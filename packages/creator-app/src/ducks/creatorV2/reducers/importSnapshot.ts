@@ -25,11 +25,16 @@ const importNode =
     state.linkIDsByNodeID[nodeID] = [];
 
     if (node.parentNode) {
-      state.blockIDByStepID[nodeID] = node.parentNode;
+      state.parentNodeIDByStepID[nodeID] = node.parentNode;
     } else {
-      state.blockIDs.push(nodeID);
+      if (node.type === Realtime.BlockType.ACTIONS) {
+        state.actionsIDs.push(nodeID);
+      } else {
+        state.blockIDs.push(nodeID);
+      }
+
       state.coordsByNodeID[nodeID] = [node.x, node.y];
-      state.stepIDsByBlockID[nodeID] = node.combinedNodes;
+      state.stepIDsByParentNodeID[nodeID] = node.combinedNodes;
     }
   };
 
@@ -106,7 +111,7 @@ export const importSnapshotReverter = createReverter(
       }),
       Realtime.node.removeMany({
         ...ctx,
-        nodes: nodesWithData.map(({ node }) => (node.parentNode ? { blockID: node.parentNode, stepID: node.id } : { blockID: node.id })),
+        nodes: nodesWithData.map(({ node }) => (node.parentNode ? { parentNodeID: node.parentNode, stepID: node.id } : { parentNodeID: node.id })),
       }),
     ];
   },

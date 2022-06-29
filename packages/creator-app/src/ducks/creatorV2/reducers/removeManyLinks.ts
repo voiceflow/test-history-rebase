@@ -2,7 +2,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { createReverter } from '@/ducks/utils';
 
-import { blockIDByStepIDSelector, linkByIDSelector } from '../selectors';
+import { linkByIDSelector, parentNodeIDByStepIDSelector } from '../selectors';
 import { removeLink } from '../utils';
 import { createActiveDiagramReducer, createDiagramInvalidator, DIAGRAM_INVALIDATORS } from './utils';
 
@@ -23,9 +23,9 @@ export const removeManyLinksReverter = createReverter(
 
     return links.map((link) => {
       const prevLink = linkByIDSelector(state, { id: link.linkID });
-      const sourceBlockID = blockIDByStepIDSelector(state, { id: link.nodeID });
+      const sourceParentNodeID = parentNodeIDByStepIDSelector(state, { id: link.nodeID });
       const payload = {
-        sourceBlockID,
+        sourceParentNodeID,
         sourceNodeID: link.nodeID,
         sourcePortID: link.portID,
         targetNodeID: prevLink!.target.nodeID,

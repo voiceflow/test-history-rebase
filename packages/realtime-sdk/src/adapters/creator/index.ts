@@ -1,6 +1,6 @@
 import { BlockType } from '@realtime-sdk/constants';
-import { CreatorDiagram, Link, Node, NodeData, Port } from '@realtime-sdk/models';
-import { isBlock, isDiagramReferencesBlockType, isMarkupBlockType } from '@realtime-sdk/utils/typeGuards';
+import { CreatorDiagram, DBNodeStart, Link, Node, NodeData, Port } from '@realtime-sdk/models';
+import { isActions, isBlock, isDiagramReferencesBlockType, isMarkupBlockType, isStart } from '@realtime-sdk/utils/typeGuards';
 import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
@@ -39,7 +39,6 @@ const creatorAdapter = createSimpleAdapter<
   ]
 >(
   (diagram, { platform, projectType, context }) => {
-    const rootNodeIDs: string[] = [];
     const nodes: Node[] = [];
     const nodeIDs = new Set<string>();
 
@@ -49,16 +48,18 @@ const creatorAdapter = createSimpleAdapter<
     const portIDs = new Set<string>();
 
     const data: Record<string, NodeData<unknown>> = {};
+    const rootNodeIDs: string[] = [];
     const markupNodeIDs: string[] = [];
 
     const nodeList = cleanupDBNodes(diagram.nodes);
 
-    const parentNodes = nodeList.reduce<Record<string, BaseModels.BaseBlock>>((acc, node) => {
-      if (isBlock(node)) {
-        node.data.steps.forEach((stepID) => {
-          acc[stepID] = node;
+    const parentNodes = nodeList.reduce<Record<string, BaseModels.BaseBlock | BaseModels.BaseActions | DBNodeStart>>((acc, node) => {
+      if (isBlock(node) || isActions(node) || isStart(node)) {
+        node.data.steps.forEach((id: string) => {
+          acc[id] = node;
         });
       }
+
       return acc;
     }, {});
 
@@ -68,16 +69,17 @@ const creatorAdapter = createSimpleAdapter<
         data: nodeData,
         ports: nodePorts,
       } = nodeAdapter.fromDB(dbNode, {
-        parentNode: parentNodes[dbNode.nodeID] || null,
         links,
-        platform,
-        projectType,
         context,
+        platform,
+        parentNode: parentNodes[dbNode.nodeID] || null,
+        projectType,
       });
+
+      data[node.id] = nodeData;
 
       nodes.push(node);
       nodeIDs.add(node.id);
-      data[node.id] = nodeData;
       nodePorts.forEach((port) => {
         ports.push(port);
         portIDs.add(port.id);
@@ -85,10 +87,7 @@ const creatorAdapter = createSimpleAdapter<
 
       if (isMarkupBlockType(node.type)) {
         markupNodeIDs.push(node.id);
-        return;
-      }
-
-      if (Array.isArray(dbNode.coords) && dbNode.coords.length === 2) {
+      } else if (Array.isArray(dbNode.coords) && dbNode.coords.length === 2) {
         rootNodeIDs.push(node.id);
       }
     };
@@ -102,17 +101,13 @@ const creatorAdapter = createSimpleAdapter<
     );
 
     return {
-      diagramID: diagram._id,
-      viewport: {
-        x: diagram.offsetX,
-        y: diagram.offsetY,
-        zoom: diagram.zoom,
-      },
-      rootNodeIDs,
-      nodes,
-      links: validLinks,
-      ports,
       data,
+      ports,
+      links: validLinks,
+      nodes,
+      viewport: { x: diagram.offsetX, y: diagram.offsetY, zoom: diagram.zoom },
+      diagramID: diagram._id,
+      rootNodeIDs,
       markupNodeIDs,
     };
   },
@@ -123,6 +118,7 @@ const creatorAdapter = createSimpleAdapter<
       if (link.source.portID in ports.byKey && link.target.nodeID in nodes.byKey) {
         acc[link.source.portID] = link.target.nodeID;
       }
+
       return acc;
     }, {});
 
@@ -140,48 +136,48 @@ const creatorAdapter = createSimpleAdapter<
           acc[node.combinedNodes[i - 1]] = node.combinedNodes[i];
         }
       }
+
       return acc;
     }, {});
 
+    const dbNodes = nodeList.reduce<Record<string, BaseModels.BaseDiagramNode>>(
+      (acc, node) => ({
+        ...acc,
+        [node.id]: nodeAdapter.toDB(
+          {
+            node,
+            data: data[node.id],
+            ports: [
+              ...node.ports.out.dynamic.map((portID) => ports.byKey[portID]),
+              ...[...Object.values(node.ports.out.byKey), ...Object.values(node.ports.out.builtIn)]
+                .filter(Boolean)
+                .map((portID) => ports.byKey[portID]),
+            ],
+          },
+          { portToTargets, stepMap, platform, projectType, portLinksMap: sourcePortLinksMap, context }
+        ),
+      }),
+      {}
+    );
+
     const diagram = {
       _id: diagramID,
+      zoom: viewport.zoom,
+      nodes: dbNodes,
       offsetX: viewport.x,
       offsetY: viewport.y,
-      zoom: viewport.zoom,
       modified: Utils.time.getCurrentTimestamp(),
-      nodes: nodeList.reduce<Record<string, BaseModels.BaseDiagramNode>>(
-        (acc, node) => ({
-          ...acc,
-          [node.id]: nodeAdapter.toDB(
-            {
-              node,
-              data: data[node.id],
-              ports: [
-                ...node.ports.out.dynamic.map((portID) => ports.byKey[portID]),
-                ...Object.values(node.ports.out.byKey)
-                  .filter(Boolean)
-                  .map((portID) => ports.byKey[portID]),
-                ...Object.values(node.ports.out.builtIn)
-                  .filter(Boolean)
-                  .map((portID) => ports.byKey[portID]),
-              ],
-            },
-            { portToTargets, stepMap, platform, projectType, portLinksMap: sourcePortLinksMap, context }
-          ),
-        }),
-        {}
-      ),
     };
 
-    const children = [
-      ...Object.values(diagram.nodes).reduce((acc, node) => {
+    const children = Array.from(
+      Object.values(diagram.nodes).reduce((acc, node) => {
         if (isDiagramReferencesBlockType(node.type as BlockType) && typeof node.data?.diagramID === 'string') {
           acc.add(node.data.diagramID);
         }
 
         return acc;
-      }, new Set<string>()),
-    ];
+      }, new Set<string>())
+    );
 
     return { ...diagram, children };
   }

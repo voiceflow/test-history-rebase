@@ -17,7 +17,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - insertStep reducer', ({ expec
       const result = applyAction(MOCK_STATE, {
         ...ACTION_CONTEXT,
         diagramID: 'foo',
-        blockID: blockNode.nodeID,
+        parentNodeID: blockNode.nodeID,
         stepID,
         ports: Realtime.Utils.port.createEmptyNodePorts(),
         data: stepData,
@@ -33,7 +33,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - insertStep reducer', ({ expec
     it('ignore inserting step with duplicate ID', () => {
       const result = applyAction(MOCK_STATE, {
         ...ACTION_CONTEXT,
-        blockID: blockNode.nodeID,
+        parentNodeID: blockNode.nodeID,
         stepID: NODE_ID,
         ports: Realtime.Utils.port.createEmptyNodePorts(),
         data: stepData,
@@ -49,7 +49,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - insertStep reducer', ({ expec
     it('ignore inserting step with unrecognized block ID', () => {
       const result = applyAction(MOCK_STATE, {
         ...ACTION_CONTEXT,
-        blockID: blockNode.nodeID,
+        parentNodeID: blockNode.nodeID,
         stepID,
         ports: Realtime.Utils.port.createEmptyNodePorts(),
         data: stepData,
@@ -67,11 +67,11 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - insertStep reducer', ({ expec
         {
           ...MOCK_STATE,
           nodes: normalize([blockNode], (node) => node.nodeID),
-          stepIDsByBlockID: { [blockNode.nodeID]: ['foo', 'bar'] },
+          stepIDsByParentNodeID: { [blockNode.nodeID]: ['foo', 'bar'] },
         },
         {
           ...ACTION_CONTEXT,
-          blockID: blockNode.nodeID,
+          parentNodeID: blockNode.nodeID,
           stepID,
           ports: Realtime.Utils.port.createEmptyNodePorts(),
           data: stepData,
@@ -83,8 +83,8 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - insertStep reducer', ({ expec
       );
 
       expect(result.nodes).to.eql(normalize([blockNode, { ...stepData, nodeID: stepID }], (node) => node.nodeID));
-      expect(result.blockIDByStepID).to.eql({ [stepID]: blockNode.nodeID });
-      expect(result.stepIDsByBlockID).to.eql({ [blockNode.nodeID]: ['foo', stepID, 'bar'] });
+      expect(result.parentNodeIDByStepID).to.eql({ [stepID]: blockNode.nodeID });
+      expect(result.stepIDsByParentNodeID).to.eql({ [blockNode.nodeID]: ['foo', stepID, 'bar'] });
       expect(result.portsByNodeID).to.eql({ [stepID]: Realtime.Utils.port.createEmptyNodePorts() });
       expect(result.linkIDsByNodeID).to.eql({ [stepID]: [] });
     });
@@ -100,11 +100,11 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - insertStep reducer', ({ expec
         {
           ...MOCK_STATE,
           nodes: normalize([blockNode], (node) => node.nodeID),
-          stepIDsByBlockID: { [blockNode.nodeID]: ['foo', 'bar'] },
+          stepIDsByParentNodeID: { [blockNode.nodeID]: ['foo', 'bar'] },
         },
         {
           ...ACTION_CONTEXT,
-          blockID: blockNode.nodeID,
+          parentNodeID: blockNode.nodeID,
           stepID,
           ports: {
             in: [{ id: inPortID }],
@@ -144,7 +144,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - insertStep reducer', ({ expec
 
   describeReverter(Realtime.node.insertStep, ({ revertAction }) => {
     it('registers an action reverter', () => {
-      const blockID = 'blockID';
+      const parentNodeID = 'parentNodeID';
       const stepID = 'stepID';
       const firstNode = 'node1';
       const secondNode = 'node2';
@@ -168,7 +168,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - insertStep reducer', ({ expec
               target: { nodeID: firstNode, portID: firstPort },
             },
           ]),
-          blockIDByStepID: { [thirdNode]: blockID },
+          parentNodeIDByStepID: { [thirdNode]: parentNodeID },
           linkIDsByPortID: {
             [firstPort]: [firstLink],
             [secondPort]: [secondLink],
@@ -179,7 +179,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - insertStep reducer', ({ expec
 
       const result = revertAction(rootState, {
         ...ACTION_CONTEXT,
-        blockID,
+        parentNodeID,
         stepID,
         ports: { in: [], out: { dynamic: [], builtIn: {}, byKey: {} } },
         data: { type: Realtime.BlockType.BUTTONS, name: 'buttons' },
@@ -197,15 +197,15 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - insertStep reducer', ({ expec
       });
 
       expect(result).to.eql([
-        Realtime.node.removeMany({ ...ACTION_CONTEXT, nodes: [{ blockID, stepID }] }),
+        Realtime.node.removeMany({ ...ACTION_CONTEXT, nodes: [{ parentNodeID, stepID }] }),
         Realtime.link.addDynamic({
           ...ACTION_CONTEXT,
-          sourceBlockID: blockID,
+          linkID: secondLink,
           sourceNodeID: thirdNode,
           sourcePortID: secondPort,
           targetNodeID: firstNode,
           targetPortID: firstPort,
-          linkID: secondLink,
+          sourceParentNodeID: parentNodeID,
         }),
       ]);
     });

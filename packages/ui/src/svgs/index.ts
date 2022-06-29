@@ -33,6 +33,10 @@ export { default as bookmark } from './bookmark.svg';
 export { default as bookmark2 } from './bookmark-2.svg';
 export { default as bookmarkActive } from './bookmark-active.svg';
 export { default as builtInIntent } from './built-in-intent.svg';
+export { default as editorExit } from './editor-exit.svg';
+export { default as editorURL } from './editor-url.svg';
+export { default as goToBlock } from './go-to-block.svg';
+export { default as intentSmall } from './intent-small.svg';
 export { default as radar } from './radar.svg';
 export { default as toggles } from './toggles.svg';
 
@@ -213,7 +217,6 @@ export { default as nubUp } from './nub-up.svg';
 // o
 export { default as offRadioButton } from './images/icons/off-radio-button.svg';
 export { default as onRadioButton } from './images/icons/on-radio-button.svg';
-export { default as openLink } from './open-link.svg';
 export { default as openLock } from './open-lock.svg';
 export { default as outlinedAdd } from './outlined-add.svg';
 export { default as outlinedCircle } from './outlined-circle.svg';

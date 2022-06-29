@@ -20,19 +20,20 @@ import {
 
 suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - transplantSteps reducer', ({ expect, describeReducerV2, describeReverter, createState }) => {
   describeReducerV2(Realtime.node.transplantSteps, ({ applyAction }) => {
-    const sourceBlockID = 'sourceBlockID';
-    const targetBlockID = 'targetBlockID';
-    const sourceBlockData = { ...NODE_DATA, nodeID: sourceBlockID };
-    const targetBlockData = { ...NODE_DATA, nodeID: targetBlockID };
+    const sourceParentNodeID = 'sourceParentNodeID';
+    const targetParentNodeID = 'targetParentNodeID';
+    const sourceBlockData = { ...NODE_DATA, nodeID: sourceParentNodeID };
+    const targetBlockData = { ...NODE_DATA, nodeID: targetParentNodeID };
 
     it('ignore transplanting nodes for a different diagram', () => {
       const result = applyAction(MOCK_STATE, {
         ...ACTION_CONTEXT,
         diagramID: 'foo',
-        sourceBlockID: NODE_ID,
-        targetBlockID: NODE_ID,
+        sourceParentNodeID: NODE_ID,
+        targetParentNodeID: NODE_ID,
         stepIDs: [NODE_ID],
         index: 1,
+        nodePortRemaps: [],
       });
 
       expect(result).to.eq(MOCK_STATE);
@@ -41,10 +42,11 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - transplantSteps reducer', ({ 
     it('ignore transplanting steps from unrecognized source block ID', () => {
       const result = applyAction(MOCK_STATE, {
         ...ACTION_CONTEXT,
-        sourceBlockID: 'foo',
-        targetBlockID: NODE_ID,
+        sourceParentNodeID: 'foo',
+        targetParentNodeID: NODE_ID,
         stepIDs: [NODE_ID],
         index: 1,
+        nodePortRemaps: [],
       });
 
       expect(result).to.eq(MOCK_STATE);
@@ -53,10 +55,11 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - transplantSteps reducer', ({ 
     it('ignore transplanting steps to unrecognized target block ID', () => {
       const result = applyAction(MOCK_STATE, {
         ...ACTION_CONTEXT,
-        sourceBlockID: NODE_ID,
-        targetBlockID: 'foo',
+        sourceParentNodeID: NODE_ID,
+        targetParentNodeID: 'foo',
         stepIDs: [NODE_ID],
         index: 1,
+        nodePortRemaps: [],
       });
 
       expect(result).to.eq(MOCK_STATE);
@@ -65,10 +68,11 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - transplantSteps reducer', ({ 
     it('ignore transplanting if any steps unrecognized', () => {
       const result = applyAction(MOCK_STATE, {
         ...ACTION_CONTEXT,
-        sourceBlockID: NODE_ID,
-        targetBlockID: NODE_ID,
+        sourceParentNodeID: NODE_ID,
+        targetParentNodeID: NODE_ID,
         stepIDs: [NODE_ID, 'foo'],
         index: 1,
+        nodePortRemaps: [],
       });
 
       expect(result).to.eq(MOCK_STATE);
@@ -80,23 +84,24 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - transplantSteps reducer', ({ 
       const state = {
         ...MOCK_STATE,
         nodes: normalize([sourceBlockData, targetBlockData, xStep, yStep], (node) => node.nodeID),
-        stepIDsByBlockID: {
-          [sourceBlockID]: ['foo', xStep.nodeID, yStep.nodeID, 'bar'],
-          [targetBlockID]: ['fizz', 'buzz'],
+        stepIDsByParentNodeID: {
+          [sourceParentNodeID]: ['foo', xStep.nodeID, yStep.nodeID, 'bar'],
+          [targetParentNodeID]: ['fizz', 'buzz'],
         },
       };
 
       const result = applyAction(state, {
         ...ACTION_CONTEXT,
-        sourceBlockID,
-        targetBlockID,
+        sourceParentNodeID,
+        targetParentNodeID,
         stepIDs: [xStep.nodeID, yStep.nodeID],
         index: 1,
+        nodePortRemaps: [],
       });
 
-      expect(result.stepIDsByBlockID).to.eql({
-        [sourceBlockID]: ['foo', 'bar'],
-        [targetBlockID]: ['fizz', xStep.nodeID, yStep.nodeID, 'buzz'],
+      expect(result.stepIDsByParentNodeID).to.eql({
+        [sourceParentNodeID]: ['foo', 'bar'],
+        [targetParentNodeID]: ['fizz', xStep.nodeID, yStep.nodeID, 'buzz'],
       });
     });
 
@@ -105,18 +110,19 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - transplantSteps reducer', ({ 
       const state = {
         ...MOCK_STATE,
         nodes: normalize([sourceBlockData, targetBlockData, stepData], (node) => node.nodeID),
-        stepIDsByBlockID: {
-          [sourceBlockID]: [stepData.nodeID],
-          [targetBlockID]: ['fizz', 'buzz'],
+        stepIDsByParentNodeID: {
+          [sourceParentNodeID]: [stepData.nodeID],
+          [targetParentNodeID]: ['fizz', 'buzz'],
         },
       };
 
       const result = applyAction(state, {
         ...ACTION_CONTEXT,
-        sourceBlockID,
-        targetBlockID,
+        sourceParentNodeID,
+        targetParentNodeID,
         stepIDs: [stepData.nodeID],
         index: 1,
+        nodePortRemaps: [],
       });
 
       expect(result.nodes).to.eql(normalize([targetBlockData, stepData], (node) => node.nodeID));
@@ -125,19 +131,19 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - transplantSteps reducer', ({ 
 
   describeReverter(Realtime.node.transplantSteps, ({ revertAction }) => {
     it('registers an transplant action reverter', () => {
-      const sourceBlockID = 'sourceBlockID';
-      const targetBlockID = 'targetBlockID';
+      const sourceParentNodeID = 'sourceParentNodeID';
+      const targetParentNodeID = 'targetParentNodeID';
       const fooStepID = 'fooStepID';
       const barStepID = 'barStepID';
       const rootState = createState(
-        { ...MOCK_STATE, stepIDsByBlockID: { [sourceBlockID]: ['first', fooStepID, barStepID, 'fourth'] } },
+        { ...MOCK_STATE, stepIDsByParentNodeID: { [sourceParentNodeID]: ['first', fooStepID, barStepID, 'fourth'] } },
         V2_FEATURE_STATE
       );
 
       const result = revertAction(rootState, {
         ...ACTION_CONTEXT,
-        sourceBlockID,
-        targetBlockID,
+        sourceParentNodeID,
+        targetParentNodeID,
         stepIDs: [fooStepID, barStepID],
         removeSource: false,
         index: 3,
@@ -146,8 +152,8 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - transplantSteps reducer', ({ 
       expect(result).to.eql([
         Realtime.node.transplantSteps({
           ...ACTION_CONTEXT,
-          sourceBlockID: targetBlockID,
-          targetBlockID: sourceBlockID,
+          sourceParentNodeID: targetParentNodeID,
+          targetParentNodeID: sourceParentNodeID,
           stepIDs: [fooStepID, barStepID],
           removeSource: false,
           nodePortRemaps: [],
@@ -157,9 +163,9 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - transplantSteps reducer', ({ 
     });
 
     it('registers an isolate action reverter', () => {
-      const sourceBlockID = 'sourceBlockID';
-      const sourceBlockInPortID = 'sourceBlockIDInPortID';
-      const targetBlockID = 'targetBlockID';
+      const sourceParentNodeID = 'sourceParentNodeID';
+      const sourceBlockInPortID = 'sourceNodeIDInPortID';
+      const targetParentNodeID = 'targetParentNodeID';
       const fooStepID = 'fooStepID';
       const barStepID = 'barStepID';
       const sourceBlockCoords: Realtime.Point = [100, 100];
@@ -167,14 +173,14 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - transplantSteps reducer', ({ 
       const rootState = createState(
         {
           ...MOCK_STATE,
-          stepIDsByBlockID: { [sourceBlockID]: ['first', fooStepID, barStepID, 'fourth'] },
-          coordsByNodeID: { [sourceBlockID]: sourceBlockCoords },
-          portsByNodeID: { [sourceBlockID]: { in: [sourceBlockInPortID], out: Realtime.Utils.port.createEmptyNodeOutPorts() } },
+          stepIDsByParentNodeID: { [sourceParentNodeID]: ['first', fooStepID, barStepID, 'fourth'] },
+          coordsByNodeID: { [sourceParentNodeID]: sourceBlockCoords },
+          portsByNodeID: { [sourceParentNodeID]: { in: [sourceBlockInPortID], out: Realtime.Utils.port.createEmptyNodeOutPorts() } },
           nodes: normalize([
             {
-              id: sourceBlockID,
+              id: sourceParentNodeID,
               type: BlockType.COMBINED,
-              nodeID: sourceBlockID,
+              nodeID: sourceParentNodeID,
               name: sourceBlockName,
             },
           ]),
@@ -184,8 +190,8 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - transplantSteps reducer', ({ 
 
       const result = revertAction(rootState, {
         ...ACTION_CONTEXT,
-        sourceBlockID,
-        targetBlockID,
+        sourceParentNodeID,
+        targetParentNodeID,
         stepIDs: [fooStepID, barStepID],
         removeSource: true,
         index: 3,
@@ -195,11 +201,14 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - transplantSteps reducer', ({ 
       expect(result).to.eql([
         Realtime.node.isolateSteps({
           ...ACTION_CONTEXT,
-          sourceBlockID: targetBlockID,
-          blockID: sourceBlockID,
-          blockCoords: sourceBlockCoords,
-          blockName: sourceBlockName,
-          blockPorts: { in: [{ id: sourceBlockInPortID }], out: Realtime.Utils.port.createEmptyNodeOutPorts() },
+          sourceParentNodeID: targetParentNodeID,
+          parentNodeID: sourceParentNodeID,
+          parentNodeData: {
+            name: sourceBlockName,
+            type: BlockType.COMBINED,
+            ports: { in: [{ id: sourceBlockInPortID }], out: Realtime.Utils.port.createEmptyNodeOutPorts() },
+            coords: sourceBlockCoords,
+          },
           projectMeta: PROJECT_META,
           schemaVersion: SCHEMA_VERSION,
           stepIDs: [fooStepID, barStepID],
@@ -208,23 +217,23 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - transplantSteps reducer', ({ 
     });
 
     it('registers an link action reverter', () => {
-      const sourceBlockID = 'sourceBlockID';
-      const targetBlockID = 'targetBlockID';
+      const sourceParentNodeID = 'sourceParentNodeID';
+      const targetParentNodeID = 'targetParentNodeID';
       const fooStepID = 'fooStepID';
       const barStepID = 'barStepID';
       const rootState = createState(
         {
           ...MOCK_STATE,
           ...NODE_PORT_REMAPS_STATE,
-          stepIDsByBlockID: { [sourceBlockID]: ['first', fooStepID, barStepID, 'fourth'] },
+          stepIDsByParentNodeID: { [sourceParentNodeID]: ['first', fooStepID, barStepID, 'fourth'] },
         },
         V2_FEATURE_STATE
       );
 
       const result = revertAction(rootState, {
         ...ACTION_CONTEXT,
-        sourceBlockID,
-        targetBlockID,
+        sourceParentNodeID,
+        targetParentNodeID,
         stepIDs: [fooStepID, barStepID],
         removeSource: false,
         index: 3,

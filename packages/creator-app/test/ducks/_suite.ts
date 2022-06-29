@@ -242,7 +242,7 @@ export default <S, A extends AnyAction>(Duck: ReduxDuck<S, A>, state: S) =>
     // reverter utils
 
     interface ReverterUtils<P> {
-      revertAction: (rootState: State, payload: P) => void;
+      revertAction: (rootState: State, payload: P) => Action<any> | Action<any>[] | undefined;
       expectToInvalidate: (origin: Action<P>, subject: AnyFSAction) => void;
       expectToIgnore: (origin: Action<P>, subject: AnyFSAction) => void;
     }

@@ -50,7 +50,7 @@ import {
   reorderOutDynamicPorts,
 } from '../utils';
 import addLinkReducer from './addLink';
-import addNodeReducer, { addManyNodesReducer, addNestedNodeReducer, addWrappedNodeReducer } from './addNode';
+import addNodeReducer, { addActionsNodeReducer, addManyNodesReducer, addNestedNodeReducer, addWrappedNodeReducer } from './addNode';
 import insertNestedNodeReducer from './insertNestedNode';
 import { removeManyNodesReducer } from './removeNode';
 import unmergeNodeReducer from './unmergeNode';
@@ -167,7 +167,7 @@ export const updateHiddenReducer: Reducer<DiagramStateType, UpdateHidden> = (sta
 
 const creatorDiagramReducer: RootReducer<DiagramStateType, AnyDiagramAction | AnyCreatorAction> = (state = INITIAL_DIAGRAM_STATE, action) => {
   if (isType(action, Realtime.node.removeMany)) {
-    return removeManyNodesReducer(state, removeNodes(action.payload.nodes.map((node) => node.stepID ?? node.blockID)));
+    return removeManyNodesReducer(state, removeNodes(action.payload.nodes.map((node) => node.stepID ?? node.parentNodeID)));
   }
 
   switch (action.type) {
@@ -193,6 +193,8 @@ const creatorDiagramReducer: RootReducer<DiagramStateType, AnyDiagramAction | An
       return addNestedNodeReducer(state, action);
     case DiagramAction.ADD_WRAPPED_NODE:
       return addWrappedNodeReducer(state, action);
+    case DiagramAction.ADD_ACTIONS_NODE:
+      return addActionsNodeReducer(state, action);
     case DiagramAction.REMOVE_MANY_NODES:
       return removeManyNodesReducer(state, action);
     case DiagramAction.ADD_OUT_BY_KEY_PORT:

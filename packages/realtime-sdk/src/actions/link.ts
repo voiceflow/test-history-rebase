@@ -7,7 +7,7 @@ import { Utils } from '@voiceflow/common';
 const linkType = Utils.protocol.typeFactory(LINK_KEY);
 
 export interface AddDynamicPayload extends BaseLinkPayload {
-  sourceBlockID: string | null;
+  sourceParentNodeID: string | null;
   sourceNodeID: string;
   sourcePortID: string;
   targetNodeID: string;

@@ -3,6 +3,7 @@ import { createRootReducer } from '@/ducks/utils/reducer';
 
 import { INITIAL_STATE } from '../constants';
 import { CreatorState } from '../types';
+import addActions from './addActions';
 import addBlock, { addBlockReverter } from './addBlock';
 import addBuiltInLink, { addBuiltinLinkReverter } from './addBuiltinLink';
 import addBuiltinPort, { addBuiltinPortReverter } from './addBuiltinPort';
@@ -35,6 +36,7 @@ const creatorReducer = createRootReducer<CreatorState>(INITIAL_STATE)
 
   .immerCase(...addBlock)
   .immerCase(...addMarkup)
+  .immerCase(...addActions)
 
   .immerCase(...insertStep)
   .immerCase(...isolateSteps)

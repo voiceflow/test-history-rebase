@@ -1,11 +1,19 @@
-import { isBlock, isMarkupOrCombinedBlockType, isRootBlockType, isStep } from '@realtime-sdk/utils/typeGuards';
+import { DBNodeStart, Link, Node, NodeData, Port } from '@realtime-sdk/models';
+import {
+  isActions,
+  isActionsBlockType,
+  isBlock,
+  isMarkupOrCombinedBlockType,
+  isRootBlockType,
+  isStart,
+  isStep,
+} from '@realtime-sdk/utils/typeGuards';
 import { BaseModels } from '@voiceflow/base-types';
 import { AnyRecord, Utils } from '@voiceflow/common';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import createAdapter from 'bidirectional-adapter';
 
 import { BlockType } from '../../constants';
-import { Link, Node, NodeData, Port } from '../../models';
 import { AdapterContext, VersionAdapterContext } from '../types';
 import { noInPortTypes } from './block';
 import { PortData } from './block/utils';
@@ -13,29 +21,30 @@ import nodeDataAdapter from './nodeData';
 import stepPortsAdapter from './stepPorts';
 import { generateInPort, getInPortID } from './utils';
 
-const nodeAdapter = createAdapter<
-  BaseModels.BaseDiagramNode,
-  { node: Node; data: NodeData<unknown>; ports: Port[] },
-  [
-    {
-      parentNode: BaseModels.BaseBlock | null;
-      links: Link[];
-      platform: VoiceflowConstants.PlatformType;
-      projectType: VoiceflowConstants.ProjectType;
-      context: AdapterContext;
-    }
-  ],
-  [
-    {
-      portToTargets: Record<string, string>;
-      stepMap: Record<string, string>;
-      platform: VoiceflowConstants.PlatformType;
-      projectType: VoiceflowConstants.ProjectType;
-      portLinksMap: Record<string, Link>;
-      context: VersionAdapterContext;
-    }
-  ]
->(
+interface InOptions {
+  links: Link[];
+  context: AdapterContext;
+  platform: VoiceflowConstants.PlatformType;
+  parentNode: BaseModels.BaseBlock | BaseModels.BaseActions | DBNodeStart | null;
+  projectType: VoiceflowConstants.ProjectType;
+}
+
+interface OutData {
+  node: Node;
+  data: NodeData<unknown>;
+  ports: Port[];
+}
+
+interface OutOptions {
+  stepMap: Record<string, string>;
+  context: VersionAdapterContext;
+  platform: VoiceflowConstants.PlatformType;
+  projectType: VoiceflowConstants.ProjectType;
+  portLinksMap: Record<string, Link>;
+  portToTargets: Record<string, string>;
+}
+
+const nodeAdapter = createAdapter<BaseModels.BaseDiagramNode, OutData, [InOptions], [OutOptions]>(
   // eslint-disable-next-line sonarjs/cognitive-complexity
   (dbNode, { parentNode, links, platform, projectType, context }) => {
     const siblingSteps = parentNode?.data.steps ?? [];
@@ -88,8 +97,8 @@ const nodeAdapter = createAdapter<
       }
     };
 
-    if (isBlock(dbNode)) {
-      if (data.type === BlockType.COMBINED) {
+    if (isStart(dbNode) || isActions(dbNode) || isBlock(dbNode)) {
+      if (data.type !== BlockType.START) {
         registerInPort(generateInPort(node.id));
       }
 
@@ -101,7 +110,8 @@ const nodeAdapter = createAdapter<
       const hasNextStep = stepIndex !== -1 && stepIndex + 1 < siblingSteps.length;
       const nextStep = hasNextStep ? siblingSteps[stepIndex + 1] : null;
 
-      if (!noInPortTypes.has(node.type)) {
+      // don't register in ports for the actions as well
+      if (!noInPortTypes.has(node.type) && !isActionsBlockType(parentNode?.type)) {
         registerInPort(generateInPort(node.id));
       }
 
@@ -126,17 +136,17 @@ const nodeAdapter = createAdapter<
     const { data: dbData, type } = nodeDataAdapter.toDB(data, { platform, projectType, context });
 
     const diagramNode: BaseModels.BaseDiagramNode = {
-      nodeID: node.id,
       type,
-      coords: node.parentNode ? undefined : [node.x, node.y],
       data: dbData,
+      nodeID: node.id,
+      coords: node.parentNode ? undefined : [node.x, node.y],
     };
 
-    if (isRootBlockType(node.type)) {
+    if (isRootBlockType(node.type) || isActionsBlockType(node.type)) {
       diagramNode.data.steps = node.combinedNodes;
     }
 
-    if (!isMarkupOrCombinedBlockType(node.type)) {
+    if (!isMarkupOrCombinedBlockType(node.type) && !isActionsBlockType(node.type)) {
       const builtInPortTypes = Utils.object.getKeys(node.ports.out.builtIn);
 
       const dynamicPorts = node.ports.out.dynamic

@@ -96,7 +96,7 @@ export const NODE_PORT_REMAPS_STATE = {
       target: { nodeID: differentBlockStepID, portID: differentBlockPortID },
     },
   ]),
-  blockIDByStepID: { [remappedStepID]: remappedBlockID },
+  parentNodeIDByStepID: { [remappedStepID]: remappedBlockID },
   linkIDsByPortID: {
     [remappedPortID]: [remappedLinkID],
   },
@@ -106,7 +106,7 @@ export const NODE_PORT_REMAPS = [{ nodeID: remappedStepID, ports: [{ portID: rem
 
 export const REVERT_NODE_PORT_REMAPS_ACTION = Realtime.link.addDynamic({
   ...ACTION_CONTEXT,
-  sourceBlockID: remappedBlockID,
+  sourceParentNodeID: remappedBlockID,
   sourceNodeID: remappedStepID,
   sourcePortID: remappedPortID,
   targetNodeID: differentBlockStepID,

@@ -1,7 +1,7 @@
 import 'react-tippy';
 
 declare module 'react-tippy' {
-  // tippy props ant type are incorrect, so fixing it
+  // tippy props and type are incorrect, so fixing it
 
   export interface TooltipProps {
     onShow?: VoidFunction;

@@ -42,10 +42,7 @@ const useLinkInstance = () => {
     const isStraight = engine.isStraightLinks();
     const targetNode = engine.getNodeByID(targetNodeID);
     const sourceNode = engine.getNodeByID(sourceNodeID);
-    // TODO: replace with the BlockType.ACTIONS
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-expect-error
-    const sourceNodeIsAction = sourceNode?.type === 'actions';
+    const sourceNodeIsAction = sourceNode?.type === BlockType.ACTIONS;
     const sourceNodeIsStart = sourceNode?.type === BlockType.START;
     const targetNodeIsCombined = targetNode?.type === BlockType.COMBINED;
 

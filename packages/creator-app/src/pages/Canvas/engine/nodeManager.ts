@@ -1,3 +1,4 @@
+/* eslint-disable default-param-last */
 import { AlexaConstants } from '@voiceflow/alexa-types';
 import { BaseNode } from '@voiceflow/base-types';
 import { Nullish, Utils } from '@voiceflow/common';
@@ -157,13 +158,13 @@ class NodeManager extends EngineConsumer {
       }
     },
 
-    appendStep: async (blockID: string, node: Creator.NodeDescriptor, data: Creator.DataDescriptor): Promise<void> => {
+    appendStep: async (parentNodeID: string, node: Creator.NodeDescriptor, data: Creator.DataDescriptor): Promise<void> => {
       if (this.isAtomicActionsPhase2) {
-        const stepIDs = this.select(CreatorV2.stepIDsByBlockIDSelector, { id: blockID });
+        const stepIDs = this.select(CreatorV2.stepIDsByParentNodeIDSelector, { id: parentNodeID });
         await this.dispatch.sync(
           Realtime.node.insertStep({
             ...this.engine.context,
-            blockID,
+            parentNodeID,
             stepID: node.id,
             data: {
               ...data,
@@ -177,10 +178,10 @@ class NodeManager extends EngineConsumer {
           })
         );
       } else {
-        this.dispatch(Creator.addNestedNode(blockID, node, data));
+        this.dispatch(Creator.addNestedNode(parentNodeID, node, data));
       }
 
-      this.redrawNestedLinks(blockID);
+      this.redrawNestedLinks(parentNodeID);
     },
 
     /**
@@ -193,14 +194,14 @@ class NodeManager extends EngineConsumer {
       this.redrawNestedThreads(parentNodeID);
     },
 
-    insertStepV2: async (blockID: string, node: Creator.NodeDescriptor, data: Creator.DataDescriptor, index: number): Promise<void> => {
-      const stepIDs = this.select(CreatorV2.stepIDsByBlockIDSelector, { id: blockID });
+    insertStepV2: async (parentNodeID: string, node: Creator.NodeDescriptor, data: Creator.DataDescriptor, index: number): Promise<void> => {
+      const stepIDs = this.select(CreatorV2.stepIDsByParentNodeIDSelector, { id: parentNodeID });
       const nodePortRemaps = index === stepIDs.length ? createPortRemap(this.engine.getNodeByID(stepIDs[stepIDs.length - 1])) : undefined;
 
       await this.dispatch.sync(
         Realtime.node.insertStep({
           ...this.engine.context,
-          blockID,
+          parentNodeID,
           stepID: node.id,
           data: {
             ...data,
@@ -214,15 +215,21 @@ class NodeManager extends EngineConsumer {
         })
       );
 
-      this.redrawNestedLinks(blockID);
-      this.redrawNestedThreads(blockID);
+      this.redrawNestedLinks(parentNodeID);
+      this.redrawNestedThreads(parentNodeID);
     },
 
-    transplantSteps: async (targetBlockID: string, sourceBlockID: string, stepIDs: string[], index: number, removeSource = false): Promise<void> => {
+    transplantSteps: async (
+      targetParentNodeID: string,
+      sourceParentNodeID: string,
+      stepIDs: string[],
+      index: number,
+      removeSource = false
+    ): Promise<void> => {
       if (!stepIDs.length) return;
 
-      const sourceStepIDs = this.select(CreatorV2.stepIDsByBlockIDSelector, { id: sourceBlockID });
-      const targetStepIDs = this.select(CreatorV2.stepIDsByBlockIDSelector, { id: targetBlockID });
+      const sourceStepIDs = this.select(CreatorV2.stepIDsByParentNodeIDSelector, { id: sourceParentNodeID });
+      const targetStepIDs = this.select(CreatorV2.stepIDsByParentNodeIDSelector, { id: targetParentNodeID });
 
       const sourceBlockLastStepID = sourceStepIDs[sourceStepIDs.length - 1];
       const isMovingSourceLastStep = stepIDs.includes(sourceBlockLastStepID) && index !== targetStepIDs.length;
@@ -236,15 +243,23 @@ class NodeManager extends EngineConsumer {
       ];
 
       await this.dispatch.sync(
-        Realtime.node.transplantSteps({ ...this.engine.context, sourceBlockID, targetBlockID, stepIDs, index, removeSource, nodePortRemaps })
+        Realtime.node.transplantSteps({
+          ...this.engine.context,
+          index,
+          stepIDs,
+          removeSource,
+          nodePortRemaps,
+          sourceParentNodeID,
+          targetParentNodeID,
+        })
       );
 
-      this.redrawNestedLinks(targetBlockID);
-      this.redrawNestedThreads(targetBlockID);
+      this.redrawNestedLinks(targetParentNodeID);
+      this.redrawNestedThreads(targetParentNodeID);
     },
 
-    reorderSteps: async (blockID: string, stepID: string, index: number): Promise<void> => {
-      const stepIDs = this.select(CreatorV2.stepIDsByBlockIDSelector, { id: blockID });
+    reorderSteps: async (parentNodeID: string, stepID: string, index: number): Promise<void> => {
+      const stepIDs = this.select(CreatorV2.stepIDsByParentNodeIDSelector, { id: parentNodeID });
       const currentIndex = stepIDs.indexOf(stepID);
       if (currentIndex === -1) return;
 
@@ -253,10 +268,10 @@ class NodeManager extends EngineConsumer {
       const nodePortRemaps = isLastStepMoved ? createPortRemap(this.engine.getNodeByID(lastStepID)) : undefined;
 
       const finalIndex = currentIndex < index ? index - 1 : index;
-      await this.dispatch.sync(Realtime.node.reorderSteps({ ...this.engine.context, blockID, stepID, index: finalIndex, nodePortRemaps }));
+      await this.dispatch.sync(Realtime.node.reorderSteps({ ...this.engine.context, parentNodeID, stepID, index: finalIndex, nodePortRemaps }));
 
-      this.redrawNestedLinks(blockID);
-      this.redrawNestedThreads(blockID);
+      this.redrawNestedLinks(parentNodeID);
+      this.redrawNestedThreads(parentNodeID);
     },
 
     isolateStep: async (nodeID: string, coords: Point, parentNode: Creator.ParentNodeDescriptor): Promise<void> => {
@@ -267,11 +282,11 @@ class NodeManager extends EngineConsumer {
 
       if (this.isAtomicActionsPhase2) {
         const projectMeta = this.engine.getActiveProjectMeta();
-        const parentBlockStepIDs = this.select(CreatorV2.stepIDsByBlockIDSelector, { id: node.parentNode! });
+        const parentNodeStepIDs = this.select(CreatorV2.stepIDsByParentNodeIDSelector, { id: node.parentNode! });
         const stepIDs = [nodeID];
 
         // if we are isolating every step in a block, we are simply just moving the block
-        const movingEntireBlock = parentBlockStepIDs.length === stepIDs.length;
+        const movingEntireBlock = parentNodeStepIDs.length === stepIDs.length;
         if (movingEntireBlock) {
           this.setOrigin(node.parentNode!, coords);
           await this.saveLocations([node.parentNode!]);
@@ -279,14 +294,12 @@ class NodeManager extends EngineConsumer {
           await this.dispatch.sync(
             Realtime.node.isolateSteps({
               ...this.engine.context,
-              sourceBlockID: node.parentNode!,
-              blockID: parentNode.id,
-              blockPorts: parentNode.ports,
-              blockCoords: coords,
               stepIDs,
-              blockName,
               projectMeta,
+              sourceParentNodeID: node.parentNode!,
+              parentNodeID: parentNode.id,
               schemaVersion: this.engine.getActiveSchemaVersion(),
+              parentNodeData: { ports: parentNode.ports, coords, name: blockName, type: Realtime.BlockType.COMBINED },
             })
           );
         }
@@ -335,9 +348,9 @@ class NodeManager extends EngineConsumer {
       });
 
       const nodesToRemove = Array.from(removedIDs).map((nodeID) => {
-        const blockID = this.select(CreatorV2.blockIDByStepIDSelector, { id: nodeID });
+        const parentNodeID = this.select(CreatorV2.parentNodeIDByStepIDSelector, { id: nodeID });
 
-        return blockID ? { blockID, stepID: nodeID } : { blockID: nodeID };
+        return parentNodeID ? { parentNodeID, stepID: nodeID } : { parentNodeID: nodeID };
       });
 
       // save last location of parent nodes in case unmerging
@@ -670,7 +683,13 @@ class NodeManager extends EngineConsumer {
   /**
    * @deprecated
    */
-  private async insertStepV1(blockID: string, node: Creator.NodeDescriptor, data: Creator.DataDescriptor, index: number): Promise<void> {
+  private async insertStepV1(
+    blockID: string,
+    node: Creator.NodeDescriptor,
+    data: Creator.DataDescriptor,
+    index: number,
+    { autoFocus }: { autoFocus?: boolean } = {}
+  ): Promise<void> {
     const parentNode = {
       id: Utils.id.objectID(),
       ports: { in: [{ id: Utils.id.objectID() }], out: { byKey: {}, dynamic: [], builtIn: {} } },
@@ -687,7 +706,7 @@ class NodeManager extends EngineConsumer {
     await this.engine.realtime.sendUpdate(RealtimeDuck.insertNestedNode(blockID, index, node.id));
 
     this.engine.saveHistory();
-    await this.handleNewStep(node, data);
+    await this.handleNewStep(node, data, autoFocus);
 
     this.log.info(this.log.success('added nested node'), this.log.slug(node.id));
   }
@@ -696,17 +715,20 @@ class NodeManager extends EngineConsumer {
    * inserts a new step to a block at some index
    */
   async insertStepV2<K extends keyof Realtime.NodeDataMap>(
-    blockID: string,
+    parentNodeID: string,
     type: K,
     index: number,
-    factoryData?: Realtime.NodeDataMap[K] & Partial<Realtime.NodeData<{}>>,
-    nodeID: string = Utils.id.objectID()
+    {
+      nodeID = Utils.id.objectID(),
+      autoFocus,
+      factoryData,
+    }: { nodeID?: string; autoFocus?: boolean; factoryData?: Partial<Realtime.NodeData<Realtime.NodeDataMap[K]>> } = {}
   ): Promise<void> {
     const { node, data } = nodeDescriptorFactory(type, factoryData, this.select(nodeFactoryOptionsSelector));
     const nodeWithID = { ...node, id: nodeID };
 
     if (!this.isAtomicActionsPhase2) {
-      await this.insertStepV1(blockID, nodeWithID, data, index);
+      await this.insertStepV1(parentNodeID, nodeWithID, data, index, { autoFocus });
       return;
     }
 
@@ -714,7 +736,7 @@ class NodeManager extends EngineConsumer {
 
     await this.dispatch(
       History.transaction(async () => {
-        await this.internal.insertStepV2(blockID, nodeWithID, data, index);
+        await this.internal.insertStepV2(parentNodeID, nodeWithID, data, index);
         // TODO: fold this into the actions that add new steps to have better atomicity
         await this.handleNewStep(nodeWithID, data);
       })
@@ -743,52 +765,52 @@ class NodeManager extends EngineConsumer {
   /**
    * relocate steps and blocks to within other blocks
    */
-  async relocateV2(targetBlockID: string, nodeID: string, index: number): Promise<void> {
+  async relocateV2(targetNodeID: string, nodeID: string, index: number): Promise<void> {
     if (!this.isAtomicActionsPhase2) {
-      await this.relocateV1(targetBlockID, index, nodeID);
+      await this.relocateV1(targetNodeID, index, nodeID);
       return;
     }
 
-    const sourceBlockID = this.select(CreatorV2.blockIDByStepIDSelector, { id: nodeID });
+    const sourceNodeID = this.select(CreatorV2.parentNodeIDByStepIDSelector, { id: nodeID });
 
-    if (sourceBlockID === targetBlockID) {
-      await this.reorderSteps(targetBlockID, nodeID, index);
-    } else if (sourceBlockID) {
-      await this.transplantStep(targetBlockID, sourceBlockID, nodeID, index);
+    if (sourceNodeID === targetNodeID) {
+      await this.reorderSteps(targetNodeID, nodeID, index);
+    } else if (sourceNodeID) {
+      await this.transplantStep(targetNodeID, sourceNodeID, nodeID, index);
     } else {
-      await this.transplantBlock(targetBlockID, nodeID, index);
+      await this.transplantBlock(targetNodeID, nodeID, index);
     }
   }
 
   /**
    * relocates a step from one block to another at some index
    */
-  private async transplantStep(targetBlockID: string, sourceBlockID: string, stepID: string, index: number): Promise<void> {
-    const stepIDs = this.select(CreatorV2.stepIDsByBlockIDSelector, { id: sourceBlockID });
+  private async transplantStep(targetNodeID: string, sourceNodeID: string, stepID: string, index: number): Promise<void> {
+    const stepIDs = this.select(CreatorV2.stepIDsByParentNodeIDSelector, { id: sourceNodeID });
     const removeSource = Utils.array.hasIdenticalMembers(stepIDs, [stepID]);
 
     this.log.debug(this.log.pending('transplanting step'), this.log.slug(stepID));
-    await this.internal.transplantSteps(targetBlockID, sourceBlockID, [stepID], index, removeSource);
+    await this.internal.transplantSteps(targetNodeID, sourceNodeID, [stepID], index, removeSource);
     this.log.info(this.log.success('transplanted step'), this.log.slug(stepID));
   }
 
   /**
    * relocates all steps from one block to another at some index
    */
-  private async transplantBlock(targetBlockID: string, sourceBlockID: string, index: number): Promise<void> {
-    const stepIDs = this.select(CreatorV2.stepIDsByBlockIDSelector, { id: sourceBlockID });
+  private async transplantBlock(targetNodeID: string, sourceNodeID: string, index: number): Promise<void> {
+    const stepIDs = this.select(CreatorV2.stepIDsByParentNodeIDSelector, { id: sourceNodeID });
 
-    this.log.debug(this.log.pending('transplanting block'), this.log.slug(sourceBlockID));
-    await this.internal.transplantSteps(targetBlockID, sourceBlockID, stepIDs, index, true);
-    this.log.info(this.log.success('transplanted block'), this.log.slug(sourceBlockID));
+    this.log.debug(this.log.pending('transplanting block'), this.log.slug(sourceNodeID));
+    await this.internal.transplantSteps(targetNodeID, sourceNodeID, stepIDs, index, true);
+    this.log.info(this.log.success('transplanted block'), this.log.slug(sourceNodeID));
   }
 
   /**
    * reorder a step within a single block
    */
-  private async reorderSteps(blockID: string, stepID: string, index: number): Promise<void> {
+  private async reorderSteps(parentNodeID: string, stepID: string, index: number): Promise<void> {
     this.log.debug(this.log.pending('reordering steps'), this.log.slug(stepID));
-    await this.internal.reorderSteps(blockID, stepID, index);
+    await this.internal.reorderSteps(parentNodeID, stepID, index);
     this.log.info(this.log.success('reordering steps'), this.log.slug(stepID));
   }
 
@@ -868,7 +890,7 @@ class NodeManager extends EngineConsumer {
   }
 
   translateAllLinks(nodeID: string, movement: Pair<number>, { sync = false }: { sync?: boolean } = {}): void {
-    [nodeID, ...this.select(CreatorV2.stepIDsByBlockIDSelector, { id: nodeID })].forEach((id) => this.translateLinks(id, movement, { sync }));
+    [nodeID, ...this.select(CreatorV2.stepIDsByParentNodeIDSelector, { id: nodeID })].forEach((id) => this.translateLinks(id, movement, { sync }));
   }
 
   private translateLinks(nodeID: string, movement: Pair<number>, { sync }: { sync: boolean }): void {
@@ -979,7 +1001,7 @@ class NodeManager extends EngineConsumer {
   }
 
   redrawNestedLinks(parentNodeID: Nullish<string>): void {
-    this.select(CreatorV2.stepIDsByBlockIDSelector, { id: parentNodeID }).forEach((nodeID) => this.redrawLinks(nodeID));
+    this.select(CreatorV2.stepIDsByParentNodeIDSelector, { id: parentNodeID }).forEach((nodeID) => this.redrawLinks(nodeID));
   }
 
   redrawThreads(nodeID: string): void {
@@ -989,7 +1011,7 @@ class NodeManager extends EngineConsumer {
   redrawNestedThreads(nodeID: Nullish<string>): void {
     if (!nodeID) return;
 
-    [nodeID, ...this.select(CreatorV2.stepIDsByBlockIDSelector, { id: nodeID })].forEach((childNodeID) => this.redrawThreads(childNodeID));
+    [nodeID, ...this.select(CreatorV2.stepIDsByParentNodeIDSelector, { id: nodeID })].forEach((childNodeID) => this.redrawThreads(childNodeID));
   }
 
   async updateManyBlocksColor(nodeIDs: string[], color: string): Promise<void> {
@@ -1087,17 +1109,17 @@ class NodeManager extends EngineConsumer {
 
       // remove the block if all child steps are being removed
       ...nodeIDs.flatMap((nodeID) => {
-        const blockID = this.select(CreatorV2.blockIDByStepIDSelector, { id: nodeID });
-        if (!blockID || nodeIDs.includes(blockID)) return [];
+        const parentNodeID = this.select(CreatorV2.parentNodeIDByStepIDSelector, { id: nodeID });
+        if (!parentNodeID || nodeIDs.includes(parentNodeID)) return [];
 
-        const stepIDs = this.select(CreatorV2.stepIDsByBlockIDSelector, { id: blockID });
-        if (stepIDs.every((stepID) => nodeIDs.includes(stepID))) return [blockID];
+        const stepIDs = this.select(CreatorV2.stepIDsByParentNodeIDSelector, { id: parentNodeID });
+        if (stepIDs.every((stepID) => nodeIDs.includes(stepID))) return [parentNodeID];
 
         return [];
       }),
 
       // remove all children from any blocks being removed
-      ...nodeIDs.flatMap((nodeID) => this.select(CreatorV2.stepIDsByBlockIDSelector, { id: nodeID })),
+      ...nodeIDs.flatMap((nodeID) => this.select(CreatorV2.stepIDsByParentNodeIDSelector, { id: nodeID })),
     ]);
   }
 

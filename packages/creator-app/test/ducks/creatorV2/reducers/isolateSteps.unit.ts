@@ -10,8 +10,8 @@ import { ACTION_CONTEXT, LINK_ID, MOCK_STATE, NODE_DATA, NODE_ID, PORT_ID, PROJE
 
 suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - isolateSteps reducer', ({ expect, createState, describeReducerV2, describeReverter }) => {
   describeReducerV2(Realtime.node.isolateSteps, ({ applyAction }) => {
-    const sourceBlockID = 'sourceBlockID';
-    const blockID = 'blockID';
+    const sourceParentNodeID = 'sourceParentNodeID';
+    const parentNodeID = 'parentNodeID';
     const stepIDs = ['stepID'];
     const blockCoords: Realtime.Point = [-90, 20];
     const blockName = 'New Block';
@@ -20,11 +20,14 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - isolateSteps reducer', ({ exp
       const result = applyAction(MOCK_STATE, {
         ...ACTION_CONTEXT,
         diagramID: 'foo',
-        sourceBlockID: NODE_ID,
-        blockID,
-        blockName,
-        blockPorts: Realtime.Utils.port.createEmptyNodePorts(),
-        blockCoords,
+        sourceParentNodeID: NODE_ID,
+        parentNodeID,
+        parentNodeData: {
+          name: blockName,
+          ports: Realtime.Utils.port.createEmptyNodePorts(),
+          coords: blockCoords,
+          type: Realtime.BlockType.COMBINED,
+        },
         stepIDs,
         projectMeta: {
           platform: VoiceflowConstants.PlatformType.VOICEFLOW,
@@ -39,11 +42,14 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - isolateSteps reducer', ({ exp
     it('ignore isolating step with duplicate block ID', () => {
       const result = applyAction(MOCK_STATE, {
         ...ACTION_CONTEXT,
-        sourceBlockID: NODE_ID,
-        blockID: NODE_ID,
-        blockName,
-        blockPorts: Realtime.Utils.port.createEmptyNodePorts(),
-        blockCoords,
+        sourceParentNodeID: NODE_ID,
+        parentNodeID: NODE_ID,
+        parentNodeData: {
+          name: blockName,
+          ports: Realtime.Utils.port.createEmptyNodePorts(),
+          coords: blockCoords,
+          type: Realtime.BlockType.COMBINED,
+        },
         stepIDs,
         projectMeta: {
           platform: VoiceflowConstants.PlatformType.VOICEFLOW,
@@ -58,11 +64,14 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - isolateSteps reducer', ({ exp
     it('ignore isolating step with unrecognized step ID', () => {
       const result = applyAction(MOCK_STATE, {
         ...ACTION_CONTEXT,
-        sourceBlockID: NODE_ID,
-        blockID,
-        blockName,
-        blockPorts: Realtime.Utils.port.createEmptyNodePorts(),
-        blockCoords,
+        sourceParentNodeID: NODE_ID,
+        parentNodeID,
+        parentNodeData: {
+          name: blockName,
+          ports: Realtime.Utils.port.createEmptyNodePorts(),
+          coords: blockCoords,
+          type: Realtime.BlockType.COMBINED,
+        },
         stepIDs,
         projectMeta: {
           platform: VoiceflowConstants.PlatformType.VOICEFLOW,
@@ -77,11 +86,14 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - isolateSteps reducer', ({ exp
     it('ignore isolating step from unrecognized source block ID', () => {
       const result = applyAction(MOCK_STATE, {
         ...ACTION_CONTEXT,
-        sourceBlockID,
-        blockID,
-        blockName,
-        blockPorts: Realtime.Utils.port.createEmptyNodePorts(),
-        blockCoords,
+        sourceParentNodeID,
+        parentNodeID,
+        parentNodeData: {
+          name: blockName,
+          ports: Realtime.Utils.port.createEmptyNodePorts(),
+          coords: blockCoords,
+          type: Realtime.BlockType.COMBINED,
+        },
         stepIDs: [NODE_ID],
         projectMeta: {
           platform: VoiceflowConstants.PlatformType.VOICEFLOW,
@@ -102,16 +114,19 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - isolateSteps reducer', ({ exp
           ...MOCK_STATE,
           blockIDs: [NODE_ID],
           nodes: normalize([NODE_DATA, stepNode], (node) => node.nodeID),
-          blockIDByStepID: { [stepID]: NODE_ID },
-          stepIDsByBlockID: { [NODE_ID]: ['fooStep', stepID, 'barStep'] },
+          parentNodeIDByStepID: { [stepID]: NODE_ID },
+          stepIDsByParentNodeID: { [NODE_ID]: ['fooStep', stepID, 'barStep'] },
         },
         {
           ...ACTION_CONTEXT,
-          sourceBlockID: NODE_ID,
-          blockID,
-          blockName,
-          blockPorts: Realtime.Utils.port.createEmptyNodePorts(),
-          blockCoords,
+          sourceParentNodeID: NODE_ID,
+          parentNodeID,
+          parentNodeData: {
+            name: blockName,
+            ports: Realtime.Utils.port.createEmptyNodePorts(),
+            coords: blockCoords,
+            type: Realtime.BlockType.COMBINED,
+          },
           stepIDs: [stepID],
           projectMeta: {
             platform: VoiceflowConstants.PlatformType.VOICEFLOW,
@@ -121,38 +136,40 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - isolateSteps reducer', ({ exp
         }
       );
 
-      expect(result.blockIDs).to.eql([NODE_ID, blockID]);
+      expect(result.blockIDs).to.eql([NODE_ID, parentNodeID]);
       expect(result.nodes).to.containSubset(
         normalize(
           [
             NODE_DATA,
             stepNode,
-            { type: Realtime.BlockType.COMBINED, blockColor: COLOR_PICKER_CONSTANTS.BLOCK_STANDARD_COLOR, nodeID: blockID, name: blockName },
+            { type: Realtime.BlockType.COMBINED, blockColor: COLOR_PICKER_CONSTANTS.BLOCK_STANDARD_COLOR, nodeID: parentNodeID, name: blockName },
           ],
           (node) => node.nodeID
         )
       );
-      expect(result.blockIDByStepID).to.eql({ [stepID]: blockID });
-      expect(result.stepIDsByBlockID).to.eql({
+      expect(result.parentNodeIDByStepID).to.eql({ [stepID]: parentNodeID });
+      expect(result.stepIDsByParentNodeID).to.eql({
         [NODE_ID]: ['fooStep', 'barStep'],
-        [blockID]: [stepID],
+        [parentNodeID]: [stepID],
       });
     });
   });
 
   describeReverter(Realtime.node.isolateSteps, ({ revertAction }) => {
     it('registers an action reverter', () => {
-      const blockID = 'blockID';
+      const parentNodeID = 'parentNodeID';
       const stepID = 'stepID';
-      const sourceBlockID = 'sourceBlockID';
-      const targetNodeID = 'targetNodeID';
+      const sourceParentNodeID = 'sourceParentNodeID';
+      const targetParentNodeID = 'targetParentNodeID';
       const targetPortID = 'targetPortID';
       const rootState = createState(
         {
           ...MOCK_STATE,
-          links: normalize([{ id: LINK_ID, source: { nodeID: NODE_ID, portID: PORT_ID }, target: { nodeID: targetNodeID, portID: targetPortID } }]),
-          blockIDByStepID: { [NODE_ID]: blockID },
-          stepIDsByBlockID: { [sourceBlockID]: ['first', stepID, 'third'] },
+          links: normalize([
+            { id: LINK_ID, source: { nodeID: NODE_ID, portID: PORT_ID }, target: { nodeID: targetParentNodeID, portID: targetPortID } },
+          ]),
+          parentNodeIDByStepID: { [NODE_ID]: parentNodeID },
+          stepIDsByParentNodeID: { [sourceParentNodeID]: ['first', stepID, 'third'] },
           linkIDsByPortID: { [PORT_ID]: [LINK_ID] },
         },
         V2_FEATURE_STATE
@@ -160,11 +177,14 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - isolateSteps reducer', ({ exp
 
       const result = revertAction(rootState, {
         ...ACTION_CONTEXT,
-        sourceBlockID,
-        blockID,
-        blockCoords: [100, -100],
-        blockName: 'New Block',
-        blockPorts: { in: [], out: { byKey: {}, builtIn: {}, dynamic: [] } },
+        sourceParentNodeID,
+        parentNodeID,
+        parentNodeData: {
+          coords: [100, -100],
+          name: 'New Block',
+          ports: { in: [], out: { byKey: {}, builtIn: {}, dynamic: [] } },
+          type: Realtime.BlockType.COMBINED,
+        },
         stepIDs: [stepID],
         projectMeta: PROJECT_META,
         schemaVersion: 2,
@@ -173,10 +193,10 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - isolateSteps reducer', ({ exp
       expect(result).to.eql(
         Realtime.node.transplantSteps({
           ...ACTION_CONTEXT,
-          sourceBlockID: blockID,
-          targetBlockID: sourceBlockID,
-          stepIDs: [stepID],
           index: 1,
+          stepIDs: [stepID],
+          sourceParentNodeID: parentNodeID,
+          targetParentNodeID: sourceParentNodeID,
           nodePortRemaps: [],
           removeSource: true,
         })

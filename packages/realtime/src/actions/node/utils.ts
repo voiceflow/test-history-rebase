@@ -12,18 +12,25 @@ export const buildPort = (nodeID: string) => {
 
 export const buildDBBlock = (nodeID: string, coords: Realtime.Point, data: BaseModels.BaseBlock['data']): BaseModels.BaseBlock => ({
   type: BaseModels.BaseNodeType.BLOCK,
-  nodeID,
-  coords,
   data,
+  coords,
+  nodeID,
+});
+
+export const buildDBActions = (nodeID: string, data: BaseModels.BaseActions['data'], coords?: Realtime.Point): BaseModels.BaseActions => ({
+  type: BaseModels.BaseNodeType.ACTIONS,
+  data,
+  coords,
+  nodeID,
 });
 
 export const buildDBStep = <Step extends BaseModels.BaseStep>(nodeID: string, type: Step['type'], data: Step['data']): Step =>
   ({ nodeID, type, data } as Step);
 
 export interface ExtractNodesOptions extends Partial<Pick<Realtime.CreatorDiagram, 'rootNodeIDs' | 'markupNodeIDs'>> {
-  ports?: Record<string, Realtime.PortsDescriptor>;
   data: Record<string, Realtime.NodeDataDescriptor<unknown>>;
   nodes: Realtime.Node[];
+  ports?: Record<string, Realtime.PortsDescriptor>;
 }
 
 export const extractNodes = (
@@ -51,11 +58,11 @@ export const extractNodes = (
       links: [],
     },
     {
-      platform: projectMeta.platform,
-      projectType: projectMeta.type,
       nodes: normalize(nodes),
       ports: normalize(ports),
       context: { schemaVersion },
+      platform: projectMeta.platform,
+      projectType: projectMeta.type,
     }
   );
 

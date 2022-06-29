@@ -17,7 +17,7 @@ export const addBlock = (
   state.blockIDs = Utils.array.append(state.blockIDs, blockID);
 
   state.coordsByNodeID[blockID] = coords;
-  state.stepIDsByBlockID[blockID] = [];
+  state.stepIDsByParentNodeID[blockID] = [];
 
   addNodeWithPorts(state, { nodeID: blockID, data: blockNodeDataFactory(blockID, { name }), ports });
 };
@@ -29,7 +29,7 @@ const addBlockReducer = createActiveDiagramReducer(
     if (Normal.hasOne(state.nodes, stepID)) return;
 
     addBlock(state, { blockID, ports: blockPorts, coords: blockCoords, name: blockName });
-    addStep(state, (stepIDs) => Utils.array.append(stepIDs, stepID), { blockID, stepID, data: stepData, ports: stepPorts });
+    addStep(state, (stepIDs) => Utils.array.append(stepIDs, stepID), { parentNodeID: blockID, stepID, data: stepData, ports: stepPorts });
   }
 );
 
@@ -39,7 +39,7 @@ export const addBlockReverter = createReverter(
   Realtime.node.addBlock,
 
   ({ workspaceID, projectID, versionID, diagramID, blockID, stepID }) =>
-    Realtime.node.removeMany({ workspaceID, projectID, versionID, diagramID, nodes: [{ blockID }, { blockID, stepID }] }),
+    Realtime.node.removeMany({ workspaceID, projectID, versionID, diagramID, nodes: [{ parentNodeID: blockID }, { parentNodeID: blockID, stepID }] }),
 
   DIAGRAM_INVALIDATORS
 );

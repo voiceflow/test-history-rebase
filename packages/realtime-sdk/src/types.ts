@@ -4,8 +4,9 @@ import { ActionCreator } from 'typescript-fsa';
 
 export enum SchemaVersion {
   V1 = 1,
+
   /**
-   * in this version we migrate to the new portsV2 structure
+   * migrate to the new portsV2 structure
    */
   V2 = 2,
 }
@@ -81,8 +82,12 @@ export interface BaseBlockPayload extends BaseDiagramPayload {
   blockID: string;
 }
 
-export interface BaseStepPayload extends BaseBlockPayload {
-  stepID: string;
+export interface BaseParentNodePayload extends BaseDiagramPayload {
+  parentNodeID: string;
+}
+
+export interface BaseActionsPayload extends BaseDiagramPayload {
+  actionsID: string;
 }
 
 export interface BasePortPayload extends BaseNodePayload {

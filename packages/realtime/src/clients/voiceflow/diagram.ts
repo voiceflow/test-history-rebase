@@ -63,58 +63,81 @@ const Client = ({ api }: ExtraOptions) => ({
 
   patch: (diagramID: string, data: Partial<Realtime.Diagram>) => api.patch(`/v3/diagrams/${diagramID}`, data),
 
-  addStep: (
-    diagramID: string,
-    blockID: string,
-    step: BaseModels.BaseDiagramNode,
-    index?: Nullish<number>,
-    nodePortRemaps?: Realtime.NodePortRemap[]
-  ) => api.post(`/v2/diagrams/${diagramID}/nodes/${blockID}/steps`, { step, index, nodePortRemaps }),
+  addStep: ({
+    step,
+    index,
+    diagramID,
+    parentNodeID,
+    nodePortRemaps,
+  }: {
+    step: BaseModels.BaseDiagramNode;
+    index?: Nullish<number>;
+    diagramID: string;
+    parentNodeID: string;
+    nodePortRemaps?: Realtime.NodePortRemap[];
+  }) => api.post(`/v2/diagrams/${diagramID}/nodes/${parentNodeID}/steps`, { step, index, nodePortRemaps }),
 
   addManyNodes: (diagramID: string, nodes: BaseModels.BaseDiagramNode[], nodePortRemaps?: Realtime.NodePortRemap[]) =>
     api.post(`/v2/diagrams/${diagramID}/nodes/bulk`, { nodes, nodePortRemaps }),
 
   isolateSteps: ({
-    diagramID,
-    sourceBlockID,
-    block,
     stepIDs,
+    diagramID,
+    parentNode,
+    sourceParentNodeID,
   }: {
-    diagramID: string;
-    sourceBlockID: string;
-    block: BaseModels.BaseDiagramNode;
     stepIDs: string[];
-  }) => api.post(`/v2/diagrams/${diagramID}/nodes/${sourceBlockID}/steps/isolate`, { block, stepIDs }),
+    diagramID: string;
+    parentNode: BaseModels.BaseBlock | BaseModels.BaseActions;
+    sourceParentNodeID: string;
+  }) => api.post(`/v2/diagrams/${diagramID}/nodes/${sourceParentNodeID}/steps/isolate`, { parentNode, stepIDs }),
 
-  reorderSteps: (diagramID: string, blockID: string, stepID: string, index: number, nodePortRemaps?: Realtime.NodePortRemap[]) =>
-    api.post(`/v2/diagrams/${diagramID}/nodes/${blockID}/steps/reorder`, { stepID, index, nodePortRemaps }),
+  reorderSteps: ({
+    index,
+    stepID,
+    diagramID,
+    parentNodeID,
+    nodePortRemaps,
+  }: {
+    index: number;
+    stepID: string;
+    diagramID: string;
+    parentNodeID: string;
+    nodePortRemaps?: Realtime.NodePortRemap[];
+  }) => api.post(`/v2/diagrams/${diagramID}/nodes/${parentNodeID}/steps/reorder`, { stepID, index, nodePortRemaps }),
 
-  transplantSteps: (
-    diagramID: string,
-    sourceBlockID: string,
-    targetBlockID: string,
-    {
-      stepIDs,
+  transplantSteps: ({
+    index,
+    stepIDs,
+    diagramID,
+    removeSource,
+    nodePortRemaps,
+    sourceParentNodeID,
+    targetParentNodeID,
+  }: {
+    index: number;
+    stepIDs: string[];
+    diagramID: string;
+    removeSource?: boolean;
+    nodePortRemaps?: Realtime.NodePortRemap[];
+    sourceParentNodeID: string;
+    targetParentNodeID: string;
+  }) =>
+    api.post(`/v2/diagrams/${diagramID}/nodes/${sourceParentNodeID}/steps/transplant`, {
       index,
-      removeSource,
-      nodePortRemaps,
-    }: { stepIDs: string[]; index: number; removeSource?: boolean; nodePortRemaps?: Realtime.NodePortRemap[] }
-  ) =>
-    api.post(`/v2/diagrams/${diagramID}/nodes/${sourceBlockID}/steps/transplant`, {
-      blockID: targetBlockID,
       stepIDs,
-      index,
+      parentNodeID: targetParentNodeID,
       removeSource,
       nodePortRemaps,
     }),
 
-  updateBlockCoords: (diagramID: string, blocks: Record<string, Realtime.Point>) => api.put(`/v2/diagrams/${diagramID}/nodes/coords`, { blocks }),
+  updateNodeCoords: (diagramID: string, nodes: Record<string, Realtime.Point>) => api.put(`/v2/diagrams/${diagramID}/nodes/coords`, { nodes }),
 
   updateManyNodeData: <D extends AnyRecord>(diagramID: string, nodes: { nodeID: string; data: D }[]) => {
     return api.patch(`/v2/diagrams/${diagramID}/nodes/data`, { nodeUpdates: nodes.map(({ nodeID, data }) => nodeDataUpdates(nodeID, data)) });
   },
 
-  removeManyNodes: (diagramID: string, nodes: { blockID: string; stepID?: Nullish<string> }[]) =>
+  removeManyNodes: (diagramID: string, nodes: { parentNodeID: string; stepID?: Nullish<string> }[]) =>
     api.delete(`/v2/diagrams/${diagramID}/nodes`, { data: { nodes } }),
 
   addByKeyLink: (diagramID: string, nodeID: string, key: string, target: string) =>

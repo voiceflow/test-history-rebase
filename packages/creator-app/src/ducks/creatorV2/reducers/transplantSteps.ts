@@ -6,7 +6,7 @@ import * as Project from '@/ducks/projectV2';
 import { createReverter } from '@/ducks/utils';
 import * as Version from '@/ducks/versionV2';
 
-import { nodeCoordsByIDSelector, nodeDataByIDSelector, portsByNodeIDSelector, stepIDsByBlockIDSelector } from '../selectors';
+import { nodeCoordsByIDSelector, nodeDataByIDSelector, portsByNodeIDSelector, stepIDsByParentNodeIDSelector } from '../selectors';
 import { addStepReferences, orphanSteps, removeNodePortRemapLinks } from '../utils';
 import {
   buildLinkRecreateActions,
@@ -19,15 +19,18 @@ import {
 
 const transplantStepsReducer = createActiveDiagramReducer(
   Realtime.node.transplantSteps,
-  (state, { sourceBlockID, targetBlockID, stepIDs, index, nodePortRemaps }) => {
-    if (!Normal.hasMany(state.nodes, [sourceBlockID, targetBlockID, ...stepIDs])) return;
+  (state, { sourceParentNodeID, targetParentNodeID, stepIDs, index, nodePortRemaps }) => {
+    if (!Normal.hasMany(state.nodes, [sourceParentNodeID, targetParentNodeID, ...stepIDs])) return;
 
     orphanSteps(
       state,
       () => {
-        addStepReferences(state, (currentStepIDs) => Utils.array.insertAll(currentStepIDs, index, stepIDs), { blockID: targetBlockID, stepIDs });
+        addStepReferences(state, (currentStepIDs) => Utils.array.insertAll(currentStepIDs, index, stepIDs), {
+          parentNodeID: targetParentNodeID,
+          stepIDs,
+        });
       },
-      { blockID: sourceBlockID, stepIDs }
+      { parentNodeID: sourceParentNodeID, stepIDs }
     );
 
     removeNodePortRemapLinks(state, nodePortRemaps);
@@ -39,9 +42,12 @@ export default transplantStepsReducer;
 export const transplantStepsReverter = createReverter(
   Realtime.node.transplantSteps,
 
-  ({ workspaceID, projectID, versionID, diagramID, sourceBlockID, targetBlockID, stepIDs, removeSource, nodePortRemaps = [] }, getState) => {
+  (
+    { workspaceID, projectID, versionID, diagramID, sourceParentNodeID, targetParentNodeID, stepIDs, removeSource, nodePortRemaps = [] },
+    getState
+  ) => {
     const state = getState();
-    const index = stepIDsByBlockIDSelector(state, { id: sourceBlockID }).indexOf(stepIDs[0]);
+    const index = stepIDsByParentNodeIDSelector(state, { id: sourceParentNodeID }).indexOf(stepIDs[0]);
 
     const ctx = { workspaceID, projectID, versionID, diagramID };
 
@@ -52,26 +58,29 @@ export const transplantStepsReverter = createReverter(
       // if source removed, restore the original block
       const schemaVersion = Version.active.schemaVersionSelector(state);
       const projectMeta = Project.active.metaSelector(state);
-      const sourceBlock = nodeDataByIDSelector(state, { id: sourceBlockID });
-      const blockCoords = nodeCoordsByIDSelector(state, { id: sourceBlockID });
-      const inPortID = portsByNodeIDSelector(state, { id: sourceBlockID }).in[0];
+      const sourceParentNode = nodeDataByIDSelector(state, { id: sourceParentNodeID });
+      const parentCoords = nodeCoordsByIDSelector(state, { id: sourceParentNodeID });
+      const inPortID = portsByNodeIDSelector(state, { id: sourceParentNodeID }).in[0];
 
-      if (!(sourceBlock && blockCoords && inPortID)) {
+      if (!(sourceParentNode && parentCoords && inPortID)) {
         return [];
       }
 
       return [
         Realtime.node.isolateSteps({
           ...ctx,
-          sourceBlockID: targetBlockID,
-          blockID: sourceBlockID,
-          blockPorts: {
-            in: [{ id: inPortID }],
-            out: Realtime.Utils.port.createEmptyNodeOutPorts(),
+          sourceParentNodeID: targetParentNodeID,
+          parentNodeID: sourceParentNodeID,
+          parentNodeData: {
+            name: sourceParentNode.name,
+            type: sourceParentNode.type as Realtime.BlockType.COMBINED,
+            ports: {
+              in: [{ id: inPortID }],
+              out: Realtime.Utils.port.createEmptyNodeOutPorts(),
+            },
+            coords: parentCoords,
           },
-          blockCoords,
           stepIDs,
-          blockName: sourceBlock.name,
           projectMeta,
           schemaVersion,
         }),
@@ -82,8 +91,8 @@ export const transplantStepsReverter = createReverter(
     return [
       Realtime.node.transplantSteps({
         ...ctx,
-        sourceBlockID: targetBlockID,
-        targetBlockID: sourceBlockID,
+        sourceParentNodeID: targetParentNodeID,
+        targetParentNodeID: sourceParentNodeID,
         stepIDs,
         index,
         removeSource: false,
@@ -96,12 +105,15 @@ export const transplantStepsReverter = createReverter(
   [
     ...DIAGRAM_INVALIDATORS,
     ...createNodeRemovalInvalidators<Realtime.node.TransplantStepsPayload>((origin, nodeID) =>
-      [...origin.stepIDs, origin.targetBlockID, origin.sourceBlockID].includes(nodeID)
+      [...origin.stepIDs, origin.targetParentNodeID, origin.sourceParentNodeID].includes(nodeID)
     ),
-    ...createNodeIndexInvalidators<Realtime.node.TransplantStepsPayload>(({ index, targetBlockID }) => ({ index, blockID: targetBlockID })),
-    ...createNodePortRemapsInvalidators<Realtime.node.TransplantStepsPayload>(({ targetBlockID, nodePortRemaps = [] }) => ({
+    ...createNodeIndexInvalidators<Realtime.node.TransplantStepsPayload>(({ index, targetParentNodeID }) => ({
+      index,
+      parentNodeID: targetParentNodeID,
+    })),
+    ...createNodePortRemapsInvalidators<Realtime.node.TransplantStepsPayload>(({ targetParentNodeID, nodePortRemaps = [] }) => ({
       nodePortRemaps,
-      blockID: targetBlockID,
+      parentNodeID: targetParentNodeID,
     })),
   ]
 );

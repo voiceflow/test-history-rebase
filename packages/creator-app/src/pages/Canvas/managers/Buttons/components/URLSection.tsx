@@ -50,7 +50,7 @@ const URLSection: React.FC<URLSectionProps> = ({ url, onAdd, isActive, onChange,
         rightAction={
           url && isAnyLink(url) ? (
             <TippyTooltip title="Open link in new tab">
-              <SvgIcon icon="openLink" color="#6e849a" onClick={preventDefault(() => window.open(getValidHref(url), '_blank'))} clickable />
+              <SvgIcon icon="editorURL" color="#6e849a" onClick={preventDefault(() => window.open(getValidHref(url), '_blank'))} clickable />
             </TippyTooltip>
           ) : (
             <></> // needs this to do not rerender nested input

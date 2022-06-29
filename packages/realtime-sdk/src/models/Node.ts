@@ -35,3 +35,5 @@ export interface Node<O extends BuiltInPortRecord = BuiltInPortRecord> {
   parentNode: string | null;
   combinedNodes: string[];
 }
+
+export type DBNodeStart = Omit<BaseModels.BaseBlock, 'type'> & { type: BlockType.START };

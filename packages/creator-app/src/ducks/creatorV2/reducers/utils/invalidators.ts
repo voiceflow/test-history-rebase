@@ -5,7 +5,7 @@ import { ActionCreator } from 'typescript-fsa';
 import type { State } from '@/ducks';
 import { ActionInvalidator, createInvalidator } from '@/ducks/utils';
 
-import { blockIDByStepIDSelector, linksByPortIDSelector } from '../../selectors';
+import { linksByPortIDSelector, parentNodeIDByStepIDSelector } from '../../selectors';
 
 export const createDiagramInvalidator = <Origin extends Realtime.BaseDiagramPayload, Payload extends Realtime.BaseDiagramPayload>(
   actionCreator: ActionCreator<Payload>,
@@ -31,48 +31,51 @@ export const createNodeRemovalInvalidators = <Origin extends Realtime.BaseDiagra
 ) => [
   createDiagramInvalidator(
     Realtime.node.transplantSteps,
-    (origin: Origin, subject) => !!subject.removeSource && compareNode(origin, subject.sourceBlockID)
+    (origin: Origin, subject) => !!subject.removeSource && compareNode(origin, subject.sourceParentNodeID)
   ),
   createDiagramInvalidator(Realtime.node.removeMany, (origin: Origin, subject) =>
-    subject.nodes.some((node) => compareNode(origin, node.stepID ?? node.blockID))
+    subject.nodes.some((node) => compareNode(origin, node.stepID ?? node.parentNodeID))
   ),
 ];
 
 export const createNodeIndexInvalidators = <Origin extends Realtime.BaseDiagramPayload>(
-  getIndex: (origin: Origin) => { index: number; blockID: string }
+  getIndex: (origin: Origin) => { index: number; parentNodeID: string }
 ) => [
   createDiagramInvalidator(Realtime.node.insertStep, (origin: Origin, subject) => {
-    const { index, blockID } = getIndex(origin);
-    return blockID === subject.blockID && index >= subject.index;
+    const { index, parentNodeID } = getIndex(origin);
+    return parentNodeID === subject.parentNodeID && index >= subject.index;
   }),
   createDiagramInvalidator(Realtime.node.transplantSteps, (origin: Origin, subject) => {
-    const { index, blockID } = getIndex(origin);
-    return blockID === subject.targetBlockID && index >= subject.index;
+    const { index, parentNodeID } = getIndex(origin);
+    return parentNodeID === subject.targetParentNodeID && index >= subject.index;
   }),
   createDiagramInvalidator(Realtime.node.reorderSteps, (origin: Origin, subject) => {
-    const { blockID } = getIndex(origin);
-    return blockID === subject.blockID;
+    const { parentNodeID } = getIndex(origin);
+    return parentNodeID === subject.parentNodeID;
   }),
   createDiagramInvalidator(Realtime.node.removeMany, (origin: Origin, subject) => {
-    const { blockID } = getIndex(origin);
-    return subject.nodes.some((node) => node.blockID === blockID);
+    const { parentNodeID } = getIndex(origin);
+    return subject.nodes.some((node) => node.parentNodeID === parentNodeID);
   }),
 ];
 
 export const createNodePortRemapsInvalidators = <Origin extends Realtime.BaseDiagramPayload>(
-  getRemaps: (origin: Origin) => { nodePortRemaps: Realtime.NodePortRemap[]; blockID: string }
+  getRemaps: (origin: Origin) => { nodePortRemaps: Realtime.NodePortRemap[]; parentNodeID: string }
 ) => [
   createDiagramInvalidator(Realtime.node.insertStep, (origin: Origin, subject) => {
-    const { nodePortRemaps, blockID } = getRemaps(origin);
-    return blockID === subject.blockID && remapsTargetSamePorts(nodePortRemaps, subject.nodePortRemaps);
+    const { nodePortRemaps, parentNodeID } = getRemaps(origin);
+    return parentNodeID === subject.parentNodeID && remapsTargetSamePorts(nodePortRemaps, subject.nodePortRemaps);
   }),
   createDiagramInvalidator(Realtime.node.transplantSteps, (origin: Origin, subject) => {
-    const { nodePortRemaps, blockID } = getRemaps(origin);
-    return (blockID === subject.targetBlockID || blockID === subject.sourceBlockID) && remapsTargetSamePorts(nodePortRemaps, subject.nodePortRemaps);
+    const { nodePortRemaps, parentNodeID } = getRemaps(origin);
+    return (
+      (parentNodeID === subject.targetParentNodeID || parentNodeID === subject.sourceParentNodeID) &&
+      remapsTargetSamePorts(nodePortRemaps, subject.nodePortRemaps)
+    );
   }),
   createDiagramInvalidator(Realtime.node.reorderSteps, (origin: Origin, subject) => {
-    const { nodePortRemaps, blockID } = getRemaps(origin);
-    return blockID === subject.blockID && remapsTargetSamePorts(nodePortRemaps, subject.nodePortRemaps);
+    const { nodePortRemaps, parentNodeID } = getRemaps(origin);
+    return parentNodeID === subject.parentNodeID && remapsTargetSamePorts(nodePortRemaps, subject.nodePortRemaps);
   }),
   createDiagramInvalidator(Realtime.link.patchMany, (origin: Origin, subject) => {
     const { nodePortRemaps } = getRemaps(origin);
@@ -87,7 +90,7 @@ export const buildLinkRecreateActions = (state: State, ctx: Realtime.BaseDiagram
     return links.map((link) => {
       const payload = {
         ...ctx,
-        sourceBlockID: blockIDByStepIDSelector(state, { id: portRemap.nodeID }),
+        sourceParentNodeID: parentNodeIDByStepIDSelector(state, { id: portRemap.nodeID }),
         sourceNodeID: portRemap.nodeID,
         sourcePortID: port.portID,
         targetNodeID: link.target.nodeID,

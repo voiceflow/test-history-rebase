@@ -64,7 +64,9 @@ class ImportSnapshot extends AbstractDiagramResourceControl<Realtime.creator.Imp
     const { diagramID, versionID, projectID, workspaceID, nodesWithData } = payload;
     const actionContext = { diagramID, versionID, projectID, workspaceID };
 
-    const startingBlocks = nodesWithData.map(({ node, data }) => ({ blockID: node.id, name: data.name }));
+    const startingBlocks = nodesWithData
+      .filter(({ node }) => node.type === Realtime.BlockType.COMBINED)
+      .map(({ node, data }) => ({ blockID: node.id, name: data.name }));
 
     await this.server.processAs(creatorID, Realtime.diagram.addNewStartingBlocks({ ...actionContext, startingBlocks }));
   };

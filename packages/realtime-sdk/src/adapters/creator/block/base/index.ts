@@ -13,6 +13,8 @@ import componentAdapter, { componentOutPortsAdapter, componentOutPortsAdapterV2 
 import directiveAdapter, { directiveOutPortsAdapter, directiveOutPortsAdapterV2 } from './directive';
 import exitAdapter, { exitOutPortsAdapter, exitOutPortsAdapterV2 } from './exit';
 import flowAdapter, { flowOutPortsAdapter, flowOutPortsAdapterV2 } from './flow';
+import goToIntentAdapter, { goToIntentOutPortsAdapter, goToIntentOutPortsAdapterV2 } from './goToIntent';
+import goToNodeAdapter, { goToNodeOutPortsAdapter, goToNodeOutPortsAdapterV2 } from './goToNode';
 import ifAdapter, { ifOutPortsAdapter, ifOutPortsAdapterV2 } from './if';
 import integrationAdapter, { integrationOutPortsAdapter, integrationOutPortsAdapterV2 } from './integration';
 import { intentOutPortsAdapter, intentOutPortsAdapterV2 } from './intent';
@@ -23,6 +25,7 @@ import setAdapter, { setOutPortsAdapter, setOutPortsAdapterV2 } from './set';
 import { speakOutPortsAdapter, speakOutPortsAdapterV2 } from './speak';
 import textAdapter, { textOutPortsAdapter, textOutPortsAdapterV2 } from './text';
 import traceAdapter, { traceOutPortsAdapter, traceOutPortsAdapterV2 } from './trace';
+import urlAdapter, { urlOutPortsAdapter, urlOutPortsAdapterV2 } from './url';
 import visualAdapter, { visualOutPortsAdapter, visualOutPortsAdapterV2 } from './visual';
 
 // adapters unique per platform
@@ -39,29 +42,32 @@ export { default as baseSpeakAdapter } from './speak';
 // adapters shared across all platforms
 export const baseBlockAdapter = {
   // user defined
+  [BlockType.URL]: urlAdapter,
   [BlockType.IFV2]: ifAdapter,
   [BlockType.TEXT]: textAdapter,
   [BlockType.EXIT]: exitAdapter,
   [BlockType.CODE]: codeAdapter,
   [BlockType.CARD]: cardAdapter,
-  [BlockType.CAROUSEL]: carouselAdapter,
   [BlockType.FLOW]: flowAdapter,
   [BlockType.SETV2]: setAdapter,
   [BlockType.TRACE]: traceAdapter,
   [BlockType.VISUAL]: visualAdapter,
   [BlockType.RANDOM]: randomAdapter,
+  [BlockType.CAROUSEL]: carouselAdapter,
   [BlockType.DIRECTIVE]: directiveAdapter,
   [BlockType.COMPONENT]: componentAdapter,
+  [BlockType.GO_TO_NODE]: goToNodeAdapter,
   [BlockType.INTEGRATION]: integrationAdapter,
+  [BlockType.GO_TO_INTENT]: goToIntentAdapter,
 };
 
 // adapters shared across all platforms
 export const baseOutPortAdapter = {
   [BlockType.IF]: ifOutPortsAdapter,
   [BlockType.SET]: setOutPortsAdapter,
+  [BlockType.URL]: urlOutPortsAdapter,
   [BlockType.EXIT]: exitOutPortsAdapter,
   [BlockType.CARD]: cardOutPortsAdapter,
-  [BlockType.CAROUSEL]: carouselOutPortsAdapter,
   [BlockType.IFV2]: ifOutPortsAdapter,
   [BlockType.CODE]: codeOutPortsAdapter,
   [BlockType.FLOW]: flowOutPortsAdapter,
@@ -77,12 +83,16 @@ export const baseOutPortAdapter = {
   [BlockType.COMMAND]: commandOutPortsAdapter,
   [BlockType.BUTTONS]: buttonsOutPortsAdapter,
   [BlockType.CAPTURE]: captureOutPortsAdapter,
+  [BlockType.ACTIONS]: emptyOutPortsAdapter,
+  [BlockType.CAROUSEL]: carouselOutPortsAdapter,
   [BlockType.COMBINED]: emptyOutPortsAdapter,
   [BlockType.CAPTUREV2]: captureV2OutPortsAdapter,
   [BlockType.COMPONENT]: componentOutPortsAdapter,
   [BlockType.DIRECTIVE]: directiveOutPortsAdapter,
   [BlockType.CHOICE_OLD]: interactionOutPortsAdapter,
+  [BlockType.GO_TO_NODE]: goToNodeOutPortsAdapter,
   [BlockType.INTEGRATION]: integrationOutPortsAdapter,
+  [BlockType.GO_TO_INTENT]: goToIntentOutPortsAdapter,
 
   [BaseNode.NodeType.API]: integrationOutPortsAdapter,
   [BaseNode.NodeType.ZAPIER]: integrationOutPortsAdapter,
@@ -93,9 +103,9 @@ export const baseOutPortAdapter = {
 export const baseOutPortAdapterV2 = {
   [BlockType.IF]: ifOutPortsAdapterV2,
   [BlockType.SET]: setOutPortsAdapterV2,
+  [BlockType.URL]: urlOutPortsAdapterV2,
   [BlockType.EXIT]: exitOutPortsAdapterV2,
   [BlockType.CARD]: cardOutPortsAdapterV2,
-  [BlockType.CAROUSEL]: carouselOutPortsAdapterV2,
   [BlockType.IFV2]: ifOutPortsAdapterV2,
   [BlockType.CODE]: codeOutPortsAdapterV2,
   [BlockType.FLOW]: flowOutPortsAdapterV2,
@@ -111,12 +121,16 @@ export const baseOutPortAdapterV2 = {
   [BlockType.COMMAND]: commandOutPortsAdapterV2,
   [BlockType.BUTTONS]: buttonsOutPortsAdapterV2,
   [BlockType.CAPTURE]: captureOutPortsAdapterV2,
+  [BlockType.ACTIONS]: emptyOutPortsAdapterV2,
+  [BlockType.CAROUSEL]: carouselOutPortsAdapterV2,
   [BlockType.COMBINED]: emptyOutPortsAdapterV2,
   [BlockType.CAPTUREV2]: captureV2OutPortsAdapterV2,
   [BlockType.COMPONENT]: componentOutPortsAdapterV2,
   [BlockType.DIRECTIVE]: directiveOutPortsAdapterV2,
   [BlockType.CHOICE_OLD]: interactionOutPortsAdapterV2,
+  [BlockType.GO_TO_NODE]: goToNodeOutPortsAdapterV2,
   [BlockType.INTEGRATION]: integrationOutPortsAdapterV2,
+  [BlockType.GO_TO_INTENT]: goToIntentOutPortsAdapterV2,
 
   [BaseNode.NodeType.API]: integrationOutPortsAdapterV2,
   [BaseNode.NodeType.ZAPIER]: integrationOutPortsAdapterV2,

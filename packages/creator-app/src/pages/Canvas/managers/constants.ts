@@ -86,6 +86,9 @@ export const MANAGERS_BY_TYPE = {
   [BlockType.VISUAL]: VisualManager,
   [BlockType.MARKUP_TEXT]: MarkupTextManager,
   [BlockType.MARKUP_IMAGE]: MarkupImageManager,
+  [BlockType.URL]: DeprecatedManager,
+  [BlockType.GO_TO_INTENT]: DeprecatedManager,
+  [BlockType.GO_TO_NODE]: DeprecatedManager,
 };
 
 const MANAGERS_BY_FEATURE: Partial<Record<BlockType, FeatureFlag>> = {

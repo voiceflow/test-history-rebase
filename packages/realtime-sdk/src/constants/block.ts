@@ -4,11 +4,18 @@ export enum BlockType {
   COMBINED = 'combined',
   COMMAND = 'command',
   COMMENT = 'comment',
+  ACTIONS = 'actions',
 
   // basic
   TEXT = 'text',
   SPEAK = 'speak',
   CHOICE_OLD = 'choice',
+
+  // navigation
+  EXIT = 'exit',
+  GO_TO_NODE = 'goToNode',
+  GO_TO_INTENT = 'goTo',
+
   // logic
   SET = 'set',
   SETV2 = 'setV2',
@@ -27,14 +34,16 @@ export enum BlockType {
   FLOW = 'flow',
   COMPONENT = 'component',
   CODE = 'code',
-  EXIT = 'exit',
   PROMPT = 'prompt',
   TRACE = 'trace',
+  URL = 'url',
+
   // visuals
   CARD = 'card',
   CAROUSEL = 'carousel',
   VISUAL = 'visual',
   DISPLAY = 'display',
+
   // user
   PERMISSION = 'permission',
   ACCOUNT_LINKING = 'account_linking',
@@ -77,6 +86,9 @@ export const MARKUP_AND_COMBINED_NODES: ReadonlyArray<MarkupOrCombinedBlockType>
 
 export type DiagramReferenceBlockType = BlockType.COMMAND | BlockType.FLOW | BlockType.COMPONENT;
 export const DIAGRAM_REFERENCE_NODES: ReadonlyArray<DiagramReferenceBlockType> = [BlockType.COMMAND, BlockType.FLOW, BlockType.COMPONENT];
+
+export type NavigationBlockType = BlockType.EXIT | BlockType.GO_TO_NODE | BlockType.GO_TO_INTENT;
+export const NAVIGATION_NODES: ReadonlyArray<NavigationBlockType> = [BlockType.EXIT, BlockType.GO_TO_NODE, BlockType.GO_TO_INTENT];
 
 export type StepBlockType = Exclude<BlockType, RootOrMarkupBlockType | DeprecatedBlockType>;
 

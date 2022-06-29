@@ -12,6 +12,7 @@ import { idParamSelector, idsParamSelector } from '@/ducks/utils/crudV2';
 import { createCurriedSelector } from '@/ducks/utils/selector';
 
 import { creatorStateSelector } from './base';
+import { linksByPortIDSelector } from './link';
 import { portsByNodeIDSelector } from './port';
 
 const _allNodeIDsSelector = createSelector([creatorStateSelector], ({ nodes }) => nodes.allKeys);
@@ -23,8 +24,8 @@ export const markupIDsSelector = Feature.createAtomicActionsPhase2Selector([Crea
 const _blockIDsSelector = createSelector([creatorStateSelector], ({ blockIDs }) => blockIDs);
 export const blockIDsSelector = Feature.createAtomicActionsPhase2Selector([CreatorV1Selectors.rootNodeIDsSelector, _blockIDsSelector]);
 
-const _stepIDsSelector = createSelector([creatorStateSelector], ({ nodes, blockIDByStepID }) =>
-  nodes.allKeys.filter((nodeID) => !!blockIDByStepID[nodeID])
+const _stepIDsSelector = createSelector([creatorStateSelector], ({ nodes, parentNodeIDByStepID }) =>
+  nodes.allKeys.filter((nodeID) => !!parentNodeIDByStepID[nodeID])
 );
 export const stepIDsSelector = Feature.createAtomicActionsPhase2Selector([CreatorV1Selectors.stepNodeIDsSelector, _stepIDsSelector]);
 
@@ -83,12 +84,12 @@ export const allBlocksMapDataSelector = createSelector([blockIDsSelector, getNod
 
 export const nodeTypeByIDSelector = createSelector([nodeDataByIDSelector], (data) => data?.type ?? null);
 
-const _blockIDByStepIDSelector = createSelector([creatorStateSelector, idParamSelector], ({ blockIDByStepID }, stepID) =>
-  stepID ? blockIDByStepID[stepID] ?? null : null
+const _parentNodeIDByStepIDSelector = createSelector([creatorStateSelector, idParamSelector], ({ parentNodeIDByStepID }, stepID) =>
+  stepID ? parentNodeIDByStepID[stepID] ?? null : null
 );
-export const blockIDByStepIDSelector = Feature.createAtomicActionsPhase2Selector(
-  [CreatorV1Selectors.nodeByIDSelector, _blockIDByStepIDSelector, idParamSelector],
-  (getNodeV1, blockIDV2, stepID) => [stepID ? getNodeV1(stepID)?.parentNode ?? null : null, blockIDV2]
+export const parentNodeIDByStepIDSelector = Feature.createAtomicActionsPhase2Selector(
+  [CreatorV1Selectors.nodeByIDSelector, _parentNodeIDByStepIDSelector, idParamSelector],
+  (getNodeV1, parentNodeIDV2, stepID) => [stepID ? getNodeV1(stepID)?.parentNode ?? null : null, parentNodeIDV2]
 );
 
 const _nodeCoordsByIDSelector = createSelector([creatorStateSelector, idParamSelector], ({ coordsByNodeID: positionByNodeID }, nodeID) =>
@@ -103,16 +104,16 @@ export const nodeCoordsByIDSelector = Feature.createAtomicActionsPhase2Selector(
   }
 );
 
-const _stepIDsByBlockIDSelector = createSelector([creatorStateSelector, idParamSelector], ({ stepIDsByBlockID }, nodeID) =>
-  nodeID ? stepIDsByBlockID[nodeID] ?? [] : []
+const _stepIDsByParentNodeIDSelector = createSelector([creatorStateSelector, idParamSelector], ({ stepIDsByParentNodeID }, nodeID) =>
+  nodeID ? stepIDsByParentNodeID[nodeID] ?? [] : []
 );
-export const stepIDsByBlockIDSelector = Feature.createAtomicActionsPhase2Selector(
-  [CreatorV1Selectors.combinedNodeIDsSelector, _stepIDsByBlockIDSelector, idParamSelector],
-  (getStepsIDsV1, stepIDsV2, blockID) => [blockID ? getStepsIDsV1(blockID) : [], stepIDsV2]
+export const stepIDsByParentNodeIDSelector = Feature.createAtomicActionsPhase2Selector(
+  [CreatorV1Selectors.combinedNodeIDsSelector, _stepIDsByParentNodeIDSelector, idParamSelector],
+  (getStepsIDsV1, stepIDsV2, nodeID) => [nodeID ? getStepsIDsV1(nodeID) : [], stepIDsV2]
 );
 
-export const stepDataByBlockIDSelector = createSelector(
-  [stepIDsByBlockIDSelector, createCurriedSelector(nodeDataByIDsSelector)],
+export const stepDataByParentNodeIDSelector = createSelector(
+  [stepIDsByParentNodeIDSelector, createCurriedSelector(nodeDataByIDsSelector)],
   (stepIDs, getData) => getData({ ids: stepIDs })
 );
 
@@ -130,23 +131,27 @@ export const linkedNodeIDsByNodeIDSelector = Feature.createAtomicActionsPhase2Se
 );
 
 export const nodeByIDSelector = createSelector(
-  [blockIDByStepIDSelector, nodeCoordsByIDSelector, portsByNodeIDSelector, stepIDsByBlockIDSelector, nodeDataByIDSelector, idParamSelector],
+  [parentNodeIDByStepIDSelector, nodeCoordsByIDSelector, portsByNodeIDSelector, stepIDsByParentNodeIDSelector, nodeTypeByIDSelector, idParamSelector],
   // eslint-disable-next-line max-params
-  (blockID, origin, ports, stepIDs, data, nodeID): Realtime.Node | null =>
-    nodeID && data
+  (parentNode, origin, ports, stepIDs, type, nodeID): Realtime.Node | null =>
+    nodeID && type
       ? {
-          id: nodeID,
-          type: data.type,
-          parentNode: blockID,
-          ports,
-          combinedNodes: stepIDs,
           x: origin?.[0] ?? 0,
           y: origin?.[1] ?? 0,
+          id: nodeID,
+          type,
+          ports,
+          parentNode,
+          combinedNodes: stepIDs,
         }
       : null
 );
 
 export const getNodeByIDSelector = createCurriedSelector(nodeByIDSelector);
+
+export const targetNodeByPortID = createSelector([linksByPortIDSelector, getNodeByIDSelector], (links, getNodeByID) =>
+  links[0].target ? getNodeByID({ id: links[0].target.nodeID }) : null
+);
 
 export const nodesByIDsSelector = createSelector([getNodeByIDSelector, idsParamSelector], (getNodeByID, nodeIDs) =>
   nodeIDs.reduce<Realtime.Node[]>((acc, nodeID) => {

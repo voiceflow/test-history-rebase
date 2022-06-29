@@ -112,22 +112,18 @@ class DiagramService extends AbstractControl {
 
   public async addStep({
     creatorID,
-    diagramID,
-    blockID,
-    step,
-    index,
-    nodePortRemaps,
+    ...addData
   }: {
-    creatorID: number;
-    diagramID: string;
-    blockID: string;
     step: BaseModels.BaseDiagramNode;
     index?: Nullish<number>;
+    creatorID: number;
+    diagramID: string;
+    parentNodeID: string;
     nodePortRemaps?: Realtime.NodePortRemap[];
   }): Promise<void> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
-    await client.diagram.addStep(diagramID, blockID, step, index, nodePortRemaps);
+    await client.diagram.addStep(addData);
   }
 
   public async addManyNodes(
@@ -143,70 +139,57 @@ class DiagramService extends AbstractControl {
 
   public async isolateSteps({
     creatorID,
-    diagramID,
-    sourceBlockID,
-    block,
-    stepIDs,
+    ...isolateData
   }: {
+    stepIDs: string[];
     creatorID: number;
     diagramID: string;
-    sourceBlockID: string;
-    block: BaseModels.BaseDiagramNode;
-    stepIDs: string[];
+    parentNode: BaseModels.BaseBlock | BaseModels.BaseActions;
+    sourceParentNodeID: string;
   }): Promise<void> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
-    await client.diagram.isolateSteps({ diagramID, sourceBlockID, block, stepIDs });
+    await client.diagram.isolateSteps(isolateData);
   }
 
   public async reorderSteps({
     creatorID,
-    diagramID,
-    blockID,
-    stepID,
-    index,
-    nodePortRemaps,
+    ...reorderData
   }: {
+    index: number;
+    stepID: string;
     creatorID: number;
     diagramID: string;
-    blockID: string;
-    stepID: string;
-    index: number;
+    parentNodeID: string;
     nodePortRemaps?: Realtime.NodePortRemap[];
   }): Promise<void> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
-    await client.diagram.reorderSteps(diagramID, blockID, stepID, index, nodePortRemaps);
+    await client.diagram.reorderSteps(reorderData);
   }
 
   public async transplantSteps({
     creatorID,
-    diagramID,
-    sourceBlockID,
-    targetBlockID,
-    stepIDs,
-    index,
-    removeSource,
-    nodePortRemaps,
+    ...transplantData
   }: {
+    index: number;
+    stepIDs: string[];
     creatorID: number;
     diagramID: string;
-    sourceBlockID: string;
-    targetBlockID: string;
-    stepIDs: string[];
-    index: number;
     removeSource?: boolean;
     nodePortRemaps?: Realtime.NodePortRemap[];
+    sourceParentNodeID: string;
+    targetParentNodeID: string;
   }): Promise<void> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
-    await client.diagram.transplantSteps(diagramID, sourceBlockID, targetBlockID, { stepIDs, index, removeSource, nodePortRemaps });
+    await client.diagram.transplantSteps(transplantData);
   }
 
-  public async updateBlockCoords(creatorID: number, diagramID: string, blocks: Record<string, Realtime.Point>): Promise<void> {
+  public async updateNodeCoords(creatorID: number, diagramID: string, nodes: Record<string, Realtime.Point>): Promise<void> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
-    await client.diagram.updateBlockCoords(diagramID, blocks);
+    await client.diagram.updateNodeCoords(diagramID, nodes);
   }
 
   public async updateManyNodeData<D extends AnyRecord>(creatorID: number, diagramID: string, nodes: { nodeID: string; data: D }[]): Promise<void> {
@@ -215,7 +198,7 @@ class DiagramService extends AbstractControl {
     await client.diagram.updateManyNodeData(diagramID, nodes);
   }
 
-  public async removeManyNodes(creatorID: number, diagramID: string, nodes: { blockID: string; stepID?: Nullish<string> }[]): Promise<void> {
+  public async removeManyNodes(creatorID: number, diagramID: string, nodes: { parentNodeID: string; stepID?: Nullish<string> }[]): Promise<void> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
     await client.diagram.removeManyNodes(diagramID, nodes);

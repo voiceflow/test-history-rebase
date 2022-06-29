@@ -44,7 +44,7 @@ export const updateManyNodeDataReverter = createReverter(
       origin.nodes.some(({ nodeID }) => subject.nodes.some((subjectNode) => nodeID === subjectNode.nodeID))
     ),
     createDiagramInvalidator(Realtime.node.removeMany, (origin, subject) =>
-      subject.nodes.some((node) => origin.nodes.some(({ nodeID }) => nodeID === (node.stepID ?? node.blockID)))
+      subject.nodes.some((node) => origin.nodes.some(({ nodeID }) => nodeID === (node.stepID ?? node.parentNodeID)))
     ),
   ]
 );

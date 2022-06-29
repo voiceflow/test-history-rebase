@@ -4,7 +4,7 @@ import { NodeData } from '@realtime-sdk/models';
 import { createPlatformAndProjectTypeSelector, createPlatformSelector } from '@realtime-sdk/utils/platform';
 import { BaseModels, BaseNode } from '@voiceflow/base-types';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
-import { BidirectionalAdapter } from 'bidirectional-adapter';
+import { BidirectionalAdapter, identityAdapter } from 'bidirectional-adapter';
 import moize from 'moize';
 
 import { alexaBlockAdapter, alexaOutPortAdapter, alexaOutPortAdapterV2 } from './alexa';
@@ -70,6 +70,7 @@ const commonBlockAdapter = {
   // internal
   [BlockType.START]: startDataAdapter,
   [BlockType.COMMENT]: null,
+  [BlockType.ACTIONS]: identityAdapter,
   [BlockType.COMBINED]: blockDataAdapter,
   [BlockType.DEPRECATED]: null,
   [BlockType.CHOICE_OLD]: null,

@@ -2,7 +2,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { createReverter } from '@/ducks/utils';
 
-import { blockIDByStepIDSelector, linksByPortIDSelector } from '../selectors';
+import { linksByPortIDSelector, parentNodeIDByStepIDSelector } from '../selectors';
 import { removeBuiltinPort } from '../utils';
 import { createActiveDiagramReducer, createDiagramInvalidator, createNodeRemovalInvalidators, DIAGRAM_INVALIDATORS } from './utils';
 
@@ -23,11 +23,11 @@ export const removeBuiltinPortReverter = createReverter(
     return [
       Realtime.port.addBuiltin({ ...ctx, nodeID, portID, type }),
       ...links.map((link) => {
-        const sourceBlockID = blockIDByStepIDSelector(state, { id: link.source.nodeID });
+        const sourceParentNodeID = parentNodeIDByStepIDSelector(state, { id: link.source.nodeID });
 
         return Realtime.link.addBuiltin({
           ...ctx,
-          sourceBlockID,
+          sourceParentNodeID,
           sourceNodeID: link.source.nodeID,
           sourcePortID: link.source.portID,
           targetNodeID: link.target.nodeID,

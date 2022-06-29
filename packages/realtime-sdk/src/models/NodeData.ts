@@ -2,7 +2,7 @@ import { BlockType, VoicePromptType } from '@realtime-sdk/constants';
 import { AlexaNode } from '@voiceflow/alexa-types';
 import { BaseButton, BaseModels, BaseNode } from '@voiceflow/base-types';
 import { ChatModels, ChatNode } from '@voiceflow/chat-types';
-import { Nullable } from '@voiceflow/common';
+import { EmptyObject, Nullable } from '@voiceflow/common';
 import { VoiceNode } from '@voiceflow/voice-types';
 import { VoiceflowNode } from '@voiceflow/voiceflow-types';
 
@@ -68,6 +68,8 @@ export namespace NodeData {
     name: string;
     blockColor: string;
   }
+
+  export type Actions = EmptyObject;
 
   export interface Code {
     code: string;
@@ -457,23 +459,48 @@ export namespace NodeData {
   export interface VisualBuiltInPorts {
     [BaseModels.PortType.NEXT]: string;
   }
+
+  export interface GoToNode {
+    diagramID?: Nullable<string>;
+    // can't use just nodeID since it conflicts with the nodeID of the node
+    goToNodeID?: Nullable<string>;
+  }
+
+  export interface GoToIntent {
+    intent?: Nullable<string>;
+    diagramID?: Nullable<string>;
+  }
+
+  export interface Url {
+    url: string;
+  }
+
+  export interface UrlBuiltInPorts {
+    [BaseModels.PortType.NEXT]: string;
+  }
 }
 
 export interface NodeDataMap {
   [BlockType.START]: NodeData.Start;
   [BlockType.COMBINED]: NodeData.Combined;
   [BlockType.COMMAND]: NodeData.Command;
-  [BlockType.COMMENT]: never;
+  [BlockType.COMMENT]: unknown;
+  [BlockType.ACTIONS]: NodeData.Actions;
 
   [BlockType.TEXT]: NodeData.Text;
   [BlockType.SPEAK]: NodeData.Speak;
-  [BlockType.CHOICE_OLD]: never;
+  [BlockType.CHOICE_OLD]: unknown;
+
+  [BlockType.EXIT]: NodeData.Exit;
+  [BlockType.GO_TO_NODE]: NodeData.GoToNode;
+  [BlockType.GO_TO_INTENT]: NodeData.GoToIntent;
 
   [BlockType.SET]: unknown;
   [BlockType.SETV2]: NodeData.SetV2;
   [BlockType.IF]: unknown;
   [BlockType.IFV2]: NodeData.IfV2;
   [BlockType.RANDOM]: NodeData.Random;
+  [BlockType.URL]: NodeData.Url;
 
   [BlockType.CHOICE]: NodeData.Interaction;
   [BlockType.BUTTONS]: NodeData.Buttons;
@@ -485,7 +512,6 @@ export interface NodeDataMap {
   [BlockType.FLOW]: NodeData.Flow;
   [BlockType.COMPONENT]: NodeData.Component;
   [BlockType.CODE]: NodeData.Code;
-  [BlockType.EXIT]: NodeData.Exit;
   [BlockType.PROMPT]: NodeData.Prompt;
   [BlockType.TRACE]: NodeData.Trace;
 

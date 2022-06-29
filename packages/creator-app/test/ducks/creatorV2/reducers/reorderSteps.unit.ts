@@ -17,16 +17,16 @@ import {
 
 suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - reorderSteps reducer', ({ expect, describeReducerV2, describeReverter, createState }) => {
   describeReducerV2(Realtime.node.reorderSteps, ({ applyAction }) => {
-    const blockID = 'blockID';
+    const parentNodeID = 'parentNodeID';
     const stepID = 'stepID';
-    const blockData = { ...NODE_DATA, nodeID: blockID };
+    const blockData = { ...NODE_DATA, nodeID: parentNodeID };
     const stepData = { ...NODE_DATA, nodeID: stepID };
 
     it('ignore reordering steps for a different diagram', () => {
       const result = applyAction(MOCK_STATE, {
         ...ACTION_CONTEXT,
         diagramID: 'foo',
-        blockID: NODE_ID,
+        parentNodeID: NODE_ID,
         stepID: NODE_ID,
         index: 1,
       });
@@ -37,7 +37,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - reorderSteps reducer', ({ exp
     it('ignore reordering step with unrecognized block ID', () => {
       const result = applyAction(MOCK_STATE, {
         ...ACTION_CONTEXT,
-        blockID: 'foo',
+        parentNodeID: 'foo',
         stepID: NODE_ID,
         index: 1,
       });
@@ -48,7 +48,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - reorderSteps reducer', ({ exp
     it('ignore reordering step with unrecognized ID', () => {
       const result = applyAction(MOCK_STATE, {
         ...ACTION_CONTEXT,
-        blockID: NODE_ID,
+        parentNodeID: NODE_ID,
         stepID: 'foo',
         index: 1,
       });
@@ -60,12 +60,12 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - reorderSteps reducer', ({ exp
       const state = {
         ...MOCK_STATE,
         nodes: normalize([blockData, stepData], (node) => node.nodeID),
-        stepIDsByBlockID: { [blockID]: ['foo'] },
+        stepIDsByParentNodeID: { [parentNodeID]: ['foo'] },
       };
 
       const result = applyAction(state, {
         ...ACTION_CONTEXT,
-        blockID,
+        parentNodeID,
         stepID,
         index: 1,
       });
@@ -77,43 +77,43 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - reorderSteps reducer', ({ exp
       const state = {
         ...MOCK_STATE,
         nodes: normalize([blockData, stepData], (node) => node.nodeID),
-        stepIDsByBlockID: { [blockID]: ['fizz', 'foo', stepID, 'bar', 'buzz'] },
+        stepIDsByParentNodeID: { [parentNodeID]: ['fizz', 'foo', stepID, 'bar', 'buzz'] },
       };
 
       const result = applyAction(state, {
         ...ACTION_CONTEXT,
-        blockID,
+        parentNodeID,
         stepID,
         index: 1,
       });
 
-      expect(result.stepIDsByBlockID[blockID]).to.eql(['fizz', stepID, 'foo', 'bar', 'buzz']);
+      expect(result.stepIDsByParentNodeID[parentNodeID]).to.eql(['fizz', stepID, 'foo', 'bar', 'buzz']);
     });
   });
 
   describeReverter(Realtime.node.reorderSteps, ({ revertAction }) => {
     it('registers an action reverter', () => {
-      const blockID = 'blockID';
+      const parentNodeID = 'parentNodeID';
       const stepID = 'stepID';
       const rootState = createState(
         {
           ...MOCK_STATE,
           ...NODE_PORT_REMAPS_STATE,
-          stepIDsByBlockID: { [blockID]: ['first', stepID, 'third', 'fourth'] },
+          stepIDsByParentNodeID: { [parentNodeID]: ['first', stepID, 'third', 'fourth'] },
         },
         V2_FEATURE_STATE
       );
 
       const result = revertAction(rootState, {
         ...ACTION_CONTEXT,
-        blockID,
+        parentNodeID,
         stepID,
         index: 2,
         nodePortRemaps: NODE_PORT_REMAPS,
       });
 
       expect(result).to.eql([
-        Realtime.node.reorderSteps({ ...ACTION_CONTEXT, blockID, stepID, index: 1, nodePortRemaps: [] }),
+        Realtime.node.reorderSteps({ ...ACTION_CONTEXT, parentNodeID, stepID, index: 1, nodePortRemaps: [] }),
         REVERT_NODE_PORT_REMAPS_ACTION,
       ]);
     });

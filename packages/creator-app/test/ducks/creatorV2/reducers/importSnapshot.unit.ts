@@ -58,8 +58,8 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - importSnapshot reducer', ({ e
       expect(result.blockIDs).to.eql([blockNode.id]);
       expect(result.nodes).to.eql(normalize([NODE_DATA, blockData, stepData], (data) => data.nodeID));
       expect(result.coordsByNodeID).to.eql({ [blockNode.id]: [blockNode.x, blockNode.y] });
-      expect(result.stepIDsByBlockID).to.eql({ [blockNode.id]: [stepNode.id] });
-      expect(result.blockIDByStepID).to.eql({ [stepNode.id]: blockNode.id });
+      expect(result.stepIDsByParentNodeID).to.eql({ [blockNode.id]: [stepNode.id] });
+      expect(result.parentNodeIDByStepID).to.eql({ [stepNode.id]: blockNode.id });
       expect(result.portsByNodeID).to.eql({ [blockNode.id]: blockNode.ports, [stepNode.id]: stepNode.ports });
       expect(result.linkIDsByNodeID).to.eql({ [blockNode.id]: [], [stepNode.id]: [] });
     });

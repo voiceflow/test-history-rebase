@@ -10,7 +10,7 @@ class InsertStep extends AbstractDiagramActionControl<Realtime.node.InsertStepPa
   actionCreator = Realtime.node.insertStep;
 
   process = async (ctx: Context, { payload }: Action<Realtime.node.InsertStepPayload>): Promise<void> => {
-    const { diagramID, blockID, stepID, data, ports, index, projectMeta, schemaVersion, nodePortRemaps } = payload;
+    const { diagramID, parentNodeID, stepID, data, ports, index, projectMeta, schemaVersion, nodePortRemaps } = payload;
 
     const creatorData: ExtractNodesOptions = {
       data: { [stepID]: data },
@@ -21,7 +21,7 @@ class InsertStep extends AbstractDiagramActionControl<Realtime.node.InsertStepPa
           type: data.type,
           x: 0,
           y: 0,
-          parentNode: blockID,
+          parentNode: parentNodeID,
           ports: Realtime.Utils.port.extractNodePorts(ports),
           combinedNodes: [],
         },
@@ -30,7 +30,14 @@ class InsertStep extends AbstractDiagramActionControl<Realtime.node.InsertStepPa
 
     const [step] = extractNodes(diagramID, projectMeta, schemaVersion, creatorData);
 
-    await this.services.diagram.addStep({ creatorID: ctx.data.creatorID, diagramID, blockID, step, index, nodePortRemaps });
+    await this.services.diagram.addStep({
+      step,
+      index,
+      creatorID: ctx.data.creatorID,
+      diagramID,
+      parentNodeID,
+      nodePortRemaps,
+    });
   };
 }
 

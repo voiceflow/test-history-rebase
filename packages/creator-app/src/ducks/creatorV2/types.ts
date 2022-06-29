@@ -24,12 +24,13 @@ export interface CreatorState {
 
   blockIDs: string[];
   markupIDs: string[];
+  actionsIDs: string[];
   coordsByNodeID: NodeLookup<Point>;
 
   portsByNodeID: NodeLookup<Realtime.NodePorts>;
   linkIDsByNodeID: NodeLookup<string[]>;
-  blockIDByStepID: NodeLookup<string>;
-  stepIDsByBlockID: NodeLookup<string[]>;
+  parentNodeIDByStepID: NodeLookup<string>;
+  stepIDsByParentNodeID: NodeLookup<string[]>;
 
   linkIDsByPortID: PortLookup<string[]>;
   nodeIDByPortID: PortLookup<string>;

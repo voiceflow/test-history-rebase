@@ -23,7 +23,7 @@ export const addMarkupReverter = createReverter(
   Realtime.node.addMarkup,
 
   ({ workspaceID, projectID, versionID, diagramID, nodeID }) =>
-    Realtime.node.removeMany({ workspaceID, projectID, versionID, diagramID, nodes: [{ blockID: nodeID }] }),
+    Realtime.node.removeMany({ workspaceID, projectID, versionID, diagramID, nodes: [{ parentNodeID: nodeID }] }),
 
   DIAGRAM_INVALIDATORS
 );

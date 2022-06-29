@@ -1,9 +1,11 @@
-import { BLOCK_KEY, NODE_KEY, STEP_KEY } from '@realtime-sdk/constants';
+import { ACTIONS_KEY, BLOCK_KEY, BlockType, NODE_KEY, STEP_KEY } from '@realtime-sdk/constants';
 import { Markup, NodeData, NodeDataDescriptor, PortsDescriptor } from '@realtime-sdk/models';
 import {
+  BaseActionsPayload,
   BaseBlockPayload,
   BaseDiagramPayload,
   BaseNodePayload,
+  BaseParentNodePayload,
   NodePortRemapsPayload,
   Point,
   ProjectMetaPayload,
@@ -14,6 +16,7 @@ import { AnyRecord, Nullish, Utils } from '@voiceflow/common';
 const nodeType = Utils.protocol.typeFactory(NODE_KEY);
 const nodeMarkupType = Utils.protocol.typeFactory(nodeType('markup'));
 const nodeBlockType = Utils.protocol.typeFactory(nodeType(BLOCK_KEY));
+const nodeActionsType = Utils.protocol.typeFactory(nodeType(ACTIONS_KEY));
 const nodeStepType = Utils.protocol.typeFactory(nodeType(STEP_KEY));
 
 export interface UpdateManyDataPayload<D extends AnyRecord = AnyRecord> extends BaseDiagramPayload, ProjectMetaPayload {
@@ -21,7 +24,7 @@ export interface UpdateManyDataPayload<D extends AnyRecord = AnyRecord> extends 
 }
 
 export interface RemoveManyPayload extends BaseDiagramPayload {
-  nodes: { blockID: string; stepID?: Nullish<string> }[];
+  nodes: { parentNodeID: string; stepID?: Nullish<string> }[];
 }
 
 export interface TranslatePayload extends BaseDiagramPayload {
@@ -44,47 +47,54 @@ export const addMarkup = Utils.protocol.createAction<AddMarkupPayload>(nodeMarku
 // blocks
 
 export interface AddBlockPayload<T = unknown> extends BaseBlockPayload, ProjectMetaPayload, SchemaVersionPayload {
-  blockPorts: PortsDescriptor;
-  blockCoords: Point;
-  blockName: string;
   stepID: string;
   stepData: NodeDataDescriptor<T>;
   stepPorts: PortsDescriptor;
+  blockName: string;
+  blockPorts: PortsDescriptor;
+  blockCoords: Point;
+}
+
+export interface AddActionsPayload<T = unknown> extends BaseActionsPayload, ProjectMetaPayload, SchemaVersionPayload {
+  stepID: string;
+  stepData: NodeDataDescriptor<T>;
+  stepPorts: PortsDescriptor;
+  actionsPorts: PortsDescriptor;
+  actionsCoords: Point;
 }
 
 export const addBlock = Utils.protocol.createAction<AddBlockPayload>(nodeBlockType('ADD'));
+export const addActions = Utils.protocol.createAction<AddActionsPayload>(nodeActionsType('ADD'));
 
 // steps
 
-export interface InsertStepPayload<T = unknown> extends BaseBlockPayload, ProjectMetaPayload, SchemaVersionPayload, NodePortRemapsPayload {
-  stepID: string;
+export interface InsertStepPayload<T = unknown> extends BaseParentNodePayload, ProjectMetaPayload, SchemaVersionPayload, NodePortRemapsPayload {
   data: NodeDataDescriptor<T>;
   ports: PortsDescriptor;
   index: number;
+  stepID: string;
 }
 
-export interface ReorderStepsPayload extends BaseBlockPayload, NodePortRemapsPayload {
-  stepID: string;
+export interface ReorderStepsPayload extends BaseParentNodePayload, NodePortRemapsPayload {
   index: number;
+  stepID: string;
 }
 
 export interface TransplantStepsPayload extends BaseDiagramPayload, NodePortRemapsPayload {
-  sourceBlockID: string;
-  targetBlockID: string;
-  stepIDs: string[];
   index: number;
+  stepIDs: string[];
   removeSource?: boolean;
+  sourceParentNodeID: string;
+  targetParentNodeID: string;
 }
 
-export interface IsolateStepsPayload extends BaseBlockPayload, ProjectMetaPayload, SchemaVersionPayload {
-  sourceBlockID: string;
-  blockPorts: PortsDescriptor;
-  blockCoords: Point;
-  blockName: string;
+export interface IsolateStepsPayload extends BaseParentNodePayload, ProjectMetaPayload, SchemaVersionPayload {
   stepIDs: string[];
+  parentNodeData: { name: string; type: BlockType.COMBINED | BlockType.ACTIONS; ports: PortsDescriptor; coords: Point };
+  sourceParentNodeID: string;
 }
 
 export const insertStep = Utils.protocol.createAction<InsertStepPayload>(nodeStepType('INSERT'));
 export const reorderSteps = Utils.protocol.createAction<ReorderStepsPayload>(nodeStepType('REORDER'));
-export const transplantSteps = Utils.protocol.createAction<TransplantStepsPayload>(nodeStepType('TRANSPLANT'));
 export const isolateSteps = Utils.protocol.createAction<IsolateStepsPayload>(nodeStepType('ISOLATE'));
+export const transplantSteps = Utils.protocol.createAction<TransplantStepsPayload>(nodeStepType('TRANSPLANT'));

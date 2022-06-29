@@ -29,7 +29,7 @@ class RemoveManyNodes extends AbstractDiagramActionControl<Realtime.node.RemoveM
 
     await this.server.processAs(
       creatorID,
-      Realtime.diagram.removeStartingBlocks({ ...actionContext, startingBlockIds: payload.nodes.map((node) => node.blockID) })
+      Realtime.diagram.removeStartingBlocks({ ...actionContext, startingBlockIds: payload.nodes.map((node) => node.parentNodeID) })
     );
   };
 }

@@ -13,7 +13,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - removeManyNodes reducer', ({ 
       const result = applyAction(MOCK_STATE, {
         ...ACTION_CONTEXT,
         diagramID: 'foo',
-        nodes: [{ blockID: NODE_ID }],
+        nodes: [{ parentNodeID: NODE_ID }],
       });
 
       expect(result).to.eq(MOCK_STATE);
@@ -32,12 +32,12 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - removeManyNodes reducer', ({ 
             [barNode.nodeID]: Realtime.Utils.port.createEmptyNodePorts(),
             [NODE_ID]: Realtime.Utils.port.createEmptyNodePorts(),
           },
-          stepIDsByBlockID: { [NODE_ID]: [], [fooNode.nodeID]: [barNode.nodeID] },
-          blockIDByStepID: { [NODE_ID]: fooNode.nodeID, [barNode.nodeID]: fooNode.nodeID },
+          stepIDsByParentNodeID: { [NODE_ID]: [], [fooNode.nodeID]: [barNode.nodeID] },
+          parentNodeIDByStepID: { [NODE_ID]: fooNode.nodeID, [barNode.nodeID]: fooNode.nodeID },
           coordsByNodeID: { [NODE_ID]: [-10, 10], [fooNode.nodeID]: [100, 200], [barNode.nodeID]: [123, 456] },
           linkIDsByNodeID: { [NODE_ID]: [LINK_ID], [fooNode.nodeID]: ['fooLink'], [barNode.nodeID]: ['barLink'] },
         },
-        { ...ACTION_CONTEXT, nodes: [{ blockID: NODE_ID }] }
+        { ...ACTION_CONTEXT, nodes: [{ parentNodeID: NODE_ID }] }
       );
 
       expect(result.nodes).to.eql(normalize([fooNode, barNode], (data) => data.nodeID));
@@ -45,8 +45,8 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - removeManyNodes reducer', ({ 
         [fooNode.nodeID]: Realtime.Utils.port.createEmptyNodePorts(),
         [barNode.nodeID]: Realtime.Utils.port.createEmptyNodePorts(),
       });
-      expect(result.stepIDsByBlockID).to.eql({ [fooNode.nodeID]: [barNode.nodeID] });
-      expect(result.blockIDByStepID).to.eql({ [barNode.nodeID]: fooNode.nodeID });
+      expect(result.stepIDsByParentNodeID).to.eql({ [fooNode.nodeID]: [barNode.nodeID] });
+      expect(result.parentNodeIDByStepID).to.eql({ [barNode.nodeID]: fooNode.nodeID });
       expect(result.coordsByNodeID).to.eql({ [fooNode.nodeID]: [100, 200], [barNode.nodeID]: [123, 456] });
       expect(result.linkIDsByNodeID).to.eql({ [fooNode.nodeID]: ['fooLink'], [barNode.nodeID]: ['barLink'] });
     });
@@ -60,7 +60,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - removeManyNodes reducer', ({ 
           ...MOCK_STATE,
           markupIDs: [fooNode.nodeID, markupNode.nodeID],
         },
-        { ...ACTION_CONTEXT, nodes: [{ blockID: markupNode.nodeID }] }
+        { ...ACTION_CONTEXT, nodes: [{ parentNodeID: markupNode.nodeID }] }
       );
 
       expect(result.markupIDs).to.eql([fooNode.nodeID]);
@@ -76,9 +76,9 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - removeManyNodes reducer', ({ 
           ...MOCK_STATE,
           nodes: normalize([stepNode, fooNode, blockNode], (node) => node.nodeID),
           blockIDs: [fooNode.nodeID, blockNode.nodeID],
-          stepIDsByBlockID: { [blockNode.nodeID]: [stepNode.nodeID] },
+          stepIDsByParentNodeID: { [blockNode.nodeID]: [stepNode.nodeID] },
         },
-        { ...ACTION_CONTEXT, nodes: [{ blockID: blockNode.nodeID }] }
+        { ...ACTION_CONTEXT, nodes: [{ parentNodeID: blockNode.nodeID }] }
       );
 
       expect(result.nodes).to.eql(normalize([fooNode], (node) => node.nodeID));
@@ -93,14 +93,14 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - removeManyNodes reducer', ({ 
         {
           ...MOCK_STATE,
           nodes: normalize([stepNode, blockNode], (node) => node.nodeID),
-          stepIDsByBlockID: { [blockNode.nodeID]: [stepNode.nodeID, NODE_ID] },
-          blockIDByStepID: { [stepNode.nodeID]: blockNode.nodeID },
+          stepIDsByParentNodeID: { [blockNode.nodeID]: [stepNode.nodeID, NODE_ID] },
+          parentNodeIDByStepID: { [stepNode.nodeID]: blockNode.nodeID },
         },
-        { ...ACTION_CONTEXT, nodes: [{ blockID: blockNode.nodeID, stepID: stepNode.nodeID }] }
+        { ...ACTION_CONTEXT, nodes: [{ parentNodeID: blockNode.nodeID, stepID: stepNode.nodeID }] }
       );
 
       expect(result.nodes).to.eql(normalize([blockNode], (node) => node.nodeID));
-      expect(result.stepIDsByBlockID).to.eql({ [blockNode.nodeID]: [NODE_ID] });
+      expect(result.stepIDsByParentNodeID).to.eql({ [blockNode.nodeID]: [NODE_ID] });
     });
 
     it('remove all ports and links from a node', () => {
@@ -126,10 +126,10 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - removeManyNodes reducer', ({ 
             },
           },
           nodeIDByPortID: { [fooPort.id]: blockNode.nodeID, [barPort.id]: stepNode.nodeID },
-          stepIDsByBlockID: { [blockNode.nodeID]: [stepNode.nodeID] },
+          stepIDsByParentNodeID: { [blockNode.nodeID]: [stepNode.nodeID] },
           linkIDsByPortID: { [fooPort.id]: [LINK_ID] },
         },
-        { ...ACTION_CONTEXT, nodes: [{ blockID: blockNode.nodeID }] }
+        { ...ACTION_CONTEXT, nodes: [{ parentNodeID: blockNode.nodeID }] }
       );
 
       expect(result.ports).to.eql(normalize([]));

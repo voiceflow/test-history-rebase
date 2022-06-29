@@ -157,7 +157,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - removeBuiltinPort reducer', (
         }),
         Realtime.link.addBuiltin({
           ...ACTION_CONTEXT,
-          sourceBlockID: null,
+          sourceParentNodeID: null,
           sourceNodeID: NODE_ID,
           sourcePortID: PORT_ID,
           targetNodeID,

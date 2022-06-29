@@ -136,7 +136,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - removeDynamicPort reducer', (
         }),
         Realtime.link.addDynamic({
           ...ACTION_CONTEXT,
-          sourceBlockID: null,
+          sourceParentNodeID: null,
           sourceNodeID: NODE_ID,
           sourcePortID: PORT_ID,
           targetNodeID,

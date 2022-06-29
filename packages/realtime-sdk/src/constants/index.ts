@@ -17,6 +17,7 @@ export const SLOT_KEY = 'slot';
 export const PRODUCT_KEY = 'product';
 export const NODE_KEY = 'node';
 export const BLOCK_KEY = 'block';
+export const ACTIONS_KEY = 'actions';
 export const STEP_KEY = 'step';
 export const LINK_KEY = 'link';
 export const PORT_KEY = 'port';

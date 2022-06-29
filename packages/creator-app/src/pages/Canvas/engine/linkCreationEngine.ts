@@ -122,11 +122,7 @@ class LinkCreationEngine extends EngineConsumer<{ newLink: NewLinkAPI }> {
       const sourceNode = this.engine.getNodeByID(sourcePort.nodeID);
 
       this.sourceNodeIsStart = sourceNode?.type === BlockType.START;
-
-      // TODO: replace with the BlockType.ACTIONS
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-expect-error
-      this.sourceNodeIsAction = sourceNode?.type === 'actions';
+      this.sourceNodeIsAction = sourceNode?.type === BlockType.ACTIONS;
     }
 
     this.engine.highlight.setPortTarget(sourcePortID);

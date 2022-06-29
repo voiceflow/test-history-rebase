@@ -5,12 +5,12 @@ import { Port } from './Port';
 import { Viewport } from './Viewport';
 
 export interface CreatorDiagram {
-  diagramID: string;
-  viewport: Viewport;
-  rootNodeIDs: string[];
+  data: Record<string, NodeData<unknown>>;
   nodes: Node[];
   links: Link[];
   ports: Port[];
-  data: Record<string, NodeData<unknown>>;
+  viewport: Viewport;
+  diagramID: string;
+  rootNodeIDs: string[];
   markupNodeIDs: string[];
 }

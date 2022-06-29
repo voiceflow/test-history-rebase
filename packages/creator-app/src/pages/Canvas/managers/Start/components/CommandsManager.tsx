@@ -15,7 +15,7 @@ interface CommandsManagerProps {
 }
 
 const CommandsManager: React.FC<CommandsManagerProps> = ({ nodeID }) => {
-  const commands = useSelector(CreatorV2.stepDataByBlockIDSelector, { id: nodeID });
+  const commands = useSelector(CreatorV2.stepDataByParentNodeIDSelector, { id: nodeID });
 
   const engine = React.useContext(EngineContext);
 

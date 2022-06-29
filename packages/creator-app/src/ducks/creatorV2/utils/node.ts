@@ -62,21 +62,21 @@ export const addNodeWithPorts = (
 export const addStepReferences = (
   state: Draft<CreatorState>,
   updateSteps: (currentStepIDs: string[]) => string[],
-  { blockID, stepIDs }: { blockID: string; stepIDs: string[] }
+  { parentNodeID, stepIDs }: { parentNodeID: string; stepIDs: string[] }
 ): void => {
-  const currentStepIDs = state.stepIDsByBlockID[blockID] ?? [];
+  const currentStepIDs = state.stepIDsByParentNodeID[parentNodeID] ?? [];
 
   stepIDs.forEach((stepID) => {
-    state.blockIDByStepID[stepID] = blockID;
+    state.parentNodeIDByStepID[stepID] = parentNodeID;
   });
-  state.stepIDsByBlockID[blockID] = updateSteps(currentStepIDs);
+  state.stepIDsByParentNodeID[parentNodeID] = updateSteps(currentStepIDs);
 };
 
-export const removeStepReferences = (state: Draft<CreatorState>, { blockID, stepIDs }: { blockID: string; stepIDs: string[] }): void => {
-  const currentStepIDs = state.stepIDsByBlockID[blockID] ?? [];
+export const removeStepReferences = (state: Draft<CreatorState>, { parentNodeID, stepIDs }: { parentNodeID: string; stepIDs: string[] }): void => {
+  const currentStepIDs = state.stepIDsByParentNodeID[parentNodeID] ?? [];
 
-  stepIDs.forEach((stepID) => delete state.blockIDByStepID[stepID]);
-  state.stepIDsByBlockID[blockID] = Utils.array.withoutValues(currentStepIDs, stepIDs);
+  stepIDs.forEach((stepID) => delete state.parentNodeIDByStepID[stepID]);
+  state.stepIDsByParentNodeID[parentNodeID] = Utils.array.withoutValues(currentStepIDs, stepIDs);
 };
 
 export const removeManyNodes = (state: Draft<CreatorState>, nodeIDs: string[]): void => {
@@ -90,7 +90,7 @@ export const removeManyNodes = (state: Draft<CreatorState>, nodeIDs: string[]): 
   };
 
   nodeIDs.forEach((nodeID) => {
-    const stepIDs = state.stepIDsByBlockID[nodeID] ?? [];
+    const stepIDs = state.stepIDsByParentNodeID[nodeID] ?? [];
 
     stepIDs.forEach((stepID) => {
       nodesToRemove.add(stepID);
@@ -101,16 +101,16 @@ export const removeManyNodes = (state: Draft<CreatorState>, nodeIDs: string[]): 
   });
 
   const removeNodeReferences = (nodeID: string) => {
-    const blockID = state.blockIDByStepID[nodeID] ?? null;
+    const parentNodeID = state.parentNodeIDByStepID[nodeID] ?? null;
 
-    if (blockID && !nodesToRemove.has(blockID)) {
-      removeStepReferences(state, { blockID, stepIDs: [nodeID] });
+    if (parentNodeID && !nodesToRemove.has(parentNodeID)) {
+      removeStepReferences(state, { parentNodeID, stepIDs: [nodeID] });
     }
 
-    delete state.coordsByNodeID[nodeID];
-    delete state.stepIDsByBlockID[nodeID];
-    delete state.blockIDByStepID[nodeID];
     delete state.portsByNodeID[nodeID];
+    delete state.coordsByNodeID[nodeID];
+    delete state.parentNodeIDByStepID[nodeID];
+    delete state.stepIDsByParentNodeID[nodeID];
     delete state.linkIDsByNodeID[nodeID];
   };
 
@@ -122,45 +122,46 @@ export const removeManyNodes = (state: Draft<CreatorState>, nodeIDs: string[]): 
 
   const nodesToRemoveArr = Array.from(nodesToRemove);
 
-  state.markupIDs = Utils.array.withoutValues(state.markupIDs, nodesToRemoveArr);
-  state.blockIDs = Utils.array.withoutValues(state.blockIDs, nodesToRemoveArr);
   state.nodes = Normal.removeMany(state.nodes, nodesToRemoveArr);
+  state.blockIDs = Utils.array.withoutValues(state.blockIDs, nodesToRemoveArr);
+  state.markupIDs = Utils.array.withoutValues(state.markupIDs, nodesToRemoveArr);
+  state.actionsIDs = Utils.array.withoutValues(state.actionsIDs, nodesToRemoveArr);
 };
 
 export const addStep = (
   state: Draft<CreatorState>,
   updateSteps: (stepIDs: string[]) => string[],
   {
-    blockID,
+    parentNodeID,
     stepID,
     data,
     ports,
   }: {
-    blockID: string;
+    parentNodeID: string;
     stepID: string;
     data: Realtime.NodeDataDescriptor<unknown>;
     ports: Realtime.PortsDescriptor;
   }
 ): void => {
   if (Normal.hasOne(state.nodes, stepID)) return;
-  if (!Normal.hasOne(state.nodes, blockID)) return;
+  if (!Normal.hasOne(state.nodes, parentNodeID)) return;
 
-  addStepReferences(state, updateSteps, { blockID, stepIDs: [stepID] });
+  addStepReferences(state, updateSteps, { parentNodeID, stepIDs: [stepID] });
   addNodeWithPorts(state, { nodeID: stepID, data, ports });
 };
 
 export const orphanSteps = (
   state: Draft<CreatorState>,
   adoptOrphan: () => void,
-  { blockID, stepIDs }: { blockID: string; stepIDs: string[] }
+  { parentNodeID, stepIDs }: { parentNodeID: string; stepIDs: string[] }
 ): void => {
-  if (!Normal.hasMany(state.nodes, [blockID, ...stepIDs])) return;
+  if (!Normal.hasMany(state.nodes, [parentNodeID, ...stepIDs])) return;
 
-  removeStepReferences(state, { blockID, stepIDs });
+  removeStepReferences(state, { parentNodeID, stepIDs });
   adoptOrphan();
 
-  const currentStepIDs = state.stepIDsByBlockID[blockID] ?? [];
+  const currentStepIDs = state.stepIDsByParentNodeID[parentNodeID] ?? [];
   if (!currentStepIDs.length) {
-    removeManyNodes(state, [blockID]);
+    removeManyNodes(state, [parentNodeID]);
   }
 };

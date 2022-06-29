@@ -18,6 +18,7 @@ export enum DiagramAction {
   ADD_NESTED_NODE = 'CREATOR:NODE:ADD_NESTED',
   ADD_MARKUP_NODE = 'CREATOR:NODE:ADD_MARKUP',
   ADD_WRAPPED_NODE = 'CREATOR:NODE:ADD_WRAPPED',
+  ADD_ACTIONS_NODE = 'CREATOR:NODE:ADD_ACTIONS',
   REMOVE_MANY_NODES = 'CREATOR:NODE:REMOVE_MANY',
   ADD_OUT_BY_KEY_PORT = 'CREATOR:PORT:ADD_OUT_BY_KEY',
   ADD_OUT_DYNAMIC_PORT = 'CREATOR:PORT:ADD_OUT_DYNAMIC',
@@ -68,6 +69,8 @@ export type AddNestedNode = Action<
 
 export type AddWrappedNode = Action<DiagramAction.ADD_WRAPPED_NODE, { node: NodeDescriptor; data: DataDescriptor; parentNode: ParentNodeDescriptor }>;
 
+export type AddActionsNode = Action<DiagramAction.ADD_ACTIONS_NODE, { node: NodeDescriptor; data: DataDescriptor; parentNode: ParentNodeDescriptor }>;
+
 export type RemoveManyNodes = Action<DiagramAction.REMOVE_MANY_NODES, string[]>;
 
 export type AddOutByKeyPort = Action<DiagramAction.ADD_OUT_BY_KEY_PORT, { nodeID: string; port: Realtime.PartialModel<Realtime.Port>; key: string }>;
@@ -115,6 +118,7 @@ export type AnyDiagramAction =
   | AddManyNodes
   | AddNestedNode
   | AddWrappedNode
+  | AddActionsNode
   | RemoveManyNodes
   | AddOutByKeyPort
   | AddOutDynamicPort
@@ -183,6 +187,12 @@ export const addNestedNode = (parentNodeID: string, node: NodeDescriptor, data: 
  */
 export const addWrappedNode = (node: NodeDescriptor, data: DataDescriptor, parentNode: ParentNodeDescriptor): AddWrappedNode =>
   createAction(DiagramAction.ADD_WRAPPED_NODE, { node, data, parentNode });
+
+/**
+ * @deprecated
+ */
+export const addActionsNode = (node: NodeDescriptor, data: DataDescriptor, parentNode: ParentNodeDescriptor): AddActionsNode =>
+  createAction(DiagramAction.ADD_ACTIONS_NODE, { node, data, parentNode });
 
 /**
  * @deprecated

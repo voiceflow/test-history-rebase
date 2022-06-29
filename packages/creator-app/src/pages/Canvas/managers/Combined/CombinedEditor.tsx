@@ -15,7 +15,7 @@ const CombinedEditor: NodeEditor<Realtime.NodeData.Combined> = ({ data: { nodeID
   const engine = React.useContext(EngineContext)!;
   const getManager = React.useContext(ManagerContext)!;
 
-  const stepData = useSelector(CreatorV2.stepDataByBlockIDSelector, { id: nodeID });
+  const stepData = useSelector(CreatorV2.stepDataByParentNodeIDSelector, { id: nodeID });
 
   return (
     <Content>

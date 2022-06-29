@@ -353,6 +353,9 @@ export const addAllPortsToState = (ports: Realtime.Port[]): DiagramStateComposeR
 export const addBlockToState = (node: Realtime.Node, ports: Realtime.Port[], data: Realtime.NodeData<unknown>): DiagramStateComposeReducer =>
   Utils.functional.compose(addNodeToState(node, data), addAllPortsToState(ports));
 
+export const addActionsToState = (node: Realtime.Node, ports: Realtime.Port[], data: Realtime.NodeData<unknown>): DiagramStateComposeReducer =>
+  Utils.functional.compose(addNode(node, data), addAllPortsToState(ports));
+
 export const addOutByKeyPortToBlockInState =
   (key: string, port: Realtime.Port) =>
   (state: DiagramState): DiagramState => {

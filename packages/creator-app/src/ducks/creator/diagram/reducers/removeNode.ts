@@ -40,7 +40,7 @@ export const removeSingleNode = (nodeID: string) => (state: DiagramState) => {
     return state;
   }
 
-  if (node.type === BlockType.COMBINED) {
+  if (node.type === BlockType.COMBINED || node.type === BlockType.ACTIONS) {
     return removeCombinedNode(state, node);
   }
 

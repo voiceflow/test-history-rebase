@@ -5,10 +5,11 @@ import * as Normal from 'normal-store';
 import { BlockType } from '@/constants';
 import { Reducer } from '@/store/types';
 
-import { AddManyNodes, AddNestedNode, AddNode, AddWrappedNode } from '../actions';
+import { AddActionsNode, AddManyNodes, AddNestedNode, AddNode, AddWrappedNode } from '../actions';
 import { nodeFactory } from '../factories';
 import { DiagramState } from '../types';
 import {
+  addActionsToState,
   addAllLinksToState,
   addAllNodesToState,
   addAllPortsToState,
@@ -99,4 +100,32 @@ export const addWrappedNodeReducer: Reducer<DiagramState, AddWrappedNode> = (
   );
 
   return Utils.functional.compose(addBlockToState(rootNode, rootPorts, rootNodeData), addBlockToState(newNode, newPorts, newNodeData))(state);
+};
+
+export const addActionsNodeReducer: Reducer<DiagramState, AddActionsNode> = (
+  state,
+  {
+    payload: {
+      node,
+      data,
+      parentNode: { ports: parentPorts, ...parentNode },
+    },
+  }
+) => {
+  const [newNode, newPorts, newNodeData] = buildNewNode({ ...node, parentNode: parentNode.id }, data);
+  const [rootNode, rootPorts, rootNodeData] = buildNewNode(
+    {
+      ...nodeFactory(parentNode.id, {
+        ...parentNode,
+        x: node.x,
+        y: node.y,
+        type: BlockType.ACTIONS,
+        combinedNodes: [node.id],
+      }),
+      ports: parentPorts,
+    },
+    { name: 'Actions' }
+  );
+
+  return Utils.functional.compose(addActionsToState(rootNode, rootPorts, rootNodeData), addActionsToState(newNode, newPorts, newNodeData))(state);
 };

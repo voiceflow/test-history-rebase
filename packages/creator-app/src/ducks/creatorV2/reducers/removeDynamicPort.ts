@@ -2,7 +2,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { createReverter } from '@/ducks/utils';
 
-import { blockIDByStepIDSelector, linksByPortIDSelector, portByIDSelector, portsByNodeIDSelector } from '../selectors';
+import { linksByPortIDSelector, parentNodeIDByStepIDSelector, portByIDSelector, portsByNodeIDSelector } from '../selectors';
 import { removeDynamicPort } from '../utils';
 import { createActiveDiagramReducer, createDiagramInvalidator, createNodeRemovalInvalidators, DIAGRAM_INVALIDATORS } from './utils';
 
@@ -26,11 +26,11 @@ export const removeDynamicPortReverter = createReverter(
     return [
       Realtime.port.addDynamic({ ...ctx, nodeID, portID, index, label: port?.label }),
       ...links.map((link) => {
-        const sourceBlockID = blockIDByStepIDSelector(state, { id: link.source.nodeID });
+        const sourceParentNodeID = parentNodeIDByStepIDSelector(state, { id: link.source.nodeID });
 
         return Realtime.link.addDynamic({
           ...ctx,
-          sourceBlockID,
+          sourceParentNodeID,
           sourceNodeID: link.source.nodeID,
           sourcePortID: link.source.portID,
           targetNodeID: link.target.nodeID,

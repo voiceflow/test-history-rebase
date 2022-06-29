@@ -9,11 +9,11 @@ class ReorderSteps extends AbstractDiagramActionControl<Realtime.node.ReorderSte
 
   process = async (ctx: Context, { payload }: Action<Realtime.node.ReorderStepsPayload>): Promise<void> => {
     await this.services.diagram.reorderSteps({
+      index: payload.index,
+      stepID: payload.stepID,
       creatorID: ctx.data.creatorID,
       diagramID: payload.diagramID,
-      blockID: payload.blockID,
-      stepID: payload.stepID,
-      index: payload.index,
+      parentNodeID: payload.parentNodeID,
       nodePortRemaps: payload.nodePortRemaps,
     });
   };

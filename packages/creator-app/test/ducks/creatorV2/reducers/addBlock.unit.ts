@@ -102,8 +102,8 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addBlock reducer', ({ expect,
       );
       expect(result.blockIDs).to.eql([blockID]);
       expect(result.coordsByNodeID).to.eql({ [blockID]: blockCoords });
-      expect(result.stepIDsByBlockID).to.eql({ [blockID]: [stepID] });
-      expect(result.blockIDByStepID).to.eql({ [stepID]: blockID });
+      expect(result.stepIDsByParentNodeID).to.eql({ [blockID]: [stepID] });
+      expect(result.parentNodeIDByStepID).to.eql({ [stepID]: blockID });
       expect(result.portsByNodeID).to.eql({
         [blockID]: Realtime.Utils.port.createEmptyNodePorts(),
         [stepID]: Realtime.Utils.port.createEmptyNodePorts(),

@@ -1,5 +1,4 @@
-import { BlockType } from '@realtime-sdk/constants';
-import { isBlock, isStep } from '@realtime-sdk/utils/typeGuards';
+import { isActions, isBlock, isStart, isStep } from '@realtime-sdk/utils/typeGuards';
 import { AnyRecord, BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 
@@ -33,12 +32,10 @@ export const cleanupDBNodes = (nodesMap: NodesMap): BaseModels.BaseDiagramNode[]
 
   // remove the steps ids which are not exists in the nodesMap as well as empty combined nodes
   const nodesList = Object.values(nodesMap).filter((node) => {
-    if (isBlock(node)) {
-      const steps = cleanupBlockSteps(nodesMap, node.data.steps);
+    if (isBlock(node) || isActions(node) || isStart(node)) {
+      const steps = cleanupBlockSteps(nodesMap, node.data.steps ?? []);
 
-      if (!steps.length && (node.type as string) === BlockType.COMBINED) {
-        return false;
-      }
+      if (!steps.length && !isStart(node)) return false;
 
       // eslint-disable-next-line no-param-reassign
       node.data.steps = steps;

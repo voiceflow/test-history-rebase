@@ -37,7 +37,7 @@ const SetRootEditor: React.FC = () => {
         )
       }
     >
-      <SectionV2.SimpleSection headerProps={{ padding: '24px 32px' }}>
+      <SectionV2.SimpleSection headerProps={{ py: 24 }}>
         <Input
           ref={inputRef}
           value={stepName}

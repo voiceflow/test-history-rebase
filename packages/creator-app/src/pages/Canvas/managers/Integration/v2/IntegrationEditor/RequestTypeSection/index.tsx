@@ -34,7 +34,7 @@ const RequestTypeSection: React.FC = () => {
   }, [onChangeAction, selectedAction]);
 
   return (
-    <SectionV2.SimpleSection style={{ backgroundColor: '#fdfdfd' }} headerProps={{ padding: '24px 32px' }}>
+    <SectionV2.SimpleSection style={{ backgroundColor: '#fdfdfd' }} headerProps={{ py: 24 }}>
       <SelectInputGroup
         value={selectedAction}
         options={API_REQUEST_OPTIONS}

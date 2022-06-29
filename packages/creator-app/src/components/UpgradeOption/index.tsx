@@ -50,7 +50,7 @@ const UpgradeOption = <T extends unknown, U extends unknown>({
     trackingEvents.trackUpgradePrompt({ promptType: promptOrigin });
   }, [isShowingPopper]);
 
-  useOnClickOutside(labelRef, () => setIsShowingPopper(false), [isShowingPopper]);
+  useOnClickOutside([labelRef, popperContainerRef], () => setIsShowingPopper(false), [isShowingPopper]);
 
   return (
     <Box.Flex ref={labelRef} width="100%" height="100%">

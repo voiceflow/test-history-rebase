@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/common';
 import React from 'react';
 
 export function useMouseMove(onMouseMove: (event: MouseEvent) => void, dependencies: any[] = []) {
@@ -8,14 +9,25 @@ export function useMouseMove(onMouseMove: (event: MouseEvent) => void, dependenc
   }, [onMouseMove, ...dependencies]);
 }
 
-export const useOnClickOutside = (ref: React.RefObject<HTMLElement>, handler: (event: MouseEvent | TouchEvent) => void, deps: any[] = []): void => {
+export const useOnClickOutside = (
+  refs: React.RefObject<HTMLElement> | React.RefObject<HTMLElement>[],
+  handler: (event: MouseEvent | TouchEvent) => void,
+  deps: any[] = []
+): void => {
+  const clickRefs = Utils.array.toArray(refs);
   React.useEffect(() => {
     const listener = (event: MouseEvent | TouchEvent) => {
       if (!event.target) return;
 
-      if (!ref.current || ref.current.contains(event.target as Node)) {
-        return;
-      }
+      let clickInRef = false;
+
+      clickRefs.forEach((ref) => {
+        if (!ref.current || ref.current.contains(event.target as Node)) {
+          clickInRef = true;
+        }
+      });
+
+      if (clickInRef) return;
       handler(event);
     };
     document.addEventListener('mousedown', listener);
@@ -26,5 +38,5 @@ export const useOnClickOutside = (ref: React.RefObject<HTMLElement>, handler: (e
       document.removeEventListener('click', listener, true);
       document.removeEventListener('touchstart', listener);
     };
-  }, [...deps, ref, handler]);
+  }, [...deps, ...clickRefs, handler]);
 };

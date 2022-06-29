@@ -3,6 +3,7 @@ import moize from 'moize';
 import React from 'react';
 import { useSelector, useStore } from 'react-redux';
 
+import { IS_DEVELOPMENT } from '@/config';
 import { MousePositionContext } from '@/contexts';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import { RealtimeSubscriptionContext } from '@/gates/RealtimeLoadingGate/contexts';
@@ -56,7 +57,7 @@ export const useEngine = (): [Engine, number] => {
   return [engine, engineKey];
 };
 
-if (import.meta.hot) {
+if (IS_DEVELOPMENT && import.meta.hot) {
   import.meta.hot.accept('../engine/index.ts', (module) => {
     $recreateEngine?.(module.default);
   });

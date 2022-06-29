@@ -1,7 +1,7 @@
 import SvgIcon, { SvgIconTypes } from '@ui/components/SvgIcon';
 import React from 'react';
 
-import { Button, ButtonContainer, Container } from './components';
+import { Button, ButtonContainer, Container, IconContainer } from './components';
 import * as T from './types';
 
 export * as CheckboxTypes from './types';
@@ -44,11 +44,16 @@ const Checkbox: React.FC<T.Props> = ({
     }
   };
 
+  const inputType = type === T.Type.DASH ? T.Type.CHECKBOX : type;
+
   return (
     <Container isFlat={isFlat} disabled={disabled} className={className} onClick={onLabelClick}>
       <ButtonContainer padding={padding}>
-        <Button type={type === T.Type.DASH ? T.Type.CHECKBOX : type} checked={checked} disabled={disabled} color={checkBoxColor} {...props} />
-        <SvgIcon color={checkBoxColor} size={16} icon={icon} ignoreEvents />
+        <Button type={inputType} checked={checked} disabled={disabled} color={checkBoxColor} {...props} />
+
+        <IconContainer isCheckbox={inputType === 'checkbox'}>
+          <SvgIcon color={checkBoxColor} size={16} icon={icon} ignoreEvents />
+        </IconContainer>
       </ButtonContainer>
 
       {children}

@@ -212,10 +212,13 @@ export const NLUManagerProvider: React.FC = ({ children }) => {
 
   useDidUpdateEffect(() => {
     setSearch('');
-    setRenamingItemID(null);
     setSelectedItemIDs([]);
-    setShowUtteranceRecommendations(false);
   }, [activeTab]);
+
+  useDidUpdateEffect(() => {
+    setRenamingItemID(null);
+    setShowUtteranceRecommendations(false);
+  }, [activeItemID]);
 
   const api = useContextApi<NLUManagerContextValue>({
     items,

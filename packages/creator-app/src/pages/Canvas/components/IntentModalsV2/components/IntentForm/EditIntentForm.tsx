@@ -9,7 +9,7 @@ import IntentForm from './index';
 
 interface EditIntentFormProps {
   intentID: string;
-  rightSlider?: boolean;
+  isNLUManager?: boolean;
   withNameSection?: boolean;
   prefilledNewUtterance?: string;
   withDescriptionBottomBorder?: boolean;
@@ -19,7 +19,7 @@ const DEFAULT_INPUTS: Realtime.IntentInput[] = [];
 
 const EditIntentForm: React.FC<EditIntentFormProps> = ({
   intentID,
-  rightSlider,
+  isNLUManager,
   withNameSection = false,
   prefilledNewUtterance,
   withDescriptionBottomBorder,
@@ -83,7 +83,7 @@ const EditIntentForm: React.FC<EditIntentFormProps> = ({
       saveName={saveName}
       isBuiltIn={intentIsBuiltIn}
       setInputs={onUpdateUtterances}
-      rightSlider={rightSlider}
+      isNLUManager={isNLUManager}
       intentEntities={intent.slots}
       withNameSection={withNameSection}
       addRequiredSlot={addRequiredSlotToIntent}

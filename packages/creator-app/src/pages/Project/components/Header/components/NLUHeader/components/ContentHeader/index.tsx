@@ -21,7 +21,6 @@ const ContentHeader: React.FC = () => {
   const nluManager = React.useContext(NLUManagerContext);
 
   const inputRef = React.useRef<HTMLInputElement>(null);
-  const canExport = nluManager.activeTab === InteractionModelTabType.INTENTS;
   const { startTraining, isTraining, isTrained } = React.useContext(TrainingModelContext);
 
   const focusInput = () => {
@@ -73,28 +72,22 @@ const ContentHeader: React.FC = () => {
         />
       </Box>
 
-      <Box>
+      <Box.FlexCenter pr={16} gap={10}>
         {!!nluManager.selectedItemIDs.size && (
           <TrashButton variant={ButtonVariant.SECONDARY} flat squareRadius onClick={confirmDelete}>
             <SvgIcon icon="trash" size={15} inline />
           </TrashButton>
         )}
 
-        {canExport && (
-          <Box display="inline-block" mr={10}>
-            <Export checkedItems={Array.from(nluManager.selectedItemIDs)} />
-          </Box>
-        )}
+        <Export checkedItems={Array.from(nluManager.selectedItemIDs)} />
 
-        <Box display="inline-block" mr={16}>
-          <TrainButton active={isTraining} onClick={handleTrain} squareRadius variant={ButtonVariant.PRIMARY}>
-            <Box display="inline-block" position="relative" top={2}>
-              <SvgIcon icon="publishSpin" spin={isTraining} size={16} inline mr={16} />
-            </Box>
-            Train
-          </TrainButton>
-        </Box>
-      </Box>
+        <TrainButton active={isTraining} onClick={handleTrain} squareRadius variant={ButtonVariant.PRIMARY}>
+          <Box display="inline-block" position="relative" top={2}>
+            <SvgIcon icon="publishSpin" spin={isTraining} size={16} inline mr={16} />
+          </Box>
+          Train
+        </TrainButton>
+      </Box.FlexCenter>
     </Container>
   );
 };

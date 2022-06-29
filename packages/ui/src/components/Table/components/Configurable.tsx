@@ -1,6 +1,7 @@
 import React from 'react';
 
 import OverflowTippyTooltip from '../../OverflowTippyTooltip';
+import { RowProvider } from '../contexts';
 import * as T from '../types';
 import Column from './Column';
 import Ellipses from './Ellipses';
@@ -13,7 +14,11 @@ const Configurable = <T extends string, I extends T.Item>({
   empty,
   columns,
   orderBy,
-  renderRow = ({ children }) => <Row>{children}</Row>,
+  renderRow = ({ children, onMouseEnter, onMouseLeave }) => (
+    <Row onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+      {children}
+    </Row>
+  ),
   descending,
   onChangeOrderBy,
 }: T.ConfigurableProps<T, I>) => (
@@ -22,10 +27,11 @@ const Configurable = <T extends string, I extends T.Item>({
     empty={empty}
     header={
       <Header>
-        {columns.map(({ type, flex, label, sorter, tooltip }) => (
+        {columns.map(({ type, flex, label, width, sorter, tooltip }) => (
           <Header.Column
             key={type}
             flex={flex}
+            width={width}
             active={type === orderBy}
             tooltip={tooltip}
             onClick={() => sorter && onChangeOrderBy?.(type)}
@@ -37,28 +43,33 @@ const Configurable = <T extends string, I extends T.Item>({
         ))}
       </Header>
     }
-    renderRow={(props) =>
-      renderRow({
-        ...props,
-        children: columns.map(({ type, flex, ellipses, component: Component, overflowTooltip }) =>
-          ellipses ? (
-            <Column key={type} flex={flex}>
-              <OverflowTippyTooltip<HTMLDivElement> style={{ display: 'block', width: '100%' }} {...overflowTooltip?.(props)}>
-                {(ref) => (
-                  <Ellipses ref={ref}>
-                    <Component {...props} />
-                  </Ellipses>
-                )}
-              </OverflowTippyTooltip>
-            </Column>
-          ) : (
-            <Column key={type} flex={flex}>
-              <Component {...props} />
-            </Column>
-          )
-        ),
-      })
-    }
+    renderRow={(props) => (
+      <RowProvider {...props}>
+        {(providerProps) =>
+          renderRow({
+            ...props,
+            ...providerProps,
+            children: columns.map(({ type, flex, width, ellipses, component: Component, overflowTooltip }) =>
+              ellipses ? (
+                <Column key={type} flex={flex} width={width}>
+                  <OverflowTippyTooltip<HTMLDivElement> style={{ display: 'block', width: '100%' }} {...overflowTooltip?.(props)}>
+                    {(ref) => (
+                      <Ellipses ref={ref}>
+                        <Component {...props} />
+                      </Ellipses>
+                    )}
+                  </OverflowTippyTooltip>
+                </Column>
+              ) : (
+                <Column key={type} flex={flex} width={width}>
+                  <Component {...props} />
+                </Column>
+              )
+            ),
+          })
+        }
+      </RowProvider>
+    )}
   />
 );
 

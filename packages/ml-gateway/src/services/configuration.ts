@@ -1,23 +1,9 @@
 import { Utils } from '@voiceflow/common';
 
 import logger from '@/logger';
-import { ModelConfiguration, ModelVersionConfiguration, RawModelConfiguration } from '@/models';
+import { ModelConfiguration } from '@/models';
 
 import { AbstractControl } from '../control';
-
-export const extractConfiguration = (modelID: string, rawConfig: RawModelConfiguration): ModelConfiguration => ({
-  id: modelID,
-  versions: Object.fromEntries(
-    Object.entries(rawConfig).map<[string, ModelVersionConfiguration]>(([versionID, [traffic, ...flags]]) => [
-      versionID,
-      {
-        id: versionID,
-        traffic,
-        flags,
-      },
-    ])
-  ),
-});
 
 class ConfigurationService extends AbstractControl {
   private cache = new Map<string, ModelConfiguration>();
@@ -27,9 +13,9 @@ class ConfigurationService extends AbstractControl {
   static buildCache(snapshot: FirebaseFirestore.QuerySnapshot): Map<string, ModelConfiguration> {
     return new Map(
       snapshot.docs.map((doc) => {
-        const data = doc.data() as RawModelConfiguration;
+        const data = doc.data() as ModelConfiguration;
 
-        return [doc.id, extractConfiguration(doc.id, data)];
+        return [doc.id, data];
       })
     );
   }
@@ -84,9 +70,8 @@ class ConfigurationService extends AbstractControl {
     const cached = this.cache.get(modelID);
     if (cached) return cached;
 
-    const doc = await this.clients.gcloud.firestore.doc(`${this.config.FIRESTORE_MODEL_COLLECTION}/${modelID}.json`).get();
+    const doc = await this.clients.gcloud.firestore.doc(`${this.config.FIRESTORE_MODEL_COLLECTION}/${modelID}`).get();
 
-    // TODO: may need to do some data processing here rather than just grabbing
     const data = doc.data() as ModelConfiguration | undefined;
 
     if (!data) {

@@ -14,20 +14,18 @@ const ALL_PROJECT_SIDEBAR_PATHS = [
   Path.NLU_MANAGER,
 ];
 
-const ProjectSidebar: React.FC = () => {
-  return (
-    <Switch>
-      <Route path={ALL_PROJECT_SIDEBAR_PATHS} component={CanvasIconMenu} />
+const ProjectSidebar: React.FC = () => (
+  <Switch>
+    <Route path={ALL_PROJECT_SIDEBAR_PATHS} component={CanvasIconMenu} />
 
-      <Route path={Path.PROJECT_PROTOTYPE} component={TestVariablesSidebar} />
+    <Route path={Path.PROJECT_PROTOTYPE} component={TestVariablesSidebar} />
 
-      <Route path={Path.PROJECT_PUBLISH} component={IntegrationsSidebar} />
+    <Route path={Path.PROJECT_PUBLISH} component={IntegrationsSidebar} />
 
-      <Route path={Path.PROJECT_SETTINGS} component={SettingsSidebar} />
+    <Route path={Path.PROJECT_SETTINGS} component={SettingsSidebar} />
 
-      <Route path={Path.CONVERSATIONS} component={ConversationsSidebar} />
-    </Switch>
-  );
-};
+    <Route path={Path.CONVERSATIONS} component={ConversationsSidebar} />
+  </Switch>
+);
 
-export default ProjectSidebar;
+export default React.memo(ProjectSidebar);

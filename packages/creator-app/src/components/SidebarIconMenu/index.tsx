@@ -1,3 +1,4 @@
+import { Nullable } from '@voiceflow/common';
 import { Box, SvgIconTypes, TippyTooltip, TippyTooltipProps } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
@@ -20,10 +21,10 @@ export interface SidebarIconMenuItem {
 
 export interface SidebarIconMenuProps<T extends SidebarIconMenuItem> {
   open: boolean;
-  options: T[];
+  options: Nullable<T>[];
   onSelect?: (option: T, event: React.MouseEvent<HTMLDivElement>) => void;
   activeValue: string;
-  footerOptions?: T[];
+  footerOptions?: Nullable<T>[];
 }
 
 const SidebarIconMenu = <T extends SidebarIconMenuItem>({
@@ -40,7 +41,9 @@ const SidebarIconMenu = <T extends SidebarIconMenuItem>({
     onSelect?.(option, event);
   };
 
-  const renderOption = (option: T) => {
+  const renderOption = (option: Nullable<T>) => {
+    if (option === null) return null;
+
     const ItemContainer = option.tooltip ? TippyTooltip : React.Fragment;
 
     return (

@@ -11,8 +11,7 @@ import * as ProjectV2 from '@/ducks/projectV2';
 import * as Slot from '@/ducks/slot';
 import * as SlotV2 from '@/ducks/slotV2';
 import * as Version from '@/ducks/version';
-import { useDispatch, useIntentNameProcessor, useOrderedVariables, useSelector } from '@/hooks';
-import { useDeleteVariable } from '@/pages/Canvas/components/NLUQuickView/hooks';
+import { useDeleteVariable, useDispatch, useIntentNameProcessor, useOrderedVariables, useSelector } from '@/hooks';
 import { generateSlotInput } from '@/pages/Canvas/components/SlotEdit/utils';
 import { applyPlatformIntentAndSlotNameFormatting, isBuiltInIntent } from '@/utils/intent';
 import { CUSTOM_ENTITY_VALUE_ERROR_MSG, validateSlotName } from '@/utils/slot';
@@ -112,15 +111,8 @@ export const NLUProvider: React.FC = ({ children }) => {
 
   const canDeleteVariable = React.useCallback((id: string) => variablesMap[id]?.type !== VariableType.BUILT_IN, [variablesMap]);
 
-  const handleSlotDelete = (slotID: string) => {
-    const activeIntents = getIntentsUsingSlot({ id: slotID });
-
-    if (activeIntents.length > 0) {
-      activeIntents.forEach((intent) => removeIntentSlot(intent.id, slotID));
-      toast.info('Utterances containing this entity have been modified to remove the slot reference.');
-    }
-    deleteSlot(slotID);
-  };
+  const slotsSize = allSlots.length;
+  const intentsSize = allCustomIntents.length;
 
   const itemActions = React.useMemo(
     () => ({
@@ -130,7 +122,7 @@ export const NLUProvider: React.FC = ({ children }) => {
         canRename: (id: string) => !isBuiltInIntent(id),
         canDelete: () => true,
         generateName: () => {
-          const numberWord = Utils.number.convertToWord(allCustomIntents.length);
+          const numberWord = Utils.number.convertToWord(intentsSize);
 
           if (Realtime.Utils.typeGuards.isAlexaOrGooglePlatform(platform)) {
             return `intent_${numberWord}`;
@@ -143,11 +135,20 @@ export const NLUProvider: React.FC = ({ children }) => {
 
       [InteractionModelTabType.SLOTS]: {
         rename: (name: string, id: string) => onRenameSlot(name, id),
-        delete: (id: string) => handleSlotDelete(id),
+        delete: (slotID: string) => {
+          const activeIntents = getIntentsUsingSlot({ id: slotID });
+
+          if (activeIntents.length > 0) {
+            activeIntents.forEach((intent) => removeIntentSlot(intent.id, slotID));
+            toast.info('Utterances containing this entity have been modified to remove the slot reference.');
+          }
+
+          deleteSlot(slotID);
+        },
         canRename: () => true,
         canDelete: () => true,
         generateName: () => {
-          const numberWord = Utils.number.convertToWord(allSlots.length);
+          const numberWord = Utils.number.convertToWord(slotsSize);
 
           if (Realtime.Utils.typeGuards.isAlexaOrGooglePlatform(platform)) {
             return `entity_${numberWord}`;
@@ -168,7 +169,19 @@ export const NLUProvider: React.FC = ({ children }) => {
         transformName: (name: string) => name,
       },
     }),
-    [allSlots, platform, onRenameIntent, onRenameSlot, canDeleteVariable, deleteIntent, handleSlotDelete, deleteVariable]
+    [
+      platform,
+      slotsSize,
+      deleteSlot,
+      intentsSize,
+      deleteIntent,
+      onRenameSlot,
+      deleteVariable,
+      onRenameIntent,
+      removeIntentSlot,
+      canDeleteVariable,
+      getIntentsUsingSlot,
+    ]
   );
 
   const renameItem = React.useCallback(

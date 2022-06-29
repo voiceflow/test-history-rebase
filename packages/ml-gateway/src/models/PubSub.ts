@@ -1,11 +1,8 @@
-export interface PubSubPayload {
-  requestID: string;
+export interface BasePubSubPayload {
+  reqGUID: string;
 }
 
-export interface PubSubRequest<Params> extends PubSubPayload {
-  params: Params;
-}
-
-export interface PubSubResponse<Result = unknown> extends PubSubPayload {
-  result: Result;
+export interface InternalPubSubRequest extends BasePubSubPayload {
+  mode: string;
+  modeUUID: string;
 }

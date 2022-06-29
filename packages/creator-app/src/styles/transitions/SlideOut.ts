@@ -8,6 +8,7 @@ export enum SlideOutDirection {
 export interface SlideOutProps {
   open?: boolean;
   width: number;
+  zIndex?: number;
   offset?: number;
   direction?: SlideOutDirection;
   disableAnimation?: boolean;
@@ -17,7 +18,7 @@ export const SlideOut = styled.div<SlideOutProps>`
   position: absolute;
   width: ${({ width }) => width}px;
   background-color: inherit;
-  z-index: 20;
+  z-index: ${({ zIndex = 20 }) => zIndex};
 
   ${({ disableAnimation }) =>
     !disableAnimation &&
@@ -27,25 +28,24 @@ export const SlideOut = styled.div<SlideOutProps>`
 
   ${({ open, width, offset = 0, direction = SlideOutDirection.RIGHT }) => {
     if (direction === SlideOutDirection.RIGHT) {
-      return css`
-        left: 0;
-        ${open
-          ? css`
-              transform: translate3d(${offset}px, 0, 0);
-            `
-          : css`
-              transform: translate3d(-${width}px, 0, 0);
-            `};
-      `;
+      return open
+        ? css`
+            left: ${offset}px;
+            transform: translate3d(0, 0, 0);
+          `
+        : css`
+            left: ${offset}px;
+            transform: translate3d(${-width}px, 0, 0);
+          `;
     }
 
     return open
       ? css`
-          right: 0;
-          transform: translate3d(-${offset}px, 0, 0);
+          right: ${offset}px;
+          transform: translate3d(0, 0, 0);
         `
       : css`
-          right: 0;
+          right: ${offset}px;
           transform: translate3d(${width}px, 0, 0);
         `;
   }}

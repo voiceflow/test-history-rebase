@@ -8,8 +8,8 @@ interface NameSectionProps {
   setName: (name: string) => void;
   saveName?: () => void;
   autofocus?: boolean;
-  hasBottomPadding?: boolean;
   isBuiltIn?: boolean;
+  hasBottomPadding?: boolean;
 }
 
 const NameSection: React.FC<NameSectionProps> = ({ isBuiltIn, name, hasBottomPadding, setName, autofocus, saveName }) => {
@@ -19,18 +19,18 @@ const NameSection: React.FC<NameSectionProps> = ({ isBuiltIn, name, hasBottomPad
     if (autofocus) {
       inputRef.current?.focus();
     }
-  });
+  }, [autofocus]);
 
   return (
     <Section backgroundColor="#fdfdfd" header="Name" variant={SectionVariant.QUATERNARY} customHeaderStyling={{ paddingTop: '20px' }}>
       <Box paddingBottom={hasBottomPadding ? 24 : 0}>
         <Input
-          disabled={!!isBuiltIn}
           ref={inputRef}
-          placeholder="Enter intent name"
           value={name}
-          onChangeText={setName}
           onBlur={() => saveName?.()}
+          disabled={!!isBuiltIn}
+          placeholder="Enter intent name"
+          onChangeText={setName}
         />
       </Box>
     </Section>

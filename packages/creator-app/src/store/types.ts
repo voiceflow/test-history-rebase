@@ -53,6 +53,7 @@ export type Selector<T, A extends any[] = []> = UI.Selector<State, T, A>;
 
 export interface ThunkExtra {
   log: Store['log'];
+  client: Store['client'];
 }
 
 export type AnyThunk = UI.SyncThunk<any, any, Dispatch, ThunkExtra>;

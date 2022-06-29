@@ -6,7 +6,10 @@ import React from 'react';
 
 import * as Intent from '@/ducks/intent';
 import * as IntentV2 from '@/ducks/intentV2';
+import * as ProjectV2 from '@/ducks/projectV2';
+import * as VersionV2 from '@/ducks/versionV2';
 import { useDispatch, useSelector } from '@/hooks';
+import { getUtteranceRecommendationsLocales } from '@/platforms';
 import { FadeDownContainer } from '@/styles/animations';
 
 import BuiltInPrompt from '../components/BuiltInPrompt';
@@ -18,61 +21,73 @@ import UtteranceSection from '../components/UtteranceSection';
 
 interface IntentFormProps {
   name: string;
+  inputs: Realtime.IntentInput[];
   noteID?: string;
   setName: (name: string) => void;
   saveName?: () => void;
-  inputs: Realtime.IntentInput[];
-  isBuiltIn?: boolean;
   setInputs: (inputs: Realtime.IntentInput[]) => void;
   intentID?: string;
-  withNameSection?: boolean;
+  isBuiltIn?: boolean;
   autofocus?: boolean;
+  isNLUManager?: boolean;
   intentEntities: Normal.Normalized<Realtime.IntentSlot>;
-  withDescriptionSection?: boolean;
-  rightSlider?: boolean;
   addRequiredSlot: (slotID: string) => void;
-  removeRequiredSlot: (slotID: string) => void;
+  withNameSection?: boolean;
   updateSlotDialog: (slotID: string, dialog: Partial<Realtime.IntentSlotDialog>) => void;
-  withDescriptionBottomBorder?: boolean;
+  removeRequiredSlot: (slotID: string) => void;
   prefilledNewUtterance?: string;
+  withDescriptionSection?: boolean;
+  withDescriptionBottomBorder?: boolean;
 }
 
 const IntentForm: React.FC<IntentFormProps> = ({
   name,
+  inputs,
   setName,
+  intentID,
   saveName,
   isBuiltIn,
-  withNameSection = true,
-  withDescriptionSection = false,
-  intentID,
   autofocus,
-  inputs,
   setInputs,
+  isNLUManager,
   intentEntities,
   addRequiredSlot,
-  removeRequiredSlot,
+  withNameSection = true,
   updateSlotDialog,
-  withDescriptionBottomBorder,
-  rightSlider,
+  removeRequiredSlot,
   prefilledNewUtterance,
+  withDescriptionSection = false,
+  withDescriptionBottomBorder,
 }) => {
+  const locales = useSelector(VersionV2.active.localesSelector);
+  const platform = useSelector(ProjectV2.active.platformSelector);
   const intentsMap = useSelector(IntentV2.customIntentMapSelector);
 
   const patchIntent = useDispatch(Intent.patchIntent);
 
-  const [showUtteranceSection, setShowUtteranceSection] = React.useState(false);
   const entitiesDividerRef = React.useRef<Nullable<HTMLHRElement>>(null);
+
+  const [showUtteranceSection, setShowUtteranceSection] = React.useState(false);
+
   const isEntitiesVisible = useOnScreen(entitiesDividerRef, { initialState: true });
 
   const scrollToEntities = () => {
     entitiesDividerRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
+  const recommendedUtterancesSupported = React.useMemo(() => {
+    const supportedLocales = getUtteranceRecommendationsLocales(platform);
+
+    return locales.some((locale) => supportedLocales.includes(locale));
+  }, [locales, platform]);
+
+  const intent = intentID ? intentsMap[intentID] : null;
+
   React.useEffect(() => {
-    const intent = intentID && intentsMap[intentID];
     if (!intent) return;
-    setShowUtteranceSection(!isBuiltIn || !!intent?.inputs?.length);
-  }, [intentID, intentsMap]);
+
+    setShowUtteranceSection(!isBuiltIn || !!intent.inputs.length);
+  }, [intent, isBuiltIn]);
 
   const utteranceSectionVisible = !isBuiltIn || showUtteranceSection;
 
@@ -80,23 +95,24 @@ const IntentForm: React.FC<IntentFormProps> = ({
     <>
       {withNameSection && (
         <NameSection
-          isBuiltIn={isBuiltIn}
-          hasBottomPadding={utteranceSectionVisible}
           name={name}
           setName={setName}
           saveName={saveName}
           autofocus={!name}
+          isBuiltIn={isBuiltIn}
+          hasBottomPadding={utteranceSectionVisible}
         />
       )}
+
       {utteranceSectionVisible && (
         <UtteranceSection
-          withRecommendations={rightSlider}
-          isBuiltIn={isBuiltIn}
           inputs={inputs}
-          onUpdateUtterances={setInputs}
+          isBuiltIn={isBuiltIn}
           autofocus={!!name && autofocus}
           withBorderTop={withNameSection}
           prefilledUtterance={prefilledNewUtterance}
+          onUpdateUtterances={setInputs}
+          withRecommendations={isNLUManager && recommendedUtterancesSupported && !!inputs.length}
         />
       )}
 
@@ -107,11 +123,11 @@ const IntentForm: React.FC<IntentFormProps> = ({
           <SectionV2.Divider ref={entitiesDividerRef} />
 
           <IntentEntitiesSection
-            addDropdownPlacement={rightSlider ? 'bottom-end' : 'bottom-start'}
             onAddRequired={addRequiredSlot}
             intentEntities={intentEntities}
             onChangeDialog={updateSlotDialog}
             onRemoveRequired={removeRequiredSlot}
+            addDropdownPlacement={isNLUManager ? 'bottom-end' : 'bottom-start'}
           />
         </>
       )}

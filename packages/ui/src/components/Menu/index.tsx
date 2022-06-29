@@ -51,7 +51,7 @@ export type MenuProps<T extends any> = {
   renderFooterAction?: Nullable<(options: { close: VoidFunction }) => React.ReactNode>;
 } & Either<
   {
-    options: MenuOption<T>[];
+    options: Nullable<MenuOption<T>>[];
     onSelect?: T extends undefined ? (value?: T) => void : (value: T) => void;
   },
   { children: React.ReactNode }
@@ -147,12 +147,18 @@ const Menu = <T extends any>(
           hideTracksWhenNotNeeded
         >
           {children ||
-            options?.map(({ key, value, note, label, onClick, ...props }, index) => (
-              <Item {...props} key={key || `${index}-${label}`} onClick={onItemClick(value as T, onClick)}>
-                <FlexLabel>{label || String(value)}</FlexLabel>
-                {!!note && <MenuItemNote>{note}</MenuItemNote>}
-              </Item>
-            ))}
+            options?.map((option, index) => {
+              if (!option) return null;
+
+              const { key, value, note, label, onClick, ...props } = option;
+
+              return (
+                <Item {...props} key={key || `${index}-${label}`} onClick={onItemClick(value as T, onClick)}>
+                  <FlexLabel>{label || String(value)}</FlexLabel>
+                  {!!note && <MenuItemNote>{note}</MenuItemNote>}
+                </Item>
+              );
+            })}
         </Scrollbars>
       </FadeDownDelayedContainer>
 

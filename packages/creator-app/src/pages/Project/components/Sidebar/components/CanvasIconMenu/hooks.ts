@@ -1,3 +1,4 @@
+import { Nullable } from '@voiceflow/common';
 import { MenuOption } from '@voiceflow/ui';
 import React from 'react';
 import { useDismissable } from 'react-dismissable-layers';
@@ -39,11 +40,11 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
   const match = useRouteMatch();
   const hasUnreadTranscripts = useSelector(Transcript.hasUnreadTranscriptsSelector);
 
+  const goToNLUManager = useDispatch(Router.goToCurrentNLUManager);
   const goToCurrentCanvas = useDispatch(Router.goToCurrentCanvas);
   const goToCurrentPublish = useDispatch(Router.goToActivePlatformPublish);
   const goToCurrentSettings = useDispatch(Router.goToCurrentSettings);
   const goToCurrentTranscript = useDispatch(Router.goToCurrentTranscript);
-  const goToNLUManager = useDispatch(Router.goToCurrentNLUManager);
 
   const [canEditProject] = usePermission(Permission.EDIT_PROJECT);
   const [canViewConversations] = usePermission(Permission.VIEW_CONVERSATIONS);
@@ -52,85 +53,10 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
 
   const [helpOpened, toggleHelpOpened] = useDismissable(false, { ref: helpButtonRef });
 
-  useHotKeys(Hotkey.DESIGN_PAGE, goToCurrentCanvas, { preventDefault: true, disable: imModal.isOpened });
-  useHotKeys(Hotkey.SETTINGS_PAGE, goToCurrentSettings, { preventDefault: true, disable: !canEditProject || imModal.isOpened });
-  useHotKeys(Hotkey.INTEGRATION_PAGE, goToCurrentPublish, { preventDefault: true, disable: !canEditProject || imModal.isOpened });
-  useHotKeys(Hotkey.CONVERSATION_PAGE, goToCurrentTranscript, { preventDefault: true, disable: imModal.isOpened });
-  useHotKeys(Hotkey.NLU_MANAGER_PAGE, goToNLUManager, { preventDefault: true, disable: !nluManager.isEnabled });
-
-  const options = React.useMemo<SidebarIconMenuItem[]>(
-    () => [
-      {
-        value: CanvasOptionType.DESIGNER,
-        icon: 'systemLayers',
-        tooltip: { title: 'Designer', hotkey: HOTKEY_LABEL_MAP[Hotkey.DESIGN_PAGE] },
-        onClick: goToCurrentCanvas,
-      },
-      ...(nluManager.isEnabled
-        ? [
-            {
-              value: CanvasOptionType.NLU_MANAGER,
-              icon: 'systemModel' as const,
-              tooltip: { title: 'NLU Manager', hotkey: HOTKEY_LABEL_MAP[Hotkey.CONVERSATION_PAGE] },
-              onClick: goToNLUManager,
-            },
-          ]
-        : []),
-      ...(canViewConversations
-        ? [
-            {
-              value: CanvasOptionType.CONVERSATION,
-              icon: 'systemTranscripts' as const,
-              tooltip: { title: 'Transcripts', hotkey: HOTKEY_LABEL_MAP[Hotkey.CONVERSATION_PAGE] },
-              onClick: goToCurrentTranscript,
-              withBadge: hasUnreadTranscripts,
-            },
-          ]
-        : []),
-      ...(canEditProject
-        ? [
-            {
-              value: CanvasOptionType.INTEGRATION,
-              icon: 'systemIntegrations' as const,
-              tooltip: { title: 'Integration', hotkey: HOTKEY_LABEL_MAP[Hotkey.INTEGRATION_PAGE] },
-              onClick: goToCurrentPublish,
-            },
-            {
-              value: CanvasOptionType.SETTINGS,
-              icon: 'systemSettings' as const,
-              tooltip: { title: 'Project Settings', hotkey: HOTKEY_LABEL_MAP[Hotkey.SETTINGS_PAGE] },
-              onClick: goToCurrentSettings,
-            },
-          ]
-        : []),
-    ],
-    [canEditProject]
-  );
-
-  const footerOptions = React.useMemo<SidebarIconMenuItem[]>(
-    () => [
-      {
-        value: CanvasOptionType.HELP,
-        icon: 'info',
-        small: true,
-        tooltip: { title: 'Help' },
-        onClick: (event) => {
-          helpButtonRef.current = event.currentTarget;
-          toggleHelpOpened();
-        },
-      },
-    ],
-    []
-  );
-
   const activeValue = React.useMemo(() => {
-    if (helpOpened) {
-      return CanvasOptionType.HELP;
-    }
+    if (helpOpened) return CanvasOptionType.HELP;
 
-    if (!match) {
-      return CanvasOptionType.DESIGNER;
-    }
+    if (!match) return CanvasOptionType.DESIGNER;
 
     const matchedOption = (Object.entries(RouteCanvasOptionMap) as [CanvasOptionType, string[]][]).find(([, paths]) =>
       paths.includes(match.path)
@@ -138,6 +64,104 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
 
     return matchedOption ?? CanvasOptionType.DESIGNER;
   }, [match, helpOpened]);
+
+  useHotKeys(Hotkey.DESIGN_PAGE, goToCurrentCanvas, {
+    disable: imModal.isOpened,
+    preventDefault: true,
+  });
+  useHotKeys(Hotkey.NLU_MANAGER_PAGE, goToNLUManager, {
+    disable: !nluManager.isEnabled,
+    preventDefault: true,
+  });
+  useHotKeys(Hotkey.CONVERSATION_PAGE, goToCurrentTranscript, {
+    disable: !nluManager.isEnabled || imModal.isOpened,
+    preventDefault: true,
+  });
+  useHotKeys(Hotkey.INTEGRATION_PAGE, goToCurrentPublish, {
+    disable: !nluManager.isEnabled || !canEditProject || imModal.isOpened,
+    preventDefault: true,
+  });
+  useHotKeys(Hotkey.SETTINGS_PAGE, goToCurrentSettings, {
+    disable: !nluManager.isEnabled || !canEditProject || imModal.isOpened,
+    preventDefault: true,
+  });
+
+  useHotKeys(Hotkey.CONVERSATION_PAGE_LEGACY, goToCurrentTranscript, {
+    disable: nluManager.isEnabled || imModal.isOpened,
+    preventDefault: true,
+  });
+  useHotKeys(Hotkey.INTEGRATION_PAGE_LEGACY, goToCurrentPublish, {
+    disable: nluManager.isEnabled || !canEditProject || imModal.isOpened,
+    preventDefault: true,
+  });
+  useHotKeys(Hotkey.SETTINGS_PAGE_LEGACY, goToCurrentSettings, {
+    disable: nluManager.isEnabled || !canEditProject || imModal.isOpened,
+    preventDefault: true,
+  });
+
+  const options: Nullable<SidebarIconMenuItem>[] = [
+    {
+      icon: 'systemLayers',
+      value: CanvasOptionType.DESIGNER,
+      tooltip: { title: 'Designer', hotkey: HOTKEY_LABEL_MAP[Hotkey.DESIGN_PAGE] },
+      onClick: goToCurrentCanvas,
+    },
+    !nluManager.isEnabled
+      ? null
+      : {
+          icon: 'systemModel',
+          value: CanvasOptionType.NLU_MANAGER,
+          tooltip: { title: 'NLU Manager', hotkey: HOTKEY_LABEL_MAP[Hotkey.NLU_MANAGER_PAGE] },
+          onClick: goToNLUManager,
+        },
+    !canViewConversations
+      ? null
+      : {
+          icon: 'systemTranscripts',
+          value: CanvasOptionType.CONVERSATION,
+          tooltip: {
+            title: 'Transcripts',
+            hotkey: HOTKEY_LABEL_MAP[nluManager.isEnabled ? Hotkey.CONVERSATION_PAGE : Hotkey.CONVERSATION_PAGE_LEGACY],
+          },
+          onClick: goToCurrentTranscript,
+          withBadge: hasUnreadTranscripts,
+        },
+    !canEditProject
+      ? null
+      : {
+          icon: 'systemIntegrations',
+          value: CanvasOptionType.INTEGRATION,
+          tooltip: {
+            title: 'Integration',
+            hotkey: HOTKEY_LABEL_MAP[nluManager.isEnabled ? Hotkey.INTEGRATION_PAGE : Hotkey.INTEGRATION_PAGE_LEGACY],
+          },
+          onClick: goToCurrentPublish,
+        },
+    !canEditProject
+      ? null
+      : {
+          icon: 'systemSettings',
+          value: CanvasOptionType.SETTINGS,
+          tooltip: {
+            title: 'Project Settings',
+            hotkey: HOTKEY_LABEL_MAP[nluManager.isEnabled ? Hotkey.SETTINGS_PAGE : Hotkey.SETTINGS_PAGE_LEGACY],
+          },
+          onClick: goToCurrentSettings,
+        },
+  ];
+
+  const footerOptions: Nullable<SidebarIconMenuItem>[] = [
+    {
+      value: CanvasOptionType.HELP,
+      icon: 'info',
+      small: true,
+      tooltip: { title: 'Help' },
+      onClick: (event) => {
+        helpButtonRef.current = event.currentTarget;
+        toggleHelpOpened();
+      },
+    },
+  ];
 
   return {
     options,
@@ -148,7 +172,7 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
   };
 };
 
-export const useHelpOptions = () => {
+export const useHelpOptions = (): MenuOption<undefined>[] => {
   const isIntercomVisible = useSelector(Session.isIntercomVisibleSelector);
 
   const showIntercom = useDispatch(Session.showIntercom);
@@ -156,45 +180,32 @@ export const useHelpOptions = () => {
 
   const [, trackingEventsWrapper] = useTrackingEvents();
 
-  return React.useMemo<MenuOption<undefined>[]>(
-    () => [
-      {
-        key: 'docs',
-        label: 'Documentation',
-        onClick: trackingEventsWrapper(() => window.open(DOCS_LINK, '_blank'), 'trackCanvasControlHelpMenuResource', {
-          resource: 'Docs',
-        }),
-      },
-      {
-        key: 'videos',
-        label: 'Video tutorials',
-        onClick: trackingEventsWrapper(() => window.open(YOUTUBE_CHANNEL_LINK, '_blank'), 'trackCanvasControlHelpMenuResource', {
-          resource: 'Videos',
-        }),
-      },
-      {
-        key: 'forum',
-        label: 'Community',
-        onClick: trackingEventsWrapper(() => window.open(FORUM_LINK, '_blank'), 'trackCanvasControlHelpMenuResource', {
-          resource: 'Forum',
-        }),
-      },
-      { key: 'divider', label: 'Divider', divider: true },
-      {
-        key: 'demo',
-        label: 'Book a demo',
-        onClick: trackingEventsWrapper(() => window.open(BOOK_DEMO_LINK, '_blank'), 'trackCanvasControlHelpMenuResource', {
-          resource: 'Demo',
-        }),
-      },
-      {
-        key: 'intercom',
-        label: isIntercomVisible ? 'Hide Intercom' : 'Contact us',
-        onClick: trackingEventsWrapper(isIntercomVisible ? hideIntercom : showIntercom, 'trackCanvasControlHelpMenuResource', {
-          resource: 'Intercom',
-        }),
-      },
-    ],
-    [isIntercomVisible]
-  );
+  return [
+    {
+      key: 'docs',
+      label: 'Documentation',
+      onClick: trackingEventsWrapper(() => window.open(DOCS_LINK, '_blank'), 'trackCanvasControlHelpMenuResource', { resource: 'Docs' }),
+    },
+    {
+      key: 'videos',
+      label: 'Video tutorials',
+      onClick: trackingEventsWrapper(() => window.open(YOUTUBE_CHANNEL_LINK, '_blank'), 'trackCanvasControlHelpMenuResource', { resource: 'Videos' }),
+    },
+    {
+      key: 'forum',
+      label: 'Community',
+      onClick: trackingEventsWrapper(() => window.open(FORUM_LINK, '_blank'), 'trackCanvasControlHelpMenuResource', { resource: 'Forum' }),
+    },
+    { key: 'divider', label: 'Divider', divider: true },
+    {
+      key: 'demo',
+      label: 'Book a demo',
+      onClick: trackingEventsWrapper(() => window.open(BOOK_DEMO_LINK, '_blank'), 'trackCanvasControlHelpMenuResource', { resource: 'Demo' }),
+    },
+    {
+      key: 'intercom',
+      label: isIntercomVisible ? 'Hide Intercom' : 'Contact us',
+      onClick: trackingEventsWrapper(isIntercomVisible ? hideIntercom : showIntercom, 'trackCanvasControlHelpMenuResource', { resource: 'Intercom' }),
+    },
+  ];
 };

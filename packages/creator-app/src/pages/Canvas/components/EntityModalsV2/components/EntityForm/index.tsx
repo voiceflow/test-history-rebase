@@ -12,88 +12,86 @@ import ValuesSection from '../ValuesSection';
 import { BuiltInIntentMessage, MessageWrapper } from './styles';
 
 interface EntityFormProps {
-  values: Realtime.SlotInput[];
-  saveValues?: (inputs: Realtime.SlotInput[]) => void;
   type: string | null;
-  updateType: (type: string) => void;
   name: string;
-  updateName: (name: string) => void;
-  saveName?: () => void;
-  withNameSection?: boolean;
   color: string;
+  values: Realtime.SlotInput[];
+  saveName?: () => void;
   saveColor: (color: string) => void;
+  updateType: (type: string) => void;
+  updateName: (name: string) => void;
+  saveValues?: (inputs: Realtime.SlotInput[]) => void;
+  withNameSection?: boolean;
   withBottomDivider?: boolean;
   colorPopperModifiers?: StrictPopperModifiers;
 }
 
-const EntityForm: React.ForwardRefRenderFunction<HTMLInputElement, EntityFormProps> = (
-  {
-    color,
-    saveColor,
-    colorPopperModifiers,
-    values,
-    saveValues,
-    withBottomDivider,
-    type,
-    updateType,
-    name,
-    updateName,
-    saveName,
-    withNameSection = true,
-  },
-  ref
-) => {
-  const [hasExtendedEntity, setHasExtendedEntity] = React.useState<boolean>(false);
-  const hasValues = Boolean(values.length);
-  const isCustomSlot = type === CUSTOM_SLOT_TYPE;
+const EntityForm = React.forwardRef<HTMLInputElement, EntityFormProps>(
+  (
+    {
+      type,
+      name,
+      color,
+      values,
+      saveName,
+      saveColor,
+      updateType,
+      saveValues,
+      updateName,
+      withNameSection = true,
+      withBottomDivider,
+      colorPopperModifiers,
+    },
+    ref
+  ) => {
+    const [hasExtendedEntity, setHasExtendedEntity] = React.useState(!!values.length);
+    const isCustomSlot = type === CUSTOM_SLOT_TYPE;
 
-  const handleInputsChange = (inputs: Realtime.SlotInput[]) => {
-    saveValues?.(inputs);
-  };
+    return (
+      <>
+        {withNameSection && (
+          <Section
+            header="Name"
+            variant={SectionVariant.QUATERNARY}
+            backgroundColor="#fdfdfd"
+            customContentStyling={{ paddingBottom: '0px' }}
+            customHeaderStyling={{ paddingTop: '20px' }}
+          >
+            <Input
+              ref={ref}
+              value={name}
+              onBlur={() => saveName?.()}
+              placeholder="Enter entity name"
+              onChangeText={(text) => updateName(applyAlexaIntentAndSlotNameFormatting(text))}
+            />
+          </Section>
+        )}
+        <TypeAndColorSection
+          name={name}
+          type={type}
+          color={color}
+          saveColor={saveColor}
+          onChangeType={updateType}
+          colorPopperModifiers={colorPopperModifiers}
+        />
 
-  return (
-    <>
-      {withNameSection && (
-        <Section
-          backgroundColor="#fdfdfd"
-          header="Name"
-          variant={SectionVariant.QUATERNARY}
-          customContentStyling={{ paddingBottom: '0px' }}
-          customHeaderStyling={{ paddingTop: '20px' }}
-        >
-          <Input
-            ref={ref}
-            onBlur={() => saveName?.()}
-            placeholder="Enter entity name"
-            value={name}
-            onChangeText={(text) => updateName(applyAlexaIntentAndSlotNameFormatting(text))}
-          />
-        </Section>
-      )}
-      <TypeAndColorSection
-        colorPopperModifiers={colorPopperModifiers}
-        color={color}
-        saveColor={saveColor}
-        type={type}
-        onChangeType={updateType}
-        name={name}
-      />
-      {!isCustomSlot && !hasExtendedEntity && (
-        <>
+        {!isCustomSlot && !hasExtendedEntity && (
           <MessageWrapper>
             <BuiltInIntentMessage>
               Entities with built-in types don't require additional sample values. If you'd like to add more you can{' '}
               <ClickableText onClick={() => setHasExtendedEntity(true)}>extend the entity.</ClickableText>
             </BuiltInIntentMessage>
           </MessageWrapper>
-          <DividerBorder />
-        </>
-      )}
-      {(isCustomSlot || hasExtendedEntity || hasValues) && (
-        <ValuesSection withBottomDivider={withBottomDivider} inputs={values} type={type} updateInputs={handleInputsChange} />
-      )}
-    </>
-  );
-};
+        )}
 
-export default React.forwardRef(EntityForm);
+        {isCustomSlot || hasExtendedEntity || !!values.length ? (
+          <ValuesSection withBottomDivider={withBottomDivider} inputs={values} type={type} updateInputs={(inputs) => saveValues?.(inputs)} />
+        ) : (
+          withBottomDivider && <DividerBorder />
+        )}
+      </>
+    );
+  }
+);
+
+export default EntityForm;

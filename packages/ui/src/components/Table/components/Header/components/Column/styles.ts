@@ -10,11 +10,10 @@ export const SortContainer = styled.div<{ visible?: boolean }>`
   opacity: ${({ visible }) => (visible ? 1 : 0)};
 `;
 
-export const Container = styled.div<{ flex: number; active?: boolean; sortable?: boolean }>`
+export const Container = styled.div<{ flex: number; width?: number; active?: boolean; sortable?: boolean }>`
   display: inline-flex;
   align-items: center;
   flex: ${({ flex }) => flex};
-  min-width: 28px;
 
   color: ${({ theme }) => theme.colors.secondary};
   font-size: 15px;
@@ -35,5 +34,13 @@ export const Container = styled.div<{ flex: number; active?: boolean; sortable?:
     sortable &&
     css`
       cursor: pointer;
+    `}
+
+    ${({ width }) =>
+    width &&
+    css`
+      width: ${width}px;
+      min-width: ${width}px;
+      max-width: ${width}px;
     `}
 `;

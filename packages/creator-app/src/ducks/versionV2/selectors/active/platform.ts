@@ -58,3 +58,7 @@ export const slotTypesSelector = createSelector(
   (locales, platform, isFeatureEnabled) =>
     getSlotTypes({ locales: locales as string[], platform, natoEnabled: !!isFeatureEnabled(FeatureFlag.NATO_APCO) })
 );
+
+export const slotTypesMapSelector = createSelector([slotTypesSelector], (slotTypes) =>
+  Utils.array.createMap(slotTypes, (slotType) => slotType.value)
+);

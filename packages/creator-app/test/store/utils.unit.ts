@@ -46,7 +46,7 @@ suite('Store | Utils', ({ spy, expect }) => {
       const result = rewriteDispatch(store as any)((dispatch, getState, extras) => {
         dispatch({ type, payload: getState() });
 
-        expect(extras).to.eql({ log });
+        expect(extras).to.eql({ log, client: { nodeId: clientNodeID } });
 
         return output;
       });

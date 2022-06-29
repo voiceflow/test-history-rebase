@@ -1,28 +1,33 @@
+import { AlexaConstants } from '@voiceflow/alexa-types';
+import { DFESConstants } from '@voiceflow/google-dfes-types';
+import { GoogleConstants } from '@voiceflow/google-types';
 import { Utils } from '@voiceflow/realtime-sdk';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import { applyAlexaIntentAndSlotNameFormatting, applyLUISIntentAndSlotNameFormatting } from '@/utils/intent';
 
-import AlexaClient from './alexa/client';
-import DialogflowClient from './dialogflow/client';
-import GeneralClient from './general/client';
-import GoogleClient from './google/client';
+import * as Alexa from './alexa';
+import * as Dialogflow from './dialogflow';
+import * as General from './general';
+import * as Google from './google';
 import { PlatformClient } from './types';
 
+export type AnyLocale = VoiceflowConstants.Locale | AlexaConstants.Locale | GoogleConstants.Locale | DFESConstants.Locale;
+
 export const platformClients = {
-  alexa: AlexaClient,
-  google: GoogleClient,
-  dialogflow: DialogflowClient,
-  general: GeneralClient,
+  alexa: Alexa.client,
+  google: Google.client,
+  general: General.client,
+  dialogflow: Dialogflow.client,
 };
 
 export const getPlatformClient = Utils.platform.createPlatformSelector<PlatformClient>(
   {
-    [VoiceflowConstants.PlatformType.ALEXA]: AlexaClient,
-    [VoiceflowConstants.PlatformType.GOOGLE]: GoogleClient,
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: DialogflowClient,
+    [VoiceflowConstants.PlatformType.ALEXA]: Alexa.client,
+    [VoiceflowConstants.PlatformType.GOOGLE]: Google.client,
+    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: Dialogflow.client,
   },
-  GeneralClient
+  General.client
 );
 
 export const getPlatformIntentAndSlotNameFormatter = Utils.platform.createPlatformSelector<(name: string) => string>(
@@ -32,4 +37,13 @@ export const getPlatformIntentAndSlotNameFormatter = Utils.platform.createPlatfo
     [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: applyAlexaIntentAndSlotNameFormatting,
   },
   applyLUISIntentAndSlotNameFormatting
+);
+
+export const getUtteranceRecommendationsLocales = Utils.platform.createPlatformSelector<AnyLocale[]>(
+  {
+    [VoiceflowConstants.PlatformType.ALEXA]: Alexa.Constants.UTTERANCE_RECOMMENDATIONS_LOCALES,
+    [VoiceflowConstants.PlatformType.GOOGLE]: Google.Constants.UTTERANCE_RECOMMENDATIONS_LOCALES,
+    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: Dialogflow.Constants.UTTERANCE_RECOMMENDATIONS_LOCALES,
+  },
+  General.Constants.UTTERANCE_RECOMMENDATIONS_LOCALES
 );

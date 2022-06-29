@@ -11,10 +11,11 @@ import EntityForm from '.';
 interface EditEntityFormProps {
   slotID: string;
   withNameSection?: boolean;
+  withBottomDivider?: boolean;
   colorPopperModifiers?: StrictPopperModifiers;
 }
 
-const EditEntityForm: React.FC<EditEntityFormProps> = ({ colorPopperModifiers, withNameSection, slotID }) => {
+const EditEntityForm: React.FC<EditEntityFormProps> = ({ colorPopperModifiers, withNameSection, slotID, withBottomDivider }) => {
   const slot = useSelector(SlotV2.slotByIDSelector, { id: slotID });
   const patchSlot = useDispatch(SlotDuck.patchSlot, slotID);
   const defaultColor = React.useMemo(() => pickRandomDefaultColor(), []);
@@ -55,7 +56,7 @@ const EditEntityForm: React.FC<EditEntityFormProps> = ({ colorPopperModifiers, w
       updateName={setName}
       saveName={saveName}
       withNameSection={withNameSection}
-      withBottomDivider
+      withBottomDivider={withBottomDivider}
     />
   );
 };

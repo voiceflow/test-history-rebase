@@ -1,4 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { useCreateConst } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';
@@ -10,7 +11,7 @@ export const MLContext = React.createContext<LoguxClient | null>(null);
 export const { Consumer: MLConsumer } = MLContext;
 
 const MLProvider: React.FC = ({ children }) => {
-  const mlClient = React.useMemo(() => client.mlGateway(), []);
+  const mlClient = useCreateConst(() => client.mlGateway());
 
   useLoguxSetup(mlClient);
 

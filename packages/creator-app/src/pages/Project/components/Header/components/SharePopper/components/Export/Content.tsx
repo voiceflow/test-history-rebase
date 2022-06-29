@@ -32,6 +32,7 @@ const Content: React.FC<{
         <TabPane tabID={ExportType.MODEL}>
           <Model selectedIntents={checkedItems} />
         </TabPane>
+
         <TabPane tabID={ExportType.CANVAS}>
           <Canvas />
         </TabPane>

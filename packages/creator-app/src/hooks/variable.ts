@@ -3,6 +3,7 @@ import _sortBy from 'lodash/sortBy';
 import React from 'react';
 
 import { VariableType } from '@/constants';
+import * as Diagram from '@/ducks/diagram';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { CanvasCreationType } from '@/ducks/tracking/constants';
@@ -53,4 +54,24 @@ export const useOrderedVariables = () => {
 
     return [list, map] as const;
   }, [localVariables, globalVariables]);
+};
+
+export const useDeleteVariable = () => {
+  const [, variablesMap] = useOrderedVariables();
+
+  const removeGlobalVariable = useDispatch(Version.removeGlobalVariable);
+  const removeVariableFromDiagram = useDispatch(Diagram.removeActiveDiagramVariable);
+
+  return React.useCallback(
+    (variableID: string) => {
+      const variable = variablesMap[variableID];
+
+      if (variable.type === VariableType.GLOBAL) {
+        removeGlobalVariable(variable.name);
+      } else {
+        removeVariableFromDiagram(variable.name);
+      }
+    },
+    [variablesMap, removeGlobalVariable, removeVariableFromDiagram]
+  );
 };

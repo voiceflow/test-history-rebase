@@ -4,28 +4,30 @@ import React from 'react';
 
 import { FeatureFlag } from '@/config/features';
 import { ModalType } from '@/constants';
+import * as Router from '@/ducks/router';
 import * as SlotV2 from '@/ducks/slotV2';
-import { useFeature, useModals, useSelector } from '@/hooks';
+import { useDispatch, useFeature, useModals, useSelector } from '@/hooks';
 
 const EntitySelectDropdown: React.FC = () => {
   const { close, open } = useModals(ModalType.ENTITY_EDIT);
   const nluManager = useFeature(FeatureFlag.NLU_MANAGER);
+
   const allSlots = useSelector(SlotV2.allSlotsSelector);
+  const goToNLUManager = useDispatch(Router.goToCurrentNLUManager);
 
   const options = React.useMemo(() => allSlots.map((slot) => ({ id: slot.id, label: slot.name })), [allSlots]);
   const optionsMap = React.useMemo(() => Utils.array.createMap(options, Utils.object.selectID), [options]);
 
-  const onOpenNLU = () => {
-    // TODO: Open NLU manager
-  };
-
   const handleSelect = (slotID: string | null) => {
     close();
-    slotID && open({ id: slotID });
+
+    if (slotID) {
+      open({ id: slotID });
+    }
   };
 
   const footerComponent = nluManager.isEnabled
-    ? () => <NestedMenuComponents.FooterActionContainer onClick={onOpenNLU}>Open NLU Manager</NestedMenuComponents.FooterActionContainer>
+    ? () => <NestedMenuComponents.FooterActionContainer onClick={goToNLUManager}>Open NLU Manager</NestedMenuComponents.FooterActionContainer>
     : null;
 
   return (

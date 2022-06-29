@@ -15,6 +15,7 @@ const EditSidebar: React.FC = () => {
         <EditEntityForm
           slotID={nluManager.activeItem.id}
           withNameSection={false}
+          withBottomDivider
           colorPopperModifiers={[{ name: 'offset', options: { offset: [-240, -25] } }]}
         />
       )}

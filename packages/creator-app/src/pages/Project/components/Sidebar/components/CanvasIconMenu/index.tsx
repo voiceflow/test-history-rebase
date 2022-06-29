@@ -7,9 +7,9 @@ import { useIsCanvasDesignOnly } from '@/hooks';
 import { useCanvasMenuOptionsAndHotkeys, useHelpOptions } from './hooks';
 
 const CanvasIconMenu: React.FC = () => {
+  const designOnly = useIsCanvasDesignOnly();
   const helpOptions = useHelpOptions();
   const { options, activeValue, helpOpened, footerOptions, helpButtonRef } = useCanvasMenuOptionsAndHotkeys();
-  const designOnly = useIsCanvasDesignOnly();
 
   const popper = useVirtualElementPopper(helpButtonRef.current, {
     placement: 'right-end',

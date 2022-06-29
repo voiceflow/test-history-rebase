@@ -10,11 +10,13 @@ export enum Hotkey {
   ZOOM_OUT = 'ZOOM_OUT',
   SPOTLIGHT = 'SPOTLIGHT',
   ROOT_NODE = 'ROOT_NODE',
+
   DESIGN_PAGE = 'DESIGN_PAGE',
   SETTINGS_PAGE = 'SETTINGS_PAGE',
+  NLU_MANAGER_PAGE = 'NLU_MANAGER_PAGE',
   INTEGRATION_PAGE = 'INTEGRATION_PAGE',
   CONVERSATION_PAGE = 'CONVERSATION_PAGE',
-  NLU_MANAGER_PAGE = 'NLU_MANAGER_PAGE',
+
   USER_SPEECH = 'USER_SPEECH',
   OPEN_CMS_MODAL = 'OPEN_CMS_MODAL',
   OPEN_MANUAL_SAVE_MODAL = 'OPEN_MANUAL_SAVE_MODAL',
@@ -56,6 +58,19 @@ export enum Hotkey {
    * @deprecated remove after topics and components are released
    */
   OPEN_LEFT_SIDEBAR_FLOWS_TAB = 'OPEN_LEFT_SIDEBAR_FLOWS_TAB',
+
+  /**
+   * @deprecated remove after nlu manager is released
+   */
+  SETTINGS_PAGE_LEGACY = 'SETTINGS_PAGE_LEGACY',
+  /**
+   * @deprecated remove after nlu manager is released
+   */
+  INTEGRATION_PAGE_LEGACY = 'INTEGRATION_PAGE_LEGACY',
+  /**
+   * @deprecated remove after nlu manager is released
+   */
+  CONVERSATION_PAGE_LEGACY = 'CONVERSATION_PAGE_LEGACY',
 }
 
 enum SpecialKey {
@@ -93,9 +108,10 @@ const HOTKEY_MAPPING: Record<Hotkey, string | string[]> = {
   [Hotkey.CREATE_COMPONENT]: [`${SpecialKey.SHIFT}+${SpecialKey.CTRL}+k`, `${SpecialKey.SHIFT}+${SpecialKey.META}+k`],
   [Hotkey.USER_SPEECH]: SpecialKey.SPACE,
   [Hotkey.DESIGN_PAGE]: '1',
-  [Hotkey.CONVERSATION_PAGE]: '2',
-  [Hotkey.SETTINGS_PAGE]: '4',
-  [Hotkey.INTEGRATION_PAGE]: '3',
+  [Hotkey.NLU_MANAGER_PAGE]: '2',
+  [Hotkey.CONVERSATION_PAGE]: '3',
+  [Hotkey.INTEGRATION_PAGE]: '4',
+  [Hotkey.SETTINGS_PAGE]: '5',
   [Hotkey.MOVE_FORWARD]: SpecialKey.RIGHT,
   [Hotkey.SHOW_HIDE_UI]: [`${SpecialKey.CTRL}+\\`, `${SpecialKey.META}+\\`],
   [Hotkey.SAVE_VERSION]: [`${SpecialKey.CTRL} + S`, `${SpecialKey.META} + S`],
@@ -113,16 +129,35 @@ const HOTKEY_MAPPING: Record<Hotkey, string | string[]> = {
   [Hotkey.TOGGLE_DESIGN_MENU_LOCK]: ['/', '?'],
   [Hotkey.OPEN_DESIGN_MENU_STEPS_TAB]: ['.', `${SpecialKey.SHIFT}+.`],
   [Hotkey.OPEN_DESIGN_MENU_LAYERS_TAB]: [',', `${SpecialKey.SHIFT}+,`],
-  [Hotkey.OPEN_LEFT_SIDEBAR_STEPS_TAB]: [',', `${SpecialKey.SHIFT}+,`],
-  [Hotkey.OPEN_LEFT_SIDEBAR_FLOWS_TAB]: ['.', `${SpecialKey.SHIFT}+.`],
   [Hotkey.PROTOTYPE_CLOSE_FULL_SCREEN]: SpecialKey.ESC,
   [Hotkey.PROTOTYPE_FULL_SCREEN_TOGGLE]: 'f',
   [Hotkey.OPEN_MANUAL_SAVE_MODAL]: [`${SpecialKey.SHIFT}+${SpecialKey.CTRL}+s`, `${SpecialKey.SHIFT}+${SpecialKey.META}+s`],
   [Hotkey.SAVE]: [`${SpecialKey.META}+s`, `${SpecialKey.CTRL}+s`],
   [Hotkey.CLOSE_UPLOAD_MODAL]: SpecialKey.ESC,
   [Hotkey.HIDE_COMMENT_BUBBLES]: [`${SpecialKey.SHIFT}+c`],
-  [Hotkey.NLU_MANAGER_PAGE]: '5',
   [Hotkey.FOCUS_NLU_MANAGER_SEARCH]: '/',
+
+  /**
+   * @deprecated remove after topics and components are released
+   */
+  [Hotkey.OPEN_LEFT_SIDEBAR_STEPS_TAB]: [',', `${SpecialKey.SHIFT}+,`],
+  /**
+   * @deprecated remove after topics and components are released
+   */
+  [Hotkey.OPEN_LEFT_SIDEBAR_FLOWS_TAB]: ['.', `${SpecialKey.SHIFT}+.`],
+
+  /**
+   * @deprecated remove after nlu manager is released
+   */
+  [Hotkey.SETTINGS_PAGE_LEGACY]: '4',
+  /**
+   * @deprecated remove after nlu manager is released
+   */
+  [Hotkey.INTEGRATION_PAGE_LEGACY]: '3',
+  /**
+   * @deprecated remove after nlu manager is released
+   */
+  [Hotkey.CONVERSATION_PAGE_LEGACY]: '2',
 };
 
 const SPECIAL_KEY_LABEL: Record<SpecialKey, string> = {

@@ -214,7 +214,7 @@ export default <S, A extends AnyAction>(Duck: ReduxDuck<S, A>, state: S) =>
         );
         const thunk = sideEffect(...args);
 
-        const result = await thunk(dispatch, getState, { log: { type: stub() } } as any);
+        const result = await thunk(dispatch, getState, { log: { type: stub() }, client: { type: stub() } } as any);
 
         return { dispatch, dispatched, result };
       },

@@ -13,6 +13,7 @@ module.exports = {
     '^@logux/core$': 'identity-obj-proxy',
     '^nanoevents$': 'identity-obj-proxy',
     '^murmurhash-wasm$': 'identity-obj-proxy',
+    '^packages/creator-app/src/pages/Canvas/hooks/engine.ts$': 'identity-obj-proxy',
     '^.+\\.(svg|csv|png)(?:\\?url)?$': '<rootDir>/config/test/integration/assetPlaceholder.js',
     '^@/(.*)': '<rootDir>/src/$1',
   },

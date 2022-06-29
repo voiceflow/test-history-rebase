@@ -19,7 +19,7 @@ export const ErrorBubble = styled.div<{ active: boolean }>`
   border-radius: 6px;
   display: flex;
   align-items: center;
-  border: solid 1px #eaeff4;
+  border: solid 1px #dfe3ed;
   cursor: pointer;
   color: #62778c;
 

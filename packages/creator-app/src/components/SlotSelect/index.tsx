@@ -1,5 +1,4 @@
-import { Utils } from '@voiceflow/common';
-import { BaseSelectProps, createUIOnlyMenuItemOption, isNotUIOnlyMenuItemOption, Select } from '@voiceflow/ui';
+import { BaseSelectProps, createUIOnlyMenuItemOption, Select } from '@voiceflow/ui';
 import React from 'react';
 
 import * as VersionV2 from '@/ducks/versionV2';
@@ -18,6 +17,7 @@ interface SlotSelectProps extends BaseSelectProps {
 
 const SlotSelect: React.FC<SlotSelectProps> = ({ value, onChange, className, filter, ...props }) => {
   const slotTypes = useSelector(VersionV2.active.slotTypesSelector);
+  const slotTypesMap = useSelector(VersionV2.active.slotTypesMapSelector);
 
   const options = React.useMemo(
     () =>
@@ -26,8 +26,7 @@ const SlotSelect: React.FC<SlotSelectProps> = ({ value, onChange, className, fil
         : [slotTypes[0], slotTypes[1], createUIOnlyMenuItemOption('divider', { divider: true }), ...slotTypes.slice(2)],
     [slotTypes, filter]
   );
-  const selected = React.useMemo(() => slotTypes.find((slotType) => slotType.value === value) ?? null, [slotTypes, value]);
-  const optionsMap = React.useMemo(() => Utils.array.createMap(options.filter(isNotUIOnlyMenuItemOption), Utils.object.selectValue), [options]);
+  const selected = React.useMemo(() => (value ? slotTypesMap[value] ?? null : null), [slotTypesMap, value]);
 
   return (
     <Select
@@ -41,7 +40,7 @@ const SlotSelect: React.FC<SlotSelectProps> = ({ value, onChange, className, fil
       getOptionKey={(option) => option.value}
       optionsMaxSize={9.5}
       getOptionValue={(option) => option?.value}
-      getOptionLabel={(value) => value && optionsMap[value]?.label}
+      getOptionLabel={(value) => value && slotTypesMap[value]?.label}
       labelSearchable={false}
       inDropdownSearch
       alwaysShowCreate

@@ -12,7 +12,7 @@ describe('Actions | Utterance | Suggest', () => {
 
       const control = new SuggestUtteranceControl({ services, clients } as any);
 
-      await expect(control.access()).to.eventually.be.false;
+      await expect(control.access()).to.eventually.be.true;
     });
   });
 
@@ -26,18 +26,21 @@ describe('Actions | Utterance | Suggest', () => {
     });
 
     it('returns an empty array', async () => {
-      const control = new SuggestUtteranceControl({ services: {}, clients: {} } as any);
+      const services = {
+        configuration: { getConfiguration: sinon.stub().returns({ config: 'config' }) },
+        interaction: { sendRequest: sinon.stub().resolves({ utterances: ['a', 'b'] }) },
+      };
 
-      const projectID = 'project_id';
-      const intentID = 'intent_id';
+      const control = new SuggestUtteranceControl({ clients: {}, services } as any);
+
       const actionID = 'action_id';
       const ctx = {};
-      const action = ML.utterance.suggest.started({ projectID, intentID }, { actionID });
+      const action = ML.utterance.suggest.started({ utterance: 'c', numberOfUtterances: 10 }, { actionID });
       const serverMeta = {};
 
       await control.process(ctx as any, action, serverMeta as any);
 
-      expect(control.$reply.args[0][1](ctx, action)).to.eventually.eql([]);
+      expect(control.$reply.args[0][1](ctx, action)).to.eventually.eql(['a', 'b']);
     });
   });
 });

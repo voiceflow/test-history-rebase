@@ -6,7 +6,7 @@ const Row = styled.div<{ active?: boolean }>`
 
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 32px;
   padding: 16px 32px;
   cursor: pointer;
   position: relative;

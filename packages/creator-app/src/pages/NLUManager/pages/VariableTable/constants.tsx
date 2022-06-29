@@ -26,6 +26,7 @@ export const COLUMNS: TableTypes.Column<TableColumn, OrderedVariable>[] = [
     type: TableColumn.NAME,
     flex: 3,
     label: 'Name',
+    width: 288,
     sorter: (slotL, slotR) => slotL.name.localeCompare(slotR.name),
     component: (props) => <NameColumn {...props} placeholder="Enter intent name" />,
   },
@@ -33,6 +34,7 @@ export const COLUMNS: TableTypes.Column<TableColumn, OrderedVariable>[] = [
   {
     type: TableColumn.TYPE,
     flex: 2,
+    width: 148,
     label: 'Type',
     sorter: (slotL, slotR) => (!slotR.type || !slotL.type ? 0 : slotL.type.localeCompare(slotR.type)),
     component: TypeColumn,

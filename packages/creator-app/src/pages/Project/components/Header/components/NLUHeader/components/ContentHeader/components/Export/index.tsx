@@ -30,7 +30,7 @@ const Export: React.FC<ExportProps> = ({ checkedItems }) => {
         )}
       >
         {({ ref }) => (
-          <Button squareRadius flat variant={ButtonVariant.SECONDARY} disabled={!checkedItems.length} onClick={() => setIsOpened(true)} ref={ref}>
+          <Button squareRadius flat variant={ButtonVariant.SECONDARY} onClick={() => setIsOpened(true)} ref={ref}>
             Export
             {!!checkedItems.length && ` (${checkedItems.length})`}
           </Button>

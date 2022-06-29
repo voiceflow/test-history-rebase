@@ -27,7 +27,8 @@ export const COLUMNS: TableTypes.Column<TableColumn, Realtime.Intent>[] = [
 
   {
     type: TableColumn.NAME,
-    flex: 1.5,
+    flex: 1,
+    width: 288,
     label: 'Name',
     sorter: (intentL, intentR) => intentL.name.localeCompare(intentR.name),
     ellipses: true,
@@ -38,6 +39,7 @@ export const COLUMNS: TableTypes.Column<TableColumn, Realtime.Intent>[] = [
   {
     type: TableColumn.CONFIDENCE,
     flex: 1,
+    width: 148,
     label: 'Confidence',
     sorter: (intentL, intentR) => (isCustomizableBuiltInIntent(intentL) ? 1 : intentL.inputs.length - intentR.inputs.length),
     tooltip: {
@@ -54,6 +56,7 @@ export const COLUMNS: TableTypes.Column<TableColumn, Realtime.Intent>[] = [
   {
     type: TableColumn.CLARITY,
     flex: 1,
+    width: 148,
     label: 'Clarity',
     tooltip: {
       html: (
@@ -67,17 +70,18 @@ export const COLUMNS: TableTypes.Column<TableColumn, Realtime.Intent>[] = [
   },
 
   {
-    type: TableColumn.ENTITIES,
-    flex: 2,
-    label: 'Entities',
-    component: EntitiesColumn,
-  },
-
-  {
     type: TableColumn.UTTERANCES,
     flex: 1,
+    width: 108,
     label: 'Utterances',
     sorter: (intentL, intentR) => intentL.inputs.length - intentR.inputs.length,
     component: UtterancesColumn,
+  },
+
+  {
+    type: TableColumn.ENTITIES,
+    flex: 1,
+    label: 'Entities',
+    component: EntitiesColumn,
   },
 ];

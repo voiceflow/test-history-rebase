@@ -11,7 +11,6 @@ export const Container = styled(FlexApart)`
 export const TrashButton = styled(Button)`
   display: inline-block;
   padding: 10px 20px !important;
-  margin-right: 10px;
   ${SvgIcon.Container} {
     ${transition()}
     opacity: 0.55;

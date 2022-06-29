@@ -75,7 +75,7 @@ const NLUQuickView: React.FC = () => {
           !!modalRef && (
             <TextEditorVariablesPopoverProvider value={modalRef}>
               {showIntentForm && <EditIntentForm intentID={selectedID} />}
-              {showEntityForm && <EditEntityForm slotID={selectedID} withNameSection={false} />}
+              {showEntityForm && <EditEntityForm slotID={selectedID} withNameSection={false} withBottomDivider />}
               {showVariableForm && <VariablesSection />}
             </TextEditorVariablesPopoverProvider>
           )

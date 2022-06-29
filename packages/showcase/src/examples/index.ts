@@ -2,6 +2,7 @@ export { default as badge } from './Badge';
 export { default as button } from './Button';
 export { default as canvasAction } from './CanvasAction';
 export { default as canvasPort } from './CanvasPort';
+export { default as checkbox } from './Checkbox';
 export { default as colorPicker } from './ColorPicker';
 export { default as cursor } from './Cursor';
 export { default as hueSlider } from './HueSlider';

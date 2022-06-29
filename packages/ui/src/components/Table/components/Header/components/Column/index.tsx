@@ -5,12 +5,12 @@ import React from 'react';
 import * as S from './styles';
 import * as T from './types';
 
-const Column: React.FC<T.Props> = ({ flex, active, onClick, tooltip, sortable, children, descending }) => {
+const Column: React.FC<T.Props> = ({ flex, active, width, onClick, tooltip, sortable, children, descending }) => {
   const nubUpColor = active && !descending ? '#132144' : '#becedc';
   const nubDownColor = active && descending ? '#132144' : '#becedc';
 
   return (
-    <S.Container sortable={sortable} active={active} flex={flex} onClick={onClick}>
+    <S.Container sortable={sortable} active={active} flex={flex} width={width} onClick={onClick}>
       {tooltip ? <TippyTooltip {...tooltip}>{children}</TippyTooltip> : children}
 
       {sortable && (

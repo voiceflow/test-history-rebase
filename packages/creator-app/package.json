@@ -26,6 +26,7 @@
     "@voiceflow/google-dfes-types": "2.11.6",
     "@voiceflow/google-types": "2.13.6",
     "@voiceflow/internal": "2.3.0",
+    "@voiceflow/ml-sdk": "^1.8.2",
     "@voiceflow/realtime-sdk": "^1.118.1",
     "@voiceflow/ui": "^1.110.1",
     "@voiceflow/voice-types": "2.5.59",

@@ -23,6 +23,7 @@ export const COLUMNS: TableTypes.Column<TableColumn, Realtime.Slot>[] = [
   {
     type: TableColumn.NAME,
     flex: 3,
+    width: 288,
     label: 'Name',
     sorter: (slotL, slotR) => slotL.name.localeCompare(slotR.name),
     ellipses: true,
@@ -33,6 +34,7 @@ export const COLUMNS: TableTypes.Column<TableColumn, Realtime.Slot>[] = [
   {
     type: TableColumn.TYPE,
     flex: 2,
+    width: 148,
     label: 'Type',
     sorter: (slotL, slotR) => (!slotR.type || !slotL.type ? 0 : slotL.type.localeCompare(slotR.type)),
     component: TypeColumn,

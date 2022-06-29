@@ -12,11 +12,15 @@ const Text = styled(EditableText)`
   }
 `;
 
-interface NameColumnProps<I extends TableTypes.Item & { name: string }> extends TableTypes.ItemProps<I> {
+interface NamedItem extends TableTypes.Item {
+  name: string;
+}
+
+interface NameColumnProps<I extends NamedItem> extends TableTypes.ItemProps<I> {
   placeholder: string;
 }
 
-const NameColumn = <I extends TableTypes.Item & { name: string }>({ item, placeholder }: NameColumnProps<I>): React.ReactElement => {
+const NameColumn = <I extends NamedItem>({ item, placeholder }: NameColumnProps<I>): React.ReactElement => {
   const nlu = React.useContext(NLUContext);
   const nluManager = React.useContext(NLUManagerContext);
 

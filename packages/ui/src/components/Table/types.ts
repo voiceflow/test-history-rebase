@@ -27,6 +27,7 @@ export interface Column<T extends string, I extends Item> {
   type: T;
   flex: number;
   label: React.ReactNode;
+  width?: number;
   sorter?: ColumnSorter<I>;
   tooltip?: TippyTooltipProps;
   ellipses?: boolean;
@@ -34,16 +35,32 @@ export interface Column<T extends string, I extends Item> {
   overflowTooltip?: (props: ItemProps<I>) => TippyTooltipProps;
 }
 
+export interface ConfigurableRowProps<I extends Item> extends ItemProps<I>, RowProviderChildrenProps {}
+
 export interface ConfigurableProps<T extends string, I extends Item> {
   items: I[];
   empty: React.ReactNode;
   columns: Column<T, I>[];
   orderBy?: T | null;
-  renderRow?: (props: React.PropsWithChildren<ItemProps<I>>) => React.ReactNode;
+  renderRow?: (props: React.PropsWithChildren<ConfigurableRowProps<I>>) => React.ReactNode;
   descending?: boolean;
   onChangeOrderBy?: (orderBy: T) => void;
 }
 
 export interface ContextValue<T extends Item> {
   items: T[];
+}
+
+export interface RowContextValue<I extends Item> extends ItemProps<I> {
+  hovered: boolean;
+}
+
+export interface RowProviderChildrenProps {
+  hovered: boolean;
+  onMouseEnter: VoidFunction;
+  onMouseLeave: VoidFunction;
+}
+
+export interface RowProviderProps extends Omit<RowContextValue<any>, 'hovered'> {
+  children: (props: RowProviderChildrenProps) => React.ReactNode;
 }

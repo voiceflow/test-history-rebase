@@ -1,6 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { BoxFlex, stopPropagation, TableTypes, Tag } from '@voiceflow/ui';
-import * as Normal from 'normal-store';
+import { Box, stopPropagation, TableTypes, Tag } from '@voiceflow/ui';
 import React from 'react';
 
 import { ModalType } from '@/constants';
@@ -12,18 +11,10 @@ import { EmptyDash } from '../../../components';
 const EntitiesColumn: React.FC<TableTypes.ItemProps<Realtime.Intent>> = ({ item }) => {
   const entityEditModal = useModals(ModalType.ENTITY_EDIT);
 
-  const entitiesIDs = React.useMemo(
-    () =>
-      Normal.denormalize<Realtime.IntentSlot>(item.slots)
-        .filter(({ required }) => required)
-        .map((slot) => slot.id),
-    [item.slots]
-  );
-
-  const entities = useSelector(SlotV2.slotsByIDsSelector, { ids: entitiesIDs });
+  const entities = useSelector(SlotV2.slotsByIDsSelector, { ids: item.slots.allKeys });
 
   return (
-    <BoxFlex gap={4}>
+    <Box.Flex gap={4}>
       {entities.length ? (
         <>
           {entities.map((entity) => (
@@ -35,7 +26,7 @@ const EntitiesColumn: React.FC<TableTypes.ItemProps<Realtime.Intent>> = ({ item 
       ) : (
         <EmptyDash />
       )}
-    </BoxFlex>
+    </Box.Flex>
   );
 };
 

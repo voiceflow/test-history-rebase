@@ -17,14 +17,8 @@ export enum ModelFlag {
   SHADOW = 's',
 }
 
-export type ModelVersionArguments = [traffic: number, ...flags: ModelFlag[]];
-
-export interface RawModelConfiguration {
-  [versionID: string]: ModelVersionArguments;
-}
-
 export interface ModelVersionConfiguration {
-  id: string;
+  topic: string;
 
   /**
    * percent of traffic that should be routed to this version
@@ -33,13 +27,11 @@ export interface ModelVersionConfiguration {
   /**
    * flags that affect how traffic is distributed
    */
-  flags: ModelFlag[];
+  trafficType: ModelFlag;
+
+  hasFeedback: boolean;
 }
 
 export interface ModelConfiguration {
-  id: string;
-
-  versions: {
-    [versionID: string]: ModelVersionConfiguration;
-  };
+  [versionID: string]: ModelVersionConfiguration;
 }

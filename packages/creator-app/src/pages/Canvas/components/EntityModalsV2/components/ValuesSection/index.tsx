@@ -18,23 +18,14 @@ import InputItem from './components/InputItem';
 const MAX_VISIBLE_VALUES = 10;
 
 interface ValuesSectionProps {
-  updateInputs: (inputs: Realtime.SlotInput[]) => void;
-  inputs: Realtime.SlotInput[];
   type: string | null;
+  inputs: Realtime.SlotInput[];
+  updateInputs: (inputs: Realtime.SlotInput[]) => void;
   withBottomDivider?: boolean;
 }
 
-const updateSingleLine = (id: string, inputs: Realtime.SlotInput[], values: Partial<Realtime.SlotInput>) => {
-  return inputs.map((line) => {
-    if (line.id === id) {
-      return {
-        ...line,
-        ...values,
-      };
-    }
-    return line;
-  });
-};
+const updateSingleLine = (id: string, inputs: Realtime.SlotInput[], values: Partial<Realtime.SlotInput>) =>
+  inputs.map((line) => (line.id === id ? { ...line, ...values } : line));
 
 const ValuesSection: React.FC<ValuesSectionProps> = ({ withBottomDivider, inputs, type, updateInputs }) => {
   const valueRef = React.useRef<HTMLInputElement | null>(null);

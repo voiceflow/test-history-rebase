@@ -82,10 +82,10 @@ export const NLUQuickViewProvider: React.FC = ({ children }) => {
 
   const location = useLocation();
 
-  const goToQuickviewModelEntity = useDispatch(Router.goToCurrentCanvasInteractionModelEntity);
   const goToQuickviewTab = useDispatch(Router.goToCurrentCanvasInteractionModel);
   const goToCurrentCanvas = useDispatch(Router.goToCurrentCanvas);
   const goToCurrentCanvasNode = useDispatch(Router.goToCurrentCanvasNode);
+  const goToQuickviewModelEntity = useDispatch(Router.goToCurrentCanvasInteractionModelEntity);
 
   const creatorFocus = useSelector(Creator.creatorFocusSelector);
 
@@ -115,32 +115,30 @@ export const NLUQuickViewProvider: React.FC = ({ children }) => {
 
   const activeID = modelMatch?.params.modelEntityID ? decodeURIComponent(modelMatch.params.modelEntityID) : '';
 
-  const onNameChange = React.useCallback(
-    (name: string, id: string) => {
-      renameItem(name, id, activeTab);
+  const onNameChange = React.useCallback((name: string, id: string) => renameItem(name, id, activeTab), [activeTab, renameItem]);
+
+  const goToEntity = React.useCallback(
+    (tab: InteractionModelTabType, id: string) => {
+      const persistedState = { tab, id };
+
+      setIMMPersistedState(persistedState);
+
+      persistedStateRef.current = persistedState;
+
+      if (id) {
+        goToQuickviewModelEntity(tab, id);
+      } else {
+        goToQuickviewTab(tab);
+      }
     },
-    [activeTab]
+    [setIMMPersistedState, goToQuickviewModelEntity, goToQuickviewTab]
   );
-
-  const handleSetPersistState = (tab: InteractionModelTabType, id: string | null) => {
-    const persistedState = { tab, id };
-    setIMMPersistedState(persistedState);
-    persistedStateRef.current = persistedState;
-  };
-
-  const goToEntity = (tab: InteractionModelTabType, id: string) => {
-    handleSetPersistState(tab, id);
-    if (id) {
-      goToQuickviewModelEntity(tab, id);
-    } else {
-      goToQuickviewTab(tab);
-    }
-  };
 
   const setSelectedTab = React.useCallback(
     (tab: InteractionModelTabType, deletedID?: string) => {
       let targetID = '';
       let targetArray: { id: string }[] = [];
+
       switch (tab) {
         case InteractionModelTabType.INTENTS:
           targetArray = sortedIntents;
@@ -164,7 +162,7 @@ export const NLUQuickViewProvider: React.FC = ({ children }) => {
 
       trackingEvents.trackIMMNavigation({ tabName: tab });
     },
-    [sortedIntents, sortedSlots, sortedVariables]
+    [sortedIntents, sortedSlots, sortedVariables, goToEntity, goToQuickviewTab]
   );
 
   const setSelectedID = React.useCallback(
@@ -174,40 +172,12 @@ export const NLUQuickViewProvider: React.FC = ({ children }) => {
     [activeTab, goToEntity]
   );
 
-  // When IMM gets opened with a variable click (with a target item)
-  React.useEffect(() => {
-    if (!!modelMatch && !isInStack) {
-      open();
-    } else if (!modelMatch && isInStack) {
-      close();
-    }
-  }, [!!modelMatch]);
-
-  useDidUpdateEffect(() => {
-    const visibleAndInStack = isInStack && isOpened;
-    if (visibleAndInStack && !modelMatch) {
-      const persistedState = persistedStateRef.current;
-      const { tab: persistedTab, id: persistedID } = persistedState;
-      if (persistedTab && persistedID) {
-        goToQuickviewModelEntity(persistedTab, persistedID);
-      } else if (sortedIntents.length) {
-        goToQuickviewModelEntity(InteractionModelTabType.INTENTS, sortedIntents[0].id);
-      } else {
-        goToQuickviewTab(InteractionModelTabType.INTENTS);
-      }
-    } else if (!isInStack && modelMatch) {
-      if (creatorFocus.target && creatorFocus.isActive) {
-        goToCurrentCanvasNode(creatorFocus.target);
-      } else {
-        goToCurrentCanvas();
-      }
-    }
-  }, [isOpened, isInStack]);
-
   const deleteItem = React.useCallback(
     (itemID: string, tab?: InteractionModelTabType) => {
       const targetTab = tab || activeTab;
+
       deleteNLUItem(itemID, targetTab);
+
       switch (targetTab) {
         case InteractionModelTabType.INTENTS:
           setSelectedTab(InteractionModelTabType.INTENTS, itemID);
@@ -225,26 +195,58 @@ export const NLUQuickViewProvider: React.FC = ({ children }) => {
     [activeTab, setSelectedTab, deleteNLUItem]
   );
 
+  // When IMM gets opened with a variable click (with a target item)
+  React.useEffect(() => {
+    if (!!modelMatch && !isInStack) {
+      open();
+    } else if (!modelMatch && isInStack) {
+      close();
+    }
+  }, [!!modelMatch]);
+
+  useDidUpdateEffect(() => {
+    const visibleAndInStack = isInStack && isOpened;
+
+    if (visibleAndInStack && !modelMatch) {
+      const persistedState = persistedStateRef.current;
+      const { tab: persistedTab, id: persistedID } = persistedState;
+
+      if (persistedTab && persistedID) {
+        goToQuickviewModelEntity(persistedTab, persistedID);
+      } else if (sortedIntents.length) {
+        goToQuickviewModelEntity(InteractionModelTabType.INTENTS, sortedIntents[0].id);
+      } else {
+        goToQuickviewTab(InteractionModelTabType.INTENTS);
+      }
+    } else if (!isInStack && modelMatch) {
+      if (creatorFocus.target && creatorFocus.isActive) {
+        goToCurrentCanvasNode(creatorFocus.target);
+      } else {
+        goToCurrentCanvas();
+      }
+    }
+  }, [isOpened, isInStack]);
+
   const api: NLUQuickViewProps = useContextApi({
-    activeTab,
-    setActiveTab: setSelectedTab,
-    selectedID: activeID,
-    setSelectedID,
     title,
     setTitle,
-    isActiveItemRename,
-    setIsActiveItemRename,
+    activeTab,
+    selectedID: activeID,
+    deleteItem,
     onNameChange,
-    nameChangeTransform,
+    setActiveTab: setSelectedTab,
+    setSelectedID,
     canRenameItem,
     canDeleteItem,
-    triggerNewInlineIntent,
-    forceNewInlineIntent,
-    triggerNewInlineEntity,
-    forceNewInlineEntity,
     isCreatingItem,
     setIsCreatingItem,
-    deleteItem,
+    isActiveItemRename,
+    nameChangeTransform,
+    forceNewInlineIntent,
+    forceNewInlineEntity,
+    setIsActiveItemRename,
+    triggerNewInlineIntent,
+    triggerNewInlineEntity,
   });
 
   return <NLUQuickViewContext.Provider value={api}>{children}</NLUQuickViewContext.Provider>;

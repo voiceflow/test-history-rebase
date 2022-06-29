@@ -35,7 +35,7 @@ export const rewriteDispatch = (store: Store): Dispatch => {
     (action: Dispatchable) => {
       // thunk handling
       if (typeof action === 'function') {
-        return action(dispatch, store.getState, { log: store.log });
+        return action(dispatch, store.getState, { log: store.log, client: store.client });
       }
 
       originalDispatch(action as Action<any>);

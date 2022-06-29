@@ -1,25 +1,24 @@
-import { Subscription, Topic } from '@google-cloud/pubsub';
+import { Message, Subscription, Topic } from '@google-cloud/pubsub';
 import { Utils } from '@voiceflow/common';
 import Chance from 'chance';
 import { createNanoEvents } from 'nanoevents';
 
 import logger from '@/logger';
-import { ModelConfiguration, ModelFlag, ModelVersionConfiguration, PubSubRequest, PubSubResponse } from '@/models';
+import { BasePubSubPayload, InternalPubSubRequest, ModelConfiguration, ModelFlag, ModelVersionConfiguration } from '@/models';
 
 import { AbstractControl } from '../control';
 
 export interface TopicWithSubscription {
-  topic: Topic;
-  subscription: Subscription;
+  requestTopic: Topic;
+  responseTopic: Topic;
+  responseSubscription: Subscription;
 }
 
 export const DEFAULT_REQUEST_TIMEOUT = 60 * 1000;
 
-export const createTopicName = (modelID: string, versionID: string): string => `${modelID}-${versionID}`;
-
 export const createSubscriptionName = (subscriberID: string): string => `ml-gateway-${subscriberID}`;
 
-export const createEventName = (topicName: string, requestID: string): string => `${topicName}:${requestID}`;
+export const createEventName = (topicName: string, reqGUID: string): string => `${topicName}.${reqGUID}`;
 
 export const chooseABTestVersion = (chance: Chance.Chance, versions: ModelVersionConfiguration[]): ModelVersionConfiguration =>
   chance.weighted(
@@ -31,67 +30,89 @@ const closeSubscription = (topicName: string, subscription: Subscription): Promi
   subscription.close().catch((error) => logger.error({ message: `failed to teardown subscription to topic: ${topicName}`, error }));
 
 class InteractionService extends AbstractControl {
-  emitter = createNanoEvents<Record<string, (response: PubSubResponse) => void>>();
+  emitter = createNanoEvents<Record<string, (response: BasePubSubPayload) => void>>();
 
   private chance = Chance();
 
   private cache = new Map<string, TopicWithSubscription>();
 
-  private async initializeTopicClient(subscriberID: string, topicName: string): Promise<TopicWithSubscription> {
-    const topic = this.clients.gcloud.pubsub.topic(topicName);
+  private static internalRequest(
+    { reqGUID, ...request }: BasePubSubPayload,
+    mode: ModelFlag,
+    modeUUID: string = Utils.id.cuid()
+  ): InternalPubSubRequest {
+    return { reqGUID, mode, modeUUID, ...request };
+  }
 
-    const [subscription] = await topic.createSubscription(createSubscriptionName(subscriberID));
+  private async initializeTopicClient(subscriberID: string, topicName: string): Promise<TopicWithSubscription> {
+    const responseTopicName = topicName.replace('_req', '_resp');
+
+    const requestTopic = this.clients.gcloud.pubsub.topic(topicName);
+    const responseTopic = this.clients.gcloud.pubsub.topic(responseTopicName);
+
+    const [responseSubscription] = await responseTopic.createSubscription(createSubscriptionName(subscriberID));
 
     // last minute check to avoid replacing a subscription that was created on-demand
-    const existingTopic = this.cache.get(topicName);
-    if (existingTopic) {
-      subscription.close().catch((error) => logger.warn({ message: `failed to cleanup subscription to topic: ${topicName}`, error }));
+    const existingResponseTopic = this.cache.get(responseTopicName);
+    if (existingResponseTopic) {
+      responseSubscription.close().catch((error) => logger.warn({ message: `failed to cleanup subscription to topic: ${responseTopicName}`, error }));
 
-      return existingTopic;
+      return existingResponseTopic;
     }
 
-    subscription.on('message', (message: Partial<PubSubResponse>) => {
-      const requestID = message?.requestID ?? null;
-      if (!requestID) {
-        logger.error(`received a response from topic '${topicName}' without a valid request ID`);
+    responseSubscription.on('message', (message: Message) => {
+      message.ack();
+
+      const data: BasePubSubPayload = JSON.parse(message.data.toString());
+
+      if (!data?.reqGUID) {
+        logger.warn(`received a response from topic '${topicName}' without a valid request ID`);
         return;
       }
 
-      this.emitter.emit(createEventName(topicName, requestID), message as PubSubResponse);
+      this.emitter.emit(createEventName(topicName, data.reqGUID), data);
     });
 
-    subscription.on('error', (error) => {
+    responseSubscription.on('error', (error) => {
       logger.error({ message: `received an error from topic: ${topicName}`, error });
     });
 
-    const result = { topic, subscription };
+    const result: TopicWithSubscription = { requestTopic, responseTopic, responseSubscription };
+
     this.cache.set(topicName, result);
 
     return result;
   }
 
-  private async getTopic(subscriberID: string, topicName: string): Promise<Topic> {
-    const cached = this.cache.get(topicName);
-    if (cached) return cached.topic;
+  private async getRequestTopic(subscriberID: string, requestTopicName: string): Promise<Topic> {
+    const cached = this.cache.get(requestTopicName);
+    if (cached) return cached.requestTopic;
 
-    const { topic } = await this.initializeTopicClient(subscriberID, topicName);
+    const { requestTopic } = await this.initializeTopicClient(subscriberID, requestTopicName);
 
-    return topic;
+    return requestTopic;
   }
 
-  private createResponseListener<Result>(eventName: string, timeout: number) {
+  private createResponseListener<Result extends BasePubSubPayload>(eventName: string, timeout: number) {
     let stopListening = Utils.functional.noop;
+    let rejected = false;
 
-    return new Promise<PubSubResponse<Result>>((resolve, reject) => {
+    return new Promise<Result>((resolve, reject) => {
       const rejectTimeout = setTimeout(() => {
+        rejected = true;
+
         stopListening();
+
         reject(new Error(`response was not sent within timeout of ${timeout / 1000}s`));
       }, timeout);
 
       stopListening = this.emitter.on(eventName, (response) => {
+        if (rejected) return;
+
         clearTimeout(rejectTimeout);
         stopListening();
-        resolve(response as PubSubResponse<Result>);
+
+        resolve(response as Result);
       });
     });
   }
@@ -100,10 +121,8 @@ class InteractionService extends AbstractControl {
     const nextCache = new Map<string, TopicWithSubscription>();
     const { cache } = this;
 
-    const topicNames = modelConfigs.flatMap((modelConfig) =>
-      Object.keys(modelConfig.versions).map((versionID) => createTopicName(modelConfig.id, versionID))
-    );
-    const topicsToCreate = topicNames.reduce<string[]>((acc, topicName) => {
+    const topics = modelConfigs.flatMap((modelConfig) => Object.values(modelConfig).map((version) => version.topic));
+    const topicsToCreate = topics.reduce<string[]>((acc, topicName) => {
       const cachedTopic = cache.get(topicName);
       if (cachedTopic) {
         nextCache.set(topicName, cachedTopic);
@@ -124,79 +143,87 @@ class InteractionService extends AbstractControl {
     await Promise.all(topicsToCreate.map((topicName) => this.initializeTopicClient(subscriberID, topicName)));
 
     // teardown the expired clients
-    await Promise.all(Array.from(cache.entries()).map(([topicName, { subscription }]) => closeSubscription(topicName, subscription)));
+    await Promise.all(Array.from(cache.entries()).map(([topicName, { responseSubscription }]) => closeSubscription(topicName, responseSubscription)));
   }
 
-  private async sendRequestToTopic<Params, Result>(
+  private async sendRequestToTopic<Result extends BasePubSubPayload>(
     subscriberID: string,
     topicName: string,
-    request: PubSubRequest<Params>,
+    request: InternalPubSubRequest,
     timeout = DEFAULT_REQUEST_TIMEOUT
-  ): Promise<PubSubResponse<Result>> {
-    const eventName = createEventName(topicName, request.requestID);
-    const topic = await this.getTopic(subscriberID, topicName);
+  ): Promise<Result> {
+    const eventName = createEventName(topicName, request.reqGUID);
+    const topic = await this.getRequestTopic(subscriberID, topicName);
 
     const [, response] = await Promise.all([topic.publishMessage({ json: request }), this.createResponseListener<Result>(eventName, timeout)]);
 
     return response;
   }
 
-  private async sendShadowRequestToTopic<Params>(subscriberID: string, topicName: string, request: PubSubRequest<Params>): Promise<void> {
+  private async sendShadowRequestToTopic(subscriberID: string, topicName: string, request: BasePubSubPayload): Promise<void> {
     try {
-      const topic = await this.getTopic(subscriberID, topicName);
+      const topic = await this.getRequestTopic(subscriberID, topicName);
 
-      await topic.publishMessage({ json: request });
+      await topic.publishMessage({ json: InteractionService.internalRequest(request, ModelFlag.SHADOW) });
     } catch (error) {
       logger.error({ message: `unable to send shadow traffic to topic: ${topicName}`, error });
     }
   }
 
-  async sendRequest<Params, Result>(
+  async sendRequest<Request extends BasePubSubPayload, Result extends BasePubSubPayload>(
     subscriberID: string,
     modelConfig: ModelConfiguration,
-    request: PubSubRequest<Params>,
+    request: Request,
     timeout = DEFAULT_REQUEST_TIMEOUT
-  ): Promise<PubSubResponse<Result>> {
-    const versions = Object.values(modelConfig.versions);
+  ): Promise<Result> {
+    const versions = Object.values(modelConfig);
 
     const shadowTrafficVersions = versions.filter(
-      (version) => version.flags.includes(ModelFlag.SHADOW) && this.chance.bool({ likelihood: version.traffic })
+      (version) => version.trafficType === ModelFlag.SHADOW && this.chance.bool({ likelihood: version.traffic })
     );
+
     const sendShadowTraffic = () =>
-      Promise.all(
-        shadowTrafficVersions.map(async (version) => {
-          const topicName = createTopicName(modelConfig.id, version.id);
+      Promise.all(shadowTrafficVersions.map(async (version) => this.sendShadowRequestToTopic(subscriberID, version.topic, request))).catch(() =>
+        logger.error('failed to send shadow traffic')
+      );
 
-          return this.sendShadowRequestToTopic<Params>(subscriberID, topicName, request);
-        })
-      ).catch(() => logger.error('failed to send shadow traffic'));
+    const abTestVersions = versions.filter((version) => version.trafficType === ModelFlag.AB_TEST);
 
-    const abTestVersions = versions.filter((version) => version.flags.includes(ModelFlag.AB_TEST));
     if (abTestVersions.length) {
       const version = chooseABTestVersion(this.chance, abTestVersions);
-      const topicName = createTopicName(modelConfig.id, version.id);
 
-      const response = await this.sendRequestToTopic<Params, Result>(subscriberID, topicName, request, timeout);
+      const response = await this.sendRequestToTopic<Result>(
+        subscriberID,
+        version.topic,
+        InteractionService.internalRequest(request, ModelFlag.AB_TEST),
+        timeout
+      );
       sendShadowTraffic();
 
       return response;
     }
 
-    const normalVersion = versions.find((version) => version.flags.includes(ModelFlag.NORMAL));
+    const normalVersion = versions.find((version) => version.trafficType === ModelFlag.NORMAL);
+
     if (!normalVersion) {
-      throw new Error(`unable to find a valid version of the model: ${modelConfig.id}`);
+      throw new Error(`unable to find a valid version of the model`);
     }
 
-    const topicName = createTopicName(modelConfig.id, normalVersion.id);
-
-    const response = await this.sendRequestToTopic<Params, Result>(subscriberID, topicName, request, timeout);
+    const response = await this.sendRequestToTopic<Result>(
+      subscriberID,
+      normalVersion.topic,
+      InteractionService.internalRequest(request, ModelFlag.NORMAL),
+      timeout
+    );
     sendShadowTraffic();
 
     return response;
   }
 
   async stop(): Promise<void> {
-    await Promise.allSettled(Array.from(this.cache.entries()).map(([topicName, { subscription }]) => closeSubscription(topicName, subscription)));
+    await Promise.allSettled(
+      Array.from(this.cache.entries()).map(([topicName, { responseSubscription }]) => closeSubscription(topicName, responseSubscription))
+    );
   }
 }
 

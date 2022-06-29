@@ -6,7 +6,7 @@ export const Container = styled.div<{ scrolled?: boolean }>`
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 16px;
+  gap: 32px;
   padding: 12px 32px;
 
   background-color: #fdfdfd;

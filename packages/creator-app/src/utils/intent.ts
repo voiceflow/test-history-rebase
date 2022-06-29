@@ -6,10 +6,13 @@ import { GoogleConstants } from '@voiceflow/google-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { StrengthGauge } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
+import _sample from 'lodash/sample';
 import { Normalized } from 'normal-store';
 
 import { FILTERED_AMAZON_INTENTS } from '@/constants';
-import { getPlatformIntentAndSlotNameFormatter } from '@/platforms/selectors';
+import { AnyLocale, getPlatformIntentAndSlotNameFormatter, getUtteranceRecommendationsLocales } from '@/platforms/selectors';
+
+import { getBuiltInSynonyms } from './slot';
 
 const ALL_NUMBERS_REGEXP = /(\d*)/g;
 const SLOT_REGEXP2 = /({{\[\w*].\w*}})/g;
@@ -312,4 +315,20 @@ export const getGoToIntentMeta = ({
     goToDiagram,
     goToIntentName,
   };
+};
+
+export const fillEntities = (
+  utterances: string,
+  { slotsMap, locales, platform }: { slotsMap: Record<string, Realtime.Slot>; locales: AnyLocale[]; platform: VoiceflowConstants.PlatformType }
+) => {
+  const supportedLocale = getUtteranceRecommendationsLocales(platform);
+  const locale = locales.find((l) => supportedLocale.includes(l)) ?? supportedLocale[0];
+
+  return utterances.replace(SLOT_REGEXP, (_match, name: string, id: string) => {
+    const slot = slotsMap[id];
+    const synonyms = slot?.inputs.flatMap((input) => [input.value, ...input.synonyms]) ?? [];
+    const builtInSynonyms = getBuiltInSynonyms(slot.type ?? '', locale, platform) ?? [];
+
+    return _sample([...synonyms, ...builtInSynonyms]) ?? name;
+  });
 };

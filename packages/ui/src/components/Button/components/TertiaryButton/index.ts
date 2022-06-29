@@ -2,11 +2,15 @@ import { ButtonVariant } from '@ui/components/Button/constants';
 import { colors, css, styled, ThemeColor, transition } from '@ui/styles';
 
 import ButtonContainer, { ButtonContainerProps } from '../ButtonContainer';
+import { CommonButtonProps } from '../types';
 
-export interface TertiaryButtonProps extends ButtonContainerProps {
-  isGray?: boolean;
-  variant: ButtonVariant.TERTIARY;
-}
+export type TertiaryButtonProps = ButtonContainerProps &
+  CommonButtonProps<
+    ButtonVariant.TERTIARY,
+    {
+      isGray?: boolean;
+    }
+  >;
 
 const TertiaryButton = styled(ButtonContainer)<TertiaryButtonProps>`
   ${transition('background', 'background-color')}

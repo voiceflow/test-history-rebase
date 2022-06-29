@@ -2,7 +2,7 @@ import { Descriptor } from '@/components/Table';
 import { styled } from '@/hocs';
 
 export const Heading = styled(Descriptor)`
-  padding: 24px 32px;
+  padding: 20px 32px;
   background: #fdfdfd;
   margin: 0;
 `;

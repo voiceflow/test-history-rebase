@@ -2,6 +2,7 @@ import { BaseModels } from '@voiceflow/base-types';
 import { Box, BoxFlexCenter, ClickableText, LoadCircle, toast } from '@voiceflow/ui';
 import ObjectID from 'bson-objectid';
 import React, { useCallback } from 'react';
+import { useSelector } from 'react-redux';
 
 import client from '@/client';
 import { SettingsSection } from '@/components/Settings';
@@ -52,6 +53,8 @@ const ProjectVersions: React.FC<ConnectedProjectVersions> = ({ projectID, active
   const [hasFullVersionPermissions] = usePermission(Permission.FULL_PROJECT_VERSIONS);
   const [trackingEvents] = useTrackingEvents();
   const manualSaveModal = useModals(ModalType.MANUAL_SAVE_MODAL);
+
+  const liveVersion = useSelector(ProjectV2.active.liveVersionSelector);
 
   const upgradeModal = useModals(ModalType.PAYMENT);
   const onClickUpgrade = useCallback(() => upgradeModal.open(), [upgradeModal]);
@@ -106,9 +109,7 @@ const ProjectVersions: React.FC<ConnectedProjectVersions> = ({ projectID, active
       }
       setVersionList([
         ...versionList,
-        ...moreVersions
-          .filter(({ _id }) => _id !== activeVersionID)
-          .map((version: BaseModels.Version.Model<BaseModels.Version.PlatformData>) => versionAdapter(version)),
+        ...moreVersions.map((version: BaseModels.Version.Model<BaseModels.Version.PlatformData>) => versionAdapter(version)),
       ]);
     } catch (err) {
       toast.error('Error fetching versions');
@@ -125,8 +126,8 @@ const ProjectVersions: React.FC<ConnectedProjectVersions> = ({ projectID, active
   useHotKeys(Hotkey.OPEN_MANUAL_SAVE_MODAL, openManualSaveModal, { preventDefault: true, disable: !canEditCanvas }, [manualSaveModal.open]);
 
   return (
-    <Box maxWidth={900}>
-      <SettingsSection title="All Versions" noContentPadding>
+    <Box>
+      <SettingsSection noContentPadding>
         <Heading>
           <>
             {PLATFORM_VERSION_HEADER_TEXT(platform)} To manually save a version, use the shortcut{' '}
@@ -145,7 +146,13 @@ const ProjectVersions: React.FC<ConnectedProjectVersions> = ({ projectID, active
           </BoxFlexCenter>
         ) : (
           <FadeLeftContainer>
-            <VersionList versions={versionList} swapVersions={swapVersions} fetchVersions={fetchBackupsV2} />
+            <VersionList
+              liveVersion={liveVersion}
+              activeVersionID={activeVersionID}
+              versions={versionList}
+              swapVersions={swapVersions}
+              fetchVersions={fetchBackupsV2}
+            />
           </FadeLeftContainer>
         )}
       </SettingsSection>

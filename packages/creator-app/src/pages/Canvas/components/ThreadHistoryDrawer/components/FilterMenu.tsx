@@ -24,7 +24,7 @@ const FilterMenu: React.FC<FilterMenuProps> = ({ setFilter, filter }) => {
   const toggleMentionedThreadsOnly = useDispatch(UI.toggleMentionedThreadsOnly);
 
   return (
-    <Menu<undefined>
+    <Menu
       noBottomPadding
       width={250}
       options={[

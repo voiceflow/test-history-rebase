@@ -179,7 +179,7 @@ const forwardRef = (
     props: MenuProps<any>,
     ref: ((instance: MenuRefElement | null) => void) | React.MutableRefObject<MenuRefElement | null> | null
   ) => React.ReactElement | null
-): (<G extends any>(props: MenuProps<G> & React.RefAttributes<MenuRefElement>) => React.ReactElement | null) =>
+): (<G extends any = undefined>(props: MenuProps<G> & React.RefAttributes<MenuRefElement>) => React.ReactElement | null) =>
   React.forwardRef<MenuRefElement, MenuProps<any>>(render);
 
 export default forwardRef(Menu);

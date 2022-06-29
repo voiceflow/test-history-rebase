@@ -29,7 +29,7 @@ export interface BasePublishApi<J extends AnyJob> {
   setJob: (job: Nullable<J>) => void;
   noPopup: boolean;
   onCancel: () => Promise<void>;
-  onPublish: VoidFunction;
+  onPublish: (versionName: string) => void;
   needsLogin: boolean;
   popupOpened: boolean;
   togglePopupOpened: (open: boolean) => void;
@@ -93,16 +93,19 @@ export const useBasePublish = <T extends PublishStageType, J extends AnyJob>({
     setWaitingForCancel(false);
   }, [cancel]);
 
-  const onPublish = React.useCallback(() => {
-    togglePopupOpened(true);
-    toggleLoginModal();
+  const onPublish = React.useCallback(
+    (versionName: string) => {
+      togglePopupOpened(true);
+      toggleLoginModal();
 
-    trackingEvents.trackActiveProjectPublishAttempt();
+      trackingEvents.trackActiveProjectPublishAttempt();
 
-    if (jobIsReady) {
-      publish();
-    }
-  }, [publish, jobIsReady, toggleLoginModal]);
+      if (jobIsReady) {
+        publish({ versionName });
+      }
+    },
+    [publish, jobIsReady, toggleLoginModal]
+  );
 
   useDidUpdateEffect(() => {
     if (diagramState === DiagramState.SAVING) {

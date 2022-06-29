@@ -18,7 +18,7 @@ const SettingsHeader: React.FC = () => {
         <HeaderTitle leftOffset>
           <Switch>
             <Route path={Path.PROJECT_GENERAL_SETTINGS}>General</Route>
-            <Route path={Path.PROJECT_VERSION_SETTINGS}>Versions</Route>
+            <Route path={Path.PROJECT_VERSION_SETTINGS}>All Versions</Route>
           </Switch>
         </HeaderTitle>
       </Header>

@@ -10,7 +10,9 @@ type PatchProjectPayload = Realtime.BaseWorkspacePayload & Realtime.actionUtils.
 class PatchProject extends AbstractWorkspaceChannelControl<PatchProjectPayload> {
   protected actionCreator = Realtime.project.crud.patch;
 
-  protected process = async (ctx: Context, { payload }: Action<PatchProjectPayload>): Promise<void> => {
+  protected process = async (ctx: Context, { payload, meta }: Action<PatchProjectPayload>): Promise<void> => {
+    if (meta?.skipPersist) return;
+
     await this.services.project.patch(ctx.data.creatorID, payload.key, {
       ..._.pick(payload.value, 'name', 'privacy', 'linkType', 'customThemes'),
       ...('image' in payload.value && { image: payload.value.image ?? undefined }),

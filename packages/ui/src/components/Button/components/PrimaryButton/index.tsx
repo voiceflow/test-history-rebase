@@ -1,14 +1,11 @@
 import { ButtonVariant } from '@ui/components/Button/constants';
-import SvgIcon, { SvgIconTypes } from '@ui/components/SvgIcon';
+import SvgIcon from '@ui/components/SvgIcon';
 import React from 'react';
 
+import { CommonButtonProps } from '../types';
 import * as S from './styles';
 
-export interface PrimaryButtonProps extends S.PrimaryButtonContainerProps {
-  icon?: SvgIconTypes.Icon | null;
-  variant?: ButtonVariant.PRIMARY;
-  iconProps?: Omit<SvgIconTypes.Props, 'icon'>;
-}
+export type PrimaryButtonProps = S.PrimaryButtonContainerProps & CommonButtonProps<ButtonVariant.PRIMARY>;
 
 const PrimaryButton = React.forwardRef<HTMLButtonElement, PrimaryButtonProps>(({ icon, children, iconProps, isLoading, ...props }, ref) => (
   <S.PrimaryButtonContainer ref={ref} {...props}>

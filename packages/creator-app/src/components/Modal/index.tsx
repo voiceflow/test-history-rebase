@@ -32,6 +32,7 @@ export interface UncontrolledModalProps {
   headerBorder?: boolean;
   fullScreen?: boolean;
   leftSidebar?: () => React.ReactElement;
+  capitalizeText?: boolean;
 }
 
 export interface ModalProps extends Omit<UncontrolledModalProps, 'fade' | 'isOpened' | 'onClose'> {
@@ -59,6 +60,7 @@ export const UncontrolledModal = React.forwardRef<HTMLDivElement, React.PropsWit
       headerActions,
       leftSidebar,
       fullScreen = false,
+      capitalizeText = true,
     },
     ref
   ) => {
@@ -82,7 +84,7 @@ export const UncontrolledModal = React.forwardRef<HTMLDivElement, React.PropsWit
               {leftSidebar?.()}
               <Box flex={10} maxWidth="100%">
                 {withHeader && (
-                  <Header headerBorder={headerBorder}>
+                  <Header headerBorder={headerBorder} capitalizeText={capitalizeText}>
                     <Box.Flex height="100%">
                       <Box.Flex height="100%" id={Identifier.MODAL_TITLE_CONTAINER}>
                         {title}

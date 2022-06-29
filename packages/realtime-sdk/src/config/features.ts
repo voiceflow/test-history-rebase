@@ -55,4 +55,5 @@ export enum FeatureFlag {
   SET_STEP_CLEANUP = 'set_step_cleanup',
   IF_STEP_CLEANUP = 'if_step_cleanup',
   FLOW_STEP_CLEANUP = 'flow_step_cleanup',
+  PRODUCTION_VERSION_MANAGEMENT = 'production_version_management',
 }

@@ -19,7 +19,7 @@ export interface PublishContextValue<T extends AnyJob> {
   setJob: (job: Nullable<AnyJob>) => void;
   cancel: () => Promise<void>;
   retry: (reset?: () => Promise<void>) => Promise<void>;
-  publish: (submit?: boolean) => Promise<void>;
+  publish: (options?: { versionName?: string; submit?: boolean }) => Promise<void>;
   updateCurrentStage: (data: unknown) => Promise<void>;
 }
 
@@ -53,14 +53,14 @@ export const PublishProvider: React.FC = ({ children }) => {
   }, [projectID, platformClient]);
 
   const publish = React.useCallback(
-    async (submit = false) => {
+    async (options: { versionName?: string; submit?: boolean } = {}) => {
       try {
         await saveActiveDiagram();
       } catch (error) {
         Sentry.error(error);
       }
 
-      const result = await platformClient.publish.run(projectID, submit);
+      const result = await platformClient.publish.run(projectID, options);
 
       setJob(result?.job || null);
     },

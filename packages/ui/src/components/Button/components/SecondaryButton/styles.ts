@@ -3,6 +3,7 @@ import { backgrounds, colors, css, styled, ThemeColor, transition } from '@ui/st
 
 export interface SecondaryButtonIconProps {
   withoutChildren?: boolean;
+  center?: boolean;
 }
 export interface SecondaryButtonContainerProps extends ButtonContainerProps {
   flat?: boolean;
@@ -20,6 +21,14 @@ export const SecondaryButtonIcon = styled.span<SecondaryButtonIconProps>`
     !withoutChildren &&
     css`
       margin-right: 16px;
+    `}
+
+  ${({ center }) =>
+    center &&
+    css`
+      display: flex;
+      align-items: center;
+      justify-content: space-evenly;
     `}
 `;
 

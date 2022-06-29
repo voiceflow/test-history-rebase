@@ -5,6 +5,7 @@ import { platformAware } from '@/hocs';
 
 import Alexa from './Alexa';
 import Dialogflow from './Dialogflow';
+import General from './General';
 import Google from './Google';
 
 const UploadGroup = platformAware(
@@ -13,7 +14,7 @@ const UploadGroup = platformAware(
     [VoiceflowConstants.PlatformType.GOOGLE]: () => <Google />,
     [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: () => <Dialogflow />,
   },
-  () => null
+  () => <General />
 );
 
 export default UploadGroup;

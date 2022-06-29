@@ -15,12 +15,24 @@ export enum ButtonVariant {
   CONNECT = 'CONNECT',
   LOADING = 'LOADING',
   SUCCESS = 'SUCCESS',
+  ACTIVE = 'ACTIVE',
+}
+
+export interface CustomVariantProps {
+  tooltip?: Partial<TippyTooltipProps>;
+  iconProps?: Omit<SvgIconTypes.Props, 'icon'>;
 }
 
 interface ConnectButtonProps {
   variant?: ButtonVariant;
   onClick?: () => void;
   progress?: number;
+
+  /* 
+    `customProps` used as an escape hatch in-case requirements ask for something
+    similar to `Button` but with slight differences.
+  */
+  customProps?: CustomVariantProps;
 }
 
 interface ButtonProps {
@@ -30,53 +42,79 @@ interface ButtonProps {
   iconProps?: Omit<SvgIconTypes.Props, 'icon'>;
 }
 
-const getButtonProps = (platform: VoiceflowConstants.PlatformType, { variant, progress }: ConnectButtonProps): ButtonProps => {
-  const loadIconProps: ButtonProps = { icon: 'loader' as const };
+const getButtonProps = (
+  platform: VoiceflowConstants.PlatformType,
+  { variant, progress, customProps = {} }: ConnectButtonProps
+): ButtonProps & { key?: string } => {
+  const loadIconProps: ButtonProps = { icon: 'publishSpin' as const };
 
   switch (variant) {
     case ButtonVariant.CONNECT:
       return {
         ...getPlatformIconProps(platform),
-        tooltip: { title: `Connect to ${getPlatformName(platform)}`, hotkey: HOTKEY_LABEL_MAP[Hotkey.UPLOAD_PROJECT] },
+        ...customProps,
+        tooltip: {
+          title: `Connect to ${getPlatformName(platform)}`,
+          hotkey: HOTKEY_LABEL_MAP[Hotkey.UPLOAD_PROJECT],
+          ...customProps.tooltip,
+        },
       };
     case ButtonVariant.UPLOAD:
       return {
         ...getPlatformIconProps(platform),
-        tooltip: { title: `Upload to ${getPlatformName(platform)}`, hotkey: HOTKEY_LABEL_MAP[Hotkey.UPLOAD_PROJECT] },
+        ...customProps,
+        tooltip: {
+          title: `Upload to ${getPlatformName(platform)}`,
+          hotkey: HOTKEY_LABEL_MAP[Hotkey.UPLOAD_PROJECT],
+          ...customProps.tooltip,
+        },
       };
     case ButtonVariant.SUCCESS:
-      return { icon: 'greenCheckMark', tooltip: { html: <span>Successfully Uploaded</span> } };
+      return {
+        icon: 'greenCheckMark',
+        ...customProps,
+        tooltip: {
+          html: <span>Successfully Uploaded</span>,
+          ...customProps.tooltip,
+        },
+      };
     case ButtonVariant.LOADING:
       return {
         ...loadIconProps,
         key: 'progress',
-        iconProps: { spin: true },
+        ...customProps,
+        iconProps: { spin: true, ...customProps.iconProps },
         tooltip: {
-          html: (
-            <div>
-              Uploading:
-              <Text ml="7px" color="rgba(255, 255, 255, 0.59)">
-                {progress || 0}%
-              </Text>
-            </div>
-          ),
+          ...(!customProps.tooltip && {
+            html: (
+              <div>
+                Uploading:
+                <Text ml="7px" color="rgba(255, 255, 255, 0.59)">
+                  {progress || 0}%
+                </Text>
+              </div>
+            ),
+          }),
+          ...customProps.tooltip,
         },
       };
+    case ButtonVariant.ACTIVE:
     default:
-      return loadIconProps;
+      return {
+        ...loadIconProps,
+        ...customProps,
+      };
   }
 };
 
 const ConnectButton: React.FC<ConnectButtonProps> = ({ onClick, ...props }) => {
   const platform = React.useContext(PlatformContext)!;
-
   const buttonProps = getButtonProps(platform, props);
-  const ButtonContainer = buttonProps.tooltip ? TippyTooltip : React.Fragment;
 
   return (
-    <ButtonContainer {...buttonProps.tooltip} position="bottom">
-      <StyledButton id={Identifier.UPLOAD} onClick={onClick} {...buttonProps} />
-    </ButtonContainer>
+    <TippyTooltip {...buttonProps.tooltip} disabled={!buttonProps.tooltip} position="bottom">
+      <StyledButton id={Identifier.UPLOAD} onClick={onClick} center {...buttonProps} />
+    </TippyTooltip>
   );
 };
 

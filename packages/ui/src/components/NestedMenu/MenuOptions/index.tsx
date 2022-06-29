@@ -65,6 +65,12 @@ function MenuOptions({
   const renderLabel = (option: unknown, options: RenderOptionLabelConfig): React.ReactNode =>
     renderOptionLabel(option, searchLabel, getOptionLabel, getOptionValue, options);
 
+  /**
+   * $TODO - Refactor this so that there are no `unknown` types here? In `renderOption`, the `option` argument is
+   *         clearly not `unknown` as it implicitly assumes `option.tooltip` exists in some of the cases, but
+   *         since `option` is typed as `unknown`, the `option.tooltip` throws a type error when spread. Perhaps
+   *         we need some kind of union type instead of `unknown`?
+   */
   const renderOption = ({ key, path, index, option }: { key: string; path: number[]; index: number; option: unknown }) => {
     const isFocused = focusedOptionIndex === index;
 
@@ -81,14 +87,12 @@ function MenuOptions({
     };
 
     if (isBaseMenuItem(option)) {
-      const Wrapper = option.tooltip ? TippyTooltip : React.Fragment;
-
       return (
-        <Wrapper key={key} {...option.tooltip}>
+        <TippyTooltip key={key} disabled={!option.tooltip} {...(option.tooltip as any)}>
           <SelectItem {...sharedProps} {...option.menuItemProps} disabled={option.disabled}>
             {!option.vfUIOnly && renderLabel(option, { isFocused, optionsPath: path })}
           </SelectItem>
-        </Wrapper>
+        </TippyTooltip>
       );
     }
 

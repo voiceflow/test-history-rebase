@@ -1,4 +1,4 @@
-import { Box, Button, ButtonVariant, SvgIcon, TippyTooltip } from '@voiceflow/ui';
+import { Menu, SvgIcon, ThemeColor, TippyTooltip } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import dayjs from 'dayjs';
 import React from 'react';
@@ -6,16 +6,30 @@ import { generatePath } from 'react-router-dom';
 import { Tooltip } from 'react-tippy';
 
 import { ConfirmProps } from '@/components/ConfirmModal';
+import { StatusIndicator } from '@/components/Indicator';
+import OverflowMenu from '@/components/OverflowMenu';
+import { DIALOG_MANAGER_API } from '@/config/documentation';
 import { Path } from '@/config/routes';
 import { ModalType } from '@/constants';
+import { getPlatformName, VersionTag } from '@/constants/platforms';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useModals, useSelector, useTrackingEvents } from '@/hooks';
 import { QUERY_PARAMS } from '@/pages/Project/constants';
 import { ProjectVersion } from '@/pages/Settings/components/ProjectVersions';
+import THEME from '@/styles/theme';
 import { createPlatformSelector } from '@/utils/platform';
+import { isPlatformWithThirdPartyUpload } from '@/utils/typeGuards';
 
-import { ActionsItemContainer, ColumnItemContainer, RowItem } from './components';
+import {
+  ActionsItemContainer,
+  bgGradientMap as indicatorbgGradientMap,
+  borderColorMap as indicatorBorderColorMap,
+  ColumnItemContainer,
+  PublishIndicatorVariant,
+  RowItem,
+  StatusIndicatorContainer,
+} from './components';
 
 const RESTORE_VERSION_MESSAGE = createPlatformSelector(
   {
@@ -27,33 +41,68 @@ const RESTORE_VERSION_MESSAGE = createPlatformSelector(
 interface Index {
   version: ProjectVersion;
   swapVersions: (versionID: string) => Promise<void>;
+  restoreEnabled: boolean;
   creatorID: number;
+  tag: VersionTag;
 }
 
-const VersionItem: React.FC<Index> = ({ version, swapVersions, creatorID }) => {
+const VersionItem: React.FC<Index> = ({ version, restoreEnabled, swapVersions, creatorID, tag }) => {
   const { open: openConfirmModal } = useModals<ConfirmProps>(ModalType.CONFIRM);
   const platform = useSelector(ProjectV2.active.platformSelector);
   const member = useSelector(WorkspaceV2.active.memberByIDSelector, { creatorID });
   const [trackingEvents] = useTrackingEvents();
   const { manualSave, autoSaveFromRestore } = version;
+
   const name = React.useMemo(() => {
-    if (autoSaveFromRestore) return 'Automatic from Restore';
-    if (manualSave) return version.name;
+    if (autoSaveFromRestore) return 'Automatic from restore';
+    if (manualSave) return version.name || 'Automatic';
     return 'Automatic';
   }, [manualSave, autoSaveFromRestore]);
 
-  const NameWrapper = manualSave ? TippyTooltip : React.Fragment;
+  const color = React.useMemo(
+    () => (manualSave && version.name !== '' ? 'black' : THEME.colors[ThemeColor.SECONDARY]),
+    [manualSave, autoSaveFromRestore]
+  );
+
+  const isLive = tag === VersionTag.PRODUCTION;
+
+  const statusText = React.useMemo(() => {
+    if (isLive) {
+      return isPlatformWithThirdPartyUpload(platform) ? 'Uploaded' : 'Production';
+    }
+    return 'Draft';
+  }, [isLive, platform]);
+
+  const tooltipText = React.useMemo(() => {
+    if (isLive) {
+      return isPlatformWithThirdPartyUpload(platform)
+        ? `This is the most recent version uploaded to ${getPlatformName(platform)}.`
+        : 'This version is live and actively being referenced by the Dialog API';
+    }
+    return isPlatformWithThirdPartyUpload(platform) ? 'This is an inactive version' : 'This version is not live';
+  }, [isLive, platform]);
 
   const confirmRestore = (versionID: string) => {
     openConfirmModal({
-      header: 'Restore Version',
+      header: 'Restore version',
+      modalProps: {
+        maxWidth: 392,
+        capitalizeText: false,
+      },
       canCancel: true,
-      confirmButtonText: 'Restore',
+      confirmButtonText: (
+        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+          <SvgIcon icon="sync" style={{ marginRight: 12 }} />
+          Restore
+        </div>
+      ),
       body: (
-        <span>
-          <b>This action can't be undone.</b> If you restore a backup, we'll create a new backup of the current version.{' '}
+        <div>
+          <span>
+            When you restore a version, we'll create a new automatic version of the current designer state. Please confirm you want to continue.
+          </span>
           {RESTORE_VERSION_MESSAGE(platform)}
-        </span>
+        </div>
       ),
       confirm: async () => {
         await swapVersions(versionID);
@@ -72,23 +121,60 @@ const VersionItem: React.FC<Index> = ({ version, swapVersions, creatorID }) => {
       <ColumnItemContainer>
         <Tooltip title={dayjs(version.created).format('MMM Do, YYYY, h:mm A')}>{dayjs(version.created).fromNow()}</Tooltip>
       </ColumnItemContainer>
-      <ColumnItemContainer style={{ color: manualSave && !autoSaveFromRestore ? 'black' : '#62778c' }}>
-        <NameWrapper title={name}>{name}</NameWrapper>
+      <ColumnItemContainer style={{ color }}>
+        <TippyTooltip title={name} disabled={!manualSave}>
+          {name}
+        </TippyTooltip>
       </ColumnItemContainer>
       <ColumnItemContainer>{member?.name}</ColumnItemContainer>
+      <TippyTooltip
+        position="top"
+        interactive={true}
+        html={
+          !isPlatformWithThirdPartyUpload(platform) && isLive ? (
+            <TippyTooltip.FooterButton buttonText="More" width={200} onClick={() => window.open(DIALOG_MANAGER_API)}>
+              <div>{tooltipText}</div>
+            </TippyTooltip.FooterButton>
+          ) : (
+            <div>{tooltipText}</div>
+          )
+        }
+      >
+        <StatusIndicatorContainer>
+          <StatusIndicator
+            variant={isLive ? PublishIndicatorVariant.PRODUCTION : PublishIndicatorVariant.DEVELOPMENT}
+            size={12}
+            borderColorMap={indicatorBorderColorMap}
+            bgGradientMap={indicatorbgGradientMap}
+          />
+          {statusText}
+        </StatusIndicatorContainer>
+      </TippyTooltip>
       <ActionsItemContainer>
-        <Box display="inline-block">
-          <Tooltip title="Restore Version">
-            <Button squareRadius variant={ButtonVariant.PRIMARY} onClick={() => confirmRestore(version.versionID)}>
-              <SvgIcon icon="publishSpin" size={20} />
-            </Button>
-          </Tooltip>
-        </Box>
-        <Box display="inline-block" mr={12}>
-          <Button flat variant={ButtonVariant.SECONDARY} onClick={handlePreview}>
-            Preview
-          </Button>
-        </Box>
+        <OverflowMenu
+          placement="bottom-end"
+          disabled={!restoreEnabled}
+          style={{ flat: true }}
+          menu={
+            <Menu
+              width={103}
+              options={[
+                {
+                  label: 'Preview',
+                  onClick: handlePreview,
+                },
+                {
+                  label: '',
+                  divider: true,
+                },
+                {
+                  label: 'Restore',
+                  onClick: () => confirmRestore(version.versionID),
+                },
+              ]}
+            />
+          }
+        />
       </ActionsItemContainer>
     </RowItem>
   );

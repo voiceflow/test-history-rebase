@@ -8,7 +8,7 @@ import { Theme } from '../theme';
  * The `breakpoints` (mobile-first) utility constructs a `css` snippet to quickly implement
  * breakpoints, where breakpoint thresholds are defined by our themes system.
  *
- * Define `xs` for extra-small devices (e.g. portrait-mode phones), `xs` for small devices
+ * Define `xs` for extra-small devices (e.g. portrait-mode phones), `sm` for small devices
  * (e.g. landscape-phones), etc.
  *
  * @param css An object containing the css to apply at each breakpoint.

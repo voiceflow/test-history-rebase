@@ -1,14 +1,18 @@
 import { Portal } from '@voiceflow/ui';
 import React from 'react';
 
+import { PublishVersionModalData } from '@/components/PublishVersionModal';
+import { FeatureFlag } from '@/config/features';
+import { ModalType } from '@/constants';
 import { DialogflowStageType } from '@/constants/platforms';
-import { useHotKeys } from '@/hooks';
+import { useFeature, useHotKeys, useModals } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import { useDialogflowPublish } from '@/pages/Project/hooks';
 import { Dialogflow } from '@/platforms';
 
 import Popup from '../components/Popup';
-import DialogflowProgressStage from './components/DialogflowProgressStage';
+import ProgressStage from '../components/ProgressStage';
+import { usePatchLiveVersion } from '../hooks';
 import DialogflowUploadButton from './components/DialogflowUploadButton';
 
 const JOB_STARTED_STAGES = new Set([DialogflowStageType.IDLE, DialogflowStageType.PROGRESS, DialogflowStageType.SUCCESS]);
@@ -18,7 +22,7 @@ const DialogflowPublish: React.FC = () => {
     job,
     noPopup,
     onCancel,
-    onPublish,
+    onPublish: publishToDF,
     needsLogin,
     popupOpened,
     multiProjects,
@@ -27,6 +31,20 @@ const DialogflowPublish: React.FC = () => {
     createNewAgent,
     createNewAgentModalOpened,
   } = useDialogflowPublish();
+
+  const publishNewVersionModal = useModals<PublishVersionModalData>(ModalType.PUBLISH_VERSION_MODAL);
+
+  const canUseGeneralPublish = useFeature(FeatureFlag.PRODUCTION_VERSION_MANAGEMENT);
+
+  usePatchLiveVersion(successfullyPublished);
+
+  const onPublish = React.useCallback(() => {
+    if (canUseGeneralPublish.isEnabled) {
+      publishNewVersionModal.open({ onConfirm: publishToDF });
+    } else {
+      publishToDF('');
+    }
+  }, []);
 
   const hotkeyDisabled = successfullyPublished || (!!job && JOB_STARTED_STAGES.has(job?.stage.type));
 
@@ -46,7 +64,7 @@ const DialogflowPublish: React.FC = () => {
       />
 
       <Portal>
-        <DialogflowProgressStage dialogflowPublishJob={job} />
+        <ProgressStage job={job} inProgressStage={DialogflowStageType.PROGRESS} />
 
         <Popup open={isUploadPopupOpen} onClose={onCancel} jobStage={job?.stage.type} multiSelect={multiProjects}>
           {shouldRenderPopupContent && (

@@ -13,6 +13,7 @@ export const {
   isVoiceProjectType,
   isChatProjectType,
   isVoiceflowPlatform,
+  isPlatformWithThirdPartyUpload,
   isPlatformWithInvocationName,
   truthy,
 } = Utils.typeGuards;

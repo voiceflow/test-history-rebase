@@ -2,6 +2,7 @@ import React from 'react';
 
 import ConfirmModalV2 from '@/components/ConfirmModal';
 import { ConfirmModal, ErrorModal, LoadingModal, ModalBackdrop, StandardModal, SuccessModal, UpgradeModal } from '@/components/modals';
+import PublishVersionModal from '@/components/PublishVersionModal';
 import RefreshModal from '@/components/RefreshModal';
 import { VariableStateEditorModal, VariableStatesManagerModal } from '@/components/VariableStateModals';
 import ConnectActivePlatformModal from '@/modals/ConnectActivePlatformModal';
@@ -74,6 +75,7 @@ const AppModals: React.FC = () => {
       <ProjectCreateModal />
 
       <IntegrationEditorSendRequestModal />
+      <PublishVersionModal />
     </>
   );
 };

@@ -17,21 +17,18 @@ const IconButton: React.ForwardRefRenderFunction<HTMLDivElement, IconButtonProps
   { size, tooltip, isSmall, className, expandable, expandActive, expandTooltip, onExpandClick, ...props },
   ref
 ) => {
-  const ButtonContainer = tooltip ? TippyTooltip : React.Fragment;
-  const ExpandedContainer = expandTooltip ? TippyTooltip : React.Fragment;
-
   return (
     <Container ref={ref} className={className}>
-      <ButtonContainer {...tooltip}>
+      <TippyTooltip disabled={!tooltip} {...tooltip}>
         <Button size={size ?? (isSmall ? 16 : 20)} isSmall={isSmall} {...props} />
-      </ButtonContainer>
+      </TippyTooltip>
 
       {expandable && (
-        <ExpandedContainer {...expandTooltip}>
+        <TippyTooltip disabled={!expandTooltip} {...expandTooltip}>
           <ExpandIconContainer onClick={onExpandClick} isActive={expandActive}>
             <SvgIcon icon="expand" size={7} color="#6e849a" />
           </ExpandIconContainer>
-        </ExpandedContainer>
+        </TippyTooltip>
       )}
     </Container>
   );

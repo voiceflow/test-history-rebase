@@ -10,13 +10,13 @@ export const TableHeader = styled(BoxFlexCenter)`
   color: #62778c;
   font-size: 13px;
   padding: 18px 32px;
-  gap: 16px;
+  gap: 32px;
 `;
 
 export const TableContainer = styled(Box)<{ columns: number[] }>`
   ${({ columns }) => getColumnStyles(columns)}
   border-top: solid 1px #eaeff4;
-  padding-bottom: 8px;
+  padding-bottom: 2px;
 
   ${TableHeader}, ${RowItem} {
     display: flex;

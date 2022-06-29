@@ -152,7 +152,7 @@ export const Item: React.FC<ItemProps> = ({
             </ProjectTitleCaption>
           </ProjectTitleDetails>
 
-          <TippyTooltip position="top" title={isLive ? 'Live' : 'Design'} className={DashboardClassName.PROJECT_LIST_ITEM_STATUS} distance={10}>
+          <TippyTooltip position="top" title={isLive ? 'Production' : 'Design'} className={DashboardClassName.PROJECT_LIST_ITEM_STATUS} distance={10}>
             <SvgIcon
               icon={isLive ? 'outlinedFilledCircle' : 'outlinedCircle'}
               color={isLive ? '#43A047' : '#059fe4'}

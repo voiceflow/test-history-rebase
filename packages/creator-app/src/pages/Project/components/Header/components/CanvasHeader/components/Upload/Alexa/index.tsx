@@ -1,20 +1,34 @@
 import { Portal } from '@voiceflow/ui';
 import React from 'react';
 
+import { PublishVersionModalData } from '@/components/PublishVersionModal';
+import { FeatureFlag } from '@/config/features';
+import { ModalType } from '@/constants';
 import { AlexaStageType } from '@/constants/platforms';
-import { useHotKeys } from '@/hooks';
+import { useFeature, useHotKeys, useModals } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import { useAlexaPublish } from '@/pages/Project/hooks';
 import { Alexa } from '@/platforms';
 
 import Popup from '../components/Popup';
-import AlexaProgressState from './components/AlexaProgressState';
+import ProgressStage from '../components/ProgressStage';
 import AlexaUploadButton from './components/AlexaUploadButton';
 
 const JOB_STARTED_STAGES = new Set([AlexaStageType.IDLE, AlexaStageType.PROGRESS, AlexaStageType.SUCCESS]);
 
 const AlexaPublish: React.FC = () => {
-  const { job, noPopup, onCancel, onPublish, needsLogin, popupOpened, successfullyPublished } = useAlexaPublish();
+  const { job, noPopup, onCancel, onPublish: publishToAlexa, needsLogin, popupOpened, successfullyPublished } = useAlexaPublish();
+
+  const publishNewVersionModal = useModals<PublishVersionModalData>(ModalType.PUBLISH_VERSION_MODAL);
+
+  const canUsePVM = useFeature(FeatureFlag.PRODUCTION_VERSION_MANAGEMENT);
+  const onPublish = React.useCallback(() => {
+    if (canUsePVM.isEnabled) {
+      publishNewVersionModal.open({ onConfirm: publishToAlexa });
+    } else {
+      publishToAlexa('');
+    }
+  }, []);
 
   const hotkeyDisabled = successfullyPublished || (!!job && JOB_STARTED_STAGES.has(job?.stage.type));
 
@@ -34,7 +48,7 @@ const AlexaPublish: React.FC = () => {
       />
 
       <Portal>
-        <AlexaProgressState alexaJob={job} />
+        <ProgressStage job={job} inProgressStage={AlexaStageType.PROGRESS} />
 
         <Popup open={isUploadPopupOpen} onClose={onCancel} jobStage={job?.stage.type}>
           {shouldRenderPopupContent && <Alexa.Components.PlatformUploadPopup />}

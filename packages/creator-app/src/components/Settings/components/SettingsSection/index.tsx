@@ -12,7 +12,7 @@ const SettingsSection: React.FC<{ title?: string; variant?: SectionVariants; noC
   children,
 }) => (
   <SettingsSectionContainer>
-    <SectionTitle>{title}</SectionTitle>
+    {title && <SectionTitle>{title}</SectionTitle>}
     <SectionBox variant={variant} noContentPadding={noContentPadding}>
       {children}
     </SectionBox>

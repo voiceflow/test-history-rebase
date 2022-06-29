@@ -23,6 +23,7 @@ export interface Project<D extends AnyRecord, M extends BaseModels.Project.Membe
   _version?: number;
   diagramID: string;
   versionID: string;
+  liveVersion?: string;
   workspaceID: string;
   members: M[];
   platformData: D;

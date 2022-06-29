@@ -45,6 +45,7 @@ const projectAdapter = createAdapter<BaseModels.Project.Model<AnyRecord, AnyReco
       diagramID: '',
       versionID: devVersion!,
       customThemes,
+      liveVersion,
       reportTags,
       prototype,
       workspaceID: teamID,

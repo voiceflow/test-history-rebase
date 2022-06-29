@@ -27,6 +27,8 @@ export const isStraightLinksSelector = createSelector([linkTypeSelector], (linkT
 
 export const isLiveSelector = createSelector([projectSelector], (project) => !!project?.isLive);
 
+export const liveVersionSelector = createSelector([projectSelector], (project) => project?.liveVersion);
+
 export const vfVersionSelector = createSelector([projectSelector], (project) => project?._version ?? Realtime.CURRENT_PROJECT_VERSION);
 
 export const isTopicsAndComponentsVersionSelector = createSelector(

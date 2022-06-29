@@ -11,17 +11,20 @@ export interface OverflowMenuProps {
   options?: Nullable<OptionsMenuOption>[];
   disabled?: boolean;
   placement?: DropdownPlacement;
+  style?: {
+    flat?: boolean;
+  };
   selfDismiss?: boolean;
 }
 
-const OverflowMenu: React.FC<OverflowMenuProps> = ({ menu, options = [], disabled, placement, selfDismiss }) => (
+const OverflowMenu: React.FC<OverflowMenuProps> = ({ menu, options = [], disabled, placement, selfDismiss, style = {} }) => (
   <Dropdown
     menu={menu || ((onToggle) => <OptionsMenu onHide={onToggle} options={options.filter(truthy)} />)}
     placement={placement}
     selfDismiss={selfDismiss}
   >
-    {(ref, onToggle) => (
-      <Container disabled={disabled} onClick={onToggle} ref={ref}>
+    {(ref, onToggle, isOpen) => (
+      <Container disabled={disabled} onClick={onToggle} isActive={isOpen} ref={ref} flat={style?.flat}>
         <SvgIcon icon="ellipsis" />
       </Container>
     )}

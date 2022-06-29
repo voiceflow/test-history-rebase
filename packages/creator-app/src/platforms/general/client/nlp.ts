@@ -1,15 +1,23 @@
 import { Nullable } from '@voiceflow/common';
 import axios from 'axios';
 
+import { VersionTag } from '@/constants/platforms';
 import { NLPTrainJob } from '@/models';
 
 const createNLPService = (serviceEndpoint: string) => ({
-  publish: (projectID: string) =>
-    axios.post<{ job: NLPTrainJob.AnyJob; appID: string }>(`${serviceEndpoint}/nlp/${projectID}/publish`).then((res) => res.data),
+  publish: (projectID: string, { tag = VersionTag.DEVELOPMENT, versionName = '' }: { tag?: VersionTag; versionName?: string } = {}) =>
+    axios
+      .post<{ job: NLPTrainJob.AnyJob; appID: string }>(`${serviceEndpoint}/nlp/${projectID}/publish`, {
+        tag,
+        versionName,
+      })
+      .then((res) => res.data),
 
-  status: (projectID: string) => axios.get<Nullable<NLPTrainJob.AnyJob>>(`${serviceEndpoint}/nlp/${projectID}/status`).then((res) => res.data),
+  status: (projectID: string, { tag = VersionTag.DEVELOPMENT }: { tag?: VersionTag } = {}) =>
+    axios.get<Nullable<NLPTrainJob.AnyJob>>(`${serviceEndpoint}/nlp/${projectID}/status?tag=${tag}`).then((res) => res.data),
 
-  cancel: (projectID: string) => axios.post<void>(`${serviceEndpoint}/nlp/${projectID}/cancel`).then((res) => res.data),
+  cancel: (projectID: string, { tag = VersionTag.DEVELOPMENT }: { tag?: VersionTag } = {}) =>
+    axios.post<void>(`${serviceEndpoint}/nlp/${projectID}/cancel`, { tag }).then((res) => res.data),
 
   getApp: (projectID: string) => axios.get<void>(`${serviceEndpoint}/nlp/${projectID}`).then((res) => res.data),
 });

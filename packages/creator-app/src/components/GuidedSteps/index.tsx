@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events */
 
-import { Button, ButtonVariant, Collapse, TippyTooltip, TippyTooltipProps } from '@voiceflow/ui';
+import { Button, ButtonVariant, Collapse, TippyTooltip } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
 
@@ -165,11 +165,6 @@ const GuidedSteps: React.FC<GuidedStepsProps> = ({
 
   const showPreventSubmitTooltip = preventSubmit && isFormValid && preventSubmit?.message;
 
-  const SubmitWrapper = showPreventSubmitTooltip ? TippyTooltip : React.Fragment;
-
-  const wrapperProps =
-    preventSubmit && showPreventSubmitTooltip ? ({ position: 'top-end', title: preventSubmit.message, distance: 5 } as TippyTooltipProps) : {};
-
   return (
     <GuidedStepsWrapper centred={centred} disabled={disabled}>
       <ul className="gs__steps-list">
@@ -214,11 +209,16 @@ const GuidedSteps: React.FC<GuidedStepsProps> = ({
                             Next
                           </Button>
                         ) : (
-                          <SubmitWrapper {...wrapperProps}>
+                          <TippyTooltip
+                            disabled={!showPreventSubmitTooltip}
+                            position="top-end"
+                            title={preventSubmit ? preventSubmit?.message : undefined}
+                            distance={5}
+                          >
                             <Button disabled={!isFormValid || disabled || !!preventSubmit} onClick={(e) => submit(e, idx)}>
                               {submitText}
                             </Button>
-                          </SubmitWrapper>
+                          </TippyTooltip>
                         )}
                       </div>
                     )}

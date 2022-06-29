@@ -24,23 +24,10 @@ const OverflowTippyTooltip = <E extends HTMLElement = HTMLElement>({ children, i
   // eslint-disable-next-line xss/no-mixed-html
   React.useLayoutEffect(() => checkForOverflow(), [props.title, props.html]);
 
-  const Container = isOverflow ? TippyTooltip : React.Fragment;
-
   return (
-    <Container
-      {...(isOverflow
-        ? {
-            delay: 300,
-            position: 'top',
-            distance: 6,
-            hideDelay: 0,
-            bodyOverflow: true,
-            ...props,
-          }
-        : {})}
-    >
+    <TippyTooltip disabled={!isOverflow} delay={300} position="top" distance={6} hideDelay={0} bodyOverflow={true} {...props}>
       {children(ref, { isOverflow })}
-    </Container>
+    </TippyTooltip>
   );
 };
 

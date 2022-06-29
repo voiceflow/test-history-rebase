@@ -118,6 +118,27 @@ export const updateProjectLinkType =
     await dispatch.sync(Realtime.project.crud.patch({ ...getActiveWorkspaceContext(getState()), key: projectID, value: { linkType } }));
   };
 
+export const updateProjectLiveVersion =
+  (projectID: string, liveVersion: string): Thunk =>
+  async (dispatch, getState) => {
+    const project = ProjectV2.projectByIDSelector(getState(), { id: projectID });
+
+    if (project?.liveVersion === liveVersion) return;
+
+    await dispatch.sync(
+      Realtime.project.crud.patch(
+        { ...getActiveWorkspaceContext(getState()), key: projectID, value: { liveVersion } },
+        {
+          /**
+           * The `liveVersion` should only be updated by backend publishing logic. No need for
+           * Logux to send a patch request to the backend to redundantly update `liveVersion`.
+           */
+          skipPersist: true,
+        }
+      )
+    );
+  };
+
 // active project
 
 export const updateProjectNameByID =

@@ -88,3 +88,8 @@ export const getDefaultPlatformLanguageLabel = Utils.platform.createPlatformSele
   },
   GENERAL_LOCALE_NAME_MAP[VoiceflowConstants.Locale.EN_US]
 );
+
+export enum VersionTag {
+  PRODUCTION = 'production', // version is published to production
+  DEVELOPMENT = 'development', // version is still in development
+}

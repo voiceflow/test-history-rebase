@@ -2,10 +2,9 @@ import { ButtonVariant } from '@ui/components/Button/constants';
 import { colors, css, styled, ThemeColor, transition } from '@ui/styles';
 
 import ButtonContainer, { ButtonContainerProps } from '../ButtonContainer';
+import { CommonButtonProps } from '../types';
 
-export interface QuaternaryButtonProps extends ButtonContainerProps {
-  variant: ButtonVariant.QUATERNARY;
-}
+export type QuaternaryButtonProps = ButtonContainerProps & CommonButtonProps<ButtonVariant.QUATERNARY>;
 
 const QuaternaryButton = styled(ButtonContainer)<QuaternaryButtonProps>`
   ${transition('background-color', 'opacity')}

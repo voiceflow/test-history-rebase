@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import client from '@/client';
 import * as Errors from '@/config/errors';
 import { JobStatus } from '@/constants';
+import { VersionTag } from '@/constants/platforms';
 import * as Session from '@/ducks/session';
 import { NLPTrainJob } from '@/models';
 import * as Sentry from '@/vendors/sentry';
@@ -13,8 +14,13 @@ import * as Sentry from '@/vendors/sentry';
 export interface NLPContextValue {
   job: Nullable<NLPTrainJob.AnyJob>;
   cancel: () => Promise<void>;
-  publish: () => Promise<void>;
+  publish: (options?: { versionName?: string }) => Promise<void>;
   publishing: boolean;
+}
+
+export interface NLPProviderProps {
+  tag?: VersionTag;
+  onFinished?: () => any;
 }
 
 export const NLPContext = React.createContext<Nullable<NLPContextValue>>(null);
@@ -22,7 +28,7 @@ export const { Consumer: NLPConsumer } = NLPContext;
 
 const PULL_TIMEOUT = 3000; // 3s
 
-export const NLPProvider: React.FC = ({ children }) => {
+export const NLPProvider: React.FC<NLPProviderProps> = ({ tag = VersionTag.DEVELOPMENT, onFinished, children }) => {
   const pullTimeout = React.useRef<NodeJS.Timeout>();
   const [job, setJob] = React.useState<Nullable<NLPTrainJob.AnyJob>>(null);
   const [publishing, setPublishing] = React.useState<boolean>(false);
@@ -36,31 +42,37 @@ export const NLPProvider: React.FC = ({ children }) => {
       return;
     }
 
-    const currentJob = await client.platform.general.nlp.status(projectID);
+    const currentJob = await client.platform.general.nlp.status(projectID, { tag });
 
     setJob(currentJob || null);
   }, [projectID]);
 
-  const publish = React.useCallback(async () => {
-    if (!projectID) {
-      Sentry.error(Errors.noActiveProjectID());
-      toast.genericError();
-      return;
-    }
+  const publish = React.useCallback(
+    async (options?: { versionName?: string }) => {
+      if (!projectID) {
+        Sentry.error(Errors.noActiveProjectID());
+        toast.genericError();
+        return;
+      }
 
-    setPublishing(true);
+      setPublishing(true);
 
-    try {
-      const result = await client.platform.general.nlp.publish(projectID);
+      try {
+        const result = await client.platform.general.nlp.publish(projectID, {
+          tag,
+          versionName: options?.versionName,
+        });
 
-      setJob(result?.job || null);
-      setPublishing(false);
-    } catch (err) {
-      setPublishing(false);
+        setJob(result?.job || null);
+        setPublishing(false);
+      } catch (err) {
+        setPublishing(false);
 
-      throw err;
-    }
-  }, [projectID]);
+        throw err;
+      }
+    },
+    [projectID]
+  );
 
   const stopPulling = React.useCallback(() => {
     if (pullTimeout.current) {
@@ -73,7 +85,7 @@ export const NLPProvider: React.FC = ({ children }) => {
   const cancel = React.useCallback(async () => {
     stopPulling();
 
-    await client.platform.general.nlp.cancel(projectID!);
+    await client.platform.general.nlp.cancel(projectID!, { tag });
 
     setJob(null);
   }, [projectID]);
@@ -88,6 +100,10 @@ export const NLPProvider: React.FC = ({ children }) => {
   }, [projectID, getJob]);
 
   useDidUpdateEffect(() => {
+    if (job && job.status === JobStatus.FINISHED) {
+      onFinished?.();
+    }
+
     // stop pulling when job is finished or job was canceled
     if (!job || job.status === JobStatus.FINISHED) {
       cancel();
@@ -110,7 +126,7 @@ export const NLPProvider: React.FC = ({ children }) => {
     stopPulling();
   });
 
-  const api = useContextApi({ job, cancel, publish, publishing });
+  const api = useContextApi({ job, cancel, publish, publishing, onFinished });
 
   return <NLPContext.Provider value={api}>{children}</NLPContext.Provider>;
 };

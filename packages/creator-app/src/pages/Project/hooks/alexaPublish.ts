@@ -26,19 +26,22 @@ export const useAlexaPublish = (): AlexaPublishApi => {
     onStateChanged,
   });
 
-  const onPublish = React.useCallback(async () => {
-    if (vendors.length > 1) {
-      // set a "fake" job and get the user to select a vendor before continuing
-      basePublishApi.setJob({ id: 'vendors', stage: { type: AlexaStageType.SELECT_VENDORS, data: {} }, status: JobStatus.FINISHED });
-      basePublishApi.togglePopupOpened(true);
-      return;
-    }
+  const onPublish = React.useCallback(
+    async (versionName: string) => {
+      if (vendors.length > 1) {
+        // set a "fake" job and get the user to select a vendor before continuing
+        basePublishApi.setJob({ id: 'vendors', stage: { type: AlexaStageType.SELECT_VENDORS, data: {} }, status: JobStatus.FINISHED });
+        basePublishApi.togglePopupOpened(true);
+        return;
+      }
 
-    if (needsLogin) {
-      await resetSelectedVendor();
-    }
-    basePublishApi.onPublish();
-  }, [needsLogin, vendors]);
+      if (needsLogin) {
+        await resetSelectedVendor();
+      }
+      basePublishApi.onPublish(versionName);
+    },
+    [needsLogin, vendors]
+  );
 
   useSetup(() => loadAccount());
 

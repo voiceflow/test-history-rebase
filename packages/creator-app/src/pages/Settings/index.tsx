@@ -8,8 +8,12 @@ import { Identifier } from '@/styles/constants';
 import GeneralSettings from './components/GeneralSettings';
 import ProjectVersions from './components/ProjectVersions';
 
+const width = 958;
+const padding = 32;
+const maxWidth = width + 2 * padding;
+
 const Settings: React.FC = () => (
-  <Box id={Identifier.SETTINGS_PAGE} maxWidth={900} p={32}>
+  <Box id={Identifier.SETTINGS_PAGE} maxWidth={maxWidth} p={padding}>
     <Switch>
       <Route path={Path.PROJECT_GENERAL_SETTINGS} component={GeneralSettings} />
       <Route path={Path.PROJECT_VERSION_SETTINGS} component={ProjectVersions} />

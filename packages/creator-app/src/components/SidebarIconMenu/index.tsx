@@ -43,11 +43,8 @@ const SidebarIconMenu = <T extends SidebarIconMenuItem>({
 
   const renderOption = (option: Nullable<T>) => {
     if (option === null) return null;
-
-    const ItemContainer = option.tooltip ? TippyTooltip : React.Fragment;
-
     return (
-      <ItemContainer key={option.value} {...option.tooltip} {...(option.tooltip ? { position: option.tooltip.position ?? 'right' } : {})}>
+      <TippyTooltip key={option.value} disabled={!option.tooltip} position="right" {...option.tooltip}>
         <Item
           id={option.id}
           small={option.small}
@@ -60,7 +57,7 @@ const SidebarIconMenu = <T extends SidebarIconMenuItem>({
           </span>
           {option.withBadge && <StatusBubble />}
         </Item>
-      </ItemContainer>
+      </TippyTooltip>
     );
   };
 

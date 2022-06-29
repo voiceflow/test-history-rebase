@@ -34,6 +34,7 @@ const Item = styled(FlexCenter)<MenuItemProps>`
 
   &:hover {
     & > span {
+      transition: 0.15s ease all;
       opacity: 1;
     }
   }

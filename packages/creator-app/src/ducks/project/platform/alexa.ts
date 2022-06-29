@@ -39,5 +39,5 @@ export const updateActiveVendor =
 
     Errors.assertWorkspaceID(workspaceID);
 
-    dispatch(Realtime.project.crud.patch({ workspaceID, key: projectID, value: { members: updatedMembers } }));
+    dispatch.local(Realtime.project.crud.patch({ workspaceID, key: projectID, value: { members: updatedMembers } }));
   };

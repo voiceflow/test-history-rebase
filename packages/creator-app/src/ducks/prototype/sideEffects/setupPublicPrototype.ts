@@ -57,7 +57,7 @@ const setupPublicPrototype =
 
     batch(() => {
       dispatch(resetPrototype());
-      dispatch(Realtime.version.crud.add({ workspaceID: '', projectID: '', key: versionID, value: version }));
+      dispatch.local(Realtime.version.crud.add({ workspaceID: '', projectID: '', key: versionID, value: version }));
       dispatch(updatePrototype({ muted: layout === PrototypeLayout.TEXT_DIALOG, platform, projectType }));
       dispatch(Session.setActiveVersionID(versionID));
       dispatch(Session.setActiveDiagramID(rootDiagramID));

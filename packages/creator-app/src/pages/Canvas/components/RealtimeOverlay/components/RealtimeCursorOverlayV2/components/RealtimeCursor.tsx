@@ -4,7 +4,7 @@ import { Cursor, CursorConstants, CursorNametag, preventDefault, SvgIcon } from 
 import React from 'react';
 
 import { EventualEngineContext } from '@/contexts';
-import { useDispatch, useRAF } from '@/hooks';
+import { useLocalDispatch, useRAF } from '@/hooks';
 
 import { RealtimeCursorContext } from '../../../contexts';
 
@@ -28,7 +28,7 @@ const RealtimeCursor = React.forwardRef<HTMLDivElement, RealtimeCursorProps>(({ 
 
   const state = React.useRef(CursorState.HIDDEN);
   const innerRef = React.useRef<HTMLDivElement>(null);
-  const awarenessHideCursor = useDispatch(Realtime.diagram.awareness.hideCursor);
+  const awarenessHideCursor = useLocalDispatch(Realtime.diagram.awareness.hideCursor);
   const removeTimerRef = React.useRef<NodeJS.Timer | null>(null);
   const fadeoutTimerRef = React.useRef<NodeJS.Timer | null>(null);
   const color = React.useMemo(() => (rawColor.includes('|') ? `#${rawColor.split('|')[0]}` : '#f8758f'), [rawColor]);

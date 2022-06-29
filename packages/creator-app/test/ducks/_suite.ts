@@ -60,6 +60,8 @@ export default <S, A extends AnyAction>(Duck: ReduxDuck<S, A>, state: S) =>
       loguxHandler: (key: keyof Dispatch) => (action: AnyFSAction) => any = () => Utils.functional.noop
     ): Dispatch =>
       Object.assign(utils.spy(handler), {
+        local: utils.spy(loguxHandler('local')),
+        crossTab: utils.spy(loguxHandler('crossTab')),
         sync: utils.spy(loguxHandler('sync')),
         getNodeID: () => 'mockNodeID',
       });

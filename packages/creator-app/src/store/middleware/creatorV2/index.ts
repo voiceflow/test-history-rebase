@@ -46,7 +46,7 @@ export const createHistoryMiddleware =
     if (!isOwnAction) {
       const invalid = collectInvalidTransactions(invalidatorLookup, state, action);
       if (invalid.length) {
-        store.dispatch(History.dropTransactions({ transactionIDs: invalid.map(({ id }) => id) }));
+        store.dispatch.local(History.dropTransactions({ transactionIDs: invalid.map(({ id }) => id) }));
       }
 
       next(action);
@@ -59,7 +59,7 @@ export const createHistoryMiddleware =
       return;
     }
 
-    store.dispatch(
+    store.dispatch.local(
       History.pushTransaction({
         transaction: {
           id: Utils.id.cuid(),

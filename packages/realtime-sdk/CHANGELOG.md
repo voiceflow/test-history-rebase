@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.119.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.118.1...@voiceflow/realtime-sdk@1.119.0) (2022-06-29)
+
+
+### Features
+
+* split actions PR [#2](https://github.com/voiceflow/creator-app/issues/2) (VF-000) ([#5600](https://github.com/voiceflow/creator-app/issues/5600)) ([5a05b2f](https://github.com/voiceflow/creator-app/commit/5a05b2f2005a8bea8f6cd19785bb62dcdb79fcd4))
+* UI changes for production version management (VF-3636) (VF-3492) ([#5507](https://github.com/voiceflow/creator-app/issues/5507)) ([e2610bc](https://github.com/voiceflow/creator-app/commit/e2610bcbf991a68df0f3edcab6eac8ad806d4fc7))
+
+
+
+
+
 ## [1.118.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.118.0...@voiceflow/realtime-sdk@1.118.1) (2022-06-24)
 
 

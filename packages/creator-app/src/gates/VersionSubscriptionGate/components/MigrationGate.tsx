@@ -1,18 +1,24 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { toast } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';
 import LoadingGate from '@/components/LoadingGate';
 import * as Router from '@/ducks/router';
-import { AsyncActionError } from '@/ducks/utils';
 import * as Version from '@/ducks/version';
 import { useDispatch, useFeature, useRealtimeClient } from '@/hooks';
 import logger from '@/utils/logger';
+import { AsyncActionError } from '@/utils/logux';
 
 import { MigrationStatus, PROJECT_LOADING_GATE_LABEL } from '../constants';
 import { VersionSubscriptionContext } from '../types';
 import MigrationFailedWarning from './MigrationFailedWarning';
 import MigrationInProgressWarning from './MigrationInProgressWarning';
+
+const MAX_RETRIES = 3;
+const MIGRATION_RETRY_KEY = 'migration_retry_count';
+
+const setMigrationRetries = (retries: number) => window.history.replaceState({ [MIGRATION_RETRY_KEY]: retries }, '');
 
 export interface MigrationGateProps
   extends React.PropsWithChildren<{
@@ -26,9 +32,15 @@ const MigrationGate: React.FC<MigrationGateProps> = ({ versionID, context, setCo
   const migrationSystem = useFeature(Realtime.FeatureFlag.MIGRATION_SYSTEM);
 
   const [status, setStatus] = React.useState(MigrationStatus.IDLE);
+  const retryCount = window.history.state?.[MIGRATION_RETRY_KEY] ?? 0;
 
   const goToDashboard = useDispatch(Router.goToDashboard);
   const negotiateTargetVersion = useDispatch(Version.negotiateTargetVersion);
+
+  const cancelMigration = React.useCallback(() => {
+    toast.error('Something went wrong, please contact support if this issue persists.');
+    goToDashboard();
+  }, []);
 
   const acceptContext = React.useCallback((result: Realtime.version.schema.NegotiateResultPayload) => {
     // handle case where the active version is not supported by the frontend code
@@ -62,29 +74,44 @@ const MigrationGate: React.FC<MigrationGateProps> = ({ versionID, context, setCo
 
       acceptContext(result);
     } catch (err) {
-      logger.error('target schema negotiation failed', err);
-      if (err instanceof AsyncActionError) {
-        if (err.code === Realtime.ErrorCode.MIGRATION_IN_PROGRESS) {
-          setStatus(MigrationStatus.WAITING);
-          return;
-        }
-
-        if (err.code === Realtime.ErrorCode.SCHEMA_VERSION_NOT_SUPPORTED) {
-          logger.error('migration target not supported', { latest: Realtime.LATEST_SCHEMA_VERSION });
-
-          window.location.reload();
-          return;
-        }
+      if (!(err instanceof AsyncActionError)) {
+        setStatus(MigrationStatus.FAILED);
+        return;
       }
 
-      setStatus(MigrationStatus.FAILED);
+      switch (err.code) {
+        case Realtime.ErrorCode.MIGRATION_IN_PROGRESS:
+          setStatus(MigrationStatus.WAITING);
+          return;
+
+        case Realtime.ErrorCode.SCHEMA_VERSION_NOT_SUPPORTED:
+          logger.error('migration target not supported', { latest: Realtime.LATEST_SCHEMA_VERSION });
+
+          if (retryCount === MAX_RETRIES) {
+            cancelMigration();
+            return;
+          }
+
+          setMigrationRetries(retryCount + 1);
+          window.location.reload();
+          return;
+
+        default:
+          setStatus(MigrationStatus.FAILED);
+      }
     }
-  }, [versionID]);
+  }, [versionID, retryCount]);
 
   const reset = React.useCallback(async () => {
+    if (retryCount === MAX_RETRIES) {
+      cancelMigration();
+      return;
+    }
+
+    setMigrationRetries(retryCount + 1);
     setStatus(MigrationStatus.IDLE);
     await loadContext();
-  }, [loadContext]);
+  }, [loadContext, retryCount]);
 
   React.useEffect(() => {
     if (status !== MigrationStatus.IDLE) return undefined;

@@ -16,7 +16,7 @@ import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import * as Tracking from '@/ducks/tracking';
 import { CanvasCreationType, VariableType } from '@/ducks/tracking/constants';
-import { AsyncActionError, waitAsync } from '@/ducks/utils';
+import { waitAsync } from '@/ducks/utils';
 import { getActiveVersionContext } from '@/ducks/version/utils';
 import * as VersionV2 from '@/ducks/versionV2';
 import mutableStore from '@/store/mutable';
@@ -24,6 +24,7 @@ import { Thunk } from '@/store/types';
 import { BLOCK_WIDTH } from '@/styles/theme';
 import { PathPoint, Point } from '@/types';
 import logger from '@/utils/logger';
+import { AsyncActionError } from '@/utils/logux';
 import { getNodesGroupCenter } from '@/utils/node';
 
 import { fullActiveDiagramSelector } from './fullDiagram';

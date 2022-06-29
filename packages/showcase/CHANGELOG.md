@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.18.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/showcase@1.17.0...@voiceflow/showcase@1.18.0) (2022-06-29)
+
+
+### Features
+
+* flow editor cleanup (CT-134) ([#5658](https://github.com/voiceflow/creator-app/issues/5658)) ([9f84897](https://github.com/voiceflow/creator-app/commit/9f848978b3f8e73baf40b8108312ea74e315f9fc))
+
+
+
+
+
 # [1.17.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/showcase@1.16.3...@voiceflow/showcase@1.17.0) (2022-06-29)
 
 

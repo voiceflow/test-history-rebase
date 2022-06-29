@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.807.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.806.0...@voiceflow/creator-app@1.807.0) (2022-06-29)
+
+
+### Features
+
+* fix ContextMenuContext api isOpen property (CT-456) ([#5683](https://github.com/voiceflow/creator-app/issues/5683)) ([fd151bc](https://github.com/voiceflow/creator-app/commit/fd151bcac0b688e795693d11f567b6c2a85d9092))
+* flow editor cleanup (CT-134) ([#5658](https://github.com/voiceflow/creator-app/issues/5658)) ([9f84897](https://github.com/voiceflow/creator-app/commit/9f848978b3f8e73baf40b8108312ea74e315f9fc))
+
+
+
+
+
 # [1.806.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.805.3...@voiceflow/creator-app@1.806.0) (2022-06-29)
 
 

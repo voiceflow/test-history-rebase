@@ -4,7 +4,7 @@ import { FeatureFlag } from '@/config/features';
 import { BlockType } from '@/constants';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import { useFeature, useLinkedRef, useRAF } from '@/hooks';
-import { EngineContext, NodeEntityContext } from '@/pages/Canvas/contexts';
+import { ContextMenuContext, EngineContext, NodeEntityContext } from '@/pages/Canvas/contexts';
 import { useElementInstance } from '@/pages/Canvas/engine/entities/utils';
 import { useEntityDrag } from '@/pages/Canvas/hooks';
 import { BlockAPI } from '@/pages/Canvas/types';
@@ -84,6 +84,7 @@ export const useNodeInstance = <T extends HTMLElement>(): InternalNodeInstance<T
 
 export const useNodeDrag = ({ skipClick, skipDrag }: { skipClick?: () => boolean; skipDrag?: () => boolean } = {}) => {
   const engine = React.useContext(EngineContext)!;
+  const contextMenu = React.useContext(ContextMenuContext)!;
   const nodeEntity = React.useContext(NodeEntityContext)!;
   const isEditingMode = useEditingMode();
 
@@ -127,6 +128,7 @@ export const useNodeDrag = ({ skipClick, skipDrag }: { skipClick?: () => boolean
     if (
       !isEditingMode ||
       event.shiftKey ||
+      contextMenu.isOpen ||
       engine.prototype.isActive ||
       engine.comment.isModeActive ||
       engine.linkCreation.isDrawing ||

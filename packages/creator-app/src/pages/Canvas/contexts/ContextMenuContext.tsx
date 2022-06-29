@@ -62,7 +62,7 @@ export const ContextMenuProvider: React.FC = ({ children }) => {
     [engine, dismissOverlay]
   );
 
-  const api = useContextApi({ ...menuContext, isOpen: !!menuContext, onOpen, onHide });
+  const api = useContextApi({ ...menuContext, isOpen: Object.values(menuContext).some(Boolean), onOpen, onHide });
 
   return <ContextMenuContext.Provider value={api}>{children}</ContextMenuContext.Provider>;
 };

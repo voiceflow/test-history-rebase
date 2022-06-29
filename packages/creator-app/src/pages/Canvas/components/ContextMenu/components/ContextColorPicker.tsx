@@ -13,7 +13,6 @@ export const ContextColorPicker: React.FC = () => {
   const onChange = React.useCallback(
     (color: string) => {
       engine.node.updateManyBlocksColor(targets, color);
-      engine.selection.reset();
     },
     [targets]
   );

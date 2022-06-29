@@ -47,7 +47,7 @@ const EntitySelectDropdown: React.FC = () => {
         optionsMaxSize={7.5}
         inDropdownSearch
         alwaysShowCreate
-        createInputPlaceholder="Slots"
+        createInputPlaceholder="entities"
         renderFooterAction={footerComponent}
         renderTrigger={({ onOpenMenu, onHideMenu, isOpen }) => (
           <Box onClick={isOpen ? onHideMenu : onOpenMenu} display="flex">

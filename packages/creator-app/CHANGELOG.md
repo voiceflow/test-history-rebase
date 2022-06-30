@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.812.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.812.0...@voiceflow/creator-app@1.812.1) (2022-06-30)
+
+
+### Bug Fixes
+
+* diagramID null on teardown (VF-000) ([#5701](https://github.com/voiceflow/creator-app/issues/5701)) ([334364d](https://github.com/voiceflow/creator-app/commit/334364def038038624917bfeeb2daf95e651feb0))
+
+
+
+
+
 # [1.812.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.811.1...@voiceflow/creator-app@1.812.0) (2022-06-30)
 
 

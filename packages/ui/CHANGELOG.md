@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.113.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.113.0...@voiceflow/ui@1.113.1) (2022-06-30)
+
+
+### Bug Fixes
+
+* realtime cursor styling (VF-3968) ([#5678](https://github.com/voiceflow/creator-app/issues/5678)) ([89dc525](https://github.com/voiceflow/creator-app/commit/89dc52511893c7087394f4a4f0e5c4fcccc49927))
+
+
+
+
+
 # [1.113.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.112.0...@voiceflow/ui@1.113.0) (2022-06-30)
 
 

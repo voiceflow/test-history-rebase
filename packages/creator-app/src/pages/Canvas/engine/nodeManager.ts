@@ -326,6 +326,8 @@ class NodeManager extends EngineConsumer {
           return acc;
         }, []);
 
+        if (!nodes.length) return;
+
         await this.dispatch.sync(Realtime.node.updateDataMany({ ...this.engine.context, nodes, projectMeta }));
       } else {
         updates.forEach(({ nodeID, patch }) => {

@@ -1,11 +1,11 @@
 import composeRefs from '@seznam/compose-react-refs';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { useCache, useDidUpdateEffect, useTeardown } from '@voiceflow/ui';
+import { useCache, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 import { Descendant, Node, Transforms } from 'slate';
 
 import SlateEditable, { SlateEditorAPI } from '@/components/SlateEditable';
-import { useDebouncedCallback, useForceUpdate } from '@/hooks';
+import { useForceUpdate } from '@/hooks';
 import { useBlockAPI } from '@/pages/Canvas/components/Block/hooks';
 import { ConnectedMarkupNodeProps } from '@/pages/Canvas/components/MarkupNode/types';
 import { EngineContext, NodeEntityContext } from '@/pages/Canvas/contexts';
@@ -16,8 +16,6 @@ import { Border, BorderPosition, Container } from './components';
 import { addDraggableAttr, findAllDraggableParents, removeDraggableAttr } from './utils';
 
 interface MarkupTextNodeProps extends ConnectedMarkupNodeProps<Realtime.Markup.NodeData.Text> {}
-
-const UPDATE_CONTENT_DEBOUNCE = 300;
 
 const MarkupTextNode = React.forwardRef<BlockAPI, MarkupTextNodeProps>(({ data }, ref) => {
   const engine = React.useContext(EngineContext)!;
@@ -34,12 +32,6 @@ const MarkupTextNode = React.forwardRef<BlockAPI, MarkupTextNodeProps>(({ data }
   const draggableParentsCache = React.useRef<HTMLElement[]>([]);
 
   const cache = useCache({ value, skipEditableFocus: false, doubleClicked: false }, { value });
-
-  const updateContentDebounced = useDebouncedCallback(
-    UPDATE_CONTENT_DEBOUNCE,
-    (content: Descendant[]) => engine.node.updateData(nodeEntity.nodeID, { content }),
-    []
-  );
 
   const { isFocused, isActivated } = nodeEntity.useState((e) => ({
     isFocused: e.isFocused,
@@ -116,7 +108,7 @@ const MarkupTextNode = React.forwardRef<BlockAPI, MarkupTextNodeProps>(({ data }
       await engine.node.api(nodeEntity.nodeID)?.instance?.applyTransformations?.();
     }
 
-    await updateContentDebounced(cache.current.value);
+    await engine.node.updateData(nodeEntity.nodeID, { content: cache.current.value });
 
     addDraggableAttr(draggableParentsCache.current);
     draggableParentsCache.current = [];
@@ -198,10 +190,6 @@ const MarkupTextNode = React.forwardRef<BlockAPI, MarkupTextNodeProps>(({ data }
       engine.transformation.initialize(nodeEntity.nodeID);
     }
   }, [value]);
-
-  useTeardown(() => {
-    updateContentDebounced(cache.current.value);
-  });
 
   return (
     <Container

@@ -7,9 +7,26 @@ import * as VersionV2 from '@/ducks/versionV2';
 import { useDispatch, useSelector } from '@/hooks';
 import MenuCheckboxOption from '@/pages/Canvas/managers/components/MenuCheckboxOption';
 
+export const LABELS = {
+  OPTION: 'Canvas Visibility',
+  PREVIEW: 'Show preview',
+  VARIANTS: 'Show all variants',
+  SET_DEFAULT: 'Set as default',
+};
+
+export const LABELS_V2 = {
+  OPTION: 'Canvas visibility',
+  PREVIEW: 'Preview',
+  VARIANTS: 'All variants',
+  SET_DEFAULT: 'Set as default',
+};
+
+type Labels = Record<keyof typeof LABELS, string>;
+
 const useCanvasVisibilityOption = (
   visibility: BaseNode.Utils.CanvasNodeVisibility = BaseNode.Utils.CanvasNodeVisibility.PREVIEW,
-  onChange: (visibility: BaseNode.Utils.CanvasNodeVisibility) => void
+  onChange: (visibility: BaseNode.Utils.CanvasNodeVisibility) => void,
+  labels: Labels = LABELS
 ): OptionsMenuOption => {
   const patchSettings = useDispatch(Version.patchSettings);
   const defaultCanvasNodeVisibility = useSelector(VersionV2.active.canvasNodeVisibilitySelector);
@@ -21,7 +38,7 @@ const useCanvasVisibilityOption = (
   }, []);
 
   return {
-    label: 'Canvas Visibility',
+    label: labels.OPTION,
     options: [
       {
         label: (
@@ -29,7 +46,7 @@ const useCanvasVisibilityOption = (
             checked={visibility === BaseNode.Utils.CanvasNodeVisibility.PREVIEW}
             onChange={() => onChange(BaseNode.Utils.CanvasNodeVisibility.PREVIEW)}
           >
-            Show preview
+            {labels.PREVIEW}
           </MenuCheckboxOption>
         ),
         disabled: true,
@@ -40,7 +57,7 @@ const useCanvasVisibilityOption = (
             checked={visibility === BaseNode.Utils.CanvasNodeVisibility.ALL_VARIANTS}
             onChange={() => onChange(BaseNode.Utils.CanvasNodeVisibility.ALL_VARIANTS)}
           >
-            Show all variants
+            {labels.VARIANTS}
           </MenuCheckboxOption>
         ),
         disabled: true,
@@ -59,7 +76,7 @@ const useCanvasVisibilityOption = (
               )
             }
           >
-            Set as default
+            {labels.SET_DEFAULT}
           </MenuCheckboxOption>
         ),
         disabled: true,

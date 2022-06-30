@@ -49,13 +49,12 @@ interface IconButtonProps {
   onMouseDown: React.MouseEventHandler<HTMLButtonElement>;
 }
 
-type PropertyButton = React.FC<{ component?: React.FC<IconButtonProps> }>;
+type PropertyButton = React.FC<{ component?: React.FC<IconButtonProps>; icon?: SvgIconTypes.Icon }>;
 
 const createButton =
-  ({ icon, hotkey, isActive, onAction }: CreateButtonOptions): PropertyButton =>
-  ({ component: Component }) => {
+  ({ icon: defaultIcon, hotkey, isActive, onAction }: CreateButtonOptions): PropertyButton =>
+  ({ component: Component, icon = defaultIcon }) => {
     const editor = useSlateEditor();
-    const Button = Component ?? IconButton;
 
     const active = isActive(editor);
 
@@ -65,7 +64,9 @@ const createButton =
       }
     });
 
-    return <Button icon={icon} active={active} onMouseDown={preventDefault(() => onAction(editor, active))} />;
+    if (Component) return <Component icon={icon} active={active} onMouseDown={preventDefault(() => onAction(editor, active))} />;
+
+    return <IconButton icon={icon} active={active} onMouseDown={preventDefault(() => onAction(editor, active))} />;
   };
 
 export const createElementPropertyButton = <P extends ElementProperty>({

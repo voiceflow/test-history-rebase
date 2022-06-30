@@ -2,6 +2,7 @@ import { Normalized, Nullish } from '@voiceflow/common';
 
 import { SlateEditableProps, SlatePluginType, SlateVariableItem } from '@/components/SlateEditable';
 
+import { ToolbarIcons } from '../types';
 import { SlateBaseInputProps } from './SlateBaseInput';
 
 export type { SlateValue } from '@/components/SlateEditable';
@@ -17,4 +18,5 @@ export interface SlateTextInputProps extends Omit<SlateInputProps, 'topToolbar' 
   variablesCreatable?: boolean;
   variablesWithSlots?: boolean;
   extraToolbarButtons?: React.ReactNode;
+  icons?: ToolbarIcons;
 }

@@ -1,5 +1,5 @@
 import { BaseNode } from '@voiceflow/base-types';
-import { Input, Popper, preventDefault, TippyTooltip, useToggle, withHandler, withInputBlur } from '@voiceflow/ui';
+import { Input, Popper, preventDefault, SvgIconTypes, TippyTooltip, useToggle, withHandler, withInputBlur } from '@voiceflow/ui';
 import React from 'react';
 
 import { PopperContent, PopperTitle } from '@/components/SlateEditable';
@@ -8,9 +8,10 @@ import IconButton from '@/components/SlateEditable/components/IconButton';
 interface MessageDelayButtonProps {
   onUpdate: (data: Partial<BaseNode.Text.TextData>) => void;
   data: BaseNode.Text.TextData;
+  icon?: SvgIconTypes.Icon;
 }
 
-const MessageDelayButton: React.FC<MessageDelayButtonProps> = ({ data, onUpdate }) => {
+const MessageDelayButton: React.FC<MessageDelayButtonProps> = ({ data, onUpdate, icon = 'delay' }) => {
   const [isOpened, toggleOpen] = useToggle(false);
   const [messageDelay, setMessageDelay] = React.useState(data?.messageDelayMilliseconds ? String(data?.messageDelayMilliseconds) : '');
 
@@ -48,7 +49,7 @@ const MessageDelayButton: React.FC<MessageDelayButtonProps> = ({ data, onUpdate 
     >
       {({ ref, isOpened }) => (
         <TippyTooltip title="Message Delay" position="top">
-          <IconButton ref={ref} icon="delay" active={isOpened || !!messageDelay} onClick={preventDefault(toggleOpen)} />
+          <IconButton ref={ref} icon={icon} active={isOpened || !!messageDelay} onClick={preventDefault(toggleOpen)} />
         </TippyTooltip>
       )}
     </Popper>

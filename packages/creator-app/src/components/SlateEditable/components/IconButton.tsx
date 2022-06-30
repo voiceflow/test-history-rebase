@@ -1,4 +1,5 @@
-import { IconButton as BaseIconButton, IconButtonFlatContainerProps, IconButtonVariant } from '@voiceflow/ui';
+import { IconButton as BaseIconButton, IconButtonFlatContainerProps, IconButtonProps as BaseIconButtonProps, IconButtonVariant } from '@voiceflow/ui';
+import React from 'react';
 
 import { css, styled, transition } from '@/hocs';
 
@@ -10,7 +11,7 @@ const activeStyles = css`
   opacity: 1;
 `;
 
-const IconButton = styled(BaseIconButton).attrs({ variant: IconButtonVariant.FLAT, size: 16 })<IconButtonFlatContainerProps>`
+const StyledIconButton = styled(BaseIconButton)<IconButtonFlatContainerProps>`
   ${transition('background', 'color', 'opacity')}
 
   width: 32px;
@@ -32,4 +33,8 @@ const IconButton = styled(BaseIconButton).attrs({ variant: IconButtonVariant.FLA
   }
 `;
 
-export default IconButton;
+const IconButton: React.ForwardRefRenderFunction<HTMLButtonElement, BaseIconButtonProps> = (props, ref) => (
+  <StyledIconButton ref={ref} {...props} variant={IconButtonVariant.FLAT} size={16} />
+);
+
+export default React.forwardRef(IconButton);

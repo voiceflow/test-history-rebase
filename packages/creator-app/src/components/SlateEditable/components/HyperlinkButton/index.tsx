@@ -19,9 +19,10 @@ interface ChildrenOptions {
 
 interface HyperlinkButtonProps {
   children?: (option: ChildrenOptions) => React.ReactNode;
+  icon?: SvgIconTypes.Icon;
 }
 
-const HyperlinkButton: React.FC<HyperlinkButtonProps> = ({ children }) => {
+const HyperlinkButton: React.FC<HyperlinkButtonProps> = ({ children, icon = 'hyperlink' }) => {
   const editor = useSlateEditor();
 
   const [isOpened, toggleOpen] = useToggle(false);
@@ -77,9 +78,9 @@ const HyperlinkButton: React.FC<HyperlinkButtonProps> = ({ children }) => {
     >
       {({ ref, isOpened }) =>
         children ? (
-          children({ ref, icon: 'hyperlink', active: !!url || isOpened, onMouseDown: preventDefault(toggleOpen) })
+          children({ ref, icon, active: !!url || isOpened, onMouseDown: preventDefault(toggleOpen) })
         ) : (
-          <IconButton ref={ref} icon="hyperlink" active={!!url || isOpened} onMouseDown={preventDefault(toggleOpen)} />
+          <IconButton ref={ref} icon={icon} active={!!url || isOpened} onMouseDown={preventDefault(toggleOpen)} />
         )
       }
     </Popper>

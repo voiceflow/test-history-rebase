@@ -14,6 +14,7 @@ import {
   useSlateEditorForceNormalize,
 } from '@/components/SlateEditable';
 
+import { TOOLBAR_ICONS_DEFAULT } from '../constants';
 import { useSlateLocalValue, useSlateVariables } from '../hooks';
 import SlateBaseInput from './SlateBaseInput';
 import Toolbar from './Toolbar';
@@ -27,6 +28,7 @@ const SlateTextInput: React.ForwardRefRenderFunction<SlateEditableRef, SlateText
     variablesCreatable = true,
     variablesWithSlots,
     extraToolbarButtons,
+    icons = TOOLBAR_ICONS_DEFAULT,
     ...props
   },
   ref
@@ -52,14 +54,14 @@ const SlateTextInput: React.ForwardRefRenderFunction<SlateEditableRef, SlateText
       pluginsOptions={localPluginsOptions}
     >
       <Toolbar onClick={stopPropagation()}>
-        <TextBoldButton />
-        <TextItalicButton />
-        <TextUnderlineButton />
-        <TextStrikeThroughButton />
+        <TextBoldButton icon={icons.TEXT_BOLD} />
+        <TextItalicButton icon={icons.TEXT_ITALIC} />
+        <TextUnderlineButton icon={icons.TEXT_UNDERLINE} />
+        <TextStrikeThroughButton icon={icons.TEXT_STRIKE_THROUGH} />
 
         <Box width="1px" height="15px" backgroundColor="#dfe3ed" />
 
-        <HyperlinkButton />
+        <HyperlinkButton icon={icons.HYPERLINK} />
 
         {extraToolbarButtons}
       </Toolbar>

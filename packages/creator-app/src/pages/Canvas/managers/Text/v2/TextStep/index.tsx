@@ -36,7 +36,7 @@ export const TextStepV2: React.FC<TextStepProps> = ({
   itemsToRender: itemsWithContent,
 }) => {
   const shouldRenderAttachment = itemsWithContent.length > 1 && preview;
-  const itemsToRender = shouldRenderAttachment ? [items[0]] : items;
+  const itemsToRender = shouldRenderAttachment ? [itemsWithContent[0]] : items;
 
   const attachment = (
     <Popper

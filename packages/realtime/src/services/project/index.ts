@@ -5,27 +5,20 @@ import { Optional } from 'utility-types';
 
 import { HEARTBEAT_EXPIRE_TIMEOUT } from '../../constants';
 import { AbstractControl, ControlOptions } from '../../control';
+import AccessCache from '../utils/accessCache';
 import ProjectMemberService from './member';
 
 class ProjectService extends AbstractControl {
-  private static getCanReadKey({ projectID, creatorID }: { projectID: string; creatorID: number }): string {
-    return `projects:${projectID}:can-read:${creatorID}`;
-  }
-
   private static getConnectedDiagramsKey({ projectID }: { projectID: string }): string {
     return `projects:${projectID}:diagrams`;
   }
-
-  private canReadCache = this.clients.cache.createKeyValue({
-    expire: 60,
-    adapter: this.clients.cache.adapters.booleanAdapter,
-    keyCreator: ProjectService.getCanReadKey,
-  });
 
   private connectedDiagramsCache = this.clients.cache.createSet({
     expire: HEARTBEAT_EXPIRE_TIMEOUT,
     keyCreator: ProjectService.getConnectedDiagramsKey,
   });
+
+  public access = new AccessCache('project', this.clients, this.services);
 
   public member: ProjectMemberService;
 
@@ -33,21 +26,6 @@ class ProjectService extends AbstractControl {
     super(options);
 
     this.member = new ProjectMemberService(options);
-  }
-
-  public async canRead(creatorID: number, projectID: string): Promise<boolean> {
-    const cachedCanRead = await this.canReadCache.get({ projectID, creatorID });
-
-    if (cachedCanRead !== null) {
-      return cachedCanRead;
-    }
-
-    const client = await this.services.voiceflow.getClientByUserID(creatorID);
-    const canRead = await client.project.canRead(creatorID, projectID);
-
-    await this.canReadCache.set({ projectID, creatorID }, canRead);
-
-    return canRead;
   }
 
   public async connectDiagram(projectID: string, diagramID: string): Promise<void> {

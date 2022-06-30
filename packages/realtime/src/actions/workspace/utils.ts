@@ -21,7 +21,7 @@ export const accessWorkspaces = <P extends WorkspacePayload, D extends Workspace
 
     const { creatorID } = ctx.data;
 
-    return (await Promise.all(workspaceIDs.map((workspaceID) => self.services.workspace.canRead(creatorID, workspaceID)))).every(Boolean);
+    return (await Promise.all(workspaceIDs.map((workspaceID) => self.services.workspace.access.canRead(creatorID, workspaceID)))).every(Boolean);
     // eslint-disable-next-line no-extra-bind
   }.bind(self);
 

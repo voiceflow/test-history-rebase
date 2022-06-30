@@ -8,6 +8,7 @@ import { VoiceflowConstants, VoiceflowVersion } from '@voiceflow/voiceflow-types
 import { AxiosInstance } from 'axios';
 
 import { ExtraOptions } from './types';
+import createResourceClient from './utils/resource';
 
 export type VersionUpdateData = Pick<
   BaseModels.Version.Model<BaseModels.Version.PlatformData<AnyRecord, AnyRecord>>,
@@ -46,11 +47,7 @@ const Client = ({ api, alexa, google, dialogflow, general }: ExtraOptions) => {
   );
 
   return {
-    canRead: (creatorID: number, versionID: string) =>
-      api
-        .head(`/v2/user/${creatorID}/versions/${versionID}`)
-        .then(() => true)
-        .catch(() => false),
+    ...createResourceClient(api, 'versions'),
 
     replaceResources: (versionID: string, version: VersionUpdateData, diagrams: DiagramUpdateData[]) =>
       api.put(`/v2/versions/${versionID}/resources`, { version, diagrams }),

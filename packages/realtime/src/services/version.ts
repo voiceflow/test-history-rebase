@@ -6,35 +6,13 @@ import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import type { DiagramUpdateData, VersionUpdateData } from '@/clients/voiceflow/version';
 
 import { AbstractControl } from '../control';
+import AccessCache from './utils/accessCache';
 
 type StartingBlockMap = Record<string, Realtime.diagram.DiagramStartingBlockMap>;
 type IntentStepsMap = Record<string, Realtime.diagram.DiagramIntentStepMap>;
 
 class VersionService extends AbstractControl {
-  private static getCanReadKey({ versionID, creatorID }: { versionID: string; creatorID: number }): string {
-    return `versions:${versionID}:can-read:${creatorID}`;
-  }
-
-  private canReadCache = this.clients.cache.createKeyValue({
-    expire: 60,
-    adapter: this.clients.cache.adapters.booleanAdapter,
-    keyCreator: VersionService.getCanReadKey,
-  });
-
-  public async canRead(creatorID: number, versionID: string): Promise<boolean> {
-    const cachedCanRead = await this.canReadCache.get({ versionID, creatorID });
-
-    if (cachedCanRead !== null) {
-      return cachedCanRead;
-    }
-
-    const client = await this.services.voiceflow.getClientByUserID(creatorID);
-    const canRead = await client.version.canRead(creatorID, versionID);
-
-    await this.canReadCache.set({ versionID, creatorID }, canRead);
-
-    return canRead;
-  }
+  public access = new AccessCache('version', this.clients, this.services);
 
   public async get<P extends BaseModels.Version.PlatformData>(creatorID: number, versionID: string): Promise<BaseModels.Version.Model<P>> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);

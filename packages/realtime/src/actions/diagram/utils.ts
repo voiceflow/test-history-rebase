@@ -22,7 +22,7 @@ export abstract class AbstractDiagramActionControl<
   D extends BaseContextData = BaseContextData
 > extends AbstractActionControl<P, D> {
   protected access = (ctx: Context<D>, action: Action<P>): Promise<boolean> =>
-    this.services.diagram.canRead(ctx.data.creatorID, action.payload.diagramID);
+    this.services.diagram.access.canRead(ctx.data.creatorID, action.payload.diagramID);
 
   protected resend = (_: Context<D>, action: Action<P>): Resend => ({
     channel: Realtime.Channels.diagram.build({

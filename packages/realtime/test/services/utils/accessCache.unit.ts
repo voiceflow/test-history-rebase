@@ -1,16 +1,16 @@
 import { expect } from 'chai';
 import sinon from 'sinon';
 
-import DiagramService from '@/services/diagram';
+import AccessCache from '@/services/utils/accessCache';
 
-describe('Diagram service unit tests', () => {
+describe('Access cache unit tests', () => {
   afterEach(() => {
     sinon.restore();
   });
 
   describe('canRead', () => {
-    it('works', async () => {
-      const diagramID = 'testDiagramID';
+    it('check and update read access cache', async () => {
+      const resourceID = 'testDiagramID';
       const creatorID = 123;
 
       const voiceflowClient = {
@@ -40,12 +40,12 @@ describe('Diagram service unit tests', () => {
         },
       };
 
-      const diagramService = new DiagramService({ services, clients } as any);
+      const cache = new AccessCache('diagram', clients as any, services as any);
 
-      await expect(diagramService.canRead(creatorID, diagramID)).to.eventually.be.true;
-      expect(keyValueCacheClient.get).to.be.calledWithExactly({ diagramID, creatorID });
-      expect(keyValueCacheClient.set).to.be.calledWithExactly({ diagramID, creatorID }, true);
-      expect(voiceflowClient.diagram.canRead).be.calledWithExactly(creatorID, diagramID);
+      await expect(cache.canRead(creatorID, resourceID)).to.eventually.be.true;
+      expect(keyValueCacheClient.get).to.be.calledWithExactly({ resourceID, creatorID });
+      expect(keyValueCacheClient.set).to.be.calledWithExactly({ resourceID, creatorID }, true);
+      expect(voiceflowClient.diagram.canRead).be.calledWithExactly(creatorID, resourceID);
     });
   });
 });

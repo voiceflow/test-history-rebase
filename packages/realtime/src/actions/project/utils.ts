@@ -17,8 +17,8 @@ export const accessProject = <P extends Realtime.BaseProjectPayload, D extends W
 
     return (
       await Promise.all([
-        this.services.workspace.canRead(creatorID, action.payload.workspaceID),
-        this.services.project.canRead(creatorID, action.payload.projectID),
+        this.services.workspace.access.canRead(creatorID, action.payload.workspaceID),
+        this.services.project.access.canRead(creatorID, action.payload.projectID),
       ])
     ).every(Boolean);
   }.bind(self);

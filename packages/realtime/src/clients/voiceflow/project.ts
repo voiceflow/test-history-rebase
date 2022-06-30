@@ -5,19 +5,7 @@ import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { AxiosInstance } from 'axios';
 
 import { ExtraOptions } from './types';
-
-interface ProjectClient {
-  canRead: (creatorID: number, projectID: string) => Promise<boolean>;
-  deleteV2: (projectID: string) => Promise<boolean>;
-  platform: <P extends BaseModels.Project.Model<any, any>>(
-    platform?: Nullish<VoiceflowConstants.PlatformType>
-  ) => ProjectPlatformClient<P> & {
-    alexa: ProjectPlatformClient<Realtime.AlexaProject>;
-    google: ProjectPlatformClient<Realtime.GoogleProject>;
-    general: ProjectPlatformClient<Realtime.VoiceflowProject>;
-    dialogflow: ProjectPlatformClient<Realtime.DialogflowProject>;
-  };
-}
+import createResourceClient from './utils/resource';
 
 export interface ProjectPlatformClient<P extends BaseModels.Project.Model<any, any>> {
   duplicate: (projectID: string, data: Realtime.NewProject, params?: { channel: string; onboarding: boolean }) => Promise<P>;
@@ -27,7 +15,7 @@ const PlatformClient = <P extends BaseModels.Project.Model<any, any>>(axios: Axi
   duplicate: (projectID, data, params?) => axios.post<P>(`/project/${projectID}/copy`, data, { params }).then((res) => res.data),
 });
 
-const Client = ({ api, alexa, google, dialogflow, general }: ExtraOptions): ProjectClient => {
+const Client = ({ api, alexa, google, dialogflow, general }: ExtraOptions) => {
   const alexaClient = PlatformClient<Realtime.AlexaProject>(alexa);
   const googleClient = PlatformClient<Realtime.GoogleProject>(google);
   const dialogflowClient = PlatformClient<Realtime.DialogflowProject>(dialogflow);
@@ -42,14 +30,10 @@ const Client = ({ api, alexa, google, dialogflow, general }: ExtraOptions): Proj
       [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: dialogflowClient,
     },
     generalClient
-  );
+  ) as <P extends BaseModels.Project.Model<any, any>>(platform?: Nullish<VoiceflowConstants.PlatformType>) => ProjectPlatformClient<P>;
 
   return {
-    canRead: (creatorID: number, projectID: string): Promise<boolean> =>
-      api
-        .head(`/v2/user/${creatorID}/projects/${projectID}`)
-        .then(() => true)
-        .catch(() => false),
+    ...createResourceClient(api, 'projects'),
 
     deleteV2: (projectID: string): Promise<boolean> => api.delete(`/v3/projects/${projectID}`),
 
@@ -58,8 +42,10 @@ const Client = ({ api, alexa, google, dialogflow, general }: ExtraOptions): Proj
       google: googleClient,
       dialogflow: dialogflowClient,
       general: generalClient,
-    }) as any,
+    }),
   };
 };
 
 export default Client;
+
+export type ProjectClient = ReturnType<typeof Client>;

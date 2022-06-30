@@ -2,12 +2,11 @@ import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { AbstractControl, ControlOptions } from '../../control';
+import AccessCache from '../utils/accessCache';
 import WorkspaceMemberService from './member';
 
 class WorkspaceService extends AbstractControl {
-  private static getCanReadKey({ workspaceID, creatorID }: { workspaceID: string; creatorID: number }): string {
-    return `workspace:${workspaceID}:can-read:${creatorID}`;
-  }
+  public access = new AccessCache('workspace', this.clients, this.services);
 
   public member: WorkspaceMemberService;
 
@@ -15,27 +14,6 @@ class WorkspaceService extends AbstractControl {
     super(options);
 
     this.member = new WorkspaceMemberService(options);
-  }
-
-  private canReadCache = this.clients.cache.createKeyValue({
-    expire: 60,
-    adapter: this.clients.cache.adapters.booleanAdapter,
-    keyCreator: WorkspaceService.getCanReadKey,
-  });
-
-  public async canRead(creatorID: number, workspaceID: string): Promise<boolean> {
-    const cachedCanRead = await this.canReadCache.get({ workspaceID, creatorID });
-
-    if (cachedCanRead !== null) {
-      return cachedCanRead;
-    }
-
-    const client = await this.services.voiceflow.getClientByUserID(creatorID);
-    const canRead = await client.workspace.canRead(creatorID, workspaceID);
-
-    await this.canReadCache.set({ workspaceID, creatorID }, canRead);
-
-    return canRead;
   }
 
   public async get(creatorID: number, workspaceID: string): Promise<Realtime.DBWorkspace> {

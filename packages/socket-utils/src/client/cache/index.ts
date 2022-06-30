@@ -7,6 +7,7 @@ import SetCache from './set';
 import { BaseAdapter, BaseHashAdapter, BaseKeyExtractor, Options } from './types';
 
 export { Hash } from './types';
+export { HashCache, KeyValueCache, SetCache };
 
 export class Cache {
   private redis: Redis;

@@ -12,7 +12,7 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
   protected channel = Realtime.Channels.version;
 
   protected access = async (ctx: ChannelContext<Realtime.Channels.VersionChannelParams>): Promise<boolean> => {
-    return this.services.version.canRead(Number(ctx.userId), ctx.params.versionID);
+    return this.services.version.access.canRead(Number(ctx.userId), ctx.params.versionID);
   };
 
   protected load = async (ctx: ChannelContext<Realtime.Channels.VersionChannelParams>): Promise<SendBackActions> => {

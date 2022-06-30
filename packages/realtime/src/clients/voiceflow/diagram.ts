@@ -3,6 +3,7 @@ import { AnyRecord, Nullish } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { ExtraOptions } from './types';
+import createResourceClient from './utils/resource';
 
 export interface RemoveBuiltInLink {
   nodeID: string;
@@ -55,11 +56,7 @@ const nodeDataUpdates = <D extends AnyRecord>(nodeID: string, data: D) => {
 };
 
 const Client = ({ api }: ExtraOptions) => ({
-  canRead: (creatorID: number, diagramID: string) =>
-    api
-      .head(`/v2/user/${creatorID}/diagrams/${diagramID}`)
-      .then(() => true)
-      .catch(() => false),
+  ...createResourceClient(api, 'diagrams'),
 
   patch: (diagramID: string, data: Partial<Realtime.Diagram>) => api.patch(`/v3/diagrams/${diagramID}`, data),
 

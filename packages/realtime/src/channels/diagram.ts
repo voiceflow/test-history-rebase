@@ -18,7 +18,7 @@ class DiagramChannel extends AbstractChannelControl<Realtime.Channels.DiagramCha
   protected channel = Realtime.Channels.diagram;
 
   protected access = async (ctx: DiagramChannelContext): Promise<boolean> => {
-    return this.services.diagram.canRead(Number(ctx.userId), ctx.params.diagramID);
+    return this.services.diagram.access.canRead(Number(ctx.userId), ctx.params.diagramID);
   };
 
   protected load = async (ctx: DiagramChannelContext): Promise<SendBackActions> => {

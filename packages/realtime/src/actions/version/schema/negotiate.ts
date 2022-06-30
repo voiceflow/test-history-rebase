@@ -14,7 +14,7 @@ class NegotiateSchema extends AbstractActionControl<Realtime.version.schema.Nego
   protected actionCreator = Realtime.version.schema.negotiate.started;
 
   access = (ctx: Context, action: Action<Realtime.version.schema.NegotiatePayload>): Promise<boolean> =>
-    this.services.version.canRead(ctx.data.creatorID, action.payload.versionID);
+    this.services.version.access.canRead(ctx.data.creatorID, action.payload.versionID);
 
   protected resend = terminateResend;
 
@@ -27,9 +27,15 @@ class NegotiateSchema extends AbstractActionControl<Realtime.version.schema.Nego
       this.services.version.get(creatorID, versionID),
     ]);
     const { teamID: workspaceID } = await this.services.project.get(creatorID, projectID);
-    const isMigrationSystemEnabled = await this.services.workspace.isFeatureEnabled(creatorID, workspaceID, Realtime.FeatureFlag.MIGRATION_SYSTEM);
+    const canWriteProject = await this.services.project.access.canWrite(creatorID, projectID);
 
     const skipResult = { workspaceID, projectID, schemaVersion: currentSchemaVersion };
+
+    if (!canWriteProject) {
+      return skipResult;
+    }
+
+    const isMigrationSystemEnabled = await this.services.workspace.isFeatureEnabled(creatorID, workspaceID, Realtime.FeatureFlag.MIGRATION_SYSTEM);
 
     if (isMigrationSystemEnabled) {
       if (targetSchemaVersion > proposedSchemaVersion) {

@@ -9,7 +9,7 @@ class UpdateManyNodeData extends AbstractDiagramActionControl<Realtime.node.Upda
 
   protected access = async (ctx: Context, action: Action<Realtime.node.UpdateManyDataPayload>): Promise<boolean> => {
     const [canRead, ...isLocked] = await Promise.all([
-      this.services.diagram.canRead(ctx.data.creatorID, action.payload.diagramID),
+      this.services.diagram.access.canRead(ctx.data.creatorID, action.payload.diagramID),
       ...action.payload.nodes.map((data) =>
         this.services.lock.isEntityLockedByType(
           ctx.nodeId,

@@ -18,7 +18,7 @@ class DuplicateProject extends AbstractProjectResourceControl<Realtime.project.D
   ): Promise<boolean> => {
     if (!(await accessWorkspaces(this)(ctx, action, meta))) return false;
 
-    return this.services.workspace.canRead(ctx.data.creatorID, action.payload.data.teamID);
+    return this.services.workspace.access.canRead(ctx.data.creatorID, action.payload.data.teamID);
   };
 
   protected resend = terminateResend;

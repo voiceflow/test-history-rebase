@@ -8,7 +8,7 @@ class ProjectChannel extends AbstractChannelControl<Realtime.Channels.ProjectCha
   protected channel = Realtime.Channels.project;
 
   protected access = async (ctx: ChannelContext<Realtime.Channels.ProjectChannelParams>): Promise<boolean> => {
-    return this.services.project.canRead(Number(ctx.userId), ctx.params.projectID);
+    return this.services.project.access.canRead(Number(ctx.userId), ctx.params.projectID);
   };
 
   protected load = async (ctx: ChannelContext<Realtime.Channels.ProjectChannelParams>): Promise<SendBackActions> => {

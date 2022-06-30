@@ -14,41 +14,19 @@ import type {
 
 import { HEARTBEAT_EXPIRE_TIMEOUT } from '../constants';
 import { AbstractControl } from '../control';
+import AccessCache from './utils/accessCache';
 
 class DiagramService extends AbstractControl {
-  private static getCanReadKey({ diagramID, creatorID }: { diagramID: string; creatorID: number }): string {
-    return `diagrams:${diagramID}:can-read:${creatorID}`;
-  }
-
   private static getConnectedNodesKey({ diagramID }: { diagramID: string }): string {
     return `diagrams:${diagramID}:nodes`;
   }
-
-  private canReadCache = this.clients.cache.createKeyValue({
-    expire: 60,
-    adapter: this.clients.cache.adapters.booleanAdapter,
-    keyCreator: DiagramService.getCanReadKey,
-  });
 
   private connectedNodesCache = this.clients.cache.createSet({
     expire: HEARTBEAT_EXPIRE_TIMEOUT,
     keyCreator: DiagramService.getConnectedNodesKey,
   });
 
-  public async canRead(creatorID: number, diagramID: string): Promise<boolean> {
-    const cachedCanRead = await this.canReadCache.get({ diagramID, creatorID });
-
-    if (cachedCanRead !== null) {
-      return cachedCanRead;
-    }
-
-    const client = await this.services.voiceflow.getClientByUserID(creatorID);
-    const canRead = await client.diagram.canRead(creatorID, diagramID);
-
-    await this.canReadCache.set({ diagramID, creatorID }, canRead);
-
-    return canRead;
-  }
+  public access = new AccessCache('diagram', this.clients, this.services);
 
   public async connectNode(diagramID: string, nodeID: string): Promise<void> {
     await this.connectedNodesCache.add({ diagramID }, nodeID);

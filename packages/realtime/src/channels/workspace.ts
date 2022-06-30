@@ -44,7 +44,7 @@ class WorkspaceChannel extends AbstractChannelControl<Realtime.Channels.Workspac
   }
 
   protected access = async (ctx: ChannelContext<Realtime.Channels.WorkspaceChannelParams>): Promise<boolean> => {
-    return this.services.workspace.canRead(Number(ctx.userId), ctx.params.workspaceID);
+    return this.services.workspace.access.canRead(Number(ctx.userId), ctx.params.workspaceID);
   };
 
   protected load = async (ctx: ChannelContext<Realtime.Channels.WorkspaceChannelParams>): Promise<SendBackActions> => {

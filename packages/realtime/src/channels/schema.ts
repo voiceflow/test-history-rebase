@@ -7,7 +7,7 @@ class SchemaChannel extends AbstractChannelControl<Realtime.Channels.SchemaChann
   protected channel = Realtime.Channels.schema;
 
   protected access = async (ctx: ChannelContext<Realtime.Channels.SchemaChannelParams>): Promise<boolean> => {
-    return this.services.version.canRead(Number(ctx.userId), ctx.params.versionID);
+    return this.services.version.access.canRead(Number(ctx.userId), ctx.params.versionID);
   };
 }
 

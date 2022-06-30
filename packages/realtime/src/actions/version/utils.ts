@@ -14,9 +14,9 @@ export const accessVersion = <P extends Realtime.BaseVersionPayload, D extends B
 
     return (
       await Promise.all([
-        this.services.workspace.canRead(creatorID, action.payload.workspaceID),
-        this.services.project.canRead(creatorID, action.payload.projectID),
-        this.services.version.canRead(creatorID, action.payload.versionID),
+        this.services.workspace.access.canRead(creatorID, action.payload.workspaceID),
+        this.services.project.access.canRead(creatorID, action.payload.projectID),
+        this.services.version.access.canRead(creatorID, action.payload.versionID),
       ])
     ).every(Boolean);
   }.bind(self);

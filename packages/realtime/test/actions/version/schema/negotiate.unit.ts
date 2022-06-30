@@ -25,7 +25,9 @@ describe('version.schema.NEGOTIATE action unit tests', () => {
       const options = {
         services: {
           version: {
-            canRead: sinon.stub().resolves(true),
+            access: {
+              canRead: sinon.stub().resolves(true),
+            },
           },
         },
       };
@@ -34,14 +36,16 @@ describe('version.schema.NEGOTIATE action unit tests', () => {
       const canAccess = await control.access(context as any, action as any);
 
       expect(canAccess).to.be.true;
-      expect(options.services.version.canRead).to.be.calledWithExactly(creatorID, versionID);
+      expect(options.services.version.access.canRead).to.be.calledWithExactly(creatorID, versionID);
     });
 
     it('does not allow access', async () => {
       const options = {
         services: {
           version: {
-            canRead: sinon.stub().resolves(false),
+            access: {
+              canRead: sinon.stub().resolves(false),
+            },
           },
         },
       };
@@ -71,6 +75,34 @@ describe('version.schema.NEGOTIATE action unit tests', () => {
       expect(control.$reply).to.be.calledWithExactly(Realtime.version.schema.negotiate, sinon.match.func);
     });
 
+    it('skip if user does not have write access', async () => {
+      const schemaVersion = Realtime.SchemaVersion.V1;
+      const options = {
+        services: {
+          project: {
+            get: sinon.stub().resolves({ teamID: workspaceID }),
+            access: {
+              canWrite: sinon.stub().resolves(false),
+            },
+          },
+          version: {
+            get: sinon.stub().resolves({ projectID }),
+          },
+          migrate: {
+            getTargetSchemaVersion: sinon.stub().resolves(schemaVersion),
+          },
+        },
+      };
+      const action = { payload: { versionID } };
+      const control = new NegotiateControl(options as any);
+
+      const result = await getReplyHandler(control)(context as any, action as any, {} as any);
+
+      expect(result).to.eql({ workspaceID, projectID, schemaVersion });
+      expect(options.services.version.get).to.be.calledWithExactly(creatorID, versionID);
+      expect(options.services.project.get).to.be.calledWithExactly(creatorID, projectID);
+    });
+
     it('skip if migration_system feature disabled', async () => {
       const schemaVersion = Realtime.SchemaVersion.V1;
       const options = {
@@ -80,6 +112,9 @@ describe('version.schema.NEGOTIATE action unit tests', () => {
           },
           project: {
             get: sinon.stub().resolves({ teamID: workspaceID }),
+            access: {
+              canWrite: sinon.stub().resolves(true),
+            },
           },
           version: {
             get: sinon.stub().resolves({ projectID }),
@@ -108,6 +143,9 @@ describe('version.schema.NEGOTIATE action unit tests', () => {
           },
           project: {
             get: sinon.stub().resolves({ teamID: workspaceID }),
+            access: {
+              canWrite: sinon.stub().resolves(true),
+            },
           },
           version: {
             get: sinon.stub().resolves({ projectID }),
@@ -141,6 +179,9 @@ describe('version.schema.NEGOTIATE action unit tests', () => {
           },
           project: {
             get: sinon.stub().resolves({ teamID: workspaceID }),
+            access: {
+              canWrite: sinon.stub().resolves(true),
+            },
           },
           version: {
             get: sinon.stub().resolves({ projectID }),
@@ -175,6 +216,9 @@ describe('version.schema.NEGOTIATE action unit tests', () => {
           },
           project: {
             get: sinon.stub().resolves({ teamID: workspaceID, _version: currentSchemaVersion }),
+            access: {
+              canWrite: sinon.stub().resolves(true),
+            },
           },
           version: {
             get: sinon.stub().resolves({ projectID }),
@@ -209,6 +253,9 @@ describe('version.schema.NEGOTIATE action unit tests', () => {
           },
           project: {
             get: sinon.stub().resolves({ teamID: workspaceID, _version: currentSchemaVersion }),
+            access: {
+              canWrite: sinon.stub().resolves(true),
+            },
           },
           version: {
             get: sinon.stub().resolves({ projectID }),
@@ -241,6 +288,9 @@ describe('version.schema.NEGOTIATE action unit tests', () => {
           },
           project: {
             get: sinon.stub().resolves({ teamID: workspaceID, _version: currentSchemaVersion }),
+            access: {
+              canWrite: sinon.stub().resolves(true),
+            },
           },
           version: {
             get: sinon.stub().resolves({ projectID }),
@@ -273,6 +323,9 @@ describe('version.schema.NEGOTIATE action unit tests', () => {
           },
           project: {
             get: sinon.stub().resolves({ teamID: workspaceID, _version: currentSchemaVersion }),
+            access: {
+              canWrite: sinon.stub().resolves(true),
+            },
           },
           version: {
             get: sinon.stub().resolves({ projectID }),

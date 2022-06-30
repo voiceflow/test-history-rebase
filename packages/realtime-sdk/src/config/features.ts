@@ -47,6 +47,8 @@ export enum FeatureFlag {
 
   REVISED_CANVAS_MENU = 'revised_canvas_menu',
 
+  PRODUCTION_VERSION_MANAGEMENT = 'production_version_management',
+
   // canvas and editor updates
   INTEGRATION_STEP_CLEANUP = 'integration_step_cleanup',
   CODE_STEP_CLEANUP = 'code_step_cleanup',
@@ -55,5 +57,5 @@ export enum FeatureFlag {
   SET_STEP_CLEANUP = 'set_step_cleanup',
   IF_STEP_CLEANUP = 'if_step_cleanup',
   FLOW_STEP_CLEANUP = 'flow_step_cleanup',
-  PRODUCTION_VERSION_MANAGEMENT = 'production_version_management',
+  IMAGE_STEP_CLEANUP = 'image_step_cleanup',
 }

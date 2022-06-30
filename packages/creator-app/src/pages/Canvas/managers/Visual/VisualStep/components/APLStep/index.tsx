@@ -5,7 +5,6 @@ import React from 'react';
 import { HSLShades } from '@/constants';
 import { StepLabelVariant } from '@/constants/canvas';
 import Step, { Item, Section } from '@/pages/Canvas/components/Step';
-import { NODE_CONFIG } from '@/pages/Canvas/managers/Display/constants';
 import { ConnectedStep } from '@/pages/Canvas/managers/types';
 import { isVariable, transformVariablesToReadable } from '@/utils/slot';
 
@@ -21,7 +20,7 @@ export const APLStep: React.FC<APLStepProps> = ({ label, nodeID, image, nextPort
   <Step nodeID={nodeID} image={image}>
     <Section>
       <Item
-        icon={NODE_CONFIG.icon}
+        icon="blocks"
         label={label}
         portID={nextPortID}
         palette={palette}

@@ -100,6 +100,7 @@ const MANAGERS_BY_FEATURE: Partial<Record<BlockType, FeatureFlag>> = {
   [BlockType.SET]: FeatureFlag.SET_STEP_CLEANUP,
   [BlockType.IFV2]: FeatureFlag.IF_STEP_CLEANUP,
   [BlockType.COMPONENT]: FeatureFlag.FLOW_STEP_CLEANUP,
+  [BlockType.VISUAL]: FeatureFlag.IMAGE_STEP_CLEANUP,
 };
 
 export type ManagersMap = typeof MANAGERS_BY_TYPE;

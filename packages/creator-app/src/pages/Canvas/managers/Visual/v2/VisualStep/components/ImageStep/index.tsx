@@ -11,6 +11,8 @@ import { ConnectedStep } from '@/pages/Canvas/managers/types';
 import { getLabel } from '@/pages/Canvas/managers/Visual/utils';
 import { isVariable } from '@/utils/slot';
 
+import ImageStepIcon from './components/ImageStepIcon';
+
 export interface ImageStepProps {
   image: string | null;
   label: string | null;
@@ -22,21 +24,7 @@ export interface ImageStepProps {
 
 export const ImageStep: React.FC<ImageStepProps> = ({ nodeID, image, nextPortID, aspectRatio, palette }) => (
   <Step nodeID={nodeID} image={image} imageAspectRatio={aspectRatio} imagePosition="top center">
-    {!image && (
-      <Item
-        icon="display"
-        iconSize={30}
-        iconStyle={{
-          position: 'relative',
-          top: '10px',
-        }}
-        title="Image"
-        image={image}
-        portID={nextPortID}
-        palette={palette}
-        placeholder="Upload an image or GIF"
-      />
-    )}
+    {!image && <Item prefix={<ImageStepIcon />} title="Image" portID={nextPortID} palette={palette} placeholder="Upload an image or GIF" v2 />}
 
     {image && nextPortID && (
       <PortEntityProvider id={nextPortID}>

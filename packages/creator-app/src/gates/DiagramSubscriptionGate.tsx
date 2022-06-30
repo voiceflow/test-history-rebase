@@ -13,11 +13,12 @@ const DiagramSubscriptionGate: React.FC = ({ children }) => {
   const workspaceID = useSelector(Session.activeWorkspaceIDSelector);
   const creatorDiagramID = useSelector(CreatorV2.activeDiagramIDSelector);
 
-  const isSubscribed = useDiagramSubscription({ workspaceID, projectID, versionID, diagramID }, [workspaceID, projectID, versionID, diagramID]);
+  const context = React.useMemo(() => ({ workspaceID, projectID, versionID, diagramID }), [workspaceID, projectID, versionID, diagramID]);
+  const isSubscribed = useDiagramSubscription(context, [context]);
 
   return (
     <LoadingGate key={creatorDiagramID} label="Diagram" internalName={DiagramSubscriptionGate.name} isLoaded={!!creatorDiagramID}>
-      <DiagramHeartbeatProvider diagramID={diagramID} isSubscribed={isSubscribed}>
+      <DiagramHeartbeatProvider isSubscribed={isSubscribed} diagramID={creatorDiagramID} context={context}>
         {children}
       </DiagramHeartbeatProvider>
     </LoadingGate>

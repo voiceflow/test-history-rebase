@@ -17,12 +17,16 @@ export const activeVersionContextSelector = createStructuredSelector<State, Acti
   versionID: Session.activeVersionIDSelector,
 });
 
-export const getActiveVersionContext = (state: State): NonNullishRecord<ActiveVersionContext> => {
-  const context = activeVersionContextSelector(state);
-
+export const assertVersionContext: (context: ActiveVersionContext) => asserts context is NonNullishRecord<ActiveVersionContext> = (context) => {
   Errors.assertWorkspaceID(context.workspaceID);
   Errors.assertProjectID(context.projectID);
   Errors.assertVersionID(context.versionID);
+};
 
-  return context as NonNullishRecord<ActiveVersionContext>;
+export const getActiveVersionContext = (state: State): NonNullishRecord<ActiveVersionContext> => {
+  const context = activeVersionContextSelector(state);
+
+  assertVersionContext(context);
+
+  return context;
 };

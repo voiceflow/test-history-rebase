@@ -1,9 +1,10 @@
-import { Nullish, Utils } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
 import * as RealtimeSDK from '@voiceflow/realtime-sdk';
 import { useContextApi } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Diagram from '@/ducks/diagram';
+import { ActiveVersionContext } from '@/ducks/version/utils';
 import { useDispatch } from '@/hooks';
 
 export interface DiagramHeartbeatContextValue {
@@ -21,14 +22,17 @@ export const { Consumer: DiagramHeartbeatConsumer } = DiagramHeartbeatContext;
 const HEARTBEAT_TIMEOUT = 7000; // 7 seconds
 
 interface DiagramHeartbeatProviderProps {
-  diagramID: Nullish<string>;
   isSubscribed: boolean;
+  diagramID: string | null;
+  context: ActiveVersionContext;
 }
 
-export const DiagramHeartbeatProvider: React.FC<DiagramHeartbeatProviderProps> = ({ children, diagramID, isSubscribed }) => {
-  const heartbeatIsActive = !!diagramID && isSubscribed;
+export const DiagramHeartbeatProvider: React.FC<DiagramHeartbeatProviderProps> = ({ diagramID, context, children, isSubscribed }) => {
+  const heartbeatIsActive = isSubscribed;
 
-  const activeDiagramHeartbeat = useDispatch(Diagram.activeDiagramHeartbeat);
+  // heartbeat action is attached to a specific context, component should remount for new action
+  const staticContext = React.useMemo(() => ({ ...context, diagramID }), []);
+  const activeDiagramHeartbeat = useDispatch(Diagram.diagramHeartbeat, staticContext);
 
   const locksMapRef = React.useRef<RealtimeSDK.diagram.awareness.HeartbeatLocksMap>({});
   const heartbeatIsActiveRef = React.useRef(heartbeatIsActive);

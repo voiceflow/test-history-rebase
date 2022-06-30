@@ -17,7 +17,7 @@ import * as Session from '@/ducks/session';
 import * as Tracking from '@/ducks/tracking';
 import { CanvasCreationType, VariableType } from '@/ducks/tracking/constants';
 import { waitAsync } from '@/ducks/utils';
-import { getActiveVersionContext } from '@/ducks/version/utils';
+import { ActiveVersionContext, assertVersionContext, getActiveVersionContext } from '@/ducks/version/utils';
 import * as VersionV2 from '@/ducks/versionV2';
 import mutableStore from '@/store/mutable';
 import { Thunk } from '@/store/types';
@@ -356,24 +356,25 @@ export const reorderIntentStepIDs =
     );
   };
 
-export const activeDiagramHeartbeat =
-  (data: {
-    lock: Nullable<{ type: Realtime.diagram.awareness.LockEntityType; entityIDs: string[] }>;
-    unlock: Nullable<{ type: Realtime.diagram.awareness.LockEntityType; entityIDs: string[] }>;
-    locksMap: Realtime.diagram.awareness.HeartbeatLocksMap;
-    forceSync: boolean;
-  }): Thunk =>
-  async (dispatch, getState) => {
-    const state = getState();
-    const diagramID = CreatorV2.activeDiagramIDSelector(state);
-
+export const diagramHeartbeat =
+  (
+    { diagramID, ...context }: ActiveVersionContext & { diagramID: Nullable<string> },
+    data: {
+      lock: Nullable<{ type: Realtime.diagram.awareness.LockEntityType; entityIDs: string[] }>;
+      unlock: Nullable<{ type: Realtime.diagram.awareness.LockEntityType; entityIDs: string[] }>;
+      locksMap: Realtime.diagram.awareness.HeartbeatLocksMap;
+      forceSync: boolean;
+    }
+  ): Thunk =>
+  async (dispatch) => {
     Errors.assertDiagramID(diagramID);
+    assertVersionContext(context);
 
     await dispatch.sync(
       Realtime.diagram.awareness.heartbeat({
-        ...getActiveVersionContext(state),
-        ...data,
         diagramID,
+        ...context,
+        ...data,
       })
     );
   };

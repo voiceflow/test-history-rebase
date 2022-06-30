@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.812.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.811.1...@voiceflow/creator-app@1.812.0) (2022-06-30)
+
+
+### Features
+
+* implement new styling for topics and components menu (CT-18) ([#5699](https://github.com/voiceflow/creator-app/issues/5699)) ([7355950](https://github.com/voiceflow/creator-app/commit/73559509732742ad6464f735bf039894f7d40ba2))
+
+
+
+
+
 ## [1.811.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.811.0...@voiceflow/creator-app@1.811.1) (2022-06-30)
 
 

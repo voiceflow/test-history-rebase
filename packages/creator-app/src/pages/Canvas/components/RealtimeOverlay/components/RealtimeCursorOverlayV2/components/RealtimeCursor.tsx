@@ -1,6 +1,6 @@
 import composeRefs from '@seznam/compose-react-refs';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Cursor, CursorConstants, CursorNametag, preventDefault, SvgIcon } from '@voiceflow/ui';
+import { Cursor, CursorConstants } from '@voiceflow/ui';
 import React from 'react';
 
 import { EventualEngineContext } from '@/contexts';
@@ -32,7 +32,6 @@ const RealtimeCursor = React.forwardRef<HTMLDivElement, RealtimeCursorProps>(({ 
   const removeTimerRef = React.useRef<NodeJS.Timer | null>(null);
   const fadeoutTimerRef = React.useRef<NodeJS.Timer | null>(null);
   const color = React.useMemo(() => (rawColor.includes('|') ? `#${rawColor.split('|')[0]}` : '#f8758f'), [rawColor]);
-  const backgroundColor = React.useMemo(() => (rawColor.includes('|') ? `#${rawColor.split('|')[1]}` : '#fddae1'), [rawColor]);
   const prevCoords = React.useRef<Realtime.Point | null>(null);
 
   const hideCursor = React.useCallback(() => {
@@ -78,6 +77,7 @@ const RealtimeCursor = React.forwardRef<HTMLDivElement, RealtimeCursorProps>(({ 
       const cursorEl = innerRef.current;
       if (!cursorEl) return;
 
+      cursorEl.style.transition = '';
       cursorEl.style.setProperty('transform', `translate(${nextPoint[0]}px, ${nextPoint[1]}px)`);
     });
   }, []);
@@ -130,16 +130,7 @@ const RealtimeCursor = React.forwardRef<HTMLDivElement, RealtimeCursorProps>(({ 
     };
   }, [setTimers, clearTimers]);
 
-  return (
-    <Cursor withTransition={false} ref={composeRefs(innerRef, ref)} style={{ left: 0, top: 0, opacity: 0 }} onClick={preventDefault()}>
-      <SvgIcon icon="cursor" color={color} />
-      <div style={{ position: 'relative' }}>
-        <CursorNametag color={color} backgroundColor={backgroundColor}>
-          {name}
-        </CursorNametag>
-      </div>
-    </Cursor>
-  );
+  return <Cursor withTransition={false} ref={composeRefs(innerRef, ref)} style={{ left: 0, top: 0, opacity: 0 }} name={name} color={color} />;
 });
 
 export default React.memo(RealtimeCursor);

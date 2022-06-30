@@ -1,4 +1,4 @@
-import { Cursor, CursorConstants, CursorNametag, preventDefault, SvgIcon } from '@voiceflow/ui';
+import { Cursor, CursorConstants } from '@voiceflow/ui';
 import React from 'react';
 
 import { OverlayType } from '@/pages/Canvas/constants';
@@ -99,18 +99,8 @@ class RealtimeCursorOverlay extends AbstractOverlay<RealtimeCursorOverlayAPI> {
   renderItem(tabID: string, viewer: RealtimeViewer, ref: React.RefObject<HTMLDivElement>) {
     const [x, y] = this.cursorLocations[tabID]!;
     const color = viewer.color.includes('|') ? `#${viewer.color.split('|')[0]}` : '#f8758f';
-    const backgroundColor = viewer.color.includes('|') ? `#${viewer.color.split('|')[1]}` : '#fddae1';
 
-    return (
-      <Cursor key={tabID} style={{ left: `${x}px`, top: `${y}px` }} onClick={preventDefault()} ref={ref}>
-        <SvgIcon icon="cursor" color={color} />
-        <div style={{ position: 'relative' }}>
-          <CursorNametag color={color} backgroundColor={backgroundColor}>
-            {viewer.name}
-          </CursorNametag>
-        </div>
-      </Cursor>
-    );
+    return <Cursor key={tabID} style={{ left: `${x}px`, top: `${y}px` }} ref={ref} color={color} name={viewer.name} />;
   }
 }
 

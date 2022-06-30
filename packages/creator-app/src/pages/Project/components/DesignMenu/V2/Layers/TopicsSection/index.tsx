@@ -1,0 +1,146 @@
+import { CustomScrollbarsTypes, IconButton, useConst, usePersistFunction } from '@voiceflow/ui';
+import React from 'react';
+import { List } from 'react-virtualized';
+
+import DraggableList from '@/components/DraggableList';
+import VirtualList from '@/components/VirtualList';
+import { Permission } from '@/config/permissions';
+import { DragItem } from '@/constants';
+import { useDidUpdateEffect, usePermission } from '@/hooks';
+import { withTargetValue } from '@/utils/dom';
+
+import SearchInput, { SEARCH_INPUT_HEIGHT } from '../components/SearchInput';
+import { ITEM_HEIGHT, SEARCHABLE_INTENTS_COUNT, SEARCHABLE_TOPICS_COUNT } from '../constants';
+import Header, { HEADER_MIN_HEIGHT } from '../Header';
+import { TopicItem, useTopics } from './hooks';
+import TopicItemComponent from './TopicItem';
+
+const TOPIC_ITEM_HEIGHT = ITEM_HEIGHT;
+
+const TopicsSection: React.FC = () => {
+  const listRef = React.useRef<List>(null);
+  const scrollBarsRef = React.useRef<CustomScrollbarsTypes.Scrollbars>(null);
+
+  const [canReorder] = usePermission(Permission.REORDER_TOPICS_AND_COMPONENTS);
+  const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
+
+  const {
+    topicsItems,
+    searchValue,
+    onCreateTopic,
+    rootDiagramID,
+    focusedNodeID,
+    setSearchValue,
+    activeDiagramID,
+    onReorderTopics,
+    onDragStart,
+    onDragEnd,
+    searchMatchValue,
+    searchTopicsItems,
+    searchOpenedTopics,
+    lastCreatedDiagramID,
+    onClearLastCreatedDiagramID,
+    openedIDs,
+    onToggleOpenedID,
+  } = useTopics();
+
+  const isSearch = !!searchMatchValue;
+
+  const topics = isSearch ? searchTopicsItems : topicsItems;
+  const opened = isSearch ? searchOpenedTopics : openedIDs;
+
+  const rowHeight = usePersistFunction(({ index }: { index: number }) => {
+    const topic = topics[index];
+    const isOpened = opened[topic.id];
+
+    if (!isOpened) {
+      return TOPIC_ITEM_HEIGHT;
+    }
+
+    const childSize = topic.intentItems.length + (!isSearch && rootDiagramID === topic.id ? 1 : 0);
+
+    return TOPIC_ITEM_HEIGHT + ITEM_HEIGHT * (childSize || 1);
+  });
+
+  const canDrag = usePersistFunction(() => !isSearch && canReorder);
+  const getItemKey = useConst((item: TopicItem) => item.id);
+
+  const withSearch = React.useMemo(() => {
+    if (isSearch || topics.length >= SEARCHABLE_TOPICS_COUNT) return true;
+
+    let intentsCount = 0;
+
+    // eslint-disable-next-line no-return-assign
+    return topics.some((topic) => (intentsCount += topic.intentItems.length) >= SEARCHABLE_INTENTS_COUNT);
+  }, [topics, isSearch]);
+
+  useDidUpdateEffect(() => {
+    listRef.current?.recomputeRowHeights();
+  }, [opened, topics]);
+
+  useDidUpdateEffect(() => {
+    const index = topics.findIndex(({ id }) => id === lastCreatedDiagramID);
+
+    if (index !== -1) {
+      const offset = Array.from({ length: index + 1 }).reduce<number>((acc, _, i) => acc + rowHeight({ index: i }), 0);
+
+      scrollBarsRef.current?.scrollTop(offset + HEADER_MIN_HEIGHT + (withSearch ? SEARCH_INPUT_HEIGHT : 0));
+    }
+  }, [lastCreatedDiagramID]);
+
+  return (
+    <DraggableList
+      type={DragItem.TOPICS}
+      canDrag={canDrag}
+      itemProps={{
+        isSearch,
+        onToggleOpen: onToggleOpenedID,
+        openedTopics: opened,
+        focusedNodeID,
+        rootDiagramID,
+        activeDiagramID,
+        searchMatchValue,
+        lastCreatedDiagramID,
+        onClearLastCreatedDiagramID,
+      }}
+      onReorder={onReorderTopics}
+      onEndDrag={onDragEnd}
+      getItemKey={getItemKey}
+      onStartDrag={onDragStart}
+      itemComponent={TopicItemComponent}
+      previewComponent={TopicItemComponent}
+      unmountableDuringDrag
+    >
+      {({ renderItem }) => (
+        <VirtualList
+          ref={scrollBarsRef}
+          size={topics.length}
+          header={
+            <Header
+              label="Topics"
+              rightAction={canEditCanvas && <IconButton icon="plus" variant={IconButton.Variant.BASIC} onClick={onCreateTopic} offsetSize={0} />}
+            >
+              {withSearch ? <SearchInput value={searchValue} onChange={withTargetValue(setSearchValue)} placeholder="Search" /> : null}
+            </Header>
+          }
+          listRef={listRef}
+          rowHeight={rowHeight}
+          renderItem={(index) => {
+            const item = topics[index];
+
+            return renderItem({
+              key: item.id,
+              item,
+              index,
+              isLast: index === topics.length - 1,
+              isFirst: index === 0,
+              itemKey: item.id,
+            });
+          }}
+        />
+      )}
+    </DraggableList>
+  );
+};
+
+export default TopicsSection;

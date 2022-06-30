@@ -36,14 +36,3 @@ export const Content = styled.div`
   width: 100%;
   padding: 12px 16px;
 `;
-
-export const Header = styled.header`
-  color: #132144;
-  font-size: 13px;
-  line-height: normal;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 36px;
-`;

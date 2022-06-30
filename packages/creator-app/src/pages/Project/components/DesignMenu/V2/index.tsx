@@ -1,10 +1,11 @@
-import { IconButton, Resizable, useLocalStorageState } from '@voiceflow/ui';
+import { Resizable, useLocalStorageState } from '@voiceflow/ui';
 import React from 'react';
 
 import { useDidUpdateEffect, useEnableDisable, useTheme } from '@/hooks';
 import StepMenu from '@/pages/Project/components/StepMenu';
 
 import { useMenuHotKeys } from './hooks';
+import Layers from './Layers';
 import ResizeHandle from './ResizeHandle';
 import * as S from './styles';
 
@@ -47,10 +48,7 @@ const DesignMenuV2: React.FC<DesignMenuV2Props> = ({ canvasOnly }) => {
         )}
       >
         <S.Content>
-          <S.Header>
-            Topics
-            <IconButton onClick={() => {}} icon="plus" variant={IconButton.Variant.BASIC} />
-          </S.Header>
+          <Layers />
         </S.Content>
       </Resizable>
     </S.FullHeightContainer>

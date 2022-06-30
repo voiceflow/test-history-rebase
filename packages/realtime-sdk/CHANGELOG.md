@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.120.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.119.0...@voiceflow/realtime-sdk@1.120.0) (2022-06-30)
+
+
+### Features
+
+* image editor cleanup (CT-135) ([#5688](https://github.com/voiceflow/creator-app/issues/5688)) ([ef5ddac](https://github.com/voiceflow/creator-app/commit/ef5ddace60f9de32945370e47297371e15cffa7c))
+
+
+
+
+
 # [1.119.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.118.1...@voiceflow/realtime-sdk@1.119.0) (2022-06-29)
 
 

@@ -1,12 +1,12 @@
 import { Nullish } from '@voiceflow/common';
-import { NestedMenuComponents } from '@voiceflow/ui';
+import { NestedMenuComponents, OverflowText, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
 import { ModalType } from '@/constants';
 import * as VariableState from '@/ducks/variableState';
 import { useDispatch, useModals, useSelector, useToggle, useVariableStatesPlanLimit } from '@/hooks';
 
-import { SelectContainer } from './components';
+import { OverflowWrapper, SelectContainer } from './components';
 
 interface VariableStateOption {
   label: string;
@@ -22,6 +22,7 @@ const VariableStateSelectMenu: React.FC<VariableStateSelectMenuProps> = ({ rende
   const [isSelectMenuOpen, toggleSelectMenuOpen] = useToggle(false);
   const variableStates = useSelector(VariableState.allVariableStatesSelector);
   const updateSelectedVariableStateById = useDispatch(VariableState.updateSelectedVariableStateById);
+  const { open: openVariableStateManagerModal } = useModals(ModalType.VARIABLE_STATES_MANAGER_MODAL);
   const verifyStatesLimit = useVariableStatesPlanLimit();
 
   const variableStateOptions = React.useMemo(
@@ -58,6 +59,12 @@ const VariableStateSelectMenu: React.FC<VariableStateSelectMenuProps> = ({ rende
         <NestedMenuComponents.FooterActions>
           <NestedMenuComponents.FooterAction onClick={verifyStatesLimit(openEditorModal)}>Create New Persona</NestedMenuComponents.FooterAction>
         </NestedMenuComponents.FooterActions>
+      )}
+      renderOptionLabel={(option: VariableStateOption) => (
+        <OverflowWrapper>
+          <OverflowText style={{ display: 'block', overflow: 'hidden' }}>{option.label}</OverflowText>
+          <SvgIcon icon="edit" variant={SvgIcon.Variant.STANDARD} onClick={() => openVariableStateManagerModal({ variableStateID: option.value })} />
+        </OverflowWrapper>
       )}
     />
   );

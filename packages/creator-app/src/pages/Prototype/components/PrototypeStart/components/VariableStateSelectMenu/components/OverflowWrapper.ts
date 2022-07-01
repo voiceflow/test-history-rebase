@@ -2,11 +2,9 @@ import { FlexApart, SvgIcon } from '@voiceflow/ui';
 
 import { styled, transition } from '@/hocs';
 
-const LabelContainer = styled(FlexApart).attrs({ fullWidth: true })`
-  margin: 0 -24px;
-  padding: 0 24px;
+const OverflowWrapper = styled(FlexApart).attrs({ fullWidth: true })`
   height: 100%;
-  width: 226px;
+  width: 100%;
 
   & ${SvgIcon.Container} {
     ${transition('opacity')}
@@ -25,4 +23,4 @@ const LabelContainer = styled(FlexApart).attrs({ fullWidth: true })`
   }
 `;
 
-export default LabelContainer;
+export default OverflowWrapper;

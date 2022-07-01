@@ -8,9 +8,9 @@ import { useDispatch, useHover } from '@/hooks';
 import { useDiagramOptions, useDiagramRename } from '@/pages/Project/hooks';
 import { withEnterPress, withTargetValue } from '@/utils/dom';
 
+import SearchLabel from '../../../../SearchLabel';
 import ItemNameContainer from '../../../components/ItemNameContainer';
 import ItemNameInput from '../../../components/ItemNameInput';
-import SearchLabel from '../../../SearchLabel';
 import * as S from './styles';
 
 interface TopicItemNameProps {

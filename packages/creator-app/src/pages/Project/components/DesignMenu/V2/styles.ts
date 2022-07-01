@@ -31,8 +31,6 @@ export const Content = styled.div`
   display: flex;
   height: 100%;
   background-color: #fdfdfd;
-  flex-direction: column;
-  overflow: hidden;
   width: 100%;
-  padding: 12px 16px;
+  padding: 0 0 12px 16px;
 `;

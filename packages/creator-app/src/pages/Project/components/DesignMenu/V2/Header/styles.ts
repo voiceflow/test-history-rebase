@@ -1,17 +1,17 @@
 import { css, styled, transition } from '@/hocs';
 
-export const MIN_HEIGHT = 36;
+import { HEADER_MIN_HEIGHT } from '../Layers/constants';
 
 export const Container = styled.div<{ isSticky?: boolean; collapsed?: boolean }>`
   ${transition('border-color')}
-
+  background-color: #fdfdfd;
   position: sticky;
   top: 0;
   display: flex;
   flex-direction: column;
   width: 100%;
-  min-height: ${MIN_HEIGHT}px;
-  padding: 10px 0;
+  min-height: ${HEADER_MIN_HEIGHT}px;
+  padding: 10px 2px 10px 12px;
 
   border-bottom: solid 1px transparent;
   z-index: 1;
@@ -27,6 +27,10 @@ export const Container = styled.div<{ isSticky?: boolean; collapsed?: boolean }>
     css`
       padding-bottom: 10px;
     `}
+`;
+
+export const Content = styled.div`
+  padding-right: 16px;
 `;
 
 export const LabelContainer = styled.header`

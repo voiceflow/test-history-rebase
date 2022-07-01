@@ -6,6 +6,7 @@ export const SEARCH_INPUT_HEIGHT = 25;
 
 const SearchInput = styled(Input).attrs({ icon: 'search', iconProps: { size: 16, color: '#6e849a' } })`
   min-height: ${SEARCH_INPUT_HEIGHT}px;
+  background-color: transparent;
   padding: 7px 0 0 0;
   border-radius: 0;
   border: none !important;
@@ -14,6 +15,8 @@ const SearchInput = styled(Input).attrs({ icon: 'search', iconProps: { size: 16,
   line-height: 18px;
 
   ${SvgIcon.Container} {
+    opacity: 0.65;
+    color: #6e849a;
     margin-right: 10px;
   }
 `;

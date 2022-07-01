@@ -3,6 +3,7 @@ import React from 'react';
 
 import { DragPreviewComponentProps, ItemComponentProps } from '@/components/DraggableList';
 
+import Body from '../../../Body';
 import { TopicItem as TopicItemModel } from '../hooks';
 import IntentList from '../IntentList';
 import TopicItemName from './Name';
@@ -44,7 +45,7 @@ const TopicItem: React.ForwardRefRenderFunction<HTMLElement, TopicItemProps> = (
   const isActive = activeDiagramID === diagramID;
 
   return (
-    <>
+    <Body>
       <TopicItemName
         ref={ref}
         name={name}
@@ -73,7 +74,7 @@ const TopicItem: React.ForwardRefRenderFunction<HTMLElement, TopicItemProps> = (
           searchMatchValue={searchMatchValue}
         />
       )}
-    </>
+    </Body>
   );
 };
 

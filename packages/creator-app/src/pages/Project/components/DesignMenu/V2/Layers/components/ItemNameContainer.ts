@@ -2,8 +2,8 @@ import { colors, Flex, ThemeColor } from '@voiceflow/ui';
 
 import { css, styled, transition } from '@/hocs';
 
+import SearchLabel from '../../SearchLabel';
 import { ITEM_HEIGHT } from '../constants';
-import SearchLabel from '../SearchLabel';
 
 interface ItemNameContainerProps {
   isActive?: boolean;

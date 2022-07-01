@@ -3,6 +3,7 @@ import React from 'react';
 
 import { DragPreviewComponentProps, ItemComponentProps } from '@/components/DraggableList';
 
+import Body from '../../../Body';
 import ComponentItemName from '../ComponentItemName';
 import { ComponentItem } from '../hooks';
 
@@ -34,10 +35,10 @@ const FolderItem: React.ForwardRefRenderFunction<HTMLElement, FolderItemProps> =
   const isActive = activeDiagramID === diagramID;
 
   return (
-    <>
+    <Body>
       <ComponentItemName
         ref={ref}
-        icon="systemFolderSmall"
+        icon="systemSymbolSmall"
         name={name}
         isActive={isActive}
         isSearch={isSearch}
@@ -50,7 +51,7 @@ const FolderItem: React.ForwardRefRenderFunction<HTMLElement, FolderItemProps> =
         lastCreatedDiagramID={lastCreatedDiagramID}
         onClearLastCreatedDiagramID={onClearLastCreatedDiagramID}
       />
-    </>
+    </Body>
   );
 };
 

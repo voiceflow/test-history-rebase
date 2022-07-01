@@ -7,7 +7,7 @@ import { DragPreviewComponentProps, ItemComponentProps } from '@/components/Drag
 import * as Router from '@/ducks/router';
 import { useDispatch, useEventualEngine } from '@/hooks';
 
-import SearchLabel from '../../../SearchLabel';
+import SearchLabel from '../../../../SearchLabel';
 import { TopicIntentItem } from '../../hooks';
 import * as S from './styles';
 

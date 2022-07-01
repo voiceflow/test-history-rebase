@@ -11,9 +11,9 @@ import { DragItem } from '@/constants';
 import { useDidUpdateEffect, usePermission } from '@/hooks';
 import { withTargetValue } from '@/utils/dom';
 
+import Header from '../../Header';
 import SearchInput, { SEARCH_INPUT_HEIGHT } from '../components/SearchInput';
-import { HORIZONTAL_DRAG_OFFSET, ITEM_HEIGHT, SEARCHABLE_COMPONENTS_COUNT } from '../constants';
-import Header, { HEADER_MIN_HEIGHT } from '../Header';
+import { HEADER_MIN_HEIGHT, HORIZONTAL_DRAG_OFFSET, ITEM_HEIGHT } from '../constants';
 import FolderItem from './FolderItem';
 import { ComponentItem, useComponents } from './hooks';
 import * as S from './styles';
@@ -53,15 +53,13 @@ const ComponentsSection: React.FC<ComponentsSectionProps> = ({ collapsed, setSec
 
   const getItemKey = useConst((item: ComponentItem) => item.id);
 
-  const withSearch = !collapsed && (isSearch || components.length >= SEARCHABLE_COMPONENTS_COUNT);
-
   useDidUpdateEffect(() => {
     const index = components.findIndex(({ id }) => id === lastCreatedDiagramID);
 
     if (index !== -1) {
       const offset = Array.from({ length: index + 1 }).reduce<number>((acc) => acc + ITEM_HEIGHT, 0);
 
-      scrollBarsRef.current?.scrollTop(offset + HEADER_MIN_HEIGHT + (withSearch ? SEARCH_INPUT_HEIGHT : 0));
+      scrollBarsRef.current?.scrollTop(offset + HEADER_MIN_HEIGHT + SEARCH_INPUT_HEIGHT);
     }
   }, [lastCreatedDiagramID]);
 
@@ -102,7 +100,7 @@ const ComponentsSection: React.FC<ComponentsSectionProps> = ({ collapsed, setSec
                 )
               }
             >
-              {withSearch ? <SearchInput value={searchValue} onChange={withTargetValue(setSearchValue)} placeholder="Search" /> : null}
+              {!!components.length && <SearchInput value={searchValue} onChange={withTargetValue(setSearchValue)} placeholder="Search" />}
             </Header>
           }
           listRef={listRef}
@@ -122,7 +120,8 @@ const ComponentsSection: React.FC<ComponentsSectionProps> = ({ collapsed, setSec
           }}
           renderPlaceholder={({ width }) => (
             <S.Placeholder width={width}>
-              To create a flow, select a collection of blocks and choose <b>‘Create flow’</b> icon in the toolbar.{' '}
+              <SvgIcon size={72} icon="componentOutline" />
+              Flows are reusable collections of saved blocks <br />
               <Link href={Documentation.COMPONENTS_LAYER}>Learn more</Link>
             </S.Placeholder>
           )}

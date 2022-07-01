@@ -5,8 +5,6 @@ import { useScrollContext, useScrollStickySides } from '@/hooks';
 
 import * as S from './styles';
 
-export { MIN_HEIGHT as HEADER_MIN_HEIGHT } from './styles';
-
 interface HeaderProps {
   label: string;
   collapsed?: boolean;
@@ -20,13 +18,15 @@ const Header: React.FC<HeaderProps> = ({ label, children, collapsed, forceSticky
 
   return (
     <S.Container collapsed={collapsed} isSticky={forceSticky || isHeaderSticky}>
-      <S.LabelContainer>
-        {label}
+      <S.Content>
+        <S.LabelContainer>
+          {label}
 
-        {rightAction}
-      </S.LabelContainer>
+          {rightAction}
+        </S.LabelContainer>
 
-      {children}
+        {children}
+      </S.Content>
     </S.Container>
   );
 };

@@ -9,9 +9,9 @@ import { DragItem } from '@/constants';
 import { useDidUpdateEffect, usePermission } from '@/hooks';
 import { withTargetValue } from '@/utils/dom';
 
+import Header from '../../Header';
 import SearchInput, { SEARCH_INPUT_HEIGHT } from '../components/SearchInput';
-import { ITEM_HEIGHT, SEARCHABLE_INTENTS_COUNT, SEARCHABLE_TOPICS_COUNT } from '../constants';
-import Header, { HEADER_MIN_HEIGHT } from '../Header';
+import { HEADER_MIN_HEIGHT, ITEM_HEIGHT } from '../constants';
 import { TopicItem, useTopics } from './hooks';
 import TopicItemComponent from './TopicItem';
 
@@ -65,15 +65,6 @@ const TopicsSection: React.FC = () => {
   const canDrag = usePersistFunction(() => !isSearch && canReorder);
   const getItemKey = useConst((item: TopicItem) => item.id);
 
-  const withSearch = React.useMemo(() => {
-    if (isSearch || topics.length >= SEARCHABLE_TOPICS_COUNT) return true;
-
-    let intentsCount = 0;
-
-    // eslint-disable-next-line no-return-assign
-    return topics.some((topic) => (intentsCount += topic.intentItems.length) >= SEARCHABLE_INTENTS_COUNT);
-  }, [topics, isSearch]);
-
   useDidUpdateEffect(() => {
     listRef.current?.recomputeRowHeights();
   }, [opened, topics]);
@@ -84,7 +75,7 @@ const TopicsSection: React.FC = () => {
     if (index !== -1) {
       const offset = Array.from({ length: index + 1 }).reduce<number>((acc, _, i) => acc + rowHeight({ index: i }), 0);
 
-      scrollBarsRef.current?.scrollTop(offset + HEADER_MIN_HEIGHT + (withSearch ? SEARCH_INPUT_HEIGHT : 0));
+      scrollBarsRef.current?.scrollTop(offset + HEADER_MIN_HEIGHT + SEARCH_INPUT_HEIGHT);
     }
   }, [lastCreatedDiagramID]);
 
@@ -120,7 +111,7 @@ const TopicsSection: React.FC = () => {
               label="Topics"
               rightAction={canEditCanvas && <IconButton icon="plus" variant={IconButton.Variant.BASIC} onClick={onCreateTopic} offsetSize={0} />}
             >
-              {withSearch ? <SearchInput value={searchValue} onChange={withTargetValue(setSearchValue)} placeholder="Search" /> : null}
+              {!!topics.length && <SearchInput value={searchValue} onChange={withTargetValue(setSearchValue)} placeholder="Search" />}
             </Header>
           }
           listRef={listRef}

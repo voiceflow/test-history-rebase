@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.813.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.812.2...@voiceflow/creator-app@1.813.0) (2022-07-02)
+
+
+### Bug Fixes
+
+* overflow in test variable select menu (CT-472) ([#5694](https://github.com/voiceflow/creator-app/issues/5694)) ([3398a04](https://github.com/voiceflow/creator-app/commit/3398a0478ef4591b92ad81d1e16ec8b9db040f49))
+
+
+### Features
+
+* new styles for components section (CT-19) ([#5703](https://github.com/voiceflow/creator-app/issues/5703)) ([f9e61b3](https://github.com/voiceflow/creator-app/commit/f9e61b3e15238d2c42f9ec3c1cd887530c9e038e))
+
+
+
+
+
 ## [1.812.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.812.1...@voiceflow/creator-app@1.812.2) (2022-06-30)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.115.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.114.0...@voiceflow/ui@1.115.0) (2022-07-02)
+
+
+### Features
+
+* new styles for components section (CT-19) ([#5703](https://github.com/voiceflow/creator-app/issues/5703)) ([f9e61b3](https://github.com/voiceflow/creator-app/commit/f9e61b3e15238d2c42f9ec3c1cd887530c9e038e))
+
+
+
+
+
 # [1.114.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.113.1...@voiceflow/ui@1.114.0) (2022-06-30)
 
 

@@ -34,6 +34,9 @@ class IOEngine extends EngineConsumer<{ [OverlayType.CURSOR_V2]: IORealtimeCurso
     this.io = io;
     this.diagramID = diagramID;
 
+    // remove any existing listeners
+    this.io.removeAllListeners();
+
     this.io.on(IO.Event.CURSOR_MOVE, this.onCursorMove);
     this.io.on(IO.Event.NODE_DRAG_MANY, this.onNodeDragMany);
 

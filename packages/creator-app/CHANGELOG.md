@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.813.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.813.0...@voiceflow/creator-app@1.813.1) (2022-07-04)
+
+
+### Bug Fixes
+
+* persist custom action step migration data correctly (VF-3993) ([#5704](https://github.com/voiceflow/creator-app/issues/5704)) ([de7d334](https://github.com/voiceflow/creator-app/commit/de7d33494f01a1d553127631ba2d367d976aba9e))
+
+
+
+
+
 # [1.813.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.812.2...@voiceflow/creator-app@1.813.0) (2022-07-02)
 
 

@@ -34,15 +34,18 @@ const APL: React.FC<APLProps & ConnectedAPLProps> = ({ data, device, resolveAPL,
     if (data) {
       (async () => {
         const context = await resolveAPL(
-          Adapters.alexaDisplayAdapter.fromDB({
-            type: data.aplType,
-            title: data.title,
-            imageURL: data.imageURL,
-            document: data.document,
-            datasource: data.datasource,
-            aplCommands: data.aplCommands,
-            jsonFileName: data.jsonFileName,
-          })
+          Adapters.alexaDisplayAdapter.fromDB(
+            {
+              type: data.aplType,
+              title: data.title,
+              imageURL: data.imageURL,
+              document: data.document,
+              datasource: data.datasource,
+              aplCommands: data.aplCommands,
+              jsonFileName: data.jsonFileName,
+            },
+            { context: {} }
+          )
         );
 
         setAPLContext(context);

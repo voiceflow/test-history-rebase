@@ -5,8 +5,8 @@ import { baseIntentAdapter } from '../base';
 import { createBlockAdapter } from '../utils';
 
 const intentAdapter = createBlockAdapter<BaseNode.Intent.StepData, NodeData.Intent>(
-  (data) => baseIntentAdapter.fromDB(data),
-  (data) => baseIntentAdapter.toDB(data)
+  (data, options) => baseIntentAdapter.fromDB(data, options),
+  (data, options) => baseIntentAdapter.toDB(data, options)
 );
 
 export default intentAdapter;

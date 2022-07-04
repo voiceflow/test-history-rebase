@@ -12,20 +12,20 @@ import {
 } from '../utils';
 
 const interactionAdapter = createBlockAdapter<ChatNode.Interaction.StepData, NodeData.Interaction>(
-  ({ else: elseData, reprompt, chips, noReply, noMatch, buttons, ...baseData }) => {
+  ({ else: elseData, reprompt, chips, noReply, noMatch, buttons, ...baseData }, options) => {
     const migratedNoReply = chatMigrateRepromptToNoReply(noReply, reprompt);
     const noMatchWithFallback = fallbackNoMatch(noMatch, elseData);
 
     return {
-      ...baseInteractionAdapter.fromDB(baseData),
+      ...baseInteractionAdapter.fromDB(baseData, options),
 
       buttons: buttons ?? chipsToIntentButtons(chips),
       noMatch: noMatchWithFallback && chatNoMatchAdapter.fromDB(noMatchWithFallback),
       noReply: migratedNoReply && chatNoReplyAdapter.fromDB(migratedNoReply),
     };
   },
-  ({ noReply, noMatch, buttons, ...baseData }) => ({
-    ...baseInteractionAdapter.toDB(baseData),
+  ({ noReply, noMatch, buttons, ...baseData }, options) => ({
+    ...baseInteractionAdapter.toDB(baseData, options),
 
     chips: null,
     buttons,

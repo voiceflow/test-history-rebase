@@ -27,15 +27,15 @@ export const voiceSpeakDialogAdapter = createAdapter<
 const speakAdapter = createBlockAdapter<
   VoiceNode.Speak.StepData<any>,
   NodeData.Speak,
-  [{ audioVoice: string }],
-  [{ audioVoice: string; defaultVoice: string }]
+  { audioVoice: string },
+  { audioVoice: string; defaultVoice: string }
 >(
-  ({ dialogs, ...baseData }, { audioVoice }) => ({
-    ...baseSpeakAdapter.fromDB(baseData),
+  ({ dialogs, ...baseData }, { audioVoice, ...options }) => ({
+    ...baseSpeakAdapter.fromDB(baseData, options),
     dialogs: voiceSpeakDialogAdapter.mapFromDB(dialogs, { audioVoice }),
   }),
-  ({ dialogs, ...baseData }, { audioVoice, defaultVoice }) => ({
-    ...baseSpeakAdapter.toDB(baseData),
+  ({ dialogs, ...baseData }, { audioVoice, defaultVoice, ...options }) => ({
+    ...baseSpeakAdapter.toDB(baseData, options),
     dialogs: voiceSpeakDialogAdapter.mapToDB(dialogs, { audioVoice, defaultVoice }),
   })
 );

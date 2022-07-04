@@ -9,21 +9,20 @@ import {
   dynamicOnlyOutPortsAdapterV2,
 } from '../utils';
 
-const traceAdapter = createBlockAdapter<
-  BaseNode._v1.StepData<{ name: string; body: string; isBlocking: boolean }> & Record<string, unknown>,
-  NodeData.Trace
->(
-  ({ payload, defaultPath, ports }) => ({
-    name: payload?.name || '',
-    body: payload?.body || '',
-    isBlocking: payload?.isBlocking || false,
-    paths: Array.isArray(ports)
-      ? ports.map((port, index) => ({
-          isDefault: index === defaultPath,
-          label: port?.data?.event?.type || '',
-        }))
-      : [],
-  }),
+const traceAdapter = createBlockAdapter<BaseNode._v1.StepData<{ name: string; body: string; isBlocking: boolean }>, NodeData.Trace>(
+  ({ payload, defaultPath }, options) => {
+    const ports = (options.portsV2?.dynamic ?? options.ports ?? []) as BaseNode._v1.StepPort[];
+
+    return {
+      name: payload?.name || '',
+      body: payload?.body || '',
+      isBlocking: payload?.isBlocking || false,
+      paths: ports.map((port, index) => ({
+        isDefault: index === defaultPath,
+        label: port?.data?.event?.type || '',
+      })),
+    };
+  },
   ({ name, body, paths, isBlocking }) => ({
     _v: 1,
     payload: { name, body, isBlocking },

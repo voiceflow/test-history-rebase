@@ -6,13 +6,13 @@ import { voicePromptAdapter } from '../voice';
 
 // TODO: refactor to use StepData (chat/voice union)
 const promptAdapter = createBlockAdapter<VoiceflowNode.Prompt.VoiceStepData, NodeData.Prompt>(
-  ({ chips, buttons, ...voiceData }) => ({
-    ...voicePromptAdapter.fromDB(voiceData),
+  ({ chips, buttons, ...voiceData }, options) => ({
+    ...voicePromptAdapter.fromDB(voiceData, options),
 
     buttons: buttons ?? chipsToIntentButtons(chips),
   }),
-  ({ buttons, ...voiceData }) => ({
-    ...voicePromptAdapter.toDB(voiceData),
+  ({ buttons, ...voiceData }, options) => ({
+    ...voicePromptAdapter.toDB(voiceData, options),
 
     chips: null,
     buttons,

@@ -5,7 +5,7 @@ import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { createSimpleAdapter } from 'bidirectional-adapter';
 
 import { AdapterContext } from '../types';
-import { APP_BLOCK_TYPE_FROM_DB, DB_BLOCK_TYPE_FROM_APP, getBlockAdapter } from './block';
+import { APP_BLOCK_TYPE_FROM_DB, DB_BLOCK_TYPE_FROM_APP, getBlockAdapters } from './block';
 import { needsMigration } from './utils';
 
 const nodeDataAdapter = createSimpleAdapter<
@@ -22,9 +22,9 @@ const nodeDataAdapter = createSimpleAdapter<
     let data: Partial<NodeData<unknown>> = {};
 
     try {
-      const adapters = getBlockAdapter(platform, projectType, needsMigration(dbType, type));
+      const adapters = getBlockAdapters(platform, projectType, needsMigration(dbType, type));
 
-      data = adapters[type]?.fromDB(dbData, { context }) || { deprecatedType: type, ...dbData };
+      data = adapters[type]?.fromDB(dbData, { context, ports: dbData.ports, portsV2: dbData.portsV2 }) || { deprecatedType: type, ...dbData };
     } catch {
       data = { deprecatedType: type, ...dbData };
     }
@@ -43,7 +43,7 @@ const nodeDataAdapter = createSimpleAdapter<
     let data: BaseModels.BaseDiagramNode['data'] = {};
 
     try {
-      const adapters = getBlockAdapter(platform, projectType);
+      const adapters = getBlockAdapters(platform, projectType);
 
       data = adapters[type]?.toDB(appData as any, { context }) || (appData as any);
     } catch {

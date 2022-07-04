@@ -5,13 +5,13 @@ import { createBlockAdapter } from '../utils';
 import { voiceCaptureAdapter } from '../voice';
 
 const captureAdapter = createBlockAdapter<AlexaNode.Capture.StepData, NodeData.Capture>(
-  (voiceData) => ({
-    ...voiceCaptureAdapter.fromDB(voiceData),
+  (voiceData, options) => ({
+    ...voiceCaptureAdapter.fromDB(voiceData, options),
 
     buttons: null, // no buttons on alexa
   }),
-  (voiceData) => ({
-    ...voiceCaptureAdapter.toDB(voiceData),
+  (voiceData, options) => ({
+    ...voiceCaptureAdapter.toDB(voiceData, options),
 
     chips: null,
     buttons: null,

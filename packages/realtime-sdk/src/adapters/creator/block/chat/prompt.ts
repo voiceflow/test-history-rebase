@@ -12,20 +12,20 @@ import {
 } from '../utils';
 
 const promptAdapter = createBlockAdapter<ChatNode.Prompt.StepData, NodeData.Prompt>(
-  ({ reprompt, noMatches, chips, buttons, noReply, noMatch, ...baseData }) => {
+  ({ reprompt, noMatches, chips, buttons, noReply, noMatch, ...baseData }, options) => {
     const migratedNoReply = chatMigrateRepromptToNoReply(noReply, reprompt);
     const noMatchWithFallback = fallbackNoMatch(noMatch, noMatches);
 
     return {
-      ...basePromptAdapter.fromDB(baseData),
+      ...basePromptAdapter.fromDB(baseData, options),
 
       buttons: buttons ?? chipsToIntentButtons(chips),
       noReply: migratedNoReply && chatNoReplyAdapter.fromDB(migratedNoReply),
       noMatch: noMatchWithFallback && chatNoMatchAdapter.fromDB(noMatchWithFallback),
     };
   },
-  ({ noReply, noMatch, buttons, ...baseData }) => ({
-    ...basePromptAdapter.toDB(baseData),
+  ({ noReply, noMatch, buttons, ...baseData }, options) => ({
+    ...basePromptAdapter.toDB(baseData, options),
 
     chips: null,
     buttons,

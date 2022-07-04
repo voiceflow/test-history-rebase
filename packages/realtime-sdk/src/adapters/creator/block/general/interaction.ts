@@ -6,13 +6,13 @@ import { voiceInteractionAdapter } from '../voice';
 
 // TODO: refactor to use StepData (chat/voice union)
 const interactionAdapter = createBlockAdapter<VoiceflowNode.Interaction.VoiceStepData, NodeData.Interaction>(
-  ({ chips, buttons, ...voiceData }) => ({
-    ...voiceInteractionAdapter.fromDB(voiceData),
+  ({ chips, buttons, ...voiceData }, options) => ({
+    ...voiceInteractionAdapter.fromDB(voiceData, options),
 
     buttons: buttons ?? chipsToIntentButtons(chips),
   }),
-  ({ buttons, ...voiceData }) => ({
-    ...voiceInteractionAdapter.toDB(voiceData),
+  ({ buttons, ...voiceData }, options) => ({
+    ...voiceInteractionAdapter.toDB(voiceData, options),
 
     chips: null,
     buttons,

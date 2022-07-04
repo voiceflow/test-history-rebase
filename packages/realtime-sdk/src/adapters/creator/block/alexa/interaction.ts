@@ -5,13 +5,13 @@ import { createBlockAdapter } from '../utils';
 import { voiceInteractionAdapter } from '../voice';
 
 const interactionAdapter = createBlockAdapter<AlexaNode.Interaction.StepData, NodeData.Interaction>(
-  (voiceData) => ({
-    ...voiceInteractionAdapter.fromDB(voiceData),
+  (voiceData, options) => ({
+    ...voiceInteractionAdapter.fromDB(voiceData, options),
 
     buttons: null, // no buttons on alexa
   }),
-  (voiceData) => ({
-    ...voiceInteractionAdapter.toDB(voiceData),
+  (voiceData, options) => ({
+    ...voiceInteractionAdapter.toDB(voiceData, options),
 
     chips: null,
     buttons: null,

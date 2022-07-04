@@ -19,7 +19,7 @@ import markupImageAdapter from './markupImage';
 import markupTextAdapter from './markupText';
 import { migrationBlockAdapter } from './migration';
 import startDataAdapter from './start';
-import { OutPortsAdapter, OutPortsAdapterV2 } from './utils';
+import { BlockAdapterOptions, FromDBBlockAdapterOptions, OutPortsAdapter, OutPortsAdapterV2 } from './utils';
 
 export type { OutPortsAdapter, OutPortsAdapterV2 } from './utils';
 export { defaultOutPortsAdapter, defaultOutPortsAdapterV2, removePortDataFalsyValues } from './utils';
@@ -105,14 +105,14 @@ const getPlatformOutPortsAdapterV2 = createPlatformSelector<
 
 export const noInPortTypes = new Set([BlockType.INTENT, BlockType.COMMAND, BlockType.EVENT, BlockType.START]);
 
-type PlatformBlockAdapter = Partial<
-  Record<BlockType, BidirectionalAdapter<unknown, NodeData<unknown>, [{ context: AdapterContext }], [{ context: AdapterContext }]>>
+type PlatformBlockAdapters = Partial<
+  Record<BlockType, BidirectionalAdapter<unknown, NodeData<unknown>, [FromDBBlockAdapterOptions], [BlockAdapterOptions]>>
 >;
 
-export const getBlockAdapter = moize(
-  (platform: VoiceflowConstants.PlatformType, projectType: VoiceflowConstants.ProjectType, migrate?: boolean): PlatformBlockAdapter => {
+export const getBlockAdapters = moize(
+  (platform: VoiceflowConstants.PlatformType, projectType: VoiceflowConstants.ProjectType, migrate?: boolean): PlatformBlockAdapters => {
     if (migrate) {
-      return migrationBlockAdapter as unknown as PlatformBlockAdapter;
+      return migrationBlockAdapter as unknown as PlatformBlockAdapters;
     }
 
     return {
@@ -120,7 +120,7 @@ export const getBlockAdapter = moize(
       ...baseBlockAdapter,
       ...generalBlockAdapter,
       ...getPlatformAdapter(platform, projectType),
-    } as unknown as PlatformBlockAdapter;
+    } as unknown as PlatformBlockAdapters;
   }
 );
 

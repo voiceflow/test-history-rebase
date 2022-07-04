@@ -5,13 +5,13 @@ import { chipsToIntentButtons, createBlockAdapter } from '../utils';
 import { voicePromptAdapter } from '../voice';
 
 const promptAdapter = createBlockAdapter<GoogleNode.Prompt.VoiceStepData, NodeData.Prompt>(
-  ({ chips, buttons, ...voiceData }) => ({
-    ...voicePromptAdapter.fromDB(voiceData),
+  ({ chips, buttons, ...voiceData }, options) => ({
+    ...voicePromptAdapter.fromDB(voiceData, options),
 
     buttons: buttons ?? chipsToIntentButtons(chips),
   }),
-  ({ buttons, ...voiceData }) => ({
-    ...voicePromptAdapter.toDB(voiceData),
+  ({ buttons, ...voiceData }, options) => ({
+    ...voicePromptAdapter.toDB(voiceData, options),
 
     chips: null,
     buttons,

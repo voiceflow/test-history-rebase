@@ -8,8 +8,8 @@ export interface StartData extends BlockData {
 }
 
 const startDataAdapter = createBlockAdapter<StartData, NodeData.Start>(
-  ({ label = '', ...data }) => ({ ...blockDataAdapter.fromDB(data), label }),
-  ({ label, ...data }) => ({ ...blockDataAdapter.toDB(data), label: label || undefined })
+  ({ label = '', ...data }, options) => ({ ...blockDataAdapter.fromDB(data, options), label }),
+  ({ label, ...data }, options) => ({ ...blockDataAdapter.toDB(data, options), label: label || undefined })
 );
 
 export default startDataAdapter;

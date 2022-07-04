@@ -8,8 +8,8 @@ import { baseCaptureV2Adapter } from '../base';
 import { chatNoMatchAdapter, chatNoReplyAdapter, createBlockAdapter } from '../utils';
 
 const captureAdapter = createBlockAdapter<ChatNode.CaptureV2.StepData, Omit<NodeData.CaptureV2, 'buttons'>>(
-  ({ noReply, noMatch, capture, ...baseData }) => ({
-    ...baseCaptureV2Adapter.fromDB(baseData),
+  ({ noReply, noMatch, capture, ...baseData }, options) => ({
+    ...baseCaptureV2Adapter.fromDB(baseData, options),
 
     intent: capture.type === BaseNode.CaptureV2.CaptureType.INTENT ? { slots: capture.intent.slots?.map(chatIntentSlotSanitizer) || [] } : undefined,
     noReply: noReply ? chatNoReplyAdapter.fromDB(noReply) : null,
@@ -17,8 +17,8 @@ const captureAdapter = createBlockAdapter<ChatNode.CaptureV2.StepData, Omit<Node
     variable: capture.type === BaseNode.CaptureV2.CaptureType.QUERY ? capture.variable : null,
     captureType: capture.type,
   }),
-  ({ intent, noReply, noMatch, captureType, variable, ...baseData }) => ({
-    ...baseCaptureV2Adapter.toDB(baseData),
+  ({ intent, noReply, noMatch, captureType, variable, ...baseData }, options) => ({
+    ...baseCaptureV2Adapter.toDB(baseData, options),
 
     capture:
       captureType === BaseNode.CaptureV2.CaptureType.INTENT

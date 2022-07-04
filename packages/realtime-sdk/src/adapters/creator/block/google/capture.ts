@@ -5,13 +5,13 @@ import { chipsToIntentButtons, createBlockAdapter } from '../utils';
 import { voiceCaptureAdapter } from '../voice';
 
 const captureAdapter = createBlockAdapter<GoogleNode.Capture.VoiceStepData, NodeData.Capture>(
-  ({ chips, buttons, ...voiceData }) => ({
-    ...voiceCaptureAdapter.fromDB(voiceData),
+  ({ chips, buttons, ...voiceData }, options) => ({
+    ...voiceCaptureAdapter.fromDB(voiceData, options),
 
     buttons: buttons ?? chipsToIntentButtons(chips),
   }),
-  ({ buttons, ...voiceData }) => ({
-    ...voiceCaptureAdapter.toDB(voiceData),
+  ({ buttons, ...voiceData }, options) => ({
+    ...voiceCaptureAdapter.toDB(voiceData, options),
 
     chips: null,
     buttons,

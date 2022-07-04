@@ -5,18 +5,18 @@ import { baseCaptureAdapter } from '../base';
 import { chatMigrateRepromptToNoReply, chatNoReplyAdapter, chipsToIntentButtons, createBlockAdapter } from '../utils';
 
 const captureAdapter = createBlockAdapter<ChatNode.Capture.StepData, NodeData.Capture>(
-  ({ chips, reprompt, noReply, buttons, ...baseData }) => {
+  ({ chips, reprompt, noReply, buttons, ...baseData }, options) => {
     const migratedNoReply = chatMigrateRepromptToNoReply(noReply, reprompt);
 
     return {
-      ...baseCaptureAdapter.fromDB(baseData),
+      ...baseCaptureAdapter.fromDB(baseData, options),
 
       buttons: buttons ?? chipsToIntentButtons(chips),
       noReply: migratedNoReply && chatNoReplyAdapter.fromDB(migratedNoReply),
     };
   },
-  ({ buttons, noReply, ...baseData }) => ({
-    ...baseCaptureAdapter.toDB(baseData),
+  ({ buttons, noReply, ...baseData }, options) => ({
+    ...baseCaptureAdapter.toDB(baseData, options),
 
     chips: null,
     buttons,

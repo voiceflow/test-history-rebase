@@ -91,12 +91,17 @@ export const topicDiagramFactory = (name: string) => {
         data: {
           intent: null,
           mappings: [],
-          ports: [
-            {
-              type: '',
-              target: null,
+          portsV2: {
+            byKey: {},
+            builtIn: {
+              [BaseModels.PortType.NEXT]: {
+                type: BaseModels.PortType.NEXT,
+                target: null,
+                id: Utils.id.objectID(),
+              },
             },
-          ],
+            dynamic: [],
+          },
         },
       },
     ],

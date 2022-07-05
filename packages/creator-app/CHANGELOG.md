@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.814.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.814.0...@voiceflow/creator-app@1.814.1) (2022-07-05)
+
+
+### Bug Fixes
+
+* socket connect event (VF-3998) ([#5710](https://github.com/voiceflow/creator-app/issues/5710)) ([b9a6883](https://github.com/voiceflow/creator-app/commit/b9a6883503a17c277c462a98315933ffde4ec7e0)), closes [/github.com/voiceflow/creator-app/blob/697c21eb7038089fbe68536c4048bf81bd857058/packages/creator-app/src/client/socket/client.tsx#L215-L220](https://github.com//github.com/voiceflow/creator-app/blob/697c21eb7038089fbe68536c4048bf81bd857058/packages/creator-app/src/client/socket/client.tsx/issues/L215-L220)
+
+
+
+
+
 # [1.814.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.813.3...@voiceflow/creator-app@1.814.0) (2022-07-05)
 
 

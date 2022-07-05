@@ -2,29 +2,34 @@ import { SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
 import { Permission } from '@/config/permissions';
-import { usePermission, useToggle } from '@/hooks';
+import * as ProjectV2 from '@/ducks/projectV2';
+import { useHover, usePermission, useSelector, useToggle } from '@/hooks';
 
 import { StepMenuExpandButton, TopLevelButton, TopLevelInnerContainer, TopLevelOuterContainer } from './components';
-import { STEPS } from './constants';
+import { getStepSections } from './constants';
 
 const StepMenu: React.FC<{ numCollapsedSteps?: number }> = ({ numCollapsedSteps = 3 }) => {
+  const platform = useSelector(ProjectV2.active.platformSelector);
+  const projectType = useSelector(ProjectV2.active.projectTypeSelector);
   const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
   const [isExpanded, toggleIsExpanded] = useToggle(false);
 
-  const shouldShowAllStepButtons = isExpanded || numCollapsedSteps >= STEPS.length;
+  const steps = getStepSections(platform, projectType);
 
-  const minSteps = React.useMemo(() => STEPS.slice(0, numCollapsedSteps), [numCollapsedSteps]);
+  const [isHovered, , hoverHandlers] = useHover();
+  const shouldShowAllStepButtons = isExpanded || numCollapsedSteps >= steps.length;
 
   return (
     <>
       {canEditCanvas && (
-        <TopLevelOuterContainer>
+        <TopLevelOuterContainer {...hoverHandlers} isHovered={isHovered}>
           <TopLevelInnerContainer>
-            {!shouldShowAllStepButtons && minSteps.map((step) => <TopLevelButton key={step.name} step={step} />)}
-            {shouldShowAllStepButtons && STEPS.map((step) => <TopLevelButton key={step.name} step={step} />)}
+            {steps.map((step, index) => (
+              <TopLevelButton key={step.label} step={step} isVisible={shouldShowAllStepButtons || index < numCollapsedSteps} />
+            ))}
           </TopLevelInnerContainer>
-          <StepMenuExpandButton onClick={toggleIsExpanded}>
-            <SvgIcon icon="arrowToggle" height={4} width={6} color="#393e42" inline rotation={isExpanded ? 0 : 180} />
+          <StepMenuExpandButton onClick={toggleIsExpanded} isHovered={isHovered}>
+            <SvgIcon icon="arrowToggleV2" size={16} color="#393e42" inline rotation={isExpanded ? 270 : 90} />
           </StepMenuExpandButton>
         </TopLevelOuterContainer>
       )}

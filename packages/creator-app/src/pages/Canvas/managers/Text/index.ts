@@ -1,5 +1,8 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { SVG } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
+
+import { RESPONSE_STEPS_LINK } from '@/constants';
 
 import { NodeManagerConfig } from '../types';
 import { NODE_CONFIG } from './constants';
@@ -17,6 +20,11 @@ const TextManager: NodeManagerConfig<Realtime.NodeData.Text, Realtime.NodeData.T
   editor: TextEditor,
 
   v2: TextManagerV2,
+
+  tooltipText: 'Add text to your assistant.',
+  tooltipLink: RESPONSE_STEPS_LINK,
+
+  stepsMenuIcon: SVG.systemText,
 };
 
 export default TextManager;

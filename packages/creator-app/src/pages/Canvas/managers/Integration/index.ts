@@ -1,4 +1,7 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { SVG } from '@voiceflow/ui';
+
+import { INTEGRATION_STEPS_LINK } from '@/constants';
 
 import { NodeManagerConfig } from '../types';
 import { NODE_CONFIG } from './constants';
@@ -16,6 +19,10 @@ const IntegrationManager: NodeManagerConfig<Realtime.NodeData.Integration, Realt
   editor: IntegrationEditor,
 
   v2: IntegrationManagerV2,
+
+  stepsMenuIcon: SVG.systemIntegrations,
+  tooltipText: 'Add integrations to your assistant.',
+  tooltipLink: INTEGRATION_STEPS_LINK,
 };
 
 export default IntegrationManager;

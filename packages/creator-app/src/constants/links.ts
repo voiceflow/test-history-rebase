@@ -8,3 +8,8 @@ export const BOOK_DEMO_LINK = 'https://www.voiceflow.com/demo';
 export const DESKTOP_APP_LINK = 'https://www.voiceflow.com/desktop';
 export const PLAN_INFO_LINK = 'https://www.voiceflow.com/pricing';
 export const APL_TOOL_LINK = 'https://developer.amazon.com/alexa/console/ask/displays';
+
+export const RESPONSE_STEPS_LINK = 'https://www.voiceflow.com/docs/designing-response-steps';
+export const INPUT_STEPS_LINK = 'https://www.voiceflow.com/docs/designing-user-input-steps';
+export const LOGIC_STEPS_LINK = 'https://www.voiceflow.com/docs/designing-logic-steps';
+export const INTEGRATION_STEPS_LINK = 'https://www.voiceflow.com/docs/designing-integration-steps';

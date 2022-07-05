@@ -18,6 +18,7 @@ export { default as arrowLeft } from './arrow-left.svg';
 export { default as arrowRight } from './arrow-right.svg';
 export { default as arrowRightTopics } from './arrow-right-topics.svg';
 export { default as arrowToggle } from './arrow-toggle.svg';
+export { default as arrowToggleV2 } from './arrow-toggle-small-up.svg';
 export { default as audio } from './audio.svg';
 export { default as audioPlayer } from './audio-player.svg';
 export { default as amazon } from './brands/amazon.svg';
@@ -315,6 +316,7 @@ export { default as systemSettings } from './system-settings.svg';
 export { default as systemStrikeThrough } from './system-strikethrough.svg';
 export { default as systemSymbolSmall } from './system-symbol-small.svg';
 export { default as systemTalk } from './system-talk.svg';
+export { default as systemText } from './system-text.svg';
 export { default as systemTranscripts } from './system-transcripts.svg';
 export { default as systemUnderscore } from './system-underscore.svg';
 

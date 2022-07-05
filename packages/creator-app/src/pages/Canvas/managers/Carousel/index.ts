@@ -1,4 +1,7 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { SVG } from '@voiceflow/ui';
+
+import { RESPONSE_STEPS_LINK } from '@/constants';
 
 import { NodeManagerConfigV2 } from '../types';
 import { NODE_CONFIG } from './constants';
@@ -11,6 +14,10 @@ const CarouselManager: NodeManagerConfigV2<Realtime.NodeData.Carousel, Realtime.
 
   step: CarouselStep,
   editorV2: Editor,
+
+  stepsMenuIcon: SVG.systemCarousel,
+  tooltipText: 'Add carousels to your assistant.',
+  tooltipLink: RESPONSE_STEPS_LINK,
 };
 
 export default CarouselManager;

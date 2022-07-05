@@ -1,6 +1,7 @@
-import composeRef from '@seznam/compose-react-refs';
-import { SvgIcon, Text, useOnClickOutside, usePopper, useToggle } from '@voiceflow/ui';
+import { SvgIcon, Text } from '@voiceflow/ui';
 import React from 'react';
+
+import { useHover } from '@/hooks';
 
 import { TopStepItem } from '../../constants';
 import SubMenu from '../SubMenu';
@@ -8,38 +9,20 @@ import { TopLevelButtonContainer } from './TopLevelButtonContainer';
 
 interface TopLevelButtonItem {
   step: TopStepItem;
+  isVisible: boolean;
 }
 
-const TopLevelButton: React.FC<TopLevelButtonItem> = ({ step }) => {
-  const [isSubMenuOpen, toggleIsSubMenuOpen] = useToggle(false);
-
-  const popper = usePopper({
-    placement: 'right',
-    strategy: 'fixed',
-    modifiers: [
-      { name: 'offset', options: { offset: [0, 5] } },
-      { name: 'preventOverflow', options: { boundary: document.body } },
-    ],
-  });
-  const subMenuRef = React.useRef<HTMLDivElement>(null);
-  const topLevelRef = React.useRef<HTMLDivElement>(null);
-
-  useOnClickOutside(subMenuRef, () => toggleIsSubMenuOpen(false), [isSubMenuOpen]);
+const TopLevelButton: React.FC<TopLevelButtonItem> = ({ step, isVisible }) => {
+  const [isHovered, , hoverHandlers] = useHover();
 
   return (
-    <>
-      <TopLevelButtonContainer
-        onClick={toggleIsSubMenuOpen}
-        focused={isSubMenuOpen}
-        ref={composeRef<HTMLDivElement>(popper.setReferenceElement, topLevelRef)}
-      >
-        <SvgIcon icon={step.icon} size={22}></SvgIcon>
-        <Text paddingTop="4px" fontSize="11px">
-          {step.name}
-        </Text>
-      </TopLevelButtonContainer>
-      {step.childSteps && isSubMenuOpen && <SubMenu steps={step.childSteps} subMenuRef={subMenuRef} />}
-    </>
+    <TopLevelButtonContainer focused={isHovered} visible={isVisible} {...hoverHandlers}>
+      <SvgIcon icon={step.icon} size={step.label === 'Logic' ? 24 : 22} marginLeft="21px" style={{ display: 'block' }} />
+      <Text paddingTop="3px" fontSize="11px" fontWeight={600}>
+        {step.label}
+      </Text>
+      {step.steps && isHovered && <SubMenu steps={step.steps} />}
+    </TopLevelButtonContainer>
   );
 };
 

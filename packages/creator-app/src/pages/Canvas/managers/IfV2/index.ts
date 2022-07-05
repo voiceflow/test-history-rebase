@@ -1,5 +1,7 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 
+import { LOGIC_STEPS_LINK } from '@/constants';
+
 import { NodeManagerConfig } from '../types';
 import { NODE_CONFIG } from './constants';
 import IfEditor from './IfEditorV2';
@@ -18,6 +20,9 @@ const IfManagerV2: NodeManagerConfig<Realtime.NodeData.IfV2, Realtime.NodeData.I
   editorsByPath: EDITORS_BY_PATH,
 
   v2: NodeConfigV2,
+
+  tooltipText: 'Add conditions to your assistant.',
+  tooltipLink: LOGIC_STEPS_LINK,
 };
 
 export default IfManagerV2;

@@ -1,5 +1,7 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 
+import { INPUT_STEPS_LINK } from '@/constants';
+
 import { NodeManagerConfigV2 } from '../types';
 import { Editor } from './components';
 import { NODE_CONFIG } from './constants';
@@ -12,6 +14,9 @@ const CaptureV2Manager: NodeManagerConfigV2<Realtime.NodeData.CaptureV2, Realtim
 
   step: Step,
   editorV2: Editor,
+
+  tooltipText: 'Add capture steps to your assistant.',
+  tooltipLink: INPUT_STEPS_LINK,
 };
 
 export default CaptureV2Manager;

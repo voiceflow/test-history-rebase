@@ -147,6 +147,12 @@ interface BaseNodeConfig<Data extends object> {
 
   mergeTerminator?: boolean;
   mergeInitializer?: boolean;
+
+  stepsMenuIcon?: React.FC;
+  getStepsMenuIcon?: (data: Data) => React.FC;
+  getTooltipText?: (data: Data) => string;
+  tooltipText?: string;
+  tooltipLink?: string;
 }
 
 export interface NodeConfig<T extends object, P extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord> extends BaseNodeConfig<T> {

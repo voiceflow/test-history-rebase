@@ -1,4 +1,7 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { SVG } from '@voiceflow/ui';
+
+import { RESPONSE_STEPS_LINK } from '@/constants';
 
 import { NodeManagerConfig } from '../types';
 import CardEditor from './CardEditor';
@@ -12,6 +15,10 @@ const CardManager: NodeManagerConfig<Realtime.NodeData.Card, Realtime.NodeData.C
 
   step: CardStep,
   editor: CardEditor,
+
+  stepsMenuIcon: SVG.systemCard,
+  tooltipText: 'Add cards to your assistant.',
+  tooltipLink: RESPONSE_STEPS_LINK,
 };
 
 export default CardManager;

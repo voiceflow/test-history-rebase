@@ -1,6 +1,6 @@
 import { BaseNode } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { SvgIconTypes } from '@voiceflow/ui';
+import { SVG, SvgIconTypes } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import _isFunction from 'lodash/isFunction';
 
@@ -31,6 +31,14 @@ export const getStepIcon = ({ factoryData, manager }: StepProps) =>
 export const getStepLabel = ({ factoryData, manager }: StepProps) =>
   (_isFunction(manager.getDataLabel) && factoryData && manager.getDataLabel(factoryData)) || manager.label;
 
+export const getStepMenuIcon = ({ factoryData, manager }: StepProps) =>
+  (_isFunction(manager.getStepsMenuIcon) && factoryData && manager.getStepsMenuIcon(factoryData)) || manager.stepsMenuIcon!;
+
+export const getStepTooltipText = ({ factoryData, manager }: StepProps) =>
+  (_isFunction(manager.getTooltipText) && factoryData && manager.getTooltipText(factoryData)) || manager.tooltipText;
+
+export const getStepTooltipLink = ({ manager }: StepProps) => manager.tooltipLink;
+
 const createMenuStep = (type: Realtime.StepBlockType, { publicOnly, factoryData }: MenuStepsConfig = {}) => {
   return {
     type,
@@ -38,6 +46,9 @@ const createMenuStep = (type: Realtime.StepBlockType, { publicOnly, factoryData 
     factoryData,
     getIcon: (manager?: ReturnType<typeof getManager>) => getStepIcon({ factoryData, manager: manager || getManager(type) }),
     getLabel: (manager?: ReturnType<typeof getManager>) => getStepLabel({ factoryData, manager: manager || getManager(type) }),
+    getStepMenuIcon: (manager?: ReturnType<typeof getManager>) => getStepMenuIcon({ factoryData, manager: manager || getManager(type) }),
+    getStepTooltipText: (manager?: ReturnType<typeof getManager>) => getStepTooltipText({ factoryData, manager: manager || getManager(type) }),
+    getStepTooltipLink: (manager?: ReturnType<typeof getManager>) => getStepTooltipLink({ manager: manager || getManager(type) }),
   };
 };
 
@@ -275,3 +286,214 @@ export const getSections = Realtime.Utils.platform.createPlatformAndProjectTypeS
   },
   GENERAL_SECTIONS
 );
+
+/*
+ Step Menu Sections
+*/
+export interface StepItem {
+  type: Realtime.BlockType;
+  getIcon: (manager?: ReturnType<typeof getManager>) => any;
+  getLabel: (manager?: ReturnType<typeof getManager>) => any;
+  getStepMenuIcon: (manager?: ReturnType<typeof getManager>) => any;
+  getStepTooltipText: (manager?: ReturnType<typeof getManager>) => string | undefined;
+  getStepTooltipLink: (manager?: ReturnType<typeof getManager>) => string | undefined;
+  publicOnly?: boolean;
+  factoryData?: Realtime.NodeData<any>;
+  tooltipText?: string;
+  tooltipLink?: string;
+}
+
+export interface TopStepItem {
+  steps?: StepItem[];
+  icon: React.FC;
+  label: string;
+}
+
+const TALK_ICON = SVG.systemTalk;
+const TALK_LABEL = 'Talk';
+
+const LISTEN_ICON = SVG.systemListen;
+const LISTEN_LABEL = 'Listen';
+
+const LOGIC_ICON = SVG.systemLogic;
+const LOGIC_LABEL = 'Logic';
+
+const EVENT_ICON = SVG.systemEvent;
+const EVENT_LABEL = 'Event';
+
+const DEV_ICON = SVG.systemDev;
+const DEV_LABEL = 'Dev';
+
+// alexa menu sections
+export const ALEXA_STEP_SECTIONS: TopStepItem[] = [
+  {
+    icon: TALK_ICON,
+    label: TALK_LABEL,
+    steps: [SPEAK_STEP, AUDIO_STEP, DISPLAY_STEP, CARD_STEP, STREAM_STEP],
+  },
+  {
+    icon: LISTEN_ICON,
+    label: LISTEN_LABEL,
+    steps: [CHOICE_STEP, CAPTURE_STEP_V2, EVENT_STEP],
+  },
+  {
+    icon: LOGIC_ICON,
+    label: LOGIC_LABEL,
+    steps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP, FLOW_STEP, EXIT_STEP],
+  },
+  {
+    icon: EVENT_ICON,
+    label: EVENT_LABEL,
+    steps: [INTENT_STEP],
+  },
+  {
+    icon: DEV_ICON,
+    label: DEV_LABEL,
+    steps: [API_STEP, GOOGLE_SHEETS_STEP, CODE_STEP, TRACE_STEP],
+  },
+];
+
+// google menu sections
+export const GOOGLE_STEP_SECTIONS: TopStepItem[] = [
+  {
+    icon: TALK_ICON,
+    label: TALK_LABEL,
+    steps: [SPEAK_STEP, AUDIO_STEP, CARD_STEP, STREAM_STEP],
+  },
+  {
+    icon: LISTEN_ICON,
+    label: LISTEN_LABEL,
+    steps: [CHOICE_STEP, CAPTURE_STEP_V2],
+  },
+  {
+    icon: LOGIC_ICON,
+    label: LOGIC_LABEL,
+    steps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP, FLOW_STEP, EXIT_STEP],
+  },
+  {
+    icon: EVENT_ICON,
+    label: EVENT_LABEL,
+    steps: [INTENT_STEP],
+  },
+  {
+    icon: DEV_ICON,
+    label: DEV_LABEL,
+    steps: [API_STEP, GOOGLE_SHEETS_STEP, CODE_STEP, TRACE_STEP],
+  },
+];
+
+// chatbot menu sections
+export const CHATBOT_STEP_SECTIONS: TopStepItem[] = [
+  {
+    icon: TALK_ICON,
+    label: TALK_LABEL,
+    steps: [TEXT_STEP, VISUAL_STEP, CAROUSEL_STEP],
+  },
+  {
+    icon: LISTEN_ICON,
+    label: LISTEN_LABEL,
+    steps: [BUTTONS_STEP, CAPTURE_STEP_V2],
+  },
+  {
+    icon: LOGIC_ICON,
+    label: LOGIC_LABEL,
+    steps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP, FLOW_STEP, EXIT_STEP],
+  },
+  {
+    icon: EVENT_ICON,
+    label: EVENT_LABEL,
+    steps: [INTENT_STEP],
+  },
+  {
+    icon: DEV_ICON,
+    label: DEV_LABEL,
+    steps: [API_STEP, GOOGLE_SHEETS_STEP, CODE_STEP, TRACE_STEP],
+  },
+];
+
+// general menu sections
+export const GENERAL_STEP_SECTIONS: TopStepItem[] = [
+  {
+    icon: TALK_ICON,
+    label: TALK_LABEL,
+    steps: [SPEAK_STEP, AUDIO_STEP, VISUAL_STEP],
+  },
+  {
+    icon: LISTEN_ICON,
+    label: LISTEN_LABEL,
+    steps: [CHOICE_STEP, CAPTURE_STEP_V2],
+  },
+  {
+    icon: LOGIC_ICON,
+    label: LOGIC_LABEL,
+    steps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP, FLOW_STEP, EXIT_STEP],
+  },
+  {
+    icon: EVENT_ICON,
+    label: EVENT_LABEL,
+    steps: [INTENT_STEP],
+  },
+  {
+    icon: DEV_ICON,
+    label: DEV_LABEL,
+    steps: [API_STEP, GOOGLE_SHEETS_STEP, CODE_STEP, TRACE_STEP],
+  },
+];
+
+// dialogflow chat menu sections
+export const DIALOGFLOW_ES_CHAT_STEP_SECTIONS: TopStepItem[] = [
+  {
+    icon: TALK_ICON,
+    label: TALK_LABEL,
+    steps: [TEXT_STEP, VISUAL_STEP, CARD_STEP],
+  },
+  {
+    icon: LISTEN_ICON,
+    label: LISTEN_LABEL,
+    steps: [BUTTONS_STEP, CAPTURE_STEP_V2],
+  },
+  {
+    icon: LOGIC_ICON,
+    label: LOGIC_LABEL,
+    steps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP, FLOW_STEP, EXIT_STEP],
+  },
+  {
+    icon: EVENT_ICON,
+    label: EVENT_LABEL,
+    steps: [INTENT_STEP],
+  },
+  {
+    icon: DEV_ICON,
+    label: DEV_LABEL,
+    steps: [CUSTOM_PAYLOAD_STEP, API_STEP, GOOGLE_SHEETS_STEP, CODE_STEP, TRACE_STEP],
+  },
+];
+
+// dialogflow voice menu sections
+export const DIALOGFLOW_ES_VOICE_STEP_SECTIONS: TopStepItem[] = [
+  {
+    icon: TALK_ICON,
+    label: TALK_LABEL,
+    steps: [SPEAK_STEP, AUDIO_STEP],
+  },
+  {
+    icon: LISTEN_ICON,
+    label: LISTEN_LABEL,
+    steps: [CHOICE_STEP, CAPTURE_STEP_V2],
+  },
+  {
+    icon: LOGIC_ICON,
+    label: LOGIC_LABEL,
+    steps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP, FLOW_STEP, EXIT_STEP],
+  },
+  {
+    icon: EVENT_ICON,
+    label: EVENT_LABEL,
+    steps: [INTENT_STEP],
+  },
+  {
+    icon: DEV_ICON,
+    label: DEV_LABEL,
+    steps: [CUSTOM_PAYLOAD_STEP, API_STEP, GOOGLE_SHEETS_STEP, CODE_STEP, TRACE_STEP],
+  },
+];

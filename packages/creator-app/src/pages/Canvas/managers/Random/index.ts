@@ -1,4 +1,7 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { SVG } from '@voiceflow/ui';
+
+import { INPUT_STEPS_LINK } from '@/constants';
 
 import { NodeManagerConfig } from '../types';
 import { NODE_CONFIG } from './constants';
@@ -12,6 +15,10 @@ const RandomManager: NodeManagerConfig<Realtime.NodeData.Random> = {
 
   step: RandomStep,
   editor: RandomEditor,
+
+  stepsMenuIcon: SVG.randomV2,
+  tooltipText: 'Add a random step to your assistant.',
+  tooltipLink: INPUT_STEPS_LINK,
 };
 
 export default RandomManager;

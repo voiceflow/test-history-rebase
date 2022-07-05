@@ -1,7 +1,7 @@
 import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { SvgIconTypes } from '@voiceflow/ui';
+import { SVG, SvgIconTypes } from '@voiceflow/ui';
 
 import { BlockType, DialogType } from '@/constants';
 
@@ -17,6 +17,11 @@ const ICON_MAP: Record<DialogType, SvgIconTypes.Icon> = {
   [DialogType.VOICE]: 'speak',
 };
 
+const STEPS_ICON_MAP: Record<DialogType, React.FC> = {
+  [DialogType.AUDIO]: SVG.audio,
+  [DialogType.VOICE]: SVG.systemMessage,
+};
+
 export const AUDIO_MOCK_DATA = { dialogs: [{ id: '', type: DialogType.AUDIO as const, url: '' }], randomize: true };
 export const VOICE_MOCK_DATA = { dialogs: [{ id: '', type: DialogType.VOICE as const, voice: '', content: '' }], randomize: true };
 
@@ -24,6 +29,9 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Speak, Realtime.NodeData.
   type: BlockType.SPEAK,
 
   getIcon: (data) => ICON_MAP[data?.dialogs[0]?.type ?? DialogType.VOICE],
+
+  getTooltipText: (data) => `Add ${NAME_MAP[data?.dialogs[0]?.type ?? DialogType.VOICE].toLowerCase()} steps to your assistant.`,
+  getStepsMenuIcon: (data) => STEPS_ICON_MAP[data?.dialogs[0]?.type ?? DialogType.VOICE],
 
   factory: ({ dialogs: [data] = [] } = {}, options) => ({
     node: {

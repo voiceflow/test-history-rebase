@@ -32,9 +32,6 @@ export const createProject =
 
     const platformType = platform ?? VoiceflowConstants.PlatformType.VOICEFLOW;
     const templateProjectID = await client.template.getPlatformTemplate(platformType, templateTag);
-    const isTopicsAndComponents = Feature.isFeatureEnabledSelector(state)(FeatureFlag.TOPICS_AND_COMPONENTS);
-
-    const vfVersion = isTopicsAndComponents ? Realtime.TOPICS_AND_COMPONENTS_PROJECT_VERSION : Realtime.CURRENT_PROJECT_VERSION;
 
     if (!templateProjectID) {
       toast.error(`no project templates exist for platform ${platformType}`);
@@ -46,7 +43,7 @@ export const createProject =
 
       return await dispatch(
         waitAsync(Realtime.project.create, {
-          data: { name, image, _version: vfVersion },
+          data: { name, image, _version: Realtime.TOPICS_AND_COMPONENTS_PROJECT_VERSION },
           listID,
           channel,
           language,

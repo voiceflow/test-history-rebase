@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.814.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.813.3...@voiceflow/creator-app@1.814.0) (2022-07-05)
+
+
+### Features
+
+* conditions builder v2 FF (CT-488) ([#5707](https://github.com/voiceflow/creator-app/issues/5707)) ([5f5eaa9](https://github.com/voiceflow/creator-app/commit/5f5eaa9037b70c63e59f9fd35b473cea99d8dcf6))
+* steps menu drag and drop (CT-16) ([#5692](https://github.com/voiceflow/creator-app/issues/5692)) ([cedd514](https://github.com/voiceflow/creator-app/commit/cedd514cc5ce9a8a257ac8b0a1226bec85f23f6d))
+
+
+
+
+
 ## [1.813.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.813.2...@voiceflow/creator-app@1.813.3) (2022-07-05)
 
 

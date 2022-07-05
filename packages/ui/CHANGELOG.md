@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.116.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.115.0...@voiceflow/ui@1.116.0) (2022-07-05)
+
+
+### Features
+
+* steps menu drag and drop (CT-16) ([#5692](https://github.com/voiceflow/creator-app/issues/5692)) ([cedd514](https://github.com/voiceflow/creator-app/commit/cedd514cc5ce9a8a257ac8b0a1226bec85f23f6d))
+
+
+
+
+
 # [1.115.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.114.0...@voiceflow/ui@1.115.0) (2022-07-02)
 
 

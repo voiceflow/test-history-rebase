@@ -5,6 +5,7 @@ import { Action, AnyAction } from 'typescript-fsa';
 import { Dispatch, Dispatchable, Store } from './types';
 
 const ORIGIN_KEY = 'origin';
+const LOGUX_ACTION_PREFIX = 'logux/';
 
 export const storeLogger = UI.logger.child('store');
 
@@ -18,7 +19,8 @@ export const wrapDispatch = (getStore: () => Store): Dispatch =>
 
 export const extendMeta = <T extends Action<any>>(action: T, meta: AnyRecord): T => ({ ...action, meta: { ...action.meta, ...meta } });
 
-export const wrapOriginAction = <T extends Action<any>>(action: T, origin: string) => extendMeta(action, { [ORIGIN_KEY]: origin });
+export const wrapOriginAction = <T extends Action<any>>(action: T, origin: string) =>
+  action.type.startsWith(LOGUX_ACTION_PREFIX) ? action : extendMeta(action, { [ORIGIN_KEY]: origin });
 
 export const getActionOrigin = (action: Action<any>): string | null => action.meta?.[ORIGIN_KEY] ?? null;
 

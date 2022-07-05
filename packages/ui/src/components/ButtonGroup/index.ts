@@ -1,7 +1,8 @@
 import { styled, units } from '@ui/styles';
-import { space, SpaceProps } from 'styled-system';
+import { border, BorderProps, space, SpaceProps } from 'styled-system';
 
-export const Button = styled.div`
+export const Button = styled.div<BorderProps>`
+  background-color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -14,6 +15,7 @@ export const Button = styled.div`
   color: #132144;
   font-weight: 600;
   cursor: pointer;
+  ${border}
 
   &:not(:first-of-type) {
     margin-top: -1px;

@@ -14,7 +14,7 @@ interface NoReplySectionProps {
 }
 
 const NoReplySection: React.FC<NoReplySectionProps> = ({ data, pushToPath }) => {
-  const onClick = React.useCallback(() => pushToPath?.({ type: NO_REPLY_PATH_TYPE, label: 'No Reply' }), [pushToPath]);
+  const onClick = React.useCallback(() => pushToPath?.({ type: NO_REPLY_PATH_TYPE, label: 'No reply' }), [pushToPath]);
 
   return (
     <Section

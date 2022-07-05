@@ -15,9 +15,10 @@ export interface NoReplyStepItemProps {
   portID?: Nullable<string>;
   noReply?: Nullable<Realtime.NodeData.NoReply>;
   nodeID: string;
+  nestedWithIcon?: boolean;
 }
 
-const NoReplyStepItemV2: React.FC<NoReplyStepItemProps> = ({ nodeID, noReply, portID }) => {
+const NoReplyStepItemV2: React.FC<NoReplyStepItemProps> = ({ nodeID, noReply, portID, nestedWithIcon }) => {
   const isPath = noReply?.types.includes(BaseNode.Utils.NoReplyType.PATH);
   const engine = React.useContext(EngineContext);
 
@@ -36,6 +37,8 @@ const NoReplyStepItemV2: React.FC<NoReplyStepItemProps> = ({ nodeID, noReply, po
         <Item
           label={(isPath ? noReply.pathName : null) ?? 'No reply'}
           portID={isPath ? portID : null}
+          v2
+          nestedWithIcon={nestedWithIcon}
           portColor="#6e849a"
           attachment={
             noReply.types.includes(BaseNode.Utils.NoReplyType.REPROMPT) && hasValidPrompt(noReply.reprompts) ? (

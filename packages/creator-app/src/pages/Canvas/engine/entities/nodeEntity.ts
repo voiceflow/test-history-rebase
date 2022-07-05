@@ -89,10 +89,12 @@ export type NodeInstance = EntityInstance & {
   blur?: () => void;
 };
 
-interface NodeEntityResource<T> {
+export interface NodeEntityResource<T> {
   node: Realtime.Node;
   data: Realtime.NodeData<T>;
 }
+
+export const isNodeEntityResource = (info: any): info is NodeEntityResource<any> => info?.data?.nodeID && info?.node?.type;
 
 // TODO: need to refactor this to expect nullish data to make the canvas components more resilient
 const nodeEntitySelector = createSelector([CreatorV2.nodeByIDSelector, CreatorV2.nodeDataByIDSelector, idParamSelector], (node, data) => ({

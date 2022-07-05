@@ -45,18 +45,20 @@ export const getJoiningLinkIDs =
       : union;
   };
 
-export const getOutgoingLinkIDs = (state: DiagramState, node: Realtime.Node): string[] =>
-  Realtime.Utils.port.flattenOutPorts(node.ports).flatMap((portID) => getLinkIDsByPortID(state)(portID));
+export const getOutgoingLinkIDs = (state: DiagramState, node: Realtime.Node, options?: { skipByKeyLinks?: boolean }): string[] =>
+  Realtime.Utils.port
+    .flattenOutPorts(node.ports, { skipByKeyPorts: !!options?.skipByKeyLinks })
+    .flatMap((portID) => getLinkIDsByPortID(state)(portID));
 
 export const getIncomingLinkIDs = (state: DiagramState, node: Realtime.Node): string[] =>
   node.ports.in.flatMap((portID) => getLinkIDsByPortID(state)(portID));
 
-export const getNestedOutgoingLinkIDs = (state: DiagramState, node: Realtime.Node): string[] => {
+export const getNestedOutgoingLinkIDs = (state: DiagramState, node: Realtime.Node, options?: { skipByKeyLinks?: boolean }): string[] => {
   const { combinedNodes } = node;
   const lastNodeID = combinedNodes[combinedNodes.length - 1];
   const lastNode = Utils.normalized.getNormalizedByKey(state.nodes, lastNodeID);
 
-  return getOutgoingLinkIDs(state, lastNode);
+  return getOutgoingLinkIDs(state, lastNode, options);
 };
 
 export const addReferenceByKey =

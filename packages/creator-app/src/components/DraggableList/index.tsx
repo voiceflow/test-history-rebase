@@ -1,4 +1,4 @@
-import { useCache } from '@voiceflow/ui';
+import { ContextMenuProps, useCache } from '@voiceflow/ui';
 import _throttle from 'lodash/throttle';
 import React from 'react';
 import { DragSourceMonitor, useDrop } from 'react-dnd';
@@ -47,6 +47,7 @@ export type DraggableListProps<I, D, C> = {
   deleteComponent?: React.NamedExoticComponent<React.PropsWithoutRef<D> & React.RefAttributes<any>>;
   partialDragItem?: boolean;
   contextMenuOptions?: ContextMenuOption<I>[];
+  contextMenuProps?: Partial<ContextMenuProps<I>>;
   unmountableDuringDrag?: boolean;
   withContextMenuDelete?: boolean;
   contextMenuDeleteLabel?: string;
@@ -107,6 +108,7 @@ const DraggableList = <I, D, C>({
   previewOptions,
   deleteComponent,
   partialDragItem,
+  contextMenuProps,
   previewComponent,
   contextMenuOptions,
   unmountableDuringDrag,
@@ -200,6 +202,7 @@ const DraggableList = <I, D, C>({
       partialDrag={partialDragItem}
       itemComponent={itemComponent as any}
       contextMenuOptions={contextMenuOptions}
+      contextMenuProps={contextMenuProps}
       unmountableDuringDrag={unmountableDuringDrag}
       withContextMenuDelete={withContextMenuDelete}
       contextMenuDeleteLabel={contextMenuDeleteLabel}

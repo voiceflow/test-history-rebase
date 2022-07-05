@@ -1,0 +1,99 @@
+import { Nullable } from '@voiceflow/common';
+import { SvgIcon, TippyTooltip } from '@voiceflow/ui';
+import cn from 'classnames';
+import React from 'react';
+import { AnyStyledComponent } from 'styled-components';
+
+import Avatar from '@/components/Avatar';
+import { PMStatus } from '@/pages/Prototype/types';
+import { ClassName } from '@/styles/constants';
+
+import * as S from './styles';
+
+export interface BaseMessageProps extends S.ContainerProps {
+  onClick?: React.MouseEventHandler;
+  style?: React.CSSProperties;
+  startTime?: string;
+  rightAlign?: boolean;
+  withLogo?: boolean;
+  isFirstInSeries?: boolean;
+  userSpeak?: boolean;
+  withAnimation?: boolean;
+  isLast?: boolean;
+  bubble?: boolean;
+  color?: string;
+  avatarURL?: string;
+  className?: string;
+  focused?: boolean;
+  animationDelay?: number;
+  animationContainer?: AnyStyledComponent;
+  isLastInSeries?: boolean;
+  isLastBotMessage?: boolean;
+  isLastBubble?: boolean;
+  isLoading?: boolean;
+  forceIcon?: boolean;
+  pmStatus: Nullable<PMStatus>;
+  onDoubleClick?: () => void;
+}
+
+const BaseMessage: React.FC<BaseMessageProps> = ({
+  rightAlign,
+  isFirstInSeries,
+  children,
+  withLogo = true,
+  onClick,
+  startTime,
+  withAnimation = true,
+  isLast,
+  color,
+  bubble = true,
+  avatarURL,
+  className,
+  focused = false,
+  isLastInSeries = false,
+  animationContainer = S.FadeUp,
+  isLastBotMessage,
+  isLoading,
+  forceIcon,
+  pmStatus,
+  isLastBubble,
+  ...props
+}) => {
+  const InnerContainer = React.useMemo(() => (withAnimation ? animationContainer : React.Fragment), []);
+  const hideIcon = pmStatus === PMStatus.FAKE_LOADING && isLastBubble;
+  const showIconLogo = forceIcon || (withLogo && isLastInSeries && !hideIcon);
+
+  return (
+    <S.Container focused={focused} className={cn(ClassName.CHAT_DIALOG_MESSAGE, className)} rightAlign={rightAlign} {...props}>
+      <InnerContainer>
+        {showIconLogo && (
+          <S.LogoCircle shadow={false} size={32} forAvatar={!!avatarURL}>
+            {avatarURL ? (
+              <Avatar className={ClassName.PROTOTYPE_MESSAGE_ICON} noHover noShadow url={avatarURL} />
+            ) : (
+              <SvgIcon icon="voiceflowV" size={16} color="#fff" />
+            )}
+          </S.LogoCircle>
+        )}
+
+        <TippyTooltip distance={8} position="top" title={startTime} disabled={!startTime}>
+          {bubble ? (
+            <S.Bubble rightAlign={rightAlign} color={color} onClick={onClick} clickable={!!onClick} isFirstInSeries={isFirstInSeries}>
+              {children}
+            </S.Bubble>
+          ) : (
+            children
+          )}
+        </TippyTooltip>
+      </InnerContainer>
+    </S.Container>
+  );
+};
+
+export default Object.assign(BaseMessage, {
+  Container: S.Container,
+  Bubble: S.Bubble,
+  FadeDown: S.FadeDown,
+  FadeUp: S.FadeUp,
+  DelayedFadeUp: S.DelayedFadeUp,
+});

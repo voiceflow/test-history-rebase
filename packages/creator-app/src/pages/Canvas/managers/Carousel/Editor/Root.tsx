@@ -1,5 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Button } from '@voiceflow/ui';
+import { Button, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
@@ -9,7 +9,8 @@ import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import { NodeEditorV2 } from '@/pages/Canvas/managers/types';
 
 import { NoMatchV2, NoReplyV2 } from '../../components';
-import { factory } from '../constants';
+import { cardFactory } from '../constants';
+import { cloneCard } from '../utils';
 import DraggableItem from './DraggableCard';
 import { useCarouselLayoutOption } from './hooks';
 
@@ -24,25 +25,31 @@ const CarouselEditorRoot: NodeEditorV2<Realtime.NodeData.Carousel, Realtime.Node
 
   const [isDragging, toggleDragging] = useToggle(false);
 
-  const onChange = React.useCallback(
-    (cards: Realtime.NodeData.Carousel['cards'], save?: boolean) => editor.onChange({ cards }, save),
-    [editor.onChange]
-  );
+  const onChange = usePersistFunction((cards: Realtime.NodeData.Carousel['cards'], save?: boolean) => editor.onChange({ cards }, save));
 
-  const onRemove = React.useCallback(
-    async (_: unknown, index: number) => {
-      const { buttons } = editor.data.cards[index];
-      const portsToRemove = buttons.map((button) => ({ key: button.id, portID: editor.node.ports.out.byKey[button.id] }));
+  const onRemove = usePersistFunction(async (_: unknown, index: number) => {
+    const { buttons } = editor.data.cards[index];
+    const portsToRemove = buttons.map((button) => ({ key: button.id, portID: editor.node.ports.out.byKey[button.id] }));
 
-      return editor.engine.port.removeManyByKey(portsToRemove);
-    },
-    [editor.engine.port.removeManyByKey, editor.node.ports.out.byKey, editor.data.cards]
-  );
+    return editor.engine.port.removeManyByKey(portsToRemove);
+  });
+
+  const onClone = usePersistFunction((initVal: Realtime.NodeData.Carousel.Card, targetVal: Realtime.NodeData.Carousel.Card) => {
+    const clonedCard = cloneCard(initVal, targetVal);
+    clonedCard.buttons.map((button) => editor.engine.port.addByKey(editor.nodeID, button.id));
+
+    return clonedCard;
+  });
 
   const managerAPI = useManager(editor.data.cards, onChange, {
-    factory,
+    factory: cardFactory,
+    clone: onClone,
     autosave: false,
     onRemove,
+  });
+
+  const onDuplicate = usePersistFunction((_, item) => {
+    managerAPI.onDuplicate(item.index, item);
   });
 
   const noMatchConfig = NoMatchV2.useConfig();
@@ -50,6 +57,7 @@ const CarouselEditorRoot: NodeEditorV2<Realtime.NodeData.Carousel, Realtime.Node
   const carouselLayoutOption = useCarouselLayoutOption(editor.data.layout, (layout) => editor.onChange({ layout }, true));
 
   const actions = [carouselLayoutOption, ...(isLast ? [noMatchConfig.option, noReplyConfig.option] : [])];
+  const hasManyCards = editor.data.cards.length > 1;
 
   return (
     <EditorV2
@@ -69,7 +77,9 @@ const CarouselEditorRoot: NodeEditorV2<Realtime.NodeData.Carousel, Realtime.Node
         type="cards-editor"
         onDelete={managerAPI.onRemove}
         onReorder={managerAPI.onReorder}
+        onDuplicate={onDuplicate}
         onEndDrag={toggleDragging}
+        canDrag={() => hasManyCards}
         itemProps={{ editor, latestCreatedKey: managerAPI.latestCreatedKey }}
         mapManaged={managerAPI.mapManaged}
         onStartDrag={toggleDragging}
@@ -77,7 +87,9 @@ const CarouselEditorRoot: NodeEditorV2<Realtime.NodeData.Carousel, Realtime.Node
         deleteComponent={DeleteComponent}
         partialDragItem
         previewComponent={DraggableItem}
-        withContextMenuDelete
+        contextMenuProps={{ selfDismiss: true }}
+        withContextMenuDelete={hasManyCards}
+        withContextMenuDuplicate
       />
 
       {isLast && !isDragging && (

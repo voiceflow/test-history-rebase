@@ -5,6 +5,7 @@ import createAdapter, { AdapterNotImplementedError } from 'bidirectional-adapter
 
 import { AnyTranscriptMessage, FormatType, SpeakTrace } from '@/models';
 import {
+  createCarouselMessage,
   createDebugMessage,
   createPathMessage,
   createSpeakMessage,
@@ -53,6 +54,8 @@ const dialogAdapter = createAdapter<AnyTranscriptMessage, Message | null>(
           return createSpeakMessage(transformSpeakTrace(trace), commonProperties);
         case BaseNode.Utils.TraceType.TEXT:
           return createTextMessage(trace, commonProperties);
+        case BaseNode.Utils.TraceType.CAROUSEL:
+          return createCarouselMessage(trace, commonProperties);
         case BaseNode.Utils.TraceType.STREAM:
           return createStreamMessage(trace, commonProperties);
         case BaseNode.Utils.TraceType.DEBUG:

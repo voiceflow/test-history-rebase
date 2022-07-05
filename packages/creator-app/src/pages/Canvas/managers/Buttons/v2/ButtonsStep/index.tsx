@@ -5,7 +5,7 @@ import React from 'react';
 
 import { HSLShades } from '@/constants';
 import { StepLabelVariant } from '@/constants/canvas';
-import Step, { Item, NoMatchStepItemV2, NoReplyItemV2, Section, StepButton } from '@/pages/Canvas/components/Step';
+import Step, { Item, NoMatchStepItemV2, NoReplyStepItemV2, Section, StepButton } from '@/pages/Canvas/components/Step';
 import { WAITING_FOR_INTENT_PLACEHOLDER } from '@/pages/Canvas/constants';
 import { ConnectedStep } from '@/pages/Canvas/managers/types';
 
@@ -81,7 +81,7 @@ export const ButtonsStep: React.FC<ButtonsStepProps> = ({
         )}
 
         <NoMatchStepItemV2 nodeID={nodeID} portID={noMatchPortID} noMatch={noMatch} nestedWithIcon />
-        <NoReplyItemV2 nodeID={nodeID} portID={noReplyPortID} noReply={noReply} />
+        <NoReplyStepItemV2 nodeID={nodeID} portID={noReplyPortID} noReply={noReply} nestedWithIcon />
       </Section>
     </Step>
   );

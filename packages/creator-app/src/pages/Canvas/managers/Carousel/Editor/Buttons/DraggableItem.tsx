@@ -8,30 +8,34 @@ import { transformVariablesToReadable } from '@/utils/slot';
 
 import { PATH } from './constants';
 
-export interface CarouselEditorDraggableItemProps
+export interface CarouselEditorButtonsDraggableItemProps
   extends ItemComponentProps<Realtime.NodeData.Carousel.Button>,
     DragPreviewComponentProps,
     MappedItemComponentHandlers<Realtime.NodeData.Carousel.Button> {
   editor: NodeEditorV2Props<Realtime.NodeData.Carousel, Realtime.NodeData.CarouselBuiltInPorts>;
 }
 
-// eslint-disable-next-line xss/no-mixed-html
-const CarouselEditorDraggableItem: React.ForwardRefRenderFunction<HTMLElement, CarouselEditorDraggableItemProps> = (
-  { item: button, editor, onRemove, isDragging, connectedDragRef, isDraggingPreview },
+const CarouselEditorButtonsDraggableItem: React.ForwardRefRenderFunction<HTMLElement, CarouselEditorButtonsDraggableItemProps> = (
+  { item: button, editor, onRemove, isDragging, connectedDragRef, isDraggingPreview, onContextMenu, isContextMenuOpen },
   ref
-) => (
-  <div ref={ref as React.Ref<HTMLDivElement>}>
-    <SectionV2.ListItem
-      isDragging={isDragging}
-      isDraggingPreview={isDraggingPreview}
-      ref={connectedDragRef as React.Ref<HTMLDivElement>}
-      icon="button"
-      action={isDraggingPreview ? null : <SectionV2.RemoveButton onClick={!isDragging ? onRemove : undefined} />}
-      onClick={() => editor.goToNested({ path: PATH, params: { buttonID: button.id } })}
-    >
-      {transformVariablesToReadable(button.name) || 'Button Label'}
-    </SectionV2.ListItem>
-  </div>
-);
+) => {
+  // eslint-disable-next-line xss/no-mixed-html
+  return (
+    <div ref={ref as React.Ref<HTMLDivElement>}>
+      <SectionV2.ListItem
+        isDragging={isDragging}
+        isDraggingPreview={isDraggingPreview}
+        ref={connectedDragRef as React.Ref<HTMLDivElement>}
+        icon="button"
+        isActive={isContextMenuOpen}
+        action={isDraggingPreview ? null : <SectionV2.RemoveButton onClick={!isDragging ? onRemove : undefined} />}
+        onClick={() => editor.goToNested({ path: PATH, params: { buttonID: button.id } })}
+        onContextMenu={onContextMenu}
+      >
+        {transformVariablesToReadable(button.name || 'Button Label')}
+      </SectionV2.ListItem>
+    </div>
+  );
+};
 
-export default React.forwardRef(CarouselEditorDraggableItem);
+export default React.forwardRef(CarouselEditorButtonsDraggableItem);

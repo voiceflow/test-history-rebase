@@ -13,9 +13,12 @@ import { FeatureFlagMap } from '@/ducks/feature';
 import { PathEntry } from '@/pages/Canvas/components/EditorSidebar/hooks';
 import { ConnectedMarkupNodeProps } from '@/pages/Canvas/components/MarkupNode/types';
 import type Engine from '@/pages/Canvas/engine';
+import type { NodeEntityResource } from '@/pages/Canvas/engine/entities/nodeEntity';
 
 import { EditorAnimationEffect } from '../constants';
 import { NodeDataUpdater } from '../types';
+
+export { NodeEntityResource };
 
 export type PortDescriptor = Partial<Omit<Realtime.Port, 'id'>>;
 
@@ -29,6 +32,7 @@ interface BaseConnectedStepProps<T, O extends Realtime.BuiltInPortRecord> {
 }
 export interface ConnectedStepProps<T = {}, O extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord> extends BaseConnectedStepProps<T, O> {
   palette: HSLShades;
+  isLast?: boolean;
 }
 
 export type ConnectedStep<T = {}, O extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord> = React.FC<ConnectedStepProps<T, O>>;
@@ -153,6 +157,7 @@ interface BaseNodeConfig<Data extends object> {
   getTooltipText?: (data: Data) => string;
   tooltipText?: string;
   tooltipLink?: string;
+  isMergeTerminator?: (nodeEntity: NodeEntityResource<Data | unknown>) => boolean;
 }
 
 export interface NodeConfig<T extends object, P extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord> extends BaseNodeConfig<T> {

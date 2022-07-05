@@ -23,6 +23,6 @@ export const useConfig = (): OptionalSectionConfig => {
       label: noReply ? 'Remove no reply' : 'Add no reply',
       onClick: () => editor.onChange({ noReply: noReply ? null : getPlatformNoReplyFactory(editor.projectType)({ defaultVoice }) }),
     },
-    section: !!noReply && <Section onClick={() => editor.goToNested(PATH)} />,
+    section: !!noReply && <Section onClick={() => editor.goToNested(PATH)} onRemove={() => editor.onChange({ noReply: null })} />,
   };
 };

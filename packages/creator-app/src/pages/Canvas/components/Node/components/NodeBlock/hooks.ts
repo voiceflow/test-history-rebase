@@ -4,8 +4,10 @@ import _throttle from 'lodash/throttle';
 import React from 'react';
 import { useDrop } from 'react-dnd';
 
-import { DragItem, HOVER_THROTTLE_TIMEOUT } from '@/constants';
+import { BlockType, DragItem, HOVER_THROTTLE_TIMEOUT } from '@/constants';
 import { EngineContext, ManagerContext, NodeEntityContext } from '@/pages/Canvas/contexts';
+import { isNodeEntityResource } from '@/pages/Canvas/engine/entities/nodeEntity';
+import { NodeEntityResource } from '@/pages/Canvas/managers/types';
 import { isMarkupBlockType } from '@/utils/typeGuards';
 import * as Sentry from '@/vendors/sentry';
 
@@ -13,6 +15,13 @@ export const useMergeInfo = (index: number) => {
   const engine = React.useContext(EngineContext)!;
   const getManager = React.useContext(ManagerContext)!;
   const nodeEntity = React.useContext(NodeEntityContext)!;
+
+  const isMergeTerminator = (type: BlockType, nodeEntityResource?: Partial<NodeEntityResource<unknown>> | { data: null }) => {
+    const manager = getManager(type);
+    if (manager.mergeTerminator) return true;
+
+    return isNodeEntityResource(nodeEntityResource) && manager.isMergeTerminator?.(nodeEntityResource);
+  };
 
   const { parentNodeID } = nodeEntity.useState((e) => ({
     parentNodeID: e.resolve().node.parentNode,
@@ -29,13 +38,13 @@ export const useMergeInfo = (index: number) => {
 
     return {
       mustBeFirst: NO_IN_PORT_NODES.has(type),
-      mustBeLast: getManager(type)?.mergeTerminator,
+      mustBeLast: isMergeTerminator(type),
     };
   }
 
   const mergeSource = engine.getNodeByID(engine.merge.sourceNodeID);
 
-  if (!mergeSource || isMarkupBlockType(mergeSource.type)) {
+  if (!engine.merge.sourceNodeID || !mergeSource || isMarkupBlockType(mergeSource.type)) {
     return {
       mustNotBe: true,
     };
@@ -44,11 +53,11 @@ export const useMergeInfo = (index: number) => {
   const parentNode = engine.getNodeByID(mergeSource.parentNode);
   if (mergeSource.parentNode && parentNode) {
     const sourceIndex = parentNode.combinedNodes.indexOf(mergeSource.id);
-
+    const mergeSourceData = engine.getDataByNodeID(engine.merge.sourceNodeID);
     return {
       mustNotBe: parentNodeID === mergeSource.parentNode && Utils.number.isInRange(index, sourceIndex, sourceIndex + 1),
       mustBeFirst: NO_IN_PORT_NODES.has(mergeSource.type),
-      mustBeLast: getManager(mergeSource.type)?.mergeTerminator,
+      mustBeLast: isMergeTerminator(mergeSource.type, { data: mergeSourceData, node: mergeSource }),
     };
   }
 
@@ -56,10 +65,11 @@ export const useMergeInfo = (index: number) => {
   const firstChildNode = engine.getNodeByID(firstChildNodeID);
   const lastChildNodeID = mergeSource.combinedNodes[mergeSource.combinedNodes.length - 1];
   const lastChildNode = engine.getNodeByID(lastChildNodeID);
+  const lastChildNodeData = engine.getDataByNodeID(lastChildNodeID);
 
   return {
     mustBeFirst: !!firstChildNode?.type && NO_IN_PORT_NODES.has(firstChildNode.type),
-    mustBeLast: !!lastChildNode?.type && getManager(lastChildNode.type)?.mergeTerminator,
+    mustBeLast: !!lastChildNode?.type && isMergeTerminator(lastChildNode.type, { data: lastChildNodeData, node: lastChildNode }),
   };
 };
 

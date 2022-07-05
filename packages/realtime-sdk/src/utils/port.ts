@@ -19,14 +19,14 @@ export const flattenInPorts = <T>(ports: Nullish<NodePortSchema<T>>): T[] => {
   return ports.in;
 };
 
-export const flattenOutPorts = <T>(ports: Nullish<NodePortSchema<T>>): T[] => {
+export const flattenOutPorts = <T>(ports: Nullish<NodePortSchema<T>>, options?: { skipByKeyPorts?: boolean }): T[] => {
   if (!ports) return [];
 
   const {
-    out: { builtIn, dynamic: dynamicPorts },
+    out: { builtIn, dynamic: dynamicPorts, byKey: byKeyPorts },
   } = ports;
 
-  return [...Object.values(builtIn).filter(Boolean), ...dynamicPorts];
+  return [...Object.values(builtIn).filter(Boolean), ...dynamicPorts, ...(options?.skipByKeyPorts ? [] : Object.values(byKeyPorts).filter(Boolean))];
 };
 
 export const flattenAllPorts = <T>(ports: Nullish<NodePortSchema<T>>): T[] => [...flattenInPorts(ports), ...flattenOutPorts(ports)];

@@ -6,7 +6,7 @@ export { default as HoverContainer } from './HoverContainer';
 export { default as NoMatchItem } from './NoMatchStepItem';
 export { default as NoMatchStepItemV2 } from './NoMatchStepItemV2';
 export { default as NoReplyItem } from './NoReplyStepItem';
-export { default as NoReplyItemV2 } from './NoReplyStepItemV2';
+export { default as NoReplyStepItemV2 } from './NoReplyStepItemV2';
 export { default as Attachment } from './StepAttachment';
 export { default as StepButton } from './StepButton';
 export { default as Container } from './StepContainer';

@@ -4,7 +4,7 @@ import { OverflowText, Thumbnail } from '@voiceflow/ui';
 import React from 'react';
 
 import SlateEditable from '@/components/SlateEditable';
-import Step, { NoMatchItem, NoReplyItem } from '@/pages/Canvas/components/Step';
+import Step, { NoMatchStepItemV2, NoReplyStepItemV2 } from '@/pages/Canvas/components/Step';
 import { ConnectedStep } from '@/pages/Canvas/managers/types';
 import { isVariable, transformVariablesToReadable } from '@/utils/slot';
 
@@ -13,7 +13,7 @@ import * as S from './styles';
 const slateDescription = (description: Realtime.NodeData.Carousel.Card['description']) =>
   SlateEditable.EditorAPI.isNewState(description) ? '' : SlateEditable.serializeToJSX(description);
 
-const CarouselStep: ConnectedStep<Realtime.NodeData.Carousel, Realtime.NodeData.CarouselBuiltInPorts> = ({ ports, data }) => {
+const CarouselStep: ConnectedStep<Realtime.NodeData.Carousel, Realtime.NodeData.CarouselBuiltInPorts> = ({ ports, data, isLast }) => {
   const cards = React.useMemo(
     () =>
       data.cards.map((card) => ({
@@ -60,10 +60,12 @@ const CarouselStep: ConnectedStep<Realtime.NodeData.Carousel, Realtime.NodeData.
           )}
         </Step.Section>
       ))}
-      <S.NoMatchNoReplySection>
-        <NoMatchItem portID={noMatchPortID} noMatch={data.noMatch} />
-        <NoReplyItem portID={noReplyPortID} noReply={data.noReply} />
-      </S.NoMatchNoReplySection>
+      {isLast && (
+        <S.NoMatchNoReplySection>
+          <NoMatchStepItemV2 nodeID={data.nodeID} portID={noMatchPortID} noMatch={data.noMatch} />
+          <NoReplyStepItemV2 nodeID={data.nodeID} portID={noReplyPortID} noReply={data.noReply} />
+        </S.NoMatchNoReplySection>
+      )}
     </Step>
   );
 };

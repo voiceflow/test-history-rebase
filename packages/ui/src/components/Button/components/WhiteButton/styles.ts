@@ -2,7 +2,9 @@ import ButtonContainer, { ButtonContainerProps } from '@ui/components/Button/com
 import SvgIcon from '@ui/components/SvgIcon';
 import { css, styled, transition } from '@ui/styles';
 
-export interface ContainerProps extends ButtonContainerProps {}
+export interface ContainerProps extends ButtonContainerProps {
+  rounded?: boolean;
+}
 
 export const Icon = styled(SvgIcon)`
   ${transition('opacity')}
@@ -11,8 +13,8 @@ export const Icon = styled(SvgIcon)`
 `;
 
 export const Container = styled(ButtonContainer)<ContainerProps>`
-  ${transition('background', 'opacity', 'box-shadow')}
-  border-radius: 10px;
+  ${transition('all')}
+  border-radius: ${({ rounded }) => (rounded ? '50%' : '10px')};
   color: #132144;
   display: flex;
   align-items: center;
@@ -33,6 +35,16 @@ export const Container = styled(ButtonContainer)<ContainerProps>`
 
     & ${Icon} {
       opacity: 1;
+    }
+  }
+
+  &:active {
+    background-color: #f7f7f7;
+    box-shadow: 0 0 0 1px rgb(19 33 68 / 8%), 0 2px 2px 0 rgb(19 33 68 / 2%), 0 2px 4px 0 rgb(19 33 68 / 2%), 0 2px 8px 0 rgb(19 33 68 / 4%);
+
+    & ${Icon} {
+      opacity: 1;
+      color: rgba(19, 33, 68, 0.85);
     }
   }
 

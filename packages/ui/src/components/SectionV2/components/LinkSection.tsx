@@ -5,10 +5,11 @@ import SimpleSection from './SimpleSection';
 
 export interface LinkSectionProps {
   onClick: VoidFunction;
+  onContextMenu?: React.MouseEventHandler;
 }
 
-const LinkSection: React.FC<LinkSectionProps> = ({ onClick, children }) => (
-  <SimpleSection isLink onClick={onClick}>
+const LinkSection: React.FC<LinkSectionProps> = ({ onClick, children, onContextMenu }) => (
+  <SimpleSection isLink onClick={onClick} onContextMenu={onContextMenu}>
     {children}
 
     <LinkArrowIcon />

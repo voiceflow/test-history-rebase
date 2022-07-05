@@ -24,7 +24,7 @@ const NoReplyStepItem: React.FC<NoReplyStepItemProps> = ({ noReply, portID }) =>
     >
       {({ ref, onToggle, isOpened }) => (
         <Item
-          label={(isPath ? noReply.pathName : null) ?? 'No Reply'}
+          label={(isPath ? noReply.pathName : null) ?? 'No reply'}
           portID={isPath ? portID : null}
           portColor="#6e849a"
           attachment={

@@ -11,7 +11,7 @@ const EXCLUDED_TAG_NAME = new Set(['input', 'textarea']);
 
 export const CONTEXT_MENU_IGNORED_CLASS_NAME = 'context-menu-exclude';
 
-interface ContextMenuProps<T> extends Omit<MenuProps<T>, 'options' | 'children'> {
+export interface ContextMenuProps<T> extends Omit<MenuProps<T>, 'options' | 'children'> {
   options: MenuOption<T>[];
   children: (props: { isOpen: boolean; onContextMenu: (event: React.MouseEvent<HTMLElement>) => void }) => React.ReactNode;
   placement?: PopperPlacement;

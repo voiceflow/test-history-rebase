@@ -10,7 +10,7 @@ interface NoReplyFactoryOptions extends PromptFactoryOptions {}
 
 const BASE_NO_REPLY: BaseNode.Utils.BaseStepNoReply = {
   types: [BaseNode.Utils.NoReplyType.REPROMPT],
-  pathName: 'No Reply',
+  pathName: 'No reply',
   randomize: false,
 };
 

@@ -14,6 +14,7 @@ export interface TextEditorRef {
   blur: VoidFunction;
   clear: VoidFunction;
   focus: VoidFunction;
+  select: VoidFunction;
   forceUpdate: VoidFunction;
   getEditorState: () => EditorState;
   getCurrentValue: () => TextEditorBlurData;

@@ -51,6 +51,21 @@ const CarouselEditorButtonsSection: React.FC<CarouselEditorButtonsSectionProps> 
       {!!buttons.length && (
         <DraggableList
           type="cards-buttons-editor"
+          contextMenuOptions={[
+            {
+              onClick: ({ item }) =>
+                editor.goToNested({
+                  path: PATH,
+                  params: { buttonID: item.id },
+                  state: {
+                    renaming: true,
+                  },
+                }),
+              label: 'Rename',
+            },
+          ]}
+          withContextMenuDelete
+          canDrag={buttons.length > 1}
           onDelete={managerAPI.onRemove}
           onReorder={managerAPI.onReorder}
           itemProps={{ editor, latestCreatedKey: managerAPI.latestCreatedKey }}

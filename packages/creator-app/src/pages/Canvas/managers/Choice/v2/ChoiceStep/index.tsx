@@ -3,7 +3,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Popper, stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 
-import Step, { Item, NoMatchStepItemV2, NoReplyItemV2, Section, StepButton } from '@/pages/Canvas/components/Step';
+import Step, { Item, NoMatchStepItemV2, NoReplyStepItemV2, Section, StepButton } from '@/pages/Canvas/components/Step';
 import { WAITING_FOR_INTENT_PLACEHOLDER } from '@/pages/Canvas/constants';
 import { ConnectedStep } from '@/pages/Canvas/managers/types';
 
@@ -65,7 +65,7 @@ export const ChoiceStepV2: React.FC<ChoiceStepProps> = ({
       )}
 
       <NoMatchStepItemV2 nodeID={nodeID} portID={noMatchPortID} noMatch={noMatch} nestedWithIcon />
-      <NoReplyItemV2 nodeID={nodeID} portID={noReplyPortID} noReply={noReply} />
+      <NoReplyStepItemV2 nodeID={nodeID} portID={noReplyPortID} noReply={noReply} nestedWithIcon />
     </Section>
   </Step>
 );

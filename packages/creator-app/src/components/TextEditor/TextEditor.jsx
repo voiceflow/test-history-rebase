@@ -130,6 +130,19 @@ function TextEditor({
             updateEditorState(newState);
           },
 
+          select: () => {
+            const currentContent = editorState.getCurrentContent();
+            const selection = editorState.getSelection().merge({
+              anchorKey: currentContent.getFirstBlock().getKey(),
+              anchorOffset: 0,
+
+              focusOffset: currentContent.getLastBlock().getText().length,
+              focusKey: currentContent.getLastBlock().getKey(),
+            });
+
+            updateEditorState(EditorState.forceSelection(editorState, selection));
+          },
+
           getCurrentValue: () => {
             const nextValue = fromStateWithAdapter(store.get('editorState'));
 

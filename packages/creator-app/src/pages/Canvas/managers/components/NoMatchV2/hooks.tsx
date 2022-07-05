@@ -23,6 +23,6 @@ export const useConfig = (): OptionalSectionConfig => {
       label: noMatch ? 'Remove no match' : 'Add no match',
       onClick: () => editor.onChange({ noMatch: noMatch ? null : getPlatformNoMatchFactory(editor.projectType)({ defaultVoice }) }),
     },
-    section: !!noMatch && <Section onClick={() => editor.goToNested(PATH)} />,
+    section: !!noMatch && <Section onClick={() => editor.goToNested(PATH)} onRemove={() => editor.onChange({ noMatch: null })} />,
   };
 };

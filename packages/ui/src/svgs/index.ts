@@ -23,6 +23,7 @@ export { default as audio } from './audio.svg';
 export { default as audioPlayer } from './audio-player.svg';
 export { default as amazon } from './brands/amazon.svg';
 export { default as button } from './button.svg';
+export { default as carousel } from './carousel.svg';
 
 // b
 export { default as back } from './back.svg';
@@ -334,8 +335,6 @@ export { default as tic } from './tic.svg';
 export { default as times } from './times.svg';
 export { default as touch } from './touch.svg';
 export { default as trash } from './trash.svg';
-export { default as trash2 } from './trash-2.svg';
-export { default as trashOpen } from './trash-open.svg';
 
 // u
 export { default as underline } from './underline.svg';

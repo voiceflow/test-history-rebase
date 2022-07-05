@@ -37,8 +37,8 @@ import { getUpdatedContextHistory, isV1Trace } from './utils';
 const MUTED_MESSAGE_DELAY = 250;
 
 // Trace types that can have a faked delay
-const BOT_TRACE_TYPES = new Set([BaseTrace.TraceType.TEXT, BaseTrace.TraceType.SPEAK]);
-type BotTraceType = TextTrace | SpeakTrace;
+const BOT_TRACE_TYPES = new Set([BaseTrace.TraceType.TEXT, BaseTrace.TraceType.SPEAK, BaseTrace.TraceType.CAROUSEL]);
+type BotTraceType = TextTrace | SpeakTrace | CarouselTrace;
 
 export enum StepDirection {
   FORWARD = 'forward',
@@ -505,6 +505,7 @@ class TraceController {
   }
 
   private async processCarouselTrace(trace: CarouselTrace) {
+    await this.simulateLoadingDelay(trace);
     await this.message.carousel(trace);
   }
 

@@ -4,9 +4,9 @@ import { SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 
-import VariablesInput from '@/components/VariablesInput';
+import VariablesInput, { VariablesInputRef } from '@/components/VariablesInput';
 import { FeatureFlag } from '@/config/features';
-import { useFeature } from '@/hooks';
+import { useFeature, useSetup } from '@/hooks';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 
@@ -48,10 +48,11 @@ const findButtonInfo = (cards: Realtime.NodeData.Carousel.Card[], buttonID: stri
 };
 
 const CarouselButtonsEditor: React.FC = () => {
+  const inputRef = React.useRef<VariablesInputRef>(null);
   const chatCarouselIntent = useFeature(FeatureFlag.CHAT_CAROUSEL_INTENT);
   const editor = EditorV2.useEditor<Realtime.NodeData.Carousel>();
   const params = useParams<{ buttonID: string }>();
-  const { state } = useLocation<{ waitForData?: boolean }>();
+  const { state } = useLocation<{ waitForData?: boolean; renaming?: boolean }>();
 
   const { button, card, cardIndex, buttonIndex } = React.useMemo(
     () => findButtonInfo(editor.data.cards, params.buttonID),
@@ -71,6 +72,8 @@ const CarouselButtonsEditor: React.FC = () => {
     editor.onChange({ cards });
   };
 
+  useSetup(() => state.renaming && inputRef.current?.select());
+
   const shouldRedirect = !button && !state.waitForData;
 
   return shouldRedirect ? (
@@ -79,18 +82,19 @@ const CarouselButtonsEditor: React.FC = () => {
     <EditorV2 header={<EditorV2.DefaultHeader onBack={editor.goBack} />}>
       {button && (
         <>
-          <SectionV2.Content topOffset={2.5}>
+          <SectionV2.Content topOffset={2.5} bottomOffset={0.5}>
             <FormControl>
               <VariablesInput
+                ref={inputRef}
                 value={button.name || ''}
                 onBlur={({ text }) => onChangeButton({ name: text })}
+                placeholder="Enter button label, { to add variable"
                 // eslint-disable-next-line jsx-a11y/no-autofocus
                 autoFocus
-                placeholder="Enter button label, { to add variable"
               />
             </FormControl>
           </SectionV2.Content>
-          <SectionV2.Divider inset />
+          <SectionV2.Divider inset={!!chatCarouselIntent.isEnabled} />
           {chatCarouselIntent.isEnabled && (
             <IntentSection intentID={button?.intent} buttonID={params.buttonID} onChange={(intent) => onChangeButton({ intent })} editor={editor} />
           )}

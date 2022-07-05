@@ -1,18 +1,26 @@
-import { SectionV2 } from '@voiceflow/ui';
+import { ContextMenu, MenuOption, SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
 interface SectionProps {
   onClick: VoidFunction;
+  onRemove: VoidFunction;
 }
 
-const Section: React.FC<SectionProps> = ({ onClick }) => (
-  <>
-    <SectionV2.Divider />
+const Section: React.FC<SectionProps> = ({ onClick, onRemove }) => {
+  const options: MenuOption<undefined>[] = [{ label: 'Remove', onClick: onRemove }];
 
-    <SectionV2.LinkSection onClick={onClick}>
-      <SectionV2.Title>No reply</SectionV2.Title>
-    </SectionV2.LinkSection>
-  </>
-);
+  return (
+    <>
+      <SectionV2.Divider />
+      <ContextMenu options={options}>
+        {({ onContextMenu }) => (
+          <SectionV2.LinkSection onClick={onClick} onContextMenu={onContextMenu}>
+            <SectionV2.Title>No reply</SectionV2.Title>
+          </SectionV2.LinkSection>
+        )}
+      </ContextMenu>
+    </>
+  );
+};
 
 export default Section;

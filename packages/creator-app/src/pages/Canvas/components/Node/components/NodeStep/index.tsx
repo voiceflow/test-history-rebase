@@ -44,7 +44,9 @@ const NodeStep: React.FC<NodeStepProps> = ({ isLast, palette, isDraggable }) => 
     return rect;
   }, []);
 
-  const stepAPI = useStepAPI(instance.ref, isLast, isDraggable, getAnchorPoint);
+  const hasPort = isLast || node.type === 'carousel';
+
+  const stepAPI = useStepAPI(instance.ref, hasPort, isDraggable, getAnchorPoint);
 
   nodeEntity.useInstance(instance);
 
@@ -69,6 +71,7 @@ const NodeStep: React.FC<NodeStepProps> = ({ isLast, palette, isDraggable }) => 
     <StepComponent
       data={data as any}
       ports={node.ports as any}
+      isLast={isLast}
       engine={engine}
       palette={palette}
       platform={platform}

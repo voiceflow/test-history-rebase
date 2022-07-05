@@ -1,6 +1,6 @@
 import { css, styled, transition } from '@/hocs';
 
-import Container from '../PrototypeDialog/components/Message/components/MessageContainer';
+import { Container } from '../PrototypeDialog/Message/Base/styles';
 
 export const OutterChatContainer = styled.div<{ focusedTurnID: string | null }>`
   position: relative;

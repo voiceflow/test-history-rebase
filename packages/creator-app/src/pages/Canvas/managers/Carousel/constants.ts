@@ -7,7 +7,7 @@ import { BlockType } from '@/constants';
 
 import { NodeConfig } from '../types';
 
-export const factory = (): BaseNode.Carousel.CarouselCard => ({
+export const cardFactory = (): BaseNode.Carousel.CarouselCard => ({
   id: Utils.id.cuid.slug(),
   title: '',
   description: SlateEditorAPI.getEmptyState(),
@@ -17,7 +17,8 @@ export const factory = (): BaseNode.Carousel.CarouselCard => ({
 
 export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Carousel, Realtime.NodeData.CarouselBuiltInPorts> = {
   type: BlockType.CAROUSEL,
-  icon: 'logs',
+  icon: 'carousel',
+  isMergeTerminator: ({ data }) => Realtime.Utils.typeGuards.isCarouselNodeData(data) && Boolean(data.noMatch || data.noReply),
 
   factory: () => ({
     node: {
@@ -35,7 +36,7 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Carousel, Realtime.NodeDa
     data: {
       name: 'Card',
       layout: BaseNode.Carousel.CarouselLayout.CAROUSEL,
-      cards: [factory()],
+      cards: [cardFactory()],
       noMatch: null,
       noReply: null,
     },

@@ -22,7 +22,9 @@ export const reorderNestedNode = (state: DiagramState, targetNode: Realtime.Node
   const nextIndex = isReorderingHighToLow ? index - 1 : index;
 
   const isLast = nextIndex === recipientNode.combinedNodes.length - 1;
-  const oldLinks = isLast ? getNestedOutgoingLinkIDs(state, recipientNode) : getOutgoingLinkIDs(state, targetNode);
+  const oldLinks = isLast
+    ? getNestedOutgoingLinkIDs(state, recipientNode, { skipByKeyLinks: true })
+    : getOutgoingLinkIDs(state, targetNode, { skipByKeyLinks: true });
 
   return Utils.functional.compose(
     removeAllLinksFromState(oldLinks),
@@ -37,7 +39,9 @@ export const reorderNestedNode = (state: DiagramState, targetNode: Realtime.Node
 
 export const insertIntoParentNode = (state: DiagramState, targetNode: Realtime.Node, index: number, recipientNode: Realtime.Node) => {
   const isLast = recipientNode.combinedNodes.length === index;
-  const oldLinks = isLast ? getNestedOutgoingLinkIDs(state, recipientNode) : getOutgoingLinkIDs(state, targetNode);
+  const oldLinks = isLast
+    ? getNestedOutgoingLinkIDs(state, recipientNode, { skipByKeyLinks: true })
+    : getOutgoingLinkIDs(state, targetNode, { skipByKeyLinks: true });
 
   return Utils.functional.compose(
     removeAllLinksFromState(oldLinks),
@@ -71,8 +75,8 @@ export const transplantNestedNode = (state: DiagramState, targetNode: Realtime.N
   const isLast = index === recipientCombinedIDs.length - 1;
 
   const oldLinks = isLast
-    ? [...getJoiningLinkIDs(state)(targetNode.id, recipientNodeID), ...getNestedOutgoingLinkIDs(state, recipientNode)]
-    : getOutgoingLinkIDs(state, targetNode);
+    ? [...getJoiningLinkIDs(state)(targetNode.id, recipientNodeID), ...getNestedOutgoingLinkIDs(state, recipientNode, { skipByKeyLinks: true })]
+    : getOutgoingLinkIDs(state, targetNode, { skipByKeyLinks: true });
 
   return Utils.functional.compose(
     removeAllLinksFromState(oldLinks),
@@ -112,9 +116,9 @@ const insertNestedNodeReducer: Reducer<DiagramState, InsertNestedNode> = (state,
   }
 
   if (isLast) {
-    oldLinks.push(...getNestedOutgoingLinkIDs(state, parentNode));
+    oldLinks.push(...getNestedOutgoingLinkIDs(state, parentNode, { skipByKeyLinks: true }));
   } else {
-    oldLinks.push(...getNestedOutgoingLinkIDs(state, targetNode));
+    oldLinks.push(...getNestedOutgoingLinkIDs(state, targetNode, { skipByKeyLinks: true }));
   }
 
   return Utils.functional.compose(

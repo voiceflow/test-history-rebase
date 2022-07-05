@@ -1,4 +1,4 @@
-import { ContextMenu, MenuOption } from '@voiceflow/ui';
+import { ContextMenu, ContextMenuProps, MenuOption } from '@voiceflow/ui';
 import React from 'react';
 
 import { DnDHandlers, InternalItem } from '../types';
@@ -38,6 +38,7 @@ export type DnDItemProps<I> = InternalItem<I> & {
     React.PropsWithoutRef<ItemComponentProps<I> & (ItemComponentHandlers<I> | MappedItemComponentHandlers<I>)> & React.RefAttributes<HTMLElement>
   >;
   contextMenuOptions?: ContextMenuOption<I>[];
+  contextMenuProps?: Partial<ContextMenuProps<I>>;
   withContextMenuDelete?: boolean;
   contextMenuDeleteLabel?: string;
   unmountableDuringDrag?: boolean;
@@ -51,6 +52,7 @@ const DnDItem = <P extends DnDItemProps<any>>({
   partialDrag,
   itemComponent: Item,
   contextMenuOptions,
+  contextMenuProps,
   withContextMenuDelete,
   contextMenuDeleteLabel = 'Delete',
   unmountableDuringDrag,
@@ -94,7 +96,7 @@ const DnDItem = <P extends DnDItemProps<any>>({
 
   if (menuOptions.length) {
     return (
-      <ContextMenu options={menuOptions}>
+      <ContextMenu {...contextMenuProps} options={menuOptions}>
         {({ isOpen, onContextMenu }) => <Item {...itemProps} onContextMenu={onContextMenu} isContextMenuOpen={isOpen} />}
       </ContextMenu>
     );

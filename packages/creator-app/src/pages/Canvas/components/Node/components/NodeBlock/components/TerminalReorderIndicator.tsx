@@ -13,9 +13,9 @@ const TerminalReorderIndicator: React.FC<ReorderIndicatorProps> = ({ index, onMo
   const { mustNotBe, mustBeFirst } = useMergeInfo(index);
   const [connectBlockDrop, isHovered] = useDnDHoverReorderIndicator(index);
 
-  const { mergeTerminator } = getManager(nodeEntity.nodeType);
+  const { mergeTerminator, isMergeTerminator } = getManager(nodeEntity.nodeType);
 
-  const isActive = !(mustNotBe || mergeTerminator || mustBeFirst);
+  const isActive = !(mustNotBe || mergeTerminator || mustBeFirst || isMergeTerminator?.(nodeEntity.resolve()));
 
   return (
     <Step.ReorderIndicator

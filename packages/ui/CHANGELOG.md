@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.117.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.116.0...@voiceflow/ui@1.117.0) (2022-07-05)
+
+
+### Features
+
+* implement carousel layout and refactored message component (VF-3360) ([#5604](https://github.com/voiceflow/creator-app/issues/5604)) ([3ad97c1](https://github.com/voiceflow/creator-app/commit/3ad97c1c1bd5c064580449df0a4e01a3023a5ac2))
+
+
+
+
+
 # [1.116.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.115.0...@voiceflow/ui@1.116.0) (2022-07-05)
 
 

@@ -58,4 +58,5 @@ export enum FeatureFlag {
   IF_STEP_CLEANUP = 'if_step_cleanup',
   FLOW_STEP_CLEANUP = 'flow_step_cleanup',
   IMAGE_STEP_CLEANUP = 'image_step_cleanup',
+  CONDITIONS_BUILDER_V2 = 'conditions_builder_v2',
 }

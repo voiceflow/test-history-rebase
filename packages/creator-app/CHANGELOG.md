@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.817.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.816.0...@voiceflow/creator-app@1.817.0) (2022-07-06)
+
+
+### Features
+
+* conditions container (CT-489) ([#5721](https://github.com/voiceflow/creator-app/issues/5721)) ([56ee1fd](https://github.com/voiceflow/creator-app/commit/56ee1fd1355ee6f2edf0f741e3514c9c3748abe0))
+
+
+
+
+
 # [1.816.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.815.1...@voiceflow/creator-app@1.816.0) (2022-07-06)
 
 

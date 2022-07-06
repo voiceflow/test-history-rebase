@@ -24,7 +24,10 @@ const ImageEditor: NodeEditor<BaseNode.Visual.ImageStepData, Realtime.NodeData.V
     data.dimensions ? { width: String(data.dimensions.width), height: String(data.dimensions.height) } : null
   );
   const cache = React.useRef({ preDimensions: data.dimensions, prevDevice: data.device });
-  const [frameType, setFrameType] = React.useState(BaseNode.Visual.FrameType.AUTO);
+  const persistedFrameType = Object.values(BaseNode.Visual.FrameType).includes(data.frameType as BaseNode.Visual.FrameType)
+    ? (data.frameType as BaseNode.Visual.FrameType)
+    : BaseNode.Visual.FrameType.AUTO;
+  const [frameType, setFrameType] = React.useState(persistedFrameType);
 
   const platform = useSelector(ProjectV2.active.platformSelector);
 

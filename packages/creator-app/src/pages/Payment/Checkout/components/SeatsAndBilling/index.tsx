@@ -3,6 +3,7 @@ import { Dropdown, Flex, FlexApart, SvgIcon, TippyTooltip } from '@voiceflow/ui'
 import _isNumber from 'lodash/isNumber';
 import React from 'react';
 
+import { STARTER_PRO_EDITOR_LIMIT } from '@/config/planLimits/numEditors';
 import { PERIOD_NAME } from '@/constants';
 import StepSection from '@/pages/Payment/components/Section';
 import { PaymentContextProps, PaymentErrors, withPayment } from '@/pages/Payment/context';
@@ -21,8 +22,8 @@ interface SeatsAndBillingProps {
 
 const SeatsAndBilling: React.FC<SeatsAndBillingProps> = ({
   payment: {
-    state: { plan, price, period, seats, errors, hasPricing, loading },
-    actions: { setPeriod, setSeats },
+    state: { plan, price, period, seats, errors, hasPricing, loading, upgradePrompt },
+    actions: { setPeriod, setSeats, toggleUpgradePrompt },
   },
 }) => {
   const formErrors: PaymentErrors = hasPricing ? errors : {};
@@ -42,6 +43,14 @@ const SeatsAndBilling: React.FC<SeatsAndBillingProps> = ({
     discountMessage = '--';
   }
 
+  const canSetSeats = (seats: number) => {
+    setSeats(seats.toString());
+
+    if ((seats <= STARTER_PRO_EDITOR_LIMIT && upgradePrompt) || (seats > STARTER_PRO_EDITOR_LIMIT && !upgradePrompt)) {
+      toggleUpgradePrompt();
+    }
+  };
+
   const seatError = formErrors?.seats?.message;
   const periodError = formErrors?.period?.message;
 
@@ -50,7 +59,7 @@ const SeatsAndBilling: React.FC<SeatsAndBillingProps> = ({
       <StepSection secondary>
         <FlexApart>
           <Flex>
-            <SeatsInput errorMessage={seatError} hasError={!!seatError} onChange={setSeats} value={seats} />
+            <SeatsInput errorMessage={seatError} hasError={!!seatError} onChange={canSetSeats} value={seats} />
             <SeatsBillingText>
               <div>Editor Seats,</div>
               <Dropdown
@@ -87,12 +96,18 @@ const SeatsAndBilling: React.FC<SeatsAndBillingProps> = ({
             <PriceBox>
               <>
                 <div>$</div>
-                {!plan?.pricing || !_isNumber(price) || loading.price ? (
-                  <div>&nbsp;--&nbsp;</div>
+                {upgradePrompt ? (
+                  <div>Custom</div>
                 ) : (
-                  <div id={Identifier.PAYMENT_MODAL_UNIT_COST_CONTAINER}>{price}</div>
+                  <>
+                    {!plan?.pricing || !_isNumber(price) || loading.price ? (
+                      <div>&nbsp;--&nbsp;</div>
+                    ) : (
+                      <div id={Identifier.PAYMENT_MODAL_UNIT_COST_CONTAINER}>{price}</div>
+                    )}
+                    <div>/month</div>
+                  </>
                 )}
-                <div>/ month</div>
               </>
             </PriceBox>
           </div>

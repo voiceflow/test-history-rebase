@@ -6,6 +6,7 @@ import React from 'react';
 import ButtonDropdownInput, { OrientationType } from '@/components/ButtonDropdownInput';
 import InputError from '@/components/InputError';
 import { Permission } from '@/config/permissions';
+import { canAddEditor, EditorLimitDetails } from '@/config/planLimits/numEditors';
 import { EDITOR_SEAT_ROLES, ModalType } from '@/constants';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useEnableDisable, useModals, usePermission, useSelector } from '@/hooks';
@@ -36,6 +37,9 @@ const SendInvite: React.FC<SendInviteProps> = ({ inline, sendInvite }) => {
   const usedEditorSeats = useSelector(WorkspaceV2.active.usedEditorSeatsSelector);
   const usedViewerSeats = useSelector(WorkspaceV2.active.usedViewerSeatsSelector);
 
+  const plan = useSelector(WorkspaceV2.active.planSelector);
+  const { open: openUpgradeModal } = useModals(ModalType.UPGRADE_MODAL);
+
   const [email, setEmail] = React.useState('');
   const [permissionType, setPermissionType] = React.useState(OPTIONS_ARRAY[0]);
   const [isInvalid, setInvalid, setValid] = useEnableDisable(false);
@@ -57,10 +61,13 @@ const SendInvite: React.FC<SendInviteProps> = ({ inline, sendInvite }) => {
       const role = permissionType.value;
 
       const paidEditorSeats = numberOfSeats!;
-      const numberOfUsedEditorSeats = usedEditorSeats;
 
-      if (numberOfUsedEditorSeats >= paidEditorSeats && EDITOR_SEAT_ROLES.includes(role)) {
+      if (usedEditorSeats >= paidEditorSeats && canAddEditor(plan, usedEditorSeats) && EDITOR_SEAT_ROLES.includes(role)) {
         return openPaymentsModal();
+      }
+
+      if (!canAddEditor(plan, usedEditorSeats) && EDITOR_SEAT_ROLES.includes(role)) {
+        return openUpgradeModal({ planLimitDetails: EditorLimitDetails });
       }
 
       const viewerLimit = seatLimits!.viewer;

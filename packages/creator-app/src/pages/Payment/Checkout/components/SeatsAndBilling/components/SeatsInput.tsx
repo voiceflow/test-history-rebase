@@ -30,7 +30,7 @@ interface SeatsInputProps {
   payment?: PaymentContextProps;
   errorMessage?: string;
   hasError: boolean;
-  onChange: (value: string) => void;
+  onChange: (value: number) => void;
   value: number;
 }
 
@@ -41,7 +41,7 @@ const SeatsInput: React.FC<SeatsInputProps> = ({ payment, errorMessage, hasError
   const [hasFocus, setHasFocus] = React.useState(false);
   const [fetchingResponse, setFetchingResponse] = React.useState(false);
   const updateSeats = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onChange(parseInt(Math.min(Math.max(parseInt(e.target.value, 10), initialValue), 99).toString(), 10).toString());
+    onChange(parseInt(Math.min(Math.max(parseInt(e.target.value, 10), initialValue), 99).toString(), 10));
   };
 
   React.useEffect(() => {

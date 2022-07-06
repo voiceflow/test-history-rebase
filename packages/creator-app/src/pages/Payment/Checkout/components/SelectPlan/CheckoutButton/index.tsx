@@ -3,6 +3,7 @@ import { Button, ButtonVariant, SvgIcon } from '@voiceflow/ui';
 import _isEmpty from 'lodash/isEmpty';
 import React from 'react';
 
+import { upgradeToEnterpriseAction } from '@/config/planLimits';
 import StartAChatButton from '@/pages/Payment/components/StartAChatButton';
 import { PaymentContextProps, withPayment } from '@/pages/Payment/context';
 import { Identifier } from '@/styles/constants';
@@ -14,7 +15,7 @@ interface CheckoutButtonProps {
 }
 
 const CheckoutButton: React.FC<CheckoutButtonProps> = ({ payment: { state, checkout } }) => {
-  const { price, period, hasPricing, errors, stripeCompleted, loading, usingExistingSource } = state;
+  const { price, period, hasPricing, errors, stripeCompleted, loading, usingExistingSource, upgradePrompt } = state;
 
   if (!hasPricing) {
     return <StartAChatButton />;
@@ -31,13 +32,24 @@ const CheckoutButton: React.FC<CheckoutButtonProps> = ({ payment: { state, check
   const paymentReady = stripeCompleted || usingExistingSource;
 
   return (
-    <Button id={Identifier.PAYMENT_UPGRADE_BUTTON} variant={ButtonVariant.PRIMARY} onClick={checkout} disabled={!_isEmpty(errors) || !paymentReady}>
-      Upgrade{' '}
-      {paymentReady && (
-        <CostText>
-          and Pay
-          {!loading.price && price ? ` $${period === BillingPeriod.MONTHLY ? price : 12 * price}` : ''}
-        </CostText>
+    <Button
+      id={Identifier.PAYMENT_UPGRADE_BUTTON}
+      variant={ButtonVariant.PRIMARY}
+      onClick={upgradePrompt ? upgradeToEnterpriseAction : checkout}
+      disabled={upgradePrompt ? false : !_isEmpty(errors) || !paymentReady}
+    >
+      {upgradePrompt ? (
+        <div>Upgrade to Enterprise</div>
+      ) : (
+        <div>
+          Upgrade{' '}
+          {paymentReady && (
+            <CostText>
+              and Pay
+              {!loading.price && price ? ` $${period === BillingPeriod.MONTHLY ? price : 12 * price}` : ''}
+            </CostText>
+          )}
+        </div>
       )}
     </Button>
   );

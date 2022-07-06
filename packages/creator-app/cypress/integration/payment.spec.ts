@@ -23,20 +23,27 @@ context('Payment and Collaborators', () => {
       paymentHelper.checkAndCloseSuccessModal();
     });
 
-    it('multiple seats (12) upgrade (Yearly)', () => {
+    it('multiple seats (2) upgrade (Yearly)', () => {
       paymentHelper.setup();
       paymentHelper.openPaymentModal();
-      paymentHelper.increaseEditors();
+      paymentHelper.increaseEditors('2');
       paymentHelper.fillCreditCard();
       paymentHelper.confirmUpgrade();
       paymentHelper.checkAndCloseSuccessModal();
     });
 
-    it('multiple seats (12) upgrade (Monthly)', () => {
+    it('multiple seats (12) upgrade (Yearly)', () => {
+      paymentHelper.setup();
+      paymentHelper.openPaymentModal();
+      paymentHelper.increaseEditors();
+      paymentHelper.checkButtonText();
+    });
+
+    it('multiple seats (2) upgrade (Monthly)', () => {
       paymentHelper.setup();
       paymentHelper.openPaymentModal();
       paymentHelper.changeToMonthlyPayments();
-      paymentHelper.increaseEditors();
+      paymentHelper.increaseEditors('2');
       paymentHelper.fillCreditCard();
       paymentHelper.confirmUpgrade();
       paymentHelper.checkAndCloseSuccessModal();
@@ -98,7 +105,7 @@ context('Payment and Collaborators', () => {
     it('upgrade to pro with multiple seats and invite editor', () => {
       paymentHelper.setup();
       paymentHelper.openPaymentModal();
-      paymentHelper.increaseEditors();
+      paymentHelper.increaseEditors('3');
       paymentHelper.fillCreditCard();
       paymentHelper.confirmUpgrade();
       paymentHelper.checkAndCloseSuccessModal();

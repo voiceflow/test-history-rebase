@@ -77,6 +77,7 @@ export interface PaymentContextProps {
     period: BillingPeriod;
     seats: number;
     stripeCompleted: boolean;
+    upgradePrompt: boolean;
   };
   actions: {
     showDetails: VoidFunction;
@@ -91,6 +92,7 @@ export interface PaymentContextProps {
     toggleUsingCoupon: VoidFunction;
     setStripeCompleted: (complete: boolean) => void;
     toggleUsingExistingSource: VoidFunction;
+    toggleUpgradePrompt: VoidFunction;
   };
   checkout: () => Promise<void>;
 }
@@ -132,6 +134,7 @@ const PaymentContextProvider: React.FC<PaymentContextProviderProps> = ({ childre
     discount: null,
     usingCoupon: false,
     stripeCompleted: false,
+    upgradePrompt: false,
   });
 
   const [trackingEvents] = useTrackingEvents();

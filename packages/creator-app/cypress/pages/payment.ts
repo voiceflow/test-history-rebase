@@ -51,11 +51,17 @@ const paymentHelper = {
     cy.get(`#${Identifier.MODAL_CLOSE_BUTTON_REGULAR}`).click();
     cy.get(`.${DashboardClassName.PLAN_BUBBLE}`).contains('Pro');
   },
-  increaseEditors: () => {
-    cy.get(`#${Identifier.PAYMENT_SEATS_INPUT}`).type('2');
+  increaseEditors: (numEditors = '12') => {
+    cy.get(`#${Identifier.PAYMENT_SEATS_INPUT}`).clear().type(numEditors);
   },
   assertPaymentModal: () => {
     cy.get(`#${Identifier.UPGRADE_PLAN_SECTION}`).should('be.visible');
+  },
+  waitForCustomPrice: () => {
+    cy.get(`#${Identifier.PAYMENT_MODAL_UNIT_COST_CONTAINER}`).contains('Custom');
+  },
+  checkButtonText: () => {
+    cy.get(`#${Identifier.PAYMENT_UPGRADE_BUTTON}`).contains('Upgrade to Enterprise');
   },
 };
 

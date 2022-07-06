@@ -28,7 +28,7 @@ interface PaymentDetailsProps {
 
 const PaymentDetails: React.FC<PaymentDetailsProps> = ({
   payment: {
-    state: { coupon, usingCoupon, errors, discount, usingExistingSource, source },
+    state: { coupon, usingCoupon, errors, discount, usingExistingSource, source, upgradePrompt },
     actions: { setCoupon, toggleUsingCoupon, setStripeCompleted, toggleUsingExistingSource },
   },
 }) => {
@@ -45,6 +45,7 @@ const PaymentDetails: React.FC<PaymentDetailsProps> = ({
       <StepSection id={Identifier.PAYMENT_DETAILS_SECTION}>
         <Collapsable opened={usingCoupon}>
           <ControlledInput
+            disabled={upgradePrompt}
             maxLength={16}
             placeholder="Coupon code"
             value={coupon}
@@ -57,7 +58,7 @@ const PaymentDetails: React.FC<PaymentDetailsProps> = ({
         {usingExistingSource && source ? (
           <Input icon="creditCard" value={`${source.brand} | XXXX-XXXX-XXXX-${source.last4}`} disabled />
         ) : (
-          <CardElement onChangeComplete={setStripeCompleted} />
+          <CardElement onChangeComplete={setStripeCompleted} disabled={upgradePrompt} />
         )}
       </StepSection>
     </>

@@ -3,9 +3,11 @@ import { Badge, Input } from '@voiceflow/ui';
 import React from 'react';
 
 import ConditionsBuilder from '@/components/ConditionsBuilder';
+import ConditionsBuilderV2 from '@/components/ConditionsBuilderV2';
 import { DragPreviewComponentProps, ItemComponentProps, MappedItemComponentHandlers } from '@/components/DraggableList';
 import Section, { SectionToggleVariant } from '@/components/Section';
-import { useSetup } from '@/hooks';
+import { FeatureFlag } from '@/config/features';
+import { useFeature, useSetup } from '@/hooks';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
 
 export type ConditionsSectionProps = ItemComponentProps<Realtime.ExpressionData> &
@@ -21,6 +23,7 @@ const ConditionsSection: React.ForwardRefRenderFunction<HTMLDivElement, Conditio
 ) => {
   const inputRef = React.useRef<HTMLInputElement | null>(null);
   const [title, setTitle] = React.useState<string>((item as Realtime.ExpressionData).name ?? '');
+  const useConditionsBuilderV2 = useFeature(FeatureFlag.CONDITIONS_BUILDER_V2);
 
   const isNew = itemKey === latestCreatedKey;
 
@@ -55,7 +58,11 @@ const ConditionsSection: React.ForwardRefRenderFunction<HTMLDivElement, Conditio
             <Input ref={inputRef} value={title} onBlur={onBlur} placeholder="Condition Label" onChangeText={setTitle} />
           </Section>
           <Section isDividerNested customContentStyling={{ paddingTop: '0px', paddingBottom: '0px' }}>
-            <ConditionsBuilder expression={item as Realtime.ExpressionData} onChange={onUpdate} />
+            {useConditionsBuilderV2.isEnabled ? (
+              <ConditionsBuilderV2 expression={item as Realtime.ExpressionData} />
+            ) : (
+              <ConditionsBuilder expression={item as Realtime.ExpressionData} onChange={onUpdate} />
+            )}
           </Section>
         </>
       )}

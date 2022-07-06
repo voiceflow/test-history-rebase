@@ -1,6 +1,6 @@
 import { BaseNode } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Dropdown, Menu, MenuItem, Text } from '@voiceflow/ui';
+import { Dropdown, Menu, MenuItem, SvgIcon, Text } from '@voiceflow/ui';
 import React from 'react';
 
 import AddConditionButton from './AddConditionButton';
@@ -10,9 +10,10 @@ export interface ConditionSelectProps {
   isLogicGroup?: boolean;
   expression?: Realtime.ExpressionV2;
   onChange: (value: BaseNode.Utils.ConditionsLogicInterface) => void;
+  isV2?: boolean;
 }
 
-const ConditionSelect: React.FC<ConditionSelectProps> = ({ onChange, additional = false, isLogicGroup = false }) => {
+const ConditionSelect: React.FC<ConditionSelectProps> = ({ onChange, additional = false, isLogicGroup = false, isV2 = false }) => {
   const onSelect = (logicInterface: BaseNode.Utils.ConditionsLogicInterface) => () => onChange(logicInterface);
 
   return (
@@ -40,7 +41,7 @@ const ConditionSelect: React.FC<ConditionSelectProps> = ({ onChange, additional 
     >
       {(ref, onToggle, isOpen) => (
         <AddConditionButton isOpen={isOpen} ref={ref} onClick={onToggle} additional={additional}>
-          Add a condition
+          {isV2 ? <SvgIcon icon="plus" size={16} color="#6e849a" /> : <div>Add a condition</div>}
         </AddConditionButton>
       )}
     </Dropdown>

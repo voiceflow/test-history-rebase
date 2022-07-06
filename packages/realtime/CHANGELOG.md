@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.82.7](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.82.6...@voiceflow/realtime@1.82.7) (2022-07-06)
+
+
+### Bug Fixes
+
+* remove nodes link restore (VF-3990) ([#5715](https://github.com/voiceflow/creator-app/issues/5715)) ([31132b6](https://github.com/voiceflow/creator-app/commit/31132b6149122a5acb4fb17b3378fe208fb5a476))
+
+
+
+
+
 ## [1.82.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.82.5...@voiceflow/realtime@1.82.6) (2022-07-05)
 
 **Note:** Version bump only for package @voiceflow/realtime

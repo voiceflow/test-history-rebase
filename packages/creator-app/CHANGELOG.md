@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.817.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.817.3...@voiceflow/creator-app@1.817.4) (2022-07-06)
+
+
+### Bug Fixes
+
+* show persisted frame type in editor (CT-532) ([#5722](https://github.com/voiceflow/creator-app/issues/5722)) ([f9fd6f6](https://github.com/voiceflow/creator-app/commit/f9fd6f6e5978c3baf49ebceba48986944b6ca66d))
+
+
+
+
+
 ## [1.817.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.817.2...@voiceflow/creator-app@1.817.3) (2022-07-06)
 
 

@@ -6,7 +6,7 @@ import './reactDnD';
 import './canvas';
 
 Cypress.Commands.add('shouldBeOn', (page) => {
-  cy.location('pathname').should('be.onRoute', page);
+  cy.location('pathname').should('be.onRoute', page, { timeout: 15000 });
 });
 
 Cypress.Commands.add('awaitLoaded', () => {

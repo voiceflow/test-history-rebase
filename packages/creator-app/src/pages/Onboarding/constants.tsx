@@ -71,7 +71,7 @@ export const STEP_META: StepMetaProps = {
       if (justCreatingWorkspace || upgradingAWorkspace) {
         return StepID.PAYMENT;
       }
-      return isProjectCreateFeatureEnabled ? null : StepID.SELECT_CHANNEL;
+      return isProjectCreateFeatureEnabled ? StepID.PAYMENT : StepID.SELECT_CHANNEL;
     },
     trackStep: ({ addCollaboratorMeta }, { skip }) =>
       Tracking.trackOnboardingCollaborators({

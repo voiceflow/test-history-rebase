@@ -442,8 +442,11 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
 
   const stepForward = async (stepID: StepID | null, { skip = false }: { skip?: boolean } = {}) => {
     const isLastStep = stepStack.length === numberOfSteps;
+
     if (isLastStep) {
       setIsFinalizing(true);
+    } else if (stepID === null) {
+      goToDashboard();
     } else if (!stepStack.includes(stepID)) {
       cache.current.skipped = skip;
       setStepStack([stepID, ...stepStack]);

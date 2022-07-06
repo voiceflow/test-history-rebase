@@ -26,7 +26,7 @@ context('Onboarding', () => {
   describe('Student promo plan', () => {
     beforeEach(() => cy.removeTestAccount());
 
-    it.skip('new user', () => {
+    it('new user', () => {
       const queryParam = '?promo=student';
       cy.signup(queryParam);
       onboarding.assert.verifyEmailTitle();
@@ -55,7 +55,7 @@ context('Onboarding', () => {
   describe('Creator promo plan', () => {
     beforeEach(() => cy.removeTestAccount());
 
-    it.skip('new user creator signup flow', () => {
+    it('new user creator signup flow', () => {
       const queryParam = '?ob_payment=true&ob_plan=creator&ob_period=MO';
       cy.signup(queryParam);
       onboarding.assert.verifyEmailTitle();

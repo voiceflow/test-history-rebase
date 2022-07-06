@@ -103,7 +103,7 @@ export const getNumberOfSteps = ({
     case SpecificFlowType.login_creator_new:
     case SpecificFlowType.login_student_new:
     case SpecificFlowType.login_payment_new:
-      return 6;
+      return 5;
     case SpecificFlowType.login_vanilla_new:
       return isProjectCreateFeatureEnabled ? 4 : 5;
     default:

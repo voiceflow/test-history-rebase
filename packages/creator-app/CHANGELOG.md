@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.817.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.817.1...@voiceflow/creator-app@1.817.2) (2022-07-06)
+
+
+### Bug Fixes
+
+* fix creator promo and student onboarding flows (CT-247) ([#5720](https://github.com/voiceflow/creator-app/issues/5720)) ([d9b6128](https://github.com/voiceflow/creator-app/commit/d9b6128f76ad2c516aed51fc2b9b71555d3e1318))
+
+
+
+
+
 ## [1.817.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.817.0...@voiceflow/creator-app@1.817.1) (2022-07-06)
 
 

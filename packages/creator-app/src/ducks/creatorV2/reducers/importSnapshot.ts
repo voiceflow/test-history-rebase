@@ -55,6 +55,11 @@ const importLink =
   (link: Realtime.Link): void => {
     const linkID = link.id;
 
+    // validate source and target ports exist
+    if (!(link.source.portID in state.ports.byKey && link.target.portID in state.ports.byKey)) {
+      return;
+    }
+
     state.links.allKeys.push(linkID);
     state.links.byKey[linkID] = link;
 

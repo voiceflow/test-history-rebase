@@ -53,6 +53,7 @@ class ImportSnapshot extends AbstractDiagramResourceControl<Realtime.creator.Imp
         context: {
           schemaVersion: payload.schemaVersion,
         },
+        partial: true,
       }
     );
 

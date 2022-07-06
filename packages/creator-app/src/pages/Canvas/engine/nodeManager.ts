@@ -339,13 +339,9 @@ class NodeManager extends EngineConsumer {
     removeMany: async (nodeIDs: string[]): Promise<void> => {
       const nodes = this.select(CreatorV2.nodesByIDsSelector, { ids: nodeIDs });
       const removedIDs = new Set<string>();
-      const parentIDs = new Set<string>();
 
       nodes.forEach((node) => {
         this.engine.activation.deactivate(node.id);
-        if (node.parentNode) {
-          parentIDs.add(node.parentNode);
-        }
         [...node.combinedNodes, node.id].forEach((childNodeID) => removedIDs.add(childNodeID));
       });
 
@@ -354,10 +350,6 @@ class NodeManager extends EngineConsumer {
 
         return parentNodeID ? { parentNodeID, stepID: nodeID } : { parentNodeID: nodeID };
       });
-
-      // save last location of parent nodes in case unmerging
-      const notRemovedParentIDs = Array.from(parentIDs).filter((parentID) => !removedIDs.has(parentID));
-      this.saveLocations(notRemovedParentIDs);
 
       await this.dispatch.sync(Realtime.node.removeMany({ ...this.engine.context, nodes: nodesToRemove }));
     },

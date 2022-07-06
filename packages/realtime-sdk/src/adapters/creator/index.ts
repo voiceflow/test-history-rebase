@@ -35,6 +35,7 @@ const creatorAdapter = createSimpleAdapter<
       platform: VoiceflowConstants.PlatformType;
       projectType: VoiceflowConstants.ProjectType;
       context: VersionAdapterContext;
+      partial?: boolean;
     }
   ]
 >(
@@ -111,11 +112,11 @@ const creatorAdapter = createSimpleAdapter<
       markupNodeIDs,
     };
   },
-  ({ diagramID, viewport, links, data }, { nodes, ports, platform, projectType, context }) => {
+  ({ diagramID, viewport, links, data }, { nodes, ports, platform, projectType, context, partial }) => {
     const nodeList = denormalize(nodes);
 
     const portToTargets = links.reduce<Record<string, string>>((acc, link) => {
-      if (link.source.portID in ports.byKey && link.target.nodeID in nodes.byKey) {
+      if (link.source.portID in ports.byKey && (partial || link.target.nodeID in nodes.byKey)) {
         acc[link.source.portID] = link.target.nodeID;
       }
 

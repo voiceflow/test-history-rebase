@@ -4,7 +4,7 @@ import * as Project from '@/ducks/projectV2';
 import { createReverter } from '@/ducks/utils';
 import * as Version from '@/ducks/versionV2';
 
-import { allPortsByIDsSelector, nodeByIDSelector, nodeDataByIDSelector, portsByNodeIDSelector } from '../selectors';
+import { allPortsByIDsSelector, linksByNodeIDSelector, nodeByIDSelector, nodeDataByIDSelector, portsByNodeIDSelector } from '../selectors';
 import { removeManyNodes } from '../utils';
 import { createActiveDiagramReducer, createDiagramInvalidator, createNodeRemovalInvalidators, DIAGRAM_INVALIDATORS } from './utils';
 
@@ -33,13 +33,14 @@ export const removeManyNodesReverter = createReverter(
     const portsIDs = nodeIDs.flatMap((nodeID) => Realtime.Utils.port.flattenAllPorts(portsByNodeIDSelector(state, { id: nodeID })));
     const ports = allPortsByIDsSelector(state, { ids: portsIDs });
     const schemaVersion = Version.active.schemaVersionSelector(state);
+    const links = nodeIDs.flatMap((nodeID) => linksByNodeIDSelector(state, { id: nodeID }));
 
     return Realtime.creator.importSnapshot({
       workspaceID,
       projectID,
       versionID,
       diagramID,
-      links: [],
+      links,
       ports,
       projectMeta,
       schemaVersion,

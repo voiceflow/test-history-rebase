@@ -37,7 +37,7 @@ const projectNLUEnterpisePlanLimitDetails = (nlpSelection: NLPProvider) => {
   return {
     modalTitle: 'NLU',
     title: 'Upgrade to use this NLU',
-    description: `${NLPProviderLabels[nlpSelection]} is an ${ENTERPRISE_LABEL} feautre. Upgrade to import and export data for this NLU.`,
+    description: `${NLPProviderLabels[nlpSelection]} is an ${ENTERPRISE_LABEL} feature. Upgrade to import and export data for this NLU.`,
     submitText: UPGRADE_TO_ENTERPRISE_ACTION_LABEL,
     onSubmit: upgradeToEnterpriseAction,
     tooltipText: `${NLPProviderLabels[nlpSelection]} is a enterprise feature.`,

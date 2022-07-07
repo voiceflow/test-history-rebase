@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.82.8](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.82.7...@voiceflow/realtime@1.82.8) (2022-07-07)
+
+
+### Bug Fixes
+
+* persist link data during migration (VF-4020) ([#5728](https://github.com/voiceflow/creator-app/issues/5728)) ([ee2ae76](https://github.com/voiceflow/creator-app/commit/ee2ae7664b946f726e474d03df909c4ec0c85d34))
+
+
+
+
+
 ## [1.82.7](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.82.6...@voiceflow/realtime@1.82.7) (2022-07-06)
 
 

@@ -98,8 +98,8 @@ describe('Migrate service - v2 migration unit tests', () => {
     };
     const failPort = {
       type: BaseModels.PortType.FAIL,
-      data: undefined,
-      target: null,
+      data: { color: '#efefef' },
+      target: nodeID,
       id: 'port-2',
     };
     const data = {

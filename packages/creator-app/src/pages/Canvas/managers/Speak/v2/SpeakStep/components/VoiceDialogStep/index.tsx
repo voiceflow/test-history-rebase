@@ -43,12 +43,13 @@ export const VoiceDialogStep: React.FC<SpeakStepProps & SpeakStepItem> = ({ rand
   );
 
   return (
-    <Step.StepItemContainer className={ClassName.CANVAS_STEP_ITEM} style={{ padding: '12px 16px 12px 22px' }}>
+    <Step.StepItemContainer className={ClassName.CANVAS_STEP_ITEM} pb={shouldRenderAttachment ? 16 : 12}>
       <Step.StepLabelTextContainer variant={stepLabel ? StepLabelVariant.PRIMARY : StepLabelVariant.PLACEHOLDER}>
         <Step.StepLabelText multiline lineClamp={100} withNewLines className={ClassName.CANVAS_STEP_ITEM_LABEL}>
           {stepLabel || SPEAK_PLACEHOLDER}
         </Step.StepLabelText>
       </Step.StepLabelTextContainer>
+
       <Step.StepPort portID={isLastItem ? nextPortID : null} />
     </Step.StepItemContainer>
   );

@@ -1,7 +1,7 @@
-import { css, styled } from '@/hocs';
+import { styled } from '@/hocs';
 
-const StepMenuExpandButton = styled.div<{ isHovered?: boolean }>`
-  transition: all 0.2s ease;
+const StepMenuExpandButton = styled.div`
+  transition: height 0.2s ease, opacity 0.2s ease;
 
   height: 0;
   display: flex;
@@ -9,14 +9,6 @@ const StepMenuExpandButton = styled.div<{ isHovered?: boolean }>`
   align-items: center;
   cursor: pointer;
   opacity: 0.3;
-  visibility: hidden;
-
-  ${({ isHovered }) =>
-    isHovered &&
-    css`
-      visibility: visible;
-      height: 16px;
-    `}
 
   &:hover {
     opacity: 0.5;

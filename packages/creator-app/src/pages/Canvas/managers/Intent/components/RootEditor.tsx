@@ -4,8 +4,9 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
-import { HelpTooltip, LegacyMappings } from '@/components/IntentForm';
+import { LegacyMappings } from '@/components/IntentForm';
 import IntentSelect from '@/components/IntentSelect';
+import * as Documentation from '@/config/documentation';
 import { FeatureFlag } from '@/config/features';
 import * as Creator from '@/ducks/creator';
 import * as Intent from '@/ducks/intent';
@@ -66,7 +67,7 @@ const RootEditor: React.FC = () => {
   };
 
   return (
-    <EditorV2 header={<EditorV2.DefaultHeader />} footer={<EditorV2.DefaultFooter tutorial={{ content: <HelpTooltip /> }} />}>
+    <EditorV2 header={<EditorV2.DefaultHeader />} footer={<EditorV2.DefaultFooter tutorial={Documentation.INTENT_STEP} />}>
       <SectionV2.SimpleSection>
         <IntentSelect
           intent={intent}

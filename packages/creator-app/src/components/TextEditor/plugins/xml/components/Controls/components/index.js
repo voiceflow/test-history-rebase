@@ -16,6 +16,7 @@ export const Wrapper = styled.div`
 export const ControlsWrapper = styled(Flex)`
   flex: 1;
   justify-content: flex-end;
+  margin-right: -6px;
 `;
 
 export const HistoryWrapper = styled.div`

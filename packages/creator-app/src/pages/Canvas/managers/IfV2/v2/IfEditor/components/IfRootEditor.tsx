@@ -1,12 +1,12 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Button } from '@voiceflow/ui';
+import { Button, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
 import DraggableList, { DeleteComponent, MapManagedEditActionHandler } from '@/components/DraggableList';
+import * as Documentation from '@/config/documentation';
 import { useToggle } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import NoMatchV2 from '@/pages/Canvas/managers/components/NoMatchV2';
-import HelpTooltip from '@/pages/Canvas/managers/IfV2/components/HelpTooltip';
 import { expressionFactory, MAX_IF_ITEMS } from '@/pages/Canvas/managers/IfV2/constants';
 import { useIfManager } from '@/pages/Canvas/managers/IfV2/hooks';
 
@@ -19,15 +19,15 @@ const IfRootEditor: React.FC = () => {
   const [isDragging, toggleDragging] = useToggle(false);
   const canCreateMoreItems = managerAPI.items.length < MAX_IF_ITEMS;
 
-  const onDuplicate: MapManagedEditActionHandler<Realtime.ExpressionData> = (_, item) => {
-    managerAPI.onDuplicate(item.index, item.item as any);
-  };
+  const onDuplicate = usePersistFunction<MapManagedEditActionHandler<Realtime.ExpressionData>>((_, item) =>
+    managerAPI.onDuplicate(item.index, item.item)
+  );
 
   return (
     <EditorV2
       header={<EditorV2.DefaultHeader title="Condition" />}
       footer={
-        <EditorV2.DefaultFooter tutorial={{ content: <HelpTooltip /> }}>
+        <EditorV2.DefaultFooter tutorial={Documentation.CONDITION_STEP}>
           {canCreateMoreItems && (
             <Button variant={Button.Variant.PRIMARY} onClick={() => managerAPI.onAdd(expressionFactory())} squareRadius>
               Add Condition

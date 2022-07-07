@@ -61,7 +61,7 @@ const IfEditor: NodeEditor<Realtime.NodeData.IfV2, Realtime.NodeData.IfV2BuiltIn
   const onDuplicationExp = React.useCallback(
     (_, item) =>
       transaction(async () => {
-        await Promise.all([onDuplicate(item.index, item), engine.port.addDynamic(node.id)]);
+        await Promise.all([onDuplicate(item.index, item.item), engine.port.addDynamic(node.id)]);
       }),
     [onDuplicate, node.id]
   );

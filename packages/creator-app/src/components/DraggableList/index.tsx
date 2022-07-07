@@ -1,4 +1,6 @@
+import { Nullable } from '@voiceflow/common';
 import { ContextMenuProps, useCache } from '@voiceflow/ui';
+// eslint-disable-next-line you-dont-need-lodash-underscore/throttle
 import _throttle from 'lodash/throttle';
 import React from 'react';
 import { DragSourceMonitor, useDrop } from 'react-dnd';
@@ -44,13 +46,14 @@ export type DraggableListProps<I, D, C> = {
   onStartDrag?: DnDHandlers<I>['onDragStart'];
   deleteProps?: D;
   previewOptions?: PreviewOptions;
-  deleteComponent?: React.NamedExoticComponent<React.PropsWithoutRef<D> & React.RefAttributes<any>>;
+  deleteComponent?: Nullable<React.NamedExoticComponent<React.PropsWithoutRef<D> & React.RefAttributes<any>>>;
   partialDragItem?: boolean;
   contextMenuOptions?: ContextMenuOption<I>[];
   contextMenuProps?: Partial<ContextMenuProps<I>>;
   unmountableDuringDrag?: boolean;
   withContextMenuDelete?: boolean;
   contextMenuDeleteLabel?: string;
+  contextMenuSelfDismiss?: boolean;
   withContextMenuDuplicate?: boolean;
   disableReorderingWhileDraggingX?: boolean;
 } & (
@@ -113,8 +116,9 @@ const DraggableList = <I, D, C>({
   contextMenuOptions,
   unmountableDuringDrag,
   withContextMenuDelete,
-  withContextMenuDuplicate,
   contextMenuDeleteLabel,
+  contextMenuSelfDismiss,
+  withContextMenuDuplicate,
   disableReorderingWhileDraggingX,
   ...props
 }: DraggableListProps<I, D, C>): JSX.Element => {
@@ -201,11 +205,12 @@ const DraggableList = <I, D, C>({
       handlers={handlers}
       partialDrag={partialDragItem}
       itemComponent={itemComponent as any}
-      contextMenuOptions={contextMenuOptions}
       contextMenuProps={contextMenuProps}
+      contextMenuOptions={contextMenuOptions}
       unmountableDuringDrag={unmountableDuringDrag}
       withContextMenuDelete={withContextMenuDelete}
       contextMenuDeleteLabel={contextMenuDeleteLabel}
+      contextMenuSelfDismiss={contextMenuSelfDismiss}
       withContextMenuDuplicate={withContextMenuDuplicate}
       disableReorderingWhileDraggingX={disableReorderingWhileDraggingX}
     />

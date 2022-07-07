@@ -6,34 +6,31 @@ import DraggableList, { DeleteComponent } from '@/components/DraggableList';
 import * as Documentation from '@/config/documentation';
 import { useManager, useToggle } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
-import { LABELS_V2, useCanvasVisibilityOption } from '@/pages/Canvas/managers/hooks';
-import { textFactory } from '@/pages/Canvas/managers/Text/constants';
+import { useCanvasVisibilityOption } from '@/pages/Canvas/managers/hooks';
+import { audioFactory } from '@/pages/Canvas/managers/Speak/constants';
 
-import TextItem from './components/TextItem';
+import AudioItem from './components/AudioItem';
 
-const TextRootEditor: React.FC = () => {
-  const editor = EditorV2.useEditor<Realtime.NodeData.Text, Realtime.NodeData.TextBuiltInPorts>();
-  const canvasVisibilityOption = useCanvasVisibilityOption(
-    editor.data.canvasVisibility,
-    (canvasVisibility) => editor.onChange({ canvasVisibility }),
-    LABELS_V2
-  );
+const AudioEditor: React.FC = () => {
+  const editor = EditorV2.useEditor<Realtime.NodeData.Speak, Realtime.NodeData.SpeakBuiltInPorts>();
+  const audios = editor.data.dialogs as Realtime.AudioData[];
+  const canvasVisibilityOption = useCanvasVisibilityOption(editor.data.canvasVisibility, (canvasVisibility) => editor.onChange({ canvasVisibility }));
   const { onAdd, onReorder, onRemove } = EditorV2.useSyncDynamicPorts();
   const [isDragging, toggleDragging] = useToggle(false);
 
-  const managerAPI = useManager(editor.data.texts, (texts) => editor.onChange({ texts }), {
+  const managerAPI = useManager<Realtime.AudioData, Realtime.AudioData[]>(audios, (dialogs) => editor.onChange({ dialogs }), {
     onAdd,
-    factory: textFactory,
+    factory: audioFactory,
     onRemove,
     onReorder,
   });
 
   return (
     <EditorV2
-      header={<EditorV2.DefaultHeader />}
+      header={<EditorV2.DefaultHeader title="Audio" />}
       footer={
         !isDragging && (
-          <EditorV2.DefaultFooter tutorial={Documentation.TEXT_STEP}>
+          <EditorV2.DefaultFooter tutorial={Documentation.AUDIO_STEP}>
             <EditorV2.FooterActionsButton actions={[canvasVisibilityOption]} />
 
             <Button variant={Button.Variant.PRIMARY} onClick={() => managerAPI.onAdd()} squareRadius>
@@ -44,21 +41,21 @@ const TextRootEditor: React.FC = () => {
       }
     >
       <DraggableList
-        type="text-editor"
+        type="speak-audio-editor"
         onDelete={managerAPI.onRemove}
         onReorder={managerAPI.onReorder}
         onEndDrag={toggleDragging}
         itemProps={{ editor, latestCreatedKey: managerAPI.latestCreatedKey }}
         mapManaged={managerAPI.mapManaged}
         onStartDrag={toggleDragging}
-        itemComponent={TextItem}
+        itemComponent={AudioItem}
         deleteComponent={DeleteComponent}
         partialDragItem
-        previewComponent={TextItem}
+        previewComponent={AudioItem}
         withContextMenuDelete
       />
     </EditorV2>
   );
 };
 
-export default TextRootEditor;
+export default AudioEditor;

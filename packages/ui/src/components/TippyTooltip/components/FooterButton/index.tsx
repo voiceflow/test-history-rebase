@@ -8,13 +8,14 @@ import { ButtonContainer } from './components';
 export interface ComplexProps {
   title?: React.ReactNode;
   width?: number;
+  onClick: VoidFunction;
   buttonText: string;
-  onClick: () => void;
+  defaultVisible?: boolean;
 }
 
-const FooterButton: React.FC<ComplexProps> = ({ onClick, buttonText, title, width = 200, children }) => {
+const FooterButton: React.FC<ComplexProps> = ({ onClick, buttonText, title, width = 200, children, defaultVisible }) => {
   const buttonRef = React.useRef(null);
-  const isVisible = useOnScreen(buttonRef);
+  const isVisible = useOnScreen(buttonRef, { initialState: defaultVisible });
 
   return (
     <Multiline width={width} style={{ paddingBottom: '46px' }}>

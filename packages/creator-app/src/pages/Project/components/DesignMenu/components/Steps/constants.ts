@@ -1,6 +1,6 @@
 import { BaseNode } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { SVG, SvgIconTypes } from '@voiceflow/ui';
+import { SvgIconTypes } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import _isFunction from 'lodash/isFunction';
 
@@ -31,9 +31,6 @@ export const getStepIcon = ({ factoryData, manager }: StepProps) =>
 export const getStepLabel = ({ factoryData, manager }: StepProps) =>
   (_isFunction(manager.getDataLabel) && factoryData && manager.getDataLabel(factoryData)) || manager.label;
 
-export const getStepMenuIcon = ({ factoryData, manager }: StepProps) =>
-  (_isFunction(manager.getStepsMenuIcon) && factoryData && manager.getStepsMenuIcon(factoryData)) || manager.stepsMenuIcon!;
-
 export const getStepTooltipText = ({ factoryData, manager }: StepProps) =>
   (_isFunction(manager.getTooltipText) && factoryData && manager.getTooltipText(factoryData)) || manager.tooltipText;
 
@@ -46,7 +43,6 @@ const createMenuStep = (type: Realtime.StepBlockType, { publicOnly, factoryData 
     factoryData,
     getIcon: (manager?: ReturnType<typeof getManager>) => getStepIcon({ factoryData, manager: manager || getManager(type) }),
     getLabel: (manager?: ReturnType<typeof getManager>) => getStepLabel({ factoryData, manager: manager || getManager(type) }),
-    getStepMenuIcon: (manager?: ReturnType<typeof getManager>) => getStepMenuIcon({ factoryData, manager: manager || getManager(type) }),
     getStepTooltipText: (manager?: ReturnType<typeof getManager>) => getStepTooltipText({ factoryData, manager: manager || getManager(type) }),
     getStepTooltipLink: (manager?: ReturnType<typeof getManager>) => getStepTooltipLink({ manager: manager || getManager(type) }),
   };
@@ -294,7 +290,6 @@ export interface StepItem {
   type: Realtime.BlockType;
   getIcon: (manager?: ReturnType<typeof getManager>) => any;
   getLabel: (manager?: ReturnType<typeof getManager>) => any;
-  getStepMenuIcon: (manager?: ReturnType<typeof getManager>) => any;
   getStepTooltipText: (manager?: ReturnType<typeof getManager>) => string | undefined;
   getStepTooltipLink: (manager?: ReturnType<typeof getManager>) => string | undefined;
   publicOnly?: boolean;
@@ -304,24 +299,24 @@ export interface StepItem {
 }
 
 export interface TopStepItem {
-  steps?: StepItem[];
-  icon: React.FC;
+  icon: SvgIconTypes.Icon;
   label: string;
+  steps?: StepItem[];
 }
 
-const TALK_ICON = SVG.systemTalk;
+const TALK_ICON = 'systemTalk' as const;
 const TALK_LABEL = 'Talk';
 
-const LISTEN_ICON = SVG.systemListen;
+const LISTEN_ICON = 'systemListen' as const;
 const LISTEN_LABEL = 'Listen';
 
-const LOGIC_ICON = SVG.systemLogic;
+const LOGIC_ICON = 'systemLogic' as const;
 const LOGIC_LABEL = 'Logic';
 
-const EVENT_ICON = SVG.systemEvent;
+const EVENT_ICON = 'systemEvent' as const;
 const EVENT_LABEL = 'Event';
 
-const DEV_ICON = SVG.systemDev;
+const DEV_ICON = 'systemDev' as const;
 const DEV_LABEL = 'Dev';
 
 // alexa menu sections

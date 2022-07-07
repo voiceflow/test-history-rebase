@@ -5,12 +5,12 @@ import React from 'react';
 
 import SlotSelect, { SlotOption } from '@/components/SlotSelect';
 import VariableSelect from '@/components/VariableSelect';
+import * as Documentation from '@/config/documentation';
 import { CUSTOM_SLOT_TYPE } from '@/constants';
 import { useManager } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 
 import { NoReplyV2 } from '../../components';
-import HelpTooltip from './HelpTooltip';
 import ListItem from './ListItem';
 
 const CaptureEditor: React.FC = () => {
@@ -29,7 +29,7 @@ const CaptureEditor: React.FC = () => {
     <EditorV2
       header={<EditorV2.DefaultHeader />}
       footer={
-        <EditorV2.DefaultFooter tutorial={{ content: <HelpTooltip /> }}>
+        <EditorV2.DefaultFooter tutorial={Documentation.CAPTURE_STEP}>
           <EditorV2.FooterActionsButton actions={[noReplyConfig.option]} />
         </EditorV2.DefaultFooter>
       }

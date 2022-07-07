@@ -5,8 +5,9 @@ import { IconButtonVariant } from '../types';
 import { BaseContainerProps } from './IconButtonContainer';
 
 export interface BasicContainerProps extends BaseContainerProps {
-  variant: IconButtonVariant.BASIC;
   inline?: boolean;
+  variant: IconButtonVariant.BASIC;
+  buttonSize?: number;
   offsetSize?: number;
   activeHover?: boolean;
   activeClick?: boolean;
@@ -27,8 +28,8 @@ const BasicContainer = styled.button<BasicContainerProps>`
   ${flexCenterStyles};
   ${transition('background', 'opacity', 'color')};
 
-  width: 36px;
-  height: 36px;
+  width: ${({ buttonSize = 36 }) => buttonSize}px;
+  height: ${({ buttonSize = 36 }) => buttonSize}px;
 
   color: #8da2b5;
   background: transparent;

@@ -1,4 +1,4 @@
-import { SvgIcon, Text } from '@voiceflow/ui';
+import { Animations, SvgIcon, Text } from '@voiceflow/ui';
 import React from 'react';
 
 import { useHover } from '@/hooks';
@@ -9,20 +9,26 @@ import { TopLevelButtonContainer } from './TopLevelButtonContainer';
 
 interface TopLevelButtonItem {
   step: TopStepItem;
-  isVisible: boolean;
+  animationIndex: number;
 }
 
-const TopLevelButton: React.FC<TopLevelButtonItem> = ({ step, isVisible }) => {
-  const [isHovered, , hoverHandlers] = useHover();
+const TopLevelButton: React.FC<TopLevelButtonItem> = ({ step, animationIndex }) => {
+  const [isHovered, , hoverHandlers, setHovering] = useHover();
 
   return (
-    <TopLevelButtonContainer focused={isHovered} visible={isVisible} {...hoverHandlers}>
-      <SvgIcon icon={step.icon} size={step.label === 'Logic' ? 24 : 22} marginLeft="21px" style={{ display: 'block' }} />
-      <Text paddingTop="3px" fontSize="11px" fontWeight={600}>
-        {step.label}
-      </Text>
-      {step.steps && isHovered && <SubMenu steps={step.steps} />}
-    </TopLevelButtonContainer>
+    <div {...hoverHandlers}>
+      <Animations.FadeLeftContainer distance={-10} delay={animationIndex * 0.06} duration={0.1}>
+        <TopLevelButtonContainer focused={isHovered}>
+          <SvgIcon icon={step.icon} size={step.label === 'Logic' ? 24 : 22} />
+
+          <Text paddingTop="3px" fontSize="11px" fontWeight={600}>
+            {step.label}
+          </Text>
+        </TopLevelButtonContainer>
+      </Animations.FadeLeftContainer>
+
+      {step.steps && isHovered && <SubMenu steps={step.steps} onDrop={() => setHovering(false)} />}
+    </div>
   );
 };
 

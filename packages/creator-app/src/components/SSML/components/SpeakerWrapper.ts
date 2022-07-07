@@ -7,10 +7,9 @@ interface SpeakerWrapperProps {
 }
 
 const SpeakerWrapper = styled(FlexCenter)<SpeakerWrapperProps>`
-  width: 20px;
-  height: 24px;
-  padding: 4px 0 4px 4px;
-  margin-left: -4px;
+  width: 32px;
+  min-width: 32px;
+  height: 32px;
   cursor: pointer;
   color: #6e849a;
   opacity: 0.8;

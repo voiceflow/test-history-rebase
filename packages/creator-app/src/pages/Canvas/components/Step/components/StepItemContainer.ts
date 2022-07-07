@@ -1,8 +1,8 @@
-import { Flex } from '@voiceflow/ui';
+import { Box } from '@voiceflow/ui';
 
 import { css, styled } from '@/hocs';
 
-const StepItemContainer = styled(Flex)<{ nested?: boolean; nestedWithIcon?: boolean }>`
+const StepItemContainer = styled(Box.Flex)<{ nested?: boolean; nestedWithIcon?: boolean }>`
   position: relative;
   ${({ nested, nestedWithIcon }) => {
     if (nestedWithIcon)

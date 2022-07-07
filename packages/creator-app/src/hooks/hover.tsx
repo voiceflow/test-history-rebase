@@ -11,32 +11,46 @@ interface HoverOptions {
   onEnd?: (event?: React.MouseEvent<HTMLElement>) => boolean | void;
   onMove?: (event?: React.MouseEvent<HTMLElement>) => boolean | void;
   onStart?: (event?: React.MouseEvent<HTMLElement>) => boolean | void;
+  hoverDelay?: number;
   cleanupOnOverride?: boolean;
 }
 
 export const useHover = (
-  { onEnd, onMove, onStart, cleanupOnOverride = true }: HoverOptions = { onStart: () => true },
+  { onEnd, onMove, onStart = () => true, hoverDelay, cleanupOnOverride = true }: HoverOptions = {},
   dependencies: any[] = []
 ): [boolean, (el: JSX.Element) => JSX.Element, Record<HoverEventHandler, React.MouseEventHandler<HTMLElement>>, (hovering: boolean) => void] => {
-  const onHoverEnd = React.useRef<((event?: React.MouseEvent<HTMLElement>) => boolean | void) | null>(null);
+  const parentHover = React.useContext(HoverContext);
+
   const [isHovered, setHovering] = React.useState(false);
   const [isOverridden, enableOverride, disableOverride] = useEnableDisable();
-  const parentHover = React.useContext(HoverContext);
+
+  const onHoverEnd = React.useRef<((event?: React.MouseEvent<HTMLElement>) => boolean | void) | null>(null);
+  const startTimeoutRef = React.useRef<number>(0);
 
   const onMouseEnter = React.useCallback(
     (event: React.MouseEvent<HTMLElement>) => {
-      if (onStart?.(event)) {
+      const hovered = () => {
         setHovering(true);
 
         onHoverEnd.current = onEnd || null;
         parentHover?.setOverride(event);
+      };
+
+      if (!onStart?.(event)) return;
+
+      if (hoverDelay) {
+        startTimeoutRef.current = window.setTimeout(hovered, hoverDelay);
+      } else {
+        hovered();
       }
     },
-    [parentHover?.setOverride, ...dependencies]
+    [parentHover?.setOverride, hoverDelay, ...dependencies]
   );
 
   const onMouseLeave = React.useCallback(
     (event: React.MouseEvent<HTMLElement>) => {
+      window.clearTimeout(startTimeoutRef.current);
+
       setHovering(false);
 
       parentHover?.clearOverride(event);

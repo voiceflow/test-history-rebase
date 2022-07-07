@@ -21,25 +21,19 @@ export const GOOGLE_ACTIONS = 'https://docs.voiceflow.com/#/platform/steps/chann
 export const DIALOGFLOW_ACTIONS = 'https://docs.voiceflow.com/#/platform/steps/channel-steps/dialogflow-steps';
 
 // canvas
-export const FLOW_STEP = 'https://www.voiceflow.com/docs/designing-components-flow';
 export const COMPONENTS_LAYER = 'https://www.voiceflow.com/docs/designing-components-flow';
 export const COMPONENT_STEP = 'https://www.voiceflow.com/docs/designing-components-flow';
-export const CONDITION_STEP = 'https://www.voiceflow.com/docs/designing-logic-steps#toc-0';
-export const SET_STEP = 'https://www.voiceflow.com/docs/designing-logic-steps#toc-1';
 export const CODE_STEP = 'https://www.voiceflow.com/docs/designing-integration-steps#toc-2';
 export const SET_STEP_VIDEO = 'https://www.youtube.com/embed/6xgr-7GPZzU';
 export const COMMAND_STEP_VIDEO = 'https://www.youtube.com/watch?v=piU_PTL1wBQ&feature=emb_title';
 export const ACCOUNT_LINKING_STEP = 'https://www.voiceflow.com/docs/designing-channel-specific-steps#toc-4';
 export const ALEXA_DIRECTIVE_STEP = 'https://www.voiceflow.com/docs/designing-channel-specific-steps#toc-5';
 export const GOOGLE_DIRECTIVE_STEP = 'https://www.voiceflow.com/docs/designing-channel-specific-steps#toc-6';
-export const BUTTONS_STEP = 'https://www.voiceflow.com/docs/designing-user-input-steps#toc-1';
-export const TEXT_STEP = 'https://www.voiceflow.com/docs/designing-response-steps#toc-2';
 export const VISUALS_STEP = 'https://www.voiceflow.com/docs/designing-response-steps#toc-4';
 export const DISPLAY_STEP = 'https://www.voiceflow.com/docs/designing-response-steps#toc-5';
 export const CUSTOM_RESPOSE = 'https://www.voiceflow.com/docs/designing-response-steps#toc-8';
 
 // TODO: we don't have a dedicated pages for these anymore
-export const CAPTURE_STEP = 'https://docs.voiceflow.com/#/platform/steps/logic-steps/logic';
 export const CARD_STEP = 'https://www.voiceflow.com/docs/designing-response-steps#toc-6';
 export const REMINDER_STEP = 'https://www.voiceflow.com/docs/designing-channel-specific-steps#toc-1';
 export const STREAM_STEP = 'https://www.voiceflow.com/docs/designing-response-steps#toc-7';
@@ -58,3 +52,18 @@ export const DIALOG_MANAGER_API = 'https://developer.voiceflow.com/reference';
 export const OPEN_INTENT = 'https://docs.voiceflow.com/#/platform/steps/input-steps/user-input?id=open-intent';
 
 export const PROJECT_CREATE = 'https://www.voiceflow.com/docs/designing-project-creation';
+
+// steps
+export const INTENT_STEP = 'https://www.voiceflow.com/docs/designing-user-input-steps#toc-2';
+export const CHOICE_STEP = 'https://www.voiceflow.com/docs/designing-user-input-steps#toc-0';
+export const BUTTONS_STEP = 'https://www.voiceflow.com/docs/designing-user-input-steps#toc-1';
+export const CAPTURE_STEP = 'https://www.voiceflow.com/docs/designing-user-input-steps#toc-3';
+export const CONDITION_STEP = 'https://www.voiceflow.com/docs/designing-logic-steps#toc-3';
+export const CUSTOM_CODE_STEP = 'https://www.voiceflow.com/docs/designing-integration-steps#toc-2';
+export const SET_STEP = 'https://www.voiceflow.com/docs/designing-logic-steps#toc-2';
+export const API_STEP = 'https://www.voiceflow.com/docs/designing-integration-steps#toc-1';
+export const SPEAK_STEP = 'https://www.voiceflow.com/docs/designing-response-steps#toc-1';
+export const TEXT_STEP = 'https://www.voiceflow.com/docs/designing-response-steps#toc-2';
+export const FLOW_STEP = 'https://www.voiceflow.com/docs/designing-logic-steps#toc-5';
+export const IMAGE_STEP = 'https://www.voiceflow.com/docs/designing-response-steps#toc-4';
+export const AUDIO_STEP = 'https://www.voiceflow.com/docs/designing-response-steps#toc-3';

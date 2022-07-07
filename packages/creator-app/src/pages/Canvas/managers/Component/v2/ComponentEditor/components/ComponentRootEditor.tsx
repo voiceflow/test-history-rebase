@@ -2,12 +2,12 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Button, SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
+import * as Documentation from '@/config/documentation';
 import * as Diagram from '@/ducks/diagram';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Router from '@/ducks/router';
 import { useDispatch, useSelector } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
-import { HelpTooltip } from '@/pages/Canvas/managers/Component/components';
 
 import ComponentSelect from './ComponentSelect';
 
@@ -37,7 +37,7 @@ const ComponentRootEditor: React.FC = () => {
     <EditorV2
       header={<EditorV2.DefaultHeader />}
       footer={
-        <EditorV2.DefaultFooter tutorial={{ content: <HelpTooltip /> }}>
+        <EditorV2.DefaultFooter tutorial={Documentation.FLOW_STEP}>
           {data.diagramID && (
             <Button variant={Button.Variant.PRIMARY} onClick={onEnterFlow} squareRadius>
               Enter Flow

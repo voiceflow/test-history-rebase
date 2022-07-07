@@ -3,8 +3,8 @@ import { Box, IconButton, IconButtonVariant } from '@voiceflow/ui';
 import React from 'react';
 
 import AceEditor, { ACE_EDITOR_COLORS, ACE_EDITOR_OPTIONS_V2 } from '@/components/AceEditor';
+import * as Documentation from '@/config/documentation';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
-import HelpTooltip from '@/pages/Canvas/managers/Code/components/HelpTooltip';
 import { useAceEditor, useVariableList } from '@/pages/Canvas/managers/Code/hooks';
 
 const CodeRootEditor: React.FC = () => {
@@ -37,7 +37,7 @@ const CodeRootEditor: React.FC = () => {
       }
       footer={
         !editor.isFullscreen && (
-          <EditorV2.DefaultFooter tutorial={{ content: <HelpTooltip /> }}>
+          <EditorV2.DefaultFooter tutorial={Documentation.CUSTOM_CODE_STEP}>
             <EditorV2.FooterActionsButton actions={editorActions} />
           </EditorV2.DefaultFooter>
         )

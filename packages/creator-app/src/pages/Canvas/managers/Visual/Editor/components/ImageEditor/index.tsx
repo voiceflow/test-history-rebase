@@ -200,7 +200,7 @@ const ImageEditor: NodeEditor<BaseNode.Visual.ImageStepData, Realtime.NodeData.V
 
       {!!data.image && (
         <Section dividers={false}>
-          <FormControl label="Canvas Visibility" contentBottomUnits={0}>
+          <FormControl label="Canvas visibility" contentBottomUnits={0}>
             <RadioGroup
               isFlat
               options={CANVAS_VISIBILITY_OPTIONS}

@@ -3,6 +3,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Button, SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
+import * as Documentation from '@/config/documentation';
 import { ModalType } from '@/constants';
 import { useModals } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
@@ -28,7 +29,7 @@ const IntegrationRootEditor: React.FC = () => {
     <EditorV2
       header={<EditorV2.DefaultHeader title={CUSTOM_API_NAME} />}
       footer={
-        <EditorV2.DefaultFooter tutorial={{ content: <div>daounadso</div> }}>
+        <EditorV2.DefaultFooter tutorial={Documentation.API_STEP}>
           <Button variant={Button.Variant.PRIMARY} onClick={() => openTestModal({ ...editor.data })} squareRadius>
             Send Request
           </Button>

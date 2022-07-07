@@ -4,7 +4,7 @@ import { styled } from '@/hocs';
 
 const FullWidthWrapper = styled(Flex)`
   height: ${({ theme }) => theme.components.input.height}px;
-  padding: 10px 0 10px 16px;
+  padding: 12px 18px;
 
   position: absolute;
   left: 0;
@@ -12,7 +12,8 @@ const FullWidthWrapper = styled(Flex)`
   bottom: 0;
 
   color: #6e849a;
-  box-shadow: rgba(17, 49, 96, 0.08) 0px 1px 3px, rgba(17, 49, 96, 0.08) 0px -1px 0px;
+  background-color: #fdfdfd;
+  border-top: 1px solid #eaeff4;
   border-bottom-left-radius: 6px;
   border-bottom-right-radius: 6px;
 

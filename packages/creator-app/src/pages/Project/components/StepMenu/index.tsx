@@ -3,7 +3,7 @@ import React from 'react';
 
 import { Permission } from '@/config/permissions';
 import * as ProjectV2 from '@/ducks/projectV2';
-import { useHover, usePermission, useSelector, useToggle } from '@/hooks';
+import { usePermission, useSelector, useToggle } from '@/hooks';
 
 import { StepMenuExpandButton, TopLevelButton, TopLevelInnerContainer, TopLevelOuterContainer } from './components';
 import { getStepSections } from './constants';
@@ -15,21 +15,20 @@ const StepMenu: React.FC<{ numCollapsedSteps?: number }> = ({ numCollapsedSteps 
   const [isExpanded, toggleIsExpanded] = useToggle(false);
 
   const steps = getStepSections(platform, projectType);
-
-  const [isHovered, , hoverHandlers] = useHover();
-  const shouldShowAllStepButtons = isExpanded || numCollapsedSteps >= steps.length;
+  const stepsToShow = isExpanded ? steps : steps.slice(0, numCollapsedSteps);
 
   return (
     <>
       {canEditCanvas && (
-        <TopLevelOuterContainer {...hoverHandlers} isHovered={isHovered}>
-          <TopLevelInnerContainer>
-            {steps.map((step, index) => (
-              <TopLevelButton key={step.label} step={step} isVisible={shouldShowAllStepButtons || index < numCollapsedSteps} />
+        <TopLevelOuterContainer>
+          <TopLevelInnerContainer size={stepsToShow.length}>
+            {stepsToShow.map((step, index) => (
+              <TopLevelButton key={step.label} step={step} animationIndex={Math.max(0, index - numCollapsedSteps)} />
             ))}
           </TopLevelInnerContainer>
-          <StepMenuExpandButton onClick={toggleIsExpanded} isHovered={isHovered}>
-            <SvgIcon icon="arrowToggleV2" size={16} color="#393e42" inline rotation={isExpanded ? 270 : 90} />
+
+          <StepMenuExpandButton onClick={toggleIsExpanded}>
+            <SvgIcon icon="arrowToggleV2" size={18} color="#393e42" inline rotation={isExpanded ? 270 : 90} />
           </StepMenuExpandButton>
         </TopLevelOuterContainer>
       )}

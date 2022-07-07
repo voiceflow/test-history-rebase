@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from '@/hooks';
 import MenuCheckboxOption from '@/pages/Canvas/managers/components/MenuCheckboxOption';
 
 export const LABELS = {
-  OPTION: 'Canvas Visibility',
+  OPTION: 'Canvas visibility',
   PREVIEW: 'Show preview',
   VARIANTS: 'Show all variants',
   SET_DEFAULT: 'Set as default',

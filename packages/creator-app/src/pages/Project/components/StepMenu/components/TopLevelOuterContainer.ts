@@ -1,20 +1,29 @@
-import { css, styled } from '@/hocs';
+import { styled } from '@/hocs';
 
-const TopLevelOuterContainer = styled.aside<{ isHovered: boolean }>`
+import StepMenuExpandButton from './StepMenuExpandButton';
+
+const TopLevelOuterContainer = styled.div`
   position: absolute;
   top: 16px;
   left: 100%;
   transform: translateX(12px);
+  padding: 4px;
   border-radius: 10px;
   background-color: #f4f4f4;
-  padding: 4px 4px 0;
   z-index: 10;
 
-  ${({ isHovered }) =>
-    !isHovered &&
-    css`
-      padding-bottom: 4px;
-    `}
+  ${StepMenuExpandButton} {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  &:hover {
+    & ${StepMenuExpandButton} {
+      height: 16px;
+      opacity: 0.3;
+      pointer-events: all;
+    }
+  }
 `;
 
 export default TopLevelOuterContainer;

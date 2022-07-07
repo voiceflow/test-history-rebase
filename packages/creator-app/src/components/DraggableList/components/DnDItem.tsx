@@ -40,8 +40,9 @@ export type DnDItemProps<I> = InternalItem<I> & {
   contextMenuOptions?: ContextMenuOption<I>[];
   contextMenuProps?: Partial<ContextMenuProps<I>>;
   withContextMenuDelete?: boolean;
-  contextMenuDeleteLabel?: string;
   unmountableDuringDrag?: boolean;
+  contextMenuDeleteLabel?: string;
+  contextMenuSelfDismiss?: boolean;
   withContextMenuDuplicate?: boolean;
   disableReorderingWhileDraggingX?: boolean;
 } & (ItemComponentHandlers<I> | MappedItemComponentHandlers<I>);
@@ -51,11 +52,12 @@ const DnDItem = <P extends DnDItemProps<any>>({
   handlers,
   partialDrag,
   itemComponent: Item,
-  contextMenuOptions,
   contextMenuProps,
+  contextMenuOptions,
   withContextMenuDelete,
-  contextMenuDeleteLabel = 'Delete',
   unmountableDuringDrag,
+  contextMenuDeleteLabel = 'Delete',
+  contextMenuSelfDismiss,
   withContextMenuDuplicate,
   disableReorderingWhileDraggingX,
   ...props
@@ -96,7 +98,7 @@ const DnDItem = <P extends DnDItemProps<any>>({
 
   if (menuOptions.length) {
     return (
-      <ContextMenu {...contextMenuProps} options={menuOptions}>
+      <ContextMenu selfDismiss={contextMenuSelfDismiss} {...contextMenuProps} options={menuOptions}>
         {({ isOpen, onContextMenu }) => <Item {...itemProps} onContextMenu={onContextMenu} isContextMenuOpen={isOpen} />}
       </ContextMenu>
     );

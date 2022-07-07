@@ -1,7 +1,6 @@
-import { SvgIcon } from '@voiceflow/ui';
+import { SvgIcon, TippyTooltip } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
-import { Tooltip } from 'react-tippy';
 
 import client from '@/client';
 import { useEnableDisable } from '@/hooks/toggle';
@@ -104,14 +103,14 @@ const Speaker: React.FC<SpeakerProps> = ({ voice, platform, setError, getSSMLToP
   );
 
   // eslint-disable-next-line no-nested-ternary
-  const icon = loading ? 'loader' : playing ? 'stopCircle' : 'sound';
+  const icon = loading ? 'loader' : playing ? 'systemStopOutline' : 'systemAudioWave';
 
   return (
-    <Tooltip title={playing ? 'Stop' : 'Play'} position="top">
+    <TippyTooltip title={playing ? 'Stop' : 'Play'} position="top" bodyOverflow distance={0}>
       <SpeakerWrapper isPlaying={playing}>
-        <SvgIcon className={ClassName.SSML_PLAY_AUDIO} onClick={onSpeak} icon={icon} size={loading || !playing ? 14 : 16} />
+        <SvgIcon className={ClassName.SSML_PLAY_AUDIO} onClick={onSpeak} color="#6E849A" icon={icon} size={loading ? 14 : 16} />
       </SpeakerWrapper>
-    </Tooltip>
+    </TippyTooltip>
   );
 };
 

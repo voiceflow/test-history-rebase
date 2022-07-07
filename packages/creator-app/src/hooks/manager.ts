@@ -159,8 +159,8 @@ export const useManager = <T extends {}, F extends any[]>(
   );
 
   const duplicateKeyValue = React.useCallback(
-    (item: any, ...args: F) => {
-      const value = clone(factory(...args), item.item);
+    (item: T, ...args: F) => {
+      const value = clone(factory(...args), item);
       const key = generateKey(value);
 
       return { key, value };

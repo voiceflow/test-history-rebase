@@ -1,4 +1,4 @@
-import { Dropdown, stopPropagation, SvgIcon } from '@voiceflow/ui';
+import { Dropdown, IconButton, stopPropagation, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 import { Tooltip } from 'react-tippy';
 
@@ -18,6 +18,7 @@ export default function Controls({
   historyTooltip,
   tagsSearchPlaceholder,
   additionalControlsRenderer,
+  icon,
 }) {
   const tagsHistory = store.getTagsToHistory();
 
@@ -67,13 +68,27 @@ export default function Controls({
     }
   }, [store, globalStore]);
 
+  const renderTrigger = ({ onOpenMenu, onHideMenu, isOpen }) => (
+    <Tooltip title={addLabel} position="top" distance={0}>
+      <IconButton
+        icon={icon}
+        variant={IconButton.Variant.BASIC}
+        onClick={isOpen ? onHideMenu : onOpenMenu}
+        buttonSize={32}
+        offsetSize={0}
+        transparent
+        activeClick={isOpen}
+      />
+    </Tooltip>
+  );
+
   return (
     <Wrapper>
       <FullWidthWrapper onClick={stopPropagation()}>
         {!!additionalControlsRenderer && additionalControlsRenderer({ store, globalStore })}
 
         <ControlsWrapper>
-          {!!tagsHistory.length && (
+          {!!tagsHistory.length && historyTooltip && (
             <Dropdown onClose={onHideFakeSelection} onSelect={onAddTag} options={tagsHistory} placement="bottom-end">
               {(ref, onToggle, isOpen) => (
                 <Tooltip title={historyTooltip} position="top">
@@ -99,6 +114,7 @@ export default function Controls({
             options={addOptions}
             minWidth={false}
             useLayers
+            icon={icon}
             onSelect={onAddTag}
             autoWidth={false}
             placement="bottom-end"
@@ -124,6 +140,7 @@ export default function Controls({
             )}
             isMultiLevel
             createInputPlaceholder={tagsSearchPlaceholder}
+            renderTrigger={icon && renderTrigger}
           />
         </ControlsWrapper>
       </FullWidthWrapper>

@@ -3,7 +3,7 @@ import { Button, createUIOnlyMenuItemOption } from '@voiceflow/ui';
 import React from 'react';
 
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
-import { HelpTooltip } from '@/components/IntentForm';
+import * as Documentation from '@/config/documentation';
 import { useManager, useToggle } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import { useIntentScope } from '@/pages/Canvas/managers/hooks';
@@ -41,7 +41,7 @@ const RootEditor: React.FC = () => {
       header={<EditorV2.DefaultHeader />}
       footer={
         !isDragging && (
-          <EditorV2.DefaultFooter tutorial={{ content: <HelpTooltip /> }}>
+          <EditorV2.DefaultFooter tutorial={Documentation.CHOICE_STEP}>
             <EditorV2.FooterActionsButton
               actions={[
                 intentScopeOption,

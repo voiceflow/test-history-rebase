@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { prettifyBucketURL, validateFiles } from '../../utils';
+import { prettifyBucketURL, validateFiles, validateURL } from '../../utils';
 import UploadBase, { UploadBaseProps } from '../Base';
 import { InputRenderer } from '../LinkInput';
 import * as S from './styles';
@@ -17,6 +17,7 @@ const UploadAudio: React.FC<UploadAudioProps> = ({ endpoint = '/audio', onChange
     linkInputPlaceholder={renderInput ? "Add link or Variable using '{'" : 'Add link'}
     endpoint={endpoint}
     validate={validateFiles}
+    validateLink={validateURL}
     value={value}
     onChange={onChange}
     renderInput={renderInput}

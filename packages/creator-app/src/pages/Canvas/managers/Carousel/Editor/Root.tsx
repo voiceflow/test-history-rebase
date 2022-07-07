@@ -2,7 +2,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Button, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
-import DraggableList, { DeleteComponent } from '@/components/DraggableList';
+import DraggableList, { DeleteComponent, MapManagedEditActionHandler } from '@/components/DraggableList';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import { useManager, useSelector, useToggle } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
@@ -48,9 +48,9 @@ const CarouselEditorRoot: NodeEditorV2<Realtime.NodeData.Carousel, Realtime.Node
     onRemove,
   });
 
-  const onDuplicate = usePersistFunction((_, item) => {
-    managerAPI.onDuplicate(item.index, item);
-  });
+  const onDuplicate = usePersistFunction<MapManagedEditActionHandler<Realtime.NodeData.Carousel.Card>>((_, item) =>
+    managerAPI.onDuplicate(item.index, item.item)
+  );
 
   const noMatchConfig = NoMatchV2.useConfig();
   const noReplyConfig = NoReplyV2.useConfig();
@@ -87,8 +87,8 @@ const CarouselEditorRoot: NodeEditorV2<Realtime.NodeData.Carousel, Realtime.Node
         deleteComponent={DeleteComponent}
         partialDragItem
         previewComponent={DraggableItem}
-        contextMenuProps={{ selfDismiss: true }}
         withContextMenuDelete={hasManyCards}
+        contextMenuSelfDismiss
         withContextMenuDuplicate
       />
 

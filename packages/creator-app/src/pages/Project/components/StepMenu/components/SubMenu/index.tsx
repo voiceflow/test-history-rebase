@@ -1,4 +1,4 @@
-import { Portal, usePopper } from '@voiceflow/ui';
+import { Animations, Portal, usePopper } from '@voiceflow/ui';
 import React from 'react';
 
 import { DragItem } from '@/constants';
@@ -9,34 +9,50 @@ import { StepDragItem } from '../../../DesignMenu/components/Steps/types';
 import { MenuStepItem } from '../../constants';
 import { SubMenuButton, SubMenuContainer } from './components';
 
-const SubMenu: React.FC<{ steps: MenuStepItem[] }> = ({ steps }) => {
+interface SubMenuProps {
+  steps: MenuStepItem[];
+  onDrop: VoidFunction;
+}
+
+const SubMenu: React.FC<SubMenuProps> = ({ steps, onDrop }) => {
+  const menuRef = React.useRef<HTMLDivElement>(null);
+
   const rootPopper = usePopper({
-    modifiers: [{ name: 'offset', options: { offset: [-65, 0] } }],
+    modifiers: [{ name: 'offset', options: { offset: [-72, 0] } }],
     placement: 'right-start',
   });
 
   const processedSteps = steps.map((step) => {
     const manager = getManager(step.type, true);
+
     return {
       ...step,
-      icon: step.getStepMenuIcon(manager) ?? step.getIcon(manager),
+      icon: step.getIcon(manager),
       label: step.getLabel(manager),
       tooltipText: step.getStepTooltipText(manager),
       tooltipLink: step.getStepTooltipLink(manager),
     };
   });
 
-  useDragPreview<StepDragItem>(DragItem.BLOCK_MENU, (props) => <SubMenuButton {...props} type={props.blockType} isDraggingPreview />, {
-    horizontalEnabled: true,
-  });
+  useDragPreview<StepDragItem>(
+    DragItem.BLOCK_MENU,
+    (props) => (
+      <div style={{ width: `${(menuRef.current?.clientWidth ?? 154) - 12}px` }}>
+        <SubMenuButton {...props} type={props.blockType} onDrop={onDrop} isDraggingPreview />
+      </div>
+    ),
+    { horizontalEnabled: true }
+  );
 
   return (
     <div ref={rootPopper.setReferenceElement}>
       <Portal portalNode={document.body}>
         <div ref={rootPopper.setPopperElement} style={rootPopper.styles.popper} {...rootPopper.attributes.popper}>
-          <SubMenuContainer>
-            {processedSteps.map((step) => (
-              <SubMenuButton key={step.label} {...step} />
+          <SubMenuContainer ref={menuRef}>
+            {processedSteps.map((step, index) => (
+              <Animations.FadeDownDelayedContainer key={step.label} delay={0.04 + index * 0.03}>
+                <SubMenuButton {...step} onDrop={onDrop} />
+              </Animations.FadeDownDelayedContainer>
             ))}
           </SubMenuContainer>
         </div>

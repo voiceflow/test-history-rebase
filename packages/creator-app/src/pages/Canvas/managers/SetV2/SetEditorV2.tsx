@@ -1,8 +1,8 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { BoxFlex, Input } from '@voiceflow/ui';
+import { BoxFlex, Input, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
-import DraggableList, { DeleteComponent } from '@/components/DraggableList';
+import DraggableList, { DeleteComponent, MapManagedEditActionHandler } from '@/components/DraggableList';
 import Section from '@/components/Section';
 import { useManager, useToggle } from '@/hooks';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
@@ -37,11 +37,8 @@ const SetEditorV2: NodeEditor<Realtime.NodeData.SetV2, Realtime.NodeData.SetV2Bu
     [onAdd]
   );
 
-  const onDuplicateSet = React.useCallback(
-    (_, item) => {
-      onDuplicate(item.index, item);
-    },
-    [onDuplicate]
+  const onDuplicateSet = usePersistFunction<MapManagedEditActionHandler<Realtime.NodeData.SetExpressionV2>>((_, item) =>
+    onDuplicate(item.index, item.item)
   );
 
   return (

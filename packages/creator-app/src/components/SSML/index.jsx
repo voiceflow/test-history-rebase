@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import { SvgIcon, TippyTooltip } from '@voiceflow/ui';
+import { Box, Select, SvgIcon, TippyTooltip } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import cn from 'classnames';
 import React from 'react';
@@ -11,7 +11,7 @@ import { useFeature } from '@/hooks';
 import { ClassName } from '@/styles/constants';
 import { prettifyGoogleVoicesLong, prettifyVoice, voiceOptionsFilter } from '@/utils/voice';
 
-import { DefaultVoiceContainer, Editor, Speaker, VoiceItem, VoiceSelect } from './components';
+import { DefaultVoiceContainer, Editor, Speaker, VoiceItem, VoiceSelectTrigger } from './components';
 import { getPlatformSSML } from './constants';
 
 const pluginsTypes = [PluginType.XML, PluginType.VARIABLES];
@@ -76,7 +76,7 @@ const SSML = (
 
   const additionalXMLControlsRenderer = React.useCallback(
     ({ store }) => (
-      <>
+      <Box.Flex ml={-6} gap={8}>
         <Speaker
           voice={hasProjectLevelVoice ? defaultVoice : voice}
           platform={platform}
@@ -84,44 +84,50 @@ const SSML = (
         />
 
         {canChangeVoice && (
-          <Tooltip title={voiceSelectLabel} position="top" delay={300}>
-            <VoiceSelect
-              label={voiceSelectLabel}
-              placeholder="Select Voice"
-              inline
-              value={null}
-              options={voiceOptions}
-              onSelect={onChangeVoice}
-              minWidth={false}
-              useLayers
-              autoWidth={false}
-              borderLess
-              isMultiLevel
-              optionsFilter={voiceOptionsFilter}
-              getOptionValue={getOptionValue}
-              getOptionLabel={getOptionLabel}
-              renderOptionLabel={(option) => (
-                <VoiceItem onClick={(e) => hasProjectLevelVoice && onDefaultVoice(option, e)}>
-                  {option.label || option.value}
+          <Select
+            label={voiceSelectLabel}
+            placeholder="Select Voice"
+            inline
+            value={null}
+            options={voiceOptions}
+            onSelect={onChangeVoice}
+            minWidth={false}
+            useLayers
+            autoWidth={false}
+            borderLess
+            isMultiLevel
+            optionsFilter={voiceOptionsFilter}
+            getOptionValue={getOptionValue}
+            getOptionLabel={getOptionLabel}
+            renderOptionLabel={(option) => (
+              <VoiceItem onClick={(e) => hasProjectLevelVoice && onDefaultVoice(option, e)}>
+                {option.label || option.value}
 
-                  {withDefaultVoice && !option.options && (
-                    <DefaultVoiceContainer active={option?.value === defaultVoice}>
-                      <TippyTooltip
-                        title={option?.value === defaultVoice ? 'Remove as Default' : 'Set as Default Voice'}
-                        disabled={option?.value === defaultVoice && option?.value === platformDefaultVoice}
-                        hideOnClick={false}
-                        popperOptions={{ modifiers: { preventOverflow: { enabled: false } } }}
-                      >
-                        <SvgIcon icon="star" onClick={(e) => onDefaultVoice(option, e)} />
-                      </TippyTooltip>
-                    </DefaultVoiceContainer>
-                  )}
-                </VoiceItem>
-              )}
-            />
-          </Tooltip>
+                {withDefaultVoice && !option.options && (
+                  <DefaultVoiceContainer active={option?.value === defaultVoice}>
+                    <TippyTooltip
+                      title={option?.value === defaultVoice ? 'Remove as Default' : 'Set as Default Voice'}
+                      disabled={option?.value === defaultVoice && option?.value === platformDefaultVoice}
+                      hideOnClick={false}
+                      popperOptions={{ modifiers: { preventOverflow: { enabled: false } } }}
+                    >
+                      <SvgIcon icon="star" onClick={(e) => onDefaultVoice(option, e)} />
+                    </TippyTooltip>
+                  </DefaultVoiceContainer>
+                )}
+              </VoiceItem>
+            )}
+            renderTrigger={({ ref, onOpenMenu, onHideMenu, isOpen }) => (
+              <Tooltip title={voiceSelectLabel} position="top" delay={300} distance={0}>
+                <VoiceSelectTrigger ref={ref} isActive={isOpen} onClick={isOpen ? onHideMenu : onOpenMenu}>
+                  <span>{voiceSelectLabel || 'Select Voice'}</span>
+                  <SvgIcon icon="arrowToggleV2" color="#6e849a" size={16} rotation={90} />
+                </VoiceSelectTrigger>
+              </Tooltip>
+            )}
+          />
         )}
-      </>
+      </Box.Flex>
     ),
     [voice, platform, onChangeVoice, getOptionValue, getOptionLabel, defaultVoice, onChangeDefaultVoice]
   );
@@ -133,9 +139,9 @@ const SSML = (
       [PluginType.XML]: {
         type: 'ssml',
         tags: platformTags,
-        addLabel: 'Add Effect',
         addOptions: platformSSMLMeta.addOptions,
-        historyTooltip: 'Recent Effects',
+        icon: 'systemShootingStar',
+        addLabel: 'Add effect',
         newLinesAllowed: true,
         tagsSearchPlaceholder: 'effects',
         additionalControlsRenderer: additionalXMLControlsRenderer,

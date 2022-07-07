@@ -94,7 +94,7 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
                 isDraggingPreview={isDraggingPreview}
                 isContextMenuOpen={isContextMenuOpen}
               >
-                {isDragging || isDraggingPreview ? null : (
+                {!isDragging && !isDraggingPreview && (
                   <>
                     <SectionV2.Content bottomOffset={2.5}>
                       <IntentSelect

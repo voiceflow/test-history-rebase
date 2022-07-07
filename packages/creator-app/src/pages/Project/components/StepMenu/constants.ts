@@ -1,4 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { SvgIconTypes } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import { getManager } from '@/pages/Canvas/managers/constants';
@@ -14,9 +15,8 @@ import {
 
 export interface MenuStepItem {
   type: Realtime.BlockType;
-  getIcon: (manager?: ReturnType<typeof getManager>) => any;
+  getIcon: (manager?: ReturnType<typeof getManager>) => SvgIconTypes.Icon;
   getLabel: (manager?: ReturnType<typeof getManager>) => any;
-  getStepMenuIcon: (manager?: ReturnType<typeof getManager>) => any;
   getStepTooltipText: (manager?: ReturnType<typeof getManager>) => string | undefined;
   getStepTooltipLink: (manager?: ReturnType<typeof getManager>) => string | undefined;
   factoryData?: Realtime.NodeData<any>;
@@ -34,9 +34,9 @@ export interface StepItem {
 }
 
 export interface TopStepItem {
-  steps?: MenuStepItem[];
-  icon: React.FC;
+  icon: SvgIconTypes.Icon;
   label: string;
+  steps?: MenuStepItem[];
 }
 
 export const getStepSections = Realtime.Utils.platform.createPlatformAndProjectTypeSelector(

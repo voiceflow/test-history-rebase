@@ -1,11 +1,11 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Button, Input, SectionV2 } from '@voiceflow/ui';
+import { Button, Input, SectionV2, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
 import DraggableList, { DeleteComponent, MapManagedEditActionHandler } from '@/components/DraggableList';
+import * as Documentation from '@/config/documentation';
 import { useToggle } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
-import HelpTooltip from '@/pages/Canvas/managers/SetV2/components/HelpTooltip';
 import { MAX_SETS } from '@/pages/Canvas/managers/SetV2/constants';
 import { useSetManager, useSetTitleForm } from '@/pages/Canvas/managers/SetV2/hooks';
 
@@ -18,16 +18,16 @@ const SetRootEditor: React.FC = () => {
   const [isDragging, toggleDragging] = useToggle(false);
   const canCreateMoreItems = managerAPI.items.length < MAX_SETS;
 
-  const onDuplicate: MapManagedEditActionHandler<Realtime.NodeData.SetExpressionV2> = (_, item) => {
-    managerAPI.onDuplicate(item.index, { ...item, ...item.item });
-  };
+  const onDuplicate = usePersistFunction<MapManagedEditActionHandler<Realtime.NodeData.SetExpressionV2>>((_, item) =>
+    managerAPI.onDuplicate(item.index, item.item)
+  );
 
   return (
     <EditorV2
       header={<EditorV2.DefaultHeader />}
       footer={
         !isDragging && (
-          <EditorV2.DefaultFooter tutorial={{ content: <HelpTooltip /> }}>
+          <EditorV2.DefaultFooter tutorial={Documentation.SET_STEP}>
             {canCreateMoreItems && (
               <Button variant={Button.Variant.PRIMARY} onClick={() => managerAPI.onAdd()} squareRadius>
                 Add Set

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.118.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.117.0...@voiceflow/ui@1.118.0) (2022-07-07)
+
+
+### Features
+
+* speak/audio editor cleanups (CT-133) ([#5668](https://github.com/voiceflow/creator-app/issues/5668)) ([016e57b](https://github.com/voiceflow/creator-app/commit/016e57b3b6681ab5f8588afbbe66ad5022dfc1b0))
+
+
+
+
+
 # [1.117.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.116.0...@voiceflow/ui@1.117.0) (2022-07-05)
 
 

@@ -5,7 +5,7 @@ import React from 'react';
 import VariablesInput from '@/components/VariablesInput';
 import { useExpressionValidation } from '@/hooks';
 
-import { EXPRESSION_PLACEHOLDER } from '../constants';
+import { EXPRESSION_PLACEHOLDER } from '../../constants';
 import ExpressionContainer from './ExpressionContainer';
 
 export interface ConditionExpressionProps {

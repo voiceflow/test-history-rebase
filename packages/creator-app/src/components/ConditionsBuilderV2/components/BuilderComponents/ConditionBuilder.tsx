@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { BuilderContainer } from './BuilderComponents';
+import BuilderContainer from './BuilderContainer';
 
 const ConditionBuilder: React.FC = () => {
   return <BuilderContainer></BuilderContainer>;

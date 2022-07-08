@@ -6,9 +6,10 @@ import React from 'react';
 import ConditionExpressionTooltip from '../../ConditionsBuilder/components/ConditionExpressionTooltip';
 import ConditionSelect from '../../ConditionsBuilder/components/ConditionSelect';
 import { ConditionsEditorTabs } from '../constants';
-import ConditionBuilder from './ConditionBuilder';
-import ConditionExpression from './ConditionExpression';
+import { ConditionBuilder } from './BuilderComponents';
+import { ConditionExpression } from './ExpressionComponents';
 import { PopperContainer, PopperContent, PopperHeader } from './PopperContainers';
+import { LogicDropdown } from './TreeComponents';
 
 const ConditionsPopper: React.FC<{ expression: Realtime.ExpressionV2 }> = ({ expression }) => {
   const [activeTab, setIsActiveTab] = React.useState<ConditionsEditorTabs>(ConditionsEditorTabs.BUILDER);
@@ -32,7 +33,14 @@ const ConditionsPopper: React.FC<{ expression: Realtime.ExpressionV2 }> = ({ exp
         </div>
       </PopperHeader>
       <PopperContent>
-        {activeTab === ConditionsEditorTabs.BUILDER ? <ConditionBuilder /> : <ConditionExpression expression={expression} />}
+        {activeTab === ConditionsEditorTabs.BUILDER ? (
+          <>
+            <LogicDropdown />
+            <ConditionBuilder />
+          </>
+        ) : (
+          <ConditionExpression expression={expression} />
+        )}
       </PopperContent>
     </PopperContainer>
   );

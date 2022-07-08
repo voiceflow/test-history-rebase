@@ -8,10 +8,10 @@ import { ColorsList } from './styles';
 import { ColorThemesProps } from './types';
 
 export const ColorThemeUnit = Color;
-export const ColorThemes: React.FC<ColorThemesProps> = ({ colors, small, selectedColor = '', onColorSelect, ...props }) => {
+export const ColorThemes: React.FC<ColorThemesProps> = ({ colors, small, selectedColor = '', onColorSelect, newColorIndex, ...props }) => {
   return (
     <ColorsList>
-      {colors.map((color: IColor) => {
+      {colors.map((color: IColor, index) => {
         const { palette, name, standardColor } = color;
         const standardGrade = standardColor.toLowerCase();
         const selected = standardGrade === selectedColor.toLowerCase();
@@ -25,6 +25,7 @@ export const ColorThemes: React.FC<ColorThemesProps> = ({ colors, small, selecte
             key={`base-${hue}`}
             small={small}
             name={name}
+            isNew={newColorIndex === index}
             {...props}
           />
         );

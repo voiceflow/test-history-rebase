@@ -87,7 +87,7 @@ const Popper = <T extends PopperItem>({
   const [localSearch, setLocalSearch] = useLinkedState(formattedSearch);
   const [activeIndex, setActiveIndex] = React.useState(0);
 
-  const withHeader = creatable || searchable;
+  const withHeader = creatable || searchable || false;
 
   const [suggestionsByNameMap, suggestionsToRender] = React.useMemo(() => {
     const map: Record<string, PopperItem> = {};

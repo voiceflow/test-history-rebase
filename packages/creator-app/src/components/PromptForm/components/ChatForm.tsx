@@ -7,7 +7,7 @@ import { ChatPromptFormProps } from '../types';
 
 const ChatForm: React.FC<ChatPromptFormProps> = ({ slots, autofocus, prompt: [prompt], onChange, placeholder }) => {
   const content = prompt?.content ?? null;
-  const variables = React.useMemo(() => normalize(slots), [slots]);
+  const variables = React.useMemo(() => normalize(slots.map((slot) => ({ ...slot, isSlot: true }))), [slots]);
 
   return (
     <SlateTextInput

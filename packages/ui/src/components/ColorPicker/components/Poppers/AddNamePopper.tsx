@@ -1,6 +1,7 @@
-import { useOnClickOutside, usePopper } from '@ui/hooks';
+import { usePopper } from '@ui/hooks';
 import { stopPropagation } from '@ui/utils';
 import React from 'react';
+import { useDismissable } from 'react-dismissable-layers';
 import styled from 'styled-components';
 
 import Badge from '../../../Badge';
@@ -18,11 +19,11 @@ const StyledBadge = styled(Badge)`
 
 interface PopperProps {
   isEditing: boolean;
-  onSubmit?: (name: string) => void;
+  onRename?: (name: string) => void;
   value?: string;
 }
 
-export const AddNamePopper: React.FC<PopperProps> = ({ isEditing, onSubmit, value = '' }) => {
+export const AddNamePopper: React.FC<PopperProps> = ({ isEditing, onRename, value = '' }) => {
   const popperContainerRef = React.useRef<HTMLDivElement>(null);
   const [name, setName] = React.useState<string>(value);
   const rootPopper = usePopper({
@@ -34,11 +35,15 @@ export const AddNamePopper: React.FC<PopperProps> = ({ isEditing, onSubmit, valu
     strategy: 'fixed',
   });
 
-  useOnClickOutside(popperContainerRef, () => onSubmit?.(name));
+  const [, , closePopper] = useDismissable(isEditing, {
+    ref: popperContainerRef,
+    onClose: () => onRename?.(name),
+  });
 
-  const onSaveColor = React.useCallback(() => {
-    onSubmit?.(name);
-  }, [name]);
+  const onSaveColor = () => {
+    onRename?.(name);
+    closePopper();
+  };
 
   return (
     <div ref={rootPopper.setReferenceElement}>

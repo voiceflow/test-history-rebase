@@ -1,5 +1,6 @@
-import { Box, COLOR_PICKER_CONSTANTS, ColorThemes, ColorThemeUnit, isBaseColor, StrictPopperModifiers, useOnClickOutside } from '@voiceflow/ui';
+import { Box, COLOR_PICKER_CONSTANTS, ColorThemes, ColorThemeUnit, isBaseColor, StrictPopperModifiers } from '@voiceflow/ui';
 import React from 'react';
+import { useDismissable } from 'react-dismissable-layers';
 
 import { ColorPickerPopper } from '@/components/ColorPickerPopper';
 import Section, { SectionVariant } from '@/components/Section';
@@ -23,10 +24,9 @@ const TypeAndColorSection: React.FC<TypeAndColorSectionProps> = ({
   onChangeType,
 }) => {
   const popperContainerRef = React.useRef<HTMLDivElement>(null);
-  const [isShowingPicker, setIsShowingPicker] = React.useState(false);
-  const { DEFAULT_COLORS, BASE_COLORS, COLOR_WHEEL } = COLOR_PICKER_CONSTANTS;
+  const [isShowingPicker, togglePopper] = useDismissable(false, { ref: popperContainerRef });
 
-  useOnClickOutside(popperContainerRef, () => setIsShowingPicker(false), [setIsShowingPicker]);
+  const { DEFAULT_COLORS, BASE_COLORS, COLOR_WHEEL } = COLOR_PICKER_CONSTANTS;
 
   return (
     <Section
@@ -46,9 +46,10 @@ const TypeAndColorSection: React.FC<TypeAndColorSectionProps> = ({
           <ColorThemes small selectedColor={color} onColorSelect={saveColor} colors={[DEFAULT_COLORS.dark, ...BASE_COLORS]} />
           <ColorThemeUnit
             background={!isBaseColor(color) ? color : COLOR_WHEEL}
-            onClick={() => setIsShowingPicker(true)}
+            onClick={() => togglePopper()}
             selected={!isBaseColor(color)}
             small
+            disableContextMenu
           />
 
           {isShowingPicker && (

@@ -2,9 +2,7 @@ import { COLOR_GRADES, HSLShades as shades } from '@ui/utils/colors/hsl';
 import { BaseModels } from '@voiceflow/base-types';
 
 export type HSLShades = shades;
-export interface IColor extends BaseModels.Project.Theme {
-  naming?: boolean;
-}
+export interface IColor extends BaseModels.Project.Theme {}
 
 export type Colors = Array<IColor>;
 

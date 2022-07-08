@@ -62,11 +62,7 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
                 const palette = createShadesFromHue(hue);
 
                 if (!colors.find(({ standardColor }) => standardColor === palette[STANDARD_GRADE])) {
-                  setNewColor({
-                    palette,
-                    naming: true,
-                    standardColor: palette[STANDARD_GRADE],
-                  });
+                  setNewColor({ palette, standardColor: palette[STANDARD_GRADE] });
                 }
               }}
             />
@@ -77,6 +73,7 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
             colors={newColor ? [...colors, newColor] : colors}
             selectedColor={selectedHex}
             onColorSelect={chain(debouncedSetColor, setLocalSelectedHex, compose(setLocalHue, String, hexToHue))}
+            newColorIndex={newColor ? colors.length : undefined}
             addCustomTheme={(theme) => {
               addCustomTheme?.(theme);
               setNewColor(null);

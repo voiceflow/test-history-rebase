@@ -2,7 +2,6 @@ import { isDefaultColor } from '@ui/components/ColorPicker/utils';
 import ContextMenu from '@ui/components/ContextMenu';
 import { MenuOption } from '@ui/components/Menu';
 import { toast } from '@ui/components/Toast';
-import { useLinkedState } from '@ui/hooks';
 import { transition } from '@ui/styles';
 import { stopPropagation } from '@ui/utils';
 import { isHexColor } from '@ui/utils/colors';
@@ -63,32 +62,51 @@ export const Color: React.FC<ColorProps> = ({
   background,
   small,
   onClick,
+  isNew,
   editCustomTheme,
   removeCustomTheme,
   addCustomTheme,
+  disableContextMenu,
 }): React.ReactElement => {
-  const [naming, setNaming] = useLinkedState(colorData?.naming);
-  const [renaming, setRenaming] = React.useState(false);
+  const [renaming, setRenaming] = React.useState(isNew);
+
   const isDefault = !!colorData?.palette && isDefaultColor(colorData.palette[STANDARD_GRADE]);
 
-  const menuOptions: MenuOption<undefined>[] = isDefault
-    ? []
-    : [
-        {
-          key: 'rename',
-          label: 'Rename',
-          onClick: () => setRenaming(true),
-        },
-        {
-          key: 'remove',
-          label: 'Remove',
-          disabled: isDefault,
-          onClick: async () => {
-            await removeCustomTheme?.(colorData!);
-            toast.success('Color successfully removed');
+  const onRename = (newName: string) => {
+    const theme = {
+      name: newName,
+      palette: colorData!.palette,
+      standardColor: colorData!.standardColor,
+    };
+
+    if (isNew) {
+      addCustomTheme?.(theme);
+    } else {
+      editCustomTheme?.(theme);
+    }
+
+    setRenaming(false);
+  };
+
+  const menuOptions: MenuOption<undefined>[] =
+    isDefault || disableContextMenu
+      ? []
+      : [
+          {
+            key: 'rename',
+            label: 'Rename',
+            onClick: () => setRenaming(true),
           },
-        },
-      ];
+          {
+            key: 'remove',
+            label: 'Remove',
+            disabled: isDefault,
+            onClick: async () => {
+              await removeCustomTheme?.(colorData!);
+              toast.success('Color successfully removed');
+            },
+          },
+        ];
 
   return (
     <ContextMenu dismissEvent="mousedown" selfDismiss options={menuOptions}>
@@ -110,28 +128,7 @@ export const Color: React.FC<ColorProps> = ({
             <ColorCircle background={background} colorData={colorData} small={small} selected={selected} onClick={onClick} />
           </ColorWrapper>
 
-          {(naming || renaming) && (
-            <AddNamePopper
-              value={name}
-              isEditing
-              onSubmit={(newName) => {
-                const theme = {
-                  name: newName,
-                  standardColor: colorData!.standardColor,
-                  palette: colorData!.palette,
-                };
-
-                if (renaming) {
-                  editCustomTheme?.(theme);
-                } else {
-                  addCustomTheme?.(theme);
-                }
-
-                setNaming(false);
-                setRenaming(false);
-              }}
-            />
-          )}
+          {renaming && <AddNamePopper value={name} isEditing onRename={onRename} />}
         </TippyTooltip>
       )}
     </ContextMenu>

@@ -12,7 +12,7 @@ import * as Workspace from '@/ducks/workspace';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { Thunk } from '@/store/types';
 
-import { extractErrorFromResponseData, extractErrorMessages } from '../utils';
+import { extractErrorMessages } from '../utils';
 
 export const acceptInvite =
   (invite: string, redirect?: () => void): Thunk<string | null> =>
@@ -30,7 +30,7 @@ export const acceptInvite =
         return null;
       }
 
-      dispatch(Modal.setError(extractErrorFromResponseData(err, 'Invite Invalid')));
+      dispatch(Modal.setError(err));
       return null;
     }
   };

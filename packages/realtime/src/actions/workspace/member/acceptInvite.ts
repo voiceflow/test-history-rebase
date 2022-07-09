@@ -2,6 +2,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { terminateResend, unrestrictedAccess } from '@voiceflow/socket-utils';
 
 import { AbstractActionControl } from '@/actions/utils';
+import log from '@/logger';
 
 class AcceptWorkspaceInvite extends AbstractActionControl<Realtime.workspace.member.AcceptInvitePayload> {
   protected actionCreator = Realtime.workspace.member.acceptInvite.started;
@@ -24,9 +25,11 @@ class AcceptWorkspaceInvite extends AbstractActionControl<Realtime.workspace.mem
         this.server.processAs(creatorID, Realtime.workspace.member.replace({ workspaceID, members: workspace.members })),
       ]);
     } catch (error) {
-      if (error.response.data?.code === 409) {
-        this.reject(error.response.data?.data, Realtime.ErrorCode.ALREADY_MEMBER_OF_WORKSPACE);
+      const { data } = error.response;
+      if (data?.data) {
+        this.reject(data?.data, data?.code === 409 ? Realtime.ErrorCode.ALREADY_MEMBER_OF_WORKSPACE : undefined);
       } else {
+        log.error(error);
         throw error;
       }
     }

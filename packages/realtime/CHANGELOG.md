@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.82.9](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.82.8...@voiceflow/realtime@1.82.9) (2022-07-09)
+
+
+### Bug Fixes
+
+* expose invite errors (CT-528) ([#5734](https://github.com/voiceflow/creator-app/issues/5734)) ([4774861](https://github.com/voiceflow/creator-app/commit/4774861feb1de3d324afce0a0f5ff7da4d012f2f))
+
+
+
+
+
 ## [1.82.8](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.82.7...@voiceflow/realtime@1.82.8) (2022-07-07)
 
 

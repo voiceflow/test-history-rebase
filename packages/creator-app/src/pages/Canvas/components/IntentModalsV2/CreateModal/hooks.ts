@@ -9,7 +9,7 @@ import * as Intent from '@/ducks/intent';
 import { getUniqSlots } from '@/ducks/intent/utils';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { useDispatch, useIntentNameProcessor, useSelector } from '@/hooks';
-import { applyPlatformIntentAndSlotNameFormatting } from '@/utils/intent';
+import { applyPlatformIntentNameFormatting } from '@/utils/intent';
 
 interface CreateIntentProps {
   onCreate?: (id: string) => void;
@@ -137,7 +137,7 @@ export const useCreateIntent = ({ initialName, onCreate }: CreateIntentProps): C
     reset,
     inputs,
     cancel,
-    setName: (name: string) => setName(applyPlatformIntentAndSlotNameFormatting(name, platform)),
+    setName: (name: string) => setName(applyPlatformIntentNameFormatting(name, platform)),
     onCreate: finalizeIntentCreate,
     creating,
     setInputs: handleSetInputs,

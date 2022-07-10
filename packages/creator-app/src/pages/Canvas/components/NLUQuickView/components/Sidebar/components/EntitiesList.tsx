@@ -61,7 +61,7 @@ const EntitiesList: React.FC<SectionProps> = ({ isActiveItemRename, setIsActiveI
     resetCreating,
   } = useCreatingItem({
     itemMap: allSlotsMap,
-    nameValidation: (name) => nameChangeTransform(name, InteractionModelTabType.INTENTS),
+    nameValidation: (name) => nameChangeTransform(name, InteractionModelTabType.SLOTS),
     onBlur: handleConfirmNewSlotName,
     forceCreate: forceNewInlineEntity,
   });

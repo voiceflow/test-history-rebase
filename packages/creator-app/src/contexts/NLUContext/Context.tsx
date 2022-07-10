@@ -13,8 +13,8 @@ import * as SlotV2 from '@/ducks/slotV2';
 import * as Version from '@/ducks/version';
 import { useDeleteVariable, useDispatch, useIntentNameProcessor, useOrderedVariables, useSelector } from '@/hooks';
 import { generateSlotInput } from '@/pages/Canvas/components/SlotEdit/utils';
-import { applyPlatformIntentAndSlotNameFormatting, isBuiltInIntent } from '@/utils/intent';
-import { CUSTOM_ENTITY_VALUE_ERROR_MSG, validateSlotName } from '@/utils/slot';
+import { applyPlatformIntentNameFormatting, isBuiltInIntent } from '@/utils/intent';
+import { applySlotNameFormatting, CUSTOM_ENTITY_VALUE_ERROR_MSG, validateSlotName } from '@/utils/slot';
 
 interface NLUContextValue {
   renameItem: (newName: string, id: string, type: InteractionModelTabType) => void;
@@ -122,7 +122,7 @@ export const NLUProvider: React.FC = ({ children }) => {
         canRename: (id: string) => !isBuiltInIntent(id),
         canDelete: () => true,
         generateName: () => {
-          const numberWord = Utils.number.convertToWord(intentsSize);
+          const numberWord = Utils.number.convertToWord(intentsSize + 1);
 
           if (Realtime.Utils.typeGuards.isAlexaOrGooglePlatform(platform)) {
             return `intent_${numberWord}`;
@@ -130,7 +130,7 @@ export const NLUProvider: React.FC = ({ children }) => {
 
           return `Intent ${numberWord}`;
         },
-        transformName: (name: string, platform: VoiceflowConstants.PlatformType) => applyPlatformIntentAndSlotNameFormatting(name, platform),
+        transformName: (name: string, platform: VoiceflowConstants.PlatformType) => applyPlatformIntentNameFormatting(name, platform),
       },
 
       [InteractionModelTabType.SLOTS]: {
@@ -148,15 +148,10 @@ export const NLUProvider: React.FC = ({ children }) => {
         canRename: () => true,
         canDelete: () => true,
         generateName: () => {
-          const numberWord = Utils.number.convertToWord(slotsSize);
-
-          if (Realtime.Utils.typeGuards.isAlexaOrGooglePlatform(platform)) {
-            return `entity_${numberWord}`;
-          }
-
-          return `Entity ${numberWord}`;
+          const numberWord = Utils.number.convertToWord(slotsSize + 1);
+          return `entity_${numberWord}`;
         },
-        transformName: (name: string) => applyPlatformIntentAndSlotNameFormatting(name, platform),
+        transformName: (name: string) => applySlotNameFormatting(name),
       },
 
       [InteractionModelTabType.VARIABLES]: {

@@ -10,7 +10,7 @@ import _sample from 'lodash/sample';
 import { Normalized } from 'normal-store';
 
 import { FILTERED_AMAZON_INTENTS } from '@/constants';
-import { AnyLocale, getPlatformIntentAndSlotNameFormatter, getUtteranceRecommendationsLocales } from '@/platforms/selectors';
+import { AnyLocale, getPlatformIntentNameFormatter, getUtteranceRecommendationsLocales } from '@/platforms/selectors';
 
 import { getBuiltInSynonyms } from './slot';
 
@@ -38,13 +38,13 @@ const INTENT_LABELS: Partial<Record<string, string>> = {
 
 export const isCustomizableBuiltInIntent = (intent?: Nullish<Realtime.Intent>): boolean => !!intent && builtInIntentMap.has(intent.id);
 
-export const applyAlexaIntentAndSlotNameFormatting = (name = ''): string =>
+export const applyAlexaIntentNameFormatting = (name = ''): string =>
   name
     .replace(/ /g, '_')
     .replace(/[^A-Z_a-z]/g, '')
     .toLowerCase();
 
-export const applyLUISIntentAndSlotNameFormatting = (name = ''): string => name.replace(/[$%&()*+:?~]/g, '');
+export const applyLUISIntentNameFormatting = (name = ''): string => name.replace(/[$%&()*+:?~]/g, '');
 
 const CONTAIN_INTENT_REGEXP = /(\w)Intent/g;
 const CAMEL_CASE_REGEXPS = [
@@ -214,8 +214,8 @@ export const formatUtterance = (text = ''): string =>
     })
     .join('');
 
-export const applyPlatformIntentAndSlotNameFormatting = (name: string, platform: VoiceflowConstants.PlatformType): string =>
-  getPlatformIntentAndSlotNameFormatter(platform)(name);
+export const applyPlatformIntentNameFormatting = (name: string, platform: VoiceflowConstants.PlatformType): string =>
+  getPlatformIntentNameFormatter(platform)(name);
 
 export const applyCustomizableBuiltInIntent = (name: string, platform: VoiceflowConstants.PlatformType): string => {
   if (Realtime.Utils.typeGuards.isVoiceflowPlatform(platform)) {

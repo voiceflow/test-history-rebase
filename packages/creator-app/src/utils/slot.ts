@@ -20,6 +20,12 @@ export const {
   CUSTOM_ENTITY_VALUE_ERROR_MSG,
 } = Realtime.Utils.slot;
 
+export const applySlotNameFormatting = (name = ''): string =>
+  name
+    .replace(/ /g, '_')
+    .replace(/[^A-Z_a-z]/g, '')
+    .toLowerCase();
+
 export const toVoiceflowSlotType = (type: string, platform: VoiceflowConstants.PlatformType): VoiceflowConstants.SlotType | undefined => {
   switch (platform) {
     case VoiceflowConstants.PlatformType.ALEXA:

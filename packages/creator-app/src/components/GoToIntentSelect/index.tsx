@@ -12,7 +12,7 @@ import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { useSelector } from '@/hooks';
 import { getDiagramName } from '@/utils/diagram';
-import { applyPlatformIntentAndSlotNameFormatting, prettifyIntentName } from '@/utils/intent';
+import { applyPlatformIntentNameFormatting, prettifyIntentName } from '@/utils/intent';
 
 interface IntentOption {
   id: string;
@@ -67,10 +67,7 @@ const GoToIntentSelect: React.FC<GoToIntentSelectProps> = ({
 
         if (!intent || !globalStepMap[intentID]?.length) continue;
 
-        const formattedName = applyPlatformIntentAndSlotNameFormatting(
-          prettifyIntentName(applySingleIntentNameFormatting(platform, intent).name),
-          platform
-        );
+        const formattedName = applyPlatformIntentNameFormatting(prettifyIntentName(applySingleIntentNameFormatting(platform, intent).name), platform);
 
         intentOptions.push({ id: `${diagramID}::${intent.id}`, label: formattedName, diagramID });
       }
@@ -88,7 +85,7 @@ const GoToIntentSelect: React.FC<GoToIntentSelectProps> = ({
 
     const componentOptions = Object.values(intentNodeDataLookup).map<IntentOption>(({ intent }) => ({
       id: `::${intent.id}`,
-      label: applyPlatformIntentAndSlotNameFormatting(prettifyIntentName(applySingleIntentNameFormatting(platform, intent).name), platform),
+      label: applyPlatformIntentNameFormatting(prettifyIntentName(applySingleIntentNameFormatting(platform, intent).name), platform),
       diagramID: activeDiagram.id,
     }));
 

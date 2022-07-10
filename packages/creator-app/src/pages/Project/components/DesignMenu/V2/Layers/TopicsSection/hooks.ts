@@ -15,7 +15,7 @@ import * as Router from '@/ducks/router';
 import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useDispatch, useDnDReorder, useSelector } from '@/hooks';
-import { applyPlatformIntentAndSlotNameFormatting, prettifyIntentName } from '@/utils/intent';
+import { applyPlatformIntentNameFormatting, prettifyIntentName } from '@/utils/intent';
 
 import { OpenedIDsToggleApi, useOpenedIDsToggle } from '../hooks';
 
@@ -89,10 +89,7 @@ export const useTopics = (): TopicsAPI & Omit<OpenedIDsToggleApi, 'onDragStart' 
               intent: intent
                 ? {
                     ...intent,
-                    name: applyPlatformIntentAndSlotNameFormatting(
-                      prettifyIntentName(applySingleIntentNameFormatting(platform, intent).name),
-                      platform
-                    ),
+                    name: applyPlatformIntentNameFormatting(prettifyIntentName(applySingleIntentNameFormatting(platform, intent).name), platform),
                   }
                 : null,
               intentID,

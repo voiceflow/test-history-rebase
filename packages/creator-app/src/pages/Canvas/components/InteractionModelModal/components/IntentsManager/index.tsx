@@ -14,7 +14,7 @@ import { CanvasCreationType } from '@/ducks/tracking/constants';
 import { connect } from '@/hocs';
 import { useEnableDisable, useTrackingEvents } from '@/hooks';
 import { ConnectedProps } from '@/types';
-import { applyPlatformIntentAndSlotNameFormatting, isCustomizableBuiltInIntent } from '@/utils/intent';
+import { applyPlatformIntentNameFormatting, isCustomizableBuiltInIntent } from '@/utils/intent';
 
 import EmptyContainer from '../EmptyContainer';
 import LeftColumn from '../LeftColumn';
@@ -124,7 +124,7 @@ const IntentsManager: React.FC<IntentsManagerProps & ConnectedIntentsManagerProp
                   isFirst: index === 0,
                 })
               }
-              formatValue={(value) => applyPlatformIntentAndSlotNameFormatting(value, platform)}
+              formatValue={(value) => applyPlatformIntentNameFormatting(value, platform)}
               placeholder="Search Intents"
             />
           )}

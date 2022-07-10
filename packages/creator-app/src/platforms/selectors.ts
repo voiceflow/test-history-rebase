@@ -4,7 +4,7 @@ import { GoogleConstants } from '@voiceflow/google-types';
 import { Utils } from '@voiceflow/realtime-sdk';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
-import { applyAlexaIntentAndSlotNameFormatting, applyLUISIntentAndSlotNameFormatting } from '@/utils/intent';
+import { applyAlexaIntentNameFormatting, applyLUISIntentNameFormatting } from '@/utils/intent';
 
 import * as Alexa from './alexa';
 import * as Dialogflow from './dialogflow';
@@ -30,13 +30,13 @@ export const getPlatformClient = Utils.platform.createPlatformSelector<PlatformC
   General.client
 );
 
-export const getPlatformIntentAndSlotNameFormatter = Utils.platform.createPlatformSelector<(name: string) => string>(
+export const getPlatformIntentNameFormatter = Utils.platform.createPlatformSelector<(name: string) => string>(
   {
-    [VoiceflowConstants.PlatformType.ALEXA]: applyAlexaIntentAndSlotNameFormatting,
-    [VoiceflowConstants.PlatformType.GOOGLE]: applyAlexaIntentAndSlotNameFormatting,
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: applyAlexaIntentAndSlotNameFormatting,
+    [VoiceflowConstants.PlatformType.ALEXA]: applyAlexaIntentNameFormatting,
+    [VoiceflowConstants.PlatformType.GOOGLE]: applyAlexaIntentNameFormatting,
+    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: applyAlexaIntentNameFormatting,
   },
-  applyLUISIntentAndSlotNameFormatting
+  applyLUISIntentNameFormatting
 );
 
 export const getUtteranceRecommendationsLocales = Utils.platform.createPlatformSelector<AnyLocale[]>(

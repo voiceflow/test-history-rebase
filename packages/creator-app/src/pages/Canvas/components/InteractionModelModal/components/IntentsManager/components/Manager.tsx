@@ -14,7 +14,7 @@ import { compose, connect } from '@/hocs';
 import { useIntentNameProcessor, useTrackingEvents } from '@/hooks';
 import { FadeLeftContainer } from '@/styles/animations';
 import { ConnectedProps, MergeArguments } from '@/types';
-import { applyPlatformIntentAndSlotNameFormatting, isCustomizableBuiltInIntent } from '@/utils/intent';
+import { applyPlatformIntentNameFormatting, isCustomizableBuiltInIntent } from '@/utils/intent';
 
 export interface ManagerProps {
   id: string;
@@ -54,7 +54,7 @@ const Manager: React.ForwardRefRenderFunction<{ resetPath: () => void }, Manager
 
   const localNameUpdate = (value: string) => {
     setNameError(null);
-    setName(applyPlatformIntentAndSlotNameFormatting(value, platform));
+    setName(applyPlatformIntentNameFormatting(value, platform));
   };
 
   React.useEffect(() => {

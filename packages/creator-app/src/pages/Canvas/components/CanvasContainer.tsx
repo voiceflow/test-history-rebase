@@ -4,6 +4,7 @@ import React from 'react';
 
 import { BlockType, ModalType } from '@/constants';
 import { PrototypeStatus } from '@/constants/prototype';
+import { SearchContext } from '@/contexts/SearchContext';
 import * as Creator from '@/ducks/creator';
 import * as History from '@/ducks/history';
 import * as Prototype from '@/ducks/prototype';
@@ -59,6 +60,7 @@ const CanvasContainer: React.FC = ({ children }) => {
   const engine = React.useContext(EngineContext)!;
   const markup = React.useContext(MarkupContext)!;
   const clipboard = React.useContext(ClipboardContext)!;
+  const search = React.useContext(SearchContext);
   const spotlight = React.useContext(SpotlightContext)!;
   const setSelectedTargets = React.useContext(SelectionSetTargetsContext);
   const lastCreatedComponent = React.useContext(LastCreatedComponentContext)!;
@@ -78,9 +80,10 @@ const CanvasContainer: React.FC = ({ children }) => {
   const prototypeStatus = useSelector(Prototype.prototypeStatusSelector);
 
   const canDelete = isEditingMode && !activeModal;
-  const disableSpotlight = !isEditingMode || !!activeModal;
+  const disableBar = !isEditingMode || !!activeModal;
 
-  const showSpotlight = React.useCallback(() => !disableSpotlight && spotlight.toggle(), [disableSpotlight]);
+  const showSpotlight = React.useCallback(() => !disableBar && spotlight.toggle(), [disableBar]);
+  const showSearch = React.useCallback(() => !disableBar && search?.toggle(), [disableBar]);
   const deleteActive = React.useCallback<VoidFunction>(() => canDelete && engine.removeActive(), [canDelete]);
   const cutActive = React.useCallback<VoidFunction>(async () => {
     await clipboard.copy(null, { disableSuccessToast: true });
@@ -151,6 +154,7 @@ const CanvasContainer: React.FC = ({ children }) => {
   useHotKeys(Hotkey.DELETE, deleteActive, { preventDefault: true }, [deleteActive]);
   useHotKeys(Hotkey.UNDO, undoHistory, { preventDefault: true });
   useHotKeys(Hotkey.REDO, redoHistory, { preventDefault: true });
+  useHotKeys(Hotkey.SEARCH, showSearch, { preventDefault: true }, [showSearch]);
   useHotKeys(Hotkey.SPOTLIGHT, showSpotlight, { action: 'keyup', preventDefault: true }, [showSpotlight]);
   useHotKeys(Hotkey.DUPLICATE, onDuplicate, { preventDefault: true, disable: !isEditingMode || imModal.isOpened }, [isEditingMode]);
   useHotKeys(Hotkey.CREATE_COMPONENT, onCreateComponent, { preventDefault: true });

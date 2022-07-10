@@ -10,7 +10,7 @@ import * as ProjectV2 from '@/ducks/projectV2';
 import { createCurriedSelector, createParameterSelector } from '@/ducks/utils';
 import { createCRUDSelectors, idParamSelector, idsParamSelector } from '@/ducks/utils/crudV2';
 import * as VersionV2 from '@/ducks/versionV2';
-import { GENERAL_BUILT_INS_MAP, getBuiltInIntents } from '@/utils/intent';
+import { fmtIntentName, GENERAL_BUILT_INS_MAP, getBuiltInIntents } from '@/utils/intent';
 import { isVoiceflowPlatform } from '@/utils/typeGuards';
 
 import { STATE_KEY } from './constants';
@@ -33,6 +33,11 @@ export const allCustomIntentsSelector = createSelector([allIntentsSelector, Proj
 
 export const customIntentMapSelector = createSelector([allCustomIntentsSelector], (intents) =>
   intents.reduce<Record<string, Realtime.Intent>>((acc, intent) => Object.assign(acc, { [intent.id]: intent }), {})
+);
+
+export const formattedIntentNameByIDSelector = createSelector(
+  [intentByIDSelector, ProjectV2.active.platformSelector],
+  (intent, platform) => intent && fmtIntentName(intent, platform)
 );
 
 // This appends the built-in intent consts to the redux intents

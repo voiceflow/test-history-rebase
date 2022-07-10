@@ -2,6 +2,8 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import { INPUT_STEPS_LINK } from '@/constants';
+import { NodeCategory } from '@/contexts/SearchContext/types';
+import * as Intent from '@/ducks/intentV2';
 
 import { NodeManagerConfigV2 } from '../types';
 import { Editor } from './components';
@@ -16,6 +18,16 @@ const ButtonsManager: NodeManagerConfigV2<Realtime.NodeData.Buttons, Realtime.No
 
   step: Step,
   editorV2: Editor,
+
+  searchCategory: NodeCategory.USER_INPUT,
+  getSearchParams: (data, state) =>
+    data.buttons.reduce<string[]>((acc, button) => {
+      if (button.name) acc.push(button.name);
+
+      const intentName = Intent.formattedIntentNameByIDSelector(state, { id: button.intent });
+      if (intentName) acc.push(intentName);
+      return acc;
+    }, []),
 
   tooltipText: 'Add buttons to your assistant.',
   tooltipLink: INPUT_STEPS_LINK,

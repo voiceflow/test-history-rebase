@@ -1,4 +1,4 @@
-import { MenuOption } from '@voiceflow/ui';
+import { MenuOption, SvgIconTypes } from '@voiceflow/ui';
 import React from 'react';
 
 import { Permission } from '@/config/permissions';
@@ -12,7 +12,11 @@ import { Hotkey, HOTKEY_LABEL_MAP } from '@/keymap';
 import { ShareProjectTab } from './constants';
 import { SharePopperContext } from './contexts';
 
-export const useLogoButtonOptions = ({ uiToggle, shortcuts }: { uiToggle?: boolean; shortcuts?: boolean } = {}): MenuOption<undefined>[] => {
+export const useLogoButtonOptions = ({
+  uiToggle,
+  shortcuts,
+  toggleSearch,
+}: { uiToggle?: boolean; shortcuts?: boolean; toggleSearch?: () => void } = {}): MenuOption<undefined>[] => {
   const goToDashboard = useDispatch(Router.goToDashboard);
   const toggleCanvasOnly = useDispatch(UI.toggleCanvasOnly);
   const goToCurrentSettings = useDispatch(Router.goToCurrentSettings);
@@ -38,6 +42,12 @@ export const useLogoButtonOptions = ({ uiToggle, shortcuts }: { uiToggle?: boole
     () => [
       { key: 'dashboard', label: 'Back to dashboard', onClick: goToDashboard },
       { key: 'divider-1', label: 'divider', divider: true },
+      ...(toggleSearch
+        ? [
+            { icon: 'search' as SvgIconTypes.Icon, label: 'Search assistant', onClick: toggleSearch, note: HOTKEY_LABEL_MAP[Hotkey.SEARCH] },
+            { key: 'divider-search', label: 'divider', divider: true },
+          ]
+        : []),
       ...(canEditProject ? [{ label: 'Version history', onClick: onVersionHistory }] : []),
       ...(sharePopper ? [{ key: 'export', label: 'Export as...', onClick: () => sharePopper.open(ShareProjectTab.EXPORT) }] : []),
       ...(canEditProject ? [{ key: 'settings', label: 'Project settings', onClick: goToCurrentSettings }] : []),

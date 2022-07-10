@@ -6,7 +6,6 @@ import React from 'react';
 import { SectionToggleVariant } from '@/components/Section';
 import SSMLWithVars from '@/components/SSMLWithVars';
 import VariablesInput from '@/components/VariablesInput';
-import { DialogType } from '@/constants';
 import { compose } from '@/hocs';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
@@ -23,8 +22,6 @@ export type SpeakAudioItemProps = ListItemComponentProps<
     formControlProps?: { contentBottomUnits?: number };
   }
 >;
-
-const isVoice = (item: Realtime.SpeakData): item is Realtime.SSMLData => item.type === DialogType.VOICE;
 
 const SpeakAudioItem: React.ForwardRefRenderFunction<HTMLDivElement, SpeakAudioItemProps> = (
   {
@@ -63,9 +60,12 @@ const SpeakAudioItem: React.ForwardRefRenderFunction<HTMLDivElement, SpeakAudioI
       ref={ref}
       namespace={['speakAudioItem', item.id]}
       initialOpen={isNew || isOnlyItem}
-      header={header || (isVoice(item) ? 'System Says' : prettifyBucketURL(item.url) || 'Audio')}
+      header={header || (Realtime.isSSML(item) ? 'System Says' : prettifyBucketURL(item.url) || 'Audio')}
       prefix={
-        <SvgIcon icon={NODE_CONFIG.getIcon!(isVoice(item) ? VOICE_MOCK_DATA : AUDIO_MOCK_DATA)} color={COLOR_PICKER_CONSTANTS.BLOCK_STANDARD_COLOR} />
+        <SvgIcon
+          icon={NODE_CONFIG.getIcon!(Realtime.isSSML(item) ? VOICE_MOCK_DATA : AUDIO_MOCK_DATA)}
+          color={COLOR_PICKER_CONSTANTS.BLOCK_STANDARD_COLOR}
+        />
       }
       suffix={isRandomized && 'randomLoop'}
       isDragging={isDragging}
@@ -78,7 +78,7 @@ const SpeakAudioItem: React.ForwardRefRenderFunction<HTMLDivElement, SpeakAudioI
     >
       {isDragging || isDraggingPreview ? null : (
         <FormControl {...formControlProps}>
-          {isVoice(item) ? (
+          {Realtime.isSSML(item) ? (
             <SSMLWithVars icon={null} voice={item.voice} value={item.content} onBlur={updateContent} onChangeVoice={updateVoice} skipBlurOnUnmount />
           ) : (
             <>

@@ -8,12 +8,14 @@ import { ExtractRouteParams } from 'react-router';
 import { Optional, Overwrite } from 'utility-types';
 
 import { BlockType, HSLShades } from '@/constants';
+import { NodeCategory } from '@/contexts/SearchContext/types';
 import * as Creator from '@/ducks/creator';
 import { FeatureFlagMap } from '@/ducks/feature';
 import { PathEntry } from '@/pages/Canvas/components/EditorSidebar/hooks';
 import { ConnectedMarkupNodeProps } from '@/pages/Canvas/components/MarkupNode/types';
 import type Engine from '@/pages/Canvas/engine';
 import type { NodeEntityResource } from '@/pages/Canvas/engine/entities/nodeEntity';
+import type { State } from '@/store/types';
 
 import { EditorAnimationEffect } from '../constants';
 import { NodeDataUpdater } from '../types';
@@ -148,6 +150,10 @@ interface BaseNodeConfig<Data extends object> {
   icon?: SvgIconTypes.Icon;
   getIcon?: (data: Data) => SvgIconTypes.Icon;
   factory?: NodeManagerFactory<Data, any>;
+
+  searchIcon?: SvgIconTypes.Icon;
+  searchCategory?: NodeCategory;
+  getSearchParams?: (data: Data, store: State) => string[];
 
   mergeTerminator?: boolean;
   mergeInitializer?: boolean;

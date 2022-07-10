@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-type-constraint */
 import composeRefs from '@seznam/compose-react-refs';
 import { FlexLabel } from '@ui/components/Flex';
+import SvgIcon, { SvgIconTypes } from '@ui/components/SvgIcon';
 import { useTheme } from '@ui/hooks';
 import { FadeDownDelayedContainer } from '@ui/styles/animations';
 import { ClassName } from '@ui/styles/constants';
@@ -16,6 +17,7 @@ export { Container as MenuContainer, Item as MenuItem, itemStyles as menuItemSty
 
 interface BaseMenuOption extends MenuItemProps {
   key?: string;
+  icon?: SvgIconTypes.Icon;
   note?: React.ReactNode;
   label: React.ReactNode;
   style?: React.CSSProperties;
@@ -150,10 +152,11 @@ const Menu = <T extends any>(
             options?.map((option, index) => {
               if (!option) return null;
 
-              const { key, value, note, label, onClick, ...props } = option;
+              const { key, value, note, label, icon, onClick, ...props } = option;
 
               return (
                 <Item {...props} key={key || `${index}-${label}`} onClick={onItemClick(value as T, onClick)}>
+                  {!!icon && <SvgIcon icon={icon} mr={16} color="#6e849ad9" />}
                   <FlexLabel>{label || String(value)}</FlexLabel>
                   {!!note && <MenuItemNote>{note}</MenuItemNote>}
                 </Item>

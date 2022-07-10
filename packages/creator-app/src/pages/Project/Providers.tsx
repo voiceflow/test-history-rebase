@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { ExportProvider, NLUProvider, PublishProvider } from '@/contexts';
+import { SearchProvider } from '@/contexts/SearchContext';
 import { NLUManagerProvider } from '@/pages/NLUManager/context';
 // TODO: move this context into contexts folder
 import { ExportProvider as NLUExportProvider } from '@/pages/Project/components/Header/components/SharePopper/components/Export/Context';
@@ -20,7 +21,9 @@ const Providers: React.FC = ({ children }) => {
                   <TrainingModelProvider>
                     <NLUManagerProvider>
                       <SelectionProvider>
-                        <LastCreatedComponentProvider>{children}</LastCreatedComponentProvider>
+                        <SearchProvider>
+                          <LastCreatedComponentProvider>{children}</LastCreatedComponentProvider>
+                        </SearchProvider>
                       </SelectionProvider>
                     </NLUManagerProvider>
                   </TrainingModelProvider>

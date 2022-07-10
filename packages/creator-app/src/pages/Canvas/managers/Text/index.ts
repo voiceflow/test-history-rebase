@@ -3,6 +3,8 @@ import { SVG } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import { RESPONSE_STEPS_LINK } from '@/constants';
+import { NodeCategory } from '@/contexts/SearchContext/types';
+import { serializeSlateToText } from '@/utils/slate';
 
 import { NodeManagerConfig } from '../types';
 import { NODE_CONFIG } from './constants';
@@ -20,6 +22,10 @@ const TextManager: NodeManagerConfig<Realtime.NodeData.Text, Realtime.NodeData.T
   editor: TextEditor,
 
   v2: TextManagerV2,
+
+  searchIcon: 'systemText',
+  searchCategory: NodeCategory.RESPONSES,
+  getSearchParams: (data) => data.texts.map(({ content }) => serializeSlateToText(content)),
 
   tooltipText: 'Add text to your assistant.',
   tooltipLink: RESPONSE_STEPS_LINK,

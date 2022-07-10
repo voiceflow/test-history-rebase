@@ -24,3 +24,5 @@ export interface SSMLData {
 }
 
 export type SpeakData = SSMLData | AudioData;
+
+export const isSSML = (message: SpeakData): message is SSMLData => message.type === DialogType.VOICE;

@@ -19,6 +19,7 @@ import ExportModelModal from './components/ExportModelModal';
 import InteractionModelModal from './components/InteractionModelModal';
 import NLUQuickView from './components/NLUQuickView';
 import RealtimeOverlay from './components/RealtimeOverlay';
+import Search from './components/Search';
 import ShortcutsModal from './components/ShortcutsModal';
 import SlotEditModal from './components/SlotEdit/SlotEditModal';
 import Spotlight from './components/Spotlight';
@@ -96,6 +97,7 @@ const Canvas: React.FC<CanvasProps> = ({ isPrototypingMode }) => {
           <>
             <EditSidebar />
             <Spotlight />
+            <Search />
             <ThreadHistoryDrawer />
           </>
         )}

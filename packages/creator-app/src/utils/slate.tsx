@@ -2,7 +2,7 @@ import { BaseText } from '@voiceflow/base-types';
 import { slate } from '@voiceflow/internal';
 import { swallowEvent } from '@voiceflow/ui';
 import React from 'react';
-import { Element, Node, Text } from 'slate';
+import { Element, Text } from 'slate';
 
 import { getValidHref } from './string';
 
@@ -54,6 +54,14 @@ const serializeNode = (node: BaseText.Descendant, index: number): React.ReactNod
   // eslint-disable-next-line no-nested-ternary
   Text.isText(node) ? serializeTextNode(node, index) : Element.isElement(node) ? serializeElementNode(node, index) : null;
 
-export const serializeSlateToText = (content: BaseText.SlateTextValue): string => content.map((node) => Node.string(node)).join('\n');
+export const transformSlateVariables = (value: BaseText.SlateTextValue): BaseText.SlateTextValue =>
+  value.map((node) => {
+    if (Element.isElement(node)) {
+      return slate.isVariableElement(node) ? { text: `{${node.name}}` } : { ...node, children: transformSlateVariables(node.children) };
+    }
+    return node;
+  });
+
+export const serializeSlateToText = (content: BaseText.SlateTextValue): string => slate.toPlaintext(transformSlateVariables(content));
 
 export const serializeSlateToJSX = (content: BaseText.SlateTextValue): React.ReactNode => content.map(serializeNode);

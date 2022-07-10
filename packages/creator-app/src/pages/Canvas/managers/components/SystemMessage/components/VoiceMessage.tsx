@@ -4,18 +4,15 @@ import React from 'react';
 
 import SSMLWithVars from '@/components/SSMLWithVars';
 import VariablesInput from '@/components/VariablesInput';
-import { DialogType } from '@/constants';
 import { PlatformContext } from '@/pages/Project/contexts';
 
 import { VoiceMessageProps } from '../types';
-
-const isSSML = (message: Realtime.SpeakData): message is Realtime.SSMLData => message.type === DialogType.VOICE;
 
 const SpeakAudioItem: React.FC<VoiceMessageProps> = ({ message, autoFocus, onChange }) => {
   const platform = React.useContext(PlatformContext)!;
   const isGoogle = Realtime.Utils.typeGuards.isGooglePlatform(platform);
 
-  return isSSML(message) ? (
+  return Realtime.isSSML(message) ? (
     <SSMLWithVars
       icon={null}
       voice={message.voice}

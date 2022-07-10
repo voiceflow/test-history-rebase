@@ -14,6 +14,7 @@ export interface Props extends Partial<ContainerProps> {
   style?: React.CSSProperties;
   onClick?: React.MouseEventHandler<HTMLSpanElement>;
   className?: string;
+  onMouseDown?: React.MouseEventHandler<HTMLSpanElement>;
   onMouseEnter?: React.MouseEventHandler<HTMLSpanElement>;
   onMouseLeave?: React.MouseEventHandler<HTMLSpanElement>;
 }

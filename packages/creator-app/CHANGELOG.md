@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.819.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.819.2...@voiceflow/creator-app@1.819.3) (2022-07-10)
+
+
+### Bug Fixes
+
+* entity formatting (VF-000) ([#5733](https://github.com/voiceflow/creator-app/issues/5733)) ([52f2c21](https://github.com/voiceflow/creator-app/commit/52f2c213943ee2ea3fc9cdb62632f78d45a83e27))
+
+
+
+
+
 ## [1.819.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.819.1...@voiceflow/creator-app@1.819.2) (2022-07-09)
 
 

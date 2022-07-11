@@ -2,13 +2,13 @@ import { Box, SvgIcon, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';
-import { InteractionModelTabType, NLUImportOrigin } from '@/constants';
+import { InteractionModelTabType, NLUImportOrigin, PlatformToNLPProvider } from '@/constants';
 import * as Intent from '@/ducks/intent';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import * as Slot from '@/ducks/slot';
-import { useDispatch, useSelector } from '@/hooks';
+import { useDispatch, useSelector, useTrackingEvents } from '@/hooks';
 import { PLATFORM_PROJECT_META_MAP } from '@/pages/NewProjectV2/constants';
 import { useNLUImport } from '@/pages/NewProjectV2/hooks';
 import { ImportModel, SupportedPlatformProjectType } from '@/pages/NewProjectV2/types';
@@ -22,6 +22,7 @@ const NavigationSidebar: React.FC = () => {
 
   const platform = useSelector(ProjectV2.active.platformSelector);
   const versionID = useSelector(Session.activeVersionIDSelector)!;
+  const [trackingEvents] = useTrackingEvents();
 
   const refreshSlots = useDispatch(Slot.refreshSlots);
   const refreshIntents = useDispatch(Intent.refreshIntents);
@@ -32,6 +33,11 @@ const NavigationSidebar: React.FC = () => {
 
   const onImportModel = async (importedModel: ImportModel) => {
     const data = await client.version.patchMergeIntentsAndSlots(versionID, importedModel);
+    trackingEvents.trackProjectNLUImport({
+      platform,
+      origin: NLUImportOrigin.NLU_MANAGER,
+      nluType: PlatformToNLPProvider[platform],
+    });
 
     if (data) {
       await Promise.all([refreshSlots(), refreshIntents()]);

@@ -46,6 +46,7 @@ export enum EventName {
   PROJECT_UTTERANCE_BULK_IMPORT = 'Utterance Bulk Import',
   PROJECT_NEW_STEP_CREATED = 'New Step Created',
   PROJECT_NLU_IMPORT = 'NLU Imported',
+  PROJECT_NLU_IMPORT_FAILED = 'NLU Import Failed',
 
   SHARE_PROTOTYPE_LINK = 'Testable Link Button',
 

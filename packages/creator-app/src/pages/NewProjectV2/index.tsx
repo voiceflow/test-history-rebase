@@ -7,10 +7,10 @@ import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import client from '@/client';
-import { ModalType } from '@/constants';
+import { ModalType, NLUImportOrigin, PlatformToNLPProvider } from '@/constants';
 import * as Project from '@/ducks/project';
 import * as Router from '@/ducks/router';
-import { useDispatch, useModals } from '@/hooks';
+import { useDispatch, useModals, useTrackingEvents } from '@/hooks';
 import LOCALE_MAP from '@/services/LocaleMap';
 import {
   isAlexaPlatform,
@@ -41,6 +41,7 @@ const NewProject: React.FC<NewProjectProps> = ({ onCreatingProject }) => {
   const [importedModel, setImportedModel] = React.useState<Nullable<ImportModel>>(null);
   const [invocationName, setInvocationName] = React.useState('');
   const [invocationNameError, setInvocationNameError] = React.useState(false);
+  const [trackingEvents] = useTrackingEvents();
 
   const createProject = useDispatch(Project.createProject);
   const redirectToCanvas = useDispatch(Router.redirectToCanvas);
@@ -140,6 +141,13 @@ const NewProject: React.FC<NewProjectProps> = ({ onCreatingProject }) => {
 
       if (importedModel && platformType && PLATFORM_PROJECT_META_MAP[platformType]?.importMeta) {
         await client.version.patchMergeIntentsAndSlots(newVersionID, importedModel);
+
+        trackingEvents.trackProjectNLUImportFromWorkspace({
+          platform: platformType,
+          origin: NLUImportOrigin.NLU_MANAGER,
+          nluType: PlatformToNLPProvider[platformType],
+          projectID: project.id,
+        });
       }
     } finally {
       setIsCreating(false);

@@ -24,7 +24,12 @@ export const useNLUImport = ({
   const platformClient = client.platform(platform);
   const acceptedFileFormats = fileExtensions?.join(',');
   const acceptedFileFormatsLabel = fileExtensions?.map((fileExtension) => FILE_EXTENSION_LABEL_MAP[fileExtension]).join(', ');
-  const onImport = async (files: FileList) => {
+
+  const getSlots = (importModelResponse: ImportModel) => {
+    return importModelResponse.slots?.map((slot: BaseModels.Slot) => (slot.color ? slot : { ...slot, color: pickRandomDefaultColor() }));
+  };
+
+  const onImport = (origin: NLUImportOrigin) => async (files: FileList) => {
     if (!files.length) return;
 
     try {
@@ -35,9 +40,7 @@ export const useNLUImport = ({
       const importModelResponse: ImportModel = await platformClient.modelImport.import(platform, formData);
       setIsImporting(false);
       if (importModelResponse) {
-        importModelResponse.slots = importModelResponse.slots?.map((slot: BaseModels.Slot) =>
-          slot.color ? slot : { ...slot, color: pickRandomDefaultColor() }
-        );
+        importModelResponse.slots = getSlots(importModelResponse);
         toast.success(`${importModelResponse.intents.length} intents successfully imported!`);
         onImportModel?.(importModelResponse);
       }
@@ -45,17 +48,17 @@ export const useNLUImport = ({
       setIsImporting(false);
 
       toast.error('File failed to import');
+      trackingEvents.trackProjectNLUImportFailed({
+        platform,
+        origin,
+        nluType: PlatformToNLPProvider[platform],
+      });
     }
   };
 
   const onUploadClick = (origin: NLUImportOrigin) => {
     if (acceptedFileFormats) {
-      upload(onImport, { accept: acceptedFileFormats, multiple: false });
-      trackingEvents.trackProjectNLUImport({
-        platform,
-        origin,
-        nluType: PlatformToNLPProvider[platform],
-      });
+      upload(onImport(origin), { accept: acceptedFileFormats, multiple: false });
     }
   };
 

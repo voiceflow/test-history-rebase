@@ -1,11 +1,11 @@
+import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Checkbox, Divider, Input, Tooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import Section, { SectionToggleVariant } from '@/components/Section';
 import TextArea from '@/components/TextArea';
-import * as History from '@/ducks/history';
-import { useDispatch, useManager } from '@/hooks';
+import { useMapManager } from '@/hooks';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
 import { NodeEditor } from '@/pages/Canvas/managers/types';
@@ -17,39 +17,21 @@ const ActionEditor: NodeEditor<Realtime.NodeData.Trace> = ({ data, node, engine,
   const [name, setName] = React.useState(data.name);
   const [value, setValue] = React.useState(data.body);
 
-  const transaction = useDispatch(History.transaction);
-
-  const updatePaths = React.useCallback((paths: Realtime.NodeData.Trace['paths']) => onChange({ paths }), [onChange]);
-  const onRemovePath = React.useCallback(
-    (_, index: number) => engine.port.removeDynamic(node.ports.out.dynamic[index]),
-    [engine.port, node.ports.out.dynamic]
-  );
   const toggleIsBlocking = React.useCallback(() => onChange({ isBlocking: !data.isBlocking }), [data.isBlocking, onChange]);
 
-  const { items, onAdd, mapManaged } = useManager<Realtime.NodeData.Trace['paths'][number], []>(data.paths, updatePaths, {
-    factory: () => ({ label: '' }),
-    autosave: false,
-    handleRemove: onRemovePath,
+  const mapManager = useMapManager(data.paths, (paths) => onChange({ paths }, false), {
+    onAdd: () => engine.port.addDynamic(node.id, {}),
+    factory: () => ({ label: '', isDefault: false }),
+    onRemove: (_, index) => engine.port.removeDynamic(node.ports.out.dynamic[index]),
   });
 
   const updateDefaultPath = (i: number) => {
-    mapManaged((item, { index, onUpdate }) => {
+    mapManager.map((item, { index, onUpdate }) => {
       onUpdate({ ...item, isDefault: i === index });
 
       return null;
     });
   };
-
-  const addPath = React.useCallback(
-    async (scrollToBottom: VoidFunction) => {
-      await transaction(async () => {
-        await Promise.all([onAdd(), engine.port.addDynamic(node.id, {})]);
-      });
-
-      scrollToBottom();
-    },
-    [engine.port, node.id, items.length, onAdd]
-  );
 
   return (
     <Content
@@ -58,13 +40,10 @@ const ActionEditor: NodeEditor<Realtime.NodeData.Trace> = ({ data, node, engine,
           options={[
             {
               label: 'Add Path',
-              onClick: () => addPath(scrollToBottom),
+              onClick: Utils.functional.chainVoid(mapManager.onAdd, scrollToBottom),
             },
           ]}
-          tutorial={{
-            content: <HelpTooltip />,
-            blockType: data.type,
-          }}
+          tutorial={{ content: <HelpTooltip />, blockType: data.type }}
         />
       )}
       fillHeight
@@ -109,13 +88,13 @@ const ActionEditor: NodeEditor<Realtime.NodeData.Trace> = ({ data, node, engine,
         </div>
       </EditorSection>
       <Section isDividerNested>
-        {mapManaged((item: any, { index, key, onUpdate, onRemove }: any) => (
+        {mapManager.map((item, { index, key, onUpdate, onRemove }) => (
           <Path
             key={key}
-            index={index}
             path={item}
+            index={index}
             onUpdate={onUpdate}
-            onRemove={items.length > 1 ? onRemove : undefined}
+            onRemove={!mapManager.isOnlyItem ? onRemove : undefined}
             updateDefaultPath={updateDefaultPath}
           />
         ))}

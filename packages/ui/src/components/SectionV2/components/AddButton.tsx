@@ -2,7 +2,7 @@ import IconButton, { IconButtonVariant } from '@ui/components/IconButton';
 import React from 'react';
 
 export interface AddButtonProps {
-  onClick?: VoidFunction;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
   isActive?: boolean;
   disabled?: boolean;
 }

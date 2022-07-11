@@ -4,7 +4,7 @@ import React from 'react';
 
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
 import * as Documentation from '@/config/documentation';
-import { useManager, useToggle } from '@/hooks';
+import { useMapManager, useToggle } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import { LABELS_V2, useCanvasVisibilityOption } from '@/pages/Canvas/managers/hooks';
 import { textFactory } from '@/pages/Canvas/managers/Text/constants';
@@ -21,7 +21,7 @@ const TextRootEditor: React.FC = () => {
   const { onAdd, onReorder, onRemove } = EditorV2.useSyncDynamicPorts();
   const [isDragging, toggleDragging] = useToggle(false);
 
-  const managerAPI = useManager(editor.data.texts, (texts) => editor.onChange({ texts }), {
+  const mapManager = useMapManager(editor.data.texts, (texts) => editor.onChange({ texts }), {
     onAdd,
     factory: textFactory,
     onRemove,
@@ -36,7 +36,7 @@ const TextRootEditor: React.FC = () => {
           <EditorV2.DefaultFooter tutorial={Documentation.TEXT_STEP}>
             <EditorV2.FooterActionsButton actions={[canvasVisibilityOption]} />
 
-            <Button variant={Button.Variant.PRIMARY} onClick={() => managerAPI.onAdd()} squareRadius>
+            <Button variant={Button.Variant.PRIMARY} onClick={() => mapManager.onAdd()} squareRadius>
               Add Variant
             </Button>
           </EditorV2.DefaultFooter>
@@ -45,17 +45,16 @@ const TextRootEditor: React.FC = () => {
     >
       <DraggableList
         type="text-editor"
-        onDelete={managerAPI.onRemove}
-        onReorder={managerAPI.onReorder}
+        canDrag={!mapManager.isOnlyItem}
         onEndDrag={toggleDragging}
-        itemProps={{ editor, latestCreatedKey: managerAPI.latestCreatedKey }}
-        mapManaged={managerAPI.mapManaged}
+        itemProps={{ editor, latestCreatedKey: mapManager.latestCreatedKey }}
+        mapManager={mapManager}
         onStartDrag={toggleDragging}
         itemComponent={TextItem}
         deleteComponent={DeleteComponent}
         partialDragItem
         previewComponent={TextItem}
-        withContextMenuDelete
+        withContextMenuDelete={!mapManager.isOnlyItem}
       />
     </EditorV2>
   );

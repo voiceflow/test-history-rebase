@@ -27,9 +27,9 @@ const PathSection: React.FC<PathSectionProps> = ({ title = 'Path', onAdd, pathNa
       title={<SectionV2.Title bold={!collapsed}>{title}</SectionV2.Title>}
       action={
         collapsed ? (
-          <SectionV2.AddButton onClick={Utils.functional.chain(enableAutofocus, onAdd)} />
+          <SectionV2.AddButton onClick={Utils.functional.chainVoid(enableAutofocus, onAdd)} />
         ) : (
-          <SectionV2.RemoveButton onClick={Utils.functional.chain(disableAutofocus, onRemove)} />
+          <SectionV2.RemoveButton onClick={Utils.functional.chainVoid(disableAutofocus, onRemove)} />
         )
       }
       collapsed={collapsed}

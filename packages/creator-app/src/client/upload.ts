@@ -7,6 +7,7 @@ const client: UploadClient = {
     if (fileType === 'audio') {
       return (await file.uploadAudio(endpoint, data)).data;
     }
+
     return (await file.uploadImage(endpoint, data)).data;
   },
 };

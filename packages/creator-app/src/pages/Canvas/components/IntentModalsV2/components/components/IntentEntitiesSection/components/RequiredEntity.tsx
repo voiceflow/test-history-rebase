@@ -20,12 +20,8 @@ const RequiredEntity: React.FC<RequiredEntityProps> = ({ entity, entities, inten
   // in this case prompt will not be removed, using ref to prevent that
   const removedRef = React.useRef(false);
 
-  const resetRemoved = () => {
-    removedRef.current = false;
-  };
-
-  const setRemoved = () => {
-    removedRef.current = true;
+  const setRemoved = (value: boolean) => () => {
+    removedRef.current = value;
   };
 
   return (
@@ -37,7 +33,11 @@ const RequiredEntity: React.FC<RequiredEntityProps> = ({ entity, entities, inten
         <Popper.Content>
           <SectionV2.ActionCollapseSection
             title={<SectionV2.Title bold>Entity reprompt</SectionV2.Title>}
-            action={<SectionV2.RemoveButton onClick={Utils.functional.chain(setRemoved, onClose, () => onChangeDialog(entity.id, { prompt: [] }))} />}
+            action={
+              <SectionV2.RemoveButton
+                onClick={Utils.functional.chainVoid(setRemoved(true), onClose, () => onChangeDialog(entity.id, { prompt: [] }))}
+              />
+            }
             collapsed={false}
             headerProps={{ px: 20 }}
             contentProps={{ px: 20, bottomOffset: 2 }}
@@ -58,7 +58,7 @@ const RequiredEntity: React.FC<RequiredEntityProps> = ({ entity, entities, inten
       {({ ref, onToggle, isOpened }) => (
         <IntentRequiredEntitiesSection.Item
           entity={entity}
-          onClick={Utils.functional.chain(resetRemoved, onToggle)}
+          onClick={Utils.functional.chainVoid(setRemoved(false), onToggle)}
           isActive={isOpened}
           contentRef={ref}
           intentEntity={intentEntity}

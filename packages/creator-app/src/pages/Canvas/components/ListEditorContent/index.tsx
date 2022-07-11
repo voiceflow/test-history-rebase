@@ -1,5 +1,5 @@
-import { Nullable, Utils } from '@voiceflow/common';
-import { Link, usePersistFunction } from '@voiceflow/ui';
+import { Nullable } from '@voiceflow/common';
+import { Link } from '@voiceflow/ui';
 import React from 'react';
 
 import DraggableList, {
@@ -8,40 +8,56 @@ import DraggableList, {
   ItemComponentProps,
   MappedItemComponentHandlers,
 } from '@/components/DraggableList';
-import { MapManagedAPI, useManager, useToggle } from '@/hooks';
+import { MapManagedFactoryAPI, MapManagedSimpleAPI, useMapManager, useToggle } from '@/hooks';
 import { Content, ContentRenderOptions, ControlOptions, Controls, EditorControlsProps } from '@/pages/Canvas/components/Editor';
 
-export type ListItemExtraProps<E = {}> = DragPreviewComponentProps &
-  E & {
+export type ListItemExtraProps<ExtraItemProps = {}> = DragPreviewComponentProps &
+  ExtraItemProps & {
     isOnlyItem: boolean;
     isRandomized?: boolean;
     latestCreatedKey: string | undefined;
   };
 
-export type ListItemComponentProps<T, E = {}> = ItemComponentProps<T> & MappedItemComponentHandlers<T> & ListItemExtraProps<E>;
+export type ListItemComponentProps<Item, ExtraItemProps = {}> = ItemComponentProps<Item> &
+  MappedItemComponentHandlers<Item> &
+  ListItemExtraProps<ExtraItemProps>;
 
-export type ListItemComponent<T, E = {}> = React.NamedExoticComponent<
-  React.PropsWithoutRef<ListItemComponentProps<T, E>> & React.RefAttributes<HTMLElement>
+export type ListItemComponent<Item, ExtraItemProps = {}> = React.NamedExoticComponent<
+  React.PropsWithoutRef<ListItemComponentProps<Item, ExtraItemProps>> & React.RefAttributes<HTMLElement>
 >;
 
-export interface ListEditorContentProps<T, F extends any[] = [], E = {}> {
+interface ListEditorContentBaseProps<Item, ExtraItemProps = {}> {
   type: string;
-  items: T[];
+  items: Item[];
   footer?: React.ReactNode;
-  factory: (...args: F) => T;
   tutorial?: EditorControlsProps['tutorial'];
   maxItems?: number;
-  onRemove?: (value: T, index: number) => void;
+  onRemove?: (value: Item, index: number) => void;
   onReorder?: (dragIndex: number, hoverIndex: number) => void;
-  renderMenu?: Nullable<(options: MapManagedAPI<T, F> & ContentRenderOptions) => React.ReactNode>;
-  itemComponent: ListItemComponent<T, E>;
-  onChangeItems: (items: T[]) => void;
+  itemComponent: ListItemComponent<Item, ExtraItemProps>;
+  onChangeItems: (items: Item[]) => void;
   howItWorksLink?: string;
-  extraItemProps?: E;
-  getControlOptions: (options: MapManagedAPI<T, F> & ContentRenderOptions) => ControlOptions[];
+  extraItemProps?: ExtraItemProps;
 }
 
-const ListEditorContent = <T, F extends any[] = [], E = {}>({
+export interface ListEditorContentSimpleProps<Item, ExtraItemProps = {}> extends ListEditorContentBaseProps<Item, ExtraItemProps> {
+  factory?: never;
+  renderMenu?: Nullable<(mapManager: MapManagedSimpleAPI<Item>, options: ContentRenderOptions) => React.ReactNode>;
+  getControlOptions: (mapManager: MapManagedSimpleAPI<Item>, options: ContentRenderOptions) => ControlOptions[];
+}
+
+export interface ListEditorContentFactoryProps<Item, ExtraItemProps = {}> extends ListEditorContentBaseProps<Item, ExtraItemProps> {
+  factory: () => Item;
+  renderMenu?: Nullable<(mapManager: MapManagedFactoryAPI<Item>, options: ContentRenderOptions) => React.ReactNode>;
+  getControlOptions: (mapManager: MapManagedFactoryAPI<Item>, options: ContentRenderOptions) => ControlOptions[];
+}
+
+interface ListEditorContentComponent {
+  <Item, ExtraItemProps = {}>(props: ListEditorContentSimpleProps<Item, ExtraItemProps>): JSX.Element;
+  <Item, ExtraItemProps = {}>(props: ListEditorContentFactoryProps<Item, ExtraItemProps>): JSX.Element;
+}
+
+const ListEditorContent: ListEditorContentComponent = ({
   type,
   items: listItems,
   footer,
@@ -56,20 +72,15 @@ const ListEditorContent = <T, F extends any[] = [], E = {}>({
   extraItemProps,
   howItWorksLink,
   getControlOptions,
-}: React.PropsWithChildren<ListEditorContentProps<T, F, E>>): React.ReactElement<any, any> => {
+}) => {
   const [isDragging, toggleDragging] = useToggle(false);
-  const persistedOnRemove = usePersistFunction(onRemove);
 
-  const mapManagedApi = useManager(listItems, onChangeItems, { factory, maxItems, handleRemove: persistedOnRemove });
+  const mapManager = useMapManager(listItems, onChangeItems, { factory: factory!, maxItems, onRemove, onReorder });
 
   return (
     <Content
       footer={(options) => (
-        <Controls
-          menu={renderMenu?.({ ...mapManagedApi, ...options })}
-          options={getControlOptions({ ...mapManagedApi, ...options })}
-          tutorial={tutorial}
-        >
+        <Controls menu={renderMenu?.(mapManager, options)} options={getControlOptions(mapManager, options)} tutorial={tutorial}>
           {!!howItWorksLink && <Link href={howItWorksLink}>How it Works</Link>}
         </Controls>
       )}
@@ -78,17 +89,15 @@ const ListEditorContent = <T, F extends any[] = [], E = {}>({
       <DraggableList
         type={type}
         footer={footer}
-        onDelete={mapManagedApi.onRemove}
-        onReorder={Utils.functional.chain(mapManagedApi.onReorder, onReorder)}
         onEndDrag={toggleDragging}
         itemProps={
           {
-            isOnlyItem: mapManagedApi.items.length === 1,
-            latestCreatedKey: mapManagedApi.latestCreatedKey,
+            isOnlyItem: mapManager.isOnlyItem,
+            latestCreatedKey: mapManager.latestCreatedKey,
             ...extraItemProps,
-          } as ListItemExtraProps<E>
+          } as ListItemExtraProps<typeof extraItemProps>
         }
-        mapManaged={mapManagedApi.mapManaged}
+        mapManager={mapManager}
         onStartDrag={toggleDragging}
         itemComponent={itemComponent}
         deleteComponent={DeleteComponent}

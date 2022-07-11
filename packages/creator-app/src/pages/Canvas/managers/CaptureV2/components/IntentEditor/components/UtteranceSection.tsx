@@ -4,7 +4,7 @@ import { Badge, Box, ErrorMessage, SectionV2, stopPropagation, SvgIcon, Text, Th
 import React from 'react';
 
 import Utterance, { UtteranceRef } from '@/components/Utterance';
-import { useManager } from '@/hooks';
+import { useMapManager } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 
 interface UtteranceSectionProps {
@@ -21,41 +21,35 @@ const UtteranceSection: React.FC<UtteranceSectionProps> = ({ slot, usedSlots, ut
 
   const [badgeAddScheduler] = useRAF();
 
-  const validate = React.useCallback(
-    ({ text }: Realtime.IntentInput, { index, isUpdate }: { index: number; isUpdate: boolean }) => {
-      let error = '';
-      const trimmedText = text.trim();
+  const validate = ({ text }: Realtime.IntentInput, { index, isUpdate }: { index: number; isUpdate: boolean }) => {
+    let error = '';
+    const trimmedText = text.trim();
 
-      if (utterances.some((utterance, indx) => utterance.text.trim() === trimmedText && (!isUpdate || indx !== index))) {
-        error = 'The utterance is already defined.';
-      }
+    if (utterances.some((utterance, indx) => utterance.text.trim() === trimmedText && (!isUpdate || indx !== index))) {
+      error = 'The utterance is already defined.';
+    }
 
-      if (!trimmedText.match(SLOT_REGEXP)?.length) {
-        error = `This capture utterance contains no entities. Use ‘{‘ to add the {${slot.name}} entity to the utterance`;
-      }
+    if (!trimmedText.match(SLOT_REGEXP)?.length) {
+      error = `This capture utterance contains no entities. Use ‘{‘ to add the {${slot.name}} entity to the utterance`;
+    }
 
-      if (error) {
-        (isUpdate ? toast.error : setAddError)(error);
-      }
+    if (error) {
+      (isUpdate ? toast.error : setAddError)(error);
+    }
 
-      return !error;
-    },
-    [utterances, slot.name]
-  );
+    return !error;
+  };
 
-  const onAdd = React.useCallback(() => {
+  const onAdd = () => {
     utteranceRef.current?.blur();
 
     badgeAddScheduler(() => {
       utteranceRef.current?.clear();
       utteranceRef.current?.forceFocusToTheEnd();
     });
-  }, []);
+  };
 
-  const mapManagedApi = useManager(utterances, onChange, {
-    onAdd,
-    validate,
-  });
+  const mapManager = useMapManager(utterances, onChange, { onAdd, validate });
 
   return (
     <EditorV2.PersistCollapse namespace={['capture_utterances', slot.id]}>
@@ -83,16 +77,13 @@ const UtteranceSection: React.FC<UtteranceSectionProps> = ({ slot, usedSlots, ut
               iconProps={{ variant: SvgIcon.Variant.BLUE }}
               rightAction={
                 !isAddEmpty && (
-                  <Badge
-                    slide
-                    onClick={stopPropagation(() => utteranceRef.current && mapManagedApi.onAdd(utteranceRef.current.getCurrentUtterance()))}
-                  >
+                  <Badge slide onClick={stopPropagation(() => utteranceRef.current && mapManager.onAdd(utteranceRef.current.getCurrentUtterance()))}>
                     Enter
                   </Badge>
                 )
               }
               placeholder="Add utterances, { to add entities"
-              onEnterPress={mapManagedApi.onAdd}
+              onEnterPress={mapManager.onAdd}
               onEditorStateChange={(state) => state.getSelection().getHasFocus() && setAddError('')}
             />
 
@@ -107,12 +98,12 @@ const UtteranceSection: React.FC<UtteranceSectionProps> = ({ slot, usedSlots, ut
               ))}
           </SectionV2.Content>
 
-          {!!mapManagedApi.size && (
+          {!!mapManager.size && (
             <>
               <SectionV2.Divider inset offset={[0, 16]} />
 
               <SectionV2.Content>
-                {mapManagedApi.mapManaged((item, { key, isLast, onUpdate, onRemove }) => (
+                {mapManager.map((item, { key, isLast, onUpdate, onRemove }) => (
                   <Box key={key} pb={isLast ? 8 : 16}>
                     <SectionV2.ListItem action={<SectionV2.RemoveButton onClick={onRemove} />}>
                       <Utterance

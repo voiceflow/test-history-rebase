@@ -23,7 +23,7 @@ export interface TextListProps {
   howItWorksLink?: string;
   label?: string;
   randomize?: boolean;
-  getControlOptions?: (options: { isMaxMatches: boolean; onAdd: () => void }) => ControlOptions[];
+  getControlOptions?: (options: { isMaxReached: boolean; onAdd: () => void }) => ControlOptions[];
 }
 
 const TextList = ({
@@ -49,15 +49,18 @@ const TextList = ({
     itemComponent={itemComponent}
     howItWorksLink={howItWorksLink}
     extraItemProps={{ isRandomized: randomize }}
-    getControlOptions={({ onAdd, isMaxMatches, scrollToBottom }) =>
+    getControlOptions={(mapManager, { scrollToBottom }) =>
       getControlOptions
-        ? getControlOptions({ isMaxMatches, onAdd: Utils.functional.chainVoid(onAdd, () => requestAnimationFrame(() => scrollToBottom())) })
+        ? getControlOptions({
+            onAdd: Utils.functional.chainVoidAsync(mapManager.onAdd, scrollToBottom),
+            isMaxReached: mapManager.isMaxReached,
+          })
         : [
             {
               label,
               icon: NODE_CONFIG.icon,
-              onClick: Utils.functional.chainVoid(onAdd, () => requestAnimationFrame(() => scrollToBottom())),
-              disabled: isMaxMatches,
+              onClick: Utils.functional.chainVoidAsync(mapManager.onAdd, scrollToBottom),
+              disabled: mapManager.isMaxReached,
             },
           ]
     }

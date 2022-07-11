@@ -47,7 +47,7 @@ const SlotsManager: React.FC<SlotsManagerProps & ConnectedSlotsManagerProps> = (
   const getItemKey = React.useCallback((item: Realtime.Slot) => item.id, []);
   const getItemLabel = React.useCallback((item: Realtime.Slot) => item.name, []);
   const onDelete = React.useCallback(
-    (index: string | number, { item }: { item: Realtime.Slot }) => {
+    (index: number, item: Realtime.Slot) => {
       const activeIntents = getIntentsUsingSlot({ id: item.id });
 
       if (activeIntents.length > 0) {
@@ -69,7 +69,9 @@ const SlotsManager: React.FC<SlotsManagerProps & ConnectedSlotsManagerProps> = (
     (id: string) => {
       const index = slots.findIndex((slot) => slot.id === id);
 
-      onDelete(index, { item: slots[index] });
+      if (index !== -1) {
+        onDelete(index, slots[index]);
+      }
     },
     [onDelete, slots]
   );

@@ -24,7 +24,6 @@ const TextItem: React.ForwardRefRenderFunction<HTMLElement, TextItemProps> = (
   ref
 ) => {
   const autofocus = latestCreatedKey === itemKey || editor.data.texts.length === 1;
-  const isNew = latestCreatedKey === itemKey;
   const [sectionRef, scrollSectionIntoView] = useAutoScrollNodeIntoView<HTMLDivElement>({ condition: autofocus, options: { block: 'end' } });
 
   return (
@@ -53,7 +52,7 @@ const TextItem: React.ForwardRefRenderFunction<HTMLElement, TextItemProps> = (
                 isContextMenuOpen={isContextMenuOpen}
               >
                 <SectionV2.Content padding="24px 32px" paddingTop={0}>
-                  <TextInput data={item} isNew={isNew} onUpdate={onUpdate} />
+                  <TextInput data={item} onUpdate={onUpdate} autofocus={autofocus} />
                 </SectionV2.Content>
               </SectionV2.CollapseSection>
             )}

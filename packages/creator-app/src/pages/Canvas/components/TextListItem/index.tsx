@@ -55,8 +55,7 @@ const TextListItem: React.ForwardRefRenderFunction<HTMLDivElement, TextListItemP
           <SlateTextInput
             value={item.content}
             onBlur={(value) => onUpdate({ content: value })}
-            // eslint-disable-next-line jsx-a11y/no-autofocus
-            autoFocus={isNew}
+            autofocus={isNew}
             extraToolbarButtons={
               <>
                 <Divider isVertical height="15px" style={{ margin: 0 }} />

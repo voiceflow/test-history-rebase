@@ -1,7 +1,7 @@
 import _isNumber from 'lodash/isNumber';
 import React from 'react';
 
-import { useManager } from '@/hooks';
+import { useMapManager } from '@/hooks';
 
 import { ItemWrapper, RemoveIcon } from './components';
 
@@ -49,7 +49,8 @@ function ListManager<I>({
 }: ListManagerProps<I>): React.ReactElement {
   const [addError, setAddError] = React.useState<string>();
   const [formValue, onChangeFormValue] = React.useState<I | null>(initialValue as I);
-  const { items: managedItems, onAdd, onAddToStart, onRemove, onReorder, toggleOpen, mapManaged, latestCreatedKey } = useManager(items, onUpdate);
+
+  const mapManager = useMapManager(items, onUpdate);
 
   const onAddItem = (value: I) => {
     const { valid, error } = addValidation ? addValidation(value) : { valid: true, error: null };
@@ -58,7 +59,12 @@ function ListManager<I>({
       setAddError(undefined);
       onChangeFormValue(null);
       beforeAdd?.(value);
-      addToStart ? onAddToStart(value) : onAdd(value);
+
+      if (addToStart) {
+        mapManager.onAddToStart(value);
+      } else {
+        mapManager.onAdd(value);
+      }
     } else if (error) {
       onChangeFormValue(value);
       setAddError(error);
@@ -70,7 +76,7 @@ function ListManager<I>({
       <ItemWrapper key={options.key}>
         {renderItem!(item, options)}
 
-        <RemoveIcon onClick={() => onRemove(options.key)} isHidden={_isNumber(requiredItemIndex) && options.index === requiredItemIndex} />
+        <RemoveIcon onClick={() => mapManager.onRemove(options.key)} isHidden={_isNumber(requiredItemIndex) && options.index === requiredItemIndex} />
       </ItemWrapper>
     ) : null;
   };
@@ -84,11 +90,19 @@ function ListManager<I>({
         onChange: onChangeFormValue,
       })}
 
-      {divider && !!managedItems.length && <hr />}
+      {divider && !!mapManager.items.length && <hr />}
 
       {renderList
-        ? renderList({ items: managedItems, onAdd: onAddItem, onRemove, onReorder, toggleOpen, mapManaged, itemRenderer, latestCreatedKey })
-        : mapManaged(itemRenderer)}
+        ? renderList({
+            items: mapManager.items,
+            onAdd: onAddItem,
+            onRemove: mapManager.onRemove,
+            onReorder: mapManager.onReorder,
+            mapManaged: mapManager.map,
+            itemRenderer,
+            latestCreatedKey: mapManager.latestCreatedKey,
+          })
+        : mapManager.map(itemRenderer)}
     </>
   );
 }

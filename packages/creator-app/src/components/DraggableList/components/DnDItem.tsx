@@ -17,7 +17,7 @@ export interface ItemComponentHandlers<I> {
 }
 
 export interface MappedItemComponentHandlers<I> {
-  onRemove: () => void;
+  onRemove: VoidFunction;
   onUpdate: (value: Partial<I>) => void;
   onDuplicate?: (props: InternalWithoutType<I>) => void;
 }

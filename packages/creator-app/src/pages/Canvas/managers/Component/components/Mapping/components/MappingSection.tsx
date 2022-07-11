@@ -3,7 +3,7 @@ import React from 'react';
 
 import { Add } from '@/components/InteractiveIcon';
 import Section, { SectionVariant } from '@/components/Section';
-import { useManager } from '@/hooks';
+import { useMapManager } from '@/hooks';
 
 import MappingVariables from './MappingVariables';
 
@@ -20,21 +20,19 @@ interface MappingSectionProps {
 }
 
 const MappingSection: React.FC<MappingSectionProps> = ({ data, header, items = [], onChange, reverse, tooltip, isDividerNested }) => {
-  const { mapManaged, onAdd } = useManager(items, onChange, { factory: variableMappingFactory });
-
-  const AddMappingButton = <Add onClick={onAdd} />;
+  const mapManager = useMapManager(items, onChange, { factory: variableMappingFactory });
 
   return (
     <Section
       header={header}
-      status={AddMappingButton}
+      status={<Add onClick={() => mapManager.onAdd()} />}
       variant={SectionVariant.SUBSECTION}
       tooltip={tooltip}
       dividers
       forceDividers
       isDividerNested={isDividerNested}
     >
-      <MappingVariables reverse={reverse} mapManaged={mapManaged} diagramID={data.diagramID} items={items} onChange={onChange} />
+      <MappingVariables reverse={reverse} mapManaged={mapManager.map} diagramID={data.diagramID} items={items} onChange={onChange} />
     </Section>
   );
 };

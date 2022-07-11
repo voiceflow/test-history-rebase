@@ -20,7 +20,7 @@ export * from './keygen';
 export * from './lazy';
 export * from './lifecycle';
 export * from './logux';
-export * from './manager';
+export * from './mapManager';
 export * from './microphone';
 export * from './mlGateway';
 export * from './modals';

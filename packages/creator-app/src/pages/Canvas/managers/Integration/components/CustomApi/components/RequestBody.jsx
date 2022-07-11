@@ -3,7 +3,7 @@ import React from 'react';
 import AceEditor, { ACE_EDITOR_OPTIONS_V2 } from '@/components/AceEditor';
 import RadioGroup from '@/components/RadioGroup';
 import Section from '@/components/Section';
-import { useManager } from '@/hooks';
+import { useMapManager } from '@/hooks';
 
 import MetaDataLineItem from '../../MetaDataLineItem';
 import PrefixVariableInput from '../../PrefixVariableInput';
@@ -31,7 +31,7 @@ const BODY_OPTIONS = [
 ];
 
 function RequestBody({ body, content, bodyInputType, onChange, factory }) {
-  const { onAdd, mapManaged } = useManager(body ?? [], (body) => onChange({ body }), { factory });
+  const mapManager = useMapManager(body ?? [], (body) => onChange({ body }), { factory });
 
   const [aceContent, setAceContent] = React.useState(content);
   const setBodyDataType = (type) => onChange({ bodyInputType: type });
@@ -44,7 +44,7 @@ function RequestBody({ body, content, bodyInputType, onChange, factory }) {
 
   let form = null;
   if (bodyInputType === 'formData' || bodyInputType === 'urlEncoded') {
-    form = mapManaged((obj, { key, onRemove, onUpdate }) => (
+    form = mapManager.map((obj, { key, onRemove, onUpdate }) => (
       <MetaDataLineItem prefix="KEY" keyPlaceholder="Enter Key" onRemove={onRemove} onUpdate={(key) => onUpdate({ key })} value={obj.key} key={key}>
         <PrefixVariableInput
           placeholder="Enter value or {variable}"
@@ -74,7 +74,7 @@ function RequestBody({ body, content, bodyInputType, onChange, factory }) {
         <RadioGroup options={BODY_OPTIONS} checked={bodyInputType} onChange={setBodyDataType} />
       </Section>
 
-      <LineItemSection header={bodyInputType !== BodyTabs.RAW_INPUT ? 'Body Assignments' : null} onAdd={onAdd} dividers={false}>
+      <LineItemSection header={bodyInputType !== BodyTabs.RAW_INPUT ? 'Body Assignments' : null} onAdd={() => mapManager.onAdd()} dividers={false}>
         {form}
       </LineItemSection>
     </>

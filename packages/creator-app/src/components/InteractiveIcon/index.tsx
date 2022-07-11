@@ -6,11 +6,11 @@ import { withProps } from 'recompose';
 import { styled } from '@/hocs';
 
 interface InteractiveIconProps {
-  disabled?: boolean;
-  onClick?: () => void;
   icon: string;
-  className?: string;
+  onClick?: React.MouseEventHandler<HTMLDivElement>;
   message?: string;
+  disabled?: boolean;
+  className?: string;
 }
 
 export const ButtonContainer = styled.div<{ disabled?: boolean }>`

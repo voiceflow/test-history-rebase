@@ -7,7 +7,7 @@ import SlotSelect, { SlotOption } from '@/components/SlotSelect';
 import VariableSelect from '@/components/VariableSelect';
 import * as Documentation from '@/config/documentation';
 import { CUSTOM_SLOT_TYPE } from '@/constants';
-import { useManager } from '@/hooks';
+import { useMapManager } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 
 import { NoReplyV2 } from '../../components';
@@ -17,9 +17,8 @@ const CaptureEditor: React.FC = () => {
   const editor = EditorV2.useEditor<Realtime.NodeData.Capture, Realtime.NodeData.CaptureBuiltInPorts>();
 
   const slotFilter = React.useCallback((slotType: SlotOption) => slotType?.value !== AlexaConstants.SlotType.SEARCHQUERY, []);
-  const onChangeExamples = React.useCallback((examples: string[]) => editor.onChange({ examples }), [editor.onChange]);
 
-  const mapManagedApi = useManager(editor.data.examples, onChangeExamples);
+  const mapManager = useMapManager(editor.data.examples, (examples) => editor.onChange({ examples }), { factory: () => '' });
 
   const noReplyConfig = NoReplyV2.useConfig();
 
@@ -44,13 +43,13 @@ const CaptureEditor: React.FC = () => {
         <>
           <SectionV2.ActionListSection
             title={<SectionV2.Title bold={hasReplies}>User replies</SectionV2.Title>}
-            action={<SectionV2.AddButton onClick={() => mapManagedApi.onAdd()} disabled={mapManagedApi.isMaxMatches} />}
+            action={<SectionV2.AddButton onClick={() => mapManager.onAdd()} disabled={mapManager.isMaxReached} />}
             sticky
           >
             {hasReplies &&
-              mapManagedApi.mapManaged((item, { key, isLast, onUpdate, onRemove }) => (
+              mapManager.map((item, { key, isLast, onUpdate, onRemove }) => (
                 <Box key={key} pb={isLast ? 8 : 16}>
-                  <ListItem value={item} onChange={onUpdate} onRemove={onRemove} autofocus={key === mapManagedApi.latestCreatedKey} />
+                  <ListItem value={item} onChange={onUpdate} onRemove={onRemove} autofocus={key === mapManager.latestCreatedKey} />
                 </Box>
               ))}
           </SectionV2.ActionListSection>

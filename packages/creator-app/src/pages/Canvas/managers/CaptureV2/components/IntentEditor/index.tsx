@@ -5,7 +5,7 @@ import React from 'react';
 
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
 import { HelpTooltip } from '@/components/IntentForm';
-import { useManager, useToggle } from '@/hooks';
+import { useMapManager, useToggle } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import { useIntentScope } from '@/pages/Canvas/managers/hooks';
 
@@ -18,22 +18,16 @@ const IntentEditor: React.FC<{ disableAnimation: boolean }> = ({ disableAnimatio
 
   const [isDragging, toggleDragging] = useToggle(false);
 
-  const onChangeSlots = React.useCallback(
-    (slots: Realtime.IntentSlot[], save?: boolean) => editor.onChange({ intent: { slots } }, save),
-    [editor.onChange]
-  );
-
   const onSelectQueryType = React.useCallback(
     () => editor.onChange({ captureType: BaseNode.CaptureV2.CaptureType.QUERY, noMatch: null, intent: { slots: [] } }),
     [editor.onChange]
   );
 
-  const managerAPI = useManager(editor.data.intent?.slots ?? defaultSlots, onChangeSlots, {
-    factory: Realtime.Utils.slot.intentSlotFactoryCreator(editor.projectType),
-    autosave: false,
+  const mapManager = useMapManager(editor.data.intent?.slots ?? defaultSlots, (slots) => editor.onChange({ intent: { slots } }, false), {
+    factory: () => Realtime.Utils.slot.intentSlotFactoryCreator(editor.projectType)({ id: '' }),
   });
 
-  const dynamicSelectedSlotIDs = React.useMemo(() => managerAPI.items.map((item) => item.id || ''), [managerAPI.items]);
+  const dynamicSelectedSlotIDs = React.useMemo(() => mapManager.items.map((item) => item.id || ''), [mapManager.items]);
   const selectedSlotIDs = React.useMemo(() => dynamicSelectedSlotIDs, [dynamicSelectedSlotIDs.join('')]);
 
   const noMatchConfig = NoMatchV2.useConfig();
@@ -50,7 +44,7 @@ const IntentEditor: React.FC<{ disableAnimation: boolean }> = ({ disableAnimatio
               actions={[intentScopeOption, createUIOnlyMenuItemOption('divider', { divider: true }), noMatchConfig.option, noReplyConfig.option]}
             />
 
-            <Button variant={Button.Variant.PRIMARY} onClick={() => managerAPI.onAdd({ id: '' })} squareRadius>
+            <Button variant={Button.Variant.PRIMARY} onClick={() => mapManager.onAdd()} squareRadius>
               Add Capture
             </Button>
           </EditorV2.DefaultFooter>
@@ -60,11 +54,9 @@ const IntentEditor: React.FC<{ disableAnimation: boolean }> = ({ disableAnimatio
     >
       <DraggableList
         type="capture-v2-editor"
-        onDelete={managerAPI.onRemove}
-        onReorder={managerAPI.onReorder}
-        itemProps={{ editor, latestCreatedKey: managerAPI.latestCreatedKey, onSelectQueryType, selectedSlotIDs }}
+        itemProps={{ editor, latestCreatedKey: mapManager.latestCreatedKey, onSelectQueryType, selectedSlotIDs }}
         onEndDrag={toggleDragging}
-        mapManaged={managerAPI.mapManaged}
+        mapManager={mapManager}
         onStartDrag={toggleDragging}
         itemComponent={DraggableItem}
         partialDragItem

@@ -5,7 +5,7 @@ import React from 'react';
 
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
 import * as Documentation from '@/config/documentation';
-import { useManager, useToggle } from '@/hooks';
+import { useMapManager, useToggle } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import { useButtonLayoutOption, useIntentScope } from '@/pages/Canvas/managers/hooks';
 
@@ -15,7 +15,7 @@ import DraggableItem from './DraggableItem';
 
 const RootEditor: React.FC = () => {
   const editor = EditorV2.useEditor<Realtime.NodeData.Buttons, Realtime.NodeData.ButtonsBuiltInPorts>();
-  const { onAdd, onReorder, onRemove } = EditorV2.useSyncDynamicPorts();
+  const dynamicPortsSync = EditorV2.useSyncDynamicPorts();
 
   const [isDragging, toggleDragging] = useToggle(false);
 
@@ -24,11 +24,10 @@ const RootEditor: React.FC = () => {
     [editor.onChange]
   );
 
-  const managerAPI = useManager(editor.data.buttons, onUpdateButtons, {
-    onAdd,
+  const mapManager = useMapManager(editor.data.buttons, onUpdateButtons, {
+    ...dynamicPortsSync,
+    getKey: (button) => button.id,
     factory: buttonFactory,
-    onRemove,
-    onReorder,
   });
 
   const noMatchConfig = NoMatchV2.useConfig();
@@ -52,7 +51,7 @@ const RootEditor: React.FC = () => {
               ]}
             />
 
-            <Button variant={Button.Variant.PRIMARY} onClick={() => managerAPI.onAdd()} squareRadius>
+            <Button variant={Button.Variant.PRIMARY} onClick={() => mapManager.onAdd()} squareRadius>
               Add Button
             </Button>
           </EditorV2.DefaultFooter>
@@ -64,11 +63,9 @@ const RootEditor: React.FC = () => {
       ) : (
         <DraggableList
           type="buttons-editor"
-          onDelete={managerAPI.onRemove}
-          onReorder={managerAPI.onReorder}
           onEndDrag={toggleDragging}
-          itemProps={{ editor, latestCreatedKey: managerAPI.latestCreatedKey }}
-          mapManaged={managerAPI.mapManaged}
+          itemProps={{ editor, latestCreatedKey: mapManager.latestCreatedKey }}
+          mapManager={mapManager}
           onStartDrag={toggleDragging}
           itemComponent={DraggableItem}
           deleteComponent={DeleteComponent}

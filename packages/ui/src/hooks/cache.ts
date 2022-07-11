@@ -20,16 +20,15 @@ export const useCachedValue = <T>(value: T): React.MutableRefObject<T> => {
 };
 
 export const usePersistFunction = <T extends (...args: any[]) => any>(fn: Nullish<T>): T => {
-  const fnRef = React.useRef<Nullish<T>>(fn);
-  const persistFn = React.useRef<T>();
+  const cache = React.useRef<{ fn: Nullish<T>; persistedFn: T | null }>({ fn, persistedFn: null });
 
-  fnRef.current = fn;
+  cache.current.fn = fn;
 
-  if (!persistFn.current) {
-    persistFn.current = ((...args: Parameters<T>) => fnRef.current?.(...args)) as T;
+  if (cache.current.persistedFn === null) {
+    cache.current.persistedFn = ((...args: Parameters<T>) => cache.current.fn?.(...args)) as T;
   }
 
-  return persistFn.current;
+  return cache.current.persistedFn;
 };
 
 export const useConst = <T>(value: T): T => {

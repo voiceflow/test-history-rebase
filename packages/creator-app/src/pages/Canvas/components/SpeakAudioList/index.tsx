@@ -31,10 +31,13 @@ const speakAudioFactory =
   (type: DialogType): Realtime.SpeakData =>
     type === DialogType.VOICE ? speakFactory({ defaultVoice }) : audioFactory();
 
-export type ItemComponent = ListItemComponent<
-  Realtime.SpeakData,
-  { platform: VoiceflowConstants.PlatformType; isRandomized?: boolean; isDeprecated?: boolean }
->;
+interface ExtraItemProps {
+  platform: VoiceflowConstants.PlatformType;
+  isRandomized?: boolean;
+  isDeprecated?: boolean;
+}
+
+export type ItemComponent = ListItemComponent<Realtime.SpeakData, ExtraItemProps>;
 
 export interface SpeakAudioListProps {
   items: Realtime.SpeakData[];
@@ -46,7 +49,7 @@ export interface SpeakAudioListProps {
   isDeprecated?: boolean;
   itemComponent: ItemComponent;
   onChangeItems?: (items: Realtime.SpeakData[]) => void;
-  getControlOptions?: (options: { addVoice: () => void; addAudio: () => void; isMaxMatches: boolean }) => ControlOptions[];
+  getControlOptions?: (options: { addVoice: () => void; addAudio: () => void; isMaxReached: boolean }) => ControlOptions[];
   onChangeRandomize?: (newRandomize: boolean) => void;
 }
 
@@ -69,17 +72,13 @@ const SpeakAudioList: React.FC<SpeakAudioListProps> = ({
 
   const defaultVoice = useSelector(VersionV2.active.defaultVoiceSelector);
 
-  const factory = React.useMemo(
-    () => speakAudioFactory({ defaultVoice: defaultVoice || getPlatformDefaultVoice(platform) }),
-    [defaultVoice, platform]
-  );
+  const factory = speakAudioFactory({ defaultVoice: defaultVoice || getPlatformDefaultVoice(platform) });
 
   return (
     <ListEditorContent
       type="speak-editor"
       items={items}
       footer={children}
-      factory={factory}
       maxItems={maxItems}
       renderMenu={() =>
         renderMenu ? (
@@ -99,25 +98,25 @@ const SpeakAudioList: React.FC<SpeakAudioListProps> = ({
       onChangeItems={updateItems}
       itemComponent={itemComponent}
       extraItemProps={{ isDeprecated, platform, isRandomized: randomize }}
-      getControlOptions={({ onAdd, isMaxMatches, scrollToBottom }) =>
+      getControlOptions={(mapManaged, { scrollToBottom }) =>
         getControlOptions
           ? getControlOptions({
-              addVoice: Utils.functional.chainVoidAsync(() => onAdd(DialogType.VOICE), scrollToBottom),
-              addAudio: Utils.functional.chainVoidAsync(() => onAdd(DialogType.AUDIO), scrollToBottom),
-              isMaxMatches,
+              addVoice: Utils.functional.chainVoidAsync(() => mapManaged.onAdd(factory(DialogType.VOICE)), scrollToBottom),
+              addAudio: Utils.functional.chainVoidAsync(() => mapManaged.onAdd(factory(DialogType.AUDIO)), scrollToBottom),
+              isMaxReached: mapManaged.isMaxReached,
             })
           : [
               {
                 label: 'Speak',
                 icon: NODE_CONFIG.getIcon?.(VOICE_MOCK_DATA),
-                onClick: Utils.functional.chainVoidAsync(() => onAdd(DialogType.VOICE), scrollToBottom),
-                disabled: isMaxMatches,
+                onClick: Utils.functional.chainVoidAsync(() => mapManaged.onAdd(factory(DialogType.VOICE)), scrollToBottom),
+                disabled: mapManaged.isMaxReached,
               },
               {
                 label: 'Audio',
                 icon: NODE_CONFIG.getIcon?.(AUDIO_MOCK_DATA),
-                onClick: Utils.functional.chainVoidAsync(() => onAdd(DialogType.AUDIO), scrollToBottom),
-                disabled: isMaxMatches,
+                onClick: Utils.functional.chainVoidAsync(() => mapManaged.onAdd(factory(DialogType.AUDIO)), scrollToBottom),
+                disabled: mapManaged.isMaxReached,
               },
             ]
       }

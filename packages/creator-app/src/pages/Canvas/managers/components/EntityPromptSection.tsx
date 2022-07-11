@@ -42,9 +42,9 @@ const EntityPromptSection: React.FC<EntityPromptSectionProps> = ({
       title={<SectionV2.Title bold={!collapsed}>{title}</SectionV2.Title>}
       action={
         collapsed ? (
-          <SectionV2.AddButton onClick={Utils.functional.chain(setRemovingRef(false), onAdd)} />
+          <SectionV2.AddButton onClick={Utils.functional.chainVoid(setRemovingRef(false), onAdd)} />
         ) : (
-          <SectionV2.RemoveButton onClick={Utils.functional.chain(setRemovingRef(true), onRemove)} />
+          <SectionV2.RemoveButton onClick={Utils.functional.chainVoid(setRemovingRef(true), onRemove)} />
         )
       }
       collapsed={collapsed}

@@ -1,26 +1,20 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Button, Input, SectionV2, usePersistFunction } from '@voiceflow/ui';
+import { Button, Input, SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
-import DraggableList, { DeleteComponent, MapManagedEditActionHandler } from '@/components/DraggableList';
+import DraggableList, { DeleteComponent } from '@/components/DraggableList';
 import * as Documentation from '@/config/documentation';
 import { useToggle } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
-import { MAX_SETS } from '@/pages/Canvas/managers/SetV2/constants';
 import { useSetManager, useSetTitleForm } from '@/pages/Canvas/managers/SetV2/hooks';
 
 import SetItem from './SetItem';
 
 const SetRootEditor: React.FC = () => {
   const editor = EditorV2.useEditor<Realtime.NodeData.SetV2, Realtime.NodeData.SetV2BuiltInPorts>();
-  const managerAPI = useSetManager();
+  const mapManager = useSetManager();
   const { inputRef, stepName, setStepName } = useSetTitleForm(editor.data.title);
   const [isDragging, toggleDragging] = useToggle(false);
-  const canCreateMoreItems = managerAPI.items.length < MAX_SETS;
-
-  const onDuplicate = usePersistFunction<MapManagedEditActionHandler<Realtime.NodeData.SetExpressionV2>>((_, item) =>
-    managerAPI.onDuplicate(item.index, item.item)
-  );
 
   return (
     <EditorV2
@@ -28,8 +22,8 @@ const SetRootEditor: React.FC = () => {
       footer={
         !isDragging && (
           <EditorV2.DefaultFooter tutorial={Documentation.SET_STEP}>
-            {canCreateMoreItems && (
-              <Button variant={Button.Variant.PRIMARY} onClick={() => managerAPI.onAdd()} squareRadius>
+            {!mapManager.isMaxReached && (
+              <Button variant={Button.Variant.PRIMARY} onClick={() => mapManager.onAdd()} squareRadius>
                 Add Set
               </Button>
             )}
@@ -51,19 +45,16 @@ const SetRootEditor: React.FC = () => {
 
       <DraggableList
         type="set-editor"
-        itemProps={{ editor, latestCreatedKey: managerAPI.latestCreatedKey }}
-        itemComponent={SetItem}
-        previewComponent={SetItem}
-        deleteComponent={DeleteComponent}
-        partialDragItem
-        withContextMenuDelete
-        withContextMenuDuplicate={canCreateMoreItems}
+        itemProps={{ editor, latestCreatedKey: mapManager.latestCreatedKey }}
         onEndDrag={toggleDragging}
+        mapManager={mapManager}
         onStartDrag={toggleDragging}
-        mapManaged={managerAPI.mapManaged}
-        onDuplicate={onDuplicate}
-        onDelete={managerAPI.onRemove}
-        onReorder={managerAPI.onReorder}
+        itemComponent={SetItem}
+        partialDragItem
+        deleteComponent={DeleteComponent}
+        previewComponent={SetItem}
+        withContextMenuDelete
+        withContextMenuDuplicate={!mapManager.isMaxReached}
       />
     </EditorV2>
   );

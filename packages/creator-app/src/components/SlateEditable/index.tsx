@@ -45,7 +45,7 @@ export interface SlateEditableRef {
   focus: () => void;
 }
 
-export interface SlateEditableProps extends Omit<EditableProps, 'value' | 'onChange' | 'decorate'> {
+export interface SlateEditableProps extends Omit<EditableProps, 'value' | 'autoFocus' | 'onChange' | 'decorate'> {
   value: SlateValue;
   editor: Editor;
   onChange: (value: SlateValue) => void;

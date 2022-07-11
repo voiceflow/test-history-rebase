@@ -52,7 +52,7 @@ const IntentsManager: React.FC<IntentsManagerProps & ConnectedIntentsManagerProp
   );
 
   const onDelete = React.useCallback(
-    (index: string | number, { item }: { item: Realtime.Intent }) => {
+    (index: number, item: Realtime.Intent) => {
       deleteIntent(item.id);
 
       if (selectedID === item.id) {
@@ -66,7 +66,9 @@ const IntentsManager: React.FC<IntentsManagerProps & ConnectedIntentsManagerProp
     (id: string) => {
       const index = intents.findIndex((intent) => intent.id === id);
 
-      onDelete(index, { item: intents[index] });
+      if (index !== -1) {
+        onDelete(index, intents[index]);
+      }
     },
     [onDelete, intents]
   );

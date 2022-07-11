@@ -32,9 +32,9 @@ const URLSection: React.FC<URLSectionProps> = ({ url, onAdd, isActive, onChange,
       title={<SectionV2.Title bold={isActive}>Attach URL</SectionV2.Title>}
       action={
         isActive ? (
-          <SectionV2.RemoveButton onClick={Utils.functional.chain(onRemove, disableAutofocus)} />
+          <SectionV2.RemoveButton onClick={Utils.functional.chainVoid(onRemove, disableAutofocus)} />
         ) : (
-          <SectionV2.AddButton onClick={Utils.functional.chain(onAdd, enableAutofocus)} />
+          <SectionV2.AddButton onClick={Utils.functional.chainVoid(onAdd, enableAutofocus)} />
         )
       }
       collapsed={!isActive}

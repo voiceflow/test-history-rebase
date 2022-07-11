@@ -11,7 +11,7 @@ import OverflowMenu from '@/components/OverflowMenu';
 import * as Creator from '@/ducks/creator';
 import * as IntentV2 from '@/ducks/intentV2';
 import { connect } from '@/hocs';
-import { useManager, useToggle } from '@/hooks';
+import { useMapManager, useToggle } from '@/hooks';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
 import { useUpdateData } from '@/pages/Canvas/components/EditorSidebar/hooks';
 import { useButtonLayoutOption } from '@/pages/Canvas/managers/hooks';
@@ -29,7 +29,7 @@ const Editor: React.FC<ConnectedButtonPageProps> = ({ focus, intents, focusedNod
   const updateButtons = React.useCallback((buttons: BaseButton.AnyButton[]) => updateData({ buttons }), [updateData]);
   const buttonLayoutOption = useButtonLayoutOption();
 
-  const { items, onAdd, onRemove, mapManaged, onReorder, latestCreatedKey } = useManager(focusedNode?.buttons ?? [], updateButtons, {
+  const mapManager = useMapManager(focusedNode?.buttons ?? [], updateButtons, {
     factory: () => ({
       name: '',
       type: BaseButton.ButtonType.INTENT,
@@ -57,7 +57,7 @@ const Editor: React.FC<ConnectedButtonPageProps> = ({ focus, intents, focusedNod
           options={[
             {
               label: `Add ${getPlatformValue(platform, { [VoiceflowConstants.PlatformType.GOOGLE]: 'Chip' }, 'Button')}`,
-              onClick: Utils.functional.compose(() => scrollToBottom('smooth'), onAdd),
+              onClick: Utils.functional.chainVoidAsync(mapManager.onAdd, scrollToBottom),
             },
           ]}
           tutorial={{ content: <HelpTooltip /> }}
@@ -68,11 +68,9 @@ const Editor: React.FC<ConnectedButtonPageProps> = ({ focus, intents, focusedNod
     >
       <DraggableList
         type="buttons-editor"
-        onDelete={onRemove}
-        onReorder={onReorder}
         onEndDrag={toggleDragging}
-        itemProps={{ latestCreatedKey, isOnlyItem: items.length === 1, dividedIntents }}
-        mapManaged={mapManaged}
+        itemProps={{ latestCreatedKey: mapManager.latestCreatedKey, isOnlyItem: mapManager.isOnlyItem, dividedIntents }}
+        mapManager={mapManager}
         onStartDrag={toggleDragging}
         itemComponent={Item}
         deleteComponent={DeleteComponent}

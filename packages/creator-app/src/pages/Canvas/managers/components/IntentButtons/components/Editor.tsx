@@ -7,7 +7,7 @@ import React from 'react';
 
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
 import * as IntentV2 from '@/ducks/intentV2';
-import { useManager, useSelector, useToggle } from '@/hooks';
+import { useMapManager, useSelector, useToggle } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import { useButtonLayoutOption } from '@/pages/Canvas/managers/hooks';
 import { intentButtonFactory } from '@/utils/intent';
@@ -30,9 +30,7 @@ const Editor: React.FC = () => {
 
   const intents = useSelector(IntentV2.allPlatformIntentsSelector);
 
-  const onChangeButtons = React.useCallback((buttons: BaseButton.AnyButton[]) => editor.onChange({ buttons }), [editor.onChange]);
-
-  const managedAPI = useManager(buttons, onChangeButtons, {
+  const mapManager = useMapManager(buttons, (buttons) => editor.onChange({ buttons }), {
     factory: intentButtonFactory,
   });
 
@@ -56,7 +54,7 @@ const Editor: React.FC = () => {
           <EditorV2.DefaultFooter tutorial={{ title: label, content: <HelpTooltip label={label} /> }}>
             <EditorV2.FooterActionsButton actions={[buttonLayoutOption]} placement="bottom-end" />
 
-            <Button variant={Button.Variant.PRIMARY} onClick={() => managedAPI.onAdd()} squareRadius>
+            <Button variant={Button.Variant.PRIMARY} onClick={() => mapManager.onAdd()} squareRadius>
               Add {getPlatformValue(editor.platform, { [VoiceflowConstants.PlatformType.GOOGLE]: 'Chip' }, 'Button')}
             </Button>
           </EditorV2.DefaultFooter>
@@ -65,11 +63,9 @@ const Editor: React.FC = () => {
     >
       <DraggableList
         type="buttons-editor"
-        onDelete={managedAPI.onRemove}
-        onReorder={managedAPI.onReorder}
         onEndDrag={toggleDragging}
-        itemProps={{ editor, latestCreatedKey: managedAPI.latestCreatedKey, intentOptions }}
-        mapManaged={managedAPI.mapManaged}
+        itemProps={{ editor, latestCreatedKey: mapManager.latestCreatedKey, intentOptions }}
+        mapManager={mapManager}
         onStartDrag={toggleDragging}
         itemComponent={DraggableItem}
         deleteComponent={DeleteComponent}

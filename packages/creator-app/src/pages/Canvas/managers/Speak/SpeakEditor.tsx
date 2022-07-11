@@ -32,12 +32,12 @@ const SpeakEditor: NodeEditor<Realtime.NodeData.Speak, Realtime.NodeData.SpeakBu
       getControlOptions={
         isDeprecated
           ? undefined
-          : ({ addAudio, addVoice, isMaxMatches }) => [
+          : ({ addAudio, addVoice, isMaxReached }) => [
               {
                 icon: NODE_CONFIG.getIcon!(isAudio ? AUDIO_MOCK_DATA : VOICE_MOCK_DATA),
                 label: 'Add Variant',
                 onClick: isAudio ? addAudio : addVoice,
-                disabled: isMaxMatches,
+                disabled: isMaxReached,
               },
             ]
       }

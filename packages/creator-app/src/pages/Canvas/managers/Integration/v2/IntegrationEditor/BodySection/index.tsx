@@ -6,7 +6,7 @@ import React from 'react';
 import AceEditor, { ACE_EDITOR_COLORS, ACE_EDITOR_OPTIONS_V2 } from '@/components/AceEditor';
 import RadioGroup from '@/components/RadioGroup';
 import VariablesInput from '@/components/VariablesInput';
-import { useManager } from '@/hooks';
+import { useMapManager } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 
 import { expressionFactory } from '../../constants';
@@ -16,7 +16,7 @@ import * as APIEditorSectionStyles from '../styles';
 const BodySection: React.FC = () => {
   const editor = EditorV2.useEditor<Realtime.NodeData.CustomApi, Realtime.NodeData.CustomPayloadBuiltInPorts>();
   const [bodyInputType, setBodyInputType] = React.useState<BaseNode.Api.APIBodyType | undefined>(editor.data.bodyInputType);
-  const { onAdd, mapManaged } = useManager(editor.data.body ?? [], (body) => editor.onChange({ body }), {
+  const mapManager = useMapManager(editor.data.body ?? [], (body) => editor.onChange({ body }), {
     factory: expressionFactory,
   });
   const bodyData = bodyInputType === BaseNode.Api.APIBodyType.FORM_DATA || bodyInputType === BaseNode.Api.APIBodyType.URL_ENCODED;
@@ -33,7 +33,7 @@ const BodySection: React.FC = () => {
       title={<SectionV2.Title bold={hasBody}>Body</SectionV2.Title>}
       action={
         !hasBody || bodyData ? (
-          <SectionV2.AddButton onClick={onAdd} />
+          <SectionV2.AddButton onClick={() => mapManager.onAdd()} />
         ) : (
           <SectionV2.RemoveButton onClick={() => editor.onChange({ body: undefined })} />
         )
@@ -47,7 +47,7 @@ const BodySection: React.FC = () => {
 
       {bodyData && (
         <Box>
-          {mapManaged((body, { index, onUpdate, onRemove }) => (
+          {mapManager.map((body, { index, onUpdate, onRemove }) => (
             <>
               {index > 0 && <APIEditorSectionStyles.IntegrationEditorSectionDivider />}
               <SectionV2.ListItem action={<SectionV2.RemoveButton onClick={onRemove} />} key={index}>

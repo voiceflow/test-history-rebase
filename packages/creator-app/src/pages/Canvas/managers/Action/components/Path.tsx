@@ -10,11 +10,11 @@ interface Path {
 }
 
 interface PathSectionProps {
-  index: number;
   path: Path;
+  index: number;
   onUpdate: (path: Partial<Path>) => void;
+  onRemove?: VoidFunction;
   updateDefaultPath: (index: number) => void;
-  onRemove?: () => void;
 }
 
 const Container = styled(BoxFlexCenter)`

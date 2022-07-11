@@ -10,8 +10,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, autoFocus, onChange 
   <SlateTextInput
     value={message.content}
     onBlur={(content) => onChange({ content })}
-    // eslint-disable-next-line jsx-a11y/no-autofocus
-    autoFocus={autoFocus}
+    autofocus={autoFocus}
     extraToolbarButtons={
       <>
         <Divider isVertical height="15px" style={{ margin: 0 }} />

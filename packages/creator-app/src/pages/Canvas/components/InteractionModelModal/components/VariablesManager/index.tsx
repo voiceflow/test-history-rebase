@@ -63,7 +63,7 @@ const VariablesManager: React.FC<VariablesManagerProps> = ({ selectedID, setSele
   const getItemLabel = React.useCallback((item: OrderedVariable) => item.name, []);
 
   const onDelete = React.useCallback(
-    (_, { item }: { item: OrderedVariable }) => {
+    (_, item: OrderedVariable) => {
       if (item.type === VariableType.GLOBAL) {
         removeGlobalVariable(item.name);
       } else {
@@ -81,7 +81,7 @@ const VariablesManager: React.FC<VariablesManagerProps> = ({ selectedID, setSele
 
   const deleteSelectedVariable = React.useCallback(() => {
     if (selectedVariable) {
-      onDelete(0, { item: selectedVariable });
+      onDelete(0, selectedVariable);
     }
   }, [onDelete, localVariables, globalVariables, selectedVariable]);
 

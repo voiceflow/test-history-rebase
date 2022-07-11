@@ -2,7 +2,7 @@ import { Utils } from '@voiceflow/common';
 import React from 'react';
 
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
-import { useManager, useToggle } from '@/hooks';
+import { useMapManager, useToggle } from '@/hooks';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
 
 import { DraggableItem, HelpTooltip } from './components';
@@ -15,21 +15,16 @@ const permissionFactory = () => ({
 function UserInfoEditor({ data, onChange }) {
   const [isDragging, toggleDragging] = useToggle(false);
   const updatePermissions = React.useCallback((permissions) => onChange({ permissions }), [onChange]);
-  const { items, onAdd, onRemove, mapManaged, onReorder, latestCreatedKey } = useManager(data.permissions ?? [], updatePermissions, {
+  const mapManager = useMapManager(data.permissions ?? [], updatePermissions, {
     factory: permissionFactory,
   });
-  const selectedPermissions = items.map(({ selected }) => selected).filter(Boolean);
+  const selectedPermissions = mapManager.items.map(({ selected }) => selected).filter(Boolean);
 
   return (
     <Content
       footer={() => (
         <Controls
-          options={[
-            {
-              label: 'Add Request',
-              onClick: onAdd,
-            },
-          ]}
+          options={[{ label: 'Add Request', onClick: () => mapManager.onAdd() }]}
           anchor="How It Works"
           tutorial={{
             content: <HelpTooltip />,
@@ -41,12 +36,9 @@ function UserInfoEditor({ data, onChange }) {
     >
       <DraggableList
         type="user-info-editor"
-        items={items}
-        onDelete={onRemove}
-        onReorder={onReorder}
         onEndDrag={toggleDragging}
-        itemProps={{ latestCreatedKey, selectedPermissions, isOnlyItem: items.length === 1 }}
-        mapManaged={mapManaged}
+        itemProps={{ latestCreatedKey: mapManager.latestCreatedKey, selectedPermissions, isOnlyItem: mapManager.isOnlyItem }}
+        mapManager={mapManager}
         onStartDrag={toggleDragging}
         itemComponent={DraggableItem}
         partialDragItem

@@ -10,18 +10,18 @@ export interface UploadAudioProps extends Pick<UploadBaseProps, 'value' | 'onCha
   renderInput?: InputRenderer;
 }
 
-const UploadAudio: React.FC<UploadAudioProps> = ({ endpoint = '/audio', onChange, renderInput, value }) => (
+const UploadAudio: React.FC<UploadAudioProps> = ({ endpoint = 'audio', onChange, renderInput, value }) => (
   <UploadBase
     label="audio file"
+    value={value}
     fileType="audio"
-    linkInputPlaceholder={renderInput ? "Add link or Variable using '{'" : 'Add link'}
+    onChange={onChange}
     endpoint={endpoint}
     validate={validateFiles}
-    validateLink={validateURL}
-    value={value}
-    onChange={onChange}
     renderInput={renderInput}
     renderValue={({ value }) => <S.Player title={prettifyBucketURL(value)} link={value} onClose={() => onChange(null)} />}
+    validateLink={validateURL}
+    linkInputPlaceholder={renderInput ? "Add link or Variable using '{'" : 'Add link'}
   />
 );
 

@@ -59,7 +59,7 @@ export const AudioDialogStep: React.FC<SpeakStepItem & SpeakStepProps> = ({
     <>
       <Step.Item
         title={<AudioTitle>{getAudioTitle(content) || 'Audio'}</AudioTitle>}
-        placeholder="Upload audio file"
+        placeholder="Upload file or link"
         label={label}
         prefix={<PlayButton content={content} playing={playing} onPlay={() => setPlaying(true)} onStop={() => setPlaying(false)} />}
         portID={isLastItem ? nextPortID : null}

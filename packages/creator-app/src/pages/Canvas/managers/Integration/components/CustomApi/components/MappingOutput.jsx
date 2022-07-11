@@ -1,17 +1,17 @@
 import React from 'react';
 
-import { useManager } from '@/hooks';
+import { useMapManager } from '@/hooks';
 import PrefixedVariableSelect from '@/pages/Canvas/components/PrefixedVariableSelect';
 
 import MetaDataLineItem from '../../MetaDataLineItem';
 import LineItemsSection from './LineItemsSection';
 
 function MappingOutput({ mapping, onChange, factory }) {
-  const { onAdd, mapManaged } = useManager(mapping ?? [], (mapping) => onChange({ mapping }), { factory });
+  const mapManager = useMapManager(mapping ?? [], (mapping) => onChange({ mapping }), { factory });
 
   return (
-    <LineItemsSection header="Transform into Variables" onAdd={onAdd} dividers>
-      {mapManaged((map, { key, onUpdate, onRemove }) => (
+    <LineItemsSection header="Transform into Variables" onAdd={() => mapManager.onAdd()} dividers>
+      {mapManager.map((map, { key, onUpdate, onRemove }) => (
         <MetaDataLineItem
           prefix="PATH"
           keyPlaceholder="Enter object path"

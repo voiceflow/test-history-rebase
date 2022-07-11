@@ -1,32 +1,32 @@
-import { FullSpinner, Spinner } from '@voiceflow/ui';
+import { Crypto } from '@voiceflow/common';
+import { FullSpinner, IS_DEVELOPMENT, Spinner } from '@voiceflow/ui';
 import React from 'react';
 
-const ALREADY_FORCE_REFRESH_KEY = 'page-has-been-force-refreshed';
-
-const LazyLoadSpinner = () => {
-  React.useEffect(() => {
-    sessionStorage.setItem(ALREADY_FORCE_REFRESH_KEY, 'true');
-    window.location.reload();
-  }, []);
-  return <FullSpinner />;
-};
+const getForceRefreshKey = (hash: string) => `component-has-force-refreshed:${hash}`;
 
 const ComponentSpinner = () => <Spinner isMd />;
 
 export const lazy = <T extends React.ComponentType<any>>(factory: () => Promise<{ default: T }>) =>
   React.lazy(async () => {
+    const factoryHash = Crypto.MurmurHash.hash(factory.toString());
+    const forceRefreshKey = getForceRefreshKey(factoryHash);
+
     try {
       const component = await factory();
-      sessionStorage.removeItem(ALREADY_FORCE_REFRESH_KEY);
+      sessionStorage.removeItem(forceRefreshKey);
       return component;
     } catch (error) {
-      if (sessionStorage.getItem(ALREADY_FORCE_REFRESH_KEY)) {
+      if (IS_DEVELOPMENT || sessionStorage.getItem(forceRefreshKey)) {
         // The page has already been reloaded
         // Assuming that user is already using the latest version of the application.
         // Let's let the application crash and raise the error.
         throw error;
       }
-      return { default: LazyLoadSpinner as React.ComponentType<any> };
+
+      sessionStorage.setItem(forceRefreshKey, '1');
+      window.location.reload();
+
+      return { default: FullSpinner as React.ComponentType<any> };
     }
   });
 

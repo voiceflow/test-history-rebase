@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.123.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.122.2...@voiceflow/realtime-sdk@1.123.0) (2022-07-11)
+
+
+### Features
+
+* search bar (VF-000) ([#5725](https://github.com/voiceflow/creator-app/issues/5725)) ([03dee40](https://github.com/voiceflow/creator-app/commit/03dee40402a7b3165e4ec28c49e47dc524e3a4f8))
+
+
+
+
+
 ## [1.122.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.122.1...@voiceflow/realtime-sdk@1.122.2) (2022-07-07)
 
 

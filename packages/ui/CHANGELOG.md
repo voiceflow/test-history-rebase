@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.119.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.118.1...@voiceflow/ui@1.119.0) (2022-07-11)
+
+
+### Features
+
+* search bar (VF-000) ([#5725](https://github.com/voiceflow/creator-app/issues/5725)) ([03dee40](https://github.com/voiceflow/creator-app/commit/03dee40402a7b3165e4ec28c49e47dc524e3a4f8))
+
+
+
+
+
 ## [1.118.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.118.0...@voiceflow/ui@1.118.1) (2022-07-08)
 
 

@@ -15,7 +15,7 @@ const CollapseTrigger: React.FC<CollapseTriggerProps> = ({ disabled, onToggle, i
   <Container disabled={disabled}>
     {variant === SectionToggleVariant.ARROW && (
       <ToggleArrowContainer onClick={onToggle as React.MouseEventHandler} isCollapsed={isCollapsed}>
-        <SvgIcon variant={SvgIcon.Variant.TERTIARY} icon="arrowLeft" size={12} />
+        <SvgIcon variant={SvgIcon.Variant.TERTIARY} icon="arrowToggle" size={12} />
       </ToggleArrowContainer>
     )}
 

@@ -7,7 +7,7 @@ interface ToggleArrowContainerProps {
 const ToggleArrowContainer = styled.div<ToggleArrowContainerProps>`
   ${transition('transform')}
   color: #becedc;
-  transform: ${({ isCollapsed }) => (isCollapsed ? 'rotate(90deg)' : 'rotate(-90deg)')};
+  transform: ${({ isCollapsed }) => (isCollapsed ? 'rotate(360deg)' : 'rotate(180deg)')};
   cursor: pointer;
 
   :hover {

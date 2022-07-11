@@ -28,6 +28,7 @@ const EntitiesList: React.FC<SectionProps> = ({ isActiveItemRename, setIsActiveI
 
   const sortedSlots = useOrderedEntities();
   const filteredList = useFilteredList(search, sortedSlots) as Realtime.Slot[];
+  const firstItem = React.useMemo(() => filteredList.find((item) => item.id), [filteredList]);
 
   const isActiveTab = React.useMemo(() => activeTab === InteractionModelTabType.SLOTS, [activeTab]);
   const { renameItem, generateItemName } = React.useContext(NLUContext);
@@ -113,6 +114,7 @@ const EntitiesList: React.FC<SectionProps> = ({ isActiveItemRename, setIsActiveI
             key={slot.id}
             name={slot.name}
             onRename={(name, id) => renameItem(name, id, InteractionModelTabType.SLOTS)}
+            onDelete={() => selectedID === slot.id && firstItem && setSelectedID(firstItem.id)}
             nameValidation={(name) => nameChangeTransform(name, InteractionModelTabType.SLOTS)}
             isActiveItemRename={isActiveItemRename}
             setIsActiveItemRename={setIsActiveItemRename}

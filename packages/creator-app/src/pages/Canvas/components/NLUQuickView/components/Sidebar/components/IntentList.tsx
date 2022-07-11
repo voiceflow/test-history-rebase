@@ -38,6 +38,7 @@ const IntentList: React.FC<SectionProps> = ({
 
   const sortedIntents = useOrderedIntents();
   const filteredList = useFilteredList(search, sortedIntents) as Realtime.Intent[];
+  const firstItem = React.useMemo(() => filteredList.find((item) => item.id), [filteredList]);
 
   useListHooks({
     setSearchLength,
@@ -113,6 +114,7 @@ const IntentList: React.FC<SectionProps> = ({
       {filteredList.map((intent) => {
         if (newIntentID === intent.id) return null;
         const isActive = !isCreating && selectedID === intent.id;
+
         return (
           <ListItem
             id={intent.id}
@@ -123,6 +125,7 @@ const IntentList: React.FC<SectionProps> = ({
             key={intent.id}
             name={intent.name}
             onRename={(name, id) => renameItem(name, id, InteractionModelTabType.INTENTS)}
+            onDelete={() => isActive && firstItem && setSelectedItemID(firstItem.id)}
             nameValidation={(name) => nameChangeTransform(name, InteractionModelTabType.INTENTS)}
             setIsActiveItemRename={setIsActiveItemRename}
             isActiveItemRename={isActiveItemRename}

@@ -12,6 +12,7 @@ interface ListItemProps {
   active?: boolean;
   onClick: () => void;
   onRename?: (name: string, id: string) => void;
+  onDelete?: () => void;
   id: string;
   nameValidation: (name: string) => string;
   isCreating?: boolean;
@@ -24,12 +25,26 @@ interface ListItemProps {
 }
 
 const ListItem: React.ForwardRefRenderFunction<HTMLInputElement, ListItemProps> = (
-  { id, isBuiltIn, isActiveItemRename, type, setIsActiveItemRename, onBlur, nameValidation, isCreating = false, name, onRename, active, onClick },
+  {
+    id,
+    isBuiltIn,
+    isActiveItemRename,
+    type,
+    setIsActiveItemRename,
+    onBlur,
+    nameValidation,
+    isCreating = false,
+    name,
+    onRename,
+    onDelete,
+    active,
+    onClick,
+  },
   ref
 ) => {
   const [isRenaming, setIsRenaming] = React.useState(isCreating);
   const [localName, setLocalName] = useLinkedState(name);
-  const { options } = useNLUItemMenu({ itemID: id, itemType: type, isBuiltIn, onRename: () => setIsRenaming(true) });
+  const { options } = useNLUItemMenu({ itemID: id, itemType: type, isBuiltIn, onRename: () => setIsRenaming(true), onDelete });
 
   const endRename = () => {
     if (localName.trim()) {

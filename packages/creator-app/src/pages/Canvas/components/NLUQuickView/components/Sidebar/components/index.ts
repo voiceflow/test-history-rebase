@@ -18,7 +18,7 @@ export const SectionSection = styled(UncontrolledSection)<{ isExpanded: boolean 
 
   ${ContentContainer} {
     padding: 0px 16px;
-    max-height: calc(100vh - 300px);
+    max-height: calc(100vh - 363px);
     overflow: auto;
 
     ${({ isExpanded }) =>

@@ -23,6 +23,7 @@ const VariablesList: React.FC<SectionProps> = ({ search, setSearchLength, select
   const [variables, variablesMap] = useOrderedVariables();
 
   const filteredList = useFilteredList(search, variables) as VariableItem[];
+  const firstItem = React.useMemo(() => filteredList.find((item) => item.id), [filteredList]);
 
   useListHooks({
     map: variablesMap,
@@ -70,17 +71,21 @@ const VariablesList: React.FC<SectionProps> = ({ search, setSearchLength, select
         )
       }
     >
-      {filteredList.map((variable, index) => (
-        <ListItem
-          type={InteractionModelTabType.VARIABLES}
-          id={variable.id}
-          active={selectedID ? selectedID === variable.id : index === 0}
-          onClick={() => setSelectedItemID(variable.id)}
-          key={variable.id}
-          name={variable.name}
-          nameValidation={(text) => text}
-        />
-      ))}
+      {filteredList.map((variable, index) => {
+        const isActive = selectedID ? selectedID === variable.id : index === 0;
+        return (
+          <ListItem
+            type={InteractionModelTabType.VARIABLES}
+            id={variable.id}
+            active={isActive}
+            onClick={() => setSelectedItemID(variable.id)}
+            onDelete={() => isActive && firstItem && setSelectedItemID(firstItem.id)}
+            key={variable.id}
+            name={variable.name}
+            nameValidation={(text) => text}
+          />
+        );
+      })}
     </SectionSection>
   );
 };

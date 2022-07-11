@@ -22,10 +22,11 @@ interface useNLUItemMenuProps {
   itemID?: string | null;
   itemType: InteractionModelTabType;
   onRename?: () => void;
+  onDelete?: () => void;
   isBuiltIn?: boolean;
 }
 
-export const useNLUItemMenu = ({ itemID, itemType, isBuiltIn, onRename: onRenameProp }: useNLUItemMenuProps) => {
+export const useNLUItemMenu = ({ itemID, itemType, isBuiltIn, onRename: onRenameProp, onDelete: onDeleteProp }: useNLUItemMenuProps) => {
   const nlu = React.useContext(NLUContext);
   const upgradeModal = useModals(ModalType.UPGRADE_MODAL);
 
@@ -45,6 +46,7 @@ export const useNLUItemMenu = ({ itemID, itemType, isBuiltIn, onRename: onRename
   const exportModel = useDispatch(Export.exportModel);
 
   const onRename = usePersistFunction(onRenameProp);
+  const onDelete = usePersistFunction(onDeleteProp);
 
   const onExport = React.useCallback(
     async (exportType: NLPProvider) => {
@@ -105,7 +107,14 @@ export const useNLUItemMenu = ({ itemID, itemType, isBuiltIn, onRename: onRename
         options.push({ key: 'divider-2', label: 'divider-2', divider: true });
       }
 
-      options.push({ key: 'delete', label: isBuiltIn ? 'Remove' : 'Delete', onClick: () => nlu.deleteItem(itemID, itemType) });
+      options.push({
+        key: 'delete',
+        label: isBuiltIn ? 'Remove' : 'Delete',
+        onClick: () => {
+          nlu.deleteItem(itemID, itemType);
+          onDelete();
+        },
+      });
     }
     return options;
   }, [itemID, itemType, onRename, isBuiltIn, canDelete, canRename, canExport, nlu.deleteItem, onExport]);

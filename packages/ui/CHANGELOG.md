@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.120.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.119.0...@voiceflow/ui@1.120.0) (2022-07-11)
+
+
+### Features
+
+* improve mapManager and draggable list apis (CT-000) ([#5726](https://github.com/voiceflow/creator-app/issues/5726)) ([6c07199](https://github.com/voiceflow/creator-app/commit/6c07199231329e2e09295868f851a673fb36b409))
+
+
+
+
+
 # [1.119.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.118.1...@voiceflow/ui@1.119.0) (2022-07-11)
 
 

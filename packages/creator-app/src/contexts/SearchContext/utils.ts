@@ -1,7 +1,6 @@
 /* eslint-disable max-depth */
 /* eslint-disable no-restricted-syntax */
 import { BaseModels } from '@voiceflow/base-types';
-import { SLOT_REGEXP } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { SvgIconTypes } from '@voiceflow/ui';
 
@@ -64,28 +63,9 @@ export const buildNodeDatabase = (nodes: Realtime.NodeData<unknown>[], diagramID
 };
 
 export const buildIntentDatabase = (intents: Realtime.Intent[]): IntentDatabaseEntry[] =>
-  intents.map((intent) => {
-    const entry: IntentDatabaseEntry = { intentID: intent.id, targets: [intent.name] };
+  intents.map((intent) => ({ intentID: intent.id, targets: [intent.name] }));
 
-    intent.inputs.forEach((input) => {
-      entry.targets.push(input.text.replace(SLOT_REGEXP, '{$1}'));
-    });
-
-    Object.values(intent.slots.byKey).forEach((intentSlot: Realtime.IntentSlot) => {
-      intentSlot.dialog.utterances.forEach((utterance) => {
-        entry.targets.push(utterance.text.replace(SLOT_REGEXP, '{$1}'));
-      });
-    });
-
-    return entry;
-  });
-
-export const buildSlotDatabase = (slots: Realtime.Slot[]): SlotDatabaseEntry[] =>
-  slots.map((slot) => {
-    const entry: SlotDatabaseEntry = { slotID: slot.id, targets: [slot.name] };
-    slot.inputs.forEach((input) => entry.targets.push(input.value, input.synonyms));
-    return entry;
-  });
+export const buildSlotDatabase = (slots: Realtime.Slot[]): SlotDatabaseEntry[] => slots.map((slot) => ({ slotID: slot.id, targets: [slot.name] }));
 
 export const buildDiagramDatabases = (diagrams: Realtime.Diagram[]): Pick<SearchDatabase, SearchCategory.FLOW | SearchCategory.TOPIC> => {
   const database: Pick<SearchDatabase, SearchCategory.FLOW | SearchCategory.TOPIC> = {

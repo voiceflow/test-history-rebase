@@ -12,7 +12,7 @@ export const PROTOTYPE_SHARE = 'https://www.voiceflow.com/docs/prototyping-shara
 // settings
 export const CANVAS_CONTROLS = 'https://www.voiceflow.com/docs/designing-canvas-navigation#toc-1';
 export const LINK_TYPE = 'https://www.voiceflow.com/docs/designing-canvas-navigation#toc-2';
-export const USE_A_TEMPLATE = 'https://docs.voiceflow.com/#/platform/project-creation/project-creation?id=start-with-a-template';
+export const USE_A_TEMPLATE = 'https://www.voiceflow.com/templates ';
 
 // channels
 export const CHANNEL_DIFFERENCES = 'https://docs.voiceflow.com/#/platform/project-creation/project-creation?id=differences-between-channels';

@@ -42,7 +42,7 @@ const ResourcesHeaderButton = ({ hasShortcuts = false }) => {
 
   const onSelect = (option: Option) => {
     if (option.link) {
-      window.open(option.link, '_blank', 'toolbar=0,location=0,menubar=0');
+      window.open(option.link, '_blank')?.focus();
     } else {
       option.onClick?.();
     }

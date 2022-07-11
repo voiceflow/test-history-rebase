@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.821.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.821.3...@voiceflow/creator-app@1.821.4) (2022-07-11)
+
+
+### Bug Fixes
+
+* intent slots search name only (VF-000) ([#5736](https://github.com/voiceflow/creator-app/issues/5736)) ([d796a2d](https://github.com/voiceflow/creator-app/commit/d796a2dd15df799a09296d79aac5d3fb59822fdc))
+
+
+
+
+
 ## [1.821.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.821.2...@voiceflow/creator-app@1.821.3) (2022-07-11)
 
 

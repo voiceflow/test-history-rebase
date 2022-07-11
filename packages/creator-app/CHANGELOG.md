@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.821.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.821.1...@voiceflow/creator-app@1.821.2) (2022-07-11)
+
+
+### Bug Fixes
+
+* imm ui improvements (NLU-10) ([#5719](https://github.com/voiceflow/creator-app/issues/5719)) ([97c1245](https://github.com/voiceflow/creator-app/commit/97c124559d2e3020c830fee7b4f56859e78397c7))
+
+
+
+
+
 ## [1.821.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.821.0...@voiceflow/creator-app@1.821.1) (2022-07-11)
 
 

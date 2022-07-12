@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.822.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.821.5...@voiceflow/creator-app@1.822.0) (2022-07-12)
+
+
+### Features
+
+* vitest (CT-44) ([#5737](https://github.com/voiceflow/creator-app/issues/5737)) ([bccd1a0](https://github.com/voiceflow/creator-app/commit/bccd1a0ea4f3a35201beb5224daa2d024d6c65ad))
+
+
+
+
+
 ## [1.821.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.821.4...@voiceflow/creator-app@1.821.5) (2022-07-12)
 
 

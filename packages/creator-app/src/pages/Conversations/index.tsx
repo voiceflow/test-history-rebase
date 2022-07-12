@@ -7,14 +7,13 @@ import { Redirect, RouteComponentProps, useHistory } from 'react-router-dom';
 
 import EmptyScreen from '@/components/EmptyScreen';
 import LoadingGate from '@/components/LoadingGate';
-import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
 import { Path } from '@/config/routes';
 import * as ReportTag from '@/ducks/reportTag';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import * as Transcripts from '@/ducks/transcript';
-import { useAsyncDidUpdate, useDispatch, useFeature, usePermission, useTeardown, useTrackingEvents } from '@/hooks';
+import { useAsyncDidUpdate, useDispatch, usePermission, useTeardown, useTrackingEvents } from '@/hooks';
 import { FilterTag } from '@/pages/Conversations/constants';
 import { Identifier } from '@/styles/constants';
 
@@ -32,7 +31,6 @@ const Conversations: React.FC<ConversationProps> = () => {
   const [trackingEvents] = useTrackingEvents();
   const [canViewConversations] = usePermission(Permission.VIEW_CONVERSATIONS);
   const [canOpenConversations] = usePermission(Permission.TRANSCRIPTS_ENABLED);
-  const revisedEntitlements = useFeature(FeatureFlag.REVISED_CREATOR_ENTITLEMENTS);
 
   const allTranscripts = useSelector(Transcripts.allTranscriptsSelector);
   const activeProjectID = useSelector(Session.activeProjectIDSelector);
@@ -104,7 +102,7 @@ const Conversations: React.FC<ConversationProps> = () => {
 
   return (
     <ConversationsContainer id={Identifier.CONVERSATIONS_PAGE} isFilteredResultsEmpty={!filteredReportsExist}>
-      {revisedEntitlements.isEnabled && !canOpenConversations ? (
+      {!canOpenConversations ? (
         <GatedTranscripts />
       ) : (
         <LoadingGate label="Conversations" internalName={Conversations.name} isLoaded={isLoaded} load={loadTranscripts}>

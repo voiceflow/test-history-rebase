@@ -39,8 +39,6 @@ export enum FeatureFlag {
 
   ASSISTANT_INTEGRATION = 'assistant_integration',
 
-  REVISED_CREATOR_ENTITLEMENTS = 'revised_creator_entitlement',
-
   PROMPT_STEP = 'prompt_step',
 
   DISABLE_CODE_EXPORTS = 'disable_code_exports',

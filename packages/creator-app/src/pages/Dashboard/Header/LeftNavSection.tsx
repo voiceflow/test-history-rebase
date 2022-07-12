@@ -5,7 +5,6 @@ import React from 'react';
 
 import PlanBubble from '@/components/PlanBubble';
 import { IS_PRIVATE_CLOUD } from '@/config';
-import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
 import { canAddWorkspace, WorkspacesLimitDetails } from '@/config/planLimits/workspaces';
 import { ModalType } from '@/constants';
@@ -13,7 +12,7 @@ import * as Router from '@/ducks/router';
 import { UpgradePrompt } from '@/ducks/tracking';
 import * as UI from '@/ducks/ui';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { useDispatch, useFeature, useModals, usePermission, useSelector, useTrackingEvents } from '@/hooks';
+import { useDispatch, useModals, usePermission, useSelector, useTrackingEvents } from '@/hooks';
 import { WorkspaceItemNameWrapper, WorkspacesDropdown } from '@/pages/Dashboard/Header/components';
 import { ClassName } from '@/styles/constants';
 
@@ -27,7 +26,6 @@ const LeftNavSection: React.FC<LeftNavSectionProps> = ({ activeWorkspace }) => {
   const workspaces = useSelector(WorkspaceV2.allWorkspacesSelector);
   const isAdminOfAnyWorkspace = useSelector(WorkspaceV2.isAdminOfAnyWorkspaceSelector);
   const isLoadingProjects = useSelector(UI.isLoadingProjectsSelector);
-  const revisedEntitlements = useFeature(FeatureFlag.REVISED_CREATOR_ENTITLEMENTS);
   const [trackingEvents] = useTrackingEvents();
   const { open: openUpgradeModal } = useModals(ModalType.UPGRADE_MODAL);
 
@@ -38,7 +36,7 @@ const LeftNavSection: React.FC<LeftNavSectionProps> = ({ activeWorkspace }) => {
   const showCreateWorkspaceButton = !IS_PRIVATE_CLOUD || privateCloudCreateCondition;
 
   const canAddNewWorkspace = () => {
-    if (revisedEntitlements.isEnabled && !canAddWorkspace(plan)) {
+    if (!canAddWorkspace(plan)) {
       trackingEvents.trackUpgradePrompt({ promptType: UpgradePrompt.WORKSPACE_LIMIT });
       openUpgradeModal({ planLimitDetails: WorkspacesLimitDetails, promptOrigin: UpgradePrompt.WORKSPACE_LIMIT });
     } else {

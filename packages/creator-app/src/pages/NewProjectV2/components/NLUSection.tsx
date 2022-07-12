@@ -3,11 +3,10 @@ import React from 'react';
 
 import Section, { SectionVariant } from '@/components/Section';
 import UpgradeOption from '@/components/UpgradeOption';
-import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
 import { getProjectNluLimitDetails, isGatedNLUType } from '@/config/planLimits/projects';
 import { UpgradePrompt } from '@/ducks/tracking';
-import { useFeature, useHover, usePermission } from '@/hooks';
+import { useHover, usePermission } from '@/hooks';
 import { Identifier } from '@/styles/constants';
 
 import { NLU_OPTIONS, PLATFORM_PROJECT_META_MAP } from '../constants';
@@ -34,13 +33,12 @@ const getPrefixIcon = (isImportLoading: boolean, value: SupportedPlatformType | 
 
 const NLUSection: React.FC<NLUSectionProps> = ({ value, onSelect, error, onImportModel, importModel }) => {
   const [isImportLoading, setIsImportLoading] = React.useState(false);
-  const revisedEntitlements = useFeature(FeatureFlag.REVISED_CREATOR_ENTITLEMENTS);
   const [permissionCustomNLU] = usePermission(Permission.NLU_CUSTOM);
   const [isHovered, , hoverHandlers] = useHover();
   const hasImport = value && PLATFORM_PROJECT_META_MAP[value]?.importMeta;
 
   const chooseCustomNLU = (value: PlatformAndProjectMetaType) => {
-    if (!revisedEntitlements.isEnabled || (revisedEntitlements.isEnabled && !isGatedNLUType(value, permissionCustomNLU))) {
+    if (!isGatedNLUType(value, permissionCustomNLU)) {
       onSelect(value as SupportedPlatformType);
     }
   };
@@ -54,51 +52,34 @@ const NLUSection: React.FC<NLUSectionProps> = ({ value, onSelect, error, onImpor
       customHeaderStyling={{ paddingTop: '24px' }}
       customContentStyling={{ paddingBottom: '0px' }}
     >
-      {revisedEntitlements.isEnabled ? (
-        <Select<PlatformAndProjectMeta, MenuItemGrouped<PlatformAndProjectMeta>, PlatformAndProjectMetaType>
-          id={Identifier.PROJECT_CREATE_SELECT_NLU}
-          value={value as PlatformAndProjectMetaType}
-          error={error}
-          prefix={getPrefixIcon(isImportLoading, value)}
-          options={NLU_OPTIONS}
-          grouped
-          useLayers
-          onSelect={chooseCustomNLU}
-          searchable
-          placeholder="Select NLU"
-          getOptionKey={(option) => option.type}
-          getOptionValue={(option) => option?.type}
-          getOptionLabel={(option) => (option ? PLATFORM_PROJECT_META_MAP[option]?.name : '')}
-          renderOptionLabel={(option, searchLabel, getOptionLabel, getOptionValue, { isFocused }) => (
-            <UpgradeOption<PlatformAndProjectMeta, PlatformAndProjectMetaType>
-              option={option}
-              isFocused={isFocused}
-              searchLabel={searchLabel}
-              getOptionLabel={getOptionLabel}
-              getOptionValue={getOptionValue}
-              isGated={isGatedNLUType(option.type, permissionCustomNLU)}
-              popperEnabled={true}
-              planDetails={getProjectNluLimitDetails(option)}
-              promptOrigin={UpgradePrompt.SUPPORTED_NLUS}
-            />
-          )}
-        />
-      ) : (
-        <Select<PlatformAndProjectMeta, MenuItemGrouped<PlatformAndProjectMeta>, PlatformAndProjectMetaType>
-          value={value as PlatformAndProjectMetaType}
-          error={error}
-          prefix={getPrefixIcon(isImportLoading, value)}
-          options={NLU_OPTIONS}
-          grouped
-          useLayers
-          onSelect={(value) => onSelect(value as SupportedPlatformType)}
-          searchable
-          placeholder="Select NLU"
-          getOptionKey={(option) => option.type}
-          getOptionValue={(option) => option?.type}
-          getOptionLabel={(option) => (option ? PLATFORM_PROJECT_META_MAP[option]?.name : '')}
-        />
-      )}
+      <Select<PlatformAndProjectMeta, MenuItemGrouped<PlatformAndProjectMeta>, PlatformAndProjectMetaType>
+        id={Identifier.PROJECT_CREATE_SELECT_NLU}
+        value={value as PlatformAndProjectMetaType}
+        error={error}
+        prefix={getPrefixIcon(isImportLoading, value)}
+        options={NLU_OPTIONS}
+        grouped
+        useLayers
+        onSelect={chooseCustomNLU}
+        searchable
+        placeholder="Select NLU"
+        getOptionKey={(option) => option.type}
+        getOptionValue={(option) => option?.type}
+        getOptionLabel={(option) => (option ? PLATFORM_PROJECT_META_MAP[option]?.name : '')}
+        renderOptionLabel={(option, searchLabel, getOptionLabel, getOptionValue, { isFocused }) => (
+          <UpgradeOption<PlatformAndProjectMeta, PlatformAndProjectMetaType>
+            option={option}
+            isFocused={isFocused}
+            searchLabel={searchLabel}
+            getOptionLabel={getOptionLabel}
+            getOptionValue={getOptionValue}
+            isGated={isGatedNLUType(option.type, permissionCustomNLU)}
+            popperEnabled={true}
+            planDetails={getProjectNluLimitDetails(option)}
+            promptOrigin={UpgradePrompt.SUPPORTED_NLUS}
+          />
+        )}
+      />
 
       {hasImport && (
         <ModelImport

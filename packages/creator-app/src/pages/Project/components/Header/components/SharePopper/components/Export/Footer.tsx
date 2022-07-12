@@ -21,7 +21,6 @@ const ExportFooter: React.FC<{
   const noModelData = exportType === ExportType.MODEL && intents.length === 0;
 
   const IMM_MODALS_V2 = useFeature(FeatureFlag.IMM_MODALS_V2);
-  const revisedEntitlements = useFeature(FeatureFlag.REVISED_CREATOR_ENTITLEMENTS);
   const [trackingEvents] = useTrackingEvents();
 
   const { open: openInteractionModelModal } = useModals(ModalType.INTERACTION_MODEL);
@@ -30,7 +29,7 @@ const ExportFooter: React.FC<{
 
   const checkIfCanExport = () => {
     if (isExporting) return;
-    if (revisedEntitlements.isEnabled && exportType === ExportType.CANVAS && canvasExportFormat && !canExport) {
+    if (exportType === ExportType.CANVAS && canvasExportFormat && !canExport) {
       if (canvasExportFormat === ExportFormat.VF) {
         trackingEvents.trackUpgradePrompt({ promptType: UpgradePrompt.EXPORT_PROJECT_CSV });
       } else {
@@ -38,7 +37,7 @@ const ExportFooter: React.FC<{
       }
       const planLimitDetails = getCanvasExportLimitDetails(canvasExportFormat);
       openUpgradeModal({ planLimitDetails, promptOrigin: UpgradePrompt.EXPORT_PROJECT });
-    } else if (revisedEntitlements.isEnabled && exportType === ExportType.MODEL && modelExportProvider && !canExport) {
+    } else if (exportType === ExportType.MODEL && modelExportProvider && !canExport) {
       if (modelExportProvider === NLPProvider.VF_CSV) {
         trackingEvents.trackUpgradePrompt({ promptType: UpgradePrompt.EXPORT_CSV_NLU });
       } else {

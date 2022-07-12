@@ -65,9 +65,7 @@ const ProjectListList: React.FC<ProjectListListProps> = ({ workspace, filter, is
 
   const [canManageLists] = usePermission(Permission.MANAGE_PROJECT_LISTS);
   const { bodyRef, innerRef, scrollHelpers } = useScrollHelpers<HTMLDivElement, HTMLDivElement>();
-  const { open: openProjectLimitModal } = useModals(ModalType.FREE_PROJECT_LIMIT);
   const { open: openProjectCreateModal } = useModals(ModalType.PROJECT_CREATE_MODAL);
-  const revisedEntitlements = useFeature(FeatureFlag.REVISED_CREATOR_ENTITLEMENTS);
   const { open: openUpgradeModal } = useModals(ModalType.UPGRADE_MODAL);
   const [trackingEvents] = useTrackingEvents();
 
@@ -83,11 +81,9 @@ const ProjectListList: React.FC<ProjectListListProps> = ({ workspace, filter, is
 
   const onCreateProject = React.useCallback(
     (id?: string) => {
-      if (projects.length >= workspace!.projects && revisedEntitlements.isEnabled) {
+      if (projects.length >= workspace!.projects) {
         trackingEvents.trackUpgradePrompt({ promptType: UpgradePrompt.PROJECT_LIMIT });
         openUpgradeModal({ planLimitDetails: ProjectLimitDetails, promptOrigin: UpgradePrompt.PROJECT_LIMIT });
-      } else if (projects.length >= workspace!.projects) {
-        openProjectLimitModal({ projects: workspace!.projects });
       } else if (projectCreateFeature.isEnabled) {
         openProjectCreateModal({
           listID: id,

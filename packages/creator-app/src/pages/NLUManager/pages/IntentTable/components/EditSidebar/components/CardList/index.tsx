@@ -1,12 +1,11 @@
 import { Box, Button, ButtonVariant, StrengthGauge } from '@voiceflow/ui';
 import React from 'react';
 
-import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
 import { NluViewConflictsLimitDetails } from '@/config/planLimits/nluConflicts';
 import { ModalType } from '@/constants';
 import * as IntentV2 from '@/ducks/intentV2';
-import { useFeature, useModals, usePermission, useSelector } from '@/hooks';
+import { useModals, usePermission, useSelector } from '@/hooks';
 import { FadeDownContainer } from '@/styles/animations';
 import { getIntentStrengthLevel, isBuiltInIntent } from '@/utils/intent';
 
@@ -72,14 +71,11 @@ const CardList: React.FC<CardListProps> = ({ intentID }) => {
   const isBuiltIn = isBuiltInIntent(intentID);
 
   const [permissionToViewConflicts] = usePermission(Permission.NLU_CONFLICTS);
-  const revisedEntitlements = useFeature(FeatureFlag.REVISED_CREATOR_ENTITLEMENTS);
   const { open: openUpgradeModal } = useModals(ModalType.UPGRADE_MODAL);
 
   const triggerConflictsSlider = () => {
-    if (!permissionToViewConflicts && revisedEntitlements.isEnabled) {
+    if (!permissionToViewConflicts) {
       openUpgradeModal({ planLimitDetails: NluViewConflictsLimitDetails });
-    } else {
-      alert('placeholder');
     }
   };
 

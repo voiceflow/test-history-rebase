@@ -3,13 +3,12 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 
 import UpgradeOption from '@/components/UpgradeOption';
-import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
 import { getNLUExportLimitDetails, isGatedNLUExportType } from '@/config/planLimits/nluExport';
 import { NLPProvider, NLPProviderLabels } from '@/constants';
 import * as IntentV2 from '@/ducks/intentV2';
 import { UpgradePrompt } from '@/ducks/tracking';
-import { useFeature, usePermission } from '@/hooks';
+import { usePermission } from '@/hooks';
 
 import { ExportContext } from '../../Context';
 import { IntentsSelect } from './components';
@@ -21,16 +20,12 @@ const ExportModel: React.FC<{
     React.useContext(ExportContext)!;
   const intents = useSelector(IntentV2.allIntentsSelector);
   const noModelData = intents.length === 0;
-  const revisedEntitlements = useFeature(FeatureFlag.REVISED_CREATOR_ENTITLEMENTS);
-  const [permissionToExport] = usePermission(revisedEntitlements.isEnabled ? Permission.NLU_EXPORT_ALL : Permission.MODEL_EXPORT);
+  const [permissionToExport] = usePermission(Permission.NLU_EXPORT_ALL);
   const [permissionToExportCSV] = usePermission(Permission.NLU_EXPORT_CSV);
 
   const modelExportSelection = (value: NLPProvider) => {
     setModelExportProvider(value);
-    if (
-      revisedEntitlements.isEnabled &&
-      ((!permissionToExportCSV && value === NLPProvider.VF_CSV) || (value !== NLPProvider.VF_CSV && !permissionToExport))
-    ) {
+    if ((!permissionToExportCSV && value === NLPProvider.VF_CSV) || (value !== NLPProvider.VF_CSV && !permissionToExport)) {
       setCanExport(false);
     } else {
       setCanExport(true);
@@ -51,39 +46,27 @@ const ExportModel: React.FC<{
 
   return (
     <>
-      {revisedEntitlements.isEnabled ? (
-        <Select
-          value={modelExportProvider}
-          options={nlpProviderOptions}
-          onSelect={modelExportSelection}
-          disabled={nlpProviderOptions.length === 1}
-          searchable
-          placeholder="Choose an option"
-          getOptionLabel={(value) => value && NLPProviderLabels[value]}
-          renderOptionLabel={(option, searchLabel, getOptionLabel, getOptionValue, { isFocused }) => (
-            <UpgradeOption
-              option={option}
-              isFocused={isFocused}
-              searchLabel={searchLabel}
-              getOptionLabel={getOptionLabel}
-              getOptionValue={getOptionValue}
-              isGated={isGatedNLUExportType(option, permissionToExport, permissionToExportCSV)}
-              planDetails={getNLUExportLimitDetails(option)}
-              promptOrigin={UpgradePrompt.EXPORT_NLU}
-            />
-          )}
-        />
-      ) : (
-        <Select
-          value={modelExportProvider}
-          options={nlpProviderOptions}
-          onSelect={setModelExportProvider}
-          disabled={nlpProviderOptions.length === 1}
-          searchable
-          placeholder="Choose an option"
-          getOptionLabel={(value) => value && NLPProviderLabels[value]}
-        />
-      )}
+      <Select
+        value={modelExportProvider}
+        options={nlpProviderOptions}
+        onSelect={modelExportSelection}
+        disabled={nlpProviderOptions.length === 1}
+        searchable
+        placeholder="Choose an option"
+        getOptionLabel={(value) => value && NLPProviderLabels[value]}
+        renderOptionLabel={(option, searchLabel, getOptionLabel, getOptionValue, { isFocused }) => (
+          <UpgradeOption
+            option={option}
+            isFocused={isFocused}
+            searchLabel={searchLabel}
+            getOptionLabel={getOptionLabel}
+            getOptionValue={getOptionValue}
+            isGated={isGatedNLUExportType(option, permissionToExport, permissionToExportCSV)}
+            planDetails={getNLUExportLimitDetails(option)}
+            promptOrigin={UpgradePrompt.EXPORT_NLU}
+          />
+        )}
+      />
 
       {noModelData ? (
         <BlockText fontSize={13} color="#62778c" lineHeight="normal" marginTop={12}>

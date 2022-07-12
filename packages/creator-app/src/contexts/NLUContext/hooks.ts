@@ -34,9 +34,8 @@ export const useNLUItemMenu = ({ itemID, itemType, isBuiltIn, onRename: onRename
   const project = useSelector(ProjectV2.projectByIDSelector, { id: projectID });
 
   const nluManager = useFeature(FeatureFlag.NLU_MANAGER);
-  const revisedEntitlements = useFeature(FeatureFlag.REVISED_CREATOR_ENTITLEMENTS);
 
-  const [permissionToExport] = usePermission(revisedEntitlements.isEnabled ? Permission.NLU_EXPORT_ALL : Permission.MODEL_EXPORT);
+  const [permissionToExport] = usePermission(Permission.NLU_EXPORT_ALL);
   const [permissionToExportCSV] = usePermission(Permission.NLU_EXPORT_CSV);
 
   const [trackingEvents] = useTrackingEvents();
@@ -52,10 +51,7 @@ export const useNLUItemMenu = ({ itemID, itemType, isBuiltIn, onRename: onRename
     async (exportType: NLPProvider) => {
       if (!itemID) return;
 
-      if (
-        (revisedEntitlements.isEnabled && ((exportType === NLPProvider.VF_CSV && permissionToExportCSV) || permissionToExport)) ||
-        !revisedEntitlements.isEnabled
-      ) {
+      if ((exportType === NLPProvider.VF_CSV && permissionToExportCSV) || permissionToExport) {
         setIsExporting(true);
 
         toast.info('Exporting...');

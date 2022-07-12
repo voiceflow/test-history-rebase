@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.37.36](https://github.com/voiceflow/creator-app/compare/@voiceflow/admin-app@1.37.35...@voiceflow/admin-app@1.37.36) (2022-07-12)
+
+
+### Bug Fixes
+
+* delete templates workspace (VF-4047) ([#5740](https://github.com/voiceflow/creator-app/issues/5740)) ([3194e8b](https://github.com/voiceflow/creator-app/commit/3194e8b1c10d5a2c0532b9c43448a4f4891f2361))
+
+
+
+
+
 ## [1.37.35](https://github.com/voiceflow/creator-app/compare/@voiceflow/admin-app@1.37.34...@voiceflow/admin-app@1.37.35) (2022-07-12)
 
 **Note:** Version bump only for package @voiceflow/admin-app

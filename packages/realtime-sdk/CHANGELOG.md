@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.123.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.123.0...@voiceflow/realtime-sdk@1.123.1) (2022-07-12)
+
+
+### Bug Fixes
+
+* delete templates workspace (VF-4047) ([#5740](https://github.com/voiceflow/creator-app/issues/5740)) ([3194e8b](https://github.com/voiceflow/creator-app/commit/3194e8b1c10d5a2c0532b9c43448a4f4891f2361))
+
+
+
+
+
 # [1.123.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.122.2...@voiceflow/realtime-sdk@1.123.0) (2022-07-11)
 
 

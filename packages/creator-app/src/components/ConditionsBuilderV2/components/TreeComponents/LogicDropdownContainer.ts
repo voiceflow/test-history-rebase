@@ -9,7 +9,8 @@ const LogicDropdownContainer = styled.div<LogicDropdownContainerProps>`
   width: 80px;
   display: flex;
   align-items: center;
-  padding-left: 13px;
+  justify-content: flex-end;
+  padding-right: 6px;
   color: #62778c;
 
   &:hover {

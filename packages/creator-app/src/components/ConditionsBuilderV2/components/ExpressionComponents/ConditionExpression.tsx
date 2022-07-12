@@ -9,7 +9,7 @@ import { EXPRESSION_PLACEHOLDER } from '../../constants';
 import ExpressionContainer from './ExpressionContainer';
 
 export interface ConditionExpressionProps {
-  expression: Realtime.ExpressionV2;
+  expression?: Realtime.ExpressionData;
 }
 
 const ConditionExpression: React.FC<ConditionExpressionProps> = ({ expression }) => {
@@ -24,14 +24,13 @@ const ConditionExpression: React.FC<ConditionExpressionProps> = ({ expression })
         // onChange({ ...expression, value: text } as Realtime.ExpressionV2);
       }
     },
-    [isValidExpression, expression.value /* onChange */]
+    [isValidExpression, expression?.value /* onChange */]
   );
 
   return (
     <ExpressionContainer>
       <VariablesInput
         error={error}
-        value={expression.value as string}
         onBlur={onUpdate}
         onFocus={resetError}
         multiline

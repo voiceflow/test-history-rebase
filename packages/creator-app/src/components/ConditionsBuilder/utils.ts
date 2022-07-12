@@ -53,7 +53,10 @@ export const getAddionalLogicData = (
   value: [...expression.value, { ...newCondition }],
 });
 
-export const getDefaultValue = (logicInterface: BaseNode.Utils.ConditionsLogicInterface): Realtime.ExpressionV2 | Realtime.LogicGroupData => {
+export const getDefaultValue = (
+  logicInterface: BaseNode.Utils.ConditionsLogicInterface,
+  isV2?: boolean
+): Realtime.ExpressionV2 | Realtime.LogicGroupData => {
   switch (logicInterface) {
     case BaseNode.Utils.ConditionsLogicInterface.EXPRESSION:
       return {
@@ -99,7 +102,9 @@ export const getDefaultValue = (logicInterface: BaseNode.Utils.ConditionsLogicIn
         id: Utils.id.cuid.slug(),
         logicInterface,
         type: null,
-        value: [],
+        value: isV2
+          ? [getDefaultValue(BaseNode.Utils.ConditionsLogicInterface.VARIABLE), getDefaultValue(BaseNode.Utils.ConditionsLogicInterface.VARIABLE)]
+          : [],
       } as Realtime.LogicGroupData;
   }
 };

@@ -1,22 +1,38 @@
-// import { BaseNode } from '@voiceflow/base-types';
+import { BaseNode } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Tabs } from '@voiceflow/ui';
 import React from 'react';
 
 import ConditionExpressionTooltip from '../../ConditionsBuilder/components/ConditionExpressionTooltip';
-import ConditionSelect from '../../ConditionsBuilder/components/ConditionSelect';
+import { getAddionalLogicData, getDefaultValue } from '../../ConditionsBuilder/utils';
 import { ConditionsEditorTabs } from '../constants';
-import { ConditionBuilder } from './BuilderComponents';
+import { BuilderSelect } from './BuilderComponents';
 import { ConditionExpression } from './ExpressionComponents';
 import { PopperContainer, PopperContent, PopperHeader } from './PopperContainers';
-import { LogicDropdown } from './TreeComponents';
+import { LogicGroup } from './TreeComponents';
 
-const ConditionsPopper: React.FC<{ expression: Realtime.ExpressionV2 }> = ({ expression }) => {
+export interface ConditionsPopperProps {
+  expression?: Realtime.ExpressionData;
+  onChange: (value: Realtime.ExpressionData) => void;
+}
+
+const ConditionsPopper: React.FC<ConditionsPopperProps> = ({ expression, onChange }) => {
   const [activeTab, setIsActiveTab] = React.useState<ConditionsEditorTabs>(ConditionsEditorTabs.BUILDER);
 
-  const addAdditionalCondition = (/* logicInterface: BaseNode.Utils.ConditionsLogicInterface */) => {
-    // const values = getDefaultValue(logicInterface);
-    // onChange(getAddionalLogicData(expression!, values));
+  const addAdditionalBuilderComponent = (logicInterface: BaseNode.Utils.ConditionsLogicInterface) => {
+    const values = getDefaultValue(logicInterface, true);
+    onChange(getAddionalLogicData(expression!, values));
+  };
+
+  const onUpdateData = (index: number) => (data: Realtime.ExpressionV2 | Realtime.LogicGroupData) => {
+    onChange({
+      ...expression,
+      value: expression!.value.map((item: any, idx: number) => (idx === index ? { ...item, ...data } : item)),
+    } as Realtime.ExpressionData);
+  };
+
+  const onDeleteCondition = (index: number) => () => {
+    onChange({ ...expression, value: expression!.value.filter((_, idx: number) => idx !== index) } as Realtime.ExpressionData);
   };
 
   return (
@@ -28,16 +44,25 @@ const ConditionsPopper: React.FC<{ expression: Realtime.ExpressionV2 }> = ({ exp
             <Tabs.Tab value={ConditionsEditorTabs.EXPRESSION}>Expression</Tabs.Tab>
           </Tabs>
         </div>
-        <div style={{ width: '36px', height: '36px', padding: '10px' }}>
-          {activeTab === ConditionsEditorTabs.BUILDER ? <ConditionSelect isV2 onChange={addAdditionalCondition} /> : <ConditionExpressionTooltip />}
-        </div>
+        {activeTab === ConditionsEditorTabs.BUILDER ? (
+          <div style={{ marginRight: '7px' }}>
+            <BuilderSelect onAddComponent={addAdditionalBuilderComponent} topLevel={true} />
+          </div>
+        ) : (
+          <div style={{ padding: '10px' }}>
+            <ConditionExpressionTooltip />
+          </div>
+        )}
       </PopperHeader>
       <PopperContent>
         {activeTab === ConditionsEditorTabs.BUILDER ? (
-          <>
-            <LogicDropdown />
-            <ConditionBuilder />
-          </>
+          <LogicGroup
+            expression={expression as Realtime.LogicGroupData}
+            onAddComponent={addAdditionalBuilderComponent}
+            topLevel={true}
+            onDelete={onDeleteCondition}
+            onChange={onUpdateData}
+          />
         ) : (
           <ConditionExpression expression={expression} />
         )}

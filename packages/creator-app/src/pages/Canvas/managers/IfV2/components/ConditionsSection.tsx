@@ -59,7 +59,7 @@ const ConditionsSection: React.ForwardRefRenderFunction<HTMLDivElement, Conditio
           </Section>
           <Section isDividerNested customContentStyling={{ paddingTop: '0px', paddingBottom: '0px' }}>
             {useConditionsBuilderV2.isEnabled ? (
-              <ConditionsBuilderV2 expression={item as Realtime.ExpressionData} />
+              <ConditionsBuilderV2 expression={item as Realtime.ExpressionData} onChange={onUpdate} />
             ) : (
               <ConditionsBuilder expression={item as Realtime.ExpressionData} onChange={onUpdate} />
             )}

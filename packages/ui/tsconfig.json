@@ -1,7 +1,7 @@
 {
   "extends": "@voiceflow/tsconfig/web.json",
   "compilerOptions": {
-    "target": "es5",
+    "target": "es2017",
     "checkJs": false,
     "skipLibCheck": true,
     "downlevelIteration": true,
@@ -11,5 +11,5 @@
       "@ui/*": ["src/*"]
     }
   },
-  "exclude": ["node_modules/**/*", "build/**/*"]
+  "exclude": ["node_modules/jest", "node_modules/**/*", "build/**/*", "coverage/**/*", "svgr.config.js"]
 }

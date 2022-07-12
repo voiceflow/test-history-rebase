@@ -1,7 +1,7 @@
 import { normalizeColor } from '../../src/components/ColorPicker/utils';
 import suite from '../_suite';
 
-suite('color normanilzation', ({ expect }) => {
+suite('color normanilzation', () => {
   describe('normalizeColor', () => {
     it('should normalize any kind of color to hex', () => {
       const assertions: [string, string][] = [
@@ -15,7 +15,7 @@ suite('color normanilzation', ({ expect }) => {
         ['rgba(0, 0, 0, .5)', '#000000'],
       ];
 
-      assertions.forEach(([color, hex]) => expect(normalizeColor(color)).to.equal(hex));
+      assertions.forEach(([color, hex]) => expect(normalizeColor(color)).toEqual(hex));
     });
   });
 });

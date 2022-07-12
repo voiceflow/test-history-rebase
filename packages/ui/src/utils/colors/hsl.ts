@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-inferrable-types */
 import { hsluvToHex } from './hsluv';
 
-export const SATURATION = 50;
-export const LOW_SATURATION = 25;
+export const SATURATION: number = 50;
+export const LOW_SATURATION: number = 25;
 export const SHADES = [94, 90, 85, 80, 72, 64, 55, 44, 32, 19];
 export const COLOR_GRADES = ['50', '100', '200', '300', '400', '500', '600', '700', '800', '900'] as const;
 

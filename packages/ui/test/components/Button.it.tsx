@@ -3,13 +3,16 @@ import Button from '@ui/components/Button';
 import { Utils } from '@voiceflow/common';
 import React from 'react';
 
+import suite from '../_suite';
 import { ThemeProvider } from '../_utils';
 
-it('reacts to click', () => {
-  const clickHandler = jest.fn();
-  render(<Button onClick={clickHandler}>{Utils.generate.string()}</Button>, { wrapper: ThemeProvider });
+suite('Button', () => {
+  it('reacts to click', () => {
+    const clickHandler = vi.fn();
+    render(<Button onClick={clickHandler}>{Utils.generate.string()}</Button>, { wrapper: ThemeProvider });
 
-  fireEvent.click(screen.getByRole('button'));
+    fireEvent.click(screen.getByRole('button'));
 
-  expect(clickHandler).toHaveBeenCalledTimes(1);
+    expect(clickHandler).toHaveBeenCalledTimes(1);
+  });
 });

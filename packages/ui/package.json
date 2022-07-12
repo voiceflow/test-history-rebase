@@ -46,19 +46,21 @@
   },
   "devDependencies": {
     "@svgr/cli": "5.5.0",
-    "@testing-library/jest-dom": "5.16.4",
-    "@testing-library/react": "12.1.5",
-    "@types/jest": "27.4.0",
+    "@testing-library/react": "^12.1.5",
     "@types/logrocket-react": "3.0.0",
     "@types/node": "16.11.41",
     "@types/react-custom-scrollbars": "4.0.10",
     "@types/react-input-autosize": "2.2.1",
     "@types/react-syntax-highlighter": "13.5.2",
     "@types/react-toggle": "4.0.3",
-    "jest": "27.4.7",
+    "@voiceflow/vite-config": "1.5.0",
+    "c8": "^7.11.3",
+    "happy-dom": "^6.0.3",
     "jest-styled-components": "7.0.6",
-    "ts-jest": "27.1.5",
-    "tslib": "2.3.1"
+    "react-dom": "17.0.2",
+    "tslib": "2.3.1",
+    "vite": "^2.9.14",
+    "vitest": "^0.18.0"
   },
   "files": [
     "build"
@@ -92,10 +94,10 @@
     "lint:js": "eslint \"**/*.{js,ts}\"",
     "lint:quiet": "concurrently -c yellow,blue \"yarn:lint:js --rule 'prettier/prettier: off' --quiet\" \"yarn:lint:css --quiet\" --color",
     "lint:report": "yarn lint:js --format json -o sonar/report.json && yarn lint:css --formatter json --output-file sonar/report_css.json",
-    "test": "exit 0",
+    "test": "vitest run --coverage",
     "test:dependencies": "depcheck",
-    "test:integration": "NODE_ENV=test jest --coverage --config config/test/integration/jest.config.js",
-    "test:unit": "NODE_ENV=test nyc --report-dir=nyc_coverage_unit ts-mocha --project tsconfig.test.json --paths --config config/test/unit/mocharc.yml",
+    "test:integration": "vitest run .it --coverage",
+    "test:unit": "vitest run .unit --coverage",
     "types": "tsc --project tsconfig.build.json --noEmit --skipLibCheck",
     "watch:esm": "yarn build:esm && ttsc --watch --project tsconfig.module.json"
   }

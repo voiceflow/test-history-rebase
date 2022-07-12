@@ -259,7 +259,7 @@
     "start:proxy": "scripts/generate_certs.sh && docker compose up -d proxy",
     "tdd:integration": "yarn test:integration --watchAll=true",
     "tdd:unit": "NODE_ENV=test ts-mocha --project tsconfig.test.json --paths --watch --config config/test/unit/mocharc.yml",
-    "test": "yarn test:unit && yarn test:integration",
+    "test": "concurrently -c yellow,blue \"yarn:test:unit\" \"yarn:test:integration\" --color",
     "test:dependencies": "depcheck ",
     "test:integration": "NODE_ENV=test jest --coverage --config config/test/integration/jest.config.js",
     "test:unit": "NODE_ENV=test nyc --report-dir=nyc_coverage_unit ts-mocha --project tsconfig.test.json --paths --config config/test/unit/mocharc.yml",

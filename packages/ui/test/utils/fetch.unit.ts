@@ -1,14 +1,8 @@
 import * as Fetch from '@ui/utils/fetch';
 import createRawFetch from '@ui/utils/fetch/raw';
 import { Utils } from '@voiceflow/common';
-import { SinonStub } from 'sinon';
 
-import suite from '../_suite';
-
-interface MockResult {
-  status?: number;
-  body?: string;
-}
+import suite, { Mocks } from '../_suite';
 
 const TEST_URL = 'test/12345';
 const TEST_API_ENDPOINT = 'https://undefined';
@@ -16,64 +10,37 @@ const FULL_TEST_URL = `${TEST_API_ENDPOINT}/${TEST_URL}`;
 
 const fetch = Fetch.createFetch(TEST_API_ENDPOINT);
 
-suite('fetch', ({ expect, spy, stub, mockDate }) => {
+suite('fetch', (mocks) => {
   const mockRequestCache = ({ get = null, set = null, has = null }: Partial<Record<'get' | 'set' | 'has', number | null>> = {}) => {
-    spy(Fetch.FETCH_REQUEST_CACHE as any);
+    const getSpy = vi.spyOn(Fetch.FETCH_REQUEST_CACHE, 'get');
+    const setSpy = vi.spyOn(Fetch.FETCH_REQUEST_CACHE, 'set');
+    const hasSpy = vi.spyOn(Fetch.FETCH_REQUEST_CACHE, 'has');
 
     return {
       verify: () => {
-        if (get !== null) {
-          expect(Fetch.FETCH_REQUEST_CACHE.get).to.have.callCount(get);
-        }
-        if (set !== null) {
-          expect(Fetch.FETCH_REQUEST_CACHE.set).to.have.callCount(set);
-        }
-        if (has !== null) {
-          expect(Fetch.FETCH_REQUEST_CACHE.has).to.have.callCount(has);
-        }
+        if (get !== null) expect(getSpy).toHaveBeenCalledTimes(get);
+        if (set !== null) expect(setSpy).toHaveBeenCalledTimes(set);
+        if (has !== null) expect(hasSpy).toHaveBeenCalledTimes(has);
       },
     };
   };
 
-  const stubFetch = () => {
-    const fetchCall = stub(global, 'fetch');
-    const yieldResult = (call: SinonStub, { status = 200, body = '' }: MockResult) =>
-      call.returns(
-        Promise.resolve({
-          status,
-          text: () => Promise.resolve(body),
-        })
-      );
-
-    return Object.assign(fetchCall, {
-      yields: (result: MockResult = {}, ...nextResults: MockResult[]) => {
-        if (nextResults.length) {
-          yieldResult(fetchCall.onCall(0), result);
-          nextResults.forEach((nextResult, index) => yieldResult(fetchCall.onCall(index + 1), nextResult));
-
-          return fetchCall;
-        }
-
-        return yieldResult(fetchCall, result);
-      },
-    });
-  };
+  const generateResponses = (count = 3) =>
+    Utils.generate.array<Mocks.FetchTypes.Response>(count, () => ({ status: Utils.generate.number(), body: Utils.generate.string() }));
 
   describe('creatRawFetch()', () => {
     const testAPIEndpoint = 'https://myEnpoint';
     const fullTestURL = `${testAPIEndpoint}/${TEST_URL}`;
     const rawFetch = createRawFetch(testAPIEndpoint);
 
-    beforeEach(() => {
-      Fetch.FETCH_REQUEST_CACHE.clear();
-    });
+    beforeEach(() => Fetch.FETCH_REQUEST_CACHE.clear());
 
     it('passes options', async () => {
-      const fetchCall = stubFetch().yields();
+      const fetch = mocks.fetch();
 
       await rawFetch(TEST_URL, { foo: 'bar' } as any);
 
-      expect(fetchCall).to.be.calledWithExactly(fullTestURL, {
+      expect(fetch).toHaveBeenCalledWith(fullTestURL, {
         ...Fetch.DEFAULT_FETCH_OPTIONS,
         headers: {},
         foo: 'bar',
@@ -81,198 +48,199 @@ suite('fetch', ({ expect, spy, stub, mockDate }) => {
     });
 
     it('runs', async () => {
-      const mockResponse = { status: Utils.generate.number(), body: Utils.generate.string() };
-      const fetchCall = stubFetch().yields(mockResponse);
+      const [mockResponse] = generateResponses(1);
+
+      const fetchCall = mocks.fetch(mockResponse);
 
       const response = await rawFetch(TEST_URL);
 
-      expect(fetchCall).to.be.calledWithExactly(fullTestURL, {
+      expect(fetchCall).toHaveBeenCalledWith(fullTestURL, {
         ...Fetch.DEFAULT_FETCH_OPTIONS,
         headers: {},
       });
-      expect(response).to.eql(mockResponse);
+      expect(response).toEqual(mockResponse);
     });
 
     it('cache - true', async () => {
-      const [mockResponse1, mockResponse2, mockResponse3] = Utils.generate.array(3, () => ({
-        status: Utils.generate.number(),
-        body: Utils.generate.string(),
-      }));
-      const fetchCall = stubFetch().yields(mockResponse1, mockResponse2, mockResponse3);
       const cache = mockRequestCache({ has: 6, get: 4, set: 3 });
+      const [mockResponse1, mockResponse2, mockResponse3] = generateResponses();
+
+      const fetchCall = mocks.fetch(mockResponse1, mockResponse2, mockResponse3);
+
       const opts: Fetch.FetchOptions = { cache: true, expiry: false };
 
       const response1 = await rawFetch('a', opts);
       const response2 = await rawFetch('a', opts);
       const response3 = await rawFetch('a', opts);
-      expect(fetchCall).to.have.callCount(1);
+
+      expect(fetchCall).toHaveBeenCalledTimes(1);
 
       const response4 = await rawFetch('a', { ...opts, foo: 'bar' } as any);
       const response5 = await rawFetch('a', { ...opts, foo: 'bar' } as any);
-      expect(fetchCall).to.have.callCount(2);
+
+      expect(fetchCall).toHaveBeenCalledTimes(2);
 
       const response6 = await rawFetch('b', opts);
-      expect(fetchCall).to.have.callCount(3);
+
+      expect(fetchCall).toHaveBeenCalledTimes(3);
 
       cache.verify();
 
-      expect(response1).to.eql(mockResponse1);
-      expect(response2).to.eql(mockResponse1);
-      expect(response3).to.eql(mockResponse1);
+      expect(response1).toEqual(mockResponse1);
+      expect(response2).toEqual(mockResponse1);
+      expect(response3).toEqual(mockResponse1);
 
-      expect(response4).to.eql(mockResponse2);
-      expect(response5).to.eql(mockResponse2);
+      expect(response4).toEqual(mockResponse2);
+      expect(response5).toEqual(mockResponse2);
 
-      expect(response6).to.eql(mockResponse3);
+      expect(response6).toEqual(mockResponse3);
     });
 
     it('cache - expiry', async () => {
-      const [mockResponse1, mockResponse2, mockResponse3] = Utils.generate.array(3, () => ({
-        status: Utils.generate.number(),
-        body: Utils.generate.string(),
-      }));
-      const fetchCall = stubFetch().yields(mockResponse1, mockResponse2, mockResponse3);
       const cache = mockRequestCache({ has: 6, get: 4, set: 3 });
+      const [mockResponse1, mockResponse2, mockResponse3] = generateResponses();
+
+      const fetchCall = mocks.fetch(mockResponse1, mockResponse2, mockResponse3);
+
       const opts = { cache: true, expiry: 1000 };
       const currentTime = Date.now();
-      const date = mockDate(currentTime);
+
+      vi.setSystemTime(currentTime);
 
       const response1 = await rawFetch('a', opts);
       const response2 = await rawFetch('a', opts);
       const response3 = await rawFetch('a', opts);
-      expect(fetchCall).to.have.callCount(1);
+      expect(fetchCall).toHaveBeenCalledTimes(1);
 
-      date.returns(currentTime + 1001);
+      vi.setSystemTime(currentTime + 1001);
 
       const response4 = await rawFetch('a', opts);
       const response5 = await rawFetch('a', opts);
-      expect(fetchCall).to.have.callCount(2);
+      expect(fetchCall).toHaveBeenCalledTimes(2);
 
       const response6 = await rawFetch('b', opts);
-      expect(fetchCall).to.have.callCount(3);
+      expect(fetchCall).toHaveBeenCalledTimes(3);
 
       cache.verify();
 
-      expect(response1).to.eql(mockResponse1);
-      expect(response2).to.eql(mockResponse1);
-      expect(response3).to.eql(mockResponse1);
+      expect(response1).toEqual(mockResponse1);
+      expect(response2).toEqual(mockResponse1);
+      expect(response3).toEqual(mockResponse1);
 
-      expect(response4).to.eql(mockResponse2);
-      expect(response5).to.eql(mockResponse2);
+      expect(response4).toEqual(mockResponse2);
+      expect(response5).toEqual(mockResponse2);
 
-      expect(response6).to.eql(mockResponse3);
+      expect(response6).toEqual(mockResponse3);
     });
 
     it('cache - false', async () => {
-      const [mockResponse1, mockResponse2, mockResponse3] = Utils.generate.array(3, () => ({
-        status: Utils.generate.number(),
-        body: Utils.generate.string(),
-      }));
-      const fetchCall = stubFetch().yields(mockResponse1, mockResponse1, mockResponse1, mockResponse2, mockResponse2, mockResponse3);
       const cache = mockRequestCache({ has: 0, get: 0, set: 0 });
+      const [mockResponse1, mockResponse2, mockResponse3] = generateResponses();
+
+      const fetchCall = mocks.fetch(mockResponse1, mockResponse1, mockResponse1, mockResponse2, mockResponse2, mockResponse3);
 
       const response1 = await rawFetch('a');
       const response2 = await rawFetch('a');
       const response3 = await rawFetch('a');
-      expect(fetchCall).to.have.callCount(3);
+      expect(fetchCall).toHaveBeenCalledTimes(3);
 
       const response4 = await rawFetch('a', { foo: 'bar' } as any);
       const response5 = await rawFetch('a', { foo: 'bar' } as any);
-      expect(fetchCall).to.have.callCount(5);
+      expect(fetchCall).toHaveBeenCalledTimes(5);
 
       const response6 = await rawFetch('b');
-      expect(fetchCall).to.have.callCount(6);
+      expect(fetchCall).toHaveBeenCalledTimes(6);
 
       cache.verify();
 
-      expect(response1).to.eql(mockResponse1);
-      expect(response2).to.eql(mockResponse1);
-      expect(response3).to.eql(mockResponse1);
+      expect(response1).toEqual(mockResponse1);
+      expect(response2).toEqual(mockResponse1);
+      expect(response3).toEqual(mockResponse1);
 
-      expect(response4).to.eql(mockResponse2);
-      expect(response5).to.eql(mockResponse2);
+      expect(response4).toEqual(mockResponse2);
+      expect(response5).toEqual(mockResponse2);
 
-      expect(response6).to.eql(mockResponse3);
+      expect(response6).toEqual(mockResponse3);
     });
   });
 
   describe('CRUD requests', () => {
     it('GET request', async () => {
-      const mockResponse = { status: Utils.generate.number(), body: Utils.generate.string() };
-      const fetchCall = stubFetch().yields(mockResponse);
+      const [mockResponse] = generateResponses(1);
+      const fetchCall = mocks.fetch(mockResponse);
 
       const response = await fetch.get(TEST_URL);
 
-      expect(fetchCall).to.be.calledWithExactly(FULL_TEST_URL, {
+      expect(fetchCall).toHaveBeenCalledWith(FULL_TEST_URL, {
         ...Fetch.DEFAULT_FETCH_OPTIONS,
         headers: {},
         method: 'GET',
       });
-      expect(response).to.eq(mockResponse.body);
+      expect(response).toEqual(mockResponse.body);
     });
 
     it('POST request', async () => {
       const mockBody = Utils.generate.object();
-      const mockResponse = { status: Utils.generate.number(), body: Utils.generate.string() };
-      const fetchCall = stubFetch().yields(mockResponse);
+      const [mockResponse] = generateResponses(1);
+      const fetchCall = mocks.fetch(mockResponse);
 
       const response = await fetch.post(TEST_URL, mockBody);
 
-      expect(fetchCall).to.be.calledWithExactly(FULL_TEST_URL, {
+      expect(fetchCall).toHaveBeenCalledWith(FULL_TEST_URL, {
         ...Fetch.DEFAULT_FETCH_OPTIONS,
         headers: { 'content-type': 'application/json' },
         method: 'POST',
         body: JSON.stringify(mockBody),
       });
-      expect(response).to.eq(mockResponse.body);
+      expect(response).toEqual(mockResponse.body);
     });
 
     it('PUT request', async () => {
       const mockBody = Utils.generate.object();
-      const mockResponse = { status: Utils.generate.number(), body: Utils.generate.string() };
-      const fetchCall = stubFetch().yields(mockResponse);
+      const [mockResponse] = generateResponses(1);
+      const fetchCall = mocks.fetch(mockResponse);
 
       const response = await fetch.put(TEST_URL, mockBody);
 
-      expect(fetchCall).to.be.calledWithExactly(FULL_TEST_URL, {
+      expect(fetchCall).toHaveBeenCalledWith(FULL_TEST_URL, {
         ...Fetch.DEFAULT_FETCH_OPTIONS,
         headers: { 'content-type': 'application/json' },
         method: 'PUT',
         body: JSON.stringify(mockBody),
       });
-      expect(response).to.eq(mockResponse.body);
+      expect(response).toEqual(mockResponse.body);
     });
 
     it('PATCH request', async () => {
       const mockBody = Utils.generate.object();
-      const mockResponse = { status: Utils.generate.number(), body: Utils.generate.string() };
-      const fetchCall = stubFetch().yields(mockResponse);
+      const [mockResponse] = generateResponses(1);
+      const fetchCall = mocks.fetch(mockResponse);
 
       const response = await fetch.patch(TEST_URL, mockBody);
 
-      expect(fetchCall).to.be.calledWithExactly(FULL_TEST_URL, {
+      expect(fetchCall).toHaveBeenCalledWith(FULL_TEST_URL, {
         ...Fetch.DEFAULT_FETCH_OPTIONS,
         headers: { 'content-type': 'application/json' },
         method: 'PATCH',
         body: JSON.stringify(mockBody),
       });
-      expect(response).to.eq(mockResponse.body);
+      expect(response).toEqual(mockResponse.body);
     });
 
     it('DELETE request', async () => {
       const mockBody = Utils.generate.object();
-      const mockResponse = { status: Utils.generate.number(), body: Utils.generate.string() };
-      const fetchCall = stubFetch().yields(mockResponse);
+      const [mockResponse] = generateResponses(1);
+      const fetchCall = mocks.fetch(mockResponse);
 
       const response = await fetch.delete(TEST_URL, mockBody);
 
-      expect(fetchCall).to.be.calledWithExactly(FULL_TEST_URL, {
+      expect(fetchCall).toHaveBeenCalledWith(FULL_TEST_URL, {
         ...Fetch.DEFAULT_FETCH_OPTIONS,
         headers: { 'content-type': 'application/json' },
         method: 'DELETE',
         body: JSON.stringify(mockBody),
       });
-      expect(response).to.eq(mockResponse.body);
+      expect(response).toEqual(mockResponse.body);
     });
   });
 });

@@ -13,8 +13,6 @@ export const CANVAS_EXPORT_OPTIONS_LABELS: Record<ExportFormat, string> = {
   [ExportFormat.VF]: 'Project file (JSON)',
 };
 
-export const CANVAS_OPTIONS_TEMPLATE_WORKSPACE = [ExportFormat.VF];
-
 export const EXPORT_TYPE_OPTIONS = [
   { id: ExportType.MODEL, label: 'NLU data' },
   { id: ExportType.CANVAS, label: 'Project content' },

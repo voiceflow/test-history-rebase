@@ -101,7 +101,6 @@ export const useProjectOptions = ({
   onDuplicated?: () => void;
   versionID?: string;
 }): MenuOption<undefined>[] => {
-  const [canCloneProject] = usePermission(Permission.CLONE_PROJECT);
   const [canShareProject] = usePermission(Permission.SHARE_PROJECT);
   const [canManageProjects] = usePermission(Permission.MANAGE_PROJECTS);
   const canExportProject = usePermissions([Permission.CANVAS_EXPORT, Permission.MODEL_EXPORT, Permission.CODE_EXPORT]);
@@ -209,7 +208,6 @@ export const useProjectOptions = ({
             { label: 'Copy clone link', onClick: onClone },
           ]
         : []),
-      ...(canCloneProject ? [{ label: 'Clone Project', onClick: onCloneProject }] : []),
       ...(canManageProjects
         ? [
             { label: 'Divider', divider: true },
@@ -217,6 +215,6 @@ export const useProjectOptions = ({
           ]
         : []),
     ],
-    [onRename, onDuplicate, onClone, canCloneProject, canManageProjects, onCloneProject, onDelete, onVersionHistory]
+    [onRename, onDuplicate, onClone, canManageProjects, onCloneProject, onDelete, onVersionHistory]
   );
 };

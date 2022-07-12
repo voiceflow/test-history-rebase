@@ -22,7 +22,6 @@ export enum Permission {
 
   // project
   MANAGE_PROJECTS = 'project.MANAGE',
-  CLONE_PROJECT = 'project.CLONE',
   SHARE_PROJECT = 'project.SHARE',
   EDIT_PROJECT = 'project.EDIT',
 
@@ -103,7 +102,6 @@ export const ROLE_PERMISSIONS: Partial<Record<Permission, UserRole[]>> = {
 
   [Permission.MANAGE_PROJECTS]: EDITOR_USER_ROLES,
   [Permission.MANAGE_PROJECT_LISTS]: EDITOR_AND_BILLING_USER_ROLES,
-  [Permission.CLONE_PROJECT]: [UserRole.LIBRARY],
   [Permission.EDIT_PROJECT]: EDITOR_USER_ROLES,
 
   [Permission.EDIT_CANVAS]: EDITOR_USER_ROLES,
@@ -178,7 +176,6 @@ export const TRIAL_EXPIRED_NOT_ALLOWED_PERMISSIONS = [
   Permission.COMMENTING,
   Permission.HINT_FEATURES,
   Permission.MANAGE_PROJECTS,
-  Permission.CLONE_PROJECT,
   Permission.SHARE_PROJECT,
   Permission.EDIT_PROJECT,
   Permission.CODE_EXPORT,

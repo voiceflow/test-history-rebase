@@ -19,6 +19,5 @@ export interface Team {
   stripe_status: string | null;
   stripe_sub_id: string | null;
   team_id: number;
-  templates: boolean;
   website: null | string;
 }

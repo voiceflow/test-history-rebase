@@ -1,5 +1,4 @@
 import { DBMember, DBWorkspace, Workspace, WorkspaceActivationState } from '@realtime-sdk/models';
-import { sortWorkspaces } from '@realtime-sdk/utils/workspace';
 import createAdapter, { AdapterNotImplementedError } from 'bidirectional-adapter';
 
 import memberAdapter from './member';
@@ -23,7 +22,6 @@ const workspaceAdapter = createAdapter<DBWorkspace, Workspace>(
     members,
     plan,
     beta_flag,
-    templates,
     organization_id,
     organization_trial_days_left,
     variableStatesLimit,
@@ -49,7 +47,6 @@ const workspaceAdapter = createAdapter<DBWorkspace, Workspace>(
       state,
       plan,
       members,
-      templates,
       betaFlag: beta_flag,
       organizationID: organization_id,
       organizationTrialDaysLeft: organization_trial_days_left,
@@ -63,7 +60,7 @@ const workspaceAdapter = createAdapter<DBWorkspace, Workspace>(
 
 export default {
   ...workspaceAdapter,
-  mapFromDB: (dbWorkspaces: DBWorkspace[]) => sortWorkspaces(workspaceAdapter.mapFromDB(dbWorkspaces)),
+  mapFromDB: (dbWorkspaces: DBWorkspace[]) => workspaceAdapter.mapFromDB(dbWorkspaces),
 };
 
 export const workspaceWithMembersAdapter = {

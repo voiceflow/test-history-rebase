@@ -135,15 +135,13 @@ export const trackProjectExit = createProjectEventTracker<{
 
 export const trackProjectExported = createProjectEventTracker<{
   platform: VoiceflowConstants.PlatformType;
-  template: boolean;
   exportType: ExportType;
   exportFormat: CanvasExportFormat;
-}>(({ platform, template, exportType, exportFormat, ...options }) =>
+}>(({ platform, exportType, exportFormat, ...options }) =>
   client.api.analytics.track(
     EventName.PROJECT_EXPORTED,
     createProjectEventPayload(options, {
       platform,
-      template,
       export_type: exportType === ExportType.CANVAS ? 'Project Content' : 'Interaction Model',
       export_format: exportFormat,
     })

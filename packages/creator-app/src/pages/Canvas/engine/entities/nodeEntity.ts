@@ -6,7 +6,6 @@ import { createSelector } from 'reselect';
 import { BlockType } from '@/constants';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import { idParamSelector } from '@/ducks/utils/crudV2';
-import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useTeardown } from '@/hooks';
 import { EngineContext } from '@/pages/Canvas/contexts/EngineContext';
 import { MarkupTransform } from '@/pages/Canvas/types';
@@ -141,10 +140,6 @@ class NodeEntity extends ResourceEntity<NodeEntityResource<unknown>, NodeInstanc
 
   get lockOwner() {
     return this.engine.getLockOwner(this.nodeID);
-  }
-
-  get isLocked() {
-    return this.engine.select(WorkspaceV2.active.isTemplatesSelector);
   }
 
   nodeType: BlockType;

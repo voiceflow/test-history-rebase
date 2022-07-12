@@ -1,7 +1,5 @@
 import React from 'react';
 
-import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { useSelector } from '@/hooks';
 import { Identifier } from '@/styles/constants';
 
 import { SharePopperContext } from '../../../../contexts';
@@ -10,13 +8,12 @@ import { ShareButton } from './components';
 
 const Share: React.FC = () => {
   const sharePopper = React.useContext(SharePopperContext)!;
-  const isTemplateWorkspace = useSelector(WorkspaceV2.active.isTemplatesSelector);
 
   return (
     <SharePopper>
       {({ ref, isOpened }) => (
         <ShareButton id={Identifier.SHARE_BUTTON} ref={ref} onClick={() => sharePopper.open()} isActive={isOpened}>
-          {isTemplateWorkspace ? 'Download' : 'Share'}
+          Share
         </ShareButton>
       )}
     </SharePopper>

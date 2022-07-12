@@ -109,7 +109,6 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
   const account = useSelector(Account.userSelector);
   const firstLogin = useSelector(Account.isFirstLoginSelector);
   const currentWorkspaceID = useSelector(Session.activeWorkspaceIDSelector);
-  const hasTemplateWorkspace = useSelector(WorkspaceV2.hasTemplatesWorkspaceSelector);
   const isLoggedIn = useSelector(Account.isLoggedInSelector);
 
   const checkoutWorkspace = useDispatch(Workspace.checkout);
@@ -162,7 +161,6 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
 
   const specificFlowType = OnboardingUtils.getSpecificFlowType(query, flow, isLoginFlow, isFirstSession);
   const upgradingAWorkspace = UPGRADING_WORKSPACE_SPECIFIC_FLOWS.has(specificFlowType);
-  const nonTemplateWorkspaces = React.useMemo(() => workspaces.filter((workspace) => !workspace.templates), [workspaces.length]);
   const numberOfSteps = OnboardingUtils.getNumberOfSteps({
     specificFlowType,
     hasPresetSeats: !!seats,
@@ -218,10 +216,10 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
   cache.current.state = state;
 
   React.useEffect(() => {
-    const usedSignupCoupon = nonTemplateWorkspaces.length === 1 && nonTemplateWorkspaces[0].name === 'Personal';
+    const usedSignupCoupon = workspaces.length === 1 && workspaces[0].name === 'Personal';
     actions.setUsedSignupCoupon(usedSignupCoupon);
     if (usedSignupCoupon) {
-      setActiveWorkspace(nonTemplateWorkspaces[0].id);
+      setActiveWorkspace(workspaces[0].id);
     }
   }, [workspaces.length]);
 
@@ -313,7 +311,7 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
     if (!workspace) {
       try {
         if (usedSignupCoupon) {
-          [workspace] = nonTemplateWorkspaces;
+          [workspace] = workspaces;
           updateWorkspaceName(name);
           updateWorkspaceImage(workspaceImage);
         } else {
@@ -506,8 +504,7 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
     },
   };
 
-  const templateWorkspacesLength = hasTemplateWorkspace ? 1 : 0;
-  const alreadyHasFreeWorkspace = workspaces.length - templateWorkspacesLength > 0;
+  const alreadyHasFreeWorkspace = workspaces.length > 0;
 
   const redirectToDashboard =
     isLoginFlow &&

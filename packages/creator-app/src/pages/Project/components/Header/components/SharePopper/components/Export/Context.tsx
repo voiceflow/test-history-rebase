@@ -7,8 +7,7 @@ import { Permission } from '@/config/permissions';
 import { GATED_EXPORT_TYPES } from '@/config/planLimits/canvasExport';
 import { ExportFormat as CanvasExportFormat, ExportType, NLPProvider, NLPProviderLabels } from '@/constants';
 import * as Export from '@/ducks/export';
-import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { useDispatch, usePermission, useSelector, useTrackingEvents } from '@/hooks';
+import { useDispatch, usePermission, useTrackingEvents } from '@/hooks';
 import { PlatformContext } from '@/pages/Project/contexts';
 import { isVoiceflowPlatform } from '@/utils/typeGuards';
 
@@ -37,14 +36,13 @@ export const { Consumer: ExportConsumer } = ExportContext;
 export const ExportProvider: React.FC = ({ children }) => {
   const exportCanvas = useDispatch(Export.exportCanvas);
   const exportModel = useDispatch(Export.exportModel);
-  const isTemplateWorkspace = useSelector(WorkspaceV2.active.isTemplatesSelector);
   const [permissionToExport] = usePermission(Permission.MODEL_EXPORT);
 
   const [trackingEvents] = useTrackingEvents();
   const platform = React.useContext(PlatformContext)!;
   const [exportType, setExportType] = React.useState<ExportType>(ExportType.MODEL);
   const [isExporting, setExporting] = React.useState(false);
-  const [canvasExportFormat, setCanvasExportFormat] = React.useState(isTemplateWorkspace ? CanvasExportFormat.VF : CanvasExportFormat.PNG);
+  const [canvasExportFormat, setCanvasExportFormat] = React.useState(CanvasExportFormat.PNG);
   const [canExport, setCanExport] = React.useState(permissionToExport || !GATED_EXPORT_TYPES.has(canvasExportFormat));
 
   const nlpProviderOptions = React.useMemo(() => {
@@ -68,7 +66,6 @@ export const ExportProvider: React.FC = ({ children }) => {
     }
 
     trackingEvents.trackProjectExported({
-      template: isTemplateWorkspace,
       platform,
       exportType,
       exportFormat: canvasExportFormat,

@@ -7,4 +7,3 @@ export * as platform from './platform';
 export * as port from './port';
 export * as slot from './slot';
 export * as typeGuards from './typeGuards';
-export * as workspace from './workspace';

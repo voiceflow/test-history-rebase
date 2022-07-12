@@ -13,7 +13,6 @@ const DashboardGate: React.FC = ({ children }) => {
   const routeWorkspaceID = useRouteWorkspaceID();
   const activeWorkspaceID = useSelector(Session.activeWorkspaceIDSelector);
   const workspaceIDs = useSelector(WorkspaceV2.allWorkspaceIDsSelector);
-  const personalWorkspaceIDs = useSelector(WorkspaceV2.personalWorkspaceIDsSelector);
 
   const load = useDispatch(Workspace.setActive, routeWorkspaceID!);
 
@@ -24,8 +23,8 @@ const DashboardGate: React.FC = ({ children }) => {
     }
   } else if (activeWorkspaceID && workspaceIDs.includes(activeWorkspaceID)) {
     return <RedirectWithSearch to={generatePath(Path.WORKSPACE_DASHBOARD, { workspaceID: activeWorkspaceID })} />;
-  } else if (personalWorkspaceIDs.length) {
-    return <RedirectWithSearch to={generatePath(Path.WORKSPACE_DASHBOARD, { workspaceID: personalWorkspaceIDs[0] })} />;
+  } else if (workspaceIDs.length) {
+    return <RedirectWithSearch to={generatePath(Path.WORKSPACE_DASHBOARD, { workspaceID: workspaceIDs[0] })} />;
   }
 
   const isLoaded = routeWorkspaceID === activeWorkspaceID;

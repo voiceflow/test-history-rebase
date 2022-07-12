@@ -269,9 +269,9 @@ suite('Client - Workspace', ({ expect, stubFetch, stubAdapter }) => {
       const email = Utils.generate.string();
       const fetch = stubFetch('api', 'patch');
 
-      await client.updateInvite(WORKSPACE_ID, email, UserRole.LIBRARY);
+      await client.updateInvite(WORKSPACE_ID, email, UserRole.BILLING);
 
-      expect(fetch).to.be.calledWithExactly(`${WORKSPACES_PATH}/${WORKSPACE_ID}/invite`, { email, role: UserRole.LIBRARY });
+      expect(fetch).to.be.calledWithExactly(`${WORKSPACES_PATH}/${WORKSPACE_ID}/invite`, { email, role: UserRole.BILLING });
     });
   });
 

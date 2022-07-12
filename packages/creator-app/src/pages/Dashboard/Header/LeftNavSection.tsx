@@ -25,7 +25,6 @@ const LeftNavSection: React.FC<LeftNavSectionProps> = ({ activeWorkspace }) => {
   const plan = useSelector(WorkspaceV2.active.planSelector);
   const [canCreatePrivateCloudWorkspace] = usePermission(Permission.CREATE_PRIVATE_CLOUD_WORKSPACE);
   const workspaces = useSelector(WorkspaceV2.allWorkspacesSelector);
-  const isTemplateWorkspace = useSelector(WorkspaceV2.active.isTemplatesSelector);
   const isAdminOfAnyWorkspace = useSelector(WorkspaceV2.isAdminOfAnyWorkspaceSelector);
   const isLoadingProjects = useSelector(UI.isLoadingProjectsSelector);
   const revisedEntitlements = useFeature(FeatureFlag.REVISED_CREATOR_ENTITLEMENTS);
@@ -90,7 +89,7 @@ const LeftNavSection: React.FC<LeftNavSectionProps> = ({ activeWorkspace }) => {
           </WorkspacesDropdown>
         )}
       </Dropdown>
-      {!isTemplateWorkspace && <PlanBubble plan={plan!} />}
+      <PlanBubble plan={plan!} />
     </>
   );
 };

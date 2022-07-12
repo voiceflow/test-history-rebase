@@ -22,14 +22,13 @@ const SettingsButton: React.FC = () => {
   const [canNotLeaveWorkspace] = usePermission(Permission.UNABLE_TO_LEAVE_WORKSPACE);
 
   const isEditor = activeRole === UserRole.EDITOR;
-  const isLibrary = activeRole === UserRole.LIBRARY;
-  const isViewer = isLibrary || activeRole === UserRole.VIEWER;
+  const isViewer = activeRole === UserRole.VIEWER;
 
   return (
     <TippyTooltip title="Settings" position="bottom">
       <Dropdown
         menu={
-          <Menu noBottomPadding noTopPadding={!canViewSettingsWorkspace && isLibrary}>
+          <Menu noBottomPadding>
             {canViewSettingsWorkspace && (
               <>
                 <MenuItem onClick={toggleCollaborators}>Manage Collaborators</MenuItem>
@@ -61,13 +60,9 @@ const SettingsButton: React.FC = () => {
             ) : (
               <>
                 {(isEditor || isViewer) && (
-                  <>
-                    {!isLibrary && <MenuItem divider style={{ marginBottom: 0 }} />}
-
-                    <MenuItem disabled ending>
-                      <Text color="#62778c">Workspace {isEditor ? 'Editor' : 'Viewer'}</Text>
-                    </MenuItem>
-                  </>
+                  <MenuItem disabled ending>
+                    <Text color="#62778c">Workspace {isEditor ? 'Editor' : 'Viewer'}</Text>
+                  </MenuItem>
                 )}
               </>
             )}

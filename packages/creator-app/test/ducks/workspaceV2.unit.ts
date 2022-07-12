@@ -31,7 +31,6 @@ const WORKSPACE: Realtime.Workspace = {
   created: '',
   image: 'http://example.com/image.png',
   hasSource: false,
-  templates: false,
   betaFlag: -1,
   projects: 3,
   seats: 5,
@@ -69,7 +68,6 @@ const MOCK_STATE: Workspace.WorkspaceState = {
       created: '',
       image: 'http://example.com/image.png',
       hasSource: false,
-      templates: false,
       betaFlag: -1,
       projects: 3,
       seats: 5,
@@ -283,32 +281,6 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace V2', ({ expect, describeReducerV
         const result = Workspace.allWorkspaceIDsSelector(createState(MOCK_STATE));
 
         expect(result).to.eq(MOCK_STATE.allKeys);
-      });
-    });
-
-    describe('hasTemplatesWorkspaceSelector()', () => {
-      it('true if a templates workspace exists', () => {
-        const workspaceState = { ...MOCK_STATE, byKey: { ...MOCK_STATE.byKey, [WORKSPACE_ID]: { ...WORKSPACE, templates: true } } };
-
-        const result = Workspace.hasTemplatesWorkspaceSelector(createState(workspaceState));
-
-        expect(result).to.be.true;
-      });
-
-      it('false if a templates workspace does not exists', () => {
-        const result = Workspace.hasTemplatesWorkspaceSelector(createState(MOCK_STATE));
-
-        expect(result).to.be.false;
-      });
-    });
-
-    describe('personalWorkspaceIDsSelector()', () => {
-      it('select all non-templates workspaces', () => {
-        const workspaceState = { ...MOCK_STATE, byKey: { ...MOCK_STATE.byKey, [WORKSPACE_ID]: { ...WORKSPACE, templates: true } } };
-
-        const result = Workspace.personalWorkspaceIDsSelector(createState(workspaceState));
-
-        expect(result).to.eql(['abc']);
       });
     });
 

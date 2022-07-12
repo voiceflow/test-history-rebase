@@ -63,7 +63,6 @@ export const MOCK_ACTION = {
         name: Utils.generate.string(),
         role: 'editor',
       })),
-      templates: false,
       betaFlag: 0,
       organizationID: '',
     })),

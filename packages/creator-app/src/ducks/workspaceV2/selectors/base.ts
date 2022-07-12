@@ -16,12 +16,6 @@ export const {
   isEmpty: workspacesEmptySelector,
 } = createCRUDSelectors(STATE_KEY);
 
-export const hasTemplatesWorkspaceSelector = createSelector([allWorkspacesSelector], (workspaces) => workspaces.some(({ templates }) => templates));
-
-export const personalWorkspaceIDsSelector = createSelector([allWorkspacesSelector], (workspaces) =>
-  workspaces.filter((workspace) => !workspace.templates).map((workspace) => workspace.id)
-);
-
 export const getWorkspaceByIDSelector = createCurriedSelector(workspaceByIDSelector);
 
 export const isAdminOfAnyWorkspaceSelector = createSelector([allWorkspacesSelector, Account.userIDSelector], (workspaces, userID) =>

@@ -1,4 +1,4 @@
-import { PlanType, UserRole } from '@voiceflow/internal';
+import { PlanType } from '@voiceflow/internal';
 import { getAlternativeColor } from '@voiceflow/ui';
 import { createSelector } from 'reselect';
 
@@ -10,7 +10,6 @@ import * as Feature from '@/ducks/feature';
 import * as Session from '@/ducks/session';
 import { createCurriedSelector, creatorIDParamSelector } from '@/ducks/utils';
 
-import { TEMPLATES_ADMIN_ID, TEMPLATES_EDITORS_ID } from '../constants';
 import { getWorkspaceByIDSelector } from './base';
 
 export const workspaceSelector = createSelector([getWorkspaceByIDSelector, Session.activeWorkspaceIDSelector], (getWorkspace, workspaceID) =>
@@ -51,8 +50,6 @@ export const usedViewerSeatsSelector = createSelector(
   (members) => members.filter((member) => !EDITOR_SEAT_ROLES.includes(member.role)).length
 );
 
-export const isTemplatesSelector = createSelector([workspaceSelector], (workspace) => !!workspace?.templates);
-
 export const memberByIDSelector = createSelector(
   [membersSelector, creatorIDParamSelector],
   (members, creatorID) => members.find((member) => member.creator_id === creatorID) || null
@@ -70,23 +67,10 @@ export const getDistinctWorkspaceMemberByCreatorIDSelector = createSelector(
 
 export const hasMemberByIDSelector = createSelector([getMemberByIDSelector], (getMember) => (creatorID: number) => !!getMember({ creatorID }));
 
-export const userRoleSelector = createSelector(
-  [getMemberByIDSelector, workspaceSelector, Account.userIDSelector],
-  (getMember, workspace, creatorID) => {
-    if (!creatorID) return null;
-
-    // template workspace has empty members array since the volume can be very high
-    if (workspace?.templates) {
-      if (creatorID === TEMPLATES_ADMIN_ID) return UserRole.ADMIN;
-
-      if (TEMPLATES_EDITORS_ID.includes(creatorID)) return UserRole.EDITOR;
-
-      return UserRole.LIBRARY;
-    }
-
-    return getMember({ creatorID })?.role;
-  }
-);
+export const userRoleSelector = createSelector([getMemberByIDSelector, Account.userIDSelector], (getMember, creatorID) => {
+  if (!creatorID) return null;
+  return getMember({ creatorID })?.role;
+});
 
 export const hasPermissionSelector = createSelector(
   [userRoleSelector, planSelector, (_: unknown, permission: Permission) => permission, organizationTrialExpired],

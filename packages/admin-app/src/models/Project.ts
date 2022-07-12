@@ -77,7 +77,6 @@ export interface Project {
   plan: string;
   period: null;
   beta_flag: number;
-  templates: boolean;
   board_name: string;
   board_created: string;
   skill_created: string;

@@ -7,6 +7,3 @@ export { UNKNOWN_MEMBER_DATA } from '@/ducks/workspace/constants';
 export const STATE_KEY = 'workspaceV2';
 
 export const INITIAL_STATE: WorkspaceState = createCRUDState();
-
-export const TEMPLATES_ADMIN_ID = 36745;
-export const TEMPLATES_EDITORS_ID = [3600, 27497];

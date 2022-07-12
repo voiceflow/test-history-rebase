@@ -6,8 +6,7 @@ import React from 'react';
 import { Permission } from '@/config/permissions';
 import { CANVAS_ZOOM_DELTA, CLIPBOARD_DATA_KEY, ModalType } from '@/constants';
 import * as UIDuck from '@/ducks/ui';
-import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { useDispatch, useModals, usePermission, useSelector } from '@/hooks';
+import { useDispatch, useModals, usePermission } from '@/hooks';
 import { ClipboardContext, ContextMenuContext, ContextMenuValue, EngineContext } from '@/pages/Canvas/contexts';
 import { MarkupContext } from '@/pages/Project/contexts';
 import { Identifier } from '@/styles/constants';
@@ -67,11 +66,7 @@ const OPTION_HANDLERS: Record<CanvasAction, OptionHandler> = {
 
   [CanvasAction.ADD_IMAGE]: (_, { markup }) => markup.triggerImagesUpload(),
 
-  [CanvasAction.ADD_COMMENT]: (_, { engine, isTemplate, upgradeModal, canUseCommenting }) => {
-    if (isTemplate) {
-      return;
-    }
-
+  [CanvasAction.ADD_COMMENT]: (_, { engine, upgradeModal, canUseCommenting }) => {
     if (!canUseCommenting) {
       upgradeModal.open();
 
@@ -85,8 +80,6 @@ const OPTION_HANDLERS: Record<CanvasAction, OptionHandler> = {
 const isCanvasActionValue = (value: string): value is CanvasAction => Object.values<string>(CanvasAction).includes(value);
 
 const ContextMenu: React.FC = () => {
-  const isTemplateWorkspace = useSelector(WorkspaceV2.active.isTemplatesSelector);
-
   const toggleCanvasOnly = useDispatch(UIDuck.toggleCanvasOnly);
 
   const engine = React.useContext(EngineContext)!;
@@ -104,7 +97,6 @@ const ContextMenu: React.FC = () => {
     engine,
     markup,
     clipboard,
-    isTemplate: isTemplateWorkspace,
     upgradeModal,
     canUseCommenting,
     toggleCanvasOnly,

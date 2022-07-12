@@ -16,11 +16,11 @@ const NewProject = lazy(() => import('@/pages/NewProject'));
 const Dashboard = lazy(() => import('@/pages/Dashboard'));
 
 const Workspace: React.FC = () => {
-  const personalWorkspaceIDs = useSelector(WorkspaceV2.personalWorkspaceIDsSelector);
+  const workspaceIDs = useSelector(WorkspaceV2.allWorkspaceIDsSelector);
 
   const goToNewWorkspace = useDispatch(Router.goToNewWorkspace);
 
-  if (!personalWorkspaceIDs.length) {
+  if (!workspaceIDs.length) {
     return (
       <div className="h-100 d-flex justify-content-center">
         <div className="align-self-center text-center">

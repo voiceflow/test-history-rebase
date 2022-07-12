@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.824.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.823.0...@voiceflow/creator-app@1.824.0) (2022-07-12)
+
+
+### Features
+
+* conditions tree logic (CT-492) ([#5743](https://github.com/voiceflow/creator-app/issues/5743)) ([94b13da](https://github.com/voiceflow/creator-app/commit/94b13da3e530295645c3c7deed7e6a5993f86323))
+
+
+
+
+
 # [1.823.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.822.1...@voiceflow/creator-app@1.823.0) (2022-07-12)
 
 

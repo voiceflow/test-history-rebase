@@ -3,6 +3,7 @@ import { Button, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
+import * as Documentation from '@/config/documentation';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import { useMapManager, useSelector, useToggle } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
@@ -50,7 +51,7 @@ const CarouselEditorRoot: NodeEditorV2<Realtime.NodeData.Carousel, Realtime.Node
       header={<EditorV2.DefaultHeader />}
       footer={
         !isDragging && (
-          <EditorV2.DefaultFooter>
+          <EditorV2.DefaultFooter tutorial={Documentation.CAROUSEL_STEP}>
             <EditorV2.FooterActionsButton actions={actions} />
             <Button variant={Button.Variant.PRIMARY} onClick={() => mapManager.onAdd()} squareRadius>
               Add Card

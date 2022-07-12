@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.823.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.822.1...@voiceflow/creator-app@1.823.0) (2022-07-12)
+
+
+### Features
+
+* add carousel docs link (CT-558) ([#5742](https://github.com/voiceflow/creator-app/issues/5742)) ([4fe89fd](https://github.com/voiceflow/creator-app/commit/4fe89fdb88231de6ba9a4b39f7c35383625c17cc)), closes [/www.voiceflow.com/docs/designing-response-steps#toc-6](https://github.com//www.voiceflow.com/docs/designing-response-steps/issues/toc-6)
+
+
+
+
+
 ## [1.822.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.822.0...@voiceflow/creator-app@1.822.1) (2022-07-12)
 
 

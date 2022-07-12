@@ -4,7 +4,8 @@ import { Box, SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
 import { MAX_ALEXA_REPROMPTS, MAX_SYSTEM_MESSAGES_COUNT } from '@/constants';
-import { useMapManager } from '@/hooks';
+import * as VersionV2 from '@/ducks/versionV2';
+import { useMapManager, useSelector } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import { chatPromptFactory, voiceAudioPromptFactory, voicePromptFactory } from '@/utils/prompt';
 
@@ -20,6 +21,7 @@ interface RepromptsSectionProps {
 
 const RepromptsSection: React.FC<RepromptsSectionProps> = ({ title, active, reprompts, onChange }) => {
   const editor = EditorV2.useEditor();
+  const defaultVoice = useSelector(VersionV2.active.defaultVoiceSelector);
   const mapManager = useMapManager(reprompts, onChange, {
     getKey: (item) => item.id,
     maxItems: Realtime.Utils.typeGuards.isAlexaPlatform(editor.platform) ? MAX_ALEXA_REPROMPTS : MAX_SYSTEM_MESSAGES_COUNT,
@@ -37,7 +39,7 @@ const RepromptsSection: React.FC<RepromptsSectionProps> = ({ title, active, repr
         ) : (
           <SectionV2.AddButtonDropdown
             actions={[
-              { label: 'Speak', onClick: () => mapManager.onAdd(voicePromptFactory()) },
+              { label: 'Speak', onClick: () => mapManager.onAdd(voicePromptFactory({ defaultVoice })) },
               { label: 'Audio', onClick: () => mapManager.onAdd(voiceAudioPromptFactory()) },
             ]}
             disabled={mapManager.isMaxReached}

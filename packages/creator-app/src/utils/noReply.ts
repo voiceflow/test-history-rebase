@@ -19,7 +19,7 @@ export const chatNoReplyFactory = (): ChatNode.Utils.StepNoReply => ({
   reprompts: [chatPromptFactory()],
 });
 
-export const voiceNoReplyFactory = (options: NoReplyFactoryOptions = {}): Realtime.NodeData.VoiceNoReply => ({
+export const voiceNoReplyFactory = (options: NoReplyFactoryOptions): Realtime.NodeData.VoiceNoReply => ({
   ...BASE_NO_REPLY,
   reprompts: [voicePromptFactory(options)],
 });
@@ -33,7 +33,7 @@ export const getDefaultNoReplyTimeoutSeconds = Realtime.Utils.platform.createPla
   10
 );
 
-type PromptFactory = (options?: PromptFactoryOptions) => Realtime.NodeData.NoReply;
+type PromptFactory = (options: PromptFactoryOptions) => Realtime.NodeData.NoReply;
 
 export const getPlatformNoReplyFactory = (
   projectType?: Nullish<VoiceflowConstants.ProjectType>,
@@ -43,6 +43,6 @@ export const getPlatformNoReplyFactory = (
 
   return Realtime.Utils.platform.createProjectTypeSelector<PromptFactory>({
     [VoiceflowConstants.ProjectType.CHAT]: () => ({ ...chatNoReplyFactory(), timeout }),
-    [VoiceflowConstants.ProjectType.VOICE]: () => ({ ...voiceNoReplyFactory(), timeout }),
+    [VoiceflowConstants.ProjectType.VOICE]: (options: PromptFactoryOptions) => ({ ...voiceNoReplyFactory(options), timeout }),
   })(projectType || undefined);
 };

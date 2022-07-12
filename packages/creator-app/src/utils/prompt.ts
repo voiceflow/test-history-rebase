@@ -11,11 +11,11 @@ import { VoicePromptType } from '@/constants';
 type VoicePrompt = Realtime.NodeData.VoicePrompt;
 
 export interface PromptFactoryOptions {
-  defaultVoice?: Nullish<string>;
+  defaultVoice: Nullish<string>;
 }
 
 export const chatPromptFactory = (): ChatModels.Prompt => ({ id: Utils.id.cuid(), content: EditorAPI.getEmptyState() });
-export const voicePromptFactory = ({ defaultVoice }: PromptFactoryOptions = {}): Realtime.NodeData.VoicePrompt => ({
+export const voicePromptFactory = ({ defaultVoice }: PromptFactoryOptions): Realtime.NodeData.VoicePrompt => ({
   id: Utils.id.cuid.slug(),
   type: VoicePromptType.TEXT,
   voice: defaultVoice ?? '',
@@ -26,21 +26,14 @@ export const voiceAudioPromptFactory = (): Realtime.NodeData.VoicePrompt => ({
   type: VoicePromptType.AUDIO,
   content: '',
 });
-export const voiceIntentPromptFactory = ({ defaultVoice }: PromptFactoryOptions = {}): VoiceModels.IntentPrompt<any> => ({
+export const voiceIntentPromptFactory = ({ defaultVoice }: PromptFactoryOptions): VoiceModels.IntentPrompt<any> => ({
   text: '',
   slots: [],
   voice: defaultVoice,
 });
 
-export const getPlatformPromptFactory = Realtime.Utils.platform.createProjectTypeSelector<
-  (options?: PromptFactoryOptions) => ChatModels.Prompt | Realtime.NodeData.VoicePrompt
->({
-  [VoiceflowConstants.ProjectType.CHAT]: chatPromptFactory,
-  [VoiceflowConstants.ProjectType.VOICE]: voicePromptFactory,
-});
-
 export const getPlatformIntentPromptFactory = Realtime.Utils.platform.createProjectTypeSelector<
-  (options?: PromptFactoryOptions) => ChatModels.Prompt | VoiceModels.IntentPrompt<string>
+  (options: PromptFactoryOptions) => ChatModels.Prompt | VoiceModels.IntentPrompt<string>
 >({
   [VoiceflowConstants.ProjectType.CHAT]: chatPromptFactory,
   [VoiceflowConstants.ProjectType.VOICE]: voiceIntentPromptFactory,

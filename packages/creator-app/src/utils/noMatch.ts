@@ -13,13 +13,13 @@ const BASE_NO_MATCH: Realtime.NodeData.BaseNoMatch = {
 };
 
 export const chatNoMatchFactory = (): Realtime.NodeData.ChatNoMatch => ({ ...BASE_NO_MATCH, reprompts: [chatPromptFactory()] });
-export const voiceNoMatchFactory = (options: NoMatchFactoryOptions = {}): Realtime.NodeData.VoiceNoMatch => ({
+export const voiceNoMatchFactory = (options: NoMatchFactoryOptions): Realtime.NodeData.VoiceNoMatch => ({
   ...BASE_NO_MATCH,
   reprompts: [voicePromptFactory(options)],
 });
 
 export const getPlatformNoMatchFactory = Realtime.Utils.platform.createProjectTypeSelector<
-  (options?: PromptFactoryOptions) => Realtime.NodeData.NoMatch
+  (options: PromptFactoryOptions) => Realtime.NodeData.NoMatch
 >({
   [VoiceflowConstants.ProjectType.CHAT]: chatNoMatchFactory,
   [VoiceflowConstants.ProjectType.VOICE]: voiceNoMatchFactory,

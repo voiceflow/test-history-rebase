@@ -6,6 +6,7 @@ import React from 'react';
 import { HelpTooltip } from '@/components/IntentForm';
 import VariableSelectV2 from '@/components/VariableSelectV2';
 import * as SlotV2 from '@/ducks/slotV2';
+import * as VersionV2 from '@/ducks/versionV2';
 import { useAddSlot, useSelector, useVariableCreation } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import { useIntentScope } from '@/pages/Canvas/managers/hooks';
@@ -18,6 +19,7 @@ import { useEntitiesOptions } from './hooks';
 
 const QueryEditor: React.FC<{ disableAnimation: boolean }> = ({ disableAnimation }) => {
   const editor = EditorV2.useEditor<Realtime.NodeData.CaptureV2, Realtime.NodeData.CaptureV2BuiltInPorts>();
+  const defaultVoice = useSelector(VersionV2.active.defaultVoiceSelector);
   const allSlots = useSelector(SlotV2.allSlotsSelector);
   const { variables, createVariable } = useVariableCreation();
 
@@ -30,7 +32,7 @@ const QueryEditor: React.FC<{ disableAnimation: boolean }> = ({ disableAnimation
 
     editor.onChange({
       intent: { slots: [Realtime.Utils.slot.intentSlotFactoryCreator(editor.projectType)({ id: slotID })] },
-      noMatch: getPlatformNoMatchFactory(editor.projectType)(),
+      noMatch: getPlatformNoMatchFactory(editor.projectType)({ defaultVoice }),
       captureType: BaseNode.CaptureV2.CaptureType.INTENT,
     });
   };

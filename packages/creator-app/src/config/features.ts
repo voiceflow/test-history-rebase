@@ -27,6 +27,7 @@ const CHAT_CAROUSEL_INTENT_ENABLED = process.env.FF_CHAT_CAROUSEL_INTENT === 'tr
 const MIGRATION_SYSTEM_ENABLED = process.env.FF_MIGRATION_SYSTEM === 'true';
 const PROMPT_STEP_ENABLED = process.env.FF_PROMPT_STEP === 'true';
 const REVISED_CANVAS_MENU_ENABLED = process.env.FF_REVISED_CANVAS_MENU === 'true';
+const STICKERS_DROPDOWN_ENABLED = process.env.FF_STICKERS_DROPDOWN === 'true';
 
 // canvas and editor updates
 const INTEGRATION_STEP_CLEANUP = process.env.FF_INTEGRATION_STEP_CLEANUP === 'true';
@@ -62,6 +63,7 @@ export const LOCAL_FEATURE_OVERRIDES: Partial<Record<FeatureFlag, boolean>> = {
   [FeatureFlag.EXPERIMENTAL_SYNC_LINKS]: EXPERIMENTAL_SYNC_LINKS_ENABLED,
   [FeatureFlag.PROMPT_STEP]: PROMPT_STEP_ENABLED,
   [FeatureFlag.REVISED_CANVAS_MENU]: REVISED_CANVAS_MENU_ENABLED,
+  [FeatureFlag.STICKERS_DROPDOWN]: STICKERS_DROPDOWN_ENABLED,
 
   // canvas and editor updates
   [FeatureFlag.INTEGRATION_STEP_CLEANUP]: INTEGRATION_STEP_CLEANUP,

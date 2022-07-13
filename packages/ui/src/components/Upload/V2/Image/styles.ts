@@ -1,7 +1,7 @@
 import Flex from '@ui/components/Flex';
 import { css, styled, transition } from '@ui/styles';
 
-const calculateRatio = (ratio?: number) =>
+const calculateRatio = (ratio?: number | null) =>
   ratio
     ? css`
         padding-bottom: ${ratio}%;
@@ -66,7 +66,7 @@ export const Container = styled.div<{ src: string }>`
 
 const reversePercent = (percentage: number, value: number) => (value / percentage) * 100;
 
-export const ImageViewport = styled(Flex)<{ isActive?: boolean; autoHeight?: boolean; ratio?: number }>`
+export const ImageViewport = styled(Flex)<{ isActive?: boolean; autoHeight?: boolean; ratio?: number | null }>`
   position: relative;
   color: #62778c;
   background-color: #ffffff;

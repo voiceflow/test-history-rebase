@@ -4,8 +4,8 @@ import { css, styled } from '@ui/styles';
 import { Either } from '@ui/types';
 import React from 'react';
 
-import { NestedInputIconPosition } from '../constants';
 import { hideNumberArrows, inputStyle, StyledInputProps } from '../styles';
+import { NestedIconPosition } from '../types';
 import ChildInput from './ChildInput';
 import InlineInput, { InlineInputProps } from './InlineInput';
 import InputWrapper, { InputWrapperProps } from './InputWrapper';
@@ -34,7 +34,7 @@ export interface NestedInputProps extends PlainInputProps, InlineInputProps {
   iconProps?: Partial<Omit<SvgIconTypes.Props, 'icon'>>;
   leftAction?: React.ReactNode;
   rightAction?: React.ReactNode;
-  iconPosition?: NestedInputIconPosition;
+  iconPosition?: NestedIconPosition;
   wrapperProps?: InputWrapperProps;
   onFocusOnClick?: () => void;
 }
@@ -51,7 +51,7 @@ export const NestedInput = React.forwardRef<HTMLInputElement, NestedInputProps>(
       iconProps,
       leftAction,
       rightAction,
-      iconPosition = NestedInputIconPosition.LEFT,
+      iconPosition = NestedIconPosition.LEFT,
       wrapperProps,
       onFocusOnClick,
       ...props
@@ -72,13 +72,13 @@ export const NestedInput = React.forwardRef<HTMLInputElement, NestedInputProps>(
       <InputWrapper onClick={onClick} readOnly={readOnly} disabled={disabled} {...wrapperProps} error={error} className={className}>
         {leftAction}
 
-        {iconPosition === NestedInputIconPosition.LEFT && iconComponent}
+        {iconPosition === NestedIconPosition.LEFT && iconComponent}
 
         <ChildInput>
           {children ? children({ ref: combinedRefs }) : <InlineInput {...props} ref={combinedRefs} readOnly={readOnly} disabled={disabled} />}
         </ChildInput>
 
-        {iconPosition === NestedInputIconPosition.RIGHT && iconComponent}
+        {iconPosition === NestedIconPosition.RIGHT && iconComponent}
 
         {rightAction}
       </InputWrapper>

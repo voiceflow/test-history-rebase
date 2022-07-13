@@ -5,7 +5,7 @@ import * as Modal from '@/ducks/modal';
 import suite from './_suite';
 
 const MOCK_STATE: Modal.ModalState = {
-  confirmModal: { text: 'something', confirm: Utils.functional.noop },
+  confirmModal: { body: 'something', confirm: Utils.functional.noop },
   errorModal: { message: 'something' },
   modal: { value: 'something' },
 };
@@ -13,14 +13,14 @@ const MOCK_STATE: Modal.ModalState = {
 suite(Modal, MOCK_STATE)('Ducks - Modal', ({ expect, spy, describeReducer }) => {
   describeReducer(({ applyAction, expectAction }) => {
     describe('setConfirm()', () => {
-      const text = 'are you sure you want to quit?';
+      const body = 'are you sure you want to quit?';
 
       it('should set a confirmation modal', () => {
         const confirmCallback = spy();
 
-        const nextState = applyAction(Modal.setConfirm({ text, confirm: confirmCallback }));
+        const nextState = applyAction(Modal.setConfirm({ body, confirm: confirmCallback }));
 
-        expect(nextState.confirmModal!.text).to.eq(text);
+        expect(nextState.confirmModal!.body).to.eq(body);
 
         nextState.confirmModal!.confirm();
 

@@ -80,9 +80,9 @@ const QueryEditor: React.FC<{ disableAnimation: boolean }> = ({ disableAnimation
                   <Box mt={16}>
                     <VariableSelectV2
                       value={editor.data.variable}
+                      prefix={<SvgIcon icon="entities" color="#6e849ad9" />}
                       options={variables}
                       onCreate={createVariable}
-                      prefix={<SvgIcon icon="entities" color="#6e849ad9" />}
                       onChange={(variable) => editor.onChange({ variable })}
                     />
                   </Box>

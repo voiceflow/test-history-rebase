@@ -150,19 +150,27 @@ const IntentSelect: React.FC<IntentSelectProps> = ({
         getOptionLabel={(value) => (value ? optionLookup[value] : undefined)}
         formatInputValue={(value) => applyPlatformIntentNameFormatting(value, platform)}
         isButtonDisabled={({ value }) => isIntentNameTaken(value)}
+        createInputPlaceholder={createInputPlaceholder}
+        renderEmpty={({ search }) => <Select.NotFound>{!search ? 'No intents exist in your assistant. ' : 'No intents found. '}</Select.NotFound>}
         renderOptionLabel={(option, searchLabel, getOptionLabel, getOptionValue, { isFocused }) => (
           <Option option={option} isFocused={isFocused} searchLabel={searchLabel} getOptionLabel={getOptionLabel} getOptionValue={getOptionValue} />
         )}
         renderSearchSuffix={
           immModalsV2.isEnabled
-            ? ({ searchLabel }) => <IconButton size={16} icon="plus" variant={IconButton.Variant.BASIC} onClick={() => onCreate(searchLabel)} />
+            ? ({ close, searchLabel }) => (
+                <IconButton
+                  size={16}
+                  icon="plus"
+                  variant={IconButton.Variant.BASIC}
+                  onClick={Utils.functional.chain(close, () => onCreate(searchLabel))}
+                />
+              )
             : null
         }
-        createInputPlaceholder={createInputPlaceholder}
         renderFooterAction={
           immModalsV2.isEnabled
-            ? ({ searchLabel }) => (
-                <NestedMenuComponents.FooterActionContainer onClick={() => onCreate(searchLabel)}>
+            ? ({ close, searchLabel }) => (
+                <NestedMenuComponents.FooterActionContainer onClick={Utils.functional.chain(close, () => onCreate(searchLabel))}>
                   Create New Intent
                 </NestedMenuComponents.FooterActionContainer>
               )

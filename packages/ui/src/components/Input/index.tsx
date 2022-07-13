@@ -6,15 +6,20 @@ import { Utils } from '@voiceflow/common';
 import React from 'react';
 
 import { DefaultInput, DefaultInputProps, InlineInput, InlineInputProps } from './components';
-import { InputVariant } from './constants';
+import { Variant } from './types';
 
 export * from './components';
-export * from './constants';
 export * from './styles';
+export * as InputTypes from './types';
+
+/**
+ * @deprecated
+ */
+export { Variant as InputVariant, NestedIconPosition as NestedInputIconPosition } from './types';
 
 const INPUT_VARIANTS = {
-  [InputVariant.INLINE]: InlineInput,
-  [InputVariant.DEFAULT]: DefaultInput,
+  [Variant.INLINE]: InlineInput,
+  [Variant.DEFAULT]: DefaultInput,
 };
 
 interface SharedProps {
@@ -24,18 +29,18 @@ interface SharedProps {
 }
 
 export interface InlineVariantInputProps extends InlineInputProps, SharedProps, Omit<React.ComponentProps<'input'>, 'ref' | 'children'> {
-  variant: InputVariant.INLINE;
+  variant: Variant.INLINE;
   children?: DefaultInputProps['children'];
 }
 
 interface BaseDefaultVariantInputProps extends SharedProps {
-  variant?: InputVariant.DEFAULT;
+  variant?: Variant.DEFAULT;
 }
 
 export type DefaultVariantInputProps = BaseDefaultVariantInputProps & DefaultInputProps;
 
 const Input = React.forwardRef<HTMLInputElement, Either<InlineVariantInputProps, DefaultVariantInputProps>>(
-  ({ variant = InputVariant.DEFAULT, onChange, autoSelectText, onKeyPress, onChangeText, onEnterPress, ...props }, ref) => {
+  ({ variant = Variant.DEFAULT, onChange, autoSelectText, onKeyPress, onChangeText, onEnterPress, ...props }, ref) => {
     const Component = INPUT_VARIANTS[variant];
     const localRef = React.useRef<HTMLInputElement>(null);
 
@@ -45,7 +50,7 @@ const Input = React.forwardRef<HTMLInputElement, Either<InlineVariantInputProps,
       }
     });
 
-    return variant === InputVariant.INLINE && props.children ? (
+    return variant === Variant.INLINE && props.children ? (
       props.children({ ref })
     ) : (
       <Component
@@ -59,5 +64,5 @@ const Input = React.forwardRef<HTMLInputElement, Either<InlineVariantInputProps,
 );
 
 export default Object.assign(Input, {
-  Variant: InputVariant,
+  Variant,
 });

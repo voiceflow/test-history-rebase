@@ -51,9 +51,11 @@ const TextItem: React.ForwardRefRenderFunction<HTMLElement, TextItemProps> = (
                 isDraggingPreview={isDraggingPreview}
                 isContextMenuOpen={isContextMenuOpen}
               >
-                <SectionV2.Content padding="24px 32px" paddingTop={0}>
-                  <TextInput data={item} onUpdate={onUpdate} autofocus={autofocus} />
-                </SectionV2.Content>
+                {!isDragging && !isDraggingPreview && (
+                  <SectionV2.Content padding="24px 32px" paddingTop={0}>
+                    <TextInput data={item} onUpdate={onUpdate} />
+                  </SectionV2.Content>
+                )}
               </SectionV2.CollapseSection>
             )}
           </SectionV2.Sticky>

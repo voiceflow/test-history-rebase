@@ -23,15 +23,15 @@ export const Container = styled(ButtonContainer)<ContainerProps>`
   gap: 20px;
   background-color: #fff;
   border: 1px solid #fff;
-  box-shadow: 0 0 0 1px rgb(19 33 68 / 6%), 0 1px 0 0 rgb(19 33 68 / 3%), 0 1px 1px 0 rgb(19 33 68 / 1%), 0 2px 2px 0 rgb(19 33 68 / 1%),
-    0 4px 4px 0 rgb(19 33 68 / 2%), 0 8px 12px 0 rgb(19 33 68 / 4%);
+  box-shadow: 0 0 0 1px rgba(19, 33, 68, 0.06), 0 1px 0 0 rgba(19, 33, 68, 0.03), 0 1px 1px 0 rgba(19, 33, 68, 0.01),
+    0 2px 2px 0 rgba(19, 33, 68, 0.01), 0 4px 4px 0 rgba(19, 33, 68, 0.02), 0 8px 12px 0 rgba(19, 33, 68, 0.04);
 
   cursor: pointer;
 
   &:hover {
     background-color: #f9f9f9;
-    box-shadow: 0 0 0 1px rgb(19 33 68 / 6%), 0 1px 0 0 rgb(19 33 68 / 3%), 0 1px 1px 0 rgb(19 33 68 / 1%), 0 2px 2px 0 rgb(19 33 68 / 1%),
-      0 4px 4px 0 rgb(19 33 68 / 2%), 0 8px 12px 0 rgb(19 33 68 / 4%), 0 8px 24px 0 rgb(19 33 68 / 4%);
+    box-shadow: 0 0 0 1px rgba(19, 33, 68, 0.06), 0 1px 0 0 rgba(19, 33, 68, 0.03), 0 1px 1px 0 rgba(19, 33, 68, 0.01),
+      0 2px 2px 0 rgba(19, 33, 68, 0.01), 0 4px 4px 0 rgba(19, 33, 68, 0.02), 0 8px 12px 0 rgba(19, 33, 68, 0.04), 0 8px 24px 0 rgba(19, 33, 68, 0.04);
 
     & ${Icon} {
       opacity: 1;
@@ -40,7 +40,8 @@ export const Container = styled(ButtonContainer)<ContainerProps>`
 
   &:active {
     background-color: #f7f7f7;
-    box-shadow: 0 0 0 1px rgb(19 33 68 / 8%), 0 2px 2px 0 rgb(19 33 68 / 2%), 0 2px 4px 0 rgb(19 33 68 / 2%), 0 2px 8px 0 rgb(19 33 68 / 4%);
+    box-shadow: 0 0 0 1px rgba(19, 33, 68, 0.08), 0 2px 2px 0 rgba(19, 33, 68, 0.02), 0 2px 4px 0 rgba(19, 33, 68, 0.02),
+      0 2px 8px 0 rgba(19, 33, 68, 0.04);
 
     & ${Icon} {
       opacity: 1;

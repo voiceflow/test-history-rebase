@@ -28,6 +28,7 @@ const RootEditor: React.FC = () => {
     ...dynamicPortsSync,
     getKey: (button) => button.id,
     factory: buttonFactory,
+    clone: ({ id }, cloneData) => ({ ...cloneData, id }),
   });
 
   const noMatchConfig = NoMatchV2.useConfig();
@@ -58,7 +59,7 @@ const RootEditor: React.FC = () => {
         )
       }
     >
-      {!editor.data.buttons.length ? (
+      {!mapManager.size ? (
         <ListeningForIntentSection />
       ) : (
         <DraggableList
@@ -72,6 +73,7 @@ const RootEditor: React.FC = () => {
           partialDragItem
           previewComponent={DraggableItem}
           withContextMenuDelete
+          withContextMenuDuplicate
         />
       )}
 

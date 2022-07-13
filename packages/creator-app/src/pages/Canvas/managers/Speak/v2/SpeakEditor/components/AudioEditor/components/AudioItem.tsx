@@ -49,13 +49,15 @@ const AudioItem: React.ForwardRefRenderFunction<HTMLElement, AudioItemProps> = (
                 isDraggingPreview={isDraggingPreview}
                 isContextMenuOpen={isContextMenuOpen}
               >
-                <SectionV2.Content padding="24px 32px" paddingTop={0}>
-                  <UploadV2.Audio
-                    value={item.url}
-                    onChange={(value) => onUpdate({ url: value ?? undefined })}
-                    renderInput={VariablesInput.renderInput}
-                  />
-                </SectionV2.Content>
+                {!isDragging && !isDraggingPreview && (
+                  <SectionV2.Content padding="24px 32px" paddingTop={0}>
+                    <UploadV2.Audio
+                      value={item.url}
+                      onChange={(value) => onUpdate({ url: value ?? undefined })}
+                      renderInput={VariablesInput.renderInput}
+                    />
+                  </SectionV2.Content>
+                )}
               </SectionV2.CollapseSection>
             )}
           </SectionV2.Sticky>

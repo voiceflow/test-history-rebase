@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { ConfirmProps } from '@/components/ConfirmModal';
 import { Action, RootReducer } from '@/store/types';
 
 import { createAction } from './utils';
@@ -9,14 +10,6 @@ interface ErrorModal {
   message?: React.ReactNode;
   violations?: { message: React.ReactNode }[];
   [key: string]: unknown;
-}
-
-interface ConfirmModal {
-  text: React.ReactNode;
-  confirm: VoidFunction;
-  warning?: boolean;
-  maxWidth?: number;
-  cancelable?: boolean;
 }
 
 interface StandardModal {
@@ -30,7 +23,7 @@ interface StandardModal {
 export interface ModalState {
   modal: StandardModal | null;
   errorModal: ErrorModal | null;
-  confirmModal: ConfirmModal | null;
+  confirmModal: ConfirmProps | null;
 }
 
 export const STATE_KEY = 'modal';
@@ -42,15 +35,16 @@ export const INITIAL_STATE: ModalState = {
 };
 
 export enum ModalAction {
-  SET_CONFIRM = 'SET_CONFIRM',
   SET_ERROR = 'SET_ERROR',
   SET_MODAL = 'SET_MODAL',
   CLEAR_MODAL = 'CLEAR_MODAL',
+  SET_CONFIRM = 'SET_CONFIRM',
+  OPEN_CONFIRM = 'OPEN_CONFIRM',
 }
 
 // action types
 
-export type SetConfirm = Action<ModalAction.SET_CONFIRM, ConfirmModal>;
+export type SetConfirm = Action<ModalAction.SET_CONFIRM, ConfirmProps>;
 
 export type SetError = Action<ModalAction.SET_ERROR, ErrorModal>;
 
@@ -90,7 +84,7 @@ export default modalReducer;
 
 // action creators
 
-export const setConfirm = (confirm: ConfirmModal): SetConfirm => createAction(ModalAction.SET_CONFIRM, confirm);
+export const setConfirm = (confirm: ConfirmProps): SetConfirm => createAction(ModalAction.SET_CONFIRM, confirm);
 
 export const setError = (rawError: string | { message?: unknown; data?: unknown; [key: string]: unknown }): SetError => {
   let error = rawError;

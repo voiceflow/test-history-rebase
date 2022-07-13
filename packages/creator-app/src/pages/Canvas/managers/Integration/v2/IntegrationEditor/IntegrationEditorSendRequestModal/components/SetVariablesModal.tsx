@@ -22,9 +22,9 @@ const SetVariablesModal: React.FC<SetVariablesModalProps> = ({ variableValues, o
           {Object.keys(variableValues).map((variable, index) => (
             <Input
               key={index}
+              value={variableValues[variable] || ''}
               leftAction={<InputAction>{variable.toUpperCase()}</InputAction>}
               placeholder="Enter value"
-              value={variableValues[variable] || ''}
               onChangeText={(value) => onChange(variable, value)}
             />
           ))}
@@ -35,6 +35,7 @@ const SetVariablesModal: React.FC<SetVariablesModalProps> = ({ variableValues, o
         <Button variant={ButtonVariant.TERTIARY} squareRadius style={{ marginRight: '12px' }} onClick={onCancel}>
           Cancel
         </Button>
+
         <Button squareRadius onClick={onSendRequest} isLoading={isLoading}>
           Send Request
         </Button>

@@ -12,9 +12,10 @@ interface UtteranceSectionProps {
   onChange: (utterances: Realtime.IntentInput[]) => void;
   usedSlots: Realtime.Slot[];
   utterances: Realtime.IntentInput[];
+  preventAccent?: boolean;
 }
 
-const UtteranceSection: React.FC<UtteranceSectionProps> = ({ slot, usedSlots, utterances, onChange }) => {
+const UtteranceSection: React.FC<UtteranceSectionProps> = ({ slot, usedSlots, utterances, onChange, preventAccent }) => {
   const utteranceRef = React.useRef<UtteranceRef>(null);
   const [addError, setAddError] = React.useState('');
   const [isAddEmpty, setIsAddEmpty] = React.useState(true);
@@ -64,6 +65,7 @@ const UtteranceSection: React.FC<UtteranceSectionProps> = ({ slot, usedSlots, ut
           }
           onToggle={onToggle}
           collapsed={collapsed}
+          preventAccent={preventAccent}
           containerToggle
         >
           <SectionV2.Content bottomOffset={2.5}>

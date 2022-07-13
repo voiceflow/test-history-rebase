@@ -121,7 +121,7 @@ const SSML = (
               <Tooltip title={voiceSelectLabel} position="top" delay={300} distance={0}>
                 <VoiceSelectTrigger ref={ref} isActive={isOpen} onClick={isOpen ? onHideMenu : onOpenMenu}>
                   <span>{voiceSelectLabel || 'Select Voice'}</span>
-                  <SvgIcon icon="arrowToggleV2" color="#6e849a" size={16} rotation={90} />
+                  <SvgIcon icon="arrowToggleV2" color="#6e849a" size={20} rotation={90} />
                 </VoiceSelectTrigger>
               </Tooltip>
             )}

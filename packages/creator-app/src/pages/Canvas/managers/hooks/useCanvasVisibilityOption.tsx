@@ -49,7 +49,7 @@ const useCanvasVisibilityOption = (
             {labels.PREVIEW}
           </MenuCheckboxOption>
         ),
-        disabled: true,
+        readOnly: true,
       },
       {
         label: (
@@ -60,9 +60,9 @@ const useCanvasVisibilityOption = (
             {labels.VARIANTS}
           </MenuCheckboxOption>
         ),
-        disabled: true,
+        readOnly: true,
       },
-      { label: '', disabled: true, menuItemProps: { style: { marginBottom: 0 }, divider: true } },
+      { label: '', readOnly: true, menuItemProps: { style: { marginBottom: 0 }, divider: true } },
       {
         label: (
           <MenuCheckboxOption
@@ -79,7 +79,7 @@ const useCanvasVisibilityOption = (
             {labels.SET_DEFAULT}
           </MenuCheckboxOption>
         ),
-        disabled: true,
+        readOnly: true,
         menuItemProps: { ending: true },
       },
     ],

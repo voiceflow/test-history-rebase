@@ -1,6 +1,6 @@
 import { Nullable, Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { NestedMenuComponents, Select } from '@voiceflow/ui';
+import { IconButton, NestedMenuComponents, Select } from '@voiceflow/ui';
 import React from 'react';
 
 interface ComponentSelectProps {
@@ -21,18 +21,30 @@ const ComponentSelect: React.FC<ComponentSelectProps> = ({ selectedDiagramID, di
       value={selectedDiagramID}
       options={diagrams}
       onCreate={onCreate}
+      fullWidth
       onSelect={onChange}
-      inDropdownSearch
-      alwaysShowCreate
       searchable
-      placeholder="Select flow"
+      placeholder="Select or create flow"
       getOptionValue={(option) => option?.id}
       getOptionLabel={(value) => (value ? optionLookup[value]?.name : undefined)}
+      inDropdownSearch
+      alwaysShowCreate
+      clearOnSelectActive
       createInputPlaceholder="flows"
-      renderFooterAction={({ searchLabel }) => (
-        <NestedMenuComponents.FooterActionContainer onClick={() => onCreate(searchLabel)}>Create New Flow</NestedMenuComponents.FooterActionContainer>
+      renderEmpty={({ search }) => <Select.NotFound>{!search ? 'No flows exist in your assistant. ' : 'No flows found. '}</Select.NotFound>}
+      renderSearchSuffix={({ close, searchLabel }) => (
+        <IconButton
+          size={16}
+          icon="plus"
+          variant={IconButton.Variant.BASIC}
+          onClick={Utils.functional.chainVoid(close, () => onCreate(searchLabel))}
+        />
       )}
-      fullWidth
+      renderFooterAction={({ close, searchLabel }) => (
+        <NestedMenuComponents.FooterActionContainer onClick={Utils.functional.chainVoid(close, () => onCreate(searchLabel))}>
+          Create New Flow
+        </NestedMenuComponents.FooterActionContainer>
+      )}
     />
   );
 };

@@ -1,9 +1,9 @@
-export enum InputVariant {
+export enum Variant {
   DEFAULT = 'default',
   INLINE = 'inline',
 }
 
-export enum NestedInputIconPosition {
+export enum NestedIconPosition {
   LEFT = 'left',
   RIGHT = 'right',
   NONE = 'none',

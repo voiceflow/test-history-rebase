@@ -31,7 +31,7 @@ const UploadDrop: React.ForwardRefRenderFunction<HTMLDivElement, UploadDropProps
   } else {
     content = (
       <S.Message>
-        Drag &amp; Drop {label} here. Or,
+        Drag &amp; drop {label} here. Or,
         <br />
         <S.BrowseButton>Browse</S.BrowseButton>
       </S.Message>

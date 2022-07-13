@@ -4,7 +4,7 @@ import React from 'react';
 import { CustomAPITestResponse } from '@/pages/Canvas/managers/Integration/types';
 
 import ResponseMetadata from '../ResponseMetadata';
-import * as StyledResponseHeaders from './styles';
+import * as S from './styles';
 
 interface ResponseHeadersProps {
   response: CustomAPITestResponse;
@@ -14,21 +14,22 @@ const ResponseHeaders: React.FC<ResponseHeadersProps> = ({ response }) => {
   if (!response.headers?.length) return null;
 
   return (
-    <StyledResponseHeaders.ResponseHeaderContainer>
+    <S.ResponseHeaderContainer>
       {response.headers?.map((header, index) => (
-        <StyledResponseHeaders.HeaderItem key={index}>
+        <S.HeaderItem key={index}>
           <Text fontSize={15} color="#132144">
             {header.key}
           </Text>
           <SvgIcon icon="collon" color="#6E849A" style={{ marginRight: '8px', marginLeft: '8px' }} />
+
           <Text fontSize={15} color="#132144">
             {header.val}
           </Text>
-        </StyledResponseHeaders.HeaderItem>
+        </S.HeaderItem>
       ))}
 
       <ResponseMetadata response={response} />
-    </StyledResponseHeaders.ResponseHeaderContainer>
+    </S.ResponseHeaderContainer>
   );
 };
 

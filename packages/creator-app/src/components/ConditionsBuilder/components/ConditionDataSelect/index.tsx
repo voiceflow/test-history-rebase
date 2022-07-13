@@ -82,7 +82,7 @@ const ConditionDataSelect: React.FC<ConditionDataSelectProps> = ({ expression, i
       )}
     >
       {({ ref, onToggle, isOpened }) => (
-        <Box ref={ref} onClick={onToggle}>
+        <Box ref={ref} height="100%" onClick={onToggle}>
           <ConditionDisplay
             error={!isOpened && isConditionInvalid(expression)}
             isActive={isOpened}

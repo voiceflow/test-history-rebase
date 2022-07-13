@@ -48,7 +48,7 @@ const BodySection: React.FC = () => {
       {bodyData && (
         <Box>
           {mapManager.map((body, { index, onUpdate, onRemove }) => (
-            <>
+            <React.Fragment key={index}>
               {index > 0 && <APIEditorSectionStyles.IntegrationEditorSectionDivider />}
               <SectionV2.ListItem action={<SectionV2.RemoveButton onClick={onRemove} />} key={index}>
                 <APIEditorSectionStyles.IntegrationEditorSectionItem>
@@ -56,7 +56,7 @@ const BodySection: React.FC = () => {
                   <VariablesInput placeholder="Enter value or {variable}" value={body.val} onBlur={({ text }) => onUpdate({ val: text })} multiline />
                 </APIEditorSectionStyles.IntegrationEditorSectionItem>
               </SectionV2.ListItem>
-            </>
+            </React.Fragment>
           ))}
         </Box>
       )}

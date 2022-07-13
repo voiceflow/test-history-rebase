@@ -25,6 +25,7 @@ const IntentEditor: React.FC<{ disableAnimation: boolean }> = ({ disableAnimatio
 
   const mapManager = useMapManager(editor.data.intent?.slots ?? defaultSlots, (slots) => editor.onChange({ intent: { slots } }, false), {
     factory: () => Realtime.Utils.slot.intentSlotFactoryCreator(editor.projectType)({ id: '' }),
+    clone: ({ id }, cloneData) => ({ ...cloneData, id } as Realtime.IntentSlot),
   });
 
   const dynamicSelectedSlotIDs = React.useMemo(() => mapManager.items.map((item) => item.id || ''), [mapManager.items]);
@@ -54,6 +55,7 @@ const IntentEditor: React.FC<{ disableAnimation: boolean }> = ({ disableAnimatio
     >
       <DraggableList
         type="capture-v2-editor"
+        canDrag={!mapManager.isOnlyItem}
         itemProps={{ editor, latestCreatedKey: mapManager.latestCreatedKey, onSelectQueryType, selectedSlotIDs }}
         onEndDrag={toggleDragging}
         mapManager={mapManager}
@@ -62,7 +64,8 @@ const IntentEditor: React.FC<{ disableAnimation: boolean }> = ({ disableAnimatio
         partialDragItem
         deleteComponent={DeleteComponent}
         previewComponent={DraggableItem}
-        withContextMenuDelete
+        withContextMenuDelete={!mapManager.isOnlyItem}
+        withContextMenuDuplicate
       />
 
       {!isDragging && (

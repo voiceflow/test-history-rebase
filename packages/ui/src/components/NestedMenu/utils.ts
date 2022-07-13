@@ -29,8 +29,9 @@ export const createUIOnlyMenuItemOption = (
 ): UIOnlyMenuItemOption => ({
   id,
   label: '',
+  tooltip,
   vfUIOnly: true,
+  readOnly: true,
   disabled: false,
   menuItemProps,
-  tooltip,
 });

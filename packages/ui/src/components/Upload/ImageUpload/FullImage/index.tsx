@@ -120,7 +120,7 @@ const FullImage = React.forwardRef<HTMLDivElement, FullImageProps>(
         onValidateLink={validateLink}
         onDropAccepted={onDropAccepted}
         onDropRejected={onDropRejected}
-        linkPlaceholder="Add link or Variable using '{'"
+        linkPlaceholder="Add link or variable using '{'"
         acceptedFileTypes={IMAGE_FILE_FORMATS}
       />
     );

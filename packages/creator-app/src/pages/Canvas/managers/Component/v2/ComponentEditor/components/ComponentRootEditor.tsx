@@ -19,6 +19,7 @@ const ComponentRootEditor: React.FC = () => {
 
   const onCreate = async (diagramName: string) => {
     const newDiagramID = await createEmptyComponent(diagramName);
+
     onChange({ diagramID: newDiagramID, inputs: [], outputs: [] });
   };
 
@@ -46,7 +47,7 @@ const ComponentRootEditor: React.FC = () => {
         </EditorV2.DefaultFooter>
       }
     >
-      <SectionV2.SimpleSection headerProps={{ py: 24 }}>
+      <SectionV2.SimpleSection isAccent>
         <ComponentSelect diagrams={diagrams} selectedDiagramID={data.diagramID} onChange={onSelectChange} onCreate={onCreate} />
       </SectionV2.SimpleSection>
     </EditorV2>

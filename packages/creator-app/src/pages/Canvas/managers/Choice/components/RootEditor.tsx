@@ -20,6 +20,7 @@ const RootEditor: React.FC = () => {
 
   const mapManager = useMapManager(editor.data.choices, (choices) => editor.onChange({ choices }, false), {
     ...syncDynamicPorts,
+    clone: ({ id }, cloneData) => ({ ...cloneData, id, intent: null }),
     factory: choiceFactory,
   });
 
@@ -51,7 +52,7 @@ const RootEditor: React.FC = () => {
         )
       }
     >
-      {!editor.data.choices.length ? (
+      {!mapManager.size ? (
         <ListeningForIntentSection />
       ) : (
         <DraggableList
@@ -65,6 +66,7 @@ const RootEditor: React.FC = () => {
           partialDragItem
           previewComponent={DraggableItem}
           withContextMenuDelete
+          withContextMenuDuplicate
         />
       )}
 

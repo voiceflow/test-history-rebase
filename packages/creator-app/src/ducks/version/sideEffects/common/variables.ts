@@ -28,6 +28,7 @@ export const addGlobalVariable =
     const variables = activeGlobalVariablesSelector(state);
 
     const error = validateVariableName(variable, variables);
+
     if (error) {
       throw new Error(error);
     }
@@ -37,7 +38,7 @@ export const addGlobalVariable =
   };
 
 export const addManyGlobalVariables =
-  (newVariables: string[], creationType: CanvasCreationType): Thunk =>
+  (newVariables: string[], creationType: CanvasCreationType): Thunk<string[]> =>
   async (dispatch, getState) => {
     const state = getState();
     const variables = activeGlobalVariablesSelector(state);
@@ -46,6 +47,7 @@ export const addManyGlobalVariables =
 
     newVariables.forEach((variable) => {
       const error = validateVariableName(variable, variables);
+
       if (error) {
         toast.error(`${variable}: ${error}`);
       } else {
@@ -55,6 +57,8 @@ export const addManyGlobalVariables =
 
     await dispatch.sync(Realtime.version.variable.addManyGlobal({ ...getActiveVersionContext(getState()), variables: validNewVariables }));
     dispatch(Tracking.trackVariableCreated({ creationType, variableType: VariableType.GLOBAL }));
+
+    return validNewVariables;
   };
 
 export const removeGlobalVariable =

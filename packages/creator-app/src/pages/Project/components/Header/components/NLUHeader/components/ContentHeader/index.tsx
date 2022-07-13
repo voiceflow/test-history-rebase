@@ -35,20 +35,19 @@ const ContentHeader: React.FC = () => {
 
   useHotKeys(Hotkey.FOCUS_NLU_MANAGER_SEARCH, focusInput, { action: 'keyup' });
 
-  const { open: openConfirmModal } = useModals<ConfirmProps>(ModalType.CONFIRM);
+  const confirmModal = useModals<ConfirmProps>(ModalType.CONFIRM);
 
   const confirmDelete = () => {
-    openConfirmModal({
+    confirmModal.open({
       body: (
-        <div>
+        <>
           Are you sure you want to delete {nluManager.selectedItemIDs.size} item(s)?
           <br />
-          <div>This action cannot be undone.</div>
-        </div>
+          This action cannot be undone.
+        </>
       ),
       header: 'Delete Items',
       confirm: () => nluManager.deleteSelectedItems(),
-      canCancel: true,
       confirmButtonText: 'Delete',
     });
   };

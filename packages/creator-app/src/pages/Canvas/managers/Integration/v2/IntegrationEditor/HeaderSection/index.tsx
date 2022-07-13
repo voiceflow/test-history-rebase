@@ -24,15 +24,16 @@ const HeaderSection: React.FC = () => {
       contentProps={{ bottomOffset: 3 }}
     >
       {mapManager.map((header, { index, onRemove, onUpdate }) => (
-        <>
+        <React.Fragment key={index}>
           {index > 0 && <APIEditorSectionStyles.IntegrationEditorSectionDivider />}
+
           <SectionV2.ListItem action={<SectionV2.RemoveButton onClick={onRemove} />} key={index}>
             <APIEditorSectionStyles.IntegrationEditorSectionItem>
               <VariablesInput placeholder="Enter parameter key" value={header.key} onBlur={({ text }) => onUpdate({ key: text })} multiline />
               <VariablesInput placeholder="Enter value or {variable}" value={header.val} onBlur={({ text }) => onUpdate({ val: text })} multiline />
             </APIEditorSectionStyles.IntegrationEditorSectionItem>
           </SectionV2.ListItem>
-        </>
+        </React.Fragment>
       ))}
     </SectionV2.ActionCollapseSection>
   );

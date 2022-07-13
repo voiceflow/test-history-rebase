@@ -11,6 +11,8 @@ import { useIfManager } from '@/pages/Canvas/managers/IfV2/hooks';
 
 import IfItem from './IfItem';
 
+const DRAG_TYPE = 'if-editor';
+
 const IfRootEditor: React.FC = () => {
   const editor = EditorV2.useEditor<Realtime.NodeData.IfV2, Realtime.NodeData.IfV2BuiltInPorts>();
   const mapManager = useIfManager();
@@ -29,9 +31,11 @@ const IfRootEditor: React.FC = () => {
           )}
         </EditorV2.DefaultFooter>
       }
+      dropLagAccept={DRAG_TYPE}
     >
       <DraggableList
-        type="if-editor"
+        type={DRAG_TYPE}
+        canDrag={!mapManager.isOnlyItem}
         itemProps={{ editor, latestCreatedKey: mapManager.latestCreatedKey }}
         onEndDrag={toggleDragging}
         mapManager={mapManager}
@@ -40,7 +44,7 @@ const IfRootEditor: React.FC = () => {
         partialDragItem
         deleteComponent={DeleteComponent}
         previewComponent={IfItem}
-        withContextMenuDelete
+        withContextMenuDelete={!mapManager.isOnlyItem}
         withContextMenuDuplicate={!mapManager.isMaxReached}
       />
 

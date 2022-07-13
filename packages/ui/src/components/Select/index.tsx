@@ -26,7 +26,7 @@ import {
   MenuItemWithID,
 } from '../NestedMenu';
 import NestedMenu from '../NestedMenu/Menu';
-import { InlineInputValue, InputBadge, LeftActionContainer, PrefixContainer, SelectWrapper, TagsContainer, TagsInput } from './components';
+import { InlineInputValue, InputBadge, LeftActionContainer, NotFound, PrefixContainer, SelectWrapper, TagsContainer, TagsInput } from './components';
 import { defaultOptionsFilter, searchableOptionsFilter } from './optionsFilters';
 import {
   SelectClearableProps,
@@ -610,4 +610,4 @@ function Select({
   );
 }
 
-export default Select;
+export default Object.assign(Select, { NotFound });

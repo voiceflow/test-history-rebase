@@ -1,6 +1,6 @@
 import { BaseNode } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { BoxFlexAlignStart } from '@voiceflow/ui';
+import { Box } from '@voiceflow/ui';
 import React from 'react';
 
 import { BaseLogicType, LogicUnitDataType } from '../types';
@@ -22,12 +22,13 @@ const LogicUnit: React.FC<LogicUnitProps> = ({ baseLogicType, updateBaseType, ex
   const label = firstItem ? 'IF' : baseLogicType?.toUpperCase();
 
   return (
-    <BoxFlexAlignStart mb={16}>
+    <Box.FlexAlignStart mb={16}>
       <ConditionLabel actionable={!firstItem} onChange={updateBaseType}>
         {label}
       </ConditionLabel>
+
       <ConditionDataSelect isLogicGroup={isLogicGroup} expression={expression} onChange={onDataChange} onDelete={onDelete} />
-    </BoxFlexAlignStart>
+    </Box.FlexAlignStart>
   );
 };
 

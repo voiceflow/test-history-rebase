@@ -12,4 +12,5 @@ const CloseButton = styled(SvgIcon)`
     color: #8da2b5;
   }
 `;
+
 export default CloseButton;

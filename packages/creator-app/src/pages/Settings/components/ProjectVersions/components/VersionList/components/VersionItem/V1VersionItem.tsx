@@ -33,7 +33,7 @@ interface Index {
 
 // TODO - Remove this when `FeatureFlag.PRODUCTION_VERSION_MANAGEMENT` is removed
 const VersionItem: React.FC<Index> = ({ version, restoreEnabled, swapVersions, creatorID }) => {
-  const { open: openConfirmModal } = useModals<ConfirmProps>(ModalType.CONFIRM);
+  const confirmModal = useModals<ConfirmProps>(ModalType.CONFIRM);
   const platform = useSelector(ProjectV2.active.platformSelector);
   const member = useSelector(WorkspaceV2.active.memberByIDSelector, { creatorID });
   const [trackingEvents] = useTrackingEvents();
@@ -45,18 +45,19 @@ const VersionItem: React.FC<Index> = ({ version, restoreEnabled, swapVersions, c
   }, [manualSave, autoSaveFromRestore]);
 
   const confirmRestore = (versionID: string) => {
-    openConfirmModal({
-      header: 'Restore Version',
-      canCancel: true,
-      confirmButtonText: 'Restore',
+    confirmModal.open({
       body: (
-        <span>
+        <>
           <b>This action can't be undone.</b> If you restore a backup, we'll create a new backup of the current version.{' '}
           {RESTORE_VERSION_MESSAGE(platform)}
-        </span>
+        </>
       ),
+      header: 'Restore Version',
+      confirmButtonText: 'Restore',
+
       confirm: () => {
         swapVersions(versionID);
+
         trackingEvents.trackProjectRestore({ versionID });
       },
     });

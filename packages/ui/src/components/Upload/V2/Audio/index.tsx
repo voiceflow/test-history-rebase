@@ -19,9 +19,9 @@ const UploadAudio: React.FC<UploadAudioProps> = ({ endpoint = 'audio', onChange,
     endpoint={endpoint}
     validate={validateFiles}
     renderInput={renderInput}
-    renderValue={({ value }) => <S.Player title={prettifyBucketURL(value)} link={value} onClose={() => onChange(null)} />}
+    renderValue={({ value }) => <S.Player title={prettifyBucketURL(value)} link={value} onClose={() => onChange(null)} showDuration />}
     validateLink={validateURL}
-    linkInputPlaceholder={renderInput ? "Add link or Variable using '{'" : 'Add link'}
+    linkInputPlaceholder={renderInput ? "Add link or variable using '{'" : 'Add link'}
   />
 );
 

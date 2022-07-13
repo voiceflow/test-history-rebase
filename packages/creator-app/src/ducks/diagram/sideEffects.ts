@@ -77,10 +77,13 @@ export const createTopicDiagram =
 export const createComponentDiagram =
   (name: string): Thunk<string> =>
   async (dispatch, getState) => {
+    const state = getState();
+    const activeComponents = VersionV2.active.componentsSelector(state);
+
     const diagram = await dispatch(
       waitAsync(Realtime.diagram.createComponent, {
-        ...getActiveVersionContext(getState()),
-        diagram: { name },
+        ...getActiveVersionContext(state),
+        diagram: { name: name || `Flow ${activeComponents.length + 1}` },
       })
     );
 

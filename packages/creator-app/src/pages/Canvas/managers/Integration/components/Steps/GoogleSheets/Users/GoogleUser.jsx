@@ -52,7 +52,11 @@ function AddGoogleUser({
 
   const deleteUser = (ev, targetUser) => {
     setConfirm({
-      text: 'Are you sure you want to remove this user?',
+      body: 'Are you sure you want to remove this user?',
+      bodyStyle: { padding: '16px', textAlign: 'center' },
+      modalProps: { centered: true, withHeader: false, maxWidth: 300 },
+      footerStyle: { justifyContent: 'space-between' },
+
       confirm: async () => {
         clearModal();
         try {

@@ -1,9 +1,9 @@
-import Flex from '@ui/components/Flex';
+import Box from '@ui/components/Box';
+import TippyTooltip from '@ui/components/TippyTooltip';
 import { swallowEvent } from '@ui/utils';
 import React from 'react';
-import { Tooltip } from 'react-tippy';
 
-import { CloseButton, Container, DurationText, FileNameContainer, PausePlayButton, ProgressBar } from './components';
+import { CloseButton, Container, DurationText, FileNameContainer, PausePlayButton, ProgressBar, TextContainer } from './components';
 import useAudioPlayer from './useAudioPlayer';
 import { formatTime } from './utils';
 
@@ -12,8 +12,8 @@ export interface AudioPlayerProps {
   title?: string;
   onClose: VoidFunction;
   autoplay?: boolean;
-  showDuration?: boolean;
   className?: string;
+  showDuration?: boolean;
 }
 
 const AudioPlayer: React.FC<AudioPlayerProps> = ({ link, title, onClose, autoplay = false, showDuration = false, className }) => {
@@ -37,26 +37,27 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ link, title, onClose, autopla
     <Container ref={containerRef} onClick={jumpToTime} className={className}>
       <ProgressBar percent={percent} />
 
-      <Flex fullWidth>
-        <PausePlayButton large onClick={swallowEvent(() => setPlaying(!playing))} icon={playing ? 'pause' : 'play'} />
+      <Box.Flex fullWidth>
+        <PausePlayButton large onClick={swallowEvent(() => setPlaying(!playing))} icon={playing ? 'pause' : 'playOutline'} />
 
-        <FileNameContainer>
-          <Tooltip title={title}>{title || 'Audio'}</Tooltip>
-        </FileNameContainer>
-      </Flex>
+        <TextContainer>
+          <FileNameContainer>
+            <TippyTooltip title={title} disabled={!title}>
+              {title || 'Audio'}
+            </TippyTooltip>
+          </FileNameContainer>
 
-      {showDuration && (
-        <DurationText>
-          {formatTime(curTime)} | {formatTime(duration)}
-        </DurationText>
-      )}
+          {showDuration && <DurationText>{formatTime(duration)}</DurationText>}
+        </TextContainer>
+      </Box.Flex>
+
       {onClose && <CloseButton icon="close" size={10} onClick={swallowEvent(() => onClose())} />}
     </Container>
   );
 };
 
 export default Object.assign(AudioPlayer, {
-  ProgressBar,
   formatTime,
+  ProgressBar,
   useAudioPlayer,
 });

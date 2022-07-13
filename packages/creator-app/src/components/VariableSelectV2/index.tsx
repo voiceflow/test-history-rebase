@@ -7,14 +7,15 @@ export interface VariableSelectProps extends BaseSelectProps {
   options: string[];
   creatable?: boolean;
   onChange: (value: string) => void;
-  onCreate: (value: string) => void | Promise<void>;
+  onCreate: (value: string) => Promise<string>;
 }
 
-const VariableSelectV2: React.FC<VariableSelectProps> = ({ value, options, onChange, onCreate, ...props }) => {
-  const handleCreation = async (value: string) => {
+const VariableSelectV2: React.FC<VariableSelectProps> = ({ value, options, onChange, onCreate: onCreateProp, ...props }) => {
+  const onCreate = async (value: string) => {
     try {
-      await onCreate(value);
-      onChange(value);
+      const newVariable = await onCreateProp(value);
+
+      onChange(newVariable);
     } catch (err) {
       toast.error(err.message);
     }
@@ -25,22 +26,28 @@ const VariableSelectV2: React.FC<VariableSelectProps> = ({ value, options, onCha
       value={value}
       options={options}
       onSelect={onChange}
-      onCreate={handleCreation}
+      onCreate={onCreate}
       creatable={false}
       searchable
       placeholder="Select or create variable"
+      getOptionLabel={(value) => value && `{${value}}`}
       inDropdownSearch
       alwaysShowCreate
-      getOptionLabel={(value) => value && `{${value}}`}
       renderOptionLabel={(option, searchLabel, _, getOptionValue, config) =>
         defaultMenuLabelRenderer<string, string>(option, searchLabel, (value) => value, getOptionValue, config)
       }
-      renderSearchSuffix={({ searchLabel }) => (
-        <IconButton size={16} icon="plus" variant={IconButton.Variant.BASIC} onClick={() => handleCreation(searchLabel)} />
-      )}
       clearOnSelectActive
+      renderEmpty={({ search }) => <Select.NotFound>{!search ? 'No variables exist in your assistant. ' : 'No variables found. '}</Select.NotFound>}
+      renderSearchSuffix={({ close, searchLabel }) => (
+        <IconButton
+          size={16}
+          icon="plus"
+          variant={IconButton.Variant.BASIC}
+          onClick={Utils.functional.chainVoid(close, () => onCreate(searchLabel))}
+        />
+      )}
       renderFooterAction={({ close, searchLabel }) => (
-        <NestedMenuComponents.FooterActionContainer onClick={Utils.functional.chainVoid(close, () => handleCreation(searchLabel))}>
+        <NestedMenuComponents.FooterActionContainer onClick={Utils.functional.chainVoid(close, () => onCreate(searchLabel))}>
           Create New Variable
         </NestedMenuComponents.FooterActionContainer>
       )}

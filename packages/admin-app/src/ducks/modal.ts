@@ -1,16 +1,16 @@
 import { Action, createAction, RootReducer } from '@voiceflow/ui';
 
 export interface ModalState {
+  modal: unknown | null;
   confirmModal: { confirm: () => void; [key: string]: unknown } | null;
   errorModal: { message?: string | unknown; [key: string]: unknown } | null;
-  modal: unknown | null;
 }
 
 export const STATE_KEY = 'modal';
 export const INITIAL_STATE: ModalState = {
-  confirmModal: null,
-  errorModal: null,
   modal: null,
+  errorModal: null,
+  confirmModal: null,
 };
 
 export enum ModalAction {

@@ -7,6 +7,11 @@ export const hasVariables = (value: string) => !!value.match(READABLE_VARIABLE_R
 
 export const validateImageUrl = async (value: string): Promise<null> => {
   return new Promise((resolve, reject) => {
+    if (hasVariables(value)) {
+      resolve(null);
+      return;
+    }
+
     const urlError = validateURL(value);
     if (urlError) {
       reject(urlError);

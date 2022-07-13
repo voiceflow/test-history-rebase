@@ -18,14 +18,12 @@ const TextRootEditor: React.FC = () => {
     (canvasVisibility) => editor.onChange({ canvasVisibility }),
     LABELS_V2
   );
-  const { onAdd, onReorder, onRemove } = EditorV2.useSyncDynamicPorts();
+
   const [isDragging, toggleDragging] = useToggle(false);
 
   const mapManager = useMapManager(editor.data.texts, (texts) => editor.onChange({ texts }), {
-    onAdd,
+    clone: ({ id }, cloneData) => ({ ...cloneData, id }),
     factory: textFactory,
-    onRemove,
-    onReorder,
   });
 
   return (
@@ -55,6 +53,7 @@ const TextRootEditor: React.FC = () => {
         partialDragItem
         previewComponent={TextItem}
         withContextMenuDelete={!mapManager.isOnlyItem}
+        withContextMenuDuplicate
       />
     </EditorV2>
   );

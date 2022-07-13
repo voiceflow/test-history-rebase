@@ -1051,9 +1051,18 @@ class NodeManager extends EngineConsumer {
 
       this.dispatch(
         Modal.setConfirm({
-          warning: false,
-          text: `${text} being actively working on and cannot be deleted`,
-          confirm: () => (unlockedNodesIDs.length ? remove(unlockedNodesIDs) : this.dispatch(Modal.clearModal())),
+          body: `${text} being actively working on and cannot be deleted`,
+          bodyStyle: { padding: '16px', textAlign: 'center' },
+          modalProps: { centered: true, withHeader: false, maxWidth: 300 },
+          footerStyle: { justifyContent: 'space-between' },
+
+          confirm: () => {
+            if (unlockedNodesIDs.length) {
+              remove(unlockedNodesIDs);
+            } else {
+              this.dispatch(Modal.clearModal());
+            }
+          },
         })
       );
 
@@ -1084,9 +1093,14 @@ class NodeManager extends EngineConsumer {
       if (requiredCommand) {
         this.dispatch(
           Modal.setConfirm({
-            warning: false,
-            text: `${requiredCommand} is required by default`,
-            confirm: () => this.dispatch(Modal.clearModal()),
+            body: `${requiredCommand} is required by default`,
+            bodyStyle: { padding: '16px', textAlign: 'center' },
+            modalProps: { centered: true, withHeader: false, maxWidth: 300 },
+            footerStyle: { justifyContent: 'space-between' },
+
+            confirm: () => {
+              this.dispatch(Modal.clearModal());
+            },
           })
         );
 

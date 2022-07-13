@@ -99,13 +99,17 @@ const ProjectListList: React.FC<ProjectListListProps> = ({ workspace, filter, is
 
   const onDeleteBoard = React.useCallback(({ name, id, projects }: { id: string; name?: string; projects?: Realtime.AnyProject[] }) => {
     setConfirm({
-      text: (
-        <p className="mb-0">
-          This action can not be undone, {name} and all {!!projects && projects.length} projects can not be recovered
-        </p>
+      header: 'Delete Projects List',
+
+      body: (
+        <>
+          This action can not be undone, <b>"{name}"</b> and all {!!projects && projects.length} projects can not be recovered
+        </>
       ),
-      warning: true,
-      confirm: () => deleteList(id).catch((err) => setError(err.message)),
+
+      confirm: async () => {
+        await deleteList(id).catch((err) => setError(err.message));
+      },
     });
   }, []);
 

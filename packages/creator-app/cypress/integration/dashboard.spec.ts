@@ -3,7 +3,7 @@ import { ClassName, DashboardClassName, Identifier } from '../../src/styles/cons
 import canvasPage from '../pages/canvas';
 import menuComponent from '../pages/components/menu';
 import dashboardPage from '../pages/dashboard';
-import { collaboratorsModal, legacyModal, modal, paymentModal } from '../pages/modals';
+import { collaboratorsModal, modal, paymentModal } from '../pages/modals';
 import newWorkspacePage from '../pages/newWorkspace';
 import { getClass, getIdentifier } from '../pages/utils';
 
@@ -32,11 +32,11 @@ context('Team Dashboard', () => {
       cy.title().should('eq', 'my other project');
     });
 
-    it.skip('delete project', () => {
+    it('delete project', () => {
       dashboardPage.el.projectListItemTitle.should('have.text', 'my other project');
       dashboardPage.el.projectListItem.find('div').eq(1).realHover().find('.vf-svg-icon--ellipsis').should('be.visible').click();
-      menuComponent.el.item.should('have.text', 'Delete project').click();
-      modal(ModalType.CONFIRM).el.root.should('be.visible').find('button').click();
+      menuComponent.el.item.eq(5).should('have.text', 'Delete project').click();
+      modal(ModalType.CONFIRM).el.root.should('be.visible').find('button').eq(2).click();
 
       // check if last project in the list is removed
       dashboardPage.el.projectList.should('have.length', 0);
@@ -47,7 +47,7 @@ context('Team Dashboard', () => {
       dashboardPage.el.projectList.should('have.length', 1);
       dashboardPage.el.projectList.find(getClass(DashboardClassName.LIST_HEADER_ASIDE)).find('.vf-svg-icon--ellipsis').click();
       menuComponent.el.item.eq(0).should('have.text', 'Remove List').click();
-      legacyModal.el.confirm.should('be.visible').find('button').eq(1).click();
+      modal(ModalType.CONFIRM).el.root.should('be.visible').find('button').eq(2).click();
 
       // check if last project list is removed
       dashboardPage.el.projectList.should('have.length', 0);

@@ -10,53 +10,43 @@ interface PlayButtonProps {
   onStop: () => void;
 }
 
-const PlayButtonIcons: Record<string, SvgIconTypes.Icon> = {
-  STOP: 'stopOutline',
-  PLAY: 'playV2',
-  AUDIO: 'audio',
-};
-
 const PlayButton: React.FC<PlayButtonProps> = ({ content, playing, onPlay, onStop }) => {
-  const [playVersion, showPlayVersion] = React.useState(false);
+  const [hovered, setHovered] = React.useState(false);
   const hasContent = !!content;
-  let icon = playVersion ? PlayButtonIcons.PLAY : PlayButtonIcons.AUDIO;
-
-  if (playing) {
-    icon = PlayButtonIcons.STOP;
-  }
 
   const handleMouseEnter = () => {
     if (!hasContent) return;
-    showPlayVersion(true);
+
+    setHovered(true);
   };
 
   const handleMouseLeave = () => {
-    if (playing || !hasContent) return;
-    showPlayVersion(false);
-    onStop();
+    if (!hasContent) return;
+
+    setHovered(false);
   };
 
-  const handleClick = stopPropagation(() => {
+  const handleClick = () => {
     if (playing) {
       onStop();
     } else {
       onPlay();
     }
-  });
+  };
 
-  React.useLayoutEffect(() => {
-    if (!playing) {
-      showPlayVersion(false);
-    }
-  }, [playing]);
+  let icon: SvgIconTypes.Icon = hovered ? 'playOutline' : 'audio';
+
+  if (playing) {
+    icon = 'pause';
+  }
 
   return (
     <PlayButtonContainer
-      $hasContent={hasContent}
       $playing={playing}
+      $hasContent={hasContent}
+      onClick={stopPropagation(hasContent ? handleClick : null)}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      onClick={hasContent ? handleClick : () => {}}
     >
       <PlayButtonIcon icon={icon} size={16} color="#62778c" />
     </PlayButtonContainer>

@@ -6,11 +6,12 @@ export interface HeaderProps extends SpaceProps {
   top?: number;
   sticky?: boolean;
   sticked?: boolean;
+  bottomUint?: number;
 }
 
 const Header = styled.header<HeaderProps>`
   ${flexApartStyles}
-  padding: ${units(2.5)}px ${units(4)}px ${units(2)}px ${units(4)}px;
+  padding: ${units(2.5)}px ${units(4)}px ${({ theme, bottomUint = 2 }) => units(bottomUint)({ theme })}px ${units(4)}px;
   line-height: 1;
   ${space}
 

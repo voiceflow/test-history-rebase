@@ -4,7 +4,7 @@ import ThumnailPopper from './Popper';
 import * as S from './styles';
 
 export interface ThumbnailProps extends S.ContainerProps, Partial<S.BaseFrameStylesProps> {
-  src: string | null;
+  src?: string | null;
 }
 
 const Thumbnail: React.FC<ThumbnailProps> = ({ src, size = 'sm', ...containerProps }) => (

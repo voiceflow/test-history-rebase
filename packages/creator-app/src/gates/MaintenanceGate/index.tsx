@@ -44,8 +44,7 @@ const MaintenanceGate: React.FC<ConnectedMaintenanceGateProps> = ({ children, se
     }
 
     setConfirm({
-      maxWidth: 450,
-      text: (
+      body: (
         <Alert mb={0}>
           Voiceflow Creator will go under planned maintenance
           <br />
@@ -55,6 +54,9 @@ const MaintenanceGate: React.FC<ConnectedMaintenanceGateProps> = ({ children, se
         </Alert>
       ),
       confirm: () => {},
+      bodyStyle: { padding: '16px', textAlign: 'center' },
+      modalProps: { centered: true, withHeader: false, maxWidth: 450 },
+      footerStyle: { justifyContent: 'space-between' },
     });
   }, []);
 

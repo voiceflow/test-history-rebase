@@ -31,4 +31,5 @@ export interface ItemProps extends StyledProps<any> {
   iconStyle?: React.CSSProperties;
   image?: string | null;
   v2?: boolean;
+  newLineAttachment?: React.ReactNode;
 }

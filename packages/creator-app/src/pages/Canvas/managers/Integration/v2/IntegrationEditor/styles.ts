@@ -10,7 +10,7 @@ export const IntegrationEditorSectionItem = styled(Box)`
 `;
 
 export const IntegrationEditorSectionDivider = styled(SectionV2.Divider)`
-  width: 100vw;
+  width: calc(100% + 32px);
   margin-top: 20px;
   margin-bottom: 20px;
 `;

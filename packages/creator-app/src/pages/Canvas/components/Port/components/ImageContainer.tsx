@@ -2,7 +2,6 @@ import React from 'react';
 
 import { css, styled } from '@/hocs';
 
-import PortConnectorContainer from './PortConnectorContainer';
 import PortContainer from './PortContainer';
 
 const Container = styled.div`
@@ -10,18 +9,14 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   position: absolute;
-  height: 32px;
+  height: 46px;
   bottom: 0;
   left: 0;
   right: 0;
 
   ${PortContainer} {
     position: absolute;
-    right: 15px;
-  }
-
-  ${PortConnectorContainer} {
-    left: 24px;
+    right: 16px;
   }
 `;
 
@@ -29,8 +24,8 @@ const Background = styled.div<{ borderRadius?: number }>`
   position: absolute;
 
   background-color: #fff;
-  width: 32px;
-  height: 32px;
+  width: 46px;
+  height: 46px;
 
   right: 0px;
   bottom: 0px;

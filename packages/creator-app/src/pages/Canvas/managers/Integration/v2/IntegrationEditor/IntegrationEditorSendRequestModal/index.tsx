@@ -57,7 +57,8 @@ const IntegrationEditorSendRequestModal: React.FC = () => {
         <Button variant={ButtonVariant.TERTIARY} squareRadius style={{ marginRight: '12px' }} onClick={close}>
           Cancel
         </Button>
-        <Button squareRadius onClick={sendRequest} isLoading={isLoading}>
+
+        <Button style={{ width: 104 }} onClick={sendRequest} disabled={isLoading} isLoading={isLoading} squareRadius>
           Re-Send
         </Button>
       </Modal.Footer>

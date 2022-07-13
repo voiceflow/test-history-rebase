@@ -1,12 +1,11 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { BoxFlex, Input } from '@voiceflow/ui';
+import { BoxFlex, Input, useLinkedState } from '@voiceflow/ui';
 import React from 'react';
 
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
 import Section from '@/components/Section';
 import { useMapManager, useToggle } from '@/hooks';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
-import { useSetTitleForm } from '@/pages/Canvas/managers/SetV2/hooks';
 import { NodeEditor } from '@/pages/Canvas/managers/types';
 
 import { DraggableItemV2, HelpMessage, HelpTooltip } from './components';
@@ -15,7 +14,7 @@ import { setClone, setFactory } from './utils';
 
 const SetEditorV2: NodeEditor<Realtime.NodeData.SetV2, Realtime.NodeData.SetV2BuiltInPorts> = ({ data, onChange }) => {
   const [isDragging, toggleDragging] = useToggle(false);
-  const { inputRef: labelInputRef, stepName, setStepName } = useSetTitleForm(data.title);
+  const [stepName, setStepName] = useLinkedState(data.title);
 
   const mapManager = useMapManager(data.sets, (sets) => onChange({ sets }), {
     clone: setClone,
@@ -40,13 +39,7 @@ const SetEditorV2: NodeEditor<Realtime.NodeData.SetV2, Realtime.NodeData.SetV2Bu
       <>
         <BoxFlex fullWidth zIndex={2} position="fixed" top={0} borderBottom="1px solid #eaeff4">
           <Section fullWidth>
-            <Input
-              ref={labelInputRef}
-              value={stepName}
-              onBlur={() => onChange({ title: stepName })}
-              onChangeText={setStepName}
-              placeholder="Set Label"
-            />
+            <Input value={stepName} onBlur={() => onChange({ title: stepName })} onChangeText={setStepName} placeholder="Set Label" />
           </Section>
         </BoxFlex>
         <BoxFlex style={{ marginTop: '84px' }}>

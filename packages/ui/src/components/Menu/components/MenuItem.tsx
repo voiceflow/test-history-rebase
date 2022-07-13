@@ -8,6 +8,7 @@ export interface MenuItemProps {
   active?: boolean;
   ending?: boolean;
   divider?: boolean;
+  readOnly?: boolean;
   disabled?: boolean;
   className?: string;
   capitalize?: boolean;
@@ -26,10 +27,10 @@ export const itemStyles = css<MenuItemProps>`
   margin: ${({ divider }) => (divider ? '8px 0' : 'none')};
   border-bottom: ${({ divider }) => (divider ? '1px solid #EAEFF4' : 'none')};
 
-  ${({ disabled }) =>
+  ${({ readOnly, disabled = readOnly }) =>
     disabled &&
     css`
-      cursor: not-allowed;
+      cursor: ${readOnly ? 'text' : 'not-allowed'};
       color: rgba(19, 33, 68, 0.65);
       background: ${colors(ThemeColor.WHITE)};
     `}
@@ -47,7 +48,7 @@ export const itemStyles = css<MenuItemProps>`
     `}
 
   &:hover {
-    ${({ disabled }) =>
+    ${({ readOnly, disabled = readOnly }) =>
       !disabled &&
       css`
         background: linear-gradient(180deg, rgba(238, 244, 246, 0.85) 0%, ${backgrounds('greyGreen')} 100%), ${colors(ThemeColor.WHITE)}fff;
@@ -61,7 +62,7 @@ export const itemStyles = css<MenuItemProps>`
     `}
 
   &:active {
-    ${({ disabled }) =>
+    ${({ readOnly, disabled = readOnly }) =>
       !disabled &&
       css`
         background: linear-gradient(180deg, rgba(230, 238, 241, 0.85) 0%, #eaf0f2 100%), ${colors(ThemeColor.WHITE)};

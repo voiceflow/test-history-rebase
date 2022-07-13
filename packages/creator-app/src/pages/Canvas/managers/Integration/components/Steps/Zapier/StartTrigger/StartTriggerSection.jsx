@@ -41,7 +41,11 @@ class StartTrigger extends Component {
     const { data } = this.props;
 
     setConfirm({
-      text: 'Are you sure you want to remove this trigger?',
+      body: 'Are you sure you want to remove this trigger?',
+      bodyStyle: { padding: '16px', textAlign: 'center' },
+      modalProps: { centered: true, withHeader: false, maxWidth: 300 },
+      footerStyle: { justifyContent: 'space-between' },
+
       confirm: async () => {
         clearModal();
         const targetTrigger = {

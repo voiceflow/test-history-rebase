@@ -8,11 +8,11 @@ import { InputRenderer } from '../LinkInput';
 import * as S from './styles';
 
 export interface UploadImageProps extends Pick<UploadBaseProps, 'value' | 'onChange' | 'rootDropAreaProps'> {
+  ratio?: number | null;
   endpoint?: string;
-  acceptedFileTypes?: string[];
-  ratio?: number;
   autoHeight?: boolean;
   renderInput?: InputRenderer;
+  acceptedFileTypes?: string[];
 }
 
 const UploadImage: React.FC<UploadImageProps> = ({

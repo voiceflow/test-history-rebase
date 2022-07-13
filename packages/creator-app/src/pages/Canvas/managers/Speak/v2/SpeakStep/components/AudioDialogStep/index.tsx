@@ -26,11 +26,10 @@ export const AudioDialogStep: React.FC<SpeakStepItem & SpeakStepProps> = ({
 
   const getAudioTitle = (content?: string | null) => (content ? Utils.string.stripHTMLTags(transformVariablesToReadable(content)) : '');
 
-  const audioDuration = React.useMemo(() => duration && `0:${Math.floor(duration)}`, [duration]);
-
-  const audioVariants = React.useMemo(() => {
-    return items.filter((item) => item.type === DialogType.AUDIO && item.url).map(({ content, id }) => ({ id, url: getAudioTitle(content) }));
-  }, [items]);
+  const audioVariants = React.useMemo(
+    () => items.filter((item) => item.type === DialogType.AUDIO && item.url).map(({ content, id }) => ({ id, url: getAudioTitle(content) })),
+    [items]
+  );
 
   const attachment =
     audioVariants.length > 1 && random ? (
@@ -53,14 +52,12 @@ export const AudioDialogStep: React.FC<SpeakStepItem & SpeakStepProps> = ({
       </Step.StepPreviewButton>
     ) : null;
 
-  const label = audioDuration || null;
-
   return (
     <>
       <Step.Item
         title={<AudioTitle>{getAudioTitle(content) || 'Audio'}</AudioTitle>}
         placeholder="Upload file or link"
-        label={label}
+        label={AudioPlayer.formatTime(duration)}
         prefix={<PlayButton content={content} playing={playing} onPlay={() => setPlaying(true)} onStop={() => setPlaying(false)} />}
         portID={isLastItem ? nextPortID : null}
         palette={palette}

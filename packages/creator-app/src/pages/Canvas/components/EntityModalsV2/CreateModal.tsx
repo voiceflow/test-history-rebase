@@ -89,21 +89,23 @@ const CreateModal: React.FC = () => {
     <Modal maxWidth={MODAL_WIDTHS[MODAL_WIDTH_VARIANTS.SMALL]} id={ModalType.ENTITY_CREATE} title="Create Entity" headerBorder>
       <Box width="100%" overflow="auto" maxHeight={MAX_HEIGHT_CALC}>
         <EntityForm
+          ref={nameInputRef}
+          name={name}
+          type={type}
           color={color}
-          saveColor={setColor}
           values={values}
+          saveColor={setColor}
           updateType={setType}
           updateName={setName}
           saveValues={setValues}
-          name={name}
-          type={type}
-          ref={nameInputRef}
         />
       </Box>
+
       <ModalFooter justifyContent="flex-end">
         <Button onClick={handleCancel} variant={ButtonVariant.TERTIARY} squareRadius style={{ marginRight: '10px' }}>
           Cancel
         </Button>
+
         <Button width={137} disabled={isCreating} isLoading={isCreating} onClick={onCreate} variant={ButtonVariant.PRIMARY} squareRadius>
           Create Entity
         </Button>

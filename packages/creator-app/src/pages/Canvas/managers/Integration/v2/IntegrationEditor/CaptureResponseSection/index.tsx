@@ -8,7 +8,7 @@ import { useMapManager, useVariableCreation } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 
 import { mappingFactory } from '../../constants';
-import * as APIEditorSectionStyles from '../styles';
+import * as S from '../styles';
 
 const ParametersSection: React.FC = () => {
   const editor = EditorV2.useEditor<Realtime.NodeData.CustomApi, Realtime.NodeData.CustomPayloadBuiltInPorts>();
@@ -26,22 +26,24 @@ const ParametersSection: React.FC = () => {
       contentProps={{ bottomOffset: 3 }}
     >
       {mapManager.map((mapping, { index, onUpdate, onRemove }) => (
-        <>
-          {index > 0 && <APIEditorSectionStyles.IntegrationEditorSectionDivider />}
+        <React.Fragment key={index}>
+          {index > 0 && <S.IntegrationEditorSectionDivider />}
+
           <SectionV2.ListItem action={<SectionV2.RemoveButton onClick={onRemove} />} key={index}>
-            <APIEditorSectionStyles.IntegrationEditorSectionItem>
+            <S.IntegrationEditorSectionItem>
               <VariablesInput placeholder="Enter key" value={mapping.path} onBlur={({ text }) => onUpdate({ path: text })} multiline />
+
               <VariableSelectV2
-                options={variables}
-                onCreate={createVariable}
                 value={mapping.var}
                 prefix="APPLY TO"
+                options={variables}
+                onCreate={createVariable}
                 onChange={(value) => onUpdate({ var: value })}
                 placeholder="Select variable"
               />
-            </APIEditorSectionStyles.IntegrationEditorSectionItem>
+            </S.IntegrationEditorSectionItem>
           </SectionV2.ListItem>
-        </>
+        </React.Fragment>
       ))}
     </SectionV2.ActionCollapseSection>
   );

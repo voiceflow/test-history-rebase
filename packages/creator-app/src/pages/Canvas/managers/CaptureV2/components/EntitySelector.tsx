@@ -38,9 +38,17 @@ const EntitySelector: React.FC<EntitySelectorProps> = ({ value, options, onEdit,
       renderOptionLabel={(option, searchLabel, _, getOptionValue, config) =>
         defaultMenuLabelRenderer<EntityOption, string>(option, searchLabel, (value) => value && optionsMap[value]?.name, getOptionValue, config)
       }
+      renderEmpty={({ search }) => <Select.NotFound>{!search ? 'No entities exist in your assistant. ' : 'No entities found. '}</Select.NotFound>}
       renderSearchSuffix={
         immModalsV2.isEnabled
-          ? ({ searchLabel }) => <IconButton size={16} icon="plus" variant={IconButton.Variant.BASIC} onClick={() => onCreate(searchLabel)} />
+          ? ({ close, searchLabel }) => (
+              <IconButton
+                size={16}
+                icon="plus"
+                variant={IconButton.Variant.BASIC}
+                onClick={Utils.functional.chainVoid(close, () => onCreate(searchLabel))}
+              />
+            )
           : null
       }
       clearOnSelectActive

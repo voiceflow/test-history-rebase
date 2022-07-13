@@ -12,6 +12,7 @@ export interface MenuItemProps {
 export interface BaseMenuItem {
   vfUIOnly?: boolean;
   disabled?: boolean;
+  readOnly?: boolean;
   menuItemProps?: MenuItemProps;
   tooltip?: React.ReactNode;
 }

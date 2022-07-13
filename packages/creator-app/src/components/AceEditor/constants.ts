@@ -3,12 +3,12 @@ export enum InputMode {
 }
 
 export const ACE_EDITOR_OPTIONS = {
-  enableBasicAutocompletion: true,
-  enableLiveAutocompletion: true,
-  enableSnippets: false,
-  showLineNumbers: true,
   tabSize: 2,
   useWorker: false,
+  enableSnippets: false,
+  showLineNumbers: true,
+  enableLiveAutocompletion: true,
+  enableBasicAutocompletion: true,
 };
 
 export const ACE_EDITOR_COLORS = {

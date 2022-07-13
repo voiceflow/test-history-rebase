@@ -42,8 +42,11 @@ const TranscriptResultsItem: React.FC<ResultsItem> = ({ data, format, active = f
 
   const onDelete = () => {
     confirmDelete({
-      warning: false,
-      text: 'Are you sure you want to delete this conversation?',
+      body: 'Are you sure you want to delete this conversation?',
+      bodyStyle: { padding: '16px', textAlign: 'center' },
+      modalProps: { centered: true, withHeader: false, maxWidth: 300 },
+      footerStyle: { justifyContent: 'space-between' },
+
       confirm: () => {
         deleteTranscript(id);
         trackingEvents.trackConversationDeleted();

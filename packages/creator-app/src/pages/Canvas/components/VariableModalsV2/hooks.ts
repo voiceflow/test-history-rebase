@@ -5,47 +5,72 @@ import { CanvasCreationType } from '@/ducks/tracking';
 import * as Version from '@/ducks/version';
 import { useDispatch, useOrderedVariables } from '@/hooks';
 
-export const useCreateVariables = ({ onCreate }: { onCreate?: (names: string[]) => void }) => {
+const formatVarName = (name: string) => name.trim().replace(/ /g, '_');
+
+export const useCreateVariables = ({
+  onCreated,
+  creationType = CanvasCreationType.IMM,
+}: {
+  onCreated?: (names: string[]) => void;
+  creationType?: CanvasCreationType;
+} = {}) => {
   const [variables] = useOrderedVariables();
-  const createGlobalVars = useDispatch(Version.addManyGlobalVariables);
+  const [isCreating, setIsCreating] = React.useState(false);
+  const addGlobalVariable = useDispatch(Version.addGlobalVariable);
+  const addManyGlobalVariables = useDispatch(Version.addManyGlobalVariables);
 
   const existingVariableNames = React.useMemo(() => variables.map((variable) => variable.name), [variables]);
 
-  const varAlreadyExists = (name: string) => existingVariableNames.includes(name);
+  const isExist = (name: string) => existingVariableNames.includes(name);
 
-  const formatVarName = (name: string) => {
-    return name.trim().replace(/ /g, '_');
-  };
+  const onCreateSingle = async (name: string) => {
+    if (isExist(name)) {
+      toast.warn(`'${name}' already exists`);
+      return;
+    }
 
-  const onCreateSingle = (varName: string) => {
-    if (!varAlreadyExists(varName)) {
-      try {
-        createGlobalVars([formatVarName(varName)], CanvasCreationType.IMM);
-      } catch (e) {
-        toast.error(e);
-      }
-    } else {
-      toast.warn(`'${varName}' already exists`);
+    try {
+      setIsCreating(true);
+
+      await addGlobalVariable(formatVarName(name), creationType);
+
+      onCreated?.([name]);
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : 'Failed to create variable');
+
+      throw err;
+    } finally {
+      setIsCreating(false);
     }
   };
-  const onCreateMultiple = React.useCallback(
-    async (commaSeparatedNames: string) => {
-      const allNewVars = commaSeparatedNames.split(',');
-      let newVarNames: string[] = [];
 
-      newVarNames = allNewVars.map(formatVarName).filter((name) => !varAlreadyExists(name));
-      await createGlobalVars(newVarNames, CanvasCreationType.IMM);
+  const onCreateMultiple = async (names: string) => {
+    const variables = names
+      .split(',')
+      .map(formatVarName)
+      .filter((name) => !isExist(name));
 
-      if (newVarNames.length) {
-        toast.success(`${newVarNames.length} variable(s) successfully created`);
-        onCreate?.(newVarNames);
+    try {
+      setIsCreating(true);
+
+      const newVariables = await addManyGlobalVariables(variables, creationType);
+
+      if (newVariables.length) {
+        toast.success(`${newVariables.length} variable(s) successfully created`);
+        onCreated?.(newVariables);
       }
-    },
-    [variables, onCreate]
-  );
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : 'Failed to create variables');
+
+      throw err;
+    } finally {
+      setIsCreating(false);
+    }
+  };
 
   return {
-    onCreateMultiple,
+    isCreating,
     onCreateSingle,
+    onCreateMultiple,
   };
 };

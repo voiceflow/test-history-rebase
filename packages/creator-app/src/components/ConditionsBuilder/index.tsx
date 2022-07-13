@@ -2,12 +2,12 @@ import { BaseNode } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box } from '@voiceflow/ui';
 import React from 'react';
-import { StyledProps } from 'styled-components';
 
 import { ConditionLabel, ConditionSelect, LogicInterfaceHandler } from './components';
 import { getAddionalLogicData, getDefaultValue } from './utils';
 
-export interface ConditionsBuilderProps extends StyledProps<any> {
+export interface ConditionsBuilderProps {
+  style?: React.CSSProperties;
   onChange: (value: Realtime.ExpressionData) => void;
   expression?: Realtime.ExpressionData;
 }

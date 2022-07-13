@@ -16,7 +16,7 @@ const HeaderActionsButton: React.FC<T.HeaderActionsButtonProps> = ({ actions, pl
     renderTrigger={({ ref, isOpen, onClick }) => (
       <IconButton
         ref={ref as React.RefObject<HTMLButtonElement>}
-        icon="ellipsis"
+        icon="systemMore"
         variant={IconButton.Variant.BASIC}
         onClick={onClick}
         offsetSize={0}

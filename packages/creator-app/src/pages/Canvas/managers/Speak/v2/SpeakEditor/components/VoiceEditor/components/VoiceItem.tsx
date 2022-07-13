@@ -59,7 +59,6 @@ const VoiceItem: React.ForwardRefRenderFunction<HTMLElement, VoiceItemProps> = (
                         voice={item.voice}
                         value={item.content}
                         onBlur={({ text }) => onUpdate({ content: text })}
-                        autofocus={autofocus}
                         onChangeVoice={(voice) => onUpdate({ voice })}
                         skipBlurOnUnmount
                       />

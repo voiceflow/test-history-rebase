@@ -5,22 +5,33 @@ import React from 'react';
 
 import VariablesInput from '@/components/VariablesInput';
 import * as Documentation from '@/config/documentation';
-import { useImageDimensions } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
+import { imageSizeFromUrl } from '@/utils/file';
 
 const VisualRootEditor: React.FC = () => {
-  const { data, onChange } = EditorV2.useEditor<BaseNode.Visual.ImageStepData, Realtime.NodeData.VisualBuiltInPorts>();
-  const dimensions = useImageDimensions({ url: data.image });
+  const editor = EditorV2.useEditor<BaseNode.Visual.ImageStepData, Realtime.NodeData.VisualBuiltInPorts>();
+
+  const onChange = async (image: string | null) => {
+    editor.onChange({ image, dimensions: null });
+
+    if (image) {
+      try {
+        const size = await imageSizeFromUrl(image);
+        editor.onChange({ dimensions: size, frameType: BaseNode.Visual.FrameType.AUTO });
+      } catch {
+        // empty
+      }
+    }
+  };
 
   return (
     <EditorV2 header={<EditorV2.DefaultHeader />} footer={<EditorV2.DefaultFooter tutorial={Documentation.IMAGE_STEP} />}>
       <SectionV2.SimpleSection isAccent>
         <UploadV2.Image
-          rootDropAreaProps={{ pb: '4px' }}
+          value={editor.data.image}
+          ratio={editor.data?.dimensions ? (editor.data.dimensions.height / editor.data.dimensions.width) * 100 : null}
+          onChange={onChange}
           renderInput={VariablesInput.renderInput}
-          value={data.image}
-          onChange={(image) => onChange({ image })}
-          ratio={dimensions?.ratio}
         />
       </SectionV2.SimpleSection>
     </EditorV2>

@@ -1,4 +1,5 @@
 import { BaseNode } from '@voiceflow/base-types';
+import { Select } from '@voiceflow/ui';
 import React from 'react';
 
 import Section from '@/components/Section';
@@ -45,15 +46,19 @@ function RequestTypeStep({ url, selectedAction, onChange }) {
   return (
     <Section>
       <FormControl label="Request URL" contentBottomUnits={0}>
-        <SelectInputGroup
-          value={selectedAction || BaseNode.Api.APIActionType.GET}
-          options={OPTIONS}
-          onSelect={onChangeAction}
-          inputValue={url}
-          placeholder="Endpoint URL"
-          onInputBlur={setEndpoint}
-          getOptionLabel={(value) => OPTIONS_MAP[value]}
-        />
+        <SelectInputGroup onBlur={setEndpoint} value={url} placeholder="Endpoint URL">
+          {(baseProps) => (
+            <Select
+              {...baseProps}
+              value={selectedAction || BaseNode.Api.APIActionType.GET}
+              label={OPTIONS_MAP[selectedAction || BaseNode.Api.APIActionType.GET]}
+              options={OPTIONS}
+              onSelect={onChangeAction}
+              isDropdown
+              getOptionLabel={(value) => OPTIONS_MAP[value]}
+            />
+          )}
+        </SelectInputGroup>
       </FormControl>
     </Section>
   );

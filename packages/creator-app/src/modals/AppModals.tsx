@@ -1,7 +1,7 @@
 import React from 'react';
 
-import ConfirmModalV2 from '@/components/ConfirmModal';
-import { ConfirmModal, ErrorModal, LoadingModal, ModalBackdrop, StandardModal, SuccessModal, UpgradeModal } from '@/components/modals';
+import ConfirmModal from '@/components/ConfirmModal';
+import { ErrorModal, LoadingModal, ModalBackdrop, ReduxConfirmModal, StandardModal, SuccessModal, UpgradeModal } from '@/components/modals';
 import PublishVersionModal from '@/components/PublishVersionModal';
 import RefreshModal from '@/components/RefreshModal';
 import { VariableStateEditorModal, VariableStatesManagerModal } from '@/components/VariableStateModals';
@@ -38,7 +38,7 @@ const AppModals: React.FC = () => {
       <ModalBackdrop />
       <SuccessModal />
       <ConfirmModal />
-      <ConfirmModalV2 />
+      <ReduxConfirmModal />
       <ErrorModal />
       <StandardModal />
       <CollaboratorsModal />

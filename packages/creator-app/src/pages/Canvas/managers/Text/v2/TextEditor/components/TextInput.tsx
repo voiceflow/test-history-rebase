@@ -8,7 +8,7 @@ import MessageDelayButton from '@/pages/Canvas/components/TextListItem/component
 interface TextInputProps {
   data: BaseNode.Text.TextData;
   onUpdate: (newText: Partial<BaseNode.Text.TextData>) => void;
-  autofocus: boolean;
+  autofocus?: boolean;
 }
 
 const TextInput: React.FC<TextInputProps> = ({ data, onUpdate, autofocus }) => (
@@ -19,7 +19,8 @@ const TextInput: React.FC<TextInputProps> = ({ data, onUpdate, autofocus }) => (
     autofocus={autofocus}
     extraToolbarButtons={
       <>
-        <Divider isVertical height="15px" style={{ margin: 0 }} />
+        <Divider height={15} offset={4} isVertical />
+
         <MessageDelayButton icon={TOOLBAR_ICONS_V2.DELAY} data={data} onUpdate={(value: Partial<BaseNode.Text.TextData>) => onUpdate(value)} />
       </>
     }

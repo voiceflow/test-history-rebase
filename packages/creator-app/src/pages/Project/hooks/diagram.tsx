@@ -147,22 +147,16 @@ export const useDiagramOptions = ({ onEdit, onRename, diagramID }: DiagramOption
     }
 
     setConfirmModal({
-      text: (
-        <>
-          Deleting this {label} permanently deletes everything inside and can not be recovered.
-          <br />
-          <br />
-          Are you sure ?
-        </>
-      ),
-      warning: true,
+      body: 'This action will permanently delete all contents of the flow and can not be reversed. Are you sure you want to continue?',
+      header: `Delete ${label}`,
+
       confirm: () => {
         deleteDiagram(diagramID).catch(() =>
           setErrorModal(`Another user is currently using this ${label}. Please wait until they're done before deleting`)
         );
       },
     });
-  }, [diagramID, topicsAndComponents.isEnabled, isTopicsAndComponentsVersion]);
+  }, [diagramID, deleteDiagram, topicsAndComponents.isEnabled, isTopicsAndComponentsVersion]);
 
   return React.useMemo<MenuOption<undefined>[]>(() => {
     if (!canEditCanvas) {

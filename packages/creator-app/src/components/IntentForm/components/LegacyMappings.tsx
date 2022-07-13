@@ -65,9 +65,11 @@ const LegacyMappings: React.FC<LegacyMappingsProps> = ({ intent, onDelete, mappi
   const confirmDelete = React.useCallback(
     () =>
       setConfirm({
-        warning: true,
-        text: 'Please ensure all usages of mapped variables have been replaced by the original slot. Delete mapping?',
+        body: 'Please ensure all usages of mapped variables have been replaced by the original slot. Delete mapping?',
         confirm: onDelete,
+        bodyStyle: { padding: '16px', textAlign: 'center' },
+        modalProps: { centered: true, withHeader: false, maxWidth: 300 },
+        footerStyle: { justifyContent: 'space-between' },
       }),
     [onDelete]
   );

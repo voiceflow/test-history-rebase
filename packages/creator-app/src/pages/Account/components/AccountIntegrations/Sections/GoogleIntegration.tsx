@@ -28,13 +28,16 @@ const GoogleIntegration: React.FC = () => {
 
   const resetGoogle = () => {
     setConfirm({
-      text: (
-        <>Resetting your Google Account is dangerous and will de-sync all your published projects. Do not reset unless you know what you are doing</>
-      ),
-      warning: true,
+      body: 'Resetting your Google Account is dangerous and will de-sync all your published projects. Do not reset unless you know what you are doing',
+      bodyStyle: { padding: '16px', textAlign: 'center' },
+      modalProps: { centered: true, withHeader: false, maxWidth: 300 },
+      footerStyle: { justifyContent: 'space-between' },
+
       confirm: async () => {
         setGoogleStatus(false);
+
         await unlinkGoogleAccount();
+
         setGoogleStatus(true);
       },
     });

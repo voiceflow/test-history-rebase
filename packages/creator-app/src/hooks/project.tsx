@@ -43,7 +43,7 @@ export const useDeleteProject = ({
 
   const [trackingEvents] = useTrackingEvents();
 
-  const { open: openConfirmModal } = useModals<ConfirmProps>(ModalType.CONFIRM);
+  const confirmModal = useModals<ConfirmProps>(ModalType.CONFIRM);
 
   const handleDelete = React.useCallback(async () => {
     if (!projectID) {
@@ -70,20 +70,19 @@ export const useDeleteProject = ({
   }, [boardID, projectID, projectName, getProjectByID]);
 
   return React.useCallback(() => {
-    if (!canManageProjects) {
-      return;
-    }
+    if (!canManageProjects) return;
 
-    openConfirmModal({
-      header: 'Delete Project',
+    confirmModal.open({
       body: (
-        <span>
+        <>
           This action can not be undone, <b>"{projectName}"</b> and all flows can not be recovered
-        </span>
+        </>
       ),
+      header: 'Delete Project',
+
       confirm: handleDelete,
     });
-  }, [canManageProjects, projectName]);
+  }, [canManageProjects, projectName, handleDelete]);
 };
 
 export const useProjectOptions = ({

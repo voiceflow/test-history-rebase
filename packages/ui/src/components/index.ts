@@ -79,7 +79,7 @@ export type {
   IconButtonSuccessContainerProps,
 } from './IconButton';
 export { default as IconButton, IconButtonContainer, IconButtonVariant } from './IconButton';
-export type { StyledInputProps } from './Input';
+export type { InputTypes, StyledInputProps } from './Input';
 export {
   ChildInput,
   ControlledInput,

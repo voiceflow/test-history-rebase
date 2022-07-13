@@ -86,4 +86,5 @@ export default Object.assign(Step, {
   StepLabelTextContainer,
   StepLabelText,
   StepPort,
+  APIContext: StepAPIContext,
 });

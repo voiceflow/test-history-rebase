@@ -1,10 +1,9 @@
 import { styled } from '@ui/styles';
 
-const DurationText = styled.div`
-  position: absolute;
-  bottom: 5px;
-  right: 10px;
-  font-size: 12px;
+const Duration = styled.div`
+  margin-top: 4px;
+  color: #62778c;
+  font-size: 13px;
 `;
 
-export default DurationText;
+export default Duration;

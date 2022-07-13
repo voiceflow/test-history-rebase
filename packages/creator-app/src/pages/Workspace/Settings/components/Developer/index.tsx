@@ -43,8 +43,11 @@ const APIKeyPage: React.FC = () => {
     (key: string) => () =>
       dispatch(
         setConfirm({
-          text: 'Are you sure you want to delete this API key? Any services consuming this key will fail.',
-          warning: true,
+          body: 'Are you sure you want to delete this API key? Any services consuming this key will fail.',
+          bodyStyle: { padding: '16px', textAlign: 'center' },
+          modalProps: { centered: true, withHeader: false, maxWidth: 300 },
+          footerStyle: { justifyContent: 'space-between' },
+
           confirm: () => deleteKey(key),
         })
       ),

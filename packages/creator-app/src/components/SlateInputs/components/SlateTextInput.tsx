@@ -1,4 +1,4 @@
-import { Box, stopPropagation, useContextApi } from '@voiceflow/ui';
+import { Divider, stopPropagation, useContextApi } from '@voiceflow/ui';
 import React from 'react';
 
 import {
@@ -59,7 +59,7 @@ const SlateTextInput: React.ForwardRefRenderFunction<SlateEditableRef, SlateText
         <TextUnderlineButton icon={icons.TEXT_UNDERLINE} />
         <TextStrikeThroughButton icon={icons.TEXT_STRIKE_THROUGH} />
 
-        <Box width="1px" height="15px" backgroundColor="#dfe3ed" />
+        <Divider height={15} offset={4} isVertical />
 
         <HyperlinkButton icon={icons.HYPERLINK} />
 

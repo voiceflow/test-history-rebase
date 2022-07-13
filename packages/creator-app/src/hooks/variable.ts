@@ -2,24 +2,37 @@ import { Utils } from '@voiceflow/common';
 import _sortBy from 'lodash/sortBy';
 import React from 'react';
 
-import { VariableType } from '@/constants';
+import { ModalType, VariableType } from '@/constants';
 import * as Diagram from '@/ducks/diagram';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as ProjectV2 from '@/ducks/projectV2';
-import { CanvasCreationType } from '@/ducks/tracking/constants';
+import { CanvasCreationType } from '@/ducks/tracking';
 import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
-import { useDispatch, useSelector } from '@/hooks';
+import { useModals } from '@/hooks/modals';
+import { useDispatch } from '@/hooks/realtime';
+import { useSelector } from '@/hooks/redux';
 import { getPlatformGlobalVariables } from '@/utils/globalVariables';
 import { addVariablePrefix } from '@/utils/variable';
 
 export const useVariableCreation = () => {
+  const createVariableModal = useModals<{ single?: boolean; onCreated?: (names: string) => void; creationType?: CanvasCreationType }>(
+    ModalType.VARIABLE_CREATE
+  );
+
   const variables = useSelector(DiagramV2.active.allSlotsAndVariablesSelector);
   const addVariable = useDispatch(Version.addGlobalVariable);
 
-  const createVariable = async (item: string) => {
-    if (!item) return;
+  const createVariable = async (item: string): Promise<string> => {
+    if (!item) {
+      return new Promise<string>((resolve, reject) => {
+        createVariableModal.open({ single: true, onCreated: ([variable]) => resolve(variable), creationType: CanvasCreationType.EDITOR }, reject);
+      });
+    }
+
     await addVariable(item, CanvasCreationType.EDITOR);
+
+    return item;
   };
 
   return { variables, createVariable };

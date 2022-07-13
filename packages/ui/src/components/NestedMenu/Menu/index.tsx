@@ -129,7 +129,11 @@ function BaseNestedMenu({
 
     const nextChildFocusedOption = childOptions[index];
 
-    if (isBaseMenuItem(nextChildFocusedOption) && (nextChildFocusedOption.disabled || nextChildFocusedOption.vfUIOnly)) return;
+    if (
+      isBaseMenuItem(nextChildFocusedOption) &&
+      (nextChildFocusedOption.disabled || nextChildFocusedOption.readOnly || nextChildFocusedOption.vfUIOnly)
+    )
+      return;
 
     setChildFocusItemIndex(index);
   };
@@ -149,7 +153,7 @@ function BaseNestedMenu({
 
     const nextFocusedOption = options[Math.max(nextIndex - firstOptionIndex, 0)];
 
-    if (isBaseMenuItem(nextFocusedOption) && (nextFocusedOption.disabled || nextFocusedOption.vfUIOnly)) return;
+    if (isBaseMenuItem(nextFocusedOption) && (nextFocusedOption.disabled || nextFocusedOption.readOnly || nextFocusedOption.vfUIOnly)) return;
 
     setChildFocusItemIndex(null);
     onFocusOption?.(nextIndex);

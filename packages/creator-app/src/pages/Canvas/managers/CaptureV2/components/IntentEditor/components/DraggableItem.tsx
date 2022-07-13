@@ -142,9 +142,10 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
 
                             <UtteranceSection
                               slot={slot}
-                              usedSlots={usedSlots}
                               onChange={(utterances) => onChangeDialog({ utterances })}
+                              usedSlots={usedSlots}
                               utterances={item.dialog.utterances}
+                              preventAccent
                             />
                           </>
                         )}

@@ -2,7 +2,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, IconButton, IconButtonVariant } from '@voiceflow/ui';
 import React from 'react';
 
-import AceEditor, { ACE_EDITOR_COLORS, ACE_EDITOR_OPTIONS_V2 } from '@/components/AceEditor';
+import AceEditor, { ACE_EDITOR_COLORS, ACE_EDITOR_OPTIONS_V2, InputMode } from '@/components/AceEditor';
 import * as Documentation from '@/config/documentation';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import { useAceEditor, useVariableList } from '@/pages/Canvas/managers/Code/hooks';
@@ -31,7 +31,6 @@ const CodeRootEditor: React.FC = () => {
             icon={editor.isFullscreen ? 'systemMinimize' : 'systemExpand'}
             onClick={editor.onToggleFullscreen}
             variant={IconButtonVariant.BASIC}
-            style={{ borderRadius: '50%' }}
           />
         </EditorV2.Header>
       }
@@ -47,18 +46,20 @@ const CodeRootEditor: React.FC = () => {
     >
       <Box height="100vh">
         <AceEditor
-          placeholder="Enter custom code"
           ref={editorRef}
-          value={editorState}
-          onChange={(value) => onUpdateEditorState(value)}
-          onBlur={onUpdateCode}
           name="code"
           mode="javascript"
-          editorColors={ACE_EDITOR_COLORS}
-          setOptions={ACE_EDITOR_OPTIONS_V2}
+          focus={!editor.data.code}
+          value={editorState}
+          onBlur={onUpdateCode}
+          onChange={(value) => onUpdateEditorState(value)}
+          inputMode={InputMode.INPUT}
           fullHeight
-          editorSpacing
+          setOptions={ACE_EDITOR_OPTIONS_V2}
+          placeholder="Enter custom code"
+          editorColors={ACE_EDITOR_COLORS}
           scrollMargin={[12, 12, 0, 0]}
+          editorSpacing
         />
       </Box>
     </EditorV2>

@@ -29,8 +29,7 @@ const API: React.FC = () => {
   const workspaceID = useSelector(Session.activeWorkspaceIDSelector)!;
   const projectID = useSelector(Session.activeProjectIDSelector)!;
 
-  const { open: openConfirmPromoteModal } = useModals<ConfirmProps>(ModalType.CONFIRM);
-  const { open: openConfirmDeleteModal } = useModals<ConfirmProps>(ModalType.CONFIRM);
+  const confirmModal = useModals<ConfirmProps>(ModalType.CONFIRM);
 
   const samples = getSamples(showSecondaryKey || showPrimaryKey ? secondaryKey?.key ?? primaryKey?.key : '');
 
@@ -71,83 +70,67 @@ const API: React.FC = () => {
   };
 
   const deleteSecondaryKey = async () => {
-    openConfirmDeleteModal({
+    confirmModal.open({
+      body: 'This action will remove the secondary API key entirely. Are you sure you want to continue?',
       header: 'Remove API Key',
-      body: (
-        <Box>
-          <BlockText>
-            <span>This action will remove the secondary API key entirely. Are you sure you want to continue?</span>
-          </BlockText>
-        </Box>
-      ),
+      confirmButtonText: 'Continue',
+
       confirm: async () => {
         await client.project.deleteSecondaryAPIKey({ projectID, apiKey: primaryKey!._id });
+
         setSecondaryKey(null);
+
         toast.success('Secondary key removed.');
       },
-      confirmButtonText: 'Continue',
-      canCancel: true,
     });
   };
 
   const promoteSecondaryKey = async () => {
-    openConfirmPromoteModal({
+    confirmModal.open({
+      body: 'This action will replace your current primary key. Are you sure you want to continue?',
       header: 'Promote API Key',
-      body: (
-        <Box>
-          <BlockText>
-            <span>This action will replace your current primary key. Are you sure you want to continue?</span>
-          </BlockText>
-        </Box>
-      ),
+      confirmButtonText: 'Continue',
+
       confirm: async () => {
         await client.project.promoteSecondaryAPIKey({ projectID, apiKey: primaryKey!._id });
+
         setPrimaryKey(secondaryKey);
         setSecondaryKey(null);
+
         toast.success('Key successfully promoted.');
       },
-      confirmButtonText: 'Continue',
-      canCancel: true,
     });
   };
 
   const regeneratePrimaryKey = async () => {
-    openConfirmPromoteModal({
+    confirmModal.open({
+      body: 'This action will remove the current primary key and replace it with a new one. Are you sure you want to continue?',
       header: 'Regenerate Primary Key',
-      body: (
-        <Box>
-          <BlockText>
-            <span>This action will remove the current primary key and replace it with a new one. Are you sure you want to continue?</span>
-          </BlockText>
-        </Box>
-      ),
+      confirmButtonText: 'Continue',
+
       confirm: async () => {
         const regeneratedPrimaryKey = await client.project.regeneratePrimaryAPIKey({ apiKey: primaryKey!._id, projectID });
+
         setPrimaryKey(regeneratedPrimaryKey);
+
         toast.success('Primary key regenerated.');
       },
-      confirmButtonText: 'Continue',
-      canCancel: true,
     });
   };
 
   const regenerateSecondaryKey = async () => {
-    openConfirmPromoteModal({
+    confirmModal.open({
+      body: 'This action will remove the current secondary key and replace it with a new one. Are you sure you want to continue?',
       header: 'Regenerate Secondary Key',
-      body: (
-        <Box>
-          <BlockText>
-            <span>This action will remove the current secondary key and replace it with a new one. Are you sure you want to continue?</span>
-          </BlockText>
-        </Box>
-      ),
+      confirmButtonText: 'Continue',
+
       confirm: async () => {
         const regeneratedSecondaryKey = await client.project.regenerateSecondaryAPIKey({ projectID, apiKey: primaryKey!._id });
+
         setSecondaryKey(regeneratedSecondaryKey);
+
         toast.success('Secondary key regenerated.');
       },
-      confirmButtonText: 'Continue',
-      canCancel: true,
     });
   };
 

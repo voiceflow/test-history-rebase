@@ -1,9 +1,10 @@
-import IconButton from '@ui/components/IconButton';
+import Button, { WhiteButtonProps } from '@ui/components/Button';
 import { css, styled } from '@ui/styles';
 
-const PausePlayButton = styled(IconButton)`
+const PausePlayButton = styled(Button).attrs({ variant: Button.Variant.WHITE, rounded: true })<WhiteButtonProps>`
   z-index: 1;
-  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
   margin-right: 24px;
 
   ${({ icon }) =>
@@ -12,7 +13,6 @@ const PausePlayButton = styled(IconButton)`
       svg {
         position: relative;
         left: 1px;
-        transform: scale(1.2);
       }
     `}
 `;

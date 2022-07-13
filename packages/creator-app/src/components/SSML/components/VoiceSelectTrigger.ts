@@ -10,12 +10,12 @@ const activeStyle = css`
 `;
 
 const VoiceSelectTrigger = styled(Flex)<{ isActive?: boolean }>`
-  gap: 8px;
   height: 32px;
 
   ${SvgIcon.Container} {
     color: #6e849a;
     opacity: 0.8;
+    margin-left: 2px;
   }
 
   &:hover {

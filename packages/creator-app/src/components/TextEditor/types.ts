@@ -1,4 +1,4 @@
-import { SvgIconTypes } from '@voiceflow/ui';
+import { InputTypes, SvgIconTypes } from '@voiceflow/ui';
 import { EditorState } from 'draft-js';
 
 import { PluginType } from './plugins';
@@ -43,6 +43,7 @@ export interface TextEditorProps {
   error?: boolean | null;
   value?: string | null;
   onBlur?: (data: TextEditorBlurData) => void;
+  variant?: InputTypes.Variant;
   onFocus?: VoidFunction;
   onEmpty?: (isEmpty: boolean) => void;
   readOnly?: boolean;

@@ -103,12 +103,12 @@ const Speaker: React.FC<SpeakerProps> = ({ voice, platform, setError, getSSMLToP
   );
 
   // eslint-disable-next-line no-nested-ternary
-  const icon = loading ? 'loader' : playing ? 'systemStopOutline' : 'systemAudioWave';
+  const icon = loading ? 'publishSpin' : playing ? 'systemStopOutline' : 'playOutline';
 
   return (
     <TippyTooltip title={playing ? 'Stop' : 'Play'} position="top" bodyOverflow distance={0}>
       <SpeakerWrapper isPlaying={playing}>
-        <SvgIcon className={ClassName.SSML_PLAY_AUDIO} onClick={onSpeak} color="#6E849A" icon={icon} size={loading ? 14 : 16} />
+        <SvgIcon className={ClassName.SSML_PLAY_AUDIO} onClick={onSpeak} color="#6E849A" icon={icon} size={loading ? 14 : 16} spinReverse={loading} />
       </SpeakerWrapper>
     </TippyTooltip>
   );

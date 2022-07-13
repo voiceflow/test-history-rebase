@@ -8,6 +8,7 @@ const VisualManagerV2: Partial<NodeManagerConfig<Realtime.NodeData.Visual, Realt
   step: VisualStep,
   editorV2: VisualEditor,
   label: 'Image',
+  icon: 'systemImage',
 };
 
 export default VisualManagerV2;

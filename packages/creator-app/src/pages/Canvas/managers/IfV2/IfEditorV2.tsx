@@ -14,7 +14,7 @@ const IfEditor: NodeEditor<Realtime.NodeData.IfV2, Realtime.NodeData.IfV2BuiltIn
   const [isDragging, toggleDragging] = useToggle(false);
 
   const mapManager = useMapManager(data.expressions, (expressions) => onChange({ expressions }, false), {
-    clone: (initVal, targetVal) => ({ ...initVal, name: targetVal.name, value: targetVal.value }),
+    clone: ({ id }, targetVal) => ({ ...targetVal, id }),
     onAdd: () => engine.port.addDynamic(node.id),
     factory: () => NODE_CONFIG.factory(undefined).data.expressions[0],
     onRemove: (_, index) => engine.port.removeDynamic(node.ports.out.dynamic[index]),

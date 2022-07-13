@@ -1,4 +1,4 @@
-import { Menu, SvgIcon, ThemeColor, TippyTooltip } from '@voiceflow/ui';
+import { Box, Menu, SvgIcon, ThemeColor, TippyTooltip } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import dayjs from 'dayjs';
 import React from 'react';
@@ -47,10 +47,13 @@ interface Index {
 }
 
 const VersionItem: React.FC<Index> = ({ version, restoreEnabled, swapVersions, creatorID, tag }) => {
-  const { open: openConfirmModal } = useModals<ConfirmProps>(ModalType.CONFIRM);
-  const platform = useSelector(ProjectV2.active.platformSelector);
+  const confirmModal = useModals<ConfirmProps>(ModalType.CONFIRM);
+
   const member = useSelector(WorkspaceV2.active.memberByIDSelector, { creatorID });
+  const platform = useSelector(ProjectV2.active.platformSelector);
+
   const [trackingEvents] = useTrackingEvents();
+
   const { manualSave, autoSaveFromRestore } = version;
 
   const name = React.useMemo(() => {
@@ -83,27 +86,25 @@ const VersionItem: React.FC<Index> = ({ version, restoreEnabled, swapVersions, c
   }, [isLive, platform]);
 
   const confirmRestore = (versionID: string) => {
-    openConfirmModal({
+    confirmModal.open({
       header: 'Restore version',
-      modalProps: {
-        maxWidth: 392,
-        capitalizeText: false,
-      },
-      canCancel: true,
+
       confirmButtonText: (
-        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-          <SvgIcon icon="sync" style={{ marginRight: 12 }} />
-          Restore
-        </div>
+        <Box.Flex gap={12}>
+          <SvgIcon icon="sync" />
+
+          <span>Restore</span>
+        </Box.Flex>
       ),
+
       body: (
-        <div>
-          <span>
-            When you restore a version, we'll create a new automatic version of the current designer state. Please confirm you want to continue.
-          </span>
+        <>
+          When you restore a version, we'll create a new automatic version of the current designer state. Please confirm you want to continue.
+          <br />
           {RESTORE_VERSION_MESSAGE(platform)}
-        </div>
+        </>
       ),
+
       confirm: async () => {
         await swapVersions(versionID);
         trackingEvents.trackProjectRestore({ versionID });

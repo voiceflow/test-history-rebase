@@ -59,7 +59,7 @@ function MenuOptions({
   if (!options.length && renderEmpty) {
     const empty = renderEmpty({ search: searchLabel, close: onHide });
 
-    return empty ? <SelectItem disabled>{empty}</SelectItem> : null;
+    return empty ? <SelectItem readOnly>{empty}</SelectItem> : null;
   }
 
   const renderLabel = (option: unknown, options: RenderOptionLabelConfig): React.ReactNode =>
@@ -78,7 +78,7 @@ function MenuOptions({
       ref: isFocused ? onItemRef?.(index) : null,
       // to prevent parent popper from closing onSelect
       onClick: stopImmediatePropagation(
-        () => (!isBaseMenuItem(option) || !option.disabled) && onSelect(getOptionValue(option), path, updatePosition)
+        () => (!isBaseMenuItem(option) || !option.disabled || !option.readOnly) && onSelect(getOptionValue(option), path, updatePosition)
       ),
       isNested: grouped,
       className: ClassName.MENU_ITEM,
@@ -89,7 +89,7 @@ function MenuOptions({
     if (isBaseMenuItem(option)) {
       return (
         <TippyTooltip key={key} disabled={!option.tooltip} {...(option.tooltip as any)}>
-          <SelectItem {...sharedProps} {...option.menuItemProps} disabled={option.disabled}>
+          <SelectItem {...sharedProps} {...option.menuItemProps} disabled={option.disabled} readOnly={option.readOnly}>
             {!option.vfUIOnly && renderLabel(option, { isFocused, optionsPath: path })}
           </SelectItem>
         </TippyTooltip>

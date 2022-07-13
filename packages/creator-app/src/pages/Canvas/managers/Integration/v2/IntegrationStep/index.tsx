@@ -23,15 +23,15 @@ export const IntegrationStep: React.FC<IntegrationStepProps> = ({ data, withPort
   <Step nodeID={nodeID}>
     <Section v2 withIcon>
       <Item
+        v2
         icon={NODE_CONFIG_V2.getIcon!(data)}
         label={getLabel(data)}
-        palette={palette}
         title={getDescriptions(data).title}
+        palette={palette}
         placeholder={getDescriptions(data).label}
         labelVariant={StepLabelVariant.PRIMARY}
         multilineLabel
         labelLineClamp={2}
-        v2
       />
       {withPorts && (
         <>

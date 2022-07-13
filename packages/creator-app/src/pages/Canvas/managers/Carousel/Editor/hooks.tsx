@@ -53,14 +53,14 @@ export const useCarouselLayoutOption = (
         ),
         ...baseOption,
       },
-      { label: '', disabled: true, menuItemProps: { style: { marginBottom: 0 }, divider: true } },
+      { label: '', readOnly: true, menuItemProps: { style: { marginBottom: 0 }, divider: true } },
       {
         label: (
           <MenuCheckboxOption type={Checkbox.Type.CHECKBOX} checked={defaultCarouselLayout === layout} onChange={toggleDefaultCarouselLayout}>
             Set as default
           </MenuCheckboxOption>
         ),
-        disabled: true,
+        readOnly: true,
         menuItemProps: { ...baseOption.menuItemProps, ending: true },
       },
     ],

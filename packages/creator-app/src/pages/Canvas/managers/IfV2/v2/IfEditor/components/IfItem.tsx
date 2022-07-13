@@ -1,12 +1,13 @@
-/* eslint-disable jsx-a11y/no-autofocus */
 import composeRef from '@seznam/compose-react-refs';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Input, SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
 import ConditionsBuilder from '@/components/ConditionsBuilder';
+import ConditionsBuilderV2 from '@/components/ConditionsBuilderV2';
 import { DragPreviewComponentProps, ItemComponentProps, MappedItemComponentHandlers } from '@/components/DraggableList';
-import { useAutoScrollNodeIntoView } from '@/hooks';
+import { FeatureFlag } from '@/config/features';
+import { useAutoScrollNodeIntoView, useFeature } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import { NodeEditorV2Props } from '@/pages/Canvas/managers/types';
 
@@ -22,6 +23,8 @@ const IfItem: React.ForwardRefRenderFunction<HTMLElement, IfItemProps> = (
   { isDragging, item, index, latestCreatedKey, itemKey, editor, isDraggingPreview, connectedDragRef, onContextMenu, isContextMenuOpen, onUpdate },
   ref
 ) => {
+  const useConditionsBuilderV2 = useFeature(FeatureFlag.CONDITIONS_BUILDER_V2);
+
   const autofocus = latestCreatedKey === itemKey || editor.data.expressions.length === 1;
   const [sectionRef, scrollSectionIntoView] = useAutoScrollNodeIntoView<HTMLDivElement>({ condition: autofocus, options: { block: 'end' } });
 
@@ -29,7 +32,7 @@ const IfItem: React.ForwardRefRenderFunction<HTMLElement, IfItemProps> = (
     <EditorV2.PersistCollapse namespace={['setEditorListItem', itemKey]} defaultCollapsed={!autofocus}>
       {({ collapsed, onToggle }) => (
         <>
-          {index !== 0 && <SectionV2.Divider />}
+          {!isDraggingPreview && index !== 0 && <SectionV2.Divider />}
 
           <SectionV2.Sticky disabled={collapsed}>
             {({ sticked }) => (
@@ -51,15 +54,27 @@ const IfItem: React.ForwardRefRenderFunction<HTMLElement, IfItemProps> = (
                 isDraggingPreview={isDraggingPreview}
                 isContextMenuOpen={isContextMenuOpen}
               >
-                <SectionV2.Content bottomOffset={2.5}>
-                  <Input value={item.name} placeholder="Enter condition label" onChangeText={(name) => onUpdate({ name })} autoFocus />
-                </SectionV2.Content>
+                {!isDragging && !isDraggingPreview && (
+                  <>
+                    <SectionV2.Content bottomOffset={2.5}>
+                      <Input value={item.name} placeholder="Enter condition label" onChangeText={(name) => onUpdate({ name })} />
+                    </SectionV2.Content>
 
-                <SectionV2.Divider inset />
+                    <SectionV2.Divider inset />
 
-                <SectionV2.SimpleSection>
-                  <ConditionsBuilder expression={item} onChange={onUpdate} style={{ padding: 0 }} />
-                </SectionV2.SimpleSection>
+                    <SectionV2.Content topOffset={2} bottomOffset={2}>
+                      {useConditionsBuilderV2.isEnabled ? (
+                        <ConditionsBuilderV2 onChange={onUpdate} expression={item as Realtime.ExpressionData} />
+                      ) : (
+                        <ConditionsBuilder
+                          style={{ padding: 0, width: '100%', height: '100%' }}
+                          expression={item as Realtime.ExpressionData}
+                          onChange={onUpdate}
+                        />
+                      )}
+                    </SectionV2.Content>
+                  </>
+                )}
               </SectionV2.CollapseSection>
             )}
           </SectionV2.Sticky>

@@ -24,16 +24,16 @@ const AmazonIntegrations: React.FC = () => {
 
   const resetAmazon = () => {
     setConfirm({
-      text: (
-        <>
-          Resetting your Amazon Account is dangerous and will de-sync all your published projects/versions and can lead to live skills being deleted.
-          Do not reset unless you know what you are doing
-        </>
-      ),
-      warning: true,
+      body: 'Resetting your Amazon Account is dangerous and will de-sync all your published projects/versions and can lead to live skills being deleted. Do not reset unless you know what you are doing',
+      bodyStyle: { padding: '16px', textAlign: 'center' },
+      modalProps: { centered: true, withHeader: false, maxWidth: 300 },
+      footerStyle: { justifyContent: 'space-between' },
+
       confirm: async () => {
         setAmazonStatus(false);
+
         await unlinkAmazonAccount();
+
         setAmazonStatus(true);
       },
     });

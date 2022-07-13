@@ -16,8 +16,9 @@ import { SectionProps } from './types';
 const VariablesList: React.FC<SectionProps> = ({ search, setSearchLength, selectedID, setSelectedItemID, setActiveTab }) => {
   const { activeTab } = React.useContext(NLUQuickViewContext);
 
+  const createVariableModal = useModals<{ onCreated: (variables: string[]) => void }>(ModalType.VARIABLE_CREATE);
+
   const isActiveTab = React.useMemo(() => activeTab === InteractionModelTabType.VARIABLES, [activeTab]);
-  const { open: openVariableCreate } = useModals(ModalType.VARIABLE_CREATE);
   const [justAddedVariables, setJustAddedVariables] = React.useState<string[] | null>(null);
 
   const [variables, variablesMap] = useOrderedVariables();
@@ -45,24 +46,10 @@ const VariablesList: React.FC<SectionProps> = ({ search, setSearchLength, select
     });
   }, [justAddedVariables, variables]);
 
-  const onCreateVariable = () => {
-    openVariableCreate({
-      onCreate: (variableNames: string[]) => {
-        if (variableNames.length) {
-          setJustAddedVariables(variableNames);
-        }
-      },
-    });
-  };
+  const onCreateVariable = () => createVariableModal.open({ onCreated: setJustAddedVariables });
 
   return (
     <SectionSection
-      isExpanded={isActiveTab && !!filteredList.length}
-      onClick={() => setActiveTab(InteractionModelTabType.VARIABLES)}
-      isCollapsed={!isActiveTab}
-      header="Variables"
-      headerToggle
-      collapseVariant={isActiveTab ? null : SectionToggleVariant.ARROW}
       suffix={
         isActiveTab && (
           <TippyTooltip title="Create variable" position="top">
@@ -70,18 +57,25 @@ const VariablesList: React.FC<SectionProps> = ({ search, setSearchLength, select
           </TippyTooltip>
         )
       }
+      header="Variables"
+      onClick={() => setActiveTab(InteractionModelTabType.VARIABLES)}
+      isExpanded={isActiveTab && !!filteredList.length}
+      isCollapsed={!isActiveTab}
+      headerToggle
+      collapseVariant={isActiveTab ? null : SectionToggleVariant.ARROW}
     >
       {filteredList.map((variable, index) => {
         const isActive = selectedID ? selectedID === variable.id : index === 0;
+
         return (
           <ListItem
-            type={InteractionModelTabType.VARIABLES}
             id={variable.id}
+            key={variable.id}
+            name={variable.name}
+            type={InteractionModelTabType.VARIABLES}
             active={isActive}
             onClick={() => setSelectedItemID(variable.id)}
             onDelete={() => isActive && firstItem && setSelectedItemID(firstItem.id)}
-            key={variable.id}
-            name={variable.name}
             nameValidation={(text) => text}
           />
         );

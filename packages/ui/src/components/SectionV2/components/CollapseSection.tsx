@@ -20,6 +20,7 @@ export interface CollapseSectionProps extends ContainerProps {
   onEntered?: VoidFunction;
   mountOnEnter?: boolean;
   unmountOnExit?: boolean;
+  preventAccent?: boolean;
   containerToggle?: boolean;
   defaultCollapsed?: boolean;
 }
@@ -32,6 +33,7 @@ const CollapseSection: React.ForwardRefRenderFunction<HTMLDivElement, CollapseSe
     onEntered,
     mountOnEnter = true,
     unmountOnExit = true,
+    preventAccent,
     containerToggle,
     defaultCollapsed = false,
     collapsed: collapsedProp,
@@ -66,7 +68,7 @@ const CollapseSection: React.ForwardRefRenderFunction<HTMLDivElement, CollapseSe
   const rendererProps = { collapsed, onToggle };
 
   return (
-    <Container isCollapse isAccent={!collapsed} {...containerProps} ref={ref} onClick={containerToggle ? onClick : undefined}>
+    <Container isCollapse isAccent={!preventAccent && !collapsed} {...containerProps} ref={ref} onClick={containerToggle ? onClick : undefined}>
       {Utils.functional.isFunction(header) ? header(rendererProps) : header}
 
       <Collapse onEntered={onEntered} isOpen={!collapsed} onClick={onPreventCollapseClick} mountOnEnter={mountOnEnter} unmountOnExit={unmountOnExit}>

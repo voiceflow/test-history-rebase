@@ -35,7 +35,7 @@ const DropAudio = React.forwardRef<HTMLDivElement, DropAudioProps>(({ update, re
       onValidateLink={validateURL}
       onDropAccepted={onDropAccepted}
       onDropRejected={onDropRejected}
-      linkPlaceholder={renderInput ? "Add link or Variable using '{'" : 'Add link'}
+      linkPlaceholder={renderInput ? "Add link or variable using '{'" : 'Add link'}
     />
   );
 });

@@ -68,7 +68,7 @@ const RootEditor: React.FC = () => {
 
   return (
     <EditorV2 header={<EditorV2.DefaultHeader />} footer={<EditorV2.DefaultFooter tutorial={Documentation.INTENT_STEP} />}>
-      <SectionV2.SimpleSection>
+      <SectionV2.SimpleSection isAccent>
         <IntentSelect
           intent={intent}
           onChange={onChangeIntent}

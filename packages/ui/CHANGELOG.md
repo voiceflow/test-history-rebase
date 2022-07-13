@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.122.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.122.0...@voiceflow/ui@1.122.1) (2022-07-13)
+
+
+### Bug Fixes
+
+* overflowtext showing scrollbar (CT-000) ([#5756](https://github.com/voiceflow/creator-app/issues/5756)) ([6ac3157](https://github.com/voiceflow/creator-app/commit/6ac3157aa695c8c196f1b284d753baf504738afa))
+
+
+
+
+
 # [1.122.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.121.1...@voiceflow/ui@1.122.0) (2022-07-13)
 
 

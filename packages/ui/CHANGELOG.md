@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.121.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.121.0...@voiceflow/ui@1.121.1) (2022-07-13)
+
+
+### Bug Fixes
+
+* text overflow cutoff (CT-499) ([#5748](https://github.com/voiceflow/creator-app/issues/5748)) ([40b6c91](https://github.com/voiceflow/creator-app/commit/40b6c915c995c23a5229a6004d69cbdeeb5eff20))
+
+
+
+
+
 # [1.121.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.120.0...@voiceflow/ui@1.121.0) (2022-07-12)
 
 

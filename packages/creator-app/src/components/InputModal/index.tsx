@@ -36,19 +36,17 @@ const InputModal: React.FC<InputModalProps> = ({ modalType, isOpened, close, dat
   const [loading, enableLoading, disableLoading] = useEnableDisable(false);
 
   React.useEffect(() => {
-    if (isOpened) disableLoading();
+    if (isOpened) {
+      disableLoading();
+      setInputVal('');
+    }
   }, [isOpened]);
-
-  const closeModal = React.useCallback(() => {
-    close();
-    setInputVal('');
-  }, []);
 
   const confirmInput = React.useCallback(async () => {
     enableLoading();
     await confirm?.onClick?.(inputVal);
 
-    closeModal();
+    close();
 
     disableLoading();
   }, [confirm, close, loading, inputVal]);
@@ -65,7 +63,7 @@ const InputModal: React.FC<InputModalProps> = ({ modalType, isOpened, close, dat
       <ModalFooter style={style?.footer}>
         {canCancel && (
           <Box mr={12}>
-            <Button onClick={closeModal} variant={ButtonVariant.TERTIARY} squareRadius={true}>
+            <Button onClick={close} variant={ButtonVariant.TERTIARY} squareRadius={true}>
               Cancel
             </Button>
           </Box>

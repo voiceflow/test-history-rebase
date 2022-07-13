@@ -1,10 +1,12 @@
+import { Link } from '@voiceflow/ui';
 import React from 'react';
 
 import InputModal from '@/components/InputModal';
 import { ModalType } from '@/constants';
 import { getPlatformName } from '@/constants/platforms';
 import * as ProjectV2 from '@/ducks/projectV2';
-import { useSelector } from '@/hooks';
+import * as Router from '@/ducks/router';
+import { useDispatch, useSelector } from '@/hooks';
 import { useModals } from '@/hooks/modals';
 import { isPlatformWithThirdPartyUpload } from '@/utils/typeGuards';
 
@@ -21,13 +23,24 @@ const PublishVersionModal: React.FC = () => {
 
   const platform = useSelector(ProjectV2.active.platformSelector);
 
-  const headerText = React.useMemo(() => (isPlatformWithThirdPartyUpload(platform) ? 'Upload new version' : 'Publish new version'), [platform]);
+  const headerText = React.useMemo(() => (isPlatformWithThirdPartyUpload(platform) ? 'Upload new version' : 'Publish for production'), [platform]);
+
+  const goToCurrentPublish = useDispatch(Router.goToActivePlatformPublish);
+
+  const onLinkClick = () => {
+    close();
+    goToCurrentPublish();
+  };
 
   const bodyText = React.useMemo(
     () =>
-      isPlatformWithThirdPartyUpload(platform)
-        ? `This action will upload a new version to ${getPlatformName(platform)}. Confirm you want to continue.`
-        : 'This action will publish a new version. Please confirm you want to continue.',
+      isPlatformWithThirdPartyUpload(platform) ? (
+        `This action will upload a new version to ${getPlatformName(platform)}. Confirm you want to continue.`
+      ) : (
+        <>
+          Publish this version to production and use it with our <Link onClick={onLinkClick}>Dialog Manager API</Link>.
+        </>
+      ),
     [platform]
   );
 

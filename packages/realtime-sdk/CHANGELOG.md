@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.125.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.125.0...@voiceflow/realtime-sdk@1.125.1) (2022-07-14)
+
+
+### Bug Fixes
+
+* sync dynamic ports (CT-585) ([#5764](https://github.com/voiceflow/creator-app/issues/5764)) ([a770d56](https://github.com/voiceflow/creator-app/commit/a770d56fd03a2fccae25210057c45aa1268b7697))
+
+
+
+
+
 # [1.125.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.124.1...@voiceflow/realtime-sdk@1.125.0) (2022-07-14)
 
 

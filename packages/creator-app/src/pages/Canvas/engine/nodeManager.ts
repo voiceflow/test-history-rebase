@@ -578,7 +578,7 @@ class NodeManager extends EngineConsumer {
    * patches a node's data by its ID
    */
   async updateData<T extends unknown = unknown>(nodeID: string, patch: Partial<Realtime.NodeData<T>>, save = true): Promise<void> {
-    this.updateManyData([{ nodeID, patch }], save);
+    await this.updateManyData([{ nodeID, patch }], save);
   }
 
   /**

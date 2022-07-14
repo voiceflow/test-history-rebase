@@ -9,6 +9,8 @@ export enum SchemaVersion {
    * migrate to the new portsV2 structure
    */
   V2 = 2,
+
+  V2_1 = 2.1,
 }
 
 export const SUPPORTED_SCHEMA_VERSIONS = Object.values(SchemaVersion)

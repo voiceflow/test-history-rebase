@@ -4,7 +4,7 @@ import { Action } from 'typescript-fsa';
 
 import { AbstractDiagramActionControl } from '@/actions/diagram/utils';
 
-class RemoveManyByKeyPort extends AbstractDiagramActionControl<Realtime.port.RemoveManyByKeyPayload> {
+class RemoveManyByKeyPorts extends AbstractDiagramActionControl<Realtime.port.RemoveManyByKeyPayload> {
   actionCreator = Realtime.port.removeManyByKey;
 
   process = async (ctx: Context, { payload }: Action<Realtime.port.RemoveManyByKeyPayload>): Promise<void> => {
@@ -12,4 +12,4 @@ class RemoveManyByKeyPort extends AbstractDiagramActionControl<Realtime.port.Rem
   };
 }
 
-export default RemoveManyByKeyPort;
+export default RemoveManyByKeyPorts;

@@ -159,7 +159,7 @@ const Client = ({ api }: ExtraOptions) => ({
     api.delete(`/v2/diagrams/${diagramID}/nodes/${nodeID}/ports`, { data: { key } }),
 
   removeManyByKeyPort: (diagramID: string, nodeID: string, keys: string[]) =>
-    api.delete(`/v2/diagrams/${diagramID}/nodes/${nodeID}/many-ports`, { data: { keys } }),
+    api.delete(`/v2/diagrams/${diagramID}/nodes/${nodeID}/many-ports`, { data: { ports: keys.map((key) => ({ key })) } }),
 
   removeDynamicPort: (diagramID: string, nodeID: string, portID: string) =>
     api.delete(`/v2/diagrams/${diagramID}/nodes/${nodeID}/ports`, { data: { portID } }),

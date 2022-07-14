@@ -20,7 +20,7 @@ const addAction = ({
   payload: Realtime.link.AddBuiltinPayload | Realtime.link.AddByKeyPayload | Realtime.link.AddDynamicPayload;
 }) => {
   if (portType) return Realtime.link.addBuiltin({ ...payload, type: portType });
-  if (portKey) Realtime.link.addByKey({ ...payload, key: portKey });
+  if (portKey) return Realtime.link.addByKey({ ...payload, key: portKey });
   return Realtime.link.addDynamic(payload);
 };
 

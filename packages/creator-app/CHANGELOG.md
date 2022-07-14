@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.830.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.829.1...@voiceflow/creator-app@1.830.0) (2022-07-14)
+
+
+### Features
+
+* render links in comments (CT-589) ([#5762](https://github.com/voiceflow/creator-app/issues/5762)) ([0b56f4e](https://github.com/voiceflow/creator-app/commit/0b56f4e2cceba754f628422d2e62a04381e28b1c))
+
+
+
+
+
 ## [1.829.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.829.0...@voiceflow/creator-app@1.829.1) (2022-07-14)
 
 

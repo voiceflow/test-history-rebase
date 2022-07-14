@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.122.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.122.1...@voiceflow/ui@1.122.2) (2022-07-14)
+
+
+### Bug Fixes
+
+* use draftjs styling for variable tags (CT-76) ([#5747](https://github.com/voiceflow/creator-app/issues/5747)) ([327122b](https://github.com/voiceflow/creator-app/commit/327122bb22af07a35e2d6b91bf18647316bd614c))
+
+
+
+
+
 ## [1.122.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.122.0...@voiceflow/ui@1.122.1) (2022-07-13)
 
 

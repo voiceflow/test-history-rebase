@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.125.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.124.1...@voiceflow/realtime-sdk@1.125.0) (2022-07-14)
+
+
+### Features
+
+* implement condition input (CT-490) ([#5754](https://github.com/voiceflow/creator-app/issues/5754)) ([45cb9d1](https://github.com/voiceflow/creator-app/commit/45cb9d181791ed691f79207104d6b26d9e547628))
+
+
+
+
+
 ## [1.124.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.124.0...@voiceflow/realtime-sdk@1.124.1) (2022-07-14)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.82.14](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.82.13...@voiceflow/realtime@1.82.14) (2022-07-14)
+
+
+### Bug Fixes
+
+* register remove many ports by key (VF-000) ([#5757](https://github.com/voiceflow/creator-app/issues/5757)) ([88165a8](https://github.com/voiceflow/creator-app/commit/88165a87cad6b59fc50025e08c435a57d804dae4))
+
+
+
+
+
 ## [1.82.13](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.82.12...@voiceflow/realtime@1.82.13) (2022-07-13)
 
 **Note:** Version bump only for package @voiceflow/realtime

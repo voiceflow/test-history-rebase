@@ -17,7 +17,7 @@ export const matchAndProcessTextNodeToElement = (
   for (const match of text.matchAll(regexp)) {
     let textNode: Text;
 
-    // find text before the variable
+    // find text before the match
     if (!prevMatch) {
       textNode = { text: text.substring(0, match.index) };
     } else {

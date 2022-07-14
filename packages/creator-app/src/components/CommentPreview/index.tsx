@@ -1,10 +1,11 @@
-import { Nullable } from '@voiceflow/common';
-import { Text } from '@voiceflow/ui';
+import { Link, Text } from '@voiceflow/ui';
 import React from 'react';
 
+import { ALL_URLS_REGEX } from '@/constants';
 import { UNKNOWN_MEMBER_DATA } from '@/ducks/workspace/constants';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useSelector, useTheme } from '@/hooks';
+import { isAnyLink, matchAllAndProcess } from '@/utils/string';
 
 import { Container } from './components';
 
@@ -24,34 +25,43 @@ const CommentPreview: React.FC<CommentPreviewProps> = ({ text = '' }) => {
   const formattedText = React.useMemo(() => {
     const nodes: React.ReactNode[] = [];
 
-    let prevMatch: Nullable<RegExpMatchArray> = null;
+    matchAllAndProcess(text, MENTION_MARKUP_REGEX, (result) => {
+      if (typeof result !== 'string') {
+        const [, userMention, userID] = result;
 
-    // eslint-disable-next-line no-restricted-syntax
-    for (const match of text.matchAll(MENTION_MARKUP_REGEX)) {
-      const [, userMention, userID] = match;
+        const memberExists = hasMemberByID(Number(userID));
 
-      nodes.push(
-        <Text key={nodes.length} color={theme.colors.primary} fontSize={15}>
-          {`${text.substring(prevMatch ? (prevMatch.index ?? 0) + prevMatch[0].length : 0, match.index)}`}
-        </Text>
-      );
+        nodes.push(
+          <Text key={nodes.length} color={theme.colors.blue}>
+            {memberExists ? userMention : `@${UNKNOWN_MEMBER_MENTION}`}
+          </Text>
+        );
 
-      const memberExists = hasMemberByID(Number(userID));
+        return;
+      }
 
-      nodes.push(
-        <Text key={nodes.length} color={theme.colors.blue} fontSize={15}>
-          {memberExists ? userMention : `@${UNKNOWN_MEMBER_MENTION}`}
-        </Text>
-      );
+      if (isAnyLink(result)) {
+        nodes.push(
+          <Link key={nodes.length} href={result}>
+            {result}
+          </Link>
+        );
 
-      prevMatch = match;
-    }
+        return;
+      }
 
-    nodes.push(
-      <Text key={nodes.length} color={theme.colors.primary} fontSize={15}>
-        {text.substring(prevMatch ? (prevMatch.index ?? 0) + prevMatch[0].length : 0, text.length)}
-      </Text>
-    );
+      matchAllAndProcess(result, ALL_URLS_REGEX, (result) => {
+        if (typeof result !== 'string') {
+          nodes.push(
+            <Link key={nodes.length} href={result[0]}>
+              {result[0]}
+            </Link>
+          );
+        } else {
+          nodes.push(<span key={nodes.length}>{result}</span>);
+        }
+      });
+    });
 
     return nodes;
   }, [text]);

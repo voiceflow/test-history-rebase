@@ -1,4 +1,4 @@
-import { READABLE_VARIABLE_REGEXP, SLOT_REGEXP, Utils } from '@voiceflow/common';
+import { Nullable, READABLE_VARIABLE_REGEXP, SLOT_REGEXP, Utils } from '@voiceflow/common';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import { STRICT_LINKS_REGEXS, URL_ONLY_REGEX, VALID_LINKS_REGEXS } from '@/constants';
@@ -40,3 +40,18 @@ export const formatProjectName = (value: string): string => value.trim() || 'Unt
 export const containsSlotOtVariable = (str: string): boolean => !!str.match(SLOT_REGEXP);
 
 export const containsReadableVariable = (str: string): boolean => !!str.match(READABLE_VARIABLE_REGEXP);
+
+export const matchAllAndProcess = (text: string, regexp: RegExp, processor: (result: string | RegExpMatchArray) => void): void => {
+  let prevMatch: Nullable<RegExpMatchArray> = null;
+
+  // eslint-disable-next-line no-restricted-syntax
+  for (const match of text.matchAll(regexp)) {
+    processor(text.substring(prevMatch ? (prevMatch.index ?? 0) + prevMatch[0].length : 0, match.index));
+
+    processor(match);
+
+    prevMatch = match;
+  }
+
+  processor(text.substring(prevMatch ? (prevMatch.index ?? 0) + prevMatch[0].length : 0, text.length));
+};

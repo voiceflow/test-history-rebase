@@ -2,7 +2,6 @@ export const toPath = (...routes: string[]) => routes.map((route) => `/${route}`
 
 export enum RootRoute {
   PROJECT = 'project',
-  SSML = 'ssml',
   RESET = 'reset',
   LOGIN = 'login',
   LOGOUT = 'logout',
@@ -110,8 +109,6 @@ export enum AccountSettingsRoute {
 
 export const Path = {
   HOME: '/',
-
-  SSML: toPath(RootRoute.SSML),
 
   RESET: toPath(RootRoute.RESET),
   RESET_PASSWORD: toPath(RootRoute.RESET, ':id'),

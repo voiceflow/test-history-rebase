@@ -22,7 +22,6 @@ import * as Query from '@/utils/query';
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
 
-const SSML = lazy(() => import('@/pages/SSML'));
 const Legal = lazy(() => import('@/components/Legal'));
 const Project = lazy(() => import('@/pages/Project'));
 const Account = lazy(() => import('@/pages/Account'));
@@ -40,8 +39,6 @@ const Routes: React.FC = () => {
   return (
     <Suspense fallback={<FullSpinner name="Assets" />}>
       <Switch>
-        <Route exact path={Path.SSML} component={SSML} />
-
         <Route exact path={Path.CONFIRM_ACCOUNT} component={ConfirmAccount} />
         <Route exact path={Path.CONFIRM_EMAIL_UPDATE} component={ConfirmEmail} />
         <Route exact path={Path.LOGOUT} component={Logout} />

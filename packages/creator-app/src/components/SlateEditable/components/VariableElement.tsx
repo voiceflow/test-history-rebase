@@ -8,10 +8,10 @@ import * as Router from '@/ducks/router';
 import * as SlotV2 from '@/ducks/slotV2';
 import { useDispatch, useModals, useSelector } from '@/hooks';
 
+import { StyledTag as Slot } from '../../TextEditor/plugins/variables/components/StyledTag';
 import { usePluginOptions } from '../contexts';
 import { PluginType } from '../editor';
 import { VariableElement as VariableElementType } from '../editor/types';
-import Slot from './Slot';
 
 interface VariableElementProps extends Omit<RenderElementProps, 'element'> {
   element: VariableElementType;

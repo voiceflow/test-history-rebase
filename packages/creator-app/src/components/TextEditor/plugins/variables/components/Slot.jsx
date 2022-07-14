@@ -1,5 +1,5 @@
 import composeRef from '@seznam/compose-react-refs';
-import { OverflowTippyTooltip, swallowEvent, Tag } from '@voiceflow/ui';
+import { OverflowTippyTooltip, swallowEvent } from '@voiceflow/ui';
 import React from 'react';
 
 import { VariableTagTooltipStyles } from '@/components/VariableTag';
@@ -7,33 +7,10 @@ import { FeatureFlag } from '@/config/features';
 import { InteractionModelTabType, ModalType } from '@/constants';
 import * as Router from '@/ducks/router';
 import * as SlotV2 from '@/ducks/slotV2';
-import { compose, styled } from '@/hocs';
+import { compose } from '@/hocs';
 import { useDispatch, useFeature, useModals, useSelector } from '@/hooks';
 
-const StyledTag = styled(Tag)`
-  pointer-events: none;
-  display: inline-flex;
-  max-width: 100%;
-  position: relative;
-  top: -1px;
-
-  > span {
-    pointer-events: all;
-
-    word-break: normal;
-    cursor: pointer;
-    max-width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    display: inline-block;
-
-    &:before :after {
-      content: '';
-      display: none;
-    }
-  }
-`;
+import { StyledTag } from './StyledTag';
 
 const Slot = ({ mention, children }, ref) => {
   const IMM_MODALS_V2 = useFeature(FeatureFlag.IMM_MODALS_V2);

@@ -7,7 +7,9 @@ interface TagProps {
   color?: string;
   children: string;
   className?: string;
+  isVariable?: boolean;
   onClick?: React.MouseEventHandler<HTMLSpanElement>;
+  onMouseDown?: React.MouseEventHandler<HTMLSpanElement>;
 }
 
 export const Tag = React.forwardRef<HTMLSpanElement, React.PropsWithChildren<TagProps>>(

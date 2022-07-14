@@ -1,5 +1,3 @@
-import { colors, ThemeColor } from '@voiceflow/ui';
-
 import { createGlobalStyle, css, styled } from '@/hocs';
 
 export interface BaseVariableTagProps {
@@ -56,12 +54,4 @@ export const VariableTagContent = styled.span`
 export const VariableTagWrapper = styled.span`
   ${variableStyle}
   display: flex;
-`;
-
-export const slotStyles = css`
-  ${variableStyle}
-  padding-top: 0px;
-  box-shadow: none;
-  background-color: ${({ color = DEFAULT_SLOT_COLOR }) => color};
-  color: ${colors(ThemeColor.WHITE)};
 `;

@@ -44,11 +44,28 @@ export type ExpressionV2 =
   | StartsWithExpression
   | LessOrEqualExpression
   | GreaterOrEqualExpression;
+
 export type LogicGroupData = GenericExpressionV2<BaseNode.Utils.ExpressionTypeV2.AND | BaseNode.Utils.ExpressionTypeV2.OR, ExpressionV2[]>;
 export type ExpressionData = GenericExpressionV2<
   BaseNode.Utils.ExpressionTypeV2.AND | BaseNode.Utils.ExpressionTypeV2.OR,
   (ExpressionV2 | LogicGroupData)[]
 >;
+
+export type TuppleExpression =
+  | OrExpressionV2
+  | AndExpressionV2
+  | LessExpressionV2
+  | EqualsExpressionV2
+  | GreaterExpressionV2
+  | IsEmptyExpression
+  | ContainsExpression
+  | NotEqualExpression
+  | EndsWithExpression
+  | HasValueExpression
+  | NotContainExpression
+  | StartsWithExpression
+  | LessOrEqualExpression
+  | GreaterOrEqualExpression;
 
 // older
 

@@ -44,14 +44,15 @@ export const isConditionInvalid = (expression: LogicUnitDataType) => {
 
 // Default values
 
-export const getAddionalLogicData = (
+export const getAddionalLogicData = <T extends Realtime.ExpressionData | Realtime.LogicGroupData = Realtime.ExpressionData | Realtime.LogicGroupData>(
   expression: Realtime.ExpressionData | Realtime.LogicGroupData,
   newCondition: Realtime.ExpressionV2 | Realtime.LogicGroupData
-): Realtime.ExpressionData | Realtime.LogicGroupData => ({
-  ...expression,
-  type: expression.type || BaseNode.Utils.ExpressionTypeV2.AND,
-  value: [...expression.value, { ...newCondition }],
-});
+): T =>
+  ({
+    ...expression,
+    type: expression.type || BaseNode.Utils.ExpressionTypeV2.AND,
+    value: [...expression.value, { ...newCondition }],
+  } as T);
 
 export const getDefaultValue = (
   logicInterface: BaseNode.Utils.ConditionsLogicInterface,

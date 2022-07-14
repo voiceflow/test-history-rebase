@@ -1,3 +1,4 @@
+export * from './expressions';
 export * from './node';
 export * from './platform';
 

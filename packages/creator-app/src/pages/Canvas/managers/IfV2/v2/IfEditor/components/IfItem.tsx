@@ -23,7 +23,7 @@ const IfItem: React.ForwardRefRenderFunction<HTMLElement, IfItemProps> = (
   { isDragging, item, index, latestCreatedKey, itemKey, editor, isDraggingPreview, connectedDragRef, onContextMenu, isContextMenuOpen, onUpdate },
   ref
 ) => {
-  const useConditionsBuilderV2 = useFeature(FeatureFlag.CONDITIONS_BUILDER_V2);
+  const conditionsBuilderV2 = useFeature(FeatureFlag.CONDITIONS_BUILDER_V2);
 
   const autofocus = latestCreatedKey === itemKey || editor.data.expressions.length === 1;
   const [sectionRef, scrollSectionIntoView] = useAutoScrollNodeIntoView<HTMLDivElement>({ condition: autofocus, options: { block: 'end' } });
@@ -63,7 +63,7 @@ const IfItem: React.ForwardRefRenderFunction<HTMLElement, IfItemProps> = (
                     <SectionV2.Divider inset />
 
                     <SectionV2.Content topOffset={2} bottomOffset={2}>
-                      {useConditionsBuilderV2.isEnabled ? (
+                      {conditionsBuilderV2.isEnabled ? (
                         <ConditionsBuilderV2 onChange={onUpdate} expression={item as Realtime.ExpressionData} />
                       ) : (
                         <ConditionsBuilder

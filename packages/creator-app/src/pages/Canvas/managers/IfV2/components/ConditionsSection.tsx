@@ -23,7 +23,7 @@ const ConditionsSection: React.ForwardRefRenderFunction<HTMLDivElement, Conditio
 ) => {
   const inputRef = React.useRef<HTMLInputElement | null>(null);
   const [title, setTitle] = React.useState<string>((item as Realtime.ExpressionData).name ?? '');
-  const useConditionsBuilderV2 = useFeature(FeatureFlag.CONDITIONS_BUILDER_V2);
+  const conditionsBuilderV2 = useFeature(FeatureFlag.CONDITIONS_BUILDER_V2);
 
   const isNew = itemKey === latestCreatedKey;
 
@@ -58,7 +58,7 @@ const ConditionsSection: React.ForwardRefRenderFunction<HTMLDivElement, Conditio
             <Input ref={inputRef} value={title} onBlur={onBlur} placeholder="Condition Label" onChangeText={setTitle} />
           </Section>
           <Section isDividerNested customContentStyling={{ paddingTop: '0px', paddingBottom: '0px' }}>
-            {useConditionsBuilderV2.isEnabled ? (
+            {conditionsBuilderV2.isEnabled ? (
               <ConditionsBuilderV2 expression={item as Realtime.ExpressionData} onChange={onUpdate} />
             ) : (
               <ConditionsBuilder expression={item as Realtime.ExpressionData} onChange={onUpdate} />

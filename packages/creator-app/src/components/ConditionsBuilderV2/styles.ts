@@ -2,7 +2,7 @@ import { Box } from '@voiceflow/ui';
 
 import { styled } from '@/hocs';
 
-const SidebarContainer = styled(Box.Flex)`
+export const SidebarContainer = styled(Box.Flex)`
   width: 100%;
   margin-right: 16px;
   border-radius: 6px;
@@ -13,5 +13,3 @@ const SidebarContainer = styled(Box.Flex)`
     background-color: rgba(238, 244, 246, 0.85);
   }
 `;
-
-export default SidebarContainer;

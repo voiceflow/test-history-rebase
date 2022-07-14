@@ -5,11 +5,11 @@ import React from 'react';
 
 import ConditionExpressionTooltip from '../../ConditionsBuilder/components/ConditionExpressionTooltip';
 import { getAddionalLogicData, getDefaultValue } from '../../ConditionsBuilder/utils';
+import BuilderSelect from '../ConditionBuilder/Select';
 import { ConditionsEditorTabs } from '../constants';
-import { BuilderSelect } from './BuilderComponents';
-import { ConditionExpression } from './ExpressionComponents';
-import { PopperContainer, PopperContent, PopperHeader } from './PopperContainers';
-import { LogicGroup } from './TreeComponents';
+import { ConditionExpression } from '../ExpressionComponents';
+import LogicGroup from '../LogicGroup';
+import { PopperContainer, PopperContent, PopperHeader } from '../PopperContainers';
 
 export interface ConditionsPopperProps {
   expression?: Realtime.ExpressionData;
@@ -22,13 +22,6 @@ const ConditionsPopper: React.FC<ConditionsPopperProps> = ({ expression, onChang
   const addAdditionalBuilderComponent = (logicInterface: BaseNode.Utils.ConditionsLogicInterface) => {
     const values = getDefaultValue(logicInterface, true);
     onChange(getAddionalLogicData(expression!, values));
-  };
-
-  const onUpdateData = (index: number) => (data: Realtime.ExpressionV2 | Realtime.LogicGroupData) => {
-    onChange({
-      ...expression,
-      value: expression!.value.map((item: any, idx: number) => (idx === index ? { ...item, ...data } : item)),
-    } as Realtime.ExpressionData);
   };
 
   const onDeleteCondition = (index: number) => () => {
@@ -61,7 +54,7 @@ const ConditionsPopper: React.FC<ConditionsPopperProps> = ({ expression, onChang
             onAddComponent={addAdditionalBuilderComponent}
             topLevel={true}
             onDelete={onDeleteCondition}
-            onChange={onUpdateData}
+            onChange={(partialExp) => onChange({ ...expression, ...(partialExp as Realtime.ExpressionData) })}
           />
         ) : (
           <ConditionExpression expression={expression} />

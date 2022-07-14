@@ -1,5 +1,5 @@
 import composeRef from '@seznam/compose-react-refs';
-import { InputRenderer, toast, useSetup } from '@voiceflow/ui';
+import { InputRenderer, InputVariant, toast, useSetup } from '@voiceflow/ui';
 import React from 'react';
 
 import TextEditor, { PluginType } from '@/components/TextEditor';
@@ -29,6 +29,7 @@ interface VariablesInputProps
   fullWidth?: boolean;
   multiline?: boolean;
   onEnterPress?: SaveCallback;
+  variant?: InputVariant;
 }
 
 const AVERAGE_SYMBOL_WIDTH = 9;

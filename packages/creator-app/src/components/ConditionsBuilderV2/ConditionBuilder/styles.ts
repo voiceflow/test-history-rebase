@@ -2,7 +2,12 @@ import { Box } from '@voiceflow/ui';
 
 import { css, styled } from '@/hocs';
 
-const BuilderButton = styled(Box.Flex)<{ topLevel?: boolean }>`
+export const Container = styled(Box.Flex)`
+  width: 490px;
+  margin: 5px 12px 5px 20px;
+`;
+
+export const BuilderButton = styled(Box.Flex)<{ topLevel?: boolean }>`
   border-radius: 6px;
   padding: 10px;
   &:hover {
@@ -15,5 +20,3 @@ const BuilderButton = styled(Box.Flex)<{ topLevel?: boolean }>`
       align-self: start;
     `}
 `;
-
-export default BuilderButton;

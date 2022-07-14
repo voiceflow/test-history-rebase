@@ -2,14 +2,14 @@ import { BaseNode } from '@voiceflow/base-types';
 import { Dropdown, Menu, MenuItem, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
-import BuilderButton from './BuilderButton';
+import * as S from '../styles';
 
-export interface BuilderSelectProps {
+export interface ConditionBuilderSelectProps {
   onAddComponent: (value: BaseNode.Utils.ConditionsLogicInterface) => void;
   topLevel?: boolean;
 }
 
-const BuilderSelect: React.FC<BuilderSelectProps> = ({ onAddComponent, topLevel = false }) => {
+const ConditionBuilderSelect: React.FC<ConditionBuilderSelectProps> = ({ onAddComponent, topLevel = false }) => {
   const onSelect = (logicInterface: BaseNode.Utils.ConditionsLogicInterface) => () => onAddComponent(logicInterface);
 
   return (
@@ -22,12 +22,12 @@ const BuilderSelect: React.FC<BuilderSelectProps> = ({ onAddComponent, topLevel 
       )}
     >
       {(ref, onToggle) => (
-        <BuilderButton ref={ref} onClick={onToggle} onKeyDown={onToggle} role="button" tabIndex={0} topLevel={topLevel}>
+        <S.BuilderButton ref={ref} onClick={onToggle} onKeyDown={onToggle} role="button" tabIndex={0} topLevel={topLevel}>
           <SvgIcon icon="plus" size={16} color="#6e849a" />
-        </BuilderButton>
+        </S.BuilderButton>
       )}
     </Dropdown>
   );
 };
 
-export default BuilderSelect;
+export default ConditionBuilderSelect;

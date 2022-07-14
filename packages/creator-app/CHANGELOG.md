@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.828.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.828.1...@voiceflow/creator-app@1.828.2) (2022-07-14)
+
+
+### Bug Fixes
+
+* temp disable tests for payment modal copy e2e (CT-506) ([#5763](https://github.com/voiceflow/creator-app/issues/5763)) ([ea9c85a](https://github.com/voiceflow/creator-app/commit/ea9c85a7666bca848bfc80537aaf05b8d6b02b7f))
+
+
+
+
+
 ## [1.828.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.828.0...@voiceflow/creator-app@1.828.1) (2022-07-14)
 
 

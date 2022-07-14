@@ -3,6 +3,7 @@ import { PathPoint, PathPoints } from '@realtime-sdk/types';
 import * as RealtimeUtilsPort from '@realtime-sdk/utils/port';
 import { BaseModels, Nullable } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
+import _range from 'lodash/range';
 
 import { generateOutPort } from '../../utils';
 
@@ -261,3 +262,30 @@ export const emptyOutPortsAdapter = createOutPortsAdapter(
   () => ({ ...RealtimeUtilsPort.createEmptyNodeOutPorts(), ports: [] }),
   () => []
 );
+
+export const syncDynamicPortsLength = <T>({
+  nodeID,
+  ports,
+  length,
+}: {
+  nodeID: string;
+  ports: PortsInfo<BuiltInPortData<T>>;
+  length: number;
+}): PortsInfo<BuiltInPortData<T>> => {
+  if (!Number.isInteger(length) || length === ports.dynamic.length) {
+    return ports;
+  }
+
+  const difference = length - ports.dynamic.length;
+  if (difference > 0) {
+    return {
+      ...ports,
+      dynamic: [...ports.dynamic, ..._range(difference).map(() => ({ port: generateOutPort(nodeID), target: null }))],
+    };
+  }
+
+  return {
+    ...ports,
+    dynamic: ports.dynamic.slice(0, length),
+  };
+};

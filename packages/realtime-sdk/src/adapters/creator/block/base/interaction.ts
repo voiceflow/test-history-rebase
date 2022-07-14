@@ -8,6 +8,7 @@ import {
   createOutPortsAdapterV2,
   noMatchNoReplyAndDynamicOutPortsAdapter,
   noMatchNoReplyAndDynamicOutPortsAdapterV2,
+  syncDynamicPortsLength,
 } from '../utils';
 
 const interactionAdapter = createBlockAdapter<
@@ -27,12 +28,22 @@ const interactionAdapter = createBlockAdapter<
 );
 
 export const interactionOutPortsAdapter = createOutPortsAdapter<NodeData.InteractionBuiltInPorts, NodeData.Interaction>(
-  (dbPorts, options) => noMatchNoReplyAndDynamicOutPortsAdapter.fromDB(dbPorts, options),
+  (dbPorts, options) =>
+    syncDynamicPortsLength({
+      nodeID: options.node.nodeID,
+      ports: noMatchNoReplyAndDynamicOutPortsAdapter.fromDB(dbPorts, options),
+      length: options.node.data.choices?.length,
+    }),
   (dbPorts, options) => noMatchNoReplyAndDynamicOutPortsAdapter.toDB(dbPorts, options)
 );
 
 export const interactionOutPortsAdapterV2 = createOutPortsAdapterV2<NodeData.InteractionBuiltInPorts, NodeData.Interaction>(
-  (dbPorts, options) => noMatchNoReplyAndDynamicOutPortsAdapterV2.fromDB(dbPorts, options),
+  (dbPorts, options) =>
+    syncDynamicPortsLength({
+      nodeID: options.node.nodeID,
+      ports: noMatchNoReplyAndDynamicOutPortsAdapterV2.fromDB(dbPorts, options),
+      length: options.node.data.choices?.length,
+    }),
   (dbPorts, options) => noMatchNoReplyAndDynamicOutPortsAdapterV2.toDB(dbPorts, options)
 );
 

@@ -7,6 +7,7 @@ import {
   createOutPortsAdapterV2,
   noMatchNoReplyAndDynamicOutPortsAdapter,
   noMatchNoReplyAndDynamicOutPortsAdapterV2,
+  syncDynamicPortsLength,
 } from '../utils';
 
 const buttonsAdapter = createBlockAdapter<
@@ -27,7 +28,12 @@ const buttonsAdapter = createBlockAdapter<
 );
 
 export const buttonsOutPortsAdapter = createOutPortsAdapter<NodeData.ButtonsBuiltInPorts, NodeData.Buttons>(
-  (dbPorts, options) => noMatchNoReplyAndDynamicOutPortsAdapter.fromDB(dbPorts, options),
+  (dbPorts, options) =>
+    syncDynamicPortsLength({
+      nodeID: options.node.nodeID,
+      ports: noMatchNoReplyAndDynamicOutPortsAdapter.fromDB(dbPorts, options),
+      length: options.node.data.buttons?.length,
+    }),
   (dbPorts, options) => noMatchNoReplyAndDynamicOutPortsAdapter.toDB(dbPorts, options)
 );
 

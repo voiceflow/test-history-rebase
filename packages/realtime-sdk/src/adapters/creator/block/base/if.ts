@@ -10,6 +10,7 @@ import {
   noMatchNoReplyAndDynamicOutPortsAdapterV2,
   outPortDataToDB,
   outPortsDataToDB,
+  syncDynamicPortsLength,
 } from '../utils';
 
 export const defaultNoMatch: BaseNode.IfV2.IfNoMatch = {
@@ -32,14 +33,12 @@ const ifAdapter = createBlockAdapter<BaseNode.IfV2.StepData, NodeData.IfV2>(
 );
 
 export const ifOutPortsAdapter = createOutPortsAdapter<NodeData.IfV2BuiltInPorts, NodeData.IfV2>(
-  (ports, options) => {
-    const adaptedPorts = noMatchNoReplyAndDynamicOutPortsAdapter.fromDB(ports, options);
-    const expressionLength: number = options.node.data?.expressions?.length ?? 0;
-    return {
-      ...adaptedPorts,
-      dynamic: adaptedPorts.dynamic.slice(0, expressionLength),
-    };
-  },
+  (ports, options) =>
+    syncDynamicPortsLength({
+      nodeID: options.node.nodeID,
+      ports: noMatchNoReplyAndDynamicOutPortsAdapter.fromDB(ports, options),
+      length: options.node.data?.expressions?.length ?? 0,
+    }),
   ({ builtIn: { [BaseModels.PortType.NO_MATCH]: noMatchPortData }, dynamic }, { data }) => [
     outPortDataToDB(noMatchPortData), // should be first for backward compatible
     ...outPortsDataToDB(dynamic).map((dbPort, index) => {
@@ -57,14 +56,12 @@ export const ifOutPortsAdapter = createOutPortsAdapter<NodeData.IfV2BuiltInPorts
 );
 
 export const ifOutPortsAdapterV2 = createOutPortsAdapterV2<NodeData.IfV2BuiltInPorts, NodeData.IfV2>(
-  (ports, options) => {
-    const adaptedPorts = noMatchNoReplyAndDynamicOutPortsAdapterV2.fromDB(ports, options);
-    const expressionLength: number = options.node.data?.expressions?.length ?? 0;
-    return {
-      ...adaptedPorts,
-      dynamic: adaptedPorts.dynamic.slice(0, expressionLength),
-    };
-  },
+  (ports, options) =>
+    syncDynamicPortsLength({
+      nodeID: options.node.nodeID,
+      ports: noMatchNoReplyAndDynamicOutPortsAdapterV2.fromDB(ports, options),
+      length: options.node.data?.expressions?.length ?? 0,
+    }),
   ({ builtIn: { [BaseModels.PortType.NO_MATCH]: noMatchPortData }, dynamic }, { data }) => ({
     byKey: {},
     builtIn: {

@@ -7,6 +7,7 @@ import {
   createOutPortsAdapterV2,
   dynamicOnlyOutPortsAdapter,
   dynamicOnlyOutPortsAdapterV2,
+  syncDynamicPortsLength,
 } from '../utils';
 
 const traceAdapter = createBlockAdapter<BaseNode._v1.StepData<{ name: string; body: string; isBlocking: boolean }>, NodeData.Trace>(
@@ -31,7 +32,12 @@ const traceAdapter = createBlockAdapter<BaseNode._v1.StepData<{ name: string; bo
 );
 
 export const traceOutPortsAdapter = createOutPortsAdapter<AnyRecord, NodeData.Trace>(
-  (ports, options) => dynamicOnlyOutPortsAdapter.fromDB(ports, options),
+  (ports, options) =>
+    syncDynamicPortsLength({
+      nodeID: options.node.nodeID,
+      ports: dynamicOnlyOutPortsAdapter.fromDB(ports, options),
+      length: options.node.data.paths?.length,
+    }),
   (ports, options) =>
     dynamicOnlyOutPortsAdapter.toDB(ports, options).map((port, index) => {
       const label = options.data.paths[index]?.label;
@@ -47,7 +53,12 @@ export const traceOutPortsAdapter = createOutPortsAdapter<AnyRecord, NodeData.Tr
 );
 
 export const traceOutPortsAdapterV2 = createOutPortsAdapterV2<AnyRecord, NodeData.Trace>(
-  (ports, options) => dynamicOnlyOutPortsAdapterV2.fromDB(ports, options),
+  (ports, options) =>
+    syncDynamicPortsLength({
+      nodeID: options.node.nodeID,
+      ports: dynamicOnlyOutPortsAdapterV2.fromDB(ports, options),
+      length: options.node.data.paths?.length,
+    }),
   (ports, options) => {
     const dbPorts = dynamicOnlyOutPortsAdapterV2.toDB(ports, options);
 

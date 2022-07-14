@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.828.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.827.1...@voiceflow/creator-app@1.828.0) (2022-07-14)
+
+
+### Bug Fixes
+
+* fixes for byKey ports and byKey ports links add/delete (CT-582) ([#5758](https://github.com/voiceflow/creator-app/issues/5758)) ([daa6ece](https://github.com/voiceflow/creator-app/commit/daa6ece5efc26fb47af01e7edccb0ae55c7dd157))
+
+
+### Features
+
+* remove public SSML page (VF-4059) ([#5745](https://github.com/voiceflow/creator-app/issues/5745)) ([d899a4b](https://github.com/voiceflow/creator-app/commit/d899a4b2e1e4310c6ac9f191c143990418d1a8be))
+
+
+
+
+
 ## [1.827.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.827.0...@voiceflow/creator-app@1.827.1) (2022-07-13)
 
 **Note:** Version bump only for package @voiceflow/creator-app

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.82.15](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.82.14...@voiceflow/realtime@1.82.15) (2022-07-14)
+
+
+### Bug Fixes
+
+* fixes for byKey ports and byKey ports links add/delete (CT-582) ([#5758](https://github.com/voiceflow/creator-app/issues/5758)) ([daa6ece](https://github.com/voiceflow/creator-app/commit/daa6ece5efc26fb47af01e7edccb0ae55c7dd157))
+
+
+
+
+
 ## [1.82.14](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.82.13...@voiceflow/realtime@1.82.14) (2022-07-14)
 
 

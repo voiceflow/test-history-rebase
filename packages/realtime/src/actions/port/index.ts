@@ -4,6 +4,7 @@ import AddByKeyPortControl from './addByKey';
 import AddDynamicPortControl from './addDynamic';
 import RemoveBuiltinPortControl from './removeBuiltin';
 import RemoveDynamicPortControl from './removeDynamic';
+import RemoveManyByKeyPortsControl from './removeManyByKey';
 import ReorderDynamicPortControl from './reorderDynamic';
 
 const buildPortActionControls = (options: LoguxControlOptions) => ({
@@ -13,6 +14,7 @@ const buildPortActionControls = (options: LoguxControlOptions) => ({
   removeBuiltinPortControl: new RemoveBuiltinPortControl(options),
   removeDynamicPortControl: new RemoveDynamicPortControl(options),
   reorderDynamicPortControl: new ReorderDynamicPortControl(options),
+  removeManyByKeyPortsControl: new RemoveManyByKeyPortsControl(options),
 });
 
 export default buildPortActionControls;

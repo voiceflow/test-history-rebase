@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.828.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.828.0...@voiceflow/creator-app@1.828.1) (2022-07-14)
+
+
+### Bug Fixes
+
+* missing await [bugfix] (CT-585) ([#5759](https://github.com/voiceflow/creator-app/issues/5759)) ([2bad634](https://github.com/voiceflow/creator-app/commit/2bad63481b456ab280c738e7486262ee255ce85f)), closes [/github.com/voiceflow/creator-app/blob/6c07199231329e2e09295868f851a673fb36b409/packages/creator-app/src/hooks/mapManager.ts#L193](https://github.com//github.com/voiceflow/creator-app/blob/6c07199231329e2e09295868f851a673fb36b409/packages/creator-app/src/hooks/mapManager.ts/issues/L193) [/github.com/voiceflow/creator-app/blob/058ecdc7c9dbe702abc4e55ccc3175fe3eb215e5/packages/creator-app/src/ducks/history/sideEffects.ts#L24](https://github.com//github.com/voiceflow/creator-app/blob/058ecdc7c9dbe702abc4e55ccc3175fe3eb215e5/packages/creator-app/src/ducks/history/sideEffects.ts/issues/L24)
+
+
+
+
+
 # [1.828.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.827.1...@voiceflow/creator-app@1.828.0) (2022-07-14)
 
 

@@ -62,6 +62,8 @@ export const useMarkupInstance = <T extends HTMLElement>() => {
   });
 
   const resizeOverlay = useConst(() => {
+    if (!engine.focus.isTarget(nodeEntity.nodeID)) return;
+
     const rect = getRectNode()?.getBoundingClientRect();
 
     if (rect) {

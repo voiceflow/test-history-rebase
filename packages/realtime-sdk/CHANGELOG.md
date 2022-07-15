@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.125.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.125.3...@voiceflow/realtime-sdk@1.125.4) (2022-07-15)
+
+
+### Bug Fixes
+
+* expressionfy null variable value (VF-000) ([0133d34](https://github.com/voiceflow/creator-app/commit/0133d348de4507ee37dbbc58a2eab2eb25f0174f))
+
+
+
+
+
 ## [1.125.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.125.2...@voiceflow/realtime-sdk@1.125.3) (2022-07-15)
 
 

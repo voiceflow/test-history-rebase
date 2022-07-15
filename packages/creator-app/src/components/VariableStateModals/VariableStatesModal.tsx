@@ -11,11 +11,10 @@ import Section from '@/components/Section';
 import { SectionVariant } from '@/components/Section/constants';
 import VariableList from '@/components/VariableList';
 import VariablesSelect from '@/components/VariablesSelect';
-import { FeatureFlag } from '@/config/features';
 import { ModalType } from '@/constants';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as VariableState from '@/ducks/variableState';
-import { useDispatch, useFeature, useModals, useSelector, useTrackingEvents } from '@/hooks';
+import { useDispatch, useModals, useSelector, useTrackingEvents } from '@/hooks';
 
 import { InputHint, VariableListSection } from './components';
 import { defaultValues, variableStateSchema } from './constants';
@@ -47,7 +46,6 @@ const VariableStatesModal: React.FC<{
 
   const createVariableState = useDispatch(VariableState.createVariableState);
   const updateVariableState = useDispatch(VariableState.updateState);
-  const { isEnabled: isStartingBlockEnabled } = useFeature(FeatureFlag.VARIABLE_STATES_STARTING_BLOCKS);
 
   const initialValues = React.useMemo((): VariableStateEditorValues => {
     if (!data.variableStateID) return defaultValues;
@@ -144,16 +142,14 @@ const VariableStatesModal: React.FC<{
           />
           {!!formik.submitCount && formik.errors.name && <InputError>{formik.errors.name}</InputError>}
         </Section>
-        {isStartingBlockEnabled && (
-          <Section header="Starting Block" dividers={false} variant={SectionVariant.TERTIARY_TITLE}>
-            <BlockSelect
-              onChange={(startFrom) => formik.setFieldValue('startFrom', startFrom)}
-              value={formik.values.startFrom}
-              disabled={formik.isSubmitting}
-              startNodeIsDefault
-            />
-          </Section>
-        )}
+        <Section header="Starting Block" dividers={false} variant={SectionVariant.TERTIARY_TITLE}>
+          <BlockSelect
+            onChange={(startFrom) => formik.setFieldValue('startFrom', startFrom)}
+            value={formik.values.startFrom}
+            disabled={formik.isSubmitting}
+            startNodeIsDefault
+          />
+        </Section>
         <Box pb={formik.values.variables.length > 0 ? 16 : 32}>
           <Section header="Variables" dividers={false} variant={SectionVariant.TERTIARY_TITLE}>
             <VariablesSelect

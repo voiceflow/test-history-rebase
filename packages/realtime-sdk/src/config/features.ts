@@ -23,10 +23,6 @@ export enum FeatureFlag {
 
   ENTERPRISE_TRIAL = 'enterprise_trial',
 
-  // variable states
-  VARIABLE_STATES = 'variable_states',
-  VARIABLE_STATES_STARTING_BLOCKS = 'variable_states_starting_blocks',
-
   IMM_MODALS_V2 = 'imm_modals_v2',
   NLU_MANAGER = 'nlu_manager',
 

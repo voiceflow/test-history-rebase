@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.831.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.831.0...@voiceflow/creator-app@1.831.1) (2022-07-15)
+
+
+### Bug Fixes
+
+* revert e2e changes for payment [bugfix] (VF-000) ([#5775](https://github.com/voiceflow/creator-app/issues/5775)) ([ac79ba4](https://github.com/voiceflow/creator-app/commit/ac79ba40b3e81d5d8524fe04d3830c95b7638cab))
+
+
+
+
+
 # [1.831.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.830.4...@voiceflow/creator-app@1.831.0) (2022-07-15)
 
 

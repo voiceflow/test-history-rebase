@@ -75,6 +75,10 @@ export enum Permission {
   NLU_EXPORT_CSV = 'nlu.EXPORT_CSV',
   NLU_CUSTOM = 'nlu.CUSTOM_PROJECT',
   NLU_CONFLICTS = 'nlu.VIEW_CONFLICTS',
+
+  // API keys
+  API_KEY_EDIT = 'api_key.EDIT',
+  API_KEY_VIEW = 'api_key.VIEW',
 }
 
 const ALL_USER_ROLES = [UserRole.ADMIN, UserRole.EDITOR, UserRole.VIEWER, UserRole.OWNER, UserRole.BILLING, UserRole.GUEST];
@@ -120,6 +124,9 @@ export const ROLE_PERMISSIONS: Partial<Record<Permission, UserRole[]>> = {
   [Permission.CREATE_PRIVATE_CLOUD_WORKSPACE]: [UserRole.OWNER],
 
   [Permission.REORDER_TOPICS_AND_COMPONENTS]: EDITOR_USER_ROLES,
+
+  [Permission.API_KEY_EDIT]: EDITOR_USER_ROLES,
+  [Permission.API_KEY_VIEW]: EDITOR_USER_ROLES,
 };
 
 const ALL_PERMISSIONS = Object.values(PlanType);

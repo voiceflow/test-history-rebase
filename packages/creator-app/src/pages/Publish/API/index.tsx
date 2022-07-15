@@ -6,9 +6,10 @@ import client from '@/client';
 import SampleEditor from '@/components/AceEditor/Sample';
 import { ConfirmProps } from '@/components/ConfirmModal';
 import { DIALOG_MANAGER_API } from '@/config/documentation';
+import { Permission } from '@/config/permissions';
 import { ModalType } from '@/constants';
 import * as Session from '@/ducks/session';
-import { useAsyncEffect, useIsAdmin, useModals, useSetup, useTrackingEvents } from '@/hooks';
+import { useAsyncEffect, useModals, usePermissions, useSetup, useTrackingEvents } from '@/hooks';
 import { ProjectAPIKey } from '@/models';
 import { copy } from '@/utils/clipboard';
 
@@ -24,7 +25,7 @@ const API: React.FC = () => {
   const [showPrimaryKey, togglePrimaryKey] = useToggle(false);
   const [showSecondaryKey, toggleSecondaryKey] = useToggle(false);
 
-  const isAdmin = useIsAdmin();
+  const hasPermissions = usePermissions([Permission.API_KEY_EDIT, Permission.API_KEY_VIEW]);
 
   const workspaceID = useSelector(Session.activeWorkspaceIDSelector)!;
   const projectID = useSelector(Session.activeProjectIDSelector)!;
@@ -40,7 +41,7 @@ const API: React.FC = () => {
   });
 
   useAsyncEffect(async () => {
-    if (isAdmin) {
+    if (hasPermissions) {
       setLoading(true);
       const apiKeys = await client.project.listAPIKeys(projectID);
 
@@ -61,7 +62,7 @@ const API: React.FC = () => {
     }
 
     setLoading(false);
-  }, [isAdmin, projectID]);
+  }, [hasPermissions, projectID]);
 
   const createSecondaryKey = async () => {
     const fetchedSecondaryKey = await client.project.createSecondaryAPIKey({ projectID, apiKey: primaryKey!._id });
@@ -163,7 +164,7 @@ const API: React.FC = () => {
           </FlatCard>
         </ContentSection>
 
-        {isAdmin && (
+        {hasPermissions && (
           <>
             <ProjectAPIKeySection
               title="Primary Key"

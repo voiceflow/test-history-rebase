@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.831.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.831.1...@voiceflow/creator-app@1.831.2) (2022-07-15)
+
+
+### Bug Fixes
+
+* realtime markup overlay glitch (VF-4045) ([#5773](https://github.com/voiceflow/creator-app/issues/5773)) ([02aab68](https://github.com/voiceflow/creator-app/commit/02aab6816b4f377daf2e6a4582d5a7126a51320b)), closes [/github.com/voiceflow/creator-app/blob/f200ea987e2c0df2fd6a7296ca7de28b5fa5ff16/packages/creator-app/src/pages/Canvas/components/MarkupNode/hooks.ts#L127](https://github.com//github.com/voiceflow/creator-app/blob/f200ea987e2c0df2fd6a7296ca7de28b5fa5ff16/packages/creator-app/src/pages/Canvas/components/MarkupNode/hooks.ts/issues/L127)
+
+
+
+
+
 ## [1.831.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.831.0...@voiceflow/creator-app@1.831.1) (2022-07-15)
 
 

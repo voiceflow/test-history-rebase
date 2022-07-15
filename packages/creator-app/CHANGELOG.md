@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.830.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.830.2...@voiceflow/creator-app@1.830.3) (2022-07-15)
+
+
+### Bug Fixes
+
+* remove imm_modals_v2 ff (CT-597) ([#5771](https://github.com/voiceflow/creator-app/issues/5771)) ([21b077d](https://github.com/voiceflow/creator-app/commit/21b077d9abb9fdb842fe3938e3aa41cfde7b6353))
+
+
+
+
+
 ## [1.830.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.830.1...@voiceflow/creator-app@1.830.2) (2022-07-15)
 
 

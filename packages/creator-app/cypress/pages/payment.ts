@@ -49,7 +49,7 @@ const paymentHelper = {
   checkAndCloseSuccessModal: () => {
     cy.get(`#${Identifier.MODAL_TITLE_CONTAINER}`).contains('Payment Successful');
     cy.get(`#${Identifier.MODAL_CLOSE_BUTTON_REGULAR}`).click();
-    cy.get(`.${DashboardClassName.PLAN_BUBBLE}`).contains('Pro');
+    cy.get(`.${DashboardClassName.PLAN_BUBBLE}`).contains('Team');
   },
   increaseEditors: (numEditors = '12') => {
     cy.get(`#${Identifier.PAYMENT_SEATS_INPUT}`).clear().type(numEditors);

@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.831.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.830.4...@voiceflow/creator-app@1.831.0) (2022-07-15)
+
+
+### Bug Fixes
+
+* combined reducers (CT-000) ([#5750](https://github.com/voiceflow/creator-app/issues/5750)) ([140c6e1](https://github.com/voiceflow/creator-app/commit/140c6e14b1f6dd8a54e1ada7d29f389b91cc77b6))
+
+
+### Features
+
+* allow editors to view & edit API keys (VF-4050) ([#5766](https://github.com/voiceflow/creator-app/issues/5766)) ([340e9aa](https://github.com/voiceflow/creator-app/commit/340e9aae84a493374c9fa56d5e5d08904ef45417))
+
+
+
+
+
 ## [1.830.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.830.3...@voiceflow/creator-app@1.830.4) (2022-07-15)
 
 

@@ -5,7 +5,7 @@ context('Payment and Collaborators', () => {
   beforeEach(() => cy.removeTestAccount());
 
   describe('dashboard upgrade payment', () => {
-    it('free to team yearly', () => {
+    it.skip('free to pro yearly', () => {
       paymentHelper.setup();
       paymentHelper.openPaymentModal();
       paymentHelper.fillCreditCard();
@@ -13,7 +13,7 @@ context('Payment and Collaborators', () => {
       paymentHelper.checkAndCloseSuccessModal();
     });
 
-    it('free to team monthly', () => {
+    it.skip('free to pro monthly', () => {
       paymentHelper.setup();
       paymentHelper.openPaymentModal();
       paymentHelper.changeAndCheckPeriodPrice();
@@ -23,7 +23,7 @@ context('Payment and Collaborators', () => {
       paymentHelper.checkAndCloseSuccessModal();
     });
 
-    it('multiple seats (2) upgrade (Yearly)', () => {
+    it.skip('multiple seats (2) upgrade (Yearly)', () => {
       paymentHelper.setup();
       paymentHelper.openPaymentModal();
       paymentHelper.increaseEditors('2');
@@ -39,7 +39,7 @@ context('Payment and Collaborators', () => {
       paymentHelper.checkButtonText();
     });
 
-    it('multiple seats (2) upgrade (Monthly)', () => {
+    it.skip('multiple seats (2) upgrade (Monthly)', () => {
       paymentHelper.setup();
       paymentHelper.openPaymentModal();
       paymentHelper.changeToMonthlyPayments();
@@ -91,7 +91,7 @@ context('Payment and Collaborators', () => {
       collaboratorHelper.assertSuccessToast();
     });
 
-    it('upgrade to team with 1 seat and invite editor', () => {
+    it.skip('upgrade to pro with 1 seat and invite editor', () => {
       paymentHelper.setup();
       paymentHelper.openPaymentModal();
       paymentHelper.fillCreditCard();
@@ -102,7 +102,7 @@ context('Payment and Collaborators', () => {
       paymentHelper.assertPaymentModal();
     });
 
-    it('upgrade to team with multiple seats and invite editor', () => {
+    it.skip('upgrade to pro with multiple seats and invite editor', () => {
       paymentHelper.setup();
       paymentHelper.openPaymentModal();
       paymentHelper.increaseEditors('3');

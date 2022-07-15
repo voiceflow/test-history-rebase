@@ -157,7 +157,7 @@ export const expressionfyLogicUnit = (expression: ExpressionV2): string => {
   }
 
   if (expression.type === BaseNode.Utils.ExpressionTypeV2.VARIABLE) {
-    return `{${expression.value.replace(SLOT_REGEXP, '$1')}}`;
+    return `{${expression.value?.replace(SLOT_REGEXP, '$1')}}`;
   }
 
   if (expression.type === BaseNode.Utils.ExpressionTypeV2.ADVANCE) {

@@ -4,13 +4,12 @@ import { Alert, BaseSelectProps, IconButton, isUIOnlyMenuItemOption, NestedMenuC
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
-import { FeatureFlag } from '@/config/features';
 import { CUSTOMIZABLE_INTENT_PREFIXS, ModalType } from '@/constants';
 import * as Intent from '@/ducks/intent';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { CanvasCreationType } from '@/ducks/tracking/constants';
-import { useDispatch, useFeature, useIntentNameProcessor, useModals, useSelector, useTrackingEvents } from '@/hooks';
+import { useDispatch, useIntentNameProcessor, useModals, useSelector, useTrackingEvents } from '@/hooks';
 import { ClassName } from '@/styles/constants';
 import { applyPlatformIntentNameFormatting, intentFilter, isCustomizableBuiltInIntent, prettifyIntentName } from '@/utils/intent';
 
@@ -46,7 +45,6 @@ const IntentSelect: React.FC<IntentSelectProps> = ({
   const platform = useSelector(ProjectV2.active.platformSelector);
   const intentsMap = useSelector(IntentV2.customIntentMapSelector);
   const allIntents = useSelector(IntentV2.allPlatformIntentsSelector);
-  const immModalsV2 = useFeature(FeatureFlag.IMM_MODALS_V2);
   const { open: openCreateIntentModal } = useModals(ModalType.INTENT_CREATE);
 
   const intentNameProcessor = useIntentNameProcessor();
@@ -103,24 +101,10 @@ const IntentSelect: React.FC<IntentSelectProps> = ({
   const onCreate = async (name: string) => {
     const { error, formattedName } = intentNameProcessor(name);
 
-    const intentByName = filteredOptions.find(({ name }) => Utils.string.removeTrailingUnderscores(name) === formattedName);
-
-    if (!immModalsV2.isEnabled && intentByName) {
-      await onSelectIntent(intentByName.id);
-
-      return;
-    }
-
     if (error) {
       toast.error(error);
-    } else if (immModalsV2.isEnabled) {
-      openCreateIntentModal({ name: formattedName, onCreate: onSelectIntent });
     } else {
-      const nextIntentID = await createIntent({ name: formattedName });
-
-      await onSelectIntent(nextIntentID);
-
-      trackingEvents.trackIntentCreated({ creationType: CanvasCreationType.EDITOR });
+      openCreateIntentModal({ name: formattedName, onCreate: onSelectIntent });
     }
   };
 
@@ -142,7 +126,7 @@ const IntentSelect: React.FC<IntentSelectProps> = ({
         onCreate={onCreate}
         onSelect={onSelectIntent}
         clearable={!!clearable && !!intentID}
-        creatable={creatable && (!immModalsV2.isEnabled || !props.inDropdownSearch)}
+        creatable={creatable && !props.inDropdownSearch}
         className={ClassName.INTENT_SELECT_INPUT}
         searchable
         placeholder={placeholder}
@@ -155,27 +139,14 @@ const IntentSelect: React.FC<IntentSelectProps> = ({
         renderOptionLabel={(option, searchLabel, getOptionLabel, getOptionValue, { isFocused }) => (
           <Option option={option} isFocused={isFocused} searchLabel={searchLabel} getOptionLabel={getOptionLabel} getOptionValue={getOptionValue} />
         )}
-        renderSearchSuffix={
-          immModalsV2.isEnabled
-            ? ({ close, searchLabel }) => (
-                <IconButton
-                  size={16}
-                  icon="plus"
-                  variant={IconButton.Variant.BASIC}
-                  onClick={Utils.functional.chain(close, () => onCreate(searchLabel))}
-                />
-              )
-            : null
-        }
-        renderFooterAction={
-          immModalsV2.isEnabled
-            ? ({ close, searchLabel }) => (
-                <NestedMenuComponents.FooterActionContainer onClick={Utils.functional.chain(close, () => onCreate(searchLabel))}>
-                  Create New Intent
-                </NestedMenuComponents.FooterActionContainer>
-              )
-            : null
-        }
+        renderSearchSuffix={({ close, searchLabel }) => (
+          <IconButton size={16} icon="plus" variant={IconButton.Variant.BASIC} onClick={Utils.functional.chain(close, () => onCreate(searchLabel))} />
+        )}
+        renderFooterAction={({ close, searchLabel }) => (
+          <NestedMenuComponents.FooterActionContainer onClick={Utils.functional.chain(close, () => onCreate(searchLabel))}>
+            Create New Intent
+          </NestedMenuComponents.FooterActionContainer>
+        )}
       />
 
       {intentMissing && (

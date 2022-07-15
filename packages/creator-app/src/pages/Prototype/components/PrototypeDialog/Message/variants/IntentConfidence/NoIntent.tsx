@@ -1,15 +1,12 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { FeatureFlag } from '@voiceflow/realtime-sdk';
 import { ClickableText, Flex, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
-import { useHistory } from 'react-router-dom';
 
-import { PREFILLED_UTTERANCE_PARAM } from '@/components/IntentForm/components/Custom/components/UtteranceManager';
 import IntentSelect from '@/components/IntentSelect';
 import { ModalType } from '@/constants';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as Transcript from '@/ducks/transcript';
-import { useDispatch, useFeature, useModals, useSelector, useTrackingEvents } from '@/hooks';
+import { useDispatch, useModals, useSelector, useTrackingEvents } from '@/hooks';
 
 import * as S from './styles';
 
@@ -35,11 +32,9 @@ const determineNewUtterances = (previousInputArray: Realtime.IntentInput[], newI
 };
 
 const NoIntent: React.FC<NoIntentProps> = ({ turnID, focused, setChildDropdownIsOpened, utterance }) => {
-  const history = useHistory();
   const [trackingEvents] = useTrackingEvents();
   const { annotations } = useSelector(Transcript.currentTranscriptSelector) ?? {};
   const { utteranceAddedTo: utteranceAddedToIntentID, utteranceAddedCount } = annotations?.[turnID] ?? {};
-  const { open: openIMM, isOpened: isOpenedIMM } = useModals(ModalType.INTERACTION_MODEL);
   const [initialUtterances, setInitialUtterances] = React.useState<Realtime.IntentInput[] | null>(null);
   const [targetIntentID, setTargetIntentID] = React.useState<string | null>(null);
   const getIntentByID = useSelector(IntentV2.getIntentByIDSelector);
@@ -47,7 +42,6 @@ const NoIntent: React.FC<NoIntentProps> = ({ turnID, focused, setChildDropdownIs
   const dispatchAddUtteranceToIntent = useDispatch(Transcript.setUtteranceAddedTo);
   const [isDropdownOpened, setIsDropdownOpened] = React.useState(false);
   const { open: openEditIntentModal, isOpened: editIntentModalOpened } = useModals(ModalType.INTENT_EDIT);
-  const immModalsV2 = useFeature(FeatureFlag.IMM_MODALS_V2);
 
   useDidUpdateEffect(() => {
     setChildDropdownIsOpened(isDropdownOpened);
@@ -60,21 +54,6 @@ const NoIntent: React.FC<NoIntentProps> = ({ turnID, focused, setChildDropdownIs
     setTargetIntentID(null);
   };
 
-  // TODO: remove legacy modal logic
-  const handleOpenIMM = (intentID: string) => {
-    const params = new URLSearchParams();
-
-    const targetIntent = getIntentByID({ id: intentID });
-    setInitialUtterances(targetIntent?.inputs ?? []);
-
-    params.append(PREFILLED_UTTERANCE_PARAM, utterance);
-    history.replace({
-      search: params.toString(),
-    });
-
-    openIMM({ initialSelectedID: targetIntentID, newUtterance: utterance });
-  };
-
   const handleOpenIntentEditModal = (intentID: string) => {
     const targetIntent = getIntentByID({ id: intentID });
     setInitialUtterances(targetIntent?.inputs ?? []);
@@ -84,11 +63,7 @@ const NoIntent: React.FC<NoIntentProps> = ({ turnID, focused, setChildDropdownIs
   // We have to put this in a useEffect because on intentSelect, if it is builtIn, the intentSelect needs to create the intent first, and there can be race conditions with the inner code
   useDidUpdateEffect(() => {
     if (targetIntentID) {
-      if (immModalsV2.isEnabled) {
-        handleOpenIntentEditModal(targetIntentID);
-      } else {
-        handleOpenIMM(targetIntentID);
-      }
+      handleOpenIntentEditModal(targetIntentID);
     }
   }, [targetIntentID]);
 
@@ -125,17 +100,10 @@ const NoIntent: React.FC<NoIntentProps> = ({ turnID, focused, setChildDropdownIs
   };
 
   useDidUpdateEffect(() => {
-    if (immModalsV2.isEnabled && !editIntentModalOpened && targetIntentID && initialUtterances) {
+    if (!editIntentModalOpened && targetIntentID && initialUtterances) {
       handleAddedUtteranceModalClose(targetIntentID, initialUtterances);
     }
   }, [targetIntentID, initialUtterances, editIntentModalOpened]);
-
-  // TODO: remove legacy modal logic
-  useDidUpdateEffect(() => {
-    if (!immModalsV2.isEnabled && !isOpenedIMM && targetIntentID && initialUtterances) {
-      handleAddedUtteranceModalClose(targetIntentID, initialUtterances);
-    }
-  }, [isOpenedIMM, targetIntentID, initialUtterances]);
 
   return !utteranceAddedToIntentID ? (
     <S.Container focused={focused}>

@@ -22,15 +22,13 @@ import Section, { SectionVariant } from '@/components/Section';
 import Utterance, { UtteranceRef } from '@/components/Utterance';
 import { Permission } from '@/config/permissions';
 import { BulkImportLimitDetails } from '@/config/planLimits/bulkImport';
-import { ModalType } from '@/constants';
+import { ModalType, PREFILLED_UTTERANCE_PARAM } from '@/constants';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as SlotV2 from '@/ducks/slotV2';
 import { useAddSlot, useModals, usePermission, useSelector, useSetup } from '@/hooks';
 import UtteranceInput from '@/pages/Canvas/components/IntentModalsV2/components/components/UtteranceSection/components/UtteranceInput';
 import { NLUManagerContext } from '@/pages/NLUManager/context';
 import { formatUtterance, getIntentStrengthLevel, validateUtterance } from '@/utils/intent';
-
-export const PREFILLED_UTTERANCE_PARAM = 'utterance';
 
 interface UtteranceManagerProps {
   creating?: boolean;

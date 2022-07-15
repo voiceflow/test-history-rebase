@@ -29,7 +29,6 @@ export { default as createGraphic } from '@/assets/svgs/create.svg?url';
 export { default as integrationGraphic } from '@/assets/svgs/integration.svg?url';
 export { default as lightbulbGraphic } from '@/assets/svgs/lightbulb.svg?url';
 export { default as noIntentsGraphic } from '@/assets/svgs/no-intents.svg?url';
-export { default as noSlotsGraphic } from '@/assets/svgs/no-slots.svg?url';
 export { default as projectDownloadGraphic } from '@/assets/svgs/project-download.svg?url';
 export { default as projectLimitGraphic } from '@/assets/svgs/project-limit.svg?url';
 export { default as receiptGraphic } from '@/assets/svgs/receipt.svg?url';

@@ -2,9 +2,6 @@ import { Utils } from '@voiceflow/common';
 import { defaultMenuLabelRenderer, IconButton, isNotUIOnlyMenuItemOption, NestedMenuComponents, Select, UIOnlyMenuItemOption } from '@voiceflow/ui';
 import React from 'react';
 
-import { FeatureFlag } from '@/config/features';
-import { useFeature } from '@/hooks';
-
 import { EntityOption } from './hooks';
 
 interface EntitySelectorProps {
@@ -16,8 +13,6 @@ interface EntitySelectorProps {
 }
 
 const EntitySelector: React.FC<EntitySelectorProps> = ({ value, options, onEdit, onSelect, onCreate }) => {
-  const immModalsV2 = useFeature(FeatureFlag.IMM_MODALS_V2);
-
   const optionsMap = React.useMemo(() => Utils.array.createMap(options.filter(isNotUIOnlyMenuItemOption), Utils.object.selectID), [options]);
 
   return (
@@ -39,18 +34,14 @@ const EntitySelector: React.FC<EntitySelectorProps> = ({ value, options, onEdit,
         defaultMenuLabelRenderer<EntityOption, string>(option, searchLabel, (value) => value && optionsMap[value]?.name, getOptionValue, config)
       }
       renderEmpty={({ search }) => <Select.NotFound>{!search ? 'No entities exist in your assistant. ' : 'No entities found. '}</Select.NotFound>}
-      renderSearchSuffix={
-        immModalsV2.isEnabled
-          ? ({ close, searchLabel }) => (
-              <IconButton
-                size={16}
-                icon="plus"
-                variant={IconButton.Variant.BASIC}
-                onClick={Utils.functional.chainVoid(close, () => onCreate(searchLabel))}
-              />
-            )
-          : null
-      }
+      renderSearchSuffix={({ close, searchLabel }) => (
+        <IconButton
+          size={16}
+          icon="plus"
+          variant={IconButton.Variant.BASIC}
+          onClick={Utils.functional.chainVoid(close, () => onCreate(searchLabel))}
+        />
+      )}
       clearOnSelectActive
       renderFooterAction={({ close, searchLabel }) => (
         <NestedMenuComponents.FooterActionContainer onClick={Utils.functional.chainVoid(close, () => onCreate(searchLabel))}>

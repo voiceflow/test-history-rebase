@@ -28,7 +28,6 @@ import {
   useTheme,
 } from '@/hooks';
 import ExportModelModal from '@/pages/Canvas/components/ExportModelModal';
-import NonRouteIMM from '@/pages/Canvas/components/InteractionModelModal/NonRouteIMM';
 import ManualSaveModal from '@/pages/Canvas/components/ManualSaveModal';
 import InactivityModal from '@/pages/Inactivity';
 import { useProjectPreviewMode } from '@/pages/Project/hooks';
@@ -136,7 +135,6 @@ const Project: React.FC = () => {
           </>
         )}
 
-        <NonRouteIMM />
         <ExportModelModal />
 
         <ProjectExitTracker platform={platform} />

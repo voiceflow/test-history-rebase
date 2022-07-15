@@ -8,11 +8,11 @@ import { SidebarIconMenuItem } from '@/components/SidebarIconMenu';
 import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
 import { Path } from '@/config/routes';
-import { BOOK_DEMO_LINK, DOCS_LINK, FORUM_LINK, ModalType, YOUTUBE_CHANNEL_LINK } from '@/constants';
+import { BOOK_DEMO_LINK, DOCS_LINK, FORUM_LINK, YOUTUBE_CHANNEL_LINK } from '@/constants';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import * as Transcript from '@/ducks/transcript';
-import { useDispatch, useFeature, useHotKeys, useModals, usePermission, useSelector, useTrackingEvents } from '@/hooks';
+import { useDispatch, useFeature, useHotKeys, usePermission, useSelector, useTrackingEvents } from '@/hooks';
 import { Hotkey, HOTKEY_LABEL_MAP } from '@/keymap';
 
 export enum CanvasOptionType {
@@ -34,7 +34,6 @@ const RouteCanvasOptionMap: Record<CanvasOptionType, string[]> = {
 };
 
 export const useCanvasMenuOptionsAndHotkeys = () => {
-  const imModal = useModals(ModalType.INTERACTION_MODEL);
   const nluManager = useFeature(FeatureFlag.NLU_MANAGER);
 
   const match = useRouteMatch();
@@ -65,37 +64,34 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
     return matchedOption ?? CanvasOptionType.DESIGNER;
   }, [match, helpOpened]);
 
-  useHotKeys(Hotkey.DESIGN_PAGE, goToCurrentCanvas, {
-    disable: imModal.isOpened,
-    preventDefault: true,
-  });
+  useHotKeys(Hotkey.DESIGN_PAGE, goToCurrentCanvas, { preventDefault: true });
   useHotKeys(Hotkey.NLU_MANAGER_PAGE, goToNLUManager, {
     disable: !nluManager.isEnabled,
     preventDefault: true,
   });
   useHotKeys(Hotkey.CONVERSATION_PAGE, goToCurrentTranscript, {
-    disable: !nluManager.isEnabled || imModal.isOpened,
+    disable: !nluManager.isEnabled,
     preventDefault: true,
   });
   useHotKeys(Hotkey.INTEGRATION_PAGE, goToCurrentPublish, {
-    disable: !nluManager.isEnabled || !canEditProject || imModal.isOpened,
+    disable: !nluManager.isEnabled || !canEditProject,
     preventDefault: true,
   });
   useHotKeys(Hotkey.SETTINGS_PAGE, goToCurrentSettings, {
-    disable: !nluManager.isEnabled || !canEditProject || imModal.isOpened,
+    disable: !nluManager.isEnabled || !canEditProject,
     preventDefault: true,
   });
 
   useHotKeys(Hotkey.CONVERSATION_PAGE_LEGACY, goToCurrentTranscript, {
-    disable: nluManager.isEnabled || imModal.isOpened,
+    disable: !!nluManager.isEnabled,
     preventDefault: true,
   });
   useHotKeys(Hotkey.INTEGRATION_PAGE_LEGACY, goToCurrentPublish, {
-    disable: nluManager.isEnabled || !canEditProject || imModal.isOpened,
+    disable: nluManager.isEnabled || !canEditProject,
     preventDefault: true,
   });
   useHotKeys(Hotkey.SETTINGS_PAGE_LEGACY, goToCurrentSettings, {
-    disable: nluManager.isEnabled || !canEditProject || imModal.isOpened,
+    disable: nluManager.isEnabled || !canEditProject,
     preventDefault: true,
   });
 

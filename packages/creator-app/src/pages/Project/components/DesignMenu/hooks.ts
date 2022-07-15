@@ -2,10 +2,9 @@ import React from 'react';
 
 import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
-import { ModalType } from '@/constants';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as UI from '@/ducks/ui';
-import { useFeature, useHasPermissions, useHotKeys, useModals, usePermission, useSelector } from '@/hooks';
+import { useFeature, useHasPermissions, useHotKeys, usePermission, useSelector } from '@/hooks';
 import { Hotkey } from '@/keymap';
 
 import { Tab, TabItem, TABS, TOPICS_TABS } from './constants';
@@ -46,7 +45,6 @@ interface HotkeysOptions {
 }
 
 export const useMenuHotKeys = ({ openByHover, setActiveTab, isOpenByHover, toggleIsHidden, closeByLoseHover }: HotkeysOptions): void => {
-  const imModal = useModals(ModalType.INTERACTION_MODEL);
   const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
   const topicsAndComponents = useFeature(FeatureFlag.TOPICS_AND_COMPONENTS);
   const isTopicsAndComponentsVersion = useSelector(ProjectV2.active.isTopicsAndComponentsVersionSelector);
@@ -98,7 +96,7 @@ export const useMenuHotKeys = ({ openByHover, setActiveTab, isOpenByHover, toggl
         closeByLoseHover();
       }
     },
-    { preventDefault: true, disable: imModal.isOpened },
+    { preventDefault: true },
     [isOpenByHover]
   );
 

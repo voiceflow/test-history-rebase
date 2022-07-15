@@ -5,8 +5,6 @@ import _isEqual from 'lodash/isEqual';
 import _pick from 'lodash/pick';
 import * as Normal from 'normal-store';
 
-import { FeatureFlag } from '@/config/features';
-import * as Feature from '@/ducks/feature';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as SlotV2 from '@/ducks/slotV2';
@@ -43,61 +41,36 @@ export const patchIntent =
       return;
     }
 
-    const nluModals = Feature.featureSelector(state)(FeatureFlag.IMM_MODALS_V2);
+    const intent = IntentV2.intentByIDSelector(state, { id });
+    if (!intent) return;
 
-    if (nluModals.isEnabled) {
-      const intent = IntentV2.intentByIDSelector(state, { id });
-      if (!intent) return;
+    const { slots: { byKey = {}, allKeys = [] } = {}, inputs: oldInputs } = intent;
 
-      const { slots: { byKey = {}, allKeys = [] } = {}, inputs: oldInputs } = intent;
+    const oldInputSlots = getUniqSlots(oldInputs);
+    const newInputSlots = getUniqSlots(data.inputs);
 
-      const oldInputSlots = getUniqSlots(oldInputs);
-      const newInputSlots = getUniqSlots(data.inputs);
+    const slotsToRemove = _differenceWith(oldInputSlots, newInputSlots, _isEqual);
 
-      const slotsToRemove = _differenceWith(oldInputSlots, newInputSlots, _isEqual);
+    const supersetKeys = [...new Set([...newInputSlots, ...allKeys])].filter((key) => !slotsToRemove.includes(key));
 
-      const supersetKeys = [...new Set([...newInputSlots, ...allKeys])].filter((key) => !slotsToRemove.includes(key));
+    const newKeys = supersetKeys.filter((slotID) => !allKeys.includes(slotID));
 
-      const newKeys = supersetKeys.filter((slotID) => !allKeys.includes(slotID));
+    let updatedByKey = _pick(byKey, supersetKeys);
 
-      let updatedByKey = _pick(byKey, supersetKeys);
+    updatedByKey = newKeys.reduce((obj, slotID) => Object.assign(obj, { [slotID]: intentSlotFactory({ id: slotID }) }), updatedByKey);
 
-      updatedByKey = newKeys.reduce((obj, slotID) => Object.assign(obj, { [slotID]: intentSlotFactory({ id: slotID }) }), updatedByKey);
+    const patchedIntent = inferIntentType({
+      ...data,
+      slots: inferIntentSlotsType({ byKey: updatedByKey, allKeys: [...supersetKeys] }),
+    });
 
-      const patchedIntent = inferIntentType({
-        ...data,
-        slots: inferIntentSlotsType({ byKey: updatedByKey, allKeys: [...supersetKeys] }),
-      });
-
-      dispatch.sync(Realtime.intent.crud.patch({ ...getActiveVersionContext(getState()), key: id, value: patchedIntent, projectMeta }));
-    } else {
-      const intent = IntentV2.intentByIDSelector(state, { id });
-      if (!intent) return;
-
-      const { slots: { byKey = {}, allKeys = [] } = {} } = intent;
-      const uniqSlots = getUniqSlots(data.inputs);
-
-      const keysWithoutRemoved = allKeys.filter((slotID) => uniqSlots.includes(slotID));
-      const keysToAdd = uniqSlots.filter((slotID) => !allKeys.includes(slotID));
-
-      let newByKey = _pick(byKey, keysWithoutRemoved);
-
-      newByKey = keysToAdd.reduce((obj, slotID) => Object.assign(obj, { [slotID]: intentSlotFactory({ id: slotID }) }), newByKey);
-
-      const patchedIntent = inferIntentType({
-        ...data,
-        slots: inferIntentSlotsType({ byKey: newByKey, allKeys: [...keysWithoutRemoved, ...keysToAdd] }),
-      });
-
-      dispatch.sync(Realtime.intent.crud.patch({ ...getActiveVersionContext(getState()), key: id, value: patchedIntent, projectMeta }));
-    }
+    dispatch.sync(Realtime.intent.crud.patch({ ...getActiveVersionContext(getState()), key: id, value: patchedIntent, projectMeta }));
   };
 
 export const addRequiredSlot =
   (intentID: string, slotID: string): SyncThunk =>
   (dispatch, getState) => {
     const state = getState();
-    const nluModals = Feature.featureSelector(state)(FeatureFlag.IMM_MODALS_V2);
 
     const projectMeta = ProjectV2.active.metaSelector(state);
     const intentSlotFactory = Realtime.Utils.slot.intentSlotFactoryCreator(projectMeta.type);
@@ -117,11 +90,7 @@ export const addRequiredSlot =
       },
     };
 
-    let allKeys = [...intent.slots.allKeys, slotID];
-    if (nluModals.isEnabled) {
-      allKeys = [...intent.slots.allKeys.filter((id) => id !== slotID), slotID];
-    }
-
+    const allKeys = [...intent.slots.allKeys.filter((id) => id !== slotID), slotID];
     const patchedIntent = inferIntentType({
       slots: inferIntentSlotsType({ byKey: byKeys, allKeys: Utils.array.unique(allKeys) }),
     });

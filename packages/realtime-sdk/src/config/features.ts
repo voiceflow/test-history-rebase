@@ -23,7 +23,6 @@ export enum FeatureFlag {
 
   ENTERPRISE_TRIAL = 'enterprise_trial',
 
-  IMM_MODALS_V2 = 'imm_modals_v2',
   NLU_MANAGER = 'nlu_manager',
 
   PROJECT_CREATE = 'project_create',

@@ -3,30 +3,21 @@ import { OverflowTippyTooltip, swallowEvent } from '@voiceflow/ui';
 import React from 'react';
 
 import { VariableTagTooltipStyles } from '@/components/VariableTag';
-import { FeatureFlag } from '@/config/features';
-import { InteractionModelTabType, ModalType } from '@/constants';
-import * as Router from '@/ducks/router';
+import { ModalType } from '@/constants';
 import * as SlotV2 from '@/ducks/slotV2';
 import { compose } from '@/hocs';
-import { useDispatch, useFeature, useModals, useSelector } from '@/hooks';
+import { useModals, useSelector } from '@/hooks';
 
 import { StyledTag } from './StyledTag';
 
 const Slot = ({ mention, children }, ref) => {
-  const IMM_MODALS_V2 = useFeature(FeatureFlag.IMM_MODALS_V2);
   const { open: openEntityEditModal } = useModals(ModalType.ENTITY_EDIT);
   const getSlotByName = useSelector(SlotV2.slotByNameSelector);
 
-  const goInteractionModelEntity = useDispatch(Router.goToCurrentCanvasInteractionModelEntity);
-
   const onClickHandler = swallowEvent(() => {
-    if (IMM_MODALS_V2.isEnabled) {
-      if (mention.id && !mention.isVariable) {
-        const slotID = getSlotByName(mention.name)?.id || mention.id;
-        openEntityEditModal({ id: slotID });
-      }
-    } else {
-      goInteractionModelEntity(mention.isVariable ? InteractionModelTabType.VARIABLES : InteractionModelTabType.SLOTS, mention.id);
+    if (mention.id && !mention.isVariable) {
+      const slotID = getSlotByName(mention.name)?.id || mention.id;
+      openEntityEditModal({ id: slotID });
     }
   }, true);
 

@@ -1,11 +1,10 @@
 import React from 'react';
 import { matchPath, useHistory } from 'react-router-dom';
 
-import { FeatureFlag } from '@/config/features';
 import { Path } from '@/config/routes';
 import { DiagramLoadingGate } from '@/gates';
 import { compose, withBatchLoadingGate } from '@/hocs';
-import { useFeature, useRAF, useRegistration } from '@/hooks';
+import { useRAF, useRegistration } from '@/hooks';
 import { DiagramHeartbeatContext, SelectionSetTargetsContext } from '@/pages/Project/contexts';
 import * as Query from '@/utils/query';
 
@@ -16,7 +15,6 @@ import ContextMenu from './components/ContextMenu';
 import DisableOverscrollBehavior from './components/DisableOverscrollBehavior';
 import EditSidebar from './components/EditorSidebar';
 import ExportModelModal from './components/ExportModelModal';
-import InteractionModelModal from './components/InteractionModelModal';
 import NLUQuickView from './components/NLUQuickView';
 import RealtimeOverlay from './components/RealtimeOverlay';
 import Search from './components/Search';
@@ -38,8 +36,6 @@ const Canvas: React.FC<CanvasProps> = ({ isPrototypingMode }) => {
   // using history to do not rerender on the every location change
   const history = useHistory();
   const [scheduler, schedulerAPI] = useRAF();
-
-  const IMM_MODALS_V2 = useFeature(FeatureFlag.IMM_MODALS_V2);
 
   const diagramHeartbeatContext = React.useContext(DiagramHeartbeatContext);
   const selectionSetTargetsContext = React.useContext(SelectionSetTargetsContext);
@@ -103,12 +99,10 @@ const Canvas: React.FC<CanvasProps> = ({ isPrototypingMode }) => {
         )}
       </Container>
 
-      {IMM_MODALS_V2.isEnabled ? <NLUQuickView /> : <InteractionModelModal />}
-
+      <NLUQuickView />
       <ShortcutsModal />
       <APLPreviewModal />
       <SlotEditModal />
-
       <ExportModelModal />
     </CanvasProviders>
   );

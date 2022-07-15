@@ -1,11 +1,10 @@
 import React from 'react';
 
-import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
 import { CANVAS_ZOOM_DELTA, ModalType } from '@/constants';
 import * as Router from '@/ducks/router';
 import * as UI from '@/ducks/ui';
-import { useDispatch, useEventualEngine, useFeature, useHotKeys, useModals, usePermission, useSelector, useTrackingEvents } from '@/hooks';
+import { useDispatch, useEventualEngine, useHotKeys, useModals, usePermission, useSelector, useTrackingEvents } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import { MarkupContext } from '@/pages/Project/contexts';
 import { useCommentingToggle, useDisableModes } from '@/pages/Project/hooks';
@@ -32,8 +31,6 @@ const HotKeys: React.FC = () => {
   const getEngine = useEventualEngine();
   const [, trackingEventsWrapper] = useTrackingEvents();
 
-  const imModal = useModals(ModalType.INTERACTION_MODEL);
-  const IMM_MODALS_V2 = useFeature(FeatureFlag.IMM_MODALS_V2);
   const nluQuickView = useModals(ModalType.NLU_MODEL_QUICK_VIEW);
   const manualSaveModal = useModals(ModalType.MANUAL_SAVE_MODAL);
 
@@ -59,38 +56,24 @@ const HotKeys: React.FC = () => {
 
   // this callback is needed to do not store event object in the modals context
   const onOpenImModel = React.useCallback(
-    () =>
-      trackingEventsWrapper(() => {
-        if (IMM_MODALS_V2.isEnabled) {
-          nluQuickView.open();
-        } else {
-          imModal.open();
-        }
-      }, 'trackCanvasControlInteractionModel')(),
-    [imModal.open]
+    () => trackingEventsWrapper(nluQuickView.open, 'trackCanvasControlInteractionModel')(),
+    [nluQuickView.open]
   );
 
   useHotKeys(Hotkey.ZOOM_IN, onZoomIn, { preventDefault: true, disable: disableCanvasHotkeys });
   useHotKeys(Hotkey.ZOOM_OUT, onZoomOut, { preventDefault: true, disable: disableCanvasHotkeys });
-  useHotKeys(Hotkey.RUN_MODE, () => goToPrototype(), { preventDefault: true, disable: imModal.isOpened || disableCanvasHotkeys });
+  useHotKeys(Hotkey.RUN_MODE, () => goToPrototype(), { preventDefault: true, disable: disableCanvasHotkeys });
   useHotKeys(Hotkey.ROOT_NODE, onFocusStart, { preventDefault: true, disable: disableCanvasHotkeys });
-  useHotKeys(Hotkey.MOVE_MODE, onDisableModes, { preventDefault: true, disable: imModal.isOpened }, [onDisableModes]);
+  useHotKeys(Hotkey.MOVE_MODE, onDisableModes, { preventDefault: true }, [onDisableModes]);
   useHotKeys(Hotkey.SHOW_HIDE_UI, toggleCanvasOnly, { preventDefault: true });
   useHotKeys(Hotkey.OPEN_CMS_MODAL, onOpenImModel, { preventDefault: true, disable: !canEditCanvas }, [onOpenImModel]);
   useHotKeys(Hotkey.OPEN_MANUAL_SAVE_MODAL, manualSaveModal.open, { preventDefault: true, disable: !canEditCanvas }, [manualSaveModal.open]);
 
-  useHotKeys(
-    Hotkey.OPEN_COMMENTING,
+  useHotKeys(Hotkey.OPEN_COMMENTING, onToggleCommenting, { preventDefault: true, disable: !showHintFeatures || disableCanvasHotkeys }, [
     onToggleCommenting,
-    { preventDefault: true, disable: !showHintFeatures || imModal.isOpened || disableCanvasHotkeys },
-    [onToggleCommenting]
-  );
-  useHotKeys(Hotkey.ADD_MARKUP_TEXT, markup.toggleTextCreating, { preventDefault: true, disable: !showHintFeatures || imModal.isOpened }, [
-    markup.toggleTextCreating,
   ]);
-  useHotKeys(Hotkey.ADD_MARKUP_IMAGE, markup.triggerImagesUpload, { preventDefault: true, disable: !showHintFeatures || imModal.isOpened }, [
-    markup.triggerImagesUpload,
-  ]);
+  useHotKeys(Hotkey.ADD_MARKUP_TEXT, markup.toggleTextCreating, { preventDefault: true, disable: !showHintFeatures }, [markup.toggleTextCreating]);
+  useHotKeys(Hotkey.ADD_MARKUP_IMAGE, markup.triggerImagesUpload, { preventDefault: true, disable: !showHintFeatures }, [markup.triggerImagesUpload]);
   useHotKeys(Hotkey.CLOSE_CANVAS_MODE, onDisableModes, { preventDefault: true }, [onDisableModes]);
   useHotKeys(Hotkey.CLOSE_CANVAS_ONLY_MODE, toggleCanvasOnly, { disable: !isCanvasOnly, preventDefault: true });
 

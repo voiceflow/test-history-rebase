@@ -20,7 +20,7 @@ import { ContentContainer, SectionToggleVariant } from '@/components/Section';
 import Utterance, { UtteranceRef } from '@/components/Utterance';
 import { Permission } from '@/config/permissions';
 import { BulkImportLimitDetails } from '@/config/planLimits/bulkImport';
-import { ModalType } from '@/constants';
+import { ModalType, PREFILLED_UTTERANCE_PARAM } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as Intent from '@/ducks/intent';
 import * as IntentV2 from '@/ducks/intentV2';
@@ -34,8 +34,6 @@ import { isCustomizableBuiltInIntent, validateUtterance } from '@/utils/intent';
 import ListManagerWrapper from '../../../ListManagerWrapper';
 import UtterancesTooltip from '../UtterancesTooltip';
 import { BuiltInIntentMessage } from './components';
-
-export const PREFILLED_UTTERANCE_PARAM = 'utterance';
 
 interface UtteranceManagerProps {
   intent: Realtime.Intent;
@@ -63,7 +61,6 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({ intent, isNested, i
   const [isEmpty, updateIsEmpty] = React.useState(true);
   const { open: openUpgradeModal } = useModals(ModalType.UPGRADE_MODAL);
   const { open: openUtterancesBulkUploadModal } = useModals(ModalType.IMPORT_UTTERANCES);
-  const { isOpened: interactionModelInstance } = useModals(ModalType.INTERACTION_MODEL);
   const [isValidUtterance, setValidUtterance, setInvalidUtterance] = useEnableDisable(true);
   const isBuiltIn = isCustomizableBuiltInIntent(intent);
   const [showUtterances, setShowUtterances] = React.useState(!isBuiltIn || !!intent.inputs?.length || !!prefilledNewUtterance);
@@ -159,7 +156,7 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({ intent, isNested, i
       <EditorSection
         namespace="utterances"
         header="Utterances"
-        initialOpen={intent.inputs.length === 0 || interactionModelInstance}
+        initialOpen={intent.inputs.length === 0}
         infix={
           <TippyTooltip title="Bulk Import">
             <SvgIcon icon="upload" clickable onClick={stopPropagation(onBulkUploadClick)} />
@@ -210,7 +207,7 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({ intent, isNested, i
                       placeholder={placeholder}
                       onEnterPress={onAdd}
                       error={!isValidUtterance}
-                      readOnly={entityEditOpened || (!isInModal && interactionModelInstance)}
+                      readOnly={entityEditOpened}
                     />
                     {!isValidUtterance && <ErrorMessage>{addError}</ErrorMessage>}
                   </>
@@ -226,7 +223,7 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({ intent, isNested, i
                   onBlur={onUpdate}
                   onEnterPress={onUpdate}
                   onAddSlot={onAddSlot}
-                  readOnly={entityEditOpened || (!isInModal && interactionModelInstance)}
+                  readOnly={entityEditOpened}
                 />
               )}
             />

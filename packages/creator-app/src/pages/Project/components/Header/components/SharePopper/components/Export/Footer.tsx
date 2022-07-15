@@ -3,13 +3,12 @@ import React from 'react';
 
 import PlatformUploadButton from '@/components/PlatformUploadButton';
 import * as Documentation from '@/config/documentation';
-import { FeatureFlag } from '@/config/features';
 import { getCanvasExportLimitDetails } from '@/config/planLimits/canvasExport';
 import { getNLUExportLimitDetails } from '@/config/planLimits/nluExport';
 import { ExportFormat, ExportType, ModalType, NLPProvider } from '@/constants';
 import * as IntentV2 from '@/ducks/intentV2';
 import { UpgradePrompt } from '@/ducks/tracking';
-import { useFeature, useModals, useSelector, useTrackingEvents } from '@/hooks';
+import { useModals, useSelector, useTrackingEvents } from '@/hooks';
 
 import { ExportContext } from './Context';
 
@@ -20,10 +19,8 @@ const ExportFooter: React.FC<{
   const intents = useSelector(IntentV2.allIntentsSelector);
   const noModelData = exportType === ExportType.MODEL && intents.length === 0;
 
-  const IMM_MODALS_V2 = useFeature(FeatureFlag.IMM_MODALS_V2);
   const [trackingEvents] = useTrackingEvents();
 
-  const { open: openInteractionModelModal } = useModals(ModalType.INTERACTION_MODEL);
   const { open: openNLUQuickview } = useModals(ModalType.NLU_MODEL_QUICK_VIEW);
   const { open: openUpgradeModal } = useModals(ModalType.UPGRADE_MODAL);
 
@@ -53,7 +50,7 @@ const ExportFooter: React.FC<{
   return (
     <FlexApart fullWidth>
       {!withoutLink && exportType === ExportType.MODEL ? (
-        <Link onClick={() => (IMM_MODALS_V2.isEnabled ? openNLUQuickview() : openInteractionModelModal())}>Open NLU Manager</Link>
+        <Link onClick={openNLUQuickview}>Open NLU Manager</Link>
       ) : (
         <Link href={Documentation.PROJECT_EXPORT}>Learn More</Link>
       )}

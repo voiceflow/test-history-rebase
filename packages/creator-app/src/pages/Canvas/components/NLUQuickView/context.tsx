@@ -19,7 +19,8 @@ import {
   useSelector,
   useTrackingEvents,
 } from '@/hooks';
-import { IMM_PERSISTED_STATE_KEY } from '@/pages/Canvas/components/InteractionModelModal';
+
+export const IMM_PERSISTED_STATE_KEY = 'IMM_PERSIST_KEY';
 
 interface NLUQuickViewProps {
   activeTab: InteractionModelTabType;

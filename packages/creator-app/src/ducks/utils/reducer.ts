@@ -1,7 +1,9 @@
+import { Utils } from '@voiceflow/common';
 import produce, { Draft } from 'immer';
 import { ActionCreator } from 'typescript-fsa';
 import { ReducerBuilder, reducerWithInitialState } from 'typescript-fsa-reducers';
 
+import { IS_E2E, IS_PRODUCTION } from '@/config';
 import { AnyAction, RootReducer } from '@/store/types';
 
 export type ImmerHandler<State, Payload> = (draft: Draft<State>, payload: Payload) => Draft<State> | void;
@@ -28,11 +30,33 @@ export const createLookupReducer =
 
 export const createRootReducer = <State>(initialState: State): ReducerBuilder<State> => {
   const reducer = reducerWithInitialState<State>(initialState);
+  const actions = new Set<string>();
 
-  reducer.immerCase = (actionCreator, handler) => reducer.case(actionCreator, (state, payload) => produce(state, (draft) => handler(draft, payload)));
+  const registerActions = (actionCreators: ActionCreator<any>[]) => {
+    if (IS_PRODUCTION && !IS_E2E) return;
 
-  reducer.immerCases = (actionCreators, handler) =>
-    reducer.cases(actionCreators, (state, payload) => produce(state, (draft) => handler(draft, payload)));
+    actionCreators.forEach((actionCreator) => {
+      if (actions.has(actionCreator.type)) {
+        throw new Error(
+          `The reducer for "${actionCreator.type}" action is already registered. Please use 'createCombinedReducer' to register multiple reducers for a single action.`
+        );
+      }
+
+      actions.add(actionCreator.type);
+    });
+  };
+
+  reducer.immerCase = (actionCreator, handler) => {
+    registerActions([actionCreator]);
+
+    return reducer.case(actionCreator, (state, payload) => produce(state, (draft) => handler(draft, payload)));
+  };
+
+  reducer.immerCases = (actionCreators, handler) => {
+    registerActions(actionCreators);
+
+    return reducer.cases(actionCreators, (state, payload) => produce(state, (draft) => handler(draft, payload)));
+  };
 
   return reducer;
 };
@@ -51,7 +75,32 @@ export interface CreateReducer<State, BasePayload = any> extends CreateSimpleRed
   ];
 }
 
+export interface CreateCombinedReducer<State, BasePayload = any> {
+  <Payload extends BasePayload>(...reducers: Array<[actionCreator: ActionCreator<Payload>, handler: ImmerHandler<State, Payload>]>): [
+    actionCreator: ActionCreator<Payload>,
+    handler: ImmerHandler<State, Payload>
+  ];
+}
+
 export const createReducerFactory =
   <State>(): CreateReducer<State> =>
-  (actionCreator: ActionCreator<any> | ActionCreator<any>[], handler: ImmerHandler<State, any>) =>
+  (actionCreator, handler) =>
     [actionCreator, handler] as any;
+
+const validateCombinedActions = <State>(reducers: Array<[actionCreator: ActionCreator<any>, handler: ImmerHandler<State, any>]>) => {
+  if (IS_PRODUCTION && !IS_E2E) return reducers[0][0];
+
+  if (Utils.array.unique(reducers.map(([actionCreator]) => actionCreator.type)).length !== 1) {
+    throw new Error(`The reducers must have "${reducers[0][0].type}" action type.`);
+  }
+
+  return reducers[0][0];
+};
+
+export const createCombinedReducerFactory =
+  <State>(): CreateCombinedReducer<State> =>
+  (...reducers) =>
+    [
+      validateCombinedActions(reducers),
+      (state, payload) => reducers.reduceRight((draft, [_, handler]) => handler(draft === undefined ? state : draft, payload) as any, state),
+    ];

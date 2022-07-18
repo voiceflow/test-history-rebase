@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.835.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.834.0...@voiceflow/creator-app@1.835.0) (2022-07-18)
+
+
+### Features
+
+* image markup refactor (VF-000) ([#5776](https://github.com/voiceflow/creator-app/issues/5776)) ([d8f8b6f](https://github.com/voiceflow/creator-app/commit/d8f8b6f58764796eace5d2d564fe1b41ff392008)), closes [/github.com/voiceflow/creator-app/blob/104eccd95fe3fc91be93e14884f88e3de70e013e/packages/creator-app/src/pages/Canvas/components/TransformOverlay/components/OverlayControls/hooks/transforms/resize.ts#L87-L93](https://github.com//github.com/voiceflow/creator-app/blob/104eccd95fe3fc91be93e14884f88e3de70e013e/packages/creator-app/src/pages/Canvas/components/TransformOverlay/components/OverlayControls/hooks/transforms/resize.ts/issues/L87-L93) [/github.com/voiceflow/creator-app/blob/02aab6816b4f377daf2e6a4582d5a7126a51320b/packages/creator-app/src/pages/Canvas/components/MarkupNode/hooks.ts#L240-L291](https://github.com//github.com/voiceflow/creator-app/blob/02aab6816b4f377daf2e6a4582d5a7126a51320b/packages/creator-app/src/pages/Canvas/components/MarkupNode/hooks.ts/issues/L240-L291) [/github.com/voiceflow/creator-app/blob/3e09814f3bc308fc06cde772b54f593aa063cb61/packages/creator-app/src/pages/Canvas/components/TransformOverlay/utils.ts#L8-L18](https://github.com//github.com/voiceflow/creator-app/blob/3e09814f3bc308fc06cde772b54f593aa063cb61/packages/creator-app/src/pages/Canvas/components/TransformOverlay/utils.ts/issues/L8-L18) [/github.com/voiceflow/creator-app/blob/3e09814f3bc308fc06cde772b54f593aa063cb61/packages/creator-app/src/pages/Canvas/components/TransformOverlay/utils.ts#L20-L30](https://github.com//github.com/voiceflow/creator-app/blob/3e09814f3bc308fc06cde772b54f593aa063cb61/packages/creator-app/src/pages/Canvas/components/TransformOverlay/utils.ts/issues/L20-L30) [/github.com/voiceflow/creator-app/blob/3e09814f3bc308fc06cde772b54f593aa063cb61/packages/creator-app/src/pages/Canvas/components/TransformOverlay/utils.ts#L101-L104](https://github.com//github.com/voiceflow/creator-app/blob/3e09814f3bc308fc06cde772b54f593aa063cb61/packages/creator-app/src/pages/Canvas/components/TransformOverlay/utils.ts/issues/L101-L104)
+
+
+
+
+
 # [1.834.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.833.0...@voiceflow/creator-app@1.834.0) (2022-07-18)
 
 

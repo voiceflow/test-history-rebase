@@ -2,16 +2,17 @@ import { Dropdown, Flex, stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 
 import { HeaderDivider, HeaderIconButton } from '@/components/ProjectPage';
+import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
 import { BlockType, ModalType } from '@/constants';
 import * as Thread from '@/ducks/thread';
-import { useModals, usePermission, useSelector, useTrackingEvents } from '@/hooks';
+import { useFeature, useModals, usePermission, useSelector, useTrackingEvents } from '@/hooks';
 import { Hotkey, HOTKEY_LABEL_MAP } from '@/keymap';
 import { MarkupContext } from '@/pages/Project/contexts';
 import { useCommentingMode, useCommentingToggle, useDisableModes } from '@/pages/Project/hooks';
 import { ClassName } from '@/styles/constants';
 
-import { MoveTypePopover } from './components';
+import { MoveTypePopover, StickersDropdown } from './components';
 
 const CanvasHeader: React.FC = () => {
   const markup = React.useContext(MarkupContext)!;
@@ -26,6 +27,8 @@ const CanvasHeader: React.FC = () => {
   const onToggleCommenting = useCommentingToggle();
 
   const [, trackingEventsWrapper] = useTrackingEvents();
+
+  const stickersDropdown = useFeature(FeatureFlag.STICKERS_DROPDOWN);
 
   const nluQuickView = useModals(ModalType.NLU_MODEL_QUICK_VIEW);
   const isMarkupTextActive = markup.creatingType === BlockType.MARKUP_TEXT;
@@ -63,16 +66,36 @@ const CanvasHeader: React.FC = () => {
           />
         )}
 
-        {canUseHintFeatures && canEditCanvas && (
-          <HeaderIconButton
-            icon="markupImage"
-            active={isMarkupImageActive}
-            isSmall
-            onClick={markup.triggerImagesUpload}
-            tooltip={{ title: 'Image', hotkey: HOTKEY_LABEL_MAP[Hotkey.ADD_MARKUP_IMAGE] }}
-            className={`${ClassName.CANVAS_CONTROL}--markup-image`}
-          />
-        )}
+        {canUseHintFeatures &&
+          canEditCanvas &&
+          (stickersDropdown.isEnabled ? (
+            <Dropdown menu={() => <StickersDropdown />}>
+              {(ref, onToggle, isOpen) => (
+                <HeaderIconButton
+                  ref={ref}
+                  icon="markupImage"
+                  active={isMarkupImageActive}
+                  isSmall
+                  onClick={markup.triggerImagesUpload}
+                  tooltip={{ title: 'Image', hotkey: HOTKEY_LABEL_MAP[Hotkey.ADD_MARKUP_IMAGE] }}
+                  className={`${ClassName.CANVAS_CONTROL}--markup-image`}
+                  expandable
+                  expandActive={isOpen}
+                  expandTooltip={{ title: 'Stickers', distance: 32 }}
+                  onExpandClick={stopPropagation(onToggle)}
+                />
+              )}
+            </Dropdown>
+          ) : (
+            <HeaderIconButton
+              icon="markupImage"
+              active={isMarkupImageActive}
+              isSmall
+              onClick={markup.triggerImagesUpload}
+              tooltip={{ title: 'Image', hotkey: HOTKEY_LABEL_MAP[Hotkey.ADD_MARKUP_IMAGE] }}
+              className={`${ClassName.CANVAS_CONTROL}--markup-image`}
+            />
+          ))}
       </Flex>
 
       {canUseHintFeatures && (

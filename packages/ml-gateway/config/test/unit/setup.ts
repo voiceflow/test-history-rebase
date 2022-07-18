@@ -13,14 +13,16 @@ chai.use(sinonChai);
 chai.use(chaiAsPromised);
 chai.use(deepEqualInAnyOrder);
 
+mockRequire('nanoevents', { createNanoEvents: () => ({}) });
+
+class Server {}
+mockRequire('@logux/server', { Server });
+
 class AsyncRejectionError extends Error {
   constructor(message: string, public code?: number) {
     super(message);
   }
 }
-
-class Server {}
-mockRequire('@logux/server', { Server });
 
 class AbstractControl {
   constructor(options: any) {

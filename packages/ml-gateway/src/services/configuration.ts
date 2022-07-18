@@ -1,4 +1,4 @@
-import { Utils } from '@voiceflow/common';
+import { Crypto, Utils } from '@voiceflow/common';
 
 import logger from '@/logger';
 import { ModelConfiguration } from '@/models';
@@ -25,6 +25,7 @@ class ConfigurationService extends AbstractControl {
    * automatically synchronizes with changes in firestore
    */
   start(subscriberID: string): Promise<void> {
+    const encodedSubscriberID = Crypto.Base64.encode(subscriberID);
     let isSynchronized = false;
 
     return new Promise((resolve, reject) => {
@@ -44,10 +45,14 @@ class ConfigurationService extends AbstractControl {
 
       this.unsubscribe = this.clients.gcloud.firestore.collection(this.config.FIRESTORE_MODEL_COLLECTION).onSnapshot(
         async (snapshot) => {
+          if (!snapshot.docs.length) {
+            logger.error(`no documents found in the firestore collection '${this.config.FIRESTORE_MODEL_COLLECTION}'`);
+          }
+
           this.cache = ConfigurationService.buildCache(snapshot);
 
           try {
-            await this.services.interaction.synchronizeClients(subscriberID, Array.from(this.cache.values()));
+            await this.services.interaction.synchronizeClients(encodedSubscriberID, Array.from(this.cache.values()));
 
             if (!isSynchronized) {
               isSynchronized = true;

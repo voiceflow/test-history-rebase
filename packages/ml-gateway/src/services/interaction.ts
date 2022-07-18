@@ -16,7 +16,7 @@ export interface TopicWithSubscription {
 
 export const DEFAULT_REQUEST_TIMEOUT = 60 * 1000;
 
-export const createSubscriptionName = (subscriberID: string): string => `ml-gateway-${subscriberID}`;
+export const createSubscriptionName = (topicName: string, subscriberID: string): string => `ml-gateway-${topicName}-${subscriberID}`;
 
 export const createEventName = (topicName: string, reqGUID: string): string => `${topicName}.${reqGUID}`;
 
@@ -50,7 +50,7 @@ class InteractionService extends AbstractControl {
     const requestTopic = this.clients.gcloud.pubsub.topic(topicName);
     const responseTopic = this.clients.gcloud.pubsub.topic(responseTopicName);
 
-    const [responseSubscription] = await responseTopic.createSubscription(createSubscriptionName(subscriberID));
+    const [responseSubscription] = await responseTopic.createSubscription(createSubscriptionName(responseTopicName, subscriberID));
 
     // last minute check to avoid replacing a subscription that was created on-demand
     const existingResponseTopic = this.cache.get(responseTopicName);
@@ -139,11 +139,21 @@ class InteractionService extends AbstractControl {
     // drop all the persisted clients from the old cache
     Array.from(nextCache.keys()).forEach((topicName) => cache.delete(topicName));
 
-    // create and add all new clients
-    await Promise.all(topicsToCreate.map((topicName) => this.initializeTopicClient(subscriberID, topicName)));
+    if (topicsToCreate.length) {
+      logger.info(`creating topic clients: ${topicsToCreate.join(', ')}`);
 
-    // teardown the expired clients
-    await Promise.all(Array.from(cache.entries()).map(([topicName, { responseSubscription }]) => closeSubscription(topicName, responseSubscription)));
+      // create and add all new clients
+      await Promise.all(topicsToCreate.map((topicName) => this.initializeTopicClient(subscriberID, topicName)));
+    }
+
+    if (cache.size) {
+      logger.info(`removing topic clients ${Array.from(cache.keys()).join(', ')}`);
+
+      // teardown the expired clients
+      await Promise.all(
+        Array.from(cache.entries()).map(([topicName, { responseSubscription }]) => closeSubscription(topicName, responseSubscription))
+      );
+    }
   }
 
   private async sendRequestToTopic<Result extends BasePubSubPayload>(

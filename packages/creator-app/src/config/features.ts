@@ -36,6 +36,7 @@ const IF_STEP_CLEANUP = process.env.FF_IF_STEP_CLEANUP === 'true';
 const FLOW_STEP_CLEANUP = process.env.FF_IF_STEP_CLEANUP === 'true';
 const IMAGE_STEP_CLEANUP = process.env.FF_IMAGE_STEP_CLEANUP === 'true';
 const CONDITIONS_BUILDER_V2 = process.env.FF_CONDITIONS_BUILDER_V2 === 'true';
+const NEW_EDITORS_PART_2 = process.env.FF_NEW_EDITORS_PART_2 === 'true';
 
 export const LOCAL_FEATURE_OVERRIDES: Partial<Record<FeatureFlag, boolean>> = {
   [FeatureFlag.GADGETS]: GADGETS_ENABLED,
@@ -69,4 +70,5 @@ export const LOCAL_FEATURE_OVERRIDES: Partial<Record<FeatureFlag, boolean>> = {
   [FeatureFlag.FLOW_STEP_CLEANUP]: FLOW_STEP_CLEANUP,
   [FeatureFlag.IMAGE_STEP_CLEANUP]: IMAGE_STEP_CLEANUP,
   [FeatureFlag.CONDITIONS_BUILDER_V2]: CONDITIONS_BUILDER_V2,
+  [FeatureFlag.NEW_EDITORS_PART_2]: NEW_EDITORS_PART_2,
 };

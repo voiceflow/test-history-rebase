@@ -1,5 +1,5 @@
 import { CANVAS_MARKUP_TRANSFORMING_CLASSNAME } from '@/pages/Canvas/constants';
-import { TransformOverlayAPI } from '@/pages/Canvas/types';
+import { MarkupTransform, TransformOverlayAPI } from '@/pages/Canvas/types';
 import { Pair } from '@/types';
 import { isMarkupBlockType } from '@/utils/typeGuards';
 
@@ -45,8 +45,12 @@ class TransformationEngine extends EngineConsumer<{ transformOverlay: TransformO
     this.components.transformOverlay?.initialize(transform);
   }
 
-  resizeOverlay(rect: DOMRectReadOnly) {
-    this.components.transformOverlay?.resize(rect);
+  getTransform() {
+    return this.engine.node.api(this.getTarget()!)?.instance?.getTransform?.() || null;
+  }
+
+  syncOverlay(transform: MarkupTransform) {
+    this.components.transformOverlay?.sync(transform);
   }
 
   start() {
@@ -55,8 +59,8 @@ class TransformationEngine extends EngineConsumer<{ transformOverlay: TransformO
     this.engine.node.api(this.getTarget()!)?.instance?.prepareForTransformation?.();
   }
 
-  scaleTarget(scale: Pair<number>, shift: Pair<number>, rotation: number, rotationOffset: Pair<number>) {
-    this.engine.node.api(this.getTarget()!)?.instance?.scale?.(scale, shift, rotation, rotationOffset);
+  scaleTarget(scale: Pair<number>, shift: Pair<number>) {
+    this.engine.node.api(this.getTarget()!)?.instance?.scale?.(scale, shift);
   }
 
   scaleTextTarget(maxWidth: number, shift: Pair<number>) {

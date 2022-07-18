@@ -1,5 +1,6 @@
-import { Pair, Point } from '@/types';
+import { Point } from '@/types';
 
+// good old pythagoras
 export const getHypotenuse = (lhs: Point, rhs: Point) => {
   const offsetX = Math.abs(lhs[0] - rhs[0]);
   const offsetY = Math.abs(lhs[1] - rhs[1]);
@@ -7,28 +8,26 @@ export const getHypotenuse = (lhs: Point, rhs: Point) => {
   return Math.sqrt(offsetX ** 2 + offsetY ** 2);
 };
 
-export const applyRotation = (length: number, rotation: number): Pair<number> => {
-  const offsetX = Math.sin(rotation) / length;
-  const offsetY = Math.cos(rotation) / length;
-
-  return [offsetX, offsetY];
-};
-
-export const getRotation = (offsetX: number, offsetY: number) => {
-  // x / y instead of y / x because our initial arm is the positive y-axis not
-  // positive x-axis and we need to rotate clockwise not counter-clockwise.
-  let angle = Math.atan(offsetX / offsetY);
-
-  // If we're in the 2nd or 3rd quadrant, then make the necessary adjustments.
-  angle = offsetY > 0 ? angle : Math.PI + angle;
-
-  // If we're in the 4th quadrant, then make the angle positive.
-  angle = angle < 0 ? 2 * Math.PI + angle : angle;
-
-  // eslint-disable-next-line no-restricted-globals
-  return isNaN(angle) ? 0 : angle;
-};
-
 export const applyMinMaxCap = (min: number, max: number, valueToCap: number) => {
   return Math.min(Math.max(valueToCap, min), max);
+};
+
+// pivot a point around a center by rad degrees: https://stackoverflow.com/a/15109215
+export const pivotPoint = (point: Point, pivot: Point, rad: number): Point => {
+  const sin = Math.sin(rad);
+  const cos = Math.cos(rad);
+
+  return [cos * (point[0] - pivot[0]) - sin * (point[1] - pivot[1]) + pivot[0], sin * (point[0] - pivot[0]) + cos * (point[1] - pivot[1]) + pivot[1]];
+};
+
+// if distance from point to center is scaled by scale, calculate new scaled point
+export const scalePoint = (point: Point, center: Point, scale: number): Point => {
+  const distanceToCenter = getHypotenuse(point, center);
+  const scaledDistance = distanceToCenter * scale;
+
+  const originAngleToCenter = Math.atan2(point[1] - center[1], point[0] - center[0]);
+  const newPointX = center[0] + Math.cos(originAngleToCenter) * scaledDistance;
+  const newPointY = center[1] + Math.sin(originAngleToCenter) * scaledDistance;
+
+  return [newPointX, newPointY];
 };

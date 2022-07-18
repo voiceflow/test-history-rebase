@@ -185,7 +185,7 @@ const MarkupTextNode = React.forwardRef<BlockAPI, MarkupTextNodeProps>(({ data }
     }
 
     if ((!isNew || isInitialWidthApplied) && isFocused && engine.transformation.isTarget(nodeEntity.nodeID)) {
-      engine.transformation.resizeOverlay(containerRef.current?.getBoundingClientRect() ?? new DOMRect());
+      engine.transformation.syncOverlay(engine.transformation.getTransform()!);
     } else if ((!isNew || isInitialWidthApplied) && isFocused) {
       engine.transformation.initialize(nodeEntity.nodeID);
     }

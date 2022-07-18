@@ -276,3 +276,7 @@ export const windowRefocused = (): Promise<void> =>
   new Promise<void>((resolve) => {
     window.addEventListener('blur', () => window.addEventListener('focus', () => resolve(), { once: true }), { once: true });
   });
+
+export const getRectCenter = (rect: DOMRect): Point => {
+  return [rect.left + rect.width / 2, rect.top + rect.height / 2];
+};

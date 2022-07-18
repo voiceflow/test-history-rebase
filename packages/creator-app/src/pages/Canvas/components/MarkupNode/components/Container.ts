@@ -6,15 +6,12 @@ import { CANVAS_COMMENTING_ENABLED_CLASSNAME, CANVAS_MARKUP_CREATING_CLASSNAME }
 
 export interface ContainerProps {
   isText: boolean;
-  rotate: number;
-  scale: number;
   maxWidth: number | null;
   backgroundColor: Realtime.Markup.Color | null;
 }
 
 const Container = styled.div<ContainerProps>`
   position: absolute;
-  transform: ${({ rotate }) => `rotate(${rotate}rad)`};
 
   ${({ backgroundColor }) =>
     backgroundColor &&
@@ -23,11 +20,9 @@ const Container = styled.div<ContainerProps>`
     border-radius: 8px;
   `};
 
-  ${({ isText, scale, maxWidth, rotate }) =>
+  ${({ isText, maxWidth }) =>
     isText &&
     css`
-      transform: rotate(${rotate}rad) scale(${scale});
-
       ${maxWidth === null
         ? css`
             min-width: 330px;

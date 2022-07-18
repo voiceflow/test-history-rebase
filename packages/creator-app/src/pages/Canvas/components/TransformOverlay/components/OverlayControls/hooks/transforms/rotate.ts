@@ -2,46 +2,38 @@
 import React from 'react';
 
 import { EngineContext } from '@/pages/Canvas/contexts';
-import { Vector } from '@/utils/geometry';
-import { getRotation } from '@/utils/math';
 
 import { OverlayState } from '../../types';
 
-const useRotate = ({ snapshot, isRotating, rotation }: OverlayState) => {
+const useRotate = ({ snapshot, rotation }: OverlayState) => {
   const engine = React.useContext(EngineContext)!;
 
   const handleRotate = React.useCallback(() => {
     if (!snapshot.current || !engine.mousePosition.current) return;
 
     const transform = snapshot.current;
+    const centerY = transform.rect.top + transform.rect.height / 2;
+    const centerX = transform.rect.left + transform.rect.width / 2;
 
-    const transformSize = new Vector([transform.rect.width, transform.rect.height]);
-
-    const [centerX, centerY] = transform.origin.add(transformSize.scalarDiv(2)).point;
-    const [mouseX, mouseY] = engine.mousePosition.current;
-
-    const deltaX = mouseX - centerX;
-    const deltaY = centerY - mouseY;
-    const rotate = getRotation(deltaX, deltaY);
+    const rotate = Math.atan2(engine.mousePosition.current[1] - centerY, engine.mousePosition.current[0] - centerX) + Math.PI / 2;
 
     rotation.current = rotate;
 
     engine.transformation.rotateTarget(rotate);
   }, []);
 
-  const startRotate = React.useCallback(() => {
-    isRotating.current = true;
+  return React.useCallback(() => {
+    engine.transformation.start();
+    document.addEventListener(
+      'mouseup',
+      () => {
+        engine.transformation.complete();
+        document.removeEventListener('mousemove', handleRotate);
+      },
+      { once: true }
+    );
+    document.addEventListener('mousemove', handleRotate, false);
   }, []);
-
-  const endRotate = React.useCallback(() => {
-    isRotating.current = false;
-  }, []);
-
-  return {
-    startRotate,
-    endRotate,
-    handleRotate,
-  };
 };
 
 export default useRotate;

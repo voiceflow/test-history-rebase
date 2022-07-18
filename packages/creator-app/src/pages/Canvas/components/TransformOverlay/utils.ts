@@ -1,9 +1,10 @@
-/* eslint-disable max-params */
 import { MarkupTransform } from '@/pages/Canvas/types';
 import { Pair, Point } from '@/types';
+import { getRectCenter } from '@/utils/dom';
+import { Coords, Vector } from '@/utils/geometry';
+import { getHypotenuse, pivotPoint, scalePoint } from '@/utils/math';
 
-import { HandlePosition, HORIZONTAL_HANDLES, SCALE_HANDLES, VERTICAL_HANDLES, X_INVERTED_HANDLES, Y_INVERTED_HANDLES } from './constants';
-import { AxialTransformation } from './types';
+import { HandlePosition, X_INVERTED_HANDLES, Y_INVERTED_HANDLES } from './constants';
 
 export const calculateRotatedBoundingRect = (rect: DOMRect, rad: number) => {
   const absSin = Math.abs(Math.sin(rad));
@@ -17,133 +18,96 @@ export const calculateRotatedBoundingRect = (rect: DOMRect, rad: number) => {
   return new DOMRect(left, top, width, height);
 };
 
-export const getScaleTransformations = (
-  transform: MarkupTransform,
-  [originX, originY]: Point,
-  [left, top]: Point,
-  [width, height]: Pair<number>,
-  [mouseX, mouseY]: Pair<number>,
-  invertX: boolean,
-  invertY: boolean
-): AxialTransformation => {
-  const maxWidth = Math.abs(mouseX - originX);
-  const maxHeight = Math.abs(mouseY - originY);
-  const scaleX = maxWidth / transform.rect.width;
-  const scaleY = maxHeight / transform.rect.height;
-  const maxScale = Math.max(0, Math.max(scaleX, scaleY));
+// get projection of line 2 (origin-pointB) to to line 1 (origin-pointA): (a·b/b·b)b
+const getProjection = (origin: Point, pointA: Point, pointB: Point) => {
+  const originCoords = new Coords(origin);
+  const startVector = new Vector(pointA).sub(originCoords);
+  const projectionVector = new Vector(pointB).sub(originCoords);
+  const projectedVector = startVector.scalarMul(projectionVector.dot(startVector) / startVector.dot(startVector));
 
-  const nextWidth = transform.rect.width * maxScale;
-  const nextHeight = transform.rect.height * maxScale;
-
-  const shiftX = invertX ? width - nextWidth : 0;
-  const shiftY = invertY ? height - nextHeight : 0;
-
-  const nextLeft = left + shiftX;
-  const nextTop = top + shiftY;
-
-  return {
-    scale: [maxScale, maxScale],
-    shift: [shiftX, shiftY],
-    position: [nextLeft, nextTop],
-    size: [nextWidth, nextHeight],
-  };
+  return projectedVector.add(originCoords).raw();
 };
 
-export const getCenteredScaleTransformations = (
-  transform: MarkupTransform,
-  [originX, originY]: Point,
-  [left, top]: Point,
-  [width, height]: Pair<number>,
-  [mouseX, mouseY]: Pair<number>
-): AxialTransformation => {
-  const newWidth = Math.abs(mouseX - originX) * 2;
-  const newHeight = Math.abs(mouseY - originY) * 2;
-
-  const scaleX = newWidth / transform.rect.width;
-  const scaleY = newHeight / transform.rect.height;
-  const maxScale = Math.max(0, Math.max(scaleX, scaleY));
-
-  const nextWidth = transform.rect.width * maxScale;
-  const nextHeight = transform.rect.height * maxScale;
-
-  const shiftX = (width - nextWidth) / 2;
-  const shiftY = (height - nextHeight) / 2;
-
-  const nextLeft = left + shiftX;
-  const nextTop = top + shiftY;
-
-  return {
-    scale: [maxScale, maxScale],
-    shift: [shiftX, shiftY],
-    position: [nextLeft, nextTop],
-    size: [nextWidth, nextHeight],
-  };
-};
-
-export const getStretchTransformations = (
-  transform: MarkupTransform,
-  [left, top]: Point,
-  [width, height]: Pair<number>,
-  [moveX, moveY]: Pair<number>,
-  invertX: boolean,
-  invertY: boolean
-): AxialTransformation => {
-  const deltaX = invertX ? -moveX : moveX;
-  const deltaY = invertY ? -moveY : moveY;
-  const nextWidth = Math.max(0, width + deltaX);
-  const nextHeight = Math.max(0, height + deltaY);
-
-  const shiftX = invertX ? moveX : 0;
-  const shiftY = invertY ? moveY : 0;
-
-  const nextLeft = left + shiftX;
-  const nextTop = top + shiftY;
-
-  const scaleX = nextWidth / transform.rect.width;
-  const scaleY = nextHeight / transform.rect.height;
-
-  return {
-    scale: [scaleX, scaleY],
-    shift: [shiftX, shiftY],
-    position: [nextLeft, nextTop],
-    size: [nextWidth, nextHeight],
-  };
-};
-
-export const getResizeTransformations = (
-  transform: MarkupTransform,
-  handle: HandlePosition,
-  [left, top]: Point,
-  [width, height]: Pair<number>,
-  [mouseX, mouseY]: Point,
-  event: MouseEvent,
-  isCentered?: boolean
-) => {
-  const [originX, originY] = transform.origin.point;
+const getRotatedCornerOrigins = (transform: MarkupTransform, handle: HandlePosition) => {
+  const center: Point = getRectCenter(transform.rect);
 
   const invertX = X_INVERTED_HANDLES.includes(handle);
   const invertY = Y_INVERTED_HANDLES.includes(handle);
-  const preserveRatio = SCALE_HANDLES.includes(handle);
-  const right = originX + transform.rect.width;
-  const bottom = originY + transform.rect.height;
-  let moveX = event.movementX;
-  let moveY = event.movementY;
+  const preRotateOrigin: Point = [
+    invertX ? transform.rect.left + transform.rect.width : transform.rect.left,
+    invertY ? transform.rect.top + transform.rect.height : transform.rect.top,
+  ];
 
-  if (HORIZONTAL_HANDLES.includes(handle)) {
-    moveY = 0;
-  } else if (VERTICAL_HANDLES.includes(handle)) {
-    moveX = 0;
-  } else if (preserveRatio) {
-    if (isCentered) {
-      const transformOrigin: Point = [originX + transform.rect.width / 2, originY + transform.rect.height / 2];
+  return pivotPoint(preRotateOrigin, center, transform.rotate);
+};
 
-      return getCenteredScaleTransformations(transform, transformOrigin, [left, top], [width, height], [mouseX, mouseY]);
-    }
+export const getScaleTransformations = (
+  handle: HandlePosition,
+  startTransform: MarkupTransform,
+  currentTransform: MarkupTransform,
+  mouseStart: Point,
+  mousePosition: Point
+): { scale: Point; shift: Pair<number> } => {
+  const startOrigin = getRotatedCornerOrigins(startTransform, handle);
 
-    const transformOrigin: Point = [invertX ? right : originX, invertY ? bottom : originY];
+  const projectionPoint = getProjection(startOrigin, mouseStart, mousePosition);
 
-    return getScaleTransformations(transform, transformOrigin, [left, top], [width, height], [mouseX, mouseY], invertX, invertY);
+  const scale = getHypotenuse(projectionPoint, startOrigin) / getHypotenuse(mouseStart, startOrigin);
+
+  const center: Point = getRectCenter(startTransform.rect);
+
+  // TODO: fix this shift code to not calculate based on center, this code can be a bit confusing
+  // get simulate the next origin point based on scale
+  const scaledOrigin = scalePoint(startOrigin, center, scale);
+
+  const targetCenter: Point = [center[0] + startOrigin[0] - scaledOrigin[0], center[1] + startOrigin[1] - scaledOrigin[1]];
+  const currentCenter = getRectCenter(currentTransform.rect);
+
+  return {
+    scale: [scale, scale],
+    shift: [targetCenter[0] - currentCenter[0], targetCenter[1] - currentCenter[1]],
+  };
+};
+
+const getHandles = ({ rect, rotate }: MarkupTransform) => {
+  const center: Point = getRectCenter(rect);
+  const halfwayHeight = rect.top + rect.height / 2;
+  return {
+    leftHandlePosition: pivotPoint([rect.left, halfwayHeight], center, rotate),
+    rightHandlePosition: pivotPoint([rect.left + rect.width, halfwayHeight], center, rotate),
+  };
+};
+
+const MIN_WIDTH = 50;
+export const getStretchTransformations = (
+  handle: HandlePosition,
+  startTransform: MarkupTransform,
+  currentTransform: MarkupTransform,
+  mousePosition: Point
+) => {
+  let startOrigin: Point;
+  let currentOrigin: Point;
+  let startPosition: Point;
+
+  const { leftHandlePosition, rightHandlePosition } = getHandles(startTransform);
+  const currentHandles = getHandles(currentTransform);
+  if (handle === HandlePosition.RIGHT) {
+    startOrigin = leftHandlePosition;
+    currentOrigin = currentHandles.leftHandlePosition;
+    startPosition = rightHandlePosition;
+  } else if (handle === HandlePosition.LEFT) {
+    startOrigin = rightHandlePosition;
+    currentOrigin = currentHandles.rightHandlePosition;
+    startPosition = leftHandlePosition;
+  } else {
+    return null;
   }
 
-  return getStretchTransformations(transform, [left, top], [width, height], [moveX, moveY], invertX, invertY);
+  const projectionPoint = getProjection(startOrigin, startPosition, mousePosition);
+
+  const width = Math.max(getHypotenuse(projectionPoint, startOrigin), MIN_WIDTH);
+  const shift: Point = [startOrigin[0] - currentOrigin[0], startOrigin[1] - currentOrigin[1]];
+
+  // calculate new center with additional width
+  return { width, shift };
 };

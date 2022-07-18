@@ -69,6 +69,10 @@ export class Vector {
     return this.mutate(([originX, originY]) => [originX - deltaX, originY - deltaY], plane);
   }
 
+  dot(vector: Vector): number {
+    return this.point[0] * vector.point[0] + this.point[1] * vector.point[1];
+  }
+
   mul(vector: Vector): Vector;
 
   mul(factor: Pair<number>, plane?: CartesianPlane): Vector;

@@ -13,7 +13,7 @@ const OffsetCircularHandle = styled(CircularHandle)`
 `;
 
 export interface RotateHandleProps {
-  onDragStart: () => void;
+  onDragStart: (event: React.DragEvent<HTMLDivElement>) => void;
 }
 
 const RotateHandle: React.FC<RotateHandleProps> = ({ onDragStart }) => {

@@ -6,7 +6,7 @@ import LineHandle from './LineHandle';
 import SquareHandle, { SquareHandleProps } from './SquareHandle';
 
 export type ResizeHandleProps = SquareHandleProps & {
-  onDragStart: () => void;
+  onDragStart: (event: React.DragEvent<HTMLDivElement>) => void;
 };
 
 const ResizeHandle: React.FC<ResizeHandleProps> = ({ position, onDragStart }) => {

@@ -11,6 +11,7 @@ export enum SchemaVersion {
   V2 = 2,
 
   V2_1 = 2.1,
+  V2_2 = 2.2, // center align image markup nodes
 }
 
 export const SUPPORTED_SCHEMA_VERSIONS = Object.values(SchemaVersion)

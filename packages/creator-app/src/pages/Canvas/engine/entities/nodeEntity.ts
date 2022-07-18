@@ -61,7 +61,7 @@ export type NodeInstance = EntityInstance & {
   /**
    * only Markup nodes can be scaled
    */
-  scale?: (scale: Pair<number>, shift: Pair<number>, rotation: number, rotationOffset: Pair<number>) => void;
+  scale?: (scale: Pair<number>, shift: Pair<number>) => void;
 
   /**
    * only Markup nodes can be scaled

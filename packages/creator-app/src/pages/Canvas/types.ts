@@ -9,10 +9,7 @@ import { RealtimeCursorEvents } from './components/RealtimeOverlay/contexts';
 
 export interface MarkupTransform {
   rect: DOMRect;
-  origin: Coords;
   rotate: number;
-  invertX: boolean;
-  invertY: boolean;
 }
 
 export interface EntityPrompt {
@@ -97,7 +94,7 @@ export interface RealtimeCursorOverlayAPI extends RealtimeCursorEvents {
 
 export interface TransformOverlayAPI {
   reset: () => void;
-  resize: (rect: DOMRect) => void;
+  sync: (transform: MarkupTransform) => void;
   initialize: (transform: MarkupTransform) => void;
   clearTransformations: () => void;
 }

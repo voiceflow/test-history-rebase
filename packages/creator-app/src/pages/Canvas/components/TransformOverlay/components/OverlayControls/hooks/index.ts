@@ -1,4 +1,3 @@
-import { useMouseMove } from '@voiceflow/ui';
 import React from 'react';
 
 import { BlockType } from '@/constants';
@@ -6,8 +5,6 @@ import { useRAF } from '@/hooks';
 import { EngineContext } from '@/pages/Canvas/contexts';
 import { useCanvasIdle } from '@/pages/Canvas/hooks';
 import { MarkupTransform, TransformOverlayAPI } from '@/pages/Canvas/types';
-import { Pair, Point } from '@/types';
-import { Coords } from '@/utils/geometry';
 
 import { HandlePosition } from '../../../constants';
 import { calculateRotatedBoundingRect } from '../../../utils';
@@ -24,64 +21,41 @@ export const useTransformOverlayAPI = (nodeType: BlockType | null) => {
   const engine = React.useContext(EngineContext)!;
 
   const ref = React.useRef<HTMLDivElement>(null);
-  const size = React.useRef<Pair<number> | null>(null);
   const snapshot = React.useRef<MarkupTransform | null>(null);
-  const position = React.useRef<Point | null>(null);
+  const overlayRect = React.useRef<DOMRect | null>(null);
   const rotation = React.useRef<number | null>(null);
-  const isRotating = React.useRef(false);
-  const handlePosition = React.useRef<HandlePosition | null>(null);
 
   const [resetStylesScheduler] = useRAF();
   const [initializeStylesScheduler] = useRAF();
 
   const state: OverlayState = {
-    ref,
-    size,
-    position,
+    overlayRect,
     snapshot,
     rotation,
-    isRotating,
-    handlePosition,
   };
 
-  const { startResize, resizeOverlay, endResize, handleResize } = useResize(nodeType, state);
-  const { startRotate, endRotate, handleRotate } = useRotate(state);
+  const drawOverlay = React.useCallback(() => {
+    if (!ref.current || !overlayRect.current) return;
 
-  const onTransformStart = React.useCallback(() => {
-    const markupNodeID = engine.focus.getTarget();
+    const { top, left, width, height } = overlayRect.current;
 
-    if (markupNodeID === null) return;
-
-    engine.drag.setTarget(markupNodeID);
-
-    document.addEventListener(
-      'mouseup',
-      () => {
-        endResize();
-        endRotate();
-        engine.node.drop();
-
-        return engine.transformation.complete();
-      },
-      { once: true }
-    );
-
-    engine.transformation.start();
+    ref.current.style.top = `${top}px`;
+    ref.current.style.left = `${left}px`;
+    ref.current.style.width = `${width}px`;
+    ref.current.style.height = `${height}px`;
+    ref.current.style.transform = `rotate(${rotation.current ?? 0}rad)`;
   }, []);
 
-  useCanvasIdle(() => engine.transformation.reinitialize());
-  useCanvasInteractions(resizeOverlay);
+  const sync = React.useCallback((transform: MarkupTransform) => {
+    overlayRect.current = calculateRotatedBoundingRect(transform.rect, rotation.current ?? 0);
+    drawOverlay();
+  }, []);
 
-  useMouseMove(
-    (event) => {
-      if (handlePosition.current) {
-        handleResize(event);
-      } else if (isRotating.current) {
-        handleRotate();
-      }
-    },
-    [handleResize, handleRotate]
-  );
+  const startResize = useResize(nodeType, state);
+  const startRotate = useRotate(state);
+
+  useCanvasIdle(() => engine.transformation.reinitialize());
+  useCanvasInteractions(sync);
 
   return React.useMemo<InternalTransformOverlayAPI>(
     () => ({
@@ -91,58 +65,34 @@ export const useTransformOverlayAPI = (nodeType: BlockType | null) => {
         const rotatedRect = calculateRotatedBoundingRect(transform.rect, transform.rotate);
 
         snapshot.current = { ...transform, rect: rotatedRect };
-
-        position.current = [rotatedRect.left, rotatedRect.top];
+        overlayRect.current = rotatedRect;
         rotation.current = transform.rotate;
-        size.current = [rotatedRect.width, rotatedRect.height];
 
         initializeStylesScheduler(() => {
-          if (ref.current === null || position.current === null || size.current === null) return;
-
+          if (ref.current === null) return;
           ref.current.style.display = 'block';
-          ref.current.style.left = `${position.current[0]}px`;
-          ref.current.style.top = `${position.current[1]}px`;
-          ref.current.style.width = `${size.current[0]}px`;
-          ref.current.style.height = `${size.current[1]}px`;
-          ref.current.style.transform = `rotate(${rotation.current}rad)`;
+          drawOverlay();
         });
       },
 
-      resize: resizeOverlay,
+      sync,
 
       clearTransformations: () => {
         const rotate = rotation.current ?? 0;
-        const [width, height] = size.current ?? [0, 0];
-        const [originX, originY] = position.current ?? [0, 0];
+        const { top = 0, left = 0, width = 0, height = 0 } = overlayRect.current ?? {};
 
         snapshot.current = {
-          rect: new DOMRect(originX, originY, width, height),
-          origin: new Coords([originX, originY]),
+          rect: new DOMRect(left, top, width, height),
           rotate,
-          invertX: false,
-          invertY: false,
         };
       },
 
-      startResize: (handle) => () => {
-        startResize(handle);
-
-        onTransformStart();
-      },
-
-      startRotate: () => {
-        startRotate();
-
-        onTransformStart();
-      },
+      startResize: (handle) => () => startResize(handle),
+      startRotate,
 
       reset: () => {
-        size.current = null;
-
         snapshot.current = null;
-        position.current = null;
-        isRotating.current = false;
-        handlePosition.current = null;
+        overlayRect.current = null;
 
         resetStylesScheduler(() => {
           if (!ref.current) return;
@@ -152,6 +102,6 @@ export const useTransformOverlayAPI = (nodeType: BlockType | null) => {
         });
       },
     }),
-    [onTransformStart]
+    []
   );
 };

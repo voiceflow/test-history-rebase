@@ -12,7 +12,6 @@ import { ClassName } from '@/styles/constants';
 
 import { Border, Container, NodeStyles } from './components';
 import { useMarkupInstance } from './hooks';
-import { ResizableMarkupNodeData } from './types';
 
 // for optimization reason using query selector to filter click events if markup is not opened
 const skipDrag = () => !!document.getElementsByClassName(CANVAS_MARKUP_CREATING_CLASSNAME).length;
@@ -73,8 +72,6 @@ const MarkupNode = () => {
         {NodeComponent && (
           <Container
             ref={instance.transformRef}
-            scale={(data as Realtime.Markup.NodeData.Text).scale ?? 1}
-            rotate={(data as ResizableMarkupNodeData).rotate || 0}
             isText={isText}
             maxWidth={(data as Realtime.Markup.NodeData.Text).overrideWidth ?? null}
             onDoubleClick={onDoubleClick}

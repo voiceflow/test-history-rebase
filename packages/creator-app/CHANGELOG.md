@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.832.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.832.0...@voiceflow/creator-app@1.832.1) (2022-07-18)
+
+
+### Bug Fixes
+
+* remove migration system ff (CT-527) ([#5769](https://github.com/voiceflow/creator-app/issues/5769)) ([7e1f2e2](https://github.com/voiceflow/creator-app/commit/7e1f2e286b480daed33b624df74cc2500ef4579b))
+
+
+
+
+
 # [1.832.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.831.4...@voiceflow/creator-app@1.832.0) (2022-07-18)
 
 

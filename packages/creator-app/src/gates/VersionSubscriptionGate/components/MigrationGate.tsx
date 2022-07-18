@@ -2,11 +2,10 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { toast } from '@voiceflow/ui';
 import React from 'react';
 
-import client from '@/client';
 import LoadingGate from '@/components/LoadingGate';
 import * as Router from '@/ducks/router';
 import * as Version from '@/ducks/version';
-import { useDispatch, useFeature, useRealtimeClient } from '@/hooks';
+import { useDispatch, useRealtimeClient } from '@/hooks';
 import logger from '@/utils/logger';
 import { AsyncActionError } from '@/utils/logux';
 
@@ -29,7 +28,6 @@ export interface MigrationGateProps
 
 const MigrationGate: React.FC<MigrationGateProps> = ({ versionID, context, setContext, children }) => {
   const realtimeClient = useRealtimeClient();
-  const migrationSystem = useFeature(Realtime.FeatureFlag.MIGRATION_SYSTEM);
 
   const [status, setStatus] = React.useState(MigrationStatus.IDLE);
   const retryCount = window.history.state?.[MIGRATION_RETRY_KEY] ?? 0;
@@ -56,19 +54,6 @@ const MigrationGate: React.FC<MigrationGateProps> = ({ versionID, context, setCo
   }, []);
 
   const loadContext = React.useCallback(async () => {
-    if (!migrationSystem.isEnabled) {
-      try {
-        const { projectID } = await client.api.version.get(versionID);
-        const { teamID: workspaceID } = await client.api.project.get(projectID);
-
-        setContext({ projectID, workspaceID });
-      } catch {
-        goToDashboard();
-      }
-
-      return;
-    }
-
     try {
       const result = await negotiateTargetVersion(versionID);
 

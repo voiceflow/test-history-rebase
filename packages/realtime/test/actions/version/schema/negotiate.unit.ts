@@ -103,44 +103,9 @@ describe('version.schema.NEGOTIATE action unit tests', () => {
       expect(options.services.project.get).to.be.calledWithExactly(creatorID, projectID);
     });
 
-    it('skip if migration_system feature disabled', async () => {
-      const schemaVersion = Realtime.SchemaVersion.V1;
-      const options = {
-        services: {
-          workspace: {
-            isFeatureEnabled: sinon.stub().resolves(false),
-          },
-          project: {
-            get: sinon.stub().resolves({ teamID: workspaceID }),
-            access: {
-              canWrite: sinon.stub().resolves(true),
-            },
-          },
-          version: {
-            get: sinon.stub().resolves({ projectID }),
-          },
-          migrate: {
-            getTargetSchemaVersion: sinon.stub().resolves(schemaVersion),
-          },
-        },
-      };
-      const action = { payload: { versionID } };
-      const control = new NegotiateControl(options as any);
-
-      const result = await getReplyHandler(control)(context as any, action as any, {} as any);
-
-      expect(result).to.eql({ workspaceID, projectID, schemaVersion });
-      expect(options.services.version.get).to.be.calledWithExactly(creatorID, versionID);
-      expect(options.services.project.get).to.be.calledWithExactly(creatorID, projectID);
-      expect(options.services.workspace.isFeatureEnabled).to.be.calledWithExactly(creatorID, workspaceID, Realtime.FeatureFlag.MIGRATION_SYSTEM);
-    });
-
     it("fail if target schema is outside of client's supported range", async () => {
       const options = {
         services: {
-          workspace: {
-            isFeatureEnabled: sinon.stub().resolves(true),
-          },
           project: {
             get: sinon.stub().resolves({ teamID: workspaceID }),
             access: {
@@ -174,9 +139,6 @@ describe('version.schema.NEGOTIATE action unit tests', () => {
           process: sinon.stub().onFirstCall().throws().onSecondCall().resolves(),
         },
         services: {
-          workspace: {
-            isFeatureEnabled: sinon.stub().resolves(true),
-          },
           project: {
             get: sinon.stub().resolves({ teamID: workspaceID }),
             access: {
@@ -211,9 +173,6 @@ describe('version.schema.NEGOTIATE action unit tests', () => {
           process: sinon.stub().resolves(),
         },
         services: {
-          workspace: {
-            isFeatureEnabled: sinon.stub().resolves(true),
-          },
           project: {
             get: sinon.stub().resolves({ teamID: workspaceID, _version: currentSchemaVersion }),
             access: {
@@ -248,9 +207,6 @@ describe('version.schema.NEGOTIATE action unit tests', () => {
           process: sinon.stub().resolves(),
         },
         services: {
-          workspace: {
-            isFeatureEnabled: sinon.stub().resolves(true),
-          },
           project: {
             get: sinon.stub().resolves({ teamID: workspaceID, _version: currentSchemaVersion }),
             access: {
@@ -283,9 +239,6 @@ describe('version.schema.NEGOTIATE action unit tests', () => {
           process: sinon.stub().resolves(),
         },
         services: {
-          workspace: {
-            isFeatureEnabled: sinon.stub().resolves(true),
-          },
           project: {
             get: sinon.stub().resolves({ teamID: workspaceID, _version: currentSchemaVersion }),
             access: {
@@ -318,9 +271,6 @@ describe('version.schema.NEGOTIATE action unit tests', () => {
           process: sinon.stub().resolves(),
         },
         services: {
-          workspace: {
-            isFeatureEnabled: sinon.stub().resolves(true),
-          },
           project: {
             get: sinon.stub().resolves({ teamID: workspaceID, _version: currentSchemaVersion }),
             access: {

@@ -35,40 +35,34 @@ class NegotiateSchema extends AbstractActionControl<Realtime.version.schema.Nego
       return skipResult;
     }
 
-    const isMigrationSystemEnabled = await this.services.workspace.isFeatureEnabled(creatorID, workspaceID, Realtime.FeatureFlag.MIGRATION_SYSTEM);
-
-    if (isMigrationSystemEnabled) {
-      if (targetSchemaVersion > proposedSchemaVersion) {
-        this.reject(SCHEMA_VERSION_NOT_SUPPORTED_MESSAGE, Realtime.ErrorCode.SCHEMA_VERSION_NOT_SUPPORTED);
-      }
-
-      const migrateResult = { ...skipResult, schemaVersion: targetSchemaVersion };
-
-      const migrator = this.services.migrate.migrateSchema(creatorID, projectID, versionID, ctx.clientId, targetSchemaVersion);
-
-      try {
-        const result = await this.applySchemaMigrations(ctx, { versionID, migrateResult, skipResult, migrator });
-
-        if (!result) {
-          this.reject(INTERNAL_ERROR_MESSAGE);
-        }
-
-        await this.server.process(Realtime.version.schema.migrate.done({ params: { versionID }, result }));
-
-        return result;
-      } catch (err) {
-        logger.error(err);
-
-        if (!(err instanceof AsyncRejectionError)) {
-          // warn other waiting clients to reload and attempt migration
-          await this.server.process(Realtime.version.schema.migrate.failed({ params: { versionID }, error: { message: INTERNAL_ERROR_MESSAGE } }));
-        }
-
-        throw err;
-      }
+    if (targetSchemaVersion > proposedSchemaVersion) {
+      this.reject(SCHEMA_VERSION_NOT_SUPPORTED_MESSAGE, Realtime.ErrorCode.SCHEMA_VERSION_NOT_SUPPORTED);
     }
 
-    return skipResult;
+    const migrateResult = { ...skipResult, schemaVersion: targetSchemaVersion };
+
+    const migrator = this.services.migrate.migrateSchema(creatorID, projectID, versionID, ctx.clientId, targetSchemaVersion);
+
+    try {
+      const result = await this.applySchemaMigrations(ctx, { versionID, migrateResult, skipResult, migrator });
+
+      if (!result) {
+        this.reject(INTERNAL_ERROR_MESSAGE);
+      }
+
+      await this.server.process(Realtime.version.schema.migrate.done({ params: { versionID }, result }));
+
+      return result;
+    } catch (err) {
+      logger.error(err);
+
+      if (!(err instanceof AsyncRejectionError)) {
+        // warn other waiting clients to reload and attempt migration
+        await this.server.process(Realtime.version.schema.migrate.failed({ params: { versionID }, error: { message: INTERNAL_ERROR_MESSAGE } }));
+      }
+
+      throw err;
+    }
   });
 
   private async applySchemaMigrations(

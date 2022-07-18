@@ -9,7 +9,6 @@ export enum FeatureFlag {
   // atomic actions
   ATOMIC_ACTIONS_PHASE_2 = 'atomic_actions_phase_2',
   ATOMIC_ACTIONS_AWARENESS = 'atomic_actions_awareness',
-  MIGRATION_SYSTEM = 'migration_system',
   HISTORY_SYSTEM = 'history_system',
 
   // used by select private cloud instances to add a new role type

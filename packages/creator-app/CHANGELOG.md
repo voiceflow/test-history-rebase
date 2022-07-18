@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.833.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.832.1...@voiceflow/creator-app@1.833.0) (2022-07-18)
+
+
+### Features
+
+* new canvas menus design (CT-248) ([#5712](https://github.com/voiceflow/creator-app/issues/5712)) ([42e95c7](https://github.com/voiceflow/creator-app/commit/42e95c7d0b78273147e28bbfed97b3d82c3a0a21))
+
+
+
+
+
 ## [1.832.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.832.0...@voiceflow/creator-app@1.832.1) (2022-07-18)
 
 

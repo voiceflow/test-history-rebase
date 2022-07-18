@@ -1,5 +1,7 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 
+import { LOGIC_STEPS_LINK } from '@/constants';
+
 import { NodeManagerConfig } from '../types';
 import ComponentEditor from './ComponentEditor';
 import ComponentStep from './ComponentStep';
@@ -15,6 +17,9 @@ const ComponentManager: NodeManagerConfig<Realtime.NodeData.Component, Realtime.
   editor: ComponentEditor,
 
   v2: ComponentManagerV2,
+
+  tooltipText: 'Points the conversation to an existing Flow.',
+  tooltipLink: LOGIC_STEPS_LINK,
 };
 
 export default ComponentManager;

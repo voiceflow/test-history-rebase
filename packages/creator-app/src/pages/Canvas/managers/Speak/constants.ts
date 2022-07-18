@@ -39,7 +39,10 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Speak, Realtime.NodeData.
 
   getIcon: (data) => ICON_MAP[data?.dialogs[0]?.type ?? DialogType.VOICE],
 
-  getTooltipText: (data) => `Add ${NAME_MAP[data?.dialogs[0]?.type ?? DialogType.VOICE].toLowerCase()} steps to your assistant.`,
+  getTooltipText: (data) =>
+    data?.dialogs[0]?.type === DialogType.AUDIO
+      ? 'Plays short audio files (less than 240s).'
+      : 'Text-to-speech messages spoken by the Voice assistant.',
 
   factory: ({ dialogs: [data] = [] } = {}, options) => ({
     node: {

@@ -43,6 +43,15 @@ export const getIconMap = (
   ...iconMapOverride,
 });
 
+export const getTooltipTextMap = (
+  nameMapOverride?: Partial<Record<BaseNode.Utils.IntegrationType, string>>
+): Record<BaseNode.Utils.IntegrationType, string> => ({
+  [BaseNode.Utils.IntegrationType.ZAPIER]: 'Pulls data from Zapier.',
+  [BaseNode.Utils.IntegrationType.CUSTOM_API]: 'Makes custom API calls to external APIs and data.',
+  [BaseNode.Utils.IntegrationType.GOOGLE_SHEETS]: 'Pulls data from a specified Google Sheet.',
+  ...nameMapOverride,
+});
+
 export const EMPTY_KEY_VALUE_ITEM = { key: '', val: '' };
 
 export const getDefaultData = (
@@ -85,15 +94,18 @@ export const getDefaultData = (
 export const DEFAULT_DATA = getDefaultData();
 export const NAME_MAP = getNameMap();
 export const ICON_MAP = getIconMap();
+export const TOOLTIP_TEXT_MAP = getTooltipTextMap();
 
 export const buildNodeConfig = ({
   iconMap,
   defaultData,
   nameMap,
+  tooltipMap,
 }: {
   iconMap: Record<BaseNode.Utils.IntegrationType, SvgIconTypes.Icon>;
   defaultData: Record<BaseNode.Utils.IntegrationType, Realtime.NodeData.Integration>;
   nameMap: Record<BaseNode.Utils.IntegrationType, string>;
+  tooltipMap: Record<BaseNode.Utils.IntegrationType, string>;
 }): NodeConfig<Realtime.NodeData.Integration, Realtime.NodeData.IntegrationBuiltInPorts> => ({
   type: BlockType.INTEGRATION,
 
@@ -102,6 +114,8 @@ export const buildNodeConfig = ({
 
   // for block redesign
   getIcon: (data) => iconMap[data.selectedIntegration!],
+
+  getTooltipText: (data) => tooltipMap[data.selectedIntegration!],
 
   factory: (data) => ({
     node: {
@@ -125,4 +139,4 @@ export const buildNodeConfig = ({
   }),
 });
 
-export const NODE_CONFIG = buildNodeConfig({ iconMap: ICON_MAP, defaultData: DEFAULT_DATA, nameMap: NAME_MAP });
+export const NODE_CONFIG = buildNodeConfig({ iconMap: ICON_MAP, defaultData: DEFAULT_DATA, nameMap: NAME_MAP, tooltipMap: TOOLTIP_TEXT_MAP });

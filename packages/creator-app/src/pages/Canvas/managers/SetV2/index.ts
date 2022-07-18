@@ -18,7 +18,7 @@ const SetManager: NodeManagerConfig<Realtime.NodeData.SetV2, Realtime.NodeData.S
 
   v2: SetManagerV2,
 
-  tooltipText: 'Set variables in your assistant.',
+  tooltipText: 'Sets and changes the value of variables.',
   tooltipLink: LOGIC_STEPS_LINK,
 };
 

@@ -17,7 +17,7 @@ const RandomManager: NodeManagerConfig<Realtime.NodeData.Random> = {
   editor: RandomEditor,
 
   stepsMenuIcon: SVG.randomV2,
-  tooltipText: 'Add a random step to your assistant.',
+  tooltipText: 'Randomizes the conversation path at this point in the conversation.',
   tooltipLink: INPUT_STEPS_LINK,
 };
 

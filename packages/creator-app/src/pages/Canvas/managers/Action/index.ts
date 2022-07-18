@@ -16,7 +16,7 @@ const TraceManager: NodeManagerConfig<Realtime.NodeData.Trace> = {
   label: 'Custom Action',
 
   stepsMenuIcon: SVG.systemIntegrations,
-  tooltipText: 'Add custom actions to your assistant.',
+  tooltipText: 'Pairs with the Voiceflow Dialog Manager SDK to create custom actions.',
   tooltipLink: INTEGRATION_STEPS_LINK,
 
   factory: () => ({

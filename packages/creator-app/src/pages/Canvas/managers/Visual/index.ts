@@ -20,7 +20,7 @@ const VisualManager: NodeManagerConfig<Realtime.NodeData.Visual, Realtime.NodeDa
   v2: VisualManagerV2,
 
   stepsMenuIcon: SVG.systemImage,
-  tooltipText: 'Add images and gifs to your assistant.',
+  tooltipText: 'Displays an image or gif.',
   tooltipLink: RESPONSE_STEPS_LINK,
 };
 

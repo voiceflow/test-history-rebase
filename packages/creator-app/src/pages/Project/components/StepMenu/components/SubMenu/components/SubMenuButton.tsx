@@ -87,7 +87,7 @@ const SubMenuButton: React.FC<SubMenuButtonProps> = ({ type, icon, label, onDrop
         <Portal portalNode={document.body}>
           <div ref={popper.setPopperElement} style={{ ...popper.styles.popper, paddingLeft: '6px' }} {...popper.attributes.popper}>
             <TooltipContainer>
-              <TippyTooltip.FooterButton width={168} onClick={() => window.open(tooltipLink, '_blank')} buttonText="More" defaultVisible>
+              <TippyTooltip.FooterButton width={168} onClick={() => window.open(tooltipLink, '_blank')} buttonText="Learn More" defaultVisible>
                 {tooltipText}
               </TippyTooltip.FooterButton>
             </TooltipContainer>

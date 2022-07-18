@@ -21,7 +21,7 @@ const IfManagerV2: NodeManagerConfig<Realtime.NodeData.IfV2, Realtime.NodeData.I
 
   v2: NodeConfigV2,
 
-  tooltipText: 'Add conditions to your assistant.',
+  tooltipText: 'Configures ‘If, then’ logic statements for funneling to paths.',
   tooltipLink: LOGIC_STEPS_LINK,
 };
 

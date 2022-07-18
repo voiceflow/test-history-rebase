@@ -14,7 +14,7 @@ const IntentManager: NodeManagerConfigV2<Realtime.NodeData.Intent, Realtime.Node
   step: Step,
   editorV2: Editor,
 
-  tooltipText: 'Add intents to your assistant.',
+  tooltipText: 'Listens for the linked intent and triggers the conversation path.',
   tooltipLink: INPUT_STEPS_LINK,
 };
 

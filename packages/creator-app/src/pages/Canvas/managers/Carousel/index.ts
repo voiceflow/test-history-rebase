@@ -16,7 +16,7 @@ const CarouselManager: NodeManagerConfigV2<Realtime.NodeData.Carousel, Realtime.
   editorV2: Editor,
 
   stepsMenuIcon: SVG.systemCarousel,
-  tooltipText: 'Add carousels to your assistant.',
+  tooltipText: 'Displays a selection of multi-modal cards.',
   tooltipLink: RESPONSE_STEPS_LINK,
 };
 

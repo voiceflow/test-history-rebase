@@ -18,7 +18,7 @@ const CodeManager: NodeManagerConfig<Realtime.NodeData.Code, Realtime.NodeData.C
 
   v2: CodeManagerV2,
 
-  tooltipText: 'Add custom code to your assistant.',
+  tooltipText: 'Executes custom JavaScript (ES6) code in the project.',
   tooltipLink: INTEGRATION_STEPS_LINK,
 };
 

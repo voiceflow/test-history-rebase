@@ -27,7 +27,7 @@ const TextManager: NodeManagerConfig<Realtime.NodeData.Text, Realtime.NodeData.T
   searchCategory: NodeCategory.RESPONSES,
   getSearchParams: (data) => data.texts.map(({ content }) => serializeSlateToText(content)),
 
-  tooltipText: 'Add text to your assistant.',
+  tooltipText: 'Text messages shown in chat.',
   tooltipLink: RESPONSE_STEPS_LINK,
 
   stepsMenuIcon: SVG.systemText,

@@ -25,7 +25,7 @@ const ChoiceManager: NodeManagerConfigV2<Realtime.NodeData.Interaction, Realtime
       return acc;
     }, []),
 
-  tooltipText: 'Add choices to your assistant.',
+  tooltipText: 'Configures pre-defined paths and choices.',
   tooltipLink: INPUT_STEPS_LINK,
 };
 

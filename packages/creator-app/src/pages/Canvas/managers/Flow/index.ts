@@ -17,7 +17,7 @@ const FlowManager: NodeManagerConfig<Realtime.NodeData.Flow, Realtime.NodeData.F
   editor: FlowEditor,
 
   stepsMenuIcon: SVG.flowV2,
-  tooltipText: 'Add flows to your assistant.',
+  tooltipText: 'Points the conversation to an existing Flow.',
   tooltipLink: LOGIC_STEPS_LINK,
 };
 

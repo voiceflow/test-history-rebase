@@ -27,7 +27,7 @@ const CaptureV2Manager: NodeManagerConfigV2<Realtime.NodeData.CaptureV2, Realtim
     return targets;
   },
 
-  tooltipText: 'Add capture steps to your assistant.',
+  tooltipText: "Capture and record all or part of a user's utterance within a variable.",
   tooltipLink: INPUT_STEPS_LINK,
 };
 

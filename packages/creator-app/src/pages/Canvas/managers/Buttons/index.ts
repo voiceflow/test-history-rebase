@@ -29,7 +29,7 @@ const ButtonsManager: NodeManagerConfigV2<Realtime.NodeData.Buttons, Realtime.No
       return acc;
     }, []),
 
-  tooltipText: 'Add buttons to your assistant.',
+  tooltipText: 'Interactive buttons connected to URLs or conversation paths.',
   tooltipLink: INPUT_STEPS_LINK,
 };
 

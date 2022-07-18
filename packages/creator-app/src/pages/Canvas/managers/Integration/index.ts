@@ -21,7 +21,6 @@ const IntegrationManager: NodeManagerConfig<Realtime.NodeData.Integration, Realt
   v2: IntegrationManagerV2,
 
   stepsMenuIcon: SVG.systemIntegrations,
-  tooltipText: 'Add integrations to your assistant.',
   tooltipLink: INTEGRATION_STEPS_LINK,
 };
 

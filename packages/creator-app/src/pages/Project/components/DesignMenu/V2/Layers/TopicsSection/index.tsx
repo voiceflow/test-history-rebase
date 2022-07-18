@@ -117,7 +117,7 @@ const TopicsSection: React.FC = () => {
                 )
               }
             >
-              {!!topicsItems.length && <SearchInput value={searchValue} onChange={withTargetValue(setSearchValue)} placeholder="Search" />}
+              <SearchInput value={searchValue} onChange={withTargetValue(setSearchValue)} placeholder="Search" />
             </Header>
           }
           listRef={listRef}

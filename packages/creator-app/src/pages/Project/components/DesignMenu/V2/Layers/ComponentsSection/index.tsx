@@ -102,7 +102,7 @@ const ComponentsSection: React.FC<ComponentsSectionProps> = ({ collapsed, setSec
                 )
               }
             >
-              {!!componentsItems.length && <SearchInput value={searchValue} onChange={withTargetValue(setSearchValue)} placeholder="Search" />}
+              <SearchInput value={searchValue} onChange={withTargetValue(setSearchValue)} placeholder="Search" />
             </Header>
           }
           listRef={listRef}

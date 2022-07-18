@@ -12,7 +12,7 @@ const StepMenu: React.FC<{ numCollapsedSteps?: number }> = ({ numCollapsedSteps 
   const platform = useSelector(ProjectV2.active.platformSelector);
   const projectType = useSelector(ProjectV2.active.projectTypeSelector);
   const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
-  const [isExpanded, toggleIsExpanded] = useToggle(false);
+  const [isExpanded, toggleIsExpanded] = useToggle(true);
 
   const steps = getStepSections(platform, projectType);
   const stepsToShow = isExpanded ? steps : steps.slice(0, numCollapsedSteps);

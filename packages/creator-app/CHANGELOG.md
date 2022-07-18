@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.834.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.833.0...@voiceflow/creator-app@1.834.0) (2022-07-18)
+
+
+### Bug Fixes
+
+* disappearing search (CT-643) ([#5779](https://github.com/voiceflow/creator-app/issues/5779)) ([1f44abc](https://github.com/voiceflow/creator-app/commit/1f44abc17c5a6668dfda132222ecd8d9d08855e6))
+
+
+### Features
+
+* new editors part 2 FF (CT-646) ([#5780](https://github.com/voiceflow/creator-app/issues/5780)) ([cb5fa49](https://github.com/voiceflow/creator-app/commit/cb5fa49558032a30960f4926f9d023f234f78fbe))
+
+
+
+
+
 # [1.833.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.832.1...@voiceflow/creator-app@1.833.0) (2022-07-18)
 
 

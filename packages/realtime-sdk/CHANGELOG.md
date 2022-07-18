@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.127.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.126.0...@voiceflow/realtime-sdk@1.127.0) (2022-07-18)
+
+
+### Features
+
+* new editors part 2 FF (CT-646) ([#5780](https://github.com/voiceflow/creator-app/issues/5780)) ([cb5fa49](https://github.com/voiceflow/creator-app/commit/cb5fa49558032a30960f4926f9d023f234f78fbe))
+
+
+
+
+
 # [1.126.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.125.5...@voiceflow/realtime-sdk@1.126.0) (2022-07-18)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.832.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.831.4...@voiceflow/creator-app@1.832.0) (2022-07-18)
+
+
+### Features
+
+* add stickers dropdown container (CT-535) ([#5772](https://github.com/voiceflow/creator-app/issues/5772)) ([4a8f34e](https://github.com/voiceflow/creator-app/commit/4a8f34ea1b8de16fca6ce6969eeb26fdf37023a6))
+
+
+
+
+
 ## [1.831.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.831.3...@voiceflow/creator-app@1.831.4) (2022-07-18)
 
 

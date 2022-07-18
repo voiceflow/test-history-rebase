@@ -1,4 +1,4 @@
-import { CustomScrollbarsTypes, IconButton, useConst, usePersistFunction } from '@voiceflow/ui';
+import { CustomScrollbarsTypes, IconButton, TippyTooltip, useConst, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 import { List } from 'react-virtualized';
 
@@ -10,8 +10,8 @@ import { useDidUpdateEffect, usePermission } from '@/hooks';
 import { withTargetValue } from '@/utils/dom';
 
 import Header from '../../Header';
-import SearchInput, { SEARCH_INPUT_HEIGHT } from '../components/SearchInput';
 import { HEADER_MIN_HEIGHT, ITEM_HEIGHT } from '../constants';
+import SearchInput, { SEARCH_INPUT_HEIGHT } from '../SearchInput';
 import { TopicItem, useTopics } from './hooks';
 import TopicItemComponent from './TopicItem';
 
@@ -109,9 +109,15 @@ const TopicsSection: React.FC = () => {
           header={
             <Header
               label="Topics"
-              rightAction={canEditCanvas && <IconButton icon="plus" variant={IconButton.Variant.BASIC} onClick={onCreateTopic} offsetSize={0} />}
+              rightAction={
+                canEditCanvas && (
+                  <TippyTooltip title="Create topic" delay={500}>
+                    <IconButton icon="plus" variant={IconButton.Variant.BASIC} onClick={onCreateTopic} offsetSize={0} />
+                  </TippyTooltip>
+                )
+              }
             >
-              {!!topics.length && <SearchInput value={searchValue} onChange={withTargetValue(setSearchValue)} placeholder="Search" />}
+              {!!topicsItems.length && <SearchInput value={searchValue} onChange={withTargetValue(setSearchValue)} placeholder="Search" />}
             </Header>
           }
           listRef={listRef}

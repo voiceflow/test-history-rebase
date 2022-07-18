@@ -1,6 +1,7 @@
-import { styled } from '@/hocs';
+import { styled, transition } from '@/hocs';
 
 const Divider = styled.div`
+  ${transition('background-color')}
   position: absolute;
   left: 0;
   right: 0;
@@ -10,6 +11,10 @@ const Divider = styled.div`
   cursor: row-resize;
   z-index: 2;
   pointer-events: auto;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.blue};
+  }
 
   &:before {
     content: '';

@@ -41,8 +41,9 @@ const IntentListItem: React.ForwardRefRenderFunction<HTMLDivElement, IntentListI
     }
   };
 
+  // eslint-disable-next-line xss/no-mixed-html
   return (
-    <OverflowTippyTooltip title={intent?.name}>
+    <OverflowTippyTooltip<HTMLDivElement> title={intent?.name}>
       {(tooltipRef) => (
         <S.IntentContainer
           ref={composeRefs(ref, tooltipRef)}
@@ -52,8 +53,12 @@ const IntentListItem: React.ForwardRefRenderFunction<HTMLDivElement, IntentListI
           isPlaceholder={!intent}
           isDraggingPreview={isDraggingPreview}
         >
-          <SvgIcon icon="systemIntentSmall" />
-          {isSearch ? <SearchLabel>{getNestedMenuFormattedLabel(intent?.name, searchMatchValue)}</SearchLabel> : intent?.name ?? 'Empty intent step'}
+          <S.IconContainer>
+            <SvgIcon icon="systemIntentSmall" />
+          </S.IconContainer>
+          <S.IntentContent>
+            {isSearch ? <SearchLabel>{getNestedMenuFormattedLabel(intent?.name, searchMatchValue)}</SearchLabel> : intent?.name ?? 'Select intent'}
+          </S.IntentContent>
         </S.IntentContainer>
       )}
     </OverflowTippyTooltip>

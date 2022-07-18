@@ -12,8 +12,8 @@ import { useDidUpdateEffect, usePermission } from '@/hooks';
 import { withTargetValue } from '@/utils/dom';
 
 import Header from '../../Header';
-import SearchInput, { SEARCH_INPUT_HEIGHT } from '../components/SearchInput';
 import { HEADER_MIN_HEIGHT, HORIZONTAL_DRAG_OFFSET, ITEM_HEIGHT } from '../constants';
+import SearchInput, { SEARCH_INPUT_HEIGHT } from '../SearchInput';
 import FolderItem from './FolderItem';
 import { ComponentItem, useComponents } from './hooks';
 import * as S from './styles';
@@ -92,19 +92,20 @@ const ComponentsSection: React.FC<ComponentsSectionProps> = ({ collapsed, setSec
             <Header
               label="Flows"
               collapsed={collapsed}
+              onClick={collapsed ? () => setSectionHeight(372) : undefined}
+              paddingRight={22}
               rightAction={
                 collapsed && (
-                  <S.CollapseIconContainer onClick={() => setSectionHeight(372)}>
-                    <SvgIcon icon="arrowRightTopics" size={9} color="#becedc" />
+                  <S.CollapseIconContainer>
+                    <SvgIcon icon="arrowRightTopics" size={9} />
                   </S.CollapseIconContainer>
                 )
               }
             >
-              {!!components.length && <SearchInput value={searchValue} onChange={withTargetValue(setSearchValue)} placeholder="Search" />}
+              {!!componentsItems.length && <SearchInput value={searchValue} onChange={withTargetValue(setSearchValue)} placeholder="Search" />}
             </Header>
           }
           listRef={listRef}
-          listStyle={{ padding: '2px 0 8px 0' }}
           rowHeight={ITEM_HEIGHT}
           renderItem={(index) => {
             const item = components[index];
@@ -121,7 +122,7 @@ const ComponentsSection: React.FC<ComponentsSectionProps> = ({ collapsed, setSec
           renderPlaceholder={({ width }) => (
             <S.Placeholder width={width}>
               <SvgIcon size={72} icon="componentOutline" />
-              Flows are reusable collections of saved blocks <br />
+              Flows are reusable collections of blocks that can be used anywhere. <br />
               <Link href={Documentation.COMPONENTS_LAYER}>Learn more</Link>
             </S.Placeholder>
           )}

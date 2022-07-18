@@ -1,8 +1,16 @@
+import { SvgIcon } from '@voiceflow/ui';
+import { space, SpaceProps } from 'styled-system';
+
 import { css, styled, transition } from '@/hocs';
 
 import { HEADER_MIN_HEIGHT } from '../Layers/constants';
 
-export const Container = styled.div<{ isSticky?: boolean; collapsed?: boolean }>`
+export interface ContainerProps extends SpaceProps {
+  isSticky?: boolean;
+  collapsed?: boolean;
+}
+
+export const Container = styled.div<ContainerProps>`
   ${transition('border-color')}
   background-color: #fdfdfd;
   position: sticky;
@@ -11,7 +19,8 @@ export const Container = styled.div<{ isSticky?: boolean; collapsed?: boolean }>
   flex-direction: column;
   width: 100%;
   min-height: ${HEADER_MIN_HEIGHT}px;
-  padding: 10px 2px 10px 12px;
+  padding: 12px 12px 0 24px;
+  ${space}
 
   border-bottom: solid 1px transparent;
   z-index: 1;
@@ -25,12 +34,13 @@ export const Container = styled.div<{ isSticky?: boolean; collapsed?: boolean }>
   ${({ collapsed }) =>
     collapsed &&
     css`
+      cursor: pointer;
       padding-bottom: 10px;
-    `}
-`;
 
-export const Content = styled.div`
-  padding-right: 16px;
+      &:hover ${SvgIcon.Container} {
+        opacity: 1 !important;
+      }
+    `}
 `;
 
 export const LabelContainer = styled.header`
@@ -42,4 +52,10 @@ export const LabelContainer = styled.header`
   align-items: center;
   justify-content: space-between;
   height: 36px;
+`;
+
+export const SearchContainer = styled.div`
+  height: 36px;
+  display: flex;
+  align-items: center;
 `;

@@ -42,7 +42,7 @@ const THEME = createTheme({
     },
     designMenu: {
       minWidth: 200,
-      maxWidth: 350,
+      maxWidth: 450,
       width: 228,
       hiddenWidth: 16,
       get contentWidth() {

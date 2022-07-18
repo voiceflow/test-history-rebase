@@ -3,7 +3,6 @@ import React from 'react';
 
 import { DragPreviewComponentProps, ItemComponentProps } from '@/components/DraggableList';
 
-import Body from '../../../Body';
 import ComponentItemName from '../ComponentItemName';
 import { ComponentItem } from '../hooks';
 
@@ -35,23 +34,21 @@ const FolderItem: React.ForwardRefRenderFunction<HTMLElement, FolderItemProps> =
   const isActive = activeDiagramID === diagramID;
 
   return (
-    <Body>
-      <ComponentItemName
-        ref={ref}
-        icon="systemSymbolSmall"
-        name={name}
-        isActive={isActive}
-        isSearch={isSearch}
-        diagramID={diagramID}
-        isDragging={isDragging}
-        disableHover={isDragActive}
-        searchMatchValue={searchMatchValue}
-        isDraggingPreview={isDraggingPreview}
-        isDraggingXEnabled={isDraggingXEnabled}
-        lastCreatedDiagramID={lastCreatedDiagramID}
-        onClearLastCreatedDiagramID={onClearLastCreatedDiagramID}
-      />
-    </Body>
+    <ComponentItemName
+      ref={ref}
+      icon="systemSymbolSmall"
+      name={name}
+      isActive={isActive}
+      isSearch={isSearch}
+      diagramID={diagramID}
+      isDragging={isDragging}
+      disableHover={isDragActive}
+      searchMatchValue={searchMatchValue}
+      isDraggingPreview={isDraggingPreview}
+      isDraggingXEnabled={isDraggingXEnabled}
+      lastCreatedDiagramID={lastCreatedDiagramID}
+      onClearLastCreatedDiagramID={onClearLastCreatedDiagramID}
+    />
   );
 };
 

@@ -10,7 +10,7 @@ interface DesignMenuV2ResizeHandleProps {
 }
 
 const DesignMenuV2ResizeHandle: React.FC<DesignMenuV2ResizeHandleProps> = ({ onMouseDown, onClick, isOpen }) => {
-  const button = <S.CollapseButton isOpen={!!isOpen} icon={isOpen ? 'longArrowLeft' : 'longArrowRight'} onClick={onClick} />;
+  const button = <S.CollapseButton isOpen={!!isOpen} icon="arrowLeftSmall" onClick={onClick} />;
 
   return <S.Container onMouseDown={onMouseDown}>{isOpen ? button : <Portal>{button}</Portal>}</S.Container>;
 };

@@ -15,6 +15,7 @@ export { default as api } from './api.svg';
 export { default as arrow } from './arrow.svg';
 export { default as arrowDown } from './arrow-down.svg';
 export { default as arrowLeft } from './arrow-left.svg';
+export { default as arrowLeftSmall } from './arrow-left-small.svg';
 export { default as arrowRight } from './arrow-right.svg';
 export { default as arrowRightTopics } from './arrow-right-topics.svg';
 export { default as arrowToggle } from './arrow-toggle.svg';

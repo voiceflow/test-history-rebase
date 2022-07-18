@@ -1,9 +1,9 @@
-import { colors, Flex, ThemeColor } from '@voiceflow/ui';
+import { colors, Flex, SvgIcon, ThemeColor } from '@voiceflow/ui';
 
 import { css, styled, transition } from '@/hocs';
 
-import SearchLabel from '../../SearchLabel';
-import { ITEM_HEIGHT } from '../constants';
+import SearchLabel from '../SearchLabel';
+import { ITEM_HEIGHT } from './constants';
 
 interface ItemNameContainerProps {
   isActive?: boolean;
@@ -15,17 +15,25 @@ interface ItemNameContainerProps {
 }
 
 const ItemNameContainer = styled(Flex)<ItemNameContainerProps>`
-  ${transition('background', 'border-color', 'box-shadow')}
+  ${transition('background', 'border-color', 'box-shadow', 'color', 'opacity')}
 
-  width: 100%;
-  margin: 0;
-  padding: 6px 12px 6px 6px;
+  margin: 0 12px;
+  padding: 5px 12px 5px 8px;
   min-height: ${ITEM_HEIGHT}px;
-  border-radius: 5px;
+  border-radius: 6px;
   border: solid 1px transparent;
   font-size: 13px;
   line-height: 13px;
   background: #fdfdfd;
+
+  ${SvgIcon.Container} {
+    opacity: 0.65;
+    color: #6e849a;
+  }
+
+  &:hover ${SvgIcon.Container} {
+    opacity: 0.85;
+  }
 
   ${({ isHovered, disableHover }) =>
     !disableHover &&
@@ -56,6 +64,8 @@ const ItemNameContainer = styled(Flex)<ItemNameContainerProps>`
     css`
       margin: 0;
       width: 100%;
+      max-width: 100%;
+      flex-grow: 1;
       padding-left: 16px;
       box-shadow: 0 6px 12px 0 rgba(17, 49, 96, 0.16), 0 0 0 1px rgba(17, 49, 96, 0.06);
       background-image: linear-gradient(to bottom, rgba(238, 244, 246, 0.3), rgba(238, 244, 246, 0.45)),
@@ -73,6 +83,11 @@ const ItemNameContainer = styled(Flex)<ItemNameContainerProps>`
 
       & ${SearchLabel} {
         color: ${colors(ThemeColor.PRIMARY)};
+      }
+
+      & ${SvgIcon.Container} {
+        opacity: 0.85;
+        color: #6e849a;
       }
     `}
 `;

@@ -90,8 +90,11 @@ class VersionService extends AbstractControl {
   }
 
   private intentStepsNodeMapper = (node: BaseModels.BaseDiagramNode<AnyRecord>): Realtime.diagram.DiagramIntentStep | null => {
-    if (!Realtime.Utils.typeGuards.isIntentDBNode(node) || !node.data.intent) return null;
-    return { intentID: node.data.intent, global: !node.data.availability || node.data.availability === BaseNode.Intent.IntentAvailability.GLOBAL };
+    if (!Realtime.Utils.typeGuards.isIntentDBNode(node)) return null;
+    return {
+      intentID: node.data.intent || null,
+      global: !node.data.availability || node.data.availability === BaseNode.Intent.IntentAvailability.GLOBAL,
+    };
   };
 
   private startingBlockNodeMapper = (node: BaseModels.BaseDiagramNode<AnyRecord>): Realtime.diagram.DiagramStartingBlock | null => {

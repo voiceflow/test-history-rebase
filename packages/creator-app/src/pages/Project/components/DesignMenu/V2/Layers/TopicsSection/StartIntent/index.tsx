@@ -7,7 +7,7 @@ import * as CreatorV2 from '@/ducks/creatorV2';
 import * as Router from '@/ducks/router';
 import { useDispatch, useEventualEngine, useSelector } from '@/hooks';
 
-import { IntentContainer } from '../IntentList/Item/styles';
+import * as S from '../IntentList/Item/styles';
 
 interface StartIntentProps {
   isActive?: boolean;
@@ -39,13 +39,16 @@ const StartIntent: React.FC<StartIntentProps> = ({ isActive, diagramID, focusedN
 
   const startIntentLabel = startNodeData?.label || 'Project starts here';
 
+  // eslint-disable-next-line xss/no-mixed-html
   return (
-    <OverflowTippyTooltip title={startIntentLabel}>
+    <OverflowTippyTooltip<HTMLDivElement> title={startIntentLabel}>
       {(ref) => (
-        <IntentContainer ref={ref} isActive={isRootDiagramActive && startNodeID === focusedNodeID} onClick={onClickRootItem}>
-          <SvgIcon icon="systemFlag" />
-          {startIntentLabel}
-        </IntentContainer>
+        <S.IntentContainer ref={ref} isActive={isRootDiagramActive && startNodeID === focusedNodeID} onClick={onClickRootItem}>
+          <S.IconContainer>
+            <SvgIcon icon="systemFlag" />
+          </S.IconContainer>
+          <S.IntentContent>{startIntentLabel}</S.IntentContent>
+        </S.IntentContainer>
       )}
     </OverflowTippyTooltip>
   );

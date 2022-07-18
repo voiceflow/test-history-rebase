@@ -13,23 +13,30 @@ interface ItemContainerProps {
   isDraggingPreview?: boolean;
 }
 
-export const IntentContainer = styled(OverflowText)<ItemContainerProps>`
+export const IntentContainer = styled.div<ItemContainerProps>`
   ${transition('color')};
-  padding-left: 16px;
+
+  padding-left: 12px;
+  padding-right: 12px;
   display: flex;
   align-items: center;
   line-height: ${ITEM_HEIGHT}px;
-  width: 100%;
+
   height: ${ITEM_HEIGHT}px;
   font-size: 13px;
   color: ${({ isPlaceholder }) => (isPlaceholder ? '#8da2b5' : '#132144')};
+
   cursor: pointer;
   border-radius: 5px;
   user-select: none;
 
-  & > ${SvgIcon.Container} {
-    margin-right: 12px;
+  ${SvgIcon.Container} {
+    opacity: 0.85;
     color: #6e849a;
+  }
+
+  &:hover ${SvgIcon.Container} {
+    opacity: 1;
   }
 
   ${({ isActive, isDraggingPreview }) =>
@@ -41,6 +48,11 @@ export const IntentContainer = styled(OverflowText)<ItemContainerProps>`
 
       & ${SearchLabel} {
         color: ${colors(ThemeColor.PRIMARY)};
+      }
+
+      & ${SvgIcon.Container} {
+        color: rgba(19, 33, 68, 0.85);
+        opacity: 1;
       }
     `};
 
@@ -66,3 +78,15 @@ export const IntentContainer = styled(OverflowText)<ItemContainerProps>`
         linear-gradient(to bottom, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9));
     `}
 `;
+
+export const IconContainer = styled.div`
+  width: 24px;
+  flex-shrink: 0;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 8px;
+`;
+
+export const IntentContent = styled(OverflowText)``;

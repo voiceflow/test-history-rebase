@@ -1,7 +1,6 @@
 import composeRef from '@seznam/compose-react-refs';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Portal, SvgIcon, SvgIconTypes, Text, TippyTooltip, usePopper } from '@voiceflow/ui';
-import cn from 'classnames';
 import React from 'react';
 import { useDrag } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
@@ -9,7 +8,6 @@ import { getEmptyImage } from 'react-dnd-html5-backend';
 import { BlockType, DragItem } from '@/constants';
 import { AutoPanningCacheContext } from '@/contexts';
 import { useEnableDisable, useEventualEngine, useHover, useSetup, useTeardown } from '@/hooks';
-import { ClassName } from '@/styles/constants';
 
 import { StepDragItem } from '../../../../DesignMenu/components/Steps/types';
 import { SubMenuButtonContainer } from './SubMenuButtonContainer';
@@ -67,11 +65,10 @@ const SubMenuButton: React.FC<SubMenuButtonProps> = ({ type, icon, label, onDrop
   return (
     <SubMenuButtonContainer
       ref={composeRef<HTMLDivElement>(connectDrag, popper.setReferenceElement)}
-      className={cn(ClassName.STEP_MENU_ITEM, `${ClassName.STEP_MENU_ITEM}--${type}`)}
       isClicked={isClickedState}
       onMouseUp={clearClickedState}
-      isDragging={isDragging}
       onMouseDown={enableClickedState}
+      isDragging={isDragging}
       isDraggingPreview={isDraggingPreview}
       {...hoverHandlers}
     >

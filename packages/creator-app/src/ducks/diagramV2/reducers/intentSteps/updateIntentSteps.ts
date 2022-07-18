@@ -12,7 +12,7 @@ const updateIntentStepsReducer = createReducer(Realtime.diagram.updateIntentStep
 
   Object.assign(state.intentSteps[diagramID], { [stepID]: intent });
 
-  if (previousIntentData) {
+  if (previousIntentData && previousIntentData.intentID) {
     state.globalIntentStepMap[diagramID][previousIntentData.intentID] ??= [];
     state.globalIntentStepMap[diagramID][previousIntentData.intentID] = Utils.array.withoutValue(
       state.globalIntentStepMap[diagramID][previousIntentData.intentID],
@@ -20,7 +20,7 @@ const updateIntentStepsReducer = createReducer(Realtime.diagram.updateIntentStep
     );
   }
 
-  if (intent?.global) {
+  if (intent?.global && intent.intentID) {
     state.globalIntentStepMap[diagramID][intent.intentID] ??= [];
     state.globalIntentStepMap[diagramID][intent.intentID].push(stepID);
   }

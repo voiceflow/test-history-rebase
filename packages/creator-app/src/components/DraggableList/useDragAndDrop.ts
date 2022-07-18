@@ -93,7 +93,14 @@ const useDragAndDrop = <I extends { id: string } | any>(
     { isDragging: boolean }
   >({
     item: dragItem,
-    end: (_result, monitor) => handlers.current.onDragEnd?.(props.item as I, monitor),
+    end: (_result, monitor) => {
+      // reset width and height when ends the drag.
+      // That way we get the current width and height when we start a new drag.
+      // This is important to support resizes.
+      cacheRef.current.styles.width = undefined;
+      cacheRef.current.styles.height = undefined;
+      handlers.current.onDragEnd?.(props.item as I, monitor);
+    },
     begin: (monitor) => handlers.current.onDragStart?.(props.item as I, monitor),
     collect: (monitor) => ({ isDragging: monitor.isDragging() }),
     canDrag:

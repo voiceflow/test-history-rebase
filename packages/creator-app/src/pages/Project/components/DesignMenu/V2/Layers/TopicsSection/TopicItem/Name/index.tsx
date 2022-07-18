@@ -9,8 +9,8 @@ import { useDiagramOptions, useDiagramRename } from '@/pages/Project/hooks';
 import { withEnterPress, withTargetValue } from '@/utils/dom';
 
 import SearchLabel from '../../../../SearchLabel';
-import ItemNameContainer from '../../../components/ItemNameContainer';
-import ItemNameInput from '../../../components/ItemNameInput';
+import ItemNameContainer from '../../../ItemNameContainer';
+import ItemNameInput from '../../../ItemNameInput';
 import * as S from './styles';
 
 interface TopicItemNameProps {
@@ -92,7 +92,7 @@ const TopicItemName: React.ForwardRefRenderFunction<HTMLDivElement, TopicItemNam
         >
           {!isDraggingPreview && (
             <S.IconContainer onClick={stopPropagation(() => onToggleOpen(diagramID))}>
-              <S.Icon isOpened={isOpened} isActive={isActive} />
+              <S.Icon isOpened={isOpened} />
             </S.IconContainer>
           )}
 

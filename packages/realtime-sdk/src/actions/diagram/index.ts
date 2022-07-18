@@ -30,7 +30,7 @@ export const removeLocalVariable = createAction<LocalVariablePayload>(diagramVar
 
 export interface DiagramIntentStep {
   global: boolean;
-  intentID: string;
+  intentID: string | null;
 }
 
 export interface DiagramIntentStepMap {

@@ -9,6 +9,6 @@ interface ContainerProps {
 
 export const Container = styled.div<ContainerProps>`
   position: relative;
-  margin-left: 16px;
-  margin-right: 8px;
+  margin-left: 34px;
+  margin-right: 12px;
 `;

@@ -1,5 +1,5 @@
 import { Nullable, Utils } from '@voiceflow/common';
-import { ContextMenu, getNestedMenuFormattedLabel, SvgIcon, SvgIconTypes, useEnableDisable, usePersistFunction } from '@voiceflow/ui';
+import { ContextMenu, getNestedMenuFormattedLabel, OverflowText, SvgIcon, SvgIconTypes, useEnableDisable, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
 import { Permission } from '@/config/permissions';
@@ -10,7 +10,7 @@ import { useDiagramOptions, useDiagramRename } from '@/pages/Project/hooks';
 import { withEnterPress, withTargetValue } from '@/utils/dom';
 
 import SearchLabel from '../../../SearchLabel';
-import ItemNameInput from '../../components/ItemNameInput';
+import ItemNameInput from '../../ItemNameInput';
 import * as S from './styles';
 
 interface ComponentItemNameNameProps {
@@ -97,6 +97,9 @@ const ComponentItemName: React.ForwardRefRenderFunction<HTMLDivElement, Componen
         >
           {!isDragging && (
             <>
+              <S.IconContainer>
+                <SvgIcon icon={icon} size={18} />
+              </S.IconContainer>
               {renameEnabled ? (
                 <ItemNameInput
                   ref={inputRef}
@@ -109,10 +112,9 @@ const ComponentItemName: React.ForwardRefRenderFunction<HTMLDivElement, Componen
                   onKeyPress={withEnterPress((event) => event.currentTarget.blur())}
                 />
               ) : (
-                <S.Label>
-                  <SvgIcon icon={icon} />
-                  {isSearch ? <SearchLabel>{getNestedMenuFormattedLabel(name, searchMatchValue)}</SearchLabel> : name}
-                </S.Label>
+                <>
+                  <OverflowText>{isSearch ? <SearchLabel>{getNestedMenuFormattedLabel(name, searchMatchValue)}</SearchLabel> : name}</OverflowText>
+                </>
               )}
             </>
           )}

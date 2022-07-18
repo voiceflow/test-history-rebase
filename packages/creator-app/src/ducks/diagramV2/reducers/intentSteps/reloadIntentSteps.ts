@@ -8,7 +8,7 @@ const reloadIntentStepsReducer = createReducer(Realtime.diagram.reloadIntentStep
   state.globalIntentStepMap[diagramID] = Object.keys(intentSteps).reduce<Record<string, string[]>>((acc, stepID) => {
     const intentData = intentSteps[stepID];
 
-    if (intentData?.global) {
+    if (intentData?.global && intentData.intentID) {
       acc[intentData.intentID] ??= [];
       acc[intentData.intentID].push(stepID);
     }

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.124.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.123.0...@voiceflow/ui@1.124.0) (2022-07-19)
+
+
+### Features
+
+* migrate to vitest (VF-000) ([#5781](https://github.com/voiceflow/creator-app/issues/5781)) ([626bf92](https://github.com/voiceflow/creator-app/commit/626bf9207c6f4fcdea34fd3792767b1dc62b4119))
+
+
+
+
+
 # [1.123.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.122.2...@voiceflow/ui@1.123.0) (2022-07-18)
 
 

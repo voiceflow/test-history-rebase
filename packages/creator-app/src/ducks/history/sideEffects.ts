@@ -15,13 +15,13 @@ export const transaction =
   (callback: () => Eventual<any>): Thunk =>
   async (dispatch) => {
     const transactionID = Utils.id.cuid();
-    dispatch.local(startTransaction({ transactionID }));
+    dispatch(startTransaction({ transactionID }));
 
     try {
       // eslint-disable-next-line callback-return
       await callback();
     } finally {
-      dispatch.local(flushTransaction({ transactionID }));
+      dispatch(flushTransaction({ transactionID }));
     }
   };
 
@@ -44,7 +44,7 @@ export const undo = (): Thunk => (dispatch, getState) => {
 
   batch(() => {
     promise = Promise.all(transaction.apply.map((action) => dispatch.sync(wrapReplayAction(action)))).then(Utils.functional.noop);
-    dispatch.local(undoTransaction({ transactionID: transaction.id, revertID: Utils.id.cuid() }));
+    dispatch(undoTransaction({ transactionID: transaction.id, revertID: Utils.id.cuid() }));
   });
 
   return promise;
@@ -69,7 +69,7 @@ export const redo = (): Thunk => (dispatch, getState) => {
 
   batch(() => {
     promise = Promise.all(transaction.apply.map((action) => dispatch.sync(wrapReplayAction(action)))).then(Utils.functional.noop);
-    dispatch.local(redoTransaction({ transactionID: transaction.id, revertID: Utils.id.cuid() }));
+    dispatch(redoTransaction({ transactionID: transaction.id, revertID: Utils.id.cuid() }));
   });
 
   return promise;

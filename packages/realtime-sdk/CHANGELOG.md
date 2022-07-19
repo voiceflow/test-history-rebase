@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.129.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.128.1...@voiceflow/realtime-sdk@1.129.0) (2022-07-19)
+
+
+### Features
+
+* add df carousel step ff (CT-598) ([#5785](https://github.com/voiceflow/creator-app/issues/5785)) ([053d5bf](https://github.com/voiceflow/creator-app/commit/053d5bf171fdb25b51bbea6bbba617b8c42bc552))
+
+
+
+
+
 ## [1.128.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.128.0...@voiceflow/realtime-sdk@1.128.1) (2022-07-19)
 
 **Note:** Version bump only for package @voiceflow/realtime-sdk

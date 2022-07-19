@@ -4,7 +4,6 @@ import { createSelector } from 'reselect';
 
 import { createAction, createRootSelector } from '@/ducks/utils';
 import { Action, RootReducer, SyncThunk, Thunk } from '@/store/types';
-import { MD5 } from '@/utils/crypto';
 
 export enum NotificationType {
   FEATURE = 'FEATURE',
@@ -36,7 +35,6 @@ export const FORCE_NOTIFICATION_KEY = 'FORCE_NOTIFICATION_STATE';
 export enum NotifcationAction {
   SET_NOTIFICATIONS = 'SET_NOTIFICATIONS',
   READ_NOTIFICATIONS = 'READ_NOTIFICATIONS',
-  FORCE_NOTIFICATION = 'FORCE_NOTIFICATION',
 }
 
 // action types
@@ -45,9 +43,7 @@ export type SetNotifications = Action<NotifcationAction.SET_NOTIFICATIONS, Notif
 
 export type ReadNotifications = Action<NotifcationAction.READ_NOTIFICATIONS>;
 
-export type ForceNotification = Action<NotifcationAction.FORCE_NOTIFICATION, Notification>;
-
-export type AnyNotificationAction = SetNotifications | ReadNotifications | ForceNotification;
+export type AnyNotificationAction = SetNotifications | ReadNotifications;
 
 // reducers
 
@@ -68,11 +64,6 @@ const notificationsReducer: RootReducer<NotificationState, AnyNotificationAction
               isNew: false,
             }
           : null,
-      };
-    case NotifcationAction.FORCE_NOTIFICATION:
-      return {
-        ...state,
-        forced: action.payload,
       };
     default:
       return state;
@@ -95,24 +86,7 @@ export const setNotifications = (notifications: Notification[]): SetNotification
 
 export const markNotificationAsRead = (): ReadNotifications => createAction(NotifcationAction.READ_NOTIFICATIONS);
 
-export const forceNotification = (notification: Notification, isNew?: boolean): ForceNotification =>
-  createAction(NotifcationAction.FORCE_NOTIFICATION, { ...notification, isNew });
-
 // side effects
-
-export const forceNotificationIfNew =
-  (notification: Notification): SyncThunk =>
-  (dispatch) => {
-    // if the user has already received this force notification do not flag it as unread
-    const notificationHash = MD5(`${notification.id}${notification.type}${notification.details}`).toString();
-    const isNew = notificationHash !== window.localStorage.getItem(FORCE_NOTIFICATION_KEY);
-
-    if (isNew) {
-      window.localStorage.setItem(FORCE_NOTIFICATION_KEY, notificationHash);
-    }
-
-    dispatch(forceNotification(notification, isNew));
-  };
 
 export const fetchNotifications = (): Thunk => async (dispatch) => {
   let {

@@ -9,7 +9,6 @@ import Coupon from '@/pages/Coupon';
 import FinanceBoard from '@/pages/Finance';
 import Home from '@/pages/Home';
 import LoginForm from '@/pages/Login';
-import ProductUpdates from '@/pages/ProductUpdates';
 import Referral from '@/pages/Referral';
 import Vendors from '@/pages/Vendors';
 
@@ -44,7 +43,6 @@ const Router: React.FC = () => {
                 <Route index element={<Home />} />
                 <Route path="copy" element={<Copy />} />
                 <Route path="coupon" element={<Coupon />} />
-                <Route path="updates" element={<ProductUpdates />} />
                 <Route path="referral" element={<Referral />} />
 
                 <Route path="charges">

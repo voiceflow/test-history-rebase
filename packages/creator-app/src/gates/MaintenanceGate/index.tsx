@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import { Alert } from '@voiceflow/ui';
+import { Alert, toast } from '@voiceflow/ui';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import React from 'react';
@@ -9,7 +9,6 @@ import client from '@/client';
 import LoadingGate from '@/components/LoadingGate';
 import { MAINTENANCE_STATUS_SOURCE } from '@/config';
 import * as Modal from '@/ducks/modal';
-import * as Notifications from '@/ducks/notifications';
 import { ConnectedProps } from '@/types';
 import { getMaintenanceCookie } from '@/utils/cookies';
 import * as Sentry from '@/vendors/sentry';
@@ -34,7 +33,7 @@ const getMaintenance = async () => {
   return { startTimeUtc, endTimeUtc };
 };
 
-const MaintenanceGate: React.FC<ConnectedMaintenanceGateProps> = ({ children, setConfirm, forceNotification }) => {
+const MaintenanceGate: React.FC<ConnectedMaintenanceGateProps> = ({ children, setConfirm }) => {
   const [checked, updateChecked] = React.useState(false);
 
   const action = React.useCallback((interval = null) => {
@@ -91,14 +90,14 @@ const MaintenanceGate: React.FC<ConnectedMaintenanceGateProps> = ({ children, se
 
           // if maintenance period has already passed, no need for notification
           if (Date.now() < end) {
-            forceNotification({
-              id: 'maintenance',
-              type: Notifications.NotificationType.UPDATE,
-              created: dayjs(start).toString(),
-              details: `Voiceflow Creator will go under planned maintenance from _**${dayjs(start).format('h:mmA, MMM Do')}**_ to _**${dayjs(
-                end
-              ).format('h:mmA, MMM Do')}**_`,
-            });
+            toast.warn(
+              <>
+                Voiceflow Creator will go under planned maintenance from
+                <br />
+                <strong>{dayjs(start).format('h:mmA, MMM Do')}</strong> to <strong>{dayjs(end).format('h:mmA, MMM Do')}</strong>
+              </>,
+              { autoClose: false }
+            );
           }
         }
       } catch (err) {
@@ -126,7 +125,6 @@ const MaintenanceGate: React.FC<ConnectedMaintenanceGateProps> = ({ children, se
 
 const mapDispatchToProps = {
   setConfirm: Modal.setConfirm,
-  forceNotification: Notifications.forceNotificationIfNew,
 };
 
 type ConnectedMaintenanceGateProps = ConnectedProps<{}, typeof mapDispatchToProps>;

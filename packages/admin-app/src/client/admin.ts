@@ -1,5 +1,5 @@
 import { api } from '@/client/fetch';
-import { Board, Creator, Team, UpdateType } from '@/models';
+import { Board, Creator, Team } from '@/models';
 
 const ADMIN_API = 'admin-api';
 
@@ -16,7 +16,6 @@ const adminClient = {
   updateMemberRole: ({ workspaceID, creatorID, role }: { workspaceID: number; creatorID: number; role: string }) =>
     api.patch(`${ADMIN_API}/workspace/${workspaceID}/members/${creatorID}`, { role }),
   getUserTeams: (user: number): Promise<Team[]> => api.get(`teams/${user}`),
-  setProductUpdate: (update: { type: UpdateType; details: unknown }) => api.post('product_updates', update),
 };
 
 export default adminClient;

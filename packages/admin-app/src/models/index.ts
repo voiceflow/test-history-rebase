@@ -2,7 +2,6 @@ export * from './Board';
 export * from './Charge';
 export * from './Creator';
 export * from './Error';
-export * from './ProductUpdates';
 export * from './Project';
 export * from './Referral';
 export * from './Session';

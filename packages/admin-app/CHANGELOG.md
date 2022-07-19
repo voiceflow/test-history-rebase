@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.40.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/admin-app@1.39.1...@voiceflow/admin-app@1.40.0) (2022-07-19)
+
+
+### Features
+
+* remove in-product notifications (CT-581) ([#5786](https://github.com/voiceflow/creator-app/issues/5786)) ([097f1a5](https://github.com/voiceflow/creator-app/commit/097f1a5331d464e150657104d6cefd49a25f3abb))
+
+
+
+
+
 ## [1.39.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/admin-app@1.39.0...@voiceflow/admin-app@1.39.1) (2022-07-19)
 
 **Note:** Version bump only for package @voiceflow/admin-app

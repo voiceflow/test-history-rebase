@@ -67,12 +67,7 @@ export const STEP_META: StepMetaProps = {
     title: (workspaceName) => (!workspaceName ? 'Invite teammates' : `Invite teammates to ${workspaceName}`),
     canBack: true,
     canSkip: true,
-    skipTo: ({ justCreatingWorkspace, upgradingAWorkspace, isProjectCreateFeatureEnabled }) => {
-      if (justCreatingWorkspace || upgradingAWorkspace) {
-        return StepID.PAYMENT;
-      }
-      return isProjectCreateFeatureEnabled ? StepID.PAYMENT : StepID.SELECT_CHANNEL;
-    },
+    skipTo: () => StepID.PAYMENT,
     trackStep: ({ addCollaboratorMeta }, { skip }) =>
       Tracking.trackOnboardingCollaborators({
         skip,

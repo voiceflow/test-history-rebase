@@ -5,7 +5,6 @@ import React from 'react';
 
 import DragLayer from '@/components/DragLayer';
 import EmptyScreen from '@/components/EmptyScreen';
-import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
 import { ProjectLimitDetails } from '@/config/planLimits/projects';
 import { ModalType } from '@/constants';
@@ -14,11 +13,10 @@ import * as Modal from '@/ducks/modal';
 import * as ProjectList from '@/ducks/projectList';
 import * as ProjectListV2 from '@/ducks/projectListV2';
 import * as ProjectV2 from '@/ducks/projectV2';
-import * as Router from '@/ducks/router';
 import { UpgradePrompt } from '@/ducks/tracking';
 import { WorkspaceFeatureLoadingGate, WorkspaceSubscriptionGate } from '@/gates';
 import { DragItem as BaseDragItem, HoverItem as BaseHoverItem, withBatchLoadingGate } from '@/hocs';
-import { useDispatch, useFeature, useModals, usePermission, useScrollHelpers, useSelector, useTrackingEvents } from '@/hooks';
+import { useDispatch, useModals, usePermission, useScrollHelpers, useSelector, useTrackingEvents } from '@/hooks';
 import { DashboardClassName, Identifier } from '@/styles/constants';
 
 import { Item as ListItem, ItemProps as ListItemProps } from './Item';
@@ -60,16 +58,12 @@ const ProjectListList: React.FC<ProjectListListProps> = ({ workspace, filter, is
   const renameList = useDispatch(ProjectList.renameProjectList);
   const transplantProjectBetweenLists = useDispatch(ProjectList.transplantProjectBetweenLists);
   const moveProjectList = useDispatch(ProjectList.moveProjectList);
-  const goToNewProject = useDispatch(Router.goToNewProject);
-  const goToNewIntroProject = useDispatch(Router.goToNewIntroProject);
 
   const [canManageLists] = usePermission(Permission.MANAGE_PROJECT_LISTS);
   const { bodyRef, innerRef, scrollHelpers } = useScrollHelpers<HTMLDivElement, HTMLDivElement>();
   const { open: openProjectCreateModal } = useModals(ModalType.PROJECT_CREATE_MODAL);
   const { open: openUpgradeModal } = useModals(ModalType.UPGRADE_MODAL);
   const [trackingEvents] = useTrackingEvents();
-
-  const projectCreateFeature = useFeature(FeatureFlag.PROJECT_CREATE);
 
   const onCreateList = React.useCallback(async () => {
     const list = await createList();
@@ -84,14 +78,10 @@ const ProjectListList: React.FC<ProjectListListProps> = ({ workspace, filter, is
       if (projects.length >= workspace!.projects) {
         trackingEvents.trackUpgradePrompt({ promptType: UpgradePrompt.PROJECT_LIMIT });
         openUpgradeModal({ planLimitDetails: ProjectLimitDetails, promptOrigin: UpgradePrompt.PROJECT_LIMIT });
-      } else if (projectCreateFeature.isEnabled) {
+      } else {
         openProjectCreateModal({
           listID: id,
         });
-      } else if (id === 'initial') {
-        goToNewIntroProject();
-      } else {
-        goToNewProject(id!);
       }
     },
     [projects, workspace]
@@ -140,7 +130,7 @@ const ProjectListList: React.FC<ProjectListListProps> = ({ workspace, filter, is
           title="No Projects Found"
           body="This workspace has no projects, create one."
           buttonText="New Project"
-          onClick={projectCreateFeature.isEnabled ? () => onCreateProject() : goToNewIntroProject}
+          onClick={onCreateProject}
         />
       ) : (
         <div className={DashboardClassName.LISTS_CONTAINER}>

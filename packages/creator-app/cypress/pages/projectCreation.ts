@@ -1,8 +1,5 @@
 import { ClassName, Identifier } from '../../src/styles/constants';
-import canvasPage from './canvas';
 import { createSelectControl } from './utils';
-
-const PROJECT_NAME = 'Untitled';
 
 export type ProjectChannel = 'Chat Assistant' | 'Voice Assistant' | 'Amazon Alexa' | 'Google Assistant';
 export type NLU = 'Voiceflow';
@@ -37,8 +34,6 @@ export default {
     }
 
     this.el.createProject.click();
-    canvasPage.el.projectTitle.should('be.visible');
-    canvasPage.el.projectTitle.should('have.text', PROJECT_NAME);
   },
   el: {
     get invocationNameInput() {

@@ -12,7 +12,6 @@ import { useDispatch, useSelector } from '@/hooks';
 import RedirectWithSearch from '@/Routes/RedirectWithSearch';
 
 const Settings = lazy(() => import('@/pages/Workspace/Settings'));
-const NewProject = lazy(() => import('@/pages/NewProject'));
 const Dashboard = lazy(() => import('@/pages/Dashboard'));
 
 const Workspace: React.FC = () => {
@@ -45,8 +44,6 @@ const Workspace: React.FC = () => {
 
   return (
     <Switch>
-      <Route exact path={[Path.NEW_INTRO_PROJECT, Path.NEW_PROJECT]} component={NewProject} />
-
       <RedirectWithSearch exact from={Path.WORKSPACE} to={Path.DASHBOARD} />
       <RedirectWithSearch exact from={LegacyPath.WORKSPACE_API_KEYS} to={Path.WORKSPACE_DEVELOPER_SETTINGS} />
 

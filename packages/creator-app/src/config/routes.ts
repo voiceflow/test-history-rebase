@@ -155,8 +155,6 @@ export const Path = {
 
   PUBLIC_PROTOTYPE: toPath(RootRoute.PROTOTYPE, ':versionID'),
   PROJECT_DEMO: toPath(RootRoute.DEMO, ':versionID'),
-  NEW_INTRO_PROJECT: toPath(RootRoute.WORKSPACE, WorkspaceRoute.TEMPLATE),
-  NEW_PROJECT: toPath(RootRoute.WORKSPACE, WorkspaceRoute.TEMPLATE, ':listID'),
   PROJECT_VERSION: toPath(RootRoute.PROJECT, ':versionID'),
   PROJECT_CANVAS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CANVAS, ':diagramID?'),
 

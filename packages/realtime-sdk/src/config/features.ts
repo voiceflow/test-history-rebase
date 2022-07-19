@@ -24,8 +24,6 @@ export enum FeatureFlag {
 
   NLU_MANAGER = 'nlu_manager',
 
-  PROJECT_CREATE = 'project_create',
-
   CHAT_CARDS_CAROUSEL = 'chat_cards_carousel',
   CHAT_CAROUSEL_INTENT = 'chat_carousel_intent',
 

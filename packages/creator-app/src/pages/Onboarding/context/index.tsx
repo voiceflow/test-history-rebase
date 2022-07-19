@@ -1,6 +1,5 @@
 import { Utils } from '@voiceflow/common';
 import { BillingPeriod, PlanType, PromoType, UserRole } from '@voiceflow/internal';
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { ButtonVariant, toast } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import _constant from 'lodash/constant';
@@ -11,7 +10,6 @@ import { Redirect, useLocation } from 'react-router-dom';
 
 import { receiptGraphic } from '@/assets';
 import { IS_PRIVATE_CLOUD } from '@/config';
-import { FeatureFlag } from '@/config/features';
 import { Path } from '@/config/routes';
 import { ModalType } from '@/constants';
 import { getDefaultPlatformLanguageLabel } from '@/constants/platforms';
@@ -23,7 +21,7 @@ import * as Tracking from '@/ducks/tracking';
 import * as Workspace from '@/ducks/workspace';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { withStripe } from '@/hocs';
-import { useDispatch, useFeature, useModals, useSelector, useSmartReducer, useTrackingEvents } from '@/hooks';
+import { useDispatch, useModals, useSelector, useSmartReducer, useTrackingEvents } from '@/hooks';
 import * as Sentry from '@/vendors/sentry';
 
 import { SELECTABLE_WORKSPACE_SPECIFIC_FLOW_TYPES, StarterPlatformType, STEP_META, StepID } from '../constants';
@@ -132,8 +130,6 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
   const isFirstSession = firstLogin;
   const { open: openSuccessModal } = useModals(ModalType.SUCCESS);
 
-  const projectCreateFeature = useFeature(FeatureFlag.PROJECT_CREATE);
-
   // if the user has existing workspaces they are owners of
   const hasWorkspaces = React.useMemo(
     () =>
@@ -166,7 +162,6 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
     hasPresetSeats: !!seats,
     hasWorkspaces,
     isAdminOfEnterprisePlan,
-    isProjectCreateFeatureEnabled: projectCreateFeature.isEnabled,
   });
 
   const firstStep = OnboardingUtils.getFirstStep({
@@ -370,23 +365,8 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
 
     try {
       if (isLoginFlow) {
-        const { projectType } = state.selectChannelMeta;
-        const platform = projectCreateFeature.isEnabled
-          ? StarterPlatformType
-          : Realtime.projectTypeToLegacyPlatform(state.selectChannelMeta.platform, projectType);
-
-        const getTemplateTag = Realtime.Utils.platform.createPlatformAndProjectTypeSelector({
-          [VoiceflowConstants.PlatformType.ALEXA]: 'onboarding:alexa_assistant',
-          [VoiceflowConstants.PlatformType.GOOGLE]: 'onboarding:google_assistant',
-          [`${VoiceflowConstants.PlatformType.VOICEFLOW}:${VoiceflowConstants.ProjectType.VOICE}`]: 'onboarding:custom_assistant', // we actually messed up on the templates and this is the correct voice project
-          [`${VoiceflowConstants.PlatformType.VOICEFLOW}:${VoiceflowConstants.ProjectType.CHAT}`]: 'onboarding:chatbot',
-          [`${VoiceflowConstants.PlatformType.DIALOGFLOW_ES}:${VoiceflowConstants.ProjectType.VOICE}`]: 'onboarding:dialogflow_es_voice',
-          [`${VoiceflowConstants.PlatformType.DIALOGFLOW_ES}:${VoiceflowConstants.ProjectType.CHAT}`]: 'onboarding:dialogflow_es_chat',
-        });
-
-        const templateTag = projectCreateFeature.isEnabled
-          ? `onboarding:${state.personalizeWorkspaceMeta.projectType}`
-          : getTemplateTag(platform, projectType);
+        const platform = StarterPlatformType;
+        const templateTag = `onboarding:${state.personalizeWorkspaceMeta.projectType}`;
 
         if (query.import) {
           goToDashboardWithSearch(`/?import=${query.import}`);

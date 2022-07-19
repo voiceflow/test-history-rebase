@@ -69,7 +69,6 @@ export interface OnboardingContextState {
   usedSignupCoupon?: boolean;
   hasWorkspaces?: boolean;
   upgradingAWorkspace: boolean;
-  isProjectCreateFeatureEnabled?: boolean | null;
 }
 
 export interface OnboardingContextActions {

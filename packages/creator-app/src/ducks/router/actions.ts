@@ -45,10 +45,6 @@ export const goToDashboard = () => goTo(Path.DASHBOARD);
 
 export const goToDashboardWithSearch = (search?: string) => goTo(`${Path.DASHBOARD}${search ?? ''}`);
 
-export const goToNewProject = (listID: string) => goTo(generatePath(Path.NEW_PROJECT, { listID }));
-
-export const goToNewIntroProject = () => goTo(Path.NEW_INTRO_PROJECT);
-
 export const goToOnboarding = (search?: string) => goTo(`${Path.ONBOARDING}${search || window.location.search}`);
 
 export const goToPrototype = (versionID: string, nodeID?: string) =>

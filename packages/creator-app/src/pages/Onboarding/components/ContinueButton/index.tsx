@@ -5,7 +5,7 @@ import { useHotKeys } from '@/hooks';
 import { Hotkey } from '@/keymap';
 
 interface ContinueButtonProps {
-  disabled: boolean;
+  disabled?: boolean;
   onClick: VoidFunction;
 }
 

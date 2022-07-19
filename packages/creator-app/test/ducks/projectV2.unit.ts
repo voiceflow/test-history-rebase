@@ -73,7 +73,7 @@ const MOCK_STATE: Project.ProjectState = {
   allKeys: [PROJECT_ID, 'abc'],
 };
 
-suite(Project, MOCK_STATE)('Ducks - Project V2', ({ expect, describeReducerV2, createState, ...utils }) => {
+suite(Project, MOCK_STATE)('Ducks - Project V2', ({ describeReducerV2, createState, ...utils }) => {
   describe('reducer', () => {
     utils.assertIgnoresOtherActions();
     utils.assertInitialState(Project.INITIAL_STATE);
@@ -85,13 +85,17 @@ suite(Project, MOCK_STATE)('Ducks - Project V2', ({ expect, describeReducerV2, c
       it('update the active vendor', () => {
         const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, creatorID: CREATOR_ID, vendorID: VENDOR_ID, skillID });
 
-        expect(result.byKey[PROJECT_ID].members).to.containSubset([{ platformData: { selectedVendor: VENDOR_ID, vendors: [{ skillID }] } }]);
+        expect(result.byKey[PROJECT_ID].members).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({ platformData: { selectedVendor: VENDOR_ID, vendors: [{ skillID, products: {}, vendorID: 'vendorID' }] } }),
+          ])
+        );
       });
 
       it('append vendor if it does not exist', () => {
         const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, creatorID: CREATOR_ID, vendorID, skillID });
 
-        expect(result.byKey[PROJECT_ID].members[0].platformData).to.eql({
+        expect(result.byKey[PROJECT_ID].members[0].platformData).toEqual({
           selectedVendor: vendorID,
           vendors: [VENDOR, { vendorID, skillID, products: {} }],
         });
@@ -100,13 +104,13 @@ suite(Project, MOCK_STATE)('Ducks - Project V2', ({ expect, describeReducerV2, c
       it('do nothing if project does not exist', () => {
         const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, projectID: 'foo', creatorID: CREATOR_ID, vendorID: VENDOR_ID, skillID });
 
-        expect(result).to.eq(MOCK_STATE);
+        expect(result).toBe(MOCK_STATE);
       });
 
       it('do nothing if project member does not exist', () => {
         const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, creatorID: 1000, vendorID: VENDOR_ID, skillID });
 
-        expect(result).to.eq(MOCK_STATE);
+        expect(result).toBe(MOCK_STATE);
       });
     });
   });
@@ -118,7 +122,7 @@ suite(Project, MOCK_STATE)('Ducks - Project V2', ({ expect, describeReducerV2, c
       it('select all projects', () => {
         const result = Project.allProjectsSelector(createState(MOCK_STATE, v2FeatureState));
 
-        expect(result).to.eql([PROJECT, MOCK_STATE.byKey.abc]);
+        expect(result).toEqual([PROJECT, MOCK_STATE.byKey.abc]);
       });
     });
 
@@ -126,13 +130,13 @@ suite(Project, MOCK_STATE)('Ducks - Project V2', ({ expect, describeReducerV2, c
       it('select known project', () => {
         const result = Project.projectByIDSelector(createState(MOCK_STATE, v2FeatureState), { id: PROJECT_ID });
 
-        expect(result).to.eq(PROJECT);
+        expect(result).toBe(PROJECT);
       });
 
       it('select unknown project', () => {
         const result = Project.projectByIDSelector(createState(MOCK_STATE, v2FeatureState), { id: 'foo' });
 
-        expect(result).to.be.null;
+        expect(result).toBeNull();
       });
     });
 
@@ -140,7 +144,7 @@ suite(Project, MOCK_STATE)('Ducks - Project V2', ({ expect, describeReducerV2, c
       it('select count of projects', () => {
         const result = Project.projectsCountSelector(createState(MOCK_STATE, v2FeatureState));
 
-        expect(result).to.eq(2);
+        expect(result).toBe(2);
       });
     });
   });

@@ -9,9 +9,9 @@ import suite from './_suite';
 
 const WORKSPACE_ID = Utils.generate.id();
 
-suite('Client - Workspace', ({ expect, stubFetch, stubAdapter }) => {
+suite('Client - Workspace', ({ expectMembers, stubFetch, stubAdapter }) => {
   it('should have expected keys', () => {
-    expect(Object.keys(client)).to.have.members([
+    expectMembers(Object.keys(client), [
       'find',
       'fetchWorkspace',
       'createWorkspace',
@@ -44,13 +44,13 @@ suite('Client - Workspace', ({ expect, stubFetch, stubAdapter }) => {
     it('should find all workspaces', async () => {
       const dbWorkspaces = Utils.generate.array<any>(3, Utils.generate.object);
       const [workspaces, mapWorkspacesFromDB] = stubAdapter(Realtime.Adapters.workspaceAdapter, 'mapFromDB', Utils.generate.array);
-      const fetch = stubFetch('api').resolves(dbWorkspaces);
+      const fetch = stubFetch('api').mockResolvedValue(dbWorkspaces);
 
       const result = await client.find();
 
-      expect(result).to.eq(workspaces);
-      expect(fetch.args[0]).to.eql([WORKSPACES_PATH, undefined]);
-      expect(mapWorkspacesFromDB).to.be.calledWithExactly(dbWorkspaces);
+      expect(result).toEqual(workspaces);
+      expect(fetch.mock.calls[0]).toEqual([WORKSPACES_PATH, undefined]);
+      expect(mapWorkspacesFromDB).toBeCalledWith(dbWorkspaces);
     });
   });
 
@@ -58,13 +58,13 @@ suite('Client - Workspace', ({ expect, stubFetch, stubAdapter }) => {
     it('should get a workspace by its ID', async () => {
       const dbWorkspace = Utils.generate.object();
       const [workspace, workspaceFromDB] = stubAdapter(Realtime.Adapters.workspaceAdapter, 'fromDB', Utils.generate.object);
-      const fetch = stubFetch('api').resolves(dbWorkspace);
+      const fetch = stubFetch('api').mockResolvedValue(dbWorkspace);
 
       const result = await client.fetchWorkspace(WORKSPACE_ID);
 
-      expect(result).to.eq(workspace);
-      expect(fetch).to.be.calledWithExactly(`${WORKSPACES_PATH}/${WORKSPACE_ID}`);
-      expect(workspaceFromDB).to.be.calledWithExactly(dbWorkspace);
+      expect(result).toEqual(workspace);
+      expect(fetch).toBeCalledWith(`${WORKSPACES_PATH}/${WORKSPACE_ID}`);
+      expect(workspaceFromDB).toBeCalledWith(dbWorkspace);
     });
   });
 
@@ -73,13 +73,13 @@ suite('Client - Workspace', ({ expect, stubFetch, stubAdapter }) => {
       const payload: any = Utils.generate.object();
       const dbWorkspace: any = Utils.generate.object();
       const [workspace, workspaceFromDB] = stubAdapter(Realtime.Adapters.workspaceAdapter, 'fromDB', Utils.generate.object);
-      const fetch = stubFetch('api', 'post').resolves(dbWorkspace);
+      const fetch = stubFetch('api', 'post').mockResolvedValue(dbWorkspace);
 
       const result = await client.createWorkspace(payload);
 
-      expect(result).to.eq(workspace);
-      expect(fetch).to.be.calledWithExactly(WORKSPACES_PATH, payload);
-      expect(workspaceFromDB).to.be.calledWithExactly(dbWorkspace);
+      expect(result).toEqual(workspace);
+      expect(fetch).toBeCalledWith(WORKSPACES_PATH, payload);
+      expect(workspaceFromDB).toBeCalledWith(dbWorkspace);
     });
   });
 
@@ -87,13 +87,13 @@ suite('Client - Workspace', ({ expect, stubFetch, stubAdapter }) => {
     it('should create a new workspace', async () => {
       const dbMembers = Utils.generate.array<any>(3, Utils.generate.object);
       const [members, mapMembersFromDB] = stubAdapter(Realtime.Adapters.memberAdapter, 'mapFromDB', Utils.generate.array);
-      const fetch = stubFetch('api').resolves(dbMembers);
+      const fetch = stubFetch('api').mockResolvedValue(dbMembers);
 
       const result = await client.findMembers(WORKSPACE_ID);
 
-      expect(result).to.eq(members);
-      expect(fetch).to.be.calledWithExactly(`${WORKSPACES_PATH}/${WORKSPACE_ID}/members`);
-      expect(mapMembersFromDB).to.be.calledWithExactly(dbMembers);
+      expect(result).toEqual(members);
+      expect(fetch).toBeCalledWith(`${WORKSPACES_PATH}/${WORKSPACE_ID}/members`);
+      expect(mapMembersFromDB).toBeCalledWith(dbMembers);
     });
   });
 
@@ -103,7 +103,7 @@ suite('Client - Workspace', ({ expect, stubFetch, stubAdapter }) => {
 
       await client.deleteWorkspace(WORKSPACE_ID);
 
-      expect(fetch).to.be.calledWithExactly(`${WORKSPACES_PATH}/${WORKSPACE_ID}`);
+      expect(fetch).toBeCalledWith(`${WORKSPACES_PATH}/${WORKSPACE_ID}`);
     });
   });
 
@@ -113,7 +113,7 @@ suite('Client - Workspace', ({ expect, stubFetch, stubAdapter }) => {
 
       await client.leaveWorkspace(WORKSPACE_ID);
 
-      expect(fetch).to.be.calledWithExactly(`${WORKSPACES_PATH}/${WORKSPACE_ID}/members/self`);
+      expect(fetch).toBeCalledWith(`${WORKSPACES_PATH}/${WORKSPACE_ID}/members/self`);
     });
   });
 
@@ -124,7 +124,7 @@ suite('Client - Workspace', ({ expect, stubFetch, stubAdapter }) => {
 
       await client.updateName(WORKSPACE_ID, name);
 
-      expect(fetch).to.be.calledWithExactly(`${LEGACY_WORKSPACE_PATH}/${WORKSPACE_ID}/update_name`, { name });
+      expect(fetch).toBeCalledWith(`${LEGACY_WORKSPACE_PATH}/${WORKSPACE_ID}/update_name`, { name });
     });
   });
 
@@ -135,7 +135,7 @@ suite('Client - Workspace', ({ expect, stubFetch, stubAdapter }) => {
 
       await client.updateImage(WORKSPACE_ID, url);
 
-      expect(fetch).to.be.calledWithExactly(`${LEGACY_WORKSPACE_PATH}/${WORKSPACE_ID}/picture`, { url });
+      expect(fetch).toBeCalledWith(`${LEGACY_WORKSPACE_PATH}/${WORKSPACE_ID}/picture`, { url });
     });
   });
 
@@ -143,22 +143,22 @@ suite('Client - Workspace', ({ expect, stubFetch, stubAdapter }) => {
     it('should accept invite', async () => {
       const invite = Utils.generate.id();
       const token = Utils.generate.string();
-      const fetch = stubFetch('api', 'post').resolves(token);
+      const fetch = stubFetch('api', 'post').mockResolvedValue(token);
 
-      await expect(client.acceptInvite(invite)).to.eventually.eq(token);
+      expect(await client.acceptInvite(invite)).toEqual(token);
 
-      expect(fetch).to.be.calledWithExactly(`${WORKSPACES_PATH}/invite/${invite}`);
+      expect(fetch).toBeCalledWith(`${WORKSPACES_PATH}/invite/${invite}`);
     });
   });
 
   describe('validateInvite()', () => {
     it('should validate invite', async () => {
       const invite = Utils.generate.id();
-      const fetch = stubFetch('api', 'get').resolves(true);
+      const fetch = stubFetch('api', 'get').mockResolvedValue(true);
 
-      await expect(client.validateInvite(invite)).to.eventually.be.true;
+      expect(await client.validateInvite(invite)).toBeTruthy();
 
-      expect(fetch).to.be.calledWithExactly(`${WORKSPACES_PATH}/invite/${invite}`);
+      expect(fetch).toBeCalledWith(`${WORKSPACES_PATH}/invite/${invite}`);
     });
   });
 
@@ -166,34 +166,34 @@ suite('Client - Workspace', ({ expect, stubFetch, stubAdapter }) => {
     it('should get invoice', async () => {
       const dbInvoice: any = Utils.generate.object();
       const [invoice, invoiceFromDB] = stubAdapter(invoiceAdapter, 'fromDB', Utils.generate.object);
-      const fetch = stubFetch('api', 'get').resolves(dbInvoice);
+      const fetch = stubFetch('api', 'get').mockResolvedValue(dbInvoice);
 
-      await expect(client.getInvoice(WORKSPACE_ID)).to.eventually.eq(invoice);
+      expect(await client.getInvoice(WORKSPACE_ID)).toEqual(invoice);
 
-      expect(fetch).to.be.calledWithExactly(`${WORKSPACES_PATH}/${WORKSPACE_ID}/invoice`);
-      expect(invoiceFromDB).to.be.calledWithExactly(dbInvoice);
+      expect(fetch).toBeCalledWith(`${WORKSPACES_PATH}/${WORKSPACE_ID}/invoice`);
+      expect(invoiceFromDB).toBeCalledWith(dbInvoice);
     });
   });
 
   describe('getPlans()', () => {
     it('should get all plans', async () => {
       const plans = Utils.generate.array(3, Utils.generate.object);
-      const fetch = stubFetch('api', 'get').resolves(plans);
+      const fetch = stubFetch('api', 'get').mockResolvedValue(plans);
 
-      await expect(client.getPlans()).to.eventually.eq(plans);
+      expect(await client.getPlans()).toEqual(plans);
 
-      expect(fetch).to.be.calledWithExactly(`${WORKSPACES_PATH}/plans`);
+      expect(fetch).toBeCalledWith(`${WORKSPACES_PATH}/plans`);
     });
   });
 
   describe('getPlan()', () => {
     it('should get plan for a specific workspace', async () => {
       const plan: any = Utils.generate.object();
-      const fetch = stubFetch('api', 'get').resolves(plan);
+      const fetch = stubFetch('api', 'get').mockResolvedValue(plan);
 
-      await expect(client.getPlan(WORKSPACE_ID)).to.eventually.eq(plan);
+      expect(await client.getPlan(WORKSPACE_ID)).toEqual(plan);
 
-      expect(fetch).to.be.calledWithExactly(`${WORKSPACES_PATH}/${WORKSPACE_ID}/plan`);
+      expect(fetch).toBeCalledWith(`${WORKSPACES_PATH}/${WORKSPACE_ID}/plan`);
     });
   });
 
@@ -204,7 +204,7 @@ suite('Client - Workspace', ({ expect, stubFetch, stubAdapter }) => {
 
       await client.updateSource(WORKSPACE_ID, sourceID);
 
-      expect(fetch).to.be.calledWithExactly(`${WORKSPACES_PATH}/${WORKSPACE_ID}/source`, { source_id: sourceID });
+      expect(fetch).toBeCalledWith(`${WORKSPACES_PATH}/${WORKSPACE_ID}/source`, { source_id: sourceID });
     });
   });
 
@@ -212,11 +212,11 @@ suite('Client - Workspace', ({ expect, stubFetch, stubAdapter }) => {
     it('should calculate the price of an upgrade', async () => {
       const data: any = Utils.generate.object();
       const price: any = Utils.generate.object();
-      const fetch = stubFetch('api', 'post').resolves(price);
+      const fetch = stubFetch('api', 'post').mockResolvedValue(price);
 
-      await expect(client.calculatePrice(WORKSPACE_ID, data)).to.eventually.eq(price);
+      expect(await client.calculatePrice(WORKSPACE_ID, data)).toEqual(price);
 
-      expect(fetch).to.be.calledWithExactly(`${WORKSPACES_PATH}/${WORKSPACE_ID}/price`, data);
+      expect(fetch).toBeCalledWith(`${WORKSPACES_PATH}/${WORKSPACE_ID}/price`, data);
     });
   });
 
@@ -227,7 +227,7 @@ suite('Client - Workspace', ({ expect, stubFetch, stubAdapter }) => {
 
       await client.checkout(WORKSPACE_ID, data);
 
-      expect(fetch).to.be.calledWithExactly(`${WORKSPACES_PATH}/${WORKSPACE_ID}/checkout`, data);
+      expect(fetch).toBeCalledWith(`${WORKSPACES_PATH}/${WORKSPACE_ID}/checkout`, data);
     });
   });
 
@@ -238,7 +238,7 @@ suite('Client - Workspace', ({ expect, stubFetch, stubAdapter }) => {
 
       await client.updateMember(WORKSPACE_ID, creatorID, UserRole.GUEST);
 
-      expect(fetch).to.be.calledWithExactly(`${WORKSPACES_PATH}/${WORKSPACE_ID}/members/${creatorID}`, { role: UserRole.GUEST });
+      expect(fetch).toBeCalledWith(`${WORKSPACES_PATH}/${WORKSPACE_ID}/members/${creatorID}`, { role: UserRole.GUEST });
     });
   });
 
@@ -249,7 +249,7 @@ suite('Client - Workspace', ({ expect, stubFetch, stubAdapter }) => {
 
       await client.deleteMember(WORKSPACE_ID, creatorID);
 
-      expect(fetch).to.be.calledWithExactly(`${WORKSPACES_PATH}/${WORKSPACE_ID}/members/${creatorID}`);
+      expect(fetch).toBeCalledWith(`${WORKSPACES_PATH}/${WORKSPACE_ID}/members/${creatorID}`);
     });
   });
 
@@ -260,7 +260,7 @@ suite('Client - Workspace', ({ expect, stubFetch, stubAdapter }) => {
 
       await client.cancelInvite(WORKSPACE_ID, email);
 
-      expect(fetch).to.be.calledWithExactly(`${WORKSPACES_PATH}/${WORKSPACE_ID}/invite`, { email });
+      expect(fetch).toBeCalledWith(`${WORKSPACES_PATH}/${WORKSPACE_ID}/invite`, { email });
     });
   });
 
@@ -271,7 +271,7 @@ suite('Client - Workspace', ({ expect, stubFetch, stubAdapter }) => {
 
       await client.updateInvite(WORKSPACE_ID, email, UserRole.BILLING);
 
-      expect(fetch).to.be.calledWithExactly(`${WORKSPACES_PATH}/${WORKSPACE_ID}/invite`, { email, role: UserRole.BILLING });
+      expect(fetch).toBeCalledWith(`${WORKSPACES_PATH}/${WORKSPACE_ID}/invite`, { email, role: UserRole.BILLING });
     });
   });
 
@@ -280,11 +280,11 @@ suite('Client - Workspace', ({ expect, stubFetch, stubAdapter }) => {
 
     it('should send an invite to a workspace', async () => {
       const member = Utils.generate.object();
-      const fetch = stubFetch('api', 'post').resolves(member);
+      const fetch = stubFetch('api', 'post').mockResolvedValue(member);
 
-      await expect(client.sendInvite(WORKSPACE_ID, email)).to.eventually.eq(member);
+      expect(await client.sendInvite(WORKSPACE_ID, email)).toEqual(member);
 
-      expect(fetch).to.be.calledWithExactly(`${WORKSPACES_PATH}/${WORKSPACE_ID}/invite`, { email, role: undefined });
+      expect(fetch).toBeCalledWith(`${WORKSPACES_PATH}/${WORKSPACE_ID}/invite`, { email, role: undefined });
     });
 
     it('should send an invite with a specific role to a workspace', async () => {
@@ -292,41 +292,41 @@ suite('Client - Workspace', ({ expect, stubFetch, stubAdapter }) => {
 
       await client.sendInvite(WORKSPACE_ID, email, UserRole.ADMIN);
 
-      expect(fetch).to.be.calledWithExactly(`${WORKSPACES_PATH}/${WORKSPACE_ID}/invite`, { email, role: UserRole.ADMIN });
+      expect(fetch).toBeCalledWith(`${WORKSPACES_PATH}/${WORKSPACE_ID}/invite`, { email, role: UserRole.ADMIN });
     });
   });
 
   describe('getInviteLink()', () => {
     it('should get a link for a workspace invitation', async () => {
       const link = Utils.generate.string();
-      const fetch = stubFetch('api', 'post').resolves(link);
+      const fetch = stubFetch('api', 'post').mockResolvedValue(link);
 
-      await expect(client.getInviteLink(WORKSPACE_ID, UserRole.VIEWER)).to.eventually.eq(link);
+      expect(await client.getInviteLink(WORKSPACE_ID, UserRole.VIEWER)).toEqual(link);
 
-      expect(fetch).to.be.calledWithExactly(`${WORKSPACES_PATH}/${WORKSPACE_ID}/inviteLink`, { role: UserRole.VIEWER });
+      expect(fetch).toBeCalledWith(`${WORKSPACES_PATH}/${WORKSPACE_ID}/inviteLink`, { role: UserRole.VIEWER });
     });
   });
 
   describe('listAPIKeys()', () => {
     it('should get a link for a workspace invitation', async () => {
       const apiKeys = Utils.generate.array(3, Utils.generate.string);
-      const fetch = stubFetch('apiV2', 'get').resolves(apiKeys);
+      const fetch = stubFetch('apiV2', 'get').mockResolvedValue(apiKeys);
 
-      await expect(client.listAPIKeys(WORKSPACE_ID)).to.eventually.eq(apiKeys);
+      expect(await client.listAPIKeys(WORKSPACE_ID)).toEqual(apiKeys);
 
-      expect(fetch).to.be.calledWithExactly(`${WORKSPACES_PATH}/${WORKSPACE_ID}/api-keys`);
+      expect(fetch).toBeCalledWith(`${WORKSPACES_PATH}/${WORKSPACE_ID}/api-keys`);
     });
   });
 
   describe('validateCoupon()', () => {
     it('check if coupon is valid', async () => {
       const couponCode = Utils.generate.id();
-      const fetch = stubFetch('api', 'get').resolves('true');
+      const fetch = stubFetch('api', 'get').mockResolvedValue('true');
 
       const result = await client.validateCoupon(couponCode);
 
-      expect(result).to.be.true;
-      expect(fetch).to.be.calledWithExactly(`${WORKSPACES_PATH}/coupon/${couponCode}`);
+      expect(result).toBeTruthy();
+      expect(fetch).toBeCalledWith(`${WORKSPACES_PATH}/coupon/${couponCode}`);
     });
   });
 });

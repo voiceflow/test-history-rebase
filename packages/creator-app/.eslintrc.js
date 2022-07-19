@@ -98,10 +98,6 @@ module.exports = {
       },
     },
     {
-      files: ['*.it.*'],
-      extends: ['@voiceflow/eslint-config/jest'],
-    },
-    {
       files: ['cypress/**/*'],
       extends: ['@voiceflow/eslint-config/cypress'],
     },

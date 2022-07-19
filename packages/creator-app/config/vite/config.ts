@@ -53,4 +53,17 @@ export default defineConfig({
       ],
     },
   },
+
+  test: {
+    ...config.test,
+    // env vars VITEST_MAX_THREADS and VITEST_MIN_THREADS set to 16 in CI
+    dir: './test',
+    setupFiles: 'config/test/setup.ts',
+    restoreMocks: true,
+    coverage: {
+      ...config.test?.coverage,
+      reporter: ['html', 'text', 'text-summary', 'lcov'],
+      reportsDirectory: 'coverage',
+    },
+  },
 }));

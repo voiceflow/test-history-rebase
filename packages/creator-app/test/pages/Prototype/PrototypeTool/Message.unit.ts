@@ -6,37 +6,41 @@ import { createSuite } from '@/../test/_suite';
 import MessageController from '@/pages/Prototype/PrototypeTool/Message';
 import { MessageType } from '@/pages/Prototype/types';
 
-const suite = createSuite(({ spy, mock, expect, stub }) => ({
+const suite = createSuite(() => ({
   describeMessage(method: keyof MessageController, type: MessageType, args: any, dataToCheck?: any) {
     describe(`${method}()`, () => {
       it(`${method} - should call .add with correct message`, () => {
-        const controller = new MessageController({ props: { addToMessages: mock() } });
+        const controller = new MessageController({ props: { addToMessages: vi.fn() } });
 
-        const now = stub(Date, 'now').returns(1000);
+        vi.setSystemTime(1000);
+
         controller.trackStartTime();
-        now.returns(11000);
+        vi.setSystemTime(11000);
+
         // @ts-ignore
-        const add = spy(controller, 'add');
+        const add = vi.spyOn(controller, 'add');
 
         const id = `${Date.now()}`;
 
         controller[method]({ id, ...args });
 
-        expect(add).to.be.calledOnceWith({ id, type, ...dataToCheck, startTime: '00:10' });
+        expect(add).toBeCalledTimes(1);
+        expect(add).toBeCalledWith({ id, type, ...dataToCheck, startTime: '00:10' });
       });
     });
   },
 }));
 
-suite('Prototype/PrototypeTool/Message', ({ mock, expect, describeMessage }) => {
+suite('Prototype/PrototypeTool/Message', ({ describeMessage }) => {
   describe('add()', () => {
     it('add - should call .addToMessages with correct message', () => {
-      const controller = new MessageController({ props: { addToMessages: mock() } });
+      const controller = new MessageController({ props: { addToMessages: vi.fn() } });
 
       // @ts-ignore
       controller['add']({ a: 10, b: 20 });
 
-      expect(controller['props']['addToMessages']).to.be.calledOnceWith({ a: 10, b: 20 });
+      expect(controller['props']['addToMessages']).toBeCalledTimes(1);
+      expect(controller['props']['addToMessages']).toBeCalledWith({ a: 10, b: 20 });
     });
   });
 

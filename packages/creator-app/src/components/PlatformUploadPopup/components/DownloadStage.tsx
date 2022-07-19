@@ -1,7 +1,6 @@
-import { toast } from '@voiceflow/ui';
+import { toast, useSetup } from '@voiceflow/ui';
 import React from 'react';
 
-import { useSetup } from '@/hooks';
 import { AlexaExportJob, DialogflowExportJob, GeneralJob, GoogleExportJob, JobStageData } from '@/models';
 import { DataTypes, download } from '@/utils/dom';
 

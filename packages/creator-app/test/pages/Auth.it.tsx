@@ -1,51 +1,58 @@
-import { act, fireEvent, render, screen } from '@testing-library/react';
+import { act, fireEvent, render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import React from 'react';
 
-import { composeWrappers, StoreProvider, ThemeProvider } from '@/../test/_utils';
 import { SignupForm } from '@/pages/Auth/components/SignupForm';
 import * as hooks from '@/pages/Auth/hooks';
+
+import suite from '../_suite';
+import { composeWrappers, StoreProvider, ThemeProvider } from '../_utils';
 
 const TEST_NAME = 'Voiceflow Tester';
 const TEST_EMAIL = 'tests@getvoiceflow.com';
 const TEST_PASSWORD = 'password';
 
-require('dotenv').config({ path: './.env.test' });
+suite('Auth', () => {
+  const TestWrapper = composeWrappers(ThemeProvider, StoreProvider);
 
-const TestWrapper = composeWrappers(ThemeProvider, StoreProvider);
+  beforeEach(() => {
+    vi.mock('@/client');
+    vi.mock('react-ga');
+    vi.mock('universal-cookie');
+    vi.mock('connected-react-router', () => ({ getSearch: () => ({}) }));
+  });
 
-beforeEach(() => {
-  jest.mock('@/client');
-  jest.mock('react-ga');
-  jest.mock('universal-cookie');
-  jest.mock('connected-react-router');
-});
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
 
-afterEach(() => {
-  jest.clearAllMocks();
-});
+  describe('Onboarding', () => {
+    it('creates accounts on signup', async () => {
+      const signup = vi.fn();
 
-describe('Onboarding', () => {
-  it('creates accounts on signup', async () => {
-    const signup = jest.fn();
-    jest.spyOn(hooks, 'getDomainSAML').mockResolvedValue(null);
+      vi.spyOn(hooks, 'getDomainSAML').mockResolvedValue(null);
 
-    render(<SignupForm query={{}} search="" signup={signup} goToLogin={jest.fn()} />, { wrapper: TestWrapper });
+      const utils = render(<SignupForm query={{}} search="" signup={signup} goToLogin={vi.fn()} />, { wrapper: TestWrapper });
 
-    fireEvent.change(screen.getByPlaceholderText('Full name'), { target: { value: TEST_NAME } });
-    fireEvent.change(screen.getByPlaceholderText('Email address'), { target: { value: TEST_EMAIL } });
-    fireEvent.change(document.querySelector('[type="password"]')!, { target: { value: TEST_PASSWORD } });
+      await userEvent.type(utils.getByPlaceholderText('Full name'), TEST_NAME);
+      await userEvent.type(utils.getByPlaceholderText('Email address'), TEST_EMAIL);
+      await userEvent.type(utils.getByPlaceholderText('Password'), TEST_PASSWORD);
 
-    await act(async () => {
-      await fireEvent.submit(document.getElementsByTagName('form')[0]);
-    });
+      await act(async () => {
+        await fireEvent.submit(document.getElementsByTagName('form')[0]);
+      });
 
-    expect(signup).toBeCalledWith({
-      name: TEST_NAME,
-      email: TEST_EMAIL,
-      password: TEST_PASSWORD,
-      coupon: '',
-      referralCode: undefined,
-      urlSearch: '',
+      expect(signup.mock.calls[0]).toEqual([
+        {
+          name: TEST_NAME,
+          email: TEST_EMAIL,
+          password: TEST_PASSWORD,
+          coupon: '',
+          urlSearch: '',
+          referralCode: undefined,
+          referralRockCode: undefined,
+        },
+      ]);
     });
   });
 });

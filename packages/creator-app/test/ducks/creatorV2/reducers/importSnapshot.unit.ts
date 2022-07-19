@@ -7,7 +7,7 @@ import * as CreatorV2 from '@/ducks/creatorV2';
 import suite from '../../_suite';
 import { ACTION_CONTEXT, LINK, MOCK_STATE, NODE, NODE_DATA, NODE_ID, PORT, PORT_ID } from '../_fixtures';
 
-suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - importSnapshot reducer', ({ expect, describeReducerV2 }) => {
+suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - importSnapshot reducer', ({ describeReducerV2 }) => {
   describeReducerV2(Realtime.creator.importSnapshot, ({ applyAction }) => {
     interface NodeTupleOptions<T> {
       type: Realtime.BlockType;
@@ -32,12 +32,16 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - importSnapshot reducer', ({ e
         nodesWithData: [{ node, data }],
         ports: [],
         links: [],
-        platform: VoiceflowConstants.PlatformType.ALEXA,
+        projectMeta: {
+          platform: VoiceflowConstants.PlatformType.ALEXA,
+          type: VoiceflowConstants.ProjectType.VOICE,
+        },
+        schemaVersion: 1,
       });
 
-      expect(result.markupIDs).to.eql([node.id]);
-      expect(result.nodes).to.eql(normalize([NODE_DATA, data], (data) => data.nodeID));
-      expect(result.coordsByNodeID).to.eql({ [node.id]: [node.x, node.y] });
+      expect(result.markupIDs).toEqual([node.id]);
+      expect(result.nodes).toEqual(normalize([NODE_DATA, data], (data) => data.nodeID));
+      expect(result.coordsByNodeID).toEqual({ [node.id]: [node.x, node.y] });
     });
 
     it('register blocks and steps', () => {
@@ -52,16 +56,20 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - importSnapshot reducer', ({ e
         ],
         ports: [],
         links: [],
-        platform: VoiceflowConstants.PlatformType.ALEXA,
+        projectMeta: {
+          platform: VoiceflowConstants.PlatformType.ALEXA,
+          type: VoiceflowConstants.ProjectType.VOICE,
+        },
+        schemaVersion: 1,
       });
 
-      expect(result.blockIDs).to.eql([blockNode.id]);
-      expect(result.nodes).to.eql(normalize([NODE_DATA, blockData, stepData], (data) => data.nodeID));
-      expect(result.coordsByNodeID).to.eql({ [blockNode.id]: [blockNode.x, blockNode.y] });
-      expect(result.stepIDsByParentNodeID).to.eql({ [blockNode.id]: [stepNode.id] });
-      expect(result.parentNodeIDByStepID).to.eql({ [stepNode.id]: blockNode.id });
-      expect(result.portsByNodeID).to.eql({ [blockNode.id]: blockNode.ports, [stepNode.id]: stepNode.ports });
-      expect(result.linkIDsByNodeID).to.eql({ [blockNode.id]: [], [stepNode.id]: [] });
+      expect(result.blockIDs).toEqual([blockNode.id]);
+      expect(result.nodes).toEqual(normalize([NODE_DATA, blockData, stepData], (data) => data.nodeID));
+      expect(result.coordsByNodeID).toEqual({ [blockNode.id]: [blockNode.x, blockNode.y] });
+      expect(result.stepIDsByParentNodeID).toEqual({ [blockNode.id]: [stepNode.id] });
+      expect(result.parentNodeIDByStepID).toEqual({ [stepNode.id]: blockNode.id });
+      expect(result.portsByNodeID).toEqual({ [blockNode.id]: blockNode.ports, [stepNode.id]: stepNode.ports });
+      expect(result.linkIDsByNodeID).toEqual({ [blockNode.id]: [], [stepNode.id]: [] });
     });
 
     it('register a port', () => {
@@ -72,10 +80,14 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - importSnapshot reducer', ({ e
         nodesWithData: [],
         ports: [port],
         links: [],
-        platform: VoiceflowConstants.PlatformType.ALEXA,
+        projectMeta: {
+          platform: VoiceflowConstants.PlatformType.ALEXA,
+          type: VoiceflowConstants.ProjectType.VOICE,
+        },
+        schemaVersion: 1,
       });
 
-      expect(result.ports).to.eql(normalize([PORT, port]));
+      expect(result.ports).toEqual(normalize([PORT, port]));
     });
 
     it('register a link between nodes', () => {
@@ -97,14 +109,18 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - importSnapshot reducer', ({ e
         ],
         ports: [port1, port2],
         links: [link],
-        platform: VoiceflowConstants.PlatformType.ALEXA,
+        projectMeta: {
+          platform: VoiceflowConstants.PlatformType.ALEXA,
+          type: VoiceflowConstants.ProjectType.VOICE,
+        },
+        schemaVersion: 1,
       });
 
-      expect(result.links).to.eql(normalize([LINK, link]));
-      expect(result.nodeIDsByLinkID).to.eql({ [link.id]: [node1.id, node2.id] });
-      expect(result.portIDsByLinkID).to.eql({ [link.id]: [port1.id, port2.id] });
-      expect(result.linkIDsByNodeID).to.eql({ [node1.id]: [link.id], [node2.id]: [link.id] });
-      expect(result.linkIDsByPortID).to.eql({ [port1.id]: [link.id], [port2.id]: [link.id] });
+      expect(result.links).toEqual(normalize([LINK, link]));
+      expect(result.nodeIDsByLinkID).toEqual({ [link.id]: [node1.id, node2.id] });
+      expect(result.portIDsByLinkID).toEqual({ [link.id]: [port1.id, port2.id] });
+      expect(result.linkIDsByNodeID).toEqual({ [node1.id]: [link.id], [node2.id]: [link.id] });
+      expect(result.linkIDsByPortID).toEqual({ [port1.id]: [link.id], [port2.id]: [link.id] });
     });
   });
 });

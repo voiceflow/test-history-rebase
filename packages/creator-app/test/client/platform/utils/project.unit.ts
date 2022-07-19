@@ -6,8 +6,8 @@ const SERVICE_ENDPOINT = 'https://service';
 
 const client = createClient(SERVICE_ENDPOINT);
 
-suite('Platform Client - Utils - Project', ({ expect }) => {
+suite('Platform Client - Utils - Project', ({ expectMembers }) => {
   it('should have expected keys', () => {
-    expect(Object.keys(client)).to.have.members(['copy']);
+    expectMembers(Object.keys(client), ['copy']);
   });
 });

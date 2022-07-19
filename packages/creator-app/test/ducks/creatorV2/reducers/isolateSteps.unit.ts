@@ -8,8 +8,8 @@ import * as CreatorV2 from '@/ducks/creatorV2';
 import suite from '../../_suite';
 import { ACTION_CONTEXT, LINK_ID, MOCK_STATE, NODE_DATA, NODE_ID, PORT_ID, PROJECT_META, V2_FEATURE_STATE } from '../_fixtures';
 
-suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - isolateSteps reducer', ({ expect, createState, describeReducerV2, describeReverter }) => {
-  describeReducerV2(Realtime.node.isolateSteps, ({ applyAction }) => {
+suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - isolateSteps reducer', ({ createState, describeReducerV2, describeReverter }) => {
+  describeReducerV2(Realtime.node.isolateSteps, ({ applyAction, normalizeContaining }) => {
     const sourceParentNodeID = 'sourceParentNodeID';
     const parentNodeID = 'parentNodeID';
     const stepIDs = ['stepID'];
@@ -36,7 +36,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - isolateSteps reducer', ({ exp
         schemaVersion: 2,
       });
 
-      expect(result).to.eq(MOCK_STATE);
+      expect(result).toBe(MOCK_STATE);
     });
 
     it('ignore isolating step with duplicate block ID', () => {
@@ -58,7 +58,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - isolateSteps reducer', ({ exp
         schemaVersion: 2,
       });
 
-      expect(result).to.eq(MOCK_STATE);
+      expect(result).toBe(MOCK_STATE);
     });
 
     it('ignore isolating step with unrecognized step ID', () => {
@@ -80,7 +80,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - isolateSteps reducer', ({ exp
         schemaVersion: 2,
       });
 
-      expect(result).to.eq(MOCK_STATE);
+      expect(result).toBe(MOCK_STATE);
     });
 
     it('ignore isolating step from unrecognized source block ID', () => {
@@ -102,7 +102,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - isolateSteps reducer', ({ exp
         schemaVersion: 2,
       });
 
-      expect(result).to.eq(MOCK_STATE);
+      expect(result).toBe(MOCK_STATE);
     });
 
     it('isolate a step from its block', () => {
@@ -136,9 +136,9 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - isolateSteps reducer', ({ exp
         }
       );
 
-      expect(result.blockIDs).to.eql([NODE_ID, parentNodeID]);
-      expect(result.nodes).to.containSubset(
-        normalize(
+      expect(result.blockIDs).toEqual([NODE_ID, parentNodeID]);
+      expect(result.nodes).toEqual(
+        normalizeContaining(
           [
             NODE_DATA,
             stepNode,
@@ -147,8 +147,8 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - isolateSteps reducer', ({ exp
           (node) => node.nodeID
         )
       );
-      expect(result.parentNodeIDByStepID).to.eql({ [stepID]: parentNodeID });
-      expect(result.stepIDsByParentNodeID).to.eql({
+      expect(result.parentNodeIDByStepID).toEqual({ [stepID]: parentNodeID });
+      expect(result.stepIDsByParentNodeID).toEqual({
         [NODE_ID]: ['fooStep', 'barStep'],
         [parentNodeID]: [stepID],
       });
@@ -190,7 +190,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - isolateSteps reducer', ({ exp
         schemaVersion: 2,
       });
 
-      expect(result).to.eql(
+      expect(result).toEqual(
         Realtime.node.transplantSteps({
           ...ACTION_CONTEXT,
           index: 1,

@@ -14,7 +14,7 @@ const MOCK_STATE: Integration.IntegrationState = {
   error: 'this is an error',
 };
 
-suite(Integration, MOCK_STATE)('Ducks - Integration', ({ expect, stub, describeReducer, describeSelectors, describeSideEffects }) => {
+suite(Integration, MOCK_STATE)('Ducks - Integration', ({ describeReducer, describeSelectors, describeSideEffects }) => {
   describeReducer(({ expectAction }) => {
     describe('fetchIntegrationUsersBegin()', () => {
       it('should start fetching users', () => {
@@ -114,19 +114,19 @@ suite(Integration, MOCK_STATE)('Ducks - Integration', ({ expect, stub, describeR
   describeSelectors(({ select }) => {
     describe('integrationUsersSelector()', () => {
       it('should select users', () => {
-        expect(select(Integration.integrationUsersSelector)).to.eq(MOCK_STATE.integration_users);
+        expect(select(Integration.integrationUsersSelector)).toBe(MOCK_STATE.integration_users);
       });
     });
 
     describe('integrationUsersLoadingSelector()', () => {
       it('should select whether users are loading', () => {
-        expect(select(Integration.integrationUsersLoadingSelector)).to.be.true;
+        expect(select(Integration.integrationUsersLoadingSelector)).toBeTruthy();
       });
     });
 
     describe('integrationUsersErrorSelector()', () => {
       it('should select an active error', () => {
-        expect(select(Integration.integrationUsersErrorSelector)).to.eq(MOCK_STATE.error);
+        expect(select(Integration.integrationUsersErrorSelector)).toBe(MOCK_STATE.error);
       });
     });
   });
@@ -140,11 +140,11 @@ suite(Integration, MOCK_STATE)('Ducks - Integration', ({ expect, stub, describeR
 
     describe('fetchIntegrationUsers()', () => {
       it('should fetch users', async () => {
-        const axiosPost = stub(axios, 'post').resolves({ data: users } as any);
+        const axiosPost = vi.spyOn(axios, 'post').mockResolvedValue({ data: users } as any);
 
         const { expectDispatch } = await applyEffect(Integration.fetchIntegrationUsers());
 
-        expect(axiosPost).to.be.calledWithExactly('/integrations/get_users');
+        expect(axiosPost).toBeCalledWith('/integrations/get_users');
         expectDispatch(Integration.fetchIntegrationUsersBegin());
         expectDispatch(
           Integration.fetchIntegrationUsersSuccess({
@@ -156,13 +156,13 @@ suite(Integration, MOCK_STATE)('Ducks - Integration', ({ expect, stub, describeR
 
       it('should catch errors', async () => {
         const mockError = new Error('fail');
-        stub(axios, 'post').rejects(mockError);
+        vi.spyOn(axios, 'post').mockRejectedValue(mockError);
 
         const { expectDispatch, error } = await catchEffect(Integration.fetchIntegrationUsers());
 
         expectDispatch(Integration.fetchIntegrationUsersBegin());
         expectDispatch(Integration.fetchIntegrationUsersFailure(mockError));
-        expect(error).to.eq(mockError);
+        expect(error).toBe(mockError);
       });
     });
 
@@ -171,11 +171,11 @@ suite(Integration, MOCK_STATE)('Ducks - Integration', ({ expect, stub, describeR
       const userData: any = Utils.generate.object();
 
       it('should fetch users', async () => {
-        const axiosPost = stub(axios, 'post').resolves({ data: users } as any);
+        const axiosPost = vi.spyOn(axios, 'post').mockResolvedValue({ data: users } as any);
 
         const { expectDispatch } = await applyEffect(Integration.addIntegrationUser(integration, userData));
 
-        expect(axiosPost).to.be.calledWithExactly('/integrations/add_user', { integration, ...userData });
+        expect(axiosPost).toBeCalledWith('/integrations/add_user', { integration, ...userData });
         expectDispatch(Integration.addIntegrationUserBegin());
         expectDispatch(
           Integration.addIntegrationUserSuccess({
@@ -188,37 +188,37 @@ suite(Integration, MOCK_STATE)('Ducks - Integration', ({ expect, stub, describeR
       it('should catch error with response.data string', async () => {
         const errorMessage = Utils.generate.string();
         const mockError: any = { response: { data: errorMessage } };
-        stub(axios, 'post').rejects(mockError);
+        vi.spyOn(axios, 'post').mockRejectedValue(mockError);
 
         const { expectDispatch, error } = await catchEffect(Integration.addIntegrationUser(integration, userData));
 
         expectDispatch(Integration.addIntegrationUserBegin());
         expectDispatch(Integration.addIntegrationUserFailure(mockError));
-        expect(error).to.eq(errorMessage);
+        expect(error).toBe(errorMessage);
       });
 
       it('should catch error with response.data object', async () => {
         const errorObject = { message: 'uh oh!' };
         const expectedMessage = 'Error occured: {"message":"uh oh!"}';
         const mockError: any = { response: { data: errorObject } };
-        stub(axios, 'post').rejects(mockError);
+        vi.spyOn(axios, 'post').mockRejectedValue(mockError);
 
         const { expectDispatch, error } = await catchEffect(Integration.addIntegrationUser(integration, userData));
 
         expectDispatch(Integration.addIntegrationUserBegin());
         expectDispatch(Integration.addIntegrationUserFailure(mockError));
-        expect(error).to.eq(expectedMessage);
+        expect(error).toBe(expectedMessage);
       });
 
       it('should catch string error', async () => {
         const errorMessage = Utils.generate.string();
-        stub(axios, 'post').rejects(errorMessage);
+        vi.spyOn(axios, 'post').mockRejectedValue(errorMessage);
 
         const { expectDispatch, error } = await catchEffect(Integration.addIntegrationUser(integration, userData));
 
         expectDispatch(Integration.addIntegrationUserBegin());
         // expectDispatch(Integration.addIntegrationUserFailure(errorMessage));
-        expect(error).to.be.undefined;
+        expect(error).toBe(errorMessage);
       });
     });
 
@@ -227,11 +227,11 @@ suite(Integration, MOCK_STATE)('Ducks - Integration', ({ expect, stub, describeR
       const userData: any = Utils.generate.object();
 
       it('should fetch users', async () => {
-        const axiosPost = stub(axios, 'post').resolves({ data: users } as any);
+        const axiosPost = vi.spyOn(axios, 'post').mockResolvedValue({ data: users } as any);
 
         const { expectDispatch } = await applyEffect(Integration.deleteIntegrationUser(integration, userData));
 
-        expect(axiosPost).to.be.calledWithExactly('/integrations/delete_user', { integration, ...userData });
+        expect(axiosPost).toBeCalledWith('/integrations/delete_user', { integration, ...userData });
         expectDispatch(Integration.deleteIntegrationUserBegin());
         expectDispatch(
           Integration.deleteIntegrationUserSuccess({
@@ -243,13 +243,13 @@ suite(Integration, MOCK_STATE)('Ducks - Integration', ({ expect, stub, describeR
 
       it('should catch errors', async () => {
         const mockError = new Error('fail');
-        stub(axios, 'post').rejects(mockError);
+        vi.spyOn(axios, 'post').mockRejectedValue(mockError);
 
         const { expectDispatch, error } = await catchEffect(Integration.deleteIntegrationUser(integration, userData));
 
         expectDispatch(Integration.deleteIntegrationUserBegin());
         expectDispatch(Integration.deleteIntegrationUserFailure(mockError));
-        expect(error).to.eq(mockError);
+        expect(error).toBe(mockError);
       });
     });
   });

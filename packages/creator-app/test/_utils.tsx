@@ -5,26 +5,17 @@ import { ThemeContext } from 'styled-components';
 
 import theme from '../src/styles/theme';
 
-export const ThemeProvider: React.FC = ({ children }) => {
-  return <ThemeContext.Provider value={theme}>{children}</ThemeContext.Provider>;
-};
+export const ThemeProvider: React.FC = ({ children }) => <ThemeContext.Provider value={theme}>{children}</ThemeContext.Provider>;
 
 export const StoreProvider: React.FC = ({ children }) => {
-  return (
-    <ReactReduxContext.Provider
-      value={{
-        store: {
-          getState: () => ({}),
-          subscribe: () => Utils.functional.noop,
-          dispatch: Utils.functional.noop,
-          replaceReducer: Utils.functional.noop,
-        } as any,
-        storeState: {},
-      }}
-    >
-      {children}
-    </ReactReduxContext.Provider>
-  );
+  const store = {
+    getState: () => ({}),
+    dispatch: Utils.functional.noop,
+    subscribe: () => Utils.functional.noop,
+    replaceReducer: Utils.functional.noop,
+  } as any;
+
+  return <ReactReduxContext.Provider value={{ store, storeState: {} }}>{children}</ReactReduxContext.Provider>;
 };
 
 export const composeWrappers =

@@ -25,7 +25,7 @@ const MOCK_STATE = {
   diagramsHistory: [],
 };
 
-suite(Creator, MOCK_STATE)('Ducks - Creator', ({ expect, describeReducer, describeSelectors }) => {
+suite(Creator, MOCK_STATE)('Ducks - Creator', ({ describeReducer, describeSelectors }) => {
   describeReducer(
     {
       diagram: mockHistoryState(Creator.INITIAL_DIAGRAM_STATE),
@@ -140,7 +140,7 @@ suite(Creator, MOCK_STATE)('Ducks - Creator', ({ expect, describeReducer, descri
   describeSelectors(({ select }) => {
     describe('isHiddenSelector()', () => {
       it('should select canvas hidden state', () => {
-        expect(select(Creator.isHiddenSelector, { creator: { diagram: { present: { hidden: true } } } })).to.eq(true);
+        expect(select(Creator.isHiddenSelector, { creator: { diagram: { present: { hidden: true } } } })).toBe(true);
       });
     });
   });

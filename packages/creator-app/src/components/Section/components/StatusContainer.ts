@@ -1,6 +1,6 @@
 import { FlexCenter } from '@voiceflow/ui';
 
-import { styled, units } from '@/hocs';
+import { styled, units } from '@/hocs/styled';
 
 const StatusContainer = styled(FlexCenter)`
   max-width: 100%;

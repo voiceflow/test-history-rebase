@@ -1,4 +1,4 @@
-import { SessionState } from './types';
+import type { SessionState } from './types';
 
 export const STATE_KEY = 'session';
 

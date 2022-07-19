@@ -1,4 +1,4 @@
-import { css, styled, units } from '@/hocs';
+import { css, styled, units } from '@/hocs/styled';
 
 import { dividersStyles, draggingPreviewStyles, draggingStyles } from './SectionContainer';
 

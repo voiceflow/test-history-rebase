@@ -1,7 +1,7 @@
 import { DEVICE_INFO } from '@voiceflow/ui';
 
 import { SessionType } from '@/constants';
-import { Account } from '@/models';
+import type { Account } from '@/models';
 
 import { api } from './fetch';
 

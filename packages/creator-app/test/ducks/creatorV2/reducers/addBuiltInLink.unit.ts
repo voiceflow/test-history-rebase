@@ -7,8 +7,8 @@ import * as CreatorV2 from '@/ducks/creatorV2';
 import suite from '../../_suite';
 import { ACTION_CONTEXT, LINK_ID, MOCK_STATE, NODE_DATA, NODE_ID, PORT, PORT_ID } from '../_fixtures';
 
-suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addBuiltinLink reducer', ({ expect, describeReducerV2 }) => {
-  describeReducerV2(Realtime.link.addBuiltin, ({ applyAction }) => {
+suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addBuiltinLink reducer', ({ describeReducerV2 }) => {
+  describeReducerV2(Realtime.link.addBuiltin, ({ applyAction, normalizeContaining }) => {
     const linkID = 'newLink';
 
     it('ignore adding a link for a different diagram', () => {
@@ -20,10 +20,11 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addBuiltinLink reducer', ({ e
         sourcePortID: PORT_ID,
         targetNodeID: NODE_ID,
         targetPortID: PORT_ID,
+        sourceParentNodeID: null,
         type: BaseModels.PortType.NO_MATCH,
       });
 
-      expect(result).to.eq(MOCK_STATE);
+      expect(result).toBe(MOCK_STATE);
     });
 
     it('ignore adding a link with duplicate ID', () => {
@@ -34,10 +35,11 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addBuiltinLink reducer', ({ e
         sourcePortID: PORT_ID,
         targetNodeID: NODE_ID,
         targetPortID: PORT_ID,
+        sourceParentNodeID: null,
         type: BaseModels.PortType.NO_MATCH,
       });
 
-      expect(result).to.eq(MOCK_STATE);
+      expect(result).toBe(MOCK_STATE);
     });
 
     it('ignore adding a link with unrecognized source port ID', () => {
@@ -48,10 +50,11 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addBuiltinLink reducer', ({ e
         sourcePortID: 'foo',
         targetNodeID: NODE_ID,
         targetPortID: PORT_ID,
+        sourceParentNodeID: null,
         type: BaseModels.PortType.NO_MATCH,
       });
 
-      expect(result).to.eq(MOCK_STATE);
+      expect(result).toBe(MOCK_STATE);
     });
 
     it('ignore adding a link with unrecognized target port ID', () => {
@@ -62,10 +65,11 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addBuiltinLink reducer', ({ e
         sourcePortID: PORT_ID,
         targetNodeID: NODE_ID,
         targetPortID: 'foo',
+        sourceParentNodeID: null,
         type: BaseModels.PortType.NO_MATCH,
       });
 
-      expect(result).to.eq(MOCK_STATE);
+      expect(result).toBe(MOCK_STATE);
     });
 
     it('ignore adding a link with unrecognized source node ID', () => {
@@ -76,10 +80,11 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addBuiltinLink reducer', ({ e
         sourcePortID: NODE_ID,
         targetNodeID: NODE_ID,
         targetPortID: PORT_ID,
+        sourceParentNodeID: null,
         type: BaseModels.PortType.NO_MATCH,
       });
 
-      expect(result).to.eq(MOCK_STATE);
+      expect(result).toBe(MOCK_STATE);
     });
 
     it('ignore adding a link with unrecognized target node ID', () => {
@@ -90,10 +95,11 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addBuiltinLink reducer', ({ e
         sourcePortID: PORT_ID,
         targetNodeID: 'foo',
         targetPortID: PORT_ID,
+        sourceParentNodeID: null,
         type: BaseModels.PortType.NO_MATCH,
       });
 
-      expect(result).to.eq(MOCK_STATE);
+      expect(result).toBe(MOCK_STATE);
     });
 
     it('add link between ports', () => {
@@ -128,12 +134,13 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addBuiltinLink reducer', ({ e
           sourcePortID,
           targetNodeID: targetNode.nodeID,
           targetPortID,
+          sourceParentNodeID: null,
           type: BaseModels.PortType.NO_MATCH,
         }
       );
 
-      expect(result.links).to.containSubset(
-        normalize([
+      expect(result.links).toEqual(
+        normalizeContaining([
           {
             id: linkID,
             source: { nodeID: sourceNode.nodeID, portID: sourcePortID },
@@ -141,13 +148,13 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addBuiltinLink reducer', ({ e
           },
         ])
       );
-      expect(result.nodeIDsByLinkID).to.eql({ [linkID]: [sourceNode.nodeID, targetNode.nodeID] });
-      expect(result.portIDsByLinkID).to.eql({ [linkID]: [sourcePortID, targetPortID] });
-      expect(result.linkIDsByPortID).to.eql({
+      expect(result.nodeIDsByLinkID).toEqual({ [linkID]: [sourceNode.nodeID, targetNode.nodeID] });
+      expect(result.portIDsByLinkID).toEqual({ [linkID]: [sourcePortID, targetPortID] });
+      expect(result.linkIDsByPortID).toEqual({
         [sourcePortID]: [fooLinkID, linkID],
         [targetPortID]: [barLinkID, linkID],
       });
-      expect(result.linkIDsByNodeID).to.eql({
+      expect(result.linkIDsByNodeID).toEqual({
         [sourceNode.nodeID]: [fooLinkID, linkID],
         [targetNode.nodeID]: [barLinkID, linkID],
       });

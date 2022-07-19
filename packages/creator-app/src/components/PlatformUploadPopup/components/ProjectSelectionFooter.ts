@@ -1,5 +1,6 @@
 import { Box } from '@voiceflow/ui';
-import styled from 'styled-components';
+
+import { styled } from '@/hocs/styled';
 
 import ProjectSelectionFooterLink from './ProjectSelectionFooterLink';
 

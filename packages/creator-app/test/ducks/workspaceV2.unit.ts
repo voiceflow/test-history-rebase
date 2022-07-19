@@ -80,7 +80,7 @@ const MOCK_STATE: Workspace.WorkspaceState = {
   allKeys: [WORKSPACE_ID, 'abc'],
 };
 
-suite(Workspace, MOCK_STATE)('Ducks - Workspace V2', ({ expect, describeReducerV2, createState, ...utils }) => {
+suite(Workspace, MOCK_STATE)('Ducks - Workspace V2', ({ describeReducerV2, createState, ...utils }) => {
   describe('reducer', () => {
     utils.assertIgnoresOtherActions();
     utils.assertInitialState(Workspace.INITIAL_STATE);
@@ -92,13 +92,13 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace V2', ({ expect, describeReducerV
       it('add a new workspace member', () => {
         const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, creatorID, member });
 
-        expect(result.byKey[WORKSPACE_ID].members).to.eql([...WORKSPACE.members, member]);
+        expect(result.byKey[WORKSPACE_ID].members).toEqual([...WORKSPACE.members, member]);
       });
 
       it('do nothing if workspace does not exist', () => {
         const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, workspaceID: 'foo', creatorID, member });
 
-        expect(result).to.eq(MOCK_STATE);
+        expect(result).toBe(MOCK_STATE);
       });
     });
 
@@ -106,19 +106,19 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace V2', ({ expect, describeReducerV
       it('remove an existing workspace member', () => {
         const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, creatorID: 1000 });
 
-        expect(result.byKey[WORKSPACE_ID].members).to.eql([WORKSPACE_MEMBER]);
+        expect(result.byKey[WORKSPACE_ID].members).toEqual([WORKSPACE_MEMBER]);
       });
 
       it('do nothing if member does not exist', () => {
         const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, creatorID: 1001 });
 
-        expect(result.byKey[WORKSPACE_ID].members).to.eql(WORKSPACE.members);
+        expect(result.byKey[WORKSPACE_ID].members).toEqual(WORKSPACE.members);
       });
 
       it('do nothing if workspace does not exist', () => {
         const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, workspaceID: 'foo', creatorID: CREATOR_ID });
 
-        expect(result).to.eq(MOCK_STATE);
+        expect(result).toBe(MOCK_STATE);
       });
     });
 
@@ -126,19 +126,19 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace V2', ({ expect, describeReducerV
       it('cancel the invite of an existing workspace member', () => {
         const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, email: 'viewer@voiceflow.com' });
 
-        expect(result.byKey[WORKSPACE_ID].members).to.eql([WORKSPACE_MEMBER]);
+        expect(result.byKey[WORKSPACE_ID].members).toEqual([WORKSPACE_MEMBER]);
       });
 
       it('do nothing if member does not exist', () => {
         const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, email: 'foo@bar.com' });
 
-        expect(result.byKey[WORKSPACE_ID].members).to.eql(WORKSPACE.members);
+        expect(result.byKey[WORKSPACE_ID].members).toEqual(WORKSPACE.members);
       });
 
       it('do nothing if workspace does not exist', () => {
         const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, workspaceID: 'foo', email: EMAIL });
 
-        expect(result).to.eq(MOCK_STATE);
+        expect(result).toBe(MOCK_STATE);
       });
     });
 
@@ -148,19 +148,19 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace V2', ({ expect, describeReducerV
       it('patch an existing workspace member', () => {
         const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, creatorID: CREATOR_ID, member });
 
-        expect(result.byKey[WORKSPACE_ID].members[0]).to.eql({ ...WORKSPACE_MEMBER, role: UserRole.BILLING });
+        expect(result.byKey[WORKSPACE_ID].members[0]).toEqual({ ...WORKSPACE_MEMBER, role: UserRole.BILLING });
       });
 
       it('do nothing if member does not exist', () => {
         const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, creatorID: 1001, member });
 
-        expect(result).to.eq(MOCK_STATE);
+        expect(result).toBe(MOCK_STATE);
       });
 
       it('do nothing if workspace does not exist', () => {
         const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, workspaceID: 'foo', creatorID: CREATOR_ID, member });
 
-        expect(result).to.eq(MOCK_STATE);
+        expect(result).toBe(MOCK_STATE);
       });
     });
 
@@ -168,19 +168,19 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace V2', ({ expect, describeReducerV
       it('patch an existing workspace member', () => {
         const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, email: EMAIL, role: UserRole.BILLING });
 
-        expect(result.byKey[WORKSPACE_ID].members[0]).to.containSubset({ role: UserRole.BILLING });
+        expect(result.byKey[WORKSPACE_ID].members[0]).toContain({ role: UserRole.BILLING });
       });
 
       it('do nothing if member does not exist', () => {
         const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, email: 'foo@bar.com', role: UserRole.BILLING });
 
-        expect(result).to.eq(MOCK_STATE);
+        expect(result).toBe(MOCK_STATE);
       });
 
       it('do nothing if workspace does not exist', () => {
         const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, workspaceID: 'foo', email: EMAIL, role: UserRole.BILLING });
 
-        expect(result).to.eq(MOCK_STATE);
+        expect(result).toBe(MOCK_STATE);
       });
     });
   });
@@ -191,17 +191,17 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace V2', ({ expect, describeReducerV
     describe('active', () => {
       describe('workspaceSelector()', () => {
         it('should select the active workspace', () => {
-          expect(Workspace.active.workspaceSelector(createState(MOCK_STATE, activeWorkspaceState))).to.eq(WORKSPACE);
+          expect(Workspace.active.workspaceSelector(createState(MOCK_STATE, activeWorkspaceState))).toBe(WORKSPACE);
         });
       });
 
       describe('membersSelector()', () => {
         it('should select members of the active workspace', () => {
-          expect(Workspace.active.membersSelector(createState(MOCK_STATE, activeWorkspaceState))).to.eq(WORKSPACE.members);
+          expect(Workspace.active.membersSelector(createState(MOCK_STATE, activeWorkspaceState))).toBe(WORKSPACE.members);
         });
 
         it('should select an empty array if no members listed', () => {
-          expect(Workspace.active.membersSelector(createState(MOCK_STATE))).to.eql([]);
+          expect(Workspace.active.membersSelector(createState(MOCK_STATE))).toEqual([]);
         });
       });
 
@@ -211,7 +211,7 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace V2', ({ expect, describeReducerV
             Workspace.active.memberByIDSelector(createState(MOCK_STATE, activeWorkspaceState), {
               creatorID: CREATOR_ID,
             })
-          ).to.eq(WORKSPACE_MEMBER);
+          ).toBe(WORKSPACE_MEMBER);
         });
 
         it('should return null if no member matches for active workspace', () => {
@@ -219,51 +219,51 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace V2', ({ expect, describeReducerV
             Workspace.active.memberByIDSelector(createState(MOCK_STATE, activeWorkspaceState), {
               creatorID: 222,
             })
-          ).to.be.null;
+          ).toBeNull();
         });
 
         it('should return null members list', () => {
-          expect(Workspace.active.memberByIDSelector(createState(MOCK_STATE), { creatorID: 999 })).to.be.null;
+          expect(Workspace.active.memberByIDSelector(createState(MOCK_STATE), { creatorID: 999 })).toBeNull();
         });
       });
 
       describe('planSelector()', () => {
         it('should select the plan of the active workspace', () => {
-          expect(Workspace.active.planSelector(createState(MOCK_STATE, activeWorkspaceState))).to.eq('pro');
+          expect(Workspace.active.planSelector(createState(MOCK_STATE, activeWorkspaceState))).toBe('pro');
         });
       });
 
       describe('isOnPaidPlanSelector()', () => {
         it('should select whether the active workspace is on a paid plan', () => {
-          expect(Workspace.active.isOnPaidPlanSelector(createState(MOCK_STATE, activeWorkspaceState))).to.be.true;
+          expect(Workspace.active.isOnPaidPlanSelector(createState(MOCK_STATE, activeWorkspaceState))).toBeTruthy();
         });
       });
 
       describe('numberOfSeatsSelector()', () => {
         it('should select the number of seats of the active workspace', () => {
-          expect(Workspace.active.numberOfSeatsSelector(createState(MOCK_STATE, activeWorkspaceState))).to.eq(5);
+          expect(Workspace.active.numberOfSeatsSelector(createState(MOCK_STATE, activeWorkspaceState))).toBe(5);
         });
       });
 
       describe('seatLimitsSelector()', () => {
         it('should select the seat limits of the active workspace', () => {
-          expect(Workspace.active.seatLimitsSelector(createState(MOCK_STATE, activeWorkspaceState))).to.eql({ viewer: 10, editor: 20 });
+          expect(Workspace.active.seatLimitsSelector(createState(MOCK_STATE, activeWorkspaceState))).toEqual({ viewer: 10, editor: 20 });
         });
       });
 
       describe('usedEditorSeatsSelector()', () => {
         it('should select the number of occupied seats in the active workspace', () => {
-          expect(Workspace.active.usedEditorSeatsSelector(createState(MOCK_STATE, activeWorkspaceState))).to.eql(1);
+          expect(Workspace.active.usedEditorSeatsSelector(createState(MOCK_STATE, activeWorkspaceState))).toEqual(1);
         });
 
         it('should always have at least 1 used seat', () => {
-          expect(Workspace.active.usedEditorSeatsSelector(createState(MOCK_STATE, { [Session.STATE_KEY]: { activeWorkspaceID: 'def' } }))).to.eql(1);
+          expect(Workspace.active.usedEditorSeatsSelector(createState(MOCK_STATE, { [Session.STATE_KEY]: { activeWorkspaceID: 'def' } }))).toEqual(1);
         });
       });
 
       describe('usedViewerSeatsSelector()', () => {
         it('should select the number of viewers in the active workspace', () => {
-          expect(Workspace.active.usedViewerSeatsSelector(createState(MOCK_STATE, activeWorkspaceState))).to.eql(1);
+          expect(Workspace.active.usedViewerSeatsSelector(createState(MOCK_STATE, activeWorkspaceState))).toEqual(1);
         });
       });
     });
@@ -272,7 +272,7 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace V2', ({ expect, describeReducerV
       it('select all workspaces', () => {
         const result = Workspace.allWorkspacesSelector(createState(MOCK_STATE));
 
-        expect(result).to.eql([WORKSPACE, MOCK_STATE.byKey.abc]);
+        expect(result).toEqual([WORKSPACE, MOCK_STATE.byKey.abc]);
       });
     });
 
@@ -280,7 +280,7 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace V2', ({ expect, describeReducerV
       it('select all workspace IDs', () => {
         const result = Workspace.allWorkspaceIDsSelector(createState(MOCK_STATE));
 
-        expect(result).to.eq(MOCK_STATE.allKeys);
+        expect(result).toBe(MOCK_STATE.allKeys);
       });
     });
 
@@ -288,13 +288,13 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace V2', ({ expect, describeReducerV
       it('select known workspace', () => {
         const result = Workspace.workspaceByIDSelector(createState(MOCK_STATE), { id: WORKSPACE_ID });
 
-        expect(result).to.eq(WORKSPACE);
+        expect(result).toBe(WORKSPACE);
       });
 
       it('select unknown workspace', () => {
         const result = Workspace.workspaceByIDSelector(createState(MOCK_STATE), { id: 'foo' });
 
-        expect(result).to.be.null;
+        expect(result).toBeNull();
       });
     });
 
@@ -304,7 +304,7 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace V2', ({ expect, describeReducerV
 
         const result = Workspace.isAdminOfAnyWorkspaceSelector(createState(MOCK_STATE, rootState));
 
-        expect(result).to.be.true;
+        expect(result).toBeTruthy();
       });
 
       it('false if user is not admin of workspaces they are a member of', () => {
@@ -312,7 +312,7 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace V2', ({ expect, describeReducerV
 
         const result = Workspace.isAdminOfAnyWorkspaceSelector(createState(MOCK_STATE, rootState));
 
-        expect(result).to.be.false;
+        expect(result).toBeFalsy();
       });
 
       it('false if no member exists that matches active user', () => {
@@ -320,7 +320,7 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace V2', ({ expect, describeReducerV
 
         const result = Workspace.isAdminOfAnyWorkspaceSelector(createState(MOCK_STATE, rootState));
 
-        expect(result).to.be.false;
+        expect(result).toBeFalsy();
       });
     });
   });

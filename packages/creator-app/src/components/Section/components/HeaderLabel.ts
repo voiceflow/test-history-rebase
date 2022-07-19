@@ -1,7 +1,7 @@
 import { overflowTextStyles } from '@voiceflow/ui';
 
 import { SectionVariant } from '@/components/Section/constants';
-import { css, styled, units } from '@/hocs';
+import { css, styled, units } from '@/hocs/styled';
 
 export enum HeaderVariant {
   SECONDARY = 'secondary',

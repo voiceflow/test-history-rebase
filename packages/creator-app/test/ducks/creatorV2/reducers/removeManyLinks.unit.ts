@@ -6,7 +6,7 @@ import * as CreatorV2 from '@/ducks/creatorV2';
 import suite from '../../_suite';
 import { ACTION_CONTEXT, LINK, LINK_ID, MOCK_STATE, NODE_ID, PORT_ID } from '../_fixtures';
 
-suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - removeManyLinks reducer', ({ expect, describeReducerV2 }) => {
+suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - removeManyLinks reducer', ({ describeReducerV2 }) => {
   describeReducerV2(Realtime.link.removeMany, ({ applyAction }) => {
     it('ignore removing link for a different diagram', () => {
       const result = applyAction(MOCK_STATE, {
@@ -15,7 +15,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - removeManyLinks reducer', ({ 
         links: [{ nodeID: NODE_ID, portID: PORT_ID, linkID: LINK_ID }],
       });
 
-      expect(result).to.eq(MOCK_STATE);
+      expect(result).toBe(MOCK_STATE);
     });
 
     it('remove a link with all references', () => {
@@ -34,11 +34,11 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - removeManyLinks reducer', ({ 
         { ...ACTION_CONTEXT, links: [{ nodeID: NODE_ID, portID: PORT_ID, linkID: LINK_ID }] }
       );
 
-      expect(result.links).to.eql(normalize([fooLink, barLink]));
-      expect(result.nodeIDsByLinkID).to.eql({ [fooLink.id]: [NODE_ID] });
-      expect(result.portIDsByLinkID).to.eql({ [barLink.id]: [PORT_ID] });
-      expect(result.linkIDsByNodeID).to.eql({ [NODE_ID]: [fooLink.id, barLink.id] });
-      expect(result.linkIDsByPortID).to.eql({ [PORT_ID]: [fooLink.id, barLink.id] });
+      expect(result.links).toEqual(normalize([fooLink, barLink]));
+      expect(result.nodeIDsByLinkID).toEqual({ [fooLink.id]: [NODE_ID] });
+      expect(result.portIDsByLinkID).toEqual({ [barLink.id]: [PORT_ID] });
+      expect(result.linkIDsByNodeID).toEqual({ [NODE_ID]: [fooLink.id, barLink.id] });
+      expect(result.linkIDsByPortID).toEqual({ [PORT_ID]: [fooLink.id, barLink.id] });
     });
 
     it('removes multiple links', () => {
@@ -63,11 +63,11 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - removeManyLinks reducer', ({ 
         }
       );
 
-      expect(result.links).to.eql(normalize([barLink]));
-      expect(result.nodeIDsByLinkID).to.eql({});
-      expect(result.portIDsByLinkID).to.eql({ [barLink.id]: [PORT_ID] });
-      expect(result.linkIDsByNodeID).to.eql({ [NODE_ID]: [barLink.id] });
-      expect(result.linkIDsByPortID).to.eql({ [PORT_ID]: [barLink.id] });
+      expect(result.links).toEqual(normalize([barLink]));
+      expect(result.nodeIDsByLinkID).toEqual({});
+      expect(result.portIDsByLinkID).toEqual({ [barLink.id]: [PORT_ID] });
+      expect(result.linkIDsByNodeID).toEqual({ [NODE_ID]: [barLink.id] });
+      expect(result.linkIDsByPortID).toEqual({ [PORT_ID]: [barLink.id] });
     });
   });
 });

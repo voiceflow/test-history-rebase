@@ -8,7 +8,7 @@ import { wrapReplayAction } from '@/ducks/utils';
 import { createHistoryMiddleware } from '@/store/middleware/creatorV2';
 import { extendMeta, wrapOriginAction } from '@/store/utils';
 
-suite('Store | Middleware | Creator V2', ({ spy, stub, expect }) => {
+suite('Store | Middleware | Creator V2', () => {
   describe('historyMiddleware()', () => {
     const transactionID = 'transactionID';
     const clientNodeID = 'clientNodeID';
@@ -33,16 +33,16 @@ suite('Store | Middleware | Creator V2', ({ spy, stub, expect }) => {
     );
 
     it('registers reverse transaction', () => {
-      const next = spy();
-      const dispatch = Object.assign(spy(), { getNodeID: () => clientNodeID });
+      const next = vi.fn();
+      const dispatch = Object.assign(vi.fn(), { getNodeID: () => clientNodeID });
       const actionValue = 'actionValue';
       const baseAction = revertibleAction({ value: actionValue }) as any;
       const action = extendMeta(wrapOriginAction(baseAction, clientNodeID), { foo: 'bar' });
-      stub(Utils.id, 'cuid').returns(transactionID);
+      vi.spyOn(Utils.id, 'cuid').mockReturnValue(transactionID);
 
       historyMiddleware({ dispatch, getState: () => rootState } as any)(next)(action);
 
-      expect(dispatch).to.be.calledWithExactly(
+      expect(dispatch).toBeCalledWith(
         History.pushTransaction({
           transaction: {
             id: transactionID,
@@ -51,36 +51,36 @@ suite('Store | Middleware | Creator V2', ({ spy, stub, expect }) => {
           },
         })
       );
-      expect(next).to.be.calledWith(action);
+      expect(next).toBeCalledWith(action);
     });
 
     it('ignores action without reverters', () => {
-      const next = spy();
-      const dispatch = Object.assign(spy(), { getNodeID: () => clientNodeID });
+      const next = vi.fn();
+      const dispatch = Object.assign(vi.fn(), { getNodeID: () => clientNodeID });
       const action = wrapOriginAction({ type: 'mock_action', payload: null }, clientNodeID) as any;
-      stub(Utils.id, 'cuid').returns(transactionID);
+      vi.spyOn(Utils.id, 'cuid').mockReturnValue(transactionID);
 
       historyMiddleware({ dispatch, getState: () => rootState } as any)(next)(action);
 
-      expect(dispatch).to.not.be.called;
-      expect(next).to.be.calledWith(action);
+      expect(dispatch).not.toBeCalled();
+      expect(next).toBeCalledWith(action);
     });
 
     it('ignores replayed action', () => {
-      const next = spy();
-      const dispatch = Object.assign(spy(), { getNodeID: () => clientNodeID });
+      const next = vi.fn();
+      const dispatch = Object.assign(vi.fn(), { getNodeID: () => clientNodeID });
       const action = wrapReplayAction(wrapOriginAction(revertibleAction({ value: 'actionValue' }), clientNodeID)) as any;
-      stub(Utils.id, 'cuid').returns(transactionID);
+      vi.spyOn(Utils.id, 'cuid').mockReturnValue(transactionID);
 
       historyMiddleware({ dispatch, getState: () => rootState } as any)(next)(action);
 
-      expect(dispatch).to.not.be.called;
-      expect(next).to.be.calledWith(action);
+      expect(dispatch).not.toBeCalled();
+      expect(next).toBeCalledWith(action);
     });
 
     it('compares foreign actions against invalidators', () => {
-      const next = spy();
-      const dispatch = Object.assign(spy(), { getNodeID: () => clientNodeID });
+      const next = vi.fn();
+      const dispatch = Object.assign(vi.fn(), { getNodeID: () => clientNodeID });
       const action = wrapOriginAction(invalidateAction(), 'foreign') as any;
       const rootState = {
         ...MOCK_STATE,
@@ -97,17 +97,17 @@ suite('Store | Middleware | Creator V2', ({ spy, stub, expect }) => {
           ],
         },
       };
-      stub(Utils.id, 'cuid').returns(transactionID);
+      vi.spyOn(Utils.id, 'cuid').mockReturnValue(transactionID);
 
       historyMiddleware({ dispatch, getState: () => rootState } as any)(next)(action);
 
-      expect(dispatch).to.be.calledWithExactly(History.dropTransactions({ transactionIDs: ['transaction1', 'transaction4'] }));
-      expect(next).to.be.calledWith(action);
+      expect(dispatch).toBeCalledWith(History.dropTransactions({ transactionIDs: ['transaction1', 'transaction4'] }));
+      expect(next).toBeCalledWith(action);
     });
 
     it('ignores own actions from causing invalidation', () => {
-      const next = spy();
-      const dispatch = Object.assign(spy(), { getNodeID: () => clientNodeID });
+      const next = vi.fn();
+      const dispatch = Object.assign(vi.fn(), { getNodeID: () => clientNodeID });
       const action = wrapOriginAction(invalidateAction(), clientNodeID) as any;
       const rootState = {
         ...MOCK_STATE,
@@ -121,19 +121,19 @@ suite('Store | Middleware | Creator V2', ({ spy, stub, expect }) => {
 
       historyMiddleware({ dispatch, getState: () => rootState } as any)(next)(action);
 
-      expect(dispatch).to.not.be.called;
-      expect(next).to.be.calledWith(action);
+      expect(dispatch).not.toBeCalled();
+      expect(next).toBeCalledWith(action);
     });
 
     it('ignores action when history feature disabled', () => {
-      const next = spy();
-      const dispatch = Object.assign(spy(), { getNodeID: () => clientNodeID });
+      const next = vi.fn();
+      const dispatch = Object.assign(vi.fn(), { getNodeID: () => clientNodeID });
       const action = wrapOriginAction(revertibleAction({ value: 'actionValue' }), clientNodeID) as any;
 
       historyMiddleware({ dispatch, getState: () => MOCK_STATE } as any)(next)(action);
 
-      expect(dispatch).to.not.be.called;
-      expect(next).to.be.calledWith(action);
+      expect(dispatch).not.toBeCalled();
+      expect(next).toBeCalledWith(action);
     });
   });
 });

@@ -1,8 +1,10 @@
 /* eslint-disable dot-notation, @typescript-eslint/ban-ts-comment */
 
+import './utils/mockAudio';
+
 import { BaseNode, BaseRequest } from '@voiceflow/base-types';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
-import { SinonSpy, SinonStub } from 'sinon';
+import { SpyInstance } from 'vitest';
 
 import { createSuite } from '@/../test/_suite';
 import { BlockType } from '@/constants';
@@ -33,85 +35,92 @@ enum TraceMethods {
   STREAM = 'processStreamTrace',
 }
 
-const suite = createSuite(({ spy, stub, expect }) => ({
+const suite = createSuite(() => ({
   createController({ debug = false, context }: { debug?: boolean; context?: { trace: Trace[] } } = {}) {
     const engine = {
-      node: { center: stub(), ports: { out: ['1'] } },
+      node: { center: vi.fn(), ports: { out: ['1'] } },
       nodes: [{ 1: { type: BlockType.START } }],
-      select: stub(),
-      selection: { replace: stub(), getTargets: stub(), reset: stub() },
-      getNodeByID: stub().returns({ id: STEP_ID, parentNode: BLOCK_ID, combinedNodes: ['1'] }),
-      getStepIDsByBlockID: stub().returns(['1']),
-      getNodeIDByStepID: stub().returns(BLOCK_ID),
-      prototype: { setFinalNodeID: stub() },
-      finalPrototypeBlockID: stub().returns('123'),
+      select: vi.fn(),
+      selection: { replace: vi.fn(), getTargets: vi.fn(), reset: vi.fn() },
+      getNodeByID: vi.fn().mockReturnValue({ id: STEP_ID, parentNode: BLOCK_ID, combinedNodes: ['1'] }),
+      getStepIDsByBlockID: vi.fn().mockReturnValue(['1']),
+      getNodeIDByStepID: vi.fn().mockReturnValue(BLOCK_ID),
+      prototype: { setFinalNodeID: vi.fn() },
+      finalPrototypeBlockID: vi.fn().mockReturnValue('123'),
     } as any as Engine;
 
     const audio = new AudioController();
     const timeout = new TimeoutController();
-    const message = new MessageController({ props: { addToMessages: stub() } });
+    const message = new MessageController({ props: { addToMessages: vi.fn() } });
 
-    stub(audio, 'play').returns(Promise.resolve());
-    stub(audio, 'stop');
-    stub(audio, 'playExternal');
+    vi.spyOn(audio, 'play').mockReturnValue(Promise.resolve());
+    vi.spyOn(audio, 'stop');
+    vi.spyOn(audio, 'playExternal');
 
-    stub(timeout, 'delay').returns(Promise.resolve());
-    stub(timeout, 'clearAll');
+    vi.spyOn(timeout, 'delay').mockReturnValue(Promise.resolve());
+    vi.spyOn(timeout, 'clearAll');
+
+    vi.spyOn(message, 'session');
+    vi.spyOn(message, 'stream');
+    vi.spyOn(message, 'speak');
+    vi.spyOn(message, 'debug');
+    vi.spyOn(message, 'text');
+    vi.spyOn(message, 'visual');
+    vi.spyOn(message, 'carousel');
+    vi.spyOn(message, 'user');
 
     const controller = new TraceController({
       props: {
         debug,
         getEngine: () => engine,
-        setError: stub(),
-        enterDiagram: stub(),
-        fetchContext: stub().returns(context),
-        updateStatus: stub(),
-        setInteractions: stub(),
+        setError: vi.fn(),
+        enterDiagram: vi.fn(),
+        fetchContext: vi.fn().mockReturnValue(context),
+        updateStatus: vi.fn(),
+        setInteractions: vi.fn(),
         flowIDHistory: [],
         activePathLinkIDs: [],
         activePathBlockIDs: [],
-        getLinksByPortID: stub(),
-        updatePrototype: stub(),
+        getLinksByPortID: vi.fn(),
+        updatePrototype: vi.fn(),
         contextStep: 1,
-        activeDiagramID: '',
+        activeDiagramID: 'diagramID',
         isMuted: false,
         waitVisuals: true,
         contextHistory: [{}],
         visualDataHistory: [null],
-        updatePrototypeVisualsData: stub(),
-        updatePrototypeVisualsDataHistory: stub(),
+        updatePrototypeVisualsData: vi.fn(),
+        updatePrototypeVisualsDataHistory: vi.fn(),
       },
       audio,
       timeout,
       logger,
-      message: stub(message) as any as MessageController,
+      message,
     });
 
-    // @ts-ignore
-    spy(controller, 'processTrace');
-
-    stub(controller, 'waitNode' as any);
-    stub(controller, 'waitDiagram' as any);
-    stub(controller, 'waitEngineAndNodes' as any);
+    vi.spyOn(controller, 'processTrace' as any);
+    vi.spyOn(controller, 'waitNode' as any);
+    vi.spyOn(controller, 'waitDiagram' as any);
+    vi.spyOn(controller, 'waitEngineAndNodes' as any);
 
     // @ts-ignore
-    Object.values(TraceMethods).forEach((method) => spy(controller, method));
+    Object.values(TraceMethods).forEach((method) => vi.spyOn(controller, method));
 
     return controller;
   },
 
   emulateAudioError: (controller: TraceController) =>
-    (controller['audio']['play'] as any as SinonStub).callsFake(async (_: any, { onError }: { onError: Function }) => onError()),
+    (controller['audio']['play'] as any as SpyInstance).mockImplementation(async (_: any, { onError }: { onError: Function }) => onError()),
 
   emulateAudioPause: (controller: TraceController, audio: any) =>
-    (controller['audio']['play'] as any as SinonStub).callsFake(async (_: any, { onPause }: { onPause: Function }) => onPause(audio)),
+    (controller['audio']['play'] as any as SpyInstance).mockImplementation(async (_: any, { onPause }: { onPause: Function }) => onPause(audio)),
 
-  emulateAudioReject: (controller: TraceController) => (controller['audio']['play'] as any as SinonStub).returns(Promise.reject()),
+  emulateAudioReject: (controller: TraceController) => (controller['audio']['play'] as any as SpyInstance).mockReturnValue(Promise.reject()),
 
   emulateFetchContext(controller: TraceController, ...data: any[]) {
     let fetchContextDataCallCount = 0;
 
-    return (controller['props']['fetchContext'] as any as SinonStub).callsFake(() => data[fetchContextDataCallCount++]);
+    return (controller['props']['fetchContext'] as any as SpyInstance).mockImplementation(() => data[fetchContextDataCallCount++]);
   },
 
   expectSetTimeout: (controller: TraceController) => expect(controller['timeout']['delay']),
@@ -123,18 +132,18 @@ const suite = createSuite(({ spy, stub, expect }) => ({
   expectAudioPlayExternal: (controller: TraceController) => expect(controller['audio']['playExternal']),
 
   expectMessage: <T extends Exclude<keyof MessageController, 'trackStartTime'>>(controller: TraceController, method: T, data: any) =>
-    expect(controller['message'][method]).to.be.calledWith(data),
+    expect(controller['message'][method]).toBeCalledWith(data),
 
   expectUpdateStatus: (controller: TraceController) => expect(controller['props']['updateStatus']),
 
   expectSetError(controller: TraceController) {
-    expect(controller['props']['updateStatus']).to.be.calledWith(PMStatus.ERROR);
+    expect(controller['props']['updateStatus']).toBeCalledWith(PMStatus.ERROR);
 
     return expect(controller['props']['setError']);
   },
 
   expectSetInteractions: (controller: TraceController, interactions: { name: string; request?: BaseRequest.BaseRequest }[]) =>
-    expect(controller['props']['setInteractions']).to.be.calledWith(interactions),
+    expect(controller['props']['setInteractions']).toBeCalledWith(interactions),
 
   expectEnterFlow: (controller: TraceController) => expect(controller['props']['enterDiagram']),
 
@@ -146,22 +155,20 @@ const suite = createSuite(({ spy, stub, expect }) => ({
     Object.values(TraceMethods)
       .filter((method) => method !== methodName)
       .forEach((method) => {
-        expect(controller[method], `${method} shouldn't be called for single ${methodName}`).not.to.be.called;
+        expect(controller[method]).not.toBeCalled();
       });
 
-    expect(controller['props']['updateStatus']).to.be.calledWith(PMStatus.NAVIGATING);
-    expect(controller['props']['updateStatus']).to.be.calledWith(PMStatus.WAITING_USER_INTERACTION);
-    expect((controller['processTrace'] as any as SinonSpy).args[1]).to.be.deep.eq([[], { onlyMessage }]);
+    expect(controller['props']['updateStatus']).toBeCalledWith(PMStatus.NAVIGATING);
+    expect(controller['props']['updateStatus']).toBeCalledWith(PMStatus.WAITING_USER_INTERACTION);
+    expect((controller['processTrace'] as any as SpyInstance).mock.calls[1]).toEqual([[], { onlyMessage }]);
 
-    return expect(controller['processTrace']).to.be.calledTwice;
+    return expect(controller['processTrace']).toBeCalledTimes(2);
   },
 }));
 
 suite(
   'Prototype/PrototypeTool/Trace',
   ({
-    spy,
-    expect,
     expectMessage,
     expectSetError,
     expectAudioStop,
@@ -185,7 +192,7 @@ suite(
 
         await controller.next();
 
-        expectUpdateStatus(controller).to.be.calledWith(PMStatus.FETCHING_CONTEXT);
+        expectUpdateStatus(controller).toBeCalledWith(PMStatus.FETCHING_CONTEXT);
       });
 
       it('should set error', async () => {
@@ -193,7 +200,7 @@ suite(
 
         await controller.next();
 
-        expectSetError(controller).to.be.calledWith('Unable to fetch response from custom endpoint: https://localhost:8005');
+        expectSetError(controller).toBeCalledWith('Unable to fetch response');
       });
 
       it('should not process trace', async () => {
@@ -201,7 +208,7 @@ suite(
 
         await controller.next();
 
-        expectProcessTrace(controller).not.to.be.called;
+        expectProcessTrace(controller).not.toBeCalled();
       });
 
       it('should process block trace', async () => {
@@ -209,7 +216,8 @@ suite(
 
         await controller.next();
 
-        expectFocusNode(controller).to.be.calledOnceWith(BLOCK_ID);
+        expectFocusNode(controller).toBeCalledTimes(1);
+        expectFocusNode(controller).toBeCalledWith(BLOCK_ID);
         expectProcessSingleTrace(controller, TraceMethods.BLOCK);
       });
 
@@ -221,7 +229,7 @@ suite(
 
         await controller.next();
 
-        expectFocusNode(controller).calledOnce;
+        expectFocusNode(controller).toBeCalledTimes(1);
         expectProcessSingleTrace(controller, TraceMethods.BLOCK);
       });
 
@@ -244,7 +252,7 @@ suite(
 
         expectMessage(controller, 'speak', speakTrace);
         expectProcessSingleTrace(controller, TraceMethods.SPEAK);
-        expectAudioPlay(controller).to.be.calledWithMatch(SRC);
+        expectAudioPlay(controller).toBeCalledWith(SRC, expect.objectContaining({}));
       });
 
       it('should process speak(audio) trace', async () => {
@@ -264,7 +272,7 @@ suite(
 
         expectMessage(controller, 'speak', audioTrace);
         expectProcessSingleTrace(controller, TraceMethods.SPEAK);
-        expectAudioPlay(controller).to.be.calledWithMatch(SRC);
+        expectAudioPlay(controller).toBeCalledWith(SRC, expect.objectContaining({}));
       });
 
       it('should process speak trace audio error', async () => {
@@ -285,8 +293,8 @@ suite(
 
         await controller.next();
 
-        expectUpdateStatus(controller).to.be.calledWith(PMStatus.ERROR);
-        expectSetError(controller).to.be.calledWith('Unable to play an audio');
+        expectUpdateStatus(controller).toBeCalledWith(PMStatus.ERROR);
+        expectSetError(controller).toBeCalledWith('Unable to play an audio');
       });
 
       it('should process speak trace audio reject', async () => {
@@ -333,8 +341,8 @@ suite(
         await controller.next();
 
         expectProcessSingleTrace(controller, TraceMethods.FLOW);
-        expectEnterFlow(controller).to.be.calledWith('diagramID');
-        expect(controller['waitDiagram']).to.be.calledWithExactly('diagramID');
+        expectEnterFlow(controller).toBeCalledWith('diagramID');
+        expect(controller['waitDiagram']).toBeCalledWith('diagramID');
       });
 
       it('should process flow trace without diagramID', async () => {
@@ -347,14 +355,14 @@ suite(
         await controller.next();
 
         expectProcessSingleTrace(controller, TraceMethods.FLOW);
-        expectEnterFlow(controller).not.to.be.called;
-        expectSetTimeout(controller).not.to.be.called;
+        expectEnterFlow(controller).not.toBeCalled();
+        expectSetTimeout(controller).not.toBeCalled();
       });
 
       it('should process stream play', async () => {
         const controller = createController();
 
-        const next = spy(controller, 'next');
+        const next = vi.spyOn(controller, 'next');
 
         const streamTrace = traceFactory(BaseNode.Utils.TraceType.STREAM, { src: SRC, action: BaseNode.Stream.TraceStreamAction.PLAY, token: '1' });
         emulateFetchContext(controller, {
@@ -363,16 +371,16 @@ suite(
 
         await controller.next();
 
-        expect(controller['streamState']).to.be.deep.eq({ src: SRC, token: '1', offset: 0 });
+        expect(controller['streamState']).toEqual({ src: SRC, token: '1', offset: 0 });
         expectMessage(controller, 'stream', streamTrace);
         expectSetInteractions(controller, [
           { name: 'next', request: { type: 'text', payload: 'next' } },
           { name: 'previous', request: { type: 'text', payload: 'previous' } },
           { name: 'pause', request: { type: 'text', payload: 'pause' } },
         ]);
-        expectUpdateStatus(controller).to.be.calledWith(PMStatus.WAITING_USER_INTERACTION);
-        expectAudioPlay(controller).to.be.calledWithMatch(SRC);
-        expect(next).to.be.calledWith({ type: BaseRequest.RequestType.TEXT, payload: VoiceflowConstants.IntentName.NEXT });
+        expectUpdateStatus(controller).toBeCalledWith(PMStatus.WAITING_USER_INTERACTION);
+        expectAudioPlay(controller).toBeCalledWith(SRC, expect.objectContaining({}));
+        expect(next).toBeCalledWith({ type: BaseRequest.RequestType.TEXT, payload: VoiceflowConstants.IntentName.NEXT });
         expectProcessSingleTrace(controller, TraceMethods.STREAM);
       });
 
@@ -384,7 +392,7 @@ suite(
           trace: [streamTrace],
         });
 
-        const next = spy(controller, 'next');
+        const next = vi.spyOn(controller, 'next');
 
         await controller.next();
 
@@ -394,10 +402,10 @@ suite(
           { name: 'previous', request: { type: 'text', payload: 'previous' } },
           { name: 'resume', request: { type: 'text', payload: 'resume' } },
         ]);
-        expectUpdateStatus(controller).to.be.calledWith(PMStatus.WAITING_USER_INTERACTION);
-        expectAudioStop(controller).to.be.calledTwice;
-        expectAudioPlay(controller).not.to.be.calledWithMatch(SRC);
-        expect(next).not.to.be.calledWith({ type: BaseRequest.RequestType.TEXT, payload: VoiceflowConstants.IntentName.NEXT });
+        expectUpdateStatus(controller).toBeCalledWith(PMStatus.WAITING_USER_INTERACTION);
+        expectAudioStop(controller).toBeCalledTimes(2);
+        expectAudioPlay(controller).not.toBeCalledWith(SRC, expect.objectContaining({}));
+        expect(next).not.toBeCalledWith({ type: BaseRequest.RequestType.TEXT, payload: VoiceflowConstants.IntentName.NEXT });
         expectProcessSingleTrace(controller, TraceMethods.STREAM);
       });
 
@@ -412,7 +420,7 @@ suite(
 
         await controller.next();
 
-        expect(controller['streamState']['offset']).to.be.eq(10);
+        expect(controller['streamState']['offset']).toEqual(10);
       });
 
       it('should process stream audio error', async () => {
@@ -425,14 +433,14 @@ suite(
 
         await controller.next();
 
-        expectUpdateStatus(controller).to.be.calledWith(PMStatus.ERROR);
-        expectSetError(controller).to.be.calledWith('Unable to play an audio');
+        expectUpdateStatus(controller).toBeCalledWith(PMStatus.ERROR);
+        expectSetError(controller).toBeCalledWith('Unable to play an audio');
       });
 
       it('should process stream audio reject', async () => {
         const controller = createController();
 
-        const next = spy(controller, 'next');
+        const next = vi.spyOn(controller, 'next');
 
         emulateFetchContext(controller, {
           trace: [traceFactory(BaseNode.Utils.TraceType.STREAM, { src: SRC, action: BaseNode.Stream.TraceStreamAction.PLAY, token: '1' })],
@@ -441,7 +449,7 @@ suite(
 
         await controller.next();
 
-        expect(next).not.to.be.calledWith({ type: BaseRequest.RequestType.TEXT, payload: VoiceflowConstants.IntentName.NEXT });
+        expect(next).not.toBeCalledWith({ type: BaseRequest.RequestType.TEXT, payload: VoiceflowConstants.IntentName.NEXT });
       });
 
       it('should process debug trace', async () => {
@@ -463,7 +471,7 @@ suite(
 
         await controller.next();
 
-        expectUpdateStatus(controller).to.be.calledWith(PMStatus.ENDED);
+        expectUpdateStatus(controller).toBeCalledWith(PMStatus.ENDED);
       });
 
       it('should crash on unsupported trace', async () => {
@@ -503,8 +511,8 @@ suite(
 
         await controller.next();
 
-        Object.values(TraceMethods).forEach((method) => expect(controller[method]).to.be.called);
-        expectUpdateStatus(controller).to.be.calledWith(PMStatus.ENDED);
+        Object.values(TraceMethods).forEach((method) => expect(controller[method]).toBeCalled());
+        expectUpdateStatus(controller).toBeCalledWith(PMStatus.ENDED);
       });
 
       it('should not process traces if stopped', async () => {
@@ -516,7 +524,7 @@ suite(
 
         await controller.next();
 
-        expectUpdateStatus(controller).not.to.be.calledWith(PMStatus.NAVIGATING);
+        expectUpdateStatus(controller).not.toBeCalledWith(PMStatus.NAVIGATING);
       });
     });
 
@@ -528,8 +536,8 @@ suite(
 
         controller.stop();
 
-        expect(controller['trace']).to.be.deep.eq([]);
-        expect(controller['stopped']).to.true;
+        expect(controller['trace']).toEqual([]);
+        expect(controller['stopped']).toBeTruthy();
       });
     });
 
@@ -560,7 +568,7 @@ suite(
 
         expectMessage(controller, 'speak', speakTrace);
         expectMessage(controller, 'stream', audioTrace);
-        expectAudioPlay(controller).not.to.be.called;
+        expectAudioPlay(controller).not.toBeCalled();
       });
     });
   }

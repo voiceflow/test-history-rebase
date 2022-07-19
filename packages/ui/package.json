@@ -53,10 +53,10 @@
     "@types/react-input-autosize": "2.2.1",
     "@types/react-syntax-highlighter": "13.5.2",
     "@types/react-toggle": "4.0.3",
-    "@voiceflow/vite-config": "1.5.0",
+    "@voiceflow/vite-config": "1.5.3",
     "c8": "^7.11.3",
-    "happy-dom": "^6.0.3",
     "jest-styled-components": "7.0.6",
+    "jsdom": "^20.0.0",
     "react-dom": "17.0.2",
     "tslib": "2.3.1",
     "vite": "^2.9.14",
@@ -96,8 +96,8 @@
     "lint:report": "yarn lint:js --format json -o sonar/report.json && yarn lint:css --formatter json --output-file sonar/report_css.json",
     "test": "vitest run --coverage",
     "test:dependencies": "depcheck",
-    "test:integration": "vitest run .it --coverage",
-    "test:unit": "vitest run .unit --coverage",
+    "test:integration": "vitest run .it --silent --coverage",
+    "test:unit": "vitest run .unit --silent --coverage",
     "types": "tsc --project tsconfig.build.json --noEmit --skipLibCheck",
     "watch:esm": "yarn build:esm && ttsc --watch --project tsconfig.module.json"
   }

@@ -54,19 +54,19 @@ const MOCK_STATE: Version.VersionState = {
   allKeys: [VERSION_ID],
 };
 
-suite(Version, MOCK_STATE)('Ducks - Version V2', ({ expect, describeReducerV2, describeEffectV2, createState }) => {
+suite(Version, MOCK_STATE)('Ducks - Version V2', ({ describeReducerV2, describeEffectV2, createState }) => {
   describe('reducer', () => {
     describeReducerV2(Realtime.version.variable.addGlobal, ({ applyAction }) => {
       it('append new variable', () => {
         const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, variable: 'foo' });
 
-        expect(result.byKey[VERSION_ID].variables).to.eql(['fizz', 'buzz', 'foo']);
+        expect(result.byKey[VERSION_ID].variables).toEqual(['fizz', 'buzz', 'foo']);
       });
 
       it('do nothing if variable already exists', () => {
         const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, variable: 'fizz' });
 
-        expect(result).to.eq(MOCK_STATE);
+        expect(result).toBe(MOCK_STATE);
       });
     });
 
@@ -74,13 +74,13 @@ suite(Version, MOCK_STATE)('Ducks - Version V2', ({ expect, describeReducerV2, d
       it('remove a known variable', () => {
         const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, variable: 'fizz' });
 
-        expect(result.byKey[VERSION_ID].variables).to.eql(['buzz']);
+        expect(result.byKey[VERSION_ID].variables).toEqual(['buzz']);
       });
 
       it('do nothing if variable does not exist', () => {
         const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, variable: 'foo' });
 
-        expect(result).to.eq(MOCK_STATE);
+        expect(result).toBe(MOCK_STATE);
       });
     });
 
@@ -88,13 +88,13 @@ suite(Version, MOCK_STATE)('Ducks - Version V2', ({ expect, describeReducerV2, d
       it('partially update publishing data', () => {
         const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, publishing: { abc: 'def' } as any });
 
-        expect(result.byKey[VERSION_ID].publishing).to.eql({ foo: 'bar', abc: 'def' });
+        expect(result.byKey[VERSION_ID].publishing).toEqual({ foo: 'bar', abc: 'def' });
       });
 
       it('do nothing if version does not exist', () => {
         const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, versionID: 'foo', publishing: { abc: 'def' } as any });
 
-        expect(result).to.eq(MOCK_STATE);
+        expect(result).toBe(MOCK_STATE);
       });
     });
 
@@ -102,13 +102,13 @@ suite(Version, MOCK_STATE)('Ducks - Version V2', ({ expect, describeReducerV2, d
       it('partially update settings data', () => {
         const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, settings: { defaultVoice: 'foo' as any } });
 
-        expect(result.byKey[VERSION_ID].settings).to.containSubset({ defaultVoice: 'foo' });
+        expect(result.byKey[VERSION_ID].settings).toContain({ defaultVoice: 'foo' });
       });
 
       it('do nothing if version does not exist', () => {
         const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, versionID: 'foo', settings: { defaultVoice: 'foo' as any } });
 
-        expect(result).to.eq(MOCK_STATE);
+        expect(result).toBe(MOCK_STATE);
       });
     });
 
@@ -116,13 +116,13 @@ suite(Version, MOCK_STATE)('Ducks - Version V2', ({ expect, describeReducerV2, d
       it('partially update session data', () => {
         const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, session: { restart: true } });
 
-        expect(result.byKey[VERSION_ID].session).to.containSubset({ restart: true });
+        expect(result.byKey[VERSION_ID].session).toContain({ restart: true });
       });
 
       it('do nothing if version does not exist', () => {
         const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, versionID: 'foo', session: { restart: true } });
 
-        expect(result).to.eq(MOCK_STATE);
+        expect(result).toBe(MOCK_STATE);
       });
     });
   });
@@ -132,13 +132,13 @@ suite(Version, MOCK_STATE)('Ducks - Version V2', ({ expect, describeReducerV2, d
       it('select known version', () => {
         const result = Version.versionByIDSelector(createState(MOCK_STATE), { id: VERSION_ID });
 
-        expect(result).to.eq(VERSION);
+        expect(result).toBe(VERSION);
       });
 
       it('select unknown version', () => {
         const result = Version.versionByIDSelector(createState(MOCK_STATE), { id: 'foo' });
 
-        expect(result).to.be.null;
+        expect(result).toBeNull();
       });
     });
   });
@@ -150,7 +150,7 @@ suite(Version, MOCK_STATE)('Ducks - Version V2', ({ expect, describeReducerV2, d
           [Session.STATE_KEY]: { activeWorkspaceID: WORKSPACE_ID, activeProjectID: PROJECT_ID, activeVersionID: VERSION_ID },
         };
 
-        await expect(applyEffect(createState(MOCK_STATE, rootState), 'new', CanvasCreationType.IMM)).to.be.rejectedWith(
+        await expect(applyEffect(createState(MOCK_STATE, rootState), 'new', CanvasCreationType.IMM)).rejects.toThrow(
           "Reserved word. You can prefix with '_' to fix this issue"
         );
       });
@@ -160,10 +160,10 @@ suite(Version, MOCK_STATE)('Ducks - Version V2', ({ expect, describeReducerV2, d
           [Session.STATE_KEY]: { activeWorkspaceID: WORKSPACE_ID, activeProjectID: PROJECT_ID, activeVersionID: VERSION_ID },
         };
 
-        await expect(applyEffect(createState(MOCK_STATE, rootState), '@$%!', CanvasCreationType.IMM)).to.be.rejectedWith(
+        await expect(applyEffect(createState(MOCK_STATE, rootState), '@$%!', CanvasCreationType.IMM)).rejects.toThrow(
           'Variable contains invalid characters or is greater than 64 characters'
         );
-        await expect(applyEffect(createState(MOCK_STATE, rootState), 'xxxx-xxxx-xxxx-xxxx', CanvasCreationType.IMM)).to.be.rejectedWith(
+        await expect(applyEffect(createState(MOCK_STATE, rootState), 'xxxx-xxxx-xxxx-xxxx', CanvasCreationType.IMM)).rejects.toThrow(
           'Variable contains invalid characters or is greater than 64 characters'
         );
       });
@@ -173,9 +173,7 @@ suite(Version, MOCK_STATE)('Ducks - Version V2', ({ expect, describeReducerV2, d
           [Session.STATE_KEY]: { activeWorkspaceID: WORKSPACE_ID, activeProjectID: PROJECT_ID, activeVersionID: VERSION_ID },
         };
 
-        await expect(applyEffect(createState(MOCK_STATE, rootState), 'fizz', CanvasCreationType.IMM)).to.be.rejectedWith(
-          'No duplicate variables: fizz'
-        );
+        await expect(applyEffect(createState(MOCK_STATE, rootState), 'fizz', CanvasCreationType.IMM)).rejects.toThrow('No duplicate variables: fizz');
       });
 
       it('add variable to version in realtime', async () => {
@@ -185,7 +183,7 @@ suite(Version, MOCK_STATE)('Ducks - Version V2', ({ expect, describeReducerV2, d
 
         const { dispatched } = await applyEffect(createState(MOCK_STATE, rootState), 'foo', CanvasCreationType.IMM);
 
-        expect(dispatched).to.eql([{ sync: Realtime.version.variable.addManyGlobal({ ...ACTION_CONTEXT, variables: ['foo'] }) }]);
+        expect(dispatched).toEqual([{ sync: Realtime.version.variable.addManyGlobal({ ...ACTION_CONTEXT, variables: ['foo'] }) }]);
       });
     });
 
@@ -197,7 +195,7 @@ suite(Version, MOCK_STATE)('Ducks - Version V2', ({ expect, describeReducerV2, d
 
         const { dispatched } = await applyEffect(createState(MOCK_STATE, rootState), 'fizz');
 
-        expect(dispatched).to.eql([{ sync: Realtime.version.variable.removeGlobal({ ...ACTION_CONTEXT, variable: 'fizz' }) }]);
+        expect(dispatched).toEqual([{ sync: Realtime.version.variable.removeGlobal({ ...ACTION_CONTEXT, variable: 'fizz' }) }]);
       });
     });
   });

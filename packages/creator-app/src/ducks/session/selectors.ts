@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 
-import { createRootSelector } from '@/ducks/utils';
+import { createRootSelector } from '@/ducks/utils/selector';
 
 import { STATE_KEY } from './constants';
 

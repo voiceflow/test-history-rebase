@@ -3,7 +3,8 @@ import { BaseNode } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import createAdapter, { AdapterNotImplementedError } from 'bidirectional-adapter';
 
-import { AnyTranscriptMessage, FormatType, SpeakTrace } from '@/models';
+import type { AnyTranscriptMessage, SpeakTrace } from '@/models';
+import { FormatType } from '@/models';
 import {
   createCarouselMessage,
   createDebugMessage,

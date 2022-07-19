@@ -5,9 +5,9 @@ import client from '@/client/template';
 
 import suite from './_suite';
 
-suite('Client - Template', ({ expect, stubFetch }) => {
+suite('Client - Template', ({ expectMembers, stubFetch }) => {
   it('should have expected keys', () => {
-    expect(Object.keys(client)).to.have.members(['getPlatformTemplate']);
+    expectMembers(Object.keys(client), ['getPlatformTemplate']);
   });
 
   describe('getPlatformTemplate()', () => {
@@ -16,7 +16,7 @@ suite('Client - Template', ({ expect, stubFetch }) => {
 
       await client.getPlatformTemplate(VoiceflowConstants.PlatformType.GOOGLE);
 
-      expect(fetch).to.be.calledWithExactly(`templates/${VoiceflowConstants.PlatformType.GOOGLE}`, { query: { tag: 'default' } });
+      expect(fetch).toBeCalledWith(`templates/${VoiceflowConstants.PlatformType.GOOGLE}`, { query: { tag: 'default' } });
     });
 
     it('get a platform template with a specific tag', async () => {
@@ -25,7 +25,7 @@ suite('Client - Template', ({ expect, stubFetch }) => {
 
       await client.getPlatformTemplate(VoiceflowConstants.PlatformType.ALEXA, tag);
 
-      expect(fetch).to.be.calledWithExactly(`templates/${VoiceflowConstants.PlatformType.ALEXA}`, { query: { tag } });
+      expect(fetch).toBeCalledWith(`templates/${VoiceflowConstants.PlatformType.ALEXA}`, { query: { tag } });
     });
   });
 });

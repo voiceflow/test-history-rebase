@@ -26,13 +26,13 @@ const MOCK_STATE: Slot.SlotState = {
   allKeys: [SLOT_ID, 'abc'],
 };
 
-suite(Slot, MOCK_STATE)('Ducks - Slot V2', ({ expect, createState }) => {
+suite(Slot, MOCK_STATE)('Ducks - Slot V2', ({ createState }) => {
   describe('selectors', () => {
     describe('allSlotsSelector()', () => {
       it('select all slots', () => {
         const result = Slot.allSlotsSelector(createState(MOCK_STATE));
 
-        expect(result).to.eql([SLOT, MOCK_STATE.byKey.abc]);
+        expect(result).toEqual([SLOT, MOCK_STATE.byKey.abc]);
       });
     });
 
@@ -40,7 +40,7 @@ suite(Slot, MOCK_STATE)('Ducks - Slot V2', ({ expect, createState }) => {
       it('select all slot IDs', () => {
         const result = Slot.allSlotIDsSelector(createState(MOCK_STATE));
 
-        expect(result).to.eq(MOCK_STATE.allKeys);
+        expect(result).toBe(MOCK_STATE.allKeys);
       });
     });
 
@@ -48,7 +48,7 @@ suite(Slot, MOCK_STATE)('Ducks - Slot V2', ({ expect, createState }) => {
       it('select slot map', () => {
         const result = Slot.slotMapSelector(createState(MOCK_STATE));
 
-        expect(result).to.eq(MOCK_STATE.byKey);
+        expect(result).toBe(MOCK_STATE.byKey);
       });
     });
 
@@ -56,13 +56,13 @@ suite(Slot, MOCK_STATE)('Ducks - Slot V2', ({ expect, createState }) => {
       it('select known slot', () => {
         const result = Slot.slotByIDSelector(createState(MOCK_STATE), { id: SLOT_ID });
 
-        expect(result).to.eq(SLOT);
+        expect(result).toBe(SLOT);
       });
 
       it('select unknown slot', () => {
         const result = Slot.slotByIDSelector(createState(MOCK_STATE), { id: 'foo' });
 
-        expect(result).to.be.null;
+        expect(result).toBeNull();
       });
     });
 
@@ -70,13 +70,13 @@ suite(Slot, MOCK_STATE)('Ducks - Slot V2', ({ expect, createState }) => {
       it('select known slots', () => {
         const result = Slot.slotsByIDsSelector(createState(MOCK_STATE), { ids: ['abc', SLOT_ID] });
 
-        expect(result).to.eql([MOCK_STATE.byKey.abc, SLOT]);
+        expect(result).toEqual([MOCK_STATE.byKey.abc, SLOT]);
       });
 
       it('select unknown slots', () => {
         const result = Slot.slotsByIDsSelector(createState(MOCK_STATE), { ids: ['foo', SLOT_ID] });
 
-        expect(result).to.eql([SLOT]);
+        expect(result).toEqual([SLOT]);
       });
     });
 
@@ -84,7 +84,7 @@ suite(Slot, MOCK_STATE)('Ducks - Slot V2', ({ expect, createState }) => {
       it('select a list of all slot names', () => {
         const result = Slot.slotNamesSelector(createState(MOCK_STATE));
 
-        expect(result).to.eql(['slot', 'alphabet slot']);
+        expect(result).toEqual(['slot', 'alphabet slot']);
       });
     });
   });

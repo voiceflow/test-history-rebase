@@ -6,7 +6,7 @@ import * as CreatorV2 from '@/ducks/creatorV2';
 import suite from '../../_suite';
 import { ACTION_CONTEXT, LINK, MOCK_STATE, NODE_ID, PORT_ID } from '../_fixtures';
 
-suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - patchManyLinks reducer', ({ expect, describeReducerV2, describeReverter, createState }) => {
+suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - patchManyLinks reducer', ({ describeReducerV2, describeReverter, createState }) => {
   describeReducerV2(Realtime.link.patchMany, ({ applyAction }) => {
     it('ignore patching links for a different diagram', () => {
       const result = applyAction(MOCK_STATE, {
@@ -15,7 +15,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - patchManyLinks reducer', ({ e
         patches: [],
       });
 
-      expect(result).to.eq(MOCK_STATE);
+      expect(result).toBe(MOCK_STATE);
     });
 
     it('patches multiple links', () => {
@@ -36,8 +36,8 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - patchManyLinks reducer', ({ e
         }
       );
 
-      expect(Normal.getOne(result.links, fooLink.id)?.data).to.eql({ foo: 'bar2', another: 'thing' });
-      expect(Normal.getOne(result.links, barLink.id)?.data).to.eql({ fizz: 'buzz2', other: 'thing' });
+      expect(Normal.getOne(result.links, fooLink.id)?.data).toEqual({ foo: 'bar2', another: 'thing' });
+      expect(Normal.getOne(result.links, barLink.id)?.data).toEqual({ fizz: 'buzz2', other: 'thing' });
     });
   });
 
@@ -63,7 +63,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - patchManyLinks reducer', ({ e
         ],
       });
 
-      expect(result).to.eql(
+      expect(result).toEqual(
         Realtime.link.patchMany({
           ...ACTION_CONTEXT,
           patches: [

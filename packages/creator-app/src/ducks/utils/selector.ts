@@ -1,9 +1,7 @@
 import moize from 'moize';
 
 import type { State } from '@/ducks';
-import { Selector } from '@/store/types';
-
-export { createAction } from '@voiceflow/ui';
+import type { Selector } from '@/store/types';
 
 export const createKeyedSelector = <S extends Selector<any>, K extends keyof ReturnType<S>>(
   selector: S,

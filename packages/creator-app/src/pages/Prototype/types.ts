@@ -3,10 +3,9 @@ import { Nullable } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { PrototypeStatus } from '@/constants/prototype';
-import { Context, PrototypeState, UpdatePrototypeVisualData } from '@/ducks/prototype';
-import * as Recent from '@/ducks/recent';
-import { PrototypeConfig } from '@/ducks/recent';
-import { IDSelectorParam } from '@/ducks/utils/crudV2';
+import type { Context, PrototypeState, UpdatePrototypeVisualData } from '@/ducks/prototype';
+import type { PrototypeConfig } from '@/ducks/recent';
+import type { IDSelectorParam } from '@/ducks/utils/crudV2';
 
 export type OnInteraction = (interaction: { name?: string | undefined; request: BaseRequest.BaseRequest | string }) => void;
 
@@ -135,7 +134,7 @@ export interface PrototypeActions {
   updatePrototypeVisualsData?: (data: Nullable<BaseNode.Visual.StepData>) => UpdatePrototypeVisualData;
   fetchContext?: (
     request: Nullable<BaseRequest.BaseRequest>,
-    config: Recent.PrototypeConfig,
+    config: PrototypeConfig,
     options?: { isPublic?: boolean }
   ) => Promise<Nullable<Context>>;
   setActiveDiagramID?: (id: string) => void;

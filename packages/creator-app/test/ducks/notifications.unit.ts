@@ -14,136 +14,132 @@ const MOCK_STATE: Notifications.NotificationState = {
 };
 const FORCED_STATE = { ...MOCK_STATE, forced: { details: 'feedback?' } as Notifications.Notification };
 
-suite(Notifications, MOCK_STATE)(
-  'Ducks - Notifications',
-  ({ expect, stub, stubLocalStorage, describeReducer, describeSelectors, describeSideEffects }) => {
-    describeReducer(({ expectAction }) => {
-      describe('setNotifications()', () => {
-        it('should replace notifications', () => {
-          const notifications = [{ details: 'new!' }, { details: 'recap' }] as Notifications.Notification[];
+suite(Notifications, MOCK_STATE)('Ducks - Notifications', ({ mocks, describeReducer, describeSelectors, describeSideEffects }) => {
+  describeReducer(({ expectAction }) => {
+    describe('setNotifications()', () => {
+      it('should replace notifications', () => {
+        const notifications = [{ details: 'new!' }, { details: 'recap' }] as Notifications.Notification[];
 
-          expectAction(Notifications.setNotifications(notifications)).toModify({ notifications });
-        });
+        expectAction(Notifications.setNotifications(notifications)).toModify({ notifications });
+      });
+    });
+
+    describe('markNotificationAsRead()', () => {
+      it('should mark notifications as read', () => {
+        expectAction(Notifications.markNotificationAsRead()).toModify({
+          notifications: [
+            { details: 'hello', isNew: false },
+            { details: 'welcome back', isNew: false },
+          ],
+        } as Notifications.NotificationState);
       });
 
-      describe('markNotificationAsRead()', () => {
-        it('should mark notifications as read', () => {
-          expectAction(Notifications.markNotificationAsRead()).toModify({
+      it('should mark forced notification as read', () => {
+        expectAction(Notifications.markNotificationAsRead())
+          .withState(FORCED_STATE)
+          .toModify({
             notifications: [
               { details: 'hello', isNew: false },
               { details: 'welcome back', isNew: false },
             ],
+            forced: { details: 'feedback?', isNew: false },
           } as Notifications.NotificationState);
-        });
-
-        it('should mark forced notification as read', () => {
-          expectAction(Notifications.markNotificationAsRead())
-            .withState(FORCED_STATE)
-            .toModify({
-              notifications: [
-                { details: 'hello', isNew: false },
-                { details: 'welcome back', isNew: false },
-              ],
-              forced: { details: 'feedback?', isNew: false },
-            } as Notifications.NotificationState);
-        });
-      });
-
-      describe('forceNotification()', () => {
-        it('should add forced notification', () => {
-          expectAction(Notifications.forceNotification(NOTIFICATION, true)).toModify({ forced: { ...NOTIFICATION, isNew: true } });
-          expectAction(Notifications.forceNotification(NOTIFICATION, false)).toModify({ forced: { ...NOTIFICATION, isNew: false } });
-        });
       });
     });
 
-    describeSelectors(({ select, createState }) => {
-      describe('notificationsSelector()', () => {
-        it('should select all notifications', () => {
-          expect(select(Notifications.notificationsSelector)).to.eq(NOTIFICATIONS);
-        });
+    describe('forceNotification()', () => {
+      it('should add forced notification', () => {
+        expectAction(Notifications.forceNotification(NOTIFICATION, true)).toModify({ forced: { ...NOTIFICATION, isNew: true } });
+        expectAction(Notifications.forceNotification(NOTIFICATION, false)).toModify({ forced: { ...NOTIFICATION, isNew: false } });
+      });
+    });
+  });
 
-        it('should select all notifications and forced notification', () => {
-          expect(select(Notifications.notificationsSelector, createState(FORCED_STATE))).to.eql([{ details: 'feedback?' }, ...NOTIFICATIONS]);
-        });
+  describeSelectors(({ select, createState }) => {
+    describe('notificationsSelector()', () => {
+      it('should select all notifications', () => {
+        expect(select(Notifications.notificationsSelector)).toBe(NOTIFICATIONS);
+      });
+
+      it('should select all notifications and forced notification', () => {
+        expect(select(Notifications.notificationsSelector, createState(FORCED_STATE))).toEqual([{ details: 'feedback?' }, ...NOTIFICATIONS]);
+      });
+    });
+  });
+
+  describeSideEffects(({ applyEffect }) => {
+    describe('forceNotificationIfNew()', () => {
+      const notification = { id: 'abc', type: 'UPDATE', details: 'v2 is out' } as Notifications.Notification;
+      const hashedNotification = 'abc';
+
+      it('should set a new forced notification', async () => {
+        const { getItem, setItem } = mocks.storage('localStorage');
+        const md5Hash = vi.spyOn(crypto, 'MD5').mockReturnValue({ toString: () => hashedNotification } as any);
+
+        const { expectDispatch } = await applyEffect(Notifications.forceNotificationIfNew(notification));
+
+        expect(md5Hash).toBeCalledWith('abcUPDATEv2 is out');
+        expect(getItem).toBeCalledWith(Notifications.FORCE_NOTIFICATION_KEY);
+        expect(setItem).toBeCalledWith(Notifications.FORCE_NOTIFICATION_KEY, hashedNotification);
+        expectDispatch(Notifications.forceNotification(notification, true));
+      });
+
+      it('should set an existing forced notification', async () => {
+        const { setItem } = mocks.storage('localStorage', () => hashedNotification);
+        vi.spyOn(crypto, 'MD5').mockReturnValue({ toString: () => hashedNotification } as any);
+
+        const { expectDispatch } = await applyEffect(Notifications.forceNotificationIfNew(notification));
+
+        expect(setItem).not.toBeCalled();
+        expectDispatch(Notifications.forceNotification(notification, false));
       });
     });
 
-    describeSideEffects(({ applyEffect }) => {
-      describe('forceNotificationIfNew()', () => {
-        const notification = { id: 'abc', type: 'UPDATE', details: 'v2 is out' } as Notifications.Notification;
-        const hashedNotification = 'abc';
+    describe('fetchNotifications()', () => {
+      const userID = 132;
+      const lastChecked = new Date('2020/01/01').getTime();
+      const notifications: Notifications.Notification[] = [{ created: lastChecked + 2000 }, { created: lastChecked - 13000 }] as any[];
+      const rootState = { account: { creator_id: userID } } as State;
 
-        it('should set a new forced notification', async () => {
-          const { getItem, setItem } = stubLocalStorage();
-          const md5Hash = stub(crypto, 'MD5').returns({ toString: () => hashedNotification } as any);
+      it('should fetch new notifications from the DB', async () => {
+        const get = vi.spyOn(axios, 'get').mockResolvedValue({ data: { rows: notifications, last_checked: lastChecked } } as any);
 
-          const { expectDispatch } = await applyEffect(Notifications.forceNotificationIfNew(notification));
+        const { expectDispatch } = await applyEffect(Notifications.fetchNotifications(), rootState as any);
 
-          expect(md5Hash).to.be.calledWithExactly('abcUPDATEv2 is out');
-          expect(getItem).to.be.calledWithExactly(Notifications.FORCE_NOTIFICATION_KEY);
-          expect(setItem).to.be.calledWithExactly(Notifications.FORCE_NOTIFICATION_KEY, hashedNotification);
-          expectDispatch(Notifications.forceNotification(notification, true));
-        });
-
-        it('should set an existing forced notification', async () => {
-          const { getItem, setItem } = stubLocalStorage(() => hashedNotification);
-          stub(crypto, 'MD5').returns({ toString: () => hashedNotification } as any);
-          stub(window, 'localStorage').get(() => ({ getItem, setItem }));
-
-          const { expectDispatch } = await applyEffect(Notifications.forceNotificationIfNew(notification));
-
-          expect(setItem).to.not.be.called;
-          expectDispatch(Notifications.forceNotification(notification, false));
-        });
+        expect(get).toBeCalledWith(`/product_updates`);
+        expectDispatch(
+          Notifications.setNotifications([
+            { ...notifications[0], isNew: true },
+            { ...notifications[1], isNew: false },
+          ] as Notifications.Notification[])
+        );
       });
 
-      describe('fetchNotifications()', () => {
-        const userID = 132;
-        const lastChecked = new Date('2020/01/01').getTime();
-        const notifications: Notifications.Notification[] = [{ created: lastChecked + 2000 }, { created: lastChecked - 13000 }] as any[];
-        const rootState = { account: { creator_id: userID } } as State;
+      it('should fetch new notifications for the first time from the DB', async () => {
+        vi.spyOn(axios, 'get').mockResolvedValue({ data: { rows: notifications, last_checked: null } } as any);
 
-        it('should fetch new notifications from the DB', async () => {
-          const get = stub(axios, 'get').resolves({ data: { rows: notifications, last_checked: lastChecked } } as any);
+        const { expectDispatch } = await applyEffect(Notifications.fetchNotifications(), rootState as any);
 
-          const { expectDispatch } = await applyEffect(Notifications.fetchNotifications(), rootState);
-
-          expect(get).to.be.calledWithExactly(`/product_updates`);
-          expectDispatch(
-            Notifications.setNotifications([
-              { ...notifications[0], isNew: true },
-              { ...notifications[1], isNew: false },
-            ] as Notifications.Notification[])
-          );
-        });
-
-        it('should fetch new notifications for the first time from the DB', async () => {
-          stub(axios, 'get').resolves({ data: { rows: notifications, last_checked: null } } as any);
-
-          const { expectDispatch } = await applyEffect(Notifications.fetchNotifications(), rootState);
-
-          expectDispatch(
-            Notifications.setNotifications([
-              { ...notifications[0], isNew: true },
-              { ...notifications[1], isNew: true },
-            ] as Notifications.Notification[])
-          );
-        });
-      });
-
-      describe('readNotifications()', () => {
-        const userID = 123;
-        const rootState = { account: { creator_id: userID } } as State;
-
-        it('should mark old notifcations as read', async () => {
-          const patch = stub(axios, 'patch');
-          const { expectDispatch } = await applyEffect(Notifications.readNotifications(), rootState);
-
-          expect(patch).to.be.calledWithExactly(`/product_updates`);
-          expectDispatch(Notifications.markNotificationAsRead());
-        });
+        expectDispatch(
+          Notifications.setNotifications([
+            { ...notifications[0], isNew: true },
+            { ...notifications[1], isNew: true },
+          ] as Notifications.Notification[])
+        );
       });
     });
-  }
-);
+
+    describe('readNotifications()', () => {
+      const userID = 123;
+      const rootState = { account: { creator_id: userID } } as State;
+
+      it('should mark old notifcations as read', async () => {
+        const patch = vi.spyOn(axios, 'patch').mockResolvedValue({});
+        const { expectDispatch } = await applyEffect(Notifications.readNotifications(), rootState as any);
+
+        expect(patch).toBeCalledWith(`/product_updates`);
+        expectDispatch(Notifications.markNotificationAsRead());
+      });
+    });
+  });
+});

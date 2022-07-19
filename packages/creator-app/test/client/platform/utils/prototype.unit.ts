@@ -6,8 +6,8 @@ const SERVICE_ENDPOINT = 'https://service';
 
 const client = createClient(SERVICE_ENDPOINT);
 
-suite('Platform Client - Utils - Prototype', ({ expect }) => {
+suite('Platform Client - Utils - Prototype', ({ expectMembers }) => {
   it('should have expected keys', () => {
-    expect(Object.keys(client)).to.have.members(['renderSync']);
+    expectMembers(Object.keys(client), ['renderSync']);
   });
 });

@@ -1,8 +1,10 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 
 // @ts-ignore
-global.Audio = class {
+class Audio {
   play() {}
 
   pause() {}
-};
+}
+
+global.Audio = Audio;

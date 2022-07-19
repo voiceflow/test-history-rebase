@@ -7,7 +7,7 @@ import suite from '../../_suite';
 import { LINK, MOCK_STATE, NODE_DATA, PORT_ID, V2_FEATURE_STATE } from '../_fixtures';
 
 const NODE_COORDS: Realtime.Point = [100, -100];
-const NODE_PORTS: Realtime.NodePorts = { in: [], out: { dynamic: [PORT_ID], builtIn: {} } };
+const NODE_PORTS: Realtime.NodePorts = { in: [], out: { byKey: {}, dynamic: [PORT_ID], builtIn: {} } };
 const START_NODE = { ...NODE_DATA, nodeID: 'startID', type: Realtime.BlockType.START, name: 'def' };
 const MARKUP_NODE = { ...NODE_DATA, nodeID: 'markupID' };
 const BLOCK_NODE = { ...NODE_DATA, nodeID: 'blockID', type: Realtime.BlockType.COMBINED, name: 'abc' };
@@ -24,11 +24,11 @@ const INITIAL_STATE: CreatorV2.CreatorState = {
   blockIDs: [BLOCK_NODE.nodeID, START_NODE.nodeID],
 };
 
-suite(CreatorV2, INITIAL_STATE)('Ducks | Creator V2 - node selectors', ({ expect, describeSelectors, createState }) => {
+suite(CreatorV2, INITIAL_STATE)('Ducks | Creator V2 - node selectors', ({ describeSelectors, createState }) => {
   describeSelectors(({ select }) => {
     describe('allNodeIDsSelector()', () => {
       it('select all node IDs', () => {
-        expect(select(CreatorV2.allNodeIDsSelector, V2_FEATURE_STATE)).to.eql([
+        expect(select(CreatorV2.allNodeIDsSelector, V2_FEATURE_STATE)).toEqual([
           START_NODE.nodeID,
           MARKUP_NODE.nodeID,
           BLOCK_NODE.nodeID,
@@ -39,45 +39,45 @@ suite(CreatorV2, INITIAL_STATE)('Ducks | Creator V2 - node selectors', ({ expect
 
     describe('markupIDsSelector()', () => {
       it('select all markup node IDs', () => {
-        expect(select(CreatorV2.markupIDsSelector, V2_FEATURE_STATE)).to.eql([MARKUP_NODE.nodeID]);
+        expect(select(CreatorV2.markupIDsSelector, V2_FEATURE_STATE)).toEqual([MARKUP_NODE.nodeID]);
       });
     });
 
     describe('blockIDsSelector()', () => {
       it('select all block node IDs', () => {
-        expect(select(CreatorV2.blockIDsSelector, V2_FEATURE_STATE)).to.eql([BLOCK_NODE.nodeID, START_NODE.nodeID]);
+        expect(select(CreatorV2.blockIDsSelector, V2_FEATURE_STATE)).toEqual([BLOCK_NODE.nodeID, START_NODE.nodeID]);
       });
     });
 
     describe('stepIDsSelector()', () => {
       it('select all step node IDs', () => {
-        expect(select(CreatorV2.stepIDsSelector, V2_FEATURE_STATE)).to.eql([STEP_NODE.nodeID]);
+        expect(select(CreatorV2.stepIDsSelector, V2_FEATURE_STATE)).toEqual([STEP_NODE.nodeID]);
       });
     });
 
     describe('isBlockSelector()', () => {
       it('return true if node is a block', () => {
-        expect(select((state) => CreatorV2.isBlockSelector(state, { id: BLOCK_NODE.nodeID }), V2_FEATURE_STATE)).to.be.true;
+        expect(select((state) => CreatorV2.isBlockSelector(state, { id: BLOCK_NODE.nodeID }), V2_FEATURE_STATE)).toBeTruthy();
       });
 
       it('return false if node is not a block', () => {
-        expect(select((state) => CreatorV2.isBlockSelector(state, { id: MARKUP_NODE.nodeID }), V2_FEATURE_STATE)).to.be.false;
+        expect(select((state) => CreatorV2.isBlockSelector(state, { id: MARKUP_NODE.nodeID }), V2_FEATURE_STATE)).toBeFalsy();
       });
     });
 
     describe('isStepSelector()', () => {
       it('return true if node is a step', () => {
-        expect(select((state) => CreatorV2.isStepSelector(state, { id: STEP_NODE.nodeID }), V2_FEATURE_STATE)).to.be.true;
+        expect(select((state) => CreatorV2.isStepSelector(state, { id: STEP_NODE.nodeID }), V2_FEATURE_STATE)).toBeTruthy();
       });
 
       it('return false if node is not a step', () => {
-        expect(select((state) => CreatorV2.isStepSelector(state, { id: MARKUP_NODE.nodeID }), V2_FEATURE_STATE)).to.be.false;
+        expect(select((state) => CreatorV2.isStepSelector(state, { id: MARKUP_NODE.nodeID }), V2_FEATURE_STATE)).toBeFalsy();
       });
     });
 
     describe('startNodeIDSelector()', () => {
       it('select the ID of the start node', () => {
-        expect(select(CreatorV2.startNodeIDSelector, V2_FEATURE_STATE)).to.eq(START_NODE.nodeID);
+        expect(select(CreatorV2.startNodeIDSelector, V2_FEATURE_STATE)).toBe(START_NODE.nodeID);
       });
 
       it('return null if no start node is found', () => {
@@ -90,66 +90,66 @@ suite(CreatorV2, INITIAL_STATE)('Ducks | Creator V2 - node selectors', ({ expect
           V2_FEATURE_STATE
         );
 
-        expect(select(CreatorV2.startNodeIDSelector, rootState)).to.be.null;
+        expect(select(CreatorV2.startNodeIDSelector, rootState)).toBeNull();
       });
     });
 
     describe('nodeDataByIDSelector()', () => {
       it('select node data by ID', () => {
-        expect(select((state) => CreatorV2.nodeDataByIDSelector(state, { id: STEP_NODE.nodeID }), V2_FEATURE_STATE)).to.eq(STEP_NODE);
+        expect(select((state) => CreatorV2.nodeDataByIDSelector(state, { id: STEP_NODE.nodeID }), V2_FEATURE_STATE)).toBe(STEP_NODE);
       });
 
       it('return null if unrecognized node ID', () => {
-        expect(select((state) => CreatorV2.nodeDataByIDSelector(state, { id: 'foo' }), V2_FEATURE_STATE)).to.be.null;
+        expect(select((state) => CreatorV2.nodeDataByIDSelector(state, { id: 'foo' }), V2_FEATURE_STATE)).toBeNull();
       });
     });
 
     describe('nodeDataByIDsSelector()', () => {
       it('select list of node data by IDs', () => {
-        expect(select((state) => CreatorV2.nodeDataByIDsSelector(state, { ids: [STEP_NODE.nodeID, MARKUP_NODE.nodeID] }), V2_FEATURE_STATE)).to.eql([
+        expect(select((state) => CreatorV2.nodeDataByIDsSelector(state, { ids: [STEP_NODE.nodeID, MARKUP_NODE.nodeID] }), V2_FEATURE_STATE)).toEqual([
           STEP_NODE,
           MARKUP_NODE,
         ]);
       });
 
       it('return empty list for unrecognized node IDs', () => {
-        expect(select((state) => CreatorV2.nodeDataByIDsSelector(state, { ids: ['foo', 'bar'] }), V2_FEATURE_STATE)).to.be.empty;
+        expect(select((state) => CreatorV2.nodeDataByIDsSelector(state, { ids: ['foo', 'bar'] }), V2_FEATURE_STATE)).toEqual([]);
       });
     });
 
     describe('allNodeDataSelector()', () => {
       it('select all node data', () => {
-        expect(select(CreatorV2.allNodeDataSelector, V2_FEATURE_STATE)).to.eql([START_NODE, MARKUP_NODE, BLOCK_NODE, STEP_NODE]);
+        expect(select(CreatorV2.allNodeDataSelector, V2_FEATURE_STATE)).toEqual([START_NODE, MARKUP_NODE, BLOCK_NODE, STEP_NODE]);
       });
     });
 
     describe('allBlocksDataSelector()', () => {
       it('select all block data', () => {
-        expect(select(CreatorV2.allBlocksDataSelector, V2_FEATURE_STATE)).to.eql([BLOCK_NODE, START_NODE]);
+        expect(select(CreatorV2.allBlocksDataSelector, V2_FEATURE_STATE)).toEqual([BLOCK_NODE, START_NODE]);
       });
     });
 
     describe('nodeTypeByIDSelector()', () => {
       it('select type of a node by ID', () => {
-        expect(select((state) => CreatorV2.nodeTypeByIDSelector(state, { id: START_NODE.nodeID }), V2_FEATURE_STATE)).to.eq(Realtime.BlockType.START);
+        expect(select((state) => CreatorV2.nodeTypeByIDSelector(state, { id: START_NODE.nodeID }), V2_FEATURE_STATE)).toBe(Realtime.BlockType.START);
       });
     });
 
     describe('parentNodeIDByStepIDSelector()', () => {
       it('select the block ID of a step by ID', () => {
-        expect(select((state) => CreatorV2.parentNodeIDByStepIDSelector(state, { id: STEP_NODE.nodeID }), V2_FEATURE_STATE)).to.eq(BLOCK_NODE.nodeID);
+        expect(select((state) => CreatorV2.parentNodeIDByStepIDSelector(state, { id: STEP_NODE.nodeID }), V2_FEATURE_STATE)).toBe(BLOCK_NODE.nodeID);
       });
     });
 
     describe('nodeOriginByIDSelector()', () => {
       it('select the block ID of a step by ID', () => {
-        expect(select((state) => CreatorV2.nodeCoordsByIDSelector(state, { id: BLOCK_NODE.nodeID }), V2_FEATURE_STATE)).to.eq(NODE_COORDS);
+        expect(select((state) => CreatorV2.nodeCoordsByIDSelector(state, { id: BLOCK_NODE.nodeID }), V2_FEATURE_STATE)).toBe(NODE_COORDS);
       });
     });
 
     describe('stepIDsByParentNodeIDSelector()', () => {
       it('select the step IDs of a block by ID', () => {
-        expect(select((state) => CreatorV2.stepIDsByParentNodeIDSelector(state, { id: BLOCK_NODE.nodeID }), V2_FEATURE_STATE)).to.eql([
+        expect(select((state) => CreatorV2.stepIDsByParentNodeIDSelector(state, { id: BLOCK_NODE.nodeID }), V2_FEATURE_STATE)).toEqual([
           STEP_NODE.nodeID,
         ]);
       });
@@ -157,7 +157,7 @@ suite(CreatorV2, INITIAL_STATE)('Ducks | Creator V2 - node selectors', ({ expect
 
     describe('stepDataByParentNodeIDSelector()', () => {
       it('select the step data of a block by ID', () => {
-        expect(select((state) => CreatorV2.stepDataByParentNodeIDSelector(state, { id: BLOCK_NODE.nodeID }), V2_FEATURE_STATE)).to.eql([STEP_NODE]);
+        expect(select((state) => CreatorV2.stepDataByParentNodeIDSelector(state, { id: BLOCK_NODE.nodeID }), V2_FEATURE_STATE)).toEqual([STEP_NODE]);
       });
     });
 
@@ -176,7 +176,7 @@ suite(CreatorV2, INITIAL_STATE)('Ducks | Creator V2 - node selectors', ({ expect
 
         const result = select((state) => CreatorV2.linkedNodeIDsByNodeIDSelector(state, { id: BLOCK_NODE.nodeID }), rootState);
 
-        expect(result).to.eql(['a', 'b', 'c', 'd', 'e']);
+        expect(result).toEqual(['a', 'b', 'c', 'd', 'e']);
       });
     });
 
@@ -184,7 +184,7 @@ suite(CreatorV2, INITIAL_STATE)('Ducks | Creator V2 - node selectors', ({ expect
       it('select a composed block node by ID', () => {
         const result = select((state) => CreatorV2.nodeByIDSelector(state, { id: BLOCK_NODE.nodeID }), V2_FEATURE_STATE);
 
-        expect(result).to.eql({
+        expect(result).toEqual({
           id: BLOCK_NODE.nodeID,
           type: BLOCK_NODE.type,
           parentNode: null,
@@ -198,7 +198,7 @@ suite(CreatorV2, INITIAL_STATE)('Ducks | Creator V2 - node selectors', ({ expect
       it('select a composed step node by ID', () => {
         const result = select((state) => CreatorV2.nodeByIDSelector(state, { id: STEP_NODE.nodeID }), V2_FEATURE_STATE);
 
-        expect(result).to.eql({
+        expect(result).toEqual({
           id: STEP_NODE.nodeID,
           type: STEP_NODE.type,
           parentNode: BLOCK_NODE.nodeID,
@@ -214,7 +214,7 @@ suite(CreatorV2, INITIAL_STATE)('Ducks | Creator V2 - node selectors', ({ expect
       it('select a composed block node by ID', () => {
         const result = select((state) => CreatorV2.nodesByIDsSelector(state, { ids: [BLOCK_NODE.nodeID, STEP_NODE.nodeID] }), V2_FEATURE_STATE);
 
-        expect(result).to.eql([
+        expect(result).toEqual([
           {
             id: BLOCK_NODE.nodeID,
             type: BLOCK_NODE.type,

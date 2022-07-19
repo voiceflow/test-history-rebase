@@ -33,7 +33,7 @@ const MOCK_STATE = {
   restricted: false,
 };
 
-suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer, describeSelectors, describeSideEffects }) => {
+suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ describeReducer, describeSelectors, describeSideEffects }) => {
   describeReducer(({ expectAction }) => {
     describe('initializeRealtime()', () => {
       it('should initialize realtime state', () => {
@@ -69,13 +69,13 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
           },
         };
 
-        expectAction(Realtime.initializeRealtime(diagramID, locks)).result.property('locks').to.eql(locks);
+        expectAction(Realtime.initializeRealtime(diagramID, locks)).result.toEqual(expect.objectContaining({ locks }));
       });
     });
 
     describe('resetRealtime()', () => {
       it('should reset realtime state', () => {
-        expectAction(Realtime.resetRealtime()).result.eq(Realtime.INITIAL_STATE);
+        expectAction(Realtime.resetRealtime()).result.toBe(Realtime.INITIAL_STATE);
       });
     });
 
@@ -187,54 +187,53 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
   describeSelectors(({ select }) => {
     describe('realtimeDiagramIDSelector()', () => {
       it('should return active realtime diagram ID', () => {
-        expect(select(Realtime.realtimeDiagramIDSelector)).to.eq(DIAGRAM_ID);
+        expect(select(Realtime.realtimeDiagramIDSelector)).toBe(DIAGRAM_ID);
       });
     });
 
     describe('isRealtimeConnectedSelector()', () => {
       it('should return whether realtime is connected', () => {
-        expect(select(Realtime.isRealtimeConnectedSelector)).to.be.true;
+        expect(select(Realtime.isRealtimeConnectedSelector)).toBeTruthy();
       });
     });
 
     describe('isErrorStateSelector()', () => {
       it('should return whether realtime is in an error state', () => {
-        expect(select(Realtime.isErrorStateSelector)).to.be.true;
+        expect(select(Realtime.isErrorStateSelector)).toBeTruthy();
       });
     });
 
     describe('isNodeMovementLockedSelector()', () => {
       it('should return whether node is movement locked', () => {
-        expect(select(Realtime.isNodeMovementLockedSelector)('def')).to.be.true;
+        expect(select(Realtime.isNodeMovementLockedSelector)('def')).toBeTruthy();
       });
     });
 
     describe('isNodeEditLockedSelector()', () => {
       it('should return whether node is edit locked', () => {
-        expect(select(Realtime.isNodeEditLockedSelector)('jkl')).to.be.true;
+        expect(select(Realtime.isNodeEditLockedSelector)('jkl')).toBeTruthy();
       });
     });
 
     describe('deletionLockedNodesSelector()', () => {
       it('should return a lookup of all nodes which cannot be deleted', () => {
-        expect(select(Realtime.deletionLockedNodesSelector)).to.eql({ def: 'ghi', jkl: 'mno' });
+        expect(select(Realtime.deletionLockedNodesSelector)).toEqual({ def: 'ghi', jkl: 'mno' });
       });
     });
 
     describe('isSessionBusy()', () => {
       it('should return whether realtime session is busy', () => {
-        expect(select(Realtime.isSessionBusy)).to.be.true;
+        expect(select(Realtime.isSessionBusy)).toBeTruthy();
       });
     });
   });
 
   describeSideEffects(({ applyEffect, createState }) => {
     const stubSocket = <K extends keyof SocketClient>(name: K, value: Partial<SocketClient[K]>) => {
-      const { socket } = client;
-      stub(client, 'socket').get(() => ({ ...socket, [name]: value }));
+      vi.spyOn(client.socket, name as any, 'get').mockReturnValue(value);
     };
     const stubSocketClient = <K extends keyof SocketClient>(clientName: K, name: keyof SocketClient[K]) => {
-      const clientMethod = stub();
+      const clientMethod = vi.fn();
 
       stubSocket(clientName, { [name]: clientMethod } as any);
 
@@ -244,23 +243,23 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
     describe.skip('updateDiagramViewers()', () => {
       it('should update active diagrams with no viewers', async () => {
         const users = {};
-        stub(Session, 'activeDiagramIDSelector').returns('890');
+        vi.spyOn(Session, 'activeDiagramIDSelector').mockReturnValue('890');
 
         const { dispatch, expectDispatch } = await applyEffect(Realtime.updateDiagramViewers(users));
 
         expectDispatch(Realtime.updateActiveDiagramViewers(users));
-        expect(dispatch).to.be.calledOnce;
+        expect(dispatch).toBeCalledTimes(1);
       });
 
       it('should update active diagrams with a single, pre-existing viewer', async () => {
-        stub(Session, 'activeDiagramIDSelector').returns(DIAGRAM_ID);
+        vi.spyOn(Session, 'activeDiagramIDSelector').mockReturnValue(DIAGRAM_ID);
 
         const { dispatch, expectDispatch } = await applyEffect(Realtime.updateDiagramViewers(USER_LOCKS));
 
         expectDispatch(Creator.saveHistory({ force: true, preventUpdate: true }));
         expectDispatch(ReduxUndo.ActionCreators.clearHistory());
         expectDispatch(Realtime.updateActiveDiagramViewers(USER_LOCKS));
-        expect(dispatch).to.be.calledThrice;
+        expect(dispatch).toBeCalledTimes(3);
       });
 
       it('should update active diagrams with many new viewers', async () => {
@@ -272,14 +271,14 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
           },
         };
 
-        stub(Session, 'activeDiagramIDSelector').returns(DIAGRAM_ID);
+        vi.spyOn(Session, 'activeDiagramIDSelector').mockReturnValue(DIAGRAM_ID);
 
-        stub(Session, 'activeWorkspaceIDSelector').returns(workspaceID);
+        vi.spyOn(Session, 'activeWorkspaceIDSelector').mockReturnValue(workspaceID);
 
         const { dispatch, expectDispatch } = await applyEffect(Realtime.updateDiagramViewers(users));
 
         expectDispatch(Realtime.updateActiveDiagramViewers(users));
-        expect(dispatch).to.be.calledTwice;
+        expect(dispatch).toBeCalledTimes(2);
       });
     });
 
@@ -293,31 +292,31 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
 
       it('should send realtime update action when connected', async () => {
         const sendUpdate = stubSocketClient('diagram', 'sendUpdate');
-        const createServerAction = stub(RealtimeUtils, 'createServerAction').returns(serverAction);
+        const createServerAction = vi.spyOn(RealtimeUtils, 'createServerAction').mockReturnValue(serverAction);
 
         await applyEffect(Realtime.sendRealtimeUpdate(action));
 
-        expect(sendUpdate).to.be.calledWithExactly(action, TIMESTAMP, null, serverAction);
-        expect(createServerAction).to.be.calledWithExactly(action);
+        expect(sendUpdate).toBeCalledWith(action, TIMESTAMP, null, serverAction);
+        expect(createServerAction).toBeCalledWith(action);
       });
 
       it('should send realtime update action with locks', async () => {
         const lockAction = { type: 'lock::SOME_ACTION' };
         const updateLockAction: any = { type: 'SOME_ACTION', meta: { lock: lockAction } };
         const sendUpdate = stubSocketClient('diagram', 'sendUpdate');
-        stub(RealtimeUtils, 'createServerAction').returns(serverAction);
+        vi.spyOn(RealtimeUtils, 'createServerAction').mockReturnValue(serverAction);
 
         await applyEffect(Realtime.sendRealtimeUpdate(updateLockAction));
 
-        expect(sendUpdate).to.be.calledWithExactly(updateLockAction, TIMESTAMP, lockAction, serverAction);
+        expect(sendUpdate).toBeCalledWith(updateLockAction, TIMESTAMP, lockAction, serverAction);
       });
 
       it('should not send realtime update action when disconnected', async () => {
         const sendUpdate = stubSocketClient('diagram', 'sendUpdate');
 
-        await applyEffect(Realtime.sendRealtimeUpdate(action), createState({ ...MOCK_STATE, connected: false }));
+        await applyEffect(Realtime.sendRealtimeUpdate(action), createState({ ...MOCK_STATE, connected: false }) as any);
 
-        expect(sendUpdate).to.not.be.called;
+        expect(sendUpdate).not.toBeCalled();
       });
     });
 
@@ -329,15 +328,15 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
 
         await applyEffect(Realtime.sendRealtimeVolatileUpdate(volatileAction));
 
-        expect(sendVolatileUpdate).to.be.calledWithExactly(volatileAction);
+        expect(sendVolatileUpdate).toBeCalledWith(volatileAction);
       });
 
       it('should not send realtime volatile action when disconnected', async () => {
         const sendVolatileUpdate = stubSocketClient('diagram', 'sendVolatileUpdate');
 
-        await applyEffect(Realtime.sendRealtimeVolatileUpdate(volatileAction), createState({ ...MOCK_STATE, connected: false }));
+        await applyEffect(Realtime.sendRealtimeVolatileUpdate(volatileAction), createState({ ...MOCK_STATE, connected: false }) as any);
 
-        expect(sendVolatileUpdate).to.not.be.called;
+        expect(sendVolatileUpdate).not.toBeCalled();
       });
     });
 
@@ -353,7 +352,7 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
 
         await applyEffect(Realtime.sendRealtimeProjectUpdate(projectAction));
 
-        expect(sendUpdate).to.be.calledWithExactly(projectAction, TIMESTAMP, null);
+        expect(sendUpdate).toBeCalledWith(projectAction, TIMESTAMP, null);
       });
 
       it('should send realtime project action with locks', async () => {
@@ -363,15 +362,15 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
 
         await applyEffect(Realtime.sendRealtimeProjectUpdate(projectLockAction));
 
-        expect(sendUpdate).to.be.calledWithExactly(projectLockAction, TIMESTAMP, lockAction);
+        expect(sendUpdate).toBeCalledWith(projectLockAction, TIMESTAMP, lockAction);
       });
 
       it('should not send realtime project action when disconnected', async () => {
         const sendUpdate = stubSocketClient('project', 'sendUpdate');
 
-        await applyEffect(Realtime.sendRealtimeProjectUpdate(projectAction), createState({ ...MOCK_STATE, connected: false }));
+        await applyEffect(Realtime.sendRealtimeProjectUpdate(projectAction), createState({ ...MOCK_STATE, connected: false }) as any);
 
-        expect(sendUpdate).to.not.be.called;
+        expect(sendUpdate).not.toBeCalled();
       });
     });
 
@@ -384,7 +383,7 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
 
         expectDispatch(Realtime.disconnectRealtime());
         expectDispatch(Realtime.resetRealtime());
-        expect(terminate).to.be.called;
+        expect(terminate).toBeCalled();
       });
     });
 
@@ -395,7 +394,7 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
         const { expectDispatch } = await applyEffect(Realtime.handleRealtimeTakeover());
 
         expectDispatch(Realtime.resetSessionBusy());
-        expect(takeoverSessioon).to.be.called;
+        expect(takeoverSessioon).toBeCalled();
       });
     });
 
@@ -412,33 +411,39 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ expect, stub, describeReducer
       it('should setup a realtime connection', async () => {
         const locks = { blocks: { movement: { def: tabID } } };
         const filteredLocks: any = { blocks: { movement: {} } };
-        const initialize = stubSocketClient('diagram', 'initialize').returns(locks);
-        const removeSelfFromLocks = stub(RealtimeUtils, 'removeSelfFromLocks').returns(filteredLocks);
+        const initialize = stubSocketClient('diagram', 'initialize').mockReturnValue(locks);
+        const removeSelfFromLocks = vi.spyOn(RealtimeUtils, 'removeSelfFromLocks').mockReturnValue(filteredLocks);
 
         const { dispatch, expectDispatch } = await applyEffect(Realtime.setupRealtimeConnection(versionID, diagramID), rootState);
 
         expectDispatch(Realtime.initializeRealtime(diagramID, filteredLocks));
-        expect(dispatch).to.be.calledTwice;
-        expect(initialize).to.be.calledWithExactly(versionID, diagramID);
-        expect(removeSelfFromLocks).to.be.calledWithExactly(locks, tabID);
+        expect(dispatch).toBeCalledTimes(2);
+        expect(initialize).toBeCalledWith(versionID, diagramID);
+        expect(removeSelfFromLocks).toBeCalledWith(locks, tabID);
       });
 
       it('should set session as busy', async () => {
-        stubSocketClient('diagram', 'initialize').throws({ browserId: 'abc', device: {} });
+        stubSocketClient('diagram', 'initialize').mockImplementation(() => {
+          // eslint-disable-next-line no-throw-literal
+          throw { browserId: 'abc', device: {} };
+        });
 
         const { dispatch, expectDispatch } = await applyEffect(Realtime.setupRealtimeConnection(versionID, diagramID), rootState);
 
         expectDispatch(Realtime.setSessionBusy());
-        expect(dispatch).to.be.calledOnce;
+        expect(dispatch).toBeCalledTimes(1);
       });
 
       it('should set realtime restriction', async () => {
-        stubSocketClient('diagram', 'initialize').throws({ busyBy: ['11'] });
+        stubSocketClient('diagram', 'initialize').mockImplementation(() => {
+          // eslint-disable-next-line no-throw-literal
+          throw { busyBy: ['11'] };
+        });
 
         const { dispatch, expectDispatch } = await applyEffect(Realtime.setupRealtimeConnection(versionID, diagramID), rootState);
 
         expectDispatch(Realtime.setRealtimeRestriction());
-        expect(dispatch).to.be.calledOnce;
+        expect(dispatch).toBeCalledTimes(1);
       });
     });
   });

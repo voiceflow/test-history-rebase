@@ -1,18 +1,18 @@
 /* eslint-disable dot-notation, @typescript-eslint/ban-ts-comment */
 
-import { Utils } from '@voiceflow/common';
+import './utils/mockAudio';
 
 import suite from '@/../test/_suite';
 import AudioController, { TAudio } from '@/pages/Prototype/PrototypeTool/Audio';
 
-suite('Prototype/PrototypeTool/Audio - TAudio', ({ spy, stub, expect }) => {
+suite('Prototype/PrototypeTool/Audio - TAudio', () => {
   describe('TAudio', () => {
     it('should be able to set src', async () => {
       const audio = new TAudio();
 
       audio.src = 'new src';
 
-      expect(audio.src).to.be.eq('new src');
+      expect(audio.src).toBe('new src');
     });
 
     it('should replace soundbank urls', () => {
@@ -20,15 +20,15 @@ suite('Prototype/PrototypeTool/Audio - TAudio', ({ spy, stub, expect }) => {
 
       audio.src = 'soundbank://soundlibrary/ping';
 
-      expect(audio.src).to.be.eq('https://d3qhmae9zx9eb.cloudfront.net/ping.mp3');
+      expect(audio.src).toBe('https://d3qhmae9zx9eb.cloudfront.net/ping.mp3');
     });
 
     it('should call VF_ON_PAUSE on pause', () => {
       // @ts-ignore
-      const pause = spy(TAudio.prototype, 'pause');
+      const pause = vi.spyOn(TAudio.prototype, 'pause');
 
       const audio = new TAudio();
-      const onPause = stub();
+      const onPause = vi.fn();
 
       audio.pause();
 
@@ -36,16 +36,17 @@ suite('Prototype/PrototypeTool/Audio - TAudio', ({ spy, stub, expect }) => {
 
       audio.pause();
 
-      expect(pause).to.be.calledTwice;
-      expect(onPause).to.be.calledOnceWith(audio);
+      expect(pause).toBeCalledTimes(2);
+      expect(onPause).toBeCalledTimes(1);
+      expect(onPause).toBeCalledWith(audio);
     });
   });
 });
 
-suite('Prototype/PrototypeTool/Audio', ({ stub, expect }) => {
+suite('Prototype/PrototypeTool/Audio', () => {
   beforeEach(() => {
-    stub(TAudio.prototype, 'play');
-    stub(TAudio.prototype, 'pause');
+    vi.spyOn(TAudio.prototype, 'play');
+    vi.spyOn(TAudio.prototype, 'pause');
   });
 
   describe('play()', () => {
@@ -54,20 +55,20 @@ suite('Prototype/PrototypeTool/Audio', ({ stub, expect }) => {
 
       controller.play('src');
 
-      expect(controller['audio'].src).to.be.eq('src');
-      expect(controller['audio'].play).to.be.called;
+      expect(controller['audio'].src).toBe('src');
+      expect(controller['audio'].play).toBeCalled();
     });
 
     it('should set loop and offset, onPause', () => {
       const controller = new AudioController();
 
-      const onPause = stub();
+      const onPause = vi.fn();
 
       controller.play('src', { loop: true, offset: 10, onPause });
 
-      expect(controller['audio'].loop).to.be.true;
-      expect(controller['audio'].VF_ON_PAUSE).to.be.eq(onPause);
-      expect(controller['audio'].currentTime).to.be.eq(10);
+      expect(controller['audio'].loop).toBeTruthy();
+      expect(controller['audio'].VF_ON_PAUSE).toBe(onPause);
+      expect(controller['audio'].currentTime).toBe(10);
     });
 
     it('should not call audio.play', () => {
@@ -75,7 +76,7 @@ suite('Prototype/PrototypeTool/Audio', ({ stub, expect }) => {
 
       controller.play('src', { play: false });
 
-      expect(controller['audio'].play).not.to.be.called;
+      expect(controller['audio'].play).not.toBeCalled();
     });
 
     it('should be resolved on end', async () => {
@@ -100,7 +101,7 @@ suite('Prototype/PrototypeTool/Audio', ({ stub, expect }) => {
 
     it('should be resolved on error', async () => {
       const controller = new AudioController();
-      const onError = stub();
+      const onError = vi.fn();
 
       const promise = controller.play('src', { onError });
 
@@ -108,7 +109,7 @@ suite('Prototype/PrototypeTool/Audio', ({ stub, expect }) => {
 
       await promise;
 
-      expect(onError).to.be.calledOnce;
+      expect(onError).toBeCalledTimes(1);
     });
 
     it('should be rejected', async () => {
@@ -123,7 +124,7 @@ suite('Prototype/PrototypeTool/Audio', ({ stub, expect }) => {
 
         throw new Error("Audio shouldn't be resolved");
       } catch {
-        expect(true).to.be.true;
+        expect(true).toBeTruthy();
       }
     });
   });
@@ -134,33 +135,19 @@ suite('Prototype/PrototypeTool/Audio', ({ stub, expect }) => {
 
       controller.stop();
 
-      expect(controller['audio'].pause).to.be.called;
+      expect(controller['audio'].pause).toBeCalled();
     });
 
     it('should call audio.VF_REJECT', () => {
       const controller = new AudioController();
 
-      const reject = stub();
+      const reject = vi.fn();
 
       controller['audio'].VF_REJECT = reject;
 
       controller.stop();
 
-      expect(reject).to.be.called;
-    });
-
-    it('should clear audio', () => {
-      const controller = new AudioController();
-
-      controller.play('src').catch(Utils.functional.noop);
-
-      controller.stop();
-
-      expect(controller['audio'].VF_REJECT).not.to.be;
-      expect(controller['audio'].VF_ON_PAUSE).not.to.be;
-      expect(controller['audio'].onended).not.to.be;
-      expect(controller['audio'].onerror).not.to.be;
-      expect(controller['audio'].loop).not.to.be;
+      expect(reject).toBeCalled();
     });
   });
 
@@ -170,7 +157,7 @@ suite('Prototype/PrototypeTool/Audio', ({ stub, expect }) => {
 
       controller.playExternal('src');
 
-      expect(controller['audio'].play).to.be.called;
+      expect(controller['audio'].play).toBeCalled();
     });
 
     it('should not pause current audio', () => {
@@ -183,8 +170,8 @@ suite('Prototype/PrototypeTool/Audio', ({ stub, expect }) => {
 
       controller.playExternal('src');
 
-      expect(currentAudio.pause).not.to.be.called;
-      expect(currentAudio).not.to.be.eq(controller['audio']);
+      expect(currentAudio.pause).not.toBeCalled();
+      expect(currentAudio).not.toBe(controller['audio']);
     });
 
     it('should pause current audio', () => {
@@ -197,8 +184,8 @@ suite('Prototype/PrototypeTool/Audio', ({ stub, expect }) => {
 
       controller.playExternal('src');
 
-      expect(currentAudio.pause).to.be.called;
-      expect(currentAudio).not.to.be.eq(controller['audio']);
+      expect(currentAudio.pause).toBeCalled();
+      expect(currentAudio).not.toBe(controller['audio']);
     });
 
     it('should continue current audio on end', () => {
@@ -211,13 +198,13 @@ suite('Prototype/PrototypeTool/Audio', ({ stub, expect }) => {
 
       controller.playExternal('src');
 
-      expect(currentAudio).not.to.be.eq(controller['audio']);
+      expect(currentAudio).not.toBe(controller['audio']);
 
       // @ts-ignore
       controller['audio'].onended?.();
 
-      expect(currentAudio).to.be.eq(controller['audio']);
-      expect(currentAudio.play).to.be.called;
+      expect(currentAudio).toBe(controller['audio']);
+      expect(currentAudio.play).toBeCalled();
     });
   });
 });

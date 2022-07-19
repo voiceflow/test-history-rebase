@@ -4,8 +4,8 @@ import suite from '../../_suite';
 
 const client = createClient();
 
-suite('Platform Client - General - Publish', ({ expect }) => {
+suite('Platform Client - General - Publish', ({ expectMembers }) => {
   it('should have expected keys', () => {
-    expect(Object.keys(client)).to.have.members(['run', 'cancel', 'getStatus', 'updateStage']);
+    expectMembers(Object.keys(client), ['run', 'cancel', 'getStatus', 'updateStage']);
   });
 });

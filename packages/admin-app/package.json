@@ -44,8 +44,8 @@
     "universal-cookie": "4.0.4"
   },
   "devDependencies": {
-    "@voiceflow/vite-config": "1.4.1",
-    "vite": "2.9.13"
+    "@voiceflow/vite-config": "1.5.3",
+    "vite": "2.9.14"
   },
   "files": [
     "build"

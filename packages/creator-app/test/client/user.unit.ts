@@ -4,9 +4,9 @@ import client, { USER_PATH } from '@/client/user';
 
 import suite from './_suite';
 
-suite('Client - User', ({ expect, stubFetch }) => {
+suite('Client - User', ({ expectMembers, stubFetch }) => {
   it('should have expected keys', () => {
-    expect(Object.keys(client)).to.have.members([
+    expectMembers(Object.keys(client), [
       'get',
       'updateProfilePicture',
       'updatePassword',
@@ -25,12 +25,12 @@ suite('Client - User', ({ expect, stubFetch }) => {
   describe('get()', () => {
     it('should get user details', async () => {
       const user = Utils.generate.object();
-      const fetch = stubFetch('api', 'get').resolves(user);
+      const fetch = stubFetch('api', 'get').mockResolvedValue(user);
 
       const result = await client.get();
 
-      expect(result).to.eq(user);
-      expect(fetch).to.be.calledWithExactly(USER_PATH);
+      expect(result).toEqual(user);
+      expect(fetch).toBeCalledWith(USER_PATH);
     });
   });
 
@@ -41,7 +41,7 @@ suite('Client - User', ({ expect, stubFetch }) => {
 
       await client.updateProfilePicture(url);
 
-      expect(fetch).to.be.calledWithExactly(`${USER_PATH}/profilePictureURL`, { url });
+      expect(fetch).toBeCalledWith(`${USER_PATH}/profilePictureURL`, { url });
     });
   });
 
@@ -51,12 +51,12 @@ suite('Client - User', ({ expect, stubFetch }) => {
       const referralCode = 'code';
       const stripePromotion = 'promo';
 
-      const fetch = stubFetch('api', 'get').resolves(stripePromotion);
+      const fetch = stubFetch('api', 'get').mockResolvedValue(stripePromotion);
 
       const result = await client.getReferralCouponCode(referrerID, referralCode);
 
-      expect(result).to.eq(stripePromotion);
-      expect(fetch).to.be.calledWithExactly(`${USER_PATH}/referral/${referrerID}/${referralCode}`);
+      expect(result).toEqual(stripePromotion);
+      expect(fetch).toBeCalledWith(`${USER_PATH}/referral/${referrerID}/${referralCode}`);
     });
   });
 
@@ -68,7 +68,7 @@ suite('Client - User', ({ expect, stubFetch }) => {
 
       await client.resetEmail(email);
 
-      expect(fetch).to.be.calledWithExactly(`${USER_PATH}/reset`, { email });
+      expect(fetch).toBeCalledWith(`${USER_PATH}/reset`, { email });
     });
   });
 
@@ -80,7 +80,7 @@ suite('Client - User', ({ expect, stubFetch }) => {
 
       await client.testResetPassword(resetCode);
 
-      expect(fetch).to.be.calledWithExactly(`${USER_PATH}/reset/${resetCode}`);
+      expect(fetch).toBeCalledWith(`${USER_PATH}/reset/${resetCode}`);
     });
   });
 
@@ -93,7 +93,7 @@ suite('Client - User', ({ expect, stubFetch }) => {
 
       await client.resetPassword(resetCode, password);
 
-      expect(fetch).to.be.calledWithExactly(`${USER_PATH}/reset/${resetCode}`, { password });
+      expect(fetch).toBeCalledWith(`${USER_PATH}/reset/${resetCode}`, { password });
     });
   });
 
@@ -103,7 +103,7 @@ suite('Client - User', ({ expect, stubFetch }) => {
 
       await client.resendConfirmationEmail();
 
-      expect(fetch).to.be.calledWithExactly(`${USER_PATH}/verify`);
+      expect(fetch).toBeCalledWith(`${USER_PATH}/verify`);
     });
   });
 
@@ -115,7 +115,7 @@ suite('Client - User', ({ expect, stubFetch }) => {
 
       await client.confirmAccount(token);
 
-      expect(fetch).to.be.calledWithExactly(`${USER_PATH}/verify/${token}`);
+      expect(fetch).toBeCalledWith(`${USER_PATH}/verify/${token}`);
     });
   });
 });

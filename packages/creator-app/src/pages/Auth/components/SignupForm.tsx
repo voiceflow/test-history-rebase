@@ -62,10 +62,10 @@ export const SignupForm: React.FC<SignupFormProps & ConnectedPublicSignupFormPro
   const isSignupDisabled = !!coupon && !couponValid;
 
   const signupSubmit = async () => {
-    if (isDisabled || ssoRequired) {
-      return;
-    }
+    if (isDisabled || ssoRequired) return;
+
     onDisable();
+
     try {
       if (await getDomainSAML(email)) {
         setSsoRequired(true);

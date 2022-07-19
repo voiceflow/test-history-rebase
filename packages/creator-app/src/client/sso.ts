@@ -1,5 +1,5 @@
 import { SessionType } from '@/constants';
-import { Account } from '@/models';
+import type { Account } from '@/models';
 
 import { apiV2 } from './fetch';
 

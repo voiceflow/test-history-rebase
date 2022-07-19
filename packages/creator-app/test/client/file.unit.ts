@@ -5,21 +5,23 @@ import client from '@/client/file';
 
 import suite from './_suite';
 
-suite('Client - File', ({ expect, stub }) => {
+suite('Client - File', ({ expectMembers }) => {
+  class FormData {}
+
   it('should have expected keys', () => {
-    expect(Object.keys(client)).to.have.members(['uploadAudio', 'uploadImage']);
+    expectMembers(Object.keys(client), ['uploadAudio', 'uploadImage']);
   });
 
   describe('uploadAudio()', () => {
     it('should generate a URL for uploaded audio data', async () => {
       const url = Utils.generate.string();
       const formData = new FormData();
-      const axiosPost = stub(axios, 'post').resolves({ data: url });
+      const axiosPost = vi.spyOn(axios, 'post').mockResolvedValue({ data: url });
 
-      const { data } = await client.uploadAudio('audio', formData);
+      const { data } = await client.uploadAudio('audio', formData as any);
 
-      expect(data).to.eq(url);
-      expect(axiosPost).to.be.calledWithExactly('/audio', formData);
+      expect(data).toEqual(url);
+      expect(axiosPost).toBeCalledWith('/audio', formData);
     });
   });
 
@@ -28,21 +30,21 @@ suite('Client - File', ({ expect, stub }) => {
     const formData = new FormData();
 
     it('should generate a URL for uploaded image', async () => {
-      const axiosPost = stub(axios, 'post').resolves({ data: url });
+      const axiosPost = vi.spyOn(axios, 'post').mockResolvedValue({ data: url });
 
-      const { data } = await client.uploadImage(null, formData);
+      const { data } = await client.uploadImage(null, formData as any);
 
-      expect(data).to.eq(url);
-      expect(axiosPost).to.be.calledWithExactly('/image', formData);
+      expect(data).toEqual(url);
+      expect(axiosPost).toBeCalledWith('/image', formData);
     });
 
     it('should generate a URL for uploaded image with custom endpoint', async () => {
-      const axiosPost = stub(axios, 'post').resolves({ data: url });
+      const axiosPost = vi.spyOn(axios, 'post').mockResolvedValue({ data: url });
 
-      const { data } = await client.uploadImage('/avatar', formData);
+      const { data } = await client.uploadImage('/avatar', formData as any);
 
-      expect(data).to.eq(url);
-      expect(axiosPost).to.be.calledWithExactly('/avatar', formData);
+      expect(data).toEqual(url);
+      expect(axiosPost).toBeCalledWith('/avatar', formData);
     });
   });
 });

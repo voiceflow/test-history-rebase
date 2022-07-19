@@ -2,9 +2,9 @@ import client from '@/platforms/alexa/client/project';
 
 import suite from '../../_suite';
 
-suite('Platform Client - Alexa - Project', ({ expect }) => {
+suite('Platform Client - Alexa - Project', ({ expectMembers }) => {
   it('should have expected keys', () => {
-    expect(Object.keys(client)).to.have.members([
+    expectMembers(Object.keys(client), [
       'copy',
       'updateSelectedVendor',
       'updateVendorSkillID',

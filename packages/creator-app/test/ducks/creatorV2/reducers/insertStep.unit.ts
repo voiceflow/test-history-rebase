@@ -7,8 +7,8 @@ import * as CreatorV2 from '@/ducks/creatorV2';
 import suite from '../../_suite';
 import { ACTION_CONTEXT, MOCK_STATE, NODE_DATA, NODE_ID, PORT, PROJECT_META, V2_FEATURE_STATE } from '../_fixtures';
 
-suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - insertStep reducer', ({ expect, createState, describeReducerV2, describeReverter }) => {
-  describeReducerV2(Realtime.node.insertStep, ({ applyAction }) => {
+suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - insertStep reducer', ({ createState, describeReducerV2, describeReverter }) => {
+  describeReducerV2(Realtime.node.insertStep, ({ applyAction, normalizeContaining }) => {
     const blockNode = { ...NODE_DATA, nodeID: 'blockNode' };
     const stepID = 'stepNode';
     const stepData = { type: Realtime.BlockType.BUTTONS, name: 'node name' };
@@ -27,7 +27,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - insertStep reducer', ({ expec
         schemaVersion: 2,
       });
 
-      expect(result).to.eq(MOCK_STATE);
+      expect(result).toBe(MOCK_STATE);
     });
 
     it('ignore inserting step with duplicate ID', () => {
@@ -43,7 +43,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - insertStep reducer', ({ expec
         schemaVersion: 2,
       });
 
-      expect(result).to.eql(MOCK_STATE);
+      expect(result).toEqual(MOCK_STATE);
     });
 
     it('ignore inserting step with unrecognized block ID', () => {
@@ -59,7 +59,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - insertStep reducer', ({ expec
         schemaVersion: 2,
       });
 
-      expect(result).to.eq(MOCK_STATE);
+      expect(result).toBe(MOCK_STATE);
     });
 
     it('insert a new step into an existing block', () => {
@@ -82,11 +82,11 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - insertStep reducer', ({ expec
         }
       );
 
-      expect(result.nodes).to.eql(normalize([blockNode, { ...stepData, nodeID: stepID }], (node) => node.nodeID));
-      expect(result.parentNodeIDByStepID).to.eql({ [stepID]: blockNode.nodeID });
-      expect(result.stepIDsByParentNodeID).to.eql({ [blockNode.nodeID]: ['foo', stepID, 'bar'] });
-      expect(result.portsByNodeID).to.eql({ [stepID]: Realtime.Utils.port.createEmptyNodePorts() });
-      expect(result.linkIDsByNodeID).to.eql({ [stepID]: [] });
+      expect(result.nodes).toEqual(normalizeContaining([blockNode, { ...stepData, nodeID: stepID }], (node) => node.nodeID));
+      expect(result.parentNodeIDByStepID).toEqual({ [stepID]: blockNode.nodeID });
+      expect(result.stepIDsByParentNodeID).toEqual({ [blockNode.nodeID]: ['foo', stepID, 'bar'] });
+      expect(result.portsByNodeID).toEqual({ [stepID]: Realtime.Utils.port.createEmptyNodePorts() });
+      expect(result.linkIDsByNodeID).toEqual({ [stepID]: [] });
     });
 
     it('register all ports of an inserted step', () => {
@@ -126,8 +126,8 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - insertStep reducer', ({ expec
         }
       );
 
-      expect(result.ports).to.containSubset(normalize([PORT, { id: inPortID }, { id: dynamicPortID }, { id: builtInPortID }, { id: byKeyPortID }]));
-      expect(result.portsByNodeID).to.eql({
+      expect(result.ports).toEqual(normalizeContaining([PORT, { id: inPortID }, { id: dynamicPortID }, { id: builtInPortID }, { id: byKeyPortID }]));
+      expect(result.portsByNodeID).toEqual({
         [stepID]: {
           in: [inPortID],
           out: {
@@ -137,8 +137,8 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - insertStep reducer', ({ expec
           },
         },
       });
-      expect(result.nodeIDByPortID).to.eql({ [inPortID]: stepID, [dynamicPortID]: stepID, [builtInPortID]: stepID, [byKeyPortID]: stepID });
-      expect(result.linkIDsByPortID).to.eql({ [inPortID]: [], [dynamicPortID]: [], [builtInPortID]: [], [byKeyPortID]: [] });
+      expect(result.nodeIDByPortID).toEqual({ [inPortID]: stepID, [dynamicPortID]: stepID, [builtInPortID]: stepID, [byKeyPortID]: stepID });
+      expect(result.linkIDsByPortID).toEqual({ [inPortID]: [], [dynamicPortID]: [], [builtInPortID]: [], [byKeyPortID]: [] });
     });
   });
 
@@ -196,7 +196,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - insertStep reducer', ({ expec
         schemaVersion: 2,
       });
 
-      expect(result).to.eql([
+      expect(result).toEqual([
         Realtime.node.removeMany({ ...ACTION_CONTEXT, nodes: [{ parentNodeID, stepID }] }),
         Realtime.link.addDynamic({
           ...ACTION_CONTEXT,

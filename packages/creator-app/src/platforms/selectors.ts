@@ -6,28 +6,32 @@ import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import { applyAlexaIntentNameFormatting, applyLUISIntentNameFormatting } from '@/utils/intent';
 
-import * as Alexa from './alexa';
-import * as Dialogflow from './dialogflow';
-import * as General from './general';
-import * as Google from './google';
+import alexaClient from './alexa/client';
+import { UTTERANCE_RECOMMENDATIONS_LOCALES as ALEXA_UTTERANCE_RECOMMENDATIONS_LOCALES } from './alexa/constants';
+import dialogflowClient from './dialogflow/client';
+import { UTTERANCE_RECOMMENDATIONS_LOCALES as DF_UTTERANCE_RECOMMENDATIONS_LOCALES } from './dialogflow/constants';
+import generalClient from './general/client';
+import { UTTERANCE_RECOMMENDATIONS_LOCALES as GENERAL_UTTERANCE_RECOMMENDATIONS_LOCALES } from './general/constants';
+import googleClient from './google/client';
+import { UTTERANCE_RECOMMENDATIONS_LOCALES as GOOGLE_UTTERANCE_RECOMMENDATIONS_LOCALES } from './google/constants';
 import { PlatformClient } from './types';
 
 export type AnyLocale = VoiceflowConstants.Locale | AlexaConstants.Locale | GoogleConstants.Locale | DFESConstants.Locale;
 
 export const platformClients = {
-  alexa: Alexa.client,
-  google: Google.client,
-  general: General.client,
-  dialogflow: Dialogflow.client,
+  alexa: alexaClient,
+  google: googleClient,
+  general: generalClient,
+  dialogflow: dialogflowClient,
 };
 
 export const getPlatformClient = Utils.platform.createPlatformSelector<PlatformClient>(
   {
-    [VoiceflowConstants.PlatformType.ALEXA]: Alexa.client,
-    [VoiceflowConstants.PlatformType.GOOGLE]: Google.client,
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: Dialogflow.client,
+    [VoiceflowConstants.PlatformType.ALEXA]: alexaClient,
+    [VoiceflowConstants.PlatformType.GOOGLE]: googleClient,
+    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: dialogflowClient,
   },
-  General.client
+  generalClient
 );
 
 export const getPlatformIntentNameFormatter = Utils.platform.createPlatformSelector<(name: string) => string>(
@@ -41,9 +45,9 @@ export const getPlatformIntentNameFormatter = Utils.platform.createPlatformSelec
 
 export const getUtteranceRecommendationsLocales = Utils.platform.createPlatformSelector<AnyLocale[]>(
   {
-    [VoiceflowConstants.PlatformType.ALEXA]: Alexa.Constants.UTTERANCE_RECOMMENDATIONS_LOCALES,
-    [VoiceflowConstants.PlatformType.GOOGLE]: Google.Constants.UTTERANCE_RECOMMENDATIONS_LOCALES,
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: Dialogflow.Constants.UTTERANCE_RECOMMENDATIONS_LOCALES,
+    [VoiceflowConstants.PlatformType.ALEXA]: ALEXA_UTTERANCE_RECOMMENDATIONS_LOCALES,
+    [VoiceflowConstants.PlatformType.GOOGLE]: GOOGLE_UTTERANCE_RECOMMENDATIONS_LOCALES,
+    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: DF_UTTERANCE_RECOMMENDATIONS_LOCALES,
   },
-  General.Constants.UTTERANCE_RECOMMENDATIONS_LOCALES
+  GENERAL_UTTERANCE_RECOMMENDATIONS_LOCALES
 );

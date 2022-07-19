@@ -1,5 +1,5 @@
 import { AlexaStageType, AnyStageType } from '@/constants/platforms';
-import { css } from '@/hocs';
+import { css } from '@/hocs/styled';
 
 const PopupLayout = (props?: { jobStage?: AnyStageType | null }) => {
   switch (props?.jobStage) {

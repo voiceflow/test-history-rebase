@@ -1,5 +1,5 @@
 import { SectionToggleVariant } from '@/components/Section/constants';
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 interface ContentContainerProps {
   noHeader?: boolean;

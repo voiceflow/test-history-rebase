@@ -1,8 +1,9 @@
 import { BoxFlex, Text } from '@voiceflow/ui';
 import React from 'react';
 
-import { ProjectItem, StageContainer } from '@/components/PlatformUploadPopup/components';
-import { PublishContext } from '@/contexts';
+import ProjectItem from '@/components/PlatformUploadPopup/components/ProjectItem';
+import StageContainer from '@/components/PlatformUploadPopup/components/StageContainer';
+import { PublishContext } from '@/contexts/PublishContext';
 import * as Account from '@/ducks/account';
 import { useDispatch, useSelector, useTrackingEvents } from '@/hooks';
 import { isReady } from '@/utils/job';

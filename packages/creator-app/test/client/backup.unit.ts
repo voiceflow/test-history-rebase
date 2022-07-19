@@ -7,9 +7,9 @@ import suite from './_suite';
 const PROJECT_ID = Utils.generate.id();
 const VERSION_ID = Utils.generate.id();
 
-suite('Client - Backup', ({ expect, stubFetch }) => {
+suite('Client - Backup', ({ stubFetch, expectMembers }) => {
   it('should have expected keys', () => {
-    expect(Object.keys(client)).to.have.members(['restore']);
+    expectMembers(Object.keys(client), ['restore']);
   });
 
   describe('restore()', () => {
@@ -18,7 +18,7 @@ suite('Client - Backup', ({ expect, stubFetch }) => {
 
       await client.restore(PROJECT_ID, VERSION_ID);
 
-      expect(fetch).to.be.calledWithExactly(`projects/${PROJECT_ID}/restore/${VERSION_ID}`);
+      expect(fetch).toBeCalledWith(`projects/${PROJECT_ID}/restore/${VERSION_ID}`);
     });
   });
 });

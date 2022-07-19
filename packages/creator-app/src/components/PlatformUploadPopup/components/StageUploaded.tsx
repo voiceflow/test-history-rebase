@@ -1,6 +1,7 @@
 import { Box, Button, FlexCenter, Link, Text } from '@voiceflow/ui';
 import React from 'react';
-import styled from 'styled-components';
+
+import { styled } from '@/hocs/styled';
 
 const UploadedContainer = styled(Box)`
   height: 100%;

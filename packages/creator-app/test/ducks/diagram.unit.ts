@@ -57,10 +57,11 @@ const MOCK_STATE: Diagram.DiagramState = {
     },
   },
   intentSteps: {},
+  startingBlocks: {},
   globalIntentStepMap: {},
 };
 
-suite(Diagram, MOCK_STATE)('Ducks - Diagram', ({ expect, stub, spy, describeReducerV2, describeEffectV2, createState, ...utils }) => {
+suite(Diagram, MOCK_STATE)('Ducks - Diagram', ({ describeReducerV2, describeEffectV2, createState, ...utils }) => {
   describe('reducer', () => {
     utils.assertIgnoresOtherActions();
     utils.assertInitialState(Diagram.INITIAL_STATE);
@@ -69,13 +70,13 @@ suite(Diagram, MOCK_STATE)('Ducks - Diagram', ({ expect, stub, spy, describeRedu
       it('append new variable', () => {
         const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, variable: 'foo' });
 
-        expect(result.byKey[DIAGRAM_ID].variables).to.eql(['fizz', 'buzz', 'foo']);
+        expect(result.byKey[DIAGRAM_ID].variables).toEqual(['fizz', 'buzz', 'foo']);
       });
 
       it('do nothing if variable already exists', () => {
         const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, variable: 'fizz' });
 
-        expect(result).to.eq(MOCK_STATE);
+        expect(result).toBe(MOCK_STATE);
       });
     });
 
@@ -83,13 +84,13 @@ suite(Diagram, MOCK_STATE)('Ducks - Diagram', ({ expect, stub, spy, describeRedu
       it('remove a known variable', () => {
         const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, variable: 'fizz' });
 
-        expect(result.byKey[DIAGRAM_ID].variables).to.eql(['buzz']);
+        expect(result.byKey[DIAGRAM_ID].variables).toEqual(['buzz']);
       });
 
       it('do nothing if variable does not exist', () => {
         const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, variable: 'foo' });
 
-        expect(result).to.eq(MOCK_STATE);
+        expect(result).toBe(MOCK_STATE);
       });
     });
 
@@ -99,7 +100,7 @@ suite(Diagram, MOCK_STATE)('Ducks - Diagram', ({ expect, stub, spy, describeRedu
 
         const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, diagramID, viewers: [{ creatorID: CREATOR_ID, name: 'bar' }] });
 
-        expect(result.awareness.viewers).to.eql({
+        expect(result.awareness.viewers).toEqual({
           ...MOCK_STATE.awareness.viewers,
           [diagramID]: Normal.normalize([{ creatorID: CREATOR_ID, creator_id: CREATOR_ID, name: 'bar', color: '5891FB|EFF5FF' }], (viewer) =>
             String(viewer.creatorID)
@@ -110,7 +111,7 @@ suite(Diagram, MOCK_STATE)('Ducks - Diagram', ({ expect, stub, spy, describeRedu
       it('replace viewers of known diagram', () => {
         const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, viewers: [{ creatorID: CREATOR_ID, name: 'bar' }] });
 
-        expect(result.awareness.viewers[DIAGRAM_ID]).to.eql(
+        expect(result.awareness.viewers[DIAGRAM_ID]).toEqual(
           Normal.normalize([{ creatorID: CREATOR_ID, creator_id: CREATOR_ID, name: 'bar', color: '5891FB|EFF5FF' }], (viewer) =>
             String(viewer.creatorID)
           )
@@ -127,7 +128,7 @@ suite(Diagram, MOCK_STATE)('Ducks - Diagram', ({ expect, stub, spy, describeRedu
           viewers: { [DIAGRAM_ID]: [{ creatorID: 456, name: 'bar' }], [diagramID]: [{ creatorID: 789, name: 'cat' }] },
         });
 
-        expect(result.awareness.viewers).to.eql({
+        expect(result.awareness.viewers).toEqual({
           ...MOCK_STATE.awareness.viewers,
           [DIAGRAM_ID]: Normal.normalize([{ creatorID: 456, creator_id: 456, name: 'bar', color: '697986|EEF0F1' }], (viewer) =>
             String(viewer.creatorID)
@@ -145,7 +146,7 @@ suite(Diagram, MOCK_STATE)('Ducks - Diagram', ({ expect, stub, spy, describeRedu
       it('select all diagrams', () => {
         const result = Diagram.allDiagramsSelector(createState(MOCK_STATE));
 
-        expect(result).to.eql([DIAGRAM, MOCK_STATE.byKey.abc]);
+        expect(result).toEqual([DIAGRAM, MOCK_STATE.byKey.abc]);
       });
     });
 
@@ -153,7 +154,7 @@ suite(Diagram, MOCK_STATE)('Ducks - Diagram', ({ expect, stub, spy, describeRedu
       it('select all diagrams IDs', () => {
         const result = Diagram.allDiagramIDsSelector(createState(MOCK_STATE));
 
-        expect(result).to.eq(MOCK_STATE.allKeys);
+        expect(result).toBe(MOCK_STATE.allKeys);
       });
     });
 
@@ -161,7 +162,7 @@ suite(Diagram, MOCK_STATE)('Ducks - Diagram', ({ expect, stub, spy, describeRedu
       it('select diagram map', () => {
         const result = Diagram.diagramMapSelector(createState(MOCK_STATE));
 
-        expect(result).to.eq(MOCK_STATE.byKey);
+        expect(result).toBe(MOCK_STATE.byKey);
       });
     });
 
@@ -169,13 +170,13 @@ suite(Diagram, MOCK_STATE)('Ducks - Diagram', ({ expect, stub, spy, describeRedu
       it('select known diagram', () => {
         const result = Diagram.diagramByIDSelector(createState(MOCK_STATE), { id: DIAGRAM_ID });
 
-        expect(result).to.eq(DIAGRAM);
+        expect(result).toBe(DIAGRAM);
       });
 
       it('select unknown diagram', () => {
         const result = Diagram.diagramByIDSelector(createState(MOCK_STATE), { id: 'foo' });
 
-        expect(result).to.be.null;
+        expect(result).toBeNull();
       });
     });
 
@@ -183,13 +184,13 @@ suite(Diagram, MOCK_STATE)('Ducks - Diagram', ({ expect, stub, spy, describeRedu
       it('select known diagrams', () => {
         const result = Diagram.diagramsByIDsSelector(createState(MOCK_STATE), { ids: ['abc', DIAGRAM_ID] });
 
-        expect(result).to.eql([MOCK_STATE.byKey.abc, DIAGRAM]);
+        expect(result).toEqual([MOCK_STATE.byKey.abc, DIAGRAM]);
       });
 
       it('select unknown diagrams', () => {
         const result = Diagram.diagramsByIDsSelector(createState(MOCK_STATE), { ids: ['foo', DIAGRAM_ID] });
 
-        expect(result).to.eql([DIAGRAM]);
+        expect(result).toEqual([DIAGRAM]);
       });
     });
 
@@ -197,67 +198,67 @@ suite(Diagram, MOCK_STATE)('Ducks - Diagram', ({ expect, stub, spy, describeRedu
       it('select variables from known diagram', () => {
         const result = Diagram.localVariablesByDiagramIDSelector(createState(MOCK_STATE), { id: DIAGRAM_ID });
 
-        expect(result).to.eq(DIAGRAM.variables);
+        expect(result).toBe(DIAGRAM.variables);
       });
 
       it('select variables from unknown diagram', () => {
         const result = Diagram.localVariablesByDiagramIDSelector(createState(MOCK_STATE), { id: 'foo' });
 
-        expect(result).to.eql([]);
+        expect(result).toEqual([]);
       });
     });
 
     describe('awarenessStateSelector()', () => {
       it('select diagram awarenes state', () => {
-        expect(Diagram.awarenessStateSelector(createState(MOCK_STATE))).to.eq(MOCK_STATE.awareness);
+        expect(Diagram.awarenessStateSelector(createState(MOCK_STATE))).toBe(MOCK_STATE.awareness);
       });
     });
 
     describe('awarenessViewersSelector()', () => {
       it('select diagram viewers state', () => {
-        expect(Diagram.awarenessViewersSelector(createState(MOCK_STATE))).to.eq(MOCK_STATE.awareness.viewers);
+        expect(Diagram.awarenessViewersSelector(createState(MOCK_STATE))).toBe(MOCK_STATE.awareness.viewers);
       });
     });
 
     describe('diagramViewersByIDSelector()', () => {
       it('select diagram viewers', () => {
-        expect(Diagram.diagramViewersByIDSelector(createState(MOCK_STATE), { id: DIAGRAM_ID })).to.eql(
+        expect(Diagram.diagramViewersByIDSelector(createState(MOCK_STATE), { id: DIAGRAM_ID })).toEqual(
           Normal.denormalize(MOCK_STATE.awareness.viewers[DIAGRAM_ID])
         );
       });
 
       it('select viewers of unknown diagram', () => {
-        expect(Diagram.diagramViewersByIDSelector(createState(MOCK_STATE), { id: 'foo' })).to.eql([]);
+        expect(Diagram.diagramViewersByIDSelector(createState(MOCK_STATE), { id: 'foo' })).toEqual([]);
       });
     });
 
     describe('hasExternalDiagramViewersByIDSelector()', () => {
       it('true if more than 1 active viewer', () => {
-        expect(Diagram.hasExternalDiagramViewersByIDSelector(createState(MOCK_STATE), { id: DIAGRAM_ID })).to.be.true;
+        expect(Diagram.hasExternalDiagramViewersByIDSelector(createState(MOCK_STATE), { id: DIAGRAM_ID })).toBeTruthy();
       });
 
       it('false if 1 or fewer active viewers', () => {
-        expect(Diagram.hasExternalDiagramViewersByIDSelector(createState(MOCK_STATE), { id: 'abc' })).to.be.false;
+        expect(Diagram.hasExternalDiagramViewersByIDSelector(createState(MOCK_STATE), { id: 'abc' })).toBeFalsy();
       });
 
       it('false if diagram unknown', () => {
-        expect(Diagram.hasExternalDiagramViewersByIDSelector(createState(MOCK_STATE), { id: 'abc' })).to.be.false;
+        expect(Diagram.hasExternalDiagramViewersByIDSelector(createState(MOCK_STATE), { id: 'abc' })).toBeFalsy();
       });
     });
 
     describe('diagramViewerByIDAndCreatorIDSelector()', () => {
       it('select known viewer from diagram', () => {
-        expect(Diagram.diagramViewerByIDAndCreatorIDSelector(createState(MOCK_STATE), { id: DIAGRAM_ID, creatorID: CREATOR_ID })).to.eq(
+        expect(Diagram.diagramViewerByIDAndCreatorIDSelector(createState(MOCK_STATE), { id: DIAGRAM_ID, creatorID: CREATOR_ID })).toBe(
           DIAGRAM_VIEWER
         );
       });
 
       it('select unknown viewer from diagram', () => {
-        expect(Diagram.diagramViewerByIDAndCreatorIDSelector(createState(MOCK_STATE), { id: DIAGRAM_ID, creatorID: -1 })).to.be.null;
+        expect(Diagram.diagramViewerByIDAndCreatorIDSelector(createState(MOCK_STATE), { id: DIAGRAM_ID, creatorID: -1 })).toBeNull();
       });
 
       it('select viewer from unknown diagram', () => {
-        expect(Diagram.diagramViewerByIDAndCreatorIDSelector(createState(MOCK_STATE), { id: 'abc', creatorID: CREATOR_ID })).to.be.null;
+        expect(Diagram.diagramViewerByIDAndCreatorIDSelector(createState(MOCK_STATE), { id: 'abc', creatorID: CREATOR_ID })).toBeNull();
       });
     });
   });
@@ -271,13 +272,13 @@ suite(Diagram, MOCK_STATE)('Ducks - Diagram', ({ expect, stub, spy, describeRedu
 
         const { dispatched } = await applyEffect(createState(MOCK_STATE, rootState), DIAGRAM_ID, 'fizz');
 
-        expect(dispatched).to.eql([{ sync: Realtime.diagram.removeLocalVariable({ ...ACTION_CONTEXT, variable: 'fizz' }) }]);
+        expect(dispatched).toEqual([{ sync: Realtime.diagram.removeLocalVariable({ ...ACTION_CONTEXT, variable: 'fizz' }) }]);
       });
     });
 
     describeEffectV2(DiagramV1.addLocalVariable, 'addLocalVariable()', ({ applyEffect }) => {
       it('fail if variable name is reserved javascript keyword', async () => {
-        await expect(applyEffect(createState(MOCK_STATE), DIAGRAM_ID, 'new', CanvasCreationType.IMM)).to.be.rejectedWith(
+        await expect(applyEffect(createState(MOCK_STATE), DIAGRAM_ID, 'new', CanvasCreationType.IMM)).rejects.toThrow(
           "Reserved word. You can prefix with '_' to fix this issue"
         );
       });
@@ -289,7 +290,7 @@ suite(Diagram, MOCK_STATE)('Ducks - Diagram', ({ expect, stub, spy, describeRedu
 
         const { dispatched } = await applyEffect(createState(MOCK_STATE, rootState), DIAGRAM_ID, 'fizz', CanvasCreationType.IMM);
 
-        expect(dispatched).to.eql([{ sync: Realtime.diagram.addLocalVariable({ ...ACTION_CONTEXT, variable: 'fizz' }) }]);
+        expect(dispatched).toEqual([{ sync: Realtime.diagram.addLocalVariable({ ...ACTION_CONTEXT, variable: 'fizz' }) }]);
       });
     });
 
@@ -302,7 +303,7 @@ suite(Diagram, MOCK_STATE)('Ducks - Diagram', ({ expect, stub, spy, describeRedu
 
         const { dispatched } = await applyEffect(createState(MOCK_STATE, rootState), 'fizz');
 
-        expect(dispatched).to.eql([{ sync: Realtime.diagram.removeLocalVariable({ ...ACTION_CONTEXT, variable: 'fizz' }) }]);
+        expect(dispatched).toEqual([{ sync: Realtime.diagram.removeLocalVariable({ ...ACTION_CONTEXT, variable: 'fizz' }) }]);
       });
     });
 
@@ -315,7 +316,7 @@ suite(Diagram, MOCK_STATE)('Ducks - Diagram', ({ expect, stub, spy, describeRedu
 
         const { dispatched } = await applyEffect(createState(MOCK_STATE, rootState), 'fizz', CanvasCreationType.IMM);
 
-        expect(dispatched).to.eql([{ sync: Realtime.diagram.addLocalVariable({ ...ACTION_CONTEXT, variable: 'fizz' }) }]);
+        expect(dispatched).toEqual([{ sync: Realtime.diagram.addLocalVariable({ ...ACTION_CONTEXT, variable: 'fizz' }) }]);
       });
     });
   });

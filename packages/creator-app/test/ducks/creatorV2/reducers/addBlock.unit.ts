@@ -2,15 +2,14 @@ import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { COLOR_PICKER_CONSTANTS } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
-import { normalize } from 'normal-store';
 
 import * as CreatorV2 from '@/ducks/creatorV2';
 
 import suite from '../../_suite';
 import { ACTION_CONTEXT, MOCK_STATE, NODE_ID } from '../_fixtures';
 
-suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addBlock reducer', ({ expect, describeReducerV2 }) => {
-  describeReducerV2(Realtime.node.addBlock, ({ applyAction }) => {
+suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addBlock reducer', ({ describeReducerV2 }) => {
+  describeReducerV2(Realtime.node.addBlock, ({ applyAction, normalizeContaining }) => {
     const blockID = 'blockNode';
     const stepID = 'stepNode';
     const blockName = 'New Block';
@@ -28,13 +27,14 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addBlock reducer', ({ expect,
         blockPorts: Realtime.Utils.port.createEmptyNodePorts(),
         stepPorts: Realtime.Utils.port.createEmptyNodePorts(),
         stepData,
+        schemaVersion: 1,
         projectMeta: {
           platform: VoiceflowConstants.PlatformType.VOICEFLOW,
           type: VoiceflowConstants.ProjectType.CHAT,
         },
       });
 
-      expect(result).to.eq(MOCK_STATE);
+      expect(result).toBe(MOCK_STATE);
     });
 
     it('ignore adding block with duplicate ID', () => {
@@ -43,6 +43,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addBlock reducer', ({ expect,
         blockID: NODE_ID,
         stepID,
         blockCoords,
+        schemaVersion: 1,
         blockName,
         blockPorts: Realtime.Utils.port.createEmptyNodePorts(),
         stepPorts: Realtime.Utils.port.createEmptyNodePorts(),
@@ -53,7 +54,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addBlock reducer', ({ expect,
         },
       });
 
-      expect(result).to.eql(MOCK_STATE);
+      expect(result).toEqual(MOCK_STATE);
     });
 
     it('ignore adding step with duplicate ID', () => {
@@ -63,6 +64,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addBlock reducer', ({ expect,
         stepID: NODE_ID,
         blockCoords,
         blockName,
+        schemaVersion: 1,
         blockPorts: Realtime.Utils.port.createEmptyNodePorts(),
         stepPorts: Realtime.Utils.port.createEmptyNodePorts(),
         stepData,
@@ -72,7 +74,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addBlock reducer', ({ expect,
         },
       });
 
-      expect(result).to.eql(MOCK_STATE);
+      expect(result).toEqual(MOCK_STATE);
     });
 
     it('add a block and step', () => {
@@ -84,6 +86,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addBlock reducer', ({ expect,
         blockName,
         blockPorts: Realtime.Utils.port.createEmptyNodePorts(),
         stepPorts: Realtime.Utils.port.createEmptyNodePorts(),
+        schemaVersion: 1,
         stepData,
         projectMeta: {
           platform: VoiceflowConstants.PlatformType.VOICEFLOW,
@@ -91,8 +94,8 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addBlock reducer', ({ expect,
         },
       });
 
-      expect(result.nodes).to.containSubset(
-        normalize(
+      expect(result.nodes).toEqual(
+        normalizeContaining(
           [
             { type: Realtime.BlockType.COMBINED, blockColor: COLOR_PICKER_CONSTANTS.BLOCK_STANDARD_COLOR, nodeID: blockID, name: blockName },
             { ...stepData, nodeID: stepID },
@@ -100,15 +103,15 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addBlock reducer', ({ expect,
           (node) => node.nodeID
         )
       );
-      expect(result.blockIDs).to.eql([blockID]);
-      expect(result.coordsByNodeID).to.eql({ [blockID]: blockCoords });
-      expect(result.stepIDsByParentNodeID).to.eql({ [blockID]: [stepID] });
-      expect(result.parentNodeIDByStepID).to.eql({ [stepID]: blockID });
-      expect(result.portsByNodeID).to.eql({
+      expect(result.blockIDs).toEqual([blockID]);
+      expect(result.coordsByNodeID).toEqual({ [blockID]: blockCoords });
+      expect(result.stepIDsByParentNodeID).toEqual({ [blockID]: [stepID] });
+      expect(result.parentNodeIDByStepID).toEqual({ [stepID]: blockID });
+      expect(result.portsByNodeID).toEqual({
         [blockID]: Realtime.Utils.port.createEmptyNodePorts(),
         [stepID]: Realtime.Utils.port.createEmptyNodePorts(),
       });
-      expect(result.linkIDsByNodeID).to.eql({ [blockID]: [], [stepID]: [] });
+      expect(result.linkIDsByNodeID).toEqual({ [blockID]: [], [stepID]: [] });
     });
 
     it('register all ports of an added block and step', () => {
@@ -133,11 +136,11 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addBlock reducer', ({ expect,
           in: [],
           out: {
             byKey: {
-              [byKeyPortKey]: { id: byKeyPortID },
+              [byKeyPortKey]: { id: byKeyPortID, label: null },
             },
-            dynamic: [{ id: dynamicPortID }],
+            dynamic: [{ id: dynamicPortID, label: null }],
             builtIn: {
-              [BaseModels.PortType.NEXT]: { id: builtInPortID },
+              [BaseModels.PortType.NEXT]: { id: builtInPortID, label: null },
             },
           },
         },
@@ -145,10 +148,11 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addBlock reducer', ({ expect,
           platform: VoiceflowConstants.PlatformType.VOICEFLOW,
           type: VoiceflowConstants.ProjectType.CHAT,
         },
+        schemaVersion: 1,
       });
 
-      expect(result.ports).to.containSubset(normalize([{ id: builtInPortID }, { id: dynamicPortID }, { id: inPortID }, { id: byKeyPortID }]));
-      expect(result.portsByNodeID).to.eql({
+      expect(result.ports).toEqual(normalizeContaining([{ id: builtInPortID }, { id: dynamicPortID }, { id: inPortID }, { id: byKeyPortID }]));
+      expect(result.portsByNodeID).toEqual({
         [blockID]: { in: [inPortID], out: { byKey: {}, dynamic: [], builtIn: {} } },
         [stepID]: {
           in: [],
@@ -161,8 +165,8 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addBlock reducer', ({ expect,
           },
         },
       });
-      expect(result.nodeIDByPortID).to.eql({ [inPortID]: blockID, [dynamicPortID]: stepID, [builtInPortID]: stepID, [byKeyPortID]: stepID });
-      expect(result.linkIDsByPortID).to.eql({ [inPortID]: [], [dynamicPortID]: [], [builtInPortID]: [], [byKeyPortID]: [] });
+      expect(result.nodeIDByPortID).toEqual({ [inPortID]: blockID, [dynamicPortID]: stepID, [builtInPortID]: stepID, [byKeyPortID]: stepID });
+      expect(result.linkIDsByPortID).toEqual({ [inPortID]: [], [dynamicPortID]: [], [builtInPortID]: [], [byKeyPortID]: [] });
     });
   });
 });

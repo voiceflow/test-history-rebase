@@ -5,7 +5,7 @@ import React from 'react';
 import GoogleLogin, { GoogleLoginProps, GoogleLoginResponse } from 'react-google-login';
 
 import { googleLogo } from '@/assets';
-import { GOOGLE_CLIENT_ID } from '@/config';
+import { GOOGLE_CLIENT_ID, IS_TEST } from '@/config';
 
 import SocialButton from './SocialButton';
 
@@ -15,8 +15,11 @@ export interface GoogleLoginButtonProps {
   onLogin: (userProfile: GoogleLoginResponse) => Promise<void>;
 }
 
+// vitest uses ES imports only, so the cjs modules with default named export not converted to default ES export
+const GglLogin: typeof GoogleLogin = IS_TEST ? (GoogleLogin as any).default || GoogleLogin : GoogleLogin;
+
 const GoogleLoginButton: React.FC<GoogleLoginButtonProps> = ({ light, disabled, onLogin }) => (
-  <GoogleLogin
+  <GglLogin
     clientId={GOOGLE_CLIENT_ID}
     render={(renderProps) => (
       <SocialButton

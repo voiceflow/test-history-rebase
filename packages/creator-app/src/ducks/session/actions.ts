@@ -1,5 +1,6 @@
-import { createAction } from '@/ducks/utils';
-import { Action } from '@/store/types';
+import { createAction } from '@voiceflow/ui';
+
+import type { Action } from '@/store/types';
 
 export enum SessionAction {
   SET_AUTH_TOKEN = 'SESSION:SET_AUTH_TOKEN',

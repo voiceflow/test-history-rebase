@@ -5,7 +5,7 @@ import { ReactFacebookLoginInfo } from 'react-facebook-login';
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
 
 import { facebookLogo } from '@/assets';
-import { FACEBOOK_APP_ID } from '@/config';
+import { FACEBOOK_APP_ID, IS_TEST } from '@/config';
 
 import SocialButton from './SocialButton';
 
@@ -15,8 +15,11 @@ export interface FacebookLoginButtonProps {
   onLogin: (fbUser: ReactFacebookLoginInfo) => Promise<void>;
 }
 
+// vitest uses ES imports only, so the cjs modules with default named export not converted to default ES export
+const FBLogin: typeof FacebookLogin = IS_TEST ? (FacebookLogin as any).default || FacebookLogin : FacebookLogin;
+
 const FacebookLoginButton: React.FC<FacebookLoginButtonProps> = ({ light, disabled, onLogin }) => (
-  <FacebookLogin
+  <FBLogin
     appId={FACEBOOK_APP_ID}
     fields="name,email,picture"
     render={(renderProps) => (

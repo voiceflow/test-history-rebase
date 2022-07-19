@@ -11,7 +11,7 @@ const MOCK_STATE = {
   _persist: { version: 1, rehydrated: false },
 };
 
-suite(Recent, MOCK_STATE)('Ducks - Recent', ({ expect, describeReducer, describeSelectors }) => {
+suite(Recent, MOCK_STATE)('Ducks - Recent', ({ describeReducer, describeSelectors }) => {
   describeReducer(({ expectAction }) => {
     describe('updateRecentPrototype()', () => {
       it('should update test configuration', () => {
@@ -25,7 +25,7 @@ suite(Recent, MOCK_STATE)('Ducks - Recent', ({ expect, describeReducer, describe
   describeSelectors(({ select }) => {
     describe('recentPrototypeSelector()', () => {
       it('should select the test tool configuration', () => {
-        expect(select(Recent.recentPrototypeSelector)).to.eq(TEST_CONFIG);
+        expect(select(Recent.recentPrototypeSelector)).toBe(TEST_CONFIG);
       });
     });
   });

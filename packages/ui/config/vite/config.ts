@@ -14,7 +14,9 @@ export default defineConfig({
 
   test: {
     ...config.test,
+    dir: './test',
     setupFiles: 'config/test/setup.ts',
+    restoreMocks: true,
     coverage: {
       ...config.test?.coverage,
       reporter: ['html', 'text', 'text-summary', 'lcov'],

@@ -1,7 +1,6 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 
-import variableStateAdapter from '@/client/adapters/variableState';
-
+import variableStateAdapter from './adapters/variableState';
 import { apiV2 } from './fetch';
 
 export const VARIABLE_STATES_PATH = 'variable-states';

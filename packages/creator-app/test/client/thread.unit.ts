@@ -7,21 +7,21 @@ import suite from './_suite';
 
 const PROJECT_ID = Utils.generate.id();
 
-suite('Client - Thread', ({ expect, stubFetch, stubAdapter }) => {
+suite('Client - Thread', ({ expectMembers, stubFetch, stubAdapter }) => {
   it('should have expected keys', () => {
-    expect(Object.keys(client)).to.have.members(['find', 'get', 'create', 'update']);
+    expectMembers(Object.keys(client), ['find', 'get', 'create', 'update']);
   });
 
   describe('find()', () => {
     it('should find all project threads', async () => {
       const dbThreads = Utils.generate.array(3, Utils.generate.object);
-      const fetch = stubFetch('api', 'get').resolves({ threads: dbThreads });
+      const fetch = stubFetch('api', 'get').mockResolvedValue({ threads: dbThreads });
       const [threads, mapThreadsFromDB] = stubAdapter(threadAdapter, 'mapFromDB', () => Utils.generate.array(3, Utils.generate.object));
 
-      await expect(client.find(PROJECT_ID)).to.eventually.eq(threads);
+      expect(await client.find(PROJECT_ID)).toEqual(threads);
 
-      expect(fetch).to.be.calledWithExactly(`${COMMENTING_PATH}/${PROJECT_ID}/threads`);
-      expect(mapThreadsFromDB).to.be.calledWithExactly(dbThreads);
+      expect(fetch).toBeCalledWith(`${COMMENTING_PATH}/${PROJECT_ID}/threads`);
+      expect(mapThreadsFromDB).toBeCalledWith(dbThreads);
     });
   });
 
@@ -29,13 +29,13 @@ suite('Client - Thread', ({ expect, stubFetch, stubAdapter }) => {
     it('should get a thread by ID', async () => {
       const dbThread = Utils.generate.object();
       const threadID = Utils.generate.id();
-      const fetch = stubFetch('api', 'get').resolves({ thread: dbThread });
+      const fetch = stubFetch('api', 'get').mockResolvedValue({ thread: dbThread });
       const [thread, threadFromDB] = stubAdapter(threadAdapter, 'fromDB', Utils.generate.object);
 
-      await expect(client.get(PROJECT_ID, threadID)).to.eventually.eq(thread);
+      expect(await client.get(PROJECT_ID, threadID)).toEqual(thread);
 
-      expect(fetch).to.be.calledWithExactly(`${COMMENTING_PATH}/${PROJECT_ID}/threads/${threadID}`);
-      expect(threadFromDB).to.be.calledWithExactly(dbThread);
+      expect(fetch).toBeCalledWith(`${COMMENTING_PATH}/${PROJECT_ID}/threads/${threadID}`);
+      expect(threadFromDB).toBeCalledWith(dbThread);
     });
   });
 
@@ -43,15 +43,15 @@ suite('Client - Thread', ({ expect, stubFetch, stubAdapter }) => {
     it('should create a new thread', async () => {
       const dbThread = Utils.generate.object();
       const data: any = Utils.generate.object();
-      const fetch = stubFetch('api', 'post').resolves(dbThread);
+      const fetch = stubFetch('api', 'post').mockResolvedValue(dbThread);
       const [thread, threadFromDB] = stubAdapter(threadAdapter, 'fromDB', Utils.generate.object);
       const [dbData, threadToDB] = stubAdapter(threadAdapter, 'toDB', Utils.generate.object);
 
-      await expect(client.create(PROJECT_ID, data)).to.eventually.eq(thread);
+      expect(await client.create(PROJECT_ID, data)).toEqual(thread);
 
-      expect(fetch).to.be.calledWithExactly(`${COMMENTING_PATH}/${PROJECT_ID}/threads`, dbData);
-      expect(threadFromDB).to.be.calledWithExactly(dbThread);
-      expect(threadToDB).to.be.calledWithExactly(data);
+      expect(fetch).toBeCalledWith(`${COMMENTING_PATH}/${PROJECT_ID}/threads`, dbData);
+      expect(threadFromDB).toBeCalledWith(dbThread);
+      expect(threadToDB).toBeCalledWith(data);
     });
   });
 
@@ -60,7 +60,7 @@ suite('Client - Thread', ({ expect, stubFetch, stubAdapter }) => {
       const dbThread = Utils.generate.object();
       const data: any = Utils.generate.object();
       const threadID = Utils.generate.id();
-      const fetch = stubFetch('api', 'put').resolves(dbThread);
+      const fetch = stubFetch('api', 'put').mockResolvedValue(dbThread);
       const [dbData, threadToDB] = stubAdapter(threadAdapter, 'toDB', () => ({
         resolved: true,
         deleted: false,
@@ -70,8 +70,8 @@ suite('Client - Thread', ({ expect, stubFetch, stubAdapter }) => {
 
       await client.update(PROJECT_ID, threadID, data);
 
-      expect(fetch).to.be.calledWithExactly(`${COMMENTING_PATH}/${PROJECT_ID}/threads/${threadID}`, dbData);
-      expect(threadToDB).to.be.calledWithExactly(data);
+      expect(fetch).toBeCalledWith(`${COMMENTING_PATH}/${PROJECT_ID}/threads/${threadID}`, dbData);
+      expect(threadToDB).toBeCalledWith(data);
     });
   });
 });

@@ -6,9 +6,9 @@ import { SessionType } from '@/constants';
 
 import suite from './_suite';
 
-suite('Client - Session', ({ expect, stubFetch }) => {
+suite('Client - Session', ({ expectMembers, stubFetch }) => {
   it('should have expected keys', () => {
-    expect(Object.keys(client)).to.have.members(['delete', 'create']);
+    expectMembers(Object.keys(client), ['delete', 'create']);
   });
 
   describe('delete()', () => {
@@ -17,7 +17,7 @@ suite('Client - Session', ({ expect, stubFetch }) => {
 
       await client.delete();
 
-      expect(fetch).to.be.calledWithExactly(SESSION_PATH);
+      expect(fetch).toBeCalledWith(SESSION_PATH);
     });
   });
 
@@ -25,14 +25,14 @@ suite('Client - Session', ({ expect, stubFetch }) => {
     it('create sessions', async () => {
       const user: any = Utils.generate.object();
       const authResponse = Utils.generate.object();
-      const fetch = stubFetch('api', 'put').resolves(authResponse);
+      const fetch = stubFetch('api', 'put').mockResolvedValue(authResponse);
 
       await Promise.all(
         Object.values(SessionType).map(async (sessionType) => {
           const result = await client.create(sessionType, user);
 
-          expect(result).to.eq(authResponse);
-          expect(fetch).to.be.calledWithExactly(SESSION_ENDPOINTS[sessionType], { user, device: DEVICE_INFO });
+          expect(result).toEqual(authResponse);
+          expect(fetch).toBeCalledWith(SESSION_ENDPOINTS[sessionType], { user, device: DEVICE_INFO });
         })
       );
     });

@@ -1,4 +1,3 @@
-/* eslint-disable mocha/no-identical-title */
 import { AlexaConstants } from '@voiceflow/alexa-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
@@ -33,13 +32,13 @@ const MOCK_STATE: Product.ProductState = {
   allKeys: [PRODUCT_ID, 'abc'],
 };
 
-suite(Product, MOCK_STATE)('Ducks - Product V2', ({ expect, describeEffectV2, createState }) => {
+suite(Product, MOCK_STATE)('Ducks - Product V2', ({ describeEffectV2, createState }) => {
   describe('selectors', () => {
     describe('allProductsSelector()', () => {
       it('select all products', () => {
         const result = Product.allProductsSelector(createState(MOCK_STATE));
 
-        expect(result).to.eql([PRODUCT, MOCK_STATE.byKey.abc]);
+        expect(result).toEqual([PRODUCT, MOCK_STATE.byKey.abc]);
       });
     });
 
@@ -47,7 +46,7 @@ suite(Product, MOCK_STATE)('Ducks - Product V2', ({ expect, describeEffectV2, cr
       it('select product map', () => {
         const result = Product.productMapSelector(createState(MOCK_STATE));
 
-        expect(result).to.eq(MOCK_STATE.byKey);
+        expect(result).toBe(MOCK_STATE.byKey);
       });
     });
 
@@ -55,13 +54,13 @@ suite(Product, MOCK_STATE)('Ducks - Product V2', ({ expect, describeEffectV2, cr
       it('select known product', () => {
         const result = Product.productByIDSelector(createState(MOCK_STATE), { id: PRODUCT_ID });
 
-        expect(result).to.eq(PRODUCT);
+        expect(result).toBe(PRODUCT);
       });
 
       it('select unknown product', () => {
         const result = Product.productByIDSelector(createState(MOCK_STATE), { id: 'foo' });
 
-        expect(result).to.be.null;
+        expect(result).toBeNull();
       });
     });
 
@@ -69,13 +68,13 @@ suite(Product, MOCK_STATE)('Ducks - Product V2', ({ expect, describeEffectV2, cr
       it('select known products', () => {
         const result = Product.productsByIDsSelector(createState(MOCK_STATE), { ids: ['abc', PRODUCT_ID] });
 
-        expect(result).to.eql([MOCK_STATE.byKey.abc, PRODUCT]);
+        expect(result).toEqual([MOCK_STATE.byKey.abc, PRODUCT]);
       });
 
       it('select unknown products', () => {
         const result = Product.productsByIDsSelector(createState(MOCK_STATE), { ids: ['foo', PRODUCT_ID] });
 
-        expect(result).to.eql([PRODUCT]);
+        expect(result).toEqual([PRODUCT]);
       });
     });
   });
@@ -89,7 +88,7 @@ suite(Product, MOCK_STATE)('Ducks - Product V2', ({ expect, describeEffectV2, cr
 
       const { dispatched } = await applyEffect(rootState, PRODUCT_ID, { name });
 
-      expect(dispatched).to.eql([{ sync: Realtime.product.crud.patch({ ...ACTION_CONTEXT, key: PRODUCT_ID, value: { name } }) }]);
+      expect(dispatched).toEqual([{ sync: Realtime.product.crud.patch({ ...ACTION_CONTEXT, key: PRODUCT_ID, value: { name } }) }]);
     });
   });
 
@@ -101,7 +100,7 @@ suite(Product, MOCK_STATE)('Ducks - Product V2', ({ expect, describeEffectV2, cr
 
       const { dispatched } = await applyEffect(rootState, PRODUCT_ID);
 
-      expect(dispatched).to.eql([{ sync: Realtime.product.crud.remove({ ...ACTION_CONTEXT, key: PRODUCT_ID }) }]);
+      expect(dispatched).toEqual([{ sync: Realtime.product.crud.remove({ ...ACTION_CONTEXT, key: PRODUCT_ID }) }]);
     });
   });
 });

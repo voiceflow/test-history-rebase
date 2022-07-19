@@ -5,7 +5,7 @@ import * as CreatorV2 from '@/ducks/creatorV2';
 import suite from '../../_suite';
 import { ACTION_CONTEXT, MOCK_STATE, NODE_ID, PORT_ID, V2_FEATURE_STATE } from '../_fixtures';
 
-suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - reorderDynamicPorts reducer', ({ expect, createState, describeReducerV2, describeReverter }) => {
+suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - reorderDynamicPorts reducer', ({ createState, describeReducerV2, describeReverter }) => {
   describeReducerV2(Realtime.port.reorderDynamic, ({ applyAction }) => {
     it('ignore reordering ports for a different diagram', () => {
       const result = applyAction(MOCK_STATE, {
@@ -16,7 +16,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - reorderDynamicPorts reducer',
         index: 1,
       });
 
-      expect(result).to.eq(MOCK_STATE);
+      expect(result).toBe(MOCK_STATE);
     });
 
     it('ignore reordering port with unrecognized ID', () => {
@@ -27,7 +27,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - reorderDynamicPorts reducer',
         index: 1,
       });
 
-      expect(result).to.eq(MOCK_STATE);
+      expect(result).toBe(MOCK_STATE);
     });
 
     it('ignore reordering port that does not exist on node', () => {
@@ -52,7 +52,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - reorderDynamicPorts reducer',
         index: 2,
       });
 
-      expect(result).to.eq(initialState);
+      expect(result).toBe(initialState);
     });
 
     it('reorder an existing dynamic port', () => {
@@ -78,7 +78,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - reorderDynamicPorts reducer',
         }
       );
 
-      expect(result.portsByNodeID[NODE_ID]?.out.dynamic).to.eql(['foo', PORT_ID, 'bar', 'fizz']);
+      expect(result.portsByNodeID[NODE_ID]?.out.dynamic).toEqual(['foo', PORT_ID, 'bar', 'fizz']);
     });
   });
 
@@ -96,7 +96,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - reorderDynamicPorts reducer',
 
       const result = revertAction(rootState, { ...ACTION_CONTEXT, nodeID: NODE_ID, portID: PORT_ID, index: 2 });
 
-      expect(result).to.eql(Realtime.port.reorderDynamic({ ...ACTION_CONTEXT, nodeID: NODE_ID, portID: PORT_ID, index: 1 }));
+      expect(result).toEqual(Realtime.port.reorderDynamic({ ...ACTION_CONTEXT, nodeID: NODE_ID, portID: PORT_ID, index: 1 }));
     });
   });
 });

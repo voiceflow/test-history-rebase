@@ -35,6 +35,7 @@ const MOCK_STATE: Diagram.DiagramState = {
     },
   },
   allKeys: [DIAGRAM_ID, 'abc'],
+  startingBlocks: {},
   awareness: {
     viewers: {},
     locks: {},
@@ -51,7 +52,7 @@ const MOCK_STATE: Diagram.DiagramState = {
   },
 };
 
-suite(Diagram, MOCK_STATE)('Ducks - Diagram V2', ({ expect, describeReducerV2, createState, ...utils }) => {
+suite(Diagram, MOCK_STATE)('Ducks - Diagram V2', ({ describeReducerV2, createState, ...utils }) => {
   describe('reducer', () => {
     utils.assertIgnoresOtherActions();
     utils.assertInitialState(Diagram.INITIAL_STATE);
@@ -67,7 +68,7 @@ suite(Diagram, MOCK_STATE)('Ducks - Diagram V2', ({ expect, describeReducerV2, c
           ],
         });
 
-        expect(result.byKey[DIAGRAM_ID].intentStepIDs).to.eql([...DIAGRAM.intentStepIDs, 'foo']);
+        expect(result.byKey[DIAGRAM_ID].intentStepIDs).toEqual([...DIAGRAM.intentStepIDs, 'foo']);
       });
 
       it('update intent step lookup', () => {
@@ -80,7 +81,7 @@ suite(Diagram, MOCK_STATE)('Ducks - Diagram V2', ({ expect, describeReducerV2, c
           ],
         });
 
-        expect(result.intentSteps[DIAGRAM_ID]).to.eql({
+        expect(result.intentSteps[DIAGRAM_ID]).toEqual({
           foo: { intentID: 'fizz', global: false },
           [STEP_ID]: { intentID: 'buzz', global: true },
         });
@@ -94,7 +95,7 @@ suite(Diagram, MOCK_STATE)('Ducks - Diagram V2', ({ expect, describeReducerV2, c
           intentSteps: [{ stepID: 'foo', intent: { intentID: 'bar', global: true } }],
         });
 
-        expect(result.intentSteps[diagramID]).to.eql({ foo: { intentID: 'bar', global: true } });
+        expect(result.intentSteps[diagramID]).toEqual({ foo: { intentID: 'bar', global: true } });
       });
     });
   });

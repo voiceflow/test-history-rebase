@@ -6,8 +6,8 @@ const SERVICE_ENDPOINT = 'https://service';
 
 const client = createClient(SERVICE_ENDPOINT);
 
-suite('Platform Client - Utils - Publish', ({ expect }) => {
+suite('Platform Client - Utils - Publish', ({ expectMembers }) => {
   it('should have expected keys', () => {
-    expect(Object.keys(client)).to.have.members(['run', 'cancel', 'getStatus', 'updateStage']);
+    expectMembers(Object.keys(client), ['run', 'cancel', 'getStatus', 'updateStage']);
   });
 });

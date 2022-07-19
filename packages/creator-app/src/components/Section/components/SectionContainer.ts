@@ -1,4 +1,4 @@
-import { css, styled, transition, units } from '@/hocs';
+import { css, styled, transition, units } from '@/hocs/styled';
 
 import { SectionVariant } from '../constants';
 import ContentContainer from './ContentContainer';

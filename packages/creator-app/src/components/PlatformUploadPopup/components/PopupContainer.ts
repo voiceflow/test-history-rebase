@@ -1,7 +1,7 @@
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import { AnyStageType } from '@/constants/platforms';
-import { css, styled } from '@/hocs';
+import { css, styled } from '@/hocs/styled';
 
 import { getPlatformPopupLayout } from '../constants';
 

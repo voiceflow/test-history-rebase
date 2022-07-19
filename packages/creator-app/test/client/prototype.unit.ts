@@ -8,31 +8,31 @@ import suite from './_suite';
 
 const VERSION_ID = Utils.generate.id();
 
-suite('Client - Prototype', ({ expect, stub }) => {
+suite('Client - Prototype', ({ expectMembers }) => {
   it('have expected keys', () => {
-    expect(Object.keys(client)).to.have.members(['interact']);
+    expectMembers(Object.keys(client), ['interact']);
   });
 
   describe('interact()', () => {
     it('should interact with a prototype', async () => {
       const data: any = Utils.generate.object();
       const response = new Blob();
-      const axiosPost = stub(axios, 'post').resolves({ data: response });
+      const axiosPost = vi.spyOn(axios, 'post').mockResolvedValue({ data: response });
 
-      await expect(client.interact(VERSION_ID, data)).to.eventually.eq(response);
+      expect(await client.interact(VERSION_ID, data)).toEqual(response);
 
-      expect(axiosPost).to.be.calledWithExactly(`${GENERAL_RUNTIME_ENDPOINT}/interact/${VERSION_ID}`, data, { headers: {} });
+      expect(axiosPost).toBeCalledWith(`${GENERAL_RUNTIME_ENDPOINT}/interact/${VERSION_ID}`, data, { headers: {} });
     });
 
     it('should interact with a prototype with a session ID', async () => {
       const data: any = Utils.generate.object();
       const sessionID = Utils.generate.id();
       const response = new Blob();
-      const axiosPost = stub(axios, 'post').resolves({ data: response });
+      const axiosPost = vi.spyOn(axios, 'post').mockResolvedValue({ data: response });
 
-      await expect(client.interact(VERSION_ID, data, { sessionID })).to.eventually.eq(response);
+      expect(await client.interact(VERSION_ID, data, { sessionID })).toEqual(response);
 
-      expect(axiosPost).to.be.calledWithExactly(`${GENERAL_RUNTIME_ENDPOINT}/interact/${VERSION_ID}`, data, { headers: { sessionID } });
+      expect(axiosPost).toBeCalledWith(`${GENERAL_RUNTIME_ENDPOINT}/interact/${VERSION_ID}`, data, { headers: { sessionID } });
     });
   });
 });

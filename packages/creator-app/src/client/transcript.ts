@@ -1,8 +1,8 @@
-import dialogAdapter from '@/client/adapters/transcripts/dialogs';
-import transcriptAdapter from '@/client/adapters/transcripts/transcripts';
-import { AnyTranscriptMessage, TagType, Transcript } from '@/models';
-import { Message } from '@/pages/Prototype/types';
+import type { AnyTranscriptMessage, TagType, Transcript } from '@/models';
+import type { Message } from '@/pages/Prototype/types';
 
+import dialogAdapter from './adapters/transcripts/dialogs';
+import transcriptAdapter from './adapters/transcripts/transcripts';
 import { apiV2 } from './fetch';
 
 export const TRANSCRIPT_PATH = 'transcripts';

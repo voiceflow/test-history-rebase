@@ -60,7 +60,7 @@ const MOCK_STATE: History.HistoryState = {
   ],
 };
 
-suite(History, MOCK_STATE)('Ducks - History', ({ expect, stub, describeReducerV2, describeEffectV2, createState, ...utils }) => {
+suite(History, MOCK_STATE)('Ducks - History', ({ describeReducerV2, describeEffectV2, createState, ...utils }) => {
   describe('reducer', () => {
     utils.assertIgnoresOtherActions();
     utils.assertInitialState(History.INITIAL_STATE);
@@ -71,14 +71,14 @@ suite(History, MOCK_STATE)('Ducks - History', ({ expect, stub, describeReducerV2
         const state = { ...MOCK_STATE, buffer: { id: 'foo', apply: [], revert: [] } };
         const result = applyAction(state, { transactionID });
 
-        expect(result).to.eq(state);
+        expect(result).toBe(state);
       });
 
       it('create a new transaction buffer', () => {
         const transactionID = 'transactionID';
         const result = applyAction(MOCK_STATE, { transactionID });
 
-        expect(result.buffer).to.eql({ id: transactionID, apply: [], revert: [] });
+        expect(result.buffer).toEqual({ id: transactionID, apply: [], revert: [] });
       });
     });
 
@@ -93,21 +93,21 @@ suite(History, MOCK_STATE)('Ducks - History', ({ expect, stub, describeReducerV2
           { transaction }
         );
 
-        expect(result.buffer).to.eql({
+        expect(result.buffer).toEqual({
           id: 'foo',
           apply: [{ type: 'old_apply', payload: null }, apply],
           revert: [{ type: 'old_revert', payload: null }, revert],
         });
-        expect(result.undo).to.eql(MOCK_STATE.undo);
-        expect(result.redo).to.eql(MOCK_STATE.redo);
+        expect(result.undo).toEqual(MOCK_STATE.undo);
+        expect(result.redo).toEqual(MOCK_STATE.redo);
       });
 
       it('push transaction directly to undo stack', () => {
         const result = applyAction(MOCK_STATE, { transaction });
 
-        expect(result.buffer).to.be.null;
-        expect(result.undo).to.eql([...MOCK_STATE.undo, transaction]);
-        expect(result.redo).to.eql([]);
+        expect(result.buffer).toBeNull();
+        expect(result.undo).toEqual([...MOCK_STATE.undo, transaction]);
+        expect(result.redo).toEqual([]);
       });
     });
 
@@ -117,7 +117,7 @@ suite(History, MOCK_STATE)('Ducks - History', ({ expect, stub, describeReducerV2
       it('do nothing if no transaction buffer is active', () => {
         const result = applyAction(MOCK_STATE, { transactionID });
 
-        expect(result).to.eq(MOCK_STATE);
+        expect(result).toBe(MOCK_STATE);
       });
 
       it('do nothing if active transaction buffer does not match', () => {
@@ -125,13 +125,13 @@ suite(History, MOCK_STATE)('Ducks - History', ({ expect, stub, describeReducerV2
 
         const result = applyAction(state, { transactionID });
 
-        expect(result).to.eq(state);
+        expect(result).toBe(state);
       });
 
       it('clear buffer if empty', () => {
         const result = applyAction({ ...MOCK_STATE, buffer: { id: transactionID, apply: [], revert: [] } }, { transactionID });
 
-        expect(result.buffer).to.be.null;
+        expect(result.buffer).toBeNull();
       });
 
       it('flush transaction', () => {
@@ -140,9 +140,9 @@ suite(History, MOCK_STATE)('Ducks - History', ({ expect, stub, describeReducerV2
 
         const result = applyAction({ ...MOCK_STATE, buffer: { id: transactionID, apply: [apply], revert: [revert] } }, { transactionID });
 
-        expect(result.buffer).to.be.null;
-        expect(result.undo).to.eql([...MOCK_STATE.undo, { id: transactionID, apply: [apply], revert: [revert] }]);
-        expect(result.redo).to.eql([]);
+        expect(result.buffer).toBeNull();
+        expect(result.undo).toEqual([...MOCK_STATE.undo, { id: transactionID, apply: [apply], revert: [revert] }]);
+        expect(result.redo).toEqual([]);
       });
     });
 
@@ -150,14 +150,14 @@ suite(History, MOCK_STATE)('Ducks - History', ({ expect, stub, describeReducerV2
       it('do nothing if no matching undo transaction exists', () => {
         const result = applyAction(MOCK_STATE, { transactionID: '100', revertID: '101' });
 
-        expect(result).to.eq(MOCK_STATE);
+        expect(result).toBe(MOCK_STATE);
       });
 
       it('undo transaction', () => {
         const result = applyAction(MOCK_STATE, { transactionID: '2', revertID: '101' });
 
-        expect(result.undo).to.eql([MOCK_STATE.undo[0]]);
-        expect(result.redo).to.eql([
+        expect(result.undo).toEqual([MOCK_STATE.undo[0]]);
+        expect(result.redo).toEqual([
           ...MOCK_STATE.redo,
           {
             id: '101',
@@ -178,14 +178,14 @@ suite(History, MOCK_STATE)('Ducks - History', ({ expect, stub, describeReducerV2
       it('do nothing if no matching redo transaction exists', () => {
         const result = applyAction(MOCK_STATE, { transactionID: '999', revertID: '100' });
 
-        expect(result).to.eq(MOCK_STATE);
+        expect(result).toBe(MOCK_STATE);
       });
 
       it('redo transaction', () => {
         const result = applyAction(MOCK_STATE, { transactionID: '4', revertID: '101' });
 
-        expect(result.redo).to.eql([MOCK_STATE.redo[0]]);
-        expect(result.undo).to.eql([
+        expect(result.redo).toEqual([MOCK_STATE.redo[0]]);
+        expect(result.undo).toEqual([
           ...MOCK_STATE.undo,
           {
             id: '101',
@@ -206,8 +206,8 @@ suite(History, MOCK_STATE)('Ducks - History', ({ expect, stub, describeReducerV2
       it('remove all matching transactions', () => {
         const result = applyAction(MOCK_STATE, { transactionIDs: ['2', '4'] });
 
-        expect(result.undo).to.eql([MOCK_STATE.undo[0]]);
-        expect(result.redo).to.eql([MOCK_STATE.redo[0]]);
+        expect(result.undo).toEqual([MOCK_STATE.undo[0]]);
+        expect(result.redo).toEqual([MOCK_STATE.redo[0]]);
       });
     });
 
@@ -215,7 +215,7 @@ suite(History, MOCK_STATE)('Ducks - History', ({ expect, stub, describeReducerV2
       it('resets history state on creator reset', () => {
         const result = applyAction(MOCK_STATE);
 
-        expect(result).to.eql(History.INITIAL_STATE);
+        expect(result).toEqual(History.INITIAL_STATE);
       });
     });
 
@@ -223,7 +223,7 @@ suite(History, MOCK_STATE)('Ducks - History', ({ expect, stub, describeReducerV2
       it('resets history state on creator initialize', () => {
         const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, nodesWithData: [], ports: [], links: [] });
 
-        expect(result).to.eql(History.INITIAL_STATE);
+        expect(result).toEqual(History.INITIAL_STATE);
       });
     });
   });
@@ -233,7 +233,7 @@ suite(History, MOCK_STATE)('Ducks - History', ({ expect, stub, describeReducerV2
       it('select all undo transactions', () => {
         const result = History.undoTransactionsSelector(createState(MOCK_STATE));
 
-        expect(result).to.eq(MOCK_STATE.undo);
+        expect(result).toBe(MOCK_STATE.undo);
       });
     });
 
@@ -241,7 +241,7 @@ suite(History, MOCK_STATE)('Ducks - History', ({ expect, stub, describeReducerV2
       it('select all redo transactions', () => {
         const result = History.redoTransactionsSelector(createState(MOCK_STATE));
 
-        expect(result).to.eq(MOCK_STATE.redo);
+        expect(result).toBe(MOCK_STATE.redo);
       });
     });
 
@@ -249,7 +249,7 @@ suite(History, MOCK_STATE)('Ducks - History', ({ expect, stub, describeReducerV2
       it('select the most recent undo transaction', () => {
         const result = History.latestUndoTransactionSelector(createState(MOCK_STATE));
 
-        expect(result).to.eq(MOCK_STATE.undo[1]);
+        expect(result).toBe(MOCK_STATE.undo[1]);
       });
     });
 
@@ -257,7 +257,7 @@ suite(History, MOCK_STATE)('Ducks - History', ({ expect, stub, describeReducerV2
       it('select the most recent redo transaction', () => {
         const result = History.latestRedoTransactionSelector(createState(MOCK_STATE));
 
-        expect(result).to.eq(MOCK_STATE.redo[1]);
+        expect(result).toBe(MOCK_STATE.redo[1]);
       });
     });
   });
@@ -267,11 +267,11 @@ suite(History, MOCK_STATE)('Ducks - History', ({ expect, stub, describeReducerV2
       it('bookend operation to establish transaction context', async () => {
         const transactionID = 'xyz';
         const rootState = createState(MOCK_STATE, V2_HISTORY_STATE);
-        stub(Utils.id, 'cuid').returns(transactionID);
+        vi.spyOn(Utils.id, 'cuid').mockReturnValue(transactionID);
 
         const { dispatched } = await applyEffect(rootState, () => {});
 
-        expect(dispatched).to.eql([History.startTransaction({ transactionID }), History.flushTransaction({ transactionID })]);
+        expect(dispatched).toEqual([History.startTransaction({ transactionID }), History.flushTransaction({ transactionID })]);
       });
     });
 
@@ -281,7 +281,7 @@ suite(History, MOCK_STATE)('Ducks - History', ({ expect, stub, describeReducerV2
 
         const { dispatched } = await applyEffect(rootState);
 
-        expect(dispatched).to.eql([Creator.undoHistory()]);
+        expect(dispatched).toEqual([Creator.undoHistory()]);
       });
 
       it('do nothing if no undo transactions available', async () => {
@@ -289,17 +289,17 @@ suite(History, MOCK_STATE)('Ducks - History', ({ expect, stub, describeReducerV2
 
         const { dispatched } = await applyEffect(rootState);
 
-        expect(dispatched).to.eql([]);
+        expect(dispatched).toEqual([]);
       });
 
       it('dispatch actions to apply the most recent undo transaction', async () => {
         const revertID = 'xyz';
         const rootState = createState(MOCK_STATE, V2_HISTORY_STATE);
-        stub(Utils.id, 'cuid').returns(revertID);
+        vi.spyOn(Utils.id, 'cuid').mockReturnValue(revertID);
 
         const { dispatched } = await applyEffect(rootState);
 
-        expect(dispatched).to.eql([
+        expect(dispatched).toEqual([
           { sync: { type: 'bar/a', payload: null, meta: { [REPLAY_KEY]: true } } },
           { sync: { type: 'bar/b', payload: null, meta: { [REPLAY_KEY]: true } } },
           History.undoTransaction({ transactionID: '2', revertID }),
@@ -313,7 +313,7 @@ suite(History, MOCK_STATE)('Ducks - History', ({ expect, stub, describeReducerV2
 
         const { dispatched } = await applyEffect(rootState);
 
-        expect(dispatched).to.eql([Creator.redoHistory()]);
+        expect(dispatched).toEqual([Creator.redoHistory()]);
       });
 
       it('do nothing if no redo transactions available', async () => {
@@ -321,17 +321,17 @@ suite(History, MOCK_STATE)('Ducks - History', ({ expect, stub, describeReducerV2
 
         const { dispatched } = await applyEffect(rootState);
 
-        expect(dispatched).to.eql([]);
+        expect(dispatched).toEqual([]);
       });
 
       it('dispatch actions to apply the most recent redo transaction', async () => {
         const revertID = 'xyz';
         const rootState = createState(MOCK_STATE, V2_HISTORY_STATE);
-        stub(Utils.id, 'cuid').returns(revertID);
+        vi.spyOn(Utils.id, 'cuid').mockReturnValue(revertID);
 
         const { dispatched } = await applyEffect(rootState);
 
-        expect(dispatched).to.eql([
+        expect(dispatched).toEqual([
           { sync: { type: 'fee/1', payload: null, meta: { [REPLAY_KEY]: true } } },
           { sync: { type: 'fee/2', payload: null, meta: { [REPLAY_KEY]: true } } },
           History.redoTransaction({ transactionID: '4', revertID }),

@@ -1,12 +1,11 @@
 import { BaseNode, BaseRequest } from '@voiceflow/base-types';
 import { Nullable, Utils } from '@voiceflow/common';
 
-import { CarouselTrace, DebugTrace, PathTrace, SpeakTrace, StreamTrace, TextTrace, VisualTrace } from '@/models';
-import {
+import type { CarouselTrace, DebugTrace, PathTrace, SpeakTrace, StreamTrace, TextTrace, VisualTrace } from '@/models';
+import type {
   AudioMessage,
   CarouselMessage,
   DebugMessage,
-  MessageType,
   PathMessage,
   SpeakMessage,
   StreamMessage,
@@ -14,6 +13,7 @@ import {
   UserMessage,
   VisualMessage,
 } from '@/pages/Prototype/types';
+import { MessageType } from '@/pages/Prototype/types';
 
 export const VF_ELICIT = 'ELICIT';
 

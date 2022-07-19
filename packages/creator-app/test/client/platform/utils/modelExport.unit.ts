@@ -6,8 +6,8 @@ const SERVICE_ENDPOINT = 'https://service';
 
 const client = createClient(SERVICE_ENDPOINT);
 
-suite('Platform Client - Utils - ModelExport', ({ expect }) => {
+suite('Platform Client - Utils - ModelExport', ({ expectMembers }) => {
   it('should have expected keys', () => {
-    expect(Object.keys(client)).to.have.members(['exportBlob']);
+    expectMembers(Object.keys(client), ['exportBlob']);
   });
 });

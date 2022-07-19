@@ -1,8 +1,7 @@
-import { useDidUpdateEffect } from '@voiceflow/ui';
+import { useDidUpdateEffect, useToggle } from '@voiceflow/ui';
 import React from 'react';
 
-import { styled } from '@/hocs';
-import { useToggle } from '@/hooks';
+import { styled } from '@/hocs/styled';
 
 import { ContentContainer, UncontrolledSection } from './components';
 import { UncontrolledSectionProps } from './components/UncontrolledSection';

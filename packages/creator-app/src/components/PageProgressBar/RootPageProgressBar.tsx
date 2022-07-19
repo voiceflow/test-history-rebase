@@ -1,7 +1,7 @@
-import { useToggle } from '@voiceflow/ui';
+import { useRAF, useTeardown, useToggle } from '@voiceflow/ui';
 import React from 'react';
 
-import { useForceUpdate, useRAF, useTeardown } from '@/hooks';
+import { useForceUpdate } from '@/hooks/forceUpdate';
 
 import PageProgressBar from './PageProgressBar';
 import { PageProgress } from './utils';

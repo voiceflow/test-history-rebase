@@ -1,55 +1,26 @@
-import { SinonStub } from 'sinon';
-
 import suite from '@/../test/_suite';
 import { api, apiV2 } from '@/client/fetch';
 
-type MockResult = { status?: number; body?: string };
+const TEST_API_ENDPOINT = 'https://localhost:8003';
 
-const TEST_API_ENDPOINT = 'https://undefined';
-
-suite('fetch', ({ expect, stub }) => {
-  const stubFetch = () => {
-    const fetchCall = stub(global, 'fetch');
-
-    const yieldResult = (call: SinonStub, { status = 200, body = '' }: MockResult) =>
-      call.returns(
-        Promise.resolve({
-          status,
-          text: () => Promise.resolve(body),
-        })
-      );
-
-    return Object.assign(fetchCall, {
-      yields: (result: MockResult = {}, ...nextResults: MockResult[]) => {
-        if (nextResults.length) {
-          yieldResult(fetchCall.onCall(0), result);
-          nextResults.forEach((nextResult, index) => yieldResult(fetchCall.onCall(index + 1), nextResult));
-
-          return fetchCall;
-        }
-
-        return yieldResult(fetchCall, result);
-      },
-    });
-  };
-
+suite('fetch', ({ mocks }) => {
   describe('api', () => {
     it('has endpoint prefix', async () => {
-      const fetchCall = stubFetch().yields();
+      const fetchCall = mocks.fetch();
 
       await api('some/path');
 
-      expect(fetchCall).to.be.calledWith(`${TEST_API_ENDPOINT}/some/path`);
+      expect(fetchCall).toBeCalledWith(`${TEST_API_ENDPOINT}/some/path`, { credentials: 'include', headers: {}, mode: 'cors' });
     });
   });
 
   describe('apiV2', () => {
     it('has endpoint prefix', async () => {
-      const fetchCall = stubFetch().yields();
+      const fetchCall = mocks.fetch();
 
       await apiV2('some/path');
 
-      expect(fetchCall).to.be.calledWith(`${TEST_API_ENDPOINT}/v2/some/path`);
+      expect(fetchCall).toBeCalledWith(`${TEST_API_ENDPOINT}/v2/some/path`, { credentials: 'include', headers: {}, mode: 'cors' });
     });
   });
 });

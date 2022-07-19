@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import { styled } from '@/hocs/styled';
 
 const ProjectSelectionFooterLink = styled.div`
   text-align: center;

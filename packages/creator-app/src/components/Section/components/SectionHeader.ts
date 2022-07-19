@@ -1,6 +1,6 @@
 import { FlexApart } from '@voiceflow/ui';
 
-import { css, styled, transition, units } from '@/hocs';
+import { css, styled, transition, units } from '@/hocs/styled';
 
 interface SectionHeaderProps {
   isDragging?: boolean;

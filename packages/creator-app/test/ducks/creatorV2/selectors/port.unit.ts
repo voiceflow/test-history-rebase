@@ -10,6 +10,7 @@ import { MOCK_STATE, NODE_ID, PORT, PORT_ID, V2_FEATURE_STATE } from '../_fixtur
 const NODE_PORTS: Realtime.NodePorts = {
   in: ['inPort'],
   out: {
+    byKey: {},
     dynamic: ['dynamicPort'],
     builtIn: {
       [BaseModels.PortType.NEXT]: 'builtInPort',
@@ -22,15 +23,15 @@ const INITIAL_STATE: CreatorV2.CreatorState = {
   portsByNodeID: { [NODE_ID]: NODE_PORTS },
 };
 
-suite(CreatorV2, INITIAL_STATE)('Ducks | Creator V2 - port selectors', ({ expect, describeSelectors, createState }) => {
+suite(CreatorV2, INITIAL_STATE)('Ducks | Creator V2 - port selectors', ({ describeSelectors, createState }) => {
   describeSelectors(({ select }) => {
     describe('portByIDSelector()', () => {
       it('select a port by its ID', () => {
-        expect(select((state) => CreatorV2.portByIDSelector(state, { id: PORT_ID }), V2_FEATURE_STATE)).to.eq(PORT);
+        expect(select((state) => CreatorV2.portByIDSelector(state, { id: PORT_ID }), V2_FEATURE_STATE)).toBe(PORT);
       });
 
       it('select null if unrecognized ID', () => {
-        expect(select((state) => CreatorV2.portByIDSelector(state, { id: 'foo' }), V2_FEATURE_STATE)).to.be.null;
+        expect(select((state) => CreatorV2.portByIDSelector(state, { id: 'foo' }), V2_FEATURE_STATE)).toBeNull();
       });
     });
 
@@ -48,21 +49,21 @@ suite(CreatorV2, INITIAL_STATE)('Ducks | Creator V2 - port selectors', ({ expect
 
         const ports = select((state) => CreatorV2.allPortsByIDsSelector(state, { ids: [fooPort.id, barPort.id] }), rootState);
 
-        expect(ports).to.eql([fooPort, barPort]);
+        expect(ports).toEqual([fooPort, barPort]);
       });
 
       it('select empty array if unrecognized IDs', () => {
-        expect(select((state) => CreatorV2.allPortsByIDsSelector(state, { ids: ['foo', 'bar'] }), V2_FEATURE_STATE)).to.be.empty;
+        expect(select((state) => CreatorV2.allPortsByIDsSelector(state, { ids: ['foo', 'bar'] }), V2_FEATURE_STATE)).toEqual([]);
       });
     });
 
     describe('portsByNodeIDSelector()', () => {
       it('select ports by a node ID', () => {
-        expect(select((state) => CreatorV2.portsByNodeIDSelector(state, { id: NODE_ID }), V2_FEATURE_STATE)).to.eq(NODE_PORTS);
+        expect(select((state) => CreatorV2.portsByNodeIDSelector(state, { id: NODE_ID }), V2_FEATURE_STATE)).toBe(NODE_PORTS);
       });
 
       it('select empty ports if unrecognized node ID', () => {
-        expect(select((state) => CreatorV2.portsByNodeIDSelector(state, { id: 'foo' }), V2_FEATURE_STATE)).to.eql(
+        expect(select((state) => CreatorV2.portsByNodeIDSelector(state, { id: 'foo' }), V2_FEATURE_STATE)).toEqual(
           Realtime.Utils.port.createEmptyNodePorts()
         );
       });

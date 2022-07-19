@@ -1,4 +1,4 @@
-import { ImportModel } from '@/pages/NewProjectV2/types';
+import type { ImportModel } from '@/pages/NewProjectV2/types';
 
 import { apiV2 } from './fetch';
 

@@ -33,7 +33,7 @@ const MOCK_STATE = {
   first_login: true,
 } as Account.AccountState;
 
-suite(Account, MOCK_STATE)('Ducks - Account', ({ expect, stub, describeReducer, describeSelectors, describeSideEffects }) => {
+suite(Account, MOCK_STATE)('Ducks - Account', ({ describeReducer, describeSelectors, describeSideEffects }) => {
   describeReducer(({ expectAction }) => {
     describe('updateAccount()', () => {
       it('should replace the active account', () => {
@@ -43,7 +43,7 @@ suite(Account, MOCK_STATE)('Ducks - Account', ({ expect, stub, describeReducer, 
 
     describe('resetAccount()', () => {
       it('should reset all account information', () => {
-        expectAction(Account.resetAccount()).result.to.eq(Account.INITIAL_STATE);
+        expectAction(Account.resetAccount()).result.toBe(Account.INITIAL_STATE);
       });
     });
 
@@ -75,25 +75,25 @@ suite(Account, MOCK_STATE)('Ducks - Account', ({ expect, stub, describeReducer, 
   describeSelectors(({ select }) => {
     describe('userSelector()', () => {
       it('should select user', () => {
-        expect(select(Account.userSelector)).to.eq(MOCK_STATE);
+        expect(select(Account.userSelector)).toBe(MOCK_STATE);
       });
     });
 
     describe('userIDSelector()', () => {
       it('should select user ID', () => {
-        expect(select(Account.userIDSelector)).to.eq(CREATOR_ID);
+        expect(select(Account.userIDSelector)).toBe(CREATOR_ID);
       });
     });
 
     describe('referrerIDSelector()', () => {
       it('should select referrer ID', () => {
-        expect(select(Account.referrerIDSelector)).to.eq(REFERRER_ID);
+        expect(select(Account.referrerIDSelector)).toBe(REFERRER_ID);
       });
     });
 
     describe('referralCodeSelector()', () => {
       it('should select referral code', () => {
-        expect(select(Account.referralCodeSelector)).to.eq(REFERRAL_CODE);
+        expect(select(Account.referralCodeSelector)).toBe(REFERRAL_CODE);
       });
     });
 
@@ -104,65 +104,65 @@ suite(Account, MOCK_STATE)('Ducks - Account', ({ expect, stub, describeReducer, 
             [Session.STATE_KEY]: { token: { value: Utils.generate.id() } },
             [Account.STATE_KEY]: { creator_id: null },
           })
-        ).to.be.true;
+        ).toBeTruthy();
       });
 
       it('should not be logging in', () => {
-        expect(select(Account.isLoggingInSelector, { [Session.STATE_KEY]: { token: { value: null } } })).to.be.false;
+        expect(select(Account.isLoggingInSelector, { [Session.STATE_KEY]: { token: { value: null } } })).toBeFalsy();
       });
     });
 
     describe('isLoggedInSelector()', () => {
       it('should be logged in', () => {
-        expect(select(Account.isLoggedInSelector, { [Session.STATE_KEY]: { token: { value: Utils.generate.id() } } })).to.be.true;
+        expect(select(Account.isLoggedInSelector, { [Session.STATE_KEY]: { token: { value: Utils.generate.id() } } })).toBeTruthy();
       });
 
       it('should not be logged in', () => {
-        expect(select(Account.isLoggedInSelector, { [Session.STATE_KEY]: { token: { value: null } } })).to.be.false;
+        expect(select(Account.isLoggedInSelector, { [Session.STATE_KEY]: { token: { value: null } } })).toBeFalsy();
       });
     });
 
     describe('isFirstLoginSelector()', () => {
       it('should select if is first login', () => {
-        expect(select(Account.isFirstLoginSelector)).to.be.true;
+        expect(select(Account.isFirstLoginSelector)).toBeTruthy();
       });
     });
 
     describe('userEmailSelector()', () => {
       it('should select user email', () => {
-        expect(select(Account.userEmailSelector)).to.eq(EMAIL);
+        expect(select(Account.userEmailSelector)).toBe(EMAIL);
       });
     });
 
     describe('amazonAccountSelector()', () => {
       it('should select amazon account', () => {
-        expect(select(Account.amazonAccountSelector)).to.eq(AMAZON_ACCOUNT);
+        expect(select(Account.amazonAccountSelector)).toBe(AMAZON_ACCOUNT);
       });
     });
 
     describe('amazonVendorsSelector()', () => {
       it('should select amazon account', () => {
-        expect(select(Account.amazonVendorsSelector)).to.eq(VENDORS);
+        expect(select(Account.amazonVendorsSelector)).toBe(VENDORS);
       });
 
       it('should select default', () => {
-        expect(select(Account.amazonVendorsSelector, { [Account.STATE_KEY]: {} })).to.eql([]);
+        expect(select(Account.amazonVendorsSelector, { [Account.STATE_KEY]: {} })).toEqual([]);
       });
     });
 
     describe('googleAccountSelector()', () => {
       it('should select google account', () => {
-        expect(select(Account.googleAccountSelector)).to.eq(GOOGLE_ACCOUNT);
+        expect(select(Account.googleAccountSelector)).toBe(GOOGLE_ACCOUNT);
       });
     });
 
     describe('googleEmailSelector()', () => {
       it('should select google account email', () => {
-        expect(select(Account.googleEmailSelector)).to.eq(EMAIL);
+        expect(select(Account.googleEmailSelector)).toBe(EMAIL);
       });
 
       it('should select default', () => {
-        expect(select(Account.googleEmailSelector, { [Account.STATE_KEY]: {} })).to.eq('0');
+        expect(select(Account.googleEmailSelector, { [Account.STATE_KEY]: {} })).toBe('0');
       });
     });
   });
@@ -173,11 +173,11 @@ suite(Account, MOCK_STATE)('Ducks - Account', ({ expect, stub, describeReducer, 
         it('should link amazon account', async () => {
           const code = '!@#';
           const amazonAccount: any = { token: 'xyz' };
-          const linkAccount = stub(client.platform.alexa.session, 'linkAccount').resolves(amazonAccount);
+          const linkAccount = vi.spyOn(client.platform.alexa.session, 'linkAccount').mockResolvedValue(amazonAccount);
 
           const { expectDispatch } = await applyEffect(Account.amazon.linkAccount(code));
 
-          expect(linkAccount).to.be.calledWith({ code });
+          expect(linkAccount).toBeCalledWith({ code });
           expectDispatch(Account.updateAccount({ amazon: amazonAccount }));
         });
       });
@@ -185,16 +185,16 @@ suite(Account, MOCK_STATE)('Ducks - Account', ({ expect, stub, describeReducer, 
       describe('loadAccount()', () => {
         it('should update amazon account on success', async () => {
           const amazonAccount: any = { token: 'xyz' };
-          const getAccount = stub(client.platform.alexa.session, 'getAccount').resolves(amazonAccount);
+          const getAccount = vi.spyOn(client.platform.alexa.session, 'getAccount').mockResolvedValue(amazonAccount);
 
           const { expectDispatch } = await applyEffect(Account.amazon.loadAccount());
 
-          expect(getAccount).to.be.calledWithExactly();
+          expect(getAccount).toBeCalledWith();
           expectDispatch(Account.updateAccount({ amazon: amazonAccount }));
         });
 
         it('should clear amazon account on failure', async () => {
-          stub(client.platform.alexa.session, 'getAccount').rejects(new Error('mock error'));
+          vi.spyOn(client.platform.alexa.session, 'getAccount').mockRejectedValue(new Error('mock error'));
 
           const { expectDispatch } = await applyEffect(Account.amazon.loadAccount());
 
@@ -205,20 +205,20 @@ suite(Account, MOCK_STATE)('Ducks - Account', ({ expect, stub, describeReducer, 
       describe('unlinkAccount()', () => {
         it('should clear amazon account on success', async () => {
           const amazonAccount: any = { token: 'xyz' };
-          const deleteAccount = stub(client.platform.alexa.session, 'unlinkAccount').resolves(amazonAccount);
+          const deleteAccount = vi.spyOn(client.platform.alexa.session, 'unlinkAccount').mockResolvedValue(amazonAccount);
 
           const { expectDispatch } = await applyEffect(Account.amazon.unlinkAccount());
 
-          expect(deleteAccount).to.be.calledWithExactly();
+          expect(deleteAccount).toBeCalledWith();
           expectDispatch(Account.updateAccount({ amazon: null }));
         });
 
         it('should set an error on failure', async () => {
-          const deleteAccount = stub(client.platform.alexa.session, 'unlinkAccount').rejects(new Error('mock error'));
+          const deleteAccount = vi.spyOn(client.platform.alexa.session, 'unlinkAccount').mockRejectedValue(new Error('mock error'));
 
           const { expectDispatch } = await applyEffect(Account.amazon.unlinkAccount());
 
-          expect(deleteAccount).to.be.calledWithExactly();
+          expect(deleteAccount).toBeCalledWith();
           expectDispatch(Modal.setError('Something went wrong - please refresh your page'));
         });
       });
@@ -231,11 +231,11 @@ suite(Account, MOCK_STATE)('Ducks - Account', ({ expect, stub, describeReducer, 
         it('should link google account', async () => {
           const code = '!@#';
           const googleAccount: any = { token: 'xyz' };
-          const linkAccount = stub(client.platform.google.session, 'linkAccount').resolves(googleAccount);
+          const linkAccount = vi.spyOn(client.platform.google.session, 'linkAccount').mockResolvedValue(googleAccount);
 
           const { expectDispatch } = await applyEffect(Account.google.linkAccount(code));
 
-          expect(linkAccount).to.be.calledWith({ code });
+          expect(linkAccount).toBeCalledWith({ code });
           expectDispatch(Account.updateAccount({ google: googleAccount }));
         });
       });
@@ -243,16 +243,16 @@ suite(Account, MOCK_STATE)('Ducks - Account', ({ expect, stub, describeReducer, 
       describe('loadAccount()', () => {
         it('should update google account on success', async () => {
           const googleAccount: any = { token: 'xyz' };
-          const getAccount = stub(client.platform.google.session, 'getAccount').resolves(googleAccount);
+          const getAccount = vi.spyOn(client.platform.google.session, 'getAccount').mockResolvedValue(googleAccount);
 
           const { expectDispatch } = await applyEffect(Account.google.loadAccount());
 
-          expect(getAccount).to.be.calledWithExactly();
+          expect(getAccount).toBeCalledWith();
           expectDispatch(Account.updateAccount({ google: googleAccount }));
         });
 
         it('should clear google account on failure', async () => {
-          stub(client.platform.google.session, 'getAccount').rejects(new Error('mock error'));
+          vi.spyOn(client.platform.google.session, 'getAccount').mockRejectedValue(new Error('mock error'));
 
           const { expectDispatch } = await applyEffect(Account.google.loadAccount());
 
@@ -263,20 +263,20 @@ suite(Account, MOCK_STATE)('Ducks - Account', ({ expect, stub, describeReducer, 
       describe('unlinkAccount()', () => {
         it('should clear google account on success', async () => {
           const googleAccount: any = { token: 'xyz' };
-          const deleteAccount = stub(client.platform.google.session, 'unlinkAccount').resolves(googleAccount);
+          const deleteAccount = vi.spyOn(client.platform.google.session, 'unlinkAccount').mockResolvedValue(googleAccount);
 
           const { expectDispatch } = await applyEffect(Account.google.unlinkAccount());
 
-          expect(deleteAccount).to.be.calledWithExactly();
+          expect(deleteAccount).toBeCalledWith();
           expectDispatch(Account.updateAccount({ google: null }));
         });
 
         it('should set an error on failure', async () => {
-          const deleteAccount = stub(client.platform.google.session, 'unlinkAccount').rejects(new Error('mock error'));
+          const deleteAccount = vi.spyOn(client.platform.google.session, 'unlinkAccount').mockRejectedValue(new Error('mock error'));
 
           const { expectDispatch } = await applyEffect(Account.google.unlinkAccount());
 
-          expect(deleteAccount).to.be.calledWithExactly();
+          expect(deleteAccount).toBeCalledWith();
           expectDispatch(Modal.setError('Something went wrong - please refresh your page'));
         });
       });

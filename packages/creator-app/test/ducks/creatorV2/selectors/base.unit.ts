@@ -7,11 +7,11 @@ import * as VersionV2 from '@/ducks/versionV2';
 import suite from '../../_suite';
 import { DIAGRAM_ID, MOCK_STATE, V2_FEATURE_STATE, VERSION_ID } from '../_fixtures';
 
-suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - base selectors', ({ expect, describeSelectors }) => {
+suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - base selectors', ({ describeSelectors }) => {
   describeSelectors(({ select }) => {
     describe('activeDiagramIDSelector()', () => {
       it('select the active diagram ID', () => {
-        expect(select(CreatorV2.activeDiagramIDSelector, V2_FEATURE_STATE)).to.eq(DIAGRAM_ID);
+        expect(select(CreatorV2.activeDiagramIDSelector, V2_FEATURE_STATE)).toBe(DIAGRAM_ID);
       });
     });
 
@@ -23,11 +23,11 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - base selectors', ({ expect, d
           [Session.STATE_KEY]: { activeVersionID: VERSION_ID },
         };
 
-        expect(select(CreatorV2.isRootDiagramActiveSelector, rootState)).to.be.true;
+        expect(select(CreatorV2.isRootDiagramActiveSelector, rootState)).toBeTruthy();
       });
 
       it('return false if this is not the root diagram', () => {
-        expect(select(CreatorV2.isRootDiagramActiveSelector, V2_FEATURE_STATE)).to.be.false;
+        expect(select(CreatorV2.isRootDiagramActiveSelector, V2_FEATURE_STATE)).toBeFalsy();
       });
     });
   });

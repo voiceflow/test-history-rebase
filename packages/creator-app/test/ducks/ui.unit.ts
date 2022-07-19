@@ -19,7 +19,7 @@ const MOCK_STATE = {
   _persist: { version: 1, rehydrated: false },
 };
 
-suite(UI, MOCK_STATE)('Ducks - UI', ({ expect, describeReducer, describeSelectors }) => {
+suite(UI, MOCK_STATE)('Ducks - UI', ({ describeReducer, describeSelectors }) => {
   describeReducer(({ expectAction }) => {
     describe('toggleBlockMenuSection()', () => {
       it('should add section if not open', () => {
@@ -78,19 +78,19 @@ suite(UI, MOCK_STATE)('Ducks - UI', ({ expect, describeReducer, describeSelector
   describeSelectors(({ select }) => {
     describe('openBlockMenuSectionsSelector()', () => {
       it('should select the open block menu sections', () => {
-        expect(select(UI.openBlockMenuSectionsSelector)).to.eql([BlockCategory.USER_INPUT]);
+        expect(select(UI.openBlockMenuSectionsSelector)).toEqual([BlockCategory.USER_INPUT]);
       });
     });
 
     describe('activeCreatorMenuSelector()', () => {
       it('should select the active creator menu', () => {
-        expect(select(UI.activeCreatorMenuSelector)).to.eq(Tab.FLOWS);
+        expect(select(UI.activeCreatorMenuSelector)).toBe(Tab.FLOWS);
       });
     });
 
     describe('isCreatorMenuHiddenSelector()', () => {
       it('should select whether the creator menu is hidden', () => {
-        expect(select(UI.isCreatorMenuHiddenSelector)).to.be.true;
+        expect(select(UI.isCreatorMenuHiddenSelector)).toBeTruthy();
       });
     });
   });

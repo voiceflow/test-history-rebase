@@ -6,7 +6,7 @@ import * as CreatorV2 from '@/ducks/creatorV2';
 import suite from '../../_suite';
 import { ACTION_CONTEXT, LINK, LINK_ID, MOCK_STATE, NODE_ID, PORT, PORT_ID, V2_FEATURE_STATE } from '../_fixtures';
 
-suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - removeDynamicPort reducer', ({ expect, describeReducerV2, describeReverter, createState }) => {
+suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - removeDynamicPort reducer', ({ describeReducerV2, describeReverter, createState }) => {
   describeReducerV2(Realtime.port.removeDynamic, ({ applyAction }) => {
     const fooLink = { ...LINK, id: 'fooLink' };
     const barLink = { ...LINK, id: 'barLink' };
@@ -21,7 +21,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - removeDynamicPort reducer', (
         portID: PORT_ID,
       });
 
-      expect(result).to.eq(MOCK_STATE);
+      expect(result).toBe(MOCK_STATE);
     });
 
     it('remove all references to a port', () => {
@@ -39,13 +39,13 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - removeDynamicPort reducer', (
         { ...ACTION_CONTEXT, nodeID: NODE_ID, portID: PORT_ID }
       );
 
-      expect(result.ports).to.eql(normalize([fooPort, barPort]));
-      expect(result.portsByNodeID).to.eql({
+      expect(result.ports).toEqual(normalize([fooPort, barPort]));
+      expect(result.portsByNodeID).toEqual({
         [NODE_ID]: Realtime.Utils.port.createEmptyNodePorts(),
         fooNode: Realtime.Utils.port.createEmptyNodePorts(),
       });
-      expect(result.nodeIDByPortID).to.eql({ [fooPort.id]: NODE_ID });
-      expect(result.linkIDsByPortID).to.eql({ [fooPort.id]: ['fooLink'] });
+      expect(result.nodeIDByPortID).toEqual({ [fooPort.id]: NODE_ID });
+      expect(result.linkIDsByPortID).toEqual({ [fooPort.id]: ['fooLink'] });
     });
 
     it('remove a dynamic port', () => {
@@ -66,7 +66,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - removeDynamicPort reducer', (
         { ...ACTION_CONTEXT, nodeID: NODE_ID, portID: PORT_ID }
       );
 
-      expect(result.portsByNodeID[NODE_ID]).to.eql({
+      expect(result.portsByNodeID[NODE_ID]).toEqual({
         in: [fooPort.id],
         out: {
           dynamic: [barPort.id],
@@ -89,10 +89,10 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - removeDynamicPort reducer', (
         { ...ACTION_CONTEXT, nodeID: NODE_ID, portID: PORT_ID }
       );
 
-      expect(result.links).to.eql(normalize([]));
-      expect(result.nodeIDsByLinkID).to.eql({ [fooLink.id]: [NODE_ID] });
-      expect(result.portIDsByLinkID).to.eql({ [barLink.id]: [PORT_ID] });
-      expect(result.linkIDsByNodeID).to.eql({ [NODE_ID]: [fooLink.id, barLink.id] });
+      expect(result.links).toEqual(normalize([]));
+      expect(result.nodeIDsByLinkID).toEqual({ [fooLink.id]: [NODE_ID] });
+      expect(result.portIDsByLinkID).toEqual({ [barLink.id]: [PORT_ID] });
+      expect(result.linkIDsByNodeID).toEqual({ [NODE_ID]: [fooLink.id, barLink.id] });
     });
   });
 
@@ -126,7 +126,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - removeDynamicPort reducer', (
         portID: PORT_ID,
       });
 
-      expect(result).to.eql([
+      expect(result).toEqual([
         Realtime.port.addDynamic({
           ...ACTION_CONTEXT,
           nodeID: NODE_ID,

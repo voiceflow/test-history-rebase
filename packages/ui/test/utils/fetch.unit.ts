@@ -10,7 +10,7 @@ const FULL_TEST_URL = `${TEST_API_ENDPOINT}/${TEST_URL}`;
 
 const fetch = Fetch.createFetch(TEST_API_ENDPOINT);
 
-suite('fetch', (mocks) => {
+suite('fetch', ({ mocks }) => {
   const mockRequestCache = ({ get = null, set = null, has = null }: Partial<Record<'get' | 'set' | 'has', number | null>> = {}) => {
     const getSpy = vi.spyOn(Fetch.FETCH_REQUEST_CACHE, 'get');
     const setSpy = vi.spyOn(Fetch.FETCH_REQUEST_CACHE, 'set');

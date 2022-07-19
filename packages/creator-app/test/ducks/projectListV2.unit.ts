@@ -29,7 +29,7 @@ const MOCK_STATE: ProjectList.ProjectListState = {
   allKeys: [LIST_ID, 'abc'],
 };
 
-suite(ProjectList, MOCK_STATE)('Ducks - Project List V2', ({ expect, describeReducerV2, createState, ...utils }) => {
+suite(ProjectList, MOCK_STATE)('Ducks - Project List V2', ({ describeReducerV2, createState, ...utils }) => {
   describe('reducer', () => {
     utils.assertIgnoresOtherActions();
     utils.assertInitialState(ProjectList.INITIAL_STATE);
@@ -38,13 +38,13 @@ suite(ProjectList, MOCK_STATE)('Ducks - Project List V2', ({ expect, describeRed
       it('add project to list', () => {
         const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, projectID: 'foo' });
 
-        expect(result.byKey[LIST_ID].projects).to.eql(['foo', PROJECT_ID, 'otherProjectID']);
+        expect(result.byKey[LIST_ID].projects).toEqual(['foo', PROJECT_ID, 'otherProjectID']);
       });
 
       it('do nothing if project is already in list', () => {
         const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, projectID: PROJECT_ID });
 
-        expect(result).to.eq(MOCK_STATE);
+        expect(result).toBe(MOCK_STATE);
       });
     });
 
@@ -52,13 +52,13 @@ suite(ProjectList, MOCK_STATE)('Ducks - Project List V2', ({ expect, describeRed
       it('remove project from list', () => {
         const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, projectID: PROJECT_ID });
 
-        expect(result.byKey[LIST_ID].projects).to.eql(['otherProjectID']);
+        expect(result.byKey[LIST_ID].projects).toEqual(['otherProjectID']);
       });
 
       it('do nothing if project is not in list', () => {
         const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, projectID: 'foo' });
 
-        expect(result).to.eq(MOCK_STATE);
+        expect(result).toBe(MOCK_STATE);
       });
     });
 
@@ -70,7 +70,7 @@ suite(ProjectList, MOCK_STATE)('Ducks - Project List V2', ({ expect, describeRed
           to: { listID: LIST_ID, target: PROJECT_ID },
         });
 
-        expect(result.byKey[LIST_ID].projects).to.eql(['otherProjectID', PROJECT_ID]);
+        expect(result.byKey[LIST_ID].projects).toEqual(['otherProjectID', PROJECT_ID]);
       });
 
       it('move project between lists by ID', () => {
@@ -80,8 +80,8 @@ suite(ProjectList, MOCK_STATE)('Ducks - Project List V2', ({ expect, describeRed
           to: { listID: LIST_ID, target: PROJECT_ID },
         });
 
-        expect(result.byKey[LIST_ID].projects).to.eql(['fizz', PROJECT_ID, 'otherProjectID']);
-        expect(result.byKey.abc.projects).to.eql(['buzz']);
+        expect(result.byKey[LIST_ID].projects).toEqual(['fizz', PROJECT_ID, 'otherProjectID']);
+        expect(result.byKey.abc.projects).toEqual(['buzz']);
       });
 
       it('move project between lists by index', () => {
@@ -91,8 +91,8 @@ suite(ProjectList, MOCK_STATE)('Ducks - Project List V2', ({ expect, describeRed
           to: { listID: LIST_ID, target: 1 },
         });
 
-        expect(result.byKey[LIST_ID].projects).to.eql([PROJECT_ID, 'fizz', 'otherProjectID']);
-        expect(result.byKey.abc.projects).to.eql(['buzz']);
+        expect(result.byKey[LIST_ID].projects).toEqual([PROJECT_ID, 'fizz', 'otherProjectID']);
+        expect(result.byKey.abc.projects).toEqual(['buzz']);
       });
 
       it('do nothing if source list is unknown', () => {
@@ -102,7 +102,7 @@ suite(ProjectList, MOCK_STATE)('Ducks - Project List V2', ({ expect, describeRed
           to: { listID: LIST_ID, target: PROJECT_ID },
         });
 
-        expect(result).to.eq(MOCK_STATE);
+        expect(result).toBe(MOCK_STATE);
       });
 
       it('do nothing if target list is unknown', () => {
@@ -112,7 +112,7 @@ suite(ProjectList, MOCK_STATE)('Ducks - Project List V2', ({ expect, describeRed
           to: { listID: 'foo', target: PROJECT_ID },
         });
 
-        expect(result).to.eq(MOCK_STATE);
+        expect(result).toBe(MOCK_STATE);
       });
 
       it('do nothing if source project is unknown', () => {
@@ -122,7 +122,7 @@ suite(ProjectList, MOCK_STATE)('Ducks - Project List V2', ({ expect, describeRed
           to: { listID: LIST_ID, target: PROJECT_ID },
         });
 
-        expect(result).to.eq(MOCK_STATE);
+        expect(result).toBe(MOCK_STATE);
       });
 
       it('move to front of list if target project is unknown', () => {
@@ -132,8 +132,8 @@ suite(ProjectList, MOCK_STATE)('Ducks - Project List V2', ({ expect, describeRed
           to: { listID: 'abc', target: 'foo' },
         });
 
-        expect(result.byKey[LIST_ID].projects).to.eql(['otherProjectID']);
-        expect(result.byKey.abc.projects).to.eql([PROJECT_ID, 'fizz', 'buzz']);
+        expect(result.byKey[LIST_ID].projects).toEqual(['otherProjectID']);
+        expect(result.byKey.abc.projects).toEqual([PROJECT_ID, 'fizz', 'buzz']);
       });
     });
   });
@@ -145,7 +145,7 @@ suite(ProjectList, MOCK_STATE)('Ducks - Project List V2', ({ expect, describeRed
       it('select all project lists', () => {
         const result = ProjectList.allProjectListsSelector(createState(MOCK_STATE, v2FeatureState));
 
-        expect(result).to.eql([PROJECT_LIST, MOCK_STATE.byKey.abc]);
+        expect(result).toEqual([PROJECT_LIST, MOCK_STATE.byKey.abc]);
       });
     });
 
@@ -153,13 +153,13 @@ suite(ProjectList, MOCK_STATE)('Ducks - Project List V2', ({ expect, describeRed
       it('select known project list', () => {
         const result = ProjectList.projectListByIDSelector(createState(MOCK_STATE, v2FeatureState), { id: LIST_ID });
 
-        expect(result).to.eq(PROJECT_LIST);
+        expect(result).toBe(PROJECT_LIST);
       });
 
       it('select unknown project list', () => {
         const result = ProjectList.projectListByIDSelector(createState(MOCK_STATE, v2FeatureState), { id: 'foo' });
 
-        expect(result).to.be.null;
+        expect(result).toBeNull();
       });
     });
 
@@ -174,13 +174,13 @@ suite(ProjectList, MOCK_STATE)('Ducks - Project List V2', ({ expect, describeRed
 
         const result = ProjectList.defaultProjectListSelector(createState(mockState, v2FeatureState));
 
-        expect(result).to.eq(defaultProjectList);
+        expect(result).toBe(defaultProjectList);
       });
 
       it('has no default project list', () => {
         const result = ProjectList.defaultProjectListSelector(createState(MOCK_STATE, v2FeatureState));
 
-        expect(result).to.be.null;
+        expect(result).toBeNull();
       });
     });
   });

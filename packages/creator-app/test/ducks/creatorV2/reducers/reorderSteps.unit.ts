@@ -15,7 +15,7 @@ import {
   V2_FEATURE_STATE,
 } from '../_fixtures';
 
-suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - reorderSteps reducer', ({ expect, describeReducerV2, describeReverter, createState }) => {
+suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - reorderSteps reducer', ({ describeReducerV2, describeReverter, createState }) => {
   describeReducerV2(Realtime.node.reorderSteps, ({ applyAction }) => {
     const parentNodeID = 'parentNodeID';
     const stepID = 'stepID';
@@ -31,7 +31,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - reorderSteps reducer', ({ exp
         index: 1,
       });
 
-      expect(result).to.eq(MOCK_STATE);
+      expect(result).toBe(MOCK_STATE);
     });
 
     it('ignore reordering step with unrecognized block ID', () => {
@@ -42,7 +42,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - reorderSteps reducer', ({ exp
         index: 1,
       });
 
-      expect(result).to.eq(MOCK_STATE);
+      expect(result).toBe(MOCK_STATE);
     });
 
     it('ignore reordering step with unrecognized ID', () => {
@@ -53,7 +53,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - reorderSteps reducer', ({ exp
         index: 1,
       });
 
-      expect(result).to.eq(MOCK_STATE);
+      expect(result).toBe(MOCK_STATE);
     });
 
     it('ignore reordering step from a different block', () => {
@@ -70,7 +70,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - reorderSteps reducer', ({ exp
         index: 1,
       });
 
-      expect(result).to.eq(state);
+      expect(result).toBe(state);
     });
 
     it('reorder a step within a block', () => {
@@ -87,7 +87,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - reorderSteps reducer', ({ exp
         index: 1,
       });
 
-      expect(result.stepIDsByParentNodeID[parentNodeID]).to.eql(['fizz', stepID, 'foo', 'bar', 'buzz']);
+      expect(result.stepIDsByParentNodeID[parentNodeID]).toEqual(['fizz', stepID, 'foo', 'bar', 'buzz']);
     });
   });
 
@@ -112,7 +112,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - reorderSteps reducer', ({ exp
         nodePortRemaps: NODE_PORT_REMAPS,
       });
 
-      expect(result).to.eql([
+      expect(result).toEqual([
         Realtime.node.reorderSteps({ ...ACTION_CONTEXT, parentNodeID, stepID, index: 1, nodePortRemaps: [] }),
         REVERT_NODE_PORT_REMAPS_ACTION,
       ]);

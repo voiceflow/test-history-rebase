@@ -2,15 +2,11 @@
   "ignorePatterns": [
     "/build",
     "/sonar",
-    "/.jest_cache",
-    "/.nyc_output",
-    "/jest_coverage",
-    "/nyc_coverage_unit"
+    "/coverage"
   ],
   "specials": [
     "bin",
     "istanbul",
-    "jest",
     "babel"
   ],
   "ignores": [
@@ -26,15 +22,9 @@
     "tslib",
     "ts-node",
     "node-noop",
+    "jsdom-global",
     "levenary",
     "estree",
-    "mocha",
-    "mocha-suite",
-    "mock-require",
-    "sinon",
-    "sinon-chai",
-    "chai",
-    "chai-as-promised",
     "react-hot-loader",
     "null-loader",
     "stream-browserify",

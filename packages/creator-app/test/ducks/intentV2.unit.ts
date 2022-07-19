@@ -43,13 +43,13 @@ const MOCK_STATE: Intent.IntentState = {
   allKeys: [INTENT_ID, 'abc'],
 };
 
-suite(Intent, MOCK_STATE)('Ducks - Intent V2', ({ expect, describeEffectV2, createState }) => {
+suite(Intent, MOCK_STATE)('Ducks - Intent V2', ({ describeEffectV2, createState }) => {
   describe('selectors', () => {
     describe('allIntentsSelector()', () => {
       it('select all intents', () => {
         const result = Intent.allIntentsSelector(createState(MOCK_STATE));
 
-        expect(result).to.eql([INTENT, MOCK_STATE.byKey.abc]);
+        expect(result).toEqual([INTENT, MOCK_STATE.byKey.abc]);
       });
     });
 
@@ -57,7 +57,7 @@ suite(Intent, MOCK_STATE)('Ducks - Intent V2', ({ expect, describeEffectV2, crea
       it('select all intent IDs', () => {
         const result = Intent.allIntentIDsSelector(createState(MOCK_STATE));
 
-        expect(result).to.eq(MOCK_STATE.allKeys);
+        expect(result).toBe(MOCK_STATE.allKeys);
       });
     });
 
@@ -65,13 +65,13 @@ suite(Intent, MOCK_STATE)('Ducks - Intent V2', ({ expect, describeEffectV2, crea
       it('select known intent', () => {
         const result = Intent.intentByIDSelector(createState(MOCK_STATE), { id: INTENT_ID });
 
-        expect(result).to.eq(INTENT);
+        expect(result).toBe(INTENT);
       });
 
       it('select unknown intent', () => {
         const result = Intent.intentByIDSelector(createState(MOCK_STATE), { id: 'foo' });
 
-        expect(result).to.be.null;
+        expect(result).toBeNull();
       });
     });
 
@@ -79,13 +79,13 @@ suite(Intent, MOCK_STATE)('Ducks - Intent V2', ({ expect, describeEffectV2, crea
       it('select known intents', () => {
         const result = Intent.intentsByIDsSelector(createState(MOCK_STATE), { ids: ['abc', INTENT_ID] });
 
-        expect(result).to.eql([MOCK_STATE.byKey.abc, INTENT]);
+        expect(result).toEqual([MOCK_STATE.byKey.abc, INTENT]);
       });
 
       it('select unknown intents', () => {
         const result = Intent.intentsByIDsSelector(createState(MOCK_STATE), { ids: ['foo', INTENT_ID] });
 
-        expect(result).to.eql([INTENT]);
+        expect(result).toEqual([INTENT]);
       });
     });
 
@@ -106,7 +106,7 @@ suite(Intent, MOCK_STATE)('Ducks - Intent V2', ({ expect, describeEffectV2, crea
           Intent.intentsUsingSlotSelector(createState(MOCK_STATE, { [Intent.STATE_KEY]: normalize([...intentWithSlot, ...intentWithoutSlot]) }), {
             id: slotID,
           })
-        ).to.eql(intentWithSlot);
+        ).toEqual(intentWithSlot);
       });
     });
   });
@@ -120,7 +120,7 @@ suite(Intent, MOCK_STATE)('Ducks - Intent V2', ({ expect, describeEffectV2, crea
 
         const { dispatched } = await applyEffect(rootState, [INTENT]);
 
-        expect(dispatched).to.eql([
+        expect(dispatched).toEqual([
           {
             sync: Realtime.intent.crud.addMany({
               ...ACTION_CONTEXT,
@@ -143,7 +143,7 @@ suite(Intent, MOCK_STATE)('Ducks - Intent V2', ({ expect, describeEffectV2, crea
 
         const { dispatched } = await applyEffect(rootState, INTENT_ID);
 
-        expect(dispatched).to.eql([
+        expect(dispatched).toEqual([
           {
             sync: Realtime.intent.crud.remove({
               ...ACTION_CONTEXT,

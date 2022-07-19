@@ -18,7 +18,7 @@ import {
   V2_FEATURE_STATE,
 } from '../_fixtures';
 
-suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - transplantSteps reducer', ({ expect, describeReducerV2, describeReverter, createState }) => {
+suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - transplantSteps reducer', ({ describeReducerV2, describeReverter, createState }) => {
   describeReducerV2(Realtime.node.transplantSteps, ({ applyAction }) => {
     const sourceParentNodeID = 'sourceParentNodeID';
     const targetParentNodeID = 'targetParentNodeID';
@@ -36,7 +36,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - transplantSteps reducer', ({ 
         nodePortRemaps: [],
       });
 
-      expect(result).to.eq(MOCK_STATE);
+      expect(result).toBe(MOCK_STATE);
     });
 
     it('ignore transplanting steps from unrecognized source block ID', () => {
@@ -49,7 +49,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - transplantSteps reducer', ({ 
         nodePortRemaps: [],
       });
 
-      expect(result).to.eq(MOCK_STATE);
+      expect(result).toBe(MOCK_STATE);
     });
 
     it('ignore transplanting steps to unrecognized target block ID', () => {
@@ -62,7 +62,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - transplantSteps reducer', ({ 
         nodePortRemaps: [],
       });
 
-      expect(result).to.eq(MOCK_STATE);
+      expect(result).toBe(MOCK_STATE);
     });
 
     it('ignore transplanting if any steps unrecognized', () => {
@@ -75,7 +75,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - transplantSteps reducer', ({ 
         nodePortRemaps: [],
       });
 
-      expect(result).to.eq(MOCK_STATE);
+      expect(result).toBe(MOCK_STATE);
     });
 
     it('transplant steps from one block to another', () => {
@@ -99,7 +99,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - transplantSteps reducer', ({ 
         nodePortRemaps: [],
       });
 
-      expect(result.stepIDsByParentNodeID).to.eql({
+      expect(result.stepIDsByParentNodeID).toEqual({
         [sourceParentNodeID]: ['foo', 'bar'],
         [targetParentNodeID]: ['fizz', xStep.nodeID, yStep.nodeID, 'buzz'],
       });
@@ -125,7 +125,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - transplantSteps reducer', ({ 
         nodePortRemaps: [],
       });
 
-      expect(result.nodes).to.eql(normalize([targetBlockData, stepData], (node) => node.nodeID));
+      expect(result.nodes).toEqual(normalize([targetBlockData, stepData], (node) => node.nodeID));
     });
   });
 
@@ -149,7 +149,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - transplantSteps reducer', ({ 
         index: 3,
       });
 
-      expect(result).to.eql([
+      expect(result).toEqual([
         Realtime.node.transplantSteps({
           ...ACTION_CONTEXT,
           sourceParentNodeID: targetParentNodeID,
@@ -198,7 +198,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - transplantSteps reducer', ({ 
         nodePortRemaps: [],
       });
 
-      expect(result).to.eql([
+      expect(result).toEqual([
         Realtime.node.isolateSteps({
           ...ACTION_CONTEXT,
           sourceParentNodeID: targetParentNodeID,
@@ -241,7 +241,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - transplantSteps reducer', ({ 
       });
       const linkResult = (Array.isArray(result) ? result : [])[1];
 
-      expect(linkResult).to.eql(REVERT_NODE_PORT_REMAPS_ACTION);
+      expect(linkResult).toEqual(REVERT_NODE_PORT_REMAPS_ACTION);
     });
   });
 });

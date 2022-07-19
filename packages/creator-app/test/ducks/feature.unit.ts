@@ -16,13 +16,13 @@ const MOCK_STATE: Feature.FeatureState = {
   } as any,
 };
 
-suite(Feature, MOCK_STATE)('Ducks - Feature', ({ expect, mockDate, describeReducer, describeSelectors }) => {
+suite(Feature, MOCK_STATE)('Ducks - Feature', ({ describeReducer, describeSelectors }) => {
   describeReducer(({ expectAction }) => {
     describe('setFeaturesLoaded()', () => {
       it('should mark the features as loaded', () => {
         const featureID: any = Utils.generate.id();
         const timestamp = TIMESTAMP + 1000;
-        mockDate(timestamp);
+        vi.setSystemTime(timestamp);
 
         expectAction(Feature.setFeaturesLoaded({ [featureID]: { isEnabled: true } }))
           .withState({ isLoaded: false } as Feature.FeatureState)
@@ -34,7 +34,7 @@ suite(Feature, MOCK_STATE)('Ducks - Feature', ({ expect, mockDate, describeReduc
       it('should mark the workspace features as loaded', () => {
         const featureID: any = Utils.generate.id();
         const timestamp = TIMESTAMP + 1000;
-        mockDate(timestamp);
+        vi.setSystemTime(timestamp);
 
         expectAction(Feature.setWorkspaceFeaturesLoaded({ [featureID]: { isEnabled: true } }))
           .withState({ isWorkspaceLoaded: false } as Feature.FeatureState)
@@ -46,33 +46,33 @@ suite(Feature, MOCK_STATE)('Ducks - Feature', ({ expect, mockDate, describeReduc
   describeSelectors(({ select }) => {
     describe('featureSelector()', () => {
       it('should select feature', () => {
-        expect(select(Feature.featureSelector)(FEATURE_ID)).to.eq(FEATURE);
+        expect(select(Feature.featureSelector)(FEATURE_ID)).toBe(FEATURE);
       });
     });
 
     describe('isFeatureEnabledSelector()', () => {
       it('should select that feature is enabled', () => {
-        expect(select(Feature.isFeatureEnabledSelector)(FEATURE_ID)).to.be.true;
+        expect(select(Feature.isFeatureEnabledSelector)(FEATURE_ID)).toBeTruthy();
       });
 
       it('should select that feature is not enabled', () => {
-        expect(select(Feature.isFeatureEnabledSelector)('ghi' as any)).to.be.false;
+        expect(select(Feature.isFeatureEnabledSelector)('ghi' as any)).toBeFalsy();
       });
 
       it('should select that feature is not registered', () => {
-        expect(select(Feature.isFeatureEnabledSelector)('xyz' as any)).to.be.null;
+        expect(select(Feature.isFeatureEnabledSelector)('xyz' as any)).toBeNull();
       });
     });
 
     describe('isLoadedSelector()', () => {
       it('should select whether features are loaded', () => {
-        expect(select(Feature.isLoadedSelector)).to.be.true;
+        expect(select(Feature.isLoadedSelector)).toBeTruthy();
       });
     });
 
     describe('isWorkspaceLoadedSelector()', () => {
       it('should select whether workspace features are loaded', () => {
-        expect(select(Feature.isWorkspaceLoadedSelector)).to.be.true;
+        expect(select(Feature.isWorkspaceLoadedSelector)).toBeTruthy();
       });
     });
   });

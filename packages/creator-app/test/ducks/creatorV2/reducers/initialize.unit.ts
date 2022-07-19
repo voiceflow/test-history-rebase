@@ -6,7 +6,7 @@ import * as CreatorV2 from '@/ducks/creatorV2';
 import suite from '../../_suite';
 import { ACTION_CONTEXT, DIAGRAM_ID, LINK_ID, MOCK_STATE, NODE, NODE_DATA, NODE_ID, PORT, PORT_ID } from '../_fixtures';
 
-suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - initialize reducer', ({ expect, describeReducerV2 }) => {
+suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - initialize reducer', ({ describeReducerV2 }) => {
   describeReducerV2(Realtime.creator.initialize, ({ applyAction }) => {
     interface NodeTupleOptions<T> {
       type: Realtime.BlockType;
@@ -31,7 +31,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - initialize reducer', ({ expec
         links: [],
       });
 
-      expect(result).to.containSubset({ activeDiagramID: DIAGRAM_ID });
+      expect(result).toContain({ activeDiagramID: DIAGRAM_ID });
     });
 
     it('register a markup node', () => {
@@ -44,9 +44,9 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - initialize reducer', ({ expec
         links: [],
       });
 
-      expect(result.markupIDs).to.eql([node.id]);
-      expect(result.nodes).to.eql(normalize([data], (data) => data.nodeID));
-      expect(result.coordsByNodeID).to.eql({ [node.id]: [node.x, node.y] });
+      expect(result.markupIDs).toEqual([node.id]);
+      expect(result.nodes).toEqual(normalize([data], (data) => data.nodeID));
+      expect(result.coordsByNodeID).toEqual({ [node.id]: [node.x, node.y] });
     });
 
     it('register blocks and steps', () => {
@@ -63,13 +63,13 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - initialize reducer', ({ expec
         links: [],
       });
 
-      expect(result.blockIDs).to.eql([blockNode.id]);
-      expect(result.nodes).to.eql(normalize([blockData, stepData], (data) => data.nodeID));
-      expect(result.coordsByNodeID).to.eql({ [blockNode.id]: [blockNode.x, blockNode.y] });
-      expect(result.stepIDsByParentNodeID).to.eql({ [blockNode.id]: [stepNode.id] });
-      expect(result.parentNodeIDByStepID).to.eql({ [stepNode.id]: blockNode.id });
-      expect(result.portsByNodeID).to.eql({ [blockNode.id]: blockNode.ports, [stepNode.id]: stepNode.ports });
-      expect(result.linkIDsByNodeID).to.eql({ [blockNode.id]: [], [stepNode.id]: [] });
+      expect(result.blockIDs).toEqual([blockNode.id]);
+      expect(result.nodes).toEqual(normalize([blockData, stepData], (data) => data.nodeID));
+      expect(result.coordsByNodeID).toEqual({ [blockNode.id]: [blockNode.x, blockNode.y] });
+      expect(result.stepIDsByParentNodeID).toEqual({ [blockNode.id]: [stepNode.id] });
+      expect(result.parentNodeIDByStepID).toEqual({ [stepNode.id]: blockNode.id });
+      expect(result.portsByNodeID).toEqual({ [blockNode.id]: blockNode.ports, [stepNode.id]: stepNode.ports });
+      expect(result.linkIDsByNodeID).toEqual({ [blockNode.id]: [], [stepNode.id]: [] });
     });
 
     it('register a port', () => {
@@ -82,7 +82,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - initialize reducer', ({ expec
         links: [],
       });
 
-      expect(result.ports).to.eql(normalize([port]));
+      expect(result.ports).toEqual(normalize([port]));
     });
 
     it('register a link between nodes', () => {
@@ -106,11 +106,11 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - initialize reducer', ({ expec
         links: [link],
       });
 
-      expect(result.links).to.eql(normalize([link]));
-      expect(result.nodeIDsByLinkID).to.eql({ [link.id]: [node1.id, node2.id] });
-      expect(result.portIDsByLinkID).to.eql({ [link.id]: [port1.id, port2.id] });
-      expect(result.linkIDsByNodeID).to.eql({ [node1.id]: [link.id], [node2.id]: [link.id] });
-      expect(result.linkIDsByPortID).to.eql({ [port1.id]: [link.id], [port2.id]: [link.id] });
+      expect(result.links).toEqual(normalize([link]));
+      expect(result.nodeIDsByLinkID).toEqual({ [link.id]: [node1.id, node2.id] });
+      expect(result.portIDsByLinkID).toEqual({ [link.id]: [port1.id, port2.id] });
+      expect(result.linkIDsByNodeID).toEqual({ [node1.id]: [link.id], [node2.id]: [link.id] });
+      expect(result.linkIDsByPortID).toEqual({ [port1.id]: [link.id], [port2.id]: [link.id] });
     });
   });
 });

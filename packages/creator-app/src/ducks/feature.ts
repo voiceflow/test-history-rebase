@@ -1,12 +1,14 @@
+import { createAction } from '@voiceflow/ui';
 import { createSelector } from 'reselect';
 
 import client from '@/client';
 import { IS_PRODUCTION } from '@/config';
 import { FeatureFlag, LOCAL_FEATURE_OVERRIDES } from '@/config/features';
-import * as Session from '@/ducks/session';
-import { Action, Reducer, RootReducer, Selector, Thunk } from '@/store/types';
+import { SessionAction, SetActiveWorkspaceID, SetAuthToken } from '@/ducks/session/actions';
+import { activeWorkspaceIDSelector } from '@/ducks/session/selectors';
+import type { Action, Reducer, RootReducer, Selector, Thunk } from '@/store/types';
 
-import { createAction, createRootSelector } from './utils';
+import { createRootSelector } from './utils/selector';
 
 export type FeatureFlagMap = Partial<Record<FeatureFlag, { isEnabled: boolean }>>;
 
@@ -37,12 +39,7 @@ export type UnsetWorkspaceFeaturesLoaded = Action<FeatureAction.UNSET_WORKSPACE_
 
 export type SetWorkspaceFeaturesLoaded = Action<FeatureAction.SET_WORKSPACE_FEATURES_LOADED, FeatureFlagMap>;
 
-type AnyFeatureAction =
-  | SetFeaturesLoaded
-  | UnsetWorkspaceFeaturesLoaded
-  | SetWorkspaceFeaturesLoaded
-  | Session.SetAuthToken
-  | Session.SetActiveWorkspaceID;
+type AnyFeatureAction = SetFeaturesLoaded | UnsetWorkspaceFeaturesLoaded | SetWorkspaceFeaturesLoaded | SetAuthToken | SetActiveWorkspaceID;
 
 // reducers
 
@@ -77,7 +74,7 @@ const featureReducer: RootReducer<FeatureState, AnyFeatureAction> = (state = INI
       return setWorkspaceFeaturesLoadedReducer(state, action);
     case FeatureAction.UNSET_WORKSPACE_FEATURES_LOADED:
       return unsetWorkspaceFeaturesLoadedReducer(state);
-    case Session.SessionAction.SET_AUTH_TOKEN:
+    case SessionAction.SET_AUTH_TOKEN:
       return accountChangeReducer(state);
     default:
       return state;
@@ -181,7 +178,7 @@ export const loadFeatures = (): Thunk => async (dispatch) => {
 };
 
 export const loadWorkspaceFeatures = (): Thunk => async (dispatch, getState) => {
-  const workspaceID = Session.activeWorkspaceIDSelector(getState());
+  const workspaceID = activeWorkspaceIDSelector(getState());
 
   if (!workspaceID) {
     return;

@@ -4,20 +4,20 @@ import client from '@/client/integrations';
 
 import suite from './_suite';
 
-suite('Client - Integrations', ({ expect, stubFetch }) => {
+suite('Client - Integrations', ({ expectMembers, stubFetch }) => {
   it('should have expected keys', () => {
-    expect(Object.keys(client)).to.have.members(['getZapierToken']);
+    expectMembers(Object.keys(client), ['getZapierToken']);
   });
 
   describe('getZapierToken()', () => {
     it('should get zapier integration token', async () => {
       const tokenResponse: any = Utils.generate.object();
-      const fetch = stubFetch('api').resolves(tokenResponse);
+      const fetch = stubFetch('api').mockResolvedValue(tokenResponse);
 
       const result = await client.getZapierToken();
 
-      expect(result).to.eq(tokenResponse);
-      expect(fetch).to.be.calledWithExactly('api/token');
+      expect(result).toEqual(tokenResponse);
+      expect(fetch).toBeCalledWith('api/token');
     });
   });
 });

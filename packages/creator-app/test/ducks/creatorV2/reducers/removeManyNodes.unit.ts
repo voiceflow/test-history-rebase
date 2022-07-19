@@ -7,7 +7,7 @@ import * as CreatorV2 from '@/ducks/creatorV2';
 import suite from '../../_suite';
 import { ACTION_CONTEXT, LINK, LINK_ID, MOCK_STATE, NODE_DATA, NODE_ID, PORT } from '../_fixtures';
 
-suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - removeManyNodes reducer', ({ expect, describeReducerV2 }) => {
+suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - removeManyNodes reducer', ({ describeReducerV2 }) => {
   describeReducerV2(Realtime.node.removeMany, ({ applyAction }) => {
     it('ignore removing nodes for a different diagram', () => {
       const result = applyAction(MOCK_STATE, {
@@ -16,7 +16,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - removeManyNodes reducer', ({ 
         nodes: [{ parentNodeID: NODE_ID }],
       });
 
-      expect(result).to.eq(MOCK_STATE);
+      expect(result).toBe(MOCK_STATE);
     });
 
     it('remove all references to a node', () => {
@@ -40,15 +40,15 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - removeManyNodes reducer', ({ 
         { ...ACTION_CONTEXT, nodes: [{ parentNodeID: NODE_ID }] }
       );
 
-      expect(result.nodes).to.eql(normalize([fooNode, barNode], (data) => data.nodeID));
-      expect(result.portsByNodeID).to.eql({
+      expect(result.nodes).toEqual(normalize([fooNode, barNode], (data) => data.nodeID));
+      expect(result.portsByNodeID).toEqual({
         [fooNode.nodeID]: Realtime.Utils.port.createEmptyNodePorts(),
         [barNode.nodeID]: Realtime.Utils.port.createEmptyNodePorts(),
       });
-      expect(result.stepIDsByParentNodeID).to.eql({ [fooNode.nodeID]: [barNode.nodeID] });
-      expect(result.parentNodeIDByStepID).to.eql({ [barNode.nodeID]: fooNode.nodeID });
-      expect(result.coordsByNodeID).to.eql({ [fooNode.nodeID]: [100, 200], [barNode.nodeID]: [123, 456] });
-      expect(result.linkIDsByNodeID).to.eql({ [fooNode.nodeID]: ['fooLink'], [barNode.nodeID]: ['barLink'] });
+      expect(result.stepIDsByParentNodeID).toEqual({ [fooNode.nodeID]: [barNode.nodeID] });
+      expect(result.parentNodeIDByStepID).toEqual({ [barNode.nodeID]: fooNode.nodeID });
+      expect(result.coordsByNodeID).toEqual({ [fooNode.nodeID]: [100, 200], [barNode.nodeID]: [123, 456] });
+      expect(result.linkIDsByNodeID).toEqual({ [fooNode.nodeID]: ['fooLink'], [barNode.nodeID]: ['barLink'] });
     });
 
     it('remove all references to a markup node', () => {
@@ -63,7 +63,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - removeManyNodes reducer', ({ 
         { ...ACTION_CONTEXT, nodes: [{ parentNodeID: markupNode.nodeID }] }
       );
 
-      expect(result.markupIDs).to.eql([fooNode.nodeID]);
+      expect(result.markupIDs).toEqual([fooNode.nodeID]);
     });
 
     it('remove all references to a block node and all its steps', () => {
@@ -81,8 +81,8 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - removeManyNodes reducer', ({ 
         { ...ACTION_CONTEXT, nodes: [{ parentNodeID: blockNode.nodeID }] }
       );
 
-      expect(result.nodes).to.eql(normalize([fooNode], (node) => node.nodeID));
-      expect(result.blockIDs).to.eql([fooNode.nodeID]);
+      expect(result.nodes).toEqual(normalize([fooNode], (node) => node.nodeID));
+      expect(result.blockIDs).toEqual([fooNode.nodeID]);
     });
 
     it('remove all references to a step node', () => {
@@ -99,8 +99,8 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - removeManyNodes reducer', ({ 
         { ...ACTION_CONTEXT, nodes: [{ parentNodeID: blockNode.nodeID, stepID: stepNode.nodeID }] }
       );
 
-      expect(result.nodes).to.eql(normalize([blockNode], (node) => node.nodeID));
-      expect(result.stepIDsByParentNodeID).to.eql({ [blockNode.nodeID]: [NODE_ID] });
+      expect(result.nodes).toEqual(normalize([blockNode], (node) => node.nodeID));
+      expect(result.stepIDsByParentNodeID).toEqual({ [blockNode.nodeID]: [NODE_ID] });
     });
 
     it('remove all ports and links from a node', () => {
@@ -132,8 +132,8 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - removeManyNodes reducer', ({ 
         { ...ACTION_CONTEXT, nodes: [{ parentNodeID: blockNode.nodeID }] }
       );
 
-      expect(result.ports).to.eql(normalize([]));
-      expect(result.links).to.eql(normalize([]));
+      expect(result.ports).toEqual(normalize([]));
+      expect(result.links).toEqual(normalize([]));
     });
   });
 });

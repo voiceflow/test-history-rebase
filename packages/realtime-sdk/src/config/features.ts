@@ -54,4 +54,5 @@ export enum FeatureFlag {
   NEW_EDITORS_PART_2 = 'new_editors_part_2',
 
   SEARCH_BAR = 'search_bar',
+  DF_CAROUSEL_STEP = 'df_carousel_step',
 }

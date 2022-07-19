@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.836.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.836.0...@voiceflow/creator-app@1.836.1) (2022-07-19)
+
+
+### Bug Fixes
+
+* hide flow search input when no flow is available (CT-643) ([#5783](https://github.com/voiceflow/creator-app/issues/5783)) ([c9df9a9](https://github.com/voiceflow/creator-app/commit/c9df9a9b8aad0b4b1d47014daa4b83bbfc276dd6))
+
+
+
+
+
 # [1.836.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.835.2...@voiceflow/creator-app@1.836.0) (2022-07-19)
 
 

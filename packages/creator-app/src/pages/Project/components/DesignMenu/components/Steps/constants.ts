@@ -227,7 +227,7 @@ export const DIALOGFLOW_ES_CHAT_SECTIONS = [
   {
     type: BlockCategory.RESPONSE,
     label: 'Response',
-    steps: [TEXT_STEP, VISUAL_STEP, CARD_STEP],
+    steps: [TEXT_STEP, VISUAL_STEP, CARD_STEP, CAROUSEL_STEP],
   },
   {
     type: BlockCategory.USER_INPUT,
@@ -440,7 +440,7 @@ export const DIALOGFLOW_ES_CHAT_STEP_SECTIONS: TopStepItem[] = [
   {
     icon: TALK_ICON,
     label: TALK_LABEL,
-    steps: [TEXT_STEP, VISUAL_STEP, CARD_STEP],
+    steps: [TEXT_STEP, VISUAL_STEP, CARD_STEP, CAROUSEL_STEP],
   },
   {
     icon: LISTEN_ICON,

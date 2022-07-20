@@ -10,6 +10,7 @@ import * as UI from '@/ducks/ui';
 import { useDispatch, useDragPreview, useFeature, useSelector } from '@/hooks';
 import { useManager } from '@/pages/Canvas/managers';
 import { Identifier } from '@/styles/constants';
+import { isDialogflowPlatform } from '@/utils/typeGuards';
 
 import ScrollbarsContainer from '../ScrollbarsContainer';
 import { Container, Item } from './components';
@@ -23,6 +24,7 @@ const Steps: React.FC = () => {
   const toggleSection = useDispatch(UI.toggleBlockMenuSection);
   const gadgets = useFeature(FeatureFlag.GADGETS);
   const chatCardsCarousel = useFeature(FeatureFlag.CHAT_CARDS_CAROUSEL);
+  const dfCarousel = useFeature(FeatureFlag.DF_CAROUSEL_STEP);
   const topicsAndComponents = useFeature(FeatureFlag.TOPICS_AND_COMPONENTS);
   const promptStep = useFeature(FeatureFlag.PROMPT_STEP);
   const isTopicsAndComponentsVersion = useSelector(ProjectV2.active.isTopicsAndComponentsVersionSelector);
@@ -37,6 +39,7 @@ const Steps: React.FC = () => {
         .filter((step) => {
           if (!gadgets.isEnabled && step.type === BlockType.EVENT) return false;
           if (!chatCardsCarousel.isEnabled && step.type === BlockType.CAROUSEL) return false;
+          if (!(dfCarousel.isEnabled && isDialogflowPlatform(platform)) && step.type === BlockType.CAROUSEL) return false;
 
           if (!(topicsAndComponents.isEnabled && isTopicsAndComponentsVersion) && step.type === BlockType.COMPONENT) return false;
           if (topicsAndComponents.isEnabled && isTopicsAndComponentsVersion && step.type === BlockType.FLOW) return false;

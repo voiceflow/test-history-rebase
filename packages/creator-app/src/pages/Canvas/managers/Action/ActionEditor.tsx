@@ -19,10 +19,11 @@ const ActionEditor: NodeEditor<Realtime.NodeData.Trace> = ({ data, node, engine,
 
   const toggleIsBlocking = React.useCallback(() => onChange({ isBlocking: !data.isBlocking }), [data.isBlocking, onChange]);
 
-  const mapManager = useMapManager(data.paths, (paths) => onChange({ paths }), {
+  const mapManager = useMapManager(data.paths, (paths, save) => onChange({ paths }, save), {
     onAdd: () => engine.port.addDynamic(node.id, {}),
     factory: () => ({ label: '', isDefault: false }),
     onRemove: (_, index) => engine.port.removeDynamic(node.ports.out.dynamic[index]),
+    autoSaveOnAddRemove: false,
   });
 
   const updateDefaultPath = (i: number) => {

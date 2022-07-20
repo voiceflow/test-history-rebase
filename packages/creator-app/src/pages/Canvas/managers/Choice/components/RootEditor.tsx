@@ -18,10 +18,11 @@ const RootEditor: React.FC = () => {
 
   const [isDragging, toggleDragging] = useToggle(false);
 
-  const mapManager = useMapManager(editor.data.choices, (choices) => editor.onChange({ choices }), {
+  const mapManager = useMapManager(editor.data.choices, (choices, save) => editor.onChange({ choices }, save), {
     ...syncDynamicPorts,
     clone: ({ id }, cloneData) => ({ ...cloneData, id, intent: null }),
     factory: choiceFactory,
+    autoSaveOnAddRemove: false,
   });
 
   const noMatchConfig = NoMatchV2.useConfig();

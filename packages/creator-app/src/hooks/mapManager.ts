@@ -17,7 +17,7 @@ const UNIQUE_TYPES = new Set(['object', 'function']);
 
 const DEBOUNCE_TIMEOUT = 300;
 
-export type OnManagerChange<Item> = (items: Item[]) => Eventual<void>;
+export type OnManagerChange<Item> = (items: Item[], save?: boolean) => Eventual<void>;
 
 interface MapManagedRenderOptions<Item> {
   key: string;
@@ -40,6 +40,9 @@ interface MapManagedBaseOptions<Item> {
   debounced?: boolean;
   onReorder?: (from: number, to: number) => Eventual<void | void[]>;
   onReordered?: (from: number, to: number) => Eventual<void | void[]>;
+
+  /** @deprecated  remove after FeatureFlag.ATOMIC_ACTIONS_PHASE_2 is out */
+  autoSaveOnAddRemove?: boolean;
 }
 
 export interface MapManagedSimpleOptions<Item> extends MapManagedBaseOptions<Item> {
@@ -99,6 +102,7 @@ export const useMapManager: MapManager = (
     debounced = true,
     onReorder: handleReorder,
     onReordered: handleReordered,
+    autoSaveOnAddRemove,
   } = {}
   // eslint-disable-next-line sonarjs/cognitive-complexity
 ) => {
@@ -153,20 +157,20 @@ export const useMapManager: MapManager = (
     [items],
     ([nextItems], [prevItems]) => Utils.array.hasIdenticalMembers<Item>(nextItems, prevItems)
   );
-  const persistedOnChanged = usePersistFunction<OnManagerChange<Item>>((denormolized: Item[]) => {
-    setDependencies([denormolized]);
-    onChange(denormolized);
+  const persistedOnChanged = usePersistFunction<OnManagerChange<Item>>((denormalized: Item[], save?: boolean) => {
+    setDependencies([denormalized]);
+    onChange(denormalized, save);
   });
 
   const isMaxReached = useCachedValue(maxItems == null ? false : normalized.current.allKeys.length >= maxItems);
 
   const debouncedOnChange = React.useMemo<OnManagerChange<Item> | DebouncedFunc<OnManagerChange<Item>>>(
-    () => (debounced ? _debounce((denormolized: Item[]) => persistedOnChanged(denormolized), DEBOUNCE_TIMEOUT) : persistedOnChanged),
+    () => (debounced ? _debounce((denormalized: Item[]) => persistedOnChanged(denormalized), DEBOUNCE_TIMEOUT) : persistedOnChanged),
     [debounced]
   );
 
   const onSave = React.useCallback(
-    async (normalizedValue: Normal.Normalized<Item>, { update }: { update?: boolean } = {}) => {
+    async (normalizedValue: Normal.Normalized<Item>, { update, save }: { update?: boolean; save?: boolean } = {}) => {
       const denormalized = Normal.denormalize(normalizedValue);
 
       if (!update && 'cancel' in debouncedOnChange) {
@@ -179,7 +183,7 @@ export const useMapManager: MapManager = (
       if (update) {
         await debouncedOnChange(denormalized);
       } else {
-        persistedOnChanged(denormalized);
+        persistedOnChanged(denormalized, save);
       }
     },
     [debouncedOnChange]
@@ -190,7 +194,7 @@ export const useMapManager: MapManager = (
       keyLookup.current.set(generateLookupKey(value, index), key);
       latestCreatedKey.current = key;
 
-      await transaction(() => Promise.all([onSave(updated), persistedHandleAdd(value, index)]));
+      await transaction(() => Promise.all([onSave(updated, { save: autoSaveOnAddRemove }), persistedHandleAdd(value, index)]));
 
       persistedHandleAdded(value, index);
     },
@@ -297,7 +301,7 @@ export const useMapManager: MapManager = (
 
       keyLookup.current.delete(generateLookupKey(currValue, currIndex));
 
-      await transaction(async () => Promise.all([onSave(updated), persistedHandleRemove(currValue, currIndex)]));
+      await transaction(async () => Promise.all([onSave(updated, { save: autoSaveOnAddRemove }), persistedHandleRemove(currValue, currIndex)]));
 
       persistedHandleRemoved(currValue, currIndex);
     },

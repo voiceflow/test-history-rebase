@@ -13,16 +13,17 @@ interface CarouselEditorButtonsSectionProps {
   cardID: string;
   editor: NodeEditorV2Props<Realtime.NodeData.Carousel, Realtime.NodeData.CarouselBuiltInPorts>;
   buttons: Realtime.NodeData.Carousel.Button[];
-  onUpdate: (value: Partial<Realtime.NodeData.Carousel.Card>) => void;
+  onUpdate: (value: Partial<Realtime.NodeData.Carousel.Card>, autoSave?: boolean) => void;
 }
 
 const CarouselEditorButtonsSection: React.FC<CarouselEditorButtonsSectionProps> = ({ editor, buttons, onUpdate }) => {
-  const mapManager = useMapManager(buttons, (buttons) => onUpdate({ buttons }), {
+  const mapManager = useMapManager(buttons, (buttons, save) => onUpdate({ buttons }, save), {
     factory: buttonFactory,
 
     onAdd: (button) => editor.engine.port.addByKey(editor.nodeID, button.id),
     onAdded: (button) => editor.goToNested({ state: { waitForData: true }, path: PATH, params: { buttonID: button.id } }),
     onRemove: (button) => editor.engine.port.removeManyByKey([{ key: button.id, portID: editor.node.ports.out.byKey[button.id] }]),
+    autoSaveOnAddRemove: false,
   });
 
   return (

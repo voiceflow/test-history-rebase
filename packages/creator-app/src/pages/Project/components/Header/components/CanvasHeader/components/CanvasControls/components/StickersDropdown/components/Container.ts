@@ -2,8 +2,8 @@ import { styled } from '@/hocs';
 
 const Container = styled.div`
   display: flex;
-  height: 100%;
-  padding: 16px 0;
+  flex-direction: row;
+  flex-wrap: wrap;
 `;
 
 export default Container;

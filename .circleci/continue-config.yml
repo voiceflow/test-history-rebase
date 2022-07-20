@@ -4,9 +4,6 @@ parameters:
   container-image-url-creator-app:
     type: string
     default: '168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-app'
-  container-image-url-admin-ui:
-    type: string
-    default: '168387678261.dkr.ecr.us-east-1.amazonaws.com/creator-admin'
   container-image-url-showcase:
     type: string
     default: '168387678261.dkr.ecr.us-east-1.amazonaws.com/showcase'
@@ -16,9 +13,6 @@ parameters:
   container-image-url-ml-gateway:
     type: string
     default: '168387678261.dkr.ecr.us-east-1.amazonaws.com/ml-gateway'
-  k8s-asset-admin-ui:
-    type: string
-    default: 'deployment/admin-ui'
   k8s-asset-creator-app:
     type: string
     default: 'deployment/creator-app'
@@ -40,9 +34,6 @@ parameters:
   track-component-creator-app:
     type: string
     default: 'creator-app'
-  track-component-admin-ui:
-    type: string
-    default: 'admin-ui'
   track-component-showcase:
     type: string
     default: 'showcase'
@@ -53,9 +44,6 @@ parameters:
     type: string
     default: 'ml-gateway'
   build-creator-app:
-    type: boolean
-    default: false
-  build-admin-app:
     type: boolean
     default: false
   build-showcase:
@@ -248,21 +236,6 @@ workflows:
           context: dev-test
           avoid_post_install_scripts: false
           attach_workspace: true
-          name: build-admin-test
-          force_execute: << pipeline.parameters.build-frontend >>
-          package: admin-app
-          container_folder_to_copy: packages/admin-app/build
-          post-steps:
-            - jira/notify
-          requires:
-            - build-realtime-sdk-test
-            - build-ui-test
-
-      - vfcommon/install_and_build:
-          <<: *slack-fail-post-step
-          context: dev-test
-          avoid_post_install_scripts: false
-          attach_workspace: true
           name: build-showcase-test
           force_execute: << pipeline.parameters.build-frontend >>
           package: showcase
@@ -336,7 +309,6 @@ workflows:
             - test
             - test-master
             - build-app-test
-            - build-admin-test
             - build-showcase-test
             - build-realtime-test
             - build-ml-gateway-test
@@ -361,20 +333,6 @@ workflows:
           requires:
             - test-master
             - build-app-test
-            - vfcommon/monorepo_release
-
-      - vfcommon/update_track:
-          <<: *ignore_break_glass_deploy_filters
-          context: dev-test
-          name: update-track-admin-ui
-          force_execute: << pipeline.parameters.build-frontend >>
-          image_repo: << pipeline.parameters.container-image-url-admin-ui >>
-          component: << pipeline.parameters.track-component-admin-ui >>
-          build_context: packages/admin-app
-          package: admin-app
-          requires:
-            - test-master
-            - build-admin-test
             - vfcommon/monorepo_release
 
       - vfcommon/update_track:
@@ -437,7 +395,6 @@ workflows:
             - test
             - test-master
             - build-app-test
-            - build-admin-test
             - build-showcase-test
             - build-realtime-test
             - build-ml-gateway-test
@@ -504,18 +461,6 @@ workflows:
             branches:
               only: master
 
-      - vfcommon/post_image_push_actions:
-          <<: *prod_deploy_filters
-          context: dev-test
-          force_execute: << pipeline.parameters.build-frontend >>
-          namespace: << pipeline.parameters.k8s-namespace >>
-          component: << pipeline.parameters.track-component-admin-ui >>
-          package: admin-app
-          name: admin-app-release-post-actions
-          tagged: true
-          success_slack_notify: false
-          requires:
-            - update-track-admin-ui
       - vfcommon/post_image_push_actions:
           <<: *prod_deploy_filters
           context: dev-test

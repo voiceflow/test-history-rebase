@@ -105,7 +105,6 @@ jobs:
           fi
 
           ./vfcli track create -n  $ENV_NAME -c creator-app -b $BRANCH --interactive false --no-telepresence
-          ./vfcli track create -n  $ENV_NAME -c admin-ui -b $BRANCH --interactive false --no-telepresence
           ./vfcli track create -n  $ENV_NAME -c realtime -b $BRANCH --interactive false --no-telepresence
           ./vfcli track create -n  $ENV_NAME -c ml-gateway -b $BRANCH --interactive false --no-telepresence
           ./vfcli track create -n  $ENV_NAME -c showcase -b $BRANCH --interactive false --no-telepresence

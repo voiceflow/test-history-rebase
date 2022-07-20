@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.840.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.839.0...@voiceflow/creator-app@1.840.0) (2022-07-20)
+
+
+### Features
+
+* add sticker component (CT-536) ([#5794](https://github.com/voiceflow/creator-app/issues/5794)) ([6f11fc8](https://github.com/voiceflow/creator-app/commit/6f11fc8957216ae4a2784a584c5ff874e2a083bf))
+* canvas grid (VF-000) ([#5755](https://github.com/voiceflow/creator-app/issues/5755)) ([9c00d61](https://github.com/voiceflow/creator-app/commit/9c00d61bd690d3be23fe708f2a7d7d49f6c7590c))
+
+
+
+
+
 # [1.839.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.838.2...@voiceflow/creator-app@1.839.0) (2022-07-20)
 
 

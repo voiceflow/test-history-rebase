@@ -3,12 +3,14 @@ import React from 'react';
 
 import { InteractionModelTabType } from '@/constants';
 import { SearchContext, SearchTypes, SearchUtils } from '@/contexts/SearchContext';
+import * as Account from '@/ducks/account';
 import * as Creator from '@/ducks/creatorV2';
 import * as Diagram from '@/ducks/diagramV2';
 import * as Intent from '@/ducks/intentV2';
 import * as Router from '@/ducks/router';
+import * as Session from '@/ducks/session';
 import * as Slot from '@/ducks/slotV2';
-import { useDispatch, useSelector, useStore } from '@/hooks';
+import { useDebouncedCallback, useDispatch, useSelector, useStore, useTrackingEvents } from '@/hooks';
 import { EngineContext } from '@/pages/Canvas/contexts';
 import { withKeyPress } from '@/utils/dom';
 
@@ -19,7 +21,9 @@ interface SearchOption {
   entry: SearchTypes.DatabaseEntry;
 }
 
-const SearchBar = () => {
+const SearchBar: React.FC = () => {
+  const [trackingEvents] = useTrackingEvents();
+
   const engine = React.useContext(EngineContext);
   const search = React.useContext(SearchContext);
   const [query, setQuery] = React.useState('');
@@ -27,6 +31,9 @@ const SearchBar = () => {
   const goToIMEntity = useDispatch(Router.goToCurrentCanvasInteractionModelEntity);
 
   const diagramID = useSelector(Creator.activeDiagramIDSelector)!;
+  const creatorID = useSelector(Account.userIDSelector);
+  const workspaceID = useSelector(Session.activeWorkspaceIDSelector);
+  const projectID = useSelector(Session.activeProjectIDSelector)!;
   const store = useStore();
   const database = React.useRef<SearchTypes.SearchDatabase>(SearchUtils.EmptySearchDatabase);
 
@@ -67,8 +74,17 @@ const SearchBar = () => {
           engine?.focusNode(entry.nodeID, { open: true });
         }
       }
+
+      trackingEvents.trackSearchBarResultSelected({
+        creator_id: creatorID,
+        workspace_id: workspaceID,
+        project_id: projectID,
+        query,
+        resultList: options,
+        selected: entry.targets[0],
+      });
     },
-    [diagramID]
+    [diagramID, query]
   );
 
   const createOption = React.useCallback(
@@ -97,6 +113,15 @@ const SearchBar = () => {
 
   const options = React.useMemo(() => SearchUtils.find(query, database.current, createOption(query), search?.filters), [query, search?.filters]);
 
+  const onKeyStroke = useDebouncedCallback(1000, () => {
+    trackingEvents.trackSearchBarQuery({
+      query,
+      creator_id: creatorID,
+      workspace_id: workspaceID,
+      project_id: projectID,
+    });
+  });
+
   if (!isVisible) {
     return null;
   }
@@ -107,7 +132,10 @@ const SearchBar = () => {
         filterOption={null}
         options={options}
         onChange={onChange}
-        onInputChange={setQuery}
+        onInputChange={(value: string) => {
+          setQuery(value);
+          onKeyStroke();
+        }}
         components={{
           Input,
           Control,

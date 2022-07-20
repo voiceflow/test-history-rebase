@@ -1,5 +1,6 @@
 import client from '@/client';
 import { BlockType, InteractionModelTabType } from '@/constants';
+import { SearchTypes } from '@/contexts/SearchContext';
 
 import { CanvasCreationType, CanvasMenuLockState, EventName, IntentEditType, VariableType } from '../constants';
 import { createProjectEventPayload, createProjectEventTracker, createVersionEventPayload, createVersionEventTracker } from '../utils';
@@ -103,6 +104,47 @@ export const trackNewStepCreated = createProjectEventTracker<{
     EventName.PROJECT_NEW_STEP_CREATED,
     createProjectEventPayload(options, {
       step_type: stepType,
+    })
+  )
+);
+
+export const trackSearchBarQuery = createProjectEventTracker<{
+  query: string;
+  creator_id: number | null;
+  workspace_id: string | null;
+  project_id: string;
+}>(({ query, creator_id, workspace_id, project_id, ...options }) =>
+  client.api.analytics.track(
+    EventName.SEARCH_BAR_QUERY,
+    createProjectEventPayload(options, {
+      query,
+      creator_id,
+      workspace_id,
+      project_id,
+    })
+  )
+);
+
+export const trackSearchBarResultSelected = createProjectEventTracker<{
+  creator_id: number | null;
+  workspace_id: string | null;
+  project_id: string;
+  query: string;
+  resultList: {
+    label: React.ReactNode;
+    entry: SearchTypes.DatabaseEntry;
+  }[];
+  selected: string;
+}>(({ creator_id, workspace_id, project_id, query, resultList, selected, ...options }) =>
+  client.api.analytics.track(
+    EventName.SEARCH_BAR_RESULT_SELECTED,
+    createProjectEventPayload(options, {
+      creator_id,
+      workspace_id,
+      project_id,
+      query,
+      result_list: resultList,
+      selected,
     })
   )
 );

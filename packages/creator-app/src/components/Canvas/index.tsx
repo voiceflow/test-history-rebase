@@ -25,12 +25,14 @@ import {
 import { CanvasProvider } from './contexts';
 import generateControls, { ControlHandlers } from './controls';
 import { ControlAction, ZoomAction } from './controls/types';
-import { calculateScrollTranslation, normalizeZoom, transformStyle } from './controls/utils';
+import { backgroundPositionStyle, backgroundSizeStyle, calculateScrollTranslation, normalizeZoom, transformStyle } from './controls/utils';
 import { MovementCalculator, StyleOptions, TransformOptions, TransitionOptions, ZoomOptions } from './types';
 
 export const ORIGIN: Point = [0, 0];
 
 const ZOOM_FINISH_DURATION = 300;
+
+const GRID_COLOR = '#E3E4E7';
 
 export type CanvasAPI = Canvas['api'];
 
@@ -56,6 +58,7 @@ export interface CanvasProps {
   getZoomType: () => ZoomType;
   onPanApplied?: (movement: Pair<number>) => void;
   onZoomApplied?: (translateZoom: MovementCalculator) => void;
+  canvasGridEnabled?: boolean;
 }
 
 class Canvas extends React.PureComponent<
@@ -141,6 +144,7 @@ class Canvas extends React.PureComponent<
     },
     zoomOut: (delta: number, options?: ZoomOptions) => {
       const inversed = this.props.getZoomType() === ZoomType.INVERSE;
+
       inversed ? this.offsetZoom(delta, options) : this.offsetZoom(-delta, options);
     },
     reorient: () => this.resetPosition(),
@@ -217,14 +221,14 @@ class Canvas extends React.PureComponent<
   };
 
   onZoom = (control: ZoomAction) => {
-    const isInversed = this.props.getZoomType() === ZoomType.INVERSE;
+    const isInverse = this.props.getZoomType() === ZoomType.INVERSE;
 
     // scale or delta type zoom
     if (control.scale) {
-      const scale = isInversed ? 2 - control.scale : control.scale;
+      const scale = isInverse ? 2 - control.scale : control.scale;
       this.setZoom(this.zoom * scale, { origin: mouseEventOffset(control.event, this.rootRef.current!) });
     } else if (control.delta) {
-      const delta = isInversed ? control.delta : -control.delta;
+      const delta = isInverse ? control.delta : -control.delta;
       this.setZoom(this.zoom + delta, { origin: mouseEventOffset(control.event, this.rootRef.current!) });
     }
   };
@@ -244,6 +248,7 @@ class Canvas extends React.PureComponent<
     // sometimes in the test tool can be undefined
     if (renderLayerEl) {
       renderLayerEl.style.transition = '';
+      this.styleCanvasGrid({});
     }
   };
 
@@ -261,15 +266,27 @@ class Canvas extends React.PureComponent<
     if (this.applyTransitionTimeout) {
       clearTimeout(this.applyTransitionTimeout);
     }
-
     this.props.addClass?.(CANVAS_ANIMATING_CLASSNAME);
     this.applyTransitionTimeout = setTimeout(this.onTransitionEnd, (duration + delay) * 1000 + 100);
 
-    renderLayerEl.style.transition = `transform ease-in-out ${duration}s ${delay}s`;
+    renderLayerEl.style.transition = `transform ease-in-out ${duration}s ${delay}s, backgroundImage ease-in-out ${duration}s ${delay}s, backgroundPosition ease-in-out ${duration}s ${delay}s`;
   };
+
+  styleCanvasGrid({ clear = false, zoom = this.zoom, position = this.position }: { clear?: boolean; zoom?: number; position?: [number, number] }) {
+    const gridLayerEl = this.rootRef.current!;
+
+    if (this.props.canvasGridEnabled && !clear) {
+      gridLayerEl.style.backgroundSize = backgroundSizeStyle(zoom);
+      gridLayerEl.style.backgroundImage = `radial-gradient(${GRID_COLOR} ${zoom / 70}px, #f9f9f9 ${zoom / 70}px)`;
+      gridLayerEl.style.backgroundPosition = backgroundPositionStyle(position);
+    } else {
+      gridLayerEl.style.backgroundImage = `none`;
+    }
+  }
 
   styleRenderLayer({ raf = true, zoom = this.zoom, position = this.position, onApplied }: StyleOptions = {}) {
     const renderLayerEl = this.renderLayerRef.current!;
+    this.styleCanvasGrid({ clear: false, zoom, position });
 
     const applyStyles = () => {
       renderLayerEl.style.transform = transformStyle(position, zoom);
@@ -293,12 +310,13 @@ class Canvas extends React.PureComponent<
   });
 
   offsetZoom = (delta: number, options?: ZoomOptions) => {
-    this.setZoom(this.zoom + delta, options);
+    // clearGrid: true, clear the grid while a +/- hotkey zoom is in progress
+    this.setZoom(this.zoom + delta, { ...options, clearGrid: true });
   };
 
   setZoom = (
     newZoom: number,
-    { raf, origin = [this.rootRef.current!.clientWidth / 2, this.rootRef.current!.clientHeight / 2] }: ZoomOptions = {}
+    { raf, clearGrid, origin = [this.rootRef.current!.clientWidth / 2, this.rootRef.current!.clientHeight / 2] }: ZoomOptions = {}
   ) => {
     const prevZoom = this.zoom / ZOOM_FACTOR;
     const nextZoom = normalizeZoom(newZoom);
@@ -324,7 +342,13 @@ class Canvas extends React.PureComponent<
       clearTimeout(this.zoomComplete);
     }
 
-    this.zoomComplete = window.setTimeout(() => this.onChange(), ZOOM_FINISH_DURATION);
+    if (clearGrid) {
+      this.styleCanvasGrid({ clear: true });
+    }
+    this.zoomComplete = window.setTimeout(() => {
+      this.onChange();
+      this.styleCanvasGrid({});
+    }, ZOOM_FINISH_DURATION);
   };
 
   resetPosition = () => {
@@ -401,7 +425,7 @@ class Canvas extends React.PureComponent<
 
   componentDidMount() {
     this.props.onRegister?.(this.api);
-
+    this.styleCanvasGrid({});
     const bindControl = (type: keyof ControlHandlers) => (e: any) => this.controls[type](e);
     const addListener = (type: keyof ControlHandlers, options?: AddEventListenerOptions) => {
       const handler = bindControl(type);

@@ -10,6 +10,7 @@ export enum UIAction {
   TOGGLE_CREATOR_MENU_HIDDEN = 'UI:CREATOR_MENU:TOGGLE_HIDDEN',
   SET_CANVAS_NAVIGATION = 'UI:SET_CANVAS_NAVIGATION',
   SET_ZOOM_TYPE = 'UI:SET_ZOOM_TYPE',
+  TOGGLE_CANVAS_GRID = 'UI:TOGGLE_CANVAS_GRID',
   SHOW_CREATOR_MENU = 'UI:CREATOR_MENU:SHOW',
   HIDE_CREATOR_MENU = 'UI:CREATOR_MENU:HIDE',
   TOGGLE_CANVAS_ONLY = 'UI:TOGGLE_CANVAS_ONLY',
@@ -36,6 +37,8 @@ export type SetCanvasNavigation = Action<UIAction.SET_CANVAS_NAVIGATION, Control
 
 export type SetZoomType = Action<UIAction.SET_ZOOM_TYPE, ZoomType>;
 
+export type ToggleCanvasGrid = Action<UIAction.TOGGLE_CANVAS_GRID, boolean>;
+
 export type ToggleCanvasOnly = Action<UIAction.TOGGLE_CANVAS_ONLY>;
 
 export type SetPreviewingVersion = Action<UIAction.SET_VIEWING_VERSION, boolean>;
@@ -61,7 +64,8 @@ export type AnyUIAction =
   | SetLoadingProjects
   | ToggleCommentVisibility
   | ToggleMentionedThreadsOnly
-  | ToggleTopicThreadsOnly;
+  | ToggleTopicThreadsOnly
+  | ToggleCanvasGrid;
 
 //  action creators
 
@@ -81,6 +85,8 @@ export const setCanvasNavigation = (canvasNavigation: ControlScheme): SetCanvasN
 export const setZoomType = (zoomType: ZoomType): SetZoomType => createAction(UIAction.SET_ZOOM_TYPE, zoomType);
 
 export const toggleCanvasOnly = (): ToggleCanvasOnly => createAction(UIAction.TOGGLE_CANVAS_ONLY);
+
+export const toggleCanvasGrid = (): ToggleCanvasGrid => createAction(UIAction.TOGGLE_CANVAS_GRID);
 
 export const setPreviewingVersion = (previewing: boolean): SetPreviewingVersion => createAction(UIAction.SET_VIEWING_VERSION, previewing);
 

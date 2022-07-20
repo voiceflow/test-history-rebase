@@ -18,4 +18,5 @@ export interface UIState {
   commentsVisible: boolean;
   topicThreadsOnly?: boolean;
   mentionedThreadsOnly?: boolean;
+  canvasGrid: boolean;
 }

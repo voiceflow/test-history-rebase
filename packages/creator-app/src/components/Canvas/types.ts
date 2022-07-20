@@ -15,6 +15,7 @@ export interface TransformOptions {
 export interface ZoomOptions {
   raf?: boolean;
   origin?: Point;
+  clearGrid?: boolean;
 }
 
 export interface StyleOptions {

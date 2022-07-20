@@ -10,6 +10,9 @@ export abstract class BaseControls {
 
 export const transformStyle = (position: Point, zoom: number) => `translate(${position[0]}px, ${position[1]}px) scale(${zoom / ZOOM_FACTOR})`;
 
+export const backgroundPositionStyle = (position: Point) => `${position[0]}px ${position[1]}px`;
+export const backgroundSizeStyle = (zoom: number) => `${zoom / 5}px ${zoom / 5}px`;
+
 export function getScrollDelta(event: WheelEvent) {
   const scrollDelta = event.deltaY;
 

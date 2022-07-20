@@ -9,6 +9,7 @@ import Crosshair from '@/components/Crosshair';
 import { PageProgress } from '@/components/PageProgressBar';
 import { BlockType, DragItem, HOVER_THROTTLE_TIMEOUT, PageProgressBar } from '@/constants';
 import { canvasNavigationSelector } from '@/ducks/ui';
+import * as UI from '@/ducks/ui';
 import * as Viewport from '@/ducks/viewport';
 import { connect } from '@/hocs';
 import { useSetup } from '@/hooks';
@@ -58,6 +59,7 @@ const DROP_TYPES = [NativeTypes.FILE, DragItem.BLOCK_MENU, DragItem.COMPONENTS];
 const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport, children }) => {
   const engine = React.useContext(EngineContext)!;
   const markup = React.useContext(MarkupContext)!;
+  const canvasGridEnabled = useSelector(UI.isCanvasGridEnabledSelector);
   const focusThread = React.useContext(FocusThreadContext)!;
   const contextMenu = React.useContext(ContextMenuContext)!;
   const isEditingMode = useEditingMode();
@@ -180,6 +182,7 @@ const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport, childr
         innerRef={connectBlockDrop}
         addClass={addClass}
         removeClass={removeClass}
+        canvasGridEnabled={canvasGridEnabled}
         getZoomType={getZoomType}
         layers={children}
         onPanApplied={(movement) => engine.emitter.emit(CanvasAction.PAN_APPLIED, movement)}

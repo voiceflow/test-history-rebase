@@ -3,7 +3,7 @@ import { Link } from '@voiceflow/ui';
 import React from 'react';
 
 import RadioGroup from '@/components/RadioGroup';
-import Section, { SectionVariant } from '@/components/Section';
+import Section, { SectionToggleVariant, SectionVariant } from '@/components/Section';
 import * as Documentation from '@/config/documentation';
 import * as Project from '@/ducks/project';
 import * as ProjectV2 from '@/ducks/projectV2';
@@ -23,6 +23,8 @@ const Canvas: React.FC<ConnectedBasicProps> = ({
   canvasNavigation,
   setCanvasNavigation,
   updateProjectLinkType,
+  canvasGridEnabled,
+  toggleCanvasGrid,
 }) => {
   const setLinkType = React.useCallback(
     (linkType: BaseModels.Project.LinkType) => updateProjectLinkType(activeProjectID!, linkType),
@@ -62,12 +64,28 @@ const Canvas: React.FC<ConnectedBasicProps> = ({
       >
         <RadioGroup options={LINK_TYPE_OPTIONS} checked={activeLinkType} onChange={setLinkType} />
       </Section>
+
+      <Section
+        header="Canvas Grid"
+        variant={SectionVariant.QUATERNARY}
+        dividers
+        collapseVariant={SectionToggleVariant.TOGGLE}
+        onToggleChange={toggleCanvasGrid}
+        isDividerNested
+        contentSuffix={() => <DescriptorContainer>When on, the canvas will have a dotted background grid.</DescriptorContainer>}
+        customHeaderStyling={{ paddingBottom: '0px' }}
+        customContentStyling={{ paddingBottom: '24px' }}
+        initialOpen={!!canvasGridEnabled}
+      >
+        <span></span>
+      </Section>
     </>
   );
 };
 
 const mapStateToProps = {
   canvasNavigation: UI.canvasNavigationSelector,
+  canvasGridEnabled: UI.isCanvasGridEnabledSelector,
   zoomType: UI.zoomTypeSelector,
   activeProjectID: Session.activeProjectIDSelector,
   activeLinkType: ProjectV2.active.linkTypeSelector,
@@ -77,6 +95,7 @@ const mapDispatchToProps = {
   setCanvasNavigation: UI.setCanvasNavigation,
   updateProjectLinkType: Project.updateProjectLinkType,
   setZoomType: UI.setZoomType,
+  toggleCanvasGrid: UI.toggleCanvasGrid,
 };
 
 type ConnectedBasicProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;

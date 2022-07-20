@@ -13,6 +13,8 @@ export const isCreatorMenuHiddenSelector = createSelector(rootSelector, ({ creat
 
 export const canvasNavigationSelector = createSelector(rootSelector, ({ canvasNavigation }) => canvasNavigation);
 
+export const isCanvasGridEnabledSelector = createSelector(rootSelector, ({ canvasGrid }) => canvasGrid);
+
 export const zoomTypeSelector = createSelector(rootSelector, ({ zoomType }) => zoomType);
 
 export const isCanvasOnlyShowingSelector = createSelector(rootSelector, ({ canvasOnly }) => canvasOnly);

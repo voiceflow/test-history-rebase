@@ -81,7 +81,7 @@ const TestToolSettings: React.FC = () => {
         </BoxFlex>
       </Section>
       {!canCustomize && (
-        <Box position="relative" top={10}>
+        <Box position="relative" top={10} mb={12}>
           <Upgrade>Customize test tool and prototype style and branding.</Upgrade>
         </Box>
       )}

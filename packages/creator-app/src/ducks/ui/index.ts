@@ -87,6 +87,11 @@ export const toggleCanvasOnlyReducer: Reducer<UIState> = (state) => ({
   canvasOnly: !state.canvasOnly,
 });
 
+export const toggleCanvasGridReducer: Reducer<UIState> = (state) => ({
+  ...state,
+  canvasGrid: !state.canvasGrid,
+});
+
 export const toggleCommentingVisibility: Reducer<UIState> = (state) => ({
   ...state,
   commentsVisible: !state.commentsVisible,
@@ -128,6 +133,8 @@ const uiReducer: RootReducer<UIState, AnyUIAction | Session.SetActiveWorkspaceID
       return showCreatorMenuReducer(state);
     case UIAction.TOGGLE_CANVAS_ONLY:
       return toggleCanvasOnlyReducer(state);
+    case UIAction.TOGGLE_CANVAS_GRID:
+      return toggleCanvasGridReducer(state);
     case UIAction.SET_VIEWING_VERSION:
       return setPreviewingVersionReducer(state, action);
     case UIAction.SET_ZOOM_TYPE:

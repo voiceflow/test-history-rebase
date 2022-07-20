@@ -23,7 +23,7 @@ const IntentEditor: React.FC<{ disableAnimation: boolean }> = ({ disableAnimatio
     [editor.onChange]
   );
 
-  const mapManager = useMapManager(editor.data.intent?.slots ?? defaultSlots, (slots) => editor.onChange({ intent: { slots } }, false), {
+  const mapManager = useMapManager(editor.data.intent?.slots ?? defaultSlots, (slots) => editor.onChange({ intent: { slots } }), {
     factory: () => Realtime.Utils.slot.intentSlotFactoryCreator(editor.projectType)({ id: '' }),
     clone: ({ id }, cloneData) => ({ ...cloneData, id } as Realtime.IntentSlot),
   });

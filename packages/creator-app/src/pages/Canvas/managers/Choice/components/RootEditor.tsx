@@ -18,7 +18,7 @@ const RootEditor: React.FC = () => {
 
   const [isDragging, toggleDragging] = useToggle(false);
 
-  const mapManager = useMapManager(editor.data.choices, (choices) => editor.onChange({ choices }, false), {
+  const mapManager = useMapManager(editor.data.choices, (choices) => editor.onChange({ choices }), {
     ...syncDynamicPorts,
     clone: ({ id }, cloneData) => ({ ...cloneData, id, intent: null }),
     factory: choiceFactory,

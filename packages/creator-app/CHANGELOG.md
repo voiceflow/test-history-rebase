@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.841.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.840.0...@voiceflow/creator-app@1.841.0) (2022-07-20)
+
+
+### Features
+
+* add carousel step to df step menu (CT-600) ([#5792](https://github.com/voiceflow/creator-app/issues/5792)) ([4730dc0](https://github.com/voiceflow/creator-app/commit/4730dc05e2b1ac959deda213e865d5e4fda1dd4a))
+
+
+
+
+
 # [1.840.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.839.0...@voiceflow/creator-app@1.840.0) (2022-07-20)
 
 

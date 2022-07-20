@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.838.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.838.1...@voiceflow/creator-app@1.838.2) (2022-07-20)
+
+
+### Bug Fixes
+
+* restore useManager autosave (VF-000) ([#5790](https://github.com/voiceflow/creator-app/issues/5790)) ([f055a7b](https://github.com/voiceflow/creator-app/commit/f055a7be60b937325732092af252d17d8d97b175)), closes [/github.com/voiceflow/creator-app/blob/0f1fa1cd20c24a1761be081c0636d5d5684981d4/packages/creator-app/src/hooks/manager.ts#L131-L149](https://github.com//github.com/voiceflow/creator-app/blob/0f1fa1cd20c24a1761be081c0636d5d5684981d4/packages/creator-app/src/hooks/manager.ts/issues/L131-L149) [/github.com/voiceflow/creator-app/blob/0f1fa1cd20c24a1761be081c0636d5d5684981d4/packages/creator-app/src/hooks/manager.ts#L176](https://github.com//github.com/voiceflow/creator-app/blob/0f1fa1cd20c24a1761be081c0636d5d5684981d4/packages/creator-app/src/hooks/manager.ts/issues/L176) [/github.com/voiceflow/creator-app/blob/0f1fa1cd20c24a1761be081c0636d5d5684981d4/packages/creator-app/src/hooks/manager.ts#L281](https://github.com//github.com/voiceflow/creator-app/blob/0f1fa1cd20c24a1761be081c0636d5d5684981d4/packages/creator-app/src/hooks/manager.ts/issues/L281)
+
+
+
+
+
 ## [1.838.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.838.0...@voiceflow/creator-app@1.838.1) (2022-07-20)
 
 

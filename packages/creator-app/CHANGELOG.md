@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.839.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.838.2...@voiceflow/creator-app@1.839.0) (2022-07-20)
+
+
+### Features
+
+* search bar segment tracking (CT-590) ([#5791](https://github.com/voiceflow/creator-app/issues/5791)) ([74d4062](https://github.com/voiceflow/creator-app/commit/74d4062d406705c2e2cc0ff09c935e18bd683600))
+
+
+
+
+
 ## [1.838.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.838.1...@voiceflow/creator-app@1.838.2) (2022-07-20)
 
 

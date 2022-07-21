@@ -1,8 +1,8 @@
 import { Utils } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { createSelector } from 'reselect';
 
-import { FeatureFlag } from '@/config/features';
 import * as Feature from '@/ducks/feature';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { getSlotTypes } from '@/utils/slot';
@@ -56,7 +56,7 @@ export const invocationsSelector = createSelector([ProjectV2.active.projectSelec
 export const slotTypesSelector = createSelector(
   [localesSelector, ProjectV2.active.platformSelector, Feature.isFeatureEnabledSelector],
   (locales, platform, isFeatureEnabled) =>
-    getSlotTypes({ locales: locales as string[], platform, natoEnabled: !!isFeatureEnabled(FeatureFlag.NATO_APCO) })
+    getSlotTypes({ locales: locales as string[], platform, natoEnabled: !!isFeatureEnabled(Realtime.FeatureFlag.NATO_APCO) })
 );
 
 export const slotTypesMapSelector = createSelector([slotTypesSelector], (slotTypes) =>

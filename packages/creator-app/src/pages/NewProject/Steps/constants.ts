@@ -1,9 +1,8 @@
-import { Utils } from '@voiceflow/realtime-sdk';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { SvgIconTypes } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
-import { FeatureFlag } from '@/config/features';
 import { AmazonInvocationName, DialogflowInvocationName, GoogleInvocationName } from '@/pages/NewProject/DescriptionElements/InvocationName';
 import { AmazonLanguage, DialogflowLanguage, GeneralLanguage, GoogleLanguage } from '@/pages/NewProject/DescriptionElements/Languages';
 
@@ -42,7 +41,7 @@ export interface ChannelMetaType {
   comingSoon?: boolean;
   isNew?: boolean;
   description: string;
-  featureFlag?: FeatureFlag;
+  featureFlag?: Realtime.FeatureFlag;
 }
 
 export interface PlatformFeatureMetaType {
@@ -59,7 +58,7 @@ export interface ProjectSection {
   }[];
 }
 
-export const getPlatformMeta = Utils.platform.createPlatformSelector<PlatformMetaType>(
+export const getPlatformMeta = Realtime.Utils.platform.createPlatformSelector<PlatformMetaType>(
   {
     [VoiceflowConstants.PlatformType.ALEXA]: {
       icon: 'amazonAlexa',
@@ -101,7 +100,7 @@ export const getPlatformMeta = Utils.platform.createPlatformSelector<PlatformMet
   }
 );
 
-export const getChannelMeta = Utils.platform.createPlatformAndProjectTypeSelector<ChannelMetaType>({
+export const getChannelMeta = Realtime.Utils.platform.createPlatformAndProjectTypeSelector<ChannelMetaType>({
   [VoiceflowConstants.PlatformType.ALEXA]: {
     name: 'Amazon Alexa',
     icon: 'amazonAlexa',
@@ -177,7 +176,7 @@ export const PLATFORM_FEATURE_META: Record<PlatformFeature, PlatformFeatureMetaT
     name: 'Export',
     color: '#c83e5a',
     description: (platform) =>
-      Utils.platform.createPlatformSelector(
+      Realtime.Utils.platform.createPlatformSelector(
         {
           [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: 'Dialogflow specific NLU model export',
         },
@@ -193,7 +192,7 @@ export const PLATFORM_FEATURE_META: Record<PlatformFeature, PlatformFeatureMetaT
     name: 'Publish',
     color: '#558b2f',
     description: (platform) =>
-      Utils.platform.createPlatformSelector(
+      Realtime.Utils.platform.createPlatformSelector(
         {
           [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: 'Publish agents directly through Dialogflow',
           [VoiceflowConstants.PlatformType.ALEXA]: 'Publish live apps to the Amazon Skill store',

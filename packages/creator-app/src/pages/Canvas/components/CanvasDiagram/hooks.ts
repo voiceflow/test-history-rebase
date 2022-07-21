@@ -1,9 +1,9 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 import { throttle } from 'throttle-debounce';
 
 import { MovementCalculator } from '@/components/Canvas/types';
-import { FeatureFlag } from '@/config/features';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as RealtimeDuck from '@/ducks/realtime';
 import * as Session from '@/ducks/session';
@@ -17,7 +17,7 @@ export const useCursorControls = () => {
   const diagramID = useSelector(Session.activeDiagramIDSelector)!;
   const hasDiagramViewers = useSelector(DiagramV2.hasExternalDiagramViewersByIDSelector, { id: diagramID });
 
-  const atomicActionsAwareness = useFeature(FeatureFlag.ATOMIC_ACTIONS_AWARENESS);
+  const atomicActionsAwareness = useFeature(Realtime.FeatureFlag.ATOMIC_ACTIONS_AWARENESS);
 
   const prevCoords = React.useRef<Point | null>(null);
   const mousePosition = React.useRef<Point | null>(null);

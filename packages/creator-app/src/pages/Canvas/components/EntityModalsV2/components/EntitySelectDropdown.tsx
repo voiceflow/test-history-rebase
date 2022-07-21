@@ -1,8 +1,8 @@
 import { Nullish, Utils } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, IconButton, IconButtonVariant, NestedMenuComponents, Select } from '@voiceflow/ui';
 import React from 'react';
 
-import { FeatureFlag } from '@/config/features';
 import { ModalType } from '@/constants';
 import * as Router from '@/ducks/router';
 import * as SlotV2 from '@/ducks/slotV2';
@@ -10,7 +10,7 @@ import { useDispatch, useFeature, useModals, useSelector } from '@/hooks';
 
 const EntitySelectDropdown: React.FC = () => {
   const { close, open } = useModals(ModalType.ENTITY_EDIT);
-  const nluManager = useFeature(FeatureFlag.NLU_MANAGER);
+  const nluManager = useFeature(Realtime.FeatureFlag.NLU_MANAGER);
 
   const allSlots = useSelector(SlotV2.allSlotsSelector);
   const goToNLUManager = useDispatch(Router.goToCurrentNLUManager);

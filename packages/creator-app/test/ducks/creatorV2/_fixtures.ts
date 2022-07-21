@@ -2,14 +2,13 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { normalize } from 'normal-store';
 
-import { FeatureFlag } from '@/config/features';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as Feature from '@/ducks/feature';
 
 export const V2_FEATURE_STATE = {
   [Feature.STATE_KEY]: {
     features: {
-      [FeatureFlag.ATOMIC_ACTIONS_PHASE_2]: { isEnabled: true },
+      [Realtime.FeatureFlag.ATOMIC_ACTIONS_PHASE_2]: { isEnabled: true },
     },
   },
 };

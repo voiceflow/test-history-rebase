@@ -1,7 +1,7 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import LoadingGate from '@/components/LoadingGate';
-import { FeatureFlag } from '@/config/features';
 import * as Creator from '@/ducks/creator';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as Session from '@/ducks/session';
@@ -28,4 +28,4 @@ const DiagramLoadingGate: React.FC = ({ children }) => {
   );
 };
 
-export default withFeatureSwitcher(FeatureFlag.ATOMIC_ACTIONS_PHASE_2, DiagramSubscriptionGate)(DiagramLoadingGate);
+export default withFeatureSwitcher(Realtime.FeatureFlag.ATOMIC_ACTIONS_PHASE_2, DiagramSubscriptionGate)(DiagramLoadingGate);

@@ -5,7 +5,6 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Logger } from '@voiceflow/ui';
 
 import { CanvasAPI } from '@/components/Canvas';
-import { FeatureFlag } from '@/config/features';
 import { BlockType } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import { FeatureFlagMap } from '@/ducks/feature';
@@ -59,11 +58,11 @@ export class EngineConsumer<C extends Record<string, unknown> = Record<string, u
   }
 
   get isAtomicActionsAwareness(): boolean {
-    return !!this.engine.isFeatureEnabled(FeatureFlag.ATOMIC_ACTIONS_AWARENESS);
+    return !!this.engine.isFeatureEnabled(Realtime.FeatureFlag.ATOMIC_ACTIONS_AWARENESS);
   }
 
   get isAtomicActionsPhase2(): boolean {
-    return !!this.engine.isFeatureEnabled(FeatureFlag.ATOMIC_ACTIONS_PHASE_2);
+    return !!this.engine.isFeatureEnabled(Realtime.FeatureFlag.ATOMIC_ACTIONS_PHASE_2);
   }
 
   bind<T extends Dispatcher<any[]>>(dispatcher: T) {

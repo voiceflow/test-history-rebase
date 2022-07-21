@@ -1,9 +1,9 @@
 import './Skill.css';
 
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
-import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
 import { Path } from '@/config/routes';
 import * as ProjectV2 from '@/ducks/projectV2';
@@ -20,7 +20,7 @@ const API = lazy(() => import('./API'));
 const Publish: React.FC = () => {
   const platform = useSelector(ProjectV2.active.platformSelector);
   const [canCodeExport] = usePermission(Permission.CODE_EXPORT);
-  const disableCodeExports = useFeature(FeatureFlag.DISABLE_CODE_EXPORTS).isEnabled;
+  const disableCodeExports = useFeature(Realtime.FeatureFlag.DISABLE_CODE_EXPORTS).isEnabled;
 
   return (
     <Switch>

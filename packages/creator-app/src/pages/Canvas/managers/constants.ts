@@ -1,6 +1,6 @@
 import { Utils } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk';
 
-import { FeatureFlag } from '@/config/features';
 import { BlockType } from '@/constants';
 import * as Feature from '@/ducks/feature';
 import { useSelector } from '@/hooks';
@@ -91,16 +91,16 @@ export const MANAGERS_BY_TYPE = {
   [BlockType.GO_TO_NODE]: DeprecatedManager,
 };
 
-const MANAGERS_BY_FEATURE: Partial<Record<BlockType, FeatureFlag>> = {
-  [BlockType.INTEGRATION]: FeatureFlag.INTEGRATION_STEP_CLEANUP,
-  [BlockType.CODE]: FeatureFlag.CODE_STEP_CLEANUP,
-  [BlockType.SPEAK]: FeatureFlag.SPEAK_STEP_CLEANUP,
-  [BlockType.TEXT]: FeatureFlag.TEXT_STEP_CLEANUP,
-  [BlockType.SETV2]: FeatureFlag.SET_STEP_CLEANUP,
-  [BlockType.SET]: FeatureFlag.SET_STEP_CLEANUP,
-  [BlockType.IFV2]: FeatureFlag.IF_STEP_CLEANUP,
-  [BlockType.COMPONENT]: FeatureFlag.FLOW_STEP_CLEANUP,
-  [BlockType.VISUAL]: FeatureFlag.IMAGE_STEP_CLEANUP,
+const MANAGERS_BY_FEATURE: Partial<Record<BlockType, Realtime.FeatureFlag>> = {
+  [BlockType.INTEGRATION]: Realtime.FeatureFlag.INTEGRATION_STEP_CLEANUP,
+  [BlockType.CODE]: Realtime.FeatureFlag.CODE_STEP_CLEANUP,
+  [BlockType.SPEAK]: Realtime.FeatureFlag.SPEAK_STEP_CLEANUP,
+  [BlockType.TEXT]: Realtime.FeatureFlag.TEXT_STEP_CLEANUP,
+  [BlockType.SETV2]: Realtime.FeatureFlag.SET_STEP_CLEANUP,
+  [BlockType.SET]: Realtime.FeatureFlag.SET_STEP_CLEANUP,
+  [BlockType.IFV2]: Realtime.FeatureFlag.IF_STEP_CLEANUP,
+  [BlockType.COMPONENT]: Realtime.FeatureFlag.FLOW_STEP_CLEANUP,
+  [BlockType.VISUAL]: Realtime.FeatureFlag.IMAGE_STEP_CLEANUP,
 };
 
 export type ManagersMap = typeof MANAGERS_BY_TYPE;
@@ -125,7 +125,7 @@ export const getManager = <T extends BlockType>(
 export const useManager = () => {
   const featureFlags = useSelector(Feature.allActiveFeaturesSelector);
   return <T extends BlockType>(nodeType: T) =>
-    getManager(nodeType, MANAGERS_BY_FEATURE[nodeType] && featureFlags[MANAGERS_BY_FEATURE[nodeType] as string]?.isEnabled);
+    getManager(nodeType, MANAGERS_BY_FEATURE[nodeType] && featureFlags[MANAGERS_BY_FEATURE[nodeType] as Realtime.FeatureFlag]?.isEnabled);
 };
 
 export const MANAGERS = Object.values(MANAGERS_BY_TYPE);

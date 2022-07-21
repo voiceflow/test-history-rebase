@@ -6,7 +6,6 @@ import { normalize } from 'normal-store';
 import client from '@/client';
 import { PageProgress } from '@/components/PageProgressBar/utils';
 import * as Errors from '@/config/errors';
-import { FeatureFlag } from '@/config/features';
 import { PageProgressBar, RESERVED_JS_WORDS } from '@/constants';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as DiagramV2 from '@/ducks/diagramV2';
@@ -305,8 +304,8 @@ export const convertToTopic =
 export const saveActiveDiagram = (): Thunk => async (_, getState) => {
   const state = getState();
   const fullDiagram = fullActiveDiagramSelector(state);
-  const isAtomicActions = Feature.isFeatureEnabledSelector(state)(FeatureFlag.ATOMIC_ACTIONS_PHASE_2);
-  const isTopicsAndComponentsEnabled = Feature.isFeatureEnabledSelector(state)(FeatureFlag.TOPICS_AND_COMPONENTS);
+  const isAtomicActions = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.ATOMIC_ACTIONS_PHASE_2);
+  const isTopicsAndComponentsEnabled = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.TOPICS_AND_COMPONENTS);
   const isTopicsAndComponentsVersion = ProjectV2.active.isTopicsAndComponentsVersionSelector(state);
 
   if (isAtomicActions) return;

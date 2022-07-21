@@ -1,8 +1,8 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, BoxFlexCenter, useOnScreen } from '@voiceflow/ui';
 import React from 'react';
 
 import { noIntentsGraphic } from '@/assets';
-import { FeatureFlag } from '@/config/features';
 import { VersionTag } from '@/constants/platforms';
 import { useFeature } from '@/hooks';
 import { ProjectVersion } from '@/pages/Settings/components/ProjectVersions';
@@ -23,7 +23,7 @@ const VersionList: React.FC<VersionListProps> = ({ liveVersion, activeVersionID,
   const infiniteScrollRef = React.useRef<HTMLDivElement>(null);
   const loadMore = useOnScreen(infiniteScrollRef);
 
-  const canUsePVM = useFeature(FeatureFlag.PRODUCTION_VERSION_MANAGEMENT);
+  const canUsePVM = useFeature(Realtime.FeatureFlag.PRODUCTION_VERSION_MANAGEMENT);
 
   React.useEffect(() => {
     if (loadMore) {

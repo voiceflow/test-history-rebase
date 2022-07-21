@@ -4,7 +4,6 @@ import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import Section, { SectionVariant } from '@/components/Section';
-import { FeatureFlag } from '@/config/features';
 import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useDispatch, useFeature, useSelector } from '@/hooks';
@@ -21,7 +20,7 @@ interface GlobalConversationLogicProps {
 }
 
 const GlobalConversationLogic: React.FC<GlobalConversationLogicProps> = ({ platform, projectType, platformMeta }) => {
-  const wavenetVoices = useFeature(FeatureFlag.WAVENET_VOICES);
+  const wavenetVoices = useFeature(Realtime.FeatureFlag.WAVENET_VOICES);
 
   const locales = useSelector(VersionV2.active.localesSelector);
   const defaultVoiceStore = useSelector(VersionV2.active.defaultVoiceSelector);

@@ -3,7 +3,6 @@ import * as RealtimeSDK from '@voiceflow/realtime-sdk';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 
-import { FeatureFlag } from '@/config/features';
 import * as Realtime from '@/ducks/realtime';
 import { useFeature, useForceUpdate, useSelector } from '@/hooks';
 import { LockOwner } from '@/models';
@@ -78,7 +77,7 @@ const useGenericLock = <T>(target: T, { disabled, createLock, createUnlock, lock
 export const useEditLock = (nodeID: string, disabled: boolean) => {
   const dispatch = useDispatch();
   const diagramHeartbeat = React.useContext(DiagramHeartbeatContext);
-  const atomicActionsPhase2 = useFeature(FeatureFlag.ATOMIC_ACTIONS_PHASE_2);
+  const atomicActionsPhase2 = useFeature(RealtimeSDK.FeatureFlag.ATOMIC_ACTIONS_PHASE_2);
 
   return useGenericLock(nodeID, {
     disabled,

@@ -1,15 +1,15 @@
 import { Struct } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { generatePath } from 'react-router-dom';
 
 import { PageProgress } from '@/components/PageProgressBar/utils';
 import * as Errors from '@/config/errors';
-import { FeatureFlag } from '@/config/features';
 import { Path } from '@/config/routes';
 import { InteractionModelTabType, PageProgressBar } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as Feature from '@/ducks/feature';
 import * as ProjectV2 from '@/ducks/projectV2';
-import * as Realtime from '@/ducks/realtime';
+import * as RealtimeDuck from '@/ducks/realtime';
 import * as Session from '@/ducks/session';
 import * as VariableState from '@/ducks/variableState';
 import * as VersionV2 from '@/ducks/versionV2';
@@ -61,7 +61,7 @@ export const goToCanvasSwitchRealtime =
   async (dispatch) => {
     PageProgress.start(PageProgressBar.CANVAS_LOADING);
 
-    await dispatch(Realtime.switchRealtimeDiagram(versionID, diagramID, isNewDiagram));
+    await dispatch(RealtimeDuck.switchRealtimeDiagram(versionID, diagramID, isNewDiagram));
 
     if (nodeID) {
       dispatch(goToCanvasNode({ versionID, diagramID, nodeID }));
@@ -73,7 +73,7 @@ export const goToCanvasSwitchRealtime =
 export const redirectToCanvasSwitchRealtime =
   (versionID: string, diagramID: string, isNewDiagram?: boolean): Thunk =>
   async (dispatch) => {
-    await dispatch(Realtime.switchRealtimeDiagram(versionID, diagramID, isNewDiagram));
+    await dispatch(RealtimeDuck.switchRealtimeDiagram(versionID, diagramID, isNewDiagram));
 
     dispatch(redirectToCanvas(versionID, diagramID));
   };
@@ -191,7 +191,7 @@ export const goToDiagramCommenting =
 
     PageProgress.start(PageProgressBar.CANVAS_LOADING);
 
-    await dispatch(Realtime.switchRealtimeDiagram(versionID, diagramID));
+    await dispatch(RealtimeDuck.switchRealtimeDiagram(versionID, diagramID));
 
     if (threadID) {
       dispatch(goToCanvasCommentingThread(versionID, diagramID, threadID, commentID));
@@ -208,7 +208,7 @@ export const goToCurrentPrototype =
     const versionID = Session.activeVersionIDSelector(state);
     const diagramID = Session.activeDiagramIDSelector(state);
     const rootDiagramID = VersionV2.active.rootDiagramIDSelector(state);
-    const isTopicsAndComponentsEnabled = Feature.isFeatureEnabledSelector(state)(FeatureFlag.TOPICS_AND_COMPONENTS);
+    const isTopicsAndComponentsEnabled = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.TOPICS_AND_COMPONENTS);
     const isTopicsAndComponentsVersion = ProjectV2.active.isTopicsAndComponentsVersionSelector(state);
     const variableStatesStartFromDiagramID = VariableState.selectedStartFromDiagramIDSelector(state);
 

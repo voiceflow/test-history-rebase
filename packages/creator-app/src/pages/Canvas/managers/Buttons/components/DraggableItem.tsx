@@ -11,7 +11,6 @@ import IntentSelect from '@/components/IntentSelect';
 import RadioGroup from '@/components/RadioGroup';
 import VariablesInput from '@/components/VariablesInput';
 import * as Documentation from '@/config/documentation';
-import { FeatureFlag } from '@/config/features';
 import * as Intent from '@/ducks/intent';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { useAutoScrollNodeIntoView, useDispatch, useFeature, useIntent, useSelector } from '@/hooks';
@@ -37,7 +36,7 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
   { item, index, editor, itemKey, onUpdate, isDragging, onContextMenu, latestCreatedKey, connectedDragRef, isDraggingPreview, isContextMenuOpen },
   ref
 ) => {
-  const topicsAndComponents = useFeature(FeatureFlag.TOPICS_AND_COMPONENTS);
+  const topicsAndComponents = useFeature(Realtime.FeatureFlag.TOPICS_AND_COMPONENTS);
   const isTopicsAndComponentsVersion = useSelector(ProjectV2.active.isTopicsAndComponentsVersionSelector);
 
   const onAddRequiredEntity = useDispatch(Intent.addRequiredSlot);

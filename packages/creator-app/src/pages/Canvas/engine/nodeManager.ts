@@ -1,4 +1,3 @@
-/* eslint-disable default-param-last */
 import { AlexaConstants } from '@voiceflow/alexa-types';
 import { BaseNode } from '@voiceflow/base-types';
 import { Nullish, Utils } from '@voiceflow/common';
@@ -7,7 +6,6 @@ import _partition from 'lodash/partition';
 import { batch } from 'react-redux';
 import { createSelector } from 'reselect';
 
-import { FeatureFlag } from '@/config/features';
 import { BlockType } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as CreatorV2 from '@/ducks/creatorV2';
@@ -358,7 +356,7 @@ class NodeManager extends EngineConsumer {
       this.api(nodeID)?.instance?.translate?.(movement);
       this.updateOrigin(nodeID, movement);
 
-      if (!this.engine.isFeatureEnabled(FeatureFlag.EXPERIMENTAL_SYNC_LINKS)) {
+      if (!this.engine.isFeatureEnabled(Realtime.FeatureFlag.EXPERIMENTAL_SYNC_LINKS)) {
         this.translateAllLinks(nodeID, movement);
       }
 

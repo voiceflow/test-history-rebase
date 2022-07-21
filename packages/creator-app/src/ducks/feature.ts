@@ -1,16 +1,17 @@
+import { Utils } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { createAction } from '@voiceflow/ui';
 import { createSelector } from 'reselect';
 
 import client from '@/client';
 import { IS_PRODUCTION } from '@/config';
-import { FeatureFlag, LOCAL_FEATURE_OVERRIDES } from '@/config/features';
 import { SessionAction, SetActiveWorkspaceID, SetAuthToken } from '@/ducks/session/actions';
 import { activeWorkspaceIDSelector } from '@/ducks/session/selectors';
 import type { Action, Reducer, RootReducer, Selector, Thunk } from '@/store/types';
 
 import { createRootSelector } from './utils/selector';
 
-export type FeatureFlagMap = Partial<Record<FeatureFlag, { isEnabled: boolean }>>;
+export type FeatureFlagMap = Partial<Record<Realtime.FeatureFlag, { isEnabled: boolean }>>;
 
 export interface FeatureState {
   features: FeatureFlagMap;
@@ -91,26 +92,19 @@ export const featuresSelector = createSelector([rootSelector], ({ features }) =>
 
 export const featureSelector = createSelector(
   [featuresSelector],
-  (features) => (featureID: FeatureFlag) => features[featureID] ?? { isEnabled: null }
+  (features) => (featureID: Realtime.FeatureFlag) => features[featureID] ?? { isEnabled: false }
 );
 
-export const allActiveFeaturesSelector = createSelector([rootSelector], ({ features }) =>
-  Object.keys(features).reduce((acc: Record<string, { isEnabled: boolean }>, key: string) => {
-    if (features[key as FeatureFlag]?.isEnabled || (!IS_PRODUCTION && LOCAL_FEATURE_OVERRIDES[key as FeatureFlag])) {
-      return { ...acc, [key]: { isEnabled: true } };
-    }
-    return acc;
-  }, {})
-);
+export const allActiveFeaturesSelector = createSelector([rootSelector], ({ features }) => features);
 
 export const isFeatureEnabledSelector = createSelector(
   [featureSelector],
-  (getFeature) => (featureID: FeatureFlag) => (!IS_PRODUCTION && LOCAL_FEATURE_OVERRIDES[featureID]) || (getFeature(featureID).isEnabled ?? null)
+  (getFeature) => (featureID: Realtime.FeatureFlag) => getFeature(featureID).isEnabled
 );
 
 export const featureSelectorFactory =
   (
-    feature: FeatureFlag
+    feature: Realtime.FeatureFlag
   ): {
     <T, P1, P2, P3, R1, R2, R3, V1, V2>(
       selectors: [
@@ -152,9 +146,9 @@ export const featureSelectorFactory =
       return isFeatureEnabled(feature) ? valueV2 : valueV1;
     });
 
-export const createAtomicActionsPhase2Selector = featureSelectorFactory(FeatureFlag.ATOMIC_ACTIONS_PHASE_2);
+export const createAtomicActionsPhase2Selector = featureSelectorFactory(Realtime.FeatureFlag.ATOMIC_ACTIONS_PHASE_2);
 
-export const createAtomicActionsAwarenessSelector = featureSelectorFactory(FeatureFlag.ATOMIC_ACTIONS_AWARENESS);
+export const createAtomicActionsAwarenessSelector = featureSelectorFactory(Realtime.FeatureFlag.ATOMIC_ACTIONS_AWARENESS);
 
 export const isLoadedSelector = createSelector([rootSelector], ({ isLoaded }) => isLoaded);
 
@@ -171,10 +165,25 @@ export const setWorkspaceFeaturesLoaded = (features: FeatureState['features']): 
 
 // side effects
 
+const overrideFeatures = (features: Record<string, { isEnabled: boolean }>) => {
+  if (IS_PRODUCTION) return features;
+
+  return Object.fromEntries(
+    Object.entries(features).map(([key, value]) => {
+      const envVar = `VF_APP_FF_${key.toLocaleUpperCase()}`;
+      if (Utils.object.hasProperty(import.meta.env, envVar)) {
+        return [key, { isEnabled: import.meta.env[envVar] === 'true' }];
+      }
+
+      return [key, value];
+    })
+  );
+};
+
 export const loadFeatures = (): Thunk => async (dispatch) => {
   const features = await client.feature.getStatuses();
 
-  dispatch(setFeaturesLoaded(features));
+  dispatch(setFeaturesLoaded(overrideFeatures(features)));
 };
 
 export const loadWorkspaceFeatures = (): Thunk => async (dispatch, getState) => {
@@ -187,5 +196,5 @@ export const loadWorkspaceFeatures = (): Thunk => async (dispatch, getState) => 
   const organization = await client.workspace.getOrganization(workspaceID);
   const features = await client.feature.getStatuses({ workspaceID, organizationID: organization?.id });
 
-  dispatch(setWorkspaceFeaturesLoaded(features));
+  dispatch(setWorkspaceFeaturesLoaded(overrideFeatures(features)));
 };

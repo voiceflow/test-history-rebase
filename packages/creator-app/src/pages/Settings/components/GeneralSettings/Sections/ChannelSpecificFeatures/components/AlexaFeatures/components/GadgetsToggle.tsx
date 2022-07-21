@@ -1,7 +1,7 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { SectionToggleVariant, SectionVariant, UncontrolledSection } from '@/components/Section';
-import { FeatureFlag } from '@/config/features';
 import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
 import { connect } from '@/hocs';
@@ -18,7 +18,7 @@ const AlexaGadgetsToggle: React.FC<AlexaGadgetsToggleOwnProps & ConnectedAlexaGa
   patchSettings,
   modelSensitivityShown,
 }) => {
-  const gadgets = useFeature(FeatureFlag.GADGETS);
+  const gadgets = useFeature(Realtime.FeatureFlag.GADGETS);
 
   return (
     <>

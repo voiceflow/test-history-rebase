@@ -1,6 +1,6 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
-import { FeatureFlag } from '@/config/features';
 import { BlockType } from '@/constants';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import { useFeature, useLinkedRef, useRAF } from '@/hooks';
@@ -33,7 +33,7 @@ export const useNodeInstance = <T extends HTMLElement>(): InternalNodeInstance<T
   const engine = React.useContext(EngineContext)!;
   const nodeEntity = React.useContext(NodeEntityContext)!;
   const position = useNodePosition();
-  const experimentalSyncLinks = useFeature(FeatureFlag.EXPERIMENTAL_SYNC_LINKS);
+  const experimentalSyncLinks = useFeature(Realtime.FeatureFlag.EXPERIMENTAL_SYNC_LINKS);
 
   const getRect = React.useCallback(() => blockRef.current?.getRect() || null, []);
 

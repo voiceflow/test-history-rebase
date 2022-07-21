@@ -9,7 +9,6 @@ import GoToIntentSelect from '@/components/GoToIntentSelect';
 import { LegacyMappings } from '@/components/IntentForm';
 import IntentSelect from '@/components/IntentSelect';
 import RadioGroup from '@/components/RadioGroup';
-import { FeatureFlag } from '@/config/features';
 import * as Intent from '@/ducks/intent';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
@@ -35,7 +34,7 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
   { item, index, editor, itemKey, onUpdate, isDragging, onContextMenu, connectedDragRef, latestCreatedKey, isDraggingPreview, isContextMenuOpen },
   ref
 ) => {
-  const topicsAndComponents = useFeature(FeatureFlag.TOPICS_AND_COMPONENTS);
+  const topicsAndComponents = useFeature(Realtime.FeatureFlag.TOPICS_AND_COMPONENTS);
 
   const intents = useSelector(IntentV2.allPlatformIntentsSelector);
   const isTopicsAndComponentsVersion = useSelector(ProjectV2.active.isTopicsAndComponentsVersionSelector);

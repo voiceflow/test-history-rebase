@@ -1,6 +1,6 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
-import { FeatureFlag } from '@/config/features';
 import { HSLShades } from '@/constants';
 import { StepLabelVariant } from '@/constants/canvas';
 import * as ProjectV2 from '@/ducks/projectV2';
@@ -14,7 +14,7 @@ export interface FlowStartStepProps {
 }
 
 const FlowStartStep: React.FC<FlowStartStepProps> = ({ label, portID, palette }) => {
-  const topicsAndComponents = useFeature(FeatureFlag.TOPICS_AND_COMPONENTS);
+  const topicsAndComponents = useFeature(Realtime.FeatureFlag.TOPICS_AND_COMPONENTS);
   const isTopicsAndComponentsVersion = useSelector(ProjectV2.active.isTopicsAndComponentsVersionSelector);
 
   return (

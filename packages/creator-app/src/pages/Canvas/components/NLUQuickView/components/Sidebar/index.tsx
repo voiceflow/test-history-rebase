@@ -1,7 +1,7 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, SvgIcon, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 
-import { FeatureFlag } from '@/config/features';
 import { InteractionModelTabType } from '@/constants';
 import { useFeature } from '@/hooks';
 import { NLUQuickViewContext } from '@/pages/Canvas/components/NLUQuickView/context';
@@ -30,7 +30,7 @@ const SearchPlaceholders = {
 const Sidebar: React.FC = () => {
   const { setTitle } = React.useContext(NLUQuickViewContext);
   const { activeTab, setActiveTab, selectedID, setSelectedID, isActiveItemRename, setIsActiveItemRename } = React.useContext(NLUQuickViewContext);
-  const nluManager = useFeature(FeatureFlag.NLU_MANAGER);
+  const nluManager = useFeature(Realtime.FeatureFlag.NLU_MANAGER);
 
   const [search, setSearch] = React.useState('');
   const [searchLength, setSearchLength] = React.useState(0);

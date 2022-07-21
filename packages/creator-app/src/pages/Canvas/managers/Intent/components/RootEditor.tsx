@@ -7,7 +7,6 @@ import React from 'react';
 import { LegacyMappings } from '@/components/IntentForm';
 import IntentSelect from '@/components/IntentSelect';
 import * as Documentation from '@/config/documentation';
-import { FeatureFlag } from '@/config/features';
 import * as Creator from '@/ducks/creator';
 import * as Intent from '@/ducks/intent';
 import * as ProjectV2 from '@/ducks/projectV2';
@@ -21,7 +20,7 @@ import AvailabilitySection from './AvailabilitySection';
 const RootEditor: React.FC = () => {
   const editor = EditorV2.useEditor<Realtime.NodeData.Intent, Realtime.NodeData.IntentBuiltInPorts>();
 
-  const topicsAndComponents = useFeature(FeatureFlag.TOPICS_AND_COMPONENTS);
+  const topicsAndComponents = useFeature(Realtime.FeatureFlag.TOPICS_AND_COMPONENTS);
 
   const isTopicsAndComponentsVersion = useSelector(ProjectV2.active.isTopicsAndComponentsVersionSelector);
 

@@ -1,7 +1,7 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { MenuOption, toast, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
-import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
 import { getNLUExportLimitDetails } from '@/config/planLimits/nluExport';
 import { InteractionModelTabType, ModalType, NLPProvider, PlatformToNLPProvider } from '@/constants';
@@ -33,7 +33,7 @@ export const useNLUItemMenu = ({ itemID, itemType, isBuiltIn, onRename: onRename
   const projectID = useSelector(Session.activeProjectIDSelector)!;
   const project = useSelector(ProjectV2.projectByIDSelector, { id: projectID });
 
-  const nluManager = useFeature(FeatureFlag.NLU_MANAGER);
+  const nluManager = useFeature(Realtime.FeatureFlag.NLU_MANAGER);
 
   const [permissionToExport] = usePermission(Permission.NLU_EXPORT_ALL);
   const [permissionToExportCSV] = usePermission(Permission.NLU_EXPORT_CSV);

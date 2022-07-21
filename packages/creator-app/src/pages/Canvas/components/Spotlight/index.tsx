@@ -1,9 +1,9 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { KeyName, preventDefault, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 import ReactSelect from 'react-select';
 
 import { IS_PRIVATE_CLOUD } from '@/config';
-import { FeatureFlag } from '@/config/features';
 import { BlockType } from '@/constants';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { useFeature, useSelector, useTrackingEvents } from '@/hooks';
@@ -27,11 +27,11 @@ const Spotlight = () => {
   const selectRef = React.useRef<ReactSelect>(null);
   const [inputValue, setInputValue] = React.useState('');
   const [trackingEvents] = useTrackingEvents();
-  const gadgets = useFeature(FeatureFlag.GADGETS);
-  const chatCardsCarousel = useFeature(FeatureFlag.CHAT_CARDS_CAROUSEL);
-  const dfCarousel = useFeature(FeatureFlag.DF_CAROUSEL_STEP);
-  const topicsAndComponents = useFeature(FeatureFlag.TOPICS_AND_COMPONENTS);
-  const promptStep = useFeature(FeatureFlag.PROMPT_STEP);
+  const gadgets = useFeature(Realtime.FeatureFlag.GADGETS);
+  const chatCardsCarousel = useFeature(Realtime.FeatureFlag.CHAT_CARDS_CAROUSEL);
+  const dfCarousel = useFeature(Realtime.FeatureFlag.DF_CAROUSEL_STEP);
+  const topicsAndComponents = useFeature(Realtime.FeatureFlag.TOPICS_AND_COMPONENTS);
+  const promptStep = useFeature(Realtime.FeatureFlag.PROMPT_STEP);
   const isTopicsAndComponentsVersion = useSelector(ProjectV2.active.isTopicsAndComponentsVersionSelector);
   const getManager = useManager();
 

@@ -1,19 +1,15 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
-import { IS_PRODUCTION } from '@/config';
-import { FeatureFlag, LOCAL_FEATURE_OVERRIDES } from '@/config/features';
 import { FeatureFlagsContext } from '@/contexts/FeatureFlagsContext';
 
 export interface Feature {
-  isReady: boolean;
-  isEnabled: boolean | null;
+  isEnabled: boolean;
 }
 
-export const useFeature = (featureID: FeatureFlag): Feature => {
-  const featureState = React.useContext(FeatureFlagsContext)![featureID] ?? { isEnabled: null };
-  const isEnabled = (!IS_PRODUCTION && LOCAL_FEATURE_OVERRIDES[featureID]) || featureState.isEnabled;
+export const useFeature = (featureID: Realtime.FeatureFlag): Feature => {
+  const featureState = React.useContext(FeatureFlagsContext)![featureID] ?? { isEnabled: false };
+  const { isEnabled } = featureState;
 
-  const isReady = isEnabled != null;
-
-  return { isEnabled, isReady };
+  return { isEnabled };
 };

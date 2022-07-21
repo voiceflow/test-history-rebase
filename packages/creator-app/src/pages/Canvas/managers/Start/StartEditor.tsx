@@ -2,7 +2,6 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { HeaderVariant } from '@/components/Section/components/HeaderLabel';
-import { FeatureFlag } from '@/config/features';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { useFeature, useSelector } from '@/hooks';
@@ -19,7 +18,7 @@ import { COMMANDS_PATH_TYPE } from './constants';
 const StartEditor: NodeEditor<Realtime.NodeData.Start> = ({ data, onChange, pushToPath }) => {
   const platform = React.useContext(PlatformContext)!;
   const isRootDiagram = useSelector(CreatorV2.isRootDiagramActiveSelector);
-  const topicsAndComponents = useFeature(FeatureFlag.TOPICS_AND_COMPONENTS);
+  const topicsAndComponents = useFeature(Realtime.FeatureFlag.TOPICS_AND_COMPONENTS);
   const isTopicsAndComponentsVersion = useSelector(ProjectV2.active.isTopicsAndComponentsVersionSelector);
 
   const componentDefaultLabel = topicsAndComponents.isEnabled && isTopicsAndComponentsVersion ? 'Flow starts here' : 'Conversation continues here';

@@ -1,8 +1,8 @@
 import { PlanType } from '@voiceflow/internal';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { getAlternativeColor } from '@voiceflow/ui';
 import { createSelector } from 'reselect';
 
-import { FeatureFlag } from '@/config/features';
 import { hasOrganizationTrialPermission, hasPlanPermission, hasRolePermission, Permission } from '@/config/permissions';
 import { EDITOR_SEAT_ROLES } from '@/constants';
 import * as Account from '@/ducks/account';
@@ -18,12 +18,12 @@ export const workspaceSelector = createSelector([getWorkspaceByIDSelector, Sessi
 
 export const hasWorkspaceSelector = createSelector([workspaceSelector], (workspace) => !!workspace);
 
-export const organizationTrialExpired = createSelector([workspaceSelector, Feature.allActiveFeaturesSelector], (workspace, features) => {
-  return features[FeatureFlag.ENTERPRISE_TRIAL]?.isEnabled && workspace?.organizationTrialDaysLeft === 0;
+export const organizationTrialExpired = createSelector([workspaceSelector, Feature.isFeatureEnabledSelector], (workspace, isFeatureEnabled) => {
+  return isFeatureEnabled(Realtime.FeatureFlag.ENTERPRISE_TRIAL) && workspace?.organizationTrialDaysLeft === 0;
 });
 
-export const organizationTrialDaysLeft = createSelector([workspaceSelector, Feature.allActiveFeaturesSelector], (workspace, features) => {
-  return features[FeatureFlag.ENTERPRISE_TRIAL]?.isEnabled ? workspace?.organizationTrialDaysLeft : null;
+export const organizationTrialDaysLeft = createSelector([workspaceSelector, Feature.isFeatureEnabledSelector], (workspace, isFeatureEnabled) => {
+  return isFeatureEnabled(Realtime.FeatureFlag.ENTERPRISE_TRIAL) ? workspace?.organizationTrialDaysLeft : null;
 });
 
 export const numberOfSeatsSelector = createSelector([workspaceSelector], (workspace) => workspace?.seats);

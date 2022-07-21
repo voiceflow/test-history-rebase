@@ -1,11 +1,11 @@
 import { Nullable } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { MenuOption } from '@voiceflow/ui';
 import React from 'react';
 import { useDismissable } from 'react-dismissable-layers';
 import { useRouteMatch } from 'react-router-dom';
 
 import { SidebarIconMenuItem } from '@/components/SidebarIconMenu';
-import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
 import { Path } from '@/config/routes';
 import { BOOK_DEMO_LINK, DOCS_LINK, FORUM_LINK, YOUTUBE_CHANNEL_LINK } from '@/constants';
@@ -34,7 +34,7 @@ const RouteCanvasOptionMap: Record<CanvasOptionType, string[]> = {
 };
 
 export const useCanvasMenuOptionsAndHotkeys = () => {
-  const nluManager = useFeature(FeatureFlag.NLU_MANAGER);
+  const nluManager = useFeature(Realtime.FeatureFlag.NLU_MANAGER);
 
   const match = useRouteMatch();
   const hasUnreadTranscripts = useSelector(Transcript.hasUnreadTranscriptsSelector);

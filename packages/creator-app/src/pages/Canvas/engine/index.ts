@@ -9,7 +9,6 @@ import { CanvasAPI } from '@/components/Canvas';
 import { MovementCalculator } from '@/components/Canvas/types';
 import { PageProgress } from '@/components/PageProgressBar';
 import { isDebug } from '@/config';
-import { FeatureFlag } from '@/config/features';
 import { BlockType, PageProgressBar } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as CreatorV2 from '@/ducks/creatorV2';
@@ -220,7 +219,7 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
 
   getDiagramID = () => this.select(CreatorV2.activeDiagramIDSelector);
 
-  isFeatureEnabled = (featureID: FeatureFlag) => this.select(Feature.isFeatureEnabledSelector)(featureID);
+  isFeatureEnabled = (featureID: Realtime.FeatureFlag) => this.select(Feature.isFeatureEnabledSelector)(featureID);
 
   isStraightLinks = () => this.select(ProjectV2.active.isStraightLinksSelector);
 
@@ -524,7 +523,7 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
    * @deprecated
    */
   saveHistory(): void {
-    if (this.isFeatureEnabled(FeatureFlag.ATOMIC_ACTIONS_PHASE_2)) return;
+    if (this.isFeatureEnabled(Realtime.FeatureFlag.ATOMIC_ACTIONS_PHASE_2)) return;
 
     this.store.dispatch(Creator.saveHistory());
     this.log.debug(this.log.success('history saved'));

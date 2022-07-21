@@ -1,6 +1,6 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
-import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as UI from '@/ducks/ui';
@@ -12,7 +12,7 @@ import { Tab, TabItem, TABS, TOPICS_TABS } from './constants';
 export const useTabs = (): { tabs: TabItem[]; selectedTab: Tab } => {
   const activeTab = useSelector(UI.activeCreatorMenuSelector);
   const hasPermissions = useHasPermissions();
-  const topicsAndComponents = useFeature(FeatureFlag.TOPICS_AND_COMPONENTS);
+  const topicsAndComponents = useFeature(Realtime.FeatureFlag.TOPICS_AND_COMPONENTS);
   const isTopicsAndComponentsVersion = useSelector(ProjectV2.active.isTopicsAndComponentsVersionSelector);
 
   const tabs = React.useMemo(() => {
@@ -46,7 +46,7 @@ interface HotkeysOptions {
 
 export const useMenuHotKeys = ({ openByHover, setActiveTab, isOpenByHover, toggleIsHidden, closeByLoseHover }: HotkeysOptions): void => {
   const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
-  const topicsAndComponents = useFeature(FeatureFlag.TOPICS_AND_COMPONENTS);
+  const topicsAndComponents = useFeature(Realtime.FeatureFlag.TOPICS_AND_COMPONENTS);
   const isTopicsAndComponentsVersion = useSelector(ProjectV2.active.isTopicsAndComponentsVersionSelector);
 
   // TODO: remove this after topics and components are fully implemented

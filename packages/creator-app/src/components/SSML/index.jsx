@@ -1,4 +1,5 @@
 import { Utils } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Select, SvgIcon, TippyTooltip } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import cn from 'classnames';
@@ -6,7 +7,6 @@ import React from 'react';
 import { Tooltip } from 'react-tippy';
 
 import { PluginType } from '@/components/TextEditor';
-import { FeatureFlag } from '@/config/features';
 import { useFeature } from '@/hooks';
 import { ClassName } from '@/styles/constants';
 import { prettifyGoogleVoicesLong, prettifyVoice, voiceOptionsFilter } from '@/utils/voice';
@@ -45,7 +45,7 @@ const SSML = (
   ref
 ) => {
   const platformSSMLMeta = getPlatformSSML(platform, projectType);
-  const wavenetVoices = useFeature(FeatureFlag.WAVENET_VOICES);
+  const wavenetVoices = useFeature(Realtime.FeatureFlag.WAVENET_VOICES);
   const SSMLPlaceholder = placeholder ?? platformSSMLMeta.fallbackPlaceholder(voice);
   const { canChangeVoice } = platformSSMLMeta;
   const voiceOptions = React.useMemo(() => platformSSMLMeta.voiceOptions(locales, wavenetVoices.isEnabled), [locales, wavenetVoices.isEnabled]);

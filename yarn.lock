@@ -5750,10 +5750,10 @@
     eslint-plugin-xss "^0.1.9"
     eslint-plugin-you-dont-need-lodash-underscore "^6.12.0"
 
-"@voiceflow/git-branch-check@1.2.5":
-  version "1.2.5"
-  resolved "https://registry.yarnpkg.com/@voiceflow/git-branch-check/-/git-branch-check-1.2.5.tgz#ac586730e2ecd1b9648133dda51905fd00a0b6df"
-  integrity sha512-HG5WePSVLSPP0IEGoXCGuJqW8B2eN3wvnLkVe9XWJQDC9DVIkVKBA+C2Gu0nOlC6LN0pC+lmIF7ZwBxvMJoM5w==
+"@voiceflow/git-branch-check@1.4.0":
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/@voiceflow/git-branch-check/-/git-branch-check-1.4.0.tgz#5874af67eaaca0bc5270098f9cca0d65ddeb860a"
+  integrity sha512-NqxeJ4Xl5dA1XnaYxEy7mdTVNbO8C0eUO9RjG/LVJneBch1eL7KfDWjyZ66+fZvUTJPbVu7LwZPnFYKw/ncgbA==
   dependencies:
     current-git-branch "^1.1.0"
 

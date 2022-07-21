@@ -1,8 +1,8 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { toast } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';
-import { FeatureFlag } from '@/config/features';
 import * as Prototype from '@/ducks/prototype';
 import * as Session from '@/ducks/session';
 import { connect } from '@/hocs';
@@ -16,7 +16,7 @@ const GlobalSocketSubscriptionsLoadingGate: React.FC<ConnectedGlobalSocketSubscr
   activeProjectID,
 }) => {
   const isPrototypingMode = usePrototypingMode();
-  const atomicActionsPhase2 = useFeature(FeatureFlag.ATOMIC_ACTIONS_PHASE_2);
+  const atomicActionsPhase2 = useFeature(Realtime.FeatureFlag.ATOMIC_ACTIONS_PHASE_2);
 
   React.useEffect(() => {
     if (atomicActionsPhase2.isEnabled) return undefined;

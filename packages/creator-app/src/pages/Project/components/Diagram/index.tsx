@@ -1,8 +1,8 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
-import { FeatureFlag } from '@/config/features';
 import * as Transcripts from '@/ducks/transcript';
 import * as UI from '@/ducks/ui';
 import { RealtimeLoadingGate } from '@/gates';
@@ -34,7 +34,7 @@ const Diagram: React.FC<DiagramProps> = () => {
   const isDesignMode = !useAnyModeOpen();
   const isPrototypingMode = usePrototypingMode();
 
-  const revisedCanvasMenu = useFeature(FeatureFlag.REVISED_CANVAS_MENU);
+  const revisedCanvasMenu = useFeature(Realtime.FeatureFlag.REVISED_CANVAS_MENU);
 
   const isCanvasEditable = !isPrototypingMode;
 

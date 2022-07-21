@@ -1,10 +1,10 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Vendors } from '@voiceflow/ui';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useIntercom } from 'react-use-intercom';
 
 import { INTERCOM_ENABLED } from '@/config';
-import { FeatureFlag } from '@/config/features';
 import * as Account from '@/ducks/account';
 import * as Session from '@/ducks/session';
 import { useActiveWorkspace, useFeature, useSelector } from '@/hooks';
@@ -12,7 +12,7 @@ import { generateID } from '@/utils/env';
 import * as Intercom from '@/vendors/intercom';
 
 export const IntercomChat: React.FC = () => {
-  const intercomIntegration = useFeature(FeatureFlag.INTERCOM_INTEGRATION);
+  const intercomIntegration = useFeature(Realtime.FeatureFlag.INTERCOM_INTEGRATION);
 
   const user = useSelector(Account.userSelector);
   const isLoggedIn = useSelector(Account.isLoggedInSelector);
@@ -52,7 +52,7 @@ export default IntercomChat;
 
 export const RemoveIntercom = React.memo(() => {
   const dispatch = useDispatch();
-  const intercomIntegration = useFeature(FeatureFlag.INTERCOM_INTEGRATION);
+  const intercomIntegration = useFeature(Realtime.FeatureFlag.INTERCOM_INTEGRATION);
 
   React.useEffect(() => {
     if (!intercomIntegration.isEnabled) return undefined;

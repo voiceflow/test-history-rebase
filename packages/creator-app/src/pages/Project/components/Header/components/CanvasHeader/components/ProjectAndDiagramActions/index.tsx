@@ -1,9 +1,9 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { BoxFlex } from '@voiceflow/ui';
 import React from 'react';
 
 import { EditableTextAPI } from '@/components/EditableText';
 import { HeaderIconButton } from '@/components/ProjectPage';
-import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as Project from '@/ducks/project';
@@ -34,7 +34,7 @@ const ProjectAndDiagramActions: React.FC = () => {
   const projectName = useSelector(ProjectV2.active.nameSelector);
 
   const getEngine = useEventualEngine();
-  const topicsAndComponents = useFeature(FeatureFlag.TOPICS_AND_COMPONENTS);
+  const topicsAndComponents = useFeature(Realtime.FeatureFlag.TOPICS_AND_COMPONENTS);
   const isTopicsAndComponentsVersion = useSelector(ProjectV2.active.isTopicsAndComponentsVersionSelector);
 
   const isPrototypingMode = usePrototypingMode();

@@ -6,7 +6,6 @@ import ConditionsBuilder from '@/components/ConditionsBuilder';
 import ConditionsBuilderV2 from '@/components/ConditionsBuilderV2';
 import { DragPreviewComponentProps, ItemComponentProps, MappedItemComponentHandlers } from '@/components/DraggableList';
 import Section, { SectionToggleVariant } from '@/components/Section';
-import { FeatureFlag } from '@/config/features';
 import { useFeature, useSetup } from '@/hooks';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
 
@@ -23,7 +22,7 @@ const ConditionsSection: React.ForwardRefRenderFunction<HTMLDivElement, Conditio
 ) => {
   const inputRef = React.useRef<HTMLInputElement | null>(null);
   const [title, setTitle] = React.useState<string>((item as Realtime.ExpressionData).name ?? '');
-  const conditionsBuilderV2 = useFeature(FeatureFlag.CONDITIONS_BUILDER_V2);
+  const conditionsBuilderV2 = useFeature(Realtime.FeatureFlag.CONDITIONS_BUILDER_V2);
 
   const isNew = itemKey === latestCreatedKey;
 

@@ -4,7 +4,6 @@ import { toast } from '@voiceflow/ui';
 import { batch } from 'react-redux';
 
 import * as Errors from '@/config/errors';
-import { FeatureFlag } from '@/config/features';
 import * as Account from '@/ducks/account';
 import * as Feature from '@/ducks/feature';
 import * as Modal from '@/ducks/modal';
@@ -74,7 +73,7 @@ export const duplicateProject =
     const state = getState();
     const project = projectByIDSelector(state, { id: projectID });
     const sourceWorkspaceID = Session.activeWorkspaceIDSelector(state);
-    const isTopicsAndComponents = Feature.isFeatureEnabledSelector(state)(FeatureFlag.TOPICS_AND_COMPONENTS);
+    const isTopicsAndComponents = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.TOPICS_AND_COMPONENTS);
 
     const vfVersion = isTopicsAndComponents ? Realtime.TOPICS_AND_COMPONENTS_PROJECT_VERSION : Realtime.CURRENT_PROJECT_VERSION;
 
@@ -95,7 +94,7 @@ export const importProject =
   (projectID: string, targetWorkspaceID: string): Thunk<Realtime.AnyProject> =>
   async (dispatch, getState) => {
     const state = getState();
-    const isTopicsAndComponents = Feature.isFeatureEnabledSelector(state)(FeatureFlag.TOPICS_AND_COMPONENTS);
+    const isTopicsAndComponents = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.TOPICS_AND_COMPONENTS);
 
     const vfVersion = isTopicsAndComponents ? Realtime.TOPICS_AND_COMPONENTS_PROJECT_VERSION : Realtime.CURRENT_PROJECT_VERSION;
 

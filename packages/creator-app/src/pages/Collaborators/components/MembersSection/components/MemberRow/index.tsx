@@ -3,7 +3,6 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, BoxFlex, Menu, OverflowTippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
-import { FeatureFlag } from '@/config/features';
 import * as Account from '@/ducks/account';
 import * as Workspace from '@/ducks/workspace';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
@@ -46,7 +45,7 @@ interface MemberRowProps {
 }
 
 const MemberRow: React.FC<MemberRowProps> = ({ member, inline, pending, resendInvite, isLast }) => {
-  const ownerRole = useFeature(FeatureFlag.OWNER_ROLE);
+  const ownerRole = useFeature(Realtime.FeatureFlag.OWNER_ROLE);
 
   // TODO: refactor this to use the permission system
   const role = useSelector(WorkspaceV2.active.userRoleSelector);

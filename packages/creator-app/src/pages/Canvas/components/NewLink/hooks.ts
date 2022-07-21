@@ -1,7 +1,7 @@
 import { Utils } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
-import { FeatureFlag } from '@/config/features';
 import { AutoPanningCacheContext } from '@/contexts';
 import * as Account from '@/ducks/account';
 import { useFeature, useRAF, useSelector } from '@/hooks';
@@ -24,7 +24,7 @@ export const useNewLinkAPI = <T extends SVGElement>() => {
 
   const [isVisible, setVisible] = React.useState(false);
 
-  const atomicActionsAwareness = useFeature(FeatureFlag.ATOMIC_ACTIONS_AWARENESS);
+  const atomicActionsAwareness = useFeature(Realtime.FeatureFlag.ATOMIC_ACTIONS_AWARENESS);
 
   const [redrawScheduler] = useRAF();
 

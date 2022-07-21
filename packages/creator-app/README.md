@@ -259,21 +259,12 @@ yarn start --privateCloud myPrivateCloud
 
 ### Feature Flags
 
-All feature flags environment variables begin with `VF_APP_FF_` and flags for the command line begin with `--ff_`.
-You can invoke the feature by setting the appropriate environment variable or passing the appropriate command line flag.
+All feature flags environment variables begin with `VF_APP_FF_`.
+You can invoke the feature by setting the appropriate environment variable in a `.env.local` file.
 
 ```sh
 VF_APP_FF_SOME_FEATURE='true'
-
 ```
-
-```sh
-yarn start --ff_someFeature
-```
-
-#### Available Flags and Environment Variables
-
-See [this file](src/config/features.ts) for a complete list of active feature flags.
 
 ### Environment variable overrides
 
@@ -285,11 +276,11 @@ NOTE: PLEASE DO NOT MODIFY `public/static.js`!!! It should be solely managed by 
 
 ## Previewing in a Development Environment
 
-#### Preparations
+### Preparations
 
 Make sure your `envcli` utility is properly set up by following the [envcli readme](https://github.com/voiceflow/envcli).
 
-#### Previewing
+### Previewing
 
 ```bash
 envcli preview

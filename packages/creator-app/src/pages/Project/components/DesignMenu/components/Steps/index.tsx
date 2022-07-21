@@ -1,9 +1,9 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { CustomScrollbars } from '@voiceflow/ui';
 import React from 'react';
 
 import { UncontrolledCollapse } from '@/components/Collapsable';
 import { IS_PRIVATE_CLOUD } from '@/config';
-import { FeatureFlag } from '@/config/features';
 import { BlockCategory, BlockType, DragItem } from '@/constants';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as UI from '@/ducks/ui';
@@ -22,11 +22,11 @@ const Steps: React.FC = () => {
   const projectType = useSelector(ProjectV2.active.projectTypeSelector);
   const expandedSections = useSelector(UI.openBlockMenuSectionsSelector);
   const toggleSection = useDispatch(UI.toggleBlockMenuSection);
-  const gadgets = useFeature(FeatureFlag.GADGETS);
-  const chatCardsCarousel = useFeature(FeatureFlag.CHAT_CARDS_CAROUSEL);
-  const dfCarousel = useFeature(FeatureFlag.DF_CAROUSEL_STEP);
-  const topicsAndComponents = useFeature(FeatureFlag.TOPICS_AND_COMPONENTS);
-  const promptStep = useFeature(FeatureFlag.PROMPT_STEP);
+  const gadgets = useFeature(Realtime.FeatureFlag.GADGETS);
+  const chatCardsCarousel = useFeature(Realtime.FeatureFlag.CHAT_CARDS_CAROUSEL);
+  const dfCarousel = useFeature(Realtime.FeatureFlag.DF_CAROUSEL_STEP);
+  const topicsAndComponents = useFeature(Realtime.FeatureFlag.TOPICS_AND_COMPONENTS);
+  const promptStep = useFeature(Realtime.FeatureFlag.PROMPT_STEP);
   const isTopicsAndComponentsVersion = useSelector(ProjectV2.active.isTopicsAndComponentsVersionSelector);
   const getManager = useManager();
 

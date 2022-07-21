@@ -1,7 +1,7 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
-import { FeatureFlag } from '@/config/features';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useFeature, useSelector } from '@/hooks';
 
@@ -9,7 +9,7 @@ import { CountdownContainer, CountdownIcon, CountdownText } from './components';
 import { CountdownStatus, MIN_TRIAL_DAYS, TRIAL_DAYS_WARNING } from './constants';
 
 const OrganizationTrialCountdown: React.FC = () => {
-  const { isEnabled: isEnterpriseTrialEnabled } = useFeature(FeatureFlag.ENTERPRISE_TRIAL);
+  const { isEnabled: isEnterpriseTrialEnabled } = useFeature(Realtime.FeatureFlag.ENTERPRISE_TRIAL);
   const trialDaysLeft = useSelector(WorkspaceV2.active.organizationTrialDaysLeft);
 
   const countdownStatus = React.useMemo(() => {

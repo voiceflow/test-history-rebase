@@ -1,10 +1,10 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Portal, toast } from '@voiceflow/ui';
 import React from 'react';
 import { useSelector } from 'react-redux';
 
 import client from '@/client';
 import { PublishVersionModalData } from '@/components/PublishVersionModal';
-import { FeatureFlag } from '@/config/features';
 import { ModalType } from '@/constants';
 import { NLPTrainStageType, VersionTag } from '@/constants/platforms';
 import * as Project from '@/ducks/project';
@@ -57,7 +57,7 @@ const GeneralPublish: React.FC = () => {
 };
 
 const UpdateLiveContainer: React.FC = () => {
-  const canUsePVM = useFeature(FeatureFlag.PRODUCTION_VERSION_MANAGEMENT);
+  const canUsePVM = useFeature(Realtime.FeatureFlag.PRODUCTION_VERSION_MANAGEMENT);
 
   // Called when we finished updating the live version and publishing to production
   const onFinished = React.useCallback(() => {

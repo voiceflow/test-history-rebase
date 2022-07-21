@@ -5,7 +5,6 @@ import React from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 
 import VariablesInput, { VariablesInputRef } from '@/components/VariablesInput';
-import { FeatureFlag } from '@/config/features';
 import { useFeature, useSetup } from '@/hooks';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
@@ -49,7 +48,7 @@ const findButtonInfo = (cards: Realtime.NodeData.Carousel.Card[], buttonID: stri
 
 const CarouselButtonsEditor: React.FC = () => {
   const inputRef = React.useRef<VariablesInputRef>(null);
-  const chatCarouselIntent = useFeature(FeatureFlag.CHAT_CAROUSEL_INTENT);
+  const chatCarouselIntent = useFeature(Realtime.FeatureFlag.CHAT_CAROUSEL_INTENT);
   const editor = EditorV2.useEditor<Realtime.NodeData.Carousel>();
   const params = useParams<{ buttonID: string }>();
   const { state } = useLocation<{ waitForData?: boolean; renaming?: boolean }>();

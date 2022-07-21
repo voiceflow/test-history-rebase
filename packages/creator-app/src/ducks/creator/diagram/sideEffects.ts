@@ -7,7 +7,6 @@ import * as ReduxUndo from 'redux-undo';
 
 import client from '@/client';
 import * as Errors from '@/config/errors';
-import { FeatureFlag } from '@/config/features';
 import { DiagramState } from '@/constants';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as DiagramSelectorsV2 from '@/ducks/diagramV2/selectors';
@@ -41,7 +40,7 @@ export const validateTopicAvailability = (): SyncThunk => (_dispatch, getState) 
   const state = getState();
 
   // remove after FF removal
-  const isTopicsAndComponentsEnabled = Feature.isFeatureEnabledSelector(state)(FeatureFlag.TOPICS_AND_COMPONENTS);
+  const isTopicsAndComponentsEnabled = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.TOPICS_AND_COMPONENTS);
   const isTopicsAndComponentsVersion = ProjectV2.active.isTopicsAndComponentsVersionSelector(state);
 
   if (!isTopicsAndComponentsEnabled || !isTopicsAndComponentsVersion) {

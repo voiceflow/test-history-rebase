@@ -1,8 +1,8 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Portal } from '@voiceflow/ui';
 import React from 'react';
 
 import { PublishVersionModalData } from '@/components/PublishVersionModal';
-import { FeatureFlag } from '@/config/features';
 import { ModalType } from '@/constants';
 import { DialogflowStageType } from '@/constants/platforms';
 import { useFeature, useHotKeys, useModals } from '@/hooks';
@@ -34,7 +34,7 @@ const DialogflowPublish: React.FC = () => {
 
   const publishNewVersionModal = useModals<PublishVersionModalData>(ModalType.PUBLISH_VERSION_MODAL);
 
-  const canUseGeneralPublish = useFeature(FeatureFlag.PRODUCTION_VERSION_MANAGEMENT);
+  const canUseGeneralPublish = useFeature(Realtime.FeatureFlag.PRODUCTION_VERSION_MANAGEMENT);
 
   usePatchLiveVersion(successfullyPublished);
 

@@ -1,9 +1,9 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { toast } from '@voiceflow/ui';
 import React from 'react';
 
 import AceEditor, { ACE_EDITOR_OPTIONS } from '@/components/AceEditor';
 import Section, { SectionVariant } from '@/components/Section';
-import { FeatureFlag } from '@/config/features';
 import * as Session from '@/ducks/session';
 import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
@@ -27,7 +27,7 @@ const AlexaEvents: React.FC<ConnectedAlexaEvents & AlexaEventsOwnProps> = ({
 }) => {
   const { descriptors } = platformMeta;
   const { events } = descriptors;
-  const gadgetsFeat = useFeature(FeatureFlag.GADGETS);
+  const gadgetsFeat = useFeature(Realtime.FeatureFlag.GADGETS);
 
   const [alexaEvents, setAlexaEvents] = React.useState(propAlexaEvents || '');
   const [alexaEventError, setAlexaEventError] = React.useState(null);

@@ -18,7 +18,7 @@
     "@voiceflow/commitlint-config": "2.0.0",
     "@voiceflow/dependency-cruiser-config": "1.1.0",
     "@voiceflow/eslint-config": "6.0.1",
-    "@voiceflow/git-branch-check": "1.2.5",
+    "@voiceflow/git-branch-check": "1.4.0",
     "@voiceflow/prettier-config": "1.0.7",
     "@voiceflow/semantic-release-config": "1.1.0",
     "@voiceflow/stylelint-config": "1.0.1",

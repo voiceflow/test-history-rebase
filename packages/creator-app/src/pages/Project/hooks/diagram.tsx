@@ -1,9 +1,9 @@
 import { BaseModels } from '@voiceflow/base-types';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { MenuOption, toast, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Errors from '@/config/errors';
-import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
 import * as Diagram from '@/ducks/diagram';
 import * as DiagramV2 from '@/ducks/diagramV2';
@@ -111,7 +111,7 @@ export const useDiagramOptions = ({ onEdit, onRename, diagramID }: DiagramOption
   const isTopicsAndComponentsVersion = useSelector(ProjectV2.active.isTopicsAndComponentsVersionSelector);
 
   const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
-  const topicsAndComponents = useFeature(FeatureFlag.TOPICS_AND_COMPONENTS);
+  const topicsAndComponents = useFeature(Realtime.FeatureFlag.TOPICS_AND_COMPONENTS);
 
   const onDuplicate = React.useCallback(() => {
     if (!diagramID) {

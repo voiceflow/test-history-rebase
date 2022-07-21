@@ -7,7 +7,6 @@ import { Redirect, Route, RouteComponentProps, Switch, useRouteMatch } from 'rea
 
 import { RemoveIntercom } from '@/components/IntercomChat';
 import ProjectPage from '@/components/ProjectPage';
-import { FeatureFlag } from '@/config/features';
 import { Path } from '@/config/routes';
 import { ModalType } from '@/constants';
 import * as Creator from '@/ducks/creator';
@@ -74,7 +73,7 @@ const Project: React.FC = () => {
   const resetCreatorV2 = useLocalDispatch(Realtime.creator.reset);
 
   const inactivityModal = useModals(ModalType.INACTIVITY);
-  const nluManager = useFeature(FeatureFlag.NLU_MANAGER);
+  const nluManager = useFeature(Realtime.FeatureFlag.NLU_MANAGER);
 
   const isPreviewRoute = useProjectPreviewMode();
 

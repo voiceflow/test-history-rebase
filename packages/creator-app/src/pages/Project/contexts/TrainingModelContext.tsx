@@ -1,11 +1,11 @@
 import { BaseModels } from '@voiceflow/base-types';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { ClickableText, logger, toast, useSmartReducerV2 } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import client from '@/client';
 import * as Errors from '@/config/errors';
-import { FeatureFlag } from '@/config/features';
 import { InteractionModelTabType } from '@/constants';
 import { NLPTrainStageType } from '@/constants/platforms';
 import * as CreatorV2 from '@/ducks/creatorV2';
@@ -74,7 +74,7 @@ export const TrainingModelProvider: React.FC = ({ children }) => {
   const validateModel = useDispatch(PrototypeDuck.validateModel);
   const goToInteractionModel = useDispatch(Router.goToInteractionModel);
   const [trackingEvents] = useTrackingEvents();
-  const nluManager = useFeature(FeatureFlag.NLU_MANAGER);
+  const nluManager = useFeature(Realtime.FeatureFlag.NLU_MANAGER);
   const goToNLUManagerEntity = useDispatch(Router.goToCurrentNLUManagerEntity);
 
   const versionID = useSelector(Session.activeVersionIDSelector);

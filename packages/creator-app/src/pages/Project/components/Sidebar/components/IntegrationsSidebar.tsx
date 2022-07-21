@@ -1,10 +1,10 @@
 import { Utils } from '@voiceflow/realtime-sdk';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 import { generatePath } from 'react-router-dom';
 
 import NavLinkSidebar, { NavLinkItem, NavLinkSection } from '@/components/NavLinkSidebar';
-import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
 import { Path } from '@/config/routes';
 import * as ProjectV2 from '@/ducks/projectV2';
@@ -41,7 +41,7 @@ const IntegrationsSidebar: React.FC = () => {
 
   const [canExportCode] = usePermission(Permission.CODE_EXPORT);
 
-  const disableCodeExports = useFeature(FeatureFlag.DISABLE_CODE_EXPORTS).isEnabled;
+  const disableCodeExports = useFeature(Realtime.FeatureFlag.DISABLE_CODE_EXPORTS).isEnabled;
 
   const items = React.useMemo<NavLinkSection[]>(() => {
     const platformItems = getPlatformItems(platform)(versionID);

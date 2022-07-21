@@ -1,8 +1,8 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Dropdown, Flex, stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 
 import { HeaderDivider, HeaderIconButton } from '@/components/ProjectPage';
-import { FeatureFlag } from '@/config/features';
 import { Permission } from '@/config/permissions';
 import { BlockType, ModalType } from '@/constants';
 import * as Thread from '@/ducks/thread';
@@ -28,7 +28,7 @@ const CanvasHeader: React.FC = () => {
 
   const [, trackingEventsWrapper] = useTrackingEvents();
 
-  const stickersDropdown = useFeature(FeatureFlag.STICKERS_DROPDOWN);
+  const stickersDropdown = useFeature(Realtime.FeatureFlag.STICKERS_DROPDOWN);
 
   const nluQuickView = useModals(ModalType.NLU_MODEL_QUICK_VIEW);
   const isMarkupTextActive = markup.creatingType === BlockType.MARKUP_TEXT;

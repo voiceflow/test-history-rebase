@@ -1,7 +1,7 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import _throttle from 'lodash/throttle';
 import React from 'react';
 
-import { FeatureFlag } from '@/config/features';
 import { AutoPanningCacheContext, AutoPanningSetContext } from '@/contexts';
 import * as Creator from '@/ducks/creator';
 import * as CreatorV2 from '@/ducks/creatorV2';
@@ -122,14 +122,14 @@ const AutoPanLayer: React.FC = () => {
         return;
       }
 
-      if (engine.isFeatureEnabled(FeatureFlag.EXPERIMENTAL_SYNC_LINKS)) {
+      if (engine.isFeatureEnabled(Realtime.FeatureFlag.EXPERIMENTAL_SYNC_LINKS)) {
         syncCanvas();
       }
 
       syncBlocksAndCursor();
       syncLinkAndCursor();
 
-      if (!engine.isFeatureEnabled(FeatureFlag.EXPERIMENTAL_SYNC_LINKS)) {
+      if (!engine.isFeatureEnabled(Realtime.FeatureFlag.EXPERIMENTAL_SYNC_LINKS)) {
         syncCanvas();
       }
 

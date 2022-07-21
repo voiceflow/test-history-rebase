@@ -27,7 +27,6 @@ declare global {
     VF_OVERRIDE_GOOGLE_CLIENT_ID?: string; // Override the Google OAuth2 Client
     VF_OVERRIDE_GOOGLE_ANALYTICS_ID?: string;
     VF_OVERRIDE_COPY_PASTE_KEY?: string;
-    VF_OVERRIDE_ADMIN_HOST?: string;
     VF_OVERRIDE_MAINTENANCE_STATUS_SOURCE?: string;
     VF_OVERRIDE_GENERAL_RUNTIME_ENDPOINT?: string;
     VF_OVERRIDE_SENTRY_DSN?: string;
@@ -118,16 +117,6 @@ export const REALTIME_IO_ENDPOINT =
   window.VF_OVERRIDE_REALTIME_IO_ENDPOINT ||
   process.env.VF_OVERRIDE_REALTIME_IO_ENDPOINT ||
   (IS_DEVELOPMENT ? REALTIME_IO_LOCAL_ENDPOINT : REALTIME_IO_CLOUD_ENDPOINT);
-
-const _ADMIN_HOST =
-  // eslint-disable-next-line no-nested-ternary
-  !API_HOST || API_HOST.includes('localhost')
-    ? 'https://localhost:3001'
-    : IS_PRODUCTION_ENV
-    ? 'https://admin.voiceflow.com'
-    : 'https://admin.development.voiceflow.com';
-
-export const ADMIN_HOST = window.VF_OVERRIDE_ADMIN_HOST || _ADMIN_HOST;
 
 // amazon
 export const AMAZON_APP_ID = window.VF_OVERRIDE_AMAZON_APP_ID || process.env.AMAZON_APP_ID!;

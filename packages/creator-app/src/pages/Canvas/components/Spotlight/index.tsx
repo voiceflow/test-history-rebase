@@ -50,7 +50,7 @@ const Spotlight = () => {
         .filter((step) => {
           if (!gadgets.isEnabled && step.type === BlockType.EVENT) return false;
           if (!chatCardsCarousel.isEnabled && step.type === BlockType.CAROUSEL) return false;
-          if (!(dfCarousel.isEnabled && isDialogflowPlatform(platform)) && step.type === BlockType.CAROUSEL) return false;
+          if (isDialogflowPlatform(platform) && !dfCarousel.isEnabled && step.type === BlockType.CAROUSEL) return false;
           if (!(topicsAndComponents.isEnabled && isTopicsAndComponentsVersion) && step.type === BlockType.COMPONENT) return false;
           if (topicsAndComponents.isEnabled && isTopicsAndComponentsVersion && step.type === BlockType.FLOW) return false;
           if (IS_PRIVATE_CLOUD && step.publicOnly) return false;

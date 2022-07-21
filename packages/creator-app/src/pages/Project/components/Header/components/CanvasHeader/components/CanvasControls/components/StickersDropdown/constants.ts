@@ -37,3 +37,5 @@ export const STICKERS: StickerData[] = [
     url: 'https://static.vecteezy.com/system/resources/previews/000/587/437/original/kawaii-sushi-vector.png',
   },
 ];
+
+export const stickerSize = 90;

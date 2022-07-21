@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.842.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.841.0...@voiceflow/creator-app@1.842.0) (2022-07-21)
+
+
+### Features
+
+* add click to insert sticker (CT-537) ([#5796](https://github.com/voiceflow/creator-app/issues/5796)) ([24a88cf](https://github.com/voiceflow/creator-app/commit/24a88cf97f8cac63e5aeb3f02f3218213e569a39))
+* remove admin-app (CT-660) ([#5798](https://github.com/voiceflow/creator-app/issues/5798)) ([6932284](https://github.com/voiceflow/creator-app/commit/6932284c225dcc8d6d4a9853748dddf296f21db2))
+* support feature flags in .env.local (DX-51) ([#5797](https://github.com/voiceflow/creator-app/issues/5797)) ([37b570a](https://github.com/voiceflow/creator-app/commit/37b570a4bcf3ec26c2f4ac2e4a7ae844b7d29612))
+
+
+
+
+
 # [1.841.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.840.0...@voiceflow/creator-app@1.841.0) (2022-07-20)
 
 

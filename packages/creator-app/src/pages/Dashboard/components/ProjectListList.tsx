@@ -130,7 +130,7 @@ const ProjectListList: React.FC<ProjectListListProps> = ({ workspace, filter, is
           title="No Projects Found"
           body="This workspace has no projects, create one."
           buttonText="New Project"
-          onClick={onCreateProject}
+          onClick={() => onCreateProject()}
         />
       ) : (
         <div className={DashboardClassName.LISTS_CONTAINER}>

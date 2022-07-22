@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.124.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.124.0...@voiceflow/ui@1.124.1) (2022-07-22)
+
+
+### Bug Fixes
+
+* markup link creation (CT-588) ([#5761](https://github.com/voiceflow/creator-app/issues/5761)) ([8349a12](https://github.com/voiceflow/creator-app/commit/8349a125a3d6e606753483427162739efe952e10))
+
+
+
+
+
 # [1.124.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.123.0...@voiceflow/ui@1.124.0) (2022-07-19)
 
 

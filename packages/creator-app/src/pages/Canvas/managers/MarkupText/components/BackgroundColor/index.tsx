@@ -1,8 +1,7 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
-import Section, { SectionToggleVariant } from '@/components/Section';
-import { HeaderVariant } from '@/components/Section/components/HeaderLabel';
 import { EngineContext } from '@/pages/Canvas/contexts';
 
 import { DEFAULT_BACKGROUND_COLOR } from '../../constants';
@@ -20,25 +19,23 @@ const BackgroundColor: React.FC<BackgroundColorProps> = ({ nodeID, data }) => {
     engine.node.updateData<Realtime.Markup.NodeData.Text>(nodeID, { backgroundColor: newColor });
   };
 
-  const handleToggleChange = (collapsed: boolean) => {
-    if (collapsed) {
-      updateBackgroundColor(null);
-    } else if (!data.backgroundColor) {
-      updateBackgroundColor(DEFAULT_BACKGROUND_COLOR);
-    }
-  };
+  const collapsed = !data.backgroundColor;
 
   return (
-    <Section
-      header="Background"
-      headerVariant={HeaderVariant.ADD}
-      initialOpen={data.backgroundColor != null}
-      collapseVariant={SectionToggleVariant.ADD_V2}
-      onToggleChange={handleToggleChange}
-      isDividerBottom
+    <SectionV2.ActionCollapseSection
+      title={<SectionV2.Title bold={!collapsed}>Background</SectionV2.Title>}
+      action={
+        collapsed ? (
+          <SectionV2.AddButton onClick={() => updateBackgroundColor(DEFAULT_BACKGROUND_COLOR)} />
+        ) : (
+          <SectionV2.RemoveButton onClick={() => updateBackgroundColor(null)} />
+        )
+      }
+      collapsed={collapsed}
+      contentProps={{ bottomOffset: 2.5 }}
     >
       <BackgroundColorSlider color={data.backgroundColor ?? DEFAULT_BACKGROUND_COLOR} onChangeColor={updateBackgroundColor} />
-    </Section>
+    </SectionV2.ActionCollapseSection>
   );
 };
 

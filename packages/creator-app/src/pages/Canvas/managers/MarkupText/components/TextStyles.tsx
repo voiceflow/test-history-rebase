@@ -4,14 +4,12 @@ import { TextItalicButton, TextUnderlineButton } from '@/components/SlateEditabl
 
 import Button from './Button';
 
-const TextStyles: React.FC = () => {
-  return (
-    <>
-      <TextItalicButton component={Button} />
+const TextStyles: React.FC = () => (
+  <>
+    <TextItalicButton component={Button} />
 
-      <TextUnderlineButton component={Button} />
-    </>
-  );
-};
+    <TextUnderlineButton component={Button} />
+  </>
+);
 
 export default TextStyles;

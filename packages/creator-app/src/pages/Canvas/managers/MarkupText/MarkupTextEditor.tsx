@@ -1,16 +1,15 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { FlexAround } from '@voiceflow/ui';
+import { Divider, SectionV2, stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 
 import { ControlledEditorProvider, FontStyles, HyperlinkButton, TextColor } from '@/components/SlateEditable';
 import { withRequiredEngine } from '@/contexts';
 import { useTrackingEvents } from '@/hooks';
 import { Content } from '@/pages/Canvas/components/Editor';
-import MarkupSection from '@/pages/Canvas/components/MarkupSection';
 import type Engine from '@/pages/Canvas/engine';
 import { NodeEditorPropsType } from '@/pages/Canvas/managers/types';
 
-import { BackgroundColor, IconButton, IconButtonSeparator, TextAligns, TextStyles } from './components';
+import { BackgroundColor, IconButton, TextAligns, TextStyles } from './components';
 
 export const MarkupTextEditor: React.FC<NodeEditorPropsType<Realtime.Markup.NodeData.Text> & { engine: Engine }> = ({ nodeID, data, engine }) => {
   const [key, editor] = engine.markup.useTextEditor(nodeID);
@@ -23,27 +22,31 @@ export const MarkupTextEditor: React.FC<NodeEditorPropsType<Realtime.Markup.Node
   return !editor ? null : (
     <ControlledEditorProvider editor={editor} contextKey={key}>
       <Content>
-        <MarkupSection>
+        <SectionV2.SimpleSection>
           <FontStyles />
-        </MarkupSection>
+        </SectionV2.SimpleSection>
 
-        <MarkupSection>
-          <FlexAround>
-            <TextAligns />
+        <SectionV2.Divider inset />
 
-            <IconButtonSeparator />
+        <SectionV2.SimpleSection>
+          <TextAligns />
 
-            <TextStyles />
+          <Divider offset={10} height={16} isVertical />
 
-            <IconButtonSeparator />
+          <TextStyles />
 
-            <HyperlinkButton>{(props) => <IconButton {...props} />}</HyperlinkButton>
-          </FlexAround>
-        </MarkupSection>
+          <Divider offset={10} height={16} isVertical />
 
-        <MarkupSection>
+          <HyperlinkButton>{(props) => <IconButton {...props} onClick={stopPropagation()} />}</HyperlinkButton>
+        </SectionV2.SimpleSection>
+
+        <SectionV2.Divider inset />
+
+        <SectionV2.SimpleSection>
           <TextColor />
-        </MarkupSection>
+        </SectionV2.SimpleSection>
+
+        <SectionV2.Divider inset />
 
         <BackgroundColor nodeID={nodeID} data={data} />
       </Content>

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.131.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.131.0...@voiceflow/realtime-sdk@1.131.1) (2022-07-25)
+
+
+### Bug Fixes
+
+* invalidate dne entity (VF-4016) ([#5723](https://github.com/voiceflow/creator-app/issues/5723)) ([2f2abcd](https://github.com/voiceflow/creator-app/commit/2f2abcdbfd11c65a672ac82175221f9734a1f9e3))
+
+
+
+
+
 # [1.131.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.130.0...@voiceflow/realtime-sdk@1.131.0) (2022-07-25)
 
 

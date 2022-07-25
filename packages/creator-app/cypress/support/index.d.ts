@@ -160,7 +160,7 @@ declare namespace Cypress {
     /**
      * add block by name to canvas via step menu
      */
-    addBlockToCanvasViaStepMenu(blockName: string, coords: Coords): Chainable;
+    addBlockToCanvasViaStepMenu(section: string, stepName: string, coords: Coords): Chainable;
 
     /**
      * select all nodes

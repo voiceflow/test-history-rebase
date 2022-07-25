@@ -36,7 +36,7 @@ context('Canvas - Blocks', () => {
   it.skip('add block to canvas using step menu', () => {
     cy.awaitCanvasAnimation();
 
-    cy.addBlockToCanvasViaStepMenu('Speak', [600, 400]);
+    cy.addBlockToCanvasViaStepMenu('Talk', 'Speak', [600, 400]);
 
     canvasPage.el.node.should('have.length', 2).eq(1).and('have.coords', [368, 465]);
   });
@@ -54,7 +54,7 @@ context('Canvas - Blocks', () => {
     cy.awaitCanvasAnimation();
 
     buildTools.unStickCanvas();
-    cy.addBlockToCanvasViaStepMenu('Speak', [400, 400]);
+    cy.addBlockToCanvasViaStepMenu('Talk', 'Speak', [400, 400]);
     buildTools.getLastBlock().should('have.coords', [236, 465], 2).dragNode(200, 200).should('have.coords', [436, 665], 2);
   });
 
@@ -103,7 +103,7 @@ context('Canvas - Blocks', () => {
   it.skip('duplicate block via context menu', () => {
     cy.awaitCanvasAnimation();
 
-    cy.addBlockToCanvasViaStepMenu('Speak', [400, 50]);
+    cy.addBlockToCanvasViaStepMenu('Talk', 'Speak', [400, 50]);
 
     buildTools.getLastBlock().rightclick();
     sharedPage.el.contextMenu.contains('Duplicate').click();
@@ -114,8 +114,8 @@ context('Canvas - Blocks', () => {
   it.skip('drag multiple blocks', () => {
     cy.awaitCanvasAnimation();
 
-    cy.addBlockToCanvasViaStepMenu('Speak', [400, 100]);
-    cy.addBlockToCanvasViaStepMenu('Speak', [400, 500]);
+    cy.addBlockToCanvasViaStepMenu('Talk', 'Speak', [400, 100]);
+    cy.addBlockToCanvasViaStepMenu('Talk', 'Speak', [400, 500]);
 
     canvasPage.el.node.eq(0).should('have.coords', [396, 249], 2);
     canvasPage.el.node.eq(1).should('have.coords', [396, 165], 2);

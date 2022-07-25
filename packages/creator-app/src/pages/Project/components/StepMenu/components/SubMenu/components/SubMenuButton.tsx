@@ -8,6 +8,7 @@ import { getEmptyImage } from 'react-dnd-html5-backend';
 import { BlockType, DragItem } from '@/constants';
 import { AutoPanningCacheContext } from '@/contexts';
 import { useEnableDisable, useEventualEngine, useHover, useSetup, useTeardown } from '@/hooks';
+import { ClassName } from '@/styles/constants';
 
 import { StepDragItem } from '../../../../DesignMenu/components/Steps/types';
 import { SubMenuButtonContainer } from './SubMenuButtonContainer';
@@ -70,6 +71,7 @@ const SubMenuButton: React.FC<SubMenuButtonProps> = ({ type, icon, label, onDrop
       onMouseDown={enableClickedState}
       isDragging={isDragging}
       isDraggingPreview={isDraggingPreview}
+      className={ClassName.SUB_STEP_MENU_ITEM}
       {...hoverHandlers}
     >
       <Box.FlexStart width="100%" opacity={isDragging ? 0 : 1}>

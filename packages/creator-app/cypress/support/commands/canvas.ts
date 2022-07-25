@@ -64,14 +64,12 @@ Cypress.Commands.add('addBlockToCanvasViaSpotlight', (blockName: string) => {
   buildTools.waitForSave();
 });
 
-Cypress.Commands.add('addBlockToCanvasViaStepMenu', (blockName: string, [offsetX, offsetY]: Cypress.Coords) => {
+Cypress.Commands.add('addBlockToCanvasViaStepMenu', (section: string, stepName: string, [offsetX, offsetY]: Cypress.Coords) => {
   buildTools.interceptSave();
 
-  canvasPage.el.stepMenu
-    .contains('.vf-step-menu__item', blockName)
-    .scrollIntoView()
-    .reactDnD('#vf-canvas', { offsetY, offsetX })
-    .awaitCanvasAnimation();
+  canvasPage.el.stepMenu.contains('.vf-step-menu__item', section).trigger('mouseover');
+  // the sub menu is a popper tied to the root dom element
+  cy.contains('.vf-sub-step-menu__item', stepName).reactDnD('#vf-canvas', { offsetY, offsetX }).awaitCanvasAnimation();
 
   buildTools.waitForSave();
 });
@@ -86,7 +84,7 @@ Cypress.Commands.add('selectAllCanvasNodes', () => {
 
 Cypress.Commands.add('addSpeakAndChoiceBlocks', (speakBlockMessage: string) => {
   cy.awaitCanvasAnimation();
-  cy.addBlockToCanvasViaStepMenu('Speak', [400, 120]);
+  cy.addBlockToCanvasViaStepMenu('Talk', 'Speak', [400, 120]);
   canvasPage.el.speakBlockTextInput.type(speakBlockMessage);
 
   cy.selectAllCanvasNodes();
@@ -96,7 +94,7 @@ Cypress.Commands.add('addSpeakAndChoiceBlocks', (speakBlockMessage: string) => {
 
   canvasPage.el.userInputToggle.click();
 
-  cy.addBlockToCanvasViaStepMenu('Choice', [400, 20]);
+  cy.addBlockToCanvasViaStepMenu('Listen', 'Choice', [400, 20]);
   canvasPage.el.choiceBlockTextInput.type('yes{enter}');
 
   cy.selectAllCanvasNodes();
@@ -105,7 +103,7 @@ Cypress.Commands.add('addSpeakAndChoiceBlocks', (speakBlockMessage: string) => {
 });
 
 Cypress.Commands.add('addVisualBlock', () => {
-  cy.addBlockToCanvasViaStepMenu('Display', [400, 400]);
+  cy.addBlockToCanvasViaStepMenu('Talk', 'Display', [400, 400]);
 
   cy.get('input[type="file"]').attachFile({
     filePath: 'image.png',

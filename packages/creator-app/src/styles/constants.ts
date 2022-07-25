@@ -51,8 +51,6 @@ export enum Identifier {
   PROTO_MENU_SETTINGS_BUTTON = 'vf-proto-menu-settings-button',
   PROTO_MENU_CANVAS_BUTTON = 'vf-proto-menu-canvas-button',
 
-  STEP_MENU_LOCK_BUTTON = 'vf-step-menu-lock',
-
   VERIFY_EMAIL_TITLE = 'vf-verify-email-title',
 
   DISPLAY_CANVAS_CONTAINER = 'vf-display-canvas-container',
@@ -106,6 +104,7 @@ export enum ClassName {
   CANVAS_CONTROL = 'vf-canvas__control',
   FLOW_MENU_ITEM = 'vf-flow-menu__item',
   STEP_MENU_ITEM = 'vf-step-menu__item',
+  SUB_STEP_MENU_ITEM = 'vf-sub-step-menu__item',
   DROPDOWN = 'vf-dropdown',
   SVG_ICON = 'vf-svg-icon',
   MODAL = 'vf-modal',

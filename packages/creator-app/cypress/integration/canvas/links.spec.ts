@@ -14,7 +14,7 @@ context('Canvas - Links', () => {
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(120);
 
-    cy.addBlockToCanvasViaStepMenu('Speak', [400, 50]);
+    cy.addBlockToCanvasViaStepMenu('Talk', 'Speak', [400, 50]);
 
     canvasPage.el.node.eq(0).find('.vf-canvas__step .vf-canvas__port').eq(0).click({ force: true });
     canvasPage.el.newLink.should('have.length', 1);
@@ -32,7 +32,7 @@ context('Canvas - Links', () => {
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(120);
 
-    cy.addBlockToCanvasViaStepMenu('Speak', [400, 50]);
+    cy.addBlockToCanvasViaStepMenu('Talk', 'Speak', [400, 50]);
 
     canvasPage.el.canvas.click(0, 0, { force: true });
 

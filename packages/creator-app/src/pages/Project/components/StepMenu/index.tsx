@@ -4,6 +4,7 @@ import React from 'react';
 import { Permission } from '@/config/permissions';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { usePermission, useSelector, useToggle } from '@/hooks';
+import { Identifier } from '@/styles/constants';
 
 import { StepMenuExpandButton, TopLevelButton, TopLevelInnerContainer, TopLevelOuterContainer } from './components';
 import { getStepSections } from './constants';
@@ -20,7 +21,7 @@ const StepMenu: React.FC<{ numCollapsedSteps?: number }> = ({ numCollapsedSteps 
   return (
     <>
       {canEditCanvas && (
-        <TopLevelOuterContainer>
+        <TopLevelOuterContainer id={Identifier.STEP_MENU}>
           <TopLevelInnerContainer size={stepsToShow.length}>
             {stepsToShow.map((step, index) => (
               <TopLevelButton key={step.label} step={step} animationIndex={Math.max(0, index - numCollapsedSteps)} />

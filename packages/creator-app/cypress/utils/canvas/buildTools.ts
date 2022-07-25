@@ -1,5 +1,3 @@
-import capitalize from 'lodash/capitalize';
-
 import { ClassName, Identifier } from '../../../src/styles/constants';
 
 const GRID_BLOCK_PIXEL_UNIT = 300;
@@ -36,14 +34,6 @@ const canvasUtils = {
     // Wait for any draw.render lag
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(50);
-  },
-  dragBlockInGrid: (blockName: string, xUnits: number, yUnits: number, xPixelOffset = 0, yPixelOffset = 0) => {
-    cy.dragCanvas(-xUnits * GRID_BLOCK_PIXEL_UNIT, -yUnits * GRID_BLOCK_PIXEL_UNIT);
-    canvasUtils.unStickCanvas();
-    cy.addBlockToCanvasViaStepMenu(capitalize(blockName), [300 + xPixelOffset, 250 + yPixelOffset]);
-    canvasUtils.unStickCanvas();
-    cy.dragCanvas(xUnits * GRID_BLOCK_PIXEL_UNIT, yUnits * GRID_BLOCK_PIXEL_UNIT);
-    canvasUtils.unStickCanvas();
   },
   getHomeBlock: () => cy.get(`.${ClassName.HOME_BLOCK}`),
   clickHomeBlockPort: () => canvasUtils.getHomeBlock().find(`.${ClassName.CANVAS_PORT}`).click({ force: true, waitForAnimations: true }),

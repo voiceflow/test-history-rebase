@@ -39,9 +39,6 @@ export default {
     get homeBlock() {
       return cy.get(`.${ClassName.HOME_BLOCK}`);
     },
-    get stepMenuLock() {
-      return cy.get(`#${Identifier.STEP_MENU_LOCK_BUTTON}`);
-    },
     get settingsPage() {
       return cy.get(`#${Identifier.SETTINGS_PAGE}`);
     },

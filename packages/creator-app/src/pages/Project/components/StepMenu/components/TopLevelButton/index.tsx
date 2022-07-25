@@ -2,6 +2,7 @@ import { Animations, SvgIcon, Text } from '@voiceflow/ui';
 import React from 'react';
 
 import { useHover } from '@/hooks';
+import { ClassName } from '@/styles/constants';
 
 import { TopStepItem } from '../../constants';
 import SubMenu from '../SubMenu';
@@ -16,7 +17,7 @@ const TopLevelButton: React.FC<TopLevelButtonItem> = ({ step, animationIndex }) 
   const [isHovered, , hoverHandlers, setHovering] = useHover();
 
   return (
-    <div {...hoverHandlers}>
+    <div {...hoverHandlers} className={ClassName.STEP_MENU_ITEM}>
       <Animations.FadeLeftContainer distance={-10} delay={animationIndex * 0.06} duration={0.1}>
         <TopLevelButtonContainer focused={isHovered}>
           <SvgIcon icon={step.icon} size={step.label === 'Logic' ? 24 : 22} />

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.17.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/socket-utils@1.16.5...@voiceflow/socket-utils@1.17.0) (2022-07-25)
+
+
+### Features
+
+* setup domains duck (CT-664) ([#5799](https://github.com/voiceflow/creator-app/issues/5799)) ([ebfb397](https://github.com/voiceflow/creator-app/commit/ebfb397a42966ba9a7fcba279eb33588b71d7929)), closes [/github.com/voiceflow/creator-api/pull/1037#pullrequestreview-1046350459](https://github.com//github.com/voiceflow/creator-api/pull/1037/issues/pullrequestreview-1046350459)
+
+
+
+
+
 ## [1.16.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/socket-utils@1.16.4...@voiceflow/socket-utils@1.16.5) (2022-07-12)
 
 

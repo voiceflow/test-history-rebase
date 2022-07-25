@@ -9,7 +9,7 @@ const TopLevelOuterContainer = styled.div`
   transform: translateX(12px);
   padding: 4px;
   border-radius: 10px;
-  background-color: rgb(239 243 244 0.8);
+  background-color: rgba(239, 243, 244, 0.8);
   z-index: 10;
 
   ${StepMenuExpandButton} {

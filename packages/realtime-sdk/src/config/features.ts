@@ -55,4 +55,5 @@ export enum FeatureFlag {
 
   SEARCH_BAR = 'search_bar',
   DF_CAROUSEL_STEP = 'df_carousel_step',
+  ASSISTANT_IA = 'assistant_ia',
 }

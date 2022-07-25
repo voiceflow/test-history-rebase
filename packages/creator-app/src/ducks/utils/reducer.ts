@@ -1,12 +1,12 @@
 import { Utils } from '@voiceflow/common';
 import produce, { Draft } from 'immer';
-import { ActionCreator } from 'typescript-fsa';
+import { Action, ActionCreator } from 'typescript-fsa';
 import { ReducerBuilder, reducerWithInitialState } from 'typescript-fsa-reducers';
 
 import { IS_E2E, IS_PRODUCTION } from '@/config';
 import { AnyAction, RootReducer } from '@/store/types';
 
-export type ImmerHandler<State, Payload> = (draft: Draft<State>, payload: Payload) => Draft<State> | void;
+export type ImmerHandler<State, Payload> = (draft: Draft<State>, payload: Payload, action: Action<Payload>) => Draft<State> | void;
 
 declare module 'typescript-fsa-reducers' {
   interface ReducerBuilder<InS, OutS = InS, PassedS = InS | undefined> {
@@ -49,13 +49,13 @@ export const createRootReducer = <State>(initialState: State): ReducerBuilder<St
   reducer.immerCase = (actionCreator, handler) => {
     registerActions([actionCreator]);
 
-    return reducer.case(actionCreator, (state, payload) => produce(state, (draft) => handler(draft, payload)));
+    return reducer.caseWithAction(actionCreator, (state, action) => produce(state, (draft) => handler(draft, action.payload, action)));
   };
 
   reducer.immerCases = (actionCreators, handler) => {
     registerActions(actionCreators);
 
-    return reducer.cases(actionCreators, (state, payload) => produce(state, (draft) => handler(draft, payload)));
+    return reducer.casesWithAction(actionCreators, (state, action) => produce(state, (draft) => handler(draft, action.payload, action)));
   };
 
   return reducer;
@@ -102,5 +102,6 @@ export const createCombinedReducerFactory =
   (...reducers) =>
     [
       validateCombinedActions(reducers),
-      (state, payload) => reducers.reduceRight((draft, [_, handler]) => handler(draft === undefined ? state : draft, payload) as any, state),
+      (state, payload, action) =>
+        reducers.reduceRight((draft, [_, handler]) => handler(draft === undefined ? state : draft, payload, action) as any, state),
     ];

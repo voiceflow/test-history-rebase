@@ -8,12 +8,14 @@ const baseVersionAdapter = createAdapter<Pick<BaseVersion.Version, '_id' | Share
   ({ _id, _version, folders = {}, topics = [], creatorID, projectID, components = [], rootDiagramID }) => ({
     id: _id,
     _version,
-    topics,
     folders,
     creatorID,
     projectID,
     components,
     rootDiagramID,
+
+    // TODO: remove when domains are released
+    topics,
   }),
   () => {
     throw new AdapterNotImplementedError();

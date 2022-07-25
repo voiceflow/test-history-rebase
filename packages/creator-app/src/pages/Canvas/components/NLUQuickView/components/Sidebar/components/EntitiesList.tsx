@@ -1,5 +1,4 @@
-import { Utils } from '@voiceflow/common';
-import { CustomSlot } from '@voiceflow/common/build/common/constants/slot';
+import { CustomSlot, Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { IconButton, IconButtonVariant, TippyTooltip, toast } from '@voiceflow/ui';
 import React from 'react';

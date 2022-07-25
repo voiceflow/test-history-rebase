@@ -255,13 +255,7 @@ export const deleteDiagram =
 export const renameDiagram =
   (diagramID: string, name: string): Thunk =>
   async (dispatch, getState) => {
-    await dispatch.sync(
-      Realtime.diagram.crud.patch({
-        ...getActiveVersionContext(getState()),
-        key: diagramID,
-        value: { name },
-      })
-    );
+    await dispatch.sync(Realtime.diagram.crud.patch({ ...getActiveVersionContext(getState()), key: diagramID, value: { name } }));
   };
 
 export const convertToTopic =

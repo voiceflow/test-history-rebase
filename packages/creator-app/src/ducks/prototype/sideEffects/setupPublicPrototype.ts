@@ -51,8 +51,12 @@ const setupPublicPrototype =
       publishing: {},
       status: null,
       folders: {},
-      topics: [],
       components: [],
+
+      /**
+       * @deprecated remove when domains are released
+       */
+      topics: [],
     };
 
     batch(() => {

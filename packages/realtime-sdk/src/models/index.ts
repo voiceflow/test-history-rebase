@@ -1,5 +1,6 @@
 export * from './CreatorDiagram';
 export * from './Diagram';
+export * from './Domain';
 export * from './EntityMap';
 export * from './Expression';
 export * from './Intent';

@@ -5,7 +5,7 @@ import { produce } from 'immer';
 import sinon from 'sinon';
 
 import { MigrationData } from '@/services/migrate/migrations/types';
-import migrateToV2 from '@/services/migrate/migrations/v2';
+import migrateToV2 from '@/services/migrate/migrations/v2_0';
 
 describe('Migrate service - v2 migration unit tests', () => {
   const migrationContext = { projectType: VoiceflowConstants.ProjectType.CHAT, platform: VoiceflowConstants.PlatformType.LUIS };

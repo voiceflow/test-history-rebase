@@ -1,5 +1,6 @@
 import { Nullish, Struct } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 class StateInvariantError<T extends Struct = {}> extends Error {
   constructor(message: string, public data?: T) {
@@ -18,6 +19,8 @@ export const noActiveProjectID = (): StateInvariantError => error('no active pro
 export const noActiveVersionID = (): StateInvariantError => error('no active version ID');
 
 export const noActiveDiagramID = (): StateInvariantError => error('no active diagram ID');
+
+export const noActivePlatform = (): StateInvariantError => error('no active platform');
 
 export const noProductByID = (productID: string): StateInvariantError<{ productID: string }> =>
   error(`no product found with ID: ${productID}`, { productID });
@@ -53,6 +56,12 @@ export const assertVersionID: (id: Nullish<string>) => asserts id is string = (i
 
 export const assertDiagramID: (id: Nullish<string>) => asserts id is string = (id) => {
   assert(id, noActiveDiagramID());
+};
+
+export const assertPlatform: (platform: Nullish<VoiceflowConstants.PlatformType>) => asserts platform is VoiceflowConstants.PlatformType = (
+  platform
+) => {
+  assert(platform, noActivePlatform());
 };
 
 export const assertProduct: (productID: string, product: Nullish<Realtime.Product>) => asserts product is Realtime.Product = (productID, product) => {

@@ -16,7 +16,7 @@ export interface ImportProjectFromFilePayload extends BaseWorkspacePayload {
 }
 
 export interface DuplicateProjectPayload extends BaseProjectPayload {
-  data: Optional<Pick<DBProject, 'teamID' | 'name' | '_version'>, 'name'>;
+  data: Optional<Pick<DBProject, 'teamID' | 'name' | '_version' | 'platform'>, 'name' | 'platform'>;
   listID?: string;
 }
 

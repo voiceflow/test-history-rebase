@@ -21,9 +21,9 @@ const componentsType = Utils.protocol.typeFactory(versionType(COMPONENTS_KEY));
 // RPC
 
 export interface ActivateVersionPayload {
-  workspaceID: string;
   projectID: string;
   versionID: string;
+  workspaceID: string;
   projectType: VoiceflowConstants.ProjectType;
 }
 
@@ -32,14 +32,17 @@ export const activateVersion = Utils.protocol.createAction<ActivateVersionPayloa
 // Other
 
 export interface PatchSettingsPayload extends BaseVersionPayload {
+  platform: VoiceflowConstants.PlatformType;
   settings: Partial<AnyVersionSettings>;
 }
 
 export interface PatchSessionPayload extends BaseVersionPayload {
   session: Partial<Version.Session>;
+  platform: VoiceflowConstants.PlatformType;
 }
 
 export interface PatchPublishingPayload extends BaseVersionPayload {
+  platform: VoiceflowConstants.PlatformType;
   publishing: Partial<AnyVersionPublishing>;
 }
 

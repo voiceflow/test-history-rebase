@@ -91,11 +91,11 @@ export const createCRUDReducers = <
     });
   });
 
-  const replace = createReducer(actionCreators.replace, (state, payload) => {
+  const replace = createReducer(actionCreators.replace, (state, payload, action) => {
     state.byKey = {};
     state.allKeys = [];
 
-    addMany[1](state, payload);
+    addMany[1](state, payload, action);
   });
 
   const reorder = createReducer(actionCreators.reorder, (state, { keys }) => {

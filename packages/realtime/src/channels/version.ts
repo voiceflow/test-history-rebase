@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 import { SendBackActions } from '@logux/server';
 import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
@@ -19,37 +18,38 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
     const { workspaceID, projectID, versionID } = ctx.params;
     const creatorID = Number(ctx.userId);
 
-    const [project, dbVersion, isTopicsAndComponents, variableStates] = await Promise.all([
-      this.services.project.get(creatorID, projectID).then(Realtime.Adapters.projectAdapter.fromDB),
-      this.services.version.get(creatorID, versionID),
+    const [dbCreator, isTopicsAndComponents, assistantIA] = await Promise.all([
+      this.services.project.getCreator(creatorID, projectID, versionID),
       this.services.workspace.isFeatureEnabled(creatorID, workspaceID, Realtime.FeatureFlag.TOPICS_AND_COMPONENTS),
-      this.services.variableState.getAll(creatorID, projectID).then(Realtime.Adapters.variableStateAdapter.mapFromDB),
+      this.services.workspace.isFeatureEnabled(creatorID, workspaceID, Realtime.FeatureFlag.ASSISTANT_IA),
     ]);
+
+    const slots = Realtime.Adapters.slotAdapter.mapFromDB(dbCreator.version.platformData.slots);
+    const notes = Realtime.Adapters.noteAdapter.mapFromDB(dbCreator.version.notes ? Object.values(dbCreator.version.notes) : []);
+    const project = Realtime.Adapters.projectAdapter.fromDB(dbCreator.project);
+    const domains = Realtime.Adapters.domainAdapter.mapFromDB(dbCreator.version.domains ?? []);
+    const diagrams = Realtime.Adapters.diagramAdapter.mapFromDB(dbCreator.diagrams, { rootDiagramID: dbCreator.version.rootDiagramID });
+    const variableStates = Realtime.Adapters.variableStateAdapter.mapFromDB(dbCreator.variableStates);
+
     const { platform, type: projectType } = project;
-    const version = Realtime.Adapters.versionAdapter.fromDB(dbVersion as Realtime.AnyDBVersion, { platform, projectType });
 
-    const [diagrams, { startingBlocks, intentSteps }] = await Promise.all([
-      this.services.diagram
-        .getAll(creatorID, versionID)
-        .then((dbDiagrams) => Realtime.Adapters.diagramAdapter.mapFromDB(dbDiagrams, { rootDiagramID: version.rootDiagramID })),
-      this.services.version.getResourcesFromDiagrams(creatorID, versionID),
-    ]);
-
-    const slots = Realtime.Adapters.slotAdapter.mapFromDB(dbVersion.platformData.slots);
-    const notes = Realtime.Adapters.noteAdapter.mapFromDB(dbVersion.notes ? Object.values(dbVersion.notes) : []);
-    const intents = Realtime.Adapters.getProjectTypeIntentAdapter<any>(projectType).mapFromDB(dbVersion.platformData.intents, { platform });
+    const version = Realtime.Adapters.versionAdapter.fromDB(dbCreator.version as Realtime.AnyDBVersion, { platform, projectType });
+    const intents = Realtime.Adapters.getProjectTypeIntentAdapter<any>(projectType).mapFromDB(dbCreator.version.platformData.intents, { platform });
     const products =
       'products' in project.platformData
         ? Realtime.Adapters.productAdapter.mapFromDB(Object.values((project.platformData as Realtime.AlexaProjectData).products))
         : [];
 
-    if (isTopicsAndComponents) {
+    const { intentSteps, startingBlocks } = this.services.diagram.getResources(dbCreator.diagrams);
+
+    if (isTopicsAndComponents && !assistantIA) {
       await this.migrateTopicsAndComponents({ project, version, diagrams, creatorID, intentSteps });
     }
 
     return [
       Realtime.note.load({ notes, workspaceID, projectID, versionID }),
       Realtime.slot.crud.replace({ values: slots, workspaceID, projectID, versionID }),
+      Realtime.domain.crud.replace({ values: domains, workspaceID, projectID, versionID }),
       Realtime.intent.crud.replace({ values: intents, workspaceID, projectID, versionID, projectMeta: { platform, type: projectType } }),
       Realtime.product.crud.replace({ values: products, workspaceID, projectID, versionID }),
       Realtime.diagram.crud.replace({ values: diagrams, workspaceID, projectID, versionID }),
@@ -61,8 +61,8 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
         projectID,
         versionID,
         settings: {
-          ...dbVersion.prototype?.settings,
-          layout: (dbVersion.prototype?.settings.layout ??
+          ...dbCreator.version.prototype?.settings,
+          layout: (dbCreator.version.prototype?.settings.layout ??
             Realtime.Utils.platform.getDefaultPrototypeLayout(projectType)) as Realtime.PrototypeLayout,
         },
       }),
@@ -72,6 +72,7 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
     ];
   };
 
+  // TODO: remove this when topics and components are fully migrated, before releasing the domains
   private migrateTopicsAndComponents = async ({
     project,
     version,
@@ -85,6 +86,8 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
     creatorID: number;
     intentSteps: Record<string, Realtime.diagram.DiagramIntentStepMap>;
   }) => {
+    /* eslint-disable no-param-reassign */
+
     // TODO: replace try/catch with the version.canWrite and diagram.canWrite checks
     // diagram.version patches can crash for non-editor users
     try {
@@ -118,6 +121,8 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
     } catch (error) {
       logger.debug(error);
     }
+
+    /* eslint-enable no-param-reassign */
   };
 }
 

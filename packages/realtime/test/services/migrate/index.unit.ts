@@ -174,7 +174,13 @@ describe('Migrate service unit tests', () => {
       expect(options.services.version.replaceResources).to.be.calledWithExactly(
         creatorID,
         versionID,
-        { _version: targetSchemaVersion, variables: ['first', 'second'], name: 'bar', rootDiagramID: 'diagramID' },
+        {
+          _version: targetSchemaVersion,
+          variables: ['first', 'second'],
+          name: 'bar',
+          rootDiagramID: 'diagramID',
+          platformData: { fizz: 'buzz' },
+        },
         [{ _id: diagramID, foo: 'bar' }]
       );
     });

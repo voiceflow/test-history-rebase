@@ -10,9 +10,9 @@ export const createReducer = createReducerFactory<CreatorState>();
 
 export const createActiveDiagramReducer: CreateSimpleReducer<CreatorState, Realtime.BaseDiagramPayload> = (actionCreator, handler) => [
   actionCreator,
-  (...[state, payload]: Parameters<typeof handler>) => {
+  (...[state, payload, action]: Parameters<typeof handler>) => {
     if (state.activeDiagramID !== payload.diagramID) return undefined;
 
-    return handler(state, payload);
+    return handler(state, payload, action);
   },
 ];

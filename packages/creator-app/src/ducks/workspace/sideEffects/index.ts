@@ -82,7 +82,7 @@ export const duplicateProject =
 
     await dispatch.sync(
       Realtime.project.duplicate.started({
-        data: { teamID: targetWorkspaceID, name: `${project.name} (COPY)`, _version: vfVersion },
+        data: { teamID: targetWorkspaceID, name: `${project.name} (COPY)`, _version: vfVersion, platform: project.platform },
         listID,
         projectID,
         workspaceID: sourceWorkspaceID,

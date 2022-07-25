@@ -21,12 +21,17 @@ interface BasePlatformData extends BaseModels.Version.PlatformData<VoiceVersion.
 
 export interface Version<P extends BasePlatformData>
   extends Pick<DBVersion<P>, 'creatorID' | '_version' | 'variables' | 'projectID' | 'rootDiagramID'>,
-    Required<Pick<DBVersion<P>, 'folders' | 'topics' | 'components'>> {
+    Required<Pick<DBVersion<P>, 'folders' | 'components'>> {
   id: string;
   status: Nullable<P['status']>;
   session: Nullable<Version.Session>;
   settings: Omit<P['settings'], 'session'>;
   publishing: P['publishing'];
+
+  /**
+   * @deprecated should be removed when domains are released
+   */
+  topics: BaseModels.Version.FolderItem[];
 }
 
 export namespace Version {

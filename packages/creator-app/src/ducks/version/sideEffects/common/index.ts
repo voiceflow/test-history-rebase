@@ -15,7 +15,7 @@ import * as Workspace from '@/ducks/workspace';
 import { Thunk } from '@/store/types';
 import { storeLogger } from '@/store/utils';
 
-import { getActiveVersionContext } from '../../utils';
+import { getActivePlatformVersionContext } from '../../utils';
 
 export * from './topicsComponents';
 export * from './variables';
@@ -98,7 +98,7 @@ export const patchSession =
 
     if (!versionID || !activeSession) throw Errors.noActiveVersionID();
 
-    await dispatch.sync(Realtime.version.patchSession({ ...getActiveVersionContext(state), session }));
+    await dispatch.sync(Realtime.version.patchSession({ ...getActivePlatformVersionContext(state), session }));
   };
 
 export const updateResumePrompt =

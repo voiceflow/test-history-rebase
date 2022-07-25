@@ -1,5 +1,5 @@
 import { parseId } from '@logux/core';
-import { BaseModels } from '@voiceflow/base-types';
+import { BaseModels, BaseNode } from '@voiceflow/base-types';
 import { AnyRecord, Nullish } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
@@ -16,6 +16,13 @@ import { HEARTBEAT_EXPIRE_TIMEOUT } from '../constants';
 import { AbstractControl } from '../control';
 import AccessCache from './utils/accessCache';
 
+type IntentStepsMap = Record<string, Realtime.diagram.DiagramIntentStepMap>;
+type StartingBlockMap = Record<string, Realtime.diagram.DiagramStartingBlockMap>;
+
+interface Resources {
+  intentSteps: IntentStepsMap;
+  startingBlocks: StartingBlockMap;
+}
 class DiagramService extends AbstractControl {
   private static getConnectedNodesKey({ diagramID }: { diagramID: string }): string {
     return `diagrams:${diagramID}:nodes`;
@@ -25,6 +32,24 @@ class DiagramService extends AbstractControl {
     expire: HEARTBEAT_EXPIRE_TIMEOUT,
     keyCreator: DiagramService.getConnectedNodesKey,
   });
+
+  private intentStepsNodeMapper = (node: BaseModels.BaseDiagramNode<AnyRecord>): Realtime.diagram.DiagramIntentStep | null => {
+    if (!Realtime.Utils.typeGuards.isIntentDBNode(node)) return null;
+
+    return {
+      global: !node.data.availability || node.data.availability === BaseNode.Intent.IntentAvailability.GLOBAL,
+      intentID: node.data.intent || null,
+    };
+  };
+
+  private startingBlockNodeMapper = (node: BaseModels.BaseDiagramNode<AnyRecord>): Realtime.diagram.DiagramStartingBlock | null => {
+    if (node.type !== BaseModels.BaseNodeType.BLOCK && node.type !== Realtime.BlockType.START) return null;
+
+    return {
+      name: node.data.name,
+      blockID: node.nodeID,
+    };
+  };
 
   public access = new AccessCache('diagram', this.clients, this.services);
 
@@ -272,6 +297,29 @@ class DiagramService extends AbstractControl {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
     await client.diagram.addDynamicPort(diagramID, nodeID, port);
+  }
+
+  public getResources(diagrams: BaseModels.Diagram.Model[]): Resources {
+    const intentSteps: IntentStepsMap = {};
+    const startingBlocks: StartingBlockMap = {};
+
+    diagrams.forEach((diagram) => {
+      const diagramIntentSteps: Realtime.diagram.DiagramIntentStepMap = {};
+      const diagramStartingBlocks: Realtime.diagram.DiagramStartingBlockMap = {};
+
+      intentSteps[diagram._id] = diagramIntentSteps;
+      startingBlocks[diagram._id] = diagramStartingBlocks;
+
+      Object.values(diagram.nodes).forEach((node) => {
+        const intentStepsNode = this.intentStepsNodeMapper(node);
+        const startingBlockNode = this.startingBlockNodeMapper(node);
+
+        if (intentStepsNode) diagramIntentSteps[node.nodeID] = intentStepsNode;
+        if (startingBlockNode) diagramStartingBlocks[node.nodeID] = startingBlockNode;
+      });
+    });
+
+    return { startingBlocks, intentSteps };
   }
 }
 

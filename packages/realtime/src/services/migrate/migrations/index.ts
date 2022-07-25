@@ -2,13 +2,13 @@ import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { Migration, Transform } from './types';
-import migrateToV2 from './v2';
+import migrateToV2_0 from './v2_0';
 import migrateToV2_1 from './v2_1';
 import migrateToV2_2 from './v2_2';
 
 const migrationsMap: Record<Realtime.SchemaVersion, Transform> = {
   [Realtime.SchemaVersion.V1]: Utils.functional.noop,
-  [Realtime.SchemaVersion.V2]: migrateToV2,
+  [Realtime.SchemaVersion.V2]: migrateToV2_0,
   [Realtime.SchemaVersion.V2_1]: migrateToV2_1,
   [Realtime.SchemaVersion.V2_2]: migrateToV2_2,
 };

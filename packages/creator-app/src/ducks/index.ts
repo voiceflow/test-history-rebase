@@ -7,6 +7,7 @@ import account, * as Account from '@/ducks/account';
 import creator, * as Creator from '@/ducks/creator';
 import creatorV2, * as CreatorV2 from '@/ducks/creatorV2';
 import diagramV2, * as DiagramV2 from '@/ducks/diagramV2';
+import domain, * as Domain from '@/ducks/domain';
 import feature, * as Feature from '@/ducks/feature';
 import history, * as History from '@/ducks/history';
 import integrationUsers, * as IntegrationUsers from '@/ducks/integration';
@@ -70,6 +71,7 @@ const getCombinedReducer = (browserHistory: BrowserHistory) =>
     [Transcript.STATE_KEY]: transcript,
     [Note.STATE_KEY]: note,
     [History.STATE_KEY]: history,
+    [Domain.STATE_KEY]: domain,
   });
 
 const createReducer = (browserHistory: BrowserHistory) => {

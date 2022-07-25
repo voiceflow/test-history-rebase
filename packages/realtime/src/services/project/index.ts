@@ -52,10 +52,24 @@ class ProjectService extends AbstractControl {
     return project.platform;
   }
 
-  public async getProjectType(creatorID: number, projectID: string): Promise<VoiceflowConstants.ProjectType> {
-    const project = await this.get(creatorID, projectID).then(Realtime.Adapters.projectAdapter.fromDB);
+  public async getCreator<
+    P extends BaseModels.Project.Model<any, any> = BaseModels.Project.Model<AnyRecord, AnyRecord>,
+    V extends BaseModels.Version.Model<any, any, string> = BaseModels.Version.Model<BaseModels.Version.PlatformData>,
+    D extends BaseModels.Diagram.Model<any> = BaseModels.Diagram.Model,
+    VS extends BaseModels.VariableState.Model = BaseModels.VariableState.Model
+  >(
+    creatorID: number,
+    projectID: string,
+    versionID: string
+  ): Promise<{
+    project: P;
+    version: V;
+    diagrams: D[];
+    variableStates: VS[];
+  }> {
+    const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
-    return project.type;
+    return client.project.getCreator(projectID, versionID);
   }
 
   public async getAll(creatorID: number, workspaceID: string): Promise<Realtime.DBProject[]> {
@@ -98,10 +112,10 @@ class ProjectService extends AbstractControl {
   public async duplicate(
     creatorID: number,
     projectID: string,
-    data: Optional<Pick<Realtime.DBProject, 'teamID' | 'name' | '_version'>, 'name'>
+    data: Optional<Pick<Realtime.DBProject, 'teamID' | 'name' | '_version' | 'platform'>, 'name' | 'platform'>
   ): Promise<Realtime.AnyDBProject> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
-    const platform = await this.getPlatform(creatorID, projectID);
+    const platform = (data.platform as VoiceflowConstants.PlatformType) ?? (await this.getPlatform(creatorID, projectID));
 
     return client.project.platform<Realtime.AnyDBProject>(platform).duplicate(projectID, data);
   }

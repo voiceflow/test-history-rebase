@@ -1,5 +1,5 @@
-import { BaseModels, BaseNode } from '@voiceflow/base-types';
-import { AnyRecord } from '@voiceflow/common';
+import { BaseModels } from '@voiceflow/base-types';
+import { AnyRecord, Nullish } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
@@ -7,9 +7,6 @@ import type { DiagramUpdateData, VersionUpdateData } from '@/clients/voiceflow/v
 
 import { AbstractControl } from '../control';
 import AccessCache from './utils/accessCache';
-
-type StartingBlockMap = Record<string, Realtime.diagram.DiagramStartingBlockMap>;
-type IntentStepsMap = Record<string, Realtime.diagram.DiagramIntentStepMap>;
 
 class VersionService extends AbstractControl {
   public access = new AccessCache('version', this.clients, this.services);
@@ -20,7 +17,7 @@ class VersionService extends AbstractControl {
     return client.version.get(versionID);
   }
 
-  public async getPlatform(creatorID: number, versionID: string): Promise<VoiceflowConstants.PlatformType> {
+  async getPlatform(creatorID: number, versionID: string): Promise<VoiceflowConstants.PlatformType> {
     const version = await this.get(creatorID, versionID);
 
     return this.services.project.getPlatform(creatorID, version.projectID);
@@ -46,14 +43,28 @@ class VersionService extends AbstractControl {
     await this.patch(creatorID, versionID, { variables });
   }
 
-  public async patchSettings<T extends Realtime.AnyVersionSettings>(creatorID: number, versionID: string, settings: Partial<T>): Promise<void> {
-    const [client, platform] = await Promise.all([this.services.voiceflow.getClientByUserID(creatorID), this.getPlatform(creatorID, versionID)]);
+  public async patchSettings<T extends Realtime.AnyVersionSettings>(
+    creatorID: number,
+    versionID: string,
+    platform: Nullish<VoiceflowConstants.PlatformType>,
+    settings: Partial<T>
+  ): Promise<void> {
+    const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
-    await client.version.platform(platform).patchSettings(versionID, settings);
+    const _platform = platform ?? (await this.getPlatform(creatorID, versionID));
+
+    await client.version.platform(_platform).patchSettings(versionID, settings);
   }
 
-  public async patchSession(creatorID: number, versionID: string, session: Partial<Realtime.Version.Session>): Promise<void> {
-    const [client, platform] = await Promise.all([this.services.voiceflow.getClientByUserID(creatorID), this.getPlatform(creatorID, versionID)]);
+  public async patchSession(
+    creatorID: number,
+    versionID: string,
+    platform: Nullish<VoiceflowConstants.PlatformType>,
+    session: Partial<Realtime.Version.Session>
+  ): Promise<void> {
+    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+
+    const _platform = platform ?? (await this.getPlatform(creatorID, versionID));
 
     const {
       platformData: {
@@ -61,7 +72,7 @@ class VersionService extends AbstractControl {
       },
     } = await this.get<Realtime.AnyVoiceVersionPlatformData>(creatorID, versionID);
 
-    const platformSessionAdapter = Realtime.Adapters.createSessionAdapter({ platform });
+    const platformSessionAdapter = Realtime.Adapters.createSessionAdapter({ platform: _platform });
     const patchedSession = platformSessionAdapter.toDB(
       {
         ...platformSessionAdapter.fromDB(dbSession, { defaultVoice }),
@@ -70,13 +81,20 @@ class VersionService extends AbstractControl {
       { defaultVoice }
     );
 
-    await client.version.platform(platform).patchSettings(versionID, { session: patchedSession } as Partial<Realtime.AnyVersionSettings>);
+    await client.version.platform(_platform).patchSettings(versionID, { session: patchedSession } as Partial<Realtime.AnyVersionSettings>);
   }
 
-  public async patchPublishing(creatorID: number, versionID: string, publishing: Partial<Realtime.AnyVersionPublishing>): Promise<void> {
-    const [client, platform] = await Promise.all([this.services.voiceflow.getClientByUserID(creatorID), this.getPlatform(creatorID, versionID)]);
+  public async patchPublishing(
+    creatorID: number,
+    versionID: string,
+    platform: Nullish<VoiceflowConstants.PlatformType>,
+    publishing: Partial<Realtime.AnyVersionPublishing>
+  ): Promise<void> {
+    const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
-    await client.version.platform(platform).patchPublishing(versionID, publishing);
+    const _platform = platform ?? (await this.getPlatform(creatorID, versionID));
+
+    await client.version.platform(_platform).patchPublishing(versionID, publishing);
   }
 
   public async patchPlatformData<T extends BaseModels.Version.PlatformData>(
@@ -87,50 +105,6 @@ class VersionService extends AbstractControl {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
     await client.version.updatePlatformData(versionID, platformData);
-  }
-
-  private intentStepsNodeMapper = (node: BaseModels.BaseDiagramNode<AnyRecord>): Realtime.diagram.DiagramIntentStep | null => {
-    if (!Realtime.Utils.typeGuards.isIntentDBNode(node)) return null;
-    return {
-      intentID: node.data.intent || null,
-      global: !node.data.availability || node.data.availability === BaseNode.Intent.IntentAvailability.GLOBAL,
-    };
-  };
-
-  private startingBlockNodeMapper = (node: BaseModels.BaseDiagramNode<AnyRecord>): Realtime.diagram.DiagramStartingBlock | null => {
-    if (node.type !== BaseModels.BaseNodeType.BLOCK && node.type !== Realtime.BlockType.START) return null;
-    return { blockID: node.nodeID, name: node.data.name };
-  };
-
-  public async getResourcesFromDiagrams(
-    creatorID: number,
-    versionID: string
-  ): Promise<{ startingBlocks: StartingBlockMap; intentSteps: IntentStepsMap }> {
-    const client = await this.services.voiceflow.getClientByUserID(creatorID);
-
-    const { diagrams: dbDiagrams } = await client.version.export(versionID);
-
-    const startingBlocks: StartingBlockMap = {};
-    const intentSteps: IntentStepsMap = {};
-
-    Object.keys(dbDiagrams).forEach((diagramID) => {
-      const dbDiagram = dbDiagrams[diagramID];
-
-      const diagramStartingBlocks: Realtime.diagram.DiagramStartingBlockMap = {};
-      const diagramIntentSteps: Realtime.diagram.DiagramIntentStepMap = {};
-      startingBlocks[diagramID] = diagramStartingBlocks;
-      intentSteps[diagramID] = diagramIntentSteps;
-
-      Object.values(dbDiagram.nodes).forEach((node) => {
-        const startingBlockNode = this.startingBlockNodeMapper(node);
-        const intentStepsNode = this.intentStepsNodeMapper(node);
-
-        if (startingBlockNode) diagramStartingBlocks[node.nodeID] = startingBlockNode;
-        if (intentStepsNode) diagramIntentSteps[node.nodeID] = intentStepsNode;
-      });
-    });
-
-    return { startingBlocks, intentSteps };
   }
 
   public async reorderTopics(creatorID: number, versionID: string, fromID: string, toIndex: number): Promise<void> {

@@ -6,7 +6,7 @@ import * as Session from '@/ducks/session';
 import * as VersionV2 from '@/ducks/versionV2';
 import { Thunk } from '@/store/types';
 
-import { getActiveVersionContext } from '../utils';
+import { getActivePlatformVersionContext } from '../utils';
 
 // action creators
 
@@ -15,13 +15,13 @@ import { getActiveVersionContext } from '../utils';
 export const patchSettings =
   (settings: Partial<DFESVersion.Settings>): Thunk =>
   async (dispatch, getState) => {
-    await dispatch.sync(Realtime.version.patchSettings({ ...getActiveVersionContext(getState()), settings }));
+    await dispatch.sync(Realtime.version.patchSettings({ ...getActivePlatformVersionContext(getState()), settings }));
   };
 
 export const patchPublishing =
   (publishing: Partial<DFESVersion.Publishing>): Thunk =>
   async (dispatch, getState) => {
-    await dispatch.sync(Realtime.version.patchPublishing({ ...getActiveVersionContext(getState()), publishing }));
+    await dispatch.sync(Realtime.version.patchPublishing({ ...getActivePlatformVersionContext(getState()), publishing }));
   };
 
 // TODO: atomic-actions

@@ -5,7 +5,7 @@ import * as Errors from '@/config/errors';
 import * as Session from '@/ducks/session';
 import { Thunk } from '@/store/types';
 
-import { getActiveVersionContext } from '../utils';
+import { getActivePlatformVersionContext } from '../utils';
 
 // action creators
 
@@ -19,5 +19,5 @@ export const patchSettings =
 
     Errors.assertVersionID(versionID);
 
-    await dispatch.sync(Realtime.version.patchSettings({ ...getActiveVersionContext(getState()), settings }));
+    await dispatch.sync(Realtime.version.patchSettings({ ...getActivePlatformVersionContext(getState()), settings }));
   };

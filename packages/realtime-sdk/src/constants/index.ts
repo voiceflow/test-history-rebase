@@ -12,6 +12,7 @@ export const PROJECT_LIST_KEY = 'project_list';
 export const VERSION_KEY = 'version';
 export const SCHEMA_KEY = 'schema';
 export const DIAGRAM_KEY = 'diagram';
+export const DOMAIN_KEY = 'domain';
 export const INTENT_KEY = 'intent';
 export const SLOT_KEY = 'slot';
 export const PRODUCT_KEY = 'product';

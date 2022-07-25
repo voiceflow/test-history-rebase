@@ -56,18 +56,18 @@ class ConvertToTopic extends AbstractDiagramResourceControl<Realtime.BaseDiagram
 
     const intentNodes = Object.values(primitiveDiagram.nodes).filter(Realtime.Utils.typeGuards.isIntentDBNode);
 
-    const [version, newDiagram] = await Promise.all([
+    const [version, newDBDiagram] = await Promise.all([
       this.services.version.get(creatorID, payload.versionID),
-      this.services.diagram
-        .create(creatorID, {
-          ...primitiveDiagram,
-          type: BaseModels.Diagram.DiagramType.TOPIC,
-          creatorID,
-          versionID: payload.versionID,
-          intentStepIDs: intentNodes.map((node) => node.nodeID),
-        })
-        .then((dbDiagram) => Realtime.Adapters.diagramAdapter.fromDB(dbDiagram, { rootDiagramID: '' })),
+      this.services.diagram.create(creatorID, {
+        ...primitiveDiagram,
+        type: BaseModels.Diagram.DiagramType.TOPIC,
+        creatorID,
+        versionID: payload.versionID,
+        intentStepIDs: intentNodes.map((node) => node.nodeID),
+      }),
     ]);
+
+    const newDiagram = Realtime.Adapters.diagramAdapter.fromDB(newDBDiagram, { rootDiagramID: version.rootDiagramID });
 
     ctx.data.newDiagram = { ...diagram, ...newDiagram };
 
@@ -87,17 +87,16 @@ class ConvertToTopic extends AbstractDiagramResourceControl<Realtime.BaseDiagram
         Realtime.diagram.reloadIntentSteps({
           ...actionContext,
           diagramID: newDiagram.id,
-          intentSteps: intentNodes.reduce<Realtime.diagram.DiagramIntentStepMap>(
-            (acc, node) => ({
-              ...acc,
-              [node.nodeID]: node.data.intent
+          intentSteps: Object.fromEntries(
+            intentNodes.map((node) => [
+              node.nodeID,
+              node.data.intent
                 ? {
                     intentID: node.data.intent,
                     global: !node.data.availability || node.data.availability === BaseNode.Intent.IntentAvailability.GLOBAL,
                   }
                 : null,
-            }),
-            {}
+            ])
           ),
         })
       ),

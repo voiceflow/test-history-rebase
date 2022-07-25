@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.844.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.844.0...@voiceflow/creator-app@1.844.1) (2022-07-25)
+
+
+### Bug Fixes
+
+* new step menu e2e tests (VF-000) ([#5810](https://github.com/voiceflow/creator-app/issues/5810)) ([c3449dd](https://github.com/voiceflow/creator-app/commit/c3449dda2f12d55d3cb0b6ceb3db93379ebe7aa4))
+* step menu outer container typo (CT-000) ([#5808](https://github.com/voiceflow/creator-app/issues/5808)) ([4b3f43e](https://github.com/voiceflow/creator-app/commit/4b3f43ed364d134d406864227bb4b641cb32f2b3))
+
+
+
+
+
 # [1.844.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.843.1...@voiceflow/creator-app@1.844.0) (2022-07-25)
 
 

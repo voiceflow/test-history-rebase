@@ -61,6 +61,6 @@ export const PrimaryButtonLabel = styled.span<PrimaryButtonLabelProps>`
           pointer-events: none;
         `
       : css`
-          padding: 0 22px;
+          padding: 0 20px;
         `}
 `;

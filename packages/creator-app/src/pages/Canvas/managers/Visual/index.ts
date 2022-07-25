@@ -1,7 +1,6 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { SVG } from '@voiceflow/ui';
 
-import { RESPONSE_STEPS_LINK } from '@/constants';
+import * as Documentation from '@/config/documentation';
 
 import { NodeManagerConfig } from '../types';
 import { NODE_CONFIG } from './constants';
@@ -19,9 +18,8 @@ const VisualManager: NodeManagerConfig<Realtime.NodeData.Visual, Realtime.NodeDa
 
   v2: VisualManagerV2,
 
-  stepsMenuIcon: SVG.systemImage,
   tooltipText: 'Displays an image or gif.',
-  tooltipLink: RESPONSE_STEPS_LINK,
+  tooltipLink: Documentation.VISUALS_STEP,
 };
 
 export default VisualManager;

@@ -9,7 +9,7 @@ import * as ProjectV2 from '@/ducks/projectV2';
 import { useFeature, useSelector, useTrackingEvents } from '@/hooks';
 import { EngineContext, SpotlightContext } from '@/pages/Canvas/contexts';
 import { useManager } from '@/pages/Canvas/managers';
-import { getSections, MenuStep } from '@/pages/Project/components/DesignMenu/components/Steps/constants';
+import { getStepSections, StepItem } from '@/pages/Project/components/StepMenu/constants';
 import { PlatformContext, ProjectTypeContext } from '@/pages/Project/contexts';
 import { Identifier } from '@/styles/constants';
 import { withKeyPress } from '@/utils/dom';
@@ -37,7 +37,7 @@ const Spotlight = () => {
 
   const isVisible = !!spotlight?.isVisible;
 
-  const onChange = async (step: MenuStep) => {
+  const onChange = async (step: StepItem) => {
     await engine.node.add(step.type, engine.getMouseCoords(), step.factoryData);
 
     spotlight?.hide();
@@ -45,7 +45,7 @@ const Spotlight = () => {
 
   const options = React.useMemo(
     () =>
-      getSections(platform, projectType)
+      getStepSections(platform, projectType)
         .flatMap((section) => section.steps)
         .filter((step) => {
           if (!gadgets.isEnabled && step.type === BlockType.EVENT) return false;

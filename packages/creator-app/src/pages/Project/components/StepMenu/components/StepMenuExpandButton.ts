@@ -1,4 +1,5 @@
 import { styled } from '@/hocs';
+import { ClassName } from '@/styles/constants';
 
 const StepMenuExpandButton = styled.div`
   transition: height 0.2s ease, opacity 0.2s ease;
@@ -8,10 +9,15 @@ const StepMenuExpandButton = styled.div`
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  opacity: 0.3;
+
+  .${ClassName.SVG_ICON} {
+    opacity: 0.65;
+  }
 
   &:hover {
-    opacity: 0.5;
+    .${ClassName.SVG_ICON} {
+      opacity: 0.8;
+    }
   }
 `;
 

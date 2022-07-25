@@ -1,4 +1,4 @@
-import { LOGIC_STEPS_LINK } from '@/constants';
+import * as Documentation from '@/config/documentation';
 
 import { NodeManagerConfig } from '../types';
 import { NODE_CONFIG } from './constants';
@@ -8,13 +8,13 @@ import ExitStep from './ExitStep';
 const ExitManager: NodeManagerConfig<{}> = {
   ...NODE_CONFIG,
 
-  label: 'Exit',
+  label: 'End',
 
   step: ExitStep,
   editor: ExitEditor,
 
   tooltipText: 'Defines the terminal point of a conversation.',
-  tooltipLink: LOGIC_STEPS_LINK,
+  tooltipLink: Documentation.EXIT_STEP,
 };
 
 export default ExitManager;

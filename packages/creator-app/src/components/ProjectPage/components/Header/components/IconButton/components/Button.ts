@@ -13,7 +13,7 @@ const Button = styled(IconButton).attrs({ variant: IconButtonVariant.OUTLINE, pr
   width: ${({ theme, isSmall }) => (isSmall ? SMALL_BUTTON_SIZE : theme.components.projectPage.header.height)}px;
   height: ${({ isSmall }) => (isSmall ? `${SMALL_BUTTON_SIZE}px` : '100%')};
   border: none !important;
-  border-radius: ${({ isSmall }) => (isSmall ? 5 : 0)}px;
+  border-radius: ${({ isSmall }) => (isSmall ? 6 : 0)}px;
 
   ${({ onClick }) =>
     !onClick &&

@@ -158,7 +158,6 @@ interface BaseNodeConfig<Data extends object> {
   mergeTerminator?: boolean;
   mergeInitializer?: boolean;
 
-  stepsMenuIcon?: React.FC;
   getTooltipText?: (data: Data) => string;
   tooltipText?: string;
   tooltipLink?: string;

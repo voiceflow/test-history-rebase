@@ -13,18 +13,17 @@ const CaretDownContainer = styled(BoxFlexCenter)<CaretDownContainerProps>`
   padding: 12px 8px;
   color: #6e849a;
   cursor: pointer;
-  opacity: 0.6;
 
   .${ClassName.SVG_ICON} {
-    transform: translateY(2px);
-    ${transition('transform')}
+    opacity: 0.8;
+    transform: translateY(2px) rotate(90deg);
+    ${transition('transform', 'color')}
   }
 
   &:hover {
-    opacity: 1;
-
     .${ClassName.SVG_ICON} {
-      transform: translateY(4px);
+      opacity: 1;
+      transform: translateY(4px) rotate(90deg);
     }
   }
 
@@ -35,7 +34,7 @@ const CaretDownContainer = styled(BoxFlexCenter)<CaretDownContainerProps>`
       opacity: 1;
 
       .${ClassName.SVG_ICON} {
-        transform: translateY(4px);
+        transform: translateY(4px) rotate(90deg);
       }
     `}
 `;

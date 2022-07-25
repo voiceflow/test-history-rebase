@@ -1,6 +1,6 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 
-import { INTEGRATION_STEPS_LINK } from '@/constants';
+import * as Documentation from '@/config/documentation';
 
 import { NodeManagerConfig } from '../types';
 import CodeEditor from './CodeEditor';
@@ -19,7 +19,7 @@ const CodeManager: NodeManagerConfig<Realtime.NodeData.Code, Realtime.NodeData.C
   v2: CodeManagerV2,
 
   tooltipText: 'Executes custom JavaScript (ES6) code in the project.',
-  tooltipLink: INTEGRATION_STEPS_LINK,
+  tooltipLink: Documentation.CODE_STEP,
 };
 
 export default CodeManager;

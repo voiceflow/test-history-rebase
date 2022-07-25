@@ -6,7 +6,7 @@ import { NodeConfig } from '../types';
 
 export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Random> = {
   type: BlockType.RANDOM,
-  icon: 'randomLoop',
+  icon: 'randomV2',
 
   mergeTerminator: true,
 

@@ -1,7 +1,6 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { SVG } from '@voiceflow/ui';
 
-import { LOGIC_STEPS_LINK } from '@/constants';
+import * as Documentation from '@/config/documentation';
 
 import { NodeManagerConfig } from '../types';
 import { NODE_CONFIG } from './constants';
@@ -16,9 +15,8 @@ const FlowManager: NodeManagerConfig<Realtime.NodeData.Flow, Realtime.NodeData.F
   step: FlowStep,
   editor: FlowEditor,
 
-  stepsMenuIcon: SVG.flowV2,
   tooltipText: 'Points the conversation to an existing Flow.',
-  tooltipLink: LOGIC_STEPS_LINK,
+  tooltipLink: Documentation.FLOW_STEP,
 };
 
 export default FlowManager;

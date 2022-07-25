@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Header, HeaderDivider } from '@/components/ProjectPage';
+import { Header } from '@/components/ProjectPage';
 import { Permission } from '@/config/permissions';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { usePermission, useSelector } from '@/hooks';
@@ -17,8 +17,6 @@ const CanvasHeader: React.FC = () => {
     <SharePopperProvider>
       <Header renderLogoButton={() => <LogoButton />}>
         <CanvasControls />
-
-        <HeaderDivider offset secondary />
 
         <ProjectAndDiagramActions />
 

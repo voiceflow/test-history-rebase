@@ -5,7 +5,7 @@ import TextEditor from './TextEditor';
 import TextStep from './TextStep';
 
 const TextManagerV2: Partial<NodeManagerConfig<Realtime.NodeData.Text, Realtime.NodeData.TextBuiltInPorts>> = {
-  icon: 'systemMessage',
+  icon: 'systemText',
   label: 'Text',
   step: TextStep,
   editorV2: TextEditor,

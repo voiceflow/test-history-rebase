@@ -9,7 +9,7 @@ const TopLevelOuterContainer = styled.div`
   transform: translateX(12px);
   padding: 4px;
   border-radius: 10px;
-  background-color: #f4f4f4;
+  background-color: rgb(239 243 244 0.8);
   z-index: 10;
 
   ${StepMenuExpandButton} {
@@ -19,9 +19,10 @@ const TopLevelOuterContainer = styled.div`
 
   &:hover {
     & ${StepMenuExpandButton} {
-      height: 16px;
-      opacity: 0.3;
+      height: 20px;
+      opacity: 1;
       pointer-events: all;
+      margin-bottom: -4px;
     }
   }
 `;

@@ -17,7 +17,7 @@ export const cardFactory = (): BaseNode.Carousel.CarouselCard => ({
 
 export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Carousel, Realtime.NodeData.CarouselBuiltInPorts> = {
   type: BlockType.CAROUSEL,
-  icon: 'carousel',
+  icon: 'systemCarousel',
   isMergeTerminator: ({ data }) => Realtime.Utils.typeGuards.isCarouselNodeData(data) && Boolean(data.noMatch || data.noReply),
 
   factory: () => ({

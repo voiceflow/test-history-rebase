@@ -40,7 +40,7 @@ const MoveTypePopover: React.FC<MoveTypePopoverProps> = ({ closePopover }) => {
       {OPTIONS.map(({ id, label, description }) => (
         <MenuItem key={id} height="auto" onClick={() => onSetNavigation(id)}>
           <Container>
-            <Box mr={16}>
+            <Box mr={12}>
               <Checkbox type={Checkbox.Type.RADIO} checked={id === canvasNavigation} />
             </Box>
 

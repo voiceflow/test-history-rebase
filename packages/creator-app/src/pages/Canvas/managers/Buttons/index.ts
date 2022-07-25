@@ -1,7 +1,7 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
-import { INPUT_STEPS_LINK } from '@/constants';
+import * as Documentation from '@/config/documentation';
 import { NodeCategory } from '@/contexts/SearchContext/types';
 import * as Intent from '@/ducks/intentV2';
 
@@ -30,7 +30,7 @@ const ButtonsManager: NodeManagerConfigV2<Realtime.NodeData.Buttons, Realtime.No
     }, []),
 
   tooltipText: 'Interactive buttons connected to URLs or conversation paths.',
-  tooltipLink: INPUT_STEPS_LINK,
+  tooltipLink: Documentation.BUTTONS_STEP,
 };
 
 export default ButtonsManager;

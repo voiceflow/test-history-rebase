@@ -1,6 +1,6 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 
-import { INPUT_STEPS_LINK } from '@/constants';
+import * as Documentation from '@/config/documentation';
 import { NodeCategory } from '@/contexts/SearchContext/types';
 import { slotByIDSelector } from '@/ducks/slotV2';
 
@@ -28,7 +28,7 @@ const CaptureV2Manager: NodeManagerConfigV2<Realtime.NodeData.CaptureV2, Realtim
   },
 
   tooltipText: "Capture and record all or part of a user's utterance within a variable.",
-  tooltipLink: INPUT_STEPS_LINK,
+  tooltipLink: Documentation.CAPTURE_STEP,
 };
 
 export default CaptureV2Manager;

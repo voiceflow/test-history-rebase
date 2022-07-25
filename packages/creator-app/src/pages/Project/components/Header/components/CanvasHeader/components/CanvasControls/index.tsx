@@ -1,8 +1,8 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Dropdown, Flex, stopPropagation } from '@voiceflow/ui';
+import { Box, Dropdown, stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 
-import { HeaderDivider, HeaderIconButton } from '@/components/ProjectPage';
+import { HeaderIconButton } from '@/components/ProjectPage';
 import { Permission } from '@/config/permissions';
 import { BlockType, ModalType } from '@/constants';
 import * as Thread from '@/ducks/thread';
@@ -36,12 +36,12 @@ const CanvasHeader: React.FC = () => {
 
   return (
     <>
-      <Flex gap={4}>
+      <Box.Flex gap={8} mr={24}>
         <Dropdown menu={(onToggle) => <MoveTypePopover closePopover={onToggle} />}>
           {(ref, onToggle, isOpen) => (
             <HeaderIconButton
               ref={ref}
-              icon="moveMode"
+              icon="cursorV2"
               active={!isMarkupTextActive && !isMarkupImageActive && !isCommentingMode}
               isSmall
               onClick={onDisableModes}
@@ -56,12 +56,11 @@ const CanvasHeader: React.FC = () => {
 
         {canUseHintFeatures && canEditCanvas && (
           <HeaderIconButton
-            icon="text"
+            icon="markupImageV2"
             active={isMarkupTextActive}
             isSmall
             tooltip={{ title: 'Text', hotkey: HOTKEY_LABEL_MAP[Hotkey.ADD_MARKUP_TEXT] }}
             onClick={markup.toggleTextCreating}
-            iconProps={{ width: 12, height: 14 }}
             className={`${ClassName.CANVAS_CONTROL}--markup-text`}
           />
         )}
@@ -73,7 +72,7 @@ const CanvasHeader: React.FC = () => {
               {(ref, onToggle, isOpen) => (
                 <HeaderIconButton
                   ref={ref}
-                  icon="markupImage"
+                  icon="addImage"
                   active={isMarkupImageActive}
                   isSmall
                   onClick={markup.triggerImagesUpload}
@@ -88,7 +87,7 @@ const CanvasHeader: React.FC = () => {
             </Dropdown>
           ) : (
             <HeaderIconButton
-              icon="markupImage"
+              icon="addImage"
               active={isMarkupImageActive}
               isSmall
               onClick={markup.triggerImagesUpload}
@@ -96,14 +95,10 @@ const CanvasHeader: React.FC = () => {
               className={`${ClassName.CANVAS_CONTROL}--markup-image`}
             />
           ))}
-      </Flex>
 
-      {canUseHintFeatures && (
-        <Flex>
-          <HeaderDivider isSmall offset />
-
+        {canUseHintFeatures && (
           <HeaderIconButton
-            icon="comment"
+            icon="commentV2"
             active={isCommentingMode}
             isSmall
             tooltip={{ title: 'Comment', hotkey: HOTKEY_LABEL_MAP[Hotkey.OPEN_COMMENTING] }}
@@ -111,22 +106,18 @@ const CanvasHeader: React.FC = () => {
             className={`${ClassName.CANVAS_CONTROL}--commenting`}
             withBadge={hasUnreadComments}
           />
+        )}
 
-          {canEditCanvas && (
-            <>
-              <HeaderDivider isSmall offset />
-
-              <HeaderIconButton
-                icon="interactionModel"
-                active={nluQuickView.isOpened}
-                isSmall
-                onClick={trackingEventsWrapper(nluQuickView.open, 'trackCanvasControlInteractionModel')}
-                tooltip={{ title: 'NLU Model', hotkey: HOTKEY_LABEL_MAP[Hotkey.OPEN_CMS_MODAL] }}
-              />
-            </>
-          )}
-        </Flex>
-      )}
+        {canEditCanvas && (
+          <HeaderIconButton
+            icon="modelQuickview"
+            active={nluQuickView.isOpened}
+            isSmall
+            onClick={trackingEventsWrapper(nluQuickView.open, 'trackCanvasControlInteractionModel')}
+            tooltip={{ title: 'NLU Model', hotkey: HOTKEY_LABEL_MAP[Hotkey.OPEN_CMS_MODAL] }}
+          />
+        )}
+      </Box.Flex>
     </>
   );
 };

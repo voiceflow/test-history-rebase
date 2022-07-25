@@ -1,7 +1,7 @@
 import { SLOT_REGEXP } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
-import { RESPONSE_STEPS_LINK } from '@/constants';
+import * as Documentation from '@/config/documentation';
 import { NodeCategory } from '@/contexts/SearchContext/types';
 
 import { NodeManagerConfig } from '../types';
@@ -26,7 +26,7 @@ const SpeakManager: NodeManagerConfig<Realtime.NodeData.Speak, Realtime.NodeData
 
   v2: SpeakManagerV2,
 
-  tooltipLink: RESPONSE_STEPS_LINK,
+  tooltipLink: Documentation.SPEAK_STEP,
 };
 
 export default SpeakManager;

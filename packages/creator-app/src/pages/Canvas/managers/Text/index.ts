@@ -1,8 +1,7 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { SVG } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
-import { RESPONSE_STEPS_LINK } from '@/constants';
+import * as Documentation from '@/config/documentation';
 import { NodeCategory } from '@/contexts/SearchContext/types';
 import { serializeSlateToText } from '@/utils/slate';
 
@@ -28,9 +27,7 @@ const TextManager: NodeManagerConfig<Realtime.NodeData.Text, Realtime.NodeData.T
   getSearchParams: (data) => data.texts.map(({ content }) => serializeSlateToText(content)),
 
   tooltipText: 'Text messages shown in chat.',
-  tooltipLink: RESPONSE_STEPS_LINK,
-
-  stepsMenuIcon: SVG.systemText,
+  tooltipLink: Documentation.TEXT_STEP,
 };
 
 export default TextManager;

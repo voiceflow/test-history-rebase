@@ -6,7 +6,7 @@ import { ClassName } from '@/styles/constants';
 const Container = styled(FlexCenter)`
   width: 100%;
   height: 100%;
-  padding: 24px 0;
+  padding: 20px 0;
   flex-direction: column;
   justify-content: flex-start;
 

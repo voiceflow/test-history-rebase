@@ -1,7 +1,6 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { SVG } from '@voiceflow/ui';
 
-import { INPUT_STEPS_LINK } from '@/constants';
+import * as Documentation from '@/config/documentation';
 
 import { NodeManagerConfig } from '../types';
 import { NODE_CONFIG } from './constants';
@@ -16,9 +15,8 @@ const RandomManager: NodeManagerConfig<Realtime.NodeData.Random> = {
   step: RandomStep,
   editor: RandomEditor,
 
-  stepsMenuIcon: SVG.randomV2,
   tooltipText: 'Randomizes the conversation path at this point in the conversation.',
-  tooltipLink: INPUT_STEPS_LINK,
+  tooltipLink: Documentation.RANDOM_STEP,
 };
 
 export default RandomManager;

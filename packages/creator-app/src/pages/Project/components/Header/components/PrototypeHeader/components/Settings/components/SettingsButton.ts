@@ -3,8 +3,7 @@ import { Button, ButtonVariant, SecondaryButtonProps } from '@voiceflow/ui';
 import { css, styled, transition } from '@/hocs';
 
 const SettingsButton = styled(Button).attrs({ variant: ButtonVariant.SECONDARY, flat: true })<SecondaryButtonProps & { isActive: boolean }>`
-  margin-right: 12px;
-  width: 60px;
+  margin-right: 10px;
 
   svg {
     ${transition('opacity', 'color')}

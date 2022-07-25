@@ -1,7 +1,6 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { SVG } from '@voiceflow/ui';
 
-import { RESPONSE_STEPS_LINK } from '@/constants';
+import * as Documentation from '@/config/documentation';
 
 import { NodeManagerConfigV2 } from '../types';
 import { NODE_CONFIG } from './constants';
@@ -15,9 +14,8 @@ const CarouselManager: NodeManagerConfigV2<Realtime.NodeData.Carousel, Realtime.
   step: CarouselStep,
   editorV2: Editor,
 
-  stepsMenuIcon: SVG.systemCarousel,
   tooltipText: 'Displays a selection of multi-modal cards.',
-  tooltipLink: RESPONSE_STEPS_LINK,
+  tooltipLink: Documentation.CAROUSEL_STEP,
 };
 
 export default CarouselManager;

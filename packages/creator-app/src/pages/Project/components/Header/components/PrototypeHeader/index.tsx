@@ -18,7 +18,7 @@ const PrototypeHeader: React.FC = () => {
   return (
     <Header renderLogoButton={() => <HeaderBackButton onClick={() => goToCurrentCanvas()} />}>
       <HeaderHotkeyToAction
-        label="to return to designer"
+        label="back to designer"
         hotkey={Hotkey.CLOSE_CANVAS_MODE}
         onHotkey={goToCurrentCanvas}
         preventDefault
@@ -31,7 +31,7 @@ const PrototypeHeader: React.FC = () => {
       <Settings />
       <Share />
 
-      <Box width={16} />
+      <Box width={12} />
     </Header>
   );
 };

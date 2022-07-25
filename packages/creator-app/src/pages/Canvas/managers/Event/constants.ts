@@ -7,7 +7,7 @@ import { NodeConfigWithoutInPorts } from '../types';
 
 export const NODE_CONFIG: NodeConfigWithoutInPorts<Realtime.NodeData.Event, Realtime.NodeData.EventBuiltInPorts> = {
   type: BlockType.EVENT,
-  icon: 'event',
+  icon: 'eventV2',
 
   mergeInitializer: true,
 

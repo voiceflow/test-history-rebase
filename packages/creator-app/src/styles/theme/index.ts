@@ -72,9 +72,9 @@ const THEME = createTheme({
       width: 400,
     },
     sidebarIconMenu: {
-      width: 65,
+      width: 61,
 
-      itemHeight: 72,
+      itemHeight: 68,
       smallItemHeight: 48,
     },
     testVariablesSidebar: {

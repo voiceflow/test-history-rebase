@@ -24,7 +24,7 @@ const ProjectActions: React.FC<ProjectActionsProps> = ({ onRename, projectID, pr
     <Dropdown options={options} placement="bottom" selfDismiss>
       {(ref, onToggle, isOpened) => (
         <CaretDownContainer ref={ref} onClick={onToggle} active={isOpened}>
-          <SvgIcon icon="caretDown" width={10} height={5} />
+          <SvgIcon icon="arrowRightTopics" size={9} />
         </CaretDownContainer>
       )}
     </Dropdown>

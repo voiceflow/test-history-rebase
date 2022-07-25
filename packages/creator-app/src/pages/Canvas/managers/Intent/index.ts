@@ -1,6 +1,6 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 
-import { INPUT_STEPS_LINK } from '@/constants';
+import * as Documentation from '@/config/documentation';
 
 import { NodeManagerConfigV2 } from '../types';
 import { Editor, Step } from './components';
@@ -15,7 +15,7 @@ const IntentManager: NodeManagerConfigV2<Realtime.NodeData.Intent, Realtime.Node
   editorV2: Editor,
 
   tooltipText: 'Listens for the linked intent and triggers the conversation path.',
-  tooltipLink: INPUT_STEPS_LINK,
+  tooltipLink: Documentation.INTENT_STEP,
 };
 
 export default IntentManager;

@@ -1,5 +1,5 @@
 export const SIDEBAR_WIDTH = 72;
-export const HEADER_HEIGHT = 65;
+export const HEADER_HEIGHT = 61;
 
 const PROJECT_PAGE = {
   header: {

@@ -1,6 +1,6 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 
-import { INPUT_STEPS_LINK } from '@/constants';
+import * as Documentation from '@/config/documentation';
 import { NodeCategory } from '@/contexts/SearchContext/types';
 import * as Intent from '@/ducks/intentV2';
 
@@ -26,7 +26,7 @@ const ChoiceManager: NodeManagerConfigV2<Realtime.NodeData.Interaction, Realtime
     }, []),
 
   tooltipText: 'Configures pre-defined paths and choices.',
-  tooltipLink: INPUT_STEPS_LINK,
+  tooltipLink: Documentation.CHOICE_STEP,
 };
 
 export default ChoiceManager;

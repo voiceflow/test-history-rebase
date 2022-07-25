@@ -1,5 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { BoxFlex } from '@voiceflow/ui';
+import { Box } from '@voiceflow/ui';
 import React from 'react';
 
 import { EditableTextAPI } from '@/components/EditableText';
@@ -90,14 +90,14 @@ const ProjectAndDiagramActions: React.FC = () => {
     setSelectedTargets([]);
   };
 
-  const onDuplicate = async () => {
+  const onCopy = async () => {
     const engine = getEngine();
 
     if (!engine) {
       return;
     }
 
-    await engine.node.duplicateMany(engine.activation.getTargets());
+    await engine.copyActive(null, { disableSuccessToast: false });
   };
 
   return (
@@ -108,21 +108,16 @@ const ProjectAndDiagramActions: React.FC = () => {
       topicsAndComponents.isEnabled &&
       isTopicsAndComponentsVersion &&
       (selectedTargets.length > 1 || (selectedTargets.length === 1 && selectedTargets[0] !== startNodeID)) ? (
-        <BoxFlex gap={5}>
+        <Box.Flex gap={5}>
           <HeaderIconButton
-            icon="folder"
+            icon="flowV2"
             isSmall
             tooltip={{ title: 'Create flow', hotkey: HOTKEY_LABEL_MAP[Hotkey.CREATE_COMPONENT] }}
             onClick={onCreateComponent}
           />
 
-          <HeaderIconButton
-            icon="duplicate"
-            isSmall
-            tooltip={{ title: 'Duplicate', hotkey: HOTKEY_LABEL_MAP[Hotkey.DUPLICATE] }}
-            onClick={onDuplicate}
-          />
-        </BoxFlex>
+          <HeaderIconButton icon="copy" isSmall tooltip={{ title: 'Copy', hotkey: HOTKEY_LABEL_MAP[Hotkey.COPY] }} onClick={onCopy} />
+        </Box.Flex>
       ) : (
         <>
           <ProjectTitle

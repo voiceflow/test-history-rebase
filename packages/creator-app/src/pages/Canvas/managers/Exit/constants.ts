@@ -4,7 +4,7 @@ import { NodeConfigWithoutOutPorts } from '../types';
 
 export const NODE_CONFIG: NodeConfigWithoutOutPorts<{}> = {
   type: BlockType.EXIT,
-  icon: 'exit',
+  icon: 'editorExit',
 
   mergeTerminator: true,
 

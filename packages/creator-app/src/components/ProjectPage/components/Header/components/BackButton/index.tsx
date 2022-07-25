@@ -5,7 +5,7 @@ import { StyledBackButton } from './components';
 
 const BackButton: React.FC<React.ButtonHTMLAttributes<HTMLButtonElement>> = (props) => (
   <StyledBackButton {...props}>
-    <SvgIcon icon="arrowLeft" size={14} color="#6e849a" />
+    <SvgIcon icon="arrowToggle" width={12} color="#6e849a" rotation={270} />
 
     <span>Back</span>
   </StyledBackButton>

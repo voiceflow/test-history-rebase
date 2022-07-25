@@ -21,7 +21,7 @@ const ExitEditor: NodeEditor<Realtime.NodeData.Exit> = ({ data }) => (
       />
     )}
   >
-    <InfoSection>Exit block ends the project in its current state.</InfoSection>
+    <InfoSection>End block ends the project in its current state.</InfoSection>
   </Content>
 );
 

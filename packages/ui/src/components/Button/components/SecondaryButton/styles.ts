@@ -57,13 +57,14 @@ const flatActiveStyles = css`
 
 export const SecondaryButtonContainer = styled(ButtonContainer)<SecondaryButtonContainerProps>`
   ${transition('color', 'opacity', 'box-shadow', 'background-color')}
+  height: 41px;
   box-sizing: border-box;
   padding: 9px 22px 10px;
   color: ${colors(ThemeColor.PRIMARY)};
   font-weight: 600;
   line-height: 22px;
   background-color: #eef4f6d9;
-  background-size: 1px 42px;
+  background-size: 1px 41px;
   border: 1px solid ${colors(ThemeColor.BORDERS)};
   ${({ square }) =>
     square &&
@@ -73,7 +74,7 @@ export const SecondaryButtonContainer = styled(ButtonContainer)<SecondaryButtonC
   ${({ flat }) =>
     flat &&
     css`
-      padding: 11px 20px 10px;
+      padding: 11px 19px 10px;
       background-color: #f2f7f8;
       border-radius: 10px;
       box-shadow: 0 0 0 1px rgba(204, 211, 228, 0.6);

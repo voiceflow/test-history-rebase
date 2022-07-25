@@ -8,10 +8,12 @@ import EventStep from './EventStep';
 const EventManager: NodeManagerConfig<Realtime.NodeData.Event, Realtime.NodeData.EventBuiltInPorts> = {
   ...NODE_CONFIG,
 
-  label: 'Event',
+  label: 'Custom',
 
   step: EventStep,
   editor: EventEditor,
+
+  tooltipText: 'Receive events from Alexa in Voiceflow.',
 };
 
 export default EventManager;

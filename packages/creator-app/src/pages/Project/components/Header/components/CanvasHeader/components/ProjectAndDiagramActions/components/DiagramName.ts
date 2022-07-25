@@ -15,6 +15,10 @@ const DiagramName = styled.div<DiagramNameProps>`
   font-size: 16px;
   margin-right: 12px;
   pointer-events: ${({ disabled }) => (disabled ? 'none' : 'all')};
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  height: 24px;
 
   &::last-child {
     margin-right: 0;

@@ -19,7 +19,7 @@ const Run: React.FC = () => {
   const [, trackingEventsWrapper] = useTrackingEvents();
 
   return (
-    <TippyTooltip title="Run" hotkey={HOTKEY_LABEL_MAP[Hotkey.RUN_MODE]} style={{ marginRight: '16px' }}>
+    <TippyTooltip title="Run" hotkey={HOTKEY_LABEL_MAP[Hotkey.RUN_MODE]} style={{ marginRight: '12px' }}>
       <RunButton
         squareRadius
         onClick={trackingEventsWrapper(() => goToPrototype(), 'trackActiveProjectPrototypeTestClick')}

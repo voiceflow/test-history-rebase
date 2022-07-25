@@ -31,12 +31,12 @@ export const ALEXA_DIRECTIVE_STEP = 'https://www.voiceflow.com/docs/designing-ch
 export const GOOGLE_DIRECTIVE_STEP = 'https://www.voiceflow.com/docs/designing-channel-specific-steps#toc-6';
 export const VISUALS_STEP = 'https://www.voiceflow.com/docs/designing-response-steps#toc-4';
 export const DISPLAY_STEP = 'https://www.voiceflow.com/docs/designing-response-steps#toc-5';
-export const CUSTOM_RESPOSE = 'https://www.voiceflow.com/docs/designing-response-steps#toc-8';
+export const CUSTOM_RESPOSE = 'https://www.voiceflow.com/docs/designing-response-steps#toc-9';
 
 // TODO: we don't have a dedicated pages for these anymore
-export const CARD_STEP = 'https://www.voiceflow.com/docs/designing-response-steps#toc-6';
+export const CARD_STEP = 'https://www.voiceflow.com/docs/designing-response-steps#toc-7';
 export const REMINDER_STEP = 'https://www.voiceflow.com/docs/designing-channel-specific-steps#toc-1';
-export const STREAM_STEP = 'https://www.voiceflow.com/docs/designing-response-steps#toc-7';
+export const STREAM_STEP = 'https://www.voiceflow.com/docs/designing-response-steps#toc-8';
 
 // features
 export const MARKUP_FEATURE = 'https://docs.voiceflow.com/#/platform/canvas/markup';
@@ -68,3 +68,6 @@ export const FLOW_STEP = 'https://www.voiceflow.com/docs/designing-logic-steps#t
 export const IMAGE_STEP = 'https://www.voiceflow.com/docs/designing-response-steps#toc-4';
 export const AUDIO_STEP = 'https://www.voiceflow.com/docs/designing-response-steps#toc-3';
 export const CAROUSEL_STEP = 'https://www.voiceflow.com/docs/designing-response-steps#toc-6';
+export const CUSTOM_ACTION = 'https://www.voiceflow.com/docs/designing-integration-steps#toc-4';
+export const EXIT_STEP = 'https://www.voiceflow.com/docs/designing-logic-steps#toc-6';
+export const RANDOM_STEP = 'https://www.voiceflow.com/docs/designing-logic-steps#toc-4';

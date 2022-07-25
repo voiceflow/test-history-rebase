@@ -28,7 +28,7 @@ const StepMenu: React.FC<{ numCollapsedSteps?: number }> = ({ numCollapsedSteps 
           </TopLevelInnerContainer>
 
           <StepMenuExpandButton onClick={toggleIsExpanded}>
-            <SvgIcon icon="arrowToggleV2" size={18} color="#393e42" inline rotation={isExpanded ? 270 : 90} />
+            <SvgIcon icon="arrowToggleV2" size={20} color="#6e849a" inline rotation={isExpanded ? 270 : 90} />
           </StepMenuExpandButton>
         </TopLevelOuterContainer>
       )}

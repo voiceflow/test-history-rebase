@@ -34,7 +34,7 @@ function isOnRoute(_chai) {
 const between = (x, min, max) => x >= min && x <= max;
 
 function hasCoords(_chai) {
-  function assertHasCoords([coordsX, coordsY], pixelDisparity = 1) {
+  function assertHasCoords([coordsX, coordsY], pixelDisparity = 4) {
     const { left, top } = this._obj.offset();
     const x = Math.floor(left);
     const y = Math.floor(top);

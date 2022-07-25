@@ -301,7 +301,7 @@ export interface StepItem {
 export interface TopStepItem {
   icon: SvgIconTypes.Icon;
   label: string;
-  steps?: StepItem[];
+  steps: StepItem[];
 }
 
 const TALK_ICON = 'systemTalk' as const;
@@ -329,7 +329,7 @@ export const ALEXA_STEP_SECTIONS: TopStepItem[] = [
   {
     icon: LISTEN_ICON,
     label: LISTEN_LABEL,
-    steps: [CHOICE_STEP, CAPTURE_STEP_V2, EVENT_STEP],
+    steps: [CHOICE_STEP, CAPTURE_STEP_V2],
   },
   {
     icon: LOGIC_ICON,
@@ -339,12 +339,12 @@ export const ALEXA_STEP_SECTIONS: TopStepItem[] = [
   {
     icon: EVENT_ICON,
     label: EVENT_LABEL,
-    steps: [INTENT_STEP],
+    steps: [INTENT_STEP, EVENT_STEP],
   },
   {
     icon: DEV_ICON,
     label: DEV_LABEL,
-    steps: [API_STEP, GOOGLE_SHEETS_STEP, CODE_STEP, TRACE_STEP],
+    steps: [API_STEP, CODE_STEP, TRACE_STEP, DIRECTIVE_STEP],
   },
 ];
 
@@ -373,7 +373,7 @@ export const GOOGLE_STEP_SECTIONS: TopStepItem[] = [
   {
     icon: DEV_ICON,
     label: DEV_LABEL,
-    steps: [API_STEP, GOOGLE_SHEETS_STEP, CODE_STEP, TRACE_STEP],
+    steps: [API_STEP, CODE_STEP, TRACE_STEP, DIRECTIVE_STEP],
   },
 ];
 
@@ -402,7 +402,7 @@ export const CHATBOT_STEP_SECTIONS: TopStepItem[] = [
   {
     icon: DEV_ICON,
     label: DEV_LABEL,
-    steps: [API_STEP, GOOGLE_SHEETS_STEP, CODE_STEP, TRACE_STEP],
+    steps: [API_STEP, CODE_STEP, TRACE_STEP],
   },
 ];
 
@@ -431,7 +431,7 @@ export const GENERAL_STEP_SECTIONS: TopStepItem[] = [
   {
     icon: DEV_ICON,
     label: DEV_LABEL,
-    steps: [API_STEP, GOOGLE_SHEETS_STEP, CODE_STEP, TRACE_STEP],
+    steps: [API_STEP, CODE_STEP, TRACE_STEP],
   },
 ];
 
@@ -440,7 +440,7 @@ export const DIALOGFLOW_ES_CHAT_STEP_SECTIONS: TopStepItem[] = [
   {
     icon: TALK_ICON,
     label: TALK_LABEL,
-    steps: [TEXT_STEP, VISUAL_STEP, CARD_STEP, CAROUSEL_STEP],
+    steps: [TEXT_STEP, VISUAL_STEP, CARD_STEP, CAROUSEL_STEP, CUSTOM_PAYLOAD_STEP],
   },
   {
     icon: LISTEN_ICON,
@@ -460,7 +460,7 @@ export const DIALOGFLOW_ES_CHAT_STEP_SECTIONS: TopStepItem[] = [
   {
     icon: DEV_ICON,
     label: DEV_LABEL,
-    steps: [CUSTOM_PAYLOAD_STEP, API_STEP, GOOGLE_SHEETS_STEP, CODE_STEP, TRACE_STEP],
+    steps: [API_STEP, CODE_STEP, TRACE_STEP],
   },
 ];
 
@@ -469,7 +469,7 @@ export const DIALOGFLOW_ES_VOICE_STEP_SECTIONS: TopStepItem[] = [
   {
     icon: TALK_ICON,
     label: TALK_LABEL,
-    steps: [SPEAK_STEP, AUDIO_STEP],
+    steps: [SPEAK_STEP, AUDIO_STEP, CUSTOM_PAYLOAD_STEP],
   },
   {
     icon: LISTEN_ICON,
@@ -489,6 +489,6 @@ export const DIALOGFLOW_ES_VOICE_STEP_SECTIONS: TopStepItem[] = [
   {
     icon: DEV_ICON,
     label: DEV_LABEL,
-    steps: [CUSTOM_PAYLOAD_STEP, API_STEP, GOOGLE_SHEETS_STEP, CODE_STEP, TRACE_STEP],
+    steps: [API_STEP, CODE_STEP, TRACE_STEP],
   },
 ];

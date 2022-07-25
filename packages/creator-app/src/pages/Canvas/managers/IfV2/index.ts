@@ -1,6 +1,6 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 
-import { LOGIC_STEPS_LINK } from '@/constants';
+import * as Documentation from '@/config/documentation';
 
 import { NodeManagerConfig } from '../types';
 import { NODE_CONFIG } from './constants';
@@ -22,7 +22,7 @@ const IfManagerV2: NodeManagerConfig<Realtime.NodeData.IfV2, Realtime.NodeData.I
   v2: NodeConfigV2,
 
   tooltipText: 'Configures ‘If, then’ logic statements for funneling to paths.',
-  tooltipLink: LOGIC_STEPS_LINK,
+  tooltipLink: Documentation.CONDITION_STEP,
 };
 
 export default IfManagerV2;

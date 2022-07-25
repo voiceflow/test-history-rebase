@@ -8,7 +8,7 @@ const StyledBackButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 124px;
+  width: 120px;
   height: 100%;
   padding: 0;
   margin-right: 24px;
@@ -22,12 +22,16 @@ const StyledBackButton = styled.button`
   box-shadow: none;
 
   ${SvgIcon.Container} {
+    opacity: 0.8;
     margin-top: 2px;
     margin-right: 10px;
   }
 
   &:hover {
     background-color: #fbfbfb;
+    ${SvgIcon.Container} {
+      opacity: 1;
+    }
   }
 `;
 

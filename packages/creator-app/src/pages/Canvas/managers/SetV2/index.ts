@@ -1,6 +1,6 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 
-import { LOGIC_STEPS_LINK } from '@/constants';
+import * as Documentation from '@/config/documentation';
 
 import { NodeManagerConfig } from '../types';
 import { NODE_CONFIG } from './constants';
@@ -19,7 +19,7 @@ const SetManager: NodeManagerConfig<Realtime.NodeData.SetV2, Realtime.NodeData.S
   v2: SetManagerV2,
 
   tooltipText: 'Sets and changes the value of variables.',
-  tooltipLink: LOGIC_STEPS_LINK,
+  tooltipLink: Documentation.SET_STEP,
 };
 
 export default SetManager;

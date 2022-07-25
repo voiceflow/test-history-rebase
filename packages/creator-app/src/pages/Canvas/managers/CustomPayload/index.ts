@@ -9,7 +9,7 @@ import CustomPayloadStep from './CustomPayloadStep';
 const CustomPayloadManager: NodeManagerConfig<Realtime.NodeData.CustomPayload, Realtime.NodeData.CustomPayloadBuiltInPorts> = {
   ...NODE_CONFIG,
 
-  label: 'Custom Response',
+  label: 'Custom',
   platforms: [VoiceflowConstants.PlatformType.DIALOGFLOW_ES],
 
   step: CustomPayloadStep,

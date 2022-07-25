@@ -1,6 +1,6 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 
-import { RESPONSE_STEPS_LINK } from '@/constants';
+import * as Documentation from '@/config/documentation';
 
 import { NodeManagerConfig } from '../types';
 import { NODE_CONFIG } from './constants';
@@ -15,8 +15,8 @@ const StreamManager: NodeManagerConfig<Realtime.NodeData.Stream, Realtime.NodeDa
   step: StreamStep,
   editor: StreamEditor,
 
-  tooltipText: 'Add a stream to your assistant.',
-  tooltipLink: RESPONSE_STEPS_LINK,
+  tooltipText: 'Streams longer audio files and visuals.',
+  tooltipLink: Documentation.STREAM_STEP,
 };
 
 export default StreamManager;

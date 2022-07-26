@@ -4,7 +4,6 @@ import React from 'react';
 import { useDidUpdateEffect, useEnableDisable, useTheme } from '@/hooks';
 import StepMenu from '@/pages/Project/components/StepMenu';
 
-import { useMenuHotKeys } from './hooks';
 import Layers from './Layers';
 import ResizeHandle from './ResizeHandle';
 import * as S from './styles';
@@ -18,12 +17,6 @@ const DesignMenuV2: React.FC<DesignMenuV2Props> = ({ canvasOnly }) => {
   const [isOpen, openMenu, closeMenu] = useEnableDisable(true);
   const [menuWidth, setWidth] = useLocalStorageState<number>(`design-menu-v2-sizes`, theme.components.designMenu.width);
   const [isCollapsed, setIsCollapsed] = useLocalStorageState<boolean>(`design-menu-v2-is-collapsed`, false);
-
-  useMenuHotKeys({
-    isOpen,
-    openMenu,
-    closeMenu,
-  });
 
   useDidUpdateEffect(() => {
     if (canvasOnly) {

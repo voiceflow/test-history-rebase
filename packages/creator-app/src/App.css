@@ -2208,32 +2208,6 @@ kbd {
 
 /* extra */
 
-.sidenav {
-  position: fixed;
-
-  /* Fixed Sidebar (stay in place on scroll) */
-  top: 0;
-
-  /* Stay at the top */
-  left: 0;
-  z-index: 1;
-
-  /* Stay on top */
-  width: 160px;
-
-  /* Set the width of the sidebar */
-  height: 100%;
-
-  /* Full-height: remove this if you want "auto" height */
-
-  /*    overflow-x: hidden;  Disable horizontal scroll */
-  padding-top: 60px;
-  background-color: #fff;
-
-  /* Black */
-  box-shadow: 0 0 0 1px rgba(36, 35, 40, 0.1);
-}
-
 .active-btn {
   z-index: 10;
   width: 138px;
@@ -2323,17 +2297,9 @@ kbd {
   color: #a156d8 !important;
 }
 
-.string-value {
-  color: #e1d40b;
-}
-
 .react-json-view {
   overflow: auto;
   background-color: #142e55 !important;
-}
-
-.object-size {
-  color: #fff !important;
 }
 
 .text-bold-label {
@@ -2354,10 +2320,6 @@ kbd {
 
 .fade {
   transition: opacity 0.12s ease;
-}
-
-.member-icon-wrapper {
-  width: 27px;
 }
 
 .member-icon {

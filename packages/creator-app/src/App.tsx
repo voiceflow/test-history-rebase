@@ -1,4 +1,4 @@
-// Import Dependent CSS
+// Import Dependent CSS, attempt to deprecate
 
 import 'react-tippy/dist/tippy.css';
 import 'react-toastify/dist/ReactToastify.css';

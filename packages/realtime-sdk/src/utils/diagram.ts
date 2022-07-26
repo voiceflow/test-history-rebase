@@ -30,12 +30,17 @@ export const startNodeFactory = (coords: [number, number] = [360, 120]): BaseMod
   data: {
     name: 'Start',
     color: BLOCK_STANDARD_COLOR,
-    ports: [
-      {
-        type: '',
-        target: null,
+    portsV2: {
+      byKey: {},
+      builtIn: {
+        [BaseModels.PortType.NEXT]: {
+          type: BaseModels.PortType.NEXT,
+          target: null,
+          id: Utils.id.objectID(),
+        },
       },
-    ],
+      dynamic: [],
+    },
   },
 });
 

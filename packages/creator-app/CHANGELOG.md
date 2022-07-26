@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.844.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.844.5...@voiceflow/creator-app@1.844.6) (2022-07-26)
+
+
+### Bug Fixes
+
+* condition for new menu (VF-000) ([#5815](https://github.com/voiceflow/creator-app/issues/5815)) ([378eeed](https://github.com/voiceflow/creator-app/commit/378eeedc450af821acc664f81129172aaed1e3f6))
+* design menu hotkey esc fix (VF-000) ([#5813](https://github.com/voiceflow/creator-app/issues/5813)) ([0bc1d23](https://github.com/voiceflow/creator-app/commit/0bc1d23cad2910cb29d2c1611dd7bfbb72c2c8c0))
+
+
+
+
+
 ## [1.844.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.844.4...@voiceflow/creator-app@1.844.5) (2022-07-26)
 
 **Note:** Version bump only for package @voiceflow/creator-app

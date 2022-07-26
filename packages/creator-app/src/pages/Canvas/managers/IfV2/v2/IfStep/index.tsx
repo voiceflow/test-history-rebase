@@ -5,6 +5,7 @@ import React from 'react';
 import { HSLShades } from '@/constants';
 import { useSyncedLookup } from '@/hooks';
 import Step, { ElseStepItemV2, Item, Section } from '@/pages/Canvas/components/Step';
+import { NoMatchV2 } from '@/pages/Canvas/managers/components';
 import { ConnectedStep } from '@/pages/Canvas/managers/types';
 import { expressionPreview } from '@/utils/expression';
 
@@ -44,7 +45,7 @@ export const IfStep: React.FC<IfStepProps> = ({ nodeID, expressions, noMatchPort
         <Item icon={IF_V2_ICON} palette={palette} placeholder="Add a Condition" />
       )}
 
-      {withNoMatchPort && <ElseStepItemV2 portID={noMatchPortID} label={noMatchPathName} palette={palette} />}
+      {withNoMatchPort && <ElseStepItemV2 portID={noMatchPortID} label={noMatchPathName} palette={palette} parentActionsPath={NoMatchV2.PATH} />}
     </Section>
   </Step>
 );

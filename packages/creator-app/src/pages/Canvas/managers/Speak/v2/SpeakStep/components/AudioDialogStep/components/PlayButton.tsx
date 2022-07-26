@@ -6,11 +6,10 @@ import { PlayButtonContainer, PlayButtonIcon } from '../styles';
 interface PlayButtonProps {
   content?: string | null;
   playing: boolean;
-  onPlay: () => void;
-  onStop: () => void;
+  onToggle: VoidFunction;
 }
 
-const PlayButton: React.FC<PlayButtonProps> = ({ content, playing, onPlay, onStop }) => {
+const PlayButton: React.FC<PlayButtonProps> = ({ content, playing, onToggle }) => {
   const [hovered, setHovered] = React.useState(false);
   const hasContent = !!content;
 
@@ -26,14 +25,6 @@ const PlayButton: React.FC<PlayButtonProps> = ({ content, playing, onPlay, onSto
     setHovered(false);
   };
 
-  const handleClick = () => {
-    if (playing) {
-      onStop();
-    } else {
-      onPlay();
-    }
-  };
-
   let icon: SvgIconTypes.Icon = hovered ? 'playOutline' : 'audio';
 
   if (playing) {
@@ -44,7 +35,7 @@ const PlayButton: React.FC<PlayButtonProps> = ({ content, playing, onPlay, onSto
     <PlayButtonContainer
       $playing={playing}
       $hasContent={hasContent}
-      onClick={stopPropagation(hasContent ? handleClick : null)}
+      onClick={stopPropagation(hasContent ? onToggle : null)}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >

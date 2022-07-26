@@ -13,10 +13,11 @@ import * as PrototypeDuck from '@/ducks/prototype';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import { useDispatch, useFeature, useSelector, useTrackingEvents } from '@/hooks';
-import { NLPContext } from '@/pages/Project/contexts';
 import { createPlatformSelector } from '@/utils/platform';
 import { getModelsDiffs, isModelChanged, ModelDiff } from '@/utils/prototypeModel';
 import * as Sentry from '@/vendors/sentry';
+
+import { NLPContext } from './NLPContext';
 
 export interface TrainingState {
   diff: ModelDiff;

@@ -4,6 +4,7 @@ import { PopperPlacement, useVirtualElementPopper } from '@ui/hooks';
 import { Identifier } from '@ui/styles/constants';
 import { Point } from '@ui/types';
 import { buildVirtualElement } from '@ui/utils/dom';
+import { Nullable } from '@voiceflow/common';
 import React from 'react';
 import { DismissEventType, useDismissable } from 'react-dismissable-layers';
 
@@ -12,7 +13,7 @@ const EXCLUDED_TAG_NAME = new Set(['input', 'textarea']);
 export const CONTEXT_MENU_IGNORED_CLASS_NAME = 'context-menu-exclude';
 
 export interface ContextMenuProps<T> extends Omit<MenuProps<T>, 'options' | 'children'> {
-  options: MenuOption<T>[];
+  options: Nullable<MenuOption<T>>[];
   children: (props: { isOpen: boolean; onContextMenu: (event: React.MouseEvent<HTMLElement>) => void }) => React.ReactNode;
   placement?: PopperPlacement;
   dismissEvent?: DismissEventType;

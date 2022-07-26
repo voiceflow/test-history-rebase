@@ -1,4 +1,4 @@
-import { BaseRequest } from '@voiceflow/base-types';
+import { BaseNode, BaseRequest, BaseTrace } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 // eslint-disable-next-line you-dont-need-lodash-underscore/is-string
 import _isString from 'lodash/isString';
@@ -60,15 +60,21 @@ class PrototypeTool {
     this.trace?.stop();
     this.timeout?.clearAll();
 
-    this.audio = new AudioController();
-
     this.trace = undefined;
     this.message = undefined;
     this.timeout = undefined;
   }
 
-  public play(src: string): void {
-    this.audio?.playExternal(src, this.props.isMuted);
+  public pause(): void {
+    this.audio?.pause();
+  }
+
+  public continue(): void {
+    // can't continue if the stream paused
+    if (this.trace?.topTrace?.type === BaseTrace.TraceType.STREAM && this.trace.topTrace.payload.action === BaseNode.Stream.TraceStreamAction.PAUSE)
+      return;
+
+    this.audio?.continue();
   }
 
   public stepBack(): void {

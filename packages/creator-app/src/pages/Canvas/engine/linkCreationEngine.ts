@@ -1,8 +1,10 @@
 import { Utils } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { RefObject } from 'react';
 
 import { BlockType } from '@/constants';
-import { buildPath, getMarkerAttrs, getPathPointsV2, LinkedRects } from '@/pages/Canvas/components/Link';
+import * as CreatorV2 from '@/ducks/creatorV2';
+import { buildPath, getMarkerAttrs, getPathPoints, LinkedRects } from '@/pages/Canvas/components/Link';
 import { NewLinkAPI } from '@/pages/Canvas/types';
 
 import { CANVAS_CREATING_LINK_CLASSNAME } from '../constants';
@@ -61,7 +63,7 @@ class LinkCreationEngine extends EngineConsumer<{ newLink: NewLinkAPI }> {
     this.markerEl = markerEl;
   }
 
-  redrawNewLink(linkedRects?: LinkedRects | null, options?: { isConnected?: boolean }): void {
+  redrawNewLink(linkedRects?: LinkedRects | null, options?: { isConnected?: boolean; skipPortSync?: boolean }): void {
     if (!this.markerEl?.current || !this.linkEl?.current || !this.engine.linkCreation.sourcePortID) return;
 
     let localLinkedRects = linkedRects;
@@ -74,7 +76,7 @@ class LinkCreationEngine extends EngineConsumer<{ newLink: NewLinkAPI }> {
     const markerNode = this.markerEl.current;
     const isStraight = this.engine.isStraightLinks();
 
-    const pathPoints = getPathPointsV2(localLinkedRects, {
+    const pathPoints = getPathPoints(localLinkedRects, {
       isStraight,
       isConnected: options?.isConnected ?? false,
       sourceNodeIsStart: this.sourceNodeIsStart,
@@ -87,9 +89,14 @@ class LinkCreationEngine extends EngineConsumer<{ newLink: NewLinkAPI }> {
     const markerAttrs = getMarkerAttrs(pathPoints, { isStraight });
 
     this.linkEl.current.setAttribute('d', path);
-    this.engine.portLinkInstances.get(this.engine.linkCreation.sourcePortID)?.api.updatePosition(pathPoints);
 
     Utils.object.getKeys(markerAttrs).forEach((attr) => markerNode.setAttribute(attr, markerAttrs[attr]));
+
+    if (!options?.skipPortSync) {
+      this.engine.portLinkInstances
+        .get(this.engine.linkCreation.sourcePortID)
+        ?.api.updatePosition(pathPoints, () => this.redrawNewLink(null, { skipPortSync: true }));
+    }
   }
 
   canTargetNode(nodeID: string): boolean {
@@ -120,9 +127,10 @@ class LinkCreationEngine extends EngineConsumer<{ newLink: NewLinkAPI }> {
 
     if (sourcePort) {
       const sourceNode = this.engine.getNodeByID(sourcePort.nodeID);
+      const sourceNodeParent = this.engine.getNodeByID(sourceNode?.parentNode);
 
       this.sourceNodeIsStart = sourceNode?.type === BlockType.START;
-      this.sourceNodeIsAction = sourceNode?.type === BlockType.ACTIONS;
+      this.sourceNodeIsAction = sourceNodeParent?.type === BlockType.ACTIONS;
     }
 
     this.engine.highlight.setPortTarget(sourcePortID);
@@ -210,16 +218,44 @@ class LinkCreationEngine extends EngineConsumer<{ newLink: NewLinkAPI }> {
     if (!port) return null;
 
     const sourcePortRect = this.engine.port.getRect(port.id);
-    const sourceNodeRect = this.engine.node.getRect(port.nodeID);
+    const sourceNodeRect = this.getSourceNodeRect(port.nodeID);
 
     if (!sourcePortRect || !sourceNodeRect) return null;
 
     return {
+      sourceNodeRect,
       sourcePortRect: toCanvasRect(this.engine.canvas, sourcePortRect),
-      sourceNodeRect: toCanvasRect(this.engine.canvas, sourceNodeRect),
       targetPortRect: targetIsCanvasRect ? targetRect : toCanvasRect(this.engine.canvas, targetRect, { relative }),
       targetNodeRect: targetIsCanvasRect ? targetRect : toCanvasRect(this.engine.canvas, targetRect, { relative }),
     };
+  }
+
+  getSourceNodeRect(nodeID: string): DOMRect | null {
+    if (!this.engine.canvas) return null;
+
+    let sourceNodeRect: DOMRect | null = null;
+
+    if (!this.sourceNodeIsAction) {
+      sourceNodeRect = this.engine.node.getRect(nodeID);
+    } else {
+      const node = this.engine.getNodeByID(nodeID);
+
+      if (!node?.parentNode) return null;
+
+      const actionsNodePorts = this.select(CreatorV2.portsByNodeIDSelector, { id: node.parentNode });
+
+      const actionsNodeInLinkID = this.engine.getLinkIDsByPortID(actionsNodePorts?.in[0])[0];
+
+      const actionsSourceNodeLink = this.engine.getLinkByID(actionsNodeInLinkID);
+
+      if (!actionsSourceNodeLink) return null;
+
+      sourceNodeRect = this.engine.node.getRect(actionsSourceNodeLink.source.nodeID);
+    }
+
+    if (!sourceNodeRect) return null;
+
+    return toCanvasRect(this.engine.canvas, sourceNodeRect);
   }
 
   getSourceParentNodeRect(): DOMRect | null {
@@ -233,7 +269,21 @@ class LinkCreationEngine extends EngineConsumer<{ newLink: NewLinkAPI }> {
 
     if (!node?.parentNode) return null;
 
-    const sourceParentNodeRect = this.engine.node.getRect(node.parentNode);
+    let sourceParentNodeRect: DOMRect | null = null;
+
+    if (this.sourceNodeIsAction) {
+      const actionsNodePorts = this.select(CreatorV2.portsByNodeIDSelector, { id: node.parentNode });
+
+      const actionsNodeInLinkID = this.engine.getLinkIDsByPortID(actionsNodePorts?.in[0])[0];
+
+      const actionsSourceNode = this.engine.getSourceNodeByLinkID(actionsNodeInLinkID);
+
+      if (!actionsSourceNode?.parentNode) return null;
+
+      sourceParentNodeRect = this.engine.node.getRect(actionsSourceNode.parentNode);
+    } else {
+      sourceParentNodeRect = this.engine.node.getRect(node.parentNode);
+    }
 
     if (!sourceParentNodeRect) return null;
 
@@ -266,7 +316,15 @@ class LinkCreationEngine extends EngineConsumer<{ newLink: NewLinkAPI }> {
     this.targetNodeIsCombined = false;
 
     if (sourcePortID) {
+      const sourcePort = this.engine.select(CreatorV2.portByIDSelector, { id: sourcePortID });
+      const sourceNode = this.engine.getNodeByID(sourcePort?.nodeID);
+      const sourceParentNode = this.engine.getNodeByID(sourceNode?.parentNode);
+
       this.engine.port.redraw(sourcePortID);
+
+      if (sourceParentNode && Realtime.Utils.typeGuards.isActionsBlockType(sourceParentNode.type)) {
+        this.engine.node.redraw(sourceParentNode.id);
+      }
     }
 
     this.log.debug(this.log.reset('reset link creation'));

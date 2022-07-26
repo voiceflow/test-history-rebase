@@ -1,5 +1,4 @@
 /* eslint-disable max-classes-per-file */
-import { IS_IOS } from '@voiceflow/ui';
 
 const SOUND_BANK_PREFIX = 'soundbank://soundlibrary/';
 const SOUND_BANK_MIRROR = 'https://d3qhmae9zx9eb.cloudfront.net/';
@@ -7,7 +6,7 @@ const SOUND_BANK_MIRROR = 'https://d3qhmae9zx9eb.cloudfront.net/';
 export class TAudio extends Audio {
   public VF_REJECT?: Function;
 
-  public VF_ON_PAUSE?: (audio: TAudio) => void;
+  public VF_ON_STOP?: (audio: TAudio) => void;
 
   set src(value: string) {
     if (value.startsWith(SOUND_BANK_PREFIX)) {
@@ -21,39 +20,26 @@ export class TAudio extends Audio {
     return super.src;
   }
 
-  pause(): void {
-    this.VF_ON_PAUSE?.(this);
+  stop(): void {
+    this.VF_ON_STOP?.(this);
 
     super.pause();
   }
 }
 
 class AudioController {
-  public audio = new TAudio();
+  public audio: TAudio;
 
-  /**
-   * Pauses PrototypeMachine audio and replaces it with external audio before resuming again
-   */
-  public playExternal(src: string, muted = false): void {
-    const externalAudio = new TAudio(src);
-    externalAudio.muted = muted;
-    const currentAudio = this.audio;
+  constructor() {
+    this.audio = new TAudio();
+  }
 
-    if (!currentAudio.paused) {
-      currentAudio.pause();
+  public pause(): void {
+    this.audio.pause();
+  }
 
-      const resume = () => {
-        this.audio = currentAudio;
-        this.audio.play();
-      };
-
-      externalAudio.onended = resume;
-      externalAudio.onerror = resume;
-    }
-
-    this.audio = externalAudio;
-
-    externalAudio.play();
+  public continue(): void {
+    this.audio.play();
   }
 
   public async play(
@@ -63,19 +49,17 @@ class AudioController {
       muted = false,
       loop = false,
       offset = 0,
+      onStop,
       onError,
-      onPause,
-    }: { offset?: number; play?: boolean; muted?: boolean; loop?: boolean; onError?: () => void; onPause?: (audio: TAudio) => void } = {}
+    }: { offset?: number; play?: boolean; muted?: boolean; loop?: boolean; onError?: () => void; onStop?: (audio: TAudio) => void } = {}
   ): Promise<void> {
     this.stop();
 
-    return new Promise<void>((resolve, reject) => {
-      if (!src) {
-        return resolve();
-      }
+    if (!src) return Promise.resolve();
 
+    return new Promise<void>((resolve, reject) => {
       this.audio.VF_REJECT = reject;
-      this.audio.VF_ON_PAUSE = onPause;
+      this.audio.VF_ON_STOP = onStop;
 
       this.audio.onended = () => resolve();
       this.audio.muted = muted;
@@ -97,20 +81,16 @@ class AudioController {
   }
 
   public stop(): void {
-    this.audio.pause();
+    this.audio.stop();
     this.audio.VF_REJECT?.();
 
     this.audio.VF_REJECT = undefined;
-    this.audio.VF_ON_PAUSE = undefined;
+    this.audio.VF_ON_STOP = undefined;
 
+    this.audio.loop = false;
     this.audio.onended = null;
     this.audio.onerror = null;
-    this.audio.loop = false;
-
-    // do not recreate an audio on iOS, since the first message will not be played
-    if (!IS_IOS) {
-      this.audio = new TAudio();
-    }
+    this.audio.currentTime = 0;
   }
 }
 

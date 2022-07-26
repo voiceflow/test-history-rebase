@@ -1,17 +1,19 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
+
 import * as Documentation from '@/config/documentation';
 
-import { NodeManagerConfig } from '../types';
+import { NodeManagerConfigV2 } from '../types';
+import { Action, Editor, Step } from './components';
 import { NODE_CONFIG } from './constants';
-import ExitEditor from './ExitEditor';
-import ExitStep from './ExitStep';
 
-const ExitManager: NodeManagerConfig<{}> = {
+const ExitManager: NodeManagerConfigV2<Realtime.NodeData.Exit> = {
   ...NODE_CONFIG,
 
   label: 'End',
 
-  step: ExitStep,
-  editor: ExitEditor,
+  step: Step,
+  action: Action,
+  editorV2: Editor,
 
   tooltipText: 'Defines the terminal point of a conversation.',
   tooltipLink: Documentation.EXIT_STEP,

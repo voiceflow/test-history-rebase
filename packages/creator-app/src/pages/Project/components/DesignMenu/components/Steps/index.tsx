@@ -8,7 +8,7 @@ import { BlockCategory, BlockType, DragItem } from '@/constants';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as UI from '@/ducks/ui';
 import { useDispatch, useDragPreview, useFeature, useSelector } from '@/hooks';
-import { useManager } from '@/pages/Canvas/managers';
+import { useManager } from '@/pages/Canvas/managers/utils';
 import { Identifier } from '@/styles/constants';
 import { isDialogflowPlatform } from '@/utils/typeGuards';
 

@@ -2,7 +2,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { SvgIconTypes } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
-import { getManager } from '@/pages/Canvas/managers/constants';
+import { getManager } from '@/pages/Canvas/managers/utils';
 
 import {
   ALEXA_STEP_SECTIONS,

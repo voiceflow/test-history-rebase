@@ -3,7 +3,7 @@ import React from 'react';
 
 import { DragItem } from '@/constants';
 import { useDragPreview } from '@/hooks';
-import { getManager } from '@/pages/Canvas/managers/constants';
+import { getManager } from '@/pages/Canvas/managers/utils';
 
 import { StepDragItem } from '../../../DesignMenu/components/Steps/types';
 import { MenuStepItem } from '../../constants';

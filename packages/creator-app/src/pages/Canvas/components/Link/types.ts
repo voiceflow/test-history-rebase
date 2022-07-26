@@ -5,15 +5,23 @@ import React from 'react';
 import { LinkInstance } from '@/pages/Canvas/engine/entities/linkEntity';
 import { Point } from '@/types';
 
-import { MarkerAttrs } from './utils';
+import { LinkedRects, MarkerAttrs } from './utils';
 
 export type InternalLinkInstance = LinkInstance & {
   pathRef: React.RefObject<SVGPathElement>;
+  cacheRef: React.MutableRefObject<{
+    isStraight: boolean;
+    isPathLocked: boolean;
+    sourceNodeIsStart: boolean;
+    sourceNodeIsAction: boolean;
+    targetNodeIsCombined: boolean;
+  }>;
   markerRef: React.RefObject<SVGMarkerElement>;
   captionRef: React.RefObject<SVGForeignObjectElement>;
-  settingsRef: React.RefObject<{ setPosition: () => void }>;
+  settingsRef: React.RefObject<{ setPosition: VoidFunction }>;
   containerRef: React.RefObject<SVGGElement>;
   hiddenPathRef: React.RefObject<SVGPathElement>;
+  linkedRectsRef: React.MutableRefObject<LinkedRects | null>;
   captionContainerRef: React.RefObject<HTMLDivElement>;
 
   getCenter: () => React.MutableRefObject<Point | null>;
@@ -21,9 +29,10 @@ export type InternalLinkInstance = LinkInstance & {
   getLinkType: () => BaseModels.Project.LinkType;
   getLinkColor: () => string;
   getCaptionRect: () => React.MutableRefObject<{ x: number; y: number; width: number; height: number }>;
+  onLinkPositionReversed: (options: { isSource: boolean; sourceAndTargetSelected: boolean }) => void;
 
-  updateMarkerPosition: () => void;
-  updateCaptionPosition: () => void;
+  redraw: VoidFunction;
+  updateCaptionPosition: VoidFunction;
 
   /**
    * get the link's SVG path string

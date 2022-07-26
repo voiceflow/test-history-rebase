@@ -5,7 +5,7 @@ import React from 'react';
 import { useHotKeys } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import { EngineContext, IsCanvasOnlyContext, IsCreatorMenuHiddenContext, LinkEntityContext } from '@/pages/Canvas/contexts';
-import { useCanvasPan, useCanvasZoom } from '@/pages/Canvas/hooks';
+import { useCanvasPan, useCanvasZoom } from '@/pages/Canvas/hooks/canvas';
 import { ClassName } from '@/styles/constants';
 
 import { InternalLinkInstance } from '../types';

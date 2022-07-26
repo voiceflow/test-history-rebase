@@ -3,7 +3,7 @@ import { PopperAPI, VirtualElement } from '@voiceflow/ui';
 import React from 'react';
 
 import { ColorPickerPopper, ColorPickerPopperProps } from '@/components/ColorPickerPopper';
-import { useCanvasPan, useCanvasZoom } from '@/pages/Canvas/hooks';
+import { useCanvasPan, useCanvasZoom } from '@/pages/Canvas/hooks/canvas';
 
 export const CanvasColorPicker: React.FC<ColorPickerPopperProps> = (props) => {
   const popperRef = React.useRef<PopperAPI<Nullable<Element | VirtualElement>, Nullable<HTMLElement>>>(null);

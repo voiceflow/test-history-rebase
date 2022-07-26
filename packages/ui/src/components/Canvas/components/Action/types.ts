@@ -8,4 +8,5 @@ export interface Props {
   active?: boolean;
   onClick?: React.MouseEventHandler;
   reversed?: boolean;
+  onDoubleClick?: React.MouseEventHandler;
 }

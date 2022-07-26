@@ -5,42 +5,57 @@ import BaseMessage, { BaseMessageProps } from '../../Base';
 import { RECTANGLE_CLASS_ARRAY, WAVE_COLOR } from './constants';
 import { WaveContainer } from './styles';
 
-type AudioProps = Omit<BaseMessageProps, 'iconProps'> & {
+interface AudioProps extends Omit<BaseMessageProps, 'iconProps'> {
   name: string;
-  isCurrent: boolean;
-  onPlay: () => void;
+  audio?: HTMLAudioElement;
+  onPause?: VoidFunction;
   audioSrc: string;
+  isCurrent: boolean;
+  trackOnly?: boolean;
   allowPause?: boolean;
-  autoplay?: boolean;
-};
+  onContinue?: VoidFunction;
+}
 
-const Audio: React.FC<AudioProps> = ({ onPlay, audioSrc, autoplay = true, name, isCurrent, allowPause, ...props }) => {
-  const { curTime, playing, duration, setPlaying, restart } = AudioPlayer.useAudioPlayer({ autoplay, audioURL: audioSrc });
+const Audio: React.FC<AudioProps> = ({ audio, onPause, onContinue, audioSrc, name, isCurrent, trackOnly, allowPause, ...props }) => {
+  const audioPlayer = AudioPlayer.useAudioPlayer({ audio: trackOnly ? audio : undefined, audioURL: audioSrc, trackOnly });
 
-  const onClickHandler = () => {
-    if (allowPause) {
-      setPlaying(!playing);
-      return;
-    }
+  const onTogglePlay = () => {
+    if (trackOnly) return;
 
-    onPlay();
-    restart();
-    setPlaying(true);
+    audioPlayer.onToggle();
   };
 
-  const percent = (curTime! / duration!) * 100;
+  React.useEffect(() => {
+    if (trackOnly) return undefined;
+
+    if (audioPlayer.playing) {
+      onPause?.();
+    } else {
+      onContinue?.();
+    }
+
+    const forcePause = () => audioPlayer.onPause();
+
+    audio?.addEventListener('play', forcePause);
+
+    return () => {
+      audio?.removeEventListener('play', forcePause);
+    };
+  }, [trackOnly, audioPlayer.playing, audio]);
 
   return (
-    <BaseMessage {...props} onClick={onClickHandler}>
-      {(playing || allowPause) && <AudioPlayer.ProgressBar percent={percent} style={{ backgroundColor: WAVE_COLOR, opacity: 0.12, top: 0 }} />}
+    <BaseMessage {...props} onClick={onTogglePlay}>
+      <AudioPlayer.ProgressBar percent={audioPlayer.percent} style={{ backgroundColor: WAVE_COLOR, opacity: 0.12, top: 0 }} />
+
       <Flex style={{ position: 'relative' }}>
-        <WaveContainer playing={playing}>
+        <WaveContainer playing={audioPlayer.playing}>
           {RECTANGLE_CLASS_ARRAY.map((val, index) => (
             <div key={index} className={`rectangle-${val}`} />
           ))}
         </WaveContainer>
+
         <Box color="#8f8e94" fontSize={14}>
-          {AudioPlayer.formatTime(curTime)}
+          {AudioPlayer.formatTime(audioPlayer.currentTime)}
         </Box>
       </Flex>
     </BaseMessage>

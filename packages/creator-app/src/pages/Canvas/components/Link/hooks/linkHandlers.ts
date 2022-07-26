@@ -10,7 +10,6 @@ import { EngineContext, LinkEntityContext } from '@/pages/Canvas/contexts';
 import { STRAIGHT_PATH_OFFSET } from '../constants';
 import { InternalLinkInstance } from '../types';
 import {
-  buildPath,
   clonePoint,
   getActiveLine,
   getPathPointsCenter,
@@ -146,7 +145,7 @@ const useLinkHandlers = (instance: InternalLinkInstance) => {
       const onBreakpointMove = () => {
         moved = true;
 
-        if (!engine.canvas || !points.current) return;
+        if (!engine.canvas || !points.current || !instance.linkedRectsRef.current) return;
 
         const mouseCoords = engine.canvas.fromCoords(engine.getMouseCoords());
 
@@ -158,7 +157,12 @@ const useLinkHandlers = (instance: InternalLinkInstance) => {
           if (!activeLine) return;
         }
 
-        points.current = transformActiveLine({ points: points.current, activeLine, mouseCoords });
+        points.current = transformActiveLine(points.current, instance.linkedRectsRef.current, {
+          activeLine,
+          mouseCoords,
+          sourceNodeIsAction: instance.cacheRef.current.sourceNodeIsAction,
+          targetNodeIsCombined: instance.cacheRef.current.targetNodeIsCombined,
+        });
 
         if (cache.current.linkData?.caption) {
           center.current = getPathPointsCenter(points.current, { isStraight: true });
@@ -167,22 +171,11 @@ const useLinkHandlers = (instance: InternalLinkInstance) => {
         }
 
         stylesScheduler(() => {
-          const pathEl = instance.pathRef.current;
-          const hiddenPathEl = instance.hiddenPathRef.current;
+          instance.redraw();
 
-          if (!pathEl || !hiddenPathEl) return;
-
-          const nextPath = buildPath(points.current, { isStraight: true });
-
-          pathEl.setAttribute('d', nextPath);
-          hiddenPathEl?.setAttribute('d', nextPath);
-
-          instance.settingsRef.current?.setPosition();
-
-          linkEntity.portLinkInstance?.api.updatePosition(points.current);
-
-          instance.updateMarkerPosition();
-          instance.updateCaptionPosition();
+          linkEntity.portLinkInstance?.api.updatePosition(points.current, () =>
+            instance.onLinkPositionReversed({ isSource: false, sourceAndTargetSelected: false })
+          );
         });
       };
 

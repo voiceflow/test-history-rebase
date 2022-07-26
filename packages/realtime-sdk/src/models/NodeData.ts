@@ -99,8 +99,6 @@ export namespace NodeData {
 
   export interface InteractionChoice {
     id: string;
-    goTo: Nullable<{ intentID: Nullable<string>; diagramID?: Nullable<string> }>;
-    action: BaseNode.Interaction.ChoiceAction;
     intent: string | null;
     mappings: BaseModels.SlotMapping[];
   }
@@ -437,7 +435,7 @@ export namespace NodeData {
   // eslint-disable-next-line @typescript-eslint/no-empty-interface
   export interface Exit {}
 
-  export interface Buttons extends Omit<VoiceflowNode.Buttons.StepData, 'else' | 'noMatch' | 'reprompt' | 'noReply'> {
+  export interface Buttons extends Omit<VoiceflowNode.Buttons.StepData, 'else' | 'noMatch' | 'reprompt' | 'noReply' | 'diagramID'> {
     noMatch: Nullable<NoMatch>;
     noReply: Nullable<NoReply>;
   }

@@ -1,9 +1,6 @@
-import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { BlockType } from '@/constants';
-import * as Feature from '@/ducks/feature';
-import { useSelector } from '@/hooks';
 
 import AccountLinkingManager from './AccountLinking';
 import ActionManager from './Action';
@@ -25,6 +22,8 @@ import DisplayManager from './Display';
 import EventManager from './Event';
 import ExitManager from './Exit';
 import FlowManager from './Flow';
+import GoToIntentManager from './GoToIntent';
+import GoToNodeManager from './GoToNode';
 import IfManagerV2 from './IfV2';
 import IntegrationManager from './Integration';
 import IntentManager from './Intent';
@@ -41,6 +40,7 @@ import SpeakManager from './Speak';
 import StartManager from './Start';
 import StreamManager from './Stream';
 import TextManager from './Text';
+import UrlManager from './Url';
 import UserInfoManager from './UserInfo';
 import VisualManager from './Visual';
 
@@ -86,12 +86,12 @@ export const MANAGERS_BY_TYPE = {
   [BlockType.VISUAL]: VisualManager,
   [BlockType.MARKUP_TEXT]: MarkupTextManager,
   [BlockType.MARKUP_IMAGE]: MarkupImageManager,
-  [BlockType.URL]: DeprecatedManager,
-  [BlockType.GO_TO_INTENT]: DeprecatedManager,
-  [BlockType.GO_TO_NODE]: DeprecatedManager,
+  [BlockType.URL]: UrlManager,
+  [BlockType.GO_TO_INTENT]: GoToIntentManager,
+  [BlockType.GO_TO_NODE]: GoToNodeManager,
 };
 
-const MANAGERS_BY_FEATURE: Partial<Record<BlockType, Realtime.FeatureFlag>> = {
+export const MANAGERS_BY_FEATURE: Partial<Record<BlockType, Realtime.FeatureFlag>> = {
   [BlockType.INTEGRATION]: Realtime.FeatureFlag.INTEGRATION_STEP_CLEANUP,
   [BlockType.CODE]: Realtime.FeatureFlag.CODE_STEP_CLEANUP,
   [BlockType.SPEAK]: Realtime.FeatureFlag.SPEAK_STEP_CLEANUP,
@@ -104,28 +104,5 @@ const MANAGERS_BY_FEATURE: Partial<Record<BlockType, Realtime.FeatureFlag>> = {
 };
 
 export type ManagersMap = typeof MANAGERS_BY_TYPE;
-
-export const getManager = <T extends BlockType>(
-  type: T,
-  isV2Enabled?: boolean | null
-): T extends keyof ManagersMap ? ManagersMap[T] : ManagersMap[BlockType.DEPRECATED] => {
-  const manager = ((Utils.object.hasProperty(MANAGERS_BY_TYPE, type) && MANAGERS_BY_TYPE[type]) ||
-    MANAGERS_BY_TYPE[BlockType.DEPRECATED]) as T extends keyof ManagersMap ? ManagersMap[T] : ManagersMap[BlockType.DEPRECATED];
-
-  if (isV2Enabled && manager?.v2) {
-    return {
-      ...manager,
-      ...manager.v2,
-    };
-  }
-
-  return manager;
-};
-
-export const useManager = () => {
-  const featureFlags = useSelector(Feature.allActiveFeaturesSelector);
-  return <T extends BlockType>(nodeType: T) =>
-    getManager(nodeType, MANAGERS_BY_FEATURE[nodeType] && featureFlags[MANAGERS_BY_FEATURE[nodeType] as Realtime.FeatureFlag]?.isEnabled);
-};
 
 export const MANAGERS = Object.values(MANAGERS_BY_TYPE);

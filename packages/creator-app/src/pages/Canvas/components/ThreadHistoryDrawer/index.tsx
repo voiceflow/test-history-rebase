@@ -22,7 +22,7 @@ import { useRAF, useSelector, useTheme } from '@/hooks';
 import { Thread as ThreadType } from '@/models';
 import { EditorContentAnimation } from '@/pages/Canvas/components/Editor';
 import { FocusThreadContext } from '@/pages/Canvas/contexts';
-import { useCanvasRendered } from '@/pages/Canvas/hooks';
+import { useCanvasRendered } from '@/pages/Canvas/hooks/canvas';
 import { useCommentingMode } from '@/pages/Project/hooks';
 import { Identifier } from '@/styles/constants';
 

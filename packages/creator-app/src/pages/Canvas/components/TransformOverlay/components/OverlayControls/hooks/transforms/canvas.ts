@@ -2,7 +2,7 @@ import { usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
 import { EngineContext } from '@/pages/Canvas/contexts';
-import { useCanvasPanApplied, useCanvasZoomApplied } from '@/pages/Canvas/hooks';
+import { useCanvasPanApplied, useCanvasZoomApplied } from '@/pages/Canvas/hooks/canvas';
 import { MarkupTransform } from '@/pages/Canvas/types';
 
 const useCanvasInteractions = (syncOverlay: (transform: MarkupTransform) => void) => {

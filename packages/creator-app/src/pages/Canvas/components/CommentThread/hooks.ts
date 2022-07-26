@@ -6,7 +6,7 @@ import { useCancellable, useLinkedRef } from '@/hooks';
 import { EditableCommentRef } from '@/pages/Canvas/components/ThreadEditor';
 import { EngineContext, ThreadEntityContext } from '@/pages/Canvas/contexts';
 import { useElementInstance } from '@/pages/Canvas/engine/entities/utils';
-import { useVectorDragTranslate } from '@/pages/Canvas/hooks';
+import { useVectorDragTranslate } from '@/pages/Canvas/hooks/drag';
 import { BlockAPI, CommentDraftValue } from '@/pages/Canvas/types';
 import { Pair } from '@/types';
 import MouseMovement from '@/utils/mouseMovement';

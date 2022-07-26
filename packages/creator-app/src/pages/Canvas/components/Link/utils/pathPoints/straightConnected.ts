@@ -2,14 +2,14 @@ import { PathPoints } from '@/types';
 
 import { LinkedRects } from '../types';
 import {
+  isSourceRectsReversed,
   isTargetEndLeftXToRightOfSourceNodeXCenter,
   isTargetEndLeftXToRightOfSourceStartRightXWithDoubleStraightOffset,
   isTargetEndRightXToRightOfSourceStartLeftXWithoutDoubleStraightOffset,
   isTargetEndTopYUnderSourceStartYWithDoubleStraightOffset,
+  isTargetNodeXCenterToLeftOfSourceStartRightXWithStraightOffset,
   isTargetNodeXCenterToRightOfSourceNodeXCenter,
   isTargetNodeXCenterToRightOfSourceStartLeftXWithoutStraightOffset,
-  isTargetNodeXCenterToRightOfSourceStartLeftXWithStraightOffset,
-  isTargetNodeXCenterToRightOfSourceStartRightXWithStraightOffset,
 } from './helpers';
 import {
   geLeftJLikePoints,
@@ -35,11 +35,13 @@ const getStraightConnectedPoints = (linkedRects: LinkedRects, options: GetPathPo
       : getLeftStraightLinePoints(linkedRects, options);
   }
 
-  if (isTargetEndLeftXToRightOfSourceStartRightXWithDoubleStraightOffset(linkedRects, options)) {
+  const isNotReversedActions = !options.sourceNodeIsAction || !isSourceRectsReversed(linkedRects);
+
+  if (isNotReversedActions && isTargetEndLeftXToRightOfSourceStartRightXWithDoubleStraightOffset(linkedRects, options)) {
     return getRightZLikePoints(linkedRects, options);
   }
 
-  if (isTargetNodeXCenterToRightOfSourceStartRightXWithStraightOffset(linkedRects, options)) {
+  if (isNotReversedActions && isTargetNodeXCenterToLeftOfSourceStartRightXWithStraightOffset(linkedRects, options)) {
     if (options.targetNodeIsCombined && isTargetEndTopYUnderSourceStartYWithDoubleStraightOffset(linkedRects)) {
       return getTopRightLLikePoints(linkedRects, options);
     }
@@ -47,7 +49,7 @@ const getStraightConnectedPoints = (linkedRects: LinkedRects, options: GetPathPo
     return getRightSLikePoints(linkedRects, options);
   }
 
-  if (isTargetEndLeftXToRightOfSourceNodeXCenter(linkedRects, options)) {
+  if (isTargetNodeXCenterToRightOfSourceNodeXCenter(linkedRects)) {
     if (options.targetNodeIsCombined && isTargetEndTopYUnderSourceStartYWithDoubleStraightOffset(linkedRects)) {
       return getTopRightSLikePoints(linkedRects, options);
     }
@@ -55,11 +57,9 @@ const getStraightConnectedPoints = (linkedRects: LinkedRects, options: GetPathPo
     return getRightJLikePoints(linkedRects, options);
   }
 
-  if (isTargetNodeXCenterToRightOfSourceStartLeftXWithStraightOffset(linkedRects, options)) {
+  if (isTargetNodeXCenterToRightOfSourceStartLeftXWithoutStraightOffset(linkedRects, options)) {
     if (options.targetNodeIsCombined && isTargetEndTopYUnderSourceStartYWithDoubleStraightOffset(linkedRects)) {
-      return isTargetNodeXCenterToRightOfSourceNodeXCenter(linkedRects)
-        ? getTopRightSLikePoints(linkedRects, options)
-        : getTopLeftSLikePoints(linkedRects, options);
+      return getTopLeftSLikePoints(linkedRects, options);
     }
 
     return geLeftJLikePoints(linkedRects, options);
@@ -67,9 +67,7 @@ const getStraightConnectedPoints = (linkedRects: LinkedRects, options: GetPathPo
 
   if (isTargetEndRightXToRightOfSourceStartLeftXWithoutDoubleStraightOffset(linkedRects, options)) {
     if (options.targetNodeIsCombined && isTargetEndTopYUnderSourceStartYWithDoubleStraightOffset(linkedRects)) {
-      return isTargetNodeXCenterToRightOfSourceStartLeftXWithoutStraightOffset(linkedRects, options)
-        ? getTopLeftSLikePoints(linkedRects, options)
-        : getTopLeftLLikePoints(linkedRects, options);
+      return getTopLeftLLikePoints(linkedRects, options);
     }
 
     return getLeftSLikePoints(linkedRects, options);

@@ -43,6 +43,7 @@ export interface ConnectedActionProps<T = {}, O extends Realtime.BuiltInPortReco
   extends BaseConnectedStepProps<T, O> {
   reversed?: boolean;
   isActive?: boolean;
+  onRemove: VoidFunction;
   sourceNodeID: string;
   sourcePortID: string;
   onOpenEditor: (routState?: Struct) => void;
@@ -109,17 +110,21 @@ interface GoToNested {
   }): void;
 }
 
-export interface NodeEditorV2Props<Data, BuiltInPorts extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord> {
+interface SharedEditorProps<Data, BuiltInPorts extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord> {
   data: Realtime.NodeData<Data>;
   node: Realtime.Node<BuiltInPorts>;
+  nodeID: string;
+  onChange: (value: Partial<Realtime.NodeData<Data>>, save?: boolean) => Promise<void>;
+}
+
+export interface NodeEditorV2Props<Data, BuiltInPorts extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord>
+  extends SharedEditorProps<Data, BuiltInPorts> {
   label: string;
   isRoot: boolean;
   engine: Engine;
-  nodeID: string;
   goBack: GoBack;
   isOpened: boolean;
   platform: VoiceflowConstants.PlatformType;
-  onChange: (value: Partial<Realtime.NodeData<Data>>, save?: boolean) => Promise<void>;
   goToRoot: (animationEffect?: EditorAnimationEffect) => void;
   scrollbars: React.RefObject<CustomScrollbarsTypes.Scrollbars>;
   goToNested: GoToNested;
@@ -130,6 +135,15 @@ export interface NodeEditorV2Props<Data, BuiltInPorts extends Realtime.BuiltInPo
 
 export type NodeEditorV2<Data, BuiltInPorts extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord> = React.FC<
   NodeEditorV2Props<Data, BuiltInPorts>
+>;
+
+export interface ActionEditorProps<Data, BuiltInPorts extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord>
+  extends NodeEditorV2Props<unknown> {
+  action: SharedEditorProps<Data, BuiltInPorts>;
+}
+
+export type ActionEditor<Data, BuiltInPorts extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord> = React.FC<
+  ActionEditorProps<Data, BuiltInPorts>
 >;
 
 interface NodeFactoryOptions {
@@ -199,7 +213,7 @@ export interface BaseNodeManagerConfig<Data extends object, BuiltInPorts extends
   projectTypes?: VoiceflowConstants.ProjectType[];
 
   editorV2?: NodeEditorV2<Data, BuiltInPorts>;
-  actionEditor?: NodeEditorV2<Data, BuiltInPorts>;
+  actionEditor?: ActionEditor<Data, BuiltInPorts>;
 
   /**
    * @deprecated use editorV2 instead

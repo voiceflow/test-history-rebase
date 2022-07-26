@@ -5,9 +5,8 @@ import { NodeCategory } from '@/contexts/SearchContext/types';
 import { slotByIDSelector } from '@/ducks/slotV2';
 
 import { NodeManagerConfigV2 } from '../types';
-import { Editor } from './components';
+import { Editor, Step } from './components';
 import { NODE_CONFIG } from './constants';
-import { Step } from './v2';
 
 const CaptureV2Manager: NodeManagerConfigV2<Realtime.NodeData.CaptureV2, Realtime.NodeData.CaptureV2BuiltInPorts> = {
   ...NODE_CONFIG,

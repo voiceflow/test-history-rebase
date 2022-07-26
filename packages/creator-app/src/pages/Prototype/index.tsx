@@ -42,13 +42,15 @@ const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({
 
   const {
     status: prototypeMachineStatus,
-    onPlay,
+    onPause,
     messages,
+    onContinue,
     onStepBack,
     interactions,
     onInteraction,
     onStepForward,
     prototypeTool,
+    audioController,
   } = usePrototype({
     actions,
     state,
@@ -97,6 +99,7 @@ const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({
   return (
     <Container id={Identifier.PROTOTYPE} isPublic={isPublic}>
       <ChatDisplay
+        audio={audioController.audio}
         pmStatus={prototypeMachineStatus}
         atTop={atTop}
         setAtTop={setAtTop}
@@ -107,7 +110,8 @@ const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({
         // to show loader until first bubble message is up or "waiting for user interaction"
         isLoading={isLoading || (!isBubbleMessageShown && prototypeMachineStatus !== PMStatus.WAITING_USER_INTERACTION)}
         messages={messages}
-        onPlay={onPlay}
+        onPause={onPause}
+        onContinue={onContinue}
         interactions={showButtons ? interactions : []}
         status={status}
         onInteraction={onInteraction}

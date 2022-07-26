@@ -1,3 +1,4 @@
+export { default as Actions } from './Actions';
 export { default as Entity } from './Entity';
 export { default as EntityPromptSection } from './EntityPromptSection';
 export { default as IntentButtons } from './IntentButtons';

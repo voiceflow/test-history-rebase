@@ -6,7 +6,7 @@ import * as CreatorV2 from '@/ducks/creatorV2';
 import { useFeature, useLinkedRef, useRAF } from '@/hooks';
 import { ContextMenuContext, EngineContext, NodeEntityContext } from '@/pages/Canvas/contexts';
 import { useElementInstance } from '@/pages/Canvas/engine/entities/utils';
-import { useEntityDrag } from '@/pages/Canvas/hooks';
+import { useEntityDrag } from '@/pages/Canvas/hooks/drag';
 import { BlockAPI } from '@/pages/Canvas/types';
 import { useEditingMode } from '@/pages/Project/hooks';
 import { Pair, Point } from '@/types';

@@ -5,6 +5,7 @@ import * as DiagramV2 from '@/ducks/diagramV2';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as ProductV2 from '@/ducks/productV2';
 import * as ProjectV2 from '@/ducks/projectV2';
+import * as Router from '@/ducks/router';
 import * as SlotV2 from '@/ducks/slotV2';
 import * as UI from '@/ducks/ui';
 import * as VersionV2 from '@/ducks/versionV2';
@@ -78,6 +79,12 @@ export const {
   Consumer: StartingBlocksConsumer,
 } = createSelectorContext(DiagramV2.startingBlocksSelector);
 
+export const {
+  Context: ActionsRouteMatchContext,
+  Provider: ActionsRouteMatchProvider,
+  Consumer: ActionsRouteMatchConsumer,
+} = createSelectorContext(Router.actionsMatchSelector);
+
 export const ReduxContextsProviders: React.FC = ({ children }) => (
   <IsCanvasOnlyProvider>
     <IsCreatorMenuHiddenProvider>
@@ -91,8 +98,10 @@ export const ReduxContextsProviders: React.FC = ({ children }) => (
                     <ActiveDiagramTypeProvider>
                       <IntentNodeDataLookupProvider>
                         <StartingBlocksProvider>
-                          {/* comment to have a children on a new line */}
-                          {children}
+                          <ActionsRouteMatchProvider>
+                            {/* comment to have a children on a new line */}
+                            {children}
+                          </ActionsRouteMatchProvider>
                         </StartingBlocksProvider>
                       </IntentNodeDataLookupProvider>
                     </ActiveDiagramTypeProvider>

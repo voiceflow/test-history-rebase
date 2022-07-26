@@ -15,9 +15,10 @@ export enum TooltipTheme {
   TRANSPARENT = 'transparent',
 }
 
-export interface TippyTooltipProps extends Omit<TooltipProps, 'theme'> {
+export interface TippyTooltipProps extends Omit<TooltipProps, 'theme' | 'delay'> {
   tag?: string;
   theme?: StringifyEnum<TooltipTheme>;
+  delay?: number | [number, number];
   hotkey?: string;
   bodyOverflow?: boolean;
 }
@@ -40,7 +41,7 @@ const closeAll = () =>
   });
 
 const TippyTooltip: React.ForwardRefRenderFunction<Tooltip, React.PropsWithChildren<TippyTooltipProps>> = (
-  { html, title, theme, disabled, children, hotkey, popperOptions, bodyOverflow, ...props },
+  { html, title, delay, theme, disabled, children, hotkey, popperOptions, bodyOverflow, ...props },
   ref
 ) => {
   const tooltipRef = React.useRef<Tooltip>(null);
@@ -65,6 +66,8 @@ const TippyTooltip: React.ForwardRefRenderFunction<Tooltip, React.PropsWithChild
         )
       }
       title={withHotkey ? undefined : title}
+      // delay types are not correct in the lib
+      delay={delay as any}
       theme={theme as Theme}
       disabled={disabled || IS_TEST}
       className={ClassName.TOOLTIP}

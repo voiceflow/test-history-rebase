@@ -1,7 +1,7 @@
 import { PathPoints } from '@/types';
 
 import { LinkedRects } from '../types';
-import getCurvePathPointsV2 from './curve';
+import getCurvePathPoints from './curve';
 import getStraightConnectedPoints from './straightConnected';
 import getStraightUnconnectedPoints from './straightUnconnected';
 import { GetPathPointsOptions } from './types';
@@ -9,9 +9,9 @@ import { GetPathPointsOptions } from './types';
 export * from './helpers';
 export type { GetPathPointsOptions } from './types';
 
-export const getPathPointsV2 = (linkedRects: LinkedRects, options: GetPathPointsOptions): PathPoints => {
+export const getPathPoints = (linkedRects: LinkedRects, options: GetPathPointsOptions): PathPoints => {
   if (!options.isStraight) {
-    return getCurvePathPointsV2(linkedRects, options);
+    return getCurvePathPoints(linkedRects, options);
   }
 
   if (options.isConnected) {

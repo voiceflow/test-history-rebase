@@ -14,7 +14,7 @@ import { connect } from '@/hocs';
 import { useMapManager, useToggle } from '@/hooks';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
 import { useUpdateData } from '@/pages/Canvas/components/EditorSidebar/hooks';
-import { useButtonLayoutOption } from '@/pages/Canvas/managers/hooks';
+import useButtonLayoutOption from '@/pages/Canvas/managers/hooks/useButtonLayoutOption';
 import { PlatformContext } from '@/pages/Project/contexts';
 import { ConnectedProps } from '@/types';
 import { getPlatformValue } from '@/utils/platform';

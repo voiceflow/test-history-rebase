@@ -7,7 +7,7 @@ import { trimLabel } from './utils';
 
 export * as ActionTypes from './types';
 
-const Action = React.forwardRef<HTMLDivElement, T.Props>(({ icon, port, label, active, onClick, nodeID, reversed }, ref) => {
+const Action = React.forwardRef<HTMLDivElement, T.Props>(({ icon, port, label, active, onClick, nodeID, reversed, onDoubleClick }, ref) => {
   const [contentHovered, onContentMouseEnter, onContentMouseLeave] = useEnableDisable(false);
 
   return (
@@ -17,6 +17,7 @@ const Action = React.forwardRef<HTMLDivElement, T.Props>(({ icon, port, label, a
         onClick={onClick}
         onMouseEnter={onClick && onContentMouseEnter}
         onMouseLeave={onClick && onContentMouseLeave}
+        onDoubleClick={onDoubleClick}
       >
         {icon}
 

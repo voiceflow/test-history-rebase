@@ -7,6 +7,7 @@ export type Options = null | {
   action?: 'keypress' | 'keydown' | 'keyup';
   disable?: boolean;
   preventDefault?: boolean;
+  skipDefaultPrevented?: boolean;
 };
 
 type Callback = (event: KeyboardEvent) => void;
@@ -14,7 +15,7 @@ type Callback = (event: KeyboardEvent) => void;
 export function useHotKeys(key: Hotkey, callback: Callback, options: Options = {}, deps: any[] = []) {
   const memoisedCallback = useMemo(
     () => (event: KeyboardEvent) => {
-      if (options?.disable) return false;
+      if (options?.disable || (options?.skipDefaultPrevented && event.defaultPrevented)) return false;
 
       if (!options?.preventDefault) {
         return callback(event);

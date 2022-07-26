@@ -5,7 +5,7 @@ const ProgressBar = styled.div<{ percent: number }>`
     percent &&
     css`
       width: ${percent}%;
-      ${transition()};
+      ${transition('width')};
     `};
   background-color: #f6f9fa;
   position: absolute;

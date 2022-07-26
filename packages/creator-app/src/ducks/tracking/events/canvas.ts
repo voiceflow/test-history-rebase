@@ -148,3 +148,17 @@ export const trackSearchBarResultSelected = createProjectEventTracker<{
     })
   )
 );
+
+export const trackActionAdded = createProjectEventTracker<{ nodeType: BlockType; actionType: BlockType }>((options) =>
+  client.api.analytics.track(
+    EventName.ACTION_ADDED,
+    createProjectEventPayload(options, { step_type: options.nodeType, action_type: options.actionType })
+  )
+);
+
+export const trackActionDeleted = createProjectEventTracker<{ nodeType: BlockType; actionType: BlockType }>((options) =>
+  client.api.analytics.track(
+    EventName.ACTION_DELETED,
+    createProjectEventPayload(options, { step_type: options.nodeType, action_type: options.actionType })
+  )
+);

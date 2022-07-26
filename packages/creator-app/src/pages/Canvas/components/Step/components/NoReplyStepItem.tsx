@@ -3,6 +3,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Popper, stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 
+import { PATH } from '@/pages/Canvas/managers/components/NoReplyV2/constants';
 import { hasValidPrompt } from '@/utils/prompt';
 
 import NoMatchAndNoReplyStepCopyList from '../../NoMatchAndNoReplyStepCopyList';
@@ -32,6 +33,7 @@ const NoReplyStepItem: React.FC<NoReplyStepItemProps> = ({ noReply, portID }) =>
               <Attachment ref={ref} icon="noReply" isActive={isOpened} onClick={stopPropagation(onToggle)} />
             ) : null
           }
+          parentActionsPath={PATH}
         />
       )}
     </Popper>

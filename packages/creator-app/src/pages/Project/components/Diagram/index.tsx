@@ -11,7 +11,7 @@ import { withBatchLoadingGate } from '@/hocs';
 import { useDispatch, useEventualEngine, useFeature, useSelector, useTeardown } from '@/hooks';
 import Canvas from '@/pages/Canvas';
 import { ManagerProvider } from '@/pages/Canvas/contexts';
-import { useManager } from '@/pages/Canvas/managers';
+import { useManager } from '@/pages/Canvas/managers/utils';
 import DesignMenu from '@/pages/Project/components/DesignMenu';
 import DesignMenuV2 from '@/pages/Project/components/DesignMenu/V2';
 import { useAnyModeOpen, usePrototypingMode } from '@/pages/Project/hooks';

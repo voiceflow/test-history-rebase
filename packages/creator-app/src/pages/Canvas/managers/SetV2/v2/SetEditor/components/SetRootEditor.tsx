@@ -7,8 +7,7 @@ import * as Documentation from '@/config/documentation';
 import { useMapManager, useToggle } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 
-import { MAX_SETS } from '../../../constants';
-import { setFactory } from '../../../utils';
+import { MAX_SETS, setFactory } from '../../../constants';
 import SetItem from './SetItem';
 
 const DRAG_TYPE = 'set-editor';

@@ -1,6 +1,7 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
+import { BlockType } from '@/constants';
 import { useSetup } from '@/hooks';
 import { EngineContext } from '@/pages/Canvas/contexts/EngineContext';
 
@@ -29,7 +30,7 @@ class PortEntity extends ResourceEntity<Realtime.Port, PortInstance> {
   }
 
   get isFinalPrototypePort() {
-    const port = this.engine.getPortByPortID(this.portID);
+    const port = this.engine.getPortByID(this.portID);
     if (!port) return false;
 
     return this.engine.prototype.finalNodeID === port.nodeID;
@@ -45,10 +46,22 @@ class PortEntity extends ResourceEntity<Realtime.Port, PortInstance> {
     return !!this.engine.getLinkIDsByPortID(this.portID).length;
   }
 
+  get isConnectedToActions() {
+    return this.resolveTargetNode()?.type === BlockType.ACTIONS;
+  }
+
   get linkID() {
     const linksIDs = this.engine.getLinkIDsByPortID(this.portID);
 
     return linksIDs[0] ?? null;
+  }
+
+  get nodeID() {
+    return this.resolve().nodeID;
+  }
+
+  get targetNodeID() {
+    return this.resolveLink()?.target.nodeID ?? null;
   }
 
   constructor(engine: Engine, public portID: string) {
@@ -82,6 +95,14 @@ class PortEntity extends ResourceEntity<Realtime.Port, PortInstance> {
 
   resolveLink() {
     return this.engine.getLinkByID(this.linkID);
+  }
+
+  resolveTargetNode() {
+    const { linkID } = this;
+
+    if (!linkID) return null;
+
+    return this.engine.getTargetNodeByLinkID(linkID);
   }
 
   useInstance(instance: PortInstance) {

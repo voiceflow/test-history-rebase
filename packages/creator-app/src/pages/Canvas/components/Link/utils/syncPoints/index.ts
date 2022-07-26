@@ -2,9 +2,9 @@
 import { Pair, PathPoint, PathPoints, Point } from '@/types';
 
 import { clonePoint, getPointX, getPointY } from '../helpers';
-import { createLine, isVerticalLine, transformVerticalHeadAndTailsLine } from '../lines';
+import { createLine, isVerticalLine, transformVerticalHeadAndTailLine } from '../lines';
 import {
-  getPathPointsV2,
+  getPathPoints,
   getSourceStartLeftX,
   getSourceStartLeftY,
   getSourceStartRightX,
@@ -19,6 +19,26 @@ import {
 import { LinkedRects } from '../types';
 import { SyncPointsOptions } from './types';
 
+interface SyncStraightSourceTargetOptions {
+  points: PathPoints;
+  movement: Point;
+  linkedRects: LinkedRects;
+  sourceNodeIsAction: boolean;
+  targetNodeIsCombined: boolean;
+}
+
+interface SyncSourcePointsOptions {
+  points: PathPoints;
+  options: SyncPointsOptions;
+  linkedRects: LinkedRects;
+}
+
+interface SyncTargetPointsOptions extends SyncSourcePointsOptions {
+  shouldClone: boolean;
+}
+
+const clonePoints = (points: PathPoints): PathPoints => points.map((point) => clonePoint(point));
+
 const syncStraightSourceAndTargetPoints = (points: PathPoints, [moveX, moveY]: Pair<number>): PathPoints => {
   for (let i = 0; i < points.length; i++) {
     points[i].point[0] += moveX;
@@ -28,8 +48,13 @@ const syncStraightSourceAndTargetPoints = (points: PathPoints, [moveX, moveY]: P
   return points;
 };
 
-const syncStraightSourcePoints = (points: PathPoints, [moveX, moveY]: Point): PathPoints => {
-  let nextPoints = points;
+const syncStraightSourcePoints = ({
+  points,
+  movement: [moveX, moveY],
+  linkedRects,
+  sourceNodeIsAction,
+  targetNodeIsCombined,
+}: SyncStraightSourceTargetOptions): PathPoints => {
   let prevPoint: PathPoint | null = null;
 
   for (let i = 0; i < points.length; i++) {
@@ -52,17 +77,18 @@ const syncStraightSourcePoints = (points: PathPoints, [moveX, moveY]: Point): Pa
     point.point[1] += moveY;
   }
 
-  nextPoints = transformVerticalHeadAndTailsLine(nextPoints, createLine(nextPoints[1], nextPoints[2]), { locked: false });
-
-  return nextPoints;
+  return transformVerticalHeadAndTailLine(points, linkedRects, {
+    locked: false,
+    activeLine: createLine(points[1], points[2]),
+    sourceNodeIsAction,
+    targetNodeIsCombined,
+  });
 };
 
-const clonePoints = (points: PathPoints): PathPoints => points.map((point) => clonePoint(point));
-
-const syncSourcePoints = (points: PathPoints, linkedRects: LinkedRects, options: SyncPointsOptions): PathPoints => {
+const syncSourcePoints = ({ points, options, linkedRects }: SyncSourcePointsOptions): PathPoints => {
   const startPoint = points[0];
 
-  if (!startPoint || !options.isStraight || !options.isPathLocked) return getPathPointsV2(linkedRects, options);
+  if (!startPoint || !options.isStraight || !options.isPathLocked) return getPathPoints(linkedRects, options);
 
   const newStartX = startPoint.reversed ? getSourceStartLeftX(linkedRects, options) : getSourceStartRightX(linkedRects, options);
   const newStartY = startPoint.reversed ? getSourceStartLeftY(linkedRects) : getSourceStartRightY(linkedRects);
@@ -76,11 +102,22 @@ const syncSourcePoints = (points: PathPoints, linkedRects: LinkedRects, options:
 
   if (options.sourceAndTargetSelected) return syncStraightSourceAndTargetPoints(clonePoints(points), movement);
 
-  return syncStraightSourcePoints(clonePoints(points), movement);
+  return syncStraightSourcePoints({
+    points: clonePoints(points),
+    movement,
+    linkedRects,
+    sourceNodeIsAction: options.sourceNodeIsAction,
+    targetNodeIsCombined: options.targetNodeIsCombined,
+  });
 };
 
-const syncStraightTargetPoints = (points: PathPoints, [moveX, moveY]: Point): PathPoints => {
-  let nextPoints = points;
+const syncStraightTargetPoints = ({
+  points,
+  movement: [moveX, moveY],
+  linkedRects,
+  sourceNodeIsAction,
+  targetNodeIsCombined,
+}: SyncStraightSourceTargetOptions): PathPoints => {
   let nextPoint: PathPoint | null = null;
 
   for (let i = points.length - 1; i >= 0; i--) {
@@ -103,17 +140,18 @@ const syncStraightTargetPoints = (points: PathPoints, [moveX, moveY]: Point): Pa
     point.point[1] += moveY;
   }
 
-  nextPoints = transformVerticalHeadAndTailsLine(nextPoints, createLine(nextPoints[nextPoints.length - 3], nextPoints[nextPoints.length - 2]), {
+  return transformVerticalHeadAndTailLine(points, linkedRects, {
     locked: false,
+    activeLine: createLine(points[points.length - 3], points[points.length - 2]),
+    sourceNodeIsAction,
+    targetNodeIsCombined,
   });
-
-  return nextPoints;
 };
 
-const syncTargetPoints = (points: PathPoints, linkedRects: LinkedRects, options: SyncPointsOptions, shouldClone: boolean): PathPoints => {
+const syncTargetPoints = ({ points, options, shouldClone, linkedRects }: SyncTargetPointsOptions): PathPoints => {
   const endPoint = points[points.length - 1];
 
-  if (!endPoint) return getPathPointsV2(linkedRects, options);
+  if (!endPoint) return getPathPoints(linkedRects, options);
 
   // eslint-disable-next-line no-nested-ternary
   const newEndX = endPoint.toTop
@@ -121,34 +159,42 @@ const syncTargetPoints = (points: PathPoints, linkedRects: LinkedRects, options:
     : endPoint.reversed
     ? getTargetEndRightX(linkedRects, options)
     : getTargetEndLeftX(linkedRects, options);
+
   // eslint-disable-next-line no-nested-ternary
   const newEndY = endPoint.toTop
     ? getTargetEndTopY(linkedRects)
     : endPoint.reversed
     ? getTargetEndRightY(linkedRects, options)
     : getTargetEndLeftY(linkedRects, options);
+
   const currentEndX = getPointX(endPoint);
   const currentEndY = getPointY(endPoint);
 
   // skip sync if start point is not changed
   if (currentEndX === newEndX && currentEndY === newEndY) return points;
 
-  if (!options.isStraight || !options.isPathLocked) return getPathPointsV2(linkedRects, options);
+  if (!options.isStraight || !options.isPathLocked) return getPathPoints(linkedRects, options);
 
   const movement: Point = [newEndX - currentEndX, newEndY - currentEndY];
 
-  return syncStraightTargetPoints(shouldClone ? clonePoints(points) : points, movement);
+  return syncStraightTargetPoints({
+    points: shouldClone ? clonePoints(points) : points,
+    movement,
+    linkedRects,
+    sourceNodeIsAction: options.sourceNodeIsAction,
+    targetNodeIsCombined: options.targetNodeIsCombined,
+  });
 };
 
 export const syncPointsWithLinkedRects = (points: PathPoints, linkedRects: LinkedRects, options: SyncPointsOptions): PathPoints => {
   let newPoints = points;
 
   if (!options.syncOnlyTarget) {
-    newPoints = syncSourcePoints(newPoints, linkedRects, options);
+    newPoints = syncSourcePoints({ points: newPoints, options, linkedRects });
   }
 
   if (!options.syncOnlySource) {
-    newPoints = syncTargetPoints(newPoints, linkedRects, options, points === newPoints);
+    newPoints = syncTargetPoints({ points: newPoints, options, shouldClone: points === newPoints, linkedRects });
   }
 
   return newPoints;

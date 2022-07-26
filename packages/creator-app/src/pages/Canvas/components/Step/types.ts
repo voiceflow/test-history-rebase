@@ -1,11 +1,10 @@
 import { SvgIconTypes } from '@voiceflow/ui';
 import React from 'react';
-import { StyledProps } from 'styled-components';
 
 import { HSLShades } from '@/constants';
 import { StepLabelVariant } from '@/constants/canvas';
 
-export interface ItemProps extends StyledProps<any> {
+export interface ItemProps {
   icon?: SvgIconTypes.Icon | null;
   label?: React.ReactNode | null;
   title?: React.ReactNode | null;
@@ -32,4 +31,5 @@ export interface ItemProps extends StyledProps<any> {
   image?: string | null;
   v2?: boolean;
   newLineAttachment?: React.ReactNode;
+  parentActionsPath?: string;
 }

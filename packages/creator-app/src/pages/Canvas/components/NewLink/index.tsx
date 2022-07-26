@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { useRegistration, useTeardown } from '@/hooks';
-import { buildHeadMarker, buildPath, getMarkerAttrs, getPathPointsV2, HeadMarker, Path, STROKE_DEFAULT_COLOR } from '@/pages/Canvas/components/Link';
+import { buildHeadMarker, buildPath, getMarkerAttrs, getPathPoints, HeadMarker, Path, STROKE_DEFAULT_COLOR } from '@/pages/Canvas/components/Link';
 import { EngineContext, IsStraightLinksContext } from '@/pages/Canvas/contexts';
 import { Identifier } from '@/styles/constants';
 
@@ -24,7 +24,7 @@ const NewLink: React.FC = () => {
   const [path, markerAttrs] = React.useMemo(() => {
     if (linkedRects === null) return [null, null];
 
-    const pathPoints = getPathPointsV2(linkedRects, {
+    const pathPoints = getPathPoints(linkedRects, {
       isStraight,
       isConnected: engine.linkCreation.hasPin,
       sourceNodeIsStart: engine.linkCreation.sourceNodeIsStart,
@@ -34,7 +34,7 @@ const NewLink: React.FC = () => {
     });
 
     return [buildPath(pathPoints, { isStraight }), getMarkerAttrs(pathPoints, { isStraight })] as const;
-  }, [linkedRects, isStraight]);
+  }, [linkedRects, isStraight, getPathPoints]);
 
   if (path === null || !api.isVisible) return null;
 

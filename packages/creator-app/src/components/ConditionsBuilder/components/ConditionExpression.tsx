@@ -5,7 +5,7 @@ import React from 'react';
 import Label from '@/components/Label';
 import RemoveIcon from '@/components/ListManager/components/RemoveIcon';
 import VariablesInput from '@/components/VariablesInput';
-import { useExpressionValidation } from '@/hooks';
+import { useExpressionValidator } from '@/hooks';
 
 import ConditionExpressionTooltip from './ConditionExpressionTooltip';
 
@@ -16,18 +16,15 @@ export interface ConditionExpressionProps {
 }
 
 const ConditionExpression: React.FC<ConditionExpressionProps> = ({ expression, onChange, onDelete }) => {
-  const [error, resetError, isValidExpression, errorMessage] = useExpressionValidation();
+  const expressionValidator = useExpressionValidator();
 
   const onUpdate = React.useCallback(
     ({ text }: { text: string }) => {
-      if (!text) return;
+      if (!text || !expressionValidator.validate(text)) return;
 
-      if (isValidExpression(text)) {
-        resetError();
-        onChange({ ...expression, value: text } as Realtime.ExpressionV2);
-      }
+      onChange({ ...expression, value: text } as Realtime.ExpressionV2);
     },
-    [isValidExpression, expression.value, onChange]
+    [expressionValidator.validate, expression.value, onChange]
   );
 
   return (
@@ -43,10 +40,10 @@ const ConditionExpression: React.FC<ConditionExpressionProps> = ({ expression, o
 
       <Box.Flex fullWidth>
         <VariablesInput
-          error={error}
-          value={expression.value as string}
+          error={!!expressionValidator.error}
+          value={String(expression.value)}
           onBlur={onUpdate}
-          onFocus={resetError}
+          onFocus={expressionValidator.resetError}
           multiline
           fullWidth
           placeholder="Enter Expression"
@@ -56,9 +53,9 @@ const ConditionExpression: React.FC<ConditionExpressionProps> = ({ expression, o
         <RemoveIcon onClick={onDelete} />
       </Box.Flex>
 
-      {error && (
+      {expressionValidator.error && (
         <Box fontSize={13} color="#e91e63" mt={16}>
-          {errorMessage ? `Error: ${errorMessage}.` : 'Expression syntax is invalid.'}
+          {expressionValidator.error}
         </Box>
       )}
     </Box>

@@ -3,7 +3,7 @@ import React from 'react';
 import { BlockType } from '@/constants';
 import { useRAF } from '@/hooks';
 import { EngineContext } from '@/pages/Canvas/contexts';
-import { useCanvasIdle } from '@/pages/Canvas/hooks';
+import { useCanvasIdle } from '@/pages/Canvas/hooks/canvas';
 import { MarkupTransform, TransformOverlayAPI } from '@/pages/Canvas/types';
 
 import { HandlePosition } from '../../../constants';

@@ -2,7 +2,7 @@ import { BaseModels } from '@voiceflow/base-types';
 import { Portal, stopPropagation, SvgIcon, usePersistFunction, usePopper } from '@voiceflow/ui';
 import React from 'react';
 
-import { useCanvasPan, useCanvasZoom } from '@/pages/Canvas/hooks';
+import { useCanvasPan, useCanvasZoom } from '@/pages/Canvas/hooks/canvas';
 
 import Button from './SettingsButton';
 import Content from './SettingsContent';

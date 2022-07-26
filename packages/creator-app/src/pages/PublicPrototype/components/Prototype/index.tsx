@@ -38,12 +38,13 @@ const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({ config, state
 
   const {
     status: prototypeMachineStatus,
+    onPause,
     messages,
+    onStepBack,
+    onContinue,
     interactions,
     onInteraction,
-    onPlay,
-    audio,
-    onStepBack,
+    audioController,
   } = usePrototype({
     state,
     actions,
@@ -118,8 +119,9 @@ const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({ config, state
 
   const onStart = () => {
     if (IS_IOS) {
-      audio.play(fakeAudio);
+      audioController.play(fakeAudio);
     }
+
     startPrototype();
   };
 
@@ -198,6 +200,7 @@ const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({ config, state
         ) : (
           <ChatDialog
             pmStatus={prototypeMachineStatus}
+            audio={audioController.audio}
             locale={locale}
             input={input}
             color={brandColor}
@@ -205,7 +208,7 @@ const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({ config, state
             buttonsOnly={settings.buttonsOnly}
             onMute={onMute}
             isIdle={isIdle}
-            onPlay={onPlay}
+            onPause={onPause}
             onStart={onStart}
             buttons={settings.buttons}
             isMuted={isMuted}
@@ -215,6 +218,7 @@ const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({ config, state
             avatarURL={isCustomizedPrototypeAllowed ? settings.avatar : undefined}
             isLoading={isLoading}
             testEnded={isFinished}
+            onContinue={onContinue}
             onStepBack={onStepBack}
             isListening={isListening}
             interactions={interactions}

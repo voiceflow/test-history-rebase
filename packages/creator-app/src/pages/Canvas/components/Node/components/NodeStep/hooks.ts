@@ -9,6 +9,7 @@ import { NodeInstance } from '@/pages/Canvas/engine/entities/nodeEntity';
 import { useElementInstance } from '@/pages/Canvas/engine/entities/utils';
 import { StepAPI } from '@/pages/Canvas/types';
 import { useEditingMode } from '@/pages/Project/hooks';
+import { ClassName } from '@/styles/constants';
 import { Coords } from '@/utils/geometry';
 
 export type InternalNodeInstance = NodeInstance & {
@@ -72,7 +73,10 @@ export const useStepAPI = <T extends HTMLElement>(
   const [hasLinkWarning, setLinkWarning, clearLinkWarning] = useEnableDisable();
   const [isHovered, wrapElement, hoverHandlers, setHovering] = useHover(
     {
-      onStart: () => {
+      onStart: (event) => {
+        // preventing actions from being hovered
+        if ((event?.target as HTMLElement)?.closest(`.${ClassName.CANVAS_NODE}--${BlockType.ACTIONS}`)) return false;
+
         if (!engine.linkCreation.canTargetNode(nodeEntity.nodeID)) return false;
 
         if (!nodeEntity.inPortID) {

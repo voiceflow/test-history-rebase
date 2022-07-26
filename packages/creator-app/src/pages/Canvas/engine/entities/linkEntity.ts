@@ -28,7 +28,7 @@ export interface LinkInstance extends EntityInstance {
 }
 
 export interface PortLinkInstance {
-  updatePosition: (points: PathPoints | null) => void;
+  updatePosition: (points: PathPoints | null, onUpdated?: VoidFunction) => void;
 }
 
 class LinkEntity extends ResourceEntity<Realtime.Link, LinkInstance> {

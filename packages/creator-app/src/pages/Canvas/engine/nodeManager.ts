@@ -52,7 +52,10 @@ class NodeManager extends EngineConsumer {
      * @deprecated remove after update atomic actions phase 2 is complete
      */
     addManyStartingBlocks: async (nodesWithData: Realtime.NodeWithData[]): Promise<void> => {
-      const startingBlocks = nodesWithData.map(({ node, data }) => ({ blockID: node.id, name: data.name }));
+      const startingBlocks = nodesWithData
+        .filter(({ node }) => node.type === BlockType.COMBINED)
+        .map(({ node, data }) => ({ blockID: node.id, name: data.name }));
+
       await this.dispatch.sync(Realtime.diagram.addNewStartingBlocks({ ...this.engine.context, startingBlocks }));
     },
 
@@ -61,6 +64,7 @@ class NodeManager extends EngineConsumer {
      */
     addNewStartingBlock: async (newBlock: { id: string; name: string }): Promise<void> => {
       const startingBlocks = [{ blockID: newBlock.id, name: newBlock.name }];
+
       await this.dispatch.sync(Realtime.diagram.addNewStartingBlocks({ ...this.engine.context, startingBlocks }));
     },
 
@@ -104,6 +108,28 @@ class NodeManager extends EngineConsumer {
       } else {
         this.dispatch(Creator.addWrappedNode(node, data, parentNode));
         this.internal.addNewStartingBlock({ id: blockID, name: blockName });
+      }
+    },
+
+    addActions: async (node: Creator.NodeDescriptor, data: Creator.DataDescriptor, parentNode: Creator.ParentNodeDescriptor): Promise<void> => {
+      const actionsID = parentNode.id;
+
+      if (this.isAtomicActionsPhase2) {
+        await this.dispatch.sync(
+          Realtime.node.addActions({
+            ...this.engine.context,
+            actionsID,
+            stepID: node.id,
+            stepData: { ...data, type: node.type },
+            stepPorts: node.ports,
+            projectMeta: this.engine.getActiveProjectMeta(),
+            actionsPorts: parentNode.ports,
+            actionsCoords: [node.x, node.y],
+            schemaVersion: this.engine.getActiveSchemaVersion(),
+          })
+        );
+      } else {
+        this.dispatch(Creator.addActionsNode(node, data, parentNode));
       }
     },
 
@@ -304,7 +330,10 @@ class NodeManager extends EngineConsumer {
       } else {
         this.saveLocations([node.parentNode!]);
         this.dispatch(Creator.unmergeNode(nodeID, coords, parentNode));
-        this.internal.addNewStartingBlock({ id: node.id, name: blockName });
+
+        if (node.type === BlockType.COMBINED) {
+          this.internal.addNewStartingBlock({ id: node.id, name: blockName });
+        }
       }
 
       this.redrawNestedLinks(node.parentNode!);
@@ -435,7 +464,10 @@ class NodeManager extends EngineConsumer {
   isSubtreeActive(nodeID: string): boolean {
     const node = this.engine.getNodeByID(nodeID);
 
-    return this.isActive(nodeID) || !!node?.combinedNodes.some((childNodeID) => this.isActive(childNodeID));
+    return (
+      this.isActive(nodeID) ||
+      [...(node?.combinedNodes ?? []), ...this.getAllLinkedOutActionsNodeIDs([nodeID])].some((childNodeID) => this.isActive(childNodeID))
+    );
   }
 
   getRect(nodeID: string): DOMRect | null {
@@ -478,6 +510,56 @@ class NodeManager extends EngineConsumer {
     this.log.info(this.log.success('added node'), this.log.slug(nodeID));
 
     return nodeID;
+  }
+
+  async addActions<K extends keyof Realtime.NodeDataMap>(
+    type: K,
+    actionsNodeID: string | null = null,
+    factoryData?: Partial<Realtime.NodeData<Realtime.NodeDataMap[K]>>,
+    nodeID = Utils.id.objectID()
+  ): Promise<{ nodeID: string; actionsNodeID: string }> {
+    let parentNodeID = actionsNodeID;
+
+    this.log.debug(this.log.pending('adding actions node'), this.log.slug(nodeID));
+
+    const actionNode = parentNodeID ? this.engine.getDataByNodeID(parentNodeID) : null;
+
+    if (parentNodeID && actionNode) {
+      const steps = this.select(CreatorV2.stepDataByParentNodeIDSelector, { id: actionNode.nodeID });
+
+      const isNavigationType = Realtime.Utils.typeGuards.isNavigationBlockType(type);
+      const hasNavigationStep = steps.some((step) => Realtime.Utils.typeGuards.isNavigationBlockType(step.type));
+
+      if (isNavigationType && hasNavigationStep) {
+        throw new Error("The actions can't have multiple navigation steps");
+      }
+
+      const index = steps.length - (hasNavigationStep ? 1 : 0);
+
+      await this.insertStepV2(actionNode.nodeID, type, index, { nodeID, factoryData, autoFocus: false });
+    } else {
+      parentNodeID = Utils.id.objectID();
+
+      const { node, data } = nodeDescriptorFactory(type, factoryData, this.select(nodeFactoryOptionsSelector));
+
+      const augmentedNode = { ...node, x: 0, y: 0, id: nodeID };
+      const parentNode = {
+        id: parentNodeID,
+        ports: { in: [{ id: Utils.id.objectID() }], out: { byKey: {}, dynamic: [], builtIn: {} } },
+      };
+
+      if (!this.isAtomicActionsPhase2) {
+        await this.engine.realtime.sendUpdate(RealtimeDuck.addNode(augmentedNode, data, parentNode));
+      }
+
+      await this.internal.addActions(augmentedNode, data, parentNode);
+    }
+
+    this.engine.saveHistory();
+
+    this.log.info(this.log.success('added actions node'), this.log.slug(nodeID));
+
+    return { nodeID, actionsNodeID: parentNodeID };
   }
 
   private getNewBlockName(): string {
@@ -533,7 +615,10 @@ class NodeManager extends EngineConsumer {
       this.engine.setActive(duplicateNodeWithData.node.id);
 
       await this.registerIntentSteps([duplicateNodeWithData]);
-      await this.internal.addNewStartingBlock({ id: duplicateNodeWithData.node.id, name: duplicateNodeWithData.data.name });
+
+      if (duplicateNodeWithData.node.type === BlockType.COMBINED) {
+        await this.internal.addNewStartingBlock({ id: duplicateNodeWithData.node.id, name: duplicateNodeWithData.data.name });
+      }
 
       this.log.info(this.log.success('duplicated node'), this.log.slug(nodeID));
     }
@@ -807,6 +892,17 @@ class NodeManager extends EngineConsumer {
   }
 
   /**
+   * iterates over all nested steps and all linked actions
+   */
+  private iterateStepsAndLinkedActions(parentNodeID: Nullish<string>, redraw: (nodeID: string) => void): void {
+    if (!parentNodeID) return;
+
+    this.select(CreatorV2.stepIDsByParentNodeIDSelector, { id: parentNodeID }).forEach(redraw);
+
+    this.getAllLinkedOutActionsNodeIDs([parentNodeID]).forEach((actionsNodeID) => this.iterateStepsAndLinkedActions(actionsNodeID, redraw));
+  }
+
+  /**
    * isolates a known step into its own block on the canvas
    */
   async isolateStep(nodeID: string, coords: Point): Promise<void> {
@@ -882,7 +978,8 @@ class NodeManager extends EngineConsumer {
   }
 
   translateAllLinks(nodeID: string, movement: Pair<number>, { sync = false }: { sync?: boolean } = {}): void {
-    [nodeID, ...this.select(CreatorV2.stepIDsByParentNodeIDSelector, { id: nodeID })].forEach((id) => this.translateLinks(id, movement, { sync }));
+    this.translateLinks(nodeID, movement, { sync });
+    this.iterateStepsAndLinkedActions(nodeID, (combinedNodeID) => this.translateLinks(combinedNodeID, movement, { sync }));
   }
 
   private translateLinks(nodeID: string, movement: Pair<number>, { sync }: { sync: boolean }): void {
@@ -894,7 +991,19 @@ class NodeManager extends EngineConsumer {
       if (!link) return;
 
       const isSource = link.source.nodeID === nodeID;
-      const linkedNode = this.engine.getNodeByID(isSource ? link.target.nodeID : link.source.nodeID);
+      let linkedNode = this.engine.getNodeByID(isSource ? link.target.nodeID : link.source.nodeID);
+
+      if (!isSource && linkedNode) {
+        const linkedParentNode = this.engine.getNodeByID(linkedNode.parentNode);
+
+        if (linkedParentNode?.type === BlockType.ACTIONS) {
+          const parentNodePorts = this.engine.select(CreatorV2.portsByNodeIDSelector, { id: linkedParentNode.id });
+          const parentNodeInLinkID = this.engine.getLinkIDsByPortID(parentNodePorts?.in[0])[0];
+          const parentNodeLinkedInNode = this.engine.getSourceNodeByLinkID(parentNodeInLinkID);
+
+          linkedNode = parentNodeLinkedInNode ?? linkedNode;
+        }
+      }
 
       this.engine.link.translatePoint(linkID, movement, {
         sync,
@@ -922,7 +1031,8 @@ class NodeManager extends EngineConsumer {
 
     if (!node) return;
 
-    [nodeID, ...node.combinedNodes].forEach((combinedNodeID) => this.translateThreads(combinedNodeID, movement));
+    this.translateThreads(nodeID, movement);
+    this.iterateStepsAndLinkedActions(nodeID, (combinedNodeID) => this.translateThreads(combinedNodeID, movement));
   }
 
   translateThreads(nodeID: string, movement: Pair<number>): void {
@@ -993,17 +1103,36 @@ class NodeManager extends EngineConsumer {
   }
 
   redrawNestedLinks(parentNodeID: Nullish<string>): void {
-    this.select(CreatorV2.stepIDsByParentNodeIDSelector, { id: parentNodeID }).forEach((nodeID) => this.redrawLinks(nodeID));
+    this.iterateStepsAndLinkedActions(parentNodeID, (nodeID) => this.redrawLinks(nodeID));
   }
 
   redrawThreads(nodeID: string): void {
     this.engine.getThreadIDsByNodeID(nodeID).forEach((threadID) => this.engine.comment.redrawThread(threadID));
   }
 
-  redrawNestedThreads(nodeID: Nullish<string>): void {
-    if (!nodeID) return;
+  redrawNestedThreads(parentNodeID: Nullish<string>): void {
+    if (!parentNodeID) return;
 
-    [nodeID, ...this.select(CreatorV2.stepIDsByParentNodeIDSelector, { id: nodeID })].forEach((childNodeID) => this.redrawThreads(childNodeID));
+    this.redrawThreads(parentNodeID);
+    this.iterateStepsAndLinkedActions(parentNodeID, (nodeID) => this.redrawThreads(nodeID));
+  }
+
+  getAllLinkedOutActionsNodeIDs(nodeIDs: string[]): Set<string> {
+    const allPortIDs = nodeIDs
+      .flatMap((nodeID) => [nodeID, ...(this.engine.getNodeByID(nodeID)?.combinedNodes ?? [])])
+      .flatMap((nodeID) => Realtime.Utils.port.flattenOutPorts(this.select(CreatorV2.portsByNodeIDSelector, { id: nodeID })));
+
+    const linkedOutActionsNodeIDs = new Set<string>();
+
+    allPortIDs.forEach((portID) => {
+      const linkedNode = this.select(CreatorV2.targetNodeByPortID, { id: portID });
+
+      if (linkedNode?.type === Realtime.BlockType.ACTIONS) {
+        linkedOutActionsNodeIDs.add(linkedNode.id);
+      }
+    });
+
+    return linkedOutActionsNodeIDs;
   }
 
   async updateManyBlocksColor(nodeIDs: string[], color: string): Promise<void> {
@@ -1126,6 +1255,8 @@ class NodeManager extends EngineConsumer {
 
       // remove all children from any blocks being removed
       ...nodeIDs.flatMap((nodeID) => this.select(CreatorV2.stepIDsByParentNodeIDSelector, { id: nodeID })),
+
+      ...this.getAllLinkedOutActionsNodeIDs(nodeIDs),
     ]);
   }
 

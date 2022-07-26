@@ -5,6 +5,7 @@ import React from 'react';
 
 import { SubEditorPaths } from '@/pages/Canvas/constants';
 import { EngineContext } from '@/pages/Canvas/contexts';
+import { PATH } from '@/pages/Canvas/managers/components/NoReplyV2/constants';
 import { hasValidPrompt } from '@/utils/prompt';
 
 import PromptsPreview from './PromptsPreview';
@@ -45,6 +46,7 @@ const NoReplyStepItemV2: React.FC<NoReplyStepItemProps> = ({ nodeID, noReply, po
               <StepButton ref={ref} icon="noReplyResponse" isActive={isOpened} onClick={stopPropagation(onToggle)} />
             ) : null
           }
+          parentActionsPath={PATH}
         />
       )}
     </Popper>

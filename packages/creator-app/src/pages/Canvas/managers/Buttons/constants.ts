@@ -6,7 +6,6 @@ import { BlockType } from '@/constants';
 import { getPlatformNoMatchFactory } from '@/utils/noMatch';
 
 import { NodeConfig } from '../types';
-import { BUTTONS_ICON } from './v2';
 
 export const buttonFactory = (): BaseNode.Buttons.Button => ({
   id: Utils.id.cuid.slug(),
@@ -16,7 +15,7 @@ export const buttonFactory = (): BaseNode.Buttons.Button => ({
 
 export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Buttons, Realtime.NodeData.ButtonsBuiltInPorts> = {
   type: BlockType.BUTTONS,
-  icon: BUTTONS_ICON,
+  icon: 'systemButtons',
 
   mergeTerminator: true,
 

@@ -193,7 +193,7 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
 
   isNodeFocused = () => this.select(Creator.hasFocusedNode);
 
-  getLinkByID = (linkID: string) => this.select(CreatorV2.linkByIDSelector, { id: linkID });
+  getLinkByID = (linkID: Nullish<string>) => this.select(CreatorV2.linkByIDSelector, { id: linkID });
 
   getPortByID = (portID: string) => this.select(CreatorV2.portByIDSelector, { id: portID });
 
@@ -203,11 +203,9 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
 
   getThreadIDsByNodeID = (nodeID: string) => this.select(Thread.threadIDsByNodeIDSelector)(nodeID);
 
-  getLinkIDsByPortID = (portID: string) => this.select(CreatorV2.linkIDsByPortIDSelector, { id: portID });
+  getLinkIDsByPortID = (portID: Nullish<string>) => this.select(CreatorV2.linkIDsByPortIDSelector, { id: portID });
 
-  getPortByPortID = (portID: string) => this.select(CreatorV2.portByIDSelector, { id: portID });
-
-  getLinkIDsByNodeID = (nodeID: string) => this.select(CreatorV2.linkIDsByNodeIDSelector, { id: nodeID });
+  getLinkIDsByNodeID = (nodeID: Nullish<string>) => this.select(CreatorV2.linkIDsByNodeIDSelector, { id: nodeID });
 
   getRootNodeIDs = () => this.select(CreatorV2.blockIDsSelector);
 
@@ -230,6 +228,10 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
   getActiveProjectMeta = () => this.select(ProjectV2.active.metaSelector);
 
   getActiveSchemaVersion = () => this.select(Version.active.schemaVersionSelector);
+
+  getTargetNodeByLinkID = (linkID: Nullish<string>) => this.getNodeByID(this.getLinkByID(linkID)?.target.nodeID);
+
+  getSourceNodeByLinkID = (linkID: Nullish<string>) => this.getNodeByID(this.getLinkByID(linkID)?.source.nodeID);
 
   isNodeOfType = (nodeID: Nullish<string>, types: BlockType | BlockType[] | ((type: BlockType) => boolean)): boolean => {
     const nodeType = this.select(CreatorV2.nodeTypeByIDSelector, { id: nodeID });
@@ -436,7 +438,19 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
    * remove any selected or focused nodes
    */
   async removeActive({ focusNextChild }: { focusNextChild?: boolean } = { focusNextChild: true }): Promise<void> {
-    if (this.activation.hasTargets) {
+    const actionRouteMatch = this.select(Router.actionsMatchSelector);
+
+    if (actionRouteMatch?.params.actionNodeID) {
+      const focusedNodeID = this.focus.getTarget();
+
+      if (focusedNodeID) {
+        this.setActive(focusedNodeID);
+      } else {
+        this.clearActivation();
+      }
+
+      await this.node.removeMany([actionRouteMatch.params.actionNodeID]);
+    } else if (this.activation.hasTargets) {
       // keep reference to targets before clearing
       const activeTargets = this.activation.getTargets();
       const isSingleTarget = activeTargets.length === 1;
@@ -457,9 +471,14 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
    */
   copyActive(nodeID?: string | null, options?: { disableSuccessToast?: boolean }): void {
     if (nodeID) {
-      this.clipboard.copy([nodeID], options);
+      const nodeIDs = [nodeID, ...this.node.getAllLinkedOutActionsNodeIDs([nodeID])];
+
+      this.clipboard.copy(nodeIDs, options);
     } else if (this.activation.hasTargets) {
-      this.clipboard.copy(this.activation.getTargets(), options);
+      const targets = this.activation.getTargets();
+      const nodeIDs = [...targets, ...this.node.getAllLinkedOutActionsNodeIDs(targets)];
+
+      this.clipboard.copy(nodeIDs, options);
     }
   }
 
@@ -519,6 +538,14 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
     this.log.info(this.log.success(`centered on the ${nodeID} node`));
   }
 
+  focusDiagramNode(diagramID: string | null, nodeID: string) {
+    if (!diagramID || this.getDiagramID() === diagramID) {
+      this.focusNode(nodeID, { open: true });
+    } else {
+      this.store.dispatch(Router.goToDiagram(diagramID, nodeID));
+    }
+  }
+
   /**
    * @deprecated
    */
@@ -558,8 +585,9 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
     PageProgress.start(PageProgressBar.COMPONENT_CREATING);
 
     const targets = this.activation.getTargets();
+    const nodeIDs = [...targets, ...this.node.getAllLinkedOutActionsNodeIDs(targets)];
 
-    const clipboardData = this.clipboard.getClipboardContext(targets);
+    const clipboardData = this.clipboard.getClipboardContext(nodeIDs);
 
     const { center } = getNodesGroupCenter(
       clipboardData.nodes.map((node) => ({ data: clipboardData.data[node.id], node })),

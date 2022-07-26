@@ -5,7 +5,7 @@ import User from '@/components/User';
 import * as Account from '@/ducks/account';
 import { useSelector } from '@/hooks';
 import { LockOwner } from '@/models';
-import { useEditLock } from '@/pages/Canvas/hooks';
+import { useEditLock } from '@/pages/Canvas/hooks/locking';
 
 import { Container } from './components';
 

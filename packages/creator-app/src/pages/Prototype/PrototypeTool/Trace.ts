@@ -132,6 +132,8 @@ class TraceController {
 
   private noReplyTimeout = 0;
 
+  public topTrace: Trace | null = null;
+
   get isPublicPrototype(): boolean {
     return !!this.props.isPublic;
   }
@@ -169,9 +171,7 @@ class TraceController {
 
     this.context = await this.props.fetchContext(request);
 
-    if (this.stopped) {
-      return;
-    }
+    if (this.stopped) return;
 
     if (!this.context) {
       if (GENERAL_RUNTIME_ENDPOINT && !GENERAL_RUNTIME_ENDPOINT.includes('voiceflow')) {
@@ -251,6 +251,7 @@ class TraceController {
   public stop(): void {
     this.trace = [];
     this.stopped = true;
+    this.topTrace = null;
 
     this.timeout.clearByID(this.noReplyTimeout);
   }
@@ -308,9 +309,7 @@ class TraceController {
   }
 
   private async processTrace(trace: Trace[], { onlyMessage = false }: { onlyMessage?: boolean } = {}): Promise<void> {
-    if (this.stopped) {
-      return;
-    }
+    if (this.stopped) return;
 
     const [topTrace, ...tailTrace] = trace;
 
@@ -324,6 +323,7 @@ class TraceController {
     this.props.updateStatus(PMStatus.NAVIGATING);
 
     this.trace = tailTrace;
+    this.topTrace = topTrace;
 
     if (!this.isPublicPrototype) {
       await this.waitEngineAndNodes();
@@ -486,7 +486,7 @@ class TraceController {
           loop: action === BaseNode.Stream.TraceStreamAction.LOOP,
           muted: this.props.isMuted,
           offset: this.streamState.offset,
-          onPause: (audio) => {
+          onStop: (audio) => {
             this.streamState.offset = audio.currentTime;
           },
           onError: this.setError,
@@ -495,6 +495,8 @@ class TraceController {
         return;
       }
     }
+
+    this.resetInteractions();
 
     await this.next({ type: BaseRequest.RequestType.TEXT, payload: VoiceflowConstants.IntentName.NEXT });
   }
@@ -604,7 +606,23 @@ class TraceController {
     this.saveActivePathLink(sourceNodeID, node);
 
     if ((hasParent && FOCUSABLE_NODES.has(nodeType)) || this.props.debug || !nodeType) {
-      this.focusNode(node.parentNode!);
+      let parentNodeID = node.parentNode;
+
+      if (parentNodeID) {
+        const parent = this.props.getEngine()?.getNodeByID(node.parentNode);
+
+        if (parent?.type === BlockType.ACTIONS) {
+          const linkID = this.props.getEngine()?.getLinkIDsByNodeID(parent.id)?.[0];
+
+          const linkedSourceNode = this.props.getEngine()?.getSourceNodeByLinkID(linkID);
+
+          parentNodeID = linkedSourceNode?.id ?? null;
+        }
+      }
+
+      if (parentNodeID) {
+        this.focusNode(parentNodeID);
+      }
 
       if (skipDelay) return;
 

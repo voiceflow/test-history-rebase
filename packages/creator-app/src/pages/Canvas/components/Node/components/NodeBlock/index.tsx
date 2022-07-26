@@ -6,7 +6,7 @@ import moize from 'moize';
 import React from 'react';
 import { useDrop } from 'react-dnd';
 
-import { DragItem, HOVER_THROTTLE_TIMEOUT } from '@/constants';
+import { BlockType, DragItem, HOVER_THROTTLE_TIMEOUT } from '@/constants';
 import * as Router from '@/ducks/router';
 import { compose } from '@/hocs';
 import { useDispatch, useEnableDisable, useHover } from '@/hooks';
@@ -15,6 +15,7 @@ import PlayButton from '@/pages/Canvas/components/PlayButton';
 import { NODE_DISABLED_CLASSNAME, NODE_HOVERED_CLASSNAME } from '@/pages/Canvas/constants';
 import { EngineContext, NodeEntityContext, NodeEntityProvider, PortEntityProvider } from '@/pages/Canvas/contexts';
 import { BlockAPI } from '@/pages/Canvas/types';
+import { ClassName } from '@/styles/constants';
 
 import NodePort from '../NodePort';
 import NodeStep from '../NodeStep';
@@ -48,7 +49,10 @@ const NodeBlock: React.ForwardRefRenderFunction<BlockAPI> = (_, ref) => {
 
   const [isHovered, wrapElement, hoverHandlers] = useHover(
     {
-      onStart: () => {
+      onStart: (event) => {
+        // preventing actions from being hovered
+        if ((event?.target as HTMLElement)?.closest(`.${ClassName.CANVAS_NODE}--${BlockType.ACTIONS}`)) return false;
+
         const isPinned = engine.linkCreation.hasPin;
 
         if (

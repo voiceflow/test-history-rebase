@@ -16,7 +16,7 @@ import type Engine from '..';
 import { EntityType } from '../constants';
 import { EntityInstance, ResourceEntity } from './entity';
 
-export type NodeInstance = EntityInstance & {
+export interface NodeInstance extends EntityInstance {
   /**
    * get the outer DOMRect of the rendered node
    */
@@ -86,7 +86,7 @@ export type NodeInstance = EntityInstance & {
    * for de-focusing blocks
    */
   blur?: () => void;
-};
+}
 
 export interface NodeEntityResource<T> {
   node: Realtime.Node;
@@ -159,6 +159,16 @@ class NodeEntity extends ResourceEntity<NodeEntityResource<unknown>, NodeInstanc
 
   resolve<T = unknown>(): NodeEntityResource<T> {
     return this.engine.select(nodeEntitySelector, { id: this.nodeID }) as NodeEntityResource<T>;
+  }
+
+  resolveLastCombinedLink(): Realtime.Link | null {
+    const node = this.engine.select(CreatorV2.nodeByIDSelector, { id: this.nodeID });
+
+    if (!node) return null;
+
+    const linkIDs = this.engine.getLinkIDsByNodeID(node.combinedNodes[node.combinedNodes.length - 1] ?? null);
+
+    return this.engine.getLinkByID(linkIDs[0]);
   }
 
   shouldUpdate() {

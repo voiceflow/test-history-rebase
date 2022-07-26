@@ -64,7 +64,7 @@ export const useNewLinkAPI = <T extends SVGElement>() => {
         setVisible(true);
 
         const onMouseMove = () => {
-          if (isPinned.current || isAutoPanning.current || !linkedRects.current || engine.linkCreation.isCompleting) return;
+          if (isPinned.current || isAutoPanning.current || engine.linkCreation.isCompleting) return;
 
           const mousePosition = engine.getCanvasMousePosition();
 
@@ -72,7 +72,9 @@ export const useNewLinkAPI = <T extends SVGElement>() => {
 
           linkedRects.current = engine.linkCreation.getLinkedRects(moveRect, { relative: true, targetIsCanvasRect: true });
 
-          redrawScheduler(() => engine.linkCreation.redrawNewLink(linkedRects.current));
+          redrawScheduler(() => {
+            engine.linkCreation.redrawNewLink(linkedRects.current);
+          });
         };
 
         const onMouseUp = (event: MouseEvent) => {

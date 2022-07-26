@@ -13,16 +13,16 @@ import PlayButton from './components/PlayButton';
 import { AudioTitle } from './styles';
 
 export const AudioDialogStep: React.FC<SpeakStepItem & SpeakStepProps> = ({
+  url,
   items,
   random,
   palette,
   content,
-  url,
   isLastItem,
   nextPortID,
   onOpenEditor,
 }) => {
-  const { duration, playing, setPlaying } = AudioPlayer.useAudioPlayer({ audioURL: url, isUsingDOMElement: false });
+  const audioPlayer = AudioPlayer.useAudioPlayer({ audioURL: url });
 
   const getAudioTitle = (content?: string | null) => (content ? Utils.string.stripHTMLTags(transformVariablesToReadable(content)) : '');
 
@@ -55,17 +55,17 @@ export const AudioDialogStep: React.FC<SpeakStepItem & SpeakStepProps> = ({
   return (
     <>
       <Step.Item
+        v2
         title={<AudioTitle>{getAudioTitle(content) || 'Audio'}</AudioTitle>}
-        placeholder="Upload file or link"
-        label={AudioPlayer.formatTime(duration)}
-        prefix={<PlayButton content={content} playing={playing} onPlay={() => setPlaying(true)} onStop={() => setPlaying(false)} />}
+        label={AudioPlayer.formatTime(audioPlayer.duration)}
+        prefix={<PlayButton content={content} playing={audioPlayer.playing} onToggle={audioPlayer.onToggle} />}
         portID={isLastItem ? nextPortID : null}
         palette={palette}
+        placeholder="Upload file or link"
         withNewLines
         labelVariant={StepLabelVariant.PRIMARY}
         labelLineClamp={100}
         multilineLabel
-        v2
       />
       {attachment}
     </>

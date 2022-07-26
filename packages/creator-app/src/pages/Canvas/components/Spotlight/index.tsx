@@ -8,7 +8,7 @@ import { BlockType } from '@/constants';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { useFeature, useSelector, useTrackingEvents } from '@/hooks';
 import { EngineContext, SpotlightContext } from '@/pages/Canvas/contexts';
-import { useManager } from '@/pages/Canvas/managers';
+import { useManager } from '@/pages/Canvas/managers/utils';
 import { getStepSections, StepItem } from '@/pages/Project/components/StepMenu/constants';
 import { PlatformContext, ProjectTypeContext } from '@/pages/Project/contexts';
 import { Identifier } from '@/styles/constants';

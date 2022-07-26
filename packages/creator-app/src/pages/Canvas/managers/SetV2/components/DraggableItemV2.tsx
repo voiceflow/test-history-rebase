@@ -8,10 +8,11 @@ import { DragPreviewComponentProps, ItemComponentProps, MappedItemComponentHandl
 import RadioGroup from '@/components/RadioGroup';
 import Section, { SectionToggleVariant } from '@/components/Section';
 import VariablesInput from '@/components/VariablesInput';
+import { useDidUpdateEffect, useExpressionValidator } from '@/hooks';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
 import PrefixedVariableSelect from '@/pages/Canvas/components/PrefixedVariableSelect';
-import { useSetItem } from '@/pages/Canvas/managers/SetV2/hooks';
+import { transformVariableToString } from '@/utils/slot';
 
 const INPUT_TYPE_OPTIONS = [
   {
@@ -35,7 +36,24 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLDivElement, SetItemProps
   { itemKey, item, index, isOnlyItem, isDragging, isDraggingPreview, onUpdate, latestCreatedKey, connectedDragRef, onContextMenu, isContextMenuOpen },
   ref
 ) => {
-  const { error, errorMessage, resetError, updateExpression, updateVariable } = useSetItem({ item, onUpdate });
+  const expressionValidator = useExpressionValidator();
+
+  const updateExpression = ({ text: expression }: { text: string }) => {
+    if (!expression.trim() || !expressionValidator.validate(expression)) return;
+
+    onUpdate({ expression });
+  };
+
+  const updateVariable = (variable: string | null) => onUpdate({ variable });
+
+  useDidUpdateEffect(() => {
+    if (item.type === BaseNode.Utils.ExpressionTypeV2.VALUE) {
+      onUpdate({ expression: transformVariableToString(String(item.expression)) });
+    }
+
+    expressionValidator.resetError();
+  }, [item.type]);
+
   const isNew = latestCreatedKey === itemKey;
 
   return (
@@ -84,18 +102,19 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLDivElement, SetItemProps
                 <Input value={String(item.expression)} onChangeText={(value) => onUpdate({ expression: value })} placeholder="Enter value" />
               ) : (
                 <VariablesInput
-                  error={error}
-                  onFocus={resetError}
+                  error={!!expressionValidator.error}
                   value={String(item.expression)}
-                  onBlur={({ text }: { text: string }) => updateExpression(text)}
-                  placeholder="Enter {variable} or expression"
+                  onBlur={updateExpression}
+                  onFocus={expressionValidator.resetError}
                   multiline
+                  placeholder="Enter {variable} or expression"
                 />
               )}
             </Box>
-            {error && item.type === BaseNode.Utils.ExpressionTypeV2.ADVANCE && (
+
+            {expressionValidator.error && item.type === BaseNode.Utils.ExpressionTypeV2.ADVANCE && (
               <Box fontSize={13} color="#e91e63" mt={16}>
-                {errorMessage ? `Error: ${errorMessage}.` : 'Expression syntax is invalid.'}
+                {expressionValidator.error}
               </Box>
             )}
           </Section>

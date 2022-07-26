@@ -10,8 +10,10 @@ import { useDispatch } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import { EngineContext } from '@/pages/Canvas/contexts';
 
+import Actions from '../../Actions';
 import PathSection from '../../PathSection';
 import RepromptsSection from '../../RepromptsSection';
+import { PATH } from '../constants';
 import HelpTooltip from './HelpTooltip';
 import TimeoutSection from './TimeoutSection';
 
@@ -26,6 +28,8 @@ const Editor: React.FC = () => {
   const transaction = useDispatch(History.transaction);
 
   const { noReply } = editor.data;
+
+  const noReplyPortID = editor.node.ports.out.builtIn[BaseModels.PortType.NO_REPLY];
 
   const onChange = async (data: Partial<Realtime.NodeData.NoReply>) => {
     if (Utils.object.shallowPartialEquals(noReply, data)) return;
@@ -50,8 +54,6 @@ const Editor: React.FC = () => {
     });
 
   const onRemovePath = async () => {
-    const noReplyPortID = editor.node.ports.out.builtIn[BaseModels.PortType.NO_REPLY];
-
     await transaction(async () => {
       if (noReplyPortID) {
         await engine.port.removeBuiltin(BaseModels.PortType.NO_REPLY, noReplyPortID);
@@ -60,6 +62,8 @@ const Editor: React.FC = () => {
       await onChange({ types: Utils.array.withoutValue(noReply.types, BaseNode.Utils.NoReplyType.PATH) });
     });
   };
+
+  const withPath = noReply.types.includes(BaseNode.Utils.NoReplyType.PATH);
 
   return (
     <EditorV2
@@ -97,8 +101,16 @@ const Editor: React.FC = () => {
         pathName={noReply.pathName ?? ''}
         onRemove={onRemovePath}
         onRename={(pathName) => onChange({ pathName })}
-        collapsed={!noReply.types.includes(BaseNode.Utils.NoReplyType.PATH)}
+        collapsed={!withPath}
       />
+
+      {withPath && !!noReplyPortID && (
+        <>
+          <SectionV2.Divider inset />
+
+          <Actions.Section portID={noReplyPortID} editor={editor} parentPath={PATH} withoutURL />
+        </>
+      )}
     </EditorV2>
   );
 };

@@ -123,14 +123,15 @@ const CanvasContainer: React.FC = ({ children }) => {
 
   const onDuplicate = React.useCallback(async () => {
     const targets = engine.activation.getTargets();
+    const nodeIDs = [...targets, ...engine.node.getAllLinkedOutActionsNodeIDs(targets)];
 
-    if (targets.length === 1) {
-      const nodeID = targets[0];
+    if (nodeIDs.length === 1) {
+      const nodeID = nodeIDs[0];
 
       engine.node.api(nodeID)?.instance?.blur?.();
       await engine.node.duplicate(nodeID);
-    } else if (targets.length > 1) {
-      await engine.node.duplicateMany(targets);
+    } else if (nodeIDs.length > 1) {
+      await engine.node.duplicateMany(nodeIDs);
     }
   }, [isEditingMode]);
 

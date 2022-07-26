@@ -1,7 +1,7 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
-import { SystemMessage } from '@/pages/Canvas/managers/components';
+import SystemMessage from '@/pages/Canvas/managers/components/SystemMessage';
 
 import { VoicePromptProps } from '../types';
 

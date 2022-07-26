@@ -8,9 +8,11 @@ import { useMapManager, useToggle } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import { useIntentScope } from '@/pages/Canvas/managers/hooks';
 
-import { IntentButtons, ListeningForIntentSection, NoMatchV2, NoReplyV2 } from '../../components';
+import { Actions, IntentButtons, ListeningForIntentSection, NoMatchV2, NoReplyV2 } from '../../components';
 import { choiceFactory } from '../constants';
 import DraggableItem from './DraggableItem';
+
+const ITEM_DRAG_TYPE = 'interaction-editor';
 
 const RootEditor: React.FC = () => {
   const editor = EditorV2.useEditor<Realtime.NodeData.Interaction, Realtime.NodeData.InteractionBuiltInPorts>();
@@ -52,12 +54,13 @@ const RootEditor: React.FC = () => {
           </EditorV2.DefaultFooter>
         )
       }
+      dropLagAccept={[Actions.Section.DRAG_TYPE, ITEM_DRAG_TYPE]}
     >
       {!mapManager.size ? (
         <ListeningForIntentSection />
       ) : (
         <DraggableList
-          type="interaction-editor"
+          type={ITEM_DRAG_TYPE}
           onEndDrag={toggleDragging}
           itemProps={{ editor, latestCreatedKey: mapManager.latestCreatedKey }}
           mapManager={mapManager}

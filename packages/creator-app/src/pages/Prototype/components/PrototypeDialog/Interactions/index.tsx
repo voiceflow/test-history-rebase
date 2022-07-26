@@ -32,7 +32,7 @@ const Interactions: React.FC<InteractionsProps> = ({ interactions, onInteraction
   const handleRequestActions = (request: Interaction['request']) => () => {
     if (request.payload && typeof request.payload === 'object') {
       request.payload.actions?.forEach((action) => {
-        if (BaseRequest.Action.isOpenURLAction(action)) {
+        if (BaseRequest.Action.isOpenURLAction(action) && action.payload.url) {
           window.open(getValidHref(action.payload.url), '_blank');
         }
       });

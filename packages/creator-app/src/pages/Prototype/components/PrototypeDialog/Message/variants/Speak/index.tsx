@@ -1,4 +1,4 @@
-import { Link, stopPropagation } from '@voiceflow/ui';
+import { AudioPlayer, Link, stopPropagation } from '@voiceflow/ui';
 import cn from 'classnames';
 import Markdown, { MarkdownOptions } from 'markdown-to-jsx';
 import React from 'react';
@@ -10,16 +10,22 @@ import { ClassName } from '@/styles/constants';
 import BaseMessage, { BaseMessageProps } from '../../Base';
 
 interface SpeakProps extends Omit<BaseMessageProps, 'iconProps'> {
+  src?: string | null;
+  audio?: HTMLAudioElement;
   voice?: string;
   message: string;
+  onPause?: VoidFunction;
+  onContinue?: VoidFunction;
 }
 
 const MARKDOWN_OPTIONS: MarkdownOptions = {
-  forceInline: true,
   overrides: { a: (props) => <Link {...props} onClick={stopPropagation()} /> },
+  forceInline: true,
 };
 
-const Speak: React.FC<SpeakProps> = ({ voice, message, className, ...props }) => {
+const Speak: React.FC<SpeakProps> = ({ src, audio, voice, message, className, onPause, onContinue, ...props }) => {
+  const audioPlayer = AudioPlayer.useAudioPlayer({ audioURL: src });
+
   const formattedMessage = React.useMemo(
     () => message.replace(SSML_TAG_REGEX, '').replace(ALL_URLS_REGEX, '[$1]($1)').replace(NEW_LINE_REGEX, '  \n'), // double spaces is a "Line Return" in the markdown
     [message]
@@ -31,8 +37,24 @@ const Speak: React.FC<SpeakProps> = ({ voice, message, className, ...props }) =>
     }
   }, [!!formattedMessage]);
 
+  React.useEffect(() => {
+    if (audioPlayer.playing) {
+      onPause?.();
+    } else {
+      onContinue?.();
+    }
+
+    const forcePause = () => audioPlayer.onPause();
+
+    audio?.addEventListener('play', forcePause);
+
+    return () => {
+      audio?.removeEventListener('play', forcePause);
+    };
+  }, [audioPlayer.playing, audio]);
+
   return formattedMessage ? (
-    <BaseMessage className={cn(ClassName.CHAT_DIALOG_SPEAK_MESSAGE, className)} {...props}>
+    <BaseMessage onClick={audioPlayer.onToggle} className={cn(ClassName.CHAT_DIALOG_SPEAK_MESSAGE, className)} {...props}>
       <Markdown options={MARKDOWN_OPTIONS}>{formattedMessage}</Markdown>
     </BaseMessage>
   ) : null;

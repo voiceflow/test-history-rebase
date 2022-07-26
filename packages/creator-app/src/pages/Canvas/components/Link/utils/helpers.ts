@@ -1,7 +1,5 @@
 import { PathPoint, Point } from '@/types';
 
-import { DOUBLE_STRAIGHT_PATH_OFFSET, TOP_PORT_OFFSET } from '../constants';
-
 interface CreatePointData {
   toTop?: boolean;
   locked?: boolean;
@@ -47,5 +45,3 @@ export const getPointX = (pathPoint: PathPoint): number => getPoint(pathPoint)[0
 export const getPointY = (pathPoint: PathPoint): number => getPoint(pathPoint)[1];
 
 export const getPointsOffset = (start: number, end: number): number => end - start;
-
-export const isToTopByY = (startY: number, endY: number): boolean => endY >= startY + DOUBLE_STRAIGHT_PATH_OFFSET + TOP_PORT_OFFSET;

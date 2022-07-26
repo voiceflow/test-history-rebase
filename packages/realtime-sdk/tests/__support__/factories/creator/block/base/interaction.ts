@@ -24,14 +24,12 @@ export const InteractionStepData = define<Omit<BaseNode.Interaction.StepData, 'e
 
 export const ChoicePlatformNodeData = define<NodeData.InteractionChoice>({
   id: () => lorem.word(),
-  goTo: () => ChoiceGoTo(),
   intent: () => lorem.word(),
-  action: () => getRandomEnumElement(BaseNode.Interaction.ChoiceAction),
   mappings: () => [{ slot: lorem.word(), variable: lorem.word() }],
 });
 
 export const ChoiceData = define<NodeData.InteractionChoice>({
-  ...ChoicePlatformNodeData({ id: 'id', goTo: null, intent: '', action: BaseNode.Interaction.ChoiceAction.PATH, mappings: [] }),
+  ...ChoicePlatformNodeData({ id: 'id', intent: '', mappings: [] }),
 });
 
 export const InteractionNodeData = define<Omit<NodeData.Interaction, 'else' | 'noReply' | 'buttons'>>({

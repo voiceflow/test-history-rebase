@@ -34,9 +34,7 @@ describe('Adapters | Creator | Block | Alexa | interactionAdapter', () => {
           choices: [
             Creator.Block.Base.ChoiceData({
               id,
-              goTo: data.choices[0].goTo!,
               intent: data.choices[0].intent,
-              action: data.choices[0].action!,
               mappings: data.choices[0].mappings!,
             }),
           ],
@@ -87,8 +85,6 @@ describe('Adapters | Creator | Block | Alexa | interactionAdapter', () => {
         noMatch,
         choices: [
           {
-            goTo: data.choices[0].goTo,
-            action: data.choices[0].action,
             intent: data.choices[0].intent,
             mappings: data.choices[0].mappings,
           },

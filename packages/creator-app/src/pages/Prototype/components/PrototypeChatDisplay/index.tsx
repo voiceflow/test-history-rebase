@@ -11,12 +11,14 @@ import Dialog from '../PrototypeDialog';
 import { InnerChatContainer, OutterChatContainer } from './components';
 
 export interface PrototypeChatDisplayProps {
+  audio?: HTMLAudioElement;
   isPublic?: boolean;
   isLoading?: boolean;
   atTop?: boolean;
   messages: Message[];
   setAtTop?: (val: boolean) => void;
-  onPlay?: (src: string) => void;
+  onPause?: VoidFunction;
+  onContinue?: VoidFunction;
   debug?: boolean;
   buttons?: BaseButton.ButtonsLayout;
   interactions: Interaction[];
@@ -38,11 +40,13 @@ export interface PrototypeChatDisplayProps {
 
 const PrototypeChatDisplay: React.FC<PrototypeChatDisplayProps> = ({
   atTop = true,
+  audio,
   setAtTop,
   isPublic,
   isLoading,
   messages = [],
-  onPlay,
+  onPause,
+  onContinue,
   interactions = [],
   status,
   hideSessionMessages,
@@ -107,12 +111,14 @@ const PrototypeChatDisplay: React.FC<PrototypeChatDisplayProps> = ({
     <OutterChatContainer focusedTurnID={focusedTurnID}>
       <InnerChatContainer atTop={atTop}>
         <Dialog
+          audio={audio}
           pmStatus={pmStatus}
           dialogTurnMap={dialogTurnMap}
           onScroll={onScrollHandler}
           stepBack={stepBack}
           status={status}
-          onPlay={onPlay}
+          onPause={onPause}
+          onContinue={onContinue}
           isPublic={isPublic}
           isMobile={isMobile}
           messages={messages}

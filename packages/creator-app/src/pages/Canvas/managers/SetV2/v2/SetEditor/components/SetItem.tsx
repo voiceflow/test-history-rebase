@@ -6,9 +6,8 @@ import React from 'react';
 import { DragPreviewComponentProps, ItemComponentProps, MappedItemComponentHandlers } from '@/components/DraggableList';
 import VariableSelectV2 from '@/components/VariableSelectV2';
 import VariablesInput from '@/components/VariablesInput';
-import { useAutoScrollNodeIntoView, useVariableCreation } from '@/hooks';
+import { useAutoScrollNodeIntoView, useExpressionValidator, useVariableCreation } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
-import { useSetItem } from '@/pages/Canvas/managers/SetV2/hooks';
 
 import { NodeEditorV2Props } from '../../../../types';
 
@@ -24,7 +23,13 @@ const SetItem: React.ForwardRefRenderFunction<HTMLElement, SetItemProps> = (
   { item, index, editor, itemKey, isDragging, onContextMenu, onUpdate, latestCreatedKey, connectedDragRef, isDraggingPreview, isContextMenuOpen },
   ref
 ) => {
-  const { error, errorMessage, resetError, updateExpression, updateVariable } = useSetItem({ item, onUpdate });
+  const expressionValidator = useExpressionValidator();
+
+  const updateExpression = ({ text: expression }: { text: string }) => {
+    if (!expression.trim() || !expressionValidator.validate(expression)) return;
+
+    onUpdate({ expression });
+  };
 
   const autofocus = latestCreatedKey === itemKey || editor.data.sets.length === 1;
 
@@ -64,23 +69,23 @@ const SetItem: React.ForwardRefRenderFunction<HTMLElement, SetItemProps> = (
                       prefix="APPLY TO"
                       options={variables}
                       onCreate={createVariable}
-                      onChange={updateVariable}
+                      onChange={(variable) => onUpdate({ variable })}
                       placeholder="Select variable"
                     />
 
                     <Box mt="16px">
                       <VariablesInput
-                        placeholder="Enter value, {variable} or expression"
-                        error={error}
-                        onFocus={resetError}
+                        error={!!expressionValidator.error}
                         value={String(item.expression)}
-                        onBlur={({ text }) => updateExpression(text)}
+                        onBlur={updateExpression}
+                        onFocus={expressionValidator.resetError}
                         multiline
+                        placeholder="Enter value, {variable} or expression"
                       />
 
-                      {error && (
+                      {expressionValidator.error && (
                         <Box fontSize={13} color="#e91e63" mt={12}>
-                          {errorMessage ? `Error: ${errorMessage}.` : 'Expression syntax is invalid.'}
+                          {expressionValidator.error}
                         </Box>
                       )}
                     </Box>

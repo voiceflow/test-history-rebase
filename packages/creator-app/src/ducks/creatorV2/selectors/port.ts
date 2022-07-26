@@ -37,6 +37,14 @@ export const portsByNodeIDSelector = Feature.createAtomicActionsPhase2Selector(
   ]
 );
 
+const _nodeIDByPortIDSelector = createSelector([creatorStateSelector, idParamSelector], ({ nodeIDByPortID }, portID) =>
+  portID ? nodeIDByPortID[portID] ?? null : null
+);
+export const nodeIDByPortIDSelector = Feature.createAtomicActionsPhase2Selector(
+  [CreatorV1Selectors.portByIDSelector, _nodeIDByPortIDSelector, idParamSelector],
+  (getPortByIDV1, nodeID, portID) => [portID ? getPortByIDV1(portID)?.nodeID ?? null : null, nodeID]
+);
+
 export const builtInPortTypeSelector = createSelector(
   [creatorStateSelector, createCurriedSelector(portsByNodeIDSelector), idParamSelector],
   ({ nodeIDByPortID }, getPorts, portID) => {

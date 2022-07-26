@@ -126,12 +126,9 @@ const usePrototype = ({ debug, config, state, actions, isPublic, waitVisuals = t
     },
     [prototype, interactions]
   );
-  const onPlay = React.useCallback(
-    (src: string) => {
-      prototype.play(src);
-    },
-    [prototype]
-  );
+
+  const onPause = React.useCallback(() => prototype.pause(), [prototype]);
+  const onContinue = React.useCallback(() => prototype.continue(), [prototype]);
 
   const onStepBack = React.useCallback(() => {
     setStatus(PMStatus.WAITING_USER_INTERACTION);
@@ -146,15 +143,16 @@ const usePrototype = ({ debug, config, state, actions, isPublic, waitVisuals = t
   }, [prototype]);
 
   return {
-    audio: prototype.audio,
     status,
-    onPlay,
+    onPause,
     messages,
+    onContinue,
     onStepBack,
     interactions,
     onInteraction,
     onStepForward,
     prototypeTool: prototype,
+    audioController: prototype.audio,
   };
 };
 

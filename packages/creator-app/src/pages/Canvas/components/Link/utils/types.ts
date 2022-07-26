@@ -4,7 +4,3 @@ export interface LinkedRects {
   targetPortRect: DOMRect;
   targetNodeRect: DOMRect;
 }
-
-export interface ExtendsLinkedRects extends LinkedRects {
-  sourceParentNodeRect: DOMRect;
-}

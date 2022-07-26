@@ -1,4 +1,4 @@
-import { BaseNode } from '@voiceflow/base-types';
+import { BaseModels, BaseNode } from '@voiceflow/base-types';
 import { ChatModels } from '@voiceflow/chat-types';
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
@@ -11,8 +11,10 @@ import { useDispatch, useSelector } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import { EngineContext } from '@/pages/Canvas/contexts';
 
+import Actions from '../../Actions';
 import PathSection from '../../PathSection';
 import RepromptsSection from '../../RepromptsSection';
+import { PATH } from '../constants';
 import HelpTooltip from './HelpTooltip';
 
 interface Data {
@@ -58,6 +60,9 @@ const Editor: React.FC = () => {
       await onChange({ types: Utils.array.withoutValue(noMatch.types, BaseNode.Utils.NoMatchType.PATH) });
     });
 
+  const withPath = noMatch.types.includes(BaseNode.Utils.NoMatchType.PATH);
+  const noMatchPortID = editor.node.ports.out.builtIn[BaseModels.PortType.NO_MATCH];
+
   return (
     <EditorV2
       header={<EditorV2.DefaultHeader onBack={editor.goBack} />}
@@ -90,8 +95,16 @@ const Editor: React.FC = () => {
         pathName={noMatch.pathName ?? ''}
         onRemove={onRemovePath}
         onRename={(pathName) => onChange({ pathName })}
-        collapsed={!noMatch.types.includes(BaseNode.Utils.NoMatchType.PATH)}
+        collapsed={!withPath}
       />
+
+      {withPath && !!noMatchPortID && (
+        <>
+          <SectionV2.Divider inset />
+
+          <Actions.Section editor={editor} portID={noMatchPortID} parentPath={PATH} withoutURL />
+        </>
+      )}
     </EditorV2>
   );
 };

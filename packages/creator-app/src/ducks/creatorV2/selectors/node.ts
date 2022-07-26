@@ -13,7 +13,7 @@ import { createCurriedSelector } from '@/ducks/utils/selector';
 
 import { creatorStateSelector } from './base';
 import { linksByPortIDSelector } from './link';
-import { portsByNodeIDSelector } from './port';
+import { nodeIDByPortIDSelector, portsByNodeIDSelector } from './port';
 
 const _allNodeIDsSelector = createSelector([creatorStateSelector], ({ nodes }) => nodes.allKeys);
 export const allNodeIDsSelector = Feature.createAtomicActionsPhase2Selector([CreatorV1Selectors.allNodeIDsSelector, _allNodeIDsSelector]);
@@ -149,8 +149,12 @@ export const nodeByIDSelector = createSelector(
 
 export const getNodeByIDSelector = createCurriedSelector(nodeByIDSelector);
 
+export const nodeByPortIDSelector = createSelector([getNodeByIDSelector, nodeIDByPortIDSelector], (getNodeByID, nodeID) =>
+  getNodeByID({ id: nodeID })
+);
+
 export const targetNodeByPortID = createSelector([linksByPortIDSelector, getNodeByIDSelector], (links, getNodeByID) =>
-  links[0].target ? getNodeByID({ id: links[0].target.nodeID }) : null
+  getNodeByID({ id: links[0]?.target?.nodeID })
 );
 
 export const nodesByIDsSelector = createSelector([getNodeByIDSelector, idsParamSelector], (getNodeByID, nodeIDs) =>

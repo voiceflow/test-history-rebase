@@ -5,11 +5,10 @@ import { BlockType } from '@/constants';
 import { getPlatformNoMatchFactory } from '@/utils/noMatch';
 
 import { NodeConfig } from '../types';
-import { CAPTURE_STEP_ICON } from './v2';
 
 export const NODE_CONFIG: NodeConfig<Realtime.NodeData.CaptureV2, Realtime.NodeData.CaptureV2BuiltInPorts> = {
   type: BlockType.CAPTUREV2,
-  icon: CAPTURE_STEP_ICON,
+  icon: 'captureV2',
 
   mergeTerminator: true,
 

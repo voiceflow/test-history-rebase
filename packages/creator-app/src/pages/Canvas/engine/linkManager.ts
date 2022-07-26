@@ -130,18 +130,49 @@ class LinkManager extends EngineConsumer {
     if (!link || !this.engine.canvas) return null;
 
     const sourcePortRect = this.engine.port.getRect(link.source.portID);
-    const sourceNodeRect = this.engine.node.getRect(link.source.nodeID);
+    const sourceNodeRect = this.getSourceNodeRect(link.source.nodeID);
     const targetPortRect = this.engine.port.getRect(link.target.portID);
     const targetNodeRect = this.engine.node.getRect(link.target.nodeID);
 
     if (!sourcePortRect || !sourceNodeRect || !targetPortRect || !targetNodeRect) return null;
 
     return {
+      sourceNodeRect,
       sourcePortRect: toCanvasRect(this.engine.canvas, sourcePortRect),
-      sourceNodeRect: toCanvasRect(this.engine.canvas, sourceNodeRect),
       targetPortRect: toCanvasRect(this.engine.canvas, targetPortRect),
       targetNodeRect: toCanvasRect(this.engine.canvas, targetNodeRect),
     };
+  }
+
+  getSourceNodeRect(nodeID: string): DOMRect | null {
+    if (!this.engine.canvas) return null;
+
+    const sourceNode = this.engine.getNodeByID(nodeID);
+    const sourceParentNode = this.engine.getNodeByID(sourceNode?.parentNode);
+
+    let sourceNodeRect: DOMRect | null = null;
+
+    if (sourceParentNode && Realtime.Utils.typeGuards.isActionsBlockType(sourceParentNode.type)) {
+      const node = this.engine.getNodeByID(nodeID);
+
+      if (!node?.parentNode) return null;
+
+      const actionsNodePorts = this.select(CreatorV2.portsByNodeIDSelector, { id: node.parentNode });
+
+      const actionsNodeInLinkID = this.engine.getLinkIDsByPortID(actionsNodePorts?.in[0])[0];
+
+      const actionsSourceNodeLink = this.engine.getLinkByID(actionsNodeInLinkID);
+
+      if (!actionsSourceNodeLink) return null;
+
+      sourceNodeRect = this.engine.node.getRect(actionsSourceNodeLink.source.nodeID);
+    } else {
+      sourceNodeRect = this.engine.node.getRect(nodeID);
+    }
+
+    if (!sourceNodeRect) return null;
+
+    return toCanvasRect(this.engine.canvas, sourceNodeRect);
   }
 
   getSourceParentNodeRect(linkID: string): DOMRect | null {
@@ -149,11 +180,26 @@ class LinkManager extends EngineConsumer {
 
     if (!link || !this.engine.canvas) return null;
 
-    const node = this.engine.getNodeByID(link.source.nodeID);
+    const sourceNode = this.engine.getNodeByID(link.source.nodeID);
+    const sourceParentNode = this.engine.getNodeByID(sourceNode?.parentNode);
 
-    if (!node?.parentNode) return null;
+    if (!sourceParentNode) return null;
 
-    const sourceParentNodeRect = this.engine.node.getRect(node.parentNode);
+    let sourceParentNodeRect: DOMRect | null = null;
+
+    if (Realtime.Utils.typeGuards.isActionsBlockType(sourceParentNode.type)) {
+      const actionsNodePorts = this.select(CreatorV2.portsByNodeIDSelector, { id: sourceParentNode.id });
+
+      const actionsNodeInLinkID = this.engine.getLinkIDsByPortID(actionsNodePorts?.in[0])[0];
+
+      const actionsSourceNode = this.engine.getSourceNodeByLinkID(actionsNodeInLinkID);
+
+      if (!actionsSourceNode?.parentNode) return null;
+
+      sourceParentNodeRect = this.engine.node.getRect(actionsSourceNode.parentNode);
+    } else {
+      sourceParentNodeRect = this.engine.node.getRect(sourceParentNode.id);
+    }
 
     if (!sourceParentNodeRect) return null;
 
@@ -279,7 +325,14 @@ class LinkManager extends EngineConsumer {
     }
   }
 
-  redrawPorts({ source: { portID: sourcePortID }, target: { portID: targetPortID } }: Realtime.Link): void {
+  redrawPorts({ id, source: { portID: sourcePortID }, target: { portID: targetPortID } }: Realtime.Link): void {
+    const sourceNode = this.engine.getSourceNodeByLinkID(id);
+    const sourceParentNode = this.engine.getNodeByID(sourceNode?.parentNode);
+
+    if (sourceParentNode && Realtime.Utils.typeGuards.isActionsBlockType(sourceParentNode.type)) {
+      this.engine.node.redraw(sourceParentNode.id);
+    }
+
     this.engine.port.redraw(sourcePortID);
     this.engine.port.redraw(targetPortID);
   }

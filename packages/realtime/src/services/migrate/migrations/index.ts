@@ -1,12 +1,14 @@
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import _noop from 'lodash/noop';
 
 import { Migration, Transform } from './types';
 import migrateToV2_0 from './v2_0';
 import migrateToV2_1 from './v2_1';
 import migrateToV2_2 from './v2_2';
 import migrateToV2_3 from './v2_3';
+import migrateToV2_4 from './v2_4';
+import migrateToV2_5 from './v2_5';
+import migrateToV2_6 from './v2_6';
 
 const migrationsMap: Record<Realtime.SchemaVersion, Transform> = {
   [Realtime.SchemaVersion.V1]: Utils.functional.noop,
@@ -14,7 +16,9 @@ const migrationsMap: Record<Realtime.SchemaVersion, Transform> = {
   [Realtime.SchemaVersion.V2_1]: migrateToV2_1,
   [Realtime.SchemaVersion.V2_2]: migrateToV2_2,
   [Realtime.SchemaVersion.V2_3]: migrateToV2_3,
-  [Realtime.SchemaVersion.V2_4]: _noop,
+  [Realtime.SchemaVersion.V2_4]: migrateToV2_4,
+  [Realtime.SchemaVersion.V2_5]: migrateToV2_5,
+  [Realtime.SchemaVersion.V2_6]: migrateToV2_6,
 };
 
 const migrations = Object.entries(migrationsMap)

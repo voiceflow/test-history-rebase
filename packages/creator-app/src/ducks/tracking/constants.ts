@@ -123,6 +123,9 @@ export enum EventName {
 
   SEARCH_BAR_QUERY = 'Search Bar Query',
   SEARCH_BAR_RESULT_SELECTED = 'Search Bar Result Selected',
+
+  ACTION_ADDED = 'Action Added',
+  ACTION_DELETED = 'Action Deleted',
 }
 
 export enum IntentEditType {

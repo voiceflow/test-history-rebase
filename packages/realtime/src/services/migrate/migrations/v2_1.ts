@@ -4,9 +4,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Transform } from './types';
 
 /**
- * this migration converts the existing port structure from an array to an object
- * with a lookup map for built-in ports that can be enabled or disabled individually
- * and an array for dynamic and ordered ports such as for an `if` or `choice` step
+ * this migration adds missing ports to carousel nodes
  */
 const migrateToV2_1: Transform = ({ diagrams }, { platform, projectType }) => {
   diagrams.forEach((dbDiagram) => {

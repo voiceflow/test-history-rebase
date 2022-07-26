@@ -30,7 +30,7 @@ const nodeDataAdapter = createSimpleAdapter<
     }
 
     return {
-      name: '',
+      name: data.name ?? dbData.name ?? '',
       ...data,
       type: data.deprecatedType ? BlockType.DEPRECATED : type,
       nodeID,
@@ -51,7 +51,7 @@ const nodeDataAdapter = createSimpleAdapter<
     }
 
     return {
-      data,
+      data: { name: appData.name, ...data },
       type: dbType,
     };
   }

@@ -5,13 +5,15 @@ import React from 'react';
 
 import { BlockType } from '@/constants';
 import { useLinkedRef, useRAF } from '@/hooks';
+import { LinkedRects } from '@/pages/Canvas/components/Link';
 import { EngineContext, LinkEntityContext } from '@/pages/Canvas/contexts';
 import { useElementInstance } from '@/pages/Canvas/engine/entities/utils';
+import { PathPoints } from '@/types';
 
 import { MIN_HEIGHT, PLACEHOLDER_WIDTH } from '../components/LinkCaptionText';
 import { STROKE_DEFAULT_COLOR } from '../constants';
 import { InternalLinkInstance } from '../types';
-import { buildPath, getMarkerAttrs, getPathPointsCenter, getPathPointsV2, syncPointsWithLinkedRects } from '../utils';
+import { buildPath, getMarkerAttrs, getPathPoints, getPathPointsCenter, syncPointsWithLinkedRects } from '../utils';
 
 const useLinkInstance = () => {
   const engine = React.useContext(EngineContext)!;
@@ -42,8 +44,10 @@ const useLinkInstance = () => {
     const isStraight = engine.isStraightLinks();
     const targetNode = engine.getNodeByID(targetNodeID);
     const sourceNode = engine.getNodeByID(sourceNodeID);
-    const sourceNodeIsAction = sourceNode?.type === BlockType.ACTIONS;
+    const sourceNodeParent = engine.getNodeByID(sourceNode?.parentNode);
+
     const sourceNodeIsStart = sourceNode?.type === BlockType.START;
+    const sourceNodeIsAction = sourceNodeParent?.type === BlockType.ACTIONS;
     const targetNodeIsCombined = targetNode?.type === BlockType.COMBINED;
 
     return {
@@ -81,7 +85,7 @@ const useLinkInstance = () => {
       });
     }
 
-    return getPathPointsV2(linkedRects, {
+    return getPathPoints(linkedRects, {
       isStraight,
       isConnected: true,
       sourceNodeIsStart,
@@ -117,47 +121,102 @@ const useLinkInstance = () => {
   const captionRectRef = useLinkedRef(captionRect);
   const linkedRectsRef = useLinkedRef(linkedRects);
 
-  const updateCaptionPosition = React.useCallback(() => {
-    const captionElm = captionRef.current;
+  const instance = React.useMemo<InternalLinkInstance>(() => {
+    const updateCaptionPosition = () => {
+      const captionElm = captionRef.current;
 
-    if (!captionElm) return;
+      if (!captionElm) return;
 
-    captionElm.setAttribute('x', String(captionRectRef.current.x));
-    captionElm.setAttribute('y', String(captionRectRef.current.y));
-    captionElm.setAttribute('width', String(captionRectRef.current.width));
-    captionElm.setAttribute('height', String(captionRectRef.current.height));
-  }, []);
+      captionElm.setAttribute('x', String(captionRectRef.current.x));
+      captionElm.setAttribute('y', String(captionRectRef.current.y));
+      captionElm.setAttribute('width', String(captionRectRef.current.width));
+      captionElm.setAttribute('height', String(captionRectRef.current.height));
+    };
 
-  const updateMarkerPosition = React.useCallback(() => {
-    const markerElm = markerRef.current;
+    const updateMarkerPosition = () => {
+      const markerElm = markerRef.current;
 
-    if (!markerElm) return;
+      if (!markerElm) return;
 
-    const nextMarketAttrs = getMarkerAttrs(pointsRef.current, { isStraight: cache.current.isStraight });
+      const nextMarketAttrs = getMarkerAttrs(pointsRef.current, { isStraight: cache.current.isStraight });
 
-    // eslint-disable-next-line no-restricted-syntax
-    for (const attr of Utils.object.getKeys(nextMarketAttrs)) {
-      markerElm.setAttribute(attr, nextMarketAttrs[attr]);
-    }
-  }, []);
+      // eslint-disable-next-line no-restricted-syntax
+      for (const attr of Utils.object.getKeys(nextMarketAttrs)) {
+        markerElm.setAttribute(attr, nextMarketAttrs[attr]);
+      }
+    };
 
-  React.useEffect(() => {
-    linkEntity.portLinkInstance?.api.updatePosition(points);
-  }, [points]);
+    const redraw = () => {
+      const pathElm = pathRef.current;
+      const hiddenPathElm = hiddenPathRef.current;
 
-  return React.useMemo<InternalLinkInstance>(
-    () => ({
+      if (!pathElm || !hiddenPathElm) return;
+
+      const nextPath = buildPath(pointsRef.current, { isStraight: cache.current.isStraight });
+
+      pointsPathRef.current = nextPath;
+
+      pathElm.setAttribute('d', nextPath);
+      hiddenPathElm?.setAttribute('d', nextPath);
+
+      settingsRef.current?.setPosition();
+
+      updateMarkerPosition();
+      updateCaptionPosition();
+    };
+
+    const syncPoints = (
+      points: PathPoints,
+      linkedRects: LinkedRects,
+      { isSource, sourceAndTargetSelected }: { isSource: boolean; sourceAndTargetSelected: boolean }
+    ) => {
+      pointsRef.current = syncPointsWithLinkedRects(points, linkedRects, {
+        isStraight: cache.current.isStraight,
+        isConnected: true,
+        isPathLocked: cache.current.isPathLocked,
+        syncOnlySource: isSource,
+        syncOnlyTarget: !isSource,
+        sourceNodeIsStart: cache.current.sourceNodeIsStart,
+        sourceNodeIsAction: cache.current.sourceNodeIsAction,
+        sourceParentNodeRect: linkEntity.getSourceParentNodeRect(),
+        targetNodeIsCombined: cache.current.targetNodeIsCombined,
+        sourceAndTargetSelected,
+      });
+
+      if (cache.current.linkData?.caption) {
+        centerRef.current = getPathPointsCenter(points, { isStraight: cache.current.isStraight });
+
+        captionRectRef.current.x = centerRef.current[0] - captionRectRef.current.width / 2;
+        captionRectRef.current.y = centerRef.current[1] - captionRectRef.current.height / 2;
+      }
+    };
+
+    // will be called when the actions are rendered from the opposite side
+    const onLinkPositionReversed = ({ isSource, sourceAndTargetSelected }: { isSource: boolean; sourceAndTargetSelected: boolean }) => {
+      const linkedRects = linkEntity.getLinkedRects();
+
+      if (!linkedRectsRef.current || !linkedRects || !pointsRef.current) return;
+
+      linkedRectsRef.current.sourcePortRect = linkedRects.sourcePortRect;
+
+      syncPoints(pointsRef.current, linkedRectsRef.current, { isSource, sourceAndTargetSelected });
+      redraw();
+    };
+
+    return {
       ...elementInstance,
 
       pathRef,
+      cacheRef: cache,
       markerRef,
       captionRef,
       settingsRef,
       containerRef,
       hiddenPathRef,
+      linkedRectsRef,
       captionContainerRef,
 
-      updateMarkerPosition,
+      redraw,
       updateCaptionPosition,
 
       getLinkType: () =>
@@ -168,6 +227,8 @@ const useLinkInstance = () => {
       getPoints: () => pointsRef,
       isStraight: () => cache.current.isStraight,
       getCaptionRect: () => captionRectRef,
+
+      onLinkPositionReversed,
 
       translatePoint: (moves, { sync, isSource, sourceAndTargetSelected }) => {
         if (!pointsRef.current || !linkedRectsRef.current) return;
@@ -194,56 +255,30 @@ const useLinkInstance = () => {
           }
         }
 
-        pointsRef.current = syncPointsWithLinkedRects(pointsRef.current, linkedRectsRef.current, {
-          isStraight: cache.current.isStraight,
-          isConnected: true,
-          isPathLocked: cache.current.isPathLocked,
-          syncOnlySource: isSource,
-          syncOnlyTarget: !isSource,
-          sourceNodeIsStart: cache.current.sourceNodeIsStart,
-          sourceNodeIsAction: cache.current.sourceNodeIsAction,
-          sourceParentNodeRect: linkEntity.getSourceParentNodeRect(),
-          targetNodeIsCombined: cache.current.targetNodeIsCombined,
-          sourceAndTargetSelected,
-        });
-
-        if (cache.current.linkData?.caption) {
-          centerRef.current = getPathPointsCenter(pointsRef.current, { isStraight: cache.current.isStraight });
-
-          captionRectRef.current.x = centerRef.current[0] - captionRectRef.current.width / 2;
-          captionRectRef.current.y = centerRef.current[1] - captionRectRef.current.height / 2;
-        }
+        syncPoints(pointsRef.current, linkedRectsRef.current, { isSource, sourceAndTargetSelected });
 
         const scheduler = sync ? (callback: () => void) => callback() : stylesScheduler;
 
         scheduler(() => {
-          const pathElm = pathRef.current;
-          const hiddenPathElm = hiddenPathRef.current;
+          redraw();
 
-          if (!pathElm || !hiddenPathElm) return;
-
-          const nextPath = buildPath(pointsRef.current, { isStraight: cache.current.isStraight });
-
-          pointsPathRef.current = nextPath;
-
-          pathElm.setAttribute('d', nextPath);
-          hiddenPathElm?.setAttribute('d', nextPath);
-
-          linkEntity.portLinkInstance?.api.updatePosition(pointsRef.current);
-
-          settingsRef.current?.setPosition();
-
-          updateMarkerPosition();
-          updateCaptionPosition();
+          linkEntity.portLinkInstance?.api.updatePosition(pointsRef.current, () => onLinkPositionReversed({ isSource, sourceAndTargetSelected }));
         });
       },
 
       getPath: () => pointsPathRef.current,
 
       getMarkerAttrs: () => getMarkerAttrs(pointsRef.current, { isStraight: cache.current.isStraight }),
-    }),
-    [elementInstance, buildPath]
-  );
+    };
+  }, [elementInstance, buildPath]);
+
+  React.useEffect(() => {
+    linkEntity.portLinkInstance?.api.updatePosition(points, () =>
+      instance.onLinkPositionReversed({ isSource: false, sourceAndTargetSelected: false })
+    );
+  }, [points, instance]);
+
+  return instance;
 };
 
 export default useLinkInstance;

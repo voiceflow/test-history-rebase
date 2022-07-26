@@ -9,15 +9,14 @@ import { Content, Controls } from '@/pages/Canvas/components/Editor';
 import { NodeEditor } from '@/pages/Canvas/managers/types';
 
 import { DraggableItemV2, HelpMessage, HelpTooltip } from './components';
-import { MAX_SETS } from './constants';
-import { setClone, setFactory } from './utils';
+import { MAX_SETS, setFactory } from './constants';
 
 const SetEditorV2: NodeEditor<Realtime.NodeData.SetV2, Realtime.NodeData.SetV2BuiltInPorts> = ({ data, onChange }) => {
   const [isDragging, toggleDragging] = useToggle(false);
   const [stepName, setStepName] = useLinkedState(data.title);
 
   const mapManager = useMapManager(data.sets, (sets) => onChange({ sets }), {
-    clone: setClone,
+    clone: ({ id }, targetVal) => ({ ...targetVal, id }),
     factory: setFactory,
     maxItems: MAX_SETS,
   });

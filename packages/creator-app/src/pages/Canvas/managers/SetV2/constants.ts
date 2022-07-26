@@ -10,8 +10,8 @@ export const MAX_SETS = 20;
 
 export const setFactory = (): Realtime.NodeData.SetExpressionV2 => ({
   id: Utils.id.cuid.slug(),
+  type: BaseNode.Utils.ExpressionTypeV2.ADVANCE,
   variable: null,
-  type: BaseNode.Utils.ExpressionTypeV2.VALUE,
   expression: '',
 });
 
@@ -33,14 +33,7 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.SetV2, Realtime.NodeData.
     data: {
       name: 'Set',
       title: '',
-      sets: [
-        {
-          id: Utils.id.cuid.slug(),
-          variable: null,
-          type: BaseNode.Utils.ExpressionTypeV2.VALUE,
-          expression: '',
-        },
-      ],
+      sets: [setFactory()],
     },
   }),
 };

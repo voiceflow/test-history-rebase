@@ -19,7 +19,7 @@ export interface AudioPlayerProps {
 const AudioPlayer: React.FC<AudioPlayerProps> = ({ link, title, onClose, autoplay = false, showDuration = false, className }) => {
   const containerRef = React.useRef<HTMLDivElement | null>(null);
 
-  const { curTime, duration, playing, setPlaying, setClickedTime } = useAudioPlayer({ autoplay, audioURL: link });
+  const audioPlayer = useAudioPlayer({ autoplay, audioURL: link });
 
   const jumpToTime = ({ clientX: xCoord }: { clientX: number }) => {
     if (!containerRef.current) return;
@@ -28,17 +28,16 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ link, title, onClose, autopla
     const { x: containerXCoord } = containerRef.current.getBoundingClientRect();
     const xOfClick = xCoord - containerXCoord;
     const timePercent = xOfClick / widthOfContainer;
-    setClickedTime(timePercent * duration);
-  };
 
-  const percent = (curTime / duration) * 100;
+    audioPlayer.onSeek(timePercent * audioPlayer.duration);
+  };
 
   return (
     <Container ref={containerRef} onClick={jumpToTime} className={className}>
-      <ProgressBar percent={percent} />
+      <ProgressBar percent={audioPlayer.percent} />
 
       <Box.Flex fullWidth>
-        <PausePlayButton large onClick={swallowEvent(() => setPlaying(!playing))} icon={playing ? 'pause' : 'playOutline'} />
+        <PausePlayButton large onClick={swallowEvent(audioPlayer.onToggle)} icon={audioPlayer.playing ? 'pause' : 'playOutline'} />
 
         <TextContainer>
           <FileNameContainer>
@@ -47,7 +46,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ link, title, onClose, autopla
             </TippyTooltip>
           </FileNameContainer>
 
-          {showDuration && <DurationText>{formatTime(duration)}</DurationText>}
+          {showDuration && <DurationText>{formatTime(audioPlayer.duration)}</DurationText>}
         </TextContainer>
       </Box.Flex>
 

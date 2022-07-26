@@ -8,6 +8,7 @@ import ConditionsBuilderV2 from '@/components/ConditionsBuilderV2';
 import { DragPreviewComponentProps, ItemComponentProps, MappedItemComponentHandlers } from '@/components/DraggableList';
 import { useAutoScrollNodeIntoView, useFeature } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
+import { Actions } from '@/pages/Canvas/managers/components';
 import { NodeEditorV2Props } from '@/pages/Canvas/managers/types';
 
 export interface IfItemProps
@@ -72,6 +73,10 @@ const IfItem: React.ForwardRefRenderFunction<HTMLElement, IfItemProps> = (
                         />
                       )}
                     </SectionV2.Content>
+
+                    <SectionV2.Divider inset />
+
+                    <Actions.Section portID={editor.node.ports.out.dynamic[index]} editor={editor} />
                   </>
                 )}
               </SectionV2.CollapseSection>

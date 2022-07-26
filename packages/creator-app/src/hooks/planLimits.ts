@@ -3,7 +3,10 @@ import { ModalType } from '@/constants';
 import { UpgradePrompt } from '@/ducks/tracking';
 import * as VariableState from '@/ducks/variableState';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { useModals, useSelector, useTrackingEvents } from '@/hooks';
+
+import { useModals } from './modals';
+import { useSelector } from './redux';
+import { useTrackingEvents } from './tracking';
 
 type PlanLimitHandler = (planAction: () => void) => () => void;
 

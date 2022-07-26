@@ -21,40 +21,34 @@ const PortLink: React.FC<PortLinkProps> = ({ linkID, isHighlighted }) => {
   const portEntity = React.useContext(PortEntityContext)!;
   const isStraightLinks = React.useContext(IsStraightLinksContext)!;
 
-  const ref = React.useRef<SVGSVGElement>(null);
-
   const { link } = portEntity.useState((e) => ({ link: e.resolveLink() }));
 
   const [reversed, toggleReversed] = useToggle(link?.data?.points?.[0]?.reversed ?? false);
 
   const straight = link?.data?.type ? link.data.type === BaseModels.Project.LinkType.STRAIGHT : isStraightLinks;
 
-  const onReverseUpdate = React.useCallback((points: PathPoints | null) => {
-    toggleReversed(points?.[0].reversed ?? false);
-  }, []);
+  const onReverseUpdate = React.useCallback((points: PathPoints | null) => toggleReversed(points?.[0].reversed ?? false), []);
 
   const api = React.useMemo(() => ({ updatePosition: onReverseUpdate }), []);
 
   useDidUpdateEffect(() => {
-    onReverseUpdate(link?.data?.points ?? null);
+    onReverseUpdate(straight ? link?.data?.points ?? null : null);
   }, [straight, link?.data?.points]);
 
   React.useEffect(() => {
     const id = linkID ?? engine.linkCreation.sourcePortID;
 
-    if (id) {
-      engine.registerPortLinkInstance(id, api);
-    }
+    if (!id) return undefined;
+
+    engine.registerPortLinkInstance(id, api);
 
     return () => {
-      if (id) {
-        engine.expirePortLinkInstance(id);
-      }
+      engine.expirePortLinkInstance(id);
     };
   }, []);
 
   return (
-    <LinkSvg ref={ref} reversed={reversed} shapeRendering="geometricPrecision">
+    <LinkSvg reversed={reversed} shapeRendering="geometricPrecision">
       <LinkPath strokeColor={link?.data?.color ?? STROKE_DEFAULT_COLOR} isHighlighted={isHighlighted} d={`M 0 4 L ${NODE_LINK_WIDTH} 4`} />
     </LinkSvg>
   );

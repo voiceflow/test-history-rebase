@@ -1,4 +1,4 @@
-import { styled, units } from '@/hocs';
+import { styled } from '@/hocs';
 import {
   CANVAS_COMMENTING_ENABLED_CLASSNAME,
   CANVAS_MERGING_CLASSNAME,
@@ -7,18 +7,14 @@ import {
   NODE_DISABLED_CLASSNAME,
 } from '@/pages/Canvas/constants';
 
-import { PORT_SIZE } from '../constants';
-
-const PORT_LEFT_PADDING = 12;
-
-const PortContainer = styled.div`
-  position: relative;
-  height: ${({ theme }) => theme.components.blockStep.minHeight}px;
-  width: ${({ theme }) => PORT_LEFT_PADDING + PORT_SIZE + theme.unit * 2}px;
-  margin: -${units(2)}px -${units(2)}px -${units(2)}px 0;
-  padding-left: ${PORT_LEFT_PADDING}px;
+const PortContainer = styled.div<{ isConnectedToActions?: boolean }>`
+  display: flex;
+  width: 100%;
+  height: 100%;
   align-self: center;
-  cursor: copy;
+  align-items: center;
+  justify-content: center;
+  cursor: ${({ isConnectedToActions }) => (isConnectedToActions ? 'inherit' : 'copy')};
 
   .${CANVAS_COMMENTING_ENABLED_CLASSNAME} & {
     cursor: crosshair;

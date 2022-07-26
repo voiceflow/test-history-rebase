@@ -15,8 +15,11 @@ const Container = styled.div`
   right: 0;
 
   ${PortContainer} {
+    width: 46px;
+    height: 46px;
+    right: 0px;
+    bottom: 0px;
     position: absolute;
-    right: 16px;
   }
 `;
 

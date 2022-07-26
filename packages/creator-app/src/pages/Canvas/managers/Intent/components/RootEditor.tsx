@@ -1,4 +1,4 @@
-import { BaseNode } from '@voiceflow/base-types';
+import { BaseModels, BaseNode } from '@voiceflow/base-types';
 import { Nullable } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { SectionV2 } from '@voiceflow/ui';
@@ -14,7 +14,7 @@ import { useDispatch, useFeature, useIntent, useSelector, useSyncDispatch } from
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import IntentRequiredEntitiesSection from '@/pages/Canvas/components/IntentRequiredEntitiesSection';
 
-import { Entity } from '../../components';
+import { Actions, Entity } from '../../components';
 import AvailabilitySection from './AvailabilitySection';
 
 const RootEditor: React.FC = () => {
@@ -66,7 +66,11 @@ const RootEditor: React.FC = () => {
   };
 
   return (
-    <EditorV2 header={<EditorV2.DefaultHeader />} footer={<EditorV2.DefaultFooter tutorial={Documentation.INTENT_STEP} />}>
+    <EditorV2
+      header={<EditorV2.DefaultHeader />}
+      footer={<EditorV2.DefaultFooter tutorial={Documentation.INTENT_STEP} />}
+      dropLagAccept={Actions.Section.DRAG_TYPE}
+    >
       <SectionV2.SimpleSection isAccent>
         <IntentSelect
           intent={intent}
@@ -84,7 +88,6 @@ const RootEditor: React.FC = () => {
       {intent && !intentIsBuiltIn && intentHasRequiredEntity && (
         <>
           <SectionV2.Divider inset />
-
           <IntentRequiredEntitiesSection
             onEntityClick={(entityID) => editor.goToNested({ path: Entity.PATH, params: { intentID: intent.id, entityID } })}
             onAddRequired={(entityID) => onAddRequiredEntity(intent.id, entityID)}
@@ -94,6 +97,9 @@ const RootEditor: React.FC = () => {
           />
         </>
       )}
+
+      <SectionV2.Divider inset />
+      <Actions.Section editor={editor} portID={editor.node.ports.out.builtIn[BaseModels.PortType.NEXT]} />
 
       {topicsAndComponents.isEnabled && isTopicsAndComponentsVersion ? (
         <>

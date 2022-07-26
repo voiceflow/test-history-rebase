@@ -10,8 +10,8 @@ import LinkLayer from '@/pages/Canvas/components/LinkLayer';
 import MarkupLayer from '@/pages/Canvas/components/MarkupLayer';
 import NodeLayer from '@/pages/Canvas/components/NodeLayer';
 import { CanvasProviders, ManagerProvider, PresentationModeProvider } from '@/pages/Canvas/contexts';
-import { useEngine } from '@/pages/Canvas/hooks';
-import { useManager } from '@/pages/Canvas/managers';
+import { useEngine } from '@/pages/Canvas/hooks/engine';
+import { useManager } from '@/pages/Canvas/managers/utils';
 import { MarkupProvider, ProjectProvider } from '@/pages/Project/contexts';
 
 import { ExportCanvasDiagram, ExportGlobalStyle, ExportWatermark, MockRealtimeGate } from './components';

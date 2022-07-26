@@ -5,6 +5,7 @@ import React from 'react';
 
 import { SubEditorPaths } from '@/pages/Canvas/constants';
 import { EngineContext } from '@/pages/Canvas/contexts';
+import NoMatchV2 from '@/pages/Canvas/managers/components/NoMatchV2';
 import { hasValidPrompt } from '@/utils/prompt';
 
 import PromptsPreview from './PromptsPreview';
@@ -45,6 +46,7 @@ const NoMatchStepItemV2: React.FC<NoMatchStepItemProps> = ({ nodeID, noMatch, po
             ) : null
           }
           v2
+          parentActionsPath={NoMatchV2.PATH}
         />
       )}
     </Popper>

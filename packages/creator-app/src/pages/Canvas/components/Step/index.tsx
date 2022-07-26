@@ -7,6 +7,7 @@ import { useEditingMode } from '@/pages/Project/hooks';
 import { ClassName } from '@/styles/constants';
 
 import {
+  ActionPort,
   Attachment,
   Container,
   HoverContainer,
@@ -71,6 +72,7 @@ export default Object.assign(Step, {
   Icon,
   Image,
   Item,
+  ActionPort,
   LabelText,
   LabelTextContainer,
   Section,

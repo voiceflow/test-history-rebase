@@ -17,7 +17,10 @@ import * as S from './styles';
 import { checkIfFirstInGroup, checkIfLastBotMessage, checkIfLastBubble, checkIfLastInGroup } from './utils';
 
 interface DialogPrototypeProps
-  extends Pick<PrototypeDialogMessageProps, 'setFocusedTurnID' | 'focusedTurnID' | 'dialogTurnMap' | 'onPlay' | 'onMessageDoubleClick'> {
+  extends Pick<
+    PrototypeDialogMessageProps,
+    'audio' | 'setFocusedTurnID' | 'focusedTurnID' | 'dialogTurnMap' | 'onPause' | 'onContinue' | 'onMessageDoubleClick'
+  > {
   status: PrototypeStatus;
   messages: Message[];
   isPublic?: boolean;

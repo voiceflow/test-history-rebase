@@ -12,9 +12,10 @@ export interface PrototypeDialogMessageProps {
   setFocusedTurnID: (turnID: string | null) => void;
   focusedTurnID: string | null;
   dialogTurnMap?: TurnMap;
-  onPlay?: (src: string) => void;
+  onPause?: VoidFunction;
+  onContinue?: VoidFunction;
   onInteraction: OnInteraction;
-
+  audio?: HTMLAudioElement;
   message: Message;
   hideSessionMessages?: boolean;
   isLoading?: boolean;
@@ -55,12 +56,14 @@ const PrototypeDialogMessage: React.FC<PrototypeDialogMessageProps> = ({
   lastUserMessage,
   color,
 
-  onPlay,
+  onPause,
+  onContinue,
   onMessageDoubleClick,
   onInteraction,
 
   pmStatus,
 
+  audio,
   avatarURL,
   isTranscript,
 }) => {
@@ -85,13 +88,15 @@ const PrototypeDialogMessage: React.FC<PrototypeDialogMessageProps> = ({
           userSpeak={userSpeak}
           {...botMessageProps}
           {...message}
+          audio={audio}
+          onPause={onPause}
           pmStatus={pmStatus}
           audioSrc={message.src ?? ''}
-          onPlay={() => onPlay?.(message.src ?? '')}
+          onContinue={onContinue}
           isCurrent={isCurrent}
           avatarURL={avatarURL}
           allowPause={isTranscript}
-          autoplay={!isTranscript}
+          trackOnly={isLast}
         />
       );
     case MessageType.TEXT:
@@ -101,9 +106,11 @@ const PrototypeDialogMessage: React.FC<PrototypeDialogMessageProps> = ({
         <V.Speak
           {...botMessageProps}
           {...message}
+          audio={audio}
           pmStatus={pmStatus}
           userSpeak={userSpeak}
-          onClick={() => onPlay?.(message.src ?? '')}
+          onPause={onPause}
+          onContinue={onContinue}
           isLast={isLast}
           avatarURL={avatarURL}
         />
@@ -142,13 +149,15 @@ const PrototypeDialogMessage: React.FC<PrototypeDialogMessageProps> = ({
           name=""
           {...botMessageProps}
           {...message}
+          audio={audio}
+          onPause={onPause}
           pmStatus={pmStatus}
           audioSrc={message.audio}
-          onPlay={() => onPlay?.(message.audio)}
+          trackOnly={isLast}
           isCurrent={isCurrent}
           avatarURL={avatarURL}
+          onContinue={onContinue}
           allowPause={isTranscript}
-          autoplay={!isTranscript}
         />
       );
     case MessageType.VISUAL:

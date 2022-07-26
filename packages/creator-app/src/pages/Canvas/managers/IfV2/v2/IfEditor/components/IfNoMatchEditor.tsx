@@ -1,10 +1,13 @@
-import { BaseNode } from '@voiceflow/base-types';
+import { BaseModels, BaseNode } from '@voiceflow/base-types';
+import * as Realtime from '@voiceflow/realtime-sdk';
+import { SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Creator from '@/ducks/creator';
 import { useSelector } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import { EngineContext } from '@/pages/Canvas/contexts';
+import { Actions, NoMatchV2 } from '@/pages/Canvas/managers/components';
 import PathSection from '@/pages/Canvas/managers/components/PathSection';
 import HelpTooltip from '@/pages/Canvas/managers/IfV2/components/HelpTooltip';
 
@@ -16,7 +19,7 @@ const DEFAULT_IF_NO_MATCH_LABEL = 'Else';
 
 const IfNoMatch: React.FC = () => {
   const engine = React.useContext(EngineContext)!;
-  const editor = EditorV2.useEditor<Data>();
+  const editor = EditorV2.useEditor<Data, Realtime.NodeData.IfV2BuiltInPorts>();
   const noMatchLinkID = useSelector(Creator.focusedNoMatchLinkIDSelector);
   const { noMatch } = editor.data;
 
@@ -35,6 +38,8 @@ const IfNoMatch: React.FC = () => {
     await onChange({ type: BaseNode.IfV2.IfNoMatchType.NONE });
   };
 
+  const collapsed = noMatch.type === BaseNode.IfV2.IfNoMatchType.NONE;
+
   return (
     <EditorV2 header={<EditorV2.DefaultHeader onBack={editor.goBack} />} footer={<EditorV2.DefaultFooter tutorial={{ content: <HelpTooltip /> }} />}>
       <PathSection
@@ -42,9 +47,17 @@ const IfNoMatch: React.FC = () => {
         pathName={noMatch.pathName && noMatch.pathName !== DEFAULT_IF_NO_MATCH_LABEL ? noMatch.pathName : ''}
         onRemove={onRemovePath}
         onRename={(pathName) => onChange({ pathName: pathName || DEFAULT_IF_NO_MATCH_LABEL })}
-        collapsed={noMatch.type === BaseNode.IfV2.IfNoMatchType.NONE}
+        collapsed={collapsed}
         placeholder="Enter path label"
       />
+
+      {!collapsed && (
+        <>
+          <SectionV2.Divider inset />
+
+          <Actions.Section portID={editor.node.ports.out.builtIn[BaseModels.PortType.NO_MATCH]} editor={editor} parentPath={NoMatchV2.PATH} />
+        </>
+      )}
     </EditorV2>
   );
 };

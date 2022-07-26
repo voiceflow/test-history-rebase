@@ -55,7 +55,8 @@ const suite = createSuite(() => ({
 
     vi.spyOn(audio, 'play').mockReturnValue(Promise.resolve());
     vi.spyOn(audio, 'stop');
-    vi.spyOn(audio, 'playExternal');
+    vi.spyOn(audio, 'pause');
+    vi.spyOn(audio, 'continue');
 
     vi.spyOn(timeout, 'delay').mockReturnValue(Promise.resolve());
     vi.spyOn(timeout, 'clearAll');
@@ -113,7 +114,7 @@ const suite = createSuite(() => ({
     (controller['audio']['play'] as any as SpyInstance).mockImplementation(async (_: any, { onError }: { onError: Function }) => onError()),
 
   emulateAudioPause: (controller: TraceController, audio: any) =>
-    (controller['audio']['play'] as any as SpyInstance).mockImplementation(async (_: any, { onPause }: { onPause: Function }) => onPause(audio)),
+    (controller['audio']['play'] as any as SpyInstance).mockImplementation(async (_: any, { onStop }: { onStop: Function }) => onStop(audio)),
 
   emulateAudioReject: (controller: TraceController) => (controller['audio']['play'] as any as SpyInstance).mockReturnValue(Promise.reject()),
 
@@ -128,8 +129,6 @@ const suite = createSuite(() => ({
   expectAudioPlay: (controller: TraceController) => expect(controller['audio']['play']),
 
   expectAudioStop: (controller: TraceController) => expect(controller['audio']['stop']),
-
-  expectAudioPlayExternal: (controller: TraceController) => expect(controller['audio']['playExternal']),
 
   expectMessage: <T extends Exclude<keyof MessageController, 'trackStartTime'>>(controller: TraceController, method: T, data: any) =>
     expect(controller['message'][method]).toBeCalledWith(data),

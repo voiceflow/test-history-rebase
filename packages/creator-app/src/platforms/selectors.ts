@@ -4,7 +4,7 @@ import { GoogleConstants } from '@voiceflow/google-types';
 import { Utils } from '@voiceflow/realtime-sdk';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
-import { applyAlexaIntentNameFormatting, applyLUISIntentNameFormatting } from '@/utils/intent';
+import { applyAlexaIntentNameFormatting, applyLUISIntentNameFormatting } from '@/utils/intent/platform';
 
 import alexaClient from './alexa/client';
 import { UTTERANCE_RECOMMENDATIONS_LOCALES as ALEXA_UTTERANCE_RECOMMENDATIONS_LOCALES } from './alexa/constants';

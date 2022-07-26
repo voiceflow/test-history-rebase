@@ -21,58 +21,67 @@ import {
 } from './components';
 
 export interface ChatDialogProps {
+  audio?: HTMLAudioElement;
   input: string;
   color?: string;
-  avatarURL?: string;
   isIdle?: boolean;
+  locale: string;
   layout: PrototypeLayout;
-  onStart: () => void;
-  onMute: () => void;
-  onPlay: (src: string) => void;
+  onMute: VoidFunction;
+  onPause: VoidFunction;
+  onReset: VoidFunction;
+  onStart: VoidFunction;
   isMuted?: boolean;
-  onReset: () => void;
-  messages: Message[];
-  isMobile?: boolean;
   buttons?: BaseButton.ButtonsLayout;
+  messages: Message[];
+  pmStatus: Nullable<PMStatus>;
+  isMobile?: boolean;
+  hasInput?: boolean;
   isLoading?: boolean;
   testEnded?: boolean;
+  avatarURL?: string;
+  autoScroll?: boolean;
+  onStepBack: VoidFunction;
+  onContinue: VoidFunction;
+  buttonsOnly: boolean;
   isListening?: boolean;
   interactions: Interaction[];
   onInteraction: OnInteraction;
   onInputChange: (input: string) => void;
   prototypeStatus: PrototypeStatus;
   finalTranscript: string;
-  onStopListening: () => void;
-  onStartListening: () => void;
-  locale: string;
+  onStopListening: VoidFunction;
+  onStartListening: VoidFunction;
   interimTranscript: string;
-  onCheckMicrophonePermission?: () => void;
+  onCheckMicrophonePermission?: VoidFunction;
   isMicrophonePermissionGranted?: boolean;
   isSpeechSpeechRecognitionSupported?: boolean;
-  hasInput?: boolean;
-  autoScroll?: boolean;
-  onStepBack: () => void;
-  pmStatus: Nullable<PMStatus>;
-  buttonsOnly: boolean;
 }
 
 const ChatDialog: React.FC<ChatDialogProps> = ({
+  audio,
   input,
   color,
-  avatarURL,
   onMute,
   isIdle,
-  onPlay,
   layout,
   locale,
+  onPause,
   onStart,
   isMuted,
   onReset,
   buttons,
   messages,
+  hasInput = true,
+  pmStatus,
   isMobile,
   isLoading,
+  avatarURL,
   testEnded,
+  autoScroll = true,
+  onContinue,
+  onStepBack,
+  buttonsOnly,
   isListening,
   interactions,
   onInputChange,
@@ -85,11 +94,6 @@ const ChatDialog: React.FC<ChatDialogProps> = ({
   onCheckMicrophonePermission,
   isMicrophonePermissionGranted,
   isSpeechSpeechRecognitionSupported,
-  hasInput = true,
-  autoScroll = true,
-  onStepBack,
-  pmStatus,
-  buttonsOnly,
 }) => {
   const theme = useTheme();
   const [canUseASR] = useCanASR();
@@ -101,8 +105,10 @@ const ChatDialog: React.FC<ChatDialogProps> = ({
     <Box height="100%" width="100%" position="relative">
       <DisplayContainer isMobile={isMobile}>
         <ChatDisplay
+          audio={audio}
           pmStatus={pmStatus}
-          onPlay={onPlay}
+          onPause={onPause}
+          onContinue={onContinue}
           status={prototypeStatus}
           messages={messages}
           isLoading={isLoading}

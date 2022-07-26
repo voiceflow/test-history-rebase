@@ -10,10 +10,35 @@ export enum SchemaVersion {
    */
   V2 = 2,
 
+  /**
+   * add missing ports to carousel steps to fix CT-582
+   */
   V2_1 = 2.1,
-  V2_2 = 2.2, // center align image markup nodes
-  V2_3 = 2.3, // remove invalid entities from utterances in IMM
-  V2_4 = 2.4, // force migration
+
+  /**
+   * center align image markup nodes
+   */
+  V2_2 = 2.2,
+
+  /**
+   * remove invalid entities from utterances in IMM
+   */
+  V2_3 = 2.3,
+
+  /**
+   * force migrate
+   */
+  V2_4 = 2.4,
+
+  /**
+   * migrate the "go to intent" and "url" node data into the "go to intent" and "url" action nodes
+   */
+  V2_5 = 2.5,
+
+  /**
+   * migrate the set "value" type into the "advance" type
+   */
+  V2_6 = 2.6,
 }
 
 export const SUPPORTED_SCHEMA_VERSIONS = Object.values(SchemaVersion)

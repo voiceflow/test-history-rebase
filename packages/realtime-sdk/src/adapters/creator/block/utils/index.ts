@@ -33,17 +33,13 @@ export const chipsToIntentButtons = (chips?: Nullable<BaseButton.Chip[]>): Nulla
   chips?.map(({ label: name }) => ({ name, type: BaseButton.ButtonType.INTENT, payload: { intentID: null } })) ?? null;
 
 export const choiceAdapter = createAdapter<BaseNode.Interaction.Choice, NodeData.InteractionChoice>(
-  ({ goTo = null, intent, action = BaseNode.Interaction.ChoiceAction.PATH, mappings = [] }) => ({
+  ({ intent, mappings = [] }) => ({
     id: Utils.id.cuid.slug(),
-    goTo,
     intent,
-    action,
     mappings,
   }),
-  ({ goTo, intent, action, mappings }) => ({
-    goTo: goTo ?? undefined,
+  ({ intent, mappings }) => ({
     intent: intent ?? '',
-    action,
     mappings,
   })
 );

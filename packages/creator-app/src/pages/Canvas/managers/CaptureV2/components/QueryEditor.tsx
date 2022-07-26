@@ -1,4 +1,4 @@
-import { BaseNode } from '@voiceflow/base-types';
+import { BaseModels, BaseNode } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, createUIOnlyMenuItemOption, SectionV2, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
@@ -12,7 +12,7 @@ import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import { useIntentScope } from '@/pages/Canvas/managers/hooks';
 import { getPlatformNoMatchFactory } from '@/utils/noMatch';
 
-import { NoReplyV2 } from '../../components';
+import { Actions, NoReplyV2 } from '../../components';
 import { ENTIRE_USER_REPLY_ID, ENTIRE_USER_REPLY_LABEL } from './constants';
 import EntitySelector from './EntitySelector';
 import { useEntitiesOptions } from './hooks';
@@ -56,6 +56,7 @@ const QueryEditor: React.FC<{ disableAnimation: boolean }> = ({ disableAnimation
           />
         </EditorV2.DefaultFooter>
       }
+      dropLagAccept={Actions.Section.DRAG_TYPE}
       disableAnimation={disableAnimation}
     >
       <EditorV2.PersistCollapse namespace={['CaptureSection', ENTIRE_USER_REPLY_ID]} defaultCollapsed={false}>
@@ -92,6 +93,10 @@ const QueryEditor: React.FC<{ disableAnimation: boolean }> = ({ disableAnimation
           </SectionV2.Sticky>
         )}
       </EditorV2.PersistCollapse>
+
+      <SectionV2.Divider />
+
+      <Actions.Section portID={editor.node.ports.out.builtIn[BaseModels.PortType.NEXT]} editor={editor} />
 
       {noReplyConfig.section}
     </EditorV2>

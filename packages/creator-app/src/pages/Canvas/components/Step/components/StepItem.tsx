@@ -1,11 +1,8 @@
 import React from 'react';
 
 import { StepLabelVariant } from '@/constants/canvas';
-import Port from '@/pages/Canvas/components/Port';
-import { PortEntityProvider } from '@/pages/Canvas/contexts';
 import { ClassName } from '@/styles/constants';
 
-import { StepAPIContext } from '../contexts';
 import { ItemProps } from '../types';
 import NewLineAttachmentContainer from './NewLineAttachmentContainer';
 import StepIcon from './StepIcon';
@@ -15,6 +12,7 @@ import StepLabelTextContainer from './StepLabelTextContainer';
 import StepLinkedLabelContainer from './StepLinkedLabelContainer';
 import StepLinkedLabelIcon from './StepLinkedLabelIcon';
 import StepLinkedLabelText from './StepLinkedLabelText';
+import StepPort from './StepPort';
 import StepTitle from './StepTitle';
 
 const StepItem: React.FC<ItemProps> = ({
@@ -42,71 +40,61 @@ const StepItem: React.FC<ItemProps> = ({
   nestedWithIcon,
   newLineAttachment,
   v2,
-  style,
-}) => {
-  const stepAPI = React.useContext(StepAPIContext);
+  parentActionsPath,
+}) => (
+  <Container className={ClassName.CANVAS_STEP_ITEM} nested={nested} nestedWithIcon={nestedWithIcon}>
+    {children ?? (
+      <>
+        {prefix}
 
-  return (
-    <>
-      <Container className={ClassName.CANVAS_STEP_ITEM} nested={nested} nestedWithIcon={nestedWithIcon} style={style}>
-        {children ?? (
-          <>
-            {prefix}
+        {v2 && icon && <StepIcon palette={palette} iconColor={iconColor} icon={icon} iconSize={iconSize} style={iconStyle} />}
 
-            {v2 && icon && <StepIcon palette={palette} iconColor={iconColor} icon={icon} iconSize={iconSize} style={iconStyle} />}
+        {!v2 && <StepIcon palette={palette} iconColor={iconColor} icon={icon} iconSize={iconSize} style={iconStyle} />}
 
-            {!v2 && <StepIcon palette={palette} iconColor={iconColor} icon={icon} iconSize={iconSize} style={iconStyle} />}
+        <StepLabelTextContainer variant={label ? labelVariant : StepLabelVariant.PLACEHOLDER}>
+          {title && (
+            <StepTitle
+              color={textColor}
+              onClick={onClick}
+              className={ClassName.CANVAS_STEP_ITEM_LABEL}
+              multiline={multilineLabel}
+              lineClamp={labelLineClamp}
+              wordBreak={wordBreak}
+              withNewLines={withNewLines}
+            >
+              {title}
+            </StepTitle>
+          )}
 
-            <StepLabelTextContainer variant={label ? labelVariant : StepLabelVariant.PLACEHOLDER}>
-              {title && (
-                <StepTitle
-                  onClick={onClick}
-                  className={ClassName.CANVAS_STEP_ITEM_LABEL}
-                  multiline={multilineLabel}
-                  lineClamp={labelLineClamp}
-                  withNewLines={withNewLines}
-                  wordBreak={wordBreak}
-                  color={textColor}
-                >
-                  {title}
-                </StepTitle>
-              )}
+          <StepLabelText
+            color={textColor}
+            onClick={onClick}
+            hasTitle={!!title}
+            multiline={multilineLabel}
+            className={ClassName.CANVAS_STEP_ITEM_LABEL}
+            lineClamp={labelLineClamp}
+            wordBreak={wordBreak}
+            withNewLines={withNewLines}
+          >
+            {label || placeholder}
+          </StepLabelText>
 
-              <StepLabelText
-                onClick={onClick}
-                className={ClassName.CANVAS_STEP_ITEM_LABEL}
-                multiline={multilineLabel}
-                lineClamp={labelLineClamp}
-                withNewLines={withNewLines}
-                wordBreak={wordBreak}
-                color={textColor}
-                hasTitle={!!title}
-              >
-                {label || placeholder}
-              </StepLabelText>
+          {!!linkedLabel && (
+            <StepLinkedLabelContainer>
+              <StepLinkedLabelIcon />
+              <StepLinkedLabelText>{linkedLabel}</StepLinkedLabelText>
+            </StepLinkedLabelContainer>
+          )}
 
-              {!!linkedLabel && (
-                <StepLinkedLabelContainer>
-                  <StepLinkedLabelIcon />
-                  <StepLinkedLabelText>{linkedLabel}</StepLinkedLabelText>
-                </StepLinkedLabelContainer>
-              )}
+          {newLineAttachment && <NewLineAttachmentContainer>{newLineAttachment}</NewLineAttachmentContainer>}
+        </StepLabelTextContainer>
 
-              {newLineAttachment && <NewLineAttachmentContainer>{newLineAttachment}</NewLineAttachmentContainer>}
-            </StepLabelTextContainer>
+        {attachment}
+      </>
+    )}
 
-            {attachment}
-          </>
-        )}
-
-        {stepAPI?.withPorts && portID && (
-          <PortEntityProvider id={portID}>
-            <Port />
-          </PortEntityProvider>
-        )}
-      </Container>
-    </>
-  );
-};
+    <StepPort portID={portID} parentActionsPath={parentActionsPath} />
+  </Container>
+);
 
 export default StepItem;

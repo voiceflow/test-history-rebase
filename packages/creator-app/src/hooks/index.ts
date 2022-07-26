@@ -5,7 +5,7 @@ export * from './dnd';
 export * from './dragPreview';
 export * from './effect';
 export * from './engine';
-export * from './expressionsValidation';
+export * from './expression';
 export * from './feature';
 export * from './feature';
 export * from './files';

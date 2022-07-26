@@ -10,6 +10,7 @@ import {
   getSourceStartRightY,
   getTargetEndLeftX,
   getTargetEndLeftY,
+  isSourceRectsReversed,
   isTargetEndLeftXToRightOfSourceNodeXCenter,
   isTargetEndLeftXToRightOfSourceStartLeftWithoutStraightOffset,
   isTargetEndLeftXToRightOfSourceStartRightXWithStraightOffset,
@@ -86,7 +87,9 @@ const getStraightUnconnectedPathPoints = (linkedRects: LinkedRects, options: Get
       : getLeftStraightLinePoints(linkedRects, options);
   }
 
-  if (isTargetEndLeftXToRightOfSourceStartRightXWithStraightOffset(linkedRects, options)) {
+  const isActionReversed = options.sourceNodeIsAction && isSourceRectsReversed(linkedRects);
+
+  if (!isActionReversed && isTargetEndLeftXToRightOfSourceStartRightXWithStraightOffset(linkedRects, options)) {
     return getRightZLikePoints(linkedRects, options);
   }
 

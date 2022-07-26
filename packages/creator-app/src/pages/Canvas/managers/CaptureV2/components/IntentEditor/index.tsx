@@ -1,6 +1,6 @@
-import { BaseNode } from '@voiceflow/base-types';
+import { BaseModels, BaseNode } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Button, createUIOnlyMenuItemOption, useConst } from '@voiceflow/ui';
+import { Button, createUIOnlyMenuItemOption, SectionV2, useConst } from '@voiceflow/ui';
 import React from 'react';
 
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
@@ -9,8 +9,10 @@ import { useMapManager, useToggle } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import { useIntentScope } from '@/pages/Canvas/managers/hooks';
 
-import { NoMatchV2, NoReplyV2 } from '../../../components';
+import { Actions, NoMatchV2, NoReplyV2 } from '../../../components';
 import { DraggableItem } from './components';
+
+const ITEM_DRAG_TYPE = 'capture-v2-editor';
 
 const IntentEditor: React.FC<{ disableAnimation: boolean }> = ({ disableAnimation }) => {
   const editor = EditorV2.useEditor<Realtime.NodeData.CaptureV2, Realtime.NodeData.CaptureV2BuiltInPorts>();
@@ -52,10 +54,11 @@ const IntentEditor: React.FC<{ disableAnimation: boolean }> = ({ disableAnimatio
           </EditorV2.DefaultFooter>
         )
       }
+      dropLagAccept={[Actions.Section.DRAG_TYPE, ITEM_DRAG_TYPE]}
       disableAnimation={disableAnimation}
     >
       <DraggableList
-        type="capture-v2-editor"
+        type={ITEM_DRAG_TYPE}
         canDrag={!mapManager.isOnlyItem}
         itemProps={{ editor, latestCreatedKey: mapManager.latestCreatedKey, onSelectQueryType, selectedSlotIDs }}
         onEndDrag={toggleDragging}
@@ -71,7 +74,12 @@ const IntentEditor: React.FC<{ disableAnimation: boolean }> = ({ disableAnimatio
 
       {!isDragging && (
         <>
+          <SectionV2.Divider />
+
+          <Actions.Section portID={editor.node.ports.out.builtIn[BaseModels.PortType.NEXT]} editor={editor} />
+
           {noMatchConfig.section}
+
           {noReplyConfig.section}
         </>
       )}

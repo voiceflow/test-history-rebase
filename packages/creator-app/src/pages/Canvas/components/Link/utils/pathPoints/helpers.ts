@@ -1,4 +1,4 @@
-import { ACTION_LINK_WIDTH, NODE_LINK_WIDTH } from '@/pages/Canvas/components/Port/constants';
+import { NODE_LINK_WIDTH } from '@/pages/Canvas/components/Port/constants';
 
 import { DOUBLE_STRAIGHT_PATH_OFFSET, STRAIGHT_PATH_OFFSET } from '../../constants';
 import { LinkedRects } from '../types';
@@ -7,22 +7,38 @@ import { GetPathPointsOptions } from './types';
 export const getRectYCenter = (rect: DOMRect): number => rect.top + rect.height / 2;
 export const getRectXCenter = (rect: DOMRect): number => rect.left + rect.width / 2;
 
-export const getSourceXOffset = ({ sourceNodeIsAction }: GetPathPointsOptions): number => (sourceNodeIsAction ? ACTION_LINK_WIDTH : NODE_LINK_WIDTH);
+export const isSourceRectsReversed = ({ sourceNodeRect, sourcePortRect }: LinkedRects) => sourcePortRect.left < sourceNodeRect.right;
+
+export const getSourceXOffset = ({ sourceNodeIsAction }: { sourceNodeIsAction: boolean }): number => (sourceNodeIsAction ? 0 : NODE_LINK_WIDTH);
+
+export const getSourceLeftXOffset = (options: GetPathPointsOptions): number => (options.sourceNodeIsStart ? 0 : getSourceXOffset(options));
 
 export const getSourceStartY = ({ sourcePortRect }: LinkedRects): number => getRectYCenter(sourcePortRect);
 
 export const getTargetXOffset = ({ isConnected, targetNodeIsCombined }: GetPathPointsOptions): number =>
   !isConnected || targetNodeIsCombined ? 0 : NODE_LINK_WIDTH;
 
-export const getTargetEndY = ({ sourcePortRect, targetPortRect }: LinkedRects, options: GetPathPointsOptions): number =>
-  options.isConnected ? targetPortRect.top + sourcePortRect.height / 2 : getRectYCenter(targetPortRect);
+export const getTargetEndY = ({ targetPortRect }: LinkedRects, options: { isConnected: boolean }): number =>
+  options.isConnected ? targetPortRect.top + 27 : getRectYCenter(targetPortRect);
 
 export const getTargetNodeXCenter = ({ targetNodeRect }: LinkedRects): number => getRectXCenter(targetNodeRect);
 
 export const getSourceNodeXCenter = ({ sourceNodeRect }: LinkedRects): number => getRectXCenter(sourceNodeRect);
 
-export const getSourceStartLeftX = ({ sourcePortRect, sourceNodeRect }: LinkedRects, options: GetPathPointsOptions): number =>
+export const getActionsSourceStartLeftX = ({ sourcePortRect, sourceNodeRect }: LinkedRects, options: GetPathPointsOptions): number =>
   (options.sourceNodeIsAction ? sourcePortRect.left : sourceNodeRect.left) - (options.sourceNodeIsStart ? 0 : getSourceXOffset(options));
+
+export const getSourceStartNormalLeftX = ({ sourceNodeRect }: LinkedRects, options: GetPathPointsOptions): number =>
+  sourceNodeRect.left - getSourceLeftXOffset(options);
+
+export const getSourceStartActionReversedLeftX = ({ sourcePortRect }: LinkedRects, options: GetPathPointsOptions): number =>
+  sourcePortRect.left - getSourceXOffset(options);
+
+export const getSourceStartActionLeftX = (linkedRects: LinkedRects, options: GetPathPointsOptions): number =>
+  isSourceRectsReversed(linkedRects) ? getSourceStartActionReversedLeftX(linkedRects, options) : getSourceStartNormalLeftX(linkedRects, options);
+
+export const getSourceStartLeftX = (linkedRects: LinkedRects, options: GetPathPointsOptions): number =>
+  options.sourceNodeIsAction ? getSourceStartActionLeftX(linkedRects, options) : getSourceStartNormalLeftX(linkedRects, options);
 
 export const getSourceStartLeftY = (linkedRects: LinkedRects): number => getSourceStartY(linkedRects);
 
@@ -33,7 +49,7 @@ export const getSourceStartRightY = (linkedRects: LinkedRects): number => getSou
 
 export const getTargetEndTopX = (linkedRects: LinkedRects): number => getTargetNodeXCenter(linkedRects);
 
-export const getTargetEndTopY = ({ targetPortRect }: LinkedRects): number => targetPortRect.top - 4;
+export const getTargetEndTopY = ({ targetPortRect }: LinkedRects): number => targetPortRect.top;
 
 export const getTargetEndLeftX = ({ targetPortRect }: LinkedRects, options: GetPathPointsOptions): number =>
   targetPortRect.left - getTargetXOffset(options);
@@ -55,7 +71,10 @@ export const isTargetEndLeftXToRightOfSourceStartRightXWithStraightOffset = (lin
   getTargetEndLeftX(linkedRects, options) > getSourceStartRightX(linkedRects, options) + STRAIGHT_PATH_OFFSET;
 
 export const isTargetEndLeftXToRightOfSourceStartLeftWithoutStraightOffset = (linkedRects: LinkedRects, options: GetPathPointsOptions): boolean =>
-  linkedRects.targetPortRect.left > getSourceStartLeftX(linkedRects, options) - STRAIGHT_PATH_OFFSET;
+  getTargetEndLeftX(linkedRects, options) > getSourceStartLeftX(linkedRects, options) - STRAIGHT_PATH_OFFSET;
+
+export const isTargetEndLeftXToRightOfSourceXCenterWithStraightOffset = (linkedRects: LinkedRects, options: GetPathPointsOptions): boolean =>
+  getTargetEndLeftX(linkedRects, options) > getSourceNodeXCenter(linkedRects) + STRAIGHT_PATH_OFFSET;
 
 export const isTargetEndLeftXToRightOfSourceStartRightXWithDoubleStraightOffset = (
   linkedRects: LinkedRects,
@@ -70,7 +89,10 @@ export const isTargetEndRightXToRightOfSourceStartLeftXWithoutDoubleStraightOffs
 export const isTargetEndTopYUnderSourceStartYWithDoubleStraightOffset = (linkedRects: LinkedRects): boolean =>
   getTargetEndTopY(linkedRects) > getSourceStartY(linkedRects) + DOUBLE_STRAIGHT_PATH_OFFSET;
 
-export const isTargetNodeXCenterToRightOfSourceStartRightXWithStraightOffset = (linkedRects: LinkedRects, options: GetPathPointsOptions): boolean =>
+export const isTargetEndLeftXToRightOfSourceNodeXCenterWithStraightOffset = (linkedRects: LinkedRects, options: GetPathPointsOptions): boolean =>
+  getTargetNodeXCenter(linkedRects) > getSourceStartRightX(linkedRects, options) + STRAIGHT_PATH_OFFSET;
+
+export const isTargetNodeXCenterToLeftOfSourceStartRightXWithStraightOffset = (linkedRects: LinkedRects, options: GetPathPointsOptions): boolean =>
   getTargetNodeXCenter(linkedRects) > getSourceStartRightX(linkedRects, options) + STRAIGHT_PATH_OFFSET;
 
 export const isTargetNodeXCenterToRightOfSourceStartLeftXWithStraightOffset = (linkedRects: LinkedRects, options: GetPathPointsOptions): boolean =>

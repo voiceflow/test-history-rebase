@@ -1,119 +1,142 @@
-import { useEffect, useRef, useState } from 'react';
+import React from 'react';
 
 const NETWORK_NO_SOURCE = 3;
 
 interface AudioPlayerProps {
+  audio?: HTMLAudioElement;
   autoplay?: boolean;
-  audioURL?: string;
-  isUsingDOMElement?: boolean;
+  audioURL?: string | null;
+  trackOnly?: boolean;
 }
 
-function useAudioPlayer({ autoplay = false, audioURL, isUsingDOMElement = false }: AudioPlayerProps) {
-  const ref = useRef<HTMLAudioElement | null>(null);
-  const [duration, setDuration] = useState<number>(0);
-  const [curTime, setCurTime] = useState<number>(0);
-  const [playing, setPlaying] = useState(autoplay);
-  const [clickedTime, setClickedTime] = useState<null | number>(null);
-  const [error, setError] = useState<Event | null | string>(null);
+// eslint-disable-next-line sonarjs/cognitive-complexity
+function useAudioPlayer({ audio: audioProp, autoplay = false, audioURL, trackOnly }: AudioPlayerProps = {}) {
+  const audio = React.useMemo(() => audioProp ?? new Audio(), [audioProp]);
 
-  const resetState = () => {
-    ref.current = null;
-    setDuration(0);
-    setPlaying(false);
-    setClickedTime(null);
-    setError(null);
+  const [error, setError] = React.useState<Event | null | string>(null);
+  const [playing, setPlaying] = React.useState(!audioProp ? false : !audioProp.paused);
+  const [duration, setDuration] = React.useState(0);
+  const [currentTime, setCurrentTime] = React.useState(0);
+
+  const onPlay = () => {
+    if (trackOnly) return;
+
+    audio.play();
   };
 
-  useEffect(() => {
-    if (isUsingDOMElement) return;
-    if (audioURL) {
-      ref.current = new Audio(audioURL);
+  const onPause = () => {
+    if (trackOnly) return;
+
+    audio.pause();
+  };
+
+  const onToggle = () => {
+    if (trackOnly) return;
+
+    if (playing) {
+      onPause();
     } else {
-      resetState();
+      onPlay();
     }
-  }, [audioURL]);
+  };
 
-  useEffect(() => {
-    const audio = ref.current;
+  const onSeek = (time: number) => {
+    if (trackOnly) return;
 
-    if (!audio) return;
-
-    const stopAudio = () => {
-      setPlaying(false);
-      setCurTime(0);
-    };
-
-    const setAudioData = () => {
-      setError(null);
-      setDuration(audio.duration);
-      setCurTime(audio.currentTime);
-    };
-
-    const onError: EventListenerOrEventListenerObject = (err) => setError(err);
-
-    const setAudioTime = () => setCurTime(audio.currentTime);
-
-    audio.addEventListener('error', onError);
-    audio.addEventListener('suspend', onError);
-    audio.addEventListener('stalled', onError);
-    audio.addEventListener('ended', stopAudio);
-    audio.addEventListener('loadeddata', setAudioData);
-    audio.addEventListener('timeupdate', setAudioTime);
-
-    if (audio.networkState === NETWORK_NO_SOURCE) {
-      setError('NETWORK_NO_SOURCE');
+    if (time && time !== currentTime) {
+      audio.currentTime = time;
     }
-    // eslint-disable-next-line consistent-return
-    return () => {
-      audio.removeEventListener('error', onError);
-      audio.removeEventListener('suspend', onError);
-      audio.removeEventListener('stalled', onError);
-      audio.removeEventListener('ended', stopAudio);
-      audio.removeEventListener('loadeddata', setAudioData);
-      audio.removeEventListener('timeupdate', setAudioTime);
-    };
-  }, [audioURL]);
+  };
 
-  useEffect(() => {
-    const audio = ref.current;
+  const onRestart = () => {
+    if (trackOnly) return;
 
-    if (!audio) {
-      return;
-    }
-
-    if (playing) audio.play();
-    else audio.pause();
-  }, [playing]);
-
-  useEffect(() => {
-    const audio = ref.current;
-
-    if (!audio) {
-      return;
-    }
-
-    if (clickedTime && clickedTime !== curTime) {
-      audio.currentTime = clickedTime;
-      setClickedTime(null);
-    }
-  }, [clickedTime, curTime]);
-
-  const restart = () => {
-    if (!ref.current) return;
-
-    const audio = ref.current;
     audio.currentTime = 0;
   };
 
+  React.useEffect(() => {
+    if (!trackOnly) {
+      audio.currentTime = 0;
+    }
+
+    setError(null);
+    setPlaying(false);
+    setDuration(0);
+    setCurrentTime(audio.currentTime);
+
+    return onPause;
+  }, [audio]);
+
+  React.useEffect(() => {
+    if (audioURL && !trackOnly) {
+      audio.src = audioURL;
+    }
+
+    if (playing === !audio.paused) {
+      setPlaying(!audio.paused);
+    }
+
+    const onPlay = () => setPlaying(true);
+    const onPause = () => setPlaying(false);
+
+    const onEnded = () => {
+      audio.currentTime = 0;
+
+      setPlaying(false);
+      setCurrentTime(0);
+    };
+
+    const onLoadedData = () => {
+      setError(null);
+      setDuration(audio.duration);
+      setCurrentTime(audio.currentTime);
+    };
+
+    const onError: EventListenerOrEventListenerObject = (err) => {
+      onEnded();
+      setError(err);
+    };
+
+    const onTimeUpdated = () => setCurrentTime(audio.currentTime);
+
+    audio.addEventListener('play', onPlay);
+    audio.addEventListener('pause', onPause);
+    audio.addEventListener('ended', onEnded);
+    audio.addEventListener('error', onError);
+    audio.addEventListener('suspend', onError);
+    audio.addEventListener('stalled', onError);
+    audio.addEventListener('loadeddata', onLoadedData);
+    audio.addEventListener('timeupdate', onTimeUpdated);
+
+    if (audio.networkState === NETWORK_NO_SOURCE) setError('NETWORK_NO_SOURCE');
+
+    return () => {
+      audio.removeEventListener('play', onPlay);
+      audio.removeEventListener('pause', onPause);
+      audio.removeEventListener('ended', onEnded);
+      audio.removeEventListener('error', onError);
+      audio.removeEventListener('suspend', onError);
+      audio.removeEventListener('stalled', onError);
+      audio.removeEventListener('loadeddata', onLoadedData);
+      audio.removeEventListener('timeupdate', onTimeUpdated);
+    };
+  }, [audio, audioURL]);
+
+  React.useEffect(() => {
+    if (autoplay) onPlay();
+  }, []);
+
   return {
-    ref,
     error,
-    curTime,
-    duration,
+    onPlay,
+    onSeek,
+    onPause,
+    percent: (currentTime / duration) * 100,
     playing,
-    setPlaying,
-    setClickedTime,
-    restart,
+    duration,
+    onToggle,
+    onRestart,
+    currentTime,
   };
 }
 

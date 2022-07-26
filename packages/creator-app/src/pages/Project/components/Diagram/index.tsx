@@ -3,6 +3,7 @@ import { useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
+import * as ProjectV2 from '@/ducks/projectV2';
 import * as Transcripts from '@/ducks/transcript';
 import * as UI from '@/ducks/ui';
 import { RealtimeLoadingGate } from '@/gates';
@@ -29,6 +30,7 @@ const Diagram: React.FC<DiagramProps> = () => {
   const toggleCanvasOnly = useDispatch(UI.toggleCanvasOnly);
   const checkUnreadTranscripts = useDispatch(Transcripts.updateHasUnreadTranscripts);
   const getManager = useManager();
+  const isTopicsAndComponentsVersion = useSelector(ProjectV2.active.isTopicsAndComponentsVersionSelector);
 
   const engine = useEventualEngine();
   const isDesignMode = !useAnyModeOpen();
@@ -71,7 +73,7 @@ const Diagram: React.FC<DiagramProps> = () => {
         {/* design mode */}
         {isDesignMode && (
           <>
-            {revisedCanvasMenu.isEnabled ? <DesignMenuV2 canvasOnly={canvasOnly} /> : <DesignMenu />}
+            {revisedCanvasMenu.isEnabled && isTopicsAndComponentsVersion ? <DesignMenuV2 canvasOnly={canvasOnly} /> : <DesignMenu />}
             <MarkupImageLoading />
           </>
         )}

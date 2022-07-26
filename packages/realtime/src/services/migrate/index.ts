@@ -28,7 +28,7 @@ class MigrateService extends AbstractControl {
   }
 
   public static getVersionPatch(version: BaseModels.Version.Model<BaseModels.Version.PlatformData>): VersionUpdateData {
-    return Utils.object.omit(version, ['_id', 'creatorID', 'projectID', 'prototype', 'manualSave', 'autoSaveFromRestore']);
+    return Utils.object.pick(version, ['_version', 'name', 'variables', 'rootDiagramID', 'platformData']);
   }
 
   public static getDiagramPatch(diagram: BaseModels.Diagram.Model): DiagramUpdateData {

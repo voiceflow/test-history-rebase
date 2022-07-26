@@ -10,9 +10,9 @@ import { AxiosInstance } from 'axios';
 import { ExtraOptions } from './types';
 import createResourceClient from './utils/resource';
 
-export type VersionUpdateData = Omit<
+export type VersionUpdateData = Pick<
   BaseModels.Version.Model<BaseModels.Version.PlatformData<AnyRecord, AnyRecord>>,
-  '_id' | 'creatorID' | 'projectID' | 'prototype' | 'manualSave' | 'autoSaveFromRestore'
+  '_version' | 'name' | 'variables' | 'rootDiagramID' | 'platformData'
 >;
 
 export type DiagramUpdateData = Omit<BaseModels.Diagram.Model, 'creatorID' | 'versionID'>;

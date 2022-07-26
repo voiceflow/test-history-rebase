@@ -12,6 +12,7 @@ export enum SchemaVersion {
 
   V2_1 = 2.1,
   V2_2 = 2.2, // center align image markup nodes
+  V2_3 = 2.3, // remove invalid entities from utterances in IMM
   V2_4 = 2.4, // force migration
 }
 

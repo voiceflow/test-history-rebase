@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.132.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.132.0...@voiceflow/realtime-sdk@1.132.1) (2022-07-26)
+
+
+### Bug Fixes
+
+* start node not using portsV2 (VF-000) ([#5821](https://github.com/voiceflow/creator-app/issues/5821)) ([b083451](https://github.com/voiceflow/creator-app/commit/b08345196ffde5f99af52be54b2912d5c7ca2766)), closes [/github.com/voiceflow/creator-app/blob/943a474d5b297c27c140e14728d63f1222498da6/packages/realtime-sdk/src/utils/diagram.ts#L99-L109](https://github.com//github.com/voiceflow/creator-app/blob/943a474d5b297c27c140e14728d63f1222498da6/packages/realtime-sdk/src/utils/diagram.ts/issues/L99-L109)
+
+
+
+
+
 # [1.132.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.131.4...@voiceflow/realtime-sdk@1.132.0) (2022-07-26)
 
 

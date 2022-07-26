@@ -12,7 +12,6 @@ export enum SchemaVersion {
 
   V2_1 = 2.1,
   V2_2 = 2.2, // center align image markup nodes
-  V2_3 = 2.3, // remove invalid entities from utterances in IMM
 }
 
 export const SUPPORTED_SCHEMA_VERSIONS = Object.values(SchemaVersion)

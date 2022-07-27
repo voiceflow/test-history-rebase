@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.846.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.845.1...@voiceflow/creator-app@1.846.0) (2022-07-27)
+
+
+### Features
+
+* domains header (CT-567) ([#5803](https://github.com/voiceflow/creator-app/issues/5803)) ([7879589](https://github.com/voiceflow/creator-app/commit/7879589456aa6e65b442da4f90fcfc444f810eca))
+
+
+
+
+
 ## [1.845.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.845.0...@voiceflow/creator-app@1.845.1) (2022-07-26)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.20.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/showcase@1.19.4...@voiceflow/showcase@1.20.0) (2022-07-27)
+
+
+### Features
+
+* domains header (CT-567) ([#5803](https://github.com/voiceflow/creator-app/issues/5803)) ([7879589](https://github.com/voiceflow/creator-app/commit/7879589456aa6e65b442da4f90fcfc444f810eca))
+
+
+
+
+
 ## [1.19.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/showcase@1.19.3...@voiceflow/showcase@1.19.4) (2022-07-26)
 
 **Note:** Version bump only for package @voiceflow/showcase

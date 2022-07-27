@@ -11,6 +11,7 @@ import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import { NodeEditorV2Props } from '@/pages/Canvas/managers/types';
 import { transformVariablesToReadable } from '@/utils/slot';
+import { isDialogflowPlatform } from '@/utils/typeGuards';
 
 import Buttons from './Buttons';
 
@@ -29,6 +30,8 @@ const CarouselStepDraggableCard: React.ForwardRefRenderFunction<HTMLElement, Car
   const dimensions = useImageDimensions({ url: item.imageUrl });
   const autofocus = latestCreatedKey === itemKey || editor.data.cards.length === 1;
   const [sectionRef, scrollIntoView] = useAutoScrollNodeIntoView<HTMLDivElement>({ condition: autofocus, options: { block: 'end' } });
+
+  const isDF = isDialogflowPlatform(editor.platform);
 
   const onChange =
     <Key extends keyof Realtime.NodeData.Carousel.Card>(field: Key) =>
@@ -92,8 +95,12 @@ const CarouselStepDraggableCard: React.ForwardRefRenderFunction<HTMLElement, Car
                         />
                       </FormControl>
                     </SectionV2.Content>
-                    <SectionV2.Divider inset />
-                    <Buttons.Section buttons={item.buttons} cardID={item.id} editor={editor} onUpdate={onUpdate} />
+                    {!isDF && (
+                      <>
+                        <SectionV2.Divider inset />
+                        <Buttons.Section buttons={item.buttons} cardID={item.id} editor={editor} onUpdate={onUpdate} />
+                      </>
+                    )}
                   </>
                 )}
               </SectionV2.CollapseSection>

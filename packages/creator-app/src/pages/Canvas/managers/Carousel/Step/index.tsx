@@ -7,13 +7,14 @@ import SlateEditable from '@/components/SlateEditable';
 import Step, { NoMatchStepItemV2, NoReplyStepItemV2 } from '@/pages/Canvas/components/Step';
 import { ConnectedStep } from '@/pages/Canvas/managers/types';
 import { isVariable, transformVariablesToReadable } from '@/utils/slot';
+import { isDialogflowPlatform } from '@/utils/typeGuards';
 
 import * as S from './styles';
 
 const slateDescription = (description: Realtime.NodeData.Carousel.Card['description']) =>
   SlateEditable.EditorAPI.isNewState(description) ? '' : SlateEditable.serializeToJSX(description);
 
-const CarouselStep: ConnectedStep<Realtime.NodeData.Carousel, Realtime.NodeData.CarouselBuiltInPorts> = ({ ports, data, isLast }) => {
+const CarouselStep: ConnectedStep<Realtime.NodeData.Carousel, Realtime.NodeData.CarouselBuiltInPorts> = ({ ports, data, isLast, platform }) => {
   const cards = React.useMemo(
     () =>
       data.cards.map((card) => ({
@@ -31,11 +32,13 @@ const CarouselStep: ConnectedStep<Realtime.NodeData.Carousel, Realtime.NodeData.
   const noMatchPortID = ports.out.builtIn[BaseModels.PortType.NO_MATCH];
   const noReplyPortID = ports.out.builtIn[BaseModels.PortType.NO_REPLY];
 
+  const isDF = isDialogflowPlatform(platform);
+
   return (
     <Step nodeID={data.nodeID} dividerOffset={22}>
       {cards.map((card) => (
         <Step.Section key={card.id}>
-          <Step.Item>
+          <Step.Item portID={isDF ? ports.out.byKey[card.buttons[0]?.id] : undefined}>
             <Thumbnail src={isVariable(card.imageUrl) ? null : card.imageUrl} mr={16} />
             <Step.LabelTextContainer>
               <Step.LabelText>{card.title || 'Card title'}</Step.LabelText>
@@ -45,7 +48,7 @@ const CarouselStep: ConnectedStep<Realtime.NodeData.Carousel, Realtime.NodeData.
             </Step.LabelTextContainer>
           </Step.Item>
 
-          {!!card.buttons?.length && (
+          {!isDF && !!card.buttons?.length && (
             <Step.SubItem>
               <S.ButtonGroup>
                 {card.buttons.map((button) => (

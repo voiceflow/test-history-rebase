@@ -36,7 +36,7 @@ const CarouselEditorRoot: NodeEditorV2<Realtime.NodeData.Carousel, Realtime.Node
   const mapManager = useMapManager(editor.data.cards, (cards, save) => editor.onChange({ cards }, save), {
     onAdd: (card) => Promise.all(card.buttons.map((button) => editor.engine.port.addByKey(editor.nodeID, button.id))),
     clone: cloneCard,
-    factory: cardFactory,
+    factory: () => cardFactory(editor.platform),
     onRemove,
     autoSaveOnAddRemove: false,
   });

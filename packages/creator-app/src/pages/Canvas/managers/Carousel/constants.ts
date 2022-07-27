@@ -1,18 +1,23 @@
 import { BaseModels, BaseNode } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import { SlateEditorAPI } from '@/components/SlateEditable';
 import { BlockType } from '@/constants';
+import { isDialogflowPlatform } from '@/utils/typeGuards';
 
 import { NodeConfig } from '../types';
+import { buttonFactory } from './Editor/Buttons/constants';
 
-export const cardFactory = (): BaseNode.Carousel.CarouselCard => ({
+export const cardFactory = (platform?: VoiceflowConstants.PlatformType): BaseNode.Carousel.CarouselCard => ({
   id: Utils.id.cuid.slug(),
   title: '',
   description: SlateEditorAPI.getEmptyState(),
   imageUrl: '',
-  buttons: [],
+  // dialog flow has a single button to support the card port.
+  // for DF, the single button is hidden in the UI
+  buttons: isDialogflowPlatform(platform) ? [buttonFactory()] : [],
 });
 
 export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Carousel, Realtime.NodeData.CarouselBuiltInPorts> = {
@@ -20,25 +25,39 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Carousel, Realtime.NodeDa
   icon: 'systemCarousel',
   isMergeTerminator: ({ data }) => Realtime.Utils.typeGuards.isCarouselNodeData(data) && Boolean(data.noMatch || data.noReply),
 
-  factory: () => ({
-    node: {
-      ports: {
-        in: [{}],
-        out: {
-          ...Realtime.Utils.port.createEmptyNodeOutPorts(),
-          builtIn: {
-            [BaseModels.PortType.NEXT]: { label: BaseModels.PortType.NEXT },
-            [BaseModels.PortType.NO_MATCH]: { label: BaseModels.PortType.NO_MATCH },
+  factory: (_, options) => {
+    const card = cardFactory(options?.platform);
+
+    return {
+      node: {
+        ports: {
+          in: [{}],
+          out: {
+            ...Realtime.Utils.port.createEmptyNodeOutPorts(),
+            ...(card?.buttons[0]
+              ? {
+                  byKey: {
+                    [card?.buttons[0].id]: {
+                      id: Utils.id.objectID(),
+                      label: '',
+                    },
+                  },
+                }
+              : {}),
+            builtIn: {
+              [BaseModels.PortType.NEXT]: { label: BaseModels.PortType.NEXT },
+              [BaseModels.PortType.NO_MATCH]: { label: BaseModels.PortType.NO_MATCH },
+            },
           },
         },
       },
-    },
-    data: {
-      name: 'Card',
-      layout: BaseNode.Carousel.CarouselLayout.CAROUSEL,
-      cards: [cardFactory()],
-      noMatch: null,
-      noReply: null,
-    },
-  }),
+      data: {
+        name: 'Card',
+        layout: BaseNode.Carousel.CarouselLayout.CAROUSEL,
+        cards: [card],
+        noMatch: null,
+        noReply: null,
+      },
+    };
+  },
 };

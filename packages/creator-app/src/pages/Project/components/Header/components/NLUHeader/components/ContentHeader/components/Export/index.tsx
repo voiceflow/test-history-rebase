@@ -24,7 +24,7 @@ const Export: React.FC<ExportProps> = ({ checkedItems }) => {
         onClose={() => setIsOpened(false)}
         renderContent={() => <ExportContent withDataTypes={false} checkedItems={checkedItems} />}
         renderFooter={() => (
-          <FooterWrapper>
+          <FooterWrapper style={{ height: '134px' }}>
             <ExportFooter withoutLink />
           </FooterWrapper>
         )}

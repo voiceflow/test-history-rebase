@@ -45,6 +45,7 @@ export interface ConfigurableProps<T extends string, I extends Item> {
   renderRow?: (props: React.PropsWithChildren<ConfigurableRowProps<I>>) => React.ReactNode;
   descending?: boolean;
   onChangeOrderBy?: (orderBy: T) => void;
+  scrolled?: boolean;
 }
 
 export interface ContextValue<T extends Item> {

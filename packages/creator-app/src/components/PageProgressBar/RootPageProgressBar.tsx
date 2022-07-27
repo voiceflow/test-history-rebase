@@ -20,7 +20,7 @@ const RootPageProgressBar: React.FC = () => {
 
   const [scheduler] = useRAF();
 
-  PageProgress.start = (type: string) => {
+  PageProgress.start = (type: string, timeout: number = FORCE_STOP_TIMEOUT) => {
     activeTypeRef.current = type;
 
     clearTimeout(timeoutRef.current);
@@ -30,7 +30,7 @@ const RootPageProgressBar: React.FC = () => {
 
     scheduler(() => forceUpdate());
 
-    timeoutRef.current = setTimeout(() => PageProgress.stop(type), FORCE_STOP_TIMEOUT) as any;
+    timeoutRef.current = window.setTimeout(() => PageProgress.stop(type), timeout);
   };
 
   PageProgress.stop = (type: string) => {

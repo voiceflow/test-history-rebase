@@ -1,6 +1,6 @@
 import { Button, FlexApart, Input, SvgIcon } from '@voiceflow/ui';
 
-import { css, styled, transition } from '@/hocs';
+import { styled, transition } from '@/hocs';
 
 export const Container = styled(FlexApart)`
   flex: 2;
@@ -34,18 +34,11 @@ export const SearchInput = styled(Input)`
 export const TrainButton = styled(Button)<{ active?: boolean }>`
   ${transition()}
   ${SvgIcon.Container} {
-    opacity: 0.8;
+    opacity: 1;
   }
 
-  ${({ active }) =>
-    active &&
-    css`
-      ${SvgIcon.Container} {
-        opacity: 1;
-      }
-    `}
-
-  &:hover, &:active {
+  &:hover,
+  &:active {
     ${SvgIcon.Container} {
       opacity: 1;
     }

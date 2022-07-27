@@ -74,7 +74,7 @@ const ExportModel: React.FC<{
         </BlockText>
       ) : (
         <>
-          <Divider style={{ margin: '20px 0px', width: 'calc(100% + 64px)' }} />
+          <Divider style={{ margin: '20px 0px', width: 'calc(100% + 64px)', backgroundColor: 'rgb(234 239 242)' }} />
           <IntentsSelect value={modelExportIntents} onChange={setModelExportIntents} />
         </>
       )}

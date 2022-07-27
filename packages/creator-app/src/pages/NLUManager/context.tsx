@@ -19,6 +19,7 @@ export interface NLUManagerContextValue<I extends AnyItem = AnyItem> {
   goToTab: (type: InteractionModelTabType, itemID?: string | null) => void;
   goToItem: (id: string | null) => void;
   itemsMap: Record<string, I>;
+  tabItemsMap: Record<InteractionModelTabType, AnyItem[]>;
   setSearch: (text: string) => void;
   activeTab: InteractionModelTabType;
   deleteItem: (id: string) => void;
@@ -34,6 +35,8 @@ export interface NLUManagerContextValue<I extends AnyItem = AnyItem> {
   toggleSelectedItemID: (itemID: string) => void;
   showUtteranceRecommendations: boolean;
   setShowUtteranceRecommendations: (shown: boolean) => void;
+  isScrolling: boolean;
+  setIsScrolling: (isScrolling: boolean) => void;
 }
 
 const INITIAL_STATE: NLUManagerContextValue = {
@@ -41,6 +44,7 @@ const INITIAL_STATE: NLUManagerContextValue = {
   search: '',
   goToTab: Utils.functional.noop,
   itemsMap: {},
+  tabItemsMap: {} as Record<InteractionModelTabType, AnyItem[]>,
   goToItem: Utils.functional.noop,
   setSearch: Utils.functional.noop,
   activeTab: InteractionModelTabType.INTENTS,
@@ -57,6 +61,8 @@ const INITIAL_STATE: NLUManagerContextValue = {
   toggleSelectedItemID: Utils.functional.noop,
   showUtteranceRecommendations: false,
   setShowUtteranceRecommendations: Utils.functional.noop,
+  isScrolling: false,
+  setIsScrolling: Utils.functional.noop,
 };
 
 export const NLUManagerContext = React.createContext<NLUManagerContextValue>(INITIAL_STATE);
@@ -80,6 +86,7 @@ const activeTabSelector = <T, R, S>(
 export const NLUManagerProvider: React.FC = ({ children }) => {
   const nlu = React.useContext(NLUContext);
 
+  const [isScrolling, setIsScrolling] = React.useState<boolean>(false);
   const [search, setSearch] = React.useState('');
   const [renamingItemID, setRenamingItemID] = React.useState<string | null>(null);
   const [selectedItemIDs, setSelectedItemIDsSet] = React.useState<Set<string>>(() => new Set());
@@ -116,6 +123,12 @@ export const NLUManagerProvider: React.FC = ({ children }) => {
     [InteractionModelTabType.INTENTS]: () => intents,
     [InteractionModelTabType.VARIABLES]: () => variables,
   })!;
+
+  const tabItemsMap = {
+    [InteractionModelTabType.SLOTS]: entities,
+    [InteractionModelTabType.INTENTS]: intents,
+    [InteractionModelTabType.VARIABLES]: variables,
+  };
 
   const itemsMap = React.useMemo(() => Utils.array.createMap(Utils.array.inferUnion(items), (item) => item.id), [items]);
 
@@ -230,6 +243,7 @@ export const NLUManagerProvider: React.FC = ({ children }) => {
     activeTab,
     deleteItem,
     activeItem: itemsMap[activeItemID] ?? null,
+    tabItemsMap,
     activeItemID,
     renamingItemID,
     selectedItemIDs,
@@ -241,6 +255,8 @@ export const NLUManagerProvider: React.FC = ({ children }) => {
     toggleSelectedItemID,
     showUtteranceRecommendations,
     setShowUtteranceRecommendations,
+    isScrolling,
+    setIsScrolling,
   });
 
   return <NLUManagerContext.Provider value={api}>{children}</NLUManagerContext.Provider>;

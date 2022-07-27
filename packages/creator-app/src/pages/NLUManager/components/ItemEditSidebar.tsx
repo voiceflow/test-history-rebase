@@ -7,7 +7,11 @@ import { NLUContext, useNLUItemMenu } from '@/contexts';
 
 import { useNLUManager } from '../context';
 
-const ItemEditSidebar: React.FC = ({ children }) => {
+interface ItemEditSidebarProps {
+  isBuiltIn?: boolean;
+}
+
+const ItemEditSidebar: React.FC<ItemEditSidebarProps> = ({ children, isBuiltIn }) => {
   const nlu = React.useContext(NLUContext);
   const nluManager = useNLUManager();
 
@@ -16,6 +20,7 @@ const ItemEditSidebar: React.FC = ({ children }) => {
   const { options } = useNLUItemMenu({
     itemID: nluManager.activeItemID,
     itemType: nluManager.activeTab,
+    isBuiltIn,
   });
 
   const actions = options.map<SidebarEditorTypes.Action>((option) =>

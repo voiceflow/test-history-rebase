@@ -1,5 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { TableTypes } from '@voiceflow/ui';
+import { Box, TableTypes } from '@voiceflow/ui';
 import React from 'react';
 
 import { EmptyDash } from '../../../components';
@@ -14,7 +14,7 @@ const InputsColumn: React.FC<TableTypes.ItemProps<Realtime.Slot>> = ({ item }) =
     [item.inputs]
   );
 
-  return <>{values || <EmptyDash />}</>;
+  return <Box.Flex gap={4}>{values || <EmptyDash />}</Box.Flex>;
 };
 
 export default InputsColumn;

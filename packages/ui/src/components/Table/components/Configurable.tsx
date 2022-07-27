@@ -21,12 +21,13 @@ const Configurable = <T extends string, I extends T.Item>({
   ),
   descending,
   onChangeOrderBy,
+  scrolled,
 }: T.ConfigurableProps<T, I>) => (
   <Table
     items={items}
     empty={empty}
     header={
-      <Header>
+      <Header scrolled={scrolled}>
         {columns.map(({ type, flex, label, width, sorter, tooltip }) => (
           <Header.Column
             key={type}
@@ -51,7 +52,16 @@ const Configurable = <T extends string, I extends T.Item>({
             ...providerProps,
             children: columns.map(({ type, flex, width, ellipses, component: Component, overflowTooltip }) =>
               ellipses ? (
-                <Column key={type} flex={flex} width={width}>
+                <Column
+                  key={type}
+                  flex={flex}
+                  width={width}
+                  style={{
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                  }}
+                >
                   <OverflowTippyTooltip<HTMLDivElement> overflow {...overflowTooltip?.(props)}>
                     {(ref) => (
                       <Ellipses ref={ref}>

@@ -27,9 +27,10 @@ export interface MentionEditorProps {
   onChange: (value: string, mentions: number[]) => void;
   inputProps?: Omit<MentionsInputProps, 'children'>;
   placeholder: string;
+  inputRef?: React.Ref<HTMLInputElement>;
 }
 
-export const MentionEditor: React.FC<MentionEditorProps> = ({ onChange, onBlur, value = '', placeholder, inputProps, height }) => {
+export const MentionEditor: React.FC<MentionEditorProps> = ({ onChange, onBlur, value = '', placeholder, inputProps, height, inputRef }) => {
   const theme = useTheme();
   const members = useSelector(activeWorkspaceCommentingMembersSelector);
 
@@ -46,6 +47,7 @@ export const MentionEditor: React.FC<MentionEditorProps> = ({ onChange, onBlur, 
       <MentionSuggestionStyles />
 
       <MentionsInput
+        inputRef={inputRef}
         value={value}
         style={mentionEditorStyle({ theme, height })}
         onBlur={onBlur}

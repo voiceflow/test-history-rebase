@@ -11,6 +11,7 @@ interface NoteEditorProps<T extends Realtime.Note> extends Omit<MentionEditorPro
   id?: string;
   type: T['type'];
   onUpsert: (note: T) => void;
+  inputRef?: React.Ref<HTMLInputElement>;
 }
 
 const DEFAULT_MENTIONS: number[] = [];
@@ -20,6 +21,7 @@ const NoteEditor = <T extends Realtime.Note>({
   type,
   meta,
   onUpsert,
+  inputRef,
   ...props
 }: T['meta'] extends AnyRecord ? NoteEditorProps<T> & { meta: T['meta'] } : NoteEditorProps<T> & { meta?: T['meta'] }): React.ReactElement => {
   const note = useSelector(Note.noteByIDSelector, { id });
@@ -47,7 +49,7 @@ const NoteEditor = <T extends Realtime.Note>({
     onUpsert(newNote as T);
   };
 
-  return <MentionEditor {...props} value={value} onBlur={onBlur} onChange={onChange} />;
+  return <MentionEditor {...props} value={value} onBlur={onBlur} onChange={onChange} inputRef={inputRef} />;
 };
 
 export default NoteEditor;

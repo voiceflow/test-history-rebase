@@ -1,4 +1,4 @@
-import { SvgIcon, ThemeColor } from '@voiceflow/ui';
+import { SvgIcon } from '@voiceflow/ui';
 
 import { styled, transition } from '@/hocs';
 
@@ -15,7 +15,7 @@ export const Container = styled.div`
   width: 248px;
   min-width: 248px;
   margin-left: ${({ theme }) => theme.components.sidebarIconMenu.width}px;
-  background: ${({ theme }) => theme.colors[ThemeColor.OFF_WHITE]};
+  background: #fbfbfb;
 `;
 
 export const ItemsContainer = styled.div`

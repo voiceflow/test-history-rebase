@@ -3,9 +3,9 @@ import { TableTypes, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import { DOCS_BASE_LINK } from '@/config/documentation';
-import { isCustomizableBuiltInIntent } from '@/utils/intent';
 
 import { HeaderSelectColumn, NameColumn } from '../../components';
+import { createIntentsSorter } from '../../utils';
 import { ClarityColumn, ConfidenceColumn, EntitiesColumn, SelectColumn, UtterancesColumn } from './components';
 
 export enum TableColumn {
@@ -41,7 +41,7 @@ export const COLUMNS: TableTypes.Column<TableColumn, Realtime.Intent>[] = [
     flex: 1,
     width: 148,
     label: 'Confidence',
-    sorter: (intentL, intentR) => (isCustomizableBuiltInIntent(intentL) ? 1 : intentL.inputs.length - intentR.inputs.length),
+    sorter: createIntentsSorter(),
     tooltip: {
       html: (
         <TippyTooltip.FooterButton onClick={() => window.open(DOCS_BASE_LINK)} buttonText="More">
@@ -56,8 +56,9 @@ export const COLUMNS: TableTypes.Column<TableColumn, Realtime.Intent>[] = [
   {
     type: TableColumn.CLARITY,
     flex: 1,
-    width: 148,
+    width: 160,
     label: 'Clarity',
+    sorter: createIntentsSorter(),
     tooltip: {
       html: (
         <TippyTooltip.FooterButton onClick={() => window.open(DOCS_BASE_LINK)} buttonText="More">
@@ -74,7 +75,7 @@ export const COLUMNS: TableTypes.Column<TableColumn, Realtime.Intent>[] = [
     flex: 1,
     width: 108,
     label: 'Utterances',
-    sorter: (intentL, intentR) => intentL.inputs.length - intentR.inputs.length,
+    sorter: createIntentsSorter(0),
     component: UtterancesColumn,
   },
 

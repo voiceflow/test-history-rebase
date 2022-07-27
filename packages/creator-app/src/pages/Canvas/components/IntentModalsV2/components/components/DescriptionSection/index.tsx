@@ -17,11 +17,20 @@ interface DescriptionSectionProps {
 const DescriptionSection: React.FC<DescriptionSectionProps> = ({ intentID, withBottomBorder = true, onCreateNote }) => {
   const [isCollapsed, toggleIsCollapsed] = useToggle(true);
   const intent = useSelector(IntentV2.getIntentByIDSelector)({ id: intentID });
+  const inputRef = React.useRef<HTMLInputElement>(null);
   if (!intent) return null;
 
   const { noteID } = intent;
 
   const headerStyling = { paddingBottom: isCollapsed ? undefined : '16px' };
+
+  const handleToggle = () => {
+    if (isCollapsed) {
+      setTimeout(() => inputRef.current?.focus(), 100);
+    }
+
+    toggleIsCollapsed();
+  };
 
   return (
     <>
@@ -32,7 +41,7 @@ const DescriptionSection: React.FC<DescriptionSectionProps> = ({ intentID, withB
         variant={SectionVariant.PRIMARY}
         forceDividers
         isCollapsed={isCollapsed}
-        toggle={toggleIsCollapsed}
+        toggle={handleToggle}
         customHeaderStyling={headerStyling}
       >
         <Box paddingBottom={14} minHeight={100}>
@@ -43,6 +52,7 @@ const DescriptionSection: React.FC<DescriptionSectionProps> = ({ intentID, withB
             height={300}
             onUpsert={(note) => !noteID && onCreateNote(note.id)}
             placeholder="Add intent description, or @mention"
+            inputRef={inputRef}
           />
         </Box>
       </UncontrolledSection>

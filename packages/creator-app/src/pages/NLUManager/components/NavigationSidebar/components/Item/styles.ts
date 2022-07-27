@@ -2,6 +2,11 @@ import { FlexApart, SvgIcon } from '@voiceflow/ui';
 
 import { css, styled, transition } from '@/hocs';
 
+export const SidebarItemNumber = styled.div`
+  font-size: 13px;
+  color: #8da2b5;
+`;
+
 export const Container = styled(FlexApart)<{ active?: boolean }>`
   ${transition('background', 'border')}
   padding: 7px 12px 7px 16px;

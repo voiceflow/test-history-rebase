@@ -2,7 +2,8 @@ import { Box, ButtonVariant, SvgIcon, toast, useDidUpdateEffect } from '@voicefl
 import React from 'react';
 
 import { ConfirmProps } from '@/components/ConfirmModal';
-import { InteractionModelTabType, ModalType } from '@/constants';
+import { PageProgress } from '@/components/PageProgressBar/utils';
+import { InteractionModelTabType, ModalType, PageProgressBar } from '@/constants';
 import { useHotKeys, useModals } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import { NLUManagerContext } from '@/pages/NLUManager/context';
@@ -30,6 +31,7 @@ const ContentHeader: React.FC = () => {
   const handleTrain = () => {
     if (!isTraining) {
       startTraining();
+      PageProgress.start(PageProgressBar.NLU_MODEL_TRAINNING, 50000);
     }
   };
 
@@ -55,6 +57,7 @@ const ContentHeader: React.FC = () => {
   useDidUpdateEffect(() => {
     if (isTrained) {
       toast.success('Successfully trained model');
+      PageProgress.stop(PageProgressBar.NLU_MODEL_TRAINNING);
     }
   }, [isTrained]);
 
@@ -71,7 +74,7 @@ const ContentHeader: React.FC = () => {
         />
       </Box>
 
-      <Box.FlexCenter pr={16} gap={10}>
+      <Box.FlexCenter pr={12} gap={10}>
         {!!nluManager.selectedItemIDs.size && (
           <TrashButton variant={ButtonVariant.SECONDARY} flat squareRadius onClick={confirmDelete}>
             <SvgIcon icon="trash" size={15} inline />

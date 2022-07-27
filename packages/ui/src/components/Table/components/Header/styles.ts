@@ -1,17 +1,25 @@
-import { styled } from '@ui/styles';
+import { css, styled, transition } from '@ui/styles';
 
 export const Container = styled.div<{ scrolled?: boolean }>`
+  ${transition('box-shadow')};
+
   position: sticky;
   top: 0px;
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 32px;
-  padding: 12px 32px;
+  gap: 24px;
+  padding: 13px 32px 12px;
 
-  background-color: #fdfdfd;
+  background-color: #fff;
 
   width: 100%;
-  border-bottom: solid 1px ${({ theme }) => theme.colors.separator};
+  border-bottom: 1px solid rgb(234 239 243);
   z-index: 2;
+
+  ${({ scrolled }) =>
+    scrolled &&
+    css`
+      box-shadow: 0 0 8px 0 rgb(19 33 68 / 8%);
+    `};
 `;

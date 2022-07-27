@@ -2,7 +2,7 @@ import { Utils } from '@voiceflow/common';
 
 interface RootPageProgressBarApi {
   stop: (type: string) => void;
-  start: (type: string) => void;
+  start: (type: string, timeout?: number) => void;
 }
 
 export const PageProgress: RootPageProgressBarApi = {

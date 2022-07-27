@@ -35,7 +35,7 @@ const BasicContainer = styled.button<BasicContainerProps>`
   background: transparent;
   border: none;
 
-  opacity: 0.8;
+  opacity: 0.85;
   border-radius: 6px;
   cursor: pointer;
 

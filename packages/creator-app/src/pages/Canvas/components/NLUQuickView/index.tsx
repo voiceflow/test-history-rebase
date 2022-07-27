@@ -12,9 +12,9 @@ import VariablesSection from '@/pages/Canvas/components/NLUQuickView/components/
 
 import { TitleInput } from './components';
 import EmptyView from './components/EmptyView';
-import HeaderOptions from './components/HeaderOptions';
 import Loading from './components/Loading';
 import Sidebar from './components/Sidebar';
+import { tabHeaderComponentsMap } from './constants';
 import { NLUQuickViewContext, NLUQuickViewProvider } from './context';
 import { useShowForms } from './hooks';
 
@@ -49,6 +49,8 @@ const NLUQuickView: React.FC = () => {
     tabHandlers[activeTab] && tabHandlers[activeTab]();
   }, [activeTab, triggerNewInlineEntity, triggerNewInlineEntity]);
 
+  const HeaderOptionsComponent = tabHeaderComponentsMap[activeTab];
+
   return (
     <Modal
       ref={setModalRef}
@@ -66,7 +68,9 @@ const NLUQuickView: React.FC = () => {
         />
       }
       headerBorder
-      headerActions={emptyHeader ? null : <HeaderOptions onRename={() => setIsActiveItemRename(true)} selectedID={selectedID} itemType={activeTab} />}
+      headerActions={
+        emptyHeader ? null : <HeaderOptionsComponent onRename={() => setIsActiveItemRename(true)} selectedID={selectedID} itemType={activeTab} />
+      }
     >
       <Box width="100%" overflow="auto" height="calc(100vh - 120px)">
         {emptyHeader ? (

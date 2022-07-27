@@ -4,7 +4,6 @@ export const SortContainer = styled.div<{ visible?: boolean }>`
   ${transition('opacity')}
 
   position: relative;
-  top: 1px;
   width: 20px;
   margin-left: 6px;
   opacity: ${({ visible }) => (visible ? 1 : 0)};
@@ -16,7 +15,7 @@ export const Container = styled.div<{ flex: number; width?: number; active?: boo
   flex: ${({ flex }) => flex};
 
   color: ${({ theme }) => theme.colors.secondary};
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 600;
   text-align: left;
 

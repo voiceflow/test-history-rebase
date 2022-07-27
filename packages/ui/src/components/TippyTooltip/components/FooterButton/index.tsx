@@ -18,7 +18,7 @@ const FooterButton: React.FC<ComplexProps> = ({ onClick, buttonText, title, widt
   const isVisible = useOnScreen(buttonRef, { initialState: defaultVisible });
 
   return (
-    <Multiline width={width} style={{ paddingBottom: '46px' }}>
+    <Multiline width={width} style={{ paddingBottom: '48px' }}>
       {!!title && <Title>{title}</Title>}
 
       {children}

@@ -21,8 +21,6 @@ export const ButtonContainer = styled.div<{ isVisible: boolean }>`
     background-color: #5d6264;
   }
 
-  transition-delay: 150ms;
-
   ${({ isVisible }) =>
     isVisible &&
     css`

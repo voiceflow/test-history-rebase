@@ -56,6 +56,7 @@ const NavigationSidebar: React.FC = () => {
           onClick={() => nluManager.goToTab(InteractionModelTabType.INTENTS)}
           isActive={nluManager.activeTab === InteractionModelTabType.INTENTS}
           createPlaceholder="intent"
+          counter={nluManager.tabItemsMap[InteractionModelTabType.INTENTS].length}
         />
 
         <Item
@@ -65,6 +66,7 @@ const NavigationSidebar: React.FC = () => {
           onClick={() => nluManager.goToTab(InteractionModelTabType.SLOTS)}
           isActive={nluManager.activeTab === InteractionModelTabType.SLOTS}
           createPlaceholder="entity"
+          counter={nluManager.tabItemsMap[InteractionModelTabType.SLOTS].length}
         />
 
         <Item
@@ -74,6 +76,7 @@ const NavigationSidebar: React.FC = () => {
           onClick={() => nluManager.goToTab(InteractionModelTabType.VARIABLES)}
           isActive={nluManager.activeTab === InteractionModelTabType.VARIABLES}
           createPlaceholder="variable"
+          counter={nluManager.tabItemsMap[InteractionModelTabType.VARIABLES].length}
         />
       </S.ItemsContainer>
 

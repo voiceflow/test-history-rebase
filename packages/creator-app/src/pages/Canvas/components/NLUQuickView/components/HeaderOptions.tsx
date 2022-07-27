@@ -4,7 +4,7 @@ import React from 'react';
 import { InteractionModelTabType } from '@/constants';
 import { useNLUItemMenu } from '@/contexts/NLUContext/hooks';
 
-interface HeaderOptionsProps {
+export interface HeaderOptionsProps {
   selectedID: string;
   onRename: () => void;
   itemType: InteractionModelTabType;

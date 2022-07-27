@@ -1,4 +1,4 @@
-import { Box, Button, ButtonVariant, StrengthGauge } from '@voiceflow/ui';
+import { Box, Button, ButtonVariant, StrengthGauge, useLocalStorageState } from '@voiceflow/ui';
 import React from 'react';
 
 import { Permission } from '@/config/permissions';
@@ -69,6 +69,12 @@ const CardList: React.FC<CardListProps> = ({ intentID }) => {
   const confidenceMeta = CONFIDENCE_META[strengthLevel];
   const clarityMeta = CLARITY_META[strengthLevel];
   const isBuiltIn = isBuiltInIntent(intentID);
+  // Temporary storage behavior
+  const [dismissedNotifications, setDismissedNotifications] = useLocalStorageState(
+    'nlu-clarify-dismissed-notifications',
+    {} as Record<string, { clarity?: boolean; confidence?: boolean }>
+  );
+  const dismissedIntentNotifications = dismissedNotifications[intentID];
 
   const [permissionToViewConflicts] = usePermission(Permission.NLU_CONFLICTS);
   const { open: openUpgradeModal } = useModals(ModalType.UPGRADE_MODAL);
@@ -79,38 +85,47 @@ const CardList: React.FC<CardListProps> = ({ intentID }) => {
     }
   };
 
+  const handleCloseNotification = (notificationID: 'clarity' | 'confidence') => {
+    setDismissedNotifications({ ...dismissedNotifications, [intentID]: { ...dismissedIntentNotifications, [notificationID]: true } });
+  };
+
   if (isBuiltIn) return null;
+  if (dismissedIntentNotifications?.confidence && dismissedIntentNotifications?.clarity) return null;
 
   // Just temporary dummy data / conditions
   return [StrengthGauge.Level.WEAK, StrengthGauge.Level.MEDIUM, StrengthGauge.Level.NOT_SET].includes(strengthLevel) ? (
     <FadeDownContainer>
       <S.Container>
-        <Card
-          color={StrengthGauge.StrengthColor[strengthLevel]}
-          title={
-            <>
-              <b>Confidence: {confidenceMeta.points}</b> of 100pts
-            </>
-          }
-          onClose={() => {}}
-        >
-          {confidenceMeta.message}
-        </Card>
+        {!dismissedIntentNotifications?.confidence && (
+          <Card
+            color={StrengthGauge.StrengthColor[strengthLevel]}
+            title={
+              <>
+                <b style={{ display: 'contents' }}>Confidence: {confidenceMeta.points}</b> of 100pts
+              </>
+            }
+            onClose={() => handleCloseNotification('confidence')}
+          >
+            {confidenceMeta.message}
+          </Card>
+        )}
 
-        <Card
-          color={StrengthGauge.StrengthColor[strengthLevel]}
-          title={
-            <>
-              <b>Clarity: {clarityMeta.points}</b> of 100pts
-            </>
-          }
-          onClose={() => {}}
-        >
-          <Box mb={16}>{clarityMeta.message}</Box>
-          <Button onClick={triggerConflictsSlider} flat squareRadius variant={ButtonVariant.SECONDARY}>
-            View conflicts
-          </Button>
-        </Card>
+        {!dismissedIntentNotifications?.clarity && (
+          <Card
+            color={StrengthGauge.StrengthColor[strengthLevel]}
+            title={
+              <>
+                <b style={{ display: 'contents' }}>Clarity: {clarityMeta.points}</b> of 100pts
+              </>
+            }
+            onClose={() => handleCloseNotification('clarity')}
+          >
+            <Box mb={16}>{clarityMeta.message}</Box>
+            <Button onClick={triggerConflictsSlider} flat squareRadius variant={ButtonVariant.SECONDARY}>
+              View conflicts
+            </Button>
+          </Card>
+        )}
       </S.Container>
     </FadeDownContainer>
   ) : null;

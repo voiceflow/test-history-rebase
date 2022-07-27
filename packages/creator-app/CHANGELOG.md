@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.848.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.847.1...@voiceflow/creator-app@1.848.0) (2022-07-27)
+
+
+### Features
+
+* Conflicts page UI (NLU-18) ([#5793](https://github.com/voiceflow/creator-app/issues/5793)) ([d060e81](https://github.com/voiceflow/creator-app/commit/d060e812cc73ea48d0e09eceb43dfd6d9f001a87))
+
+
+
+
+
 ## [1.847.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.847.0...@voiceflow/creator-app@1.847.1) (2022-07-27)
 
 

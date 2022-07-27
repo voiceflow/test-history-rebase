@@ -80,14 +80,12 @@ const Recommendations: React.FC = () => {
   };
 
   React.useEffect(() => {
-    if (!nluManager.activeItem || !nluManager.showUtteranceRecommendations) return;
-
     setRecommendations([]);
     onFetchRecommendations();
-  }, [nluManager.showUtteranceRecommendations, nluManager.activeItem?.id]);
+  }, []);
 
   return (
-    <Drawer open={nluManager.showUtteranceRecommendations} width={450} offset={450} zIndex={19} direction={Drawer.Direction.LEFT}>
+    <Drawer open width={450} offset={450} zIndex={19} direction={Drawer.Direction.LEFT}>
       <SidebarEditor.Container>
         <SidebarEditor.Header>
           <SidebarEditor.HeaderTitle fontWeight={600}>Recommendations</SidebarEditor.HeaderTitle>
@@ -102,13 +100,7 @@ const Recommendations: React.FC = () => {
               offsetSize={0}
             />
 
-            <IconButton
-              size={16}
-              icon="close"
-              variant={IconButton.Variant.BASIC}
-              onClick={() => nluManager.setShowUtteranceRecommendations(false)}
-              offsetSize={0}
-            />
+            <IconButton size={16} icon="close" variant={IconButton.Variant.BASIC} onClick={nluManager.closeEditorTab} offsetSize={0} />
           </SectionV2.ActionsContainer>
         </SidebarEditor.Header>
 

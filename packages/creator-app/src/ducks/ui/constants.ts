@@ -22,4 +22,5 @@ export const INITIAL_STATE: UIState = {
   isLoadingProjects: false,
   commentsVisible: true,
   canvasGrid: false,
+  fullScreenMode: false,
 };

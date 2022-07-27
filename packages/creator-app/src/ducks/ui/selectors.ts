@@ -19,6 +19,8 @@ export const zoomTypeSelector = createSelector(rootSelector, ({ zoomType }) => z
 
 export const isCanvasOnlyShowingSelector = createSelector(rootSelector, ({ canvasOnly }) => canvasOnly);
 
+export const isFullScreenMode = createSelector(rootSelector, ({ fullScreenMode }) => fullScreenMode);
+
 export const isPreviewingVersion = createSelector(rootSelector, ({ previewing }) => previewing);
 
 export const isLoadingProjectsSelector = createSelector(rootSelector, ({ isLoadingProjects }) => isLoadingProjects);

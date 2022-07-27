@@ -4,6 +4,7 @@ import React from 'react';
 import Drawer from '@/components/Drawer';
 import EditableText from '@/components/EditableText';
 import { NLUContext, useNLUItemMenu } from '@/contexts';
+import { EDITOR_LEFT_SIDEBAR_WIDTH, EditorTabs } from '@/pages/NLUManager/constants';
 
 import { useNLUManager } from '../context';
 
@@ -36,9 +37,9 @@ const ItemEditSidebar: React.FC<ItemEditSidebarProps> = ({ children, isBuiltIn }
   };
 
   return (
-    <Drawer open={!!nluManager.activeItem} width={450} direction={Drawer.Direction.LEFT}>
+    <Drawer open={!!nluManager.activeItem} width={EDITOR_LEFT_SIDEBAR_WIDTH} direction={Drawer.Direction.LEFT}>
       <SidebarEditor.Container>
-        <SidebarEditor.Header>
+        <SidebarEditor.Header style={nluManager.isEditorTabActive(EditorTabs.INTENT_CONFLICTS) ? { height: '65px' } : {}}>
           <SidebarEditor.HeaderTitle fontWeight={600}>
             <EditableText
               value={name}

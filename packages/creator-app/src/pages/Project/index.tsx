@@ -3,10 +3,9 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import IdleTimer from 'react-idle-timer';
 import { batch } from 'react-redux';
-import { Redirect, Route, RouteComponentProps, Switch, useRouteMatch } from 'react-router-dom';
+import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
 
 import { RemoveIntercom } from '@/components/IntercomChat';
-import ProjectPage from '@/components/ProjectPage';
 import { Path } from '@/config/routes';
 import { ModalType } from '@/constants';
 import * as Creator from '@/ducks/creator';
@@ -33,10 +32,8 @@ import { useProjectPreviewMode } from '@/pages/Project/hooks';
 import Providers from '@/pages/Project/Providers';
 import PrototypeWebhook from '@/pages/PrototypeWebhook';
 
-import Header from './components/Header';
 import ProjectExitTracker from './components/ProjectExitTracker';
-import Sidebar from './components/Sidebar';
-import { TIMEOUT_COUNT } from './constants';
+import { DIAGRAM_ROUTES, TIMEOUT_COUNT } from './constants';
 import { MarkupProvider, ProjectProvider } from './contexts';
 
 const Diagram = lazy(() => import('./components/Diagram'));
@@ -49,16 +46,6 @@ const NLUManager = lazy(() => import('@/pages/NLUManager'));
 
 export type ProjectProps = RouteComponentProps;
 
-const DIAGRAM_ROUTES = [
-  Path.PROJECT_PROTOTYPE,
-  Path.PROJECT_CANVAS,
-  Path.CANVAS_COMMENTING,
-  Path.CANVAS_COMMENTING_THREAD,
-  Path.CANVAS_MODEL,
-  Path.CANVAS_MODEL_ENTITY,
-  Path.CANVAS_NODE,
-];
-
 const Project: React.FC = () => {
   const theme = useTheme();
   const getEngine = useEventualEngine();
@@ -67,7 +54,6 @@ const Project: React.FC = () => {
   const projectType = useSelector(ProjectV2.active.projectTypeSelector);
   const projectName = useSelector(ProjectV2.active.nameSelector);
   const isOnlyViewer = useSelector(RealtimeDuck.isOnlyViewerSelector);
-  const isDiagramRoute = useRouteMatch(DIAGRAM_ROUTES);
   const setPreviewing = useDispatch(UI.setPreviewingVersion);
   const resetCreator = useDispatch(Creator.resetCreator);
   const resetCreatorV2 = useLocalDispatch(Realtime.creator.reset);
@@ -140,28 +126,26 @@ const Project: React.FC = () => {
         <RemoveIntercom />
 
         <Providers>
-          <ProjectPage scrollable={!isDiagramRoute} renderHeader={() => !canvasOnly && <Header />} renderSidebar={() => !canvasOnly && <Sidebar />}>
-            <Switch>
-              <Route path={DIAGRAM_ROUTES} component={Diagram} />
+          <Switch>
+            <Route path={DIAGRAM_ROUTES} component={Diagram} />
 
-              <Route path={Path.CONVERSATIONS} component={Conversations} />
+            <Route path={Path.CONVERSATIONS} component={Conversations} />
 
-              {nluManager.isEnabled && <Route path={Path.NLU_MANAGER} component={NLUManager} />}
+            {nluManager.isEnabled && <Route path={Path.NLU_MANAGER} component={NLUManager} />}
 
-              <Route path={Path.PROJECT_TOOLS} component={Business} />
+            <Route path={Path.PROJECT_TOOLS} component={Business} />
 
-              <Route path={Path.PROJECT_MIGRATE} component={Migrate} />
+            <Route path={Path.PROJECT_MIGRATE} component={Migrate} />
 
-              <Route path={Path.PROTOTYPE_WEBHOOK} component={PrototypeWebhook} />
+            <Route path={Path.PROTOTYPE_WEBHOOK} component={PrototypeWebhook} />
 
-              <Route path={Path.PROJECT_PUBLISH} component={Publish} />
+            <Route path={Path.PROJECT_PUBLISH} component={Publish} />
 
-              <Route path={Path.PROJECT_SETTINGS} component={Settings} />
+            <Route path={Path.PROJECT_SETTINGS} component={Settings} />
 
-              <Redirect to={Path.PROJECT_CANVAS} />
-            </Switch>
-            <ManualSaveModal />
-          </ProjectPage>
+            <Redirect to={Path.PROJECT_CANVAS} />
+          </Switch>
+          <ManualSaveModal />
         </Providers>
       </ProjectProvider>
     </MarkupProvider>

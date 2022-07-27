@@ -7,10 +7,11 @@ import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import { useSelector } from '@/hooks';
 
+import { SideBarComponentProps } from '../types';
 import CanvasIconMenu from './CanvasIconMenu';
 import IconMenuOffsetContainer from './IconMenuOffsetContainer';
 
-const SettingsSidebar: React.FC = () => {
+const SettingsSidebar: React.FC<SideBarComponentProps> = () => {
   const platform = useSelector(ProjectV2.active.platformSelector);
   const versionID = useSelector(Session.activeVersionIDSelector)!;
 

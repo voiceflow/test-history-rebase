@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { API_ENDPOINT } from '@/config';
 import * as Account from '@/ducks/account';
 import * as Session from '@/ducks/session';
+import ProjectPage from '@/pages/Project/components/ProjectPage';
 import { copy } from '@/utils/clipboard';
 
 const TEXT_PAYLOAD = `{
@@ -35,34 +36,36 @@ const PrototypeWebhook = () => {
   };
 
   return (
-    <Box width={900} m="0 auto" p={60}>
-      <h1>Prototype Webhook URL</h1>
-      <hr />
-
-      <Alert>
-        Call the prototype webhook with these patterns in the <b>POST request body</b> to simulate a user interaction
-      </Alert>
-
-      <Alert>
-        <b>Text Request</b> - raw string input for the NLP/NLU to resolve
+    <ProjectPage>
+      <Box width={900} m="0 auto" p={60}>
+        <h1>Prototype Webhook URL</h1>
         <hr />
-        <pre>{TEXT_PAYLOAD}</pre>
-      </Alert>
 
-      <Alert>
-        <b>Intent Request</b> - matches with Voiceflow intent names and assigns entity (slot) values to variables
-        <hr />
-        <pre>{INTENT_PAYLOAD}</pre>
-      </Alert>
+        <Alert>
+          Call the prototype webhook with these patterns in the <b>POST request body</b> to simulate a user interaction
+        </Alert>
 
-      <Box my={16} textAlign="right">
-        <Input value={url} readOnly disabled />
+        <Alert>
+          <b>Text Request</b> - raw string input for the NLP/NLU to resolve
+          <hr />
+          <pre>{TEXT_PAYLOAD}</pre>
+        </Alert>
 
-        <ClickableText onClick={onClick} mt={8}>
-          Copy To Clipboard
-        </ClickableText>
+        <Alert>
+          <b>Intent Request</b> - matches with Voiceflow intent names and assigns entity (slot) values to variables
+          <hr />
+          <pre>{INTENT_PAYLOAD}</pre>
+        </Alert>
+
+        <Box my={16} textAlign="right">
+          <Input value={url} readOnly disabled />
+
+          <ClickableText onClick={onClick} mt={8}>
+            Copy To Clipboard
+          </ClickableText>
+        </Box>
       </Box>
-    </Box>
+    </ProjectPage>
   );
 };
 

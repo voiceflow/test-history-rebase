@@ -19,4 +19,5 @@ export interface UIState {
   topicThreadsOnly?: boolean;
   mentionedThreadsOnly?: boolean;
   canvasGrid: boolean;
+  fullScreenMode?: boolean;
 }

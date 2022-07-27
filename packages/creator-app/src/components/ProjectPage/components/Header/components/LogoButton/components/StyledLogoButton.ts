@@ -5,8 +5,12 @@ import IconButton from '../../IconButton';
 import IconButtonButton from '../../IconButton/components/Button';
 import ExpandIconContainer from '../../IconButton/components/ExpandIconContainer';
 
-const StyledLogoButton = styled(IconButton).attrs({ icon: 'voiceflowV', size: 26, iconProps: { color: '#000' } })`
-  border-right: 1px solid ${({ theme }) => theme.colors.borders};
+const StyledLogoButton = styled(IconButton).attrs({ icon: 'voiceflowV', size: 26, iconProps: { color: '#000' } })<{ withBorder?: boolean }>`
+  ${({ theme, withBorder }) =>
+    withBorder &&
+    css`
+      border-right: 1px solid ${theme.colors.borders};
+    `};
 
   ${IconButtonButton} {
     width: ${({ theme }) => theme.components.projectPage.header.height - 1}px;

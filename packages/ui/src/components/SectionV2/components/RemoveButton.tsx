@@ -1,13 +1,14 @@
 import IconButton, { IconButtonVariant } from '@ui/components/IconButton';
 import React from 'react';
+import { StyledProps } from 'styled-components';
 
-export interface RemoveButtonProps {
+export interface RemoveButtonProps extends StyledProps<any> {
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
   isActive?: boolean;
 }
 
-const RemoveButton: React.FC<RemoveButtonProps> = ({ onClick, isActive }) => (
-  <IconButton size={16} icon="minus" onClick={onClick} variant={IconButtonVariant.BASIC} activeClick={isActive} />
+const RemoveButton: React.FC<RemoveButtonProps> = ({ onClick, isActive, style }) => (
+  <IconButton size={16} icon="minus" onClick={onClick} variant={IconButtonVariant.BASIC} activeClick={isActive} style={style} />
 );
 
 export default RemoveButton;

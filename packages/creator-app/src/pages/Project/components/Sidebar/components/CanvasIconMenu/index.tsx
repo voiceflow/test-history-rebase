@@ -4,9 +4,10 @@ import React from 'react';
 import SidebarIconMenu from '@/components/SidebarIconMenu';
 import { useIsCanvasDesignOnly } from '@/hooks';
 
+import { SideBarComponentProps } from '../../types';
 import { useCanvasMenuOptionsAndHotkeys, useHelpOptions } from './hooks';
 
-const CanvasIconMenu: React.FC = () => {
+const CanvasIconMenu: React.FC<SideBarComponentProps> = ({ withLogo = false }) => {
   const designOnly = useIsCanvasDesignOnly();
   const helpOptions = useHelpOptions();
   const { options, activeValue, helpOpened, footerOptions, helpButtonRef } = useCanvasMenuOptionsAndHotkeys();
@@ -18,7 +19,7 @@ const CanvasIconMenu: React.FC = () => {
 
   return (
     <>
-      <SidebarIconMenu open={!designOnly} options={options} activeValue={activeValue} footerOptions={footerOptions} />
+      <SidebarIconMenu open={!designOnly} options={options} activeValue={activeValue} footerOptions={footerOptions} withLogo={withLogo} />
 
       {helpOpened && (
         <Portal>

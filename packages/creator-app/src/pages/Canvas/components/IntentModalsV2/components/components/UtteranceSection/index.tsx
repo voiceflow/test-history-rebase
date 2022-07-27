@@ -27,6 +27,7 @@ import * as IntentV2 from '@/ducks/intentV2';
 import * as SlotV2 from '@/ducks/slotV2';
 import { useAddSlot, useModals, usePermission, useSelector, useSetup } from '@/hooks';
 import UtteranceInput from '@/pages/Canvas/components/IntentModalsV2/components/components/UtteranceSection/components/UtteranceInput';
+import { EditorTabs } from '@/pages/NLUManager/constants';
 import { NLUManagerContext } from '@/pages/NLUManager/context';
 import { formatUtterance, getIntentStrengthLevel, validateUtterance } from '@/utils/intent';
 
@@ -157,8 +158,8 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({
                 <Badge
                   flat
                   style={{ fontSize: '13px', lineHeight: '16px', minHeight: '24px' }}
-                  active={nluManager.showUtteranceRecommendations}
-                  onClick={() => nluManager.setShowUtteranceRecommendations?.(!nluManager.showUtteranceRecommendations)}
+                  active={nluManager.isEditorTabActive(EditorTabs.UTTERANCE_RECOMMENDATIONS)}
+                  onClick={() => nluManager.openEditorTab(EditorTabs.UTTERANCE_RECOMMENDATIONS)}
                 >
                   Recommend
                 </Badge>

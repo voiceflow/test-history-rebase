@@ -19,6 +19,7 @@ export enum UIAction {
   TOGGLE_COMMENT_VISIBILITY = 'UI:TOGGLE_COMMENT_VISIBILITY',
   TOGGLE_MENTIONED_THREADS_ONLY = 'UI:TOGGLE_MENTIONED_THREADS_ONLY',
   TOGGLE_TOPIC_THREADS_ONLY = 'UI:TOGGLE_TOPIC_THREADS_ONLY',
+  TOGGLE_FULL_SCREEN_MODE = 'UI:TOGGLE_FULL_SCREEN_MODE',
 }
 
 // action types
@@ -51,6 +52,8 @@ export type ToggleMentionedThreadsOnly = Action<UIAction.TOGGLE_MENTIONED_THREAD
 
 export type ToggleTopicThreadsOnly = Action<UIAction.TOGGLE_TOPIC_THREADS_ONLY>;
 
+export type ToggleFullScreenMode = Action<UIAction.TOGGLE_FULL_SCREEN_MODE>;
+
 export type AnyUIAction =
   | ToggleBlockMenuSection
   | SetActiveCreatorMenu
@@ -65,7 +68,8 @@ export type AnyUIAction =
   | ToggleCommentVisibility
   | ToggleMentionedThreadsOnly
   | ToggleTopicThreadsOnly
-  | ToggleCanvasGrid;
+  | ToggleCanvasGrid
+  | ToggleFullScreenMode;
 
 //  action creators
 
@@ -74,6 +78,8 @@ export const toggleBlockMenuSection = (section: BlockCategory): ToggleBlockMenuS
 export const setActiveCreatorMenu = (menu: string): SetActiveCreatorMenu => createAction(UIAction.SET_ACTIVE_CREATOR_MENU, menu);
 
 export const toggleCreatorMenuHidden = (): ToggleCreatorMenuHidden => createAction(UIAction.TOGGLE_CREATOR_MENU_HIDDEN);
+
+export const toggleFullScreenMode = (): ToggleFullScreenMode => createAction(UIAction.TOGGLE_FULL_SCREEN_MODE);
 
 export const showCreatorMenu = (): ShowCreatorMenu => createAction(UIAction.SHOW_CREATOR_MENU);
 

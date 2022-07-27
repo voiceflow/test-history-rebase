@@ -9,6 +9,7 @@ import { Path } from '@/config/routes';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { lazy } from '@/hocs';
 import { useFeature, usePermission, useSelector } from '@/hooks';
+import ProjectPage from '@/pages/Project/components/ProjectPage';
 import { isAlexaPlatform, isDialogflowPlatform, isGooglePlatform } from '@/utils/typeGuards';
 
 const PublishAmazon = lazy(() => import('./Amazon'));
@@ -23,16 +24,18 @@ const Publish: React.FC = () => {
   const disableCodeExports = useFeature(Realtime.FeatureFlag.DISABLE_CODE_EXPORTS).isEnabled;
 
   return (
-    <Switch>
-      {!disableCodeExports && canCodeExport && <Route path={Path.PUBLISH_EXPORT} component={Export} />}
-      {isAlexaPlatform(platform) && <Route path={Path.PUBLISH_ALEXA} component={PublishAmazon} />}
-      {isGooglePlatform(platform) && <Route path={Path.PUBLISH_GOOGLE} component={PublishGoogle} />}
-      {isDialogflowPlatform(platform) && <Route path={Path.PUBLISH_DIALOGFLOW} component={PublishDialogflow} />}
+    <ProjectPage>
+      <Switch>
+        {!disableCodeExports && canCodeExport && <Route path={Path.PUBLISH_EXPORT} component={Export} />}
+        {isAlexaPlatform(platform) && <Route path={Path.PUBLISH_ALEXA} component={PublishAmazon} />}
+        {isGooglePlatform(platform) && <Route path={Path.PUBLISH_GOOGLE} component={PublishGoogle} />}
+        {isDialogflowPlatform(platform) && <Route path={Path.PUBLISH_DIALOGFLOW} component={PublishDialogflow} />}
 
-      <Route path={Path.PUBLISH_API} component={API} />
+        <Route path={Path.PUBLISH_API} component={API} />
 
-      <Redirect to={Path.PUBLISH_API} />
-    </Switch>
+        <Redirect to={Path.PUBLISH_API} />
+      </Switch>
+    </ProjectPage>
   );
 };
 

@@ -12,6 +12,12 @@ import * as VersionV2 from '@/ducks/versionV2';
 import { createSelectorContext } from '@/utils/redux';
 
 export const {
+  Context: FullScreenModeContext,
+  Provider: FullScreenModeProvider,
+  Consumer: FullScreenModeConsumer,
+} = createSelectorContext(UI.isFullScreenMode);
+
+export const {
   Context: IsCanvasOnlyContext,
   Provider: IsCanvasOnlyProvider,
   Consumer: IsCanvasOnlyConsumer,
@@ -86,32 +92,34 @@ export const {
 } = createSelectorContext(Router.actionsMatchSelector);
 
 export const ReduxContextsProviders: React.FC = ({ children }) => (
-  <IsCanvasOnlyProvider>
-    <IsCreatorMenuHiddenProvider>
-      <IsStraightLinksProvider>
-        <AccountLinkingProvider>
-          <ProductMapProvider>
-            <CustomIntentMapProvider>
-              <SlotMapProvider>
-                <DiagramMapProvider>
-                  <GlobalIntentStepMapProvider>
-                    <ActiveDiagramTypeProvider>
-                      <IntentNodeDataLookupProvider>
-                        <StartingBlocksProvider>
-                          <ActionsRouteMatchProvider>
-                            {/* comment to have a children on a new line */}
-                            {children}
-                          </ActionsRouteMatchProvider>
-                        </StartingBlocksProvider>
-                      </IntentNodeDataLookupProvider>
-                    </ActiveDiagramTypeProvider>
-                  </GlobalIntentStepMapProvider>
-                </DiagramMapProvider>
-              </SlotMapProvider>
-            </CustomIntentMapProvider>
-          </ProductMapProvider>
-        </AccountLinkingProvider>
-      </IsStraightLinksProvider>
-    </IsCreatorMenuHiddenProvider>
-  </IsCanvasOnlyProvider>
+  <FullScreenModeProvider>
+    <IsCanvasOnlyProvider>
+      <IsCreatorMenuHiddenProvider>
+        <IsStraightLinksProvider>
+          <AccountLinkingProvider>
+            <ProductMapProvider>
+              <CustomIntentMapProvider>
+                <SlotMapProvider>
+                  <DiagramMapProvider>
+                    <GlobalIntentStepMapProvider>
+                      <ActiveDiagramTypeProvider>
+                        <IntentNodeDataLookupProvider>
+                          <StartingBlocksProvider>
+                            <ActionsRouteMatchProvider>
+                              {/* comment to have a children on a new line */}
+                              {children}
+                            </ActionsRouteMatchProvider>
+                          </StartingBlocksProvider>
+                        </IntentNodeDataLookupProvider>
+                      </ActiveDiagramTypeProvider>
+                    </GlobalIntentStepMapProvider>
+                  </DiagramMapProvider>
+                </SlotMapProvider>
+              </CustomIntentMapProvider>
+            </ProductMapProvider>
+          </AccountLinkingProvider>
+        </IsStraightLinksProvider>
+      </IsCreatorMenuHiddenProvider>
+    </IsCanvasOnlyProvider>
+  </FullScreenModeProvider>
 );

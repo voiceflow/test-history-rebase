@@ -16,7 +16,6 @@ import { PlatformAndProjectMeta, PlatformAndProjectMetaType } from '@/pages/NewP
 const STARTER_PROJECT_LIMIT = 2;
 
 const GATED_PROJECT_NLUS = new Set([
-  <PlatformAndProjectMetaType>VoiceflowConstants.PlatformType.DIALOGFLOW_ES,
   <PlatformAndProjectMetaType>VoiceflowConstants.PlatformType.EINSTEIN,
   <PlatformAndProjectMetaType>VoiceflowConstants.PlatformType.LEX,
   <PlatformAndProjectMetaType>VoiceflowConstants.PlatformType.LUIS,

@@ -13,6 +13,7 @@ export { default as Header } from './Header';
 export { default as LinkArrowIcon } from './LinkArrowIcon';
 export { default as LinkSection } from './LinkSection';
 export { default as ListItem } from './ListItem';
+export { default as ListItemContent } from './ListItemContent';
 export { default as RemoveButton } from './RemoveButton';
 export { default as SimpleContentSection } from './SimpleContentSection';
 export { default as SimpleSection } from './SimpleSection';

@@ -1,3 +1,4 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Button, ButtonVariant, StrengthGauge, useLocalStorageState } from '@voiceflow/ui';
 import React from 'react';
 
@@ -6,6 +7,8 @@ import { NluViewConflictsLimitDetails } from '@/config/planLimits/nluConflicts';
 import { ModalType } from '@/constants';
 import * as IntentV2 from '@/ducks/intentV2';
 import { useModals, usePermission, useSelector } from '@/hooks';
+import { EditorTabs } from '@/pages/NLUManager/constants';
+import { useNLUManager } from '@/pages/NLUManager/context';
 import { FadeDownContainer } from '@/styles/animations';
 import { getIntentStrengthLevel, isBuiltInIntent } from '@/utils/intent';
 
@@ -75,14 +78,24 @@ const CardList: React.FC<CardListProps> = ({ intentID }) => {
     {} as Record<string, { clarity?: boolean; confidence?: boolean }>
   );
   const dismissedIntentNotifications = dismissedNotifications[intentID];
+  const nluManager = useNLUManager<Realtime.Intent>();
+  const isConflictsPageOpen = nluManager.isEditorTabActive(EditorTabs.INTENT_CONFLICTS);
 
   const [permissionToViewConflicts] = usePermission(Permission.NLU_CONFLICTS);
   const { open: openUpgradeModal } = useModals(ModalType.UPGRADE_MODAL);
 
   const triggerConflictsSlider = () => {
+    if (isConflictsPageOpen) {
+      nluManager.closeEditorTab();
+      return;
+    }
+
     if (!permissionToViewConflicts) {
       openUpgradeModal({ planLimitDetails: NluViewConflictsLimitDetails });
+      return;
     }
+
+    nluManager.openEditorTab(EditorTabs.INTENT_CONFLICTS);
   };
 
   const handleCloseNotification = (notificationID: 'clarity' | 'confidence') => {
@@ -122,7 +135,7 @@ const CardList: React.FC<CardListProps> = ({ intentID }) => {
           >
             <Box mb={16}>{clarityMeta.message}</Box>
             <Button onClick={triggerConflictsSlider} flat squareRadius variant={ButtonVariant.SECONDARY}>
-              View conflicts
+              {isConflictsPageOpen ? 'Hide conflicts' : 'View conflicts'}
             </Button>
           </Card>
         )}

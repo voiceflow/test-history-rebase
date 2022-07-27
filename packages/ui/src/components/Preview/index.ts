@@ -1,3 +1,4 @@
+import Button from './components/Button';
 import ButtonIcon from './components/ButtonIcon';
 import Code from './components/Code';
 import Container from './components/Container';
@@ -21,4 +22,5 @@ export default Object.assign(Container, {
   ButtonIcon,
   ContentItem,
   ContentIcon,
+  Button,
 });

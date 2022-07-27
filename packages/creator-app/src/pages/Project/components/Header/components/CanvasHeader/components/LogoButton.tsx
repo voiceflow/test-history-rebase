@@ -5,11 +5,11 @@ import { SearchContext } from '@/contexts/SearchContext';
 
 import { useLogoButtonOptions } from '../../../hooks';
 
-const LogoButton: React.FC = () => {
+const LogoButton: React.FC<React.CSSProperties> = (props) => {
   const search = useContext(SearchContext);
   const logoOptions = useLogoButtonOptions({ uiToggle: true, shortcuts: true, toggleSearch: search?.toggle });
 
-  return <HeaderLogoButton options={logoOptions} />;
+  return <HeaderLogoButton options={logoOptions} {...props} />;
 };
 
 export default LogoButton;

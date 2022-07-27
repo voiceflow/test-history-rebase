@@ -11,6 +11,9 @@ import * as Router from '@/ducks/router';
 import { activeProjectIDSelector } from '@/ducks/session';
 import { OrderedVariable, useDispatch, useModals, useOrderedEntities, useOrderedIntents, useOrderedVariables, useSelector } from '@/hooks';
 
+import { EditorTabs } from './constants';
+import useEditorTab from './hooks/useEditorTab';
+
 type AnyItem = OrderedVariable | Realtime.Intent | Realtime.Slot;
 
 export interface NLUManagerContextValue<I extends AnyItem = AnyItem> {
@@ -33,10 +36,12 @@ export interface NLUManagerContextValue<I extends AnyItem = AnyItem> {
   toggleActiveItemID: (id: string) => void;
   deleteSelectedItems: VoidFunction;
   toggleSelectedItemID: (itemID: string) => void;
-  showUtteranceRecommendations: boolean;
-  setShowUtteranceRecommendations: (shown: boolean) => void;
+  isEditorTabActive: (tab: EditorTabs) => boolean;
+  openEditorTab: (tab: EditorTabs) => void;
+  closeEditorTab: () => void;
   isScrolling: boolean;
   setIsScrolling: (isScrolling: boolean) => void;
+  inFullScreenTab: boolean | null;
 }
 
 const INITIAL_STATE: NLUManagerContextValue = {
@@ -59,10 +64,12 @@ const INITIAL_STATE: NLUManagerContextValue = {
   toggleActiveItemID: Utils.functional.noop,
   deleteSelectedItems: Utils.functional.noop,
   toggleSelectedItemID: Utils.functional.noop,
-  showUtteranceRecommendations: false,
-  setShowUtteranceRecommendations: Utils.functional.noop,
+  isEditorTabActive: () => false,
+  openEditorTab: Utils.functional.noop,
+  closeEditorTab: Utils.functional.noop,
   isScrolling: false,
   setIsScrolling: Utils.functional.noop,
+  inFullScreenTab: null,
 };
 
 export const NLUManagerContext = React.createContext<NLUManagerContextValue>(INITIAL_STATE);
@@ -90,7 +97,7 @@ export const NLUManagerProvider: React.FC = ({ children }) => {
   const [search, setSearch] = React.useState('');
   const [renamingItemID, setRenamingItemID] = React.useState<string | null>(null);
   const [selectedItemIDs, setSelectedItemIDsSet] = React.useState<Set<string>>(() => new Set());
-  const [showUtteranceRecommendations, setShowUtteranceRecommendations] = React.useState(false);
+  const { isTabActive: isEditorTabActive, closeEditorTab, openEditorTab, inFullScreenTab } = useEditorTab();
 
   const location = useLocation();
 
@@ -141,12 +148,11 @@ export const NLUManagerProvider: React.FC = ({ children }) => {
       setNluManagerPersistedState(persistedState);
       goToNLUManagerEntity(tab, itemID);
 
-      // TODO: refactor this to not be a flag specifically for showing utterance recommendations
       if (!itemID) {
-        setShowUtteranceRecommendations(false);
+        closeEditorTab();
       }
     },
-    [activeTab, goToNLUManagerEntity, setNluManagerPersistedState, setShowUtteranceRecommendations]
+    [activeTab, goToNLUManagerEntity, setNluManagerPersistedState, closeEditorTab]
   );
 
   const goToItem = React.useCallback(
@@ -230,7 +236,7 @@ export const NLUManagerProvider: React.FC = ({ children }) => {
 
   useDidUpdateEffect(() => {
     setRenamingItemID(null);
-    setShowUtteranceRecommendations(false);
+    closeEditorTab();
   }, [activeItemID]);
 
   const api = useContextApi<NLUManagerContextValue>({
@@ -253,10 +259,12 @@ export const NLUManagerProvider: React.FC = ({ children }) => {
     toggleActiveItemID,
     deleteSelectedItems,
     toggleSelectedItemID,
-    showUtteranceRecommendations,
-    setShowUtteranceRecommendations,
+    isEditorTabActive,
+    openEditorTab,
+    closeEditorTab,
     isScrolling,
     setIsScrolling,
+    inFullScreenTab,
   });
 
   return <NLUManagerContext.Provider value={api}>{children}</NLUManagerContext.Provider>;

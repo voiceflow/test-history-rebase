@@ -14,6 +14,7 @@ import { ManagerProvider } from '@/pages/Canvas/contexts';
 import { useManager } from '@/pages/Canvas/managers/utils';
 import DesignMenu from '@/pages/Project/components/DesignMenu';
 import DesignMenuV2 from '@/pages/Project/components/DesignMenu/V2';
+import ProjectPage from '@/pages/Project/components/ProjectPage';
 import { useAnyModeOpen, usePrototypingMode } from '@/pages/Project/hooks';
 import PrototypeOverlay from '@/pages/Prototype/components/PrototypeOverlay';
 import ReadOnlyBadge from '@/pages/Prototype/components/ReadOnlyBadge';
@@ -59,7 +60,7 @@ const Diagram: React.FC<DiagramProps> = () => {
   }, [canvasOnly]);
 
   return (
-    <>
+    <ProjectPage>
       {isCanvasEditable && <DiagramSync />}
 
       <ManagerProvider value={getManager}>
@@ -80,7 +81,7 @@ const Diagram: React.FC<DiagramProps> = () => {
 
         <PrototypeOverlay />
       </ManagerProvider>
-    </>
+    </ProjectPage>
   );
 };
 

@@ -91,7 +91,7 @@ export const withDraggable =
         const item = monitor.getItem() as DragItem;
         const { [onDropKey]: onDrop, onToggleDragging } = props;
 
-        onDrop?.({ toListId: item.listId!, fromListId: item._initialListId });
+        onDrop?.({ toListId: item.listId!, fromListId: item._initialListId, ...props });
         onToggleDragging?.(false);
       },
       beginDrag(props, _, component) {

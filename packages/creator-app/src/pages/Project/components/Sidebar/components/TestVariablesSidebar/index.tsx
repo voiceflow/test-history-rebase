@@ -10,9 +10,10 @@ import * as variableState from '@/ducks/variableState';
 import { useDispatch, useSelector, useTheme } from '@/hooks';
 import { Variable } from '@/models';
 
+import { SideBarComponentProps } from '../../types';
 import { SelectContainer, VariableListContainer } from './components';
 
-const TestVariablesSidebar: React.FC = () => {
+const TestVariablesSidebar: React.FC<SideBarComponentProps> = () => {
   const theme = useTheme();
   const variables = useSelector(variableState.selectedVariablesStateVariablesSelector);
   const selectedVariableStateId = useSelector(variableState.selectedVariableStateIdSelector);

@@ -13,6 +13,7 @@ import {
   SetPreviewingVersion,
   SetZoomType,
   ToggleBlockMenuSection,
+  ToggleFullScreenMode,
   UIAction,
 } from './actions';
 import { INITIAL_STATE, STATE_KEY } from './constants';
@@ -92,6 +93,11 @@ export const toggleCanvasGridReducer: Reducer<UIState> = (state) => ({
   canvasGrid: !state.canvasGrid,
 });
 
+export const toggleFullScreenModeReducer: Reducer<UIState, ToggleFullScreenMode> = (state, { payload: value }) => ({
+  ...state,
+  canvasOnly: value || !state.fullScreenMode,
+});
+
 export const toggleCommentingVisibility: Reducer<UIState> = (state) => ({
   ...state,
   commentsVisible: !state.commentsVisible,
@@ -135,6 +141,8 @@ const uiReducer: RootReducer<UIState, AnyUIAction | Session.SetActiveWorkspaceID
       return toggleCanvasOnlyReducer(state);
     case UIAction.TOGGLE_CANVAS_GRID:
       return toggleCanvasGridReducer(state);
+    case UIAction.TOGGLE_FULL_SCREEN_MODE:
+      return toggleFullScreenModeReducer(state, action);
     case UIAction.SET_VIEWING_VERSION:
       return setPreviewingVersionReducer(state, action);
     case UIAction.SET_ZOOM_TYPE:

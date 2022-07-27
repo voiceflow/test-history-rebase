@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.847.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.846.0...@voiceflow/creator-app@1.847.0) (2022-07-27)
+
+
+### Features
+
+* canvas visualization support for df carousel cards (CT-670) ([#5809](https://github.com/voiceflow/creator-app/issues/5809)) ([e7a122c](https://github.com/voiceflow/creator-app/commit/e7a122c42acc5b32ad37b4cfd50c580c970724bf))
+
+
+
+
+
 # [1.846.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.845.1...@voiceflow/creator-app@1.846.0) (2022-07-27)
 
 

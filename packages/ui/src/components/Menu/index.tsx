@@ -1,67 +1,23 @@
-/* eslint-disable @typescript-eslint/no-unnecessary-type-constraint */
 import composeRefs from '@seznam/compose-react-refs';
 import { FlexLabel } from '@ui/components/Flex';
-import SvgIcon, { SvgIconTypes } from '@ui/components/SvgIcon';
-import { useTheme } from '@ui/hooks';
+import SvgIcon from '@ui/components/SvgIcon';
+import { useCachedValue, useTheme } from '@ui/hooks';
 import { FadeDownDelayedContainer } from '@ui/styles/animations';
 import { ClassName } from '@ui/styles/constants';
-import { Either } from '@ui/types';
 import { getScrollbarWidth, stopImmediatePropagation, stopPropagation } from '@ui/utils';
-import { Nullable } from '@voiceflow/common';
 import React from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 
-import { ButtonContainer, Container, getMaxHeight, Item, itemStyles, MenuItemNote, MenuItemProps } from './components';
+import { ActionIcon, ButtonContainer, Container, Footer, getMaxHeight, Item, itemStyles, MenuItemNote, NotFound } from './components';
+import * as T from './types';
+
+export * as MenuTypes from './types';
 
 export { Container as MenuContainer, Item as MenuItem, itemStyles as menuItemStyles };
 
-interface BaseMenuOption extends MenuItemProps {
-  key?: string;
-  icon?: SvgIconTypes.Icon;
-  note?: React.ReactNode;
-  label: React.ReactNode;
-  style?: React.CSSProperties;
-  onClick?: (e: React.MouseEvent) => void;
-}
-
-interface MenuOptionWithValue<T> extends BaseMenuOption {
-  value: T;
-}
-
-interface MenuOptionWithoutValue extends BaseMenuOption {
-  value?: never;
-}
-
-export type MenuOption<T extends any> = T extends undefined ? MenuOptionWithoutValue : MenuOptionWithValue<T>;
-
-export type MenuProps<T extends any> = {
-  id?: string;
-  width?: number;
-  disabled?: boolean;
-  onHide?: () => void;
-  onToggle?: () => void;
-  fullWidth?: boolean;
-  maxHeight?: number | string;
-  searchable?: React.ReactNode;
-  selfDismiss?: boolean;
-  noTopPadding?: boolean;
-  scrollbarsRef?: React.Ref<Scrollbars>;
-  maxVisibleItems?: number;
-  noBottomPadding?: boolean;
-  multiSelectProps?: { buttonClick: React.MouseEventHandler; buttonLabel: React.ReactNode };
-  disableAnimation?: boolean;
-  renderFooterAction?: Nullable<(options: { close: VoidFunction }) => React.ReactNode>;
-} & Either<
-  {
-    options: Nullable<MenuOption<T>>[];
-    onSelect?: T extends undefined ? (value?: T) => void : (value: T) => void;
-  },
-  { children: React.ReactNode }
->;
-
-export type MenuRefElement = HTMLUListElement;
-
-const Menu = <T extends any>(
+function Menu(props: T.PropsWithChildren & React.RefAttributes<T.RefElement>, ref: React.Ref<T.RefElement>): React.ReactElement;
+function Menu<Value = void>(props: T.PropsWithOptions<Value> & React.RefAttributes<T.RefElement>, ref: React.Ref<T.RefElement>): React.ReactElement;
+function Menu<Value = void>(
   {
     id,
     width,
@@ -82,14 +38,17 @@ const Menu = <T extends any>(
     disableAnimation = false,
     multiSelectProps,
     renderFooterAction,
-  }: MenuProps<T>,
-  ref: React.Ref<MenuRefElement>
-) => {
-  const menuRef = React.useRef<MenuRefElement>(null);
+    swallowMouseDownEvent = true,
+  }: T.PropsWithChildren | T.PropsWithOptions<Value>,
+  ref: React.Ref<T.RefElement>
+): React.ReactElement {
+  const menuRef = React.useRef<T.RefElement>(null);
   const scrollBarWidth = React.useMemo(() => getScrollbarWidth(), []);
   const theme = useTheme();
 
-  const onItemClick = (value?: T, onClick?: (event: React.MouseEvent) => void) =>
+  const swallowMouseDownEventCache = useCachedValue(swallowMouseDownEvent);
+
+  const onItemClick = (value?: Value, onClick?: (event: React.MouseEvent) => void) =>
     stopPropagation<React.MouseEvent>((event) => {
       onClick?.(event);
       onSelect?.(value!);
@@ -105,6 +64,8 @@ const Menu = <T extends any>(
     const wheelCallback = (event: WheelEvent) => event.stopImmediatePropagation();
 
     const mouseDownCallback = (event: MouseEvent) => {
+      if (!swallowMouseDownEventCache.current) return;
+
       event.preventDefault();
       event.stopPropagation();
     };
@@ -125,17 +86,16 @@ const Menu = <T extends any>(
   return (
     <Container
       id={id}
-      withFooterAction={!!footerAction}
       ref={composeRefs(ref, menuRef)}
+      width={width}
       className={ClassName.MENU}
       fullWidth={fullWidth}
-      width={width}
+      noTopPadding={noTopPadding}
+      withScrollbars
       maxVisibleItems={maxVisibleItems}
       nativeScrollbar={scrollBarWidth === 0}
-      noTopPadding={noTopPadding}
-      noBottomPadding={noBottomPadding}
+      noBottomPadding={noBottomPadding || !!footerAction}
       disableAnimation={disableAnimation}
-      withScrollbars
     >
       <FadeDownDelayedContainer duration={disableAnimation ? 0 : undefined} delay={disableAnimation ? 0 : undefined}>
         {searchable}
@@ -155,7 +115,7 @@ const Menu = <T extends any>(
               const { key, value, note, label, icon, onClick, ...props } = option;
 
               return (
-                <Item {...props} key={key || `${index}-${label}`} onClick={onItemClick(value as T, onClick)}>
+                <Item {...props} key={key || `${index}-${label}`} onClick={onItemClick(value, onClick)}>
                   {!!icon && <SvgIcon icon={icon} mr={16} color="#6e849ad9" />}
                   <FlexLabel>{label || String(value)}</FlexLabel>
                   {!!note && <MenuItemNote>{note}</MenuItemNote>}
@@ -163,26 +123,31 @@ const Menu = <T extends any>(
               );
             })}
         </Scrollbars>
+
+        {multiSelectProps && (
+          <ButtonContainer
+            disabled={disabled}
+            onClick={disabled ? stopImmediatePropagation() : stopImmediatePropagation(multiSelectProps.buttonClick)}
+          >
+            {multiSelectProps.buttonLabel}
+          </ButtonContainer>
+        )}
+
+        {footerAction}
       </FadeDownDelayedContainer>
-
-      {multiSelectProps && (
-        <ButtonContainer disabled={disabled} onClick={disabled ? stopImmediatePropagation() : stopImmediatePropagation(multiSelectProps.buttonClick)}>
-          {multiSelectProps.buttonLabel}
-        </ButtonContainer>
-      )}
-
-      {footerAction}
     </Container>
   );
-};
+}
 
-// The only way we found to use generics with forwardRef
-const forwardRef = (
-  render: (
-    props: MenuProps<any>,
-    ref: ((instance: MenuRefElement | null) => void) | React.MutableRefObject<MenuRefElement | null> | null
-  ) => React.ReactElement | null
-): (<G extends any = undefined>(props: MenuProps<G> & React.RefAttributes<MenuRefElement>) => React.ReactElement | null) =>
-  React.forwardRef<MenuRefElement, MenuProps<any>>(render);
+export default Object.assign(React.forwardRef(Menu) as any as typeof Menu, {
+  itemStyles,
+  getMaxHeight,
 
-export default forwardRef(Menu);
+  Item,
+  Footer,
+  NotFound,
+  ItemNote: MenuItemNote,
+  Container,
+  ActionIcon,
+  ButtonContainer,
+});

@@ -9,7 +9,7 @@ export interface VariableTagProps extends BaseVariableTagProps {
 }
 
 export const VariableTag = ({ tooltip, children, ...props }: VariableTagProps): React.ReactElement => (
-  <OverflowTippyTooltip {...tooltip} title={`{${children}}`} style={{ maxWidth: '100%', display: 'flex', ...tooltip?.style }}>
+  <OverflowTippyTooltip {...tooltip} title={`{${children}}`} overflow>
     {(ref, { isOverflow }) => (
       <>
         <VariableTagWrapper {...props}>

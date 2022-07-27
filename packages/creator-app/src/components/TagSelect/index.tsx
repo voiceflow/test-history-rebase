@@ -7,7 +7,7 @@ import {
   GetOptionLabel,
   GetOptionValue,
   isNotUIOnlyMenuItemOption,
-  NestedMenuComponents,
+  Menu,
   Primitive,
   Select,
   SelectInputVariant,
@@ -89,9 +89,11 @@ function TagSelect({
         customMenuLabelRenderer(option, searchLabel, getOptionLabel, getOptionValue, isOptionSelected)
       }
       renderFooterAction={({ close }) => (
-        <NestedMenuComponents.FooterActionContainer onClick={stopImmediatePropagation(Utils.functional.chainVoid(close, toggleSelectAll))}>
-          {selectedAllIntents ? 'Unselect All' : 'Select All'}
-        </NestedMenuComponents.FooterActionContainer>
+        <Menu.Footer>
+          <Menu.Footer.Action onClick={stopImmediatePropagation(Utils.functional.chainVoid(close, toggleSelectAll))}>
+            {selectedAllIntents ? 'Unselect All' : 'Select All'}
+          </Menu.Footer.Action>
+        </Menu.Footer>
       )}
       fullWidth
       selectedOptions={selected}

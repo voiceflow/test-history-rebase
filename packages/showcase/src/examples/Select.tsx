@@ -1,4 +1,4 @@
-import { NestedMenuComponents, Select } from '@voiceflow/ui';
+import { Menu, Select } from '@voiceflow/ui';
 import React from 'react';
 
 import { withBox } from './hocs';
@@ -31,7 +31,9 @@ const searchableDropdown = createExample(
         getOptionLabel={(value) => (value ? optionLookup[value] : undefined)}
         createInputPlaceholder="for something"
         renderFooterAction={() => (
-          <NestedMenuComponents.FooterActionContainer onClick={() => {}}>Create New Stuff</NestedMenuComponents.FooterActionContainer>
+          <Menu.Footer>
+            <Menu.Footer.Action>Create New Stuff</Menu.Footer.Action>
+          </Menu.Footer>
         )}
       />
     );

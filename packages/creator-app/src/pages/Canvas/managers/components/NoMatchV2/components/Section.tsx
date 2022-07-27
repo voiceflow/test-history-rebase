@@ -1,4 +1,4 @@
-import { ContextMenu, MenuOption, SectionV2 } from '@voiceflow/ui';
+import { ContextMenu, MenuTypes, SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
 interface SectionProps {
@@ -7,7 +7,7 @@ interface SectionProps {
 }
 
 const Section: React.FC<SectionProps> = ({ onClick, onRemove }) => {
-  const options: MenuOption<undefined>[] = [{ label: 'Remove', onClick: onRemove }];
+  const options: MenuTypes.Option[] = [{ label: 'Remove', onClick: onRemove }];
 
   return (
     <>

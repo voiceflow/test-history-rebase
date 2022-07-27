@@ -125,7 +125,7 @@ const PricingForm: React.FC<PricingFormProps> = ({ advanceStep }) => {
                     )}
                   </Dropdown>
                 </SubscriptionDropdown>
-                <Text>with the trial priod of</Text>
+                <Text>with the trial period of</Text>
                 <TextInput
                   className="form-bg small_input"
                   name="days"

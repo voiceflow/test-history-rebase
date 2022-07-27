@@ -1,6 +1,6 @@
 import { isDefaultColor } from '@ui/components/ColorPicker/utils';
 import ContextMenu from '@ui/components/ContextMenu';
-import { MenuOption } from '@ui/components/Menu';
+import { MenuTypes } from '@ui/components/Menu';
 import { toast } from '@ui/components/Toast';
 import { transition } from '@ui/styles';
 import { stopPropagation } from '@ui/utils';
@@ -88,7 +88,7 @@ export const Color: React.FC<ColorProps> = ({
     setRenaming(false);
   };
 
-  const menuOptions: MenuOption<undefined>[] =
+  const menuOptions: MenuTypes.OptionWithoutValue[] =
     isDefault || disableContextMenu
       ? []
       : [

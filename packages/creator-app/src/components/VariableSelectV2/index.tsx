@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import { BaseSelectProps, defaultMenuLabelRenderer, IconButton, NestedMenuComponents, Select, toast } from '@voiceflow/ui';
+import { BaseSelectProps, defaultMenuLabelRenderer, IconButton, Menu, Select, toast } from '@voiceflow/ui';
 import React from 'react';
 
 export interface VariableSelectProps extends BaseSelectProps {
@@ -37,7 +37,7 @@ const VariableSelectV2: React.FC<VariableSelectProps> = ({ value, options, onCha
         defaultMenuLabelRenderer<string, string>(option, searchLabel, (value) => value, getOptionValue, config)
       }
       clearOnSelectActive
-      renderEmpty={({ search }) => <Select.NotFound>{!search ? 'No variables exist in your assistant. ' : 'No variables found. '}</Select.NotFound>}
+      renderEmpty={({ search }) => <Menu.NotFound>{!search ? 'No variables exist in your assistant. ' : 'No variables found. '}</Menu.NotFound>}
       renderSearchSuffix={({ close, searchLabel }) => (
         <IconButton
           size={16}
@@ -47,9 +47,9 @@ const VariableSelectV2: React.FC<VariableSelectProps> = ({ value, options, onCha
         />
       )}
       renderFooterAction={({ close, searchLabel }) => (
-        <NestedMenuComponents.FooterActionContainer onClick={Utils.functional.chainVoid(close, () => onCreate(searchLabel))}>
-          Create New Variable
-        </NestedMenuComponents.FooterActionContainer>
+        <Menu.Footer>
+          <Menu.Footer.Action onClick={Utils.functional.chainVoid(close, () => onCreate(searchLabel))}>Create New Variable</Menu.Footer.Action>
+        </Menu.Footer>
       )}
       createInputPlaceholder="variables"
       {...props}

@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import { NestedMenuComponents } from '@voiceflow/ui';
+import { Menu } from '@voiceflow/ui';
 import React from 'react';
 
 import { ModalType } from '@/constants';
@@ -48,9 +48,9 @@ const ManageTagInput: React.FC<ManageTagInputProps> = ({ selectedTags }) => {
       className={ClassName.BASE_REPORT_TAG_INPUT}
       selectedTags={selectedTags}
       renderFooterAction={({ close }) => (
-        <NestedMenuComponents.FooterActionContainer onClick={Utils.functional.chainVoid(close, tagManagerModal.open)}>
-          Manage Tags
-        </NestedMenuComponents.FooterActionContainer>
+        <Menu.Footer>
+          <Menu.Footer.Action onClick={Utils.functional.chainVoid(close, tagManagerModal.open)}>Manage Tags</Menu.Footer.Action>
+        </Menu.Footer>
       )}
     />
   );

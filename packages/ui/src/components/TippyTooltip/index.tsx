@@ -17,8 +17,8 @@ export enum TooltipTheme {
 
 export interface TippyTooltipProps extends Omit<TooltipProps, 'theme' | 'delay'> {
   tag?: string;
-  theme?: StringifyEnum<TooltipTheme>;
   delay?: number | [number, number];
+  theme?: StringifyEnum<TooltipTheme>;
   hotkey?: string;
   bodyOverflow?: boolean;
 }

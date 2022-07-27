@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import { defaultMenuLabelRenderer, IconButton, isNotUIOnlyMenuItemOption, NestedMenuComponents, Select, UIOnlyMenuItemOption } from '@voiceflow/ui';
+import { defaultMenuLabelRenderer, IconButton, isNotUIOnlyMenuItemOption, Menu, Select, UIOnlyMenuItemOption } from '@voiceflow/ui';
 import React from 'react';
 
 import { EntityOption } from './hooks';
@@ -33,7 +33,7 @@ const EntitySelector: React.FC<EntitySelectorProps> = ({ value, options, onEdit,
       renderOptionLabel={(option, searchLabel, _, getOptionValue, config) =>
         defaultMenuLabelRenderer<EntityOption, string>(option, searchLabel, (value) => value && optionsMap[value]?.name, getOptionValue, config)
       }
-      renderEmpty={({ search }) => <Select.NotFound>{!search ? 'No entities exist in your assistant. ' : 'No entities found. '}</Select.NotFound>}
+      renderEmpty={({ search }) => <Menu.NotFound>{!search ? 'No entities exist in your assistant. ' : 'No entities found. '}</Menu.NotFound>}
       renderSearchSuffix={({ close, searchLabel }) => (
         <IconButton
           size={16}
@@ -44,9 +44,9 @@ const EntitySelector: React.FC<EntitySelectorProps> = ({ value, options, onEdit,
       )}
       clearOnSelectActive
       renderFooterAction={({ close, searchLabel }) => (
-        <NestedMenuComponents.FooterActionContainer onClick={Utils.functional.chainVoid(close, () => onCreate(searchLabel))}>
-          Create New Entity
-        </NestedMenuComponents.FooterActionContainer>
+        <Menu.Footer>
+          <Menu.Footer.Action onClick={Utils.functional.chainVoid(close, () => onCreate(searchLabel))}>Create New Entity</Menu.Footer.Action>
+        </Menu.Footer>
       )}
       createInputPlaceholder="entities"
     />

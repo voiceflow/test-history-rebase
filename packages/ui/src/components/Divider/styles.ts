@@ -10,14 +10,18 @@ export const getSimpleStyles = ({
   height = isVertical ? '100%' : 1,
   offset = units(1.5)({ theme }),
   isSecondaryColor,
-}: T.SimpleProps) => css`
-  ${transition('background-color')};
+}: T.SimpleProps) => {
+  const [offsetStart, offsetEnd] = Array.isArray(offset) ? offset : [offset, offset];
 
-  width: ${typeof width === 'number' ? `${width}px` : width};
-  height: ${typeof height === 'number' ? `${height}px` : height};
-  margin: ${isVertical ? `0 ${offset}px` : `${offset}px 0`};
-  background-color: ${isSecondaryColor ? theme.colors.separatorSecondary : theme.colors.separator};
-`;
+  return css`
+    ${transition('background-color')};
+
+    width: ${typeof width === 'number' ? `${width}px` : width};
+    height: ${typeof height === 'number' ? `${height}px` : height};
+    margin: ${isVertical ? `0 ${offsetStart}px 0 ${offsetEnd}px` : `${offsetStart}px 0 ${offsetEnd}px 0`};
+    background-color: ${isSecondaryColor ? theme.colors.separatorSecondary : theme.colors.separator};
+  `;
+};
 
 export const Simple = styled.div`
   ${getSimpleStyles}

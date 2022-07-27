@@ -27,7 +27,7 @@ const StyledLogoButton = styled(IconButton).attrs({ icon: 'voiceflowV', size: 26
     }
   }
 
-  ${IconButtonButton}:active + ${ExpandIconContainer} {
+  &:active ${ExpandIconContainer} {
     opacity: 1;
 
     .${ClassName.SVG_ICON} {
@@ -39,7 +39,7 @@ const StyledLogoButton = styled(IconButton).attrs({ icon: 'voiceflowV', size: 26
   ${({ active }) =>
     active
       ? css`
-          & ${IconButtonButton} + ${ExpandIconContainer} {
+          & ${ExpandIconContainer} {
             opacity: 1;
 
             .${ClassName.SVG_ICON} {

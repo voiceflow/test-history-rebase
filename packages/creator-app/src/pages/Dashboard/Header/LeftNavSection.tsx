@@ -48,28 +48,30 @@ const LeftNavSection: React.FC<LeftNavSectionProps> = ({ activeWorkspace }) => {
     <>
       <Dropdown
         menu={
-          <Menu maxHeight={600} maxVisibleItems={15}>
-            <>
-              {workspaces.map((workspace) => {
-                const active = workspace.id === activeWorkspace?.id;
-                return (
-                  <MenuItem key={workspace.id} onClick={() => goToWorkspace(workspace.id)}>
-                    <FlexApart style={{ width: '100%' }}>
-                      <WorkspaceItemNameWrapper>{workspace.name}</WorkspaceItemNameWrapper>
-                      {active && <SvgIcon icon="blocks" color="#becedc" />}
-                    </FlexApart>
-                  </MenuItem>
-                );
-              })}
-              {showCreateWorkspaceButton && (
-                <>
-                  <MenuItem divider />
-                  <MenuItem onClick={canAddNewWorkspace} bottomAction id="createWorkspace">
+          <Menu
+            maxHeight={600}
+            maxVisibleItems={15}
+            renderFooterAction={() =>
+              showCreateWorkspaceButton ? (
+                <Menu.Footer>
+                  <Menu.Footer.Action id="createWorkspace" onClick={canAddNewWorkspace}>
                     Create New Workspace
-                  </MenuItem>
-                </>
-              )}
-            </>
+                  </Menu.Footer.Action>
+                </Menu.Footer>
+              ) : null
+            }
+          >
+            {workspaces.map((workspace) => {
+              const active = workspace.id === activeWorkspace?.id;
+              return (
+                <MenuItem key={workspace.id} onClick={() => goToWorkspace(workspace.id)}>
+                  <FlexApart style={{ width: '100%' }}>
+                    <WorkspaceItemNameWrapper>{workspace.name}</WorkspaceItemNameWrapper>
+                    {active && <SvgIcon icon="blocks" color="#becedc" />}
+                  </FlexApart>
+                </MenuItem>
+              );
+            })}
           </Menu>
         }
         placement="bottom-start"

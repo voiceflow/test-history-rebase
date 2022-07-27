@@ -93,7 +93,7 @@ export {
   NestedInputIconPosition,
 } from './Input';
 export { LoadCircle, default as Loader } from './Loader';
-export type { MenuOption, MenuProps } from './Menu';
+export type { MenuTypes } from './Menu';
 export { default as Menu, MenuContainer, MenuItem, menuItemStyles } from './Menu';
 export { ModalActionContainer, ModalBodyContainer, ModalBoldText, ModalButtonContainer, ModalContentContainer, ModalImportSelect } from './Modal';
 export type {
@@ -113,7 +113,6 @@ export {
   isNotUIOnlyMenuItemOption,
   isUIOnlyMenuItemOption,
   default as NestedMenu,
-  NestedMenuComponents,
 } from './NestedMenu';
 export type { OptionsMenuOption } from './OptionsMenu';
 export { default as OptionsMenu } from './OptionsMenu';

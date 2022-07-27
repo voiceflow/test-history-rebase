@@ -1,4 +1,4 @@
-import { Box, BoxFlex, Button, ButtonVariant, Dropdown, Input, MenuOption, SecondaryButtonProps, SvgIcon } from '@voiceflow/ui';
+import { Box, BoxFlex, Button, ButtonVariant, Dropdown, Input, MenuTypes, SecondaryButtonProps, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
 import { styled } from '@/hocs';
@@ -8,7 +8,7 @@ import { ContentSection, Section } from '../../components';
 
 export interface ProjectAPIKeySectionProps {
   title: string;
-  options: MenuOption<undefined>[];
+  options: MenuTypes.OptionWithoutValue[];
   apiKey: ProjectAPIKey | null;
   show: boolean;
   onToggleShow: () => void;

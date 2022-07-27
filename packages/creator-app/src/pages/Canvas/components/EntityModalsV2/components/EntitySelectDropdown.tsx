@@ -1,6 +1,6 @@
 import { Nullish, Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, IconButton, IconButtonVariant, NestedMenuComponents, Select } from '@voiceflow/ui';
+import { Box, IconButton, IconButtonVariant, Menu, Select } from '@voiceflow/ui';
 import React from 'react';
 
 import { ModalType } from '@/constants';
@@ -26,10 +26,6 @@ const EntitySelectDropdown: React.FC = () => {
     }
   };
 
-  const footerComponent = nluManager.isEnabled
-    ? () => <NestedMenuComponents.FooterActionContainer onClick={goToNLUManager}>Open NLU Manager</NestedMenuComponents.FooterActionContainer>
-    : null;
-
   return (
     <>
       <Select
@@ -48,7 +44,13 @@ const EntitySelectDropdown: React.FC = () => {
         inDropdownSearch
         alwaysShowCreate
         createInputPlaceholder="entities"
-        renderFooterAction={footerComponent}
+        renderFooterAction={() =>
+          nluManager.isEnabled ? (
+            <Menu.Footer>
+              <Menu.Footer.Action onClick={goToNLUManager}>Open NLU Manager</Menu.Footer.Action>
+            </Menu.Footer>
+          ) : null
+        }
         renderTrigger={({ onOpenMenu, onHideMenu, isOpen }) => (
           <Box onClick={isOpen ? onHideMenu : onOpenMenu} display="flex">
             <IconButton activeClick={isOpen} variant={IconButtonVariant.BASIC} icon="sandwichMenu" size={16} style={{ marginRight: '12px' }} />

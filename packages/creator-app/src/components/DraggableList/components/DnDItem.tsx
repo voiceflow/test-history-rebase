@@ -1,4 +1,4 @@
-import { ContextMenu, ContextMenuProps, MenuOption } from '@voiceflow/ui';
+import { ContextMenu, ContextMenuProps, MenuTypes } from '@voiceflow/ui';
 import React from 'react';
 
 import { DnDHandlers, InternalItem } from '../types';
@@ -6,7 +6,7 @@ import useDragAndDrop from '../useDragAndDrop';
 
 type InternalWithoutType<I> = Omit<InternalItem<I>, 'type'>;
 
-export interface ContextMenuOption<I> extends Omit<MenuOption<undefined>, 'onClick'> {
+export interface ContextMenuOption<I> extends Omit<MenuTypes.OptionWithoutValue, 'onClick'> {
   onClick?: (props: InternalWithoutType<I>) => void;
 }
 

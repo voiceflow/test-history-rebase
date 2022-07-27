@@ -4,7 +4,6 @@ import { PopperProps } from 'react-popper';
 
 import defaultMenuLabelRenderer from './defaultMenuLabelRenderer';
 import { DEFAULT_PATH } from './Menu';
-import { FooterAction, FooterActionContainer, FooterActions } from './Menu/components';
 import { NestedMenuInternalProps, NestedMenuMultilevelProps, NestedMenuWithIDMultilevelProps } from './Menu/types';
 import MenuOptions from './MenuOptions';
 import { MenuItemMultilevel, MenuItemWithID, RenderOptionLabel } from './types';
@@ -13,8 +12,6 @@ export { getFormattedLabel as getNestedMenuFormattedLabel } from './getFormatted
 export { defaultMenuLabelRenderer };
 export * from './types';
 export * from './utils';
-
-export const NestedMenuComponents = { FooterActionContainer, FooterActions, FooterAction };
 
 export const POPOVER_MODIFIERS: PopperProps['modifiers'] = {
   hide: { enabled: false },

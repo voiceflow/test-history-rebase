@@ -1,20 +1,14 @@
-import { MenuProps } from '@ui/components/Menu';
+import { MenuTypes } from '@ui/components/Menu';
 import { Nullish } from '@voiceflow/common';
 import React from 'react';
 import { PopperProps } from 'react-popper';
 
-export interface MenuItemProps {
-  style?: React.CSSProperties;
-  ending?: boolean;
-  divider?: boolean;
-}
-
 export interface BaseMenuItem {
+  tooltip?: React.ReactNode;
   vfUIOnly?: boolean;
   disabled?: boolean;
   readOnly?: boolean;
-  menuItemProps?: MenuItemProps;
-  tooltip?: React.ReactNode;
+  menuItemProps?: Omit<MenuTypes.MenuItemProps, 'disabled' | 'readOnly'>;
 }
 
 export interface UIOnlyMenuItemOption extends Required<BaseMenuItem> {
@@ -36,7 +30,7 @@ export interface MenuItemGrouped<Option> extends BaseMenuItem {
 
 export interface MenuItemMultilevel<Option> extends BaseMenuItem {
   options?: Array<Option | UIOnlyMenuItemOption>;
-  menuProps?: Omit<MenuProps<unknown>, 'onSelect' | 'options' | 'children'>;
+  menuProps?: MenuTypes.BaseProps;
 }
 
 export interface MenuItemWithOptions<Option> extends BaseMenuItem {

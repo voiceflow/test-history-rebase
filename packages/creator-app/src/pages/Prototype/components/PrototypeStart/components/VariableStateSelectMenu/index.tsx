@@ -1,5 +1,5 @@
 import { Nullish } from '@voiceflow/common';
-import { NestedMenuComponents, OverflowText, SvgIcon } from '@voiceflow/ui';
+import { Menu, OverflowText, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
 import { ModalType } from '@/constants';
@@ -56,9 +56,9 @@ const VariableStateSelectMenu: React.FC<VariableStateSelectMenuProps> = ({ rende
       createInputPlaceholder="personas"
       renderTrigger={({ ref, isOpen }) => render({ ref, isOpen, toggleSelectMenuOpen })}
       renderFooterAction={() => (
-        <NestedMenuComponents.FooterActions>
-          <NestedMenuComponents.FooterAction onClick={verifyStatesLimit(openEditorModal)}>Create New Persona</NestedMenuComponents.FooterAction>
-        </NestedMenuComponents.FooterActions>
+        <Menu.Footer>
+          <Menu.Footer.Action onClick={verifyStatesLimit(openEditorModal)}>Create New Persona</Menu.Footer.Action>
+        </Menu.Footer>
       )}
       renderOptionLabel={(option: VariableStateOption) => (
         <OverflowWrapper>

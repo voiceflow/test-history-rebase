@@ -1,4 +1,4 @@
-import { Checkbox, Menu, MenuItem } from '@voiceflow/ui';
+import { Checkbox, Menu } from '@voiceflow/ui';
 import React from 'react';
 
 import DropdownButton from '@/components/DropdownButton';
@@ -9,8 +9,6 @@ import { connect } from '@/hocs';
 import { Identifier } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
 
-const PartialMenu = Menu as React.ComponentType<Partial<React.ComponentProps<typeof Menu>>>;
-const PartialMenuItem = MenuItem as React.ComponentType<Partial<React.ComponentProps<typeof MenuItem>>>;
 const AnyDropdownButton = DropdownButton as React.ComponentType<any>;
 
 interface AlexaUploadGroupButtonProps {
@@ -46,16 +44,16 @@ const AlexaUploadGroupButton: React.FC<ConnectedButtonProps & AlexaUploadGroupBu
         <AnyDropdownButton
           id={Identifier.UPLOAD}
           menu={
-            <PartialMenu>
-              <PartialMenuItem disabled>Select Vendor</PartialMenuItem>
-              <PartialMenuItem divider />
+            <Menu>
+              <Menu.Item disabled>Select Vendor</Menu.Item>
+              <Menu.Item divider />
 
               {vendors.map(({ id, name }) => (
-                <PartialMenuItem key={id} onClick={() => selectVendor(id)}>
+                <Menu.Item key={id} onClick={() => selectVendor(id)}>
                   <Checkbox checked={vendorID === id} readOnly /> {name}
-                </PartialMenuItem>
+                </Menu.Item>
               ))}
-            </PartialMenu>
+            </Menu>
           }
           buttonProps={{
             onClick,

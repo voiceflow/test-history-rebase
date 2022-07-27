@@ -1,6 +1,6 @@
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Alert, BaseSelectProps, IconButton, isUIOnlyMenuItemOption, NestedMenuComponents, Select, toast, UIOnlyMenuItemOption } from '@voiceflow/ui';
+import { Alert, BaseSelectProps, IconButton, isUIOnlyMenuItemOption, Menu, Select, toast, UIOnlyMenuItemOption } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
@@ -135,7 +135,7 @@ const IntentSelect: React.FC<IntentSelectProps> = ({
         formatInputValue={(value) => applyPlatformIntentNameFormatting(value, platform)}
         isButtonDisabled={({ value }) => isIntentNameTaken(value)}
         createInputPlaceholder={createInputPlaceholder}
-        renderEmpty={({ search }) => <Select.NotFound>{!search ? 'No intents exist in your assistant. ' : 'No intents found. '}</Select.NotFound>}
+        renderEmpty={({ search }) => <Menu.NotFound>{!search ? 'No intents exist in your assistant. ' : 'No intents found. '}</Menu.NotFound>}
         renderOptionLabel={(option, searchLabel, getOptionLabel, getOptionValue, { isFocused }) => (
           <Option option={option} isFocused={isFocused} searchLabel={searchLabel} getOptionLabel={getOptionLabel} getOptionValue={getOptionValue} />
         )}
@@ -143,9 +143,9 @@ const IntentSelect: React.FC<IntentSelectProps> = ({
           <IconButton size={16} icon="plus" variant={IconButton.Variant.BASIC} onClick={Utils.functional.chain(close, () => onCreate(searchLabel))} />
         )}
         renderFooterAction={({ close, searchLabel }) => (
-          <NestedMenuComponents.FooterActionContainer onClick={Utils.functional.chain(close, () => onCreate(searchLabel))}>
-            Create New Intent
-          </NestedMenuComponents.FooterActionContainer>
+          <Menu.Footer>
+            <Menu.Footer.Action onClick={Utils.functional.chain(close, () => onCreate(searchLabel))}>Create New Intent</Menu.Footer.Action>
+          </Menu.Footer>
         )}
       />
 

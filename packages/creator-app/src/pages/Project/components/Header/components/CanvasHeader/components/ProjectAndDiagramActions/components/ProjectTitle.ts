@@ -1,11 +1,13 @@
 import EditableText from '@/components/EditableText';
 import { styled } from '@/hocs';
 
-const ProjectTitle = styled(EditableText)`
+const ProjectTitle = styled(EditableText)<{ $secondary?: boolean }>`
+  max-width: 205px;
   overflow: hidden;
   font-size: 16px;
   white-space: nowrap;
   text-overflow: ellipsis;
+  color: ${({ $secondary, theme }) => ($secondary ? theme.colors.secondary : theme.colors.primary)};
 `;
 
 export default ProjectTitle;

@@ -1,6 +1,6 @@
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, IconButton, IconButtonVariant, NestedMenuComponents, PopperProps, Select } from '@voiceflow/ui';
+import { IconButton, IconButtonVariant, Menu, PopperProps, Select } from '@voiceflow/ui';
 import * as Normal from 'normal-store';
 import React from 'react';
 
@@ -39,13 +39,6 @@ const AddDropdown: React.FC<AddDropdownProps> = ({ entities, placement, onAddReq
       placement={placement}
       isDropdown
       searchable={!!unusedEntities.length}
-      renderEmpty={({ close }) => (
-        <Box margin="-24px 0" flex={1} textAlign="center">
-          <NestedMenuComponents.FooterAction onClick={Utils.functional.chainVoid(close, onCreate)}>
-            Create New Entity
-          </NestedMenuComponents.FooterAction>
-        </Box>
-      )}
       minMenuWidth={250}
       renderTrigger={({ ref, onOpenMenu, onHideMenu, isOpen }) => (
         <IconButton
@@ -61,15 +54,11 @@ const AddDropdown: React.FC<AddDropdownProps> = ({ entities, placement, onAddReq
       getOptionLabel={(value) => value?.name}
       inDropdownSearch={!!unusedEntities.length}
       alwaysShowCreate
-      renderFooterAction={
-        unusedEntities.length
-          ? ({ close }) => (
-              <NestedMenuComponents.FooterActionContainer onClick={Utils.functional.chainVoid(close, onCreate)}>
-                Create New Entity
-              </NestedMenuComponents.FooterActionContainer>
-            )
-          : undefined
-      }
+      renderFooterAction={({ close }) => (
+        <Menu.Footer noItems={!unusedEntities.length}>
+          <Menu.Footer.Action onClick={Utils.functional.chainVoid(close, onCreate)}>Create New Entity</Menu.Footer.Action>
+        </Menu.Footer>
+      )}
       createInputPlaceholder="entities"
     />
   );

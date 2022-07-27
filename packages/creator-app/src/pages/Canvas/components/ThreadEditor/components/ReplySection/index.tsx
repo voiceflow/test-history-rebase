@@ -1,4 +1,4 @@
-import { preventDefault, usePersistFunction } from '@voiceflow/ui';
+import { Menu, preventDefault, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
 import { useTrackingEvents } from '@/hooks';
@@ -65,8 +65,10 @@ const ReplySection: React.ForwardRefRenderFunction<EditableCommentRef, ReplySect
       />
     </Content>
   ) : (
-    <ReplySectionContainer className={REPLY_CLASSNAME} onClick={preventDefault(onReply)} disabled={isThreadEditing}>
-      Reply in Thread
+    <ReplySectionContainer>
+      <Menu.Footer.Action className={REPLY_CLASSNAME} onClick={preventDefault(onReply)} disabled={isThreadEditing}>
+        Reply in Thread
+      </Menu.Footer.Action>
     </ReplySectionContainer>
   );
 };

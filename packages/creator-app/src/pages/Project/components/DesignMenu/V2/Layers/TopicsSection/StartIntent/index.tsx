@@ -43,11 +43,12 @@ const StartIntent: React.FC<StartIntentProps> = ({ isActive, diagramID, focusedN
   return (
     <OverflowTippyTooltip<HTMLDivElement> title={startIntentLabel}>
       {(ref) => (
-        <S.IntentContainer ref={ref} isActive={isRootDiagramActive && startNodeID === focusedNodeID} onClick={onClickRootItem}>
+        <S.IntentContainer isActive={isRootDiagramActive && startNodeID === focusedNodeID} onClick={onClickRootItem}>
           <S.IconContainer>
             <SvgIcon icon="systemFlag" />
           </S.IconContainer>
-          <S.IntentContent>{startIntentLabel}</S.IntentContent>
+
+          <S.IntentContent ref={ref}>{startIntentLabel}</S.IntentContent>
         </S.IntentContainer>
       )}
     </OverflowTippyTooltip>

@@ -1,4 +1,4 @@
-import { BoxFlexCenter } from '@voiceflow/ui';
+import { Box } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Creator from '@/ducks/creator';
@@ -10,8 +10,8 @@ import { useDispatch, useSelector } from '@/hooks';
 import { getDiagramName } from '@/utils/diagram';
 
 import DiagramActions from './DiagramActions';
-import DiagramDivider from './DiagramDivider';
 import DiagramName from './DiagramName';
+import HistoryDivider from './HistoryDivider';
 
 const DiagramsActions: React.FC = () => {
   const goToDiagramHistoryPop = useDispatch(Router.goToDiagramHistoryPop);
@@ -30,31 +30,35 @@ const DiagramsActions: React.FC = () => {
   const isOnlyRootDiagramActive = !previousDiagramID && rootDiagramIsPreviousDiagram;
 
   return (
-    <BoxFlexCenter ml={4} overflow="hidden">
+    <Box.FlexCenter ml={4} gap={12} overflow="hidden">
       {isOnlyRootDiagramActive ? (
-        <DiagramActions diagramID={rootDiagramID} diagramName={rootDiagramName} />
+        <>
+          <HistoryDivider />
+          <DiagramActions diagramID={rootDiagramID} diagramName={rootDiagramName} />
+        </>
       ) : (
         <>
           {rootDiagramID !== (previousDiagramID || activeDiagramID) && (
             <>
-              <DiagramDivider />
+              <HistoryDivider />
               <DiagramName onClick={() => rootDiagramID && goToDiagramHistoryClear(rootDiagramID)}>{rootDiagramName}</DiagramName>
             </>
           )}
 
           {!!previousDiagram && activeDiagramID !== previousDiagramID && (
             <>
-              <DiagramDivider />
+              <HistoryDivider />
               <DiagramName onClick={() => goToDiagramHistoryPop(previousDiagram.id)}>
                 {rootDiagramIsPreviousDiagram ? rootDiagramName : previousDiagram?.name}
               </DiagramName>
             </>
           )}
 
+          <HistoryDivider />
           <DiagramActions diagramID={activeDiagramID} diagramName={rootDiagramIsActiveDiagram ? rootDiagramName : activeDiagram?.name} />
         </>
       )}
-    </BoxFlexCenter>
+    </Box.FlexCenter>
   );
 };
 

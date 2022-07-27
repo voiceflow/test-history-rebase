@@ -4,7 +4,7 @@ export interface SimpleProps {
   theme: Theme;
   width?: number | string;
   height?: number | string;
-  offset?: number;
+  offset?: number | [number, number];
   isVertical?: boolean;
   isSecondaryColor?: boolean;
 }

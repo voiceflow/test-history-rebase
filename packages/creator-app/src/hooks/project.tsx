@@ -1,5 +1,6 @@
 import { BaseModels } from '@voiceflow/base-types';
-import { MenuOption, toast } from '@voiceflow/ui';
+import { Nullable } from '@voiceflow/common';
+import { MenuTypes, toast } from '@voiceflow/ui';
 import React from 'react';
 import { useSelector } from 'react-redux';
 
@@ -88,35 +89,43 @@ export const useDeleteProject = ({
 export const useProjectOptions = ({
   boardID,
   onRename,
+  versionID,
   projectID,
+  withDelete = true,
+  withInvite = false,
   projectName,
   onDuplicated,
-  versionID,
 }: {
   boardID?: string;
   onRename?: () => void;
+  versionID?: string;
   projectID?: string | null;
+  withDelete?: boolean;
+  withInvite?: boolean;
   projectName?: string | null;
   onDuplicated?: () => void;
-  versionID?: string;
-}): MenuOption<undefined>[] => {
+  // eslint-disable-next-line sonarjs/cognitive-complexity
+}): Nullable<MenuTypes.Option>[] => {
+  const sharePopper = React.useContext(SharePopperContext);
+
+  const canExportProject = usePermissions([Permission.CANVAS_EXPORT, Permission.MODEL_EXPORT]);
+  const [canEditProject] = usePermission(Permission.EDIT_PROJECT);
   const [canShareProject] = usePermission(Permission.SHARE_PROJECT);
   const [canManageProjects] = usePermission(Permission.MANAGE_PROJECTS);
-  const canExportProject = usePermissions([Permission.CANVAS_EXPORT, Permission.MODEL_EXPORT, Permission.CODE_EXPORT]);
+  const [canAddCollaborators] = usePermission(Permission.ADD_COLLABORATORS);
 
   const workspace = useActiveWorkspace();
   const projectsCount = useSelector(ProjectV2.projectsCountSelector);
   const getProjectByID = useSelector(ProjectV2.getProjectByIDSelector);
-  const sharePopper = React.useContext(SharePopperContext);
   const currentVersionID = useSelector(Session.activeVersionIDSelector);
 
-  const duplicateProject = useDispatch(Workspace.duplicateProject);
   const goToVersions = useDispatch(Router.goToVersions);
+  const goToSettings = useDispatch(Router.goToSettings);
+  const duplicateProject = useDispatch(Workspace.duplicateProject);
   const updateProjectPrivacy = useDispatch(Project.updateProjectPrivacy);
 
   const targetVersionID = versionID || currentVersionID;
 
-  const { open: onOpenCloneModal } = useModals(ModalType.IMPORT_PROJECT);
   const { toggle: onToggleLoadingModal } = useModals(ModalType.LOADING);
   const { open: onOpenProjectLimitModal } = useModals(ModalType.FREE_PROJECT_LIMIT);
   const { open: onOpenProjectDownloadModal } = useModals(ModalType.PROJECT_DOWNLOAD);
@@ -125,7 +134,7 @@ export const useProjectOptions = ({
 
   const [trackingEvents] = useTrackingEvents();
 
-  const onDuplicate = React.useCallback(async () => {
+  const onDuplicate = async () => {
     if (!workspace) {
       Sentry.error(Errors.noActiveWorkspaceID());
       toast.genericError();
@@ -151,9 +160,9 @@ export const useProjectOptions = ({
 
     onToggleLoadingModal(false);
     onDuplicated?.();
-  }, [boardID, getProjectByID, onDuplicated, projectsCount, workspace, onToggleLoadingModal, onOpenProjectLimitModal]);
+  };
 
-  const onClone = React.useCallback(async () => {
+  const onClone = async () => {
     if (!projectID) {
       Sentry.error(Errors.noActiveProjectID());
       toast.genericError();
@@ -175,45 +184,29 @@ export const useProjectOptions = ({
     } else {
       onOpenProjectDownloadModal();
     }
-  }, [projectID, canShareProject, onOpenProjectDownloadModal]);
+  };
 
-  const onCloneProject = React.useCallback(() => {
-    if (!projectID) {
-      Sentry.error(Errors.noActiveProjectID());
-      toast.genericError();
-      return;
-    }
+  const withInviteOption = withInvite && canAddCollaborators && sharePopper;
+  const withDeleteOption = withDelete && canManageProjects;
+  const withExportOption = canExportProject && sharePopper;
+  const withRenameOption = canManageProjects && onRename;
+  const withHistoryOption = canManageProjects && targetVersionID;
+  const withSettingsOption = canEditProject && targetVersionID;
 
-    onOpenCloneModal({ cloning: true, projectID });
-  }, [onOpenCloneModal, projectID]);
+  return [
+    withHistoryOption ? { label: 'Version history', onClick: () => goToVersions(targetVersionID) } : null,
+    withSettingsOption ? { label: 'Project settings', onClick: () => goToSettings(targetVersionID) } : null,
+    withInviteOption ? { key: 'invite', label: 'Invite collaborators', onClick: () => sharePopper.open(ShareProjectTab.INVITE) } : null,
+    withExportOption ? { label: 'Export as...', onClick: () => sharePopper.open(ShareProjectTab.EXPORT) } : null,
 
-  const onVersionHistory = React.useCallback(() => {
-    goToVersions(targetVersionID!);
-  }, [targetVersionID]);
+    withHistoryOption || withSettingsOption || withInviteOption || withExportOption ? { label: 'divider 1', divider: true } : null,
 
-  return React.useMemo<MenuOption<undefined>[]>(
-    () => [
-      ...(canManageProjects && targetVersionID ? [{ label: 'Version history', onClick: onVersionHistory }] : []),
-      ...(canExportProject && sharePopper
-        ? [
-            { label: 'Export as...', onClick: () => sharePopper.open(ShareProjectTab.EXPORT) },
-            { label: 'Divider', divider: true },
-          ]
-        : []),
-      ...(canManageProjects && onRename ? [{ label: 'Rename project', onClick: onRename }] : []),
-      ...(canManageProjects
-        ? [
-            { label: 'Duplicate project', onClick: onDuplicate },
-            { label: 'Copy clone link', onClick: onClone },
-          ]
-        : []),
-      ...(canManageProjects
-        ? [
-            { label: 'Divider', divider: true },
-            { label: 'Delete project', onClick: onDelete },
-          ]
-        : []),
-    ],
-    [onRename, onDuplicate, onClone, canManageProjects, onCloneProject, onDelete, onVersionHistory]
-  );
+    withRenameOption ? { label: 'Rename project', onClick: onRename } : null,
+    canManageProjects ? { label: 'Duplicate project', onClick: onDuplicate } : null,
+    canManageProjects ? { label: 'Copy clone link', onClick: onClone } : null,
+
+    withDeleteOption ? { label: 'divider-2', divider: true } : null,
+
+    withDeleteOption ? { label: 'Delete project', onClick: onDelete } : null,
+  ];
 };

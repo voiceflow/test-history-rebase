@@ -4,7 +4,7 @@ import { SlideDown } from '@ui/styles/animations';
 
 export const MAX_VISIBLE_ITEMS = 7.5;
 export const MAX_MENU_HEIGHT = '90vh';
-const VERTICAL_PADDING = 8;
+export const VERTICAL_PADDING = 8;
 
 const nativeScrollbarsStyle = css`
   .scrollbars > div {
@@ -41,7 +41,6 @@ export interface MenuContainerProps {
   padding?: string;
   height?: number;
   withScrollbars?: boolean;
-  withFooterAction?: boolean;
 }
 
 const MenuContainer = styled.ul<MenuContainerProps>`
@@ -91,12 +90,6 @@ const MenuContainer = styled.ul<MenuContainerProps>`
     noBottomPadding &&
     css`
       padding-bottom: 0;
-    `}
-
-  ${({ withFooterAction }) =>
-    withFooterAction &&
-    css`
-      padding-bottom: 71px;
     `}
 `;
 

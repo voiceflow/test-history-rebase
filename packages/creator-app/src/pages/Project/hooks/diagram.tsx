@@ -1,6 +1,6 @@
 import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { MenuOption, toast, usePersistFunction } from '@voiceflow/ui';
+import { MenuTypes, toast, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Errors from '@/config/errors';
@@ -99,7 +99,7 @@ interface DiagramOptionsOptions {
   diagramID?: string | null;
 }
 
-export const useDiagramOptions = ({ onEdit, onRename, diagramID }: DiagramOptionsOptions): MenuOption<undefined>[] => {
+export const useDiagramOptions = ({ onEdit, onRename, diagramID }: DiagramOptionsOptions): MenuTypes.OptionWithoutValue[] => {
   const convertToTopic = useDispatch(Diagram.convertToTopic);
   const duplicateDiagram = useDispatch(Diagram.duplicateDiagram);
   const deleteDiagram = useDispatch(Diagram.deleteDiagram);
@@ -158,7 +158,7 @@ export const useDiagramOptions = ({ onEdit, onRename, diagramID }: DiagramOption
     });
   }, [diagramID, deleteDiagram, topicsAndComponents.isEnabled, isTopicsAndComponentsVersion]);
 
-  return React.useMemo<MenuOption<undefined>[]>(() => {
+  return React.useMemo<MenuTypes.OptionWithoutValue[]>(() => {
     if (!canEditCanvas) {
       return [];
     }

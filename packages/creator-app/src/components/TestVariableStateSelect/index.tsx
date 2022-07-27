@@ -3,7 +3,7 @@ import {
   BaseSelectProps,
   isNotUIOnlyMenuItemOption,
   isUIOnlyMenuItemOption,
-  NestedMenuComponents,
+  Menu,
   OverflowText,
   OverflowTippyTooltip,
   SvgIcon,
@@ -15,7 +15,7 @@ import { ModalType } from '@/constants';
 import * as variableState from '@/ducks/variableState';
 import { useModals, useSelector, useVariableStatesPlanLimit } from '@/hooks';
 
-import { OuterWrapper, SelectContainer } from './components';
+import { SelectContainer } from './components';
 import { baseOptions, dividerOption } from './constants';
 import { VariableStateOption } from './types';
 
@@ -58,22 +58,15 @@ const TestVariableStateSelect: React.FC<TestVariableStateSelectProps> = ({ value
       getOptionValue={(option) => option?.value}
       getOptionLabel={(value) => value && optionsMap[value]?.label}
       renderOptionLabel={(option: VariableStateOption) => (
-        <OverflowTippyTooltip style={{ overflow: 'hidden', width: '275px' }} title={option.label} position="top-start">
-          {(overflowref) => (
-            <OuterWrapper>
-              <OverflowText style={{ display: 'block', overflow: 'hidden' }}>{option.label}</OverflowText>
+        <>
+          <OverflowTippyTooltip title={option.label} overflow position="top-start">
+            {(overflowref) => <OverflowText ref={overflowref}>{option.label}</OverflowText>}
+          </OverflowTippyTooltip>
 
-              {option.label !== 'All project variables' && (
-                <SvgIcon
-                  icon="edit"
-                  ref={overflowref}
-                  variant={SvgIcon.Variant.STANDARD}
-                  onClick={() => openVariableStateManagerModal({ variableStateID: option.value })}
-                />
-              )}
-            </OuterWrapper>
+          {option.label !== 'All project variables' && (
+            <Menu.ActionIcon icon="edit" onClick={() => openVariableStateManagerModal({ variableStateID: option.value })} />
           )}
-        </OverflowTippyTooltip>
+        </>
       )}
       icon={loading ? 'publishSpin' : undefined}
       iconProps={{ clickable: true, color: '#132144', spin: true, size: 16, marginRight: '-4px' }}
@@ -87,11 +80,9 @@ const TestVariableStateSelect: React.FC<TestVariableStateSelectProps> = ({ value
         )
       }
       renderFooterAction={({ close }) => (
-        <NestedMenuComponents.FooterActions>
-          <NestedMenuComponents.FooterAction onClick={Utils.functional.chainVoid(close, onAddNew)}>
-            Create New Persona
-          </NestedMenuComponents.FooterAction>
-        </NestedMenuComponents.FooterActions>
+        <Menu.Footer>
+          <Menu.Footer.Action onClick={Utils.functional.chainVoid(close, onAddNew)}>Create New Persona</Menu.Footer.Action>
+        </Menu.Footer>
       )}
       {...props}
     />

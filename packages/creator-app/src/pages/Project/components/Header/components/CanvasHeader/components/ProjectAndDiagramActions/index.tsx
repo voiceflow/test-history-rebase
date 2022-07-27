@@ -19,7 +19,7 @@ import { Identifier } from '@/styles/constants';
 import { withEnterPress, withInputBlur } from '@/utils/dom';
 import { formatProjectName } from '@/utils/string';
 
-import { Container, DiagramsActions, ProjectActions, ProjectTitle, ViewOnly } from './components';
+import { Container, DiagramsActions, DomainActions, ProjectActions, ProjectTitle, ViewOnly } from './components';
 
 const ProjectAndDiagramActions: React.FC = () => {
   const selectedTargets = React.useContext(SelectionTargetsContext);
@@ -34,6 +34,7 @@ const ProjectAndDiagramActions: React.FC = () => {
   const projectName = useSelector(ProjectV2.active.nameSelector);
 
   const getEngine = useEventualEngine();
+  const assistantIA = useFeature(Realtime.FeatureFlag.ASSISTANT_IA);
   const topicsAndComponents = useFeature(Realtime.FeatureFlag.TOPICS_AND_COMPONENTS);
   const isTopicsAndComponentsVersion = useSelector(ProjectV2.active.isTopicsAndComponentsVersionSelector);
 
@@ -129,15 +130,19 @@ const ProjectAndDiagramActions: React.FC = () => {
             readOnly={isReadOnly}
             onChange={updateFormValue}
             disabled={!canEditProject}
+            $secondary={!!assistantIA.isEnabled}
             onKeyPress={withEnterPress(withInputBlur())}
           />
 
-          {!focused && (
-            <>
-              <ProjectActions projectID={projectID} projectName={projectName} onRename={onRename} />
-              <DiagramsActions />
-            </>
-          )}
+          {!focused &&
+            (assistantIA.isEnabled ? (
+              <DomainActions />
+            ) : (
+              <>
+                <ProjectActions projectID={projectID} projectName={projectName} onRename={onRename} />
+                <DiagramsActions />
+              </>
+            ))}
         </>
       )}
     </Container>

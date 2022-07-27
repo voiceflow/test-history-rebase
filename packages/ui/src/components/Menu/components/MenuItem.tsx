@@ -1,9 +1,12 @@
 import { flexStyles } from '@ui/components/Flex';
-import { backgrounds, colors, css, styled, ThemeColor } from '@ui/styles';
+import { colors, css, styled, ThemeColor, transition } from '@ui/styles';
 import { ClassName } from '@ui/styles/constants';
 import cn from 'classnames';
 
+import ActionIcon from './ActionIcon';
+
 export interface MenuItemProps {
+  style?: React.CSSProperties;
   height?: number | string;
   active?: boolean;
   ending?: boolean;
@@ -15,8 +18,21 @@ export interface MenuItemProps {
   bottomAction?: boolean;
 }
 
+const activeStyles = css`
+  background: #eef4f6;
+
+  ${ActionIcon} {
+    opacity: 0.85;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+`;
+
 export const itemStyles = css<MenuItemProps>`
   ${flexStyles}
+  ${transition('background')}
 
   height: ${({ theme, height = theme.components.menuItem.height, divider }) => (!divider ? `${height}px` : 0)};
   padding: 0 24px;
@@ -24,7 +40,7 @@ export const itemStyles = css<MenuItemProps>`
   overflow: hidden;
   user-select: none;
   cursor: pointer;
-  margin: ${({ divider }) => (divider ? '8px 0' : 'none')};
+  margin: ${({ divider }) => (divider ? '8px 0' : '0')};
   border-bottom: ${({ divider }) => (divider ? '1px solid #EAEFF4' : 'none')};
 
   ${({ readOnly, disabled = readOnly }) =>
@@ -47,26 +63,18 @@ export const itemStyles = css<MenuItemProps>`
       text-transform: capitalize;
     `}
 
-  &:hover {
-    ${({ readOnly, disabled = readOnly }) =>
-      !disabled &&
-      css`
-        background: linear-gradient(180deg, rgba(238, 244, 246, 0.85) 0%, ${backgrounds('greyGreen')} 100%), ${colors(ThemeColor.WHITE)}fff;
-      `}
+  ${ActionIcon} {
+    opacity: 0;
   }
 
-  ${({ active }) =>
-    active &&
-    css`
-      background: linear-gradient(180deg, rgba(238, 244, 246, 0.85) 0%, ${backgrounds('greyGreen')} 100%), ${colors(ThemeColor.WHITE)}fff;
-    `}
+  &:hover {
+    ${({ readOnly, disabled = readOnly }) => !disabled && activeStyles}
+  }
+
+  ${({ active }) => active && activeStyles}
 
   &:active {
-    ${({ readOnly, disabled = readOnly }) =>
-      !disabled &&
-      css`
-        background: linear-gradient(180deg, rgba(230, 238, 241, 0.85) 0%, #eaf0f2 100%), ${colors(ThemeColor.WHITE)};
-      `}
+    ${({ readOnly, disabled = readOnly }) => !disabled && activeStyles}
   }
 
   ${({ bottomAction }) =>

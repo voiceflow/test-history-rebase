@@ -1,5 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { MenuOption, toast, usePersistFunction } from '@voiceflow/ui';
+import { MenuTypes, toast, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
 import { Permission } from '@/config/permissions';
@@ -13,7 +13,7 @@ import { useDispatch, useFeature, useModals, usePermission, useSelector, useTrac
 
 import { NLUContext } from './Context';
 
-interface NLUItem extends MenuOption<undefined> {
+interface NLUItem extends MenuTypes.OptionWithoutValue {
   key: string;
   onClick?: VoidFunction;
 }

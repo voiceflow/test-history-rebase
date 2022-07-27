@@ -12,6 +12,7 @@ export interface ContainerProps extends SpaceProps {
   width?: number | string;
   height?: number | string;
   inline?: boolean;
+  active?: boolean;
   variant?: Variant;
   rotation?: number;
   clickable?: boolean;
@@ -81,6 +82,7 @@ export const Container = styled.span<ContainerProps>`
       components: { icon },
     },
     color,
+    active,
     variant,
     clickable,
   }) => {
@@ -88,15 +90,21 @@ export const Container = styled.span<ContainerProps>`
 
     const iconVariant = icon[variant];
 
+    // stylelint-disable-next-line value-keyword-case
+    const activeStyle = css`
+      color: ${variant === Variant.STANDARD && clickable ? '#132144' : iconVariant?.activeColor || iconVariant?.hoverColor || color};
+    `;
+
     return css`
       &:hover {
         color: ${iconVariant?.hoverColor || color};
       }
 
       &:active {
-        /* stylelint-disable-next-line value-keyword-case */
-        color: ${variant === Variant.STANDARD && clickable ? '#132144' : iconVariant?.activeColor || iconVariant?.hoverColor || color};
+        ${activeStyle}
       }
+
+      ${active && activeStyle}
     `;
   }}
 

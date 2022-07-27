@@ -1,4 +1,3 @@
-import composeRefs from '@seznam/compose-react-refs';
 import { Nullable } from '@voiceflow/common';
 import { getNestedMenuFormattedLabel, OverflowTippyTooltip, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
@@ -46,7 +45,7 @@ const IntentListItem: React.ForwardRefRenderFunction<HTMLDivElement, IntentListI
     <OverflowTippyTooltip<HTMLDivElement> title={intent?.name}>
       {(tooltipRef) => (
         <S.IntentContainer
-          ref={composeRefs(ref, tooltipRef)}
+          ref={ref}
           onClick={onClick}
           isActive={focusedNodeID === stepID}
           isDragging={isDragging}
@@ -56,7 +55,8 @@ const IntentListItem: React.ForwardRefRenderFunction<HTMLDivElement, IntentListI
           <S.IconContainer>
             <SvgIcon icon="systemIntentSmall" />
           </S.IconContainer>
-          <S.IntentContent>
+
+          <S.IntentContent ref={tooltipRef}>
             {isSearch ? <SearchLabel>{getNestedMenuFormattedLabel(intent?.name, searchMatchValue)}</SearchLabel> : intent?.name ?? 'Select intent'}
           </S.IntentContent>
         </S.IntentContainer>

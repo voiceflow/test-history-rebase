@@ -123,7 +123,7 @@ export const Item: React.FC<ItemProps> = ({
 
         <ProjectNameWrapper>
           <ProjectTitleDetails>
-            <OverflowTippyTooltip title={name} style={{ display: 'block', width: '100%' }} bodyOverflow>
+            <OverflowTippyTooltip title={name} overflow>
               {(ref) => (
                 <ProjectTitle
                   ref={(editableText) => {

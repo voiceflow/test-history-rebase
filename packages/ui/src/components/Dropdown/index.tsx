@@ -1,10 +1,11 @@
-import Menu, { MenuOption, MenuProps } from '@ui/components/Menu';
+import Menu, { MenuTypes } from '@ui/components/Menu';
 import Portal from '@ui/components/Portal';
 import { useCachedValue } from '@ui/hooks/cache';
 import { PopperPlacement, usePopper } from '@ui/hooks/popper';
+import { Nullable } from '@voiceflow/common';
 import { StrictModifier } from 'newpopper';
 import React, { Fragment } from 'react';
-import { useDismissable } from 'react-dismissable-layers';
+import { DismissableLayerProvider, useDismissable } from 'react-dismissable-layers';
 
 import { PopoverContainer } from './components';
 
@@ -12,14 +13,14 @@ const DEFAULT_PORTAL_NODE = document.body;
 
 export type DropdownPlacement = PopperPlacement;
 
-export interface DropdownProps<T> {
+export interface DropdownProps<Value = void> {
   menu?: React.ReactNode | ((onToggle: () => void) => void);
   portal?: HTMLElement | null;
   zIndex?: string | number;
   offset?: StrictModifier<'offset'>['options'];
   onClose?: () => void;
-  options?: MenuOption<T>[];
-  onSelect?: MenuProps<T>['onSelect'];
+  options?: Nullable<MenuTypes.Option<Value>>[];
+  onSelect?: MenuTypes.OnSelect<Value>;
   noScroll?: boolean;
   children: (ref: React.Ref<any>, onToggle: () => void, isOpen: boolean) => React.ReactNode;
   maxHeight?: number | string;
@@ -32,7 +33,8 @@ export interface DropdownProps<T> {
   maxVisibleItems?: number;
 }
 
-const Dropdown = <T extends any = undefined>({
+// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-constraint
+const Dropdown = <Value extends unknown = void>({
   menu,
   portal = DEFAULT_PORTAL_NODE,
   zIndex,
@@ -50,7 +52,7 @@ const Dropdown = <T extends any = undefined>({
   disabledOverlay = false,
   preventOverflow,
   maxVisibleItems,
-}: DropdownProps<T>): React.ReactElement => {
+}: DropdownProps<Value>): React.ReactElement => {
   const popper = usePopper({
     placement,
     modifiers: [
@@ -80,18 +82,20 @@ const Dropdown = <T extends any = undefined>({
             autoWidth={autoWidth}
             {...popper.attributes.popper}
           >
-            {(typeof menu === 'function' ? menu(onToggle) : menu) ||
-              (options && (
-                <Menu<T>
-                  options={options}
-                  width={menuWidth}
-                  onSelect={onSelect}
-                  maxHeight={maxHeight}
-                  maxVisibleItems={maxVisibleItems}
-                  onToggle={onToggle}
-                  selfDismiss={selfDismiss}
-                />
-              ))}
+            <DismissableLayerProvider>
+              {(typeof menu === 'function' ? menu(onToggle) : menu) ||
+                (options && (
+                  <Menu<Value>
+                    width={menuWidth}
+                    options={options}
+                    onSelect={onSelect}
+                    onToggle={onToggle}
+                    maxHeight={maxHeight}
+                    selfDismiss={selfDismiss}
+                    maxVisibleItems={maxVisibleItems}
+                  />
+                ))}
+            </DismissableLayerProvider>
           </PopoverContainer>
         </Wrapper>
       )}

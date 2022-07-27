@@ -1,12 +1,13 @@
-import { Box, Dropdown, MenuOption } from '@voiceflow/ui';
+import { Nullable } from '@voiceflow/common';
+import { Box, Dropdown, MenuTypes } from '@voiceflow/ui';
 import React from 'react';
 
 import { StyledLogoButton } from './components';
 
 interface LogoButtonProps {
-  options: MenuOption<undefined>[];
-  expandable?: boolean;
+  options: Nullable<MenuTypes.OptionWithoutValue>[];
   noMargins?: boolean;
+  expandable?: boolean;
 }
 
 const LogoButton: React.FC<LogoButtonProps> = ({ options, expandable = true, noMargins = false }) => (

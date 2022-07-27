@@ -1,4 +1,4 @@
-import Menu, { MenuOption, MenuProps } from '@ui/components/Menu';
+import Menu, { MenuTypes } from '@ui/components/Menu';
 import Portal from '@ui/components/Portal';
 import { PopperPlacement, useVirtualElementPopper } from '@ui/hooks';
 import { Identifier } from '@ui/styles/constants';
@@ -12,22 +12,23 @@ const EXCLUDED_TAG_NAME = new Set(['input', 'textarea']);
 
 export const CONTEXT_MENU_IGNORED_CLASS_NAME = 'context-menu-exclude';
 
-export interface ContextMenuProps<T> extends Omit<MenuProps<T>, 'options' | 'children'> {
-  options: Nullable<MenuOption<T>>[];
+export interface ContextMenuProps<Value = void> extends MenuTypes.BaseProps {
+  options: Nullable<MenuTypes.Option<Value>>[];
   children: (props: { isOpen: boolean; onContextMenu: (event: React.MouseEvent<HTMLElement>) => void }) => React.ReactNode;
   placement?: PopperPlacement;
   dismissEvent?: DismissEventType;
   disableLayers?: boolean;
 }
 
-const ContextMenu = <T,>({
+// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-constraint
+const ContextMenu = <Value extends unknown = void>({
   options,
   children,
   placement = 'bottom-start',
   dismissEvent,
   disableLayers,
   ...props
-}: ContextMenuProps<T>): React.ReactElement<any, any> => {
+}: ContextMenuProps<Value>): React.ReactElement => {
   const [virtualElement, setVirtualElement] = React.useState<ReturnType<typeof buildVirtualElement> | null>(null);
   const popper = useVirtualElementPopper(virtualElement, { placement });
   const [isOpen, onToggle] = useDismissable(false, { disableLayers, dismissEvent });
@@ -40,6 +41,7 @@ const ContextMenu = <T,>({
     if (target && (EXCLUDED_TAG_NAME.has(target.tagName.toLowerCase()) || target.closest?.(`.${CONTEXT_MENU_IGNORED_CLASS_NAME}`))) {
       return;
     }
+
     event?.preventDefault();
     event?.stopPropagation();
 

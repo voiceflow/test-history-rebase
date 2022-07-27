@@ -1,6 +1,6 @@
 import { Nullable, Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { IconButton, NestedMenuComponents, Select } from '@voiceflow/ui';
+import { IconButton, Menu, Select } from '@voiceflow/ui';
 import React from 'react';
 
 interface ComponentSelectProps {
@@ -31,7 +31,7 @@ const ComponentSelect: React.FC<ComponentSelectProps> = ({ selectedDiagramID, di
       alwaysShowCreate
       clearOnSelectActive
       createInputPlaceholder="flows"
-      renderEmpty={({ search }) => <Select.NotFound>{!search ? 'No flows exist in your assistant. ' : 'No flows found. '}</Select.NotFound>}
+      renderEmpty={({ search }) => <Menu.NotFound>{!search ? 'No flows exist in your assistant. ' : 'No flows found. '}</Menu.NotFound>}
       renderSearchSuffix={({ close, searchLabel }) => (
         <IconButton
           size={16}
@@ -41,9 +41,9 @@ const ComponentSelect: React.FC<ComponentSelectProps> = ({ selectedDiagramID, di
         />
       )}
       renderFooterAction={({ close, searchLabel }) => (
-        <NestedMenuComponents.FooterActionContainer onClick={Utils.functional.chainVoid(close, () => onCreate(searchLabel))}>
-          Create New Flow
-        </NestedMenuComponents.FooterActionContainer>
+        <Menu.Footer>
+          <Menu.Footer.Action onClick={Utils.functional.chainVoid(close, () => onCreate(searchLabel))}>Create New Flow</Menu.Footer.Action>
+        </Menu.Footer>
       )}
     />
   );

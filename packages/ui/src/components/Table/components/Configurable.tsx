@@ -52,7 +52,7 @@ const Configurable = <T extends string, I extends T.Item>({
             children: columns.map(({ type, flex, width, ellipses, component: Component, overflowTooltip }) =>
               ellipses ? (
                 <Column key={type} flex={flex} width={width}>
-                  <OverflowTippyTooltip<HTMLDivElement> style={{ display: 'block', width: '100%' }} {...overflowTooltip?.(props)}>
+                  <OverflowTippyTooltip<HTMLDivElement> overflow {...overflowTooltip?.(props)}>
                     {(ref) => (
                       <Ellipses ref={ref}>
                         <Component {...props} />

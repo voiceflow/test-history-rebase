@@ -1,6 +1,6 @@
 import { Nullable } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { MenuOption } from '@voiceflow/ui';
+import { MenuTypes } from '@voiceflow/ui';
 import React from 'react';
 import { useDismissable } from 'react-dismissable-layers';
 import { useRouteMatch } from 'react-router-dom';
@@ -168,7 +168,7 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
   };
 };
 
-export const useHelpOptions = (): MenuOption<undefined>[] => {
+export const useHelpOptions = (): MenuTypes.OptionWithoutValue[] => {
   const isIntercomVisible = useSelector(Session.isIntercomVisibleSelector);
 
   const showIntercom = useDispatch(Session.showIntercom);

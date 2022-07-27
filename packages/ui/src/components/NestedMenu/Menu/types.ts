@@ -1,4 +1,4 @@
-import { MenuProps } from '@ui/components/Menu';
+import { MenuTypes } from '@ui/components/Menu';
 import { Nullable } from '@voiceflow/common';
 import React from 'react';
 
@@ -19,7 +19,7 @@ interface BaseNestedMenuProps extends SharedNestedMenuProps {
   isRoot?: boolean;
   minWidth?: number;
   maxHeight?: number | string;
-  menuProps?: Omit<MenuProps<unknown>, 'onSelect' | 'options' | 'children'>;
+  menuProps?: MenuTypes.BaseProps;
   searchable?: boolean;
   isDropdown?: boolean;
   searchLabel?: string;

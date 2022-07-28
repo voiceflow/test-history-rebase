@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.88.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.87.0...@voiceflow/realtime@1.88.0) (2022-07-28)
+
+
+### Features
+
+* convert history middleware into a transducer (VF-3990) ([#5718](https://github.com/voiceflow/creator-app/issues/5718)) ([9b2280e](https://github.com/voiceflow/creator-app/commit/9b2280e6171350e9d0cce69905cd9dfe0e4e2ac7))
+
+
+
+
+
 # [1.87.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.86.2...@voiceflow/realtime@1.87.0) (2022-07-28)
 
 

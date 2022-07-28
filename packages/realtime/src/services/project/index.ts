@@ -1,4 +1,5 @@
 import { AnyRecord, BaseModels } from '@voiceflow/base-types';
+import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { Optional } from 'utility-types';
@@ -117,7 +118,8 @@ class ProjectService extends AbstractControl {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
     const platform = (data.platform as VoiceflowConstants.PlatformType) ?? (await this.getPlatform(creatorID, projectID));
 
-    return client.project.platform<Realtime.AnyDBProject>(platform).duplicate(projectID, data);
+    // do not pass platform to duplicate to do not migrate projects from "chat" to "voice"
+    return client.project.platform<Realtime.AnyDBProject>(platform).duplicate(projectID, Utils.object.omit(data, ['platform']));
   }
 
   public async patch(creatorID: number, projectID: string, { _id, ...data }: Partial<Realtime.DBProject>): Promise<void> {

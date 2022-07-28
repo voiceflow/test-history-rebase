@@ -10,15 +10,13 @@ import {
   CANVAS_MERGING_CLASSNAME,
   CANVAS_SELECTING_GROUP_CLASSNAME,
   CANVAS_THREAD_OPEN_CLASSNAME,
-  NODE_ACTIVE_CLASSNAME,
 } from '@/pages/Canvas/constants';
 
 export interface BlockHeaderProps {
-  nodeID: string;
   palette: HSLShades;
 }
 
-export type HeaderInputProps = EditableTextProps & BlockHeaderProps;
+export interface HeaderInputProps extends EditableTextProps, BlockHeaderProps {}
 
 export const headerInputStyles = css`
   ${transition('background')};
@@ -56,10 +54,6 @@ const HeaderInput = styled(TextArea)<HeaderInputProps>`
   line-height: 1.5;
 
   color: ${({ palette }) => palette[700]};
-
-  .${NODE_ACTIVE_CLASSNAME}[data-node-id="${({ nodeID }) => nodeID}"] && {
-    color: ${({ palette }) => palette[700]};
-  }
 `;
 
 export default React.memo(HeaderInput);

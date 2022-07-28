@@ -1,3 +1,4 @@
+import { COLOR_PICKER_CONSTANTS } from '@voiceflow/ui';
 import React from 'react';
 
 import { CanvasColorPicker } from '@/pages/Canvas/components/CanvasColorPicker';
@@ -21,10 +22,10 @@ const SettingsColor: React.FC<SettingsColorProps> = ({ color, isOpen, onToggle, 
 
       {isOpen && (
         <CanvasColorPicker
-          defaultColorScheme="light"
-          selectedColor={color}
           onChange={onChange}
           modifiers={[{ name: 'offset', options: { offset: [-35, 30] } }]}
+          selectedColor={color}
+          defaultColorScheme={COLOR_PICKER_CONSTANTS.ColorScheme.LIGHT}
         />
       )}
     </>

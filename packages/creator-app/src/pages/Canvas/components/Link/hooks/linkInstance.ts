@@ -9,6 +9,7 @@ import { LinkedRects } from '@/pages/Canvas/components/Link';
 import { EngineContext, LinkEntityContext } from '@/pages/Canvas/contexts';
 import { useElementInstance } from '@/pages/Canvas/engine/entities/utils';
 import { PathPoints } from '@/types';
+import { isChipNode } from '@/utils/node';
 
 import { MIN_HEIGHT, PLACEHOLDER_WIDTH } from '../components/LinkCaptionText';
 import { STROKE_DEFAULT_COLOR } from '../constants';
@@ -40,18 +41,20 @@ const useLinkInstance = () => {
   const [stylesScheduler] = useRAF();
   const elementInstance = useElementInstance(containerRef);
 
-  const { isStraight, sourceNodeIsStart, sourceNodeIsAction, targetNodeIsCombined } = React.useMemo(() => {
+  const { isStraight, sourceNodeIsChip, sourceNodeIsStart, sourceNodeIsAction, targetNodeIsCombined } = React.useMemo(() => {
     const isStraight = engine.isStraightLinks();
     const targetNode = engine.getNodeByID(targetNodeID);
     const sourceNode = engine.getNodeByID(sourceNodeID);
     const sourceNodeParent = engine.getNodeByID(sourceNode?.parentNode);
 
+    const sourceNodeIsChip = isChipNode(sourceNode, sourceNodeParent);
     const sourceNodeIsStart = sourceNode?.type === BlockType.START;
     const sourceNodeIsAction = sourceNodeParent?.type === BlockType.ACTIONS;
     const targetNodeIsCombined = targetNode?.type === BlockType.COMBINED;
 
     return {
       isStraight: linkData?.type ? linkData.type === BaseModels.Project.LinkType.STRAIGHT : isStraight,
+      sourceNodeIsChip,
       sourceNodeIsStart,
       sourceNodeIsAction,
       targetNodeIsCombined,
@@ -62,6 +65,7 @@ const useLinkInstance = () => {
     linkData,
     isStraight,
     isPathLocked,
+    sourceNodeIsChip,
     sourceNodeIsStart,
     sourceNodeIsAction,
     targetNodeIsCombined,
@@ -77,6 +81,7 @@ const useLinkInstance = () => {
         isPathLocked,
         syncOnlySource: false,
         syncOnlyTarget: false,
+        sourceNodeIsChip,
         sourceNodeIsStart,
         sourceNodeIsAction,
         targetNodeIsCombined,
@@ -88,12 +93,23 @@ const useLinkInstance = () => {
     return getPathPoints(linkedRects, {
       isStraight,
       isConnected: true,
+      sourceNodeIsChip,
       sourceNodeIsStart,
       sourceNodeIsAction,
       targetNodeIsCombined,
       sourceParentNodeRect,
     });
-  }, [isStraight, linkData?.points, isPathLocked, linkedRects, sourceNodeIsStart, sourceNodeIsAction, targetNodeIsCombined, sourceParentNodeRect]);
+  }, [
+    linkData?.points,
+    isStraight,
+    linkedRects,
+    isPathLocked,
+    sourceNodeIsChip,
+    sourceNodeIsStart,
+    sourceNodeIsAction,
+    targetNodeIsCombined,
+    sourceParentNodeRect,
+  ]);
 
   const center = React.useMemo(
     () => (!!linkData?.caption && points ? getPathPointsCenter(points, { isStraight }) : null),
@@ -176,6 +192,7 @@ const useLinkInstance = () => {
         isPathLocked: cache.current.isPathLocked,
         syncOnlySource: isSource,
         syncOnlyTarget: !isSource,
+        sourceNodeIsChip: cache.current.sourceNodeIsChip,
         sourceNodeIsStart: cache.current.sourceNodeIsStart,
         sourceNodeIsAction: cache.current.sourceNodeIsAction,
         sourceParentNodeRect: linkEntity.getSourceParentNodeRect(),

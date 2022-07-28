@@ -160,6 +160,7 @@ const useLinkHandlers = (instance: InternalLinkInstance) => {
         points.current = transformActiveLine(points.current, instance.linkedRectsRef.current, {
           activeLine,
           mouseCoords,
+          sourceNodeIsChip: instance.cacheRef.current.sourceNodeIsChip,
           sourceNodeIsAction: instance.cacheRef.current.sourceNodeIsAction,
           targetNodeIsCombined: instance.cacheRef.current.targetNodeIsCombined,
         });

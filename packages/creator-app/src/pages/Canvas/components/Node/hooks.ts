@@ -7,7 +7,7 @@ import { useFeature, useLinkedRef, useRAF } from '@/hooks';
 import { ContextMenuContext, EngineContext, NodeEntityContext } from '@/pages/Canvas/contexts';
 import { useElementInstance } from '@/pages/Canvas/engine/entities/utils';
 import { useEntityDrag } from '@/pages/Canvas/hooks/drag';
-import { BlockAPI } from '@/pages/Canvas/types';
+import { CombinedAPI } from '@/pages/Canvas/types';
 import { useEditingMode } from '@/pages/Project/hooks';
 import { Pair, Point } from '@/types';
 
@@ -29,13 +29,13 @@ export const useNodePosition = () => {
 
 export const useNodeInstance = <T extends HTMLElement>(): InternalNodeInstance<T> => {
   const ref = React.useRef<T | null>(null);
-  const blockRef = React.useRef<BlockAPI>(null);
+  const nodeRef = React.useRef<CombinedAPI>(null);
   const engine = React.useContext(EngineContext)!;
   const nodeEntity = React.useContext(NodeEntityContext)!;
   const position = useNodePosition();
   const experimentalSyncLinks = useFeature(Realtime.FeatureFlag.EXPERIMENTAL_SYNC_LINKS);
 
-  const getRect = React.useCallback(() => blockRef.current?.getRect() || null, []);
+  const getRect = React.useCallback(() => nodeRef.current?.getRect() || null, []);
 
   const elementInstance = useElementInstance(ref);
   const [stylesScheduler] = useRAF();
@@ -45,7 +45,7 @@ export const useNodeInstance = <T extends HTMLElement>(): InternalNodeInstance<T
       ...elementInstance,
 
       ref,
-      blockRef,
+      nodeRef,
       position,
       getRect,
       getPosition: () => position.current!,
@@ -56,7 +56,7 @@ export const useNodeInstance = <T extends HTMLElement>(): InternalNodeInstance<T
 
         return [node.x, node.y];
       },
-      rename: () => blockRef.current?.rename(),
+      rename: () => nodeRef.current?.rename(),
       blur: () => ref.current?.blur(),
       translate: ([movementX, movementY]: Pair<number>, onStylesApplied?: VoidFunction) => {
         if (!position.current) return;

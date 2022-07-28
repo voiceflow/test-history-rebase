@@ -70,7 +70,10 @@ export const Color: React.FC<ColorProps> = ({
 }): React.ReactElement => {
   const [renaming, setRenaming] = React.useState(isNew);
 
-  const isDefault = !!colorData?.palette && isDefaultColor(colorData.palette[STANDARD_GRADE]);
+  const isDefault = React.useMemo(
+    () => !!colorData?.palette && isDefaultColor(colorData.palette[STANDARD_GRADE]),
+    [colorData?.palette[STANDARD_GRADE]]
+  );
 
   const onRename = (newName: string) => {
     const theme = {

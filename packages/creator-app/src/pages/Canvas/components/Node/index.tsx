@@ -10,17 +10,18 @@ import { READONLY_CLICK_EVENT_NAME } from '@/pages/Prototype/components/ReadOnly
 import perf, { PerfAction } from '@/performance';
 import { ClassName } from '@/styles/constants';
 
-import { Container, Lifecycle, NodeBlock, NodeStartBlock, Styles } from './components';
+import { Container, Lifecycle, NodeChipStart, NodeCombined, Styles } from './components';
 
 const Node: React.FC = () => {
   const engine = React.useContext(EngineContext)!;
   const nodeEntity = React.useContext(NodeEntityContext)!;
+
   const contextMenu = React.useContext(ContextMenuContext)!;
   const isPresentationMode = React.useContext(PresentationModeContext);
-
   const instance = useNodeInstance<HTMLDivElement>();
   const isEditingMode = useEditingMode();
   const isCanvasMode = useCanvasMode();
+
   const isPrototypingMode = usePrototypingMode();
   const { onClick, onMouseUp, onDragStart, onMouseDown } = useNodeDrag();
 
@@ -73,9 +74,9 @@ const Node: React.FC = () => {
   let nodeEl: JSX.Element | null = null;
 
   if (nodeEntity.nodeType === BlockType.COMBINED) {
-    nodeEl = <NodeBlock ref={instance.blockRef} />;
+    nodeEl = <NodeCombined ref={instance.nodeRef} />;
   } else if (nodeEntity.nodeType === BlockType.START) {
-    nodeEl = <NodeStartBlock ref={instance.blockRef} />;
+    nodeEl = <NodeChipStart ref={instance.nodeRef} />;
   }
 
   return (

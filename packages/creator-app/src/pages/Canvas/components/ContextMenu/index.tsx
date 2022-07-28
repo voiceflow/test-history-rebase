@@ -105,6 +105,7 @@ const ContextMenu: React.FC = () => {
     engine,
     markup,
     clipboard,
+    contextMenu,
     upgradeModal,
     canUseCommenting,
     toggleCanvasOnly,
@@ -116,9 +117,9 @@ const ContextMenu: React.FC = () => {
       return [];
     }
 
-    const targetOptions = TARGET_OPTIONS[contextMenu.type]({ viewerOnly: !canEditCanvas }).filter(
-      (option) => !option.shouldRender || option.shouldRender(contextMenu, cache.current)
-    );
+    const targetOptions = TARGET_OPTIONS[contextMenu.type]({ viewerOnly: !canEditCanvas })
+      .filter((option) => !option.shouldRender || option.shouldRender(contextMenu, cache.current))
+      .map(({ render, ...option }) => ({ ...option, render: render ? () => render(cache.current.contextMenu, cache.current) : undefined }));
 
     if (targetOptions[0]?.value === CanvasAction.DIVIDER) {
       targetOptions.shift();
@@ -129,7 +130,7 @@ const ContextMenu: React.FC = () => {
     }
 
     return targetOptions;
-  }, [contextMenu.type]);
+  }, [contextMenu.type, contextMenu.target]);
 
   const optionsMap = React.useMemo(() => {
     const flattenedOptions = options.flatMap(({ label, value, options = [] }) => [
@@ -157,7 +158,13 @@ const ContextMenu: React.FC = () => {
   }
 
   return (
-    <div id={Identifier.CONTEXT_MENU} ref={popper.setPopperElement} style={{ ...popper.styles.popper, zIndex: 10 }} {...popper.attributes.popper}>
+    <div
+      id={Identifier.CONTEXT_MENU}
+      key={`${contextMenu.target}-${contextMenu.position}`}
+      ref={popper.setPopperElement}
+      style={{ ...popper.styles.popper, zIndex: 10 }}
+      {...popper.attributes.popper}
+    >
       <NestedMenu
         onHide={contextMenu.onHide}
         options={options}

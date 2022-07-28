@@ -1,4 +1,5 @@
 import { Utils } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import * as Normal from 'normal-store';
 
 import { BlockType } from '@/constants';
@@ -52,7 +53,7 @@ const unmergeNodeReducer: Reducer<DiagramState, UnmergeNode> = (
       }),
       ports: parentPorts,
     },
-    { name: 'Block' }
+    { name: Realtime.Utils.typeGuards.isCanvasChipBlockType(node.type) ? '' : 'Block' }
   );
 
   return Utils.functional.compose(

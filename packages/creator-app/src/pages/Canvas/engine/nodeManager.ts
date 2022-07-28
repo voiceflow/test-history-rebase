@@ -84,7 +84,7 @@ class NodeManager extends EngineConsumer {
     },
 
     addBlock: async (node: Creator.NodeDescriptor, data: Creator.DataDescriptor, parentNode: Creator.ParentNodeDescriptor): Promise<void> => {
-      const blockName = this.getNewBlockName();
+      const blockName = this.getNewBlockName(node.type);
       const blockID = parentNode.id;
 
       if (this.isAtomicActionsPhase2) {
@@ -302,7 +302,7 @@ class NodeManager extends EngineConsumer {
       const node = this.engine.getNodeByID(nodeID);
       if (!node) return;
 
-      const blockName = this.getNewBlockName();
+      const blockName = this.getNewBlockName(node.type);
 
       if (this.isAtomicActionsPhase2) {
         const projectMeta = this.engine.getActiveProjectMeta();
@@ -562,8 +562,11 @@ class NodeManager extends EngineConsumer {
     return { nodeID, actionsNodeID: parentNodeID };
   }
 
-  private getNewBlockName(): string {
+  private getNewBlockName(type: BlockType): string {
+    if (Realtime.Utils.typeGuards.isCanvasChipBlockType(type)) return '';
+
     const rootNodeIDs = this.engine.getRootNodeIDs();
+
     return `New Block ${rootNodeIDs.length}`;
   }
 

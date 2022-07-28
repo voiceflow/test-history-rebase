@@ -1,4 +1,3 @@
-import { hexToHsluv } from '@ui/utils/colors/hsluv';
 import React from 'react';
 
 import { IColor } from '../../constants';
@@ -8,25 +7,27 @@ import { ColorsList } from './styles';
 import { ColorThemesProps } from './types';
 
 export const ColorThemeUnit = Color;
-export const ColorThemes: React.FC<ColorThemesProps> = ({ colors, small, selectedColor = '', onColorSelect, newColorIndex, ...props }) => {
+
+export const ColorThemes: React.FC<ColorThemesProps> = ({ colors, selectedColor = '', onColorSelect, newColorIndex, ...props }) => {
+  const lowercaseSelectedColor = selectedColor.toLowerCase();
+
   return (
     <ColorsList>
       {colors.map((color: IColor, index) => {
         const { palette, name, standardColor } = color;
+
         const standardGrade = standardColor.toLowerCase();
-        const selected = standardGrade === selectedColor.toLowerCase();
-        const [hue] = hexToHsluv(standardGrade).map(String);
+
         return (
           <Color
-            selected={selected}
-            onClick={() => onColorSelect(getStandardShade(hue, palette))}
-            background={standardGrade}
-            colorData={color}
-            key={`base-${hue}`}
-            small={small}
+            {...props}
+            key={standardColor}
             name={name}
             isNew={newColorIndex === index}
-            {...props}
+            onClick={() => onColorSelect(getStandardShade(palette, standardGrade))}
+            selected={standardGrade === lowercaseSelectedColor}
+            colorData={color}
+            background={standardGrade}
           />
         );
       })}

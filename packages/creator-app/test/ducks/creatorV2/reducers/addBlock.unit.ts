@@ -1,6 +1,5 @@
 import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { COLOR_PICKER_CONSTANTS } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import * as CreatorV2 from '@/ducks/creatorV2';
@@ -97,7 +96,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addBlock reducer', ({ describ
       expect(result.nodes).toEqual(
         normalizeContaining(
           [
-            { type: Realtime.BlockType.COMBINED, blockColor: COLOR_PICKER_CONSTANTS.BLOCK_STANDARD_COLOR, nodeID: blockID, name: blockName },
+            { type: Realtime.BlockType.COMBINED, blockColor: '', nodeID: blockID, name: blockName },
             { ...stepData, nodeID: stepID },
           ],
           (node) => node.nodeID

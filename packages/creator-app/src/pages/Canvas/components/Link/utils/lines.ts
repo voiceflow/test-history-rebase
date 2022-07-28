@@ -77,6 +77,7 @@ export const getActiveLine = (points: PathPoints, [pointX, pointY]: Point): Path
 interface TransformEdgeLineOptions {
   locked: boolean;
   activeLine: PathLine;
+  sourceNodeIsChip: boolean;
   sourceNodeIsAction: boolean;
   targetNodeIsCombined: boolean;
 }
@@ -84,6 +85,7 @@ interface TransformEdgeLineOptions {
 interface TransformActiveLineOptions {
   activeLine: PathLine;
   mouseCoords: Point;
+  sourceNodeIsChip: boolean;
   sourceNodeIsAction: boolean;
   targetNodeIsCombined: boolean;
 }
@@ -96,17 +98,18 @@ export const transformActiveLine = (points: PathPoints, linkedRects: LinkedRects
 const transformVerticalHeadLine = (
   points: PathPoints,
   linkedRects: LinkedRects,
-  { activeLine, sourceNodeIsAction }: TransformEdgeLineOptions
+  { activeLine, sourceNodeIsAction, sourceNodeIsChip }: TransformEdgeLineOptions
 ): PathPoints => {
   const point = points[0];
+  const linkOffset = sourceNodeIsChip ? 0 : NODE_LINK_WIDTH;
 
   if (point.reversed && getSourceNodeXCenter(linkedRects) < getPointX(activeLine[0])) {
-    const offset = sourceNodeIsAction ? linkedRects.sourceNodeRect.left - linkedRects.sourcePortRect.left : NODE_LINK_WIDTH;
+    const offset = sourceNodeIsAction ? linkedRects.sourceNodeRect.left - linkedRects.sourcePortRect.left : linkOffset;
 
     point.reversed = false;
     point.point[0] = linkedRects.sourceNodeRect.right + offset;
   } else if (!point.reversed && getSourceNodeXCenter(linkedRects) > getPointX(activeLine[0])) {
-    const offset = sourceNodeIsAction ? linkedRects.sourcePortRect.right - linkedRects.sourceNodeRect.right : NODE_LINK_WIDTH;
+    const offset = sourceNodeIsAction ? linkedRects.sourcePortRect.right - linkedRects.sourceNodeRect.right : linkOffset;
 
     point.reversed = true;
     point.point[0] = linkedRects.sourceNodeRect.left - offset;
@@ -185,7 +188,7 @@ export const transformVerticalHeadAndTailLine = (points: PathPoints, linkedRects
 const transformActiveVerticalLine = (
   points: PathPoints,
   linkedRects: LinkedRects,
-  { activeLine, mouseCoords: [pointX], sourceNodeIsAction, targetNodeIsCombined }: TransformActiveLineOptions
+  { activeLine, mouseCoords: [pointX], sourceNodeIsChip, sourceNodeIsAction, targetNodeIsCombined }: TransformActiveLineOptions
 ): PathPoints => {
   let nextPoints = points;
 
@@ -220,7 +223,13 @@ const transformActiveVerticalLine = (
   activeLine[0].point[0] = pointX;
   activeLine[1].point[0] = pointX;
 
-  nextPoints = transformVerticalHeadAndTailLine(nextPoints, linkedRects, { locked: true, activeLine, sourceNodeIsAction, targetNodeIsCombined });
+  nextPoints = transformVerticalHeadAndTailLine(nextPoints, linkedRects, {
+    locked: true,
+    activeLine,
+    sourceNodeIsChip,
+    sourceNodeIsAction,
+    targetNodeIsCombined,
+  });
 
   return nextPoints;
 };
@@ -270,7 +279,7 @@ export const transformHorizontalHeadAndTailLine = (
 const transformActiveHorizontalLine = (
   points: PathPoints,
   linkedRects: LinkedRects,
-  { activeLine, mouseCoords: [, pointY], sourceNodeIsAction, targetNodeIsCombined }: TransformActiveLineOptions
+  { activeLine, mouseCoords: [, pointY], sourceNodeIsChip, sourceNodeIsAction, targetNodeIsCombined }: TransformActiveLineOptions
 ): PathPoints => {
   let nextPoints = points;
 
@@ -313,6 +322,7 @@ const transformActiveHorizontalLine = (
   nextPoints = transformHorizontalHeadAndTailLine(nextPoints, linkedRects, {
     locked: true,
     activeLine,
+    sourceNodeIsChip,
     sourceNodeIsAction,
     targetNodeIsCombined,
   });

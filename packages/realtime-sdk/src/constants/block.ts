@@ -90,6 +90,9 @@ export const DIAGRAM_REFERENCE_NODES: ReadonlyArray<DiagramReferenceBlockType> =
 export type NavigationBlockType = BlockType.EXIT | BlockType.GO_TO_NODE | BlockType.GO_TO_INTENT;
 export const NAVIGATION_NODES: ReadonlyArray<NavigationBlockType> = [BlockType.EXIT, BlockType.GO_TO_NODE, BlockType.GO_TO_INTENT];
 
+export type CanvasChipBlockType = BlockType.INTENT | BlockType.START;
+export const CANVAS_CHIPS_NODES: ReadonlyArray<CanvasChipBlockType> = [BlockType.INTENT, BlockType.START];
+
 export type StepBlockType = Exclude<BlockType, RootOrMarkupBlockType | DeprecatedBlockType>;
 
 export const NO_IN_PORT_NODES = new Set([BlockType.INTENT, BlockType.COMMAND, BlockType.EVENT, BlockType.START]);

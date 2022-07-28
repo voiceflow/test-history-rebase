@@ -1,7 +1,9 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
+import { HSLShades } from '@/constants';
 import { LockOwner } from '@/models';
+import type { ChipApiRef } from '@/pages/Canvas/components/Chip';
 import { Pair, Point } from '@/types';
 import { Coords } from '@/utils/geometry';
 
@@ -26,9 +28,9 @@ export interface CanvasContainerAPI {
   removeClass: (className: string) => void;
 }
 
-export interface BlockAPI<T extends HTMLElement = HTMLElement> {
+export interface CombinedAPI<T extends HTMLElement = HTMLElement> {
   ref: React.RefObject<T>;
-  rename: () => void;
+  rename: VoidFunction;
   getRect: () => DOMRect | null;
   addEventListener: <E extends keyof HTMLElementEventMap>(event: E, listener: (event: HTMLElementEventMap[E]) => void) => void;
   removeEventListener: <E extends keyof HTMLElementEventMap>(event: E, listener: (event: HTMLElementEventMap[E]) => void) => void;
@@ -36,9 +38,9 @@ export interface BlockAPI<T extends HTMLElement = HTMLElement> {
 
 export interface StepAPI<T extends HTMLElement = HTMLElement> {
   ref: React.RefObject<T>;
-  isDraggable: boolean;
   withPorts: boolean;
   lockOwner: LockOwner | null;
+  isDraggable: boolean;
   wrapElement: (el: JSX.Element) => JSX.Element;
   handlers: {
     onClick: React.MouseEventHandler<T>;
@@ -48,6 +50,26 @@ export interface StepAPI<T extends HTMLElement = HTMLElement> {
     onMouseLeave: React.MouseEventHandler<T>;
     onDoubleClick: React.MouseEventHandler<T>;
     onContextMenu: React.MouseEventHandler<T>;
+  };
+}
+
+export interface ChipAPI<T extends HTMLElement = HTMLElement> {
+  ref: React.RefObject<T>;
+  name: string;
+  nodeID: string;
+  apiRef: React.RefObject<ChipApiRef>;
+  palette: HSLShades;
+  withPort: boolean;
+  onRename: (name: string) => void;
+  lockOwner: LockOwner | null;
+  isDisabled?: boolean;
+
+  handlers: {
+    onClick?: React.MouseEventHandler<T>;
+    onMouseMove?: React.MouseEventHandler<HTMLElement>;
+    onMouseDown?: React.MouseEventHandler<HTMLElement>;
+    onMouseEnter?: React.MouseEventHandler<HTMLElement>;
+    onMouseLeave?: React.MouseEventHandler<HTMLElement>;
   };
 }
 

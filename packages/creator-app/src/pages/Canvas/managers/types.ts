@@ -24,14 +24,18 @@ export { NodeEntityResource };
 
 export type PortDescriptor = Partial<Omit<Realtime.Port, 'id'>>;
 
-interface BaseConnectedStepProps<T, O extends Realtime.BuiltInPortRecord> {
+interface BaseConnectedProps<T, O extends Realtime.BuiltInPortRecord> {
   data: Realtime.NodeData<T>;
   ports: Realtime.NodePorts<O>;
   engine: Engine;
   platform: VoiceflowConstants.PlatformType;
-  withPorts: boolean;
   projectType: VoiceflowConstants.ProjectType;
 }
+
+interface BaseConnectedStepProps<T, O extends Realtime.BuiltInPortRecord> extends BaseConnectedProps<T, O> {
+  withPorts: boolean;
+}
+
 export interface ConnectedStepProps<T = {}, O extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord> extends BaseConnectedStepProps<T, O> {
   palette: HSLShades;
   isLast?: boolean;
@@ -50,6 +54,10 @@ export interface ConnectedActionProps<T = {}, O extends Realtime.BuiltInPortReco
 }
 
 export type ConnectedAction<T = {}, O extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord> = React.FC<ConnectedActionProps<T, O>>;
+
+export interface ConnectedChipProps<T = {}, O extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord> extends BaseConnectedProps<T, O> {}
+
+export type ConnectedChip<T = {}, O extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord> = React.FC<ConnectedChipProps<T, O>>;
 
 interface NodeDescriptorPorts<T extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord> {
   in: PortDescriptor[];
@@ -226,6 +234,7 @@ export interface BaseNodeManagerConfig<Data extends object, BuiltInPorts extends
   editorsByPath?: Record<string, React.FC<any>>;
 
   step?: ConnectedStep<Data, BuiltInPorts>;
+  chip?: ConnectedChip<Data, BuiltInPorts>;
 
   v2?: Partial<NodeManagerConfig<Data, BuiltInPorts>> | Partial<NodeManagerConfigV2<Data, BuiltInPorts>>;
 }

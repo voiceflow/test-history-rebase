@@ -9,7 +9,8 @@ export const getRectXCenter = (rect: DOMRect): number => rect.left + rect.width 
 
 export const isSourceRectsReversed = ({ sourceNodeRect, sourcePortRect }: LinkedRects) => sourcePortRect.left < sourceNodeRect.right;
 
-export const getSourceXOffset = ({ sourceNodeIsAction }: { sourceNodeIsAction: boolean }): number => (sourceNodeIsAction ? 0 : NODE_LINK_WIDTH);
+export const getSourceXOffset = ({ sourceNodeIsChip, sourceNodeIsAction }: { sourceNodeIsChip: boolean; sourceNodeIsAction: boolean }): number =>
+  sourceNodeIsAction || sourceNodeIsChip ? 0 : NODE_LINK_WIDTH;
 
 export const getSourceLeftXOffset = (options: GetPathPointsOptions): number => (options.sourceNodeIsStart ? 0 : getSourceXOffset(options));
 
@@ -26,7 +27,7 @@ export const getTargetNodeXCenter = ({ targetNodeRect }: LinkedRects): number =>
 export const getSourceNodeXCenter = ({ sourceNodeRect }: LinkedRects): number => getRectXCenter(sourceNodeRect);
 
 export const getActionsSourceStartLeftX = ({ sourcePortRect, sourceNodeRect }: LinkedRects, options: GetPathPointsOptions): number =>
-  (options.sourceNodeIsAction ? sourcePortRect.left : sourceNodeRect.left) - (options.sourceNodeIsStart ? 0 : getSourceXOffset(options));
+  (options.sourceNodeIsAction ? sourcePortRect.left : sourceNodeRect.left) - getSourceLeftXOffset(options);
 
 export const getSourceStartNormalLeftX = ({ sourceNodeRect }: LinkedRects, options: GetPathPointsOptions): number =>
   sourceNodeRect.left - getSourceLeftXOffset(options);

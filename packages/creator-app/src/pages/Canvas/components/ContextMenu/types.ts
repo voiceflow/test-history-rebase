@@ -10,7 +10,6 @@ export interface OptionProps {
   engine: Engine;
   markup: MarkupContextType;
   clipboard: ClipboardContextValue;
-  blockColor?: string;
   isTemplate?: boolean;
   upgradeModal: ModalActions;
   toggleCanvasOnly: () => void;
@@ -23,6 +22,6 @@ export interface ContextMenuOption<T extends string = string> extends MenuItemMu
   label: string;
   hotkey?: string;
 
+  render?: (contextMenu: ContextMenuValue, props: OptionProps) => React.ReactElement;
   shouldRender?: (contextMenu: ContextMenuValue, props: OptionProps) => boolean;
-  render?: React.FC;
 }

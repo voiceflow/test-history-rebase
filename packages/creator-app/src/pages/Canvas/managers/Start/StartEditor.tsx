@@ -3,8 +3,7 @@ import React from 'react';
 
 import { HeaderVariant } from '@/components/Section/components/HeaderLabel';
 import * as CreatorV2 from '@/ducks/creatorV2';
-import * as ProjectV2 from '@/ducks/projectV2';
-import { useFeature, useSelector } from '@/hooks';
+import { useSelector } from '@/hooks';
 import { Content } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
 import { HelpMessage, HelpTooltip } from '@/pages/Canvas/managers/Command/components';
@@ -18,20 +17,13 @@ import { COMMANDS_PATH_TYPE } from './constants';
 const StartEditor: NodeEditor<Realtime.NodeData.Start> = ({ data, onChange, pushToPath }) => {
   const platform = React.useContext(PlatformContext)!;
   const isRootDiagram = useSelector(CreatorV2.isRootDiagramActiveSelector);
-  const topicsAndComponents = useFeature(Realtime.FeatureFlag.TOPICS_AND_COMPONENTS);
-  const isTopicsAndComponentsVersion = useSelector(ProjectV2.active.isTopicsAndComponentsVersionSelector);
-
-  const componentDefaultLabel = topicsAndComponents.isEnabled && isTopicsAndComponentsVersion ? 'Flow starts here' : 'Conversation continues here';
 
   return (
     <Content>
       {isRootDiagram && isPlatformWithInvocationName(platform) ? (
         <InvocationNameSection />
       ) : (
-        <StartLabelSection
-          label={data.label || (isRootDiagram ? 'Project starts here' : componentDefaultLabel)}
-          onChangeLabel={(label) => onChange({ label })}
-        />
+        <StartLabelSection label={data.label || (isRootDiagram ? 'Home' : 'Start')} onChangeLabel={(label) => onChange({ label })} />
       )}
 
       <EditorSection

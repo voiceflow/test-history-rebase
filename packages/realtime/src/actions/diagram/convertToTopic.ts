@@ -33,7 +33,7 @@ class ConvertToTopic extends AbstractDiagramResourceControl<Realtime.BaseDiagram
 
       primitiveDiagram.nodes[startNodeID] = buildDBBlock(startNodeID, startNode.coords ?? [360, 120], {
         name: primitiveDiagram.name,
-        color: Realtime.BLOCK_STANDARD_COLOR,
+        color: '',
         steps: [intentNodeID],
       });
 

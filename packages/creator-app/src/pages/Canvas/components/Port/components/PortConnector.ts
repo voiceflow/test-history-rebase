@@ -2,17 +2,29 @@ import { Canvas } from '@voiceflow/ui';
 
 import { css, styled } from '@/hocs';
 import { PORT_HIGHLIGHTED_CLASSNAME, PORT_PROTOTYPE_END_UNLINKED_CLASSNAME } from '@/pages/Canvas/constants';
+import { Theme } from '@/styles/theme';
+
+const getConnectedStyles = (chip: boolean, theme: Theme) =>
+  chip
+    ? css`
+        background: ${theme.colors.darkerBlue};
+
+        &:before {
+          background: ${theme.colors.darkerBlue};
+        }
+      `
+    : css`
+        &:before {
+          background: linear-gradient(to bottom, ${theme.colors.darkerBlue}1f, ${theme.colors.darkerBlue}3d 100%);
+          border: solid 1px ${theme.colors.darkerBlue};
+        }
+      `;
 
 const PortConnector = styled(Canvas.Port)`
   .${PORT_HIGHLIGHTED_CLASSNAME} && {
-    ${({ theme, connected }) =>
+    ${({ theme, connected, chip = false }) =>
       connected
-        ? css`
-            &:before {
-              background: linear-gradient(to bottom, ${theme.colors.darkerBlue}1f, ${theme.colors.darkerBlue}3d 100%);
-              border: solid 1px ${theme.colors.darkerBlue};
-            }
-          `
+        ? getConnectedStyles(chip, theme)
         : css`
             background: ${theme.colors.darkerBlue};
           `}

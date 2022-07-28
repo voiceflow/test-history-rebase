@@ -1,208 +1,63 @@
 import composeRefs from '@seznam/compose-react-refs';
-import * as Realtime from '@voiceflow/realtime-sdk';
-import { COLOR_PICKER_CONSTANTS, useColorPaletteWithDynamicSaturation } from '@voiceflow/ui';
-import _throttle from 'lodash/throttle';
-import moize from 'moize';
+import { COLOR_PICKER_CONSTANTS } from '@voiceflow/ui';
 import React from 'react';
-import { useDrop } from 'react-dnd';
 
-import { BlockType, DragItem, HOVER_THROTTLE_TIMEOUT } from '@/constants';
-import * as Router from '@/ducks/router';
-import { compose } from '@/hocs';
-import { useDispatch, useEnableDisable, useHover } from '@/hooks';
 import Block from '@/pages/Canvas/components/Block';
-import PlayButton from '@/pages/Canvas/components/PlayButton';
-import { NODE_DISABLED_CLASSNAME, NODE_HOVERED_CLASSNAME } from '@/pages/Canvas/constants';
-import { EngineContext, NodeEntityContext, NodeEntityProvider, PortEntityProvider } from '@/pages/Canvas/contexts';
-import { BlockAPI } from '@/pages/Canvas/types';
-import { ClassName } from '@/styles/constants';
+import BlockPlayButton from '@/pages/Canvas/components/BlockPlayButton';
+import { NodeEntityProvider, PortEntityProvider } from '@/pages/Canvas/contexts';
+import { CombinedAPI } from '@/pages/Canvas/types';
 
+import { useCombined } from '../hooks';
 import NodePort from '../NodePort';
 import NodeStep from '../NodeStep';
-import { ReorderIndicator, SourceReorderIndicator, Styles, TerminalReorderIndicator } from './components';
+import { ReorderIndicator, SourceReorderIndicator, TerminalReorderIndicator } from './components';
 
-const NodeBlock: React.ForwardRefRenderFunction<BlockAPI> = (_, ref) => {
-  const engine = React.useContext(EngineContext)!;
-  const nodeEntity = React.useContext(NodeEntityContext)!;
-  const goToCurrentCanvas = useDispatch(Router.goToCurrentCanvas);
-
-  const blockRef = React.useRef<BlockAPI>(null);
-
-  const { name, blockColor, combinedNodes, isMergeTarget } = nodeEntity.useState((e) => {
-    const { node, data } = e.resolve<Realtime.NodeData.Combined>();
-    return {
-      name: data.name,
-      blockColor: data.blockColor || COLOR_PICKER_CONSTANTS.BLOCK_STANDARD_COLOR,
-      combinedNodes: node.combinedNodes,
-      isMergeTarget: e.isMergeTarget,
-    };
-  });
-
-  const palette = useColorPaletteWithDynamicSaturation(blockColor);
-
-  const observer = React.useMemo(() => new ResizeObserver(() => engine.node.redrawLinks(nodeEntity.nodeID)), []);
-
-  const getAnchorPoint = React.useCallback(() => blockRef.current?.getRect() ?? null, []);
-
-  const [hasLinkWarning, setLinkWarning, clearLinkWarning] = useEnableDisable();
-  const hasNestedInPort = engine.getNodeByID(combinedNodes[0])?.ports.in.length !== 0;
-
-  const [isHovered, wrapElement, hoverHandlers] = useHover(
-    {
-      onStart: (event) => {
-        // preventing actions from being hovered
-        if ((event?.target as HTMLElement)?.closest(`.${ClassName.CANVAS_NODE}--${BlockType.ACTIONS}`)) return false;
-
-        const isPinned = engine.linkCreation.hasPin;
-
-        if (
-          engine.linkCreation.isDrawing &&
-          !engine.linkCreation.containsSourcePort(nodeEntity.nodeID) &&
-          !engine.linkCreation.isSourceNode(combinedNodes[0])
-        ) {
-          if (!hasNestedInPort) {
-            setLinkWarning();
-
-            if (isPinned) {
-              engine.linkCreation.unpin();
-            }
-
-            return true;
-          }
-
-          const anchorPoint = getAnchorPoint();
-
-          if (!anchorPoint || !nodeEntity.inPortID) return false;
-
-          engine.linkCreation.pin(nodeEntity.inPortID, anchorPoint);
-
-          return true;
-        }
-
-        if (isPinned) {
-          engine.linkCreation.unpin();
-        }
-
-        return false;
-      },
-      onMove: () => engine.linkCreation.isDrawing,
-      onEnd: () => {
-        if (!hasNestedInPort) {
-          clearLinkWarning();
-          return;
-        }
-
-        engine.linkCreation.unpin();
-      },
-      cleanupOnOverride: false,
-    },
-    [hasNestedInPort]
-  );
-
-  const updateName = React.useCallback((name) => engine.node.updateData(nodeEntity.nodeID, { name }), [engine, nodeEntity.nodeID]);
-
-  const onInsert = React.useMemo(
-    () =>
-      moize((index: number) => async (event: React.MouseEvent) => {
-        if (engine.drag.hasTarget) {
-          const target = engine.drag.target!;
-
-          event.preventDefault();
-
-          await Promise.all([engine.node.relocateV2(nodeEntity.nodeID, target, index), engine.drag.reset()]);
-        }
-      }),
-    [nodeEntity.nodeID]
-  );
-
-  React.useEffect(() => onInsert.clear, [onInsert]);
-
-  React.useEffect(() => {
-    engine.node.redrawNestedLinks(nodeEntity.nodeID);
-  }, [isMergeTarget]);
-
-  React.useEffect(() => {
-    const blockEl = blockRef.current!.ref.current!;
-
-    observer.observe(blockEl);
-
-    return () => observer.unobserve(blockEl);
-  }, []);
-
-  const [, connectBlockDrop] = useDrop({
-    accept: [DragItem.BLOCK_MENU, DragItem.COMPONENTS],
-    hover: _throttle(
-      (_, monitor) => {
-        if (!monitor.isOver({ shallow: true })) {
-          return;
-        }
-
-        engine.merge.clearTargetStep();
-        engine.merge.setTarget(nodeEntity.nodeID);
-      },
-      HOVER_THROTTLE_TIMEOUT,
-      { trailing: false }
-    ),
-  });
-
-  const captureDropRef = React.useCallback((api: BlockAPI | null) => api && connectBlockDrop(api.ref.current!), [connectBlockDrop]);
-
-  const onClick = React.useCallback((event: React.MouseEvent) => {
-    if (engine.prototype.isActive) {
-      goToCurrentCanvas();
-    }
-
-    if (event.defaultPrevented || !engine.comment.isModeActive) {
-      return;
-    }
-
-    if (engine.comment.isCreating) {
-      engine.comment.resetCreating();
-    } else {
-      engine.comment.startThread();
-    }
-
-    event.stopPropagation();
-    event.nativeEvent.stopImmediatePropagation();
-  }, []);
-
-  React.useEffect(
-    () => () => {
-      connectBlockDrop(null);
-    },
-    [connectBlockDrop]
-  );
-
-  const isDisabled = isHovered && hasLinkWarning;
-
-  nodeEntity.useConditionalStyle(NODE_HOVERED_CLASSNAME, isHovered);
-  nodeEntity.useConditionalStyle(NODE_DISABLED_CLASSNAME, isDisabled);
+const NodeBlock: React.ForwardRefRenderFunction<CombinedAPI> = (_, ref) => {
+  const {
+    name,
+    palette,
+    onClick,
+    onRename,
+    onInsert,
+    onDropRef,
+    nodeEntity,
+    isDisabled,
+    wrapElement,
+    combinedRef,
+    combinedNodes,
+    hoverHandlers,
+    isMergeTarget,
+    hasLinkWarning,
+    getAnchorPoint,
+  } = useCombined({ defaultBlockColor: COLOR_PICKER_CONSTANTS.BLOCK_STANDARD_COLOR });
 
   return (
     <>
-      <Styles isHovered={isHovered} hasLinkWarning={hasLinkWarning} />
       {nodeEntity.inPortID && !hasLinkWarning && (
         <PortEntityProvider id={nodeEntity.inPortID}>
           <NodePort getAnchorPoint={getAnchorPoint} />
         </PortEntityProvider>
       )}
+
       {wrapElement(
         <Block
+          ref={composeRefs(ref, combinedRef, onDropRef)}
+          name={name || 'Block'}
           nodeID={nodeEntity.nodeID}
-          name={name}
-          isDisabled={isDisabled}
+          actions={<BlockPlayButton nodeID={combinedNodes[0]} palette={palette} />}
           palette={palette}
-          updateName={updateName}
-          ref={composeRefs(ref, blockRef, captureDropRef)}
-          canEditTitle
           onClick={onClick}
-          actions={<PlayButton nodeID={combinedNodes[0]} palette={palette} />}
+          onRename={onRename}
+          isDisabled={isDisabled}
+          canEditTitle
           {...hoverHandlers}
         >
           {combinedNodes.map((stepNodeID, index) => (
             <NodeEntityProvider id={stepNodeID} key={stepNodeID}>
               {index === 0 && <SourceReorderIndicator isEnabled={isMergeTarget} index={0} onMouseUp={onInsert(0)} palette={palette} />}
+
               <NodeStep isDraggable isLast={index === combinedNodes.length - 1} palette={palette} />
+
               {index === combinedNodes.length - 1 ? (
                 <TerminalReorderIndicator isEnabled={isMergeTarget} index={index + 1} onMouseUp={onInsert(index + 1)} palette={palette} />
               ) : (
@@ -216,4 +71,4 @@ const NodeBlock: React.ForwardRefRenderFunction<BlockAPI> = (_, ref) => {
   );
 };
 
-export default compose(React.memo, React.forwardRef)(NodeBlock);
+export default React.forwardRef(NodeBlock);

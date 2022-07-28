@@ -1,4 +1,4 @@
-import { Box, COLOR_PICKER_CONSTANTS, ColorThemes, ColorThemeUnit, isBaseColor, StrictPopperModifiers } from '@voiceflow/ui';
+import { Box, COLOR_PICKER_CONSTANTS, ColorThemes, ColorThemeUnit, isBaseOrSchemeColor, StrictPopperModifiers } from '@voiceflow/ui';
 import React from 'react';
 import { useDismissable } from 'react-dismissable-layers';
 
@@ -8,32 +8,34 @@ import SlotSelect from '@/components/SlotSelect';
 
 interface TypeAndColorSectionProps {
   type: string | null;
-  onChangeType: (type: string) => void;
   name: string;
   color: string;
   saveColor: (color: string) => void;
+  onChangeType: (type: string) => void;
   colorPopperModifiers?: StrictPopperModifiers;
 }
 
+const { ColorScheme, BASE_COLORS, DEFAULT_SCHEME_COLORS } = COLOR_PICKER_CONSTANTS;
+
 const TypeAndColorSection: React.FC<TypeAndColorSectionProps> = ({
-  color,
-  colorPopperModifiers = [{ name: 'offset', options: { offset: [-20, -21] } }],
-  saveColor,
   name,
   type,
+  color,
+  saveColor,
   onChangeType,
+  colorPopperModifiers = [{ name: 'offset', options: { offset: [-20, -21] } }],
 }) => {
   const popperContainerRef = React.useRef<HTMLDivElement>(null);
   const [isShowingPicker, togglePopper] = useDismissable(false, { ref: popperContainerRef });
 
-  const { DEFAULT_COLORS, BASE_COLORS, COLOR_WHEEL } = COLOR_PICKER_CONSTANTS;
+  const baseOrSchemeColor = React.useMemo(() => isBaseOrSchemeColor(color), [color]);
 
   return (
     <Section
-      dividers={false}
-      backgroundColor="#fdfdfd"
       header="Type"
+      dividers={false}
       variant={SectionVariant.QUATERNARY}
+      backgroundColor="#fdfdfd"
       customHeaderStyling={{ paddingTop: '16px' }}
       customContentStyling={{ paddingBottom: '24px' }}
     >
@@ -43,22 +45,23 @@ const TypeAndColorSection: React.FC<TypeAndColorSectionProps> = ({
         </Box.Flex>
 
         <Box.Flex>
-          <ColorThemes small selectedColor={color} onColorSelect={saveColor} colors={[DEFAULT_COLORS.dark, ...BASE_COLORS]} />
+          <ColorThemes small colors={[DEFAULT_SCHEME_COLORS[ColorScheme.DARK], ...BASE_COLORS]} selectedColor={color} onColorSelect={saveColor} />
+
           <ColorThemeUnit
-            background={!isBaseColor(color) ? color : COLOR_WHEEL}
-            onClick={() => togglePopper()}
-            selected={!isBaseColor(color)}
             small
+            onClick={() => togglePopper()}
+            selected={!baseOrSchemeColor}
+            background={!baseOrSchemeColor ? color : COLOR_PICKER_CONSTANTS.COLOR_WHEEL}
             disableContextMenu
           />
 
           {isShowingPicker && (
             <ColorPickerPopper
-              popperContainerRef={popperContainerRef}
-              modifiers={colorPopperModifiers}
               tagName={name}
-              selectedColor={color}
               onChange={saveColor}
+              modifiers={colorPopperModifiers}
+              selectedColor={color}
+              popperContainerRef={popperContainerRef}
             />
           )}
         </Box.Flex>

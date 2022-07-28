@@ -39,6 +39,11 @@ export enum SchemaVersion {
    * migrate the set "value" type into the "advance" type
    */
   V2_6 = 2.6,
+
+  /**
+   * migrate the block color and name for start blocks and blocks with the only intent step
+   */
+  V2_7 = 2.7,
 }
 
 export const SUPPORTED_SCHEMA_VERSIONS = Object.values(SchemaVersion)

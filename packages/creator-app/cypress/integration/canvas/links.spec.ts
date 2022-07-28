@@ -16,7 +16,7 @@ context('Canvas - Links', () => {
 
     cy.addBlockToCanvasViaStepMenu('Talk', 'Speak', [400, 50]);
 
-    canvasPage.el.node.eq(0).find('.vf-canvas__step .vf-canvas__port').eq(0).click({ force: true });
+    canvasPage.el.homeChip.find('.vf-canvas__port').eq(0).click({ force: true });
     canvasPage.el.newLink.should('have.length', 1);
     canvasPage.el.node.eq(1).trigger('mouseover');
     canvasPage.el.node.eq(1).trigger('hover');
@@ -36,7 +36,7 @@ context('Canvas - Links', () => {
 
     canvasPage.el.canvas.click(0, 0, { force: true });
 
-    canvasPage.el.node.eq(0).find('.vf-canvas__step .vf-canvas__port').eq(0).click({ force: true });
+    canvasPage.el.homeChip.find('.vf-canvas__port').eq(0).click({ force: true });
     canvasPage.el.newLink.should('have.length', 1);
     canvasPage.el.node.eq(1).trigger('mouseover');
     canvasPage.el.node.eq(1).trigger('hover');

@@ -12,6 +12,7 @@ export type InternalLinkInstance = LinkInstance & {
   cacheRef: React.MutableRefObject<{
     isStraight: boolean;
     isPathLocked: boolean;
+    sourceNodeIsChip: boolean;
     sourceNodeIsStart: boolean;
     sourceNodeIsAction: boolean;
     targetNodeIsCombined: boolean;

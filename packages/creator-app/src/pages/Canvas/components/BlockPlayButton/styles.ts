@@ -8,7 +8,7 @@ import {
   NODE_MERGE_TARGET_CLASSNAME,
 } from '../../constants';
 
-export const PlayButtonContainer = styled.div`
+export const Container = styled.div`
   transition: max-width 0.12s ease, margin-right 0.12s ease, opacity 0.12s ease;
   max-width: 0;
   margin-right: 0;

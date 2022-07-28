@@ -3,15 +3,20 @@ import { FlexCenter } from '@voiceflow/ui';
 import { css, styled } from '@/hocs';
 import { NODE_LINK_WIDTH } from '@/pages/Canvas/components/Port/constants';
 
-export const Container = styled(FlexCenter)<{ reversed?: boolean }>`
+interface ContainerProps {
+  isChip?: boolean;
+  reversed?: boolean;
+}
+
+export const Container = styled(FlexCenter)<ContainerProps>`
   position: absolute;
-  ${({ theme, reversed }) =>
+  ${({ theme, isChip, reversed }) =>
     reversed
       ? css`
-          right: ${theme.components.block.width - NODE_LINK_WIDTH + 2}px;
+          right: ${isChip ? `calc(100% + ${NODE_LINK_WIDTH}px)` : `${theme.components.block.width - NODE_LINK_WIDTH + 2}px`};
           flex-direction: row-reverse;
         `
       : css`
-          left: ${theme.components.block.width - NODE_LINK_WIDTH + 2}px;
+          left: ${isChip ? `calc(100% + ${NODE_LINK_WIDTH}px)` : `${theme.components.block.width - NODE_LINK_WIDTH + 2}px`};
         `};
 `;

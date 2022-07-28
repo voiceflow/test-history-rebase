@@ -1,4 +1,4 @@
-import { BLOCK_STANDARD_COLOR, BlockType } from '@realtime-sdk/constants';
+import { BlockType, START_NODE_COLOR } from '@realtime-sdk/constants';
 import { AnyRecord, BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 
@@ -29,7 +29,7 @@ export const startNodeFactory = (coords: [number, number] = [360, 120]): BaseMod
   coords,
   data: {
     name: 'Start',
-    color: BLOCK_STANDARD_COLOR,
+    color: START_NODE_COLOR,
     portsV2: {
       byKey: {},
       builtIn: {
@@ -86,7 +86,7 @@ export const topicDiagramFactory = (name: string) => {
         coords: [360, 120],
         data: {
           name,
-          color: BLOCK_STANDARD_COLOR,
+          color: '',
           steps: [intentNodeID],
         },
       },

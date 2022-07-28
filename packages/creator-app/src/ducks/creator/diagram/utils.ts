@@ -1,7 +1,6 @@
 import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { COLOR_PICKER_CONSTANTS } from '@voiceflow/ui';
 import _groupBy from 'lodash/groupBy';
 import * as Normal from 'normal-store';
 
@@ -489,9 +488,9 @@ export const buildNewNode = (node: NodeDescriptor, data: DataDescriptor): [Realt
 
   const newNodeData = {
     ...data,
-    nodeID: node.id,
     type: node.type,
-    blockColor: COLOR_PICKER_CONSTANTS.BLOCK_STANDARD_COLOR,
+    nodeID: node.id,
+    blockColor: '',
   };
   const newNode = nodeFactory(node.id, {
     ...node,

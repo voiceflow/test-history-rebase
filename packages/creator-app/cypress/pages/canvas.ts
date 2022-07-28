@@ -36,8 +36,8 @@ export default {
     get linkSettings() {
       return cy.get(`.${ClassName.LINK_SETTINGS}`);
     },
-    get homeBlock() {
-      return cy.get(`.${ClassName.HOME_BLOCK}`);
+    get homeChip() {
+      return cy.get(`.${ClassName.HOME_CHIP}`);
     },
     get settingsPage() {
       return cy.get(`#${Identifier.SETTINGS_PAGE}`);

@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { HSLShades } from '@/constants';
 import { PORT_HIGHLIGHTED_CLASSNAME, PORT_PROTOTYPE_END_UNLINKED_CLASSNAME } from '@/pages/Canvas/constants';
 import { PortEntityContext } from '@/pages/Canvas/contexts';
 import { ClassName } from '@/styles/constants';
@@ -9,11 +10,13 @@ import { useHandlers, usePortInstance } from './hooks';
 
 interface PortProps {
   flat?: boolean;
+  isChip?: boolean;
+  palette?: HSLShades;
   withoutLink?: boolean;
   parentActionsPath?: string;
 }
 
-const Port: React.FC<PortProps> = ({ flat, withoutLink, parentActionsPath }) => {
+const Port: React.FC<PortProps> = ({ flat, isChip, palette, withoutLink, parentActionsPath }) => {
   const portEntity = React.useContext(PortEntityContext)!;
   const instance = usePortInstance<HTMLDivElement>();
   const { isConnected, isHighlighted, isConnectedToActions, isFinalPrototypeUnlinkedPort } = portEntity.useState((e) => ({
@@ -42,11 +45,11 @@ const Port: React.FC<PortProps> = ({ flat, withoutLink, parentActionsPath }) => 
         onMouseDown={isConnectedToActions ? undefined : onMouseDown}
         isConnectedToActions={isConnectedToActions}
       >
-        <Connector flat={flat} connected={isConnected} />
+        <Connector flat={flat} chip={isChip} palette={palette} connected={isConnected} />
       </Container>
 
       {isConnectedToActions ? (
-        <Actions key={linkID} parentPath={parentActionsPath} />
+        <Actions key={linkID} isChip={isChip} parentPath={parentActionsPath} />
       ) : (
         !withoutLink && (isHighlighted || isConnected) && <Link key={linkID} linkID={linkID} isHighlighted={isHighlighted} />
       )}

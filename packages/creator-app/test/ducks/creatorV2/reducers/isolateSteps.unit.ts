@@ -1,5 +1,4 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { COLOR_PICKER_CONSTANTS } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { normalize } from 'normal-store';
 
@@ -139,11 +138,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - isolateSteps reducer', ({ cre
       expect(result.blockIDs).toEqual([NODE_ID, parentNodeID]);
       expect(result.nodes).toEqual(
         normalizeContaining(
-          [
-            NODE_DATA,
-            stepNode,
-            { type: Realtime.BlockType.COMBINED, blockColor: COLOR_PICKER_CONSTANTS.BLOCK_STANDARD_COLOR, nodeID: parentNodeID, name: blockName },
-          ],
+          [NODE_DATA, stepNode, { type: Realtime.BlockType.COMBINED, blockColor: '', nodeID: parentNodeID, name: blockName }],
           (node) => node.nodeID
         )
       );

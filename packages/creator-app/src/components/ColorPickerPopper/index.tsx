@@ -3,47 +3,48 @@ import { ColorPicker, ColorPickerProps, PopperAPI, PopperPlacement, Portal, Stri
 import React from 'react';
 
 import * as Project from '@/ducks/project';
-import { customThemesSelector } from '@/ducks/projectV2/selectors/active/base';
+import * as ProjectV2 from '@/ducks/projectV2';
 import { useDispatch, useSelector } from '@/hooks';
 
-export interface ColorPickerPopperProps extends ColorPickerProps {
-  popperContainerRef?: React.Ref<HTMLDivElement>;
+export interface ColorPickerPopperProps extends Omit<ColorPickerProps, 'customThemes' | 'addCustomTheme' | 'editCustomTheme' | 'removeCustomTheme'> {
   modifiers?: StrictPopperModifiers;
   placement?: PopperPlacement;
+  popperContainerRef?: React.Ref<HTMLDivElement>;
 }
 
-export const ColorPickerPopper = React.forwardRef<
-  PopperAPI<Nullable<Element | VirtualElement>, Nullable<HTMLElement>>,
-  Omit<ColorPickerPopperProps, 'addCustomTheme'>
->(({ modifiers = [], placement = 'bottom', popperContainerRef, ...props }, ref) => {
-  const colors = useSelector(customThemesSelector);
-  const addCustomTheme = useDispatch(Project.addCustomThemeToProject);
-  const editCustomTheme = useDispatch(Project.editCustomThemeOnProject);
-  const removeCustomTheme = useDispatch(Project.removeCustomThemeOnProject);
+export interface ColorPickerPopperRef extends PopperAPI<Nullable<Element | VirtualElement>, Nullable<HTMLElement>> {}
 
-  const rootPopper = usePopper({
-    modifiers: [{ name: 'offset', options: { offset: [0, 0] } }, { name: 'preventOverflow', options: { boundary: document.body } }, ...modifiers],
-    strategy: 'fixed',
-    placement,
-  });
+export const ColorPickerPopper = React.forwardRef<ColorPickerPopperRef, ColorPickerPopperProps>(
+  ({ modifiers = [], placement = 'bottom', popperContainerRef, ...props }, ref) => {
+    const colors = useSelector(ProjectV2.active.customThemesSelector);
+    const addCustomTheme = useDispatch(Project.addCustomThemeToProject);
+    const editCustomTheme = useDispatch(Project.editCustomThemeOnProject);
+    const removeCustomTheme = useDispatch(Project.removeCustomThemeOnProject);
 
-  React.useImperativeHandle(ref, () => rootPopper, [rootPopper]);
+    const rootPopper = usePopper({
+      modifiers: [{ name: 'offset', options: { offset: [0, 0] } }, { name: 'preventOverflow', options: { boundary: document.body } }, ...modifiers],
+      strategy: 'fixed',
+      placement,
+    });
 
-  return (
-    <div ref={rootPopper.setReferenceElement}>
-      <Portal portalNode={document.body}>
-        <div ref={rootPopper.setPopperElement} style={rootPopper.styles.popper} {...rootPopper.attributes.popper}>
-          <div ref={popperContainerRef}>
-            <ColorPicker
-              {...props}
-              addCustomTheme={addCustomTheme}
-              editCustomTheme={editCustomTheme}
-              removeCustomTheme={removeCustomTheme}
-              customThemes={colors}
-            />
+    React.useImperativeHandle(ref, () => rootPopper, [rootPopper]);
+
+    return (
+      <div ref={rootPopper.setReferenceElement}>
+        <Portal portalNode={document.body}>
+          <div ref={rootPopper.setPopperElement} style={rootPopper.styles.popper} {...rootPopper.attributes.popper}>
+            <div ref={popperContainerRef}>
+              <ColorPicker
+                {...props}
+                customThemes={colors}
+                addCustomTheme={addCustomTheme}
+                editCustomTheme={editCustomTheme}
+                removeCustomTheme={removeCustomTheme}
+              />
+            </div>
           </div>
-        </div>
-      </Portal>
-    </div>
-  );
-});
+        </Portal>
+      </div>
+    );
+  }
+);

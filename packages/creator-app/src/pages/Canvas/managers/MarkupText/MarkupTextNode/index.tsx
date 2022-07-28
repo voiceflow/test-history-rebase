@@ -9,7 +9,7 @@ import { useForceUpdate } from '@/hooks';
 import { useBlockAPI } from '@/pages/Canvas/components/Block/hooks';
 import { ConnectedMarkupNodeProps } from '@/pages/Canvas/components/MarkupNode/types';
 import { EngineContext, NodeEntityContext } from '@/pages/Canvas/contexts';
-import { BlockAPI } from '@/pages/Canvas/types';
+import { CombinedAPI } from '@/pages/Canvas/types';
 
 import { SLATE_EDITOR_CLASS_NAME } from '../constants';
 import { Border, BorderPosition, Container } from './components';
@@ -17,7 +17,7 @@ import { addDraggableAttr, findAllDraggableParents, removeDraggableAttr } from '
 
 interface MarkupTextNodeProps extends ConnectedMarkupNodeProps<Realtime.Markup.NodeData.Text> {}
 
-const MarkupTextNode = React.forwardRef<BlockAPI, MarkupTextNodeProps>(({ data }, ref) => {
+const MarkupTextNode = React.forwardRef<CombinedAPI, MarkupTextNodeProps>(({ data }, ref) => {
   const engine = React.useContext(EngineContext)!;
   const nodeEntity = React.useContext(NodeEntityContext)!;
 

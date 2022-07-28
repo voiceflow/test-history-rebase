@@ -15,8 +15,7 @@ context('Canvas - Blocks', () => {
     buildTools.unStickCanvas();
     buildTools.toggleDesignMenu();
     canvasPage.el.node.should('have.length', 1);
-    canvasPage.el.homeBlock.should('be.visible');
-    canvasPage.el.homeBlock.find('.vf-canvas__block__section__title').first().should('have.text', 'Start');
+    canvasPage.el.homeChip.should('be.visible').should('have.text', 'Start');
   });
 
   it.skip('drag home block on canvas', () => {

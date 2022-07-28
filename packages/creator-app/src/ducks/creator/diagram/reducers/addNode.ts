@@ -96,7 +96,7 @@ export const addWrappedNodeReducer: Reducer<DiagramState, AddWrappedNode> = (
       }),
       ports: parentPorts,
     },
-    { name: `New Block ${state.rootNodeIDs.length}` }
+    { name: Realtime.Utils.typeGuards.isCanvasChipBlockType(node.type) ? '' : `New Block ${state.rootNodeIDs.length}` }
   );
 
   return Utils.functional.compose(addBlockToState(rootNode, rootPorts, rootNodeData), addBlockToState(newNode, newPorts, newNodeData))(state);

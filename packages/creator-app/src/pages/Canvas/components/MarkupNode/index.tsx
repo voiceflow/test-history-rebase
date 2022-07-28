@@ -77,7 +77,7 @@ const MarkupNode = () => {
             onDoubleClick={onDoubleClick}
             backgroundColor={(data as Realtime.Markup.NodeData.Text).backgroundColor ?? null}
           >
-            <NodeComponent ref={instance.blockRef} data={data as any} />
+            <NodeComponent ref={instance.nodeRef} data={data as any} />
 
             <Border.Left />
             <Border.Right />

@@ -23,16 +23,15 @@ import {
 export interface BlockHeaderProps {
   name?: string;
   icon?: SvgIconTypes.Icon;
-  nodeID: string;
   palette: HSLShades;
   actions?: JSX.Element;
   titleRef?: React.Ref<EditableTextAPI | null> & { current?: any };
+  onRename?: (value: string) => void;
   isDisabled?: boolean;
-  updateName?: (value: string) => void;
   canEditTitle?: boolean;
 }
 
-const BlockHeader: React.FC<BlockHeaderProps> = ({ name, icon, nodeID, palette, actions, titleRef, updateName, isDisabled, canEditTitle }) => {
+const BlockHeader: React.FC<BlockHeaderProps> = ({ name, icon, palette, actions, titleRef, onRename, isDisabled, canEditTitle }) => {
   const isEditingMode = useEditingMode();
   const textareaRef = React.useRef<HTMLTextAreaElement>(null);
   const [editing, setEditing] = React.useState(false);
@@ -43,7 +42,7 @@ const BlockHeader: React.FC<BlockHeaderProps> = ({ name, icon, nodeID, palette, 
     if (blockLabel.trim() === '') {
       setBlockLabel(name ?? '');
     } else {
-      updateName?.(blockLabel);
+      onRename?.(blockLabel);
     }
   };
 
@@ -102,7 +101,6 @@ const BlockHeader: React.FC<BlockHeaderProps> = ({ name, icon, nodeID, palette, 
         <InputContainer>
           <Input
             value={blockLabel}
-            nodeID={nodeID}
             onBlur={handleOnBlur}
             palette={palette}
             onClick={stopPropagation()}
@@ -122,7 +120,6 @@ const BlockHeader: React.FC<BlockHeaderProps> = ({ name, icon, nodeID, palette, 
             <RadiusContainer>
               <TitleContainerInner>
                 <Title
-                  nodeID={nodeID}
                   palette={palette}
                   onClick={stopPropagation(() => setEditing(true))}
                   disabled={readOnly}

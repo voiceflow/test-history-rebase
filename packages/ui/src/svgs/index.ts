@@ -42,8 +42,8 @@ export { default as editorURL } from './editor-url.svg';
 export { default as goToBlock } from './go-to-block.svg';
 export { default as intentSmall } from './intent-small.svg';
 export { default as radar } from './radar.svg';
+export { default as systemHome2 } from './system-home-2.svg';
 export { default as toggles } from './toggles.svg';
-
 // c
 export { default as call } from './call.svg';
 export { default as cancelPayment } from './cancel-payment.svg';

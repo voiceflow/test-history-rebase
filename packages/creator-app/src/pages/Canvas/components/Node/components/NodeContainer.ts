@@ -1,5 +1,6 @@
 import { styled } from '@/hocs';
 import BlockContainer from '@/pages/Canvas/components/Block/components/BlockContainer';
+import * as ChipStyles from '@/pages/Canvas/components/Chip/styles';
 import { DragTargetProps } from '@/pages/Canvas/components/DragTarget';
 import { NODE_ACTIVE_CLASSNAME, NODE_MERGE_TARGET_CLASSNAME } from '@/pages/Canvas/constants';
 
@@ -22,6 +23,11 @@ const NodeContainer = styled(NodeDragTarget)<DragTargetProps>`
   }
 
   ${BlockContainer} {
+    position: absolute;
+    transform: translateX(-50%);
+  }
+
+  ${ChipStyles.Container} {
     position: absolute;
     transform: translateX(-50%);
   }

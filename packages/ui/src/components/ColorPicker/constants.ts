@@ -1,10 +1,16 @@
-import { COLOR_GRADES, HSLShades as shades } from '@ui/utils/colors/hsl';
+import { COLOR_GRADES, HSLShades } from '@ui/utils/colors/hsl';
 import { BaseModels } from '@voiceflow/base-types';
 
-export type HSLShades = shades;
+export type { HSLShades };
 export interface IColor extends BaseModels.Project.Theme {}
 
 export type Colors = Array<IColor>;
+
+export enum ColorScheme {
+  DARK = 'dark',
+  LIGHT = 'light',
+  BLACK = 'black',
+}
 
 const createCustomPalette = (colors: string[]) =>
   COLOR_GRADES.reduce((acc, grade, i) => {
@@ -13,14 +19,18 @@ const createCustomPalette = (colors: string[]) =>
     return acc;
   }, {} as HSLShades);
 
-export const DEFAULT_COLORS: { dark: IColor; light: IColor } = {
-  dark: {
-    standardColor: '#3b4042',
-    palette: createCustomPalette(['#F2F7F7', '#828788', '#707577', '#5d6264', '#94999A', '#3b4042', '#33373a', '#4B5052', '#202428', '#161a1e']),
+export const DEFAULT_SCHEME_COLORS: Record<ColorScheme, IColor> = {
+  [ColorScheme.DARK]: {
+    standardColor: '#616769',
+    palette: createCustomPalette(['#f2f7f7', '#e2e6e6', '#d1d6d7', '#c0c5c6', '#9fa5a8', '#616769', '#5B6063', '#4b5052', '#373A3C', '#2B2E2F']),
   },
-  light: {
+  [ColorScheme.LIGHT]: {
     standardColor: '#A1ADBA',
     palette: createCustomPalette(['#EFF1F3', '#E7ECF3', '#CFD6DC', '#C0C9D1', '#B0BBC5', '#A1ADBA', '#718497', '#62778C', '#718497', '#62778C']),
+  },
+  [ColorScheme.BLACK]: {
+    standardColor: '#43494E',
+    palette: createCustomPalette(['#f2f7f7', '#e2e6e6', '#d1d6d7', '#c0c5c6', '#9fa5a8', '#43494E', '#353A3E', '#2b2f32', '#1F2224', '#0F1011']),
   },
 };
 
@@ -47,16 +57,17 @@ export const DEFAULT_THEMES: Colors = [
   },
 ];
 
-export const ALL_COLORS = [DEFAULT_COLORS.dark, DEFAULT_COLORS.light, ...DEFAULT_THEMES];
+export const ALL_COLORS = [...Object.values(DEFAULT_SCHEME_COLORS), ...DEFAULT_THEMES];
 
-export const BLOCK_STANDARD_COLOR = DEFAULT_COLORS.light.standardColor;
+export const CHIP_STANDARD_COLOR = DEFAULT_SCHEME_COLORS[ColorScheme.DARK].standardColor;
+export const BLOCK_STANDARD_COLOR = DEFAULT_SCHEME_COLORS[ColorScheme.LIGHT].standardColor;
 
 export const LegacyBlockVariant: Record<string, string> = {
   purple: '#d7b0d7',
   standard: BLOCK_STANDARD_COLOR,
-  red: ALL_COLORS[4].standardColor,
-  blue: ALL_COLORS[2].standardColor,
-  green: ALL_COLORS[3].standardColor,
+  red: ALL_COLORS[5].standardColor,
+  blue: ALL_COLORS[3].standardColor,
+  green: ALL_COLORS[4].standardColor,
 };
 
 export const COLOR_WHEEL = `

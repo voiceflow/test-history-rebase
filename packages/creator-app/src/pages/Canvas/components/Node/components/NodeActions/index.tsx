@@ -21,12 +21,13 @@ import NodeLifecycle from '../NodeLifecycle';
 import * as S from './styles';
 
 interface NodeActionsProps {
+  isChip?: boolean;
   parentPath?: string;
   sourcePortID: string;
   sourceNodeID: string;
 }
 
-const NodeActions: React.FC<NodeActionsProps> = ({ parentPath, sourcePortID, sourceNodeID }) => {
+const NodeActions: React.FC<NodeActionsProps> = ({ isChip, parentPath, sourcePortID, sourceNodeID }) => {
   const engine = React.useContext(EngineContext)!;
   const nodeEntity = React.useContext(NodeEntityContext)!;
   const isStraightLinks = React.useContext(IsStraightLinksContext)!;
@@ -101,12 +102,13 @@ const NodeActions: React.FC<NodeActionsProps> = ({ parentPath, sourcePortID, sou
     <ActionsPortAPIProvider value={api}>
       <NodeLifecycle />
 
-      <LinkSvg reversed={reversed} shapeRendering="geometricPrecision">
+      <LinkSvg isAction reversed={reversed} shapeRendering="geometricPrecision">
         <LinkPath d={`M 0 4 L ${NODE_LINK_WIDTH} 4`} isHighlighted={isHighlighted} strokeColor={color} />
       </LinkSvg>
 
       <S.Container
         ref={instance.ref}
+        isChip={isChip}
         tabIndex={-1}
         reversed={reversed}
         draggable={false}

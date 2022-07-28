@@ -9,6 +9,7 @@ import migrateToV2_3 from './v2_3';
 import migrateToV2_4 from './v2_4';
 import migrateToV2_5 from './v2_5';
 import migrateToV2_6 from './v2_6';
+import migrateToV2_7 from './v2_7';
 
 const migrationsMap: Record<Realtime.SchemaVersion, Transform> = {
   [Realtime.SchemaVersion.V1]: Utils.functional.noop,
@@ -19,6 +20,7 @@ const migrationsMap: Record<Realtime.SchemaVersion, Transform> = {
   [Realtime.SchemaVersion.V2_4]: migrateToV2_4,
   [Realtime.SchemaVersion.V2_5]: migrateToV2_5,
   [Realtime.SchemaVersion.V2_6]: migrateToV2_6,
+  [Realtime.SchemaVersion.V2_7]: migrateToV2_7,
 };
 
 const migrations = Object.entries(migrationsMap)

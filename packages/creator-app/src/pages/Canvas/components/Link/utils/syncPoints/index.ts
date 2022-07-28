@@ -23,6 +23,7 @@ interface SyncStraightSourceTargetOptions {
   points: PathPoints;
   movement: Point;
   linkedRects: LinkedRects;
+  sourceNodeIsChip: boolean;
   sourceNodeIsAction: boolean;
   targetNodeIsCombined: boolean;
 }
@@ -52,6 +53,7 @@ const syncStraightSourcePoints = ({
   points,
   movement: [moveX, moveY],
   linkedRects,
+  sourceNodeIsChip,
   sourceNodeIsAction,
   targetNodeIsCombined,
 }: SyncStraightSourceTargetOptions): PathPoints => {
@@ -80,6 +82,7 @@ const syncStraightSourcePoints = ({
   return transformVerticalHeadAndTailLine(points, linkedRects, {
     locked: false,
     activeLine: createLine(points[1], points[2]),
+    sourceNodeIsChip,
     sourceNodeIsAction,
     targetNodeIsCombined,
   });
@@ -106,6 +109,7 @@ const syncSourcePoints = ({ points, options, linkedRects }: SyncSourcePointsOpti
     points: clonePoints(points),
     movement,
     linkedRects,
+    sourceNodeIsChip: options.sourceNodeIsChip,
     sourceNodeIsAction: options.sourceNodeIsAction,
     targetNodeIsCombined: options.targetNodeIsCombined,
   });
@@ -115,6 +119,7 @@ const syncStraightTargetPoints = ({
   points,
   movement: [moveX, moveY],
   linkedRects,
+  sourceNodeIsChip,
   sourceNodeIsAction,
   targetNodeIsCombined,
 }: SyncStraightSourceTargetOptions): PathPoints => {
@@ -143,6 +148,7 @@ const syncStraightTargetPoints = ({
   return transformVerticalHeadAndTailLine(points, linkedRects, {
     locked: false,
     activeLine: createLine(points[points.length - 3], points[points.length - 2]),
+    sourceNodeIsChip,
     sourceNodeIsAction,
     targetNodeIsCombined,
   });
@@ -181,6 +187,7 @@ const syncTargetPoints = ({ points, options, shouldClone, linkedRects }: SyncTar
     points: shouldClone ? clonePoints(points) : points,
     movement,
     linkedRects,
+    sourceNodeIsChip: options.sourceNodeIsChip,
     sourceNodeIsAction: options.sourceNodeIsAction,
     targetNodeIsCombined: options.targetNodeIsCombined,
   });

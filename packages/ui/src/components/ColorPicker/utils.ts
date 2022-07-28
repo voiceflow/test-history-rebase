@@ -1,16 +1,23 @@
 import { isHexColor, isRGBColor, RGBAToHex } from '@ui/utils/colors';
 import { createStandardShadeFromHue, HSLShades, STANDARD_GRADE } from '@ui/utils/colors/hsl';
 import { hexToHsluv } from '@ui/utils/colors/hsluv';
+import _sample from 'lodash/sample';
 
-import { ALL_COLORS, LegacyBlockVariant } from './constants';
+import { ALL_COLORS, BASE_COLORS, DEFAULT_SCHEME_COLORS, LegacyBlockVariant } from './constants';
 
-export const pickRandomDefaultColor = (): string => ALL_COLORS[Math.floor(Math.random() * ALL_COLORS.length)].palette[500];
-export const isDefaultColor = (color: string): boolean => ALL_COLORS.some(({ palette }) => Object.values(palette).some((val) => val === color));
-export const isBaseColor = (color: string): boolean =>
-  ALL_COLORS.slice(0, 4).some(({ palette }) => Object.values(palette).some((val) => val === color));
-export const getStandardShade = (hue: string, palette: HSLShades): string =>
-  isDefaultColor(palette[STANDARD_GRADE]) ? palette[STANDARD_GRADE] : createStandardShadeFromHue(hue);
+const ALL_PALETTES_COLORS = ALL_COLORS.flatMap(({ palette }) => Object.values(palette));
+const BASE_AND_SCHEME_PALETTES_COLORS = [...Object.values(DEFAULT_SCHEME_COLORS), ...BASE_COLORS].flatMap(({ palette }) => Object.values(palette));
+
+export const isDefaultColor = (color: string): boolean => ALL_PALETTES_COLORS.some((val) => val === color);
+
+export const isBaseOrSchemeColor = (color: string): boolean => BASE_AND_SCHEME_PALETTES_COLORS.some((val) => val === color);
+
+export const pickRandomDefaultColor = (): string => _sample(ALL_COLORS)?.palette[500] ?? ALL_COLORS[0].palette[500];
+
 export const hexToHue = (color: string) => hexToHsluv(color)[0];
+
+export const getStandardShade = (palette: HSLShades, color: string): string =>
+  isDefaultColor(palette[STANDARD_GRADE]) ? palette[STANDARD_GRADE] : createStandardShadeFromHue(hexToHue(color));
 
 export const normalizeColor = (color: string): string => {
   if (isRGBColor(color)) return RGBAToHex(color);

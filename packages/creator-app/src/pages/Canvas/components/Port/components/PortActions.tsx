@@ -5,10 +5,11 @@ import { NodeEntityProvider, PortEntityContext } from '@/pages/Canvas/contexts';
 import ActionsNode from '../../Node/components/NodeActions';
 
 interface PortActionsProps {
+  isChip?: boolean;
   parentPath?: string;
 }
 
-const PortActions: React.FC<PortActionsProps> = ({ parentPath }) => {
+const PortActions: React.FC<PortActionsProps> = ({ isChip, parentPath }) => {
   const sourcePortEntity = React.useContext(PortEntityContext)!;
 
   const { sourcePortID, sourceNodeID, targetNodeID } = sourcePortEntity.useState((e) => ({
@@ -19,7 +20,7 @@ const PortActions: React.FC<PortActionsProps> = ({ parentPath }) => {
 
   return targetNodeID === null ? null : (
     <NodeEntityProvider id={targetNodeID} key={targetNodeID}>
-      <ActionsNode parentPath={parentPath} sourcePortID={sourcePortID} sourceNodeID={sourceNodeID} />
+      <ActionsNode isChip={isChip} parentPath={parentPath} sourcePortID={sourcePortID} sourceNodeID={sourceNodeID} />
     </NodeEntityProvider>
   );
 };

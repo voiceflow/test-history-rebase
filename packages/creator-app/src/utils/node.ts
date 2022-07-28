@@ -1,5 +1,6 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 
+import { BlockType } from '@/constants';
 import { Point } from '@/types';
 
 import { isMarkupOrCombinedBlockType } from './typeGuards';
@@ -70,3 +71,6 @@ export const centerNodeGroup = (entities: Realtime.EntityMap, [originX, originY]
     nodesWithData,
   };
 };
+
+export const isChipNode = (node: Realtime.Node | null, parentNode: Realtime.Node | null) =>
+  node?.type === BlockType.START || (parentNode?.combinedNodes.length === 1 && Realtime.Utils.typeGuards.isCanvasChipBlockType(node?.type));

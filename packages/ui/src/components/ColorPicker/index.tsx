@@ -1,44 +1,66 @@
 import Box from '@ui/components/Box';
 import { Tag } from '@ui/components/Tag';
-import { useDebouncedCallback } from '@ui/hooks';
+import { useDebouncedCallback, useLinkedState } from '@ui/hooks';
 import { stopPropagation } from '@ui/utils';
 import { createShadesFromHue, createStandardShadeFromHue, STANDARD_GRADE } from '@ui/utils/colors/hsl';
-import { Utils } from '@voiceflow/common';
+import { BaseModels } from '@voiceflow/base-types';
 import React from 'react';
 import { DismissableLayerProvider } from 'react-dismissable-layers';
 
 import { ColorRange } from './components/ColorRange';
 import { ColorThemes } from './components/ColorThemes';
 import { ColorThemesPersistAPI } from './components/ColorThemes/types';
-import { Colors, DEFAULT_COLORS, DEFAULT_THEMES, IColor } from './constants';
+import { Colors, ColorScheme, DEFAULT_SCHEME_COLORS, DEFAULT_THEMES, IColor } from './constants';
 import { Label, PopperContent, Wrapper } from './styles';
 import { hexToHue, normalizeColor } from './utils';
 
-const { compose, chain } = Utils.functional;
-
 export interface ColorPickerProps extends ColorThemesPersistAPI {
-  defaultColorScheme?: 'light' | 'dark';
-  onChange: (color: string) => void;
-  selectedColor: string;
-  customThemes?: Colors;
   tagName?: string;
+  onChange: (color: string) => void;
+  customThemes?: Colors;
+  selectedColor: string;
+  defaultColorScheme?: ColorScheme;
 }
 
 export const ColorPicker: React.FC<ColorPickerProps> = ({
-  defaultColorScheme = 'dark',
-  selectedColor,
-  customThemes = [],
-  onChange,
   tagName = '',
+  onChange,
+  customThemes = [],
+  selectedColor,
   addCustomTheme,
+  defaultColorScheme = ColorScheme.DARK,
   ...props
 }) => {
-  const debouncedSetColor = useDebouncedCallback(100, (color: string) => onChange(color), []);
-  const [selectedHex, setLocalSelectedHex] = React.useState<string>(() => normalizeColor(selectedColor));
-  const [localHue, setLocalHue] = React.useState(() => String(hexToHue(selectedHex)));
+  const normalizedColor = React.useMemo(() => normalizeColor(selectedColor), [selectedColor]);
+
+  const [selectedHex, setSelectedHex] = useLinkedState(normalizedColor);
 
   const [newColor, setNewColor] = React.useState<IColor | null>(null);
-  const colors = [DEFAULT_COLORS[defaultColorScheme], ...DEFAULT_THEMES, ...customThemes];
+
+  const debouncedOnChange = useDebouncedCallback(100, (color: string) => onChange(color), []);
+
+  const onChangeHex = (hex: string) => {
+    setSelectedHex(hex);
+    debouncedOnChange(hex);
+  };
+
+  const onSaveHue = (hue: string) => {
+    const palette = createShadesFromHue(hue);
+
+    // do not save standard color
+    if (colors.some(({ standardColor }) => standardColor === palette[STANDARD_GRADE])) return;
+
+    setNewColor({ palette, standardColor: palette[STANDARD_GRADE] });
+  };
+
+  const onAddCustomTheme = (theme: BaseModels.Project.Theme) => {
+    addCustomTheme?.(theme);
+    setNewColor(null);
+  };
+
+  const localHue = React.useMemo(() => String(hexToHue(selectedHex)), [selectedHex]);
+
+  const colors = [DEFAULT_SCHEME_COLORS[defaultColorScheme], ...DEFAULT_THEMES, ...customThemes];
 
   return (
     <DismissableLayerProvider>
@@ -51,34 +73,17 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
           )}
 
           <Box width={200} mb={22} mt={5}>
-            <ColorRange
-              hue={localHue}
-              setHue={chain(
-                setLocalHue,
-                compose(debouncedSetColor, String, createStandardShadeFromHue),
-                compose(setLocalSelectedHex, String, createStandardShadeFromHue)
-              )}
-              saveHue={(hue) => {
-                const palette = createShadesFromHue(hue);
-
-                if (!colors.find(({ standardColor }) => standardColor === palette[STANDARD_GRADE])) {
-                  setNewColor({ palette, standardColor: palette[STANDARD_GRADE] });
-                }
-              }}
-            />
+            <ColorRange hue={localHue} setHue={(hue) => onChangeHex(createStandardShadeFromHue(hue))} saveHue={onSaveHue} />
           </Box>
 
           <Label>Color themes</Label>
           <ColorThemes
+            {...props}
             colors={newColor ? [...colors, newColor] : colors}
             selectedColor={selectedHex}
-            onColorSelect={chain(debouncedSetColor, setLocalSelectedHex, compose(setLocalHue, String, hexToHue))}
             newColorIndex={newColor ? colors.length : undefined}
-            addCustomTheme={(theme) => {
-              addCustomTheme?.(theme);
-              setNewColor(null);
-            }}
-            {...props}
+            onColorSelect={onChangeHex}
+            addCustomTheme={onAddCustomTheme}
           />
         </PopperContent>
       </Wrapper>

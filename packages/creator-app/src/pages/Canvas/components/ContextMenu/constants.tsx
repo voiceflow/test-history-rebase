@@ -1,9 +1,11 @@
 import { Nullish } from '@voiceflow/common';
+import { COLOR_PICKER_CONSTANTS } from '@voiceflow/ui';
 import React from 'react';
 
 import { BlockType, CLIPBOARD_DATA_KEY } from '@/constants';
 import { Hotkey, HOTKEY_LABEL_MAP, PLATFORM_META_KEY_LABEL } from '@/keymap';
 import { ContextMenuTarget } from '@/pages/Canvas/constants';
+import { isChipNode } from '@/utils/node';
 import { isMarkupBlockType } from '@/utils/typeGuards';
 
 import type Engine from '../../engine';
@@ -106,8 +108,17 @@ export const BLOCK_OPTIONS: ContextMenuOption<CanvasAction>[] = [
   {
     label: 'Block color',
     value: CanvasAction.COLOR_BLOCK,
+    render: ({ target: nodeID }, { engine }) => {
+      const node = engine.getNodeByID(nodeID);
+      const defaultColorScheme = isChipNode(engine.getNodeByID(node?.combinedNodes[0]), node)
+        ? COLOR_PICKER_CONSTANTS.ColorScheme.DARK
+        : COLOR_PICKER_CONSTANTS.ColorScheme.LIGHT;
+
+      return (
+        <ContextColorPicker defaultColorScheme={node?.type === BlockType.START ? COLOR_PICKER_CONSTANTS.ColorScheme.BLACK : defaultColorScheme} />
+      );
+    },
     shouldRender: ({ target: nodeID }, { engine }) => isBlock(nodeID, engine) || isStart(nodeID, engine),
-    render: () => <ContextColorPicker />,
   },
   {
     label: 'Rename',

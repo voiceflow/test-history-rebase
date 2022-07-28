@@ -2,18 +2,14 @@ import { MemberIcon } from '@/components/User';
 import { HSLShades } from '@/constants';
 import { styled, transition } from '@/hocs';
 import {
-  CANVAS_ACTIVATION_CLASSNAME,
   CANVAS_COMMENTING_ENABLED_CLASSNAME,
   CANVAS_CREATING_LINK_CLASSNAME,
-  CANVAS_PROTOTYPE_RUNNING_CLASSNAME,
   CANVAS_SELECTING_GROUP_CLASSNAME,
   CANVAS_THREAD_OPEN_CLASSNAME,
-  NODE_ACTIVE_CLASSNAME,
   NODE_DISABLED_CLASSNAME,
   NODE_FOCUSED_CLASSNAME,
   NODE_HIGHLIGHTED_CLASSNAME,
   NODE_HOVERED_CLASSNAME,
-  NODE_MERGE_TARGET_CLASSNAME,
   NODE_PROTOTYPE_HIGHLIGHTED_CLASSNAME,
   NODE_SELECTED_CLASSNAME,
   NODE_THREAD_TARGET_CLASSNAME,
@@ -27,7 +23,7 @@ interface StyledBlockContainerProps {
 }
 
 const BlockContainer = styled.div<StyledBlockContainerProps>`
-  ${transition('opacity', 'background-color')}
+  ${transition('background-color')}
 
   width: ${({ theme }) => theme.components.block.width}px;
   border-radius: 8px;
@@ -37,7 +33,6 @@ const BlockContainer = styled.div<StyledBlockContainerProps>`
 
   background-color: ${({ palette }) => palette[100]};
   position: relative;
-  opacity: 1;
 
   .${CANVAS_COMMENTING_ENABLED_CLASSNAME} & {
     cursor: crosshair;
@@ -96,12 +91,6 @@ const BlockContainer = styled.div<StyledBlockContainerProps>`
 
   .${CANVAS_CREATING_LINK_CLASSNAME} .${NODE_DISABLED_CLASSNAME} & {
     cursor: not-allowed;
-  }
-
-  .${CANVAS_ACTIVATION_CLASSNAME}:not(.${CANVAS_PROTOTYPE_RUNNING_CLASSNAME}) .${ClassName.CANVAS_NODE}:not(.${NODE_ACTIVE_CLASSNAME}) & {
-    :not(.${NODE_MERGE_TARGET_CLASSNAME}) &:hover {
-      opacity: 1;
-    }
   }
 
   ${MemberIcon} {

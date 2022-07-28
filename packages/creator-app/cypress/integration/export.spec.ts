@@ -12,6 +12,6 @@ context('Canvas Export', () => {
     exportPage.el.canvas.should('exist');
 
     exportPage.el.node.should('have.length', 1);
-    exportPage.el.homeBlock.should('be.visible');
+    exportPage.el.homeChip.should('be.visible');
   });
 });

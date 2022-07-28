@@ -27,6 +27,7 @@ const NewLink: React.FC = () => {
     const pathPoints = getPathPoints(linkedRects, {
       isStraight,
       isConnected: engine.linkCreation.hasPin,
+      sourceNodeIsChip: engine.linkCreation.sourceNodeIsChip,
       sourceNodeIsStart: engine.linkCreation.sourceNodeIsStart,
       sourceNodeIsAction: engine.linkCreation.sourceNodeIsAction,
       targetNodeIsCombined: engine.linkCreation.targetNodeIsCombined,

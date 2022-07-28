@@ -1,5 +1,6 @@
 import {
   BlockType,
+  CANVAS_CHIPS_NODES,
   DIAGRAM_REFERENCE_NODES,
   INTERNAL_NODES,
   MARKUP_AND_COMBINED_NODES,
@@ -32,6 +33,7 @@ export const isActionsBlockType = createBlockTypeGuard(BlockType.ACTIONS);
 export const isButtonsBlockType = createBlockTypeGuard(BlockType.BUTTONS);
 export const isInternalBlockType = createBlockTypeGuard(INTERNAL_NODES);
 export const isNavigationBlockType = createBlockTypeGuard(NAVIGATION_NODES);
+export const isCanvasChipBlockType = createBlockTypeGuard(CANVAS_CHIPS_NODES);
 export const isRootOrMarkupBlockType = createBlockTypeGuard(ROOT_AND_MARKUP_NODES);
 export const isMarkupOrCombinedBlockType = createBlockTypeGuard(MARKUP_AND_COMBINED_NODES);
 export const isDiagramReferencesBlockType = createBlockTypeGuard(DIAGRAM_REFERENCE_NODES);

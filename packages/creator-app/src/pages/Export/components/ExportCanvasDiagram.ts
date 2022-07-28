@@ -2,6 +2,7 @@ import Canvas from '@/components/Canvas';
 import { RenderLayer } from '@/components/Canvas/components';
 import { styled } from '@/hocs';
 import BlockContainer from '@/pages/Canvas/components/Block/components/BlockContainer';
+import * as ChipStyles from '@/pages/Canvas/components/Chip/styles';
 import DragTarget from '@/pages/Canvas/components/DragTarget';
 import LinkLayerSvg from '@/pages/Canvas/components/LinkLayer/components/LinkLayerSvg';
 import { Container as MarkupChildNodeContainer } from '@/pages/Canvas/components/MarkupNode/components';
@@ -32,6 +33,11 @@ const ExportCanvasDiagram = styled(Canvas as any)`
 
   ${NodeContainer} {
     ${BlockContainer} {
+      position: relative;
+      transform: none;
+    }
+
+    ${ChipStyles.Container} {
       position: relative;
       transform: none;
     }

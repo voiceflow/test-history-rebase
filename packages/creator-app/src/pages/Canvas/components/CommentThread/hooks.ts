@@ -7,7 +7,7 @@ import { EditableCommentRef } from '@/pages/Canvas/components/ThreadEditor';
 import { EngineContext, ThreadEntityContext } from '@/pages/Canvas/contexts';
 import { useElementInstance } from '@/pages/Canvas/engine/entities/utils';
 import { useVectorDragTranslate } from '@/pages/Canvas/hooks/drag';
-import { BlockAPI, CommentDraftValue } from '@/pages/Canvas/types';
+import { CommentDraftValue } from '@/pages/Canvas/types';
 import { Pair } from '@/types';
 import MouseMovement from '@/utils/mouseMovement';
 
@@ -31,11 +31,8 @@ export const useThreadCoords = () => {
 
 export const useThreadInstance = <T extends HTMLElement>(): InternalThreadInstance<T> => {
   const ref = React.useRef<T | null>(null);
-  const blockRef = React.useRef<BlockAPI>(null);
   const coords = useThreadCoords();
   const commentRef = React.useRef<EditableCommentRef>(null);
-
-  const getRect = React.useCallback(() => blockRef.current?.getRect() || null, []);
 
   const elementInstance = useElementInstance(ref);
 
@@ -46,9 +43,6 @@ export const useThreadInstance = <T extends HTMLElement>(): InternalThreadInstan
       ...elementInstance,
 
       ref,
-      blockRef,
-      getRect,
-
       getCoords: () => coords.current!,
 
       translate,

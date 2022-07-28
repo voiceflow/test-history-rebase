@@ -1,6 +1,5 @@
 import { WithRequired } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { COLOR_PICKER_CONSTANTS } from '@voiceflow/ui';
 import { Overwrite } from 'utility-types';
 
 export const linkFactory = (sourcePort: Realtime.Port, targetPort: Realtime.Port, linkID: string): Realtime.Link => ({
@@ -43,6 +42,6 @@ export const nodeDataFactory = (nodeID: string, data: WithRequired<Partial<Realt
 });
 
 export const blockNodeDataFactory = (nodeID: string, data: Partial<Realtime.BlockNodeData<unknown>> = {}): Realtime.BlockNodeData<unknown> => ({
-  blockColor: COLOR_PICKER_CONSTANTS.BLOCK_STANDARD_COLOR,
+  blockColor: '',
   ...nodeDataFactory(nodeID, { type: Realtime.BlockType.COMBINED, ...data }),
 });

@@ -41,7 +41,7 @@ export interface NodeInstance extends EntityInstance {
    * select the name of the node for editing
    * if the node is a step, it will open the editor
    */
-  rename: () => void;
+  rename: VoidFunction;
 
   /**
    * only Block nodes can be translated
@@ -138,6 +138,20 @@ class NodeEntity extends ResourceEntity<NodeEntityResource<unknown>, NodeInstanc
     return this.engine.prototype.isNodeHighlightedLink(this.nodeID);
   }
 
+  get isCanvasChipNode() {
+    if (this.nodeType !== BlockType.COMBINED) return false;
+
+    const {
+      node: { combinedNodes },
+    } = this.resolve<Realtime.NodeData.Combined>();
+
+    if (combinedNodes.length !== 1) return false;
+
+    const stepNode = this.engine.getNodeByID(combinedNodes[0]);
+
+    return Realtime.Utils.typeGuards.isCanvasChipBlockType(stepNode?.type);
+  }
+
   get lockOwner() {
     return this.engine.getLockOwner(this.nodeID);
   }
@@ -206,9 +220,8 @@ class NodeEntity extends ResourceEntity<NodeEntityResource<unknown>, NodeInstanc
   useLifecycle() {
     const engine = React.useContext(EngineContext)!;
     const { x, y } = this.useCoordinates();
-    const { parentNode } = this.useState((e) => ({
-      parentNode: e.resolve().node.parentNode,
-    }));
+
+    const { parentNode } = this.useState((e) => ({ parentNode: e.resolve().node.parentNode }));
 
     React.useEffect(() => engine.node.setOrigin(this.nodeID, [x, y]), [x, y]);
 

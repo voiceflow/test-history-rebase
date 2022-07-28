@@ -76,6 +76,7 @@ const EditableText = React.forwardRef<EditableTextAPI, EditableTextProps>(
         id={id}
         ref={composeRef(titleRef, titleRefProp)}
         onFocus={props.readOnly || !startEditingOnFocus ? undefined : Utils.functional.chain(onFocus, startEditing)}
+        onClick={props.onClick}
         tabIndex={-1}
         className={className}
         isPlaceholder={!!placeholder && !value}

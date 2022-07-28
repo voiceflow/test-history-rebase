@@ -50,7 +50,7 @@ export const useMarkupInstance = <T extends HTMLElement>() => {
 
   const getRectNode = useConst(() => {
     if (isText) {
-      return nodeInstance.blockRef.current?.ref.current ?? null;
+      return nodeInstance.nodeRef.current?.ref.current ?? null;
     }
 
     return transformRef.current ?? null;

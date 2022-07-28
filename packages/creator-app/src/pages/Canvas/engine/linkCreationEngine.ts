@@ -6,6 +6,7 @@ import { BlockType } from '@/constants';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import { buildPath, getMarkerAttrs, getPathPoints, LinkedRects } from '@/pages/Canvas/components/Link';
 import { NewLinkAPI } from '@/pages/Canvas/types';
+import { isChipNode } from '@/utils/node';
 
 import { CANVAS_CREATING_LINK_CLASSNAME } from '../constants';
 import { EngineConsumer, toCanvasRect } from './utils';
@@ -24,6 +25,8 @@ class LinkCreationEngine extends EngineConsumer<{ newLink: NewLinkAPI }> {
   sourcePortID: string | null = null;
 
   mousePositionRect = new DOMRect(0, 0, 0, 0);
+
+  sourceNodeIsChip = false;
 
   sourceNodeIsStart = false;
 
@@ -79,6 +82,7 @@ class LinkCreationEngine extends EngineConsumer<{ newLink: NewLinkAPI }> {
     const pathPoints = getPathPoints(localLinkedRects, {
       isStraight,
       isConnected: options?.isConnected ?? false,
+      sourceNodeIsChip: this.sourceNodeIsChip,
       sourceNodeIsStart: this.sourceNodeIsStart,
       sourceNodeIsAction: this.sourceNodeIsAction,
       targetNodeIsCombined: options?.isConnected ? this.targetNodeIsCombined : false,
@@ -129,6 +133,7 @@ class LinkCreationEngine extends EngineConsumer<{ newLink: NewLinkAPI }> {
       const sourceNode = this.engine.getNodeByID(sourcePort.nodeID);
       const sourceNodeParent = this.engine.getNodeByID(sourceNode?.parentNode);
 
+      this.sourceNodeIsChip = isChipNode(sourceNode, sourceNodeParent);
       this.sourceNodeIsStart = sourceNode?.type === BlockType.START;
       this.sourceNodeIsAction = sourceNodeParent?.type === BlockType.ACTIONS;
     }
@@ -310,8 +315,9 @@ class LinkCreationEngine extends EngineConsumer<{ newLink: NewLinkAPI }> {
 
     this.sourcePortID = null;
     this.isCompleting = false;
-    this.activeTargetPortID = null;
+    this.sourceNodeIsChip = false;
     this.sourceNodeIsStart = false;
+    this.activeTargetPortID = null;
     this.sourceNodeIsAction = false;
     this.targetNodeIsCombined = false;
 

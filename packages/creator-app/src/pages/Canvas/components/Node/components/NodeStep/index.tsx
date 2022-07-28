@@ -10,8 +10,8 @@ import { PlatformContext, ProjectTypeContext } from '@/pages/Project/contexts';
 
 import NodeLifecycle from '../NodeLifecycle';
 import NodePort from '../NodePort';
+import Styles from '../NodeStepStyles';
 import { useNodeInstance, useStepAPI } from './hooks';
-import Styles from './NodeStepStyles';
 
 export interface NodeStepProps {
   isLast: boolean;
@@ -36,13 +36,7 @@ const NodeStep: React.FC<NodeStepProps> = ({ isLast, palette, isDraggable }) => 
     };
   });
 
-  const getAnchorPoint = React.useCallback(() => {
-    const rect = instance.ref.current?.getBoundingClientRect();
-
-    if (!rect || !engine.canvas) return null;
-
-    return rect;
-  }, []);
+  const getAnchorPoint = React.useCallback(() => instance.ref.current?.getBoundingClientRect() ?? null, []);
 
   const hasPort = isLast || node.type === 'carousel';
 

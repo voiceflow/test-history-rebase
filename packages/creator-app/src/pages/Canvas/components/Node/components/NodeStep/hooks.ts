@@ -12,20 +12,21 @@ import { useEditingMode } from '@/pages/Project/hooks';
 import { ClassName } from '@/styles/constants';
 import { Coords } from '@/utils/geometry';
 
-export type InternalNodeInstance = NodeInstance & {
+export interface InternalNodeInstance extends NodeInstance {
   ref: React.RefObject<HTMLElement>;
-};
+}
 
-export type InternalStepAPI<T extends HTMLElement = HTMLElement> = StepAPI<T> & {
+export interface InternalStepAPI<T extends HTMLElement = HTMLElement> extends StepAPI<T> {
   isHovered: boolean;
-  hasLinkWarning: boolean;
   setHovering: (hovering: boolean) => void;
-};
+  hasLinkWarning: boolean;
+}
 
 export const useNodeInstance = () => {
   const ref = React.useRef<HTMLElement>(null);
-  const nodeEntity = React.useContext(NodeEntityContext)!;
   const engine = React.useContext(EngineContext)!;
+  const nodeEntity = React.useContext(NodeEntityContext)!;
+
   const elementInstance = useElementInstance(ref);
 
   const getRect = React.useCallback(() => ref.current?.getBoundingClientRect() || null, []);

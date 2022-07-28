@@ -22,7 +22,7 @@ export const NODE_CONFIG: NodeConfigWithoutInPorts<Realtime.NodeData.Intent, Rea
       },
     },
     data: {
-      name: 'Intent',
+      name: '',
       intent: null,
       mappings: [],
       availability: BaseNode.Intent.IntentAvailability.GLOBAL,

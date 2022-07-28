@@ -1,0 +1,53 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
+import { AnyAction } from 'redux';
+import { Action } from 'typescript-fsa';
+
+import * as Feature from '@/ducks/feature';
+import * as History from '@/ducks/history';
+import type { InvalidatorLookup, RootReducer, State } from '@/store/types';
+import { getActionOrigin } from '@/store/utils';
+
+import { Transducer } from '../types';
+
+export interface HistoryTransducerContext {
+  isOwnAction: boolean;
+}
+
+export const cloneAction = ({ type, payload }: Action<any>) => ({ type, payload });
+
+export const collectInvalidTransactions = (invalidatorLookup: InvalidatorLookup, state: State, subject: Action<any>) => {
+  const actionInvalidatorLookup = invalidatorLookup[subject.type];
+  if (!actionInvalidatorLookup) return [];
+
+  return [...History.undoTransactionsSelector(state), ...History.redoTransactionsSelector(state)].filter((transaction) =>
+    transaction.apply.some((origin) => {
+      const invalidators = actionInvalidatorLookup[origin.type];
+      if (!invalidators) return false;
+
+      return invalidators.some((invalidator) => invalidator.invalidate(origin.payload, subject.payload));
+    })
+  );
+};
+
+export const createHistoryTransducer =
+  <A extends any[]>(getHistoryAction: (...args: A) => (state: State, action: Action<any>, context: HistoryTransducerContext) => Action<any> | null) =>
+  (getClientNodeID: () => string, ...args: A): Transducer<State> =>
+  (rootReducer) =>
+    ((state, action: Action<any>) => {
+      const skipHistory = () => rootReducer(state, action);
+
+      if (!state) return skipHistory();
+
+      const isHistoryEnabled = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.HISTORY_SYSTEM);
+      const origin = getActionOrigin(action);
+
+      if (!isHistoryEnabled || !origin) return skipHistory();
+
+      const isOwnAction = origin === getClientNodeID();
+      const historyAction = getHistoryAction(...args)(state, action, { isOwnAction });
+
+      if (!historyAction) return skipHistory();
+
+      const historyAppliedState = rootReducer(state, historyAction);
+      return rootReducer(historyAppliedState, action);
+    }) as RootReducer<State, AnyAction>;

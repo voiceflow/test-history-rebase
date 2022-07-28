@@ -1,9 +1,12 @@
+import { Utils } from '@voiceflow/common';
+
 import suite from '@/../test/_suite';
 import { rewriteDispatch } from '@/store/utils';
 
 suite('Store | Utils', () => {
   describe('rewriteDispatch()', () => {
     const clientNodeID = 'clientNodeID';
+    const actionID = 'actionID';
 
     it('add origin to dispatched actions', () => {
       const action = { type: 'mock_action', payload: null };
@@ -11,11 +14,12 @@ suite('Store | Utils', () => {
         dispatch: vi.fn(),
         client: { nodeId: clientNodeID },
       };
+      vi.spyOn(Utils.id, 'cuid').mockReturnValue(actionID);
 
       const result = rewriteDispatch(store as any)(action);
 
       expect(result).toEqual(action);
-      expect(store.dispatch).toBeCalledWith({ ...action, meta: { origin: clientNodeID } });
+      expect(store.dispatch).toBeCalledWith({ ...action, meta: { origin: clientNodeID, actionID } });
     });
 
     it('add origin to dispatched actions with existing meta', () => {
@@ -24,11 +28,12 @@ suite('Store | Utils', () => {
         dispatch: vi.fn(),
         client: { nodeId: clientNodeID },
       };
+      vi.spyOn(Utils.id, 'cuid').mockReturnValue(actionID);
 
       const result = rewriteDispatch(store as any)(action);
 
       expect(result).toEqual(action);
-      expect(store.dispatch).toBeCalledWith({ ...action, meta: { ...action.meta, origin: clientNodeID } });
+      expect(store.dispatch).toBeCalledWith({ ...action, meta: { ...action.meta, origin: clientNodeID, actionID } });
     });
 
     it('executes dispatched thunks', () => {
@@ -42,6 +47,7 @@ suite('Store | Utils', () => {
         client: { nodeId: clientNodeID },
         log,
       };
+      vi.spyOn(Utils.id, 'cuid').mockReturnValue(actionID);
 
       const result = rewriteDispatch(store as any)((dispatch, getState, extras) => {
         dispatch({ type, payload: getState() });
@@ -52,7 +58,7 @@ suite('Store | Utils', () => {
       });
 
       expect(result).toBe(output);
-      expect(store.dispatch).toBeCalledWith({ type, payload: state, meta: { origin: clientNodeID } });
+      expect(store.dispatch).toBeCalledWith({ type, payload: state, meta: { origin: clientNodeID, actionID } });
     });
 
     it('add origin to local, sync and crossTab actions', () => {
@@ -63,6 +69,7 @@ suite('Store | Utils', () => {
         dispatch: { local: vi.fn(), sync: vi.fn(), crossTab: vi.fn() },
         client: { nodeId: clientNodeID },
       };
+      vi.spyOn(Utils.id, 'cuid').mockReturnValue(actionID);
 
       const dispatch = rewriteDispatch(store as any);
 
@@ -70,9 +77,9 @@ suite('Store | Utils', () => {
       dispatch.sync(syncAction);
       dispatch.crossTab(crossTabAction);
 
-      expect(store.dispatch.local).toBeCalledWith({ ...localAction, meta: { origin: clientNodeID } });
-      expect(store.dispatch.sync).toBeCalledWith({ ...syncAction, meta: { origin: clientNodeID } });
-      expect(store.dispatch.crossTab).toBeCalledWith({ ...crossTabAction, meta: { origin: clientNodeID } });
+      expect(store.dispatch.local).toBeCalledWith({ ...localAction, meta: { origin: clientNodeID, actionID } });
+      expect(store.dispatch.sync).toBeCalledWith({ ...syncAction, meta: { origin: clientNodeID, actionID } });
+      expect(store.dispatch.crossTab).toBeCalledWith({ ...crossTabAction, meta: { origin: clientNodeID, actionID } });
     });
   });
 });

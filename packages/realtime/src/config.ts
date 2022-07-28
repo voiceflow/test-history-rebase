@@ -1,7 +1,9 @@
 import { getOptionalProcessEnv, getRequiredProcessEnv, setupEnv } from '@voiceflow/backend-utils';
+import dotenv from 'dotenv';
 
 import { Config } from './types';
 
+dotenv.config({ path: '.env.local' });
 setupEnv();
 
 const NODE_ENV = getRequiredProcessEnv('NODE_ENV');
@@ -39,6 +41,11 @@ const CONFIG: Config = {
   // Logging
   LOG_LEVEL: getOptionalProcessEnv('LOG_LEVEL'),
   MIDDLEWARE_VERBOSITY: getOptionalProcessEnv('MIDDLEWARE_VERBOSITY'),
+
+  // Feature flags
+  FEATURE_OVERRIDES: Object.fromEntries(
+    Object.entries(process.env).flatMap(([key, value]) => (key.startsWith('FF_') ? [[key.substring(3).toLowerCase(), value === 'true']] : []))
+  ),
 };
 
 export default CONFIG;

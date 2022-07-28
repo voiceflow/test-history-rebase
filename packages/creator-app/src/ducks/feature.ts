@@ -170,7 +170,7 @@ const overrideFeatures = (features: Record<string, { isEnabled: boolean }>) => {
 
   return Object.fromEntries(
     Object.entries(features).map(([key, value]) => {
-      const envVar = `VF_APP_FF_${key.toLocaleUpperCase()}`;
+      const envVar = `VF_APP_FF_${key.toUpperCase()}`;
       if (Utils.object.hasProperty(import.meta.env, envVar)) {
         return [key, { isEnabled: import.meta.env[envVar] === 'true' }];
       }

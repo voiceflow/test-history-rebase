@@ -36,6 +36,6 @@ export const wrapReplayAction = <T extends Action<any>>(action: T) => extendMeta
 
 export const wrapBatchAction = <T extends Action<any>>(action: T) => extendMeta(action, { [BATCH_KEY]: true });
 
-export const isReplayAction = (action: Action<any> & { meta: any }) => !!action?.meta[REPLAY_KEY];
+export const isReplayAction = (action: Action<any> & { meta?: any }) => !!action?.meta[REPLAY_KEY];
 
-export const isBatchAction = (action: Action<any> & { meta: any }) => !!action?.meta[BATCH_KEY];
+export const isBatchAction = (action: Action<any> & { meta?: any }) => !!action?.meta[BATCH_KEY];

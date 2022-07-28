@@ -1,5 +1,4 @@
 import { Client } from '@logux/client';
-import { createStoreCreator } from '@logux/redux';
 import { composeWithDevTools } from '@redux-devtools/extension';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { History } from 'history';
@@ -9,6 +8,8 @@ import { Persistor, persistStore } from 'redux-persist';
 import { DEBUG_REALTIME, IS_DEVELOPMENT } from '@/config';
 import createReducer, { allRPCs } from '@/ducks';
 
+import { ACTION_INVALIDATORS, ACTION_REVERTERS } from './constants';
+import { createStoreCreator } from './createStoreCreator';
 import createMiddleware from './middleware';
 import { RPCController } from './rpc';
 import { Store } from './types';
@@ -20,12 +21,13 @@ declare global {
   }
 }
 
-export const composeEnhancers = composeWithDevTools({
+const composeEnhancers = composeWithDevTools({
   name: 'Voiceflow Creator',
   actionsDenylist: DEBUG_REALTIME
     ? []
     : [
         'logux/state',
+        'logux/processed',
         Realtime.project.awareness.updateViewers.type,
         Realtime.diagram.awareness.heartbeat.type,
         Realtime.diagram.awareness.updateLockedEntities.type,
@@ -33,7 +35,13 @@ export const composeEnhancers = composeWithDevTools({
 });
 
 const createStore = (realtime: Client, history: History): { store: Store; persistor: Persistor } => {
-  const rootReducer = createReducer(history);
+  const reducerOptions = {
+    browserHistory: history,
+    reverters: ACTION_REVERTERS,
+    invalidators: ACTION_INVALIDATORS,
+    getClientNodeID: () => realtime.nodeId,
+  };
+  const rootReducer = createReducer(reducerOptions);
   const createStore = createStoreCreator(realtime);
   const rpcController = new RPCController();
 
@@ -49,7 +57,7 @@ const createStore = (realtime: Client, history: History): { store: Store; persis
 
   if (IS_DEVELOPMENT && import.meta.hot) {
     import.meta.hot.accept('@/ducks', () => {
-      store.replaceReducer(createReducer(history));
+      store.replaceReducer(createReducer(reducerOptions));
       rpcController.replaceHandlers(allRPCs);
     });
   }

@@ -1,6 +1,6 @@
 import { connectRouter } from 'connected-react-router';
 import { History as BrowserHistory } from 'history';
-import { AnyAction, combineReducers } from 'redux';
+import { combineReducers } from 'redux';
 import { reducer as formReducer } from 'redux-form';
 
 import account, * as Account from '@/ducks/account';
@@ -37,6 +37,16 @@ import versionV2, * as VersionV2 from '@/ducks/versionV2';
 import viewport, * as Viewport from '@/ducks/viewport';
 import * as Workspace from '@/ducks/workspace';
 import workspaceV2, * as WorkspaceV2 from '@/ducks/workspaceV2';
+import { InvalidatorLookup, ReverterLookup } from '@/store/types';
+
+import stateTransducer from './transducers';
+
+export interface ReducerOptions {
+  browserHistory: BrowserHistory;
+  reverters: ReverterLookup;
+  invalidators: InvalidatorLookup;
+  getClientNodeID: () => string;
+}
 
 const getCombinedReducer = (browserHistory: BrowserHistory) =>
   combineReducers({
@@ -74,23 +84,8 @@ const getCombinedReducer = (browserHistory: BrowserHistory) =>
     [Domain.STATE_KEY]: domain,
   });
 
-const createReducer = (browserHistory: BrowserHistory) => {
-  const rootReducer = getCombinedReducer(browserHistory);
-
-  return (state: State | undefined, action: AnyAction) => {
-    let nextState: Partial<State | undefined> = state;
-
-    if (action.type === Account.AccountAction.RESET_ACCOUNT) {
-      nextState = {
-        viewport: nextState?.viewport,
-        ui: nextState?.ui,
-        recent: nextState?.recent,
-      };
-    }
-
-    return rootReducer(nextState as State | undefined, action);
-  };
-};
+const createReducer = ({ browserHistory, reverters, invalidators, getClientNodeID }: ReducerOptions) =>
+  stateTransducer(reverters, invalidators, getClientNodeID)(getCombinedReducer(browserHistory));
 
 export default createReducer;
 

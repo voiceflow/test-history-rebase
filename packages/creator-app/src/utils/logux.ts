@@ -2,7 +2,7 @@ import { Client } from '@logux/client';
 import { Utils } from '@voiceflow/common';
 import { Action, AsyncActionCreators } from 'typescript-fsa';
 
-import { extendMeta } from '@/store/utils';
+import { getActionID, wrapOwnAction } from '@/store/utils';
 
 type ErrorCode<T> = T extends Utils.protocol.AsyncError<infer R> ? R : never;
 
@@ -38,12 +38,12 @@ export const waitAsyncAction = async <T, R, E extends Utils.protocol.AsyncError<
       unsubscribeProcessed();
     };
 
-    await client.sync(extendMeta(action, { actionID }));
+    await client.sync(wrapOwnAction(action, client.nodeId, actionID));
 
     unsubscribe();
     unsubscribe = null;
 
-    const processedAction = processedActions.find((action) => action.meta?.actionID === actionID);
+    const processedAction = processedActions.find((action) => getActionID(action) === actionID);
 
     if (processedAction && actionCreators.failed.match(processedAction)) {
       throw new AsyncActionError<E>(processedAction.payload.error);

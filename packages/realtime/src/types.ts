@@ -29,4 +29,7 @@ export interface Config {
   // Logging
   LOG_LEVEL: string | null;
   MIDDLEWARE_VERBOSITY: string | null;
+
+  // Feature flags
+  FEATURE_OVERRIDES: Record<string, boolean>;
 }

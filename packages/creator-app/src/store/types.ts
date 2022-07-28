@@ -7,6 +7,7 @@ import { AnyAction } from 'typescript-fsa';
 import { Assign } from 'utility-types';
 
 import type { State } from '@/ducks';
+import { ActionInvalidator, ActionReverter } from '@/ducks/utils';
 
 export type { Action, ActionPayload, ActionReducer, AnyAction, Reducer, RootReducer, RootState, ThunkDispatch, ThunkResult } from '@voiceflow/ui';
 
@@ -65,3 +66,9 @@ export type Thunk<R = void> = UI.Thunk<State, R, Dispatch, ThunkExtra>;
 // RPC
 
 export type RPCHandler = (action: AnyAction, dispatch: Dispatch) => boolean;
+
+// History
+
+export type ReverterLookup = Partial<Record<string, ActionReverter<any>[]>>;
+
+export type InvalidatorLookup = Partial<Record<string, Partial<Record<string, ActionInvalidator<any, any>[]>>>>;

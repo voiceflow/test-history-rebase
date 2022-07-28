@@ -7,6 +7,7 @@ import * as Feature from '@/ducks/feature';
 
 export const V2_FEATURE_STATE = {
   [Feature.STATE_KEY]: {
+    ...Feature.INITIAL_STATE,
     features: {
       [Realtime.FeatureFlag.ATOMIC_ACTIONS_PHASE_2]: { isEnabled: true },
     },
@@ -15,6 +16,7 @@ export const V2_FEATURE_STATE = {
 
 export const V2_HISTORY_STATE = {
   [Feature.STATE_KEY]: {
+    ...Feature.INITIAL_STATE,
     features: {
       [Realtime.FeatureFlag.HISTORY_SYSTEM]: { isEnabled: true },
     },

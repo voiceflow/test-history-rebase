@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.849.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.848.0...@voiceflow/creator-app@1.849.0) (2022-07-28)
+
+
+### Features
+
+* canvas chips [bugfix] (CT-480) ([#5705](https://github.com/voiceflow/creator-app/issues/5705)) ([53ea9a5](https://github.com/voiceflow/creator-app/commit/53ea9a57172ff3ee33c3f0600da357e7cc3e0b81))
+
+
+
+
+
 # [1.848.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.847.1...@voiceflow/creator-app@1.848.0) (2022-07-27)
 
 

@@ -26,6 +26,7 @@ const Steps: React.FC = () => {
   const chatCardsCarousel = useFeature(Realtime.FeatureFlag.CHAT_CARDS_CAROUSEL);
   const dfCarousel = useFeature(Realtime.FeatureFlag.DF_CAROUSEL_STEP);
   const topicsAndComponents = useFeature(Realtime.FeatureFlag.TOPICS_AND_COMPONENTS);
+  const chatCardStep = useFeature(Realtime.FeatureFlag.CHAT_CARD_STEP);
   const promptStep = useFeature(Realtime.FeatureFlag.PROMPT_STEP);
   const isTopicsAndComponentsVersion = useSelector(ProjectV2.active.isTopicsAndComponentsVersionSelector);
   const getManager = useManager();
@@ -40,7 +41,7 @@ const Steps: React.FC = () => {
           if (!gadgets.isEnabled && step.type === BlockType.EVENT) return false;
           if (!chatCardsCarousel.isEnabled && step.type === BlockType.CAROUSEL) return false;
           if (isDialogflowPlatform(platform) && !dfCarousel.isEnabled && step.type === BlockType.CAROUSEL) return false;
-
+          if (!chatCardStep.isEnabled && step.type === BlockType.CARDV2) return false;
           if (!(topicsAndComponents.isEnabled && isTopicsAndComponentsVersion) && step.type === BlockType.COMPONENT) return false;
           if (topicsAndComponents.isEnabled && isTopicsAndComponentsVersion && step.type === BlockType.FLOW) return false;
           if (IS_PRIVATE_CLOUD && step.publicOnly) return false;

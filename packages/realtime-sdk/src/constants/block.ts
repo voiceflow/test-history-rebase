@@ -41,6 +41,7 @@ export enum BlockType {
   // visuals
   CARD = 'card',
   CAROUSEL = 'carousel',
+  CARDV2 = 'cardV2',
   VISUAL = 'visual',
   DISPLAY = 'display',
 

@@ -98,6 +98,7 @@ const FOCUSABLE_NODES = new Set([
   BlockType.SPEAK,
   BlockType.TEXT,
   BlockType.CAROUSEL,
+  BlockType.CARDV2,
   BlockType.CAPTURE,
   BlockType.CAPTUREV2,
   BlockType.CHOICE,

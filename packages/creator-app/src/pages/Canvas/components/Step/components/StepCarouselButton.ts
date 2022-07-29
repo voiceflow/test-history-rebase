@@ -1,7 +1,6 @@
 import { styled, units } from '@/hocs';
-import StepItemContainer from '@/pages/Canvas/components/Step/components/StepItemContainer';
 
-export const Button = styled.div`
+export const StepCarouselButton = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -15,37 +14,23 @@ export const Button = styled.div`
   font-weight: 600;
 `;
 
-export const ButtonGroup = styled.div`
+export const StepCarouselButtonGroup = styled.div`
   width: 100%;
 
-  ${Button} {
+  ${StepCarouselButton} {
     max-width: calc(100% - 24px);
   }
 
-  > :not(:first-of-type) ${Button} {
+  > :not(:first-of-type) ${StepCarouselButton} {
     margin-top: -1px;
     border-top-left-radius: 0 !important;
     border-top-right-radius: 0 !important;
     border-top-color: #eaeff4;
   }
 
-  > :not(:last-of-type) ${Button} {
+  > :not(:last-of-type) ${StepCarouselButton} {
     border-bottom-color: #eaeff4;
     border-bottom-left-radius: 0 !important;
     border-bottom-right-radius: 0 !important;
-  }
-`;
-
-export const NoMatchNoReplySection = styled.div`
-  width: 100%;
-
-  ${StepItemContainer}::before {
-    position: absolute;
-    top: -1px;
-    height: 1px;
-    left: ${units(3)}px;
-    right: 0;
-    content: '';
-    border-top: 1px solid #eaeff4;
   }
 `;

@@ -24,8 +24,6 @@ export { default as arrowToggleV2 } from './arrow-toggle-small-up.svg';
 export { default as audio } from './audio.svg';
 export { default as audioPlayer } from './audio-player.svg';
 export { default as amazon } from './brands/amazon.svg';
-export { default as button } from './button.svg';
-export { default as carousel } from './carousel.svg';
 
 // b
 export { default as back } from './back.svg';
@@ -37,6 +35,7 @@ export { default as bookmark } from './bookmark.svg';
 export { default as bookmark2 } from './bookmark-2.svg';
 export { default as bookmarkActive } from './bookmark-active.svg';
 export { default as builtInIntent } from './built-in-intent.svg';
+export { default as button } from './button.svg';
 export { default as editorExit } from './editor-exit.svg';
 export { default as editorURL } from './editor-url.svg';
 export { default as goToBlock } from './go-to-block.svg';
@@ -51,8 +50,10 @@ export { default as canvas } from './canvas.svg';
 export { default as capture } from './capture.svg';
 export { default as captureV2 } from './capture-v2.svg';
 export { default as card } from './card.svg';
+export { default as cardV2 } from './card-v2.svg';
 export { default as caretDown } from './caret-down.svg';
 export { default as caretRight } from './caret-right.svg';
+export { default as carousel } from './carousel.svg';
 export { default as chatBubbles } from './chat-bubbles.svg';
 export { default as check } from './check.svg';
 export { default as check2 } from './check-2.svg';

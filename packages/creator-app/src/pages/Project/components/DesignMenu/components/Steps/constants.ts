@@ -58,6 +58,7 @@ const CAPTURE_STEP_V2 = createMenuStep(Realtime.BlockType.CAPTUREV2);
 
 const CARD_STEP = createMenuStep(Realtime.BlockType.CARD);
 const CAROUSEL_STEP = createMenuStep(Realtime.BlockType.CAROUSEL);
+const CARDV2_STEP = createMenuStep(Realtime.BlockType.CARDV2);
 
 const CHOICE_STEP = createMenuStep(Realtime.BlockType.CHOICE);
 
@@ -179,7 +180,7 @@ export const CHATBOT_SECTIONS = [
   {
     type: BlockCategory.RESPONSE,
     label: 'Response',
-    steps: [TEXT_STEP, VISUAL_STEP, CAROUSEL_STEP],
+    steps: [TEXT_STEP, VISUAL_STEP, CARDV2_STEP, CAROUSEL_STEP],
   },
   {
     type: BlockCategory.USER_INPUT,
@@ -382,7 +383,7 @@ export const CHATBOT_STEP_SECTIONS: TopStepItem[] = [
   {
     icon: TALK_ICON,
     label: TALK_LABEL,
-    steps: [TEXT_STEP, VISUAL_STEP, CAROUSEL_STEP],
+    steps: [TEXT_STEP, VISUAL_STEP, CARDV2_STEP, CAROUSEL_STEP],
   },
   {
     icon: LISTEN_ICON,

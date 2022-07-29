@@ -6,6 +6,7 @@ import { buttonsOutPortsAdapter, buttonsOutPortsAdapterV2 } from './buttons';
 import { captureOutPortsAdapter, captureOutPortsAdapterV2 } from './capture';
 import { captureV2OutPortsAdapter, captureV2OutPortsAdapterV2 } from './captureV2';
 import cardAdapter, { cardOutPortsAdapter, cardOutPortsAdapterV2 } from './card';
+import cardV2Adapter, { cardV2OutPortsAdapter, cardV2OutPortsAdapterV2 } from './cardV2';
 import carouselAdapter, { carouselOutPortsAdapter, carouselOutPortsAdapterV2 } from './carousel';
 import codeAdapter, { codeOutPortsAdapter, codeOutPortsAdapterV2 } from './code';
 import { commandOutPortsAdapter, commandOutPortsAdapterV2 } from './command';
@@ -33,6 +34,7 @@ export { default as baseButtonsAdapter } from './buttons';
 export { default as baseCaptureAdapter } from './capture';
 export { default as baseCaptureV2Adapter } from './captureV2';
 export { default as baseCarouselAdapter } from './carousel';
+export { default as baseCardV2Adapter } from './carousel';
 export { default as baseCommandAdapter } from './command';
 export { default as baseIntentAdapter } from './intent';
 export { default as baseInteractionAdapter } from './interaction';
@@ -53,6 +55,7 @@ export const baseBlockAdapter = {
   [BlockType.TRACE]: traceAdapter,
   [BlockType.VISUAL]: visualAdapter,
   [BlockType.RANDOM]: randomAdapter,
+  [BlockType.CARDV2]: cardV2Adapter,
   [BlockType.CAROUSEL]: carouselAdapter,
   [BlockType.DIRECTIVE]: directiveAdapter,
   [BlockType.COMPONENT]: componentAdapter,
@@ -84,6 +87,7 @@ export const baseOutPortAdapter = {
   [BlockType.BUTTONS]: buttonsOutPortsAdapter,
   [BlockType.CAPTURE]: captureOutPortsAdapter,
   [BlockType.ACTIONS]: emptyOutPortsAdapter,
+  [BlockType.CARDV2]: cardV2OutPortsAdapter,
   [BlockType.CAROUSEL]: carouselOutPortsAdapter,
   [BlockType.COMBINED]: emptyOutPortsAdapter,
   [BlockType.CAPTUREV2]: captureV2OutPortsAdapter,
@@ -122,6 +126,7 @@ export const baseOutPortAdapterV2 = {
   [BlockType.BUTTONS]: buttonsOutPortsAdapterV2,
   [BlockType.CAPTURE]: captureOutPortsAdapterV2,
   [BlockType.ACTIONS]: emptyOutPortsAdapterV2,
+  [BlockType.CARDV2]: cardV2OutPortsAdapterV2,
   [BlockType.CAROUSEL]: carouselOutPortsAdapterV2,
   [BlockType.COMBINED]: emptyOutPortsAdapterV2,
   [BlockType.CAPTUREV2]: captureV2OutPortsAdapterV2,

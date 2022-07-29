@@ -4,12 +4,16 @@ import { OverflowText, Thumbnail } from '@voiceflow/ui';
 import React from 'react';
 
 import SlateEditable from '@/components/SlateEditable';
-import Step, { NoMatchStepItemV2, NoReplyStepItemV2 } from '@/pages/Canvas/components/Step';
+import Step, {
+  NoMatchNoReplyContainer,
+  NoMatchStepItemV2,
+  NoReplyStepItemV2,
+  StepCarouselButton,
+  StepCarouselButtonGroup,
+} from '@/pages/Canvas/components/Step';
 import { ConnectedStep } from '@/pages/Canvas/managers/types';
 import { isVariable, transformVariablesToReadable } from '@/utils/slot';
 import { isDialogflowPlatform } from '@/utils/typeGuards';
-
-import * as S from './styles';
 
 const slateDescription = (description: Realtime.NodeData.Carousel.Card['description']) =>
   SlateEditable.EditorAPI.isNewState(description) ? '' : SlateEditable.serializeToJSX(description);
@@ -50,24 +54,24 @@ const CarouselStep: ConnectedStep<Realtime.NodeData.Carousel, Realtime.NodeData.
 
           {!isDF && !!card.buttons?.length && (
             <Step.SubItem>
-              <S.ButtonGroup>
+              <StepCarouselButtonGroup>
                 {card.buttons.map((button) => (
                   <Step.Item key={button.id} nested portID={ports.out.byKey[button.id]}>
-                    <S.Button>
+                    <StepCarouselButton>
                       <OverflowText>{button.name || 'Button Label'}</OverflowText>
-                    </S.Button>
+                    </StepCarouselButton>
                   </Step.Item>
                 ))}
-              </S.ButtonGroup>
+              </StepCarouselButtonGroup>
             </Step.SubItem>
           )}
         </Step.Section>
       ))}
       {isLast && (
-        <S.NoMatchNoReplySection>
+        <NoMatchNoReplyContainer>
           <NoMatchStepItemV2 nodeID={data.nodeID} portID={noMatchPortID} noMatch={data.noMatch} />
           <NoReplyStepItemV2 nodeID={data.nodeID} portID={noReplyPortID} noReply={data.noReply} />
-        </S.NoMatchNoReplySection>
+        </NoMatchNoReplyContainer>
       )}
     </Step>
   );

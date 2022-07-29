@@ -202,6 +202,19 @@ export namespace NodeData {
     [BaseModels.PortType.NO_REPLY]?: string;
     [BaseModels.PortType.NEXT]?: string;
   }
+  export namespace CardV2 {
+    export type Card = BaseNode.CardV2.CardV2Card;
+    export type Button = BaseNode.CardV2.CardV2Button;
+  }
+  export interface CardV2 extends Omit<VoiceflowNode.CardV2.StepData, 'noMatch' | 'noReply'> {
+    noMatch: Nullable<NoMatch>;
+    noReply: Nullable<NoReply>;
+  }
+  export interface CardV2BuiltInPorts {
+    [BaseModels.PortType.NO_MATCH]?: string;
+    [BaseModels.PortType.NO_REPLY]?: string;
+    [BaseModels.PortType.NEXT]?: string;
+  }
 
   export interface VariableMapping {
     to: string | null;
@@ -515,6 +528,7 @@ export interface NodeDataMap {
 
   [BlockType.CARD]: NodeData.Card;
   [BlockType.CAROUSEL]: NodeData.Carousel;
+  [BlockType.CARDV2]: NodeData.CardV2;
   [BlockType.VISUAL]: NodeData.Visual;
   [BlockType.DISPLAY]: unknown;
 

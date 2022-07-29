@@ -2,9 +2,8 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
-import VariableSelectV2 from '@/components/VariableSelectV2';
 import VariablesInput from '@/components/VariablesInput';
-import { useMapManager, useVariableCreation } from '@/hooks';
+import { useMapManager } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 
 import { expressionFactory } from '../../constants';
@@ -16,7 +15,6 @@ const ParametersSection: React.FC = () => {
     factory: expressionFactory,
   });
   const hasParams = !!editor.data.parameters?.length;
-  const { variables, createVariable } = useVariableCreation();
 
   return (
     <SectionV2.ActionCollapseSection
@@ -33,13 +31,11 @@ const ParametersSection: React.FC = () => {
             <S.IntegrationEditorSectionItem>
               <VariablesInput placeholder="Enter parameter key" value={parameter.key} onBlur={({ text }) => onUpdate({ key: text })} multiline />
 
-              <VariableSelectV2
+              <VariablesInput
                 value={parameter.val}
-                prefix="APPLY TO"
-                options={variables}
-                onCreate={createVariable}
-                onChange={(value) => onUpdate({ val: value })}
-                placeholder="Select variable"
+                onBlur={({ text }) => onUpdate({ val: text })}
+                multiline
+                placeholder="Enter value or {variable}"
               />
             </S.IntegrationEditorSectionItem>
           </SectionV2.ListItem>

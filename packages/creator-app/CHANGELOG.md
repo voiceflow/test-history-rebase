@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.850.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.850.0...@voiceflow/creator-app@1.850.1) (2022-07-29)
+
+
+### Bug Fixes
+
+* logout stuck on account loading (VF-000) ([#5828](https://github.com/voiceflow/creator-app/issues/5828)) ([79a7162](https://github.com/voiceflow/creator-app/commit/79a7162ec2ab32181e8b34c6d345d8f8c1fabcbf))
+
+
+
+
+
 # [1.850.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.849.0...@voiceflow/creator-app@1.850.0) (2022-07-28)
 
 

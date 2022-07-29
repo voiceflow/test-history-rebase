@@ -38,7 +38,7 @@ export const createHistoryTransducer =
 
       if (!state) return skipHistory();
 
-      const isHistoryEnabled = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.HISTORY_SYSTEM);
+      const isHistoryEnabled = !!Feature.rootSelector(state) && Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.HISTORY_SYSTEM);
       const origin = getActionOrigin(action);
 
       if (!isHistoryEnabled || !origin) return skipHistory();

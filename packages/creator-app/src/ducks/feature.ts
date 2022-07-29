@@ -86,7 +86,7 @@ export default featureReducer;
 
 // selectors
 
-const rootSelector = createRootSelector(STATE_KEY);
+export const rootSelector = createRootSelector(STATE_KEY);
 
 export const featuresSelector = createSelector([rootSelector], ({ features }) => features);
 

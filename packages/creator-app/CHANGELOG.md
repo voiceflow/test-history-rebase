@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.851.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.850.2...@voiceflow/creator-app@1.851.0) (2022-07-29)
+
+
+### Features
+
+* Add card step (CT-459) ([#5787](https://github.com/voiceflow/creator-app/issues/5787)) ([d0ff658](https://github.com/voiceflow/creator-app/commit/d0ff6585335b46780d5c6bdcdb49db2a87f9bcd3))
+* random editor v2 (CT-635) ([#5806](https://github.com/voiceflow/creator-app/issues/5806)) ([e7eee39](https://github.com/voiceflow/creator-app/commit/e7eee39cb83867f2df58c1f221641f9da0a3c96b))
+
+
+
+
+
 ## [1.850.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.850.1...@voiceflow/creator-app@1.850.2) (2022-07-29)
 
 

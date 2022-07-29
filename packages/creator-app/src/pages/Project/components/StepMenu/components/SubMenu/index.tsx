@@ -1,8 +1,9 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Animations, Portal, usePopper } from '@voiceflow/ui';
 import React from 'react';
 
-import { DragItem } from '@/constants';
-import { useDragPreview } from '@/hooks';
+import { BlockType, DragItem } from '@/constants';
+import { useDragPreview, useFeature } from '@/hooks';
 import { getManager } from '@/pages/Canvas/managers/utils';
 
 import { StepDragItem } from '../../../DesignMenu/components/Steps/types';
@@ -15,6 +16,8 @@ interface SubMenuProps {
 }
 
 const SubMenu: React.FC<SubMenuProps> = ({ steps, onDrop }) => {
+  const newEditors2 = useFeature(Realtime.FeatureFlag.NEW_EDITORS_PART_2);
+
   const menuRef = React.useRef<HTMLDivElement>(null);
 
   const rootPopper = usePopper({
@@ -22,17 +25,24 @@ const SubMenu: React.FC<SubMenuProps> = ({ steps, onDrop }) => {
     placement: 'right-start',
   });
 
-  const processedSteps = steps.map((step) => {
-    const manager = getManager(step.type, true);
+  const processedSteps = steps
+    .filter((step) => {
+      if (!newEditors2.isEnabled && step.type === BlockType.RANDOMV2) return false;
+      if (newEditors2.isEnabled && step.type === BlockType.RANDOM) return false;
 
-    return {
-      ...step,
-      icon: step.getIcon(manager),
-      label: step.getLabel(manager),
-      tooltipText: step.getStepTooltipText(manager),
-      tooltipLink: step.getStepTooltipLink(manager),
-    };
-  });
+      return true;
+    })
+    .map((step) => {
+      const manager = getManager(step.type, true);
+
+      return {
+        ...step,
+        icon: step.getIcon(manager),
+        label: step.getLabel(manager),
+        tooltipText: step.getStepTooltipText(manager),
+        tooltipLink: step.getStepTooltipLink(manager),
+      };
+    });
 
   useDragPreview<StepDragItem>(
     DragItem.BLOCK_MENU,

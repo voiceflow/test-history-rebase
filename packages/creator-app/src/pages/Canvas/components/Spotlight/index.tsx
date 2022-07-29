@@ -33,6 +33,7 @@ const Spotlight = () => {
   const topicsAndComponents = useFeature(Realtime.FeatureFlag.TOPICS_AND_COMPONENTS);
   const promptStep = useFeature(Realtime.FeatureFlag.PROMPT_STEP);
   const isTopicsAndComponentsVersion = useSelector(ProjectV2.active.isTopicsAndComponentsVersionSelector);
+  const newEditors2 = useFeature(Realtime.FeatureFlag.NEW_EDITORS_PART_2);
   const getManager = useManager();
 
   const isVisible = !!spotlight?.isVisible;
@@ -53,6 +54,8 @@ const Spotlight = () => {
           if (isDialogflowPlatform(platform) && !dfCarousel.isEnabled && step.type === BlockType.CAROUSEL) return false;
           if (!(topicsAndComponents.isEnabled && isTopicsAndComponentsVersion) && step.type === BlockType.COMPONENT) return false;
           if (topicsAndComponents.isEnabled && isTopicsAndComponentsVersion && step.type === BlockType.FLOW) return false;
+          if (!newEditors2.isEnabled && step.type === BlockType.RANDOMV2) return false;
+          if (newEditors2.isEnabled && step.type === BlockType.RANDOM) return false;
           if (IS_PRIVATE_CLOUD && step.publicOnly) return false;
           if (!promptStep.isEnabled && step.type === BlockType.PROMPT) return false;
           return true;

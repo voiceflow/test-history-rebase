@@ -5,10 +5,11 @@ import { StyledProps } from 'styled-components';
 export interface RemoveButtonProps extends StyledProps<any> {
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
   isActive?: boolean;
+  disabled?: boolean;
 }
 
-const RemoveButton: React.FC<RemoveButtonProps> = ({ onClick, isActive, style }) => (
-  <IconButton size={16} icon="minus" onClick={onClick} variant={IconButtonVariant.BASIC} activeClick={isActive} style={style} />
+const RemoveButton: React.FC<RemoveButtonProps> = ({ onClick, isActive, style, disabled }) => (
+  <IconButton size={16} icon="minus" onClick={onClick} variant={IconButtonVariant.BASIC} activeClick={isActive} style={style} disabled={disabled} />
 );
 
 export default RemoveButton;

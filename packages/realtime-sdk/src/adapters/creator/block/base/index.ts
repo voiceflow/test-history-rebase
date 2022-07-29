@@ -22,6 +22,7 @@ import { intentOutPortsAdapter, intentOutPortsAdapterV2 } from './intent';
 import { interactionOutPortsAdapter, interactionOutPortsAdapterV2 } from './interaction';
 import { promptOutPortsAdapter, promptOutPortsAdapterV2 } from './prompt';
 import randomAdapter, { randomOutPortsAdapter, randomOutPortsAdapterV2 } from './random';
+import randomV2Adapter, { randomV2OutPortsAdapter, randomV2OutPortsAdapterV2 } from './randomV2';
 import setAdapter, { setOutPortsAdapter, setOutPortsAdapterV2 } from './set';
 import { speakOutPortsAdapter, speakOutPortsAdapterV2 } from './speak';
 import textAdapter, { textOutPortsAdapter, textOutPortsAdapterV2 } from './text';
@@ -56,6 +57,7 @@ export const baseBlockAdapter = {
   [BlockType.VISUAL]: visualAdapter,
   [BlockType.RANDOM]: randomAdapter,
   [BlockType.CARDV2]: cardV2Adapter,
+  [BlockType.RANDOMV2]: randomV2Adapter,
   [BlockType.CAROUSEL]: carouselAdapter,
   [BlockType.DIRECTIVE]: directiveAdapter,
   [BlockType.COMPONENT]: componentAdapter,
@@ -83,6 +85,7 @@ export const baseOutPortAdapter = {
   [BlockType.PROMPT]: promptOutPortsAdapter,
   [BlockType.CHOICE]: interactionOutPortsAdapter,
   [BlockType.RANDOM]: randomOutPortsAdapter,
+  [BlockType.RANDOMV2]: randomV2OutPortsAdapter,
   [BlockType.COMMAND]: commandOutPortsAdapter,
   [BlockType.BUTTONS]: buttonsOutPortsAdapter,
   [BlockType.CAPTURE]: captureOutPortsAdapter,
@@ -122,6 +125,7 @@ export const baseOutPortAdapterV2 = {
   [BlockType.PROMPT]: promptOutPortsAdapterV2,
   [BlockType.CHOICE]: interactionOutPortsAdapterV2,
   [BlockType.RANDOM]: randomOutPortsAdapterV2,
+  [BlockType.RANDOMV2]: randomV2OutPortsAdapterV2,
   [BlockType.COMMAND]: commandOutPortsAdapterV2,
   [BlockType.BUTTONS]: buttonsOutPortsAdapterV2,
   [BlockType.CAPTURE]: captureOutPortsAdapterV2,

@@ -2,6 +2,7 @@ import { styled, units } from '@ui/styles';
 
 export interface TitleProps {
   bold?: boolean;
+  noMargin?: boolean;
 }
 
 const Title = styled.h5<TitleProps>`
@@ -14,7 +15,7 @@ const Title = styled.h5<TitleProps>`
   align-items: center;
 
   &:not(:last-child) {
-    margin-right: ${units(1.5)}px;
+    margin-right: ${({ noMargin }) => (noMargin ? 0 : `${units(1.5)}px`)};
   }
 `;
 

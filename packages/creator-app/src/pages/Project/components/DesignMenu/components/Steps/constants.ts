@@ -99,6 +99,8 @@ const PROMPT_STEP = createMenuStep(Realtime.BlockType.PROMPT);
 
 const RANDOM_STEP = createMenuStep(Realtime.BlockType.RANDOM);
 
+const RANDOM_STEP_V2 = createMenuStep(Realtime.BlockType.RANDOMV2);
+
 const REMINDER_STEP = createMenuStep(Realtime.BlockType.REMINDER);
 
 const SET_STEP_V2 = createMenuStep(Realtime.BlockType.SETV2);
@@ -132,7 +134,7 @@ export const ALEXA_SECTIONS = [
   {
     type: BlockCategory.LOGIC,
     label: 'Logic',
-    steps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP, FLOW_STEP, COMPONENT_STEP, EXIT_STEP],
+    steps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP, RANDOM_STEP_V2, FLOW_STEP, COMPONENT_STEP, EXIT_STEP],
   },
   {
     type: BlockCategory.INTEGRATION,
@@ -161,7 +163,7 @@ export const GOOGLE_SECTIONS = [
   {
     type: BlockCategory.LOGIC,
     label: 'Logic',
-    steps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP, FLOW_STEP, COMPONENT_STEP, EXIT_STEP],
+    steps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP, RANDOM_STEP_V2, FLOW_STEP, COMPONENT_STEP, EXIT_STEP],
   },
   {
     type: BlockCategory.INTEGRATION,
@@ -190,7 +192,7 @@ export const CHATBOT_SECTIONS = [
   {
     type: BlockCategory.LOGIC,
     label: 'Logic',
-    steps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP, FLOW_STEP, COMPONENT_STEP, EXIT_STEP],
+    steps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP, RANDOM_STEP_V2, FLOW_STEP, COMPONENT_STEP, EXIT_STEP],
   },
   {
     type: BlockCategory.INTEGRATION,
@@ -214,7 +216,7 @@ export const GENERAL_SECTIONS = [
   {
     type: BlockCategory.LOGIC,
     label: 'Logic',
-    steps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP, FLOW_STEP, COMPONENT_STEP, EXIT_STEP],
+    steps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP, RANDOM_STEP_V2, FLOW_STEP, COMPONENT_STEP, EXIT_STEP],
   },
   {
     type: BlockCategory.INTEGRATION,
@@ -238,7 +240,7 @@ export const DIALOGFLOW_ES_CHAT_SECTIONS = [
   {
     type: BlockCategory.LOGIC,
     label: 'Logic',
-    steps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP, FLOW_STEP, COMPONENT_STEP, EXIT_STEP],
+    steps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP, RANDOM_STEP_V2, FLOW_STEP, COMPONENT_STEP, EXIT_STEP],
   },
   {
     type: BlockCategory.INTEGRATION,
@@ -262,7 +264,7 @@ export const DIALOGFLOW_ES_VOICE_SECTIONS = [
   {
     type: BlockCategory.LOGIC,
     label: 'Logic',
-    steps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP, FLOW_STEP, COMPONENT_STEP, EXIT_STEP],
+    steps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP, RANDOM_STEP_V2, FLOW_STEP, COMPONENT_STEP, EXIT_STEP],
   },
   {
     type: BlockCategory.INTEGRATION,
@@ -335,7 +337,7 @@ export const ALEXA_STEP_SECTIONS: TopStepItem[] = [
   {
     icon: LOGIC_ICON,
     label: LOGIC_LABEL,
-    steps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP, COMPONENT_STEP, EXIT_STEP],
+    steps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
   },
   {
     icon: EVENT_ICON,
@@ -364,7 +366,7 @@ export const GOOGLE_STEP_SECTIONS: TopStepItem[] = [
   {
     icon: LOGIC_ICON,
     label: LOGIC_LABEL,
-    steps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP, COMPONENT_STEP, EXIT_STEP],
+    steps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
   },
   {
     icon: EVENT_ICON,
@@ -393,7 +395,7 @@ export const CHATBOT_STEP_SECTIONS: TopStepItem[] = [
   {
     icon: LOGIC_ICON,
     label: LOGIC_LABEL,
-    steps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP, COMPONENT_STEP, EXIT_STEP],
+    steps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
   },
   {
     icon: EVENT_ICON,
@@ -422,7 +424,7 @@ export const GENERAL_STEP_SECTIONS: TopStepItem[] = [
   {
     icon: LOGIC_ICON,
     label: LOGIC_LABEL,
-    steps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP, COMPONENT_STEP, EXIT_STEP],
+    steps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
   },
   {
     icon: EVENT_ICON,
@@ -451,7 +453,7 @@ export const DIALOGFLOW_ES_CHAT_STEP_SECTIONS: TopStepItem[] = [
   {
     icon: LOGIC_ICON,
     label: LOGIC_LABEL,
-    steps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP, COMPONENT_STEP, EXIT_STEP],
+    steps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
   },
   {
     icon: EVENT_ICON,
@@ -480,7 +482,7 @@ export const DIALOGFLOW_ES_VOICE_STEP_SECTIONS: TopStepItem[] = [
   {
     icon: LOGIC_ICON,
     label: LOGIC_LABEL,
-    steps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP, COMPONENT_STEP, EXIT_STEP],
+    steps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
   },
   {
     icon: EVENT_ICON,

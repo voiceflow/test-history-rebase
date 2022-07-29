@@ -89,6 +89,11 @@ export namespace NodeData {
     noDuplicates: boolean;
   }
 
+  export interface RandomV2 {
+    namedPaths: { label: string }[];
+    noDuplicates: boolean;
+  }
+
   export interface Permission {
     permissions: string[];
   }
@@ -511,6 +516,7 @@ export interface NodeDataMap {
   [BlockType.IF]: unknown;
   [BlockType.IFV2]: NodeData.IfV2;
   [BlockType.RANDOM]: NodeData.Random;
+  [BlockType.RANDOMV2]: NodeData.RandomV2;
   [BlockType.URL]: NodeData.Url;
 
   [BlockType.CHOICE]: NodeData.Interaction;

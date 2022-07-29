@@ -35,6 +35,7 @@ import PaymentManager from './Payment';
 import PermissionManager from './Permission';
 import PromptManager from './Prompt';
 import RandomManager from './Random';
+import RandomManagerV2 from './RandomV2';
 import ReminderManager from './Reminder';
 import SetManagerV2 from './SetV2';
 import SpeakManager from './Speak';
@@ -62,6 +63,7 @@ export const MANAGERS_BY_TYPE = {
   [BlockType.CAPTURE]: CaptureManager,
   [BlockType.CAPTUREV2]: CaptureManagerV2,
   [BlockType.RANDOM]: RandomManager,
+  [BlockType.RANDOMV2]: RandomManagerV2,
   [BlockType.INTENT]: IntentManager,
   [BlockType.STREAM]: StreamManager,
   [BlockType.INTEGRATION]: IntegrationManager,
@@ -103,6 +105,7 @@ export const MANAGERS_BY_FEATURE: Partial<Record<BlockType, Realtime.FeatureFlag
   [BlockType.IFV2]: Realtime.FeatureFlag.IF_STEP_CLEANUP,
   [BlockType.COMPONENT]: Realtime.FeatureFlag.FLOW_STEP_CLEANUP,
   [BlockType.VISUAL]: Realtime.FeatureFlag.IMAGE_STEP_CLEANUP,
+  [BlockType.RANDOMV2]: Realtime.FeatureFlag.NEW_EDITORS_PART_2,
 };
 
 export type ManagersMap = typeof MANAGERS_BY_TYPE;

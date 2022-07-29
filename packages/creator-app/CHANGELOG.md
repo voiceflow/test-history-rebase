@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.852.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.851.0...@voiceflow/creator-app@1.852.0) (2022-07-29)
+
+
+### Features
+
+* sunset alexa skills/integrations (CT-622) ([#5802](https://github.com/voiceflow/creator-app/issues/5802)) ([6a2c56c](https://github.com/voiceflow/creator-app/commit/6a2c56cc249e4470b4208dfc897823ab9c924bb0))
+
+
+
+
+
 # [1.851.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.850.2...@voiceflow/creator-app@1.851.0) (2022-07-29)
 
 

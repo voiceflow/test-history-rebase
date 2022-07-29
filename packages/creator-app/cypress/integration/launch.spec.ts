@@ -18,7 +18,7 @@ context('Launch', () => {
       cy.intercept('GET', 'https://localhost:3002/testable-link.svg').as('alexaUploadReady');
     });
 
-    it('happy path', () => {
+    it.skip('happy path', () => {
       canvas.goToCanvas();
 
       // $TODO - Need to upload at least once to submit the Launch page

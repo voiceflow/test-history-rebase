@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 
 import { SectionVariants, SettingsSection } from '@/components/Settings';
 import * as ProjectV2 from '@/ducks/projectV2';
-import { useSetup, useTrackingEvents } from '@/hooks';
+import { useAlexaProjectSettings, useSetup, useTrackingEvents } from '@/hooks';
 import AlexaFeatures from '@/pages/Settings/components/GeneralSettings/Sections/ChannelSpecificFeatures';
 import { DEFAULT_MAX_WIDTH, getSettingsMetaProps, SettingSections } from '@/pages/Settings/constants';
 
@@ -33,11 +33,16 @@ const SettingsContent: React.FC = () => {
   useSetup(() => {
     trackingEvents.trackActiveProjectSettingsOpened();
   });
+
+  const canUseAlexaSettings = useAlexaProjectSettings();
+
   return (
     <Box maxWidth={DEFAULT_MAX_WIDTH}>
-      {platformMeta.sections.map((section: SettingSections, index) => {
+      {platformMeta.sections.map((section: SettingSections, index): null | React.ReactElement => {
         const SectionComponent = SectionComponents[section];
         const variant = section === SettingSections.DANGER_ZONE ? SectionVariants.SECONDARY : SectionVariants.PRIMARY;
+
+        if ((section === SettingSections.CHANNEL_SPECIFIC_FEATURES || section === SettingSections.TEST_TOOL) && !canUseAlexaSettings) return null;
 
         return (
           <SettingsSection variant={variant} key={index} title={section}>

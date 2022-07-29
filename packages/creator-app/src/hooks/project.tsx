@@ -1,13 +1,14 @@
 import { BaseModels } from '@voiceflow/base-types';
 import { Nullable } from '@voiceflow/common';
 import { MenuTypes, toast } from '@voiceflow/ui';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 import { useSelector } from 'react-redux';
 
 import { ConfirmProps } from '@/components/ConfirmModal';
 import * as Errors from '@/config/errors';
 import { Permission } from '@/config/permissions';
-import { ModalType } from '@/constants';
+import { ALEXA_SUNSET_PROJECT_ID, ModalType } from '@/constants';
 import * as Project from '@/ducks/project';
 import * as ProjectList from '@/ducks/projectList';
 import * as ProjectV2 from '@/ducks/projectV2';
@@ -209,4 +210,13 @@ export const useProjectOptions = ({
 
     withDeleteOption ? { label: 'Delete project', onClick: onDelete } : null,
   ];
+};
+
+export const useAlexaProjectSettings = (): boolean => {
+  const project = useSelector(ProjectV2.active.projectSelector);
+  if (!project?.id || !project?.platform) return false;
+
+  if (project.platform !== VoiceflowConstants.PlatformType.ALEXA) return true;
+
+  return project.id < ALEXA_SUNSET_PROJECT_ID;
 };

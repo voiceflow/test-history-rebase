@@ -585,5 +585,7 @@ export enum NLUImportOrigin {
   NLU_MANAGER = 'NLU Manager',
 }
 
+export const ALEXA_SUNSET_PROJECT_ID = '62e424a61f2f9a0006572066';
+
 export * from './links';
 export * from './plans';

@@ -9,12 +9,13 @@ import * as ProjectV2 from '@/ducks/projectV2';
 import * as Prototype from '@/ducks/prototype';
 import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
-import { useDispatch, usePermission, useSelector } from '@/hooks';
+import { useAlexaProjectSettings, useDispatch, usePermission, useSelector } from '@/hooks';
 import { ColorInput } from '@/pages/Project/components/Header/components/SharePopper/components/Prototype/components/AppearanceAndBranding/components';
 
 const TestToolSettings: React.FC = () => {
   const [canCustomize] = usePermission(Permission.CUSTOMIZE_PROTOTYPE);
   const patchSettings = useDispatch(Version.patchSettings);
+  const canUseAlexaSettings = useAlexaProjectSettings();
 
   const durationMilliseconds = useSelector(VersionV2.active.general.messageDelaySelector);
 
@@ -66,24 +67,30 @@ const TestToolSettings: React.FC = () => {
           </Flex>
         </Section>
       )}
-      <Section
-        header="Appearance & Branding"
-        variant={SectionVariant.QUATERNARY}
-        dividers
-        isDividerNested={!!showMessageDelaySetting}
-        customContentStyling={{ paddingBottom: '20px' }}
-      >
-        <BoxFlex mr={120}>
-          <ColorInput isAllowed={canCustomize} disabledBorderColor="rgba(210, 218, 226, 0.65)" />
-          <Box ml={16}>
-            <Upload.IconUpload image={prototypeAvatar} size={UploadIconVariant.EXTRA_SMALL} update={savePrototypeImage} />
-          </Box>
-        </BoxFlex>
-      </Section>
-      {!canCustomize && (
-        <Box position="relative" top={10} mb={12}>
-          <Upgrade>Customize test tool and prototype style and branding.</Upgrade>
-        </Box>
+
+      {canUseAlexaSettings && (
+        <>
+          <Section
+            header="Appearance & Branding"
+            variant={SectionVariant.QUATERNARY}
+            dividers
+            isDividerNested={!!showMessageDelaySetting}
+            customContentStyling={{ paddingBottom: '20px' }}
+          >
+            <BoxFlex mr={120}>
+              <ColorInput isAllowed={canCustomize} disabledBorderColor="rgba(210, 218, 226, 0.65)" />
+              <Box ml={16}>
+                <Upload.IconUpload image={prototypeAvatar} size={UploadIconVariant.EXTRA_SMALL} update={savePrototypeImage} />
+              </Box>
+            </BoxFlex>
+          </Section>
+
+          {!canCustomize && (
+            <Box position="relative" top={10} mb={12}>
+              <Upgrade>Customize test tool and prototype style and branding.</Upgrade>
+            </Box>
+          )}
+        </>
       )}
     </>
   );

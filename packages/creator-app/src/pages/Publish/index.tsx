@@ -8,7 +8,7 @@ import { Permission } from '@/config/permissions';
 import { Path } from '@/config/routes';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { lazy } from '@/hocs';
-import { useFeature, usePermission, useSelector } from '@/hooks';
+import { useAlexaProjectSettings, useFeature, usePermission, useSelector } from '@/hooks';
 import ProjectPage from '@/pages/Project/components/ProjectPage';
 import { isAlexaPlatform, isDialogflowPlatform, isGooglePlatform } from '@/utils/typeGuards';
 
@@ -22,12 +22,13 @@ const Publish: React.FC = () => {
   const platform = useSelector(ProjectV2.active.platformSelector);
   const [canCodeExport] = usePermission(Permission.CODE_EXPORT);
   const disableCodeExports = useFeature(Realtime.FeatureFlag.DISABLE_CODE_EXPORTS).isEnabled;
+  const canUseAlexaSettings = useAlexaProjectSettings();
 
   return (
     <ProjectPage>
       <Switch>
         {!disableCodeExports && canCodeExport && <Route path={Path.PUBLISH_EXPORT} component={Export} />}
-        {isAlexaPlatform(platform) && <Route path={Path.PUBLISH_ALEXA} component={PublishAmazon} />}
+        {isAlexaPlatform(platform) && canUseAlexaSettings && <Route path={Path.PUBLISH_ALEXA} component={PublishAmazon} />}
         {isGooglePlatform(platform) && <Route path={Path.PUBLISH_GOOGLE} component={PublishGoogle} />}
         {isDialogflowPlatform(platform) && <Route path={Path.PUBLISH_DIALOGFLOW} component={PublishDialogflow} />}
 

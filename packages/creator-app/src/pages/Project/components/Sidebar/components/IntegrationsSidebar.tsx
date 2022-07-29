@@ -9,7 +9,7 @@ import { Permission } from '@/config/permissions';
 import { Path } from '@/config/routes';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
-import { useFeature, usePermission, useSelector } from '@/hooks';
+import { useAlexaProjectSettings, useFeature, usePermission, useSelector } from '@/hooks';
 
 import { SideBarComponentProps } from '../types';
 import CanvasIconMenu from './CanvasIconMenu';
@@ -44,8 +44,10 @@ const IntegrationsSidebar: React.FC<SideBarComponentProps> = () => {
 
   const disableCodeExports = useFeature(Realtime.FeatureFlag.DISABLE_CODE_EXPORTS).isEnabled;
 
+  const canUseAlexaSettings = useAlexaProjectSettings();
+
   const items = React.useMemo<NavLinkSection[]>(() => {
-    const platformItems = getPlatformItems(platform)(versionID);
+    const platformItems = canUseAlexaSettings ? getPlatformItems(platform)(versionID) : [];
 
     return [
       ...(platformItems.length

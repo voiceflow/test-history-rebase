@@ -7,10 +7,11 @@
     "url": "https://github.com/voiceflow/creator-app/issues"
   },
   "dependencies": {
-    "@logux/client": "0.13.3",
-    "@logux/core": "0.7.2",
-    "@logux/redux": "0.8.2",
+    "@logux/client": "0.17.0",
+    "@logux/core": "0.7.3",
+    "@logux/redux": "0.8.3",
     "@logux/state": "0.2.0",
+    "@nanostores/react": "0.3.0",
     "@react-rxjs/core": "0.8.4",
     "@react-rxjs/utils": "0.9.3",
     "@redux-devtools/extension": "3.1.0",
@@ -68,7 +69,7 @@
     "mouse-event-offset": "3.0.2",
     "mousetrap": "1.6.5",
     "nanoevents": "6.0.2",
-    "nanostores": "0.4.9",
+    "nanostores": "0.6.0",
     "normal-store": "1.3.0",
     "number-to-words": "1.2.4",
     "object-hash": "2.2.0",

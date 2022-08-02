@@ -42,6 +42,8 @@ export enum FeatureFlag {
 
   STICKERS_DROPDOWN = 'stickers_dropdown',
 
+  BLOCK_TEMPLATE = 'block_template',
+
   // canvas and editor updates
   INTEGRATION_STEP_CLEANUP = 'integration_step_cleanup',
   CODE_STEP_CLEANUP = 'code_step_cleanup',

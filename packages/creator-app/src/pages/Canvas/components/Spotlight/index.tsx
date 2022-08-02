@@ -1,5 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { KeyName, preventDefault, useDidUpdateEffect } from '@voiceflow/ui';
+import { Flex, KeyName, preventDefault, SvgIcon, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 import ReactSelect from 'react-select';
 
@@ -15,7 +15,7 @@ import { Identifier } from '@/styles/constants';
 import { withKeyPress } from '@/utils/dom';
 import { isDialogflowPlatform } from '@/utils/typeGuards';
 
-import { Container, Select } from './components';
+import { Container, Control, Select } from '../Search/components';
 
 const Spotlight = () => {
   const engine = React.useContext(EngineContext)!;
@@ -62,7 +62,17 @@ const Spotlight = () => {
         })
         .map((step) => {
           const manager = getManager(step.type);
-          return { ...step, icon: step.getIcon(manager), label: step.getLabel(manager) };
+          const value = step.getLabel(manager);
+          return {
+            ...step,
+            value,
+            label: (
+              <Flex>
+                <SvgIcon icon={step.getIcon(manager)} color="#F2F7F7D9" mb={-2} mr={12} />
+                {value}
+              </Flex>
+            ),
+          };
         }),
     [gadgets.isEnabled, topicsAndComponents.isEnabled, topicsAndComponents.isEnabled, isTopicsAndComponentsVersion]
   );
@@ -84,8 +94,8 @@ const Spotlight = () => {
   const trimmedValue = inputValue.toLowerCase().trim();
 
   const filteredOptions = options
-    .filter(({ label }) => label.toLowerCase().includes(trimmedValue))
-    .sort((leftOption, rightOption) => leftOption.label.toLowerCase().indexOf(trimmedValue) - rightOption.label.toLowerCase().indexOf(trimmedValue));
+    .filter(({ value }) => value.toLowerCase().includes(trimmedValue))
+    .sort((leftOption, rightOption) => leftOption.value.toLowerCase().indexOf(trimmedValue) - rightOption.value.toLowerCase().indexOf(trimmedValue));
 
   return (
     <Container id={Identifier.SPOTLIGHT} onClick={preventDefault()}>
@@ -96,6 +106,10 @@ const Spotlight = () => {
         options={filteredOptions}
         onChange={onChange}
         inputValue={inputValue}
+        components={{
+          Control,
+          IndicatorsContainer: () => null,
+        }}
         // eslint-disable-next-line jsx-a11y/no-autofocus
         autoFocus
         onKeyDown={withKeyPress(KeyName.ESCAPE, () => spotlight?.hide())}
@@ -103,7 +117,7 @@ const Spotlight = () => {
         filterOption={() => true}
         onInputChange={setInputValue}
         maxMenuHeight={124}
-        classNamePrefix="spotlight"
+        classNamePrefix="search"
       />
     </Container>
   );

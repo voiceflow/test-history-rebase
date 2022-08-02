@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.852.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.852.2...@voiceflow/creator-app@1.852.3) (2022-08-02)
+
+
+### Bug Fixes
+
+* spotlight styling (VF-000) ([#5842](https://github.com/voiceflow/creator-app/issues/5842)) ([7dbaf17](https://github.com/voiceflow/creator-app/commit/7dbaf1721a46571c74647acb5ccc3c93f1ec76cf))
+
+
+
+
+
 ## [1.852.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.852.1...@voiceflow/creator-app@1.852.2) (2022-07-31)
 
 

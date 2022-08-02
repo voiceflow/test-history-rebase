@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.135.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.134.0...@voiceflow/realtime-sdk@1.135.0) (2022-08-02)
+
+
+### Features
+
+* add block template ff (CT-560) ([#5843](https://github.com/voiceflow/creator-app/issues/5843)) ([7c89900](https://github.com/voiceflow/creator-app/commit/7c89900da8c3f6f4962c308a0f478fef6d19dd07))
+
+
+
+
+
 # [1.134.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.133.0...@voiceflow/realtime-sdk@1.134.0) (2022-07-29)
 
 

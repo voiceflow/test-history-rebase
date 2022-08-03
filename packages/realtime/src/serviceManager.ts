@@ -7,6 +7,7 @@ import buildClients, { ClientMap, stopClients } from './clients';
 import type { IOControlOptions, LoguxControlOptions } from './control';
 import buildIO from './io';
 import buildMiddlewares, { MiddlewareMap } from './middlewares';
+import buildModels, { ModelMap } from './models';
 import buildServices, { ServiceMap } from './services';
 import type { Config } from './types';
 
@@ -21,6 +22,7 @@ class ServiceManager extends AbstractServiceManager<LoguxControlOptions, Middlew
     buildIO({
       config: options.config,
       clients: this.clients,
+      models: this.models,
       ioServer,
       services: this.services,
     });
@@ -30,8 +32,12 @@ class ServiceManager extends AbstractServiceManager<LoguxControlOptions, Middlew
     return buildClients(context);
   }
 
-  buildServices(context: { config: Config; clients: ClientMap; log: Logger }): ServiceMap {
+  buildServices(context: { config: Config; clients: ClientMap; log: Logger; models: ModelMap }): ServiceMap {
     return buildServices(context);
+  }
+
+  buildModels(context: { config: Config; clients: ClientMap }): ModelMap {
+    return buildModels(context);
   }
 
   buildMiddlewares(context: LoguxControlOptions): MiddlewareMap {

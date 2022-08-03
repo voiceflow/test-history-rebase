@@ -11,7 +11,7 @@ class DuplicateDiagram extends AbstractDiagramResourceControl<Realtime.BaseDiagr
   protected process = this.reply(Realtime.diagram.duplicate, async (ctx, { payload }) => {
     const { creatorID } = ctx.data;
     const [{ _id, type = BaseModels.Diagram.DiagramType.COMPONENT, intentStepIDs = [], ...diagram }, diagramNames] = await Promise.all([
-      this.services.diagram.get(creatorID, payload.diagramID),
+      this.services.diagram.get(payload.diagramID),
       this.services.diagram.getAll(creatorID, payload.versionID).then((diagrams) => diagrams.map(({ name }) => name)),
     ]);
 

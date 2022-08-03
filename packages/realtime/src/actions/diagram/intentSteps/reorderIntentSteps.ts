@@ -10,7 +10,7 @@ class ReorderIntentSteps extends AbstractDiagramResourceControl<Realtime.diagram
 
   protected process = async (ctx: Context, { payload }: Action<Realtime.diagram.ReorderIntentStepsPayload>) => {
     const { creatorID } = ctx.data;
-    const { intentStepIDs = [] } = await this.services.diagram.get(creatorID, payload.diagramID);
+    const { intentStepIDs = [] } = await this.services.diagram.get(payload.diagramID);
 
     await this.services.diagram.patch(creatorID, payload.diagramID, {
       intentStepIDs: Utils.array.reorder(intentStepIDs, payload.from, payload.to),

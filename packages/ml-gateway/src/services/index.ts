@@ -23,7 +23,7 @@ interface Options {
 
 const buildServices = ({ config, clients }: Options): ServiceMap => {
   const services = {} as ServiceMap;
-  const serviceOptions = { config, clients, services };
+  const serviceOptions = { config, clients, services, models: {} };
 
   const serviceMap: ServiceMap = {
     user: new UserService(serviceOptions),

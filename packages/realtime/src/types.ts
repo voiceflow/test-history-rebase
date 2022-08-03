@@ -32,4 +32,8 @@ export interface Config {
 
   // Feature flags
   FEATURE_OVERRIDES: Record<string, boolean>;
+
+  // Mongo DB
+  MONGO_URI: string;
+  MONGO_DB: string;
 }

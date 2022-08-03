@@ -76,10 +76,8 @@ class DiagramService extends AbstractControl {
     return this.services.viewer.getViewers(userIDs);
   }
 
-  public async get<T extends BaseModels.BaseDiagramNode>(creatorID: number, diagramID: string): Promise<BaseModels.Diagram.Model<T>> {
-    const client = await this.services.voiceflow.getClientByUserID(creatorID);
-
-    return client.diagram.get(diagramID);
+  public async get(diagramID: string): Promise<BaseModels.Diagram.Model<BaseModels.BaseDiagramNode>> {
+    return this.models.diagram.findById(diagramID);
   }
 
   public async getAll<T extends BaseModels.BaseDiagramNode>(creatorID: number, versionID: string): Promise<BaseModels.Diagram.Model<T>[]> {

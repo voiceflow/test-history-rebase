@@ -10,6 +10,7 @@ import type { Config } from './types';
 export interface ControlOptions {
   config: Config;
   clients: ClientMap;
+  models: Record<string, never>;
   services: ServiceMap;
 }
 

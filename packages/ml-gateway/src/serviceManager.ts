@@ -30,6 +30,10 @@ class ServiceManager extends AbstractServiceManager<LoguxControlOptions, Middlew
     return buildChannels(context);
   }
 
+  buildModels() {
+    return {};
+  }
+
   async start(): Promise<void> {
     await super.start();
     await this.services.configuration.start(this.server.nodeId);

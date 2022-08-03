@@ -16,7 +16,7 @@ class ConvertToTopic extends AbstractDiagramResourceControl<Realtime.BaseDiagram
   protected process = this.reply(Realtime.diagram.convertToTopic, async (ctx, { payload }) => {
     const { creatorID } = ctx.data;
 
-    const diagram = await this.services.diagram.get(creatorID, payload.diagramID);
+    const diagram = await this.services.diagram.get(payload.diagramID);
 
     const { versionID: _versionID, creatorID: _creatorID, _id, ...primitiveDiagram } = diagram;
 

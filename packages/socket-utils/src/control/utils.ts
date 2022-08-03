@@ -22,6 +22,7 @@ export type LoguxControlMap = Record<string, LoguxControl>;
 
 export interface ControlOptions<C = any> {
   config: C;
+  models: Record<string, any>;
   clients: BaseClientMap;
   services: BaseServiceMap;
 }
@@ -29,12 +30,15 @@ export interface ControlOptions<C = any> {
 export abstract class AbstractControl<T extends ControlOptions> {
   protected config: T['config'];
 
+  protected models: T['models'];
+
   protected clients: T['clients'];
 
   protected services: T['services'];
 
-  constructor({ config, clients, services }: T) {
+  constructor({ config, clients, services, models }: T) {
     this.config = config;
+    this.models = models;
     this.clients = clients;
     this.services = services;
   }

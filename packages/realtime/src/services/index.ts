@@ -1,6 +1,7 @@
 import { BaseServiceMap, SyncService } from '@voiceflow/socket-utils';
 
 import type { ClientMap } from '../clients';
+import type { ModelMap } from '../models';
 import type { Config } from '../types';
 import DiagramService from './diagram';
 import IntentService from './intent';
@@ -39,11 +40,12 @@ export interface ServiceMap extends BaseServiceMap {
 interface Options {
   config: Config;
   clients: ClientMap;
+  models: ModelMap;
 }
 
-const buildServices = ({ config, clients }: Options): ServiceMap => {
+const buildServices = ({ config, clients, models }: Options): ServiceMap => {
   const services = {} as ServiceMap;
-  const serviceOptions = { config, clients, services };
+  const serviceOptions = { config, clients, services, models };
 
   const serviceMap: ServiceMap = {
     slot: new SlotService(serviceOptions),

@@ -13,7 +13,7 @@ class RegisterIntentSteps extends AbstractDiagramResourceControl<Realtime.diagra
 
     const { creatorID } = ctx.data;
     const newIntentStepIDs = payload.intentSteps.map(({ stepID }) => stepID);
-    const { intentStepIDs = [] } = await this.services.diagram.get(creatorID, payload.diagramID);
+    const { intentStepIDs = [] } = await this.services.diagram.get(payload.diagramID);
 
     await this.services.diagram.patch(creatorID, payload.diagramID, {
       intentStepIDs: Utils.array.unique([...intentStepIDs, ...newIntentStepIDs]),

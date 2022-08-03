@@ -26,7 +26,7 @@ class DiagramChannel extends AbstractChannelControl<Realtime.Channels.DiagramCha
 
     const [project, diagram, diagramLocks] = await Promise.all([
       this.services.project.get(creatorID, ctx.params.projectID).then(Realtime.Adapters.projectAdapter.fromDB),
-      this.services.diagram.get(creatorID, ctx.params.diagramID),
+      this.services.diagram.get(ctx.params.diagramID),
       this.services.lock.getAllLocks<Realtime.diagram.awareness.LockEntityType>(ctx.params.diagramID),
     ]);
     const { nodes, data, ports, links } = Realtime.Adapters.creatorAdapter.fromDB(diagram, {

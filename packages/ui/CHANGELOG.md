@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.132.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.132.0...@voiceflow/ui@1.132.1) (2022-08-03)
+
+
+### Bug Fixes
+
+* allow multiple lines in canvas preview (CT-716) ([#5850](https://github.com/voiceflow/creator-app/issues/5850)) ([b45eeba](https://github.com/voiceflow/creator-app/commit/b45eebaf01bbde00851decc95e37422c42bbac2c))
+
+
+
+
+
 # [1.132.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.131.0...@voiceflow/ui@1.132.0) (2022-08-03)
 
 

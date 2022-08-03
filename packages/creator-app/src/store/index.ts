@@ -1,5 +1,4 @@
 import { Client } from '@logux/client';
-import { createStoreCreator } from '@logux/redux';
 import { composeWithDevTools } from '@redux-devtools/extension';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { History } from 'history';
@@ -10,6 +9,7 @@ import { DEBUG_REALTIME, IS_DEVELOPMENT } from '@/config';
 import createReducer, { allRPCs } from '@/ducks';
 
 import { ACTION_INVALIDATORS, ACTION_REVERTERS } from './constants';
+import { createStoreCreator } from './create-store-creator';
 import createMiddleware from './middleware';
 import { RPCController } from './rpc';
 import { Store } from './types';

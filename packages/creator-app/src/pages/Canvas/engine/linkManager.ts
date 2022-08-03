@@ -48,7 +48,7 @@ class LinkManager extends EngineConsumer {
           linkID,
         };
 
-        await this.dispatch.sync(addAction({ payload, portKey, portType }));
+        await this.dispatch.partialSync(addAction({ payload, portKey, portType }));
       } else {
         this.dispatch(Creator.addLink(sourcePortID, targetPortID, linkID));
       }
@@ -72,7 +72,7 @@ class LinkManager extends EngineConsumer {
           };
         });
 
-        await this.dispatch.sync(Realtime.link.removeMany({ ...this.engine.context, links }));
+        await this.dispatch.partialSync(Realtime.link.removeMany({ ...this.engine.context, links }));
       } else {
         this.dispatch(Creator.removeManyLinks(linkIDs));
       }
@@ -87,7 +87,7 @@ class LinkManager extends EngineConsumer {
           return { ...patch, ...(portType ? { type: portType } : {}), ...(portKey ? { key: portKey } : {}) };
         });
 
-        await this.dispatch.sync(Realtime.link.patchMany({ ...this.engine.context, patches: patchesWithType }));
+        await this.dispatch.partialSync(Realtime.link.patchMany({ ...this.engine.context, patches: patchesWithType }));
       } else {
         this.dispatch(Creator.updateLinkDataMany(patches));
       }

@@ -15,7 +15,7 @@ class PortManager extends EngineConsumer {
   internal = {
     addByKey: async (nodeID: string, key: string, port: Realtime.PartialModel<Realtime.Port>): Promise<void> => {
       if (this.isAtomicActionsPhase2) {
-        await this.dispatch.sync(
+        await this.dispatch.partialSync(
           Realtime.port.addByKey({
             ...this.engine.context,
             nodeID,
@@ -31,7 +31,7 @@ class PortManager extends EngineConsumer {
 
     addDynamic: async (nodeID: string, port: Realtime.PartialModel<Realtime.Port>, index?: number): Promise<void> => {
       if (this.isAtomicActionsPhase2) {
-        await this.dispatch.sync(Realtime.port.addDynamic({ ...this.engine.context, nodeID, portID: port.id, label: port.label, index }));
+        await this.dispatch.partialSync(Realtime.port.addDynamic({ ...this.engine.context, nodeID, portID: port.id, label: port.label, index }));
       } else {
         this.dispatch(Creator.addOutDynamicPort(nodeID, port, index));
       }
@@ -39,7 +39,7 @@ class PortManager extends EngineConsumer {
 
     addBuiltin: async (nodeID: string, portType: BaseModels.PortType, port: Realtime.PartialModel<Realtime.Port>): Promise<void> => {
       if (this.isAtomicActionsPhase2) {
-        await this.dispatch.sync(
+        await this.dispatch.partialSync(
           Realtime.port.addBuiltin({
             ...this.engine.context,
             nodeID,
@@ -59,7 +59,7 @@ class PortManager extends EngineConsumer {
       const [{ nodeID }] = ports;
 
       if (this.isAtomicActionsPhase2) {
-        await this.dispatch.sync(Realtime.port.removeManyByKey({ ...this.engine.context, nodeID, keys: portsToRemove.map(({ key }) => key) }));
+        await this.dispatch.partialSync(Realtime.port.removeManyByKey({ ...this.engine.context, nodeID, keys: portsToRemove.map(({ key }) => key) }));
       } else {
         const portIDs = portsToRemove.map(({ portID }) => portID);
         const linkIDs = portIDs.flatMap((portID) => this.engine.getLinkIDsByPortID(portID));
@@ -77,7 +77,7 @@ class PortManager extends EngineConsumer {
       if (!port) return;
 
       if (this.isAtomicActionsPhase2) {
-        await this.dispatch.sync(Realtime.port.removeDynamic({ ...this.engine.context, nodeID: port.nodeID, portID }));
+        await this.dispatch.partialSync(Realtime.port.removeDynamic({ ...this.engine.context, nodeID: port.nodeID, portID }));
       } else {
         const linkIDs = this.engine.getLinkIDsByPortID(portID);
 
@@ -94,7 +94,7 @@ class PortManager extends EngineConsumer {
       if (!port) return;
 
       if (this.isAtomicActionsPhase2) {
-        await this.dispatch.sync(
+        await this.dispatch.partialSync(
           Realtime.port.removeBuiltin({ ...this.engine.context, nodeID: port.nodeID, portID, type: port.label as BaseModels.PortType })
         );
       } else {
@@ -118,7 +118,7 @@ class PortManager extends EngineConsumer {
     },
 
     reorderDynamicV2: async (nodeID: string, portID: string, index: number): Promise<void> => {
-      await this.dispatch.sync(Realtime.port.reorderDynamic({ ...this.engine.context, nodeID, portID, index }));
+      await this.dispatch.partialSync(Realtime.port.reorderDynamic({ ...this.engine.context, nodeID, portID, index }));
 
       this.engine.node.redrawLinks(nodeID);
     },

@@ -16,6 +16,7 @@ export const wrapDispatch = (getStore: () => Store): Dispatch =>
     local: <T extends AnyAction>(action: T) => getStore().dispatch.local(action),
     crossTab: <T extends AnyAction>(action: T) => getStore().dispatch.crossTab(action),
     getNodeID: () => getStore().client.nodeId,
+    partialSync: <T extends AnyAction>(action: T) => getStore().dispatch.partialSync(action),
   });
 
 export const extendMeta = <T extends Action<any>>(action: T, meta: AnyRecord): T => ({
@@ -58,6 +59,7 @@ export const rewriteDispatch = (store: Store): Dispatch => {
       sync: addOrigin(store.dispatch.sync),
       local: addOrigin(store.dispatch.local),
       crossTab: addOrigin(store.dispatch.crossTab),
+      partialSync: addOrigin(store.dispatch.partialSync),
     },
     { getNodeID: () => store.client.nodeId }
   );

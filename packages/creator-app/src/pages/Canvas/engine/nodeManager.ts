@@ -88,7 +88,7 @@ class NodeManager extends EngineConsumer {
       const blockID = parentNode.id;
 
       if (this.isAtomicActionsPhase2) {
-        await this.dispatch.sync(
+        await this.dispatch.partialSync(
           Realtime.node.addBlock({
             ...this.engine.context,
             blockID,
@@ -115,7 +115,7 @@ class NodeManager extends EngineConsumer {
       const actionsID = parentNode.id;
 
       if (this.isAtomicActionsPhase2) {
-        await this.dispatch.sync(
+        await this.dispatch.partialSync(
           Realtime.node.addActions({
             ...this.engine.context,
             actionsID,
@@ -137,7 +137,7 @@ class NodeManager extends EngineConsumer {
       if (this.isAtomicActionsPhase2) {
         const markupData = data as Creator.DataDescriptor<Realtime.Markup.AnyNodeData>;
 
-        await this.dispatch.sync(
+        await this.dispatch.partialSync(
           Realtime.node.addMarkup({
             ...this.engine.context,
             nodeID: node.id,
@@ -168,7 +168,7 @@ class NodeManager extends EngineConsumer {
 
     importSnapshot: async (entities: Realtime.EntityMap): Promise<void> => {
       if (this.isAtomicActionsPhase2) {
-        await this.dispatch.sync(
+        await this.dispatch.partialSync(
           Realtime.creator.importSnapshot({
             ...this.engine.context,
             ...entities,
@@ -185,7 +185,7 @@ class NodeManager extends EngineConsumer {
     appendStep: async (parentNodeID: string, node: Creator.NodeDescriptor, data: Creator.DataDescriptor): Promise<void> => {
       if (this.isAtomicActionsPhase2) {
         const stepIDs = this.select(CreatorV2.stepIDsByParentNodeIDSelector, { id: parentNodeID });
-        await this.dispatch.sync(
+        await this.dispatch.partialSync(
           Realtime.node.insertStep({
             ...this.engine.context,
             parentNodeID,
@@ -222,7 +222,7 @@ class NodeManager extends EngineConsumer {
       const stepIDs = this.select(CreatorV2.stepIDsByParentNodeIDSelector, { id: parentNodeID });
       const nodePortRemaps = index === stepIDs.length ? createPortRemap(this.engine.getNodeByID(stepIDs[stepIDs.length - 1])) : undefined;
 
-      await this.dispatch.sync(
+      await this.dispatch.partialSync(
         Realtime.node.insertStep({
           ...this.engine.context,
           parentNodeID,
@@ -266,7 +266,7 @@ class NodeManager extends EngineConsumer {
         ...((isMovingTargetLastStep && createPortRemap(this.engine.getNodeByID(targetBlockLastStepID))) || []),
       ];
 
-      await this.dispatch.sync(
+      await this.dispatch.partialSync(
         Realtime.node.transplantSteps({
           ...this.engine.context,
           index,
@@ -292,7 +292,9 @@ class NodeManager extends EngineConsumer {
       const nodePortRemaps = isLastStepMoved ? createPortRemap(this.engine.getNodeByID(lastStepID)) : undefined;
 
       const finalIndex = currentIndex < index ? index - 1 : index;
-      await this.dispatch.sync(Realtime.node.reorderSteps({ ...this.engine.context, parentNodeID, stepID, index: finalIndex, nodePortRemaps }));
+      await this.dispatch.partialSync(
+        Realtime.node.reorderSteps({ ...this.engine.context, parentNodeID, stepID, index: finalIndex, nodePortRemaps })
+      );
 
       this.redrawNestedLinks(parentNodeID);
       this.redrawNestedThreads(parentNodeID);
@@ -315,7 +317,7 @@ class NodeManager extends EngineConsumer {
           this.setOrigin(node.parentNode!, coords);
           await this.saveLocations([node.parentNode!]);
         } else {
-          await this.dispatch.sync(
+          await this.dispatch.partialSync(
             Realtime.node.isolateSteps({
               ...this.engine.context,
               stepIDs,
@@ -355,7 +357,7 @@ class NodeManager extends EngineConsumer {
 
         if (!nodes.length) return;
 
-        await this.dispatch.sync(Realtime.node.updateDataMany({ ...this.engine.context, nodes, projectMeta }));
+        await this.dispatch.partialSync(Realtime.node.updateDataMany({ ...this.engine.context, nodes, projectMeta }));
       } else {
         updates.forEach(({ nodeID, patch }) => {
           this.dispatch(Creator.updateNodeData(nodeID, patch));
@@ -378,7 +380,7 @@ class NodeManager extends EngineConsumer {
         return parentNodeID ? { parentNodeID, stepID: nodeID } : { parentNodeID: nodeID };
       });
 
-      await this.dispatch.sync(Realtime.node.removeMany({ ...this.engine.context, nodes: nodesToRemove }));
+      await this.dispatch.partialSync(Realtime.node.removeMany({ ...this.engine.context, nodes: nodesToRemove }));
     },
 
     translate: (nodeID: string, movement: Pair<number>): void => {
@@ -421,7 +423,7 @@ class NodeManager extends EngineConsumer {
 
       if (this.isAtomicActionsPhase2 && !!Object.keys(nodes).length) {
         await this.dispatch
-          .sync(
+          .partialSync(
             Realtime.node.moveMany({
               ...this.engine.context,
               blocks: nodes,
@@ -478,8 +480,7 @@ class NodeManager extends EngineConsumer {
     type: K,
     coords: Coords,
     factoryData?: Realtime.NodeDataMap[K] & Partial<Realtime.NodeData<{}>>,
-    nodeID: string = Utils.id.objectID(),
-    autoFocus = true
+    nodeID: string = Utils.id.objectID()
   ): Promise<string> {
     const [x, y] = this.engine.canvas!.fromCoords(coords);
 
@@ -510,7 +511,7 @@ class NodeManager extends EngineConsumer {
 
         this.engine.saveHistory();
         // TODO: fold this into the actions that add new steps to have better atomicity
-        await this.handleNewStep(augmentedNode, data, autoFocus);
+        await this.handleNewStep(augmentedNode, data);
       })
     );
 
@@ -1156,7 +1157,7 @@ class NodeManager extends EngineConsumer {
     }, []);
 
     if (addedIntentSteps.length) {
-      await this.dispatch.sync(Realtime.diagram.registerIntentSteps({ ...this.engine.context, intentSteps: addedIntentSteps }));
+      await this.dispatch.partialSync(Realtime.diagram.registerIntentSteps({ ...this.engine.context, intentSteps: addedIntentSteps }));
     }
   }
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.90.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.89.1...@voiceflow/realtime@1.90.0) (2022-08-03)
+
+
+### Features
+
+* models structure part 2 (VF-4137) ([#5851](https://github.com/voiceflow/creator-app/issues/5851)) ([9e546ee](https://github.com/voiceflow/creator-app/commit/9e546ee86dae131aa7edffce89b23306df68daf7))
+
+
+
+
+
 ## [1.89.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.89.0...@voiceflow/realtime@1.89.1) (2022-08-03)
 
 **Note:** Version bump only for package @voiceflow/realtime

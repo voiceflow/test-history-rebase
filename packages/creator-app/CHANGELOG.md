@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.854.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.853.1...@voiceflow/creator-app@1.854.0) (2022-08-03)
+
+
+### Features
+
+* add upload button (CT-704) ([#5848](https://github.com/voiceflow/creator-app/issues/5848)) ([26c1395](https://github.com/voiceflow/creator-app/commit/26c13956209857f6e6315b3466a3a6f4aee134a4))
+
+
+
+
+
 ## [1.853.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.853.0...@voiceflow/creator-app@1.853.1) (2022-08-03)
 
 

@@ -2,7 +2,6 @@ import { ChatModels } from '@voiceflow/chat-types';
 import { slate } from '@voiceflow/internal';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Preview, stopPropagation, toast } from '@voiceflow/ui';
-import _isString from 'lodash/isString';
 import React from 'react';
 
 import { copy } from '@/utils/clipboard';
@@ -17,8 +16,13 @@ interface PromptPreviewProps {
 }
 
 const getPromptContent = (noMatchPrompt: noMatchPrompt) => {
-  if (_isString(noMatchPrompt.content)) return noMatchPrompt.content;
-  return slate.toPlaintext((noMatchPrompt.content[0] as any)?.children);
+  if (Array.isArray(noMatchPrompt.content)) {
+    const promptContent = noMatchPrompt.content.map((value: any) => {
+      return slate.toPlaintext(value.children) as string;
+    });
+    return promptContent.join('\n');
+  }
+  return noMatchPrompt.content;
 };
 
 const PromptsPreview: React.FC<PromptPreviewProps> = ({ title, prompts, onOpenEditor, onClose }) => {

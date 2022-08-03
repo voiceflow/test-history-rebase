@@ -8,9 +8,18 @@ import { EntityPrompt } from './types';
 type Slots = Array<Realtime.VoiceIntentSlot<string> | Realtime.ChatIntentSlot>;
 
 const getPromptContent = (prompt: VoiceModels.IntentPrompt<string>[] | ChatModels.Prompt[]) => {
+  if ('content' in prompt[0]) {
+    const promptContent = prompt[0].content.map((value: any) => {
+      const v = value.children[0];
+      if (v?.text) return v?.text as string;
+      return slate.toPlaintext(v?.content?.[0].children) as string;
+    });
+
+    return promptContent.join('\n');
+  }
+
   const promptContent = prompt[0] as any;
-  if (promptContent.text) return promptContent.text;
-  return slate.toPlaintext(promptContent.content?.[0].children);
+  return promptContent.text;
 };
 
 export const transformSlotIntoPrompt = (slotData: Realtime.Slot, slot: Realtime.VoiceIntentSlot<string> | Realtime.ChatIntentSlot) => {

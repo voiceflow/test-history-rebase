@@ -7,18 +7,12 @@ import { AbstractDiagramActionControl } from '@/actions/diagram/utils';
 class AddByKeyPort extends AbstractDiagramActionControl<Realtime.port.AddByKeyPayload> {
   actionCreator = Realtime.port.addByKey;
 
-  process = async (ctx: Context, { payload }: Action<Realtime.port.AddByKeyPayload>): Promise<void> => {
-    await this.services.diagram.addByKeyPort(
-      ctx.data.creatorID,
-      payload.diagramID,
-      payload.nodeID,
-      {
-        id: payload.portID,
-        target: null,
-        type: payload.label ?? '',
-      },
-      payload.key
-    );
+  process = async (_ctx: Context, { payload }: Action<Realtime.port.AddByKeyPayload>): Promise<void> => {
+    await this.services.diagram.addByKeyPort(payload.diagramID, payload.nodeID, payload.key, {
+      id: payload.portID,
+      target: null,
+      type: payload.label ?? '',
+    });
   };
 }
 

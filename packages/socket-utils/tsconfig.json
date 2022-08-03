@@ -2,6 +2,7 @@
   "extends": "@voiceflow/tsconfig",
   "compilerOptions": {
     "skipLibCheck": true,
+    "allowJs": true,
     "baseUrl": ".",
     "paths": {
       "@socket-utils/*": [

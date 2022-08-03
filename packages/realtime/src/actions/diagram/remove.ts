@@ -13,10 +13,7 @@ class RemoveDiagram extends AbstractDiagramResourceControl<RemoveDiagramPayload>
     const { creatorID } = ctx.data;
     const { key: removedDiagramID } = payload;
 
-    const [version] = await Promise.all([
-      this.services.version.get(creatorID, payload.versionID),
-      this.services.diagram.delete(creatorID, removedDiagramID),
-    ]);
+    const [version] = await Promise.all([this.services.version.get(creatorID, payload.versionID), this.services.diagram.delete(removedDiagramID)]);
 
     await this.services.version.patch(creatorID, payload.versionID, {
       topics: (version.topics ?? []).filter((topic) => topic.sourceID !== removedDiagramID),

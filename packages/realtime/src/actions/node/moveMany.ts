@@ -7,8 +7,8 @@ import { AbstractDiagramActionControl } from '@/actions/diagram/utils';
 class MoveManyNodes extends AbstractDiagramActionControl<Realtime.node.TranslatePayload> {
   actionCreator = Realtime.node.moveMany;
 
-  process = async (ctx: Context, { payload }: Action<Realtime.node.TranslatePayload>): Promise<void> => {
-    await this.services.diagram.updateNodeCoords(ctx.data.creatorID, payload.diagramID, payload.blocks);
+  process = async (_ctx: Context, { payload }: Action<Realtime.node.TranslatePayload>): Promise<void> => {
+    await this.services.diagram.updateNodeCoords(payload.diagramID, payload.blocks);
   };
 }
 

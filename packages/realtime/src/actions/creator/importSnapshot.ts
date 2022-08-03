@@ -26,8 +26,7 @@ const findSignificantNodes = (nodesWithData: Realtime.NodeWithData[]) => {
 class ImportSnapshot extends AbstractDiagramResourceControl<Realtime.creator.ImportSnapshotPayload> {
   protected actionCreator = Realtime.creator.importSnapshot;
 
-  protected process = async (ctx: Context, { payload }: Action<Realtime.creator.ImportSnapshotPayload>) => {
-    const { creatorID } = ctx.data;
+  protected process = async (_ctx: Context, { payload }: Action<Realtime.creator.ImportSnapshotPayload>) => {
     const { diagramID, nodesWithData, ports, links, projectMeta } = payload;
 
     const { rootNodeIDs, markupNodeIDs } = findSignificantNodes(nodesWithData);
@@ -57,7 +56,7 @@ class ImportSnapshot extends AbstractDiagramResourceControl<Realtime.creator.Imp
       }
     );
 
-    await this.services.diagram.addManyNodes(creatorID, diagramID, Object.values(dbNodes));
+    await this.services.diagram.addManyNodes(diagramID, Object.values(dbNodes));
   };
 
   protected finally = async (ctx: Context, { payload }: Action<Realtime.creator.ImportSnapshotPayload>) => {

@@ -10,8 +10,7 @@ import { extractNodes } from './utils';
 class IsolateSteps extends AbstractDiagramActionControl<Realtime.node.IsolateStepsPayload> {
   actionCreator = Realtime.node.isolateSteps;
 
-  process = async (ctx: Context, { payload }: Action<Realtime.node.IsolateStepsPayload>): Promise<void> => {
-    const { creatorID } = ctx.data;
+  process = async (_ctx: Context, { payload }: Action<Realtime.node.IsolateStepsPayload>): Promise<void> => {
     const { stepIDs, diagramID, projectMeta, sourceParentNodeID, parentNodeID, schemaVersion, parentNodeData } = payload;
     const { type, name, ports, coords } = parentNodeData;
 
@@ -34,7 +33,6 @@ class IsolateSteps extends AbstractDiagramActionControl<Realtime.node.IsolateSte
 
     await this.services.diagram.isolateSteps({
       stepIDs,
-      creatorID,
       diagramID,
       parentNode: parentNode as BaseModels.BaseBlock | BaseModels.BaseActions,
       sourceParentNodeID,

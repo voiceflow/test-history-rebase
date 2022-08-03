@@ -13,7 +13,7 @@ class UpdateViewport extends AbstractActionControl<UpdateViewportPayload> {
     this.services.diagram.access.canRead(ctx.data.creatorID, action.payload.key);
 
   protected process = async (
-    ctx: Context,
+    _ctx: Context,
     {
       payload: {
         key: diagramID,
@@ -21,9 +21,7 @@ class UpdateViewport extends AbstractActionControl<UpdateViewportPayload> {
       },
     }: Action<UpdateViewportPayload>
   ) => {
-    const { creatorID } = ctx.data;
-
-    await this.services.diagram.patch(creatorID, diagramID, {
+    await this.services.diagram.patch(diagramID, {
       offsetX: x,
       offsetY: y,
       zoom,

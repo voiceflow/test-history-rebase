@@ -7,11 +7,10 @@ import { AbstractDiagramActionControl } from '@/actions/diagram/utils';
 class ReorderSteps extends AbstractDiagramActionControl<Realtime.node.ReorderStepsPayload> {
   actionCreator = Realtime.node.reorderSteps;
 
-  process = async (ctx: Context, { payload }: Action<Realtime.node.ReorderStepsPayload>): Promise<void> => {
+  process = async (_ctx: Context, { payload }: Action<Realtime.node.ReorderStepsPayload>): Promise<void> => {
     await this.services.diagram.reorderSteps({
       index: payload.index,
       stepID: payload.stepID,
-      creatorID: ctx.data.creatorID,
       diagramID: payload.diagramID,
       parentNodeID: payload.parentNodeID,
       nodePortRemaps: payload.nodePortRemaps,

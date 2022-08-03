@@ -12,7 +12,7 @@ class DuplicateDiagram extends AbstractDiagramResourceControl<Realtime.BaseDiagr
     const { creatorID } = ctx.data;
     const [{ _id, type = BaseModels.Diagram.DiagramType.COMPONENT, intentStepIDs = [], ...diagram }, diagramNames] = await Promise.all([
       this.services.diagram.get(payload.diagramID),
-      this.services.diagram.getAll(creatorID, payload.versionID).then((diagrams) => diagrams.map(({ name }) => name)),
+      this.services.diagram.getAll(payload.versionID, ['name']).then((diagrams) => diagrams.map(({ name }) => name)),
     ]);
 
     const uniqueName = Realtime.Utils.diagram.getUniqueCopyName(diagram.name, diagramNames);

@@ -58,7 +58,7 @@ class ConvertToTopic extends AbstractDiagramResourceControl<Realtime.BaseDiagram
 
     const [version, newDBDiagram] = await Promise.all([
       this.services.version.get(creatorID, payload.versionID),
-      this.services.diagram.create(creatorID, {
+      this.services.diagram.create({
         ...primitiveDiagram,
         type: BaseModels.Diagram.DiagramType.TOPIC,
         creatorID,

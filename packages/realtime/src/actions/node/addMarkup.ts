@@ -9,8 +9,7 @@ import { extractNodes } from './utils';
 class AddMarkup extends AbstractDiagramActionControl<Realtime.node.AddMarkupPayload> {
   actionCreator = Realtime.node.addMarkup;
 
-  process = async (ctx: Context, { payload }: Action<Realtime.node.AddMarkupPayload>): Promise<void> => {
-    const { creatorID } = ctx.data;
+  process = async (_ctx: Context, { payload }: Action<Realtime.node.AddMarkupPayload>): Promise<void> => {
     const {
       diagramID,
       nodeID,
@@ -36,7 +35,7 @@ class AddMarkup extends AbstractDiagramActionControl<Realtime.node.AddMarkupPayl
       ],
     });
 
-    await this.services.diagram.addManyNodes(creatorID, diagramID, nodes);
+    await this.services.diagram.addManyNodes(diagramID, nodes);
   };
 }
 

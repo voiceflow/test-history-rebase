@@ -55,7 +55,7 @@ export abstract class AbstractDiagramResourceControl<
     const { rootDiagramID } = await this.services.version.get(creatorID, payload.versionID);
 
     const diagram = await this.services.diagram
-      .create(creatorID, {
+      .create({
         ...primitiveDiagram,
         creatorID,
         versionID: payload.versionID,

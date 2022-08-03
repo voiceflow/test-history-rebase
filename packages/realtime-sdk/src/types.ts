@@ -1,4 +1,5 @@
-import { Utils } from '@voiceflow/common';
+import { BaseModels } from '@voiceflow/base-types';
+import { Struct, Utils } from '@voiceflow/common';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { ActionCreator } from 'typescript-fsa';
 
@@ -137,16 +138,81 @@ export interface SchemaVersionPayload {
   schemaVersion: SchemaVersion;
 }
 
+export interface ByKeyPortDelete {
+  portID?: never;
+  key: string;
+  type?: never;
+}
+
+export interface DynamicPortDelete {
+  portID: string;
+  key?: never;
+  type?: never;
+}
+
+export interface BuiltInPortDelete {
+  portID?: never;
+  key?: never;
+  type: BaseModels.PortType;
+}
+
+export type PortDelete = ByKeyPortDelete | DynamicPortDelete | BuiltInPortDelete;
+
 export interface NodePortRemap {
   nodeID: string;
-  ports: {
-    key?: string;
-    type?: string;
-    portID: string;
-  }[];
+  ports: PortDelete[];
   targetNodeID: string | null;
 }
 
 export interface NodePortRemapsPayload {
   nodePortRemaps?: NodePortRemap[];
 }
+
+export interface ByKeyLinkPatch {
+  nodeID: string;
+  portID?: never;
+  type?: never;
+  key: string;
+  data: Struct;
+}
+
+export interface BuiltInLinkPatch {
+  nodeID: string;
+  portID?: never;
+  type: BaseModels.PortType;
+  key?: never;
+  data: Struct;
+}
+
+export interface DynamicLinkPatch {
+  nodeID: string;
+  portID: string;
+  type?: never;
+  key?: never;
+  data: Struct;
+}
+
+export type LinkPatch = ByKeyLinkPatch | BuiltInLinkPatch | DynamicLinkPatch;
+
+export interface ByKeyLinkDelete {
+  nodeID: string;
+  portID?: never;
+  type?: never;
+  key: string;
+}
+
+export interface BuiltInLinkDelete {
+  nodeID: string;
+  portID?: never;
+  type: BaseModels.PortType;
+  key?: never;
+}
+
+export interface DynamicLinkDelete {
+  nodeID: string;
+  portID: string;
+  type?: never;
+  key?: never;
+}
+
+export type LinkDelete = ByKeyLinkDelete | BuiltInLinkDelete | DynamicLinkDelete;

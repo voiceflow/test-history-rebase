@@ -7,18 +7,12 @@ import { AbstractDiagramActionControl } from '@/actions/diagram/utils';
 class AddBuiltinPort extends AbstractDiagramActionControl<Realtime.port.BuiltinPayload> {
   actionCreator = Realtime.port.addBuiltin;
 
-  process = async (ctx: Context, { payload }: Action<Realtime.port.BuiltinPayload>): Promise<void> => {
-    await this.services.diagram.addBuiltInPort(
-      ctx.data.creatorID,
-      payload.diagramID,
-      payload.nodeID,
-      {
-        id: payload.portID,
-        type: payload.type,
-        target: null,
-      },
-      payload.type
-    );
+  process = async (_ctx: Context, { payload }: Action<Realtime.port.BuiltinPayload>): Promise<void> => {
+    await this.services.diagram.addBuiltInPort(payload.diagramID, payload.nodeID, payload.type, {
+      id: payload.portID,
+      type: payload.type,
+      target: null,
+    });
   };
 }
 

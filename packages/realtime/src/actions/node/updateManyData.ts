@@ -23,7 +23,7 @@ class UpdateManyNodeData extends AbstractDiagramActionControl<Realtime.node.Upda
     return canRead && !isLocked.some(Boolean);
   };
 
-  process = async (ctx: Context, { payload }: Action<Realtime.node.UpdateManyDataPayload>): Promise<void> => {
+  process = async (_ctx: Context, { payload }: Action<Realtime.node.UpdateManyDataPayload>): Promise<void> => {
     const nodes = payload.nodes.map((nodeData) => ({
       nodeID: nodeData.nodeID,
       ...Realtime.Adapters.nodeDataAdapter.toDB(nodeData, {
@@ -33,7 +33,7 @@ class UpdateManyNodeData extends AbstractDiagramActionControl<Realtime.node.Upda
       }),
     }));
 
-    await this.services.diagram.updateManyNodeData(ctx.data.creatorID, payload.diagramID, nodes);
+    await this.services.diagram.updateManyNodeData(payload.diagramID, nodes);
   };
 }
 

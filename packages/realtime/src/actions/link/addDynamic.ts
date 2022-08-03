@@ -7,14 +7,8 @@ import { AbstractDiagramActionControl } from '@/actions/diagram/utils';
 class AddDynamicLink extends AbstractDiagramActionControl<Realtime.link.AddDynamicPayload> {
   actionCreator = Realtime.link.addDynamic;
 
-  process = async (ctx: Context, { payload }: Action<Realtime.link.AddDynamicPayload>): Promise<void> => {
-    await this.services.diagram.addDynamicLink(
-      ctx.data.creatorID,
-      payload.diagramID,
-      payload.sourceNodeID,
-      payload.sourcePortID,
-      payload.targetNodeID
-    );
+  process = async (_ctx: Context, { payload }: Action<Realtime.link.AddDynamicPayload>): Promise<void> => {
+    await this.services.diagram.addDynamicLink(payload.diagramID, payload.sourceNodeID, payload.sourcePortID, payload.targetNodeID);
   };
 }
 

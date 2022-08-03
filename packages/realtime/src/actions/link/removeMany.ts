@@ -7,9 +7,8 @@ import { AbstractDiagramActionControl } from '@/actions/diagram/utils';
 class RemoveManyLinks extends AbstractDiagramActionControl<Realtime.link.RemoveManyPayload> {
   actionCreator = Realtime.link.removeMany;
 
-  process = async (ctx: Context, { payload }: Action<Realtime.link.RemoveManyPayload>): Promise<void> => {
+  process = async (_ctx: Context, { payload }: Action<Realtime.link.RemoveManyPayload>): Promise<void> => {
     await this.services.diagram.removeManyLinks(
-      ctx.data.creatorID,
       payload.diagramID,
       payload.links.map((link) => (link.type ? { nodeID: link.nodeID, type: link.type } : { nodeID: link.nodeID, portID: link.portID }))
     );

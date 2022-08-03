@@ -7,11 +7,10 @@ import { AbstractDiagramActionControl } from '@/actions/diagram/utils';
 class TransplantSteps extends AbstractDiagramActionControl<Realtime.node.TransplantStepsPayload> {
   actionCreator = Realtime.node.transplantSteps;
 
-  process = async (ctx: Context, { payload }: Action<Realtime.node.TransplantStepsPayload>): Promise<void> => {
+  process = async (_ctx: Context, { payload }: Action<Realtime.node.TransplantStepsPayload>): Promise<void> => {
     await this.services.diagram.transplantSteps({
       index: payload.index,
       stepIDs: payload.stepIDs,
-      creatorID: ctx.data.creatorID,
       diagramID: payload.diagramID,
       removeSource: payload.removeSource,
       nodePortRemaps: payload.nodePortRemaps,

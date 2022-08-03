@@ -8,14 +8,13 @@ import { AbstractDiagramResourceControl } from '../utils';
 class RegisterIntentSteps extends AbstractDiagramResourceControl<Realtime.diagram.RegisterIntentStepsPayload> {
   protected actionCreator = Realtime.diagram.registerIntentSteps;
 
-  protected process = async (ctx: Context, { payload }: Action<Realtime.diagram.RegisterIntentStepsPayload>) => {
+  protected process = async (_ctx: Context, { payload }: Action<Realtime.diagram.RegisterIntentStepsPayload>) => {
     if (!payload.intentSteps.length) return;
 
-    const { creatorID } = ctx.data;
     const newIntentStepIDs = payload.intentSteps.map(({ stepID }) => stepID);
     const { intentStepIDs = [] } = await this.services.diagram.get(payload.diagramID);
 
-    await this.services.diagram.patch(creatorID, payload.diagramID, {
+    await this.services.diagram.patch(payload.diagramID, {
       intentStepIDs: Utils.array.unique([...intentStepIDs, ...newIntentStepIDs]),
     });
   };

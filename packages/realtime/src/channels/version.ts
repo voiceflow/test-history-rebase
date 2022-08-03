@@ -114,7 +114,7 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
 
             diagram.intentStepIDs = intentStepIDs;
 
-            await this.services.diagram.patch(creatorID, diagram.id, { intentStepIDs });
+            await this.services.diagram.patch(diagram.id, { intentStepIDs });
           })
         );
       }

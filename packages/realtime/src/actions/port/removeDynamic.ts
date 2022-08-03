@@ -7,8 +7,8 @@ import { AbstractDiagramActionControl } from '@/actions/diagram/utils';
 class RemoveDynamicPort extends AbstractDiagramActionControl<Realtime.BasePortPayload> {
   actionCreator = Realtime.port.removeDynamic;
 
-  process = async (ctx: Context, { payload }: Action<Realtime.BasePortPayload>): Promise<void> => {
-    await this.services.diagram.removeDynamicPort(ctx.data.creatorID, payload.diagramID, payload.nodeID, payload.portID);
+  process = async (_ctx: Context, { payload }: Action<Realtime.BasePortPayload>): Promise<void> => {
+    await this.services.diagram.removeDynamicPort(payload.diagramID, payload.nodeID, payload.portID);
   };
 }
 

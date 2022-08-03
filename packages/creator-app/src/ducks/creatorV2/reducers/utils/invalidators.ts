@@ -92,7 +92,7 @@ export const buildLinkRecreateActions = (state: State, ctx: Realtime.BaseDiagram
         ...ctx,
         sourceParentNodeID: parentNodeIDByStepIDSelector(state, { id: portRemap.nodeID }),
         sourceNodeID: portRemap.nodeID,
-        sourcePortID: port.portID,
+        sourcePortID: port.portID!,
         targetNodeID: link.target.nodeID,
         targetPortID: link.target.portID,
         linkID: link.id,

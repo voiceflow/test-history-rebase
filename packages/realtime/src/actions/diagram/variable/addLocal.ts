@@ -8,11 +8,10 @@ import { AbstractDiagramResourceControl } from '../utils';
 class AddLocalVariable extends AbstractDiagramResourceControl<Realtime.diagram.LocalVariablePayload> {
   protected actionCreator = Realtime.diagram.addLocalVariable;
 
-  protected process = async (ctx: Context, { payload }: Action<Realtime.diagram.LocalVariablePayload>) => {
-    const { creatorID } = ctx.data;
+  protected process = async (_ctx: Context, { payload }: Action<Realtime.diagram.LocalVariablePayload>) => {
     const { variables } = await this.services.diagram.get(payload.diagramID);
 
-    await this.services.diagram.patch(creatorID, payload.diagramID, { variables: Utils.array.append(variables, payload.variable) });
+    await this.services.diagram.patch(payload.diagramID, { variables: Utils.array.append(variables, payload.variable) });
   };
 }
 

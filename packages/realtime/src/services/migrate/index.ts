@@ -150,7 +150,7 @@ class MigrateService extends AbstractControl {
     try {
       const [project, diagrams] = await Promise.all([
         this.services.project.get(creatorID, projectID).then(Realtime.Adapters.projectAdapter.fromDB),
-        this.services.diagram.getAll(creatorID, versionID),
+        this.services.diagram.getAll(versionID),
       ]);
 
       const migrationContext: MigrationContext = { platform: project.platform, projectType: project.type };

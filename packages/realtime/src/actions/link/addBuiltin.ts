@@ -7,8 +7,8 @@ import { AbstractDiagramActionControl } from '@/actions/diagram/utils';
 class AddBuiltinLink extends AbstractDiagramActionControl<Realtime.link.AddBuiltinPayload> {
   actionCreator = Realtime.link.addBuiltin;
 
-  process = async (ctx: Context, { payload }: Action<Realtime.link.AddBuiltinPayload>): Promise<void> => {
-    await this.services.diagram.addBuiltInLink(ctx.data.creatorID, payload.diagramID, payload.sourceNodeID, payload.type, payload.targetNodeID);
+  process = async (_ctx: Context, { payload }: Action<Realtime.link.AddBuiltinPayload>): Promise<void> => {
+    await this.services.diagram.addBuiltInLink(payload.diagramID, payload.sourceNodeID, payload.type, payload.targetNodeID);
   };
 }
 

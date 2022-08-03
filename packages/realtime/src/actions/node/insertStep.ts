@@ -1,3 +1,4 @@
+import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Context } from '@voiceflow/socket-utils';
 import { Action } from 'typescript-fsa';
@@ -9,7 +10,7 @@ import { extractNodes, ExtractNodesOptions } from './utils';
 class InsertStep extends AbstractDiagramActionControl<Realtime.node.InsertStepPayload> {
   actionCreator = Realtime.node.insertStep;
 
-  process = async (ctx: Context, { payload }: Action<Realtime.node.InsertStepPayload>): Promise<void> => {
+  process = async (_ctx: Context, { payload }: Action<Realtime.node.InsertStepPayload>): Promise<void> => {
     const { diagramID, parentNodeID, stepID, data, ports, index, projectMeta, schemaVersion, nodePortRemaps } = payload;
 
     const creatorData: ExtractNodesOptions = {
@@ -31,9 +32,8 @@ class InsertStep extends AbstractDiagramActionControl<Realtime.node.InsertStepPa
     const [step] = extractNodes(diagramID, projectMeta, schemaVersion, creatorData);
 
     await this.services.diagram.addStep({
-      step,
+      step: step as BaseModels.BaseStep,
       index,
-      creatorID: ctx.data.creatorID,
       diagramID,
       parentNodeID,
       nodePortRemaps,

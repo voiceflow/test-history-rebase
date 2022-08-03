@@ -37,19 +37,22 @@ export type BaseItemData<Item> = Omit<InternalItem<Item>, 'type'>;
 
 export type IndexableEditActionHandler<Item> = (index: number, item: Item, data: BaseItemData<Item>) => void;
 
-interface DraggableListBaseProps<Item, DeleteProps, ExtraItemProps> {
+export interface DraggableListHandlers<Item> {
+  canDrag?: DnDHandlers<Item>['canDrag'];
+  canDrop?: DnDHandlers<Item>['canDrop'];
+  onEndDrag?: DnDHandlers<Item>['onDragEnd'];
+  canReorder?: DnDHandlers<Item>['canReorder'];
+  onStartDrag?: DnDHandlers<Item>['onDragStart'];
+}
+
+interface DraggableListBaseProps<Item, DeleteProps, ExtraItemProps> extends DraggableListHandlers<Item> {
   type: string;
   filter?: (item: Item) => boolean;
   footer?: React.ReactNode;
   onDrop?: (item: DnDInternalItem<Item>) => unknown;
-  canDrag?: DnDHandlers<Item>['canDrag'];
-  canDrop?: DnDHandlers<Item>['canDrop'];
   itemProps?: ExtraItemProps;
-  onEndDrag?: DnDHandlers<Item>['onDragEnd'];
-  canReorder?: DnDHandlers<Item>['canReorder'];
   fullHeight?: boolean;
   getItemKey?: (item: Item) => string;
-  onStartDrag?: DnDHandlers<Item>['onDragStart'];
   deleteProps?: DeleteProps;
   previewOptions?: PreviewOptions;
   deleteComponent?: Nullable<React.NamedExoticComponent<React.PropsWithoutRef<DeleteProps> & React.RefAttributes<any>>>;

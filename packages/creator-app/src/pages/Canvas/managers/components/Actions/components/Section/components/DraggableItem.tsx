@@ -1,11 +1,12 @@
 import { EmptyObject } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, ContextMenu, Input, SectionV2, Text } from '@voiceflow/ui';
+import { Box, ContextMenu, Input, OverflowText, OverflowTippyTooltip, SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
 import { DragPreviewComponentProps, ItemComponentHandlers, ItemComponentProps } from '@/components/DraggableList';
 import { BlockType } from '@/constants';
 import { useAutoScrollNodeIntoView, useEnableDisable, useLinkedState } from '@/hooks';
+import type { ManagerGetter } from '@/pages/Canvas/contexts';
 import type { NodeEditorV2Props } from '@/pages/Canvas/managers/types';
 import { withInputBlur } from '@/utils/dom';
 
@@ -18,14 +19,15 @@ interface DraggableItemProps
   portID: string;
   editor: NodeEditorV2Props<unknown>;
   onRename: (step: Realtime.NodeData<EmptyObject>, name: string) => void;
+  getManager: ManagerGetter;
   actionPath: string;
   lastCreatedStepID: string | null;
 }
 
 const DraggableItem = React.forwardRef<HTMLElement, DraggableItemProps>((props, ref) => {
-  const { item, portID, editor, actionPath, onDuplicate, isDragging, lastCreatedStepID, isDraggingPreview, connectedDragRef } = props;
+  const { item, portID, editor, getManager, actionPath, onDuplicate, isDragging, lastCreatedStepID, isDraggingPreview, connectedDragRef } = props;
 
-  const { icon, isEmpty, defaultName, placeholder } = useItemConfig(item);
+  const { icon, isEmpty, defaultName, placeholder } = useItemConfig(getManager, item);
 
   const [localName, setLocalName] = useLinkedState(item.name || defaultName);
   const [isRenaming, enableRenaming, disableRenaming] = useEnableDisable(false);
@@ -46,7 +48,7 @@ const DraggableItem = React.forwardRef<HTMLElement, DraggableItemProps>((props, 
   };
 
   const onRename = () => {
-    if (localName && item.name !== localName) {
+    if (localName && (item.name || defaultName) !== localName) {
       props.onRename(item, localName);
     }
 
@@ -77,10 +79,12 @@ const DraggableItem = React.forwardRef<HTMLElement, DraggableItemProps>((props, 
             isDragging={isDragging}
             actionCentred
             onContextMenu={onContextMenu}
+            overflowHidden
             isDraggingPreview={isDraggingPreview}
           >
             {isRenaming ? (
               <Input
+                style={{ width: '100%', maxWidth: '100%' }}
                 value={localName}
                 onBlur={onRename}
                 variant={Input.Variant.INLINE}
@@ -91,7 +95,13 @@ const DraggableItem = React.forwardRef<HTMLElement, DraggableItemProps>((props, 
                 onEnterPress={withInputBlur()}
               />
             ) : (
-              <Text color={isEmpty ? '#8da2b5' : 'currentColor'}>{isEmpty ? placeholder : localName}</Text>
+              <OverflowTippyTooltip overflow title={isEmpty ? placeholder : localName}>
+                {(ref) => (
+                  <OverflowText ref={ref} color={isEmpty ? '#8da2b5' : 'currentColor'}>
+                    <span>{isEmpty ? placeholder : localName}</span>
+                  </OverflowText>
+                )}
+              </OverflowTippyTooltip>
             )}
           </SectionV2.ListItem>
         </Box>

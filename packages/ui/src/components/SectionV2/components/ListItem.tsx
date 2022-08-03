@@ -18,13 +18,30 @@ export interface ListItemProps {
   iconWarning?: string | null;
   actionCentred?: boolean;
   onContextMenu?: React.MouseEventHandler;
+  overflowHidden?: boolean;
   isDraggingPreview?: boolean;
 }
 
 const ListItem = React.forwardRef<HTMLDivElement, React.PropsWithChildren<ListItemProps>>(
-  ({ icon, action, onClick, isActive, children, contentRef, isDragging, iconWarning, actionCentred, onContextMenu, isDraggingPreview }, ref) => (
+  (
+    {
+      icon,
+      action,
+      onClick,
+      isActive,
+      children,
+      contentRef,
+      isDragging,
+      overflowHidden,
+      iconWarning,
+      actionCentred,
+      onContextMenu,
+      isDraggingPreview,
+    },
+    ref
+  ) => (
     <ListItemContainer ref={ref} isDragging={isDragging} isDraggingPreview={isDraggingPreview}>
-      <ListItemContent ref={contentRef} onClick={onClick} isActive={isActive} onContextMenu={onContextMenu}>
+      <ListItemContent ref={contentRef} onClick={onClick} isActive={isActive} onContextMenu={onContextMenu} overflowHidden={overflowHidden}>
         {(!!iconWarning || !!icon) && (
           <ListItemIconContainer>
             {iconWarning ? (

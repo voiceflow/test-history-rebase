@@ -28,7 +28,31 @@ const useOnAddAction = ({ portID, editor, actionPath, targetNode, hasNavigationS
 
   const [lastCreatedStepID, setLastCreatedStepID] = React.useState<string | null>(null);
 
-  const beforeAdd = async () => {
+  const getNextActionIndex = (type: BlockType) => {
+    if (!targetNodeIsActions) return 0;
+
+    let index = targetNodeSteps.length;
+
+    if (targetNodeSteps.some((step) => Realtime.Utils.typeGuards.isNavigationBlockType(step.type))) {
+      if (Realtime.Utils.typeGuards.isNavigationBlockType(type)) {
+        throw new Error("The actions can't have multiple navigation steps");
+      }
+
+      // navigation steps should always be last
+      index -= 1;
+    } else if (Realtime.Utils.typeGuards.isURLBlockType(type)) {
+      if (targetNodeSteps.some((step) => Realtime.Utils.typeGuards.isURLBlockType(step.type))) {
+        throw new Error("The actions can't have multiple url steps");
+      }
+
+      // url action should always be first
+      index = 0;
+    }
+
+    return index;
+  };
+
+  const beforeAdd = async (index: number) => {
     // remove the link before creating an action node
     if (targetNode && !targetNodeIsActions) {
       const linkIDs = editor.engine.getLinkIDsByPortID(portID);
@@ -38,7 +62,7 @@ const useOnAddAction = ({ portID, editor, actionPath, targetNode, hasNavigationS
       }
 
       // remove the last action link before adding a new one
-    } else if (targetNodeIsActions && targetNodeSteps.length && !hasNavigationStep) {
+    } else if (targetNodeIsActions && targetNodeSteps.length && !hasNavigationStep && index) {
       const linkIDs = editor.engine.getLinkIDsByNodeID(targetNodeSteps[targetNodeSteps.length - 1].nodeID);
 
       if (linkIDs.length) {
@@ -62,7 +86,9 @@ const useOnAddAction = ({ portID, editor, actionPath, targetNode, hasNavigationS
   };
 
   const onAdd = async <K extends BlockType>(type: K, factoryData?: Partial<Realtime.NodeData<Realtime.NodeDataMap[K]>>) => {
-    await beforeAdd();
+    const index = getNextActionIndex(type);
+
+    await beforeAdd(index);
 
     const nodeID = Utils.id.objectID();
 
@@ -70,7 +96,8 @@ const useOnAddAction = ({ portID, editor, actionPath, targetNode, hasNavigationS
 
     const { actionsNodeID } = await editor.engine.node.addActions(
       type,
-      targetNodeIsActions ? targetNode?.id : null,
+      index,
+      targetNodeIsActions ? targetNode?.id ?? null : null,
       { ...factoryData } as Partial<Realtime.NodeData<Realtime.NodeDataMap[K]>>,
       nodeID
     );

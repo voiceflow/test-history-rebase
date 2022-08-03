@@ -3,6 +3,7 @@ import { css, styled, transition, units } from '@ui/styles';
 
 export interface ListItemContentProps {
   isActive?: boolean;
+  overflowHidden?: boolean;
 }
 
 const activeStyle = css`
@@ -40,6 +41,12 @@ const ListItemContent = styled.div<ListItemContentProps>`
   }
 
   ${({ isActive }) => isActive && activeStyle}
+
+  ${({ overflowHidden }) =>
+    overflowHidden &&
+    css`
+      overflow: hidden;
+    `}
 `;
 
 export default ListItemContent;

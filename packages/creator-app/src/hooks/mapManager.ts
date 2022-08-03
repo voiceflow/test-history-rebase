@@ -60,6 +60,7 @@ interface MapManagedBaseAPI<Item> {
   size: number;
   keys: string[];
   items: Item[];
+  isEmpty: boolean;
   getIndex: (key: string) => number;
   onUpdate: (key: string, value: Partial<Item>) => Promise<void>;
   onRemove: (key: string) => Promise<void>;
@@ -335,6 +336,7 @@ export const useMapManager: MapManager = (
     keys: normalized.current.allKeys,
     items,
     onAdd,
+    isEmpty: !normalized.current.allKeys.length,
     onUpdate,
     getIndex: persistedGetIndex,
     onRemove,

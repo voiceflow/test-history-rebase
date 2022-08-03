@@ -1,62 +1,25 @@
 import { BaseModels, BaseNode } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { SVG, SvgIconTypes } from '@voiceflow/ui';
+import { SvgIconTypes } from '@voiceflow/ui';
 
 import { BlockType } from '@/constants';
 import * as Creator from '@/ducks/creator';
 
 import { NodeConfig } from '../types';
 
-export const API_REQUEST_OPTIONS = [
-  BaseNode.Api.APIActionType.GET,
-  BaseNode.Api.APIActionType.POST,
-  BaseNode.Api.APIActionType.PUT,
-  BaseNode.Api.APIActionType.DELETE,
-  BaseNode.Api.APIActionType.PATCH,
-];
-
-export const API_REQUEST_OPTIONS_MAP = {
-  [BaseNode.Api.APIActionType.GET]: 'GET',
-  [BaseNode.Api.APIActionType.POST]: 'POST',
-  [BaseNode.Api.APIActionType.PUT]: 'PUT',
-  [BaseNode.Api.APIActionType.DELETE]: 'DELETE',
-  [BaseNode.Api.APIActionType.PATCH]: 'PATCH',
-};
-
-export const TEST_API_ENDPOINT = '/test/api';
-
-export const getNameMap = (
-  nameMapOverride?: Partial<Record<BaseNode.Utils.IntegrationType, string>>
-): Record<BaseNode.Utils.IntegrationType, string> => ({
+export const NAME_MAP: Record<BaseNode.Utils.IntegrationType, string> = {
   [BaseNode.Utils.IntegrationType.ZAPIER]: 'Zapier',
   [BaseNode.Utils.IntegrationType.CUSTOM_API]: 'API',
   [BaseNode.Utils.IntegrationType.GOOGLE_SHEETS]: 'Google Sheets',
-  ...nameMapOverride,
-});
+};
 
-export const getIconMap = (
-  iconMapOverride?: Partial<Record<BaseNode.Utils.IntegrationType, SvgIconTypes.Icon>>
-): Record<BaseNode.Utils.IntegrationType, SvgIconTypes.Icon> => ({
+export const ICON_MAP: Record<BaseNode.Utils.IntegrationType, SvgIconTypes.Icon> = {
   [BaseNode.Utils.IntegrationType.ZAPIER]: 'zapier',
-  [BaseNode.Utils.IntegrationType.CUSTOM_API]: 'variable',
+  [BaseNode.Utils.IntegrationType.CUSTOM_API]: 'editor',
   [BaseNode.Utils.IntegrationType.GOOGLE_SHEETS]: 'googleSheets',
-  ...iconMapOverride,
-});
+};
 
-export const getTooltipTextMap = (
-  nameMapOverride?: Partial<Record<BaseNode.Utils.IntegrationType, string>>
-): Record<BaseNode.Utils.IntegrationType, string> => ({
-  [BaseNode.Utils.IntegrationType.ZAPIER]: 'Pulls data from Zapier.',
-  [BaseNode.Utils.IntegrationType.CUSTOM_API]: 'Makes custom API calls to external APIs and data.',
-  [BaseNode.Utils.IntegrationType.GOOGLE_SHEETS]: 'Pulls data from a specified Google Sheet.',
-  ...nameMapOverride,
-});
-
-export const EMPTY_KEY_VALUE_ITEM = { key: '', val: '' };
-
-export const getDefaultData = (
-  defaultDataOverride?: Partial<Record<BaseNode.Utils.IntegrationType, Realtime.NodeData.Integration>>
-): Record<BaseNode.Utils.IntegrationType, Realtime.NodeData.Integration> => ({
+export const DEFAULT_DATA: Record<BaseNode.Utils.IntegrationType, Realtime.NodeData.Integration> = {
   [BaseNode.Utils.IntegrationType.ZAPIER]: {
     user: {},
     value: '',
@@ -65,11 +28,11 @@ export const getDefaultData = (
   },
   [BaseNode.Utils.IntegrationType.CUSTOM_API]: {
     url: '',
-    body: [EMPTY_KEY_VALUE_ITEM],
-    headers: [EMPTY_KEY_VALUE_ITEM],
-    mapping: [{ path: '', var: null }],
+    body: [],
+    headers: [],
+    mapping: [],
     content: '',
-    parameters: [EMPTY_KEY_VALUE_ITEM],
+    parameters: [],
     bodyInputType: BaseNode.Api.APIBodyType.FORM_DATA,
     selectedAction: BaseNode.Api.APIActionType.GET,
     selectedIntegration: BaseNode.Utils.IntegrationType.CUSTOM_API,
@@ -88,34 +51,20 @@ export const getDefaultData = (
     selectedAction: '',
     selectedIntegration: BaseNode.Utils.IntegrationType.GOOGLE_SHEETS,
   },
-  ...defaultDataOverride,
-});
+};
 
-export const DEFAULT_DATA = getDefaultData();
-export const NAME_MAP = getNameMap();
-export const ICON_MAP = getIconMap();
-export const TOOLTIP_TEXT_MAP = getTooltipTextMap();
+export const TOOLTIP_TEXT_MAP = {
+  [BaseNode.Utils.IntegrationType.ZAPIER]: 'Pulls data from Zapier.',
+  [BaseNode.Utils.IntegrationType.CUSTOM_API]: 'Makes custom API calls to external APIs and data.',
+  [BaseNode.Utils.IntegrationType.GOOGLE_SHEETS]: 'Pulls data from a specified Google Sheet.',
+};
 
-export const buildNodeConfig = ({
-  iconMap,
-  defaultData,
-  nameMap,
-  tooltipMap,
-}: {
-  iconMap: Record<BaseNode.Utils.IntegrationType, SvgIconTypes.Icon>;
-  defaultData: Record<BaseNode.Utils.IntegrationType, Realtime.NodeData.Integration>;
-  nameMap: Record<BaseNode.Utils.IntegrationType, string>;
-  tooltipMap: Record<BaseNode.Utils.IntegrationType, string>;
-}): NodeConfig<Realtime.NodeData.Integration, Realtime.NodeData.IntegrationBuiltInPorts> => ({
+export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Integration, Realtime.NodeData.IntegrationBuiltInPorts> = {
   type: BlockType.INTEGRATION,
 
-  // for older version
-  icon: SVG.globeIcon as any,
+  getIcon: (data) => ICON_MAP[data.selectedIntegration!],
 
-  // for block redesign
-  getIcon: (data) => iconMap[data.selectedIntegration!],
-
-  getTooltipText: (data) => tooltipMap[data.selectedIntegration!],
+  getTooltipText: (data) => TOOLTIP_TEXT_MAP[data.selectedIntegration!],
 
   factory: (data) => ({
     node: {
@@ -132,11 +81,9 @@ export const buildNodeConfig = ({
       },
     },
     data: {
-      name: data?.selectedIntegration ? nameMap[data.selectedIntegration] : 'Integrations',
+      name: '',
       ...data,
-      ...(data && defaultData[data.selectedIntegration!]),
+      ...(data && DEFAULT_DATA[data.selectedIntegration!]),
     } as Creator.DataDescriptor<Realtime.NodeData.Integration>,
   }),
-});
-
-export const NODE_CONFIG = buildNodeConfig({ iconMap: ICON_MAP, defaultData: DEFAULT_DATA, nameMap: NAME_MAP, tooltipMap: TOOLTIP_TEXT_MAP });
+};

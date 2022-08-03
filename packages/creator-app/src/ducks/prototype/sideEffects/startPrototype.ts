@@ -6,7 +6,7 @@ import { BlockType } from '@/constants';
 import { PrototypeStatus } from '@/constants/prototype';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as Session from '@/ducks/session';
-import * as VariableState from '@/ducks/variableState';
+import { selectedStartFromDiagramIDSelector, selectedStartFromNodeIDSelector, selectedVariablesSelector } from '@/ducks/variableState/selectors';
 import { SyncThunk, ThunkDispatch } from '@/store/types';
 
 import { pushContextHistory, pushPrototypeVisualDataHistory, updatePrototype } from '../actions';
@@ -56,9 +56,9 @@ const startPrototype =
     const state = getState();
 
     const projectID = Session.activeProjectIDSelector(state);
-    const variables = VariableState.selectedVariablesSelector(state) || prototypeVariablesSelector(state);
-    const startFromNodeID = VariableState.selectedStartFromNodeIDSelector(state);
-    const startFromDiagramID = VariableState.selectedStartFromDiagramIDSelector(state);
+    const variables = selectedVariablesSelector(state) || prototypeVariablesSelector(state);
+    const startFromNodeID = selectedStartFromNodeIDSelector(state);
+    const startFromDiagramID = selectedStartFromDiagramIDSelector(state);
     const activeDiagramID = Session.activeDiagramIDSelector(state);
     const shouldApplyVariableState = !selectedNodeID && startFromNodeID && startFromDiagramID && activeDiagramID === startFromDiagramID;
     const nodeID = shouldApplyVariableState ? startFromNodeID : selectedNodeID;

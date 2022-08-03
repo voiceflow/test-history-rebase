@@ -17,7 +17,7 @@ const PreviewContent = styled.div`
   }
 
   ${PreviewContentItem} {
-    margin-top: 12px;
+    margin-top: 8px;
 
     &:first-child {
       margin-top: 0px;

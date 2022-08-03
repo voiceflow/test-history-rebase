@@ -13,7 +13,7 @@ import LinkSvg from '@/pages/Canvas/components/Port/components/PortLinkSvg';
 import { NODE_LINK_WIDTH } from '@/pages/Canvas/components/Port/constants';
 import { ActionsPortAPIProvider } from '@/pages/Canvas/components/Step/contexts';
 import { ActionsRouteMatchContext, EngineContext, IsStraightLinksContext, NodeEntityContext, NodeEntityProvider } from '@/pages/Canvas/contexts';
-import Actions from '@/pages/Canvas/managers/components/Actions';
+import { PATH } from '@/pages/Canvas/managers/components/Actions/constants';
 import { ClassName } from '@/styles/constants';
 
 import NodeActionStep from '../NodeActionStep';
@@ -66,7 +66,7 @@ const NodeActions: React.FC<NodeActionsProps> = ({ isChip, parentPath, sourcePor
     (actionNodeID: string, routeState?: Struct) =>
       engine.setActive(sourceNodeID, {
         routeState,
-        nodeSubPath: generatePath(parentPath ? `${parentPath}/${Actions.PATH}` : Actions.PATH, { sourcePortID, actionNodeID }),
+        nodeSubPath: generatePath(parentPath ? `${parentPath}/${PATH}` : PATH, { sourcePortID, actionNodeID }),
       }),
     [engine, parentPath, sourcePortID, sourceNodeID]
   );

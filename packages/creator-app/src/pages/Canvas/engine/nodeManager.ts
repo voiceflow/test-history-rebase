@@ -514,7 +514,8 @@ class NodeManager extends EngineConsumer {
 
   async addActions<K extends keyof Realtime.NodeDataMap>(
     type: K,
-    actionsNodeID: string | null = null,
+    index: number,
+    actionsNodeID: string | null,
     factoryData?: Partial<Realtime.NodeData<Realtime.NodeDataMap[K]>>,
     nodeID = Utils.id.objectID()
   ): Promise<{ nodeID: string; actionsNodeID: string }> {
@@ -525,17 +526,6 @@ class NodeManager extends EngineConsumer {
     const actionNode = parentNodeID ? this.engine.getDataByNodeID(parentNodeID) : null;
 
     if (parentNodeID && actionNode) {
-      const steps = this.select(CreatorV2.stepDataByParentNodeIDSelector, { id: actionNode.nodeID });
-
-      const isNavigationType = Realtime.Utils.typeGuards.isNavigationBlockType(type);
-      const hasNavigationStep = steps.some((step) => Realtime.Utils.typeGuards.isNavigationBlockType(step.type));
-
-      if (isNavigationType && hasNavigationStep) {
-        throw new Error("The actions can't have multiple navigation steps");
-      }
-
-      const index = steps.length - (hasNavigationStep ? 1 : 0);
-
       await this.insertStepV2(actionNode.nodeID, type, index, { nodeID, factoryData, autoFocus: false });
     } else {
       parentNodeID = Utils.id.objectID();

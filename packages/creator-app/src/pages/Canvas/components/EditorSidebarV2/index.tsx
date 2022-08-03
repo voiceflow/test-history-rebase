@@ -113,7 +113,7 @@ const EditorSidebarV2 = () => {
     const editorProps = {
       data: data as any,
       node: node as any,
-      label: manager.label ?? '',
+      label: manager.getDataLabel?.(data as any) ?? manager.label ?? '',
       engine,
       nodeID: node.id,
       isRoot: !!routeMatch?.isExact,

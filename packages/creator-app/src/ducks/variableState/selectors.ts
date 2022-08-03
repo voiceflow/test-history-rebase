@@ -4,7 +4,7 @@ import _sortBy from 'lodash/sortBy';
 import { createSelector } from 'reselect';
 
 import * as CreatorV2 from '@/ducks/creatorV2';
-import * as Prototype from '@/ducks/prototype';
+import { prototypeVariablesSelector } from '@/ducks/prototype/selectors';
 import { createCurriedSelector } from '@/ducks/utils';
 import { createCRUDSelectors } from '@/ducks/utils/crudV2';
 import { Variable, VariableValue } from '@/models';
@@ -47,7 +47,7 @@ export const createVariableList = (variables?: Record<string, VariableValue>): V
       )
     : [];
 
-export const selectAllProjectVariablesSelector = createSelector([Prototype.prototypeVariablesSelector], (prototypeVariables) => {
+export const selectAllProjectVariablesSelector = createSelector([prototypeVariablesSelector], (prototypeVariables) => {
   return createVariableList(prototypeVariables);
 });
 

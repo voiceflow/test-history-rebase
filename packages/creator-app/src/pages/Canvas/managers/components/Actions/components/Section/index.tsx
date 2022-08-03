@@ -1,3 +1,4 @@
+import { BaseNode } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { createUIOnlyMenuItemOption, SectionV2, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
@@ -5,6 +6,7 @@ import React from 'react';
 import DraggableList from '@/components/DraggableList';
 import { ACTIONS } from '@/config/documentation';
 import { BlockType } from '@/constants';
+import { ManagerContext } from '@/pages/Canvas/contexts';
 import type { NodeEditorV2Props } from '@/pages/Canvas/managers/types';
 
 import { DraggableItem } from './components';
@@ -20,6 +22,8 @@ interface ActionsSectionProps {
 }
 
 const ActionsSection: React.FC<ActionsSectionProps> = ({ portID, editor, parentPath, withoutURL }) => {
+  const getManager = React.useContext(ManagerContext)!;
+
   const {
     onAdd,
     onRemove,
@@ -56,15 +60,21 @@ const ActionsSection: React.FC<ActionsSectionProps> = ({ portID, editor, parentP
         action={
           <SectionV2.AddButtonDropdown
             actions={[
-              !withURLAction ? null : { icon: 'editorURL', label: 'Open URL', onClick: () => onAdd(BlockType.URL) },
-              hasNavigationStep || !withURLAction ? null : createUIOnlyMenuItemOption('divider', { divider: true }),
               hasNavigationStep ? null : { icon: 'goToBlock', label: 'Go to Block', onClick: () => onAdd(BlockType.GO_TO_NODE) },
               hasNavigationStep ? null : { icon: 'intentSmall', label: 'Go to Intent', onClick: () => onAdd(BlockType.GO_TO_INTENT) },
               hasNavigationStep ? null : { icon: 'editorExit', label: 'End', onClick: () => onAdd(BlockType.EXIT) },
+              hasNavigationStep ? null : createUIOnlyMenuItemOption('divider', { divider: true }),
+              { icon: 'systemSet', label: 'Set variable', onClick: () => onAdd(BlockType.SETV2) },
+              !withURLAction ? null : { icon: 'editorURL', label: 'Open URL', onClick: () => onAdd(BlockType.URL) },
+              {
+                icon: 'editor',
+                label: 'API',
+                onClick: () => onAdd(BlockType.INTEGRATION, { selectedIntegration: BaseNode.Utils.IntegrationType.CUSTOM_API }),
+              },
+              { icon: 'systemCode', label: 'Code', onClick: () => onAdd(BlockType.CODE) },
             ]}
           />
         }
-        sticky
         contentProps={{ bottomOffset: 2.5 }}
       >
         {withActions && (
@@ -76,7 +86,7 @@ const ActionsSection: React.FC<ActionsSectionProps> = ({ portID, editor, parentP
             }
             onDelete={onRemove}
             onReorder={onReorder}
-            itemProps={{ portID, editor, onRename, actionPath, lastCreatedStepID }}
+            itemProps={{ portID, editor, onRename, getManager, actionPath, lastCreatedStepID }}
             canReorder={(_, toIndex) => (!hasNavigationStep || toIndex !== targetNodeSteps.length - 1) && (!hasURLStep || toIndex !== 0)}
             getItemKey={(item) => item.nodeID}
             itemComponent={DraggableItem}

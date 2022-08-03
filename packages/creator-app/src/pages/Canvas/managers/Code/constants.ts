@@ -7,7 +7,7 @@ import { NodeConfig } from '../types';
 
 export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Code, Realtime.NodeData.CodeBuiltInPorts> = {
   type: BlockType.CODE,
-  icon: 'power',
+  icon: 'systemCode',
 
   factory: () => ({
     node: {
@@ -23,8 +23,9 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Code, Realtime.NodeData.C
         },
       },
     },
+
     data: {
-      name: 'Code',
+      name: '',
       code: '',
     },
   }),

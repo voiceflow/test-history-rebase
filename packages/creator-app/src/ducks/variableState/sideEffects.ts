@@ -2,7 +2,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 
 import * as Prototype from '@/ducks/prototype';
 import * as RealtimeDucks from '@/ducks/realtime';
-import * as Router from '@/ducks/router';
+import { goToPrototype } from '@/ducks/router/actions';
 import * as Session from '@/ducks/session';
 import { waitAsync } from '@/ducks/utils';
 import { getActiveVersionContext } from '@/ducks/version/utils';
@@ -28,7 +28,7 @@ export const redirectToDiagram =
     await dispatch(RealtimeDucks.switchRealtimeDiagram(versionID, diagramID));
 
     dispatch(Prototype.resetPrototype());
-    dispatch(Router.goToPrototype(versionID, undefined));
+    dispatch(goToPrototype(versionID, undefined));
     dispatch(Session.setActiveDiagramID(diagramID));
   };
 

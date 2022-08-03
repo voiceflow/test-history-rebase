@@ -2,22 +2,20 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 
 import * as Documentation from '@/config/documentation';
 
-import { NodeManagerConfig } from '../types';
-import { NODE_CONFIG } from './constants';
-import IntegrationEditor from './IntegrationEditor';
-import IntegrationStep from './IntegrationStep';
-import IntegrationManagerV2 from './v2';
+import { NodeManagerConfigV2 } from '../types';
+import { Action, ActionEditor, Editor, Step } from './components';
+import { NAME_MAP, NODE_CONFIG } from './constants';
 
-const IntegrationManager: NodeManagerConfig<Realtime.NodeData.Integration, Realtime.NodeData.IntegrationBuiltInPorts> = {
+const IntegrationManager: NodeManagerConfigV2<Realtime.NodeData.Integration, Realtime.NodeData.IntegrationBuiltInPorts> = {
   ...NODE_CONFIG,
 
   label: 'Integrations',
-  getDataLabel: (data) => NODE_CONFIG.factory(data).data.name,
+  getDataLabel: (data) => NAME_MAP[data.selectedIntegration],
 
-  step: IntegrationStep,
-  editor: IntegrationEditor,
-
-  v2: IntegrationManagerV2,
+  step: Step,
+  action: Action,
+  editorV2: Editor,
+  actionEditor: ActionEditor,
 
   tooltipLink: Documentation.API_STEP,
 };

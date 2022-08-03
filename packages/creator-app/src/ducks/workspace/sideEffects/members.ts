@@ -8,11 +8,11 @@ import * as Modal from '@/ducks/modal';
 import * as Session from '@/ducks/session';
 import { trackInvitationCancelled, trackInvitationSent } from '@/ducks/tracking/events/invitation';
 import { waitAsync } from '@/ducks/utils';
-import * as Workspace from '@/ducks/workspace';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { Thunk } from '@/store/types';
 
 import { extractErrorMessages } from '../utils';
+import { setActive } from './shared';
 
 export const acceptInvite =
   (invite: string, redirect?: () => void): Thunk<string | null> =>
@@ -20,7 +20,7 @@ export const acceptInvite =
     try {
       const workspaceID = await dispatch(waitAsync(Realtime.workspace.member.acceptInvite, { invite }));
 
-      dispatch(Workspace.setActive(workspaceID));
+      dispatch(setActive(workspaceID));
 
       return workspaceID;
     } catch (err) {

@@ -38,5 +38,3 @@ export const UPGRADE_TO_ENTERPRISE_ACTION_LABEL = 'Contact Sales';
 
 export const upgradeToTeamAction = ({ openPaymentModal }: LimitSubmitProps) => openPaymentModal();
 export const upgradeToEnterpriseAction = () => window.open(BOOK_DEMO_LINK, '_blank');
-
-export * from './variableStates';

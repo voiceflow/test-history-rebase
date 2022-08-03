@@ -10,19 +10,13 @@ import { EditorAnimationEffect } from '../../constants';
 import { AnimatedContent, DefaultFooter, DefaultHeader, PersistCollapse, RedirectToRoot, Tutorial } from './components';
 import { withGoBack, withRedirectToRoot } from './hocs';
 import { useEditor, useEditorDefaultActions, useSyncDynamicPorts } from './hooks';
+import * as T from './types';
 
-interface EditorV2Props {
-  header?: React.ReactNode;
-  footer?: React.ReactNode;
-  fillHeight?: boolean;
-  dropLagAccept?: string | string[];
-  disableAnimation?: boolean;
-  withoutContentContainer?: boolean;
-}
+export * as EditorV2Types from './types';
 
 const ANIMATION_DISTANCE = 40;
 
-const EditorV2: React.FC<EditorV2Props> = ({ header, footer, children, fillHeight, dropLagAccept, disableAnimation, withoutContentContainer }) => {
+const EditorV2: React.FC<T.Props> = ({ header, footer, children, fillHeight, dropLagAccept, disableAnimation, withoutContentContainer }) => {
   const { scrollbars } = useEditor();
 
   const dropLagFixRef = useDropLagFix(dropLagAccept ?? []);

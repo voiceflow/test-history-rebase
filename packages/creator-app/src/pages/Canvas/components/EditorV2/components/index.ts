@@ -1,4 +1,5 @@
 export { default as AnimatedContent } from './AnimatedContent';
+export type { DefaultFooterTypes } from './DefaultFooter';
 export { default as DefaultFooter } from './DefaultFooter';
 export { default as DefaultHeader } from './DefaultHeader';
 export { default as PersistCollapse } from './PersistCollapse';

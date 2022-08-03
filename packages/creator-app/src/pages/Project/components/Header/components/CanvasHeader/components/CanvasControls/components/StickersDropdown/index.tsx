@@ -1,4 +1,4 @@
-import { Menu } from '@voiceflow/ui';
+import { Button, ButtonVariant, Menu } from '@voiceflow/ui';
 import React from 'react';
 
 import { Container, Sticker } from './components';
@@ -15,6 +15,10 @@ const StickersDropdown: React.FC = () => {
           ))}
         </Container>
       </div>
+
+      <Button variant={ButtonVariant.WHITE} style={{ width: '100%', borderRadius: 0 }}>
+        Upload New
+      </Button>
     </Menu>
   );
 };

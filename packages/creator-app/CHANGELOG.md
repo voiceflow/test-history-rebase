@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.854.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.854.1...@voiceflow/creator-app@1.854.2) (2022-08-03)
+
+
+### Bug Fixes
+
+* ports (CT-694) ([#5829](https://github.com/voiceflow/creator-app/issues/5829)) ([c12539b](https://github.com/voiceflow/creator-app/commit/c12539bed50d055a6fc40bff409b417d7c7b9721))
+* realtime node port fix (VF-4137) ([#5844](https://github.com/voiceflow/creator-app/issues/5844)) ([750d9b8](https://github.com/voiceflow/creator-app/commit/750d9b8a291f3f4dd92763790e6e80b4024ce192))
+
+
+
+
+
 ## [1.854.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.854.0...@voiceflow/creator-app@1.854.1) (2022-08-03)
 
 

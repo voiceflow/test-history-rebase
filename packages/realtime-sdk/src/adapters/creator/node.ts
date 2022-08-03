@@ -1,4 +1,5 @@
 import { DBNodeStart, Link, Node, NodeData, Port } from '@realtime-sdk/models';
+import { getInPortID } from '@realtime-sdk/utils/port';
 import {
   isActions,
   isActionsBlockType,
@@ -19,7 +20,7 @@ import { noInPortTypes } from './block';
 import { PortData } from './block/utils';
 import nodeDataAdapter from './nodeData';
 import stepPortsAdapter from './stepPorts';
-import { generateInPort, getInPortID } from './utils';
+import { generateInPort } from './utils';
 
 interface InOptions {
   links: Link[];

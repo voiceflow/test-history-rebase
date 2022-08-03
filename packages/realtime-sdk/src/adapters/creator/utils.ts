@@ -1,10 +1,9 @@
 import { BlockType } from '@realtime-sdk/constants';
 import { DBPortWithLinkData, Port } from '@realtime-sdk/models';
+import { getInPortID } from '@realtime-sdk/utils/port';
 import { Utils } from '@voiceflow/common';
 
-import { IN_PORT_KEY, MIGRATION_BLOCKS } from './constants';
-
-export const getInPortID = (nodeID: string): string => `${nodeID}${IN_PORT_KEY}`;
+import { MIGRATION_BLOCKS } from './constants';
 
 export const generateInPort = (nodeID: string, { label = '' }: Partial<Port> = {}): Port => ({
   label,

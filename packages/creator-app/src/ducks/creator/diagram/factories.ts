@@ -15,7 +15,7 @@ export const portFactory = (nodeID: string, portID: string, port: Partial<Realti
   nodeID,
 });
 
-export const nodeFactory = <T extends string | null>(
+export const nodeFactory = <T extends string>(
   nodeID: T,
   node: WithRequired<Partial<Realtime.Node>, 'type'>
 ): Overwrite<Realtime.Node, { id: T }> => ({

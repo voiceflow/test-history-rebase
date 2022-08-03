@@ -483,9 +483,16 @@ class NodeManager extends EngineConsumer {
   ): Promise<string> {
     const [x, y] = this.engine.canvas!.fromCoords(coords);
 
-    const { node, data } = nodeDescriptorFactory(type, factoryData, this.select(nodeFactoryOptionsSelector));
-    const augmentedNode = { ...node, x, y, id: nodeID };
-    const parentNode = { id: Utils.id.objectID(), ports: { in: [{ id: Utils.id.objectID() }], out: { dynamic: [], builtIn: {}, byKey: {} } } };
+    // create step
+    const { node, data } = nodeDescriptorFactory(nodeID, type, factoryData, this.select(nodeFactoryOptionsSelector));
+    const augmentedNode = { ...node, x, y };
+
+    // create block around step
+    const parentNodeID = Utils.id.objectID();
+    const parentNode = {
+      id: parentNodeID,
+      ports: { in: [{ id: Realtime.Utils.port.getInPortID(parentNodeID) }], out: { dynamic: [], builtIn: {}, byKey: {} } },
+    };
 
     this.log.debug(this.log.pending('adding node'), this.log.slug(nodeID));
 
@@ -530,9 +537,9 @@ class NodeManager extends EngineConsumer {
     } else {
       parentNodeID = Utils.id.objectID();
 
-      const { node, data } = nodeDescriptorFactory(type, factoryData, this.select(nodeFactoryOptionsSelector));
+      const { node, data } = nodeDescriptorFactory(nodeID, type, factoryData, this.select(nodeFactoryOptionsSelector));
 
-      const augmentedNode = { ...node, x: 0, y: 0, id: nodeID };
+      const augmentedNode = { ...node, x: 0, y: 0 };
       const parentNode = {
         id: parentNodeID,
         ports: { in: [{ id: Utils.id.objectID() }], out: { byKey: {}, dynamic: [], builtIn: {} } },
@@ -728,22 +735,21 @@ class NodeManager extends EngineConsumer {
    */
   async appendStep(blockID: string, type: BlockType): Promise<void> {
     const stepID = Utils.id.objectID();
-    const { node, data } = nodeDescriptorFactory(type, undefined, this.select(nodeFactoryOptionsSelector));
-    const nodeWithID = { ...node, id: stepID };
+    const { node, data } = nodeDescriptorFactory(stepID, type, undefined, this.select(nodeFactoryOptionsSelector));
 
     this.log.debug(this.log.pending('adding nested node'), this.log.slug(stepID));
 
     if (!this.isAtomicActionsPhase2) {
-      await this.engine.realtime.sendUpdate(RealtimeDuck.addNestedNode(blockID, nodeWithID, data));
+      await this.engine.realtime.sendUpdate(RealtimeDuck.addNestedNode(blockID, node, data));
     }
 
     await this.dispatch(
       History.transaction(async () => {
-        await this.internal.appendStep(blockID, nodeWithID, data);
+        await this.internal.appendStep(blockID, node, data);
 
         this.engine.saveHistory();
         // TODO: fold this into the actions that add new steps to have better atomicity
-        await this.handleNewStep(nodeWithID, data);
+        await this.handleNewStep(node, data);
       })
     );
 
@@ -794,25 +800,24 @@ class NodeManager extends EngineConsumer {
       factoryData,
     }: { nodeID?: string; autoFocus?: boolean; factoryData?: Partial<Realtime.NodeData<Realtime.NodeDataMap[K]>> } = {}
   ): Promise<void> {
-    const { node, data } = nodeDescriptorFactory(type, factoryData, this.select(nodeFactoryOptionsSelector));
-    const nodeWithID = { ...node, id: nodeID };
+    const { node, data } = nodeDescriptorFactory(nodeID, type, factoryData, this.select(nodeFactoryOptionsSelector));
 
     if (!this.isAtomicActionsPhase2) {
-      await this.insertStepV1(parentNodeID, nodeWithID, data, index, { autoFocus });
+      await this.insertStepV1(parentNodeID, node, data, index, { autoFocus });
       return;
     }
 
-    this.log.debug(this.log.pending('inserting step'), this.log.slug(nodeWithID.id));
+    this.log.debug(this.log.pending('inserting step'), this.log.slug(node.id));
 
     await this.dispatch(
       History.transaction(async () => {
-        await this.internal.insertStepV2(parentNodeID, nodeWithID, data, index);
+        await this.internal.insertStepV2(parentNodeID, node, data, index);
         // TODO: fold this into the actions that add new steps to have better atomicity
-        await this.handleNewStep(nodeWithID, data);
+        await this.handleNewStep(node, data);
       })
     );
 
-    this.log.info(this.log.success('inserted step'), this.log.slug(nodeWithID.id));
+    this.log.info(this.log.success('inserted step'), this.log.slug(node.id));
   }
 
   /**

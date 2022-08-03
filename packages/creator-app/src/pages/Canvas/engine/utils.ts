@@ -90,10 +90,11 @@ export class EngineConsumer<C extends Record<string, unknown> = Record<string, u
 }
 
 export function nodeDescriptorFactory(
+  nodeID: string,
   type: BlockType,
   factoryData?: Partial<Realtime.NodeData<unknown>>,
   options?: { defaultVoice: string; canvasNodeVisibility: BaseNode.Utils.CanvasNodeVisibility; features?: FeatureFlagMap }
-): { node: Omit<Creator.NodeDescriptor, 'id'>; data: Creator.DataDescriptor } {
+): { node: Creator.NodeDescriptor; data: Creator.DataDescriptor } {
   if (type === BlockType.COMMENT || type === BlockType.CHOICE_OLD) {
     throw new Error('attempted to create a deprecated node');
   }
@@ -107,9 +108,9 @@ export function nodeDescriptorFactory(
 
   return {
     node: {
-      ...Creator.Factories.nodeFactory(null, { ...node, type }),
+      ...Creator.Factories.nodeFactory(nodeID, { ...node, type }),
       ports: {
-        in: ports?.in?.map((port) => ({ ...port, id: Utils.id.objectID() })) ?? [],
+        in: ports?.in?.map((port) => ({ ...port, id: Realtime.Utils.port.getInPortID(nodeID) })) ?? [],
         out: {
           byKey: Utils.object.mapValue(ports?.out?.byKey || {}, (port) => ({ ...port, id: Utils.id.objectID() })),
           dynamic: ports?.out?.dynamic?.map((port) => ({ ...port, id: Utils.id.objectID() })) ?? [],

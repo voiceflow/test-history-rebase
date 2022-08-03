@@ -1,6 +1,10 @@
 import { NodeOutPortSchema, NodePorts, NodePortSchema, PortsDescriptor } from '@realtime-sdk/models';
 import { Nullish, Utils } from '@voiceflow/common';
 
+export const IN_PORT_KEY = '-in';
+
+export const getInPortID = (nodeID: string): string => `${nodeID}${IN_PORT_KEY}`;
+
 export const createEmptyNodePorts = <T = string>(): NodePortSchema<T> => ({ in: [], out: { byKey: {}, builtIn: {}, dynamic: [] } });
 export const createEmptyNodeOutPorts = <T = string>(): NodeOutPortSchema<T> => ({ byKey: {}, builtIn: {}, dynamic: [] });
 

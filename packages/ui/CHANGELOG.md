@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.132.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.131.0...@voiceflow/ui@1.132.0) (2022-08-03)
+
+
+### Features
+
+* logic actions (CT-297) ([#5822](https://github.com/voiceflow/creator-app/issues/5822)) ([9ad7303](https://github.com/voiceflow/creator-app/commit/9ad7303fe39ea2f5266a6ec1c40f8c4643612828))
+
+
+
+
+
 # [1.131.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.130.0...@voiceflow/ui@1.131.0) (2022-07-29)
 
 

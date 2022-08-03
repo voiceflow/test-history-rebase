@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.853.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.852.4...@voiceflow/creator-app@1.853.0) (2022-08-03)
+
+
+### Features
+
+* logic actions (CT-297) ([#5822](https://github.com/voiceflow/creator-app/issues/5822)) ([9ad7303](https://github.com/voiceflow/creator-app/commit/9ad7303fe39ea2f5266a6ec1c40f8c4643612828))
+
+
+
+
+
 ## [1.852.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.852.3...@voiceflow/creator-app@1.852.4) (2022-08-02)
 
 **Note:** Version bump only for package @voiceflow/creator-app

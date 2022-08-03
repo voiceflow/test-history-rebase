@@ -110,8 +110,8 @@ export const updateLinkDataManyReducer: Reducer<DiagramStateType, UpdateLinkData
 export const addOutByKeyPortReducer: Reducer<DiagramStateType, AddOutByKeyPort> = (state, { payload: { nodeID, port, key } }) =>
   addOutByKeyPortToBlockInState(key, portFactory(nodeID, port.id, port))(state);
 
-export const addOutDynamicPortReducer: Reducer<DiagramStateType, AddOutDynamicPort> = (state, { payload: { nodeID, port } }) =>
-  addOutDynamicPortToBlockInState(portFactory(nodeID, port.id, port))(state);
+export const addOutDynamicPortReducer: Reducer<DiagramStateType, AddOutDynamicPort> = (state, { payload: { nodeID, port, index } }) =>
+  addOutDynamicPortToBlockInState(portFactory(nodeID, port.id, port), index)(state);
 
 export const addOutBuiltInPortReducer: Reducer<DiagramStateType, AddOutBuiltInPort> = (state, { payload: { nodeID, port, portType } }) =>
   addOutBuiltInPortToBlockInState(portType, portFactory(nodeID, port.id, port))(state);

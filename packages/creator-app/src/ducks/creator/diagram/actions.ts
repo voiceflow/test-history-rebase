@@ -75,7 +75,10 @@ export type RemoveManyNodes = Action<DiagramAction.REMOVE_MANY_NODES, string[]>;
 
 export type AddOutByKeyPort = Action<DiagramAction.ADD_OUT_BY_KEY_PORT, { nodeID: string; port: Realtime.PartialModel<Realtime.Port>; key: string }>;
 
-export type AddOutDynamicPort = Action<DiagramAction.ADD_OUT_DYNAMIC_PORT, { nodeID: string; port: Realtime.PartialModel<Realtime.Port> }>;
+export type AddOutDynamicPort = Action<
+  DiagramAction.ADD_OUT_DYNAMIC_PORT,
+  { nodeID: string; port: Realtime.PartialModel<Realtime.Port>; index?: number }
+>;
 
 export type AddOutBuiltInPort = Action<
   DiagramAction.ADD_OUT_BUILT_IN_PORT,
@@ -208,8 +211,8 @@ export const addOutByKeyPort = (nodeID: string, key: string, port: Realtime.Part
 /**
  * @deprecated
  */
-export const addOutDynamicPort = (nodeID: string, port: Realtime.PartialModel<Realtime.Port>): AddOutDynamicPort =>
-  createAction(DiagramAction.ADD_OUT_DYNAMIC_PORT, { nodeID, port });
+export const addOutDynamicPort = (nodeID: string, port: Realtime.PartialModel<Realtime.Port>, index?: number): AddOutDynamicPort =>
+  createAction(DiagramAction.ADD_OUT_DYNAMIC_PORT, { nodeID, port, index });
 
 /**
  * @deprecated

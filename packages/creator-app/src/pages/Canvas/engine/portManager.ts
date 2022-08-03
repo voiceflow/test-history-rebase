@@ -29,11 +29,11 @@ class PortManager extends EngineConsumer {
       }
     },
 
-    addDynamic: async (nodeID: string, port: Realtime.PartialModel<Realtime.Port>): Promise<void> => {
+    addDynamic: async (nodeID: string, port: Realtime.PartialModel<Realtime.Port>, index?: number): Promise<void> => {
       if (this.isAtomicActionsPhase2) {
-        await this.dispatch.sync(Realtime.port.addDynamic({ ...this.engine.context, nodeID, portID: port.id, label: port.label }));
+        await this.dispatch.sync(Realtime.port.addDynamic({ ...this.engine.context, nodeID, portID: port.id, label: port.label, index }));
       } else {
-        this.dispatch(Creator.addOutDynamicPort(nodeID, port));
+        this.dispatch(Creator.addOutDynamicPort(nodeID, port, index));
       }
     },
 
@@ -154,17 +154,17 @@ class PortManager extends EngineConsumer {
   /**
    * adds a new dynamic out port to a known step
    */
-  async addDynamic(nodeID: string, port?: Partial<Realtime.Port>): Promise<void> {
+  async addDynamic(nodeID: string, index?: number, port?: Partial<Realtime.Port>): Promise<void> {
     const portID = Utils.id.objectID();
     const augmentedPort = { ...port, id: portID };
 
     this.log.debug(this.log.pending('adding out dynamic port'), this.log.slug(portID));
 
     if (!this.isAtomicActionsPhase2) {
-      await this.engine.realtime.sendUpdate(RealtimeDuck.addOutDynamicPort(nodeID, augmentedPort));
+      await this.engine.realtime.sendUpdate(RealtimeDuck.addOutDynamicPort(nodeID, augmentedPort, index));
     }
 
-    await this.internal.addDynamic(nodeID, augmentedPort);
+    await this.internal.addDynamic(nodeID, augmentedPort, index);
     this.engine.saveHistory();
 
     this.log.info(this.log.success('added out dynamic port'), this.log.slug(portID));

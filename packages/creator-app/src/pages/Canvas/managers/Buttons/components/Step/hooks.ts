@@ -1,6 +1,7 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
+import { useSyncedLookup } from '@/hooks';
 import { CustomIntentMapContext, SlotMapContext } from '@/pages/Canvas/contexts';
 import { EntityPrompt } from '@/pages/Canvas/types';
 import { transformSlotsIntoPrompts } from '@/pages/Canvas/utils';
@@ -18,27 +19,31 @@ export const useButtons = ({ data, ports }: Options) => {
   const slotMap = React.useContext(SlotMapContext)!;
   const intentsMap = React.useContext(CustomIntentMapContext)!;
 
+  const buttonsByPortID = useSyncedLookup(ports.out.dynamic, data.buttons);
+
   const buttons = React.useMemo(
     () =>
-      data.buttons.map((button, index) => {
-        const intent = button.intent ? intentsMap[button.intent] ?? null : null;
-        const portID = ports.out.dynamic[index];
-        const prompts: EntityPrompt[] = intent?.slots.byKey ? transformSlotsIntoPrompts(Object.values(intent.slots.byKey), slotMap) : [];
+      ports.out.dynamic
+        .filter((portID) => buttonsByPortID[portID])
+        .map((portID) => {
+          const button = buttonsByPortID[portID];
+          const intent = button.intent ? intentsMap[button.intent] ?? null : null;
+          const prompts: EntityPrompt[] = intent?.slots.byKey ? transformSlotsIntoPrompts(Object.values(intent.slots.byKey), slotMap) : [];
 
-        const label = transformVariablesToReadable(button.name);
-        const linkedLabel = prettifyIntentName(intent?.name);
+          const label = transformVariablesToReadable(button.name);
+          const linkedLabel = prettifyIntentName(intent?.name);
 
-        const buttonItem: ButtonItem = {
-          ...button,
-          label,
-          portID,
-          prompts,
-          linkedLabel,
-        };
+          const buttonItem: ButtonItem = {
+            ...button,
+            label,
+            portID,
+            prompts,
+            linkedLabel,
+          };
 
-        return buttonItem;
-      }),
-    [data.buttons, ports.out.dynamic, intentsMap, slotMap]
+          return buttonItem;
+        }),
+    [buttonsByPortID, ports.out.dynamic, intentsMap, slotMap]
   );
 
   return { buttons };

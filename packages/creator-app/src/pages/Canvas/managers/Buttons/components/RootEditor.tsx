@@ -28,9 +28,10 @@ const RootEditor: React.FC = () => {
 
   const mapManager = useMapManager(editor.data.buttons, onUpdateButtons, {
     ...dynamicPortsSync,
+    clone: ({ id }, cloneData) => ({ ...cloneData, id }),
     getKey: (button) => button.id,
     factory: buttonFactory,
-    clone: ({ id }, cloneData) => ({ ...cloneData, id }),
+    autoSaveOnAddRemove: false,
   });
 
   const noMatchConfig = NoMatchV2.useConfig();

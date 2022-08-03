@@ -145,12 +145,12 @@ class RealtimeEngine extends EngineConsumer<{ [OverlayType.CURSOR]: RealtimeCurs
       await this.engine.port.internal.addByKey(nodeID, key, port);
     },
 
-    [Realtime.SocketAction.ADD_OUT_DYNAMIC_PORT]: async ({ nodeID, port }: ActionPayload<Realtime.AddOutDynamicPort>, tabID) => {
+    [Realtime.SocketAction.ADD_OUT_DYNAMIC_PORT]: async ({ nodeID, port, index }: ActionPayload<Realtime.AddOutDynamicPort>, tabID) => {
       if (this.isAtomicActionsPhase2) return;
 
       Sentry.breadcrumb('realtime', 'Remote user added dynamic port', { tabID });
 
-      await this.engine.port.internal.addDynamic(nodeID, port);
+      await this.engine.port.internal.addDynamic(nodeID, port, index);
     },
     [Realtime.SocketAction.ADD_OUT_BUILT_IN_PORT]: async ({ nodeID, port, portType }: ActionPayload<Realtime.AddOutBuiltInPort>, tabID) => {
       if (this.isAtomicActionsPhase2) return;

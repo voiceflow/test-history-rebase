@@ -191,8 +191,8 @@ export const addOutByKeyPort = (nodeID: string, key: string, port: Realtime.Part
 /**
  * @deprecated
  */
-export const addOutDynamicPort = (nodeID: string, port: Realtime.PartialModel<Realtime.Port>): AddOutDynamicPort =>
-  createAction(SocketAction.ADD_OUT_DYNAMIC_PORT, { nodeID, port });
+export const addOutDynamicPort = (nodeID: string, port: Realtime.PartialModel<Realtime.Port>, index?: number): AddOutDynamicPort =>
+  createAction(SocketAction.ADD_OUT_DYNAMIC_PORT, { nodeID, port, index });
 
 /**
  * @deprecated

@@ -15,7 +15,7 @@ const IfEditor: NodeEditor<Realtime.NodeData.IfV2, Realtime.NodeData.IfV2BuiltIn
 
   const mapManager = useMapManager(data.expressions, (expressions, save) => onChange({ expressions }, save), {
     clone: ({ id }, targetVal) => ({ ...targetVal, id }),
-    onAdd: () => engine.port.addDynamic(node.id),
+    onAdd: (_, index) => engine.port.addDynamic(node.id, index),
     factory: () => NODE_CONFIG.factory(undefined).data.expressions[0],
     onRemove: (_, index) => engine.port.removeDynamic(node.ports.out.dynamic[index]),
     onReorder: (from, to) => engine.port.reorderDynamic(node.id, from, to),

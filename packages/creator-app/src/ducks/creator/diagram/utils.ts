@@ -380,7 +380,7 @@ export const addOutByKeyPortToBlockInState =
   };
 
 export const addOutDynamicPortToBlockInState =
-  (port: Realtime.Port) =>
+  (port: Realtime.Port, index?: number) =>
   (state: DiagramState): DiagramState => {
     const node = Utils.normalized.getNormalizedByKey(state.nodes, port.nodeID);
 
@@ -390,7 +390,7 @@ export const addOutDynamicPortToBlockInState =
           ...node.ports,
           out: {
             ...node.ports.out,
-            dynamic: [...node.ports.out.dynamic, port.id],
+            dynamic: index === undefined ? [...node.ports.out.dynamic, port.id] : Utils.array.insert(node.ports.out.dynamic, index, port.id),
           },
         },
       }),

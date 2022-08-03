@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.853.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.853.0...@voiceflow/creator-app@1.853.1) (2022-08-03)
+
+
+### Bug Fixes
+
+* remove stopPropagation on tooltip text (CT-715) ([#5846](https://github.com/voiceflow/creator-app/issues/5846)) ([25c3a6e](https://github.com/voiceflow/creator-app/commit/25c3a6e0d08d30f97609b15e85764974a058a084))
+
+
+
+
+
 # [1.853.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.852.4...@voiceflow/creator-app@1.853.0) (2022-08-03)
 
 

@@ -138,7 +138,6 @@ export const Item: React.FC<ItemProps> = ({
                   value={formValue}
                   onBlur={onBlur}
                   onChange={updateFormValue}
-                  onClick={stopPropagation()}
                   onKeyPress={withEnterPress(withInputBlur())}
                 />
               )}

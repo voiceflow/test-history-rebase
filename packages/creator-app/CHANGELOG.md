@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.855.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.854.2...@voiceflow/creator-app@1.855.0) (2022-08-03)
+
+
+### Features
+
+* partial sync (VF-000) ([#5845](https://github.com/voiceflow/creator-app/issues/5845)) ([7030c4b](https://github.com/voiceflow/creator-app/commit/7030c4be278c70649bfd8af4d122ab0dffe90854)), closes [/github.com/logux/redux/blob/8678e352a4fd4449b5a34a2f4c0fcc3272a0f671/create-store-creator/index.js#L84-L87](https://github.com//github.com/logux/redux/blob/8678e352a4fd4449b5a34a2f4c0fcc3272a0f671/create-store-creator/index.js/issues/L84-L87) [/github.com/logux/client/blob/53bf1f0e29ffb9cea7add38ed3669289fe6377b2/client/index.js#L295-L303](https://github.com//github.com/logux/client/blob/53bf1f0e29ffb9cea7add38ed3669289fe6377b2/client/index.js/issues/L295-L303) [/github.com/logux/redux/blob/8678e352a4fd4449b5a34a2f4c0fcc3272a0f671/create-store-creator/index.js#L254](https://github.com//github.com/logux/redux/blob/8678e352a4fd4449b5a34a2f4c0fcc3272a0f671/create-store-creator/index.js/issues/L254)
+
+
+
+
+
 ## [1.854.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.854.1...@voiceflow/creator-app@1.854.2) (2022-08-03)
 
 

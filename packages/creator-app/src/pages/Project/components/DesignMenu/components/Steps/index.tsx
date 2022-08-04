@@ -25,11 +25,9 @@ const Steps: React.FC = () => {
   const gadgets = useFeature(Realtime.FeatureFlag.GADGETS);
   const chatCardsCarousel = useFeature(Realtime.FeatureFlag.CHAT_CARDS_CAROUSEL);
   const dfCarousel = useFeature(Realtime.FeatureFlag.DF_CAROUSEL_STEP);
-  const topicsAndComponents = useFeature(Realtime.FeatureFlag.TOPICS_AND_COMPONENTS);
   const chatCardStep = useFeature(Realtime.FeatureFlag.CHAT_CARD_STEP);
   const promptStep = useFeature(Realtime.FeatureFlag.PROMPT_STEP);
   const newEditors2 = useFeature(Realtime.FeatureFlag.NEW_EDITORS_PART_2);
-  const isTopicsAndComponentsVersion = useSelector(ProjectV2.active.isTopicsAndComponentsVersionSelector);
   const getManager = useManager();
 
   const sections = React.useMemo(() => {
@@ -46,8 +44,6 @@ const Steps: React.FC = () => {
           if (!newEditors2.isEnabled && step.type === BlockType.RANDOMV2) return false;
           if (newEditors2.isEnabled && step.type === BlockType.RANDOM) return false;
 
-          if (!(topicsAndComponents.isEnabled && isTopicsAndComponentsVersion) && step.type === BlockType.COMPONENT) return false;
-          if (topicsAndComponents.isEnabled && isTopicsAndComponentsVersion && step.type === BlockType.FLOW) return false;
           if (IS_PRIVATE_CLOUD && step.publicOnly) return false;
           if (!promptStep.isEnabled && step.type === BlockType.PROMPT) return false;
 
@@ -58,7 +54,7 @@ const Steps: React.FC = () => {
           return { ...step, icon: step.getIcon(manager), label: step.getLabel(manager) };
         }),
     }));
-  }, [platform, isTopicsAndComponentsVersion]);
+  }, [platform]);
 
   const expandedSectionsMap = React.useMemo(
     () => expandedSections.reduce<Partial<Record<BlockCategory, boolean>>>((obj, type) => Object.assign(obj, { [type]: true }), {}),
@@ -72,7 +68,7 @@ const Steps: React.FC = () => {
   return (
     <ScrollbarsContainer>
       <CustomScrollbars>
-        <Container id={Identifier.STEP_MENU} fadeLeft={!!topicsAndComponents.isEnabled && isTopicsAndComponentsVersion}>
+        <Container id={Identifier.STEP_MENU} fadeLeft>
           {sections.map(({ type, label, steps }) =>
             steps.length ? (
               <UncontrolledCollapse

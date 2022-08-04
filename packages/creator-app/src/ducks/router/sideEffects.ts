@@ -1,5 +1,4 @@
 import { Struct } from '@voiceflow/common';
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { generatePath } from 'react-router-dom';
 
 import { PageProgress } from '@/components/PageProgressBar/utils';
@@ -7,7 +6,6 @@ import * as Errors from '@/config/errors';
 import { Path } from '@/config/routes';
 import { InteractionModelTabType, PageProgressBar } from '@/constants';
 import * as Creator from '@/ducks/creator';
-import * as Feature from '@/ducks/feature';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as RealtimeDuck from '@/ducks/realtime';
 import * as Session from '@/ducks/session';
@@ -208,8 +206,6 @@ export const goToCurrentPrototype =
     const versionID = Session.activeVersionIDSelector(state);
     const diagramID = Session.activeDiagramIDSelector(state);
     const rootDiagramID = VersionV2.active.rootDiagramIDSelector(state);
-    const isTopicsAndComponentsEnabled = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.TOPICS_AND_COMPONENTS);
-    const isTopicsAndComponentsVersion = ProjectV2.active.isTopicsAndComponentsVersionSelector(state);
     const variableStatesStartFromDiagramID = VariableState.selectedStartFromDiagramIDSelector(state);
 
     Errors.assertVersionID(versionID);
@@ -222,7 +218,7 @@ export const goToCurrentPrototype =
 
     if (!nodeID && variableStatesStartFromDiagramID) {
       await dispatch(redirectToDiagram(variableStatesStartFromDiagramID));
-    } else if (!nodeID && isTopic && rootDiagramID && rootDiagramID !== diagramID && isTopicsAndComponentsEnabled && isTopicsAndComponentsVersion) {
+    } else if (!nodeID && isTopic && rootDiagramID && rootDiagramID !== diagramID) {
       await dispatch(redirectToDiagram(rootDiagramID));
     }
 

@@ -6,8 +6,6 @@ import { Point } from '@/types';
 import { isMarkupOrCombinedBlockType } from './typeGuards';
 
 export const {
-  isFlowNode,
-  isLinkedFlowNode,
   isCommandNode,
   isLinkedCommandNode,
   isIntentNode,

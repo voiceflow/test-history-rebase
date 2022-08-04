@@ -10,7 +10,6 @@ import * as Errors from '@/config/errors';
 import { DiagramState } from '@/constants';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as DiagramSelectorsV2 from '@/ducks/diagramV2/selectors';
-import * as Feature from '@/ducks/feature';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import mutableStore from '@/store/mutable';
@@ -38,14 +37,6 @@ export const performSave =
 
 export const validateTopicAvailability = (): SyncThunk => (_dispatch, getState) => {
   const state = getState();
-
-  // remove after FF removal
-  const isTopicsAndComponentsEnabled = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.TOPICS_AND_COMPONENTS);
-  const isTopicsAndComponentsVersion = ProjectV2.active.isTopicsAndComponentsVersionSelector(state);
-
-  if (!isTopicsAndComponentsEnabled || !isTopicsAndComponentsVersion) {
-    return;
-  }
 
   const diagramType = DiagramSelectorsV2.active.typeSelector(state);
   const isRootDiagramActive = CreatorV2.isRootDiagramActiveSelector(state);

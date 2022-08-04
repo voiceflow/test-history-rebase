@@ -13,7 +13,6 @@ import { commandOutPortsAdapter, commandOutPortsAdapterV2 } from './command';
 import componentAdapter, { componentOutPortsAdapter, componentOutPortsAdapterV2 } from './component';
 import directiveAdapter, { directiveOutPortsAdapter, directiveOutPortsAdapterV2 } from './directive';
 import exitAdapter, { exitOutPortsAdapter, exitOutPortsAdapterV2 } from './exit';
-import flowAdapter, { flowOutPortsAdapter, flowOutPortsAdapterV2 } from './flow';
 import goToIntentAdapter, { goToIntentOutPortsAdapter, goToIntentOutPortsAdapterV2 } from './goToIntent';
 import goToNodeAdapter, { goToNodeOutPortsAdapter, goToNodeOutPortsAdapterV2 } from './goToNode';
 import ifAdapter, { ifOutPortsAdapter, ifOutPortsAdapterV2 } from './if';
@@ -51,7 +50,6 @@ export const baseBlockAdapter = {
   [BlockType.EXIT]: exitAdapter,
   [BlockType.CODE]: codeAdapter,
   [BlockType.CARD]: cardAdapter,
-  [BlockType.FLOW]: flowAdapter,
   [BlockType.SETV2]: setAdapter,
   [BlockType.TRACE]: traceAdapter,
   [BlockType.VISUAL]: visualAdapter,
@@ -75,7 +73,6 @@ export const baseOutPortAdapter = {
   [BlockType.CARD]: cardOutPortsAdapter,
   [BlockType.IFV2]: ifOutPortsAdapter,
   [BlockType.CODE]: codeOutPortsAdapter,
-  [BlockType.FLOW]: flowOutPortsAdapter,
   [BlockType.TEXT]: textOutPortsAdapter,
   [BlockType.TRACE]: traceOutPortsAdapter,
   [BlockType.SETV2]: setOutPortsAdapter,
@@ -115,7 +112,6 @@ export const baseOutPortAdapterV2 = {
   [BlockType.CARD]: cardOutPortsAdapterV2,
   [BlockType.IFV2]: ifOutPortsAdapterV2,
   [BlockType.CODE]: codeOutPortsAdapterV2,
-  [BlockType.FLOW]: flowOutPortsAdapterV2,
   [BlockType.TEXT]: textOutPortsAdapterV2,
   [BlockType.TRACE]: traceOutPortsAdapterV2,
   [BlockType.SETV2]: setOutPortsAdapterV2,

@@ -69,7 +69,6 @@ export const SET_STEP = 'https://www.voiceflow.com/docs/designing-logic-steps#to
 export const API_STEP = 'https://www.voiceflow.com/docs/designing-integration-steps#toc-1';
 export const SPEAK_STEP = 'https://www.voiceflow.com/docs/designing-response-steps#toc-1';
 export const TEXT_STEP = 'https://www.voiceflow.com/docs/designing-response-steps#toc-2';
-export const FLOW_STEP = 'https://www.voiceflow.com/docs/designing-logic-steps#toc-5';
 export const IMAGE_STEP = 'https://www.voiceflow.com/docs/designing-response-steps#toc-4';
 export const AUDIO_STEP = 'https://www.voiceflow.com/docs/designing-response-steps#toc-3';
 export const CAROUSEL_STEP = 'https://www.voiceflow.com/docs/designing-response-steps#toc-6';

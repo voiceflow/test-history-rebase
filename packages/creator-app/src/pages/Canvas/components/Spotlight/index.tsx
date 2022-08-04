@@ -5,8 +5,7 @@ import ReactSelect from 'react-select';
 
 import { IS_PRIVATE_CLOUD } from '@/config';
 import { BlockType } from '@/constants';
-import * as ProjectV2 from '@/ducks/projectV2';
-import { useFeature, useSelector, useTrackingEvents } from '@/hooks';
+import { useFeature, useTrackingEvents } from '@/hooks';
 import { EngineContext, SpotlightContext } from '@/pages/Canvas/contexts';
 import { useManager } from '@/pages/Canvas/managers/utils';
 import { getStepSections, StepItem } from '@/pages/Project/components/StepMenu/constants';
@@ -30,9 +29,7 @@ const Spotlight = () => {
   const gadgets = useFeature(Realtime.FeatureFlag.GADGETS);
   const chatCardsCarousel = useFeature(Realtime.FeatureFlag.CHAT_CARDS_CAROUSEL);
   const dfCarousel = useFeature(Realtime.FeatureFlag.DF_CAROUSEL_STEP);
-  const topicsAndComponents = useFeature(Realtime.FeatureFlag.TOPICS_AND_COMPONENTS);
   const promptStep = useFeature(Realtime.FeatureFlag.PROMPT_STEP);
-  const isTopicsAndComponentsVersion = useSelector(ProjectV2.active.isTopicsAndComponentsVersionSelector);
   const newEditors2 = useFeature(Realtime.FeatureFlag.NEW_EDITORS_PART_2);
   const getManager = useManager();
 
@@ -52,8 +49,6 @@ const Spotlight = () => {
           if (!gadgets.isEnabled && step.type === BlockType.EVENT) return false;
           if (!chatCardsCarousel.isEnabled && step.type === BlockType.CAROUSEL) return false;
           if (isDialogflowPlatform(platform) && !dfCarousel.isEnabled && step.type === BlockType.CAROUSEL) return false;
-          if (!(topicsAndComponents.isEnabled && isTopicsAndComponentsVersion) && step.type === BlockType.COMPONENT) return false;
-          if (topicsAndComponents.isEnabled && isTopicsAndComponentsVersion && step.type === BlockType.FLOW) return false;
           if (!newEditors2.isEnabled && step.type === BlockType.RANDOMV2) return false;
           if (newEditors2.isEnabled && step.type === BlockType.RANDOM) return false;
           if (IS_PRIVATE_CLOUD && step.publicOnly) return false;
@@ -74,7 +69,7 @@ const Spotlight = () => {
             ),
           };
         }),
-    [gadgets.isEnabled, topicsAndComponents.isEnabled, topicsAndComponents.isEnabled, isTopicsAndComponentsVersion]
+    [platform, gadgets.isEnabled, newEditors2.isEnabled, chatCardsCarousel.isEnabled, dfCarousel.isEnabled, promptStep.isEnabled]
   );
 
   useDidUpdateEffect(() => {

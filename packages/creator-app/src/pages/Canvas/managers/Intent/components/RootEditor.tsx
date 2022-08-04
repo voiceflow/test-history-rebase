@@ -9,8 +9,7 @@ import IntentSelect from '@/components/IntentSelect';
 import * as Documentation from '@/config/documentation';
 import * as Creator from '@/ducks/creator';
 import * as Intent from '@/ducks/intent';
-import * as ProjectV2 from '@/ducks/projectV2';
-import { useDispatch, useFeature, useIntent, useSelector, useSyncDispatch } from '@/hooks';
+import { useDispatch, useIntent, useSyncDispatch } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import IntentRequiredEntitiesSection from '@/pages/Canvas/components/IntentRequiredEntitiesSection';
 
@@ -19,10 +18,6 @@ import AvailabilitySection from './AvailabilitySection';
 
 const RootEditor: React.FC = () => {
   const editor = EditorV2.useEditor<Realtime.NodeData.Intent, Realtime.NodeData.IntentBuiltInPorts>();
-
-  const topicsAndComponents = useFeature(Realtime.FeatureFlag.TOPICS_AND_COMPONENTS);
-
-  const isTopicsAndComponentsVersion = useSelector(ProjectV2.active.isTopicsAndComponentsVersionSelector);
 
   const onAddRequiredEntity = useDispatch(Intent.addRequiredSlot);
   const onRemoveRequiredEntity = useDispatch(Intent.removeRequiredSlot);
@@ -39,10 +34,7 @@ const RootEditor: React.FC = () => {
   const onChangeIntent = async ({ intent }: { intent: Nullable<string> }) => {
     await patchPlatformData({ intent });
 
-    if (topicsAndComponents.isEnabled && isTopicsAndComponentsVersion) {
-      updateIntentSteps({ ...editor.engine.context, stepID: editor.nodeID, intent: intent ? { intentID: intent, global: isGlobalIntent } : null });
-    }
-
+    updateIntentSteps({ ...editor.engine.context, stepID: editor.nodeID, intent: intent ? { intentID: intent, global: isGlobalIntent } : null });
     validateTopicAvailability();
   };
 
@@ -52,13 +44,11 @@ const RootEditor: React.FC = () => {
 
     await patchPlatformData({ availability: nextAvailability });
 
-    if (topicsAndComponents.isEnabled && isTopicsAndComponentsVersion) {
-      updateIntentSteps({
-        ...editor.engine.context,
-        stepID: editor.nodeID,
-        intent: intent?.id ? { intentID: intent.id, global: nextAvailabilityIsGlobal } : null,
-      });
-    }
+    updateIntentSteps({
+      ...editor.engine.context,
+      stepID: editor.nodeID,
+      intent: intent?.id ? { intentID: intent.id, global: nextAvailabilityIsGlobal } : null,
+    });
 
     if (!nextAvailabilityIsGlobal) {
       validateTopicAvailability();
@@ -101,12 +91,8 @@ const RootEditor: React.FC = () => {
       <SectionV2.Divider inset />
       <Actions.Section editor={editor} portID={editor.node.ports.out.builtIn[BaseModels.PortType.NEXT]} />
 
-      {topicsAndComponents.isEnabled && isTopicsAndComponentsVersion ? (
-        <>
-          <SectionV2.Divider />
-          <AvailabilitySection isEnabled={isGlobalIntent} onChange={onChangeAvailability} />
-        </>
-      ) : null}
+      <SectionV2.Divider />
+      <AvailabilitySection isEnabled={isGlobalIntent} onChange={onChangeAvailability} />
 
       <LegacyMappings intent={intent} mappings={editor.data.mappings} onDelete={() => patchPlatformData({ mappings: [] })} />
     </EditorV2>

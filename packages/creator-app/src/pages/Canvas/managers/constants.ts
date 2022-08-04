@@ -22,7 +22,6 @@ import DirectiveManager from './Directive';
 import DisplayManager from './Display';
 import EventManager from './Event';
 import ExitManager from './Exit';
-import FlowManager from './Flow';
 import GoToIntentManager from './GoToIntent';
 import GoToNodeManager from './GoToNode';
 import IfManagerV2 from './IfV2';
@@ -67,7 +66,6 @@ export const MANAGERS_BY_TYPE = {
   [BlockType.INTENT]: IntentManager,
   [BlockType.STREAM]: StreamManager,
   [BlockType.INTEGRATION]: IntegrationManager,
-  [BlockType.FLOW]: FlowManager,
   [BlockType.COMPONENT]: ComponentManager,
   [BlockType.CODE]: CodeManager,
   [BlockType.EXIT]: ExitManager,

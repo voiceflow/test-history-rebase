@@ -298,18 +298,12 @@ export const saveActiveDiagram = (): Thunk => async (_, getState) => {
   const state = getState();
   const fullDiagram = fullActiveDiagramSelector(state);
   const isAtomicActions = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.ATOMIC_ACTIONS_PHASE_2);
-  const isTopicsAndComponentsEnabled = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.TOPICS_AND_COMPONENTS);
-  const isTopicsAndComponentsVersion = ProjectV2.active.isTopicsAndComponentsVersionSelector(state);
 
   if (isAtomicActions) return;
 
   if (!fullDiagram) throw Errors.noActiveDiagramID();
 
   const { _id, ...activeDiagram } = fullDiagram;
-
-  if (!isTopicsAndComponentsEnabled || !isTopicsAndComponentsVersion) {
-    delete activeDiagram.type;
-  }
 
   if (activeDiagram.type !== BaseModels.Diagram.DiagramType.TOPIC) {
     delete activeDiagram.intentStepIDs;

@@ -104,7 +104,7 @@ const FOCUSABLE_NODES = new Set([
   BlockType.CHOICE,
   BlockType.INTENT,
   BlockType.STREAM,
-  BlockType.FLOW,
+  BlockType.COMPONENT,
   BlockType.EXIT,
   BlockType.PROMPT,
   BlockType.VISUAL,
@@ -697,7 +697,7 @@ class TraceController {
 
     // We need to prematurely highlight the out link of a node block (if it exists)
     // because the regular active path logic doesn't account for that case
-    if (targetNode.type === BlockType.FLOW || targetNode.type === BlockType.COMPONENT) {
+    if (targetNode.type === BlockType.COMPONENT) {
       const builtIn = (targetNode.ports.out.builtIn ?? {}) as Realtime.NodeData.FlowBuiltInPorts | Realtime.NodeData.ComponentBuiltInPorts;
 
       const outPort = builtIn[BaseModels.PortType.NEXT] as unknown as IDSelectorParam;

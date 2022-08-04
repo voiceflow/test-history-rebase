@@ -35,8 +35,6 @@ const ProjectAndDiagramActions: React.FC = () => {
 
   const getEngine = useEventualEngine();
   const assistantIA = useFeature(Realtime.FeatureFlag.ASSISTANT_IA);
-  const topicsAndComponents = useFeature(Realtime.FeatureFlag.TOPICS_AND_COMPONENTS);
-  const isTopicsAndComponentsVersion = useSelector(ProjectV2.active.isTopicsAndComponentsVersionSelector);
 
   const isPrototypingMode = usePrototypingMode();
   const [canEditProject] = usePermission(Permission.EDIT_PROJECT);
@@ -105,10 +103,7 @@ const ProjectAndDiagramActions: React.FC = () => {
     <Container>
       {!canEditCanvas && <ViewOnly>View only</ViewOnly>}
 
-      {canEditCanvas &&
-      topicsAndComponents.isEnabled &&
-      isTopicsAndComponentsVersion &&
-      (selectedTargets.length > 1 || (selectedTargets.length === 1 && selectedTargets[0] !== startNodeID)) ? (
+      {canEditCanvas && (selectedTargets.length > 1 || (selectedTargets.length === 1 && selectedTargets[0] !== startNodeID)) ? (
         <Box.Flex gap={5}>
           <HeaderIconButton
             icon="flowV2"

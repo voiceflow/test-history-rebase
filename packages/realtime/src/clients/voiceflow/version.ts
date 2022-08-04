@@ -12,7 +12,7 @@ import createResourceClient from './utils/resource';
 
 export type VersionUpdateData = Pick<
   BaseModels.Version.Model<BaseModels.Version.PlatformData<AnyRecord, AnyRecord>>,
-  '_version' | 'name' | 'variables' | 'rootDiagramID' | 'platformData'
+  '_version' | 'name' | 'variables' | 'rootDiagramID' | 'platformData' | 'topics' | 'folders' | 'components'
 >;
 
 export type DiagramUpdateData = Omit<BaseModels.Diagram.Model, 'creatorID' | 'versionID'>;

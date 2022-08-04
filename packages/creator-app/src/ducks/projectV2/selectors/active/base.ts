@@ -30,8 +30,3 @@ export const isLiveSelector = createSelector([projectSelector], (project) => !!p
 export const liveVersionSelector = createSelector([projectSelector], (project) => project?.liveVersion);
 
 export const vfVersionSelector = createSelector([projectSelector], (project) => project?._version ?? Realtime.CURRENT_PROJECT_VERSION);
-
-export const isTopicsAndComponentsVersionSelector = createSelector(
-  [vfVersionSelector],
-  (vfVersion) => vfVersion >= Realtime.TOPICS_AND_COMPONENTS_PROJECT_VERSION
-);

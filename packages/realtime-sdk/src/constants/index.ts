@@ -59,5 +59,4 @@ export enum VoicePromptType {
 }
 
 export const START_NODE_COLOR = '#2b2f32';
-export const CURRENT_PROJECT_VERSION = 1.0;
-export const TOPICS_AND_COMPONENTS_PROJECT_VERSION = 1.2;
+export const CURRENT_PROJECT_VERSION = 1.2;

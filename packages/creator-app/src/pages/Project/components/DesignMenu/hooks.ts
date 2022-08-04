@@ -1,25 +1,17 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { Permission } from '@/config/permissions';
-import * as ProjectV2 from '@/ducks/projectV2';
 import * as UI from '@/ducks/ui';
-import { useFeature, useHasPermissions, useHotKeys, usePermission, useSelector } from '@/hooks';
+import { useHasPermissions, useHotKeys, usePermission, useSelector } from '@/hooks';
 import { Hotkey } from '@/keymap';
 
-import { Tab, TabItem, TABS, TOPICS_TABS } from './constants';
+import { Tab, TabItem, TOPICS_TABS } from './constants';
 
 export const useTabs = (): { tabs: TabItem[]; selectedTab: Tab } => {
   const activeTab = useSelector(UI.activeCreatorMenuSelector);
   const hasPermissions = useHasPermissions();
-  const topicsAndComponents = useFeature(Realtime.FeatureFlag.TOPICS_AND_COMPONENTS);
-  const isTopicsAndComponentsVersion = useSelector(ProjectV2.active.isTopicsAndComponentsVersionSelector);
 
-  const tabs = React.useMemo(() => {
-    const featureTabs = topicsAndComponents.isEnabled && isTopicsAndComponentsVersion ? TOPICS_TABS : TABS;
-
-    return featureTabs.filter(({ permissions }) => hasPermissions(permissions));
-  }, [hasPermissions, topicsAndComponents.isEnabled, isTopicsAndComponentsVersion]);
+  const tabs = React.useMemo(() => TOPICS_TABS.filter(({ permissions }) => hasPermissions(permissions)), [hasPermissions]);
 
   const selectedTab = React.useMemo(() => {
     if (tabs.find(({ value }) => value === activeTab)) {
@@ -30,8 +22,8 @@ export const useTabs = (): { tabs: TabItem[]; selectedTab: Tab } => {
       return Tab.STEPS;
     }
 
-    return isTopicsAndComponentsVersion ? Tab.LAYERS : Tab.FLOWS;
-  }, [activeTab, tabs, isTopicsAndComponentsVersion]);
+    return Tab.LAYERS;
+  }, [activeTab, tabs]);
 
   return { tabs, selectedTab };
 };
@@ -46,28 +38,6 @@ interface HotkeysOptions {
 
 export const useMenuHotKeys = ({ openByHover, setActiveTab, isOpenByHover, toggleIsHidden, closeByLoseHover }: HotkeysOptions): void => {
   const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
-  const topicsAndComponents = useFeature(Realtime.FeatureFlag.TOPICS_AND_COMPONENTS);
-  const isTopicsAndComponentsVersion = useSelector(ProjectV2.active.isTopicsAndComponentsVersionSelector);
-
-  // TODO: remove this after topics and components are fully implemented
-  useHotKeys(
-    Hotkey.OPEN_LEFT_SIDEBAR_FLOWS_TAB,
-    () => {
-      setActiveTab(Tab.FLOWS);
-      openByHover();
-    },
-    { preventDefault: true, disable: !!topicsAndComponents.isEnabled && isTopicsAndComponentsVersion }
-  );
-
-  // TODO: remove this after topics and components are fully implemented
-  useHotKeys(
-    Hotkey.OPEN_LEFT_SIDEBAR_STEPS_TAB,
-    () => {
-      setActiveTab(Tab.STEPS);
-      openByHover();
-    },
-    { preventDefault: true, disable: (!!topicsAndComponents.isEnabled && isTopicsAndComponentsVersion) || !canEditCanvas }
-  );
 
   useHotKeys(
     Hotkey.OPEN_DESIGN_MENU_LAYERS_TAB,
@@ -75,7 +45,7 @@ export const useMenuHotKeys = ({ openByHover, setActiveTab, isOpenByHover, toggl
       setActiveTab(Tab.LAYERS);
       openByHover();
     },
-    { preventDefault: true, disable: !(topicsAndComponents.isEnabled && isTopicsAndComponentsVersion) }
+    { preventDefault: true }
   );
 
   useHotKeys(
@@ -84,7 +54,7 @@ export const useMenuHotKeys = ({ openByHover, setActiveTab, isOpenByHover, toggl
       setActiveTab(Tab.STEPS);
       openByHover();
     },
-    { preventDefault: true, disable: !(topicsAndComponents.isEnabled && isTopicsAndComponentsVersion) || !canEditCanvas }
+    { preventDefault: true, disable: !canEditCanvas }
   );
 
   useHotKeys(

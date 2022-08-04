@@ -1,5 +1,4 @@
 import { BaseModels } from '@voiceflow/base-types';
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { MenuTypes, toast, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
@@ -8,9 +7,8 @@ import { Permission } from '@/config/permissions';
 import * as Diagram from '@/ducks/diagram';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Modal from '@/ducks/modal';
-import * as ProjectV2 from '@/ducks/projectV2';
 import * as VersionV2 from '@/ducks/versionV2';
-import { useDispatch, useFeature, useLinkedState, usePermission, useSelector, useToggle } from '@/hooks';
+import { useDispatch, useLinkedState, usePermission, useSelector, useToggle } from '@/hooks';
 import * as Sentry from '@/vendors/sentry';
 
 interface DiagramRenameApi {
@@ -108,10 +106,8 @@ export const useDiagramOptions = ({ onEdit, onRename, diagramID }: DiagramOption
 
   const rootDiagramID = useSelector(VersionV2.active.rootDiagramIDSelector);
   const getDiagramByID = useSelector(DiagramV2.getDiagramByIDSelector);
-  const isTopicsAndComponentsVersion = useSelector(ProjectV2.active.isTopicsAndComponentsVersionSelector);
 
   const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
-  const topicsAndComponents = useFeature(Realtime.FeatureFlag.TOPICS_AND_COMPONENTS);
 
   const onDuplicate = React.useCallback(() => {
     if (!diagramID) {
@@ -140,11 +136,7 @@ export const useDiagramOptions = ({ onEdit, onRename, diagramID }: DiagramOption
       return;
     }
 
-    let label = 'flow';
-
-    if (topicsAndComponents.isEnabled && isTopicsAndComponentsVersion) {
-      label = getDiagramByID({ id: diagramID })?.type === BaseModels.Diagram.DiagramType.TOPIC ? 'topic' : 'flow';
-    }
+    const label = getDiagramByID({ id: diagramID })?.type === BaseModels.Diagram.DiagramType.TOPIC ? 'topic' : 'flow';
 
     setConfirmModal({
       body: 'This action will permanently delete all contents of the flow and can not be reversed. Are you sure you want to continue?',
@@ -156,7 +148,7 @@ export const useDiagramOptions = ({ onEdit, onRename, diagramID }: DiagramOption
         );
       },
     });
-  }, [diagramID, deleteDiagram, topicsAndComponents.isEnabled, isTopicsAndComponentsVersion]);
+  }, [diagramID, deleteDiagram]);
 
   return React.useMemo<MenuTypes.OptionWithoutValue[]>(() => {
     if (!canEditCanvas) {
@@ -175,10 +167,11 @@ export const useDiagramOptions = ({ onEdit, onRename, diagramID }: DiagramOption
 
       { label: 'Rename', onClick: onRename },
 
-      ...(!(topicsAndComponents.isEnabled && isTopicsAndComponentsVersion) || !isTopic ? [{ label: 'Duplicate', onClick: onDuplicate }] : []),
-
-      ...(topicsAndComponents.isEnabled && isTopicsAndComponentsVersion && !isTopic
-        ? [{ label: 'Convert to Topic', onClick: onConvertToTopic }]
+      ...(!isTopic
+        ? [
+            { label: 'Duplicate', onClick: onDuplicate },
+            { label: 'Convert to Topic', onClick: onConvertToTopic },
+          ]
         : []),
 
       ...(rootDiagramID !== diagramID
@@ -188,15 +181,5 @@ export const useDiagramOptions = ({ onEdit, onRename, diagramID }: DiagramOption
           ]
         : []),
     ];
-  }, [
-    onEdit,
-    onRename,
-    onDelete,
-    onDuplicate,
-    canEditCanvas,
-    rootDiagramID,
-    onConvertToTopic,
-    topicsAndComponents.isEnabled,
-    isTopicsAndComponentsVersion,
-  ]);
+  }, [onEdit, onRename, onDelete, onDuplicate, canEditCanvas, rootDiagramID, onConvertToTopic]);
 };

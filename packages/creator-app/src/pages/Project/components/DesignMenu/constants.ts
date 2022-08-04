@@ -11,20 +11,6 @@ export interface TabItem extends TabOption<Tab> {
   permissions?: Permission[];
 }
 
-export const TABS: TabItem[] = [
-  {
-    value: Tab.STEPS,
-    label: 'Steps',
-    tooltip: { title: 'Steps', hotkey: '<', position: 'top', distance: -2 },
-    permissions: [Permission.EDIT_CANVAS],
-  },
-  {
-    value: Tab.FLOWS,
-    label: 'Flows',
-    tooltip: { title: 'Flows', hotkey: '>', position: 'top', distance: -2 },
-  },
-];
-
 export const TOPICS_TABS: TabItem[] = [
   {
     value: Tab.LAYERS,

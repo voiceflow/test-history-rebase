@@ -38,7 +38,7 @@ const ComponentRootEditor: React.FC = () => {
     <EditorV2
       header={<EditorV2.DefaultHeader />}
       footer={
-        <EditorV2.DefaultFooter tutorial={Documentation.FLOW_STEP}>
+        <EditorV2.DefaultFooter tutorial={Documentation.COMPONENT_STEP}>
           {data.diagramID && (
             <Button variant={Button.Variant.PRIMARY} onClick={onEnterFlow} squareRadius>
               Enter Flow

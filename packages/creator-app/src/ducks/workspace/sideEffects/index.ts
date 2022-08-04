@@ -4,7 +4,6 @@ import { toast } from '@voiceflow/ui';
 
 import * as Errors from '@/config/errors';
 import * as Account from '@/ducks/account';
-import * as Feature from '@/ducks/feature';
 import * as Modal from '@/ducks/modal';
 import { projectByIDSelector } from '@/ducks/projectV2/selectors';
 import { goToDashboard, goToWorkspace } from '@/ducks/router/actions';
@@ -72,16 +71,13 @@ export const duplicateProject =
     const state = getState();
     const project = projectByIDSelector(state, { id: projectID });
     const sourceWorkspaceID = Session.activeWorkspaceIDSelector(state);
-    const isTopicsAndComponents = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.TOPICS_AND_COMPONENTS);
-
-    const vfVersion = isTopicsAndComponents ? Realtime.TOPICS_AND_COMPONENTS_PROJECT_VERSION : Realtime.CURRENT_PROJECT_VERSION;
 
     Errors.assertProject(projectID, project);
     Errors.assertWorkspaceID(sourceWorkspaceID);
 
     await dispatch.sync(
       Realtime.project.duplicate.started({
-        data: { teamID: targetWorkspaceID, name: `${project.name} (COPY)`, _version: vfVersion, platform: project.platform },
+        data: { name: `${project.name} (COPY)`, teamID: targetWorkspaceID, _version: Realtime.CURRENT_PROJECT_VERSION, platform: project.platform },
         listID,
         projectID,
         workspaceID: sourceWorkspaceID,
@@ -91,15 +87,10 @@ export const duplicateProject =
 
 export const importProject =
   (projectID: string, targetWorkspaceID: string): Thunk<Realtime.AnyProject> =>
-  async (dispatch, getState) => {
-    const state = getState();
-    const isTopicsAndComponents = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.TOPICS_AND_COMPONENTS);
-
-    const vfVersion = isTopicsAndComponents ? Realtime.TOPICS_AND_COMPONENTS_PROJECT_VERSION : Realtime.CURRENT_PROJECT_VERSION;
-
+  async (dispatch) => {
     return dispatch(
       waitAsync(Realtime.project.duplicate, {
-        data: { teamID: targetWorkspaceID, _version: vfVersion },
+        data: { teamID: targetWorkspaceID, _version: Realtime.CURRENT_PROJECT_VERSION },
         projectID,
         workspaceID: targetWorkspaceID,
       })

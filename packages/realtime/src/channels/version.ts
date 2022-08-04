@@ -1,9 +1,6 @@
 import { SendBackActions } from '@logux/server';
-import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { ChannelContext } from '@voiceflow/socket-utils';
-
-import logger from '@/logger';
 
 import { AbstractChannelControl } from './utils';
 
@@ -18,11 +15,7 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
     const { workspaceID, projectID, versionID } = ctx.params;
     const creatorID = Number(ctx.userId);
 
-    const [dbCreator, isTopicsAndComponents, assistantIA] = await Promise.all([
-      this.services.project.getCreator(creatorID, projectID, versionID),
-      this.services.workspace.isFeatureEnabled(creatorID, workspaceID, Realtime.FeatureFlag.TOPICS_AND_COMPONENTS),
-      this.services.workspace.isFeatureEnabled(creatorID, workspaceID, Realtime.FeatureFlag.ASSISTANT_IA),
-    ]);
+    const dbCreator = await this.services.project.getCreator(creatorID, projectID, versionID);
 
     const slots = Realtime.Adapters.slotAdapter.mapFromDB(dbCreator.version.platformData.slots);
     const notes = Realtime.Adapters.noteAdapter.mapFromDB(dbCreator.version.notes ? Object.values(dbCreator.version.notes) : []);
@@ -41,10 +34,6 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
         : [];
 
     const { intentSteps, startingBlocks } = this.services.diagram.getResources(dbCreator.diagrams);
-
-    if (isTopicsAndComponents && !assistantIA) {
-      await this.migrateTopicsAndComponents({ project, version, diagrams, creatorID, intentSteps });
-    }
 
     return [
       Realtime.note.load({ notes, workspaceID, projectID, versionID }),
@@ -70,59 +59,6 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
       Realtime.project.crud.add({ value: project, key: projectID, workspaceID }),
       Realtime.version.activateVersion({ workspaceID, projectID, versionID, projectType }),
     ];
-  };
-
-  // TODO: remove this when topics and components are fully migrated, before releasing the domains
-  private migrateTopicsAndComponents = async ({
-    project,
-    version,
-    diagrams,
-    creatorID,
-    intentSteps,
-  }: {
-    project: Realtime.AnyProject;
-    version: Realtime.AnyVersion;
-    diagrams: Realtime.Diagram[];
-    creatorID: number;
-    intentSteps: Record<string, Realtime.diagram.DiagramIntentStepMap>;
-  }) => {
-    /* eslint-disable no-param-reassign */
-
-    // TODO: replace try/catch with the version.canWrite and diagram.canWrite checks
-    // diagram.version patches can crash for non-editor users
-    try {
-      // perform initial conversion
-      if (project._version && project._version >= Realtime.TOPICS_AND_COMPONENTS_PROJECT_VERSION) {
-        const topicsDiagrams = diagrams.filter((diagram) => diagram.type === BaseModels.Diagram.DiagramType.TOPIC);
-        const componentsDiagrams = diagrams.filter((diagram) => !diagram.type || diagram.type === BaseModels.Diagram.DiagramType.COMPONENT);
-
-        if ((version.topics?.length ?? 0) !== topicsDiagrams.length || (version.components?.length ?? 0) !== componentsDiagrams.length) {
-          const topics = topicsDiagrams.map((diagram) => ({ sourceID: diagram.id, type: BaseModels.Version.FolderItemType.DIAGRAM }));
-          const components = componentsDiagrams.map((diagram) => ({ sourceID: diagram.id, type: BaseModels.Version.FolderItemType.DIAGRAM }));
-
-          version.topics = topics;
-          version.components = components;
-
-          await this.services.version.patch(creatorID, version.id, { topics, components });
-        }
-
-        await Promise.all(
-          topicsDiagrams.map(async (diagram) => {
-            const intentStepIDs = Object.keys(intentSteps[diagram.id] ?? {});
-
-            if ((diagram.intentStepIDs?.length ?? 0) === intentStepIDs.length) return;
-
-            diagram.intentStepIDs = intentStepIDs;
-
-            await this.services.diagram.patch(diagram.id, { intentStepIDs });
-          })
-        );
-      }
-    } catch (error) {
-      logger.debug(error);
-    }
-
-    /* eslint-enable no-param-reassign */
   };
 }
 

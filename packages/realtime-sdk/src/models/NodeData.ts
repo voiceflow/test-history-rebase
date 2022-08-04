@@ -226,12 +226,6 @@ export namespace NodeData {
     from: string | null;
   }
 
-  export interface Flow {
-    diagramID: string | null;
-    inputs?: VariableMapping[];
-    outputs?: VariableMapping[];
-  }
-
   export interface FlowBuiltInPorts {
     [BaseModels.PortType.NEXT]: string;
   }
@@ -526,7 +520,6 @@ export interface NodeDataMap {
   [BlockType.INTENT]: NodeData.Intent;
   [BlockType.STREAM]: NodeData.Stream;
   [BlockType.INTEGRATION]: NodeData.Integration;
-  [BlockType.FLOW]: NodeData.Flow;
   [BlockType.COMPONENT]: NodeData.Component;
   [BlockType.CODE]: NodeData.Code;
   [BlockType.PROMPT]: NodeData.Prompt;

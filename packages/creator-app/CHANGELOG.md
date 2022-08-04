@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.858.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.858.0...@voiceflow/creator-app@1.858.1) (2022-08-04)
+
+
+### Bug Fixes
+
+* initialize export canvas with AA enabled (CT-648) ([#5859](https://github.com/voiceflow/creator-app/issues/5859)) ([4b60872](https://github.com/voiceflow/creator-app/commit/4b60872e97760a8500c582acc0b2503469218c93))
+
+
+
+
+
 # [1.858.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.857.2...@voiceflow/creator-app@1.858.0) (2022-08-04)
 
 

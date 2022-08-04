@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.856.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.856.0...@voiceflow/creator-app@1.856.1) (2022-08-04)
+
+
+### Bug Fixes
+
+* realtime actions creation (CT-718) ([#5853](https://github.com/voiceflow/creator-app/issues/5853)) ([0f6f49b](https://github.com/voiceflow/creator-app/commit/0f6f49b310f5f6de2ba1f0dd95d85aac4e979f9f))
+
+
+
+
+
 # [1.856.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.855.0...@voiceflow/creator-app@1.856.0) (2022-08-03)
 
 

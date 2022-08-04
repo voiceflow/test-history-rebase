@@ -50,6 +50,11 @@ export enum SchemaVersion {
    * migrate to the topics and components
    */
   V3_0 = 3.0,
+
+  /**
+   * adds root diagram id to topics
+   */
+  V3_1 = 3.1,
 }
 
 export const SUPPORTED_SCHEMA_VERSIONS = Object.values(SchemaVersion)

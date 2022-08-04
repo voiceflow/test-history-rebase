@@ -26,7 +26,7 @@ const migrateToTopicsAndComponents = (version: Draft<VersionUpdateData>, diagram
   version.components = [];
 
   diagrams.forEach((diagram) => {
-    if (diagram._id === version.rootDiagramID) {
+    if (String(diagram._id) === String(version.rootDiagramID)) {
       diagram.type = BaseModels.Diagram.DiagramType.TOPIC;
       version.topics!.push(createDiagramFolderItem(diagram));
 
@@ -73,8 +73,12 @@ const migrateToV3_0: Transform = ({ version, diagrams }) => {
     return;
   }
 
-  const topicsDiagrams = diagrams.filter((diagram) => diagram.type === BaseModels.Diagram.DiagramType.TOPIC);
-  const componentsDiagrams = diagrams.filter((diagram) => !diagram.type || diagram.type === BaseModels.Diagram.DiagramType.COMPONENT);
+  const topicsDiagrams = diagrams.filter(
+    (diagram) => String(diagram._id) === String(version.rootDiagramID) || diagram.type === BaseModels.Diagram.DiagramType.TOPIC
+  );
+  const componentsDiagrams = diagrams.filter(
+    (diagram) => (!diagram.type || diagram.type === BaseModels.Diagram.DiagramType.COMPONENT) && String(diagram._id) !== String(version.rootDiagramID)
+  );
 
   if (version.topics.length === topicsDiagrams.length && version.components?.length === componentsDiagrams.length) return;
 

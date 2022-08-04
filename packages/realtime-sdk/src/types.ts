@@ -55,6 +55,11 @@ export enum SchemaVersion {
    * adds root diagram id to topics
    */
   V3_1 = 3.1,
+
+  /**
+   * restores version with a rootDiagramID that points to a non-existent diagram
+   */
+  V3_2 = 3.2,
 }
 
 export const SUPPORTED_SCHEMA_VERSIONS = Object.values(SchemaVersion)

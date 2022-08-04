@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.858.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.857.2...@voiceflow/creator-app@1.858.0) (2022-08-04)
+
+
+### Features
+
+* new modals system + domains modals (CT-568) ([#5820](https://github.com/voiceflow/creator-app/issues/5820)) ([affaf80](https://github.com/voiceflow/creator-app/commit/affaf80e76dcd4b24ee62d179689a306c1faef2e))
+
+
+
+
+
 ## [1.857.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.857.1...@voiceflow/creator-app@1.857.2) (2022-08-04)
 
 **Note:** Version bump only for package @voiceflow/creator-app

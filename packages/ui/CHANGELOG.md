@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.133.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.132.1...@voiceflow/ui@1.133.0) (2022-08-04)
+
+
+### Features
+
+* new modals system + domains modals (CT-568) ([#5820](https://github.com/voiceflow/creator-app/issues/5820)) ([affaf80](https://github.com/voiceflow/creator-app/commit/affaf80e76dcd4b24ee62d179689a306c1faef2e))
+
+
+
+
+
 ## [1.132.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.132.0...@voiceflow/ui@1.132.1) (2022-08-03)
 
 

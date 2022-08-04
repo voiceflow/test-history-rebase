@@ -7,7 +7,7 @@ import { DialogflowStageType } from '@/constants/platforms';
 import { ExportContext, PublishContext } from '@/contexts';
 
 import { SuccessStage, WaitProjectStage } from './components';
-import { DEFAULT_ERROR_MESSAGE } from './constants';
+import { DEFAULT_ERROR_MESSAGE, errorMap } from './errors';
 
 export const PlatformUploadPopup: React.FC<PlatformContentProps> = ({
   export: isExport,
@@ -25,7 +25,7 @@ export const PlatformUploadPopup: React.FC<PlatformContentProps> = ({
     case DialogflowStageType.PROGRESS:
       return <ProgressStage progress={contextValue.job.stage.data.progress}>{contextValue.job.stage.data.message}</ProgressStage>;
     case DialogflowStageType.ERROR:
-      return <ErrorStage stage={contextValue.job.stage} defaultMessage={DEFAULT_ERROR_MESSAGE} />;
+      return <ErrorStage stage={contextValue.job.stage} defaultMessage={DEFAULT_ERROR_MESSAGE} errorMap={errorMap} />;
     case DialogflowStageType.SUCCESS:
       return <SuccessStage stage={contextValue.job.stage} cancel={contextValue.cancel} />;
     case DialogflowStageType.WAIT_PROJECT:

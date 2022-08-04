@@ -19,23 +19,34 @@ import StageHeader from './StageHeader';
 
 const getTitle = ({ errorType, message }: AnyErrorStageData, platform: VoiceflowConstants.PlatformType) => {
   if (IsPublishJobRenderingError(errorType)) {
-    return 'Rendering Error';
+    return 'Rendering error';
   }
 
   if (isPublishJobSubmittingProjectError(errorType)) {
-    return 'Submitting Project Error';
+    return 'Submitting project error';
   }
 
   if (isPublishJobSubmittingReviewError(errorType)) {
-    return `${getPlatformName(platform)} Error Response`;
+    return `${getPlatformName(platform)} error response`;
   }
 
   return message;
 };
 
-const getError = ({ errorType, error }: AnyErrorStageData, defaultMessage: string) => {
+const getError = <E extends AnyErrorStageData>(
+  stageError: E,
+  defaultMessage: string,
+  errorMap?: (statusCode: E) => React.ReactElement | string | null
+) => {
+  const { errorType, error } = stageError;
+
   if (IsPublishJobRenderingError(errorType)) {
-    return 'project structure unable to build, please contact us on Intercom';
+    return 'Project structure unable to build, please contact us on Intercom';
+  }
+
+  if (errorMap) {
+    const msg = errorMap(stageError);
+    if (msg) return msg;
   }
 
   const strError = _isString(error) ? error : error?.message;
@@ -43,20 +54,24 @@ const getError = ({ errorType, error }: AnyErrorStageData, defaultMessage: strin
   return _isString(strError) ? strError : defaultMessage;
 };
 
-interface ErrorStageProps {
-  stage: AnyErrorStage;
+interface ErrorStageProps<S extends AnyErrorStage> {
+  stage: S;
+  errorMap?: (statusCode: S['data']) => React.ReactElement | string | null;
   defaultMessage?: string;
 }
 
-const ErrorStage: React.FC<ErrorStageProps> = ({ stage, defaultMessage = 'something went wrong, please contact us on Intercom' }) => {
+const ErrorStage = <S extends AnyErrorStage = AnyErrorStage>({
+  stage,
+  errorMap,
+  defaultMessage = 'Something went wrong, please contact us on Intercom',
+}: ErrorStageProps<S>) => {
   const platform = useSelector(ProjectV2.active.platformSelector);
 
   return (
     <StageContainer style={{ textAlign: 'left' }}>
       <StageHeader color="#e91e63">{getTitle(stage.data, platform)}</StageHeader>
-
       <Box mt={12}>
-        <span>{getError(stage.data, defaultMessage)}</span>
+        <span>{getError(stage.data, defaultMessage, errorMap)}</span>
       </Box>
     </StageContainer>
   );

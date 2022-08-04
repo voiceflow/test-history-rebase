@@ -117,6 +117,7 @@ export namespace DialogflowPublishJob {
       errorType: DialogflowPublishJobErrorType;
       error?: any;
       googleError?: boolean;
+      statusCode?: number;
     }
   >;
 
@@ -185,6 +186,7 @@ export namespace GooglePublishJob {
       errorType: GooglePublishJobErrorType;
       error?: any;
       googleError?: boolean;
+      statusCode?: number;
     }
   >;
 

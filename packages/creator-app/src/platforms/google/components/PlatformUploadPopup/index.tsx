@@ -6,6 +6,7 @@ import { GoogleStageType } from '@/constants/platforms';
 import { ExportContext, PublishContext } from '@/contexts';
 
 import { SuccessStage, WaitInvocationName, WaitProjectStage } from './components';
+import { errorMap } from './errors';
 
 export const PlatformUploadPopup: React.FC<PlatformContentProps> = ({ export: isExport, setMultiProjects }) => {
   const exportContextValue = React.useContext(ExportContext)!;
@@ -19,7 +20,7 @@ export const PlatformUploadPopup: React.FC<PlatformContentProps> = ({ export: is
     case GoogleStageType.PROGRESS:
       return <ProgressStage progress={contextValue.job.stage.data.progress}>{contextValue.job.stage.data.message}</ProgressStage>;
     case GoogleStageType.ERROR:
-      return <ErrorStage stage={contextValue.job.stage} />;
+      return <ErrorStage stage={contextValue.job.stage} errorMap={errorMap} />;
     case GoogleStageType.SUCCESS:
       return <SuccessStage stage={contextValue.job.stage} cancel={contextValue.cancel} />;
     case GoogleStageType.WAIT_PROJECT:

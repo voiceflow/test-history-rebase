@@ -11,7 +11,7 @@ const NLUHeader: React.FC = () => {
 
   return (
     <SharePopperProvider>
-      <Header renderLogoButton={() => <HeaderLogoButton options={logoOptions} height="65px" />}>
+      <Header renderLogoButton={() => <HeaderLogoButton options={logoOptions} style={{ height: '65px' }} />}>
         <SidebarHeader />
         <ContentHeader />
       </Header>

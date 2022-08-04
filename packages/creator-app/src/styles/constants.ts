@@ -22,8 +22,6 @@ export enum Identifier {
   UPGRADE_BUTTON = 'vf-upgrade-button',
   PAYMENT_DETAILS_SECTION = 'vf-payment-details-section',
   PAYMENT_UPGRADE_BUTTON = 'vf-payment-upgrade-button',
-  MODAL_CLOSE_BUTTON_REGULAR = 'vf-close-button-regular',
-  MODAL_TITLE_CONTAINER = 'vf-modal-title-container',
   PAYMENT_MODAL_BILLING_CYCLE_DROPDOWN = 'vf-payment-modal-billing-cycle-dropdown',
   PAYMENT_SEATS_INPUT = 'vf-input-seats-input',
   COLLAB_SEND_INVITE_BUTTON = 'vf-collab-invite-button',

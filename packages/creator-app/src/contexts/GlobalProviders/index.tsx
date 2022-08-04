@@ -19,6 +19,7 @@ import {
   RealtimeConnectionGate,
   SocketLoadingGate,
 } from '@/gates';
+import * as ModalsV2 from '@/ModalsV2';
 import THEME from '@/styles/theme';
 import * as Sentry from '@/vendors/sentry';
 
@@ -59,17 +60,19 @@ const GlobalProviders: React.FC<GlobalProvidersProps> = ({ history, store, persi
                                 <DragProvider>
                                   <AutoPanningProvider>
                                     <ModalsContextProvider>
-                                      <Upload.Provider client={client.upload} onError={(error) => Sentry.error(error)}>
-                                        <SocketLoadingGate>
-                                          <AccountLoadingGate>
-                                            <RealtimeConnectionGate>
-                                              <MLProvider>
-                                                <AccountSubscriptionGate>{children}</AccountSubscriptionGate>
-                                              </MLProvider>
-                                            </RealtimeConnectionGate>
-                                          </AccountLoadingGate>
-                                        </SocketLoadingGate>
-                                      </Upload.Provider>
+                                      <ModalsV2.Provider>
+                                        <Upload.Provider client={client.upload} onError={(error) => Sentry.error(error)}>
+                                          <SocketLoadingGate>
+                                            <AccountLoadingGate>
+                                              <RealtimeConnectionGate>
+                                                <MLProvider>
+                                                  <AccountSubscriptionGate>{children}</AccountSubscriptionGate>
+                                                </MLProvider>
+                                              </RealtimeConnectionGate>
+                                            </AccountLoadingGate>
+                                          </SocketLoadingGate>
+                                        </Upload.Provider>
+                                      </ModalsV2.Provider>
                                     </ModalsContextProvider>
                                   </AutoPanningProvider>
                                 </DragProvider>

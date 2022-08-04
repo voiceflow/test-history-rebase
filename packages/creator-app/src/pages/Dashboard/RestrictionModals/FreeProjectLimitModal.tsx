@@ -1,4 +1,3 @@
-import { ModalBoldText } from '@voiceflow/ui';
 import React from 'react';
 
 import { projectLimitGraphic } from '@/assets';
@@ -25,8 +24,7 @@ const FreeProjectLimitModal: React.FC = () => {
       icon={projectLimitGraphic}
       bodyContent={
         <>
-          {data.message || `You've reached your ${data.projects} free project limit`}. Upgrade to{' '}
-          <ModalBoldText>unlock unlimited projects.</ModalBoldText>
+          {data.message || `You've reached your ${data.projects} free project limit`}. Upgrade to <b>unlock unlimited projects.</b>
         </>
       }
     />

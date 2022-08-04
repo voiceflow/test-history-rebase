@@ -18,6 +18,7 @@ import { SeoPage } from '@/constants/seo';
 import { GlobalSocketSubscriptionsLoadingGate } from '@/gates';
 import { compose, withBatchLoadingGate } from '@/hocs';
 import AppModals from '@/modals/AppModals';
+import * as ModalsV2 from '@/ModalsV2';
 
 import { GlobalProvidersProps, withGlobalProviders } from './contexts/GlobalProviders';
 import Routes from './Routes';
@@ -29,6 +30,7 @@ const App: React.FC = () => (
     <Routes />
     <IntercomChat />
     <AppModals />
+    <ModalsV2.Placeholder />
     <RootPageProgressBar />
     <SupportChat />
   </>

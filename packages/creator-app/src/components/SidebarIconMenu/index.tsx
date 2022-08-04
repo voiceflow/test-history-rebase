@@ -3,9 +3,7 @@ import { Box, SvgIconTypes, TippyTooltip, TippyTooltipProps } from '@voiceflow/u
 import cn from 'classnames';
 import React from 'react';
 
-import { HeaderLogoButton } from '@/components/ProjectPage';
 import { useTheme } from '@/hooks';
-import { useLogoButtonOptions } from '@/pages/Project/components/Header/hooks';
 import { ClassName } from '@/styles/constants';
 
 import Drawer from '../Drawer';
@@ -23,23 +21,22 @@ export interface SidebarIconMenuItem {
 
 export interface SidebarIconMenuProps<T extends SidebarIconMenuItem> {
   open: boolean;
+  header?: React.ReactNode;
   options: Nullable<T>[];
   onSelect?: (option: T, event: React.MouseEvent<HTMLDivElement>) => void;
   activeValue: string;
   footerOptions?: Nullable<T>[];
-  withLogo?: boolean;
 }
 
 const SidebarIconMenu = <T extends SidebarIconMenuItem>({
   open,
+  header,
   options,
   onSelect,
   activeValue,
   footerOptions,
-  withLogo,
 }: SidebarIconMenuProps<T>): React.ReactElement<any, any> => {
   const theme = useTheme();
-  const logoOptions = useLogoButtonOptions();
 
   const onClick = (option: T, event: React.MouseEvent<HTMLDivElement>) => {
     option.onClick?.(event);
@@ -68,8 +65,8 @@ const SidebarIconMenu = <T extends SidebarIconMenuItem>({
 
   return (
     <Drawer open={open} width={theme.components.sidebarIconMenu.width} zIndex={25} direction={Drawer.Direction.RIGHT}>
-      <Container className={cn(ClassName.SIDEBAR_ICON_MENU, open && `${ClassName.SIDEBAR_ICON_MENU}--opened`)} style={withLogo ? { padding: 0 } : {}}>
-        {withLogo && <HeaderLogoButton options={logoOptions} margin="0 0 24px 0" withBorder={false} height="65px" borderBottom="1px solid #dfe3ed" />}
+      <Container className={cn(ClassName.SIDEBAR_ICON_MENU, open && `${ClassName.SIDEBAR_ICON_MENU}--opened`)} style={header ? { padding: 0 } : {}}>
+        {header}
 
         {options.map(renderOption)}
 

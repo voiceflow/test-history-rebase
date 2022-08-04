@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Link, ModalBodyContainer, ModalButtonContainer, ModalContentContainer } from '@voiceflow/ui';
+import { Box, Button, Flex, Link } from '@voiceflow/ui';
 import React from 'react';
 
 import Modal, { ModalFooter } from '@/components/Modal';
@@ -40,21 +40,19 @@ const RedirectToPaymentBaseModal: React.FC<RedirectToPaymentBaseModalProps> = ({
   return (
     <StyledModal id={modalType} className={className} title={header}>
       <Box width="100%">
-        <ModalBodyContainer column>
+        <Modal.Body centred>
           <img src={icon} alt="plan restriction" height={80} />
 
-          <ModalContentContainer>{bodyContent}</ModalContentContainer>
-        </ModalBodyContainer>
+          <Box mt={16}>{bodyContent}</Box>
+        </Modal.Body>
 
-        <ModalFooter justifyContent="space-between">
+        <ModalFooter gap={12} justifyContent="space-between">
           <div>{helpLink && <Link href={helpLink}>See more</Link>}</div>
 
           <ActionContainer>
-            <ModalButtonContainer>
-              <Button squareRadius onClick={onUnlock}>
-                Unlock
-              </Button>
-            </ModalButtonContainer>
+            <Button squareRadius onClick={onUnlock}>
+              Unlock
+            </Button>
           </ActionContainer>
         </ModalFooter>
       </Box>

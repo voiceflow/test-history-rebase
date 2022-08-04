@@ -22,4 +22,8 @@ export enum ClassName {
   POPPER = 'vf-popper',
   POPPER_NAV_ITEM = 'vf-popper__nav_item',
   SELECT = 'vf-select',
+
+  MODAL = 'vf-modal',
+  MODAL_TITLE_CONTAINER = 'vf-modal--title-container',
+  MODAL_CLOSE_BUTTON_REGULAR = 'vf-modal--close-button-regular',
 }

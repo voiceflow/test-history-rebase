@@ -1,4 +1,3 @@
-import { ModalBoldText } from '@voiceflow/ui';
 import React from 'react';
 
 import { projectDownloadGraphic } from '@/assets';
@@ -12,7 +11,7 @@ const ProjectDownloadModal: React.FC = () => (
     icon={projectDownloadGraphic}
     bodyContent={
       <>
-        This is a <ModalBoldText>Pro</ModalBoldText> feature. Please upgrade your workspace to access downloadable link.
+        This is a <b>Pro</b> feature. Please upgrade your workspace to access downloadable link.
       </>
     }
   />

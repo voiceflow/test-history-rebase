@@ -1,3 +1,5 @@
+import { ClassName as UIClassName } from '@voiceflow/ui';
+
 import { ClassName, DashboardClassName, Identifier } from '../../src/styles/constants';
 
 const paymentHelper = {
@@ -47,8 +49,8 @@ const paymentHelper = {
     cy.get(`.${DashboardClassName.PLAN_BUBBLE}`).contains('Free');
   },
   checkAndCloseSuccessModal: () => {
-    cy.get(`#${Identifier.MODAL_TITLE_CONTAINER}`).contains('Payment Successful');
-    cy.get(`#${Identifier.MODAL_CLOSE_BUTTON_REGULAR}`).click();
+    cy.get(`.${UIClassName.MODAL_TITLE_CONTAINER}`).contains('Payment Successful');
+    cy.get(`.${UIClassName.MODAL_CLOSE_BUTTON_REGULAR}`).click();
     cy.get(`.${DashboardClassName.PLAN_BUBBLE}`).contains('Pro');
   },
   increaseEditors: (numEditors = '12') => {

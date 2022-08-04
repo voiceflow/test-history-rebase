@@ -2,7 +2,7 @@ import './ImportModal.css';
 
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Button, ButtonVariant, ModalImportSelect, StatusCode, toast, ToastCallToAction } from '@voiceflow/ui';
+import { Button, ButtonVariant, StatusCode, toast, ToastCallToAction } from '@voiceflow/ui';
 import React, { useMemo, useState } from 'react';
 
 import client from '@/client';
@@ -16,6 +16,8 @@ import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { extractMemberById } from '@/ducks/workspaceV2/utils';
 import { useAsyncEffect, useDispatch, useModals, useSelector, useTrackingEvents } from '@/hooks';
 import * as Sentry from '@/vendors/sentry';
+
+import ModalImportSelect from './ModalImportSelect';
 
 const allowedToClone = (workspace: Realtime.Workspace, creatorID: number | null): boolean => {
   if (!creatorID) {

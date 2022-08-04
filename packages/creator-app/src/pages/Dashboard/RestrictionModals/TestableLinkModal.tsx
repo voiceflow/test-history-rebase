@@ -1,4 +1,3 @@
-import { ModalBoldText } from '@voiceflow/ui';
 import React from 'react';
 
 import { linkGraphic } from '@/assets';
@@ -12,7 +11,7 @@ const TestableLinkModal: React.FC = () => (
     icon={linkGraphic}
     bodyContent={
       <>
-        This is a <ModalBoldText>Pro</ModalBoldText> feature. Please upgrade your workspace to share testable links.
+        This is a <b>Pro</b> feature. Please upgrade your workspace to share testable links.
       </>
     }
   />

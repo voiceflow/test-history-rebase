@@ -1,18 +1,18 @@
-import { Box, IconButton, IconButtonVariant, Portal, TutorialInfoIcon } from '@voiceflow/ui';
+import { Box, Modal as UIModal, Portal } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
 import { ThemeProvider } from 'styled-components';
 
 import { ModalType } from '@/constants';
 import { useModals, useTheme } from '@/hooks';
-import { ClassName, Identifier } from '@/styles/constants';
+import { ClassName } from '@/styles/constants';
 
-import { Body, Container, Footer, Header, Root } from './components';
+import { Container } from './components';
 
 /**
  * @deprecated
  */
-export { Body as ModalBody, Footer as ModalFooter, Header as ModalHeader } from './components';
+export const { Body: ModalBody, Footer: ModalFooter } = UIModal;
 
 export interface UncontrolledModalProps {
   id?: string;
@@ -71,7 +71,7 @@ export const UncontrolledModal = React.forwardRef<HTMLDivElement, React.PropsWit
     return (
       <ThemeProvider theme={nestedTheme}>
         <Portal portalNode={document.body}>
-          <Root ref={ref} hidden={!isOpened} centered={centered} fullScreen={fullScreen}>
+          <UIModal.S.Root ref={ref} hidden={!isOpened} centered={centered} fullScreen={fullScreen}>
             <Container
               fade={fade}
               centered={centered}
@@ -82,33 +82,18 @@ export const UncontrolledModal = React.forwardRef<HTMLDivElement, React.PropsWit
               fullScreen={fullScreen}
             >
               {leftSidebar?.()}
+
               <Box flex={10} maxWidth="100%">
                 {withHeader && (
-                  <Header headerBorder={headerBorder} capitalizeText={capitalizeText}>
-                    <Box.Flex height="100%">
-                      <Box.Flex height="100%" id={Identifier.MODAL_TITLE_CONTAINER}>
-                        {title}
-                      </Box.Flex>
-
-                      {intoTooltip && (
-                        <Box ml={8}>
-                          <TutorialInfoIcon>{intoTooltip}</TutorialInfoIcon>
-                        </Box>
-                      )}
-                    </Box.Flex>
-                    <Box.Flex height="100%">
-                      {headerActions && <Box.Flex mr={16}>{headerActions}</Box.Flex>}
-                      {closable && (
-                        <IconButton
-                          size={16}
-                          id={Identifier.MODAL_CLOSE_BUTTON_REGULAR}
-                          icon="close"
-                          variant={IconButtonVariant.BASIC}
-                          onClick={onClose}
-                        />
-                      )}
-                    </Box.Flex>
-                  </Header>
+                  <UIModal.Header
+                    border={headerBorder}
+                    onClose={closable ? onClose : null}
+                    actions={headerActions}
+                    intoTooltip={intoTooltip}
+                    capitalizeText={capitalizeText}
+                  >
+                    {title}
+                  </UIModal.Header>
                 )}
 
                 <Box.Flex column fullHeight={fullScreen}>
@@ -116,7 +101,7 @@ export const UncontrolledModal = React.forwardRef<HTMLDivElement, React.PropsWit
                 </Box.Flex>
               </Box>
             </Container>
-          </Root>
+          </UIModal.S.Root>
         </Portal>
       </ThemeProvider>
     );
@@ -129,10 +114,11 @@ const Modal: React.ForwardRefRenderFunction<HTMLDivElement, ModalProps> = ({ id,
   return !isInStack ? null : <UncontrolledModal {...props} id={id} ref={ref} fade={fade} onClose={close} isOpened={isOpened} />;
 };
 
+/**
+ * @deprecated use ModalsV2 instead
+ */
 export default Object.assign(React.forwardRef<HTMLDivElement, React.PropsWithChildren<ModalProps>>(Modal), {
-  Root,
-  Body,
-  Footer,
-  Header,
-  Container,
+  Body: UIModal.Body,
+  Footer: UIModal.Footer,
+  Header: UIModal.Header,
 });

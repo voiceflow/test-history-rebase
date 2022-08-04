@@ -1,16 +1,5 @@
 import { Nullable } from '@voiceflow/common';
-import {
-  Alert,
-  Box,
-  Button,
-  ButtonVariant,
-  LoadCircle,
-  ModalActionContainer,
-  ModalBodyContainer,
-  ModalBoldText,
-  ModalButtonContainer,
-  ModalContentContainer,
-} from '@voiceflow/ui';
+import { Alert, Box, Button, ButtonVariant, LoadCircle } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
@@ -74,21 +63,21 @@ const BaseConnectPlatformModal: React.FC<BaseConnectPlatformModalProps> = ({
   return (
     <Modal id={modalType} maxWidth={392} title={title}>
       <Box width="100%">
-        <ModalBodyContainer column>
+        <Modal.Body centred>
           {isLoading ? (
             <>
               <LoadCircle />
-              <ModalContentContainer>
-                Waiting for a verified connection to your <ModalBoldText>{platformName} Developer</ModalBoldText> account.
-              </ModalContentContainer>
+              <Box mt={16}>
+                Waiting for a verified connection to your <b>{platformName} Developer</b> account.
+              </Box>
             </>
           ) : (
             <>
               <img src={linkGraphic} alt="plan restriction" height={80} />
 
-              <ModalContentContainer>
-                Please connect your <ModalBoldText>{platformName} Developer</ModalBoldText> account to upload your {projectName}.
-              </ModalContentContainer>
+              <Box mt={16}>
+                Please connect your <b>{platformName} Developer</b> account to upload your {projectName}.
+              </Box>
             </>
           )}
           {hasError && (
@@ -96,28 +85,25 @@ const BaseConnectPlatformModal: React.FC<BaseConnectPlatformModalProps> = ({
               Login With {platformName} Failed
             </Alert>
           )}
-        </ModalBodyContainer>
+        </Modal.Body>
 
         <ModalFooter justifyContent="space-between">
-          <ModalActionContainer>
+          <Box.Flex gap={12} style={{ whiteSpace: 'nowrap' }}>
             <Button variant={ButtonVariant.TERTIARY} onClick={onCancel}>
               Cancel
             </Button>
 
-            {platform && (
-              <ModalButtonContainer>
-                {getPlatformValue(
-                  platform,
-                  {
-                    [VoiceflowConstants.PlatformType.ALEXA]: (
-                      <AmazonLoginButton disabled={isLoading} onLoad={onLoad} onFail={onFail} onSuccess={onSuccess} />
-                    ),
-                  },
-                  <GoogleLoginButton scopes={GOOGLE_OAUTH_SCOPES} onLoad={onLoad} onFail={onFail} onSuccess={onSuccess} />
-                )}
-              </ModalButtonContainer>
-            )}
-          </ModalActionContainer>
+            {platform &&
+              getPlatformValue(
+                platform,
+                {
+                  [VoiceflowConstants.PlatformType.ALEXA]: (
+                    <AmazonLoginButton disabled={isLoading} onLoad={onLoad} onFail={onFail} onSuccess={onSuccess} />
+                  ),
+                },
+                <GoogleLoginButton scopes={GOOGLE_OAUTH_SCOPES} onLoad={onLoad} onFail={onFail} onSuccess={onSuccess} />
+              )}
+          </Box.Flex>
         </ModalFooter>
       </Box>
     </Modal>

@@ -1,4 +1,4 @@
-import { Box, Button, Link, logger, ModalBodyContainer, ModalContentContainer } from '@voiceflow/ui';
+import { Box, Button, Link, logger } from '@voiceflow/ui';
 import React from 'react';
 
 import { takeoffGraphic } from '@/assets';
@@ -50,11 +50,11 @@ const RefreshModal: React.FC = () => {
   return (
     <Modal id={ModalType.REFRESH} maxWidth={392} title="New Version">
       <Box width="100%">
-        <ModalBodyContainer column>
+        <Modal.Body centred>
           <img src={takeoffGraphic} alt="new version" height={80} />
 
-          <ModalContentContainer>Voiceflow has published new changes. Please refresh to gain access to the newest version. </ModalContentContainer>
-        </ModalBodyContainer>
+          <Box mt={16}>Voiceflow has published new changes. Please refresh to gain access to the newest version. </Box>
+        </Modal.Body>
 
         <ModalFooter justifyContent="space-between">
           <Link href={CHANGELOG_LINK}>See what’s new!</Link>

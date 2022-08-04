@@ -95,7 +95,7 @@ export {
 export { LoadCircle, default as Loader } from './Loader';
 export type { MenuTypes } from './Menu';
 export { default as Menu, MenuContainer, MenuItem, menuItemStyles } from './Menu';
-export { ModalActionContainer, ModalBodyContainer, ModalBoldText, ModalButtonContainer, ModalContentContainer, ModalImportSelect } from './Modal';
+export { default as Modal } from './Modal';
 export type {
   BaseMenuItem,
   GetOptionKey,

@@ -1,4 +1,3 @@
-import { ModalBoldText } from '@voiceflow/ui';
 import React from 'react';
 
 import { integrationGraphic } from '@/assets';
@@ -12,7 +11,7 @@ const CanvasExportModal: React.FC = () => (
     icon={integrationGraphic}
     bodyContent={
       <>
-        This is a <ModalBoldText>Pro</ModalBoldText> feature. Please upgrade your workspace to use the Export feature.
+        This is a <b>Pro</b> feature. Please upgrade your workspace to use the Export feature.
       </>
     }
   />

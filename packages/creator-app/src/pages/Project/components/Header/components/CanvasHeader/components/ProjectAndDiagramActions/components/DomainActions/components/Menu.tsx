@@ -1,5 +1,8 @@
+import { Utils } from '@voiceflow/common';
 import { Menu as UIMenu, stopImmediatePropagation } from '@voiceflow/ui';
 import React from 'react';
+
+import * as Modals from '@/ModalsV2';
 
 import MenuInfoTooltip from './MenuInfoTooltip';
 import MenuItem from './MenuItem';
@@ -27,8 +30,10 @@ const DOMAINS = [
   },
 ];
 
-const Menu: React.FC<MenuProps> = () => {
+const Menu: React.FC<MenuProps> = ({ onClose }) => {
   const [search, setSearch] = React.useState('');
+
+  const createModal = Modals.useModal(Modals.Domain.Create);
 
   const filteredDomains = React.useMemo(() => {
     const lowercaseSearch = search.toLowerCase();
@@ -40,6 +45,7 @@ const Menu: React.FC<MenuProps> = () => {
     <>
       <UIMenu
         width={275}
+        onHide={onClose}
         swallowMouseDownEvent={false}
         searchable={
           <S.MenuSearchInput
@@ -51,7 +57,9 @@ const Menu: React.FC<MenuProps> = () => {
         }
         renderFooterAction={({ close }) => (
           <UIMenu.Footer>
-            <UIMenu.Footer.Action onClick={close}>Create New Domain</UIMenu.Footer.Action>
+            <UIMenu.Footer.Action onClick={Utils.functional.chain(close, () => createModal.openVoid({ name: search }))}>
+              Create New Domain
+            </UIMenu.Footer.Action>
           </UIMenu.Footer>
         )}
       >

@@ -1,4 +1,3 @@
-import { ModalBoldText } from '@voiceflow/ui';
 import React from 'react';
 
 import { teamGraphic } from '@/assets';
@@ -24,8 +23,7 @@ const RealtimeDeniedModal: React.FC = () => {
       icon={teamGraphic}
       bodyContent={
         <>
-          A teammate is actively editing this project. Real-time collaboration is a <ModalBoldText>Pro</ModalBoldText> feature, please upgrade your
-          plan to continue.
+          A teammate is actively editing this project. Real-time collaboration is a <b>Pro</b> feature, please upgrade your plan to continue.
         </>
       }
     />

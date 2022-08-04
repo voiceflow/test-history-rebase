@@ -1,4 +1,4 @@
-import { Box, LoadCircle, ModalBodyContainer } from '@voiceflow/ui';
+import { Box, LoadCircle } from '@voiceflow/ui';
 import React from 'react';
 
 import Modal from '@/components/Modal';
@@ -13,9 +13,9 @@ export interface IdleStageProps {
 const IdleStage: React.FC<IdleStageProps> = ({ modalType, title, className }) => (
   <Modal id={modalType} title={title} maxWidth={392} className={className}>
     <Box width="100%">
-      <ModalBodyContainer column>
+      <Modal.Body centred>
         <LoadCircle />
-      </ModalBodyContainer>
+      </Modal.Body>
     </Box>
   </Modal>
 );

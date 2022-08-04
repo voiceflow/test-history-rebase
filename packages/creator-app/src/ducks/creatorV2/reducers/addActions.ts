@@ -3,11 +3,12 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Draft } from 'immer';
 import * as Normal from 'normal-store';
 
-import { blockNodeDataFactory } from '@/ducks/creator/diagram/factories';
+import { nodeDataFactory } from '@/ducks/creator/diagram/factories';
+import { createReverter } from '@/ducks/utils';
 
 import { CreatorState } from '../types';
 import { addNodeWithPorts, addStep } from '../utils';
-import { createActiveDiagramReducer } from './utils';
+import { createActiveDiagramReducer, DIAGRAM_INVALIDATORS } from './utils';
 
 export const addActions = (
   state: Draft<CreatorState>,
@@ -18,7 +19,7 @@ export const addActions = (
   state.coordsByNodeID[actionsID] = coords;
   state.stepIDsByParentNodeID[actionsID] = [];
 
-  addNodeWithPorts(state, { nodeID: actionsID, data: blockNodeDataFactory(actionsID), ports });
+  addNodeWithPorts(state, { nodeID: actionsID, data: nodeDataFactory(actionsID, { type: Realtime.BlockType.ACTIONS, name: 'Actions' }), ports });
 };
 
 const addActionsReducer = createActiveDiagramReducer(
@@ -33,3 +34,18 @@ const addActionsReducer = createActiveDiagramReducer(
 );
 
 export default addActionsReducer;
+
+export const addActionsReverted = createReverter(
+  Realtime.node.addActions,
+
+  ({ workspaceID, projectID, versionID, diagramID, actionsID, stepID }) =>
+    Realtime.node.removeMany({
+      workspaceID,
+      projectID,
+      versionID,
+      diagramID,
+      nodes: [{ parentNodeID: actionsID }, { parentNodeID: actionsID, stepID }],
+    }),
+
+  DIAGRAM_INVALIDATORS
+);

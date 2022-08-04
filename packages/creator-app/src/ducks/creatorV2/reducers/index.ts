@@ -3,7 +3,7 @@ import { createRootReducer } from '@/ducks/utils/reducer';
 
 import { INITIAL_STATE } from '../constants';
 import { CreatorState } from '../types';
-import addActions from './addActions';
+import addActions, { addActionsReverted } from './addActions';
 import addBlock, { addBlockReverter } from './addBlock';
 import addBuiltInLink, { addBuiltinLinkReverter } from './addBuiltinLink';
 import addBuiltinPort, { addBuiltinPortReverter } from './addBuiltinPort';
@@ -67,6 +67,7 @@ export const reverters = [
 
   addBlockReverter,
   addMarkupReverter,
+  addActionsReverted,
 
   insertStepReverter,
   isolateStepsReverter,

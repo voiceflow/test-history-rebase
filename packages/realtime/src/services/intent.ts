@@ -2,6 +2,7 @@ import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { AbstractControl } from '@/control';
+import { uniqueReverse } from '@/services/utils/uniq';
 
 class IntentService extends AbstractControl {
   public async getAll<T extends BaseModels.Version.PlatformData>(creatorID: number, versionID: string): Promise<Realtime.VersionIntent<T>[]> {
@@ -19,7 +20,9 @@ class IntentService extends AbstractControl {
     versionID: string,
     intents: Realtime.VersionIntent<T>[]
   ): Promise<void> {
-    await this.services.version.patchPlatformData(creatorID, versionID, { intents });
+    await this.services.version.patchPlatformData(creatorID, versionID, {
+      intents: uniqueReverse(intents, (intent) => intent.key || intent),
+    });
   }
 
   public async createMany<T extends BaseModels.Version.PlatformData>(

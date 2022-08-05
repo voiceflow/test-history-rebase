@@ -2,6 +2,7 @@ import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { AbstractControl } from '@/control';
+import { uniqueReverse } from '@/services/utils/uniq';
 
 class SlotService extends AbstractControl {
   public async getAll<T extends BaseModels.Version.PlatformData>(creatorID: number, versionID: string): Promise<Realtime.VersionSlot<T>[]> {
@@ -19,7 +20,7 @@ class SlotService extends AbstractControl {
     versionID: string,
     slots: Realtime.VersionSlot<T>[]
   ): Promise<void> {
-    await this.services.version.patchPlatformData(creatorID, versionID, { slots });
+    await this.services.version.patchPlatformData(creatorID, versionID, { slots: uniqueReverse(slots, (slot) => slot.key || slot) });
   }
 
   public async createMany<T extends BaseModels.Version.PlatformData>(

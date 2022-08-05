@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.859.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.858.4...@voiceflow/creator-app@1.859.0) (2022-08-05)
+
+
+### Features
+
+* remove unused SVGs (CT-584) ([#5855](https://github.com/voiceflow/creator-app/issues/5855)) ([5d4ffcd](https://github.com/voiceflow/creator-app/commit/5d4ffcdb580cbdd6ac1780d0d31c4a2c91a0b1e1))
+
+
+
+
+
 ## [1.858.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.858.3...@voiceflow/creator-app@1.858.4) (2022-08-05)
 
 **Note:** Version bump only for package @voiceflow/creator-app

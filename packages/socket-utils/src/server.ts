@@ -31,7 +31,8 @@ export class SocketServer extends Logux.Server {
           // ignore action processing logs
           if (['Action was processed', 'Action was cleaned'].includes(message)) return;
 
-          logger.info({ message, details: env === 'production' || !details.action ? details : details.action });
+          const action = details?.action?.type || '';
+          logger.info(env === 'production' ? { message, details } : `${message}${action && ': '}${action}`);
         },
         warn: (details, message) => logger.warn({ message, details }),
         error: (details, message) => logger.error({ message, details }),

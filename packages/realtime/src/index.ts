@@ -1,5 +1,6 @@
 import './polyfills';
 
+import { LoguxError } from '@logux/core';
 import { SocketServer } from '@voiceflow/socket-utils';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -16,7 +17,8 @@ const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
     env: config.NODE_ENV,
     port: config.PORT,
     cwd: rootDir,
-    logger,
+    // errors handled by server.on('error', ...) below
+    logger: Object.assign(logger, { error: logger.debug }),
   });
 
   const ioServer = new IOServer({
@@ -50,7 +52,13 @@ const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 
   try {
     server.on('fatal', (error) => logger.error({ error }));
-    server.on('error', (error, action, meta) => logger.warn({ error, action, meta }));
+    server.on('error', (error, action, meta) => {
+      if (error instanceof LoguxError && error.type === 'timeout') {
+        logger.info({ error, action, meta });
+      } else {
+        logger.warn({ error, action, meta });
+      }
+    });
     ioServer.on('error', (error) => error && logger.warn({ error }));
     ioServer.on('fatal', (error) => error && logger.error({ error }));
 

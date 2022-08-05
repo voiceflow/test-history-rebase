@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.860.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.859.0...@voiceflow/creator-app@1.860.0) (2022-08-05)
+
+
+### Features
+
+* block template context option (CT-672) ([#5854](https://github.com/voiceflow/creator-app/issues/5854)) ([026d887](https://github.com/voiceflow/creator-app/commit/026d887a9a9f171096f7d1cde483a685416c3ed5))
+
+
+
+
+
 # [1.859.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.858.4...@voiceflow/creator-app@1.859.0) (2022-08-05)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.91.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.91.3...@voiceflow/realtime@1.91.4) (2022-08-05)
+
+
+### Bug Fixes
+
+* unique resources by key [bugfix] (CT-756) ([#5866](https://github.com/voiceflow/creator-app/issues/5866)) ([1b6fb90](https://github.com/voiceflow/creator-app/commit/1b6fb90480ece23a02472eed60d7ee4face0ffe3)), closes [/github.com/voiceflow/creator-app/blob/44e9e64bfe66328ae1e8bcf9def27fcaba86284b/packages/realtime/src/services/slot.ts#L26-L34](https://github.com//github.com/voiceflow/creator-app/blob/44e9e64bfe66328ae1e8bcf9def27fcaba86284b/packages/realtime/src/services/slot.ts/issues/L26-L34)
+
+
+
+
+
 ## [1.91.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.91.2...@voiceflow/realtime@1.91.3) (2022-08-05)
 
 

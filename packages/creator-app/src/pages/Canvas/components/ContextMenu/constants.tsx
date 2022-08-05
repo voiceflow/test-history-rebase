@@ -10,6 +10,7 @@ import { isMarkupBlockType } from '@/utils/typeGuards';
 
 import type Engine from '../../engine';
 import { ContextColorPicker } from './components/ContextColorPicker';
+import { ContextTemplateLibrary } from './components/ContextTemplateLibrary';
 import { ContextMenuOption } from './types';
 
 export enum CanvasAction {
@@ -19,6 +20,7 @@ export enum CanvasAction {
   DUPLICATE_BLOCK = 'duplicate_block',
   DELETE_BLOCK = 'delete_block',
   COLOR_BLOCK = 'color_block',
+  SAVE_TO_LIBRARY = 'save_to_library',
   RETURN_TO_HOME = 'return_to_home',
   ZOOM_IN = 'zoom_in',
   ZOOM_OUT = 'zoom_out',
@@ -119,6 +121,21 @@ export const BLOCK_OPTIONS: ContextMenuOption<CanvasAction>[] = [
       );
     },
     shouldRender: ({ target: nodeID }, { engine }) => isBlock(nodeID, engine) || isStart(nodeID, engine),
+  },
+  {
+    label: 'Save to Library',
+    value: CanvasAction.SAVE_TO_LIBRARY,
+    render: ({ target: nodeID }, { engine }) => {
+      const node = engine.getNodeByID(nodeID);
+      const defaultColorScheme = isChipNode(engine.getNodeByID(node?.combinedNodes[0]), node)
+        ? COLOR_PICKER_CONSTANTS.ColorScheme.DARK
+        : COLOR_PICKER_CONSTANTS.ColorScheme.LIGHT;
+
+      return (
+        <ContextTemplateLibrary defaultColorScheme={node?.type === BlockType.START ? COLOR_PICKER_CONSTANTS.ColorScheme.BLACK : defaultColorScheme} />
+      );
+    },
+    shouldRender: ({ target: nodeID }, { engine }) => !isStart(nodeID, engine),
   },
   {
     label: 'Rename',

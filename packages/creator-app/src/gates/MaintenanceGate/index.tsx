@@ -21,6 +21,8 @@ const WARNING_INTERVALS = [60, 30, 10, 5, 1];
 
 const CHECKED_COOKIE = 'd8WMYh2g89';
 
+const WARNING_KEY = 'maintenanceWarning';
+
 const getMaintenance = async () => {
   // TEST TIME INTERVALS (uncomment to override fetched times with hard coded test ISO-ZULU intervals)
   // const minutesFromNow = (minutes = 1) => new Date(Date.now() + minutes * 60 * 1000).toISOString();
@@ -85,11 +87,14 @@ const MaintenanceGate: React.FC<ConnectedMaintenanceGateProps> = ({ children, se
         const start = Date.parse(startTimeUtc);
         const end = Date.parse(endTimeUtc);
 
+        const maintenanceID = `${start}-${end}`;
+
         if (start && end) {
           maintenance.evaluateMaintenance(start, end);
 
           // if maintenance period has already passed, no need for notification
-          if (Date.now() < end) {
+          if (Date.now() < end && localStorage.getItem(WARNING_KEY) !== maintenanceID) {
+            localStorage.setItem(WARNING_KEY, maintenanceID);
             toast.warn(
               <>
                 Voiceflow Creator will go under planned maintenance from
@@ -98,6 +103,8 @@ const MaintenanceGate: React.FC<ConnectedMaintenanceGateProps> = ({ children, se
               </>,
               { autoClose: false }
             );
+          } else if (Date.now() > end) {
+            localStorage.removeItem(WARNING_KEY);
           }
         }
       } catch (err) {

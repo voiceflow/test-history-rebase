@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.858.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.858.2...@voiceflow/creator-app@1.858.3) (2022-08-05)
+
+
+### Bug Fixes
+
+* not display carousel card blocks when there is no data (CT-695) ([#5865](https://github.com/voiceflow/creator-app/issues/5865)) ([e9ab0a5](https://github.com/voiceflow/creator-app/commit/e9ab0a5b7926bfcfd559e8c7d831172892d31137))
+
+
+
+
+
 ## [1.858.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.858.1...@voiceflow/creator-app@1.858.2) (2022-08-04)
 
 **Note:** Version bump only for package @voiceflow/creator-app

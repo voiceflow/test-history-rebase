@@ -34,7 +34,7 @@ const SampleEditor: React.FC<{ samples: Sample[]; wrap?: boolean }> = ({ samples
           ))}
         </Box>
         <TippyTooltip title="Copy">
-          <SvgIcon icon="flows" onClick={handleCopySnippet} color="#becedc" clickable />
+          <SvgIcon icon="copy" onClick={handleCopySnippet} color="#becedc" clickable />
         </TippyTooltip>
       </Header>
       <SampleAceEditor

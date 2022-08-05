@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.19.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/socket-utils@1.19.0...@voiceflow/socket-utils@1.19.1) (2022-08-05)
+
+
+### Bug Fixes
+
+* less verbose logs (VF-000) ([#5861](https://github.com/voiceflow/creator-app/issues/5861)) ([394ebe9](https://github.com/voiceflow/creator-app/commit/394ebe9d37cc4f297809143a02816e50ceaa42c9)), closes [/github.com/voiceflow/creator-app/blob/d5113f2c003612693c1dfa676afe468bb0532954/packages/socket-utils/src/server.ts#L38](https://github.com//github.com/voiceflow/creator-app/blob/d5113f2c003612693c1dfa676afe468bb0532954/packages/socket-utils/src/server.ts/issues/L38) [/github.com/voiceflow/creator-app/blob/6691c684938d4cb85aa22d7cc502b4299829f6a1/packages/realtime/src/index.ts#L55](https://github.com//github.com/voiceflow/creator-app/blob/6691c684938d4cb85aa22d7cc502b4299829f6a1/packages/realtime/src/index.ts/issues/L55) [/github.com/logux/server/blob/95166cee9c1da9184a827ed72f343b76be99e021/base-server/index.js#L275-L287](https://github.com//github.com/logux/server/blob/95166cee9c1da9184a827ed72f343b76be99e021/base-server/index.js/issues/L275-L287) [/github.com/logux/server/blob/05cf14f1ee50f5293d5848c2aec5417fdae69ae7/create-reporter/index.js#L261-L281](https://github.com//github.com/logux/server/blob/05cf14f1ee50f5293d5848c2aec5417fdae69ae7/create-reporter/index.js/issues/L261-L281)
+
+
+
+
+
 # [1.19.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/socket-utils@1.18.0...@voiceflow/socket-utils@1.19.0) (2022-08-03)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.133.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.133.0...@voiceflow/ui@1.133.1) (2022-08-05)
+
+
+### Bug Fixes
+
+* modal popovers no events [bugfix] (CT-758) ([#5867](https://github.com/voiceflow/creator-app/issues/5867)) ([0b753a6](https://github.com/voiceflow/creator-app/commit/0b753a66377dd30145d057ae09a6f4786f29b2ef)), closes [/github.com/voiceflow/creator-app/blob/9e05c4bffd7db7ad50819275197edc0abdbc9240/packages/ui/src/components/Modal/styles.ts#L106](https://github.com//github.com/voiceflow/creator-app/blob/9e05c4bffd7db7ad50819275197edc0abdbc9240/packages/ui/src/components/Modal/styles.ts/issues/L106) [/github.com/voiceflow/creator-app/blob/08a3b2deb3b51074c74919a2aacb276445a48fd6/packages/creator-app/src/pages/Canvas/components/IntentModalsV2/CreateModal/index.tsx#L47](https://github.com//github.com/voiceflow/creator-app/blob/08a3b2deb3b51074c74919a2aacb276445a48fd6/packages/creator-app/src/pages/Canvas/components/IntentModalsV2/CreateModal/index.tsx/issues/L47)
+
+
+
+
+
 # [1.133.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.132.1...@voiceflow/ui@1.133.0) (2022-08-04)
 
 

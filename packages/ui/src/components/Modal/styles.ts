@@ -119,7 +119,7 @@ export const Root = styled.div<RootProps>`
           visibility: hidden;
         `
       : css`
-          & > ${Container} {
+          & > * {
             pointer-events: auto;
           }
         `}

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.860.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.860.0...@voiceflow/creator-app@1.860.1) (2022-08-05)
+
+
+### Bug Fixes
+
+* localstorage maintenance warning (CT-000) ([#5868](https://github.com/voiceflow/creator-app/issues/5868)) ([6f4fa90](https://github.com/voiceflow/creator-app/commit/6f4fa90ec40d7cc2ae07c1148d914a4020a2ea6b))
+
+
+
+
+
 # [1.860.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.859.0...@voiceflow/creator-app@1.860.0) (2022-08-05)
 
 

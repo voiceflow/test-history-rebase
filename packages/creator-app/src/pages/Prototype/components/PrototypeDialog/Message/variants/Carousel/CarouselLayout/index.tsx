@@ -1,4 +1,4 @@
-import { BaseNode, BaseText } from '@voiceflow/base-types';
+import { BaseNode } from '@voiceflow/base-types';
 import { ButtonGroup } from '@voiceflow/ui';
 import React from 'react';
 
@@ -20,8 +20,6 @@ const AVATAR_MARGIN = 14;
 const CARDS_GAP = 16;
 const CARDS_WIDTH = 242;
 const VIEWPORT_PADDING = 24;
-
-const hasValue = (value: BaseText.SlateTextValue) => value && !SlateEditable.EditorAPI.isNewState(value);
 
 const MessageVariantCarouselCarouselLayout: React.FC<MessageVariantCarouselCarouselLayoutProps> = ({
   cards,
@@ -63,7 +61,7 @@ const MessageVariantCarouselCarouselLayout: React.FC<MessageVariantCarouselCarou
         <BaseMessage {...messageProps} bubble={false}>
           <div style={{ flexGrow: 1, display: 'flex', gap: CARDS_GAP, alignItems: 'flex-start' }}>
             {cards.map(({ id, title, description, imageUrl, buttons }) => {
-              const hasInfo = Boolean(title || hasValue(description?.slate));
+              const hasInfo = Boolean(title || description?.text);
               return (
                 <S.Card key={id}>
                   {imageUrl && <S.CardImage src={imageUrl} roundedBottomBorders={!hasInfo && !buttons?.length} />}
@@ -71,7 +69,7 @@ const MessageVariantCarouselCarouselLayout: React.FC<MessageVariantCarouselCarou
                     <S.CardHeader>
                       <S.CardHeaderInfo>
                         <S.CardTitle>{title}</S.CardTitle>
-                        {description.slate && <S.CardDescription>{SlateEditable.serializeToJSX(description.slate)}</S.CardDescription>}
+                        {description.text && <S.CardDescription>{SlateEditable.serializeToJSX(description.slate)}</S.CardDescription>}
                       </S.CardHeaderInfo>
                     </S.CardHeader>
                   )}

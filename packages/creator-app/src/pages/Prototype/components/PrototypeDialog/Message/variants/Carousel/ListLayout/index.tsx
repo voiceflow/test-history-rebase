@@ -19,15 +19,15 @@ const MessageVariantCarouselListLayout: React.FC<MessageVariantCarouselListLayou
     <Message {...messageProps} bubble={false}>
       <S.Container>
         {cards.map(({ id, title, description, imageUrl, buttons }) => {
-          const hasDescription = !SlateEditable.EditorAPI.isNewState(description?.slate);
+          const hasInfo = !SlateEditable.EditorAPI.isNewState(description?.slate) || title;
           return (
             <S.Card key={id}>
-              {(hasDescription || imageUrl) && (
+              {(hasInfo || imageUrl) && (
                 <S.CardHeader>
-                  {(title || hasDescription) && (
+                  {hasInfo && (
                     <S.CardHeaderInfo>
-                      <S.CardTitle>{title}</S.CardTitle>
-                      {description.slate && <S.CardDescription>{SlateEditable.serializeToJSX(description.slate)}</S.CardDescription>}
+                      {title && <S.CardTitle>{title}</S.CardTitle>}
+                      {description.text && <S.CardDescription>{SlateEditable.serializeToJSX(description.slate)}</S.CardDescription>}
                     </S.CardHeaderInfo>
                   )}
                   {imageUrl && <Thumbnail src={imageUrl} ml={16} size="md" />}

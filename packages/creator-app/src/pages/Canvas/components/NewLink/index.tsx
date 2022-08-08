@@ -43,7 +43,15 @@ const NewLink: React.FC = () => {
     <Container>
       <HeadMarker id={NEW_LINK_ID} ref={api.markerRef} isHighlighted {...markerAttrs} />
 
-      <Path d={path} id={Identifier.NEW_LINK} strokeColor={STROKE_DEFAULT_COLOR} markerEnd={HEAD_MARKER} ref={api.ref} isHighlighted />
+      <Path
+        d={path}
+        id={Identifier.NEW_LINK}
+        strokeDasharray="6,6"
+        strokeColor={STROKE_DEFAULT_COLOR}
+        markerEnd={HEAD_MARKER}
+        ref={api.ref}
+        isHighlighted
+      />
     </Container>
   );
 };

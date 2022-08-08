@@ -14,9 +14,10 @@ import LinkSvg from './PortLinkSvg';
 export interface PortLinkProps {
   linkID?: Nullish<string>;
   isHighlighted: boolean;
+  isNew?: boolean;
 }
 
-const PortLink: React.FC<PortLinkProps> = ({ linkID, isHighlighted }) => {
+const PortLink: React.FC<PortLinkProps> = ({ linkID, isHighlighted, isNew }) => {
   const engine = React.useContext(EngineContext)!;
   const portEntity = React.useContext(PortEntityContext)!;
   const isStraightLinks = React.useContext(IsStraightLinksContext)!;
@@ -49,7 +50,12 @@ const PortLink: React.FC<PortLinkProps> = ({ linkID, isHighlighted }) => {
 
   return (
     <LinkSvg reversed={reversed} shapeRendering="geometricPrecision">
-      <LinkPath strokeColor={link?.data?.color ?? STROKE_DEFAULT_COLOR} isHighlighted={isHighlighted} d={`M 0 4 L ${NODE_LINK_WIDTH} 4`} />
+      <LinkPath
+        strokeDasharray={isNew ? '6,6' : undefined}
+        strokeColor={link?.data?.color ?? STROKE_DEFAULT_COLOR}
+        isHighlighted={isHighlighted}
+        d={`M 0 4 L ${NODE_LINK_WIDTH} 4`}
+      />
     </LinkSvg>
   );
 };

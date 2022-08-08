@@ -303,6 +303,7 @@ export interface TopStepItem {
   icon: SvgIconTypes.Icon;
   label: string;
   steps: StepItem[];
+  isLibrary: boolean;
 }
 
 const TALK_ICON = 'systemTalk' as const;
@@ -325,26 +326,31 @@ export const ALEXA_STEP_SECTIONS: TopStepItem[] = [
   {
     icon: TALK_ICON,
     label: TALK_LABEL,
+    isLibrary: false,
     steps: [SPEAK_STEP, AUDIO_STEP, DISPLAY_STEP, CARD_STEP, STREAM_STEP],
   },
   {
     icon: LISTEN_ICON,
     label: LISTEN_LABEL,
+    isLibrary: false,
     steps: [CHOICE_STEP, CAPTURE_STEP_V2],
   },
   {
     icon: LOGIC_ICON,
     label: LOGIC_LABEL,
+    isLibrary: false,
     steps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
   },
   {
     icon: EVENT_ICON,
     label: EVENT_LABEL,
+    isLibrary: false,
     steps: [INTENT_STEP, EVENT_STEP],
   },
   {
     icon: DEV_ICON,
     label: DEV_LABEL,
+    isLibrary: false,
     steps: [API_STEP, CODE_STEP, TRACE_STEP, DIRECTIVE_STEP],
   },
 ];
@@ -354,26 +360,31 @@ export const GOOGLE_STEP_SECTIONS: TopStepItem[] = [
   {
     icon: TALK_ICON,
     label: TALK_LABEL,
+    isLibrary: false,
     steps: [SPEAK_STEP, AUDIO_STEP, CARD_STEP, STREAM_STEP],
   },
   {
     icon: LISTEN_ICON,
     label: LISTEN_LABEL,
+    isLibrary: false,
     steps: [CHOICE_STEP, CAPTURE_STEP_V2],
   },
   {
     icon: LOGIC_ICON,
     label: LOGIC_LABEL,
+    isLibrary: false,
     steps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
   },
   {
     icon: EVENT_ICON,
     label: EVENT_LABEL,
+    isLibrary: false,
     steps: [INTENT_STEP],
   },
   {
     icon: DEV_ICON,
     label: DEV_LABEL,
+    isLibrary: false,
     steps: [API_STEP, CODE_STEP, TRACE_STEP, DIRECTIVE_STEP],
   },
 ];
@@ -383,26 +394,31 @@ export const CHATBOT_STEP_SECTIONS: TopStepItem[] = [
   {
     icon: TALK_ICON,
     label: TALK_LABEL,
+    isLibrary: false,
     steps: [TEXT_STEP, VISUAL_STEP, CARDV2_STEP, CAROUSEL_STEP],
   },
   {
     icon: LISTEN_ICON,
     label: LISTEN_LABEL,
+    isLibrary: false,
     steps: [BUTTONS_STEP, CAPTURE_STEP_V2],
   },
   {
     icon: LOGIC_ICON,
     label: LOGIC_LABEL,
+    isLibrary: false,
     steps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
   },
   {
     icon: EVENT_ICON,
     label: EVENT_LABEL,
+    isLibrary: false,
     steps: [INTENT_STEP],
   },
   {
     icon: DEV_ICON,
     label: DEV_LABEL,
+    isLibrary: false,
     steps: [API_STEP, CODE_STEP, TRACE_STEP],
   },
 ];
@@ -412,26 +428,31 @@ export const GENERAL_STEP_SECTIONS: TopStepItem[] = [
   {
     icon: TALK_ICON,
     label: TALK_LABEL,
+    isLibrary: false,
     steps: [SPEAK_STEP, AUDIO_STEP, VISUAL_STEP],
   },
   {
     icon: LISTEN_ICON,
     label: LISTEN_LABEL,
+    isLibrary: false,
     steps: [CHOICE_STEP, CAPTURE_STEP_V2],
   },
   {
     icon: LOGIC_ICON,
     label: LOGIC_LABEL,
+    isLibrary: false,
     steps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
   },
   {
     icon: EVENT_ICON,
     label: EVENT_LABEL,
+    isLibrary: false,
     steps: [INTENT_STEP],
   },
   {
     icon: DEV_ICON,
     label: DEV_LABEL,
+    isLibrary: false,
     steps: [API_STEP, CODE_STEP, TRACE_STEP],
   },
 ];
@@ -441,26 +462,31 @@ export const DIALOGFLOW_ES_CHAT_STEP_SECTIONS: TopStepItem[] = [
   {
     icon: TALK_ICON,
     label: TALK_LABEL,
+    isLibrary: false,
     steps: [TEXT_STEP, VISUAL_STEP, CARD_STEP, CAROUSEL_STEP, CUSTOM_PAYLOAD_STEP],
   },
   {
     icon: LISTEN_ICON,
     label: LISTEN_LABEL,
+    isLibrary: false,
     steps: [BUTTONS_STEP, CAPTURE_STEP_V2],
   },
   {
     icon: LOGIC_ICON,
     label: LOGIC_LABEL,
+    isLibrary: false,
     steps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
   },
   {
     icon: EVENT_ICON,
     label: EVENT_LABEL,
+    isLibrary: false,
     steps: [INTENT_STEP],
   },
   {
     icon: DEV_ICON,
     label: DEV_LABEL,
+    isLibrary: false,
     steps: [API_STEP, CODE_STEP, TRACE_STEP],
   },
 ];
@@ -470,26 +496,31 @@ export const DIALOGFLOW_ES_VOICE_STEP_SECTIONS: TopStepItem[] = [
   {
     icon: TALK_ICON,
     label: TALK_LABEL,
+    isLibrary: false,
     steps: [SPEAK_STEP, AUDIO_STEP, CUSTOM_PAYLOAD_STEP],
   },
   {
     icon: LISTEN_ICON,
     label: LISTEN_LABEL,
+    isLibrary: false,
     steps: [CHOICE_STEP, CAPTURE_STEP_V2],
   },
   {
     icon: LOGIC_ICON,
     label: LOGIC_LABEL,
+    isLibrary: false,
     steps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
   },
   {
     icon: EVENT_ICON,
     label: EVENT_LABEL,
+    isLibrary: false,
     steps: [INTENT_STEP],
   },
   {
     icon: DEV_ICON,
     label: DEV_LABEL,
+    isLibrary: false,
     steps: [API_STEP, CODE_STEP, TRACE_STEP],
   },
 ];

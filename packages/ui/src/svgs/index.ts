@@ -139,6 +139,7 @@ export { default as italic } from './italic.svg';
 // l
 export { default as largeArrowLeft } from './large-arrow-left.svg';
 export { default as lex } from './lex.svg';
+export { default as library } from './library.svg';
 export { default as lineCurved } from './line-curved.svg';
 export { default as lineStraight } from './line-straight.svg';
 export { default as lineText } from './line-text.svg';

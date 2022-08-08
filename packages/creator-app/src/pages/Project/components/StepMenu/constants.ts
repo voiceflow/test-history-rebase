@@ -33,10 +33,16 @@ export interface StepItem {
   tooltipLink?: string;
 }
 
+export interface LibraryItem {
+  label: string;
+  id: string;
+}
+
 export interface TopStepItem {
   icon: SvgIconTypes.Icon;
   label: string;
-  steps?: MenuStepItem[];
+  steps: MenuStepItem[] | LibraryItem[];
+  isLibrary?: boolean;
 }
 
 export const getStepSections = Realtime.Utils.platform.createPlatformAndProjectTypeSelector(
@@ -51,3 +57,20 @@ export const getStepSections = Realtime.Utils.platform.createPlatformAndProjectT
   },
   GENERAL_STEP_SECTIONS
 );
+
+export const getLibrarySection = (): TopStepItem => {
+  return {
+    icon: 'library',
+    label: 'Library',
+    isLibrary: true,
+    steps: [],
+  };
+};
+
+export const getAllSections = (platform: VoiceflowConstants.PlatformType, project: VoiceflowConstants.ProjectType) => {
+  const steps = getStepSections(platform, project);
+  const templates = getLibrarySection();
+  if (templates.steps.length > 0) return [...steps, templates];
+
+  return steps;
+};

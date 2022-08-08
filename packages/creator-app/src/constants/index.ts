@@ -63,6 +63,7 @@ export enum DragItem {
   COMPONENTS = 'components',
   BLOCK_MENU = 'blockMenu',
   TOPIC_INTENTS = 'topicIntents',
+  TEMPLATES = 'templates',
 }
 
 export enum SessionType {

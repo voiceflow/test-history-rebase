@@ -7,18 +7,22 @@ interface SubMenuButtonContainerProps {
   isClicked: boolean;
   isDragging: boolean;
   isDraggingPreview?: boolean;
-  disabled: boolean;
+  disabled?: boolean;
+  customDisplay?: string;
 }
 
 export const SubMenuButtonContainer = styled(Box.FlexStart)<SubMenuButtonContainerProps>`
   ${transition('box-shadow', 'background-color', 'transform', 'background-image')}
 
   min-width: 142px;
+  max-width: 230px;
   height: 38px;
   padding: 9px 16px 8px;
   border-radius: 6px;
   cursor: grab;
   white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 
   &:hover {
     box-shadow: 0 2px 3px 0 rgba(19, 33, 68, 0.08), 0 0 0 1px rgba(19, 33, 68, 0.06);
@@ -29,11 +33,17 @@ export const SubMenuButtonContainer = styled(Box.FlexStart)<SubMenuButtonContain
     cursor: grabbing;
   }
 
-  ${({ isClicked, disabled }) =>
+  ${({ isClicked }) =>
     isClicked &&
-    !disabled &&
     css`
       transform: rotate(-2deg);
+    `}
+
+  ${({ isClicked, disabled }) =>
+    isClicked &&
+    disabled &&
+    css`
+      transform: none;
     `}
 
   ${({ isDragging }) =>
@@ -55,6 +65,10 @@ export const SubMenuButtonContainer = styled(Box.FlexStart)<SubMenuButtonContain
       background-image: linear-gradient(to bottom, rgba(238, 244, 246, 0.3), rgba(238, 244, 246, 0.6)), linear-gradient(to bottom, #ffffff, #ffffff);
       cursor: grabbing;
     `}
-`;
 
-export const SubMenuButtonOuterContainer = styled.div``;
+    ${({ customDisplay }) =>
+    customDisplay &&
+    css`
+      display: ${customDisplay};
+    `}
+`;

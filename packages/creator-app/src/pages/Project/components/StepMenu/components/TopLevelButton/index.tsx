@@ -4,7 +4,8 @@ import React from 'react';
 import { useHover } from '@/hooks';
 import { ClassName } from '@/styles/constants';
 
-import { TopStepItem } from '../../constants';
+import { LibraryItem, MenuStepItem, TopStepItem } from '../../constants';
+import LibrarySubMenu from '../LibrarySubMenu';
 import SubMenu from '../SubMenu';
 import { TopLevelButtonContainer } from './TopLevelButtonContainer';
 
@@ -28,7 +29,13 @@ const TopLevelButton: React.FC<TopLevelButtonItem> = ({ step, animationIndex }) 
         </TopLevelButtonContainer>
       </Animations.FadeLeftContainer>
 
-      {step.steps && isHovered && <SubMenu steps={step.steps} onDrop={() => setHovering(false)} />}
+      {step.steps &&
+        isHovered &&
+        (step.isLibrary ? (
+          <LibrarySubMenu steps={step.steps as LibraryItem[]} onDrop={() => setHovering(false)} />
+        ) : (
+          <SubMenu steps={step.steps as MenuStepItem[]} onDrop={() => setHovering(false)} />
+        ))}
     </div>
   );
 };

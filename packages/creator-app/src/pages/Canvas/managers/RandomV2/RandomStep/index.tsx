@@ -20,12 +20,12 @@ export interface RandomStepProps {
   paths: Path[];
 }
 
-const RandomStep: ConnectedStep<Realtime.NodeData.RandomV2, Realtime.BuiltInPortRecord<string>> = ({ ports, data, palette }) => {
-  const pathsByPortID = useSyncedLookup(ports.out.dynamic, data.namedPaths);
+const RandomStep: ConnectedStep<Realtime.NodeData.RandomV2> = ({ ports, data, palette }) => {
+  const pathsByPortID = useSyncedLookup(ports.out.dynamic.slice(0, data.namedPaths.length), data.namedPaths);
 
   const paths = React.useMemo(
-    () => ports.out.dynamic.filter((portID) => pathsByPortID[portID]).map<Path>((portID) => ({ ...pathsByPortID[portID], portID })),
-    [pathsByPortID, ports.out.dynamic, data.namedPaths]
+    () => ports.out.dynamic.filter((portID) => pathsByPortID[portID]).map((portID) => ({ label: pathsByPortID[portID].label, portID })),
+    [pathsByPortID, ports.out.dynamic]
   );
 
   return (
@@ -39,6 +39,7 @@ const RandomStep: ConnectedStep<Realtime.NodeData.RandomV2, Realtime.BuiltInPort
             portID={path.portID}
             palette={palette}
             labelVariant={StepLabelVariant.SECONDARY}
+            textColor="#132144"
           />
         ))}
       </Section>

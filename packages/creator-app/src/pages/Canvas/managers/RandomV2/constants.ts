@@ -12,7 +12,14 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.RandomV2> = {
 
   factory: () => ({
     node: {
-      ports: Realtime.Utils.port.createEmptyNodePorts(),
+      ports: {
+        in: [{}],
+        out: {
+          byKey: {},
+          dynamic: [{}, {}],
+          builtIn: {},
+        },
+      },
     },
     data: {
       name: 'Random',

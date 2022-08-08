@@ -9,33 +9,43 @@ import { NodeEditorV2 } from '@/pages/Canvas/managers/types';
 
 import { PathInput } from './components';
 
-const RandomEditorV2: NodeEditorV2<Realtime.NodeData.RandomV2, Realtime.BuiltInPortRecord<string>> = ({ data, node, engine, onChange }) => {
+const RandomEditorV2: NodeEditorV2<Realtime.NodeData.RandomV2> = ({ data, onChange }) => {
+  const [numPaths, setNumPaths] = React.useState(2);
+
+  const syncDynamicPorts = EditorV2.useSyncDynamicPorts();
   const mapManager = useMapManager(data.namedPaths, (namedPaths) => onChange({ namedPaths }), {
-    onAdd: () => engine.port.addDynamic(node.id),
-    factory: () => ({ label: `Path ${data.namedPaths.length + 1}` }),
-    onRemove: (_, index) => engine.port.removeDynamic(node.ports.out.dynamic[index]),
+    ...syncDynamicPorts,
+    factory: () => ({ label: `Path ${numPaths + 1}` }),
   });
 
-  const toggle = () => {
-    onChange({ noDuplicates: !data.noDuplicates });
+  const addPath = () => {
+    setNumPaths(numPaths + 1);
+    mapManager.onAdd();
   };
+
+  const toggle = React.useCallback(() => onChange({ noDuplicates: !data.noDuplicates }), [data.noDuplicates, onChange]);
 
   return (
     <EditorV2
       header={<EditorV2.DefaultHeader title="Random" />}
       footer={<EditorV2.DefaultFooter tutorial={Documentation.RANDOM_STEP}></EditorV2.DefaultFooter>}
     >
-      <SectionV2.ActionListSection
-        title={<SectionV2.Title bold>Paths</SectionV2.Title>}
-        action={<SectionV2.AddButton onClick={mapManager.onAdd} />}
-      />
+      <SectionV2.ActionListSection title={<SectionV2.Title bold>Paths</SectionV2.Title>} action={<SectionV2.AddButton onClick={addPath} />} />
       <SectionV2.Content>
         {data.namedPaths &&
-          mapManager.map((item, { key, isLast, onUpdate, onRemove }) => (
-            <Box key={key} pb={isLast ? 16 : 12}>
-              <PathInput key={key} pathName={item.label} onUpdate={onUpdate} onRemove={onRemove} removeDisabled={data.namedPaths.length <= 2} />
-            </Box>
-          ))}
+          mapManager.map((item, { key, isLast, onUpdate, onRemove }) => {
+            const removePath = () => {
+              if (numPaths - 1 >= 2) {
+                setNumPaths(numPaths - 1);
+                onRemove();
+              }
+            };
+            return (
+              <Box key={key} pb={isLast ? 16 : 12}>
+                <PathInput key={key} pathName={item.label} onUpdate={onUpdate} onRemove={removePath} removeDisabled={data.namedPaths.length <= 2} />
+              </Box>
+            );
+          })}
       </SectionV2.Content>
       <SectionV2.Divider />
 

@@ -16,6 +16,7 @@ interface PathInputProps {
 
 const PathInput: React.FC<PathInputProps> = ({ pathName, onUpdate, onRemove, removeDisabled = false }) => {
   const inputRef = React.useRef<HTMLInputElement | null>(null);
+  const update = React.useCallback((value: string) => onUpdate({ label: value }), [onUpdate]);
 
   return (
     <SectionV2.ListItem
@@ -25,7 +26,7 @@ const PathInput: React.FC<PathInputProps> = ({ pathName, onUpdate, onRemove, rem
         </RemoveBox>
       }
     >
-      <Input ref={inputRef} value={pathName} onChangeText={(value: string) => onUpdate({ label: value })} />
+      <Input ref={inputRef} value={pathName} onChangeText={update} />
     </SectionV2.ListItem>
   );
 };

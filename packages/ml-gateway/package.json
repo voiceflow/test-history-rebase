@@ -7,7 +7,7 @@
     "@logux/server": "0.11.0",
     "@opentelemetry/api-metrics": "0.26.0",
     "@voiceflow/api-sdk": "3.17.3",
-    "@voiceflow/backend-utils": "4.8.1",
+    "@voiceflow/backend-utils": "4.8.2",
     "@voiceflow/common": "8.1.2",
     "@voiceflow/logger": "1.6.1",
     "@voiceflow/metrics": "1.4.1",

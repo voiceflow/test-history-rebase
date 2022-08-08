@@ -5625,10 +5625,10 @@
     babel-plugin-styled-components "^1.13.2"
     babel-preset-react-app "^10.0.0"
 
-"@voiceflow/backend-utils@4.8.1":
-  version "4.8.1"
-  resolved "https://registry.yarnpkg.com/@voiceflow/backend-utils/-/backend-utils-4.8.1.tgz#93e6aeef1c1a1b843592bbd48ef47b9fdf0e317f"
-  integrity sha512-FNp/HkqXDdxf1+t2F2AlnzvH3/Cu42DYivAddSbxyHIa4KC9BD0Z+bCEuoXTk9e2KQiUW7vqXAfefyeFMhhZOg==
+"@voiceflow/backend-utils@4.8.2":
+  version "4.8.2"
+  resolved "https://registry.yarnpkg.com/@voiceflow/backend-utils/-/backend-utils-4.8.2.tgz#6f9405845d4e4a285246561cea436b60b4fc8a1b"
+  integrity sha512-3QUFmRPNS9RNolEAnbZBLGz5W7FGwulbIMLE2yUTrowFdAEyAtNZ8f/PR1WGdcqjHeCqxsnUS288MbEJDlGcng==
   dependencies:
     "@types/http-errors" "^1.8.2"
     "@voiceflow/logger" "1.6.1"

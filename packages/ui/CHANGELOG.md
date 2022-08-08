@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.136.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.135.0...@voiceflow/ui@1.136.0) (2022-08-08)
+
+
+### Features
+
+* template library step menu (CT-673) ([#5857](https://github.com/voiceflow/creator-app/issues/5857)) ([dbcec37](https://github.com/voiceflow/creator-app/commit/dbcec379a711dfe17f573b7b1a78a4d5ed47750a))
+
+
+
+
+
 # [1.135.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.134.0...@voiceflow/ui@1.135.0) (2022-08-05)
 
 

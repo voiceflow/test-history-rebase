@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.862.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.861.1...@voiceflow/creator-app@1.862.0) (2022-08-08)
+
+
+### Features
+
+* add active linking ui (CT-550) ([#5870](https://github.com/voiceflow/creator-app/issues/5870)) ([068d9d3](https://github.com/voiceflow/creator-app/commit/068d9d3fdc39601fbceefda9b2379ebd38c6d1f5))
+* template library step menu (CT-673) ([#5857](https://github.com/voiceflow/creator-app/issues/5857)) ([dbcec37](https://github.com/voiceflow/creator-app/commit/dbcec379a711dfe17f573b7b1a78a4d5ed47750a))
+
+
+
+
+
 ## [1.861.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.861.0...@voiceflow/creator-app@1.861.1) (2022-08-08)
 
 

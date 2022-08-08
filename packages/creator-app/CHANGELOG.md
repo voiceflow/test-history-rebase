@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.861.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.860.2...@voiceflow/creator-app@1.861.0) (2022-08-08)
+
+
+### Features
+
+* lock code and action step for starter (CT-625) ([#5858](https://github.com/voiceflow/creator-app/issues/5858)) ([d737638](https://github.com/voiceflow/creator-app/commit/d737638aedeebd22c34a0e78d65ba747d1fe0faa))
+
+
+
+
+
 ## [1.860.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.860.1...@voiceflow/creator-app@1.860.2) (2022-08-08)
 
 

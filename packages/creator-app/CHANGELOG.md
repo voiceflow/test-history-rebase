@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.861.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.861.0...@voiceflow/creator-app@1.861.1) (2022-08-08)
+
+
+### Bug Fixes
+
+* random v2 UI (CT-636) ([#5841](https://github.com/voiceflow/creator-app/issues/5841)) ([3206a41](https://github.com/voiceflow/creator-app/commit/3206a41d2197ba34f1477f1533d02790f61f6d9a))
+
+
+
+
+
 # [1.861.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.860.2...@voiceflow/creator-app@1.861.0) (2022-08-08)
 
 

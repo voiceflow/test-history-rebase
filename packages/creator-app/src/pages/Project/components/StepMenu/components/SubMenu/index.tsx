@@ -8,7 +8,8 @@ import { getManager } from '@/pages/Canvas/managers/utils';
 
 import { StepDragItem } from '../../../DesignMenu/components/Steps/types';
 import { MenuStepItem } from '../../constants';
-import { SubMenuButton, SubMenuContainer } from './components';
+import { SubMenuButton } from './components';
+import { SubMenuContainer } from './styles';
 
 interface SubMenuProps {
   steps: MenuStepItem[];

@@ -7,6 +7,7 @@ interface SubMenuButtonContainerProps {
   isClicked: boolean;
   isDragging: boolean;
   isDraggingPreview?: boolean;
+  disabled: boolean;
 }
 
 export const SubMenuButtonContainer = styled(Box.FlexStart)<SubMenuButtonContainerProps>`
@@ -28,8 +29,9 @@ export const SubMenuButtonContainer = styled(Box.FlexStart)<SubMenuButtonContain
     cursor: grabbing;
   }
 
-  ${({ isClicked }) =>
+  ${({ isClicked, disabled }) =>
     isClicked &&
+    !disabled &&
     css`
       transform: rotate(-2deg);
     `}

@@ -68,7 +68,7 @@ const CommentActions: React.FC<CommentActionsProps> = ({
               <BoxFlex ml={16}>
                 <IconButton
                   size={16}
-                  icon="success"
+                  icon="checkmark2"
                   variant={IconButtonVariant.SUBTLE}
                   onClick={swallowEvent(onResolve)}
                   disabled={isThreadEditing}

@@ -24,7 +24,7 @@ const CheckoutButton: React.FC<CheckoutButtonProps> = ({ payment: { state, check
   if (loading.checkout) {
     return (
       <LoadingButton variant={ButtonVariant.PRIMARY} square>
-        <SvgIcon icon="publishSpin" size={24} spin />
+        <SvgIcon icon="arrowSpin" size={24} spin />
       </LoadingButton>
     );
   }

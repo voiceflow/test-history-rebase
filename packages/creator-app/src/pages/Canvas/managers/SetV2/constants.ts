@@ -18,7 +18,7 @@ export const setFactory = (): Realtime.NodeData.SetExpressionV2 => ({
 
 export const NODE_CONFIG: NodeConfig<Realtime.NodeData.SetV2, Realtime.NodeData.SetV2BuiltInPorts> = {
   type: BlockType.SETV2,
-  icon: 'systemSet',
+  icon: 'setV2',
 
   factory: (_data) => ({
     node: {

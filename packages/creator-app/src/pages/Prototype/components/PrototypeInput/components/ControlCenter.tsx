@@ -72,7 +72,7 @@ const ControlCenter: React.FC<ConnectedControlCenterProps & ControlCenterProps> 
 
       <TippyTooltip title="Buttons" position="top">
         <ControlButton active={showButtons} onClick={() => setShowButtons(!showButtons)}>
-          <SvgIcon icon="touch" size={16} color={ICON_COLOR} />
+          <SvgIcon icon="action" size={16} color={ICON_COLOR} />
         </ControlButton>
       </TippyTooltip>
 

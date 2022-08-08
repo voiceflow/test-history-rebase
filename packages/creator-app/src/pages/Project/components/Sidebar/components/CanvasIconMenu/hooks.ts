@@ -125,7 +125,7 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
     !canEditProject
       ? null
       : {
-          icon: 'systemIntegrations',
+          icon: 'integrations',
           value: CanvasOptionType.INTEGRATION,
           tooltip: {
             title: 'Integration',

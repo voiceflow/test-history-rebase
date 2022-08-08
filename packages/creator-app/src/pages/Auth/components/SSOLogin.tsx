@@ -44,7 +44,12 @@ const SSOLogin: React.FC<SSOLoginProps & ConnectedSSOLoginProps> = ({ domain, cl
   return (
     <SocialLoginContainer>
       <FlexApart fullWidth>
-        <Button icon="lock" variant={ButtonVariant.SECONDARY} onClick={onSSOLogin} className={cn('social-button', { 'social-button-light': light })}>
+        <Button
+          icon="lockLocked"
+          variant={ButtonVariant.SECONDARY}
+          onClick={onSSOLogin}
+          className={cn('social-button', { 'social-button-light': light })}
+        >
           SSO
         </Button>
       </FlexApart>

@@ -47,7 +47,7 @@ const ButtonPreview: React.FC<ButtonsPreviewProps> = ({ prompts, onOpenEditor, o
 
       {canOpenEditor && (
         <Preview.Footer>
-          <Preview.ButtonIcon icon="editorEdit" onClick={Utils.functional.chain(onOpenEditor, onClose)} />
+          <Preview.ButtonIcon icon="edit" onClick={Utils.functional.chain(onOpenEditor, onClose)} />
         </Preview.Footer>
       )}
     </Preview>

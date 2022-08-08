@@ -91,7 +91,7 @@ const VersionItem: React.FC<Index> = ({ version, restoreEnabled, swapVersions, c
 
       confirmButtonText: (
         <Box.Flex gap={12}>
-          <SvgIcon icon="sync" />
+          <SvgIcon icon="arrowSpin" />
 
           <span>Restore</span>
         </Box.Flex>

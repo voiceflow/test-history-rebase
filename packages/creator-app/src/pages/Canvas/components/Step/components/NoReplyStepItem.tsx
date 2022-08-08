@@ -30,7 +30,7 @@ const NoReplyStepItem: React.FC<NoReplyStepItemProps> = ({ noReply, portID }) =>
           portColor="#6e849a"
           attachment={
             noReply.types.includes(BaseNode.Utils.NoReplyType.REPROMPT) && hasValidPrompt(noReply.reprompts) ? (
-              <Attachment ref={ref} icon="noReply" isActive={isOpened} onClick={stopPropagation(onToggle)} />
+              <Attachment ref={ref} icon="delay" isActive={isOpened} onClick={stopPropagation(onToggle)} />
             ) : null
           }
           parentActionsPath={PATH}

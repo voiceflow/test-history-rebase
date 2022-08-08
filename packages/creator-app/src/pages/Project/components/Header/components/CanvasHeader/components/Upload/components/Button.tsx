@@ -46,7 +46,7 @@ const getButtonProps = (
   platform: VoiceflowConstants.PlatformType,
   { variant, progress, customProps = {} }: ConnectButtonProps
 ): ButtonProps & { key?: string } => {
-  const loadIconProps: ButtonProps = { icon: 'publishSpin' as const };
+  const loadIconProps: ButtonProps = { icon: 'arrowSpin' as const };
 
   switch (variant) {
     case ButtonVariant.CONNECT:
@@ -71,7 +71,7 @@ const getButtonProps = (
       };
     case ButtonVariant.SUCCESS:
       return {
-        icon: 'greenCheckMark',
+        icon: 'checkmarkGreen',
         ...customProps,
         tooltip: {
           html: <span>Successfully Uploaded</span>,

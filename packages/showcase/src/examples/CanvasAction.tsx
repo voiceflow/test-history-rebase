@@ -11,7 +11,7 @@ export default createSection('Canvas.Action', 'src/components/Canvas/components/
     'simple',
     wrapContainer(() => (
       <Canvas.Action
-        icon={<Canvas.Action.Icon icon="entities" />}
+        icon={<Canvas.Action.Icon icon="setV2" />}
         port={
           <Canvas.Action.Port>
             <Canvas.Port />
@@ -26,7 +26,7 @@ export default createSection('Canvas.Action', 'src/components/Canvas/components/
     wrapContainer(() => (
       <Canvas.Action
         active
-        icon={<Canvas.Action.Icon icon="entities" />}
+        icon={<Canvas.Action.Icon icon="setV2" />}
         port={
           <Canvas.Action.Port>
             <Canvas.Port />
@@ -40,7 +40,7 @@ export default createSection('Canvas.Action', 'src/components/Canvas/components/
     'with placeholder',
     wrapContainer(() => (
       <Canvas.Action
-        icon={<Canvas.Action.Icon icon="entities" />}
+        icon={<Canvas.Action.Icon icon="setV2" />}
         label={<Canvas.Action.Label secondary>label</Canvas.Action.Label>}
         port={
           <Canvas.Action.Port>
@@ -55,7 +55,7 @@ export default createSection('Canvas.Action', 'src/components/Canvas/components/
     'with label',
     wrapContainer(() => (
       <Canvas.Action
-        icon={<Canvas.Action.Icon icon="entities" />}
+        icon={<Canvas.Action.Icon icon="setV2" />}
         label={<Canvas.Action.Label>label</Canvas.Action.Label>}
         port={
           <Canvas.Action.Port>
@@ -71,7 +71,7 @@ export default createSection('Canvas.Action', 'src/components/Canvas/components/
     wrapContainer(() => (
       <Canvas.Action
         active
-        icon={<Canvas.Action.Icon icon="entities" />}
+        icon={<Canvas.Action.Icon icon="setV2" />}
         port={
           <Canvas.Action.Port>
             <Canvas.Port connected />
@@ -87,7 +87,7 @@ export default createSection('Canvas.Action', 'src/components/Canvas/components/
     wrapContainer(() => (
       <>
         <Canvas.Action
-          icon={<Canvas.Action.Icon icon="entities" />}
+          icon={<Canvas.Action.Icon icon="setV2" />}
           port={
             <Canvas.Action.Port>
               <Canvas.Port connected />
@@ -99,7 +99,7 @@ export default createSection('Canvas.Action', 'src/components/Canvas/components/
         <Canvas.Action.Connector />
 
         <Canvas.Action
-          icon={<Canvas.Action.Icon icon="entities" />}
+          icon={<Canvas.Action.Icon icon="setV2" />}
           port={
             <Canvas.Action.Port>
               <Canvas.Port connected />
@@ -110,7 +110,7 @@ export default createSection('Canvas.Action', 'src/components/Canvas/components/
         <Canvas.Action.Connector />
 
         <Canvas.Action
-          icon={<Canvas.Action.Icon icon="entities" />}
+          icon={<Canvas.Action.Icon icon="setV2" />}
           port={
             <Canvas.Action.Port>
               <Canvas.Port />
@@ -127,7 +127,7 @@ export default createSection('Canvas.Action', 'src/components/Canvas/components/
     wrapContainer(() => (
       <Canvas.Action
         reversed
-        icon={<Canvas.Action.Icon icon="entities" />}
+        icon={<Canvas.Action.Icon icon="setV2" />}
         port={
           <Canvas.Action.Port>
             <Canvas.Port />
@@ -142,7 +142,7 @@ export default createSection('Canvas.Action', 'src/components/Canvas/components/
     wrapContainer(() => (
       <Canvas.Action
         reversed
-        icon={<Canvas.Action.Icon icon="entities" />}
+        icon={<Canvas.Action.Icon icon="setV2" />}
         port={
           <Canvas.Action.Port>
             <Canvas.Port connected />
@@ -159,7 +159,7 @@ export default createSection('Canvas.Action', 'src/components/Canvas/components/
       <>
         <Canvas.Action
           reversed
-          icon={<Canvas.Action.Icon icon="entities" />}
+          icon={<Canvas.Action.Icon icon="setV2" />}
           port={
             <Canvas.Action.Port>
               <Canvas.Port />
@@ -172,7 +172,7 @@ export default createSection('Canvas.Action', 'src/components/Canvas/components/
 
         <Canvas.Action
           reversed
-          icon={<Canvas.Action.Icon icon="entities" />}
+          icon={<Canvas.Action.Icon icon="setV2" />}
           port={
             <Canvas.Action.Port>
               <Canvas.Port connected />
@@ -184,7 +184,7 @@ export default createSection('Canvas.Action', 'src/components/Canvas/components/
 
         <Canvas.Action
           reversed
-          icon={<Canvas.Action.Icon icon="entities" />}
+          icon={<Canvas.Action.Icon icon="setV2" />}
           port={
             <Canvas.Action.Port>
               <Canvas.Port connected />

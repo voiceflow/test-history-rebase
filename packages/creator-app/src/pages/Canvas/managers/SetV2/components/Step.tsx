@@ -10,7 +10,7 @@ const SetStep: ConnectedStep<Realtime.NodeData.SetV2, Realtime.NodeData.SetV2Bui
   <Step nodeID={data.nodeID}>
     <Section>
       <Item
-        icon="systemSet"
+        icon="setV2"
         label={data.title || ''}
         portID={ports.out.builtIn[BaseModels.PortType.NEXT]}
         palette={palette}

@@ -125,7 +125,7 @@ const PrototypeSidebar: React.FC = () => {
               <Box display="inline-block">
                 <Tooltip title="Reset Test">
                   <SvgIcon
-                    icon="restart"
+                    icon="randomLoop"
                     color={notStarted ? '#BECEDC' : undefined}
                     clickable={!notStarted}
                     onClick={() => (notStarted ? null : resetPrototype())}

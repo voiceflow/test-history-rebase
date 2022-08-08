@@ -45,7 +45,7 @@ const ThreadItem: React.FC<ThreadItemProps> = ({ id: threadID, resolved, comment
           <TippyTooltip title="Mark Unresolved" distance={1}>
             <IconButton
               size={16}
-              icon="filledCheck"
+              icon="checkmarkFilled"
               variant={IconButtonVariant.SUBTLE}
               onClick={() => engine.comment.unresolveThread(threadID)}
               iconProps={{ color: '#becedc' }}

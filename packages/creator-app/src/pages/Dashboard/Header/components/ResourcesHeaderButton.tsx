@@ -32,7 +32,7 @@ const ResourcesHeaderButton = ({ hasShortcuts = false }) => {
     ? [
         ...STATIC_RESOURCES,
         {
-          icon: 'shortcuts',
+          icon: 'forward',
           label: 'Shortcuts',
           onClick: shortcutModal.toggle,
           resourceName: Tracking.CanvasControlHelpMenuResource.SHORTCUTS,

@@ -38,7 +38,7 @@ const InteractiveIcon: React.FC<InteractiveIconProps> = ({ onClick, icon, disabl
   </ButtonContainer>
 );
 
-export const Add = withProps({ icon: 'zoomIn' })(InteractiveIcon);
+export const Add = withProps({ icon: 'add2' })(InteractiveIcon);
 export const Minus = withProps({ icon: 'zoomOut' })(InteractiveIcon);
 
 export default InteractiveIcon;

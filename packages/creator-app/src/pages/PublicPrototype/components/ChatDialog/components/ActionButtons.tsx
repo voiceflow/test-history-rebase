@@ -53,7 +53,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
               isMobile={isMobile}
               squareRadius
             >
-              <SvgIcon icon="restart" color="inherit" />
+              <SvgIcon icon="randomLoop" color="inherit" />
             </ActionButton>
           </TippyTooltip>
 
@@ -80,7 +80,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
         <>
           <Box width={12} />
           <ActionButton color={color || '#3d82e2'} onClick={onReset} isMobile={isMobile} squareRadius>
-            <SvgIcon icon="restart" color={theme?.backgrounds.white} />
+            <SvgIcon icon="randomLoop" color={theme?.backgrounds.white} />
           </ActionButton>
         </>
       )}

@@ -86,7 +86,7 @@ export const LoginForm: React.FC<LoginFormProps & ConnectedLoginFormProps> = ({ 
             <BoxFlexApart pt={8}>
               {sso ? (
                 <BoxFlexCenter color={ThemeColor.SECONDARY}>
-                  <SvgIcon icon="lock" inline mr={14} />
+                  <SvgIcon icon="lockLocked" inline mr={14} />
                   SAML SSO enabled
                 </BoxFlexCenter>
               ) : (

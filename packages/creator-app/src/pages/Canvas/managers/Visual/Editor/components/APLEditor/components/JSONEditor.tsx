@@ -63,7 +63,7 @@ const JSONEditor: React.FC<JSONEditorProps> = ({ onChange, datasource = '', aplC
     <>
       <EditorSection
         header="JSON File"
-        suffix={documentData && datasource && <SvgIcon variant={SvgIcon.Variant.STANDARD} icon="downloads" onClick={downloadAPL} size={14} />}
+        suffix={documentData && datasource && <SvgIcon variant={SvgIcon.Variant.STANDARD} icon="download" onClick={downloadAPL} size={14} />}
         variant={SectionVariant.TERTIARY}
         isDividerNested
         customContentStyling={{ paddingBottom: '20px' }}

@@ -15,7 +15,7 @@ export const NAME_MAP: Record<BaseNode.Utils.IntegrationType, string> = {
 
 export const ICON_MAP: Record<BaseNode.Utils.IntegrationType, SvgIconTypes.Icon> = {
   [BaseNode.Utils.IntegrationType.ZAPIER]: 'zapier',
-  [BaseNode.Utils.IntegrationType.CUSTOM_API]: 'editor',
+  [BaseNode.Utils.IntegrationType.CUSTOM_API]: 'integrations',
   [BaseNode.Utils.IntegrationType.GOOGLE_SHEETS]: 'googleSheets',
 };
 

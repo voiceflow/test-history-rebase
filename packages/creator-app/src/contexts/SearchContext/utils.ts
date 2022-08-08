@@ -136,7 +136,7 @@ export const getDatabaseEntryIcon = (entry: DatabaseEntry): SvgIconTypes.Icon =>
     return entry.icon;
   }
   if (isSlotDatabaseEntry(entry)) {
-    return 'entities';
+    return 'setV2';
   }
   if (isIntentDatabaseEntry(entry)) {
     return 'intent';

@@ -7,7 +7,7 @@ import { NodeConfig } from '../types';
 
 export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Card, Realtime.NodeData.CardBuiltInPorts> = {
   type: BlockType.CARD,
-  icon: 'systemCard',
+  icon: 'cardV2',
 
   factory: () => ({
     node: {

@@ -258,7 +258,7 @@ const Payment: React.FC = () => {
         <FlexCenter>
           <Button disabled={!canContinue || sendingRequests} onClick={onContinue}>
             {sendingRequests ? (
-              <SvgIcon icon="publishSpin" size={24} spin />
+              <SvgIcon icon="arrowSpin" size={24} spin />
             ) : (
               <>Pay {creditCardComplete && <CostText> ${paymentPeriod === BillingPeriod.MONTHLY ? dollarPrice : 12 * dollarPrice} </CostText>}</>
             )}

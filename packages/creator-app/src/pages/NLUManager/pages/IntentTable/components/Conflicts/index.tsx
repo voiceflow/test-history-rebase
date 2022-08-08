@@ -77,7 +77,7 @@ const Conflicts: React.FC = () => {
               <S.ContentContainer>
                 <Button variant={ButtonVariant.PRIMARY} squareRadius onClick={handleSubmit} disabled={!shouldApplyChanges}>
                   <Box display="inline-block" position="relative" top={2}>
-                    <SvgIcon icon="publishSpin" spin={isSubmitting} size={16} inline mr={16} />
+                    <SvgIcon icon="arrowSpin" spin={isSubmitting} size={16} inline mr={16} />
                   </Box>
                   Apply Changes
                 </Button>

@@ -20,7 +20,7 @@ const ChannelSelect: React.FC<ChannelSelectProps> = ({ onSelect, isLoading }) =>
         <Section key={index} name={name} platforms={platforms} onSelect={(option) => !isLoading && onSelect(option)} />
       ))}
 
-      <BoxFlexCenter mt={32}>{isLoading && <SvgIcon icon="publishSpin" color="#92a3b3" size={36} spin />}</BoxFlexCenter>
+      <BoxFlexCenter mt={32}>{isLoading && <SvgIcon icon="arrowSpin" color="#92a3b3" size={36} spin />}</BoxFlexCenter>
     </Container>
   );
 };

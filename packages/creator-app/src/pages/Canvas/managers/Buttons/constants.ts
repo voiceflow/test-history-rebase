@@ -15,7 +15,7 @@ export const buttonFactory = (): BaseNode.Buttons.Button => ({
 
 export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Buttons, Realtime.NodeData.ButtonsBuiltInPorts> = {
   type: BlockType.BUTTONS,
-  icon: 'systemButtons',
+  icon: 'button',
 
   mergeTerminator: true,
 

@@ -103,7 +103,7 @@ const Speaker: React.FC<SpeakerProps> = ({ voice, platform, setError, getSSMLToP
   );
 
   // eslint-disable-next-line no-nested-ternary
-  const icon = loading ? 'publishSpin' : playing ? 'systemStopOutline' : 'playOutline';
+  const icon = loading ? 'arrowSpin' : playing ? 'systemStopOutline' : 'playOutline';
 
   return (
     <TippyTooltip title={playing ? 'Stop' : 'Play'} position="top" bodyOverflow distance={0}>

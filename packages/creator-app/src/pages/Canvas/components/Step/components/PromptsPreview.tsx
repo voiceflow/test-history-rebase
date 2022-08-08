@@ -64,7 +64,7 @@ const PromptsPreview: React.FC<PromptPreviewProps> = ({ title, prompts, onOpenEd
       </Preview.Content>
 
       <Preview.Footer>
-        <Preview.ButtonIcon icon="editorEdit" onClick={handleEditorClick} />
+        <Preview.ButtonIcon icon="edit" onClick={handleEditorClick} />
         <Preview.ButtonIcon icon="copy" ml={8} onClick={copyAllToClipboard} />
       </Preview.Footer>
     </Preview>

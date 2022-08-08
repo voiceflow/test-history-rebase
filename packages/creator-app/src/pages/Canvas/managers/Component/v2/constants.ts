@@ -1,1 +1,1 @@
-export const COMPONENT_STEP_ICON = 'flowV2';
+export const COMPONENT_STEP_ICON = 'componentOutline';

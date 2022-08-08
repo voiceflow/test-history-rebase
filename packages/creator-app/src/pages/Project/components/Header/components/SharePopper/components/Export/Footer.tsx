@@ -54,7 +54,7 @@ const ExportFooter: React.FC<{
       ) : (
         <Link href={Documentation.PROJECT_EXPORT}>Learn More</Link>
       )}
-      <PlatformUploadButton icon="sync" label="Export" onClick={checkIfCanExport} isActive={!!isExporting} disabled={noModelData} />
+      <PlatformUploadButton icon="arrowSpin" label="Export" onClick={checkIfCanExport} isActive={!!isExporting} disabled={noModelData} />
     </FlexApart>
   );
 };

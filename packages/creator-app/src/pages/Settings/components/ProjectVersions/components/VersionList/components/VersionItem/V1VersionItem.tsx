@@ -83,7 +83,7 @@ const VersionItem: React.FC<Index> = ({ version, restoreEnabled, swapVersions, c
         <Box display="inline-block">
           <Tooltip title="Restore Version">
             <Button disabled={!restoreEnabled} squareRadius variant={ButtonVariant.PRIMARY} onClick={() => confirmRestore(version.versionID)}>
-              <SvgIcon icon="publishSpin" size={20} />
+              <SvgIcon icon="arrowSpin" size={20} />
             </Button>
           </Tooltip>
         </Box>

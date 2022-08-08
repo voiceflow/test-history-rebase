@@ -171,7 +171,7 @@ const ProjectSettings: React.FC<PlatformSettingsProps> = ({
       <FlexCenter>
         {creatingProject ? (
           <LoadingButton square>
-            <SvgIcon icon="publishSpin" size={24} spin />
+            <SvgIcon icon="arrowSpin" size={24} spin />
           </LoadingButton>
         ) : (
           <ContinueButton disabled={!canContinue} onClick={finalizeCreation}>

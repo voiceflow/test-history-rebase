@@ -70,7 +70,7 @@ const AddCollaborators: React.FC<OnboardingStepProps> = ({ data }) => {
 
       <FlexCenter column style={{ marginTop: '25px' }}>
         <ContinueButton disabled={disabledContinue} onClick={onContinue}>
-          {sendingRequests ? <SvgIcon icon="publishSpin" size={24} spin /> : 'Send Invites'}
+          {sendingRequests ? <SvgIcon icon="arrowSpin" size={24} spin /> : 'Send Invites'}
         </ContinueButton>
 
         <ClickableText onClick={advanceToNextStep} mt={16}>

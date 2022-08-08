@@ -43,7 +43,7 @@ const NoReplyStepItemV2: React.FC<NoReplyStepItemProps> = ({ nodeID, noReply, po
           portColor="#6e849a"
           attachment={
             noReply.types.includes(BaseNode.Utils.NoReplyType.REPROMPT) && hasValidPrompt(noReply.reprompts) ? (
-              <StepButton ref={ref} icon="noReplyResponse" isActive={isOpened} onClick={stopPropagation(onToggle)} />
+              <StepButton ref={ref} icon="delay" isActive={isOpened} onClick={stopPropagation(onToggle)} />
             ) : null
           }
           parentActionsPath={PATH}

@@ -85,7 +85,7 @@ const ContentHeader: React.FC = () => {
 
         <TrainButton active={isTraining} onClick={handleTrain} squareRadius variant={ButtonVariant.PRIMARY}>
           <Box display="inline-block" position="relative" top={2}>
-            <SvgIcon icon="publishSpin" spin={isTraining} size={16} inline mr={16} />
+            <SvgIcon icon="arrowSpin" spin={isTraining} size={16} inline mr={16} />
           </Box>
           Train
         </TrainButton>

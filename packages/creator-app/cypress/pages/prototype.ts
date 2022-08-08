@@ -58,7 +58,7 @@ export default {
       return cy.get('.vf-svg-icon--send').find('svg');
     },
     get resetPrototypeButton() {
-      return cy.get('.vf-svg-icon--restart').find('svg');
+      return cy.get('.vf-svg-icon--randomLoop').find('svg');
     },
     get prototypeMenuCanvasButton() {
       return cy.get(`#${Identifier.PROTO_MENU_CANVAS_BUTTON}`);

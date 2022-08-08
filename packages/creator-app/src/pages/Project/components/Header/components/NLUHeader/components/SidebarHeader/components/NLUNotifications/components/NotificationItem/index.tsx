@@ -12,7 +12,7 @@ interface NotificationItemProps {
 }
 
 const NOTIFICATION_ITEM_ICONS: Record<InteractionModelTabType, SvgIconTypes.Icon> = {
-  [InteractionModelTabType.SLOTS]: 'entities',
+  [InteractionModelTabType.SLOTS]: 'setV2',
   [InteractionModelTabType.INTENTS]: 'intent',
   [InteractionModelTabType.VARIABLES]: 'variables',
 };

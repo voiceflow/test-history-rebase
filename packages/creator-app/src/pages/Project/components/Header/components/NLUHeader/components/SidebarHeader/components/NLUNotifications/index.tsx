@@ -84,7 +84,7 @@ const NLUNotifications: React.FC = () => {
         </Button>
         <Button variant={ButtonVariant.SECONDARY} onClick={handleRefresh} flat squareRadius>
           <Flex>
-            <SvgIcon color="#6e849a" icon="publishSpin" mr={12} inline />
+            <SvgIcon color="#6e849a" icon="arrowSpin" mr={12} inline />
             Refresh
           </Flex>
         </Button>

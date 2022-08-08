@@ -89,19 +89,19 @@ const addCollapseSection = createExample(
           Simple item
         </SectionV2.ListItem>
 
-        <SectionV2.ListItem icon="entities" actionCentred onClick={console.log}>
+        <SectionV2.ListItem icon="setV2" actionCentred onClick={console.log}>
           Item with icon
         </SectionV2.ListItem>
 
-        <SectionV2.ListItem icon="entities" isActive actionCentred onClick={console.log}>
+        <SectionV2.ListItem icon="setV2" isActive actionCentred onClick={console.log}>
           Active icon
         </SectionV2.ListItem>
 
-        <SectionV2.ListItem icon="entities" action={<SectionV2.RemoveButton />} actionCentred onClick={console.log}>
+        <SectionV2.ListItem icon="setV2" action={<SectionV2.RemoveButton />} actionCentred onClick={console.log}>
           Item with icon and action
         </SectionV2.ListItem>
 
-        <SectionV2.ListItem icon="entities" action={<SectionV2.RemoveButton />} iconWarning="Some message" actionCentred onClick={console.log}>
+        <SectionV2.ListItem icon="setV2" action={<SectionV2.RemoveButton />} iconWarning="Some message" actionCentred onClick={console.log}>
           Item with icon, action and warning
         </SectionV2.ListItem>
       </SectionV2.ActionCollapseSection>

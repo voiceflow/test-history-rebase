@@ -53,7 +53,7 @@ const IntentListItem: React.ForwardRefRenderFunction<HTMLDivElement, IntentListI
           isDraggingPreview={isDraggingPreview}
         >
           <S.IconContainer>
-            <SvgIcon icon="systemIntentSmall" />
+            <SvgIcon icon="intentSmall" />
           </S.IconContainer>
 
           <S.IntentContent ref={tooltipRef}>

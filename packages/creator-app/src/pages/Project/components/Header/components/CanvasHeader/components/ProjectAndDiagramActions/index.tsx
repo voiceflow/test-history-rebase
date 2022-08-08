@@ -106,7 +106,7 @@ const ProjectAndDiagramActions: React.FC = () => {
       {canEditCanvas && (selectedTargets.length > 1 || (selectedTargets.length === 1 && selectedTargets[0] !== startNodeID)) ? (
         <Box.Flex gap={5}>
           <HeaderIconButton
-            icon="flowV2"
+            icon="componentOutline"
             isSmall
             tooltip={{ title: 'Create flow', hotkey: HOTKEY_LABEL_MAP[Hotkey.CREATE_COMPONENT] }}
             onClick={onCreateComponent}

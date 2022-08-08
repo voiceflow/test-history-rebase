@@ -25,7 +25,7 @@ const MenuItem: React.FC<MenuItemProps> = ({ id, name, isHome, search, onClick }
             )}
           </OverflowTippyTooltip>
 
-          <UIMenu.ActionIcon ref={ref} icon="toggles" onClick={stopPropagation(onToggle)} active={isOpened} />
+          <UIMenu.ActionIcon ref={ref} icon="filter" onClick={stopPropagation(onToggle)} active={isOpened} />
         </UIMenu.Item>
       )}
     </Dropdown>

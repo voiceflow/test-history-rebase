@@ -50,7 +50,7 @@ const AudioPreview: React.FC<AudioPreviewProps> = ({ audioVariants, onOpenEditor
       </Preview.Content>
 
       <Preview.Footer>
-        {canOpenEditor && <Preview.ButtonIcon icon="editorEdit" onClick={handleEditorClick} />}
+        {canOpenEditor && <Preview.ButtonIcon icon="edit" onClick={handleEditorClick} />}
         <Preview.ButtonIcon ml={8} icon="copy" onClick={copyAllToClipboard} />
       </Preview.Footer>
     </Preview>

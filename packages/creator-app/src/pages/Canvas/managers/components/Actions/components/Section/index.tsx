@@ -64,10 +64,10 @@ const ActionsSection: React.FC<ActionsSectionProps> = ({ portID, editor, parentP
               hasNavigationStep ? null : { icon: 'intentSmall', label: 'Go to Intent', onClick: () => onAdd(BlockType.GO_TO_INTENT) },
               hasNavigationStep ? null : { icon: 'editorExit', label: 'End', onClick: () => onAdd(BlockType.EXIT) },
               hasNavigationStep ? null : createUIOnlyMenuItemOption('divider', { divider: true }),
-              { icon: 'systemSet', label: 'Set variable', onClick: () => onAdd(BlockType.SETV2) },
+              { icon: 'setV2', label: 'Set variable', onClick: () => onAdd(BlockType.SETV2) },
               !withURLAction ? null : { icon: 'editorURL', label: 'Open URL', onClick: () => onAdd(BlockType.URL) },
               {
-                icon: 'editor',
+                icon: 'integrations',
                 label: 'API',
                 onClick: () => onAdd(BlockType.INTEGRATION, { selectedIntegration: BaseNode.Utils.IntegrationType.CUSTOM_API }),
               },

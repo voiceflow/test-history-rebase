@@ -50,7 +50,7 @@ const speakPreview = createExample('prompt list', () => (
     </Preview.Content>
 
     <Preview.Footer>
-      <Preview.ButtonIcon icon="editorEdit" mr={12} />
+      <Preview.ButtonIcon icon="edit" mr={12} />
       <Preview.ButtonIcon icon="copy" />
     </Preview.Footer>
   </Preview>
@@ -73,7 +73,7 @@ const entityPreview = createExample('list with tag', () => (
     </Preview.Content>
 
     <Preview.Footer>
-      <Preview.ButtonIcon icon="editorEdit" />
+      <Preview.ButtonIcon icon="edit" />
     </Preview.Footer>
   </Preview>
 ));
@@ -89,7 +89,7 @@ const urlPreview = createExample('simple preview', () => (
     </Preview.Content>
 
     <Preview.Footer noBackground>
-      <Preview.ButtonIcon icon="editorEdit" mr={12} />
+      <Preview.ButtonIcon icon="edit" mr={12} />
       <Preview.ButtonIcon icon="copy" />
     </Preview.Footer>
   </Preview>
@@ -106,7 +106,7 @@ const goToTargetPreview = createExample('different icons', () => (
     </Preview.Content>
 
     <Preview.Footer noBackground>
-      <Preview.ButtonIcon icon="editorEdit" mr={12} />
+      <Preview.ButtonIcon icon="edit" mr={12} />
       <Preview.ButtonIcon icon="target" />
     </Preview.Footer>
   </Preview>
@@ -129,7 +129,7 @@ const codePreview = createExample('code', () => (
     </Preview.Content>
 
     <Preview.Footer>
-      <Preview.ButtonIcon icon="editorEdit" mr={12} />
+      <Preview.ButtonIcon icon="edit" mr={12} />
       <Preview.ButtonIcon icon="copy" />
     </Preview.Footer>
   </Preview>

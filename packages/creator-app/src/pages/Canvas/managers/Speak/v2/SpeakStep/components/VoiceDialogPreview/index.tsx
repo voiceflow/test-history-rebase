@@ -52,7 +52,7 @@ const VoiceDialogPreview: React.FC<VoiceDialogPreviewProps> = ({ speakVariants, 
       </Preview.Content>
 
       <Preview.Footer>
-        {canOpenEditor && <Preview.ButtonIcon icon="editorEdit" onClick={handleEditorClick} />}
+        {canOpenEditor && <Preview.ButtonIcon icon="edit" onClick={handleEditorClick} />}
         <Preview.ButtonIcon icon="copy" ml={8} onClick={copyAllToClipboard} />
       </Preview.Footer>
     </Preview>

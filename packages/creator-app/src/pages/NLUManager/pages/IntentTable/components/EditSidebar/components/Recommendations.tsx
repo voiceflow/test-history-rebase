@@ -93,7 +93,7 @@ const Recommendations: React.FC = () => {
           <SectionV2.ActionsContainer gap={8}>
             <IconButton
               size={16}
-              icon="publishSpin"
+              icon="arrowSpin"
               variant={IconButton.Variant.BASIC}
               onClick={onFetchRecommendations}
               iconProps={{ spinReverse: isFetching }}

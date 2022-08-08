@@ -29,7 +29,7 @@ const ButtonItem: React.FC<ButtonItemProps> = ({ index, label, portID, prompts, 
           borderRadius="8px"
           renderContent={({ onClose }) => <ButtonPreview prompts={prompts} onClose={onClose} onOpenEditor={onOpenEditor} />}
         >
-          {({ onToggle, ref, isOpened }) => <StepButton ref={ref} onClick={stopPropagation(onToggle)} icon="systemSet" isActive={isOpened} />}
+          {({ onToggle, ref, isOpened }) => <StepButton ref={ref} onClick={stopPropagation(onToggle)} icon="setV2" isActive={isOpened} />}
         </Popper>
       )
     }

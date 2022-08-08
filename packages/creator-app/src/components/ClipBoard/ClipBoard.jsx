@@ -68,7 +68,7 @@ const ClipBoard = (props) => {
           <InputGroup>
             {'locked' in props && (
               <InputPrepend>
-                <SvgIcon icon={locked ? SVG.locked : SVG.unlocked} width={18} height={18} />
+                <SvgIcon icon={locked ? SVG.lockLocked : SVG.lockUnlocked} width={18} height={18} />
               </InputPrepend>
             )}
             <Input readOnly value={value} className="form-control-border right" />

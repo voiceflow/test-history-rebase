@@ -8,7 +8,7 @@ import { NodeConfig } from '../types';
 
 export const NODE_CONFIG: NodeConfig<Realtime.NodeData.AccountLinking, Realtime.NodeData.AccountLinkingBuiltInPorts> = {
   type: BlockType.ACCOUNT_LINKING,
-  icon: 'accountLinking',
+  icon: 'link',
 
   factory: () => ({
     node: {

@@ -24,7 +24,7 @@ interface NLUSectionProps {
 }
 
 const getPrefixIcon = (isImportLoading: boolean, value: SupportedPlatformType | null) => {
-  if (isImportLoading) return <SvgIcon size={16} icon="sync" spin />;
+  if (isImportLoading) return <SvgIcon size={16} icon="arrowSpin" spin />;
 
   const meta = value && PLATFORM_PROJECT_META_MAP[value];
 

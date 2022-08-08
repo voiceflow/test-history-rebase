@@ -19,7 +19,7 @@ export interface CommandStepProps {
 export const CommandStep: React.FC<CommandStepProps> = ({ nodeID, name, palette, onCommandClick }) => (
   <Step nodeID={nodeID}>
     <Section>
-      <Item icon="flowV2" palette={palette} label={name} onClick={stopPropagation(onCommandClick)} />
+      <Item icon="componentOutline" palette={palette} label={name} onClick={stopPropagation(onCommandClick)} />
     </Section>
   </Step>
 );

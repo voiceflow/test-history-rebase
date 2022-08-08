@@ -20,7 +20,7 @@ const Header: React.FC<HeaderProps> = ({ tabs, locked, selectedTab, toggleLock, 
 
     <LockIconContainer>
       <TippyTooltip title={locked ? 'Unlock Sidebar' : 'Lock Sidebar'} position="top" distance={8} hotkey="?">
-        <LockIcon size={15} icon={locked ? 'lock' : 'openLock'} locked={locked} onClick={toggleLock} />
+        <LockIcon size={15} icon={locked ? 'lockLocked' : 'lockUnlocked'} locked={locked} onClick={toggleLock} />
       </TippyTooltip>
     </LockIconContainer>
   </Container>

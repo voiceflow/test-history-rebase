@@ -19,7 +19,7 @@ const FooterActionsButton: React.FC<T.FooterActionsButtonProps> = ({ actions, pl
       <Button
         ref={ref as React.RefObject<HTMLButtonElement>}
         flat
-        icon="toggles"
+        icon="filter"
         variant={Button.Variant.SECONDARY}
         onClick={onClick}
         isActive={isOpen}

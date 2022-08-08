@@ -182,7 +182,7 @@ const ProjectListList: React.FC<ProjectListListProps> = ({ workspace, filter, is
                       style={{ flex: '0 0 auto', alignSelf: 'flex-start', margin: '15px 27px', minWidth: '0' }}
                     >
                       <TippyTooltip distance={8} title="Add new list" position="bottom">
-                        <IconButton large icon="addStep" onClick={onCreateList} size={13} />
+                        <IconButton large icon="add2" onClick={onCreateList} size={13} />
                       </TippyTooltip>
                     </BoxFlex>
                   )}

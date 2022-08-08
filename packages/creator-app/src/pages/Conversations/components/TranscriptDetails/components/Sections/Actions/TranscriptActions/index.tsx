@@ -63,7 +63,7 @@ const TranscriptActions: React.FC = () => {
     <Container>
       <ActionButton
         id={Identifier.MARK_AS_REVIEWED_TRANSCRIPT_BUTTON}
-        icon={isReviewed ? 'checkmarkFilled' : 'success'}
+        icon={isReviewed ? 'checkmarkFilled' : 'checkmark2'}
         color={isReviewed ? '#449127' : THEME.colors.tertiary}
         label="Mark as Reviewed"
         onClick={handleReviewedClick}

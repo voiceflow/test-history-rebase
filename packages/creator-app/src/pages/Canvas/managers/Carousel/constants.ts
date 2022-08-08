@@ -22,7 +22,7 @@ export const cardFactory = (platform?: VoiceflowConstants.PlatformType): BaseNod
 
 export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Carousel, Realtime.NodeData.CarouselBuiltInPorts> = {
   type: BlockType.CAROUSEL,
-  icon: 'systemCarousel',
+  icon: 'carousel',
   isMergeTerminator: ({ data }) => Realtime.Utils.typeGuards.isCarouselNodeData(data) && Boolean(data.noMatch || data.noReply),
 
   factory: (_, options) => {

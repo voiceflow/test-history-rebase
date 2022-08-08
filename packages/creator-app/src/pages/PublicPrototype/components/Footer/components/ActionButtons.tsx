@@ -35,7 +35,7 @@ const ActionButtons: React.FC<ActionButtons> = ({ onMute, onReset, isMuted, onFu
 
       <ActionButtonContainer>
         <TippyTooltip title="Reset Test">
-          <SvgIcon icon="restart" size={18} variant={SvgIcon.Variant.STANDARD} onClick={onReset} clickable />
+          <SvgIcon icon="randomLoop" size={18} variant={SvgIcon.Variant.STANDARD} onClick={onReset} clickable />
         </TippyTooltip>
       </ActionButtonContainer>
     </>

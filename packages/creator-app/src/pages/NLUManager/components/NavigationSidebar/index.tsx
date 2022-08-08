@@ -60,7 +60,7 @@ const NavigationSidebar: React.FC = () => {
         />
 
         <Item
-          icon="entities"
+          icon="setV2"
           title="Entities"
           onAdd={nluManager.createAndGoToItem}
           onClick={() => nluManager.goToTab(InteractionModelTabType.SLOTS)}

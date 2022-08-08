@@ -44,7 +44,7 @@ export const CaptureItem: React.FC<CaptureItemProps> = ({ slot, label, isFirst, 
           portID={portID}
           palette={palette}
           wordBreak
-          attachment={slotPrompt?.content && <StepButton ref={ref} icon="systemSet" isActive={isOpened} onClick={stopPropagation(onToggle)} />}
+          attachment={slotPrompt?.content && <StepButton ref={ref} icon="setV2" isActive={isOpened} onClick={stopPropagation(onToggle)} />}
           withNewLines
         />
       )}

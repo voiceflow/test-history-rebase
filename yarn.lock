@@ -7521,7 +7521,7 @@ bson-objectid@^2.0.1:
   resolved "https://registry.yarnpkg.com/bson-objectid/-/bson-objectid-2.0.3.tgz#d840185172846b2f10c42ce2bcdb4a50956a9db5"
   integrity sha512-WYwVtY9yqk179EPMNuF3vcxufdrGLEo2XwqdRVbfLVe9X6jLt7WKZQgP+ObOcprakBGbHxzl76tgTaieqsH29g==
 
-bson@*:
+bson@*, bson@4.6.5:
   version "4.6.5"
   resolved "https://registry.yarnpkg.com/bson/-/bson-4.6.5.tgz#1a410148c20eef4e40d484878a037a7036e840fb"
   integrity sha512-uqrgcjyOaZsHfz7ea8zLRCLe1u+QGUSzMZmvXqO24CDW7DWoW1qiN9folSwa7hSneTSgM2ykDIzF5kcQQ8cwNw==

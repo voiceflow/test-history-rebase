@@ -9,7 +9,7 @@ const init = () => {
 
 export const createSimpleSpeakChoice = () => {
   init();
-  canvasUtils.interceptSave();
+
   canvasUtils.spawnNodeInGrid('speak', 1, 0);
   canvasUtils.focusLastStep();
   canvasUtils.editor.speak.addText('Test');
@@ -32,12 +32,11 @@ export const createSimpleSpeakChoice = () => {
   canvasUtils.clickPreviousNthBlockPort(3, 1);
   canvasUtils.clickLastBlock();
   canvasUtils.clickCanvas();
-  canvasUtils.waitForSave();
 };
 
 export const createSimple2BlockSpeak = () => {
   init();
-  canvasUtils.interceptSave();
+
   canvasUtils.spawnNodeInGrid('speak', 1, 0);
   canvasUtils.focusLastStep();
   canvasUtils.editor.speak.addText('Speak 1, welcome to a simple Alexa project');
@@ -48,16 +47,14 @@ export const createSimple2BlockSpeak = () => {
   canvasUtils.editor.speak.addText('Bye, this is the end');
   canvasUtils.connectLastBlockWithRecent(0);
   canvasUtils.clickCanvas();
-  canvasUtils.waitForSave();
 };
 
 export const createSimpleDisplay = () => {
   init();
-  canvasUtils.interceptSave();
+
   canvasUtils.spawnNodeInGrid('display', 1, 0);
   canvasUtils.clickHomeBlockPort();
   canvasUtils.clickLastBlock();
   canvasUtils.focusLastStep();
   canvasUtils.editor.uploadImage();
-  canvasUtils.waitForSave();
 };

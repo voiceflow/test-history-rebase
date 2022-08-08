@@ -1,5 +1,6 @@
+import { ObjectId } from 'bson';
 import { expect } from 'chai';
-import { Db, MongoClient, ObjectId } from 'mongodb';
+import { Db, MongoClient } from 'mongodb';
 
 import config from '@/config';
 import AbstractModel from '@/models/_mongo';

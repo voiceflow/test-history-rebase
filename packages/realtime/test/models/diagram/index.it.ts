@@ -1,6 +1,7 @@
 import { BaseModels } from '@voiceflow/base-types';
+import { ObjectId } from 'bson';
 import { expect } from 'chai';
-import { Db, MongoClient, ObjectId } from 'mongodb';
+import { Db, MongoClient } from 'mongodb';
 
 import config from '@/config';
 import DiagramModel from '@/models/diagram';

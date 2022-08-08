@@ -1,8 +1,8 @@
 import { BaseModels, BaseNode } from '@voiceflow/base-types';
+import { ObjectId } from 'bson';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import _ from 'lodash';
-import { ObjectId } from 'mongodb';
 import sinon from 'sinon';
 
 import DiagramModel from '@/models/diagram/index';
@@ -28,7 +28,7 @@ describe('Diagram model unit tests', () => {
 
     expect(await model.create(data)).to.eql(result);
 
-    expect(stubInsertOne.args).to.eql([[{ ...data, versionID: new ObjectId(versionID) }]]);
+    expect(stubInsertOne.args).to.eql([[{ ...data, versionID }]]);
   });
 
   it('findManyByVersion', async () => {

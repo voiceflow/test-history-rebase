@@ -1,7 +1,7 @@
+import { ObjectId } from 'bson';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import _ from 'lodash';
-import { ObjectId } from 'mongodb';
 import sinon from 'sinon';
 
 import AbstractModel from '@/models/_mongo';

@@ -1,6 +1,7 @@
 import type { LoguxControl } from '@voiceflow/socket-utils';
+import { ObjectId } from 'bson';
 import _ from 'lodash';
-import Mongo, { Collection, FilterQuery, FindOneAndUpdateOption, OptionalId, UpdateOneOptions, UpdateQuery, WithId } from 'mongodb';
+import { Collection, FilterQuery, FindOneAndUpdateOption, OptionalId, UpdateOneOptions, UpdateQuery, WithId } from 'mongodb';
 
 import { Config } from '@/types';
 
@@ -10,8 +11,6 @@ import { Atomic } from './utils';
 export interface ModelDependencies {
   clients: ClientMap;
 }
-
-const { ObjectId } = Mongo;
 
 abstract class MongoModel<T> implements LoguxControl {
   protected static getAtomicUpdatesFields<M>(updates: Atomic.UpdateOperation<any>[]) {

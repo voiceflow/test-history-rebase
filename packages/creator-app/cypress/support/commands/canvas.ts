@@ -2,13 +2,11 @@
 
 import { ClassName } from '../../../src/styles/constants';
 import canvasPage from '../../pages/canvas';
-import buildTools from '../../utils/canvas/buildTools';
 
 Cypress.Commands.add('awaitCanvasAnimation', (wait = 150) => {
   canvasPage.el.canvas.children().then(($el) => cy.wrap($el, { timeout: 1000 }).invoke('css', 'transition').should('eq', 'all 0s ease 0s'));
 
   // extra wait time to be sure the animation is finished
-  // eslint-disable-next-line cypress/no-unnecessary-waiting
   cy.wait(wait);
 });
 
@@ -58,20 +56,14 @@ Cypress.Commands.add(
 );
 
 Cypress.Commands.add('addBlockToCanvasViaSpotlight', (blockName: string) => {
-  buildTools.interceptSave();
   cy.sendHotkey('{shift} ');
   cy.get('#vf-spotlight input').type(`${blockName}{enter}`);
-  buildTools.waitForSave();
 });
 
 Cypress.Commands.add('addBlockToCanvasViaStepMenu', (section: string, stepName: string, [offsetX, offsetY]: Cypress.Coords) => {
-  buildTools.interceptSave();
-
   canvasPage.el.stepMenu.contains('.vf-step-menu__item', section).trigger('mouseover');
   // the sub menu is a popper tied to the root dom element
   cy.contains('.vf-sub-step-menu__item', stepName).reactDnD('#vf-canvas', { offsetY, offsetX }).awaitCanvasAnimation();
-
-  buildTools.waitForSave();
 });
 
 Cypress.Commands.add('selectAllCanvasNodes', () => {

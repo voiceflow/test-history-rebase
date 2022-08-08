@@ -86,19 +86,19 @@ class DiagramService extends AbstractControl {
   }
 
   public async get(diagramID: string): Promise<BaseModels.Diagram.Model> {
-    return this.models.diagram.findById(diagramID);
+    return this.models.diagram.fromDB(await this.models.diagram.findById(diagramID));
   }
 
   public async getAll(versionID: string, filter?: string[]): Promise<BaseModels.Diagram.Model[]> {
-    return this.models.diagram.findManyByVersion(versionID, filter);
+    return (await this.models.diagram.findManyByVersion(versionID, filter)).map(this.models.diagram.fromDB);
   }
 
   public async create(data: Omit<BaseModels.Diagram.Model, '_id'>): Promise<BaseModels.Diagram.Model> {
-    return this.models.diagram.create(data);
+    return this.models.diagram.fromDB(await this.models.diagram.create(this.models.diagram.toDB(data)));
   }
 
   public async patch(diagramID: string, { _id, ...data }: Partial<BaseModels.Diagram.Model>): Promise<void> {
-    await this.models.diagram.updateById(diagramID, data);
+    await this.models.diagram.updateById(diagramID, this.models.diagram.toDB(data));
   }
 
   public async delete(diagramID: string): Promise<void> {

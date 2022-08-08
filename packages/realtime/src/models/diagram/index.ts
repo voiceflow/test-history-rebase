@@ -2,19 +2,23 @@
 import { BaseModels, BaseNode } from '@voiceflow/base-types';
 import { Nullish, Struct, Utils } from '@voiceflow/common';
 import { LinkDelete, LinkPatch, NodePortRemap, PortDelete } from '@voiceflow/realtime-sdk';
+import { ObjectId } from 'bson';
 import _ from 'lodash';
-import Mongo, { OptionalId } from 'mongodb';
+import { OptionalId } from 'mongodb';
 
 import AbstractModel from '../_mongo';
 import { Atomic, AtomicEntity } from '../utils';
-
-const { ObjectId } = Mongo;
 
 interface ManyNodeDataUpdate extends Atomic.Update {
   nodeID: string;
 }
 
-class DiagramModel extends AbstractModel<BaseModels.Diagram.Model> {
+interface DBDiagramModel extends Omit<BaseModels.Diagram.Model, '_id' | 'versionID'> {
+  _id: ObjectId;
+  versionID: ObjectId;
+}
+
+class DiagramModel extends AbstractModel<DBDiagramModel> {
   public collectionName = 'diagrams';
 
   private static nodePath = (nodeID: string, path?: string): string => `nodes.${nodeID}${path ? `.${path}` : ''}`;
@@ -37,6 +41,36 @@ class DiagramModel extends AbstractModel<BaseModels.Diagram.Model> {
   private atomicNode = new AtomicEntity(DiagramModel.nodePath);
 
   private atomicNodeData = new AtomicEntity(DiagramModel.nodeDataPath);
+
+  fromDB(diagram: DBDiagramModel): BaseModels.Diagram.Model;
+
+  fromDB<DBDiagram extends Partial<DBDiagramModel>>(
+    diagram: DBDiagram
+  ): Pick<BaseModels.Diagram.Model, Extract<keyof BaseModels.Diagram.Model, keyof DBDiagram>>;
+
+  fromDB(diagram: Partial<DBDiagramModel>): Partial<BaseModels.Diagram.Model> {
+    const { _id, versionID, ...rest } = diagram;
+
+    return {
+      ...rest,
+      ...(_id && { _id: _id.toHexString() }),
+      ...(versionID && { versionID: versionID.toHexString() }),
+    };
+  }
+
+  toDB(diagram: BaseModels.Diagram.Model): DBDiagramModel;
+
+  toDB<Diagram extends Partial<BaseModels.Diagram.Model>>(diagram: Diagram): Pick<DBDiagramModel, Extract<keyof DBDiagramModel, keyof Diagram>>;
+
+  toDB(diagram: Partial<BaseModels.Diagram.Model>): Partial<DBDiagramModel> {
+    const { _id, versionID, ...rest } = diagram;
+
+    return {
+      ...rest,
+      ...(_id && { _id: new ObjectId(_id) }),
+      ...(versionID && { versionID: new ObjectId(versionID) }),
+    };
+  }
 
   atomicNodePortRemap(nodePortRemaps?: NodePortRemap[]) {
     if (!nodePortRemaps?.length) return [];
@@ -359,9 +393,8 @@ class DiagramModel extends AbstractModel<BaseModels.Diagram.Model> {
     return port;
   }
 
-  async create(diagramData: OptionalId<BaseModels.Diagram.Model>) {
-    const data = { ...diagramData, versionID: new ObjectId(diagramData.versionID) };
-    return this.insertOne(data);
+  async create(diagramData: OptionalId<DBDiagramModel>) {
+    return this.insertOne(diagramData);
   }
 }
 

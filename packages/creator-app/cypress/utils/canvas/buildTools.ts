@@ -3,12 +3,6 @@ import { ClassName, Identifier } from '../../../src/styles/constants';
 const GRID_BLOCK_PIXEL_UNIT = 300;
 
 const canvasUtils = {
-  interceptSave: () => {
-    cy.intercept('PATCH', '/v2/diagrams/*').as('diagramSave');
-  },
-  waitForSave: () => {
-    cy.wait('@diagramSave');
-  },
   focusCanvas: () => {
     cy.get(`#${Identifier.CANVAS}`).focus();
   },

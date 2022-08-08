@@ -2,6 +2,7 @@ import './polyfills';
 
 import { LoguxError } from '@logux/core';
 import { SocketServer } from '@voiceflow/socket-utils';
+import { inspect } from 'node:util';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -39,13 +40,13 @@ const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 
   // Graceful shutdown from SIGTERM
   process.on('SIGTERM', async () => {
-    logger.warn('SIGTERM received stopping server...');
+    logger.info('SIGTERM received stopping server...');
 
     await gracefulShutdown();
   });
 
   process.on('unhandledRejection', async (r, p) => {
-    logger.warn(`${r} Unhandled rejection at: ${p}`);
+    logger.warn(`${r} Unhandled rejection at: ${inspect(p)}`);
 
     await gracefulShutdown();
   });

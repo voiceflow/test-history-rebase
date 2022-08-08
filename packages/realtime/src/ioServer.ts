@@ -1,37 +1,31 @@
 import { readFileSync } from 'fs';
-import { createServer } from 'https';
+import { createServer, Server as HTTPServer } from 'https';
 import { Server } from 'socket.io';
 
 class IOServer extends Server {
-  private env: string;
-
-  private port: number;
-
   constructor({ env, port }: { env: string; port: number }) {
-    super({
+    let server: HTTPServer | number;
+
+    if (env === 'e2e') {
+      server = createServer({
+        key: readFileSync('certs/localhost.key'),
+        cert: readFileSync('certs/localhost.crt'),
+      });
+      server.listen(port);
+    } else {
+      server = port;
+    }
+
+    super(server, {
       allowEIO3: true,
       transports: ['websocket'],
       pingTimeout: 10000,
       pingInterval: 5000,
     });
-
-    this.env = env;
-    this.port = port;
   }
 
-  start(): void {
-    if (this.env === 'e2e') {
-      const server = createServer({
-        key: readFileSync('certs/localhost.key'),
-        cert: readFileSync('certs/localhost.crt'),
-      });
-
-      this.listen(server);
-      server.listen(this.port);
-    } else {
-      this.listen(this.port);
-    }
-  }
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  start() {}
 
   stop(): void {
     this.close();

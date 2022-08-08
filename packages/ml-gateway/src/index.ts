@@ -1,6 +1,7 @@
 import './polyfills';
 
 import { SocketServer } from '@voiceflow/socket-utils';
+import { inspect } from 'node:util';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -21,7 +22,7 @@ const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 
   // Graceful shutdown from SIGTERM
   process.on('SIGTERM', async () => {
-    logger.warn('SIGTERM received stopping server...');
+    logger.info('SIGTERM received stopping server...');
 
     await serviceManager.stop();
     await server.stop();
@@ -30,7 +31,7 @@ const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
   });
 
   process.on('unhandledRejection', async (r, p) => {
-    logger.warn(`${r} Unhandled rejection at: ${p}`);
+    logger.warn(`${r} Unhandled rejection at: ${inspect(p)}`);
 
     await serviceManager.stop();
     await server.stop();

@@ -24,6 +24,7 @@ import { Permission } from '@/config/permissions';
 import { BulkImportLimitDetails } from '@/config/planLimits/bulkImport';
 import { ModalType, PREFILLED_UTTERANCE_PARAM } from '@/constants';
 import * as IntentV2 from '@/ducks/intentV2';
+import * as ProjectV2 from '@/ducks/projectV2';
 import * as SlotV2 from '@/ducks/slotV2';
 import { useAddSlot, useModals, usePermission, useSelector, useSetup } from '@/hooks';
 import UtteranceInput from '@/pages/Canvas/components/IntentModalsV2/components/components/UtteranceSection/components/UtteranceInput';
@@ -66,6 +67,7 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({
 
   const intents = useSelector(IntentV2.allIntentsSelector);
   const slots = useSelector(SlotV2.allSlotsSelector);
+  const platform = useSelector(ProjectV2.active.platformSelector);
 
   const utteranceRef = React.useRef<UtteranceRef>(null);
 
@@ -108,7 +110,7 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({
 
   const addValidation = React.useCallback(
     ({ text }) => {
-      const error = validateUtterance(text, null, intents);
+      const error = validateUtterance(text, null, intents, platform);
 
       if (error) {
         setInvalidUtterance();
@@ -135,11 +137,13 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({
 
   const onUpdateUtterancesHandler = (intentUtterances: Realtime.IntentInput[]) => {
     const cleanedUtterances = intentUtterances.map((utterance) => {
-      const text = formatUtterance(utterance.text);
+      const text = formatUtterance(platform, utterance.text);
+
       if (text !== utterance.text) {
-        toast.error('Utterances cannot contain numbers');
+        toast.error('Utterance is not valid');
         return { ...utterance, text };
       }
+
       return utterance;
     });
 

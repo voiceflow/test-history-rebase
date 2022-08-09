@@ -24,6 +24,7 @@ import { ModalType, PREFILLED_UTTERANCE_PARAM } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as Intent from '@/ducks/intent';
 import * as IntentV2 from '@/ducks/intentV2';
+import * as ProjectV2 from '@/ducks/projectV2';
 import * as SlotV2 from '@/ducks/slotV2';
 import { CanvasCreationType, IntentEditType } from '@/ducks/tracking/constants';
 import { useAddSlot, useDispatch, useModals, usePermission, useSelector, useTrackingEvents } from '@/hooks';
@@ -64,6 +65,7 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({ intent, isNested, i
   const [isValidUtterance, setValidUtterance, setInvalidUtterance] = useEnableDisable(true);
   const isBuiltIn = isCustomizableBuiltInIntent(intent);
   const [showUtterances, setShowUtterances] = React.useState(!isBuiltIn || !!intent.inputs?.length || !!prefilledNewUtterance);
+  const platform = useSelector(ProjectV2.active.platformSelector);
 
   const onUpdateUtterances = React.useCallback(
     (inputs) => {
@@ -100,7 +102,7 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({ intent, isNested, i
 
   const addValidation = React.useCallback(
     ({ text }) => {
-      const error = validateUtterance(text, intentID, customIntents);
+      const error = validateUtterance(text, intentID, customIntents, platform);
 
       if (error) {
         setInvalidUtterance();

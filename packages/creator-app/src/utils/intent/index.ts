@@ -15,9 +15,7 @@ import { AnyLocale, getPlatformIntentNameFormatter, getUtteranceRecommendationsL
 import { getBuiltInSynonyms } from '../slot';
 
 export * from './platform';
-
-const ALL_NUMBERS_REGEXP = /(\d*)/g;
-const SLOT_REGEXP2 = /({{\[\w*].\w*}})/g;
+export * from './utterance';
 
 const AMAZON_INTENT_PREFIX = 'AMAZON.';
 
@@ -163,50 +161,6 @@ export const isBuiltInIntent = (intentID: string): boolean =>
   [...ALEXA_BUILT_INS, ...GOOGLE_BUILT_INS, ...DIALOGFLOW_BUILT_INS, ...GENERAL_BUILT_INS_MAP[VoiceflowConstants.Language.EN]].some(
     (intent) => intent.id === intentID
   );
-
-const NUMERIC_UTTERANCE_REGEXP = /\d/;
-
-export function validateUtterance(utterance: string, intentID: string | null, intents: Realtime.Intent[]): string {
-  const utteranceWithoutSlots = utterance.replace(SLOT_REGEXP, '');
-
-  let err = '';
-
-  if (utterance === '') {
-    return 'Utterances must contain text';
-  }
-
-  if (utteranceWithoutSlots.match(NUMERIC_UTTERANCE_REGEXP)) {
-    return 'Utterances cannot contain numbers, replace them with words or a slot that accepts numbers as a value.';
-  }
-
-  const lowercaseUtterance = utterance.toLowerCase();
-
-  intents.some(({ inputs, id, name }) =>
-    inputs.some(({ text }) => {
-      if (text.toLowerCase() === lowercaseUtterance) {
-        err =
-          id === intentID ? 'You already have this utterance in this intent.' : `You already have this utterance defined in the "${name}" intent.`;
-
-        return true;
-      }
-
-      return false;
-    })
-  );
-
-  return err;
-}
-
-export const formatUtterance = (text = ''): string =>
-  text
-    .split(SLOT_REGEXP2)
-    .map((part) => {
-      if (!part.match(SLOT_REGEXP2)) {
-        return part.replace(ALL_NUMBERS_REGEXP, '');
-      }
-      return part;
-    })
-    .join('');
 
 export const applyPlatformIntentNameFormatting = (name: string, platform: VoiceflowConstants.PlatformType): string =>
   getPlatformIntentNameFormatter(platform)(name);

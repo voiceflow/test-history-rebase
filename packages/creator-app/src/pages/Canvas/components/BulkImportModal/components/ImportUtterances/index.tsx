@@ -8,9 +8,10 @@ import RadioGroup from '@/components/RadioGroup';
 import * as Documentation from '@/config/documentation';
 import { MODAL_WIDTH_VARIANTS, MODAL_WIDTHS, ModalType } from '@/constants';
 import * as IntentV2 from '@/ducks/intentV2';
+import * as ProjectV2 from '@/ducks/projectV2';
 import * as SlotV2 from '@/ducks/slotV2';
 import { connect } from '@/hocs';
-import { useDebouncedCallback, useModals } from '@/hooks';
+import { useDebouncedCallback, useModals, useSelector } from '@/hooks';
 import { ConnectedProps } from '@/types';
 import { readFileAsText } from '@/utils/file';
 import { isCustomizableBuiltInIntent } from '@/utils/intent';
@@ -37,6 +38,7 @@ const ImportUtterances: React.FC<ConnectedImportUtterancesProps> = ({ slots, get
     validUtterances: [] as { text: string; slots: string[] }[],
   });
   const isInline = state.uploadVariant === UploadType.INLINE;
+  const platform = useSelector(ProjectV2.active.platformSelector);
 
   const { close, data, isOpened } = useModals<{ intentID: string; onUpload: (utterances: { text: string; slots: string[] }[]) => void }>(
     ModalType.IMPORT_UTTERANCES
@@ -119,7 +121,14 @@ const ImportUtterances: React.FC<ConnectedImportUtterancesProps> = ({ slots, get
   }, []);
 
   const onUpload = React.useCallback(() => {
-    const [errors, validUtterances] = validateUtterances(getUtterances(state.editorValue), data.intentID, intents, slots, builtIn);
+    const [errors, validUtterances] = validateUtterances({
+      utterances: getUtterances(state.editorValue),
+      intentID: data.intentID,
+      intents,
+      slots,
+      builtIn,
+      platform,
+    });
 
     if (errors.size && !state.ignoreErrors) {
       stateApi.update({ errors, validUtterances, uploadDisabled: true });

@@ -69,7 +69,7 @@ const Recommendations: React.FC = () => {
   const onAddRecommendation = (index: number, { text, slots }: Recommendation) => {
     if (!nluManager.activeItem) return;
 
-    const error = validateUtterance(text, nluManager.activeItem.id, intents);
+    const error = validateUtterance(text, nluManager.activeItem.id, intents, platform);
 
     if (error) {
       toast.error(error);

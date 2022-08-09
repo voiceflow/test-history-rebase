@@ -1,5 +1,6 @@
 import { READABLE_VARIABLE_REGEXP } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import _isString from 'lodash/isString';
 
 import { rawTextToUtteranceFormat } from '@/client/adapters/textEditor';
@@ -12,7 +13,21 @@ export const getUtterances = (value: string) =>
     .map((part) => part.trim())
     .filter(Boolean);
 
-export const validateUtterances = (utterances: string[], intentID: string, intents: Realtime.Intent[], slots: Realtime.Slot[], builtIn: boolean) => {
+export const validateUtterances = ({
+  utterances,
+  intentID,
+  intents,
+  slots,
+  builtIn,
+  platform,
+}: {
+  utterances: string[];
+  intentID: string;
+  intents: Realtime.Intent[];
+  slots: Realtime.Slot[];
+  builtIn: boolean;
+  platform: VoiceflowConstants.PlatformType;
+}) => {
   const errors = new Map<number, string>();
   const slotsMap = slots.reduce<Record<string, string>>((acc, slot) => Object.assign(acc, { [slot.name]: slot.id }), {});
   const validUtterances: { text: string; slots: string[] }[] = [];
@@ -20,7 +35,7 @@ export const validateUtterances = (utterances: string[], intentID: string, inten
   utterances.forEach((utterance, index) => {
     const name = utterance.trim();
 
-    const error = validateUtterance(name, intentID, intents);
+    const error = validateUtterance(name, intentID, intents, platform);
 
     if (error) {
       errors.set(index, error);

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.863.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.863.0...@voiceflow/creator-app@1.863.1) (2022-08-09)
+
+
+### Bug Fixes
+
+* fixes utterance validation logic (NLU-269) ([#5873](https://github.com/voiceflow/creator-app/issues/5873)) ([c04c21f](https://github.com/voiceflow/creator-app/commit/c04c21f46f0c307032ef84a97b84131792dad8f9))
+
+
+
+
+
 # [1.863.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.862.0...@voiceflow/creator-app@1.863.0) (2022-08-09)
 
 

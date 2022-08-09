@@ -209,7 +209,7 @@ export const useProjectOptions = ({
     withDeleteOption ? { label: 'divider-2', divider: true } : null,
 
     withDeleteOption ? { label: 'Delete project', onClick: onDelete } : null,
-  ];
+  ].filter((opt) => !!opt);
 };
 
 export const useAlexaProjectSettings = (): boolean => {

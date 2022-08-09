@@ -7,6 +7,9 @@ import { Action, AnyAction } from 'typescript-fsa';
 
 const SUBPROTOCOL = '1.0.0';
 const SUPPORT_RANGE = '1.x';
+const WARNING_BYPASS = new Set(['Zombie client was disconnected']);
+// ignore action processing logs
+const INFO_BYPASS = new Set(['Action was processed', 'Action was cleaned']);
 
 export interface SocketServerOptions {
   port: number;
@@ -26,15 +29,18 @@ export class SocketServer extends Logux.Server {
       port,
       logger: {
         info: (details: { action: AnyAction }, message) => {
-          // ignore MOVE_CURSOR actions and processed responses
-          if ([...(loggerIgnoredActions ?? []), 'logux/processed'].includes(details?.action?.type)) return;
-          // ignore action processing logs
-          if (['Action was processed', 'Action was cleaned'].includes(message)) return;
+          const actionType = details?.action?.type || '';
 
-          const action = details?.action?.type || '';
-          logger.info(env === 'production' ? { message, details } : `${message}${action && ': '}${action}`);
+          if ([...(loggerIgnoredActions ?? []), 'logux/processed'].includes(details?.action?.type)) return;
+          if (INFO_BYPASS.has(message)) return;
+
+          logger.info(env === 'production' ? { message, details } : `${message}${actionType && ': '}${actionType}`);
         },
-        warn: (details, message) => logger.warn({ message, details }),
+        warn: (details, message) => {
+          if (WARNING_BYPASS.has(message)) return;
+
+          logger.warn({ message, details });
+        },
         error: (details, message) => logger.error({ message, details }),
         fatal: (details, message) => logger.fatal({ message, details }),
       },

@@ -22,7 +22,7 @@ const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 
   // Graceful shutdown from SIGTERM
   process.on('SIGTERM', async () => {
-    logger.info('SIGTERM received stopping server...');
+    logger.warn('SIGTERM received stopping server...');
 
     await serviceManager.stop();
     await server.stop();

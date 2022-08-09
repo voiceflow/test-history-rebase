@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.863.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.862.0...@voiceflow/creator-app@1.863.0) (2022-08-09)
+
+
+### Features
+
+* implement actions for carousel cards (CT-429) ([#5872](https://github.com/voiceflow/creator-app/issues/5872)) ([e3ee0ec](https://github.com/voiceflow/creator-app/commit/e3ee0ec5db68bfc17ab4d013c589d1e624b4e5b2))
+
+
+
+
+
 # [1.862.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.861.1...@voiceflow/creator-app@1.862.0) (2022-08-08)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.863.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.863.1...@voiceflow/creator-app@1.863.2) (2022-08-09)
+
+
+### Bug Fixes
+
+* filter out nullish values in options (CT-763) ([#5876](https://github.com/voiceflow/creator-app/issues/5876)) ([9cd7d01](https://github.com/voiceflow/creator-app/commit/9cd7d012a3b4d35467b643cd45124a402d4a21df))
+
+
+
+
+
 ## [1.863.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.863.0...@voiceflow/creator-app@1.863.1) (2022-08-09)
 
 

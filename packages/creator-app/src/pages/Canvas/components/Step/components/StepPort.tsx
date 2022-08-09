@@ -18,9 +18,10 @@ const Container = styled.div`
 interface StepPortProps {
   portID?: string | null;
   parentActionsPath?: string;
+  parentActionsParams?: Record<string, string>;
 }
 
-const StepPort: React.FC<StepPortProps> = ({ portID, parentActionsPath }) => {
+const StepPort: React.FC<StepPortProps> = ({ portID, parentActionsPath, parentActionsParams }) => {
   const stepAPI = React.useContext(StepAPIContext);
 
   if (!stepAPI?.withPorts || !portID) return null;
@@ -28,7 +29,7 @@ const StepPort: React.FC<StepPortProps> = ({ portID, parentActionsPath }) => {
   return (
     <PortEntityProvider id={portID}>
       <Container>
-        <Port flat parentActionsPath={parentActionsPath} />
+        <Port flat parentActionsPath={parentActionsPath} parentActionsParams={parentActionsParams} />
       </Container>
     </PortEntityProvider>
   );

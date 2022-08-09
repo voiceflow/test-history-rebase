@@ -7,7 +7,7 @@ import { NODE_CONFIG } from '../constants';
 import ActionPreview from './ActionPreview';
 import { useGoToNode } from './hooks';
 
-const Action: ConnectedAction<Realtime.NodeData.GoToNode> = ({ data, engine, onRemove, reversed, isActive, onOpenEditor }) => {
+const GoToNodeAction: ConnectedAction<Realtime.NodeData.GoToNode> = ({ data, engine, onRemove, reversed, isActive, onOpenEditor }) => {
   const goToNode = useGoToNode(data.goToNodeID ?? null, data.diagramID);
   const isEmpty = !goToNode;
 
@@ -51,4 +51,4 @@ const Action: ConnectedAction<Realtime.NodeData.GoToNode> = ({ data, engine, onR
   );
 };
 
-export default Action;
+export default GoToNodeAction;

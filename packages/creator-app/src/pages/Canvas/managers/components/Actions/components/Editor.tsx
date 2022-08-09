@@ -9,7 +9,7 @@ import { EditorSidebarProvider } from '@/pages/Canvas/components/EditorSidebarV2
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import { ManagerContext } from '@/pages/Canvas/contexts';
 
-const Editor: React.FC = () => {
+const ActionsEditor: React.FC = () => {
   const editor = EditorV2.useEditor();
   const getManager = React.useContext(ManagerContext)!;
 
@@ -45,4 +45,4 @@ const Editor: React.FC = () => {
   );
 };
 
-export default Editor;
+export default ActionsEditor;

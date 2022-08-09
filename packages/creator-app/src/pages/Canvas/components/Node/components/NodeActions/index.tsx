@@ -1,7 +1,7 @@
 import { BaseModels } from '@voiceflow/base-types';
 import { Struct } from '@voiceflow/common';
 import { PathPoints } from '@voiceflow/realtime-sdk';
-import { Canvas, swallowEvent, useDidUpdateEffect, useToggle } from '@voiceflow/ui';
+import { Canvas, swallowEvent, useDidUpdateEffect, usePersistFunction, useToggle } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
 import { generatePath } from 'react-router';
@@ -25,9 +25,10 @@ interface NodeActionsProps {
   parentPath?: string;
   sourcePortID: string;
   sourceNodeID: string;
+  parentParams?: Record<string, string>;
 }
 
-const NodeActions: React.FC<NodeActionsProps> = ({ isChip, parentPath, sourcePortID, sourceNodeID }) => {
+const NodeActions: React.FC<NodeActionsProps> = ({ isChip, parentPath, parentParams, sourcePortID, sourceNodeID }) => {
   const engine = React.useContext(EngineContext)!;
   const nodeEntity = React.useContext(NodeEntityContext)!;
   const isStraightLinks = React.useContext(IsStraightLinksContext)!;
@@ -62,14 +63,12 @@ const NodeActions: React.FC<NodeActionsProps> = ({ isChip, parentPath, sourcePor
 
   const onReverseUpdate = React.useCallback((points: PathPoints | null) => toggleReversed(points?.[0].reversed ?? false), []);
 
-  const onOpenEditor = React.useCallback(
-    (actionNodeID: string, routeState?: Struct) =>
-      engine.setActive(sourceNodeID, {
-        routeState,
-        nodeSubPath: generatePath(parentPath ? `${parentPath}/${PATH}` : PATH, { sourcePortID, actionNodeID }),
-      }),
-    [engine, parentPath, sourcePortID, sourceNodeID]
-  );
+  const onOpenEditor = usePersistFunction((actionNodeID: string, routeState?: Struct) => {
+    engine.setActive(sourceNodeID, {
+      routeState,
+      nodeSubPath: generatePath(parentPath ? `${parentPath}/${PATH}` : PATH, { ...parentParams, sourcePortID, actionNodeID }),
+    });
+  });
 
   useDidUpdateEffect(() => {
     toggleReversed(isStraight ? linkReversed : false);

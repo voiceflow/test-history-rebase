@@ -11,6 +11,7 @@ import Buttons from './Buttons';
 import Root from './Root';
 
 const EntityEditor = EditorV2.withGoBack(Buttons.PATH)(Entity.Editor);
+const ActionsEditor = EditorV2.withGoBack(Buttons.PATH)(Actions.Editor);
 const NoMatchActionsEditor = EditorV2.withGoBack(NoMatchV2.PATH)(Actions.Editor);
 const NoReplyActionsEditor = EditorV2.withGoBack(NoReplyV2.PATH)(Actions.Editor);
 
@@ -22,6 +23,7 @@ const CarouselEditor: NodeEditorV2<Realtime.NodeData.Carousel, Realtime.NodeData
     <Route path={`${Path.CANVAS_NODE}/${NoReplyV2.PATH}/${Actions.PATH}`} component={NoReplyActionsEditor} />
     <Route path={`${Path.CANVAS_NODE}/${NoReplyV2.PATH}`} component={NoReplyV2.Editor} />
 
+    <Route path={`${Path.CANVAS_NODE}/${Buttons.PATH}/${Actions.PATH}`} component={ActionsEditor} />
     <Route path={`${Path.CANVAS_NODE}/${Buttons.PATH}/${Entity.PATH}`} component={EntityEditor} />
     <Route path={`${Path.CANVAS_NODE}/${Buttons.PATH}`} component={Buttons.Editor} />
 

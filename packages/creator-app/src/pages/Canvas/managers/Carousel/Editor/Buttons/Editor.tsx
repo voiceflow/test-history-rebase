@@ -9,6 +9,8 @@ import { useFeature, useSetup } from '@/hooks';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 
+import { Actions } from '../../../components';
+import { PATH } from './constants';
 import IntentSection from './IntentSection';
 
 type ButtonInfo = Partial<{
@@ -93,10 +95,16 @@ const CarouselButtonsEditor: React.FC = () => {
               />
             </FormControl>
           </SectionV2.Content>
-          <SectionV2.Divider inset={!!chatCarouselIntent.isEnabled} />
           {chatCarouselIntent.isEnabled && (
-            <IntentSection intentID={button?.intent} buttonID={params.buttonID} onChange={(intent) => onChangeButton({ intent })} editor={editor} />
+            <>
+              <SectionV2.Divider inset />
+              <IntentSection intentID={button?.intent} buttonID={params.buttonID} onChange={(intent) => onChangeButton({ intent })} editor={editor} />
+            </>
           )}
+          <SectionV2.Divider inset />
+
+          <Actions.Section portID={editor.node.ports.out.byKey[button.id]} editor={editor} parentPath={PATH} />
+          <SectionV2.Divider />
         </>
       )}
     </EditorV2>

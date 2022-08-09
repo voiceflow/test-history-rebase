@@ -14,9 +14,10 @@ interface PortProps {
   palette?: HSLShades;
   withoutLink?: boolean;
   parentActionsPath?: string;
+  parentActionsParams?: Record<string, string>;
 }
 
-const Port: React.FC<PortProps> = ({ flat, isChip, palette, withoutLink, parentActionsPath }) => {
+const Port: React.FC<PortProps> = ({ flat, isChip, palette, withoutLink, parentActionsPath, parentActionsParams }) => {
   const portEntity = React.useContext(PortEntityContext)!;
   const instance = usePortInstance<HTMLDivElement>();
   const { isConnected, isHighlighted, isConnectedToActions, isLinkCreationHighlighted, isFinalPrototypeUnlinkedPort } = portEntity.useState((e) => ({
@@ -50,7 +51,7 @@ const Port: React.FC<PortProps> = ({ flat, isChip, palette, withoutLink, parentA
       </Container>
 
       {isConnectedToActions ? (
-        <Actions key={linkID} isChip={isChip} parentPath={parentActionsPath} />
+        <Actions key={linkID} isChip={isChip} parentPath={parentActionsPath} parentParams={parentActionsParams} />
       ) : (
         !withoutLink &&
         (isHighlighted || isConnected) && <Link key={linkID} linkID={linkID} isNew={isLinkCreationHighlighted} isHighlighted={isHighlighted} />

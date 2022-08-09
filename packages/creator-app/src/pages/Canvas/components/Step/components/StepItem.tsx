@@ -41,6 +41,7 @@ const StepItem: React.FC<ItemProps> = ({
   newLineAttachment,
   v2,
   parentActionsPath,
+  parentActionsParams,
 }) => (
   <Container className={ClassName.CANVAS_STEP_ITEM} nested={nested} nestedWithIcon={nestedWithIcon}>
     {children ?? (
@@ -93,7 +94,7 @@ const StepItem: React.FC<ItemProps> = ({
       </>
     )}
 
-    <StepPort portID={portID} parentActionsPath={parentActionsPath} />
+    <StepPort portID={portID} parentActionsPath={parentActionsPath} parentActionsParams={parentActionsParams} />
   </Container>
 );
 

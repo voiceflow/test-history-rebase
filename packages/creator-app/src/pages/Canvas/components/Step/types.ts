@@ -32,4 +32,5 @@ export interface ItemProps {
   v2?: boolean;
   newLineAttachment?: React.ReactNode;
   parentActionsPath?: string;
+  parentActionsParams?: Record<string, string>;
 }

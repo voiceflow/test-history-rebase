@@ -21,7 +21,7 @@ export const baseNoMatchAdapter = createAdapter<BaseNode.Utils.BaseStepNoMatch, 
 );
 
 export const chatNoMatchAdapter = createAdapter<ChatNode.Utils.StepNoMatch, NodeData.ChatNoMatch>(
-  ({ reprompts, ...baseNoMatch }) => ({
+  ({ reprompts = [], ...baseNoMatch }) => ({
     ...baseNoMatchAdapter.fromDB(baseNoMatch),
     reprompts: chatPromptAdapter.mapFromDB(reprompts),
   }),
@@ -32,7 +32,7 @@ export const chatNoMatchAdapter = createAdapter<ChatNode.Utils.StepNoMatch, Node
 );
 
 export const voiceNoMatchAdapter = createAdapter<VoiceNode.Utils.StepNoMatch<any>, NodeData.VoiceNoMatch>(
-  ({ reprompts, ...baseNoMatch }) => ({
+  ({ reprompts = [], ...baseNoMatch }) => ({
     ...baseNoMatchAdapter.fromDB(baseNoMatch),
     reprompts: voicePromptAdapter.mapFromDB(reprompts),
   }),

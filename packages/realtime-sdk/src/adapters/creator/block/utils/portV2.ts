@@ -5,6 +5,7 @@ import { Utils } from '@voiceflow/common';
 
 import {
   BuiltInPortData,
+  dbBuiltInPortFactory,
   outPortDataFromDB,
   outPortDataToDB,
   outPortsDataFromDB,
@@ -68,7 +69,7 @@ export const dynamicOnlyOutPortsAdapterV2 = createOutPortsAdapterV2(
 
 export const defaultOutPortsAdapterV2 = createOutPortsAdapterV2<{ [BaseModels.PortType.NEXT]: string }>(
   (dbPorts, options) => {
-    const dbNextPort = dbPorts.builtIn[BaseModels.PortType.NEXT];
+    const dbNextPort = dbPorts.builtIn[BaseModels.PortType.NEXT] ?? dbBuiltInPortFactory(BaseModels.PortType.NEXT);
     const dbDynamicPorts = dbPorts.dynamic;
 
     const nextPortData = outPortDataFromDB(dbNextPort, options);

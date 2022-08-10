@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.11.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-sdk@1.10.0...@voiceflow/ml-sdk@1.11.0) (2022-08-10)
+
+
+### Features
+
+* NLU intent clarity/notifications integration (NLU-17) ([#5730](https://github.com/voiceflow/creator-app/issues/5730)) ([f710eca](https://github.com/voiceflow/creator-app/commit/f710eca34fd4defe545d9e37ee5b72c7c0abda0a))
+
+
+
+
+
 # [1.10.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-sdk@1.9.0...@voiceflow/ml-sdk@1.10.0) (2022-07-25)
 
 

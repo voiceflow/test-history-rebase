@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.92.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.92.1...@voiceflow/realtime@1.92.2) (2022-08-10)
+
+
+### Bug Fixes
+
+* adds realtime remove many intents action (NLU-32) ([#5879](https://github.com/voiceflow/creator-app/issues/5879)) ([78d4fa7](https://github.com/voiceflow/creator-app/commit/78d4fa7528f25588318cced1019671e8f8a18234))
+
+
+
+
+
 ## [1.92.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.92.0...@voiceflow/realtime@1.92.1) (2022-08-10)
 
 **Note:** Version bump only for package @voiceflow/realtime

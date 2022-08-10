@@ -1,7 +1,28 @@
-export interface IntentItem {
-  intentID: string;
-  intentName: string;
-  utterances: string[];
+import * as ML from '@voiceflow/ml-sdk';
+import * as Realtime from '@voiceflow/realtime-sdk';
+import { StrengthGaugeTypes } from '@voiceflow/ui';
+
+export interface ClarityModel extends ML.intent.ClarityModelResponse {}
+
+export type NLUIntent = Realtime.Intent & {
+  confidence: number;
+  confidenceLevel: StrengthGaugeTypes.Level;
+  clarity: number;
+  clarityLevel: StrengthGaugeTypes.Level;
+  hasConflicts: boolean;
+  conflictingIntentIDs: string[];
+  conflictingUtterances: string[];
+};
+
+export enum IntentNotificationTypes {
+  ENTITY_PROMPT = 'entityPrompt',
+  CONFIDENCE = 'confidence',
+  CLARITY = 'clarity',
+}
+
+export interface IntentNotification {
+  type: IntentNotificationTypes;
+  intent: NLUIntent;
 }
 
 export interface Utterance {

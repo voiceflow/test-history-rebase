@@ -1,14 +1,14 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, stopPropagation, TableTypes, Tag } from '@voiceflow/ui';
 import React from 'react';
 
 import { ModalType } from '@/constants';
 import * as SlotV2 from '@/ducks/slotV2';
 import { useModals, useSelector } from '@/hooks';
+import { NLUIntent } from '@/pages/NLUManager/types';
 
 import { EmptyDash } from '../../../components';
 
-const EntitiesColumn: React.FC<TableTypes.ItemProps<Realtime.Intent>> = ({ item }) => {
+const EntitiesColumn: React.FC<TableTypes.ItemProps<NLUIntent>> = ({ item }) => {
   const entityEditModal = useModals(ModalType.ENTITY_EDIT);
 
   const entities = useSelector(SlotV2.slotsByIDsSelector, { ids: item.slots.allKeys });

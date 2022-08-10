@@ -14,6 +14,7 @@ import * as SlotV2 from '@/ducks/slotV2';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useAddSlot, useDispatch, useMLGatewayClient, useSelector } from '@/hooks';
 import { useNLUManager } from '@/pages/NLUManager/context';
+import { NLUIntent } from '@/pages/NLUManager/types';
 import { fillEntities, validateUtterance } from '@/utils/intent';
 import { waitAsyncAction } from '@/utils/logux';
 
@@ -23,7 +24,7 @@ interface Recommendation extends Realtime.IntentInput {
 
 const Recommendations: React.FC = () => {
   const mlClient = useMLGatewayClient();
-  const nluManager = useNLUManager<Realtime.Intent>();
+  const nluManager = useNLUManager<NLUIntent>();
 
   const slots = useSelector(SlotV2.allSlotsSelector);
   const locales = useSelector(VersionV2.active.localesSelector);

@@ -39,7 +39,7 @@ const ItemEditSidebar: React.FC<ItemEditSidebarProps> = ({ children, isBuiltIn }
   return (
     <Drawer open={!!nluManager.activeItem} width={EDITOR_LEFT_SIDEBAR_WIDTH} direction={Drawer.Direction.LEFT}>
       <SidebarEditor.Container>
-        <SidebarEditor.Header style={nluManager.isEditorTabActive(EditorTabs.INTENT_CONFLICTS) ? { height: '65px' } : {}}>
+        <SidebarEditor.Header style={nluManager.isEditorTabActive(EditorTabs.INTENT_CONFLICTS) ? { height: '61px' } : {}}>
           <SidebarEditor.HeaderTitle fontWeight={600}>
             <EditableText
               value={name}

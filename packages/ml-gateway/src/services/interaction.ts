@@ -14,7 +14,7 @@ export interface TopicWithSubscription {
   responseSubscription: Subscription;
 }
 
-export const DEFAULT_REQUEST_TIMEOUT = 60 * 1000;
+export const DEFAULT_REQUEST_TIMEOUT = 60 * 4 * 1000;
 
 export const createSubscriptionName = (topicName: string, subscriberID: string): string => `ml-gateway-${topicName}-${subscriberID}`;
 

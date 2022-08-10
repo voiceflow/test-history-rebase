@@ -12,9 +12,12 @@ import { activeProjectIDSelector } from '@/ducks/session';
 import { OrderedVariable, useDispatch, useModals, useOrderedEntities, useOrderedIntents, useOrderedVariables, useSelector } from '@/hooks';
 
 import { EditorTabs } from './constants';
+import useClarity from './hooks/useClarity';
 import useEditorTab from './hooks/useEditorTab';
+import useNotifications from './hooks/useNotifications';
+import { ClarityModel, IntentNotification, NLUIntent } from './types';
 
-type AnyItem = OrderedVariable | Realtime.Intent | Realtime.Slot;
+type AnyItem = OrderedVariable | NLUIntent | Realtime.Slot;
 
 export interface NLUManagerContextValue<I extends AnyItem = AnyItem> {
   items: I[];
@@ -40,8 +43,12 @@ export interface NLUManagerContextValue<I extends AnyItem = AnyItem> {
   openEditorTab: (tab: EditorTabs) => void;
   closeEditorTab: () => void;
   isScrolling: boolean;
+  isFetchingClarity: boolean;
   setIsScrolling: (isScrolling: boolean) => void;
   inFullScreenTab: boolean | null;
+  clarity: ClarityModel | null;
+  notifications: IntentNotification[];
+  fetchClarity: (updatedModel?: Record<string, Partial<Realtime.Intent>>) => void;
 }
 
 const INITIAL_STATE: NLUManagerContextValue = {
@@ -68,13 +75,22 @@ const INITIAL_STATE: NLUManagerContextValue = {
   openEditorTab: Utils.functional.noop,
   closeEditorTab: Utils.functional.noop,
   isScrolling: false,
+  isFetchingClarity: false,
   setIsScrolling: Utils.functional.noop,
   inFullScreenTab: null,
+  clarity: null,
+  notifications: [],
+  fetchClarity: Utils.functional.noop,
 };
 
 export const NLUManagerContext = React.createContext<NLUManagerContextValue>(INITIAL_STATE);
 
 const NLU_MANAGER_PERSISTED_STATE_KEY = 'NLU_MANAGER_PERSIST_KEY';
+
+interface NLUPersistedState {
+  id?: string | null;
+  tab: InteractionModelTabType;
+}
 
 interface MatchPathParams {
   modelType: InteractionModelTabType;
@@ -105,6 +121,9 @@ export const NLUManagerProvider: React.FC = ({ children }) => {
   const entities = useOrderedEntities();
   const [variables] = useOrderedVariables();
 
+  const { fetchClarity, clarity, nluIntents, isFetching: isFetchingClarity } = useClarity(intents);
+  const notifications = useNotifications(nluIntents);
+
   const activeProjectID = useSelector(activeProjectIDSelector)!;
 
   const modelMatch = React.useMemo(() => matchPath<MatchPathParams>(location.pathname, { path: [Path.NLU_MANAGER_ENTITY] }), [location.pathname]);
@@ -115,7 +134,7 @@ export const NLUManagerProvider: React.FC = ({ children }) => {
   const addIntentModal = useModals(ModalType.INTENT_CREATE);
   const addVariableModal = useModals(ModalType.VARIABLE_CREATE);
 
-  const [nluManagerPersistedState, setNluManagerPersistedState] = useSessionStorageState<{ id?: string | null; tab: InteractionModelTabType }>(
+  const [nluManagerPersistedState, setNluManagerPersistedState] = useSessionStorageState<NLUPersistedState>(
     `${NLU_MANAGER_PERSISTED_STATE_KEY}-${activeProjectID}`,
     { id: null, tab: InteractionModelTabType.INTENTS }
   );
@@ -127,13 +146,13 @@ export const NLUManagerProvider: React.FC = ({ children }) => {
 
   const items = activeTabSelector(activeTab, {
     [InteractionModelTabType.SLOTS]: () => entities,
-    [InteractionModelTabType.INTENTS]: () => intents,
+    [InteractionModelTabType.INTENTS]: () => nluIntents,
     [InteractionModelTabType.VARIABLES]: () => variables,
   })!;
 
   const tabItemsMap = {
     [InteractionModelTabType.SLOTS]: entities,
-    [InteractionModelTabType.INTENTS]: intents,
+    [InteractionModelTabType.INTENTS]: nluIntents,
     [InteractionModelTabType.VARIABLES]: variables,
   };
 
@@ -265,6 +284,10 @@ export const NLUManagerProvider: React.FC = ({ children }) => {
     isScrolling,
     setIsScrolling,
     inFullScreenTab,
+    clarity,
+    notifications,
+    fetchClarity,
+    isFetchingClarity,
   });
 
   return <NLUManagerContext.Provider value={api}>{children}</NLUManagerContext.Provider>;

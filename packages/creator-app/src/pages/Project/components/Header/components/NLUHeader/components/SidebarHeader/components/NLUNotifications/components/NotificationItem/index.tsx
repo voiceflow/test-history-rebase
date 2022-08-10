@@ -1,34 +1,26 @@
-import { Box, SvgIcon, SvgIconTypes, toast } from '@voiceflow/ui';
+import { Box, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
 import { InteractionModelTabType } from '@/constants';
 import { NLUManagerContext } from '@/pages/NLUManager/context';
 
-import { NLUNotificationItem } from '../..';
+import { NOTIFICATION_ITEM_ICONS } from '../../constants';
+import { NLUNotificationItem } from '../../types';
 import { Container, IconContainer } from './components';
 
 interface NotificationItemProps {
   data: NLUNotificationItem;
+  onClose: () => void;
 }
 
-const NOTIFICATION_ITEM_ICONS: Record<InteractionModelTabType, SvgIconTypes.Icon> = {
-  [InteractionModelTabType.SLOTS]: 'setV2',
-  [InteractionModelTabType.INTENTS]: 'intent',
-  [InteractionModelTabType.VARIABLES]: 'variables',
-};
-
-const NotificationItem: React.FC<NotificationItemProps> = ({ data }) => {
+const NotificationItem: React.FC<NotificationItemProps> = ({ data, onClose }) => {
   const nluManager = React.useContext(NLUManagerContext);
 
   const { title, message, itemID, type } = data;
 
   const jumpToItem = () => {
-    // eslint-disable-next-line sonarjs/no-gratuitous-expressions
-    if (true) {
-      toast.warn('Placeholder');
-    } else {
-      nluManager.goToTab(type, itemID);
-    }
+    nluManager.goToTab(InteractionModelTabType.INTENTS, itemID);
+    onClose();
   };
 
   return (

@@ -2,8 +2,8 @@ import { LoguxControlOptions } from '@/control';
 
 import SuggestUtteranceControl from './suggest';
 
-const buildDiagramActionControls = (options: LoguxControlOptions) => ({
+const buildUtteranceActionControls = (options: LoguxControlOptions) => ({
   suggestUtteranceControl: new SuggestUtteranceControl(options),
 });
 
-export default buildDiagramActionControls;
+export default buildUtteranceActionControls;

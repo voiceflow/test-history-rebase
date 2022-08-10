@@ -22,8 +22,10 @@ import * as Query from '@/utils/query';
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
 
-const Legal = lazy(() => import('@/components/Legal'));
 const Project = lazy(() => import('@/pages/Project'));
+
+const Legal = lazy(() => import('@/components/Legal'));
+
 const Account = lazy(() => import('@/pages/Account'));
 const Runtime = lazy(() => import('@/pages/Runtime'));
 const PublicPrototype = lazy(() => import('@/pages/PublicPrototype'));

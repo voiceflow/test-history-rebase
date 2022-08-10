@@ -9,6 +9,7 @@ import file from './file';
 import integrations from './integrations';
 import maintenance from './maintenance';
 import mlGateway from './mlGateway';
+import nluManager from './nluManager';
 import organization from './organization';
 import project from './project';
 import projectList from './projectList';
@@ -62,6 +63,7 @@ const client = {
   maintenance,
   upload,
   mlGateway,
+  nluManager,
 };
 
 export default client;

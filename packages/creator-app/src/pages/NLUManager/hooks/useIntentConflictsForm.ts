@@ -1,12 +1,23 @@
 import { Utils } from '@voiceflow/common';
 import React from 'react';
 
-import { conflictsData } from '../constants';
-import { ConflictUtterance, DeletedUtterancePayload, EditUtterancePayload, MoveUtterancePayload } from '../types';
+import * as IntentV2 from '@/ducks/intentV2';
+import { useSelector } from '@/hooks';
+import {
+  ClarityModel,
+  Conflict,
+  ConflictUtterance,
+  DeletedUtterancePayload,
+  EditUtterancePayload,
+  MoveUtterancePayload,
+} from '@/pages/NLUManager/types';
 
-const useIntentConflicts = () => {
-  const [conflicts, updateConflicts] = React.useState(conflictsData);
-  const [isSubmitting, setIsSubmitting] = React.useState(false);
+import { conflictModelToFormAdapter } from '../adapters';
+
+const useIntentConflictsForm = (intentID: string | null, conflictsData: ClarityModel | null) => {
+  const intentsByName = useSelector(IntentV2.intentMapByNameSelector);
+  const getIntentByID = useSelector(IntentV2.getIntentByIDSelector);
+  const [conflicts, updateConflicts] = React.useState<Record<string, Conflict>>({});
 
   const allConflictUtterancesConflictMap = React.useMemo<Record<string, ConflictUtterance[]>>(() => {
     return Object.values(conflicts).reduce((mapper, conflict) => {
@@ -21,21 +32,11 @@ const useIntentConflicts = () => {
     }, []);
   }, [allConflictUtterancesConflictMap]);
 
-  const shouldApplyChanges = React.useMemo(() => {
-    return (
-      allUtterancesMap.filter((utterance) => {
-        return utterance.deleted || utterance.initialIntentID !== utterance.intentID || utterance.initialSentence !== utterance.sentence;
-      }).length > 0
-    );
+  const modifiedUtterances = React.useMemo(() => {
+    return allUtterancesMap.filter((utterance) => {
+      return utterance.deleted || utterance.initialIntentID !== utterance.intentID || utterance.initialSentence !== utterance.sentence;
+    });
   }, [allUtterancesMap]);
-
-  // TODO: Fake behavior for clarity page testing. Remove once integration is complete.
-  const onSubmit = () => {
-    setIsSubmitting(true);
-    setTimeout(() => {
-      setIsSubmitting(false);
-    }, 1500);
-  };
 
   const findUtteranceIndex = (utterance: string, utterances: ConflictUtterance[]) => {
     return utterances.findIndex((u) => u.sentence === utterance);
@@ -115,16 +116,26 @@ const useIntentConflicts = () => {
     });
   };
 
+  React.useEffect(() => {
+    const activeIntent = getIntentByID({ id: intentID });
+
+    if (!conflictsData || !activeIntent) return;
+
+    const currentIntent = intentsByName[activeIntent.name];
+    const newConflicts = conflictModelToFormAdapter(conflictsData, currentIntent, intentsByName);
+
+    updateConflicts(newConflicts);
+  }, []);
+
   return {
     conflicts: Object.values(conflicts),
     onMoveUtterance,
     onEditUtterance,
     onDeleteUtterance,
-    onSubmit,
     updateConflicts,
-    isSubmitting,
-    shouldApplyChanges,
+    shouldApplyChanges: modifiedUtterances.length > 0,
+    modifiedUtterances,
   };
 };
 
-export default useIntentConflicts;
+export default useIntentConflictsForm;

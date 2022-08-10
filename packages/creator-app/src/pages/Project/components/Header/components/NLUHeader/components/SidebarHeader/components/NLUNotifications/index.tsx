@@ -1,73 +1,47 @@
 import { Box, Button, ButtonVariant, Flex, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
-import { InteractionModelTabType } from '@/constants';
+import { useNLUManager } from '@/pages/NLUManager/context';
 
 import { Container, ItemsContainer } from './components';
 import NotificationItem from './components/NotificationItem';
+import { getNotificationMessage, NOTIFICATION_TITLE } from './constants';
+import { NLUNotificationItem } from './types';
 
-export interface NLUNotificationItem {
-  type: InteractionModelTabType;
-  title: string;
-  message: string;
-  itemID: string;
+interface NLUNotificationsProps {
+  onClose: () => void;
 }
 
-const DUMMY_NOTIFICATION_DATA = [
-  {
-    type: InteractionModelTabType.INTENTS,
-    title: 'Confidence is low',
-    message: 'Credit card intent needs more utterances',
-    itemID: '123',
-  },
-  {
-    type: InteractionModelTabType.SLOTS,
-    title: 'Entity prompt missing',
-    message: 'Car Brand intent contains entities with no default prompt',
-    itemID: '123',
-  },
-  {
-    type: InteractionModelTabType.INTENTS,
-    title: 'Confidence is low',
-    message: 'Credit card intent needs more utterances',
-    itemID: '123',
-  },
-  {
-    type: InteractionModelTabType.SLOTS,
-    title: 'Entity prompt missing',
-    message: 'Car Brand intent contains entities with no default prompt',
-    itemID: '123',
-  },
-  {
-    type: InteractionModelTabType.INTENTS,
-    title: 'Confidence is low',
-    message: 'Credit card intent needs more utterances',
-    itemID: '123',
-  },
-  {
-    type: InteractionModelTabType.SLOTS,
-    title: 'Entity prompt missing',
-    message: 'Car Brand intent contains entities with no default prompt',
-    itemID: '123',
-  },
-];
+const NLUNotifications: React.FC<NLUNotificationsProps> = ({ onClose }) => {
+  const { notifications, fetchClarity, isFetchingClarity } = useNLUManager();
+  const [isLoading, setIsLoading] = React.useState(false);
 
-const NLUNotifications: React.FC = () => {
-  const [notifications, setNotifications] = React.useState<NLUNotificationItem[]>(DUMMY_NOTIFICATION_DATA);
+  const notificationList = React.useMemo<NLUNotificationItem[]>(() => {
+    return notifications.map((notification) => ({
+      type: notification.type,
+      title: NOTIFICATION_TITLE[notification.type],
+      message: getNotificationMessage[notification.type](notification.intent),
+      itemID: notification.intent.id,
+    }));
+  }, [notifications]);
 
-  const handleDelete = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setNotifications([]);
+  const handleRefresh = async () => {
+    setIsLoading(true);
+    fetchClarity();
   };
 
-  const handleRefresh = () => {};
+  React.useEffect(() => {
+    if (!isFetchingClarity) {
+      setIsLoading(false);
+    }
+  }, [isFetchingClarity]);
 
   return (
     <Container>
       {notifications.length ? (
         <ItemsContainer>
-          {notifications.map((notif, index) => {
-            return <NotificationItem data={notif} key={index} />;
+          {notificationList.map((notification, index) => {
+            return <NotificationItem data={notification} key={index} onClose={onClose} />;
           })}
         </ItemsContainer>
       ) : (
@@ -76,15 +50,9 @@ const NLUNotifications: React.FC = () => {
         </Box>
       )}
       <Box display="flex" p="0px 32px" justifyContent="flex-end" mt={14}>
-        <Button style={{ marginRight: 12 }} variant={ButtonVariant.SECONDARY} onClick={handleDelete} flat squareRadius>
-          <Flex>
-            <SvgIcon color="#6e849a" icon="trash" mr={12} inline />
-            Delete
-          </Flex>
-        </Button>
         <Button variant={ButtonVariant.SECONDARY} onClick={handleRefresh} flat squareRadius>
           <Flex>
-            <SvgIcon color="#6e849a" icon="arrowSpin" mr={12} inline />
+            <SvgIcon color="#6e849a" icon="arrowSpin" mr={12} inline spin={isLoading} />
             Refresh
           </Flex>
         </Button>

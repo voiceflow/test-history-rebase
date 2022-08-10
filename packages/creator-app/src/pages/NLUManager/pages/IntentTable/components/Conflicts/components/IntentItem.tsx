@@ -5,10 +5,10 @@ import { useDrop } from 'react-dnd';
 
 import { HOVER_THROTTLE_TIMEOUT } from '@/constants';
 import { useDragPreview } from '@/hooks';
+import { ConflictUtterance, DeletedUtterancePayload, EditUtterancePayload, MoveUtterancePayload } from '@/pages/NLUManager/types';
 
 import { DragAndDropTypes } from '../constants';
 import * as S from '../styles';
-import { ConflictUtterance, DeletedUtterancePayload, EditUtterancePayload, MoveUtterancePayload } from '../types';
 import UtteranceItem from './UtteranceItem';
 import UtterancePreview from './UtterancePreview';
 

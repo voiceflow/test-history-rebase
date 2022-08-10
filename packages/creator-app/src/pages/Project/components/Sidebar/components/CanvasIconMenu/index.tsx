@@ -30,7 +30,7 @@ const CanvasIconMenu: React.FC<SideBarComponentProps> = ({ withLogo = false }) =
         header={
           withLogo ? (
             <HeaderLogoButton
-              style={{ height: '65px', margin: '0 0 24px 0', borderBottom: '1px solid #dfe3ed' }}
+              style={{ height: '61px', margin: '0 0 20px 0', borderBottom: '1px solid #dfe3ed' }}
               options={logoOptions}
               withBorder={false}
             />

@@ -1,11 +1,10 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { TableTypes, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import { DOCS_BASE_LINK } from '@/config/documentation';
+import { NLUIntent } from '@/pages/NLUManager/types';
 
 import { HeaderSelectColumn, NameColumn } from '../../components';
-import { createIntentsSorter } from '../../utils';
 import { ClarityColumn, ConfidenceColumn, EntitiesColumn, SelectColumn, UtterancesColumn } from './components';
 
 export enum TableColumn {
@@ -17,7 +16,7 @@ export enum TableColumn {
   CONFIDENCE = 'CONFIDENCE',
 }
 
-export const COLUMNS: TableTypes.Column<TableColumn, Realtime.Intent>[] = [
+export const COLUMNS: TableTypes.Column<TableColumn, NLUIntent>[] = [
   {
     type: TableColumn.SELECT,
     flex: 0,
@@ -41,7 +40,7 @@ export const COLUMNS: TableTypes.Column<TableColumn, Realtime.Intent>[] = [
     flex: 1,
     width: 148,
     label: 'Confidence',
-    sorter: createIntentsSorter(),
+    sorter: (intentL, intentR) => intentL.confidence - intentR.confidence,
     tooltip: {
       html: (
         <TippyTooltip.FooterButton onClick={() => window.open(DOCS_BASE_LINK)} buttonText="More">
@@ -58,7 +57,7 @@ export const COLUMNS: TableTypes.Column<TableColumn, Realtime.Intent>[] = [
     flex: 1,
     width: 160,
     label: 'Clarity',
-    sorter: createIntentsSorter(),
+    sorter: (intentL, intentR) => intentL.clarity - intentR.clarity,
     tooltip: {
       html: (
         <TippyTooltip.FooterButton onClick={() => window.open(DOCS_BASE_LINK)} buttonText="More">
@@ -75,7 +74,7 @@ export const COLUMNS: TableTypes.Column<TableColumn, Realtime.Intent>[] = [
     flex: 1,
     width: 108,
     label: 'Utterances',
-    sorter: createIntentsSorter(0),
+    sorter: (intentL, intentR) => intentL.inputs.length - intentR.inputs.length,
     component: UtterancesColumn,
   },
 

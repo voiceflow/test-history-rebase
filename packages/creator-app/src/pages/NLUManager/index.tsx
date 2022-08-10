@@ -16,7 +16,10 @@ const NLUManager: React.FC = () => {
     nluManager.setIsScrolling(e.currentTarget.scrollTop > 0);
   };
 
-  React.useEffect(nluManager.closeEditorTab, []);
+  React.useEffect(() => {
+    nluManager.closeEditorTab();
+    nluManager.fetchClarity();
+  }, []);
 
   return (
     <ProjectPage sideBarProps={{ withLogo: !!nluManager.inFullScreenTab }} shouldRenderHeader={!nluManager.inFullScreenTab}>

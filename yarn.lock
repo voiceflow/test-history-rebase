@@ -5669,6 +5669,14 @@
     "@voiceflow/common" "^7.27.1"
     slate "0.73.0"
 
+"@voiceflow/base-types@^2.53.0":
+  version "2.53.0"
+  resolved "https://registry.yarnpkg.com/@voiceflow/base-types/-/base-types-2.53.0.tgz#6b032d5a998a999dd2ee53f7be6d8a55d882ccfd"
+  integrity sha512-ezSGGwzkuvLi6yXvNTZT9c0W5raK1lEXekvbsDuKEZLPbjdFkP01Z+iw4PH/FbcDnaQcR/z5M2sifZc4JrnbCw==
+  dependencies:
+    "@voiceflow/common" "^8.1.2"
+    slate "0.73.0"
+
 "@voiceflow/chat-types@2.10.7", "@voiceflow/chat-types@^2.10.7":
   version "2.10.7"
   resolved "https://registry.yarnpkg.com/@voiceflow/chat-types/-/chat-types-2.10.7.tgz#42c679dd57c76318f856199eceaea8a4c6442f48"

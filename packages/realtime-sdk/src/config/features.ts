@@ -23,6 +23,7 @@ export enum FeatureFlag {
   ENTERPRISE_TRIAL = 'enterprise_trial',
 
   NLU_MANAGER = 'nlu_manager',
+  NLU_MANAGER_CONFLICTS_VIEW = 'nlu_manager_conflicts_view',
 
   CHAT_CARDS_CAROUSEL = 'chat_cards_carousel',
   CHAT_CARD_STEP = 'chat_card_step',

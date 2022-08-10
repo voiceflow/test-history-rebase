@@ -1,15 +1,15 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { Table } from '@voiceflow/ui';
 import React from 'react';
 
 import EmptyView from '@/pages/Canvas/components/NLUQuickView/components/EmptyView';
 import { useNLUManager } from '@/pages/NLUManager/context';
 
+import { NLUIntent } from '../../types';
 import { EditSidebar, Row } from './components';
 import { COLUMNS, TableColumn } from './constants';
 
 const IntentTable: React.FC = () => {
-  const nluManager = useNLUManager<Realtime.Intent>();
+  const nluManager = useNLUManager<NLUIntent>();
 
   const { items, orderBy, descending, onChangeOrderBy } = Table.useFilterOrderItems({
     items: nluManager.items,

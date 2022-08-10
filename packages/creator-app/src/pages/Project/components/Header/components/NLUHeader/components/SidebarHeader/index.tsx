@@ -6,6 +6,7 @@ import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import { PLATFORM_PROJECT_META_MAP } from '@/pages/NewProjectV2/constants';
 import { SupportedPlatformProjectType } from '@/pages/NewProjectV2/types';
+import { useNLUManager } from '@/pages/NLUManager/context';
 import { isVoiceflowPlatform } from '@/utils/typeGuards';
 
 import { ErrorBubble, SidebarHeaderContainer } from './components';
@@ -17,6 +18,7 @@ const SidebarHeader: React.FC = () => {
   const platform = project?.platform;
   const platformMeta = PLATFORM_PROJECT_META_MAP[platform as SupportedPlatformProjectType];
   const showIcon = !isVoiceflowPlatform(platform);
+  const { notifications } = useNLUManager();
 
   return (
     <SidebarHeaderContainer>
@@ -29,10 +31,11 @@ const SidebarHeader: React.FC = () => {
         NLU Model
       </Box>
 
-      <Popper width="370px" placement="bottom-start" renderContent={() => <NLUNotifications />}>
+      <Popper width="370px" placement="bottom-start" renderContent={({ onClose }) => <NLUNotifications onClose={onClose} />}>
         {({ ref, onToggle, isOpened }) => (
           <ErrorBubble active={isOpened} onClick={onToggle} ref={ref}>
-            <SvgIcon mr={5} color={isOpened ? '#132144' : '#6e849a'} icon="warning" inline size={16} />2
+            <SvgIcon mr={5} color={isOpened ? '#132144' : '#6e849a'} icon="warning" inline size={16} />
+            {notifications.length}
           </ErrorBubble>
         )}
       </Popper>

@@ -54,6 +54,10 @@ export const allPlatformIntentsSelector = createSelector(
   }
 );
 
+export const intentMapByNameSelector = createSelector([allPlatformIntentsSelector], (intents) =>
+  intents.reduce<Record<string, Realtime.Intent>>((acc, intent) => Object.assign(acc, { [intent.name]: intent }), {})
+);
+
 export const platformIntentMapSelector = createSelector([allPlatformIntentsSelector], (intents) =>
   intents.reduce<Record<string, Realtime.Intent>>((acc, intent) => Object.assign(acc, { [intent.id]: intent }), {})
 );

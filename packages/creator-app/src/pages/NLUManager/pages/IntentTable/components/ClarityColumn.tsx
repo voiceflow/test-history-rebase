@@ -1,13 +1,10 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, StrengthGauge, TableTypes } from '@voiceflow/ui';
 import React from 'react';
 
-import { getIntentStrengthLevel, isBuiltInIntent } from '@/utils/intent';
+import { NLUIntent } from '@/pages/NLUManager/types';
 
-const ClarityColumn: React.FC<TableTypes.ItemProps<Realtime.Intent>> = ({ item }) => {
-  const isBuiltIn = isBuiltInIntent(item.id);
-
-  const strength = isBuiltIn ? StrengthGauge.Level.VERY_STRONG : getIntentStrengthLevel(item.inputs.length);
+const ClarityColumn: React.FC<TableTypes.ItemProps<NLUIntent>> = ({ item }) => {
+  const strength = item.clarityLevel;
 
   return (
     <>

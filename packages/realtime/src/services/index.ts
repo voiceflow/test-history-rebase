@@ -12,6 +12,7 @@ import ProductService from './product';
 import ProjectService from './project';
 import ProjectListService from './projectList';
 import SlotService from './slot';
+import ThreadService from './thread';
 import UserService from './user';
 import VariableService from './variableState';
 import VersionService from './version';
@@ -24,6 +25,7 @@ export interface ServiceMap extends BaseServiceMap {
   slot: SlotService;
   note: NoteService;
   lock: LockService;
+  thread: ThreadService;
   viewer: ViewerService;
   intent: IntentService;
   product: ProductService;
@@ -53,6 +55,7 @@ const buildServices = ({ config, clients, models }: Options): ServiceMap => {
     sync: new SyncService(serviceOptions),
     note: new NoteService(serviceOptions),
     lock: new LockService(serviceOptions),
+    thread: new ThreadService(serviceOptions),
     viewer: new ViewerService(serviceOptions),
     intent: new IntentService(serviceOptions),
     diagram: new DiagramService(serviceOptions),

@@ -14,6 +14,7 @@ export const SCHEMA_KEY = 'schema';
 export const DIAGRAM_KEY = 'diagram';
 export const DOMAIN_KEY = 'domain';
 export const INTENT_KEY = 'intent';
+export const THREAD_KEY = 'thread';
 export const SLOT_KEY = 'slot';
 export const PRODUCT_KEY = 'product';
 export const NODE_KEY = 'node';

@@ -8,6 +8,7 @@ import ExtraFeatureClient, { FeatureClient } from './feature';
 import ExtraProductClient, { ProductClient } from './product';
 import ExtraProjectClient from './project';
 import ExtraProjectListClient, { ProjectListClient } from './projectList';
+import ExtraThreadClient, { ThreadClient } from './thread';
 import { ExtraOptions, Options } from './types';
 import ExtraUserClient, { UserClient } from './user';
 import ExtraVariableStateClient, { VariableStateClient } from './variableState';
@@ -19,6 +20,7 @@ interface ExtraClient {
   projectList: ProjectListClient;
   product: ProductClient;
   feature: FeatureClient;
+  thread: ThreadClient;
 }
 
 export interface Client extends Voiceflow.Client, ExtraClient {
@@ -56,6 +58,7 @@ const VoiceflowFactoryClient = ({ axios, config }: Options): VoiceflowFactory =>
       projectList: ExtraProjectListClient(extraOptions),
       product: ExtraProductClient(extraOptions),
       feature: ExtraFeatureClient(extraOptions),
+      thread: ExtraThreadClient(extraOptions),
     };
 
     Object.assign(client, extraClient);

@@ -150,6 +150,8 @@ export const createAtomicActionsPhase2Selector = featureSelectorFactory(Realtime
 
 export const createAtomicActionsAwarenessSelector = featureSelectorFactory(Realtime.FeatureFlag.ATOMIC_ACTIONS_AWARENESS);
 
+export const createAtomicActionsCommentingSelector = featureSelectorFactory(Realtime.FeatureFlag.ATOMIC_ACTIONS_COMMENTING);
+
 export const isLoadedSelector = createSelector([rootSelector], ({ isLoaded }) => isLoaded);
 
 export const isWorkspaceLoadedSelector = createSelector([rootSelector], ({ isWorkspaceLoaded }) => isWorkspaceLoaded);

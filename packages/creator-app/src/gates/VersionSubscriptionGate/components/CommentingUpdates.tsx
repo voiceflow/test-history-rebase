@@ -1,8 +1,9 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import client from '@/client';
 import * as Thread from '@/ducks/thread';
-import { connect } from '@/hocs';
+import { connect, withFeatureDisabled } from '@/hocs';
 import { ConnectedProps } from '@/types';
 
 const CommentingUpdates: React.FC<ConnectedCommentingUpdatesProps> = ({ addThread, updateThread, addNewReply, updateComment, deleteComment }) => {
@@ -29,4 +30,5 @@ const mapDispatchToProps = {
 
 type ConnectedCommentingUpdatesProps = ConnectedProps<{}, typeof mapDispatchToProps>;
 
-export default connect(null, mapDispatchToProps)(CommentingUpdates);
+/** @deprecated legacy socket commenting component, remove when Realtime.FeatureFlag.ATOMIC_ACTIONS_COMMENTING is released */
+export default withFeatureDisabled(Realtime.FeatureFlag.ATOMIC_ACTIONS_COMMENTING)(connect(null, mapDispatchToProps)(CommentingUpdates));

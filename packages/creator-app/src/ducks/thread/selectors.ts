@@ -1,10 +1,10 @@
+import { Thread } from '@voiceflow/realtime-sdk';
 import { createSelector } from 'reselect';
 
 import * as Account from '@/ducks/account';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as UI from '@/ducks/ui';
 import * as CRUD from '@/ducks/utils/crud';
-import { Thread } from '@/models';
 
 import { STATE_KEY } from './constants';
 

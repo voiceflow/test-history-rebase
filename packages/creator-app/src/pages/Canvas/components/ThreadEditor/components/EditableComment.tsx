@@ -1,11 +1,11 @@
 import { Nullable } from '@voiceflow/common';
+import { Comment } from '@voiceflow/realtime-sdk';
 import { Box, KeyName, useCache } from '@voiceflow/ui';
 import React from 'react';
 
 import CommentPreview from '@/components/CommentPreview';
 import MentionEditor from '@/components/MentionEditor';
 import { useLinkedState, useToggle } from '@/hooks';
-import { Comment } from '@/models';
 import { CommentDraftValue } from '@/pages/Canvas/types';
 
 import { COMMENT_CLASSNAME, COMMENT_EDITOR_CLASSNAME } from '../constants';

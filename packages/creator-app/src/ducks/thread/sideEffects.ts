@@ -1,14 +1,12 @@
+import { Adapters, Comment, DBComment, DBThread, NewThread, Thread } from '@voiceflow/realtime-sdk';
 import { toast } from '@voiceflow/ui';
 import { batch } from 'react-redux';
 
 import client from '@/client';
-import commentAdapter from '@/client/adapters/comment';
-import threadAdapter from '@/client/adapters/thread';
 import * as Errors from '@/config/errors';
 import * as Account from '@/ducks/account';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as Session from '@/ducks/session';
-import { Comment, DBComment, DBThread, NewThread, Thread } from '@/models';
 import { SyncThunk, Thunk } from '@/store/types';
 import { Pair } from '@/types';
 
@@ -185,7 +183,7 @@ export const handleNewThread =
   (payload: { projectID: string; created: DBThread }): SyncThunk =>
   (dispatch, getState) => {
     const state = getState();
-    const thread = threadAdapter.fromDB(payload.created);
+    const thread = Adapters.threadAdapter.fromDB(payload.created);
 
     const creatorID = Account.userIDSelector(state);
 
@@ -202,7 +200,7 @@ export const handleThreadUpdate =
   (payload: { projectID: string; updatedThread: DBThread }): SyncThunk =>
   (dispatch, getState) => {
     const state = getState();
-    const { comments, ...thread } = threadAdapter.fromDB({ ...payload.updatedThread, comments: [] });
+    const { comments, ...thread } = Adapters.threadAdapter.fromDB({ ...payload.updatedThread, comments: [] });
 
     const creatorID = Account.userIDSelector(state);
 
@@ -222,7 +220,7 @@ export const handleNewReply =
     Errors.assertCreatorID(creatorID);
     if (creatorID === payload.created.creator_id) return;
 
-    const comment = commentAdapter.fromDB(payload.created);
+    const comment = Adapters.commentAdapter.fromDB(payload.created);
     const thread = ThreadSelectors.threadByIDSelector(state)(comment.threadID);
 
     batch(() => {
@@ -241,7 +239,7 @@ export const handleCommentUpdate =
     Errors.assertCreatorID(creatorID);
     if (creatorID === payload.updatedComment.creator_id) return;
 
-    const comment = commentAdapter.fromDB(payload.updatedComment);
+    const comment = Adapters.commentAdapter.fromDB(payload.updatedComment);
     const thread = ThreadSelectors.threadByIDSelector(state)(comment.threadID);
 
     dispatch(

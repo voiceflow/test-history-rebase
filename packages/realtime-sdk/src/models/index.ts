@@ -17,6 +17,7 @@ export * from './ProjectList';
 export * from './Prototype';
 export * from './Slot';
 export * from './Speak';
+export * from './Thread';
 export * from './Utility';
 export * from './VariableState';
 export * from './Version';

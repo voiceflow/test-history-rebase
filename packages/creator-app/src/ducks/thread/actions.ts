@@ -1,6 +1,7 @@
+import { Thread } from '@voiceflow/realtime-sdk';
+
 import { createAction } from '@/ducks/utils';
 import * as CRUD from '@/ducks/utils/crud';
-import { Thread } from '@/models';
 import { Action } from '@/store/types';
 
 import { STATE_KEY } from './constants';

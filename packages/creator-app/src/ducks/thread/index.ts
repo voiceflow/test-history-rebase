@@ -1,7 +1,7 @@
+import { Thread } from '@voiceflow/realtime-sdk';
 import compositeReducer from 'composite-reducer';
 
 import createCRUDReducer from '@/ducks/utils/crud';
-import { Thread } from '@/models';
 import { RootReducer } from '@/store/types';
 
 import { CommentingAction, UpdateUnreadComments } from './actions';

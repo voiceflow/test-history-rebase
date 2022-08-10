@@ -1,10 +1,10 @@
+import { Thread as ThreadType } from '@voiceflow/realtime-sdk';
 import { Box, BoxFlexApart, Flex, IconButton, IconButtonVariant, Text, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import Commenter from '@/components/Commenter';
 import CommentPreview from '@/components/CommentPreview';
 import Duration from '@/components/Duration';
-import { Thread as ThreadType } from '@/models';
 import { EngineContext, FocusThreadContext } from '@/pages/Canvas/contexts';
 
 import ItemContainer from './ItemContainer';

@@ -1,6 +1,6 @@
 import { Utils } from '@voiceflow/common';
+import { Adapters } from '@voiceflow/realtime-sdk';
 
-import commentAdapter from '@/client/adapters/comment';
 import client, { COMMENTING_PATH } from '@/client/comment';
 
 import suite from './_suite';
@@ -26,7 +26,7 @@ suite('Client - Comment', ({ expectMembers, stubFetch, stubAdapter }) => {
   describe('update()', () => {
     it('update comment', async () => {
       const data: any = Utils.generate.object();
-      const [dbComment, toDB] = stubAdapter(commentAdapter, 'toDB', Utils.generate.object);
+      const [dbComment, toDB] = stubAdapter(Adapters.commentAdapter, 'toDB', Utils.generate.object);
       const fetch = stubFetch('api', 'put');
 
       await client.update(PROJECT_ID, COMMENT_ID, data);
@@ -44,8 +44,8 @@ suite('Client - Comment', ({ expectMembers, stubFetch, stubAdapter }) => {
 
       const commentResponse = Utils.generate.object();
 
-      const [dbComment, toDB] = stubAdapter(commentAdapter, 'toDB', Utils.generate.object);
-      const [comment, fromDB] = stubAdapter(commentAdapter, 'fromDB', Utils.generate.object);
+      const [dbComment, toDB] = stubAdapter(Adapters.commentAdapter, 'toDB', Utils.generate.object);
+      const [comment, fromDB] = stubAdapter(Adapters.commentAdapter, 'fromDB', Utils.generate.object);
       const fetch = stubFetch('api', 'post').mockResolvedValue(commentResponse);
 
       const result = await client.create(PROJECT_ID, threadID, data);

@@ -4,7 +4,6 @@ import { createSelector } from 'reselect';
 
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as Thread from '@/ducks/thread';
-import * as Models from '@/models';
 import { EngineContext } from '@/pages/Canvas/contexts/EngineContext';
 import { Point } from '@/types';
 import { Coords, Vector } from '@/utils/geometry';
@@ -39,7 +38,7 @@ const threadEntitySelector = createSelector(
   }
 );
 
-class ThreadEntity extends ResourceEntity<{ thread: Models.Thread; node: Realtime.Node | null }, ThreadInstance> {
+class ThreadEntity extends ResourceEntity<{ thread: Realtime.Thread; node: Realtime.Node | null }, ThreadInstance> {
   diagramID: string;
 
   threadOrder: number;

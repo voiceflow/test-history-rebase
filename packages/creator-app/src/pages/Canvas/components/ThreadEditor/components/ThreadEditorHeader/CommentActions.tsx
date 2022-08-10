@@ -1,8 +1,7 @@
 import { Nullable } from '@voiceflow/common';
+import { Comment } from '@voiceflow/realtime-sdk';
 import { BoxFlex, Dropdown, FlexEnd, IconButton, IconButtonVariant, Menu, MenuItem, swallowEvent, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
-
-import { Comment } from '@/models';
 
 import PostButton from './PostButton';
 

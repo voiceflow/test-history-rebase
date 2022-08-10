@@ -1,7 +1,7 @@
+import { Comment } from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { useSetup } from '@/hooks';
-import { Comment } from '@/models';
 import { EngineContext } from '@/pages/Canvas/contexts';
 
 import Content from './Content';

@@ -1,10 +1,25 @@
 import createAdapter from 'bidirectional-adapter';
 
-import { DBThread, Thread } from '@/models';
+import { Comment, DBComment, DBThread, Thread } from '../models';
 
-import commentAdapter from './comment';
+export const commentAdapter = createAdapter<DBComment, Comment>(
+  ({ comment_id, thread_id, creator_id, created_at, ...comment }: DBComment) => ({
+    ...comment,
+    id: comment_id,
+    threadID: thread_id,
+    creatorID: creator_id,
+    created: created_at,
+  }),
+  ({ id, threadID, creatorID, created, ...comment }: Comment) => ({
+    ...comment,
+    creator_id: creatorID,
+    comment_id: id,
+    thread_id: threadID,
+    created_at: created,
+  })
+);
 
-const threadAdapter = createAdapter<DBThread, Thread>(
+export const threadAdapter = createAdapter<DBThread, Thread>(
   ({ thread_id, project_id, diagram_id, node_id, creator_id, comments, ...thread }: DBThread) => ({
     ...thread,
     id: thread_id,
@@ -24,5 +39,3 @@ const threadAdapter = createAdapter<DBThread, Thread>(
     comments: commentAdapter.mapToDB(comments),
   })
 );
-
-export default threadAdapter;

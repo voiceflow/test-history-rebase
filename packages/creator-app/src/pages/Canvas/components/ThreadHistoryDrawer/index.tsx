@@ -1,4 +1,5 @@
 import { Utils } from '@voiceflow/common';
+import { Thread as ThreadType } from '@voiceflow/realtime-sdk';
 import {
   CustomScrollbars,
   CustomScrollbarsTypes,
@@ -19,7 +20,6 @@ import { Path } from '@/config/routes';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as Thread from '@/ducks/thread';
 import { useRAF, useSelector, useTheme } from '@/hooks';
-import { Thread as ThreadType } from '@/models';
 import { EditorContentAnimation } from '@/pages/Canvas/components/Editor';
 import { FocusThreadContext } from '@/pages/Canvas/contexts';
 import { useCanvasRendered } from '@/pages/Canvas/hooks/canvas';

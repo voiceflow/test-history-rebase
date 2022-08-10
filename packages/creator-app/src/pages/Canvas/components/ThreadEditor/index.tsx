@@ -1,10 +1,10 @@
+import { Thread } from '@voiceflow/realtime-sdk';
 import { stopPropagation, useOnClickOutside } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
 import { DismissableLayerContext } from 'react-dismissable-layers';
 
 import { useEnableDisable, useResizeObserver } from '@/hooks';
-import { Thread } from '@/models';
 import { EngineContext, FocusThreadContext } from '@/pages/Canvas/contexts';
 import { useCommentingMode } from '@/pages/Project/hooks';
 import { ClassName } from '@/styles/constants';

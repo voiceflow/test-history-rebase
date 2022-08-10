@@ -14,6 +14,12 @@ class NoteService extends AbstractControl {
 
     await client.note.delete(versionID, noteID);
   }
+
+  public async deleteMany(creatorID: number, versionID: string, noteIDs: string[]): Promise<void[]> {
+    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+
+    return Promise.all(noteIDs.map((noteID) => client.note.delete(versionID, noteID)));
+  }
 }
 
 export default NoteService;

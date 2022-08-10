@@ -43,6 +43,24 @@ class IntentService extends AbstractControl {
     await this.createMany(creatorID, versionID, [intent]);
   }
 
+  public async deleteMany<T extends BaseModels.Version.PlatformData>(
+    creatorID: number,
+    versionID: string,
+    intentIDs: string[]
+  ): Promise<Realtime.VersionIntent<T>[] | null> {
+    const currentIntents = await this.getAll<T>(creatorID, versionID);
+
+    const removedIntents = currentIntents.filter((intent) => intentIDs.includes(intent.key));
+
+    await this.replaceAll<BaseModels.Version.PlatformData>(
+      creatorID,
+      versionID,
+      currentIntents.filter((intent) => !intentIDs.includes(intent.key))
+    );
+
+    return removedIntents ?? null;
+  }
+
   public async delete<T extends BaseModels.Version.PlatformData>(
     creatorID: number,
     versionID: string,

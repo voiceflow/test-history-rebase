@@ -17,6 +17,11 @@ export interface RemovePayload extends BaseVersionPayload {
   noteID: string;
 }
 
+export interface RemoveManyPayload extends BaseVersionPayload {
+  noteIDs: string[];
+}
+
 export const load = Utils.protocol.createAction<LoadPayload>(noteType('LOAD'));
 export const upsert = Utils.protocol.createAction<UpsertPayload>(noteType('UPSERT'));
 export const remove = Utils.protocol.createAction<RemovePayload>(noteType('REMOVE'));
+export const removeMany = Utils.protocol.createAction<RemoveManyPayload>(noteType('REMOVE_MANY'));

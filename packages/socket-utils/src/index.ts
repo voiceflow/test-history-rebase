@@ -1,5 +1,6 @@
 export * from './client';
 export * from './control';
+export * from './logger';
 export * from './middleware';
 export * from './model';
 export * from './server';

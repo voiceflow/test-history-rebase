@@ -1,6 +1,7 @@
 import './polyfills';
 
-import { SocketServer } from '@voiceflow/socket-utils';
+import { LoguxError } from '@logux/core';
+import { serializeError, SocketServer } from '@voiceflow/socket-utils';
 import { inspect } from 'node:util';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -41,8 +42,14 @@ const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
   });
 
   try {
-    server.on('fatal', (error) => logger.error({ error }));
-    server.on('error', (error, action, meta) => logger.warn({ error, action, meta }));
+    server.on('fatal', (error) => logger.error({ error: serializeError(error) }));
+    server.on('error', (error, action, meta) => {
+      if (error instanceof LoguxError && error.type === 'timeout') {
+        logger.info({ error: serializeError(error), action, meta });
+      } else {
+        logger.warn({ error: serializeError(error), action, meta });
+      }
+    });
 
     await serviceManager.start();
     await server.start();

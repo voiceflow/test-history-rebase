@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.137.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.137.2...@voiceflow/realtime-sdk@1.137.3) (2022-08-10)
+
+
+### Bug Fixes
+
+* add thread client to realtime (CT-593) ([#5880](https://github.com/voiceflow/creator-app/issues/5880)) ([fa118cf](https://github.com/voiceflow/creator-app/commit/fa118cf21f8fca8ebbc2bb947b7112eba46e56da))
+* move adapters and model to realtime-sdk (CT-593) ([#5877](https://github.com/voiceflow/creator-app/issues/5877)) ([1eb6e97](https://github.com/voiceflow/creator-app/commit/1eb6e977f0db127dd7abf68b43fee1df15741cb9))
+
+
+
+
+
 ## [1.137.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.137.1...@voiceflow/realtime-sdk@1.137.2) (2022-08-04)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.91.8](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.91.7...@voiceflow/realtime@1.91.8) (2022-08-10)
+
+
+### Bug Fixes
+
+* add thread client to realtime (CT-593) ([#5880](https://github.com/voiceflow/creator-app/issues/5880)) ([fa118cf](https://github.com/voiceflow/creator-app/commit/fa118cf21f8fca8ebbc2bb947b7112eba46e56da))
+
+
+
+
+
 ## [1.91.7](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.91.6...@voiceflow/realtime@1.91.7) (2022-08-09)
 
 

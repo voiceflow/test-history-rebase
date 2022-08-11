@@ -1,13 +1,13 @@
 import './syncMessage.js';
 
 import * as Logux from '@logux/server';
-import { ServerMeta } from '@logux/server';
+import { Environment } from '@voiceflow/common';
 import Logger from '@voiceflow/logger';
 import { Action, AnyAction } from 'typescript-fsa';
 
 const SUBPROTOCOL = '1.0.0';
 const SUPPORT_RANGE = '1.x';
-const WARNING_BYPASS = new Set(['Zombie client was disconnected']);
+const WARNING_BYPASS = new Set(['Zombie client was disconnected', 'Action was denied']);
 // ignore action processing logs
 const INFO_BYPASS = new Set(['Action was processed', 'Action was cleaned']);
 
@@ -34,7 +34,7 @@ export class SocketServer extends Logux.Server {
           if ([...(loggerIgnoredActions ?? []), 'logux/processed'].includes(details?.action?.type)) return;
           if (INFO_BYPASS.has(message)) return;
 
-          logger.info(env === 'production' ? { message, details } : `${message}${actionType && ': '}${actionType}`);
+          logger.info(env === Environment.PRODUCTION ? { message, details } : `${message}${actionType && ': '}${actionType}`);
         },
         warn: (details, message) => {
           if (WARNING_BYPASS.has(message)) return;
@@ -44,9 +44,9 @@ export class SocketServer extends Logux.Server {
         error: (details, message) => logger.error({ message, details }),
         fatal: (details, message) => logger.fatal({ message, details }),
       },
-      env: env === 'production' ? 'production' : 'development',
+      env: env === Environment.PRODUCTION ? Environment.PRODUCTION : Environment.DEVELOPMENT,
 
-      ...(env === 'e2e' && {
+      ...(env === Environment.E2E && {
         cert: 'certs/localhost.crt',
         key: 'certs/localhost.key',
       }),
@@ -61,7 +61,12 @@ export class SocketServer extends Logux.Server {
     await Promise.allSettled([this.destroy()]);
   }
 
-  public async processAs(creatorID: number, action: Action<any>, meta?: Partial<ServerMeta>): Promise<Readonly<ServerMeta>> {
+  public async processAs(creatorID: number, action: Action<any>, meta?: Partial<Logux.ServerMeta>): Promise<Readonly<Logux.ServerMeta>> {
     return this.process({ ...action, meta: { ...action?.meta, creatorID } }, meta);
+  }
+
+  protected denyAction(action: AnyAction, meta: Logux.ServerMeta): void {
+    this.logger.warn({ message: 'Action was denied', action, meta });
+    super.denyAction(action, meta);
   }
 }

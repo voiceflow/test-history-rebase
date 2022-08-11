@@ -42,12 +42,12 @@ const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
   });
 
   try {
-    server.on('fatal', (error) => logger.error({ error: serializeError(error) }));
+    server.on('fatal', (error) => logger.error({ message: error.message, error: serializeError(error) }));
     server.on('error', (error, action, meta) => {
       if (error instanceof LoguxError && error.type === 'timeout') {
-        logger.info({ error: serializeError(error), action, meta });
+        logger.info({ message: error.message, error: serializeError(error), action, meta });
       } else {
-        logger.warn({ error: serializeError(error), action, meta });
+        logger.warn({ message: error.message, error: serializeError(error), action, meta });
       }
     });
 

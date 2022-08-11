@@ -24,14 +24,21 @@ export const SubMenuButtonContainer = styled(Box.FlexStart)<SubMenuButtonContain
   text-overflow: ellipsis;
   overflow: hidden;
 
-  &:hover {
-    box-shadow: 0 2px 3px 0 rgba(19, 33, 68, 0.08), 0 0 0 1px rgba(19, 33, 68, 0.06);
-    background-color: #fdfdfd;
-  }
-
   &:active {
     cursor: grabbing;
   }
+
+  ${({ disabled }) =>
+    disabled
+      ? css`
+          cursor: default !important;
+        `
+      : css`
+          &:hover {
+            box-shadow: 0 2px 3px 0 rgba(19, 33, 68, 0.08), 0 0 0 1px rgba(19, 33, 68, 0.06);
+            background-color: #fdfdfd;
+          }
+        `}
 
   ${({ isClicked }) =>
     isClicked &&

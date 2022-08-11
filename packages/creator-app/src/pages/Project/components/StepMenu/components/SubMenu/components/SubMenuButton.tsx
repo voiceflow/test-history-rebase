@@ -31,11 +31,12 @@ interface SubMenuButtonProps {
 const SubMenuButton: React.FC<SubMenuButtonProps> = ({ type, icon, label, onDrop, tooltipText, tooltipLink, factoryData, isDraggingPreview }) => {
   const getEngine = useEventualEngine();
   const isAutoPanning = React.useContext(AutoPanningCacheContext);
-  const [isClickedState, enableClickedState, clearClickedState] = useEnableDisable();
-  const [isHovered, , hoverHandlers] = useHover({ hoverDelay: 1600 });
-
   const plan = useSelector(WorkspaceV2.active.planSelector);
   const isLocked = isLockedStep(plan, type);
+
+  const [isClickedState, enableClickedState, clearClickedState] = useEnableDisable();
+  const [isHovered, , hoverHandlers] = useHover({ hoverDelay: isLocked ? 0 : 1600 });
+
   const { open: openPaymentModal } = useModals<{ planType: PlanType }>(ModalType.PAYMENT);
 
   const [{ isDragging }, connectDrag, connectPreview] = useDrag<StepDragItem, unknown, { isDragging: boolean }>({

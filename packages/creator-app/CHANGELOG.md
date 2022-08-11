@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.864.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.864.1...@voiceflow/creator-app@1.864.2) (2022-08-11)
+
+
+### Bug Fixes
+
+* ux for gated steps (CT-775) ([#5886](https://github.com/voiceflow/creator-app/issues/5886)) ([43f6c73](https://github.com/voiceflow/creator-app/commit/43f6c73458536d19ecae09b868c1e46bdbb86123))
+
+
+
+
+
 ## [1.864.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.864.0...@voiceflow/creator-app@1.864.1) (2022-08-10)
 
 **Note:** Version bump only for package @voiceflow/creator-app

@@ -4,15 +4,15 @@ import React from 'react';
 
 import { BlockType, DragItem } from '@/constants';
 import { useDragPreview, useFeature } from '@/hooks';
+import { StepDragItem } from '@/pages/Canvas/components/CanvasDiagram';
 import { getManager } from '@/pages/Canvas/managers/utils';
 
-import { StepDragItem } from '../../../DesignMenu/components/Steps/types';
-import { MenuStepItem } from '../../constants';
+import { StepItem } from '../../constants';
 import { SubMenuButton } from './components';
 import { SubMenuContainer } from './styles';
 
 interface SubMenuProps {
-  steps: MenuStepItem[];
+  steps: StepItem[];
   onDrop: VoidFunction;
 }
 

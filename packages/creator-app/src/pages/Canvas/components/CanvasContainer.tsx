@@ -8,13 +8,11 @@ import { SearchContext } from '@/contexts/SearchContext';
 import * as Creator from '@/ducks/creator';
 import * as History from '@/ducks/history';
 import * as Prototype from '@/ducks/prototype';
-import * as UI from '@/ducks/ui';
 import { styled } from '@/hocs';
 import { useActiveModal, useDispatch, useHotKeys, useModals, useRegistration, useSelector } from '@/hooks';
 import { getHotkeyLabel, Hotkey } from '@/keymap';
 import { ClipboardContext, EngineContext, SpotlightContext } from '@/pages/Canvas/contexts';
 import { CanvasContainerAPI } from '@/pages/Canvas/types';
-import { DesignMenuTab } from '@/pages/Project/components/DesignMenu';
 import { LastCreatedComponentContext, MarkupContext, SelectionSetTargetsContext } from '@/pages/Project/contexts';
 import { useCommentingMode, useEditingMode, usePrototypingMode } from '@/pages/Project/hooks';
 import { Identifier } from '@/styles/constants';
@@ -71,7 +69,6 @@ const CanvasContainer: React.FC = ({ children }) => {
   const isCommentingMode = useCommentingMode();
   const isPrototypingMode = usePrototypingMode();
 
-  const setActiveCreatorMenu = useDispatch(UI.setActiveCreatorMenu);
   const undoHistory = useDispatch(History.undo);
   const redoHistory = useDispatch(History.redo);
 
@@ -137,8 +134,6 @@ const CanvasContainer: React.FC = ({ children }) => {
 
   const onCreateComponent = React.useCallback(async () => {
     if (engine.activation.getTargets().length > 1) {
-      setActiveCreatorMenu(DesignMenuTab.LAYERS);
-
       const diagramID = await engine.createComponent();
 
       lastCreatedComponent.setComponentID(diagramID);

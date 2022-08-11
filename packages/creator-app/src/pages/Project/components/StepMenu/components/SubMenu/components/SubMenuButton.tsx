@@ -11,9 +11,9 @@ import { BlockType, DragItem, ModalType } from '@/constants';
 import { AutoPanningCacheContext } from '@/contexts';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useEnableDisable, useEventualEngine, useHover, useModals, useSelector, useSetup, useTeardown } from '@/hooks';
+import { StepDragItem } from '@/pages/Canvas/components/CanvasDiagram';
 import { ClassName } from '@/styles/constants';
 
-import { StepDragItem } from '../../../../DesignMenu/components/Steps/types';
 import { StyledText, TooltipContainer } from '../styles';
 import { SubMenuButtonContainer } from './SubMenuButtonContainer';
 

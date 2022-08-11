@@ -8,7 +8,6 @@ import { UIState } from './types';
 export const STATE_KEY = 'ui';
 export const INITIAL_STATE: UIState = {
   creatorMenu: {
-    activeMenu: null,
     isHidden: false,
   },
   blockMenu: {

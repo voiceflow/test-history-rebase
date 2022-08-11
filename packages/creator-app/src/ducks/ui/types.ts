@@ -3,7 +3,6 @@ import { BlockCategory } from '@/constants';
 
 export interface UIState {
   creatorMenu: {
-    activeMenu: string | null;
     isHidden: boolean;
   };
   blockMenu: {

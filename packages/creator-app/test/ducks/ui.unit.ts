@@ -1,13 +1,11 @@
 import { ControlScheme } from '@/components/Canvas/constants';
 import { BlockCategory } from '@/constants';
 import * as UI from '@/ducks/ui';
-import { Tab } from '@/pages/Project/components/DesignMenu/constants';
 
 import suite from './_suite';
 
 const MOCK_STATE = {
   creatorMenu: {
-    activeMenu: Tab.FLOWS,
     isHidden: true,
   },
   blockMenu: {
@@ -39,22 +37,10 @@ suite(UI, MOCK_STATE)('Ducks - UI', ({ describeReducer, describeSelectors }) => 
       });
     });
 
-    describe('setActiveCreatorMenu()', () => {
-      it('should open the creator menu and set active panel', () => {
-        expectAction(UI.setActiveCreatorMenu(Tab.STEPS)).toModify({
-          creatorMenu: {
-            activeMenu: Tab.STEPS,
-            isHidden: true,
-          },
-        });
-      });
-    });
-
     describe('toggleCreatorMenuHidden()', () => {
       it('should show the creator menu', () => {
         expectAction(UI.toggleCreatorMenuHidden()).toModify({
           creatorMenu: {
-            activeMenu: Tab.FLOWS,
             isHidden: false,
           },
         });
@@ -67,7 +53,6 @@ suite(UI, MOCK_STATE)('Ducks - UI', ({ describeReducer, describeSelectors }) => 
           .withState(menuVisibleState)
           .toModify({
             creatorMenu: {
-              activeMenu: Tab.FLOWS,
               isHidden: true,
             },
           });
@@ -79,12 +64,6 @@ suite(UI, MOCK_STATE)('Ducks - UI', ({ describeReducer, describeSelectors }) => 
     describe('openBlockMenuSectionsSelector()', () => {
       it('should select the open block menu sections', () => {
         expect(select(UI.openBlockMenuSectionsSelector)).toEqual([BlockCategory.USER_INPUT]);
-      });
-    });
-
-    describe('activeCreatorMenuSelector()', () => {
-      it('should select the active creator menu', () => {
-        expect(select(UI.activeCreatorMenuSelector)).toBe(Tab.FLOWS);
       });
     });
 

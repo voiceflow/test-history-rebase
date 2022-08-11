@@ -7,7 +7,6 @@ import { Reducer, RootReducer } from '@/store/types';
 
 import {
   AnyUIAction,
-  SetActiveCreatorMenu,
   SetCanvasNavigation,
   SetLoadingProjects,
   SetPreviewingVersion,
@@ -43,11 +42,6 @@ export const toggleBlockMenuSectionReducer: Reducer<UIState, ToggleBlockMenuSect
     },
   };
 };
-
-export const setActiveCreatorMenuReducer: Reducer<UIState, SetActiveCreatorMenu> = (state, { payload: activeMenu }) => ({
-  ...state,
-  creatorMenu: { ...state.creatorMenu, activeMenu },
-});
 
 export const toggleCreatorMenuHiddenReducer: Reducer<UIState> = (state) => ({
   ...state,
@@ -127,8 +121,6 @@ const uiReducer: RootReducer<UIState, AnyUIAction | Session.SetActiveWorkspaceID
   switch (action.type) {
     case UIAction.TOGGLE_BLOCK_MENU_SECTION:
       return toggleBlockMenuSectionReducer(state, action);
-    case UIAction.SET_ACTIVE_CREATOR_MENU:
-      return setActiveCreatorMenuReducer(state, action);
     case UIAction.SET_CANVAS_NAVIGATION:
       return setNavigationReducer(state, action);
     case UIAction.TOGGLE_CREATOR_MENU_HIDDEN:

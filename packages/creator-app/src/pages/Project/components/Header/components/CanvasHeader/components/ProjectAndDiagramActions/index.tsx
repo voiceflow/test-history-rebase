@@ -9,10 +9,8 @@ import * as CreatorV2 from '@/ducks/creatorV2';
 import * as Project from '@/ducks/project';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
-import * as UI from '@/ducks/ui';
 import { useDispatch, useEventualEngine, useFeature, useLinkedState, usePermission, useSelector, useToggle } from '@/hooks';
 import { Hotkey, HOTKEY_LABEL_MAP } from '@/keymap';
-import { DesignMenuTab } from '@/pages/Project/components/DesignMenu';
 import { LastCreatedComponentContext, SelectionSetTargetsContext, SelectionTargetsContext } from '@/pages/Project/contexts';
 import { usePrototypingMode } from '@/pages/Project/hooks';
 import { Identifier } from '@/styles/constants';
@@ -27,7 +25,6 @@ const ProjectAndDiagramActions: React.FC = () => {
   const lastCreatedComponent = React.useContext(LastCreatedComponentContext);
 
   const updateProjectName = useDispatch(Project.updateActiveProjectName);
-  const setActiveDesignMenuTab = useDispatch(UI.setActiveCreatorMenu);
 
   const projectID = useSelector(Session.activeProjectIDSelector);
   const startNodeID = useSelector(CreatorV2.startNodeIDSelector);
@@ -76,11 +73,7 @@ const ProjectAndDiagramActions: React.FC = () => {
   const onCreateComponent = async () => {
     const engine = getEngine();
 
-    if (!engine) {
-      return;
-    }
-
-    setActiveDesignMenuTab(DesignMenuTab.LAYERS);
+    if (!engine) return;
 
     const diagramID = await engine.createComponent();
 

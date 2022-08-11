@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Flex, KeyName, preventDefault, SvgIcon, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
@@ -44,8 +45,9 @@ const Spotlight = () => {
   const options = React.useMemo(
     () =>
       getStepSections(platform, projectType)
-        .flatMap((section) => section.steps)
+        .flatMap((section) => Utils.array.inferUnion(section.steps))
         .filter((step) => {
+          if (!Utils.object.hasProperty(step, 'type')) return false;
           if (!gadgets.isEnabled && step.type === BlockType.EVENT) return false;
           if (!chatCardsCarousel.isEnabled && step.type === BlockType.CAROUSEL) return false;
           if (isDialogflowPlatform(platform) && !dfCarousel.isEnabled && step.type === BlockType.CAROUSEL) return false;

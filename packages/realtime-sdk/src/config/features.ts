@@ -37,8 +37,6 @@ export enum FeatureFlag {
 
   DISABLE_CODE_EXPORTS = 'disable_code_exports',
 
-  REVISED_CANVAS_MENU = 'revised_canvas_menu',
-
   PRODUCTION_VERSION_MANAGEMENT = 'production_version_management',
 
   STICKERS_DROPDOWN = 'stickers_dropdown',

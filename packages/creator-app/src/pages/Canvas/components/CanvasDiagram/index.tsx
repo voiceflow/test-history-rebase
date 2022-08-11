@@ -1,3 +1,6 @@
+import { Nullable } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk';
+import { SvgIconTypes } from '@voiceflow/ui';
 import _throttle from 'lodash/throttle';
 import React from 'react';
 import { useDrop, XYCoord } from 'react-dnd';
@@ -6,6 +9,7 @@ import { useSelector } from 'react-redux';
 
 import Canvas from '@/components/Canvas';
 import Crosshair from '@/components/Crosshair';
+import { DragPreviewComponentProps, ItemComponentProps } from '@/components/DraggableList';
 import { PageProgress } from '@/components/PageProgressBar';
 import { BlockType, DragItem, HOVER_THROTTLE_TIMEOUT, PageProgressBar } from '@/constants';
 import { canvasNavigationSelector } from '@/ducks/ui';
@@ -22,8 +26,6 @@ import SelectionMarquee from '@/pages/Canvas/components/SelectionMarquee';
 import TransformOverlay from '@/pages/Canvas/components/TransformOverlay';
 import { CanvasAction } from '@/pages/Canvas/constants';
 import { ContextMenuContext, EngineContext, FocusThreadContext } from '@/pages/Canvas/contexts';
-import { FolderItemProps } from '@/pages/Project/components/DesignMenu/components/Layers/components/ComponentsSection/components/FolderItem';
-import { StepDragItem } from '@/pages/Project/components/DesignMenu/components/Steps/types';
 import { MarkupContext } from '@/pages/Project/contexts';
 import { useCommentingMode, useEditingMode } from '@/pages/Project/hooks';
 import perf, { PerfAction } from '@/performance';
@@ -36,6 +38,29 @@ const withInitialViewport = connect({ viewport: Viewport.activeDiagramViewportSe
   // ignore all further updates to the viewport
   areStatesEqual: () => true,
 });
+
+export interface StepDragItem {
+  type: DragItem;
+  icon: SvgIconTypes.Icon | React.FC;
+  label: string;
+  blockType: BlockType;
+  factoryData?: Realtime.NodeData<any>;
+  iconColor?: string;
+}
+
+interface ComponentItem {
+  id: string;
+  name: string;
+  children: ComponentItem[];
+  isFolder: boolean;
+}
+export interface FolderItemProps extends ItemComponentProps<ComponentItem>, DragPreviewComponentProps {
+  isSearch: boolean;
+  activeDiagramID: Nullable<string>;
+  searchMatchValue: string;
+  lastCreatedDiagramID: Nullable<string>;
+  onClearLastCreatedDiagramID: VoidFunction;
+}
 
 interface ConnectedCanvasDiagramProps {
   viewport: ViewportType;

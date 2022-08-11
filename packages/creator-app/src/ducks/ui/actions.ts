@@ -6,7 +6,6 @@ import { createAction } from '../utils';
 
 export enum UIAction {
   TOGGLE_BLOCK_MENU_SECTION = 'UI:BLOCK_MENU:TOGGLE_SECTION',
-  SET_ACTIVE_CREATOR_MENU = 'UI:CREATOR_MENU:SET_ACTIVE_MENU',
   TOGGLE_CREATOR_MENU_HIDDEN = 'UI:CREATOR_MENU:TOGGLE_HIDDEN',
   SET_CANVAS_NAVIGATION = 'UI:SET_CANVAS_NAVIGATION',
   SET_ZOOM_TYPE = 'UI:SET_ZOOM_TYPE',
@@ -25,8 +24,6 @@ export enum UIAction {
 // action types
 
 export type ToggleBlockMenuSection = Action<UIAction.TOGGLE_BLOCK_MENU_SECTION, BlockCategory>;
-
-export type SetActiveCreatorMenu = Action<UIAction.SET_ACTIVE_CREATOR_MENU, string>;
 
 export type ToggleCreatorMenuHidden = Action<UIAction.TOGGLE_CREATOR_MENU_HIDDEN>;
 
@@ -56,7 +53,6 @@ export type ToggleFullScreenMode = Action<UIAction.TOGGLE_FULL_SCREEN_MODE>;
 
 export type AnyUIAction =
   | ToggleBlockMenuSection
-  | SetActiveCreatorMenu
   | ToggleCreatorMenuHidden
   | SetCanvasNavigation
   | HideCreatorMenu
@@ -74,8 +70,6 @@ export type AnyUIAction =
 //  action creators
 
 export const toggleBlockMenuSection = (section: BlockCategory): ToggleBlockMenuSection => createAction(UIAction.TOGGLE_BLOCK_MENU_SECTION, section);
-
-export const setActiveCreatorMenu = (menu: string): SetActiveCreatorMenu => createAction(UIAction.SET_ACTIVE_CREATOR_MENU, menu);
 
 export const toggleCreatorMenuHidden = (): ToggleCreatorMenuHidden => createAction(UIAction.TOGGLE_CREATOR_MENU_HIDDEN);
 

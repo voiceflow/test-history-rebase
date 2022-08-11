@@ -3,8 +3,8 @@ import React from 'react';
 
 import { DragItem } from '@/constants';
 import { useDragPreview } from '@/hooks';
+import { StepDragItem } from '@/pages/Canvas/components/CanvasDiagram';
 
-import { StepDragItem } from '../../../DesignMenu/components/Steps/types';
 import { LibraryItem } from '../../constants';
 import { SubMenuContainer } from '../SubMenu/styles';
 import LibrarySubMenuButton from './components/LibrarySubMenuButton';

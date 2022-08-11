@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.20.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/socket-utils@1.20.0...@voiceflow/socket-utils@1.20.1) (2022-08-11)
+
+
+### Bug Fixes
+
+* add action details to denied message (DX-62) ([#5889](https://github.com/voiceflow/creator-app/issues/5889)) ([c5615e7](https://github.com/voiceflow/creator-app/commit/c5615e79c97bb7f93632c7f8809b5f64287b5368))
+
+
+
+
+
 # [1.20.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/socket-utils@1.19.2...@voiceflow/socket-utils@1.20.0) (2022-08-10)
 
 

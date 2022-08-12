@@ -134,7 +134,7 @@ export enum IntentEditType {
 }
 
 export enum VariableType {
-  FLOW = 'flow',
+  COMPONENT = 'component',
   GLOBAL = 'global',
 }
 

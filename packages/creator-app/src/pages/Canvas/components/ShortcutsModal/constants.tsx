@@ -72,7 +72,7 @@ export const SHORTCUTS: ShortcutItem[] = [
     command: <ShortcutCommand>{'<'}</ShortcutCommand>,
   },
   {
-    title: 'Open Flows Menu',
+    title: 'Open Components Menu',
     command: <ShortcutCommand>{'>'}</ShortcutCommand>,
   },
   {

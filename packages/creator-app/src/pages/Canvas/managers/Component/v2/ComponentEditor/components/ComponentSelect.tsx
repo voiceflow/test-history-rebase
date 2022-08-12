@@ -24,14 +24,14 @@ const ComponentSelect: React.FC<ComponentSelectProps> = ({ selectedDiagramID, di
       fullWidth
       onSelect={onChange}
       searchable
-      placeholder="Select or create flow"
+      placeholder="Select or create component"
       getOptionValue={(option) => option?.id}
       getOptionLabel={(value) => (value ? optionLookup[value]?.name : undefined)}
       inDropdownSearch
       alwaysShowCreate
       clearOnSelectActive
-      createInputPlaceholder="flows"
-      renderEmpty={({ search }) => <Menu.NotFound>{!search ? 'No flows exist in your assistant. ' : 'No flows found. '}</Menu.NotFound>}
+      createInputPlaceholder="components"
+      renderEmpty={({ search }) => <Menu.NotFound>{!search ? 'No components exist in your assistant. ' : 'No components found. '}</Menu.NotFound>}
       renderSearchSuffix={({ close, searchLabel }) => (
         <IconButton
           size={16}
@@ -42,7 +42,7 @@ const ComponentSelect: React.FC<ComponentSelectProps> = ({ selectedDiagramID, di
       )}
       renderFooterAction={({ close, searchLabel }) => (
         <Menu.Footer>
-          <Menu.Footer.Action onClick={Utils.functional.chainVoid(close, () => onCreate(searchLabel))}>Create New Flow</Menu.Footer.Action>
+          <Menu.Footer.Action onClick={Utils.functional.chainVoid(close, () => onCreate(searchLabel))}>Create New Component</Menu.Footer.Action>
         </Menu.Footer>
       )}
     />

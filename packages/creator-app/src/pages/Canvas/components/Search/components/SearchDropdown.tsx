@@ -11,7 +11,7 @@ const SearchFilters = [
   SearchTypes.NodeCategory.RESPONSES,
   SearchTypes.NodeCategory.USER_INPUT,
   SearchTypes.SearchCategory.TOPIC,
-  SearchTypes.SearchCategory.FLOW,
+  SearchTypes.SearchCategory.COMPONENT,
 ];
 
 const DropdownIcon = styled(SvgIcon)`

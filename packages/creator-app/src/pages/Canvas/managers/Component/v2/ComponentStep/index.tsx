@@ -34,7 +34,7 @@ const ConnectedComponentStep: ConnectedStep<Realtime.NodeData.Component, Realtim
           portID={ports.out.builtIn[BaseModels.PortType.NEXT]}
           palette={palette}
           attachment={label && <StepButton icon="edit" onClick={stopPropagation(onClick)} />}
-          placeholder="Select a flow"
+          placeholder="Select a component"
           labelVariant={StepLabelVariant.PRIMARY}
         />
       </Section>

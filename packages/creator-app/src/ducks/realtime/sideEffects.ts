@@ -45,7 +45,7 @@ export const switchRealtimeDiagram =
       } catch (err) {
         Sentry.error(err);
         if (err) {
-          dispatch(Modal.setError('Error Switching Flows'));
+          dispatch(Modal.setError('Error Switching Components'));
         }
       }
     }

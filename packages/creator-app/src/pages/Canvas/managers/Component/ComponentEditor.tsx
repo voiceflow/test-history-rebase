@@ -56,7 +56,7 @@ const ComponentEditor: NodeEditor<Realtime.NodeData.Component, Realtime.NodeData
         <ComponentSelect onChange={onChange} diagramID={diagram?.id ?? null} />
 
         <BlockText mt={12} fontSize={theme.fontSizes.s} color={theme.colors.secondary}>
-          Changes to this flow will update globally. <Link href={Documentation.COMPONENT_STEP}>Learn more</Link>
+          Changes to this component will update globally. <Link href={Documentation.COMPONENT_STEP}>Learn more</Link>
         </BlockText>
       </Section>
 

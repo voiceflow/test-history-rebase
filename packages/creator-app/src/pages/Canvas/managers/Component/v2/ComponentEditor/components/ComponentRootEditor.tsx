@@ -32,7 +32,7 @@ const ComponentRootEditor: React.FC = () => {
     onChange({ diagramID: selectedDiagramID, inputs: [], outputs: [] });
   };
 
-  const onEnterFlow = () => data.diagramID && goToDiagram(data.diagramID);
+  const onEnterComponent = () => data.diagramID && goToDiagram(data.diagramID);
 
   return (
     <EditorV2
@@ -40,8 +40,8 @@ const ComponentRootEditor: React.FC = () => {
       footer={
         <EditorV2.DefaultFooter tutorial={Documentation.COMPONENT_STEP}>
           {data.diagramID && (
-            <Button variant={Button.Variant.PRIMARY} onClick={onEnterFlow} squareRadius>
-              Enter Flow
+            <Button variant={Button.Variant.PRIMARY} onClick={onEnterComponent} squareRadius>
+              Enter Component
             </Button>
           )}
         </EditorV2.DefaultFooter>

@@ -233,7 +233,7 @@ class TraceController {
     const targetStepTrace = targetTrace![targetTrace!.length - 1];
     const targetBlockID = targetBlockTraceFrame.payload?.blockID;
 
-    // wait for the block to render (to account for switching between flows)
+    // wait for the block to render (to account for switching between components)
     await this.waitNode(targetBlockID);
 
     this.props.getEngine()?.prototype.setFinalNodeID(null);
@@ -658,8 +658,8 @@ class TraceController {
     const beginningFlowID = this.props.flowIDHistory[0];
 
     // This if block handles the edge case were a user starts on a non-start block when testing, and then enters the
-    // default 'help' flow. Since these diagram start blocks have the same ID, we have to dynamically add and remove
-    // the, from the activePathBlockID array, so when users exit flows, the start block won't be incorrectly highlighted
+    // default 'help' component. Since these diagram start blocks have the same ID, we have to dynamically add and remove
+    // the, from the activePathBlockID array, so when users exit components, the start block won't be incorrectly highlighted
     if (beginningBlock !== START_BLOCK_ID && beginningFlowID === diagramID) {
       updatedActivePathBlockArray = updatedActivePathBlockArray.filter((val) => val !== START_BLOCK_ID);
     }

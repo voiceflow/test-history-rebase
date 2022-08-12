@@ -11,14 +11,14 @@ import ComponentManagerV2 from './v2';
 const ComponentManager: NodeManagerConfig<Realtime.NodeData.Component, Realtime.NodeData.ComponentBuiltInPorts> = {
   ...NODE_CONFIG,
 
-  label: 'Flow',
+  label: 'Component',
 
   step: ComponentStep,
   editor: ComponentEditor,
 
   v2: ComponentManagerV2,
 
-  tooltipText: 'Points the conversation to an existing Flow.',
+  tooltipText: 'Points the conversation to an existing Component.',
   tooltipLink: Documentation.COMPONENT_STEP,
 };
 

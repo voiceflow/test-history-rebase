@@ -101,7 +101,7 @@ const ProjectAndDiagramActions: React.FC = () => {
           <HeaderIconButton
             icon="componentOutline"
             isSmall
-            tooltip={{ title: 'Create flow', hotkey: HOTKEY_LABEL_MAP[Hotkey.CREATE_COMPONENT] }}
+            tooltip={{ title: 'Create component', hotkey: HOTKEY_LABEL_MAP[Hotkey.CREATE_COMPONENT] }}
             onClick={onCreateComponent}
           />
 

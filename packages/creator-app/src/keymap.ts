@@ -55,10 +55,6 @@ export enum Hotkey {
    * @deprecated remove after topics and components are released
    */
   OPEN_LEFT_SIDEBAR_STEPS_TAB = 'OPEN_LEFT_SIDEBAR_STEPS_TAB',
-  /**
-   * @deprecated remove after topics and components are released
-   */
-  OPEN_LEFT_SIDEBAR_FLOWS_TAB = 'OPEN_LEFT_SIDEBAR_FLOWS_TAB',
 
   /**
    * @deprecated remove after nlu manager is released
@@ -143,10 +139,6 @@ const HOTKEY_MAPPING: Record<Hotkey, string | string[]> = {
    * @deprecated remove after topics and components are released
    */
   [Hotkey.OPEN_LEFT_SIDEBAR_STEPS_TAB]: [',', `${SpecialKey.SHIFT}+,`],
-  /**
-   * @deprecated remove after topics and components are released
-   */
-  [Hotkey.OPEN_LEFT_SIDEBAR_FLOWS_TAB]: ['.', `${SpecialKey.SHIFT}+.`],
 
   /**
    * @deprecated remove after nlu manager is released

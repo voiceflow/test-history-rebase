@@ -90,7 +90,7 @@ const ComponentsSection: React.FC<ComponentsSectionProps> = ({ collapsed, setSec
           size={components.length}
           header={
             <Header
-              label="Flows"
+              label="Components"
               collapsed={collapsed}
               onClick={collapsed ? () => setSectionHeight(372) : undefined}
               paddingRight={22}
@@ -124,7 +124,7 @@ const ComponentsSection: React.FC<ComponentsSectionProps> = ({ collapsed, setSec
           renderPlaceholder={({ width }) => (
             <S.Placeholder width={width}>
               <SvgIcon size={72} icon="componentOutline" />
-              Flows are reusable collections of blocks that can be used anywhere. <br />
+              Components are reusable collections of blocks that can be used anywhere. <br />
               <Link href={Documentation.COMPONENTS_LAYER}>Learn more</Link>
             </S.Placeholder>
           )}

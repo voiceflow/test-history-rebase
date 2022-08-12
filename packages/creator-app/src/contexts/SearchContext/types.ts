@@ -35,7 +35,7 @@ export enum SearchCategory {
   INTENT = 'Intents',
   ENTITIES = 'Entities',
   NODE = 'Node',
-  FLOW = 'Flows',
+  COMPONENT = 'Components',
   TOPIC = 'Topics',
 }
 
@@ -47,6 +47,6 @@ export interface SearchDatabase {
   [SearchCategory.INTENT]: IntentDatabaseEntry[];
   [SearchCategory.ENTITIES]: SlotDatabaseEntry[];
   [SearchCategory.NODE]: NodeDatabaseEntry[];
-  [SearchCategory.FLOW]: DiagramDatabaseEntry[];
+  [SearchCategory.COMPONENT]: DiagramDatabaseEntry[];
   [SearchCategory.TOPIC]: DiagramDatabaseEntry[];
 }

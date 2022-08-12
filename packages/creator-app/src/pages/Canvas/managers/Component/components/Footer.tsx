@@ -40,7 +40,7 @@ const Footer: React.FC<FooterProps> = ({ onEdit, editable, blockType, hasVariabl
     ]}
     anchor="How it Works?"
     tutorial={{ content: <HelpTooltip />, blockType }}
-    tutorialTitle="Flow Tutorial"
+    tutorialTitle="Component Tutorial"
   />
 );
 

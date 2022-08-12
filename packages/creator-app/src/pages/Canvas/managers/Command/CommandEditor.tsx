@@ -36,7 +36,7 @@ const CommandEditorV2: NodeEditor<Realtime.NodeData.Command, {}> = ({ data, onCh
         <Controls
           options={[
             {
-              label: 'Enter Flow',
+              label: 'Enter Component',
               onClick: goToDiagram,
               variant: ButtonVariant.PRIMARY,
               disabled: !diagram,
@@ -58,7 +58,7 @@ const CommandEditorV2: NodeEditor<Realtime.NodeData.Command, {}> = ({ data, onCh
 
       <IntentForm intent={intent} pushToPath={pushToPath} />
 
-      <Section variant={SectionVariant.SUBSECTION} header="Flow" tooltip={<ComponentTooltip />}>
+      <Section variant={SectionVariant.SUBSECTION} header="Component" tooltip={<ComponentTooltip />}>
         <ComponentSelect diagramID={data.diagramID} onChange={patchPlatformData} enterOnCreate={false} />
       </Section>
 

@@ -31,7 +31,7 @@ export const ComponentStep: React.FC<ComponentStepProps> = ({ label, nodeID, nex
         portID={nextPortID}
         onClick={label ? stopPropagation(onClickComponent) : undefined}
         palette={palette}
-        placeholder="Select a flow"
+        placeholder="Select a component"
         labelVariant={StepLabelVariant.PRIMARY}
       />
     </Section>

@@ -25,7 +25,7 @@ export interface SearchDatabase {
   [SearchCategory.INTENT]: IntentDatabaseEntry[];
   [SearchCategory.ENTITIES]: SlotDatabaseEntry[];
   [SearchCategory.NODE]: NodeDatabaseEntry[];
-  [SearchCategory.FLOW]: DiagramDatabaseEntry[];
+  [SearchCategory.COMPONENT]: DiagramDatabaseEntry[];
   [SearchCategory.TOPIC]: DiagramDatabaseEntry[];
 }
 
@@ -67,9 +67,9 @@ export const buildIntentDatabase = (intents: Realtime.Intent[]): IntentDatabaseE
 
 export const buildSlotDatabase = (slots: Realtime.Slot[]): SlotDatabaseEntry[] => slots.map((slot) => ({ slotID: slot.id, targets: [slot.name] }));
 
-export const buildDiagramDatabases = (diagrams: Realtime.Diagram[]): Pick<SearchDatabase, SearchCategory.FLOW | SearchCategory.TOPIC> => {
-  const database: Pick<SearchDatabase, SearchCategory.FLOW | SearchCategory.TOPIC> = {
-    [SearchCategory.FLOW]: [],
+export const buildDiagramDatabases = (diagrams: Realtime.Diagram[]): Pick<SearchDatabase, SearchCategory.COMPONENT | SearchCategory.TOPIC> => {
+  const database: Pick<SearchDatabase, SearchCategory.COMPONENT | SearchCategory.TOPIC> = {
+    [SearchCategory.COMPONENT]: [],
     [SearchCategory.TOPIC]: [],
   };
 
@@ -78,7 +78,7 @@ export const buildDiagramDatabases = (diagrams: Realtime.Diagram[]): Pick<Search
     if (diagram.type === BaseModels.Diagram.DiagramType.TOPIC) {
       database[SearchCategory.TOPIC].push(entry);
     } else {
-      database[SearchCategory.FLOW].push(entry);
+      database[SearchCategory.COMPONENT].push(entry);
     }
   });
 

@@ -51,7 +51,7 @@ export const addLocalVariable =
 
     await dispatch.sync(Realtime.diagram.addLocalVariable({ ...getActiveVersionContext(getState()), variable, diagramID }));
 
-    dispatch(Tracking.trackVariableCreated({ variableType: VariableType.FLOW, diagramID, creationType }));
+    dispatch(Tracking.trackVariableCreated({ variableType: VariableType.COMPONENT, diagramID, creationType }));
   };
 
 export const createTopicDiagram =
@@ -82,7 +82,7 @@ export const createComponentDiagram =
     const diagram = await dispatch(
       waitAsync(Realtime.diagram.createComponent, {
         ...getActiveVersionContext(state),
-        diagram: { name: name || `Flow ${activeComponents.length + 1}` },
+        diagram: { name: name || `Component ${activeComponents.length + 1}` },
       })
     );
 
@@ -128,7 +128,7 @@ export const convertToComponent =
     const projectType = ProjectV2.active.projectTypeSelector(state);
     const activeComponents = VersionV2.active.componentsSelector(state);
     const schemaVersion = VersionV2.active.schemaVersionSelector(state);
-    const name = `Flow ${activeComponents.length + 1}`;
+    const name = `Component ${activeComponents.length + 1}`;
     const diagram = Realtime.Utils.diagram.componentDiagramFactory(name, startCoords);
 
     const nodeIDMap = nodes.reduce<Record<string, boolean>>((acc, node) => Object.assign(acc, { [node.id]: true }), {});

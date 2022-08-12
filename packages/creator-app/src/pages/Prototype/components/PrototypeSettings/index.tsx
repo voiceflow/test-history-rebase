@@ -21,7 +21,7 @@ const PrototypeSettings: React.FC<PrototypeSettingsProps> = ({ showTitle }) => {
     <Drawer id={Identifier.PROTO_SETTINGS_MENU_CONTAINER}>
       {showTitle && <Section header="TEST SETTINGS" variant={SectionVariant.PROTOTYPE} />}
       <SettingsSection header="Debug Mode" toggle={toggleSetting('debug')} value={config.debug}>
-        Show the paths, variables and flows you're using while you test.
+        Show the paths, variables and components you're using while you test.
       </SettingsSection>
       <SettingsSection header="Intent Confidence Score" toggle={toggleSetting('intent')} value={config.intent} isDividerNested>
         Show the natural language model's confidence out of 1.00 when matching trained intents.

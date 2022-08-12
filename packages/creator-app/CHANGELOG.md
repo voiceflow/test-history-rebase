@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.864.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.864.3...@voiceflow/creator-app@1.864.4) (2022-08-12)
+
+
+### Bug Fixes
+
+* add back df to enterprise gate (VF-000) ([#5894](https://github.com/voiceflow/creator-app/issues/5894)) ([b1c206a](https://github.com/voiceflow/creator-app/commit/b1c206a1bcae8420f186dbaa8f66f9999e94a534))
+
+
+
+
+
 ## [1.864.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.864.2...@voiceflow/creator-app@1.864.3) (2022-08-11)
 
 **Note:** Version bump only for package @voiceflow/creator-app

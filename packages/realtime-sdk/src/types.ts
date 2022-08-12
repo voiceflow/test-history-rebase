@@ -60,6 +60,11 @@ export enum SchemaVersion {
    * restores version with a rootDiagramID that points to a non-existent diagram
    */
   V3_2 = 3.2,
+
+  /**
+   * forces step data out of the ports for trace (custom action) step and into "paths" property
+   */
+  V3_3 = 3.3,
 }
 
 export const SUPPORTED_SCHEMA_VERSIONS = Object.values(SchemaVersion)

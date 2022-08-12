@@ -17,6 +17,7 @@ const STARTER_PROJECT_LIMIT = 2;
 
 const GATED_PROJECT_NLUS = new Set([
   <PlatformAndProjectMetaType>VoiceflowConstants.PlatformType.EINSTEIN,
+  <PlatformAndProjectMetaType>VoiceflowConstants.PlatformType.DIALOGFLOW_ES,
   <PlatformAndProjectMetaType>VoiceflowConstants.PlatformType.LEX,
   <PlatformAndProjectMetaType>VoiceflowConstants.PlatformType.LUIS,
   <PlatformAndProjectMetaType>VoiceflowConstants.PlatformType.NUANCE_MIX,

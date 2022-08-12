@@ -4,6 +4,8 @@ import React from 'react';
 
 import { PopperContent, PopperTitle } from '@/components/SlateEditable';
 import IconButton from '@/components/SlateEditable/components/IconButton';
+import * as VersionV2 from '@/ducks/versionV2';
+import { useSelector } from '@/hooks';
 
 interface MessageDelayButtonProps {
   onUpdate: (data: Partial<BaseNode.Text.TextData>) => void;
@@ -14,6 +16,7 @@ interface MessageDelayButtonProps {
 const MessageDelayButton: React.FC<MessageDelayButtonProps> = ({ data, onUpdate, icon = 'delay' }) => {
   const [isOpened, toggleOpen] = useToggle(false);
   const [messageDelay, setMessageDelay] = React.useState(data?.messageDelayMilliseconds ? String(data?.messageDelayMilliseconds) : '');
+  const durationMilliseconds = useSelector(VersionV2.active.general.messageDelaySelector);
 
   const onBlur = () => {
     const newMessageDelay = messageDelay;
@@ -40,7 +43,7 @@ const MessageDelayButton: React.FC<MessageDelayButtonProps> = ({ data, onUpdate,
             autoFocus // eslint-disable-line jsx-a11y/no-autofocus
             type="number"
             min={0}
-            placeholder="1000"
+            placeholder={String(durationMilliseconds)}
             onChangeText={setMessageDelay}
             onEnterPress={preventDefault(withInputBlur())}
           />

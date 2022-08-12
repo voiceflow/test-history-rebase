@@ -19,9 +19,10 @@ interface ActionsSectionProps {
   portID: string;
   parentPath?: string;
   withoutURL?: boolean;
+  parentParams?: Record<string, string>;
 }
 
-const ActionsSection: React.FC<ActionsSectionProps> = ({ portID, editor, parentPath, withoutURL }) => {
+const ActionsSection: React.FC<ActionsSectionProps> = ({ portID, editor, parentPath, parentParams, withoutURL }) => {
   const getManager = React.useContext(ManagerContext)!;
 
   const {
@@ -36,7 +37,7 @@ const ActionsSection: React.FC<ActionsSectionProps> = ({ portID, editor, parentP
     hasNavigationStep,
     lastCreatedStepID,
     targetNodeIsActions,
-  } = useActions({ editor, portID, parentPath });
+  } = useActions({ editor, portID, parentPath, parentParams });
 
   const withActions = targetNodeIsActions && !!targetNodeSteps.length;
   const withURLAction = isButtonsNode && !hasURLStep && !withoutURL;

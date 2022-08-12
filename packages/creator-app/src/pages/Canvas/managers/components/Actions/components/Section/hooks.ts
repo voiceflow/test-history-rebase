@@ -13,6 +13,7 @@ interface ActionsOptions {
   editor: NodeEditorV2Props<unknown>;
   portID: string;
   parentPath?: string;
+  parentParams?: Record<string, string>;
 }
 
 interface OnAddOptions extends ActionsOptions {
@@ -23,7 +24,16 @@ interface OnAddOptions extends ActionsOptions {
   targetNodeIsActions: boolean;
 }
 
-const useOnAddAction = ({ portID, editor, actionPath, targetNode, hasNavigationStep, targetNodeSteps, targetNodeIsActions }: OnAddOptions) => {
+const useOnAddAction = ({
+  portID,
+  editor,
+  actionPath,
+  targetNode,
+  parentParams,
+  hasNavigationStep,
+  targetNodeSteps,
+  targetNodeIsActions,
+}: OnAddOptions) => {
   const [trackingEvents] = useTrackingEvents();
 
   const [lastCreatedStepID, setLastCreatedStepID] = React.useState<string | null>(null);
@@ -103,7 +113,7 @@ const useOnAddAction = ({ portID, editor, actionPath, targetNode, hasNavigationS
     );
 
     if (type !== BlockType.EXIT) {
-      editor.goToNested({ path: actionPath, params: { sourcePortID: portID, actionNodeID: nodeID } });
+      editor.goToNested({ path: actionPath, params: { ...parentParams, sourcePortID: portID, actionNodeID: nodeID } });
     }
 
     await afterAdd({ type, actionsNodeID });
@@ -115,7 +125,7 @@ const useOnAddAction = ({ portID, editor, actionPath, targetNode, hasNavigationS
   };
 };
 
-export const useActions = ({ editor, portID, parentPath }: ActionsOptions) => {
+export const useActions = ({ editor, portID, parentPath, parentParams }: ActionsOptions) => {
   const [trackingEvents] = useTrackingEvents();
 
   const targetNode = useSelector(CreatorV2.targetNodeByPortID, { id: portID });
@@ -156,6 +166,7 @@ export const useActions = ({ editor, portID, parentPath }: ActionsOptions) => {
     hasNavigationStep,
     targetNodeSteps,
     targetNodeIsActions,
+    parentParams,
   });
 
   return {

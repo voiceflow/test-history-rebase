@@ -9,7 +9,7 @@ import APIForm from './APIForm';
 import { isCustomAPIEditor } from './utils';
 import ZapierAndGoogleEditor from './ZapierAndGoogleEditor';
 
-const Editor: ActionEditor<Realtime.NodeData.Integration, Realtime.NodeData.IntegrationBuiltInPorts> = (props) => {
+const IntegrationActionEditor: ActionEditor<Realtime.NodeData.Integration, Realtime.NodeData.IntegrationBuiltInPorts> = (props) => {
   const data = { ...props, ...props.action };
 
   if (isCustomAPIEditor(data)) {
@@ -25,4 +25,4 @@ const Editor: ActionEditor<Realtime.NodeData.Integration, Realtime.NodeData.Inte
   return <ZapierAndGoogleEditor {...data} />;
 };
 
-export default Editor;
+export default IntegrationActionEditor;

@@ -814,7 +814,7 @@ class NodeManager extends EngineConsumer {
       History.transaction(async () => {
         await this.internal.insertStepV2(parentNodeID, node, data, index);
         // TODO: fold this into the actions that add new steps to have better atomicity
-        await this.handleNewStep(node, data);
+        await this.handleNewStep(node, data, autoFocus);
       })
     );
 

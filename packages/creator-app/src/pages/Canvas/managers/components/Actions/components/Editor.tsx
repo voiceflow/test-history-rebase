@@ -38,8 +38,10 @@ const ActionsEditor: React.FC = () => {
 
   if (!ActionEditor) return null;
 
+  const label = manager.getDataLabel?.(data as any) ?? manager.label ?? editor.label;
+
   return (
-    <EditorSidebarProvider value={{ ...editor, action }}>
+    <EditorSidebarProvider value={{ ...editor, label, action }}>
       <ActionEditor {...editor} action={action} />
     </EditorSidebarProvider>
   );

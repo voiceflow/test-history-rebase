@@ -103,7 +103,12 @@ const CarouselButtonsEditor: React.FC = () => {
           )}
           <SectionV2.Divider inset />
 
-          <Actions.Section portID={editor.node.ports.out.byKey[button.id]} editor={editor} parentPath={PATH} />
+          <Actions.Section
+            portID={editor.node.ports.out.byKey[button.id]}
+            editor={editor}
+            parentPath={PATH}
+            parentParams={{ buttonID: params.buttonID }}
+          />
           <SectionV2.Divider />
         </>
       )}

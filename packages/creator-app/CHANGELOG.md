@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.864.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.864.4...@voiceflow/creator-app@1.864.5) (2022-08-12)
+
+
+### Bug Fixes
+
+* [bugfix] bugs related to actions editor (CT-781) ([#5893](https://github.com/voiceflow/creator-app/issues/5893)) ([6c0e415](https://github.com/voiceflow/creator-app/commit/6c0e4156cb15ed8658e9fa178087452e7c332d17))
+
+
+
+
+
 ## [1.864.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.864.3...@voiceflow/creator-app@1.864.4) (2022-08-12)
 
 

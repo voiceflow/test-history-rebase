@@ -9,7 +9,6 @@ import client from '@/client';
 import * as Diagram from '@/ducks/diagramV2';
 import * as Project from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
-import { withFeatureGate } from '@/hocs/withFeature';
 import { useAsyncEffect, useSelector, useStore } from '@/hooks';
 
 import { Filters, NodeDatabaseEntry } from './types';
@@ -86,6 +85,4 @@ const SearchProvider: React.FC = ({ children }) => {
   return <SearchContext.Provider value={{ ...api, filters }}>{children}</SearchContext.Provider>;
 };
 
-const FeatureGatedMLProvider = withFeatureGate(Realtime.FeatureFlag.SEARCH_BAR)(SearchProvider);
-
-export { FeatureGatedMLProvider as SearchProvider };
+export { SearchProvider };

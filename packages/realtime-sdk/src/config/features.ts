@@ -7,7 +7,6 @@ export enum FeatureFlag {
 
   // atomic actions
   ATOMIC_ACTIONS_PHASE_2 = 'atomic_actions_phase_2',
-  ATOMIC_ACTIONS_AWARENESS = 'atomic_actions_awareness',
   ATOMIC_ACTIONS_COMMENTING = 'atomic_actions_commenting',
   HISTORY_SYSTEM = 'history_system',
 
@@ -55,7 +54,6 @@ export enum FeatureFlag {
   CONDITIONS_BUILDER_V2 = 'conditions_builder_v2',
   NEW_EDITORS_PART_2 = 'new_editors_part_2',
 
-  SEARCH_BAR = 'search_bar',
   DF_CAROUSEL_STEP = 'df_carousel_step',
   ASSISTANT_IA = 'assistant_ia',
 

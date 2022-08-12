@@ -1,10 +1,9 @@
 import { Utils } from '@voiceflow/common';
-import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { AutoPanningCacheContext } from '@/contexts';
 import * as Account from '@/ducks/account';
-import { useFeature, useRAF, useSelector } from '@/hooks';
+import { useRAF, useSelector } from '@/hooks';
 import { LinkedRects } from '@/pages/Canvas/components/Link';
 import { EngineContext } from '@/pages/Canvas/contexts';
 import { NewLinkAPI } from '@/pages/Canvas/types';
@@ -23,8 +22,6 @@ export const useNewLinkAPI = <T extends SVGElement>() => {
   const creatorID = useSelector(Account.userIDSelector)!;
 
   const [isVisible, setVisible] = React.useState(false);
-
-  const atomicActionsAwareness = useFeature(Realtime.FeatureFlag.ATOMIC_ACTIONS_AWARENESS);
 
   const [redrawScheduler] = useRAF();
 
@@ -117,5 +114,5 @@ export const useNewLinkAPI = <T extends SVGElement>() => {
         isPinned.current = false;
       },
     };
-  }, [isVisible, creatorID, atomicActionsAwareness.isEnabled]);
+  }, [isVisible, creatorID]);
 };

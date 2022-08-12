@@ -1,14 +1,41 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import { withProvider } from '@voiceflow/ui';
 import React from 'react';
 
-import { useFeature } from '@/hooks';
+import { EventualEngineContext } from '@/contexts';
+import * as Account from '@/ducks/account';
+import * as DiagramV2 from '@/ducks/diagramV2';
+import * as Session from '@/ducks/session';
+import { useSelector } from '@/hooks';
+import { OverlayType } from '@/pages/Canvas/constants';
 
-import { CursorOverlay, CursorOverlayV2 } from './components';
+import { RealtimeCursor } from './components';
+import { RealtimeCursorContext } from './contexts';
 
-const RealtimeOverlay = () => {
-  const atomicActionsAwareness = useFeature(Realtime.FeatureFlag.ATOMIC_ACTIONS_AWARENESS);
+const RealtimeCursorOverlayV2: React.FC = () => {
+  const cursorContext = React.useContext(RealtimeCursorContext.Context);
+  const eventualEngine = React.useContext(EventualEngineContext)!;
+  const userID = useSelector(Account.userIDSelector);
+  const diagramID = useSelector(Session.activeDiagramIDSelector)!;
+  const viewers = useSelector(DiagramV2.diagramViewersByIDSelector, { id: diagramID });
 
-  return <>{atomicActionsAwareness.isEnabled ? <CursorOverlayV2 /> : <CursorOverlay />}</>;
+  React.useEffect(
+    () =>
+      eventualEngine.get()?.io.register(OverlayType.CURSOR_V2, {
+        panViewport: (movement) => cursorContext?.emit('panViewport', movement),
+        zoomViewport: (calculateMovement) => cursorContext?.emit('zoomViewport', calculateMovement),
+        realtimeCursorMove: ({ diagramID, creatorID, coords }) => cursorContext?.emit(`realtimeCursorMove:${diagramID}:${creatorID}`, coords),
+      }),
+    []
+  );
+
+  return (
+    <>
+      {viewers.map((viewer) => {
+        if (userID === viewer.creatorID) return null;
+        return <RealtimeCursor key={viewer.creatorID} diagramID={diagramID} creatorID={viewer.creatorID} name={viewer.name} color={viewer.color} />;
+      })}
+    </>
+  );
 };
 
-export default RealtimeOverlay;
+export default withProvider(RealtimeCursorContext.Dispatcher)(RealtimeCursorOverlayV2);

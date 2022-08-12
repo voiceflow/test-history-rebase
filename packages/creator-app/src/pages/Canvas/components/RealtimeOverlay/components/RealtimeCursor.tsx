@@ -6,7 +6,7 @@ import React from 'react';
 import { EventualEngineContext } from '@/contexts';
 import { useLocalDispatch, useRAF } from '@/hooks';
 
-import { RealtimeCursorContext } from '../../../contexts';
+import { RealtimeCursorContext } from '../contexts';
 
 enum CursorState {
   VISIBLE = 'visible',

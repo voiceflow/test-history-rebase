@@ -405,9 +405,7 @@ class NodeManager extends EngineConsumer {
     translateMany: (nodeIDs: string[], movement: Pair<number>, origins: Point[]) => {
       nodeIDs.forEach((nodeID) => this.internal.translate(nodeID, movement));
 
-      if (this.isAtomicActionsAwareness) {
-        this.engine.io.nodeDragMany(nodeIDs, movement, origins);
-      }
+      this.engine.io.nodeDragMany(nodeIDs, movement, origins);
     },
 
     translateManyOnOrigins: (nodeIDs: string[], movement: Pair<number>, origins: Point[]) => {
@@ -938,9 +936,7 @@ class NodeManager extends EngineConsumer {
 
     const action = RealtimeDuck.moveManyNodes(activeNodeIDs, movement, origins);
 
-    if (volatile && !this.isAtomicActionsAwareness) {
-      this.engine.realtime.sendVolatileUpdate(action);
-    } else if (!volatile && !this.isAtomicActionsPhase2) {
+    if (!volatile && !this.isAtomicActionsPhase2) {
       await this.engine.realtime.sendUpdate(action);
     }
   }

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.136.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.136.0...@voiceflow/ui@1.136.1) (2022-08-12)
+
+
+### Bug Fixes
+
+* use step paths instead of ports custom action [bugfix] (CT-791) ([#5897](https://github.com/voiceflow/creator-app/issues/5897)) ([dfcd8e3](https://github.com/voiceflow/creator-app/commit/dfcd8e3d3211bbfad416c68ca3f118fc508a9a91))
+
+
+
+
+
 # [1.136.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.135.0...@voiceflow/ui@1.136.0) (2022-08-08)
 
 

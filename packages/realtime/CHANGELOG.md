@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.92.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.92.4...@voiceflow/realtime@1.92.5) (2022-08-12)
+
+
+### Bug Fixes
+
+* use step paths instead of ports custom action [bugfix] (CT-791) ([#5897](https://github.com/voiceflow/creator-app/issues/5897)) ([dfcd8e3](https://github.com/voiceflow/creator-app/commit/dfcd8e3d3211bbfad416c68ca3f118fc508a9a91))
+
+
+
+
+
 ## [1.92.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.92.3...@voiceflow/realtime@1.92.4) (2022-08-11)
 
 

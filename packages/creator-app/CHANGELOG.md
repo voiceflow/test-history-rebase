@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.864.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.864.5...@voiceflow/creator-app@1.864.6) (2022-08-12)
+
+
+### Bug Fixes
+
+* [bugfix] root api editor showing back button [bugfix] (CT-781) ([#5898](https://github.com/voiceflow/creator-app/issues/5898)) ([970b4b0](https://github.com/voiceflow/creator-app/commit/970b4b029cd03b22adb9a2fc574a7e28e8b61c9a))
+* remove awareness ff (CT-000) ([#5892](https://github.com/voiceflow/creator-app/issues/5892)) ([7cc1d69](https://github.com/voiceflow/creator-app/commit/7cc1d690444682d6afc11ad08f53245727e25ae4))
+* update message delay placeholder to global value (CT-779) ([#5896](https://github.com/voiceflow/creator-app/issues/5896)) ([92f53b5](https://github.com/voiceflow/creator-app/commit/92f53b5e3d591c85804edf7779c9877b9e24dd1c))
+* use step paths instead of ports custom action [bugfix] (CT-791) ([#5897](https://github.com/voiceflow/creator-app/issues/5897)) ([dfcd8e3](https://github.com/voiceflow/creator-app/commit/dfcd8e3d3211bbfad416c68ca3f118fc508a9a91))
+
+
+
+
+
 ## [1.864.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.864.4...@voiceflow/creator-app@1.864.5) (2022-08-12)
 
 

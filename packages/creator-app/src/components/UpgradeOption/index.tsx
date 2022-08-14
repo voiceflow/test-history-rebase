@@ -1,4 +1,4 @@
-import { Box, GetOptionLabel, GetOptionValue, stopPropagation, useOnClickOutside, usePopper } from '@voiceflow/ui';
+import { Box, GetOptionLabel, GetOptionValue, useOnClickOutside, usePopper } from '@voiceflow/ui';
 import React from 'react';
 
 import { LimitDetails } from '@/config/planLimits';
@@ -8,7 +8,7 @@ import { useToggle, useTrackingEvents } from '@/hooks';
 import { UpgradeLabel, UpgradePopper } from './components';
 
 interface UpgradeOptionProps<T, U> {
-  option: T;
+  option: T & { disabled?: boolean };
   isFocused?: boolean;
   searchLabel?: string | null;
   getOptionLabel: GetOptionLabel<U>;
@@ -50,16 +50,20 @@ const UpgradeOption = <T extends unknown, U extends unknown>({
     trackingEvents.trackUpgradePrompt({ promptType: promptOrigin });
   }, [isShowingPopper]);
 
-  useOnClickOutside([labelRef, popperContainerRef], () => setIsShowingPopper(false), [isShowingPopper]);
+  const handleLabelClick = (e: React.MouseEvent) => {
+    if (option.disabled) {
+      e.stopPropagation();
+    }
+    if (isGated && popperEnabled) {
+      e.stopPropagation();
+      setIsShowingPopper();
+    }
+  };
 
+  useOnClickOutside([labelRef, popperContainerRef], () => setIsShowingPopper(false), [isShowingPopper]);
   return (
     <Box.Flex ref={labelRef} width="100%" height="100%">
-      <Box.Flex
-        ref={popper.setReferenceElement}
-        onClick={isGated && popperEnabled ? stopPropagation(setIsShowingPopper) : undefined}
-        width="100%"
-        height="100%"
-      >
+      <Box.Flex ref={popper.setReferenceElement} onClick={handleLabelClick} width="100%" height="100%">
         <UpgradeLabel
           option={option}
           isFocused={isFocused}

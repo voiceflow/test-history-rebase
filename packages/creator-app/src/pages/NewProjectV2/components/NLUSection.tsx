@@ -38,7 +38,7 @@ const NLUSection: React.FC<NLUSectionProps> = ({ value, onSelect, error, onImpor
   const hasImport = value && PLATFORM_PROJECT_META_MAP[value]?.importMeta;
 
   const chooseCustomNLU = (value: PlatformAndProjectMetaType) => {
-    if (!isGatedNLUType(value, permissionCustomNLU)) {
+    if (!isGatedNLUType(value, permissionCustomNLU) && !PLATFORM_PROJECT_META_MAP[value]?.disabled) {
       onSelect(value as SupportedPlatformType);
     }
   };

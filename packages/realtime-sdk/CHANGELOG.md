@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.139.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.139.0...@voiceflow/realtime-sdk@1.139.1) (2022-08-15)
+
+
+### Bug Fixes
+
+* add default step color ff (CT-797) ([#5908](https://github.com/voiceflow/creator-app/issues/5908)) ([1420955](https://github.com/voiceflow/creator-app/commit/14209551f407fc0831fa0c3eda6f15024a5c76b0))
+
+
+
+
+
 # [1.139.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.138.4...@voiceflow/realtime-sdk@1.139.0) (2022-08-15)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.138.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.138.3...@voiceflow/realtime-sdk@1.138.4) (2022-08-15)
+
+
+### Bug Fixes
+
+* add thread v2 duck (CT-593) ([#5888](https://github.com/voiceflow/creator-app/issues/5888)) ([57a8d47](https://github.com/voiceflow/creator-app/commit/57a8d475ac6195649f88c59866efefa32d3de2bd))
+
+
+
+
+
 ## [1.138.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.138.2...@voiceflow/realtime-sdk@1.138.3) (2022-08-12)
 
 

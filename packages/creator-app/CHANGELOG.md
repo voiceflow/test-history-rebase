@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.864.9](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.864.8...@voiceflow/creator-app@1.864.9) (2022-08-15)
+
+
+### Bug Fixes
+
+* add thread v2 duck (CT-593) ([#5888](https://github.com/voiceflow/creator-app/issues/5888)) ([57a8d47](https://github.com/voiceflow/creator-app/commit/57a8d475ac6195649f88c59866efefa32d3de2bd))
+* inaccurate sample snippet on API key page (PL-95) ([#5890](https://github.com/voiceflow/creator-app/issues/5890)) ([2d7d9fe](https://github.com/voiceflow/creator-app/commit/2d7d9fe71c174b6d9b21ca3ea4daadedf7bafda3))
+
+
+
+
+
 ## [1.864.8](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.864.7...@voiceflow/creator-app@1.864.8) (2022-08-15)
 
 

@@ -25,7 +25,7 @@ const CapturePreview: React.FC<ButtonsPreviewProps> = ({ prompt, onOpenEditor, o
   return (
     <Preview onClick={stopPropagation(() => {})}>
       <Preview.Header>
-        <Preview.Title>Entity prompt</Preview.Title>
+        <Preview.Title>Entity reprompt</Preview.Title>
       </Preview.Header>
 
       <Preview.Content>

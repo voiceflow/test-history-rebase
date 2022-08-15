@@ -41,7 +41,7 @@ const Editor: React.FC<EditorProps> = ({ goBack }) => {
       {!!intentEntity && (
         <>
           <EntityPromptSection
-            title="Entity prompt"
+            title="Entity reprompt"
             onAdd={() => onChangeDialog({ prompt: [intentPromptFactory({ defaultVoice })] } as Partial<Realtime.IntentSlotDialog>)}
             prompt={intentEntity.dialog.prompt}
             onChange={(prompt) => onChangeDialog({ prompt } as Partial<Realtime.IntentSlotDialog>)}

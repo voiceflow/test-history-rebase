@@ -10,8 +10,8 @@ const ResponseUtterancesTooltip: React.FC = () => (
     <Tooltip.Title>Example</Tooltip.Title>
 
     <Tooltip.Section marginBottomUnits={2}>
-      In this example let’s say we’re building a pizza ordering experience and have a required entity called <var>size</var>. Plus, our entity prompt
-      for <var>size</var> is, “what size of pizza would you like?”. Here’s what our response utterances might look like:
+      In this example let’s say we’re building a pizza ordering experience and have a required entity called <var>size</var>. Plus, our entity
+      reprompt for <var>size</var> is, “what size of pizza would you like?”. Here’s what our response utterances might look like:
     </Tooltip.Section>
 
     <Tooltip.Section marginBottomUnits={2}>

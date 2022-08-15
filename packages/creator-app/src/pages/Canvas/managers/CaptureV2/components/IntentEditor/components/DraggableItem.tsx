@@ -126,7 +126,7 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
                         <SectionV2.Divider inset />
 
                         <EntityPromptSection
-                          title="Entity prompt"
+                          title="Entity reprompt"
                           onAdd={() => onChangeDialog({ prompt: [intentPromptFactory({ defaultVoice })] } as Partial<Realtime.IntentSlotDialog>)}
                           prompt={item.dialog.prompt}
                           onChange={(prompt) => onChangeDialog({ prompt } as Partial<Realtime.IntentSlotDialog>)}

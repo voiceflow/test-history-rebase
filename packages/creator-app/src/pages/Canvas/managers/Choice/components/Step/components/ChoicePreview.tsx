@@ -23,7 +23,7 @@ const ChoicePreview: React.FC<ButtonsPreviewProps> = ({ prompts, onClose, onOpen
   return (
     <Preview onClick={stopPropagation()}>
       <Preview.Header>
-        <Preview.Title>Entity prompt</Preview.Title>
+        <Preview.Title>Entity reprompt</Preview.Title>
       </Preview.Header>
 
       <Preview.Content>

@@ -59,7 +59,7 @@ const speakPreview = createExample('prompt list', () => (
 const entityPreview = createExample('list with tag', () => (
   <Preview>
     <Preview.Header>
-      <Preview.Title>Entity prompt</Preview.Title>
+      <Preview.Title>Entity reprompt</Preview.Title>
     </Preview.Header>
 
     <Preview.Content>

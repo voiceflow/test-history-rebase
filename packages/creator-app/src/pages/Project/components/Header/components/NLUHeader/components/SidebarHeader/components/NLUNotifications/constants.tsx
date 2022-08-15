@@ -5,7 +5,7 @@ import { InteractionModelTabType } from '@/constants';
 import { IntentNotificationTypes, NLUIntent } from '@/pages/NLUManager/types';
 
 export const NOTIFICATION_TITLE: Record<IntentNotificationTypes, string> = {
-  [IntentNotificationTypes.ENTITY_PROMPT]: 'Entity prompt missing',
+  [IntentNotificationTypes.ENTITY_PROMPT]: 'Entity reprompt missing',
   [IntentNotificationTypes.CONFIDENCE]: 'Confidence is low',
   [IntentNotificationTypes.CLARITY]: 'Clarity is low',
 };

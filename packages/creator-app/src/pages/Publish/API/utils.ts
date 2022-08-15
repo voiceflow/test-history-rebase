@@ -2,9 +2,11 @@ import { Language, Sample } from '@/components/AceEditor/Sample';
 
 import { curl, nodeJS, python } from './constants';
 
-export const getSamples = (apiKey?: string): Sample[] => {
+export const getSamples = (generalServiceEndpoint?: string, apiKey?: string): Sample[] => {
   const sampleReplace = (sample: string) => {
-    return sample.replace(/{{vf\.api_key}}/gi, apiKey || '{api_key}');
+    return sample
+      .replace(/{{vf\.api_key}}/gi, apiKey || '{api_key}')
+      .replace(/{{general-service-endpoint}}/gi, generalServiceEndpoint || 'https://general-runtime.voiceflow.com');
   };
 
   return [

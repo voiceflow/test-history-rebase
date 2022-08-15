@@ -8,7 +8,7 @@ const userID = 'user_123'; // Unique ID used to track conversation state
 const userInput = 'Hello world!'; // User's message to your Voiceflow project
 
 const body = {
-  request: {
+  action: {
     type: 'text',
     payload: userInput,
   },
@@ -18,7 +18,7 @@ async function startInteract() {
   // Start a conversation
   const response = await axios({
     method: 'POST',
-    baseURL: 'https://general-runtime.voiceflow.com',
+    baseURL: 'https://{{general-service-endpoint}}',
     url: \`/state/user/\${userID}/interact\`,
     headers: {
       Authorization: apiKey,
@@ -41,11 +41,11 @@ API_KEY='{{vf.api_key}}'
 USER_ID='user_123'
 USER_INPUT='Hello world!'
 
-curl --request POST "https://general-runtime.voiceflow.com/state/user/$USER_ID/interact" \
+curl --request POST "https://{{general-service-endpoint}}/state/user/$USER_ID/interact" \
      --header "Authorization: $API_KEY" \
      --header 'Content-Type: application/json' \
      --data-raw "{
-        \"request\": { \"type\": \"text\", \"payload\": \"$USER_INPUT\" }
+        \"action\": { \"type\": \"text\", \"payload\": \"$USER_INPUT\" }
      }"
 `;
 
@@ -58,11 +58,11 @@ api_key = "{{vf.api_key}}"
 user_id = "user_123"  # Unique ID used to track conversation state
 user_input = "Hello world!"  # User's message to your Voiceflow project
 
-body = {"request": {"type": "text", "payload": "Hello world!"}}
+body = {"action": {"type": "text", "payload": "Hello world!"}}
 
 # Start a conversation
 response = requests.post(
-    f"https://general-runtime.voiceflow.com/state/user/{user_id}/interact",
+    f"https://{{general-service-endpoint}}/state/user/{user_id}/interact",
     json=body,
     headers={"Authorization": api_key},
 )

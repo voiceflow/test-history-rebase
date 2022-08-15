@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import client from '@/client';
 import SampleEditor from '@/components/AceEditor/Sample';
 import { ConfirmProps } from '@/components/ConfirmModal';
+import { GENERAL_RUNTIME_ENDPOINT } from '@/config';
 import { DIALOG_MANAGER_API } from '@/config/documentation';
 import { Permission } from '@/config/permissions';
 import { ModalType } from '@/constants';
@@ -32,7 +33,7 @@ const API: React.FC = () => {
 
   const confirmModal = useModals<ConfirmProps>(ModalType.CONFIRM);
 
-  const samples = getSamples(showSecondaryKey || showPrimaryKey ? secondaryKey?.key ?? primaryKey?.key : '');
+  const samples = getSamples(GENERAL_RUNTIME_ENDPOINT, showSecondaryKey || showPrimaryKey ? secondaryKey?.key ?? primaryKey?.key : '');
 
   const [trackingEvents] = useTrackingEvents();
 

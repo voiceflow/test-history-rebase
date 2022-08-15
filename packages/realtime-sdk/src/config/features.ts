@@ -58,4 +58,6 @@ export enum FeatureFlag {
   ASSISTANT_IA = 'assistant_ia',
 
   CHAT_VOICE_PROJECT = 'chat_voice_project_type',
+
+  DEFAULT_STEP_COLORS = 'default_step_colors',
 }

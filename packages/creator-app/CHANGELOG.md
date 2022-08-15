@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.865.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.864.9...@voiceflow/creator-app@1.865.0) (2022-08-15)
+
+
+### Features
+
+* canvas templates actions (CT-680) ([#5887](https://github.com/voiceflow/creator-app/issues/5887)) ([3daad54](https://github.com/voiceflow/creator-app/commit/3daad54046d6c331241e7ddfa09bba3a2f8908ff))
+* realtime comments (CT-593) ([#5907](https://github.com/voiceflow/creator-app/issues/5907)) ([f55ff69](https://github.com/voiceflow/creator-app/commit/f55ff6961f44b4e5e87b16d33f046a91b3360bc5))
+
+
+
+
+
 ## [1.864.9](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.864.8...@voiceflow/creator-app@1.864.9) (2022-08-15)
 
 

@@ -1,0 +1,18 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
+import { Context } from '@voiceflow/socket-utils';
+import { Action } from 'typescript-fsa';
+
+import { AbstractProjectResourceControl } from '@/actions/project/utils';
+
+type PatchThreadPayload = Realtime.BaseProjectPayload & Realtime.actionUtils.CRUDValuePayload<Partial<Realtime.Thread>>;
+
+class PatchThread extends AbstractProjectResourceControl<PatchThreadPayload> {
+  protected actionCreator = Realtime.thread.crud.patch;
+
+  protected process = async (ctx: Context, { payload }: Action<PatchThreadPayload>) => {
+    const { creatorID } = ctx.data;
+    await this.services.thread.update(creatorID, payload.projectID, payload.key, payload.value);
+  };
+}
+
+export default PatchThread;

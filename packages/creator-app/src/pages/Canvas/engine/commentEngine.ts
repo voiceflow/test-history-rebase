@@ -1,12 +1,15 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { createMatchSelector } from 'connected-react-router';
 
 import { Path } from '@/config/routes';
+import * as Account from '@/ducks/account';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import * as Thread from '@/ducks/thread';
 import * as ThreadV2 from '@/ducks/threadV2';
 import * as UI from '@/ducks/ui';
+import { waitAsync } from '@/ducks/utils';
 import { CommentDraftValue, NewCommentAPI } from '@/pages/Canvas/types';
 import { Point } from '@/types';
 import { Coords, Vector } from '@/utils/geometry';
@@ -111,7 +114,9 @@ class CommentEngine extends EngineConsumer<{ newComment: NewCommentAPI }> {
       await this.centerThread(threadID);
     }
 
-    await this.dispatch(Thread.loadThread(projectID, threadID));
+    if (!this.isAtomicActionsCommeting) {
+      await this.dispatch(Thread.loadThread(projectID, threadID));
+    }
 
     this.redrawThread(threadID);
 
@@ -139,15 +144,45 @@ class CommentEngine extends EngineConsumer<{ newComment: NewCommentAPI }> {
     }
   }
 
-  createComment = this.bind(Thread.createComment);
+  createComment = (threadID: string, comment: Realtime.NewComment) => {
+    if (this.isAtomicActionsCommeting) {
+      this.dispatch.partialSync(Realtime.thread.comment.create.started({ ...this.engine.context, threadID, comment }));
+    } else {
+      this.dispatch(Thread.createComment(threadID, comment));
+    }
+  };
 
-  updateComment = this.bind(Thread.updateComment);
+  updateComment = (threadID: string, commentID: string, comment: Realtime.NewComment) => {
+    if (this.isAtomicActionsCommeting) {
+      this.dispatch.partialSync(Realtime.thread.comment.update({ ...this.engine.context, threadID, commentID, comment }));
+    } else {
+      this.dispatch(Thread.updateComment(threadID, commentID, comment));
+    }
+  };
 
-  deleteComment = this.bind(Thread.deleteComment);
+  deleteComment = (threadID: string, commentID: string) => {
+    if (this.isAtomicActionsCommeting) {
+      this.dispatch.partialSync(Realtime.thread.comment.delete({ ...this.engine.context, threadID, commentID }));
+    } else {
+      this.dispatch(Thread.deleteComment(threadID, commentID));
+    }
+  };
 
-  resolveThread = this.bind(Thread.resolveThread);
+  resolveThread = (threadID: string) => {
+    if (this.isAtomicActionsCommeting) {
+      this.dispatch.partialSync(Realtime.thread.crud.patch({ ...this.engine.context, key: threadID, value: { resolved: true } }));
+    } else {
+      this.dispatch(Thread.resolveThread(threadID));
+    }
+  };
 
-  unresolveThread = this.bind(Thread.unresolveThread);
+  unresolveThread = (threadID: string) => {
+    if (this.isAtomicActionsCommeting) {
+      this.dispatch.partialSync(Realtime.thread.crud.patch({ ...this.engine.context, key: threadID, value: { resolved: false } }));
+    } else {
+      this.dispatch(Thread.unresolveThread(threadID));
+    }
+  };
 
   startThread() {
     if (this.hasTarget) return;
@@ -210,29 +245,44 @@ class CommentEngine extends EngineConsumer<{ newComment: NewCommentAPI }> {
 
   async addNewThread(text: string, mentions: number[]) {
     const origin = this.components.newComment!.getOrigin();
-
     if (!origin) return;
 
-    if (this.targetNodeID) {
+    let position: Point;
+    const nodeID = this.targetNodeID || null;
+    if (nodeID) {
       // account for zoom / panning after placing the comment
       const originRelativeToPlane = origin.onPlane(this.engine.canvas!.getPlane());
-      const offset = this.getCoordsRelativeToNode(originRelativeToPlane, this.targetNodeID);
+      const offset = this.getCoordsRelativeToNode(originRelativeToPlane, nodeID);
       if (!offset) return;
 
-      const thread = await this.dispatch(Thread.createThread({ nodeID: this.targetNodeID, position: offset, data: { text, mentions } }));
-
-      this.resetCreating();
-      this.setFocus(thread.id);
-
-      return;
+      position = offset;
+    } else {
+      position = this.engine.canvas!.fromCoords(origin);
     }
 
-    const thread = await this.dispatch(
-      Thread.createThread({ nodeID: null, position: this.engine.canvas!.fromCoords(origin), data: { text, mentions } })
-    );
+    if (this.isAtomicActionsCommeting) {
+      const { projectID, diagramID } = this.engine.context;
+      const creatorID = this.engine.select(Account.userIDSelector)!;
+      const newComment = { text, mentions, creatorID };
+      const thread: Realtime.NewThread = {
+        projectID,
+        diagramID,
+        nodeID: this.targetNodeID,
+        creatorID,
+        position,
+        resolved: false,
+        comments: [newComment],
+        deleted: false,
+      };
+
+      const createdThread = await this.dispatch(waitAsync(Realtime.thread.create, { ...this.engine.context, thread }));
+      this.setFocus(createdThread.id);
+    } else {
+      const thread = await this.dispatch(Thread.createThread({ nodeID, position, data: { text, mentions } }));
+      this.setFocus(thread.id);
+    }
 
     this.resetCreating();
-    this.setFocus(thread.id);
   }
 
   translateThread(threadID: string, movement: Vector) {
@@ -271,13 +321,18 @@ class CommentEngine extends EngineConsumer<{ newComment: NewCommentAPI }> {
 
     const coords = thread.instance.getCoords().onPlane(this.engine.canvas!.getPlane());
 
+    let position = coords.point;
     if (targetNodeID) {
       const offset = this.getCoordsRelativeToNode(coords, targetNodeID);
       if (!offset) return;
+      position = offset;
+    }
 
-      await this.dispatch(Thread.updateThreadData(threadID, { nodeID: targetNodeID, position: offset }));
+    const nodeID = targetNodeID || null;
+    if (this.isAtomicActionsCommeting) {
+      await this.dispatch.partialSync(Realtime.thread.crud.patch({ ...this.engine.context, key: threadID, value: { nodeID, position } }));
     } else {
-      await this.dispatch(Thread.updateThreadData(threadID, { nodeID: null, position: coords.point }));
+      await this.dispatch(Thread.updateThreadData(threadID, { nodeID, position }));
     }
 
     this.log.debug('location saved', this.log.slug(threadID));
@@ -292,7 +347,13 @@ class CommentEngine extends EngineConsumer<{ newComment: NewCommentAPI }> {
     const anchorCoords = node.instance.getThreadAnchorCoords()!;
     const coords = anchorCoords.add(thread.position);
 
-    await this.dispatch(Thread.updateThreadData(threadID, { nodeID: null, position: coords.point }));
+    if (this.isAtomicActionsCommeting) {
+      await this.dispatch.partialSync(
+        Realtime.thread.crud.patch({ ...this.engine.context, key: threadID, value: { nodeID: null, position: coords.point } })
+      );
+    } else {
+      await this.dispatch(Thread.updateThreadData(threadID, { nodeID: null, position: coords.point }));
+    }
 
     this.log.debug('new thread location saved', this.log.slug(threadID));
   }

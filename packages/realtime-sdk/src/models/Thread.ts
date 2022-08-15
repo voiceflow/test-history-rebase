@@ -22,6 +22,8 @@ export interface Thread {
   deleted: boolean;
 }
 
+export type NewComment = Pick<Comment, 'text' | 'mentions'>;
+
 export type NewThread = Assign<Omit<Thread, 'id'>, { comments: [Pick<Comment, 'creatorID' | 'text' | 'mentions'>] }>;
 
 // Backend type

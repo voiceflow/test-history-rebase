@@ -12,6 +12,7 @@ import buildProductActionControls from './product';
 import buildProjectActionControls from './project';
 import buildProjectListActionControls from './projectList';
 import buildSlotActionControls from './slot';
+import buildThreadActionControls from './thread';
 import buildVariableStateActionControls from './variableState';
 import buildVersionActionControls from './version';
 import buildWorkspaceActionControls from './workspace';
@@ -32,6 +33,7 @@ const buildActions = (options: LoguxControlOptions) => ({
   ...buildWorkspaceActionControls(options),
   ...buildVariableStateActionControls(options),
   ...buildNoteActionControls(options),
+  ...buildThreadActionControls(options),
 });
 
 export default buildActions;

@@ -199,6 +199,19 @@ export const convertToComponent =
     };
   };
 
+export const createTemplateDiagram = (): Thunk<string> => async (dispatch, getState) => {
+  const state = getState();
+
+  const diagram = await dispatch(
+    waitAsync(Realtime.diagram.createTemplateDiagram, {
+      ...getActiveVersionContext(state),
+      diagram: { name: 'Template Diagram' },
+    })
+  );
+
+  return diagram.id;
+};
+
 export const duplicateDiagram =
   (diagramID: string, { openDiagram = false }: { openDiagram?: boolean } = {}): Thunk<string> =>
   async (dispatch, getState) => {

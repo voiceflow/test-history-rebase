@@ -21,6 +21,7 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
     const notes = Realtime.Adapters.noteAdapter.mapFromDB(dbCreator.version.notes ? Object.values(dbCreator.version.notes) : []);
     const project = Realtime.Adapters.projectAdapter.fromDB(dbCreator.project);
     const domains = Realtime.Adapters.domainAdapter.mapFromDB(dbCreator.version.domains ?? []);
+    const canvasTemplates = Realtime.Adapters.canvasTemplateAdapter.mapFromDB(dbCreator.version.canvasTemplates ?? []);
     const diagrams = Realtime.Adapters.diagramAdapter.mapFromDB(dbCreator.diagrams, { rootDiagramID: dbCreator.version.rootDiagramID });
     const variableStates = Realtime.Adapters.variableStateAdapter.mapFromDB(dbCreator.variableStates);
 
@@ -39,6 +40,7 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
       Realtime.note.load({ notes, workspaceID, projectID, versionID }),
       Realtime.slot.crud.replace({ values: slots, workspaceID, projectID, versionID }),
       Realtime.domain.crud.replace({ values: domains, workspaceID, projectID, versionID }),
+      Realtime.canvasTemplate.crud.replace({ values: canvasTemplates, workspaceID, projectID, versionID }),
       Realtime.intent.crud.replace({ values: intents, workspaceID, projectID, versionID, projectMeta: { platform, type: projectType } }),
       Realtime.product.crud.replace({ values: products, workspaceID, projectID, versionID }),
       Realtime.diagram.crud.replace({ values: diagrams, workspaceID, projectID, versionID }),

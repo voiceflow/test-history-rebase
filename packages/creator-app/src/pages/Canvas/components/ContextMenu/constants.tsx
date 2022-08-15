@@ -200,6 +200,11 @@ export const SELECTION_OPTIONS: ContextMenuOption<CanvasAction>[] = [
     render: () => <ContextColorPicker />,
   },
   {
+    label: 'Save to library',
+    value: CanvasAction.SAVE_TO_LIBRARY,
+    render: () => <ContextTemplateLibrary />,
+  },
+  {
     label: 'Divider 2',
     value: CanvasAction.DIVIDER,
     menuItemProps: { divider: true },

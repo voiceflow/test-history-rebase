@@ -20,7 +20,7 @@ interface BasePlatformData extends BaseModels.Version.PlatformData<VoiceVersion.
 }
 
 export interface Version<P extends BasePlatformData>
-  extends Pick<DBVersion<P>, 'creatorID' | '_version' | 'variables' | 'projectID' | 'rootDiagramID'>,
+  extends Pick<DBVersion<P>, 'creatorID' | '_version' | 'variables' | 'projectID' | 'rootDiagramID' | 'templateDiagramID'>,
     Required<Pick<DBVersion<P>, 'folders' | 'components'>> {
   id: string;
   status: Nullable<P['status']>;

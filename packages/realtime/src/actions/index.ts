@@ -1,5 +1,6 @@
 import { LoguxControlOptions } from '@/control';
 
+import buildCanvasTemplateActionControls from './canvasTemplates';
 import buildCreatorActionControls from './creator';
 import buildDiagramActionControls from './diagram';
 import buildIntentActionControls from './intent';
@@ -17,6 +18,7 @@ import buildWorkspaceActionControls from './workspace';
 
 const buildActions = (options: LoguxControlOptions) => ({
   ...buildDiagramActionControls(options),
+  ...buildCanvasTemplateActionControls(options),
   ...buildCreatorActionControls(options),
   ...buildIntentActionControls(options),
   ...buildLinkActionControls(options),

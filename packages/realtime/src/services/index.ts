@@ -3,6 +3,7 @@ import { BaseServiceMap, SyncService } from '@voiceflow/socket-utils';
 import type { ClientMap } from '../clients';
 import type { ModelMap } from '../models';
 import type { Config } from '../types';
+import CanvasTemplateService from './canvasTemplate';
 import DiagramService from './diagram';
 import IntentService from './intent';
 import LockService from './lock';
@@ -37,6 +38,7 @@ export interface ServiceMap extends BaseServiceMap {
   workspace: WorkspaceService;
   projectList: ProjectListService;
   variableState: VariableService;
+  canvasTemplate: CanvasTemplateService;
 }
 
 interface Options {
@@ -67,6 +69,7 @@ const buildServices = ({ config, clients, models }: Options): ServiceMap => {
     workspace: new WorkspaceService(serviceOptions),
     projectList: new ProjectListService(serviceOptions),
     variableState: new VariableService(serviceOptions),
+    canvasTemplate: new CanvasTemplateService(serviceOptions),
   };
 
   Object.assign(services, serviceMap);

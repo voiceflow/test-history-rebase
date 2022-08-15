@@ -1,3 +1,4 @@
+export * as canvasTemplate from './canvasTemplate';
 export * as creator from './creator';
 export * as diagram from './diagram';
 export * as domain from './domain';

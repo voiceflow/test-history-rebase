@@ -4,6 +4,7 @@ import { combineReducers } from 'redux';
 import { reducer as formReducer } from 'redux-form';
 
 import account, * as Account from '@/ducks/account';
+import canvasTemplate, * as CanvasTemplate from '@/ducks/canvasTemplate';
 import creator, * as Creator from '@/ducks/creator';
 import creatorV2, * as CreatorV2 from '@/ducks/creatorV2';
 import diagramV2, * as DiagramV2 from '@/ducks/diagramV2';
@@ -84,6 +85,7 @@ const getCombinedReducer = (browserHistory: BrowserHistory) =>
     [Note.STATE_KEY]: note,
     [History.STATE_KEY]: history,
     [Domain.STATE_KEY]: domain,
+    [CanvasTemplate.STATE_KEY]: canvasTemplate,
   });
 
 const createReducer = ({ browserHistory, reverters, invalidators, getClientNodeID }: ReducerOptions) =>

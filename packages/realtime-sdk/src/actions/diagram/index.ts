@@ -1,5 +1,5 @@
 import { createAction, createAsyncAction, createCRUDActions, createType } from '@realtime-sdk/actions/utils';
-import { COMPONENT_KEY, TOPIC_KEY, VARIABLES_KEY } from '@realtime-sdk/constants';
+import { COMPONENT_KEY, TEMPLATE_DIAGRAM_KEY, TOPIC_KEY, VARIABLES_KEY } from '@realtime-sdk/constants';
 import { Diagram } from '@realtime-sdk/models';
 import { BaseDiagramPayload, BaseVersionPayload } from '@realtime-sdk/types';
 import { diagram } from '@realtime-sdk/utils';
@@ -13,6 +13,7 @@ export * as viewport from './viewport';
 
 const diagramTopicType = createType(diagramType(TOPIC_KEY));
 const diagramComponentType = createType(diagramType(COMPONENT_KEY));
+const diagramTemplateDiagramType = createType(diagramType(TEMPLATE_DIAGRAM_KEY));
 const diagramVariablesType = createType(diagramType(VARIABLES_KEY));
 const diagramIntentStepsType = createType(diagramType('intent_steps'));
 const diagramStartingBlocksType = createType(diagramType('starting_blocks'));
@@ -110,6 +111,7 @@ export interface CreateDiagramPayload extends BaseVersionPayload {
 
 export const createTopic = createAsyncAction<CreateDiagramPayload, Diagram>(diagramTopicType('CREATE'));
 export const createComponent = createAsyncAction<CreateDiagramPayload, Diagram>(diagramComponentType('CREATE'));
+export const createTemplateDiagram = createAsyncAction<CreateDiagramPayload, Diagram>(diagramTemplateDiagramType('CREATE'));
 export const duplicate = createAsyncAction<BaseDiagramPayload, Diagram>(diagramType('DUPICATE'));
 export const convertToTopic = createAsyncAction<BaseDiagramPayload, Diagram>(diagramType('CONVERT_TO_TOPIC'));
 

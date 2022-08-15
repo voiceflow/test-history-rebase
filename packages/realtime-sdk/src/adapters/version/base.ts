@@ -2,10 +2,10 @@ import { Version } from '@realtime-sdk/models';
 import { BaseVersion } from '@voiceflow/base-types';
 import createAdapter, { AdapterNotImplementedError } from 'bidirectional-adapter';
 
-export type SharedFields = '_version' | 'creatorID' | 'projectID' | 'rootDiagramID' | 'folders' | 'topics' | 'components';
+export type SharedFields = '_version' | 'creatorID' | 'projectID' | 'rootDiagramID' | 'folders' | 'topics' | 'components' | 'templateDiagramID';
 
 const baseVersionAdapter = createAdapter<Pick<BaseVersion.Version, '_id' | SharedFields>, Pick<Version<any>, 'id' | SharedFields>>(
-  ({ _id, _version, folders = {}, topics = [], creatorID, projectID, components = [], rootDiagramID }) => ({
+  ({ _id, _version, folders = {}, topics = [], creatorID, projectID, components = [], rootDiagramID, templateDiagramID }) => ({
     id: _id,
     _version,
     folders,
@@ -13,6 +13,7 @@ const baseVersionAdapter = createAdapter<Pick<BaseVersion.Version, '_id' | Share
     projectID,
     components,
     rootDiagramID,
+    templateDiagramID,
 
     // TODO: remove when domains are released
     topics,

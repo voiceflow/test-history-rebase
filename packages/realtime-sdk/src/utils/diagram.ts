@@ -112,3 +112,10 @@ export const topicDiagramFactory = (name: string) => {
     ],
   });
 };
+
+export const templateDiagramFactory = (name = 'Template Diagram') =>
+  diagramFactory({
+    name,
+    type: BaseModels.Diagram.DiagramType.TEMPLATE,
+    nodes: [startNodeFactory()],
+  });

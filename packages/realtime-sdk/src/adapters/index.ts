@@ -1,3 +1,4 @@
+export { default as canvasTemplateAdapter } from './canvasTemplate';
 export { default as creatorAdapter, nodeDataAdapter, stepPortsAdapter } from './creator';
 export { default as alexaDisplayAdapter } from './creator/block/alexa/display';
 export { voicePromptToSpeakDataAdapter } from './creator/block/utils';

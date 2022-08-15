@@ -1,3 +1,4 @@
+export * from './CanvasTemplate';
 export * from './CreatorDiagram';
 export * from './Diagram';
 export * from './Domain';

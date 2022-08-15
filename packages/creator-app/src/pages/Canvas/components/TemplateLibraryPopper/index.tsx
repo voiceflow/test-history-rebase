@@ -9,6 +9,7 @@ import {
   Portal,
   stopPropagation,
   StrictPopperModifiers,
+  toast,
   useDebouncedCallback,
   useLinkedState,
   usePopper,
@@ -16,8 +17,11 @@ import {
 } from '@voiceflow/ui';
 import React from 'react';
 
+import * as CanvasTemplate from '@/ducks/canvasTemplate';
+import * as Diagram from '@/ducks/diagram';
 import * as ProjectV2 from '@/ducks/projectV2';
-import { useSelector } from '@/hooks';
+import * as VersionV2 from '@/ducks/versionV2';
+import { useDispatch, useSelector } from '@/hooks';
 
 import * as S from './styles';
 
@@ -28,12 +32,16 @@ export interface TemplateLibraryPopperProps {
   modifiers?: StrictPopperModifiers;
   placement?: PopperPlacement;
   popperContainerRef?: React.Ref<HTMLDivElement>;
+  nodeIDs: string[];
 }
 
 export interface TemplateLibraryPopperRef extends PopperAPI<Nullable<Element | VirtualElement>, Nullable<HTMLElement>> {}
 
 export const TemplateLibraryPopper = React.forwardRef<TemplateLibraryPopperRef, TemplateLibraryPopperProps>(
-  ({ selectedColor, onChange, defaultColorScheme, modifiers = [], placement = 'bottom', popperContainerRef, ...props }, ref) => {
+  ({ selectedColor, onChange, defaultColorScheme, modifiers = [], placement = 'bottom', popperContainerRef, nodeIDs, ...props }, ref) => {
+    const createCanvasTemplate = useDispatch(CanvasTemplate.createCanvasTemplate);
+    const templateDiagramID = useSelector(VersionV2.active.templateDiagramIDSelector);
+    const createTemplateDiagram = useDispatch(Diagram.createTemplateDiagram);
     const customThemes = useSelector(ProjectV2.active.customThemesSelector);
     const colors = [COLOR_PICKER_CONSTANTS.DEFAULT_SCHEME_COLORS[defaultColorScheme], ...COLOR_PICKER_CONSTANTS.DEFAULT_THEMES, ...customThemes];
     const normalizedColor = React.useMemo(() => normalizeColor(selectedColor), [selectedColor]);
@@ -54,8 +62,20 @@ export const TemplateLibraryPopper = React.forwardRef<TemplateLibraryPopperRef, 
       debouncedOnChange(hex);
     };
 
-    const onCreateTemplate = () => {
-      // TODO: connect to CRUD actions
+    const onCreateTemplate = async () => {
+      try {
+        if (!templateDiagramID) {
+          await createTemplateDiagram();
+        }
+
+        await createCanvasTemplate({ name, color: selectedHex, nodeIDs });
+
+        // TODO: copy node/nodeData to template diagram
+
+        toast.success(`Block template saved to library.`);
+      } catch {
+        toast.error('Something went wrong, please contact support if this issue persists.');
+      }
       // TODO: dismiss this popper
     };
 

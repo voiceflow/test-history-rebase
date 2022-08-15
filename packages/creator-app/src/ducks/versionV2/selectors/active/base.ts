@@ -14,6 +14,8 @@ export const creatorIDSelector = createSelector([versionSelector], (version) => 
 
 export const rootDiagramIDSelector = createSelector([versionSelector], (version) => version?.rootDiagramID ?? null);
 
+export const templateDiagramIDSelector = createSelector([versionSelector], (version) => version?.templateDiagramID ?? null);
+
 export const globalVariablesSelector = createSelector([versionSelector], (version) => version?.variables ?? []);
 
 export const sessionSelector = createSelector([versionSelector], (version) => version?.session ?? null);

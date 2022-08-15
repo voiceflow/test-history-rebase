@@ -38,6 +38,7 @@ export const ContextTemplateLibrary: React.FC<ContextTemplateLibraryProps> = ({ 
       placement="right"
       selectedColor={color}
       defaultColorScheme={defaultColorScheme}
+      nodeIDs={targets}
     />
   );
 };

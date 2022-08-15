@@ -3,6 +3,7 @@ import { LoguxControlOptions } from '@/control';
 import AddDiagramControl from './add';
 import ConvertToTopicControl from './convertToTopic';
 import CreateComponentControl from './createComponent';
+import CreateTemplateControl from './createTemplateDiagram';
 import CreateTopicControl from './createTopic';
 import DuplicateDiagramControl from './duplicate';
 import HeartbeatDiagramControl from './heartbeat';
@@ -24,6 +25,7 @@ const buildDiagramActionControls = (options: LoguxControlOptions) => ({
   convertToTopicControl: new ConvertToTopicControl(options),
   createComponentControl: new CreateComponentControl(options),
   createTopicControl: new CreateTopicControl(options),
+  createTemplateControl: new CreateTemplateControl(options),
   duplicateDiagramControl: new DuplicateDiagramControl(options),
   patchDiagramControl: new PatchDiagramControl(options),
   removeDiagramControl: new RemoveDiagramControl(options),

@@ -27,6 +27,7 @@ import session, * as Session from '@/ducks/session';
 import slot, * as Slot from '@/ducks/slot';
 import slotV2, * as SlotV2 from '@/ducks/slotV2';
 import thread, * as Thread from '@/ducks/thread';
+import threadV2, * as ThreadV2 from '@/ducks/threadV2';
 import tracking, * as Tracking from '@/ducks/tracking';
 import transcript, * as Transcript from '@/ducks/transcript';
 import ui, * as UI from '@/ducks/ui';
@@ -56,6 +57,7 @@ const getCombinedReducer = (browserHistory: BrowserHistory) =>
     [Modal.STATE_KEY]: modal,
     [WorkspaceV2.STATE_KEY]: workspaceV2,
     [Thread.STATE_KEY]: thread,
+    [ThreadV2.STATE_KEY]: threadV2,
     [Account.STATE_KEY]: account,
     [IntegrationUsers.STATE_KEY]: integrationUsers,
     [Prototype.STATE_KEY]: prototype,

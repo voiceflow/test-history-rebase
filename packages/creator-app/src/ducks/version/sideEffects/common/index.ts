@@ -5,6 +5,7 @@ import { batch } from 'react-redux';
 import client from '@/client';
 import * as Errors from '@/config/errors';
 import * as Diagram from '@/ducks/diagram';
+import * as Feature from '@/ducks/feature';
 import * as Integration from '@/ducks/integration';
 import * as Product from '@/ducks/product';
 import * as Session from '@/ducks/session';
@@ -30,7 +31,9 @@ export const initializeVersion =
     // not a dependency for project to load
     dispatch(Integration.fetchIntegrationUsers()).catch(() => storeLogger.warn('Unable to fetch integration users'));
 
-    const isNewWorkspace = Session.activeWorkspaceIDSelector(getState()) !== workspaceID;
+    const state = getState();
+    const isNewWorkspace = Session.activeWorkspaceIDSelector(state) !== workspaceID;
+    const AACommentingEnabled = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.ATOMIC_ACTIONS_COMMENTING);
 
     batch(() => {
       if (isNewWorkspace) {
@@ -39,7 +42,10 @@ export const initializeVersion =
 
       dispatch(Session.setActiveProjectID(projectID));
       dispatch(Session.setActiveVersionID(versionID));
-      dispatch(Thread.loadThreads(projectID));
+
+      if (!AACommentingEnabled) {
+        dispatch(Thread.loadThreads(projectID));
+      }
     });
 
     await client.socket?.project.initialize(projectID);

@@ -3,7 +3,7 @@ import React from 'react';
 import { createSelector } from 'reselect';
 
 import * as CreatorV2 from '@/ducks/creatorV2';
-import * as Thread from '@/ducks/thread';
+import * as ThreadV2 from '@/ducks/threadV2';
 import { EngineContext } from '@/pages/Canvas/contexts/EngineContext';
 import { Point } from '@/types';
 import { Coords, Vector } from '@/utils/geometry';
@@ -25,9 +25,9 @@ export interface ThreadInstance extends EntityInstance, CommentAPI {
 }
 
 const threadEntitySelector = createSelector(
-  [CreatorV2.getNodeByIDSelector, Thread.threadByIDSelector],
+  [CreatorV2.getNodeByIDSelector, ThreadV2.getThreadByIDSelector],
   (getNode, getThread) => (threadID: string) => {
-    const thread = getThread(threadID);
+    const thread = getThread({ id: threadID })!;
     const node = getNode({ id: thread?.nodeID });
 
     return {
@@ -62,7 +62,7 @@ class ThreadEntity extends ResourceEntity<{ thread: Realtime.Thread; node: Realt
   }
 
   getThreadOrder() {
-    return this.engine.select(Thread.threadOrder)(this.threadID);
+    return this.engine.select(ThreadV2.threadOrder)(this.threadID);
   }
 
   shouldUpdate() {

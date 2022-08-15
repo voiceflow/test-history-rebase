@@ -1,5 +1,5 @@
 import { THREAD_KEY } from '@realtime-sdk/constants';
-import { Comment, Thread } from '@realtime-sdk/models';
+import { Comment, NewThread, Thread } from '@realtime-sdk/models';
 import { BaseProjectPayload } from '@realtime-sdk/types';
 import { Utils } from '@voiceflow/common';
 
@@ -10,6 +10,11 @@ const threadType = Utils.protocol.typeFactory(THREAD_KEY);
 // Other
 
 export const crud = createCRUDActions<Thread, BaseProjectPayload>(threadType);
+
+export interface CreateThreadPayload extends BaseProjectPayload {
+  thread: NewThread;
+}
+export const create = Utils.protocol.createAsyncAction<CreateThreadPayload, Thread>(threadType('CREATE'));
 
 export interface AddCommentPayload extends BaseProjectPayload {
   threadID: string;

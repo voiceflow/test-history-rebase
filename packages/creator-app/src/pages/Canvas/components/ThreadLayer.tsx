@@ -2,6 +2,7 @@ import React from 'react';
 
 import { AutoPanningStateContext } from '@/contexts';
 import * as Thread from '@/ducks/thread';
+import * as ThreadV2 from '@/ducks/threadV2';
 import * as UI from '@/ducks/ui';
 import { useDispatch, useHotKeys, useRAF, useSelector, useTrackingEvents } from '@/hooks';
 import { Hotkey } from '@/keymap';
@@ -24,7 +25,7 @@ const ThreadLayer: React.FC = () => {
   const [trackEvents] = useTrackingEvents();
   const isCommentingMode = useCommentingMode();
 
-  const threadIDs = useSelector(Thread.activeDiagramThreadIDsSelector);
+  const threadIDs = useSelector(ThreadV2.activeDiagramThreadIDsSelector);
   const commentsVisible = useSelector(UI.isCommentsVisible);
 
   const updateUnreadComments = useDispatch(Thread.updateUnreadComments);

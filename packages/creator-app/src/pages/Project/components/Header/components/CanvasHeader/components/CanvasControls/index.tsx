@@ -5,7 +5,7 @@ import React from 'react';
 import { HeaderIconButton } from '@/components/ProjectPage';
 import { Permission } from '@/config/permissions';
 import { BlockType, ModalType } from '@/constants';
-import * as Thread from '@/ducks/thread';
+import * as Thread from '@/ducks/threadV2';
 import { useFeature, useModals, usePermission, useSelector, useTrackingEvents } from '@/hooks';
 import { Hotkey, HOTKEY_LABEL_MAP } from '@/keymap';
 import { MarkupContext } from '@/pages/Project/contexts';

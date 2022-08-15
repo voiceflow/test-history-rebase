@@ -18,7 +18,7 @@ import { matchPath, useHistory } from 'react-router-dom';
 import Drawer from '@/components/Drawer';
 import { Path } from '@/config/routes';
 import * as CreatorV2 from '@/ducks/creatorV2';
-import * as Thread from '@/ducks/thread';
+import * as Thread from '@/ducks/threadV2';
 import { useRAF, useSelector, useTheme } from '@/hooks';
 import { EditorContentAnimation } from '@/pages/Canvas/components/Editor';
 import { FocusThreadContext } from '@/pages/Canvas/contexts';

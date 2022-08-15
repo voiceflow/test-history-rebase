@@ -20,7 +20,7 @@ import * as ProjectV2 from '@/ducks/projectV2';
 import * as RealtimeDuck from '@/ducks/realtime';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
-import * as Thread from '@/ducks/thread';
+import * as Thread from '@/ducks/threadV2';
 import * as UI from '@/ducks/ui';
 import * as Version from '@/ducks/versionV2';
 import { RealtimeSubscriptionValue } from '@/gates/RealtimeLoadingGate/contexts';

@@ -2,7 +2,7 @@ import { Popper } from '@voiceflow/ui';
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import * as Thread from '@/ducks/thread';
+import * as Thread from '@/ducks/threadV2';
 import { useLinkedRef, useRegistration } from '@/hooks';
 import { CommentIndicator } from '@/pages/Canvas/components/CommentThread/components';
 import { INDICATOR_DIAMETER } from '@/pages/Canvas/components/CommentThread/constants';

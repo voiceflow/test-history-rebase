@@ -1,7 +1,7 @@
 import { Checkbox, Menu } from '@voiceflow/ui';
 import React from 'react';
 
-import * as Thread from '@/ducks/thread';
+import * as Thread from '@/ducks/threadV2';
 import * as UI from '@/ducks/ui';
 import { useDispatch, useSelector } from '@/hooks';
 import { FILTER_LABELS, FilterType } from '@/pages/Canvas/components/ThreadHistoryDrawer/constants';

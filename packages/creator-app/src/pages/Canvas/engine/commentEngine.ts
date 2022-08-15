@@ -5,6 +5,7 @@ import * as CreatorV2 from '@/ducks/creatorV2';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import * as Thread from '@/ducks/thread';
+import * as ThreadV2 from '@/ducks/threadV2';
 import * as UI from '@/ducks/ui';
 import { CommentDraftValue, NewCommentAPI } from '@/pages/Canvas/types';
 import { Point } from '@/types';
@@ -96,7 +97,7 @@ class CommentEngine extends EngineConsumer<{ newComment: NewCommentAPI }> {
     this.focusTargetComment = options?.commentID ?? null;
 
     const diagramID = this.engine.getDiagramID();
-    const thread = this.select(Thread.threadByIDSelector)(threadID);
+    const thread = this.select(ThreadV2.getThreadByIDSelector)({ id: threadID })!;
 
     if (thread.diagramID !== diagramID) {
       await this.dispatch(Router.goToDiagramCommenting(thread.diagramID, threadID, options?.commentID));
@@ -283,7 +284,7 @@ class CommentEngine extends EngineConsumer<{ newComment: NewCommentAPI }> {
   }
 
   async moveThreadToCanvas(threadID: string) {
-    const thread = this.select(Thread.threadByIDSelector)(threadID);
+    const thread = this.select(ThreadV2.getThreadByIDSelector)({ id: threadID })!;
     const node = this.engine.node.api(thread.nodeID!);
 
     if (!node?.instance?.isReady()) return;
@@ -297,7 +298,7 @@ class CommentEngine extends EngineConsumer<{ newComment: NewCommentAPI }> {
   }
 
   async handleNodesDelete(nodeIDs: string[]) {
-    const threadIDs = nodeIDs.flatMap(this.select(Thread.threadIDsByNodeIDSelector));
+    const threadIDs = nodeIDs.flatMap(this.select(ThreadV2.threadIDsByNodeIDSelector));
 
     await Promise.all(threadIDs.map((threadID) => this.moveThreadToCanvas(threadID)));
   }
@@ -316,7 +317,7 @@ class CommentEngine extends EngineConsumer<{ newComment: NewCommentAPI }> {
     if (!this.isModeActive || !this.isVisible) return;
 
     const plane = this.engine.canvas!.getOuterPlane();
-    const threads = this.select(Thread.activeDiagramThreadsSelector);
+    const threads = this.select(ThreadV2.activeDiagramThreadsSelector);
 
     threads.forEach(({ id, position, nodeID }) => {
       const thread = this.thread(id);

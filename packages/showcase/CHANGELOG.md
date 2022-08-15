@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.21.10](https://github.com/voiceflow/creator-app/compare/@voiceflow/showcase@1.21.9...@voiceflow/showcase@1.21.10) (2022-08-15)
+
+
+### Bug Fixes
+
+* change all instances of entity prompt with entity reprompt (VF-000) ([#5899](https://github.com/voiceflow/creator-app/issues/5899)) ([a6b3785](https://github.com/voiceflow/creator-app/commit/a6b37850e3bd7790b63e76733b8b333d31953fe3))
+
+
+
+
+
 ## [1.21.9](https://github.com/voiceflow/creator-app/compare/@voiceflow/showcase@1.21.8...@voiceflow/showcase@1.21.9) (2022-08-12)
 
 **Note:** Version bump only for package @voiceflow/showcase

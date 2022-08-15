@@ -140,13 +140,15 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
                           <>
                             <SectionV2.Divider inset />
 
-                            <UtteranceSection
-                              slot={slot}
-                              onChange={(utterances) => onChangeDialog({ utterances })}
-                              usedSlots={usedSlots}
-                              utterances={item.dialog.utterances}
-                              preventAccent
-                            />
+                            {editor.data.utterancesShown && (
+                              <UtteranceSection
+                                slot={slot}
+                                onChange={(utterances) => onChangeDialog({ utterances })}
+                                usedSlots={usedSlots}
+                                utterances={item.dialog.utterances}
+                                preventAccent
+                              />
+                            )}
                           </>
                         )}
                       </>

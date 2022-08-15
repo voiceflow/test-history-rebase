@@ -10,6 +10,7 @@ import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import { useIntentScope } from '@/pages/Canvas/managers/hooks';
 
 import { Actions, NoMatchV2, NoReplyV2 } from '../../../components';
+import { useUtterancesOption } from '../hooks';
 import { DraggableItem } from './components';
 
 const ITEM_DRAG_TYPE = 'capture-v2-editor';
@@ -37,6 +38,7 @@ const IntentEditor: React.FC<{ disableAnimation: boolean }> = ({ disableAnimatio
   const noMatchConfig = NoMatchV2.useConfig();
   const noReplyConfig = NoReplyV2.useConfig();
   const intentScopeOption = useIntentScope({ data: editor.data, onChange: editor.onChange });
+  const utterancesOption = useUtterancesOption(editor.data.utterancesShown || false, editor.onChange);
 
   return (
     <EditorV2
@@ -45,7 +47,13 @@ const IntentEditor: React.FC<{ disableAnimation: boolean }> = ({ disableAnimatio
         !isDragging && (
           <EditorV2.DefaultFooter tutorial={{ content: <HelpTooltip /> }}>
             <EditorV2.FooterActionsButton
-              actions={[intentScopeOption, createUIOnlyMenuItemOption('divider', { divider: true }), noMatchConfig.option, noReplyConfig.option]}
+              actions={[
+                intentScopeOption,
+                utterancesOption,
+                createUIOnlyMenuItemOption('divider', { divider: true }),
+                noMatchConfig.option,
+                noReplyConfig.option,
+              ]}
             />
 
             <Button variant={Button.Variant.PRIMARY} onClick={() => mapManager.onAdd()} squareRadius>
@@ -60,7 +68,12 @@ const IntentEditor: React.FC<{ disableAnimation: boolean }> = ({ disableAnimatio
       <DraggableList
         type={ITEM_DRAG_TYPE}
         canDrag={!mapManager.isOnlyItem}
-        itemProps={{ editor, latestCreatedKey: mapManager.latestCreatedKey, onSelectQueryType, selectedSlotIDs }}
+        itemProps={{
+          editor,
+          latestCreatedKey: mapManager.latestCreatedKey,
+          onSelectQueryType,
+          selectedSlotIDs,
+        }}
         onEndDrag={toggleDragging}
         mapManager={mapManager}
         onStartDrag={toggleDragging}

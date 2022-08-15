@@ -163,6 +163,7 @@ export namespace NodeData {
     variable: Nullable<string>;
     captureType: BaseNode.CaptureV2.CaptureType;
     intentScope?: BaseNode.Utils.IntentScope;
+    utterancesShown?: boolean;
   }
 
   export interface CaptureV2BuiltInPorts {

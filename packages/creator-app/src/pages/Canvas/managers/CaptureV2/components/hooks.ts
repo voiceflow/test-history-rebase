@@ -1,5 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { createUIOnlyMenuItemOption, UIOnlyMenuItemOption } from '@voiceflow/ui';
+import { createUIOnlyMenuItemOption, OptionsMenuOption, UIOnlyMenuItemOption } from '@voiceflow/ui';
 import React from 'react';
 
 import { ENTIRE_USER_REPLY_ID, ENTIRE_USER_REPLY_LABEL } from './constants';
@@ -25,4 +25,11 @@ export const useEntitiesOptions = (unusedSlots: Realtime.Slot[], slot: Realtime.
       ...unusedSlots.map((slot) => ({ id: slot.id, label: `{${slot.name}}`, name: slot.name })),
     ];
   }, [slot, unusedSlots]);
+};
+
+export const useUtterancesOption = (shown: boolean, onChange: (changes: { utterancesShown: boolean }) => void): OptionsMenuOption => {
+  return {
+    label: shown ? 'Remove utterances' : 'Add utterances',
+    onClick: () => onChange({ utterancesShown: !shown }),
+  };
 };

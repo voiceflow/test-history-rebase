@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.865.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.865.1...@voiceflow/creator-app@1.865.2) (2022-08-16)
+
+
+### Bug Fixes
+
+* capture step default utterance (CT-787) ([#5906](https://github.com/voiceflow/creator-app/issues/5906)) ([8d8db63](https://github.com/voiceflow/creator-app/commit/8d8db631243e0683d0b7cad8c4ed747bcd50df8e))
+* default choice and button ux (CT-000) ([#5909](https://github.com/voiceflow/creator-app/issues/5909)) ([fdd566b](https://github.com/voiceflow/creator-app/commit/fdd566bbf8b74fa139166f2f872592bd96a9bcab))
+
+
+
+
+
 ## [1.865.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.865.0...@voiceflow/creator-app@1.865.1) (2022-08-15)
 
 **Note:** Version bump only for package @voiceflow/creator-app

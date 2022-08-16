@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.139.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.139.1...@voiceflow/realtime-sdk@1.139.2) (2022-08-16)
+
+
+### Bug Fixes
+
+* capture step default utterance (CT-787) ([#5906](https://github.com/voiceflow/creator-app/issues/5906)) ([8d8db63](https://github.com/voiceflow/creator-app/commit/8d8db631243e0683d0b7cad8c4ed747bcd50df8e))
+
+
+
+
+
 ## [1.139.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.139.0...@voiceflow/realtime-sdk@1.139.1) (2022-08-15)
 
 

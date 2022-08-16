@@ -7,7 +7,6 @@ import React from 'react';
 import { LegacyMappings } from '@/components/IntentForm';
 import IntentSelect from '@/components/IntentSelect';
 import * as Documentation from '@/config/documentation';
-import * as Creator from '@/ducks/creator';
 import * as Intent from '@/ducks/intent';
 import { useDispatch, useIntent, useSyncDispatch } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
@@ -21,7 +20,6 @@ const RootEditor: React.FC = () => {
 
   const onAddRequiredEntity = useDispatch(Intent.addRequiredSlot);
   const onRemoveRequiredEntity = useDispatch(Intent.removeRequiredSlot);
-  const validateTopicAvailability = useDispatch(Creator.validateTopicAvailability);
 
   const { intent, intentEditModal, intentIsBuiltIn, intentHasRequiredEntity } = useIntent(editor.data.intent);
 
@@ -35,7 +33,6 @@ const RootEditor: React.FC = () => {
     await patchPlatformData({ intent });
 
     updateIntentSteps({ ...editor.engine.context, stepID: editor.nodeID, intent: intent ? { intentID: intent, global: isGlobalIntent } : null });
-    validateTopicAvailability();
   };
 
   const onChangeAvailability = async () => {
@@ -49,10 +46,6 @@ const RootEditor: React.FC = () => {
       stepID: editor.nodeID,
       intent: intent?.id ? { intentID: intent.id, global: nextAvailabilityIsGlobal } : null,
     });
-
-    if (!nextAvailabilityIsGlobal) {
-      validateTopicAvailability();
-    }
   };
 
   return (

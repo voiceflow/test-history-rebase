@@ -714,8 +714,6 @@ class NodeManager extends EngineConsumer {
 
       this.engine.saveHistory();
 
-      this.dispatch(Creator.validateTopicAvailability());
-
       this.log.info(this.log.success('removed multiple nodes'), this.log.value(removableNodeIDs.length));
     });
   }

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.136.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.136.1...@voiceflow/ui@1.136.2) (2022-08-16)
+
+
+### Bug Fixes
+
+* toast updates (CT-795) ([#5903](https://github.com/voiceflow/creator-app/issues/5903)) ([7e9a6bb](https://github.com/voiceflow/creator-app/commit/7e9a6bb50daa388f3eacc9e866e55e9002b4364e))
+
+
+
+
+
 ## [1.136.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.136.0...@voiceflow/ui@1.136.1) (2022-08-12)
 
 

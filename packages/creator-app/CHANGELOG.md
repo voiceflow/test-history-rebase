@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.866.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.866.1...@voiceflow/creator-app@1.866.2) (2022-08-16)
+
+
+### Bug Fixes
+
+* change custom code to Javascript (CT-737) ([#5905](https://github.com/voiceflow/creator-app/issues/5905)) ([98880f7](https://github.com/voiceflow/creator-app/commit/98880f711ad4eb08afcc3ba900c4cef9538d9358))
+
+
+
+
+
 ## [1.866.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.866.0...@voiceflow/creator-app@1.866.1) (2022-08-16)
 
 

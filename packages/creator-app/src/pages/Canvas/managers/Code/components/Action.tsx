@@ -34,9 +34,7 @@ const Action: ConnectedAction<Realtime.NodeData.Code, Realtime.NodeData.CodeBuil
           }
           port={<Step.ActionPort portID={ports.out.builtIn[BaseModels.PortType.NEXT]} />}
           label={
-            <Canvas.Action.Label secondary={isEmpty}>
-              {isEmpty ? 'Add code' : Canvas.Action.trimLabel(data.name || 'Custom code')}
-            </Canvas.Action.Label>
+            <Canvas.Action.Label secondary={isEmpty}>{isEmpty ? 'Add code' : Canvas.Action.trimLabel(data.name || 'Javascript')}</Canvas.Action.Label>
           }
           nodeID={data.nodeID}
           active={isOpened || isActive}

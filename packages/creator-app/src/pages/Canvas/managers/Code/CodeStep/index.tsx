@@ -23,9 +23,9 @@ export const CodeStep: React.FC<CodeStepProps> = ({ withCode, withPorts, nodeID,
     <Section>
       <Item
         icon={NODE_CONFIG.icon}
-        label={withCode ? 'Custom code added' : null}
+        label={withCode ? 'Javascript added' : null}
         palette={palette}
-        placeholder="Enter custom code snippet"
+        placeholder="Enter javascript snippet"
         labelVariant={StepLabelVariant.SECONDARY}
       />
     </Section>

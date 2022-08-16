@@ -14,9 +14,9 @@ const CodeStep: ConnectedStep<Realtime.NodeData.Code, Realtime.NodeData.CodeBuil
     <Section v2 withIcon>
       <Item
         icon={NODE_CONFIG.icon}
-        label={data.code ? 'Custom code' : null}
+        label={data.code ? 'Javascript' : null}
         palette={palette}
-        placeholder="Add custom code"
+        placeholder="Add javascript"
         attachment={
           !!data.code && (
             <Popper

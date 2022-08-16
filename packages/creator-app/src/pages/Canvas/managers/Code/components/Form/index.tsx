@@ -36,7 +36,7 @@ const Form: React.FC<FormProps> = ({ editor, header, footer }) => {
           inputMode={InputMode.INPUT}
           fullHeight
           setOptions={ACE_EDITOR_OPTIONS_V2}
-          placeholder="Enter custom code"
+          placeholder="Enter javascript"
           editorColors={ACE_EDITOR_COLORS}
           scrollMargin={[12, 12, 0, 0]}
           editorSpacing

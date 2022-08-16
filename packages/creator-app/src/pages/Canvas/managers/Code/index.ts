@@ -9,7 +9,7 @@ import { NODE_CONFIG } from './constants';
 const CodeManager: NodeManagerConfigV2<Realtime.NodeData.Code, Realtime.NodeData.CodeBuiltInPorts> = {
   ...NODE_CONFIG,
 
-  label: 'Custom Code',
+  label: 'Javascript',
 
   step: Step,
   action: Action,

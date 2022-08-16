@@ -90,8 +90,8 @@ export const useItemConfig = (getManager: ManagerGetter, data: Realtime.NodeData
       return {
         icon: manager.icon,
         isEmpty: !code,
-        defaultName: 'Custom code',
-        placeholder: 'Add custom code',
+        defaultName: 'Javascript',
+        placeholder: 'Add javascript',
       };
     }
 

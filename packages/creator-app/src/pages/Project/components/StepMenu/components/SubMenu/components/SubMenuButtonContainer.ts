@@ -7,6 +7,7 @@ interface SubMenuButtonContainerProps {
   isClicked: boolean;
   isDragging: boolean;
   isDraggingPreview?: boolean;
+  isContextMenuOpen?: boolean;
   disabled?: boolean;
   customDisplay?: string;
 }
@@ -28,22 +29,30 @@ export const SubMenuButtonContainer = styled(Box.FlexStart)<SubMenuButtonContain
     cursor: grabbing;
   }
 
-  ${({ disabled }) =>
+  ${({ disabled, isContextMenuOpen }) =>
     disabled
       ? css`
           cursor: default !important;
         `
-      : css`
+      : !isContextMenuOpen &&
+        css`
           &:hover {
             box-shadow: 0 2px 3px 0 rgba(19, 33, 68, 0.08), 0 0 0 1px rgba(19, 33, 68, 0.06);
             background-color: #fdfdfd;
           }
         `}
 
-  ${({ isClicked }) =>
+  ${({ isClicked, isContextMenuOpen }) =>
     isClicked &&
+    !isContextMenuOpen &&
     css`
       transform: rotate(-2deg);
+    `}
+
+  ${({ isContextMenuOpen }) =>
+    isContextMenuOpen &&
+    css`
+      background-color: rgba(238, 244, 246, 0.85);
     `}
 
   ${({ isClicked, disabled }) =>

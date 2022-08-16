@@ -54,3 +54,9 @@ export const StyledText = styled(Text)<{ disabled: boolean }>`
       color: #62778c;
     `}
 `;
+
+export const ContextMenuOption = styled.div`
+  display: flex;
+  gap: 21px;
+  align-items: center;
+`;

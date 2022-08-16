@@ -25,10 +25,23 @@ interface SubMenuButtonProps {
   tooltipText?: string;
   tooltipLink?: string;
   factoryData?: Partial<Realtime.NodeData<unknown>>;
+  onContextMenu?: React.MouseEventHandler;
+  isContextMenuOpen?: boolean;
   isDraggingPreview?: boolean;
 }
 
-const SubMenuButton: React.FC<SubMenuButtonProps> = ({ type, icon, label, onDrop, tooltipText, tooltipLink, factoryData, isDraggingPreview }) => {
+const SubMenuButton: React.FC<SubMenuButtonProps> = ({
+  type,
+  icon,
+  label,
+  onDrop,
+  tooltipText,
+  tooltipLink,
+  factoryData,
+  onContextMenu,
+  isContextMenuOpen,
+  isDraggingPreview,
+}) => {
   const getEngine = useEventualEngine();
   const isAutoPanning = React.useContext(AutoPanningCacheContext);
   const plan = useSelector(WorkspaceV2.active.planSelector);
@@ -81,8 +94,10 @@ const SubMenuButton: React.FC<SubMenuButtonProps> = ({ type, icon, label, onDrop
       onMouseDown={enableClickedState}
       isDragging={isDragging}
       isDraggingPreview={isDraggingPreview}
+      isContextMenuOpen={isContextMenuOpen}
       className={ClassName.SUB_STEP_MENU_ITEM}
       disabled={isLocked as boolean}
+      onContextMenu={onContextMenu}
       {...hoverHandlers}
     >
       <Box.FlexStart width="100%" opacity={isDragging ? 0 : 1}>

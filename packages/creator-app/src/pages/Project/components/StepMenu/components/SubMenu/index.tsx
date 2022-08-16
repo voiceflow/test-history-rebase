@@ -1,5 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Animations, Portal, usePopper } from '@voiceflow/ui';
+import { Animations, ContextMenu, OptionsMenuOption, Portal, SvgIcon, usePopper } from '@voiceflow/ui';
 import React from 'react';
 
 import { BlockType, DragItem } from '@/constants';
@@ -9,7 +9,7 @@ import { getManager } from '@/pages/Canvas/managers/utils';
 
 import { StepItem } from '../../constants';
 import { SubMenuButton } from './components';
-import { SubMenuContainer } from './styles';
+import * as S from './styles';
 
 interface SubMenuProps {
   steps: StepItem[];
@@ -19,6 +19,7 @@ interface SubMenuProps {
 const SubMenu: React.FC<SubMenuProps> = ({ steps, onDrop }) => {
   const newEditors2 = useFeature(Realtime.FeatureFlag.NEW_EDITORS_PART_2);
   const chatCardStep = useFeature(Realtime.FeatureFlag.CHAT_CARD_STEP);
+  const defaultStepColors = useFeature(Realtime.FeatureFlag.DEFAULT_STEP_COLORS);
 
   const menuRef = React.useRef<HTMLDivElement>(null);
 
@@ -57,17 +58,39 @@ const SubMenu: React.FC<SubMenuProps> = ({ steps, onDrop }) => {
     { horizontalEnabled: true }
   );
 
+  const menuOptions: OptionsMenuOption[] = React.useMemo(
+    () => [
+      {
+        label: (
+          <S.ContextMenuOption>
+            Default color
+            <SvgIcon icon="arrowRight" color="#BECEDC" size={10} />
+          </S.ContextMenuOption>
+        ),
+      },
+    ],
+    []
+  );
+
   return (
     <div ref={rootPopper.setReferenceElement}>
       <Portal portalNode={document.body}>
         <div ref={rootPopper.setPopperElement} style={rootPopper.styles.popper} {...rootPopper.attributes.popper}>
-          <SubMenuContainer ref={menuRef}>
+          <S.SubMenuContainer ref={menuRef}>
             {processedSteps.map((step, index) => (
               <Animations.FadeDownDelayedContainer key={step.label} delay={0.04 + index * 0.03}>
-                <SubMenuButton {...step} onDrop={onDrop} />
+                {defaultStepColors.isEnabled ? (
+                  <ContextMenu options={menuOptions}>
+                    {({ isOpen, onContextMenu }) => (
+                      <SubMenuButton {...step} onDrop={onDrop} onContextMenu={onContextMenu} isContextMenuOpen={isOpen} />
+                    )}
+                  </ContextMenu>
+                ) : (
+                  <SubMenuButton {...step} onDrop={onDrop} />
+                )}
               </Animations.FadeDownDelayedContainer>
             ))}
-          </SubMenuContainer>
+          </S.SubMenuContainer>
         </div>
       </Portal>
     </div>

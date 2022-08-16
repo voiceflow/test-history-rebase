@@ -25,7 +25,7 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Buttons, Realtime.NodeDat
         in: [{}],
         out: {
           byKey: {},
-          dynamic: [],
+          dynamic: [{}],
           builtIn: { [BaseModels.PortType.NO_MATCH]: { label: BaseModels.PortType.NO_MATCH } },
         },
       },
@@ -33,7 +33,7 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Buttons, Realtime.NodeDat
     data: {
       name: 'Buttons',
       noMatch: getPlatformNoMatchFactory(projectType)({ defaultVoice }),
-      buttons: [],
+      buttons: [buttonFactory()],
       noReply: null,
       intentScope: BaseNode.Utils.IntentScope.GLOBAL,
     },

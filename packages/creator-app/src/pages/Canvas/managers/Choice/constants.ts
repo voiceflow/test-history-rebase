@@ -26,7 +26,7 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Interaction, Realtime.Nod
         in: [{}],
         out: {
           byKey: {},
-          dynamic: [],
+          dynamic: [{}],
           builtIn: { [BaseModels.PortType.NO_MATCH]: { label: BaseModels.PortType.NO_MATCH } },
         },
       },
@@ -37,7 +37,7 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Interaction, Realtime.Nod
       noMatch: getPlatformNoMatchFactory(projectType)({ defaultVoice }),
       noReply: null,
       buttons: Realtime.Utils.typeGuards.isChatProjectType(projectType) ? buttonsFactory() : null,
-      choices: [],
+      choices: [choiceFactory()],
       intentScope: BaseNode.Utils.IntentScope.GLOBAL,
     },
   }),

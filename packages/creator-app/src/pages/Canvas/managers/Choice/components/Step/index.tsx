@@ -17,7 +17,7 @@ const ChoiceStep: ConnectedStep<Realtime.NodeData.Interaction, Realtime.NodeData
   return (
     <Step nodeID={data.nodeID}>
       <Section v2 withIcon>
-        {choices.length ? (
+        {choices.length > 1 || (choices.length === 1 && choices[0].label) ? (
           choices.map((item, index) => <ChoiceItem {...item} key={item.key} index={index} palette={palette} onOpenEditor={onOpenEditor} />)
         ) : (
           <Item v2 label={WAITING_FOR_INTENT_PLACEHOLDER} icon="radar" palette={palette} />

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.866.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.865.2...@voiceflow/creator-app@1.866.0) (2022-08-16)
+
+
+### Features
+
+* add context menu to step menu item (CT-799) ([#5910](https://github.com/voiceflow/creator-app/issues/5910)) ([73f7be9](https://github.com/voiceflow/creator-app/commit/73f7be9660f33b5a26e4d1499c4ce89310696e31))
+
+
+
+
+
 ## [1.865.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.865.1...@voiceflow/creator-app@1.865.2) (2022-08-16)
 
 

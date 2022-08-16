@@ -13,7 +13,6 @@ import { getStepSections, StepItem } from '@/pages/Project/components/StepMenu/c
 import { PlatformContext, ProjectTypeContext } from '@/pages/Project/contexts';
 import { Identifier } from '@/styles/constants';
 import { withKeyPress } from '@/utils/dom';
-import { isDialogflowPlatform } from '@/utils/typeGuards';
 
 import { Container, Control, Select } from '../Search/components';
 
@@ -29,7 +28,6 @@ const Spotlight = () => {
   const [trackingEvents] = useTrackingEvents();
   const gadgets = useFeature(Realtime.FeatureFlag.GADGETS);
   const chatCardsCarousel = useFeature(Realtime.FeatureFlag.CHAT_CARDS_CAROUSEL);
-  const dfCarousel = useFeature(Realtime.FeatureFlag.DF_CAROUSEL_STEP);
   const promptStep = useFeature(Realtime.FeatureFlag.PROMPT_STEP);
   const newEditors2 = useFeature(Realtime.FeatureFlag.NEW_EDITORS_PART_2);
   const getManager = useManager();
@@ -50,7 +48,6 @@ const Spotlight = () => {
           if (!Utils.object.hasProperty(step, 'type')) return false;
           if (!gadgets.isEnabled && step.type === BlockType.EVENT) return false;
           if (!chatCardsCarousel.isEnabled && step.type === BlockType.CAROUSEL) return false;
-          if (isDialogflowPlatform(platform) && !dfCarousel.isEnabled && step.type === BlockType.CAROUSEL) return false;
           if (!newEditors2.isEnabled && step.type === BlockType.RANDOMV2) return false;
           if (newEditors2.isEnabled && step.type === BlockType.RANDOM) return false;
           if (IS_PRIVATE_CLOUD && step.publicOnly) return false;
@@ -71,7 +68,7 @@ const Spotlight = () => {
             ),
           };
         }),
-    [platform, gadgets.isEnabled, newEditors2.isEnabled, chatCardsCarousel.isEnabled, dfCarousel.isEnabled, promptStep.isEnabled]
+    [platform, gadgets.isEnabled, newEditors2.isEnabled, chatCardsCarousel.isEnabled, promptStep.isEnabled]
   );
 
   useDidUpdateEffect(() => {

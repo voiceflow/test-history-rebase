@@ -54,7 +54,6 @@ export enum FeatureFlag {
   CONDITIONS_BUILDER_V2 = 'conditions_builder_v2',
   NEW_EDITORS_PART_2 = 'new_editors_part_2',
 
-  DF_CAROUSEL_STEP = 'df_carousel_step',
   ASSISTANT_IA = 'assistant_ia',
 
   CHAT_VOICE_PROJECT = 'chat_voice_project_type',

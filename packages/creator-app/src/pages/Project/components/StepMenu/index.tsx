@@ -3,6 +3,7 @@ import { SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
 import { Permission } from '@/config/permissions';
+import * as CanvasTemplates from '@/ducks/canvasTemplate';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { useFeature, usePermission, useSelector, useToggle } from '@/hooks';
 import { Identifier } from '@/styles/constants';
@@ -14,10 +15,11 @@ const StepMenu: React.FC<{ numCollapsedSteps?: number }> = ({ numCollapsedSteps 
   const blockTemplates = useFeature(Realtime.FeatureFlag.BLOCK_TEMPLATE);
   const platform = useSelector(ProjectV2.active.platformSelector);
   const projectType = useSelector(ProjectV2.active.projectTypeSelector);
+  const templates = useSelector(CanvasTemplates.allCanvasTemplatesSelector);
   const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
   const [isExpanded, toggleIsExpanded] = useToggle(true);
 
-  const steps = getAllSections(platform, projectType).filter((step) => {
+  const steps = getAllSections(platform, projectType, templates).filter((step) => {
     if (step.isLibrary && !blockTemplates.isEnabled) return false;
     return true;
   });

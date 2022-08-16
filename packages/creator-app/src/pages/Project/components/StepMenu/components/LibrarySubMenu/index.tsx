@@ -1,16 +1,16 @@
+import { BaseModels } from '@voiceflow/base-types';
 import { Animations, Portal, usePopper } from '@voiceflow/ui';
 import React from 'react';
 
 import { DragItem } from '@/constants';
 import { useDragPreview } from '@/hooks';
-import { StepDragItem } from '@/pages/Canvas/components/CanvasDiagram';
 
-import { LibraryItem } from '../../constants';
-import { SubMenuContainer } from '../SubMenu/styles';
+import { LibraryDragItem } from '../../constants';
+import * as S from '../SubMenu/styles';
 import LibrarySubMenuButton from './components/LibrarySubMenuButton';
 
 interface LibrarySubMenuProps {
-  steps: LibraryItem[];
+  steps: BaseModels.Version.CanvasTemplate[];
   onDrop: VoidFunction;
 }
 
@@ -22,20 +22,13 @@ const LibrarySubMenu: React.FC<LibrarySubMenuProps> = ({ steps, onDrop }) => {
     placement: 'right-start',
   });
 
-  const processedSteps = steps
-    .map((step) => {
-      return {
-        ...step,
-        label: step.label,
-      };
-    })
-    .sort((a, b) => {
-      if (a.label > b.label) return 1;
-      if (b.label > a.label) return -1;
-      return 0;
-    });
+  const processedSteps = steps.sort((a, b) => {
+    if (a.name > b.name) return 1;
+    if (b.name > a.name) return -1;
+    return 0;
+  });
 
-  useDragPreview<StepDragItem>(
+  useDragPreview<LibraryDragItem>(
     DragItem.TEMPLATES,
     (props) => (
       <div style={{ width: `${(menuRef.current?.clientWidth ?? 154) - 12}px` }}>
@@ -49,13 +42,13 @@ const LibrarySubMenu: React.FC<LibrarySubMenuProps> = ({ steps, onDrop }) => {
     <div ref={rootPopper.setReferenceElement}>
       <Portal portalNode={document.body}>
         <div ref={rootPopper.setPopperElement} style={rootPopper.styles.popper} {...rootPopper.attributes.popper}>
-          <SubMenuContainer ref={menuRef}>
+          <S.SubMenuContainer ref={menuRef}>
             {processedSteps.map((step, index) => (
-              <Animations.FadeDownDelayedContainer key={step.label} delay={0.04 + index * 0.03}>
+              <Animations.FadeDownDelayedContainer key={step.name} delay={0.04 + index * 0.03}>
                 <LibrarySubMenuButton {...step} onDrop={onDrop} />
               </Animations.FadeDownDelayedContainer>
             ))}
-          </SubMenuContainer>
+          </S.SubMenuContainer>
         </div>
       </Portal>
     </div>

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.94.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.93.3...@voiceflow/realtime@1.94.0) (2022-08-16)
+
+
+### Features
+
+* templates edit/delete context menu (CT-676) ([#5913](https://github.com/voiceflow/creator-app/issues/5913)) ([548ed02](https://github.com/voiceflow/creator-app/commit/548ed021e43a2acdb0619836ada306c6e02c5a66))
+
+
+
+
+
 ## [1.93.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.93.2...@voiceflow/realtime@1.93.3) (2022-08-16)
 
 **Note:** Version bump only for package @voiceflow/realtime

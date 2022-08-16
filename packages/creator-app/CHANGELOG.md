@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.867.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.866.2...@voiceflow/creator-app@1.867.0) (2022-08-16)
+
+
+### Features
+
+* templates edit/delete context menu (CT-676) ([#5913](https://github.com/voiceflow/creator-app/issues/5913)) ([548ed02](https://github.com/voiceflow/creator-app/commit/548ed021e43a2acdb0619836ada306c6e02c5a66))
+
+
+
+
+
 ## [1.866.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.866.1...@voiceflow/creator-app@1.866.2) (2022-08-16)
 
 

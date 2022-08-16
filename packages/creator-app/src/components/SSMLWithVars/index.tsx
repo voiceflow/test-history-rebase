@@ -60,7 +60,7 @@ const SSMLWithVars: React.FC<SSMLWithVarsProps> = ({ icon = 'alexa', voice, auto
     <SSML
       ref={ssmlRef}
       icon={icon}
-      voice={voice || defaultVoice || platformDefaultVoice}
+      voice={voice || platformDefaultVoice}
       space
       locales={locales}
       platform={platform}

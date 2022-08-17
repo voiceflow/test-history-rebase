@@ -64,6 +64,7 @@ export enum BlockType {
 
   MARKUP_TEXT = 'markup_text',
   MARKUP_IMAGE = 'markup_image',
+  MARKUP_VIDEO = 'markup_video',
 }
 
 export type DeprecatedBlockType = BlockType.COMMENT | BlockType.CHOICE_OLD;
@@ -76,8 +77,11 @@ export type InternalBlockType = BlockType.DEPRECATED | BlockType.COMMAND | RootB
 export const INTERNAL_NODES: ReadonlyArray<InternalBlockType> = [BlockType.DEPRECATED, BlockType.COMMAND, ...ROOT_NODES];
 export const isInternalBlockType = (type: BlockType): type is InternalBlockType => INTERNAL_NODES.includes(type as RootBlockType);
 
-export type MarkupBlockType = BlockType.MARKUP_TEXT | BlockType.MARKUP_IMAGE;
-export const MARKUP_NODES: ReadonlyArray<MarkupBlockType> = [BlockType.MARKUP_TEXT, BlockType.MARKUP_IMAGE];
+export type MarkupMediaBlockType = BlockType.MARKUP_IMAGE | BlockType.MARKUP_VIDEO;
+export const MARKUP_MEDIA_NODES: ReadonlyArray<MarkupMediaBlockType> = [BlockType.MARKUP_IMAGE, BlockType.MARKUP_VIDEO];
+
+export type MarkupBlockType = BlockType.MARKUP_TEXT | MarkupMediaBlockType;
+export const MARKUP_NODES: ReadonlyArray<MarkupBlockType> = [BlockType.MARKUP_TEXT, ...MARKUP_MEDIA_NODES];
 
 export type RootOrMarkupBlockType = RootBlockType | MarkupBlockType;
 export const ROOT_AND_MARKUP_NODES: ReadonlyArray<RootOrMarkupBlockType> = [...ROOT_NODES, ...MARKUP_NODES];

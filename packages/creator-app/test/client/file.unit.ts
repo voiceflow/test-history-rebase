@@ -18,7 +18,7 @@ suite('Client - File', ({ expectMembers }) => {
       const formData = new FormData();
       const axiosPost = vi.spyOn(axios, 'post').mockResolvedValue({ data: url });
 
-      const { data } = await client.uploadAudio('audio', formData as any);
+      const { data } = await client.uploadAudio(formData as any);
 
       expect(data).toEqual(url);
       expect(axiosPost).toBeCalledWith('/audio', formData);

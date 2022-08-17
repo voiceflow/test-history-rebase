@@ -30,6 +30,7 @@ import IntentManager from './Intent';
 import InvalidPlatformManager from './InvalidPlatform';
 import MarkupImageManager from './MarkupImage';
 import MarkupTextManager from './MarkupText';
+import MarkupVideoManager from './MarkupVideo';
 import PaymentManager from './Payment';
 import PermissionManager from './Permission';
 import PromptManager from './Prompt';
@@ -88,6 +89,7 @@ export const MANAGERS_BY_TYPE = {
   [BlockType.VISUAL]: VisualManager,
   [BlockType.MARKUP_TEXT]: MarkupTextManager,
   [BlockType.MARKUP_IMAGE]: MarkupImageManager,
+  [BlockType.MARKUP_VIDEO]: MarkupVideoManager,
   [BlockType.URL]: UrlManager,
   [BlockType.GO_TO_INTENT]: GoToIntentManager,
   [BlockType.GO_TO_NODE]: GoToNodeManager,

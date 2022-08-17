@@ -1,34 +1,47 @@
-export const imageSizeFromFile = async (file: File) =>
-  new Promise<{ width: number; height: number }>((resolve, reject) => {
+export interface MediaSize {
+  width: number;
+  height: number;
+}
+
+export const imageSizeFromUrl = async (url: string): Promise<MediaSize> =>
+  new Promise<MediaSize>((resolve, reject) => {
     const img = new Image();
 
+    img.onload = () => resolve({ width: img.naturalWidth, height: img.naturalHeight });
     img.onerror = reject;
-    img.onload = () => {
-      resolve({
-        width: img.naturalWidth,
-        height: img.naturalHeight,
-      });
-    };
-
-    img.src = window.URL.createObjectURL(file);
-  });
-
-export const imageSizeFromUrl = async (url: string) =>
-  new Promise<{ width: number; height: number }>((resolve, reject) => {
-    const img = new Image();
-
-    img.onerror = reject;
-
-    // eslint-disable-next-line sonarjs/no-identical-functions
-    img.onload = () => {
-      resolve({
-        width: img.naturalWidth,
-        height: img.naturalHeight,
-      });
-    };
 
     img.src = url;
   });
+
+export const imageSizeFromFile = async (file: File): Promise<MediaSize> => {
+  const url = window.URL.createObjectURL(file);
+
+  try {
+    return await imageSizeFromUrl(url);
+  } finally {
+    window.URL.revokeObjectURL(url);
+  }
+};
+
+export const videoSizeFromUrl = async (url: string): Promise<MediaSize> =>
+  new Promise<MediaSize>((resolve, reject) => {
+    const video = document.createElement('video');
+
+    video.onerror = reject;
+    video.onloadedmetadata = () => resolve({ width: video.videoWidth, height: video.videoHeight });
+
+    video.src = url;
+  });
+
+export const videoSizeFromFile = async (file: File): Promise<MediaSize> => {
+  const url = window.URL.createObjectURL(file);
+
+  try {
+    return await videoSizeFromUrl(url);
+  } finally {
+    window.URL.revokeObjectURL(url);
+  }
+};
 
 export const readFileAsText = (file: File) => {
   const reader = new FileReader();

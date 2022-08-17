@@ -7,7 +7,7 @@ import { Container, Loader, LoadingContainer } from './components';
 const ImageLoading: React.FC = () => {
   const markup = React.useContext(MarkupContext)!;
 
-  return !markup.uploadingImages ? null : (
+  return !markup.uploadingMedia ? null : (
     <Container>
       <LoadingContainer>
         <Loader borderLess />

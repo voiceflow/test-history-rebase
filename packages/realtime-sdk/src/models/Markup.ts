@@ -17,12 +17,16 @@ export namespace Markup {
       overrideWidth: number | null /* Used to implement horizontal + vertical resizing of Markup Text */;
     }
 
-    export interface Image {
+    export interface Media {
       url: string;
       width: number;
       height: number;
       rotate: number;
     }
+
+    export interface Image extends Media {}
+
+    export interface Video extends Media {}
   }
 
   export type AnyNodeData = NodeData.Text | NodeData.Image;

@@ -14,5 +14,9 @@ export const Container = styled.div`
     &--${BlockType.MARKUP_IMAGE} {
       z-index: 1;
     }
+
+    &--${BlockType.MARKUP_VIDEO} {
+      z-index: 1;
+    }
   }
 `;

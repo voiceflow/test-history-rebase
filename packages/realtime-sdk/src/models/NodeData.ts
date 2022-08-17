@@ -550,4 +550,5 @@ export interface NodeDataMap {
 
   [BlockType.MARKUP_TEXT]: Markup.NodeData.Text;
   [BlockType.MARKUP_IMAGE]: Markup.NodeData.Image;
+  [BlockType.MARKUP_VIDEO]: Markup.NodeData.Video;
 }

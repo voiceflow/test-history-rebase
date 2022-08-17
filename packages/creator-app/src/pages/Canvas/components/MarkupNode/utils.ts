@@ -1,11 +1,8 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 
-import { BlockType } from '@/constants';
-
 import { ResizableMarkupNodeData } from './types';
 
 export const isResizableShape = (data: Realtime.NodeData<unknown>): data is Realtime.NodeData<ResizableMarkupNodeData> =>
-  [BlockType.MARKUP_IMAGE].includes(data.type);
+  Realtime.Utils.typeGuards.isMarkupMediaNodeData(data);
 
-export const isText = (data: Realtime.NodeData<unknown>): data is Realtime.NodeData<Realtime.Markup.NodeData.Text> =>
-  data.type === BlockType.MARKUP_TEXT;
+export const isText = Realtime.Utils.typeGuards.isMarkupTextNodeData;

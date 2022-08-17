@@ -32,7 +32,7 @@ const CanvasHeader: React.FC = () => {
 
   const nluQuickView = useModals(ModalType.NLU_MODEL_QUICK_VIEW);
   const isMarkupTextActive = markup.creatingType === BlockType.MARKUP_TEXT;
-  const isMarkupImageActive = markup.creatingType === BlockType.MARKUP_IMAGE;
+  const isMarkupMediaActive = Realtime.Utils.typeGuards.isMarkupMediaBlockType(markup.creatingType);
 
   return (
     <>
@@ -42,7 +42,7 @@ const CanvasHeader: React.FC = () => {
             <HeaderIconButton
               ref={ref}
               icon="cursorV2"
-              active={!isMarkupTextActive && !isMarkupImageActive && !isCommentingMode}
+              active={!isMarkupTextActive && !isMarkupMediaActive && !isCommentingMode}
               isSmall
               onClick={onDisableModes}
               tooltip={{ title: 'Move', hotkey: HOTKEY_LABEL_MAP[Hotkey.MOVE_MODE] }}
@@ -73,10 +73,10 @@ const CanvasHeader: React.FC = () => {
                 <HeaderIconButton
                   ref={ref}
                   icon="addImage"
-                  active={isMarkupImageActive}
+                  active={isMarkupMediaActive}
                   isSmall
-                  onClick={markup.triggerImagesUpload}
-                  tooltip={{ title: 'Image', hotkey: HOTKEY_LABEL_MAP[Hotkey.ADD_MARKUP_IMAGE] }}
+                  onClick={markup.triggerMediaUpload}
+                  tooltip={{ title: 'Image or Video', hotkey: HOTKEY_LABEL_MAP[Hotkey.ADD_MARKUP_IMAGE] }}
                   className={`${ClassName.CANVAS_CONTROL}--markup-image`}
                   expandable
                   expandActive={isOpen}
@@ -88,10 +88,10 @@ const CanvasHeader: React.FC = () => {
           ) : (
             <HeaderIconButton
               icon="addImage"
-              active={isMarkupImageActive}
+              active={isMarkupMediaActive}
               isSmall
-              onClick={markup.triggerImagesUpload}
-              tooltip={{ title: 'Image', hotkey: HOTKEY_LABEL_MAP[Hotkey.ADD_MARKUP_IMAGE] }}
+              onClick={markup.triggerMediaUpload}
+              tooltip={{ title: 'Image or Video', hotkey: HOTKEY_LABEL_MAP[Hotkey.ADD_MARKUP_IMAGE] }}
               className={`${ClassName.CANVAS_CONTROL}--markup-image`}
             />
           ))}

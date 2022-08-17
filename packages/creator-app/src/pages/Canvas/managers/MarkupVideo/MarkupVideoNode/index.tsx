@@ -7,7 +7,7 @@ import { EngineContext, NodeEntityContext } from '@/pages/Canvas/contexts';
 
 import * as S from './styles';
 
-const MarkupImageNode: React.FC<ConnectedMarkupNodeProps<Realtime.Markup.NodeData.Image>> = React.forwardRef(({ data }, ref) => {
+const MarkupVideoNode: React.FC<ConnectedMarkupNodeProps<Realtime.Markup.NodeData.Video>> = React.forwardRef(({ data }, ref) => {
   const engine = React.useContext(EngineContext)!;
   const nodeEntity = React.useContext(NodeEntityContext)!;
 
@@ -26,7 +26,11 @@ const MarkupImageNode: React.FC<ConnectedMarkupNodeProps<Realtime.Markup.NodeDat
 
   React.useImperativeHandle(ref, () => blockAPI, [blockAPI]);
 
-  return <S.Container activated={isActivated} ref={blockAPI.ref} url={data.url} width={data.width} height={data.height} />;
+  return (
+    <S.Container activated={isActivated} ref={blockAPI.ref} width={data.width} height={data.height}>
+      <S.Video src={data.url} controls />
+    </S.Container>
+  );
 });
 
-export default MarkupImageNode;
+export default MarkupVideoNode;

@@ -130,6 +130,9 @@ export default {
     get markupImage() {
       return cy.get(`.${ClassName.CANVAS_NODE}--${BlockType.MARKUP_IMAGE}`);
     },
+    get markupVideo() {
+      return cy.get(`.${ClassName.CANVAS_NODE}--${BlockType.MARKUP_VIDEO}`);
+    },
     get markupImageUpload() {
       return cy.get('body input#vf-upload[type="file"]');
     },

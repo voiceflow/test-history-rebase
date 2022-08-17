@@ -73,7 +73,7 @@ const HotKeys: React.FC = () => {
     onToggleCommenting,
   ]);
   useHotKeys(Hotkey.ADD_MARKUP_TEXT, markup.toggleTextCreating, { preventDefault: true, disable: !showHintFeatures }, [markup.toggleTextCreating]);
-  useHotKeys(Hotkey.ADD_MARKUP_IMAGE, markup.triggerImagesUpload, { preventDefault: true, disable: !showHintFeatures }, [markup.triggerImagesUpload]);
+  useHotKeys(Hotkey.ADD_MARKUP_IMAGE, markup.triggerMediaUpload, { preventDefault: true, disable: !showHintFeatures }, [markup.triggerMediaUpload]);
   useHotKeys(Hotkey.CLOSE_CANVAS_MODE, onDisableModes, { preventDefault: true }, [onDisableModes]);
   useHotKeys(Hotkey.CLOSE_CANVAS_ONLY_MODE, toggleCanvasOnly, { disable: !isCanvasOnly, preventDefault: true });
 

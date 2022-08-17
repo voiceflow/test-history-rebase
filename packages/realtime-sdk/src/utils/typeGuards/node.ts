@@ -4,6 +4,7 @@ import {
   DIAGRAM_REFERENCE_NODES,
   INTERNAL_NODES,
   MARKUP_AND_COMBINED_NODES,
+  MARKUP_MEDIA_NODES,
   MARKUP_NODES,
   NAVIGATION_NODES,
   ROOT_AND_MARKUP_NODES,
@@ -34,6 +35,7 @@ export const isButtonsBlockType = createBlockTypeGuard(BlockType.BUTTONS);
 export const isInternalBlockType = createBlockTypeGuard(INTERNAL_NODES);
 export const isNavigationBlockType = createBlockTypeGuard(NAVIGATION_NODES);
 export const isCanvasChipBlockType = createBlockTypeGuard(CANVAS_CHIPS_NODES);
+export const isMarkupMediaBlockType = createBlockTypeGuard(MARKUP_MEDIA_NODES);
 export const isRootOrMarkupBlockType = createBlockTypeGuard(ROOT_AND_MARKUP_NODES);
 export const isMarkupOrCombinedBlockType = createBlockTypeGuard(MARKUP_AND_COMBINED_NODES);
 export const isDiagramReferencesBlockType = createBlockTypeGuard(DIAGRAM_REFERENCE_NODES);
@@ -42,6 +44,8 @@ export const isIntentDBNode = createDBNodeTypeGuard<BaseNode.Intent.Step>(BaseNo
 
 export const isIntentNodeData = createNodeDataTypeGuard<NodeData<NodeData.Intent>>(BlockType.INTENT);
 export const isMarkupTextNodeData = createNodeDataTypeGuard<NodeData<Markup.NodeData.Text>>(BlockType.MARKUP_TEXT);
+export const isMarkupMediaNodeData = createNodeDataTypeGuard<NodeData<Markup.NodeData.Media>>(MARKUP_MEDIA_NODES);
 export const isMarkupImageNodeData = createNodeDataTypeGuard<NodeData<Markup.NodeData.Image>>(BlockType.MARKUP_IMAGE);
+export const isMarkupVideoNodeData = createNodeDataTypeGuard<NodeData<Markup.NodeData.Video>>(BlockType.MARKUP_VIDEO);
 export const isCarouselNodeData = createNodeDataTypeGuard<NodeData<NodeData.Carousel>>(BlockType.CAROUSEL);
 export const isCardV2NodeData = createNodeDataTypeGuard<NodeData<NodeData.CardV2>>(BlockType.CARDV2);

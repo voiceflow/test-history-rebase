@@ -140,7 +140,7 @@ const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport, childr
     accept: DROP_TYPES,
     drop: async (item, monitor) => {
       if ('files' in item && item.files) {
-        markup.addImages(item.files);
+        markup.addMedia(item.files);
         return;
       }
 

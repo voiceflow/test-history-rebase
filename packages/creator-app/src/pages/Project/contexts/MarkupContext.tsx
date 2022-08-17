@@ -9,37 +9,48 @@ import { useDispatch, useEventualEngine, usePermission, useTrackingEvents } from
 import { useAnyModeOpen } from '@/pages/Project/hooks/modes';
 import { ClassName, Identifier } from '@/styles/constants';
 import { upload, windowRefocused } from '@/utils/dom';
-import { imageSizeFromUrl } from '@/utils/file';
+import { imageSizeFromUrl, videoSizeFromUrl } from '@/utils/file';
 
-const FILE_LIMIT = 2 ** 20 * 4; // 2 ** 20 === 1 mb
+const MB = 2 ** 20; // 2 ** 20 === 1 mb
+const IMAGE_FILE_LIMIT = 4 * MB;
+const VIDEO_FILE_LIMIT = 40 * MB;
 const ALLOWED_IMAGE_TYPES = ['.jpg', '.jpeg', '.png'];
+const ALLOWED_VIDEOS_TYPES = ['.mp4', '.mpeg4', '.webm'];
 
 export interface MarkupContextType {
-  imageLimit: number;
   creatingType: Nullable<MarkupBlockType>;
-  uploadingImages: boolean;
+  uploadingMedia: boolean;
   imageAcceptedTypes: string[];
 
-  addImages: (files: Nullable<FileList | File[]>) => Promise<void>;
+  addMedia: (files: Nullable<FileList | File[]>) => Promise<void>;
   finishCreating: () => void;
   startTextCreation: () => void;
   toggleTextCreating: () => void;
-  triggerImagesUpload: () => void;
+  triggerMediaUpload: () => void;
 }
 
 export const MarkupContext = React.createContext<Nullable<MarkupContextType>>(null);
 export const { Consumer: MarkupConsumer } = MarkupContext;
 
+const getFileExtension = (file: File) => `.${file.type.split('/')[1]}`;
+
 export const MarkupProvider: React.FC = ({ children }) => {
   const getEngine = useEventualEngine();
   const isAnyModeOpen = useAnyModeOpen();
   const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
+  const [uploadingMedia, setUploadingMedia] = React.useState(false);
   const [creatingType, localSetCreatingType] = React.useState<Nullable<MarkupBlockType>>(null);
-  const [uploadingImages, setUploadingImages] = React.useState(false);
 
-  const { onUpload: onUploadImage, isLoading: isImageUploading, loadingOn, loadingOff } = Upload.useUpload({ fileType: 'image', endpoint: '/image' });
+  const imageUploader = Upload.useUpload({ fileType: 'image', endpoint: '/image' });
+  const videoUploader = Upload.useUpload({ fileType: 'video', endpoint: '/video' });
 
-  const cache = useCache({ getEngine, isAnyModeOpen, canEditCanvas, isImageUploading, uploadingImages });
+  const cache = useCache({
+    getEngine,
+    isAnyModeOpen,
+    canEditCanvas,
+    uploadingMedia,
+    isMediaUploading: imageUploader.isLoading || videoUploader.isLoading,
+  });
 
   const transaction = useDispatch(History.transaction);
 
@@ -57,45 +68,81 @@ export const MarkupProvider: React.FC = ({ children }) => {
 
   const finishCreating = React.useCallback(() => setCreatingType(null), []);
 
-  const addImages = React.useCallback(async (files: Nullable<FileList | File[]>) => {
+  const addMedia = React.useCallback(async (files: Nullable<FileList | File[]>) => {
     if (!cache.current.canEditCanvas || !files || !files[0]) {
       return;
     }
 
     trackEvents.trackMarkupImage();
 
-    const allowedFiles = Array.from(files).filter((file) => ALLOWED_IMAGE_TYPES.includes(`.${file.type.split('/')[1]}`) && file.size <= FILE_LIMIT);
+    const allowedFiles = Array.from(files).filter((file) => {
+      const extension = getFileExtension(file);
+
+      return (
+        (ALLOWED_IMAGE_TYPES.includes(extension) && file.size <= IMAGE_FILE_LIMIT) ||
+        (ALLOWED_VIDEOS_TYPES.includes(extension) && file.size <= VIDEO_FILE_LIMIT)
+      );
+    });
 
     if (!allowedFiles.length) {
-      toast.error('The file must be less then 4MB');
+      toast.error(
+        <>
+          The <b>image</b> files must be less then {Math.floor(IMAGE_FILE_LIMIT / MB)}MB and have
+          {ALLOWED_IMAGE_TYPES.map((e) => `"${e}"`).join(', ')} extension.
+          <br />
+          The <b>video</b> file must be less then ${Math.floor(VIDEO_FILE_LIMIT / MB)}MB and have
+          {ALLOWED_VIDEOS_TYPES.map((e) => `"${e}"`).join(', ')} extension.
+        </>
+      );
       return;
     }
 
     setCreatingType(BlockType.MARKUP_IMAGE);
-    setUploadingImages(true);
+    setUploadingMedia(true);
 
     const engine = cache.current.getEngine()!;
+
+    const uploadVideo = async (file: File) => {
+      videoUploader.loadingOn();
+
+      const url = await videoUploader.onUpload('/video', file);
+      const size = await videoSizeFromUrl(url);
+
+      videoUploader.loadingOff();
+
+      return { url, size };
+    };
+
+    const uploadImage = async (file: File) => {
+      imageUploader.loadingOn();
+
+      const url = await imageUploader.onUpload('/image', file);
+      const size = await imageSizeFromUrl(url);
+
+      imageUploader.loadingOff();
+
+      return { url, size };
+    };
 
     await transaction(() =>
       Utils.array.asyncForEach(allowedFiles, async (file) => {
         if (!engine.canvas) return;
 
+        const isImage = ALLOWED_IMAGE_TYPES.includes(getFileExtension(file));
+
         try {
-          loadingOn();
-          const imageURL = await onUploadImage('/image', file);
-          const imageSize = await imageSizeFromUrl(imageURL);
-          loadingOff();
+          const { url, size } = isImage ? await uploadImage(file) : await uploadVideo(file);
 
           const rect = engine.canvas.getRect();
           const zoom = engine.canvas.getZoom();
           const [x, y] = engine.canvas.getPosition();
-          const offsetX = 0 - x / zoom + (rect.width / zoom - imageSize.width) / 2;
-          const offsetY = 0 - y / zoom + (rect.height / zoom - imageSize.height) / 2;
+          const offsetX = 0 - x / zoom + (rect.width / zoom - size.width) / 2;
+          const offsetY = 0 - y / zoom + (rect.height / zoom - size.height) / 2;
 
-          await engine.node.add(BlockType.MARKUP_IMAGE, engine.canvas.toCoords([offsetX, offsetY]), {
-            url: imageURL,
-            width: imageSize.width,
-            height: imageSize.height,
+          await engine.node.add(isImage ? BlockType.MARKUP_IMAGE : BlockType.MARKUP_VIDEO, engine.canvas.toCoords([offsetX, offsetY]), {
+            url,
+            width: size.width,
+            height: size.height,
             rotate: 0,
           });
         } catch {
@@ -105,7 +152,7 @@ export const MarkupProvider: React.FC = ({ children }) => {
     );
 
     setCreatingType(null);
-    setUploadingImages(false);
+    setUploadingMedia(false);
   }, []);
 
   const startTextCreation = React.useCallback(() => {
@@ -128,8 +175,8 @@ export const MarkupProvider: React.FC = ({ children }) => {
     }
   }, [creatingType, finishCreating, startTextCreation]);
 
-  const triggerImagesUpload = React.useCallback(async () => {
-    if (!cache.current.canEditCanvas || cache.current.isImageUploading) {
+  const triggerMediaUpload = React.useCallback(async () => {
+    if (!cache.current.canEditCanvas || cache.current.isMediaUploading) {
       return;
     }
 
@@ -139,12 +186,12 @@ export const MarkupProvider: React.FC = ({ children }) => {
 
     setCreatingType(BlockType.MARKUP_IMAGE);
 
-    upload(addImages, { multiple: true, accept: ALLOWED_IMAGE_TYPES.join(',') });
+    upload(addMedia, { multiple: true, accept: [...ALLOWED_IMAGE_TYPES, ...ALLOWED_VIDEOS_TYPES].join(',') });
 
     await windowRefocused();
     await Utils.promise.delay(300);
 
-    if (!cache.current.uploadingImages) {
+    if (!cache.current.uploadingMedia) {
       setCreatingType(null);
     }
   }, []);
@@ -193,15 +240,14 @@ export const MarkupProvider: React.FC = ({ children }) => {
   getEngine()?.markup.setFinishCreating(finishCreating);
 
   const api = useContextApi({
-    addImages,
-    imageLimit: FILE_LIMIT,
+    addMedia,
     creatingType,
     finishCreating,
-    uploadingImages,
+    uploadingMedia,
     startTextCreation,
     imageAcceptedTypes: ALLOWED_IMAGE_TYPES,
     toggleTextCreating,
-    triggerImagesUpload,
+    triggerMediaUpload,
   });
 
   return <MarkupContext.Provider value={api}>{children}</MarkupContext.Provider>;

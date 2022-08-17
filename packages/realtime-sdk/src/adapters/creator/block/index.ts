@@ -17,6 +17,7 @@ import { googleBlockAdapter, googleOutPortAdapter, googleOutPortAdapterV2 } from
 import invalidPlatformAdapter from './invalidPlatform';
 import markupImageAdapter from './markupImage';
 import markupTextAdapter from './markupText';
+import markupVideoAdapter from './markupVideo';
 import { migrationBlockAdapter } from './migration';
 import startDataAdapter from './start';
 import { BlockAdapterOptions, FromDBBlockAdapterOptions, OutPortsAdapter, OutPortsAdapterV2 } from './utils';
@@ -79,6 +80,7 @@ const commonBlockAdapter = {
   // markup
   [BlockType.MARKUP_TEXT]: markupTextAdapter,
   [BlockType.MARKUP_IMAGE]: markupImageAdapter,
+  [BlockType.MARKUP_VIDEO]: markupVideoAdapter,
 };
 
 const getPlatformOutPortsAdapter = createPlatformSelector<

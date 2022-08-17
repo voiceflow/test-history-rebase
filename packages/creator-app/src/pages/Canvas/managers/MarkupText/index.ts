@@ -8,7 +8,7 @@ import MarkupTextEditor from './MarkupTextEditor';
 import MarkupTextNode from './MarkupTextNode';
 
 const MarkupText: MarkupNodeManagerConfig<Realtime.Markup.NodeData.Text> = {
-  type: BlockType.MARKUP_IMAGE,
+  type: BlockType.MARKUP_TEXT,
 
   editor: MarkupTextEditor,
   markupNode: MarkupTextNode,

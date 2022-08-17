@@ -40,6 +40,10 @@ const Wrapper = styled.div`
     cursor: default;
   }
 
+  &.${CANVAS_MARKUP_CREATING_CLASSNAME}[data-markup-creating-type="${BlockType.MARKUP_VIDEO}"] {
+    cursor: default;
+  }
+
   &.${CANVAS_HIDDEN_CLASSNAME} {
     display: none;
   }

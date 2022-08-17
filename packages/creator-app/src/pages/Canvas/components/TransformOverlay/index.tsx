@@ -1,3 +1,4 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { BlockType } from '@/constants';
@@ -20,7 +21,7 @@ const TransformOverlay = () => (
         );
       }
 
-      if (nodeType === BlockType.MARKUP_IMAGE) {
+      if (Realtime.Utils.typeGuards.isMarkupMediaBlockType(nodeType)) {
         return (
           <>
             {SCALE_HANDLES.map((handle) => (

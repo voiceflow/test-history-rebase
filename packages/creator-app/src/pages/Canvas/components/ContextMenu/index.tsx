@@ -74,7 +74,7 @@ const OPTION_HANDLERS: Record<CanvasAction, OptionHandler> = {
 
   [CanvasAction.ADD_TEXT]: (_, { markup }) => markup.startTextCreation(),
 
-  [CanvasAction.ADD_IMAGE]: (_, { markup }) => markup.triggerImagesUpload(),
+  [CanvasAction.ADD_IMAGE]: (_, { markup }) => markup.triggerMediaUpload(),
 
   [CanvasAction.ADD_COMMENT]: (_, { engine, upgradeModal, canUseCommenting }) => {
     if (!canUseCommenting) {

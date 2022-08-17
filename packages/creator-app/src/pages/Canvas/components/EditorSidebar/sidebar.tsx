@@ -22,7 +22,7 @@ import EditorModal from '../EditorModal';
 import { SidebarHeaderAction, SidebarProvider } from './contexts';
 import { useEditorPath, useUpdateData } from './hooks';
 
-const UNEDITABLE_BLOCKS = new Set([BlockType.MARKUP_IMAGE]);
+const UNEDITABLE_BLOCKS = new Set<Realtime.BlockType>([...Realtime.MARKUP_MEDIA_NODES]);
 const EMPTY_HEADER_ACTIONS: SidebarHeaderAction[] = [];
 
 const FOCUSED_NODE_SIDEBAR_OFFSET = 20;

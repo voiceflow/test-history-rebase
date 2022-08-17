@@ -41,5 +41,3 @@ export const Container = styled.div.attrs<ContainerProps>(({ width, height }) =>
       border: solid 1px #5d9df5;
     `}
 `;
-
-export default Container;

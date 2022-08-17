@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.94.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.94.1...@voiceflow/realtime@1.94.2) (2022-08-17)
+
+
+### Bug Fixes
+
+* increase reconnect timeout (CT-000) ([#5914](https://github.com/voiceflow/creator-app/issues/5914)) ([0e3d6ff](https://github.com/voiceflow/creator-app/commit/0e3d6ff2726cbec823305da3a603595492790ccd))
+
+
+
+
+
 ## [1.94.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.94.0...@voiceflow/realtime@1.94.1) (2022-08-17)
 
 **Note:** Version bump only for package @voiceflow/realtime

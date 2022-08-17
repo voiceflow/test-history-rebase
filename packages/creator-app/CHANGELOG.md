@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.868.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.868.2...@voiceflow/creator-app@1.868.3) (2022-08-17)
+
+
+### Bug Fixes
+
+* [bugfix] removed utterance special characters validation (NLU-000) ([#5917](https://github.com/voiceflow/creator-app/issues/5917)) ([ce4c0af](https://github.com/voiceflow/creator-app/commit/ce4c0af28df96915e388244b86ad191f7e265f6f))
+
+
+
+
+
 ## [1.868.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.868.1...@voiceflow/creator-app@1.868.2) (2022-08-17)
 
 **Note:** Version bump only for package @voiceflow/creator-app

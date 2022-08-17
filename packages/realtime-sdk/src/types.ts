@@ -65,6 +65,11 @@ export enum SchemaVersion {
    * forces step data out of the ports for trace (custom action) step and into "paths" property
    */
   V3_3 = 3.3,
+
+  /**
+   * adds missing components to versions component list so all components are visible in the menu
+   */
+  V3_4 = 3.4,
 }
 
 export const SUPPORTED_SCHEMA_VERSIONS = Object.values(SchemaVersion)

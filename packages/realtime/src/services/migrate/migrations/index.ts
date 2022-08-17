@@ -28,7 +28,6 @@ const migrationsMap: Record<Realtime.SchemaVersion, Transform> = {
   [Realtime.SchemaVersion.V3_0]: migrateToV3_0,
   [Realtime.SchemaVersion.V3_1]: migrateToV3_1,
   [Realtime.SchemaVersion.V3_2]: migrateToV3_2,
-  [Realtime.SchemaVersion.V3_2]: migrateToV3_2,
   [Realtime.SchemaVersion.V3_3]: migrateToV3_3,
 };
 

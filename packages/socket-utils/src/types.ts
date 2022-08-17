@@ -41,4 +41,4 @@ export type ChannelContext<P extends object, D extends object = {}> = BaseChanne
 
 export type ChannelAccessor<P extends object, D extends object = {}> = (ctx: ChannelContext<P, D>) => Eventual<boolean>;
 
-export type ChannelSubscribeAction<E extends object> = LoguxSubscribeAction & E;
+export type ChannelSubscribeAction<E extends object = {}> = LoguxSubscribeAction & E;

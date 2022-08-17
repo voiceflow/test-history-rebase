@@ -8,18 +8,19 @@ import { fileURLToPath } from 'url';
 
 import config from './config';
 import IOServer from './ioServer';
-import logger from './logger';
+import logger, { createLogger } from './logger';
 import ServiceManager from './serviceManager';
 
 const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
 (async () => {
+  const serverLogger = createLogger();
   const server = new SocketServer({
     env: config.NODE_ENV,
     port: config.PORT,
     cwd: rootDir,
     // errors handled by server.on('error', ...) below
-    logger: Object.assign(logger, { error: logger.debug }),
+    logger: Object.assign(serverLogger, { error: serverLogger.debug }),
   });
 
   const ioServer = new IOServer({

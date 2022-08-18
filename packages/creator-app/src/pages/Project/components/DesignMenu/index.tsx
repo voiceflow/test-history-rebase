@@ -1,7 +1,8 @@
 import { Resizable, useLocalStorageState } from '@voiceflow/ui';
 import React from 'react';
 
-import { useDidUpdateEffect, useEnableDisable, useTheme } from '@/hooks';
+import * as UI from '@/ducks/ui';
+import { useDidUpdateEffect, useEnableDisable, useSelector, useTheme } from '@/hooks';
 import StepMenu from '@/pages/Project/components/StepMenu';
 
 import Layers from './Layers';
@@ -18,6 +19,8 @@ const DesignMenu: React.FC<DesignMenuProps> = ({ canvasOnly }) => {
   const [menuWidth, setWidth] = useLocalStorageState<number>(`design-menu-sizes`, theme.components.designMenu.width);
   const [isCollapsed, setIsCollapsed] = useLocalStorageState<boolean>(`design-menu-is-collapsed`, false);
 
+  const isPreviewing = useSelector(UI.isPreviewingVersion);
+
   useDidUpdateEffect(() => {
     if (canvasOnly) {
       closeMenu(); // canvas only mode should unlock the step menu
@@ -27,7 +30,7 @@ const DesignMenu: React.FC<DesignMenuProps> = ({ canvasOnly }) => {
   }, [canvasOnly]);
 
   return (
-    <S.FullHeightContainer menuWidth={menuWidth} isOpen={isOpen && !isCollapsed} canvasOnly={canvasOnly}>
+    <S.FullHeightContainer menuWidth={menuWidth} isOpen={isOpen && !isCollapsed} canvasOnly={canvasOnly || isPreviewing}>
       <StepMenu />
       <Resizable
         disabled={isCollapsed}

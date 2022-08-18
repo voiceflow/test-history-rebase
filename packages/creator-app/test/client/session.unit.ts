@@ -32,7 +32,7 @@ suite('Client - Session', ({ expectMembers, stubFetch }) => {
           const result = await client.create(sessionType, user);
 
           expect(result).toEqual(authResponse);
-          expect(fetch).toBeCalledWith(SESSION_ENDPOINTS[sessionType], { user, device: DEVICE_INFO });
+          expect(fetch).toBeCalledWith(SESSION_ENDPOINTS[sessionType], { user, device: DEVICE_INFO, queryParams: {} });
         })
       );
     });

@@ -1,4 +1,4 @@
-import { Vendors } from '@voiceflow/ui';
+import { parseQuery, Vendors } from '@voiceflow/ui';
 import { batch } from 'react-redux';
 import { matchPath } from 'react-router-dom';
 
@@ -131,7 +131,9 @@ const setSession =
 export const ssoLogin =
   (payload: SSOLoginPayload): Thunk =>
   async (dispatch) => {
-    const { user, token, intercomUserHMAC = null } = await client.sso.login(payload);
+    const parsedQuery = parseQuery(window.location.search);
+
+    const { user, token, intercomUserHMAC = null } = await client.sso.login(payload, parsedQuery);
 
     await dispatch(setSession({ user, token, intercomUserHMAC }));
   };
@@ -140,7 +142,8 @@ const createSession =
   (sessionType: SessionType) =>
   (authRequest: unknown): Thunk<Models.Account> =>
   async (dispatch) => {
-    const { user, token, intercomUserHMAC = null } = await client.session.create(sessionType, authRequest);
+    const parsedQuery = parseQuery(window.location.search);
+    const { user, token, intercomUserHMAC = null } = await client.session.create(sessionType, authRequest, parsedQuery);
 
     await dispatch(setSession({ user, token, intercomUserHMAC }));
 

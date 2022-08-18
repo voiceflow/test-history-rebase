@@ -23,7 +23,8 @@ export interface SessionResponsePayload {
 const sessionClient = {
   delete: () => api.delete(SESSION_PATH),
 
-  create: (type: SessionType, user: unknown) => api.put<SessionResponsePayload>(SESSION_ENDPOINTS[type], { user, device: DEVICE_INFO }),
+  create: (type: SessionType, user: unknown, queryParams = {}) =>
+    api.put<SessionResponsePayload>(SESSION_ENDPOINTS[type], { user, device: DEVICE_INFO, queryParams }),
 };
 
 export default sessionClient;

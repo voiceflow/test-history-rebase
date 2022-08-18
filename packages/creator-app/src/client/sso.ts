@@ -24,7 +24,8 @@ export interface SSOConvertPayload {
 }
 
 const ssoClient = {
-  login: (data: SSOLoginPayload) => apiV2.post<{ token: string; user: Account; intercomUserHMAC?: string }>(`${SSO_PATH}/login`, data),
+  login: (data: SSOLoginPayload, queryParams?: {}) =>
+    apiV2.post<{ token: string; user: Account; intercomUserHMAC?: string }>(`${SSO_PATH}/login`, { ...data, queryParams }),
 
   convert: (session: SessionType, data: SSOConvertPayload) => {
     if (session === SessionType.SIGN_UP) {

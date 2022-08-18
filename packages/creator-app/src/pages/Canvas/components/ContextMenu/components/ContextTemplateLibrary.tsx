@@ -33,7 +33,7 @@ export const ContextTemplateLibrary: React.FC<ContextTemplateLibraryProps> = ({ 
   return (
     <TemplateLibraryPopper
       ref={popperRef}
-      onChange={onChange}
+      onColorChange={onChange}
       modifiers={[{ name: 'offset', options: { offset: [26, 0] } }]}
       placement="right"
       selectedColor={color}

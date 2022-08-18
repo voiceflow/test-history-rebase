@@ -32,7 +32,7 @@ const TopLevelButton: React.FC<TopLevelButtonItem> = ({ step, animationIndex }) 
       {step.steps &&
         isHovered &&
         (step.isLibrary ? (
-          <LibrarySubMenu steps={step.steps} onDrop={() => setHovering(false)} />
+          <LibrarySubMenu templates={step.steps} onDrop={() => setHovering(false)} />
         ) : (
           <SubMenu steps={step.steps} onDrop={() => setHovering(false)} />
         ))}

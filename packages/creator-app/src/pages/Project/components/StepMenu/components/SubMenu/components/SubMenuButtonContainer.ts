@@ -15,8 +15,7 @@ interface SubMenuButtonContainerProps {
 export const SubMenuButtonContainer = styled(Box.FlexStart)<SubMenuButtonContainerProps>`
   ${transition('box-shadow', 'background-color', 'transform', 'background-image')}
 
-  min-width: 142px;
-  max-width: 230px;
+  width: 230px;
   height: 38px;
   padding: 9px 16px 8px;
   border-radius: 6px;

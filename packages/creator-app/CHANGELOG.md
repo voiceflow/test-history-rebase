@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.870.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.869.1...@voiceflow/creator-app@1.870.0) (2022-08-18)
+
+
+### Features
+
+* parse and pass query params to login/signup endpoints (CT-811) ([#5924](https://github.com/voiceflow/creator-app/issues/5924)) ([dffe31a](https://github.com/voiceflow/creator-app/commit/dffe31a41ecaa6211633aab83eda98c35b8c78c1))
+
+
+
+
+
 ## [1.869.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.869.0...@voiceflow/creator-app@1.869.1) (2022-08-18)
 
 

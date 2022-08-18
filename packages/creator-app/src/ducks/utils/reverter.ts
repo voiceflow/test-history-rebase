@@ -1,3 +1,4 @@
+import { Nullable } from '@voiceflow/common';
 import { Action, ActionCreator } from 'typescript-fsa';
 
 import type { GetState } from '@/store/types';
@@ -8,7 +9,7 @@ export const BATCH_KEY = Symbol('batch');
 
 export interface ActionReverter<Payload> {
   actionCreator: ActionCreator<Payload>;
-  revert: (payload: Payload, getState: GetState) => Action<any> | Action<any>[];
+  revert: (payload: Payload, getState: GetState) => Nullable<Action<any>> | Nullable<Action<any>>[];
   invalidators: ActionInvalidator<Payload, any>[];
 }
 
@@ -24,7 +25,7 @@ export const createInvalidator = <Origin, Payload>(
 
 export const createReverter = <Payload>(
   actionCreator: ActionCreator<Payload>,
-  revert: (payload: Payload, getState: GetState) => Action<any> | Action<any>[],
+  revert: (payload: Payload, getState: GetState) => Nullable<Action<any>> | Nullable<Action<any>[]>,
   invalidators: ActionInvalidator<Payload, any>[] = []
 ): ActionReverter<Payload> => ({
   actionCreator,

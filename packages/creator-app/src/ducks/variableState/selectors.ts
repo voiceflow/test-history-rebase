@@ -1,5 +1,4 @@
-// eslint-disable-next-line lodash/import-scope
-import _ from 'lodash';
+import _isEqual from 'lodash/isEqual';
 import _sortBy from 'lodash/sortBy';
 import { createSelector } from 'reselect';
 
@@ -110,6 +109,6 @@ export const IsVariableStateUnsyncSelector = createSelector(
 
     if (!selectedVariableState.variables || !savedState?.variables) return false;
 
-    return !_.isEqual(savedState.variables, selectedVariableState.variables);
+    return !_isEqual(savedState.variables, selectedVariableState.variables);
   }
 );

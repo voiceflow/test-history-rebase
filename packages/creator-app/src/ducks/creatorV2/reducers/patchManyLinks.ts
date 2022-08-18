@@ -1,4 +1,6 @@
+import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import _isEqual from 'lodash/isEqual';
 import * as Normal from 'normal-store';
 
 import { createReverter } from '@/ducks/utils';
@@ -25,13 +27,24 @@ export const patchManyLinksReverter = createReverter(
   Realtime.link.patchMany,
 
   ({ workspaceID, projectID, versionID, diagramID, patches }, getState) => {
-    const links = linksByIDsSelector(getState(), { ids: patches.map((patch) => patch.linkID) });
-    const prevPatches: Realtime.link.LinkPatch[] = links.map((link) => ({
-      nodeID: link.source.nodeID,
-      portID: link.source.portID,
-      linkID: link.id,
-      data: link.data ?? {},
-    }));
+    const patchesByID = Utils.array.createMap(patches, (patch) => patch.linkID);
+
+    const links = linksByIDsSelector(getState(), { ids: Object.keys(patchesByID) });
+    const prevPatches: Realtime.link.LinkPatch[] = links
+      .map((link) => ({
+        nodeID: link.source.nodeID,
+        portID: link.source.portID,
+        linkID: link.id,
+        data: link.data ?? {},
+      }))
+      .filter((prevPatch) => {
+        const { nodeID, portID, linkID, data } = patchesByID[prevPatch.linkID];
+        const nextPatch = { nodeID, portID, linkID, data: data ?? {} };
+
+        return !_isEqual(prevPatch, nextPatch);
+      });
+
+    if (!prevPatches.length) return null;
 
     return Realtime.link.patchMany({ workspaceID, projectID, versionID, diagramID, patches: prevPatches });
   },

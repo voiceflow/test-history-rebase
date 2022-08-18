@@ -2,6 +2,7 @@ import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { createReverter } from '@/ducks/utils';
+import { isPointEqual } from '@/utils/geometry';
 
 import { nodeCoordsByIDSelector } from '../selectors';
 import { createActiveDiagramReducer, createDiagramInvalidator, createNodeRemovalInvalidators, DIAGRAM_INVALIDATORS } from './utils';
@@ -20,9 +21,13 @@ export const moveManyNodesReverter = createReverter(
   Realtime.node.moveMany,
   ({ workspaceID, projectID, versionID, diagramID, blocks }, getState) => {
     const state = getState();
-    const prevCoords = Object.fromEntries(Object.keys(blocks).map((nodeID) => [nodeID, nodeCoordsByIDSelector(state, { id: nodeID })!]));
+    const prevCoords = Object.keys(blocks)
+      .map((nodeID) => [nodeID, nodeCoordsByIDSelector(state, { id: nodeID })!] as const)
+      .filter(([nodeID, coords]) => !isPointEqual(coords, blocks[nodeID]));
 
-    return Realtime.node.moveMany({ workspaceID, projectID, versionID, diagramID, blocks: prevCoords });
+    if (prevCoords.length === 0) return null;
+
+    return Realtime.node.moveMany({ workspaceID, projectID, versionID, diagramID, blocks: Object.fromEntries(prevCoords) });
   },
 
   [

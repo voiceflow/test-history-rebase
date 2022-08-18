@@ -407,8 +407,10 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
   /**
    * clear activation state of all nodes
    */
-  clearActivation({ skipUrlSync }: { skipUrlSync?: boolean } = {}): void {
-    this.saveActiveLocations();
+  clearActivation({ skipUrlSync, skipSaveLocations }: { skipUrlSync?: boolean; skipSaveLocations?: boolean } = {}): void {
+    if (!skipSaveLocations) {
+      this.saveActiveLocations();
+    }
 
     const hasFocusTarget = this.focus.hasTarget;
 
@@ -446,7 +448,7 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
       if (focusedNodeID) {
         this.setActive(focusedNodeID);
       } else {
-        this.clearActivation();
+        this.clearActivation({ skipSaveLocations: true });
       }
 
       await this.node.removeMany([actionRouteMatch.params.actionNodeID]);
@@ -459,7 +461,7 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
       if (siblingID && focusNextChild) {
         this.setActive(siblingID);
       } else {
-        this.clearActivation();
+        this.clearActivation({ skipSaveLocations: true });
       }
 
       await this.node.removeMany(activeTargets);

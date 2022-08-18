@@ -35,6 +35,8 @@ export const removeManyNodesReverter = createReverter(
     const schemaVersion = Version.active.schemaVersionSelector(state);
     const links = nodeIDs.flatMap((nodeID) => linksByNodeIDSelector(state, { id: nodeID }));
 
+    if (!nodesWithData.length) return null;
+
     return Realtime.creator.importSnapshot({
       workspaceID,
       projectID,

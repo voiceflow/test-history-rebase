@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.869.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.868.4...@voiceflow/creator-app@1.869.0) (2022-08-18)
+
+
+### Features
+
+* templates edit popover (CT-677) ([#5920](https://github.com/voiceflow/creator-app/issues/5920)) ([11f0f0d](https://github.com/voiceflow/creator-app/commit/11f0f0dcc7b9c5009ed7d647932de8c259e29290))
+
+
+
+
+
 ## [1.868.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.868.3...@voiceflow/creator-app@1.868.4) (2022-08-18)
 
 

@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.869.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.869.0...@voiceflow/creator-app@1.869.1) (2022-08-18)
+
+
+### Bug Fixes
+
+* remove redundant headers (CT-785) ([#5922](https://github.com/voiceflow/creator-app/issues/5922)) ([f4ea214](https://github.com/voiceflow/creator-app/commit/f4ea214248ebee1bef943af33c391bbbc63241d5))
+* ugly design menu offset (CT-762) ([#5925](https://github.com/voiceflow/creator-app/issues/5925)) ([96cce59](https://github.com/voiceflow/creator-app/commit/96cce59c98ce01b4f4efbb07190003e7cd989d20))
+
+
+
+
+
 # [1.869.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.868.4...@voiceflow/creator-app@1.869.0) (2022-08-18)
 
 

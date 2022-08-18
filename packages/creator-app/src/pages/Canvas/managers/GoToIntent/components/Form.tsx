@@ -14,7 +14,7 @@ interface FormProps {
 
 const Form: React.FC<FormProps> = ({ editor, header, footer }) => (
   <EditorV2 header={header ?? <EditorV2.DefaultHeader />} footer={footer ?? <EditorV2.DefaultFooter />}>
-    <SectionV2.SimpleContentSection header={<SectionV2.Title bold>Go to Intent</SectionV2.Title>} contentProps={{ bottomOffset: 2.5 }}>
+    <SectionV2.SimpleSection contentProps={{ bottomOffset: 2.5 }}>
       <GoToIntentSelect
         onChange={(data) => editor.onChange({ intent: data?.intentID ?? null, diagramID: data?.diagramID ?? null })}
         intentID={editor.data.intent}
@@ -22,7 +22,7 @@ const Form: React.FC<FormProps> = ({ editor, header, footer }) => (
         placeholder="Select an intent"
         clearOnSelectActive
       />
-    </SectionV2.SimpleContentSection>
+    </SectionV2.SimpleSection>
   </EditorV2>
 );
 

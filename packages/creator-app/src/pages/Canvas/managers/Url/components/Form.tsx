@@ -24,7 +24,7 @@ const Form: React.FC<FormProps> = ({ editor, header, footer }) => {
 
   return (
     <EditorV2 header={header ?? <EditorV2.DefaultHeader />} footer={footer ?? <EditorV2.DefaultFooter />}>
-      <SectionV2.SimpleContentSection header={<SectionV2.Title bold>URL</SectionV2.Title>} contentProps={{ bottomOffset: 2.5 }}>
+      <SectionV2.SimpleSection contentProps={{ bottomOffset: 2.5 }}>
         <VariablesInput
           value={editor.data.url}
           onBlur={onChange}
@@ -34,7 +34,7 @@ const Form: React.FC<FormProps> = ({ editor, header, footer }) => {
           placeholder="Enter URL"
           onEnterPress={onChange}
         />
-      </SectionV2.SimpleContentSection>
+      </SectionV2.SimpleSection>
     </EditorV2>
   );
 };

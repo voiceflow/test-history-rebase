@@ -17,14 +17,14 @@ const Form: React.FC<FormProps> = ({ editor, header, footer }) => {
 
   return (
     <EditorV2 header={header ?? <EditorV2.DefaultHeader />} footer={footer ?? <EditorV2.DefaultFooter />}>
-      <SectionV2.SimpleContentSection header={<SectionV2.Title bold>Go to Block</SectionV2.Title>} contentProps={{ bottomOffset: 2.5 }}>
+      <SectionV2.SimpleSection contentProps={{ bottomOffset: 2.5 }}>
         <BlockSelect
           value={goToNodeID && diagramID ? { stepID: goToNodeID, diagramID } : null}
           onChange={(data) => editor.onChange({ goToNodeID: data?.stepID ?? null, diagramID: data?.diagramID ?? null })}
           clearable
           clearOnSelectActive
         />
-      </SectionV2.SimpleContentSection>
+      </SectionV2.SimpleSection>
     </EditorV2>
   );
 };

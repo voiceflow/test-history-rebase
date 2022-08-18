@@ -15,6 +15,14 @@ import { ConnectedProps } from '@/types';
 
 import { LINK_TYPE_OPTIONS, NAVIGATION_DESCRIPTIONS, NAVIGATION_OPTIONS, ZOOM_OPTIONS } from './constants';
 
+const headerStyling = {
+  paddingBottom: '11px',
+};
+
+const sectionStyling = {
+  paddingBottom: '24px',
+};
+
 const Canvas: React.FC<ConnectedBasicProps> = ({
   activeProjectID,
   activeLinkType,
@@ -34,33 +42,34 @@ const Canvas: React.FC<ConnectedBasicProps> = ({
   return (
     <>
       <Section
-        header="Navigation Mode"
+        header="Navigation"
         variant={SectionVariant.QUATERNARY}
         contentSuffix={() => (
           <DescriptorContainer>
             {NAVIGATION_DESCRIPTIONS[canvasNavigation]} <Link href={Documentation.CANVAS_CONTROLS}>See more.</Link>
           </DescriptorContainer>
         )}
-        customContentStyling={{ paddingBottom: '24px' }}
+        customHeaderStyling={headerStyling}
+        customContentStyling={sectionStyling}
       >
         <RadioGroup options={NAVIGATION_OPTIONS} checked={canvasNavigation} onChange={setCanvasNavigation} />
       </Section>
 
-      <Section isDividerNested header="Zoom Type" variant={SectionVariant.QUATERNARY} customContentStyling={{ paddingBottom: '24px' }}>
+      <Section header="Zoom Preference" variant={SectionVariant.QUATERNARY} customHeaderStyling={headerStyling} customContentStyling={sectionStyling}>
         <RadioGroup options={ZOOM_OPTIONS} checked={zoomType} onChange={setZoomType} />
       </Section>
 
       <Section
-        header="Line Type"
+        header="Connectors"
         variant={SectionVariant.QUATERNARY}
         dividers
-        isDividerNested
         contentSuffix={() => (
           <DescriptorContainer>
             Choose between straight or curved connection lines between blocks. <Link href={Documentation.LINK_TYPE}>See more.</Link>
           </DescriptorContainer>
         )}
-        customContentStyling={{ paddingBottom: '24px' }}
+        customHeaderStyling={headerStyling}
+        customContentStyling={sectionStyling}
       >
         <RadioGroup options={LINK_TYPE_OPTIONS} checked={activeLinkType} onChange={setLinkType} />
       </Section>
@@ -71,10 +80,11 @@ const Canvas: React.FC<ConnectedBasicProps> = ({
         dividers
         collapseVariant={SectionToggleVariant.TOGGLE}
         onToggleChange={toggleCanvasGrid}
-        isDividerNested
-        contentSuffix={() => <DescriptorContainer>When on, the canvas will have a dotted background grid.</DescriptorContainer>}
+        contentSuffix={() => (
+          <DescriptorContainer style={{ marginTop: '6px' }}>When on, the canvas will have a dotted background grid.</DescriptorContainer>
+        )}
         customHeaderStyling={{ paddingBottom: '0px' }}
-        customContentStyling={{ paddingBottom: '24px' }}
+        customContentStyling={sectionStyling}
         initialOpen={!!canvasGridEnabled}
       >
         <span></span>

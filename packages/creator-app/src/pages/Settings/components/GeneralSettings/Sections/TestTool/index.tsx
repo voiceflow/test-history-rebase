@@ -50,7 +50,12 @@ const TestToolSettings: React.FC = () => {
   return (
     <>
       {showMessageDelaySetting && (
-        <Section header="Message Delay" variant={SectionVariant.QUATERNARY} customContentStyling={{ paddingBottom: '24px' }}>
+        <Section
+          header="Message Delay"
+          variant={SectionVariant.QUATERNARY}
+          customHeaderStyling={{ paddingBottom: '11px' }}
+          customContentStyling={{ paddingBottom: '24px' }}
+        >
           <Flex>
             <Box width="80px" mr={12}>
               <Input
@@ -75,7 +80,8 @@ const TestToolSettings: React.FC = () => {
             variant={SectionVariant.QUATERNARY}
             dividers
             isDividerNested={!!showMessageDelaySetting}
-            customContentStyling={{ paddingBottom: '20px' }}
+            customHeaderStyling={{ paddingBottom: '11px' }}
+            customContentStyling={{ paddingBottom: '24px' }}
           >
             <BoxFlex mr={120}>
               <ColorInput isAllowed={canCustomize} disabledBorderColor="rgba(210, 218, 226, 0.65)" />

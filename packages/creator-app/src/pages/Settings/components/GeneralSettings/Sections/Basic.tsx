@@ -20,6 +20,7 @@ import { connect } from '@/hocs';
 import { SectionErrorMessage } from '@/pages/NewProject/Steps/components';
 import { FORMATTED_DIALOGFLOW_LOCALES, FORMATTED_DIALOGFLOW_LOCALES_LABELS, getDialogflowLocaleLanguage } from '@/pages/Publish/Dialogflow/utils';
 import { FORMATTED_GOOGLE_LOCALES_LABELS, FORMATTED_LOCALES, getLocaleLanguage } from '@/pages/Publish/Google/utils';
+import { DescriptorContainer } from '@/pages/Settings/components/ContentDescriptors/components';
 import LOCALE_MAP from '@/services/LocaleMap';
 import { ConnectedProps } from '@/types';
 import { isAlexaPlatform, isDialogflowPlatform, isGooglePlatform, isPlatformWithInvocationName, isVoiceflowPlatform } from '@/utils/typeGuards';
@@ -34,9 +35,15 @@ interface BasicProps {
   platformMeta: PlatformSettingsMetaProps;
 }
 
+const headerStyling = {
+  paddingBottom: '11px',
+};
+
 const sectionStyling = {
   paddingBottom: '24px',
 };
+
+const LanguagesDescriptor: React.FC = () => <DescriptorContainer>The language(s) that your assistant supports.</DescriptorContainer>;
 
 const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
   invocationName,
@@ -115,10 +122,11 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
   return (
     <>
       <Section
+        customHeaderStyling={headerStyling}
         customContentStyling={sectionStyling}
         variant={SectionVariant.QUATERNARY}
         contentSuffix={descriptors.projectName}
-        header="Project Name"
+        header="Assistant Name"
       >
         <BoxFlex>
           <Input value={newProjectName} onChangeText={setNewProjectName} onBlur={saveSettings} />
@@ -130,9 +138,9 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
 
       {isDialogflowPlatform(platform) && (
         <Section
+          customHeaderStyling={headerStyling}
           customContentStyling={sectionStyling}
           variant={SectionVariant.QUATERNARY}
-          isDividerNested
           contentSuffix={
             !newAgentName
               ? () => <SectionErrorMessage marginTop={12}>Your agent requires a valid name to be uploaded</SectionErrorMessage>
@@ -155,7 +163,7 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
               ? () => <SectionErrorMessage marginTop={16}>{invocationError}</SectionErrorMessage>
               : descriptors.invocationName
           }
-          isDividerNested
+          customHeaderStyling={headerStyling}
           customContentStyling={sectionStyling}
         >
           <Input error={!!invocationError} value={newInvocation} onBlur={saveSettings} onChangeText={setNewInvocation} />
@@ -163,10 +171,10 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
       )}
 
       <Section
-        header={localeText}
+        header={localeText || 'Language'}
         variant={SectionVariant.QUATERNARY}
-        contentSuffix={descriptors.localesDescriptor}
-        isDividerNested
+        contentSuffix={descriptors.localesDescriptor || LanguagesDescriptor}
+        customHeaderStyling={headerStyling}
         customContentStyling={sectionStyling}
       >
         {Realtime.Utils.platform.createPlatformSelector<() => React.ReactNode>(

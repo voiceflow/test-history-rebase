@@ -33,7 +33,7 @@ const SettingsType: React.FC<SettingsTypeProps> = ({ type, isOpen, onToggle, onC
 
   return (
     <>
-      <Button ref={popper.setReferenceElement} isActive={isOpen} onClick={onToggle} tooltipTitle="Line type">
+      <Button ref={popper.setReferenceElement} isActive={isOpen} onClick={onToggle} tooltipTitle="Connectors">
         <SvgIcon icon={isStraightLink ? 'lineStraight' : 'lineCurved'} />
       </Button>
 

@@ -3,7 +3,7 @@ import { css, styled } from '@/hocs';
 import { SectionVariants } from '../constants';
 
 const SectionBox = styled.div<{ width?: number; variant?: SectionVariants; noContentPadding?: boolean }>`
-  border-radius: 5px;
+  border-radius: 6px;
   box-shadow: 0 1px 3px 0 rgba(17, 49, 96, 0.08), 0 0 1px 1px rgba(17, 49, 96, 0.08);
   overflow: hidden;
   ${({ variant = SectionVariants.PRIMARY }) =>

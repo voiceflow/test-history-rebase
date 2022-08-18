@@ -4,11 +4,11 @@ import React from 'react';
 import { styled } from '@/hocs';
 
 const Container = styled(FlexApart)`
-  padding: 29px 32px;
+  padding: 24px 32px;
 `;
 
 const LeftSection = styled.div`
-  flex: 3;
+  flex: 5;
 `;
 
 const RightSection = styled.div`
@@ -17,7 +17,7 @@ const RightSection = styled.div`
 
 const Heading = styled.div`
   color: #132144;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   font-size: 15px;
   font-weight: 600;
 `;

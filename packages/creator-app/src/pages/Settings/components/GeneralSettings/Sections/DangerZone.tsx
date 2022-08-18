@@ -16,11 +16,11 @@ const DangerZone: React.FC<ConnectedDangerZoneProps> = ({ projectName, projectID
 
   return (
     <ActionSection
-      heading="Delete Project"
+      heading="Delete Assistant"
       description="This action cannot be reverted. Please proceed with caution."
       action={
-        <Button variant={ButtonVariant.PRIMARY} onClick={deletePrompt}>
-          Delete Project
+        <Button variant={ButtonVariant.PRIMARY} onClick={deletePrompt} squareRadius>
+          Delete
         </Button>
       }
     />

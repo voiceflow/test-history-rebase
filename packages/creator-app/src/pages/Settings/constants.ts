@@ -5,7 +5,7 @@ import React from 'react';
 import { Alexa, Dialogflow, General, Google, Universal } from './components/ContentDescriptors';
 
 export enum SettingSections {
-  BASIC = 'Basic',
+  BASIC = 'Name & Language',
   CANVAS = 'Canvas',
   GLOBAL_CONVERSATION_LOGIC = 'Global Conversation Logic',
   CHANNEL_SPECIFIC_FEATURES = 'Channel Specific Features',

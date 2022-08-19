@@ -60,7 +60,7 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
                     <BoxFlex>
                       <SectionV2.Title bold={!collapsed}>{intent?.name || `Path ${index + 1}`}</SectionV2.Title>
 
-                      <BoxFlex pl={4} pt={2}>
+                      <BoxFlex pl={12} pt={2}>
                         <StrengthGauge
                           width={36}
                           level={intentIsBuiltIn ? StrengthGauge.Level.VERY_STRONG : getIntentStrengthLevel(intent?.inputs.length ?? 0)}

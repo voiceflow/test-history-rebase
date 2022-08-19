@@ -17,7 +17,6 @@ interface SubMenuProps {
 }
 
 const SubMenu: React.FC<SubMenuProps> = ({ steps, onDrop }) => {
-  const newEditors2 = useFeature(Realtime.FeatureFlag.NEW_EDITORS_PART_2);
   const chatCardStep = useFeature(Realtime.FeatureFlag.CHAT_CARD_STEP);
   const defaultStepColors = useFeature(Realtime.FeatureFlag.DEFAULT_STEP_COLORS);
 
@@ -30,8 +29,6 @@ const SubMenu: React.FC<SubMenuProps> = ({ steps, onDrop }) => {
 
   const processedSteps = steps
     .filter((step) => {
-      if (!newEditors2.isEnabled && step.type === BlockType.RANDOMV2) return false;
-      if (newEditors2.isEnabled && step.type === BlockType.RANDOM) return false;
       if (!chatCardStep.isEnabled && step.type === BlockType.CARDV2) return false;
 
       return true;

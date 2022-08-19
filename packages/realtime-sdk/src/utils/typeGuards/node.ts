@@ -49,3 +49,5 @@ export const isMarkupImageNodeData = createNodeDataTypeGuard<NodeData<Markup.Nod
 export const isMarkupVideoNodeData = createNodeDataTypeGuard<NodeData<Markup.NodeData.Video>>(BlockType.MARKUP_VIDEO);
 export const isCarouselNodeData = createNodeDataTypeGuard<NodeData<NodeData.Carousel>>(BlockType.CAROUSEL);
 export const isCardV2NodeData = createNodeDataTypeGuard<NodeData<NodeData.CardV2>>(BlockType.CARDV2);
+export const isRandomV2NodeData = createNodeDataTypeGuard<NodeData<NodeData.RandomV2>>(BlockType.RANDOMV2);
+export const isRandomV1NodeData = createNodeDataTypeGuard<NodeData<NodeData.Random>>(BlockType.RANDOM);

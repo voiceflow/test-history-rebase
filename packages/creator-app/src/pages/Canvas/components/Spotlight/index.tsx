@@ -29,7 +29,6 @@ const Spotlight = () => {
   const gadgets = useFeature(Realtime.FeatureFlag.GADGETS);
   const chatCardsCarousel = useFeature(Realtime.FeatureFlag.CHAT_CARDS_CAROUSEL);
   const promptStep = useFeature(Realtime.FeatureFlag.PROMPT_STEP);
-  const newEditors2 = useFeature(Realtime.FeatureFlag.NEW_EDITORS_PART_2);
   const getManager = useManager();
 
   const isVisible = !!spotlight?.isVisible;
@@ -48,8 +47,6 @@ const Spotlight = () => {
           if (!Utils.object.hasProperty(step, 'type')) return false;
           if (!gadgets.isEnabled && step.type === BlockType.EVENT) return false;
           if (!chatCardsCarousel.isEnabled && step.type === BlockType.CAROUSEL) return false;
-          if (!newEditors2.isEnabled && step.type === BlockType.RANDOMV2) return false;
-          if (newEditors2.isEnabled && step.type === BlockType.RANDOM) return false;
           if (IS_PRIVATE_CLOUD && step.publicOnly) return false;
           if (!promptStep.isEnabled && step.type === BlockType.PROMPT) return false;
           return true;
@@ -68,7 +65,7 @@ const Spotlight = () => {
             ),
           };
         }),
-    [platform, gadgets.isEnabled, newEditors2.isEnabled, chatCardsCarousel.isEnabled, promptStep.isEnabled]
+    [platform, gadgets.isEnabled, chatCardsCarousel.isEnabled, promptStep.isEnabled]
   );
 
   useDidUpdateEffect(() => {

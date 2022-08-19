@@ -34,7 +34,6 @@ import MarkupVideoManager from './MarkupVideo';
 import PaymentManager from './Payment';
 import PermissionManager from './Permission';
 import PromptManager from './Prompt';
-import RandomManager from './Random';
 import RandomManagerV2 from './RandomV2';
 import ReminderManager from './Reminder';
 import SetManagerV2 from './SetV2';
@@ -62,7 +61,6 @@ export const MANAGERS_BY_TYPE = {
   [BlockType.IFV2]: IfManagerV2,
   [BlockType.CAPTURE]: CaptureManager,
   [BlockType.CAPTUREV2]: CaptureManagerV2,
-  [BlockType.RANDOM]: RandomManager,
   [BlockType.RANDOMV2]: RandomManagerV2,
   [BlockType.INTENT]: IntentManager,
   [BlockType.STREAM]: StreamManager,

@@ -70,6 +70,11 @@ export enum SchemaVersion {
    * adds missing components to versions component list so all components are visible in the menu
    */
   V3_4 = 3.4,
+
+  /**
+   * migrate the old random step to random step v2
+   */
+  V3_5 = 3.5,
 }
 
 export const SUPPORTED_SCHEMA_VERSIONS = Object.values(SchemaVersion)

@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.871.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.870.0...@voiceflow/creator-app@1.871.0) (2022-08-19)
+
+
+### Bug Fixes
+
+* do not save empty undos (CT-833) ([#5926](https://github.com/voiceflow/creator-app/issues/5926)) ([54740e2](https://github.com/voiceflow/creator-app/commit/54740e239c2312d177536e0d9a9be292e17dfc79))
+
+
+### Features
+
+* random migration [bugfix] (CT-640) ([#5831](https://github.com/voiceflow/creator-app/issues/5831)) ([e0793e3](https://github.com/voiceflow/creator-app/commit/e0793e3127e21f9832585a56c3709eb290dca49f))
+
+
+
+
+
 # [1.870.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.869.1...@voiceflow/creator-app@1.870.0) (2022-08-18)
 
 

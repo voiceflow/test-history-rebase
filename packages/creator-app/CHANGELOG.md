@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.871.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.871.3...@voiceflow/creator-app@1.871.4) (2022-08-19)
+
+
+### Bug Fixes
+
+* reload race condition (CT-000) ([#5918](https://github.com/voiceflow/creator-app/issues/5918)) ([4a05162](https://github.com/voiceflow/creator-app/commit/4a051628ae7b6abec17294362cc40566148214b3))
+
+
+
+
+
 ## [1.871.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.871.2...@voiceflow/creator-app@1.871.3) (2022-08-19)
 
 

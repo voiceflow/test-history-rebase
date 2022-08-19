@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.95.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.95.1...@voiceflow/realtime@1.95.2) (2022-08-19)
+
+
+### Bug Fixes
+
+* reload race condition (CT-000) ([#5918](https://github.com/voiceflow/creator-app/issues/5918)) ([4a05162](https://github.com/voiceflow/creator-app/commit/4a051628ae7b6abec17294362cc40566148214b3))
+
+
+
+
+
 ## [1.95.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.95.0...@voiceflow/realtime@1.95.1) (2022-08-19)
 
 **Note:** Version bump only for package @voiceflow/realtime

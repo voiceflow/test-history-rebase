@@ -2,7 +2,6 @@ import { Utils } from '@voiceflow/common';
 
 import suite from '@/../test/_suite';
 import { MOCK_STATE } from '@/../test/ducks/_fixtures';
-import { V2_HISTORY_STATE } from '@/../test/ducks/creatorV2/_fixtures';
 import * as History from '@/ducks/history';
 import reverterTransducer from '@/ducks/transducers/history/reverter';
 import { wrapReplayAction } from '@/ducks/utils';
@@ -14,7 +13,7 @@ suite('Transducers - History - Reverter', () => {
     const actionID = 'actionID';
     const revertibleAction = Utils.protocol.createAction<{ value: string }>('revertible_action');
     const reverseAction = Utils.protocol.createAction<{ value: string }>('reverse_action');
-    const rootState = { ...MOCK_STATE, ...V2_HISTORY_STATE };
+    const rootState = MOCK_STATE;
     const reverters = {
       [revertibleAction.type]: [
         { actionCreator: revertibleAction, revert: ({ value }: { value: string }) => reverseAction({ value }), invalidators: [] },
@@ -56,15 +55,6 @@ suite('Transducers - History - Reverter', () => {
       const action = wrapReplayAction(wrapOwnAction(revertibleAction({ value: 'actionValue' }), clientNodeID)) as any;
 
       reverterTransducer(() => clientNodeID, reverters)(reducer)(rootState, action);
-
-      expect(reducer).toBeCalledTimes(1);
-    });
-
-    it('ignores action when history feature disabled', () => {
-      const reducer = vi.fn();
-      const action = wrapOwnAction(revertibleAction({ value: 'actionValue' }), clientNodeID) as any;
-
-      reverterTransducer(() => clientNodeID, reverters)(reducer)(MOCK_STATE, action);
 
       expect(reducer).toBeCalledTimes(1);
     });

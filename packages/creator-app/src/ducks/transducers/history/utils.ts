@@ -1,8 +1,6 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { AnyAction } from 'redux';
 import { Action } from 'typescript-fsa';
 
-import * as Feature from '@/ducks/feature';
 import * as History from '@/ducks/history';
 import type { InvalidatorLookup, RootReducer, State } from '@/store/types';
 import { getActionOrigin } from '@/store/utils';
@@ -38,10 +36,9 @@ export const createHistoryTransducer =
 
       if (!state) return skipHistory();
 
-      const isHistoryEnabled = !!Feature.rootSelector(state) && Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.HISTORY_SYSTEM);
       const origin = getActionOrigin(action);
 
-      if (!isHistoryEnabled || !origin) return skipHistory();
+      if (!origin) return skipHistory();
 
       const isOwnAction = origin === getClientNodeID();
       const historyAction = getHistoryAction(...args)(state, action, { isOwnAction });

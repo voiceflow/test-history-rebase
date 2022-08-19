@@ -1,12 +1,11 @@
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
-import * as Creator from '@/ducks/creator';
 import * as History from '@/ducks/history';
 import { REPLAY_KEY } from '@/ducks/utils';
 
 import suite from './_suite';
-import { ACTION_CONTEXT, V2_HISTORY_STATE } from './creatorV2/_fixtures';
+import { ACTION_CONTEXT } from './creatorV2/_fixtures';
 
 const MOCK_STATE: History.HistoryState = {
   buffer: null,
@@ -266,7 +265,7 @@ suite(History, MOCK_STATE)('Ducks - History', ({ describeReducerV2, describeEffe
     describeEffectV2(History.transaction, 'transaction()', ({ applyEffect }) => {
       it('bookend operation to establish transaction context', async () => {
         const transactionID = 'xyz';
-        const rootState = createState(MOCK_STATE, V2_HISTORY_STATE);
+        const rootState = createState(MOCK_STATE);
         vi.spyOn(Utils.id, 'cuid').mockReturnValue(transactionID);
 
         const { dispatched } = await applyEffect(rootState, () => {});
@@ -276,16 +275,8 @@ suite(History, MOCK_STATE)('Ducks - History', ({ describeReducerV2, describeEffe
     });
 
     describeEffectV2(History.undo, 'undo()', ({ applyEffect }) => {
-      it('dispatch legacy history undo action', async () => {
-        const rootState = createState(MOCK_STATE);
-
-        const { dispatched } = await applyEffect(rootState);
-
-        expect(dispatched).toEqual([Creator.undoHistory()]);
-      });
-
       it('do nothing if no undo transactions available', async () => {
-        const rootState = createState({ ...MOCK_STATE, undo: [] }, V2_HISTORY_STATE);
+        const rootState = createState({ ...MOCK_STATE, undo: [] });
 
         const { dispatched } = await applyEffect(rootState);
 
@@ -294,7 +285,7 @@ suite(History, MOCK_STATE)('Ducks - History', ({ describeReducerV2, describeEffe
 
       it('dispatch actions to apply the most recent undo transaction', async () => {
         const revertID = 'xyz';
-        const rootState = createState(MOCK_STATE, V2_HISTORY_STATE);
+        const rootState = createState(MOCK_STATE);
         vi.spyOn(Utils.id, 'cuid').mockReturnValue(revertID);
 
         const { dispatched } = await applyEffect(rootState);
@@ -308,16 +299,8 @@ suite(History, MOCK_STATE)('Ducks - History', ({ describeReducerV2, describeEffe
     });
 
     describeEffectV2(History.redo, 'redo()', ({ applyEffect }) => {
-      it('dispatch legacy history redo action', async () => {
-        const rootState = createState(MOCK_STATE);
-
-        const { dispatched } = await applyEffect(rootState);
-
-        expect(dispatched).toEqual([Creator.redoHistory()]);
-      });
-
       it('do nothing if no redo transactions available', async () => {
-        const rootState = createState({ ...MOCK_STATE, redo: [] }, V2_HISTORY_STATE);
+        const rootState = createState({ ...MOCK_STATE, redo: [] });
 
         const { dispatched } = await applyEffect(rootState);
 
@@ -326,7 +309,7 @@ suite(History, MOCK_STATE)('Ducks - History', ({ describeReducerV2, describeEffe
 
       it('dispatch actions to apply the most recent redo transaction', async () => {
         const revertID = 'xyz';
-        const rootState = createState(MOCK_STATE, V2_HISTORY_STATE);
+        const rootState = createState(MOCK_STATE);
         vi.spyOn(Utils.id, 'cuid').mockReturnValue(revertID);
 
         const { dispatched } = await applyEffect(rootState);

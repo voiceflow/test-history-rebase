@@ -14,15 +14,6 @@ export const V2_FEATURE_STATE = {
   },
 };
 
-export const V2_HISTORY_STATE = {
-  [Feature.STATE_KEY]: {
-    ...Feature.INITIAL_STATE,
-    features: {
-      [Realtime.FeatureFlag.HISTORY_SYSTEM]: { isEnabled: true },
-    },
-  },
-};
-
 export const WORKSPACE_ID = 'workspaceID';
 export const PROJECT_ID = 'projectID';
 export const VERSION_ID = 'versionID';

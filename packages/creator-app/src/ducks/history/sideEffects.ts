@@ -1,10 +1,7 @@
 import { Eventual, Utils } from '@voiceflow/common';
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { toast } from '@voiceflow/ui';
 import { batch } from 'react-redux';
 
-import * as Creator from '@/ducks/creator';
-import * as Feature from '@/ducks/feature';
 import { wrapReplayAction } from '@/ducks/utils';
 import { Thunk } from '@/store/types';
 
@@ -27,13 +24,7 @@ export const transaction =
 
 export const undo = (): Thunk => (dispatch, getState) => {
   const state = getState();
-  const isHistoryEnabled = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.HISTORY_SYSTEM);
   let promise = Promise.resolve();
-
-  if (!isHistoryEnabled) {
-    dispatch(Creator.undoHistory());
-    return promise;
-  }
 
   const transaction = latestUndoTransactionSelector(state);
 
@@ -52,13 +43,7 @@ export const undo = (): Thunk => (dispatch, getState) => {
 
 export const redo = (): Thunk => (dispatch, getState) => {
   const state = getState();
-  const isHistoryEnabled = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.HISTORY_SYSTEM);
   let promise = Promise.resolve();
-
-  if (!isHistoryEnabled) {
-    dispatch(Creator.redoHistory());
-    return promise;
-  }
 
   const transaction = latestRedoTransactionSelector(state);
 

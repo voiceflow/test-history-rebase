@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.871.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.871.2...@voiceflow/creator-app@1.871.3) (2022-08-19)
+
+
+### Bug Fixes
+
+* [bugfix] excluded dfes fallback intent from conflicts (NLU-305) ([#5936](https://github.com/voiceflow/creator-app/issues/5936)) ([0b5191b](https://github.com/voiceflow/creator-app/commit/0b5191b506514b6e53095c90fbc7ac5213e427df))
+* remove history system ff (CT-844) ([#5935](https://github.com/voiceflow/creator-app/issues/5935)) ([e1253a2](https://github.com/voiceflow/creator-app/commit/e1253a2303702d7a073d34e983b1d9d1ced2d4e9))
+* update z-index (CT-788) ([#5937](https://github.com/voiceflow/creator-app/issues/5937)) ([1f3a00a](https://github.com/voiceflow/creator-app/commit/1f3a00af0e8090be759f41a674b6ae040d00b561))
+
+
+
+
+
 ## [1.871.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.871.1...@voiceflow/creator-app@1.871.2) (2022-08-19)
 
 

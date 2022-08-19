@@ -1,31 +1,35 @@
 import { BaseModels } from '@voiceflow/base-types';
 
+import { EXCLUDED_CONFLICTS_INTENTS } from '@/constants/nlu';
+
 export const transformIntents = (intents: BaseModels.Intent[]) => {
-  return intents.map((intent) => {
-    return {
-      key: intent.key,
-      name: intent.name,
-      inputs: intent.inputs.map((input) => ({
-        text: input.text,
-        slots: input.slots || [],
-      })),
-      slots: intent?.slots?.length
-        ? intent.slots.map((slot) => {
-            return {
-              id: slot.id,
-              dialog: {
-                // TO DO: add dialog and confirm
-                prompt: [],
-                confirm: [],
-                utterances: slot.dialog.utterances.map((u) => u.text) as any[],
-                confirmEnabled: slot.dialog.confirmEnabled,
-              },
-              required: slot.required,
-            };
-          })
-        : [],
-    };
-  });
+  return intents
+    .filter((intent) => EXCLUDED_CONFLICTS_INTENTS.includes(intent.name))
+    .map((intent) => {
+      return {
+        key: intent.key,
+        name: intent.name,
+        inputs: intent.inputs.map((input) => ({
+          text: input.text,
+          slots: input.slots || [],
+        })),
+        slots: intent?.slots?.length
+          ? intent.slots.map((slot) => {
+              return {
+                id: slot.id,
+                dialog: {
+                  // TO DO: add dialog and confirm
+                  prompt: [],
+                  confirm: [],
+                  utterances: slot.dialog.utterances.map((u) => u.text) as any[],
+                  confirmEnabled: slot.dialog.confirmEnabled,
+                },
+                required: slot.required,
+              };
+            })
+          : [],
+      };
+    });
 };
 
 export const transformSlots = (slots: BaseModels.Slot[]) => {

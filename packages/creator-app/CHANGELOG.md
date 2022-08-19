@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.871.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.871.1...@voiceflow/creator-app@1.871.2) (2022-08-19)
+
+
+### Bug Fixes
+
+* update padding for strength gauge (CT-823) ([#5933](https://github.com/voiceflow/creator-app/issues/5933)) ([5a52ea2](https://github.com/voiceflow/creator-app/commit/5a52ea25291dca1dcd3ec1b0b508e69bc5b801bf))
+
+
+
+
+
 ## [1.871.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.871.0...@voiceflow/creator-app@1.871.1) (2022-08-19)
 
 

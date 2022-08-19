@@ -74,7 +74,7 @@ Cypress.Commands.add('createThread', (text: string) => {
   });
 
   cy.request('POST', `${API_URL}/commenting/project/${projectID}/threads`, {
-    position: [-400, -100],
+    position: [360, 160],
     resolved: false,
     project_id: projectID,
     diagram_id: diagramID,

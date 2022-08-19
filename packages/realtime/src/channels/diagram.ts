@@ -22,13 +22,14 @@ class DiagramChannel extends AbstractChannelControl<Realtime.Channels.DiagramCha
   };
 
   protected load = async (ctx: DiagramChannelContext, action: ChannelSubscribeAction): Promise<SendBackActions> => {
-    if (action.since) return [];
-
     const creatorID = Number(ctx.userId);
 
-    const [project, diagram, diagramLocks] = await Promise.all([
-      this.services.project.get(creatorID, ctx.params.projectID).then(Realtime.Adapters.projectAdapter.fromDB),
+    // the timestamp of Realtime.creator.initialize is when this.services.diagram.get is called, not when it is resolved
+    const initializeMeta = { id: this.server.log.generateId() };
+
+    const [diagram, project, diagramLocks] = await Promise.all([
       this.services.diagram.get(ctx.params.diagramID),
+      this.services.project.get(creatorID, ctx.params.projectID).then(Realtime.Adapters.projectAdapter.fromDB),
       this.services.lock.getAllLocks<Realtime.diagram.awareness.LockEntityType>(ctx.params.diagramID),
     ]);
     const { nodes, data, ports, links } = Realtime.Adapters.creatorAdapter.fromDB(diagram, {
@@ -36,6 +37,19 @@ class DiagramChannel extends AbstractChannelControl<Realtime.Channels.DiagramCha
       projectType: project.type,
       context: {},
     });
+
+    const initializeAction = Realtime.creator.initialize({
+      ...ctx.params,
+      nodesWithData: nodes.map((node) => ({ node, data: data[node.id] })),
+      ports,
+      links,
+    });
+
+    if (action.since) {
+      await this.server.processAs(creatorID, initializeAction, initializeMeta);
+    } else {
+      await ctx.sendBack(initializeAction, initializeMeta);
+    }
 
     ctx.data.subscribed = true;
 
@@ -47,12 +61,6 @@ class DiagramChannel extends AbstractChannelControl<Realtime.Channels.DiagramCha
           y: diagram.offsetY,
           zoom: diagram.zoom,
         },
-      }),
-      Realtime.creator.initialize({
-        ...ctx.params,
-        nodesWithData: nodes.map((node) => ({ node, data: data[node.id] })),
-        ports,
-        links,
       }),
       Realtime.diagram.awareness.updateLockedEntities({
         ...ctx.params,

@@ -7,17 +7,8 @@ import { AbstractDiagramActionControl } from '@/actions/diagram/utils';
 class RemoveManyNodes extends AbstractDiagramActionControl<Realtime.node.RemoveManyPayload> {
   actionCreator = Realtime.node.removeMany;
 
-  process = async (ctx: Context, { payload }: Action<Realtime.node.RemoveManyPayload>): Promise<void> => {
-    const { creatorID } = ctx.data;
-
+  process = async (_ctx: Context, { payload }: Action<Realtime.node.RemoveManyPayload>): Promise<void> => {
     if (!payload.nodes.length) return;
-
-    const isAtomicActionsPhase2 = await this.services.workspace.isFeatureEnabled(
-      creatorID,
-      payload.workspaceID,
-      Realtime.FeatureFlag.ATOMIC_ACTIONS_PHASE_2
-    );
-    if (!isAtomicActionsPhase2) return;
 
     await this.services.diagram.removeManyNodes(payload.diagramID, payload.nodes);
   };

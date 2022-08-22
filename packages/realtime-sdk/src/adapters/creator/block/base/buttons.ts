@@ -29,7 +29,13 @@ export const buttonsOutPortsAdapter = createOutPortsAdapter<NodeData.ButtonsBuil
 );
 
 export const buttonsOutPortsAdapterV2 = createOutPortsAdapterV2<NodeData.ButtonsBuiltInPorts, NodeData.Buttons>(
-  (dbPorts, options) => noMatchNoReplyAndDynamicOutPortsAdapterV2.fromDB(dbPorts, options),
+  (dbPorts, options) =>
+    syncDynamicPortsLength({
+      nodeID: options.node.nodeID,
+      ports: noMatchNoReplyAndDynamicOutPortsAdapterV2.fromDB(dbPorts, options),
+      length: options.node.data.buttons?.length,
+    }),
+
   (dbPorts, options) => noMatchNoReplyAndDynamicOutPortsAdapterV2.toDB(dbPorts, options)
 );
 

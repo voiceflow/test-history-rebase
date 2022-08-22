@@ -42,7 +42,7 @@ const EditorSidebarV2 = () => {
   const goToNode = useDispatch(Router.goToCurrentCanvasNode);
 
   const onChange = React.useCallback(
-    (value: Partial<Realtime.NodeData<{}>>, save = true) => (node?.id ? engine.node.updateData(node.id, value, save) : Promise.resolve()),
+    (value: Partial<Realtime.NodeData<{}>>) => (node?.id ? engine.node.updateData(node.id, value) : Promise.resolve()),
     [engine.node, node?.id]
   );
 

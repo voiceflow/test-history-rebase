@@ -155,7 +155,7 @@ export const useActions = ({ editor, portID, parentPath, parentParams }: Actions
   const onReorder = async (fromIndex: number, toIndex: number) => {
     if (!targetNode || !targetNodeSteps[fromIndex]) return;
 
-    await editor.engine.node.relocateV2(targetNode.id, targetNodeSteps[fromIndex].nodeID, toIndex);
+    await editor.engine.node.relocate(targetNode.id, targetNodeSteps[fromIndex].nodeID, toIndex);
   };
 
   const { onAdd, lastCreatedStepID } = useOnAddAction({

@@ -49,7 +49,7 @@ const StreamEditor: NodeEditor<Realtime.NodeData.Stream, Realtime.NodeData.Strea
 
     await transaction(async () => {
       if (hasPausePort) {
-        await engine.port.removeBuiltin(BaseModels.PortType.PAUSE, pausePortID);
+        await engine.port.removeBuiltin(pausePortID);
       } else {
         await engine.port.addBuiltin(node.id, BaseModels.PortType.PAUSE);
       }

@@ -19,7 +19,7 @@ const ActionsEditor: React.FC = () => {
   const data = useSelector(CreatorV2.nodeDataByIDSelector, { id: actionNodeID });
 
   const onChange = React.useCallback(
-    (value: Partial<Realtime.NodeData<{}>>, save = true) => (node?.id ? editor.engine.node.updateData(node.id, value, save) : Promise.resolve()),
+    (value: Partial<Realtime.NodeData<{}>>) => (node?.id ? editor.engine.node.updateData(node.id, value) : Promise.resolve()),
     [editor.engine.node, node?.id]
   );
 

@@ -1,11 +1,8 @@
-import * as RealtimeSDK from '@voiceflow/realtime-sdk';
+import * as Realtime from '@voiceflow/realtime-sdk';
 
-import * as Realtime from '@/ducks/realtime';
 import { CANVAS_DRAGGING_CLASSNAME } from '@/pages/Canvas/constants';
 
 import { EngineConsumer } from './utils';
-
-const DRAG_LOCKS: Realtime.AnyNodeLock[] = [Realtime.LockType.MOVEMENT];
 
 class DragEngine extends EngineConsumer {
   log = this.engine.log.child('drag');
@@ -56,12 +53,7 @@ class DragEngine extends EngineConsumer {
     this.log.debug(this.log.pending('setting drag group'), nodeIDs);
     nodeIDs.forEach((nodeID) => this.engine.node.redraw(nodeID));
 
-    if (this.isAtomicActionsPhase2) {
-      await this.engine.components.diagramHeartbeat?.lockEntities(RealtimeSDK.diagram.awareness.LockEntityType.NODE_MOVEMENT, nodeIDs);
-    } else {
-      await this.engine.realtime.sendUpdate(Realtime.lockNodes(nodeIDs, DRAG_LOCKS));
-    }
-
+    await this.engine.components.diagramHeartbeat?.lockEntities(Realtime.diagram.awareness.LockEntityType.NODE_MOVEMENT, nodeIDs);
     this.addStyle();
 
     const focusedNode = this.engine.focus.getTarget();
@@ -84,11 +76,7 @@ class DragEngine extends EngineConsumer {
 
     this.engine.node.redraw(nodeID);
 
-    if (this.isAtomicActionsPhase2) {
-      await this.engine.components.diagramHeartbeat?.lockEntities(RealtimeSDK.diagram.awareness.LockEntityType.NODE_MOVEMENT, [nodeID]);
-    } else {
-      await this.engine.realtime.sendUpdate(Realtime.lockNodes([nodeID], DRAG_LOCKS));
-    }
+    await this.engine.components.diagramHeartbeat?.lockEntities(Realtime.diagram.awareness.LockEntityType.NODE_MOVEMENT, [nodeID]);
 
     this.addStyle();
     if (this.engine.focus.getTarget() !== nodeID) {
@@ -109,13 +97,9 @@ class DragEngine extends EngineConsumer {
       this.engine.merge.reset();
 
       this.engine.node.redraw(target);
-      await this.engine.node.translate([target], [0, 0], false);
+      await this.engine.node.translate([target], [0, 0]);
 
-      if (this.isAtomicActionsPhase2) {
-        await this.engine.components.diagramHeartbeat?.unlockEntities(RealtimeSDK.diagram.awareness.LockEntityType.NODE_MOVEMENT, [target]);
-      } else {
-        await this.engine.realtime.sendUpdate(Realtime.unlockNodes([target], DRAG_LOCKS));
-      }
+      await this.engine.components.diagramHeartbeat?.unlockEntities(Realtime.diagram.awareness.LockEntityType.NODE_MOVEMENT, [target]);
 
       this.removeStyle();
 
@@ -128,13 +112,9 @@ class DragEngine extends EngineConsumer {
 
       this.log.debug(this.log.pending('resetting drag group'), group);
       group.forEach((nodeID) => this.engine.node.redraw(nodeID));
-      await this.engine.node.translate(group, [0, 0], false);
+      await this.engine.node.translate(group, [0, 0]);
 
-      if (this.isAtomicActionsPhase2) {
-        await this.engine.components.diagramHeartbeat?.unlockEntities(RealtimeSDK.diagram.awareness.LockEntityType.NODE_MOVEMENT, group);
-      } else {
-        await this.engine.realtime.sendUpdate(Realtime.unlockNodes(group, DRAG_LOCKS));
-      }
+      await this.engine.components.diagramHeartbeat?.unlockEntities(Realtime.diagram.awareness.LockEntityType.NODE_MOVEMENT, group);
 
       this.removeStyle();
 

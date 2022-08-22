@@ -120,9 +120,9 @@ export const useUpdateData = (nodeID?: string | null): NodeDataUpdater<any> => {
   const engine = React.useContext(EngineContext)!;
 
   return React.useCallback(
-    async (value, save = true) => {
+    async (value) => {
       if (nodeID && !Utils.object.shallowPartialEquals(engine.getDataByNodeID(nodeID), value)) {
-        return engine.node.updateData(nodeID, value, save);
+        return engine.node.updateData(nodeID, value);
       }
       return Promise.resolve();
     },

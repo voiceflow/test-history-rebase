@@ -100,7 +100,7 @@ export const useDnDHoverReorderIndicator = (index: number) => {
     drop: () => {
       const { type, factoryData } = engine.merge.virtualSource!;
 
-      engine.node.insertStepV2(engine.merge.targetNodeID!, type, index, { factoryData }).catch(Sentry.error);
+      engine.node.insertStep(engine.merge.targetNodeID!, type, index, { factoryData }).catch(Sentry.error);
 
       return { captured: true };
     },

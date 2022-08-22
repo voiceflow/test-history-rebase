@@ -40,7 +40,7 @@ const useNoReplyOptionSection = ({
 
     await transaction(async () => {
       if (data.noReply && noReplyPortID) {
-        await engine.port.removeBuiltin(BaseModels.PortType.NO_REPLY, noReplyPortID);
+        await engine.port.removeBuiltin(noReplyPortID);
       }
 
       await onChange({ noReply: data.noReply ? null : getPlatformNoReplyFactory(projectType, platform)({ defaultVoice }) });

@@ -67,7 +67,7 @@ const NoReplyForm: React.FC<NoReplyFormProps> = ({ noReply, onChange, pushToPath
 
     await transaction(async () => {
       if (noReplyPortID && prevTypesIncludesPath && !newTypesIncludesPath) {
-        await engine.port.removeBuiltin(BaseModels.PortType.NO_REPLY, noReplyPortID);
+        await engine.port.removeBuiltin(noReplyPortID);
       } else if (!noReplyPortID && !prevTypesIncludesPath && newTypesIncludesPath && focusedNodeID) {
         await engine.port.addBuiltin(focusedNodeID, BaseModels.PortType.NO_REPLY);
       }

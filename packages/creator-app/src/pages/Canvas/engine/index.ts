@@ -490,7 +490,6 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
   paste(pastedText: string, coords: Coords): void {
     this.clearActivation();
     this.clipboard.paste(pastedText, coords);
-    this.saveHistory();
   }
 
   getHomeNodeID(): string | null {
@@ -546,16 +545,6 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
     } else {
       this.store.dispatch(Router.goToDiagram(diagramID, nodeID));
     }
-  }
-
-  /**
-   * @deprecated
-   */
-  saveHistory(): void {
-    if (this.isFeatureEnabled(Realtime.FeatureFlag.ATOMIC_ACTIONS_PHASE_2)) return;
-
-    this.store.dispatch(Creator.saveHistory());
-    this.log.debug(this.log.success('history saved'));
   }
 
   getCanvasMousePosition(): Point {

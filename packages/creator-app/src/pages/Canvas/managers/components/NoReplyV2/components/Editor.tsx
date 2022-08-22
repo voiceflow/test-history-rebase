@@ -56,7 +56,7 @@ const Editor: React.FC = () => {
   const onRemovePath = async () => {
     await transaction(async () => {
       if (noReplyPortID) {
-        await engine.port.removeBuiltin(BaseModels.PortType.NO_REPLY, noReplyPortID);
+        await engine.port.removeBuiltin(noReplyPortID);
       }
 
       await onChange({ types: Utils.array.withoutValue(noReply.types, BaseNode.Utils.NoReplyType.PATH) });

@@ -3,7 +3,6 @@ import { BaseNode } from '@voiceflow/base-types';
 import { Nullish, Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import _partition from 'lodash/partition';
-import { batch } from 'react-redux';
 import { createSelector } from 'reselect';
 
 import { BlockType } from '@/constants';
@@ -48,177 +47,99 @@ class NodeManager extends EngineConsumer {
   log = this.engine.log.child('node');
 
   internal = {
-    /**
-     * @deprecated remove after update atomic actions phase 2 is complete
-     */
-    addManyStartingBlocks: async (nodesWithData: Realtime.NodeWithData[]): Promise<void> => {
-      const startingBlocks = nodesWithData
-        .filter(({ node }) => node.type === BlockType.COMBINED)
-        .map(({ node, data }) => ({ blockID: node.id, name: data.name }));
-
-      await this.dispatch.sync(Realtime.diagram.addNewStartingBlocks({ ...this.engine.context, startingBlocks }));
-    },
-
-    /**
-     * @deprecated remove after update atomic actions phase 2 is complete
-     */
-    addNewStartingBlock: async (newBlock: { id: string; name: string }): Promise<void> => {
-      const startingBlocks = [{ blockID: newBlock.id, name: newBlock.name }];
-
-      await this.dispatch.sync(Realtime.diagram.addNewStartingBlocks({ ...this.engine.context, startingBlocks }));
-    },
-
-    /**
-     * @deprecated remove after update atomic actions phase 2 is complete
-     */
-    removeStartingBlocks: async (blockIDs: string[]): Promise<void> => {
-      const blockIDsToRemove = [...new Set(blockIDs)];
-      await this.dispatch.sync(Realtime.diagram.removeStartingBlocks({ ...this.engine.context, startingBlockIds: blockIDsToRemove }));
-    },
-
-    /**
-     * @deprecated remove after update atomic actions phase 2 is complete
-     */
-    updateStartingBlock: async (startingBlock: Realtime.diagram.DiagramStartingBlock): Promise<void> => {
-      await this.dispatch.sync(Realtime.diagram.updateStartingBlock({ ...this.engine.context, startingBlock }));
-    },
-
     addBlock: async (node: Creator.NodeDescriptor, data: Creator.DataDescriptor, parentNode: Creator.ParentNodeDescriptor): Promise<void> => {
       const blockName = this.getNewBlockName(node.type);
       const blockID = parentNode.id;
 
-      if (this.isAtomicActionsPhase2) {
-        await this.dispatch.partialSync(
-          Realtime.node.addBlock({
-            ...this.engine.context,
-            blockID,
-            blockPorts: parentNode.ports,
-            blockCoords: [node.x, node.y],
-            blockName,
-            stepID: node.id,
-            stepData: {
-              ...data,
-              type: node.type,
-            },
-            stepPorts: node.ports,
-            projectMeta: this.engine.getActiveProjectMeta(),
-            schemaVersion: this.engine.getActiveSchemaVersion(),
-          })
-        );
-      } else {
-        this.dispatch(Creator.addWrappedNode(node, data, parentNode));
-        this.internal.addNewStartingBlock({ id: blockID, name: blockName });
-      }
+      await this.dispatch.partialSync(
+        Realtime.node.addBlock({
+          ...this.engine.context,
+          blockID,
+          blockPorts: parentNode.ports,
+          blockCoords: [node.x, node.y],
+          blockName,
+          stepID: node.id,
+          stepData: {
+            ...data,
+            type: node.type,
+          },
+          stepPorts: node.ports,
+          projectMeta: this.engine.getActiveProjectMeta(),
+          schemaVersion: this.engine.getActiveSchemaVersion(),
+        })
+      );
     },
 
     addActions: async (node: Creator.NodeDescriptor, data: Creator.DataDescriptor, parentNode: Creator.ParentNodeDescriptor): Promise<void> => {
       const actionsID = parentNode.id;
 
-      if (this.isAtomicActionsPhase2) {
-        await this.dispatch.partialSync(
-          Realtime.node.addActions({
-            ...this.engine.context,
-            actionsID,
-            stepID: node.id,
-            stepData: { ...data, type: node.type },
-            stepPorts: node.ports,
-            projectMeta: this.engine.getActiveProjectMeta(),
-            actionsPorts: parentNode.ports,
-            actionsCoords: [node.x, node.y],
-            schemaVersion: this.engine.getActiveSchemaVersion(),
-          })
-        );
-      } else {
-        this.dispatch(Creator.addActionsNode(node, data, parentNode));
-      }
+      await this.dispatch.partialSync(
+        Realtime.node.addActions({
+          ...this.engine.context,
+          actionsID,
+          stepID: node.id,
+          stepData: { ...data, type: node.type },
+          stepPorts: node.ports,
+          projectMeta: this.engine.getActiveProjectMeta(),
+          actionsPorts: parentNode.ports,
+          actionsCoords: [node.x, node.y],
+          schemaVersion: this.engine.getActiveSchemaVersion(),
+        })
+      );
     },
 
     addMarkup: async (node: Creator.NodeDescriptor, data: Creator.DataDescriptor): Promise<void> => {
-      if (this.isAtomicActionsPhase2) {
-        const markupData = data as Creator.DataDescriptor<Realtime.Markup.AnyNodeData>;
+      const markupData = data as Creator.DataDescriptor<Realtime.Markup.AnyNodeData>;
 
-        await this.dispatch.partialSync(
-          Realtime.node.addMarkup({
-            ...this.engine.context,
-            nodeID: node.id,
-            data: {
-              ...markupData,
-              type: node.type,
-            },
-            coords: [node.x, node.y],
-            projectMeta: this.engine.getActiveProjectMeta(),
-            schemaVersion: this.engine.getActiveSchemaVersion(),
-          })
-        );
-      } else {
-        this.dispatch(Creator.addNode(node, data));
-      }
-    },
-
-    /**
-     * @deprecated
-     */
-    addV1: async (node: Creator.NodeDescriptor, data: Creator.DataDescriptor, parentNode: Creator.ParentNodeDescriptor): Promise<void> => {
-      if (isMarkupBlockType(node.type)) {
-        return this.internal.addMarkup(node, data);
-      }
-
-      return this.internal.addBlock(node, data, parentNode);
+      await this.dispatch.partialSync(
+        Realtime.node.addMarkup({
+          ...this.engine.context,
+          nodeID: node.id,
+          data: {
+            ...markupData,
+            type: node.type,
+          },
+          coords: [node.x, node.y],
+          projectMeta: this.engine.getActiveProjectMeta(),
+          schemaVersion: this.engine.getActiveSchemaVersion(),
+        })
+      );
     },
 
     importSnapshot: async (entities: Realtime.EntityMap): Promise<void> => {
-      if (this.isAtomicActionsPhase2) {
-        await this.dispatch.partialSync(
-          Realtime.creator.importSnapshot({
-            ...this.engine.context,
-            ...entities,
-            projectMeta: this.engine.getActiveProjectMeta(),
-            schemaVersion: this.engine.getActiveSchemaVersion(),
-          })
-        );
-      } else {
-        this.dispatch(Creator.addManyNodes(entities));
-        this.internal.addManyStartingBlocks(entities.nodesWithData);
-      }
+      await this.dispatch.partialSync(
+        Realtime.creator.importSnapshot({
+          ...this.engine.context,
+          ...entities,
+          projectMeta: this.engine.getActiveProjectMeta(),
+          schemaVersion: this.engine.getActiveSchemaVersion(),
+        })
+      );
     },
 
     appendStep: async (parentNodeID: string, node: Creator.NodeDescriptor, data: Creator.DataDescriptor): Promise<void> => {
-      if (this.isAtomicActionsPhase2) {
-        const stepIDs = this.select(CreatorV2.stepIDsByParentNodeIDSelector, { id: parentNodeID });
-        await this.dispatch.partialSync(
-          Realtime.node.insertStep({
-            ...this.engine.context,
-            parentNodeID,
-            stepID: node.id,
-            data: {
-              ...data,
-              type: node.type,
-            },
-            ports: node.ports,
-            projectMeta: this.engine.getActiveProjectMeta(),
-            schemaVersion: this.engine.getActiveSchemaVersion(),
-            index: stepIDs.length,
-            nodePortRemaps: [],
-          })
-        );
-      } else {
-        this.dispatch(Creator.addNestedNode(parentNodeID, node, data));
-      }
+      const stepIDs = this.select(CreatorV2.stepIDsByParentNodeIDSelector, { id: parentNodeID });
+      await this.dispatch.partialSync(
+        Realtime.node.insertStep({
+          ...this.engine.context,
+          parentNodeID,
+          stepID: node.id,
+          data: {
+            ...data,
+            type: node.type,
+          },
+          ports: node.ports,
+          projectMeta: this.engine.getActiveProjectMeta(),
+          schemaVersion: this.engine.getActiveSchemaVersion(),
+          index: stepIDs.length,
+          nodePortRemaps: [],
+        })
+      );
 
       this.redrawNestedLinks(parentNodeID);
     },
 
-    /**
-     * @deprecated
-     */
-    insertNestedNode: (parentNodeID: string, index: number, nodeID: string): void => {
-      this.dispatch(Creator.insertNestedNode(parentNodeID, index, nodeID));
-
-      this.redrawNestedLinks(parentNodeID);
-      this.redrawNestedThreads(parentNodeID);
-    },
-
-    insertStepV2: async (parentNodeID: string, node: Creator.NodeDescriptor, data: Creator.DataDescriptor, index: number): Promise<void> => {
+    insertStep: async (parentNodeID: string, node: Creator.NodeDescriptor, data: Creator.DataDescriptor, index: number): Promise<void> => {
       const stepIDs = this.select(CreatorV2.stepIDsByParentNodeIDSelector, { id: parentNodeID });
       const nodePortRemaps = index === stepIDs.length ? createPortRemap(this.engine.getNodeByID(stepIDs[stepIDs.length - 1])) : undefined;
 
@@ -306,36 +227,27 @@ class NodeManager extends EngineConsumer {
 
       const blockName = this.getNewBlockName(node.type);
 
-      if (this.isAtomicActionsPhase2) {
-        const projectMeta = this.engine.getActiveProjectMeta();
-        const parentNodeStepIDs = this.select(CreatorV2.stepIDsByParentNodeIDSelector, { id: node.parentNode! });
-        const stepIDs = [nodeID];
+      const projectMeta = this.engine.getActiveProjectMeta();
+      const parentNodeStepIDs = this.select(CreatorV2.stepIDsByParentNodeIDSelector, { id: node.parentNode! });
+      const stepIDs = [nodeID];
 
-        // if we are isolating every step in a block, we are simply just moving the block
-        const movingEntireBlock = parentNodeStepIDs.length === stepIDs.length;
-        if (movingEntireBlock) {
-          this.setOrigin(node.parentNode!, coords);
-          await this.saveLocations([node.parentNode!]);
-        } else {
-          await this.dispatch.partialSync(
-            Realtime.node.isolateSteps({
-              ...this.engine.context,
-              stepIDs,
-              projectMeta,
-              sourceParentNodeID: node.parentNode!,
-              parentNodeID: parentNode.id,
-              schemaVersion: this.engine.getActiveSchemaVersion(),
-              parentNodeData: { ports: parentNode.ports, coords, name: blockName, type: Realtime.BlockType.COMBINED },
-            })
-          );
-        }
+      // if we are isolating every step in a block, we are simply just moving the block
+      const movingEntireBlock = parentNodeStepIDs.length === stepIDs.length;
+      if (movingEntireBlock) {
+        this.setOrigin(node.parentNode!, coords);
+        await this.saveLocations([node.parentNode!]);
       } else {
-        this.saveLocations([node.parentNode!]);
-        this.dispatch(Creator.unmergeNode(nodeID, coords, parentNode));
-
-        if (node.type === BlockType.COMBINED) {
-          this.internal.addNewStartingBlock({ id: node.id, name: blockName });
-        }
+        await this.dispatch.partialSync(
+          Realtime.node.isolateSteps({
+            ...this.engine.context,
+            stepIDs,
+            projectMeta,
+            sourceParentNodeID: node.parentNode!,
+            parentNodeID: parentNode.id,
+            schemaVersion: this.engine.getActiveSchemaVersion(),
+            parentNodeData: { ports: parentNode.ports, coords, name: blockName, type: Realtime.BlockType.COMBINED },
+          })
+        );
       }
 
       this.redrawNestedLinks(node.parentNode!);
@@ -345,24 +257,18 @@ class NodeManager extends EngineConsumer {
     updateManyData: async (updates: { nodeID: string; patch: Partial<Realtime.NodeData<unknown>> }[]): Promise<void> => {
       if (!updates.length) return;
 
-      if (this.isAtomicActionsPhase2) {
-        const projectMeta = this.engine.getActiveProjectMeta();
-        const nodes = updates.reduce<Realtime.NodeData<unknown>[]>((acc, { nodeID, patch }) => {
-          const data = this.engine.getDataByNodeID(nodeID);
-          if (data) {
-            acc.push({ ...data, ...patch });
-          }
-          return acc;
-        }, []);
+      const projectMeta = this.engine.getActiveProjectMeta();
+      const nodes = updates.reduce<Realtime.NodeData<unknown>[]>((acc, { nodeID, patch }) => {
+        const data = this.engine.getDataByNodeID(nodeID);
+        if (data) {
+          acc.push({ ...data, ...patch });
+        }
+        return acc;
+      }, []);
 
-        if (!nodes.length) return;
+      if (!nodes.length) return;
 
-        await this.dispatch.partialSync(Realtime.node.updateDataMany({ ...this.engine.context, nodes, projectMeta }));
-      } else {
-        updates.forEach(({ nodeID, patch }) => {
-          this.dispatch(Creator.updateNodeData(nodeID, patch));
-        });
-      }
+      await this.dispatch.partialSync(Realtime.node.updateDataMany({ ...this.engine.context, nodes, projectMeta }));
     },
 
     removeMany: async (nodeIDs: string[]): Promise<void> => {
@@ -419,18 +325,16 @@ class NodeManager extends EngineConsumer {
         return acc;
       }, {});
 
-      if (this.isAtomicActionsPhase2 && !!Object.keys(nodes).length) {
-        await this.dispatch
-          .partialSync(
-            Realtime.node.moveMany({
-              ...this.engine.context,
-              blocks: nodes,
-            })
-          )
-          .catch(Sentry.error);
-      } else {
-        Object.entries(nodes).forEach(([nodeID, coords]) => this.dispatch(Creator.updateNodeLocation(nodeID, coords)));
-      }
+      if (!Object.keys(nodes).length) return;
+
+      await this.dispatch
+        .partialSync(
+          Realtime.node.moveMany({
+            ...this.engine.context,
+            blocks: nodes,
+          })
+        )
+        .catch(Sentry.error);
     },
   };
 
@@ -495,10 +399,6 @@ class NodeManager extends EngineConsumer {
 
     this.log.debug(this.log.pending('adding node'), this.log.slug(nodeID));
 
-    if (!this.isAtomicActionsPhase2) {
-      await this.engine.realtime.sendUpdate(RealtimeDuck.addNode(augmentedNode, data, parentNode));
-    }
-
     await this.dispatch(
       History.transaction(async () => {
         if (isMarkupBlockType(type)) {
@@ -507,7 +407,6 @@ class NodeManager extends EngineConsumer {
           await this.internal.addBlock(augmentedNode, data, parentNode);
         }
 
-        this.engine.saveHistory();
         // TODO: fold this into the actions that add new steps to have better atomicity
         await this.handleNewStep(augmentedNode, data);
       })
@@ -532,7 +431,7 @@ class NodeManager extends EngineConsumer {
     const actionNode = parentNodeID ? this.engine.getDataByNodeID(parentNodeID) : null;
 
     if (parentNodeID && actionNode) {
-      await this.insertStepV2(actionNode.nodeID, type, index, { nodeID, factoryData, autoFocus: false });
+      await this.insertStep(actionNode.nodeID, type, index, { nodeID, factoryData, autoFocus: false });
     } else {
       parentNodeID = Utils.id.objectID();
 
@@ -544,14 +443,8 @@ class NodeManager extends EngineConsumer {
         ports: { in: [{ id: Utils.id.objectID() }], out: { byKey: {}, dynamic: [], builtIn: {} } },
       };
 
-      if (!this.isAtomicActionsPhase2) {
-        await this.engine.realtime.sendUpdate(RealtimeDuck.addNode(augmentedNode, data, parentNode));
-      }
-
       await this.internal.addActions(augmentedNode, data, parentNode);
     }
-
-    this.engine.saveHistory();
 
     this.log.info(this.log.success('added actions node'), this.log.slug(nodeID));
 
@@ -585,14 +478,9 @@ class NodeManager extends EngineConsumer {
     const point = this.engine.canvas!.fromCoords(coords);
     const centeredEntities = centerNodeGroup(entities, point);
 
-    if (!this.isAtomicActionsPhase2) {
-      await this.engine.realtime.sendUpdate(RealtimeDuck.addManyNodes(centeredEntities, point));
-    }
-
     await this.dispatch(
       History.transaction(async () => {
         await this.internal.importSnapshot(centeredEntities);
-        this.engine.saveHistory();
 
         await this.registerIntentSteps(entities.nodesWithData);
       })
@@ -610,14 +498,9 @@ class NodeManager extends EngineConsumer {
     const duplicateNodeWithData = await this.engine.diagram.duplicateNode(nodeID);
 
     if (duplicateNodeWithData?.node?.id) {
-      this.engine.saveHistory();
       this.engine.setActive(duplicateNodeWithData.node.id);
 
       await this.registerIntentSteps([duplicateNodeWithData]);
-
-      if (duplicateNodeWithData.node.type === BlockType.COMBINED) {
-        await this.internal.addNewStartingBlock({ id: duplicateNodeWithData.node.id, name: duplicateNodeWithData.data.name });
-      }
 
       this.log.info(this.log.success('duplicated node'), this.log.slug(nodeID));
     }
@@ -650,40 +533,24 @@ class NodeManager extends EngineConsumer {
 
     this.engine.selection.replace(parentNodes);
 
-    this.engine.saveHistory();
-
     await this.registerIntentSteps(nodesWithData);
-    await this.internal.addManyStartingBlocks(nodesWithData);
   }
 
   /**
    * patches a node's data by its ID
    */
-  async updateData<T extends unknown = unknown>(nodeID: string, patch: Partial<Realtime.NodeData<T>>, save = true): Promise<void> {
-    await this.updateManyData([{ nodeID, patch }], save);
+  async updateData<T extends unknown = unknown>(nodeID: string, patch: Partial<Realtime.NodeData<T>>): Promise<void> {
+    await this.updateManyData([{ nodeID, patch }]);
   }
 
   /**
    * patches multiple nodes data by ID
    */
-  async updateManyData<T extends unknown = unknown>(updates: { nodeID: string; patch: Partial<Realtime.NodeData<T>> }[], save = true): Promise<void> {
+  async updateManyData<T extends unknown = unknown>(updates: { nodeID: string; patch: Partial<Realtime.NodeData<T>> }[]): Promise<void> {
     this.log.debug(this.log.pending('updating many node data'), this.log.value(updates.length));
-
-    if (!this.isAtomicActionsPhase2) {
-      await Promise.all(updates.map(({ nodeID, patch }) => this.engine.realtime.sendUpdate(RealtimeDuck.updateNodeData(nodeID, patch))));
-    }
     await this.internal.updateManyData(updates);
 
-    updates.forEach(({ nodeID, patch }) => {
-      if (patch.name && this.engine.getDataByNodeID(nodeID)?.type === Realtime.BlockType.COMBINED) {
-        this.internal.updateStartingBlock({ blockID: nodeID, name: patch.name });
-      }
-      this.redraw(nodeID);
-    });
-
-    if (save) {
-      this.engine.saveHistory();
-    }
+    updates.forEach(({ nodeID }) => this.redraw(nodeID));
 
     this.log.info(this.log.success('updated many node data'), this.log.value(updates.length));
   }
@@ -704,15 +571,7 @@ class NodeManager extends EngineConsumer {
 
     return this.validateRemove(allNodeIDs, async (removableNodeIDs) => {
       await this.engine.comment.handleNodesDelete(removableNodeIDs);
-
-      if (!this.isAtomicActionsPhase2) {
-        await this.engine.realtime.sendUpdate(RealtimeDuck.removeManyNodes(removableNodeIDs));
-        await this.internal.removeStartingBlocks(removableNodeIDs);
-      }
-
       await this.internal.removeMany(removableNodeIDs);
-
-      this.engine.saveHistory();
 
       this.log.info(this.log.success('removed multiple nodes'), this.log.value(removableNodeIDs.length));
     });
@@ -736,15 +595,10 @@ class NodeManager extends EngineConsumer {
 
     this.log.debug(this.log.pending('adding nested node'), this.log.slug(stepID));
 
-    if (!this.isAtomicActionsPhase2) {
-      await this.engine.realtime.sendUpdate(RealtimeDuck.addNestedNode(blockID, node, data));
-    }
-
     await this.dispatch(
       History.transaction(async () => {
         await this.internal.appendStep(blockID, node, data);
 
-        this.engine.saveHistory();
         // TODO: fold this into the actions that add new steps to have better atomicity
         await this.handleNewStep(node, data);
       })
@@ -754,40 +608,9 @@ class NodeManager extends EngineConsumer {
   }
 
   /**
-   * @deprecated
-   */
-  private async insertStepV1(
-    blockID: string,
-    node: Creator.NodeDescriptor,
-    data: Creator.DataDescriptor,
-    index: number,
-    { autoFocus }: { autoFocus?: boolean } = {}
-  ): Promise<void> {
-    const parentNode = {
-      id: Utils.id.objectID(),
-      ports: { in: [{ id: Utils.id.objectID() }], out: { byKey: {}, dynamic: [], builtIn: {} } },
-    };
-
-    this.log.debug(this.log.pending('adding nested node'), this.log.slug(node.id));
-
-    batch(() => {
-      this.internal.addV1(node, data, parentNode);
-      this.internal.insertNestedNode(blockID, index, parentNode.id);
-    });
-
-    await this.engine.realtime.sendUpdate(RealtimeDuck.addNode(node, data, parentNode));
-    await this.engine.realtime.sendUpdate(RealtimeDuck.insertNestedNode(blockID, index, node.id));
-
-    this.engine.saveHistory();
-    await this.handleNewStep(node, data, autoFocus);
-
-    this.log.info(this.log.success('added nested node'), this.log.slug(node.id));
-  }
-
-  /**
    * inserts a new step to a block at some index
    */
-  async insertStepV2<K extends keyof Realtime.NodeDataMap>(
+  async insertStep<K extends keyof Realtime.NodeDataMap>(
     parentNodeID: string,
     type: K,
     index: number,
@@ -799,16 +622,11 @@ class NodeManager extends EngineConsumer {
   ): Promise<void> {
     const { node, data } = nodeDescriptorFactory(nodeID, type, factoryData, this.select(nodeFactoryOptionsSelector));
 
-    if (!this.isAtomicActionsPhase2) {
-      await this.insertStepV1(parentNodeID, node, data, index, { autoFocus });
-      return;
-    }
-
     this.log.debug(this.log.pending('inserting step'), this.log.slug(node.id));
 
     await this.dispatch(
       History.transaction(async () => {
-        await this.internal.insertStepV2(parentNodeID, node, data, index);
+        await this.internal.insertStep(parentNodeID, node, data, index);
         // TODO: fold this into the actions that add new steps to have better atomicity
         await this.handleNewStep(node, data, autoFocus);
       })
@@ -818,31 +636,9 @@ class NodeManager extends EngineConsumer {
   }
 
   /**
-   * @deprecated
-   */
-  private async relocateV1(parentNodeID: string, index: number, nodeID: string): Promise<void> {
-    this.log.debug(this.log.pending('inserting nested node'), this.log.slug(nodeID));
-
-    this.internal.insertNestedNode(parentNodeID, index, nodeID);
-
-    if (!this.isAtomicActionsPhase2) {
-      await this.engine.realtime.sendUpdate(RealtimeDuck.insertNestedNode(parentNodeID, index, nodeID));
-    }
-
-    this.engine.saveHistory();
-
-    this.log.info(this.log.success('inserted nested node'), this.log.slug(nodeID));
-  }
-
-  /**
    * relocate steps and blocks to within other blocks
    */
-  async relocateV2(targetNodeID: string, nodeID: string, index: number): Promise<void> {
-    if (!this.isAtomicActionsPhase2) {
-      await this.relocateV1(targetNodeID, index, nodeID);
-      return;
-    }
-
+  async relocate(targetNodeID: string, nodeID: string, index: number): Promise<void> {
     const sourceNodeID = this.select(CreatorV2.parentNodeIDByStepIDSelector, { id: nodeID });
 
     if (sourceNodeID === targetNodeID) {
@@ -910,19 +706,14 @@ class NodeManager extends EngineConsumer {
 
     this.log.debug(this.log.pending('unmerging node'), this.log.slug(nodeID));
 
-    if (!this.isAtomicActionsPhase2) {
-      await this.engine.realtime.sendUpdate(RealtimeDuck.unmergeNode(nodeID, coords, parentNode));
-    }
-
     await this.internal.isolateStep(nodeID, coords, parentNode);
-    this.engine.saveHistory();
 
     this.log.info(this.log.success('unmerged node'), this.log.slug(nodeID));
   }
 
   // location / rendering methods
 
-  async translate(nodeIDs: string[], movement: Pair<number>, volatile = true): Promise<void> {
+  async translate(nodeIDs: string[], movement: Pair<number>): Promise<void> {
     const activeNodeIDs = nodeIDs.filter((nodeID) => this.engine.nodes.has(nodeID));
     const origins = activeNodeIDs.map<Point>((nodeID) => {
       const node = this.engine.nodes.get(nodeID)!;
@@ -931,12 +722,6 @@ class NodeManager extends EngineConsumer {
     });
 
     await this.internal.translateMany(activeNodeIDs, movement, origins);
-
-    const action = RealtimeDuck.moveManyNodes(activeNodeIDs, movement, origins);
-
-    if (!volatile && !this.isAtomicActionsPhase2) {
-      await this.engine.realtime.sendUpdate(action);
-    }
   }
 
   async saveLocations(nodeIDs: Nullish<string>[]): Promise<void> {
@@ -1016,7 +801,7 @@ class NodeManager extends EngineConsumer {
 
     const validLinkIDs = Utils.array.unique(linkIDs).filter((linkID) => this.engine.links.has(linkID));
 
-    await this.engine.link.savePointsMany(validLinkIDs, { saveHistory: false });
+    await this.engine.link.savePointsMany(validLinkIDs);
   }
 
   translateAllThreads(nodeID: string, movement: Pair<number>): void {
@@ -1057,7 +842,6 @@ class NodeManager extends EngineConsumer {
 
   async drop(): Promise<void> {
     this.engine.saveActiveLocations();
-    this.engine.saveHistory();
 
     await this.engine.drag.reset();
     this.engine.transformation.reinitialize();

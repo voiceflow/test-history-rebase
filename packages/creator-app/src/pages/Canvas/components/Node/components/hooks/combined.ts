@@ -107,7 +107,7 @@ export const useCombined = ({ defaultBlockColor }: { defaultBlockColor: string }
 
           event.preventDefault();
 
-          await Promise.all([engine.node.relocateV2(nodeEntity.nodeID, target, index), engine.drag.reset()]);
+          await Promise.all([engine.node.relocate(nodeEntity.nodeID, target, index), engine.drag.reset()]);
         }
       }),
     [nodeEntity.nodeID]

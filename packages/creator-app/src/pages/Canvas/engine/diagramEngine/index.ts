@@ -39,7 +39,7 @@ class DiagramEngine extends EngineConsumer {
     const stepIDs = parentNode.combinedNodes;
     const targetIndex = stepIDs.includes(node.id) ? stepIDs.indexOf(node.id) + 1 : stepIDs.length;
 
-    await this.engine.node.insertStepV2(blockID, node.type, targetIndex, { nodeID: node.id, factoryData: data });
+    await this.engine.node.insertStep(blockID, node.type, targetIndex, { nodeID: node.id, factoryData: data });
 
     return clonedEntities;
   }

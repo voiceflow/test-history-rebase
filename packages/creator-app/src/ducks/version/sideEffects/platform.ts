@@ -34,6 +34,12 @@ export const patchSettings =
     }
   };
 
+export const patchDefaultStepColors =
+  (defaultStepColors: Realtime.Version.DefaultStepColors): Thunk =>
+  async (dispatch) => {
+    await dispatch(general.patchDefaultStepColors(defaultStepColors));
+  };
+
 export const updateLocales =
   <L extends Realtime.AnyLocale>(locales?: L[]): Thunk =>
   async (dispatch, getState) => {

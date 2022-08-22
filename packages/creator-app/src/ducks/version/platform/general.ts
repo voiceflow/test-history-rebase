@@ -21,3 +21,14 @@ export const patchSettings =
 
     await dispatch.sync(Realtime.version.patchSettings({ ...getActivePlatformVersionContext(getState()), settings }));
   };
+
+export const patchDefaultStepColors =
+  (defaultStepColors: Realtime.Version.DefaultStepColors): Thunk =>
+  async (dispatch, getState) => {
+    const state = getState();
+    const versionID = Session.activeVersionIDSelector(state);
+
+    Errors.assertVersionID(versionID);
+
+    await dispatch.sync(Realtime.version.patchDefaultStepColors({ ...getActivePlatformVersionContext(getState()), defaultStepColors }));
+  };

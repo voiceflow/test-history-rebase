@@ -3,6 +3,7 @@ import { VoiceflowVersion } from '@voiceflow/voiceflow-types';
 import { createSelector } from 'reselect';
 
 import * as Session from '@/ducks/session';
+import { createParameterSelector } from '@/ducks/utils';
 
 import { getVersionByIDSelector } from '../base';
 
@@ -35,6 +36,14 @@ export const foldersSelector = createSelector([versionSelector], (version) => ve
 export const canvasNodeVisibilitySelector = createSelector([settingsSelector], (settings) => settings?.defaultCanvasNodeVisibility ?? null);
 
 export const carouselLayoutSelector = createSelector([settingsSelector], (settings) => settings?.defaultCarouselLayout ?? null);
+
+const stepTypeParamSelector = createParameterSelector((params: { stepType: keyof Realtime.Version.DefaultStepColors }) => params.stepType);
+
+export const defaultStepColors = createSelector([versionSelector], (version) => version?.defaultStepColors ?? {});
+export const defaultStepColorByStepType = createSelector(
+  [defaultStepColors, stepTypeParamSelector],
+  (defaultStepColors, stepType) => defaultStepColors[stepType]
+);
 
 export const defaultVoiceSelector = createSelector(
   [settingsSelector],

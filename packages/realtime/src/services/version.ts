@@ -107,6 +107,12 @@ class VersionService extends AbstractControl {
     await client.version.updatePlatformData(versionID, platformData);
   }
 
+  public async patchDefaultStepColors(creatorID: number, versionID: string, defaultStepColors: Realtime.Version.DefaultStepColors): Promise<void> {
+    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+
+    await client.version.updateDefaultStepColors(versionID, defaultStepColors);
+  }
+
   public async reorderTopics(creatorID: number, versionID: string, fromID: string, toIndex: number): Promise<void> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 

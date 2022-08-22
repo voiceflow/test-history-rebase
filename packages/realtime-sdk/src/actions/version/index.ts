@@ -1,4 +1,13 @@
-import { COMPONENTS_KEY, PROTOTYPE_KEY, PUBLISHING_KEY, RPC_KEY, SESSION_KEY, SETTINGS_KEY, TOPICS_KEY } from '@realtime-sdk/constants';
+import {
+  COMPONENTS_KEY,
+  DEFAULT_STEP_COLORS_KEY,
+  PROTOTYPE_KEY,
+  PUBLISHING_KEY,
+  RPC_KEY,
+  SESSION_KEY,
+  SETTINGS_KEY,
+  TOPICS_KEY,
+} from '@realtime-sdk/constants';
 import { AnyVersion, AnyVersionPublishing, AnyVersionSettings, PrototypeSettings, Version } from '@realtime-sdk/models';
 import { BaseProjectPayload, BaseVersionPayload } from '@realtime-sdk/types';
 import { Utils } from '@voiceflow/common';
@@ -12,6 +21,7 @@ export * as variable from './variable';
 
 const versionRPCType = Utils.protocol.typeFactory(versionType(RPC_KEY));
 const versionSettingsType = Utils.protocol.typeFactory(versionType(SETTINGS_KEY));
+const versionDefaultStepColorsType = Utils.protocol.typeFactory(versionType(DEFAULT_STEP_COLORS_KEY));
 const versionSessionType = Utils.protocol.typeFactory(versionSettingsType(SESSION_KEY));
 const versionPublishingType = Utils.protocol.typeFactory(versionType(PUBLISHING_KEY));
 const versionPrototypeType = Utils.protocol.typeFactory(versionType(PROTOTYPE_KEY));
@@ -34,6 +44,10 @@ export const activateVersion = Utils.protocol.createAction<ActivateVersionPayloa
 export interface PatchSettingsPayload extends BaseVersionPayload {
   platform: VoiceflowConstants.PlatformType;
   settings: Partial<AnyVersionSettings>;
+}
+
+export interface PatchDefaultStepColorsPayload extends BaseVersionPayload {
+  defaultStepColors: Version.DefaultStepColors;
 }
 
 export interface PatchSessionPayload extends BaseVersionPayload {
@@ -61,6 +75,8 @@ export interface ReplacePrototypeSettingsPayload extends BaseVersionPayload {
 }
 
 export const patchSettings = Utils.protocol.createAction<PatchSettingsPayload>(versionSettingsType('PATCH'));
+
+export const patchDefaultStepColors = Utils.protocol.createAction<PatchDefaultStepColorsPayload>(versionDefaultStepColorsType('PATCH'));
 
 export const patchSession = Utils.protocol.createAction<PatchSessionPayload>(versionSessionType('PATCH'));
 

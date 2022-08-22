@@ -20,6 +20,7 @@ export interface ColorPickerProps extends ColorThemesPersistAPI {
   customThemes?: Colors;
   selectedColor: string;
   defaultColorScheme?: ColorScheme;
+  debounceTime?: number;
 }
 
 export const ColorPicker: React.FC<ColorPickerProps> = ({
@@ -29,6 +30,7 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
   selectedColor,
   addCustomTheme,
   defaultColorScheme = ColorScheme.DARK,
+  debounceTime = 100,
   ...props
 }) => {
   const normalizedColor = React.useMemo(() => normalizeColor(selectedColor), [selectedColor]);
@@ -37,7 +39,7 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
 
   const [newColor, setNewColor] = React.useState<IColor | null>(null);
 
-  const debouncedOnChange = useDebouncedCallback(100, (color: string) => onChange(color), []);
+  const debouncedOnChange = useDebouncedCallback(debounceTime, (color: string) => onChange(color), []);
 
   const onChangeHex = (hex: string) => {
     setSelectedHex(hex);

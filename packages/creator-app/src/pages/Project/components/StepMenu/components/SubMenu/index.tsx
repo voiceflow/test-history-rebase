@@ -1,5 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Animations, ContextMenu, OptionsMenuOption, Portal, SvgIcon, usePopper } from '@voiceflow/ui';
+import { Animations, Portal, usePopper } from '@voiceflow/ui';
 import React from 'react';
 
 import { BlockType, DragItem } from '@/constants';
@@ -19,6 +19,7 @@ interface SubMenuProps {
 const SubMenu: React.FC<SubMenuProps> = ({ steps, onDrop }) => {
   const chatCardStep = useFeature(Realtime.FeatureFlag.CHAT_CARD_STEP);
   const defaultStepColors = useFeature(Realtime.FeatureFlag.DEFAULT_STEP_COLORS);
+  const [activeStepType, setActiveStepType] = React.useState<null | Realtime.BlockType>(null);
 
   const menuRef = React.useRef<HTMLDivElement>(null);
 
@@ -55,19 +56,10 @@ const SubMenu: React.FC<SubMenuProps> = ({ steps, onDrop }) => {
     { horizontalEnabled: true }
   );
 
-  const menuOptions: OptionsMenuOption[] = React.useMemo(
-    () => [
-      {
-        label: (
-          <S.ContextMenuOption>
-            Default color
-            <SvgIcon icon="arrowRight" color="#BECEDC" size={10} />
-          </S.ContextMenuOption>
-        ),
-      },
-    ],
-    []
-  );
+  const onMouseEnterMenuButton = (stepType: BlockType) => {
+    // this will close the context menu when moving the focus to another step
+    if (stepType !== activeStepType) setActiveStepType(stepType);
+  };
 
   return (
     <div ref={rootPopper.setReferenceElement}>
@@ -76,15 +68,14 @@ const SubMenu: React.FC<SubMenuProps> = ({ steps, onDrop }) => {
           <S.SubMenuContainer ref={menuRef}>
             {processedSteps.map((step, index) => (
               <Animations.FadeDownDelayedContainer key={step.label} delay={0.04 + index * 0.03}>
-                {defaultStepColors.isEnabled ? (
-                  <ContextMenu options={menuOptions}>
-                    {({ isOpen, onContextMenu }) => (
-                      <SubMenuButton {...step} onDrop={onDrop} onContextMenu={onContextMenu} isContextMenuOpen={isOpen} />
-                    )}
-                  </ContextMenu>
-                ) : (
-                  <SubMenuButton {...step} onDrop={onDrop} />
-                )}
+                <div onMouseEnter={() => onMouseEnterMenuButton(step.type)}>
+                  <SubMenuButton
+                    {...step}
+                    onDrop={onDrop}
+                    isDefaultStepColorsEnabled={defaultStepColors.isEnabled}
+                    isFocused={activeStepType === step.type}
+                  />
+                </div>
               </Animations.FadeDownDelayedContainer>
             ))}
           </S.SubMenuContainer>

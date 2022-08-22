@@ -1,7 +1,7 @@
 import composeRef from '@seznam/compose-react-refs';
 import { PlanType } from '@voiceflow/internal';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, Portal, SvgIcon, SvgIconTypes, TippyTooltip, usePopper } from '@voiceflow/ui';
+import { Box, ContextMenu, OptionsMenuOption, Portal, SvgIcon, SvgIconTypes, TippyTooltip, usePopper } from '@voiceflow/ui';
 import React from 'react';
 import { useDrag } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
@@ -14,6 +14,7 @@ import { useEnableDisable, useEventualEngine, useHover, useModals, useSelector, 
 import { StepDragItem } from '@/pages/Canvas/components/CanvasDiagram';
 import { ClassName } from '@/styles/constants';
 
+import DefaultColorPopper from '../DefaultColorPopper';
 import { StyledText, TooltipContainer } from '../styles';
 import { SubMenuButtonContainer } from './SubMenuButtonContainer';
 
@@ -25,9 +26,9 @@ interface SubMenuButtonProps {
   tooltipText?: string;
   tooltipLink?: string;
   factoryData?: Partial<Realtime.NodeData<unknown>>;
-  onContextMenu?: React.MouseEventHandler;
-  isContextMenuOpen?: boolean;
   isDraggingPreview?: boolean;
+  isDefaultStepColorsEnabled?: boolean;
+  isFocused?: boolean;
 }
 
 const SubMenuButton: React.FC<SubMenuButtonProps> = ({
@@ -38,17 +39,30 @@ const SubMenuButton: React.FC<SubMenuButtonProps> = ({
   tooltipText,
   tooltipLink,
   factoryData,
-  onContextMenu,
-  isContextMenuOpen,
   isDraggingPreview,
+  isDefaultStepColorsEnabled,
+  isFocused,
 }) => {
   const getEngine = useEventualEngine();
   const isAutoPanning = React.useContext(AutoPanningCacheContext);
   const plan = useSelector(WorkspaceV2.active.planSelector);
   const isLocked = isLockedStep(plan, type);
+  const [showPopper, , popperHoverHandlers] = useHover();
+  const [isHovered, , hoverHandlers] = useHover({ hoverDelay: isLocked ? 0 : 1600 });
+
+  const menuOptions = React.useMemo(
+    () =>
+      [
+        {
+          label: <DefaultColorPopper blockType={type} isHovered={showPopper} />,
+          active: showPopper,
+          ...popperHoverHandlers,
+        },
+      ] as OptionsMenuOption[],
+    [showPopper]
+  );
 
   const [isClickedState, enableClickedState, clearClickedState] = useEnableDisable();
-  const [isHovered, , hoverHandlers] = useHover({ hoverDelay: isLocked ? 0 : 1600 });
 
   const { open: openPaymentModal } = useModals<{ planType: PlanType }>(ModalType.PAYMENT);
 
@@ -79,14 +93,16 @@ const SubMenuButton: React.FC<SubMenuButtonProps> = ({
   useTeardown(() => connectDrag(null), [connectDrag]);
 
   React.useEffect(() => {
-    if (isDragging) {
-      clearClickedState();
-    }
+    if (isDragging) clearClickedState();
   }, [isDragging]);
+
+  React.useEffect(() => {
+    if (!isFocused) clearClickedState();
+  }, [isFocused]);
 
   const containerRef = isLocked ? popper.setReferenceElement : composeRef<HTMLDivElement>(connectDrag, popper.setReferenceElement);
 
-  return (
+  const button = (isOpen?: boolean, onContextMenu?: React.MouseEventHandler) => (
     <SubMenuButtonContainer
       ref={containerRef}
       isClicked={isClickedState}
@@ -94,7 +110,7 @@ const SubMenuButton: React.FC<SubMenuButtonProps> = ({
       onMouseDown={enableClickedState}
       isDragging={isDragging}
       isDraggingPreview={isDraggingPreview}
-      isContextMenuOpen={isContextMenuOpen}
+      isContextMenuOpen={isOpen && isFocused}
       className={ClassName.SUB_STEP_MENU_ITEM}
       disabled={isLocked as boolean}
       onContextMenu={onContextMenu}
@@ -128,6 +144,12 @@ const SubMenuButton: React.FC<SubMenuButtonProps> = ({
       )}
     </SubMenuButtonContainer>
   );
+
+  if (isDefaultStepColorsEnabled && isFocused) {
+    return <ContextMenu options={menuOptions}>{({ isOpen, onContextMenu }) => button(isOpen, onContextMenu)}</ContextMenu>;
+  }
+
+  return button();
 };
 
 export default React.memo(SubMenuButton);

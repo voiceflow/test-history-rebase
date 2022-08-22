@@ -20,7 +20,7 @@ interface BasePlatformData extends BaseModels.Version.PlatformData<VoiceVersion.
 }
 
 export interface Version<P extends BasePlatformData>
-  extends Pick<DBVersion<P>, 'creatorID' | '_version' | 'variables' | 'projectID' | 'rootDiagramID' | 'templateDiagramID'>,
+  extends Pick<DBVersion<P>, 'creatorID' | '_version' | 'variables' | 'projectID' | 'rootDiagramID' | 'templateDiagramID' | 'defaultStepColors'>,
     Required<Pick<DBVersion<P>, 'folders' | 'components'>> {
   id: string;
   status: Nullable<P['status']>;
@@ -44,6 +44,8 @@ export namespace Version {
       followContent: Nullable<string>;
     };
   }
+
+  export type DefaultStepColors = BaseModels.Version.DefaultStepColors;
 }
 
 export type AnyVoiceVersionSettings =

@@ -26,6 +26,7 @@ export const PORT_KEY = 'port';
 export const AWARENESS_KEY = 'awareness';
 export const LOCAL_KEY = 'local';
 export const SETTINGS_KEY = 'settings';
+export const DEFAULT_STEP_COLORS_KEY = 'default_step_colors';
 export const SESSION_KEY = 'session';
 export const PUBLISHING_KEY = 'publishing';
 export const PLATFORM_DATA_KEY = 'platform_data';

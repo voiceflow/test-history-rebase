@@ -5,6 +5,7 @@ import addDiagram from './addDiagram';
 import addGlobalVariable from './addGlobalVariable';
 import addManyGlobalVariables from './addManyGlobalVariables';
 import crudReducers from './crud';
+import patchDefaultStepColors from './patchDefaultStepColors';
 import patchPublishing from './patchPublishing';
 import patchSession from './patchSession';
 import patchSettings from './patchSettings';
@@ -24,6 +25,7 @@ const versionReducer = createRootCRUDReducer(INITIAL_STATE, crudReducers)
   .immerCase(...patchPublishing)
   .immerCase(...patchSession)
   .immerCase(...patchSettings)
+  .immerCase(...patchDefaultStepColors)
   .immerCase(...reorderTopics)
   .immerCase(...reorderComponents)
   .build();

@@ -6,6 +6,7 @@ import NestedMenu, { MenuItemMultilevel, UIOnlyMenuItemOption } from './NestedMe
 export interface OptionsMenuOption extends MenuItemMultilevel<OptionsMenuOption> {
   label: React.ReactNode;
   onClick?: VoidFunction;
+  active?: boolean;
 }
 
 export interface OptionsMenuProps {

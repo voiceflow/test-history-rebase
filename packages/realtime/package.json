@@ -1,6 +1,6 @@
 {
   "name": "@voiceflow/realtime",
-  "version": "1.96.1",
+  "version": "1.96.2",
   "dependencies": {
     "@logux/core": "0.7.3",
     "@logux/server": "0.11.0",

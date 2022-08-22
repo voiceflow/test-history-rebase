@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.96.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.96.1...@voiceflow/realtime@1.96.2) (2022-08-22)
+
+
+### Bug Fixes
+
+* realtime connections unstable warning (CT-000) ([#5944](https://github.com/voiceflow/creator-app/issues/5944)) ([2a34e77](https://github.com/voiceflow/creator-app/commit/2a34e7757932733753ec7037440ac79e7918adfa))
+
+
+
+
+
 ## [1.96.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.96.0...@voiceflow/realtime@1.96.1) (2022-08-22)
 
 **Note:** Version bump only for package @voiceflow/realtime

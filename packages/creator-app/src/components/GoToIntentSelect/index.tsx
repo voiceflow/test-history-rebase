@@ -124,6 +124,7 @@ const GoToIntentSelect: React.FC<GoToIntentSelectProps> = ({
   return (
     <Select<IntentOption, TopicIntentOption, string>
       value={value}
+      fullWidth
       grouped
       options={options}
       onSelect={onSelect}

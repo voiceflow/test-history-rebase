@@ -1,5 +1,3 @@
-export const RECONNECT_TIMEOUT = 10 * 1000;
-
 export enum ConnectionStatus {
   // client has not attempted connection
   IDLE = 'idle',
@@ -7,8 +5,6 @@ export enum ConnectionStatus {
   CONNECTED = 'connected',
   // client is disconnected and waiting to re-connect
   RECONNECTING = 'reconnecting',
-  // client connection has terminated
-  TERMINATED = 'terminated',
 }
 
 export enum ClientEvents {

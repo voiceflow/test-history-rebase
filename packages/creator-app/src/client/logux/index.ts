@@ -6,7 +6,7 @@ import { Action, ActionCreator } from 'typescript-fsa';
 
 import { clientLogger } from '@/client/utils';
 
-import { CLIENT_EVENTS, ClientEvents, ConnectionStatus, RECONNECT_TIMEOUT } from './constants';
+import { CLIENT_EVENTS, ClientEvents, ConnectionStatus } from './constants';
 
 export * from './constants';
 
@@ -17,42 +17,21 @@ class LoguxClient extends Client {
 
   private subscriptions!: Record<string, number>;
 
-  private reconnectTimer: NodeJS.Timer | null = null;
-
   private clientEmitter = createNanoEvents<Record<ConnectionStatus | ClientEvents, VoidFunction>>();
-
-  get isTerminated(): boolean {
-    return !this.connected && this.connectionStatus === ConnectionStatus.TERMINATED;
-  }
-
-  private disconnectListener = (): void => {
-    this.reconnectTimer = null;
-    this.setConnectionStatus(ConnectionStatus.TERMINATED);
-  };
 
   private stateChangeListener = (): void => {
     switch (this.connectionStatus) {
       case ConnectionStatus.CONNECTED:
-        if (!this.connected && !this.reconnectTimer) {
+        if (!this.connected) {
           this.setConnectionStatus(ConnectionStatus.RECONNECTING);
-          this.reconnectTimer = setTimeout(this.disconnectListener, RECONNECT_TIMEOUT);
         }
 
         break;
 
       case ConnectionStatus.IDLE:
-      case ConnectionStatus.TERMINATED:
+      case ConnectionStatus.RECONNECTING:
         if (this.state === 'synchronized') {
           this.setConnectionStatus(ConnectionStatus.CONNECTED);
-        }
-
-        break;
-
-      case ConnectionStatus.RECONNECTING:
-        if (this.state === 'synchronized' && this.reconnectTimer) {
-          this.setConnectionStatus(ConnectionStatus.CONNECTED);
-          clearTimeout(this.reconnectTimer);
-          this.reconnectTimer = null;
         }
 
         break;

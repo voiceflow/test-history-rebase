@@ -7,6 +7,7 @@ import {
   BaseButton,
   baseButtonStyles,
   ButtonContainer,
+  DarkButton,
   PrimaryButton,
   PrimaryButtonProps,
   QuaternaryButton,
@@ -58,4 +59,5 @@ export default Object.assign(React.forwardRef<HTMLButtonElement, ButtonProps>(Bu
   SecondaryButton,
   QuaternaryButton,
   WhiteButton,
+  DarkButton,
 });

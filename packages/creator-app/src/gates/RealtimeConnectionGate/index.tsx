@@ -5,7 +5,7 @@ import LoadingGate from '@/components/LoadingGate';
 import { withSessionGate } from '@/hocs';
 import { useLoguxSetup, useRealtimeClient } from '@/hooks';
 
-import ConnectionWarning from './RealtimeLoadingGate/components/RealtimeConnectionWarning';
+import RealtimeTimeoutControl from './components/RealtimeTimeoutControl';
 
 /**
  * manages connection to realtime service
@@ -14,9 +14,17 @@ const RealtimeConnectionGate: React.FC = ({ children }) => {
   const client = useRealtimeClient();
 
   const [isReady, setReady] = React.useState(false);
+  const [reconnecting, setReconnecting] = React.useState(false);
 
-  React.useEffect(() => client.on(ConnectionStatus.TERMINATED, () => setReady(false)), []);
-  React.useEffect(() => client.on(ConnectionStatus.CONNECTED, () => setReady(true)), []);
+  React.useEffect(() => client.on(ConnectionStatus.RECONNECTING, () => setReconnecting(true)), []);
+  React.useEffect(
+    () =>
+      client.on(ConnectionStatus.CONNECTED, () => {
+        setReady(true);
+        setReconnecting(false);
+      }),
+    []
+  );
 
   useLoguxSetup(client, {
     onLogout: () => setReady(false),
@@ -26,11 +34,10 @@ const RealtimeConnectionGate: React.FC = ({ children }) => {
     },
   });
 
-  if (client.isTerminated) return <ConnectionWarning />;
-
   return (
     <LoadingGate label="Collaboration" internalName={RealtimeConnectionGate.name} isLoaded={isReady}>
       {children}
+      {reconnecting && <RealtimeTimeoutControl />}
     </LoadingGate>
   );
 };

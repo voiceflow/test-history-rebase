@@ -1,10 +1,9 @@
 import { Utils } from '@voiceflow/common';
 import * as RealtimeSDK from '@voiceflow/realtime-sdk';
 import React from 'react';
-import { useDispatch } from 'react-redux';
 
 import * as Realtime from '@/ducks/realtime';
-import { useFeature, useForceUpdate, useSelector } from '@/hooks';
+import { useForceUpdate, useSelector } from '@/hooks';
 import { LockOwner } from '@/models';
 import { DiagramHeartbeatContext } from '@/pages/Project/contexts';
 import { Selector } from '@/store/types';
@@ -75,23 +74,15 @@ const useGenericLock = <T>(target: T, { disabled, createLock, createUnlock, lock
 };
 
 export const useEditLock = (nodeID: string, disabled: boolean) => {
-  const dispatch = useDispatch();
   const diagramHeartbeat = React.useContext(DiagramHeartbeatContext);
-  const atomicActionsPhase2 = useFeature(RealtimeSDK.FeatureFlag.ATOMIC_ACTIONS_PHASE_2);
 
   return useGenericLock(nodeID, {
     disabled,
     isLockedSelector: Realtime.isNodeEditLockedSelector,
     lockOwnerSelector: Realtime.editLockOwnerSelector,
 
-    createLock: (id: string) =>
-      atomicActionsPhase2.isEnabled
-        ? diagramHeartbeat.lockEntities(RealtimeSDK.diagram.awareness.LockEntityType.NODE_EDIT, [id])
-        : dispatch(Realtime.sendRealtimeUpdate(Realtime.lockNodes([id], [Realtime.LockType.EDIT]))),
+    createLock: (id: string) => diagramHeartbeat.lockEntities(RealtimeSDK.diagram.awareness.LockEntityType.NODE_EDIT, [id]),
 
-    createUnlock: (id: string) =>
-      atomicActionsPhase2.isEnabled
-        ? diagramHeartbeat.unlockEntities(RealtimeSDK.diagram.awareness.LockEntityType.NODE_EDIT, [id])
-        : dispatch(Realtime.sendRealtimeUpdate(Realtime.unlockNodes([id], [Realtime.LockType.EDIT]))),
+    createUnlock: (id: string) => diagramHeartbeat.unlockEntities(RealtimeSDK.diagram.awareness.LockEntityType.NODE_EDIT, [id]),
   });
 };

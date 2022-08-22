@@ -2,8 +2,6 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import _isNumber from 'lodash/isNumber';
 
 import client from '@/client';
-import * as Creator from '@/ducks/creator';
-import * as Feature from '@/ducks/feature';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { Thunk } from '@/store/types';
 import { BLOCK_WIDTH } from '@/styles/theme';
@@ -85,21 +83,17 @@ export const initialize =
     creator.ports = applyOffsetsToPorts(creator.ports, offsets);
     creator.links = applyOffsetsToLinks(creator.links, offsets);
 
-    if (Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.ATOMIC_ACTIONS_PHASE_2)) {
-      dispatch(
-        Realtime.creator.initialize({
-          workspaceID: '',
-          projectID: '',
-          versionID: '',
-          diagramID,
-          nodesWithData: creator.nodes.map((node) => ({ node, data: creator.data[node.id] })),
-          ports: creator.ports,
-          links: creator.links,
-        })
-      );
-    } else {
-      dispatch(Creator.initializeCreator(creator));
-    }
+    dispatch(
+      Realtime.creator.initialize({
+        workspaceID: '',
+        projectID: '',
+        versionID: '',
+        diagramID,
+        nodesWithData: creator.nodes.map((node) => ({ node, data: creator.data[node.id] })),
+        ports: creator.ports,
+        links: creator.links,
+      })
+    );
 
     const node = document.createElement('div');
 

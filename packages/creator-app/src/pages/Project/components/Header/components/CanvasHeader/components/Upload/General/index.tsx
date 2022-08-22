@@ -9,7 +9,7 @@ import { ModalType } from '@/constants';
 import { NLPTrainStageType, VersionTag } from '@/constants/platforms';
 import * as Project from '@/ducks/project';
 import { activeProjectIDSelector } from '@/ducks/session';
-import { useDispatch, useFeature, useModals } from '@/hooks';
+import { useDispatch, useFeature, useModals, useTrackingEvents } from '@/hooks';
 import { NLPContext, NLPProvider } from '@/pages/Project/contexts/NLPContext';
 
 import ProgressStage from '../components/ProgressStage';
@@ -25,11 +25,16 @@ const GeneralPublish: React.FC = () => {
   const nlpContext = React.useContext(NLPContext)!;
   const isTraining = !!nlpContext && (nlpContext.publishing || !!nlpContext.job);
 
+  const stageType = nlpContext.job?.stage.type;
   const progress = nlpContext.job?.stage.type === NLPTrainStageType.PROGRESS ? nlpContext.job.stage.data.progress : 0;
+
+  const [trackingEvents] = useTrackingEvents();
 
   const updateLiveVersion = React.useCallback(
     async (versionName: string) => {
       try {
+        trackingEvents.trackActiveProjectPublishAttempt();
+
         publishVersionModal.close();
         await nlpContext?.publish({ versionName });
 
@@ -45,6 +50,12 @@ const GeneralPublish: React.FC = () => {
   const onClick = React.useCallback(() => {
     publishVersionModal.open({ onConfirm: updateLiveVersion });
   }, [publishVersionModal, updateLiveVersion]);
+
+  React.useEffect(() => {
+    if (stageType === NLPTrainStageType.SUCCESS) {
+      trackingEvents.trackActiveProjectPublishSuccess();
+    }
+  }, [stageType]);
 
   return (
     <>

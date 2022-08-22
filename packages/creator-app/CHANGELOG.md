@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.872.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.871.5...@voiceflow/creator-app@1.872.0) (2022-08-22)
+
+
+### Features
+
+* added segment tracking for general project publish (PL-111) ([#5912](https://github.com/voiceflow/creator-app/issues/5912)) ([51f2251](https://github.com/voiceflow/creator-app/commit/51f2251c4c5b00b2fd3b6aa18cce5fde8b129a30))
+
+
+
+
+
 ## [1.871.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.871.4...@voiceflow/creator-app@1.871.5) (2022-08-22)
 
 

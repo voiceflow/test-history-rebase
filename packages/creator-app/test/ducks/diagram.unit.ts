@@ -1,9 +1,8 @@
-/* eslint-disable mocha/no-identical-title */
 import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import * as Normal from 'normal-store';
 
-import * as Creator from '@/ducks/creator';
+import * as CreatorV2 from '@/ducks/creatorV2';
 import * as DiagramV1 from '@/ducks/diagram';
 import * as Diagram from '@/ducks/diagramV2';
 import * as Session from '@/ducks/session';
@@ -298,7 +297,7 @@ suite(Diagram, MOCK_STATE)('Ducks - Diagram', ({ describeReducerV2, describeEffe
       it('remove variable from active diagram', async () => {
         const rootState = {
           [Session.STATE_KEY]: { activeWorkspaceID: WORKSPACE_ID, activeProjectID: PROJECT_ID, activeVersionID: VERSION_ID },
-          [Creator.STATE_KEY]: { diagram: { present: { diagramID: DIAGRAM_ID } } },
+          [CreatorV2.STATE_KEY]: { activeDiagramID: DIAGRAM_ID },
         };
 
         const { dispatched } = await applyEffect(createState(MOCK_STATE, rootState), 'fizz');
@@ -311,7 +310,7 @@ suite(Diagram, MOCK_STATE)('Ducks - Diagram', ({ describeReducerV2, describeEffe
       it('add variable to active diagram', async () => {
         const rootState = {
           [Session.STATE_KEY]: { activeWorkspaceID: WORKSPACE_ID, activeProjectID: PROJECT_ID, activeVersionID: VERSION_ID },
-          [Creator.STATE_KEY]: { diagram: { present: { diagramID: DIAGRAM_ID } } },
+          [CreatorV2.STATE_KEY]: { activeDiagramID: DIAGRAM_ID },
         };
 
         const { dispatched } = await applyEffect(createState(MOCK_STATE, rootState), 'fizz', CanvasCreationType.IMM);

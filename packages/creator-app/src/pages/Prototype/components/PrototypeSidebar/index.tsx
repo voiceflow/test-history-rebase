@@ -9,7 +9,6 @@ import { SectionVariant, UncontrolledSection as Section } from '@/components/Sec
 import SoundToggle from '@/components/SoundToggle';
 import { Permission } from '@/config/permissions';
 import { PrototypeStatus } from '@/constants/prototype';
-import * as Diagram from '@/ducks/diagram';
 import * as PrototypeDuck from '@/ducks/prototype';
 import { useDispatch, useEventualEngine, usePermission, useTheme } from '@/hooks';
 import { useToggle } from '@/hooks/toggle';
@@ -19,7 +18,6 @@ import { PrototypeContext } from '@/pages/Prototype/context';
 import { useDebug, useResetPrototype } from '@/pages/Prototype/hooks';
 import { PMStatus } from '@/pages/Prototype/types';
 import { ModelDiff } from '@/utils/prototypeModel';
-import * as Sentry from '@/vendors/sentry';
 
 import { Container, EmbedContainer, TrainingSection } from './components';
 
@@ -37,7 +35,6 @@ const PrototypeSidebar: React.FC = () => {
   const prototypeAPI = React.useContext(PrototypeContext);
   const trainingModelAPI = React.useContext(TrainingModelContext);
   const compilePrototype = useDispatch(PrototypeDuck.compilePrototype);
-  const saveActiveDiagram = useDispatch(Diagram.saveActiveDiagram);
   const { state, actions, config } = prototypeAPI;
   const { locales, projectType, isMuted } = config;
   const { status } = state;
@@ -55,7 +52,6 @@ const PrototypeSidebar: React.FC = () => {
 
   const renderPromise = React.useMemo<Promise<void>>(async () => {
     if (canRenderPrototype) {
-      await saveActiveDiagram().catch(Sentry.error);
       await compilePrototype();
     }
   }, []);

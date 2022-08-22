@@ -6,12 +6,9 @@ import { useSelector } from 'react-redux';
 
 import client from '@/client';
 import { JobStatus } from '@/constants';
-import * as Diagram from '@/ducks/diagram';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
-import { useDispatch } from '@/hooks';
 import { AlexaPublishJob, DialogflowPublishJob, GooglePublishJob } from '@/models';
-import * as Sentry from '@/vendors/sentry';
 
 export type AnyJob = AlexaPublishJob.AnyJob | GooglePublishJob.AnyJob | DialogflowPublishJob.AnyJob;
 export interface PublishContextValue<T extends AnyJob> {
@@ -34,7 +31,6 @@ export const PublishProvider: React.FC = ({ children }) => {
 
   const platform = useSelector(ProjectV2.active.platformSelector);
   const projectID = useSelector(Session.activeProjectIDSelector)!;
-  const saveActiveDiagram = useDispatch(Diagram.saveActiveDiagram);
 
   const platformClient = React.useMemo(() => {
     const isDialogflowPlatform = Realtime.Utils.typeGuards.isDialogflowPlatform(platform);
@@ -54,12 +50,6 @@ export const PublishProvider: React.FC = ({ children }) => {
 
   const publish = React.useCallback(
     async (options: { versionName?: string; submit?: boolean } = {}) => {
-      try {
-        await saveActiveDiagram();
-      } catch (error) {
-        Sentry.error(error);
-      }
-
       const result = await platformClient.publish.run(projectID, options);
 
       setJob(result?.job || null);

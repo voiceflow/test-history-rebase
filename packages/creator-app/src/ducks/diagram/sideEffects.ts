@@ -3,13 +3,11 @@ import { Nullable } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { normalize } from 'normal-store';
 
-import client from '@/client';
 import { PageProgress } from '@/components/PageProgressBar/utils';
 import * as Errors from '@/config/errors';
 import { PageProgressBar, RESERVED_JS_WORDS } from '@/constants';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as DiagramV2 from '@/ducks/diagramV2';
-import * as Feature from '@/ducks/feature';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
@@ -18,15 +16,12 @@ import { CanvasCreationType, VariableType } from '@/ducks/tracking/constants';
 import { waitAsync } from '@/ducks/utils';
 import { ActiveVersionContext, assertVersionContext, getActiveVersionContext } from '@/ducks/version/utils';
 import * as VersionV2 from '@/ducks/versionV2';
-import mutableStore from '@/store/mutable';
 import { Thunk } from '@/store/types';
 import { BLOCK_WIDTH } from '@/styles/theme';
 import { PathPoint, Point } from '@/types';
 import logger from '@/utils/logger';
 import { AsyncActionError } from '@/utils/logux';
 import { getNodesGroupCenter } from '@/utils/node';
-
-import { fullActiveDiagramSelector } from './fullDiagram';
 
 // side effects
 
@@ -303,27 +298,6 @@ export const convertToTopic =
   };
 
 // active diagram
-
-/**
- * @deprecated changes will be synched by the new realtime service
- */
-export const saveActiveDiagram = (): Thunk => async (_, getState) => {
-  const state = getState();
-  const fullDiagram = fullActiveDiagramSelector(state);
-  const isAtomicActions = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.ATOMIC_ACTIONS_PHASE_2);
-
-  if (isAtomicActions) return;
-
-  if (!fullDiagram) throw Errors.noActiveDiagramID();
-
-  const { _id, ...activeDiagram } = fullDiagram;
-
-  if (activeDiagram.type !== BaseModels.Diagram.DiagramType.TOPIC) {
-    delete activeDiagram.intentStepIDs;
-  }
-
-  await client.api.diagram.options({ headers: { rtctimestamp: mutableStore.getRTCTimestamp() } }).update(_id, activeDiagram);
-};
 
 export const addActiveDiagramVariable =
   (variable: string, creationType: CanvasCreationType): Thunk =>

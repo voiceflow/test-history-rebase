@@ -203,24 +203,6 @@ suite(Realtime, MOCK_STATE)('Ducks - Realtime', ({ describeReducer, describeSele
       });
     });
 
-    describe('isNodeMovementLockedSelector()', () => {
-      it('should return whether node is movement locked', () => {
-        expect(select(Realtime.isNodeMovementLockedSelector)('def')).toBeTruthy();
-      });
-    });
-
-    describe('isNodeEditLockedSelector()', () => {
-      it('should return whether node is edit locked', () => {
-        expect(select(Realtime.isNodeEditLockedSelector)('jkl')).toBeTruthy();
-      });
-    });
-
-    describe('deletionLockedNodesSelector()', () => {
-      it('should return a lookup of all nodes which cannot be deleted', () => {
-        expect(select(Realtime.deletionLockedNodesSelector)).toEqual({ def: 'ghi', jkl: 'mno' });
-      });
-    });
-
     describe('isSessionBusy()', () => {
       it('should return whether realtime session is busy', () => {
         expect(select(Realtime.isSessionBusy)).toBeTruthy();

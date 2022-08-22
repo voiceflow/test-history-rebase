@@ -3,46 +3,25 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import * as Normal from 'normal-store';
 import { createSelector } from 'reselect';
 
-import * as CreatorV1Selectors from '@/ducks/creator/diagram/selectors';
-import * as Feature from '@/ducks/feature';
 import { createCurriedSelector } from '@/ducks/utils';
 import { idParamSelector, idsParamSelector } from '@/ducks/utils/crudV2';
 
 import { creatorStateSelector } from './base';
 
-const _portByIDSelector = createSelector([creatorStateSelector, idParamSelector], ({ ports }, portID) =>
+export const portByIDSelector = createSelector([creatorStateSelector, idParamSelector], ({ ports }, portID) =>
   portID ? Normal.getOne(ports, portID) : null
-);
-export const portByIDSelector = Feature.createAtomicActionsPhase2Selector(
-  [CreatorV1Selectors.portByIDSelector, _portByIDSelector, idParamSelector],
-  (getPortV1, portV2, portID) => [portID ? getPortV1(portID) : null, portV2]
 );
 
 export const getPortByIDSelector = createCurriedSelector(portByIDSelector);
 
-const _allPortsByIDsSelector = createSelector([creatorStateSelector, idsParamSelector], ({ ports }, portIDs) => Normal.getMany(ports, portIDs));
-export const allPortsByIDsSelector = Feature.createAtomicActionsPhase2Selector(
-  [CreatorV1Selectors.allPortsByIDsSelector, _allPortsByIDsSelector, idsParamSelector],
-  (getPortsV1, portsV2, portIDs) => [getPortsV1(portIDs), portsV2]
-);
+export const allPortsByIDsSelector = createSelector([creatorStateSelector, idsParamSelector], ({ ports }, portIDs) => Normal.getMany(ports, portIDs));
 
-const _portsByNodeIDSelector = createSelector([creatorStateSelector, idParamSelector], ({ portsByNodeID }, nodeID) =>
+export const portsByNodeIDSelector = createSelector([creatorStateSelector, idParamSelector], ({ portsByNodeID }, nodeID) =>
   nodeID ? portsByNodeID[nodeID] ?? Realtime.Utils.port.createEmptyNodePorts() : Realtime.Utils.port.createEmptyNodePorts()
 );
-export const portsByNodeIDSelector = Feature.createAtomicActionsPhase2Selector(
-  [CreatorV1Selectors.nodeByIDSelector, _portsByNodeIDSelector, idParamSelector],
-  (getNodeV1, portsV2, nodeID) => [
-    nodeID ? getNodeV1(nodeID)?.ports ?? Realtime.Utils.port.createEmptyNodePorts() : Realtime.Utils.port.createEmptyNodePorts(),
-    portsV2,
-  ]
-);
 
-const _nodeIDByPortIDSelector = createSelector([creatorStateSelector, idParamSelector], ({ nodeIDByPortID }, portID) =>
+export const nodeIDByPortIDSelector = createSelector([creatorStateSelector, idParamSelector], ({ nodeIDByPortID }, portID) =>
   portID ? nodeIDByPortID[portID] ?? null : null
-);
-export const nodeIDByPortIDSelector = Feature.createAtomicActionsPhase2Selector(
-  [CreatorV1Selectors.portByIDSelector, _nodeIDByPortIDSelector, idParamSelector],
-  (getPortByIDV1, nodeID, portID) => [portID ? getPortByIDV1(portID)?.nodeID ?? null : null, nodeID]
 );
 
 export const builtInPortTypeSelector = createSelector(

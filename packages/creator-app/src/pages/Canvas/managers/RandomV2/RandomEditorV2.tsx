@@ -30,7 +30,14 @@ const RandomEditorV2: NodeEditorV2<Realtime.NodeData.RandomV2> = ({ data, onChan
       header={<EditorV2.DefaultHeader title="Random" />}
       footer={<EditorV2.DefaultFooter tutorial={Documentation.RANDOM_STEP}></EditorV2.DefaultFooter>}
     >
-      <SectionV2.ActionListSection title={<SectionV2.Title bold>Paths</SectionV2.Title>} action={<SectionV2.AddButton onClick={addPath} />} />
+      <SectionV2.Sticky>
+        {({ sticked }) => (
+          <SectionV2.Header sticky sticked={sticked}>
+            <SectionV2.Title bold>Paths</SectionV2.Title>
+            <SectionV2.AddButton onClick={addPath} />
+          </SectionV2.Header>
+        )}
+      </SectionV2.Sticky>
       <SectionV2.Content>
         {data.namedPaths &&
           mapManager.map((item, { key, isLast, onUpdate, onRemove }) => {
@@ -55,9 +62,7 @@ const RandomEditorV2: NodeEditorV2<Realtime.NodeData.RandomV2> = ({ data, onChan
         position="bottom-end"
         distance={-10}
         html={
-          <Box width="200px" padding="6px 10px" textAlign="left">
-            When on, the step will ignore paths that have already been activated in a given session.
-          </Box>
+          <TippyTooltip.Multiline>When on, the step will ignore paths that have already been activated in a given session.</TippyTooltip.Multiline>
         }
       >
         <SectionV2.SimpleSection onClick={toggle}>

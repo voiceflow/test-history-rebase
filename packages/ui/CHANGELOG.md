@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.138.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.137.0...@voiceflow/ui@1.138.0) (2022-08-22)
+
+
+### Features
+
+* implement color picker to step context menu (CT-800) ([#5921](https://github.com/voiceflow/creator-app/issues/5921)) ([5340103](https://github.com/voiceflow/creator-app/commit/53401037c90de371859e88fbfbd191a1af8012d1))
+
+
+
+
+
 # [1.137.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.136.2...@voiceflow/ui@1.137.0) (2022-08-17)
 
 

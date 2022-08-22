@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.873.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.872.0...@voiceflow/creator-app@1.873.0) (2022-08-22)
+
+
+### Bug Fixes
+
+* make select full width in actions (CT-850) ([#5945](https://github.com/voiceflow/creator-app/issues/5945)) ([821aa95](https://github.com/voiceflow/creator-app/commit/821aa95f3b74fa3e0d0758f8fb7fb052d3f10978))
+* random editor UI fixes (CT-838) ([#5934](https://github.com/voiceflow/creator-app/issues/5934)) ([d35fc47](https://github.com/voiceflow/creator-app/commit/d35fc478cb7361c641c80d01f4239086c97c0bbc))
+
+
+### Features
+
+* implement color picker to step context menu (CT-800) ([#5921](https://github.com/voiceflow/creator-app/issues/5921)) ([5340103](https://github.com/voiceflow/creator-app/commit/53401037c90de371859e88fbfbd191a1af8012d1))
+
+
+
+
+
 # [1.872.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.871.5...@voiceflow/creator-app@1.872.0) (2022-08-22)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.96.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.95.2...@voiceflow/realtime@1.96.0) (2022-08-22)
+
+
+### Features
+
+* implement color picker to step context menu (CT-800) ([#5921](https://github.com/voiceflow/creator-app/issues/5921)) ([5340103](https://github.com/voiceflow/creator-app/commit/53401037c90de371859e88fbfbd191a1af8012d1))
+
+
+
+
+
 ## [1.95.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.95.1...@voiceflow/realtime@1.95.2) (2022-08-19)
 
 

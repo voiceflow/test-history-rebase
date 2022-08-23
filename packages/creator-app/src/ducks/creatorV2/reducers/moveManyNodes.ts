@@ -22,8 +22,12 @@ export const moveManyNodesReverter = createReverter(
   ({ workspaceID, projectID, versionID, diagramID, blocks }, getState) => {
     const state = getState();
     const prevCoords = Object.keys(blocks)
-      .map((nodeID) => [nodeID, nodeCoordsByIDSelector(state, { id: nodeID })!] as const)
-      .filter(([nodeID, coords]) => !isPointEqual(coords, blocks[nodeID]));
+      .map((nodeID): [string, Realtime.Point | null] => [nodeID, nodeCoordsByIDSelector(state, { id: nodeID })])
+      .filter((blockEntries): blockEntries is [string, Realtime.Point] => {
+        const [nodeID, coords] = blockEntries;
+
+        return !!coords && !isPointEqual(coords, blocks[nodeID]);
+      });
 
     if (prevCoords.length === 0) return null;
 

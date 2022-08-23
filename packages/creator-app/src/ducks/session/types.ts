@@ -8,6 +8,5 @@ export interface SessionState {
   activeDiagramID: string | null;
   intercomVisible: boolean;
   intercomUserHMAC: null | string;
-  websocketsEnabled: boolean;
   prototypeSidebarVisible: boolean;
 }

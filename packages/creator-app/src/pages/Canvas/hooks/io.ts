@@ -1,7 +1,6 @@
 import React from 'react';
 
 import client from '@/client';
-import { SocketIOEvent } from '@/client/socket/constants';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as Session from '@/ducks/session';
 import { useSelector } from '@/hooks';
@@ -18,7 +17,7 @@ export const useIO = (engine: Engine) => {
     const io = client.realtimeIO(token);
 
     engine.io.join(io, diagramID);
-    io.io.on(SocketIOEvent.RECONNECT, () => {
+    io.io.on('reconnect', () => {
       engine.io.join(io, diagramID);
     });
 

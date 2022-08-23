@@ -12,7 +12,6 @@ import * as ProductV2 from '@/ducks/productV2';
 import * as ProjectListV2 from '@/ducks/projectListV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Prototype from '@/ducks/prototype';
-import * as Realtime from '@/ducks/realtime';
 import * as Recent from '@/ducks/recent';
 import * as ReportTag from '@/ducks/reportTag';
 import * as Router from '@/ducks/router';
@@ -50,7 +49,6 @@ export const MOCK_STATE: State = {
   [ProjectV2.STATE_KEY]: createCRUDState(),
   [ProjectListV2.STATE_KEY]: createCRUDState(),
   [Prototype.STATE_KEY]: Prototype.INITIAL_STATE as ReturnType<typeof Prototype.default>,
-  [Realtime.STATE_KEY]: Realtime.INITIAL_STATE,
   [Recent.STATE_KEY]: Recent.INITIAL_STATE as ReturnType<typeof Recent.default>,
   [ReportTag.STATE_KEY]: createCRUDState(),
   [Router.STATE_KEY]: { location: Object.assign(new URL('http://foo.bar'), { query: {}, state: {} }), action: 'REPLACE' },

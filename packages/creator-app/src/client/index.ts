@@ -18,7 +18,6 @@ import realtime, { realtimeIO } from './realtime';
 import reportTags from './reportTags';
 import saml from './saml';
 import session from './session';
-import socket from './socket';
 import sso from './sso';
 import template from './template';
 import thread from './thread';
@@ -47,7 +46,6 @@ const client = {
   projectList,
   prototype,
   session,
-  socket,
   sso,
   saml,
   template,

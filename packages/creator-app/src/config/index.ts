@@ -86,7 +86,6 @@ export const LOG_FILTER = process.env.LOG_FILTER || '';
 // debugging
 
 export const DEBUG_NETWORK = !IS_PRODUCTION && !!process.env.DEBUG_NETWORK;
-export const DEBUG_SOCKET = DEBUG_NETWORK || (!IS_PRODUCTION && !!process.env.DEBUG_SOCKET);
 
 export const DEBUG_REALTIME = !IS_PRODUCTION && !!process.env.DEBUG_REALTIME;
 

@@ -12,7 +12,6 @@ export const loadEnv = defineEnv((extracted) => {
     LOG_FILTER,
     GA_ENABLED,
     DEBUG_FETCH,
-    DEBUG_SOCKET,
     DEBUG_CANVAS,
     DEBUG_NETWORK,
     DEBUG_REALTIME,
@@ -54,14 +53,12 @@ export const loadEnv = defineEnv((extracted) => {
       ...(DEBUG
         ? {
             DEBUG_FETCH: 'true',
-            DEBUG_SOCKET: 'true',
             DEBUG_CANVAS: 'true',
             DEBUG_NETWORK: 'true',
             DEBUG_REALTIME: 'true',
           }
         : {
             DEBUG_FETCH: DEBUG_FETCH ? 'true' : '',
-            DEBUG_SOCKET: DEBUG_SOCKET ? 'true' : '',
             DEBUG_CANVAS: DEBUG_CANVAS ? 'true' : '',
             DEBUG_NETWORK: DEBUG_NETWORK ? 'true' : '',
             DEBUG_REALTIME: DEBUG_REALTIME ? 'true' : '',

@@ -1,8 +1,8 @@
 import { Utils } from '@voiceflow/common';
-import * as RealtimeSDK from '@voiceflow/realtime-sdk';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
-import * as Realtime from '@/ducks/realtime';
+import * as DiagramV2 from '@/ducks/diagramV2';
 import { useForceUpdate, useSelector } from '@/hooks';
 import { LockOwner } from '@/models';
 import { DiagramHeartbeatContext } from '@/pages/Project/contexts';
@@ -78,11 +78,11 @@ export const useEditLock = (nodeID: string, disabled: boolean) => {
 
   return useGenericLock(nodeID, {
     disabled,
-    isLockedSelector: Realtime.isNodeEditLockedSelector,
-    lockOwnerSelector: Realtime.editLockOwnerSelector,
+    isLockedSelector: DiagramV2.isNodeEditLockedSelector,
+    lockOwnerSelector: DiagramV2.editLockOwnerSelector,
 
-    createLock: (id: string) => diagramHeartbeat.lockEntities(RealtimeSDK.diagram.awareness.LockEntityType.NODE_EDIT, [id]),
+    createLock: (id: string) => diagramHeartbeat.lockEntities(Realtime.diagram.awareness.LockEntityType.NODE_EDIT, [id]),
 
-    createUnlock: (id: string) => diagramHeartbeat.unlockEntities(RealtimeSDK.diagram.awareness.LockEntityType.NODE_EDIT, [id]),
+    createUnlock: (id: string) => diagramHeartbeat.unlockEntities(Realtime.diagram.awareness.LockEntityType.NODE_EDIT, [id]),
   });
 };

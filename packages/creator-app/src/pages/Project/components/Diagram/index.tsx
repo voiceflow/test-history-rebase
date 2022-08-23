@@ -4,7 +4,6 @@ import { RouteComponentProps } from 'react-router-dom';
 
 import * as Transcripts from '@/ducks/transcript';
 import * as UI from '@/ducks/ui';
-import { RealtimeLoadingGate } from '@/gates';
 import { withBatchLoadingGate } from '@/hocs';
 import { useDispatch, useEventualEngine, useSelector, useTeardown } from '@/hooks';
 import Canvas from '@/pages/Canvas';
@@ -79,4 +78,4 @@ const Diagram: React.FC<DiagramProps> = () => {
   );
 };
 
-export default withBatchLoadingGate(DiagramGate, RealtimeLoadingGate)(Diagram);
+export default withBatchLoadingGate(DiagramGate)(Diagram);

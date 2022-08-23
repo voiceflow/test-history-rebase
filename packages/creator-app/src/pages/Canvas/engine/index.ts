@@ -17,13 +17,11 @@ import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Feature from '@/ducks/feature';
 import * as History from '@/ducks/history';
 import * as ProjectV2 from '@/ducks/projectV2';
-import * as RealtimeDuck from '@/ducks/realtime';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import * as Thread from '@/ducks/threadV2';
 import * as UI from '@/ducks/ui';
 import * as Version from '@/ducks/versionV2';
-import { RealtimeSubscriptionValue } from '@/gates/RealtimeLoadingGate/contexts';
 import { CanvasAction } from '@/pages/Canvas/constants';
 import { CanvasContainerAPI } from '@/pages/Canvas/types';
 import { DiagramHeartbeatContextValue } from '@/pages/Project/contexts';
@@ -53,7 +51,6 @@ import MergeEngine from './mergeEngine';
 import NodeManager from './nodeManager';
 import PortManager from './portManager';
 import PrototypeEngine from './prototypeEngine';
-import RealtimeEngine from './realtimeEngine';
 import SelectionEngine from './selectionEngine';
 import TransformationEngine from './transformationEngine';
 import { ComponentManager } from './utils';
@@ -127,8 +124,6 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
 
   canvas: CanvasAPI | null = null;
 
-  realtime: RealtimeEngine;
-
   dispatcher: Dispatcher;
 
   get services() {
@@ -146,7 +141,6 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
       this.link,
       this.port,
       this.node,
-      this.realtime,
       this.dispatcher,
       this.markup,
       this.transformation,
@@ -163,7 +157,7 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
     };
   }
 
-  constructor(public store: Store, public mousePosition: React.RefObject<Point>, realtimeSubscription: RealtimeSubscriptionValue) {
+  constructor(public store: Store, public mousePosition: React.RefObject<Point>) {
     super();
 
     if (isDebug()) {
@@ -171,7 +165,6 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
     }
 
     // do not change these to property declarations, they depend on this.store being set
-    this.realtime = new RealtimeEngine(realtimeSubscription, this);
     this.dispatcher = new Dispatcher(this);
 
     this.log.info(this.log.init('initialized canvas engine'), this.log.value(this.select(Session.activeVersionIDSelector)));
@@ -187,9 +180,9 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
 
   getDataByNodeID = <T>(nodeID: string) => this.select(CreatorV2.nodeDataByIDSelector, { id: nodeID }) as Realtime.NodeData<T> | null;
 
-  isNodeMovementLocked = (nodeID: string) => this.select(RealtimeDuck.isNodeMovementLockedSelector)(nodeID);
+  isNodeMovementLocked = (nodeID: string) => this.select(DiagramV2.isNodeMovementLockedSelector)(nodeID);
 
-  getLockOwner = (nodeID: string) => this.select(RealtimeDuck.editLockOwnerSelector)(nodeID);
+  getLockOwner = (nodeID: string) => this.select(DiagramV2.editLockOwnerSelector)(nodeID);
 
   isNodeFocused = () => this.select(Creator.hasFocusedNode);
 
@@ -308,7 +301,7 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
 
   // canvas orchestration methods
 
-  disableAllModes(): Promise<void> {
+  disableAllModes(): void {
     this.clearActivation({ skipUrlSync: true });
 
     return this.store.dispatch(Router.goToCurrentCanvas());
@@ -363,13 +356,11 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
 
   panViewport(movement: Pair<number>): void {
     this.emitter.emit(CanvasAction.PAN, movement);
-    this.realtime.panViewport(movement);
     this.io.panViewport(movement);
   }
 
   zoomViewport(calculateMovement: MovementCalculator): void {
     this.emitter.emit(CanvasAction.ZOOM, calculateMovement);
-    this.realtime.zoomViewport(calculateMovement);
     this.io.zoomViewport(calculateMovement);
   }
 

@@ -20,7 +20,6 @@ import productV2, * as ProductV2 from '@/ducks/productV2';
 import projectListV2, * as ProjectListV2 from '@/ducks/projectListV2';
 import projectV2, * as ProjectV2 from '@/ducks/projectV2';
 import prototype, * as Prototype from '@/ducks/prototype';
-import realtime, * as Realtime from '@/ducks/realtime';
 import recent, * as Recent from '@/ducks/recent';
 import reportTag, * as ReportTag from '@/ducks/reportTag';
 import * as Router from '@/ducks/router';
@@ -73,7 +72,6 @@ const getCombinedReducer = (browserHistory: BrowserHistory) =>
     [SlotV2.STATE_KEY]: slotV2,
     [Recent.STATE_KEY]: recent,
     [UI.STATE_KEY]: ui,
-    [Realtime.STATE_KEY]: realtime,
     [Viewport.STATE_KEY]: viewport,
     [Notifications.STATE_KEY]: notifications,
     [Tracking.STATE_KEY]: tracking,

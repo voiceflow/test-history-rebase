@@ -7,7 +7,6 @@ import { Path } from '@/config/routes';
 import { InteractionModelTabType, PageProgressBar } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as ProjectV2 from '@/ducks/projectV2';
-import * as RealtimeDuck from '@/ducks/realtime';
 import * as Session from '@/ducks/session';
 import * as VariableState from '@/ducks/variableState';
 import * as VersionV2 from '@/ducks/versionV2';
@@ -55,11 +54,9 @@ export const redirectToCanvas = (versionID: string, diagramID?: string) =>
   redirectTo(`${generatePath(Path.PROJECT_CANVAS, { versionID, diagramID })}${window.location.search}`);
 
 export const goToCanvasSwitchRealtime =
-  (versionID: string, diagramID: string, { nodeID, isNewDiagram }: { nodeID?: string; isNewDiagram?: boolean } = {}): Thunk =>
-  async (dispatch) => {
+  (versionID: string, diagramID: string, { nodeID }: { nodeID?: string } = {}): SyncThunk =>
+  (dispatch) => {
     PageProgress.start(PageProgressBar.CANVAS_LOADING);
-
-    await dispatch(RealtimeDuck.switchRealtimeDiagram(versionID, diagramID, isNewDiagram));
 
     if (nodeID) {
       dispatch(goToCanvasNode({ versionID, diagramID, nodeID }));
@@ -68,15 +65,7 @@ export const goToCanvasSwitchRealtime =
     }
   };
 
-export const redirectToCanvasSwitchRealtime =
-  (versionID: string, diagramID: string, isNewDiagram?: boolean): Thunk =>
-  async (dispatch) => {
-    await dispatch(RealtimeDuck.switchRealtimeDiagram(versionID, diagramID, isNewDiagram));
-
-    dispatch(redirectToCanvas(versionID, diagramID));
-  };
-
-export const goToCurrentCanvas = (): Thunk => async (dispatch, getState) => {
+export const goToCurrentCanvas = (): SyncThunk => (dispatch, getState) => {
   const state = getState();
   const versionID = Session.activeVersionIDSelector(state);
   const diagramID = Session.activeDiagramIDSelector(state);
@@ -136,14 +125,14 @@ export const goToRootDiagram = (): Thunk => async (dispatch, getState) => {
 };
 
 export const redirectToDiagram =
-  (diagramID: string): Thunk =>
-  async (dispatch, getState) => {
+  (diagramID: string): SyncThunk =>
+  (dispatch, getState) => {
     const version = VersionV2.active.versionSelector(getState());
 
     if (!version) throw Errors.noActiveVersionID();
 
     PageProgress.start(PageProgressBar.CANVAS_LOADING);
-    await dispatch(redirectToCanvasSwitchRealtime(version.id, diagramID));
+    dispatch(redirectToCanvas(version.id, diagramID));
   };
 
 export const goToDiagram =
@@ -188,8 +177,6 @@ export const goToDiagramCommenting =
     Errors.assertVersionID(versionID);
 
     PageProgress.start(PageProgressBar.CANVAS_LOADING);
-
-    await dispatch(RealtimeDuck.switchRealtimeDiagram(versionID, diagramID));
 
     if (threadID) {
       dispatch(goToCanvasCommentingThread(versionID, diagramID, threadID, commentID));

@@ -6,14 +6,7 @@ import { Path } from '@/config/routes';
 import * as Session from '@/ducks/session';
 import { useDispatch, useRouteVersionID, useTeardown } from '@/hooks';
 
-import {
-  CommentingUpdates,
-  MigrationGate,
-  ProjectReconnectGate,
-  SchemaChannelSubscriptionGate,
-  TranscriptUpdates,
-  VersionChannelSubscriptionGate,
-} from './components';
+import { MigrationGate, SchemaChannelSubscriptionGate, VersionChannelSubscriptionGate } from './components';
 import { VersionSubscriptionContext } from './types';
 
 const VersionSubscriptionGate: React.FC = ({ children }) => {
@@ -42,9 +35,6 @@ const VersionSubscriptionGate: React.FC = ({ children }) => {
       <MigrationGate versionID={versionID} context={context} setContext={setContext}>
         {context && (
           <VersionChannelSubscriptionGate workspaceID={context.workspaceID} projectID={context.projectID} versionID={versionID}>
-            <CommentingUpdates />
-            <TranscriptUpdates />
-            <ProjectReconnectGate />
             {children}
           </VersionChannelSubscriptionGate>
         )}

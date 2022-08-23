@@ -6,7 +6,6 @@ import { useSelector, useStore } from 'react-redux';
 import { IS_DEVELOPMENT } from '@/config';
 import { MousePositionContext } from '@/contexts';
 import * as CreatorV2 from '@/ducks/creatorV2';
-import { RealtimeSubscriptionContext } from '@/gates/RealtimeLoadingGate/contexts';
 import { useForceUpdate } from '@/hooks';
 import { CanvasAction } from '@/pages/Canvas/constants';
 import { Store } from '@/store/types';
@@ -23,15 +22,14 @@ const useCreateEngine = (): [Engine, number] => {
   const store = useStore() as Store;
   const [forceUpdate, engineKey] = useForceUpdate();
   const mousePosition = React.useContext(MousePositionContext);
-  const realtimeSubscription = React.useContext(RealtimeSubscriptionContext);
 
   const ref = React.useRef<Engine>();
 
   if (ref.current === undefined) {
-    ref.current = createEngine(store, mousePosition, realtimeSubscription);
+    ref.current = createEngine(store, mousePosition);
 
     $recreateEngine = (Class: typeof Engine) => {
-      ref.current = new Class(store, mousePosition, realtimeSubscription);
+      ref.current = new Class(store, mousePosition);
       forceUpdate();
     };
   }

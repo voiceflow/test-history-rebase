@@ -2,7 +2,6 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { batch } from 'react-redux';
 
-import client from '@/client';
 import * as Errors from '@/config/errors';
 import * as Diagram from '@/ducks/diagram';
 import * as Feature from '@/ducks/feature';
@@ -13,7 +12,7 @@ import * as Thread from '@/ducks/thread';
 import { waitAsync } from '@/ducks/utils';
 import * as VersionV2 from '@/ducks/versionV2';
 import * as Workspace from '@/ducks/workspace';
-import { Thunk } from '@/store/types';
+import { SyncThunk, Thunk } from '@/store/types';
 import { storeLogger } from '@/store/utils';
 
 import { getActivePlatformVersionContext } from '../../utils';
@@ -26,8 +25,8 @@ export * from './variables';
  * this is also called when re-connecting to an existing subscription
  */
 export const initializeVersion =
-  ({ workspaceID, projectID, versionID }: Realtime.version.ActivateVersionPayload): Thunk =>
-  async (dispatch, getState) => {
+  ({ workspaceID, projectID, versionID }: Realtime.version.ActivateVersionPayload): SyncThunk =>
+  (dispatch, getState) => {
     // not a dependency for project to load
     dispatch(Integration.fetchIntegrationUsers()).catch(() => storeLogger.warn('Unable to fetch integration users'));
 
@@ -47,8 +46,6 @@ export const initializeVersion =
         dispatch(Thread.loadThreads(projectID));
       }
     });
-
-    await client.socket?.project.initialize(projectID);
   };
 
 export const importProjectContext =

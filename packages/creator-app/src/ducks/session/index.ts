@@ -97,8 +97,6 @@ export const setPrototypeSidebarVisibleReducer: Reducer<SessionState, SetPrototy
 
 const sessionReducer: RootReducer<SessionState, AnySessionAction> = (state = INITIAL_STATE as SessionState, action) => {
   switch (action.type) {
-    case SessionAction.DISABLE_WEBSOCKETS:
-      return disableWebsocketsReducer(state);
     case SessionAction.SET_INTERCOM_VISIBLE:
       return setIntercomVisibleReducer(state, action);
     case SessionAction.SET_ACTIVE_PROJECT_ID:

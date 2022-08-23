@@ -10,15 +10,7 @@ import { ThemeProvider } from 'styled-components';
 
 import client from '@/client';
 import { INTERCOM_APP_ID } from '@/config';
-import {
-  AccountLoadingGate,
-  AccountSubscriptionGate,
-  CapabilitiesGate,
-  FeatureLoadingGate,
-  MaintenanceGate,
-  RealtimeConnectionGate,
-  SocketLoadingGate,
-} from '@/gates';
+import { AccountLoadingGate, AccountSubscriptionGate, CapabilitiesGate, FeatureLoadingGate, MaintenanceGate, RealtimeConnectionGate } from '@/gates';
 import * as ModalsV2 from '@/ModalsV2';
 import THEME from '@/styles/theme';
 import * as Sentry from '@/vendors/sentry';
@@ -62,15 +54,13 @@ const GlobalProviders: React.FC<GlobalProvidersProps> = ({ history, store, persi
                                     <ModalsContextProvider>
                                       <ModalsV2.Provider>
                                         <Upload.Provider client={client.upload} onError={(error) => Sentry.error(error)}>
-                                          <SocketLoadingGate>
-                                            <AccountLoadingGate>
-                                              <RealtimeConnectionGate>
-                                                <MLProvider>
-                                                  <AccountSubscriptionGate>{children}</AccountSubscriptionGate>
-                                                </MLProvider>
-                                              </RealtimeConnectionGate>
-                                            </AccountLoadingGate>
-                                          </SocketLoadingGate>
+                                          <AccountLoadingGate>
+                                            <RealtimeConnectionGate>
+                                              <MLProvider>
+                                                <AccountSubscriptionGate>{children}</AccountSubscriptionGate>
+                                              </MLProvider>
+                                            </RealtimeConnectionGate>
+                                          </AccountLoadingGate>
                                         </Upload.Provider>
                                       </ModalsV2.Provider>
                                     </ModalsContextProvider>

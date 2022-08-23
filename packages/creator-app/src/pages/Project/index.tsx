@@ -9,10 +9,10 @@ import { RemoveIntercom } from '@/components/IntercomChat';
 import { Path } from '@/config/routes';
 import { ModalType } from '@/constants';
 import * as Creator from '@/ducks/creator';
+import * as DiagramV2 from '@/ducks/diagramV2';
 import * as ProjectV2 from '@/ducks/projectV2';
-import * as RealtimeDuck from '@/ducks/realtime';
 import * as UI from '@/ducks/ui';
-import { PlanRestrictionGate, ProjectLockGate, VersionSubscriptionGate, WorkspaceFeatureLoadingGate } from '@/gates';
+import { VersionSubscriptionGate, WorkspaceFeatureLoadingGate } from '@/gates';
 import { lazy, withBatchLoadingGate } from '@/hocs';
 import {
   useDispatch,
@@ -53,7 +53,7 @@ const Project: React.FC = () => {
   const platform = useSelector(ProjectV2.active.platformSelector);
   const projectType = useSelector(ProjectV2.active.projectTypeSelector);
   const projectName = useSelector(ProjectV2.active.nameSelector);
-  const isOnlyViewer = useSelector(RealtimeDuck.isOnlyViewerSelector);
+  const isOnlyViewer = useSelector(DiagramV2.isOnlyViewerSelector);
   const setPreviewing = useDispatch(UI.setPreviewingVersion);
   const resetCreator = useDispatch(Creator.resetCreator);
   const resetCreatorV2 = useLocalDispatch(Realtime.creator.reset);
@@ -152,4 +152,4 @@ const Project: React.FC = () => {
   );
 };
 
-export default withBatchLoadingGate(VersionSubscriptionGate, PlanRestrictionGate, ProjectLockGate, WorkspaceFeatureLoadingGate)(Project);
+export default withBatchLoadingGate(VersionSubscriptionGate, WorkspaceFeatureLoadingGate)(Project);

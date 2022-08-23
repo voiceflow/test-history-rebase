@@ -15,8 +15,7 @@ import { RootPageProgressBar } from '@/components/PageProgressBar';
 import SeoHelmet from '@/components/SeoHelmet';
 import SupportChat from '@/components/SupportChat';
 import { SeoPage } from '@/constants/seo';
-import { GlobalSocketSubscriptionsLoadingGate } from '@/gates';
-import { compose, withBatchLoadingGate } from '@/hocs';
+import { compose } from '@/hocs';
 import AppModals from '@/modals/AppModals';
 import * as ModalsV2 from '@/ModalsV2';
 
@@ -36,4 +35,4 @@ const App: React.FC = () => (
   </>
 );
 
-export default compose(withGlobalProviders, withBatchLoadingGate(GlobalSocketSubscriptionsLoadingGate))(App) as React.FC<GlobalProvidersProps>;
+export default compose(withGlobalProviders)(App) as React.FC<GlobalProvidersProps>;

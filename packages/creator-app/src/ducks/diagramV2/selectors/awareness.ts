@@ -7,7 +7,7 @@ import { createSelector } from 'reselect';
 
 import * as Account from '@/ducks/account';
 import { activeDiagramIDSelector } from '@/ducks/creatorV2/selectors';
-import { createParameterSelector, creatorIDParamSelector } from '@/ducks/utils';
+import { createCurriedSelector, createParameterSelector, creatorIDParamSelector } from '@/ducks/utils';
 import { idParamSelector, idsParamSelector } from '@/ducks/utils/crudV2';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 
@@ -120,4 +120,19 @@ export const activeDiagramLockOwnerSelector = createSelector(
 
     return getWorkspaceMember(lockOwnerID, clientNodeID);
   }
+);
+
+export const isNodeEditLockedSelector = createSelector(
+  [createCurriedSelector(isActiveDiagramEntityLockedByIDAndTypeSelector)],
+  (isNodeLocked) => (entityID: string) => isNodeLocked({ entityID, lockType: Realtime.diagram.awareness.LockEntityType.NODE_EDIT })
+);
+
+export const editLockOwnerSelector = createSelector(
+  [createCurriedSelector(activeDiagramLockOwnerSelector)],
+  (isNodeLocked) => (entityID: string) => isNodeLocked({ entityID, lockType: Realtime.diagram.awareness.LockEntityType.NODE_EDIT })
+);
+
+export const isNodeMovementLockedSelector = createSelector(
+  [createCurriedSelector(isActiveDiagramEntityLockedByIDAndTypeSelector)],
+  (isNodeLocked) => (entityID: string) => isNodeLocked({ entityID, lockType: Realtime.diagram.awareness.LockEntityType.NODE_MOVEMENT })
 );

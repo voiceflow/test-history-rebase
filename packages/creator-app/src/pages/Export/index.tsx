@@ -14,7 +14,7 @@ import { useEngine } from '@/pages/Canvas/hooks/engine';
 import { useManager } from '@/pages/Canvas/managers/utils';
 import { MarkupProvider, ProjectProvider } from '@/pages/Project/contexts';
 
-import { ExportCanvasDiagram, ExportGlobalStyle, ExportWatermark, MockRealtimeGate } from './components';
+import { ExportCanvasDiagram, ExportGlobalStyle, ExportWatermark } from './components';
 import InitializeExportGate from './gates/InitializeExportGate';
 
 const ExportCanvas: React.FC = () => {
@@ -49,4 +49,4 @@ const ExportCanvas: React.FC = () => {
   );
 };
 
-export default withBatchLoadingGate(VersionSubscriptionGate, WorkspaceFeatureLoadingGate, MockRealtimeGate, InitializeExportGate)(ExportCanvas);
+export default withBatchLoadingGate(VersionSubscriptionGate, WorkspaceFeatureLoadingGate, InitializeExportGate)(ExportCanvas);

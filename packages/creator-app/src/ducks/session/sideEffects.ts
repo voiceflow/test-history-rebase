@@ -17,7 +17,7 @@ import * as Sentry from '@/vendors/sentry';
 import * as Support from '@/vendors/support';
 
 import { setAuthToken, setIntercomUserHMAC } from './actions';
-import { authTokenSelector, browserIDSelector, tabIDSelector } from './selectors';
+import { authTokenSelector } from './selectors';
 
 /**
  * update the auth token in the store and in the cookie jar
@@ -40,8 +40,6 @@ export const resetSession = (): Thunk => async (dispatch) => {
     dispatch(updateAuthToken(null));
     dispatch(setIntercomUserHMAC(null));
   });
-
-  await client.socket.logout().catch(Sentry.error);
 
   dispatch(goToLogin());
 };
@@ -71,13 +69,9 @@ export const restoreSession = (): Thunk => async (dispatch, getState) => {
   try {
     const state = getState();
     const token = authTokenSelector(state);
-    const browserID = browserIDSelector(state);
-    const tabID = tabIDSelector(state);
     const user = await client.user.get();
 
     if (!token) throw new Error('no auth token set');
-
-    await client.socket!.auth(token, browserID, tabID);
 
     dispatch(updateAccount(user));
 
@@ -100,8 +94,6 @@ const setSession =
   ({ token, user, intercomUserHMAC }: { token: string; user: Models.Account; intercomUserHMAC: string | null }): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
-    const tabID = tabIDSelector(state);
-    const browserID = browserIDSelector(state);
 
     Cookies.removeLastSessionCookie();
 
@@ -122,8 +114,6 @@ const setSession =
     } else {
       dispatch(goToOnboarding());
     }
-
-    await client.socket!.auth(token, browserID, tabID);
 
     await dispatch(identifyUser(user));
   };

@@ -8,11 +8,11 @@ import { createSelector } from 'reselect';
 import { BlockType } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as CreatorV2 from '@/ducks/creatorV2';
+import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Feature from '@/ducks/feature';
 import * as History from '@/ducks/history';
 import * as Modal from '@/ducks/modal';
 import * as ProjectV2 from '@/ducks/projectV2';
-import * as RealtimeDuck from '@/ducks/realtime';
 import * as Tracking from '@/ducks/tracking';
 import * as VersionV2 from '@/ducks/versionV2';
 import { Pair, Point } from '@/types';
@@ -944,7 +944,7 @@ class NodeManager extends EngineConsumer {
   }
 
   private isRemovingLocked(nodeIDs: string[], remove: (nodeIDs: string[]) => Promise<void>): boolean {
-    const lockedNodes = this.select(RealtimeDuck.deletionLockedNodesSelector);
+    const lockedNodes = this.select(DiagramV2.activeDiagramDeletionLockedNodesSelector);
     const combinedNodes = nodeIDs.map(this.engine.getNodeByID).filter((node): node is Realtime.Node => node?.type === BlockType.COMBINED);
 
     const unRemovableCombinedNodeIDs = new Set(

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.877.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.876.0...@voiceflow/creator-app@1.877.0) (2022-08-23)
+
+
+### Features
+
+* [AA FF REMOVAL] remove creator-api socket realtime (CT-846) ([#5948](https://github.com/voiceflow/creator-app/issues/5948)) ([e39f7a6](https://github.com/voiceflow/creator-app/commit/e39f7a66f8060ca8b559128413e2571a397dc323))
+
+
+
+
+
 # [1.876.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.875.0...@voiceflow/creator-app@1.876.0) (2022-08-23)
 
 

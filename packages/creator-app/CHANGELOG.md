@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.876.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.875.0...@voiceflow/creator-app@1.876.0) (2022-08-23)
+
+
+### Bug Fixes
+
+* aggressive socket timeouts (CT-000) ([#5957](https://github.com/voiceflow/creator-app/issues/5957)) ([6013f55](https://github.com/voiceflow/creator-app/commit/6013f557ae35e155542fdb5af73730ca7e8479d5))
+
+
+### Features
+
+* catch reverter and invalidator errors (DX-69) ([#5956](https://github.com/voiceflow/creator-app/issues/5956)) ([2357c9b](https://github.com/voiceflow/creator-app/commit/2357c9b1c69ef4ee2727ef34f4d7588bffb9d4d0))
+
+
+
+
+
 # [1.875.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.874.2...@voiceflow/creator-app@1.875.0) (2022-08-23)
 
 

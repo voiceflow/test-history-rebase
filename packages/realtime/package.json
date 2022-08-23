@@ -1,6 +1,6 @@
 {
   "name": "@voiceflow/realtime",
-  "version": "1.96.5",
+  "version": "1.97.0",
   "dependencies": {
     "@logux/core": "0.7.3",
     "@logux/server": "0.11.0",
@@ -15,7 +15,7 @@
     "@voiceflow/internal": "2.3.1",
     "@voiceflow/logger": "1.6.1",
     "@voiceflow/metrics": "1.4.1",
-    "@voiceflow/realtime-sdk": "^1.143.2",
+    "@voiceflow/realtime-sdk": "^1.144.0",
     "@voiceflow/socket-utils": "^1.21.0",
     "@voiceflow/voiceflow-types": "3.19.0",
     "axios": "0.24.0",

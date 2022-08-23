@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.97.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.96.5...@voiceflow/realtime@1.97.0) (2022-08-23)
+
+
+### Features
+
+* assign default step color to new block when drop into canvas (CT-805) ([#5951](https://github.com/voiceflow/creator-app/issues/5951)) ([1833610](https://github.com/voiceflow/creator-app/commit/183361065e84a11a6861d05816cb1026c43dce35))
+
+
+
+
+
 ## [1.96.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.96.4...@voiceflow/realtime@1.96.5) (2022-08-23)
 
 

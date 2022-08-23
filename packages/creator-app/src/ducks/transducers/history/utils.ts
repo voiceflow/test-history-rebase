@@ -3,7 +3,7 @@ import { Action } from 'typescript-fsa';
 
 import * as History from '@/ducks/history';
 import type { InvalidatorLookup, RootReducer, State } from '@/store/types';
-import { getActionOrigin } from '@/store/utils';
+import { getActionOrigin, storeLogger } from '@/store/utils';
 
 import { Transducer } from '../types';
 
@@ -22,7 +22,16 @@ export const collectInvalidTransactions = (invalidatorLookup: InvalidatorLookup,
       const invalidators = actionInvalidatorLookup[origin.type];
       if (!invalidators) return false;
 
-      return invalidators.some((invalidator) => invalidator.invalidate(origin.payload, subject.payload));
+      return invalidators.some((invalidator) => {
+        try {
+          return invalidator.invalidate(origin.payload, subject.payload);
+        } catch (e) {
+          storeLogger.error('failed to invalidate transaction', { origin, subject }, e);
+
+          // if an invalidator fails then we should drop the transaction to be safe
+          return true;
+        }
+      });
     })
   );
 };

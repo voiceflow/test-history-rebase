@@ -16,7 +16,11 @@ suite('Transducers - History - Reverter', () => {
     const rootState = MOCK_STATE;
     const reverters = {
       [revertibleAction.type]: [
-        { actionCreator: revertibleAction, revert: ({ value }: { value: string }) => reverseAction({ value }), invalidators: [] },
+        {
+          actionCreator: revertibleAction,
+          revert: ({ value }: { value: string }) => reverseAction({ value }),
+          invalidators: [],
+        },
       ],
     };
 
@@ -55,6 +59,27 @@ suite('Transducers - History - Reverter', () => {
       const action = wrapReplayAction(wrapOwnAction(revertibleAction({ value: 'actionValue' }), clientNodeID)) as any;
 
       reverterTransducer(() => clientNodeID, reverters)(reducer)(rootState, action);
+
+      expect(reducer).toBeCalledTimes(1);
+    });
+
+    it('ignores action if reverter fails', () => {
+      const reducer = vi.fn();
+      const actionValue = 'actionValue';
+      const baseAction = revertibleAction({ value: actionValue }) as any;
+      const action = extendMeta(wrapOwnAction(baseAction, clientNodeID, actionID), { foo: 'bar' });
+
+      reverterTransducer(() => clientNodeID, {
+        [revertibleAction.type]: [
+          {
+            actionCreator: revertibleAction,
+            revert: () => {
+              throw new Error();
+            },
+            invalidators: [],
+          },
+        ],
+      })(reducer)(rootState, action);
 
       expect(reducer).toBeCalledTimes(1);
     });

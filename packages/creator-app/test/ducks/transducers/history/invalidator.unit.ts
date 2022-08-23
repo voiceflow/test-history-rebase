@@ -2,7 +2,6 @@ import { Utils } from '@voiceflow/common';
 
 import suite from '@/../test/_suite';
 import { MOCK_STATE } from '@/../test/ducks/_fixtures';
-import { V2_HISTORY_STATE } from '@/../test/ducks/creatorV2/_fixtures';
 import * as History from '@/ducks/history';
 import invalidatorTransducer from '@/ducks/transducers/history/invalidator';
 import { State } from '@/store/types';
@@ -30,7 +29,6 @@ suite('Transducers - History - Invalidator', () => {
       const action = wrapOwnAction(invalidateAction(), 'foreign') as any;
       const rootState: State = {
         ...MOCK_STATE,
-        ...V2_HISTORY_STATE,
         [History.STATE_KEY]: {
           ...History.INITIAL_STATE,
           undo: [
@@ -55,7 +53,6 @@ suite('Transducers - History - Invalidator', () => {
       const action = wrapOwnAction(invalidateAction(), clientNodeID) as any;
       const rootState = {
         ...MOCK_STATE,
-        ...V2_HISTORY_STATE,
         [History.STATE_KEY]: {
           ...History.INITIAL_STATE,
           undo: [{ id: 'transaction1', apply: [reverseAction({ value: 'reverseAction' })], revert: [] }],
@@ -67,6 +64,41 @@ suite('Transducers - History - Invalidator', () => {
 
       expect(reducer).toBeCalledTimes(1);
       expect(reducer).toBeCalledWith(rootState, action);
+    });
+
+    it('invalidates actions if an error is thrown', () => {
+      const reducer = vi.fn();
+      const action = wrapOwnAction(invalidateAction(), 'foreign') as any;
+      const rootState: State = {
+        ...MOCK_STATE,
+        [History.STATE_KEY]: {
+          ...History.INITIAL_STATE,
+          undo: [
+            { id: 'transaction1', apply: [reverseAction({ value: 'reverse1' })], revert: [] },
+            { id: 'transaction2', apply: [revertibleAction({ value: 'revertible2' })], revert: [] },
+          ],
+          redo: [
+            { id: 'transaction3', apply: [revertibleAction({ value: 'revertible3' })], revert: [] },
+            { id: 'transaction4', apply: [reverseAction({ value: 'reverse4' })], revert: [] },
+          ],
+        },
+      };
+
+      invalidatorTransducer(() => clientNodeID, {
+        [invalidateAction.type]: {
+          [reverseAction.type]: [
+            {
+              actionCreator: reverseAction,
+              invalidate: () => {
+                throw new Error();
+              },
+            },
+          ],
+        },
+      })(reducer)(rootState, action);
+
+      expect(reducer).toBeCalledTimes(2);
+      expect(reducer).toBeCalledWith(rootState, History.dropTransactions({ transactionIDs: ['transaction1', 'transaction4'] }));
     });
   });
 });

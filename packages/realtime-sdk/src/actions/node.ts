@@ -53,6 +53,7 @@ export interface AddBlockPayload<T = unknown> extends BaseBlockPayload, ProjectM
   blockName: string;
   blockPorts: PortsDescriptor;
   blockCoords: Point;
+  blockColor?: string;
 }
 
 export interface AddActionsPayload<T = unknown> extends BaseActionsPayload, ProjectMetaPayload, SchemaVersionPayload {

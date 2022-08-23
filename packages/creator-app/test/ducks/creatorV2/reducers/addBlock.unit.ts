@@ -12,6 +12,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addBlock reducer', ({ describ
     const blockID = 'blockNode';
     const stepID = 'stepNode';
     const blockName = 'New Block';
+    const blockColor = '#ff0000';
     const blockCoords: Realtime.Point = [100, 200];
     const stepData = { type: Realtime.BlockType.BUTTONS, name: 'node name' };
 
@@ -83,6 +84,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addBlock reducer', ({ describ
         stepID,
         blockCoords,
         blockName,
+        blockColor,
         blockPorts: Realtime.Utils.port.createEmptyNodePorts(),
         stepPorts: Realtime.Utils.port.createEmptyNodePorts(),
         schemaVersion: 1,
@@ -96,7 +98,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addBlock reducer', ({ describ
       expect(result.nodes).toEqual(
         normalizeContaining(
           [
-            { type: Realtime.BlockType.COMBINED, blockColor: '', nodeID: blockID, name: blockName },
+            { type: Realtime.BlockType.COMBINED, blockColor: '#ff0000', nodeID: blockID, name: blockName },
             { ...stepData, nodeID: stepID },
           ],
           (node) => node.nodeID

@@ -16,6 +16,7 @@ class AddBlock extends AbstractDiagramActionControl<Realtime.node.AddBlockPayloa
       blockName,
       blockCoords: [blockX, blockY],
       blockPorts,
+      blockColor,
       stepID,
       stepData,
       stepPorts,
@@ -54,6 +55,14 @@ class AddBlock extends AbstractDiagramActionControl<Realtime.node.AddBlockPayloa
         },
       ],
     });
+
+    if (blockColor) {
+      nodes.forEach((node) => {
+        if (node.nodeID === blockID) {
+          Object.assign(node.data, { color: blockColor });
+        }
+      });
+    }
 
     await this.services.diagram.addManyNodes(diagramID, nodes);
   };

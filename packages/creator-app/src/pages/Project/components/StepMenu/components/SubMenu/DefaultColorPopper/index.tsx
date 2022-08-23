@@ -18,7 +18,7 @@ const StepMenuSubMenuDefaultColorPopper: React.ForwardRefRenderFunction<HTMLDivE
   isHovered,
 }) => {
   const stepTypeColor = useSelector(VersionV2.active.defaultStepColorByStepType, {
-    stepType: blockType as unknown as keyof Realtime.Version.DefaultStepColors,
+    stepType: blockType,
   });
   const patchDefaultStepColors = useDispatch(Version.patchDefaultStepColors);
 

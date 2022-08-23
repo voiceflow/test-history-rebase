@@ -37,7 +37,9 @@ export const canvasNodeVisibilitySelector = createSelector([settingsSelector], (
 
 export const carouselLayoutSelector = createSelector([settingsSelector], (settings) => settings?.defaultCarouselLayout ?? null);
 
-const stepTypeParamSelector = createParameterSelector((params: { stepType: keyof Realtime.Version.DefaultStepColors }) => params.stepType);
+const stepTypeParamSelector = createParameterSelector(
+  (params: { stepType: Realtime.BlockType }) => params.stepType as unknown as keyof Realtime.Version.DefaultStepColors
+);
 
 export const defaultStepColors = createSelector([versionSelector], (version) => version?.defaultStepColors ?? {});
 export const defaultStepColorByStepType = createSelector(

@@ -48,6 +48,9 @@ class NodeManager extends EngineConsumer {
 
   internal = {
     addBlock: async (node: Creator.NodeDescriptor, data: Creator.DataDescriptor, parentNode: Creator.ParentNodeDescriptor): Promise<void> => {
+      const stepTypeColor = this.engine.select(VersionV2.active.defaultStepColorByStepType, {
+        stepType: node.type,
+      });
       const blockName = this.getNewBlockName(node.type);
       const blockID = parentNode.id;
 
@@ -57,6 +60,7 @@ class NodeManager extends EngineConsumer {
           blockID,
           blockPorts: parentNode.ports,
           blockCoords: [node.x, node.y],
+          blockColor: stepTypeColor,
           blockName,
           stepID: node.id,
           stepData: {

@@ -57,10 +57,6 @@ export class EngineConsumer<C extends Record<string, unknown> = Record<string, u
     return this.engine.store.dispatch;
   }
 
-  get isAtomicActionsPhase2(): boolean {
-    return !!this.engine.isFeatureEnabled(Realtime.FeatureFlag.ATOMIC_ACTIONS_PHASE_2);
-  }
-
   get isAtomicActionsCommeting(): boolean {
     return !!this.engine.isFeatureEnabled(Realtime.FeatureFlag.ATOMIC_ACTIONS_COMMENTING);
   }

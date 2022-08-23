@@ -21,17 +21,13 @@ const RootEditor: React.FC = () => {
 
   const [isDragging, toggleDragging] = useToggle(false);
 
-  const onUpdateButtons = React.useCallback(
-    (buttons: BaseNode.Buttons.Button[], save?: boolean) => editor.onChange({ buttons }, save),
-    [editor.onChange]
-  );
+  const onUpdateButtons = React.useCallback((buttons: BaseNode.Buttons.Button[]) => editor.onChange({ buttons }), [editor.onChange]);
 
   const mapManager = useMapManager(editor.data.buttons, onUpdateButtons, {
     ...dynamicPortsSync,
     clone: ({ id }, cloneData) => ({ ...cloneData, id }),
     getKey: (button) => button.id,
     factory: buttonFactory,
-    autoSaveOnAddRemove: false,
   });
 
   const noMatchConfig = NoMatchV2.useConfig();

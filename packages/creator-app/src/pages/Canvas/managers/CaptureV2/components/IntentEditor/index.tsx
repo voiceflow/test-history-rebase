@@ -26,10 +26,9 @@ const IntentEditor: React.FC<{ disableAnimation: boolean }> = ({ disableAnimatio
     [editor.onChange]
   );
 
-  const mapManager = useMapManager(editor.data.intent?.slots ?? defaultSlots, (slots, save) => editor.onChange({ intent: { slots } }, save), {
+  const mapManager = useMapManager(editor.data.intent?.slots ?? defaultSlots, (slots) => editor.onChange({ intent: { slots } }), {
     factory: () => Realtime.Utils.slot.intentSlotFactoryCreator(editor.projectType)({ id: '' }),
     clone: ({ id }, cloneData) => ({ ...cloneData, id } as Realtime.IntentSlot),
-    autoSaveOnAddRemove: false,
   });
 
   const dynamicSelectedSlotIDs = React.useMemo(() => mapManager.items.map((item) => item.id || ''), [mapManager.items]);

@@ -40,9 +40,6 @@ interface MapManagedBaseOptions<Item> {
   debounced?: boolean;
   onReorder?: (from: number, to: number) => Eventual<void | void[]>;
   onReordered?: (from: number, to: number) => Eventual<void | void[]>;
-
-  /** @deprecated  remove after FeatureFlag.ATOMIC_ACTIONS_PHASE_2 is out */
-  autoSaveOnAddRemove?: boolean;
 }
 
 export interface MapManagedSimpleOptions<Item> extends MapManagedBaseOptions<Item> {
@@ -103,7 +100,6 @@ export const useMapManager: MapManager = (
     debounced = true,
     onReorder: handleReorder,
     onReordered: handleReordered,
-    autoSaveOnAddRemove,
   } = {}
   // eslint-disable-next-line sonarjs/cognitive-complexity
 ) => {
@@ -195,7 +191,7 @@ export const useMapManager: MapManager = (
       keyLookup.current.set(generateLookupKey(value, index), key);
       latestCreatedKey.current = key;
 
-      await transaction(() => Promise.all([onSave(updated, { save: autoSaveOnAddRemove }), persistedHandleAdd(value, index)]));
+      await transaction(() => Promise.all([onSave(updated), persistedHandleAdd(value, index)]));
 
       persistedHandleAdded(value, index);
     },
@@ -302,7 +298,7 @@ export const useMapManager: MapManager = (
 
       keyLookup.current.delete(generateLookupKey(currValue, currIndex));
 
-      await transaction(async () => Promise.all([onSave(updated, { save: autoSaveOnAddRemove }), persistedHandleRemove(currValue, currIndex)]));
+      await transaction(async () => Promise.all([onSave(updated), persistedHandleRemove(currValue, currIndex)]));
 
       persistedHandleRemoved(currValue, currIndex);
     },

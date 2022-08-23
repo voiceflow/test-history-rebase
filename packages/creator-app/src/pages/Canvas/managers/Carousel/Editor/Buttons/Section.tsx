@@ -17,13 +17,12 @@ interface CarouselEditorButtonsSectionProps {
 }
 
 const CarouselEditorButtonsSection: React.FC<CarouselEditorButtonsSectionProps> = ({ editor, buttons, onUpdate }) => {
-  const mapManager = useMapManager(buttons, (buttons, save) => onUpdate({ buttons }, save), {
+  const mapManager = useMapManager(buttons, (buttons) => onUpdate({ buttons }), {
     factory: buttonFactory,
 
     onAdd: (button) => editor.engine.port.addByKey(editor.nodeID, button.id),
     onAdded: (button) => editor.goToNested({ state: { waitForData: true }, path: PATH, params: { buttonID: button.id } }),
     onRemove: (button) => editor.engine.port.removeManyByKey([{ key: button.id, portID: editor.node.ports.out.byKey[button.id] }]),
-    autoSaveOnAddRemove: false,
   });
 
   return (

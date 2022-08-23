@@ -6,7 +6,6 @@ export enum FeatureFlag {
   WAVENET_VOICES = 'wavenet_voices',
 
   // atomic actions
-  ATOMIC_ACTIONS_PHASE_2 = 'atomic_actions_phase_2',
   ATOMIC_ACTIONS_COMMENTING = 'atomic_actions_commenting',
 
   // used by select private cloud instances to add a new role type

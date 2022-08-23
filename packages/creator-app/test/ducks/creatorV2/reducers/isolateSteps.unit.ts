@@ -5,7 +5,7 @@ import { normalize } from 'normal-store';
 import * as CreatorV2 from '@/ducks/creatorV2';
 
 import suite from '../../_suite';
-import { ACTION_CONTEXT, LINK_ID, MOCK_STATE, NODE_DATA, NODE_ID, PORT_ID, PROJECT_META, V2_FEATURE_STATE } from '../_fixtures';
+import { ACTION_CONTEXT, LINK_ID, MOCK_STATE, NODE_DATA, NODE_ID, PORT_ID, PROJECT_META } from '../_fixtures';
 
 suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - isolateSteps reducer', ({ createState, describeReducerV2, describeReverter }) => {
   describeReducerV2(Realtime.node.isolateSteps, ({ applyAction, normalizeContaining }) => {
@@ -157,18 +157,15 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - isolateSteps reducer', ({ cre
       const sourceParentNodeID = 'sourceParentNodeID';
       const targetParentNodeID = 'targetParentNodeID';
       const targetPortID = 'targetPortID';
-      const rootState = createState(
-        {
-          ...MOCK_STATE,
-          links: normalize([
-            { id: LINK_ID, source: { nodeID: NODE_ID, portID: PORT_ID }, target: { nodeID: targetParentNodeID, portID: targetPortID } },
-          ]),
-          parentNodeIDByStepID: { [NODE_ID]: parentNodeID },
-          stepIDsByParentNodeID: { [sourceParentNodeID]: ['first', stepID, 'third'] },
-          linkIDsByPortID: { [PORT_ID]: [LINK_ID] },
-        },
-        V2_FEATURE_STATE
-      );
+      const rootState = createState({
+        ...MOCK_STATE,
+        links: normalize([
+          { id: LINK_ID, source: { nodeID: NODE_ID, portID: PORT_ID }, target: { nodeID: targetParentNodeID, portID: targetPortID } },
+        ]),
+        parentNodeIDByStepID: { [NODE_ID]: parentNodeID },
+        stepIDsByParentNodeID: { [sourceParentNodeID]: ['first', stepID, 'third'] },
+        linkIDsByPortID: { [PORT_ID]: [LINK_ID] },
+      });
 
       const result = revertAction(rootState, {
         ...ACTION_CONTEXT,

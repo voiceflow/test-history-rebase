@@ -33,17 +33,16 @@ const CarouselEditorRoot: NodeEditorV2<Realtime.NodeData.Carousel, Realtime.Node
     return editor.engine.port.removeManyByKey(portsToRemove);
   });
 
-  const mapManager = useMapManager(editor.data.cards, (cards, save) => editor.onChange({ cards }, save), {
+  const mapManager = useMapManager(editor.data.cards, (cards) => editor.onChange({ cards }), {
     onAdd: (card) => Promise.all(card.buttons.map((button) => editor.engine.port.addByKey(editor.nodeID, button.id))),
     clone: cloneCard,
     factory: () => cardFactory(editor.platform),
     onRemove,
-    autoSaveOnAddRemove: false,
   });
 
   const noMatchConfig = NoMatchV2.useConfig();
   const noReplyConfig = NoReplyV2.useConfig();
-  const carouselLayoutOption = useCarouselLayoutOption(editor.data.layout, (layout) => editor.onChange({ layout }, true));
+  const carouselLayoutOption = useCarouselLayoutOption(editor.data.layout, (layout) => editor.onChange({ layout }));
 
   const actions = [carouselLayoutOption, ...(isLast ? [noMatchConfig.option, noReplyConfig.option] : [])];
 

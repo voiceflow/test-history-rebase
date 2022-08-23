@@ -122,7 +122,7 @@ interface SharedEditorProps<Data, BuiltInPorts extends Realtime.BuiltInPortRecor
   data: Realtime.NodeData<Data>;
   node: Realtime.Node<BuiltInPorts>;
   nodeID: string;
-  onChange: (value: Partial<Realtime.NodeData<Data>>, save?: boolean) => Promise<void>;
+  onChange: (value: Partial<Realtime.NodeData<Data>>) => Promise<void>;
 }
 
 export interface NodeEditorV2Props<Data, BuiltInPorts extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord>

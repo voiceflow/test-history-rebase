@@ -146,8 +146,6 @@ export const featureSelectorFactory =
       return isFeatureEnabled(feature) ? valueV2 : valueV1;
     });
 
-export const createAtomicActionsPhase2Selector = featureSelectorFactory(Realtime.FeatureFlag.ATOMIC_ACTIONS_PHASE_2);
-
 export const createAtomicActionsCommentingSelector = featureSelectorFactory(Realtime.FeatureFlag.ATOMIC_ACTIONS_COMMENTING);
 
 export const isLoadedSelector = createSelector([rootSelector], ({ isLoaded }) => isLoaded);

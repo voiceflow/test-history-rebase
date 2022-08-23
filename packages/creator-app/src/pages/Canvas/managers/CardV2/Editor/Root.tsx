@@ -38,15 +38,12 @@ const CardV2EditorRoot: NodeEditorV2<Realtime.NodeData.CardV2, Realtime.NodeData
         item={card}
         editor={editor}
         onUpdate={async (partial) =>
-          editor.onChange(
-            {
-              card: {
-                ...card,
-                ...partial,
-              },
+          editor.onChange({
+            card: {
+              ...card,
+              ...partial,
             },
-            false
-          )
+          })
         }
       />
 

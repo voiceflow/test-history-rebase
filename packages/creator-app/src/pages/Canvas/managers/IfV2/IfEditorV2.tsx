@@ -13,13 +13,12 @@ import { MAX_IF_ITEMS, NODE_CONFIG } from './constants';
 const IfEditor: NodeEditor<Realtime.NodeData.IfV2, Realtime.NodeData.IfV2BuiltInPorts> = ({ data, node, engine, pushToPath, onChange }) => {
   const [isDragging, toggleDragging] = useToggle(false);
 
-  const mapManager = useMapManager(data.expressions, (expressions, save) => onChange({ expressions }, save), {
+  const mapManager = useMapManager(data.expressions, (expressions) => onChange({ expressions }), {
     clone: ({ id }, targetVal) => ({ ...targetVal, id }),
     onAdd: (_, index) => engine.port.addDynamic(node.id, index),
     factory: () => NODE_CONFIG.factory(undefined).data.expressions[0],
     onRemove: (_, index) => engine.port.removeDynamic(node.ports.out.dynamic[index]),
     onReorder: (from, to) => engine.port.reorderDynamic(node.id, from, to),
-    autoSaveOnAddRemove: false,
   });
 
   return (

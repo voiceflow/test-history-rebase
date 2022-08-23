@@ -12,7 +12,6 @@ import {
   NODE_PORT_REMAPS,
   NODE_PORT_REMAPS_STATE,
   REVERT_NODE_PORT_REMAPS_ACTION,
-  V2_FEATURE_STATE,
 } from '../_fixtures';
 
 suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - reorderSteps reducer', ({ describeReducerV2, describeReverter, createState }) => {
@@ -95,14 +94,11 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - reorderSteps reducer', ({ des
     it('registers an action reverter', () => {
       const parentNodeID = 'parentNodeID';
       const stepID = 'stepID';
-      const rootState = createState(
-        {
-          ...MOCK_STATE,
-          ...NODE_PORT_REMAPS_STATE,
-          stepIDsByParentNodeID: { [parentNodeID]: ['first', stepID, 'third', 'fourth'] },
-        },
-        V2_FEATURE_STATE
-      );
+      const rootState = createState({
+        ...MOCK_STATE,
+        ...NODE_PORT_REMAPS_STATE,
+        stepIDsByParentNodeID: { [parentNodeID]: ['first', stepID, 'third', 'fourth'] },
+      });
 
       const result = revertAction(rootState, {
         ...ACTION_CONTEXT,

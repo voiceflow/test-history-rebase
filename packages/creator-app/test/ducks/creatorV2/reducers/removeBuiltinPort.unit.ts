@@ -5,7 +5,7 @@ import { normalize } from 'normal-store';
 import * as CreatorV2 from '@/ducks/creatorV2';
 
 import suite from '../../_suite';
-import { ACTION_CONTEXT, LINK, LINK_ID, MOCK_STATE, NODE_ID, PORT, PORT_ID, V2_FEATURE_STATE } from '../_fixtures';
+import { ACTION_CONTEXT, LINK, LINK_ID, MOCK_STATE, NODE_ID, PORT, PORT_ID } from '../_fixtures';
 
 suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - removeBuiltinPort reducer', ({ describeReducerV2, describeReverter, createState }) => {
   describeReducerV2(Realtime.port.removeBuiltin, ({ applyAction }) => {
@@ -125,21 +125,18 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - removeBuiltinPort reducer', (
       const targetNodeID = 'targetNodeID';
       const targetPortID = 'targetPortID';
       const linkData: any = { foo: 'bar' };
-      const rootState = createState(
-        {
-          ...MOCK_STATE,
-          linkIDsByPortID: { [PORT_ID]: [LINK_ID] },
-          links: normalize([
-            {
-              id: LINK_ID,
-              source: { nodeID: NODE_ID, portID: PORT_ID },
-              target: { nodeID: targetNodeID, portID: targetPortID },
-              data: linkData,
-            },
-          ]),
-        },
-        V2_FEATURE_STATE
-      );
+      const rootState = createState({
+        ...MOCK_STATE,
+        linkIDsByPortID: { [PORT_ID]: [LINK_ID] },
+        links: normalize([
+          {
+            id: LINK_ID,
+            source: { nodeID: NODE_ID, portID: PORT_ID },
+            target: { nodeID: targetNodeID, portID: targetPortID },
+            data: linkData,
+          },
+        ]),
+      });
 
       const result = revertAction(rootState, {
         ...ACTION_CONTEXT,

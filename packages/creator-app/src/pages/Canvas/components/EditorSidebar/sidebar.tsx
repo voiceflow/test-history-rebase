@@ -50,7 +50,7 @@ const EditSidebar = () => {
   const [canvasPositionScheduler] = useRAF();
 
   const updateData = useUpdateData(node?.id);
-  const onRename = React.useCallback((name) => updateData({ name }, true), [updateData]);
+  const onRename = React.useCallback((name) => updateData({ name }), [updateData]);
 
   const isMarkup = !!node && isMarkupBlockType(node.type);
   const shouldRender = !!data && !!node && !UNEDITABLE_BLOCKS.has(node.type);

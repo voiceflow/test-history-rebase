@@ -21,7 +21,7 @@ export interface EntityPrompt {
   color: string;
 }
 
-export type NodeDataUpdater<T> = (value: Partial<Realtime.NodeData<T>>, save?: boolean) => Promise<void>;
+export type NodeDataUpdater<T> = (value: Partial<Realtime.NodeData<T>>) => Promise<void>;
 
 export interface CanvasContainerAPI {
   addClass: (className: string) => void;

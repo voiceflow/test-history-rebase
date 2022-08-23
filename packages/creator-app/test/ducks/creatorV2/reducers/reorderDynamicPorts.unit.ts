@@ -3,7 +3,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import * as CreatorV2 from '@/ducks/creatorV2';
 
 import suite from '../../_suite';
-import { ACTION_CONTEXT, MOCK_STATE, NODE_ID, PORT_ID, V2_FEATURE_STATE } from '../_fixtures';
+import { ACTION_CONTEXT, MOCK_STATE, NODE_ID, PORT_ID } from '../_fixtures';
 
 suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - reorderDynamicPorts reducer', ({ createState, describeReducerV2, describeReverter }) => {
   describeReducerV2(Realtime.port.reorderDynamic, ({ applyAction }) => {
@@ -84,15 +84,12 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - reorderDynamicPorts reducer',
 
   describeReverter(Realtime.port.reorderDynamic, ({ revertAction }) => {
     it('registers an action reverter', () => {
-      const rootState = createState(
-        {
-          ...MOCK_STATE,
-          portsByNodeID: {
-            [NODE_ID]: { in: [], out: { builtIn: {}, byKey: {}, dynamic: ['first', PORT_ID, 'third', 'fourth'] } },
-          },
+      const rootState = createState({
+        ...MOCK_STATE,
+        portsByNodeID: {
+          [NODE_ID]: { in: [], out: { builtIn: {}, byKey: {}, dynamic: ['first', PORT_ID, 'third', 'fourth'] } },
         },
-        V2_FEATURE_STATE
-      );
+      });
 
       const result = revertAction(rootState, { ...ACTION_CONTEXT, nodeID: NODE_ID, portID: PORT_ID, index: 2 });
 

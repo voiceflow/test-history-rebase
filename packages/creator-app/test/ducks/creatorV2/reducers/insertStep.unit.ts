@@ -5,7 +5,7 @@ import { normalize } from 'normal-store';
 import * as CreatorV2 from '@/ducks/creatorV2';
 
 import suite from '../../_suite';
-import { ACTION_CONTEXT, MOCK_STATE, NODE_DATA, NODE_ID, PORT, PROJECT_META, V2_FEATURE_STATE } from '../_fixtures';
+import { ACTION_CONTEXT, MOCK_STATE, NODE_DATA, NODE_ID, PORT, PROJECT_META } from '../_fixtures';
 
 suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - insertStep reducer', ({ createState, describeReducerV2, describeReverter }) => {
   describeReducerV2(Realtime.node.insertStep, ({ applyAction, normalizeContaining }) => {
@@ -153,29 +153,26 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - insertStep reducer', ({ creat
       const secondPort = 'port2';
       const firstLink = 'link1';
       const secondLink = 'link2';
-      const rootState = createState(
-        {
-          ...MOCK_STATE,
-          links: normalize([
-            {
-              id: firstLink,
-              source: { nodeID: firstNode, portID: firstPort },
-              target: { nodeID: secondNode, portID: secondPort },
-            },
-            {
-              id: secondLink,
-              source: { nodeID: thirdNode, portID: secondPort },
-              target: { nodeID: firstNode, portID: firstPort },
-            },
-          ]),
-          parentNodeIDByStepID: { [thirdNode]: parentNodeID },
-          linkIDsByPortID: {
-            [firstPort]: [firstLink],
-            [secondPort]: [secondLink],
+      const rootState = createState({
+        ...MOCK_STATE,
+        links: normalize([
+          {
+            id: firstLink,
+            source: { nodeID: firstNode, portID: firstPort },
+            target: { nodeID: secondNode, portID: secondPort },
           },
+          {
+            id: secondLink,
+            source: { nodeID: thirdNode, portID: secondPort },
+            target: { nodeID: firstNode, portID: firstPort },
+          },
+        ]),
+        parentNodeIDByStepID: { [thirdNode]: parentNodeID },
+        linkIDsByPortID: {
+          [firstPort]: [firstLink],
+          [secondPort]: [secondLink],
         },
-        V2_FEATURE_STATE
-      );
+      });
 
       const result = revertAction(rootState, {
         ...ACTION_CONTEXT,

@@ -15,7 +15,6 @@ import {
   PROJECT_META,
   REVERT_NODE_PORT_REMAPS_ACTION,
   SCHEMA_VERSION,
-  V2_FEATURE_STATE,
 } from '../_fixtures';
 
 suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - transplantSteps reducer', ({ describeReducerV2, describeReverter, createState }) => {
@@ -135,10 +134,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - transplantSteps reducer', ({ 
       const targetParentNodeID = 'targetParentNodeID';
       const fooStepID = 'fooStepID';
       const barStepID = 'barStepID';
-      const rootState = createState(
-        { ...MOCK_STATE, stepIDsByParentNodeID: { [sourceParentNodeID]: ['first', fooStepID, barStepID, 'fourth'] } },
-        V2_FEATURE_STATE
-      );
+      const rootState = createState({ ...MOCK_STATE, stepIDsByParentNodeID: { [sourceParentNodeID]: ['first', fooStepID, barStepID, 'fourth'] } });
 
       const result = revertAction(rootState, {
         ...ACTION_CONTEXT,
@@ -170,23 +166,20 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - transplantSteps reducer', ({ 
       const barStepID = 'barStepID';
       const sourceBlockCoords: Realtime.Point = [100, 100];
       const sourceBlockName = 'sourceBlock';
-      const rootState = createState(
-        {
-          ...MOCK_STATE,
-          stepIDsByParentNodeID: { [sourceParentNodeID]: ['first', fooStepID, barStepID, 'fourth'] },
-          coordsByNodeID: { [sourceParentNodeID]: sourceBlockCoords },
-          portsByNodeID: { [sourceParentNodeID]: { in: [sourceBlockInPortID], out: Realtime.Utils.port.createEmptyNodeOutPorts() } },
-          nodes: normalize([
-            {
-              id: sourceParentNodeID,
-              type: BlockType.COMBINED,
-              nodeID: sourceParentNodeID,
-              name: sourceBlockName,
-            },
-          ]),
-        },
-        V2_FEATURE_STATE
-      );
+      const rootState = createState({
+        ...MOCK_STATE,
+        stepIDsByParentNodeID: { [sourceParentNodeID]: ['first', fooStepID, barStepID, 'fourth'] },
+        coordsByNodeID: { [sourceParentNodeID]: sourceBlockCoords },
+        portsByNodeID: { [sourceParentNodeID]: { in: [sourceBlockInPortID], out: Realtime.Utils.port.createEmptyNodeOutPorts() } },
+        nodes: normalize([
+          {
+            id: sourceParentNodeID,
+            type: BlockType.COMBINED,
+            nodeID: sourceParentNodeID,
+            name: sourceBlockName,
+          },
+        ]),
+      });
 
       const result = revertAction(rootState, {
         ...ACTION_CONTEXT,
@@ -221,14 +214,11 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - transplantSteps reducer', ({ 
       const targetParentNodeID = 'targetParentNodeID';
       const fooStepID = 'fooStepID';
       const barStepID = 'barStepID';
-      const rootState = createState(
-        {
-          ...MOCK_STATE,
-          ...NODE_PORT_REMAPS_STATE,
-          stepIDsByParentNodeID: { [sourceParentNodeID]: ['first', fooStepID, barStepID, 'fourth'] },
-        },
-        V2_FEATURE_STATE
-      );
+      const rootState = createState({
+        ...MOCK_STATE,
+        ...NODE_PORT_REMAPS_STATE,
+        stepIDsByParentNodeID: { [sourceParentNodeID]: ['first', fooStepID, barStepID, 'fourth'] },
+      });
 
       const result = revertAction(rootState, {
         ...ACTION_CONTEXT,

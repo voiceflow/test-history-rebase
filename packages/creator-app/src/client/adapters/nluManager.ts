@@ -4,7 +4,7 @@ import { EXCLUDED_CONFLICTS_INTENTS } from '@/constants/nlu';
 
 export const transformIntents = (intents: BaseModels.Intent[]) => {
   return intents
-    .filter((intent) => EXCLUDED_CONFLICTS_INTENTS.includes(intent.name))
+    .filter((intent) => !EXCLUDED_CONFLICTS_INTENTS.includes(intent.name))
     .map((intent) => {
       return {
         key: intent.key,

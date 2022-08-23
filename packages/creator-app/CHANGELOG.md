@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.874.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.874.1...@voiceflow/creator-app@1.874.2) (2022-08-23)
+
+
+### Bug Fixes
+
+* short term transcript hack (CT-846) ([#5950](https://github.com/voiceflow/creator-app/issues/5950)) ([eec2bb5](https://github.com/voiceflow/creator-app/commit/eec2bb5623dd741e7e5888fbb7bc319dc35ec24c))
+
+
+
+
+
 ## [1.874.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.874.0...@voiceflow/creator-app@1.874.1) (2022-08-23)
 
 

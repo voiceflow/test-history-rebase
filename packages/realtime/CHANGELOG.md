@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.96.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.96.4...@voiceflow/realtime@1.96.5) (2022-08-23)
+
+
+### Bug Fixes
+
+* short term transcript hack (CT-846) ([#5950](https://github.com/voiceflow/creator-app/issues/5950)) ([eec2bb5](https://github.com/voiceflow/creator-app/commit/eec2bb5623dd741e7e5888fbb7bc319dc35ec24c))
+
+
+
+
+
 ## [1.96.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.96.3...@voiceflow/realtime@1.96.4) (2022-08-23)
 
 **Note:** Version bump only for package @voiceflow/realtime

@@ -13,6 +13,7 @@ export * as projectList from './projectList';
 export * as protocol from './protocol';
 export * as slot from './slot';
 export * as thread from './thread';
+export * as transcript from './transcript';
 export * as actionUtils from './utils';
 export * as variableState from './variableState';
 export * as version from './version';

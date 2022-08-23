@@ -2,11 +2,11 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Context } from '@voiceflow/socket-utils';
 import { Action } from 'typescript-fsa';
 
-import { AbstractProjectResourceControl } from '@/actions/project/utils';
+import { AbstractProjectChannelControl } from '@/actions/project/utils';
 
 type PatchThreadPayload = Realtime.BaseProjectPayload & Realtime.actionUtils.CRUDValuePayload<Partial<Realtime.Thread>>;
 
-class PatchThread extends AbstractProjectResourceControl<PatchThreadPayload> {
+class PatchThread extends AbstractProjectChannelControl<PatchThreadPayload> {
   protected actionCreator = Realtime.thread.crud.patch;
 
   protected process = async (ctx: Context, { payload }: Action<PatchThreadPayload>) => {

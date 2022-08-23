@@ -2,9 +2,9 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Context } from '@voiceflow/socket-utils';
 import { Action } from 'typescript-fsa';
 
-import { AbstractProjectResourceControl } from '@/actions/project/utils';
+import { AbstractProjectChannelControl } from '@/actions/project/utils';
 
-class UpdateComment extends AbstractProjectResourceControl<Realtime.thread.UpdateCommentPayload> {
+class UpdateComment extends AbstractProjectChannelControl<Realtime.thread.UpdateCommentPayload> {
   protected actionCreator = Realtime.thread.comment.update;
 
   protected process = async (ctx: Context, { payload }: Action<Realtime.thread.UpdateCommentPayload>) => {

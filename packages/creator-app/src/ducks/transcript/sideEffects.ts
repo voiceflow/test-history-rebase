@@ -1,3 +1,4 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { toast } from '@voiceflow/ui';
 import Bowser from 'bowser';
 
@@ -5,7 +6,7 @@ import client from '@/client';
 import { TranscriptExportFormat } from '@/client/transcript';
 import * as Prototype from '@/ducks/prototype';
 import * as Session from '@/ducks/session';
-import { patchTranscript, removeTranscript, replaceTranscripts, updateUnreadTranscripts } from '@/ducks/transcript/actions';
+import { patchTranscript, replaceTranscripts, updateUnreadTranscripts } from '@/ducks/transcript/actions';
 import { transcriptByIDSelector } from '@/ducks/transcript/selectors';
 import { Browser, Device, OperatingSystem, Sentiment, SystemTag, Transcript } from '@/models';
 import { Thunk } from '@/store/types';
@@ -165,11 +166,12 @@ export const deleteTranscript =
   (transcriptID: string): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
-    const activeProjectID = Session.activeProjectIDSelector(state);
+    const projectID = Session.activeProjectIDSelector(state)!;
+    const workspaceID = Session.activeWorkspaceIDSelector(state)!;
 
     try {
-      await client.transcript.deleteTranscript(activeProjectID!, transcriptID);
-      dispatch(removeTranscript(transcriptID.toString()));
+      await client.transcript.deleteTranscript(projectID, transcriptID);
+      dispatch.sync(Realtime.transcript.crud.remove({ projectID, workspaceID, key: transcriptID.toString() }));
       toast.success('Successfully deleted conversation');
     } catch (e) {
       toast.error('Failed to delete transcript');

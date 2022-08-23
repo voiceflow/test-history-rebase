@@ -44,6 +44,7 @@ export const RPC_KEY = 'rpc';
 export const NOTE_KEY = 'note';
 export const VARIABLE_STATE_KEY = 'variable_state';
 export const VIEWPORT_KEY = 'viewport';
+export const TRANSCRIPT_KEY = 'transcript';
 
 export const DEFAULT_PROJECT_LIST_NAME = 'Default List';
 

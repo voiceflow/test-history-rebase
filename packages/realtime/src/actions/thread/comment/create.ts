@@ -1,9 +1,9 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { terminateResend } from '@voiceflow/socket-utils';
 
-import { AbstractProjectResourceControl } from '@/actions/project/utils';
+import { AbstractProjectChannelControl } from '@/actions/project/utils';
 
-class CreateComment extends AbstractProjectResourceControl<Realtime.thread.CreateCommentPayload> {
+class CreateComment extends AbstractProjectChannelControl<Realtime.thread.CreateCommentPayload> {
   protected actionCreator = Realtime.thread.comment.create.started;
 
   protected resend = terminateResend;

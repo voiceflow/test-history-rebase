@@ -2,9 +2,9 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Context } from '@voiceflow/socket-utils';
 import { Action } from 'typescript-fsa';
 
-import { AbstractProjectResourceControl } from '@/actions/project/utils';
+import { AbstractProjectChannelControl } from '@/actions/project/utils';
 
-class DeleteComment extends AbstractProjectResourceControl<Realtime.thread.DeleteCommentPayload> {
+class DeleteComment extends AbstractProjectChannelControl<Realtime.thread.DeleteCommentPayload> {
   protected actionCreator = Realtime.thread.comment.delete;
 
   protected process = async (ctx: Context, { payload }: Action<Realtime.thread.DeleteCommentPayload>) => {

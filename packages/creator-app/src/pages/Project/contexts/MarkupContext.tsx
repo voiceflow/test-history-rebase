@@ -13,7 +13,7 @@ import { imageSizeFromUrl, videoSizeFromUrl } from '@/utils/file';
 
 const MB = 2 ** 20; // 2 ** 20 === 1 mb
 const IMAGE_FILE_LIMIT = 4 * MB;
-const VIDEO_FILE_LIMIT = 40 * MB;
+const VIDEO_FILE_LIMIT = 50 * MB;
 const ALLOWED_IMAGE_TYPES = ['.jpg', '.jpeg', '.png'];
 const ALLOWED_VIDEOS_TYPES = ['.mp4', '.mpeg4', '.webm'];
 

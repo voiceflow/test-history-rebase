@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.874.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.874.0...@voiceflow/creator-app@1.874.1) (2022-08-23)
+
+
+### Bug Fixes
+
+* [AA FF REMOVAL] remove aa phase 2 ff (CT-846) ([#5947](https://github.com/voiceflow/creator-app/issues/5947)) ([45f6e0d](https://github.com/voiceflow/creator-app/commit/45f6e0ddda12e27a2445795e73b2ec8622c8c2af))
+* reverter error [bugfix] (CT-859) ([#5953](https://github.com/voiceflow/creator-app/issues/5953)) ([91d462d](https://github.com/voiceflow/creator-app/commit/91d462da2c461e889a9242bdcafc190c0f118b0f)), closes [/github.com/voiceflow/creator-app/blob/7030c4be278c70649bfd8af4d122ab0dffe90854/packages/creator-app/src/store/create-store-creator/index.js#L202-L210](https://github.com//github.com/voiceflow/creator-app/blob/7030c4be278c70649bfd8af4d122ab0dffe90854/packages/creator-app/src/store/create-store-creator/index.js/issues/L202-L210) [/github.com/voiceflow/creator-app/blob/7030c4be278c70649bfd8af4d122ab0dffe90854/packages/creator-app/src/store/create-store-creator/index.js#L259-L263](https://github.com//github.com/voiceflow/creator-app/blob/7030c4be278c70649bfd8af4d122ab0dffe90854/packages/creator-app/src/store/create-store-creator/index.js/issues/L259-L263)
+
+
+
+
+
 # [1.874.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.873.3...@voiceflow/creator-app@1.874.0) (2022-08-23)
 
 

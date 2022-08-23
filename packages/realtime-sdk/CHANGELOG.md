@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.143.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.143.0...@voiceflow/realtime-sdk@1.143.1) (2022-08-23)
+
+
+### Bug Fixes
+
+* [AA FF REMOVAL] remove aa phase 2 ff (CT-846) ([#5947](https://github.com/voiceflow/creator-app/issues/5947)) ([45f6e0d](https://github.com/voiceflow/creator-app/commit/45f6e0ddda12e27a2445795e73b2ec8622c8c2af))
+
+
+
+
+
 # [1.143.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.142.1...@voiceflow/realtime-sdk@1.143.0) (2022-08-23)
 
 

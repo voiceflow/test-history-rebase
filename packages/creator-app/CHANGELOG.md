@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.874.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.873.3...@voiceflow/creator-app@1.874.0) (2022-08-23)
+
+
+### Features
+
+* bump video upload size limit [bugfix] (CT-000) ([#5952](https://github.com/voiceflow/creator-app/issues/5952)) ([f62d1d7](https://github.com/voiceflow/creator-app/commit/f62d1d79c8c3be8a1015e083ddf3c1709c8fe2f5))
+
+
+
+
+
 ## [1.873.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.873.2...@voiceflow/creator-app@1.873.3) (2022-08-23)
 
 **Note:** Version bump only for package @voiceflow/creator-app

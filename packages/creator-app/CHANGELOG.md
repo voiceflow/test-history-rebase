@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.878.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.877.1...@voiceflow/creator-app@1.878.0) (2022-08-24)
+
+
+### Features
+
+* new plan limit system + video upload limits (CT-826) ([#5927](https://github.com/voiceflow/creator-app/issues/5927)) ([f7aeda1](https://github.com/voiceflow/creator-app/commit/f7aeda1badb5fadb45e57bf3771557e439f09c35))
+
+
+
+
+
 ## [1.877.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.877.0...@voiceflow/creator-app@1.877.1) (2022-08-24)
 
 

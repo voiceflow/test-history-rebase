@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
+import { useTrackingEvents } from '@/hooks';
 import { PLATFORM_PROJECT_META_MAP } from '@/pages/NewProjectV2/constants';
 import { SupportedPlatformProjectType } from '@/pages/NewProjectV2/types';
 import { useNLUManager } from '@/pages/NLUManager/context';
@@ -19,6 +20,7 @@ const SidebarHeader: React.FC = () => {
   const platformMeta = PLATFORM_PROJECT_META_MAP[platform as SupportedPlatformProjectType];
   const showIcon = !isVoiceflowPlatform(platform);
   const { notifications } = useNLUManager();
+  const [trackingEvents] = useTrackingEvents();
 
   return (
     <SidebarHeaderContainer>
@@ -33,7 +35,16 @@ const SidebarHeader: React.FC = () => {
 
       <Popper width="370px" placement="bottom-start" renderContent={({ onClose }) => <NLUNotifications onClose={onClose} />}>
         {({ ref, onToggle, isOpened }) => (
-          <ErrorBubble active={isOpened} onClick={onToggle} ref={ref}>
+          <ErrorBubble
+            active={isOpened}
+            onClick={() => {
+              onToggle();
+              if (!isOpened) {
+                trackingEvents.trackNLUNotificationsOpened();
+              }
+            }}
+            ref={ref}
+          >
             <SvgIcon mr={5} color={isOpened ? '#132144' : '#6e849a'} icon="warning" inline size={16} />
             {notifications.length}
           </ErrorBubble>

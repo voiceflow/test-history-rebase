@@ -8,6 +8,8 @@ import { InteractionModelTabType, PageProgressBar } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
+import * as Tracking from '@/ducks/tracking';
+import { NLUManagerOpenedOrigin } from '@/ducks/tracking/constants';
 import * as VariableState from '@/ducks/variableState';
 import * as VersionV2 from '@/ducks/versionV2';
 import { SyncThunk, Thunk } from '@/store/types';
@@ -320,13 +322,17 @@ export const goToCurrentTranscript = (): SyncThunk => (dispatch, getState) => {
   dispatch(goToTranscript(versionID));
 };
 
-export const goToCurrentNLUManager = (): SyncThunk => (dispatch, getState) => {
-  const state = getState();
-  const versionID = Session.activeVersionIDSelector(state);
-  Errors.assertVersionID(versionID);
+export const goToCurrentNLUManager =
+  (origin: NLUManagerOpenedOrigin): SyncThunk =>
+  (dispatch, getState) => {
+    const state = getState();
+    const versionID = Session.activeVersionIDSelector(state);
+    Errors.assertVersionID(versionID);
 
-  dispatch(goToNLUManager(versionID));
-};
+    dispatch(goToNLUManager(versionID));
+
+    dispatch(Tracking.trackNLUManagerOpened({ origin }));
+  };
 
 export const goToTargetTranscript =
   (transcriptID: string): SyncThunk =>

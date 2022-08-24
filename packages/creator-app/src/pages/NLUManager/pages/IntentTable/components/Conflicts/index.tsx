@@ -3,7 +3,7 @@ import React from 'react';
 
 import Drawer from '@/components/Drawer';
 import * as IntentV2 from '@/ducks/intentV2';
-import { useSelector } from '@/hooks';
+import { useSelector, useTrackingEvents } from '@/hooks';
 import { EDITOR_LEFT_SIDEBAR_WIDTH, MENU_RIGHT_SIDEBAR_WIDTH } from '@/pages/NLUManager/constants';
 import { useNLUManager } from '@/pages/NLUManager/context';
 import { useConflictsSubmit, useIntentConflictsForm } from '@/pages/NLUManager/hooks';
@@ -22,10 +22,11 @@ interface ConflictsProps {
 const Conflicts: React.FC<ConflictsProps> = ({ onChangesApplied }) => {
   const { clarity, activeItemID: intentID, closeEditorTab } = useNLUManager<NLUIntent>();
   const getIntentByID = useSelector(IntentV2.getIntentByIDSelector);
+  const [trackingEvents] = useTrackingEvents();
 
   const { conflicts, onMoveUtterance, onEditUtterance, onDeleteUtterance, modifiedUtterances } = useIntentConflictsForm(intentID, clarity);
 
-  const { submit, isLoading } = useConflictsSubmit();
+  const { submit, isLoading } = useConflictsSubmit(intentID);
 
   const handleSubmit = async () => {
     try {
@@ -39,6 +40,11 @@ const Conflicts: React.FC<ConflictsProps> = ({ onChangesApplied }) => {
       toast.error('Could not apply changes');
     }
   };
+
+  React.useEffect(() => {
+    if (!intentID) return;
+    trackingEvents.trackConflictsViewed({ intentID });
+  }, [intentID]);
 
   return (
     <Drawer open width={1000} offset={450} zIndex={19} direction={Drawer.Direction.LEFT} style={{ width: drawerWidth }}>

@@ -12,7 +12,7 @@ import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as SlotV2 from '@/ducks/slotV2';
 import * as VersionV2 from '@/ducks/versionV2';
-import { useAddSlot, useDispatch, useMLGatewayClient, useSelector } from '@/hooks';
+import { useAddSlot, useDispatch, useMLGatewayClient, useSelector, useTrackingEvents } from '@/hooks';
 import { useNLUManager } from '@/pages/NLUManager/context';
 import { NLUIntent } from '@/pages/NLUManager/types';
 import { fillEntities, validateUtterance } from '@/utils/intent';
@@ -32,6 +32,7 @@ const Recommendations: React.FC = () => {
   const platform = useSelector(ProjectV2.active.platformSelector);
   const slotsMap = useSelector(SlotV2.slotMapSelector);
   const patchIntent = useDispatch(Intent.patchIntent);
+  const [trackingEvents] = useTrackingEvents();
 
   const [isFetching, toggleIsFetching] = useToggle(false);
   const [recommendations, setRecommendations] = React.useState<Recommendation[]>([]);
@@ -52,6 +53,10 @@ const Recommendations: React.FC = () => {
       });
 
       setRecommendations(utterances.map((text) => ({ id: Utils.id.cuid.slug(), text, slots: [] })));
+
+      if (nluManager.activeItemID) {
+        trackingEvents.trackUtteranceRecommendationRefreshed({ intentID: nluManager.activeItemID });
+      }
     } catch {
       toast.warn('Failed to generate recommendations, please try again later');
     } finally {
@@ -63,8 +68,14 @@ const Recommendations: React.FC = () => {
     setRecommendations(Utils.array.replace(recommendations, index, { ...recommendations[index], ...value }));
   };
 
-  const onRemoveRecommendation = (index: number) => {
+  const removeRecommendation = (index: number) => {
     setRecommendations(Utils.array.without(recommendations, index));
+  };
+
+  const onRemoveRecommendation = (index: number, text: string) => {
+    removeRecommendation(index);
+    if (!nluManager.activeItemID) return;
+    trackingEvents.trackUtteranceRecommendationRejected({ utteranceName: text, intentID: nluManager.activeItemID });
   };
 
   const onAddRecommendation = (index: number, { text, slots }: Recommendation) => {
@@ -77,12 +88,17 @@ const Recommendations: React.FC = () => {
     }
 
     patchIntent(nluManager.activeItem.id, { inputs: [...nluManager.activeItem.inputs, { text, slots }] });
-    onRemoveRecommendation(index);
+    trackingEvents.trackUtteranceRecommendationAccepted({ utteranceName: text, intentID: nluManager.activeItem.id });
+    removeRecommendation(index);
   };
 
   React.useEffect(() => {
     setRecommendations([]);
     onFetchRecommendations();
+
+    if (nluManager.activeItemID) {
+      trackingEvents.trackUtteranceRecommendationsOpened({ intentID: nluManager.activeItemID });
+    }
   }, []);
 
   return (
@@ -127,7 +143,7 @@ const Recommendations: React.FC = () => {
                       size={14}
                       icon="close"
                       variant={IconButton.Variant.BASIC}
-                      onClick={() => onRemoveRecommendation(index)}
+                      onClick={() => onRemoveRecommendation(index, recommendation.text)}
                       disabled={isFetching}
                       offsetSize={0}
                     />

@@ -9,7 +9,16 @@ import { InteractionModelTabType, ModalType } from '@/constants';
 import { NLUContext } from '@/contexts';
 import * as Router from '@/ducks/router';
 import { activeProjectIDSelector } from '@/ducks/session';
-import { OrderedVariable, useDispatch, useModals, useOrderedEntities, useOrderedIntents, useOrderedVariables, useSelector } from '@/hooks';
+import {
+  OrderedVariable,
+  useDispatch,
+  useModals,
+  useOrderedEntities,
+  useOrderedIntents,
+  useOrderedVariables,
+  useSelector,
+  useTrackingEvents,
+} from '@/hooks';
 
 import { EditorTabs } from './constants';
 import useClarity from './hooks/useClarity';
@@ -130,6 +139,8 @@ export const NLUManagerProvider: React.FC = ({ children }) => {
 
   const goToNLUManagerEntity = useDispatch(Router.goToCurrentNLUManagerEntity);
 
+  const [trackingEvents] = useTrackingEvents();
+
   const addSlotModal = useModals(ModalType.ENTITY_CREATE);
   const addIntentModal = useModals(ModalType.INTENT_CREATE);
   const addVariableModal = useModals(ModalType.VARIABLE_CREATE);
@@ -161,6 +172,7 @@ export const NLUManagerProvider: React.FC = ({ children }) => {
   const goToTab = React.useCallback(
     (tab: InteractionModelTabType, itemID?: string | null) => {
       const persistedState = { tab, id: itemID };
+      trackingEvents.trackNLUManagerNavigation({ tab });
 
       persistedStateRef.current = persistedState;
 

@@ -156,29 +156,6 @@ export const trackProjectNLUImport = createProjectEventTracker<{
   client.api.analytics.track(EventName.PROJECT_NLU_IMPORT, createProjectEventPayload(options, { nlu_type: nluType, project_type: platform, origin }))
 );
 
-export const trackProjectNLUImportFromWorkspace = createWorkspaceEventTracker<{
-  nluType: NLPProvider | undefined;
-  platform: VoiceflowConstants.PlatformType;
-  origin: NLUImportOrigin;
-  projectID: string;
-}>(({ nluType, platform, projectID, origin, ...options }) =>
-  client.api.analytics.track(
-    EventName.PROJECT_NLU_IMPORT,
-    createWorkspaceEventPayload(options, { nlu_type: nluType, project_type: platform, origin, projectID })
-  )
-);
-
-export const trackProjectNLUImportFailed = createProjectEventTracker<{
-  nluType: NLPProvider | undefined;
-  platform: VoiceflowConstants.PlatformType;
-  origin: NLUImportOrigin;
-}>(({ nluType, platform, origin, ...options }) =>
-  client.api.analytics.track(
-    EventName.PROJECT_NLU_IMPORT_FAILED,
-    createProjectEventPayload(options, { nlu_type: nluType, project_type: platform, origin })
-  )
-);
-
 export const trackTopicCreated = createProjectEventTracker((options) =>
   client.api.analytics.track(EventName.TOPIC_CREATED, createProjectEventPayload(options))
 );

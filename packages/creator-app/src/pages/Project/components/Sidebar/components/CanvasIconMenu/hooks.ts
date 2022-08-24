@@ -11,6 +11,7 @@ import { Path } from '@/config/routes';
 import { BOOK_DEMO_LINK, DOCS_LINK, FORUM_LINK, YOUTUBE_CHANNEL_LINK } from '@/constants';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
+import { NLUManagerOpenedOrigin } from '@/ducks/tracking/constants';
 import * as Transcript from '@/ducks/transcript';
 import { useDispatch, useFeature, useHotKeys, usePermission, useSelector, useTrackingEvents } from '@/hooks';
 import { Hotkey, HOTKEY_LABEL_MAP } from '@/keymap';
@@ -65,7 +66,7 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
   }, [match, helpOpened]);
 
   useHotKeys(Hotkey.DESIGN_PAGE, goToCurrentCanvas, { preventDefault: true });
-  useHotKeys(Hotkey.NLU_MANAGER_PAGE, goToNLUManager, {
+  useHotKeys(Hotkey.NLU_MANAGER_PAGE, () => goToNLUManager(NLUManagerOpenedOrigin.LEFT_NAV), {
     disable: !nluManager.isEnabled,
     preventDefault: true,
   });
@@ -108,7 +109,7 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
           icon: 'systemModel',
           value: CanvasOptionType.NLU_MANAGER,
           tooltip: { title: 'NLU Manager', hotkey: HOTKEY_LABEL_MAP[Hotkey.NLU_MANAGER_PAGE] },
-          onClick: goToNLUManager,
+          onClick: () => goToNLUManager(NLUManagerOpenedOrigin.LEFT_NAV),
         },
     !canViewConversations
       ? null

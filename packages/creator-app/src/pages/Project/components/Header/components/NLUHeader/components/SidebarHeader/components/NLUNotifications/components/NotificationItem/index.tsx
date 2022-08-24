@@ -2,6 +2,7 @@ import { Box, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
 import { InteractionModelTabType } from '@/constants';
+import { useTrackingEvents } from '@/hooks';
 import { NLUManagerContext } from '@/pages/NLUManager/context';
 
 import { NOTIFICATION_ITEM_ICONS } from '../../constants';
@@ -15,11 +16,13 @@ interface NotificationItemProps {
 
 const NotificationItem: React.FC<NotificationItemProps> = ({ data, onClose }) => {
   const nluManager = React.useContext(NLUManagerContext);
+  const [trackingEvents] = useTrackingEvents();
 
   const { title, message, itemID, type } = data;
 
   const jumpToItem = () => {
     nluManager.goToTab(InteractionModelTabType.INTENTS, itemID);
+    trackingEvents.trackNLUNotificationsOpened();
     onClose();
   };
 

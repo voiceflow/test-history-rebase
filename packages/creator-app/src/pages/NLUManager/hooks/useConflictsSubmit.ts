@@ -4,16 +4,17 @@ import React from 'react';
 
 import * as Intent from '@/ducks/intent';
 import * as IntentV2 from '@/ducks/intentV2';
-import { useDispatch, useSelector } from '@/hooks';
+import { useDispatch, useSelector, useTrackingEvents } from '@/hooks';
 
 import { ConflictUtterance } from '../types';
 
 type NewIntents = Record<string, Partial<Realtime.Intent>>;
 
-const useSolveIntentConflicts = () => {
+const useSolveIntentConflicts = (intentID: string | null) => {
   const patchIntent = useDispatch(Intent.patchIntent);
   const intentsMap = useSelector(IntentV2.platformIntentMapSelector);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const [trackingEvents] = useTrackingEvents();
 
   const getSubmitData = (modifiedUtterances: ConflictUtterance[]): NewIntents => {
     return Object.entries(intentsMap).reduce((acc, [currentIntentID, currentIntent]) => {
@@ -71,6 +72,10 @@ const useSolveIntentConflicts = () => {
       Object.entries(submitData).forEach(async ([intentID, intent]) => {
         await patchIntent(intentID, intent);
       });
+
+      if (intentID) {
+        trackingEvents.trackConflictViewChangesApplied({ intentID });
+      }
     } catch (e) {
       toast.error('Something went wrong');
     } finally {

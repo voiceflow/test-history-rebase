@@ -126,6 +126,18 @@ export enum EventName {
 
   ACTION_ADDED = 'Action Added',
   ACTION_DELETED = 'Action Deleted',
+
+  // NLU Manager
+  CONFLICTS_VIEWED = 'Conflicts Viewed',
+  CONFLICT_VIEW_CHANGES_APPLIED = 'Conflict View Changes Applied',
+  UTTERANCE_RECOMMENDATION_OPENED = 'Utterance Recommendation Opened',
+  UTTERANCE_RECOMMENDATION_ACCEPTED = 'Utterance Recommendation Accepted',
+  UTTERANCE_RECOMMENDATION_REJECTED = 'Utterance Recommendation Rejected',
+  UTTERANCE_RECOMMENDATION_REFRESHED = 'Utterance Recommendation Refreshed',
+  NLU_MANAGER_OPENED = 'NLU Manager Opened',
+  NLU_MANAGER_NAVIGATION = 'NLU Manager Navigation',
+  NLU_NOTIFICATIONS_OPENED = 'NLU Notifications Opened',
+  NLU_NOTIFICATIONS_CLICKED = 'NLU Notifications Clicked',
 }
 
 export enum IntentEditType {
@@ -142,6 +154,11 @@ export enum CanvasCreationType {
   EDITOR = 'editor',
   IMM = 'imm',
   PASTE = 'paste',
+}
+
+export enum NLUManagerOpenedOrigin {
+  LEFT_NAV = 'left-nav',
+  QUICKVIEW = 'quickview',
 }
 
 export enum UploadType {

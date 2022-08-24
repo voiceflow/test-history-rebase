@@ -6,6 +6,7 @@ import React from 'react';
 import { ModalType } from '@/constants';
 import * as Router from '@/ducks/router';
 import * as SlotV2 from '@/ducks/slotV2';
+import { NLUManagerOpenedOrigin } from '@/ducks/tracking/constants';
 import { useDispatch, useFeature, useModals, useSelector } from '@/hooks';
 
 const EntitySelectDropdown: React.FC = () => {
@@ -47,7 +48,7 @@ const EntitySelectDropdown: React.FC = () => {
         renderFooterAction={() =>
           nluManager.isEnabled ? (
             <Menu.Footer>
-              <Menu.Footer.Action onClick={goToNLUManager}>Open NLU Manager</Menu.Footer.Action>
+              <Menu.Footer.Action onClick={() => goToNLUManager(NLUManagerOpenedOrigin.QUICKVIEW)}>Open NLU Manager</Menu.Footer.Action>
             </Menu.Footer>
           ) : null
         }

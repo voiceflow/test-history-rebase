@@ -237,8 +237,13 @@ export const getIntentClarityStrengthLevel = (count: number) => {
 };
 
 export const getIntentConfidenceStrengthLevel = (count: number) => {
-  if (count === 0) return StrengthGauge.Level.WEAK;
-  return getIntentStrengthLevel(count);
+  if (count === 0) return StrengthGauge.Level.NOT_SET;
+  if (count < 4) return StrengthGauge.Level.WEAK;
+  if (count < 6) return StrengthGauge.Level.MEDIUM;
+  if (count < 10) return StrengthGauge.Level.STRONG;
+  if (count >= 10) return StrengthGauge.Level.VERY_STRONG;
+
+  return StrengthGauge.Level.NOT_SET;
 };
 
 export const intentButtonFactory = (): BaseButton.IntentButton => ({ name: '', type: BaseButton.ButtonType.INTENT, payload: { intentID: null } });

@@ -23,8 +23,9 @@ interface CardListProps {
 const CardList: React.FC<CardListProps> = ({ intent }) => {
   const nluManager = useNLUManager<NLUIntent>();
   const intentID = intent.id;
+  const confidence = intent.confidence || 0;
   const clarityStrengthLevel = getIntentClarityStrengthLevel(intent.clarity || 0);
-  const confidenceStrengthLevel = getIntentConfidenceStrengthLevel(intent.confidence || 0);
+  const confidenceStrengthLevel = getIntentConfidenceStrengthLevel(confidence);
   const confidenceMeta = getConfidenceMeta()[confidenceStrengthLevel];
   const clarityMeta = getClarityMeta(intent)[clarityStrengthLevel];
   const isBuiltIn = isBuiltInIntent(intentID);
@@ -64,6 +65,8 @@ const CardList: React.FC<CardListProps> = ({ intent }) => {
   if (isBuiltIn) return null;
   if (!showClarityMessage && !showConfidenceMessage) return null;
 
+  const confidencePoints = confidence >= 10 ? 100 : confidence * 10;
+
   return (
     <FadeDownContainer>
       <S.Container>
@@ -72,7 +75,7 @@ const CardList: React.FC<CardListProps> = ({ intent }) => {
             color={StrengthGauge.StrengthColor[confidenceStrengthLevel]}
             title={
               <>
-                <b style={{ display: 'contents' }}>Confidence: {confidenceMeta.points}</b> of 100pts
+                <b style={{ display: 'contents' }}>Confidence: {confidencePoints}</b> of 100pts
               </>
             }
             onClose={() => handleCloseNotification('confidence')}

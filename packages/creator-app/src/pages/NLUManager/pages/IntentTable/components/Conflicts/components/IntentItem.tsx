@@ -5,7 +5,7 @@ import { useDrop } from 'react-dnd';
 
 import { HOVER_THROTTLE_TIMEOUT } from '@/constants';
 import { useDragPreview } from '@/hooks';
-import { ConflictUtterance, DeletedUtterancePayload, EditUtterancePayload, MoveUtterancePayload } from '@/pages/NLUManager/types';
+import { ConflictUtterance, DeletedUtterancePayload, EditUtterancePayload, MoveUtterancePayload, NLUIntent } from '@/pages/NLUManager/types';
 
 import { DragAndDropTypes } from '../constants';
 import * as S from '../styles';
@@ -13,8 +13,7 @@ import UtteranceItem from './UtteranceItem';
 import UtterancePreview from './UtterancePreview';
 
 interface IntentItemProps {
-  intentName: string;
-  intentID: string;
+  intent: NLUIntent;
   conflictID: string;
   utterances: ConflictUtterance[];
   onDeleteUtterance: (payload: DeletedUtterancePayload) => void;
@@ -22,16 +21,10 @@ interface IntentItemProps {
   onMoveUtterance: (payload: MoveUtterancePayload) => void;
 }
 
-const IntentItem: React.FC<IntentItemProps> = ({
-  intentName,
-  intentID,
-  conflictID,
-  utterances,
-  onEditUtterance,
-  onDeleteUtterance,
-  onMoveUtterance,
-}) => {
+const IntentItem: React.FC<IntentItemProps> = ({ intent, conflictID, utterances, onEditUtterance, onDeleteUtterance, onMoveUtterance }) => {
   const intentUtterances = React.useMemo(() => utterances.filter((u) => !u.deleted), [utterances]);
+  const intentName = intent?.name || '';
+  const intentID = intent?.id || '';
 
   const onMove = (from: any, to: any) => {
     onMoveUtterance({
@@ -82,7 +75,7 @@ const IntentItem: React.FC<IntentItemProps> = ({
         {intentName}
 
         <Box marginLeft={16} display="inline-block" position="relative" bottom="3px">
-          <StrengthGauge width={40} level={StrengthGauge.Level.WEAK} />
+          <StrengthGauge width={40} level={intent?.clarityLevel} />
         </Box>
       </SidebarEditor.HeaderTitle>
 

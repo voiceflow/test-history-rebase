@@ -2,8 +2,7 @@ import { Box, Button, ButtonVariant, FlexEnd, IconButton, SectionV2, SidebarEdit
 import React from 'react';
 
 import Drawer from '@/components/Drawer';
-import * as IntentV2 from '@/ducks/intentV2';
-import { useSelector, useTrackingEvents } from '@/hooks';
+import { useTrackingEvents } from '@/hooks';
 import { EDITOR_LEFT_SIDEBAR_WIDTH, MENU_RIGHT_SIDEBAR_WIDTH } from '@/pages/NLUManager/constants';
 import { useNLUManager } from '@/pages/NLUManager/context';
 import { useConflictsSubmit, useIntentConflictsForm } from '@/pages/NLUManager/hooks';
@@ -20,9 +19,15 @@ interface ConflictsProps {
 }
 
 const Conflicts: React.FC<ConflictsProps> = ({ onChangesApplied }) => {
-  const { clarity, activeItemID: intentID, closeEditorTab } = useNLUManager<NLUIntent>();
-  const getIntentByID = useSelector(IntentV2.getIntentByIDSelector);
+  const { clarity, activeItemID: intentID, closeEditorTab, items: nluIntents } = useNLUManager<NLUIntent>();
   const [trackingEvents] = useTrackingEvents();
+
+  const intentsByID = React.useMemo(() => {
+    return nluIntents.reduce((acc, intent) => {
+      acc[intent.id] = intent;
+      return acc;
+    }, {} as Record<string, NLUIntent>);
+  }, [nluIntents]);
 
   const { conflicts, onMoveUtterance, onEditUtterance, onDeleteUtterance, modifiedUtterances } = useIntentConflictsForm(intentID, clarity);
 
@@ -66,8 +71,7 @@ const Conflicts: React.FC<ConflictsProps> = ({ onChangesApplied }) => {
             {conflicts.map((conflict, index) => (
               <S.IntentsGrid key={index}>
                 <IntentItem
-                  intentName={getIntentByID({ id: conflict.intentID })?.name || ''}
-                  intentID={conflict.intentID}
+                  intent={intentsByID?.[conflict.intentID]}
                   conflictID={conflict.id}
                   utterances={conflict.utterances[conflict.intentID]}
                   onMoveUtterance={onMoveUtterance}
@@ -80,8 +84,7 @@ const Conflicts: React.FC<ConflictsProps> = ({ onChangesApplied }) => {
                     .filter((intentID) => conflict.intentID !== intentID)
                     .map((conflictIntentID, index) => (
                       <IntentItem
-                        intentName={getIntentByID({ id: conflictIntentID })?.name || ''}
-                        intentID={conflictIntentID}
+                        intent={intentsByID?.[conflictIntentID]}
                         conflictID={conflict.id}
                         utterances={conflict.utterances[conflictIntentID]}
                         key={`${conflictIntentID}-${index}`}

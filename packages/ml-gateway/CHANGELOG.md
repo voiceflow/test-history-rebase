@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.23.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.22.4...@voiceflow/ml-gateway@1.23.0) (2022-08-24)
+
+
+### Features
+
+* ML-Gateway HTTP express api structure (NLU-310) ([#5928](https://github.com/voiceflow/creator-app/issues/5928)) ([e3a4e83](https://github.com/voiceflow/creator-app/commit/e3a4e83cd20bcdc7db203104d0a51078d5607fdb))
+
+
+
+
+
 ## [1.22.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.22.3...@voiceflow/ml-gateway@1.22.4) (2022-08-22)
 
 **Note:** Version bump only for package @voiceflow/ml-gateway

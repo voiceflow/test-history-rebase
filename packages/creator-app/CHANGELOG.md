@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.877.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.877.0...@voiceflow/creator-app@1.877.1) (2022-08-24)
+
+
+### Bug Fixes
+
+* [bugfix] fixes excluded intents logic (NLU-000) ([#5959](https://github.com/voiceflow/creator-app/issues/5959)) ([0d5b329](https://github.com/voiceflow/creator-app/commit/0d5b329b11d09df98a0e84cbb94207ade9214a13))
+
+
+
+
+
 # [1.877.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.876.0...@voiceflow/creator-app@1.877.0) (2022-08-23)
 
 

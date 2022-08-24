@@ -138,6 +138,8 @@ export enum EventName {
   NLU_MANAGER_NAVIGATION = 'NLU Manager Navigation',
   NLU_NOTIFICATIONS_OPENED = 'NLU Notifications Opened',
   NLU_NOTIFICATIONS_CLICKED = 'NLU Notifications Clicked',
+
+  BLOCK_TEMPLATE_CREATED = 'Block Template Created',
 }
 
 export enum IntentEditType {

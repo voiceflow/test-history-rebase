@@ -10,11 +10,15 @@ import {
 } from '@voiceflow/ui';
 import React from 'react';
 
+import * as Account from '@/ducks/account';
 import * as CanvasTemplate from '@/ducks/canvasTemplate';
 import * as Diagram from '@/ducks/diagram';
 import * as ProjectV2 from '@/ducks/projectV2';
+import * as Session from '@/ducks/session';
 import * as VersionV2 from '@/ducks/versionV2';
-import { useDispatch, useSelector, useTeardown } from '@/hooks';
+import * as WorksapceV2 from '@/ducks/workspaceV2';
+import { useDispatch, useSelector, useTeardown, useTrackingEvents } from '@/hooks';
+import { EngineContext } from '@/pages/Canvas/contexts';
 
 import * as S from '../styles';
 import { TemplatePopperContentProps } from '../types';
@@ -28,6 +32,13 @@ const TemplateLibraryPopperContent: React.FC<TemplatePopperContentProps> = ({
   onNameChange,
   oldName = '',
 }) => {
+  const [trackingEvents] = useTrackingEvents();
+  const creatorID = useSelector(Account.userIDSelector);
+  const workspaceID = useSelector(Session.activeWorkspaceIDSelector);
+  const projectID = useSelector(Session.activeProjectIDSelector)!;
+  const orgID = useSelector(WorksapceV2.active.organizationIDSelector)!;
+
+  const engine = React.useContext(EngineContext);
   const createCanvasTemplate = useDispatch(CanvasTemplate.createCanvasTemplate);
   const templateDiagramID = useSelector(VersionV2.active.templateDiagramIDSelector);
   const createTemplateDiagram = useDispatch(Diagram.createTemplateDiagram);
@@ -49,10 +60,30 @@ const TemplateLibraryPopperContent: React.FC<TemplatePopperContentProps> = ({
         await createTemplateDiagram();
       }
 
-      await createCanvasTemplate({ name, color: selectedHex, nodeIDs });
+      const createdTemplate = await createCanvasTemplate({
+        name,
+        color: selectedHex,
+        nodeIDs,
+      });
 
-      // TODO: copy node/nodeData to template diagram
+      const nodeTypes = nodeIDs
+        .map((nodeID) => {
+          const node = engine?.getNodeByID(nodeID);
+          if (node?.type === 'combined') {
+            return node.combinedNodes.map((stepID) => engine?.getNodeByID(stepID)?.type);
+          }
+          return node?.type;
+        })
+        .flat(1);
 
+      trackingEvents.trackBlockTemplateCreated({
+        creator_id: creatorID,
+        workspace_id: workspaceID,
+        project_id: projectID,
+        org_id: orgID,
+        template_id: createdTemplate.id,
+        nested_steps: nodeTypes,
+      });
       toast.success(`Block template saved to library.`);
     } catch {
       toast.error('Something went wrong, please contact support if this issue persists.');

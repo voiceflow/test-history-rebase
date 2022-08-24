@@ -162,3 +162,24 @@ export const trackActionDeleted = createProjectEventTracker<{ nodeType: BlockTyp
     createProjectEventPayload(options, { step_type: options.nodeType, action_type: options.actionType })
   )
 );
+
+export const trackBlockTemplateCreated = createProjectEventTracker<{
+  creator_id: number | null;
+  workspace_id: string | null;
+  project_id: string;
+  org_id: string | null;
+  template_id: string | null;
+  nested_steps: (BlockType | undefined)[];
+}>(({ creator_id, workspace_id, project_id, org_id, template_id, nested_steps, ...options }) =>
+  client.api.analytics.track(
+    EventName.BLOCK_TEMPLATE_CREATED,
+    createProjectEventPayload(options, {
+      creator_id,
+      workspace_id,
+      project_id,
+      org_id,
+      template_id,
+      nested_steps,
+    })
+  )
+);

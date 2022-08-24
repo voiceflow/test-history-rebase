@@ -3,17 +3,16 @@ import { toast, Upload, useCache, useContextApi, useDidUpdateEffect } from '@voi
 import React from 'react';
 
 import { Permission } from '@/config/permissions';
+import { LimitType } from '@/config/planLimitV2';
 import { BlockType, MarkupBlockType } from '@/constants';
 import * as History from '@/ducks/history';
-import { useDispatch, useEventualEngine, usePermission, useTrackingEvents } from '@/hooks';
+import { useDispatch, useEventualEngine, useLimit, usePermission, useTrackingEvents } from '@/hooks';
 import { useAnyModeOpen } from '@/pages/Project/hooks/modes';
 import { ClassName, Identifier } from '@/styles/constants';
 import { upload, windowRefocused } from '@/utils/dom';
 import { imageSizeFromUrl, videoSizeFromUrl } from '@/utils/file';
 
 const MB = 2 ** 20; // 2 ** 20 === 1 mb
-const IMAGE_FILE_LIMIT = 4 * MB;
-const VIDEO_FILE_LIMIT = 50 * MB;
 const ALLOWED_IMAGE_TYPES = ['.jpg', '.jpeg', '.png'];
 const ALLOWED_VIDEOS_TYPES = ['.mp4', '.mpeg4', '.webm'];
 
@@ -41,6 +40,9 @@ export const MarkupProvider: React.FC = ({ children }) => {
   const [uploadingMedia, setUploadingMedia] = React.useState(false);
   const [creatingType, localSetCreatingType] = React.useState<Nullable<MarkupBlockType>>(null);
 
+  const markupVideoLimit = useLimit(LimitType.MARKUP_VIDEO);
+  const markupImageLimit = useLimit(LimitType.MARKUP_IMAGE);
+
   const imageUploader = Upload.useUpload({ fileType: 'image', endpoint: '/image' });
   const videoUploader = Upload.useUpload({ fileType: 'video', endpoint: '/video' });
 
@@ -49,6 +51,8 @@ export const MarkupProvider: React.FC = ({ children }) => {
     isAnyModeOpen,
     canEditCanvas,
     uploadingMedia,
+    markupVideoLimit,
+    markupImageLimit,
     isMediaUploading: imageUploader.isLoading || videoUploader.isLoading,
   });
 
@@ -75,25 +79,41 @@ export const MarkupProvider: React.FC = ({ children }) => {
 
     trackEvents.trackMarkupImage();
 
+    const errors: React.ReactNode[] = [];
+
     const allowedFiles = Array.from(files).filter((file) => {
       const extension = getFileExtension(file);
 
-      return (
-        (ALLOWED_IMAGE_TYPES.includes(extension) && file.size <= IMAGE_FILE_LIMIT) ||
-        (ALLOWED_VIDEOS_TYPES.includes(extension) && file.size <= VIDEO_FILE_LIMIT)
-      );
+      const fileSizeMB = file.size / MB;
+
+      if (ALLOWED_IMAGE_TYPES.includes(extension)) {
+        if (cache.current.markupImageLimit && fileSizeMB > cache.current.markupImageLimit.value) {
+          errors.push(cache.current.markupImageLimit.error);
+          return false;
+        }
+
+        return true;
+      }
+
+      if (ALLOWED_VIDEOS_TYPES.includes(extension)) {
+        if (cache.current.markupVideoLimit && fileSizeMB > cache.current.markupVideoLimit.value) {
+          errors.push(cache.current.markupVideoLimit.error);
+          return false;
+        }
+
+        return true;
+      }
+
+      return false;
     });
 
     if (!allowedFiles.length) {
-      toast.error(
-        <>
-          The <b>image</b> files must be less then {Math.floor(IMAGE_FILE_LIMIT / MB)}MB and have
-          {ALLOWED_IMAGE_TYPES.map((e) => `"${e}"`).join(', ')} extension.
-          <br />
-          The <b>video</b> file must be less then ${Math.floor(VIDEO_FILE_LIMIT / MB)}MB and have
-          {ALLOWED_VIDEOS_TYPES.map((e) => `"${e}"`).join(', ')} extension.
-        </>
-      );
+      if (errors.length) {
+        toast.error(errors[0]);
+      } else {
+        toast.error(`Unsupported file type, please upload ${[...ALLOWED_IMAGE_TYPES, ...ALLOWED_VIDEOS_TYPES].join(', ')}`);
+      }
+
       return;
     }
 

@@ -26,6 +26,7 @@ export * from './mlGateway';
 export * from './modals';
 export * from './permission';
 export * from './planLimits';
+export * from './planLimitV2';
 export * from './project';
 export * from './realtime';
 export * from './reducer';

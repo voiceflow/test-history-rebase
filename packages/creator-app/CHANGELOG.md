@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.880.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.879.1...@voiceflow/creator-app@1.880.0) (2022-08-24)
+
+
+### Features
+
+* segment event block template created (CT-830) ([#5931](https://github.com/voiceflow/creator-app/issues/5931)) ([af95b99](https://github.com/voiceflow/creator-app/commit/af95b99216dfa2880624b6fcc75f41039c7175bd))
+
+
+
+
+
 ## [1.879.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.879.0...@voiceflow/creator-app@1.879.1) (2022-08-24)
 
 

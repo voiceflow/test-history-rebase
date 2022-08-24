@@ -6,6 +6,7 @@ import type { ClientMap } from '../clients';
 import type { Config } from '../types';
 import ConfigurationService from './configuration';
 import InteractionService from './interaction';
+import NLPService from './nlp';
 import UserService from './user';
 import VoiceflowService from './voiceflow';
 
@@ -14,6 +15,7 @@ export interface ServiceMap extends BaseServiceMap {
   voiceflow: VoiceflowService;
   interaction: InteractionService;
   configuration: ConfigurationService;
+  nlp: NLPService;
 }
 
 interface Options {
@@ -31,6 +33,7 @@ const buildServices = ({ config, clients }: Options): ServiceMap => {
     interaction: new InteractionService(serviceOptions),
     configuration: new ConfigurationService(serviceOptions),
     voiceflow: new VoiceflowService(serviceOptions),
+    nlp: new NLPService(serviceOptions),
   };
 
   Object.assign(services, serviceMap);

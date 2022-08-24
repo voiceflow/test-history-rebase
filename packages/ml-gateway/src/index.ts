@@ -6,6 +6,7 @@ import { inspect } from 'node:util';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
+import { ApiManager } from './api';
 import config from './config';
 import logger from './logger';
 import ServiceManager from './serviceManager';
@@ -19,7 +20,11 @@ const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
     cwd: rootDir,
     logger,
   });
+
   const serviceManager = new ServiceManager({ server, config, log: logger });
+  const apiManager = new ApiManager(serviceManager);
+
+  server.http(apiManager.start());
 
   // Graceful shutdown from SIGTERM
   process.on('SIGTERM', async () => {

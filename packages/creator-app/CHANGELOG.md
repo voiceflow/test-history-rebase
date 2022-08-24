@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.879.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.878.0...@voiceflow/creator-app@1.879.0) (2022-08-24)
+
+
+### Features
+
+* NLU Manager segment events (NLU-298) ([#5930](https://github.com/voiceflow/creator-app/issues/5930)) ([2e7c8af](https://github.com/voiceflow/creator-app/commit/2e7c8afa70e0f9bcd9b0e89d56602adb112acfe4))
+
+
+
+
+
 # [1.878.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.877.1...@voiceflow/creator-app@1.878.0) (2022-08-24)
 
 

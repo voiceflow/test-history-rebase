@@ -54,9 +54,9 @@ export const OPEN_INTENT = 'https://docs.voiceflow.com/#/platform/steps/input-st
 export const PROJECT_CREATE = 'https://www.voiceflow.com/docs/designing-project-creation';
 
 // TODO: the actions documentation is not available yet
-export const ACTIONS = 'www.voiceflow.com/docs/designing-adding-actions';
-export const ACTIONS_BACKEND = 'www.voiceflow.com/docs/designing-adding-actions#backend-actions';
-export const ACTIONS_NAVIGATION = 'www.voiceflow.com/docs/designing-adding-actions#navigation-actions';
+export const ACTIONS = 'https://www.voiceflow.com/docs/designing-adding-actions';
+export const ACTIONS_BACKEND = 'https://www.voiceflow.com/docs/designing-adding-actions#backend-actions';
+export const ACTIONS_NAVIGATION = 'https://www.voiceflow.com/docs/designing-adding-actions#navigation-actions';
 
 // steps
 export const INTENT_STEP = 'https://www.voiceflow.com/docs/designing-user-input-steps#toc-2';

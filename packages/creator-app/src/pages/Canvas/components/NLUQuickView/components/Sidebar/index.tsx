@@ -2,8 +2,10 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, SvgIcon, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 
-import { InteractionModelTabType } from '@/constants';
-import { useFeature } from '@/hooks';
+import { InteractionModelTabType, ModalType } from '@/constants';
+import * as Router from '@/ducks/router';
+import { NLUManagerOpenedOrigin } from '@/ducks/tracking/constants';
+import { useDispatch, useFeature, useModals } from '@/hooks';
 import { NLUQuickViewContext } from '@/pages/Canvas/components/NLUQuickView/context';
 
 import { Container, HeaderSearchInput, NLUButton, SectionsContainer } from './components';
@@ -28,9 +30,11 @@ const SearchPlaceholders = {
 };
 
 const Sidebar: React.FC = () => {
+  const { close: closeNLUQuickviewModal } = useModals(ModalType.NLU_MODEL_QUICK_VIEW);
   const { setTitle } = React.useContext(NLUQuickViewContext);
   const { activeTab, setActiveTab, selectedID, setSelectedID, isActiveItemRename, setIsActiveItemRename } = React.useContext(NLUQuickViewContext);
   const nluManager = useFeature(Realtime.FeatureFlag.NLU_MANAGER);
+  const goToNLUManager = useDispatch(Router.goToCurrentNLUManager);
 
   const [search, setSearch] = React.useState('');
   const [searchLength, setSearchLength] = React.useState(0);
@@ -71,7 +75,12 @@ const Sidebar: React.FC = () => {
         <VariablesList {...sectionProps} />
       </SectionsContainer>
       {nluManager.isEnabled && (
-        <NLUButton>
+        <NLUButton
+          onClick={() => {
+            goToNLUManager(NLUManagerOpenedOrigin.QUICKVIEW);
+            closeNLUQuickviewModal();
+          }}
+        >
           <Box display="inline-block" mr={12}>
             <SvgIcon icon="fullExpand" color="#6e849a" />
           </Box>

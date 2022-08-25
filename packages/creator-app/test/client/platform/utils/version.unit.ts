@@ -8,6 +8,6 @@ const client = createClient(SERVICE_ENDPOINT);
 
 suite('Platform Client - Utils - Version', ({ expectMembers }) => {
   it('should have expected keys', () => {
-    expectMembers(Object.keys(client), ['updateVersion', 'updateSettings', 'updatePublishing', 'updatePlatformData']);
+    expectMembers(Object.keys(client), ['updateSettings', 'updatePublishing']);
   });
 });

@@ -12,7 +12,6 @@ import mlGateway from './mlGateway';
 import nluManager from './nluManager';
 import organization from './organization';
 import project from './project';
-import projectList from './projectList';
 import prototype from './prototype';
 import realtime, { realtimeIO } from './realtime';
 import reportTags from './reportTags';
@@ -43,7 +42,6 @@ const client = {
   integrations,
   organization,
   project,
-  projectList,
   prototype,
   session,
   sso,

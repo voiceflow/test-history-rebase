@@ -23,7 +23,7 @@ export const DIALOGFLOW_ACTIONS = 'https://docs.voiceflow.com/#/platform/steps/c
 // canvas
 export const COMPONENTS_LAYER = 'https://www.voiceflow.com/docs/designing-components-flow';
 export const COMPONENT_STEP = 'https://www.voiceflow.com/docs/designing-components-flow';
-export const CODE_STEP = 'https://www.voiceflow.com/docs/designing-integration-steps#toc-2';
+export const CODE_STEP = 'https://www.voiceflow.com/docs/designing-developer-steps#toc-2';
 export const SET_STEP_VIDEO = 'https://www.youtube.com/embed/6xgr-7GPZzU';
 export const COMMAND_STEP_VIDEO = 'https://www.youtube.com/watch?v=piU_PTL1wBQ&feature=emb_title';
 export const ACCOUNT_LINKING_STEP = 'https://www.voiceflow.com/docs/designing-channel-specific-steps#toc-4';
@@ -59,14 +59,14 @@ export const ACTIONS_BACKEND = 'https://www.voiceflow.com/docs/designing-adding-
 export const ACTIONS_NAVIGATION = 'https://www.voiceflow.com/docs/designing-adding-actions#navigation-actions';
 
 // steps
-export const INTENT_STEP = 'https://www.voiceflow.com/docs/designing-user-input-steps#toc-2';
-export const CHOICE_STEP = 'https://www.voiceflow.com/docs/designing-user-input-steps#toc-0';
+export const INTENT_STEP = 'https://www.voiceflow.com/docs/designing-event-steps#toc-0';
+export const CHOICE_STEP = 'https://www.voiceflow.com/docs/designing-user-input-steps#toc-2';
 export const BUTTONS_STEP = 'https://www.voiceflow.com/docs/designing-user-input-steps#toc-1';
 export const CAPTURE_STEP = 'https://www.voiceflow.com/docs/designing-user-input-steps#toc-3';
-export const CONDITION_STEP = 'https://www.voiceflow.com/docs/designing-logic-steps#toc-3';
-export const CUSTOM_CODE_STEP = 'https://www.voiceflow.com/docs/designing-integration-steps#toc-2';
-export const SET_STEP = 'https://www.voiceflow.com/docs/designing-logic-steps#toc-2';
-export const API_STEP = 'https://www.voiceflow.com/docs/designing-integration-steps#toc-1';
+export const CONDITION_STEP = 'https://www.voiceflow.com/docs/designing-logic-steps#toc-2';
+export const CUSTOM_CODE_STEP = 'https://www.voiceflow.com/docs/designing-developer-steps#toc-2';
+export const SET_STEP = 'https://www.voiceflow.com/docs/designing-logic-steps#toc-3';
+export const API_STEP = 'https://www.voiceflow.com/docs/designing-developer-steps#toc-1';
 export const SPEAK_STEP = 'https://www.voiceflow.com/docs/designing-response-steps#toc-1';
 export const TEXT_STEP = 'https://www.voiceflow.com/docs/designing-response-steps#toc-2';
 export const IMAGE_STEP = 'https://www.voiceflow.com/docs/designing-response-steps#toc-4';

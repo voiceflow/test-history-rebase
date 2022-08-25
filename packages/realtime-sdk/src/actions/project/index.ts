@@ -1,4 +1,4 @@
-import { createAsyncAction, createCRUDActions } from '@realtime-sdk/actions/utils';
+import { createAction, createAsyncAction, createCRUDActions } from '@realtime-sdk/actions/utils';
 import { AnyProject, DBProject } from '@realtime-sdk/models';
 import { BaseProjectPayload, BaseWorkspacePayload } from '@realtime-sdk/types';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
@@ -30,6 +30,11 @@ export interface CreateProjectPayload extends BaseWorkspacePayload {
   templateID: string;
 }
 
+export interface EjectUsersPayload extends BaseProjectPayload {
+  key: string;
+  creatorID: number;
+}
+
 export const importFromFile = createAsyncAction<ImportProjectFromFilePayload, AnyProject>(projectType('IMPORT_FROM_FILE'));
 
 export const duplicate = createAsyncAction<DuplicateProjectPayload, AnyProject>(projectType('DUPLICATE'));
@@ -37,3 +42,5 @@ export const duplicate = createAsyncAction<DuplicateProjectPayload, AnyProject>(
 export const create = createAsyncAction<CreateProjectPayload, AnyProject>(projectType('CREATE'));
 
 export const crud = createCRUDActions<AnyProject, BaseWorkspacePayload>(projectType);
+
+export const ejectUsers = createAction<EjectUsersPayload>(projectType('KICK_USERS'));

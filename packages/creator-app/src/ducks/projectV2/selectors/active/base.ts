@@ -19,6 +19,8 @@ export const metaSelector = createSelector([projectTypeSelector, platformSelecto
 
 export const nameSelector = createSelector([projectSelector], (project) => project?.name ?? null);
 
+export const idSelector = Session.activeProjectIDSelector;
+
 export const linkTypeSelector = createSelector([projectSelector], (project) => project?.linkType || BaseModels.Project.LinkType.STRAIGHT);
 
 export const customThemesSelector = createSelector([projectSelector], (project) => project?.customThemes || []);

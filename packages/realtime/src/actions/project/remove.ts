@@ -11,6 +11,7 @@ class RemoveProject extends AbstractWorkspaceChannelControl<RemoveProjectPayload
 
   protected process = async (ctx: Context, { payload }: Action<RemoveProjectPayload>): Promise<void> => {
     await this.services.project.delete(ctx.data.creatorID, payload.key);
+    await this.server.process(Realtime.project.ejectUsers({ ...payload, projectID: payload.key, creatorID: ctx.data.creatorID }));
   };
 }
 

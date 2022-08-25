@@ -4,6 +4,7 @@ import AddProjectControl from './add';
 import { UpdateProjectViewersControl } from './awareness';
 import CreateProjectControl from './create';
 import DuplicateProjectControl from './duplicate';
+import EjectUsersControl from './ejectUsers';
 import ImportProjectFromFileControl from './importFromFile';
 import PatchProjectControl from './patch';
 import AlexaUpdateVendorControl from './platform/alexa/updateVendor';
@@ -19,6 +20,7 @@ const buildProjectActionControls = (options: LoguxControlOptions) => ({
   removeProjectControl: new RemoveProjectControl(options),
   removeManyProjectsControl: new RemoveManyProjectsControl(options),
   importProjectFromFileControl: new ImportProjectFromFileControl(options),
+  ejectUsers: new EjectUsersControl(options),
 
   // awareness
   updateProjectViewersControl: new UpdateProjectViewersControl(options),

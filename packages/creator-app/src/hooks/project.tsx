@@ -60,9 +60,8 @@ export const useDeleteProject = ({
       if (boardID) {
         await onDeleteProjectFromList(boardID, projectID);
       } else {
-        onGoToDashboard();
-
         await onDeleteProject(projectID);
+        onGoToDashboard();
       }
 
       toast.success(`Successfully deleted ${projectName}`);

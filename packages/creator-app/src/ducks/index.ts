@@ -91,7 +91,7 @@ const createReducer = ({ browserHistory, reverters, invalidators, getClientNodeI
 
 export default createReducer;
 
-export const allRPCs = [...Workspace.rpcs, ...Version.rpcs, ...Session.rpcs];
+export const allRPCs = [...Workspace.rpcs, ...Version.rpcs, ...Session.rpcs, ...ProjectV2.rpcs];
 
 export const allReverters: ActionReverter<any>[] = [...CreatorV2.reverters];
 

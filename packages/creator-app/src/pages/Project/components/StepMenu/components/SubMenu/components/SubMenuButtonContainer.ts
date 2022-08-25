@@ -10,13 +10,21 @@ interface SubMenuButtonContainerProps {
   isContextMenuOpen?: boolean;
   disabled?: boolean;
   customDisplay?: string;
+  isLibrary?: boolean;
 }
 
 export const SubMenuButtonContainer = styled(Box.FlexStart)<SubMenuButtonContainerProps>`
   ${transition('box-shadow', 'background-color', 'transform', 'background-image')}
 
-  min-width: 142px;
-  max-width: 230px;
+  ${({ isLibrary }) =>
+    isLibrary
+      ? css`
+          max-width: 230px;
+        `
+      : css`
+          width: 142px;
+        `}
+
   height: 38px;
   padding: 9px 16px 8px;
   border-radius: 6px;

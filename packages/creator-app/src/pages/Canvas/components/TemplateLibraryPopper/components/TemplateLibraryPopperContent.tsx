@@ -56,6 +56,8 @@ const TemplateLibraryPopperContent: React.FC<TemplatePopperContentProps> = ({
 
   const onCreateTemplate = async () => {
     try {
+      if (name.length === 0) return;
+
       if (!templateDiagramID) {
         await createTemplateDiagram();
       }
@@ -104,15 +106,18 @@ const TemplateLibraryPopperContent: React.FC<TemplatePopperContentProps> = ({
           value={name}
           placeholder="Template Name"
           onChangeText={setName}
+          onEnterPress={onCreateTemplate}
         />
         <S.Label>Block Color</S.Label>
         <ColorThemes colors={colors} selectedColor={selectedHex} newColorIndex={undefined} onColorSelect={onChangeHex} />
       </S.InnerPopperContent>
 
       {!editing && (
-        <S.StyledButton variant={ButtonVariant.PRIMARY} onClick={onCreateTemplate} disabled={name.length === 0}>
-          Create
-        </S.StyledButton>
+        <div style={{ padding: '6px', width: '100%' }}>
+          <S.StyledButton variant={ButtonVariant.PRIMARY} onClick={onCreateTemplate} disabled={name.length === 0}>
+            Create
+          </S.StyledButton>
+        </div>
       )}
     </S.OuterPopperContent>
   );

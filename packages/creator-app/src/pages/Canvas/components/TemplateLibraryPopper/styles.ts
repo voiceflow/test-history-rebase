@@ -9,7 +9,7 @@ export const Label = styled(Text)`
   font-weight: 600;
   color: #62778c;
   margin-bottom: 10px;
-  margin-top: 10px;
+  margin-top: 16px;
 `;
 
 export const StyledInput = styled(Input)`
@@ -25,12 +25,11 @@ export const StyledButton = styled(Button)`
 export const OuterPopperContent = styled(Box.Flex)`
   ${FadeDown}
 
-  border-radius: 5px;
+  border-radius: 8px;
   flex-direction: column;
   background-color: #fff;
   box-shadow: 0 0 0 1px rgba(17, 49, 96, 0.06), 0 8px 16px 0 rgba(17, 49, 96, 0.16);
   max-width: 255px;
-  padding: 6px;
   box-sizing: border-box;
   font-family: 'Open Sans', sans-serif;
 
@@ -44,5 +43,5 @@ export const InnerPopperContent = styled(Box.Flex)`
   font-family: 'Open Sans', sans-serif;
   align-items: flex-start;
   justify-content: flex-start;
-  padding: 10px 18px 14px 18px;
+  padding: 16px 24px 8px 24px;
 `;

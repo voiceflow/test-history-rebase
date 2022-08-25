@@ -120,6 +120,7 @@ const LibrarySubMenuButton: React.FC<SubMenuButtonProps> = ({ name, id, color, n
             onContextMenu={onContextMenu}
             className={ClassName.SUB_STEP_MENU_ITEM}
             customDisplay="block"
+            isLibrary
           >
             <Box opacity={isDragging ? 0 : 1} display="block">
               <Label>{name}</Label>

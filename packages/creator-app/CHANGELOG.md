@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.881.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.880.1...@voiceflow/creator-app@1.881.0) (2022-08-25)
+
+
+### Features
+
+* kick users to dashboard when project is deleted (CT-849) ([#5954](https://github.com/voiceflow/creator-app/issues/5954)) ([ab4bc5e](https://github.com/voiceflow/creator-app/commit/ab4bc5e165f9cbae8d7d90248e011459c7a0dafd))
+
+
+
+
+
 ## [1.880.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.880.0...@voiceflow/creator-app@1.880.1) (2022-08-25)
 
 

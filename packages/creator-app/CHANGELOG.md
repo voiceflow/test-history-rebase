@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.881.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.881.0...@voiceflow/creator-app@1.881.1) (2022-08-25)
+
+
+### Bug Fixes
+
+* [bugfix] fixes open nlu manager quickview link (NLU-318) ([#5966](https://github.com/voiceflow/creator-app/issues/5966)) ([b89e512](https://github.com/voiceflow/creator-app/commit/b89e5122077afe6a55981fd23be91d5ce51e1346))
+
+
+
+
+
 # [1.881.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.880.1...@voiceflow/creator-app@1.881.0) (2022-08-25)
 
 

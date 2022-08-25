@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.882.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.881.1...@voiceflow/creator-app@1.882.0) (2022-08-25)
+
+
+### Bug Fixes
+
+* actions links (CT-865) ([#5963](https://github.com/voiceflow/creator-app/issues/5963)) ([423037c](https://github.com/voiceflow/creator-app/commit/423037c0d4debe1578c28ee4198e212548a1e4ac))
+* update documentation links (CT-841) ([#5964](https://github.com/voiceflow/creator-app/issues/5964)) ([97ca97c](https://github.com/voiceflow/creator-app/commit/97ca97c573bb1577fd37bf1241de31ac200e95be)), closes [/www.voiceflow.com/docs/designing-logic-steps#toc-2](https://github.com//www.voiceflow.com/docs/designing-logic-steps/issues/toc-2) [/www.voiceflow.com/docs/designing-logic-steps#toc-3](https://github.com//www.voiceflow.com/docs/designing-logic-steps/issues/toc-3) [/www.voiceflow.com/docs/designing-user-input-steps#toc-2](https://github.com//www.voiceflow.com/docs/designing-user-input-steps/issues/toc-2) [/www.voiceflow.com/docs/designing-event-steps#toc-0](https://github.com//www.voiceflow.com/docs/designing-event-steps/issues/toc-0) [/www.voiceflow.com/docs/designing-developer-steps#toc-1](https://github.com//www.voiceflow.com/docs/designing-developer-steps/issues/toc-1) [/www.voiceflow.com/docs/designing-developer-steps#toc-2](https://github.com//www.voiceflow.com/docs/designing-developer-steps/issues/toc-2)
+
+
+### Features
+
+* block template ui fixes (CT-856) ([#5965](https://github.com/voiceflow/creator-app/issues/5965)) ([37fb4c8](https://github.com/voiceflow/creator-app/commit/37fb4c8486e4ff6d08b0ed3692a56f3982abb7a5))
+
+
+
+
+
 ## [1.881.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.881.0...@voiceflow/creator-app@1.881.1) (2022-08-25)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.139.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.138.1...@voiceflow/ui@1.139.0) (2022-08-25)
+
+
+### Features
+
+* block template ui fixes (CT-856) ([#5965](https://github.com/voiceflow/creator-app/issues/5965)) ([37fb4c8](https://github.com/voiceflow/creator-app/commit/37fb4c8486e4ff6d08b0ed3692a56f3982abb7a5))
+
+
+
+
+
 ## [1.138.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.138.0...@voiceflow/ui@1.138.1) (2022-08-22)
 
 

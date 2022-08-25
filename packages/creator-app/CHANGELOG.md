@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.880.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.880.0...@voiceflow/creator-app@1.880.1) (2022-08-25)
+
+
+### Bug Fixes
+
+* remove unused client methods (DX-72) ([#5967](https://github.com/voiceflow/creator-app/issues/5967)) ([3c460b5](https://github.com/voiceflow/creator-app/commit/3c460b5c286793d00a349f51bcb545402d3afd20))
+
+
+
+
+
 # [1.880.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.879.1...@voiceflow/creator-app@1.880.0) (2022-08-24)
 
 

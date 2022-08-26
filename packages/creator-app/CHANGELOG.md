@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.882.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.882.1...@voiceflow/creator-app@1.882.2) (2022-08-26)
+
+
+### Bug Fixes
+
+* line desync [bugfix] (CT-862) ([#5972](https://github.com/voiceflow/creator-app/issues/5972)) ([3063113](https://github.com/voiceflow/creator-app/commit/30631135f58a93ccb42a98b6219b97a2abf89d59))
+
+
+
+
+
 ## [1.882.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.882.0...@voiceflow/creator-app@1.882.1) (2022-08-26)
 
 

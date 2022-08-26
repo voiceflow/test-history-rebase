@@ -2,9 +2,9 @@ import { Box, Input, Link, Upload, UploadIconVariant } from '@voiceflow/ui';
 import React from 'react';
 
 import Section, { SectionVariant } from '@/components/Section';
-import { ModalType } from '@/constants';
 import * as Account from '@/ducks/account';
-import { useDispatch, useModals, useSelector } from '@/hooks';
+import { useDispatch, useSelector } from '@/hooks';
+import * as ModalsV2 from '@/ModalsV2';
 import { DescriptorContainer } from '@/pages/Settings/components/ContentDescriptors/components';
 
 const sectionStyling = {
@@ -14,9 +14,9 @@ const sectionStyling = {
 const AccountProfile: React.FC = () => {
   const user = useSelector(Account.userSelector);
   const saveProfilePicture = useDispatch(Account.saveProfilePicture);
-  const profileNameModal = useModals(ModalType.PROFILE_NAME_MODAL);
-  const changeEmailModal = useModals(ModalType.CHANGE_EMAIL_MODAL);
-  const changePasswordModal = useModals(ModalType.CHANGE_PASSWORD_MODAL);
+  const profileNameModal = ModalsV2.useModal(ModalsV2.ChangeName);
+  const changeEmailModal = ModalsV2.useModal(ModalsV2.ChangeEmail);
+  const changePasswordModal = ModalsV2.useModal(ModalsV2.ChangePassword);
   const { gid, okta_id, fid, saml_provider_id } = user;
   const isNotSSOUser = !gid && !okta_id && !fid && !saml_provider_id;
 
@@ -27,7 +27,7 @@ const AccountProfile: React.FC = () => {
         variant={SectionVariant.QUATERNARY}
         contentSuffix={() => (
           <DescriptorContainer>
-            <Link onClick={() => profileNameModal.open()}>Change Name</Link>
+            <Link onClick={() => profileNameModal.openVoid({})}>Change Name</Link>
           </DescriptorContainer>
         )}
         header="Name"
@@ -46,7 +46,7 @@ const AccountProfile: React.FC = () => {
         variant={SectionVariant.QUATERNARY}
         contentSuffix={() => (
           <DescriptorContainer>
-            <Link onClick={() => changeEmailModal.open()}>Change Email</Link>
+            <Link onClick={() => changeEmailModal.openVoid({})}>Change Email</Link>
           </DescriptorContainer>
         )}
         header="Email"
@@ -59,7 +59,7 @@ const AccountProfile: React.FC = () => {
       {isNotSSOUser && (
         <Section customContentStyling={sectionStyling} variant={SectionVariant.QUATERNARY} header="Password">
           <DescriptorContainer style={{ margin: 0 }}>
-            <Link onClick={() => changePasswordModal.open()}>Change Password</Link>
+            <Link onClick={() => changePasswordModal.openVoid({})}>Change Password</Link>
           </DescriptorContainer>
         </Section>
       )}

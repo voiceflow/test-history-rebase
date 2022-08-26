@@ -1,31 +1,17 @@
-import { Box, Button, ButtonVariant, Input, stopImmediatePropagation, SvgIcon, toast } from '@voiceflow/ui';
+/* eslint-disable jsx-a11y/no-autofocus */
+import { Box, Button, ButtonVariant, Input, Modal, stopImmediatePropagation, SvgIcon, toast } from '@voiceflow/ui';
 import _get from 'lodash/get';
 import React from 'react';
 
 import client from '@/client';
-import Modal, { ModalBody, ModalFooter } from '@/components/Modal';
 import UpgradeContainer from '@/components/Upgrade/UpgradeContainer';
-import { ModalType } from '@/constants';
-import { useModals } from '@/hooks';
 
-const ChangeEmailModal: React.FC = () => {
+import manager from '../../manager';
+
+const ChangeEmail = manager.create('ChangeEmail', () => ({ api, type, opened, hidden, animated }) => {
   const [nextEmail, setNextEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [saving, setSaving] = React.useState(false);
-  const { isOpened, close } = useModals(ModalType.CHANGE_EMAIL_MODAL);
-  const nameInputRef = React.useRef<HTMLInputElement>(null);
-
-  const reset = () => {
-    setSaving(false);
-    setPassword('');
-    setNextEmail('');
-  };
-
-  React.useEffect(() => {
-    if (isOpened) {
-      nameInputRef.current?.focus();
-    }
-  }, [isOpened]);
 
   const handleSave = async () => {
     if (!password.trim() || saving) return;
@@ -33,8 +19,7 @@ const ChangeEmailModal: React.FC = () => {
     try {
       await client.user.updateEmail(password, nextEmail);
       toast.success('Validation email successfully sent');
-      reset();
-      close();
+      api.close();
     } catch (e) {
       const errText = _get(e, ['body', 'data']) || false;
       const errToast = errText || 'Unable to update email, try again later';
@@ -43,40 +28,37 @@ const ChangeEmailModal: React.FC = () => {
     }
   };
 
-  if (!isOpened) return null;
-
   return (
-    <Modal id={ModalType.CHANGE_EMAIL_MODAL} title="Change Email">
-      <ModalBody>
+    <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove}>
+      <Modal.Header>Change Email</Modal.Header>
+      <Modal.Body>
         <div style={{ color: '#62778c', marginBottom: '12px', fontWeight: 600 }}>Email</div>
-        <Input ref={nameInputRef} value={nextEmail} onChangeText={setNextEmail} placeholder="New Email" onEnterPress={handleSave} />
-
+        <Input autoFocus value={nextEmail} onChangeText={setNextEmail} placeholder="New Email" onEnterPress={handleSave} />
         <br />
         <div style={{ color: '#62778c', marginBottom: '12px', fontWeight: 600 }}>Password</div>
         <Input onEnterPress={handleSave} value={password} onChangeText={setPassword} placeholder="Confirm Voiceflow password" type="password" />
         <br />
         <br />
         <br />
-
         <Box position="absolute" left={0} right={0} bottom={0}>
           <UpgradeContainer onClick={stopImmediatePropagation()} style={{ padding: '32px' }}>
             <SvgIcon icon="info" color="#3d82e2" mr={16} mb={16} />
             We will send a validation email to your new email address. Click the "Confirm email" button inside to complete the change. &nbsp;
           </UpgradeContainer>
         </Box>
-      </ModalBody>
+      </Modal.Body>
 
-      <ModalFooter>
-        <Button variant={ButtonVariant.TERTIARY} onClick={() => close()} style={{ marginRight: '12px' }}>
+      <Modal.Footer>
+        <Button variant={ButtonVariant.TERTIARY} onClick={() => api.close()} style={{ marginRight: '12px' }}>
           Cancel
         </Button>
 
         <Button disabled={!nextEmail || saving} onClick={handleSave}>
           {saving ? 'Saving...' : 'Submit'}
         </Button>
-      </ModalFooter>
+      </Modal.Footer>
     </Modal>
   );
-};
+});
 
-export default ChangeEmailModal;
+export default ChangeEmail;

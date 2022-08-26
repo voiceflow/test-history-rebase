@@ -1,34 +1,20 @@
-import { Button, ButtonVariant, Input, toast } from '@voiceflow/ui';
+/* eslint-disable jsx-a11y/no-autofocus */
+import { Button, ButtonVariant, Input, Modal, toast } from '@voiceflow/ui';
 import _get from 'lodash/get';
 import React from 'react';
 
 import client from '@/client';
-import Modal, { ModalBody, ModalFooter } from '@/components/Modal';
-import { ModalType } from '@/constants';
-import { useModals, useTrackingEvents } from '@/hooks';
+import { useTrackingEvents } from '@/hooks';
 import { MIN_PASSWORD_LENGTH } from '@/pages/Auth/constants';
 
-const ChangePasswordModal: React.FC = () => {
+import manager from '../../manager';
+
+const ChangePassword = manager.create('ChangePassword', () => ({ api, type, opened, hidden, animated }) => {
   const [currentPassword, setCurrentPassword] = React.useState('');
   const [nextPassword, setNextPassword] = React.useState('');
   const [confirmPassword, setConfirmPassword] = React.useState('');
   const [saving, setSaving] = React.useState(false);
-  const { isOpened, close } = useModals(ModalType.CHANGE_PASSWORD_MODAL);
   const [trackingEvents] = useTrackingEvents();
-  const nameInputRef = React.useRef<HTMLInputElement>(null);
-
-  const reset = () => {
-    setSaving(false);
-    setCurrentPassword('');
-    setConfirmPassword('');
-    setNextPassword('');
-  };
-
-  React.useEffect(() => {
-    if (isOpened) {
-      nameInputRef.current?.focus();
-    }
-  }, [isOpened]);
 
   const handleSave = async () => {
     if (!currentPassword.trim() || saving) return;
@@ -46,8 +32,7 @@ const ChangePasswordModal: React.FC = () => {
         await client.user.updatePassword(currentPassword, nextPassword);
         toast.success('Password successfully updated');
         trackingEvents.trackProfilePasswordChanged();
-        reset();
-        close();
+        api.close();
       } catch (e) {
         setSaving(false);
 
@@ -56,13 +41,12 @@ const ChangePasswordModal: React.FC = () => {
     }
   };
 
-  if (!isOpened) return null;
-
   return (
-    <Modal id={ModalType.CHANGE_PASSWORD_MODAL} title="Change Password">
-      <ModalBody>
+    <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove}>
+      <Modal.Header>Change Password</Modal.Header>
+      <Modal.Body>
         <Input
-          ref={nameInputRef}
+          autoFocus
           type="password"
           value={currentPassword}
           placeholder="Current password"
@@ -83,19 +67,19 @@ const ChangePasswordModal: React.FC = () => {
           onEnterPress={handleSave}
           placeholder="Confirm new password"
         />
-      </ModalBody>
+      </Modal.Body>
 
-      <ModalFooter>
-        <Button variant={ButtonVariant.TERTIARY} onClick={() => close()} style={{ marginRight: '15px' }}>
+      <Modal.Footer>
+        <Button variant={ButtonVariant.TERTIARY} onClick={() => api.close()} style={{ marginRight: '15px' }}>
           Cancel
         </Button>
 
         <Button disabled={!nextPassword || saving} onClick={handleSave}>
           {saving ? 'Saving...' : 'Submit'}
         </Button>
-      </ModalFooter>
+      </Modal.Footer>
     </Modal>
   );
-};
+});
 
-export default ChangePasswordModal;
+export default ChangePassword;

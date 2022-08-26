@@ -8,9 +8,6 @@ import { VariableStateEditorModal, VariableStatesManagerModal } from '@/componen
 import ConnectActivePlatformModal from '@/modals/ConnectActivePlatformModal';
 import ConnectAmazonModal from '@/modals/ConnectAmazonModal';
 import ConnectGoogleModal from '@/modals/ConnectGoogleModal';
-import ChangeEmailModal from '@/pages/Account/components/ChangeEmailModal';
-import ChangePasswordModal from '@/pages/Account/components/ChangePasswordModal';
-import ProfileNameModal from '@/pages/Account/components/ProfileNameModal';
 import { BulkImportSlots, BulkImportUtterances } from '@/pages/Canvas/components/BulkImportModal';
 import CreateEntityModal from '@/pages/Canvas/components/EntityModalsV2/CreateModal';
 import EditEntityModal from '@/pages/Canvas/components/EntityModalsV2/EditModal';
@@ -43,9 +40,6 @@ const AppModals: React.FC = () => {
       <CollaboratorsModal />
       <ImportModal />
       <UpgradeModal />
-      <ProfileNameModal />
-      <ChangeEmailModal />
-      <ChangePasswordModal />
       <LoadingModal />
       <TagManagerModal />
 

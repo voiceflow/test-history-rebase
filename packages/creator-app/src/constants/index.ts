@@ -288,10 +288,6 @@ export enum ModalType {
 
   DIALOGFLOW_CREATE_NEW_AGENT = 'dialogflow-create-new-agent',
 
-  PROFILE_NAME_MODAL = 'profile-name-modal',
-  CHANGE_PASSWORD_MODAL = 'change-password-modal',
-  CHANGE_EMAIL_MODAL = 'change-email-modal',
-
   VARIABLE_STATE_EDITOR_MODAL = 'variable-state-editor-modal',
   VARIABLE_STATES_MANAGER_MODAL = 'variable-states-manager-modal',
 

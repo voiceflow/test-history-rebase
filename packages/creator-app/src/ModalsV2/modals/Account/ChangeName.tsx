@@ -1,27 +1,20 @@
-import { Button, Input, Link, toast } from '@voiceflow/ui';
+/* eslint-disable jsx-a11y/no-autofocus */
+import { Button, Input, Link, Modal, toast } from '@voiceflow/ui';
 import _get from 'lodash/get';
 import React from 'react';
 
 import client from '@/client';
-import Modal, { ModalBody, ModalFooter } from '@/components/Modal';
-import { ModalType } from '@/constants';
 import * as Account from '@/ducks/account';
-import { useDispatch, useModals, useSelector, useTrackingEvents } from '@/hooks';
+import { useDispatch, useSelector, useTrackingEvents } from '@/hooks';
 
-const ProfileNameModal: React.FC = () => {
+import manager from '../../manager';
+
+const ChangeName = manager.create('ChangeName', () => ({ api, type, opened, hidden, animated }) => {
   const user = useSelector(Account.userSelector);
   const updateAccount = useDispatch(Account.updateAccount);
   const [saveName, setSaveName] = React.useState(user.name ?? '');
   const [saving, setSaving] = React.useState(false);
-  const { isOpened, close } = useModals(ModalType.PROFILE_NAME_MODAL);
   const [trackingEvents] = useTrackingEvents();
-  const nameInputRef = React.useRef<HTMLInputElement>(null);
-
-  React.useEffect(() => {
-    if (isOpened) {
-      nameInputRef.current?.focus();
-    }
-  }, [isOpened]);
 
   const handleSave = async () => {
     if (!saveName.trim() || saving) return;
@@ -32,7 +25,7 @@ const ProfileNameModal: React.FC = () => {
       toast.success('Name successfully updated');
       trackingEvents.trackProfileNameChanged();
       setSaving(false);
-      close();
+      api.close();
     } catch (e) {
       const errText = _get(e, ['body', 'data']) || false;
       const errToast = errText || 'Unable to update name';
@@ -41,24 +34,25 @@ const ProfileNameModal: React.FC = () => {
     }
   };
 
-  return isOpened ? (
-    <Modal id={ModalType.PROFILE_NAME_MODAL} title="Change Name">
-      <ModalBody>
+  return (
+    <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove}>
+      <Modal.Header>Change Name</Modal.Header>
+      <Modal.Body>
         <div style={{ color: '#62778c', marginBottom: '12px', fontWeight: 600 }}>Name</div>
-        <Input ref={nameInputRef} value={saveName} placeholder="Enter name" onChangeText={setSaveName} onEnterPress={handleSave} />
-      </ModalBody>
+        <Input autoFocus value={saveName} placeholder="Enter name" onChangeText={setSaveName} onEnterPress={handleSave} />
+      </Modal.Body>
 
-      <ModalFooter>
-        <Link onClick={() => close()} style={{ marginRight: '33px', fontWeight: 600 }}>
+      <Modal.Footer>
+        <Link onClick={() => api.close()} style={{ marginRight: '33px', fontWeight: 600 }}>
           Cancel
         </Link>
 
         <Button disabled={!saveName || saving} onClick={handleSave}>
           {saving ? 'Saving...' : 'Save'}
         </Button>
-      </ModalFooter>
+      </Modal.Footer>
     </Modal>
-  ) : null;
-};
+  );
+});
 
-export default ProfileNameModal;
+export default ChangeName;

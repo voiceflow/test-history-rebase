@@ -22,7 +22,7 @@ export const SubMenuButtonContainer = styled(Box.FlexStart)<SubMenuButtonContain
           max-width: 230px;
         `
       : css`
-          width: 142px;
+          min-width: 142px;
         `}
 
   height: 38px;

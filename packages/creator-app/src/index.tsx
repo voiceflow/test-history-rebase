@@ -1,3 +1,6 @@
+// uncomment anytime we wanna debug why component is rerendering
+// should be used with `wdyr` hock
+// import './src/wdyr';
 import './index.css';
 import './polyfills';
 

@@ -4,6 +4,7 @@ export * from './lazy';
 export * from './platformAware';
 export * from './session';
 export * from './styled';
+export * from './wdyr';
 export * from './withBatchLoadingGate';
 export * from './withDebug';
 export * from './withDraggable';

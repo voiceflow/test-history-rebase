@@ -1,5 +1,6 @@
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import React from 'react';
 
 import { BlockType } from '@/constants';
 import * as Feature from '@/ducks/feature';
@@ -27,11 +28,14 @@ export const getManager = <T extends BlockType>(
 export const useManager = () => {
   const featureFlags = useSelector(Feature.allActiveFeaturesSelector);
 
-  return <T extends BlockType>(nodeType: T) => {
-    const nodeFF = MANAGERS_BY_FEATURE[nodeType];
+  return React.useCallback(
+    <T extends BlockType>(nodeType: T) => {
+      const nodeFF = MANAGERS_BY_FEATURE[nodeType];
 
-    return getManager(nodeType, nodeFF && featureFlags[nodeFF as Realtime.FeatureFlag]?.isEnabled);
-  };
+      return getManager(nodeType, nodeFF && featureFlags[nodeFF as Realtime.FeatureFlag]?.isEnabled);
+    },
+    [featureFlags]
+  );
 };
 
 export const getNoMatchNoReplySectionLabel = <E extends { REPROMPT: string; PATH: string }>(Enum: E, types: string[]): string => {

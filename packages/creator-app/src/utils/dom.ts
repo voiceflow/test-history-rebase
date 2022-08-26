@@ -280,3 +280,14 @@ export const windowRefocused = (): Promise<void> =>
 export const getRectCenter = (rect: DOMRect): Point => {
   return [rect.left + rect.width / 2, rect.top + rect.height / 2];
 };
+
+export const isRectsEqual = (rect1: DOMRect | null, rect2: DOMRect | null): boolean =>
+  (rect1 === null && rect2 === null) ||
+  (rect1 !== null &&
+    rect2 !== null &&
+    rect1.left === rect2.left &&
+    rect1.top === rect2.top &&
+    rect1.width === rect2.width &&
+    rect1.height === rect2.height &&
+    rect1.bottom === rect2.bottom &&
+    rect1.right === rect2.right);

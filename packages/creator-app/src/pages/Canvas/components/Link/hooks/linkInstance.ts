@@ -9,6 +9,7 @@ import { LinkedRects } from '@/pages/Canvas/components/Link';
 import { EngineContext, LinkEntityContext } from '@/pages/Canvas/contexts';
 import { useElementInstance } from '@/pages/Canvas/engine/entities/utils';
 import { PathPoints } from '@/types';
+import { isRectsEqual } from '@/utils/dom';
 import { isChipNode } from '@/utils/node';
 
 import { MIN_HEIGHT, PLACEHOLDER_WIDTH } from '../components/LinkCaptionText';
@@ -16,25 +17,55 @@ import { STROKE_DEFAULT_COLOR } from '../constants';
 import { InternalLinkInstance } from '../types';
 import { buildPath, getMarkerAttrs, getPathPoints, getPathPointsCenter, syncPointsWithLinkedRects } from '../utils';
 
+const useLinkRelatedRects = () => {
+  const linkEntity = React.useContext(LinkEntityContext)!;
+
+  const cacheData = React.useRef<null | { linkedRects: LinkedRects | null; sourceParentNodeRect: DOMRect | null }>(null);
+
+  const linkedRects = linkEntity.getLinkedRects();
+  const sourceParentNodeRect = linkEntity.getSourceParentNodeRect();
+
+  return React.useMemo(() => {
+    const isLinkedRectsEqual = (linkedRects1: LinkedRects | null, linkedRects2: LinkedRects | null) => {
+      if (linkedRects1 === null && linkedRects2 === null) return true;
+      if (linkedRects1 === null || linkedRects2 === null) return false;
+
+      return Utils.object.getKeys(linkedRects1).every((key) => isRectsEqual(linkedRects1[key], linkedRects2[key]));
+    };
+
+    if (
+      !cacheData.current ||
+      !isLinkedRectsEqual(cacheData.current.linkedRects, linkedRects) ||
+      !isRectsEqual(cacheData.current.sourceParentNodeRect, sourceParentNodeRect)
+    ) {
+      cacheData.current = { linkedRects, sourceParentNodeRect };
+
+      return [linkedRects, sourceParentNodeRect] as const;
+    }
+
+    return [cacheData.current.linkedRects, cacheData.current.sourceParentNodeRect] as const;
+  }, [linkedRects, sourceParentNodeRect]);
+};
+
 const useLinkInstance = () => {
   const engine = React.useContext(EngineContext)!;
   const linkEntity = React.useContext(LinkEntityContext)!;
 
   const pathRef = React.useRef<SVGPathElement | null>(null);
   const markerRef = React.useRef<SVGMarkerElement | null>(null);
+  const captionRef = React.useRef<SVGForeignObjectElement | null>(null);
   const settingsRef = React.useRef<{ setPosition: () => void } | null>(null);
   const containerRef = React.useRef<SVGGElement | null>(null);
   const hiddenPathRef = React.useRef<SVGPathElement | null>(null);
-  const captionRef = React.useRef<SVGForeignObjectElement | null>(null);
   const captionContainerRef = React.useRef<HTMLDivElement | null>(null);
 
-  const { linkData, sourceNodeID, targetNodeID, linkedRects, sourceParentNodeRect } = linkEntity.useState((entity) => ({
+  const { linkData, sourceNodeID, targetNodeID } = linkEntity.useState((entity) => ({
     linkData: entity.resolve().data,
-    linkedRects: entity.getLinkedRects(),
     sourceNodeID: entity.resolve().source.nodeID,
     targetNodeID: entity.resolve().target.nodeID,
-    sourceParentNodeRect: entity.getSourceParentNodeRect(),
   }));
+
+  const [linkedRects, sourceParentNodeRect] = useLinkRelatedRects();
 
   const isPathLocked = React.useMemo(() => !!linkData?.points?.some((point) => point.locked), [linkData?.points]);
 
@@ -71,7 +102,13 @@ const useLinkInstance = () => {
     targetNodeIsCombined,
   });
 
+  const prevPointsRef = React.useRef<PathPoints | null>(null);
+
   const points = React.useMemo(() => {
+    if (engine.canvas?.isAnimating()) {
+      return prevPointsRef.current;
+    }
+
     if (!linkedRects) return null;
 
     if (isStraight && linkData?.points) {
@@ -110,6 +147,8 @@ const useLinkInstance = () => {
     targetNodeIsCombined,
     sourceParentNodeRect,
   ]);
+
+  prevPointsRef.current = points;
 
   const center = React.useMemo(
     () => (!!linkData?.caption && points ? getPathPointsCenter(points, { isStraight }) : null),

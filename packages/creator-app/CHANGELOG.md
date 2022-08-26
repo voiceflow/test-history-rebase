@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.883.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.882.2...@voiceflow/creator-app@1.883.0) (2022-08-26)
+
+
+### Bug Fixes
+
+* set default step color schema to light (CT-796) ([#5974](https://github.com/voiceflow/creator-app/issues/5974)) ([7bad971](https://github.com/voiceflow/creator-app/commit/7bad97171b0b81bf9f19fa2c3f4df2624ab1d027))
+
+
+### Features
+
+* migrate account modals to v2 (CT-689) ([#5973](https://github.com/voiceflow/creator-app/issues/5973)) ([9363d19](https://github.com/voiceflow/creator-app/commit/9363d1912a822b502484f8862d65701f3dc59578))
+
+
+
+
+
 ## [1.882.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.882.1...@voiceflow/creator-app@1.882.2) (2022-08-26)
 
 

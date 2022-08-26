@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.882.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.882.0...@voiceflow/creator-app@1.882.1) (2022-08-26)
+
+
+### Bug Fixes
+
+* step menu width [bugfix] (CT-000) ([#5970](https://github.com/voiceflow/creator-app/issues/5970)) ([97b804d](https://github.com/voiceflow/creator-app/commit/97b804db0935f0cf0d6c767a2ea4ea7876901d7e))
+
+
+
+
+
 # [1.882.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.881.1...@voiceflow/creator-app@1.882.0) (2022-08-25)
 
 

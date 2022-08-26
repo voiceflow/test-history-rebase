@@ -1,5 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { ColorPicker, Portal, SvgIcon, usePopper } from '@voiceflow/ui';
+import { COLOR_PICKER_CONSTANTS, ColorPicker, Portal, SvgIcon, usePopper } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Version from '@/ducks/version';
@@ -42,6 +42,7 @@ const StepMenuSubMenuDefaultColorPopper: React.ForwardRefRenderFunction<HTMLDivE
         <Portal portalNode={document.body}>
           <div ref={popper.setPopperElement} style={popper.styles.popper} {...popper.attributes.popper}>
             <ColorPicker
+              defaultColorScheme={COLOR_PICKER_CONSTANTS.ColorScheme.LIGHT}
               onChange={(color) =>
                 patchDefaultStepColors({
                   [blockType]: color,

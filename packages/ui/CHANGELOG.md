@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.140.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.139.0...@voiceflow/ui@1.140.0) (2022-08-27)
+
+
+### Features
+
+* implement shared nodes system (CT-768) ([#5923](https://github.com/voiceflow/creator-app/issues/5923)) ([561176f](https://github.com/voiceflow/creator-app/commit/561176ff6c24fa91ad68ecf64004882ec09f6fae)), closes [#5943](https://github.com/voiceflow/creator-app/issues/5943)
+
+
+
+
+
 # [1.139.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.138.1...@voiceflow/ui@1.139.0) (2022-08-25)
 
 

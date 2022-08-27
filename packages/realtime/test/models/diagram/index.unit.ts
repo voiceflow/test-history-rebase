@@ -344,7 +344,10 @@ describe('Diagram model unit tests', () => {
 
     await model.addBuiltInLink(diagramID, nodeID, type, target);
 
-    expect(patchNodeData).to.be.calledWithExactly(diagramID, nodeID, [{ path: `portsV2.builtIn.${type}.target`, value: target }]);
+    expect(patchNodeData).to.be.calledWithExactly(diagramID, nodeID, [
+      { path: `portsV2.builtIn.${type}.target`, value: target },
+      { path: `portsV2.builtIn.${type}.data`, value: {} },
+    ]);
   });
 
   it('addDynamicLink', async () => {
@@ -359,7 +362,10 @@ describe('Diagram model unit tests', () => {
 
     await model.addDynamicLink(diagramID, nodeID, portID, target);
 
-    expect(patchNodeData).to.be.calledWithExactly(diagramID, nodeID, [{ path: ['portsV2.dynamic', { id: portID }, 'target'], value: target }]);
+    expect(patchNodeData).to.be.calledWithExactly(diagramID, nodeID, [
+      { path: ['portsV2.dynamic', { id: portID }, 'target'], value: target },
+      { path: ['portsV2.dynamic', { id: portID }, 'data'], value: {} },
+    ]);
   });
 
   it('removeManyLinks', async () => {

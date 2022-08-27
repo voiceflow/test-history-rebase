@@ -316,15 +316,24 @@ class DiagramModel extends AbstractModel<DBDiagramModel> {
   }
 
   async addByKeyLink(diagramID: string, nodeID: string, key: string, target: string) {
-    await this.patchNodeData(diagramID, nodeID, [{ path: DiagramModel.byKeyPortPath(key, 'target'), value: target }]);
+    await this.patchNodeData(diagramID, nodeID, [
+      { path: DiagramModel.byKeyPortPath(key, 'target'), value: target },
+      { path: DiagramModel.byKeyPortPath(key, 'data'), value: {} },
+    ]);
   }
 
   async addBuiltInLink(diagramID: string, nodeID: string, type: BaseModels.PortType, target: string) {
-    await this.patchNodeData(diagramID, nodeID, [{ path: DiagramModel.builtInPortPath(type, 'target'), value: target }]);
+    await this.patchNodeData(diagramID, nodeID, [
+      { path: DiagramModel.builtInPortPath(type, 'target'), value: target },
+      { path: DiagramModel.builtInPortPath(type, 'data'), value: {} },
+    ]);
   }
 
   async addDynamicLink(diagramID: string, nodeID: string, portID: string, target: string) {
-    await this.patchNodeData(diagramID, nodeID, [{ path: DiagramModel.dynamicPortPath(portID, 'target'), value: target }]);
+    await this.patchNodeData(diagramID, nodeID, [
+      { path: DiagramModel.dynamicPortPath(portID, 'target'), value: target },
+      { path: DiagramModel.dynamicPortPath(portID, 'data'), value: {} },
+    ]);
   }
 
   async removeManyLinks(diagramID: string, links: Realtime.LinkDelete[]) {

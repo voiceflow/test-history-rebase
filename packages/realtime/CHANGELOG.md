@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.99.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.99.0...@voiceflow/realtime@1.99.1) (2022-08-27)
+
+
+### Bug Fixes
+
+* no data on link create (CT-861) ([#5960](https://github.com/voiceflow/creator-app/issues/5960)) ([077b301](https://github.com/voiceflow/creator-app/commit/077b301258430d147ab92a8e688a32882a0f1585)), closes [/github.com/voiceflow/creator-app/blob/28691a5b44e94a652952700c0b5e536bc6001d4c/packages/realtime-sdk/src/models/Port.ts#L12-L14](https://github.com//github.com/voiceflow/creator-app/blob/28691a5b44e94a652952700c0b5e536bc6001d4c/packages/realtime-sdk/src/models/Port.ts/issues/L12-L14)
+
+
+
+
+
 # [1.99.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.98.0...@voiceflow/realtime@1.99.0) (2022-08-27)
 
 

@@ -25,7 +25,6 @@ export interface DiagramAwarenessState {
 
 export interface DiagramState extends CRUDState<Realtime.Diagram> {
   awareness: DiagramAwarenessState;
-  intentSteps: DiagramLookup<NodeLookup<Realtime.diagram.DiagramIntentStep | null>>;
-  startingBlocks: DiagramLookup<NodeLookup<Realtime.diagram.DiagramStartingBlock | null>>;
+  sharedNodes: Realtime.diagram.sharedNodes.DiagramSharedNodeMap;
   globalIntentStepMap: DiagramLookup<{ [intentID: string]: string[] }>;
 }

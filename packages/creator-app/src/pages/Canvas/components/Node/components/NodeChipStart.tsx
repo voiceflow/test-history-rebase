@@ -13,7 +13,7 @@ import Styles from './NodeStepStyles';
 
 const { ColorScheme, DEFAULT_SCHEME_COLORS } = COLOR_PICKER_CONSTANTS;
 
-const NodeStartChip = React.forwardRef<CombinedAPI>((_, ref) => {
+const NodeChipStart = React.forwardRef<CombinedAPI>((_, ref) => {
   const engine = React.useContext(EngineContext)!;
   const platform = React.useContext(PlatformContext)!;
   const getManager = React.useContext(ManagerContext)!;
@@ -22,7 +22,7 @@ const NodeStartChip = React.forwardRef<CombinedAPI>((_, ref) => {
 
   const chipElmRef = React.useRef<HTMLElement>(null);
 
-  const { palette, onClick, onRename, onDropRef, nodeEntity, isHovered, wrapElement, combinedRef, hoverHandlers, hasLinkWarning } = useCombined({
+  const { palette, onClick, onDropRef, nodeEntity, isHovered, wrapElement, combinedRef, hoverHandlers, hasLinkWarning } = useCombined({
     defaultBlockColor: DEFAULT_SCHEME_COLORS[ColorScheme.BLACK].standardColor,
   });
 
@@ -34,6 +34,8 @@ const NodeStartChip = React.forwardRef<CombinedAPI>((_, ref) => {
       ports: node.ports,
     };
   });
+
+  const onRename = React.useCallback((label: string) => engine.node.updateData(nodeEntity.nodeID, { label }), [engine, nodeEntity.nodeID]);
 
   const chipApi = useChipApi(chipElmRef);
   const chipStepApi = useChipStepAPI({
@@ -75,4 +77,4 @@ const NodeStartChip = React.forwardRef<CombinedAPI>((_, ref) => {
   );
 });
 
-export default NodeStartChip;
+export default NodeChipStart;

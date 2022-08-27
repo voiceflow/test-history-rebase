@@ -5,8 +5,8 @@ export interface Diagram {
   type: BaseModels.Diagram.DiagramType;
   name: string;
   variables: string[];
+  menuNodeIDs: string[];
   subDiagrams: string[];
-  intentStepIDs: string[];
 }
 
-export interface DBDiagram extends Pick<BaseModels.Diagram.Model, '_id' | 'type' | 'name' | 'variables' | 'children' | 'intentStepIDs'> {}
+export interface DBDiagram extends Pick<BaseModels.Diagram.Model, '_id' | 'type' | 'name' | 'variables' | 'children' | 'menuNodeIDs'> {}

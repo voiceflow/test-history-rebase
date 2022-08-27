@@ -2,9 +2,9 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Context } from '@voiceflow/socket-utils';
 import { Action } from 'typescript-fsa';
 
-import { AbstractDiagramActionControl } from '@/actions/diagram/utils';
+import { AbstractVersionDiagramAccessActionControl } from '@/actions/diagram/utils';
 
-class TransplantSteps extends AbstractDiagramActionControl<Realtime.node.TransplantStepsPayload> {
+class TransplantSteps extends AbstractVersionDiagramAccessActionControl<Realtime.node.TransplantStepsPayload> {
   actionCreator = Realtime.node.transplantSteps;
 
   process = async (_ctx: Context, { payload }: Action<Realtime.node.TransplantStepsPayload>): Promise<void> => {

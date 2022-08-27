@@ -3,15 +3,15 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Context } from '@voiceflow/socket-utils';
 import { Action } from 'typescript-fsa';
 
-import { AbstractDiagramActionControl } from '@/actions/diagram/utils';
+import { AbstractVersionDiagramAccessActionControl } from '@/actions/diagram/utils';
 
 import { extractNodes, ExtractNodesOptions } from './utils';
 
-class InsertStep extends AbstractDiagramActionControl<Realtime.node.InsertStepPayload> {
+class InsertStep extends AbstractVersionDiagramAccessActionControl<Realtime.node.InsertStepPayload> {
   actionCreator = Realtime.node.insertStep;
 
   process = async (_ctx: Context, { payload }: Action<Realtime.node.InsertStepPayload>): Promise<void> => {
-    const { diagramID, parentNodeID, stepID, data, ports, index, projectMeta, schemaVersion, nodePortRemaps } = payload;
+    const { diagramID, parentNodeID, stepID, data, ports, index, isActions, projectMeta, schemaVersion, nodePortRemaps } = payload;
 
     const creatorData: ExtractNodesOptions = {
       data: { [stepID]: data },
@@ -34,6 +34,7 @@ class InsertStep extends AbstractDiagramActionControl<Realtime.node.InsertStepPa
     await this.services.diagram.addStep({
       step: step as BaseModels.BaseStep,
       index,
+      isActions,
       diagramID,
       parentNodeID,
       nodePortRemaps,

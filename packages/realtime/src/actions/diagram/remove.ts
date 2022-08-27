@@ -21,15 +21,10 @@ class RemoveDiagram extends AbstractDiagramResourceControl<RemoveDiagramPayload>
     });
   };
 
-  protected finally = async (ctx: Context, { payload }: Action<RemoveDiagramPayload>) => {
-    const { creatorID } = ctx.data;
-    const { key: removedDiagramID, versionID, projectID, workspaceID } = payload;
-    const actionContext = { diagramID: removedDiagramID, versionID, projectID, workspaceID };
+  protected finally = async (_ctx: Context, { payload }: Action<RemoveDiagramPayload>) => {
+    const { key: removedDiagramID } = payload;
 
-    await Promise.all([
-      this.server.processAs(creatorID, Realtime.diagram.removeDiagramStartingBlocks({ ...actionContext, removedDiagramID })),
-      this.services.lock.unlockAllEntities(removedDiagramID),
-    ]);
+    await this.services.lock.unlockAllEntities(removedDiagramID);
   };
 }
 

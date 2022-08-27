@@ -319,17 +319,10 @@ export const removeActiveDiagramVariable =
     return dispatch(removeLocalVariable(activeDiagramID, variable));
   };
 
-export const reorderIntentStepIDs =
-  (diagramID: string, from: number, to: number): Thunk =>
+export const reorderMenuNode =
+  ({ toIndex, nodeID, diagramID, skipPersist }: { diagramID: string; nodeID: string; toIndex: number; skipPersist?: boolean }): Thunk =>
   async (dispatch, getState) => {
-    await dispatch.sync(
-      Realtime.diagram.reorderIntentSteps({
-        ...getActiveVersionContext(getState()),
-        to,
-        from,
-        diagramID,
-      })
-    );
+    await dispatch.sync(Realtime.diagram.reorderMenuNode({ ...getActiveVersionContext(getState()), nodeID, toIndex, diagramID }, { skipPersist }));
   };
 
 export const diagramHeartbeat =

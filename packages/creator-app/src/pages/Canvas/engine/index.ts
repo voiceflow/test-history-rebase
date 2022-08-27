@@ -495,10 +495,10 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
 
     // topics do not have start node, focus first intent step
     if (!isRootDiagramActive && diagram?.type === BaseModels.Diagram.DiagramType.TOPIC) {
-      const intentStepID = diagram.intentStepIDs[0];
+      const menuNodeID = diagram.menuNodeIDs[0];
 
-      if (intentStepID) {
-        this.focusNode(intentStepID, options);
+      if (menuNodeID) {
+        this.focusNode(menuNodeID, options);
       }
     } else {
       const nodeID = this.getHomeNodeID();

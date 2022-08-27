@@ -74,6 +74,7 @@ export interface InsertStepPayload<T = unknown> extends BaseParentNodePayload, P
   ports: PortsDescriptor;
   index: number;
   stepID: string;
+  isActions?: boolean;
 }
 
 export interface ReorderStepsPayload extends BaseParentNodePayload, NodePortRemapsPayload {

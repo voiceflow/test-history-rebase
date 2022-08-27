@@ -1,10 +1,8 @@
-/* eslint-disable no-param-reassign */
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { createReducer } from '../utils';
+import { removeDiagramLocks } from './utils';
 
-const removeDiagramLocks = createReducer(Realtime.diagram.crud.remove, (state, { key }) => {
-  delete state.awareness.locks[key];
-});
+const removeDiagram = createReducer(Realtime.diagram.crud.remove, (state, { key }) => removeDiagramLocks(state)(key));
 
-export default removeDiagramLocks;
+export default removeDiagram;

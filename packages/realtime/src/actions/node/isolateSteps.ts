@@ -3,11 +3,11 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Context } from '@voiceflow/socket-utils';
 import { Action } from 'typescript-fsa';
 
-import { AbstractDiagramActionControl } from '@/actions/diagram/utils';
+import { AbstractVersionDiagramAccessActionControl } from '@/actions/diagram/utils';
 
 import { extractNodes } from './utils';
 
-class IsolateSteps extends AbstractDiagramActionControl<Realtime.node.IsolateStepsPayload> {
+class IsolateSteps extends AbstractVersionDiagramAccessActionControl<Realtime.node.IsolateStepsPayload> {
   actionCreator = Realtime.node.isolateSteps;
 
   process = async (_ctx: Context, { payload }: Action<Realtime.node.IsolateStepsPayload>): Promise<void> => {
@@ -37,19 +37,6 @@ class IsolateSteps extends AbstractDiagramActionControl<Realtime.node.IsolateSte
       parentNode: parentNode as BaseModels.BaseBlock | BaseModels.BaseActions,
       sourceParentNodeID,
     });
-  };
-
-  protected finally = async (ctx: Context, { payload }: Action<Realtime.node.IsolateStepsPayload>): Promise<void> => {
-    const { creatorID } = ctx.data;
-    const { diagramID, versionID, projectID, workspaceID, parentNodeID, parentNodeData } = payload;
-    const actionContext = { diagramID, versionID, projectID, workspaceID };
-
-    if (parentNodeData.type !== Realtime.BlockType.COMBINED) return;
-
-    await this.server.processAs(
-      creatorID,
-      Realtime.diagram.addNewStartingBlocks({ ...actionContext, startingBlocks: [{ blockID: parentNodeID, name: parentNodeData.name }] })
-    );
   };
 }
 

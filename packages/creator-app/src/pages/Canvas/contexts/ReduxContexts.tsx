@@ -80,10 +80,10 @@ export const {
 } = createSelectorContext(DiagramV2.globalIntentStepMapSelector);
 
 export const {
-  Context: StartingBlocksContext,
-  Provider: StartingBlocksProvider,
-  Consumer: StartingBlocksConsumer,
-} = createSelectorContext(DiagramV2.startingBlocksSelector);
+  Context: SharedNodesContext,
+  Provider: SharedNodesProvider,
+  Consumer: SharedNodesConsumer,
+} = createSelectorContext(DiagramV2.sharedNodesSelector);
 
 export const {
   Context: ActionsRouteMatchContext,
@@ -104,12 +104,12 @@ export const ReduxContextsProviders: React.FC = ({ children }) => (
                     <GlobalIntentStepMapProvider>
                       <ActiveDiagramTypeProvider>
                         <IntentNodeDataLookupProvider>
-                          <StartingBlocksProvider>
+                          <SharedNodesProvider>
                             <ActionsRouteMatchProvider>
                               {/* comment to have a children on a new line */}
                               {children}
                             </ActionsRouteMatchProvider>
-                          </StartingBlocksProvider>
+                          </SharedNodesProvider>
                         </IntentNodeDataLookupProvider>
                       </ActiveDiagramTypeProvider>
                     </GlobalIntentStepMapProvider>

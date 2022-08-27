@@ -2,11 +2,11 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Context } from '@voiceflow/socket-utils';
 import { Action } from 'typescript-fsa';
 
-import { AbstractDiagramActionControl } from '@/actions/diagram/utils';
+import { AbstractVersionDiagramAccessActionControl } from '@/actions/diagram/utils';
 
 import { extractNodes } from './utils';
 
-class AddBlock extends AbstractDiagramActionControl<Realtime.node.AddBlockPayload> {
+class AddBlock extends AbstractVersionDiagramAccessActionControl<Realtime.node.AddBlockPayload> {
   actionCreator = Realtime.node.addBlock;
 
   process = async (_ctx: Context, { payload }: Action<Realtime.node.AddBlockPayload>): Promise<void> => {
@@ -65,17 +65,6 @@ class AddBlock extends AbstractDiagramActionControl<Realtime.node.AddBlockPayloa
     }
 
     await this.services.diagram.addManyNodes(diagramID, nodes);
-  };
-
-  protected finally = async (ctx: Context, { payload }: Action<Realtime.node.AddBlockPayload>): Promise<void> => {
-    const { creatorID } = ctx.data;
-    const { diagramID, versionID, projectID, workspaceID, blockID, blockName } = payload;
-    const actionContext = { diagramID, versionID, projectID, workspaceID };
-
-    await this.server.processAs(
-      creatorID,
-      Realtime.diagram.addNewStartingBlocks({ ...actionContext, startingBlocks: [{ blockID, name: blockName }] })
-    );
   };
 }
 

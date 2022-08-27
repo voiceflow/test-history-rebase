@@ -10,8 +10,7 @@ export const INITIAL_STATE: DiagramState = {
     locks: {},
     viewers: {},
   },
-  intentSteps: {},
-  startingBlocks: {},
+  sharedNodes: {},
   globalIntentStepMap: {},
 };
 

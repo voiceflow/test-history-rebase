@@ -1,4 +1,5 @@
 /* eslint-disable max-classes-per-file */
+import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { ActionAccessor, BaseContextData, Context } from '@voiceflow/socket-utils';
 import { Action } from 'typescript-fsa';
@@ -33,4 +34,14 @@ export abstract class AbstractVersionResourceControl<
   D extends BaseContextData = BaseContextData
 > extends AbstractVersionAccessResourceControl<P, D> {
   protected resend = resendProjectChannel;
+
+  protected reloadSharedNodes = async (ctx: Context<BaseContextData>, payload: P, dbDiagram: BaseModels.Diagram.Model): Promise<void> => {
+    const { creatorID } = ctx.data;
+    const { versionID, projectID, workspaceID } = payload;
+    const actionContext = { versionID, projectID, workspaceID };
+
+    const sharedNodes = this.services.diagram.getSharedNodes([dbDiagram]);
+
+    await this.server.processAs(creatorID, Realtime.diagram.sharedNodes.reload({ ...actionContext, sharedNodes }));
+  };
 }

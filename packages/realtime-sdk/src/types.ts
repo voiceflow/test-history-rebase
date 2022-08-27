@@ -75,6 +75,11 @@ export enum SchemaVersion {
    * migrate the old random step to random step v2
    */
   V3_5 = 3.5,
+
+  /**
+   * renames intentStepIDs into menuNodeIDs and adds components and start nodes into it
+   */
+  V3_6 = 3.6,
 }
 
 export const SUPPORTED_SCHEMA_VERSIONS = Object.values(SchemaVersion)

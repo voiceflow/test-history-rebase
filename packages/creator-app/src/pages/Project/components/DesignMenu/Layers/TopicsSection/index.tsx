@@ -25,23 +25,23 @@ const TopicsSection: React.FC = () => {
   const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
 
   const {
+    openedIDs,
+    onDragEnd,
     topicsItems,
     searchValue,
+    onDragStart,
     onCreateTopic,
     rootDiagramID,
     focusedNodeID,
     setSearchValue,
     activeDiagramID,
     onReorderTopics,
-    onDragStart,
-    onDragEnd,
+    onToggleOpenedID,
     searchMatchValue,
     searchTopicsItems,
     searchOpenedTopics,
     lastCreatedDiagramID,
     onClearLastCreatedDiagramID,
-    openedIDs,
-    onToggleOpenedID,
   } = useTopics();
 
   const isSearch = !!searchMatchValue;
@@ -57,9 +57,7 @@ const TopicsSection: React.FC = () => {
       return TOPIC_ITEM_HEIGHT;
     }
 
-    const childSize = topic.intentItems.length + (!isSearch && rootDiagramID === topic.id ? 1 : 0);
-
-    return TOPIC_ITEM_HEIGHT + ITEM_HEIGHT * (childSize || 1);
+    return TOPIC_ITEM_HEIGHT + ITEM_HEIGHT * (topic.menuItems.length || 1);
   });
 
   const canDrag = usePersistFunction(() => !isSearch && canReorder);

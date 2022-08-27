@@ -143,7 +143,13 @@ class NodeManager extends EngineConsumer {
       this.redrawNestedLinks(parentNodeID);
     },
 
-    insertStep: async (parentNodeID: string, node: Creator.NodeDescriptor, data: Creator.DataDescriptor, index: number): Promise<void> => {
+    insertStep: async (
+      parentNodeID: string,
+      node: Creator.NodeDescriptor,
+      data: Creator.DataDescriptor,
+      index: number,
+      { isActions }: { isActions?: boolean } = {}
+    ): Promise<void> => {
       const stepIDs = this.select(CreatorV2.stepIDsByParentNodeIDSelector, { id: parentNodeID });
       const nodePortRemaps = index === stepIDs.length ? createPortRemap(this.engine.getNodeByID(stepIDs[stepIDs.length - 1])) : undefined;
 
@@ -158,6 +164,7 @@ class NodeManager extends EngineConsumer {
           },
           ports: node.ports,
           index,
+          isActions,
           projectMeta: this.engine.getActiveProjectMeta(),
           schemaVersion: this.engine.getActiveSchemaVersion(),
           nodePortRemaps,
@@ -412,7 +419,7 @@ class NodeManager extends EngineConsumer {
         }
 
         // TODO: fold this into the actions that add new steps to have better atomicity
-        await this.handleNewStep(augmentedNode, data);
+        await this.handleNewStep(augmentedNode);
       })
     );
 
@@ -435,7 +442,7 @@ class NodeManager extends EngineConsumer {
     const actionNode = parentNodeID ? this.engine.getDataByNodeID(parentNodeID) : null;
 
     if (parentNodeID && actionNode) {
-      await this.insertStep(actionNode.nodeID, type, index, { nodeID, factoryData, autoFocus: false });
+      await this.insertStep(actionNode.nodeID, type, index, { nodeID, factoryData, autoFocus: false, isActions: true });
     } else {
       parentNodeID = Utils.id.objectID();
 
@@ -463,10 +470,8 @@ class NodeManager extends EngineConsumer {
     return `New Block ${rootNodeIDs.length}`;
   }
 
-  private async handleNewStep<T extends { id: string; type: BlockType }>(node: T, data: Realtime.NodeData<any>, autoFocus = true) {
+  private async handleNewStep<T extends { id: string; type: BlockType }>(node: T, autoFocus = true) {
     this.dispatch(Tracking.trackNewStepCreated({ stepType: node.type }));
-
-    await this.registerIntentSteps([{ node, data }]);
 
     if (autoFocus) {
       this.engine.setActive(node.id);
@@ -485,8 +490,6 @@ class NodeManager extends EngineConsumer {
     await this.dispatch(
       History.transaction(async () => {
         await this.internal.importSnapshot(centeredEntities);
-
-        await this.registerIntentSteps(entities.nodesWithData);
       })
     );
 
@@ -503,8 +506,6 @@ class NodeManager extends EngineConsumer {
 
     if (duplicateNodeWithData?.node?.id) {
       this.engine.setActive(duplicateNodeWithData.node.id);
-
-      await this.registerIntentSteps([duplicateNodeWithData]);
 
       this.log.info(this.log.success('duplicated node'), this.log.slug(nodeID));
     }
@@ -536,8 +537,6 @@ class NodeManager extends EngineConsumer {
     });
 
     this.engine.selection.replace(parentNodes);
-
-    await this.registerIntentSteps(nodesWithData);
   }
 
   /**
@@ -604,7 +603,7 @@ class NodeManager extends EngineConsumer {
         await this.internal.appendStep(blockID, node, data);
 
         // TODO: fold this into the actions that add new steps to have better atomicity
-        await this.handleNewStep(node, data);
+        await this.handleNewStep(node);
       })
     );
 
@@ -620,9 +619,10 @@ class NodeManager extends EngineConsumer {
     index: number,
     {
       nodeID = Utils.id.objectID(),
+      isActions,
       autoFocus,
       factoryData,
-    }: { nodeID?: string; autoFocus?: boolean; factoryData?: Partial<Realtime.NodeData<Realtime.NodeDataMap[K]>> } = {}
+    }: { nodeID?: string; autoFocus?: boolean; isActions?: boolean; factoryData?: Partial<Realtime.NodeData<Realtime.NodeDataMap[K]>> } = {}
   ): Promise<void> {
     const { node, data } = nodeDescriptorFactory(nodeID, type, factoryData, this.select(nodeFactoryOptionsSelector));
 
@@ -630,9 +630,9 @@ class NodeManager extends EngineConsumer {
 
     await this.dispatch(
       History.transaction(async () => {
-        await this.internal.insertStep(parentNodeID, node, data, index);
+        await this.internal.insertStep(parentNodeID, node, data, index, { isActions });
         // TODO: fold this into the actions that add new steps to have better atomicity
-        await this.handleNewStep(node, data, autoFocus);
+        await this.handleNewStep(node, autoFocus);
       })
     );
 
@@ -918,29 +918,6 @@ class NodeManager extends EngineConsumer {
 
   async updateManyBlocksColor(nodeIDs: string[], color: string): Promise<void> {
     await this.updateManyData(nodeIDs.map((nodeID) => ({ nodeID, patch: { blockColor: color } })));
-  }
-
-  private async registerIntentSteps<T extends { node: { id: string; type: BlockType }; data: Realtime.NodeData<any> }>(
-    addedNodes: T[]
-  ): Promise<void> {
-    const addedIntentSteps = addedNodes.reduce<Realtime.diagram.RegisterIntentStepsPayload['intentSteps']>((acc, { node, data }) => {
-      if (node.type === BlockType.INTENT) {
-        const platformData = data as Realtime.NodeData.Intent;
-
-        acc.push({
-          stepID: node.id,
-          intent: platformData?.intent
-            ? { intentID: platformData.intent, global: platformData.availability === BaseNode.Intent.IntentAvailability.GLOBAL }
-            : null,
-        });
-      }
-
-      return acc;
-    }, []);
-
-    if (addedIntentSteps.length) {
-      await this.dispatch.partialSync(Realtime.diagram.registerIntentSteps({ ...this.engine.context, intentSteps: addedIntentSteps }));
-    }
   }
 
   private isRemovingLocked(nodeIDs: string[], remove: (nodeIDs: string[]) => Promise<void>): boolean {

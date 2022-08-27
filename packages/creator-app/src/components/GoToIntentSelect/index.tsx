@@ -42,7 +42,6 @@ const GoToIntentSelect: React.FC<GoToIntentSelectProps> = ({
   clearOnSelectActive,
 }) => {
   const platform = useSelector(ProjectV2.active.platformSelector);
-  const intentSteps = useSelector(DiagramV2.intentStepsSelector);
   const activeDiagram = useSelector(DiagramV2.active.diagramSelector);
   const getIntentByID = useSelector(IntentV2.getIntentByIDSelector);
   const getDiagramByID = useSelector(DiagramV2.getDiagramByIDSelector);
@@ -54,12 +53,11 @@ const GoToIntentSelect: React.FC<GoToIntentSelectProps> = ({
   const globalOptions = React.useMemo(() => {
     const topicIntentOptions: TopicIntentOption[] = [];
 
-    for (const diagramID of Object.keys(intentSteps)) {
+    for (const [diagramID, globalStepMap] of Object.entries(globalIntentStepMap)) {
       const diagram = getDiagramByID({ id: diagramID });
 
       if (!diagram || diagram.type !== BaseModels.Diagram.DiagramType.TOPIC) continue;
 
-      const globalStepMap = globalIntentStepMap[diagramID];
       const intentOptions: IntentOption[] = [];
 
       for (const intentID of Object.keys(globalStepMap)) {
@@ -78,7 +76,7 @@ const GoToIntentSelect: React.FC<GoToIntentSelectProps> = ({
     }
 
     return topicIntentOptions;
-  }, [platform, intentSteps, getIntentByID, getDiagramByID, globalIntentStepMap]);
+  }, [platform, getIntentByID, getDiagramByID, globalIntentStepMap]);
 
   const options = React.useMemo(() => {
     if (!activeDiagram?.id || !isComponentActive) return globalOptions;

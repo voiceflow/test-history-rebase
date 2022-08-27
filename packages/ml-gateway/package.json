@@ -9,7 +9,7 @@
     "@opentelemetry/api-metrics": "0.26.0",
     "@voiceflow/api-sdk": "^3.20.2",
     "@voiceflow/backend-utils": "4.8.2",
-    "@voiceflow/common": "8.1.2",
+    "@voiceflow/common": "8.1.4",
     "@voiceflow/logger": "1.6.1",
     "@voiceflow/metrics": "1.4.1",
     "@voiceflow/ml-sdk": "^1.11.1",

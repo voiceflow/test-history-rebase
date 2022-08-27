@@ -8,7 +8,7 @@ import { LegacyMappings } from '@/components/IntentForm';
 import IntentSelect from '@/components/IntentSelect';
 import * as Documentation from '@/config/documentation';
 import * as Intent from '@/ducks/intent';
-import { useDispatch, useIntent, useSyncDispatch } from '@/hooks';
+import { useDispatch, useIntent } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import IntentRequiredEntitiesSection from '@/pages/Canvas/components/IntentRequiredEntitiesSection';
 
@@ -25,27 +25,14 @@ const RootEditor: React.FC = () => {
 
   const patchPlatformData = (patch: Partial<Realtime.NodeData.Intent.PlatformData>) => editor.onChange({ ...editor.data, ...patch });
 
-  const updateIntentSteps = useSyncDispatch(Realtime.diagram.updateIntentSteps);
-
   const isGlobalIntent = editor.data.availability === BaseNode.Intent.IntentAvailability.GLOBAL;
 
-  const onChangeIntent = async ({ intent }: { intent: Nullable<string> }) => {
-    await patchPlatformData({ intent });
-
-    updateIntentSteps({ ...editor.engine.context, stepID: editor.nodeID, intent: intent ? { intentID: intent, global: isGlobalIntent } : null });
-  };
+  const onChangeIntent = ({ intent }: { intent: Nullable<string> }) => patchPlatformData({ intent });
 
   const onChangeAvailability = async () => {
     const nextAvailability = isGlobalIntent ? BaseNode.Intent.IntentAvailability.LOCAL : BaseNode.Intent.IntentAvailability.GLOBAL;
-    const nextAvailabilityIsGlobal = nextAvailability === BaseNode.Intent.IntentAvailability.GLOBAL;
 
     await patchPlatformData({ availability: nextAvailability });
-
-    updateIntentSteps({
-      ...editor.engine.context,
-      stepID: editor.nodeID,
-      intent: intent?.id ? { intentID: intent.id, global: nextAvailabilityIsGlobal } : null,
-    });
   };
 
   return (

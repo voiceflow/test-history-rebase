@@ -22,7 +22,7 @@ export const useItemConfig = (getManager: ManagerGetter, data: Realtime.NodeData
   const manager = getManager(data.type);
 
   const intentMap = useSelector(IntentV2.customIntentMapSelector);
-  const startingBlocks = useSelector(DiagramV2.startingBlocksSelector);
+  const sharedNodes = useSelector(DiagramV2.sharedNodesSelector);
 
   switch (data.type) {
     case Realtime.BlockType.GO_TO_INTENT: {
@@ -41,12 +41,14 @@ export const useItemConfig = (getManager: ManagerGetter, data: Realtime.NodeData
     case Realtime.BlockType.GO_TO_NODE: {
       const { goToNodeID, diagramID } = data as Realtime.NodeData<Realtime.NodeData.GoToNode>;
 
-      const goToNode = diagramID && goToNodeID ? startingBlocks[diagramID]?.[goToNodeID] ?? null : null;
+      const sharedNode = diagramID && goToNodeID ? sharedNodes[diagramID]?.[goToNodeID] ?? null : null;
+      const name =
+        (sharedNode?.type === Realtime.BlockType.COMBINED && sharedNode.name) || (sharedNode?.type === Realtime.BlockType.START && 'Start');
 
       return {
         icon: manager.icon,
-        isEmpty: !goToNode,
-        defaultName: goToNode ? `Go to '${prettifyIntentName(goToNode.name)}' block` : '',
+        isEmpty: !sharedNode,
+        defaultName: name ? `Go to '${name}' block` : 'Go to block',
         placeholder: 'Select go-to block',
       };
     }

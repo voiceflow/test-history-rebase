@@ -4,7 +4,7 @@ import React from 'react';
 import { DragPreviewComponentProps, ItemComponentProps } from '@/components/DraggableList';
 
 import { TopicItem as TopicItemModel } from '../hooks';
-import IntentList from '../IntentList';
+import MenuList from '../MenuList';
 import TopicItemName from './Name';
 
 interface TopicItemProps extends ItemComponentProps<TopicItemModel>, DragPreviewComponentProps {
@@ -22,7 +22,7 @@ interface TopicItemProps extends ItemComponentProps<TopicItemModel>, DragPreview
 
 const TopicItem: React.ForwardRefRenderFunction<HTMLElement, TopicItemProps> = (
   {
-    item: { id: diagramID, name, intentItems },
+    item: { id: diagramID, name, menuItems },
     index,
     isSearch,
     isDragging,
@@ -63,12 +63,12 @@ const TopicItem: React.ForwardRefRenderFunction<HTMLElement, TopicItemProps> = (
       />
 
       {isOpened && !isDragging && !isDraggingPreview && (
-        <IntentList
+        <MenuList
           isRoot={isRoot}
           isSearch={isSearch}
           isActive={isActive}
           diagramID={diagramID}
-          intentItems={intentItems}
+          menuItems={menuItems}
           focusedNodeID={focusedNodeID}
           searchMatchValue={searchMatchValue}
         />

@@ -1,14 +1,13 @@
 import { BaseModels, BaseNode } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Context, terminateResend } from '@voiceflow/socket-utils';
-import { Action } from 'typescript-fsa';
+import { terminateResend } from '@voiceflow/socket-utils';
 
 import { buildDBBlock, buildDBStep } from '@/actions/node/utils';
 
-import { AbstractDiagramResourceControl, NewDiagramContextData } from './utils';
+import { AbstractDiagramResourceControl } from './utils';
 
-class ConvertToTopic extends AbstractDiagramResourceControl<Realtime.BaseDiagramPayload, NewDiagramContextData> {
+class ConvertToTopic extends AbstractDiagramResourceControl<Realtime.BaseDiagramPayload> {
   protected actionCreator = Realtime.diagram.convertToTopic.started;
 
   protected resend = terminateResend;
@@ -54,7 +53,9 @@ class ConvertToTopic extends AbstractDiagramResourceControl<Realtime.BaseDiagram
       });
     }
 
-    const intentNodes = Object.values(primitiveDiagram.nodes).filter(Realtime.Utils.typeGuards.isIntentDBNode);
+    const menuNodeIDs = Object.values(primitiveDiagram.nodes)
+      .filter(Realtime.Utils.typeGuards.isDiagramMenuDBNode)
+      .map(({ nodeID }) => nodeID);
 
     const [version, newDBDiagram] = await Promise.all([
       this.services.version.get(creatorID, payload.versionID),
@@ -63,13 +64,11 @@ class ConvertToTopic extends AbstractDiagramResourceControl<Realtime.BaseDiagram
         type: BaseModels.Diagram.DiagramType.TOPIC,
         creatorID,
         versionID: payload.versionID,
-        intentStepIDs: intentNodes.map((node) => node.nodeID),
+        menuNodeIDs,
       }),
     ]);
 
     const newDiagram = Realtime.Adapters.diagramAdapter.fromDB(newDBDiagram, { rootDiagramID: version.rootDiagramID });
-
-    ctx.data.newDiagram = { ...diagram, ...newDiagram };
 
     const actionContext = {
       versionID: payload.versionID,
@@ -82,39 +81,13 @@ class ConvertToTopic extends AbstractDiagramResourceControl<Realtime.BaseDiagram
         topics: [...(version.topics ?? []), { sourceID: newDiagram.id, type: BaseModels.Version.FolderItemType.DIAGRAM }],
       }),
       this.server.processAs(creatorID, Realtime.diagram.crud.add({ ...actionContext, key: newDiagram.id, value: newDiagram })),
-      this.server.processAs(
-        creatorID,
-        Realtime.diagram.reloadIntentSteps({
-          ...actionContext,
-          diagramID: newDiagram.id,
-          intentSteps: Object.fromEntries(
-            intentNodes.map((node) => [
-              node.nodeID,
-              node.data.intent
-                ? {
-                    intentID: node.data.intent,
-                    global: !node.data.availability || node.data.availability === BaseNode.Intent.IntentAvailability.GLOBAL,
-                  }
-                : null,
-            ])
-          ),
-        })
-      ),
+      this.reloadSharedNodes(ctx, payload, newDBDiagram),
     ]);
 
-    // remove the component once the new diagram is introduced to avoid overwriting changes to version.topics
-    await Promise.all([
-      this.server.processAs(creatorID, Realtime.diagram.crud.remove({ ...actionContext, key: payload.diagramID })),
-      this.server.processAs(creatorID, Realtime.diagram.reloadIntentSteps({ ...actionContext, diagramID: payload.diagramID, intentSteps: {} })),
-    ]);
+    await this.server.processAs(creatorID, Realtime.diagram.crud.remove({ ...actionContext, key: payload.diagramID }));
 
     return newDiagram;
   });
-
-  protected finally = async (ctx: Context<NewDiagramContextData>, { payload }: Action<Realtime.BaseDiagramPayload>) => {
-    const { newDiagram } = ctx.data;
-    this.reloadStartingBlocksFromNewDiagram(ctx, payload, { id: newDiagram.id, nodes: newDiagram.nodes });
-  };
 }
 
 export default ConvertToTopic;

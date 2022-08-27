@@ -1,3 +1,4 @@
+import compositeRef from '@seznam/compose-react-refs';
 import { Nullable } from '@voiceflow/common';
 import { ContextMenuProps, useCache, usePersistFunction } from '@voiceflow/ui';
 // eslint-disable-next-line you-dont-need-lodash-underscore/throttle
@@ -54,6 +55,7 @@ interface DraggableListBaseProps<Item, DeleteProps, ExtraItemProps> extends Drag
   fullHeight?: boolean;
   getItemKey?: (item: Item) => string;
   deleteProps?: DeleteProps;
+  containerRef?: React.Ref<HTMLDivElement>;
   previewOptions?: PreviewOptions;
   deleteComponent?: Nullable<React.NamedExoticComponent<React.PropsWithoutRef<DeleteProps> & React.RefAttributes<any>>>;
   partialDragItem?: boolean;
@@ -138,6 +140,7 @@ const DraggableList: DraggableListComponent = ({
   canReorder,
   onStartDrag,
   deleteProps,
+  containerRef,
   itemComponent,
   previewOptions,
   deleteComponent,
@@ -256,7 +259,7 @@ const DraggableList: DraggableListComponent = ({
   );
 
   return (
-    <ListContainer ref={connectDrop} fullHeight={fullHeight}>
+    <ListContainer ref={compositeRef(connectDrop as any, containerRef)} fullHeight={fullHeight}>
       {!props.children &&
         (props.mapManager
           ? props.mapManager.map((item, { key, index, isFirst, isLast, onRemove, onUpdate }) => {

@@ -1,7 +1,7 @@
 /* eslint-disable sonarjs/no-nested-template-literals */
-import { BaseModels, BaseNode } from '@voiceflow/base-types';
+import { BaseModels } from '@voiceflow/base-types';
 import { Nullish, Struct, Utils } from '@voiceflow/common';
-import { LinkDelete, LinkPatch, NodePortRemap, PortDelete } from '@voiceflow/realtime-sdk';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { ObjectId } from 'bson';
 import _ from 'lodash';
 import { OptionalId } from 'mongodb';
@@ -31,7 +31,7 @@ class DiagramModel extends AbstractModel<DBDiagramModel> {
 
   private static byKeyPortPath = (key: string, path?: string) => `portsV2.byKey.${key}${path ? `.${path}` : ''}`;
 
-  private static portPath = ({ type, key, portID }: PortDelete, path?: string) => {
+  private static portPath = ({ type, key, portID }: Realtime.PortDelete, path?: string) => {
     if (type) return DiagramModel.builtInPortPath(type, path);
     if (key) return DiagramModel.byKeyPortPath(key, path);
     if (portID) return DiagramModel.dynamicPortPath(portID, path);
@@ -72,7 +72,7 @@ class DiagramModel extends AbstractModel<DBDiagramModel> {
     };
   }
 
-  atomicNodePortRemap(nodePortRemaps?: NodePortRemap[]) {
+  atomicNodePortRemap(nodePortRemaps?: Realtime.NodePortRemap[]) {
     if (!nodePortRemaps?.length) return [];
 
     const patches = nodePortRemaps.map(({ nodeID, ports, targetNodeID }) => ({
@@ -93,6 +93,7 @@ class DiagramModel extends AbstractModel<DBDiagramModel> {
   async addStep({
     step,
     index,
+    isActions,
     diagramID,
     parentNodeID,
     nodePortRemaps,
@@ -100,13 +101,14 @@ class DiagramModel extends AbstractModel<DBDiagramModel> {
     step: BaseModels.BaseStep;
     index?: Nullish<number>;
     diagramID: string;
+    isActions?: boolean;
     parentNodeID: string;
-    nodePortRemaps?: NodePortRemap[];
+    nodePortRemaps?: Realtime.NodePortRemap[];
   }) {
-    const isIntent = step.type === BaseNode.NodeType.INTENT;
+    const isMenuNode = !isActions && Realtime.Utils.typeGuards.isDiagramMenuDBNode(step);
 
     await this.atomicUpdateById(diagramID, [
-      ...(isIntent ? [Atomic.push([{ path: 'intentStepIDs', value: [step.nodeID] }])] : []),
+      ...(isMenuNode ? [Atomic.push([{ path: 'menuNodeIDs', value: [step.nodeID] }])] : []),
 
       this.atomicNode.set(step.nodeID, [{ path: '', value: step }]),
 
@@ -118,11 +120,11 @@ class DiagramModel extends AbstractModel<DBDiagramModel> {
     return step;
   }
 
-  async addManyNodes(diagramID: string, nodes: BaseModels.BaseDiagramNode[], nodePortRemaps?: NodePortRemap[]) {
-    const intentStepIDs = nodes.flatMap((node) => (node.type === BaseNode.NodeType.INTENT ? [node.nodeID] : []));
+  async addManyNodes(diagramID: string, nodes: BaseModels.BaseDiagramNode[], nodePortRemaps?: Realtime.NodePortRemap[]) {
+    const menuNodeIDs = nodes.filter(Realtime.Utils.typeGuards.isDiagramMenuDBNode).map((node) => node.nodeID);
 
     await this.atomicUpdateById(diagramID, [
-      ...(intentStepIDs.length ? [Atomic.push([{ path: 'intentStepIDs', value: intentStepIDs }])] : []),
+      ...(menuNodeIDs.length ? [Atomic.push([{ path: 'menuNodeIDs', value: menuNodeIDs }])] : []),
 
       this.atomicNode.setMany(nodes.map((node) => ({ entityID: node.nodeID, sets: [{ path: '', value: node }] }))),
       ...this.atomicNodePortRemap(nodePortRemaps),
@@ -161,7 +163,7 @@ class DiagramModel extends AbstractModel<DBDiagramModel> {
     stepID: string;
     diagramID: string;
     parentNodeID: string;
-    nodePortRemaps?: NodePortRemap[];
+    nodePortRemaps?: Realtime.NodePortRemap[];
   }) {
     const remapQuery = this.atomicNodePortRemap(nodePortRemaps);
 
@@ -184,7 +186,7 @@ class DiagramModel extends AbstractModel<DBDiagramModel> {
     stepIDs: string[];
     diagramID: string;
     removeSource?: boolean;
-    nodePortRemaps?: NodePortRemap[];
+    nodePortRemaps?: Realtime.NodePortRemap[];
     sourceParentNodeID: string;
     targetParentNodeID: string;
   }) {
@@ -206,13 +208,13 @@ class DiagramModel extends AbstractModel<DBDiagramModel> {
   async removeManyNodes(diagramID: string, nodes: { parentNodeID: string; stepID?: Nullish<string> }[]) {
     const [stepsToPull, nodesToPull] = Utils.array.separate(nodes, ({ stepID }) => !!stepID);
     const parentNodeIDsToPull = new Set(nodesToPull.map(({ parentNodeID }) => parentNodeID));
-    const stepIDsToPull = stepsToPull.map(({ stepID }) => stepID);
+    const stepIDsToPull = stepsToPull.map(({ stepID }) => stepID).filter(Boolean);
 
     // do not attempt to pull a step from a node that is also being deleted
     const stepsToPullFromNodes = stepsToPull.filter(({ parentNodeID }) => !parentNodeIDsToPull.has(parentNodeID));
 
     await this.atomicUpdateById(diagramID, [
-      ...(stepIDsToPull.length ? [Atomic.pull([{ path: 'intentStepIDs', match: { $in: stepIDsToPull } }])] : []),
+      ...(stepIDsToPull.length ? [Atomic.pull([{ path: 'menuNodeIDs', match: { $in: stepIDsToPull } }])] : []),
 
       this.atomicNode.unsetMany(nodes.map(({ stepID, parentNodeID }) => ({ entityID: stepID ?? parentNodeID, unsets: [{ path: '' }] }))),
 
@@ -325,7 +327,7 @@ class DiagramModel extends AbstractModel<DBDiagramModel> {
     await this.patchNodeData(diagramID, nodeID, [{ path: DiagramModel.dynamicPortPath(portID, 'target'), value: target }]);
   }
 
-  async removeManyLinks(diagramID: string, links: LinkDelete[]) {
+  async removeManyLinks(diagramID: string, links: Realtime.LinkDelete[]) {
     const patches = links.map((link) => ({
       nodeID: link.nodeID,
       patches: [{ path: DiagramModel.portPath(link, 'target'), value: null }],
@@ -336,7 +338,7 @@ class DiagramModel extends AbstractModel<DBDiagramModel> {
     return links;
   }
 
-  async patchManyLinks(diagramID: string, linkPatches: LinkPatch[]) {
+  async patchManyLinks(diagramID: string, linkPatches: Realtime.LinkPatch[]) {
     const patches = linkPatches.map((patch) => ({
       nodeID: patch.nodeID,
       patches: Object.entries(patch.data).map(([key, value]) => ({ path: DiagramModel.portPath(patch, `data.${key}`), value })),
@@ -347,7 +349,7 @@ class DiagramModel extends AbstractModel<DBDiagramModel> {
     return linkPatches;
   }
 
-  async removeManyPorts(diagramID: string, nodeID: string, ports: PortDelete[]) {
+  async removeManyPorts(diagramID: string, nodeID: string, ports: Realtime.PortDelete[]) {
     await this.unsetNodeData(
       diagramID,
       nodeID,
@@ -391,6 +393,11 @@ class DiagramModel extends AbstractModel<DBDiagramModel> {
     await this.pushNodeData(diagramID, nodeID, [{ path: 'portsV2.dynamic', value: port, index }]);
 
     return port;
+  }
+
+  async reorderMenuNodes({ index, nodeID, diagramID }: { index: number; nodeID: string; diagramID: string }) {
+    await this.atomicUpdateById(diagramID, [Atomic.pull([{ path: 'menuNodeIDs', match: nodeID }])]);
+    await this.atomicUpdateById(diagramID, [Atomic.push([{ path: 'menuNodeIDs', value: nodeID, index }])]);
   }
 
   async create(diagramData: OptionalId<DBDiagramModel>) {

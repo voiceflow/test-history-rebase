@@ -58,18 +58,6 @@ class ImportSnapshot extends AbstractDiagramResourceControl<Realtime.creator.Imp
 
     await this.services.diagram.addManyNodes(diagramID, Object.values(dbNodes));
   };
-
-  protected finally = async (ctx: Context, { payload }: Action<Realtime.creator.ImportSnapshotPayload>) => {
-    const { creatorID } = ctx.data;
-    const { diagramID, versionID, projectID, workspaceID, nodesWithData } = payload;
-    const actionContext = { diagramID, versionID, projectID, workspaceID };
-
-    const startingBlocks = nodesWithData
-      .filter(({ node }) => node.type === Realtime.BlockType.COMBINED)
-      .map(({ node, data }) => ({ blockID: node.id, name: data.name }));
-
-    await this.server.processAs(creatorID, Realtime.diagram.addNewStartingBlocks({ ...actionContext, startingBlocks }));
-  };
 }
 
 export default ImportSnapshot;

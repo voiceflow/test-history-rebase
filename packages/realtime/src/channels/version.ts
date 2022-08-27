@@ -37,33 +37,31 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
         ? Realtime.Adapters.productAdapter.mapFromDB(Object.values((project.platformData as Realtime.AlexaProjectData).products))
         : [];
 
-    const { intentSteps, startingBlocks } = this.services.diagram.getResources(dbCreator.diagrams);
+    const sharedNodes = this.services.diagram.getSharedNodes(dbCreator.diagrams);
+
+    const prototypeSettings = {
+      ...dbCreator.version.prototype?.settings,
+      layout: (dbCreator.version.prototype?.settings.layout ??
+        Realtime.Utils.platform.getDefaultPrototypeLayout(projectType)) as Realtime.PrototypeLayout,
+    };
+
+    const actionContext = { projectID, versionID, workspaceID };
 
     return [
-      Realtime.note.load({ notes, workspaceID, projectID, versionID }),
-      Realtime.slot.crud.replace({ values: slots, workspaceID, projectID, versionID }),
-      Realtime.thread.crud.replace({ values: threads, workspaceID, projectID }),
-      Realtime.domain.crud.replace({ values: domains, workspaceID, projectID, versionID }),
-      Realtime.canvasTemplate.crud.replace({ values: canvasTemplates, workspaceID, projectID, versionID }),
-      Realtime.intent.crud.replace({ values: intents, workspaceID, projectID, versionID, projectMeta: { platform, type: projectType } }),
-      Realtime.product.crud.replace({ values: products, workspaceID, projectID, versionID }),
-      Realtime.diagram.crud.replace({ values: diagrams, workspaceID, projectID, versionID }),
-      Realtime.variableState.crud.replace({ values: variableStates, workspaceID, projectID, versionID }),
-      Realtime.diagram.loadIntentSteps({ intentSteps, workspaceID, projectID, versionID }),
-      Realtime.diagram.loadStartingBlocks({ startingBlocks, workspaceID, projectID, versionID }),
-      Realtime.version.replacePrototypeSettings({
-        workspaceID,
-        projectID,
-        versionID,
-        settings: {
-          ...dbCreator.version.prototype?.settings,
-          layout: (dbCreator.version.prototype?.settings.layout ??
-            Realtime.Utils.platform.getDefaultPrototypeLayout(projectType)) as Realtime.PrototypeLayout,
-        },
-      }),
-      Realtime.version.crud.add({ value: version, key: versionID, workspaceID, projectID }),
-      Realtime.project.crud.add({ value: project, key: projectID, workspaceID }),
-      Realtime.version.activateVersion({ workspaceID, projectID, versionID, projectType }),
+      Realtime.note.load({ ...actionContext, notes }),
+      Realtime.slot.crud.replace({ ...actionContext, values: slots }),
+      Realtime.thread.crud.replace({ ...actionContext, values: threads }),
+      Realtime.domain.crud.replace({ ...actionContext, values: domains }),
+      Realtime.canvasTemplate.crud.replace({ ...actionContext, values: canvasTemplates }),
+      Realtime.intent.crud.replace({ ...actionContext, values: intents, projectMeta: { platform, type: projectType } }),
+      Realtime.product.crud.replace({ ...actionContext, values: products }),
+      Realtime.diagram.crud.replace({ ...actionContext, values: diagrams }),
+      Realtime.variableState.crud.replace({ ...actionContext, values: variableStates }),
+      Realtime.diagram.sharedNodes.load({ ...actionContext, sharedNodes }),
+      Realtime.project.crud.add({ ...actionContext, value: project, key: projectID }),
+      Realtime.version.crud.add({ ...actionContext, value: version, key: versionID }),
+      Realtime.version.replacePrototypeSettings({ ...actionContext, settings: prototypeSettings }),
+      Realtime.version.activateVersion({ ...actionContext, projectType }),
     ];
   };
 }

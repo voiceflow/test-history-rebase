@@ -7,44 +7,27 @@ import CreateTemplateControl from './createTemplateDiagram';
 import CreateTopicControl from './createTopic';
 import DuplicateDiagramControl from './duplicate';
 import HeartbeatDiagramControl from './heartbeat';
-import { RegisterIntentStepsControl, ReloadIntentStepsControl, ReorderIntentStepsControl, UpdateIntentStepsControl } from './intentSteps';
 import { LockEntitiesControl, UnlockEntitiesControl, UpdateLockedEntitiesControl } from './locks';
 import PatchDiagramControl from './patch';
+import ReloadSharedNodesControl from './reloadSharedNodes';
 import RemoveDiagramControl from './remove';
-import {
-  AddNewStartingBlocksControl,
-  RemoveDiagramStartingBlocksControl,
-  RemoveStartingBlocksControl,
-  UpdateStartingBlockControl,
-} from './startingBlocks';
+import ReorderMenuNodeControl from './reorderMenuNode';
 import { AddLocalVariableControl, RemoveLocalVariableControl } from './variable';
 import { UpdateViewportControl } from './viewport';
 
 const buildDiagramActionControls = (options: LoguxControlOptions) => ({
   addDiagramControl: new AddDiagramControl(options),
-  convertToTopicControl: new ConvertToTopicControl(options),
-  createComponentControl: new CreateComponentControl(options),
   createTopicControl: new CreateTopicControl(options),
-  createTemplateControl: new CreateTemplateControl(options),
-  duplicateDiagramControl: new DuplicateDiagramControl(options),
   patchDiagramControl: new PatchDiagramControl(options),
   removeDiagramControl: new RemoveDiagramControl(options),
+  createTemplateControl: new CreateTemplateControl(options),
+  convertToTopicControl: new ConvertToTopicControl(options),
+  createComponentControl: new CreateComponentControl(options),
+  duplicateDiagramControl: new DuplicateDiagramControl(options),
 
   // variables
   addLocalVariableControl: new AddLocalVariableControl(options),
   removeLocalVariableControl: new RemoveLocalVariableControl(options),
-
-  // intent steps
-  registerIntentStepsControl: new RegisterIntentStepsControl(options),
-  reorderIntentStepsControl: new ReorderIntentStepsControl(options),
-  updateIntentStepsControl: new UpdateIntentStepsControl(options),
-  reloadIntentStepsControl: new ReloadIntentStepsControl(options),
-
-  // starting blocks
-  addNewStartingBlocksControl: new AddNewStartingBlocksControl(options),
-  removeStartingBlocksControl: new RemoveStartingBlocksControl(options),
-  updateStartingBlockControl: new UpdateStartingBlockControl(options),
-  removeDiagramStartingBlocksControl: new RemoveDiagramStartingBlocksControl(options),
 
   // awareness
   lockEntitiesControl: new LockEntitiesControl(options),
@@ -54,6 +37,10 @@ const buildDiagramActionControls = (options: LoguxControlOptions) => ({
 
   // viewport
   updateViewportControl: new UpdateViewportControl(options),
+
+  // other
+  reorderMenuNodeControl: new ReorderMenuNodeControl(options),
+  reloadSharedNodesControl: new ReloadSharedNodesControl(options),
 });
 
 export default buildDiagramActionControls;

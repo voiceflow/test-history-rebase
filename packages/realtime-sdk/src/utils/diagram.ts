@@ -4,11 +4,11 @@ import { Utils } from '@voiceflow/common';
 
 export interface DiagramFactoryOptions {
   name: string;
-  intentStepIDs?: string[];
+  menuNodeIDs?: string[];
 }
 
 export type PrimitiveDiagram<T extends BaseModels.BaseDiagramNode = BaseModels.BaseDiagramNode> = Required<
-  Omit<BaseModels.Diagram.Model<T>, '_id' | 'creatorID' | 'versionID'>
+  Omit<BaseModels.Diagram.Model<T>, '_id' | 'creatorID' | 'versionID' | 'intentStepIDs'>
 >;
 
 export const getUniqueCopyName = (originalName: string, existingNames: string[]) => {
@@ -48,7 +48,7 @@ export const diagramFactory = <T extends BaseModels.BaseDiagramNode>({
   name,
   type,
   nodes,
-  intentStepIDs = [],
+  menuNodeIDs = [],
 }: DiagramFactoryOptions & {
   type: BaseModels.Diagram.DiagramType;
   nodes: BaseModels.BaseDiagramNode[];
@@ -62,7 +62,7 @@ export const diagramFactory = <T extends BaseModels.BaseDiagramNode>({
   nodes: nodes.reduce((acc, node) => Object.assign(acc, { [node.nodeID]: node }), {}),
   children: nodes.map((node) => node.nodeID),
   variables: [],
-  intentStepIDs,
+  menuNodeIDs,
 });
 
 export const componentDiagramFactory = (name: string, startNodeCoords?: [number, number]) =>
@@ -78,7 +78,7 @@ export const topicDiagramFactory = (name: string) => {
   return diagramFactory({
     name,
     type: BaseModels.Diagram.DiagramType.TOPIC,
-    intentStepIDs: [intentNodeID],
+    menuNodeIDs: [intentNodeID],
     nodes: [
       {
         type: BaseModels.BaseNodeType.BLOCK,

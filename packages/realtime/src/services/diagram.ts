@@ -7,14 +7,6 @@ import { HEARTBEAT_EXPIRE_TIMEOUT } from '../constants';
 import { AbstractControl } from '../control';
 import AccessCache from './utils/accessCache';
 
-type IntentStepsMap = Record<string, Realtime.diagram.DiagramIntentStepMap>;
-type StartingBlockMap = Record<string, Realtime.diagram.DiagramStartingBlockMap>;
-
-interface Resources {
-  intentSteps: IntentStepsMap;
-  startingBlocks: StartingBlockMap;
-}
-
 // utility function to format node update data
 const nodeDataUpdates = <D extends AnyRecord>(nodeID: string, data: D) => {
   const entries = Object.entries(data);
@@ -42,22 +34,26 @@ class DiagramService extends AbstractControl {
     keyCreator: DiagramService.getConnectedNodesKey,
   });
 
-  private intentStepsNodeMapper = (node: BaseModels.BaseDiagramNode<AnyRecord>): Realtime.diagram.DiagramIntentStep | null => {
-    if (!Realtime.Utils.typeGuards.isIntentDBNode(node)) return null;
+  private sharedNodeMapper = (node: BaseModels.BaseDiagramNode<AnyRecord>): Realtime.diagram.sharedNodes.SharedNode | null => {
+    if (Realtime.Utils.typeGuards.isIntentDBNode(node)) {
+      const global = !node.data.availability || node.data.availability === BaseNode.Intent.IntentAvailability.GLOBAL;
 
-    return {
-      global: !node.data.availability || node.data.availability === BaseNode.Intent.IntentAvailability.GLOBAL,
-      intentID: node.data.intent || null,
-    };
-  };
+      return { type: Realtime.BlockType.INTENT, global, nodeID: node.nodeID, intentID: node.data.intent || null };
+    }
 
-  private startingBlockNodeMapper = (node: BaseModels.BaseDiagramNode<AnyRecord>): Realtime.diagram.DiagramStartingBlock | null => {
-    if (node.type !== BaseModels.BaseNodeType.BLOCK && node.type !== Realtime.BlockType.START) return null;
+    if (Realtime.Utils.typeGuards.isStartDBNode(node)) {
+      return { type: Realtime.BlockType.START, name: node.data.label || '', nodeID: node.nodeID };
+    }
 
-    return {
-      name: node.data.name,
-      blockID: node.nodeID,
-    };
+    if (Realtime.Utils.typeGuards.isBlockDBNode(node)) {
+      return { type: Realtime.BlockType.COMBINED, name: node.data.name, nodeID: node.nodeID };
+    }
+
+    if (Realtime.Utils.typeGuards.isComponentDBNode(node)) {
+      return { type: Realtime.BlockType.COMPONENT, nodeID: node.nodeID, componentID: node.data.diagramID };
+    }
+
+    return null;
   };
 
   public access = new AccessCache('diagram', this.clients, this.services);
@@ -108,6 +104,7 @@ class DiagramService extends AbstractControl {
   public async addStep(addData: {
     step: BaseModels.BaseStep;
     index?: Nullish<number>;
+    isActions?: boolean;
     diagramID: string;
     parentNodeID: string;
     nodePortRemaps?: Realtime.NodePortRemap[];
@@ -213,27 +210,28 @@ class DiagramService extends AbstractControl {
     await this.models.diagram.addDynamicPort(diagramID, nodeID, port);
   }
 
-  public getResources(diagrams: BaseModels.Diagram.Model[]): Resources {
-    const intentSteps: IntentStepsMap = {};
-    const startingBlocks: StartingBlockMap = {};
+  public async reorderMenuNodes(reorderData: { index: number; nodeID: string; diagramID: string }): Promise<void> {
+    await this.models.diagram.reorderMenuNodes(reorderData);
+  }
+
+  public getSharedNodes(diagrams: BaseModels.Diagram.Model[]): Realtime.diagram.sharedNodes.DiagramSharedNodeMap {
+    const sharedNodes: Realtime.diagram.sharedNodes.DiagramSharedNodeMap = {};
 
     diagrams.forEach((diagram) => {
-      const diagramIntentSteps: Realtime.diagram.DiagramIntentStepMap = {};
-      const diagramStartingBlocks: Realtime.diagram.DiagramStartingBlockMap = {};
+      const diagramSharedNode: Realtime.diagram.sharedNodes.SharedNodeMap = {};
 
-      intentSteps[diagram._id] = diagramIntentSteps;
-      startingBlocks[diagram._id] = diagramStartingBlocks;
+      sharedNodes[diagram._id] = diagramSharedNode;
 
       Object.values(diagram.nodes).forEach((node) => {
-        const intentStepsNode = this.intentStepsNodeMapper(node);
-        const startingBlockNode = this.startingBlockNodeMapper(node);
+        const sharedNode = this.sharedNodeMapper(node);
 
-        if (intentStepsNode) diagramIntentSteps[node.nodeID] = intentStepsNode;
-        if (startingBlockNode) diagramStartingBlocks[node.nodeID] = startingBlockNode;
+        if (!sharedNode) return;
+
+        diagramSharedNode[sharedNode.nodeID] = sharedNode;
       });
     });
 
-    return { startingBlocks, intentSteps };
+    return sharedNodes;
   }
 }
 

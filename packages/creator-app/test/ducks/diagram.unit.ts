@@ -23,7 +23,7 @@ const DIAGRAM: Realtime.Diagram = {
   type: BaseModels.Diagram.DiagramType.COMPONENT,
   variables: ['fizz', 'buzz'],
   subDiagrams: [],
-  intentStepIDs: [],
+  menuNodeIDs: [],
 };
 
 const DIAGRAM_VIEWER: Diagram.DiagramViewer = {
@@ -42,7 +42,7 @@ const MOCK_STATE: Diagram.DiagramState = {
       type: BaseModels.Diagram.DiagramType.TOPIC,
       variables: ['xyz'],
       subDiagrams: [],
-      intentStepIDs: [],
+      menuNodeIDs: [],
     },
   },
   allKeys: [DIAGRAM_ID, 'abc'],
@@ -55,8 +55,7 @@ const MOCK_STATE: Diagram.DiagramState = {
       abc: Normal.normalize([{ creatorID: 1000, creator_id: 1000, name: 'caleb', color: '#aaa' }], (viewer) => String(viewer.creatorID)),
     },
   },
-  intentSteps: {},
-  startingBlocks: {},
+  sharedNodes: {},
   globalIntentStepMap: {},
 };
 

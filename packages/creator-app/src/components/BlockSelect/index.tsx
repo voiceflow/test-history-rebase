@@ -1,3 +1,4 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { BaseSelectProps, FlexApart, Select } from '@voiceflow/ui';
 import React from 'react';
 
@@ -22,31 +23,32 @@ interface BlockSelectProps extends BaseSelectProps {
 
 const BlockSelect: React.FC<BlockSelectProps> = ({ value, onChange, className, clearable, startNodeIsDefault, ...props }) => {
   const startNodeID = useSelector(CreatorV2.startNodeIDSelector);
-  const startingBlocks = useSelector(DiagramV2.startingBlocksSelector);
-  const getDiagramByID = useSelector(DiagramV2.getDiagramByIDSelector);
+  const sharedNodes = useSelector(DiagramV2.sharedNodesSelector);
   const allDiagrams = useSelector(DiagramV2.allDiagramsSelector);
+  const getDiagramByID = useSelector(DiagramV2.getDiagramByIDSelector);
 
   const { options, optionsMap } = React.useMemo(() => {
     const options: TopicBlockOption[] = [];
     const optionsMap: Record<string, BlockOption> = {};
 
-    Object.entries(startingBlocks).forEach(([diagramID, diagramBlocksData]) => {
+    Object.entries(sharedNodes).forEach(([diagramID, diagramBlocksData]) => {
       const diagram = getDiagramByID({ id: diagramID });
 
       if (!diagram) return;
 
       const blockOptions: BlockOption[] = [];
 
-      Object.values(diagramBlocksData).forEach((blockData) => {
-        if (!blockData) return;
+      Object.values(diagramBlocksData).forEach((sharedNode) => {
+        if (sharedNode?.type !== Realtime.BlockType.COMBINED && sharedNode?.type !== Realtime.BlockType.START) return;
 
-        optionsMap[blockData.blockID] = { id: blockData.blockID, label: blockData.name, diagramID };
+        const label = sharedNode.type === Realtime.BlockType.START ? sharedNode.name || 'Start' : sharedNode.name;
 
-        blockOptions.push({
-          id: blockData.blockID,
-          label: blockData.name,
-          diagramID,
-        });
+        if (!label) return;
+
+        const option = { id: sharedNode.nodeID, label, diagramID };
+
+        optionsMap[option.id] = option;
+        blockOptions.push(option);
       });
 
       if (blockOptions.length) {
@@ -59,7 +61,7 @@ const BlockSelect: React.FC<BlockSelectProps> = ({ value, onChange, className, c
     });
 
     return { options, optionsMap };
-  }, [startingBlocks, allDiagrams]);
+  }, [sharedNodes, allDiagrams]);
 
   const onSelect = (stepID: string | null) => {
     if (!stepID) {

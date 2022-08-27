@@ -107,7 +107,7 @@ describe('Diagram model unit tests', () => {
 
     expect(atomicUpdateById).to.be.calledWithExactly(diagramID, [
       {
-        query: { intentStepIDs: { $each: ['node-id'] } },
+        query: { menuNodeIDs: { $each: ['node-id'] } },
         operation: '$push',
         arrayFilters: [],
       },
@@ -164,7 +164,7 @@ describe('Diagram model unit tests', () => {
 
     expect(atomicUpdateById).to.be.calledWithExactly(diagramID, [
       {
-        query: { intentStepIDs: { $each: ['node-2'] } },
+        query: { menuNodeIDs: { $each: ['node-2'] } },
         operation: '$push',
         arrayFilters: [],
       },
@@ -315,7 +315,7 @@ describe('Diagram model unit tests', () => {
 
     expect(atomicUpdateById).to.be.calledWithExactly(diagramID, [
       {
-        query: { intentStepIDs: { $in: [stepID] } },
+        query: { menuNodeIDs: { $in: [stepID] } },
         operation: '$pull',
         arrayFilters: [],
       },

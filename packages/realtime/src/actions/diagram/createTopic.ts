@@ -1,38 +1,47 @@
 import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Context } from '@voiceflow/socket-utils';
-import { Action } from 'typescript-fsa';
 
-import { AbstractDiagramResourceControl, NewDiagramContextData } from './utils';
+import { AbstractDiagramResourceControl } from './utils';
 
-class CreateTopic extends AbstractDiagramResourceControl<Realtime.diagram.CreateDiagramPayload, NewDiagramContextData> {
+class CreateTopic extends AbstractDiagramResourceControl<Realtime.diagram.CreateDiagramPayload> {
   protected actionCreator = Realtime.diagram.createTopic.started;
 
   protected process = this.reply(Realtime.diagram.createTopic, async (ctx, { payload }) => {
     const { creatorID } = ctx.data;
-    const topicFactory = Realtime.Utils.diagram.topicDiagramFactory(payload.diagram.name);
 
-    const [diagram, version] = await Promise.all([
-      this.createDiagram(ctx, payload, {
-        ...topicFactory,
+    const [dbDiagram, version] = await Promise.all([
+      this.services.diagram.create({
+        ...Realtime.Utils.diagram.topicDiagramFactory(payload.diagram.name),
         ...payload.diagram,
+        creatorID,
+        versionID: payload.versionID,
       }),
       this.services.version.get(creatorID, payload.versionID),
     ]);
 
-    await this.services.version.patch(creatorID, payload.versionID, {
-      topics: [...(version.topics ?? []), { sourceID: diagram.id, type: BaseModels.Version.FolderItemType.DIAGRAM }],
-    });
+    const diagram = Realtime.Adapters.diagramAdapter.fromDB(dbDiagram, { rootDiagramID: version.rootDiagramID });
 
-    ctx.data.newDiagram = { ...diagram, ...topicFactory };
+    await Promise.all([
+      this.services.version.patch(creatorID, payload.versionID, {
+        topics: [...(version.topics ?? []), { sourceID: diagram.id, type: BaseModels.Version.FolderItemType.DIAGRAM }],
+      }),
+
+      this.server.processAs(
+        creatorID,
+        Realtime.diagram.crud.add({
+          key: diagram.id,
+          value: diagram,
+          versionID: payload.versionID,
+          projectID: payload.projectID,
+          workspaceID: payload.workspaceID,
+        })
+      ),
+
+      this.reloadSharedNodes(ctx, payload, dbDiagram),
+    ]);
 
     return diagram;
   });
-
-  protected finally = async (ctx: Context<NewDiagramContextData>, { payload }: Action<Realtime.diagram.CreateDiagramPayload>) => {
-    const { newDiagram } = ctx.data;
-    this.reloadStartingBlocksFromNewDiagram(ctx, payload, { id: newDiagram.id, nodes: newDiagram.nodes });
-  };
 }
 
 export default CreateTopic;

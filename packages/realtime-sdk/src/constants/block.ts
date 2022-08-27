@@ -98,6 +98,15 @@ export const NAVIGATION_NODES: ReadonlyArray<NavigationBlockType> = [BlockType.E
 export type CanvasChipBlockType = BlockType.INTENT | BlockType.START;
 export const CANVAS_CHIPS_NODES: ReadonlyArray<CanvasChipBlockType> = [BlockType.INTENT, BlockType.START];
 
+export type DiagramMenuBlockType = BlockType.START | BlockType.INTENT | BlockType.COMPONENT;
+export const DIAGRAM_MENU_NODES: ReadonlyArray<DiagramMenuBlockType> = [BlockType.START, BlockType.INTENT, BlockType.COMPONENT];
+
+export type StaringBlockType = BlockType.START | BlockType.COMBINED;
+export const STARTING_NODES: ReadonlyArray<StaringBlockType> = [BlockType.START, BlockType.COMBINED];
+
+export type SharedBlockType = DiagramMenuBlockType | BlockType.COMBINED;
+export const SHARED_NODES: ReadonlyArray<SharedBlockType> = [...DIAGRAM_MENU_NODES, BlockType.COMBINED];
+
 export type StepBlockType = Exclude<BlockType, RootOrMarkupBlockType | DeprecatedBlockType>;
 
 export const NO_IN_PORT_NODES = new Set([BlockType.INTENT, BlockType.COMMAND, BlockType.EVENT, BlockType.START]);

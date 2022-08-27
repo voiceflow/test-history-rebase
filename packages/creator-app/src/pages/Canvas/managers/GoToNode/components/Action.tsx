@@ -9,9 +9,9 @@ import { useGoToNode } from './hooks';
 
 const GoToNodeAction: ConnectedAction<Realtime.NodeData.GoToNode> = ({ data, engine, onRemove, reversed, isActive, onOpenEditor }) => {
   const goToNode = useGoToNode(data.goToNodeID ?? null, data.diagramID);
-  const isEmpty = !goToNode;
+  const isEmpty = !goToNode?.name;
 
-  const onOpenTarget = () => goToNode && engine.focusDiagramNode(data.diagramID ?? null, goToNode.blockID);
+  const onOpenTarget = () => goToNode && engine.focusDiagramNode(data.diagramID ?? null, goToNode.nodeID);
 
   return (
     <Popper

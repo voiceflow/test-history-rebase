@@ -1,5 +1,5 @@
-import { DiagramType } from '@voiceflow/base-types/build/cjs/models/diagram';
-import { FolderItemType } from '@voiceflow/base-types/build/cjs/models/version';
+/* eslint-disable no-param-reassign */
+import { BaseModels } from '@voiceflow/base-types';
 
 import { Transform } from './types';
 
@@ -8,10 +8,14 @@ import { Transform } from './types';
  */
 const migrateToV3_4: Transform = ({ diagrams, version }) => {
   diagrams.forEach((dbDiagram) => {
-    if ((dbDiagram.type && dbDiagram.type !== DiagramType.COMPONENT) || version.components?.some(({ sourceID }) => sourceID === dbDiagram._id))
+    if (
+      (dbDiagram.type && dbDiagram.type !== BaseModels.Diagram.DiagramType.COMPONENT) ||
+      version.components?.some(({ sourceID }) => sourceID === dbDiagram._id)
+    )
       return;
 
-    version.components?.push({ sourceID: dbDiagram._id, type: FolderItemType.DIAGRAM });
+    version.components ??= [];
+    version.components?.push({ sourceID: dbDiagram._id, type: BaseModels.Version.FolderItemType.DIAGRAM });
   });
 };
 

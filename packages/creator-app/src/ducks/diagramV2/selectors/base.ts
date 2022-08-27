@@ -21,8 +21,6 @@ export const getDiagramsByIDsSelector = createCurriedSelector(diagramsByIDsSelec
 
 export const localVariablesByDiagramIDSelector = createSelector([diagramByIDSelector], (diagram) => diagram?.variables || []);
 
-export const intentStepsSelector = createSelector([rootDiagramSelector], ({ intentSteps }) => intentSteps);
-
-export const startingBlocksSelector = createSelector([rootDiagramSelector], ({ startingBlocks }) => startingBlocks);
+export const sharedNodesSelector = createSelector([rootDiagramSelector], ({ sharedNodes }) => sharedNodes);
 
 export const globalIntentStepMapSelector = createSelector([rootDiagramSelector], ({ globalIntentStepMap }) => globalIntentStepMap);

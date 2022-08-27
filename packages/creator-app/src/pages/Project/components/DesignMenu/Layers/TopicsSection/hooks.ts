@@ -1,4 +1,4 @@
-import { Nullable } from '@voiceflow/common';
+import { Nullable, Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
@@ -19,15 +19,16 @@ import { applyPlatformIntentNameFormatting, prettifyIntentName } from '@/utils/i
 
 import { OpenedIDsToggleApi, useOpenedIDsToggle } from '../hooks';
 
-export interface TopicIntentItem {
-  id: string;
-  intent: Nullable<Realtime.Intent>;
-  intentID: Nullable<string>;
+export interface TopicMenuItem {
+  name: string;
+  type: Realtime.BlockType;
+  nodeID: string;
 }
+
 export interface TopicItem {
   id: string;
   name: string;
-  intentItems: TopicIntentItem[];
+  menuItems: TopicMenuItem[];
 }
 
 interface TopicsAPI {
@@ -50,10 +51,11 @@ interface TopicsAPI {
 
 export const useTopics = (): TopicsAPI & Omit<OpenedIDsToggleApi, 'onDragStart' | 'onDragEnd'> => {
   const platform = useSelector(ProjectV2.active.platformSelector);
-  const intentSteps = useSelector(DiagramV2.intentStepsSelector);
+  const sharedNodes = useSelector(DiagramV2.sharedNodesSelector);
   const getIntentByID = useSelector(IntentV2.getIntentByIDSelector);
   const rootDiagramID = useSelector(VersionV2.active.rootDiagramIDSelector);
   const topicDiagrams = useSelector(DiagramV2.active.topicDiagramsSelector);
+  const getDiagramByID = useSelector(DiagramV2.getDiagramByIDSelector);
   const activeDiagramID = useSelector(CreatorV2.activeDiagramIDSelector);
   const { target: focusedNodeID, isActive: isFocusedNodeActive } = useSelector(Creator.creatorFocusSelector);
 
@@ -74,30 +76,41 @@ export const useTopics = (): TopicsAPI & Omit<OpenedIDsToggleApi, 'onDragStart' 
 
   const topicsItems = React.useMemo(
     () =>
-      topicDiagrams.map<TopicItem>((diagram) => {
-        const topicIntentStepMap = intentSteps[diagram.id] ?? {};
+      topicDiagrams.map<TopicItem>((diagram) => ({
+        id: diagram.id,
+        name: rootDiagramID === diagram.id && diagram.name === ROOT_DIAGRAM_NAME ? ROOT_DIAGRAM_LABEL : diagram.name,
+        menuItems: diagram.menuNodeIDs
+          .map<TopicMenuItem | null>((menuNodeID) => {
+            const sharedNode = sharedNodes[diagram.id]?.[menuNodeID];
 
-        return {
-          id: diagram.id,
-          name: rootDiagramID === diagram.id && diagram.name === ROOT_DIAGRAM_NAME ? ROOT_DIAGRAM_LABEL : diagram.name,
-          intentItems: diagram.intentStepIDs.map<TopicIntentItem>((stepID) => {
-            const intentID = topicIntentStepMap[stepID]?.intentID ?? null;
-            const intent = getIntentByID({ id: intentID });
+            if (sharedNode?.type === Realtime.BlockType.INTENT) {
+              const intent = getIntentByID({ id: sharedNode.intentID });
+              const name = intent
+                ? applyPlatformIntentNameFormatting(prettifyIntentName(applySingleIntentNameFormatting(platform, intent).name), platform)
+                : '';
 
-            return {
-              id: stepID,
-              intent: intent
-                ? {
-                    ...intent,
-                    name: applyPlatformIntentNameFormatting(prettifyIntentName(applySingleIntentNameFormatting(platform, intent).name), platform),
-                  }
-                : null,
-              intentID,
-            };
-          }),
-        };
-      }),
-    [platform, getIntentByID, rootDiagramID, topicDiagrams, intentSteps]
+              return { name, type: sharedNode.type, nodeID: sharedNode.nodeID };
+            }
+
+            if (sharedNode?.type === Realtime.BlockType.START) {
+              return {
+                name: sharedNode.name || (rootDiagramID === diagram.id ? 'Project starts here' : 'Start'),
+                type: sharedNode.type,
+                nodeID: sharedNode.nodeID,
+              };
+            }
+
+            if (sharedNode?.type === Realtime.BlockType.COMPONENT) {
+              const diagram = getDiagramByID({ id: sharedNode.componentID });
+
+              return { name: diagram?.name ?? '', type: sharedNode.type, nodeID: sharedNode.nodeID };
+            }
+
+            return null;
+          })
+          .filter(Utils.array.isNotNullish),
+      })),
+    [platform, getDiagramByID, getIntentByID, rootDiagramID, topicDiagrams, sharedNodes]
   );
 
   const onCreateTopic = React.useCallback(async () => {
@@ -106,7 +119,7 @@ export const useTopics = (): TopicsAPI & Omit<OpenedIDsToggleApi, 'onDragStart' 
     const newDiagram = await createTopicDiagram(`Topic ${topicDiagrams.length + 1}`);
 
     setLastCreatedDiagramID(newDiagram.id);
-    goToDiagram(newDiagram.id, newDiagram.intentStepIDs[0]);
+    goToDiagram(newDiagram.id, newDiagram.menuNodeIDs[0]);
   }, [topicDiagrams]);
 
   const onClearLastCreatedDiagramID = React.useCallback(() => {
@@ -134,12 +147,12 @@ export const useTopics = (): TopicsAPI & Omit<OpenedIDsToggleApi, 'onDragStart' 
     }
 
     topicsItems.forEach((topic) => {
-      const intentItems = topic.intentItems.filter(({ intent }) => !!intent && intent.name.toLowerCase().includes(lowerCasedSearchValue));
+      const menuItems = topic.menuItems.filter(({ name }) => !!name && name.toLowerCase().includes(lowerCasedSearchValue));
 
-      if (topic.name.toLowerCase().includes(lowerCasedSearchValue) && !intentItems.length) {
+      if (topic.name.toLowerCase().includes(lowerCasedSearchValue) && !menuItems.length) {
         items.push(topic);
-      } else if (intentItems.length) {
-        items.push({ ...topic, intentItems });
+      } else if (menuItems.length) {
+        items.push({ ...topic, menuItems });
         openedTopics[topic.id] = true;
       }
     });

@@ -2,9 +2,9 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Context } from '@voiceflow/socket-utils';
 import { Action } from 'typescript-fsa';
 
-import { AbstractDiagramActionControl } from '@/actions/diagram/utils';
+import { AbstractVersionDiagramAccessActionControl } from '@/actions/diagram/utils';
 
-class ReorderSteps extends AbstractDiagramActionControl<Realtime.node.ReorderStepsPayload> {
+class ReorderSteps extends AbstractVersionDiagramAccessActionControl<Realtime.node.ReorderStepsPayload> {
   actionCreator = Realtime.node.reorderSteps;
 
   process = async (_ctx: Context, { payload }: Action<Realtime.node.ReorderStepsPayload>): Promise<void> => {

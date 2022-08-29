@@ -151,6 +151,8 @@ interface CRUDSelectors<K extends keyof CRUDStateSubset> {
   byID: ParametricSelector<State, IDSelectorParam, NormalizedValue<CRUDStateSubset[K]> | null>;
   byIDs: ParametricSelector<State, IDsSelectorParam, NormalizedValue<CRUDStateSubset[K]>[]>;
   allIDs: Selector<State, string[]>;
+  getByID: Selector<State, (params: IDSelectorParam) => NormalizedValue<CRUDStateSubset[K]> | null>;
+  getByIDs: Selector<State, (params: IDsSelectorParam) => NormalizedValue<CRUDStateSubset[K]>[]>;
   withoutIDs: ParametricSelector<State, IDsSelectorParam, NormalizedValue<CRUDStateSubset[K]>[]>;
 }
 
@@ -161,16 +163,34 @@ export const createCRUDSelectors = <K extends keyof CRUDStateSubset, T extends N
   modelType: K
 ): CRUDSelectors<K> => {
   const root = createRootSelector(modelType) as Selector<State, CRUDStateSubset[K]>;
-  const count = createSelector([root], ({ allKeys }) => allKeys.length);
-  const isEmpty = createSelector([count], (size) => size === 0);
-  const all = createSelector([root], (xs) => Normal.denormalize(xs as CRUDState<T>));
   const map = createSelector([root], ({ byKey }) => byKey as Record<string, T>);
   const allIDs = createSelector([root], ({ allKeys }) => allKeys);
-  const hasByID = createSelector([root, idParamSelector], (normalized, id) => (id ? Normal.hasOne(normalized, id) : false));
-  const hasByIDs = createSelector([root, idsParamSelector], (normalized, ids) => Normal.hasMany(normalized, ids));
+  const pureNormalized = createSelector([map, allIDs], (byKey, allKeys) => ({
+    byKey,
+    allKeys,
+  }));
 
-  const byID = createSelector([root, idParamSelector], (normalized, id) => (id ? Normal.getOne(normalized, id) : null));
-  const byIDs = createSelector([root, idsParamSelector], (normalized, ids) => Normal.getMany(normalized, ids));
+  const count = createSelector([allIDs], (allKeys) => allKeys.length);
+  const isEmpty = createSelector([count], (size) => size === 0);
+  const all = createSelector([pureNormalized], (xs) => Normal.denormalize(xs as CRUDState<T>));
+
+  const hasByID = createSelector([pureNormalized, idParamSelector], (normalized, id) => (id ? Normal.hasOne(normalized, id) : false));
+  const hasByIDs = createSelector([pureNormalized, idsParamSelector], (normalized, ids) => Normal.hasMany(normalized, ids));
+
+  const byID = createSelector([pureNormalized, idParamSelector], (normalized, id) => (id ? Normal.getOne(normalized, id) : null));
+  const byIDs = createSelector([pureNormalized, idsParamSelector], (normalized, ids) => Normal.getMany(normalized, ids));
+  const getByID = createSelector(
+    [pureNormalized],
+    (normalized) =>
+      ({ id }: IDSelectorParam) =>
+        id ? Normal.getOne(normalized, id) : null
+  );
+  const getByIDs = createSelector(
+    [pureNormalized],
+    (normalized) =>
+      ({ ids }: IDsSelectorParam) =>
+        Normal.getMany(normalized, ids)
+  );
   const withoutIDs = createSelector([all, idsParamSelector], (items, ids) => items.filter((item) => !ids.includes(item.id)));
 
   return {
@@ -183,6 +203,8 @@ export const createCRUDSelectors = <K extends keyof CRUDStateSubset, T extends N
     hasByIDs,
     byID,
     byIDs,
+    getByID,
+    getByIDs,
     allIDs,
     withoutIDs,
   };

@@ -6,7 +6,6 @@ import * as CreatorV2 from '@/ducks/creatorV2';
 import * as Feature from '@/ducks/feature';
 import * as ThreadV1 from '@/ducks/thread';
 import * as UI from '@/ducks/ui';
-import { createCurriedSelector } from '@/ducks/utils';
 import { createCRUDSelectors } from '@/ducks/utils/crudV2';
 
 import { STATE_KEY } from './constants';
@@ -18,13 +17,13 @@ export const {
   byID: threadsByIDSelector,
   byIDs: threadsByIDsSelector,
   allIDs: allThreadIDsSelector,
+  getByID: _getThreadByIDSelector,
 } = createCRUDSelectors(STATE_KEY);
 
 export const rootThreadsSelector = Feature.createAtomicActionsCommentingSelector([ThreadV1.rootThreadsSelector, _rootThreadsSelector]);
 export const allThreadsSelector = Feature.createAtomicActionsCommentingSelector([ThreadV1.allThreadsSelector, _allThreadsSelector]);
 
 // selectors
-const _getThreadByIDSelector = createCurriedSelector(threadsByIDSelector);
 const legacyGetThreadByIDSelector = createSelector(
   ThreadV1.threadByIDSelector,
   (threadByIDSelector) =>

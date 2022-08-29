@@ -1,6 +1,5 @@
 import { createSelector } from 'reselect';
 
-import { createCurriedSelector } from '@/ducks/utils';
 import { createCRUDSelectors } from '@/ducks/utils/crudV2';
 
 import { STATE_KEY } from '../constants';
@@ -12,12 +11,10 @@ export const {
   byID: diagramByIDSelector,
   byIDs: diagramsByIDsSelector,
   allIDs: allDiagramIDsSelector,
+  getByID: getDiagramByIDSelector,
+  getByIDs: getDiagramsByIDsSelector,
   hasByIDs: hasDiagramsByIDsSelector,
 } = createCRUDSelectors(STATE_KEY);
-
-export const getDiagramByIDSelector = createCurriedSelector(diagramByIDSelector);
-
-export const getDiagramsByIDsSelector = createCurriedSelector(diagramsByIDsSelector);
 
 export const localVariablesByDiagramIDSelector = createSelector([diagramByIDSelector], (diagram) => diagram?.variables || []);
 

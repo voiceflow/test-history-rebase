@@ -20,10 +20,9 @@ export const {
   map: intentsMapSelector,
   byID: intentByIDSelector,
   byIDs: intentsByIDsSelector,
+  getByID: getIntentByIDSelector,
   allIDs: allIntentIDsSelector,
 } = createCRUDSelectors(STATE_KEY);
-
-export const getIntentByIDSelector = createCurriedSelector(intentByIDSelector);
 
 // platform-formatted
 

@@ -4,7 +4,6 @@ import { createSelector } from 'reselect';
 
 import * as CreatorV2 from '@/ducks/creatorV2';
 import { prototypeVariablesSelector } from '@/ducks/prototype/selectors';
-import { createCurriedSelector } from '@/ducks/utils';
 import { createCRUDSelectors } from '@/ducks/utils/crudV2';
 import { Variable, VariableValue } from '@/models';
 
@@ -15,9 +14,8 @@ export const {
   map: mapVariableStatesSelector,
   all: allVariableStatesSelector,
   byID: variableStateByIDSelector,
+  getByID: getVariableStateByIDSelector,
 } = createCRUDSelectors(STATE_KEY);
-
-export const getVariableStateByIDSelector = createCurriedSelector(variableStateByIDSelector);
 
 export const selectedVariableStateIdSelector = createSelector([rootVariableStatesSelector], (variableStates) => variableStates?.selectedState?.id);
 

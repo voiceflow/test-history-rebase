@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.884.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.884.0...@voiceflow/creator-app@1.884.1) (2022-08-29)
+
+
+### Bug Fixes
+
+* selector performance (CT-000) ([#5978](https://github.com/voiceflow/creator-app/issues/5978)) ([2110eab](https://github.com/voiceflow/creator-app/commit/2110eab6d795d76bf064025b2da5c693774ffbc3)), closes [/github.com/voiceflow/creator-app/blob/09ca09d4d61be50673d7d22cc6d9280d5c7cfb37/packages/creator-app/src/ducks/creatorV2/selectors/node.ts#L95-L106](https://github.com//github.com/voiceflow/creator-app/blob/09ca09d4d61be50673d7d22cc6d9280d5c7cfb37/packages/creator-app/src/ducks/creatorV2/selectors/node.ts/issues/L95-L106) [/github.com/voiceflow/creator-app/blob/09ca09d4d61be50673d7d22cc6d9280d5c7cfb37/packages/creator-app/src/pages/Canvas/engine/entities/entity.ts#L75](https://github.com//github.com/voiceflow/creator-app/blob/09ca09d4d61be50673d7d22cc6d9280d5c7cfb37/packages/creator-app/src/pages/Canvas/engine/entities/entity.ts/issues/L75)
+
+
+
+
+
 # [1.884.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.883.0...@voiceflow/creator-app@1.884.0) (2022-08-27)
 
 

@@ -29,7 +29,7 @@ const IfItem: React.ForwardRefRenderFunction<HTMLElement, IfItemProps> = (
   const [sectionRef, scrollSectionIntoView] = useAutoScrollNodeIntoView<HTMLDivElement>({ condition: autofocus, options: { block: 'end' } });
 
   return (
-    <EditorV2.PersistCollapse namespace={['ifEditorListItem', itemKey]} defaultCollapsed={!autofocus}>
+    <EditorV2.PersistCollapse namespace={['ifEditorListItem', item.id || itemKey]} defaultCollapsed={!autofocus}>
       {({ collapsed, onToggle }) => (
         <>
           {!isDraggingPreview && index !== 0 && <SectionV2.Divider />}

@@ -6,7 +6,7 @@ import { AutoPanningCacheContext, AutoPanningSetContext } from '@/contexts';
 import * as Creator from '@/ducks/creator';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as UI from '@/ducks/ui';
-import { useDidUpdateEffect, useEventualEngine, useRAF, useSelector } from '@/hooks';
+import { useEventualEngine, useRAF, useSelector } from '@/hooks';
 import { useEditingMode } from '@/pages/Project/hooks';
 import THEME from '@/styles/theme';
 import { HEADER_HEIGHT, SIDEBAR_WIDTH } from '@/styles/theme/projectPage';
@@ -31,8 +31,8 @@ const AutoPanLayer: React.FC = () => {
   const isCreatorMenuHidden = useSelector(UI.isCreatorMenuHiddenSelector);
   const isEditingMode = useEditingMode();
   const disableNewStepPanningRef = React.useRef(false);
+  const isDraggingNewStepRef = React.useRef(false);
   const mouseMoveRef = React.useRef<MouseEvent | null>(null);
-  const [draggingNewStep, setDraggingNewStep] = React.useState(false);
 
   const hasFocusedNode = !!useSelector(Creator.creatorFocusSelector)?.isActive;
   const blockEditorOpened = isEditingMode && hasFocusedNode;
@@ -45,12 +45,6 @@ const AutoPanLayer: React.FC = () => {
   const rightOffsetRef = React.useRef<number>(0);
 
   const [scheduler, schedulerAPI] = useRAF();
-
-  useDidUpdateEffect(() => {
-    disableNewStepPanningRef.current = draggingNewStep;
-
-    if (!draggingNewStep) reset();
-  }, [draggingNewStep]);
 
   React.useEffect(() => {
     leftOffsetRef.current = !isCreatorMenuHidden ? SIDEBAR_WIDTH + THEME.components.leftSidebar.width : SIDEBAR_WIDTH;
@@ -142,7 +136,11 @@ const AutoPanLayer: React.FC = () => {
       const isDraggingGroup = engine.drag.hasGroup;
       const isDraggingNewStep = engine.drag.isDraggingToCreate;
 
-      setDraggingNewStep(isDraggingNewStep);
+      if (isDraggingNewStep !== isDraggingNewStepRef.current) {
+        isDraggingNewStepRef.current = isDraggingNewStep;
+        // disableNewStepPanningRef has other logic acting on it in `onMouseMove` and can maintain a separate state
+        disableNewStepPanningRef.current = isDraggingNewStep;
+      }
 
       return isDraggingNewStep || (isLeftClick && (isDrawingLink || isDraggingBlock || isDraggingGroup));
     };

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.884.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.884.2...@voiceflow/creator-app@1.884.3) (2022-08-29)
+
+
+### Bug Fixes
+
+* clean up creator v1 duck (CT-846) ([#5946](https://github.com/voiceflow/creator-app/issues/5946)) ([11c1b9d](https://github.com/voiceflow/creator-app/commit/11c1b9da3b5678a4e301f19e6080a9a8fc841760))
+
+
+
+
+
 ## [1.884.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.884.1...@voiceflow/creator-app@1.884.2) (2022-08-29)
 
 

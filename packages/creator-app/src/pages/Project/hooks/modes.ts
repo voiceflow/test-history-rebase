@@ -8,6 +8,8 @@ import { QUERY_PARAMS } from '@/pages/Project/constants';
 
 export const useCommentingMode = () => !!useRouteMatch([Path.CANVAS_COMMENTING, Path.CANVAS_COMMENTING_THREAD]);
 
+export const useTextMarkupMode = () => !!useRouteMatch([Path.CANVAS_TEXT_MARKUP]);
+
 export const usePrototypingMode = () => !!useRouteMatch([Path.PROJECT_DEMO, Path.PROJECT_PROTOTYPE]);
 
 export const useCanvasMode = () => !!useRouteMatch(Path.PROJECT_CANVAS);
@@ -23,8 +25,9 @@ export const useProjectPreviewMode = () => {
 export const useAnyModeOpen = () => {
   const isCommentingMode = useCommentingMode();
   const isPrototypingMode = usePrototypingMode();
+  const isTextMarkupMode = useTextMarkupMode();
 
-  return isCommentingMode || isPrototypingMode;
+  return isCommentingMode || isPrototypingMode || isTextMarkupMode;
 };
 
 export const useEditingMode = () => {

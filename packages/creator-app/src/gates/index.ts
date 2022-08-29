@@ -6,6 +6,7 @@ export { default as DiagramSubscriptionGate } from './DiagramSubscriptionGate';
 export { default as FeatureLoadingGate } from './FeatureLoadingGate';
 export { default as MaintenanceGate } from './MaintenanceGate';
 export { default as PermissionGate } from './PermissionGate';
+export { default as PrivateCapabilitiesGate } from './PrivateCapabilitiesGate';
 export { default as RealtimeConnectionGate } from './RealtimeConnectionGate';
 export { default as VersionSubscriptionGate } from './VersionSubscriptionGate';
 export { default as WorkspaceFeatureLoadingGate } from './WorkspaceFeatureLoadingGate';

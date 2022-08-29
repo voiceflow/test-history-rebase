@@ -1,11 +1,12 @@
 import composeRef from '@seznam/compose-react-refs';
 import { PlanType } from '@voiceflow/internal';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, ContextMenu, OptionsMenuOption, Portal, SvgIcon, SvgIconTypes, TippyTooltip, usePopper } from '@voiceflow/ui';
+import { Box, ContextMenu, OptionsMenuOption, Portal, SvgIcon, SvgIconTypes, TippyTooltip, useLocalStorage, usePopper } from '@voiceflow/ui';
 import React from 'react';
 import { useDrag } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
 
+import { addStepGuide } from '@/assets';
 import { getLockedStepTooltipText, isLockedStep, lockedStepTooltipButtonText, lockedStepTypes } from '@/config/planLimits/steps';
 import { BlockType, DragItem, ModalType } from '@/constants';
 import { AutoPanningCacheContext } from '@/contexts';
@@ -17,6 +18,8 @@ import { ClassName } from '@/styles/constants';
 import DefaultColorPopper from '../DefaultColorPopper';
 import { StyledText, TooltipContainer } from '../styles';
 import { SubMenuButtonContainer } from './SubMenuButtonContainer';
+
+const NO_DRAG_CLICKS_KEY = 'SubMenuButton:NO_DRAG_CLICKS';
 
 interface SubMenuButtonProps {
   type: BlockType;
@@ -100,13 +103,42 @@ const SubMenuButton: React.FC<SubMenuButtonProps> = ({
     if (!isFocused) clearClickedState();
   }, [isFocused]);
 
-  const containerRef = isLocked ? popper.setReferenceElement : composeRef<HTMLDivElement>(connectDrag, popper.setReferenceElement);
+  const buttonRef = React.useRef<HTMLDivElement>(null);
+  const containerRef = isLocked ? popper.setReferenceElement : composeRef<HTMLDivElement>(connectDrag, popper.setReferenceElement, buttonRef);
+
+  // number of times the user has clicked on the step without dragging
+  // initialize to 5 so the user is over the threshold on first click
+  const [getNoDragClicks, setNoDragClicks] = useLocalStorage(NO_DRAG_CLICKS_KEY, 5);
+  const [showDragTip, setShowDragTip] = React.useState(false);
+
+  const onMouseUp: React.MouseEventHandler<HTMLDivElement> = React.useCallback((event) => {
+    // if the user clicked on the button without dragging, increment the number of clicks
+    if (buttonRef.current?.contains(event.target as Node)) {
+      setNoDragClicks(getNoDragClicks() + 1);
+
+      if (getNoDragClicks() > 4) {
+        setShowDragTip(true);
+      }
+    }
+    clearClickedState();
+  }, []);
+
+  const confirmDragTip = React.useCallback((event: React.MouseEvent<HTMLDivElement>) => {
+    setShowDragTip(false);
+    setNoDragClicks(0);
+    hoverHandlers.onMouseLeave(event);
+  }, []);
+
+  const onMouseLeave = React.useCallback((event: React.MouseEvent<HTMLDivElement>) => {
+    setShowDragTip(false);
+    hoverHandlers.onMouseLeave(event);
+  }, []);
 
   const button = (isOpen?: boolean, onContextMenu?: React.MouseEventHandler) => (
     <SubMenuButtonContainer
       ref={containerRef}
       isClicked={isClickedState}
-      onMouseUp={clearClickedState}
+      onMouseUp={onMouseUp}
       onMouseDown={enableClickedState}
       isDragging={isDragging}
       isDraggingPreview={isDraggingPreview}
@@ -115,6 +147,7 @@ const SubMenuButton: React.FC<SubMenuButtonProps> = ({
       disabled={isLocked as boolean}
       onContextMenu={onContextMenu}
       {...hoverHandlers}
+      onMouseLeave={onMouseLeave}
     >
       <Box.FlexStart width="100%" opacity={isDragging ? 0 : 1}>
         <SvgIcon icon={icon} size={16} color={isLocked ? '#62778c' : '#132144'} />
@@ -122,14 +155,26 @@ const SubMenuButton: React.FC<SubMenuButtonProps> = ({
         <StyledText disabled={isLocked as boolean}>{label}</StyledText>
       </Box.FlexStart>
 
-      {!isDragging && isHovered && tooltipText && (
+      {showDragTip && (
+        <Portal portalNode={document.body}>
+          <div ref={popper.setPopperElement} style={{ ...popper.styles.popper, paddingLeft: '6px' }} {...popper.attributes.popper}>
+            <TooltipContainer>
+              <TippyTooltip.FooterButton buttonText="Don't show again" onClick={confirmDragTip}>
+                Click + drag to add steps to the canvas.
+                <Box borderRadius={6} mt={8} as="img" src={addStepGuide} alt="add step" width="100%" />
+              </TippyTooltip.FooterButton>
+            </TooltipContainer>
+          </div>
+        </Portal>
+      )}
+
+      {!showDragTip && !isDragging && isHovered && tooltipText && (
         <Portal portalNode={document.body}>
           <div ref={popper.setPopperElement} style={{ ...popper.styles.popper, paddingLeft: '6px' }} {...popper.attributes.popper}>
             <TooltipContainer>
               {tooltipLink ? (
                 <TippyTooltip.FooterButton
-                  width={isLocked ? 200 : 168}
-                  onClick={isLocked ? openPaymentModal : () => window.open(tooltipLink, '_blank')}
+                  onClick={isLocked ? () => openPaymentModal() : () => window.open(tooltipLink, '_blank')}
                   buttonText={isLocked ? lockedStepTooltipButtonText : 'Learn More'}
                   defaultVisible
                 >

@@ -80,6 +80,8 @@ export const goToEditProduct = (versionID: string, productID: string) => goTo(ge
 export const goToInteractionModel = (versionID: string, diagramID: string, modelType?: string, entityID?: string) =>
   goTo(`${generatePath(Path.CANVAS_MODEL, { versionID, diagramID, modelType, entityID })}`);
 
+export const goToCanvasTextMarkup = (versionID: string, diagramID: string) => goTo(generatePath(Path.CANVAS_TEXT_MARKUP, { versionID, diagramID }));
+
 export const goToCanvasCommenting = (versionID: string, diagramID: string) =>
   goTo(`${generatePath(Path.CANVAS_COMMENTING, { versionID, diagramID })}`);
 

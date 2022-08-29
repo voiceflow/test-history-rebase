@@ -22,10 +22,24 @@ export interface DraggableItemProps
     MappedItemComponentHandlers<BaseNode.Buttons.Button> {
   editor: NodeEditorV2Props<Realtime.NodeData.Buttons, Realtime.NodeData.ButtonsBuiltInPorts>;
   latestCreatedKey: string | undefined;
+  canAddIntent: boolean;
 }
 
 const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemProps> = (
-  { item, index, editor, itemKey, onUpdate, isDragging, onContextMenu, latestCreatedKey, connectedDragRef, isDraggingPreview, isContextMenuOpen },
+  {
+    item,
+    index,
+    editor,
+    itemKey,
+    onUpdate,
+    isDragging,
+    onContextMenu,
+    latestCreatedKey,
+    connectedDragRef,
+    isDraggingPreview,
+    isContextMenuOpen,
+    canAddIntent,
+  },
   ref
 ) => {
   const onAddRequiredEntity = useDispatch(Intent.addRequiredSlot);
@@ -43,6 +57,9 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
     onUpdate({ intent: null });
     setAttachIntentCollapsed(true);
   };
+
+  // show the intent option if already set
+  const showIntent = canAddIntent || !!intent;
 
   return (
     <EditorV2.PersistCollapse namespace={['buttonsListItem', item.id]} defaultCollapsed={!autofocus}>
@@ -87,30 +104,32 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
 
                     <SectionV2.Divider inset offset={[12, 0]} />
 
-                    <SectionV2.ActionCollapseSection
-                      title={<SectionV2.Title bold={!attachIntentCollapsed}>Attach intent</SectionV2.Title>}
-                      action={
-                        attachIntentCollapsed ? (
-                          <SectionV2.AddButton onClick={() => setAttachIntentCollapsed(false)} />
-                        ) : (
-                          <SectionV2.RemoveButton onClick={onRemoveIntent} />
-                        )
-                      }
-                      collapsed={attachIntentCollapsed}
-                      contentProps={{ bottomOffset: 2.5 }}
-                    >
-                      <IntentSelect
-                        intent={intent}
-                        onChange={({ intent }) => onUpdate({ intent })}
-                        fullWidth
-                        clearable
-                        leftAction={intent ? { icon: 'edit', onClick: () => intentEditModal.open({ id: intent.id }) } : undefined}
-                        placeholder="Select trigger intent"
-                        inDropdownSearch
-                        alwaysShowCreate
-                        clearOnSelectActive
-                      />
-                    </SectionV2.ActionCollapseSection>
+                    {showIntent && (
+                      <SectionV2.ActionCollapseSection
+                        title={<SectionV2.Title bold={!attachIntentCollapsed}>Attach intent</SectionV2.Title>}
+                        action={
+                          attachIntentCollapsed ? (
+                            <SectionV2.AddButton onClick={() => setAttachIntentCollapsed(false)} />
+                          ) : (
+                            <SectionV2.RemoveButton onClick={onRemoveIntent} />
+                          )
+                        }
+                        collapsed={attachIntentCollapsed}
+                        contentProps={{ bottomOffset: 2.5 }}
+                      >
+                        <IntentSelect
+                          intent={intent}
+                          onChange={({ intent }) => onUpdate({ intent })}
+                          fullWidth
+                          clearable
+                          leftAction={intent ? { icon: 'edit', onClick: () => intentEditModal.open({ id: intent.id }) } : undefined}
+                          placeholder="Select trigger intent"
+                          inDropdownSearch
+                          alwaysShowCreate
+                          clearOnSelectActive
+                        />
+                      </SectionV2.ActionCollapseSection>
+                    )}
 
                     {!!intent && !intentIsBuiltIn && intentHasRequiredEntity && (
                       <>
@@ -126,7 +145,7 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
                       </>
                     )}
 
-                    <SectionV2.Divider inset />
+                    {showIntent && <SectionV2.Divider inset />}
 
                     <Actions.Section portID={editor.node.ports.out.dynamic[index]} editor={editor} />
                   </>

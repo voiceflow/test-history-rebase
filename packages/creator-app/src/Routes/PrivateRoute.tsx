@@ -5,6 +5,7 @@ import ErrorBoundary from '@/components/ErrorBoundary';
 import { Path } from '@/config/routes';
 import { userVerifiedSelector } from '@/ducks/account';
 import { authTokenSelector } from '@/ducks/session';
+import { PrivateCapabilitiesGate } from '@/gates';
 import { connect } from '@/hocs';
 import Verify from '@/pages/Auth/Verify';
 import { ConnectedProps } from '@/types';
@@ -42,9 +43,11 @@ const PrivateRoute = <T extends object>({
       }
 
       return (
-        <ErrorBoundary>
-          <Component {...props} {...(rest as any)} />
-        </ErrorBoundary>
+        <PrivateCapabilitiesGate>
+          <ErrorBoundary>
+            <Component {...props} {...(rest as any)} />
+          </ErrorBoundary>
+        </PrivateCapabilitiesGate>
       );
     }}
   />

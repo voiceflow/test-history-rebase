@@ -18,6 +18,7 @@ import {
   goTo,
   goToCanvasCommenting,
   goToCanvasCommentingThread,
+  goToCanvasTextMarkup,
   goToConversations,
   goToNLUManager,
   goToPrototype,
@@ -101,6 +102,17 @@ export const goToCurrentCanvasCommenting =
       dispatch(goToCanvasCommenting(versionID, diagramID));
     }
   };
+
+export const goToCurrentCanvasTextMarkup = (): SyncThunk => (dispatch, getState) => {
+  const state = getState();
+  const versionID = Session.activeVersionIDSelector(state);
+  const diagramID = Session.activeDiagramIDSelector(state);
+
+  Errors.assertVersionID(versionID);
+  Errors.assertDiagramID(diagramID);
+
+  dispatch(goToCanvasTextMarkup(versionID, diagramID));
+};
 
 export const redirectToCurrentCanvasCommentingThread =
   (threadID: string, commentID?: string): Thunk =>

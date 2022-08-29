@@ -8,7 +8,7 @@ import { ButtonContainer } from './components';
 export interface ComplexProps {
   title?: React.ReactNode;
   width?: number;
-  onClick: VoidFunction;
+  onClick: React.MouseEventHandler<HTMLDivElement>;
   buttonText: string;
   defaultVisible?: boolean;
 }

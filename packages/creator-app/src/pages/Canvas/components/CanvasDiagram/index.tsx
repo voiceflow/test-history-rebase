@@ -112,9 +112,8 @@ const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport, childr
       }
 
       if (markup.creatingType && markup.creatingType === BlockType.MARKUP_TEXT) {
-        await engine.markup.addTextNode();
-
         markup.finishCreating();
+        await engine.markup.addTextNode();
       }
 
       if (isCommentingMode && !engine.comment.hasTarget) {

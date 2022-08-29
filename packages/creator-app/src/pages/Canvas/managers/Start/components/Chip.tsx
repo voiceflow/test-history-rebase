@@ -13,8 +13,8 @@ const StartChip: ConnectedChip<Realtime.NodeData.Start> = ({ ports }) => {
 
   return (
     <Chip
-      name={isRootDiagram ? 'Home' : 'Start'}
-      icon={isRootDiagram ? 'systemHome2' : 'systemFlag'}
+      name={isRootDiagram ? 'Start' : 'Continues Here'}
+      icon="systemFlag"
       portID={ports.out.builtIn[BaseModels.PortType.NEXT]}
       className={isRootDiagram ? HOME_CHIP_CLASSNAME : FLOW_CHIP_CLASSNAME}
     />

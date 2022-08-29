@@ -63,5 +63,5 @@ export enum VoicePromptType {
   AUDIO = 'audio',
 }
 
-export const START_NODE_COLOR = '#2b2f32';
+export const START_NODE_COLOR = '#616769';
 export const CURRENT_PROJECT_VERSION = 1.2;

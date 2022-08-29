@@ -3,9 +3,10 @@ import React from 'react';
 interface Storage {
   getItem: (key: string) => string | null;
   setItem: (key: string, value: string) => void;
+  removeItem: (key: string) => void;
 }
 
-const createUseStorageHook = <S extends Storage>(storage: S) => {
+const createUseStorageStateHook = <S extends Storage>(storage: S) => {
   const getInitialValue = <T>(name: string, defaultValue: T): T => {
     const strValue = storage.getItem(name);
 
@@ -28,5 +29,26 @@ const createUseStorageHook = <S extends Storage>(storage: S) => {
   };
 };
 
-export const useLocalStorageState = createUseStorageHook(localStorage);
-export const useSessionStorageState = createUseStorageHook(sessionStorage);
+const createUseStorageHook = <S extends Storage>(storage: S) => {
+  return <T>(name: string, defaultValue: T) => {
+    const getStorage = React.useCallback((): T => {
+      const item = storage.getItem(name);
+      return item === null ? defaultValue : JSON.parse(item);
+    }, []);
+
+    const setStorage = React.useCallback((value: T) => {
+      storage.setItem(name, JSON.stringify(value));
+    }, []);
+
+    const clearStorage = React.useCallback(() => {
+      storage.removeItem(name);
+    }, []);
+
+    return [getStorage, setStorage, clearStorage] as const;
+  };
+};
+
+export const useLocalStorage = createUseStorageHook(localStorage);
+
+export const useLocalStorageState = createUseStorageStateHook(localStorage);
+export const useSessionStorageState = createUseStorageStateHook(sessionStorage);

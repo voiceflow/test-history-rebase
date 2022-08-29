@@ -1,6 +1,6 @@
 import { BaseNode } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Button, createUIOnlyMenuItemOption } from '@voiceflow/ui';
+import { Button, createUIOnlyMenuItemOption, useLocalStorageState } from '@voiceflow/ui';
 import React from 'react';
 
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
@@ -10,7 +10,7 @@ import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import { useButtonLayoutOption, useIntentScope } from '@/pages/Canvas/managers/hooks';
 
 import { Actions, ListeningForIntentSection, NoMatchV2, NoReplyV2 } from '../../components';
-import { buttonFactory } from '../constants';
+import { ADD_INTENTS_KEY, buttonFactory } from '../constants';
 import DraggableItem from './DraggableItem';
 
 const ITEM_DRAG_TYPE = 'buttons-editor';
@@ -35,6 +35,15 @@ const RootEditor: React.FC = () => {
   const intentScopeOption = useIntentScope({ data: editor.data, onChange: editor.onChange });
   const buttonLayoutOption = useButtonLayoutOption();
 
+  const [canAddIntent, setCanAddIntent] = useLocalStorageState(ADD_INTENTS_KEY, false);
+  const addIntentsOption = React.useMemo(
+    () => ({
+      label: canAddIntent ? 'Remove intents for buttons' : 'Add intents for buttons',
+      onClick: () => setCanAddIntent(!canAddIntent),
+    }),
+    [canAddIntent]
+  );
+
   return (
     <EditorV2
       header={<EditorV2.DefaultHeader />}
@@ -48,6 +57,7 @@ const RootEditor: React.FC = () => {
                 createUIOnlyMenuItemOption('divider', { divider: true }),
                 noMatchConfig.option,
                 noReplyConfig.option,
+                addIntentsOption,
               ]}
             />
 
@@ -65,7 +75,7 @@ const RootEditor: React.FC = () => {
         <DraggableList
           type={ITEM_DRAG_TYPE}
           onEndDrag={toggleDragging}
-          itemProps={{ editor, latestCreatedKey: mapManager.latestCreatedKey }}
+          itemProps={{ editor, latestCreatedKey: mapManager.latestCreatedKey, canAddIntent }}
           mapManager={mapManager}
           onStartDrag={toggleDragging}
           itemComponent={DraggableItem}

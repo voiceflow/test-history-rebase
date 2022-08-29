@@ -16,6 +16,9 @@ export { default as wordmarkDark } from '@/assets/svgs/wordmark-dark.svg?url';
 export { default as wordmarkLight } from '@/assets/svgs/wordmark-light.svg?url';
 export { default as zapierWordmark } from '@/assets/images/zapier-wordmark.png';
 
+// reference guides
+export { default as addStepGuide } from '@/assets/images/add-step-guide.png';
+
 // graphics
 export { default as error404Graphic } from '@/assets/svgs/404.svg?url';
 export { default as error500Graphic } from '@/assets/svgs/500.svg?url';
@@ -43,6 +46,8 @@ export { default as voiceAndVisualsGraphic } from '@/assets/svgs/voice-and-visua
 export { default as voiceAndVisualsGraphicInactive } from '@/assets/svgs/voice-and-visuals-inactive.svg?url';
 export { default as imageDropzoneGraphic } from '@/assets/svgs/image-dropzone.svg?url';
 export { default as blurryTranscripts } from '@/assets/images/coversation-upgrade-convo.png';
+export { default as screenSize } from '@/assets/svgs/screen_size.svg?url';
+export { default as mobile } from '@/assets/svgs/mobile.svg?url';
 
 // placeholders
 export { default as itemDragPlaceholder } from '@/assets/svgs/item-drag-placeholder.svg?url';

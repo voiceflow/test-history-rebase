@@ -7,13 +7,13 @@ import Page404Wrapper from './Page404Wrapper';
 const TitleLabel = styled.div`
   color: ${colors(ThemeColor.PRIMARY)};
   display: block;
-  margin-top: 1rem;
+  margin-top: 16px;
   font-weight: 600;
   font-size: 15px;
 `;
 
 export const ErrorDescription = styled.p`
-  max-width: 360px;
+  max-width: 252px;
   color: ${colors(ThemeColor.SECONDARY)};
   margin-bottom: 24px;
   text-align: center;

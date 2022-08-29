@@ -8,6 +8,7 @@ import { Editor } from 'slate';
 
 import { SlateEditorAPI, SlatePluginType, useSetupSlateEditor } from '@/components/SlateEditable';
 import { BlockType, MarkupBlockType } from '@/constants';
+import * as Router from '@/ducks/router';
 import { useForceUpdate, useSetup, useTeardown } from '@/hooks';
 import { DEFAULT_BACKGROUND_COLOR } from '@/pages/Canvas/managers/MarkupText/constants';
 import { isMarkupBlockType } from '@/utils/typeGuards';
@@ -94,6 +95,10 @@ class MarkupEngine extends EngineConsumer {
     });
 
     return [key, editor];
+  }
+
+  activate() {
+    return this.dispatch(Router.goToCurrentCanvasTextMarkup());
   }
 }
 

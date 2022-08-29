@@ -59,7 +59,7 @@ const CanvasHeader: React.FC = () => {
             icon="markupImageV2"
             active={isMarkupTextActive}
             isSmall
-            tooltip={{ title: 'Text', hotkey: HOTKEY_LABEL_MAP[Hotkey.ADD_MARKUP_TEXT] }}
+            tooltip={{ title: 'Text Markup', hotkey: HOTKEY_LABEL_MAP[Hotkey.ADD_MARKUP_TEXT] }}
             onClick={markup.toggleTextCreating}
             className={`${ClassName.CANVAS_CONTROL}--markup-text`}
           />

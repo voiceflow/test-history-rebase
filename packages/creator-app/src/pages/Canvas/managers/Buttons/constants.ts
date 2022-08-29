@@ -7,6 +7,8 @@ import { getPlatformNoMatchFactory } from '@/utils/noMatch';
 
 import { NodeConfig } from '../types';
 
+export const ADD_INTENTS_KEY = 'Buttons/constants:ADD_INTENTS';
+
 export const buttonFactory = (): BaseNode.Buttons.Button => ({
   id: Utils.id.cuid.slug(),
   name: '',

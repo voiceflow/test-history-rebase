@@ -26,6 +26,8 @@ const NodeChipStart = React.forwardRef<CombinedAPI>((_, ref) => {
     defaultBlockColor: DEFAULT_SCHEME_COLORS[ColorScheme.BLACK].standardColor,
   });
 
+  const onRename = React.useCallback((label: string) => engine.node.updateData(nodeEntity.nodeID, { label }), [engine, nodeEntity.nodeID]);
+
   const { data, ports } = nodeEntity.useState((e) => {
     const { node, data } = e.resolve();
 
@@ -34,8 +36,6 @@ const NodeChipStart = React.forwardRef<CombinedAPI>((_, ref) => {
       ports: node.ports,
     };
   });
-
-  const onRename = React.useCallback((label: string) => engine.node.updateData(nodeEntity.nodeID, { label }), [engine, nodeEntity.nodeID]);
 
   const chipApi = useChipApi(chipElmRef);
   const chipStepApi = useChipStepAPI({

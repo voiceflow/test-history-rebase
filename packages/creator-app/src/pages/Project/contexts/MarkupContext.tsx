@@ -7,8 +7,7 @@ import { LimitType } from '@/config/planLimitV2';
 import { BlockType, MarkupBlockType } from '@/constants';
 import * as History from '@/ducks/history';
 import { useDispatch, useEventualEngine, useLimit, usePermission, useTrackingEvents } from '@/hooks';
-import { useAnyModeOpen } from '@/pages/Project/hooks/modes';
-import { ClassName, Identifier } from '@/styles/constants';
+import { useAnyModeOpen, useTextMarkupMode } from '@/pages/Project/hooks/modes';
 import { upload, windowRefocused } from '@/utils/dom';
 import { imageSizeFromUrl, videoSizeFromUrl } from '@/utils/file';
 
@@ -36,9 +35,10 @@ const getFileExtension = (file: File) => `.${file.type.split('/')[1]}`;
 export const MarkupProvider: React.FC = ({ children }) => {
   const getEngine = useEventualEngine();
   const isAnyModeOpen = useAnyModeOpen();
+  const isTextMarkupMode = useTextMarkupMode();
   const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
   const [uploadingMedia, setUploadingMedia] = React.useState(false);
-  const [creatingType, localSetCreatingType] = React.useState<Nullable<MarkupBlockType>>(null);
+  const [creatingType, localSetCreatingType] = React.useState<Nullable<MarkupBlockType>>(isTextMarkupMode ? BlockType.MARKUP_TEXT : null);
 
   const markupVideoLimit = useLimit(LimitType.MARKUP_VIDEO);
   const markupImageLimit = useLimit(LimitType.MARKUP_IMAGE);
@@ -70,7 +70,10 @@ export const MarkupProvider: React.FC = ({ children }) => {
     localSetCreatingType(type);
   }, []);
 
-  const finishCreating = React.useCallback(() => setCreatingType(null), []);
+  const finishCreating = React.useCallback(() => {
+    setCreatingType(null);
+    cache.current.getEngine()?.disableAllModes();
+  }, []);
 
   const addMedia = React.useCallback(async (files: Nullable<FileList | File[]>) => {
     if (!cache.current.canEditCanvas || !files || !files[0]) {
@@ -185,6 +188,7 @@ export const MarkupProvider: React.FC = ({ children }) => {
     }
 
     setCreatingType(BlockType.MARKUP_TEXT);
+    cache.current.getEngine()?.markup.activate();
   }, []);
 
   const toggleTextCreating = React.useCallback(() => {
@@ -220,41 +224,6 @@ export const MarkupProvider: React.FC = ({ children }) => {
     if (!creatingType) {
       getEngine()?.markup.reset();
     }
-  }, [creatingType]);
-
-  React.useEffect(() => {
-    if (creatingType === BlockType.MARKUP_TEXT) {
-      const handler = (event: MouseEvent) => {
-        // eslint-disable-next-line xss/no-mixed-html
-        const target = event.target as HTMLElement | SVGElement;
-
-        // not using .className cause in the SVGElement it can be SVGAnimatedString
-        const className = target.getAttribute('class') ?? '';
-
-        // do not finish creating if clicked to the canvas or markup node
-        if (
-          target.id === Identifier.CANVAS ||
-          className.includes(`${ClassName.CANVAS_NODE}--${BlockType.MARKUP_TEXT}`) ||
-          target.closest(`${ClassName.CANVAS_NODE}--${BlockType.MARKUP_TEXT}`) ||
-          className.includes(`${ClassName.CANVAS_NODE}--${BlockType.MARKUP_IMAGE}`) ||
-          target.closest(`${ClassName.CANVAS_NODE}--${BlockType.MARKUP_IMAGE}`)
-        ) {
-          return;
-        }
-
-        finishCreating();
-      };
-
-      window.document.addEventListener('mouseup', handler);
-      window.document.addEventListener('mousedown', handler);
-
-      return () => {
-        window.document.removeEventListener('mouseup', handler);
-        window.document.removeEventListener('mousedown', handler);
-      };
-    }
-
-    return () => {};
   }, [creatingType]);
 
   getEngine()?.markup.setFinishCreating(finishCreating);

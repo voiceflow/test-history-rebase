@@ -10,7 +10,7 @@ const Page404Wrapper = styled.div`
   }
 
   p {
-    margin-top: 1rem;
+    margin-top: 8px;
     color: ${colors(ThemeColor.SECONDARY)};
   }
 `;

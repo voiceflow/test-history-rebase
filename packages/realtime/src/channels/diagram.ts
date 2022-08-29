@@ -45,27 +45,36 @@ class DiagramChannel extends AbstractChannelControl<Realtime.Channels.DiagramCha
       links,
     });
 
+    const sendBackInitalize: SendBackActions = [[initializeAction, initializeMeta]];
+
+    // on resubscribe broadcast your action to all other viewers
     if (action.since) {
+      sendBackInitalize.pop(); // do not double send initialize action (sendBack)
       await this.server.processAs(creatorID, initializeAction, initializeMeta);
-    } else {
-      await ctx.sendBack(initializeAction, initializeMeta);
     }
 
     ctx.data.subscribed = true;
 
     return [
-      Realtime.diagram.viewport.rehydrate({
-        viewport: {
-          id: ctx.params.diagramID,
-          x: diagram.offsetX,
-          y: diagram.offsetY,
-          zoom: diagram.zoom,
-        },
-      }),
-      Realtime.diagram.awareness.updateLockedEntities({
-        ...ctx.params,
-        locks: diagramLocks,
-      }),
+      [
+        Realtime.diagram.viewport.rehydrate({
+          viewport: {
+            id: ctx.params.diagramID,
+            x: diagram.offsetX,
+            y: diagram.offsetY,
+            zoom: diagram.zoom,
+          },
+        }),
+        {},
+      ],
+      ...sendBackInitalize,
+      [
+        Realtime.diagram.awareness.updateLockedEntities({
+          ...ctx.params,
+          locks: diagramLocks,
+        }),
+        {},
+      ],
     ];
   };
 

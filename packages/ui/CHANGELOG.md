@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.140.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.140.0...@voiceflow/ui@1.140.1) (2022-08-29)
+
+
+### Bug Fixes
+
+* ui fixes medley (CT-866) ([#5971](https://github.com/voiceflow/creator-app/issues/5971)) ([124d76c](https://github.com/voiceflow/creator-app/commit/124d76c0d9d7b179cd0be088b4bf0a76895e8828))
+
+
+
+
+
 # [1.140.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.139.0...@voiceflow/ui@1.140.0) (2022-08-27)
 
 

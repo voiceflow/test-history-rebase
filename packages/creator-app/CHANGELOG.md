@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.885.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.884.5...@voiceflow/creator-app@1.885.0) (2022-08-29)
+
+
+### Features
+
+* Card v2 step restructure (CT-630) ([#5878](https://github.com/voiceflow/creator-app/issues/5878)) ([6fd86c3](https://github.com/voiceflow/creator-app/commit/6fd86c3445d955925f3b1523b17f9aa0953715e9))
+
+
+
+
+
 ## [1.884.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.884.4...@voiceflow/creator-app@1.884.5) (2022-08-29)
 
 

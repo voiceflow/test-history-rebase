@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.100.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.99.2...@voiceflow/realtime@1.100.0) (2022-08-29)
+
+
+### Features
+
+* Card v2 step restructure (CT-630) ([#5878](https://github.com/voiceflow/creator-app/issues/5878)) ([6fd86c3](https://github.com/voiceflow/creator-app/commit/6fd86c3445d955925f3b1523b17f9aa0953715e9))
+
+
+
+
+
 ## [1.99.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.99.1...@voiceflow/realtime@1.99.2) (2022-08-29)
 
 

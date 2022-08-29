@@ -2,9 +2,10 @@ import React from 'react';
 import { matchPath, useHistory } from 'react-router-dom';
 
 import { Path } from '@/config/routes';
+import * as CreatorV2 from '@/ducks/creatorV2/utils/selector';
 import { DiagramSubscriptionGate } from '@/gates';
 import { compose, withBatchLoadingGate } from '@/hocs';
-import { useRAF, useRegistration } from '@/hooks';
+import { useRAF, useRegistration, useTeardown } from '@/hooks';
 import { DiagramHeartbeatContext, SelectionSetTargetsContext } from '@/pages/Project/contexts';
 import * as Query from '@/utils/query';
 
@@ -72,6 +73,8 @@ const Canvas: React.FC<CanvasProps> = ({ isPrototypingMode }) => {
 
   useRegistration(() => engine.register('diagramHeartbeat', diagramHeartbeatContext), [engine, diagramHeartbeatContext]);
   useRegistration(() => engine.selection.register('selectionSetTargetsContext', selectionSetTargetsContext), [engine, selectionSetTargetsContext]);
+
+  useTeardown(() => CreatorV2.clearAllCache());
 
   return (
     <CanvasProviders key={engineKey} engine={engine}>

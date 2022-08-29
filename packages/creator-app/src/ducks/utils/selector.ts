@@ -1,4 +1,5 @@
 import moize from 'moize';
+import { createCachedSelector as reReselectCreateCachedSelector, FlatObjectCache } from 're-reselect';
 
 import type { State } from '@/ducks';
 import type { Selector } from '@/store/types';
@@ -31,3 +32,27 @@ export const createCurriedSelector =
   (state: State) =>
   (param: P): T =>
     selector(state, param);
+
+export const createCachedSelectorFactory = (): { clearAllCache: VoidFunction; createCachedSelector: typeof reReselectCreateCachedSelector } => {
+  const cacheObjects: FlatObjectCache[] = [];
+
+  const createCachedSelector =
+    (...args: [any, any]) =>
+    (props: any) => {
+      const options = typeof props === 'function' ? { keySelector: props } : props;
+      const cacheObject = new FlatObjectCache();
+      cacheObjects.push(cacheObject);
+
+      return reReselectCreateCachedSelector(...args)({
+        ...options,
+        cacheObject,
+      });
+    };
+
+  const clearAllCache = () => cacheObjects.forEach((cache) => cache.clear());
+
+  return {
+    clearAllCache,
+    createCachedSelector: createCachedSelector as any,
+  };
+};

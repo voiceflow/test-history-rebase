@@ -8,9 +8,10 @@ import * as IntentSelectors from '@/ducks/intentV2/selectors';
 import { idParamSelector, idsParamSelector } from '@/ducks/utils/crudV2';
 import { createCurriedSelector } from '@/ducks/utils/selector';
 
+import { createCachedSelector } from '../utils/selector';
 import { creatorStateSelector } from './base';
 import { linksByPortIDSelector } from './link';
-import { nodeIDByPortIDSelector, portsByNodeIDSelector } from './port';
+import { nodeIDByPortIDSelector } from './port';
 
 export const allNodeIDsSelector = createSelector([creatorStateSelector], ({ nodes }) => nodes.allKeys);
 
@@ -89,22 +90,37 @@ export const linkedNodeIDsByNodeIDSelector = createSelector(
   }
 );
 
-export const nodeByIDSelector = createSelector(
-  [parentNodeIDByStepIDSelector, nodeCoordsByIDSelector, portsByNodeIDSelector, stepIDsByParentNodeIDSelector, nodeTypeByIDSelector, idParamSelector],
+const parentNodeIDByStepIDSelectorV2 = createSelector([creatorStateSelector], ({ parentNodeIDByStepID }) => parentNodeIDByStepID);
+const nodeCoordsByIDSelectorV2 = createSelector([creatorStateSelector], ({ coordsByNodeID }) => coordsByNodeID);
+const portsByNodeIDSelectorV2 = createSelector([creatorStateSelector], ({ portsByNodeID }) => portsByNodeID);
+const stepIDsByParentNodeIDSelectorV2 = createSelector([creatorStateSelector], ({ stepIDsByParentNodeID }) => stepIDsByParentNodeID);
+
+export const nodeByIDSelector = createCachedSelector(
+  [
+    parentNodeIDByStepIDSelectorV2,
+    nodeCoordsByIDSelectorV2,
+    portsByNodeIDSelectorV2,
+    stepIDsByParentNodeIDSelectorV2,
+    nodeDataMapSelector,
+    idParamSelector,
+  ],
   // eslint-disable-next-line max-params
-  (parentNode, origin, ports, stepIDs, type, nodeID): Realtime.Node | null =>
-    nodeID && type
-      ? {
-          x: origin?.[0] ?? 0,
-          y: origin?.[1] ?? 0,
-          id: nodeID,
-          type,
-          ports,
-          parentNode,
-          combinedNodes: stepIDs,
-        }
-      : null
-);
+  (parentNodeIDByStepID, nodeCoordsByID, portsByNodeID, stepIDsByParentNodeID, dataMap, nodeID): Realtime.Node | null => {
+    const type = dataMap[nodeID!]?.type;
+    if (!nodeID || !type) return null;
+    const coords = nodeCoordsByID[nodeID];
+
+    return {
+      x: coords?.[0] ?? 0,
+      y: coords?.[1] ?? 0,
+      id: nodeID,
+      type,
+      ports: portsByNodeID[nodeID] ?? Realtime.Utils.port.createEmptyNodePorts(),
+      parentNode: parentNodeIDByStepID[nodeID] ?? null,
+      combinedNodes: stepIDsByParentNodeID[nodeID] ?? [],
+    };
+  }
+)((_, params) => idParamSelector(_, params) || '');
 
 export const getNodeByIDSelector = createCurriedSelector(nodeByIDSelector);
 

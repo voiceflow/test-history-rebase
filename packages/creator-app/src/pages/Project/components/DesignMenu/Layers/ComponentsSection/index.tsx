@@ -63,6 +63,8 @@ const ComponentsSection: React.FC<ComponentsSectionProps> = ({ collapsed, setSec
     }
   }, [lastCreatedDiagramID]);
 
+  const previewOptions = React.useMemo(() => ({ horizontalEnabled }), [horizontalEnabled]);
+
   return (
     <DraggableList
       type={DragItem.COMPONENTS}
@@ -79,7 +81,7 @@ const ComponentsSection: React.FC<ComponentsSectionProps> = ({ collapsed, setSec
       getItemKey={getItemKey}
       onStartDrag={onDragStart}
       itemComponent={FolderItem}
-      previewOptions={{ horizontalEnabled }}
+      previewOptions={previewOptions}
       previewComponent={FolderItem}
       unmountableDuringDrag
       disableReorderingWhileDraggingX

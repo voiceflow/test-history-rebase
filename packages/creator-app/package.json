@@ -81,6 +81,7 @@
     "prop-types": "15.8.1",
     "query-string": "7.1.0",
     "rc-slider": "9.7.5",
+    "re-reselect": "^4.0.1",
     "react": "17.0.2",
     "react-ace": "9.5.0",
     "react-color": "2.19.3",

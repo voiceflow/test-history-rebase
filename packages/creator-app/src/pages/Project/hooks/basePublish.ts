@@ -2,12 +2,11 @@ import { Nullable } from '@voiceflow/common';
 import { toast } from '@voiceflow/ui';
 import React from 'react';
 
-import { DiagramState, ModalType } from '@/constants';
+import { ModalType } from '@/constants';
 import { AlexaStageType, DialogflowStageType, GoogleStageType } from '@/constants/platforms';
 import { AnyJob, PublishContext, PublishContextValue } from '@/contexts';
-import * as Creator from '@/ducks/creator';
 import { SourceType } from '@/ducks/tracking/constants';
-import { useDidUpdateEffect, useModals, useSelector, useToggle, useTrackingEvents } from '@/hooks';
+import { useModals, useToggle, useTrackingEvents } from '@/hooks';
 import { isNotify, isReady } from '@/utils/job';
 
 type PublishStageType = typeof GoogleStageType | typeof AlexaStageType | typeof DialogflowStageType;
@@ -48,8 +47,6 @@ export const useBasePublish = <T extends PublishStageType, J extends AnyJob>({
   const [trackingEvents] = useTrackingEvents();
 
   const { open: openLoginModal, close: closeLoginModal, isOpened: loginModalOpened } = useModals(ModalType.CONNECT_PLATFORM);
-
-  const diagramState = useSelector(Creator.diagramStateSelector);
 
   const [popupOpened, togglePopupOpened] = useToggle(false);
   const [invalidInvName, setInvalidInvName] = React.useState(false);
@@ -106,12 +103,6 @@ export const useBasePublish = <T extends PublishStageType, J extends AnyJob>({
     },
     [publish, jobIsReady, toggleLoginModal]
   );
-
-  useDidUpdateEffect(() => {
-    if (diagramState === DiagramState.SAVING) {
-      setSuccessfullyPublished(false);
-    }
-  }, [diagramState]);
 
   React.useEffect(() => {
     if (stageType === StageType.SUCCESS) {

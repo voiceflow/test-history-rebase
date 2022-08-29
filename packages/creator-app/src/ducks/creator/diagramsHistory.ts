@@ -1,9 +1,9 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { createSelector } from 'reselect';
 
 import { createAction, createKeyedSelector } from '@/ducks/utils';
 import { Action, Reducer, RootReducer } from '@/store/types';
 
-import { AnyCreatorAction, CreatorAction } from './actions';
 import { creatorStateSelector } from './selectors';
 
 export type DiagramsHistoryState = string[];
@@ -37,12 +37,9 @@ export const diagramsHistoryPushReducer: Reducer<DiagramsHistoryState, DiagramsH
   diagramID,
 ];
 
-const diagramsHistoryReducer: RootReducer<DiagramsHistoryState, AnyDiagramsHistoryAction | AnyCreatorAction> = (
-  state = INITIAL_DIAGRAMS_HISTORY_STATE,
-  action
-) => {
+const diagramsHistoryReducer: RootReducer<DiagramsHistoryState, AnyDiagramsHistoryAction> = (state = INITIAL_DIAGRAMS_HISTORY_STATE, action) => {
   switch (action.type) {
-    case CreatorAction.RESET_CREATOR:
+    case Realtime.creator.reset.type:
     case DiagramsHistoryAction.CLEAR:
       return INITIAL_DIAGRAMS_HISTORY_STATE;
     case DiagramsHistoryAction.POP:

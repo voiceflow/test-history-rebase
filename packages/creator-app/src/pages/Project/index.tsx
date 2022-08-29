@@ -2,13 +2,11 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import IdleTimer from 'react-idle-timer';
-import { batch } from 'react-redux';
 import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
 
 import { RemoveIntercom } from '@/components/IntercomChat';
 import { Path } from '@/config/routes';
 import { ModalType } from '@/constants';
-import * as Creator from '@/ducks/creator';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as UI from '@/ducks/ui';
@@ -55,8 +53,7 @@ const Project: React.FC = () => {
   const projectName = useSelector(ProjectV2.active.nameSelector);
   const isOnlyViewer = useSelector(DiagramV2.isOnlyViewerSelector);
   const setPreviewing = useDispatch(UI.setPreviewingVersion);
-  const resetCreator = useDispatch(Creator.resetCreator);
-  const resetCreatorV2 = useLocalDispatch(Realtime.creator.reset);
+  const resetCreator = useLocalDispatch(Realtime.creator.reset);
 
   const inactivityModal = useModals(ModalType.INACTIVITY);
   const nluManager = useFeature(Realtime.FeatureFlag.NLU_MANAGER);
@@ -90,12 +87,7 @@ const Project: React.FC = () => {
     }
   }, [canvasOnly]);
 
-  useTeardown(() =>
-    batch(() => {
-      resetCreator();
-      resetCreatorV2();
-    })
-  );
+  useTeardown(() => resetCreator());
 
   return (
     <MarkupProvider>

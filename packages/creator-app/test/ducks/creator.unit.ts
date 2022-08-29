@@ -1,23 +1,10 @@
 import { Utils } from '@voiceflow/common';
-import * as Normal from 'normal-store';
 
-import { DiagramState } from '@/constants';
 import * as Creator from '@/ducks/creator';
 
 import suite from './_suite';
 
-const mockHistoryState = (present: any) => ({
-  present,
-  _latestUnfiltered: null,
-  past: [],
-  future: [],
-  group: null,
-  index: 0,
-  limit: 1,
-});
-
 const MOCK_STATE = {
-  diagram: mockHistoryState({}) as any,
   focus: {
     target: Utils.generate.id(),
     isActive: true,
@@ -25,68 +12,13 @@ const MOCK_STATE = {
   diagramsHistory: [],
 };
 
-suite(Creator, MOCK_STATE)('Ducks - Creator', ({ describeReducer, describeSelectors }) => {
+suite(Creator, MOCK_STATE)('Ducks - Creator', ({ describeReducer }) => {
   describeReducer(
     {
-      diagram: mockHistoryState(Creator.INITIAL_DIAGRAM_STATE),
       focus: Creator.INITIAL_FOCUS_STATE,
       diagramsHistory: Creator.INITIAL_DIAGRAMS_HISTORY_STATE,
     },
     ({ expectAction }) => {
-      describe('initializeCreator()', () => {
-        it('should persist existing state that is not overridden', () => {
-          const diagram = { diagramID: 'abc', rootNodeIDs: [], nodes: [], links: [], ports: [], data: {}, markupNodeIDs: [] };
-
-          expectAction(Creator.initializeCreator(diagram))
-            .withState({ ...MOCK_STATE, diagram: { ...MOCK_STATE.diagram, present: { hidden: true } } })
-            .toModify({
-              diagram: {
-                ...MOCK_STATE.diagram,
-                present: {
-                  hidden: true,
-                  diagramID: diagram.diagramID,
-                  diagramState: DiagramState.IDLE,
-                  markupNodeIDs: [],
-                  rootNodeIDs: [],
-                  linkedNodesByNodeID: {},
-                  linksByNodeID: {},
-                  linksByPortID: {},
-                  sections: {},
-                  data: {},
-                  links: Normal.createEmpty(),
-                  nodes: Normal.createEmpty(),
-                  ports: Normal.createEmpty(),
-                },
-              },
-              focus: {
-                isActive: false,
-                target: null,
-              },
-            });
-        });
-      });
-
-      describe('showCanvas()', () => {
-        it('should show the canvas', () => {
-          expectAction(Creator.showCanvas()).toModify({ diagram: { ...MOCK_STATE.diagram, present: { hidden: false } } });
-        });
-      });
-
-      describe('hideCanvas()', () => {
-        it('should hide the canvas', () => {
-          expectAction(Creator.hideCanvas()).toModify({ diagram: { ...MOCK_STATE.diagram, present: { hidden: true } } });
-        });
-      });
-
-      describe('resetCreator()', () => {
-        it('should reset the canvas state', () => {
-          expectAction(Creator.resetCreator()).toModify({
-            diagram: { ...MOCK_STATE.diagram, present: {} },
-            focus: Creator.INITIAL_FOCUS_STATE,
-          });
-        });
-      });
-
       describe('setFocus()', () => {
         const nodeID = Utils.generate.id();
 
@@ -136,12 +68,4 @@ suite(Creator, MOCK_STATE)('Ducks - Creator', ({ describeReducer, describeSelect
       });
     }
   );
-
-  describeSelectors(({ select }) => {
-    describe('isHiddenSelector()', () => {
-      it('should select canvas hidden state', () => {
-        expect(select(Creator.isHiddenSelector, { creator: { diagram: { present: { hidden: true } } } })).toBe(true);
-      });
-    });
-  });
 });

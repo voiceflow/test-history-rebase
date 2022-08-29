@@ -5,7 +5,6 @@ import React from 'react';
 import { BlockType, ModalType } from '@/constants';
 import { PrototypeStatus } from '@/constants/prototype';
 import { SearchContext } from '@/contexts/SearchContext';
-import * as Creator from '@/ducks/creator';
 import * as History from '@/ducks/history';
 import * as Prototype from '@/ducks/prototype';
 import { styled } from '@/hocs';
@@ -19,7 +18,6 @@ import { Identifier } from '@/styles/constants';
 
 import {
   CANVAS_COMMENTING_ENABLED_CLASSNAME,
-  CANVAS_HIDDEN_CLASSNAME,
   CANVAS_MARKUP_CREATING_CLASSNAME,
   CANVAS_PROTOTYPE_ENABLED_CLASSNAME,
   CANVAS_PROTOTYPE_RUNNING_CLASSNAME,
@@ -42,10 +40,6 @@ const Wrapper = styled.div`
 
   &.${CANVAS_MARKUP_CREATING_CLASSNAME}[data-markup-creating-type="${BlockType.MARKUP_VIDEO}"] {
     cursor: default;
-  }
-
-  &.${CANVAS_HIDDEN_CLASSNAME} {
-    display: none;
   }
 
   &.${CANVAS_COMMENTING_ENABLED_CLASSNAME} {
@@ -76,7 +70,6 @@ const CanvasContainer: React.FC = ({ children }) => {
   const undoHistory = useDispatch(History.undo);
   const redoHistory = useDispatch(History.redo);
 
-  const isCanvasHidden = useSelector(Creator.isHiddenSelector);
   const prototypeStatus = useSelector(Prototype.prototypeStatusSelector);
 
   const canDelete = isEditingMode && !activeModal;
@@ -164,7 +157,6 @@ const CanvasContainer: React.FC = ({ children }) => {
       id={Identifier.CANVAS_CONTAINER}
       ref={ref}
       className={cn({
-        [CANVAS_HIDDEN_CLASSNAME]: isCanvasHidden,
         [CANVAS_MARKUP_CREATING_CLASSNAME]: !!markup.creatingType,
         [CANVAS_PROTOTYPE_ENABLED_CLASSNAME]: isPrototypingMode,
         [CANVAS_PROTOTYPE_RUNNING_CLASSNAME]: prototypeStatus === PrototypeStatus.ACTIVE,

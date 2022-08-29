@@ -321,14 +321,6 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
     this.log.debug(this.log.reset('removed class'), this.log.value(className));
   }
 
-  showCanvas(): void {
-    this.store.dispatch(Creator.showCanvas());
-  }
-
-  hideCanvas(): void {
-    this.store.dispatch(Creator.hideCanvas());
-  }
-
   /**
    * render all missing links for the port with the given ID
    */

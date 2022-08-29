@@ -6,7 +6,6 @@ import * as CreatorV2 from '@/ducks/creatorV2';
 import { createAction, createKeyedSelector } from '@/ducks/utils';
 import { Action, Reducer, RootReducer } from '@/store/types';
 
-import { AnyCreatorAction, CreatorAction } from './actions';
 import { creatorStateSelector } from './selectors';
 
 export interface FocusState {
@@ -58,10 +57,9 @@ export const clearFocusReducer: Reducer<FocusState> = (state) => {
   };
 };
 
-const focusReducer: RootReducer<FocusState, AnyFocusAction | AnyCreatorAction> = (state = INITIAL_FOCUS_STATE, action) => {
+const focusReducer: RootReducer<FocusState, AnyFocusAction> = (state = INITIAL_FOCUS_STATE, action) => {
   switch (action.type) {
-    case CreatorAction.INITIALIZE_CREATOR:
-    case CreatorAction.RESET_CREATOR:
+    case Realtime.creator.reset.type:
       return INITIAL_FOCUS_STATE;
     case FocusAction.SET_FOCUS:
       return setFocusReducer(state, action);

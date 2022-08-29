@@ -10,10 +10,9 @@ import { buttonFactory, PATH } from './constants';
 import DraggableItem from './DraggableItem';
 
 interface CardV2EditorButtonsSectionProps {
-  cardID: string;
   editor: NodeEditorV2Props<Realtime.NodeData.CardV2, Realtime.NodeData.CardV2BuiltInPorts>;
   buttons: Realtime.NodeData.CardV2.Button[];
-  onUpdate: (value: Partial<Realtime.NodeData.CardV2.Card>, save?: boolean | undefined) => Promise<void>;
+  onUpdate: (value: Partial<Realtime.NodeData.CardV2>, save?: boolean | undefined) => Promise<void>;
 }
 
 const CardV2EditorButtonsSection: React.FC<CardV2EditorButtonsSectionProps> = ({ editor, buttons, onUpdate }) => {

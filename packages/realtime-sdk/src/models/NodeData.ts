@@ -209,7 +209,6 @@ export namespace NodeData {
     [BaseModels.PortType.NEXT]?: string;
   }
   export namespace CardV2 {
-    export type Card = BaseNode.CardV2.CardV2Card;
     export type Button = BaseNode.CardV2.CardV2Button;
   }
   export interface CardV2 extends Omit<VoiceflowNode.CardV2.StepData, 'noMatch' | 'noReply'> {

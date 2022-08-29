@@ -17,6 +17,7 @@ export type VisualTrace = TraceWithID<BaseTrace.VisualTrace>;
 export type PathTrace = TraceWithID<BaseTrace.PathTrace>;
 export type TextTrace = TraceWithID<BaseTrace.TextTrace>;
 export type CarouselTrace = TraceWithID<BaseTrace.CarouselTrace>;
+export type CardV2Trace = TraceWithID<BaseTrace.CardV2Trace>;
 export type GoToTrace = TraceWithID<BaseTrace.GoToTrace>;
 export type NoReplyTrace = TraceWithID<BaseTrace.NoReplyTrace>;
 export type V1Trace = Required<BaseNode.Utils.BaseTraceFrame>;
@@ -35,7 +36,8 @@ export type Trace =
   | PathTrace
   | GoToTrace
   | NoReplyTrace
-  | CarouselTrace;
+  | CarouselTrace
+  | CardV2Trace;
 
 // context types
 

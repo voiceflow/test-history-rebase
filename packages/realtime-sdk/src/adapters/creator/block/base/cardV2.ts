@@ -1,6 +1,7 @@
 import * as RealtimeUtilsPort from '@realtime-sdk/utils/port';
-import { BaseModels, BaseNode } from '@voiceflow/base-types';
+import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
+import { VoiceflowNode } from '@voiceflow/voiceflow-types';
 
 import { NodeData } from '../../../../models';
 import {
@@ -14,13 +15,9 @@ import {
   outPortDataToDB,
 } from '../utils';
 
-const extractCard = ({ card }: Omit<BaseNode.CardV2.StepData, 'noMatch' | 'noReply'>) => ({
-  card,
-});
-
-const cardV2Adapter = createBlockAdapter<Omit<BaseNode.CardV2.StepData, 'noMatch' | 'noReply'>, Omit<NodeData.CardV2, 'noMatch' | 'noReply'>>(
-  extractCard,
-  extractCard
+const cardV2Adapter = createBlockAdapter<Omit<VoiceflowNode.CardV2.StepData, 'noMatch' | 'noReply'>, Omit<NodeData.CardV2, 'noMatch' | 'noReply'>>(
+  ({ title, buttons, imageUrl, description }) => ({ title, buttons, imageUrl, description }),
+  ({ title, buttons, imageUrl, description }) => ({ title, buttons, imageUrl, description })
 );
 
 export const cardV2OutPortsAdapter = createOutPortsAdapter<NodeData.CardV2BuiltInPorts, NodeData.CardV2>(

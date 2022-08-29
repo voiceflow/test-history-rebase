@@ -32,8 +32,8 @@ import visualAdapter, { visualOutPortsAdapter, visualOutPortsAdapterV2 } from '.
 export { default as baseButtonsAdapter } from './buttons';
 export { default as baseCaptureAdapter } from './capture';
 export { default as baseCaptureV2Adapter } from './captureV2';
+export { default as baseCardV2Adapter } from './cardV2';
 export { default as baseCarouselAdapter } from './carousel';
-export { default as baseCardV2Adapter } from './carousel';
 export { default as baseCommandAdapter } from './command';
 export { default as baseIntentAdapter } from './intent';
 export { default as baseInteractionAdapter } from './interaction';

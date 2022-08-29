@@ -12,6 +12,7 @@ import * as Router from '@/ducks/router';
 import { IDSelectorParam } from '@/ducks/utils/crudV2';
 import {
   BlockTrace,
+  CardV2Trace,
   CarouselTrace,
   ChoiceTrace,
   FlowTrace,
@@ -37,8 +38,8 @@ import { getUpdatedContextHistory, isV1Trace } from './utils';
 const MUTED_MESSAGE_DELAY = 250;
 
 // Trace types that can have a faked delay
-const BOT_TRACE_TYPES = new Set([BaseTrace.TraceType.TEXT, BaseTrace.TraceType.SPEAK, BaseTrace.TraceType.CAROUSEL]);
-type BotTraceType = TextTrace | SpeakTrace | CarouselTrace;
+const BOT_TRACE_TYPES = new Set([BaseTrace.TraceType.TEXT, BaseTrace.TraceType.SPEAK, BaseTrace.TraceType.CAROUSEL, BaseTrace.TraceType.CARD_V2]);
+type BotTraceType = TextTrace | SpeakTrace | CarouselTrace | CardV2Trace;
 
 export enum StepDirection {
   FORWARD = 'forward',
@@ -99,6 +100,7 @@ const FOCUSABLE_NODES = new Set([
   BlockType.TEXT,
   BlockType.CAROUSEL,
   BlockType.CARDV2,
+  BlockType.CARD,
   BlockType.CAPTURE,
   BlockType.CAPTUREV2,
   BlockType.CHOICE,
@@ -357,6 +359,10 @@ class TraceController {
         await this.processCarouselTrace(topTrace);
         break;
       }
+      case BaseTrace.TraceType.CARD_V2: {
+        await this.processCardTrace(topTrace);
+        break;
+      }
       case BaseTrace.TraceType.FLOW: {
         await this.processFlowTrace(topTrace);
         break;
@@ -510,6 +516,11 @@ class TraceController {
   private async processCarouselTrace(trace: CarouselTrace) {
     await this.simulateLoadingDelay(trace);
     await this.message.carousel(trace);
+  }
+
+  private async processCardTrace(trace: CardV2Trace) {
+    await this.simulateLoadingDelay(trace);
+    await this.message.card(trace);
   }
 
   private async processSpeakTrace(trace: SpeakTrace, { onlyMessage }: { onlyMessage?: boolean } = {}) {

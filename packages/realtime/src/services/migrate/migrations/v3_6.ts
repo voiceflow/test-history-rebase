@@ -11,7 +11,7 @@ const findAllComponentsNodes = (nodes: Draft<Record<string, BaseModels.BaseDiagr
 /**
  * renames intentStepIDs into menuNodeIDs and adds components and start nodes into it
  */
-const migrateToV3_5: Transform = ({ diagrams }) => {
+const migrateToV3_6: Transform = ({ diagrams }) => {
   diagrams.forEach((dbDiagram) => {
     if (dbDiagram.type !== BaseModels.Diagram.DiagramType.TOPIC) return;
 
@@ -34,4 +34,4 @@ const migrateToV3_5: Transform = ({ diagrams }) => {
   });
 };
 
-export default migrateToV3_5;
+export default migrateToV3_6;

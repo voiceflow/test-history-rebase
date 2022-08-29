@@ -1,6 +1,7 @@
-import { BaseModels } from '@voiceflow/base-types';
+import { BaseModels, BaseText } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { OverflowText, Thumbnail } from '@voiceflow/ui';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import SlateEditable from '@/components/SlateEditable';
@@ -14,21 +15,25 @@ import Step, {
 import { ConnectedStep } from '@/pages/Canvas/managers/types';
 import { isVariable, transformVariablesToReadable } from '@/utils/slot';
 
-const slateDescription = (description: Realtime.NodeData.CardV2.Card['description']) =>
+const slateDescription = (description: BaseText.SlateTextValue) =>
   SlateEditable.EditorAPI.isNewState(description) ? '' : SlateEditable.serializeToJSX(description);
 
-const CardV2Step: ConnectedStep<Realtime.NodeData.CardV2, Realtime.NodeData.CardV2BuiltInPorts> = ({ ports, data, isLast }) => {
+const CardV2Step: ConnectedStep<Realtime.NodeData.CardV2, Realtime.NodeData.CardV2BuiltInPorts> = ({ ports, data, isLast, projectType }) => {
+  const isVoiceProject = projectType === VoiceflowConstants.ProjectType.VOICE;
+
   const card = React.useMemo(
     () => ({
-      ...data.card,
-      title: data.card.title && transformVariablesToReadable(data.card.title),
-      description: slateDescription(data.card.description),
-      buttons: data.card.buttons.map((button) => ({
+      ...data,
+      title: transformVariablesToReadable(data.title),
+      description: isVoiceProject
+        ? transformVariablesToReadable(data.description as string)
+        : slateDescription(data.description as BaseText.SlateTextValue),
+      buttons: data.buttons.map((button) => ({
         ...button,
-        name: button.name ? transformVariablesToReadable(button.name) : '',
+        name: transformVariablesToReadable(button.name),
       })),
     }),
-    [data.card]
+    [data]
   );
 
   const noMatchPortID = ports.out.builtIn[BaseModels.PortType.NO_MATCH];
@@ -36,7 +41,7 @@ const CardV2Step: ConnectedStep<Realtime.NodeData.CardV2, Realtime.NodeData.Card
 
   return (
     <Step nodeID={data.nodeID} dividerOffset={22}>
-      <Step.Section key={card.id}>
+      <Step.Section key={card.nodeID}>
         <Step.Item>
           <Thumbnail src={isVariable(card.imageUrl) ? null : card.imageUrl} mr={16} />
           <Step.LabelTextContainer>
@@ -47,7 +52,7 @@ const CardV2Step: ConnectedStep<Realtime.NodeData.CardV2, Realtime.NodeData.Card
           </Step.LabelTextContainer>
         </Step.Item>
 
-        {!!card.buttons?.length && (
+        {!!card.buttons?.length && !isVoiceProject && (
           <Step.SubItem>
             <StepCarouselButtonGroup>
               {card.buttons.map((button) => (

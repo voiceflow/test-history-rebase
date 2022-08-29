@@ -56,7 +56,6 @@ const CANCEL_PURCHASE_STEP = createMenuStep(Realtime.BlockType.CANCEL_PAYMENT);
 
 const CAPTURE_STEP_V2 = createMenuStep(Realtime.BlockType.CAPTUREV2);
 
-const CARD_STEP = createMenuStep(Realtime.BlockType.CARD);
 const CAROUSEL_STEP = createMenuStep(Realtime.BlockType.CAROUSEL);
 const CARDV2_STEP = createMenuStep(Realtime.BlockType.CARDV2);
 
@@ -120,7 +119,7 @@ export const ALEXA_SECTIONS = [
   {
     type: BlockCategory.RESPONSE,
     label: 'Response',
-    steps: [SPEAK_STEP, AUDIO_STEP, DISPLAY_STEP, CARD_STEP, STREAM_STEP],
+    steps: [SPEAK_STEP, AUDIO_STEP, DISPLAY_STEP, CARDV2_STEP, STREAM_STEP],
   },
   {
     type: BlockCategory.USER_INPUT,
@@ -149,7 +148,7 @@ export const GOOGLE_SECTIONS = [
   {
     type: BlockCategory.RESPONSE,
     label: 'Response',
-    steps: [SPEAK_STEP, AUDIO_STEP, CARD_STEP, STREAM_STEP],
+    steps: [SPEAK_STEP, AUDIO_STEP, CARDV2_STEP, STREAM_STEP],
   },
   {
     type: BlockCategory.USER_INPUT,
@@ -226,7 +225,7 @@ export const DIALOGFLOW_ES_CHAT_SECTIONS = [
   {
     type: BlockCategory.RESPONSE,
     label: 'Response',
-    steps: [TEXT_STEP, VISUAL_STEP, CARD_STEP, CAROUSEL_STEP],
+    steps: [TEXT_STEP, VISUAL_STEP, CARDV2_STEP, CAROUSEL_STEP],
   },
   {
     type: BlockCategory.USER_INPUT,
@@ -325,7 +324,7 @@ export const ALEXA_STEP_SECTIONS: TopStepItem[] = [
     icon: TALK_ICON,
     label: TALK_LABEL,
     isLibrary: false,
-    steps: [SPEAK_STEP, AUDIO_STEP, DISPLAY_STEP, CARD_STEP, STREAM_STEP],
+    steps: [SPEAK_STEP, AUDIO_STEP, DISPLAY_STEP, CARDV2_STEP, STREAM_STEP],
   },
   {
     icon: LISTEN_ICON,
@@ -359,7 +358,7 @@ export const GOOGLE_STEP_SECTIONS: TopStepItem[] = [
     icon: TALK_ICON,
     label: TALK_LABEL,
     isLibrary: false,
-    steps: [SPEAK_STEP, AUDIO_STEP, CARD_STEP, STREAM_STEP],
+    steps: [SPEAK_STEP, AUDIO_STEP, CARDV2_STEP, STREAM_STEP],
   },
   {
     icon: LISTEN_ICON,
@@ -461,7 +460,7 @@ export const DIALOGFLOW_ES_CHAT_STEP_SECTIONS: TopStepItem[] = [
     icon: TALK_ICON,
     label: TALK_LABEL,
     isLibrary: false,
-    steps: [TEXT_STEP, VISUAL_STEP, CARD_STEP, CAROUSEL_STEP, CUSTOM_PAYLOAD_STEP],
+    steps: [TEXT_STEP, VISUAL_STEP, CARDV2_STEP, CAROUSEL_STEP, CUSTOM_PAYLOAD_STEP],
   },
   {
     icon: LISTEN_ICON,

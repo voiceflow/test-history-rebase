@@ -1,26 +1,18 @@
-import { BaseModels, BaseNode } from '@voiceflow/base-types';
-import { Utils } from '@voiceflow/common';
+import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
-import { SlateEditorAPI } from '@/components/SlateEditable';
+import SlateEditable from '@/components/SlateEditable';
 import { BlockType } from '@/constants';
 
 import { NodeConfig } from '../types';
-
-export const cardFactory = (): BaseNode.CardV2.CardV2Card => ({
-  id: Utils.id.cuid.slug(),
-  title: '',
-  description: SlateEditorAPI.getEmptyState(),
-  imageUrl: '',
-  buttons: [],
-});
 
 export const NODE_CONFIG: NodeConfig<Realtime.NodeData.CardV2, Realtime.NodeData.CardV2BuiltInPorts> = {
   type: BlockType.CARDV2,
   icon: 'cardV2',
   isMergeTerminator: ({ data }) => Realtime.Utils.typeGuards.isCardV2NodeData(data) && Boolean(data.noMatch || data.noReply),
 
-  factory: () => ({
+  factory: (_, options) => ({
     node: {
       ports: {
         in: [{}],
@@ -35,7 +27,10 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.CardV2, Realtime.NodeData
     },
     data: {
       name: 'Card',
-      card: cardFactory(),
+      title: '',
+      description: options?.projectType === VoiceflowConstants.ProjectType.VOICE ? '' : SlateEditable.EditorAPI.getEmptyState(),
+      imageUrl: '',
+      buttons: [],
       noMatch: null,
       noReply: null,
     },

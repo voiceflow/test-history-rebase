@@ -80,6 +80,16 @@ export enum SchemaVersion {
    * renames intentStepIDs into menuNodeIDs and adds components and start nodes into it
    */
   V3_6 = 3.6,
+
+  /**
+   * this migration transforms the cardV2 data structure
+   */
+  V3_7 = 3.7,
+
+  /**
+   * this migration transforms card nodes into cardV2s
+   */
+  V3_8 = 3.8,
 }
 
 export const SUPPORTED_SCHEMA_VERSIONS = Object.values(SchemaVersion)

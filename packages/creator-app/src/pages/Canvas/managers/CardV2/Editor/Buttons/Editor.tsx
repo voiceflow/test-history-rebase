@@ -10,15 +10,14 @@ import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 
 type ButtonInfo = Partial<{
-  cardID: string;
   buttonID: string;
   buttonIndex: number;
   cardIndex: number;
   button: Realtime.NodeData.CardV2.Button;
-  card: Realtime.NodeData.CardV2.Card;
+  card: Realtime.NodeData.CardV2;
 }>;
 
-const findButtonInfo = (card: Realtime.NodeData.CardV2.Card, buttonID: string): ButtonInfo => {
+const findButtonInfo = (card: Realtime.NodeData.CardV2, buttonID: string): ButtonInfo => {
   const result: ButtonInfo = { buttonID };
   const button = card.buttons.find((button, buttonIndex) => {
     const foundButton = button.id === buttonID;
@@ -29,7 +28,6 @@ const findButtonInfo = (card: Realtime.NodeData.CardV2.Card, buttonID: string): 
   });
 
   if (button) {
-    result.cardID = card.id;
     result.button = button;
     result.card = card;
   }
@@ -43,7 +41,7 @@ const CardV2ButtonsEditor: React.FC = () => {
   const params = useParams<{ buttonID: string }>();
   const { state } = useLocation<{ waitForData?: boolean; renaming?: boolean }>();
 
-  const { button, card, buttonIndex } = React.useMemo(() => findButtonInfo(editor.data.card, params.buttonID), [editor.data.card, params.buttonID]);
+  const { button, buttonIndex, card } = React.useMemo(() => findButtonInfo(editor.data, params.buttonID), [editor.data, params.buttonID]);
 
   const onChangeButton = (partialButton: Partial<Realtime.NodeData.CardV2.Button>) => {
     if (!button || !card || buttonIndex == null) return;
@@ -51,11 +49,11 @@ const CardV2ButtonsEditor: React.FC = () => {
     const buttons = Utils.array.replace(card.buttons, buttonIndex, { ...button, ...partialButton });
 
     const populatedCard = {
-      ...editor.data.card,
+      ...editor.data,
       buttons,
     };
 
-    editor.onChange({ card: populatedCard });
+    editor.onChange(populatedCard);
   };
 
   useSetup(() => state.renaming && inputRef.current?.select());
@@ -81,9 +79,6 @@ const CardV2ButtonsEditor: React.FC = () => {
             </FormControl>
           </SectionV2.Content>
           <SectionV2.Divider />
-          {/* {chatCardV2Intent.isEnabled && (
-            <IntentSection intentID={button?.intent} buttonID={params.buttonID} onChange={(intent) => onChangeButton({ intent })} editor={editor} />
-          )} */}
         </>
       )}
     </EditorV2>

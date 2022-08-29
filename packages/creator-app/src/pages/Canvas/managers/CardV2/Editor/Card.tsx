@@ -1,7 +1,10 @@
+import { BaseText } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, SectionV2, UploadV2 } from '@voiceflow/ui';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
+import SlateEditable from '@/components/SlateEditable';
 import { SlateTextInput } from '@/components/SlateInputs';
 import VariablesInput from '@/components/VariablesInput';
 import { useImageDimensions } from '@/hooks';
@@ -11,17 +14,18 @@ import { NodeEditorV2Props } from '@/pages/Canvas/managers/types';
 import Buttons from './Buttons';
 
 export interface CardV2Props {
-  item: Realtime.NodeData.Carousel.Card;
+  item: Realtime.NodeData.CardV2;
   editor: NodeEditorV2Props<Realtime.NodeData.CardV2, Realtime.NodeData.CardV2BuiltInPorts>;
   onUpdate: (value: Partial<Realtime.NodeData<Realtime.NodeData.CardV2>>, save?: boolean | undefined) => Promise<void>;
 }
 
 const CardV2: React.ForwardRefRenderFunction<HTMLElement, CardV2Props> = ({ item, editor, onUpdate }) => {
   const dimensions = useImageDimensions({ url: item.imageUrl });
+  const isVoiceProject = editor.projectType === VoiceflowConstants.ProjectType.VOICE;
 
   const onChange =
-    <Key extends keyof Realtime.NodeData.CardV2.Card>(field: Key) =>
-    (value: Realtime.NodeData.CardV2.Card[Key]) =>
+    <Key extends keyof Realtime.NodeData.CardV2>(field: Key) =>
+    (value: Realtime.NodeData.CardV2[Key]) =>
       onUpdate(
         {
           [field]: value,
@@ -49,16 +53,33 @@ const CardV2: React.ForwardRefRenderFunction<HTMLElement, CardV2Props> = ({ item
           />
         </FormControl>
         <FormControl contentBottomUnits={0}>
-          <SlateTextInput value={item.description} onBlur={onChange('description')} placeholder="Enter card description, { to add variable" />
+          {isVoiceProject ? (
+            <VariablesInput
+              value={item.description as string}
+              onBlur={({ text }) => onChange('description')(text)}
+              multiline
+              placeholder="Enter card description, { to add variable"
+              newLineOnEnter
+            />
+          ) : (
+            <SlateTextInput
+              value={(item.description as BaseText.SlateTextValue) || SlateEditable.EditorAPI.getEmptyState()}
+              onBlur={onChange('description')}
+              placeholder="Enter card description, { to add variable"
+            />
+          )}
         </FormControl>
       </SectionV2.Content>
-      <SectionV2.Divider inset />
-      <Buttons.Section
-        buttons={item.buttons}
-        cardID={item.id}
-        editor={editor}
-        onUpdate={({ buttons = [] }) => onUpdate({ buttons } as Partial<Realtime.NodeData<Realtime.NodeData.CardV2>>, true)}
-      />
+      {!isVoiceProject && (
+        <>
+          <SectionV2.Divider inset />
+          <Buttons.Section
+            buttons={item.buttons}
+            editor={editor}
+            onUpdate={({ buttons = [] }) => onUpdate({ buttons } as Partial<Realtime.NodeData<Realtime.NodeData.CardV2>>, true)}
+          />
+        </>
+      )}
     </Box>
   );
 };

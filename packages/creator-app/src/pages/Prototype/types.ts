@@ -38,6 +38,7 @@ export enum MessageType {
   LAUNCH = 'LAUNCH',
   PATH = 'PATH',
   CAROUSEL = 'CAROUSEL',
+  CARD = 'CARD',
 }
 
 export const BotMessageTypes = [MessageType.AUDIO, MessageType.SPEAK, MessageType.TEXT, MessageType.STREAM, MessageType.VISUAL, MessageType.CAROUSEL];
@@ -68,6 +69,9 @@ export type CarouselMessage = GenericMessage<
   MessageType.CAROUSEL,
   { cards: BaseNode.Carousel.TraceCarouselCard[]; layout: BaseNode.Carousel.CarouselLayout }
 >;
+
+export type CardMessage = GenericMessage<MessageType.CARD, BaseNode.CardV2.TraceCardV2>;
+
 export interface MessageMap {
   [MessageType.USER]: UserMessage;
   [MessageType.TEXT]: TextMessage;
@@ -80,6 +84,7 @@ export interface MessageMap {
   [MessageType.LAUNCH]: LaunchMessage;
   [MessageType.PATH]: PathMessage;
   [MessageType.CAROUSEL]: CarouselMessage;
+  [MessageType.CARD]: CardMessage;
 }
 
 export type Message =
@@ -93,7 +98,8 @@ export type Message =
   | VisualMessage
   | LaunchMessage
   | PathMessage
-  | CarouselMessage;
+  | CarouselMessage
+  | CardMessage;
 
 export type TypedMessage<T extends MessageType> = MessageMap[T];
 

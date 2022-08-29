@@ -5,6 +5,7 @@ import React from 'react';
 import SlateEditable from '@/components/SlateEditable';
 import { useResizeObserver } from '@/hooks';
 import { OnInteraction } from '@/pages/Prototype/types';
+import { textFieldHasValue } from '@/utils/prototypeMessage';
 
 import BaseMessage, { BaseMessageProps } from '../../../Base';
 import * as S from './styles';
@@ -61,7 +62,8 @@ const MessageVariantCarouselCarouselLayout: React.FC<MessageVariantCarouselCarou
         <BaseMessage {...messageProps} bubble={false}>
           <div style={{ flexGrow: 1, display: 'flex', gap: CARDS_GAP, alignItems: 'flex-start' }}>
             {cards.map(({ id, title, description, imageUrl, buttons }) => {
-              const hasInfo = Boolean(title || description?.text);
+              const hasInfo = Boolean(title || textFieldHasValue(description?.text));
+
               return (
                 <S.Card key={id}>
                   {imageUrl && <S.CardImage src={imageUrl} roundedBottomBorders={!hasInfo && !buttons?.length} />}

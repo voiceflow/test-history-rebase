@@ -1,10 +1,11 @@
 import { BaseRequest, Nullable } from '@voiceflow/base-types';
 import dayjs from 'dayjs';
 
-import { CarouselTrace, DebugTrace, SpeakTrace, StreamTrace, TextTrace, VisualTrace } from '@/models';
+import { CardV2Trace, CarouselTrace, DebugTrace, SpeakTrace, StreamTrace, TextTrace, VisualTrace } from '@/models';
 
 import { Message, MessageType, TypedMessage } from '../types';
 import {
+  createCardMessage,
   createCarouselMessage,
   createDebugMessage,
   createSpeakMessage,
@@ -57,6 +58,10 @@ class MessageController {
 
   public carousel(trace: CarouselTrace): void {
     this.add(createCarouselMessage(trace, this.messageProperties()));
+  }
+
+  public card(trace: CardV2Trace): void {
+    this.add(createCardMessage(trace, this.messageProperties()));
   }
 
   public user({ id, input }: { id?: string; input: string }): void {

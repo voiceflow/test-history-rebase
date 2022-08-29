@@ -1,4 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import * as Documentation from '@/config/documentation';
@@ -12,8 +13,10 @@ import Card from './Card';
 
 const CardV2EditorRoot: NodeEditorV2<Realtime.NodeData.CardV2, Realtime.NodeData.CardV2BuiltInPorts> = () => {
   const editor = EditorV2.useEditor<Realtime.NodeData.CardV2, Realtime.NodeData.CardV2BuiltInPorts>();
+  const isVoiceProject = editor.projectType === VoiceflowConstants.ProjectType.VOICE;
+
   const parentNode = useSelector(CreatorV2.nodeByIDSelector, { id: editor.node.parentNode });
-  const { card } = editor.data;
+  const card = editor.data;
 
   const isLast = React.useMemo(() => {
     if (!parentNode) return false;
@@ -23,14 +26,12 @@ const CardV2EditorRoot: NodeEditorV2<Realtime.NodeData.CardV2, Realtime.NodeData
   const noMatchConfig = NoMatchV2.useConfig();
   const noReplyConfig = NoReplyV2.useConfig();
 
-  const actions = isLast ? [noMatchConfig.option, noReplyConfig.option] : [];
-
   return (
     <EditorV2
       header={<EditorV2.DefaultHeader />}
       footer={
         <EditorV2.DefaultFooter tutorial={Documentation.CAROUSEL_STEP}>
-          {isLast && <EditorV2.FooterActionsButton actions={actions} />}
+          {isLast && !isVoiceProject && <EditorV2.FooterActionsButton actions={[noMatchConfig.option, noReplyConfig.option]} />}
         </EditorV2.DefaultFooter>
       }
     >
@@ -39,10 +40,8 @@ const CardV2EditorRoot: NodeEditorV2<Realtime.NodeData.CardV2, Realtime.NodeData
         editor={editor}
         onUpdate={async (partial) =>
           editor.onChange({
-            card: {
-              ...card,
-              ...partial,
-            },
+            ...card,
+            ...partial,
           })
         }
       />

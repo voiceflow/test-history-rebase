@@ -174,6 +174,20 @@ const PrototypeDialogMessage: React.FC<PrototypeDialogMessageProps> = ({
           avatarURL={avatarURL}
         />
       );
+    case MessageType.CARD:
+      return (
+        <V.CardV2
+          {...botMessageProps}
+          description={message.description}
+          color={color}
+          imageUrl={message.imageUrl}
+          pmStatus={pmStatus}
+          title={message.title}
+          buttons={message.buttons}
+          onInteraction={onInteraction}
+          avatarURL={avatarURL}
+        />
+      );
     default:
       return null;
   }

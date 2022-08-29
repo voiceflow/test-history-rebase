@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.884.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.884.4...@voiceflow/creator-app@1.884.5) (2022-08-29)
+
+
+### Bug Fixes
+
+* memoized crud selectors (CT-000) ([#5984](https://github.com/voiceflow/creator-app/issues/5984)) ([9b96586](https://github.com/voiceflow/creator-app/commit/9b965864b21af8afad1af79e36c1cf97357bf4f4)), closes [/github.com/voiceflow/creator-app/blob/2110eab6d795d76bf064025b2da5c693774ffbc3/packages/creator-app/src/ducks/utils/selector.ts#L30-L34](https://github.com//github.com/voiceflow/creator-app/blob/2110eab6d795d76bf064025b2da5c693774ffbc3/packages/creator-app/src/ducks/utils/selector.ts/issues/L30-L34)
+
+
+
+
+
 ## [1.884.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.884.3...@voiceflow/creator-app@1.884.4) (2022-08-29)
 
 

@@ -6,20 +6,15 @@ import { compose, withNamespace } from '@/hocs';
 import { useSectionState } from '@/pages/Canvas/hooks/section';
 
 type EditorSectionProps = Omit<UncontrolledSectionProps, 'isCollapsed' | 'toggle'> & {
-  autoSave?: boolean;
   initialOpen?: boolean;
   onContextMenu?: React.MouseEventHandler;
 };
 
-const EditorSection: React.ForwardRefRenderFunction<HTMLDivElement, EditorSectionProps> = (
-  { autoSave = true, initialOpen = false, ...props },
-  ref
-) => {
+const EditorSection: React.ForwardRefRenderFunction<HTMLDivElement, EditorSectionProps> = ({ initialOpen = false, ...props }, ref) => {
   const isCollapsible = !!props.collapseVariant;
   const initialState = React.useRef(initialOpen);
 
   const [sectionState, setSectionState] = useSectionState<{ isOpen: boolean }>({
-    autoSave: isCollapsible && autoSave,
     sectionKey: null,
     defaultValue: { isOpen: initialState.current },
   });

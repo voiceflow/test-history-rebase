@@ -5,16 +5,14 @@ import { withNamespace } from '@/hocs';
 import { useSectionState } from '@/pages/Canvas/hooks/section';
 
 interface PersistCollapseProps {
-  autoSave?: boolean;
   children: (props: { collapsed: boolean; onToggle: (collapsed?: boolean) => void }) => React.ReactElement;
   defaultCollapsed?: boolean;
 }
 
-const PersistCollapse: React.FC<PersistCollapseProps> = ({ autoSave = true, children, defaultCollapsed = false }) => {
+const PersistCollapse: React.FC<PersistCollapseProps> = ({ children, defaultCollapsed = false }) => {
   const initialState = useConst({ isOpen: !defaultCollapsed });
 
   const [state, setState] = useSectionState<{ isOpen: boolean }>({
-    autoSave,
     sectionKey: null,
     defaultValue: initialState,
   });

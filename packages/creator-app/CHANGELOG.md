@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.887.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.886.0...@voiceflow/creator-app@1.887.0) (2022-08-30)
+
+
+### Bug Fixes
+
+* canvas layer performance (CT-000) ([#5979](https://github.com/voiceflow/creator-app/issues/5979)) ([364b7be](https://github.com/voiceflow/creator-app/commit/364b7bef14fb4654eaf0ce3e717c7b9ed8562ea4))
+* update transcripts header height and use theme (CT-881) ([#5986](https://github.com/voiceflow/creator-app/issues/5986)) ([cef13c5](https://github.com/voiceflow/creator-app/commit/cef13c552c0cddf90aa1ea234b9d32483cd03954))
+
+
+### Features
+
+* block via link step menu (CT-857) ([#5983](https://github.com/voiceflow/creator-app/issues/5983)) ([706f39f](https://github.com/voiceflow/creator-app/commit/706f39f3e210e03736899d2d0faa64e30d1c2470))
+* update text editor to use new icons (CT-808) ([#5990](https://github.com/voiceflow/creator-app/issues/5990)) ([e540f1a](https://github.com/voiceflow/creator-app/commit/e540f1a3d04ddd222079eac5eb1a40843958dc78))
+
+
+
+
+
 # [1.886.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.885.0...@voiceflow/creator-app@1.886.0) (2022-08-30)
 
 

@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.142.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.141.0...@voiceflow/ui@1.142.0) (2022-08-30)
+
+
+### Features
+
+* block via link step menu (CT-857) ([#5983](https://github.com/voiceflow/creator-app/issues/5983)) ([706f39f](https://github.com/voiceflow/creator-app/commit/706f39f3e210e03736899d2d0faa64e30d1c2470))
+* update text editor to use new icons (CT-808) ([#5990](https://github.com/voiceflow/creator-app/issues/5990)) ([e540f1a](https://github.com/voiceflow/creator-app/commit/e540f1a3d04ddd222079eac5eb1a40843958dc78))
+
+
+
+
+
 # [1.141.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.140.1...@voiceflow/ui@1.141.0) (2022-08-29)
 
 

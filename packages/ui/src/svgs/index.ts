@@ -111,9 +111,6 @@ export { default as googleAssistant } from './google-assistant.svg';
 export { default as googleSheets } from './google-sheets.svg';
 export { default as globe } from './images/globe.svg';
 
-// h
-export { default as hyperlink } from './hyperlink.svg';
-
 // i
 export { default as itemAdd } from './expression-add.svg';
 export { default as itemMinus } from './expression-minus.svg';
@@ -127,7 +124,6 @@ export { default as information } from './information.svg';
 export { default as intent } from './intent.svg';
 export { default as intentLocal } from './intent-local.svg';
 export { default as intentSmall } from './intent-small.svg';
-export { default as italic } from './italic.svg';
 export { default as integrations } from './system-integrations.svg';
 
 // j
@@ -203,7 +199,6 @@ export { default as sound } from './sound.svg';
 export { default as soundOff } from './sound-off.svg';
 export { default as speak } from './speak.svg';
 export { default as star } from './star.svg';
-export { default as strikeThrough } from './strike-through.svg';
 export { default as subArrow } from './sub-arrow.svg';
 export { default as support } from './support.svg';
 export { default as systemBold } from './system-bold.svg';
@@ -245,12 +240,10 @@ export { default as text } from './text.svg';
 export { default as textAlignCenter } from './text-align-centre.svg';
 export { default as textAlignLeft } from './text-align-left.svg';
 export { default as textAlignRight } from './text-align-right.svg';
-export { default as textBold } from './text-bold.svg';
 export { default as textStep } from './text-step.svg';
 export { default as trash } from './trash.svg';
 
 // u
-export { default as underline } from './underline.svg';
 export { default as up } from './up.svg';
 export { default as upgrade } from './upgrade.svg';
 export { default as upload } from './upload.svg';

@@ -13,7 +13,7 @@ interface MessageDelayButtonProps {
   icon?: SvgIconTypes.Icon;
 }
 
-const MessageDelayButton: React.FC<MessageDelayButtonProps> = ({ data, onUpdate, icon = 'delay' }) => {
+const MessageDelayButton: React.FC<MessageDelayButtonProps> = ({ data, onUpdate, icon = 'systemMessageDelay' }) => {
   const [isOpened, toggleOpen] = useToggle(false);
   const [messageDelay, setMessageDelay] = React.useState(data?.messageDelayMilliseconds ? String(data?.messageDelayMilliseconds) : '');
   const durationMilliseconds = useSelector(VersionV2.active.general.messageDelaySelector);

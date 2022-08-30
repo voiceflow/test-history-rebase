@@ -14,7 +14,7 @@ import {
   useSlateEditorForceNormalize,
 } from '@/components/SlateEditable';
 
-import { TOOLBAR_ICONS_DEFAULT } from '../constants';
+import { TOOLBAR_ICONS } from '../constants';
 import { useSlateLocalValue, useSlateVariables } from '../hooks';
 import SlateBaseInput from './SlateBaseInput';
 import Toolbar from './Toolbar';
@@ -28,7 +28,7 @@ const SlateTextInput: React.ForwardRefRenderFunction<SlateEditableRef, SlateText
     variablesCreatable = true,
     variablesWithSlots,
     extraToolbarButtons,
-    icons = TOOLBAR_ICONS_DEFAULT,
+    icons = TOOLBAR_ICONS,
     ...props
   },
   ref

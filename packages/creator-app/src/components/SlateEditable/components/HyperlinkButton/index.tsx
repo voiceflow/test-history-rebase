@@ -22,7 +22,7 @@ interface HyperlinkButtonProps {
   icon?: SvgIconTypes.Icon;
 }
 
-const HyperlinkButton: React.FC<HyperlinkButtonProps> = ({ children, icon = 'hyperlink' }) => {
+const HyperlinkButton: React.FC<HyperlinkButtonProps> = ({ children, icon = 'systemLinkText' }) => {
   const editor = useSlateEditor();
 
   const [isOpened, toggleOpen] = useToggle(false);

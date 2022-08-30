@@ -14,6 +14,7 @@ export enum Identifier {
   HEADER_BACK = 'vf-header-back',
   PROJECT_TITLE = 'vf-project-title',
   CANVAS = 'vf-canvas',
+  CANVAS_OFFSET = 'vf-canvas-offset',
   CANVAS_CONTAINER = 'vf-canvas-container',
   BLOCK_EDITOR = 'vf-block-editor',
   ADD_COLLABORATORS = 'vf-add-collaborators',

@@ -189,11 +189,19 @@ class NodeEntity extends ResourceEntity<NodeEntityResource<unknown>, NodeInstanc
     return !!this.resolve().node;
   }
 
+  isEqual = <T>(lhs: NodeEntityResource<T> | null, rhs: NodeEntityResource<T> | null) => {
+    if (!lhs && !rhs) return true;
+    if (!lhs || !rhs) return false;
+    if (lhs.data === rhs.data && lhs.node === rhs.node) return true;
+    if (Utils.object.shallowEquals(lhs.node, rhs.node)) return true;
+    return false;
+  };
+
   useInstance(instance: NodeInstance) {
     const engine = React.useContext(EngineContext)!;
 
     super.useInstance(instance);
-    this.useSubscription(this.nodeID, () => this.resolve(), Utils.object.shallowEquals);
+    this.useSubscription(this.nodeID);
 
     React.useEffect(() => {
       engine.registerNode(this.nodeID, this);

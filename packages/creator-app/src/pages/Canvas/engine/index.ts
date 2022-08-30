@@ -5,7 +5,7 @@ import { logger } from '@voiceflow/ui';
 import EventEmitter from 'eventemitter3';
 import React from 'react';
 
-import { CanvasAPI } from '@/components/Canvas';
+import { BUFFER_REGION, CanvasAPI, MAX_CANVAS_SIZE, MIN_CANVAS_HEIGHT, MIN_CANVAS_WIDTH, ORIGIN } from '@/components/Canvas';
 import { MovementCalculator } from '@/components/Canvas/types';
 import { PageProgress } from '@/components/PageProgressBar';
 import { isDebug } from '@/config';
@@ -243,6 +243,25 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
     this.canvas = canvas;
 
     if (canvas) {
+      const nodeCoords = this.select(CreatorV2.nodeCoordsByIDSelectorV2);
+
+      const Xpositions: number[] = [];
+      const Ypositions: number[] = [];
+      Object.values(nodeCoords).forEach(([x, y] = ORIGIN) => {
+        Xpositions.push(x);
+        Ypositions.push(y);
+      });
+      // add buffer to give extra room for creating new steps
+      const minX = Math.trunc(Math.min(...Xpositions)) - BUFFER_REGION;
+      const maxX = Math.trunc(Math.max(...Xpositions)) + BUFFER_REGION;
+      const minY = Math.trunc(Math.min(...Ypositions)) - BUFFER_REGION;
+      const maxY = Math.trunc(Math.max(...Ypositions)) + BUFFER_REGION;
+
+      // find the difference, and ensure it is between a MIN and MAX
+      const width = Math.max(Math.min(Math.abs(maxX - minX), MAX_CANVAS_SIZE), MIN_CANVAS_WIDTH);
+      const height = Math.max(Math.min(Math.abs(maxY - minY), MAX_CANVAS_SIZE), MIN_CANVAS_HEIGHT);
+
+      canvas.setCanvasSize(width, height, -minX, -minY);
       this.emitter.emit(CanvasAction.RENDERED);
     }
 

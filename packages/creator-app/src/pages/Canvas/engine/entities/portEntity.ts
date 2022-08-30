@@ -109,7 +109,7 @@ class PortEntity extends ResourceEntity<Realtime.Port, PortInstance> {
     const engine = React.useContext(EngineContext)!;
 
     super.useInstance(instance);
-    this.useSubscription(this.portID, () => this.resolve());
+    this.useSubscription(this.portID);
     this.useLinkSubscription(this.linkID, () => this.resolveLink());
 
     React.useEffect(() => {

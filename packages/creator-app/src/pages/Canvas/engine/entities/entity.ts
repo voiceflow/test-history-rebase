@@ -106,15 +106,17 @@ export abstract class Entity<T extends EntityInstance = EntityInstance> {
 }
 
 export abstract class ResourceEntity<M, T extends EntityInstance = EntityInstance> extends Entity<T> {
-  useSubscription<T>(id: string, selector: () => T, isEqual: (lhs: T | null, rhs: T | null) => boolean = isDirectlyEqual) {
-    let prevState: T | null = null;
+  isEqual: (lhs: M | null, rhs: M | null) => boolean = isDirectlyEqual;
+
+  useSubscription(id: string) {
+    let prevState: M | null = null;
 
     return this.engine.dispatcher.useSubscription(this.type, id, (isForced) => {
-      const state = selector();
+      const state = this.resolve();
 
       this.log.debug(this.log.pending('redrawing'));
 
-      if (isForced || !this.instance?.isReady() || !isEqual(state, prevState)) {
+      if (isForced || !this.instance?.isReady() || !this.isEqual(state, prevState)) {
         this.handlers.forEach((handler) => handler(this));
         prevState = state;
 

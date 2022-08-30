@@ -30,6 +30,12 @@ import { MovementCalculator, StyleOptions, TransformOptions, TransitionOptions, 
 
 export const ORIGIN: Point = [0, 0];
 
+export const MAX_CANVAS_SIZE = 2 ** 16; // 65536
+// voiceflow projects tend to span horizontally more than vertically
+export const MIN_CANVAS_WIDTH = 2 ** 13; // 8192
+export const MIN_CANVAS_HEIGHT = 2 ** 12; // 4096
+export const BUFFER_REGION = 2 ** 11; // 2048
+
 const ZOOM_FINISH_DURATION = 300;
 
 const GRID_COLOR = '#E3E4E7';
@@ -77,6 +83,8 @@ class Canvas extends React.PureComponent<
 
   renderLayerRef = React.createRef<HTMLDivElement>();
 
+  offsetLayerRef = React.createRef<HTMLDivElement>();
+
   zoom = this.props.viewport ? this.props.viewport.zoom : ZOOM_FACTOR;
 
   zoomComplete = 0;
@@ -87,7 +95,18 @@ class Canvas extends React.PureComponent<
 
   applyTransitionTimeout: NodeJS.Timeout | null = null;
 
+  size = {
+    width: MIN_CANVAS_WIDTH,
+    height: MIN_CANVAS_HEIGHT,
+    offsetX: MIN_CANVAS_WIDTH / 2,
+    offsetY: MIN_CANVAS_HEIGHT / 2,
+  };
+
   api = {
+    setCanvasSize: (width: number, height: number, offsetX: number, offsetY: number) => {
+      this.size = { width, height, offsetX, offsetY };
+      this.forceUpdate();
+    },
     getControlScheme: () => this.controls.scheme,
     applyControlScheme: (controlScheme: ControlScheme = this.props.controlScheme) => {
       this.controls = generateControls(controlScheme, this.handleControl, this.props.scrollTimeout!);
@@ -134,7 +153,7 @@ class Canvas extends React.PureComponent<
       return new Vector(point, this.getPlane());
     },
     getBoundingPosition: () => {
-      const { x, y } = this.renderLayerRef.current!.getBoundingClientRect();
+      const { x, y } = this.offsetLayerRef.current!.getBoundingClientRect();
       return [x, y];
     },
 
@@ -289,7 +308,7 @@ class Canvas extends React.PureComponent<
     this.styleCanvasGrid({ clear: false, zoom, position });
 
     const applyStyles = () => {
-      renderLayerEl.style.transform = transformStyle(position, zoom);
+      renderLayerEl.style.transform = transformStyle(position, zoom, this.size.offsetX, this.size.offsetY);
       onApplied?.();
     };
 
@@ -486,8 +505,18 @@ class Canvas extends React.PureComponent<
           tabIndex={-1}
           ref={innerRef ? composeRefs(this.rootRef, innerRef) : this.rootRef}
         >
-          <RenderLayer ref={this.renderLayerRef} style={{ transform: transformStyle(this.position, this.zoom) }}>
-            {children}
+          <RenderLayer
+            ref={this.renderLayerRef}
+            size={this.size}
+            style={{ transform: transformStyle(this.position, this.zoom, this.size.offsetX, this.size.offsetY) }}
+          >
+            <div
+              id={Identifier.CANVAS_OFFSET}
+              ref={this.offsetLayerRef}
+              style={{ transform: `translate(${this.size.offsetX}px, ${this.size.offsetY}px)` }}
+            >
+              {children}
+            </div>
           </RenderLayer>
 
           {this.props.layers}

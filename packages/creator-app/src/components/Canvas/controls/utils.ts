@@ -8,7 +8,8 @@ export abstract class BaseControls {
   constructor(protected handle: (action: ControlAction) => void) {}
 }
 
-export const transformStyle = (position: Point, zoom: number) => `translate(${position[0]}px, ${position[1]}px) scale(${zoom / ZOOM_FACTOR})`;
+export const transformStyle = (position: Point, zoom: number, offsetX = 0, offsetY = 0) =>
+  `translate(${position[0] - offsetX}px, ${position[1] - offsetY}px) scale(${zoom / ZOOM_FACTOR})`;
 
 export const backgroundPositionStyle = (position: Point) => `${position[0]}px ${position[1]}px`;
 export const backgroundSizeStyle = (zoom: number) => `${zoom / 5}px ${zoom / 5}px`;

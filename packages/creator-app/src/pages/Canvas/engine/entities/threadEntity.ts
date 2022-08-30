@@ -110,7 +110,7 @@ class ThreadEntity extends ResourceEntity<{ thread: Realtime.Thread; node: Realt
     const engine = React.useContext(EngineContext)!;
 
     super.useInstance(instance);
-    this.useSubscription(this.threadID, () => this.resolve());
+    this.useSubscription(this.threadID);
 
     React.useEffect(() => {
       engine.registerThread(this.threadID, this);

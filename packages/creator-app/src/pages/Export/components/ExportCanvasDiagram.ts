@@ -22,7 +22,13 @@ const ExportCanvasDiagram = styled(Canvas as any)`
   ${RenderLayer} {
     position: relative;
     transform: translate(0, 0) !important;
+    height: 100% !important;
+    width: 100% !important;
     pointer-events: none;
+
+    > div {
+      transform: none !important;
+    }
   }
 
   ${LinkLayerSvg} {

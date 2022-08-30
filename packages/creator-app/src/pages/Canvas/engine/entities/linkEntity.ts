@@ -81,7 +81,7 @@ class LinkEntity extends ResourceEntity<Realtime.Link, LinkInstance> {
     const engine = React.useContext(EngineContext)!;
 
     super.useInstance(instance);
-    this.useSubscription(this.linkID, () => this.resolve());
+    this.useSubscription(this.linkID);
 
     React.useEffect(() => {
       engine.registerLink(this.linkID, this);

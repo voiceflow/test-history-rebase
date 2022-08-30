@@ -1,12 +1,18 @@
 import { styled } from '@/hocs';
 
-const CanvasRenderLayer = styled.div`
+interface Size {
+  width: number;
+  height: number;
+  offsetX: number;
+  offsetY: number;
+}
+
+const CanvasRenderLayer = styled.div<{ size: Size }>`
   position: absolute;
-  height: 100%;
-  width: 100%;
-  transform-origin: 0 0;
+  height: ${({ size }) => size.height}px;
+  width: ${({ size }) => size.width}px;
+  transform-origin: ${({ size }) => size.offsetX}px ${({ size }) => size.offsetY}px;
   pointer-events: none;
-  backface-visibility: hidden;
   will-change: transform;
 `;
 

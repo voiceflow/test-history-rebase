@@ -90,11 +90,13 @@ export const linkedNodeIDsByNodeIDSelector = createSelector(
   }
 );
 
-const parentNodeIDByStepIDSelectorV2 = createSelector([creatorStateSelector], ({ parentNodeIDByStepID }) => parentNodeIDByStepID);
-const nodeCoordsByIDSelectorV2 = createSelector([creatorStateSelector], ({ coordsByNodeID }) => coordsByNodeID);
+export const nodeCoordsByIDSelectorV2 = createSelector([creatorStateSelector], ({ coordsByNodeID }) => coordsByNodeID);
 const portsByNodeIDSelectorV2 = createSelector([creatorStateSelector], ({ portsByNodeID }) => portsByNodeID);
+const parentNodeIDByStepIDSelectorV2 = createSelector([creatorStateSelector], ({ parentNodeIDByStepID }) => parentNodeIDByStepID);
 const stepIDsByParentNodeIDSelectorV2 = createSelector([creatorStateSelector], ({ stepIDsByParentNodeID }) => stepIDsByParentNodeID);
 
+// for shallow comparison equality
+const EMPTY_COMBINED_NODES_ARRAY: string[] = [];
 export const nodeByIDSelector = createCachedSelector(
   [
     parentNodeIDByStepIDSelectorV2,
@@ -117,7 +119,7 @@ export const nodeByIDSelector = createCachedSelector(
       type,
       ports: portsByNodeID[nodeID] ?? Realtime.Utils.port.createEmptyNodePorts(),
       parentNode: parentNodeIDByStepID[nodeID] ?? null,
-      combinedNodes: stepIDsByParentNodeID[nodeID] ?? [],
+      combinedNodes: stepIDsByParentNodeID[nodeID] ?? EMPTY_COMBINED_NODES_ARRAY,
     };
   }
 )((_, params) => idParamSelector(_, params) || '');

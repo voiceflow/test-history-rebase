@@ -45,6 +45,9 @@ export default {
     get canvas() {
       return cy.get(`#${Identifier.CANVAS}`);
     },
+    get canvasOffset() {
+      return cy.get(`#${Identifier.CANVAS_OFFSET}`);
+    },
     get commentingModeControl() {
       return cy.get(`.${ClassName.CANVAS_CONTROL}--commenting button`);
     },

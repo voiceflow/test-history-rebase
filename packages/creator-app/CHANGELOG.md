@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.886.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.885.0...@voiceflow/creator-app@1.886.0) (2022-08-30)
+
+
+### Bug Fixes
+
+* only show divider if utterance section is showing (CT-880) ([#5987](https://github.com/voiceflow/creator-app/issues/5987)) ([4197f61](https://github.com/voiceflow/creator-app/commit/4197f61b28e0b410332ff7d709e4eada15f9d80f))
+
+
+### Features
+
+* remove default step colours ff (CT-798) ([#5988](https://github.com/voiceflow/creator-app/issues/5988)) ([cc79316](https://github.com/voiceflow/creator-app/commit/cc793164cf109d560b071aa895a961fc3f7348c5))
+
+
+
+
+
 # [1.885.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.884.5...@voiceflow/creator-app@1.885.0) (2022-08-29)
 
 

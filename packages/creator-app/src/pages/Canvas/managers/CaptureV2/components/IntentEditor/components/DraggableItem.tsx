@@ -138,16 +138,18 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
 
                         {!isGooglePlatform(editor.platform) && !isDialogflowPlatform(editor.platform) && (
                           <>
-                            <SectionV2.Divider inset />
-
                             {editor.data.utterancesShown && (
-                              <UtteranceSection
-                                slot={slot}
-                                onChange={(utterances) => onChangeDialog({ utterances })}
-                                usedSlots={usedSlots}
-                                utterances={item.dialog.utterances}
-                                preventAccent
-                              />
+                              <>
+                                <SectionV2.Divider inset />
+
+                                <UtteranceSection
+                                  slot={slot}
+                                  onChange={(utterances) => onChangeDialog({ utterances })}
+                                  usedSlots={usedSlots}
+                                  utterances={item.dialog.utterances}
+                                  preventAccent
+                                />
+                              </>
                             )}
                           </>
                         )}

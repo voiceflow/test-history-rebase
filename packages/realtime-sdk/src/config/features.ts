@@ -56,7 +56,5 @@ export enum FeatureFlag {
 
   CHAT_VOICE_PROJECT = 'chat_voice_project_type',
 
-  DEFAULT_STEP_COLORS = 'default_step_colors',
-
   BLOCK_VIA_LINK = 'block_via_link',
 }

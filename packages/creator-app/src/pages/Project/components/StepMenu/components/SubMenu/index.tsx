@@ -18,7 +18,6 @@ interface SubMenuProps {
 
 const SubMenu: React.FC<SubMenuProps> = ({ steps, onDrop }) => {
   const chatCardStep = useFeature(Realtime.FeatureFlag.CHAT_CARD_STEP);
-  const defaultStepColors = useFeature(Realtime.FeatureFlag.DEFAULT_STEP_COLORS);
   const [activeStepType, setActiveStepType] = React.useState<null | Realtime.BlockType>(null);
 
   const menuRef = React.useRef<HTMLDivElement>(null);
@@ -69,12 +68,7 @@ const SubMenu: React.FC<SubMenuProps> = ({ steps, onDrop }) => {
             {processedSteps.map((step, index) => (
               <Animations.FadeDownDelayedContainer key={step.label} delay={0.04 + index * 0.03}>
                 <div onMouseEnter={() => onMouseEnterMenuButton(step.type)}>
-                  <SubMenuButton
-                    {...step}
-                    onDrop={onDrop}
-                    isDefaultStepColorsEnabled={defaultStepColors.isEnabled}
-                    isFocused={activeStepType === step.type}
-                  />
+                  <SubMenuButton {...step} onDrop={onDrop} isFocused={activeStepType === step.type} />
                 </div>
               </Animations.FadeDownDelayedContainer>
             ))}

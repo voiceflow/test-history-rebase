@@ -30,7 +30,6 @@ interface SubMenuButtonProps {
   tooltipLink?: string;
   factoryData?: Partial<Realtime.NodeData<unknown>>;
   isDraggingPreview?: boolean;
-  isDefaultStepColorsEnabled?: boolean;
   isFocused?: boolean;
 }
 
@@ -43,7 +42,6 @@ const SubMenuButton: React.FC<SubMenuButtonProps> = ({
   tooltipLink,
   factoryData,
   isDraggingPreview,
-  isDefaultStepColorsEnabled,
   isFocused,
 }) => {
   const getEngine = useEventualEngine();
@@ -190,7 +188,7 @@ const SubMenuButton: React.FC<SubMenuButtonProps> = ({
     </SubMenuButtonContainer>
   );
 
-  if (isDefaultStepColorsEnabled && isFocused) {
+  if (isFocused) {
     return <ContextMenu options={menuOptions}>{({ isOpen, onContextMenu }) => button(isOpen, onContextMenu)}</ContextMenu>;
   }
 

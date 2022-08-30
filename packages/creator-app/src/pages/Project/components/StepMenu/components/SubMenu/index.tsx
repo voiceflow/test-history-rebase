@@ -3,7 +3,7 @@ import { Animations, Portal, usePopper } from '@voiceflow/ui';
 import React from 'react';
 
 import { BlockType, DragItem } from '@/constants';
-import { useDragPreview, useFeature } from '@/hooks';
+import { useCanvasNodeFilter, useDragPreview } from '@/hooks';
 import { StepDragItem } from '@/pages/Canvas/components/CanvasDiagram';
 import { getManager } from '@/pages/Canvas/managers/utils';
 
@@ -17,7 +17,6 @@ interface SubMenuProps {
 }
 
 const SubMenu: React.FC<SubMenuProps> = ({ steps, onDrop }) => {
-  const chatCardStep = useFeature(Realtime.FeatureFlag.CHAT_CARD_STEP);
   const [activeStepType, setActiveStepType] = React.useState<null | Realtime.BlockType>(null);
 
   const menuRef = React.useRef<HTMLDivElement>(null);
@@ -27,23 +26,22 @@ const SubMenu: React.FC<SubMenuProps> = ({ steps, onDrop }) => {
     placement: 'right-start',
   });
 
-  const processedSteps = steps
-    .filter((step) => {
-      if (!chatCardStep.isEnabled && step.type === BlockType.CARDV2) return false;
+  const nodeFilter = useCanvasNodeFilter();
+  const processedSteps = React.useMemo(
+    () =>
+      steps.filter(nodeFilter).map((step) => {
+        const manager = getManager(step.type, true);
 
-      return true;
-    })
-    .map((step) => {
-      const manager = getManager(step.type, true);
-
-      return {
-        ...step,
-        icon: step.getIcon(manager),
-        label: step.getLabel(manager),
-        tooltipText: step.getStepTooltipText(manager),
-        tooltipLink: step.getStepTooltipLink(manager),
-      };
-    });
+        return {
+          ...step,
+          icon: step.getIcon(manager),
+          label: step.getLabel(manager),
+          tooltipText: step.getStepTooltipText(manager),
+          tooltipLink: step.getStepTooltipLink(manager),
+        };
+      }),
+    [nodeFilter]
+  );
 
   useDragPreview<StepDragItem>(
     DragItem.BLOCK_MENU,

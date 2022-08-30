@@ -1,12 +1,9 @@
 import { Utils } from '@voiceflow/common';
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { Flex, KeyName, preventDefault, SvgIcon, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 import ReactSelect from 'react-select';
 
-import { IS_PRIVATE_CLOUD } from '@/config';
-import { BlockType } from '@/constants';
-import { useFeature, useTrackingEvents } from '@/hooks';
+import { useCanvasNodeFilter, useTrackingEvents } from '@/hooks';
 import { EngineContext, SpotlightContext } from '@/pages/Canvas/contexts';
 import { useManager } from '@/pages/Canvas/managers/utils';
 import { getStepSections, StepItem } from '@/pages/Project/components/StepMenu/constants';
@@ -26,9 +23,6 @@ const Spotlight = () => {
   const selectRef = React.useRef<ReactSelect>(null);
   const [inputValue, setInputValue] = React.useState('');
   const [trackingEvents] = useTrackingEvents();
-  const gadgets = useFeature(Realtime.FeatureFlag.GADGETS);
-  const chatCardsCarousel = useFeature(Realtime.FeatureFlag.CHAT_CARDS_CAROUSEL);
-  const promptStep = useFeature(Realtime.FeatureFlag.PROMPT_STEP);
   const getManager = useManager();
 
   const isVisible = !!spotlight?.isVisible;
@@ -39,17 +33,16 @@ const Spotlight = () => {
     spotlight?.hide();
   };
 
+  const nodeFilter = useCanvasNodeFilter();
+
   const options = React.useMemo(
     () =>
       getStepSections(platform, projectType)
         .flatMap((section) => Utils.array.inferUnion(section.steps))
         .filter((step) => {
           if (!Utils.object.hasProperty(step, 'type')) return false;
-          if (!gadgets.isEnabled && step.type === BlockType.EVENT) return false;
-          if (!chatCardsCarousel.isEnabled && step.type === BlockType.CAROUSEL) return false;
-          if (IS_PRIVATE_CLOUD && step.publicOnly) return false;
-          if (!promptStep.isEnabled && step.type === BlockType.PROMPT) return false;
-          return true;
+
+          return nodeFilter(step);
         })
         .map((step) => {
           const manager = getManager(step.type);
@@ -65,7 +58,7 @@ const Spotlight = () => {
             ),
           };
         }),
-    [platform, gadgets.isEnabled, chatCardsCarousel.isEnabled, promptStep.isEnabled]
+    [platform, nodeFilter]
   );
 
   useDidUpdateEffect(() => {

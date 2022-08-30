@@ -1,6 +1,7 @@
 export * from './asr';
 export * from './atoms';
 export * from './callback';
+export * from './canvasNodes';
 export * from './dnd';
 export * from './dragPreview';
 export * from './effect';

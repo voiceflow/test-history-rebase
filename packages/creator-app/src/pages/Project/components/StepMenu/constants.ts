@@ -21,6 +21,7 @@ export interface StepItem {
 
 export interface BaseTopStepItem {
   icon: SvgIconTypes.Icon;
+  smallIcon?: SvgIconTypes.Icon;
   label: string;
   steps: unknown[];
 }
@@ -128,34 +129,41 @@ const TRACE_STEP = createMenuStep(Realtime.BlockType.TRACE);
 */
 
 const TALK_ICON = 'systemTalk' as const;
+const TALK_ICON_SMALL = 'systemTalkSmall' as const;
 const TALK_LABEL = 'Talk';
 
 const LISTEN_ICON = 'systemListen' as const;
+const LISTEN_ICON_SMALL = 'systemListenSmall' as const;
 const LISTEN_LABEL = 'Listen';
 
 const LOGIC_ICON = 'systemLogic' as const;
+const LOGIC_ICON_SMALL = 'ifV2' as const;
 const LOGIC_LABEL = 'Logic';
 
 const EVENT_ICON = 'systemEvent' as const;
-const EVENT_LABEL = 'Event';
+export const EVENT_LABEL = 'Event';
 
 const DEV_ICON = 'systemDev' as const;
+const DEV_ICON_SMALL = 'systemDevSmall' as const;
 const DEV_LABEL = 'Dev';
 
 // alexa menu sections
 export const ALEXA_STEP_SECTIONS: TopStepItem[] = [
   {
     icon: TALK_ICON,
+    smallIcon: TALK_ICON_SMALL,
     label: TALK_LABEL,
     steps: [SPEAK_STEP, AUDIO_STEP, DISPLAY_STEP, CARDV2_STEP, STREAM_STEP],
   },
   {
     icon: LISTEN_ICON,
+    smallIcon: LISTEN_ICON_SMALL,
     label: LISTEN_LABEL,
     steps: [CHOICE_STEP, CAPTURE_STEP_V2],
   },
   {
     icon: LOGIC_ICON,
+    smallIcon: LOGIC_ICON_SMALL,
     label: LOGIC_LABEL,
     steps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
   },
@@ -166,6 +174,7 @@ export const ALEXA_STEP_SECTIONS: TopStepItem[] = [
   },
   {
     icon: DEV_ICON,
+    smallIcon: DEV_ICON_SMALL,
     label: DEV_LABEL,
     steps: [API_STEP, CODE_STEP, TRACE_STEP, DIRECTIVE_STEP],
   },
@@ -175,16 +184,19 @@ export const ALEXA_STEP_SECTIONS: TopStepItem[] = [
 export const GOOGLE_STEP_SECTIONS: TopStepItem[] = [
   {
     icon: TALK_ICON,
+    smallIcon: TALK_ICON_SMALL,
     label: TALK_LABEL,
     steps: [SPEAK_STEP, AUDIO_STEP, CARDV2_STEP, STREAM_STEP],
   },
   {
     icon: LISTEN_ICON,
+    smallIcon: LISTEN_ICON_SMALL,
     label: LISTEN_LABEL,
     steps: [CHOICE_STEP, CAPTURE_STEP_V2],
   },
   {
     icon: LOGIC_ICON,
+    smallIcon: LOGIC_ICON_SMALL,
     label: LOGIC_LABEL,
     steps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
   },
@@ -195,6 +207,7 @@ export const GOOGLE_STEP_SECTIONS: TopStepItem[] = [
   },
   {
     icon: DEV_ICON,
+    smallIcon: DEV_ICON_SMALL,
     label: DEV_LABEL,
     steps: [API_STEP, CODE_STEP, TRACE_STEP, DIRECTIVE_STEP],
   },
@@ -204,16 +217,19 @@ export const GOOGLE_STEP_SECTIONS: TopStepItem[] = [
 export const CHATBOT_STEP_SECTIONS: TopStepItem[] = [
   {
     icon: TALK_ICON,
+    smallIcon: TALK_ICON_SMALL,
     label: TALK_LABEL,
     steps: [TEXT_STEP, VISUAL_STEP, CARDV2_STEP, CAROUSEL_STEP],
   },
   {
     icon: LISTEN_ICON,
+    smallIcon: LISTEN_ICON_SMALL,
     label: LISTEN_LABEL,
     steps: [BUTTONS_STEP, CAPTURE_STEP_V2],
   },
   {
     icon: LOGIC_ICON,
+    smallIcon: LOGIC_ICON_SMALL,
     label: LOGIC_LABEL,
     steps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
   },
@@ -224,6 +240,7 @@ export const CHATBOT_STEP_SECTIONS: TopStepItem[] = [
   },
   {
     icon: DEV_ICON,
+    smallIcon: DEV_ICON_SMALL,
     label: DEV_LABEL,
     steps: [API_STEP, CODE_STEP, TRACE_STEP],
   },
@@ -233,16 +250,19 @@ export const CHATBOT_STEP_SECTIONS: TopStepItem[] = [
 export const GENERAL_STEP_SECTIONS: TopStepItem[] = [
   {
     icon: TALK_ICON,
+    smallIcon: TALK_ICON_SMALL,
     label: TALK_LABEL,
     steps: [SPEAK_STEP, AUDIO_STEP, VISUAL_STEP],
   },
   {
     icon: LISTEN_ICON,
+    smallIcon: LISTEN_ICON_SMALL,
     label: LISTEN_LABEL,
     steps: [CHOICE_STEP, CAPTURE_STEP_V2],
   },
   {
     icon: LOGIC_ICON,
+    smallIcon: LOGIC_ICON_SMALL,
     label: LOGIC_LABEL,
     steps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
   },
@@ -253,6 +273,7 @@ export const GENERAL_STEP_SECTIONS: TopStepItem[] = [
   },
   {
     icon: DEV_ICON,
+    smallIcon: DEV_ICON_SMALL,
     label: DEV_LABEL,
     steps: [API_STEP, CODE_STEP, TRACE_STEP],
   },
@@ -262,16 +283,19 @@ export const GENERAL_STEP_SECTIONS: TopStepItem[] = [
 export const DIALOGFLOW_ES_CHAT_STEP_SECTIONS: TopStepItem[] = [
   {
     icon: TALK_ICON,
+    smallIcon: TALK_ICON_SMALL,
     label: TALK_LABEL,
     steps: [TEXT_STEP, VISUAL_STEP, CARDV2_STEP, CAROUSEL_STEP, CUSTOM_PAYLOAD_STEP],
   },
   {
     icon: LISTEN_ICON,
+    smallIcon: LISTEN_ICON_SMALL,
     label: LISTEN_LABEL,
     steps: [BUTTONS_STEP, CAPTURE_STEP_V2],
   },
   {
     icon: LOGIC_ICON,
+    smallIcon: LOGIC_ICON_SMALL,
     label: LOGIC_LABEL,
     steps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
   },
@@ -282,6 +306,7 @@ export const DIALOGFLOW_ES_CHAT_STEP_SECTIONS: TopStepItem[] = [
   },
   {
     icon: DEV_ICON,
+    smallIcon: DEV_ICON_SMALL,
     label: DEV_LABEL,
     steps: [API_STEP, CODE_STEP, TRACE_STEP],
   },
@@ -291,16 +316,19 @@ export const DIALOGFLOW_ES_CHAT_STEP_SECTIONS: TopStepItem[] = [
 export const DIALOGFLOW_ES_VOICE_STEP_SECTIONS: TopStepItem[] = [
   {
     icon: TALK_ICON,
+    smallIcon: TALK_ICON_SMALL,
     label: TALK_LABEL,
     steps: [SPEAK_STEP, AUDIO_STEP, CUSTOM_PAYLOAD_STEP, CARDV2_STEP],
   },
   {
     icon: LISTEN_ICON,
+    smallIcon: LISTEN_ICON_SMALL,
     label: LISTEN_LABEL,
     steps: [CHOICE_STEP, CAPTURE_STEP_V2],
   },
   {
     icon: LOGIC_ICON,
+    smallIcon: LOGIC_ICON_SMALL,
     label: LOGIC_LABEL,
     steps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
   },
@@ -311,6 +339,7 @@ export const DIALOGFLOW_ES_VOICE_STEP_SECTIONS: TopStepItem[] = [
   },
   {
     icon: DEV_ICON,
+    smallIcon: DEV_ICON_SMALL,
     label: DEV_LABEL,
     steps: [API_STEP, CODE_STEP, TRACE_STEP],
   },
@@ -332,6 +361,7 @@ export const getStepSections = Realtime.Utils.platform.createPlatformAndProjectT
 export const getLibrarySection = (templates: BaseModels.Version.CanvasTemplate[]): TopLibraryItem => {
   return {
     icon: 'library',
+    smallIcon: 'librarySmall',
     label: 'Library',
     steps: templates,
     isLibrary: true,

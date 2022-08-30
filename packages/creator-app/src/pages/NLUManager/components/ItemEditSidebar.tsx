@@ -4,6 +4,7 @@ import React from 'react';
 import Drawer from '@/components/Drawer';
 import EditableText from '@/components/EditableText';
 import { NLUContext, useNLUItemMenu } from '@/contexts';
+import { useTheme } from '@/hooks';
 import { EDITOR_LEFT_SIDEBAR_WIDTH, EditorTabs } from '@/pages/NLUManager/constants';
 
 import { useNLUManager } from '../context';
@@ -13,6 +14,7 @@ interface ItemEditSidebarProps {
 }
 
 const ItemEditSidebar: React.FC<ItemEditSidebarProps> = ({ children, isBuiltIn }) => {
+  const theme = useTheme();
   const nlu = React.useContext(NLUContext);
   const nluManager = useNLUManager();
 
@@ -39,7 +41,9 @@ const ItemEditSidebar: React.FC<ItemEditSidebarProps> = ({ children, isBuiltIn }
   return (
     <Drawer open={!!nluManager.activeItem} width={EDITOR_LEFT_SIDEBAR_WIDTH} direction={Drawer.Direction.LEFT}>
       <SidebarEditor.Container>
-        <SidebarEditor.Header style={nluManager.isEditorTabActive(EditorTabs.INTENT_CONFLICTS) ? { height: '61px' } : {}}>
+        <SidebarEditor.Header
+          style={nluManager.isEditorTabActive(EditorTabs.INTENT_CONFLICTS) ? { height: `${theme.components.projectPage.header.height}px` } : {}}
+        >
           <SidebarEditor.HeaderTitle fontWeight={600}>
             <EditableText
               value={name}

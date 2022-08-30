@@ -2,7 +2,7 @@ import { Box, Button, ButtonVariant, FlexEnd, IconButton, SectionV2, SidebarEdit
 import React from 'react';
 
 import Drawer from '@/components/Drawer';
-import { useTrackingEvents } from '@/hooks';
+import { useTheme, useTrackingEvents } from '@/hooks';
 import { EDITOR_LEFT_SIDEBAR_WIDTH, MENU_RIGHT_SIDEBAR_WIDTH } from '@/pages/NLUManager/constants';
 import { useNLUManager } from '@/pages/NLUManager/context';
 import { useConflictsSubmit, useIntentConflictsForm } from '@/pages/NLUManager/hooks';
@@ -19,6 +19,7 @@ interface ConflictsProps {
 }
 
 const Conflicts: React.FC<ConflictsProps> = ({ onChangesApplied }) => {
+  const theme = useTheme();
   const { clarity, activeItemID: intentID, closeEditorTab, items: nluIntents } = useNLUManager<NLUIntent>();
   const [trackingEvents] = useTrackingEvents();
 
@@ -54,7 +55,7 @@ const Conflicts: React.FC<ConflictsProps> = ({ onChangesApplied }) => {
   return (
     <Drawer open width={1000} offset={450} zIndex={19} direction={Drawer.Direction.LEFT} style={{ width: drawerWidth }}>
       <SidebarEditor.Container>
-        <SidebarEditor.Header style={{ height: '61px' }}>
+        <SidebarEditor.Header style={{ height: `${theme.components.projectPage.header.height}px` }}>
           <SidebarEditor.HeaderTitle fontWeight={600} fontSize={15}>
             Conflicting Intents
           </SidebarEditor.HeaderTitle>

@@ -3,13 +3,14 @@ import React from 'react';
 
 import { HeaderLogoButton } from '@/components/ProjectPage';
 import SidebarIconMenu from '@/components/SidebarIconMenu';
-import { useIsCanvasDesignOnly } from '@/hooks';
+import { useIsCanvasDesignOnly, useTheme } from '@/hooks';
 import { useLogoButtonOptions } from '@/pages/Project/components/Header/hooks';
 
 import { SideBarComponentProps } from '../../types';
 import { useCanvasMenuOptionsAndHotkeys, useHelpOptions } from './hooks';
 
 const CanvasIconMenu: React.FC<SideBarComponentProps> = ({ withLogo = false }) => {
+  const theme = useTheme();
   const designOnly = useIsCanvasDesignOnly();
   const helpOptions = useHelpOptions();
   const logoOptions = useLogoButtonOptions();
@@ -30,7 +31,7 @@ const CanvasIconMenu: React.FC<SideBarComponentProps> = ({ withLogo = false }) =
         header={
           withLogo ? (
             <HeaderLogoButton
-              style={{ height: '61px', margin: '0 0 20px 0', borderBottom: '1px solid #dfe3ed' }}
+              style={{ height: `${theme.components.projectPage.header.height}px`, margin: '0 0 20px 0', borderBottom: '1px solid #dfe3ed' }}
               options={logoOptions}
               withBorder={false}
             />

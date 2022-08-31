@@ -19,7 +19,7 @@ const nodeDataAdapter = createSimpleAdapter<
 
     const type = typeof getNodeType === 'function' ? getNodeType(dbData, { context }) : getNodeType || dbType;
 
-    let data: Partial<NodeData<unknown>> = {};
+    let data: Partial<NodeData<unknown & { portsV2?: unknown }>> = {};
 
     try {
       const adapters = getBlockAdapters(platform, projectType, needsMigration(dbType, type));
@@ -29,9 +29,12 @@ const nodeDataAdapter = createSimpleAdapter<
       data = { deprecatedType: type, ...dbData };
     }
 
+    // strip portsV2 from adapted data, ports catalogued separately in nodeAdapter
+    const { portsV2: _, ...sanitizedData } = data;
+
     return {
       name: data.name ?? dbData.name ?? '',
-      ...data,
+      ...sanitizedData,
       type: data.deprecatedType ? BlockType.DEPRECATED : type,
       nodeID,
     };

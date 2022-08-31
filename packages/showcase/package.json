@@ -19,10 +19,7 @@
     "simplebar": "5.3.3",
     "styled-components": "5.3.3"
   },
-  "devDependencies": {
-    "@voiceflow/vite-config": "1.5.3",
-    "vite": "2.9.14"
-  },
+  "devDependencies": {},
   "files": [
     "build"
   ],

@@ -57,6 +57,8 @@ export const useEngine = (): [Engine, number] => {
 
 if (IS_DEVELOPMENT && import.meta.hot) {
   import.meta.hot.accept('../engine/index.ts', (module) => {
-    $recreateEngine?.(module.default);
+    if (module) {
+      $recreateEngine?.(module.default);
+    }
   });
 }

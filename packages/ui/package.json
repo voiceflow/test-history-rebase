@@ -53,14 +53,10 @@
     "@types/react-input-autosize": "2.2.1",
     "@types/react-syntax-highlighter": "13.5.2",
     "@types/react-toggle": "4.0.3",
-    "@voiceflow/vite-config": "1.5.3",
-    "c8": "^7.11.3",
     "jest-styled-components": "7.0.6",
     "jsdom": "^20.0.0",
     "react-dom": "17.0.2",
-    "tslib": "2.3.1",
-    "vite": "^2.9.14",
-    "vitest": "^0.18.0"
+    "tslib": "2.3.1"
   },
   "files": [
     "build"

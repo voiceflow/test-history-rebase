@@ -14,6 +14,8 @@
     "@types/mock-require": "2.0.1",
     "@types/sinon": "10.0.11",
     "@types/sinon-chai": "3.2.8",
+    "@vitest/coverage-c8": "^0.22.1",
+    "@voiceflow/vite-config": "1.6.0",
     "@voiceflow/babel-preset": "1.1.1",
     "@voiceflow/commitlint-config": "2.0.0",
     "@voiceflow/dependency-cruiser-config": "1.1.0",
@@ -56,6 +58,7 @@
     "ts-node": "10.7.0",
     "tsconfig-paths": "3.12.0",
     "ttypescript": "1.5.12",
+    "vite": "3.0.9",
     "typescript": "4.4.4",
     "webpack": "5.62.1"
   },

@@ -102,6 +102,7 @@ const PrototypeDialog: React.FC<DialogPrototypeProps> = ({
               isFirstInSeries={isFirstInSeries}
               isLastBotMessage={isLastBotMessage}
               isIntentConfidence={isIntentConfidence}
+              isTranscript={isTranscript}
               hasManyMessages={hasManyMessages}
               avatarURL={avatarURL}
               {...messageProps}

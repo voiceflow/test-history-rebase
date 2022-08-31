@@ -35,12 +35,11 @@ export const IntentConfidence: React.FC<IntentConfidenceProps> = ({
 }) => {
   const isReprompt = React.useMemo(() => turnID && dialogTurnMap?.get(turnID)?.some(isRepromptMessage), [dialogTurnMap, turnID]);
   const intentConfidence = lastUserMessage?.confidence;
-  const intentMessage = `${message.split('**')[1]} - `;
+  const intentName = message.split('**')[1];
+  const intentMessage = `${intentName} - `;
   const confidenceMessage = ` ${message.split('confidence interval')[1].split('_')[1]}`;
   const noMatch =
-    isReprompt ||
-    lastUserMessage.intentName === VoiceflowConstants.IntentName.NONE ||
-    (intentConfidence && intentConfidence < INTENT_CONFIDENCE_THRESHOLD);
+    isReprompt || intentName === VoiceflowConstants.IntentName.NONE || (intentConfidence && intentConfidence < INTENT_CONFIDENCE_THRESHOLD);
 
   if (noMatch && isTranscript) {
     return (

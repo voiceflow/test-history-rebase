@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import { Box, BoxFlex, Preview, stopPropagation, Tag } from '@voiceflow/ui';
+import { Box, Preview, stopPropagation, Tag } from '@voiceflow/ui';
 import React from 'react';
 
 import { Permission } from '@/config/permissions';
@@ -30,13 +30,13 @@ const CapturePreview: React.FC<ButtonsPreviewProps> = ({ prompt, onOpenEditor, o
 
       <Preview.Content>
         <Preview.ContentItem key={prompt.id}>
-          <BoxFlex flexDirection="column" alignItems="flex-start">
+          <Box.FlexAlignStart flexDirection="column">
             <Box mb="4px">
               <Tag onClick={() => onOpenEntityModal(prompt.id)} color={prompt.color}>{`{${prompt.name}}`}</Tag>
             </Box>
 
             <Preview.Text>{prompt.content}</Preview.Text>
-          </BoxFlex>
+          </Box.FlexAlignStart>
 
           <Preview.ContentIcon>
             <Preview.ButtonIcon icon="copy" onClick={Utils.functional.chain(copyWithToast(prompt.content), onClose)} />

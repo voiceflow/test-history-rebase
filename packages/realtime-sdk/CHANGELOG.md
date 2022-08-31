@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.148.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.148.0...@voiceflow/realtime-sdk@1.148.1) (2022-08-31)
+
+
+### Bug Fixes
+
+* strip portsV2 from data adapter [bugfix] (CT-000) ([#5997](https://github.com/voiceflow/creator-app/issues/5997)) ([a116260](https://github.com/voiceflow/creator-app/commit/a116260feca0dd611efa799d76a7eda6f1309d8e)), closes [/github.com/voiceflow/creator-app/blob/bc4925f5e3ece85f830339239c375f3e33997a9a/packages/realtime-sdk/src/adapters/creator/block/base/text.ts#L6-L9](https://github.com//github.com/voiceflow/creator-app/blob/bc4925f5e3ece85f830339239c375f3e33997a9a/packages/realtime-sdk/src/adapters/creator/block/base/text.ts/issues/L6-L9)
+
+
+
+
+
 # [1.148.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.147.0...@voiceflow/realtime-sdk@1.148.0) (2022-08-30)
 
 

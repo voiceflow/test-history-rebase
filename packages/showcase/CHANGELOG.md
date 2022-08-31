@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.22.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/showcase@1.21.20...@voiceflow/showcase@1.22.0) (2022-08-31)
+
+
+### Features
+
+* bump vite (CT-886) ([#5992](https://github.com/voiceflow/creator-app/issues/5992)) ([07d6fe7](https://github.com/voiceflow/creator-app/commit/07d6fe78e6eb0471c9278f4fc6220ef5ee7bb76e))
+
+
+
+
+
 ## [1.21.20](https://github.com/voiceflow/creator-app/compare/@voiceflow/showcase@1.21.19...@voiceflow/showcase@1.21.20) (2022-08-31)
 
 **Note:** Version bump only for package @voiceflow/showcase

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.144.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.143.0...@voiceflow/ui@1.144.0) (2022-08-31)
+
+
+### Features
+
+* bump vite (CT-886) ([#5992](https://github.com/voiceflow/creator-app/issues/5992)) ([07d6fe7](https://github.com/voiceflow/creator-app/commit/07d6fe78e6eb0471c9278f4fc6220ef5ee7bb76e))
+
+
+
+
+
 # [1.143.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.142.0...@voiceflow/ui@1.143.0) (2022-08-31)
 
 

@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.889.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.888.0...@voiceflow/creator-app@1.889.0) (2022-08-31)
+
+
+### Bug Fixes
+
+* add utterance to intent in transcripts (CT-717) ([#5995](https://github.com/voiceflow/creator-app/issues/5995)) ([b8e7254](https://github.com/voiceflow/creator-app/commit/b8e7254d27cc3c8adbcd882681356fed8c392948))
+* left align entity tag (CT-720) ([#5996](https://github.com/voiceflow/creator-app/issues/5996)) ([0daddc5](https://github.com/voiceflow/creator-app/commit/0daddc58634fb1cf31c7ba27d70dbcba56a8e151))
+
+
+### Features
+
+* bump vite (CT-886) ([#5992](https://github.com/voiceflow/creator-app/issues/5992)) ([07d6fe7](https://github.com/voiceflow/creator-app/commit/07d6fe78e6eb0471c9278f4fc6220ef5ee7bb76e))
+
+
+
+
+
 # [1.888.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.887.1...@voiceflow/creator-app@1.888.0) (2022-08-31)
 
 

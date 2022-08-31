@@ -1,4 +1,5 @@
 export { default as AnimatedContent } from './AnimatedContent';
+export { default as ChipHeader } from './ChipHeader';
 export type { DefaultFooterTypes } from './DefaultFooter';
 export { default as DefaultFooter } from './DefaultFooter';
 export { default as DefaultHeader } from './DefaultHeader';

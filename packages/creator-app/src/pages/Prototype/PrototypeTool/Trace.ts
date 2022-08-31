@@ -659,7 +659,7 @@ class TraceController {
     await this.waitDiagram(diagramID);
     await this.waitEngineAndNodes();
 
-    // Highlight the start block when entering a flow
+    // Highlight the start block when entering a diagram
     const startNode = Array.from(this.props.getEngine()?.nodes ?? []).find((data) => data[1].type === BlockType.START);
 
     // TODO: refactor block highlighting system, topics do not have startNodes

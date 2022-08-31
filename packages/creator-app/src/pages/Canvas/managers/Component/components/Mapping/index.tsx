@@ -5,18 +5,17 @@ import MappingSection from './components/MappingSection';
 
 interface MappingProps {
   data: Realtime.NodeData<Realtime.NodeData.Component>;
-  isFlow?: boolean;
   updateInputs: (inputs: Realtime.NodeData.VariableMapping[]) => void;
   updateOutputs: (outputs: Realtime.NodeData.VariableMapping[]) => void;
 }
 
-const Mapping: React.FC<MappingProps> = ({ isFlow, data, updateInputs, updateOutputs }) => (
+const Mapping: React.FC<MappingProps> = ({ data, updateInputs, updateOutputs }) => (
   <>
     <MappingSection
       data={data}
       items={data.inputs}
       header="Input Mapping"
-      tooltip={`Pass in variables that will be used exclusively for this ${isFlow ? 'flow' : 'component'}.`}
+      tooltip="Pass in variables that will be used exclusively for this component."
       onChange={updateInputs}
     />
 
@@ -25,7 +24,7 @@ const Mapping: React.FC<MappingProps> = ({ isFlow, data, updateInputs, updateOut
       items={data.outputs}
       header="Output Mapping"
       reverse
-      tooltip={`Retrieve variables that are used in this ${isFlow ? 'flow' : 'component'}.`}
+      tooltip="Retrieve variables that are used in this component."
       onChange={updateOutputs}
       isDividerNested
     />

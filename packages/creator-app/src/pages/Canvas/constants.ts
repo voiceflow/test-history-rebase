@@ -35,10 +35,9 @@ export const EDITOR_HEADER_CLASSNAME = `${ClassName.CANVAS_EDITOR}__header`;
 export const EDITOR_BREADCRUMBS_CLASSNAME = `${ClassName.CANVAS_EDITOR}__breadcrumbs`;
 
 export const HOME_BLOCK_CLASSNAME = `${ClassName.CANVAS_BLOCK}--home`;
-export const FLOW_BLOCK_CLASSNAME = `${ClassName.CANVAS_BLOCK}--flow`;
 
 export const HOME_CHIP_CLASSNAME = `${ClassName.CANVAS_CHIP}--home`;
-export const FLOW_CHIP_CLASSNAME = `${ClassName.CANVAS_CHIP}--flow`;
+export const COMPONENT_CHIP_CLASSNAME = `${ClassName.CANVAS_CHIP}--component`;
 
 export const BLOCK_SECTION_CLASSNAME = `${ClassName.CANVAS_BLOCK}__section`;
 export const BLOCK_SECTION_TITLE_CLASSNAME = `${ClassName.CANVAS_BLOCK}__section__title`;

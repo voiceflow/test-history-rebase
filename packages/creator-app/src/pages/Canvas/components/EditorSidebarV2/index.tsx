@@ -1,3 +1,4 @@
+import { Nullable } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { CustomScrollbarsTypes, stopImmediatePropagation } from '@voiceflow/ui';
 import React from 'react';
@@ -9,6 +10,7 @@ import { Path } from '@/config/routes';
 import { BlockType } from '@/constants';
 import { NamespaceProvider } from '@/contexts';
 import * as Creator from '@/ducks/creator';
+import * as CreatorV2 from '@/ducks/creatorV2';
 import * as Router from '@/ducks/router';
 import { useDispatch, useSelector, useTheme, useToggle } from '@/hooks';
 import { EngineContext, ManagerContext } from '@/pages/Canvas/contexts';
@@ -16,6 +18,7 @@ import { PlatformContext, ProjectTypeContext } from '@/pages/Project/contexts';
 import { useEditingMode } from '@/pages/Project/hooks';
 
 import { EditorAnimationEffect } from '../../constants';
+import { NodeEditorV2Props } from '../../managers/types';
 import { LockedBlockOverlay } from '../LockedEditorOverlay';
 import { EditorSidebarProvider } from './context';
 import { useUseAutopanBlockIntoView } from './hooks';
@@ -36,6 +39,9 @@ const EditorSidebarV2 = () => {
   const node = useSelector(Creator.focusedNodeSelector);
   const data = useSelector(Creator.focusedNodeDataSelector);
   const focus = useSelector(Creator.creatorFocusSelector);
+  const parentNodeData = useSelector(CreatorV2.nodeDataByIDSelector, { id: node?.parentNode }) as Nullable<
+    Realtime.NodeData<Realtime.NodeData.Combined>
+  >;
 
   const [isFullscreen, toggleFullscreen] = useToggle(false);
 
@@ -44,6 +50,12 @@ const EditorSidebarV2 = () => {
   const onChange = React.useCallback(
     (value: Partial<Realtime.NodeData<{}>>) => (node?.id ? engine.node.updateData(node.id, value) : Promise.resolve()),
     [engine.node, node?.id]
+  );
+
+  const onParentChange = React.useCallback(
+    (value: Partial<Realtime.NodeData<Realtime.NodeData.Combined>>) =>
+      node?.parentNode ? engine.node.updateData(node.parentNode, value) : Promise.resolve(),
+    [engine.node, node?.parentNode]
   );
 
   const routeMatch = useRouteMatch(Path.CANVAS_NODE);
@@ -110,7 +122,7 @@ const EditorSidebarV2 = () => {
 
     if (!Editor) return null;
 
-    const editorProps = {
+    const editorProps: NodeEditorV2Props<any, any> = {
       data: data as any,
       node: node as any,
       label: manager.getDataLabel?.(data as any) ?? manager.label ?? '',
@@ -126,6 +138,8 @@ const EditorSidebarV2 = () => {
       scrollbars,
       projectType,
       isFullscreen,
+      parentNodeData,
+      onParentChange,
       onToggleFullscreen: toggleFullscreen,
     };
 

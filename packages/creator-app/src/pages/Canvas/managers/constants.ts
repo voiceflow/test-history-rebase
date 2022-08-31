@@ -14,7 +14,6 @@ import CarouselManager from './Carousel';
 import ChoiceManager from './Choice';
 import CodeManager from './Code';
 import CombinedManager from './Combined';
-import CommandManager from './Command';
 import ComponentManager from './Component';
 import CustomPayloadManager from './CustomPayload';
 import DeprecatedManager from './Deprecated';
@@ -52,7 +51,7 @@ export const MANAGERS_BY_TYPE = {
   [BlockType.CHOICE]: ChoiceManager,
   [BlockType.BUTTONS]: ButtonsManager,
   [BlockType.COMBINED]: CombinedManager,
-  [BlockType.COMMAND]: CommandManager,
+  [BlockType.COMMAND]: DeprecatedManager,
   [BlockType.PAYLOAD]: CustomPayloadManager,
   [BlockType.DEPRECATED_CUSTOM_PAYLOAD]: CustomPayloadManager,
   [BlockType.SET]: SetManagerV2,

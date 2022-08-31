@@ -470,7 +470,7 @@ class NodeManager extends EngineConsumer {
     return `New Block ${rootNodeIDs.length}`;
   }
 
-  private async handleNewStep<T extends { id: string; type: BlockType }>(node: T, autoFocus = true) {
+  private async handleNewStep<T extends { id: string; type: BlockType }>(node: T, { autoFocus = true }: { autoFocus?: boolean } = {}) {
     this.dispatch(Tracking.trackNewStepCreated({ stepType: node.type }));
 
     if (autoFocus) {
@@ -592,7 +592,7 @@ class NodeManager extends EngineConsumer {
   /**
    * appends a new step to a block
    */
-  async appendStep(blockID: string, type: BlockType): Promise<void> {
+  async appendStep(blockID: string, type: BlockType, options?: { autoFocus?: boolean }): Promise<string> {
     const stepID = Utils.id.objectID();
     const { node, data } = nodeDescriptorFactory(stepID, type, undefined, this.select(nodeFactoryOptionsSelector));
 
@@ -603,11 +603,13 @@ class NodeManager extends EngineConsumer {
         await this.internal.appendStep(blockID, node, data);
 
         // TODO: fold this into the actions that add new steps to have better atomicity
-        await this.handleNewStep(node);
+        await this.handleNewStep(node, options);
       })
     );
 
     this.log.info(this.log.success('added nested node'), this.log.slug(stepID));
+
+    return node.id;
   }
 
   /**
@@ -632,7 +634,7 @@ class NodeManager extends EngineConsumer {
       History.transaction(async () => {
         await this.internal.insertStep(parentNodeID, node, data, index, { isActions });
         // TODO: fold this into the actions that add new steps to have better atomicity
-        await this.handleNewStep(node, autoFocus);
+        await this.handleNewStep(node, { autoFocus });
       })
     );
 

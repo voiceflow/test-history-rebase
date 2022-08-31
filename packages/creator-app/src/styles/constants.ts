@@ -1,7 +1,6 @@
 export enum Identifier {
   TEST = 'vf-test',
   DESIGN_MENU = 'vf-design-menu',
-  FLOW_MENU = 'vf-flow-menu',
   STEP_MENU = 'vf-step-menu',
   RESOURCE_MENU = 'vf-resource-menu',
   MARKUP_MENU = 'vf-markup-menu',
@@ -102,7 +101,6 @@ export enum ClassName {
   CANVAS_PORT = 'vf-canvas__port',
   CANVAS_LINK = 'vf-canvas__link',
   CANVAS_CONTROL = 'vf-canvas__control',
-  FLOW_MENU_ITEM = 'vf-flow-menu__item',
   STEP_MENU_ITEM = 'vf-step-menu__item',
   SUB_STEP_MENU_ITEM = 'vf-sub-step-menu__item',
   DROPDOWN = 'vf-dropdown',

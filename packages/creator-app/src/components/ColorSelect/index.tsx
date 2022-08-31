@@ -7,9 +7,9 @@ import ColorPicker from '@/components/ColorPicker';
 import { ColorPreview } from './components';
 
 export type ColorSelectProps = React.ComponentProps<typeof ColorPicker> & {
-  disabled?: boolean;
   onShow?: () => void;
   onClose?: () => void;
+  disabled?: boolean;
   onPickerPreviewMouseDown?: (event: React.MouseEvent<HTMLDivElement>) => void;
   onPickerContainerMouseDown?: (event: React.MouseEvent<HTMLDivElement>) => void;
 };

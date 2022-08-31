@@ -1,4 +1,4 @@
-import { Input, removeHashFromHex } from '@voiceflow/ui';
+import { COLOR_PICKER_CONSTANTS, Input, removeHashFromHex } from '@voiceflow/ui';
 import { parseToRgb, rgba } from 'polished';
 import React from 'react';
 import { RGBColor } from 'react-color';
@@ -11,11 +11,11 @@ import { AlphaContainer, Colors, Container, HueContainer, InputAction, InputCont
 import withHexColor from './withHexColor';
 
 export interface ColorPickerProps {
-  type?: 'background' | 'text';
   width?: number;
   colors?: boolean;
   hexInput?: boolean;
   alphaSlider?: boolean;
+  colorScheme?: COLOR_PICKER_CONSTANTS.ColorScheme;
   onInputBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
   onInputFocus?: (event: React.FocusEvent<HTMLInputElement>) => void;
   onChangeCompleted?: (color: RGBColor) => void;
@@ -23,10 +23,10 @@ export interface ColorPickerProps {
 }
 
 const ColorPicker = ({
-  type = 'background',
   colors = true,
   hexInput = true,
   alphaSlider = true,
+  colorScheme = COLOR_PICKER_CONSTANTS.ColorScheme.LIGHT,
   onInputBlur,
   onInputFocus,
   onChangeCompleted,
@@ -107,7 +107,7 @@ const ColorPicker = ({
         </InputContainer>
       )}
 
-      {colors && <Colors type={type} selectedColor={localHex} onSelect={onSelectColor} />}
+      {colors && <Colors selectedColor={localHex} colorScheme={colorScheme} onSelect={onSelectColor} />}
     </Container>
   );
 };

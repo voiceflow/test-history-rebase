@@ -1,5 +1,12 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { colorGetReadableAlfa, colorReadableAlfaToOpacity, preventDefault, useDidUpdateEffect, useToggle } from '@voiceflow/ui';
+import {
+  COLOR_PICKER_CONSTANTS,
+  colorGetReadableAlfa,
+  colorReadableAlfaToOpacity,
+  preventDefault,
+  useDidUpdateEffect,
+  useToggle,
+} from '@voiceflow/ui';
 import React from 'react';
 import { unstable_batchedUpdates } from 'react-dom';
 
@@ -109,10 +116,10 @@ const TextColor: React.FC = () => {
       sliderProps={{ min: 0, autoFocus: false, handle: OpacitySliderHandle }}
       sliderPrefix={
         <ColorSelect
-          type="text"
           color={color}
           onChange={onChangeColor}
           onInputBlur={onPickerInputBlur}
+          colorScheme={COLOR_PICKER_CONSTANTS.ColorScheme.DARK}
           onInputFocus={onPickerInputFocus}
           onContainerMouseDown={preventDefault()}
           onPickerPreviewMouseDown={preventDefault()}

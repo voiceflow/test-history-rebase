@@ -2,6 +2,8 @@ import { flexApartStyles } from '@ui/components/Flex';
 import { css, styled, units } from '@ui/styles';
 import { space, SpaceProps } from 'styled-system';
 
+import InfoIconTooltip from './InfoIconTooltip';
+
 export interface HeaderProps extends SpaceProps {
   top?: number;
   sticky?: boolean;
@@ -14,6 +16,16 @@ const Header = styled.header<HeaderProps>`
   padding: ${units(2.5)}px ${units(4)}px ${({ theme, bottomUint = 2 }) => units(bottomUint)({ theme })}px ${units(4)}px;
   line-height: 1;
   ${space}
+
+  ${InfoIconTooltip.StyledIcon} {
+    opacity: 0;
+  }
+
+  &:hover {
+    ${InfoIconTooltip.StyledIcon} {
+      opacity: 1;
+    }
+  }
 
   ${({ onClick }) =>
     onClick &&

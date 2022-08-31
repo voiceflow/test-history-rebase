@@ -18,9 +18,9 @@ export interface ColorPickerProps extends ColorThemesPersistAPI {
   tagName?: string;
   onChange: (color: string) => void;
   customThemes?: Colors;
-  selectedColor: string;
-  defaultColorScheme?: ColorScheme;
   debounceTime?: number;
+  selectedColor?: string;
+  defaultColorScheme?: ColorScheme;
 }
 
 export const ColorPicker: React.FC<ColorPickerProps> = ({
@@ -33,7 +33,10 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
   debounceTime = 100,
   ...props
 }) => {
-  const normalizedColor = React.useMemo(() => normalizeColor(selectedColor), [selectedColor]);
+  const normalizedColor = React.useMemo(
+    () => normalizeColor(selectedColor || DEFAULT_SCHEME_COLORS[defaultColorScheme].standardColor),
+    [selectedColor, defaultColorScheme]
+  );
 
   const [selectedHex, setSelectedHex] = useLinkedState(normalizedColor);
 

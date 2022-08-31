@@ -1,5 +1,5 @@
 import { BaseNode } from '@voiceflow/base-types';
-import { Struct } from '@voiceflow/common';
+import { Nullable, Struct } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { CustomScrollbarsTypes, OptionsMenuOption, SvgIconTypes } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
@@ -138,6 +138,8 @@ export interface NodeEditorV2Props<Data, BuiltInPorts extends Realtime.BuiltInPo
   goToNested: GoToNested;
   projectType: VoiceflowConstants.ProjectType;
   isFullscreen: boolean;
+  parentNodeData: Nullable<Realtime.NodeData<Realtime.NodeData.Combined>>;
+  onParentChange: (value: Partial<Realtime.NodeData<Realtime.NodeData.Combined>>) => Promise<void>;
   onToggleFullscreen: VoidFunction;
 }
 

@@ -7,7 +7,6 @@ import { isMarkupOrCombinedBlockType } from './typeGuards';
 
 export const {
   isCommandNode,
-  isLinkedCommandNode,
   isIntentNode,
   isLinkedIntentNode,
   isChoiceNode,

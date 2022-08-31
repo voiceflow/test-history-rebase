@@ -21,10 +21,6 @@ export const isLinkedDiagramNode = (data: NodeData<unknown>): data is NodeData<{
 
 export const isCommandNode = checkNodeType<NodeData.Command>(BlockType.COMMAND);
 
-export const isLinkedCommandNode = (
-  data: NodeData<unknown>
-): data is NodeData<NodeData.Command> & NonNullishRecord<Pick<NodeData.Command.PlatformData, 'diagramID'>> => isCommandNode(data) && !!data.diagramID;
-
 export const isIntentNode = checkNodeType<NodeData.Intent>(BlockType.INTENT);
 
 export type LinkedIntentNode = NodeData<NodeData.Intent> & NonNullishRecord<Pick<NodeData.Intent.PlatformData, 'intent'>>;

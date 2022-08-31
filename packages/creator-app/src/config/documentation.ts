@@ -25,7 +25,6 @@ export const COMPONENTS_LAYER = 'https://www.voiceflow.com/docs/designing-compon
 export const COMPONENT_STEP = 'https://www.voiceflow.com/docs/designing-components-flow';
 export const CODE_STEP = 'https://www.voiceflow.com/docs/designing-developer-steps#toc-2';
 export const SET_STEP_VIDEO = 'https://www.youtube.com/embed/6xgr-7GPZzU';
-export const COMMAND_STEP_VIDEO = 'https://www.youtube.com/watch?v=piU_PTL1wBQ&feature=emb_title';
 export const ACCOUNT_LINKING_STEP = 'https://www.voiceflow.com/docs/designing-channel-specific-steps#toc-4';
 export const ALEXA_DIRECTIVE_STEP = 'https://www.voiceflow.com/docs/designing-channel-specific-steps#toc-5';
 export const GOOGLE_DIRECTIVE_STEP = 'https://www.voiceflow.com/docs/designing-channel-specific-steps#toc-6';
@@ -59,6 +58,8 @@ export const ACTIONS_BACKEND = 'https://www.voiceflow.com/docs/designing-adding-
 export const ACTIONS_NAVIGATION = 'https://www.voiceflow.com/docs/designing-adding-actions#navigation-actions';
 
 // steps
+export const START_STEP = 'https://www.voiceflow.com/docs/';
+export const COMMAND_STEP = 'https://www.voiceflow.com/docs/';
 export const INTENT_STEP = 'https://www.voiceflow.com/docs/designing-event-steps#toc-0';
 export const CHOICE_STEP = 'https://www.voiceflow.com/docs/designing-user-input-steps#toc-2';
 export const BUTTONS_STEP = 'https://www.voiceflow.com/docs/designing-user-input-steps#toc-1';

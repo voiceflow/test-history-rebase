@@ -133,7 +133,10 @@ export namespace NodeData {
     [BaseModels.PortType.NO_REPLY]?: string;
   }
 
-  export type Command = Command.PlatformData & { name: string };
+  export interface Command extends Command.PlatformData {
+    name: string;
+  }
+
   export namespace Command {
     export interface PlatformData {
       // only added some properties here

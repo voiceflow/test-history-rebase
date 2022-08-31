@@ -87,7 +87,6 @@ const BackgroundColorSlider: React.FC<BackgroundColorSliderProps> = ({ color, on
       sliderProps={{ min: 0, autoFocus: false, handle: OpacitySliderHandle }}
       sliderPrefix={
         <ColorSelect
-          type="background"
           color={color}
           onChange={handleChangeColor}
           onInputBlur={onPickerInputBlur}

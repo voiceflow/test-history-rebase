@@ -25,7 +25,7 @@ export const Debug: React.FC<DebugProps> = ({ message, ...props }) => {
 
       const name = getDiagram({ id: flowID })?.name || flowID;
 
-      formattedMessage = `entering flow \`${name}\``;
+      formattedMessage = `entering diagram \`${name}\``;
     }
 
     // eslint-disable-next-line no-useless-escape, prettier/prettier

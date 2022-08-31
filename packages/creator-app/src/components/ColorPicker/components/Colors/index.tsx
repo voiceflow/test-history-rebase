@@ -6,18 +6,18 @@ import { useSelector } from '@/hooks';
 
 import { Container, List } from './components';
 
-const { ColorScheme, DEFAULT_THEMES, DEFAULT_SCHEME_COLORS } = COLOR_PICKER_CONSTANTS;
+const { DEFAULT_THEMES, DEFAULT_SCHEME_COLORS } = COLOR_PICKER_CONSTANTS;
 
 interface ColorsProps {
-  type: 'background' | 'text';
   onSelect: (color: string) => void;
+  colorScheme: COLOR_PICKER_CONSTANTS.ColorScheme;
   selectedColor: string;
 }
 
-const Colors: React.FC<ColorsProps> = ({ onSelect, type, selectedColor }) => {
+const Colors: React.FC<ColorsProps> = ({ onSelect, colorScheme, selectedColor }) => {
   const colors = useSelector(customThemesSelector);
 
-  const defaultColor = type === 'text' ? DEFAULT_SCHEME_COLORS[ColorScheme.DARK] : DEFAULT_SCHEME_COLORS[ColorScheme.LIGHT];
+  const defaultColor = DEFAULT_SCHEME_COLORS[colorScheme];
 
   return (
     <Container>

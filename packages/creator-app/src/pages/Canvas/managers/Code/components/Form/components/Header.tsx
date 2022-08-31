@@ -13,7 +13,7 @@ const Header: React.FC<HeaderProps> = ({ editor, children }) => (
   <EditorV2.Header>
     {children}
 
-    <EditorV2.HeaderTitle>Javascript</EditorV2.HeaderTitle>
+    <EditorV2.HeaderTitle>{editor.label}</EditorV2.HeaderTitle>
 
     <IconButton
       icon={editor.isFullscreen ? 'systemMinimize' : 'systemExpand'}

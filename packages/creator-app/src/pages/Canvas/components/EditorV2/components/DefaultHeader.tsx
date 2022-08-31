@@ -24,7 +24,7 @@ const DefaultHeader: React.FC<DefaultHeaderProps> = ({ title, actions, onBack })
       <SidebarEditor.HeaderTitle>{title ?? editor.label}</SidebarEditor.HeaderTitle>
 
       <SectionV2.ActionsContainer>
-        <SidebarEditor.HeaderActionsButton actions={actions ?? defaultActions} />
+        <SidebarEditor.HeaderActionsButton actions={onBack ? [] : actions ?? defaultActions} />
       </SectionV2.ActionsContainer>
     </SidebarEditor.Header>
   );

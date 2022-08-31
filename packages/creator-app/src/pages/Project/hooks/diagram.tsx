@@ -136,7 +136,7 @@ export const useDiagramOptions = ({ onEdit, onRename, diagramID }: DiagramOption
       return;
     }
 
-    const label = getDiagramByID({ id: diagramID })?.type === BaseModels.Diagram.DiagramType.TOPIC ? 'topic' : 'flow';
+    const label = getDiagramByID({ id: diagramID })?.type === BaseModels.Diagram.DiagramType.TOPIC ? 'topic' : 'component';
 
     setConfirmModal({
       body: 'This action will permanently delete all contents of the component and can not be reversed. Are you sure you want to continue?',

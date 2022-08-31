@@ -30,7 +30,6 @@ interface IntentSelectProps
 }
 
 const IntentSelect: React.FC<IntentSelectProps> = ({
-  icon,
   intent,
   options: propOptions,
   onChange,

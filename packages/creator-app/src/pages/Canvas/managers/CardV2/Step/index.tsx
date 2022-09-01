@@ -15,6 +15,8 @@ import Step, {
 import { ConnectedStep } from '@/pages/Canvas/managers/types';
 import { isVariable, transformVariablesToReadable } from '@/utils/slot';
 
+import { PATH } from '../Editor/Buttons/constants';
+
 const slateDescription = (description: BaseText.SlateTextValue) =>
   SlateEditable.EditorAPI.isNewState(description) ? '' : SlateEditable.serializeToJSX(description);
 
@@ -56,7 +58,13 @@ const CardV2Step: ConnectedStep<Realtime.NodeData.CardV2, Realtime.NodeData.Card
           <Step.SubItem>
             <StepCarouselButtonGroup>
               {card.buttons.map((button) => (
-                <Step.Item key={button.id} nested portID={ports.out.byKey[button.id]}>
+                <Step.Item
+                  key={button.id}
+                  nested
+                  portID={ports.out.byKey[button.id]}
+                  parentActionsPath={PATH}
+                  parentActionsParams={{ buttonID: button.id }}
+                >
                   <StepCarouselButton>
                     <OverflowText>{button.name || 'Button Label'}</OverflowText>
                   </StepCarouselButton>

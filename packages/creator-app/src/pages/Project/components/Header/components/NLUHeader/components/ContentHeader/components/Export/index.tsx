@@ -1,6 +1,7 @@
 import { Button, ButtonVariant, Popper } from '@voiceflow/ui';
 import React from 'react';
 
+import { InteractionModelTabType } from '@/constants';
 import {
   ExportContent,
   ExportFooter,
@@ -10,9 +11,10 @@ import {
 
 interface ExportProps {
   checkedItems: string[];
+  activeTab: InteractionModelTabType;
 }
 
-const Export: React.FC<ExportProps> = ({ checkedItems }) => {
+const Export: React.FC<ExportProps> = ({ checkedItems, activeTab }) => {
   const [opened, setIsOpened] = React.useState(false);
 
   return (
@@ -32,7 +34,7 @@ const Export: React.FC<ExportProps> = ({ checkedItems }) => {
         {({ ref }) => (
           <Button squareRadius flat variant={ButtonVariant.SECONDARY} onClick={() => setIsOpened(true)} ref={ref}>
             Export
-            {!!checkedItems.length && ` (${checkedItems.length})`}
+            {activeTab === InteractionModelTabType.INTENTS && !!checkedItems.length && ` (${checkedItems.length})`}
           </Button>
         )}
       </Popper>

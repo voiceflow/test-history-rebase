@@ -81,7 +81,7 @@ const ContentHeader: React.FC = () => {
           </TrashButton>
         )}
 
-        <Export checkedItems={Array.from(nluManager.selectedItemIDs)} />
+        <Export checkedItems={Array.from(nluManager.selectedItemIDs)} activeTab={nluManager.activeTab} />
 
         <TrainButton active={isTraining} onClick={handleTrain} squareRadius variant={ButtonVariant.PRIMARY}>
           <Box display="inline-block" position="relative" top={2}>

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.21.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/socket-utils@1.21.0...@voiceflow/socket-utils@1.21.1) (2022-09-02)
+
+
+### Bug Fixes
+
+* ignore websocket close message (CT-000) ([ef9569e](https://github.com/voiceflow/creator-app/commit/ef9569e3b8ef3d1428bccc130aaaf0047f31d8ca))
+
+
+
+
+
 # [1.21.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/socket-utils@1.20.2...@voiceflow/socket-utils@1.21.0) (2022-08-22)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.890.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.890.0...@voiceflow/creator-app@1.890.1) (2022-09-02)
+
+
+### Bug Fixes
+
+* removed nlu export counter for entities and variables (NLU-279) ([#6001](https://github.com/voiceflow/creator-app/issues/6001)) ([c1405da](https://github.com/voiceflow/creator-app/commit/c1405daee4957de087b0b8c545989ebb4d66f25e))
+
+
+
+
+
 # [1.890.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.889.0...@voiceflow/creator-app@1.890.0) (2022-09-01)
 
 

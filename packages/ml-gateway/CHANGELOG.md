@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.24.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.24.2...@voiceflow/ml-gateway@1.24.3) (2022-09-03)
+
+
+### Bug Fixes
+
+* bump logux (CT-000) ([#6009](https://github.com/voiceflow/creator-app/issues/6009)) ([f4e0486](https://github.com/voiceflow/creator-app/commit/f4e048626ed8ecf46277a6adf59092de375bbb8e))
+
+
+
+
+
 ## [1.24.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.24.1...@voiceflow/ml-gateway@1.24.2) (2022-09-02)
 
 **Note:** Version bump only for package @voiceflow/ml-gateway

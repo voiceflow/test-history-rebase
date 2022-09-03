@@ -6,7 +6,6 @@ import { ButtonContainer, Container, SynonymContainer, ValueContainer } from './
 const CustomLine = ({ remove, value: { value, synonyms }, onBlur, onChange, removeDisabled }) => (
   <Container>
     <ValueContainer>
-      {/* eslint-disable-next-line jsx-a11y/no-autofocus */}
       <Input autoFocus={!value} value={value} onBlur={onBlur} onChangeText={(value) => onChange({ value })} placeholder="Entity Value" />
     </ValueContainer>
 

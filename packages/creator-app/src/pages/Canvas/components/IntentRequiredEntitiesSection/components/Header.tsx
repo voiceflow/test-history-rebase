@@ -1,5 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { PopperProps, SectionV2 } from '@voiceflow/ui';
+import { PopperTypes, SectionV2 } from '@voiceflow/ui';
 import * as Normal from 'normal-store';
 import React from 'react';
 
@@ -10,7 +10,7 @@ interface HeaderProps {
   boldTitle?: boolean;
   onAddRequired: (slotID: string) => void;
   intentEntities: Normal.Normalized<Realtime.IntentSlot>;
-  addDropdownPlacement?: PopperProps['placement'];
+  addDropdownPlacement?: PopperTypes.Placement;
 }
 
 const Header: React.FC<HeaderProps> = ({ entities, boldTitle, onAddRequired, intentEntities, addDropdownPlacement }) => (

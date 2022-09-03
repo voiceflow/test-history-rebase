@@ -1,6 +1,7 @@
-import { ClientCRUDPayload, createAction, createAsyncAction, createCRUDActions, getCRUDActionTargets } from '@realtime-sdk/actions/utils';
+import { ClientCRUDPayload, createCRUDActions, getCRUDActionTargets } from '@realtime-sdk/actions/utils';
 import { Workspace } from '@realtime-sdk/models';
 import { BaseCreatorPayload, BaseWorkspacePayload } from '@realtime-sdk/types';
+import { Utils } from '@voiceflow/common';
 import { BillingPeriod, PlanType } from '@voiceflow/internal';
 import { Action, AnyAction } from 'typescript-fsa';
 
@@ -14,7 +15,7 @@ export interface CreateWorkspacePayload {
   data: { name: string; image?: string };
 }
 
-export const create = createAsyncAction<CreateWorkspacePayload, Workspace>(workspaceType('CREATE'));
+export const create = Utils.protocol.createAsyncAction<CreateWorkspacePayload, Workspace>(workspaceType('CREATE'));
 
 // crud
 
@@ -40,13 +41,13 @@ export interface CheckoutWorkspacePayload extends BaseWorkspacePayload {
   sourceID: string;
 }
 
-export const leave = createAction<LeaveWorkspacePayload>(workspaceType('LEAVE'));
+export const leave = Utils.protocol.createAction<LeaveWorkspacePayload>(workspaceType('LEAVE'));
 
-export const checkout = createAction<CheckoutWorkspacePayload>(workspaceType('CHECKOUT'));
+export const checkout = Utils.protocol.createAction<CheckoutWorkspacePayload>(workspaceType('CHECKOUT'));
 
-export const updateName = createAction<UpdateWorkspaceNamePayload>(workspaceType('UPDATE_NAME'));
+export const updateName = Utils.protocol.createAction<UpdateWorkspaceNamePayload>(workspaceType('UPDATE_NAME'));
 
-export const updateImage = createAction<UpdateWorkspaceImagePayload>(workspaceType('UPDATE_IMAGE'));
+export const updateImage = Utils.protocol.createAction<UpdateWorkspaceImagePayload>(workspaceType('UPDATE_IMAGE'));
 
 export const crud = createCRUDActions<Workspace, BaseCreatorPayload>(workspaceType);
 

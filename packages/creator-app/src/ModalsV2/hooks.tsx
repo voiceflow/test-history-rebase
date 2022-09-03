@@ -34,19 +34,26 @@ export function useModal(
   const close = React.useCallback(() => manager.close(modalID, type), []);
   const openVoid = React.useCallback((data: AnyRecord = {}) => open(data).catch(() => null), []);
   const updateData = React.useCallback((data: AnyRecord = {}) => manager.update(modalID, type, data), []);
+  const enableClose = React.useCallback(() => manager.enableClose(modalID, type), []);
+  const preventClose = React.useCallback(() => manager.preventClose(modalID, type), []);
 
   const rendered = React.useMemo(() => modals.state.allKeys.includes(combinedID), [modals.state.allKeys]);
+
+  const modal = modals.state.byKey[combinedID];
 
   return {
     id: modalID,
     type,
     open,
     close,
-    opened: rendered && !modals.state.byKey[combinedID]?.closing,
+    opened: rendered && !modal?.closing,
     hidden: modals.state.allKeys[0] !== combinedID,
     animated: modals.animated,
     rendered,
     openVoid,
     updateData,
+    enableClose,
+    preventClose,
+    closePrevented: !!modal?.closePrevented,
   };
 }

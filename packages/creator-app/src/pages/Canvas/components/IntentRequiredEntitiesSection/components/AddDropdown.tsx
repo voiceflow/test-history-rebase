@@ -1,6 +1,6 @@
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { IconButton, IconButtonVariant, Menu, PopperProps, Select } from '@voiceflow/ui';
+import { IconButton, IconButtonVariant, Menu, PopperTypes, Select } from '@voiceflow/ui';
 import * as Normal from 'normal-store';
 import React from 'react';
 
@@ -10,7 +10,7 @@ import { useAddSlot } from '@/hooks';
 
 interface AddDropdownProps {
   entities: Realtime.Slot[];
-  placement?: PopperProps['placement'];
+  placement?: PopperTypes.Placement;
   onAddRequired: (slotID: string) => void;
   intentEntities: Normal.Normalized<Realtime.IntentSlot>;
 }

@@ -8,15 +8,7 @@ import { OptionalId } from 'mongodb';
 
 import AbstractModel from '../_mongo';
 import { Atomic, AtomicEntity } from '../utils';
-
-interface ManyNodeDataUpdate extends Atomic.Update {
-  nodeID: string;
-}
-
-interface DBDiagramModel extends Omit<BaseModels.Diagram.Model, '_id' | 'versionID'> {
-  _id: ObjectId;
-  versionID: ObjectId;
-}
+import { DBDiagramModel, FromDB, ManyNodeDataUpdate, MapFromDB, MapToDB, ToDB } from './types';
 
 class DiagramModel extends AbstractModel<DBDiagramModel> {
   public collectionName = 'diagrams';
@@ -42,13 +34,7 @@ class DiagramModel extends AbstractModel<DBDiagramModel> {
 
   private atomicNodeData = new AtomicEntity(DiagramModel.nodeDataPath);
 
-  fromDB(diagram: DBDiagramModel): BaseModels.Diagram.Model;
-
-  fromDB<DBDiagram extends Partial<DBDiagramModel>>(
-    diagram: DBDiagram
-  ): Pick<BaseModels.Diagram.Model, Extract<keyof BaseModels.Diagram.Model, keyof DBDiagram>>;
-
-  fromDB(diagram: Partial<DBDiagramModel>): Partial<BaseModels.Diagram.Model> {
+  fromDB: FromDB = (diagram: DBDiagramModel) => {
     const { _id, versionID, ...rest } = diagram;
 
     return {
@@ -56,21 +42,21 @@ class DiagramModel extends AbstractModel<DBDiagramModel> {
       ...(_id && { _id: _id.toHexString() }),
       ...(versionID && { versionID: versionID.toHexString() }),
     };
-  }
+  };
 
-  toDB(diagram: BaseModels.Diagram.Model): DBDiagramModel;
+  mapFromDB: MapFromDB = (diagrams: DBDiagramModel[]) => diagrams.map(this.fromDB);
 
-  toDB<Diagram extends Partial<BaseModels.Diagram.Model>>(diagram: Diagram): Pick<DBDiagramModel, Extract<keyof DBDiagramModel, keyof Diagram>>;
-
-  toDB(diagram: Partial<BaseModels.Diagram.Model>): Partial<DBDiagramModel> {
+  toDB: ToDB = (diagram: BaseModels.Diagram.Model) => {
     const { _id, versionID, ...rest } = diagram;
 
     return {
       ...rest,
       ...(_id && { _id: new ObjectId(_id) }),
       ...(versionID && { versionID: new ObjectId(versionID) }),
-    };
-  }
+    } as DBDiagramModel;
+  };
+
+  mapToDB: MapToDB = (diagrams: BaseModels.Diagram.Model[]) => diagrams.map(this.toDB) as DBDiagramModel[];
 
   atomicNodePortRemap(nodePortRemaps?: Realtime.NodePortRemap[]) {
     if (!nodePortRemaps?.length) return [];
@@ -86,8 +72,14 @@ class DiagramModel extends AbstractModel<DBDiagramModel> {
     return [this.atomicNodeData.setMany(patches)];
   }
 
-  async findManyByVersion(versionID: string, filter?: string[]) {
-    return this.findMany({ versionID: new ObjectId(versionID) }, filter);
+  findManyByVersion(versionID: string, ids?: string[]): Promise<DBDiagramModel[]>;
+
+  findManyByVersion<Field extends keyof DBDiagramModel>(versionID: string, ids: string[], fields: Field[]): Promise<Pick<DBDiagramModel, Field>[]>;
+
+  async findManyByVersion(versionID: string, ids: string[] = [], fields: Array<keyof DBDiagramModel> = []) {
+    const idFilter = ids.length ? { _id: { $in: ids.map((x) => new ObjectId(x)) } } : {};
+
+    return this.findMany({ versionID: new ObjectId(versionID), ...idFilter }, fields);
   }
 
   async addStep({
@@ -411,6 +403,10 @@ class DiagramModel extends AbstractModel<DBDiagramModel> {
 
   async create(diagramData: OptionalId<DBDiagramModel>) {
     return this.insertOne(diagramData);
+  }
+
+  async createMany(diagramsData: OptionalId<DBDiagramModel>[]) {
+    return this.insertMany(diagramsData);
   }
 }
 

@@ -34,6 +34,7 @@ export * from './reducer';
 export * from './redux';
 export * from './routes';
 export * from './scroll';
+export * from './select';
 export * from './slot';
 export * from './speechRecognition';
 export * from './state';

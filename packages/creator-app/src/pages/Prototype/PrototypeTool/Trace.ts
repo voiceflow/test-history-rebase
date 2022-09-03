@@ -5,8 +5,9 @@ import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import _findLast from 'lodash/findLast';
 
 import { GENERAL_RUNTIME_ENDPOINT, IS_TEST } from '@/config';
-import { BlockType, START_BLOCK_ID } from '@/constants';
+import { BlockType } from '@/constants';
 import * as CreatorV2 from '@/ducks/creatorV2';
+import * as Domain from '@/ducks/domain';
 import * as Prototype from '@/ducks/prototype';
 import * as Router from '@/ducks/router';
 import { IDSelectorParam } from '@/ducks/utils/crudV2';
@@ -287,7 +288,13 @@ class TraceController {
       this.props.getEngine()?.store.dispatch(Router.goToCurrentCanvas());
       this.props.getEngine()?.focusNode(blockID, { open: true });
     } else {
-      this.props.getEngine()?.store.dispatch(Router.goToDiagram(diagramID, blockID));
+      const domainID =
+        this.props.getEngine()?.select(Domain.domainIDByTopicIDSelector, { topicID: diagramID }) ??
+        this.props.getEngine()?.select(Domain.rootDomainIDSelector);
+
+      if (domainID) {
+        this.props.getEngine()?.store.dispatch(Router.goToDomainDiagram(domainID, diagramID, blockID));
+      }
     }
   }
 
@@ -671,8 +678,8 @@ class TraceController {
     // This if block handles the edge case were a user starts on a non-start block when testing, and then enters the
     // default 'help' component. Since these diagram start blocks have the same ID, we have to dynamically add and remove
     // the, from the activePathBlockID array, so when users exit components, the start block won't be incorrectly highlighted
-    if (beginningBlock !== START_BLOCK_ID && beginningFlowID === diagramID) {
-      updatedActivePathBlockArray = updatedActivePathBlockArray.filter((val) => val !== START_BLOCK_ID);
+    if (beginningBlock !== Realtime.START_NODE_ID && beginningFlowID === diagramID) {
+      updatedActivePathBlockArray = updatedActivePathBlockArray.filter((val) => val !== Realtime.START_NODE_ID);
     }
 
     this.props.updatePrototype({

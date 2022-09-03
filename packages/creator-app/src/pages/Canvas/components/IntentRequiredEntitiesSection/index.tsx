@@ -1,5 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { PopperProps, SectionV2 } from '@voiceflow/ui';
+import { PopperTypes, SectionV2 } from '@voiceflow/ui';
 import * as Normal from 'normal-store';
 import React from 'react';
 
@@ -13,7 +13,7 @@ interface IntentRequiredEntitiesSectionProps {
   onAddRequired: (entityID: string) => void;
   intentEntities: Normal.Normalized<Realtime.IntentSlot>;
   onRemoveRequired: (entityID: string) => void;
-  addDropdownPlacement?: PopperProps['placement'];
+  addDropdownPlacement?: PopperTypes.Placement;
 }
 
 const IntentRequiredEntitiesSection: React.FC<IntentRequiredEntitiesSectionProps> = ({

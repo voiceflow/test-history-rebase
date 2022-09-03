@@ -39,6 +39,8 @@ module.exports = {
     'you-dont-need-lodash-underscore/is-string': 'warn',
     'you-dont-need-lodash-underscore/is-function': 'warn',
 
+    'jsx-a11y/no-autofocus': 'off',
+
     // high performance overhead
     'import/named': 'off',
     'import/no-cycle': 'off',

@@ -112,7 +112,7 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
   const checkoutWorkspace = useDispatch(Workspace.checkout);
   const createWorkspace = useDispatch(Workspace.createWorkspace);
   const sendInvite = useDispatch(Workspace.sendInviteToActiveWorkspace);
-  const goToCanvas = useDispatch(Router.goToCanvas);
+  const goToDomain = useDispatch(Router.goToDomain);
   const acceptInvite = useDispatch(Workspace.acceptInvite);
   const goToDashboard = useDispatch(Router.goToDashboard);
   const goToDashboardWithSearch = useDispatch(Router.goToDashboardWithSearch);
@@ -380,7 +380,7 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
             templateTag
           );
 
-          goToCanvas(versionID!);
+          goToDomain({ versionID });
         }
       } else {
         goToWorkspace(workspace.id);

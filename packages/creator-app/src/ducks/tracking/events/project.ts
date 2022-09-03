@@ -175,3 +175,35 @@ export const trackComponentCreated = createProjectEventTracker((options) =>
 export const trackComponentDeleted = createProjectEventTracker((options) =>
   client.api.analytics.track(EventName.COMPONENT_DELETED, createProjectEventPayload(options))
 );
+
+export const trackDomainDeleted = createProjectEventTracker<{ domainID: string; platform: VoiceflowConstants.PlatformType }>(
+  ({ domainID, platform, ...options }) =>
+    client.api.analytics.track(EventName.DOMAIN_DELETED, createProjectEventPayload(options, { domain_id: domainID, project_type: platform }))
+);
+
+export const trackDomainCreated = createProjectEventTracker<{ domainID: string; platform: VoiceflowConstants.PlatformType }>(
+  ({ domainID, platform, ...options }) =>
+    client.api.analytics.track(EventName.DOMAIN_CREATED, createProjectEventPayload(options, { domain_id: domainID, project_type: platform }))
+);
+
+export const trackDomainDuplicated = createProjectEventTracker<{ domainID: string; platform: VoiceflowConstants.PlatformType }>(
+  ({ domainID, platform, ...options }) =>
+    client.api.analytics.track(EventName.DOMAIN_DUPLICATED, createProjectEventPayload(options, { domain_id: domainID, project_type: platform }))
+);
+
+export const trackDomainConvert = createVersionEventTracker<{
+  sourcePlatform?: VoiceflowConstants.PlatformType;
+  targetPlatform?: VoiceflowConstants.PlatformType;
+  sourceProjectID: string;
+  targetProjectID: string;
+}>(({ sourcePlatform, targetPlatform, sourceProjectID, targetProjectID, ...options }) =>
+  client.api.analytics.track(
+    EventName.DOMAIN_CONVERT,
+    createVersionEventPayload(options, {
+      origin_project_id: sourceProjectID,
+      origin_project_type: sourcePlatform,
+      destination_project_id: targetProjectID,
+      destination_project_type: targetPlatform,
+    })
+  )
+);

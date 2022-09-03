@@ -14,7 +14,7 @@ import * as Session from '@/ducks/session';
 import * as Tracking from '@/ducks/tracking';
 import { CanvasCreationType, VariableType } from '@/ducks/tracking/constants';
 import { waitAsync } from '@/ducks/utils';
-import { ActiveVersionContext, assertVersionContext, getActiveVersionContext } from '@/ducks/version/utils';
+import { ActiveVersionContext, assertVersionContext, getActiveDomainContext, getActiveVersionContext } from '@/ducks/version/utils';
 import * as VersionV2 from '@/ducks/versionV2';
 import { Thunk } from '@/store/types';
 import { BLOCK_WIDTH } from '@/styles/theme';
@@ -55,9 +55,9 @@ export const createTopicDiagram =
     PageProgress.start(PageProgressBar.TOPIC_CREATING);
 
     const diagram = await dispatch(
-      waitAsync(Realtime.diagram.createTopic, {
-        ...getActiveVersionContext(getState()),
-        diagram: { name },
+      waitAsync(Realtime.domain.topicCreate, {
+        ...getActiveDomainContext(getState()),
+        topic: { name },
       })
     );
 
@@ -75,9 +75,9 @@ export const createComponentDiagram =
     const activeComponents = VersionV2.active.componentsSelector(state);
 
     const diagram = await dispatch(
-      waitAsync(Realtime.diagram.createComponent, {
+      waitAsync(Realtime.diagram.componentCreate, {
         ...getActiveVersionContext(state),
-        diagram: { name: name || `Component ${activeComponents.length + 1}` },
+        component: { name: name || `Component ${activeComponents.length + 1}` },
       })
     );
 
@@ -124,7 +124,7 @@ export const convertToComponent =
     const activeComponents = VersionV2.active.componentsSelector(state);
     const schemaVersion = VersionV2.active.schemaVersionSelector(state);
     const name = `Component ${activeComponents.length + 1}`;
-    const diagram = Realtime.Utils.diagram.componentDiagramFactory(name, startCoords);
+    const component = Realtime.Utils.diagram.componentDiagramFactory(name, startCoords);
 
     const nodeIDMap = nodes.reduce<Record<string, boolean>>((acc, node) => Object.assign(acc, { [node.id]: true }), {});
     const allNodesLinks = nodes.flatMap((node) => CreatorV2.linksByNodeIDSelector(state, { id: node.id }));
@@ -162,14 +162,14 @@ export const convertToComponent =
       { nodes: normalize(adjustedNodes), ports: normalize(adjustedPorts), platform, projectType, context: { schemaVersion } }
     );
 
-    diagram.nodes = { ...diagram.nodes, ...convertedDiagram.nodes };
-    diagram.children = [...diagram.children, ...convertedDiagram.children];
+    component.nodes = { ...component.nodes, ...convertedDiagram.nodes };
+    component.children = [...component.children, ...convertedDiagram.children];
 
     if (incomingLinks.length === 1) {
       const incomingLink = incomingLinks[0];
 
-      const startNode = Object.values(diagram.nodes).find((node) => node.type === BaseNode.NodeType.START);
-      const connectedNode = Object.values(diagram.nodes).find((node) => node.nodeID === incomingLink.target.nodeID);
+      const startNode = Object.values(component.nodes).find((node) => node.type === BaseNode.NodeType.START);
+      const connectedNode = Object.values(component.nodes).find((node) => node.nodeID === incomingLink.target.nodeID);
       const startNodeNextPort = startNode?.data.portsV2?.builtIn[BaseModels.PortType.NEXT];
 
       if (startNode && connectedNode && startNodeNextPort) {
@@ -178,9 +178,9 @@ export const convertToComponent =
     }
 
     const newDiagram = await dispatch(
-      waitAsync(Realtime.diagram.createComponent, {
+      waitAsync(Realtime.diagram.componentCreate, {
         ...getActiveVersionContext(getState()),
-        diagram,
+        component,
       })
     );
 
@@ -198,22 +198,39 @@ export const createTemplateDiagram = (): Thunk<string> => async (dispatch, getSt
   const state = getState();
 
   const diagram = await dispatch(
-    waitAsync(Realtime.diagram.createTemplateDiagram, {
+    waitAsync(Realtime.diagram.templateCreate, {
       ...getActiveVersionContext(state),
-      diagram: { name: 'Template Diagram' },
+      template: { name: 'Template Diagram' },
     })
   );
 
   return diagram.id;
 };
 
-export const duplicateDiagram =
-  (diagramID: string, { openDiagram = false }: { openDiagram?: boolean } = {}): Thunk<string> =>
+export const duplicateComponent =
+  (componentID: string, { openDiagram = false }: { openDiagram?: boolean } = {}): Thunk<string> =>
   async (dispatch, getState) => {
     const newDiagram = await dispatch(
-      waitAsync(Realtime.diagram.duplicate, {
+      waitAsync(Realtime.diagram.componentDuplicate, {
         ...getActiveVersionContext(getState()),
-        diagramID,
+        diagramID: componentID,
+      })
+    );
+
+    if (openDiagram) {
+      await dispatch(Router.goToDiagram(newDiagram.id));
+    }
+
+    return newDiagram.id;
+  };
+
+export const duplicateTopic =
+  (topicID: string, { openDiagram = false }: { openDiagram?: boolean } = {}): Thunk<string> =>
+  async (dispatch, getState) => {
+    const newDiagram = await dispatch(
+      waitAsync(Realtime.domain.topicDuplicate, {
+        ...getActiveDomainContext(getState()),
+        topicID,
       })
     );
 
@@ -228,33 +245,34 @@ export const deleteDiagram =
   (diagramID: string): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
+
     const versionID = Session.activeVersionIDSelector(state);
-    const rootDiagramID = VersionV2.active.rootDiagramIDSelector(state);
 
     Errors.assertVersionID(versionID);
-    Errors.assertDiagramID(rootDiagramID);
 
     // if the user is on the deleted diagram, redirect to root
     const activeDiagramID = CreatorV2.activeDiagramIDSelector(state);
 
     if (diagramID === activeDiagramID) {
-      await dispatch(Router.goToRootDiagram());
+      await dispatch(Router.goToDomainRootDiagram());
     }
 
     const { type } = DiagramV2.diagramByIDSelector(state, { id: diagramID }) ?? {};
     const isTopic = type === BaseModels.Diagram.DiagramType.TOPIC;
-    const isComponent = !type || type === BaseModels.Diagram.DiagramType.COMPONENT;
 
-    await dispatch.sync(
-      Realtime.diagram.crud.remove({
-        ...getActiveVersionContext(state),
-        key: diagramID,
-      })
-    );
+    if (isTopic) {
+      const domainID = Session.activeDomainIDSelector(state);
+
+      Errors.assertDomainID(domainID);
+
+      await dispatch.sync(Realtime.domain.topicRemove({ ...getActiveVersionContext(state), topicID: diagramID, domainID }));
+    } else {
+      await dispatch.sync(Realtime.diagram.componentRemove({ ...getActiveVersionContext(state), diagramID }));
+    }
 
     if (isTopic) {
       dispatch(Tracking.trackTopicDeleted());
-    } else if (isComponent) {
+    } else {
       dispatch(Tracking.trackComponentDeleted());
     }
   };
@@ -265,7 +283,7 @@ export const renameDiagram =
     await dispatch.sync(Realtime.diagram.crud.patch({ ...getActiveVersionContext(getState()), key: diagramID, value: { name } }));
   };
 
-export const convertToTopic =
+export const convertComponentToTopic =
   (diagramID: string): Thunk =>
   async (dispatch, getState) => {
     PageProgress.start(PageProgressBar.TOPIC_CREATING);
@@ -274,14 +292,14 @@ export const convertToTopic =
     const activeDiagramID = CreatorV2.activeDiagramIDSelector(state);
 
     if (diagramID === activeDiagramID) {
-      await dispatch(Router.goToRootDiagram());
+      await dispatch(Router.goToDomainRootDiagram());
     }
 
     try {
       await dispatch(
-        waitAsync(Realtime.diagram.convertToTopic, {
-          ...getActiveVersionContext(getState()),
-          diagramID,
+        waitAsync(Realtime.domain.topicConvertFromComponent, {
+          ...getActiveDomainContext(state),
+          componentID: diagramID,
         })
       );
 

@@ -107,6 +107,11 @@ export const toggleTopicThreadsOnlyReducer: Reducer<UIState> = (state) => ({
   topicThreadsOnly: !state.topicThreadsOnly,
 });
 
+export const toggleDomainThreadsOnlyReducer: Reducer<UIState> = (state) => ({
+  ...state,
+  domainThreadsOnly: !state.domainThreadsOnly,
+});
+
 export const setPreviewingVersionReducer: Reducer<UIState, SetPreviewingVersion> = (state, { payload: previewing }) => ({
   ...state,
   previewing,
@@ -147,6 +152,8 @@ const uiReducer: RootReducer<UIState, AnyUIAction | Session.SetActiveWorkspaceID
       return toggleMentionedThreadsOnlyReducer(state);
     case UIAction.TOGGLE_TOPIC_THREADS_ONLY:
       return toggleTopicThreadsOnlyReducer(state);
+    case UIAction.TOGGLE_DOMAIN_THREADS_ONLY:
+      return toggleDomainThreadsOnlyReducer(state);
     default:
       return state;
   }

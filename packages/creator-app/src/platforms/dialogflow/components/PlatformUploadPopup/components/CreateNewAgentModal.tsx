@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/no-autofocus */
 import { Box, Button, ButtonVariant, Input, useSmartReducerV2 } from '@voiceflow/ui';
 import React from 'react';
 

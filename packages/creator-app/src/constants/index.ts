@@ -437,8 +437,6 @@ export const MODAL_WIDTHS = {
   [MODAL_WIDTH_VARIANTS.LARGE]: 900,
 };
 
-export const START_BLOCK_ID = 'start00000000000000000000';
-
 export const DEVICE_LABEL_MAP: Record<BaseNode.Visual.DeviceType, string> = {
   [BaseNode.Visual.DeviceType.MOBILE]: 'Mobile',
   [BaseNode.Visual.DeviceType.TABLET]: 'Tablet',
@@ -573,6 +571,9 @@ export const RESERVED_JS_WORDS = [
 export enum PageProgressBar {
   CANVAS_LOADING = 'CANVAS_LOADING',
   TOPIC_CREATING = 'TOPIC_CREATING',
+  DOMAIN_CREATING = 'DOMAIN_CREATING',
+  DOMAIN_DELETING = 'DOMAIN_DELETING',
+  DOMAIN_DUPLICATING = 'DOMAIN_DUPLICATING',
   COMPONENT_CREATING = 'COMPONENT_CREATING',
   NLU_MODEL_TRAINNING = 'NLU_MODEL_TRAINNING',
 }

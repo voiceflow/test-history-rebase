@@ -14,12 +14,14 @@ const VersionSubscriptionGate: React.FC = ({ children }) => {
 
   const [context, setContext] = React.useState<VersionSubscriptionContext | null>(null);
 
+  const setActiveDomainID = useDispatch(Session.setActiveDomainID);
   const setActiveProjectID = useDispatch(Session.setActiveProjectID);
   const setActiveVersionID = useDispatch(Session.setActiveVersionID);
   const setActiveDiagramID = useDispatch(Session.setActiveDiagramID);
 
   useTeardown(() =>
     batch(() => {
+      setActiveDomainID(null);
       setActiveProjectID(null);
       setActiveVersionID(null);
       setActiveDiagramID(null);

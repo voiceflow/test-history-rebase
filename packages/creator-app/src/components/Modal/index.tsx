@@ -4,7 +4,8 @@ import React from 'react';
 import { ThemeProvider } from 'styled-components';
 
 import { ModalType } from '@/constants';
-import { useModals, useTheme } from '@/hooks';
+import { useModals } from '@/hooks/modals';
+import { useTheme } from '@/hooks/theme';
 import { ClassName } from '@/styles/constants';
 
 import { Container } from './components';
@@ -87,8 +88,14 @@ export const UncontrolledModal = React.forwardRef<HTMLDivElement, React.PropsWit
                 {withHeader && (
                   <UIModal.Header
                     border={headerBorder}
-                    onClose={closable ? onClose : null}
-                    actions={headerActions}
+                    actions={
+                      headerActions || closable ? (
+                        <>
+                          {headerActions}
+                          {closable && <UIModal.Header.CloseButton onClick={onClose} />}
+                        </>
+                      ) : null
+                    }
                     intoTooltip={intoTooltip}
                     capitalizeText={capitalizeText}
                   >

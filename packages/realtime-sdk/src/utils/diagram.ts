@@ -24,8 +24,8 @@ export const getUniqueCopyName = (originalName: string, existingNames: string[])
 };
 
 export const startNodeFactory = (coords: [number, number] = [360, 120]): BaseModels.BaseDiagramNode<AnyRecord> => ({
-  nodeID: Utils.id.objectID(),
   type: BlockType.START,
+  nodeID: Utils.id.objectID(),
   coords,
   data: {
     name: 'Start',
@@ -34,9 +34,9 @@ export const startNodeFactory = (coords: [number, number] = [360, 120]): BaseMod
       byKey: {},
       builtIn: {
         [BaseModels.PortType.NEXT]: {
+          id: Utils.id.objectID(),
           type: BaseModels.PortType.NEXT,
           target: null,
-          id: Utils.id.objectID(),
         },
       },
       dynamic: [],
@@ -56,11 +56,11 @@ export const diagramFactory = <T extends BaseModels.BaseDiagramNode>({
   name,
   type,
   zoom: 100,
+  nodes: nodes.reduce((acc, node) => Object.assign(acc, { [node.nodeID]: node }), {}),
   offsetX: 0,
   offsetY: 0,
-  modified: 0,
-  nodes: nodes.reduce((acc, node) => Object.assign(acc, { [node.nodeID]: node }), {}),
-  children: nodes.map((node) => node.nodeID),
+  modified: Utils.time.getCurrentTimestamp(),
+  children: [],
   variables: [],
   menuNodeIDs,
 });
@@ -71,6 +71,17 @@ export const componentDiagramFactory = (name: string, startNodeCoords?: [number,
     type: BaseModels.Diagram.DiagramType.COMPONENT,
     nodes: [startNodeFactory(startNodeCoords)],
   });
+
+export const rootTopicDiagramFactory = (name: string, startNodeCoords?: [number, number]) => {
+  const startNode = startNodeFactory(startNodeCoords);
+
+  return diagramFactory({
+    name,
+    type: BaseModels.Diagram.DiagramType.TOPIC,
+    nodes: [startNode],
+    menuNodeIDs: [startNode.nodeID],
+  });
+};
 
 export const topicDiagramFactory = (name: string) => {
   const intentNodeID = Utils.id.objectID();
@@ -100,9 +111,9 @@ export const topicDiagramFactory = (name: string) => {
             byKey: {},
             builtIn: {
               [BaseModels.PortType.NEXT]: {
+                id: Utils.id.objectID(),
                 type: BaseModels.PortType.NEXT,
                 target: null,
-                id: Utils.id.objectID(),
               },
             },
             dynamic: [],

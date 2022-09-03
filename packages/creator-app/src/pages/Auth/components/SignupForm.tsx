@@ -131,7 +131,6 @@ export const SignupForm: React.FC<SignupFormProps & ConnectedPublicSignupFormPro
                 name="name"
                 value={name}
                 required
-                // eslint-disable-next-line jsx-a11y/no-autofocus
                 autoFocus
                 className="form-bg"
                 minLength={3}

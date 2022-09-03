@@ -13,12 +13,14 @@ export interface ContainerProps extends SpaceProps {
   height?: number | string;
   inline?: boolean;
   active?: boolean;
+  hovered?: boolean;
   variant?: Variant;
   rotation?: number;
   clickable?: boolean;
   transition?: string | string[];
   spinReverse?: boolean;
   ignoreEvents?: boolean;
+  reducedOpacity?: boolean;
 }
 
 export const Container = styled.span<ContainerProps>`
@@ -64,48 +66,63 @@ export const Container = styled.span<ContainerProps>`
     height: inherit;
   }
 
-  ${({ clickable }) =>
+  ${({ clickable, reducedOpacity }) =>
     clickable &&
     css`
       display: block;
       cursor: pointer;
-      opacity: 0.8;
+      opacity: ${reducedOpacity ? 0.65 : 0.8};
 
-      &:hover,
+      &:hover {
+        opacity: ${reducedOpacity ? 0.85 : 1};
+      }
+
       &:active {
         opacity: 1;
       }
     `}
 
-  ${({
-    theme: {
-      components: { icon },
-    },
-    color,
-    active,
-    variant,
-    clickable,
-  }) => {
+  ${({ theme, variant, hovered, color, clickable, reducedOpacity }) => {
+    if (!hovered) return null;
+
+    const clickableStyle =
+      clickable &&
+      css`
+        opacity: ${reducedOpacity ? 0.85 : 1};
+      `;
+
+    if (!variant) return clickableStyle;
+
+    const iconVariant = theme.components.icon[variant];
+
+    return css`
+      ${clickableStyle}
+      color: ${iconVariant?.hoverColor || color};
+    `;
+  }}
+
+  ${({ theme, color, active, variant, clickable }) => {
     if (!variant) return null;
 
-    const iconVariant = icon[variant];
+    const iconVariant = theme.components.icon[variant];
 
     // stylelint-disable-next-line value-keyword-case
     const activeStyle = css`
       color: ${variant === Variant.STANDARD && clickable ? '#132144' : iconVariant?.activeColor || iconVariant?.hoverColor || color};
+      opacity: 1;
     `;
 
-    return css`
-      &:hover {
-        color: ${iconVariant?.hoverColor || color};
-      }
+    return active
+      ? activeStyle
+      : css`
+          &:hover {
+            color: ${iconVariant?.hoverColor || color};
+          }
 
-      &:active {
-        ${activeStyle}
-      }
-
-      ${active && activeStyle}
-    `;
+          &:active {
+            ${activeStyle}
+          }
+        `;
   }}
 
   ${({ inline }) =>

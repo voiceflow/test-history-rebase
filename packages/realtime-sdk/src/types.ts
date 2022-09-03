@@ -90,6 +90,11 @@ export enum SchemaVersion {
    * this migration transforms card nodes into cardV2s
    */
   V3_8 = 3.8,
+
+  /**
+   * migrates to domains
+   */
+  V3_9 = 3.9,
 }
 
 export const SUPPORTED_SCHEMA_VERSIONS = Object.values(SchemaVersion)

@@ -90,7 +90,6 @@ const CarouselButtonsEditor: React.FC = () => {
                 value={button.name || ''}
                 onBlur={({ text }) => onChangeButton({ name: text })}
                 placeholder="Enter button label, { to add variable"
-                // eslint-disable-next-line jsx-a11y/no-autofocus
                 autoFocus
               />
             </FormControl>

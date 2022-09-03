@@ -147,6 +147,14 @@ abstract class MongoModel<T> implements LoguxControl {
     if (!silent && (!ok || deletedCount !== 1)) throw Error('delete error');
   }
 
+  async deleteMany(filter: FilterQuery<T>, { silent }: { silent?: boolean } = {}) {
+    const {
+      result: { ok },
+    } = await this.collection.deleteMany(filter);
+
+    if (!silent && !ok) throw Error('delete many error');
+  }
+
   // type assertion
   // https://github.com/DefinitelyTyped/DefinitelyTyped/issues/39358
   public idFilter = (id: string) => ({ _id: new ObjectId(id) } as FilterQuery<T>);
@@ -191,6 +199,10 @@ abstract class MongoModel<T> implements LoguxControl {
   async deleteById(id: string) {
     await this.deleteOne(this.idFilter(id));
     return id;
+  }
+
+  async deleteManyByIDs(ids: string[]) {
+    return this.deleteMany(this.idsFilter(ids));
   }
 }
 

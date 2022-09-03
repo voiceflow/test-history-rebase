@@ -1,5 +1,5 @@
 import { TimeRange } from '@voiceflow/internal';
-import { PopperProps } from '@voiceflow/ui';
+import { PopperTypes } from '@voiceflow/ui';
 import dayjs from 'dayjs';
 import React from 'react';
 import { RangeModifier } from 'react-day-picker';
@@ -21,7 +21,7 @@ const initialRange = { from: undefined, to: undefined, enteredTo: undefined };
 
 export interface DayPickerInputProps {
   onChange: (input: TimeRange | string) => void;
-  placement?: PopperProps['placement'];
+  placement?: PopperTypes.Placement;
   currentRange: string;
 }
 

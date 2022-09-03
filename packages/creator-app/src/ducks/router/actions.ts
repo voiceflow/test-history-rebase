@@ -77,19 +77,34 @@ export const goToNLUManager = (versionID: string, search = window.location.searc
 
 export const goToEditProduct = (versionID: string, productID: string) => goTo(generatePath(Path.PRODUCT_DETAILS, { versionID, productID }));
 
-export const goToInteractionModel = (versionID: string, diagramID: string, modelType?: string, entityID?: string) =>
-  goTo(`${generatePath(Path.CANVAS_MODEL, { versionID, diagramID, modelType, entityID })}`);
+interface GoToCanvasBaseOptions {
+  domainID: string;
+  diagramID: string;
+  versionID: string;
+}
 
-export const goToCanvasTextMarkup = (versionID: string, diagramID: string) => goTo(generatePath(Path.CANVAS_TEXT_MARKUP, { versionID, diagramID }));
+interface GoToInteractionModelOptions extends GoToCanvasBaseOptions {
+  entityID?: string;
+  modelType?: string;
+}
 
-export const goToCanvasCommenting = (versionID: string, diagramID: string) =>
-  goTo(`${generatePath(Path.CANVAS_COMMENTING, { versionID, diagramID })}`);
+// here and above using {...options} to fix TS interfaces extend issue
+export const goToCanvasTextMarkup = (options: GoToCanvasBaseOptions) => goTo(generatePath(Path.CANVAS_TEXT_MARKUP, { ...options }));
 
-export const goToCanvasCommentingThread = (versionID: string, diagramID: string, threadID: string, commentID?: string) =>
-  goTo(generatePath(Path.CANVAS_COMMENTING_THREAD, { versionID, diagramID, threadID, commentID }));
+export const goToInteractionModel = (options: GoToInteractionModelOptions) => goTo(`${generatePath(Path.CANVAS_MODEL, { ...options })}`);
 
-export const redirectToCanvasCommentingThread = (versionID: string, diagramID: string, threadID: string, commentID?: string) =>
-  redirectTo(generatePath(Path.CANVAS_COMMENTING_THREAD, { versionID, diagramID, threadID, commentID }));
+export const goToCanvasCommenting = (options: GoToCanvasBaseOptions) => goTo(`${generatePath(Path.CANVAS_COMMENTING, { ...options })}`);
+
+interface GoToCanvasCommentingThreadOptions extends GoToCanvasBaseOptions {
+  threadID: string;
+  commentID?: string;
+}
+
+export const goToCanvasCommentingThread = (options: GoToCanvasCommentingThreadOptions) =>
+  goTo(generatePath(Path.CANVAS_COMMENTING_THREAD, { ...options }));
+
+export const redirectToCanvasCommentingThread = (options: GoToCanvasCommentingThreadOptions) =>
+  redirectTo(generatePath(Path.CANVAS_COMMENTING_THREAD, { ...options }));
 
 export const redirectToDashboard = () => redirectTo(Path.DASHBOARD);
 

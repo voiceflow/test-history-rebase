@@ -29,7 +29,6 @@ const Form: React.FC<FormProps> = ({ editor, header, footer }) => {
           value={editor.data.url}
           onBlur={onChange}
           multiline
-          // eslint-disable-next-line jsx-a11y/no-autofocus
           autoFocus={!editor.data.url}
           placeholder="Enter URL"
           onEnterPress={onChange}

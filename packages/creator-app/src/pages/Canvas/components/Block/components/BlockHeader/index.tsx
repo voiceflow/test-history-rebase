@@ -108,7 +108,6 @@ const BlockHeader: React.FC<BlockHeaderProps> = ({ name, icon, palette, actions,
             onChange={withTargetValue(setBlockLabel)}
             tabIndex={-1}
             className={BLOCK_SECTION_TITLE_CLASSNAME}
-            // eslint-disable-next-line jsx-a11y/no-autofocus
             autoFocus
             onKeyPress={withEnterPress(handleEnterPress)}
             onDoubleClick={stopPropagation()}

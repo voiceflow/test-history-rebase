@@ -5,6 +5,7 @@ import React from 'react';
 
 import { PrototypeStatus } from '@/constants/prototype';
 import * as CreatorV2 from '@/ducks/creatorV2';
+import * as Domain from '@/ducks/domain';
 import * as Modal from '@/ducks/modal';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Prototype from '@/ducks/prototype';
@@ -69,6 +70,8 @@ export const PrototypeProvider: React.FC = ({ children }) => {
   const locales = useSelector(VersionV2.active.localesSelector);
   const platform = useSelector(ProjectV2.active.platformSelector);
   const projectType = useSelector(ProjectV2.active.projectTypeSelector);
+  const rootDomainID = useSelector(Domain.rootDomainIDSelector);
+  const getDomainIDByTopicID = useSelector(Domain.getDomainIDByTopicIDSelector);
   const config = useSelector(Recent.recentPrototypeSelector);
   const updatePrototype = useDispatch(Prototype.updatePrototype);
   const isMuted = useSelector(Prototype.prototypeMutedSelector);
@@ -87,11 +90,20 @@ export const PrototypeProvider: React.FC = ({ children }) => {
   const updatePrototypeVisualsData = useDispatch(Prototype.updatePrototypeVisualData);
   const fetchContext = useDispatch(Prototype.fetchContext);
   const setActiveDiagramID = useDispatch(Session.setActiveDiagramID);
+  const setActiveDomainID = useDispatch(Session.setActiveDomainID);
   const updatePrototypeVisualsDataHistory = useDispatch(Prototype.updatePrototypeVisualDataHistory);
   const updatePrototypeStatus = useDispatch(Prototype.updatePrototypeStatus);
   const setError = useDispatch(Modal.setError);
 
-  const protoConfig: ProtoConfigType = {
+  const setActiveDiagramAndDomainIDs = React.useCallback(
+    (diagramID: string) => {
+      setActiveDiagramID(diagramID);
+      setActiveDomainID(getDomainIDByTopicID({ topicID: diagramID }) ?? rootDomainID);
+    },
+    [rootDomainID, getDomainIDByTopicID]
+  );
+
+  const protoConfig = useContextApi<ProtoConfigType>({
     buttons,
     autoplay,
     showButtons,
@@ -103,9 +115,9 @@ export const PrototypeProvider: React.FC = ({ children }) => {
     platform,
     projectType,
     ...config,
-  };
+  });
 
-  const state: PrototypeRuntimeState = {
+  const state = useContextApi<PrototypeRuntimeState>({
     status,
     activePathLinkIDs,
     activePathBlockIDs,
@@ -115,19 +127,19 @@ export const PrototypeProvider: React.FC = ({ children }) => {
     contextStep,
     visualDataHistory,
     webhook,
-  };
+  });
 
-  const actions: PrototypeActions = {
+  const actions = useContextApi<PrototypeActions>({
     updatePrototype,
     savePrototypeSession,
     getLinksByPortID,
     updatePrototypeVisualsData,
     fetchContext,
-    setActiveDiagramID,
+    setActiveDiagramID: setActiveDiagramAndDomainIDs,
     updatePrototypeVisualsDataHistory,
     updatePrototypeStatus,
     setError,
-  };
+  });
 
   const api = useContextApi({
     state,

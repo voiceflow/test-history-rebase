@@ -10,7 +10,7 @@ const versionClient = {
     const autoSaveFromRestore = !!options.autoSaveFromRestore;
 
     return apiV2.get(
-      `/${VERSIONS_PATH}/snapshot/${versionID}?manualSave=${manualSave}&saveVersionName=${versionName}&autoSaveFromRestore=${autoSaveFromRestore}`
+      `${VERSIONS_PATH}/snapshot/${versionID}?manualSave=${manualSave}&saveVersionName=${versionName}&autoSaveFromRestore=${autoSaveFromRestore}`
     );
   },
   patchMergeIntentsAndSlots: (versionID: string, importModel: ImportModel): Promise<ImportModel> => {

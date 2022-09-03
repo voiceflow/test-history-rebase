@@ -1,5 +1,6 @@
 import { LoguxControlOptions } from '../../control';
 import AddProductControl from './add';
+import AddManyProductControl from './addMany';
 import CreateProductControl from './create';
 import PatchProductControl from './patch';
 import RemoveProductControl from './remove';
@@ -10,6 +11,7 @@ const buildProductActionControls = (options: LoguxControlOptions) => ({
   patchProductControl: new PatchProductControl(options),
   createProductControl: new CreateProductControl(options),
   removeProductControl: new RemoveProductControl(options),
+  addManyProductsControl: new AddManyProductControl(options),
   updateProductLocalesControl: new UpdateProductLocalesControl(options),
 });
 

@@ -4,6 +4,7 @@ import { normalize } from 'normal-store';
 import { createSelector } from 'reselect';
 
 import * as CreatorV2 from '@/ducks/creatorV2';
+import * as DomainSelectors from '@/ducks/domain/selectors';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as SlotV2 from '@/ducks/slotV2';
 import * as VersionV2 from '@/ducks/versionV2';
@@ -17,8 +18,9 @@ export const diagramSelector = createSelector([getDiagramByIDSelector, CreatorV2
 
 export const typeSelector = createSelector([diagramSelector], (diagram) => diagram?.type ?? null);
 
-export const topicDiagramsSelector = createSelector([VersionV2.active.topicsSelector, getDiagramsByIDsSelector], (topics, getDiagramsByIDs) =>
-  getDiagramsByIDs({ ids: topics.map(({ sourceID }) => sourceID) })
+export const topicDiagramsSelector = createSelector(
+  [DomainSelectors.active.topicIDsSelector, getDiagramsByIDsSelector],
+  (topicIDs, getDiagramsByIDs) => getDiagramsByIDs({ ids: topicIDs })
 );
 
 export const componentDiagramsSelector = createSelector(

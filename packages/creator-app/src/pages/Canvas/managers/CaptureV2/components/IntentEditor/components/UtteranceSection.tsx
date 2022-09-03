@@ -113,7 +113,6 @@ const UtteranceSection: React.FC<UtteranceSectionProps> = ({ slot, usedSlots, ut
                         slots={usedSlots}
                         value={item.text}
                         onBlur={onUpdate}
-                        // eslint-disable-next-line jsx-a11y/no-autofocus
                         autoFocus={false}
                         creatable={false}
                         onEnterPress={onUpdate}

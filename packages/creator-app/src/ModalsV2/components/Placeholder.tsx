@@ -17,7 +17,11 @@ const Placeholder = React.memo(() => {
   return (
     <>
       {!!visibleModal && (
-        <Backdrop onClose={() => manager.close(visibleModal.id, visibleModal.type)} closing={modalsToRender.length === 1 && visibleModal.closing} />
+        <Backdrop
+          onClose={() => manager.close(visibleModal.id, visibleModal.type)}
+          closing={modalsToRender.length === 1 && visibleModal.closing}
+          closePrevented={visibleModal?.closePrevented}
+        />
       )}
 
       {modalsToRender.map(([modal, Component], index) => (
@@ -31,6 +35,7 @@ const Placeholder = React.memo(() => {
           hidden={index !== 0}
           rendered
           animated={animated}
+          closePrevented={modal.closePrevented}
         />
       ))}
     </>

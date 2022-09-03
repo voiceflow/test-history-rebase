@@ -16,6 +16,7 @@ export interface UIState {
   isLoadingProjects: boolean;
   commentsVisible: boolean;
   topicThreadsOnly?: boolean;
+  domainThreadsOnly?: boolean;
   mentionedThreadsOnly?: boolean;
   canvasGrid: boolean;
   fullScreenMode?: boolean;

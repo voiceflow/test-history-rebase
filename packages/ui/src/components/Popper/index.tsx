@@ -1,51 +1,21 @@
 import Portal, { portalRootNode } from '@ui/components/Portal';
-import { useDidUpdateEffect, useTheme } from '@ui/hooks';
+import { useDidUpdateEffect, useNestedPopperTheme, useTheme } from '@ui/hooks';
 import { ClassName } from '@ui/styles/constants';
 import React from 'react';
-import { DismissableLayerProvider, DismissEventType, useDismissable } from 'react-dismissable-layers';
-import { Manager, Popper as ReactPopper, PopperProps as ReactPopperProps, Reference } from 'react-popper';
+import { DismissableLayerProvider, useDismissable } from 'react-dismissable-layers';
+import { Manager, Popper as ReactPopper, Reference } from 'react-popper';
 import { MemoryRouter } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 
 import { Body, Container, Content, Footer, Nav, NavItem } from './components';
+import * as T from './types';
 
-interface RendererProps {
-  onClose: VoidFunction;
-  isOpened: boolean;
-  onToggle: VoidFunction;
-  scheduleUpdate: VoidFunction;
-}
+export * as PopperTypes from './types';
 
-interface ChildrenProps extends Omit<RendererProps, 'scheduleUpdate'> {
-  ref: React.Ref<any>;
-}
-
-export interface PopperProps {
-  width?: string;
-  height?: string;
-  zIndex?: number;
-  opened?: boolean;
-  onClose?: VoidFunction;
-  children?: (props: ChildrenProps) => React.ReactNode;
-  maxWidth?: string;
-  maxHeight?: string;
-  renderNav?: (props: RendererProps) => React.ReactNode;
-  modifiers?: ReactPopperProps['modifiers'];
-  placement?: ReactPopperProps['placement'];
-  portalNode?: HTMLElement;
-  initialTab?: string;
-  dismissEvent?: DismissEventType;
-  renderFooter?: (props: RendererProps) => React.ReactNode;
-  renderContent: (props: RendererProps) => React.ReactNode;
-  disableLayers?: boolean;
-  initialOpened?: boolean;
-  preventOverflowPadding?: number;
-  borderRadius?: string;
-}
-
-const Popper: React.FC<PopperProps> = ({
+const Popper: React.FC<T.Props> = ({
   width,
   height,
+  inline,
   opened,
   zIndex,
   onClose,
@@ -57,15 +27,16 @@ const Popper: React.FC<PopperProps> = ({
   placement = 'bottom',
   initialTab,
   portalNode = portalRootNode,
+  borderRadius = 5,
   dismissEvent,
   renderFooter,
   renderContent,
   disableLayers,
   initialOpened,
   preventOverflowPadding = 16,
-  borderRadius = '5px',
 }) => {
   const theme = useTheme();
+  const nestedTheme = useNestedPopperTheme(zIndex);
 
   const containerRef = React.useRef<HTMLDivElement>(null);
 
@@ -81,53 +52,60 @@ const Popper: React.FC<PopperProps> = ({
 
   const Wrapper = renderNav ? MemoryRouter : React.Fragment;
 
-  const nestedTheme = React.useMemo(() => ({ ...theme, zIndex: { ...theme.zIndex, popper: (zIndex ?? theme.zIndex.popper) + 1 } }), [theme, zIndex]);
+  const popper = isOpened && (
+    <Wrapper
+      {...(renderNav
+        ? {
+            initialIndex: initialTab ? 0 : undefined,
+            initialEntries: initialTab ? [initialTab] : undefined,
+          }
+        : {})}
+    >
+      <Portal portalNode={portalNode}>
+        <DismissableLayerProvider>
+          <ThemeProvider theme={nestedTheme}>
+            <ReactPopper
+              innerRef={containerRef}
+              placement={placement}
+              modifiers={{
+                offset: { offset: '0,5' },
+                preventOverflow: { boundariesElement: portalNode, padding: preventOverflowPadding },
+                ...modifiers,
+              }}
+              positionFixed
+            >
+              {({ ref, style, scheduleUpdate }) => (
+                <div ref={ref} style={{ ...style, zIndex: zIndex ?? theme.zIndex.popper }}>
+                  <Container
+                    className={ClassName.POPPER}
+                    width={width}
+                    height={height}
+                    maxWidth={maxWidth}
+                    maxHeight={maxHeight}
+                    borderRadius={borderRadius}
+                  >
+                    {renderNav?.({ ...rendererProps, scheduleUpdate })}
+
+                    <Body>
+                      {renderContent({ ...rendererProps, scheduleUpdate })}
+
+                      {renderFooter?.({ ...rendererProps, scheduleUpdate })}
+                    </Body>
+                  </Container>
+                </div>
+              )}
+            </ReactPopper>
+          </ThemeProvider>
+        </DismissableLayerProvider>
+      </Portal>
+    </Wrapper>
+  );
 
   return (
     <Manager>
-      {children && <Reference>{({ ref }) => children({ ...rendererProps, ref })}</Reference>}
+      {children && <Reference>{({ ref }) => children({ ...rendererProps, ref, popper: inline && popper })}</Reference>}
 
-      {isOpened && (
-        <Wrapper
-          {...(renderNav
-            ? {
-                initialIndex: initialTab ? 0 : undefined,
-                initialEntries: initialTab ? [initialTab] : undefined,
-              }
-            : {})}
-        >
-          <DismissableLayerProvider>
-            <ThemeProvider theme={nestedTheme}>
-              <Portal portalNode={portalNode}>
-                <ReactPopper
-                  innerRef={containerRef}
-                  placement={placement}
-                  modifiers={{
-                    offset: { offset: '0,5' },
-                    preventOverflow: { boundariesElement: portalNode, padding: preventOverflowPadding },
-                    ...modifiers,
-                  }}
-                  positionFixed
-                >
-                  {({ ref, style, scheduleUpdate }) => (
-                    <div ref={ref} style={{ ...style, zIndex: zIndex ?? theme.zIndex.popper }}>
-                      <Container className={ClassName.POPPER} style={{ width, height, maxWidth, maxHeight, borderRadius }}>
-                        {renderNav?.({ ...rendererProps, scheduleUpdate })}
-
-                        <Body>
-                          {renderContent({ ...rendererProps, scheduleUpdate })}
-
-                          {renderFooter?.({ ...rendererProps, scheduleUpdate })}
-                        </Body>
-                      </Container>
-                    </div>
-                  )}
-                </ReactPopper>
-              </Portal>
-            </ThemeProvider>
-          </DismissableLayerProvider>
-        </Wrapper>
-      )}
+      {!inline && popper}
     </Manager>
   );
 };

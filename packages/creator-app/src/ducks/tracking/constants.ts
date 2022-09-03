@@ -110,6 +110,11 @@ export enum EventName {
   COMPONENT_CREATED = 'Component Created',
   COMPONENT_DELETED = 'Component Deleted',
 
+  DOMAIN_CONVERT = 'Convert to Domain',
+  DOMAIN_CREATED = 'Domain Created',
+  DOMAIN_DELETED = 'Domain Deleted',
+  DOMAIN_DUPLICATED = 'Domain Duplicated',
+
   PROFILE_NAME_CHANGED = 'Profile Name Changed',
   PROFILE_EMAIL_CHANGED = 'Profile Email Changed',
   PROFILE_PASSWORD_CHANGED = 'Profile Password Changed',
@@ -199,6 +204,7 @@ export enum UpgradePrompt {
   EXPORT_PROJECT_CSV = 'Export Project as CSV',
   TRANSCRIPTS = 'Transcripts',
   VARIABLE_STATES_LIMIT = 'Variable States Limit',
+  DOMAINS = 'Domains',
 }
 
 export enum SourceType {

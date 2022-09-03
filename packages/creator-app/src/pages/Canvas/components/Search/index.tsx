@@ -142,7 +142,6 @@ const SearchBar: React.FC = () => {
           IndicatorsContainer: Dropdown,
           Menu,
         }}
-        // eslint-disable-next-line jsx-a11y/no-autofocus
         autoFocus
         onKeyDown={withKeyPress(KeyName.ESCAPE, () => search?.hide())}
         placeholder="Find anything..."

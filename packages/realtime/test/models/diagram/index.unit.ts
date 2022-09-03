@@ -42,7 +42,7 @@ describe('Diagram model unit tests', () => {
 
     const versionID = '5f11ac822ab2ce1957cb0d24';
     const filter = ['name'];
-    expect(await model.findManyByVersion(versionID, filter)).to.eql(result);
+    expect(await model.findManyByVersion(versionID, [], filter)).to.eql(result);
 
     expect(stubFindMany.args).to.eql([[{ versionID: new ObjectId(versionID) }, filter]]);
   });

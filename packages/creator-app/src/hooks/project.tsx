@@ -17,6 +17,8 @@ import * as Session from '@/ducks/session';
 import * as Workspace from '@/ducks/workspace';
 import { useModals } from '@/hooks/modals';
 import { usePermission, usePermissions } from '@/hooks/permission';
+import { useModal } from '@/ModalsV2/hooks';
+import ConvertModal from '@/ModalsV2/modals/Domain/Convert';
 import { ShareProjectTab } from '@/pages/Project/components/Header/constants';
 import { SharePopperContext } from '@/pages/Project/components/Header/contexts';
 import { copy } from '@/utils/clipboard';
@@ -95,6 +97,7 @@ export const useProjectOptions = ({
   withInvite = false,
   projectName,
   onDuplicated,
+  withConvertToDomain = false,
 }: {
   boardID?: string;
   onRename?: () => void;
@@ -104,6 +107,7 @@ export const useProjectOptions = ({
   withInvite?: boolean;
   projectName?: string | null;
   onDuplicated?: () => void;
+  withConvertToDomain?: boolean;
   // eslint-disable-next-line sonarjs/cognitive-complexity
 }): Nullable<MenuTypes.Option>[] => {
   const sharePopper = React.useContext(SharePopperContext);
@@ -126,6 +130,7 @@ export const useProjectOptions = ({
 
   const targetVersionID = versionID || currentVersionID;
 
+  const convertModal = useModal(ConvertModal);
   const { toggle: onToggleLoadingModal } = useModals(ModalType.LOADING);
   const { open: onOpenProjectLimitModal } = useModals(ModalType.FREE_PROJECT_LIMIT);
   const { open: onOpenProjectDownloadModal } = useModals(ModalType.PROJECT_DOWNLOAD);
@@ -186,6 +191,17 @@ export const useProjectOptions = ({
     }
   };
 
+  const onCovertToDomain = async () => {
+    if (!projectID) {
+      Sentry.error(Errors.noActiveProjectID());
+      toast.genericError();
+
+      return;
+    }
+
+    convertModal.openVoid({ sourceProjectID: projectID });
+  };
+
   const withInviteOption = withInvite && canAddCollaborators && sharePopper;
   const withDeleteOption = withDelete && canManageProjects;
   const withExportOption = canExportProject && sharePopper;
@@ -204,6 +220,7 @@ export const useProjectOptions = ({
     withRenameOption ? { label: 'Rename project', onClick: onRename } : null,
     canManageProjects ? { label: 'Duplicate project', onClick: onDuplicate } : null,
     canManageProjects ? { label: 'Copy clone link', onClick: onClone } : null,
+    canManageProjects && withConvertToDomain ? { label: 'Convert to domain', onClick: onCovertToDomain } : null,
 
     withDeleteOption ? { label: 'divider-2', divider: true } : null,
 

@@ -39,7 +39,6 @@ const PathSection: React.FC<PathSectionProps> = ({ title = 'Path', onAdd, pathNa
       <Input
         value={name}
         onBlur={() => onRename(name)}
-        // eslint-disable-next-line jsx-a11y/no-autofocus
         autoFocus={autofocus}
         onChangeText={setName}
         onEnterPress={withInputBlur()}

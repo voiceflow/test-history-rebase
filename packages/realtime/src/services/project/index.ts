@@ -128,6 +128,12 @@ class ProjectService extends AbstractControl {
     await client.project.update(projectID, data);
   }
 
+  public async patchPlatformData(creatorID: number, projectID: string, data: Partial<AnyRecord>): Promise<void> {
+    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+
+    await client.project.updatePlatformData(projectID, data);
+  }
+
   public async delete(creatorID: number, projectID: string): Promise<void> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 

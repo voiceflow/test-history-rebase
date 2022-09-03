@@ -1,6 +1,6 @@
 import type { UIOnlyMenuItemOption } from '../NestedMenu';
 import type { OptionsMenuOption } from '../OptionsMenu';
-import type { PopperProps } from '../Popper';
+import type { PopperTypes } from '../Popper';
 
 export type Action = OptionsMenuOption | UIOnlyMenuItemOption | null;
 
@@ -15,10 +15,10 @@ export interface HeaderProps {
 
 export interface HeaderActionsButtonProps {
   actions: Action[];
-  placement?: PopperProps['placement'];
+  placement?: PopperTypes.Placement;
 }
 
 export interface FooterActionsButtonProps {
   actions: Action[];
-  placement?: PopperProps['placement'];
+  placement?: PopperTypes.Placement;
 }

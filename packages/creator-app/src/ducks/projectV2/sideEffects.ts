@@ -1,17 +1,18 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { toast } from '@voiceflow/ui';
 
-import * as Account from '@/ducks/account';
-import * as ProjectV2 from '@/ducks/projectV2';
+import { userIDSelector } from '@/ducks/account/selectors';
 import * as Router from '@/ducks/router/actions';
 import { Thunk } from '@/store/types';
+
+import { idSelector } from './selectors/active/base';
 
 export const ejectUsersFromProject =
   ({ key: projectID, creatorID }: Realtime.project.EjectUsersPayload): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
-    const userID = Account.userIDSelector(state);
-    const activeProjectID = ProjectV2.active.idSelector(state);
+    const userID = userIDSelector(state);
+    const activeProjectID = idSelector(state);
 
     if (projectID !== activeProjectID) return;
 

@@ -35,10 +35,11 @@ class OKTA {
         resolve({ code: data.code });
       };
 
+      const scope = this.scopes.join(' ');
+      const encodedRedirectURI = encodeURIComponent(redirectURI);
+
       window.open(
-        `https://${domain}/oauth2/default/v1/authorize?client_id=${clientID}&response_type=code&scope=${this.scopes.join(
-          ' '
-        )}&state=${state}&redirect_uri=${encodeURIComponent(redirectURI)}`
+        `https://${domain}/oauth2/default/v1/authorize?client_id=${clientID}&response_type=code&scope=${scope}&state=${state}&redirect_uri=${encodedRedirectURI}`
       );
     });
   }

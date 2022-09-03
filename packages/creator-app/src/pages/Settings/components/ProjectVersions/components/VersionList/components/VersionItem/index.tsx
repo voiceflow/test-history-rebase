@@ -20,6 +20,7 @@ import { ProjectVersion } from '@/pages/Settings/components/ProjectVersions';
 import THEME from '@/styles/theme';
 import { createPlatformSelector } from '@/utils/platform';
 import { isPlatformWithThirdPartyUpload } from '@/utils/typeGuards';
+import { onOpenInternalURLInANewTabFactory } from '@/utils/window';
 
 import {
   ActionsItemContainer,
@@ -113,7 +114,8 @@ const VersionItem: React.FC<Index> = ({ version, restoreEnabled, swapVersions, c
   };
 
   const handlePreview = () => {
-    window.open(`${generatePath(Path.PROJECT_CANVAS, { versionID: version.versionID })}?${QUERY_PARAMS.PREVIEWING}=true`);
+    window.open(`${generatePath(Path.PROJECT_DOMAIN, { versionID: version.versionID })}?${QUERY_PARAMS.PREVIEWING}=true`, '_blank')?.focus();
+
     trackingEvents.trackVersionPreview({ versionID: version.versionID });
   };
 
@@ -133,7 +135,7 @@ const VersionItem: React.FC<Index> = ({ version, restoreEnabled, swapVersions, c
         interactive={true}
         html={
           !isPlatformWithThirdPartyUpload(platform) && isLive ? (
-            <TippyTooltip.FooterButton buttonText="More" width={200} onClick={() => window.open(DIALOG_MANAGER_API)}>
+            <TippyTooltip.FooterButton buttonText="More" width={200} onClick={onOpenInternalURLInANewTabFactory(DIALOG_MANAGER_API)}>
               <div>{tooltipText}</div>
             </TippyTooltip.FooterButton>
           ) : (

@@ -29,6 +29,7 @@ export type Option<Value = void> = Value extends void ? OptionWithoutValue : Opt
 export interface BaseProps {
   id?: string;
   width?: number;
+  inline?: boolean;
   onHide?: () => void;
   disabled?: boolean;
   onToggle?: () => void;

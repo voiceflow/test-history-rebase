@@ -6,6 +6,7 @@ import { PLAN_INFO_LINK } from '@/constants';
 import StepSection from '@/pages/Payment/components/Section';
 import { PaymentContextProps, withPayment } from '@/pages/Payment/context';
 import { Identifier } from '@/styles/constants';
+import { onOpenInternalURLInANewTabFactory } from '@/utils/window';
 
 import StepHeading from '../StepHeading';
 import PlanInfoCard from './PlanInfoCard';
@@ -32,7 +33,7 @@ const SelectPlan: React.FC<SelectPlanProps> = ({
                 <SvgIcon size={12} icon="next" style={{ display: 'inline-block', marginLeft: 7, marginBottom: -2 }} />
               </>
             ),
-            action: () => window.open(PLAN_INFO_LINK, '_blank'),
+            action: onOpenInternalURLInANewTabFactory(PLAN_INFO_LINK),
           },
         ]}
       />

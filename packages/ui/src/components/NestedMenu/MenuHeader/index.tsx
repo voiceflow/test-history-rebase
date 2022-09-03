@@ -92,7 +92,6 @@ const MenuHeader: React.FC<MenuHeaderProps> = ({
               onClick={() => inputRef.current?.focus()}
               inputRef={(node) => setRef(composeRef(createInputRef, inputRef), node)}
               onChange={searchable ? onChangeSearchLabel : ({ target }) => updateSearchLabel(target.value)}
-              // eslint-disable-next-line jsx-a11y/no-autofocus
               autoFocus
               $fullWidth
               placeholder={`Search ${createInputPlaceholder}`}

@@ -12,7 +12,17 @@ import createResourceClient from './utils/resource';
 
 export type VersionUpdateData = Pick<
   BaseModels.Version.Model<BaseModels.Version.PlatformData<AnyRecord, AnyRecord>>,
-  '_version' | 'name' | 'variables' | 'rootDiagramID' | 'platformData' | 'topics' | 'folders' | 'components' | 'canvasTemplates' | 'defaultStepColors'
+  | '_version'
+  | 'name'
+  | 'variables'
+  | 'rootDiagramID'
+  | 'platformData'
+  | 'topics'
+  | 'folders'
+  | 'components'
+  | 'domains'
+  | 'canvasTemplates'
+  | 'defaultStepColors'
 >;
 
 export type DiagramUpdateData = Omit<BaseModels.Diagram.Model, 'creatorID' | 'versionID'>;
@@ -51,6 +61,15 @@ const Client = ({ api, alexa, google, dialogflow, general }: ExtraOptions) => {
 
     replaceResources: (versionID: string, version: VersionUpdateData, diagrams: DiagramUpdateData[]) =>
       api.put(`/v2/versions/${versionID}/resources`, { version, diagrams }),
+
+    saveSnapshot: (versionID: string, versionName: string, options: { manualSave?: boolean; autoSaveFromRestore?: boolean } = {}) => {
+      const manualSave = options.manualSave ?? true;
+      const autoSaveFromRestore = !!options.autoSaveFromRestore;
+
+      return api.get(
+        `/v2/versions/snapshot/${versionID}?manualSave=${manualSave}&saveVersionName=${versionName}&autoSaveFromRestore=${autoSaveFromRestore}`
+      );
+    },
 
     platform: Object.assign(getPlatform, {
       alexa: alexaClient,

@@ -6,15 +6,15 @@
     "url": "https://github.com/voiceflow/creator-app/issues"
   },
   "dependencies": {
-    "@voiceflow/alexa-types": "2.10.23",
-    "@voiceflow/base-types": "2.60.0",
-    "@voiceflow/chat-types": "2.12.0",
+    "@voiceflow/alexa-types": "2.10.24",
+    "@voiceflow/base-types": "2.61.0",
+    "@voiceflow/chat-types": "2.12.1",
     "@voiceflow/common": "8.1.4",
-    "@voiceflow/google-dfes-types": "2.12.24",
-    "@voiceflow/google-types": "2.15.19",
+    "@voiceflow/google-dfes-types": "2.12.25",
+    "@voiceflow/google-types": "2.15.20",
     "@voiceflow/internal": "2.3.1",
-    "@voiceflow/voice-types": "2.8.0",
-    "@voiceflow/voiceflow-types": "3.20.0",
+    "@voiceflow/voice-types": "2.8.1",
+    "@voiceflow/voiceflow-types": "3.20.1",
     "bidirectional-adapter": "^1.0.0",
     "dayjs": "1.10.7",
     "is-var-name": "^2.0.0",
@@ -27,7 +27,7 @@
   },
   "devDependencies": {
     "@types/faker": "5.5.9",
-    "@voiceflow/api-sdk": "3.20.0",
+    "@voiceflow/api-sdk": "3.20.1",
     "cooky-cutter": "1.5.4",
     "draft-js": "0.11.7",
     "faker": "5.5.3",
@@ -41,7 +41,7 @@
   "main": "build/common/index.js",
   "module": "build/module/index.js",
   "peerDependencies": {
-    "@voiceflow/api-sdk": "3.14.4",
+    "@voiceflow/api-sdk": "3.20.1",
     "draft-js": "^0.11.2",
     "polished": "^3.6.5"
   },

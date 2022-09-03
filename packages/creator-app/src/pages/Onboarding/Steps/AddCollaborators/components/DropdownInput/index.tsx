@@ -38,7 +38,6 @@ const DropdownInput: React.FC<DropdownInputProps> = ({
     <InputGroup>
       <TextInputContainer>
         <Input
-          // eslint-disable-next-line jsx-a11y/no-autofocus
           autoFocus={autoFocus}
           orientation={OrientationType.LEFT}
           value={inputValue}

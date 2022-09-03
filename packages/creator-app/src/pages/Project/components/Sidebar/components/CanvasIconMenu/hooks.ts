@@ -15,6 +15,7 @@ import { NLUManagerOpenedOrigin } from '@/ducks/tracking/constants';
 import * as Transcript from '@/ducks/transcript';
 import { useDispatch, useFeature, useHotKeys, usePermission, useSelector, useTrackingEvents } from '@/hooks';
 import { Hotkey, HOTKEY_LABEL_MAP } from '@/keymap';
+import { onOpenInternalURLInANewTabFactory } from '@/utils/window';
 
 export enum CanvasOptionType {
   HELP = 'HELP',
@@ -181,23 +182,25 @@ export const useHelpOptions = (): MenuTypes.OptionWithoutValue[] => {
     {
       key: 'docs',
       label: 'Documentation',
-      onClick: trackingEventsWrapper(() => window.open(DOCS_LINK, '_blank'), 'trackCanvasControlHelpMenuResource', { resource: 'Docs' }),
+      onClick: trackingEventsWrapper(onOpenInternalURLInANewTabFactory(DOCS_LINK), 'trackCanvasControlHelpMenuResource', { resource: 'Docs' }),
     },
     {
       key: 'videos',
       label: 'Video tutorials',
-      onClick: trackingEventsWrapper(() => window.open(YOUTUBE_CHANNEL_LINK, '_blank'), 'trackCanvasControlHelpMenuResource', { resource: 'Videos' }),
+      onClick: trackingEventsWrapper(onOpenInternalURLInANewTabFactory(YOUTUBE_CHANNEL_LINK), 'trackCanvasControlHelpMenuResource', {
+        resource: 'Videos',
+      }),
     },
     {
       key: 'forum',
       label: 'Community',
-      onClick: trackingEventsWrapper(() => window.open(FORUM_LINK, '_blank'), 'trackCanvasControlHelpMenuResource', { resource: 'Forum' }),
+      onClick: trackingEventsWrapper(onOpenInternalURLInANewTabFactory(FORUM_LINK), 'trackCanvasControlHelpMenuResource', { resource: 'Forum' }),
     },
     { key: 'divider', label: 'Divider', divider: true },
     {
       key: 'demo',
       label: 'Book a demo',
-      onClick: trackingEventsWrapper(() => window.open(BOOK_DEMO_LINK, '_blank'), 'trackCanvasControlHelpMenuResource', { resource: 'Demo' }),
+      onClick: trackingEventsWrapper(onOpenInternalURLInANewTabFactory(BOOK_DEMO_LINK), 'trackCanvasControlHelpMenuResource', { resource: 'Demo' }),
     },
     {
       key: 'intercom',

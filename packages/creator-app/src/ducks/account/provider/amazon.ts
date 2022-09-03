@@ -4,7 +4,7 @@ import client from '@/client';
 import * as Errors from '@/config/errors';
 import * as Modal from '@/ducks/modal';
 import * as Project from '@/ducks/project';
-import * as ProjectV2 from '@/ducks/projectV2';
+import { ownVendorIDSelector } from '@/ducks/projectV2/selectors/active/alexa';
 import * as Session from '@/ducks/session';
 import { Account } from '@/models';
 import { Thunk } from '@/store/types';
@@ -71,7 +71,7 @@ export const syncSelectedVendor = (): Thunk => async (dispatch, getState) => {
 
   const state = getState();
   const vendors = amazonVendorsSelector(state);
-  const activeVendorID = ProjectV2.active.alexa.ownVendorIDSelector(state);
+  const activeVendorID = ownVendorIDSelector(state);
 
   if (activeVendorID && vendors.length && !vendors.find((vendor) => vendor?.id === activeVendorID)) {
     await dispatch(selectVendor(vendors[0]?.id));

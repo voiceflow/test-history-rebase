@@ -5,6 +5,7 @@ import type { ModelMap } from '../models';
 import type { Config } from '../types';
 import CanvasTemplateService from './canvasTemplate';
 import DiagramService from './diagram';
+import DomainService from './domain';
 import IntentService from './intent';
 import LockService from './lock';
 import MigrateService from './migrate';
@@ -27,6 +28,7 @@ export interface ServiceMap extends BaseServiceMap {
   note: NoteService;
   lock: LockService;
   thread: ThreadService;
+  domain: DomainService;
   viewer: ViewerService;
   intent: IntentService;
   product: ProductService;
@@ -60,6 +62,7 @@ const buildServices = ({ config, clients, models }: Options): ServiceMap => {
     thread: new ThreadService(serviceOptions),
     viewer: new ViewerService(serviceOptions),
     intent: new IntentService(serviceOptions),
+    domain: new DomainService(serviceOptions),
     diagram: new DiagramService(serviceOptions),
     product: new ProductService(serviceOptions),
     project: new ProjectService(serviceOptions),

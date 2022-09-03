@@ -72,7 +72,6 @@ const UserInput: React.FC<UserInputProps> = ({
         onBlur={onBlur}
         onFocus={onFocus}
         disabled={isIdle || testEnded || hideInput}
-        // eslint-disable-next-line jsx-a11y/no-autofocus
         autoFocus={!isIdle || testEnded}
         noOverflow
         placeholder={placeholder || ''}

@@ -8,6 +8,7 @@ import { useModals, useTrackingEvents } from '@/hooks';
 import { STATIC_RESOURCES, StaticResource } from '@/pages/Canvas/components/CanvasControls/constants';
 import { useDashboardMode } from '@/pages/Project/hooks';
 import { ClassName } from '@/styles/constants';
+import { openURLInANewTab } from '@/utils/window';
 
 import OptionLabel from './ResourceOptionLabel';
 
@@ -42,10 +43,11 @@ const ResourcesHeaderButton = ({ hasShortcuts = false }) => {
 
   const onSelect = (option: Option) => {
     if (option.link) {
-      window.open(option.link, '_blank')?.focus();
+      openURLInANewTab(option.link);
     } else {
       option.onClick?.();
     }
+
     if (!isDashboardMode) {
       trackEvents.trackCanvasControlHelpMenuResource({ resource: option.resourceName! });
     }

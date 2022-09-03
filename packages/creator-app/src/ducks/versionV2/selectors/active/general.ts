@@ -3,7 +3,7 @@ import { Nullable } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { createSelector } from 'reselect';
 
-import * as ProjectV2 from '@/ducks/projectV2';
+import { nameSelector } from '@/ducks/projectV2/selectors/active/base';
 
 import { versionSelector as activeVersionSelector } from './base';
 
@@ -13,7 +13,7 @@ export const settingsSelector = createSelector([versionSelector], (version) => v
 
 export const localesSelector = createSelector([settingsSelector], (settings) => settings?.locales ?? []);
 
-export const invocationNameSelector = ProjectV2.active.nameSelector;
+export const invocationNameSelector = nameSelector;
 
 export const messageDelaySelector = createSelector([settingsSelector], (settings) =>
   settings ? (settings as Omit<ChatVersion.Settings, 'session'>)?.messageDelay?.durationMilliseconds ?? 0 : 0

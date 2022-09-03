@@ -6,7 +6,7 @@ import { LimitDetails } from '@/config/planLimits';
 import { ModalType } from '@/constants';
 import { useModals } from '@/hooks';
 
-import { GatedFeatureIcon } from '.';
+import GatedFeatureIcon from './GatedFeatureIcon';
 import { getLabelTooltip, getUpgradeTooltip } from './getOptionTooltips';
 
 interface UpgradeLabelProps<T, U> {

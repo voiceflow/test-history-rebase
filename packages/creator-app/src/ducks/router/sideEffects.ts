@@ -6,12 +6,12 @@ import * as Errors from '@/config/errors';
 import { Path } from '@/config/routes';
 import { InteractionModelTabType, PageProgressBar } from '@/constants';
 import * as Creator from '@/ducks/creator';
+import * as DomainSelectors from '@/ducks/domain/selectors';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import * as Tracking from '@/ducks/tracking';
 import { NLUManagerOpenedOrigin } from '@/ducks/tracking/constants';
 import * as VariableState from '@/ducks/variableState';
-import * as VersionV2 from '@/ducks/versionV2';
 import { SyncThunk, Thunk } from '@/store/types';
 
 import {
@@ -30,133 +30,191 @@ import {
   redirectToCanvasCommentingThread,
 } from './actions';
 
-export const goToCanvas = (versionID: string, diagramID?: string) =>
-  goTo(`${generatePath(Path.PROJECT_CANVAS, { versionID, diagramID })}${window.location.search}`);
+export const goToVersions = (versionID: string) => goTo(`${generatePath(Path.PROJECT_VERSION_SETTINGS, { versionID })}`);
 
-export const goToCanvasNode = ({
-  nodeID,
-  versionID,
-  diagramID,
-  routeState,
-  nodeSubPath,
-}: {
-  nodeID: string;
+interface GoToDomainOptions {
+  domainID?: string;
   versionID: string;
+}
+
+export const goToDomain = ({ domainID, versionID }: GoToDomainOptions) =>
+  goTo(`${generatePath(Path.PROJECT_DOMAIN, { domainID, versionID })}${window.location.search}`);
+
+export const redirectToDomain = ({ domainID, versionID }: GoToDomainOptions) =>
+  redirectTo(`${generatePath(Path.PROJECT_DOMAIN, { versionID, domainID })}${window.location.search}`);
+
+interface GoToCanvasOptions extends GoToDomainOptions {
+  domainID: string;
+  diagramID?: string;
+}
+
+interface GoToCanvasDiagramOptions extends GoToCanvasOptions {
   diagramID: string;
+}
+
+export const goToCanvas = ({ domainID, diagramID, versionID }: GoToCanvasOptions) =>
+  goTo(`${generatePath(Path.DOMAIN_CANVAS, { domainID, diagramID, versionID })}${window.location.search}`);
+
+export const redirectToCanvas = ({ domainID, diagramID, versionID, extraPath = '' }: GoToCanvasOptions & { extraPath?: string }) =>
+  redirectTo(`${generatePath(Path.DOMAIN_CANVAS, { versionID, diagramID, domainID })}${extraPath}${window.location.search}`);
+
+interface GoToCanvasNodeOptions extends GoToCanvasDiagramOptions {
+  nodeID: string;
   routeState?: Struct;
   nodeSubPath?: string;
-}) =>
+}
+
+export const goToCanvasNode = ({ nodeID, domainID, versionID, diagramID, routeState, nodeSubPath }: GoToCanvasNodeOptions) =>
   goTo(
-    `${generatePath(Path.CANVAS_NODE, { versionID, diagramID, nodeID })}${nodeSubPath ? `/${nodeSubPath}` : ''}${window.location.search}`,
+    `${generatePath(Path.CANVAS_NODE, { versionID, diagramID, domainID, nodeID })}${nodeSubPath ? `/${nodeSubPath}` : ''}${window.location.search}`,
     routeState
   );
 
-export const goToVersions = (versionID: string) => goTo(`${generatePath(Path.PROJECT_VERSION_SETTINGS, { versionID })}`);
-
-export const redirectToCanvas = (versionID: string, diagramID?: string) =>
-  redirectTo(`${generatePath(Path.PROJECT_CANVAS, { versionID, diagramID })}${window.location.search}`);
+interface GoToCanvasSwitchRealtimeOptions extends GoToCanvasDiagramOptions {
+  nodeID?: string;
+}
 
 export const goToCanvasSwitchRealtime =
-  (versionID: string, diagramID: string, { nodeID }: { nodeID?: string } = {}): SyncThunk =>
+  ({ nodeID, domainID, versionID, diagramID }: GoToCanvasSwitchRealtimeOptions): SyncThunk =>
   (dispatch) => {
     PageProgress.start(PageProgressBar.CANVAS_LOADING);
 
     if (nodeID) {
-      dispatch(goToCanvasNode({ versionID, diagramID, nodeID }));
+      dispatch(goToCanvasNode({ nodeID, domainID, diagramID, versionID }));
     } else {
-      dispatch(goToCanvas(versionID, diagramID));
+      dispatch(goToCanvas({ domainID, diagramID, versionID }));
     }
   };
 
 export const goToCurrentCanvas = (): SyncThunk => (dispatch, getState) => {
   const state = getState();
+  const domainID = Session.activeDomainIDSelector(state);
   const versionID = Session.activeVersionIDSelector(state);
   const diagramID = Session.activeDiagramIDSelector(state);
-  const version = VersionV2.active.versionSelector(state);
+  const rootDomain = DomainSelectors.rootDomainSelector(state);
 
   Errors.assertVersionID(versionID);
 
-  if (diagramID) {
-    dispatch(goToCanvas(versionID, diagramID));
+  if (domainID && diagramID) {
+    dispatch(goToCanvas({ domainID, diagramID, versionID }));
     return;
   }
 
-  if (!version) throw Errors.noActiveVersionID();
+  if (!rootDomain) throw Errors.noActiveDomainID();
 
-  dispatch(goToCanvas(versionID, version.rootDiagramID));
+  dispatch(goToCanvas({ domainID: rootDomain.id, diagramID: rootDomain.rootDiagramID, versionID }));
 };
 
 export const goToCurrentCanvasCommenting =
   (threadID?: string, commentID?: string): SyncThunk =>
   (dispatch, getState) => {
     const state = getState();
+
+    const domainID = Session.activeDomainIDSelector(state);
     const versionID = Session.activeVersionIDSelector(state);
     const diagramID = Session.activeDiagramIDSelector(state);
 
+    Errors.assertDomainID(domainID);
     Errors.assertVersionID(versionID);
     Errors.assertDiagramID(diagramID);
 
     if (threadID) {
-      dispatch(goToCanvasCommentingThread(versionID, diagramID, threadID, commentID));
+      dispatch(goToCanvasCommentingThread({ domainID, diagramID, versionID, threadID, commentID }));
     } else {
-      dispatch(goToCanvasCommenting(versionID, diagramID));
+      dispatch(goToCanvasCommenting({ domainID, diagramID, versionID }));
     }
   };
 
 export const goToCurrentCanvasTextMarkup = (): SyncThunk => (dispatch, getState) => {
   const state = getState();
+
+  const domainID = Session.activeDomainIDSelector(state);
   const versionID = Session.activeVersionIDSelector(state);
   const diagramID = Session.activeDiagramIDSelector(state);
 
+  Errors.assertDomainID(domainID);
   Errors.assertVersionID(versionID);
   Errors.assertDiagramID(diagramID);
 
-  dispatch(goToCanvasTextMarkup(versionID, diagramID));
+  dispatch(goToCanvasTextMarkup({ domainID, diagramID, versionID }));
 };
 
 export const redirectToCurrentCanvasCommentingThread =
   (threadID: string, commentID?: string): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
+
+    const domainID = Session.activeDomainIDSelector(state);
     const versionID = Session.activeVersionIDSelector(state);
     const diagramID = Session.activeDiagramIDSelector(state);
 
+    Errors.assertDomainID(domainID);
     Errors.assertVersionID(versionID);
     Errors.assertDiagramID(diagramID);
 
-    dispatch(redirectToCanvasCommentingThread(versionID, diagramID, threadID, commentID));
+    dispatch(redirectToCanvasCommentingThread({ domainID, diagramID, versionID, threadID, commentID }));
   };
 
-export const goToRootDiagram = (): Thunk => async (dispatch, getState) => {
+export const goToDomainRootDiagram = (): Thunk => async (dispatch, getState) => {
   const state = getState();
-  const versionID = Session.activeVersionIDSelector(state);
-  const rootDiagramID = VersionV2.active.rootDiagramIDSelector(state);
 
+  const domainID = Session.activeDomainIDSelector(state);
+  const versionID = Session.activeVersionIDSelector(state);
+  const rootDiagramID = DomainSelectors.active.rootDiagramIDSelector(state);
+
+  Errors.assertDomainID(domainID);
   Errors.assertVersionID(versionID);
+
   if (!rootDiagramID) throw new Error('no active root diagram ID');
 
-  await dispatch(goToCanvasSwitchRealtime(versionID, rootDiagramID));
+  await dispatch(goToCanvasSwitchRealtime({ diagramID: rootDiagramID, domainID, versionID }));
+};
+
+export const goToRootDomain = (): Thunk => async (dispatch, getState) => {
+  const state = getState();
+
+  const versionID = Session.activeVersionIDSelector(state);
+  const rootDomain = DomainSelectors.rootDomainSelector(state);
+
+  Errors.assertDomainID(rootDomain?.id);
+  Errors.assertVersionID(versionID);
+
+  await dispatch(goToCanvasSwitchRealtime({ diagramID: rootDomain.rootDiagramID, domainID: rootDomain.id, versionID }));
 };
 
 export const redirectToDiagram =
-  (diagramID: string): SyncThunk =>
+  (domainID: string, diagramID: string): SyncThunk =>
   (dispatch, getState) => {
-    const version = VersionV2.active.versionSelector(getState());
+    const state = getState();
+    const versionID = Session.activeVersionIDSelector(state);
 
-    if (!version) throw Errors.noActiveVersionID();
+    Errors.assertVersionID(versionID);
 
     PageProgress.start(PageProgressBar.CANVAS_LOADING);
-    dispatch(redirectToCanvas(version.id, diagramID));
+
+    dispatch(redirectToCanvas({ domainID, versionID, diagramID }));
   };
 
-export const goToDiagram =
-  (diagramID: string, nodeID?: string): Thunk =>
+export const goToDomainDiagram =
+  (domainID: string, diagramID: string, nodeID?: string): Thunk =>
   async (dispatch, getState) => {
     const versionID = Session.activeVersionIDSelector(getState());
 
     Errors.assertVersionID(versionID);
 
-    await dispatch(goToCanvasSwitchRealtime(versionID, diagramID, { nodeID }));
+    await dispatch(goToCanvasSwitchRealtime({ nodeID, domainID, diagramID, versionID }));
+  };
+
+export const goToDiagram =
+  (diagramID: string, nodeID?: string): Thunk =>
+  async (dispatch, getState) => {
+    const state = getState();
+
+    const domainID = DomainSelectors.domainIDByTopicIDSelector(state, { topicID: diagramID }) ?? Session.activeDomainIDSelector(state);
+
+    Errors.assertDomainID(domainID);
+
+    await dispatch(goToDomainDiagram(domainID, diagramID, nodeID));
   };
 
 export const goToDiagramHistoryPush =
@@ -186,16 +244,20 @@ export const goToDiagramHistoryClear =
 export const goToDiagramCommenting =
   (diagramID: string, threadID?: string, commentID?: string): Thunk =>
   async (dispatch, getState) => {
-    const versionID = Session.activeVersionIDSelector(getState());
+    const state = getState();
 
+    const domainID = DomainSelectors.domainIDByTopicIDSelector(state, { topicID: diagramID }) ?? DomainSelectors.rootDomainIDSelector(state);
+    const versionID = Session.activeVersionIDSelector(state);
+
+    Errors.assertDomainID(domainID);
     Errors.assertVersionID(versionID);
 
     PageProgress.start(PageProgressBar.CANVAS_LOADING);
 
     if (threadID) {
-      dispatch(goToCanvasCommentingThread(versionID, diagramID, threadID, commentID));
+      dispatch(goToCanvasCommentingThread({ domainID, versionID, diagramID, threadID, commentID }));
     } else {
-      dispatch(goToCanvasCommenting(versionID, diagramID));
+      dispatch(goToCanvasCommenting({ domainID, versionID, diagramID }));
     }
   };
 
@@ -203,24 +265,28 @@ export const goToCurrentPrototype =
   (nodeID?: string): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
-    const topics = VersionV2.active.topicsSelector(state);
+    const topicIDs = DomainSelectors.active.topicIDsSelector(state);
     const versionID = Session.activeVersionIDSelector(state);
     const diagramID = Session.activeDiagramIDSelector(state);
-    const rootDiagramID = VersionV2.active.rootDiagramIDSelector(state);
+    const rootDomain = DomainSelectors.rootDomainSelector(state);
     const variableStatesStartFromDiagramID = VariableState.selectedStartFromDiagramIDSelector(state);
 
     Errors.assertVersionID(versionID);
 
-    const isTopic = topics.find((item) => item.sourceID === diagramID);
+    const isTopic = !!diagramID && topicIDs.includes(diagramID);
 
     if (nodeID && variableStatesStartFromDiagramID && variableStatesStartFromDiagramID !== diagramID) {
       dispatch(VariableState.resetVariableStates());
     }
 
     if (!nodeID && variableStatesStartFromDiagramID) {
-      await dispatch(redirectToDiagram(variableStatesStartFromDiagramID));
-    } else if (!nodeID && isTopic && rootDiagramID && rootDiagramID !== diagramID) {
-      await dispatch(redirectToDiagram(rootDiagramID));
+      const domainID = DomainSelectors.domainIDByTopicIDSelector(state, { topicID: variableStatesStartFromDiagramID }) ?? rootDomain?.id;
+
+      Errors.assertDomainID(domainID);
+
+      await dispatch(redirectToDiagram(domainID, variableStatesStartFromDiagramID));
+    } else if (!nodeID && isTopic && rootDomain && rootDomain.rootDiagramID !== diagramID) {
+      await dispatch(redirectToDiagram(rootDomain.id, rootDomain.rootDiagramID));
     }
 
     dispatch(goToPrototype(versionID, nodeID));
@@ -256,26 +322,33 @@ export const goToCurrentCanvasInteractionModel =
   (entityType: InteractionModelTabType): SyncThunk =>
   (dispatch, getState) => {
     const state = getState();
+    const domainID = Session.activeDomainIDSelector(state);
     const versionID = Session.activeVersionIDSelector(state);
     const diagramID = Session.activeDiagramIDSelector(state);
 
-    if (!versionID || !diagramID) return;
-    dispatch(goTo(generatePath(Path.CANVAS_MODEL, { versionID, diagramID, modelType: entityType })));
+    Errors.assertDiagramID(domainID);
+    Errors.assertVersionID(versionID);
+    Errors.assertDiagramID(diagramID);
+
+    dispatch(goTo(generatePath(Path.CANVAS_MODEL, { domainID, versionID, diagramID, modelType: entityType })));
   };
 
 export const goToCurrentCanvasInteractionModelEntity =
   (entityType: InteractionModelTabType, entityID: string): SyncThunk =>
   (dispatch, getState) => {
     const state = getState();
+    const domainID = Session.activeDomainIDSelector(state);
     const versionID = Session.activeVersionIDSelector(state);
     const diagramID = Session.activeDiagramIDSelector(state);
 
+    Errors.assertDiagramID(domainID);
     Errors.assertVersionID(versionID);
     Errors.assertDiagramID(diagramID);
 
     dispatch(
       goTo(
         generatePath(Path.CANVAS_MODEL_ENTITY, {
+          domainID,
           versionID,
           diagramID,
           modelType: entityType,
@@ -289,13 +362,16 @@ export const goToCurrentCanvasNode =
   (nodeID: string, nodeSubPath?: string, routeState?: Struct): SyncThunk =>
   (dispatch, getState) => {
     const state = getState();
+
+    const domainID = Session.activeDomainIDSelector(state);
     const versionID = Session.activeVersionIDSelector(state);
     const diagramID = Session.activeDiagramIDSelector(state);
 
+    Errors.assertDomainID(domainID);
     Errors.assertVersionID(versionID);
     Errors.assertDiagramID(diagramID);
 
-    dispatch(goToCanvasNode({ versionID, diagramID, nodeID, nodeSubPath, routeState }));
+    dispatch(goToCanvasNode({ domainID, versionID, diagramID, nodeID, nodeSubPath, routeState }));
   };
 
 export const goToCurrentNLUManagerEntity =

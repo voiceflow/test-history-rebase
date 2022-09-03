@@ -23,6 +23,7 @@ const activeStyles = css`
 
   ${ActionIcon} {
     opacity: 0.85;
+    display: block;
 
     &:hover {
       opacity: 1;
@@ -64,7 +65,7 @@ export const itemStyles = css<MenuItemProps>`
     `}
 
   ${ActionIcon} {
-    opacity: 0;
+    display: none;
   }
 
   &:hover {

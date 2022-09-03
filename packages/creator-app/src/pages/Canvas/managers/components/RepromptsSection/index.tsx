@@ -52,13 +52,7 @@ const RepromptsSection: React.FC<RepromptsSectionProps> = ({ title, active, repr
       {hasReprompts &&
         mapManager.map((item, { key, isLast, onUpdate, onRemove }) => (
           <Box key={key} pb={isLast ? 0 : 16}>
-            <ListItem
-              message={item}
-              onChange={onUpdate}
-              onRemove={onRemove}
-              // eslint-disable-next-line jsx-a11y/no-autofocus
-              autoFocus={key === mapManager.latestCreatedKey}
-            />
+            <ListItem message={item} onChange={onUpdate} onRemove={onRemove} autoFocus={key === mapManager.latestCreatedKey} />
           </Box>
         ))}
     </SectionV2.ActionListSection>

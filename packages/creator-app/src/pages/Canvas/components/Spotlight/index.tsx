@@ -94,7 +94,6 @@ const Spotlight = () => {
           Control,
           IndicatorsContainer: () => null,
         }}
-        // eslint-disable-next-line jsx-a11y/no-autofocus
         autoFocus
         onKeyDown={withKeyPress(KeyName.ESCAPE, () => spotlight?.hide())}
         placeholder="Add Block"

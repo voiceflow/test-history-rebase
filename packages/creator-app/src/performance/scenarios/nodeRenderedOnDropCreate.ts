@@ -16,7 +16,7 @@ runner.register<typeof MOCK_DATA.VERSIONS[number]>(
     });
 
     beforeEachIterationData(async (version) => {
-      await commands.goToCanvas(version.id, 10000);
+      await commands.goToDomain(version.id, 10000);
     });
 
     afterAll(async () => {

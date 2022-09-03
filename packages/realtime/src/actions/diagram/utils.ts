@@ -1,7 +1,9 @@
 // eslint-disable-next-line max-classes-per-file
+import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { BaseContextData, Context, Resend } from '@voiceflow/socket-utils';
 import type { Action } from 'typescript-fsa';
+import type { Required } from 'utility-types';
 
 import { AbstractActionControl } from '@/actions/utils';
 import { AbstractVersionResourceControl } from '@/actions/version/utils';
@@ -48,4 +50,48 @@ export abstract class AbstractNoopDiagramActionControl<
 export abstract class AbstractDiagramResourceControl<
   P extends Realtime.BaseVersionPayload,
   D extends WorkspaceContextData = WorkspaceContextData
-> extends AbstractVersionResourceControl<P, D> {}
+> extends AbstractVersionResourceControl<P, D> {
+  protected createComponent = async (
+    ctx: Context<BaseContextData>,
+    payload: P,
+    primitiveDiagram: Required<Partial<Realtime.Utils.diagram.PrimitiveDiagram>, 'name'>
+  ): Promise<Realtime.Diagram> => {
+    const { creatorID } = ctx.data;
+    const { versionID, projectID, workspaceID } = payload;
+
+    const factoryComponent = Realtime.Utils.diagram.componentDiagramFactory(primitiveDiagram.name);
+
+    const [components, newDBDiagram] = await Promise.all([
+      this.services.version.getComponents(creatorID, versionID),
+      this.services.diagram.create({
+        ...factoryComponent,
+        ...primitiveDiagram,
+        creatorID,
+        versionID,
+      }),
+    ]);
+
+    const newDiagram = Realtime.Adapters.diagramAdapter.fromDB(newDBDiagram, { rootDiagramID: '' });
+
+    // TODO: move components patch into creator api
+    await this.services.version.patch(creatorID, versionID, {
+      components: [...components, { sourceID: newDiagram.id, type: BaseModels.Version.FolderItemType.DIAGRAM }],
+    });
+
+    await Promise.all([
+      this.reloadSharedNodes(ctx, payload, [newDBDiagram]),
+      this.server.processAs(
+        creatorID,
+        Realtime.diagram.crud.add({
+          key: newDiagram.id,
+          value: newDiagram,
+          projectID,
+          versionID,
+          workspaceID,
+        })
+      ),
+    ]);
+
+    return newDiagram;
+  };
+}

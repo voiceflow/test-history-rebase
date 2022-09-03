@@ -103,7 +103,6 @@ const TopicItemName: React.ForwardRefRenderFunction<HTMLDivElement, TopicItemNam
               onBlur={onSaveName}
               onChange={withTargetValue(setLocalName)}
               readOnly={!catEdit}
-              // eslint-disable-next-line jsx-a11y/no-autofocus
               autoFocus
               onKeyPress={withEnterPress((event) => event.currentTarget.blur())}
             />

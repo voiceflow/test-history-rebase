@@ -1,8 +1,9 @@
-import { createAction, createAsyncAction, createCRUDActions, createType } from '@realtime-sdk/actions/utils';
-import { COMPONENT_KEY, TEMPLATE_DIAGRAM_KEY, TOPIC_KEY, VARIABLES_KEY } from '@realtime-sdk/constants';
+import { createCRUDActions } from '@realtime-sdk/actions/utils';
+import { COMPONENT_KEY, TEMPLATE_DIAGRAM_KEY, VARIABLES_KEY } from '@realtime-sdk/constants';
 import { Diagram } from '@realtime-sdk/models';
 import { BaseDiagramPayload, BaseVersionPayload } from '@realtime-sdk/types';
-import { diagram } from '@realtime-sdk/utils';
+import { PrimitiveDiagram } from '@realtime-sdk/utils/diagram';
+import { Utils } from '@voiceflow/common';
 import { Required } from 'utility-types';
 
 import { diagramType } from './utils';
@@ -11,36 +12,41 @@ export * as awareness from './awareness';
 export * as sharedNodes from './sharedNodes';
 export * as viewport from './viewport';
 
-const diagramTopicType = createType(diagramType(TOPIC_KEY));
-const diagramComponentType = createType(diagramType(COMPONENT_KEY));
-const diagramTemplateDiagramType = createType(diagramType(TEMPLATE_DIAGRAM_KEY));
-const diagramVariablesType = createType(diagramType(VARIABLES_KEY));
+const diagramComponentType = Utils.protocol.typeFactory(diagramType(COMPONENT_KEY));
+const diagramVariablesType = Utils.protocol.typeFactory(diagramType(VARIABLES_KEY));
+const diagramTemplateDiagramType = Utils.protocol.typeFactory(diagramType(TEMPLATE_DIAGRAM_KEY));
+
+// crud
+export const crud = createCRUDActions<Diagram, BaseVersionPayload, Pick<Diagram, 'name'>>(diagramType);
+
+// component
+export interface ComponentCreatePayload extends BaseVersionPayload {
+  component: Required<Partial<PrimitiveDiagram>, 'name'>;
+}
+
+export const componentRemove = Utils.protocol.createAction<BaseDiagramPayload>(diagramComponentType('REMOVE'));
+export const componentCreate = Utils.protocol.createAsyncAction<ComponentCreatePayload, Diagram>(diagramComponentType('CREATE'));
+export const componentDuplicate = Utils.protocol.createAsyncAction<BaseDiagramPayload, Diagram>(diagramComponentType('DUPLICATE'));
 
 // variables
-
 export interface LocalVariablePayload extends BaseDiagramPayload {
   variable: string;
 }
 
+export const addLocalVariable = Utils.protocol.createAction<LocalVariablePayload>(diagramVariablesType('ADD'));
+export const removeLocalVariable = Utils.protocol.createAction<LocalVariablePayload>(diagramVariablesType('REMOVE'));
+
+// menu nodes
 export interface ReorderMenuNodePayload extends BaseDiagramPayload {
   nodeID: string;
   toIndex: number;
 }
 
-export const reorderMenuNode = createAction<ReorderMenuNodePayload>(diagramTopicType('REORDER_MENU_NODE'));
-export const addLocalVariable = createAction<LocalVariablePayload>(diagramVariablesType('ADD'));
-export const removeLocalVariable = createAction<LocalVariablePayload>(diagramVariablesType('REMOVE'));
+export const reorderMenuNode = Utils.protocol.createAction<ReorderMenuNodePayload>(diagramType('REORDER_MENU_NODE'));
 
-// crud
-
-export interface CreateDiagramPayload extends BaseVersionPayload {
-  diagram: Required<Partial<diagram.PrimitiveDiagram>, 'name'>;
+// template diagram
+export interface TemplateCreatePayload extends BaseVersionPayload {
+  template: Required<Partial<PrimitiveDiagram>, 'name'>;
 }
 
-export const createTopic = createAsyncAction<CreateDiagramPayload, Diagram>(diagramTopicType('CREATE'));
-export const createComponent = createAsyncAction<CreateDiagramPayload, Diagram>(diagramComponentType('CREATE'));
-export const createTemplateDiagram = createAsyncAction<CreateDiagramPayload, Diagram>(diagramTemplateDiagramType('CREATE'));
-export const duplicate = createAsyncAction<BaseDiagramPayload, Diagram>(diagramType('DUPICATE'));
-export const convertToTopic = createAsyncAction<BaseDiagramPayload, Diagram>(diagramType('CONVERT_TO_TOPIC'));
-
-export const crud = createCRUDActions<Diagram, BaseVersionPayload>(diagramType);
+export const templateCreate = Utils.protocol.createAsyncAction<TemplateCreatePayload, Diagram>(diagramTemplateDiagramType('CREATE'));

@@ -137,15 +137,14 @@ const VariableStatesModal: React.FC<{
             placeholder="E.g., New User, Return User, Added Credit Card"
             onEnterPress={formik.submitForm}
             disabled={formik.isSubmitting}
-            // eslint-disable-next-line jsx-a11y/no-autofocus
             autoFocus
           />
           {!!formik.submitCount && formik.errors.name && <InputError>{formik.errors.name}</InputError>}
         </Section>
         <Section header="Starting Block" dividers={false} variant={SectionVariant.TERTIARY_TITLE}>
           <BlockSelect
-            onChange={(startFrom) => formik.setFieldValue('startFrom', startFrom)}
             value={formik.values.startFrom}
+            onChange={(startFrom) => formik.setFieldValue('startFrom', startFrom)}
             disabled={formik.isSubmitting}
             startNodeIsDefault
           />

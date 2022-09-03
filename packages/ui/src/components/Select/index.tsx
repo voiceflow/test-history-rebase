@@ -196,6 +196,7 @@ function Select({
   renderFooterAction,
   renderSearchSuffix,
   renderOptionsFilter,
+  nestedMenuAutoWidth = true,
   autoUpdatePlacement,
   clearOnSelectActive,
   showNotMatchedOptions,
@@ -235,7 +236,7 @@ function Select({
     autoSizing: {
       enabled: true,
       fn: (data) => {
-        if (placement === 'bottom-start' && inputWrapperNode) {
+        if (placement === 'bottom-start' && inputWrapperNode && (data.instance.options.modifiers?.isRoot?.value || nestedMenuAutoWidth)) {
           // eslint-disable-next-line no-param-reassign
           data.styles.width = `${inputWrapperNode.getBoundingClientRect().width}px`;
         }

@@ -1,6 +1,6 @@
+import { Modal } from '@voiceflow/ui';
 import React from 'react';
 
-import { ModalFooter } from '@/components/Modal';
 import { Permission } from '@/config/permissions';
 import { usePermission } from '@/hooks';
 import ChatWithUsLink from '@/pages/Payment/components/ChatWithUsLink';
@@ -36,10 +36,11 @@ const UpdatePlan: React.FC<UpdatePlanProps> = ({
           </PlanDetailsContainer>
         </FadeLeftContainer>
       </Container>
-      <ModalFooter justifyContent="space-between">
+
+      <Modal.Footer justifyContent="space-between">
         <ChatWithUsLink />
         <CheckoutButton />
-      </ModalFooter>
+      </Modal.Footer>
     </>
   );
 };

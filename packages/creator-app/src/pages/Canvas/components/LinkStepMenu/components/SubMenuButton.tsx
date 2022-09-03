@@ -67,7 +67,6 @@ const SubMenuButton: React.FC<SubMenuButtonProps> = ({ step, template }) => {
                 width={isLocked ? 200 : 168}
                 onClick={isLocked ? () => openPaymentModal() : () => window.open(step?.tooltipLink, '_blank')}
                 buttonText={isLocked ? lockedStepTooltipButtonText : 'Learn More'}
-                defaultVisible
               >
                 {getLockedStepTooltipText(step.type as lockedStepTypes)}
               </TippyTooltip.FooterButton>

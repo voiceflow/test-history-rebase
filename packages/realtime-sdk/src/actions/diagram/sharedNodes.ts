@@ -1,11 +1,10 @@
-import { createAction, createType } from '@realtime-sdk/actions/utils';
 import { BlockType } from '@realtime-sdk/constants';
 import { BaseVersionPayload } from '@realtime-sdk/types';
-import { Nullable } from '@voiceflow/common';
+import { Nullable, Utils } from '@voiceflow/common';
 
 import { diagramType } from './utils';
 
-const menuNodesType = createType(diagramType('shared_nodes'));
+const menuNodesType = Utils.protocol.typeFactory(diagramType('shared_nodes'));
 
 export interface BaseSharedNode {
   type: BlockType;
@@ -51,5 +50,5 @@ export interface ReloadPayload extends BaseVersionPayload {
   sharedNodes: DiagramSharedNodeMap;
 }
 
-export const load = createAction<LoadPayload>(menuNodesType('LOAD'));
-export const reload = createAction<ReloadPayload>(menuNodesType('RELOAD'));
+export const load = Utils.protocol.createAction<LoadPayload>(menuNodesType('LOAD'));
+export const reload = Utils.protocol.createAction<ReloadPayload>(menuNodesType('RELOAD'));

@@ -1,5 +1,4 @@
 import composeRef from '@seznam/compose-react-refs';
-import { PlanType } from '@voiceflow/internal';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, ContextMenu, OptionsMenuOption, Portal, SvgIcon, SvgIconTypes, TippyTooltip, useLocalStorage, usePopper } from '@voiceflow/ui';
 import React from 'react';
@@ -14,6 +13,7 @@ import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useEnableDisable, useEventualEngine, useHover, useModals, useSelector, useSetup, useTeardown } from '@/hooks';
 import { StepDragItem } from '@/pages/Canvas/components/CanvasDiagram';
 import { ClassName } from '@/styles/constants';
+import { onOpenInternalURLInANewTabFactory } from '@/utils/window';
 
 import DefaultColorPopper from '../DefaultColorPopper';
 import { StyledText, TooltipContainer } from '../styles';
@@ -65,7 +65,7 @@ const SubMenuButton: React.FC<SubMenuButtonProps> = ({
 
   const [isClickedState, enableClickedState, clearClickedState] = useEnableDisable();
 
-  const { open: openPaymentModal } = useModals<{ planType: PlanType }>(ModalType.PAYMENT);
+  const { open: openPaymentModal } = useModals(ModalType.PAYMENT);
 
   const [{ isDragging }, connectDrag, connectPreview] = useDrag<StepDragItem, unknown, { isDragging: boolean }>({
     item: { type: DragItem.BLOCK_MENU, icon, label, blockType: type, factoryData },
@@ -172,9 +172,8 @@ const SubMenuButton: React.FC<SubMenuButtonProps> = ({
             <TooltipContainer>
               {tooltipLink ? (
                 <TippyTooltip.FooterButton
-                  onClick={isLocked ? () => openPaymentModal() : () => window.open(tooltipLink, '_blank')}
+                  onClick={isLocked ? () => openPaymentModal() : onOpenInternalURLInANewTabFactory(tooltipLink)}
                   buttonText={isLocked ? lockedStepTooltipButtonText : 'Learn More'}
-                  defaultVisible
                 >
                   {isLocked ? getLockedStepTooltipText(type as lockedStepTypes) : tooltipText}
                 </TippyTooltip.FooterButton>

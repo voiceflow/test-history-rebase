@@ -1,8 +1,6 @@
 import { AnyRecord } from '@voiceflow/common';
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { ActionCreator } from 'typescript-fsa';
 
-import { isFeatureEnabledSelector } from '@/ducks/feature';
 import { Middleware, State } from '@/store/types';
 import { extendMeta } from '@/store/utils';
 
@@ -19,8 +17,4 @@ export const createExtendMetaMiddleware =
     next(action);
   };
 
-const extendMetaWithAssistantIAEnabledMiddleware = createExtendMetaMiddleware([Realtime.diagram.crud.add, Realtime.diagram.crud.remove], (state) => ({
-  assistantIAEnabled: isFeatureEnabledSelector(state)(Realtime.FeatureFlag.ASSISTANT_IA),
-}));
-
-export default [extendMetaWithAssistantIAEnabledMiddleware];
+export default [];

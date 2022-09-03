@@ -7,6 +7,7 @@ import { logsIcon } from '@/assets';
 import * as Modal from '@/ducks/modal';
 import { connect, styled } from '@/hocs';
 import IntegrationsService from '@/services/Integrations';
+import { openURLInANewTab } from '@/utils/window';
 import * as Sentry from '@/vendors/sentry';
 
 const SpreadSheetIcon = styled.img`
@@ -48,10 +49,10 @@ function SelectGoogleSheet({ selectedAction, data, setError, user, updateHeaders
   const openSpreadsheetLink = () => {
     const spreadsheet_id = data.spreadsheet && data.spreadsheet.value;
     const sheet_id = data.sheet && data.sheet.value;
+
     if (spreadsheet_id == null || sheet_id == null) return;
-    const url = `https://docs.google.com/spreadsheets/d/${spreadsheet_id}/edit#gid=${sheet_id}`;
-    const win = window.open(url, '_blank');
-    win.focus();
+
+    openURLInANewTab(`https://docs.google.com/spreadsheets/d/${spreadsheet_id}/edit#gid=${sheet_id}`);
   };
 
   const selected_action = selectedAction;

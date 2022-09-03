@@ -1,5 +1,5 @@
 import Portal from '@ui/components/Portal';
-import { useTheme } from '@ui/hooks';
+import { useConst, useTheme } from '@ui/hooks';
 import { ANIMATION_SPEED, ClassName } from '@ui/styles/constants';
 import cn from 'classnames';
 import React from 'react';
@@ -20,6 +20,7 @@ export interface ModalProps {
   maxWidth?: number;
   className?: string;
   maxHeight?: number;
+  minHeight?: number;
   fullScreen?: boolean;
   verticalMargin?: number;
 }
@@ -28,10 +29,25 @@ const EXTRA_ANIMATION_TIME = 0.02;
 
 const Modal = React.forwardRef<HTMLDivElement, React.PropsWithChildren<ModalProps>>(
   (
-    { type, animated = true, centered, hidden, opened, maxWidth, onExited, maxHeight, children, className, fullScreen = false, verticalMargin },
+    {
+      type,
+      hidden,
+      opened,
+      animated = true,
+      children,
+      centered,
+      maxWidth,
+      onExited,
+      maxHeight,
+      minHeight,
+      className,
+      fullScreen = false,
+      verticalMargin,
+    },
     ref
   ) => {
     const theme = useTheme();
+    const enterAnimation = useConst(animated);
 
     const nestedTheme = React.useMemo(() => ({ ...theme, zIndex: { ...theme.zIndex, popper: theme.zIndex.modal + 1 } }), [theme]);
 
@@ -41,10 +57,10 @@ const Modal = React.forwardRef<HTMLDivElement, React.PropsWithChildren<ModalProp
           <S.Root ref={ref} hidden={hidden} centered={centered} fullScreen={fullScreen}>
             <Transition
               in={opened}
-              timeout={animated ? (ANIMATION_SPEED + EXTRA_ANIMATION_TIME) * 1000 : 0}
+              timeout={animated ? (ANIMATION_SPEED + EXTRA_ANIMATION_TIME) * 1000 : 1}
               onExited={onExited}
-              unmountOnExit
               mountOnEnter
+              unmountOnExit
             >
               {(status) => (
                 <S.Container
@@ -53,9 +69,11 @@ const Modal = React.forwardRef<HTMLDivElement, React.PropsWithChildren<ModalProp
                   centered={centered}
                   maxWidth={maxWidth}
                   maxHeight={maxHeight}
+                  minHeight={minHeight}
                   className={cn(ClassName.MODAL, className, `${ClassName.MODAL}--${type ?? 'unknown'}`)}
                   fullScreen={fullScreen}
                   verticalMargin={verticalMargin}
+                  enterAnimation={enterAnimation}
                 >
                   {children}
                 </S.Container>

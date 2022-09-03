@@ -11,6 +11,7 @@ interface ToggleProps {
   name?: string;
   checked?: boolean;
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
+  disabled?: boolean;
 }
 
 const Toggle = React.forwardRef<HTMLDivElement | ReactToggle, ToggleProps>(

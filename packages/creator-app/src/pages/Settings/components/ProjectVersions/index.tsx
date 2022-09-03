@@ -44,7 +44,7 @@ const versionAdapter = (version: BaseModels.Version.Model<BaseModels.Version.Pla
   created: ObjectID.isValid(version._id) ? new ObjectID(version._id).getTimestamp().toString() : '',
 });
 
-const ProjectVersions: React.FC<ConnectedProjectVersions> = ({ projectID, activeVersionID, goToCanvas, platform }) => {
+const ProjectVersions: React.FC<ConnectedProjectVersions> = ({ projectID, activeVersionID, goToDomain, platform }) => {
   const [loading, setLoading] = React.useState(true);
   const [noMoreVersions, setNoMoreVersions] = React.useState(false);
   const [versionList, setVersionList] = React.useState<ProjectVersion[]>([]);
@@ -90,8 +90,11 @@ const ProjectVersions: React.FC<ConnectedProjectVersions> = ({ projectID, active
 
     try {
       const clonedVersion = await client.backup.restore(projectID, versionID);
+
       const { versionID: clonedVersionID } = versionAdapter(clonedVersion);
-      goToCanvas(clonedVersionID);
+
+      goToDomain({ versionID: clonedVersionID });
+
       toast.success('Version successfully restored.');
     } catch (err) {
       toast.error('Unable to restore version');
@@ -167,7 +170,7 @@ const mapStateToProps = {
 };
 
 const mapDispatchToProps = {
-  goToCanvas: Router.goToCanvas,
+  goToDomain: Router.goToDomain,
 };
 
 export type ConnectedProjectVersions = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;

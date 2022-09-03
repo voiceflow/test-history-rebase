@@ -7,7 +7,7 @@ import { usePermission, useSelector } from '@/hooks';
 import CanvasViewers from '@/pages/Project/components/CanvasViewers';
 
 import { SharePopperProvider } from '../../contexts';
-import { CanvasControls, LogoButton, ProjectAndDiagramActions, Run, Share, TrialExpired, Upload } from './components';
+import { CanvasControls, DomainsAndCanvasActions, LogoButton, Run, Share, TrialExpired, Upload } from './components';
 
 const CanvasHeader: React.FC = () => {
   const organizationTrialExpired = useSelector(WorkspaceV2.active.organizationTrialExpired);
@@ -18,7 +18,7 @@ const CanvasHeader: React.FC = () => {
       <Header renderLogoButton={() => <LogoButton />}>
         <CanvasControls />
 
-        <ProjectAndDiagramActions />
+        <DomainsAndCanvasActions />
 
         {organizationTrialExpired ? (
           <TrialExpired />

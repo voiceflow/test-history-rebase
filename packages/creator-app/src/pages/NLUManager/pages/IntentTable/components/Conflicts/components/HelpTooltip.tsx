@@ -2,6 +2,7 @@ import { Box, IconButton, Popper, Preview, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import { DOCS_BASE_LINK } from '@/config/documentation';
+import { onOpenInternalURLInANewTabFactory } from '@/utils/window';
 
 const HelpTooltip: React.FC = () => {
   return (
@@ -21,7 +22,7 @@ const HelpTooltip: React.FC = () => {
             <Preview.Text>Edit, remove, or transfer them to the proper intent to resolve the conflicts.</Preview.Text>
           </Preview.Content>
 
-          <TippyTooltip.FooterButton onClick={() => window.open(DOCS_BASE_LINK)} buttonText="More" />
+          <TippyTooltip.FooterButton onClick={onOpenInternalURLInANewTabFactory(DOCS_BASE_LINK)} buttonText="More" />
         </Preview>
       )}
     >

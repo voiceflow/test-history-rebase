@@ -4,7 +4,7 @@ import { swallowEvent } from '@voiceflow/ui';
 import React from 'react';
 import { Element, Text } from 'slate';
 
-import { getValidHref } from './string';
+import { openURLInANewTab } from './window';
 
 const serializeTextNode = (node: BaseText.Text, index: number): React.ReactNode => {
   const styles = slate.getTextCSSProperties(node);
@@ -27,7 +27,7 @@ const serializeLinkElement = (node: BaseText.LinkElement, index: number): React.
       href={node.url ?? ''}
       target="_blank"
       style={{ ...styles, pointerEvents: 'all' }}
-      onClick={swallowEvent(() => node.url && window.open(getValidHref(node.url), '_blank'))}
+      onClick={swallowEvent(() => node.url && openURLInANewTab(node.url))}
     >
       {children}
     </a>

@@ -319,7 +319,7 @@ function BaseNestedMenu({
 
   return (
     <Portal portalNode={portalNode || document.body}>
-      <Popper placement={placement} modifiers={popoverModifiers}>
+      <Popper placement={placement} modifiers={{ ...popoverModifiers, isRoot: { value: isRoot } }}>
         {({ ref, style, scheduleUpdate, placement: parentPlacement }) => {
           dataRef.current.scheduleUpdate = scheduleUpdate;
 

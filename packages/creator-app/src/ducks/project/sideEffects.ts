@@ -7,6 +7,7 @@ import client from '@/client';
 import * as Errors from '@/config/errors';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
+import * as Tracking from '@/ducks/tracking';
 import { waitAsync } from '@/ducks/utils';
 import { getActiveWorkspaceContext } from '@/ducks/workspace/utils';
 import { Thunk } from '@/store/types';
@@ -70,6 +71,32 @@ export const deleteProject =
       Realtime.project.crud.remove({
         ...getActiveWorkspaceContext(getState()),
         key: projectID,
+      })
+    );
+  };
+
+export const mergeProjects =
+  (sourceProjectID: string, targetProjectID: string): Thunk =>
+  async (dispatch, getState) => {
+    const state = getState();
+
+    const sourceProject = ProjectV2.projectByIDSelector(state, { id: sourceProjectID });
+    const targetProject = ProjectV2.projectByIDSelector(state, { id: targetProjectID });
+
+    dispatch(
+      Tracking.trackDomainConvert({
+        sourcePlatform: sourceProject?.platform,
+        targetPlatform: targetProject?.platform,
+        sourceProjectID,
+        targetProjectID,
+      })
+    );
+
+    await dispatch(
+      waitAsync(Realtime.project.merge, {
+        ...getActiveWorkspaceContext(state),
+        sourceProjectID,
+        targetProjectID,
       })
     );
   };

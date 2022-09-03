@@ -50,4 +50,27 @@ const multilineWithTitle = createExample('multiline with title', ({ isPage }) =>
   </TippyTooltip>
 ));
 
-export default createSection('TippyTooltip', 'src/components/TippyTooltip/index.tsx', [simple, withHotkey, html, multiline, multilineWithTitle]);
+const withButton = createExample('with button', ({ isPage }) => (
+  <TippyTooltip
+    html={
+      <TippyTooltip.FooterButton buttonText="More" onClick={() => null}>
+        <TippyTooltip.Title>Title</TippyTooltip.Title>
+        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since
+        the 1500s
+      </TippyTooltip.FooterButton>
+    }
+    open={isPage}
+    interactive
+  >
+    hover
+  </TippyTooltip>
+));
+
+export default createSection('TippyTooltip', 'src/components/TippyTooltip/index.tsx', [
+  simple,
+  withHotkey,
+  html,
+  multiline,
+  multilineWithTitle,
+  withButton,
+]);

@@ -84,7 +84,7 @@ const ListItem: React.ForwardRefRenderFunction<HTMLInputElement, ListItemProps> 
               variant={InputVariant.INLINE}
               onFocus={({ target }) => target.select()}
               onChange={withTargetValue((val) => setLocalName(nameValidation(val)))}
-              autoFocus // eslint-disable-line jsx-a11y/no-autofocus
+              autoFocus
               onKeyPress={withEnterPress(withInputBlur())}
             />
           ) : (

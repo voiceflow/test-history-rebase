@@ -53,7 +53,6 @@ export const AddNamePopper: React.FC<PopperProps> = ({ isEditing, onRename, valu
             <PopperContent onClick={stopPropagation(null, true)}>
               <Label>Color Label</Label>
               <StyledInput
-                // eslint-disable-next-line jsx-a11y/no-autofocus
                 autoFocus
                 autoSelectText
                 value={name}

@@ -8,4 +8,10 @@ const intentType = Utils.protocol.typeFactory(INTENT_KEY);
 
 export interface BaseIntentPayload extends BaseVersionPayload, ProjectMetaPayload {}
 
+export interface ReloadPayload extends BaseIntentPayload {
+  intents: Intent[];
+}
+
 export const crud = createCRUDActions<Intent, BaseIntentPayload>(intentType);
+
+export const reload = Utils.protocol.createAction<ReloadPayload>(intentType('RELOAD'));

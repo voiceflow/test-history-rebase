@@ -78,6 +78,7 @@ export const TrainingModelProvider: React.FC = ({ children }) => {
   const nluManager = useFeature(Realtime.FeatureFlag.NLU_MANAGER);
   const goToNLUManagerEntity = useDispatch(Router.goToCurrentNLUManagerEntity);
 
+  const domainID = useSelector(Session.activeDomainIDSelector);
   const versionID = useSelector(Session.activeVersionIDSelector);
   const diagramID = useSelector(CreatorV2.activeDiagramIDSelector);
   const projectID = useSelector(Session.activeProjectIDSelector);
@@ -88,8 +89,8 @@ export const TrainingModelProvider: React.FC = ({ children }) => {
   const handleGoToIMM = (slotID: string) => {
     if (nluManager.isEnabled) {
       goToNLUManagerEntity(InteractionModelTabType.SLOTS, slotID);
-    } else {
-      goToInteractionModel(versionID!, diagramID!, 'slots', slotID);
+    } else if (domainID && versionID && diagramID) {
+      goToInteractionModel({ domainID, versionID, diagramID, modelType: 'slots', entityID: slotID });
     }
   };
 

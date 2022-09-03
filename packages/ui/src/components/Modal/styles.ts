@@ -10,8 +10,10 @@ export interface ContainerProps {
   centered?: boolean;
   maxWidth?: number;
   maxHeight?: number;
+  minHeight?: number;
   fullScreen?: boolean;
   verticalMargin?: number;
+  enterAnimation?: boolean;
 }
 
 const ShowKeyframe = keyframes`
@@ -31,7 +33,7 @@ export const Container = styled.section<ContainerProps>`
   z-index: ${({ theme }) => theme.zIndex.modal};
   pointer-events: all;
 
-  ${({ centered, maxWidth = 500, maxHeight, fullScreen, verticalMargin = 28 }) =>
+  ${({ centered, maxWidth = 500, minHeight, maxHeight, fullScreen, verticalMargin = 28 }) =>
     fullScreen
       ? css`
           height: 100%;
@@ -47,9 +49,9 @@ export const Container = styled.section<ContainerProps>`
           width: 100%;
           border-radius: 5px;
           margin: ${centered ? 'auto' : `${verticalMargin}px auto;`};
-          max-height: calc(100% - 56px);
           max-width: ${maxWidth}px;
-          max-height: ${maxHeight ? `${maxHeight}px` : ''};
+          min-height: ${minHeight ? `${minHeight}px` : ''};
+          max-height: ${maxHeight ? `${maxHeight}px` : 'calc(100% - 56px)'};
           overflow-x: hidden;
           overflow-y: auto;
 
@@ -62,15 +64,18 @@ export const Container = styled.section<ContainerProps>`
           }
         `};
 
-  ${({ status, animated }) => {
+  ${({ status, animated, enterAnimation }) => {
     if (!animated) return null;
 
     switch (status) {
       case ENTERED:
-        return css`
-          animation: ${ShowKeyframe} ${ANIMATION_SPEED}s ease-in;
-          animation-fill-mode: backwards;
-        `;
+        return (
+          enterAnimation &&
+          css`
+            animation: ${ShowKeyframe} ${ANIMATION_SPEED}s ease-in;
+            animation-fill-mode: backwards;
+          `
+        );
 
       case EXITING:
         return css`
@@ -171,7 +176,7 @@ const hideKeyframes = keyframes`
   }
 `;
 
-export const Backdrop = styled.div<{ closing: boolean }>`
+export const Backdrop = styled.div<{ closing: boolean; closePrevented?: boolean }>`
   position: fixed;
   top: 0;
   left: 0;
@@ -179,7 +184,7 @@ export const Backdrop = styled.div<{ closing: boolean }>`
   width: 100vw;
   z-index: ${({ theme }) => theme.zIndex.backdrop};
   background-color: rgba(19, 33, 68, 0.6);
-  cursor: pointer;
+  cursor: ${({ closePrevented }) => (closePrevented ? 'default' : 'pointer')};
 
   animation: ${({ closing }) => (closing ? hideKeyframes : showKeyframes)} ${ANIMATION_SPEED}s ease-in-out;
   animation-fill-mode: both;

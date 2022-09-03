@@ -86,10 +86,11 @@ export const Item: React.FC<ItemProps> = ({
 
   const options = useProjectOptions({
     boardID: listId,
-    projectID: id,
-    projectName: name,
     onRename,
+    projectID: id,
     versionID,
+    projectName: name,
+    withConvertToDomain: true,
   });
 
   const hasOptions = !!options.length;

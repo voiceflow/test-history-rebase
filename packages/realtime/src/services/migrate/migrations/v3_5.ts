@@ -1,33 +1,25 @@
-/* eslint-disable no-param-reassign */
-import * as Realtime from '@voiceflow/realtime-sdk';
+import { BaseNode, BaseUtils } from '@voiceflow/base-types';
 
 import { Transform } from './types';
 
 /*
  * this migration transforms random nodes into randomV2s
  */
-const migrateToV3_5: Transform = ({ diagrams }, { platform, projectType }) => {
+const migrateToV3_5: Transform = ({ diagrams }) => {
   diagrams.forEach((dbDiagram) => {
-    const diagram = Realtime.Adapters.creatorAdapter.fromDB(dbDiagram, { platform, projectType, context: {} });
-
     Object.values(dbDiagram.nodes).forEach((dbNode) => {
-      const randomV1 = diagram.data[dbNode.nodeID];
+      if (!BaseUtils.step.isRandom(dbNode)) return;
 
-      if (!Realtime.Utils.typeGuards.isStep(dbNode) || !Realtime.Utils.typeGuards.isRandomV1NodeData(randomV1)) return;
-
-      const data = {
-        name: 'Random',
-        namedPaths: [...Array(randomV1.paths)].map((_, index) => {
-          return { label: `Path ${index + 1}` };
-        }),
-        noDuplicates: randomV1.noDuplicates,
-        nodeID: randomV1.nodeID,
-        type: Realtime.BlockType.RANDOMV2,
+      const randomV2: BaseNode.RandomV2.Step = {
+        ...dbNode,
+        type: BaseNode.NodeType.RANDOM_V2,
+        data: {
+          ...dbNode.data,
+          namedPaths: Array.from({ length: dbNode.data.paths }, (_, i) => ({ label: `Path ${i + 1}` })),
+        },
       };
 
-      const dbData = Realtime.Adapters.nodeDataAdapter.toDB(data, { platform, projectType, context: {} });
-      dbNode.type = dbData.type;
-      dbNode.data = { ...dbData.data, ...(dbNode.data.ports ? { ports: dbNode.data.ports } : { portsV2: dbNode.data.portsV2 }) };
+      Object.assign(dbNode, randomV2);
     });
   });
 };

@@ -17,6 +17,18 @@ class VersionService extends AbstractControl {
     return client.version.get(versionID);
   }
 
+  public async getComponents(creatorID: number, versionID: string): Promise<BaseModels.Version.FolderItem[]> {
+    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+
+    const fields = ['components'] as const;
+    const { components } = await client.version.get<Pick<BaseModels.Version.Model<BaseModels.Version.PlatformData>, typeof fields[number]>>(
+      versionID,
+      ['components']
+    );
+
+    return components ?? [];
+  }
+
   async getPlatform(creatorID: number, versionID: string): Promise<VoiceflowConstants.PlatformType> {
     const version = await this.get(creatorID, versionID);
 
@@ -113,16 +125,21 @@ class VersionService extends AbstractControl {
     await client.version.updateDefaultStepColors(versionID, defaultStepColors);
   }
 
-  public async reorderTopics(creatorID: number, versionID: string, fromID: string, toIndex: number): Promise<void> {
-    const client = await this.services.voiceflow.getClientByUserID(creatorID);
-
-    await client.version.reorderTopics(versionID, { fromID, toIndex });
-  }
-
   public async reorderComponents(creatorID: number, versionID: string, fromID: string, toIndex: number): Promise<void> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
     await client.version.reorderComponents(versionID, { fromID, toIndex });
+  }
+
+  public async saveSnapshot(
+    creatorID: number,
+    versionID: string,
+    versionName: string,
+    options?: { manualSave?: boolean; autoSaveFromRestore?: boolean }
+  ): Promise<void> {
+    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+
+    await client.version.saveSnapshot(versionID, versionName, options);
   }
 }
 

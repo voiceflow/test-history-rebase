@@ -68,7 +68,7 @@ const HyperlinkButton: React.FC<HyperlinkButtonProps> = ({ children, icon = 'sys
             value={localUrl}
             onBlur={withHandler(onClose)(onBlur)}
             onFocus={editor.applyFakeSelection}
-            autoFocus // eslint-disable-line jsx-a11y/no-autofocus
+            autoFocus
             placeholder="Enter URL"
             onChangeText={(value) => setLocalUrl(value)}
             onEnterPress={preventDefault(({ currentTarget }) => currentTarget?.blur())}

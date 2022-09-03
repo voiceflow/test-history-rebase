@@ -40,7 +40,6 @@ const CreateWorkspace: React.FC = () => {
           onBlur={onBlur}
           onKeyPress={handleInputEnterPress}
           onChange={(event) => setWorkspaceName(event.currentTarget.value)}
-          // eslint-disable-next-line jsx-a11y/no-autofocus
           autoFocus
           placeholder="Give your workspace a name"
         />

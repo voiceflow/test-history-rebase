@@ -24,15 +24,7 @@ const InvocationNameSection: React.FC<InvocationNameSectionProps> = ({ value, er
     customHeaderStyling={{ paddingTop: '24px' }}
     customContentStyling={{ paddingBottom: '0px' }}
   >
-    <Input
-      id={Identifier.INVOCATION_NAME_INPUT}
-      error={error}
-      value={value}
-      // eslint-disable-next-line jsx-a11y/no-autofocus
-      autoFocus
-      placeholder="Enter invocation name"
-      onChangeText={onChange}
-    />
+    <Input id={Identifier.INVOCATION_NAME_INPUT} error={error} value={value} autoFocus placeholder="Enter invocation name" onChangeText={onChange} />
 
     {error ? (
       <SectionErrorMessage>{errorMessage || 'Invocation name is required'}</SectionErrorMessage>

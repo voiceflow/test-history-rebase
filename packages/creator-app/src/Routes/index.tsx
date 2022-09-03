@@ -66,8 +66,8 @@ const Routes: React.FC = () => {
         <Route path={Path.PUBLIC_PROTOTYPE} component={PublicPrototype} />
 
         <Redirect from={LegacyPath.WORKSPACE_DASHBOARD} to={Path.WORKSPACE_DASHBOARD} />
-        <Redirect from={LegacyPath.CANVAS_DIAGRAM} to={Path.PROJECT_CANVAS} />
-        <Redirect from={LegacyPath.CANVAS_PREVIEW} to={Path.PROJECT_CANVAS} />
+        <Redirect from={LegacyPath.CANVAS_DIAGRAM} to={LegacyPath.PROJECT_CANVAS} />
+        <Redirect from={LegacyPath.CANVAS_PREVIEW} to={LegacyPath.PROJECT_CANVAS} />
         <Redirect from={LegacyPath.CANVAS_TEST} to={Path.PROJECT_PROTOTYPE} />
         <Redirect from={LegacyPath.PROJECT_TEST} to={Path.PROJECT_PROTOTYPE} />
         <Redirect from={LegacyPath.PRODUCT_DETAILS} to={Path.PRODUCT_DETAILS} />

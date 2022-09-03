@@ -5,6 +5,8 @@ module.exports = {
   rules: {
     // common pattern when writing styled components
     'sonarjs/no-nested-template-literals': 'off',
+
+    'jsx-a11y/no-autofocus': 'off',
   },
   settings: {
     'import/resolver': {

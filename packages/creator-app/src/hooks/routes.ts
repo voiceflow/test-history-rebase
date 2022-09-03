@@ -21,3 +21,9 @@ export const useRouteDiagramID = (): string | null => {
 
   return params.diagramID ?? null;
 };
+
+export const useRouteDomainID = (): string | null => {
+  const { params } = useRouteMatch<{ domainID?: string }>();
+
+  return params.domainID ?? null;
+};

@@ -7,6 +7,7 @@ import * as Session from '@/ducks/session';
 import * as UI from '@/ducks/ui';
 import { useDispatch, useModals, useProjectOptions, useSelector, useTrackingEvents } from '@/hooks';
 import { Hotkey, HOTKEY_LABEL_MAP } from '@/keymap';
+import { onOpenInternalURLInANewTabFactory } from '@/utils/window';
 
 export const useLogoButtonOptions = ({
   uiToggle,
@@ -50,6 +51,6 @@ export const useLogoButtonOptions = ({
       ? { key: 'shortcuts', label: 'See shortcuts', onClick: wrapTrackingEvent(shortcutModal.toggle, 'trackCanvasSeeShortcutsModalOpened') }
       : null,
 
-    { key: 'desktop-app', label: 'Get desktop app', onClick: () => window.open(DESKTOP_APP_LINK, '_blank') },
+    { key: 'desktop-app', label: 'Get desktop app', onClick: onOpenInternalURLInANewTabFactory(DESKTOP_APP_LINK) },
   ];
 };

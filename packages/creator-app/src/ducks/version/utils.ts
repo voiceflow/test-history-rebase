@@ -13,6 +13,10 @@ export interface ActiveVersionContext {
   versionID: string | null;
 }
 
+export interface ActiveDomainContext extends ActiveVersionContext {
+  domainID: string | null;
+}
+
 export interface ActivePlatformVersionContext extends ActiveVersionContext {
   platform: VoiceflowConstants.PlatformType;
 }
@@ -21,6 +25,13 @@ export const activeVersionContextSelector = createStructuredSelector<State, Acti
   workspaceID: Session.activeWorkspaceIDSelector,
   projectID: Session.activeProjectIDSelector,
   versionID: Session.activeVersionIDSelector,
+});
+
+export const activeDomainContextSelector = createStructuredSelector<State, ActiveDomainContext>({
+  domainID: Session.activeDomainIDSelector,
+  projectID: Session.activeProjectIDSelector,
+  versionID: Session.activeVersionIDSelector,
+  workspaceID: Session.activeWorkspaceIDSelector,
 });
 
 export const activePlatformVersionContextSelector = createStructuredSelector<State, ActivePlatformVersionContext>({
@@ -36,6 +47,12 @@ export const assertVersionContext: (context: ActiveVersionContext) => asserts co
   Errors.assertVersionID(context.versionID);
 };
 
+export const assertDomainContext: (context: ActiveDomainContext) => asserts context is NonNullishRecord<ActiveDomainContext> = (context) => {
+  assertVersionContext(context);
+
+  Errors.assertDomainID(context.domainID);
+};
+
 export const assertPlatformVersionContext: (
   context: ActivePlatformVersionContext
 ) => asserts context is NonNullishRecord<ActivePlatformVersionContext> = (context) => {
@@ -48,6 +65,14 @@ export const getActiveVersionContext = (state: State): NonNullishRecord<ActiveVe
   const context = activeVersionContextSelector(state);
 
   assertVersionContext(context);
+
+  return context;
+};
+
+export const getActiveDomainContext = (state: State): NonNullishRecord<ActiveDomainContext> => {
+  const context = activeDomainContextSelector(state);
+
+  assertDomainContext(context);
 
   return context;
 };

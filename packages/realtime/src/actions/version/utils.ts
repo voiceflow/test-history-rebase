@@ -35,12 +35,12 @@ export abstract class AbstractVersionResourceControl<
 > extends AbstractVersionAccessResourceControl<P, D> {
   protected resend = resendProjectChannel;
 
-  protected reloadSharedNodes = async (ctx: Context<BaseContextData>, payload: P, dbDiagram: BaseModels.Diagram.Model): Promise<void> => {
+  protected reloadSharedNodes = async (ctx: Context<BaseContextData>, payload: P, dbDiagrams: BaseModels.Diagram.Model[]): Promise<void> => {
     const { creatorID } = ctx.data;
     const { versionID, projectID, workspaceID } = payload;
     const actionContext = { versionID, projectID, workspaceID };
 
-    const sharedNodes = this.services.diagram.getSharedNodes([dbDiagram]);
+    const sharedNodes = this.services.diagram.getSharedNodes(dbDiagrams);
 
     await this.server.processAs(creatorID, Realtime.diagram.sharedNodes.reload({ ...actionContext, sharedNodes }));
   };

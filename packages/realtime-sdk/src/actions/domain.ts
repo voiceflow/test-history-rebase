@@ -1,30 +1,65 @@
 import { createCRUDActions } from '@realtime-sdk/actions/utils';
-import { DOMAIN_KEY } from '@realtime-sdk/constants';
+import { DOMAIN_KEY, TOPIC_KEY } from '@realtime-sdk/constants';
+import { Diagram } from '@realtime-sdk/models';
 import { BaseVersionPayload } from '@realtime-sdk/types';
+import { PrimitiveDiagram } from '@realtime-sdk/utils/diagram';
 import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
+import { Required } from 'utility-types';
 
 const domainType = Utils.protocol.typeFactory(DOMAIN_KEY);
+const domainTopicType = Utils.protocol.typeFactory(domainType(TOPIC_KEY));
 
-export interface BaseDomainPayload extends BaseVersionPayload {}
+export interface CreatePayload extends BaseVersionPayload {
+  domain: Omit<BaseModels.Version.Domain, 'id' | 'topicIDs' | 'rootDiagramID'>;
+}
 
-export interface BaseTopicPayload extends BaseDomainPayload {
+export interface BaseDomainPayload extends BaseVersionPayload {
   domainID: string;
 }
 
-export interface TopicCreatePayload extends BaseTopicPayload {
-  name: string;
+export interface DeleteWithNewVersionPayload extends BaseDomainPayload {
+  versionName?: string;
 }
 
-export interface TopicRemovePayload extends BaseTopicPayload {}
+export interface PatchPayload extends Partial<Omit<BaseModels.Version.Domain, 'id' | 'topicIDs' | 'rootDiagramID'>> {}
 
-export interface TopicReorderPayload extends BaseTopicPayload {
-  fromID: string;
+export interface TopicCreatePayload extends BaseDomainPayload {
+  topic: Required<Partial<PrimitiveDiagram>, 'name'>;
+}
+
+export interface TopicAddPayload extends BaseDomainPayload {
+  topicID: string;
+}
+
+export interface TopicRemovePayload extends BaseDomainPayload {
+  topicID: string;
+}
+
+export interface TopicReorderPayload extends BaseDomainPayload {
   toIndex: number;
+  topicID: string;
 }
 
-export const crud = createCRUDActions<BaseModels.Version.Domain, BaseDomainPayload, Pick<BaseModels.Version.Domain, 'live' | 'name'>>(domainType);
+export interface TopicDuplicatePayload extends BaseDomainPayload {
+  topicID: string;
+}
 
-export const topicCreate = Utils.protocol.createAction<TopicCreatePayload>(domainType('TOPIC_CREATE'));
-export const topicRemove = Utils.protocol.createAction<TopicRemovePayload>(domainType('TOPIC_REMOVE'));
-export const topicReorder = Utils.protocol.createAction<TopicReorderPayload>(domainType('TOPIC_REORDER'));
+export interface TopicConvertFromComponentPayload extends BaseDomainPayload {
+  componentID: string;
+}
+
+export const crud = createCRUDActions<BaseModels.Version.Domain, BaseVersionPayload, PatchPayload>(domainType);
+
+export const create = Utils.protocol.createAsyncAction<CreatePayload, BaseModels.Version.Domain>(domainType('CREATE'));
+export const duplicate = Utils.protocol.createAsyncAction<BaseDomainPayload, BaseModels.Version.Domain>(domainType('DUPLICATE'));
+export const deleteWithNewVersion = Utils.protocol.createAction<DeleteWithNewVersionPayload>(domainType('DELETE_WITH_NEW_VERSION'));
+
+export const topicAdd = Utils.protocol.createAction<TopicAddPayload>(domainTopicType('ADD'));
+export const topicCreate = Utils.protocol.createAsyncAction<TopicCreatePayload, Diagram>(domainTopicType('CREATE'));
+export const topicRemove = Utils.protocol.createAction<TopicRemovePayload>(domainTopicType('REMOVE'));
+export const topicReorder = Utils.protocol.createAction<TopicReorderPayload>(domainTopicType('REORDER'));
+export const topicDuplicate = Utils.protocol.createAsyncAction<TopicDuplicatePayload, Diagram>(domainTopicType('DUPLICATE'));
+export const topicConvertFromComponent = Utils.protocol.createAsyncAction<TopicConvertFromComponentPayload, Diagram>(
+  domainTopicType('CONVERT_FROM_COMPONENT')
+);

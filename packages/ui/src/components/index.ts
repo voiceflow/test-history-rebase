@@ -119,7 +119,7 @@ export type { OptionsMenuOption } from './OptionsMenu';
 export { default as OptionsMenu } from './OptionsMenu';
 export type { OverflowTippyTooltipTypes } from './OverflowTippyTooltip';
 export { default as OverflowTippyTooltip } from './OverflowTippyTooltip';
-export type { PopperProps } from './Popper';
+export type { PopperTypes } from './Popper';
 export { default as Popper } from './Popper';
 export { default as Portal, portalRootNode } from './Portal';
 export { default as Preview } from './Preview';

@@ -3,6 +3,7 @@ import { createSelector } from 'reselect';
 
 import * as Account from '@/ducks/account';
 import * as CreatorV2 from '@/ducks/creatorV2';
+import * as Domain from '@/ducks/domain';
 import * as Feature from '@/ducks/feature';
 import * as ThreadV1 from '@/ducks/thread';
 import * as UI from '@/ducks/ui';
@@ -38,12 +39,20 @@ export const allThreadIdsSelector = createSelector([allThreadsSelector, CreatorV
 export const allAvailableThreads = createSelector(allThreadsSelector, (threads) => threads.filter((thread) => !thread.deleted).reverse());
 
 export const threadFilter = createSelector(
-  [UI.isMentionedThreadsOnly, UI.isTopicThreadsOnly, Account.userIDSelector, CreatorV2.activeDiagramIDSelector],
-  (isMentionedThreadsOnly, isTopicThreadsOnly, creatorID, diagramID) => (thread: Thread) =>
+  [
+    UI.isMentionedThreadsOnly,
+    UI.isTopicThreadsOnly,
+    UI.isDomainThreadsOnly,
+    Account.userIDSelector,
+    CreatorV2.activeDiagramIDSelector,
+    Domain.active.domainSelector,
+  ],
+  // eslint-disable-next-line max-params
+  (isMentionedThreadsOnly, isTopicThreadsOnly, isDomainThreadsOnly, creatorID, diagramID, activeDomain) => (thread: Thread) =>
     (!isMentionedThreadsOnly || thread.comments.some((comment) => comment.mentions.includes(creatorID!))) &&
-    (!isTopicThreadsOnly || thread.diagramID === diagramID)
+    (!isTopicThreadsOnly || thread.diagramID === diagramID) &&
+    (!isDomainThreadsOnly || !activeDomain || activeDomain.topicIDs.includes(thread.diagramID))
 );
-
 export const openedThreads = createSelector([allAvailableThreads, threadFilter], (threads, filter) =>
   threads.filter((thread) => !thread.resolved && filter(thread))
 );

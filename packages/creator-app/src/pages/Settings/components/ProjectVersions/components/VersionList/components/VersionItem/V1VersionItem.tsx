@@ -64,7 +64,8 @@ const VersionItem: React.FC<Index> = ({ version, restoreEnabled, swapVersions, c
   };
 
   const handlePreview = () => {
-    window.open(`${generatePath(Path.PROJECT_CANVAS, { versionID: version.versionID })}?${QUERY_PARAMS.PREVIEWING}=true`);
+    window.open(`${generatePath(Path.PROJECT_DOMAIN, { versionID: version.versionID })}?${QUERY_PARAMS.PREVIEWING}=true`, '_blank')?.focus();
+
     trackingEvents.trackVersionPreview({ versionID: version.versionID });
   };
 

@@ -14,9 +14,11 @@ const sectionStyling = {
 const AccountProfile: React.FC = () => {
   const user = useSelector(Account.userSelector);
   const saveProfilePicture = useDispatch(Account.saveProfilePicture);
-  const profileNameModal = ModalsV2.useModal(ModalsV2.ChangeName);
-  const changeEmailModal = ModalsV2.useModal(ModalsV2.ChangeEmail);
-  const changePasswordModal = ModalsV2.useModal(ModalsV2.ChangePassword);
+
+  const accountNameModal = ModalsV2.useModal(ModalsV2.Account.Name);
+  const accountEmailModal = ModalsV2.useModal(ModalsV2.Account.Email);
+  const accountPasswordModal = ModalsV2.useModal(ModalsV2.Account.Password);
+
   const { gid, okta_id, fid, saml_provider_id } = user;
   const isNotSSOUser = !gid && !okta_id && !fid && !saml_provider_id;
 
@@ -27,7 +29,7 @@ const AccountProfile: React.FC = () => {
         variant={SectionVariant.QUATERNARY}
         contentSuffix={() => (
           <DescriptorContainer>
-            <Link onClick={() => profileNameModal.openVoid({})}>Change Name</Link>
+            <Link onClick={() => accountNameModal.openVoid()}>Change Name</Link>
           </DescriptorContainer>
         )}
         header="Name"
@@ -46,7 +48,7 @@ const AccountProfile: React.FC = () => {
         variant={SectionVariant.QUATERNARY}
         contentSuffix={() => (
           <DescriptorContainer>
-            <Link onClick={() => changeEmailModal.openVoid({})}>Change Email</Link>
+            <Link onClick={() => accountEmailModal.openVoid()}>Change Email</Link>
           </DescriptorContainer>
         )}
         header="Email"
@@ -59,7 +61,7 @@ const AccountProfile: React.FC = () => {
       {isNotSSOUser && (
         <Section customContentStyling={sectionStyling} variant={SectionVariant.QUATERNARY} header="Password">
           <DescriptorContainer style={{ margin: 0 }}>
-            <Link onClick={() => changePasswordModal.openVoid({})}>Change Password</Link>
+            <Link onClick={() => accountPasswordModal.openVoid()}>Change Password</Link>
           </DescriptorContainer>
         </Section>
       )}

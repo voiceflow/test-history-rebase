@@ -32,8 +32,8 @@ const createCommands = (runner: Runner) => {
         promisifyListener<RunnerEvent.PERF_ACTION, T>(RunnerEvent.PERF_ACTION, (payload) => payload === action),
       ]),
 
-    goToCanvas: async (versionID: string, timeout = 5000) => {
-      window.store.dispatch(Router.goToCanvas(versionID));
+    goToDomain: async (versionID: string, timeout = 5000) => {
+      window.store.dispatch(Router.goToDomain({ versionID }));
 
       await commands.waitAction(PerfAction.CANVAS_RENDERED, timeout);
     },

@@ -15,7 +15,7 @@ const ACCEPTED_FILE_FORMATS = '.vf,.vfr';
 const ImportButton: React.FC = () => {
   const projects = useSelector(ProjectV2.allProjectsSelector);
 
-  const goToCanvas = useDispatch(Router.goToCanvas);
+  const goToDomain = useDispatch(Router.goToDomain);
   const importProject = useDispatch(Project.importProjectFromFile);
 
   const workspace = useActiveWorkspace();
@@ -40,7 +40,7 @@ const ImportButton: React.FC = () => {
       toast.success(
         <>
           .VF file successfully imported for <strong>"{newProject.name}"</strong>
-          <ToastCallToAction onClick={() => goToCanvas(newProject.versionID)}>Open Project</ToastCallToAction>
+          <ToastCallToAction onClick={() => goToDomain({ versionID: newProject.versionID })}>Open Project</ToastCallToAction>
         </>
       );
     } catch (err) {

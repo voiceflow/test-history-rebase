@@ -1,6 +1,6 @@
 import { Utils } from '@voiceflow/common';
 import { BillingPeriod, PlanType, UserRole } from '@voiceflow/internal';
-import { ButtonVariant, toast, withContext, withProvider } from '@voiceflow/ui';
+import { ButtonVariant, toast, withContext } from '@voiceflow/ui';
 import _isEmpty from 'lodash/isEmpty';
 import React from 'react';
 
@@ -100,10 +100,11 @@ export interface PaymentContextProps {
 interface PaymentContextProviderProps {
   stripe: stripe.Stripe;
   children: JSX.Element;
+  onCheckout?: (message: string) => void;
   checkChargeable: (source: stripe.Source) => Promise<void>;
 }
 
-const PaymentContextProvider: React.FC<PaymentContextProviderProps> = ({ children, stripe, checkChargeable }) => {
+const PaymentContextProvider: React.FC<PaymentContextProviderProps> = ({ stripe, children, onCheckout, checkChargeable }) => {
   const workspace = useActiveWorkspace();
   const referrerID = useSelector(Account.referrerIDSelector);
   const referralCode = useSelector(Account.referralCodeSelector);
@@ -200,13 +201,16 @@ const PaymentContextProvider: React.FC<PaymentContextProviderProps> = ({ childre
         workspaceID: workspace.id,
       });
 
-      closePaymentsModal();
-
       const message = source?.id
         ? `Your Voiceflow ${state.plan.name} subscription has been activated.`
         : 'Your workspace has been successfully updated. Thank you.';
 
-      openSuccessModal({ title: 'Payment Successful', message, icon: receiptGraphic, variant: ButtonVariant.TERTIARY });
+      if (onCheckout) {
+        onCheckout(message);
+      } else {
+        closePaymentsModal();
+        openSuccessModal({ title: 'Payment Successful', message, icon: receiptGraphic, variant: ButtonVariant.TERTIARY });
+      }
 
       trackingEvents.trackUpgrade({
         plan: state.plan.id,
@@ -334,8 +338,14 @@ const PaymentContextProvider: React.FC<PaymentContextProviderProps> = ({ childre
   return <PaymentContext.Provider value={api}>{children}</PaymentContext.Provider>;
 };
 
-export const withPaymentProvider = withProvider(withStripe(PaymentContextProvider) as any) as <P>(
-  component: React.ComponentType<P>
-) => React.ComponentType<P>;
+export const withPaymentProvider = (Component: React.ComponentType<any>) => {
+  const PaymentContextProviderWithStripe = withStripe(PaymentContextProvider) as any;
+
+  return (props: any) => (
+    <PaymentContextProviderWithStripe onCheckout={props.onCheckout}>
+      <Component {...props} />
+    </PaymentContextProviderWithStripe>
+  );
+};
 
 export const withPayment = withContext(PaymentContext, 'payment');

@@ -76,3 +76,7 @@ export const CAROUSEL_STEP = 'https://www.voiceflow.com/docs/designing-response-
 export const CUSTOM_ACTION = 'https://www.voiceflow.com/docs/designing-integration-steps#toc-4';
 export const EXIT_STEP = 'https://www.voiceflow.com/docs/designing-logic-steps#toc-6';
 export const RANDOM_STEP = 'https://www.voiceflow.com/docs/designing-logic-steps#toc-4';
+
+export const DOMAINS = 'http://www.voiceflow.com/docs/designing-domains';
+export const DOMAINS_LIVE_TOGGLE = 'http://www.voiceflow.com/docs/designing-domains#live-toggle';
+export const DOMAINS_PROJECT_TRANSFER = 'http://www.voiceflow.com/docs/designing-domains#project-transfer';

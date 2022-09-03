@@ -6,7 +6,7 @@ import React from 'react';
 import { Interaction, OnInteraction } from '@/pages/Prototype/types';
 import perf, { PerfAction } from '@/performance';
 import { ClassName } from '@/styles/constants';
-import { getValidHref } from '@/utils/string';
+import { openURLInANewTab } from '@/utils/window';
 
 import * as S from './styles';
 
@@ -33,7 +33,7 @@ const Interactions: React.FC<InteractionsProps> = ({ interactions, onInteraction
     if (request.payload && typeof request.payload === 'object') {
       request.payload.actions?.forEach((action) => {
         if (BaseRequest.Action.isOpenURLAction(action) && action.payload.url) {
-          window.open(getValidHref(action.payload.url), '_blank');
+          openURLInANewTab(action.payload.url);
         }
       });
     }

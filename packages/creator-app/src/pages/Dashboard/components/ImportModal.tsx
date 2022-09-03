@@ -36,7 +36,7 @@ const ImportModal: React.FC = () => {
   const workspaces = useSelector(WorkspaceV2.allWorkspacesSelector);
   const getWorkspaceByID = useSelector(WorkspaceV2.getWorkspaceByIDSelector);
 
-  const goToCanvas = useDispatch(Router.goToCanvas);
+  const goToDomain = useDispatch(Router.goToDomain);
   const importProject = useDispatch(Workspace.importProject);
   const goToWorkspace = useDispatch(Router.goToWorkspace);
 
@@ -135,7 +135,7 @@ const ImportModal: React.FC = () => {
         toast.success(
           <>
             Cloned project <strong>"{importedProject.name}"</strong> successfully!
-            <ToastCallToAction onClick={() => goToCanvas(importedProject.versionID)}>Open Project</ToastCallToAction>
+            <ToastCallToAction onClick={() => goToDomain({ versionID: importedProject.versionID })}>Open Project</ToastCallToAction>
           </>
         );
         closeLoadingModal();

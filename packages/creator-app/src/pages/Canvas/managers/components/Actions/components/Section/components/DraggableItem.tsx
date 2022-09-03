@@ -91,7 +91,6 @@ const DraggableItem = React.forwardRef<HTMLElement, DraggableItemProps>((props, 
                 onBlur={onRename}
                 variant={Input.Variant.INLINE}
                 onFocus={({ target }) => target.select()}
-                // eslint-disable-next-line jsx-a11y/no-autofocus
                 autoFocus
                 onChangeText={setLocalName}
                 onEnterPress={withInputBlur()}

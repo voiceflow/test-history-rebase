@@ -17,8 +17,6 @@ const migrateToV3_6: Transform = ({ diagrams }) => {
 
     dbDiagram.menuNodeIDs = [...(dbDiagram.intentStepIDs ?? [])];
 
-    delete dbDiagram.intentStepIDs;
-
     const startNode = findStartNode(dbDiagram.nodes);
     const componentsNodes = findAllComponentsNodes(dbDiagram.nodes);
 

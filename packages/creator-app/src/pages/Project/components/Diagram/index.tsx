@@ -16,6 +16,7 @@ import PrototypeOverlay from '@/pages/Prototype/components/PrototypeOverlay';
 import ReadOnlyBadge from '@/pages/Prototype/components/ReadOnlyBadge';
 
 import DiagramSync from '../DiagramSync';
+import DomainSync from '../DomainSync';
 import MarkupImageLoading from '../MarkupImageLoading';
 import { HotKeys } from './components';
 import DiagramGate from './gates/DiagramGate';
@@ -54,7 +55,12 @@ const Diagram: React.FC<DiagramProps> = () => {
 
   return (
     <ProjectPage>
-      {isCanvasEditable && <DiagramSync />}
+      {isCanvasEditable && (
+        <>
+          <DiagramSync />
+          <DomainSync />
+        </>
+      )}
 
       <ManagerProvider value={getManager}>
         <ReadOnlyBadge />

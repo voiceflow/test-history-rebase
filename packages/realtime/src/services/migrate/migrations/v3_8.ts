@@ -7,7 +7,7 @@ import { Transform } from './types';
 /**
  * this migration transforms card nodes into cardV2s
  */
-const migrateToV3_7: Transform = ({ diagrams }, { projectType }) => {
+const migrateToV3_8: Transform = ({ diagrams }, { projectType }) => {
   diagrams.forEach((dbDiagram) => {
     Object.values(dbDiagram.nodes).forEach((dbNode) => {
       if (!BaseUtils.step.isCard(dbNode)) return;
@@ -31,4 +31,4 @@ const migrateToV3_7: Transform = ({ diagrams }, { projectType }) => {
   });
 };
 
-export default migrateToV3_7;
+export default migrateToV3_8;

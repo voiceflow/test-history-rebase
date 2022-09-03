@@ -60,10 +60,6 @@ const Project: React.FC = () => {
 
   const isPreviewRoute = useProjectPreviewMode();
 
-  React.useEffect(() => {
-    setPreviewing(!!isPreviewRoute);
-  }, [isPreviewRoute]);
-
   const idleTimer = React.useRef<IdleTimer | null>(null);
 
   const setActive = React.useCallback(() => {
@@ -75,6 +71,10 @@ const Project: React.FC = () => {
     inactivityModal.open();
     idleTimer.current?.pause();
   }, []);
+
+  React.useEffect(() => {
+    setPreviewing(!!isPreviewRoute);
+  }, [isPreviewRoute]);
 
   useLayoutDidUpdate(() => {
     const engine = getEngine();
@@ -135,7 +135,7 @@ const Project: React.FC = () => {
 
             <Route path={Path.PROJECT_SETTINGS} component={Settings} />
 
-            <Redirect to={Path.PROJECT_CANVAS} />
+            <Redirect to={Path.PROJECT_DOMAIN} />
           </Switch>
           <ManualSaveModal />
         </Providers>

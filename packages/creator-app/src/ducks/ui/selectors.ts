@@ -27,4 +27,6 @@ export const isCommentsVisible = createSelector(rootSelector, ({ commentsVisible
 
 export const isTopicThreadsOnly = createSelector(rootSelector, ({ topicThreadsOnly }) => topicThreadsOnly);
 
+export const isDomainThreadsOnly = createSelector(rootSelector, ({ domainThreadsOnly }) => domainThreadsOnly);
+
 export const isMentionedThreadsOnly = createSelector(rootSelector, ({ mentionedThreadsOnly }) => mentionedThreadsOnly);

@@ -37,6 +37,7 @@ function NestedMenu<Option extends MenuItemWithID & MenuItemMultilevel<Option>, 
   props: ExtraProps<Option, Value> & Omit<NestedMenuWithIDMultilevelProps<Option, Value>, ExcludedProps>
 ): React.ReactElement;
 function NestedMenu({
+  isRoot,
   options,
   onSelect,
   getOptionKey,

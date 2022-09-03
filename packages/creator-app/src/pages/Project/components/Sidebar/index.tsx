@@ -7,7 +7,7 @@ import { CanvasIconMenu, ConversationsSidebar, IntegrationsSidebar, SettingsSide
 import { SideBarComponentProps } from './types';
 
 const ALL_PROJECT_SIDEBAR_PATHS = [
-  Path.PROJECT_CANVAS,
+  Path.DOMAIN_CANVAS,
   Path.CANVAS_COMMENTING,
   Path.CANVAS_COMMENTING_THREAD,
   Path.CANVAS_MODEL,

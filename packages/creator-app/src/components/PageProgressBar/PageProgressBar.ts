@@ -12,7 +12,7 @@ const PageProgressBar = styled.div<PageProgressBarProps>`
   top: 0;
   left: 0;
   right: 0;
-  z-index: 1000;
+  z-index: 2000;
   background-color: ${({ theme }) => theme.colors.darkerBlue};
   transition: transform ${({ easing = 'ease-in-out', duration = 0.3 }) => `${duration}s ${easing}`};
   transform-origin: center left;

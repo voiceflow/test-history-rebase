@@ -8,6 +8,7 @@ import { ACTIONS } from '@/config/documentation';
 import { BlockType } from '@/constants';
 import { ManagerContext } from '@/pages/Canvas/contexts';
 import type { NodeEditorV2Props } from '@/pages/Canvas/managers/types';
+import { onOpenInternalURLInANewTabFactory } from '@/utils/window';
 
 import { DraggableItem } from './components';
 import { useActions } from './hooks';
@@ -46,7 +47,7 @@ const ActionsSection: React.FC<ActionsSectionProps> = ({ portID, editor, parentP
     <TippyTooltip
       tag="div"
       html={
-        <TippyTooltip.FooterButton buttonText="More" width={200} onClick={() => window.open(ACTIONS, '_blank')?.focus()}>
+        <TippyTooltip.FooterButton buttonText="More" width={200} onClick={onOpenInternalURLInANewTabFactory(ACTIONS)}>
           Use actions to nest navigation and backend logic in a single step.
         </TippyTooltip.FooterButton>
       }

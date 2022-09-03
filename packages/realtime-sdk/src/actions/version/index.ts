@@ -1,13 +1,4 @@
-import {
-  COMPONENTS_KEY,
-  DEFAULT_STEP_COLORS_KEY,
-  PROTOTYPE_KEY,
-  PUBLISHING_KEY,
-  RPC_KEY,
-  SESSION_KEY,
-  SETTINGS_KEY,
-  TOPICS_KEY,
-} from '@realtime-sdk/constants';
+import { COMPONENTS_KEY, DEFAULT_STEP_COLORS_KEY, PROTOTYPE_KEY, PUBLISHING_KEY, RPC_KEY, SESSION_KEY, SETTINGS_KEY } from '@realtime-sdk/constants';
 import { AnyVersion, AnyVersionPublishing, AnyVersionSettings, PrototypeSettings, Version } from '@realtime-sdk/models';
 import { BaseProjectPayload, BaseVersionPayload } from '@realtime-sdk/types';
 import { Utils } from '@voiceflow/common';
@@ -25,7 +16,6 @@ const versionDefaultStepColorsType = Utils.protocol.typeFactory(versionType(DEFA
 const versionSessionType = Utils.protocol.typeFactory(versionSettingsType(SESSION_KEY));
 const versionPublishingType = Utils.protocol.typeFactory(versionType(PUBLISHING_KEY));
 const versionPrototypeType = Utils.protocol.typeFactory(versionType(PROTOTYPE_KEY));
-const topicsType = Utils.protocol.typeFactory(versionType(TOPICS_KEY));
 const componentsType = Utils.protocol.typeFactory(versionType(COMPONENTS_KEY));
 
 // RPC
@@ -74,15 +64,25 @@ export interface ReplacePrototypeSettingsPayload extends BaseVersionPayload {
   settings: PrototypeSettings;
 }
 
+export interface ReloadFoldersPayload extends BaseVersionPayload {
+  folders: NonNullable<AnyVersion['folders']>;
+}
+
+export interface AddManyComponentsPayload extends BaseVersionPayload {
+  components: NonNullable<AnyVersion['components']>;
+}
+
 export const patchSettings = Utils.protocol.createAction<PatchSettingsPayload>(versionSettingsType('PATCH'));
 
 export const patchDefaultStepColors = Utils.protocol.createAction<PatchDefaultStepColorsPayload>(versionDefaultStepColorsType('PATCH'));
 
 export const patchSession = Utils.protocol.createAction<PatchSessionPayload>(versionSessionType('PATCH'));
 
+export const reloadFolders = Utils.protocol.createAction<ReloadFoldersPayload>(versionType('RELOAD_FOLDERS'));
+
 export const patchPublishing = Utils.protocol.createAction<PatchPublishingPayload>(versionPublishingType('PATCH'));
 
-export const reorderTopics = Utils.protocol.createAction<ReorderTopicsPayload>(topicsType('REORDER'));
+export const addManyComponents = Utils.protocol.createAction<AddManyComponentsPayload>(componentsType('ADD_MANY'));
 
 export const reorderComponents = Utils.protocol.createAction<ReorderComponentsPayload>(componentsType('REORDER'));
 

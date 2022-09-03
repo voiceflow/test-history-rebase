@@ -15,13 +15,7 @@ const ListItem: React.FC<ListItemProps> = ({ value, onChange, onRemove, autofocu
 
   return (
     <SectionV2.ListItem ref={ref} action={<SectionV2.RemoveButton onClick={onRemove} />}>
-      <Input
-        value={value}
-        // eslint-disable-next-line jsx-a11y/no-autofocus
-        autoFocus={autofocus}
-        placeholder="Enter Entity Content Example"
-        onChangeText={onChange}
-      />
+      <Input value={value} autoFocus={autofocus} placeholder="Enter Entity Content Example" onChangeText={onChange} />
     </SectionV2.ListItem>
   );
 };

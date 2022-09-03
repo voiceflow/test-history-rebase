@@ -6,7 +6,7 @@ import { Transform } from './types';
 /**
  * this migration transforms the cardV2 data structure
  */
-const migrateToV3_6: Transform = ({ diagrams }) => {
+const migrateToV3_7: Transform = ({ diagrams }) => {
   diagrams.forEach((dbDiagram) => {
     Object.values(dbDiagram.nodes).forEach((dbNode) => {
       if (!BaseUtils.step.isCardV2(dbNode) || !(dbNode.data as any).card) return;
@@ -28,4 +28,4 @@ const migrateToV3_6: Transform = ({ diagrams }) => {
   });
 };
 
-export default migrateToV3_6;
+export default migrateToV3_7;

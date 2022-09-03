@@ -132,7 +132,6 @@ const Recommendations: React.FC = () => {
                     value={recommendation.text}
                     onBlur={(value) => onUpdateRecommendation(index, value)}
                     readOnly={isFetching}
-                    // eslint-disable-next-line jsx-a11y/no-autofocus
                     autoFocus={false}
                     onAddSlot={onAddSlot}
                     onEnterPress={(value) => onUpdateRecommendation(index, value)}

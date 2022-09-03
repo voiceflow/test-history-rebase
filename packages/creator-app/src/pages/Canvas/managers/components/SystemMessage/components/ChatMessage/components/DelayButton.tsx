@@ -37,7 +37,7 @@ const DelayButton: React.FC<DelayButtonProps> = ({ delay, onChange }) => {
             min={0}
             value={messageDelay}
             onBlur={withHandler(onClose)(onBlur)}
-            autoFocus // eslint-disable-line jsx-a11y/no-autofocus
+            autoFocus
             placeholder="1000"
             onChangeText={setMessageDelay}
             onEnterPress={preventDefault(withInputBlur())}

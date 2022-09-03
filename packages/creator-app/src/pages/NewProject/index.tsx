@@ -87,9 +87,9 @@ const NewProject: React.FC = () => {
   const projects = useSelector(ProjectV2.allProjectsSelector);
   const workspace = useActiveWorkspace();
 
-  const redirectToCanvas = useDispatch(Router.redirectToCanvas);
   const goToDashboard = useDispatch(Router.goToDashboard);
   const createProject = useDispatch(Project.createProject);
+  const redirectToDomain = useDispatch(Router.redirectToDomain);
 
   // Once this starts getting more complex, we should move all this logic to a context, but right now that's overkill
   const [stepStack, setStepStack] = React.useState<StepID[]>([StepID.PLATFORM_SELECT]);
@@ -159,7 +159,7 @@ const NewProject: React.FC = () => {
     }
 
     if (newVersionID) {
-      redirectToCanvas(newVersionID);
+      redirectToDomain({ versionID: newVersionID });
     }
   };
 

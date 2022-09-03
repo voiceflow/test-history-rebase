@@ -2,6 +2,7 @@ import * as Account from '@/ducks/account';
 import * as Creator from '@/ducks/creator';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as DiagramV2 from '@/ducks/diagramV2';
+import * as Domain from '@/ducks/domain';
 import * as Feature from '@/ducks/feature';
 import * as History from '@/ducks/history';
 import * as IntegrationUsers from '@/ducks/integration';
@@ -35,7 +36,6 @@ export const MOCK_STATE: State = {
   [Account.STATE_KEY]: Account.INITIAL_STATE,
   [Creator.STATE_KEY]: {
     [Creator.FOCUS_STATE_KEY]: Creator.INITIAL_FOCUS_STATE,
-    [Creator.DIAGRAM_STATE_KEY]: { past: [], future: [], present: Creator.INITIAL_DIAGRAM_STATE },
     [Creator.DIAGRAMS_HISTORY_STATE_KEY]: Creator.INITIAL_DIAGRAMS_HISTORY_STATE,
   },
   [CreatorV2.STATE_KEY]: CreatorV2.INITIAL_STATE,
@@ -59,6 +59,7 @@ export const MOCK_STATE: State = {
     activeWorkspaceID: null,
     activeProjectID: null,
     activeVersionID: null,
+    activeDomainID: null,
     tabID: '',
     browserID: '',
   },
@@ -69,6 +70,7 @@ export const MOCK_STATE: State = {
   [Transcript.STATE_KEY]: Transcript.INITIAL_STATE,
   [UI.STATE_KEY]: UI.INITIAL_STATE as ReturnType<typeof UI.default>,
   [VersionV2.STATE_KEY]: createCRUDState(),
+  [Domain.STATE_KEY]: createCRUDState(),
   [Viewport.STATE_KEY]: Viewport.INITIAL_STATE as ReturnType<typeof Viewport.default>,
   [WorkspaceV2.STATE_KEY]: createCRUDState(),
   [VariableState.STATE_KEY]: { ...VariableState.INITIAL_STATE, selectedID: null },

@@ -96,7 +96,6 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
                         value={item.name}
                         onBlur={({ text }) => onUpdate({ name: text.trim() })}
                         fullWidth
-                        // eslint-disable-next-line jsx-a11y/no-autofocus
                         autoFocus={autofocus}
                         placeholder="Enter button label"
                       />

@@ -1,9 +1,10 @@
-import { createAsyncAction, createCRUDActions, createType } from '@realtime-sdk/actions/utils';
+import { createCRUDActions } from '@realtime-sdk/actions/utils';
 import { VARIABLE_STATE_KEY } from '@realtime-sdk/constants';
 import { VariableState, VariableStateData } from '@realtime-sdk/models';
 import { BaseVersionPayload } from '@realtime-sdk/types';
+import { Utils } from '@voiceflow/common';
 
-const variableStateType = createType(VARIABLE_STATE_KEY);
+const variableStateType = Utils.protocol.typeFactory(VARIABLE_STATE_KEY);
 
 // Other
 
@@ -15,8 +16,8 @@ export interface PatchVariableStatesPayload extends BaseVersionPayload {
   variableStates: Partial<VariableState>[];
 }
 
-export const create = createAsyncAction<CreateVariableStatePayload, VariableState>(variableStateType('CREATE'));
+export const create = Utils.protocol.createAsyncAction<CreateVariableStatePayload, VariableState>(variableStateType('CREATE'));
 
-export const patch = createAsyncAction<PatchVariableStatesPayload, VariableState[]>(variableStateType('PATCH'));
+export const patch = Utils.protocol.createAsyncAction<PatchVariableStatesPayload, VariableState[]>(variableStateType('PATCH'));
 
 export const crud = createCRUDActions<VariableState, BaseVersionPayload>(variableStateType);

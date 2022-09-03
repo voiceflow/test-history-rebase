@@ -1,15 +1,16 @@
-import { createAction, createCRUDActions, createType } from '@realtime-sdk/actions/utils';
+import { createCRUDActions } from '@realtime-sdk/actions/utils';
 import { VIEWPORT_KEY } from '@realtime-sdk/constants';
 import { ViewportModel } from '@realtime-sdk/models';
+import { Utils } from '@voiceflow/common';
 
 import { diagramType } from './utils';
 
-const diagramViewportType = createType(diagramType(VIEWPORT_KEY));
+const diagramViewportType = Utils.protocol.typeFactory(diagramType(VIEWPORT_KEY));
 
 export interface RehydrateViewportPayload {
   viewport: ViewportModel;
 }
 
-export const rehydrate = createAction<RehydrateViewportPayload>(diagramViewportType('REHYDRATE'));
+export const rehydrate = Utils.protocol.createAction<RehydrateViewportPayload>(diagramViewportType('REHYDRATE'));
 
 export const crud = createCRUDActions<ViewportModel>(diagramViewportType);

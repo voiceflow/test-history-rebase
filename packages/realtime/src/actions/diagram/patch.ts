@@ -5,13 +5,13 @@ import { Action } from 'typescript-fsa';
 
 import { AbstractDiagramResourceControl } from './utils';
 
-type PatchDiagramPayload = Realtime.BaseVersionPayload & Realtime.actionUtils.CRUDValuePayload<Partial<Realtime.Diagram>>;
+interface PatchDiagramPayload extends Realtime.BaseVersionPayload, Realtime.actionUtils.CRUDValuePayload<Pick<Realtime.Diagram, 'name'>> {}
 
 class PatchDiagram extends AbstractDiagramResourceControl<PatchDiagramPayload> {
   protected actionCreator = Realtime.diagram.crud.patch;
 
   protected process = async (_ctx: Context, { payload }: Action<PatchDiagramPayload>) => {
-    await this.services.diagram.patch(payload.key, _.pick(payload.value, 'name'));
+    await this.services.diagram.patch(payload.key, payload.value);
   };
 }
 

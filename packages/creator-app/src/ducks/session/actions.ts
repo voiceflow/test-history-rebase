@@ -10,6 +10,7 @@ export enum SessionAction {
   SET_ACTIVE_PROJECT_ID = 'SESSION:ACTIVE_PROJECT_ID:SET',
   SET_ACTIVE_VERSION_ID = 'SESSION:ACTIVE_VERSION_ID:SET',
   SET_ACTIVE_DIAGRAM_ID = 'SESSION:ACTIVE_DIAGRAM_ID:SET',
+  SET_ACTIVE_DOMAIN_ID = 'SESSION:ACTIVE_DOMAIN_ID:SET',
   SET_PROTOTYPE_SIDEBAR_VISIBLE = 'SESSION:PROTOTYPE_SIDEBAR_VISIBLE:SET',
 }
 
@@ -29,6 +30,8 @@ export type SetActiveVersionID = Action<SessionAction.SET_ACTIVE_VERSION_ID, str
 
 export type SetActiveDiagramID = Action<SessionAction.SET_ACTIVE_DIAGRAM_ID, string | null>;
 
+export type SetActiveDomainID = Action<SessionAction.SET_ACTIVE_DOMAIN_ID, string | null>;
+
 export type SetPrototypeSidebarVisible = Action<SessionAction.SET_PROTOTYPE_SIDEBAR_VISIBLE, boolean>;
 
 export type AnySessionAction =
@@ -39,6 +42,7 @@ export type AnySessionAction =
   | SetActiveProjectID
   | SetActiveVersionID
   | SetActiveDiagramID
+  | SetActiveDomainID
   | SetPrototypeSidebarVisible;
 
 // action creators
@@ -60,6 +64,8 @@ export const setActiveProjectID = (projectID: string | null): SetActiveProjectID
 export const setActiveVersionID = (versionID: string | null): SetActiveVersionID => createAction(SessionAction.SET_ACTIVE_VERSION_ID, versionID);
 
 export const setActiveDiagramID = (diagramID: string | null): SetActiveDiagramID => createAction(SessionAction.SET_ACTIVE_DIAGRAM_ID, diagramID);
+
+export const setActiveDomainID = (diagramID: string | null): SetActiveDomainID => createAction(SessionAction.SET_ACTIVE_DOMAIN_ID, diagramID);
 
 export const setPrototypeSidebarVisible = (isVisible: boolean): SetPrototypeSidebarVisible =>
   createAction(SessionAction.SET_PROTOTYPE_SIDEBAR_VISIBLE, isVisible);

@@ -13,6 +13,7 @@ export const versionSelector = createSelector([Session.activeVersionIDSelector, 
 
 export const creatorIDSelector = createSelector([versionSelector], (version) => version?.creatorID ?? null);
 
+// Should be used only in the domain duck to get root domain
 export const rootDiagramIDSelector = createSelector([versionSelector], (version) => version?.rootDiagramID ?? null);
 
 export const templateDiagramIDSelector = createSelector([versionSelector], (version) => version?.templateDiagramID ?? null);
@@ -24,8 +25,6 @@ export const sessionSelector = createSelector([versionSelector], (version) => ve
 export const settingsSelector = createSelector([versionSelector], (version) => version?.settings ?? null);
 
 export const publishingSelector = createSelector([versionSelector], (version) => version?.publishing ?? null);
-
-export const topicsSelector = createSelector([versionSelector], (version) => version?.topics ?? []);
 
 export const componentsSelector = createSelector([versionSelector], (version) => version?.components ?? []);
 

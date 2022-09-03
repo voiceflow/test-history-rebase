@@ -1,3 +1,4 @@
+import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { batch } from 'react-redux';
@@ -17,7 +18,7 @@ import { storeLogger } from '@/store/utils';
 
 import { getActivePlatformVersionContext } from '../../utils';
 
-export * from './topicsComponents';
+export * from './components';
 export * from './variables';
 
 /**
@@ -77,7 +78,9 @@ export const importProjectContext =
 
     await Promise.all(
       diagrams.map(async (diagram) => {
-        const newDiagramID = await dispatch(Diagram.duplicateDiagram(diagram.id));
+        const newDiagramID = await dispatch(
+          diagram.type === BaseModels.Diagram.DiagramType.TOPIC ? Diagram.duplicateTopic(diagram.id) : Diagram.duplicateComponent(diagram.id)
+        );
 
         mappedNodes = mappedNodes.map((node) =>
           Realtime.Utils.node.isDiagramNode(node.data) && node.data.diagramID === diagram.id

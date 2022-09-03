@@ -14,7 +14,7 @@ export const locationSelector = createSelector(rootSelector, ({ location }) => l
 
 export const pathnameSelector = createSelector(locationSelector, ({ pathname }) => pathname);
 
-export const actionsMatchSelector = createSelector(locationSelector, ({ pathname }) =>
+export const actionsMatchSelector = createSelector(pathnameSelector, (pathname) =>
   matchPath<{ 0?: string; sourcePortID: string; actionNodeID: string }>(pathname, [
     `${Path.CANVAS_NODE}/${ACTIONS_PATH}`,
     `${Path.CANVAS_NODE}/*/${ACTIONS_PATH}`,

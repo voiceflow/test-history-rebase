@@ -9,6 +9,7 @@ import {
   AnySessionAction,
   SessionAction,
   SetActiveDiagramID,
+  SetActiveDomainID,
   SetActiveProjectID,
   SetActiveVersionID,
   SetActiveWorkspaceID,
@@ -44,11 +45,6 @@ export const authTokenReducer: RootReducer<{ value: string | null }, SetAuthToke
 
   return state;
 };
-
-export const disableWebsocketsReducer: Reducer<SessionState> = (state) => ({
-  ...state,
-  websocketsEnabled: false,
-});
 
 export const setIntercomVisibleReducer: Reducer<SessionState, SetIntercomVisible> = (state, { payload }) => ({
   ...state,
@@ -90,6 +86,11 @@ export const setActiveDiagramIDReducer: Reducer<SessionState, SetActiveDiagramID
   activeDiagramID: payload,
 });
 
+export const setActiveDomainIDReducer: Reducer<SessionState, SetActiveDomainID> = (state, { payload }) => ({
+  ...state,
+  activeDomainID: payload,
+});
+
 export const setPrototypeSidebarVisibleReducer: Reducer<SessionState, SetPrototypeSidebarVisible> = (state, { payload }) => ({
   ...state,
   prototypeSidebarVisible: payload,
@@ -105,6 +106,8 @@ const sessionReducer: RootReducer<SessionState, AnySessionAction> = (state = INI
       return setActiveVersionIDReducer(state, action);
     case SessionAction.SET_ACTIVE_DIAGRAM_ID:
       return setActiveDiagramIDReducer(state, action);
+    case SessionAction.SET_ACTIVE_DOMAIN_ID:
+      return setActiveDomainIDReducer(state, action);
     case SessionAction.SET_PROTOTYPE_SIDEBAR_VISIBLE:
       return setPrototypeSidebarVisibleReducer(state, action);
     default:

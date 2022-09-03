@@ -20,4 +20,6 @@ export const addManyGlobal = Utils.protocol.createAction<GlobalManyVariablesPayl
 
 export const removeGlobal = Utils.protocol.createAction<GlobalVariablePayload>(variablesType('REMOVE'));
 
+export const reloadGlobal = Utils.protocol.createAction<GlobalManyVariablesPayload>(variablesType('RELOAD'));
+
 export const removeManyGlobal = Utils.protocol.createAction<GlobalManyVariablesPayload>(variablesType('REMOVE_MANY'));

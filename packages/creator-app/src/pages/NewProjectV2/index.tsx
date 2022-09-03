@@ -44,7 +44,7 @@ const NewProject: React.FC<NewProjectProps> = ({ onCreatingProject }) => {
   const [trackingEvents] = useTrackingEvents();
 
   const createProject = useDispatch(Project.createProject);
-  const redirectToCanvas = useDispatch(Router.redirectToCanvas);
+  const redirectToDomain = useDispatch(Router.redirectToDomain);
 
   const { updateDialogFlowMeta, updateGeneralMeta, updateAlexaMeta, updateGoogleMeta } = updatePlatformMetaCalls();
 
@@ -156,7 +156,7 @@ const NewProject: React.FC<NewProjectProps> = ({ onCreatingProject }) => {
     }
 
     if (newVersionID) {
-      redirectToCanvas(newVersionID);
+      redirectToDomain({ versionID: newVersionID });
     }
   };
 

@@ -1,4 +1,4 @@
-import { Popper, PopperProps, useSessionStorageState } from '@voiceflow/ui';
+import { Popper, PopperTypes, useSessionStorageState } from '@voiceflow/ui';
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
@@ -13,8 +13,9 @@ import { SharePopperContext } from '../../contexts';
 import { ExportContent, ExportFooter, ExportProvider, Footer, Nav, NavItem, PrototypeContent, PrototypeFooter } from './components';
 
 interface SharePopperProps {
-  children: PopperProps['children'];
+  children: PopperTypes.Children;
 }
+
 const PERSISTED_SESSION_SHARE_TAB = 'persisted_session_share_tab';
 
 const SharePopper: React.FC<SharePopperProps> = ({ children }) => {

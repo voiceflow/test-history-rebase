@@ -1,5 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, PopperProps, SectionV2 } from '@voiceflow/ui';
+import { Box, PopperTypes, SectionV2 } from '@voiceflow/ui';
 import * as Normal from 'normal-store';
 import React from 'react';
 
@@ -14,7 +14,7 @@ interface EntitiesSectionProps {
   intentEntities: Normal.Normalized<Realtime.IntentSlot>;
   onChangeDialog: (slotID: string, dialog: Partial<Realtime.IntentSlot['dialog']>) => void;
   onRemoveRequired: (slotID: string) => void;
-  addDropdownPlacement?: PopperProps['placement'];
+  addDropdownPlacement?: PopperTypes.Placement;
 }
 
 const EntitiesSection: React.FC<EntitiesSectionProps> = ({

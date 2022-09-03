@@ -1,7 +1,8 @@
+import Box from '@ui/components/Box';
 import { styled } from '@ui/styles';
 import { FadeDown } from '@ui/styles/animations';
 
-const Container = styled.div`
+const Container = styled(Box)`
   ${FadeDown}
 
   display: flex;

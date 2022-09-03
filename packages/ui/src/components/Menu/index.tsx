@@ -22,6 +22,7 @@ function Menu<Value = void>(
     id,
     width,
     onHide,
+    inline,
     options,
     disabled,
     onToggle,
@@ -88,6 +89,7 @@ function Menu<Value = void>(
       id={id}
       ref={composeRefs(ref, menuRef)}
       width={width}
+      inline={inline}
       className={ClassName.MENU}
       fullWidth={fullWidth}
       noTopPadding={noTopPadding}

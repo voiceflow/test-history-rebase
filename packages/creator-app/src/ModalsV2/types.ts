@@ -11,11 +11,14 @@ interface SharedAPI {
   opened: boolean;
   rendered: boolean;
   animated: boolean;
+  closePrevented: boolean;
 }
 
 interface BaseInternalAPI {
   close: VoidFunction;
   remove: VoidFunction;
+  enableClose: VoidFunction;
+  preventClose: VoidFunction;
 }
 
 export interface VoidInternalAPI extends BaseInternalAPI {
@@ -37,6 +40,8 @@ export type ResultInternalProps<Result> = InternalProps<ResultInternalAPI<Result
 
 interface BasePublicAPI extends SharedAPI {
   close: () => Promise<void>;
+  enableClose: VoidFunction;
+  preventClose: VoidFunction;
 }
 
 export interface VoidPublicAPI extends BasePublicAPI {

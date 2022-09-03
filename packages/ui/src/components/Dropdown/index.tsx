@@ -1,11 +1,13 @@
 import Menu, { MenuTypes } from '@ui/components/Menu';
 import Portal from '@ui/components/Portal';
+import { useNestedPopperTheme } from '@ui/hooks';
 import { useCachedValue } from '@ui/hooks/cache';
 import { PopperPlacement, usePopper } from '@ui/hooks/popper';
 import { Nullable } from '@voiceflow/common';
 import { StrictModifier } from 'newpopper';
 import React, { Fragment } from 'react';
 import { DismissableLayerProvider, useDismissable } from 'react-dismissable-layers';
+import { ThemeProvider } from 'styled-components';
 
 import { PopoverContainer } from './components';
 
@@ -62,6 +64,7 @@ const Dropdown = <Value extends unknown = void>({
     ],
   });
 
+  const nestedTheme = useNestedPopperTheme();
   const dismissableRef = useCachedValue(popper.popperElement as Element);
   const [isOpen, onToggle] = useDismissable(false, { onClose, disableLayers: disabledOverlay, ref: selfDismiss ? dismissableRef : undefined });
 
@@ -83,18 +86,20 @@ const Dropdown = <Value extends unknown = void>({
             {...popper.attributes.popper}
           >
             <DismissableLayerProvider>
-              {(typeof menu === 'function' ? menu(onToggle) : menu) ||
-                (options && (
-                  <Menu<Value>
-                    width={menuWidth}
-                    options={options}
-                    onSelect={onSelect}
-                    onToggle={onToggle}
-                    maxHeight={maxHeight}
-                    selfDismiss={selfDismiss}
-                    maxVisibleItems={maxVisibleItems}
-                  />
-                ))}
+              <ThemeProvider theme={nestedTheme}>
+                {(typeof menu === 'function' ? menu(onToggle) : menu) ||
+                  (options && (
+                    <Menu<Value>
+                      width={menuWidth}
+                      options={options}
+                      onSelect={onSelect}
+                      onToggle={onToggle}
+                      maxHeight={maxHeight}
+                      selfDismiss={selfDismiss}
+                      maxVisibleItems={maxVisibleItems}
+                    />
+                  ))}
+              </ThemeProvider>
             </DismissableLayerProvider>
           </PopoverContainer>
         </Wrapper>

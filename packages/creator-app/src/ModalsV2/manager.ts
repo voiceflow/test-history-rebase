@@ -17,7 +17,7 @@ export enum Event {
 
 export interface OpenEvent {
   id: string;
-  api: { close: VoidFunction; remove: VoidFunction; reject: (error: Error) => void; resolve: (data: unknown) => void };
+  api: T.ResultInternalAPI<unknown>;
   type: string;
   data: AnyRecord;
 }
@@ -30,7 +30,7 @@ export interface CloseRemoveEvent {
 export interface UpdateEvent {
   id: string;
   type: string;
-  data: AnyRecord;
+  payload: { data?: AnyRecord; closePrevented?: boolean };
 }
 
 interface Events {
@@ -83,6 +83,11 @@ class Manager extends EventEmitter<Events> {
   unregister(type: string): void {
     this.registry.delete(type);
   }
+
+  // needs to use factory to make HMR work
+  create<Props extends void>(factory: () => React.FC<Props & T.VoidInternalProps>): T.RegisteredModal<Props & T.VoidInternalProps>;
+
+  create<Props extends void>(type: string, factory: () => React.FC<Props & T.VoidInternalProps>): T.RegisteredModal<Props & T.VoidInternalProps>;
 
   create<Props extends EmptyObject>(factory: () => React.FC<Props & T.VoidInternalProps>): T.RegisteredModal<Props & T.VoidInternalProps>;
 
@@ -198,6 +203,10 @@ class Manager extends EventEmitter<Events> {
 
           _reject(error);
         },
+
+        enableClose: () => this.enableClose(id, type),
+
+        preventClose: () => this.preventClose(id, type),
       },
     });
 
@@ -240,7 +249,15 @@ class Manager extends EventEmitter<Events> {
       return;
     }
 
-    this.emit(Event.UPDATE, { id, type, data });
+    this.emit(Event.UPDATE, { id, type, payload: { data } });
+  }
+
+  enableClose(id: string, type: string): void {
+    this.emit(Event.UPDATE, { id, type, payload: { closePrevented: false } });
+  }
+
+  preventClose(id: string, type: string): void {
+    this.emit(Event.UPDATE, { id, type, payload: { closePrevented: true } });
   }
 }
 

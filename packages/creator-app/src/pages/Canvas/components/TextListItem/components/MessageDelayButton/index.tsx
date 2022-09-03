@@ -40,7 +40,6 @@ const MessageDelayButton: React.FC<MessageDelayButtonProps> = ({ data, onUpdate,
             value={messageDelay}
             hideDefaultNumberControls
             onBlur={withHandler(onClose)(onBlur)}
-            autoFocus // eslint-disable-line jsx-a11y/no-autofocus
             type="number"
             min={0}
             placeholder={String(durationMilliseconds)}

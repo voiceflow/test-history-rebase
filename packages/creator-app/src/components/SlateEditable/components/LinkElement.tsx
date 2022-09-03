@@ -2,7 +2,7 @@ import React from 'react';
 import { RenderElementProps } from 'slate-react';
 
 import { styled } from '@/hocs';
-import { getValidHref } from '@/utils/string';
+import { openURLInANewTab } from '@/utils/window';
 
 import { LinkElement as LinkElementType } from '../editor/types';
 
@@ -33,7 +33,7 @@ const LinkElement: React.FC<LinkElementProps> = ({ attributes, children, element
       }
 
       if (href && withoutExtraKeys) {
-        window.open(getValidHref(href), '_blank');
+        openURLInANewTab(href);
       }
     },
     [href]

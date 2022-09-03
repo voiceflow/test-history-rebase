@@ -6,8 +6,8 @@ import * as Errors from '@/config/errors';
 import { Permission } from '@/config/permissions';
 import * as Diagram from '@/ducks/diagram';
 import * as DiagramV2 from '@/ducks/diagramV2';
+import * as Domain from '@/ducks/domain';
 import * as Modal from '@/ducks/modal';
-import * as VersionV2 from '@/ducks/versionV2';
 import { useDispatch, useLinkedState, usePermission, useSelector, useToggle } from '@/hooks';
 import * as Sentry from '@/vendors/sentry';
 
@@ -98,13 +98,13 @@ interface DiagramOptionsOptions {
 }
 
 export const useDiagramOptions = ({ onEdit, onRename, diagramID }: DiagramOptionsOptions): MenuTypes.OptionWithoutValue[] => {
-  const convertToTopic = useDispatch(Diagram.convertToTopic);
-  const duplicateDiagram = useDispatch(Diagram.duplicateDiagram);
   const deleteDiagram = useDispatch(Diagram.deleteDiagram);
   const setErrorModal = useDispatch(Modal.setError);
   const setConfirmModal = useDispatch(Modal.setConfirm);
+  const duplicateComponent = useDispatch(Diagram.duplicateComponent);
+  const convertComponentToTopic = useDispatch(Diagram.convertComponentToTopic);
 
-  const rootDiagramID = useSelector(VersionV2.active.rootDiagramIDSelector);
+  const rootDiagramID = useSelector(Domain.active.rootDiagramIDSelector);
   const getDiagramByID = useSelector(DiagramV2.getDiagramByIDSelector);
 
   const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
@@ -116,7 +116,7 @@ export const useDiagramOptions = ({ onEdit, onRename, diagramID }: DiagramOption
       return;
     }
 
-    duplicateDiagram(diagramID, { openDiagram: true });
+    duplicateComponent(diagramID, { openDiagram: true });
   }, [diagramID]);
 
   const onConvertToTopic = React.useCallback(() => {
@@ -126,7 +126,7 @@ export const useDiagramOptions = ({ onEdit, onRename, diagramID }: DiagramOption
       return;
     }
 
-    convertToTopic(diagramID);
+    convertComponentToTopic(diagramID);
   }, [diagramID]);
 
   const onDelete = React.useCallback(() => {

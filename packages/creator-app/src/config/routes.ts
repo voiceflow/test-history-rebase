@@ -32,7 +32,7 @@ export enum SSORoute {
 }
 
 export enum ProjectRoute {
-  CANVAS = 'canvas',
+  DOMAIN = 'domain',
   PROTOTYPE = 'prototype',
   TOOLS = 'tools',
   MIGRATE = 'migrate',
@@ -42,6 +42,10 @@ export enum ProjectRoute {
   SETTINGS = 'settings',
   PROTOTYPE_WEBHOOK = 'webhook', // TODO: temporary page, remove after updated
   EXPORT = 'export',
+}
+
+export enum DomainRoute {
+  CANVAS = 'canvas',
 }
 
 export enum CanvasRoute {
@@ -156,7 +160,7 @@ export const Path = {
   PUBLIC_PROTOTYPE: toPath(RootRoute.PROTOTYPE, ':versionID'),
   PROJECT_DEMO: toPath(RootRoute.DEMO, ':versionID'),
   PROJECT_VERSION: toPath(RootRoute.PROJECT, ':versionID'),
-  PROJECT_CANVAS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CANVAS, ':diagramID?'),
+  PROJECT_DOMAIN: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.DOMAIN, ':domainID?'),
 
   PROJECT_PROTOTYPE: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PROTOTYPE),
   PROJECT_TOOLS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.TOOLS),
@@ -175,20 +179,60 @@ export const Path = {
 
   NLU_MANAGER_ENTITY: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.NLU_MANAGER, ':modelType', ':modelEntityID?'),
 
-  CANVAS_NODE: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CANVAS, ':diagramID', CanvasRoute.NODE, ':nodeID'),
-  CANVAS_MODEL: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CANVAS, ':diagramID', CanvasRoute.MODEL, ':modelType?'),
-  CANVAS_COMMENTING: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CANVAS, ':diagramID', CanvasRoute.COMMENTING),
+  DOMAIN_CANVAS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.DOMAIN, ':domainID', DomainRoute.CANVAS, ':diagramID?'),
+
+  CANVAS_TEXT_MARKUP: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.DOMAIN, ':domainID', DomainRoute.CANVAS, ':diagramID', CanvasRoute.MARKUP),
+  CANVAS_NODE: toPath(
+    RootRoute.PROJECT,
+    ':versionID',
+    ProjectRoute.DOMAIN,
+    ':domainID',
+    DomainRoute.CANVAS,
+    ':diagramID',
+    CanvasRoute.NODE,
+    ':nodeID'
+  ),
+  CANVAS_MODEL: toPath(
+    RootRoute.PROJECT,
+    ':versionID',
+    ProjectRoute.DOMAIN,
+    ':domainID',
+    DomainRoute.CANVAS,
+    ':diagramID',
+    CanvasRoute.MODEL,
+    ':modelType?'
+  ),
+  CANVAS_COMMENTING: toPath(
+    RootRoute.PROJECT,
+    ':versionID',
+    ProjectRoute.DOMAIN,
+    ':domainID',
+    DomainRoute.CANVAS,
+    ':diagramID',
+    CanvasRoute.COMMENTING
+  ),
   CANVAS_COMMENTING_THREAD: toPath(
     RootRoute.PROJECT,
     ':versionID',
-    ProjectRoute.CANVAS,
+    ProjectRoute.DOMAIN,
+    ':domainID',
+    DomainRoute.CANVAS,
     ':diagramID',
     CanvasRoute.COMMENTING,
     ':threadID',
     ':commentID?'
   ),
-  CANVAS_MODEL_ENTITY: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CANVAS, ':diagramID', CanvasRoute.MODEL, ':modelType', ':modelEntityID?'),
-  CANVAS_TEXT_MARKUP: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CANVAS, ':diagramID', CanvasRoute.MARKUP),
+  CANVAS_MODEL_ENTITY: toPath(
+    RootRoute.PROJECT,
+    ':versionID',
+    ProjectRoute.DOMAIN,
+    ':domainID',
+    DomainRoute.CANVAS,
+    ':diagramID',
+    CanvasRoute.MODEL,
+    ':modelType',
+    ':modelEntityID?'
+  ),
 
   NEW_PRODUCT: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.TOOLS, ToolsRoute.PRODUCT),
   PRODUCT_DETAILS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.TOOLS, ToolsRoute.PRODUCT, ':productID'),
@@ -225,4 +269,5 @@ export const LegacyPath = {
 
   PROJECT_PUBLISH: toPath(RootRoute.PROJECT, ':versionID', 'publish'),
   PROJECT_TEST: toPath(RootRoute.PROJECT, ':versionID', 'test', ':diagramID?'),
+  PROJECT_CANVAS: toPath(RootRoute.PROJECT, ':versionID', DomainRoute.CANVAS, ':diagramID?'),
 };

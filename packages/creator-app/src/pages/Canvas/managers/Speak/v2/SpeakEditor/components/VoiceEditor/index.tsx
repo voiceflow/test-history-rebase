@@ -6,7 +6,7 @@ import DraggableList, { DeleteComponent } from '@/components/DraggableList';
 import * as Documentation from '@/config/documentation';
 import { useMapManager, useToggle } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
-import { useCanvasVisibilityOption } from '@/pages/Canvas/managers/hooks';
+import useCanvasVisibilityOption from '@/pages/Canvas/managers/hooks/useCanvasVisibilityOption';
 import { voiceFactory } from '@/pages/Canvas/managers/Speak/constants';
 
 import { VoiceItem } from './components';

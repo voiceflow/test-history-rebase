@@ -183,6 +183,10 @@ describe('Migrate service unit tests', () => {
           components: undefined,
           rootDiagramID: 'diagramID',
           platformData: { fizz: 'buzz' },
+          topics: undefined,
+          domains: undefined,
+          components: undefined,
+          folders: undefined,
         },
         [{ _id: diagramID, foo: 'bar' }]
       );

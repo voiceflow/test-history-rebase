@@ -125,6 +125,7 @@ export interface BaseSelectProps {
   renderFooterAction?: Nullable<(options: { close: VoidFunction; searchLabel: string }) => React.ReactNode>;
   renderSearchSuffix?: Nullable<(options: { close: VoidFunction; searchLabel: string }) => React.ReactNode>;
   clearOnSelectActive?: boolean;
+  nestedMenuAutoWidth?: boolean;
   autoUpdatePlacement?: boolean;
   showNotMatchedOptions?: boolean;
   createInputPlaceholder?: string;

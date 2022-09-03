@@ -20,6 +20,8 @@ export const noActiveVersionID = (): StateInvariantError => error('no active ver
 
 export const noActiveDiagramID = (): StateInvariantError => error('no active diagram ID');
 
+export const noActiveDomainID = (): StateInvariantError => error('no active domain ID');
+
 export const noActivePlatform = (): StateInvariantError => error('no active platform');
 
 export const noProductByID = (productID: string): StateInvariantError<{ productID: string }> =>
@@ -56,6 +58,10 @@ export const assertVersionID: (id: Nullish<string>) => asserts id is string = (i
 
 export const assertDiagramID: (id: Nullish<string>) => asserts id is string = (id) => {
   assert(id, noActiveDiagramID());
+};
+
+export const assertDomainID: (id: Nullish<string>) => asserts id is string = (id) => {
+  assert(id, noActiveDomainID());
 };
 
 export const assertPlatform: (platform: Nullish<VoiceflowConstants.PlatformType>) => asserts platform is VoiceflowConstants.PlatformType = (

@@ -11,11 +11,12 @@ import { PaymentContextProps, VIEWS, withPayment, withPaymentProvider } from './
 import Details from './Details';
 
 interface PaymentProps {
+  focus?: string;
   payment?: PaymentContextProps;
-  focus: string;
+  onCheckout?: (message: string) => void;
 }
 
-const Payment: React.FC<PaymentProps> = ({ payment, focus }) => {
+const Payment: React.FC<PaymentProps> = ({ focus, payment }) => {
   const [isAllowed] = usePermission(Permission.UPGRADE_WORKSPACE);
 
   React.useEffect(() => {

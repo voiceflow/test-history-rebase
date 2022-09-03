@@ -8,12 +8,11 @@ import * as Creator from '@/ducks/creator';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as DiagramDuck from '@/ducks/diagram';
 import * as DiagramV2 from '@/ducks/diagramV2';
+import * as Domain from '@/ducks/domain';
 import { applySingleIntentNameFormatting } from '@/ducks/intent/utils';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
-import * as Version from '@/ducks/version';
-import * as VersionV2 from '@/ducks/versionV2';
 import { useDispatch, useDnDReorder, useSelector } from '@/hooks';
 import { applyPlatformIntentNameFormatting, prettifyIntentName } from '@/utils/intent';
 
@@ -53,14 +52,14 @@ export const useTopics = (): TopicsAPI & Omit<OpenedIDsToggleApi, 'onDragStart' 
   const platform = useSelector(ProjectV2.active.platformSelector);
   const sharedNodes = useSelector(DiagramV2.sharedNodesSelector);
   const getIntentByID = useSelector(IntentV2.getIntentByIDSelector);
-  const rootDiagramID = useSelector(VersionV2.active.rootDiagramIDSelector);
+  const rootDiagramID = useSelector(Domain.active.rootDiagramIDSelector);
   const topicDiagrams = useSelector(DiagramV2.active.topicDiagramsSelector);
   const getDiagramByID = useSelector(DiagramV2.getDiagramByIDSelector);
   const activeDiagramID = useSelector(CreatorV2.activeDiagramIDSelector);
   const { target: focusedNodeID, isActive: isFocusedNodeActive } = useSelector(Creator.creatorFocusSelector);
 
   const goToDiagram = useDispatch(Router.goToDiagramHistoryPush);
-  const reorderTopics = useDispatch(Version.reorderTopics);
+  const reorderTopics = useDispatch(Domain.currentReorderTopic);
   const createTopicDiagram = useDispatch(DiagramDuck.createTopicDiagram);
 
   const [searchValue, setSearchValue] = React.useState<string>('');
@@ -68,8 +67,8 @@ export const useTopics = (): TopicsAPI & Omit<OpenedIDsToggleApi, 'onDragStart' 
 
   const dndReorder = useDnDReorder({
     getID: (item: TopicItem) => item.id,
-    onPersist: (fromID: string, toIndex: number) => reorderTopics({ fromID, toIndex }),
-    onReorder: (fromID: string, toIndex: number) => reorderTopics({ fromID, toIndex, skipPersist: true }),
+    onPersist: (topicID: string, toIndex: number) => reorderTopics({ topicID, toIndex }),
+    onReorder: (topicID: string, toIndex: number) => reorderTopics({ topicID, toIndex, skipPersist: true }),
   });
 
   const openedIDsToggle = useOpenedIDsToggle('topics');

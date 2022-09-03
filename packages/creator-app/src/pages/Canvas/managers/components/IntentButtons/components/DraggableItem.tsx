@@ -80,7 +80,6 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
                 <VariablesInput
                   value={item.name}
                   onBlur={({ text }) => onUpdate({ name: text })}
-                  // eslint-disable-next-line jsx-a11y/no-autofocus
                   autoFocus={autofocus}
                   placeholder={`Enter ${label.toLowerCase()} name`}
                 />

@@ -3,6 +3,7 @@ import React from 'react';
 
 import { DOCS_BASE_LINK } from '@/config/documentation';
 import { NLUIntent } from '@/pages/NLUManager/types';
+import { onOpenInternalURLInANewTabFactory } from '@/utils/window';
 
 import { HeaderSelectColumn, NameColumn } from '../../components';
 import { ClarityColumn, ConfidenceColumn, EntitiesColumn, SelectColumn, UtterancesColumn } from './components';
@@ -43,7 +44,7 @@ export const COLUMNS: TableTypes.Column<TableColumn, NLUIntent>[] = [
     sorter: (intentL, intentR) => intentL.confidence - intentR.confidence,
     tooltip: {
       html: (
-        <TippyTooltip.FooterButton onClick={() => window.open(DOCS_BASE_LINK)} buttonText="More">
+        <TippyTooltip.FooterButton onClick={onOpenInternalURLInANewTabFactory(DOCS_BASE_LINK)} buttonText="More">
           Confidence is a measure of a specific intents data robustness.
         </TippyTooltip.FooterButton>
       ),
@@ -60,7 +61,7 @@ export const COLUMNS: TableTypes.Column<TableColumn, NLUIntent>[] = [
     sorter: (intentL, intentR) => intentL.clarity - intentR.clarity,
     tooltip: {
       html: (
-        <TippyTooltip.FooterButton onClick={() => window.open(DOCS_BASE_LINK)} buttonText="More">
+        <TippyTooltip.FooterButton onClick={onOpenInternalURLInANewTabFactory(DOCS_BASE_LINK)} buttonText="More">
           Clarity is a measure of an intents ability to be recognized, relative to the rest of your model.
         </TippyTooltip.FooterButton>
       ),

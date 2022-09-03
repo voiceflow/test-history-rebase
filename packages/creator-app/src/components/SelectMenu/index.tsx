@@ -1,11 +1,11 @@
-import { Popper, PopperProps } from '@voiceflow/ui';
+import { Popper, PopperTypes } from '@voiceflow/ui';
 import React from 'react';
 
 import { SelectMenuHeader } from './components';
 
 export { MenuSection } from './components';
 
-interface SelectMenuProp extends Omit<PopperProps, 'renderContent'> {
+interface SelectMenuProp extends Omit<PopperTypes.Props, 'renderContent'> {
   onClose?: VoidFunction;
   onClear: VoidFunction;
   sections: ({ onToggle }: { onToggle: VoidFunction }) => React.ReactNode;

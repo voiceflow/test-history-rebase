@@ -13,6 +13,7 @@ interface Modal {
   type: string;
   data: AnyRecord;
   closing: boolean;
+  closePrevented: boolean;
 }
 
 interface ContextValue {
@@ -24,6 +25,9 @@ interface ContextValue {
   update: (id: string, type: string, data?: AnyRecord) => void;
   remove: (id: string, type: string) => void;
   isClosing: (id: string, type: string) => boolean;
+  enableClose: (id: string, type: string) => void;
+  preventClose: (id: string, type: string) => void;
+  isClosePrevented: (id: string, type: string) => boolean;
 }
 
 const initialState = Normal.createEmpty<Modal>();
@@ -37,6 +41,9 @@ export const Context = React.createContext<ContextValue>({
   remove: Utils.functional.noop,
   update: Utils.functional.noop,
   isClosing: () => false,
+  enableClose: Utils.functional.noop,
+  preventClose: Utils.functional.noop,
+  isClosePrevented: () => false,
 });
 
 const reducer = reducerWithInitialState(initialState);
@@ -46,15 +53,21 @@ const actions = {
   clone: Utils.protocol.createAction('vf-modals/clone'),
   close: Utils.protocol.createAction<{ id: string; type: string }>('vf-modals/close'),
   remove: Utils.protocol.createAction<{ id: string; type: string }>('vf-modals/remove'),
-  update: Utils.protocol.createAction<{ id: string; type: string; data: AnyRecord }>('vf-modals/update'),
+  update: Utils.protocol.createAction<{ id: string; type: string; update: { data?: AnyRecord; closePrevented?: boolean } }>('vf-modals/update'),
 };
 
 reducer
   .case(actions.open, (state, payload) => Normal.prependOne(state, manager.getCombinedID(payload.id, payload.type), payload))
-  .case(actions.close, (state, payload) => Normal.patchOne(state, manager.getCombinedID(payload.id, payload.type), { closing: true }))
+  .case(actions.close, (state, payload) => {
+    const modal = Normal.getOne(state, manager.getCombinedID(payload.id, payload.type));
+
+    if (modal?.closePrevented) return state;
+
+    return Normal.patchOne(state, manager.getCombinedID(payload.id, payload.type), { closing: true });
+  })
   .case(actions.clone, (state) => ({ ...state }))
   .case(actions.remove, (state, payload) => Normal.removeOne(state, manager.getCombinedID(payload.id, payload.type)))
-  .case(actions.update, (state, payload) => Normal.patchOne(state, manager.getCombinedID(payload.id, payload.type), payload.data));
+  .case(actions.update, (state, payload) => Normal.patchOne(state, manager.getCombinedID(payload.id, payload.type), payload.update));
 
 export const Provider: React.FC = ({ children }) => {
   const [state, dispatch] = React.useReducer(reducer, initialState);
@@ -63,13 +76,22 @@ export const Provider: React.FC = ({ children }) => {
 
   const open = React.useCallback(
     (id: string, type: string, data: AnyRecord, api: T.VoidInternalAPI | T.ResultInternalAPI<any>) =>
-      dispatch(actions.open({ id, api, type, data, closing: false })),
+      dispatch(actions.open({ id, api, type, data, closing: false, closePrevented: false })),
     []
   );
   const close = React.useCallback((id: string, type: string) => dispatch(actions.close({ id, type })), []);
   const remove = React.useCallback((id: string, type: string) => dispatch(actions.remove({ id, type })), []);
-  const update = React.useCallback((id: string, type: string, data: AnyRecord = {}) => dispatch(actions.update({ id, type, data })), []);
+  const update = React.useCallback(
+    (id: string, type: string, update: { data?: AnyRecord; closePrevented?: boolean } = {}) => dispatch(actions.update({ id, type, update })),
+    []
+  );
   const isClosing = React.useCallback((id: string, type: string) => !!Normal.getOne(state, manager.getCombinedID(id, type))?.closing, [state]);
+  const enableClose = React.useCallback((id: string, type: string) => dispatch(actions.update({ id, type, update: { closePrevented: false } })), []);
+  const preventClose = React.useCallback((id: string, type: string) => dispatch(actions.update({ id, type, update: { closePrevented: true } })), []);
+  const isClosePrevented = React.useCallback(
+    (id: string, type: string) => !!Normal.getOne(state, manager.getCombinedID(id, type))?.closePrevented,
+    [state]
+  );
 
   React.useEffect(() => {
     prevAllKeysLengthRef.current = state.allKeys.length;
@@ -79,7 +101,7 @@ export const Provider: React.FC = ({ children }) => {
     const onOpen = ({ id, type, data, api }: OpenEvent) => open(id, type, data, api);
     const onClose = ({ id, type }: CloseRemoveEvent) => close(id, type);
     const onRemove = ({ id, type }: CloseRemoveEvent) => remove(id, type);
-    const onUpdate = ({ id, type, data }: UpdateEvent) => update(id, type, data);
+    const onUpdate = ({ id, type, payload }: UpdateEvent) => update(id, type, payload);
     const onReload = () => dispatch(actions.clone());
 
     manager.on(Event.OPEN, onOpen);
@@ -105,6 +127,9 @@ export const Provider: React.FC = ({ children }) => {
     remove,
     animated: state.allKeys.length <= 1 && prevAllKeysLengthRef.current <= 1,
     isClosing,
+    enableClose,
+    preventClose,
+    isClosePrevented,
   });
 
   return <Context.Provider value={api}>{children}</Context.Provider>;

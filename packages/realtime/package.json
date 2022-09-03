@@ -2,8 +2,8 @@
   "name": "@voiceflow/realtime",
   "version": "1.100.4",
   "dependencies": {
-    "@logux/core": "0.7.3",
-    "@logux/server": "0.11.0",
+    "@logux/core": "0.8.0",
+    "@logux/server": "0.12.1",
     "@opentelemetry/api-metrics": "0.26.0",
     "@voiceflow/alexa-types": "2.10.23",
     "@voiceflow/api-sdk": "3.20.2",

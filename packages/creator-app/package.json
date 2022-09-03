@@ -7,8 +7,8 @@
     "url": "https://github.com/voiceflow/creator-app/issues"
   },
   "dependencies": {
-    "@logux/client": "0.17.0",
-    "@logux/core": "0.7.3",
+    "@logux/client": "0.18.0",
+    "@logux/core": "0.8.0",
     "@logux/redux": "0.8.3",
     "@logux/state": "0.2.0",
     "@nanostores/react": "0.3.0",

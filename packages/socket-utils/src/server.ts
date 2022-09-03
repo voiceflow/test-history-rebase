@@ -1,5 +1,3 @@
-import './syncMessage.js';
-
 import * as Logux from '@logux/server';
 import { Environment } from '@voiceflow/common';
 import Logger from '@voiceflow/logger';

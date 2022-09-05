@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.892.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.891.2...@voiceflow/creator-app@1.892.0) (2022-09-05)
+
+
+### Bug Fixes
+
+* removed entity name restrictions for chat/voice/dfes projects (NLU-268) ([#6006](https://github.com/voiceflow/creator-app/issues/6006)) ([d0d0912](https://github.com/voiceflow/creator-app/commit/d0d09120786c65b105a2c0390303f65d1edf5ddc))
+
+
+### Features
+
+* [bugfix] nlu manager session duration tracking (NLU-315) ([#6008](https://github.com/voiceflow/creator-app/issues/6008)) ([2223142](https://github.com/voiceflow/creator-app/commit/22231421207abd2b3507623902cfb0d512fa7bc3))
+
+
+
+
+
 ## [1.891.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.891.1...@voiceflow/creator-app@1.891.2) (2022-09-05)
 
 

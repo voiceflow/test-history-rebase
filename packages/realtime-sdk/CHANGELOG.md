@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.150.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.150.0...@voiceflow/realtime-sdk@1.150.1) (2022-09-05)
+
+
+### Bug Fixes
+
+* removed entity name restrictions for chat/voice/dfes projects (NLU-268) ([#6006](https://github.com/voiceflow/creator-app/issues/6006)) ([d0d0912](https://github.com/voiceflow/creator-app/commit/d0d09120786c65b105a2c0390303f65d1edf5ddc))
+
+
+
+
+
 # [1.150.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.149.0...@voiceflow/realtime-sdk@1.150.0) (2022-09-03)
 
 

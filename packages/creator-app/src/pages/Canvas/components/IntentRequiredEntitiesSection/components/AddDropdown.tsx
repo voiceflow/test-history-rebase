@@ -18,11 +18,15 @@ interface AddDropdownProps {
 const AddDropdown: React.FC<AddDropdownProps> = ({ entities, placement, onAddRequired, intentEntities }) => {
   const { onAddSlot } = useAddSlot();
   const { generateItemName } = React.useContext(NLUContext);
+  const searchValue = React.useRef<string>('');
 
   const unusedEntities = React.useMemo(() => entities.filter((entity) => !Normal.hasOne(intentEntities, entity.id)), [entities, intentEntities]);
 
   const onCreate = async () => {
-    const newSlot = await onAddSlot(generateItemName(InteractionModelTabType.SLOTS));
+    const newEntityName = searchValue.current || generateItemName(InteractionModelTabType.SLOTS);
+
+    const newSlot = await onAddSlot(newEntityName);
+    searchValue.current = '';
 
     if (newSlot) {
       await onAddRequired(newSlot.id);
@@ -52,6 +56,9 @@ const AddDropdown: React.FC<AddDropdownProps> = ({ entities, placement, onAddReq
       )}
       optionsMaxSize={7.5}
       getOptionLabel={(value) => value?.name}
+      onSearch={(search) => {
+        searchValue.current = search;
+      }}
       inDropdownSearch={!!unusedEntities.length}
       alwaysShowCreate
       renderFooterAction={({ close }) => (

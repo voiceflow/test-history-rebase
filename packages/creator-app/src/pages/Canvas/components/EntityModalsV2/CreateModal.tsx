@@ -6,10 +6,11 @@ import React from 'react';
 import Modal, { ModalFooter } from '@/components/Modal';
 import { MODAL_WIDTH_VARIANTS, MODAL_WIDTHS, ModalType } from '@/constants';
 import * as IntentV2 from '@/ducks/intentV2';
+import * as ProjectV2 from '@/ducks/projectV2';
 import * as Slot from '@/ducks/slot';
 import * as SlotV2 from '@/ducks/slotV2';
 import { useDispatch, useLinkedState, useModals, useSelector } from '@/hooks';
-import { applySlotNameFormatting, validateSlotName } from '@/utils/slot';
+import { applySlotNameFormatting, slotNameFormatter, validateSlotName } from '@/utils/slot';
 
 import EntityForm from './components/EntityForm';
 import { MAX_HEIGHT_CALC } from './constants';
@@ -27,7 +28,8 @@ const CreateModal: React.FC = () => {
 
   const [isCreating, setIsCreating] = React.useState(false);
   const [type, setType] = React.useState(CustomSlot.type);
-  const [name, setName] = useLinkedState(applySlotNameFormatting(data.name) ?? '');
+  const platform = useSelector(ProjectV2.active.platformSelector);
+  const [name, setName] = useLinkedState(applySlotNameFormatting(platform)(data.name) ?? '');
   const [values, setValues] = React.useState<Realtime.SlotInput[]>([]);
   const [color, setColor] = React.useState<string>(pickRandomDefaultColor());
 
@@ -37,7 +39,7 @@ const CreateModal: React.FC = () => {
 
   const onCreate = async () => {
     setIsCreating(true);
-    const formattedSlotName = Utils.string.removeTrailingUnderscores(name);
+    const formattedSlotName = slotNameFormatter(platform)(name);
     const id = Utils.id.cuid.slug();
 
     const error = validateSlotName({

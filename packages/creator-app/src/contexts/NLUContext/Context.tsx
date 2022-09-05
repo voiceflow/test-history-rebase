@@ -14,7 +14,7 @@ import * as Version from '@/ducks/version';
 import { useDeleteVariable, useDispatch, useIntentNameProcessor, useOrderedVariables, useSelector } from '@/hooks';
 import { generateSlotInput } from '@/pages/Canvas/components/SlotEdit/utils';
 import { applyPlatformIntentNameFormatting, isBuiltInIntent } from '@/utils/intent';
-import { applySlotNameFormatting, CUSTOM_ENTITY_VALUE_ERROR_MSG, validateSlotName } from '@/utils/slot';
+import { applySlotNameFormatting, CUSTOM_ENTITY_VALUE_ERROR_MSG, slotNameFormatter, validateSlotName } from '@/utils/slot';
 
 interface NLUContextValue {
   renameItem: (newName: string, id: string, type: InteractionModelTabType) => void;
@@ -80,7 +80,7 @@ export const NLUProvider: React.FC = ({ children }) => {
 
   const onRenameSlot = React.useCallback(
     (slotName: string, id: string) => {
-      const formattedSlotName = Utils.string.removeTrailingUnderscores(slotName);
+      const formattedSlotName = slotNameFormatter(platform)(slotName);
 
       const slot = allSlotsMap[id];
 
@@ -151,7 +151,7 @@ export const NLUProvider: React.FC = ({ children }) => {
           const numberWord = Utils.number.convertToWord(slotsSize + 1);
           return `entity_${numberWord}`;
         },
-        transformName: (name: string) => applySlotNameFormatting(name),
+        transformName: (name: string) => applySlotNameFormatting(platform)(name),
       },
 
       [InteractionModelTabType.VARIABLES]: {

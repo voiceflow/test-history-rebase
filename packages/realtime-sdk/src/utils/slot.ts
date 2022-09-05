@@ -97,6 +97,10 @@ export const validateSlotName = ({
     return 'Entity must have a name';
   }
 
+  if (!/[A-Za-z]/.test(slotName)) {
+    return 'Entity name must contain at least one letter';
+  }
+
   if (slotName.length > 32) {
     return 'Entity name cannot exceed 32 characters';
   }

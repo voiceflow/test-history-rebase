@@ -1,16 +1,15 @@
-import { transition } from '@ui/styles';
+import { css, transition } from '@ui/styles';
 import { HSLShades } from '@ui/utils/colors/hsl';
-import React from 'react';
 import styled from 'styled-components';
 
-export interface BaseTagProps {
+export interface Props {
   palette: HSLShades;
-  noColor: boolean;
-  onClick?: React.MouseEventHandler<HTMLSpanElement>;
+  noColor?: boolean;
 }
 
-export const TagWrapper = styled.span<BaseTagProps>`
+export const Container = styled.span<Props>`
   ${transition('background-color')}
+
   padding: 2px 5px 4px 6px;
   font-weight: 600;
   font-size: 12px;
@@ -28,56 +27,21 @@ export const TagWrapper = styled.span<BaseTagProps>`
 
   ${({ noColor }) =>
     noColor &&
-    `
-    box-shadow: rgb(223 229 234) 0px 0px 0px 1px inset;
-    background-color: #f4f8f9;
-  `}
+    css`
+      box-shadow: rgb(223 229 234) 0px 0px 0px 1px inset;
+      background-color: #f4f8f9;
+    `}
 
   ${({ onClick }) =>
     onClick &&
-    `
-    cursor: pointer;
-  `}
-
-  &::before,
-  &::after {
-    ${transition('color', 'background-color')}
-    position: absolute;
-    top: 2px;
-    font-weight: 900;
-    width: 8px;
-    height: calc(100% - 4px);
-    background-color: ${({ palette }) => palette[700]};
-    color: ${({ palette }) => palette[400]};
-    opacity: 1;
-    line-height: 12px;
-
-    ${({ noColor }) =>
-      noColor &&
-      `
-      color: #8d9eae;
-      background-color: #f4f8f9;
+    css`
+      cursor: pointer;
     `}
-  }
-
-  &::before {
-    content: '{';
-    left: 3px;
-    text-align: left;
-  }
-
-  &::after {
-    content: '}';
-    right: 2px;
-    text-align: right;
-  }
 `;
 
-export const Label = styled.span<BaseTagProps>`
+export const Label = styled.span<Props>`
   ${transition('color')}
   margin-bottom: -1px;
 
-  color: ${({ palette }) => palette[50]};
-
-  ${({ noColor }) => noColor && `color: #62778c;`}
+  color: ${({ noColor, palette }) => (noColor ? '#62778c' : palette[50])};
 `;

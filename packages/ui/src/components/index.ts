@@ -138,7 +138,7 @@ export { default as SvgIcon } from './SvgIcon';
 export type { TableTypes } from './Table';
 export { default as Table } from './Table';
 export { default as Tabs } from './Tabs';
-export { Tag } from './Tag';
+export { default as Tag } from './Tag';
 export type { TextProps } from './Text';
 export { BlockText, ClickableText, Description, Label, Link, OverflowText, overflowTextStyles, default as Text, Title } from './Text';
 export { default as Thumbnail } from './Thumbnail';

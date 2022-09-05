@@ -19,10 +19,5 @@ export const StyledTag = styled(Tag)`
     text-overflow: ellipsis;
     white-space: nowrap;
     display: inline-block;
-
-    &:before :after {
-      content: '';
-      display: none;
-    }
   }
 `;

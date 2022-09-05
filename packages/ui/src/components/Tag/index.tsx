@@ -1,28 +1,30 @@
 import React from 'react';
 
 import { useColorPalette } from '../ColorPicker/hooks';
-import { Label, TagWrapper } from './styles';
+import * as S from './styles';
 
 interface TagProps {
   color?: string;
-  children: string;
+  onClick?: React.MouseEventHandler<HTMLSpanElement>;
   className?: string;
   isVariable?: boolean;
-  onClick?: React.MouseEventHandler<HTMLSpanElement>;
+  noBrackets?: boolean;
   onMouseDown?: React.MouseEventHandler<HTMLSpanElement>;
 }
 
-export const Tag = React.forwardRef<HTMLSpanElement, React.PropsWithChildren<TagProps>>(
+const Tag = React.forwardRef<HTMLSpanElement, React.PropsWithChildren<TagProps>>(
   ({ color, onClick, children, className, ...props }, ref): React.ReactElement => {
     const palette = useColorPalette(color);
     const noColor = !color;
 
     return (
-      <TagWrapper onClick={onClick} noColor={noColor} ref={ref} {...props} className={className} palette={palette}>
-        <Label noColor={noColor} palette={palette}>
+      <S.Container onClick={onClick} noColor={noColor} ref={ref} {...props} className={className} palette={palette}>
+        <S.Label noColor={noColor} palette={palette}>
           {children}
-        </Label>
-      </TagWrapper>
+        </S.Label>
+      </S.Container>
     );
   }
 );
+
+export default Tag;

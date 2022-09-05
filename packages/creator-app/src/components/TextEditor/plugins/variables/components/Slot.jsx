@@ -14,12 +14,12 @@ const Slot = ({ mention, children }, ref) => {
   const { open: openEntityEditModal } = useModals(ModalType.ENTITY_EDIT);
   const getSlotByName = useSelector(SlotV2.slotByNameSelector);
 
-  const onClickHandler = swallowEvent(() => {
+  const onClickHandler = () => {
     if (mention.id && !mention.isVariable) {
       const slotID = getSlotByName(mention.name)?.id || mention.id;
       openEntityEditModal({ id: slotID });
     }
-  }, true);
+  };
 
   return (
     <OverflowTippyTooltip
@@ -32,10 +32,10 @@ const Slot = ({ mention, children }, ref) => {
           <StyledTag
             ref={composeRef(ref, overflowRef)}
             color={mention.color}
-            onClick={onClickHandler}
-            onMouseUp={swallowEvent(null, true)}
-            onMouseDown={swallowEvent(null, true)}
+            onClick={mention.isVariable ? undefined : swallowEvent(onClickHandler, true)}
+            onMouseUp={mention.isVariable ? undefined : swallowEvent(null, true)}
             isVariable={mention.isVariable}
+            onMouseDown={mention.isVariable ? undefined : swallowEvent(null, true)}
           >
             {children}
           </StyledTag>

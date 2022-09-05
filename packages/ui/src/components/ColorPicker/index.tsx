@@ -1,5 +1,5 @@
 import Box from '@ui/components/Box';
-import { Tag } from '@ui/components/Tag';
+import Tag from '@ui/components/Tag';
 import { useDebouncedCallback, useLinkedState } from '@ui/hooks';
 import { stopPropagation } from '@ui/utils';
 import { createShadesFromHue, createStandardShadeFromHue, STANDARD_GRADE } from '@ui/utils/colors/hsl';

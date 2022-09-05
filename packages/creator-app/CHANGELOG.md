@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.891.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.891.1...@voiceflow/creator-app@1.891.2) (2022-09-05)
+
+
+### Bug Fixes
+
+* actions width (BUG-41) ([#6004](https://github.com/voiceflow/creator-app/issues/6004)) ([285c93c](https://github.com/voiceflow/creator-app/commit/285c93c0a4c6abb595cb8941ec5b492af3dc4e98))
+* missing cursor (CT-727) ([#6005](https://github.com/voiceflow/creator-app/issues/6005)) ([af83b7d](https://github.com/voiceflow/creator-app/commit/af83b7daaa443d9b810a0dbdf4f384c530b1dc9c))
+
+
+
+
+
 ## [1.891.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.891.0...@voiceflow/creator-app@1.891.1) (2022-09-05)
 
 

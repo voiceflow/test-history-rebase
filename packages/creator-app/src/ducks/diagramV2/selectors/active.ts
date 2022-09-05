@@ -1,3 +1,4 @@
+import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import _unionBy from 'lodash/unionBy';
 import { normalize } from 'normal-store';
@@ -17,6 +18,8 @@ export const diagramSelector = createSelector([getDiagramByIDSelector, CreatorV2
 );
 
 export const typeSelector = createSelector([diagramSelector], (diagram) => diagram?.type ?? null);
+
+export const isTopicSelector = createSelector([typeSelector], (type) => type === BaseModels.Diagram.DiagramType.TOPIC);
 
 export const topicDiagramsSelector = createSelector(
   [DomainSelectors.active.topicIDsSelector, getDiagramsByIDsSelector],

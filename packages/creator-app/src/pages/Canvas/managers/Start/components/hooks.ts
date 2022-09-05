@@ -1,8 +1,8 @@
-import * as CreatorV2 from '@/ducks/creatorV2';
+import * as DiagramV2 from '@/ducks/diagramV2';
 import { useSelector } from '@/hooks';
 
 export const useNodeLabel = () => {
-  const isRootDiagram = useSelector(CreatorV2.isRootDiagramActiveSelector);
+  const isTopic = useSelector(DiagramV2.active.isTopicSelector);
 
-  return isRootDiagram ? 'Home' : 'Start';
+  return isTopic ? 'Home' : 'Start';
 };

@@ -7,7 +7,7 @@ import { findDomainIDByTopicID, findRootDomainID } from '@/utils/domain';
 
 import { STATE_KEY } from '../constants';
 
-const topicIDSelector = createParameterSelector((params: { topicID: string }) => params.topicID);
+const topicIDSelector = createParameterSelector((params: { topicID: string | null }) => params.topicID);
 
 export const {
   all: allDomainsSelector,
@@ -28,7 +28,7 @@ export const rootDomainSelector = createSelector([getDomainByIDSelector, rootDom
 );
 
 export const domainIDByTopicIDSelector = createSelector([allDomainsSelector, topicIDSelector], (domains, topicID) =>
-  findDomainIDByTopicID(domains, topicID)
+  topicID ? findDomainIDByTopicID(domains, topicID) : null
 );
 
 export const getDomainIDByTopicIDSelector = createCurriedSelector(domainIDByTopicIDSelector);

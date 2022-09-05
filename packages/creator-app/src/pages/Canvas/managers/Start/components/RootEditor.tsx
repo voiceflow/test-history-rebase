@@ -4,6 +4,7 @@ import React from 'react';
 
 import * as Documentation from '@/config/documentation';
 import * as CreatorV2 from '@/ducks/creatorV2';
+import * as VersionV2 from '@/ducks/versionV2';
 import { useSelector } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import { PlatformContext } from '@/pages/Project/contexts';
@@ -19,7 +20,11 @@ const RootEditor: React.FC = () => {
 
   const platform = React.useContext(PlatformContext)!;
 
-  const isRootDiagram = useSelector(CreatorV2.isRootDiagramActiveSelector);
+  const activeDiagramID = useSelector(CreatorV2.activeDiagramIDSelector);
+  const versionRootDiagramID = useSelector(VersionV2.active.rootDiagramIDSelector);
+
+  // to render invocation name section only for version root diagram
+  const isVersionRootDiagramActive = activeDiagramID === versionRootDiagramID;
 
   const nodeLabel = useNodeLabel();
 
@@ -35,7 +40,7 @@ const RootEditor: React.FC = () => {
       }
       footer={<EditorV2.DefaultFooter tutorial={Documentation.START_STEP} />}
     >
-      {isRootDiagram && isPlatformWithInvocationName(platform) ? <InvocationNameSection /> : <StartLabelSection />}
+      {isVersionRootDiagramActive && isPlatformWithInvocationName(platform) ? <InvocationNameSection /> : <StartLabelSection />}
 
       <SectionV2.Divider />
 

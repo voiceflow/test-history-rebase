@@ -6,7 +6,7 @@ import { ExportFormat as CanvasExportFormat, ExportType, NLPProvider, NLUImportO
 import { PrototypeSettings } from '@/ducks/prototype/types';
 
 import { EventName } from '../constants';
-import { VersionEventInfo } from '../types';
+import { ProjectSessionEventInfo } from '../types';
 import {
   createProjectEventPayload,
   createProjectEventTracker,
@@ -16,10 +16,10 @@ import {
   createWorkspaceEventTracker,
 } from '../utils';
 
-export const trackActiveProjectSessionBegin = (options: VersionEventInfo) => () =>
+export const trackActiveProjectSessionBegin = (options: ProjectSessionEventInfo) => () =>
   client.api.analytics.track(EventName.PROJECT_SESSION_BEGIN, createProjectEventPayload(options));
 
-export const trackActiveProjectSessionDuration = (options: VersionEventInfo & { duration: number }) => () =>
+export const trackActiveProjectSessionDuration = (options: ProjectSessionEventInfo & { duration: number }) => () =>
   client.api.analytics.track(
     EventName.PROJECT_SESSION_DURATION,
     createProjectEventPayload(options, { duration: Math.floor(options.duration / 1000) })
@@ -121,7 +121,9 @@ export const trackProjectExit = createProjectEventTracker<{
   canvasSessionDuration: number;
   prototypeSessionDuration: number;
   transcriptsSessionDuration: number;
-}>(({ platform, canvasSessionDuration, prototypeSessionDuration, transcriptsSessionDuration, ...options }) =>
+  nluManagerSessionDuration: number;
+  creatorID: number;
+}>(({ platform, canvasSessionDuration, prototypeSessionDuration, transcriptsSessionDuration, nluManagerSessionDuration, creatorID, ...options }) =>
   client.api.analytics.track(
     EventName.PROJECT_EXIT,
     createProjectEventPayload(options, {
@@ -129,6 +131,8 @@ export const trackProjectExit = createProjectEventTracker<{
       canvasSessionDuration,
       prototypeSessionDuration,
       transcriptsSessionDuration,
+      nluManagerSessionDuration,
+      creatorID,
     })
   )
 );

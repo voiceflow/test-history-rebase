@@ -4,6 +4,7 @@ import { matchPath } from 'react-router';
 import { useLocation } from 'react-router-dom';
 
 import { Path } from '@/config/routes';
+import * as Account from '@/ducks/account';
 import * as Session from '@/ducks/session';
 import { useSelector, useTrackingEvents, useWorkspaceTracking } from '@/hooks';
 
@@ -11,25 +12,27 @@ export enum TrackingArea {
   CANVAS = 'canvas',
   PROTOTYPE = 'prototype',
   TRANSCRIPTS = 'transcripts',
+  NLU_MANAGER = 'nlu',
 }
 
 const trackingPaths = [
   { area: TrackingArea.PROTOTYPE, path: Path.PROJECT_PROTOTYPE },
   { area: TrackingArea.TRANSCRIPTS, path: Path.CONVERSATIONS },
   { area: TrackingArea.CANVAS, path: Path.DOMAIN_CANVAS },
+  { area: TrackingArea.NLU_MANAGER, path: Path.NLU_MANAGER },
 ];
 
 export function useProjectExitTracking({ platform }: { platform: VoiceflowConstants.PlatformType }): void {
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const projectID = useSelector(Session.activeProjectIDSelector)!;
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const workspaceID = useSelector(Session.activeWorkspaceIDSelector)!;
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const versionID = useSelector(Session.activeVersionIDSelector)!;
+  const creatorID = useSelector(Account.userIDSelector)!;
+
   const durationsRef = React.useRef({
     [TrackingArea.CANVAS]: 0,
     [TrackingArea.PROTOTYPE]: 0,
     [TrackingArea.TRANSCRIPTS]: 0,
+    [TrackingArea.NLU_MANAGER]: 0,
   });
   const areaTimeRef = React.useRef(0);
   const location = useLocation();
@@ -61,6 +64,7 @@ export function useProjectExitTracking({ platform }: { platform: VoiceflowConsta
       skillID: versionID,
       projectID,
       workspaceID,
+      creatorID,
     });
 
     const trackSession = () => {
@@ -71,7 +75,9 @@ export function useProjectExitTracking({ platform }: { platform: VoiceflowConsta
         canvasSessionDuration: durations.canvas,
         prototypeSessionDuration: durations.prototype,
         transcriptsSessionDuration: durations.transcripts,
+        nluManagerSessionDuration: durations.nlu,
         platform,
+        creatorID,
       });
 
       trackingEvents.trackActiveProjectSessionDuration({
@@ -79,6 +85,7 @@ export function useProjectExitTracking({ platform }: { platform: VoiceflowConsta
         duration: Date.now() - mountTime,
         projectID,
         workspaceID,
+        creatorID,
       });
     };
 

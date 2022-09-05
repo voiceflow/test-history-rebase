@@ -12,3 +12,7 @@ export interface ProjectEventInfo extends WorkspaceEventInfo {
 export interface VersionEventInfo extends ProjectEventInfo {
   skillID: string;
 }
+
+export interface ProjectSessionEventInfo extends VersionEventInfo {
+  creatorID: number;
+}

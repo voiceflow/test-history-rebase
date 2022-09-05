@@ -1,4 +1,3 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { Portal, toast } from '@voiceflow/ui';
 import React from 'react';
 import { useSelector } from 'react-redux';
@@ -9,7 +8,7 @@ import { ModalType } from '@/constants';
 import { NLPTrainStageType, VersionTag } from '@/constants/platforms';
 import * as Project from '@/ducks/project';
 import { activeProjectIDSelector } from '@/ducks/session';
-import { useDispatch, useFeature, useModals, useTrackingEvents } from '@/hooks';
+import { useDispatch, useModals, useTrackingEvents } from '@/hooks';
 import { NLPContext, NLPProvider } from '@/pages/Project/contexts/NLPContext';
 
 import ProgressStage from '../components/ProgressStage';
@@ -68,16 +67,10 @@ const GeneralPublish: React.FC = () => {
 };
 
 const UpdateLiveContainer: React.FC = () => {
-  const canUsePVM = useFeature(Realtime.FeatureFlag.PRODUCTION_VERSION_MANAGEMENT);
-
   // Called when we finished updating the live version and publishing to production
   const onFinished = React.useCallback(() => {
     toast.success('Version successfully published.');
   }, []);
-
-  if (!canUsePVM.isEnabled) {
-    return null;
-  }
 
   return (
     <NLPProvider tag={VersionTag.PRODUCTION} onFinished={onFinished}>

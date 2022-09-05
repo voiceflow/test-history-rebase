@@ -1,11 +1,10 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { Portal } from '@voiceflow/ui';
 import React, { useCallback } from 'react';
 
 import { PublishVersionModalData } from '@/components/PublishVersionModal';
 import { ModalType } from '@/constants';
 import { GoogleStageType } from '@/constants/platforms';
-import { useFeature, useHotKeys, useModals } from '@/hooks';
+import { useHotKeys, useModals } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import { useGooglePublish } from '@/pages/Project/hooks';
 import { Google } from '@/platforms';
@@ -32,16 +31,10 @@ const GooglePublish: React.FC = () => {
 
   const publishNewVersionModal = useModals<PublishVersionModalData>(ModalType.PUBLISH_VERSION_MODAL);
 
-  const canUseGeneralPublish = useFeature(Realtime.FeatureFlag.PRODUCTION_VERSION_MANAGEMENT);
-
   usePatchLiveVersion(successfullyPublished);
 
   const onPublish = useCallback(() => {
-    if (canUseGeneralPublish.isEnabled) {
-      publishNewVersionModal.open({ onConfirm: publishToGoogle });
-    } else {
-      publishToGoogle('');
-    }
+    publishNewVersionModal.open({ onConfirm: publishToGoogle });
   }, []);
 
   const hotkeyDisabled = successfullyPublished || (!!job && JOB_STARTED_STAGES.has(job?.stage.type));

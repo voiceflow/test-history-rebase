@@ -50,11 +50,6 @@ export const StatusIndicatorContainer = styled(Flex)`
   }
 `;
 
-export const ActionsItemContainerV1 = styled.span`
-  display: flex;
-  flex-direction: row-reverse;
-`;
-
 export const ActionsItemContainer = styled.span`
   display: inline-block;
 `;

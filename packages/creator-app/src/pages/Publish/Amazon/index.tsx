@@ -1,11 +1,10 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import Modal, { ModalBody } from '@/components/Modal';
 import { JobStatus, ModalType } from '@/constants';
 import { PublishContext } from '@/contexts';
 import * as Account from '@/ducks/account';
-import { useDidUpdateEffect, useDispatch, useFeature, useModals, useSetup, useTrackingEvents } from '@/hooks';
+import { useDidUpdateEffect, useDispatch, useModals, useSetup, useTrackingEvents } from '@/hooks';
 import { Alexa } from '@/platforms';
 
 import PublishAmazonForm from './Form';
@@ -30,14 +29,8 @@ export const PublishAmazon: React.FC = () => {
     [publishAmazonModal, publishToAlexa]
   );
 
-  const canUsePVM = useFeature(Realtime.FeatureFlag.PRODUCTION_VERSION_MANAGEMENT);
-
   const onPublish = React.useCallback(() => {
-    if (canUsePVM.isEnabled) {
-      publishVersionModal.open({ onConfirm: publish });
-    } else {
-      publish('');
-    }
+    publishVersionModal.open({ onConfirm: publish });
   }, []);
 
   useSetup(() => {

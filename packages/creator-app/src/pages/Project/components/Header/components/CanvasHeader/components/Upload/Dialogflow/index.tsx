@@ -1,11 +1,10 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { Portal } from '@voiceflow/ui';
 import React from 'react';
 
 import { PublishVersionModalData } from '@/components/PublishVersionModal';
 import { ModalType } from '@/constants';
 import { DialogflowStageType } from '@/constants/platforms';
-import { useFeature, useHotKeys, useModals } from '@/hooks';
+import { useHotKeys, useModals } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import { useDialogflowPublish } from '@/pages/Project/hooks';
 import { Dialogflow } from '@/platforms';
@@ -34,16 +33,10 @@ const DialogflowPublish: React.FC = () => {
 
   const publishNewVersionModal = useModals<PublishVersionModalData>(ModalType.PUBLISH_VERSION_MODAL);
 
-  const canUseGeneralPublish = useFeature(Realtime.FeatureFlag.PRODUCTION_VERSION_MANAGEMENT);
-
   usePatchLiveVersion(successfullyPublished);
 
   const onPublish = React.useCallback(() => {
-    if (canUseGeneralPublish.isEnabled) {
-      publishNewVersionModal.open({ onConfirm: publishToDF });
-    } else {
-      publishToDF('');
-    }
+    publishNewVersionModal.open({ onConfirm: publishToDF });
   }, []);
 
   const hotkeyDisabled = successfullyPublished || (!!job && JOB_STARTED_STAGES.has(job?.stage.type));

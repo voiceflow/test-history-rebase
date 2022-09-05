@@ -4,7 +4,6 @@ export enum FeatureFlag {
   ASR_BYPASS = 'asr_bypass',
   MOTOROLA_SSO = 'motorola_sso',
   WAVENET_VOICES = 'wavenet_voices',
-
   // atomic actions
   ATOMIC_ACTIONS_COMMENTING = 'atomic_actions_commenting',
 
@@ -33,8 +32,6 @@ export enum FeatureFlag {
   PROMPT_STEP = 'prompt_step',
 
   DISABLE_CODE_EXPORTS = 'disable_code_exports',
-
-  PRODUCTION_VERSION_MANAGEMENT = 'production_version_management',
 
   STICKERS_DROPDOWN = 'stickers_dropdown',
 

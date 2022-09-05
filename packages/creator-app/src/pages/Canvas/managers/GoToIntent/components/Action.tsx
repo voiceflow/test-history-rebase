@@ -35,11 +35,7 @@ const Action: ConnectedAction<Realtime.NodeData.GoToIntent> = ({ data, engine, r
               <Canvas.Action.Icon icon={isEmpty && !isActive ? 'warning' : NODE_CONFIG.icon!} />
             </TippyTooltip>
           }
-          label={
-            <Canvas.Action.Label secondary={isEmpty}>
-              {isEmpty ? 'Select intent' : Canvas.Action.trimLabel(data.name || goToIntentName)}
-            </Canvas.Action.Label>
-          }
+          label={<Canvas.Action.Label secondary={isEmpty}>{isEmpty ? 'Select intent' : data.name || goToIntentName}</Canvas.Action.Label>}
           nodeID={data.nodeID}
           active={isOpened || isActive}
           onClick={swallowEvent(onToggle)}

@@ -33,9 +33,7 @@ const Action: ConnectedAction<Realtime.NodeData.Code, Realtime.NodeData.CodeBuil
             </TippyTooltip>
           }
           port={<Step.ActionPort portID={ports.out.builtIn[BaseModels.PortType.NEXT]} />}
-          label={
-            <Canvas.Action.Label secondary={isEmpty}>{isEmpty ? 'Add code' : Canvas.Action.trimLabel(data.name || 'Javascript')}</Canvas.Action.Label>
-          }
+          label={<Canvas.Action.Label secondary={isEmpty}>{isEmpty ? 'Add code' : data.name || 'Javascript'}</Canvas.Action.Label>}
           nodeID={data.nodeID}
           active={isOpened || isActive}
           onClick={swallowEvent(onToggle)}

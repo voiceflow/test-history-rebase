@@ -20,7 +20,7 @@ const Action: ConnectedAction<Realtime.NodeData.Exit> = ({ data, reversed, platf
   <TippyTooltip tag="div" title={`${getPlatformLabel(platform)} ends in the active state.`} distance={4} position="top-start" bodyOverflow>
     <Canvas.Action
       icon={<Canvas.Action.Icon icon={NODE_CONFIG.icon!} />}
-      label={<Canvas.Action.Label>{Canvas.Action.trimLabel(data.name || 'End')}</Canvas.Action.Label>}
+      label={<Canvas.Action.Label>{data.name || 'End'}</Canvas.Action.Label>}
       nodeID={data.nodeID}
       active={isActive}
       reversed={reversed}

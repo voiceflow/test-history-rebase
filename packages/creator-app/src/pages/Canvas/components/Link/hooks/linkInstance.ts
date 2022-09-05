@@ -22,8 +22,10 @@ const useLinkRelatedRects = () => {
 
   const cacheData = React.useRef<null | { linkedRects: LinkedRects | null; sourceParentNodeRect: DOMRect | null }>(null);
 
-  const linkedRects = linkEntity.getLinkedRects();
-  const sourceParentNodeRect = linkEntity.getSourceParentNodeRect();
+  const { linkedRects, sourceParentNodeRect } = linkEntity.useState((entity) => ({
+    linkedRects: entity.getLinkedRects(),
+    sourceParentNodeRect: entity.getSourceParentNodeRect(),
+  }));
 
   return React.useMemo(() => {
     const isLinkedRectsEqual = (linkedRects1: LinkedRects | null, linkedRects2: LinkedRects | null) => {

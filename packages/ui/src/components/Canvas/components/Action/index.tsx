@@ -1,9 +1,9 @@
 import { useEnableDisable } from '@ui/hooks';
 import React from 'react';
 
+import { Label } from './components';
 import * as S from './styles';
 import * as T from './types';
-import { trimLabel } from './utils';
 
 export * as ActionTypes from './types';
 
@@ -30,12 +30,10 @@ const Action = React.forwardRef<HTMLDivElement, T.Props>(({ icon, port, label, a
 });
 
 export default Object.assign(Action, {
-  trimLabel,
-
   S,
   Port: S.Port,
   Icon: S.Icon,
-  Label: S.Label,
+  Label,
   Separator: S.Separator,
   Connector: S.Connector,
 });

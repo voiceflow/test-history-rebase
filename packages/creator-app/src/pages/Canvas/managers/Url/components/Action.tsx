@@ -45,9 +45,7 @@ const Action: ConnectedAction<Realtime.NodeData.Url, Realtime.NodeData.UrlBuiltI
           }
           port={<Step.ActionPort portID={ports.out.builtIn[BaseModels.PortType.NEXT]} />}
           label={
-            <Canvas.Action.Label secondary={isEmpty}>
-              {isEmpty ? 'Add URL' : Canvas.Action.trimLabel(data.name || transformVariablesToReadable(data.url))}
-            </Canvas.Action.Label>
+            <Canvas.Action.Label secondary={isEmpty}>{isEmpty ? 'Add URL' : data.name || transformVariablesToReadable(data.url)}</Canvas.Action.Label>
           }
           nodeID={data.nodeID}
           active={isOpened || isActive}

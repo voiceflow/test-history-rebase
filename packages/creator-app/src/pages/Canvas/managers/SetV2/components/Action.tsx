@@ -41,9 +41,7 @@ const Action: ConnectedAction<Realtime.NodeData.SetV2, Realtime.NodeData.SetV2Bu
             <Canvas.Action.Label secondary={isEmpty}>
               {isEmpty
                 ? 'Set variable'
-                : Canvas.Action.trimLabel(
-                    data.name || `Set {${setsToPreview[0].variable}} to ${transformVariablesToReadable(String(setsToPreview[0].expression) || "''")}`
-                  )}
+                : data.name || `Set {${setsToPreview[0].variable}} to ${transformVariablesToReadable(String(setsToPreview[0].expression) || "''")}`}
             </Canvas.Action.Label>
           }
           nodeID={data.nodeID}

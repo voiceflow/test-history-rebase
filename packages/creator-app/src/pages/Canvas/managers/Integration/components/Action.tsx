@@ -49,7 +49,7 @@ const Action: ConnectedAction<Realtime.NodeData.Integration, Realtime.NodeData.I
           port={<Step.ActionPort portID={ports.out.builtIn[BaseModels.PortType.NEXT]} />}
           label={
             <Canvas.Action.Label secondary={isEmpty}>
-              {isEmpty ? 'Add request' : Canvas.Action.trimLabel(data.name || `${getCustomAPIActionLabel(selectedAction)} request`)}
+              {isEmpty ? 'Add request' : data.name || `${getCustomAPIActionLabel(selectedAction)} request`}
             </Canvas.Action.Label>
           }
           nodeID={data.nodeID}

@@ -1,14 +1,7 @@
 import SvgIcon from '@ui/components/SvgIcon';
 import { css, styled, transition } from '@ui/styles';
 
-export const Label = styled.div<{ secondary?: boolean }>`
-  ${transition('color')}
-  color: ${({ theme, secondary }) => (secondary ? theme.colors.tertiary : theme.colors.secondary)};
-  font-size: 13px;
-  font-weight: 600;
-  line-height: 20px;
-  white-space: nowrap;
-`;
+import { Label } from './components';
 
 const connectorReversedStyles = css`
   flex-direction: row-reverse;
@@ -65,7 +58,7 @@ export const Icon = styled(SvgIcon).attrs(({ size = 16, color = '#6e849a' }) => 
 const activeContentStyles = css`
   background-color: #e7f2fd;
 
-  ${Label} {
+  ${Label.Container} {
     color: ${({ theme }) => theme.colors.darkerBlue};
   }
 

@@ -11,18 +11,24 @@ import { getPlatformNoMatchFactory } from '@/utils/noMatch';
 import { Section } from './components';
 import { PATH } from './constants';
 
-export const useConfig = (): OptionalSectionConfig => {
+interface NoMatchConfigOptions {
+  canRemove?: boolean;
+}
+
+export const useConfig = ({ canRemove = true }: NoMatchConfigOptions = {}): OptionalSectionConfig => {
   const editor = EditorV2.useEditor<{ noMatch?: Nullable<Realtime.NodeData.NoMatch> }>();
 
   const defaultVoice = useSelector(VersionV2.active.defaultVoiceSelector);
 
   const { noMatch } = editor.data;
 
+  const onRemove = canRemove ? () => editor.onChange({ noMatch: null }) : undefined;
+
   return {
     option: {
       label: noMatch ? 'Remove no match' : 'Add no match',
       onClick: () => editor.onChange({ noMatch: noMatch ? null : getPlatformNoMatchFactory(editor.projectType)({ defaultVoice }) }),
     },
-    section: !!noMatch && <Section onClick={() => editor.goToNested(PATH)} onRemove={() => editor.onChange({ noMatch: null })} />,
+    section: !!noMatch && <Section onClick={() => editor.goToNested(PATH)} onRemove={onRemove} />,
   };
 };

@@ -3,11 +3,11 @@ import React from 'react';
 
 interface SectionProps {
   onClick: VoidFunction;
-  onRemove: VoidFunction;
+  onRemove?: VoidFunction;
 }
 
 const Section: React.FC<SectionProps> = ({ onClick, onRemove }) => {
-  const options: MenuTypes.Option[] = [{ label: 'Remove', onClick: onRemove }];
+  const options: MenuTypes.Option[] = [...(onRemove ? [{ label: 'Remove', onClick: onRemove }] : [])];
 
   return (
     <>

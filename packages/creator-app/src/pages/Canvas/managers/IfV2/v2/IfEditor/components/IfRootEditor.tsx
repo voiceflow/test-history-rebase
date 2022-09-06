@@ -16,7 +16,7 @@ const DRAG_TYPE = 'if-editor';
 const IfRootEditor: React.FC = () => {
   const editor = EditorV2.useEditor<Realtime.NodeData.IfV2, Realtime.NodeData.IfV2BuiltInPorts>();
   const mapManager = useIfManager();
-  const noMatchConfig = NoMatchV2.useConfig();
+  const noMatchConfig = NoMatchV2.useConfig({ canRemove: false });
   const [isDragging, toggleDragging] = useToggle(false);
 
   return (

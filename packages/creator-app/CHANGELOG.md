@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.893.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.893.2...@voiceflow/creator-app@1.893.3) (2022-09-06)
+
+
+### Bug Fixes
+
+* add userflow [bugfix] (CT-000) ([#6014](https://github.com/voiceflow/creator-app/issues/6014)) ([55e685c](https://github.com/voiceflow/creator-app/commit/55e685c6d5e0330e4e7ae20b461c7485d34b80d7))
+* allow component drag while searching (BUG-34) ([#6017](https://github.com/voiceflow/creator-app/issues/6017)) ([e187b3f](https://github.com/voiceflow/creator-app/commit/e187b3f82b1ddbadede8ed104263a2a135b844bf))
+
+
+
+
+
 ## [1.893.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.893.1...@voiceflow/creator-app@1.893.2) (2022-09-06)
 
 

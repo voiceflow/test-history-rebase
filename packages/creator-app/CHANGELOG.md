@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.893.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.893.1...@voiceflow/creator-app@1.893.2) (2022-09-06)
+
+
+### Bug Fixes
+
+* define a clone method on conditionv2 mapManager (BUG-12) ([#6016](https://github.com/voiceflow/creator-app/issues/6016)) ([43b762e](https://github.com/voiceflow/creator-app/commit/43b762ecd6e0e633c11aa7ad75ed5e5e8679695a))
+
+
+
+
+
 ## [1.893.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.893.0...@voiceflow/creator-app@1.893.1) (2022-09-06)
 
 **Note:** Version bump only for package @voiceflow/creator-app

@@ -10,6 +10,7 @@ const useIfManager = () => {
 
   return useMapManager(editor.data.expressions, (expressions) => editor.onChange({ expressions }), {
     ...syncDynamicPorts,
+    clone: ({ id }, targetVal) => ({ ...targetVal, id }),
     factory: expressionFactory,
     maxItems: MAX_IF_ITEMS,
   });

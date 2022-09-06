@@ -46,7 +46,7 @@ const ComponentsSection: React.FC<ComponentsSectionProps> = ({ collapsed, setSec
 
   const components = isSearch ? searchComponentsItems : componentsItems;
 
-  const canDrag = usePersistFunction(() => !isSearch && canReorder);
+  const canDrag = usePersistFunction(() => canReorder);
   const horizontalEnabled = usePersistFunction(
     (_: ComponentItem, initialOffset: XYCoord, currentOffset: XYCoord) => currentOffset.x - initialOffset.x >= HORIZONTAL_DRAG_OFFSET
   );
@@ -85,6 +85,7 @@ const ComponentsSection: React.FC<ComponentsSectionProps> = ({ collapsed, setSec
       previewComponent={FolderItem}
       unmountableDuringDrag
       disableReorderingWhileDraggingX
+      canReorder={() => !isSearch && canReorder}
     >
       {({ renderItem }) => (
         <VirtualList

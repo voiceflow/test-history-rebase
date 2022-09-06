@@ -9,7 +9,7 @@ import AbstractModel from '@/models/_mongo';
 chai.use(chaiAsPromised);
 const { expect } = chai;
 
-class TestModel extends AbstractModel<any> {
+class TestModel extends AbstractModel<any, any, string> {
   public collectionName = 'test-collection';
 
   modifyCollection = sinon.stub();
@@ -190,36 +190,36 @@ describe('mongo model unit tests', () => {
     });
   });
 
-  it('findById', async () => {
+  it('findByID', async () => {
     const result = { _id: '5ec7e2005f68a44b5a68e5a4', foo: 'bar' };
     const model = generateModel();
     const stubFindOne = sinon.stub().resolves(result);
     model.findOne = stubFindOne;
 
-    expect(await model.findById(result._id)).to.eql(result);
+    expect(await model.findByID(result._id)).to.eql(result);
 
     expect(stubFindOne.args).to.eql([[{ _id: new ObjectId(result._id) }, undefined]]);
   });
 
-  it('updateById', async () => {
+  it('updateByID', async () => {
     const id = '5ec7e2005f68a44b5a68e5a4';
     const data = { foo: 'bar' };
     const model = generateModel();
     const stubUpdateOne = sinon.stub().returns(data);
     model.updateOne = stubUpdateOne;
 
-    expect(await model.updateById(id, data)).to.eql(data);
+    expect(await model.updateByID(id, data)).to.eql(data);
 
     expect(stubUpdateOne.args).to.eql([[{ _id: new ObjectId(id) }, data, undefined]]);
   });
 
-  it('deleteById', async () => {
+  it('deleteByID', async () => {
     const id = '5ec7e2005f68a44b5a68e5a4';
     const model = generateModel();
     const stubDeleteOne = sinon.stub();
     model.deleteOne = stubDeleteOne;
 
-    expect(await model.deleteById(id)).to.eql(id);
+    expect(await model.deleteByID(id)).to.eql(id);
 
     expect(stubDeleteOne.args).to.eql([[{ _id: new ObjectId(id) }]]);
   });

@@ -9,16 +9,14 @@ interface PatchIntentPayload extends Realtime.intent.BaseIntentPayload, Realtime
 class PatchIntent extends AbstractVersionResourceControl<PatchIntentPayload> {
   protected actionCreator = Realtime.intent.crud.patch;
 
-  process = async (ctx: Context, { payload }: Action<PatchIntentPayload>) => {
-    const { creatorID } = ctx.data;
+  process = async (_ctx: Context, { payload }: Action<PatchIntentPayload>) => {
     const { versionID, key, value, projectMeta } = payload;
 
     const intents: Realtime.Intent[] = await this.services.intent
-      .getAll(creatorID, versionID)
+      .getAll(versionID)
       .then((intents) => Realtime.Adapters.getProjectTypeIntentAdapter<any>(projectMeta.type).mapFromDB(intents, { platform: projectMeta.platform }));
 
     await this.services.intent.replaceAll(
-      creatorID,
       versionID,
       Realtime.Adapters.getProjectTypeIntentAdapter<any>(projectMeta.type).mapToDB(
         intents.map((intent) => {

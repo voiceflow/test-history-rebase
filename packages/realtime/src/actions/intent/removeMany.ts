@@ -15,7 +15,7 @@ class RemoveManyIntents extends AbstractVersionResourceControl<RemoveManyIntents
   protected actionCreator = Realtime.intent.crud.removeMany;
 
   protected process = async (ctx: Context<RemoveManyIntentsContextData>, { payload }: Action<RemoveManyIntentsPayload>) => {
-    ctx.data.removedIntents = await this.services.intent.deleteMany(ctx.data.creatorID, payload.versionID, payload.keys);
+    ctx.data.removedIntents = await this.services.intent.deleteMany(payload.versionID, payload.keys);
   };
 
   protected finally = async (ctx: Context<RemoveManyIntentsContextData>, { payload }: Action<RemoveManyIntentsPayload>) => {

@@ -7,8 +7,8 @@ import { AbstractVersionResourceControl } from './utils';
 class PatchVersionDefaultStepColors extends AbstractVersionResourceControl<Realtime.version.PatchDefaultStepColorsPayload> {
   protected actionCreator = Realtime.version.patchDefaultStepColors;
 
-  protected process = async (ctx: Context, { payload }: Action<Realtime.version.PatchDefaultStepColorsPayload>) => {
-    await this.services.version.patchDefaultStepColors(ctx.data.creatorID, payload.versionID, payload.defaultStepColors);
+  protected process = async (_ctx: Context, { payload }: Action<Realtime.version.PatchDefaultStepColorsPayload>) => {
+    await this.services.version.patchDefaultStepColors(payload.versionID, payload.defaultStepColors);
   };
 }
 

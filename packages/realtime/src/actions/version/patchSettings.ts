@@ -8,7 +8,7 @@ class PatchVersionSettings extends AbstractVersionResourceControl<Realtime.versi
   protected actionCreator = Realtime.version.patchSettings;
 
   protected process = async (ctx: Context, { payload }: Action<Realtime.version.PatchSettingsPayload>) => {
-    await this.services.version.patchSettings(ctx.data.creatorID, payload.versionID, payload.platform, payload.settings);
+    await this.services.version.patchPlatformSettings(ctx.data.creatorID, payload.versionID, payload.platform, payload.settings);
   };
 }
 

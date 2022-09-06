@@ -61,22 +61,16 @@ export abstract class AbstractDiagramResourceControl<
 
     const factoryComponent = Realtime.Utils.diagram.componentDiagramFactory(primitiveDiagram.name);
 
-    const [components, newDBDiagram] = await Promise.all([
-      this.services.version.getComponents(creatorID, versionID),
-      this.services.diagram.create({
-        ...factoryComponent,
-        ...primitiveDiagram,
-        creatorID,
-        versionID,
-      }),
-    ]);
+    const newDBDiagram = await this.services.diagram.create({
+      ...factoryComponent,
+      ...primitiveDiagram,
+      creatorID,
+      versionID,
+    });
 
     const newDiagram = Realtime.Adapters.diagramAdapter.fromDB(newDBDiagram, { rootDiagramID: '' });
 
-    // TODO: move components patch into creator api
-    await this.services.version.patch(creatorID, versionID, {
-      components: [...components, { sourceID: newDiagram.id, type: BaseModels.Version.FolderItemType.DIAGRAM }],
-    });
+    await this.services.version.addComponent(versionID, { type: BaseModels.Version.FolderItemType.DIAGRAM, sourceID: newDBDiagram._id });
 
     await Promise.all([
       this.reloadSharedNodes(ctx, payload, [newDBDiagram]),

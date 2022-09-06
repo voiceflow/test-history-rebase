@@ -9,11 +9,10 @@ interface AddIntentPayload extends Realtime.intent.BaseIntentPayload, Realtime.a
 class AddIntent extends AbstractVersionResourceControl<AddIntentPayload> {
   protected actionCreator = Realtime.intent.crud.add;
 
-  protected process = async (ctx: Context, { payload }: Action<AddIntentPayload>) => {
-    const { creatorID } = ctx.data;
+  protected process = async (_ctx: Context, { payload }: Action<AddIntentPayload>) => {
     const { versionID, key, value, projectMeta } = payload;
 
-    await this.services.intent.create(creatorID, versionID, {
+    await this.services.intent.create(versionID, {
       ...Realtime.Adapters.getProjectTypeIntentAdapter<any>(projectMeta.type).toDB(value),
       key,
     });

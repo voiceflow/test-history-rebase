@@ -1,6 +1,4 @@
 import { AlexaVersion } from '@voiceflow/alexa-types';
-import { BaseModels } from '@voiceflow/base-types';
-import { AnyRecord } from '@voiceflow/common';
 import { DFESVersion } from '@voiceflow/google-dfes-types';
 import { GoogleVersion } from '@voiceflow/google-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
@@ -9,23 +7,6 @@ import { AxiosInstance } from 'axios';
 
 import { ExtraOptions } from './types';
 import createResourceClient from './utils/resource';
-
-export type VersionUpdateData = Pick<
-  BaseModels.Version.Model<BaseModels.Version.PlatformData<AnyRecord, AnyRecord>>,
-  | '_version'
-  | 'name'
-  | 'variables'
-  | 'rootDiagramID'
-  | 'platformData'
-  | 'topics'
-  | 'folders'
-  | 'components'
-  | 'domains'
-  | 'canvasTemplates'
-  | 'defaultStepColors'
->;
-
-export type DiagramUpdateData = Omit<BaseModels.Diagram.Model, 'creatorID' | 'versionID'>;
 
 export interface VersionPlatformClient<S extends Realtime.AnyVersionSettings, P> {
   patchSettings: (versionID: string, settings: Partial<S>) => Promise<void>;
@@ -58,18 +39,6 @@ const Client = ({ api, alexa, google, dialogflow, general }: ExtraOptions) => {
 
   return {
     ...createResourceClient(api, 'versions'),
-
-    replaceResources: (versionID: string, version: VersionUpdateData, diagrams: DiagramUpdateData[]) =>
-      api.put(`/v2/versions/${versionID}/resources`, { version, diagrams }),
-
-    saveSnapshot: (versionID: string, versionName: string, options: { manualSave?: boolean; autoSaveFromRestore?: boolean } = {}) => {
-      const manualSave = options.manualSave ?? true;
-      const autoSaveFromRestore = !!options.autoSaveFromRestore;
-
-      return api.get(
-        `/v2/versions/snapshot/${versionID}?manualSave=${manualSave}&saveVersionName=${versionName}&autoSaveFromRestore=${autoSaveFromRestore}`
-      );
-    },
 
     platform: Object.assign(getPlatform, {
       alexa: alexaClient,

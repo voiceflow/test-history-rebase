@@ -13,7 +13,7 @@ class CreateCanvasTemplate extends AbstractVersionResourceControl<Realtime.canva
     const { canvasTemplate, versionID, projectID, workspaceID } = payload;
 
     const newCanvasTemplate = await this.services.canvasTemplate
-      .create(creatorID, versionID, { ...canvasTemplate })
+      .create(versionID, { ...canvasTemplate })
       .then(Realtime.Adapters.canvasTemplateAdapter.fromDB);
 
     await this.server.processAs(

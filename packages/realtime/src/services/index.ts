@@ -16,7 +16,8 @@ import ProjectListService from './projectList';
 import SlotService from './slot';
 import ThreadService from './thread';
 import UserService from './user';
-import VariableService from './variableState';
+import VariableService from './variable';
+import VariableStateService from './variableState';
 import VersionService from './version';
 import ViewerService from './viewer';
 import VoiceflowService from './voiceflow';
@@ -36,10 +37,11 @@ export interface ServiceMap extends BaseServiceMap {
   project: ProjectService;
   version: VersionService;
   migrate: MigrateService;
+  variable: VariableService;
   voiceflow: VoiceflowService;
   workspace: WorkspaceService;
   projectList: ProjectListService;
-  variableState: VariableService;
+  variableState: VariableStateService;
   canvasTemplate: CanvasTemplateService;
 }
 
@@ -68,10 +70,11 @@ const buildServices = ({ config, clients, models }: Options): ServiceMap => {
     project: new ProjectService(serviceOptions),
     version: new VersionService(serviceOptions),
     migrate: new MigrateService(serviceOptions),
+    variable: new VariableService(serviceOptions),
     voiceflow: new VoiceflowService(serviceOptions),
     workspace: new WorkspaceService(serviceOptions),
     projectList: new ProjectListService(serviceOptions),
-    variableState: new VariableService(serviceOptions),
+    variableState: new VariableStateService(serviceOptions),
     canvasTemplate: new CanvasTemplateService(serviceOptions),
   };
 

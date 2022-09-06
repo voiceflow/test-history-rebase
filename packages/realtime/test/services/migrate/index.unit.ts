@@ -172,7 +172,6 @@ describe('Migrate service unit tests', () => {
       await expectMigrationStates(migrator, [MigrationState.STARTED, MigrationState.DONE]);
       expect(setActiveSchemaVersion).to.be.calledWithExactly(versionID, targetSchemaVersion);
       expect(options.services.version.replaceResources).to.be.calledWithExactly(
-        creatorID,
         versionID,
         {
           _version: targetSchemaVersion,
@@ -188,7 +187,7 @@ describe('Migrate service unit tests', () => {
           components: undefined,
           folders: undefined,
         },
-        [{ _id: diagramID, foo: 'bar' }]
+        [[diagramID, { foo: 'bar' }]]
       );
     });
   });

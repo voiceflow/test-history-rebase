@@ -7,8 +7,8 @@ import { AbstractVersionResourceControl } from '@/actions/version/utils';
 class RemoveManyNotes extends AbstractVersionResourceControl<Realtime.note.RemoveManyPayload> {
   protected actionCreator = Realtime.note.removeMany;
 
-  protected process = async (ctx: Context, { payload }: Action<Realtime.note.RemoveManyPayload>) => {
-    await this.services.note.deleteMany(ctx.data.creatorID, payload.versionID, payload.noteIDs);
+  protected process = async (_ctx: Context, { payload }: Action<Realtime.note.RemoveManyPayload>) => {
+    await this.services.note.deleteMany(payload.versionID, payload.noteIDs);
   };
 }
 

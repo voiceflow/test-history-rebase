@@ -8,7 +8,7 @@ class PatchVersionPublishing extends AbstractVersionResourceControl<Realtime.ver
   protected actionCreator = Realtime.version.patchPublishing;
 
   protected process = async (ctx: Context, { payload }: Action<Realtime.version.PatchPublishingPayload>) => {
-    await this.services.version.patchPublishing(ctx.data.creatorID, payload.versionID, payload.platform, payload.publishing);
+    await this.services.version.patchPlatformPublishing(ctx.data.creatorID, payload.versionID, payload.platform, payload.publishing);
   };
 }
 

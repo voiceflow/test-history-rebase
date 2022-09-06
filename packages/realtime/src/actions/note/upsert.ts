@@ -7,8 +7,8 @@ import { AbstractVersionResourceControl } from '@/actions/version/utils';
 class UpsertNote extends AbstractVersionResourceControl<Realtime.note.UpsertPayload> {
   protected actionCreator = Realtime.note.upsert;
 
-  protected process = async (ctx: Context, { payload }: Action<Realtime.note.UpsertPayload>) => {
-    await this.services.note.upsert(ctx.data.creatorID, payload.versionID, payload.note);
+  protected process = async (_ctx: Context, { payload }: Action<Realtime.note.UpsertPayload>) => {
+    await this.services.note.upsert(payload.versionID, payload.note);
   };
 }
 

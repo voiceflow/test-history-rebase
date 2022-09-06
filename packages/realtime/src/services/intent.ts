@@ -4,56 +4,40 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { AbstractControl } from '@/control';
 import { uniqueReverse } from '@/services/utils/uniq';
 
+// TODO: refactor this to use atomic operations and the intent mongo model, similar to domain/canvasTemplate and etc models
 class IntentService extends AbstractControl {
-  public async getAll<T extends BaseModels.Version.PlatformData>(creatorID: number, versionID: string): Promise<Realtime.VersionIntent<T>[]> {
-    const client = await this.services.voiceflow.getClientByUserID(creatorID);
-
-    const {
-      platformData: { intents },
-    } = await client.version.get<T>(versionID);
-
-    return intents;
+  public async getAll<PlatformData extends BaseModels.Version.PlatformData>(versionID: string): Promise<Realtime.VersionIntent<PlatformData>[]> {
+    return this.services.version.getIntents<PlatformData>(versionID);
   }
 
-  public async replaceAll<T extends BaseModels.Version.PlatformData>(
-    creatorID: number,
+  public async replaceAll<PlatformData extends BaseModels.Version.PlatformData>(
     versionID: string,
-    intents: Realtime.VersionIntent<T>[]
+    intents: Realtime.VersionIntent<PlatformData>[]
   ): Promise<void> {
-    await this.services.version.patchPlatformData(creatorID, versionID, {
+    await this.services.version.patchPlatformData(versionID, {
       intents: uniqueReverse(intents, (intent) => intent.key || intent),
     });
   }
 
-  public async createMany<T extends BaseModels.Version.PlatformData>(
-    creatorID: number,
-    versionID: string,
-    intents: Realtime.VersionIntent<T>[]
-  ): Promise<void> {
-    const currentIntents = await this.getAll<T>(creatorID, versionID);
+  public async createMany<T extends BaseModels.Version.PlatformData>(versionID: string, intents: Realtime.VersionIntent<T>[]): Promise<void> {
+    const currentIntents = await this.getAll<T>(versionID);
 
-    await this.replaceAll<T>(creatorID, versionID, [...currentIntents, ...intents]);
+    await this.replaceAll<T>(versionID, [...currentIntents, ...intents]);
   }
 
-  public async create<T extends BaseModels.Version.PlatformData>(
-    creatorID: number,
-    versionID: string,
-    intent: Realtime.VersionIntent<T>
-  ): Promise<void> {
-    await this.createMany(creatorID, versionID, [intent]);
+  public async create<T extends BaseModels.Version.PlatformData>(versionID: string, intent: Realtime.VersionIntent<T>): Promise<void> {
+    await this.createMany(versionID, [intent]);
   }
 
   public async deleteMany<T extends BaseModels.Version.PlatformData>(
-    creatorID: number,
     versionID: string,
     intentIDs: string[]
   ): Promise<Realtime.VersionIntent<T>[] | null> {
-    const currentIntents = await this.getAll<T>(creatorID, versionID);
+    const currentIntents = await this.getAll<T>(versionID);
 
     const removedIntents = currentIntents.filter((intent) => intentIDs.includes(intent.key));
 
     await this.replaceAll<BaseModels.Version.PlatformData>(
-      creatorID,
       versionID,
       currentIntents.filter((intent) => !intentIDs.includes(intent.key))
     );
@@ -61,17 +45,12 @@ class IntentService extends AbstractControl {
     return removedIntents ?? null;
   }
 
-  public async delete<T extends BaseModels.Version.PlatformData>(
-    creatorID: number,
-    versionID: string,
-    intentID: string
-  ): Promise<Realtime.VersionIntent<T> | null> {
-    const currentIntents = await this.getAll<T>(creatorID, versionID);
+  public async delete<T extends BaseModels.Version.PlatformData>(versionID: string, intentID: string): Promise<Realtime.VersionIntent<T> | null> {
+    const currentIntents = await this.getAll<T>(versionID);
 
     const removedIntent = currentIntents.find((intent) => intent.key === intentID);
 
     await this.replaceAll<BaseModels.Version.PlatformData>(
-      creatorID,
       versionID,
       currentIntents.filter((intent) => intent.key !== intentID)
     );

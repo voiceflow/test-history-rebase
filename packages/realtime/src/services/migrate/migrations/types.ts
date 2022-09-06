@@ -1,8 +1,24 @@
+import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { Draft } from 'immer';
 
-import type { DiagramUpdateData, VersionUpdateData } from '@/clients/voiceflow/version';
+export type VersionUpdateData = Pick<
+  BaseModels.Version.Model<BaseModels.Version.PlatformData>,
+  | '_version'
+  | 'name'
+  | 'variables'
+  | 'rootDiagramID'
+  | 'platformData'
+  | 'topics'
+  | 'folders'
+  | 'components'
+  | 'canvasTemplates'
+  | 'defaultStepColors'
+  | 'domains'
+>;
+
+export type DiagramUpdateData = Omit<BaseModels.Diagram.Model, '_id' | 'creatorID' | 'versionID'> & { readonly _id: string };
 
 export interface MigrationData {
   version: VersionUpdateData;

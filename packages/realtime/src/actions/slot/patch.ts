@@ -9,12 +9,10 @@ type PatchSlotPayload = Realtime.BaseVersionPayload & Realtime.actionUtils.CRUDV
 class PatchSlot extends AbstractVersionResourceControl<PatchSlotPayload> {
   protected actionCreator = Realtime.slot.crud.patch;
 
-  protected process = async (ctx: Context, { payload }: Action<PatchSlotPayload>) => {
-    const { creatorID } = ctx.data;
-    const slots = await this.services.slot.getAll(creatorID, payload.versionID).then(Realtime.Adapters.slotAdapter.mapFromDB);
+  protected process = async (_ctx: Context, { payload }: Action<PatchSlotPayload>) => {
+    const slots = await this.services.slot.getAll(payload.versionID).then(Realtime.Adapters.slotAdapter.mapFromDB);
 
     await this.services.slot.replaceAll(
-      creatorID,
       payload.versionID,
       Realtime.Adapters.slotAdapter.mapToDB(
         slots.map((slot) => {

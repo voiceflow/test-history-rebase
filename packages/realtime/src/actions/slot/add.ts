@@ -9,8 +9,8 @@ type AddSlotPayload = Realtime.BaseVersionPayload & Realtime.actionUtils.CRUDVal
 class AddSlot extends AbstractVersionResourceControl<AddSlotPayload> {
   protected actionCreator = Realtime.slot.crud.add;
 
-  protected process = async (ctx: Context, { payload }: Action<AddSlotPayload>) => {
-    await this.services.slot.create(ctx.data.creatorID, payload.versionID, {
+  protected process = async (_ctx: Context, { payload }: Action<AddSlotPayload>) => {
+    await this.services.slot.create(payload.versionID, {
       ...Realtime.Adapters.slotAdapter.toDB(payload.value),
       key: payload.key,
     });

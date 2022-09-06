@@ -27,6 +27,8 @@ const nodeDataUpdates = <D extends AnyRecord>(nodeID: string, data: D) => {
   );
 };
 
+export type DiagramPatchData = Partial<Omit<BaseModels.Diagram.Model, DiagramService['models']['diagram']['READ_ONLY_KEYS'][number]>>;
+
 class DiagramService extends AbstractControl {
   private static getConnectedNodesKey({ diagramID }: { diagramID: string }): string {
     return `diagrams:${diagramID}:nodes`;
@@ -61,6 +63,40 @@ class DiagramService extends AbstractControl {
 
   public access = new AccessCache('diagram', this.clients, this.services);
 
+  public async get(diagramID: string): Promise<BaseModels.Diagram.Model> {
+    return this.models.diagram.findByID(diagramID).then(this.models.diagram.adapter.fromDB);
+  }
+
+  public async create(data: Optional<BaseModels.Diagram.Model, '_id'>): Promise<BaseModels.Diagram.Model> {
+    return this.models.diagram.insertOne(this.models.diagram.adapter.toDB(data)).then(this.models.diagram.adapter.fromDB);
+  }
+
+  public async createMany(data: Optional<BaseModels.Diagram.Model, '_id'>[]): Promise<BaseModels.Diagram.Model[]> {
+    return this.models.diagram.insertMany(this.models.diagram.adapter.mapToDB(data)).then(this.models.diagram.adapter.mapFromDB);
+  }
+
+  public async patch(diagramID: string, data: DiagramPatchData): Promise<void> {
+    await this.models.diagram.updateByID(diagramID, this.models.diagram.adapter.toDB(data));
+  }
+
+  public async delete(diagramID: string): Promise<void> {
+    await this.models.diagram.deleteByID(diagramID);
+  }
+
+  public async deleteMany(diagramIDs: string[]): Promise<void> {
+    await this.models.diagram.deleteManyByIDs(diagramIDs);
+  }
+
+  public async getAll(versionID: string): Promise<BaseModels.Diagram.Model[]>;
+
+  public async getAll<Key extends keyof BaseModels.Diagram.Model>(versionID: string, fields: Key[]): Promise<Pick<BaseModels.Diagram.Model, Key>[]>;
+
+  public async getAll(versionID: string, fields?: (keyof BaseModels.Diagram.Model)[]): Promise<Partial<BaseModels.Diagram.Model>[]>;
+
+  public async getAll(versionID: string, fields?: (keyof BaseModels.Diagram.Model)[]): Promise<Partial<BaseModels.Diagram.Model>[]> {
+    return this.models.diagram.findManyByVersionID(versionID, fields).then(this.models.diagram.adapter.mapFromDB);
+  }
+
   public async connectNode(diagramID: string, nodeID: string): Promise<void> {
     await this.connectedNodesCache.add({ diagramID }, nodeID);
   }
@@ -84,78 +120,33 @@ class DiagramService extends AbstractControl {
     return this.services.viewer.getViewers(userIDs);
   }
 
-  public async get(diagramID: string): Promise<BaseModels.Diagram.Model> {
-    return this.models.diagram.findById(diagramID).then(this.models.diagram.fromDB);
-  }
-
-  getAll(versionID: string): Promise<BaseModels.Diagram.Model[]>;
-
-  getAll<Field extends keyof BaseModels.Diagram.Model>(versionID: string, fields: Field[]): Promise<Pick<BaseModels.Diagram.Model, Field>[]>;
-
-  public async getAll(versionID: string, fields?: Array<keyof BaseModels.Diagram.Model>): Promise<BaseModels.Diagram.Model[]> {
-    if (fields) return this.models.diagram.findManyByVersion(versionID, [], fields).then(this.models.diagram.mapFromDB);
-
-    return this.models.diagram.findManyByVersion(versionID).then(this.models.diagram.mapFromDB);
-  }
-
-  getByIDs(versionID: string, ids: string[]): Promise<BaseModels.Diagram.Model[]>;
-
-  getByIDs<Field extends keyof BaseModels.Diagram.Model>(
-    versionID: string,
-    ids: string[],
-    fields: Field[]
-  ): Promise<Pick<BaseModels.Diagram.Model, Field>[]>;
-
-  public async getByIDs(versionID: string, ids: string[], fields?: Array<keyof BaseModels.Diagram.Model>): Promise<BaseModels.Diagram.Model[]> {
-    if (fields) return this.models.diagram.findManyByVersion(versionID, ids, fields).then(this.models.diagram.mapFromDB);
-
-    return this.models.diagram.findManyByVersion(versionID, ids).then(this.models.diagram.mapFromDB);
-  }
-
   public async getAllNames(versionID: string): Promise<string[]> {
     const diagrams = await this.getAll(versionID, ['name']);
 
     return diagrams.map(({ name }) => name);
   }
 
-  public async create(data: Omit<BaseModels.Diagram.Model, '_id'>): Promise<BaseModels.Diagram.Model> {
-    return this.models.diagram.create(this.models.diagram.toDB(data)).then(this.models.diagram.fromDB);
-  }
-
-  public async createMany(data: Optional<BaseModels.Diagram.Model, '_id'>[]): Promise<BaseModels.Diagram.Model[]> {
-    return this.models.diagram.createMany(this.models.diagram.mapToDB(data)).then(this.models.diagram.mapFromDB);
-  }
-
   public async cloneMany(creatorID: number, versionID: string, ids: string[]): Promise<BaseModels.Diagram.Model[]> {
-    const oldDiagrams = await this.getByIDs(versionID, ids);
+    const oldDiagrams = await this.models.diagram.findManyByIDs(ids).then(this.models.diagram.adapter.mapFromDB);
 
     const diagramIDMap = new Map(oldDiagrams.map((diagram) => [diagram._id, new ObjectId().toHexString()]));
 
     const clonedDBDiagrams = oldDiagrams.map(({ nodes, ...diagram }) => ({
       ...Utils.id.remapObjectIDs(diagram, diagramIDMap),
-      _id: new ObjectId(diagramIDMap.get(diagram._id)),
+      _id: diagramIDMap.get(diagram._id)!,
       nodes: _mapValues(nodes, (node) => Utils.id.remapObjectIDs(node, diagramIDMap)),
       creatorID,
-      versionID: new ObjectId(versionID),
+      versionID,
     }));
 
-    const clonedDiagrams = await this.models.diagram.insertMany(clonedDBDiagrams).then(this.models.diagram.mapFromDB);
+    const clonedDiagrams = await this.models.diagram
+      .insertMany(this.models.diagram.adapter.mapToDB(clonedDBDiagrams))
+      .then(this.models.diagram.adapter.mapFromDB);
+
     const clonedDiagramsMap = new Map(clonedDiagrams.map((diagram) => [diagram._id, diagram]));
 
     // to be sure sure that order is the same as incoming ids
     return ids.map((id) => clonedDiagramsMap.get(diagramIDMap.get(id)!)!);
-  }
-
-  public async patch(diagramID: string, { _id, ...data }: Partial<BaseModels.Diagram.Model>): Promise<void> {
-    await this.models.diagram.updateById(diagramID, this.models.diagram.toDB(data));
-  }
-
-  public async delete(diagramID: string): Promise<void> {
-    await this.models.diagram.deleteById(diagramID);
-  }
-
-  public async deleteMany(diagramIDs: string[]): Promise<void> {
-    await this.models.diagram.deleteManyByIDs(diagramIDs);
   }
 
   public async addStep(addData: {

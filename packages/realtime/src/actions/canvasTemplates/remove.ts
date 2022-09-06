@@ -9,8 +9,8 @@ interface Payload extends Realtime.BaseVersionPayload, Realtime.actionUtils.CRUD
 class RemoveCanvasTemplate extends AbstractVersionResourceControl<Payload> {
   protected actionCreator = Realtime.canvasTemplate.crud.remove;
 
-  protected process = async (ctx: Context, { payload }: Action<Payload>): Promise<void> => {
-    await this.services.canvasTemplate.delete(ctx.data.creatorID, payload.versionID, payload.key);
+  protected process = async (_ctx: Context, { payload }: Action<Payload>): Promise<void> => {
+    await this.services.canvasTemplate.delete(payload.versionID, payload.key);
   };
 }
 

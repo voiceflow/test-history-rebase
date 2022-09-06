@@ -4,8 +4,7 @@ import { AnyRecord } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Draft } from 'immer';
 
-import type { DiagramUpdateData, VersionUpdateData } from '@/clients/voiceflow/version';
-
+import type { DiagramUpdateData, VersionUpdateData } from './types';
 import { Transform } from './types';
 
 const createDiagramFolderItem = (diagram: Draft<DiagramUpdateData>) => ({ sourceID: diagram._id, type: BaseModels.Version.FolderItemType.DIAGRAM });

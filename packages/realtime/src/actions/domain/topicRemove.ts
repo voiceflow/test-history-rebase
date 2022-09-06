@@ -11,7 +11,7 @@ class TopicRemove extends AbstractDomainResourceControl<Realtime.domain.TopicRem
     const { creatorID } = ctx.data;
     const { topicID, domainID, versionID, projectID, workspaceID } = payload;
 
-    await Promise.all([this.services.diagram.delete(topicID), this.services.domain.topicRemove(creatorID, versionID, domainID, topicID)]);
+    await Promise.all([this.services.diagram.delete(topicID), this.services.domain.topicRemove(versionID, domainID, topicID)]);
 
     await this.server.processAs(creatorID, Realtime.diagram.crud.remove({ versionID, projectID, workspaceID, key: topicID }));
   };

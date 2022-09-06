@@ -47,10 +47,10 @@ class ProjectService extends AbstractControl {
     return client.project.get(projectID);
   }
 
-  public async getPlatform(creatorID: number, projectID: string): Promise<VoiceflowConstants.PlatformType> {
-    const project = await this.get(creatorID, projectID).then(Realtime.Adapters.projectAdapter.fromDB);
+  public async getPlatform(projectID: string): Promise<VoiceflowConstants.PlatformType> {
+    const { type, platform } = await this.models.project.getPlatformAndType(projectID);
 
-    return project.platform;
+    return Realtime.legacyPlatformToProjectType(platform as VoiceflowConstants.PlatformType, type as VoiceflowConstants.ProjectType).platform;
   }
 
   public async getCreator<
@@ -116,7 +116,7 @@ class ProjectService extends AbstractControl {
     data: Optional<Pick<Realtime.DBProject, 'teamID' | 'name' | '_version' | 'platform'>, 'name' | 'platform'>
   ): Promise<Realtime.AnyDBProject> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
-    const platform = (data.platform as VoiceflowConstants.PlatformType) ?? (await this.getPlatform(creatorID, projectID));
+    const platform = (data.platform as VoiceflowConstants.PlatformType) ?? (await this.getPlatform(projectID));
 
     // do not pass platform to duplicate to do not migrate projects from "chat" to "voice"
     return client.project.platform<Realtime.AnyDBProject>(platform).duplicate(projectID, Utils.object.omit(data, ['platform']));

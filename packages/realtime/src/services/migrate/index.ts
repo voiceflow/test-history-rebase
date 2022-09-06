@@ -3,14 +3,13 @@ import { Nullable, Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { produce } from 'immer';
 
-import type { DiagramUpdateData, VersionUpdateData } from '@/clients/voiceflow/version';
 import { HEARTBEAT_EXPIRE_TIMEOUT } from '@/constants';
 import { AbstractControl } from '@/control';
 import logger from '@/logger';
 
 import { MigrationState } from './constants';
 import migrations from './migrations';
-import { Migration, MigrationContext, MigrationData } from './migrations/types';
+import { DiagramUpdateData, Migration, MigrationContext, MigrationData, VersionUpdateData } from './migrations/types';
 
 const MIGRATION_LOCK_EXPIRY_TIMEOUT = 15;
 
@@ -133,7 +132,7 @@ class MigrateService extends AbstractControl {
       return;
     }
 
-    const version = await this.services.version.get(creatorID, versionID);
+    const version = await this.services.version.get(versionID);
     const currentSchemaVersion = version._version ?? Realtime.SchemaVersion.V1;
     const pendingMigrations = MigrateService.getPendingMigrations(currentSchemaVersion, targetSchemaVersion);
 
@@ -173,10 +172,9 @@ class MigrateService extends AbstractControl {
       );
 
       await this.services.version.replaceResources(
-        creatorID,
         versionID,
         { ...migrationResult.version, _version: targetSchemaVersion },
-        migrationResult.diagrams
+        migrationResult.diagrams.map(({ _id, ...data }) => [_id, data])
       );
 
       await this.setActiveSchemaVersion(versionID, targetSchemaVersion);

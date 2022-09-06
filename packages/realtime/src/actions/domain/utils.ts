@@ -39,7 +39,7 @@ export abstract class AbstractDomainResourceControl<
 
     const newDiagram = Realtime.Adapters.diagramAdapter.fromDB(newDBDiagram);
 
-    await this.services.domain.topicAdd(ctx.data.creatorID, versionID, domainID, newDiagram.id);
+    await this.services.domain.topicAdd(versionID, domainID, newDiagram.id);
 
     await Promise.all([
       this.reloadSharedNodes(ctx, payload, [newDBDiagram]),

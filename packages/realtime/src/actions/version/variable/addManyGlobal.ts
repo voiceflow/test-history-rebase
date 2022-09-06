@@ -7,11 +7,8 @@ import { AbstractVersionResourceControl } from '../utils';
 class AddManyGlobalVariables extends AbstractVersionResourceControl<Realtime.version.variable.GlobalManyVariablesPayload> {
   protected actionCreator = Realtime.version.variable.addManyGlobal;
 
-  protected process = async (ctx: Context, { payload }: Action<Realtime.version.variable.GlobalManyVariablesPayload>) => {
-    const { creatorID } = ctx.data;
-    const { variables } = await this.services.version.get(creatorID, payload.versionID);
-
-    await this.services.version.updateVariables(creatorID, payload.versionID, [...variables, ...payload.variables]);
+  protected process = async (_ctx: Context, { payload }: Action<Realtime.version.variable.GlobalManyVariablesPayload>) => {
+    await this.services.variable.addMany(payload.versionID, payload.variables);
   };
 }
 

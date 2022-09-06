@@ -99,7 +99,7 @@ describe('version.schema.NEGOTIATE action unit tests', () => {
       const result = await getReplyHandler(control)(context as any, action as any, {} as any);
 
       expect(result).to.eql({ workspaceID, projectID, schemaVersion });
-      expect(options.services.version.get).to.be.calledWithExactly(creatorID, versionID);
+      expect(options.services.version.get).to.be.calledWithExactly(versionID);
       expect(options.services.project.get).to.be.calledWithExactly(creatorID, projectID);
     });
 

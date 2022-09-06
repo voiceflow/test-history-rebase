@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { toast } from '@voiceflow/ui';
 
@@ -45,7 +46,7 @@ export const addManyGlobalVariables =
 
     const validNewVariables: string[] = [];
 
-    newVariables.forEach((variable) => {
+    Utils.array.unique(newVariables).forEach((variable) => {
       const error = validateVariableName(variable, variables);
 
       if (error) {

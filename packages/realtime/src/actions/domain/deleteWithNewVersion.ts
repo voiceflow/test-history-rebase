@@ -15,11 +15,11 @@ class DeleteDomainWithNewVersion extends AbstractDomainResourceControl<Realtime.
     const { creatorID } = ctx.data;
     const { domainID, versionID, projectID, versionName, workspaceID } = payload;
 
-    const dbDomain = await this.services.domain.get(creatorID, payload.versionID, payload.domainID);
+    const dbDomain = await this.services.domain.get(payload.versionID, payload.domainID);
 
-    await this.services.version.saveSnapshot(creatorID, versionID, versionName || '', { manualSave: !!versionName });
+    await this.services.version.snapshot(creatorID, versionID, { manualSave: !!versionName, name: versionName });
 
-    await Promise.all([this.services.diagram.deleteMany(dbDomain.topicIDs), this.services.domain.delete(creatorID, payload.versionID, domainID)]);
+    await Promise.all([this.services.diagram.deleteMany(dbDomain.topicIDs), this.services.domain.delete(payload.versionID, domainID)]);
 
     ctx.data.topicIDs = dbDomain.topicIDs;
 

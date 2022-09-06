@@ -42,8 +42,8 @@ class MergeProjects extends AbstractProjectResourceControl<Realtime.project.Merg
     ]);
 
     const [sourceVersion, targetVersion, sourceDiagrams] = await Promise.all([
-      this.services.version.get(creatorID, sourceProject.devVersion),
-      this.services.version.get(creatorID, targetProject.devVersion),
+      this.services.version.get(sourceProject.devVersion),
+      this.services.version.get(targetProject.devVersion),
       this.services.diagram.getAll(sourceProject.devVersion),
     ]);
 
@@ -73,7 +73,7 @@ class MergeProjects extends AbstractProjectResourceControl<Realtime.project.Merg
     const hasNewCustomThemes = !!newCustomThemes.length;
 
     // creating a new version before save merged data
-    await this.services.version.saveSnapshot(creatorID, targetVersion._id, `Transferred "${sourceProject.name}" domain`);
+    await this.services.version.snapshot(creatorID, targetVersion._id, { name: `Transferred "${sourceProject.name}" domain` });
 
     // storing merged data into the DB
     await Promise.all<unknown>([
@@ -84,7 +84,7 @@ class MergeProjects extends AbstractProjectResourceControl<Realtime.project.Merg
         this.services.project.patchPlatformData(creatorID, targetProjectID, { products: { ...targetProject.platformData.products, ...newProducts } }),
 
       (hasNewNotes || hasNewDomains || hasNewFolders || hasNewComponents) &&
-        this.services.version.patch(creatorID, targetVersion._id, {
+        this.services.version.patch(targetVersion._id, {
           ...(hasNewNotes && { notes: { ...targetVersion.notes, ...newNotes } }),
           ...(hasNewDomains && { domains: [...(targetVersion.domains ?? []), ...newDomains] }),
           ...(hasNewFolders && { folders: { ...targetVersion.folders, ...newFolders } }),
@@ -93,7 +93,7 @@ class MergeProjects extends AbstractProjectResourceControl<Realtime.project.Merg
         }),
 
       (hasMergedSlots || hasMergedIntents) &&
-        this.services.version.patchPlatformData(creatorID, targetVersion._id, {
+        this.services.version.patchPlatformData(targetVersion._id, {
           ...(hasMergedSlots && { slots: mergedSlots }),
           ...(hasMergedIntents && { intents: mergedIntents }),
         }),

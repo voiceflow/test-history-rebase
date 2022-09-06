@@ -15,7 +15,7 @@ class RemoveIntent extends AbstractVersionResourceControl<RemoveIntentPayload, R
   protected actionCreator = Realtime.intent.crud.remove;
 
   protected process = async (ctx: Context<RemoveIntentContextData>, { payload }: Action<RemoveIntentPayload>) => {
-    ctx.data.removedIntent = await this.services.intent.delete(ctx.data.creatorID, payload.versionID, payload.key);
+    ctx.data.removedIntent = await this.services.intent.delete(payload.versionID, payload.key);
   };
 
   protected finally = async (ctx: Context<RemoveIntentContextData>, { payload }: Action<RemoveIntentPayload>) => {

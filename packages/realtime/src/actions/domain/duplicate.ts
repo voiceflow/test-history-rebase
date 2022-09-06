@@ -13,7 +13,7 @@ class DuplicateDomain extends AbstractDomainResourceControl<Realtime.domain.Base
     const { creatorID } = ctx.data;
     const { domainID, versionID, projectID, workspaceID } = payload;
 
-    const allDomains = await this.services.domain.getAll(creatorID, versionID);
+    const allDomains = await this.services.domain.getAll(versionID);
     const domainToClone = allDomains.find((domain) => domain.id === domainID);
 
     if (!domainToClone) {
@@ -27,7 +27,7 @@ class DuplicateDomain extends AbstractDomainResourceControl<Realtime.domain.Base
       allDomains.map((domain) => domain.name)
     );
 
-    const clonedDBDomain = await this.services.domain.create(creatorID, versionID, {
+    const clonedDBDomain = await this.services.domain.create(versionID, {
       ...domainToClone,
       id: Utils.id.objectID(),
       name: uniqueName,

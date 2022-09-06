@@ -9,8 +9,8 @@ type AddManySlotsPayload = Realtime.BaseVersionPayload & Realtime.actionUtils.CR
 class AddManySlots extends AbstractVersionResourceControl<AddManySlotsPayload> {
   protected actionCreator = Realtime.slot.crud.addMany;
 
-  protected process = async (ctx: Context, { payload }: Action<AddManySlotsPayload>) => {
-    await this.services.slot.createMany(ctx.data.creatorID, payload.versionID, Realtime.Adapters.slotAdapter.mapToDB(payload.values));
+  protected process = async (_ctx: Context, { payload }: Action<AddManySlotsPayload>) => {
+    await this.services.slot.createMany(payload.versionID, Realtime.Adapters.slotAdapter.mapToDB(payload.values));
   };
 }
 

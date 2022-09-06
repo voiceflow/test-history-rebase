@@ -18,20 +18,7 @@ describe('Diagram model unit tests', () => {
 
   afterEach(() => sinon.restore());
 
-  it('create', async () => {
-    const model = new DiagramModel(null as any, {} as any);
-    const result = { foo: 'bar' };
-    const stubInsertOne = sinon.stub().resolves(result);
-    model.insertOne = stubInsertOne;
-    const versionID = '5f11ac822ab2ce1957cb0d24';
-    const data = { foo: 'bar', versionID } as any;
-
-    expect(await model.create(data)).to.eql(result);
-
-    expect(stubInsertOne.args).to.eql([[{ ...data, versionID }]]);
-  });
-
-  it('findManyByVersion', async () => {
+  it('findManyByVersionID', async () => {
     const model = new DiagramModel(null as any, {} as any);
     const result = [
       { _id: 'diagram-id', name: 'diagram name' },
@@ -42,7 +29,7 @@ describe('Diagram model unit tests', () => {
 
     const versionID = '5f11ac822ab2ce1957cb0d24';
     const filter = ['name'];
-    expect(await model.findManyByVersion(versionID, [], filter)).to.eql(result);
+    expect(await model.findManyByVersionID(versionID, filter)).to.eql(result);
 
     expect(stubFindMany.args).to.eql([[{ versionID: new ObjectId(versionID) }, filter]]);
   });
@@ -51,8 +38,8 @@ describe('Diagram model unit tests', () => {
     const model = new DiagramModel(null as any, {} as any);
     const data = { coords: [10, 100] };
     const data2 = { field: { a: 20 } };
-    const atomicUpdateById = sinon.stub().resolves(data);
-    model.atomicUpdateById = atomicUpdateById;
+    const atomicUpdateByID = sinon.stub().resolves(data);
+    model.atomicUpdateByID = atomicUpdateByID;
 
     const diagramID = '5f11ac822ab2ce1957cb0d24';
     const nodeID = 'node-id';
@@ -64,15 +51,15 @@ describe('Diagram model unit tests', () => {
       ])
     ).to.eql(data);
 
-    expect(atomicUpdateById.args).to.eql([
+    expect(atomicUpdateByID.args).to.eql([
       [diagramID, [{ arrayFilters: [], operation: '$set', query: { 'nodes.node-id.coords': data.coords, 'nodes.node-id-2.field': data2.field } }]],
     ]);
   });
 
   it('addStep', async () => {
     const model = new DiagramModel(null as any, {} as any);
-    const atomicUpdateById = sinon.stub().resolves();
-    model.atomicUpdateById = atomicUpdateById;
+    const atomicUpdateByID = sinon.stub().resolves();
+    model.atomicUpdateByID = atomicUpdateByID;
 
     const diagramID = '5f11ac822ab2ce1957cb0d24';
     const parentNodeID = 'block-id';
@@ -80,7 +67,7 @@ describe('Diagram model unit tests', () => {
 
     await expect(model.addStep({ diagramID, parentNodeID, step })).to.eventually.eq(step);
 
-    expect(atomicUpdateById).to.be.calledWithExactly(diagramID, [
+    expect(atomicUpdateByID).to.be.calledWithExactly(diagramID, [
       {
         query: { 'nodes.node-id': step },
         operation: '$set',
@@ -96,8 +83,8 @@ describe('Diagram model unit tests', () => {
 
   it('addStep - intent step', async () => {
     const model = new DiagramModel(null as any, {} as any);
-    const atomicUpdateById = sinon.stub().resolves();
-    model.atomicUpdateById = atomicUpdateById;
+    const atomicUpdateByID = sinon.stub().resolves();
+    model.atomicUpdateByID = atomicUpdateByID;
 
     const diagramID = '5f11ac822ab2ce1957cb0d24';
     const parentNodeID = 'block-id';
@@ -105,7 +92,7 @@ describe('Diagram model unit tests', () => {
 
     await expect(model.addStep({ diagramID, parentNodeID, step })).to.eventually.eq(step);
 
-    expect(atomicUpdateById).to.be.calledWithExactly(diagramID, [
+    expect(atomicUpdateByID).to.be.calledWithExactly(diagramID, [
       {
         query: { menuNodeIDs: { $each: ['node-id'] } },
         operation: '$push',
@@ -126,8 +113,8 @@ describe('Diagram model unit tests', () => {
 
   it('addStep - with index', async () => {
     const model = new DiagramModel(null as any, {} as any);
-    const atomicUpdateById = sinon.stub().resolves();
-    model.atomicUpdateById = atomicUpdateById;
+    const atomicUpdateByID = sinon.stub().resolves();
+    model.atomicUpdateByID = atomicUpdateByID;
 
     const diagramID = '5f11ac822ab2ce1957cb0d24';
     const parentNodeID = 'block-id';
@@ -136,7 +123,7 @@ describe('Diagram model unit tests', () => {
 
     await expect(model.addStep({ diagramID, parentNodeID, step, index })).to.eventually.eq(step);
 
-    expect(atomicUpdateById).to.be.calledWithExactly(diagramID, [
+    expect(atomicUpdateByID).to.be.calledWithExactly(diagramID, [
       {
         query: { 'nodes.node-id': step },
         operation: '$set',
@@ -152,8 +139,8 @@ describe('Diagram model unit tests', () => {
 
   it('addManyNodes - with intent steps', async () => {
     const model = new DiagramModel(null as any, {} as any);
-    const atomicUpdateById = sinon.stub().resolves();
-    model.atomicUpdateById = atomicUpdateById;
+    const atomicUpdateByID = sinon.stub().resolves();
+    model.atomicUpdateByID = atomicUpdateByID;
 
     const diagramID = '5f11ac822ab2ce1957cb0d24';
     const node1 = { nodeID: 'node-1', type: 'type', data: { foo: 'bar' } };
@@ -162,7 +149,7 @@ describe('Diagram model unit tests', () => {
 
     await expect(model.addManyNodes(diagramID, nodes)).to.eventually.eq(nodes);
 
-    expect(atomicUpdateById).to.be.calledWithExactly(diagramID, [
+    expect(atomicUpdateByID).to.be.calledWithExactly(diagramID, [
       {
         query: { menuNodeIDs: { $each: ['node-2'] } },
         operation: '$push',
@@ -178,8 +165,8 @@ describe('Diagram model unit tests', () => {
 
   it('addManyNodes - no intent steps', async () => {
     const model = new DiagramModel(null as any, {} as any);
-    const atomicUpdateById = sinon.stub().resolves();
-    model.atomicUpdateById = atomicUpdateById;
+    const atomicUpdateByID = sinon.stub().resolves();
+    model.atomicUpdateByID = atomicUpdateByID;
 
     const diagramID = '5f11ac822ab2ce1957cb0d24';
     const node1 = { nodeID: 'node-1', type: 'type', data: { foo: 'bar' } };
@@ -188,7 +175,7 @@ describe('Diagram model unit tests', () => {
 
     await expect(model.addManyNodes(diagramID, nodes)).to.eventually.eq(nodes);
 
-    expect(atomicUpdateById).to.be.calledWithExactly(diagramID, [
+    expect(atomicUpdateByID).to.be.calledWithExactly(diagramID, [
       {
         query: { 'nodes.node-1': node1, 'nodes.node-2': node2 },
         operation: '$set',
@@ -199,8 +186,8 @@ describe('Diagram model unit tests', () => {
 
   it('isolateSteps', async () => {
     const model = new DiagramModel(null as any, {} as any);
-    const atomicUpdateById = sinon.stub().resolves();
-    model.atomicUpdateById = atomicUpdateById;
+    const atomicUpdateByID = sinon.stub().resolves();
+    model.atomicUpdateByID = atomicUpdateByID;
 
     const diagramID = '5f11ac822ab2ce1957cb0d24';
     const sourceParentNodeID = 'source-block-id';
@@ -214,7 +201,7 @@ describe('Diagram model unit tests', () => {
 
     await expect(model.isolateSteps({ diagramID, sourceParentNodeID, parentNode, stepIDs })).to.eventually.eq(stepIDs);
 
-    expect(atomicUpdateById).to.be.calledWithExactly(diagramID, [
+    expect(atomicUpdateByID).to.be.calledWithExactly(diagramID, [
       {
         query: { 'nodes.block-id': parentNode },
         operation: '$set',
@@ -231,9 +218,9 @@ describe('Diagram model unit tests', () => {
   it('reorderSteps', async () => {
     const model = new DiagramModel(null as any, {} as any);
 
-    const atomicUpdateById = sinon.stub().resolves();
+    const atomicUpdateByID = sinon.stub().resolves();
 
-    model.atomicUpdateById = atomicUpdateById;
+    model.atomicUpdateByID = atomicUpdateByID;
 
     const diagramID = '5f11ac822ab2ce1957cb0d24';
     const parentNodeID = 'block-id';
@@ -242,7 +229,7 @@ describe('Diagram model unit tests', () => {
 
     await expect(model.reorderSteps({ diagramID, parentNodeID, stepID, index, nodePortRemaps: [] })).to.eventually.eq(stepID);
 
-    expect(atomicUpdateById).to.be.calledWithExactly(diagramID, [
+    expect(atomicUpdateByID).to.be.calledWithExactly(diagramID, [
       {
         query: { 'nodes.block-id.data.steps': stepID },
         operation: '$pull',
@@ -250,7 +237,7 @@ describe('Diagram model unit tests', () => {
       },
     ]);
 
-    expect(atomicUpdateById).to.be.calledWithExactly(diagramID, [
+    expect(atomicUpdateByID).to.be.calledWithExactly(diagramID, [
       {
         query: { 'nodes.block-id.data.steps': { $each: [stepID], $position: index } },
         operation: '$push',
@@ -261,8 +248,8 @@ describe('Diagram model unit tests', () => {
 
   it('transplantSteps', async () => {
     const model = new DiagramModel(null as any, {} as any);
-    const atomicUpdateById = sinon.stub().resolves();
-    model.atomicUpdateById = atomicUpdateById;
+    const atomicUpdateByID = sinon.stub().resolves();
+    model.atomicUpdateByID = atomicUpdateByID;
 
     const diagramID = '5f11ac822ab2ce1957cb0d24';
     const sourceParentNodeID = 'source-block-id';
@@ -272,7 +259,7 @@ describe('Diagram model unit tests', () => {
 
     await expect(model.transplantSteps({ diagramID, sourceParentNodeID, targetParentNodeID, stepIDs, index })).to.eventually.eq(stepIDs);
 
-    expect(atomicUpdateById).to.be.calledWithExactly(diagramID, [
+    expect(atomicUpdateByID).to.be.calledWithExactly(diagramID, [
       {
         query: { 'nodes.source-block-id.data.steps': { $in: stepIDs } },
         operation: '$pull',
@@ -304,8 +291,8 @@ describe('Diagram model unit tests', () => {
 
   it('removeManyNodes', async () => {
     const model = new DiagramModel(null as any, {} as any);
-    const atomicUpdateById = sinon.stub().resolves();
-    model.atomicUpdateById = atomicUpdateById;
+    const atomicUpdateByID = sinon.stub().resolves();
+    model.atomicUpdateByID = atomicUpdateByID;
 
     const diagramID = '5f11ac822ab2ce1957cb0d24';
     const stepID = 'step-id';
@@ -313,7 +300,7 @@ describe('Diagram model unit tests', () => {
 
     await expect(model.removeManyNodes(diagramID, nodes)).to.eventually.eq(nodes);
 
-    expect(atomicUpdateById).to.be.calledWithExactly(diagramID, [
+    expect(atomicUpdateByID).to.be.calledWithExactly(diagramID, [
       {
         query: { menuNodeIDs: { $in: [stepID] } },
         operation: '$pull',

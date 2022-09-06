@@ -9,8 +9,8 @@ type RemoveManySlotPayload = Realtime.BaseVersionPayload & Realtime.actionUtils.
 class RemoveManySlots extends AbstractVersionResourceControl<RemoveManySlotPayload> {
   protected actionCreator = Realtime.slot.crud.removeMany;
 
-  protected process = async (ctx: Context, { payload }: Action<RemoveManySlotPayload>) => {
-    await this.services.slot.deleteMany(ctx.data.creatorID, payload.versionID, payload.keys);
+  protected process = async (_ctx: Context, { payload }: Action<RemoveManySlotPayload>) => {
+    await this.services.slot.deleteMany(payload.versionID, payload.keys);
   };
 }
 

@@ -9,11 +9,10 @@ interface Payload extends Realtime.BaseVersionPayload, Realtime.actionUtils.CRUD
 class PatchDomain extends AbstractDomainResourceControl<Payload> {
   protected actionCreator = Realtime.domain.crud.patch;
 
-  protected process = async (ctx: Context, { payload }: Action<Payload>) => {
-    const { creatorID } = ctx.data;
+  protected process = async (_ctx: Context, { payload }: Action<Payload>) => {
     const { key, value, versionID } = payload;
 
-    await this.services.domain.patch(creatorID, versionID, key, value);
+    await this.services.domain.patch(versionID, key, value);
   };
 }
 

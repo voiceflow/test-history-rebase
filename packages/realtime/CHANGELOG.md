@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.102.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.101.2...@voiceflow/realtime@1.102.0) (2022-09-06)
+
+
+### Features
+
+* mongo version model (CT-825) ([#6002](https://github.com/voiceflow/creator-app/issues/6002)) ([4d3c28c](https://github.com/voiceflow/creator-app/commit/4d3c28c78c2bf4915f07d741a5dca32284b5d404))
+
+
+
+
+
 ## [1.101.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.101.1...@voiceflow/realtime@1.101.2) (2022-09-05)
 
 **Note:** Version bump only for package @voiceflow/realtime

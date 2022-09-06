@@ -23,6 +23,7 @@ import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { withStripe } from '@/hocs';
 import { useDispatch, useModals, useSelector, useSmartReducer, useTrackingEvents } from '@/hooks';
 import * as Sentry from '@/vendors/sentry';
+import * as Userflow from '@/vendors/userflow';
 
 import { SELECTABLE_WORKSPACE_SPECIFIC_FLOW_TYPES, StarterPlatformType, STEP_META, StepID } from '../constants';
 import { CollaboratorType } from '../types';
@@ -381,6 +382,8 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
           );
 
           goToDomain({ versionID });
+
+          Userflow.startOnboardingFlow(templateTag);
         }
       } else {
         goToWorkspace(workspace.id);

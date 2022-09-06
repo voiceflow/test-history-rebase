@@ -6,6 +6,7 @@ import { BlockType, DragItem } from '@/constants';
 import { useCanvasNodeFilter, useDragPreview } from '@/hooks';
 import { StepDragItem } from '@/pages/Canvas/components/CanvasDiagram';
 import { getManager } from '@/pages/Canvas/managers/utils';
+import { ClassName } from '@/styles/constants';
 
 import { StepItem } from '../../constants';
 import { SubMenuButton } from './components';
@@ -61,7 +62,7 @@ const SubMenu: React.FC<SubMenuProps> = ({ steps, onDrop }) => {
   return (
     <div ref={rootPopper.setReferenceElement}>
       <Portal portalNode={document.body}>
-        <div ref={rootPopper.setPopperElement} style={rootPopper.styles.popper} {...rootPopper.attributes.popper}>
+        <div ref={rootPopper.setPopperElement} style={rootPopper.styles.popper} {...rootPopper.attributes.popper} className={ClassName.SUB_STEP_MENU}>
           <S.SubMenuContainer ref={menuRef}>
             {processedSteps.map((step, index) => (
               <Animations.FadeDownDelayedContainer key={step.label} delay={0.04 + index * 0.03}>

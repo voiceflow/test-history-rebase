@@ -22800,6 +22800,11 @@ use@^3.1.0:
   resolved "https://registry.yarnpkg.com/use/-/use-3.1.1.tgz#d50c8cac79a19fbc20f2911f56eb973f4e10070f"
   integrity sha512-cwESVXlO3url9YWlFW/TA9cshCEhtu7IKJ/p5soJ/gGpj7vbvFrAY/eIioQ6Dw23KjZhYgiIo8HOs1nQ2vr/oQ==
 
+userflow.js@2.5.0:
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/userflow.js/-/userflow.js-2.5.0.tgz#b394b70fbfc4171945d6c36e36290abe7f1530c7"
+  integrity sha512-l6QX741o/I9+VAc36hgb2zSDHiGKqAVhJ9b/M7iC0ETM18DE9URB6qPTWtNkSWUYWLbrcQQ5iXaaxMuwcQsjIQ==
+
 util-deprecate@^1.0.1, util-deprecate@^1.0.2, util-deprecate@~1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/util-deprecate/-/util-deprecate-1.0.2.tgz#450d4dc9fa70de732762fbd2d4a28981419a0ccf"

@@ -102,6 +102,7 @@ export enum ClassName {
   CANVAS_LINK = 'vf-canvas__link',
   CANVAS_CONTROL = 'vf-canvas__control',
   STEP_MENU_ITEM = 'vf-step-menu__item',
+  SUB_STEP_MENU = 'vf-sub-step-menu',
   SUB_STEP_MENU_ITEM = 'vf-sub-step-menu__item',
   DROPDOWN = 'vf-dropdown',
   SVG_ICON = 'vf-svg-icon',

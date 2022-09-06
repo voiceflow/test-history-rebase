@@ -27,6 +27,7 @@ declare global {
     VF_OVERRIDE_GOOGLE_CLIENT_ID?: string; // Override the Google OAuth2 Client
     VF_OVERRIDE_GOOGLE_ANALYTICS_ID?: string;
     VF_OVERRIDE_COPY_PASTE_KEY?: string;
+    VF_OVERRIDE_USERFLOW_TOKEN?: string;
     VF_OVERRIDE_MAINTENANCE_STATUS_SOURCE?: string;
     VF_OVERRIDE_GENERAL_RUNTIME_ENDPOINT?: string;
     VF_OVERRIDE_SENTRY_DSN?: string;
@@ -170,6 +171,9 @@ export const MAINTENANCE_STATUS_SOURCE = window.VF_OVERRIDE_MAINTENANCE_STATUS_S
 
 // copy-paste
 export const COPY_PASTE_KEY = window.VF_OVERRIDE_COPY_PASTE_KEY || process.env.COPY_PASTE_KEY!;
+
+// userflow
+export const USERFLOW_TOKEN = (IS_PRODUCTION_ENV && (window.VF_OVERRIDE_USERFLOW_TOKEN || process.env.USERFLOW_TOKEN)) || null;
 
 // canvas export
 export const CANVAS_EXPORT_CLOUD_ENDPOINT =

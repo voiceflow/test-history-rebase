@@ -5,6 +5,7 @@ import React from 'react';
 import { useCanvasNodeFilter } from '@/hooks';
 import { getManager } from '@/pages/Canvas/managers/utils';
 import { StepItem } from '@/pages/Project/components/StepMenu/constants';
+import { ClassName } from '@/styles/constants';
 
 import SubMenuButton, { LinkStepItem } from './SubMenuButton';
 
@@ -48,7 +49,7 @@ const SubMenu: React.FC<SubMenuProps> = ({ steps, templates }) => {
   return (
     <div ref={rootPopper.setReferenceElement}>
       <Portal portalNode={document.body}>
-        <div ref={rootPopper.setPopperElement} style={rootPopper.styles.popper} {...rootPopper.attributes.popper}>
+        <div ref={rootPopper.setPopperElement} style={rootPopper.styles.popper} {...rootPopper.attributes.popper} className={ClassName.SUB_STEP_MENU}>
           <Menu>
             {processedTemplates.map((template, index) => (
               <Animations.FadeDownDelayedContainer key={template.name} delay={0.04 + index * 0.03}>

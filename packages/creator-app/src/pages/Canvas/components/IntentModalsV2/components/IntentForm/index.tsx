@@ -106,6 +106,7 @@ const IntentForm: React.FC<IntentFormProps> = ({
 
       {utteranceSectionVisible && (
         <UtteranceSection
+          intentID={intentID ?? null}
           inputs={inputs}
           isBuiltIn={isBuiltIn}
           autofocus={!!name && autofocus}

@@ -1,14 +1,12 @@
-import { Box, BoxFlex, Button, Input, Upload, UploadIconVariant } from '@voiceflow/ui';
+import { Box, Button, Input, Upload, UploadIconVariant } from '@voiceflow/ui';
 import React from 'react';
 
 import Section, { SectionVariant } from '@/components/Section';
 import { ActionSection, SectionVariants, SettingsSection } from '@/components/Settings';
 import { Permission } from '@/config/permissions';
-import { ModalType } from '@/constants';
 import * as Workspace from '@/ducks/workspace';
-import { useActiveWorkspace, useDispatch, useModals, usePermission } from '@/hooks';
-
-import BoardDeleteModal from './components/BoardDeleteModal';
+import { useActiveWorkspace, useDispatch, usePermission } from '@/hooks';
+import * as ModalsV2 from '@/ModalsV2';
 
 const GeneralSettingsPage: React.FC = () => {
   const workspace = useActiveWorkspace()!;
@@ -19,7 +17,7 @@ const GeneralSettingsPage: React.FC = () => {
 
   const [name, updateName] = React.useState(workspace.name);
 
-  const { open: openDeleteModal } = useModals(ModalType.BOARD_DELETE);
+  const boardDeleteModal = ModalsV2.useModal(ModalsV2.Board.Delete);
 
   React.useEffect(() => {
     updateName(workspace.name);
@@ -37,7 +35,7 @@ const GeneralSettingsPage: React.FC = () => {
     <>
       <SettingsSection title="General">
         <Section variant={SectionVariant.QUATERNARY} header="Workspace Name">
-          <BoxFlex mb={24}>
+          <Box.Flex mb={24}>
             <Input name="name" value={name} onBlur={saveName} onChangeText={updateName} placeholder="Board Name" readOnly={!canConfigureWorkspace} />
             <Box ml={16}>
               <Upload.IconUpload
@@ -47,7 +45,7 @@ const GeneralSettingsPage: React.FC = () => {
                 image={workspace.image}
               />
             </Box>
-          </BoxFlex>
+          </Box.Flex>
         </Section>
       </SettingsSection>
 
@@ -56,12 +54,10 @@ const GeneralSettingsPage: React.FC = () => {
           <ActionSection
             heading="Delete Workspace"
             description="This action cannot be reverted, proceed with caution"
-            action={<Button onClick={openDeleteModal}>Delete Workspace</Button>}
+            action={<Button onClick={() => boardDeleteModal.openVoid({ workspace })}>Delete Workspace</Button>}
           />
         </SettingsSection>
       )}
-
-      <BoardDeleteModal workspace={workspace} />
     </>
   );
 };

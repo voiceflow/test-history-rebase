@@ -4,9 +4,9 @@ import React from 'react';
 
 import RadioGroup from '@/components/RadioGroup';
 import Section from '@/components/Section';
-import { ModalType } from '@/constants';
 import * as APL from '@/ducks/apl';
-import { useDispatch, useModals } from '@/hooks';
+import { useDispatch } from '@/hooks';
+import * as ModalsV2 from '@/ModalsV2';
 import { Content, FormControl } from '@/pages/Canvas/components/Editor';
 import { NodeEditor } from '@/pages/Canvas/managers/types';
 
@@ -16,7 +16,7 @@ import { APL_OPTIONS } from './constants';
 const APLEditor: NodeEditor<BaseNode.Visual.APLStepData, Realtime.NodeData.VisualBuiltInPorts> = ({ data, onChange }) => {
   const resolveAPL = useDispatch(APL.resolveAPL);
 
-  const previewModal = useModals(ModalType.APL_PREVIEW);
+  const previewModal = ModalsV2.useModal(ModalsV2.APLPreview);
 
   const { aplType, imageURL, title, document: documentData, aplCommands, jsonFileName, datasource } = data;
 

@@ -12,3 +12,5 @@ export const UPLOAD_VARIANTS = [
 ];
 
 export const ACCEPTED_FILE_TYPES = ['.csv', '.CSV', 'text/csv'];
+
+export const DEBOUNCE_TIMEOUT = 300;

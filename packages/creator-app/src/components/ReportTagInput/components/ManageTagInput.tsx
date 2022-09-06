@@ -2,9 +2,9 @@ import { Utils } from '@voiceflow/common';
 import { Menu } from '@voiceflow/ui';
 import React from 'react';
 
-import { ModalType } from '@/constants';
 import { addTag, currentTranscriptIDSelector, removeTag, updateTags } from '@/ducks/transcript';
-import { useDispatch, useModals, useSelector } from '@/hooks';
+import { useDispatch, useSelector } from '@/hooks';
+import * as ModalsV2 from '@/ModalsV2';
 import { ClassName } from '@/styles/constants';
 
 import BaseTagInput from './BaseReportTagInput';
@@ -20,7 +20,7 @@ const ManageTagInput: React.FC<ManageTagInputProps> = ({ selectedTags }) => {
   const dispatchRemoveTag = useDispatch(removeTag);
   const dispatchUpdateTags = useDispatch(updateTags);
 
-  const tagManagerModal = useModals(ModalType.TAG_MANAGER);
+  const tagManagerModal = ModalsV2.useModal(ModalsV2.Conversation.TagManager);
 
   const setTags = async (tags: string[]) => {
     if (!currentTranscriptID) return;
@@ -49,7 +49,7 @@ const ManageTagInput: React.FC<ManageTagInputProps> = ({ selectedTags }) => {
       selectedTags={selectedTags}
       renderFooterAction={({ close }) => (
         <Menu.Footer>
-          <Menu.Footer.Action onClick={Utils.functional.chainVoid(close, tagManagerModal.open)}>Manage Tags</Menu.Footer.Action>
+          <Menu.Footer.Action onClick={Utils.functional.chainVoid(close, () => tagManagerModal.openVoid())}>Manage Tags</Menu.Footer.Action>
         </Menu.Footer>
       )}
     />

@@ -1,8 +1,7 @@
 import { Flex } from '@voiceflow/ui';
 import React from 'react';
 
-import ShortcutContainer from './ShortcutContainer';
-import ShortcutTitle from './ShortcutTitle';
+import { ShortcutContainer, ShortcutTitle } from '../styles';
 
 export interface ShortcutProps {
   title: string;

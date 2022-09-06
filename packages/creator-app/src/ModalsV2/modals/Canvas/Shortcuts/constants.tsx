@@ -2,7 +2,7 @@ import React from 'react';
 
 import { PLATFORM_META_KEY_LABEL } from '@/keymap';
 
-import { ShortcutCommand } from './components';
+import { ShortcutCommand } from './styles';
 
 interface ShortcutItem {
   title: string;

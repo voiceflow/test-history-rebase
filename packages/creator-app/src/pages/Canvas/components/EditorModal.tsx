@@ -1,21 +1,25 @@
+import { Modal } from '@voiceflow/ui';
 import React from 'react';
 
-import Modal, { ModalBody } from '@/components/Modal';
-import { ModalType } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import { useSelector } from '@/hooks';
 
-export interface EditorModalProps {
-  editor: React.ReactNode;
+interface EditorModalProps {
+  onClose: VoidFunction;
 }
 
-const EditorModal: React.FC<EditorModalProps> = ({ editor }) => {
+const EditorModal: React.FC<EditorModalProps> = ({ onClose, children }) => {
   const data = useSelector(Creator.focusedNodeDataSelector);
 
   return (
-    <Modal id={ModalType.FULLSCREEN_EDITOR} title={`${data?.name} Settings`} maxWidth={800}>
-      <ModalBody padding="0 11px !important">{editor}</ModalBody>
-    </Modal>
+    <>
+      <Modal.Backdrop onClick={() => onClose()} closing={false} />
+
+      <Modal opened maxWidth={800} hidden={false}>
+        <Modal.Header>{data?.name} Settings</Modal.Header>
+        <Modal.Body padding="0 11px !important">{children}</Modal.Body>
+      </Modal>
+    </>
   );
 };
 

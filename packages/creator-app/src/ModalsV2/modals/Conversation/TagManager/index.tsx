@@ -1,18 +1,16 @@
 import { Utils } from '@voiceflow/common';
-import { Badge, Box, Button, ButtonVariant, ErrorMessage, Input } from '@voiceflow/ui';
+import { Badge, Box, Button, ButtonVariant, ErrorMessage, Input, Modal } from '@voiceflow/ui';
 import intersectionWith from 'lodash/intersectionWith';
 import isEqual from 'lodash/isEqual';
 import React from 'react';
-import { RouteComponentProps } from 'react-router-dom';
 
-import Modal, { ModalBody, ModalFooter } from '@/components/Modal';
-import { ModalType } from '@/constants';
 import { allReportTagsSelector, createTag, deleteTag } from '@/ducks/reportTag';
-import { useDispatch, useModals, useSelector, useTrackingEvents } from '@/hooks';
+import { useDispatch, useSelector, useTrackingEvents } from '@/hooks';
 import { ReportTag } from '@/models';
 import { FadeLeftContainer } from '@/styles/animations';
 import { isBuiltInTag } from '@/utils/reportTag';
 
+import manager from '../../../manager';
 import { Content, NewTagInputContainer, TagLineItem } from './components';
 
 const tagInputToArray = (val: string) =>
@@ -23,14 +21,12 @@ const tagInputToArray = (val: string) =>
       .filter(Boolean)
   );
 
-const TagManagerModal: React.FC<RouteComponentProps> = () => {
+const TagManager = manager.create('TagManager', () => ({ api, type, opened, hidden, animated }) => {
   const [trackingEvents] = useTrackingEvents();
 
   const allTags = useSelector(allReportTagsSelector);
   const deleteReportTag = useDispatch(deleteTag);
   const createReportTag = useDispatch(createTag);
-
-  const tagManagerModal = useModals(ModalType.TAG_MANAGER);
 
   const [addVal, setAddVal] = React.useState('');
   const [addError, setAddError] = React.useState('');
@@ -69,9 +65,10 @@ const TagManagerModal: React.FC<RouteComponentProps> = () => {
   };
 
   return (
-    <Modal id={ModalType.TAG_MANAGER} title="Manage Tags">
+    <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove}>
+      <Modal.Header>Manage Tags</Modal.Header>
       <Box width="100%">
-        <ModalBody style={{ padding: '0' }}>
+        <Modal.Body style={{ padding: '0' }}>
           <NewTagInputContainer>
             <Input
               error={!!addError}
@@ -99,16 +96,16 @@ const TagManagerModal: React.FC<RouteComponentProps> = () => {
               <TagLineItem key={tag.id} onUndoDelete={onUndoDelete} onDelete={onDeleteTag} tags={allTags} tag={tag} />
             ))}
           </Content>
-        </ModalBody>
+        </Modal.Body>
 
-        <ModalFooter justifyContent="flex-end">
-          <Button variant={ButtonVariant.TERTIARY} onClick={tagManagerModal.close}>
+        <Modal.Footer justifyContent="flex-end">
+          <Button variant={ButtonVariant.TERTIARY} onClick={api.close}>
             Close
           </Button>
-        </ModalFooter>
+        </Modal.Footer>
       </Box>
     </Modal>
   );
-};
+});
 
-export default TagManagerModal as React.FC;
+export default TagManager;

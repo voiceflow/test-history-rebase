@@ -1,2 +1,2 @@
-export { default as BulkImportSlots } from './components/ImportSlots';
-export { default as BulkImportUtterances } from './components/ImportUtterances';
+export { default as BulkImportSlots } from './ImportSlots';
+export { default as BulkImportUtterances } from './ImportUtterances';

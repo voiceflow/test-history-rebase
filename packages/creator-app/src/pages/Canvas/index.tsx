@@ -9,7 +9,6 @@ import { useRAF, useRegistration, useTeardown } from '@/hooks';
 import { DiagramHeartbeatContext, SelectionSetTargetsContext } from '@/pages/Project/contexts';
 import * as Query from '@/utils/query';
 
-import APLPreviewModal from './components/APLPreviewModal';
 import Container from './components/CanvasContainer';
 import CanvasDiagram from './components/CanvasDiagram';
 import ContextMenu from './components/ContextMenu';
@@ -19,7 +18,6 @@ import ExportModelModal from './components/ExportModelModal';
 import NLUQuickView from './components/NLUQuickView';
 import RealtimeOverlay from './components/RealtimeOverlay';
 import Search from './components/Search';
-import ShortcutsModal from './components/ShortcutsModal';
 import SlotEditModal from './components/SlotEdit/SlotEditModal';
 import Spotlight from './components/Spotlight';
 import ThreadHistoryDrawer from './components/ThreadHistoryDrawer';
@@ -103,8 +101,6 @@ const Canvas: React.FC<CanvasProps> = ({ isPrototypingMode }) => {
       </Container>
 
       <NLUQuickView />
-      <ShortcutsModal />
-      <APLPreviewModal />
       <SlotEditModal />
       <ExportModelModal />
     </CanvasProviders>

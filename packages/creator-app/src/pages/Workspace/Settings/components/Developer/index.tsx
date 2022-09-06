@@ -1,24 +1,21 @@
-import { Box, BoxFlexApart, ClickableText, Dropdown, IconButton, IconButtonVariant, Spinner, Text, toast } from '@voiceflow/ui';
+import { Box, ClickableText, Dropdown, IconButton, IconButtonVariant, Spinner, Text, toast } from '@voiceflow/ui';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import client from '@/client';
 import { SettingsSection } from '@/components/Settings';
 import { TableContainer, TableRow } from '@/components/Table';
-import { ModalType } from '@/constants';
 import { setConfirm } from '@/ducks/modal';
 import * as Session from '@/ducks/session';
-import { useModals } from '@/hooks';
+import * as ModalsV2 from '@/ModalsV2';
 import { APIKey } from '@/models';
 import * as Sentry from '@/vendors/sentry';
-
-import CreateAPIKeyModal from './modal';
 
 const APIKeyPage: React.FC = () => {
   const dispatch = useDispatch();
   const workspaceID = useSelector(Session.activeWorkspaceIDSelector)!;
 
-  const { open: openCreateModal } = useModals(ModalType.API_KEY_CREATE);
+  const createAPIKeyModal = ModalsV2.useModal(ModalsV2.Workspace.CreateAPIKey);
 
   const [apiKeys, setAPIKeys] = React.useState<APIKey[]>([]);
   const [loading, setLoading] = React.useState(true);
@@ -68,11 +65,11 @@ const APIKeyPage: React.FC = () => {
 
   return (
     <SettingsSection title="API Keys">
-      <BoxFlexApart px={32} py={24}>
+      <Box.FlexApart px={32} py={24}>
         <Text color="secondary">({apiKeys.length}) Existing API Keys</Text>
         <ClickableText
           onClick={() =>
-            openCreateModal({
+            createAPIKeyModal.openVoid({
               workspaceID,
               onCreate: fetchAPIKeys,
             })
@@ -80,7 +77,7 @@ const APIKeyPage: React.FC = () => {
         >
           Create New API Key
         </ClickableText>
-      </BoxFlexApart>
+      </Box.FlexApart>
       {!!apiKeys.length && (
         <TableContainer topBorder columns={[1]}>
           {apiKeys.map(({ _id: keyID, name }) => (
@@ -106,7 +103,6 @@ const APIKeyPage: React.FC = () => {
           ))}
         </TableContainer>
       )}
-      <CreateAPIKeyModal />
     </SettingsSection>
   );
 };

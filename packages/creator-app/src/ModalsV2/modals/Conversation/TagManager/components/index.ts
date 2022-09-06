@@ -8,6 +8,7 @@ export const Container = styled(Flex)`
   width: 100%;
   align-items: start;
 `;
+
 export const NewTagInputContainer = styled.div`
   border-bottom: 1px solid;
   padding: 16px 32px;

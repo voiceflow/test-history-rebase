@@ -2,9 +2,10 @@ import { IconButton, IconButtonVariant, Select, SvgIcon, SvgIconTypes } from '@v
 import React from 'react';
 import { Tooltip } from 'react-tippy';
 
-import { ModalType } from '@/constants';
 import * as Tracking from '@/ducks/tracking';
-import { useModals, useTrackingEvents } from '@/hooks';
+import { useTrackingEvents } from '@/hooks';
+import * as ModalsV2 from '@/ModalsV2';
+import { VoidInternalProps } from '@/ModalsV2/types';
 import { STATIC_RESOURCES, StaticResource } from '@/pages/Canvas/components/CanvasControls/constants';
 import { useDashboardMode } from '@/pages/Project/hooks';
 import { ClassName } from '@/styles/constants';
@@ -16,7 +17,7 @@ interface Option {
   link?: string;
   icon: SvgIconTypes.Icon;
   label: string;
-  onClick?: () => void;
+  onClick?: (props?: (void & VoidInternalProps) | undefined) => Promise<unknown>;
   resourceName?: Tracking.CanvasControlHelpMenuResource;
 }
 
@@ -27,7 +28,7 @@ export type Resource = Omit<StaticResource, 'link'> & {
 
 const ResourcesHeaderButton = ({ hasShortcuts = false }) => {
   const [trackEvents] = useTrackingEvents();
-  const shortcutModal = useModals(ModalType.SHORTCUTS);
+  const shortcutModal = ModalsV2.useModal(ModalsV2.Canvas.Shortcuts);
   const isDashboardMode = useDashboardMode();
   const dropdownOptions: Option[] = hasShortcuts
     ? [
@@ -35,7 +36,7 @@ const ResourcesHeaderButton = ({ hasShortcuts = false }) => {
         {
           icon: 'forward',
           label: 'Shortcuts',
-          onClick: shortcutModal.toggle,
+          onClick: shortcutModal.openVoid,
           resourceName: Tracking.CanvasControlHelpMenuResource.SHORTCUTS,
         },
       ]

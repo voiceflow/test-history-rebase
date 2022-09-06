@@ -4,11 +4,11 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 
 import Drawer from '@/components/Drawer';
-import { BlockType, ModalType } from '@/constants';
+import { BlockType } from '@/constants';
 import { NamespaceProvider } from '@/contexts';
 import * as Creator from '@/ducks/creator';
 import * as CreatorV2 from '@/ducks/creatorV2';
-import { useModals, useRAF, useTheme } from '@/hooks';
+import { useRAF, useTheme } from '@/hooks';
 import { LockedBlockOverlay } from '@/pages/Canvas/components/LockedEditorOverlay';
 import { EngineContext, ManagerContext } from '@/pages/Canvas/contexts';
 import BlockEditor from '@/pages/Canvas/editors/BlockEditor';
@@ -42,7 +42,7 @@ const EditSidebar = () => {
   const prevPathLength = React.useRef(0);
   const prevAnimationDistance = React.useRef(40);
 
-  const fullscreenEditorModal = useModals(ModalType.FULLSCREEN_EDITOR);
+  const [fullScreen, setFullScreen] = React.useState(false);
 
   const isEditingMode = useEditingMode();
   const { node, path, goToPath, pushToPath, popFromPath } = useEditorPath();
@@ -54,7 +54,7 @@ const EditSidebar = () => {
 
   const isMarkup = !!node && isMarkupBlockType(node.type);
   const shouldRender = !!data && !!node && !UNEDITABLE_BLOCKS.has(node.type);
-  const isOpen = isEditingMode && shouldRender && focus.isActive && !fullscreenEditorModal.isOpened;
+  const isOpen = isEditingMode && shouldRender && focus.isActive && !fullScreen;
   const blocKID = node?.parentNode ?? node?.id;
 
   React.useEffect(() => {
@@ -107,8 +107,8 @@ const EditSidebar = () => {
         platform={platform}
         projectType={projectType}
         onChange={updateData}
-        onExpand={fullscreenEditorModal.open}
-        expanded={fullscreenEditorModal.isOpened}
+        onExpand={() => setFullScreen(true)}
+        expanded={fullScreen}
         goToPath={goToPath}
         activePath={activePath}
         pushToPath={pushToPath}
@@ -123,7 +123,7 @@ const EditSidebar = () => {
             {managerEl}
           </MarkupEditor>
 
-          <LockedBlockOverlay nodeID={node.id} disabled={!isOpen && !fullscreenEditorModal.isOpened} />
+          <LockedBlockOverlay nodeID={node.id} disabled={!isOpen && !fullScreen} />
         </NamespaceProvider>
       );
     } else {
@@ -134,13 +134,13 @@ const EditSidebar = () => {
             path={path}
             goToPath={goToPath}
             onRename={onRename}
-            hideHeader={fullscreenEditorModal.isOpened}
+            hideHeader={fullScreen}
             animationDistance={prevAnimationDistance.current}
           >
             {managerEl}
           </BlockEditor>
 
-          <LockedBlockOverlay nodeID={node.id} disabled={!isOpen && !fullscreenEditorModal.isOpened} />
+          <LockedBlockOverlay nodeID={node.id} disabled={!isOpen && !fullScreen} />
         </NamespaceProvider>
       );
     }
@@ -161,10 +161,9 @@ const EditSidebar = () => {
         direction={Drawer.Direction.LEFT}
         disableAnimation={!shouldRender}
       >
-        {!fullscreenEditorModal.isOpened && !!path.length && editor}
+        {!fullScreen && !!path.length && editor}
       </Drawer>
-
-      {fullscreenEditorModal.isOpened && <EditorModal editor={editor} />}
+      {fullScreen && <EditorModal onClose={() => setFullScreen(false)}>{editor}</EditorModal>}
     </SidebarProvider>
   );
 };

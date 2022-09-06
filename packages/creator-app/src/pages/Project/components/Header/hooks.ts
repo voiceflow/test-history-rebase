@@ -1,12 +1,13 @@
 import { Nullable } from '@voiceflow/common';
 import { MenuTypes, SvgIconTypes } from '@voiceflow/ui';
 
-import { DESKTOP_APP_LINK, ModalType } from '@/constants';
+import { DESKTOP_APP_LINK } from '@/constants';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import * as UI from '@/ducks/ui';
-import { useDispatch, useModals, useProjectOptions, useSelector, useTrackingEvents } from '@/hooks';
+import { useDispatch, useProjectOptions, useSelector, useTrackingEvents } from '@/hooks';
 import { Hotkey, HOTKEY_LABEL_MAP } from '@/keymap';
+import * as ModalsV2 from '@/ModalsV2';
 import { onOpenInternalURLInANewTabFactory } from '@/utils/window';
 
 export const useLogoButtonOptions = ({
@@ -19,7 +20,7 @@ export const useLogoButtonOptions = ({
   const goToDashboard = useDispatch(Router.goToDashboard);
   const toggleCanvasOnly = useDispatch(UI.toggleCanvasOnly);
 
-  const shortcutModal = useModals(ModalType.SHORTCUTS);
+  const shortcutModal = ModalsV2.useModal(ModalsV2.Canvas.Shortcuts);
 
   const [, wrapTrackingEvent] = useTrackingEvents();
 
@@ -48,7 +49,7 @@ export const useLogoButtonOptions = ({
     { key: 'divider-3', label: 'divider', divider: true },
 
     shortcuts
-      ? { key: 'shortcuts', label: 'See shortcuts', onClick: wrapTrackingEvent(shortcutModal.toggle, 'trackCanvasSeeShortcutsModalOpened') }
+      ? { key: 'shortcuts', label: 'See shortcuts', onClick: wrapTrackingEvent(() => shortcutModal.openVoid(), 'trackCanvasSeeShortcutsModalOpened') }
       : null,
 
     { key: 'desktop-app', label: 'Get desktop app', onClick: onOpenInternalURLInANewTabFactory(DESKTOP_APP_LINK) },

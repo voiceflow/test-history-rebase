@@ -38,7 +38,7 @@ interface UtteranceManagerProps {
   withBorderTop?: boolean;
   onUpdateUtterances: (data: Realtime.IntentInput[]) => void;
   inputs: Realtime.IntentInput[];
-  intentID?: string;
+  intentID: string | null;
   isBuiltIn?: boolean;
   prefilledUtterance?: string;
   withRecommendations?: boolean;

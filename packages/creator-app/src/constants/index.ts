@@ -236,10 +236,6 @@ export enum ModalType {
   PAYMENT = 'payment',
   COLLABORATORS = 'collaborators',
 
-  BOARD_DELETE = 'board-delete',
-
-  API_KEY_CREATE = 'api-key-create',
-
   SUCCESS = 'success',
 
   SLOT_EDIT = 'slot-edit',
@@ -250,9 +246,6 @@ export enum ModalType {
   EXPORT_MODEL = 'export-model',
 
   MANUAL_SAVE_MODAL = 'manual-save-modal',
-  FULLSCREEN_EDITOR = 'fullscreen-editor',
-
-  APL_PREVIEW = 'apl-preview',
 
   ONBOARDING = 'onboarding',
 
@@ -262,8 +255,6 @@ export enum ModalType {
   TESTABLE_LINKS = 'testable-links',
   CANVAS_EXPORT = 'canvas-export',
   PUBLISH_AMAZON = 'publish-amazon',
-
-  SHORTCUTS = 'shortcuts',
 
   INTENT_EDIT = 'intent-edit',
   INTENT_CREATE = 'intent-create',
@@ -283,8 +274,6 @@ export enum ModalType {
   CONNECT_PLATFORM = 'connect-platform',
   CONNECT_GOOGLE = 'connect-google',
   CONNECT_AMAZON = 'connect-amazon',
-
-  TAG_MANAGER = 'tag-manager',
 
   DIALOGFLOW_CREATE_NEW_AGENT = 'dialogflow-create-new-agent',
 

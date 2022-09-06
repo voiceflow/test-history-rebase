@@ -1,5 +1,10 @@
 export * as Account from './Account';
+export { default as APLPreview } from './APLPreview';
+export * as Board from './Board';
+export * as Canvas from './Canvas';
+export * as Conversation from './Conversation';
 export * as Domain from './Domain';
 export { default as Payment } from './Payment';
 export { default as Success } from './Success';
 export { default as Upgrade } from './Upgrade';
+export * as Workspace from './Workspace';

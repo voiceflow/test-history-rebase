@@ -15,7 +15,6 @@ import CreateIntentModal from '@/pages/Canvas/components/IntentModalsV2/CreateMo
 import EditIntentModal from '@/pages/Canvas/components/IntentModalsV2/EditModal';
 import CreateVariableModal from '@/pages/Canvas/components/VariableModalsV2/CreateModal';
 import CollaboratorsModal from '@/pages/Collaborators/CollaboratorsModal';
-import TagManagerModal from '@/pages/Conversations/components/TagManagerModal';
 import ImportModal from '@/pages/Dashboard/components/ImportModal';
 import {
   CanvasExportModal,
@@ -41,7 +40,6 @@ const AppModals: React.FC = () => {
       <ImportModal />
       <UpgradeModal />
       <LoadingModal />
-      <TagManagerModal />
 
       <EditIntentModal />
       <CreateIntentModal />

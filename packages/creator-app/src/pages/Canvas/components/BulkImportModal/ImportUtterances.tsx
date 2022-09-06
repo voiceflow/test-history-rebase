@@ -16,10 +16,8 @@ import { ConnectedProps } from '@/types';
 import { readFileAsText } from '@/utils/file';
 import { isCustomizableBuiltInIntent } from '@/utils/intent';
 
-import { ACCEPTED_FILE_TYPES, FILE_SIZE_LIMIT_BYTES, FILE_SIZE_LIMIT_KB, UPLOAD_VARIANTS, UploadType } from '../../constants';
-import AceEditor from '../AceEditor';
-import Errors from '../Errors';
-import Separator from '../Separator';
+import { AceEditor, Errors, Separator } from './components';
+import { ACCEPTED_FILE_TYPES, FILE_SIZE_LIMIT_BYTES, FILE_SIZE_LIMIT_KB, UPLOAD_VARIANTS, UploadType } from './constants';
 import { getUniqSlots, getUtterances, validateUtterances } from './utils';
 
 const DEBOUNCE_TIMEOUT = 300;

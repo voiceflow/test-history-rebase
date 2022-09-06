@@ -1,25 +1,23 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, Button, ButtonVariant, Input, Spinner } from '@voiceflow/ui';
+import { Box, Button, ButtonVariant, Input, Modal, Spinner } from '@voiceflow/ui';
 import React from 'react';
 
-import Modal, { ModalBody, ModalFooter } from '@/components/Modal';
-import { ModalType } from '@/constants';
 import * as Workspace from '@/ducks/workspace';
-import { useDidUpdateEffect, useDispatch, useModals, useTrackingEvents } from '@/hooks';
+import { useDispatch, useTrackingEvents } from '@/hooks';
 
-export interface BoardDeleteModalProps {
+import manager from '../../manager';
+
+export interface Props {
   workspace: Realtime.Workspace;
 }
 
-export const BoardDeleteModal: React.FC<BoardDeleteModalProps> = ({ workspace }) => {
+const Delete = manager.create<Props>('BoardDelete', () => ({ api, type, opened, hidden, animated, workspace }) => {
   const [trackEvents] = useTrackingEvents();
 
   const deleteWorkspace = useDispatch(Workspace.deleteWorkspace);
 
   const [name, setName] = React.useState('');
   const [deleting, updateDeleting] = React.useState(false);
-
-  const { close, isOpened } = useModals(ModalType.BOARD_DELETE);
 
   const onDeleteWorkspace = async () => {
     try {
@@ -29,21 +27,15 @@ export const BoardDeleteModal: React.FC<BoardDeleteModalProps> = ({ workspace })
 
       trackEvents.trackWorkspaceDelete(workspace.id);
     } finally {
-      close();
+      api.close();
       updateDeleting(false);
     }
   };
 
-  useDidUpdateEffect(() => {
-    if (!isOpened) {
-      setName('');
-      updateDeleting(false);
-    }
-  }, [isOpened]);
-
   return (
-    <Modal id={ModalType.BOARD_DELETE} title="Delete Workspace">
-      <ModalBody pt={0} paddingX={45}>
+    <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove}>
+      <Modal.Header>Delete Workspace</Modal.Header>
+      <Modal.Body pt={0} paddingX={45}>
         {deleting ? (
           <Box mb={12}>
             <Spinner message="Deleting Workspace" />
@@ -56,9 +48,9 @@ export const BoardDeleteModal: React.FC<BoardDeleteModalProps> = ({ workspace })
             <Input name="input" onChangeText={setName} value={name} placeholder="Workspace Name" />
           </div>
         )}
-      </ModalBody>
+      </Modal.Body>
 
-      <ModalFooter width="100%">
+      <Modal.Footer width="100%">
         <Button
           variant={ButtonVariant.PRIMARY}
           onClick={onDeleteWorkspace}
@@ -66,9 +58,9 @@ export const BoardDeleteModal: React.FC<BoardDeleteModalProps> = ({ workspace })
         >
           Delete forever
         </Button>
-      </ModalFooter>
+      </Modal.Footer>
     </Modal>
   );
-};
+});
 
-export default BoardDeleteModal;
+export default Delete;

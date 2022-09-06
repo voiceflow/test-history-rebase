@@ -12,13 +12,9 @@ import { MODAL_WIDTH_VARIANTS, MODAL_WIDTHS, ModalType } from '@/constants';
 import { useDebouncedCallback, useModals } from '@/hooks';
 import { readFileAsText } from '@/utils/file';
 
-import { ACCEPTED_FILE_TYPES, FILE_SIZE_LIMIT_BYTES, FILE_SIZE_LIMIT_KB, UPLOAD_VARIANTS, UploadType } from '../../constants';
-import AceEditor from '../AceEditor';
-import Errors from '../Errors';
-import Separator from '../Separator';
+import { AceEditor, Errors, Separator } from './components';
+import { ACCEPTED_FILE_TYPES, DEBOUNCE_TIMEOUT, FILE_SIZE_LIMIT_BYTES, FILE_SIZE_LIMIT_KB, UPLOAD_VARIANTS, UploadType } from './constants';
 import { getSlotsWithSynonyms, validateSlots } from './utils';
-
-const DEBOUNCE_TIMEOUT = 300;
 
 const ImportSlots: React.FC = () => {
   const [state, stateApi] = useSmartReducerV2({

@@ -8,7 +8,7 @@ import { ReportTag } from '@/models';
 import { FadeLeftContainer } from '@/styles/animations';
 import { ClassName } from '@/styles/constants';
 
-import { Container, TrashIconContainer } from './components';
+import { Container, TrashIconContainer } from './styles';
 
 interface TagLineItemProps {
   tag: ReportTag;

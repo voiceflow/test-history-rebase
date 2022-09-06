@@ -48,7 +48,7 @@ const ValuesSection: React.FC<ValuesSectionProps> = ({ withBottomDivider, inputs
   const onBulkUploadClick = React.useCallback(() => {
     if (canBulkUpload) {
       openSlotsBulkUploadModal({
-        onUpload: (slots: string[]) => {
+        onUpload: (slots: string[][]) => {
           const newCustomLines = slots.map(([value, ...synonyms]) => generateSlotInput(value, synonyms.join(', ')));
           const mergedSlotInputs = mergeSlotInputs(newCustomLines, customLines);
           updateInputs(mergedSlotInputs);

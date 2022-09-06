@@ -2,9 +2,34 @@ import { READABLE_VARIABLE_REGEXP } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import _isString from 'lodash/isString';
+import Papa from 'papaparse';
 
 import { rawTextToUtteranceFormat } from '@/client/adapters/textEditor';
 import { validateUtterance } from '@/utils/intent';
+
+const NEW_LINE_REGEXP = /\n/g;
+
+export const getSlotsWithSynonyms = (value: string) =>
+  Papa.parse<string[]>(value, { skipEmptyLines: true })
+    .data.map((arr) => arr.map((s) => s.trim().replace(NEW_LINE_REGEXP, '')).filter(Boolean))
+    .filter((arr) => arr.length);
+
+export const validateSlots = (slotsWithSynonyms: string[][]) => {
+  const errors = new Map<number, string>();
+  const validSlotsWithSynonyms: string[][] = [];
+
+  slotsWithSynonyms.forEach(([slot, ...synonym], index) => {
+    const name = slot.trim();
+
+    if (!name) {
+      errors.set(index, "Slot value can't be empty.");
+    } else {
+      validSlotsWithSynonyms.push([slot, ...synonym.map((part) => part.trim()).filter(Boolean)]);
+    }
+  });
+
+  return [errors, validSlotsWithSynonyms] as const;
+};
 
 export const getUniqSlots = (value: string) => [...new Set([...value.matchAll(READABLE_VARIABLE_REGEXP)].map((res) => res[1]))];
 export const getUtterances = (value: string) =>
@@ -22,7 +47,7 @@ export const validateUtterances = ({
   platform,
 }: {
   utterances: string[];
-  intentID: string;
+  intentID: string | null;
   intents: Realtime.Intent[];
   slots: Realtime.Slot[];
   builtIn: boolean;

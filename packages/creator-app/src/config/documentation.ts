@@ -58,8 +58,8 @@ export const ACTIONS_BACKEND = 'https://www.voiceflow.com/docs/designing-adding-
 export const ACTIONS_NAVIGATION = 'https://www.voiceflow.com/docs/designing-adding-actions#navigation-actions';
 
 // steps
-export const START_STEP = 'https://www.voiceflow.com/docs/';
-export const COMMAND_STEP = 'https://www.voiceflow.com/docs/';
+export const START_STEP = 'https://www.voiceflow.com/docs/designing-adding-steps-and-paths#toc-5';
+export const COMMAND_STEP = 'https://www.voiceflow.com/docs/designing-adding-steps-and-paths#toc-6';
 export const INTENT_STEP = 'https://www.voiceflow.com/docs/designing-event-steps#toc-0';
 export const CHOICE_STEP = 'https://www.voiceflow.com/docs/designing-user-input-steps#toc-2';
 export const BUTTONS_STEP = 'https://www.voiceflow.com/docs/designing-user-input-steps#toc-1';

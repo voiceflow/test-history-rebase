@@ -23,7 +23,7 @@ const baseNavigationButtonStyles = css<{ disabled: boolean }>`
   width: 42px;
   height: 42px;
   z-index: 10;
-  margin-top: 148px;
+  bottom: 23%;
   position: absolute;
 
   ${({ disabled }) =>

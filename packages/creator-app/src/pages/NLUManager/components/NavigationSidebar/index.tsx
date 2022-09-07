@@ -33,6 +33,7 @@ const NavigationSidebar: React.FC = () => {
 
   const onImportModel = async (importedModel: ImportModel) => {
     const data = await client.version.patchMergeIntentsAndSlots(versionID, importedModel);
+
     trackingEvents.trackProjectNLUImport({
       platform,
       origin: NLUImportOrigin.NLU_MANAGER,

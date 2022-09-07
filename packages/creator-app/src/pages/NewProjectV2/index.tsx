@@ -144,7 +144,7 @@ const NewProject: React.FC<NewProjectProps> = ({ onCreatingProject }) => {
 
         trackingEvents.trackProjectNLUImportFromWorkspace({
           platform: platformType,
-          origin: NLUImportOrigin.NLU_MANAGER,
+          origin: NLUImportOrigin.PROJECT,
           nluType: PlatformToNLPProvider[platformType],
           projectID: project.id,
         });

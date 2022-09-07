@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.893.7](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.893.6...@voiceflow/creator-app@1.893.7) (2022-09-07)
+
+
+### Bug Fixes
+
+* change carousel arrow positioning (BUG-27) ([#6018](https://github.com/voiceflow/creator-app/issues/6018)) ([76f51e7](https://github.com/voiceflow/creator-app/commit/76f51e7b2cbd9e5f93eaf3100037286b8af58995))
+
+
+
+
+
 ## [1.893.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.893.5...@voiceflow/creator-app@1.893.6) (2022-09-07)
 
 

@@ -54,4 +54,10 @@ export enum FeatureFlag {
   CHAT_VOICE_PROJECT = 'chat_voice_project_type',
 
   BLOCK_VIA_LINK = 'block_via_link',
+
+  // Identity service FFs
+  IDENTITY_WORKSPACE = 'identity_workspace',
+  IDENTITY_USER = 'identity_user',
+  IDENTITY_ORGANIZATION = 'identity_organization',
+  IDENTITY_GENERAL = 'identity_general',
 }

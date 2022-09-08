@@ -5,6 +5,7 @@ import React from 'react';
 import { LimitType } from '@/config/planLimitV2';
 import * as Domain from '@/ducks/domain';
 import * as Router from '@/ducks/router';
+import * as Session from '@/ducks/session';
 import { useDispatch, useLimitedAction, useSelector } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
 
@@ -24,8 +25,8 @@ const Menu: React.FC<MenuProps> = ({ onClose }) => {
 
   const domains = useSelector(Domain.allDomainsSelector);
   const rootDomainID = useSelector(Domain.rootDomainIDSelector);
-  const activeDomain = useSelector(Domain.active.domainSelector);
   const getDomainByID = useSelector(Domain.getDomainByIDSelector);
+  const activeDiagramID = useSelector(Session.activeDiagramIDSelector);
 
   const patchDomain = useDispatch(Domain.patch);
   const duplicateDomain = useDispatch(Domain.duplicate);
@@ -91,7 +92,7 @@ const Menu: React.FC<MenuProps> = ({ onClose }) => {
               search={search}
               status={status}
               onEdit={Utils.functional.chainVoid(onClose, () => editModal.openVoid({ domainID: id }))}
-              onClick={Utils.functional.chainVoid(onClose, () => activeDomain?.id !== id && goToDomainDiagram(id, rootDiagramID))}
+              onClick={Utils.functional.chainVoid(onClose, () => rootDiagramID !== activeDiagramID && goToDomainDiagram(id, rootDiagramID))}
               onDelete={Utils.functional.chainVoid(onClose, () => deleteModal.openVoid({ domainID: id }))}
               onDuplicate={Utils.functional.chainVoid(onClose, () => onDuplicate(id))}
               onToggleLive={(live) => patchDomain(id, { live })}

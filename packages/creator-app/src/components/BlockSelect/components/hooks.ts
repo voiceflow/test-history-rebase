@@ -16,6 +16,7 @@ const createDiagramOptions = <OptionsMap extends Record<string, Option | Group> 
 ) =>
   Object.values(diagramSharedNodes).reduce<Option[]>((acc, sharedNode) => {
     if (sharedNode?.type !== Realtime.BlockType.COMBINED && sharedNode?.type !== Realtime.BlockType.START) return acc;
+    if (sharedNode.type !== Realtime.BlockType.START && !sharedNode.name) return acc;
 
     const option = {
       id: createGroupedSelectID(diagramID, sharedNode.nodeID),

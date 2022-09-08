@@ -8,6 +8,7 @@ import { ClipboardProvider } from './ClipboardContext';
 import { ContextMenuProvider } from './ContextMenuContext';
 import { EngineProvider } from './EngineContext';
 import { FocusThreadProvider } from './FocusThreadContext';
+import { LinkStepMenuProvider } from './LinkStepMenuContext';
 import { ReduxContextsProviders } from './ReduxContexts';
 import { SpotlightProvider } from './SpotlightContext';
 
@@ -16,6 +17,7 @@ export * from './ContextMenuContext';
 export * from './EngineContext';
 export * from './EntityContexts';
 export * from './FocusThreadContext';
+export * from './LinkStepMenuContext';
 export * from './PresentationModeContext';
 export * from './ReduxContexts';
 export * from './SpotlightContext';
@@ -36,7 +38,9 @@ export const CanvasProviders: React.FC<CanvasProvidersProps> = ({ engine, childr
       <ClipboardProvider>
         <FocusThreadProvider>
           <SpotlightProvider>
-            <ReduxContextsProviders>{children}</ReduxContextsProviders>
+            <LinkStepMenuProvider>
+              <ReduxContextsProviders>{children}</ReduxContextsProviders>
+            </LinkStepMenuProvider>
           </SpotlightProvider>
         </FocusThreadProvider>
       </ClipboardProvider>

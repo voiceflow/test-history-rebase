@@ -5,7 +5,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import _partition from 'lodash/partition';
 import { createSelector } from 'reselect';
 
-import { BlockType } from '@/constants';
+import { BlockType, StepMenuType } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as DiagramV2 from '@/ducks/diagramV2';
@@ -393,6 +393,7 @@ class NodeManager extends EngineConsumer {
     type: K,
     coords: Coords,
     factoryData?: Realtime.NodeDataMap[K] & Partial<Realtime.NodeData<{}>>,
+    menuType: StepMenuType = StepMenuType.SIDEBAR,
     nodeID: string = Utils.id.objectID()
   ): Promise<string> {
     const [x, y] = this.engine.canvas!.fromCoords(coords);
@@ -419,7 +420,7 @@ class NodeManager extends EngineConsumer {
         }
 
         // TODO: fold this into the actions that add new steps to have better atomicity
-        await this.handleNewStep(augmentedNode);
+        await this.handleNewStep(augmentedNode, menuType);
       })
     );
 
@@ -470,8 +471,12 @@ class NodeManager extends EngineConsumer {
     return `New Block ${rootNodeIDs.length}`;
   }
 
-  private async handleNewStep<T extends { id: string; type: BlockType }>(node: T, { autoFocus = true }: { autoFocus?: boolean } = {}) {
-    this.dispatch(Tracking.trackNewStepCreated({ stepType: node.type }));
+  private async handleNewStep<T extends { id: string; type: BlockType }>(
+    node: T,
+    menuType: StepMenuType,
+    { autoFocus = true }: { autoFocus?: boolean } = {}
+  ) {
+    this.dispatch(Tracking.trackNewStepCreated({ stepType: node.type, menuType }));
 
     if (autoFocus) {
       this.engine.setActive(node.id);
@@ -592,7 +597,12 @@ class NodeManager extends EngineConsumer {
   /**
    * appends a new step to a block
    */
-  async appendStep(blockID: string, type: BlockType, options?: { autoFocus?: boolean }): Promise<string> {
+  async appendStep(
+    blockID: string,
+    type: BlockType,
+    options?: { autoFocus?: boolean },
+    menuType: StepMenuType = StepMenuType.SIDEBAR
+  ): Promise<string> {
     const stepID = Utils.id.objectID();
     const { node, data } = nodeDescriptorFactory(stepID, type, undefined, this.select(nodeFactoryOptionsSelector));
 
@@ -603,7 +613,7 @@ class NodeManager extends EngineConsumer {
         await this.internal.appendStep(blockID, node, data);
 
         // TODO: fold this into the actions that add new steps to have better atomicity
-        await this.handleNewStep(node, options);
+        await this.handleNewStep(node, menuType, options);
       })
     );
 
@@ -624,7 +634,8 @@ class NodeManager extends EngineConsumer {
       isActions,
       autoFocus,
       factoryData,
-    }: { nodeID?: string; autoFocus?: boolean; isActions?: boolean; factoryData?: Partial<Realtime.NodeData<Realtime.NodeDataMap[K]>> } = {}
+    }: { nodeID?: string; autoFocus?: boolean; isActions?: boolean; factoryData?: Partial<Realtime.NodeData<Realtime.NodeDataMap[K]>> } = {},
+    menuType: StepMenuType = StepMenuType.SIDEBAR
   ): Promise<void> {
     const { node, data } = nodeDescriptorFactory(nodeID, type, factoryData, this.select(nodeFactoryOptionsSelector));
 
@@ -634,7 +645,7 @@ class NodeManager extends EngineConsumer {
       History.transaction(async () => {
         await this.internal.insertStep(parentNodeID, node, data, index, { isActions });
         // TODO: fold this into the actions that add new steps to have better atomicity
-        await this.handleNewStep(node, { autoFocus });
+        await this.handleNewStep(node, menuType, { autoFocus });
       })
     );
 

@@ -1,11 +1,12 @@
 import { Utils } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { AutoPanningCacheContext } from '@/contexts';
 import * as Account from '@/ducks/account';
-import { useRAF, useSelector } from '@/hooks';
+import { useFeature, useRAF, useSelector } from '@/hooks';
 import { LinkedRects } from '@/pages/Canvas/components/Link';
-import { EngineContext } from '@/pages/Canvas/contexts';
+import { EngineContext, LinkStepMenuContext } from '@/pages/Canvas/contexts';
 import { NewLinkAPI } from '@/pages/Canvas/types';
 
 type NewLinkInstance<T extends SVGElement> = NewLinkAPI & {
@@ -18,6 +19,8 @@ type NewLinkInstance<T extends SVGElement> = NewLinkAPI & {
 export const useNewLinkAPI = <T extends SVGElement>() => {
   const engine = React.useContext(EngineContext)!;
   const isAutoPanning = React.useContext(AutoPanningCacheContext);
+  const stepMenu = React.useContext(LinkStepMenuContext)!;
+  const blockFromLink = useFeature(Realtime.FeatureFlag.BLOCK_VIA_LINK);
 
   const creatorID = useSelector(Account.userIDSelector)!;
 
@@ -30,6 +33,9 @@ export const useNewLinkAPI = <T extends SVGElement>() => {
   const markerRef = React.useRef<SVGMarkerElement>(null);
   const linkedRects = React.useRef<LinkedRects | null>(null);
   const removeEventListeners = React.useRef(Utils.functional.noop);
+
+  const showStepMenu = React.useCallback((event: MouseEvent) => stepMenu.onOpen(event), []);
+  const hideStepMenu = React.useCallback(() => stepMenu.onHide({ abort: false }), []);
 
   React.useEffect(() => {
     engine.linkCreation.setElements(ref, markerRef);
@@ -61,7 +67,7 @@ export const useNewLinkAPI = <T extends SVGElement>() => {
         setVisible(true);
 
         const onMouseMove = () => {
-          if (isPinned.current || isAutoPanning.current || engine.linkCreation.isCompleting) return;
+          if (isPinned.current || isAutoPanning.current || engine.linkCreation.isCompleting || engine.linkCreation.blockViaLinkMenuOpened) return;
 
           const mousePosition = engine.getCanvasMousePosition();
 
@@ -75,13 +81,20 @@ export const useNewLinkAPI = <T extends SVGElement>() => {
         };
 
         const onMouseUp = (event: MouseEvent) => {
-          if (event.defaultPrevented) {
+          if (event.defaultPrevented || engine.linkCreation.blockViaLinkMenuOpened) {
             return;
           }
 
           if (engine.linkCreation.activeTargetPortID) {
             engine.linkCreation.complete(engine.linkCreation.activeTargetPortID);
-          } else if (!engine.linkCreation.isCompleting) {
+          } else if (
+            engine.linkCreation.blockViaLinkMode &&
+            !engine.linkCreation.blockViaLinkMenuOpened &&
+            blockFromLink.isEnabled &&
+            event.button !== 2
+          ) {
+            showStepMenu(event);
+          } else if (!engine.linkCreation.isCompleting && !engine.linkCreation.blockViaLinkMenuOpened) {
             engine.linkCreation.abort();
           }
 
@@ -113,6 +126,8 @@ export const useNewLinkAPI = <T extends SVGElement>() => {
       unpin: () => {
         isPinned.current = false;
       },
+
+      hideMenu: () => hideStepMenu(),
     };
   }, [isVisible, creatorID]);
 };

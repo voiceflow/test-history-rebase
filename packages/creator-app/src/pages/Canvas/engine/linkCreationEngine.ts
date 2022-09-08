@@ -8,7 +8,7 @@ import { buildPath, getMarkerAttrs, getPathPoints, LinkedRects } from '@/pages/C
 import { NewLinkAPI } from '@/pages/Canvas/types';
 import { isChipNode } from '@/utils/node';
 
-import { CANVAS_CREATING_LINK_CLASSNAME } from '../constants';
+import { CANVAS_CREATING_LINK_BLOCK_VIA_LINK_MODE_CLASSNAME, CANVAS_CREATING_LINK_CLASSNAME } from '../constants';
 import { EngineConsumer, toCanvasRect } from './utils';
 
 class LinkCreationEngine extends EngineConsumer<{ newLink: NewLinkAPI }> {
@@ -35,6 +35,10 @@ class LinkCreationEngine extends EngineConsumer<{ newLink: NewLinkAPI }> {
   activeTargetPortID: string | null = null;
 
   targetNodeIsCombined = false;
+
+  blockViaLinkMode = false;
+
+  blockViaLinkMenuOpened = false;
 
   get isDrawing(): boolean {
     return !!this.sourcePortID;
@@ -159,6 +163,8 @@ class LinkCreationEngine extends EngineConsumer<{ newLink: NewLinkAPI }> {
       this.isCompleting = false;
     }
 
+    this.engine.removeClass(CANVAS_CREATING_LINK_BLOCK_VIA_LINK_MODE_CLASSNAME);
+
     this.log.info(this.log.success('linked to port'), this.log.slug(targetPortID));
   }
 
@@ -176,7 +182,7 @@ class LinkCreationEngine extends EngineConsumer<{ newLink: NewLinkAPI }> {
   }
 
   pin(targetPortID: string, rect: DOMRect): void {
-    if (this.isCompleting) return;
+    if (this.isCompleting || this.blockViaLinkMenuOpened) return;
 
     this.log.debug(this.log.pending('pinning to port'), this.log.slug(targetPortID));
     this.clearUnpinTimeout();
@@ -310,6 +316,7 @@ class LinkCreationEngine extends EngineConsumer<{ newLink: NewLinkAPI }> {
     this.engine.highlight.reset();
     this.components.newLink?.unpin();
     this.engine.removeClass(CANVAS_CREATING_LINK_CLASSNAME);
+    this.engine.removeClass(CANVAS_CREATING_LINK_BLOCK_VIA_LINK_MODE_CLASSNAME);
 
     const { sourcePortID } = this;
 
@@ -320,6 +327,8 @@ class LinkCreationEngine extends EngineConsumer<{ newLink: NewLinkAPI }> {
     this.activeTargetPortID = null;
     this.sourceNodeIsAction = false;
     this.targetNodeIsCombined = false;
+    this.blockViaLinkMode = false;
+    this.blockViaLinkMenuOpened = false;
 
     if (sourcePortID) {
       const sourcePort = this.engine.select(CreatorV2.portByIDSelector, { id: sourcePortID });
@@ -335,6 +344,23 @@ class LinkCreationEngine extends EngineConsumer<{ newLink: NewLinkAPI }> {
 
     this.log.debug(this.log.reset('reset link creation'));
   }
+
+  enableBlockViaLinkMode = () => {
+    this.blockViaLinkMode = true;
+    this.engine.addClass(CANVAS_CREATING_LINK_BLOCK_VIA_LINK_MODE_CLASSNAME);
+  };
+
+  blockViaLinkMenuShown = () => {
+    this.blockViaLinkMenuOpened = true;
+    this.engine.removeClass(CANVAS_CREATING_LINK_BLOCK_VIA_LINK_MODE_CLASSNAME);
+  };
+
+  blockViaLinkMenuHidden = () => {
+    if (this.blockViaLinkMode) this.engine.addClass(CANVAS_CREATING_LINK_BLOCK_VIA_LINK_MODE_CLASSNAME);
+
+    this.blockViaLinkMenuOpened = false;
+    this.components.newLink?.hideMenu();
+  };
 }
 
 export default LinkCreationEngine;

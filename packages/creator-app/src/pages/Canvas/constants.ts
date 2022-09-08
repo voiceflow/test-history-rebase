@@ -6,6 +6,7 @@ export const CANVAS_ACTIVATION_CLASSNAME = `${Identifier.CANVAS}--activation`;
 export const CANVAS_DRAGGING_CLASSNAME = `${Identifier.CANVAS}--dragging`;
 export const CANVAS_MERGING_CLASSNAME = `${Identifier.CANVAS}--merging`;
 export const CANVAS_CREATING_LINK_CLASSNAME = `${Identifier.CANVAS}--creating-link`;
+export const CANVAS_CREATING_LINK_BLOCK_VIA_LINK_MODE_CLASSNAME = `${Identifier.CANVAS}--creating-link-attached`;
 export const CANVAS_SELECTING_GROUP_CLASSNAME = `${Identifier.CANVAS}--selecting-group`;
 export const CANVAS_MARKUP_CREATING_CLASSNAME = `${Identifier.CANVAS}--markup-creating`;
 export const CANVAS_MARKUP_TRANSFORMING_CLASSNAME = `${Identifier.CANVAS}--markup-transforming`;

@@ -79,6 +79,7 @@ export interface NewLinkAPI {
   isPinned: () => boolean;
   pin: (rect: DOMRect) => void;
   unpin: () => void;
+  hideMenu: () => void;
 }
 
 export interface CommentDraftValue {

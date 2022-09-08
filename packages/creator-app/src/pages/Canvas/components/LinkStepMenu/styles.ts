@@ -26,9 +26,9 @@ export const MenuButtonContainer = styled(MenuItem)<{ focused?: boolean }>`
   ${({ focused }) => focused && buttonContainerActiveStyles}
 `;
 
-export const StyledText = styled(Text)<{ disabled: boolean }>`
+export const StyledText = styled(Text)<{ disabled: boolean; isLibrary: boolean }>`
   display: block;
-  padding-left: 12px;
+  padding-left: ${({ isLibrary }) => (isLibrary ? 0 : 12)}px;
   width: 100%;
   max-width: 230px;
   white-space: nowrap;

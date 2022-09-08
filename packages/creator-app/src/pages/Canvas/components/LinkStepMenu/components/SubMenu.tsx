@@ -5,16 +5,17 @@ import React from 'react';
 import { useCanvasNodeFilter } from '@/hooks';
 import { getManager } from '@/pages/Canvas/managers/utils';
 import { StepItem } from '@/pages/Project/components/StepMenu/constants';
-import { ClassName } from '@/styles/constants';
 
 import SubMenuButton, { LinkStepItem } from './SubMenuButton';
 
 interface SubMenuProps {
   steps?: StepItem[];
   templates?: BaseModels.Version.CanvasTemplate[];
+  popperContainerRef?: React.Ref<HTMLDivElement>;
+  upgradePopperRef?: React.Ref<HTMLDivElement>;
 }
 
-const SubMenu: React.FC<SubMenuProps> = ({ steps, templates }) => {
+const SubMenu: React.FC<SubMenuProps> = ({ steps, templates, popperContainerRef, upgradePopperRef }) => {
   const rootPopper = usePopper({
     modifiers: [{ name: 'offset', options: { offset: [-40, 0] } }],
     placement: 'right-start',
@@ -49,23 +50,25 @@ const SubMenu: React.FC<SubMenuProps> = ({ steps, templates }) => {
   return (
     <div ref={rootPopper.setReferenceElement}>
       <Portal portalNode={document.body}>
-        <div ref={rootPopper.setPopperElement} style={rootPopper.styles.popper} {...rootPopper.attributes.popper} className={ClassName.SUB_STEP_MENU}>
-          <Menu>
-            {processedTemplates.map((template, index) => (
-              <Animations.FadeDownDelayedContainer key={template.name} delay={0.04 + index * 0.03}>
-                <div>
-                  <SubMenuButton template={template} />
-                </div>
-              </Animations.FadeDownDelayedContainer>
-            ))}
-            {processedSteps.map((step, index) => (
-              <Animations.FadeDownDelayedContainer key={step.label} delay={0.04 + index * 0.03}>
-                <div>
-                  <SubMenuButton step={step} />
-                </div>
-              </Animations.FadeDownDelayedContainer>
-            ))}
-          </Menu>
+        <div ref={rootPopper.setPopperElement} style={rootPopper.styles.popper} {...rootPopper.attributes.popper}>
+          <div ref={popperContainerRef}>
+            <Menu>
+              {processedTemplates.map((template, index) => (
+                <Animations.FadeDownDelayedContainer key={template.name} delay={0.04 + index * 0.03}>
+                  <div>
+                    <SubMenuButton template={template} />
+                  </div>
+                </Animations.FadeDownDelayedContainer>
+              ))}
+              {processedSteps.map((step, index) => (
+                <Animations.FadeDownDelayedContainer key={step.label} delay={0.04 + index * 0.03}>
+                  <div>
+                    <SubMenuButton step={step} upgradePopperRef={upgradePopperRef} />
+                  </div>
+                </Animations.FadeDownDelayedContainer>
+              ))}
+            </Menu>
+          </div>
         </div>
       </Portal>
     </div>

@@ -54,6 +54,7 @@ interface ComponentItem {
   children: ComponentItem[];
   isFolder: boolean;
 }
+
 export interface FolderItemProps extends ItemComponentProps<ComponentItem>, DragPreviewComponentProps {
   isSearch: boolean;
   activeDiagramID: Nullable<string>;

@@ -1,5 +1,5 @@
 import client from '@/client';
-import { BlockType, InteractionModelTabType } from '@/constants';
+import { BlockType, InteractionModelTabType, StepMenuType } from '@/constants';
 import { SearchTypes } from '@/contexts/SearchContext';
 
 import { CanvasCreationType, CanvasMenuLockState, EventName, IntentEditType, VariableType } from '../constants';
@@ -99,11 +99,13 @@ export const trackUtteranceBulkImport = createProjectEventTracker<{
 
 export const trackNewStepCreated = createProjectEventTracker<{
   stepType: BlockType;
-}>(({ stepType, ...options }) =>
+  menuType: StepMenuType;
+}>(({ stepType, menuType, ...options }) =>
   client.api.analytics.track(
     EventName.PROJECT_NEW_STEP_CREATED,
     createProjectEventPayload(options, {
       step_type: stepType,
+      menu_type: menuType,
     })
   )
 );

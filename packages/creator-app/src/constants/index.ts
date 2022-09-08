@@ -574,6 +574,11 @@ export enum NLUImportOrigin {
 
 export const ALEXA_SUNSET_PROJECT_ID = '62e424a61f2f9a0006572066';
 
+export enum StepMenuType {
+  LINK = 'link',
+  SIDEBAR = 'sidebar',
+}
+
 export * from './links';
 export * from './nlu';
 export * from './plans';

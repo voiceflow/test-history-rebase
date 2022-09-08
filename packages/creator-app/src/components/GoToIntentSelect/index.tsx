@@ -28,8 +28,12 @@ const GoToIntentSelect: React.FC<Props> = ({ value, placeholder = 'Behave as use
   const sharedProps = {
     value: selectValue,
     clearable: !!value,
+    fullWidth: true,
     searchable: true,
     placeholder,
+    inDropdownSearch: true,
+    alwaysShowCreate: true,
+    clearOnSelectActive: true,
     renderEmpty: ({ close, search }: { close: VoidFunction; search: string }) => (
       <Menu.NotFound>
         {!search ? 'No open intents exists in your project. ' : 'No open intents found. '}

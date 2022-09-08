@@ -19,12 +19,16 @@ const BlockSelect: React.FC<Props> = ({ value, clearable, startNodeIsDefault, ..
 
   const sharedProps = {
     value: selectValue,
-    clearable: !!clearable && !!selectValue,
+    clearable: !!value,
+    fullWidth: true,
     searchable: true,
+    placeholder: 'Select a block',
+    inDropdownSearch: true,
+    alwaysShowCreate: true,
+    clearOnSelectActive: true,
     renderEmpty: ({ search }: { search: string }) => (
       <Menu.NotFound>{!search ? 'No blocks exists in your project. ' : 'No blocks found. '}</Menu.NotFound>
     ),
-    placeholder: 'Select a block',
   };
 
   return allDomains.length < 2 ? <GroupedSelect {...sharedProps} {...props} /> : <MultilevelSelect {...sharedProps} {...props} />;

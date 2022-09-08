@@ -21,9 +21,6 @@ const Form: React.FC<FormProps> = ({ editor, header, footer }) => {
         <BlockSelect
           value={goToNodeID && diagramID ? { stepID: goToNodeID, diagramID } : null}
           onChange={(data) => editor.onChange({ goToNodeID: data?.stepID ?? null, diagramID: data?.diagramID ?? null })}
-          clearable
-          clearOnSelectActive
-          fullWidth
         />
       </SectionV2.SimpleSection>
     </EditorV2>

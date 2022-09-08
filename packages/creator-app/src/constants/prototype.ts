@@ -26,3 +26,7 @@ export enum PrototypeInputMode {
   TEXT = 'TEXT',
   VOICE = 'VOICE',
 }
+
+export interface PrototypeRenderSyncOptions {
+  renderUnusedIntents?: boolean;
+}

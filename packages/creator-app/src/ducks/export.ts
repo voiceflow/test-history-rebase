@@ -5,6 +5,7 @@ import _orderBy from 'lodash/orderBy';
 import client from '@/client';
 import * as Errors from '@/config/errors';
 import { ExportFormat, NLPProvider } from '@/constants';
+import { PrototypeRenderSyncOptions } from '@/constants/prototype';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Prototype from '@/ducks/prototype';
@@ -94,7 +95,7 @@ export const exportCanvas =
   };
 
 export const exportModel =
-  (nlpProvider: NLPProvider, intents?: string[]): Thunk =>
+  (nlpProvider: NLPProvider, intents?: string[], compilerOptions?: PrototypeRenderSyncOptions): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
     const versionID = Session.activeVersionIDSelector(state);
@@ -105,7 +106,7 @@ export const exportModel =
       let data: string;
       const projectName = ProjectV2.active.nameSelector(state)?.replace(/ /g, '_');
 
-      await dispatch(Prototype.compilePrototype());
+      await dispatch(Prototype.compilePrototype(compilerOptions));
 
       switch (nlpProvider) {
         case NLPProvider.ALEXA:

@@ -18,7 +18,7 @@ const Export: React.FC<ExportProps> = ({ checkedItems, activeTab }) => {
   const [opened, setIsOpened] = React.useState(false);
 
   return (
-    <ExportProvider>
+    <ExportProvider compilerOptions={{ renderUnusedIntents: true }}>
       <Popper
         width="450px"
         height="300px"

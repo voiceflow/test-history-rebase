@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.894.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.894.0...@voiceflow/creator-app@1.894.1) (2022-09-08)
+
+
+### Bug Fixes
+
+* [bugfix] export unused intents (NLU-309) ([#6000](https://github.com/voiceflow/creator-app/issues/6000)) ([f8a4177](https://github.com/voiceflow/creator-app/commit/f8a417778696ec731ae813c7c74994a610465f5d))
+* go to domain root diagram (CT-000) ([#6030](https://github.com/voiceflow/creator-app/issues/6030)) ([4988efd](https://github.com/voiceflow/creator-app/commit/4988efde3d32b1a33684280c195cfb03e162c117))
+
+
+
+
+
 # [1.894.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.893.7...@voiceflow/creator-app@1.894.0) (2022-09-08)
 
 

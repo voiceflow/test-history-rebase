@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.894.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.893.7...@voiceflow/creator-app@1.894.0) (2022-09-08)
+
+
+### Bug Fixes
+
+* intent and block selects (CT-930) ([#6026](https://github.com/voiceflow/creator-app/issues/6026)) ([cc7d195](https://github.com/voiceflow/creator-app/commit/cc7d195be19b49e44490b505154174a4ba7041a9))
+* remove ghost blocks from go to block dropdown (CT-951) ([#6024](https://github.com/voiceflow/creator-app/issues/6024)) ([83c7e75](https://github.com/voiceflow/creator-app/commit/83c7e75b53d931e3105f289f740aacc8f3170fd8))
+* update capture step link (CT-840) ([#6023](https://github.com/voiceflow/creator-app/issues/6023)) ([cd28b2b](https://github.com/voiceflow/creator-app/commit/cd28b2b1e72c4b6d877f83b32ffe50ddeea4381e))
+
+
+### Features
+
+* block via link (CT-556) ([#5994](https://github.com/voiceflow/creator-app/issues/5994)) ([f7bb1ac](https://github.com/voiceflow/creator-app/commit/f7bb1acbf98274988ccb05f0ed91c7fa5da86f49))
+
+
+
+
+
 ## [1.893.7](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.893.6...@voiceflow/creator-app@1.893.7) (2022-09-07)
 
 

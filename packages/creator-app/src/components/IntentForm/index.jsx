@@ -5,7 +5,6 @@ import { isCustomizableBuiltInIntent } from '@/utils/intent';
 
 import CustomIntentForm from './components/Custom';
 
-export { HelpTooltip } from './components/Custom/components';
 export { default as LegacyMappings } from './components/LegacyMappings';
 
 const IntentForm = ({ intent, isInModal = false, ...props }) => {

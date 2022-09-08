@@ -4,7 +4,7 @@ import { Button, createUIOnlyMenuItemOption, SectionV2, useConst } from '@voicef
 import React from 'react';
 
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
-import { HelpTooltip } from '@/components/IntentForm';
+import * as Documentation from '@/config/documentation';
 import { useMapManager, useToggle } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import { useIntentScope } from '@/pages/Canvas/managers/hooks';
@@ -44,7 +44,7 @@ const IntentEditor: React.FC<{ disableAnimation: boolean }> = ({ disableAnimatio
       header={<EditorV2.DefaultHeader />}
       footer={
         !isDragging && (
-          <EditorV2.DefaultFooter tutorial={{ content: <HelpTooltip /> }}>
+          <EditorV2.DefaultFooter tutorial={Documentation.CAPTURE_STEP}>
             <EditorV2.FooterActionsButton
               actions={[
                 intentScopeOption,

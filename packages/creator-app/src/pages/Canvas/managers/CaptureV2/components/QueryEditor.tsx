@@ -3,8 +3,8 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, createUIOnlyMenuItemOption, SectionV2, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
-import { HelpTooltip } from '@/components/IntentForm';
 import VariableSelectV2 from '@/components/VariableSelectV2';
+import * as Documentation from '@/config/documentation';
 import * as SlotV2 from '@/ducks/slotV2';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useAddSlot, useSelector, useVariableCreation } from '@/hooks';
@@ -50,7 +50,7 @@ const QueryEditor: React.FC<{ disableAnimation: boolean }> = ({ disableAnimation
     <EditorV2
       header={<EditorV2.DefaultHeader />}
       footer={
-        <EditorV2.DefaultFooter tutorial={{ content: <HelpTooltip /> }}>
+        <EditorV2.DefaultFooter tutorial={Documentation.CAPTURE_STEP}>
           <EditorV2.FooterActionsButton
             actions={[intentScopeOption, createUIOnlyMenuItemOption('divider', { divider: true }), noReplyConfig.option]}
           />

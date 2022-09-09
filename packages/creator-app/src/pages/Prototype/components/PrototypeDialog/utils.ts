@@ -1,4 +1,7 @@
-import { BotMessageTypes, Message, MessageType } from '@/pages/Prototype/types';
+import { BaseRequest } from '@voiceflow/base-types';
+
+import { BotMessageTypes, Interaction, Message, MessageType } from '@/pages/Prototype/types';
+import { openURLInANewTab } from '@/utils/window';
 
 export const checkIfFirstInGroup = (previousMessage: Message, currentMessage: Message) => {
   return BotMessageTypes.includes(previousMessage?.type) !== BotMessageTypes.includes(currentMessage?.type);
@@ -44,4 +47,14 @@ export const checkIfLastBubble = (message: Message, messages: Message[]) => {
     pointer -= 1;
   }
   return true;
+};
+
+export const handleRequestActions = (request: Interaction['request']) => () => {
+  if (request.payload && typeof request.payload === 'object') {
+    request.payload.actions?.forEach((action) => {
+      if (BaseRequest.Action.isOpenURLAction(action) && action.payload.url) {
+        openURLInANewTab(action.payload.url);
+      }
+    });
+  }
 };

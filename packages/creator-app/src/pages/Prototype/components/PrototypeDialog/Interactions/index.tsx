@@ -1,4 +1,3 @@
-import { BaseRequest } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import { hexToRGBA, preventDefault } from '@voiceflow/ui';
 import React from 'react';
@@ -6,8 +5,8 @@ import React from 'react';
 import { Interaction, OnInteraction } from '@/pages/Prototype/types';
 import perf, { PerfAction } from '@/performance';
 import { ClassName } from '@/styles/constants';
-import { openURLInANewTab } from '@/utils/window';
 
+import { handleRequestActions } from '../utils';
 import * as S from './styles';
 
 interface InteractionsProps {
@@ -28,16 +27,6 @@ const Interactions: React.FC<InteractionsProps> = ({ interactions, onInteraction
   if (!hasInteractions) {
     return null;
   }
-
-  const handleRequestActions = (request: Interaction['request']) => () => {
-    if (request.payload && typeof request.payload === 'object') {
-      request.payload.actions?.forEach((action) => {
-        if (BaseRequest.Action.isOpenURLAction(action) && action.payload.url) {
-          openURLInANewTab(action.payload.url);
-        }
-      });
-    }
-  };
 
   return (
     <>

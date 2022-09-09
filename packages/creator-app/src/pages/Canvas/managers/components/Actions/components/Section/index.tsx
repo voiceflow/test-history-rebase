@@ -33,7 +33,7 @@ const ActionsSection: React.FC<ActionsSectionProps> = ({ portID, editor, parentP
     onReorder,
     actionPath,
     hasURLStep,
-    isButtonsNode,
+    canHaveURLStep,
     targetNodeSteps,
     hasNavigationStep,
     lastCreatedStepID,
@@ -41,7 +41,7 @@ const ActionsSection: React.FC<ActionsSectionProps> = ({ portID, editor, parentP
   } = useActions({ editor, portID, parentPath, parentParams });
 
   const withActions = targetNodeIsActions && !!targetNodeSteps.length;
-  const withURLAction = isButtonsNode && !hasURLStep && !withoutURL;
+  const withURLAction = canHaveURLStep && !hasURLStep && !withoutURL;
 
   return (
     <TippyTooltip

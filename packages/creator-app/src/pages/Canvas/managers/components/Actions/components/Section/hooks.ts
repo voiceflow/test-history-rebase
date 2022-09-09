@@ -132,7 +132,8 @@ export const useActions = ({ editor, portID, parentPath, parentParams }: Actions
   const targetNodeSteps = useSelector(CreatorV2.stepDataByParentNodeIDSelector, { id: targetNode?.id });
 
   const hasURLStep = Realtime.Utils.typeGuards.isURLBlockType(targetNodeSteps[0]?.type);
-  const isButtonsNode = Realtime.Utils.typeGuards.isButtonsBlockType(editor.data.type);
+  const canHaveURLStep =
+    Realtime.Utils.typeGuards.isButtonsBlockType(editor.data.type) || Realtime.Utils.typeGuards.isCarouselBlockType(editor.data.type);
   const hasNavigationStep = Realtime.Utils.typeGuards.isNavigationBlockType(targetNodeSteps[targetNodeSteps.length - 1]?.type);
 
   const actionPath = parentPath ? `${parentPath}/${PATH}` : PATH;
@@ -176,7 +177,7 @@ export const useActions = ({ editor, portID, parentPath, parentParams }: Actions
     onReorder,
     hasURLStep,
     actionPath,
-    isButtonsNode,
+    canHaveURLStep,
     targetNodeSteps,
     hasNavigationStep,
     lastCreatedStepID,

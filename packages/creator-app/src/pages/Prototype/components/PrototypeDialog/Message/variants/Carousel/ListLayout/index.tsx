@@ -1,10 +1,12 @@
 import { BaseNode } from '@voiceflow/base-types';
+import { Utils } from '@voiceflow/common';
 import { ButtonGroup, Thumbnail } from '@voiceflow/ui';
 import React from 'react';
 
 import SlateEditable from '@/components/SlateEditable';
 import { OnInteraction } from '@/pages/Prototype/types';
 
+import { handleRequestActions } from '../../../../utils';
 import Message, { BaseMessageProps } from '../../../Base';
 import * as S from './styles';
 
@@ -36,7 +38,11 @@ const MessageVariantCarouselListLayout: React.FC<MessageVariantCarouselListLayou
               {!!buttons?.length && (
                 <ButtonGroup mt={16}>
                   {buttons.map(({ request, name }) => (
-                    <S.Button key={request.type} onClick={() => onInteraction({ name, request })} color={color}>
+                    <S.Button
+                      key={request.type}
+                      onClick={Utils.functional.chainVoid(handleRequestActions(request), () => onInteraction({ name, request }))}
+                      color={color}
+                    >
                       {name || 'Button Label'}
                     </S.Button>
                   ))}

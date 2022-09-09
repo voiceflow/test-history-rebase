@@ -1,21 +1,18 @@
-import { MenuItem } from '@ui/components/Menu';
-import { backgrounds, colors, css, styled, ThemeColor } from '@ui/styles';
+import Menu from '@ui/components/Menu';
+import { css, styled } from '@ui/styles';
 
 interface SelectItemProps {
-  isFocused?: boolean;
   isGroup?: boolean;
   isNested?: boolean;
   withSubLevel?: boolean;
 }
 
-const SelectItem = styled(MenuItem)<SelectItemProps>`
+const SelectItem = styled(Menu.Item)<SelectItemProps>`
   position: relative;
 
-  ${({ isFocused }) =>
-    isFocused &&
-    css`
-      background: linear-gradient(180deg, rgba(238, 244, 246, 0.85) 0%, ${backgrounds('greyGreen')} 100%), ${colors(ThemeColor.WHITE)} !important;
-    `}
+  &:hover {
+    background: none;
+  }
 
   ${({ isGroup }) =>
     isGroup &&
@@ -35,10 +32,6 @@ const SelectItem = styled(MenuItem)<SelectItemProps>`
     css`
       padding-right: 80px;
     `}
-
-  &:hover {
-    background: none;
-  }
 
   b {
     text-decoration: underline;

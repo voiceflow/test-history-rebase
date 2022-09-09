@@ -1,8 +1,8 @@
-import { MenuContainer } from '@voiceflow/ui';
+import { Menu } from '@voiceflow/ui';
 
 import { styled } from '@/hocs';
 
-const TooltipContent = styled(MenuContainer)`
+const TooltipContent = styled(Menu.Container)`
   color: #62778c;
   font-size: 15px;
   padding: 17px 24px;

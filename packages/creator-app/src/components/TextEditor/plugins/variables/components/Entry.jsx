@@ -1,9 +1,9 @@
-import { MenuItem } from '@voiceflow/ui';
+import { Menu } from '@voiceflow/ui';
 import React from 'react';
 
 import { css, styled } from '@/hocs';
 
-const Item = styled(MenuItem)`
+const Item = styled(Menu.Item)`
   ${({ focused }) =>
     focused &&
     css`

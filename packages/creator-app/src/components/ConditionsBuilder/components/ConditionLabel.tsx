@@ -1,5 +1,5 @@
 import { BaseNode } from '@voiceflow/base-types';
-import { Box, Dropdown, Menu, MenuItem, SvgIcon } from '@voiceflow/ui';
+import { Box, Dropdown, Menu, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
 import ConditionLabelContainer from './ConditionLabelContainer';
@@ -14,8 +14,8 @@ const ConditionLabel: React.FC<ConditionLabelProps> = ({ actionable = false, onC
     <Dropdown
       menu={() => (
         <Menu>
-          <MenuItem onClick={() => onChange?.(BaseNode.Utils.ExpressionTypeV2.AND)}>And</MenuItem>
-          <MenuItem onClick={() => onChange?.(BaseNode.Utils.ExpressionTypeV2.OR)}>Or</MenuItem>
+          <Menu.Item onClick={() => onChange?.(BaseNode.Utils.ExpressionTypeV2.AND)}>And</Menu.Item>
+          <Menu.Item onClick={() => onChange?.(BaseNode.Utils.ExpressionTypeV2.OR)}>Or</Menu.Item>
         </Menu>
       )}
     >

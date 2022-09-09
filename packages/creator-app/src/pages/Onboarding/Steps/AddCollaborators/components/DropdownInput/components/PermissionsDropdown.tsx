@@ -1,5 +1,5 @@
 import { UserRole } from '@voiceflow/internal';
-import { Dropdown as BaseDropdown, Menu, MenuItem, SvgIcon } from '@voiceflow/ui';
+import { Dropdown as BaseDropdown, Menu, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
 import { SectionToggleVariant } from '@/components/Section';
@@ -30,12 +30,12 @@ const PermissionsDropdown: React.FC<PermissionDropdownProps> = ({ options = [], 
       menu={
         <Menu>
           {options.map(({ label, value }, index) => (
-            <MenuItem key={index} onClick={() => onSelect?.(value)}>
+            <Menu.Item key={index} onClick={() => onSelect?.(value)}>
               {label}
-            </MenuItem>
+            </Menu.Item>
           ))}
-          <MenuItem divider />
-          <MenuItem onClick={onRemove}>Remove</MenuItem>
+          <Menu.Item divider />
+          <Menu.Item onClick={onRemove}>Remove</Menu.Item>
         </Menu>
       }
     >

@@ -2,6 +2,7 @@
 
 import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { UIOnlyMenuItemOption } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
@@ -51,7 +52,7 @@ const createTopicOptions = <OptionsMap extends Record<string, Option | Group> | 
     return acc;
   }, []);
 
-export const useDiagramsBlocksOptionsMap = () => {
+export const useDiagramsIntentsOptionsMap = () => {
   const platform = useSelector(ProjectV2.active.platformSelector);
   const sharedNodes = useSelector(DiagramV2.sharedNodesSelector);
   const activeDiagram = useSelector(DiagramV2.active.diagramSelector);
@@ -107,13 +108,14 @@ export const useDiagramsBlocksOptionsMap = () => {
   }, [platform, sharedNodes, getIntentByID, activeDiagram, getDiagramByID, globalIntentStepMap]);
 };
 
-export const useOnSelect = (onChange: BaseProps['onChange'], optionsMap: Record<string, Option | Multilevel>) => (value: string | null) => {
-  const option = value ? optionsMap[value] : null;
+export const useOnSelect =
+  (onChange: BaseProps['onChange'], optionsMap: Record<string, Option | Multilevel | UIOnlyMenuItemOption>) => (value: string | null) => {
+    const option = value ? optionsMap[value] : null;
 
-  if (!option || !('intentID' in option)) {
-    onChange(null);
-    return;
-  }
+    if (!option || !('intentID' in option)) {
+      onChange(null);
+      return;
+    }
 
-  onChange({ intentID: option.intentID, diagramID: option.diagramID });
-};
+    onChange({ intentID: option.intentID, diagramID: option.diagramID });
+  };

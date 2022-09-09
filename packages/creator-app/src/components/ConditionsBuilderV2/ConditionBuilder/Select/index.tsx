@@ -1,5 +1,5 @@
 import { BaseNode } from '@voiceflow/base-types';
-import { Dropdown, Menu, MenuItem, SvgIcon } from '@voiceflow/ui';
+import { Dropdown, Menu, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
 import * as S from '../styles';
@@ -16,8 +16,8 @@ const ConditionBuilderSelect: React.FC<ConditionBuilderSelectProps> = ({ onAddCo
     <Dropdown
       menu={() => (
         <Menu>
-          <MenuItem onClick={onSelect(BaseNode.Utils.ConditionsLogicInterface.VARIABLE)}>Condition</MenuItem>
-          <MenuItem onClick={onSelect(BaseNode.Utils.ConditionsLogicInterface.LOGIC_GROUP)}>Logic group</MenuItem>
+          <Menu.Item onClick={onSelect(BaseNode.Utils.ConditionsLogicInterface.VARIABLE)}>Condition</Menu.Item>
+          <Menu.Item onClick={onSelect(BaseNode.Utils.ConditionsLogicInterface.LOGIC_GROUP)}>Logic group</Menu.Item>
         </Menu>
       )}
     >

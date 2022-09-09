@@ -3,7 +3,8 @@ import React from 'react';
 
 import Domains from '@/components/Domains';
 import * as Domain from '@/ducks/domain';
-import { useDispatch, useSelector } from '@/hooks';
+import { useDispatch, useHotKeys, useSelector } from '@/hooks';
+import { Hotkey } from '@/keymap';
 
 import manager from '../../manager';
 
@@ -26,6 +27,8 @@ const Edit = manager.create<Props>('DomainEdit', () => ({ api, type, opened, hid
     api.close();
   };
 
+  useHotKeys(Hotkey.SUBMIT, onUpdate, { preventDefault: true });
+
   return (
     <Modal type={type} maxWidth={400} opened={opened} hidden={hidden} animated={animated} onExited={api.remove}>
       <Modal.Header
@@ -39,7 +42,7 @@ const Edit = manager.create<Props>('DomainEdit', () => ({ api, type, opened, hid
       </Modal.Header>
 
       <Modal.Body>
-        <Input value={name} autoFocus placeholder="Enter domain name" onChangeText={setName} />
+        <Input value={name} autoFocus placeholder="Enter domain name" onChangeText={setName} onEnterPress={onUpdate} />
       </Modal.Body>
 
       <Modal.Footer gap={12}>

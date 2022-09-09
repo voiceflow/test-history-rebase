@@ -4,12 +4,12 @@ import React from 'react';
 import { useDomainAndDiagramMultilevelSelectOptions } from '@/hooks';
 
 import { ChildProps, Multilevel } from '../types';
-import { useDiagramsBlocksOptionsMap, useOnSelect } from './hooks';
+import { useDiagramsIntentsOptionsMap, useOnSelect } from './hooks';
 
 const MultilevelSelect: React.FC<ChildProps> = ({ onChange, ...props }) => {
-  const diagramsBlocksOptions = useDiagramsBlocksOptionsMap();
+  const diagramsIntentsOptions = useDiagramsIntentsOptionsMap();
 
-  const { options, optionsMap } = useDomainAndDiagramMultilevelSelectOptions(diagramsBlocksOptions);
+  const { options, optionsMap } = useDomainAndDiagramMultilevelSelectOptions(diagramsIntentsOptions, { diagramGroupName: 'Intents' });
 
   const onSelect = useOnSelect(onChange, optionsMap);
 

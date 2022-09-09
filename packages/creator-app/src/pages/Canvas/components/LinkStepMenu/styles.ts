@@ -1,30 +1,6 @@
-import { MenuItem, SvgIcon, Text } from '@voiceflow/ui';
+import { Text } from '@voiceflow/ui';
 
-import { css, keyframes, styled, transition } from '@/hocs';
-
-export const ArrowSvgContainer = styled(SvgIcon)`
-  color: #6e849a;
-  opacity: 0.65;
-`;
-
-const buttonContainerActiveStyles = css`
-  background-color: rgba(238, 244, 246, 0.85);
-  > ${ArrowSvgContainer} {
-    ${transition('transform')}
-    transform: translateX(8px);
-    opacity: 1;
-  }
-`;
-
-export const MenuButtonContainer = styled(MenuItem)<{ focused?: boolean }>`
-  justify-content: space-between;
-  &:hover,
-  &:focus {
-    ${buttonContainerActiveStyles}
-  }
-
-  ${({ focused }) => focused && buttonContainerActiveStyles}
-`;
+import { css, keyframes, styled } from '@/hocs';
 
 export const StyledText = styled(Text)<{ disabled: boolean; isLibrary: boolean }>`
   display: block;

@@ -34,6 +34,7 @@ const GoToIntentSelect: React.FC<Props> = ({ value, placeholder = 'Behave as use
     inDropdownSearch: true,
     alwaysShowCreate: true,
     clearOnSelectActive: true,
+    createInputPlaceholder: 'intents',
     renderEmpty: ({ close, search }: { close: VoidFunction; search: string }) => (
       <Menu.NotFound>
         {!search ? 'No open intents exists in your project. ' : 'No open intents found. '}

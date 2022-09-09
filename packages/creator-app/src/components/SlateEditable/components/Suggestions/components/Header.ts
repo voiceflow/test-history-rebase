@@ -1,4 +1,4 @@
-import { menuItemStyles } from '@voiceflow/ui';
+import { Menu } from '@voiceflow/ui';
 
 import { styled } from '@/hocs';
 
@@ -9,7 +9,7 @@ interface HeaderProps {
 }
 
 const Header = styled.div<HeaderProps>`
-  ${menuItemStyles};
+  ${Menu.itemStyles};
   display: flex;
   border-bottom: 1px solid #eaeff4;
 

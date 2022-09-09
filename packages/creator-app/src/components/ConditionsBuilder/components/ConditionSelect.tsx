@@ -1,6 +1,6 @@
 import { BaseNode } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Dropdown, Menu, MenuItem, Text } from '@voiceflow/ui';
+import { Dropdown, Menu, Text } from '@voiceflow/ui';
 import React from 'react';
 
 import AddConditionButton from './AddConditionButton';
@@ -19,22 +19,22 @@ const ConditionSelect: React.FC<ConditionSelectProps> = ({ onChange, additional 
     <Dropdown
       menu={() => (
         <Menu>
-          <MenuItem onClick={onSelect(BaseNode.Utils.ConditionsLogicInterface.VARIABLE)}>Variable</MenuItem>
-          <MenuItem onClick={onSelect(BaseNode.Utils.ConditionsLogicInterface.VALUE)}>
+          <Menu.Item onClick={onSelect(BaseNode.Utils.ConditionsLogicInterface.VARIABLE)}>Variable</Menu.Item>
+          <Menu.Item onClick={onSelect(BaseNode.Utils.ConditionsLogicInterface.VALUE)}>
             <Text mr={6}>Value</Text>
             <Text fontSize={14} color="#62778c">
               (plain text)
             </Text>
-          </MenuItem>
+          </Menu.Item>
           {!isLogicGroup && (
-            <MenuItem onClick={onSelect(BaseNode.Utils.ConditionsLogicInterface.LOGIC_GROUP)}>
+            <Menu.Item onClick={onSelect(BaseNode.Utils.ConditionsLogicInterface.LOGIC_GROUP)}>
               <Text mr={6}>Logic group</Text>
               <Text fontSize={14} color="#62778c">
                 (and, or)
               </Text>
-            </MenuItem>
+            </Menu.Item>
           )}
-          {!(additional || isLogicGroup) && <MenuItem onClick={onSelect(BaseNode.Utils.ConditionsLogicInterface.EXPRESSION)}>Expression</MenuItem>}
+          {!(additional || isLogicGroup) && <Menu.Item onClick={onSelect(BaseNode.Utils.ConditionsLogicInterface.EXPRESSION)}>Expression</Menu.Item>}
         </Menu>
       )}
     >

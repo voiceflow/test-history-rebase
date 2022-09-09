@@ -2,9 +2,9 @@ import SvgIcon from '@ui/components/SvgIcon';
 import { styled } from '@ui/styles';
 
 // needs this to apply custom styles
-const ActionIcon = styled(SvgIcon).attrs({ variant: SvgIcon.Variant.STANDARD, clickable: true })`
+const ItemActionIcon = styled(SvgIcon).attrs({ variant: SvgIcon.Variant.STANDARD, clickable: true })`
   margin-left: auto;
   padding-left: 16px;
 `;
 
-export default ActionIcon;
+export default ItemActionIcon;

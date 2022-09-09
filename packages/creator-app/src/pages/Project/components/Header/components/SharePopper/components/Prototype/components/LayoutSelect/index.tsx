@@ -1,4 +1,4 @@
-import { Box, Checkbox, Menu, MenuItem } from '@voiceflow/ui';
+import { Box, Checkbox, Menu } from '@voiceflow/ui';
 import React from 'react';
 
 import DropdownWithCaret from '@/components/DropdownWithCaret';
@@ -43,7 +43,7 @@ const LayoutSelect: React.FC = () => {
         menu={(onToggle: () => void) => (
           <Menu width={CUSTOM_MENU_WIDTH}>
             {layoutOptions.map((option) => (
-              <MenuItem
+              <Menu.Item
                 key={option}
                 style={{ paddingTop: '12px', paddingBottom: '12px', height: 'auto' }}
                 onClick={onClick(option, onToggle)}
@@ -54,7 +54,7 @@ const LayoutSelect: React.FC = () => {
                   title={OPTION_DETAILS[option].title}
                   description={OPTION_DETAILS[option].description(platform)}
                 />
-              </MenuItem>
+              </Menu.Item>
             ))}
           </Menu>
         )}

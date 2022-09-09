@@ -4,7 +4,7 @@ import {
   ClickableText,
   getNestedMenuFormattedLabel,
   KeyName,
-  MenuContainer,
+  Menu,
   Portal,
   portalRootNode,
   preventDefault,
@@ -209,7 +209,7 @@ const Popper = <T extends PopperItem>({
   return (
     <Portal portalNode={portalNode}>
       <div ref={popper.setPopperElement} style={{ ...popper.styles.popper, zIndex: theme.zIndex.popper }} {...popper.attributes.popper}>
-        <MenuContainer onMouseDown={onFocusPopper} onClick={stopPropagation()}>
+        <Menu.Container onMouseDown={onFocusPopper} onClick={stopPropagation()}>
           <FadeDownDelayedContainer>
             {withHeader && (
               <Header active={activeIndex === 0} onMouseEnter={() => setActiveIndex(0)}>
@@ -244,7 +244,7 @@ const Popper = <T extends PopperItem>({
               ))}
             </Content>
           </FadeDownDelayedContainer>
-        </MenuContainer>
+        </Menu.Container>
       </div>
     </Portal>
   );

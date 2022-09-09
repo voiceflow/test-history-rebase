@@ -9,7 +9,7 @@ import { useDiagramsBlocksOptionsMap, useOnSelect } from './hooks';
 const MultilevelSelect: React.FC<ChildProps> = ({ onChange, ...props }) => {
   const diagramsBlocksOptions = useDiagramsBlocksOptionsMap();
 
-  const { options, optionsMap } = useDomainAndDiagramMultilevelSelectOptions(diagramsBlocksOptions);
+  const { options, optionsMap } = useDomainAndDiagramMultilevelSelectOptions(diagramsBlocksOptions, { diagramGroupName: 'Blocks' });
 
   const onSelect = useOnSelect(onChange, optionsMap);
 

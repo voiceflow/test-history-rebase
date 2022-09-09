@@ -1,6 +1,6 @@
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Dropdown, FlexApart, Menu, MenuItem, SvgIcon } from '@voiceflow/ui';
+import { Dropdown, FlexApart, Menu, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
 import PlanBubble from '@/components/PlanBubble';
@@ -64,12 +64,12 @@ const LeftNavSection: React.FC<LeftNavSectionProps> = ({ activeWorkspace }) => {
             {workspaces.map((workspace) => {
               const active = workspace.id === activeWorkspace?.id;
               return (
-                <MenuItem key={workspace.id} onClick={() => goToWorkspace(workspace.id)}>
+                <Menu.Item key={workspace.id} onClick={() => goToWorkspace(workspace.id)}>
                   <FlexApart style={{ width: '100%' }}>
                     <WorkspaceItemNameWrapper>{workspace.name}</WorkspaceItemNameWrapper>
                     {active && <SvgIcon icon="blocks" color="#becedc" />}
                   </FlexApart>
-                </MenuItem>
+                </Menu.Item>
               );
             })}
           </Menu>

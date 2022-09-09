@@ -1,6 +1,5 @@
 import composeRefs from '@seznam/compose-react-refs';
 import { FlexLabel } from '@ui/components/Flex';
-import SvgIcon from '@ui/components/SvgIcon';
 import { useCachedValue, useTheme } from '@ui/hooks';
 import { FadeDownDelayedContainer } from '@ui/styles/animations';
 import { ClassName } from '@ui/styles/constants';
@@ -8,12 +7,23 @@ import { getScrollbarWidth, stopImmediatePropagation, stopPropagation } from '@u
 import React from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 
-import { ActionIcon, ButtonContainer, Container, Footer, getMaxHeight, Item, itemStyles, MenuItemNote, NotFound } from './components';
+import {
+  ButtonContainer,
+  Container,
+  Footer,
+  getMaxHeight,
+  Item,
+  ItemActionIcon,
+  ItemIcon,
+  ItemNextIcon,
+  ItemNote,
+  itemStyles,
+  MAX_VISIBLE_ITEMS,
+  NotFound,
+} from './components';
 import * as T from './types';
 
 export * as MenuTypes from './types';
-
-export { Container as MenuContainer, Item as MenuItem, itemStyles as menuItemStyles };
 
 function Menu(props: T.PropsWithChildren & React.RefAttributes<T.RefElement>, ref: React.Ref<T.RefElement>): React.ReactElement;
 function Menu<Value = void>(props: T.PropsWithOptions<Value> & React.RefAttributes<T.RefElement>, ref: React.Ref<T.RefElement>): React.ReactElement;
@@ -28,6 +38,7 @@ function Menu<Value = void>(
     onToggle,
     onSelect,
     children,
+    placement,
     maxHeight,
     fullWidth,
     searchable,
@@ -94,6 +105,7 @@ function Menu<Value = void>(
       fullWidth={fullWidth}
       noTopPadding={noTopPadding}
       withScrollbars
+      data-placement={placement}
       maxVisibleItems={maxVisibleItems}
       nativeScrollbar={scrollBarWidth === 0}
       noBottomPadding={noBottomPadding || !!footerAction}
@@ -118,9 +130,11 @@ function Menu<Value = void>(
 
               return (
                 <Item {...props} key={key || `${index}-${label}`} onClick={onItemClick(value, onClick)}>
-                  {!!icon && <SvgIcon icon={icon} mr={16} color="#6e849ad9" />}
+                  {!!icon && <ItemIcon icon={icon} />}
+
                   <FlexLabel>{label || String(value)}</FlexLabel>
-                  {!!note && <MenuItemNote>{note}</MenuItemNote>}
+
+                  {!!note && <ItemNote>{note}</ItemNote>}
                 </Item>
               );
             })}
@@ -144,12 +158,15 @@ function Menu<Value = void>(
 export default Object.assign(React.forwardRef(Menu) as any as typeof Menu, {
   itemStyles,
   getMaxHeight,
+  MAX_VISIBLE_ITEMS,
 
   Item,
   Footer,
   NotFound,
-  ItemNote: MenuItemNote,
+  ItemIcon,
+  ItemNote,
   Container,
-  ActionIcon,
+  ItemNextIcon,
+  ItemActionIcon,
   ButtonContainer,
 });

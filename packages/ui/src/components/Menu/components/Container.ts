@@ -29,7 +29,7 @@ export const getMaxHeight = (
   return MAX_MENU_HEIGHT;
 };
 
-export interface MenuContainerProps {
+export interface ContainerProps {
   width?: number;
   height?: number;
   inline?: boolean;
@@ -43,7 +43,7 @@ export interface MenuContainerProps {
   disableAnimation?: boolean;
 }
 
-const MenuContainer = styled.ul<MenuContainerProps>`
+const Container = styled.ul<ContainerProps>`
   max-height: ${({ theme, withScrollbars, maxVisibleItems }) =>
     withScrollbars ? 'auto' : getMaxHeight(undefined, maxVisibleItems, theme.components.menuItem.height, true)};
   min-width: 100px;
@@ -65,7 +65,6 @@ const MenuContainer = styled.ul<MenuContainerProps>`
   line-height: 18px;
   list-style: none;
   overflow: hidden;
-  will-change: transform;
   padding: ${({ padding }) => padding || `${VERTICAL_PADDING}px 0`};
 
   ${({ inline }) =>
@@ -87,7 +86,13 @@ const MenuContainer = styled.ul<MenuContainerProps>`
     !disableAnimation &&
     !inline &&
     css`
+      will-change: transform;
       animation: fadein ${ANIMATION_SPEED}s ease, movein ${ANIMATION_SPEED}s ease, scaleY 0.1s ease;
+      transform-origin: top;
+
+      &[data-placement^='top'] {
+        transform-origin: bottom;
+      }
     `}
 
   ${({ noTopPadding }) =>
@@ -103,4 +108,4 @@ const MenuContainer = styled.ul<MenuContainerProps>`
     `}
 `;
 
-export default MenuContainer;
+export default Container;

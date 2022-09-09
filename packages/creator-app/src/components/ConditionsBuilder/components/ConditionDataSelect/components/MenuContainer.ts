@@ -1,8 +1,8 @@
-import { MenuContainer as BaseMenuContainer } from '@voiceflow/ui';
+import { Menu } from '@voiceflow/ui';
 
 import { styled } from '@/hocs';
 
-const MenuContainer = styled(BaseMenuContainer)`
+const MenuContainer = styled(Menu.Container)`
   z-index: ${({ theme }) => theme.zIndex.popper};
   max-width: 440px;
   width: 440px;

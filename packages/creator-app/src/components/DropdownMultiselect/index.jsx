@@ -1,4 +1,4 @@
-import { Checkbox, Dropdown, Menu, MenuItem, stopImmediatePropagation, SvgIcon } from '@voiceflow/ui';
+import { Checkbox, Dropdown, Menu, stopImmediatePropagation, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
 import { useKeygen } from '@/hooks';
@@ -70,7 +70,7 @@ function DropdownMultiselect({
               <span key={index}>
                 {sectionLabel && <SectionLabel>{sectionLabel}</SectionLabel>}
                 {options.map(({ value, label, onClick }) => (
-                  <MenuItem
+                  <Menu.Item
                     className={ClassName.MULTISELECT_ITEM}
                     key={genKey(value || label)}
                     onClick={stopImmediatePropagation(() => {
@@ -93,7 +93,7 @@ function DropdownMultiselect({
                         <Label style={customOptionLabelStyling}>{label || value.toString()}</Label>
                       </>
                     )}
-                  </MenuItem>
+                  </Menu.Item>
                 ))}
               </span>
             ))}

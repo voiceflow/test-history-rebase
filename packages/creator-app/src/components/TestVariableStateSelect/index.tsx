@@ -64,7 +64,7 @@ const TestVariableStateSelect: React.FC<TestVariableStateSelectProps> = ({ value
           </OverflowTippyTooltip>
 
           {option.label !== 'All project variables' && (
-            <Menu.ActionIcon icon="edit" onClick={() => openVariableStateManagerModal({ variableStateID: option.value })} />
+            <Menu.ItemActionIcon icon="edit" onClick={() => openVariableStateManagerModal({ variableStateID: option.value })} />
           )}
         </>
       )}

@@ -1,11 +1,11 @@
-import SvgIcon from '@ui/components/SvgIcon';
+import Menu from '@ui/components/Menu';
 import { styled } from '@ui/styles';
 
 export { default as GroupHeader } from './GroupHeader';
 export { default as SelectItem } from './SelectItem';
 
-export const SubLevelIcon = styled(SvgIcon)`
+export const SubLevelIcon = styled(Menu.ItemNextIcon)`
   position: absolute;
   top: 16px;
-  right: 20px;
+  right: 24px;
 `;

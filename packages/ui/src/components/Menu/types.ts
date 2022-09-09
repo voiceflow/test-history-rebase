@@ -3,11 +3,11 @@ import { Nullable } from '@voiceflow/common';
 import React from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 
-import { MenuItemProps } from './components';
+import { ItemProps } from './components';
 
-export type { MenuItemProps };
+export type { ItemProps };
 
-export interface BaseOption extends MenuItemProps {
+export interface BaseOption extends ItemProps {
   key?: string;
   icon?: SvgIconTypes.Icon;
   note?: React.ReactNode;
@@ -35,6 +35,7 @@ export interface BaseProps {
   onToggle?: () => void;
   fullWidth?: boolean;
   maxHeight?: number | string;
+  placement?: string;
   searchable?: React.ReactNode;
   selfDismiss?: boolean;
   noTopPadding?: boolean;

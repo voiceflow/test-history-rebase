@@ -1,7 +1,7 @@
 import { BaseModels } from '@voiceflow/base-types';
 import { PlanType } from '@voiceflow/internal';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, MenuItem, Portal, stopPropagation, SvgIcon, SvgIconTypes, TippyTooltip, usePopper } from '@voiceflow/ui';
+import { Box, Menu, Portal, stopPropagation, SvgIcon, SvgIconTypes, TippyTooltip, usePopper } from '@voiceflow/ui';
 import React from 'react';
 
 import { getLockedStepTooltipText, isLockedStep, lockedStepTooltipButtonText, lockedStepTypes } from '@/config/planLimits/steps';
@@ -61,7 +61,7 @@ const SubMenuButton: React.FC<SubMenuButtonProps> = ({ step, template, upgradePo
   };
 
   return (
-    <MenuItem
+    <Menu.Item
       ref={popper.setReferenceElement}
       className={ClassName.SUB_STEP_MENU_ITEM}
       disabled={isLocked as boolean}
@@ -94,7 +94,7 @@ const SubMenuButton: React.FC<SubMenuButtonProps> = ({ step, template, upgradePo
           </div>
         </Portal>
       )}
-    </MenuItem>
+    </Menu.Item>
   );
 };
 

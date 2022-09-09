@@ -569,7 +569,7 @@ function Select({
 
       {renderDropdown && (
         <NestedMenu
-          id={`${id}__nested-menu`}
+          id={id ? `${id}__nested-menu` : undefined}
           onHide={onHideMenu}
           grouped={grouped}
           options={optionsToRender}

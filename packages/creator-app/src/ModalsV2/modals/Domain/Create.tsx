@@ -3,7 +3,8 @@ import React from 'react';
 
 import Domains from '@/components/Domains';
 import * as Domain from '@/ducks/domain';
-import { useDispatch } from '@/hooks';
+import { useDispatch, useHotKeys } from '@/hooks';
+import { Hotkey } from '@/keymap';
 
 import manager from '../../manager';
 
@@ -25,9 +26,9 @@ const Create = manager.create<Props>(
         try {
           api.preventClose();
 
-          await createDomain({ name, live }, { navigateToDomain: true });
+          const domain = await createDomain({ name, live }, { navigateToDomain: true });
 
-          toast.success(`Successfully created "${name}" domain.`);
+          toast.success(`Successfully created "${domain.name}" domain.`);
 
           api.enableClose();
           api.close();
@@ -36,6 +37,8 @@ const Create = manager.create<Props>(
           api.enableClose();
         }
       };
+
+      useHotKeys(Hotkey.SUBMIT, onCreate, { preventDefault: true });
 
       return (
         <Modal type={type} maxWidth={400} opened={opened} hidden={hidden} animated={animated} onExited={api.remove}>
@@ -50,7 +53,7 @@ const Create = manager.create<Props>(
           </Modal.Header>
 
           <Modal.Body>
-            <Input value={name} readOnly={closePrevented} autoFocus placeholder="Enter domain name" onChangeText={setName} />
+            <Input value={name} readOnly={closePrevented} autoFocus placeholder="Enter domain name" onChangeText={setName} onEnterPress={onCreate} />
           </Modal.Body>
 
           <Modal.Footer gap={12}>

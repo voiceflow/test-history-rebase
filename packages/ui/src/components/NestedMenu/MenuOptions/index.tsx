@@ -77,13 +77,17 @@ function MenuOptions({
 
     const sharedProps = {
       ref: isFocused ? onItemRef?.(index) : null,
+      active: isFocused,
       // to prevent parent popper from closing onSelect
       onClick: stopImmediatePropagation(() => isSelectable && onSelect(getOptionValue(option), path, updatePosition)),
       isNested: grouped,
       className: ClassName.MENU_ITEM,
-      isFocused,
       onMouseEnter: () => onFocusItem?.(index),
     };
+
+    if (isBaseMenuItem(option) && option.groupHeader) {
+      return <GroupHeader isSmall>{renderLabel(option, { isFocused, optionsPath: path })}</GroupHeader>;
+    }
 
     if (isBaseMenuItem(option)) {
       return (
@@ -118,7 +122,7 @@ function MenuOptions({
               {({ ref }) => (
                 <SelectItem
                   ref={composeRef(ref, isFocused ? onItemRef?.(index) : null)}
-                  isFocused={isFocused}
+                  active={isFocused}
                   withSubLevel
                   onMouseEnter={() => onFocusItem?.(index)}
                 >
@@ -127,7 +131,7 @@ function MenuOptions({
                     optionsPath: path,
                   })}
 
-                  <SubLevelIcon icon="arrowRight" color="#BECEDC" size={10} />
+                  <SubLevelIcon />
                 </SelectItem>
               )}
             </Reference>

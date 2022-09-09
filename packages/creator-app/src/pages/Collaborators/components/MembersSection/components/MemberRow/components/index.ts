@@ -1,4 +1,4 @@
-import { Dropdown, FlexApart, MenuItem, SvgIcon } from '@voiceflow/ui';
+import { Dropdown, FlexApart, Menu, SvgIcon } from '@voiceflow/ui';
 
 import User from '@/components/User';
 import { css, styled } from '@/hocs';
@@ -69,4 +69,4 @@ export const MemberEmail = styled.div<{ pending?: boolean }>`
   padding-right: 12px;
 `;
 
-export const DropdownItem = styled(MenuItem)``;
+export const DropdownItem = styled(Menu.Item)``;

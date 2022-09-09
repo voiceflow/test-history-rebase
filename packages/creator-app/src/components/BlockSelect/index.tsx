@@ -26,6 +26,7 @@ const BlockSelect: React.FC<Props> = ({ value, clearable, startNodeIsDefault, ..
     inDropdownSearch: true,
     alwaysShowCreate: true,
     clearOnSelectActive: true,
+    createInputPlaceholder: 'blocks',
     renderEmpty: ({ search }: { search: string }) => (
       <Menu.NotFound>{!search ? 'No blocks exists in your project. ' : 'No blocks found. '}</Menu.NotFound>
     ),

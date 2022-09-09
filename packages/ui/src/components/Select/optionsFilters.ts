@@ -138,7 +138,9 @@ export const searchableOptionsFilter = <Option, Value>(
     [[], []]
   );
 
-  if (isUIOnlyMenuItemOption(matchedOptions[0])) {
+  const firstOption = matchedOptions[0];
+
+  if (isUIOnlyMenuItemOption(firstOption) && !firstOption.groupHeader) {
     matchedOptions.shift();
   }
 

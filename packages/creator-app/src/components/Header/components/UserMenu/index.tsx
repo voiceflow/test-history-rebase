@@ -1,4 +1,4 @@
-import { Dropdown, Menu, MenuItem, preventDefault, SvgIcon } from '@voiceflow/ui';
+import { Dropdown, Menu, preventDefault, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
@@ -20,13 +20,13 @@ export const UserMenu: React.FC<ConnectedUserMenuProps> = ({ user, logout }) => 
     <Dropdown
       menu={
         <Menu>
-          <MenuItem disabled>{user.email}</MenuItem>
-          <MenuItem divider />
+          <Menu.Item disabled>{user.email}</Menu.Item>
+          <Menu.Item divider />
 
           <StyledLink to="/account">
-            <MenuItem>Account</MenuItem>
+            <Menu.Item>Account</Menu.Item>
           </StyledLink>
-          <MenuItem onClick={preventDefault(logout) as any}>Logout</MenuItem>
+          <Menu.Item onClick={preventDefault(logout) as any}>Logout</Menu.Item>
         </Menu>
       }
       placement="bottom-end"

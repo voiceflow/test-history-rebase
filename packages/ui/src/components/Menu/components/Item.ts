@@ -3,9 +3,11 @@ import { colors, css, styled, ThemeColor, transition } from '@ui/styles';
 import { ClassName } from '@ui/styles/constants';
 import cn from 'classnames';
 
-import ActionIcon from './ActionIcon';
+import ItemActionIcon from './ItemActionIcon';
+import ItemIcon from './ItemIcon';
+import ItemNextIcon from './ItemNextIcon';
 
-export interface MenuItemProps {
+export interface ItemProps {
   style?: React.CSSProperties;
   height?: number | string;
   active?: boolean;
@@ -18,10 +20,23 @@ export interface MenuItemProps {
   bottomAction?: boolean;
 }
 
-const activeStyles = css`
+export const activeStyles = css`
   background: #eef4f6;
 
-  ${ActionIcon} {
+  &:hover {
+    background: #eef4f6;
+  }
+
+  ${ItemIcon} {
+    opacity: 1;
+  }
+
+  ${ItemNextIcon} {
+    transform: translateX(8px);
+    opacity: 1;
+  }
+
+  ${ItemActionIcon} {
     opacity: 0.85;
     display: block;
 
@@ -31,7 +46,7 @@ const activeStyles = css`
   }
 `;
 
-export const itemStyles = css<MenuItemProps>`
+export const itemStyles = css<ItemProps>`
   ${flexStyles}
   ${transition('background')}
 
@@ -64,7 +79,15 @@ export const itemStyles = css<MenuItemProps>`
       text-transform: capitalize;
     `}
 
-  ${ActionIcon} {
+  ${ItemIcon} {
+    opacity: 0.85;
+  }
+
+  ${ItemNextIcon} {
+    opacity: 0.65;
+  }
+
+  ${ItemActionIcon} {
     display: none;
   }
 
@@ -95,10 +118,10 @@ export const itemStyles = css<MenuItemProps>`
     `}
 `;
 
-const StyledMenuItem = styled.li.attrs<MenuItemProps>(({ className }) => ({
+const StyledItem = styled.li.attrs<ItemProps>(({ className }) => ({
   className: cn(className, ClassName.MENU_ITEM),
-}))<MenuItemProps>`
+}))<ItemProps>`
   ${itemStyles}
 `;
 
-export default StyledMenuItem;
+export default Object.assign(StyledItem, { activeStyles });

@@ -1,16 +1,16 @@
-import { BoxFlex } from '@ui/components/Box';
 import React from 'react';
 
-import GroupHeaderLine from './GroupHeaderLine';
-import GroupHeaderTitle from './GroupHeaderTitle';
+import * as S from './styles';
 
-const GroupHeader: React.FC = ({ children }) => {
-  return (
-    <BoxFlex pt={16} pb={8}>
-      <GroupHeaderTitle>{children}</GroupHeaderTitle>
-      <GroupHeaderLine />
-    </BoxFlex>
-  );
-};
+interface GroupHeaderProps {
+  isSmall?: boolean;
+}
+
+const GroupHeader: React.FC<GroupHeaderProps> = ({ isSmall, children }) => (
+  <S.Container isSmall={isSmall}>
+    <S.Title>{children}</S.Title>
+    <S.Line />
+  </S.Container>
+);
 
 export default GroupHeader;

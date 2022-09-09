@@ -33,5 +33,6 @@ export const createUIOnlyMenuItemOption = (
   vfUIOnly: true,
   readOnly: true,
   disabled: false,
+  groupHeader: false,
   menuItemProps,
 });

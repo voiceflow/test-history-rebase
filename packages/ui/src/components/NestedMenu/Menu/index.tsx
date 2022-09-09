@@ -1,6 +1,5 @@
 import composeRef from '@seznam/compose-react-refs';
 import Menu from '@ui/components/Menu';
-import { MAX_VISIBLE_ITEMS } from '@ui/components/Menu/components/MenuContainer';
 import Portal from '@ui/components/Portal';
 import { useDidUpdateEffect, usePersistFunction } from '@ui/hooks';
 import { swallowEvent } from '@ui/utils';
@@ -337,6 +336,7 @@ function BaseNestedMenu({
                 ref={menuRef}
                 onHide={onHide}
                 maxHeight={maxHeight}
+                placement={parentPlacement}
                 fullWidth
                 searchable={
                   (((creatable || (searchable && isDropdown)) && !directSearchMatch) || inDropdownSearch) && (
@@ -365,7 +365,7 @@ function BaseNestedMenu({
                   )
                 }
                 scrollbarsRef={scrollbarsRef}
-                maxVisibleItems={MAX_VISIBLE_ITEMS}
+                maxVisibleItems={Menu.MAX_VISIBLE_ITEMS}
                 disableAnimation={disableAnimation}
                 renderFooterAction={
                   renderFooterAction && ((props) => renderFooterAction({ ...props, searchLabel: (searchable ? searchLabel : newOptionLabel) ?? '' }))

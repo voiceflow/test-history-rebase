@@ -1,6 +1,6 @@
 import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
-import { Checkbox, Menu as UIMenu, Popper, SvgIcon } from '@voiceflow/ui';
+import { Checkbox, Menu as UIMenu, Popper } from '@voiceflow/ui';
 import React from 'react';
 
 interface CheckBoxItemProps {
@@ -49,7 +49,7 @@ const MenuItemStatusActionItem: React.FC<MenuItemStatusActionItemProps> = ({ sta
     {({ ref, popper, onClose, isOpened, onToggle }) => (
       <UIMenu.Item ref={ref} active={isOpened} onMouseEnter={onToggle} onMouseLeave={onClose}>
         Status
-        <SvgIcon icon="arrowRight" ml="auto" size={10} variant={SvgIcon.Variant.STANDARD} hovered={isOpened} clickable reducedOpacity />
+        <UIMenu.ItemNextIcon />
         {popper}
       </UIMenu.Item>
     )}

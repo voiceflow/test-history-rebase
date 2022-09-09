@@ -1,4 +1,4 @@
-import { backgrounds, colors, MenuItem, ThemeColor } from '@voiceflow/ui';
+import { backgrounds, colors, Menu, ThemeColor } from '@voiceflow/ui';
 
 import { css, styled } from '@/hocs';
 
@@ -10,7 +10,7 @@ export const activeStyle = css`
   }
 `;
 
-const Item = styled(MenuItem)`
+const Item = styled(Menu.Item)`
   &:hover {
     background: #fff;
   }

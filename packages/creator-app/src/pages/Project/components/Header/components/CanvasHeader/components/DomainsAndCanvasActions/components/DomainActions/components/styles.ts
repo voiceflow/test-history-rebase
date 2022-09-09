@@ -2,7 +2,7 @@ import { Input } from '@voiceflow/ui';
 
 import { styled } from '@/hocs';
 
-export const MenuSearchInput = styled(Input).attrs({ icon: 'search', iconProps: { color: '#6e849a' } })`
+export const MenuSearchInput = styled(Input).attrs({ icon: 'search', iconProps: { color: 'rgba(110,132, 154, 0.85)' } })`
   height: 42px;
   width: 100%;
   padding: 0 24px;

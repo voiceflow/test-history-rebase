@@ -8,7 +8,8 @@ export interface BaseMenuItem {
   vfUIOnly?: boolean;
   disabled?: boolean;
   readOnly?: boolean;
-  menuItemProps?: Omit<MenuTypes.MenuItemProps, 'disabled' | 'readOnly'>;
+  groupHeader?: boolean;
+  menuItemProps?: Omit<MenuTypes.ItemProps, 'disabled' | 'readOnly'>;
 }
 
 export interface UIOnlyMenuItemOption extends Required<BaseMenuItem> {

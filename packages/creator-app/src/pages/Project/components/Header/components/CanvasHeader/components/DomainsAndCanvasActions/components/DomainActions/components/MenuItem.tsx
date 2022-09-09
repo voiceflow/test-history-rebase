@@ -1,4 +1,4 @@
-import { Dropdown, getNestedMenuFormattedLabel, Menu as UIMenu, OverflowText, OverflowTippyTooltip, stopPropagation, SvgIcon } from '@voiceflow/ui';
+import { Dropdown, getNestedMenuFormattedLabel, Menu as UIMenu, OverflowText, OverflowTippyTooltip, stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 
 import MenuItemActions, { MenuItemActionsProps } from './MenuItemActions';
@@ -17,13 +17,13 @@ const MenuItem: React.FC<MenuItemProps> = ({ name, isRoot, search, onClick, ...a
         <OverflowTippyTooltip title={name} overflow>
           {(ref) => (
             <>
-              {isRoot && <SvgIcon mr={16} variant={SvgIcon.Variant.STANDARD} icon="systemHome2" />}
+              {isRoot && <UIMenu.ItemIcon ref={ref} icon="systemHome2" active={isOpened} />}
               <OverflowText ref={ref}>{getNestedMenuFormattedLabel(name, search)}</OverflowText>
             </>
           )}
         </OverflowTippyTooltip>
 
-        <UIMenu.ActionIcon ref={ref} icon="filter" onClick={stopPropagation(onToggle)} active={isOpened} />
+        <UIMenu.ItemActionIcon ref={ref} icon="filter" onClick={stopPropagation(onToggle)} active={isOpened} />
       </UIMenu.Item>
     )}
   </Dropdown>

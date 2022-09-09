@@ -1,6 +1,6 @@
 import { Nullable } from '@voiceflow/common';
 import { Comment } from '@voiceflow/realtime-sdk';
-import { BoxFlex, Dropdown, FlexEnd, IconButton, IconButtonVariant, Menu, MenuItem, swallowEvent, TippyTooltip } from '@voiceflow/ui';
+import { BoxFlex, Dropdown, FlexEnd, IconButton, IconButtonVariant, Menu, swallowEvent, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import PostButton from './PostButton';
@@ -41,8 +41,8 @@ const CommentActions: React.FC<CommentActionsProps> = ({
               portal={null}
               menu={
                 <Menu>
-                  {onEdit && <MenuItem onClick={onEdit}>Edit</MenuItem>}
-                  {onDelete && <MenuItem onClick={onDelete}>Delete</MenuItem>}
+                  {onEdit && <Menu.Item onClick={onEdit}>Edit</Menu.Item>}
+                  {onDelete && <Menu.Item onClick={onDelete}>Delete</Menu.Item>}
                 </Menu>
               }
             >

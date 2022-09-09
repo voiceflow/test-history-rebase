@@ -1,5 +1,5 @@
 import { BillingPeriod, PlanType, UserRole } from '@voiceflow/internal';
-import { Button, ClickableText, ControlledInput, Dropdown, FlexApart, FlexCenter, Menu, MenuItem, SvgIcon, toast } from '@voiceflow/ui';
+import { Button, ClickableText, ControlledInput, Dropdown, FlexApart, FlexCenter, Menu, SvgIcon, toast } from '@voiceflow/ui';
 import _isEmpty from 'lodash/isEmpty';
 import React, { useContext } from 'react';
 
@@ -151,7 +151,7 @@ const Payment: React.FC = () => {
         text: `${selectedPlan} PLAN`,
         menu: (
           <Menu>
-            <MenuItem onClick={() => setSelectedPlan(PlanType.PRO)}>Pro Plan</MenuItem>
+            <Menu.Item onClick={() => setSelectedPlan(PlanType.PRO)}>Pro Plan</Menu.Item>
           </Menu>
         ),
       }
@@ -160,7 +160,7 @@ const Payment: React.FC = () => {
         menu: (
           <Menu>
             {workspaces.map((workspace) => (
-              <MenuItem
+              <Menu.Item
                 key={workspace.id}
                 onClick={() => {
                   if (isWorkspaceAdmin(workspace.id)) {
@@ -171,7 +171,7 @@ const Payment: React.FC = () => {
                 }}
               >
                 {workspace.name}
-              </MenuItem>
+              </Menu.Item>
             ))}
           </Menu>
         ),

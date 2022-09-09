@@ -1,5 +1,5 @@
 import { UserRole } from '@voiceflow/internal';
-import { Button, ButtonVariant, Menu, MenuItem, toast } from '@voiceflow/ui';
+import { Button, ButtonVariant, Menu, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';
@@ -91,9 +91,9 @@ const InviteByLinkFooter: React.FC = () => {
           alwaysBlue
           menu={(onToggle: () => void) => (
             <Menu>
-              <MenuItem onClick={() => handlePermissionChange(onToggle, UserRole.EDITOR)}>can edit</MenuItem>
-              <MenuItem onClick={() => handlePermissionChange(onToggle, UserRole.VIEWER)}>can view</MenuItem>
-              {canManageAdminCollaborators && <MenuItem onClick={() => handlePermissionChange(onToggle, UserRole.ADMIN)}>can admin</MenuItem>}
+              <Menu.Item onClick={() => handlePermissionChange(onToggle, UserRole.EDITOR)}>can edit</Menu.Item>
+              <Menu.Item onClick={() => handlePermissionChange(onToggle, UserRole.VIEWER)}>can view</Menu.Item>
+              {canManageAdminCollaborators && <Menu.Item onClick={() => handlePermissionChange(onToggle, UserRole.ADMIN)}>can admin</Menu.Item>}
             </Menu>
           )}
           text={PermissionText[linkInvitePermission]}

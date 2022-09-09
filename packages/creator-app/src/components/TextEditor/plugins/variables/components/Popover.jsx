@@ -1,4 +1,4 @@
-import { Input, Link, MenuContainer, Portal, preventDefault, stopPropagation } from '@voiceflow/ui';
+import { Input, Link, Menu, Portal, preventDefault, stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 
 import { TextEditorVariablesPopoverConsumer } from '@/contexts';
@@ -56,7 +56,7 @@ export default React.forwardRef(
       {(portalNode) => (
         <Portal portalNode={portalNode}>
           <PopoverContainer ref={ref} onClick={stopPropagation()}>
-            <MenuContainer onBlur={creatable ? onBlurInput : undefined}>
+            <Menu.Container onBlur={creatable ? onBlurInput : undefined}>
               <FadeDownDelayedContainer>
                 {creatable && (
                   <>
@@ -87,7 +87,7 @@ export default React.forwardRef(
 
                 {children}
               </FadeDownDelayedContainer>
-            </MenuContainer>
+            </Menu.Container>
           </PopoverContainer>
         </Portal>
       )}

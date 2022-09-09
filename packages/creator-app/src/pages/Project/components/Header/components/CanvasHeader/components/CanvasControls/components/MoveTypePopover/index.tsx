@@ -1,4 +1,4 @@
-import { BlockText, Box, Checkbox, Menu, MenuItem } from '@voiceflow/ui';
+import { BlockText, Box, Checkbox, Menu } from '@voiceflow/ui';
 import React from 'react';
 
 import { ControlScheme } from '@/components/Canvas/constants';
@@ -38,7 +38,7 @@ const MoveTypePopover: React.FC<MoveTypePopoverProps> = ({ closePopover }) => {
   return (
     <Menu>
       {OPTIONS.map(({ id, label, description }) => (
-        <MenuItem key={id} height="auto" onClick={() => onSetNavigation(id)}>
+        <Menu.Item key={id} height="auto" onClick={() => onSetNavigation(id)}>
           <Container>
             <Box mr={12}>
               <Checkbox type={Checkbox.Type.RADIO} checked={id === canvasNavigation} />
@@ -52,7 +52,7 @@ const MoveTypePopover: React.FC<MoveTypePopoverProps> = ({ closePopover }) => {
               </BlockText>
             </div>
           </Container>
-        </MenuItem>
+        </Menu.Item>
       ))}
     </Menu>
   );

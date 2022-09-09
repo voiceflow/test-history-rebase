@@ -1,9 +1,9 @@
-import { menuItemStyles } from '@voiceflow/ui';
+import { Menu } from '@voiceflow/ui';
 
 import { styled } from '@/hocs';
 
 const SelectInputOptionWrapperAbsolute = styled.div`
-  ${menuItemStyles};
+  ${Menu.itemStyles};
   position: absolute;
   top: 0;
   right: 0;

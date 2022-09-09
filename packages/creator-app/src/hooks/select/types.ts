@@ -1,3 +1,5 @@
+import { UIOnlyMenuItemOption } from '@voiceflow/ui';
+
 export interface BaseSelectOption {
   id: string;
   label: string;
@@ -8,5 +10,5 @@ export interface BaseSelectGroup<Option> extends BaseSelectOption {
 }
 
 export interface BaseSelectMultilevel<Option> extends BaseSelectOption {
-  options: Array<Option | BaseSelectMultilevel<Option>>;
+  options: Array<Option | BaseSelectMultilevel<Option> | UIOnlyMenuItemOption>;
 }

@@ -1,5 +1,5 @@
 import { UserRole } from '@voiceflow/internal';
-import { ClickableText, Dropdown, IconButton, IconButtonVariant, Menu, MenuItem, Text, TippyTooltip } from '@voiceflow/ui';
+import { ClickableText, Dropdown, IconButton, IconButtonVariant, Menu, Text, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import { Permission } from '@/config/permissions';
@@ -32,38 +32,38 @@ const SettingsButton: React.FC = () => {
           <Menu noBottomPadding>
             {canViewSettingsWorkspace && (
               <>
-                <MenuItem onClick={() => collaboratorsModal.openVoid()}>Manage Collaborators</MenuItem>
-                <MenuItem onClick={goToWorkspaceSettings}>Workspace Settings</MenuItem>
-                <MenuItem divider style={{ marginBottom: 0 }} />
+                <Menu.Item onClick={() => collaboratorsModal.openVoid()}>Manage Collaborators</Menu.Item>
+                <Menu.Item onClick={goToWorkspaceSettings}>Workspace Settings</Menu.Item>
+                <Menu.Item divider style={{ marginBottom: 0 }} />
               </>
             )}
             {!canNotLeaveWorkspace && (
               <>
-                <MenuItem onClick={leaveWorkspace}>Leave Workspace</MenuItem>
-                <MenuItem divider style={{ marginBottom: 0 }} />
+                <Menu.Item onClick={leaveWorkspace}>Leave Workspace</Menu.Item>
+                <Menu.Item divider style={{ marginBottom: 0 }} />
               </>
             )}
 
             {canViewSettingsWorkspace ? (
               <>
                 {plan ? (
-                  <MenuItem disabled capitalize ending>
+                  <Menu.Item disabled capitalize ending>
                     <Text color="#62778c">{PLAN_TYPE_META[plan].label} Plan &nbsp;-&nbsp; </Text>
 
                     <ClickableText onClick={openUpgrade}>{isOnPaidPlan ? <span>Manage</span> : <span>Upgrade</span>}</ClickableText>
-                  </MenuItem>
+                  </Menu.Item>
                 ) : (
-                  <MenuItem onClick={togglePayment} style={{ color: '#279745' }}>
+                  <Menu.Item onClick={togglePayment} style={{ color: '#279745' }}>
                     Upgrade Workspace
-                  </MenuItem>
+                  </Menu.Item>
                 )}
               </>
             ) : (
               <>
                 {(isEditor || isViewer) && (
-                  <MenuItem disabled ending>
+                  <Menu.Item disabled ending>
                     <Text color="#62778c">Workspace {isEditor ? 'Editor' : 'Viewer'}</Text>
-                  </MenuItem>
+                  </Menu.Item>
                 )}
               </>
             )}

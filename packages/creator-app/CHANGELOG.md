@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.895.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.895.0...@voiceflow/creator-app@1.895.1) (2022-09-09)
+
+
+### Bug Fixes
+
+* add url action to carousel (CT-809) ([#5989](https://github.com/voiceflow/creator-app/issues/5989)) ([729ff17](https://github.com/voiceflow/creator-app/commit/729ff17e2d558fc43ce7140497ca0716656df33f))
+
+
+
+
+
 # [1.895.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.894.3...@voiceflow/creator-app@1.895.0) (2022-09-09)
 
 

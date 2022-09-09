@@ -9,7 +9,7 @@ import * as S from './styles';
 export interface HeaderProps {
   border?: boolean;
   actions?: React.ReactNode;
-  intoTooltip?: React.ReactNode;
+  infoTooltip?: React.ReactNode;
   capitalizeText?: boolean;
 }
 
@@ -17,14 +17,14 @@ const CloseButton: React.FC<Omit<IconButtonBasicContainerProps, 'size' | 'icon' 
   <IconButton size={16} icon="close" variant={IconButton.Variant.BASIC} className={ClassName.MODAL_CLOSE_BUTTON_REGULAR} {...props} />
 );
 
-const Header: React.FC<HeaderProps> = ({ border, actions, children, intoTooltip, capitalizeText = true }) => (
+const Header: React.FC<HeaderProps> = ({ border, actions, children, infoTooltip, capitalizeText = true }) => (
   <S.Container border={border} capitalizeText={capitalizeText}>
     <Box.Flex gap={8} height="100%">
       <Box.Flex height="100%" className={ClassName.MODAL_TITLE_CONTAINER}>
         {children}
       </Box.Flex>
 
-      {intoTooltip && <TutorialInfoIcon>{intoTooltip}</TutorialInfoIcon>}
+      {infoTooltip && <TutorialInfoIcon>{infoTooltip}</TutorialInfoIcon>}
     </Box.Flex>
 
     {!!actions && (

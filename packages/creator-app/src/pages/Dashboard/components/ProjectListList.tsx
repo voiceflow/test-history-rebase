@@ -17,6 +17,7 @@ import { UpgradePrompt } from '@/ducks/tracking';
 import { WorkspaceFeatureLoadingGate, WorkspaceSubscriptionGate } from '@/gates';
 import { DragItem as BaseDragItem, HoverItem as BaseHoverItem, withBatchLoadingGate } from '@/hocs';
 import { useDispatch, useModals, usePermission, useScrollHelpers, useSelector, useTrackingEvents } from '@/hooks';
+import * as ModalsV2 from '@/ModalsV2';
 import { DashboardClassName, Identifier } from '@/styles/constants';
 
 import { Item as ListItem, ItemProps as ListItemProps } from './Item';
@@ -61,7 +62,7 @@ const ProjectListList: React.FC<ProjectListListProps> = ({ workspace, filter, is
 
   const [canManageLists] = usePermission(Permission.MANAGE_PROJECT_LISTS);
   const { bodyRef, innerRef, scrollHelpers } = useScrollHelpers<HTMLDivElement, HTMLDivElement>();
-  const { open: openProjectCreateModal } = useModals(ModalType.PROJECT_CREATE_MODAL);
+  const projectCreateModal = ModalsV2.useModal(ModalsV2.Project.Create);
   const { open: openUpgradeModal } = useModals(ModalType.UPGRADE_MODAL);
   const [trackingEvents] = useTrackingEvents();
 
@@ -79,7 +80,7 @@ const ProjectListList: React.FC<ProjectListListProps> = ({ workspace, filter, is
         trackingEvents.trackUpgradePrompt({ promptType: UpgradePrompt.PROJECT_LIMIT });
         openUpgradeModal({ planLimitDetails: ProjectLimitDetails, promptOrigin: UpgradePrompt.PROJECT_LIMIT });
       } else {
-        openProjectCreateModal({
+        projectCreateModal.openVoid({
           listID: id,
         });
       }

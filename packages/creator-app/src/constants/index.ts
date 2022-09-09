@@ -234,7 +234,6 @@ export const AV_FORMATS_STREAMING = [...AV_FILE_FORMATS, 'audio/x-mpegurl', 'app
 
 export enum ModalType {
   PAYMENT = 'payment',
-  COLLABORATORS = 'collaborators',
 
   SUCCESS = 'success',
 
@@ -279,8 +278,6 @@ export enum ModalType {
 
   VARIABLE_STATE_EDITOR_MODAL = 'variable-state-editor-modal',
   VARIABLE_STATES_MANAGER_MODAL = 'variable-states-manager-modal',
-
-  PROJECT_CREATE_MODAL = 'project-create-modal',
 
   PUBLISH_VERSION_MODAL = 'publish-version-modal',
 

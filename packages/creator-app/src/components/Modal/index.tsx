@@ -28,7 +28,7 @@ export interface UncontrolledModalProps {
   verticalMargin?: number;
   className?: string;
   withHeader?: boolean;
-  intoTooltip?: React.ReactNode;
+  infoTooltip?: React.ReactNode;
   headerActions?: React.ReactNode;
   headerBorder?: boolean;
   fullScreen?: boolean;
@@ -57,7 +57,7 @@ export const UncontrolledModal = React.forwardRef<HTMLDivElement, React.PropsWit
       children,
       className,
       withHeader = true,
-      intoTooltip,
+      infoTooltip,
       headerActions,
       leftSidebar,
       fullScreen = false,
@@ -96,7 +96,7 @@ export const UncontrolledModal = React.forwardRef<HTMLDivElement, React.PropsWit
                         </>
                       ) : null
                     }
-                    intoTooltip={intoTooltip}
+                    infoTooltip={infoTooltip}
                     capitalizeText={capitalizeText}
                   >
                     {title}

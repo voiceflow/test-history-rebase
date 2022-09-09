@@ -8,6 +8,7 @@ import * as Router from '@/ducks/router';
 import * as Workspace from '@/ducks/workspace';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useDispatch, useModals, usePermission, useSelector } from '@/hooks';
+import * as ModalsV2 from '@/ModalsV2';
 
 const SettingsButton: React.FC = () => {
   const plan = useSelector(WorkspaceV2.active.planSelector);
@@ -17,7 +18,7 @@ const SettingsButton: React.FC = () => {
   const goToWorkspaceSettings = useDispatch(Router.goToCurrentWorkspaceSettings);
 
   const { toggle: togglePayment, open: openUpgrade } = useModals(ModalType.PAYMENT);
-  const { toggle: toggleCollaborators } = useModals(ModalType.COLLABORATORS);
+  const collaboratorsModal = ModalsV2.useModal(ModalsV2.Collaborators);
   const [canViewSettingsWorkspace, { activeRole }] = usePermission(Permission.VIEW_SETTINGS_WORKSPACE);
   const [canNotLeaveWorkspace] = usePermission(Permission.UNABLE_TO_LEAVE_WORKSPACE);
 
@@ -31,7 +32,7 @@ const SettingsButton: React.FC = () => {
           <Menu noBottomPadding>
             {canViewSettingsWorkspace && (
               <>
-                <MenuItem onClick={toggleCollaborators}>Manage Collaborators</MenuItem>
+                <MenuItem onClick={() => collaboratorsModal.openVoid()}>Manage Collaborators</MenuItem>
                 <MenuItem onClick={goToWorkspaceSettings}>Workspace Settings</MenuItem>
                 <MenuItem divider style={{ marginBottom: 0 }} />
               </>

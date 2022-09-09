@@ -7,10 +7,10 @@ import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import client from '@/client';
-import { ModalType, NLUImportOrigin, PlatformToNLPProvider } from '@/constants';
+import { NLUImportOrigin, PlatformToNLPProvider } from '@/constants';
 import * as Project from '@/ducks/project';
 import * as Router from '@/ducks/router';
-import { useDispatch, useModals, useTrackingEvents } from '@/hooks';
+import { useDispatch, useTrackingEvents } from '@/hooks';
 import LOCALE_MAP from '@/services/LocaleMap';
 import {
   isAlexaPlatform,
@@ -27,10 +27,12 @@ import { AnyLanguage, AnyLocale, ImportModel, SupportedPlatformProjectType, Supp
 import { updatePlatformMetaCalls } from './updatePlatformMeta';
 
 interface NewProjectProps {
-  onCreatingProject: (val: boolean) => void;
+  onToggleCreating: (val: boolean) => void;
+  onClose: VoidFunction;
+  listID?: string;
 }
 
-const NewProject: React.FC<NewProjectProps> = ({ onCreatingProject }) => {
+const NewProject: React.FC<NewProjectProps> = ({ onToggleCreating, onClose, listID }) => {
   const [nlu, setNlu] = React.useState<Nullable<SupportedPlatformType>>(null);
   const [channel, setChannel] = React.useState<Nullable<SupportedPlatformProjectType>>(null);
   const [language, setLanguage] = React.useState<Nullable<AnyLanguage>>(null);
@@ -47,8 +49,6 @@ const NewProject: React.FC<NewProjectProps> = ({ onCreatingProject }) => {
   const redirectToDomain = useDispatch(Router.redirectToDomain);
 
   const { updateDialogFlowMeta, updateGeneralMeta, updateAlexaMeta, updateGoogleMeta } = updatePlatformMetaCalls();
-
-  const { close: closeProjectCreateModal, data } = useModals<{ listID?: string }>(ModalType.PROJECT_CREATE_MODAL);
 
   const invocationErrorMessage = React.useMemo(() => {
     if (!invocationName || !channel) return '';
@@ -112,13 +112,13 @@ const NewProject: React.FC<NewProjectProps> = ({ onCreatingProject }) => {
     const alexaLocalesToUse: AnyLocale[] = alexaLocales || (getDefaultLanguage(platformType) as AnyLocale[]);
 
     try {
-      onCreatingProject(true);
+      onToggleCreating(true);
       setIsCreating(true);
 
       const project = await createProject(
         {
           name: DEFAULT_PROJECT_NAME,
-          listID: data.listID,
+          listID,
           platform: platformType!,
           language: getLanguage(languageToUse!, alexaLocalesToUse, platformType!),
           onboarding: false,
@@ -151,8 +151,7 @@ const NewProject: React.FC<NewProjectProps> = ({ onCreatingProject }) => {
       }
     } finally {
       setIsCreating(false);
-      closeProjectCreateModal();
-      onCreatingProject(false);
+      onClose();
     }
 
     if (newVersionID) {
@@ -189,7 +188,7 @@ const NewProject: React.FC<NewProjectProps> = ({ onCreatingProject }) => {
         </Container>
       </Box>
 
-      <Footer onCreate={handleOnCreate} onCancel={closeProjectCreateModal} isCreating={isCreating} />
+      <Footer onCreate={handleOnCreate} onCancel={onClose} isCreating={isCreating} />
     </>
   );
 };

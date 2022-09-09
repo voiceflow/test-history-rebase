@@ -1,11 +1,11 @@
-import { BoxFlex } from '@voiceflow/ui';
+import { Box } from '@voiceflow/ui';
 import React from 'react';
 
 import Members from '@/components/Members';
 import { Permission } from '@/config/permissions';
-import { ModalType } from '@/constants';
 import * as DiagramV2 from '@/ducks/diagramV2';
-import { useModals, usePermission, useSelector } from '@/hooks';
+import { usePermission, useSelector } from '@/hooks';
+import * as ModalsV2 from '@/ModalsV2';
 
 interface CanvasViewersProps {
   flat?: boolean;
@@ -15,16 +15,16 @@ interface CanvasViewersProps {
 const CanvasViewers: React.FC<CanvasViewersProps> = ({ flat, withAdd = true }) => {
   const [canAddCollaborators] = usePermission(Permission.ADD_COLLABORATORS);
   const [canViewCollaborators] = usePermission(Permission.VIEW_COLLABORATORS);
-  const { toggle: toggleCollaborators } = useModals(ModalType.COLLABORATORS);
+  const collaboratorsModal = ModalsV2.useModal(ModalsV2.Collaborators);
   const diagramIDs = useSelector(DiagramV2.allDiagramIDsSelector);
   const viewers = useSelector(DiagramV2.diagramsViewersByIDsSelector, { ids: diagramIDs });
 
   if (!canViewCollaborators) return null;
 
   return (
-    <BoxFlex minWidth={53}>
-      <Members flat={flat} onAdd={withAdd && canAddCollaborators ? () => toggleCollaborators() : undefined} members={viewers} />
-    </BoxFlex>
+    <Box.Flex minWidth={53}>
+      <Members flat={flat} onAdd={withAdd && canAddCollaborators ? () => collaboratorsModal.openVoid() : undefined} members={viewers} />
+    </Box.Flex>
   );
 };
 

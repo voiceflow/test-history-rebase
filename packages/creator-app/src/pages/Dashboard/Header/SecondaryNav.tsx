@@ -4,8 +4,8 @@ import React from 'react';
 
 import Members from '@/components/Members';
 import { Permission } from '@/config/permissions';
-import { ModalType } from '@/constants';
-import { useModals, usePermission } from '@/hooks';
+import { usePermission } from '@/hooks';
+import * as ModalsV2 from '@/ModalsV2';
 
 import { ProjectSearchContainer, ProjectSearchInput } from './components';
 
@@ -15,7 +15,7 @@ interface SecondaryNavProps {
 }
 
 const SecondaryNav: React.FC<SecondaryNavProps> = ({ workspace: selectedWorkspace, handleFilterText }) => {
-  const { toggle: toggleCollaborators } = useModals(ModalType.COLLABORATORS);
+  const collaboratorsModal = ModalsV2.useModal(ModalsV2.Collaborators);
   const [canAddCollaborators] = usePermission(Permission.ADD_COLLABORATORS);
   const [canViewCollaborators] = usePermission(Permission.VIEW_COLLABORATORS);
 
@@ -32,7 +32,7 @@ const SecondaryNav: React.FC<SecondaryNavProps> = ({ workspace: selectedWorkspac
 
       <Flex>
         {selectedWorkspace && canViewCollaborators && (
-          <Members members={selectedWorkspace.members} onAdd={canAddCollaborators ? () => toggleCollaborators() : undefined} />
+          <Members members={selectedWorkspace.members} onAdd={canAddCollaborators ? () => collaboratorsModal.openVoid() : undefined} />
         )}
       </Flex>
     </>

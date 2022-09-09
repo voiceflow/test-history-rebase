@@ -11,6 +11,7 @@ import * as Notifications from '@/ducks/notifications';
 import * as Router from '@/ducks/router';
 import { withBatchLoadingGate } from '@/hocs';
 import { useActiveWorkspace, useDispatch, useModals, useSetup, useWorkspaceTracking } from '@/hooks';
+import * as ModalsV2 from '@/ModalsV2';
 import perf, { PerfAction } from '@/performance';
 import { DashboardClassName } from '@/styles/constants';
 import * as Query from '@/utils/query';
@@ -29,7 +30,7 @@ const Dashboard: React.FC = () => {
 
   const [filterText, handleFilterText] = React.useState('');
   const { open: openImportModal } = useModals(ModalType.IMPORT_PROJECT);
-  const { open: openCollaboratorsModal } = useModals(ModalType.COLLABORATORS);
+  const collaboratorsModal = ModalsV2.useModal(ModalsV2.Collaborators);
   const { open: openPaymentModal } = useModals(ModalType.PAYMENT);
 
   useSetup(() => {
@@ -40,7 +41,7 @@ const Dashboard: React.FC = () => {
       clearSearch();
       openImportModal({ projectID: query?.import });
     } else if (query?.invite_collaborators) {
-      openCollaboratorsModal();
+      collaboratorsModal.openVoid();
     } else if (query?.upgrade_workspace) {
       openPaymentModal();
     }

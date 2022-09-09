@@ -14,7 +14,6 @@ import EditEntityModal from '@/pages/Canvas/components/EntityModalsV2/EditModal'
 import CreateIntentModal from '@/pages/Canvas/components/IntentModalsV2/CreateModal';
 import EditIntentModal from '@/pages/Canvas/components/IntentModalsV2/EditModal';
 import CreateVariableModal from '@/pages/Canvas/components/VariableModalsV2/CreateModal';
-import CollaboratorsModal from '@/pages/Collaborators/CollaboratorsModal';
 import ImportModal from '@/pages/Dashboard/components/ImportModal';
 import {
   CanvasExportModal,
@@ -23,7 +22,6 @@ import {
   RealtimeDeniedModal,
   TestableLinkModal,
 } from '@/pages/Dashboard/RestrictionModals';
-import ProjectCreateModal from '@/pages/NewProjectV2/NewProjectModal';
 import PaymentModal from '@/pages/Payment/PaymentModal';
 import { Dialogflow } from '@/platforms';
 
@@ -36,7 +34,6 @@ const AppModals: React.FC = () => {
       <ReduxConfirmModal />
       <ErrorModal />
       <StandardModal />
-      <CollaboratorsModal />
       <ImportModal />
       <UpgradeModal />
       <LoadingModal />
@@ -63,7 +60,6 @@ const AppModals: React.FC = () => {
 
       <BulkImportSlots />
       <BulkImportUtterances />
-      <ProjectCreateModal />
 
       <PublishVersionModal />
     </>

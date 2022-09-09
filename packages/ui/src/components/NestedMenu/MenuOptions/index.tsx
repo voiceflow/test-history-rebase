@@ -73,13 +73,12 @@ function MenuOptions({
    */
   const renderOption = ({ key, path, index, option }: { key: string; path: number[]; index: number; option: unknown }) => {
     const isFocused = focusedOptionIndex === index;
+    const isSelectable = !isBaseMenuItem(option) || (!option.disabled && !option.readOnly);
 
     const sharedProps = {
       ref: isFocused ? onItemRef?.(index) : null,
       // to prevent parent popper from closing onSelect
-      onClick: stopImmediatePropagation(
-        () => (!isBaseMenuItem(option) || !option.disabled || !option.readOnly) && onSelect(getOptionValue(option), path, updatePosition)
-      ),
+      onClick: stopImmediatePropagation(() => isSelectable && onSelect(getOptionValue(option), path, updatePosition)),
       isNested: grouped,
       className: ClassName.MENU_ITEM,
       isFocused,

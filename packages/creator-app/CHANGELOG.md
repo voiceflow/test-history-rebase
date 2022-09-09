@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.894.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.894.1...@voiceflow/creator-app@1.894.2) (2022-09-09)
+
+
+### Bug Fixes
+
+* dashboard modals v2 (CT-689) ([#5975](https://github.com/voiceflow/creator-app/issues/5975)) ([ac77f00](https://github.com/voiceflow/creator-app/commit/ac77f0067dbb3d2535e7bebbd517a8ef31f2e8a4))
+
+
+
+
+
 ## [1.894.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.894.0...@voiceflow/creator-app@1.894.1) (2022-09-08)
 
 

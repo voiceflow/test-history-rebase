@@ -1,6 +1,12 @@
 import { KeyName } from '@ui/constants';
 import { Point } from '@ui/types';
 
+export enum DataTypes {
+  TEXT = 'text/plain;charset=utf-8',
+  JSON = 'text/json;charset=utf-8',
+  CSV = 'text/csv;encoding:utf-8',
+}
+
 /**
  * Get the width of the browser scrollbar
  */
@@ -99,4 +105,21 @@ export const buildVirtualElement = (point: Point = [0, 0]) => {
     clientWidth: 0,
     clientHeight: 0,
   };
+};
+
+export const downloadFromURL = (filename: string, url: string) => {
+  const element = document.createElement('a');
+  element.setAttribute('href', url);
+  element.setAttribute('download', filename);
+
+  element.style.display = 'none';
+  document.body.appendChild(element);
+
+  element.click();
+
+  document.body.removeChild(element);
+};
+
+export const download = (filename: string, text: string, data = DataTypes.TEXT) => {
+  downloadFromURL(filename, `data:${data},${encodeURIComponent(text)}`);
 };

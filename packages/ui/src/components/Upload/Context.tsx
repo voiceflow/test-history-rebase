@@ -1,7 +1,7 @@
 import { useContextApi } from '@ui/hooks';
 import React from 'react';
 
-export type UploadFileType = 'audio' | 'image' | 'video';
+export type UploadFileType = 'audio' | 'image' | 'video' | 'JSON';
 
 export interface UploadValue {
   upload: (endpoint: string, fileType: UploadFileType, file: FormData) => Promise<string>;

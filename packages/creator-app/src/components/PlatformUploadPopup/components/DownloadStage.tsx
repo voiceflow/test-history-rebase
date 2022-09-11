@@ -1,8 +1,7 @@
-import { toast, useSetup } from '@voiceflow/ui';
+import { DataTypes, download, toast, useSetup } from '@voiceflow/ui';
 import React from 'react';
 
 import { AlexaExportJob, DialogflowExportJob, GeneralJob, GoogleExportJob, JobStageData } from '@/models';
-import { DataTypes, download } from '@/utils/dom';
 
 interface DownloadProps {
   cancel: () => void;

@@ -1,8 +1,10 @@
+import { SpaceProps } from 'styled-system';
+
 export interface BaseInjectedWithUploadProps {
   error: null | string;
   setError: (error: null | string) => void;
   isLoading: boolean;
-  onDropRejected: () => void;
+  onDropRejected: VoidFunction;
   onDropAccepted: (files: File[]) => void;
 }
 
@@ -22,3 +24,10 @@ export interface WithMultiUploadProps {
 }
 
 export type AnyWithUploadProps = WithSingleUploadProps | WithMultiUploadProps;
+
+export interface ValueRendererProps {
+  value: string;
+  openFileSelection: VoidFunction;
+}
+
+export interface RootDropAreaProps extends SpaceProps {}

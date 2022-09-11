@@ -3,11 +3,22 @@ import { FlexCenter } from '@ui/components/Flex';
 import { LoadCircle, LoaderProps } from '@ui/components/Loader';
 import SvgIcon from '@ui/components/SvgIcon';
 import { css, styled, transition } from '@ui/styles';
+import { space } from 'styled-system';
+
+import { RootDropAreaProps } from '../../types';
 
 interface ContainerProps {
   active?: boolean;
   hasError?: boolean;
 }
+
+export const DropContainer = styled.div`
+  height: 170px;
+`;
+
+export const RootDropArea = styled.div<RootDropAreaProps>`
+  ${space}
+`;
 
 export const Container = styled(FlexCenter)<ContainerProps>`
   height: 100%;

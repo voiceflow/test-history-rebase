@@ -4,6 +4,7 @@ export { createShadesFromHue } from './colors/hsl';
 export * from './cookies';
 export * from './dom';
 export * from './fetch';
+export * from './JSON';
 export * from './logger';
 export * from './query';
 export * from './refs';

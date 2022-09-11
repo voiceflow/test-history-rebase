@@ -6,7 +6,17 @@ import { BlockType } from '@/constants';
 
 import { NodeConfig } from '../types';
 
-export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Visual, Realtime.NodeData.VisualBuiltInPorts> = {
+export const displayFactory = (aplType = BaseNode.Visual.APLType.SPLASH): BaseNode.Visual.APLStepData => ({
+  title: '',
+  aplType,
+  visualType: BaseNode.Visual.VisualType.APL,
+  imageURL: '',
+  document: '',
+  datasource: '',
+  jsonFileName: '',
+});
+
+export const NODE_CONFIG: NodeConfig<BaseNode.Visual.APLStepData, Realtime.NodeData.VisualBuiltInPorts> = {
   type: BlockType.DISPLAY,
   icon: 'displayV2',
 
@@ -26,13 +36,7 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Visual, Realtime.NodeData
     },
     data: {
       name: 'Display',
-      title: '',
-      aplType: BaseNode.Visual.APLType.SPLASH,
-      visualType: BaseNode.Visual.VisualType.APL,
-      imageURL: '',
-      document: '',
-      datasource: '',
-      jsonFileName: '',
+      ...displayFactory(),
     },
   }),
 };

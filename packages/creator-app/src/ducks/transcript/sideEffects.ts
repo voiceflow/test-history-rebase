@@ -1,5 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { toast } from '@voiceflow/ui';
+import { downloadFromURL, toast } from '@voiceflow/ui';
 import Bowser from 'bowser';
 
 import client from '@/client';
@@ -10,7 +10,6 @@ import { patchTranscript, replaceTranscripts, updateUnreadTranscripts } from '@/
 import { transcriptByIDSelector } from '@/ducks/transcript/selectors';
 import { Browser, Device, OperatingSystem, Sentiment, SystemTag, Transcript } from '@/models';
 import { Thunk } from '@/store/types';
-import { downloadFromURL } from '@/utils/dom';
 import { getPrototypeSessionID } from '@/utils/prototype';
 
 export const fetchTranscripts =

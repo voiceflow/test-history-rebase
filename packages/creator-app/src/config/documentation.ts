@@ -29,7 +29,7 @@ export const ACCOUNT_LINKING_STEP = 'https://www.voiceflow.com/docs/designing-ch
 export const ALEXA_DIRECTIVE_STEP = 'https://www.voiceflow.com/docs/designing-channel-specific-steps#toc-5';
 export const GOOGLE_DIRECTIVE_STEP = 'https://www.voiceflow.com/docs/designing-channel-specific-steps#toc-6';
 export const VISUALS_STEP = 'https://www.voiceflow.com/docs/designing-response-steps#toc-4';
-export const DISPLAY_STEP = 'https://www.voiceflow.com/docs/designing-response-steps#toc-5';
+export const DISPLAY_STEP = 'https://www.voiceflow.com/docs/designing-response-steps#toc-7';
 export const CUSTOM_RESPOSE = 'https://www.voiceflow.com/docs/designing-response-steps#toc-9';
 
 // TODO: we don't have a dedicated pages for these anymore

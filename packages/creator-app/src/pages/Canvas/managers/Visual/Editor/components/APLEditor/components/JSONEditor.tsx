@@ -1,4 +1,4 @@
-import { Link, SvgIcon, toast, Upload } from '@voiceflow/ui';
+import { DataTypes, download, Link, readJSONFile, SvgIcon, toast, Upload } from '@voiceflow/ui';
 import React from 'react';
 
 import AceEditor from '@/components/AceEditor';
@@ -6,8 +6,6 @@ import { SectionToggleVariant, SectionVariant } from '@/components/Section';
 import { APL_TOOL_LINK } from '@/constants';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
-import { DataTypes, download } from '@/utils/dom';
-import { handleJSONFileRead } from '@/utils/files';
 
 interface JSONEditorProps {
   onChange: (data: { datasource?: string; aplCommands?: string; jsonFileName?: string; document?: string }) => void;
@@ -30,7 +28,7 @@ const JSONEditor: React.FC<JSONEditorProps> = ({ onChange, datasource = '', aplC
 
     fileReader.onloadend = (event) => {
       try {
-        const { data, fileName } = handleJSONFileRead<{ document?: object; datasources?: object }>(acceptedFiles[0], event.target!, [
+        const { data, fileName } = readJSONFile<{ document?: object; datasources?: object }>(acceptedFiles[0], event.target!, [
           'document',
           'datasources',
         ]);

@@ -1,13 +1,13 @@
 import Tabs from '@ui/components/Tabs';
 import { toast } from '@ui/components/Toast';
 import React from 'react';
-import { useDropzone } from 'react-dropzone';
 
 import { UPLOAD_ERROR } from '../../constants';
 import { UploadFileType } from '../../Context';
+import { RootDropAreaProps, ValueRendererProps } from '../../types';
 import { SingleUploadConfig, useUpload } from '../../useUpload';
 import { hasVariables } from '../../utils';
-import Drop from '../Drop';
+import Drop from '../Drop/index';
 import LinkInput, { InputRenderer } from '../LinkInput';
 import * as S from './styles';
 
@@ -21,37 +21,35 @@ const tabs = [
   { label: 'Link', type: TabType.LINK },
 ];
 
-interface ValueRendererProps {
-  value: string;
-  openFileSelection: () => void;
-}
-
 export interface UploadBaseProps {
-  acceptedFileTypes?: string[];
-  endpoint: string;
-  fileType: UploadFileType;
-  label: string;
-  linkInputPlaceholder: string;
+  validateLink?: (value: string) => string | null | Promise<null>;
+  renderValue: (props: ValueRendererProps) => JSX.Element;
   onChange: (value: string | null) => void;
   renderInput?: InputRenderer;
-  renderValue: (props: ValueRendererProps) => JSX.Element;
-  rootDropAreaProps?: S.RootDropAreaProps;
+
+  rootDropAreaProps?: RootDropAreaProps;
+  linkInputPlaceholder?: string;
+  acceptedFileTypes?: string[];
+  fileType: UploadFileType;
+  onlyUpload?: boolean;
   value: string | null;
-  validateLink?: (value: string) => string | null | Promise<null>;
+  endpoint: string;
+  label: string;
 }
 
 const UploadBase: React.FC<UploadBaseProps & SingleUploadConfig> = ({
   acceptedFileTypes = [],
-  endpoint,
-  fileType,
-  label,
   linkInputPlaceholder,
-  onChange,
-  renderInput,
-  renderValue,
   rootDropAreaProps,
-  validate,
+  onlyUpload = false,
   validateLink,
+  renderValue,
+  renderInput,
+  fileType,
+  endpoint,
+  onChange,
+  validate,
+  label,
   value,
 }) => {
   const onError = React.useCallback(
@@ -68,46 +66,42 @@ const UploadBase: React.FC<UploadBaseProps & SingleUploadConfig> = ({
   );
 
   const valueHasVariable = value ? hasVariables(value) : false;
+  const hasDisplayableValue = !!value && !valueHasVariable;
   const [activeTab, setActiveTab] = React.useState(valueHasVariable ? TabType.LINK : TabType.UPLOAD);
   const { onDropAccepted, onDropRejected, isLoading, error, setError } = useUpload({ fileType, endpoint, validate, update: onChange, onError });
 
-  const { getRootProps, getInputProps, isDragActive, isDragReject } = useDropzone({
-    accept: acceptedFileTypes.toString(),
-    disabled: !!isLoading,
-    onDropAccepted,
-    onDropRejected,
-  });
-
-  const { onClick, ...rootProps } = getRootProps();
-
-  const hasDisplayableValue = !!value && !valueHasVariable;
   const shouldDisplayDropArea = activeTab === TabType.UPLOAD || hasDisplayableValue;
 
   return (
     <S.Container>
-      <Tabs value={activeTab} onChange={setActiveTab}>
-        {tabs.map(({ label, type }) => (
-          <Tabs.Tab key={type} value={type}>
-            {label}
-          </Tabs.Tab>
-        ))}
-      </Tabs>
-      {activeTab === TabType.LINK && (
-        <LinkInput value={value} renderInput={renderInput} placeholder={linkInputPlaceholder} onChangeText={onChange} validate={validateLink} />
+      {!onlyUpload && (
+        <Tabs value={activeTab} onChange={setActiveTab}>
+          {tabs.map(({ label, type }) => (
+            <Tabs.Tab key={type} value={type}>
+              {label}
+            </Tabs.Tab>
+          ))}
+        </Tabs>
+      )}
+
+      {activeTab === TabType.LINK && !onlyUpload && (
+        <LinkInput value={value} renderInput={renderInput} placeholder={linkInputPlaceholder!} onChangeText={onChange} validate={validateLink} />
       )}
 
       {shouldDisplayDropArea && (
-        <S.RootDropArea {...rootDropAreaProps} {...rootProps} onContextMenu={(event) => event.stopPropagation()}>
-          <input style={{ display: 'none' }} {...getInputProps()} />
-
-          {activeTab === TabType.UPLOAD && !hasDisplayableValue && (
-            <S.DropContainer onClick={(event) => (error ? setError(null) : onClick(event))}>
-              <Drop isDragActive={isDragActive} isDragReject={isDragReject} label={label} isLoading={isLoading} error={error} />
-            </S.DropContainer>
-          )}
-
-          {hasDisplayableValue && renderValue({ value, openFileSelection: onClick })}
-        </S.RootDropArea>
+        <Drop
+          hasDisplayableValue={hasDisplayableValue}
+          rootDropAreaProps={rootDropAreaProps}
+          acceptedFileTypes={acceptedFileTypes}
+          onDropAccepted={onDropAccepted}
+          onDropRejected={onDropRejected}
+          renderValue={renderValue}
+          isLoading={isLoading}
+          setError={setError}
+          value={value!}
+          label={label}
+          error={error}
+        />
       )}
     </S.Container>
   );

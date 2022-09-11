@@ -1,22 +1,50 @@
 import { LoadCircle } from '@ui/components/Loader';
 import SvgIcon from '@ui/components/SvgIcon';
 import React from 'react';
+import { useDropzone } from 'react-dropzone';
 
 import { UPLOAD_ERROR } from '../../constants';
+import { RootDropAreaProps, ValueRendererProps } from '../../types';
 import { UploadAPI } from '../../useUpload';
 import * as S from './styles';
 
 export interface UploadDropProps extends Partial<UploadAPI> {
-  label?: string;
-  className?: string;
+  renderValue?: (props: ValueRendererProps) => JSX.Element;
+  rootDropAreaProps?: RootDropAreaProps;
+  hasDisplayableValue?: boolean;
+  acceptedFileTypes?: string[];
   isDragActive?: boolean;
   isDragReject?: boolean;
+  className?: string;
+  label?: string;
+  value?: string;
 }
 
 const UploadDrop: React.ForwardRefRenderFunction<HTMLDivElement, UploadDropProps> = (
-  { label, isLoading, className, isDragActive, isDragReject, error },
+  {
+    hasDisplayableValue,
+    rootDropAreaProps,
+    acceptedFileTypes = [],
+    className,
+    isLoading,
+    label,
+    error,
+    value = '',
+    onDropAccepted,
+    onDropRejected,
+    renderValue,
+    setError,
+  },
   ref
 ) => {
+  const { getRootProps, getInputProps, isDragActive, isDragReject } = useDropzone({
+    accept: acceptedFileTypes.toString(),
+    disabled: !!isLoading,
+    onDropAccepted,
+    onDropRejected,
+  });
+
+  const { onClick, ...rootProps } = getRootProps();
   let content = null;
 
   if (isDragReject || error) {
@@ -39,9 +67,19 @@ const UploadDrop: React.ForwardRefRenderFunction<HTMLDivElement, UploadDropProps
   }
 
   return (
-    <S.Container ref={ref} active={isDragActive} hasError={isDragReject || !!error} className={className}>
-      {content}
-    </S.Container>
+    <S.RootDropArea {...rootDropAreaProps} {...rootProps} onContextMenu={(event) => event.stopPropagation()}>
+      <input style={{ display: 'none' }} {...getInputProps()} />
+
+      {hasDisplayableValue ? (
+        renderValue?.({ value, openFileSelection: onClick })
+      ) : (
+        <S.DropContainer onClick={(event) => (error ? setError?.(null) : onClick(event))}>
+          <S.Container ref={ref} active={isDragActive} hasError={isDragReject || !!error} className={className}>
+            {content}
+          </S.Container>
+        </S.DropContainer>
+      )}
+    </S.RootDropArea>
   );
 };
 

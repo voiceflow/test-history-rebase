@@ -23,6 +23,8 @@ export type AceEditorProps = AceEditorBaseProps & {
   inputMode?: InputMode;
   editorColors?: AceEditorColors;
   editorSpacing?: boolean;
+  hideIndentGuide?: boolean;
+  hideFoldWidgets?: boolean;
 };
 
 const StyledEditor = styled(AceEditor).attrs({
@@ -121,6 +123,23 @@ const StyledEditor = styled(AceEditor).attrs({
       }
       .ace_scrollbar .ace_scrollbar-v,
       .ace_scrollbar .ace_scrollbar-h {
+        display: none !important;
+      }
+    `}
+  
+  ${({ hideIndentGuide }) =>
+    hideIndentGuide &&
+    css`
+      .ace_indent-guide {
+        background: none;
+      }
+    `}
+  
+  ${({ hideFoldWidgets }) =>
+    hideFoldWidgets &&
+    css`
+      .ace_folding-enabled .ace_fold-widget,
+      .ace_fold-widget {
         display: none !important;
       }
     `}

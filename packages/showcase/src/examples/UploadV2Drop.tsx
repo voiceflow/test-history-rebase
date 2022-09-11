@@ -10,6 +10,6 @@ const renderBaseBlock = (children: JSX.Element) => <div style={{ width: 386 }}>{
 
 const base = createExample('Image', () => renderBaseBlock(<UploadV2.Image renderInput={renderInput} onChange={onChange} value="" />));
 
-const dropWithError = createExample('Drop with error', () => renderBaseBlock(<UploadV2.Drop label="image" isDragReject />));
+const dropWithError = createExample('Drop with error', () => renderBaseBlock(<UploadV2.Drop label="image" error="Sample error message" />));
 
 export default createSection('UploadV2.Image', 'src/components/Upload/Image/index.tsx', [base, dropWithError]);

@@ -160,12 +160,6 @@ export const moveCursorToEnd = (el: HTMLInputElement) => {
   }
 };
 
-export enum DataTypes {
-  TEXT = 'text/plain;charset=utf-8',
-  JSON = 'text/json;charset=utf-8',
-  CSV = 'text/csv;encoding:utf-8',
-}
-
 export const readFileAsync = (file: File): Promise<string> =>
   new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -213,23 +207,6 @@ export const upload = (onChange: (files: FileList) => void, options: { accept?: 
 
     document.body.removeChild(element);
   }
-};
-
-export const downloadFromURL = (filename: string, url: string) => {
-  const element = document.createElement('a');
-  element.setAttribute('href', url);
-  element.setAttribute('download', filename);
-
-  element.style.display = 'none';
-  document.body.appendChild(element);
-
-  element.click();
-
-  document.body.removeChild(element);
-};
-
-export const download = (filename: string, text: string, data = DataTypes.TEXT) => {
-  downloadFromURL(filename, `data:${data},${encodeURIComponent(text)}`);
 };
 
 export const unhighlightAllText = () => {

@@ -1,4 +1,4 @@
-import { toast } from '@voiceflow/ui';
+import { DataTypes, download, downloadFromURL, toast } from '@voiceflow/ui';
 import fileSaver from 'file-saver';
 import _orderBy from 'lodash/orderBy';
 
@@ -13,7 +13,6 @@ import * as Session from '@/ducks/session';
 import * as Tracking from '@/ducks/tracking';
 import { Thunk } from '@/store/types';
 import * as Cookies from '@/utils/cookies';
-import { DataTypes, download, downloadFromURL } from '@/utils/dom';
 import { jsonToCSV } from '@/utils/files';
 import * as Sentry from '@/vendors/sentry';
 

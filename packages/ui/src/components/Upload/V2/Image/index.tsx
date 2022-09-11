@@ -13,6 +13,7 @@ export interface UploadImageProps extends Pick<UploadBaseProps, 'value' | 'onCha
   autoHeight?: boolean;
   renderInput?: InputRenderer;
   acceptedFileTypes?: string[];
+  onlyUpload?: boolean;
 }
 
 const UploadImage: React.FC<UploadImageProps> = ({
@@ -24,8 +25,10 @@ const UploadImage: React.FC<UploadImageProps> = ({
   renderInput,
   value,
   rootDropAreaProps,
+  onlyUpload = false,
 }) => (
   <UploadBase
+    onlyUpload={onlyUpload}
     label="image/GIF"
     fileType="image"
     endpoint={endpoint}

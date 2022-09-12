@@ -52,6 +52,7 @@ class PrototypeTool {
 
     this.message?.trackStartTime();
     this.message?.session({ id: Utils.id.cuid(), message: 'New session started' });
+    this.trace?.start();
     this.trace?.next();
   }
 

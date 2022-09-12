@@ -22,16 +22,7 @@ interface Options extends PrototypeAllTypes {
 
 const usePrototype = ({ debug, config, state, actions, isPublic, waitVisuals = true, prototypeStatus, globalDelayInMilliseconds }: Options) => {
   const { isMuted } = config;
-  const {
-    activePathLinkIDs,
-    webhook,
-    activeDiagramID = null,
-    flowIDHistory,
-    activePathBlockIDs,
-    contextHistory = [],
-    visualDataHistory = [],
-    contextStep,
-  } = state;
+  const { webhook, activeDiagramID = null, flowIDHistory, activePaths, contextHistory = [], visualDataHistory = [], contextStep } = state;
   const {
     updatePrototypeStatus,
     updatePrototypeVisualsDataHistory = Utils.functional.noop,
@@ -54,6 +45,7 @@ const usePrototype = ({ debug, config, state, actions, isPublic, waitVisuals = t
     isMuted,
     isPublic,
     setError,
+    activePaths,
     enterDiagram: setActiveDiagramID,
     waitVisuals,
     contextStep,
@@ -66,9 +58,7 @@ const usePrototype = ({ debug, config, state, actions, isPublic, waitVisuals = t
     updatePrototype,
     setInteractions,
     getLinksByPortID: (portID: IDSelectorParam) => getLinksByPortID?.(portID) || [],
-    activePathLinkIDs,
     visualDataHistory,
-    activePathBlockIDs,
     globalMessageDelayMilliseconds: globalDelayInMilliseconds,
     updatePrototypeVisualsData,
     updatePrototypeVisualsDataHistory,

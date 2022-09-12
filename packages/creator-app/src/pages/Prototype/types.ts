@@ -3,7 +3,7 @@ import { Nullable } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { PrototypeStatus } from '@/constants/prototype';
-import type { Context, PrototypeState, UpdatePrototypeVisualData } from '@/ducks/prototype';
+import type { ActivePath, Context, PrototypeState, UpdatePrototypeVisualData } from '@/ducks/prototype';
 import type { PrototypeConfig } from '@/ducks/recent';
 import type { IDSelectorParam } from '@/ducks/utils/crudV2';
 
@@ -122,8 +122,7 @@ export interface ProtoConfigType extends PrototypeConfig {
 
 export interface PrototypeRuntimeState {
   status: PrototypeStatus;
-  activePathLinkIDs: string[];
-  activePathBlockIDs: string[];
+  activePaths: Record<string, ActivePath>;
   contextHistory?: Partial<Context>[];
   activeDiagramID: string | null;
   flowIDHistory: string[];

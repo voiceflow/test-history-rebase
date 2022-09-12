@@ -10,8 +10,7 @@ export const INITIAL_STATE: PrototypeState = {
   muted: false,
   startTime: 0,
   inputMode: PrototypeInputMode.TEXT,
-  activePathBlockIDs: [],
-  activePathLinkIDs: [],
+  activePaths: {},
   showButtons: true,
   autoplay: false,
   visual: {

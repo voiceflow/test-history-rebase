@@ -36,8 +36,7 @@ const defaultPrototypeContext: PrototypeAllTypes = {
   },
   state: {
     status: PrototypeStatus.IDLE,
-    activePathLinkIDs: [],
-    activePathBlockIDs: [],
+    activePaths: {},
     contextHistory: [],
     visualDataHistory: [],
     webhook: null,
@@ -78,13 +77,12 @@ export const PrototypeProvider: React.FC = ({ children }) => {
   const savePrototypeSession = useDispatch(Transcripts.createTranscript);
   const durationMilliseconds = useSelector(VersionV2.active.general.messageDelaySelector);
 
-  const activePathLinkIDs = useSelector(Prototype.activePathLinkIDsSelector);
-  const activePathBlockIDs = useSelector(Prototype.activePathBlockIDsSelector);
+  const activePaths = useSelector(Prototype.activePathsSelector);
   const getLinksByPortID = useSelector(CreatorV2.getLinksByPortIDSelector);
   const contextHistory = useSelector(Prototype.prototypeContextHistorySelector);
   const visualDataHistory = useSelector(Prototype.prototypeVisualDataHistorySelector);
   const webhook = useSelector(Prototype.prototypeWebhookDataSelector);
-  const activeDiagramID = useSelector(Session.activeDiagramIDSelector)!;
+  const activeDiagramID = useSelector(Session.activeDiagramIDSelector);
   const flowIDHistory = useSelector(Prototype.prototypeFlowIDHistorySelector);
   const contextStep = useSelector(Prototype.prototypeContextStepSelector);
   const updatePrototypeVisualsData = useDispatch(Prototype.updatePrototypeVisualData);
@@ -119,8 +117,7 @@ export const PrototypeProvider: React.FC = ({ children }) => {
 
   const state = useContextApi<PrototypeRuntimeState>({
     status,
-    activePathLinkIDs,
-    activePathBlockIDs,
+    activePaths,
     contextHistory,
     activeDiagramID,
     flowIDHistory,

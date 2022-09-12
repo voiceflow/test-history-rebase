@@ -40,12 +40,13 @@ const suite = createSuite(() => ({
     const engine = {
       node: { center: vi.fn(), ports: { out: ['1'] } },
       nodes: [{ 1: { type: BlockType.START } }],
-      select: vi.fn(),
+      select: vi.fn().mockReturnValue(() => {}),
       selection: { replace: vi.fn(), getTargets: vi.fn(), reset: vi.fn() },
       getNodeByID: vi.fn().mockReturnValue({ id: STEP_ID, parentNode: BLOCK_ID, combinedNodes: ['1'] }),
       getStepIDsByBlockID: vi.fn().mockReturnValue(['1']),
       getNodeIDByStepID: vi.fn().mockReturnValue(BLOCK_ID),
-      prototype: { setFinalNodeID: vi.fn() },
+      prototype: { setFinalNodeID: vi.fn(), subscribe: vi.fn(), reset: vi.fn() },
+      isSynced: () => true,
       finalPrototypeBlockID: vi.fn().mockReturnValue('123'),
     } as any as Engine;
 
@@ -80,8 +81,7 @@ const suite = createSuite(() => ({
         updateStatus: vi.fn(),
         setInteractions: vi.fn(),
         flowIDHistory: [],
-        activePathLinkIDs: [],
-        activePathBlockIDs: [],
+        activePaths: {},
         getLinksByPortID: vi.fn(),
         updatePrototype: vi.fn(),
         contextStep: 1,
@@ -342,6 +342,7 @@ suite(
         expectProcessSingleTrace(controller, TraceMethods.FLOW);
         expectEnterFlow(controller).toBeCalledWith('diagramID');
         expect(controller['waitDiagram']).toBeCalledWith('diagramID');
+        expect(controller['props']['getEngine']()!['prototype']['subscribe']).toBeCalled();
       });
 
       it('should process flow trace without diagramID', async () => {
@@ -537,6 +538,7 @@ suite(
 
         expect(controller['trace']).toEqual([]);
         expect(controller['stopped']).toBeTruthy();
+        expect(controller['props']['getEngine']()!['prototype']['reset']).toBeCalled();
       });
     });
 

@@ -41,9 +41,12 @@ export const prototypeVisualDataSelector = createSelector([prototypeVisualSelect
 
 export const prototypeVisualDataHistorySelector = createSelector([prototypeVisualSelector], ({ dataHistory }) => dataHistory);
 
-export const activePathBlockIDsSelector = createSelector([prototypeSelector], ({ activePathBlockIDs }) => activePathBlockIDs);
+export const activePathsSelector = createSelector([prototypeSelector], ({ activePaths }) => activePaths);
 
-export const activePathLinkIDsSelector = createSelector([prototypeSelector], ({ activePathLinkIDs }) => activePathLinkIDs);
+export const activePathByDiagramIDSelector = createSelector(
+  [activePathsSelector],
+  (activePaths) => (diagramID: string) => activePaths[diagramID] ?? { linkIDs: [], blockIDs: [] }
+);
 
 export const prototypeWebhookDataSelector = createSelector([prototypeSelector], ({ webhook }) => webhook);
 

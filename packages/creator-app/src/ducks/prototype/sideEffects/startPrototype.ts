@@ -20,7 +20,9 @@ const getValidStartingNode = (
   getLinkedNodeIDsByNodeID: (id: string) => string[],
   getLinkIDsByNodeID: (id: string) => string[],
   dispatch: ThunkDispatch,
+  diagramID: string,
   nodeID?: string | null
+  // eslint-disable-next-line max-params
 ) => {
   if (!nodeID) return null;
 
@@ -44,7 +46,7 @@ const getValidStartingNode = (
 
   const invalidBlockOutLinkID = getLinkIDsByNodeID(nodeID)[0];
   if (invalidBlockOutLinkID) {
-    dispatch(updatePrototype({ activePathLinkIDs: [invalidBlockOutLinkID] }));
+    dispatch(updatePrototype({ activePaths: { [diagramID]: { linkIDs: [invalidBlockOutLinkID], blockIDs: [nodeID] } } }));
   }
 
   return targetNodeID;
@@ -67,8 +69,8 @@ const startPrototype =
     const getLinkIDsByNodeID = (nodeID: string) => CreatorV2.linkIDsByNodeIDSelector(state, { id: nodeID });
     const getLinkedNodeIDsByNodeID = (nodeID: string) => CreatorV2.linkedNodeIDsByNodeIDSelector(state, { id: nodeID });
     const getNodeByID = (nodeID: string) => CreatorV2.nodeByIDSelector(state, { id: nodeID });
-    const targetNodeID = getValidStartingNode(getNodeByID, getLinkedNodeIDsByNodeID, getLinkIDsByNodeID, dispatch, nodeID) || undefined;
-    const startNodeID = CreatorV2.startNodeIDSelector(state);
+    const targetNodeID =
+      getValidStartingNode(getNodeByID, getLinkedNodeIDsByNodeID, getLinkIDsByNodeID, dispatch, selectedDiagramID!, nodeID) || undefined;
 
     Errors.assertDiagramID(activeDiagramID);
 
@@ -89,14 +91,7 @@ const startPrototype =
 
     localStorage.setItem(`TEST_VARIABLES_${projectID}`, JSON.stringify(variables));
 
-    let prototypeStartNodeID = startNodeID;
-
-    if (nodeID) {
-      const parentNodeID = getNodeByID(nodeID)?.parentNode;
-      prototypeStartNodeID = parentNodeID || nodeID;
-    }
     batch(() => {
-      dispatch(updatePrototype({ activePathBlockIDs: [prototypeStartNodeID!] }));
       dispatch(pushContextHistory(context));
       dispatch(pushPrototypeVisualDataHistory(null));
       dispatch(

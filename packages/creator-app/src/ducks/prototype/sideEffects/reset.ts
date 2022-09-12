@@ -58,8 +58,7 @@ const resetPrototype = (): SyncThunk => (dispatch, getState) => {
         contextStep: 0,
         contextHistory: [],
         flowIDHistory: [],
-        activePathLinkIDs: [],
-        activePathBlockIDs: [],
+        activePaths: {},
         autoplay: false,
         visual: { ...visualState, data: null, dataHistory: [] },
       })

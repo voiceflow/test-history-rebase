@@ -145,6 +145,7 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
       this.markup,
       this.transformation,
       this.comment,
+      this.prototype,
     ];
   }
 
@@ -209,6 +210,8 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
   isRootDiagram = () => this.select(CreatorV2.isRootDiagramActiveSelector);
 
   getDiagramID = () => this.select(CreatorV2.activeDiagramIDSelector);
+
+  isSynced = () => this.getDiagramID() === this.select(Session.activeDiagramIDSelector);
 
   isFeatureEnabled = (featureID: Realtime.FeatureFlag) => this.select(Feature.isFeatureEnabledSelector)(featureID);
 

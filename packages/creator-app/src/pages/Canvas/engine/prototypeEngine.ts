@@ -11,9 +11,9 @@ class PrototypeEngine extends EngineConsumer {
 
   log = this.engine.log.child('prototype');
 
-  highlightedNodeIDs: string[] = [];
+  highlightedNodeIDs = new Set<string>();
 
-  highlightedLinkIDs: string[] = [];
+  highlightedLinkIDs = new Set<string>();
 
   teardownSubscription = Utils.functional.noop;
 
@@ -28,14 +28,14 @@ class PrototypeEngine extends EngineConsumer {
    * check to see if the node is highlighted
    */
   isNodeHighlightedLink(nodeID: string) {
-    return this.highlightedNodeIDs.includes(nodeID);
+    return this.highlightedNodeIDs.has(nodeID);
   }
 
   /**
    * check to see if the link is highlighted
    */
   isLinkHighlighted(linkID: string) {
-    return this.highlightedLinkIDs.includes(linkID);
+    return this.highlightedLinkIDs.has(linkID);
   }
 
   /**
@@ -44,29 +44,30 @@ class PrototypeEngine extends EngineConsumer {
   isPortHighlighted(portID: string) {
     const linkIDs = this.engine.getLinkIDsByPortID(portID);
 
-    return !!linkIDs.length && this.highlightedLinkIDs.includes(linkIDs[0]);
+    return !!linkIDs.length && this.highlightedLinkIDs.has(linkIDs[0]);
   }
 
-  start(nodeID?: string | null) {
-    this.log.debug(this.log.pending('initializing prototype'));
-    this.dispatch(Prototype.startPrototype(nodeID));
+  subscribe() {
+    this.reset();
     this.teardownSubscription = this.engine.store.subscribe(() => this.redrawHighlighted());
-
-    this.log.info(this.log.success('prototype initialized'));
   }
 
   redrawHighlighted() {
-    const highlightedNodeIDs = this.select(Prototype.activePathBlockIDsSelector);
-    const highlightedLinkIDs = this.select(Prototype.activePathLinkIDsSelector);
+    const diagramID = this.engine.getDiagramID();
+    const { blockIDs, linkIDs } = this.select(Prototype.activePathByDiagramIDSelector)(diagramID!);
 
-    const nodeDiff = Utils.array.diff(this.highlightedNodeIDs, highlightedNodeIDs);
-    const linkDiff = Utils.array.diff(this.highlightedLinkIDs, highlightedLinkIDs);
+    blockIDs.forEach((nodeID) => {
+      if (this.highlightedNodeIDs.has(nodeID)) return;
 
-    this.highlightedNodeIDs = highlightedNodeIDs;
-    this.highlightedLinkIDs = highlightedLinkIDs;
+      this.highlightedNodeIDs.add(nodeID);
+      this.engine.node.redraw(nodeID);
+    });
 
-    nodeDiff.forEach((id) => this.engine.node.redraw(id));
-    linkDiff.forEach((id) => this.engine.link.redrawLinked(id));
+    linkIDs.forEach((linkID) => {
+      if (this.highlightedLinkIDs.has(linkID)) return;
+      this.highlightedLinkIDs.add(linkID);
+      this.engine.link.redrawLinked(linkID);
+    }, []);
   }
 
   setFinalNodeID(nodeID: string | null) {
@@ -82,21 +83,21 @@ class PrototypeEngine extends EngineConsumer {
   }
 
   reset() {
-    const nodeIDs = this.highlightedNodeIDs;
-    const linkIDs = this.highlightedLinkIDs;
+    const nodeIDs = [...this.highlightedNodeIDs];
+    const linkIDs = [...this.highlightedLinkIDs];
 
-    this.log.debug(this.log.pending('resetting prototype'));
+    this.highlightedNodeIDs.clear();
+    this.highlightedLinkIDs.clear();
+    this.setFinalNodeID(null);
     this.teardownSubscription();
     this.teardownSubscription = Utils.functional.noop;
-    this.setFinalNodeID(null);
-    this.highlightedNodeIDs = [];
-    this.highlightedLinkIDs = [];
 
-    this.dispatch(Prototype.resetPrototype());
     nodeIDs.forEach((id) => this.engine.node.redraw(id));
     linkIDs.forEach((id) => this.engine.link.redrawLinked(id));
+  }
 
-    this.log.info(this.log.reset('reset prototype'));
+  teardown() {
+    this.teardownSubscription();
   }
 }
 

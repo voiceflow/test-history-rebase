@@ -19,10 +19,14 @@ export type PrototypeSettings = Omit<BaseModels.Version.PrototypeSettings, 'layo
   buttonsOnly: boolean;
 };
 
+export interface ActivePath {
+  blockIDs: string[];
+  linkIDs: string[];
+}
+
 // context types
 export interface Context extends PrototypeContext {
-  activePathLinkIDs?: string[];
-  activePathBlockIDs?: string[];
+  activePaths?: Record<string, ActivePath>;
   targetContextDiagramID?: string;
   previousContextDiagramID?: string;
 }
@@ -40,8 +44,7 @@ export interface PrototypeState {
   status: PrototypeStatus;
   flowIDHistory: string[];
   autoplay: boolean;
-  activePathBlockIDs: string[];
-  activePathLinkIDs: string[];
+  activePaths: Record<string, ActivePath>;
   inputMode: PrototypeInputMode;
   platform?: VoiceflowConstants.PlatformType;
   projectType?: VoiceflowConstants.ProjectType;

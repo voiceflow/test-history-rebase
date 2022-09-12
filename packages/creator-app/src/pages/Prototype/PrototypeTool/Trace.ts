@@ -34,7 +34,7 @@ import { Interaction, PMStatus } from '../types';
 import AudioController from './Audio';
 import MessageController from './Message';
 import TimeoutController from './Timeout';
-import { getUpdatedContextHistory, isV1Trace } from './utils';
+import { appendActivePaths, getUpdatedActivePathContextHistory, isV1Trace } from './utils';
 
 const MUTED_MESSAGE_DELAY = 250;
 
@@ -64,9 +64,8 @@ export interface TraceControllerProps {
   setInteractions: (interactions: Interaction[]) => void;
   updatePrototype: (payload: Partial<Prototype.PrototypeState>) => void;
   getLinksByPortID: (portID: IDSelectorParam) => Realtime.Link[];
-  activePathLinkIDs: string[];
+  activePaths: Record<string, Prototype.ActivePath>;
   visualDataHistory: (null | BaseNode.Visual.StepData)[];
-  activePathBlockIDs: string[];
   updatePrototypeVisualsData: (data: null | BaseNode.Visual.StepData) => void;
   updatePrototypeVisualsDataHistory: (dataHistory: (null | BaseNode.Visual.StepData)[]) => void;
   globalMessageDelayMilliseconds?: number;
@@ -154,6 +153,10 @@ class TraceController {
     this.message = message;
   }
 
+  public start() {
+    this.startPrototypeEngine();
+  }
+
   public next = async (request: BaseRequest.BaseRequest | null = null): Promise<void> => {
     const currentContextStep = this.props.contextStep;
     const { contextHistory } = this.props;
@@ -220,13 +223,11 @@ class TraceController {
       await this.waitDiagram(targetDiagramID);
     }
 
-    const activePathBlockIDsSnapshot = contextHistory[newContextStepNumber]?.activePathBlockIDs || [];
-    const activePathLinkIDsSnapshot = contextHistory[newContextStepNumber]?.activePathLinkIDs || [];
+    const activePathsSnapshot = contextHistory[newContextStepNumber]?.activePaths || {};
 
     this.props.updatePrototype({
       contextStep: newContextStepNumber,
-      activePathLinkIDs: activePathLinkIDsSnapshot,
-      activePathBlockIDs: activePathBlockIDsSnapshot,
+      activePaths: activePathsSnapshot,
     });
 
     const targetContext = contextHistory[newContextStepNumber];
@@ -258,6 +259,7 @@ class TraceController {
     this.topTrace = null;
 
     this.timeout.clearByID(this.noReplyTimeout);
+    this.stopPrototypeEngine();
   }
 
   // immediate display the remaining traces and not wait on any async effects
@@ -586,28 +588,20 @@ class TraceController {
     this.props.updateStatus(PMStatus.ENDED);
   }
 
-  private saveActivePathBlock(node: Realtime.Node) {
-    const updatedActivePathBlockArray = Utils.array.unique([...this.props.activePathBlockIDs, node!.parentNode!]);
+  private saveActivePathBlock(nodeID: string) {
+    const updatedActivePaths = appendActivePaths(this.props.activePaths, { diagramID: this.props.activeDiagramID!, blockIDs: [nodeID] });
+    const updatedContextHistory = getUpdatedActivePathContextHistory(this.props.contextStep, this.props.contextHistory, updatedActivePaths);
 
-    const updatedContextHistory = getUpdatedContextHistory(
-      this.props.contextStep,
-      this.props.contextHistory,
-      'activePathBlockIDs',
-      updatedActivePathBlockArray
-    );
-
-    const updatePrototypeData = {
-      activePathBlockIDs: updatedActivePathBlockArray,
+    this.props.updatePrototype({
+      activePaths: updatedActivePaths,
       contextHistory: updatedContextHistory,
-    };
-
-    this.props.updatePrototype(updatePrototypeData);
+    });
   }
 
   private async highlightBlock(node: Realtime.Node, skipDelay = false) {
     const hasParent = !!node.parentNode;
     const nodeType = node?.type;
-    const highlightedBlocks = this.props.getEngine()?.select(Prototype.activePathBlockIDsSelector);
+    const highlightedBlocks = this.props.getEngine()?.select(Prototype.activePathByDiagramIDSelector)(this.props.activeDiagramID!)?.blockIDs || [];
     const parentBlockAlreadyHighlighted = !!highlightedBlocks?.includes(node?.parentNode || '');
 
     if (parentBlockAlreadyHighlighted) {
@@ -616,10 +610,12 @@ class TraceController {
 
     this.logger.debug('Highlighting block', node, { skipDelay });
 
-    const [, sourceNodeID] = Utils.array.tail(this.props.getEngine()?.select(Prototype.activePathBlockIDsSelector) || []);
+    const [, sourceNodeID] = Utils.array.tail(highlightedBlocks);
 
     if (hasParent) {
-      await this.saveActivePathBlock(node);
+      await this.saveActivePathBlock(node.parentNode!);
+    } else if (nodeType === Realtime.BlockType.START) {
+      await this.saveActivePathBlock(node.id);
     }
 
     this.saveActivePathLink(sourceNodeID, node);
@@ -665,26 +661,10 @@ class TraceController {
 
     await this.waitDiagram(diagramID);
     await this.waitEngineAndNodes();
+    this.startPrototypeEngine();
 
-    // Highlight the start block when entering a diagram
-    const startNode = Array.from(this.props.getEngine()?.nodes ?? []).find((data) => data[1].type === BlockType.START);
-
-    // TODO: refactor block highlighting system, topics do not have startNodes
-    let updatedActivePathBlockArray = Utils.array.unique([...this.props.activePathBlockIDs, ...(startNode ? [startNode[0]] : [])]);
-
-    const beginningBlock = this.props.activePathBlockIDs[0];
-    const beginningFlowID = this.props.flowIDHistory[0];
-
-    // This if block handles the edge case were a user starts on a non-start block when testing, and then enters the
-    // default 'help' component. Since these diagram start blocks have the same ID, we have to dynamically add and remove
-    // the, from the activePathBlockID array, so when users exit components, the start block won't be incorrectly highlighted
-    if (beginningBlock !== Realtime.START_NODE_ID && beginningFlowID === diagramID) {
-      updatedActivePathBlockArray = updatedActivePathBlockArray.filter((val) => val !== Realtime.START_NODE_ID);
-    }
-
-    this.props.updatePrototype({
-      activePathBlockIDs: updatedActivePathBlockArray,
-    });
+    // force re-render of active paths
+    this.props.updatePrototype({ activePaths: { ...this.props.activePaths } });
   }
 
   private setError = (message = 'Unable to play an audio') => {
@@ -725,19 +705,16 @@ class TraceController {
       outLinkIDs = outLinkID ? [outLinkID] : [];
     }
 
-    let activePathLinkArray = this.props.activePathLinkIDs;
-    if (activePathLinkID) {
-      activePathLinkArray = Utils.array.unique([...this.props.activePathLinkIDs, ...outLinkIDs, activePathLinkID]);
-    }
+    if (!activePathLinkID) return;
 
-    const updatedContextHistory = getUpdatedContextHistory(
-      this.props.contextStep,
-      this.props.contextHistory,
-      'activePathLinkIDs',
-      activePathLinkArray
-    );
+    const updatedActivePaths = appendActivePaths(this.props.activePaths, {
+      diagramID: this.props.activeDiagramID!,
+      linkIDs: [...outLinkIDs, activePathLinkID],
+    });
 
-    this.props.updatePrototype({ activePathLinkIDs: activePathLinkArray, contextHistory: updatedContextHistory });
+    const updatedContextHistory = getUpdatedActivePathContextHistory(this.props.contextStep, this.props.contextHistory, updatedActivePaths);
+
+    this.props.updatePrototype({ activePaths: updatedActivePaths, contextHistory: updatedContextHistory });
   }
 
   private focusNode(nodeID: string) {
@@ -749,7 +726,7 @@ class TraceController {
   private async waitFor(condition: () => boolean, rejectTimeout = 15000) {
     let waitingTime = 0;
 
-    while (condition()) {
+    while (!condition()) {
       // eslint-disable-next-line no-await-in-loop
       await this.timeout.delay(WAIT_ENTITY_TIME);
 
@@ -759,12 +736,22 @@ class TraceController {
     }
   }
 
+  private startPrototypeEngine() {
+    const engine = this.props.getEngine();
+    engine?.prototype.subscribe();
+  }
+
+  private stopPrototypeEngine() {
+    const engine = this.props.getEngine();
+    engine?.prototype.reset();
+  }
+
   private async waitNode(nodeID: string) {
     this.logger.debug(`Waiting for node: ${nodeID}`);
 
     if (!nodeID) return;
 
-    await this.waitFor(() => !this.props.getEngine()?.getNodeByID(nodeID));
+    await this.waitFor(() => !!this.props.getEngine()?.getNodeByID(nodeID));
   }
 
   private async waitDiagram(diagramID: string) {
@@ -772,13 +759,13 @@ class TraceController {
 
     if (!diagramID) return;
 
-    await this.waitFor(() => this.props.activeDiagramID !== diagramID);
+    await this.waitFor(() => this.props.activeDiagramID === diagramID);
   }
 
   private async waitEngineAndNodes() {
     this.logger.debug('Waiting for engine and nodes');
 
-    await this.waitFor(() => !this.props.getEngine());
+    await this.waitFor(() => !!this.props.getEngine()?.isSynced());
   }
 }
 

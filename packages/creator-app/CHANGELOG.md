@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.897.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.897.1...@voiceflow/creator-app@1.897.2) (2022-09-12)
+
+
+### Bug Fixes
+
+* prototype highlighting ([#6039](https://github.com/voiceflow/creator-app/issues/6039)) ([1a2f998](https://github.com/voiceflow/creator-app/commit/1a2f9987e11e40fe2e58378c46e7d2529c08d372)), closes [/github.com/voiceflow/creator-app/blob/07d6fe78e6eb0471c9278f4fc6220ef5ee7bb76e/packages/creator-app/src/pages/Canvas/hooks/engine.ts#L47-L53](https://github.com//github.com/voiceflow/creator-app/blob/07d6fe78e6eb0471c9278f4fc6220ef5ee7bb76e/packages/creator-app/src/pages/Canvas/hooks/engine.ts/issues/L47-L53)
+
+
+
+
+
 ## [1.897.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.897.0...@voiceflow/creator-app@1.897.1) (2022-09-12)
 
 

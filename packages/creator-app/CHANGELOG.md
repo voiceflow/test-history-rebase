@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.897.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.896.0...@voiceflow/creator-app@1.897.0) (2022-09-12)
+
+
+### Features
+
+* **creator-app:** updates train assistant event tracking (NLU-296) ([#6037](https://github.com/voiceflow/creator-app/issues/6037)) ([c9e4734](https://github.com/voiceflow/creator-app/commit/c9e47345c5b19669db5f74f499b2ecf625a5cf9b))
+
+
+
+
+
 # [1.896.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.895.1...@voiceflow/creator-app@1.896.0) (2022-09-12)
 
 

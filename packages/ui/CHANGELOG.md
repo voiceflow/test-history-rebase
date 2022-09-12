@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.147.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.146.0...@voiceflow/ui@1.147.0) (2022-09-12)
+
+
+### Features
+
+* New apl editor (CT-884) ([#6012](https://github.com/voiceflow/creator-app/issues/6012)) ([589d78c](https://github.com/voiceflow/creator-app/commit/589d78c7ca80e7f4befa53032323735219cfbe81))
+
+
+
+
+
 # [1.146.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.145.3...@voiceflow/ui@1.146.0) (2022-09-09)
 
 

@@ -96,7 +96,7 @@ export const topicDiagramFactory = (name: string) => {
         nodeID: Utils.id.objectID(),
         coords: [360, 120],
         data: {
-          name,
+          name: '',
           color: '',
           steps: [intentNodeID],
         },

@@ -92,19 +92,31 @@ export const Container = styled.div<PaletteProps>`
     transform: translate(-50%, -50%);
   }
 
-  div:not(.${CANVAS_PROTOTYPE_RUNNING_CLASSNAME}) &,
-  div:not(.${NODE_HOVERED_CLASSNAME}) &,
-  div:not(.${NODE_MERGE_TARGET_CLASSNAME}) &,
-  div:not(.${CANVAS_CREATING_LINK_CLASSNAME}) & {
+  :hover {
+    ${PlayContainer} {
+      opacity: 0.999;
+      pointer-events: all;
+    }
+
+    ${IconContainer} {
+      opacity: 0;
+      pointer-events: none;
+    }
+  }
+
+  .${CANVAS_PROTOTYPE_RUNNING_CLASSNAME} &,
+  .${NODE_HOVERED_CLASSNAME} &,
+  .${NODE_MERGE_TARGET_CLASSNAME} &,
+  .${CANVAS_CREATING_LINK_CLASSNAME} & {
     :hover {
       ${PlayContainer} {
-        opacity: 0.999;
-        pointer-events: all;
+        opacity: 0;
+        pointer-events: none;
       }
 
       ${IconContainer} {
-        opacity: 0;
-        pointer-events: none;
+        opacity: 0.999;
+        pointer-events: all;
       }
     }
   }

@@ -7,6 +7,7 @@ import { ModalType } from '@/constants';
 import * as Prototype from '@/ducks/prototype';
 import * as Session from '@/ducks/session';
 import { VariableStateAppliedType } from '@/ducks/tracking';
+import * as Tracking from '@/ducks/tracking';
 import { useAsyncEffect, useDispatch, useModals, usePermission, useSelector, useTrackingEvents } from '@/hooks';
 import { Container, DropdownContainer } from '@/pages/Collaborators/components/InviteByLink/components';
 import { TrainingModelContext } from '@/pages/Project/contexts';
@@ -60,7 +61,9 @@ const Footer: React.FC<FooterProps> = ({ isCanvas }) => {
       toast.warn(
         <>
           Assistant is not fully trained. This may cause unexpected behaviour when prototyping.
-          <ToastCallToAction onClick={trainingModelAPI.startTraining}>Train Assistant</ToastCallToAction>
+          <ToastCallToAction onClick={() => trainingModelAPI.startTraining(Tracking.AssistantOriginType.TEST_TOOL)}>
+            Train Assistant
+          </ToastCallToAction>
         </>
       );
     }

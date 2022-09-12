@@ -65,8 +65,8 @@ export const trackIntentCreated = createProjectEventTracker<{ creationType: Canv
   client.api.analytics.track(EventName.INTENT_CREATED, createProjectEventPayload(options, { creation_type: options.creationType }))
 );
 
-export const trackEntityEdit = createProjectEventTracker((options) =>
-  client.api.analytics.track(EventName.ENTITIES_EDIT, createProjectEventPayload(options))
+export const trackEntityEdit = createProjectEventTracker<{ creationType: CanvasCreationType }>((options) =>
+  client.api.analytics.track(EventName.ENTITIES_EDIT, createProjectEventPayload(options, { creation_type: options.creationType }))
 );
 
 export const trackVariableCreated = createProjectEventTracker<{ diagramID?: string; variableType: VariableType; creationType: CanvasCreationType }>(

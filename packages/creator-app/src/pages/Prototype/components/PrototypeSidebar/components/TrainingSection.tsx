@@ -6,6 +6,7 @@ import { NLPTrainStageType } from '@/constants/platforms';
 import { PrototypeStatus } from '@/constants/prototype';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as PrototypeDuck from '@/ducks/prototype';
+import * as Tracking from '@/ducks/tracking';
 import { useSelector } from '@/hooks';
 import { NLPContext, TrainingModelContext } from '@/pages/Project/contexts';
 
@@ -97,7 +98,7 @@ const TrainingSection: React.FC<TrainingSectionProps> = ({ isOpen, onOpen, toggl
                 isTrained={isTrained}
                 trainedModel={trainingState.trainedModel}
                 lastTrainedTime={trainingState.lastTrainedTime}
-                onStartTraining={startTraining}
+                onStartTraining={() => startTraining(Tracking.AssistantOriginType.TEST_TOOL)}
               />
             </TrainFadeDown>
           )

@@ -217,3 +217,8 @@ export enum VariableStateAppliedType {
   LOCAL = 'Local',
   SHAREABLE_LINK = 'Shareable Link',
 }
+
+export enum AssistantOriginType {
+  NLU_MANAGER = 'NLU Manager',
+  TEST_TOOL = 'Test Tool',
+}

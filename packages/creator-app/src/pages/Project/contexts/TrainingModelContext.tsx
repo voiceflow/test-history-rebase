@@ -12,6 +12,7 @@ import * as CreatorV2 from '@/ducks/creatorV2';
 import * as PrototypeDuck from '@/ducks/prototype';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
+import * as Tracking from '@/ducks/tracking';
 import { useDispatch, useFeature, useSelector, useTrackingEvents } from '@/hooks';
 import { createPlatformSelector } from '@/utils/platform';
 import { getModelsDiffs, isModelChanged, ModelDiff } from '@/utils/prototypeModel';
@@ -39,7 +40,7 @@ export interface TrainingModelContextValue {
   isTraining: boolean;
   isTrained: boolean;
   getDiff: () => void;
-  startTraining: () => void;
+  startTraining: (origin: Tracking.AssistantOriginType) => void;
   cancelTraining: () => void | Promise<void>;
 }
 
@@ -94,8 +95,8 @@ export const TrainingModelProvider: React.FC = ({ children }) => {
     }
   };
 
-  const startTraining = async () => {
-    trackingEvents.trackProjectTrainAssistant();
+  const startTraining = async (origin: Tracking.AssistantOriginType) => {
+    trackingEvents.trackProjectTrainAssistant({ origin });
 
     try {
       const { invalid } = await validateModel();

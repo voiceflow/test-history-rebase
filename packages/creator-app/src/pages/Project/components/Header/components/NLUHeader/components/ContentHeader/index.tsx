@@ -4,6 +4,7 @@ import React from 'react';
 import { ConfirmProps } from '@/components/ConfirmModal';
 import { PageProgress } from '@/components/PageProgressBar/utils';
 import { InteractionModelTabType, ModalType, PageProgressBar } from '@/constants';
+import * as Tracking from '@/ducks/tracking';
 import { useHotKeys, useModals } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import { NLUManagerContext } from '@/pages/NLUManager/context';
@@ -30,7 +31,7 @@ const ContentHeader: React.FC = () => {
 
   const handleTrain = () => {
     if (!isTraining) {
-      startTraining();
+      startTraining(Tracking.AssistantOriginType.NLU_MANAGER);
       PageProgress.start(PageProgressBar.NLU_MODEL_TRAINNING, 50000);
     }
   };

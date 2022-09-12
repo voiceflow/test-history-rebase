@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.897.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.897.2...@voiceflow/creator-app@1.897.3) (2022-09-12)
+
+
+### Bug Fixes
+
+* add text editor classname [bugfix] (CT-000) ([c20aec7](https://github.com/voiceflow/creator-app/commit/c20aec7c93d0a8ad2ec5581af8c44d3fc058df61))
+
+
+
+
+
 ## [1.897.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.897.1...@voiceflow/creator-app@1.897.2) (2022-09-12)
 
 

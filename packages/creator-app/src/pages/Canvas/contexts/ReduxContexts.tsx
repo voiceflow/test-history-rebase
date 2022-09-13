@@ -2,6 +2,7 @@ import React from 'react';
 
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as DiagramV2 from '@/ducks/diagramV2';
+import * as DomainV2 from '@/ducks/domain';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as ProductV2 from '@/ducks/productV2';
 import * as ProjectV2 from '@/ducks/projectV2';
@@ -86,6 +87,12 @@ export const {
 } = createSelectorContext(DiagramV2.sharedNodesSelector);
 
 export const {
+  Context: DomainMapContext,
+  Provider: DomainMapProvider,
+  Consumer: DomainMapConsumer,
+} = createSelectorContext(DomainV2.domainsMapSelector);
+
+export const {
   Context: ActionsRouteMatchContext,
   Provider: ActionsRouteMatchProvider,
   Consumer: ActionsRouteMatchConsumer,
@@ -106,8 +113,10 @@ export const ReduxContextsProviders: React.FC = ({ children }) => (
                         <IntentNodeDataLookupProvider>
                           <SharedNodesProvider>
                             <ActionsRouteMatchProvider>
-                              {/* comment to have a children on a new line */}
-                              {children}
+                              <DomainMapProvider>
+                                {/* comment to have a children on a new line */}
+                                {children}
+                              </DomainMapProvider>
                             </ActionsRouteMatchProvider>
                           </SharedNodesProvider>
                         </IntentNodeDataLookupProvider>

@@ -6,7 +6,7 @@ import { BlockType } from '@/constants';
 import { NodeConfig } from '../types';
 
 export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Url, Realtime.NodeData.UrlBuiltInPorts> = {
-  type: BlockType.GO_TO_NODE,
+  type: BlockType.URL,
   icon: 'editorURL',
 
   factory: ({ name = '', url = '' } = {}) => ({

@@ -94,6 +94,8 @@ export const PlatformToNLPProvider = {
   [VoiceflowConstants.PlatformType.EINSTEIN]: NLPProvider.EINSTEIN,
   [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: NLPProvider.DIALOGFLOW_ES,
   [VoiceflowConstants.PlatformType.NUANCE_MIX]: NLPProvider.NUANCE_MIX,
+  // TODO: remove/update when DIALOGFLOW_CX fully supported
+  [VoiceflowConstants.PlatformType.DIALOGFLOW_CX]: undefined,
   [VoiceflowConstants.PlatformType.GOOGLE]: undefined,
   [VoiceflowConstants.PlatformType.GENERAL]: undefined,
   [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT]: undefined,

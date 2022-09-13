@@ -9,7 +9,7 @@
     "@logux/actions": "0.3.0",
     "@logux/core": "^0.8.0",
     "@logux/server": "0.12.1",
-    "@voiceflow/common": "8.1.4",
+    "@voiceflow/common": "8.1.5",
     "@voiceflow/logger": "1.6.1",
     "bidirectional-adapter": "1.0.0",
     "cbor": "8.1.0",

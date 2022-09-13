@@ -64,6 +64,7 @@ const ActionsSection: React.FC<ActionsSectionProps> = ({ portID, editor, parentP
             actions={[
               hasNavigationStep ? null : { icon: 'goToBlock', label: 'Go to Block', onClick: () => onAdd(BlockType.GO_TO_NODE) },
               hasNavigationStep ? null : { icon: 'intentSmall', label: 'Go to Intent', onClick: () => onAdd(BlockType.GO_TO_INTENT) },
+              hasNavigationStep ? null : { icon: 'goToDomain', label: 'Go to Domain', onClick: () => onAdd(BlockType.GO_TO_DOMAIN) },
               hasNavigationStep ? null : { icon: 'editorExit', label: 'End', onClick: () => onAdd(BlockType.EXIT) },
               hasNavigationStep ? null : createUIOnlyMenuItemOption('divider', { divider: true }),
               { icon: 'setV2', label: 'Set variable', onClick: () => onAdd(BlockType.SETV2) },

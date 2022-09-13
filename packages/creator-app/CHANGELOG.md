@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.899.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.898.0...@voiceflow/creator-app@1.899.0) (2022-09-13)
+
+
+### Features
+
+* remove old editors and steps (CT-740) ([#6042](https://github.com/voiceflow/creator-app/issues/6042)) ([487603e](https://github.com/voiceflow/creator-app/commit/487603ee5e6e2504e4f5c4f7a5c53f3c5dd68dd7))
+
+
+
+
+
 # [1.898.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.897.4...@voiceflow/creator-app@1.898.0) (2022-09-13)
 
 

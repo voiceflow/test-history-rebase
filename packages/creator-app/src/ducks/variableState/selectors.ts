@@ -2,6 +2,7 @@ import _isEqual from 'lodash/isEqual';
 import _sortBy from 'lodash/sortBy';
 import { createSelector } from 'reselect';
 
+import { BlockType } from '@/constants';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import { createCRUDSelectors } from '@/ducks/utils/crudV2';
 import { Variable, VariableValue } from '@/models';
@@ -58,7 +59,12 @@ export const selectedStartFromNodeIDSelector = createSelector(
 
     const stepID = selectedVariableState?.startFrom?.stepID;
 
-    return getNodeByIDSelector({ id: stepID })?.combinedNodes[0] ?? stepID;
+    const node = getNodeByIDSelector({ id: stepID });
+    if (node?.type === BlockType.COMBINED) {
+      return node.combinedNodes[0];
+    }
+
+    return stepID;
   }
 );
 

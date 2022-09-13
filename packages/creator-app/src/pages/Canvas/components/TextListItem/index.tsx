@@ -8,10 +8,9 @@ import { compose } from '@/hocs';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
 import { ListItemComponentProps } from '@/pages/Canvas/components/ListEditorContent';
+import MessageDelayButton from '@/pages/Canvas/components/MessageDelayButton';
 import { NODE_CONFIG } from '@/pages/Canvas/managers/Text/constants';
 import THEME from '@/styles/theme';
-
-import MessageDelayButton from './components/MessageDelayButton';
 
 export type TextListItemProps = ListItemComponentProps<BaseNode.Text.TextData, { header?: React.ReactNode }>;
 
@@ -59,7 +58,10 @@ const TextListItem: React.ForwardRefRenderFunction<HTMLDivElement, TextListItemP
             extraToolbarButtons={
               <>
                 <Divider isVertical height="15px" style={{ margin: 0 }} />
-                <MessageDelayButton data={item} onUpdate={(value: Partial<BaseNode.Text.TextData>) => onUpdate(value)} />
+                <MessageDelayButton
+                  delay={item.messageDelayMilliseconds}
+                  onChange={(messageDelayMilliseconds) => onUpdate({ messageDelayMilliseconds })}
+                />
               </>
             }
           />

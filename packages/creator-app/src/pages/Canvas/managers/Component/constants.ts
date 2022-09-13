@@ -7,7 +7,7 @@ import { NodeConfig } from '../types';
 
 export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Component, Realtime.NodeData.ComponentBuiltInPorts> = {
   type: BlockType.COMPONENT,
-  icon: 'folder',
+  icon: 'componentOutline',
 
   factory: ({ diagramID = null } = {}) => ({
     node: {

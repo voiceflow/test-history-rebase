@@ -92,18 +92,7 @@ export const MANAGERS_BY_TYPE = {
   [BlockType.GO_TO_NODE]: GoToNodeManager,
 };
 
-export const MANAGERS_BY_FEATURE: Partial<Record<BlockType, Realtime.FeatureFlag>> = {
-  [BlockType.INTEGRATION]: Realtime.FeatureFlag.INTEGRATION_STEP_CLEANUP,
-  [BlockType.CODE]: Realtime.FeatureFlag.CODE_STEP_CLEANUP,
-  [BlockType.SPEAK]: Realtime.FeatureFlag.SPEAK_STEP_CLEANUP,
-  [BlockType.TEXT]: Realtime.FeatureFlag.TEXT_STEP_CLEANUP,
-  [BlockType.SETV2]: Realtime.FeatureFlag.SET_STEP_CLEANUP,
-  [BlockType.SET]: Realtime.FeatureFlag.SET_STEP_CLEANUP,
-  [BlockType.IFV2]: Realtime.FeatureFlag.IF_STEP_CLEANUP,
-  [BlockType.COMPONENT]: Realtime.FeatureFlag.FLOW_STEP_CLEANUP,
-  [BlockType.VISUAL]: Realtime.FeatureFlag.IMAGE_STEP_CLEANUP,
-  [BlockType.RANDOMV2]: Realtime.FeatureFlag.NEW_EDITORS_PART_2,
-};
+export const MANAGERS_BY_FEATURE: Partial<Record<BlockType, Realtime.FeatureFlag>> = {};
 
 export type ManagersMap = typeof MANAGERS_BY_TYPE;
 

@@ -11,8 +11,7 @@ export const textFactory = () => ({ id: Utils.id.cuid.slug(), content: SlateEdit
 
 export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Text, Realtime.NodeData.TextBuiltInPorts> = {
   type: BlockType.TEXT,
-  icon: 'textStep',
-  searchIcon: 'textStep',
+  icon: 'systemText',
 
   factory: (_, options) => ({
     node: {

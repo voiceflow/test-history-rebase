@@ -1,1 +1,2 @@
-export { default as PathInput } from './PathInput';
+export { default as Editor } from './Editor';
+export { default as Step } from './Step';

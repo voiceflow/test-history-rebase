@@ -17,7 +17,7 @@ export const expressionFactory = (): Realtime.ExpressionData => ({
 
 export const NODE_CONFIG: NodeConfig<Realtime.NodeData.IfV2, Realtime.NodeData.IfV2BuiltInPorts> = {
   type: BlockType.IFV2,
-  icon: 'if',
+  icon: 'ifV2',
 
   mergeTerminator: true,
 

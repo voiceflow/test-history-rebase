@@ -14,7 +14,7 @@ const NAME_MAP: Record<DialogType, string> = {
 
 const ICON_MAP: Record<DialogType, SvgIconTypes.Icon> = {
   [DialogType.AUDIO]: 'audio',
-  [DialogType.VOICE]: 'speak',
+  [DialogType.VOICE]: 'systemMessage',
 };
 
 export const AUDIO_MOCK_DATA = { dialogs: [{ id: '', type: DialogType.AUDIO as const, url: '' }], randomize: true };
@@ -33,6 +33,8 @@ export const audioFactory = (): Realtime.AudioData => ({
   desc: '',
   type: DialogType.AUDIO,
 });
+
+export const getLabelByType = (type?: DialogType): string => NAME_MAP[type ?? DialogType.VOICE];
 
 export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Speak, Realtime.NodeData.SpeakBuiltInPorts> = {
   type: BlockType.SPEAK,

@@ -7,7 +7,7 @@ import { NodeConfig } from '../types';
 
 export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Visual, Realtime.NodeData.VisualBuiltInPorts> = {
   type: BlockType.VISUAL,
-  icon: 'display',
+  icon: 'systemImage',
 
   factory: () => ({
     node: {

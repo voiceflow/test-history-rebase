@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.900.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.899.0...@voiceflow/creator-app@1.900.0) (2022-09-13)
+
+
+### Bug Fixes
+
+* [bugfix] fixes nlu export to always include unused intents (NLU-309) ([#6049](https://github.com/voiceflow/creator-app/issues/6049)) ([c588e6a](https://github.com/voiceflow/creator-app/commit/c588e6a2c791795ba48b8d445516152c99e2a90c))
+* display images using variables/url without set aspect ratio (BUG-25) ([#6046](https://github.com/voiceflow/creator-app/issues/6046)) ([c486953](https://github.com/voiceflow/creator-app/commit/c486953daf1558ffd8eb4ffc8e962ac23b78585c))
+
+
+### Features
+
+* go to domain (CT-959) ([#6035](https://github.com/voiceflow/creator-app/issues/6035)) ([e991d89](https://github.com/voiceflow/creator-app/commit/e991d8971173816d12f384825de96855498936df))
+
+
+
+
+
 # [1.899.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.898.0...@voiceflow/creator-app@1.899.0) (2022-09-13)
 
 

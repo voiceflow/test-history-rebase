@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.15.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-sdk@1.14.0...@voiceflow/ml-sdk@1.15.0) (2022-09-13)
+
+
+### Features
+
+* go to domain (CT-959) ([#6035](https://github.com/voiceflow/creator-app/issues/6035)) ([e991d89](https://github.com/voiceflow/creator-app/commit/e991d8971173816d12f384825de96855498936df))
+
+
+
+
+
 # [1.14.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-sdk@1.13.0...@voiceflow/ml-sdk@1.14.0) (2022-09-03)
 
 

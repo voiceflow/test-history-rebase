@@ -1,11 +1,22 @@
 import { BaseNode, BaseRequest } from '@voiceflow/base-types';
 import { Nullable, Utils } from '@voiceflow/common';
 
-import type { CardV2Trace, CarouselTrace, DebugTrace, PathTrace, SpeakTrace, StreamTrace, TextTrace, VisualTrace } from '@/models';
+import type {
+  CardV2Trace,
+  CarouselTrace,
+  ChannelActionTrace,
+  DebugTrace,
+  PathTrace,
+  SpeakTrace,
+  StreamTrace,
+  TextTrace,
+  VisualTrace,
+} from '@/models';
 import type {
   AudioMessage,
   CardMessage,
   CarouselMessage,
+  ChannelActionMessage,
   DebugMessage,
   PathMessage,
   SpeakMessage,
@@ -95,6 +106,13 @@ export const createVisualMessage = (trace: VisualTrace, common: CommonProperties
     ...common,
   };
 };
+
+export const createChannelActionMessage = (trace: ChannelActionTrace, common: CommonProperties): ChannelActionMessage => ({
+  id: trace.id,
+  type: MessageType.CHANNEL_ACTION,
+  name: trace.payload.name,
+  ...common,
+});
 
 const isGuidedNavRequest = (request: BaseRequest.BaseRequest): request is BaseRequest.BaseRequest<string> =>
   !!request.type.toLowerCase().match(/^port\d+$/) && typeof request.payload === 'string';

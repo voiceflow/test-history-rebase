@@ -15,6 +15,7 @@ import {
   BlockTrace,
   CardV2Trace,
   CarouselTrace,
+  ChannelActionTrace,
   ChoiceTrace,
   FlowTrace,
   GoToTrace,
@@ -385,7 +386,7 @@ class TraceController {
         break;
       }
       case BaseTrace.TraceType.DEBUG: {
-        await this.message.debug(topTrace);
+        this.message.debug(topTrace);
         break;
       }
       case BaseTrace.TraceType.GOTO: {
@@ -394,6 +395,11 @@ class TraceController {
       }
       case BaseTrace.TraceType.NO_REPLY: {
         this.processNoReplyTrace(topTrace);
+        break;
+      }
+      case BaseTrace.TraceType.CHANNEL_ACTION: {
+        this.message.channelAction(topTrace);
+        if (!tailTrace.length) this.processPathTrace(topTrace);
         break;
       }
       default:
@@ -413,8 +419,8 @@ class TraceController {
     this.props.setInteractions(buttons);
   }
 
-  private processPathTrace(trace: V1Trace) {
-    const interactions = trace.paths.reduce<Interaction[]>((acc, path) => {
+  private processPathTrace(trace: V1Trace | ChannelActionTrace) {
+    const interactions = trace.paths?.reduce<Interaction[]>((acc, path) => {
       if (path.event) {
         const { type } = path.event;
 
@@ -428,7 +434,7 @@ class TraceController {
       return acc;
     }, []);
 
-    this.props.setInteractions(interactions);
+    this.props.setInteractions(interactions ?? []);
   }
 
   private async processBlockTrace(trace: BlockTrace, { onlyMessage }: { isLast?: boolean; onlyMessage?: boolean } = {}) {

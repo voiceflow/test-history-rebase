@@ -6,13 +6,12 @@ import React from 'react';
 import { Permission } from '@/config/permissions';
 import { GATED_EXPORT_TYPES } from '@/config/planLimits/canvasExport';
 import { ExportFormat as CanvasExportFormat, ExportType, NLPProvider, NLPProviderLabels } from '@/constants';
-import { PrototypeRenderSyncOptions } from '@/constants/prototype';
 import * as Export from '@/ducks/export';
 import { useDispatch, usePermission, useTrackingEvents } from '@/hooks';
 import { PlatformContext } from '@/pages/Project/contexts';
 import { isVoiceflowPlatform } from '@/utils/typeGuards';
 
-import { getNlpModelProvider } from './constants';
+import { getNlpModelProvider, NLP_COMPILER_OPTIONS } from './constants';
 
 interface ExportValue {
   onExport: VoidFunction;
@@ -34,11 +33,7 @@ export const ExportContext = React.createContext<Nullable<ExportValue>>(null);
 
 export const { Consumer: ExportConsumer } = ExportContext;
 
-interface ExportProviderProps {
-  compilerOptions?: PrototypeRenderSyncOptions;
-}
-
-export const ExportProvider: React.FC<ExportProviderProps> = ({ children, compilerOptions }) => {
+export const ExportProvider: React.FC = ({ children }) => {
   const exportCanvas = useDispatch(Export.exportCanvas);
   const exportModel = useDispatch(Export.exportModel);
   const [permissionToExport] = usePermission(Permission.MODEL_EXPORT);
@@ -67,7 +62,7 @@ export const ExportProvider: React.FC<ExportProviderProps> = ({ children, compil
     if (exportType === ExportType.CANVAS) {
       await exportCanvas(canvasExportFormat);
     } else if (modelExportProvider) {
-      await exportModel(modelExportProvider, modelExportIntents, compilerOptions);
+      await exportModel(modelExportProvider, modelExportIntents, NLP_COMPILER_OPTIONS);
     }
 
     trackingEvents.trackProjectExported({

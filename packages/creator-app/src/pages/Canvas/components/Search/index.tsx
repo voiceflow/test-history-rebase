@@ -71,7 +71,7 @@ const SearchBar: React.FC = () => {
         if (entry.diagramID !== diagramID) {
           goToDiagram(entry.diagramID, entry.nodeID);
         } else {
-          engine?.focusNode(entry.nodeID, { open: true });
+          engine?.focusNode(entry.nodeID, { open: true, focusOnStep: true });
         }
       }
 

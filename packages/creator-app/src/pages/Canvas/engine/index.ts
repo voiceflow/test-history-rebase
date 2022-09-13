@@ -517,9 +517,17 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
     }
   }
 
-  focusNode(nodeID: string, { open, skipURLSync }: { open?: boolean; skipURLSync?: boolean } = {}): void {
+  focusNode(nodeID: string, { open, skipURLSync, focusOnStep }: { open?: boolean; skipURLSync?: boolean; focusOnStep?: boolean } = {}): void {
+    const node = focusOnStep && this.getNodeByID(nodeID);
+
     this.node.center(nodeID, !this.comment.isModeActive);
-    this.setActive(nodeID, { isSelection: !open, skipURLSync });
+
+    if (node && Realtime.Utils.typeGuards.isCombinedBlockType(node.type)) {
+      this.setActive(node.combinedNodes[0]);
+    } else {
+      this.setActive(nodeID, { isSelection: !open, skipURLSync });
+    }
+
     this.comment.forceRedrawThreads();
     this.log.info(this.log.success(`focused on the ${nodeID} node`));
   }

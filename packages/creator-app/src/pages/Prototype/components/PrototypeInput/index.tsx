@@ -101,7 +101,7 @@ const PrototypeInput = <L extends string>({
         goBackDisabled={goBackDisabled}
       />
       {status === PrototypeStatus.ENDED ? (
-        <Reset onClick={resetPrototype} onSave={onSave} />
+        <Reset onClick={() => resetPrototype()} onSave={onSave} />
       ) : (
         <InputContainer>
           {inputMode === PrototypeInputMode.TEXT ? (

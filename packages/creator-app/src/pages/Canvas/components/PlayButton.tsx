@@ -3,8 +3,8 @@ import React from 'react';
 
 import * as Prototype from '@/ducks/prototype';
 import * as Router from '@/ducks/router';
+import * as VariableState from '@/ducks/variableState';
 import { useDispatch, useTrackingEvents } from '@/hooks';
-import { useResetPrototype } from '@/pages/Prototype/hooks';
 
 interface PlayButtonProps {
   color: string;
@@ -12,17 +12,17 @@ interface PlayButtonProps {
 }
 
 const PlayButton: React.FC<PlayButtonProps> = ({ nodeID, color }) => {
-  const resetPrototype = useResetPrototype();
   const updatePrototype = useDispatch(Prototype.updatePrototype);
   const goToCurrentPrototype = useDispatch(Router.goToCurrentPrototype);
+  const currentDiagramVariableState = useDispatch(VariableState.currentDiagramVariableState);
   const [trackingEvents] = useTrackingEvents();
 
   const startTestFromBlock = (event: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
     event.stopPropagation();
 
-    resetPrototype();
     updatePrototype({ autoplay: true });
-    goToCurrentPrototype(nodeID);
+    currentDiagramVariableState(nodeID!);
+    goToCurrentPrototype();
 
     trackingEvents.trackProjectBlockPrototypeTestStart();
   };

@@ -1,3 +1,4 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import compositeReducer from 'composite-reducer';
 
 import { createRootCRUDReducer } from '@/ducks/utils/crudV2';
@@ -5,10 +6,9 @@ import { RootReducer } from '@/store/types';
 
 import { SelectedStateActions, VariableStateAction } from '../actions';
 import { INITIAL_STATE } from '../constants';
-import { SelectedVariableState } from '../types';
 import crudReducers from './crud';
 
-const updateSelectedReducer: RootReducer<Partial<SelectedVariableState> | null, SelectedStateActions> = (state = null, action) => {
+const updateSelectedReducer: RootReducer<Partial<Realtime.VariableState> | null, SelectedStateActions> = (state = null, action) => {
   switch (action.type) {
     case VariableStateAction.UPDATE_SELECTED_STATE:
       return action.payload;

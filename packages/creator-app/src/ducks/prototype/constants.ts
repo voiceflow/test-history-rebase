@@ -4,6 +4,14 @@ import { PrototypeState } from './types';
 
 export const STATE_KEY = 'prototype';
 
+export const EMPTY_CONTEXT = {
+  turn: {},
+  trace: [],
+  stack: [],
+  storage: {},
+  variables: {},
+};
+
 export const INITIAL_STATE: PrototypeState = {
   ID: null,
   status: PrototypeStatus.IDLE,
@@ -21,13 +29,7 @@ export const INITIAL_STATE: PrototypeState = {
   contextStep: 0,
   contextHistory: [],
   flowIDHistory: [],
-  context: {
-    turn: {},
-    trace: [],
-    stack: [],
-    storage: {},
-    variables: {},
-  },
+  context: EMPTY_CONTEXT,
   webhook: null,
   settings: {},
 };

@@ -1,69 +1,60 @@
 import { Utils } from '@voiceflow/common';
 import { batch } from 'react-redux';
 
-import { BuiltInVariable } from '@/constants';
 import { PrototypeStatus } from '@/constants/prototype';
-import * as ProjectV2 from '@/ducks/projectV2';
+import * as Domain from '@/ducks/domain/selectors';
+import * as Router from '@/ducks/router/sideEffects';
 import * as Session from '@/ducks/session';
-import * as SlotV2 from '@/ducks/slotV2';
-import * as VersionV2 from '@/ducks/versionV2';
-import { Store } from '@/models';
+import * as VariableState from '@/ducks/variableState/selectors';
 import { SyncThunk } from '@/store/types';
-import * as Sentry from '@/vendors/sentry';
+import { findDomainIDByDiagramID } from '@/utils/domain';
 
-import { updatePrototype, updatePrototypeContext, updatePrototypeStatus } from '../actions';
+import { updatePrototype, updatePrototypeStatus } from '../actions';
 import { prototypeVisualSelector } from '../selectors';
 
-const resetPrototype = (): SyncThunk => (dispatch, getState) => {
-  const state = getState();
-  const visualState = prototypeVisualSelector(state);
-  const globalVariables = VersionV2.active.globalVariablesSelector(state);
-  const slotNames = SlotV2.slotNamesSelector(state);
-  const platform = ProjectV2.active.platformSelector(state);
+export const redirectToPrototypeDiagram =
+  (diagramID: string, nodeID?: string): SyncThunk =>
+  (dispatch, getState) => {
+    const state = getState();
 
-  let variables: Store = {};
-  [...globalVariables, ...slotNames].forEach((name) => {
-    variables[name] = 0;
-  });
+    const versionID = Session.activeVersionIDSelector(state);
+    if (!versionID) return;
 
-  variables = {
-    ...variables,
-    [BuiltInVariable.USER_ID]: 'TEST_USER',
-    [BuiltInVariable.PLATFORM]: platform,
-    [BuiltInVariable.SESSIONS]: 1,
-    [BuiltInVariable.TIMESTAMP]: 0,
-    [BuiltInVariable.INTENT_CONFIDENCE]: 0,
-    [BuiltInVariable.LAST_UTTERANCE]: '',
+    dispatch(Session.setActiveDiagramID(diagramID));
+    dispatch(Router.goToCurrentPrototype(nodeID));
+
+    const newDomainID = findDomainIDByDiagramID(Domain.allDomainsSelector(state), diagramID);
+    if (newDomainID) dispatch(Session.setActiveDomainID(newDomainID));
   };
 
-  const projectID = Session.activeProjectIDSelector(state);
-  const store = localStorage.getItem(`TEST_VARIABLES_${projectID}`);
-  if (store) {
-    try {
-      const savedVariables = JSON.parse(store);
-      Object.keys(savedVariables).forEach((name) => {
-        if (name in variables) variables[name] = savedVariables[name];
-      });
-    } catch (err) {
-      Sentry.error(err);
-    }
-  }
+export interface ResetOptions {
+  redirect?: boolean;
+}
 
-  batch(() => {
-    dispatch(updatePrototypeStatus(PrototypeStatus.IDLE));
-    dispatch(updatePrototypeContext({ variables }));
-    dispatch(
-      updatePrototype({
-        ID: Utils.id.cuid(),
-        contextStep: 0,
-        contextHistory: [],
-        flowIDHistory: [],
-        activePaths: {},
-        autoplay: false,
-        visual: { ...visualState, data: null, dataHistory: [] },
-      })
-    );
-  });
-};
+const resetPrototype =
+  ({ redirect = true }: ResetOptions = {}): SyncThunk =>
+  (dispatch, getState) => {
+    const state = getState();
+    const visualState = prototypeVisualSelector(state);
+    const startFrom = VariableState.selectedVariableStateSelector(state)?.startFrom;
+
+    batch(() => {
+      if (redirect && startFrom) {
+        dispatch(redirectToPrototypeDiagram(startFrom.diagramID, startFrom.stepID));
+      }
+      dispatch(updatePrototypeStatus(PrototypeStatus.IDLE));
+      dispatch(
+        updatePrototype({
+          ID: Utils.id.cuid(),
+          contextStep: 0,
+          contextHistory: [],
+          flowIDHistory: [],
+          activePaths: {},
+          autoplay: false,
+          visual: { ...visualState, data: null, dataHistory: [] },
+        })
+      );
+    });
+  };
 
 export default resetPrototype;

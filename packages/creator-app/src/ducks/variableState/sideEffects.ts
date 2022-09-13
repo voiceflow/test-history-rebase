@@ -1,33 +1,21 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 
-import * as Prototype from '@/ducks/prototype';
-import { goToPrototype } from '@/ducks/router/actions';
+import * as Errors from '@/config/errors';
+import { BuiltInVariable } from '@/constants';
+import * as Diagram from '@/ducks/diagramV2';
+import * as Domain from '@/ducks/domain/selectors';
+import * as ProjectV2 from '@/ducks/projectV2';
+import * as Prototype from '@/ducks/prototype/sideEffects';
 import * as Session from '@/ducks/session';
 import { waitAsync } from '@/ducks/utils';
 import { getActiveVersionContext } from '@/ducks/version/utils';
 import * as VersionV2 from '@/ducks/versionV2';
-import { VariableValue } from '@/models';
-import { Thunk } from '@/store/types';
+import { Store, VariableValue } from '@/models';
+import { SyncThunk, Thunk } from '@/store/types';
 
 import { updateSelectedVariableState, updateVariables } from './actions';
 import { ALL_PROJECT_VARIABLES_ID } from './constants';
-import {
-  getVariableStateByIDSelector,
-  selectedVariableStateIdSelector as getSelectedVariableStateId,
-  selectedVariableStateSelector as getSelectedVariableState,
-} from './selectors';
-
-export const redirectToDiagram =
-  (diagramID: string): Thunk =>
-  async (dispatch, getState) => {
-    const versionID = Session.activeVersionIDSelector(getState());
-
-    if (!versionID) return;
-
-    dispatch(Prototype.resetPrototype());
-    dispatch(goToPrototype(versionID, undefined));
-    dispatch(Session.setActiveDiagramID(diagramID));
-  };
+import { getVariableStateByIDSelector, selectedVariableStateSelector } from './selectors';
 
 export const createVariableState =
   (variableState: Omit<Realtime.VariableStateData, 'projectID'>): Thunk =>
@@ -45,66 +33,36 @@ export const createVariableState =
       })
     );
 
-    dispatch(updateSelectedVariableState({ id: createdVariableState.id, variables: variableState.variables }));
-
-    await dispatch(redirectToDiagram(variableState.startFrom?.diagramID || version.rootDiagramID));
+    dispatch(updateSelectedVariableState(createdVariableState));
+    dispatch(Prototype.resetPrototype());
   };
 
 export const updateSelectedVariableStateVariables =
-  (variable: Record<string, VariableValue>): Thunk =>
-  async (dispatch, getState) => {
-    const state = getState();
-    const selectedVariableStateId = getSelectedVariableStateId(state);
-
-    if (selectedVariableStateId === ALL_PROJECT_VARIABLES_ID) {
-      dispatch(Prototype.updateVariables({ ...variable }));
-    }
-
-    dispatch(updateVariables({ ...variable }));
+  (variables: Record<string, VariableValue>): Thunk =>
+  async (dispatch) => {
+    dispatch(updateVariables({ ...variables }));
   };
-
-export const resetVariableStates = (): Thunk => async (dispatch, getState) => {
-  const variables = Prototype.prototypeVariablesSelector(getState());
-  dispatch(updateSelectedVariableState({ id: ALL_PROJECT_VARIABLES_ID, variables }));
-};
 
 export const updateSelectedVariableStateById =
   (variableStateID: string | null): Thunk =>
   async (dispatch, getState) => {
-    const version = VersionV2.active.versionSelector(getState());
-
-    if (!version?.rootDiagramID) return;
-
-    if (!variableStateID) {
-      await dispatch(redirectToDiagram(version.rootDiagramID));
-      dispatch(updateSelectedVariableState(null));
-      dispatch(Session.setPrototypeSidebarVisible(true));
-      return;
-    }
-
-    const state = getState();
-    const getVariableStateById = getVariableStateByIDSelector(state);
-    const variableState = getVariableStateById({ id: variableStateID });
-    const variables = Prototype.prototypeVariablesSelector(state);
-
-    if (!variableState) {
-      await dispatch(redirectToDiagram(version.rootDiagramID));
-      dispatch(updateSelectedVariableState({ id: ALL_PROJECT_VARIABLES_ID, variables }));
-      dispatch(Session.setPrototypeSidebarVisible(true));
-      return;
-    }
-
-    if (variableState.startFrom?.diagramID) {
-      await dispatch(redirectToDiagram(variableState.startFrom?.diagramID));
-    }
-
-    dispatch(updateSelectedVariableState({ id: variableStateID, variables: variableState.variables }));
     dispatch(Session.setPrototypeSidebarVisible(true));
+
+    if (!variableStateID || variableStateID === ALL_PROJECT_VARIABLES_ID) {
+      dispatch(defaultVariableState());
+    } else {
+      const state = getState();
+      const variableState = getVariableStateByIDSelector(state)({ id: variableStateID });
+
+      dispatch(updateSelectedVariableState(variableState));
+    }
+
+    dispatch(Prototype.resetPrototype());
   };
 
 export const updateStateValues = (): Thunk => async (dispatch, getState) => {
   const state = getState();
-  const selectedState = getSelectedVariableState(state);
+  const selectedState = selectedVariableStateSelector(state);
   const getVariableStateById = getVariableStateByIDSelector(state);
 
   if (!selectedState?.id) return;
@@ -125,11 +83,6 @@ export const updateState =
   (variableStateID: string, variableState: Partial<Realtime.VariableState>): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
-    const selectedVariableStateId = getSelectedVariableStateId(state);
-
-    if (variableState.startFrom?.diagramID && selectedVariableStateId === variableStateID) {
-      await dispatch(redirectToDiagram(variableState.startFrom?.diagramID));
-    }
 
     await dispatch.sync(
       Realtime.variableState.crud.patch({
@@ -145,11 +98,78 @@ export const deleteState =
   async (dispatch, getState) => {
     const state = getState();
 
-    const selectedVariableStateId = getSelectedVariableStateId(state);
+    const selectedVariableStateID = selectedVariableStateSelector(state)?.id;
 
     await dispatch.sync(Realtime.variableState.crud.remove({ ...getActiveVersionContext(state), key: variableStateID }));
 
-    if (selectedVariableStateId === variableStateID) {
+    if (selectedVariableStateID === variableStateID) {
       dispatch(updateSelectedVariableState(null));
     }
   };
+
+// set variable state to current diagram and specific node
+export const currentDiagramVariableState =
+  (nodeID: string): SyncThunk =>
+  (dispatch, getState) => {
+    const state = getState();
+    const diagramID = Session.activeDiagramIDSelector(state);
+    Errors.assertDiagramID(diagramID);
+
+    dispatch(applyVariableState(nodeID, diagramID));
+  };
+
+// go to the closest diagram with a start step
+export const defaultVariableState = (): SyncThunk => (dispatch, getState) => {
+  const state = getState();
+  const sharedNodesStartIDSelector = Diagram.sharedNodesStartIDSelector(state);
+
+  const activeDiagramID = Session.activeDiagramIDSelector(state);
+  Errors.assertDiagramID(activeDiagramID);
+  const activeDiagramStartNodeID = sharedNodesStartIDSelector(activeDiagramID);
+  if (activeDiagramStartNodeID) {
+    dispatch(applyVariableState(activeDiagramStartNodeID, activeDiagramID));
+    return;
+  }
+
+  const rootDiagramID = Domain.active.rootDiagramIDSelector(state);
+  Errors.assertDiagramID(rootDiagramID);
+  const rootDiagramStartNodeID = sharedNodesStartIDSelector(rootDiagramID) || Realtime.START_NODE_ID;
+  dispatch(applyVariableState(rootDiagramStartNodeID, rootDiagramID));
+};
+
+export const applyVariableState =
+  (stepID: string, diagramID: string): SyncThunk =>
+  (dispatch, getState) => {
+    const state = getState();
+
+    const platform = ProjectV2.active.platformSelector(state);
+    const projectID = Session.activeProjectIDSelector(state);
+    const allVariableNames = Diagram.active.allSlotsAndVariablesSelector(state);
+    let variables: Store = {};
+    allVariableNames.forEach((name) => {
+      variables[name] = 0;
+    });
+
+    variables = {
+      ...variables,
+      [BuiltInVariable.USER_ID]: 'TEST_USER',
+      [BuiltInVariable.PLATFORM]: platform,
+      [BuiltInVariable.SESSIONS]: 1,
+      [BuiltInVariable.TIMESTAMP]: 0,
+      [BuiltInVariable.INTENT_CONFIDENCE]: 0,
+      [BuiltInVariable.LAST_UTTERANCE]: '',
+    };
+
+    Errors.assertProjectID(projectID);
+    Errors.assertDiagramID(diagramID);
+
+    dispatch(updateSelectedVariableState({ id: ALL_PROJECT_VARIABLES_ID, name: 'Default', projectID, startFrom: { stepID, diagramID }, variables }));
+  };
+
+// if no variable state exists, apply new state
+export const initializeVariableState = (): Thunk => async (dispatch, getState) => {
+  const selectedVariableState = selectedVariableStateSelector(getState());
+  if (!selectedVariableState) {
+    dispatch(defaultVariableState());
+  }
+};

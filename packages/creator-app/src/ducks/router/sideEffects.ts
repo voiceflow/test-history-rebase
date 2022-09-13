@@ -11,7 +11,6 @@ import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import * as Tracking from '@/ducks/tracking';
 import { NLUManagerOpenedOrigin } from '@/ducks/tracking/constants';
-import * as VariableState from '@/ducks/variableState';
 import { SyncThunk, Thunk } from '@/store/types';
 
 import {
@@ -265,29 +264,9 @@ export const goToCurrentPrototype =
   (nodeID?: string): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
-    const topicIDs = DomainSelectors.active.topicIDsSelector(state);
     const versionID = Session.activeVersionIDSelector(state);
-    const diagramID = Session.activeDiagramIDSelector(state);
-    const rootDomain = DomainSelectors.rootDomainSelector(state);
-    const variableStatesStartFromDiagramID = VariableState.selectedStartFromDiagramIDSelector(state);
 
     Errors.assertVersionID(versionID);
-
-    const isTopic = !!diagramID && topicIDs.includes(diagramID);
-
-    if (nodeID && variableStatesStartFromDiagramID && variableStatesStartFromDiagramID !== diagramID) {
-      dispatch(VariableState.resetVariableStates());
-    }
-
-    if (!nodeID && variableStatesStartFromDiagramID) {
-      const domainID = DomainSelectors.domainIDByTopicIDSelector(state, { topicID: variableStatesStartFromDiagramID }) ?? rootDomain?.id;
-
-      Errors.assertDomainID(domainID);
-
-      await dispatch(redirectToDiagram(domainID, variableStatesStartFromDiagramID));
-    } else if (!nodeID && isTopic && rootDomain && rootDomain.rootDiagramID !== diagramID) {
-      await dispatch(redirectToDiagram(rootDomain.id, rootDomain.rootDiagramID));
-    }
 
     dispatch(goToPrototype(versionID, nodeID));
   };

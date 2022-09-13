@@ -46,8 +46,8 @@ export interface Store {
 }
 
 export interface Frame {
-  blockID?: string | null;
-  diagramID: string;
+  nodeID?: string | null;
+  programID: string;
 
   storage: Store;
   commands?: Record<string, any>[];

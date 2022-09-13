@@ -497,29 +497,23 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
     this.clipboard.paste(pastedText, coords);
   }
 
-  getHomeNodeID(): string | null {
-    const startNode = Array.from(this.nodes.entries()).find(([, { type }]) => type === BlockType.START);
+  getStartNodeID(): string | null {
+    const diagram = this.select(DiagramV2.active.diagramSelector);
+    const isRootDiagramActive = this.select(CreatorV2.isRootDiagramActiveSelector);
 
+    // topics do not have start node, get first intent step
+    if (!isRootDiagramActive && diagram?.type === BaseModels.Diagram.DiagramType.TOPIC) {
+      return diagram.menuNodeIDs[0];
+    }
+
+    const startNode = Array.from(this.nodes.entries()).find(([, { type }]) => type === BlockType.START);
     return startNode?.[0] ?? null;
   }
 
   focusStart(options: { open?: boolean; skipURLSync?: boolean } = {}): void {
-    const diagram = this.select(DiagramV2.active.diagramSelector);
-    const isRootDiagramActive = this.select(CreatorV2.isRootDiagramActiveSelector);
-
-    // topics do not have start node, focus first intent step
-    if (!isRootDiagramActive && diagram?.type === BaseModels.Diagram.DiagramType.TOPIC) {
-      const menuNodeID = diagram.menuNodeIDs[0];
-
-      if (menuNodeID) {
-        this.focusNode(menuNodeID, options);
-      }
-    } else {
-      const nodeID = this.getHomeNodeID();
-
-      if (nodeID) {
-        this.focusNode(nodeID, options);
-      }
+    const startNodeID = this.getStartNodeID();
+    if (startNodeID) {
+      this.focusNode(startNodeID, options);
     }
   }
 
@@ -528,14 +522,6 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
     this.setActive(nodeID, { isSelection: !open, skipURLSync });
     this.comment.forceRedrawThreads();
     this.log.info(this.log.success(`focused on the ${nodeID} node`));
-  }
-
-  centerHome(): void {
-    const nodeID = this.getHomeNodeID();
-
-    if (nodeID) {
-      this.centerNode(nodeID);
-    }
   }
 
   centerNode(nodeID: string): void {

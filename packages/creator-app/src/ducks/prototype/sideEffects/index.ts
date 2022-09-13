@@ -12,6 +12,7 @@ import { prototypeSettingsSelector } from '../selectors';
 export { default as checkSharedProtoPassword } from './checkSharedProtoPassword';
 export { default as compilePrototype } from './compilePrototype';
 export { default as fetchContext } from './fetchContext';
+export type { ResetOptions } from './reset';
 export { default as resetPrototype } from './reset';
 export { default as setupPublicPrototype } from './setupPublicPrototype';
 export { default as startPrototype } from './startPrototype';

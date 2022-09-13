@@ -3,7 +3,6 @@ import _sortBy from 'lodash/sortBy';
 import { createSelector } from 'reselect';
 
 import * as CreatorV2 from '@/ducks/creatorV2';
-import { prototypeVariablesSelector } from '@/ducks/prototype/selectors';
 import { createCRUDSelectors } from '@/ducks/utils/crudV2';
 import { Variable, VariableValue } from '@/models';
 
@@ -17,14 +16,17 @@ export const {
   getByID: getVariableStateByIDSelector,
 } = createCRUDSelectors(STATE_KEY);
 
-export const selectedVariableStateIdSelector = createSelector([rootVariableStatesSelector], (variableStates) => variableStates?.selectedState?.id);
+export const selectedVariableStateSelector = createSelector([rootVariableStatesSelector], (variableStates) => variableStates?.selectedState || null);
 
-export const isVariableStateSelected = createSelector(
-  [selectedVariableStateIdSelector],
-  (selectedVariableStateId) => selectedVariableStateId && selectedVariableStateId !== ALL_PROJECT_VARIABLES_ID
+export const selectedVariableStateIDSelector = createSelector(
+  [selectedVariableStateSelector],
+  (selectedVariableState) => selectedVariableState?.id ?? null
 );
 
-export const selectedVariableStateSelector = createSelector([rootVariableStatesSelector], (variableStates) => variableStates?.selectedState);
+export const isVariableStateSelected = createSelector(
+  [selectedVariableStateIDSelector],
+  (selectedVariableStateID) => selectedVariableStateID && selectedVariableStateID !== ALL_PROJECT_VARIABLES_ID
+);
 
 export const getSelectedVariableStateNameSelector = createSelector(
   [selectedVariableStateSelector, getVariableStateByIDSelector],
@@ -44,57 +46,34 @@ export const createVariableList = (variables?: Record<string, VariableValue>): V
       )
     : [];
 
-export const selectAllProjectVariablesSelector = createSelector([prototypeVariablesSelector], (prototypeVariables) => {
-  return createVariableList(prototypeVariables);
-});
-
 export const selectedVariablesSelector = createSelector([selectedVariableStateSelector], (selectedVariableState) => {
-  if (!selectedVariableState || selectedVariableState.id === ALL_PROJECT_VARIABLES_ID) return null;
+  if (!selectedVariableState) return null;
   return selectedVariableState.variables;
 });
 
 export const selectedStartFromNodeIDSelector = createSelector(
-  [selectedVariableStateIdSelector, getVariableStateByIDSelector, CreatorV2.getNodeByIDSelector],
-  (selectedVariableStateID, getByID, getNodeByIDSelector) => {
-    if (!selectedVariableStateID) return null;
-
-    const selectedVariableState = getByID({ id: selectedVariableStateID });
-
+  [selectedVariableStateSelector, CreatorV2.getNodeByIDSelector],
+  (selectedVariableState, getNodeByIDSelector) => {
     if (!selectedVariableState?.startFrom) return null;
 
-    // The selected node block contains visual data. Start from first node step id in order to get the correct node.
-    return getNodeByIDSelector({ id: selectedVariableState.startFrom?.stepID })?.combinedNodes[0] ?? null;
+    const stepID = selectedVariableState?.startFrom?.stepID;
+
+    return getNodeByIDSelector({ id: stepID })?.combinedNodes[0] ?? stepID;
   }
 );
 
-export const selectedStartFromDiagramIDSelector = createSelector(
-  [selectedVariableStateIdSelector, getVariableStateByIDSelector],
-  (selectedVariableStateID, getByID) => {
-    if (!selectedVariableStateID) return null;
+export const selectedStartFromDiagramIDSelector = createSelector([selectedVariableStateSelector], (selectedVariableState) => {
+  if (!selectedVariableState?.startFrom) return null;
+  return selectedVariableState?.startFrom?.diagramID || null;
+});
 
-    const selectedVariableState = getByID({ id: selectedVariableStateID });
-
-    if (!selectedVariableState?.startFrom) return null;
-
-    return selectedVariableState?.startFrom?.diagramID || null;
-  }
-);
-
-export const selectedVariablesStateVariablesSelector = createSelector(
-  [selectedVariableStateSelector, selectAllProjectVariablesSelector],
-  (selectedVariableState, allProjectVariables) => {
-    if (!selectedVariableState?.id) return [];
-
-    if (selectedVariableState.id === ALL_PROJECT_VARIABLES_ID) {
-      return allProjectVariables;
-    }
-
-    return createVariableList(selectedVariableState.variables);
-  }
-);
+export const selectedVariablesStateVariablesSelector = createSelector([selectedVariableStateSelector], (selectedVariableState) => {
+  if (!selectedVariableState) return [];
+  return createVariableList(selectedVariableState.variables);
+});
 
 export const selectedVariableStateSavedStateSelector = createSelector(
-  [selectedVariableStateIdSelector, getVariableStateByIDSelector],
+  [selectedVariableStateIDSelector, getVariableStateByIDSelector],
   (selectedVariableStateID, getSavedStateByID) => selectedVariableStateID && getSavedStateByID({ id: selectedVariableStateID })
 );
 

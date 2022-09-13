@@ -48,7 +48,7 @@ export const goToDashboardWithSearch = (search?: string) => goTo(`${Path.DASHBOA
 export const goToOnboarding = (search?: string) => goTo(`${Path.ONBOARDING}${search || window.location.search}`);
 
 export const goToPrototype = (versionID: string, nodeID?: string) =>
-  goTo(`${generatePath(Path.PROJECT_PROTOTYPE, { versionID })}${nodeID ? Query.stringify({ nodeID }) : ''}`);
+  goTo(`${generatePath(Path.PROJECT_PROTOTYPE, { versionID })}${Query.stringify({ nodeID })}`);
 
 export const goToSettings = (versionID: string) => goTo(generatePath(Path.PROJECT_SETTINGS, { versionID }));
 

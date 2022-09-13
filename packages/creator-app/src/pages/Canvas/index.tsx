@@ -7,7 +7,6 @@ import { DiagramSubscriptionGate } from '@/gates';
 import { compose, withBatchLoadingGate } from '@/hocs';
 import { useRAF, useRegistration, useTeardown } from '@/hooks';
 import { DiagramHeartbeatContext, SelectionSetTargetsContext } from '@/pages/Project/contexts';
-import * as Query from '@/utils/query';
 
 import Container from './components/CanvasContainer';
 import CanvasDiagram from './components/CanvasDiagram';
@@ -42,22 +41,15 @@ const Canvas: React.FC<CanvasProps> = ({ isPrototypingMode }) => {
   React.useEffect(() => {
     const nodeMatch = matchPath<{ nodeID: string }>(history.location.pathname, { path: Path.CANVAS_NODE });
     const rootNodes = engine.getRootNodeIDs();
-    const query = Query.parse(history.location.search);
 
     scheduler(() => {
-      const nodeID = nodeMatch?.params.nodeID ?? query.nodeID;
+      const nodeID = nodeMatch?.params.nodeID;
 
       if (nodeID) {
-        const isPrototype = engine.prototype.isActive;
-
-        if (query.nodeID) {
-          history.push({ search: '' });
-        }
-
         if (nodeID === 'start') {
-          engine.focusStart({ open: !isPrototype, skipURLSync: !!nodeMatch?.params.nodeID || isPrototype });
+          engine.focusStart({ open: true, skipURLSync: true });
         } else {
-          engine.focusNode(nodeID, { open: !isPrototype, skipURLSync: !!nodeMatch?.params.nodeID || isPrototype });
+          engine.focusNode(nodeID, { open: true, skipURLSync: true });
         }
       } else if (rootNodes.length === 1 && !engine.comment.isModeActive) {
         engine.centerNode(rootNodes[0]);

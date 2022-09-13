@@ -5,3 +5,6 @@ export const findRootDomainID = (domains: BaseModels.Version.Domain[], rootDiagr
 
 export const findDomainIDByTopicID = (domains: BaseModels.Version.Domain[], topicID: string): string | null =>
   domains.find((d) => d.topicIDs.includes(topicID))?.id ?? null;
+
+export const findDomainIDByDiagramID = (domains: BaseModels.Version.Domain[], diagramID: string): string | null =>
+  domains.find((d) => d.rootDiagramID === diagramID || d.topicIDs.includes(diagramID))?.id ?? null;

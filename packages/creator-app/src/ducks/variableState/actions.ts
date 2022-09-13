@@ -1,10 +1,11 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
+
 import { createAction } from '@/ducks/utils';
 import { createCRUDActionCreators } from '@/ducks/utils/crud';
 import { VariableValue } from '@/models';
 import { Action } from '@/store/types';
 
 import { STATE_KEY } from './constants';
-import { SelectedVariableState } from './types';
 
 const {
   add: addVariableState,
@@ -22,13 +23,13 @@ export enum VariableStateAction {
   UPDATE_VARIABLES = 'VARIABLE_STATE:UPDATE_VARIABLES',
 }
 
-export type UpdateSelectedVariableState = Action<VariableStateAction.UPDATE_SELECTED_STATE, SelectedVariableState | null>;
+export type UpdateSelectedVariableState = Action<VariableStateAction.UPDATE_SELECTED_STATE, Realtime.VariableState | null>;
 
 export type UpdateVariables = Action<VariableStateAction.UPDATE_VARIABLES, Record<string, VariableValue>>;
 
 export type SelectedStateActions = UpdateSelectedVariableState | UpdateVariables;
 
-export const updateSelectedVariableState = (selectedVariableState: SelectedVariableState | null): UpdateSelectedVariableState =>
+export const updateSelectedVariableState = (selectedVariableState: Realtime.VariableState | null): UpdateSelectedVariableState =>
   createAction(VariableStateAction.UPDATE_SELECTED_STATE, selectedVariableState);
 
 export const updateVariables = (variables: Record<string, VariableValue>): UpdateVariables =>

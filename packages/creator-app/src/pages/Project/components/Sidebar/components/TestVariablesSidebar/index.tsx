@@ -1,4 +1,3 @@
-import { transformStringVariableToNumber } from '@voiceflow/common';
 import { Flex, FlexCenter, LoadCircle, toast, useSessionStorageState } from '@voiceflow/ui';
 import React from 'react';
 
@@ -8,29 +7,24 @@ import VariableList from '@/components/VariableList';
 import * as Session from '@/ducks/session';
 import * as variableState from '@/ducks/variableState';
 import { useDispatch, useSelector, useTheme } from '@/hooks';
-import { Variable } from '@/models';
 
 import { SideBarComponentProps } from '../../types';
 import { SelectContainer, VariableListContainer } from './components';
+import { usePrototypeContextVariables } from './hooks';
 
 const TestVariablesSidebar: React.FC<SideBarComponentProps> = () => {
   const theme = useTheme();
-  const variables = useSelector(variableState.selectedVariablesStateVariablesSelector);
-  const selectedVariableStateId = useSelector(variableState.selectedVariableStateIdSelector);
+  const selectedVariables = useSelector(variableState.selectedVariablesStateVariablesSelector);
+  const selectedVariableState = useSelector(variableState.selectedVariableStateSelector);
   const isTestVariablesSidebarOpen = useSelector(Session.isPrototypeSidebarVisibleSelector);
 
   const updateSelectedVariableStateById = useDispatch(variableState.updateSelectedVariableStateById);
   const updateSelectedVariableStateVariables = useDispatch(variableState.updateSelectedVariableStateVariables);
-  const resetVariableStates = useDispatch(variableState.resetVariableStates);
   const updateStateValues = useDispatch(variableState.updateStateValues);
   const updateIsTestVariablesSidebarOpen = useDispatch(Session.setPrototypeSidebarVisible);
   const selectedSavedState = useSelector(variableState.selectedVariableStateSavedStateSelector);
   const [loading, setLoading] = React.useState(false);
   const [isOpen, setIsOpen] = useSessionStorageState('sidebarOpen', false);
-
-  const onChangeVariable = ({ name, value }: Variable) => {
-    updateSelectedVariableStateVariables({ [name]: transformStringVariableToNumber(value as string | number | null) });
-  };
 
   const handleVariableStateSelection = (variableStateId: string | null) => {
     updateSelectedVariableStateById(variableStateId);
@@ -55,14 +49,9 @@ const TestVariablesSidebar: React.FC<SideBarComponentProps> = () => {
   };
 
   React.useEffect(() => {
-    if (selectedVariableStateId === variableState.ALL_PROJECT_VARIABLES_ID) return;
-
-    if (!selectedSavedState) {
-      resetVariableStates();
-      return;
+    if (selectedSavedState) {
+      updateSelectedVariableStateVariables(selectedSavedState.variables);
     }
-
-    updateSelectedVariableStateVariables(selectedSavedState.variables);
   }, [selectedSavedState]);
 
   React.useEffect(() => {
@@ -70,6 +59,8 @@ const TestVariablesSidebar: React.FC<SideBarComponentProps> = () => {
       setIsOpen(isTestVariablesSidebarOpen);
     }
   }, [isTestVariablesSidebarOpen]);
+
+  const [variables, onChangeVariable] = usePrototypeContextVariables(selectedVariables, updateSelectedVariableStateVariables);
 
   return (
     <Drawer
@@ -84,7 +75,7 @@ const TestVariablesSidebar: React.FC<SideBarComponentProps> = () => {
         <Flex column fullHeight>
           <SelectContainer>
             <TestVariableStateSelect
-              value={selectedVariableStateId}
+              value={selectedVariableState?.id}
               loading={loading}
               onChange={(value) => handleVariableStateSelection(value)}
               onUpdateStateValues={onUpdateStateValues}

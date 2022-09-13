@@ -44,7 +44,7 @@ const CanvasHeader: React.FC = () => {
               icon="cursorV2"
               active={!isMarkupTextActive && !isMarkupMediaActive && !isCommentingMode}
               isSmall
-              onClick={onDisableModes}
+              onClick={stopPropagation(onDisableModes)}
               tooltip={{ title: 'Move', hotkey: HOTKEY_LABEL_MAP[Hotkey.MOVE_MODE] }}
               expandable
               expandActive={isOpen}
@@ -60,7 +60,7 @@ const CanvasHeader: React.FC = () => {
             active={isMarkupTextActive}
             isSmall
             tooltip={{ title: 'Text Markup', hotkey: HOTKEY_LABEL_MAP[Hotkey.ADD_MARKUP_TEXT] }}
-            onClick={markup.toggleTextCreating}
+            onClick={stopPropagation(markup.toggleTextCreating)}
             className={`${ClassName.CANVAS_CONTROL}--markup-text`}
           />
         )}
@@ -102,7 +102,7 @@ const CanvasHeader: React.FC = () => {
             active={isCommentingMode}
             isSmall
             tooltip={{ title: 'Comment', hotkey: HOTKEY_LABEL_MAP[Hotkey.OPEN_COMMENTING] }}
-            onClick={onToggleCommenting}
+            onClick={stopPropagation(onToggleCommenting)}
             className={`${ClassName.CANVAS_CONTROL}--commenting`}
             withBadge={hasUnreadComments}
           />

@@ -1,5 +1,4 @@
 export { default as Body } from './Body';
-export { ClickableWrapper } from './ClickableWrapper';
 export { default as Container } from './Container';
 export type { ContentProps } from './Content';
 export { default as Content } from './Content';

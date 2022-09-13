@@ -1,10 +1,6 @@
-import { css, styled } from '@/hocs';
+import { styled } from '@/hocs';
 
-interface ContainerProps {
-  isCreatingMarkupText: boolean;
-}
-
-const Container = styled.section<ContainerProps>`
+const Container = styled.section`
   position: relative;
   display: flex;
   width: 100vw;
@@ -12,17 +8,6 @@ const Container = styled.section<ContainerProps>`
   flex-direction: column;
   overflow: hidden;
   overflow: clip;
-
-  ${({ isCreatingMarkupText }) =>
-    isCreatingMarkupText &&
-    css`
-      cursor: text !important;
-
-      a,
-      button {
-        cursor: text !important;
-      }
-    `}
 `;
 
 export default Container;

@@ -1,10 +1,6 @@
 import React from 'react';
 
-import { BlockType } from '@/constants';
-import { MarkupContext } from '@/pages/Project/contexts';
-import { useDisableModes } from '@/pages/Project/hooks';
-
-import { Body, ClickableWrapper, Container, Content, ContentProps } from './components';
+import { Body, Container, Content, ContentProps } from './components';
 
 export type { HeaderIconButtonProps } from './components';
 export {
@@ -24,15 +20,12 @@ export interface ProjectPageProps extends Partial<ContentProps> {
 }
 
 const ProjectPage: React.FC<ProjectPageProps> = ({ renderHeader, renderSidebar, children, scrollable = true }) => {
-  const markup = React.useContext(MarkupContext)!;
-  const onDisableModes = useDisableModes();
-
   return (
-    <Container isCreatingMarkupText={markup.creatingType === BlockType.MARKUP_TEXT}>
-      <ClickableWrapper onClick={onDisableModes}>{renderHeader?.()}</ClickableWrapper>
+    <Container>
+      {renderHeader?.()}
 
       <Body>
-        <ClickableWrapper onClick={onDisableModes}>{renderSidebar?.()}</ClickableWrapper>
+        {renderSidebar?.()}
 
         <Content scrollable={scrollable}>{children}</Content>
       </Body>

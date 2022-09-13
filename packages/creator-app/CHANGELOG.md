@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.898.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.897.4...@voiceflow/creator-app@1.898.0) (2022-09-13)
+
+
+### Features
+
+* handle channel action trace (PL-41) ([#5961](https://github.com/voiceflow/creator-app/issues/5961)) ([3a9eabd](https://github.com/voiceflow/creator-app/commit/3a9eabddafee18973ab90c88a1d7d0d5d531bfd2))
+
+
+
+
+
 ## [1.897.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.897.3...@voiceflow/creator-app@1.897.4) (2022-09-13)
 
 

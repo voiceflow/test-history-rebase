@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.901.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.900.1...@voiceflow/creator-app@1.901.0) (2022-09-13)
+
+
+### Features
+
+* improve text markup (CT-876) ([#6045](https://github.com/voiceflow/creator-app/issues/6045)) ([f3726f0](https://github.com/voiceflow/creator-app/commit/f3726f04d24a44b511bbf36c8a56cc744f095280))
+
+
+
+
+
 ## [1.900.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.900.0...@voiceflow/creator-app@1.900.1) (2022-09-13)
 
 

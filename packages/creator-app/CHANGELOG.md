@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.900.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.900.0...@voiceflow/creator-app@1.900.1) (2022-09-13)
+
+
+### Bug Fixes
+
+* start selectors [bugfix] (CT-000) ([a8b3869](https://github.com/voiceflow/creator-app/commit/a8b38691459b9ef93d3dcb09c4728dade59ad380))
+* when select node, focus on first step (CT-975) ([#6047](https://github.com/voiceflow/creator-app/issues/6047)) ([67bad5d](https://github.com/voiceflow/creator-app/commit/67bad5d1dae7281ad9c9035a708a008d72d8c1d4))
+
+
+
+
+
 # [1.900.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.899.0...@voiceflow/creator-app@1.900.0) (2022-09-13)
 
 

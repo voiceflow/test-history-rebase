@@ -8,7 +8,8 @@ export const VisualContainer = styled.div`
   }
 `;
 
-export const ImageContainer = styled.div<{ ratio: number; isFirstInSeries?: boolean }>`
-  max-width: 306px;
+export const Image = styled.img<{ borderRadius?: number }>`
   width: 100%;
+  max-width: 306px;
+  border-radius: ${({ borderRadius }) => `${borderRadius ?? 5}px`};
 `;

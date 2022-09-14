@@ -8,7 +8,6 @@ const HelpTooltip: React.FC = () => {
   return (
     <Popper
       placement="bottom"
-      borderRadius="8px"
       renderContent={() => (
         <Preview style={{ maxWidth: '232px' }}>
           <Preview.Content style={{ paddingTop: '11px', paddingBottom: 0 }}>

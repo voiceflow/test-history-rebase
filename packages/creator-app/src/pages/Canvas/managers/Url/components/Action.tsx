@@ -24,7 +24,6 @@ const Action: ConnectedAction<Realtime.NodeData.Url, Realtime.NodeData.UrlBuiltI
   return (
     <Popper
       placement="top-start"
-      borderRadius="8px"
       renderContent={({ onClose }) => (
         <ActionPreview
           content={isEmpty ? 'Enter URL' : data.url}

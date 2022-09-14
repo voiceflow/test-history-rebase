@@ -22,7 +22,6 @@ const GoToDomainAction: ConnectedAction<Realtime.NodeData.GoToDomain> = ({ data,
   return (
     <Popper
       placement="top-start"
-      borderRadius="8px"
       renderContent={({ onClose }) => (
         <ActionPreview
           content={isEmpty ? 'Select domain' : `'${goToDomain.name}'`}

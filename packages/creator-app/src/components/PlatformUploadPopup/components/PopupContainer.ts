@@ -1,7 +1,8 @@
+import { Popper } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import { AnyStageType } from '@/constants/platforms';
-import { css, styled } from '@/hocs/styled';
+import { styled } from '@/hocs/styled';
 
 import { getPlatformPopupLayout } from '../constants';
 
@@ -21,16 +22,11 @@ const PopupContainer = styled.div<PopupContainerProps>`
   align-items: center;
   white-space: normal;
   background-color: #fff;
-  border-radius: 5px;
+  border-radius: 8px;
   overflow: hidden;
   transform: translate3d(0, 0, 0);
 
-  ${({ open, jobStage }) =>
-    open &&
-    jobStage &&
-    css`
-      box-shadow: 0 0 0 1px rgba(17, 49, 96, 0.06), 0 8px 16px 0 rgba(17, 49, 96, 0.16);
-    `}
+  ${({ open, jobStage }) => open && jobStage && Popper.baseStyles}
 
   ${({ platform, jobStage, multiSelect }) => getPlatformPopupLayout(platform)({ jobStage, multiSelect })};
 `;

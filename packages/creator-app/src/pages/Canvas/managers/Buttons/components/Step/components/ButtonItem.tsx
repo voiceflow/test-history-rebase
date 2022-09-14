@@ -26,7 +26,6 @@ const ButtonItem: React.FC<ButtonItemProps> = ({ index, label, portID, prompts, 
       !!prompts?.length && (
         <Popper
           placement="right-start"
-          borderRadius="8px"
           renderContent={({ onClose }) => <ButtonPreview prompts={prompts} onClose={onClose} onOpenEditor={onOpenEditor} />}
         >
           {({ onToggle, ref, isOpened }) => <StepButton ref={ref} onClick={stopPropagation(onToggle)} icon="setV2" isActive={isOpened} />}

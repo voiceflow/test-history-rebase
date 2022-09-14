@@ -25,7 +25,6 @@ const Action: ConnectedAction<Realtime.NodeData.SetV2, Realtime.NodeData.SetV2Bu
   return (
     <Popper
       placement="top-start"
-      borderRadius="8px"
       renderContent={({ onClose }) => <ActionPreview sets={setsToPreview} onClose={onClose} onRemove={onRemove} onOpenEditor={onOpenEditor} />}
     >
       {({ ref, onToggle, isOpened }) => (

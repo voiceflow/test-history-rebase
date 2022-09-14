@@ -42,7 +42,6 @@ export const AudioStep: React.FC<AudioStepProps> = ({ item, palette, nextPortID,
         <Step.StepPreviewButton>
           <Popper
             placement="right-start"
-            borderRadius="8px"
             renderContent={({ onClose }) => <StepPreview items={attachmentItems} onClose={onClose} onOpenEditor={onOpenEditor} />}
           >
             {({ onToggle, ref, isOpened }) => (

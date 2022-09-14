@@ -24,7 +24,6 @@ const VoiceStep: React.FC<VoiceStepProps> = ({ item, nextPortID, onOpenEditor, a
       {!!attachmentItems.length && (
         <Popper
           placement="right-start"
-          borderRadius="8px"
           renderContent={({ onClose }) => <StepPreview items={attachmentItems} onClose={onClose} onOpenEditor={onOpenEditor} />}
         >
           {({ onToggle, ref, isOpened }) => (

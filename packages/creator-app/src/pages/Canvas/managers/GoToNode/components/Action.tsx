@@ -16,7 +16,6 @@ const GoToNodeAction: ConnectedAction<Realtime.NodeData.GoToNode> = ({ data, eng
   return (
     <Popper
       placement="top-start"
-      borderRadius="8px"
       renderContent={({ onClose }) => (
         <ActionPreview
           content={isEmpty ? 'Select block' : `'${goToNode.name}'`}

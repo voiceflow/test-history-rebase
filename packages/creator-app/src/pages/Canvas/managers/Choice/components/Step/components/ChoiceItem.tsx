@@ -26,7 +26,6 @@ const ChoiceItem: React.FC<ChoiceItemProps> = ({ label, portID, index, prompts, 
       !!prompts?.length && (
         <Popper
           placement="right-start"
-          borderRadius="8px"
           renderContent={({ onClose }) => <ChoicePreview prompts={prompts} onClose={onClose} onOpenEditor={onOpenEditor} />}
         >
           {({ onToggle, ref, isOpened }) => <StepButton ref={ref} onClick={stopPropagation(onToggle)} icon="setV2" isActive={isOpened} />}

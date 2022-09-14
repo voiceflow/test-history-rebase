@@ -27,7 +27,6 @@ const Action: ConnectedAction<Realtime.NodeData.Integration, Realtime.NodeData.I
   return (
     <Popper
       placement="top-start"
-      borderRadius="8px"
       renderContent={({ onClose }) => (
         <ActionPreview
           title={`${getCustomAPIActionLabel(selectedAction)} request`}

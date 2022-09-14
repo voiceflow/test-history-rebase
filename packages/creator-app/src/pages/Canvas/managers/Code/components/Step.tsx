@@ -21,7 +21,6 @@ const CodeStep: ConnectedStep<Realtime.NodeData.Code, Realtime.NodeData.CodeBuil
           !!data.code && (
             <Popper
               placement="right-start"
-              borderRadius="8px"
               renderContent={({ onClose }) => (
                 <StepPreview codeData={data.code} onClose={onClose} onOpenEditor={() => engine.setActive(data.nodeID)} />
               )}

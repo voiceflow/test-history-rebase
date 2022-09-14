@@ -57,7 +57,6 @@ const CommentThread: React.FC<{ isHidden?: boolean }> = ({ isHidden }) => {
   return (
     <Popper
       width="350px"
-      borderRadius="8px"
       zIndex={20}
       opened={isFocused && !isHidden}
       modifiers={{ offset: { offset: `${-INDICATOR_DIAMETER / 2},${INDICATOR_DIAMETER / 2 + 14}` } }}

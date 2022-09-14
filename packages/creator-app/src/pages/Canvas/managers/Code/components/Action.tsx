@@ -21,7 +21,6 @@ const Action: ConnectedAction<Realtime.NodeData.Code, Realtime.NodeData.CodeBuil
   return (
     <Popper
       placement="top-start"
-      borderRadius="8px"
       renderContent={({ onClose }) => <ActionPreview content={data.code} onClose={onClose} onRemove={onRemove} onOpenEditor={onOpenEditor} />}
     >
       {({ ref, onToggle, isOpened }) => (

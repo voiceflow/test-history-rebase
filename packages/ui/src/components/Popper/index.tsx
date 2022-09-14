@@ -7,7 +7,7 @@ import { Manager, Popper as ReactPopper, Reference } from 'react-popper';
 import { MemoryRouter } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 
-import { Body, Container, Content, Footer, Nav, NavItem } from './components';
+import { baseStyles, Body, Container, Content, Footer, Nav, NavItem } from './components';
 import * as T from './types';
 
 export * as PopperTypes from './types';
@@ -27,7 +27,6 @@ const Popper: React.FC<T.Props> = ({
   placement = 'bottom',
   initialTab,
   portalNode = portalRootNode,
-  borderRadius = 5,
   dismissEvent,
   renderFooter,
   renderContent,
@@ -76,14 +75,7 @@ const Popper: React.FC<T.Props> = ({
             >
               {({ ref, style, scheduleUpdate }) => (
                 <div ref={ref} style={{ ...style, zIndex: zIndex ?? theme.zIndex.popper }}>
-                  <Container
-                    className={ClassName.POPPER}
-                    width={width}
-                    height={height}
-                    maxWidth={maxWidth}
-                    maxHeight={maxHeight}
-                    borderRadius={borderRadius}
-                  >
+                  <Container className={ClassName.POPPER} width={width} height={height} maxWidth={maxWidth} maxHeight={maxHeight}>
                     {renderNav?.({ ...rendererProps, scheduleUpdate })}
 
                     <Body>
@@ -110,4 +102,11 @@ const Popper: React.FC<T.Props> = ({
   );
 };
 
-export default Object.assign(Popper, { Nav, Footer, Content, NavItem });
+export default Object.assign(Popper, {
+  baseStyles,
+
+  Nav,
+  Footer,
+  Content,
+  NavItem,
+});

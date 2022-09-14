@@ -16,15 +16,16 @@ export const mentionEditorStyle = ({ theme, height }: { theme: Theme; height?: n
       height: 'initial',
     },
     suggestions: {
-      borderRadius: '5px',
+      borderRadius: '8px',
       zIndex: theme.zIndex.popper,
       list: {
         width: '254px',
         maxHeight: '350px',
         padding: '8px 0',
         overflowY: 'auto',
-        borderRadius: '5px',
-        boxShadow: '0 8px 16px 0 rgba(17, 49, 96, 0.16), 0 0 0 1px rgba(17, 49, 96, 0.06)',
+        borderRadius: '8px',
+        boxShadow:
+          '0px 12px 24px rgba(19, 33, 68, 0.04), 0px 8px 12px rgba(19, 33, 68, 0.04), 0px 4px 4px rgba(19, 33, 68, 0.02), 0px 2px 2px rgba(19, 33, 68, 0.01), 0px 1px 1px rgba(19, 33, 68, 0.01), 0px 0px 0px rgba(17, 49, 96, 0.03), 0px 0px 1px rgba(17, 49, 96, 0.24)',
       },
       item: {
         padding: '9px 24px',

@@ -45,7 +45,6 @@ export interface Props {
   initialTab?: string;
   dismissEvent?: DismissEventType;
   renderFooter?: Renderer;
-  borderRadius?: string | number;
   renderContent: Renderer;
   disableLayers?: boolean;
   initialOpened?: boolean;

@@ -1616,7 +1616,7 @@ body.modal-open {
 .tippy-tooltip {
   padding: 8px 16px;
   font-size: 13px;
-  border-radius: 6px !important;
+  border-radius: 8px !important;
 }
 
 .tippy-tooltip.menu-theme {
@@ -1651,7 +1651,7 @@ body.modal-open {
   background: linear-gradient(-180deg, #2b2f32, #2b2f32);
   background-color: #fff;
   border: 1px solid #2b2f32;
-  border-radius: 5px;
+  border-radius: 8px;
 }
 
 .port.in.combine-port.moving {

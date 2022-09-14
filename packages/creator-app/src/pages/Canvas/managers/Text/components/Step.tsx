@@ -57,7 +57,6 @@ const TextStep: ConnectedStep<Realtime.NodeData.Text, Realtime.NodeData.TextBuil
               itemsWithContent.length > 1 && (
                 <Popper
                   placement="right-start"
-                  borderRadius="8px"
                   renderContent={({ onClose }) => <StepPreview onClose={onClose} onOpenEditor={() => engine.setActive(data.nodeID)} items={items} />}
                 >
                   {({ onToggle, ref, isOpened }) => (

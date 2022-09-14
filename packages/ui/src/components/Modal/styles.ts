@@ -47,7 +47,7 @@ export const Container = styled.section<ContainerProps>`
         `
       : css`
           width: 100%;
-          border-radius: 5px;
+          border-radius: 8px;
           margin: ${centered ? 'auto' : `${verticalMargin}px auto;`};
           max-width: ${maxWidth}px;
           min-height: ${minHeight ? `${minHeight}px` : ''};
@@ -152,8 +152,8 @@ export const Footer = styled(Box.Flex)`
   padding: ${units(3)}px ${units(4)}px;
   background: ${({ theme }) => theme.backgrounds.gray};
   border-top: 1px solid ${({ theme }) => theme.colors.separatorSecondary};
-  border-bottom-left-radius: 5px;
-  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
 `;
 
 const showKeyframes = keyframes`

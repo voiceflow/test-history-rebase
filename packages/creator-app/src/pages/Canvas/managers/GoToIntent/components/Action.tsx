@@ -16,7 +16,6 @@ const Action: ConnectedAction<Realtime.NodeData.GoToIntent> = ({ data, engine, r
   return (
     <Popper
       placement="top-start"
-      borderRadius="8px"
       renderContent={({ onClose }) => (
         <ActionPreview
           onClose={onClose}

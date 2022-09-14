@@ -26,6 +26,7 @@ const SpeakStep: ConnectedStep<Realtime.NodeData.Speak, Realtime.NodeData.SpeakB
           itemsToRender.map((item, index) =>
             isVoiceItem(item) ? (
               <VoiceStep
+                key={item.id}
                 item={item}
                 palette={palette}
                 nextPortID={index === itemsToRender.length - 1 ? nextPortID : null}
@@ -34,6 +35,7 @@ const SpeakStep: ConnectedStep<Realtime.NodeData.Speak, Realtime.NodeData.SpeakB
               />
             ) : (
               <AudioStep
+                key={item.id}
                 item={item}
                 palette={palette}
                 nextPortID={index === itemsToRender.length - 1 ? nextPortID : null}

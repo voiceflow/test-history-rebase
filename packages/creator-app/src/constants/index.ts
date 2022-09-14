@@ -271,10 +271,6 @@ export enum ModalType {
   CONFIRM = 'confirm',
   REFRESH = 'refresh',
 
-  CONNECT_PLATFORM = 'connect-platform',
-  CONNECT_GOOGLE = 'connect-google',
-  CONNECT_AMAZON = 'connect-amazon',
-
   DIALOGFLOW_CREATE_NEW_AGENT = 'dialogflow-create-new-agent',
 
   VARIABLE_STATE_EDITOR_MODAL = 'variable-state-editor-modal',

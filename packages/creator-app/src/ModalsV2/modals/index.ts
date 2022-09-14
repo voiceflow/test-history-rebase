@@ -6,6 +6,7 @@ export { default as Collaborators } from './Collaborators';
 export * as Conversation from './Conversation';
 export * as Domain from './Domain';
 export { default as Payment } from './Payment';
+export * as Platform from './Platform';
 export * as Project from './Project';
 export { default as Success } from './Success';
 export { default as Upgrade } from './Upgrade';

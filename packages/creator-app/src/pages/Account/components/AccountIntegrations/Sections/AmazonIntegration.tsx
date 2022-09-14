@@ -1,13 +1,14 @@
 import { Button, ButtonVariant } from '@voiceflow/ui';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React, { useEffect, useState } from 'react';
 
-import { ModalType } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as Modal from '@/ducks/modal';
 import { SourceType } from '@/ducks/tracking/constants';
-import { useDispatch, useModals, useSelector } from '@/hooks';
+import { useDispatch, useSelector } from '@/hooks';
+import * as ModalsV2 from '@/ModalsV2';
 
-import { IntegrationHeader, IntegrationInfo, IntegrationInfoItem, PropName } from './components';
+import * as S from './styles';
 
 const AmazonIntegrations: React.FC = () => {
   const [amazonStatus, setAmazonStatus] = useState(false);
@@ -15,7 +16,8 @@ const AmazonIntegrations: React.FC = () => {
   const loadAmazonAccount = useDispatch(Account.amazon.loadAccount);
   const unlinkAmazonAccount = useDispatch(Account.amazon.unlinkAccount);
   const setConfirm = useDispatch(Modal.setConfirm);
-  const connectAmazonModal = useModals(ModalType.CONNECT_AMAZON);
+
+  const connectAmazonModal = ModalsV2.useModal(ModalsV2.Platform.Connect);
 
   useEffect(() => {
     // eslint-disable-next-line promise/catch-or-return
@@ -49,7 +51,11 @@ const AmazonIntegrations: React.FC = () => {
     }
     if (!user.amazon) {
       return (
-        <Button variant={ButtonVariant.PRIMARY} squareRadius onClick={() => connectAmazonModal.open({ source: SourceType.ACCOUNT_PAGE })}>
+        <Button
+          variant={ButtonVariant.PRIMARY}
+          onClick={() => connectAmazonModal.openVoid({ source: SourceType.ACCOUNT_PAGE, platform: VoiceflowConstants.PlatformType.ALEXA })}
+          squareRadius
+        >
           Connect
         </Button>
       );
@@ -63,22 +69,22 @@ const AmazonIntegrations: React.FC = () => {
 
   return (
     <div className="card">
-      <IntegrationHeader>
+      <S.IntegrationHeader>
         <h5 className="mb-0 font-weight-bold">Amazon Alexa</h5>
         <div className="super-center">{amazonButton()}</div>
-      </IntegrationHeader>
+      </S.IntegrationHeader>
       {user.amazon && (
-        <IntegrationInfo>
-          <IntegrationInfoItem>
-            <PropName> Name: </PropName> {user.amazon.profile.name}
-          </IntegrationInfoItem>
-          <IntegrationInfoItem>
-            <PropName> Email: </PropName> {user.amazon.profile.email}
-          </IntegrationInfoItem>
-          <IntegrationInfoItem>
-            <PropName> User Id: </PropName> {user.amazon.profile.user_id}
-          </IntegrationInfoItem>
-        </IntegrationInfo>
+        <S.IntegrationInfo>
+          <S.IntegrationInfoItem>
+            <S.PropName> Name: </S.PropName> {user.amazon.profile.name}
+          </S.IntegrationInfoItem>
+          <S.IntegrationInfoItem>
+            <S.PropName> Email: </S.PropName> {user.amazon.profile.email}
+          </S.IntegrationInfoItem>
+          <S.IntegrationInfoItem>
+            <S.PropName> User Id: </S.PropName> {user.amazon.profile.user_id}
+          </S.IntegrationInfoItem>
+        </S.IntegrationInfo>
       )}
     </div>
   );

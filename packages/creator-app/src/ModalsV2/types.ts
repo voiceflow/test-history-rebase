@@ -44,34 +44,39 @@ interface BasePublicAPI extends SharedAPI {
   preventClose: VoidFunction;
 }
 
+export interface OpenOptions {
+  // unmounts and mounts model, useful when we wanna reset modal state and re-open it
+  reopen?: boolean;
+}
+
 export interface VoidPublicAPI extends BasePublicAPI {
   // returns promise that resolves when modal is closed with some data, ex intent is cerated, can be rejected by .close()
-  open: () => Promise<void>;
+  open: (options?: OpenOptions) => Promise<void>;
   // similar to open, but promise always resolved
-  openVoid: () => Promise<void>;
-  updateData?: never;
+  openVoid: (options?: OpenOptions) => Promise<void>;
+  updateProps?: never;
 }
 
 export interface PropsPublicAPI<Props extends EmptyObject> extends BasePublicAPI {
   // returns promise that resolves when modal is closed with some data, ex intent is cerated, can be rejected by .close()
-  open: (props: Props) => Promise<void>;
+  open: (props: Props, options?: OpenOptions) => Promise<void>;
   // similar to open, but promise always resolved
-  openVoid: (props: Props) => Promise<void>;
-  updateData: (props: Partial<Props>) => void;
+  openVoid: (props: Props, options?: OpenOptions) => Promise<void>;
+  updateProps: (props: Partial<Props>) => void;
 }
 
 export interface ResultPublicAPI<Props extends void, Result> extends BasePublicAPI {
   // returns promise that resolves when modal is closed with some data, ex intent is cerated, can be rejected by .close()
-  open: (props?: Props) => Promise<Result>;
+  open: (props?: Props, options?: OpenOptions) => Promise<Result>;
   // similar to open, but promise always resolved with Result or null if closed
-  openVoid: (props?: Props) => Promise<Result | null>;
-  updateData?: never;
+  openVoid: (props?: Props, options?: OpenOptions) => Promise<Result | null>;
+  updateProps?: never;
 }
 
 export interface PropsResultPublicAPI<Props extends EmptyObject, Result> extends BasePublicAPI {
   // returns promise that resolves when modal is closed with some data, ex intent is cerated, can be rejected by .close()
-  open: (props: Props) => Promise<Result>;
+  open: (props: Props, options?: OpenOptions) => Promise<Result>;
   // similar to open, but promise always resolved with Result or null if closed
-  openVoid: (props: Props) => Promise<Result | null>;
-  updateData: (props: Partial<Props>) => void;
+  openVoid: (props: Props, options?: OpenOptions) => Promise<Result | null>;
+  updateProps: (props: Partial<Props>) => void;
 }

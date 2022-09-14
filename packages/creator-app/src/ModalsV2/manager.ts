@@ -19,7 +19,8 @@ export interface OpenEvent {
   id: string;
   api: T.ResultInternalAPI<unknown>;
   type: string;
-  data: AnyRecord;
+  props: AnyRecord;
+  options?: T.OpenOptions;
 }
 
 export interface CloseRemoveEvent {
@@ -30,7 +31,7 @@ export interface CloseRemoveEvent {
 export interface UpdateEvent {
   id: string;
   type: string;
-  payload: { data?: AnyRecord; closePrevented?: boolean };
+  payload: { props?: AnyRecord; closePrevented?: boolean };
 }
 
 interface Events {
@@ -45,10 +46,24 @@ interface Events {
   [Event.RELOAD]: void;
 }
 
+interface OpenedModal {
+  id: string;
+  api: T.ResultInternalAPI<unknown>;
+  type: string;
+  props: AnyRecord;
+  promise: Promise<any>;
+  _reject: (error: Error) => void;
+  _resolve: (data: unknown) => void;
+}
+
 class Manager extends EventEmitter<Events> {
   private registry = new Map<string, React.FC<T.VoidInternalProps> | React.FC<AnyRecord & T.ResultInternalProps<any>>>();
 
-  private modalPromises = new Map<string, Promise<any>>();
+  private openedModals = new Map<string, OpenedModal>();
+
+  emit<K extends keyof Events>(event: K, ...args: Events[K] extends void ? [] : [Events[K]]): boolean {
+    return super.emit(event, ...args);
+  }
 
   getCombinedID(id: string, type: string): string {
     return `${type}:${id}`;
@@ -132,60 +147,78 @@ class Manager extends EventEmitter<Events> {
     return Object.assign(MemoizedComponent, { __vfModalType: type });
   }
 
-  open<Result>(id: string, type: string): Promise<Result>;
+  open<Result>(id: string, type: string, options?: { options?: T.OpenOptions }): Promise<Result>;
 
-  open<Result>(id: string, modal: T.RegisteredModal<T.VoidInternalProps>): Promise<Result>;
+  open<Result>(id: string, modal: T.RegisteredModal<T.VoidInternalProps>, options?: { options?: T.OpenOptions }): Promise<Result>;
 
-  open<Props extends EmptyObject>(id: string, type: string, data: Props): Promise<void>;
+  open<Props extends EmptyObject>(id: string, type: string, options: { props: Props; options?: T.OpenOptions }): Promise<void>;
 
-  open<Props extends EmptyObject>(id: string, modal: T.RegisteredModal<Props & T.VoidInternalProps>, data: Props): Promise<void>;
+  open<Props extends EmptyObject>(
+    id: string,
+    modal: T.RegisteredModal<Props & T.VoidInternalProps>,
+    options: { props: Props; options?: T.OpenOptions }
+  ): Promise<void>;
 
-  open<Props extends EmptyObject, Result>(id: string, type: string, data: Props): Promise<Result>;
+  open<Props extends EmptyObject, Result>(id: string, type: string, options: { props: Props; options?: T.OpenOptions }): Promise<Result>;
 
-  open<Props extends EmptyObject, Result>(id: string, modal: T.RegisteredModal<Props & T.ResultInternalProps<Result>>, data: Props): void;
+  open<Props extends EmptyObject, Result>(
+    id: string,
+    modal: T.RegisteredModal<Props & T.ResultInternalProps<Result>>,
+    options: { props: Props; options?: T.OpenOptions }
+  ): void;
 
-  open(id: string, type: string): Promise<void>;
+  open(id: string, type: string, options?: { options?: T.OpenOptions }): Promise<void>;
 
-  open(id: string, modal: T.RegisteredModal<T.VoidInternalProps>): Promise<void>;
+  open(id: string, modal: T.RegisteredModal<T.VoidInternalProps>, options?: { options?: T.OpenOptions }): Promise<void>;
 
   open(
     ...args:
-      | [id: string, type: string]
-      | [id: string, modal: T.RegisteredModal<T.VoidInternalProps>]
-      | [id: string, type: string, data: unknown]
-      | [id: string, modal: T.RegisteredModal<unknown & T.ResultInternalProps<unknown>>, data: unknown]
+      | [id: string, type: string, options?: { props?: never; options?: T.OpenOptions }]
+      | [id: string, modal: T.RegisteredModal<T.VoidInternalProps>, options?: { props?: never; options?: T.OpenOptions }]
+      | [id: string, type: string, options: { props: AnyRecord; options?: T.OpenOptions }]
+      | [id: string, modal: T.RegisteredModal<unknown & T.ResultInternalProps<unknown>>, options: { props: AnyRecord; options?: T.OpenOptions }]
   ): Promise<unknown> {
-    const [id, modal, data = {}] = args;
+    const [id, modal, { props = {}, options = {} } = {}] = args;
     const type = typeof modal === 'string' ? modal : modal.__vfModalType;
     const combinedID = this.getCombinedID(id, type);
 
-    if (this.modalPromises.has(combinedID)) {
-      logger.warn(`Modal "${combinedID}" is already opened.`);
-
-      return this.modalPromises.get(combinedID)!;
-    }
-
+    let promise!: Promise<unknown>;
     let _reject!: (error: Error) => void;
     let _resolve!: (data: unknown) => void;
 
-    const promise = new Promise<unknown>((resolve, reject) => {
-      _reject = reject;
-      _resolve = resolve;
-    });
+    if (this.openedModals.has(combinedID)) {
+      const openedModel = this.openedModals.get(combinedID)!;
 
-    this.modalPromises.set(combinedID, promise);
+      if (options.reopen) {
+        promise = openedModel.promise;
+        _reject = openedModel._reject;
+        _resolve = openedModel._resolve;
 
-    this.emit(Event.OPEN, {
+        this.emit(Event.REMOVE, { id, type });
+      } else {
+        logger.warn(`Modal "${combinedID}" is already opened.`);
+
+        return openedModel.promise;
+      }
+    } else {
+      promise = new Promise<unknown>((resolve, reject) => {
+        _reject = reject;
+        _resolve = resolve;
+      });
+    }
+
+    const openEvent: OpenEvent = {
       id,
       type,
-      data,
+      props,
+      options,
       api: {
         close: () => {
           this.emit(Event.CLOSE, { id, type });
         },
 
         remove: () => {
-          this.modalPromises.delete(combinedID);
+          this.openedModals.delete(combinedID);
 
           this.emit(Event.REMOVE, { id, type });
 
@@ -193,13 +226,13 @@ class Manager extends EventEmitter<Events> {
         },
 
         resolve: (data: unknown) => {
-          this.modalPromises.delete(combinedID);
+          this.openedModals.delete(combinedID);
 
           _resolve(data);
         },
 
         reject: (error: Error) => {
-          this.modalPromises.delete(combinedID);
+          this.openedModals.delete(combinedID);
 
           _reject(error);
         },
@@ -208,7 +241,11 @@ class Manager extends EventEmitter<Events> {
 
         preventClose: () => this.preventClose(id, type),
       },
-    });
+    };
+
+    this.openedModals.set(combinedID, { ...openEvent, promise, _reject, _resolve });
+
+    this.emit(Event.OPEN, openEvent);
 
     return promise;
   }
@@ -223,7 +260,7 @@ class Manager extends EventEmitter<Events> {
 
     const combinedID = this.getCombinedID(id, type);
 
-    if (!this.modalPromises.has(combinedID)) {
+    if (!this.openedModals.has(combinedID)) {
       logger.warn(`Modal "${combinedID}" is not opened yet.`);
 
       return Promise.resolve();
@@ -231,25 +268,27 @@ class Manager extends EventEmitter<Events> {
 
     this.emit(Event.CLOSE, { id, type });
 
-    return this.modalPromises.get(combinedID)!.then(Utils.functional.noop, Utils.functional.noop);
+    return this.openedModals.get(combinedID)!.promise.then(Utils.functional.noop, Utils.functional.noop);
   }
 
-  update<Props extends EmptyObject>(id: string, type: string, data: Partial<Props>): void;
+  update<Props extends EmptyObject>(id: string, type: string, props: Partial<Props>): void;
 
-  update<Props extends EmptyObject>(id: string, modal: T.RegisteredModal<Props & T.VoidInternalProps>, data: Partial<Props>): void;
+  update<Props extends EmptyObject>(id: string, modal: T.RegisteredModal<Props & T.VoidInternalProps>, props: Partial<Props>): void;
 
-  update(...args: [id: string, type: string, data: unknown] | [id: string, modal: T.RegisteredModal<T.VoidInternalProps>, data: unknown]): void {
-    const [id, modal, data = {}] = args;
+  update(
+    ...args: [id: string, type: string, props: AnyRecord] | [id: string, modal: T.RegisteredModal<T.VoidInternalProps>, props: AnyRecord]
+  ): void {
+    const [id, modal, props = {}] = args;
     const type = typeof modal === 'string' ? modal : modal.__vfModalType;
     const combinedID = this.getCombinedID(id, type);
 
-    if (!this.modalPromises.has(combinedID)) {
+    if (!this.openedModals.has(combinedID)) {
       logger.warn(`Modal "${combinedID}" is not opened yet.`);
 
       return;
     }
 
-    this.emit(Event.UPDATE, { id, type, payload: { data } });
+    this.emit(Event.UPDATE, { id, type, payload: { props } });
   }
 
   enableClose(id: string, type: string): void {

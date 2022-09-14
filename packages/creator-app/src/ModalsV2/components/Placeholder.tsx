@@ -26,15 +26,15 @@ const Placeholder = React.memo(() => {
 
       {modalsToRender.map(([modal, Component], index) => (
         <Component
-          {...modal.data}
-          key={modal.id}
+          {...modal.props}
           id={modal.id}
+          key={modal.key}
           api={modal.api as any}
           type={modal.type}
           opened={!modal.closing}
           hidden={index !== 0}
           rendered
-          animated={animated}
+          animated={animated && (!modal.reopened || modal.closing)}
           closePrevented={modal.closePrevented}
         />
       ))}

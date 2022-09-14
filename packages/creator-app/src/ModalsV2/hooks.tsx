@@ -10,11 +10,11 @@ export function useModal<Props extends EmptyObject>(component: T.RegisteredModal
 export function useModal<Props extends void, Result>(
   component: T.RegisteredModal<Props & T.ResultInternalProps<Result>>,
   id?: string
-): T.ResultPublicAPI<Props, Result>;
+): T.ResultPublicAPI<void, Result>;
 export function useModal<Props extends EmptyObject, Result>(
   component: T.RegisteredModal<Props & T.ResultInternalProps<Result>>,
   id?: string
-): T.PropsResultPublicAPI<Props, Result>;
+): T.PropsResultPublicAPI<Omit<Props, keyof T.ResultInternalProps<Result>>, Result>;
 export function useModal(component: T.RegisteredModal<T.VoidInternalProps>, id?: string): T.VoidPublicAPI;
 export function useModal<Props extends EmptyObject>(type: string, id?: string): T.PropsPublicAPI<Props>;
 export function useModal<Props extends void, Result>(type: string, id?: string): T.ResultPublicAPI<Props, Result>;
@@ -30,10 +30,14 @@ export function useModal(
   const modalID = useCreateConst(() => id || Utils.id.cuid.slug());
   const combinedID = useCreateConst(() => manager.getCombinedID(modalID, type));
 
-  const open = React.useCallback((data: AnyRecord = {}) => manager.open(modalID, type, data), []);
+  const open = React.useCallback(
+    (props?: AnyRecord, options?: T.OpenOptions) =>
+      props ? manager.open(modalID, type, { props, options }) : manager.open(modalID, type, { options }),
+    []
+  );
   const close = React.useCallback(() => manager.close(modalID, type), []);
-  const openVoid = React.useCallback((data: AnyRecord = {}) => open(data).catch(() => null), []);
-  const updateData = React.useCallback((data: AnyRecord = {}) => manager.update(modalID, type, data), []);
+  const openVoid = React.useCallback((props?: AnyRecord, options?: T.OpenOptions) => open(props, options).catch(() => null), []);
+  const updateProps = React.useCallback((props: AnyRecord = {}) => manager.update(modalID, type, props), []);
   const enableClose = React.useCallback(() => manager.enableClose(modalID, type), []);
   const preventClose = React.useCallback(() => manager.preventClose(modalID, type), []);
 
@@ -51,7 +55,7 @@ export function useModal(
     animated: modals.animated,
     rendered,
     openVoid,
-    updateData,
+    updateProps,
     enableClose,
     preventClose,
     closePrevented: !!modal?.closePrevented,

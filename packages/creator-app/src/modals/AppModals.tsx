@@ -5,9 +5,6 @@ import { ErrorModal, LoadingModal, ModalBackdrop, ReduxConfirmModal, StandardMod
 import PublishVersionModal from '@/components/PublishVersionModal';
 import RefreshModal from '@/components/RefreshModal';
 import { VariableStateEditorModal, VariableStatesManagerModal } from '@/components/VariableStateModals';
-import ConnectActivePlatformModal from '@/modals/ConnectActivePlatformModal';
-import ConnectAmazonModal from '@/modals/ConnectAmazonModal';
-import ConnectGoogleModal from '@/modals/ConnectGoogleModal';
 import { BulkImportSlots, BulkImportUtterances } from '@/pages/Canvas/components/BulkImportModal';
 import CreateEntityModal from '@/pages/Canvas/components/EntityModalsV2/CreateModal';
 import EditEntityModal from '@/pages/Canvas/components/EntityModalsV2/EditModal';
@@ -53,9 +50,6 @@ const AppModals: React.FC = () => {
       <RealtimeDeniedModal />
       <PaymentModal />
       <RefreshModal />
-      <ConnectActivePlatformModal />
-      <ConnectAmazonModal />
-      <ConnectGoogleModal />
       <Dialogflow.Components.CreateNewAgentModal />
 
       <BulkImportSlots />

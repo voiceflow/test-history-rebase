@@ -1,17 +1,14 @@
 import { Button, ButtonVariant } from '@voiceflow/ui';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React, { useEffect, useState } from 'react';
 
-import { ModalType } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as Modal from '@/ducks/modal';
 import { SourceType } from '@/ducks/tracking/constants';
-import { useDispatch, useModals, useSelector } from '@/hooks';
-import {
-  IntegrationHeader,
-  IntegrationInfo,
-  IntegrationInfoItem,
-  PropName,
-} from '@/pages/Account/components/AccountIntegrations/Sections/components';
+import { useDispatch, useSelector } from '@/hooks';
+import * as ModalsV2 from '@/ModalsV2';
+
+import * as S from './styles';
 
 const GoogleIntegration: React.FC = () => {
   const [googleStatus, setGoogleStatus] = useState(false);
@@ -19,7 +16,7 @@ const GoogleIntegration: React.FC = () => {
   const loadGoogleAccount = useDispatch(Account.google.loadAccount);
   const unlinkGoogleAccount = useDispatch(Account.google.unlinkAccount);
   const setConfirm = useDispatch(Modal.setConfirm);
-  const connectGoogleModal = useModals(ModalType.CONNECT_GOOGLE);
+  const connectGoogleModal = ModalsV2.useModal(ModalsV2.Platform.Connect);
 
   useEffect(() => {
     // eslint-disable-next-line promise/catch-or-return
@@ -53,7 +50,11 @@ const GoogleIntegration: React.FC = () => {
     }
     if (!user.google) {
       return (
-        <Button variant={ButtonVariant.PRIMARY} squareRadius onClick={() => connectGoogleModal.open({ source: SourceType.ACCOUNT_PAGE })}>
+        <Button
+          variant={ButtonVariant.PRIMARY}
+          squareRadius
+          onClick={() => connectGoogleModal.openVoid({ source: SourceType.ACCOUNT_PAGE, platform: VoiceflowConstants.PlatformType.GOOGLE })}
+        >
           Connect
         </Button>
       );
@@ -67,22 +68,22 @@ const GoogleIntegration: React.FC = () => {
 
   return (
     <div className="card">
-      <IntegrationHeader>
+      <S.IntegrationHeader>
         <h5 className="mb-0 font-weight-bold">Google</h5>
         <div className="super-center">{googleButton()}</div>
-      </IntegrationHeader>
+      </S.IntegrationHeader>
       {user.google && user.google.profile && (
-        <IntegrationInfo>
-          <IntegrationInfoItem>
-            <PropName> Name: </PropName> {user.google.profile.name}
-          </IntegrationInfoItem>
-          <IntegrationInfoItem>
-            <PropName> Email: </PropName> {user.google.profile.email}
-          </IntegrationInfoItem>
-          <IntegrationInfoItem>
-            <PropName> User Id: </PropName> {user.google.profile.id}
-          </IntegrationInfoItem>
-        </IntegrationInfo>
+        <S.IntegrationInfo>
+          <S.IntegrationInfoItem>
+            <S.PropName> Name: </S.PropName> {user.google.profile.name}
+          </S.IntegrationInfoItem>
+          <S.IntegrationInfoItem>
+            <S.PropName> Email: </S.PropName> {user.google.profile.email}
+          </S.IntegrationInfoItem>
+          <S.IntegrationInfoItem>
+            <S.PropName> User Id: </S.PropName> {user.google.profile.id}
+          </S.IntegrationInfoItem>
+        </S.IntegrationInfo>
       )}
     </div>
   );

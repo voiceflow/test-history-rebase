@@ -2,11 +2,11 @@ import { Nullable } from '@voiceflow/common';
 import { toast } from '@voiceflow/ui';
 import React from 'react';
 
-import { ModalType } from '@/constants';
 import { AlexaStageType, DialogflowStageType, GoogleStageType } from '@/constants/platforms';
 import { AnyJob, PublishContext, PublishContextValue } from '@/contexts';
 import { SourceType } from '@/ducks/tracking/constants';
-import { useModals, useToggle, useTrackingEvents } from '@/hooks';
+import { useToggle, useTrackingEvents } from '@/hooks';
+import * as ModalsV2 from '@/ModalsV2';
 import { isNotify, isReady } from '@/utils/job';
 
 type PublishStageType = typeof GoogleStageType | typeof AlexaStageType | typeof DialogflowStageType;
@@ -46,48 +46,47 @@ export const useBasePublish = <T extends PublishStageType, J extends AnyJob>({
 
   const [trackingEvents] = useTrackingEvents();
 
-  const { open: openLoginModal, close: closeLoginModal, isOpened: loginModalOpened } = useModals(ModalType.CONNECT_PLATFORM);
+  const connectPlatformModal = ModalsV2.useModal(ModalsV2.Platform.Connect);
 
   const [popupOpened, togglePopupOpened] = useToggle(false);
   const [invalidInvName, setInvalidInvName] = React.useState(false);
-  const [waitingForCancel, setWaitingForCancel] = React.useState(false);
   const [successfullyPublished, setSuccessfullyPublished] = React.useState(false);
+
+  const waitingForCancelRef = React.useRef(false);
 
   const stageType = job?.stage.type;
 
   const noPopup = !!stageType && NO_POPUP_STAGES.includes(stageType);
   const jobIsReady = isReady(job);
 
-  const source = SourceType.PROJECT;
-
-  const toggleLoginModal = React.useCallback(() => {
-    if (!needsLogin) {
-      if (loginModalOpened) {
-        closeLoginModal();
-      } else {
-        return;
-      }
+  const toggleLoginModal = React.useCallback(async () => {
+    if (!needsLogin && !connectPlatformModal.opened) {
+      return;
     }
 
-    if (stageType === StageType.IDLE) {
-      openLoginModal({ stage: stageType, onCancel, updateCurrentStage, source });
-    } else if (stageType === StageType.WAIT_ACCOUNT) {
-      if (loginModalOpened) {
-        closeLoginModal();
+    if (stageType === StageType.IDLE || stageType === StageType.WAIT_ACCOUNT) {
+      try {
+        const account = await connectPlatformModal.open({ stage: stageType, source: SourceType.PROJECT }, { reopen: connectPlatformModal.opened });
+
+        updateCurrentStage(account);
+      } catch {
+        onCancel();
       }
-      openLoginModal({ stage: stageType, onCancel, updateCurrentStage, source });
-    } else {
-      closeLoginModal();
+    } else if (connectPlatformModal.opened) {
+      connectPlatformModal.close();
     }
-  }, [needsLogin, stageType, popupOpened, loginModalOpened, closeLoginModal, openLoginModal, updateCurrentStage]);
+  }, [needsLogin, stageType, popupOpened, connectPlatformModal, updateCurrentStage]);
 
   const onCancel = React.useCallback(async () => {
+    waitingForCancelRef.current = true;
+
     togglePopupOpened(false);
-    setWaitingForCancel(true);
 
-    await cancel();
-
-    setWaitingForCancel(false);
+    try {
+      await cancel();
+    } finally {
+      waitingForCancelRef.current = false;
+    }
   }, [cancel]);
 
   const onPublish = React.useCallback(
@@ -117,11 +116,13 @@ export const useBasePublish = <T extends PublishStageType, J extends AnyJob>({
       return;
     }
 
-    if (!popupOpened && isNotify(job) && stageType !== StageType.WAIT_ACCOUNT && !waitingForCancel) {
+    if (!popupOpened && isNotify(job) && stageType !== StageType.WAIT_ACCOUNT && !waitingForCancelRef.current) {
       togglePopupOpened(true);
     }
 
-    toggleLoginModal();
+    if (!waitingForCancelRef.current) {
+      toggleLoginModal();
+    }
 
     if (stageType === StageType.SUCCESS) {
       trackingEvents.trackActiveProjectPublishSuccess();

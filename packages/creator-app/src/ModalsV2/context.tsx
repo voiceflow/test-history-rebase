@@ -9,20 +9,27 @@ import * as T from './types';
 
 interface Modal {
   id: string;
+  key: string;
   api: T.VoidInternalAPI | T.ResultInternalAPI<any>;
   type: string;
-  data: AnyRecord;
+  props: AnyRecord;
   closing: boolean;
+  reopened: boolean;
   closePrevented: boolean;
+}
+
+interface UpdateData {
+  props?: AnyRecord;
+  closePrevented?: boolean;
 }
 
 interface ContextValue {
   state: Normal.Normalized<Modal>;
   animated: boolean;
 
-  open: (id: string, type: string, data: AnyRecord, api: T.VoidInternalAPI | T.ResultInternalAPI<any>) => void;
+  open: (id: string, type: string, props: AnyRecord, api: T.VoidInternalAPI | T.ResultInternalAPI<any>) => void;
   close: (id: string, type: string) => void;
-  update: (id: string, type: string, data?: AnyRecord) => void;
+  update: (id: string, type: string, props: UpdateData) => void;
   remove: (id: string, type: string) => void;
   isClosing: (id: string, type: string) => boolean;
   enableClose: (id: string, type: string) => void;
@@ -53,7 +60,7 @@ const actions = {
   clone: Utils.protocol.createAction('vf-modals/clone'),
   close: Utils.protocol.createAction<{ id: string; type: string }>('vf-modals/close'),
   remove: Utils.protocol.createAction<{ id: string; type: string }>('vf-modals/remove'),
-  update: Utils.protocol.createAction<{ id: string; type: string; update: { data?: AnyRecord; closePrevented?: boolean } }>('vf-modals/update'),
+  update: Utils.protocol.createAction<{ id: string; type: string; update: UpdateData }>('vf-modals/update'),
 };
 
 reducer
@@ -75,16 +82,24 @@ export const Provider: React.FC = ({ children }) => {
   const prevAllKeysLengthRef = React.useRef(state.allKeys.length);
 
   const open = React.useCallback(
-    (id: string, type: string, data: AnyRecord, api: T.VoidInternalAPI | T.ResultInternalAPI<any>) =>
-      dispatch(actions.open({ id, api, type, data, closing: false, closePrevented: false })),
+    (id: string, type: string, props: AnyRecord, api: T.VoidInternalAPI | T.ResultInternalAPI<any>, options: T.OpenOptions = {}) =>
+      dispatch(
+        actions.open({
+          id,
+          key: Utils.id.cuid.slug(),
+          api,
+          type,
+          props,
+          closing: false,
+          reopened: options.reopen ?? false,
+          closePrevented: false,
+        })
+      ),
     []
   );
   const close = React.useCallback((id: string, type: string) => dispatch(actions.close({ id, type })), []);
   const remove = React.useCallback((id: string, type: string) => dispatch(actions.remove({ id, type })), []);
-  const update = React.useCallback(
-    (id: string, type: string, update: { data?: AnyRecord; closePrevented?: boolean } = {}) => dispatch(actions.update({ id, type, update })),
-    []
-  );
+  const update = React.useCallback((id: string, type: string, update: UpdateData) => dispatch(actions.update({ id, type, update })), []);
   const isClosing = React.useCallback((id: string, type: string) => !!Normal.getOne(state, manager.getCombinedID(id, type))?.closing, [state]);
   const enableClose = React.useCallback((id: string, type: string) => dispatch(actions.update({ id, type, update: { closePrevented: false } })), []);
   const preventClose = React.useCallback((id: string, type: string) => dispatch(actions.update({ id, type, update: { closePrevented: true } })), []);
@@ -98,7 +113,7 @@ export const Provider: React.FC = ({ children }) => {
   }, [state.allKeys.length]);
 
   React.useEffect(() => {
-    const onOpen = ({ id, type, data, api }: OpenEvent) => open(id, type, data, api);
+    const onOpen = ({ id, type, props, api, options }: OpenEvent) => open(id, type, props, api, options);
     const onClose = ({ id, type }: CloseRemoveEvent) => close(id, type);
     const onRemove = ({ id, type }: CloseRemoveEvent) => remove(id, type);
     const onUpdate = ({ id, type, payload }: UpdateEvent) => update(id, type, payload);

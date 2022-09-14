@@ -106,6 +106,8 @@ export const useBasePublish = <T extends PublishStageType, J extends AnyJob>({
   React.useEffect(() => {
     if (stageType === StageType.SUCCESS) {
       setSuccessfullyPublished(true);
+    } else if (successfullyPublished) {
+      setSuccessfullyPublished(false);
     }
   }, [stageType]);
 

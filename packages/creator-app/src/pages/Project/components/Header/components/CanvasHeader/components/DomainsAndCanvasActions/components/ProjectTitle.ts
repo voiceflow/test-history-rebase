@@ -2,7 +2,7 @@ import EditableText from '@/components/EditableText';
 import { styled } from '@/hocs';
 
 const ProjectTitle = styled(EditableText)<{ $secondary?: boolean }>`
-  max-width: 205px;
+  max-width: 250px;
   overflow: hidden;
   font-size: 16px;
   white-space: nowrap;

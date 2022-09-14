@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.149.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.148.1...@voiceflow/ui@1.149.0) (2022-09-14)
+
+
+### Bug Fixes
+
+* not able to properly select block label text (BUG-29) ([#6038](https://github.com/voiceflow/creator-app/issues/6038)) ([0937612](https://github.com/voiceflow/creator-app/commit/0937612f7ed63cbb526001b6e41d94333359f418))
+
+
+### Features
+
+* update inactivity modal to use snackbar style (CT-954) ([#6054](https://github.com/voiceflow/creator-app/issues/6054)) ([c7694b0](https://github.com/voiceflow/creator-app/commit/c7694b0c54afea27cda4a89e7d3a4d74b4365341))
+
+
+
+
+
 ## [1.148.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.148.0...@voiceflow/ui@1.148.1) (2022-09-14)
 
 

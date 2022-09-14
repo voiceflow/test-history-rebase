@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.902.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.902.0...@voiceflow/creator-app@1.902.1) (2022-09-14)
+
+
+### Bug Fixes
+
+* update  poppers border radius and box shadow (CT-921) ([#6048](https://github.com/voiceflow/creator-app/issues/6048)) ([a3e4960](https://github.com/voiceflow/creator-app/commit/a3e4960e56ca05c0e55716811eb929065c3cace6))
+
+
+
+
+
 # [1.902.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.901.2...@voiceflow/creator-app@1.902.0) (2022-09-14)
 
 

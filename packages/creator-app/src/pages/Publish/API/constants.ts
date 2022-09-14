@@ -18,7 +18,7 @@ async function startInteract() {
   // Start a conversation
   const response = await axios({
     method: 'POST',
-    baseURL: 'https://{{general-service-endpoint}}',
+    baseURL: '{{general-service-endpoint}}',
     url: \`/state/user/\${userID}/interact\`,
     headers: {
       Authorization: apiKey,
@@ -41,7 +41,7 @@ API_KEY='{{vf.api_key}}'
 USER_ID='user_123'
 USER_INPUT='Hello world!'
 
-curl --request POST "https://{{general-service-endpoint}}/state/user/$USER_ID/interact" \
+curl --request POST "{{general-service-endpoint}}/state/user/$USER_ID/interact" \
      --header "Authorization: $API_KEY" \
      --header 'Content-Type: application/json' \
      --data-raw "{
@@ -62,7 +62,7 @@ body = {"action": {"type": "text", "payload": "Hello world!"}}
 
 # Start a conversation
 response = requests.post(
-    f"https://{{general-service-endpoint}}/state/user/{user_id}/interact",
+    f"{{general-service-endpoint}}/state/user/{user_id}/interact",
     json=body,
     headers={"Authorization": api_key},
 )

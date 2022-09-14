@@ -130,6 +130,8 @@ export type { BaseSelectProps, FilterResult, OptionsFilter } from './Select';
 export { default as Select, SelectInputVariant, SelectWrapper } from './Select';
 export type { SidebarEditorTypes } from './SidebarEditor';
 export { default as SidebarEditor } from './SidebarEditor';
+export type { SnackbarTypes } from './Snackbar';
+export { default as Snackbar } from './Snackbar';
 export { FullSpinner, Spinner } from './Spinner';
 export type { StrengthGaugeTypes } from './StrengthGauge';
 export { default as StrengthGauge } from './StrengthGauge';

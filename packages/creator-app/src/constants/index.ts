@@ -270,7 +270,6 @@ export enum ModalType {
   LOADING = 'loading',
   CONFIRM = 'confirm',
   REFRESH = 'refresh',
-  INACTIVITY = 'inactivity',
 
   CONNECT_PLATFORM = 'connect-platform',
   CONNECT_GOOGLE = 'connect-google',

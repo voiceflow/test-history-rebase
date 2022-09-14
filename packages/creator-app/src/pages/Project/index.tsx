@@ -1,31 +1,21 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { Snackbar, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import IdleTimer from 'react-idle-timer';
 import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
 
+import InactivitySnackbar from '@/components/InactivitySnackbar';
 import { RemoveIntercom } from '@/components/IntercomChat';
 import { Path } from '@/config/routes';
-import { ModalType } from '@/constants';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as UI from '@/ducks/ui';
 import { VersionSubscriptionGate, WorkspaceFeatureLoadingGate } from '@/gates';
 import { lazy, withBatchLoadingGate } from '@/hocs';
-import {
-  useDispatch,
-  useEventualEngine,
-  useFeature,
-  useLayoutDidUpdate,
-  useLocalDispatch,
-  useModals,
-  useSelector,
-  useTeardown,
-  useTheme,
-} from '@/hooks';
+import { useDispatch, useEventualEngine, useFeature, useLayoutDidUpdate, useLocalDispatch, useSelector, useTeardown, useTheme } from '@/hooks';
 import ExportModelModal from '@/pages/Canvas/components/ExportModelModal';
 import ManualSaveModal from '@/pages/Canvas/components/ManualSaveModal';
-import InactivityModal from '@/pages/Inactivity';
 import { useProjectPreviewMode } from '@/pages/Project/hooks';
 import Providers from '@/pages/Project/Providers';
 import PrototypeWebhook from '@/pages/PrototypeWebhook';
@@ -55,22 +45,22 @@ const Project: React.FC = () => {
   const setPreviewing = useDispatch(UI.setPreviewingVersion);
   const resetCreator = useLocalDispatch(Realtime.creator.reset);
 
-  const inactivityModal = useModals(ModalType.INACTIVITY);
+  const inactivitySnackbar = Snackbar.useSnackbar();
   const nluManager = useFeature(Realtime.FeatureFlag.NLU_MANAGER);
 
   const isPreviewRoute = useProjectPreviewMode();
 
   const idleTimer = React.useRef<IdleTimer | null>(null);
 
-  const setActive = React.useCallback(() => {
-    inactivityModal.close();
+  const setActive = usePersistFunction(() => {
+    inactivitySnackbar.close();
     idleTimer.current?.reset();
-  }, [inactivityModal.close]);
+  });
 
-  const setIdle = React.useCallback(() => {
-    inactivityModal.open();
+  const setIdle = usePersistFunction(() => {
+    inactivitySnackbar.open();
     idleTimer.current?.pause();
-  }, []);
+  });
 
   React.useEffect(() => {
     setPreviewing(!!isPreviewRoute);
@@ -107,8 +97,7 @@ const Project: React.FC = () => {
               debounce={250}
               timeout={TIMEOUT_COUNT}
             />
-
-            <InactivityModal onActive={setActive} />
+            <InactivitySnackbar {...inactivitySnackbar} onDismiss={setActive} />
           </>
         )}
 

@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.903.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.902.2...@voiceflow/creator-app@1.903.0) (2022-09-14)
+
+
+### Bug Fixes
+
+* remove extra https:// from API URL (PL-173) ([#6058](https://github.com/voiceflow/creator-app/issues/6058)) ([b4453ae](https://github.com/voiceflow/creator-app/commit/b4453ae8a7189dba81c853b17c767a1dfb2b3f5a))
+* when user closes the tooltip, unlock publish button (CT-821) ([#6062](https://github.com/voiceflow/creator-app/issues/6062)) ([fbc9e78](https://github.com/voiceflow/creator-app/commit/fbc9e788e931d72b1235ef8bb1036243b3296125))
+
+
+### Features
+
+* connect platform modals v2 (CT-894) ([#6055](https://github.com/voiceflow/creator-app/issues/6055)) ([b1c373c](https://github.com/voiceflow/creator-app/commit/b1c373ca65afa61dc6ad5209f594518c7be2934d))
+* increase title width (CT-956) ([#6051](https://github.com/voiceflow/creator-app/issues/6051)) ([1b305cd](https://github.com/voiceflow/creator-app/commit/1b305cd4eaef0cae20cd1989e0076231bf10f332))
+
+
+
+
+
 ## [1.902.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.902.1...@voiceflow/creator-app@1.902.2) (2022-09-14)
 
 

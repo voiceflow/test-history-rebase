@@ -94,7 +94,7 @@ const MenuHeader: React.FC<MenuHeaderProps> = ({
               onChange={searchable ? onChangeSearchLabel : ({ target }) => updateSearchLabel(target.value)}
               autoFocus
               $fullWidth
-              placeholder={`Search ${createInputPlaceholder}`}
+              placeholder={createInputPlaceholder && `Search ${createInputPlaceholder}`}
             />
 
             {renderSearchSuffix?.({ close: onHide, searchLabel: inputVal ?? '' })}

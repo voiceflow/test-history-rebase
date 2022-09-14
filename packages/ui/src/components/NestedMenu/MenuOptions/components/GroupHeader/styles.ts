@@ -8,6 +8,8 @@ export const Container = styled(Box.Flex)<{ isSmall?: boolean }>`
   ${({ isSmall }) =>
     isSmall &&
     css`
+      padding-bottom: 0px;
+
       &:first-child {
         padding-top: 4px;
       }

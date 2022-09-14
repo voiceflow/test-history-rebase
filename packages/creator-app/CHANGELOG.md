@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.901.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.901.1...@voiceflow/creator-app@1.901.2) (2022-09-14)
+
+
+### Bug Fixes
+
+* goto domain ui (CT-971) ([#6057](https://github.com/voiceflow/creator-app/issues/6057)) ([48263f6](https://github.com/voiceflow/creator-app/commit/48263f6e339966bf0e9c69c6e64b27710293b453))
+
+
+
+
+
 ## [1.901.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.901.0...@voiceflow/creator-app@1.901.1) (2022-09-13)
 
 

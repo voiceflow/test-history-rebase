@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.902.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.902.1...@voiceflow/creator-app@1.902.2) (2022-09-14)
+
+
+### Bug Fixes
+
+* move old enterprise to starter plan (CT-964) ([#6056](https://github.com/voiceflow/creator-app/issues/6056)) ([436cd65](https://github.com/voiceflow/creator-app/commit/436cd65190f875e9d37d8cc4248da2a71675f2cc))
+
+
+
+
+
 ## [1.902.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.902.0...@voiceflow/creator-app@1.902.1) (2022-09-14)
 
 

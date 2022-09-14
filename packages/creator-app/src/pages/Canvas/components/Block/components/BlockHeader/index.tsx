@@ -1,4 +1,4 @@
-import { stopPropagation, SvgIcon, SvgIconTypes, usePersistFunction } from '@voiceflow/ui';
+import { stopPropagation, SvgIcon, SvgIconTypes, useDragTrap, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
 import { EditableTextAPI } from '@/components/EditableText';
@@ -38,6 +38,8 @@ const BlockHeader: React.FC<BlockHeaderProps> = ({ name, icon, palette, actions,
   const [blockLabel, setBlockLabel] = useLinkedState(name ?? '');
   const readOnly = isDisabled || !canEditTitle || !isEditingMode;
 
+  const dragTrap = useDragTrap();
+
   const saveLabel = () => {
     if (blockLabel.trim() === '') {
       setBlockLabel(name ?? '');
@@ -45,11 +47,10 @@ const BlockHeader: React.FC<BlockHeaderProps> = ({ name, icon, palette, actions,
       onRename?.(blockLabel);
     }
   };
-
-  const handleOnBlur = () => {
+  const handleOnBlur = usePersistFunction(() => {
     saveLabel();
     setEditing(false);
-  };
+  });
 
   const handleEnterPress: React.KeyboardEventHandler<HTMLInputElement> = async ({ shiftKey, currentTarget }) => {
     if (!shiftKey) {
@@ -59,9 +60,7 @@ const BlockHeader: React.FC<BlockHeaderProps> = ({ name, icon, palette, actions,
   };
 
   React.useEffect(() => {
-    if (isDisabled) {
-      saveLabel();
-    }
+    if (isDisabled) saveLabel();
   }, [isDisabled]);
 
   React.useEffect(() => {
@@ -73,17 +72,14 @@ const BlockHeader: React.FC<BlockHeaderProps> = ({ name, icon, palette, actions,
     textareaRef.current?.select();
   }, [editing]);
 
-  const handleOnBlurPersisted = usePersistFunction(handleOnBlur);
-
   React.useImperativeHandle(
     titleRef,
     () => ({
       startEditing: () => {
         setEditing(true);
       },
-
       stopEditing: () => {
-        handleOnBlurPersisted();
+        handleOnBlur();
       },
     }),
     []
@@ -98,12 +94,11 @@ const BlockHeader: React.FC<BlockHeaderProps> = ({ name, icon, palette, actions,
       )}
 
       {editing ? (
-        <InputContainer>
+        <InputContainer {...dragTrap}>
           <Input
             value={blockLabel}
             onBlur={handleOnBlur}
             palette={palette}
-            onClick={stopPropagation()}
             inputRef={textareaRef}
             onChange={withTargetValue(setBlockLabel)}
             tabIndex={-1}

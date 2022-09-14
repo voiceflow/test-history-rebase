@@ -1,3 +1,4 @@
+import { preventDefault, stopPropagation } from '@ui/utils';
 import { Utils } from '@voiceflow/common';
 import React from 'react';
 
@@ -39,4 +40,15 @@ export const useOnClickOutside = (
       document.removeEventListener('touchstart', listener);
     };
   }, [...deps, ...clickRefs, handler]);
+};
+
+export const useDragTrap = () => {
+  return {
+    draggable: true,
+    onClick: stopPropagation(),
+    onMouseMove: stopPropagation(),
+    onMouseDown: stopPropagation(),
+    onMouseUp: stopPropagation(),
+    onDragStart: stopPropagation(preventDefault(), true),
+  };
 };

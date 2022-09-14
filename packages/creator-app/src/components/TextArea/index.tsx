@@ -2,7 +2,7 @@
 import { Utils } from '@voiceflow/common';
 import { withEnterPress, withTargetValue } from '@voiceflow/ui';
 import React from 'react';
-import AutosizeTextArea, { TextareaAutosizeProps } from 'react-textarea-autosize';
+import { TextareaAutosizeProps } from 'react-textarea-autosize';
 
 import * as S from './styles';
 
@@ -30,6 +30,6 @@ const withInputProps = <P extends BaseTextAreaProps, R>(Component: React.Compone
   ));
 
 export const StaticTextArea = withInputProps<React.ComponentProps<'textarea'>, HTMLTextAreaElement>(S.StaticTextArea);
-const TextArea = withInputProps<Omit<TextareaAutosizeProps, 'ref'>, AutosizeTextArea>(S.TextArea);
+const TextArea = withInputProps<Omit<TextareaAutosizeProps, 'ref'>, HTMLTextAreaElement>(S.TextArea);
 
 export default TextArea;

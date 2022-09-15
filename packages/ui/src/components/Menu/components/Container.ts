@@ -75,6 +75,7 @@ const Container = styled.ul<ContainerProps>`
         `
       : css`
           ${Popper.baseStyles}
+          border-radius: 6px;
           margin-top: 1px;
           margin-bottom: 5px;
           background: ${colors(ThemeColor.WHITE)};

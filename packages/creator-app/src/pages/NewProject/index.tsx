@@ -19,7 +19,7 @@ import { useActiveWorkspace, useDispatch, useSelector } from '@/hooks';
 import { FORMATTED_DIALOGFLOW_LOCALES_LABELS } from '@/pages/Publish/Dialogflow/utils';
 import { FORMATTED_GOOGLE_LOCALES_LABELS } from '@/pages/Publish/Google/utils';
 import LOCALE_MAP from '@/services/LocaleMap';
-import { isAlexaPlatform, isDialogflowPlatform, isGooglePlatform, isVoiceflowPlatform } from '@/utils/typeGuards';
+import { isAlexaPlatform, isDialogflowPlatform, isGooglePlatform } from '@/utils/typeGuards';
 
 import { DEFAULT_PROJECT_NAME, PROJECT_CREATION_STEPS_NUMBER, StepID, StepMeta } from './constants';
 
@@ -151,7 +151,7 @@ const NewProject: React.FC = () => {
         await updateGoogleMeta(newVersionID, googleLanguage, invocationName);
       } else if (isDialogflowPlatform(selectedChannel?.platform)) {
         await updateDialogFlowMeta(newVersionID, dialogflowLanguage);
-      } else if (isVoiceflowPlatform(selectedChannel?.platform)) {
+      } else {
         await updateGeneralMeta(newVersionID, generalLocale);
       }
     } finally {

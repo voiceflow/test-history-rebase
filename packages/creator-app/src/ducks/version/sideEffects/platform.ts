@@ -10,7 +10,7 @@ import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import * as VersionV2 from '@/ducks/versionV2';
 import { Thunk } from '@/store/types';
-import { isAlexaPlatform, isDialogflowPlatform, isGooglePlatform, isVoiceflowPlatform } from '@/utils/typeGuards';
+import { isAlexaPlatform, isDialogflowPlatform, isGooglePlatform } from '@/utils/typeGuards';
 
 import * as alexa from '../platform/alexa';
 import * as dialogflow from '../platform/dialogflow';
@@ -29,7 +29,7 @@ export const patchSettings =
       await dispatch(google.patchSettings(settings as GoogleVersion.VoiceSettings));
     } else if (isDialogflowPlatform(platform)) {
       await dispatch(dialogflow.patchSettings(settings as DFESVersion.Settings));
-    } else if (isVoiceflowPlatform(platform)) {
+    } else {
       await dispatch(general.patchSettings(settings as VoiceflowVersion.Settings));
     }
   };

@@ -23,9 +23,9 @@ export const mentionEditorStyle = ({ theme, height }: { theme: Theme; height?: n
         maxHeight: '350px',
         padding: '8px 0',
         overflowY: 'auto',
-        borderRadius: '8px',
+        borderRadius: '6px',
         boxShadow:
-          '0px 12px 24px rgba(19, 33, 68, 0.04), 0px 8px 12px rgba(19, 33, 68, 0.04), 0px 4px 4px rgba(19, 33, 68, 0.02), 0px 2px 2px rgba(19, 33, 68, 0.01), 0px 1px 1px rgba(19, 33, 68, 0.01), 0px 0px 0px rgba(17, 49, 96, 0.03), 0px 0px 1px rgba(17, 49, 96, 0.24)',
+          '0px 12px 24px rgba(19, 33, 68, 0.04), 0px 8px 12px rgba(19, 33, 68, 0.04), 0px 4px 4px rgba(19, 33, 68, 0.02), 0px 2px 2px rgba(19, 33, 68, 0.01), 0px 1px 1px rgba(19, 33, 68, 0.01), 0px 0px 0px rgba(17, 49, 96, 0.03), 0px 0px 0px 1px rgba(17, 49, 96, 0.06)',
       },
       item: {
         padding: '9px 24px',

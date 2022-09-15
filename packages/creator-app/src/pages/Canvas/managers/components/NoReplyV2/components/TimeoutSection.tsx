@@ -18,7 +18,7 @@ const TimeoutSection: React.FC<TimeoutSectionProps> = ({ timeout: propTimeout, o
 
   const [timeout, setTimeout] = useLinkedState(String(propTimeout || getDefaultNoReplyTimeoutSeconds(editor.platform)));
 
-  const isVoiceflow = Realtime.Utils.typeGuards.isVoiceflowPlatform(editor.platform);
+  const isVoiceflow = Realtime.Utils.typeGuards.isVoiceflowBasedPlatform(editor.platform);
 
   const onChange = (value: string) => {
     if (value !== '' && (!value.match(NUMBERS_ONLY_REGEXP) || value.length > 2)) {

@@ -12,6 +12,7 @@ export const {
   isInternalBlockType,
   isDialogflowPlatform,
   isRootOrMarkupBlockType,
+  isVoiceflowBasedPlatform,
   isOneClickChannelPlatform,
   isMarkupOrCombinedBlockType,
   isPlatformWithInvocationName,

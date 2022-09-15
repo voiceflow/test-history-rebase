@@ -18,7 +18,7 @@ import { FORMATTED_DIALOGFLOW_LOCALES, FORMATTED_DIALOGFLOW_LOCALES_LABELS } fro
 import { FORMATTED_GOOGLE_LOCALES_LABELS, FORMATTED_LOCALES } from '@/pages/Publish/Google/utils';
 import LOCALE_MAP from '@/services/LocaleMap';
 import { Identifier } from '@/styles/constants';
-import { isAlexaPlatform, isDialogflowPlatform, isVoiceflowPlatform } from '@/utils/typeGuards';
+import { isAlexaPlatform, isDialogflowPlatform, isVoiceflowBasedPlatform } from '@/utils/typeGuards';
 
 import { SectionDescription, SectionErrorMessage, SectionTitle } from '../components';
 
@@ -56,7 +56,7 @@ const ProjectSettings: React.FC<PlatformSettingsProps> = ({
   setDialogflowLanguage,
 }) => {
   const isAlexa = isAlexaPlatform(platform);
-  const isGeneral = isVoiceflowPlatform(platform);
+  const isGeneral = isVoiceflowBasedPlatform(platform);
   const isDialogflow = isDialogflowPlatform(platform);
 
   const alexaDisplayName = isAlexa

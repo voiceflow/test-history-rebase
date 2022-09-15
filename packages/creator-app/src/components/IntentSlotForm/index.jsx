@@ -17,13 +17,13 @@ import { connect } from '@/hocs';
 import { Content, FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
 import { slotToString } from '@/utils/slot';
-import { isAlexaPlatform, isVoiceflowPlatform } from '@/utils/typeGuards';
+import { isAlexaPlatform, isVoiceflowBasedPlatform } from '@/utils/typeGuards';
 
 import { ResponseUtterancesTooltip, SlotConfirmationTooltip, SlotPromptTooltip, SlotRequiredMessage } from './components';
 
 function IntentSlotForm({ slot, platform, intentSlot, slotsMap, intent, standalone = false, patchIntentSlot, updateIntentSlotDialog }) {
   const isAlexa = isAlexaPlatform(platform);
-  const isGeneral = isVoiceflowPlatform(platform);
+  const isGeneral = isVoiceflowBasedPlatform(platform);
   const utteranceRef = React.useRef();
   const {
     required,

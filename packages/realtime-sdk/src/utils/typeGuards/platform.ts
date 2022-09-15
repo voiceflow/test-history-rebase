@@ -20,6 +20,14 @@ export const isDialogflowPlatform = (platform?: VoiceflowConstants.PlatformType 
 export const isVoiceflowPlatform = (platform?: VoiceflowConstants.PlatformType | null): platform is VoiceflowConstants.PlatformType.VOICEFLOW =>
   !!platform && legacyPlatformToProjectType(platform)?.platform === PlatformType.VOICEFLOW;
 
+type VoiceflowBasedPlatform = Exclude<
+  VoiceflowConstants.PlatformType,
+  VoiceflowConstants.PlatformType.ALEXA | VoiceflowConstants.PlatformType.GOOGLE | VoiceflowConstants.PlatformType.DIALOGFLOW_ES
+>;
+
+export const isVoiceflowBasedPlatform = (platform?: VoiceflowConstants.PlatformType | null): platform is VoiceflowBasedPlatform =>
+  !!platform && !isAlexaPlatform(platform) && !isGooglePlatform(platform) && !isDialogflowPlatform(platform);
+
 export const isOneClickChannelPlatform = createPlatformTypeGuard<VoiceflowConstants.PlatformType>([
   PlatformType.ALEXA,
   PlatformType.GOOGLE,

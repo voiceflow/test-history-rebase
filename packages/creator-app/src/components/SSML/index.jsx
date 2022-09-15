@@ -71,7 +71,7 @@ const SSML = (
         onChangeDefaultVoice(option?.value ?? null);
       }
     },
-    [defaultVoice]
+    [defaultVoice, onChangeDefaultVoice]
   );
 
   const additionalXMLControlsRenderer = React.useCallback(
@@ -129,7 +129,7 @@ const SSML = (
         )}
       </Box.Flex>
     ),
-    [voice, platform, onChangeVoice, getOptionValue, getOptionLabel, defaultVoice, onChangeDefaultVoice]
+    [voice, platform, onChangeVoice, getOptionValue, getOptionLabel, defaultVoice, onDefaultVoice]
   );
 
   const { platformTags } = platformSSMLMeta;

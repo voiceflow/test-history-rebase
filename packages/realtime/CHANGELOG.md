@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.105.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.105.0...@voiceflow/realtime@1.105.1) (2022-09-15)
+
+
+### Bug Fixes
+
+* realtime resource spikes (CT-000) ([#6072](https://github.com/voiceflow/creator-app/issues/6072)) ([323c78c](https://github.com/voiceflow/creator-app/commit/323c78cd3257f91975d5256711e6d321a4cd3a91))
+
+
+
+
+
 # [1.105.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.104.1...@voiceflow/realtime@1.105.0) (2022-09-15)
 
 

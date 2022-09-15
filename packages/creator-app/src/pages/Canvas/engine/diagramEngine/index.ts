@@ -23,7 +23,7 @@ class DiagramEngine extends EngineConsumer {
   async cloneEntities(entityMap: Realtime.EntityMap, coords: Coords, options?: CloneContextOptions): Promise<Realtime.EntityMap> {
     const clonedEntityMap = cloneEntityMap(entityMap, options);
 
-    await this.engine.node.importSnapshot(clonedEntityMap, coords);
+    await this.engine.node.importSnapshot(clonedEntityMap, coords, options?.diagramID);
 
     return clonedEntityMap;
   }

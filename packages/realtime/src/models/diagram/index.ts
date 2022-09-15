@@ -5,6 +5,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { createSmartMultiAdapter } from 'bidirectional-adapter';
 import { ObjectId } from 'bson';
 import _ from 'lodash';
+import { FilterQuery } from 'mongodb';
 
 import AbstractModel from '../_mongo';
 import { Atomic, AtomicEntity, Bson } from '../utils';
@@ -17,6 +18,7 @@ const OBJECT_ID_KEYS = ['_id', 'versionID'] as const;
 const READ_ONLY_KEYS = ['_id', 'versionID', 'creatorID'] as const;
 
 type DBDiagramModel = Bson.StringToObjectID<BaseModels.Diagram.Model, typeof OBJECT_ID_KEYS[number]>;
+export type DiagramFilter = FilterQuery<DBDiagramModel>;
 
 class DiagramModel extends AbstractModel<DBDiagramModel, BaseModels.Diagram.Model, typeof READ_ONLY_KEYS[number]> {
   READ_ONLY_KEYS = READ_ONLY_KEYS;
@@ -73,6 +75,10 @@ class DiagramModel extends AbstractModel<DBDiagramModel, BaseModels.Diagram.Mode
     return this.findMany({ versionID: new ObjectId(versionID) }, fields);
   }
 
+  async findOneByVersionID(versionID: string, filters?: DiagramFilter) {
+    return this.findOne({ versionID: new ObjectId(versionID), ...filters });
+  }
+
   async addStep({
     step,
     index,
@@ -101,6 +107,48 @@ class DiagramModel extends AbstractModel<DBDiagramModel, BaseModels.Diagram.Mode
     ]);
 
     return step;
+  }
+
+  async addManySteps({
+    steps,
+    index,
+    diagramID,
+    parentNodeID,
+    nodePortRemaps,
+  }: {
+    steps: BaseModels.BaseStep[];
+    index?: Nullish<number>;
+    diagramID: string;
+    parentNodeID: string;
+    nodePortRemaps?: Realtime.NodePortRemap[];
+  }) {
+    const menuNodeIDs: string[] = [];
+    const allNodeIDs: string[] = [];
+    const stepsSets: {
+      entityID: string;
+      sets: Atomic.SetOperation[];
+    }[] = [];
+
+    steps.forEach((step) => {
+      allNodeIDs.push(step.nodeID);
+      stepsSets.push({ entityID: step.nodeID, sets: [{ path: '', value: step }] });
+
+      if (Realtime.Utils.typeGuards.isDiagramMenuDBNode(step)) {
+        menuNodeIDs.push(step.nodeID);
+      }
+    });
+
+    await this.atomicUpdateByID(diagramID, [
+      ...(menuNodeIDs?.length ? [Atomic.push([{ path: 'menuNodeIDs', value: menuNodeIDs }])] : []),
+
+      this.atomicNode.setMany(stepsSets),
+
+      this.atomicNodeData.push(parentNodeID, [{ path: 'steps', value: allNodeIDs, index }]),
+
+      ...this.atomicNodePortRemap(nodePortRemaps),
+    ]);
+
+    return steps;
   }
 
   async addManyNodes(diagramID: string, nodes: BaseModels.BaseDiagramNode[], nodePortRemaps?: Realtime.NodePortRemap[]) {

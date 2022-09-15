@@ -112,7 +112,7 @@ const ProjectVersions: React.FC<ConnectedProjectVersions> = ({ projectID, active
       }
       setVersionList([
         ...versionList,
-        ...moreVersions.map((version: BaseModels.Version.Model<BaseModels.Version.PlatformData>) => versionAdapter(version)),
+        ...moreVersions.map((version) => versionAdapter(version as BaseModels.Version.Model<BaseModels.Version.PlatformData>)),
       ]);
     } catch (err) {
       toast.error('Error fetching versions');

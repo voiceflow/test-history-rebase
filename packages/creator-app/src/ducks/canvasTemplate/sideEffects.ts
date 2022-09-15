@@ -7,7 +7,7 @@ import { getActiveVersionContext } from '@/ducks/version/utils';
 import { Thunk } from '@/store/types';
 
 export const createCanvasTemplate =
-  ({ name, color, nodeIDs }: { name: string; color: string; nodeIDs: string[] }): Thunk<Realtime.CanvasTemplate> =>
+  ({ name, color, nodeIDs }: { name: string; color: string | null; nodeIDs: string[] }): Thunk<Realtime.CanvasTemplate> =>
   async (dispatch, getState) => {
     const state = getState();
 

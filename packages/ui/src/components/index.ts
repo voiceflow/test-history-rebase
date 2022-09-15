@@ -35,7 +35,7 @@ export type { CheckboxTypes } from './Checkbox';
 export { default as Checkbox } from './Checkbox';
 export { default as Collapse } from './Collapse';
 export type { ColorPickerProps } from './ColorPicker';
-export { ColorPicker } from './ColorPicker';
+export { default as ColorPicker } from './ColorPicker';
 export { Range as ColorPickerRange } from './ColorPicker/components/ColorRange/Range';
 export { ColorThemes, ColorThemeUnit } from './ColorPicker/components/ColorThemes';
 export * as COLOR_PICKER_CONSTANTS from './ColorPicker/constants';
@@ -105,6 +105,7 @@ export type {
   MenuItemGrouped,
   MenuItemMultilevel,
   MenuItemWithID,
+  NestedMenuContainerRef,
   UIOnlyMenuItemOption,
 } from './NestedMenu';
 export {

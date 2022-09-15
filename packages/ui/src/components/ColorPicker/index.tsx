@@ -11,6 +11,7 @@ import { ColorRange } from './components/ColorRange';
 import { ColorThemes } from './components/ColorThemes';
 import { ColorThemesPersistAPI } from './components/ColorThemes/types';
 import { Colors, ColorScheme, DEFAULT_SCHEME_COLORS, DEFAULT_THEMES, IColor } from './constants';
+import { useNormalizedColor } from './hooks';
 import { Label, PopperContent, Wrapper } from './styles';
 import { hexToHue, normalizeColor } from './utils';
 
@@ -95,3 +96,7 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
     </DismissableLayerProvider>
   );
 };
+
+export default Object.assign(ColorPicker, {
+  useNormalizedColor,
+});

@@ -1,44 +1,20 @@
-import { COLOR_PICKER_CONSTANTS } from '@voiceflow/ui';
+import { NestedMenu } from '@voiceflow/ui';
 import React from 'react';
 
-import * as CreatorV2 from '@/ducks/creatorV2';
-import { useSelector } from '@/hooks';
-import { TemplateLibraryPopper, TemplateLibraryPopperRef } from '@/pages/Canvas/components/TemplateLibraryPopper';
+import CanvasTemplateEditorNewTemplate from '@/pages/Canvas/components/TemplateEditor/NewTemplate';
 import { EngineContext } from '@/pages/Canvas/contexts';
-import { useCanvasPan, useCanvasZoom } from '@/pages/Canvas/hooks/canvas';
 
-interface ContextTemplateLibraryProps {
-  defaultColorScheme?: COLOR_PICKER_CONSTANTS.ColorScheme;
-}
+import * as S from './styles';
 
-export const ContextTemplateLibrary: React.FC<ContextTemplateLibraryProps> = ({ defaultColorScheme = COLOR_PICKER_CONSTANTS.ColorScheme.LIGHT }) => {
+export const ContextTemplateLibrary: React.FC = () => {
   const engine = React.useContext(EngineContext)!;
   const targets = engine.activation.getTargets();
-  const color = useSelector(CreatorV2.blockColorSelector, { id: targets[0] }) || COLOR_PICKER_CONSTANTS.BLOCK_STANDARD_COLOR;
-
-  const popperRef = React.useRef<TemplateLibraryPopperRef>(null);
-
-  const onChange = React.useCallback(
-    (color: string) => {
-      engine.node.updateManyBlocksColor(targets, color);
-    },
-    [targets]
-  );
-
-  const updatePosition = () => popperRef.current?.update?.();
-
-  useCanvasPan(updatePosition);
-  useCanvasZoom(updatePosition);
 
   return (
-    <TemplateLibraryPopper
-      ref={popperRef}
-      onColorChange={onChange}
-      modifiers={[{ name: 'offset', options: { offset: [26, 0] } }]}
-      placement="right"
-      selectedColor={color}
-      defaultColorScheme={defaultColorScheme}
-      nodeIDs={targets}
-    />
+    <NestedMenu.OptionContainer>
+      <S.Container>
+        <CanvasTemplateEditorNewTemplate withoutPopper nodeIDs={targets} isOpen />
+      </S.Container>
+    </NestedMenu.OptionContainer>
   );
 };

@@ -3,6 +3,7 @@ import { Snackbar, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import IdleTimer from 'react-idle-timer';
+import { batch } from 'react-redux';
 import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
 
 import InactivitySnackbar from '@/components/InactivitySnackbar';
@@ -44,6 +45,7 @@ const Project: React.FC = () => {
   const isOnlyViewer = useSelector(DiagramV2.isOnlyViewerSelector);
   const setPreviewing = useDispatch(UI.setPreviewingVersion);
   const resetCreator = useLocalDispatch(Realtime.creator.reset);
+  const resetCanvasTemplateData = useLocalDispatch(Realtime.canvasTemplate.reset);
 
   const inactivitySnackbar = Snackbar.useSnackbar();
   const nluManager = useFeature(Realtime.FeatureFlag.NLU_MANAGER);
@@ -77,7 +79,12 @@ const Project: React.FC = () => {
     }
   }, [canvasOnly]);
 
-  useTeardown(() => resetCreator());
+  useTeardown(() =>
+    batch(() => {
+      resetCreator();
+      resetCanvasTemplateData();
+    })
+  );
 
   return (
     <MarkupProvider>

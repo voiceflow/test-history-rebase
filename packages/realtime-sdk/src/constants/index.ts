@@ -39,6 +39,7 @@ export const TOPICS_KEY = 'topics';
 export const COMPONENT_KEY = 'component';
 export const COMPONENTS_KEY = 'components';
 export const CANVAS_TEMPLATE_KEY = 'canvas_template';
+export const CANVAS_TEMPLATE_DATA_KEY = 'canvas_template_data';
 export const TEMPLATE_DIAGRAM_KEY = 'template_diagram';
 export const RPC_KEY = 'rpc';
 export const NOTE_KEY = 'note';

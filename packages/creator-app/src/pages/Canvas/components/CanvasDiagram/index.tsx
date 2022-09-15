@@ -55,6 +55,12 @@ interface ComponentItem {
   isFolder: boolean;
 }
 
+interface CanvasTemplateItem {
+  id: string;
+  name: string;
+  nodeIDs: string[];
+  color: string | null;
+}
 export interface FolderItemProps extends ItemComponentProps<ComponentItem>, DragPreviewComponentProps {
   isSearch: boolean;
   activeDiagramID: Nullable<string>;
@@ -62,6 +68,8 @@ export interface FolderItemProps extends ItemComponentProps<ComponentItem>, Drag
   lastCreatedDiagramID: Nullable<string>;
   onClearLastCreatedDiagramID: VoidFunction;
 }
+
+export interface CanvasTemplateItemProps extends ItemComponentProps<CanvasTemplateItem>, DragPreviewComponentProps {}
 
 interface ConnectedCanvasDiagramProps {
   viewport: ViewportType;
@@ -77,10 +85,14 @@ interface FilesDrop extends BaseDrop {
 }
 
 interface StepMenuDrop extends BaseDrop, Omit<StepDragItem, 'type'> {}
+interface CanvasTemplateDrop extends BaseDrop, Omit<StepDragItem, 'type'>, CanvasTemplateItem {}
 
 interface ComponentsDrop extends BaseDrop, FolderItemProps {}
+type DroppableItem = FilesDrop | StepMenuDrop | ComponentsDrop | CanvasTemplateDrop;
 
-const DROP_TYPES = [NativeTypes.FILE, DragItem.BLOCK_MENU, DragItem.COMPONENTS];
+const DROP_TYPES = [NativeTypes.FILE, DragItem.BLOCK_MENU, DragItem.COMPONENTS, DragItem.TEMPLATES];
+
+const isTemplateItem = (item: DroppableItem): item is CanvasTemplateDrop => item.type === DragItem.TEMPLATES;
 
 const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport, children }) => {
   const engine = React.useContext(EngineContext)!;
@@ -136,7 +148,7 @@ const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport, childr
     [isEditingMode]
   );
 
-  const [, connectBlockDrop] = useDrop<FilesDrop | StepMenuDrop | ComponentsDrop, {}, {}>({
+  const [, connectBlockDrop] = useDrop<DroppableItem, {}, {}>({
     accept: DROP_TYPES,
     drop: async (item, monitor) => {
       if ('files' in item && item.files) {
@@ -149,7 +161,9 @@ const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport, childr
       const { x: mouseX, y: mouseY } = monitor.getClientOffset() || item.clientOffset;
       const coords = new Coords([mouseX, mouseY]);
 
-      if ('blockType' in item) {
+      if (isTemplateItem(item)) {
+        await engine.canvasTemplate.dropTemplate(item.id, coords);
+      } else if ('blockType' in item) {
         perf.action(PerfAction.STEP_DROP_CREATE);
         await engine.node.add(item.blockType, coords, item.factoryData);
       } else if (item.type === DragItem.COMPONENTS && 'searchMatchValue' in item) {

@@ -20,3 +20,5 @@ export const useColorPalette = (color: string | undefined): HSLShades =>
 
     return isDefaultColor?.palette || createShadesFromHue(String(hexToHsluv(normalizedColor)[0]));
   }, [color]);
+
+export const useNormalizedColor = (color: string) => React.useMemo(() => normalizeColor(color), [color]);

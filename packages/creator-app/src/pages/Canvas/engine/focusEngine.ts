@@ -31,6 +31,7 @@ class FocusEngine extends EngineConsumer {
     if (this.engine.isCanvasBusy || this.isTarget(nodeID)) return;
 
     this.log.debug(this.log.pending('focusing node'), this.log.slug(nodeID));
+    this.engine.selection.reset();
     this.engine.activation.reset();
     this.engine.transformation.reset();
 

@@ -8,6 +8,7 @@ import { Optional } from 'utility-types';
 
 import { HEARTBEAT_EXPIRE_TIMEOUT } from '../constants';
 import { AbstractControl } from '../control';
+import type { DiagramFilter } from '../models/diagram';
 import AccessCache from './utils/accessCache';
 
 // utility function to format node update data
@@ -126,6 +127,11 @@ class DiagramService extends AbstractControl {
     return diagrams.map(({ name }) => name);
   }
 
+  public async findOneByVersionID(versionID: string, filters?: DiagramFilter): Promise<BaseModels.Diagram.Model | null> {
+    const version = await this.models.diagram.findOneByVersionID(versionID, filters);
+    return version ? this.models.diagram.adapter.fromDB(version) : null;
+  }
+
   public async cloneMany(creatorID: number, versionID: string, ids: string[]): Promise<BaseModels.Diagram.Model[]> {
     const oldDiagrams = await this.models.diagram.findManyByIDs(ids).then(this.models.diagram.adapter.mapFromDB);
 
@@ -158,6 +164,16 @@ class DiagramService extends AbstractControl {
     nodePortRemaps?: Realtime.NodePortRemap[];
   }): Promise<void> {
     await this.models.diagram.addStep(addData);
+  }
+
+  public async addManySteps(addData: {
+    steps: BaseModels.BaseStep[];
+    index?: Nullish<number>;
+    diagramID: string;
+    parentNodeID: string;
+    nodePortRemaps?: Realtime.NodePortRemap[];
+  }): Promise<void> {
+    await this.models.diagram.addManySteps(addData);
   }
 
   public async addManyNodes(diagramID: string, nodes: BaseModels.BaseDiagramNode[], nodePortRemaps?: Realtime.NodePortRemap[]): Promise<void> {

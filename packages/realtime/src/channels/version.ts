@@ -1,8 +1,29 @@
 import { SendBackActions } from '@logux/server';
+import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { ChannelContext } from '@voiceflow/socket-utils';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import { AbstractChannelControl } from './utils';
+
+const initializeTemplateDiagramAction = (
+  templateDiagram: BaseModels.Diagram.Model<BaseModels.BaseDiagramNode>,
+  options: { platform: VoiceflowConstants.PlatformType; projectType: VoiceflowConstants.ProjectType },
+  actionContext: { projectID: string; versionID: string; workspaceID: string }
+) => {
+  const { nodes, data, ports, links } = Realtime.Adapters.creatorAdapter.fromDB(templateDiagram, {
+    ...options,
+    context: {},
+  });
+
+  return Realtime.canvasTemplate.initialize({
+    ...actionContext,
+    diagramID: templateDiagram._id,
+    nodesWithData: nodes.map((node) => ({ node, data: data[node.id] })),
+    ports,
+    links,
+  });
+};
 
 class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionChannelParams> {
   protected channel = Realtime.Channels.version;
@@ -15,9 +36,10 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
     const { workspaceID, projectID, versionID } = ctx.params;
     const creatorID = Number(ctx.userId);
 
-    const [dbCreator, threads] = await Promise.all([
+    const [dbCreator, threads, templateDiagram] = await Promise.all([
       this.services.project.getCreator(creatorID, projectID, versionID),
       this.services.thread.getAll(creatorID, projectID),
+      this.services.diagram.findOneByVersionID(versionID, { type: BaseModels.Diagram.DiagramType.TEMPLATE }),
     ]);
 
     const slots = Realtime.Adapters.slotAdapter.mapFromDB(dbCreator.version.platformData.slots);
@@ -62,6 +84,18 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
       Realtime.version.crud.add({ ...actionContext, value: version, key: versionID }),
       Realtime.version.replacePrototypeSettings({ ...actionContext, settings: prototypeSettings }),
       Realtime.version.activateVersion({ ...actionContext, projectType }),
+      ...(templateDiagram
+        ? [
+            initializeTemplateDiagramAction(
+              templateDiagram,
+              {
+                platform: project.platform,
+                projectType: project.type,
+              },
+              actionContext
+            ),
+          ]
+        : []),
     ];
   };
 }

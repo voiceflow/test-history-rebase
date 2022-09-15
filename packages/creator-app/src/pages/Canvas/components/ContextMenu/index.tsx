@@ -103,7 +103,7 @@ const ContextMenu: React.FC = () => {
   const [canUseCommenting] = usePermission(Permission.COMMENTING);
   const [showHintFeatures] = usePermission(Permission.HINT_FEATURES);
 
-  const blockTemplates = useFeature(Realtime.FeatureFlag.BLOCK_TEMPLATE);
+  const blockTemplate = useFeature(Realtime.FeatureFlag.BLOCK_TEMPLATE);
 
   const cache = useCache({
     engine,
@@ -123,7 +123,7 @@ const ContextMenu: React.FC = () => {
 
     const targetOptions = TARGET_OPTIONS[contextMenu.type]({ viewerOnly: !canEditCanvas })
       .filter((option) => {
-        if (!blockTemplates.isEnabled && option.value === CanvasAction.SAVE_TO_LIBRARY) return false;
+        if (!blockTemplate.isEnabled && option.value === CanvasAction.SAVE_TO_LIBRARY) return false;
 
         return !option.shouldRender || option.shouldRender(contextMenu, cache.current);
       })

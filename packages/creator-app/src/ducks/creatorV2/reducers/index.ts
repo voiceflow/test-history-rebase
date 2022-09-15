@@ -14,6 +14,7 @@ import addDynamicPort, { addDynamicPortReverter } from './addDynamicPort';
 import addMarkup, { addMarkupReverter } from './addMarkup';
 import importSnapshot, { importSnapshotReverter } from './importSnapshot';
 import initialize from './initialize';
+import insertManySteps, { insertManyStepsReverter } from './insertManySteps';
 import insertStep, { insertStepReverter } from './insertStep';
 import isolateSteps, { isolateStepsReverter } from './isolateSteps';
 import moveManyNodes, { moveManyNodesReverter } from './moveManyNodes';
@@ -39,6 +40,7 @@ const creatorReducer = createRootReducer<CreatorState>(INITIAL_STATE)
   .immerCase(...addActions)
 
   .immerCase(...insertStep)
+  .immerCase(...insertManySteps)
   .immerCase(...isolateSteps)
   .immerCase(...transplantSteps)
   .immerCase(...reorderSteps)
@@ -70,6 +72,7 @@ export const reverters = [
   addActionsReverted,
 
   insertStepReverter,
+  insertManyStepsReverter,
   isolateStepsReverter,
   reorderStepsReverter,
   removeManyNodesReverter,

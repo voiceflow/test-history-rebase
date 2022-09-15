@@ -185,3 +185,26 @@ export const trackBlockTemplateCreated = createProjectEventTracker<{
     })
   )
 );
+
+export const trackBlockTemplateUsed = createProjectEventTracker<{
+  creator_id: number | null;
+  workspace_id: string | null;
+  project_id: string;
+  org_id: string | null;
+  template_id: string | null;
+  nested_steps: (BlockType | undefined)[];
+  dropped_into: 'canvas' | 'block';
+}>(({ creator_id, workspace_id, project_id, org_id, template_id, nested_steps, dropped_into, ...options }) =>
+  client.api.analytics.track(
+    EventName.BLOCK_TEMPLATE_USED,
+    createProjectEventPayload(options, {
+      creator_id,
+      workspace_id,
+      project_id,
+      org_id,
+      template_id,
+      nested_steps,
+      dropped_into,
+    })
+  )
+);

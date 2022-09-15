@@ -10,11 +10,25 @@ import { useCallback, useEffect, useMemo, useRef } from 'react';
 
 import { useTeardown } from './lifecycle';
 
-export const useDebouncedCallback = <C extends (...args: any[]) => any>(delay: number, callback: C, deps: any[] = [], options?: DebounceSettings) =>
-  useMemo(() => _debounce(callback, delay, options), deps);
+export const useDebouncedCallback = <C extends (...args: any[]) => any>(delay: number, callback: C, deps: any[] = [], options?: DebounceSettings) => {
+  const memo = useMemo(() => _debounce(callback, delay, options), deps);
 
-export const useThrottledCallback = <C extends (...args: any[]) => any>(delay: number, callback: C, deps: any[] = [], options?: ThrottleSettings) =>
-  useMemo(() => _throttle(callback, delay, options), deps);
+  useTeardown(() => {
+    memo.cancel();
+  });
+
+  return memo;
+};
+
+export const useThrottledCallback = <C extends (...args: any[]) => any>(delay: number, callback: C, deps: any[] = [], options?: ThrottleSettings) => {
+  const memo = useMemo(() => _throttle(callback, delay, options), deps);
+
+  useTeardown(() => {
+    memo.cancel();
+  });
+
+  return memo;
+};
 
 export const useCurried = <S extends any[], D extends any[], R = void>(callback: (...args: S & D) => R, dependencies: any[] = []) => {
   const moized = useMemo(

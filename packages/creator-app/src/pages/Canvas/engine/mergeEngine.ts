@@ -10,12 +10,17 @@ import { createBoundaryTest, EngineConsumer, getCandidates, NodeCandidate } from
 
 const UNMERGEABLE_NODES = new Set([BlockType.START]);
 
+interface VirtualSourceExtra {
+  nodes?: Realtime.NodeData<unknown>[];
+  meta?: Record<string, any>;
+}
+
 class MergeEngine extends EngineConsumer<{ mergeLayer: MergeLayerAPI }> {
   log = this.engine.log.child('merge');
 
   candidates: NodeCandidate[] = [];
 
-  virtualSource: { type: BlockType; factoryData: Partial<Realtime.NodeData<unknown>> } | null = null;
+  virtualSource: { type: BlockType; factoryData: Partial<Realtime.NodeData<unknown>>; extra?: VirtualSourceExtra } | null = null;
 
   targetStep: { index: number; reset: () => void } | null = null;
 
@@ -125,8 +130,8 @@ class MergeEngine extends EngineConsumer<{ mergeLayer: MergeLayerAPI }> {
     this.log.debug(this.log.success('unmerged node'), this.log.slug(sourceNodeID));
   }
 
-  setVirtualSource(type: BlockType, factoryData: Partial<Realtime.NodeData<unknown>> = {}) {
-    this.virtualSource = { type, factoryData };
+  setVirtualSource(type: BlockType, factoryData: Partial<Realtime.NodeData<unknown>> = {}, extra: VirtualSourceExtra = {}) {
+    this.virtualSource = { type, factoryData, extra };
   }
 
   setTargetStep(index: number, reset: () => void) {

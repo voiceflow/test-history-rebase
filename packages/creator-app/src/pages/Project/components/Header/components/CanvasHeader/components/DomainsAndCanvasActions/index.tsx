@@ -1,3 +1,4 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box } from '@voiceflow/ui';
 import React from 'react';
 
@@ -6,8 +7,9 @@ import { Permission } from '@/config/permissions';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as Project from '@/ducks/project';
 import * as ProjectV2 from '@/ducks/projectV2';
-import { useDispatch, useEventualEngine, useLinkedState, usePermission, useSelector, useToggle } from '@/hooks';
+import { useDispatch, useEventualEngine, useFeature, useHotKeys, useLinkedState, usePermission, useSelector, useToggle } from '@/hooks';
 import { Hotkey, HOTKEY_LABEL_MAP } from '@/keymap';
+import CanvasTemplateEditorNewTemplate from '@/pages/Canvas/components/TemplateEditor/NewTemplate';
 import { LastCreatedComponentContext, SelectionSetTargetsContext, SelectionTargetsContext } from '@/pages/Project/contexts';
 import { usePrototypingMode } from '@/pages/Project/hooks';
 import { Identifier } from '@/styles/constants';
@@ -17,6 +19,8 @@ import { formatProjectName } from '@/utils/string';
 import { Container, DomainActions, ProjectTitle, ViewOnly } from './components';
 
 const DomainsAndCanvasActions: React.FC = () => {
+  const [templatePopperIsOpen, setTemplatePopperIsOpen] = React.useState(false);
+
   const selectedTargets = React.useContext(SelectionTargetsContext);
   const setSelectedTargets = React.useContext(SelectionSetTargetsContext);
   const lastCreatedComponent = React.useContext(LastCreatedComponentContext);
@@ -28,6 +32,8 @@ const DomainsAndCanvasActions: React.FC = () => {
 
   const getEngine = useEventualEngine();
 
+  const blockTemplate = useFeature(Realtime.FeatureFlag.BLOCK_TEMPLATE);
+
   const isPrototypingMode = usePrototypingMode();
   const [canEditProject] = usePermission(Permission.EDIT_PROJECT);
   const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
@@ -36,6 +42,16 @@ const DomainsAndCanvasActions: React.FC = () => {
   const [formValue, updateFormValue] = useLinkedState(projectName ?? '');
 
   const isReadOnly = isPrototypingMode || !canEditProject;
+
+  const showEditorIcons = canEditCanvas && (selectedTargets.length > 1 || (selectedTargets.length === 1 && selectedTargets[0] !== startNodeID));
+
+  React.useEffect(() => {
+    if (!showEditorIcons && templatePopperIsOpen) {
+      setTemplatePopperIsOpen(false);
+    }
+  }, [showEditorIcons]);
+
+  useHotKeys(Hotkey.ADD_TO_LIBRARY, () => setTemplatePopperIsOpen(true), { preventDefault: true });
 
   const onBlur = () => {
     if (isReadOnly) {
@@ -86,7 +102,7 @@ const DomainsAndCanvasActions: React.FC = () => {
     <Container>
       {!canEditCanvas && <ViewOnly>View only</ViewOnly>}
 
-      {canEditCanvas && (selectedTargets.length > 1 || (selectedTargets.length === 1 && selectedTargets[0] !== startNodeID)) ? (
+      {showEditorIcons ? (
         <Box.Flex gap={5}>
           <HeaderIconButton
             icon="componentOutline"
@@ -94,7 +110,24 @@ const DomainsAndCanvasActions: React.FC = () => {
             tooltip={{ title: 'Create component', hotkey: HOTKEY_LABEL_MAP[Hotkey.CREATE_COMPONENT] }}
             onClick={onCreateComponent}
           />
-
+          {blockTemplate.isEnabled && (
+            <CanvasTemplateEditorNewTemplate
+              isOpen={templatePopperIsOpen}
+              nodeIDs={selectedTargets}
+              onClose={() => setTemplatePopperIsOpen(false)}
+              onOpen={() => setTemplatePopperIsOpen(true)}
+            >
+              {({ onToggle }) => (
+                <HeaderIconButton
+                  icon="librarySmall"
+                  active={templatePopperIsOpen}
+                  isSmall
+                  tooltip={{ title: 'Add to library', hotkey: HOTKEY_LABEL_MAP[Hotkey.ADD_TO_LIBRARY] }}
+                  onClick={onToggle}
+                />
+              )}
+            </CanvasTemplateEditorNewTemplate>
+          )}
           <HeaderIconButton icon="copy" isSmall tooltip={{ title: 'Copy', hotkey: HOTKEY_LABEL_MAP[Hotkey.COPY] }} onClick={onCopy} />
         </Box.Flex>
       ) : (

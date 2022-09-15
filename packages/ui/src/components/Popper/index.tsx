@@ -1,5 +1,5 @@
 import Portal, { portalRootNode } from '@ui/components/Portal';
-import { useDidUpdateEffect, useNestedPopperTheme, useTheme } from '@ui/hooks';
+import { useDidUpdateEffect, useNestedPopperTheme, usePersistFunction, useTheme } from '@ui/hooks';
 import { ClassName } from '@ui/styles/constants';
 import React from 'react';
 import { DismissableLayerProvider, useDismissable } from 'react-dismissable-layers';
@@ -18,6 +18,7 @@ const Popper: React.FC<T.Props> = ({
   inline,
   opened,
   zIndex,
+  onOpen,
   onClose,
   children,
   maxWidth,
@@ -27,6 +28,7 @@ const Popper: React.FC<T.Props> = ({
   placement = 'bottom',
   initialTab,
   portalNode = portalRootNode,
+  preventClose,
   dismissEvent,
   renderFooter,
   renderContent,
@@ -39,15 +41,24 @@ const Popper: React.FC<T.Props> = ({
 
   const containerRef = React.useRef<HTMLDivElement>(null);
 
-  const [isOpened, onToggle, onForceClose] = useDismissable(opened ?? initialOpened, { ref: containerRef, onClose, dismissEvent, disableLayers });
+  const [isOpened, onToggle, onForceClose] = useDismissable(opened ?? initialOpened, {
+    ref: containerRef,
+    onClose,
+    dismissEvent,
+    disableLayers,
+    preventClose,
+  });
+
+  const handleToggle = usePersistFunction(() => {
+    onToggle();
+    if (!isOpened && onOpen) onOpen();
+  });
 
   useDidUpdateEffect(() => {
-    if ((opened && !isOpened) || (!opened && isOpened)) {
-      onToggle();
-    }
+    if (opened !== isOpened) onToggle();
   }, [opened]);
 
-  const rendererProps = { onClose: onForceClose, isOpened, onToggle };
+  const rendererProps = { onClose: onForceClose, isOpened, onToggle: handleToggle };
 
   const Wrapper = renderNav ? MemoryRouter : React.Fragment;
 

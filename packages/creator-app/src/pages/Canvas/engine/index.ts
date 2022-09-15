@@ -31,6 +31,7 @@ import { Coords } from '@/utils/geometry';
 import { getNodesGroupCenter } from '@/utils/node';
 
 import ActivationEngine from './activationEngine';
+import CanvasTemplateEngine from './canvasTemplateEngine';
 import ClipboardEngine from './clipboardEngine';
 import CommentEngine from './commentEngine';
 import DiagramEngine from './diagramEngine';
@@ -94,6 +95,8 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
 
   clipboard = new ClipboardEngine(this);
 
+  canvasTemplate = new CanvasTemplateEngine(this);
+
   diagram = new DiagramEngine(this);
 
   merge = new MergeEngine(this);
@@ -123,6 +126,8 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
   supportedLinks: string[] = [];
 
   canvas: CanvasAPI | null = null;
+
+  isInteractionDisabled = false;
 
   dispatcher: Dispatcher;
 
@@ -241,6 +246,14 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
     return nodeType === types;
   };
 
+  disableInteractions() {
+    this.isInteractionDisabled = true;
+  }
+
+  enableInteractions() {
+    this.isInteractionDisabled = false;
+  }
+
   // entity registration methods
   registerCanvas(canvas: CanvasAPI | null): void {
     this.canvas = canvas;
@@ -330,7 +343,7 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
   }
 
   get isCanvasBusy(): boolean {
-    return this.linkCreation.isDrawing || this.groupSelection.isDrawing || this.drag.hasTarget || this.drag.hasGroup;
+    return this.linkCreation.isDrawing || this.groupSelection.isDrawing || this.drag.hasTarget || this.drag.hasGroup || this.isInteractionDisabled;
   }
 
   addClass(className: string): void {

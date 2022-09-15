@@ -6,6 +6,7 @@ import defaultMenuLabelRenderer from './defaultMenuLabelRenderer';
 import { DEFAULT_PATH } from './Menu';
 import { NestedMenuInternalProps, NestedMenuMultilevelProps, NestedMenuWithIDMultilevelProps } from './Menu/types';
 import MenuOptions from './MenuOptions';
+import OptionContainer from './OptionContainer';
 import { MenuItemMultilevel, MenuItemWithID, RenderOptionLabel } from './types';
 
 export { getFormattedLabel as getNestedMenuFormattedLabel } from './getFormattedLabel';
@@ -81,4 +82,6 @@ function NestedMenu({
   );
 }
 
-export default NestedMenu;
+export default Object.assign(NestedMenu, {
+  OptionContainer,
+});

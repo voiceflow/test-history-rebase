@@ -150,6 +150,30 @@ export const addStep = (
   addNodeWithPorts(state, { nodeID: stepID, data, ports });
 };
 
+export const addManySteps = (
+  state: Draft<CreatorState>,
+  updateSteps: (stepIDs: string[]) => string[],
+  {
+    parentNodeID,
+    steps,
+  }: {
+    parentNodeID: string;
+    steps: { stepID: string; data: Realtime.NodeDataDescriptor<unknown>; ports: Realtime.PortsDescriptor }[];
+  }
+): void => {
+  if (!Normal.hasOne(state.nodes, parentNodeID)) return;
+
+  const stepIDs: string[] = [];
+
+  steps.forEach(({ stepID, data, ports }) => {
+    if (Normal.hasOne(state.nodes, stepID)) return;
+    stepIDs.push(stepID);
+    addNodeWithPorts(state, { nodeID: stepID, data, ports });
+  });
+
+  addStepReferences(state, updateSteps, { parentNodeID, stepIDs });
+};
+
 export const orphanSteps = (
   state: Draft<CreatorState>,
   adoptOrphan: () => void,

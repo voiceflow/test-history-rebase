@@ -1,7 +1,7 @@
 import { MenuTypes } from '@ui/components/Menu';
 import { Nullish } from '@voiceflow/common';
 import React from 'react';
-import { PopperProps } from 'react-popper';
+import { Popper, PopperProps } from 'react-popper';
 
 export interface BaseMenuItem {
   tooltip?: React.ReactNode;
@@ -65,3 +65,5 @@ export interface SharedNestedMenuProps {
   renderEmpty?: Nullish<(options: { search: string; close: VoidFunction }) => React.ReactNode>;
   popoverModifiers?: PopperProps['modifiers'];
 }
+
+export type NestedMenuContainerRef = Popper;

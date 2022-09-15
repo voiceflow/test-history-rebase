@@ -195,6 +195,7 @@ const getOrCreateID = (lookup: Record<string, string>) => (id: string) => {
 export interface CloneContextOptions {
   nodeIDLookup?: Record<string, string>;
   portIDLookup?: Record<string, string>;
+  diagramID?: string;
 }
 
 export const createCloneContext = ({ nodeIDLookup = {}, portIDLookup = {} }: CloneContextOptions = {}) => {

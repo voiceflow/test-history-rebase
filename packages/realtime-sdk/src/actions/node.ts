@@ -77,6 +77,11 @@ export interface InsertStepPayload<T = unknown> extends BaseParentNodePayload, P
   isActions?: boolean;
 }
 
+export interface InsertManyStepsPayload<T = unknown> extends BaseParentNodePayload, ProjectMetaPayload, SchemaVersionPayload, NodePortRemapsPayload {
+  steps: { data: NodeDataDescriptor<T>; ports: PortsDescriptor; stepID: string }[];
+  index: number;
+}
+
 export interface ReorderStepsPayload extends BaseParentNodePayload, NodePortRemapsPayload {
   index: number;
   stepID: string;
@@ -97,6 +102,7 @@ export interface IsolateStepsPayload extends BaseParentNodePayload, ProjectMetaP
 }
 
 export const insertStep = Utils.protocol.createAction<InsertStepPayload>(nodeStepType('INSERT'));
+export const insertManySteps = Utils.protocol.createAction<InsertManyStepsPayload>(nodeStepType('INSERT_MANY'));
 export const reorderSteps = Utils.protocol.createAction<ReorderStepsPayload>(nodeStepType('REORDER'));
 export const isolateSteps = Utils.protocol.createAction<IsolateStepsPayload>(nodeStepType('ISOLATE'));
 export const transplantSteps = Utils.protocol.createAction<TransplantStepsPayload>(nodeStepType('TRANSPLANT'));

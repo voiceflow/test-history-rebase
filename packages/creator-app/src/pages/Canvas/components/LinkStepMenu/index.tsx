@@ -23,14 +23,14 @@ const LinkStepMenu: React.FC<{}> = () => {
   const subMenuContainerRef = React.useRef<HTMLDivElement>(null);
   const upgradePopperRef = React.useRef<HTMLDivElement>(null);
 
-  const blockTemplates = useFeature(Realtime.FeatureFlag.BLOCK_TEMPLATE);
+  const blockTemplate = useFeature(Realtime.FeatureFlag.BLOCK_TEMPLATE);
   const platform = useSelector(ProjectV2.active.platformSelector);
   const projectType = useSelector(ProjectV2.active.projectTypeSelector);
   const templates = useSelector(CanvasTemplates.allCanvasTemplatesSelector);
   const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
 
   const steps = getAllSections(platform, projectType, templates).filter((step) => {
-    if (step.isLibrary && !blockTemplates.isEnabled) return false;
+    if (step.isLibrary && !blockTemplate.isEnabled) return false;
     if (step.label === EVENT_LABEL) return false;
     return true;
   });

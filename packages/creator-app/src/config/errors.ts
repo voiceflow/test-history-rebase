@@ -18,6 +18,8 @@ export const noActiveProjectID = (): StateInvariantError => error('no active pro
 
 export const noActiveVersionID = (): StateInvariantError => error('no active version ID');
 
+export const noCancasTemplateID = (): StateInvariantError => error('no canvas template ID');
+
 export const noActiveDiagramID = (): StateInvariantError => error('no active diagram ID');
 
 export const noActiveDomainID = (): StateInvariantError => error('no active domain ID');
@@ -54,6 +56,10 @@ export const assertProjectID: (id: Nullish<string>) => asserts id is string = (i
 
 export const assertVersionID: (id: Nullish<string>) => asserts id is string = (id) => {
   assert(id, noActiveVersionID());
+};
+
+export const assertCanvasTemplateID: (id: Nullish<string>) => asserts id is string = (id) => {
+  assert(id, noCancasTemplateID());
 };
 
 export const assertDiagramID: (id: Nullish<string>) => asserts id is string = (id) => {

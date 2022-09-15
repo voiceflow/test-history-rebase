@@ -73,14 +73,15 @@ export const useMergeInfo = (index: number) => {
   };
 };
 
+const ACCEPTED_DROP_ITEMS = [DragItem.BLOCK_MENU, DragItem.COMPONENTS, DragItem.TEMPLATES];
+
 export const useDnDHoverReorderIndicator = (index: number) => {
   const engine = React.useContext(EngineContext)!;
   const isHoveredLocal = React.useRef(false);
   const [isHovered, setHovered] = React.useState(false);
 
   const [, connectBlockDrop] = useDrop({
-    accept: [DragItem.BLOCK_MENU, DragItem.COMPONENTS],
-
+    accept: ACCEPTED_DROP_ITEMS,
     hover: _throttle(
       () => {
         if (!isHoveredLocal.current) {
@@ -98,9 +99,20 @@ export const useDnDHoverReorderIndicator = (index: number) => {
     ),
 
     drop: () => {
-      const { type, factoryData } = engine.merge.virtualSource!;
+      const { type, factoryData, extra } = engine.merge.virtualSource!;
+      if (type === BlockType.COMBINED && extra?.nodes) {
+        engine.node.insertManySteps(engine.merge.targetNodeID!, extra.nodes, index).catch(Sentry.error);
 
-      engine.node.insertStep(engine.merge.targetNodeID!, type, index, { factoryData }).catch(Sentry.error);
+        if (extra.meta?.templateID) {
+          engine.canvasTemplate.trackTemplateUsed({
+            templateID: extra.meta.templateID,
+            nodeIDs: extra.nodes.map((node) => node.nodeID),
+            droppedInto: 'block',
+          });
+        }
+      } else {
+        engine.node.insertStep(engine.merge.targetNodeID!, type, index, { factoryData }).catch(Sentry.error);
+      }
 
       return { captured: true };
     },

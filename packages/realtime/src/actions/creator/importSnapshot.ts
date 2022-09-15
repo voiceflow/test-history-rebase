@@ -5,7 +5,7 @@ import { Action } from 'typescript-fsa';
 
 import { AbstractDiagramResourceControl } from '@/actions/diagram/utils';
 
-const findSignificantNodes = (nodesWithData: Realtime.NodeWithData[]) => {
+export const findSignificantNodes = (nodesWithData: Realtime.NodeWithData[]) => {
   const rootNodeIDs: string[] = [];
   const markupNodeIDs: string[] = [];
 
@@ -23,40 +23,45 @@ const findSignificantNodes = (nodesWithData: Realtime.NodeWithData[]) => {
   return { rootNodeIDs, markupNodeIDs };
 };
 
+export const getDBNodes = <T extends Realtime.creator.ImportSnapshotPayload>(payload: T) => {
+  const { diagramID, nodesWithData, ports, links, projectMeta } = payload;
+  const { rootNodeIDs, markupNodeIDs } = findSignificantNodes(nodesWithData);
+
+  const { nodes: dbNodes } = Realtime.Adapters.creatorAdapter.toDB(
+    {
+      diagramID,
+      data: Object.fromEntries(nodesWithData.map(({ data }) => [data.nodeID, data])),
+      rootNodeIDs,
+      markupNodeIDs,
+      links,
+
+      // the rest of these can safely be left empty
+      viewport: { x: 0, y: 0, zoom: 0 },
+      nodes: [],
+      ports: [],
+    },
+    {
+      platform: projectMeta.platform,
+      projectType: projectMeta.type,
+      nodes: normalize(nodesWithData.map(({ node }) => node)),
+      ports: normalize(ports),
+      context: {
+        schemaVersion: payload.schemaVersion,
+      },
+      partial: true,
+    }
+  );
+
+  return dbNodes;
+};
+
 class ImportSnapshot extends AbstractDiagramResourceControl<Realtime.creator.ImportSnapshotPayload> {
   protected actionCreator = Realtime.creator.importSnapshot;
 
   protected process = async (_ctx: Context, { payload }: Action<Realtime.creator.ImportSnapshotPayload>) => {
-    const { diagramID, nodesWithData, ports, links, projectMeta } = payload;
+    const dbNodes = getDBNodes(payload);
 
-    const { rootNodeIDs, markupNodeIDs } = findSignificantNodes(nodesWithData);
-
-    const { nodes: dbNodes } = Realtime.Adapters.creatorAdapter.toDB(
-      {
-        diagramID,
-        data: Object.fromEntries(nodesWithData.map(({ data }) => [data.nodeID, data])),
-        rootNodeIDs,
-        markupNodeIDs,
-        links,
-
-        // the rest of these can safely be left empty
-        viewport: { x: 0, y: 0, zoom: 0 },
-        nodes: [],
-        ports: [],
-      },
-      {
-        platform: projectMeta.platform,
-        projectType: projectMeta.type,
-        nodes: normalize(nodesWithData.map(({ node }) => node)),
-        ports: normalize(ports),
-        context: {
-          schemaVersion: payload.schemaVersion,
-        },
-        partial: true,
-      }
-    );
-
-    await this.services.diagram.addManyNodes(diagramID, Object.values(dbNodes));
+    await this.services.diagram.addManyNodes(payload.diagramID, Object.values(dbNodes));
   };
 }
 

@@ -25,8 +25,8 @@ export const ContextColorPicker: React.FC<ContextColorPickerProps> = ({ defaultC
   return (
     <CanvasColorPicker
       onChange={onChange}
-      modifiers={[{ name: 'offset', options: { offset: [26, 0] } }]}
-      placement="right"
+      modifiers={[{ name: 'offset', options: { offset: [-42, 0] } }]}
+      placement="right-start"
       selectedColor={color}
       defaultColorScheme={defaultColorScheme}
     />

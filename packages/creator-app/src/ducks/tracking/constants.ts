@@ -145,6 +145,7 @@ export enum EventName {
   NLU_NOTIFICATIONS_CLICKED = 'NLU Notifications Clicked',
 
   BLOCK_TEMPLATE_CREATED = 'Block Template Created',
+  BLOCK_TEMPLATE_USED = 'Block Template Used',
 }
 
 export enum IntentEditType {

@@ -3,6 +3,7 @@ import React from 'react';
 
 import { HoverContext, HoverProvider } from '@/contexts/HoverContext';
 
+import { useTeardown } from './lifecycle';
 import { useEnableDisable } from './toggle';
 
 type HoverEventHandler = 'onMouseEnter' | 'onMouseLeave';
@@ -99,6 +100,8 @@ export const useHover = (
     () => ({ onMouseEnter, onMouseLeave, onMouseMove: onMove ? onMouseMove : undefined }),
     [onMouseEnter, onMouseLeave, onMouseMove]
   );
+
+  useTeardown(() => window.clearTimeout(startTimeoutRef.current));
 
   return [!isOverridden && isHovered, wrapElement, hoverHandlers, setHovering];
 };

@@ -17,6 +17,11 @@ export const diagramSelector = createSelector([getDiagramByIDSelector, CreatorV2
   getDiagram({ id: activeDiagramID })
 );
 
+export const templateDiagramSelector = createSelector(
+  [getDiagramByIDSelector, VersionV2.active.templateDiagramIDSelector],
+  (getDiagram, templateDiagramID) => getDiagram({ id: templateDiagramID })
+);
+
 export const typeSelector = createSelector([diagramSelector], (diagram) => diagram?.type ?? null);
 
 export const isTopicSelector = createSelector([typeSelector], (type) => type === BaseModels.Diagram.DiagramType.TOPIC);

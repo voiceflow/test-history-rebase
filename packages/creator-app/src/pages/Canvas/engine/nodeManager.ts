@@ -110,11 +110,12 @@ class NodeManager extends EngineConsumer {
       );
     },
 
-    importSnapshot: async (entities: Realtime.EntityMap): Promise<void> => {
+    importSnapshot: async (entities: Realtime.EntityMap, diagramID?: string): Promise<void> => {
       await this.dispatch.partialSync(
         Realtime.creator.importSnapshot({
           ...this.engine.context,
           ...entities,
+          ...(diagramID ? { diagramID } : {}),
           projectMeta: this.engine.getActiveProjectMeta(),
           schemaVersion: this.engine.getActiveSchemaVersion(),
         })
@@ -165,6 +166,37 @@ class NodeManager extends EngineConsumer {
           ports: node.ports,
           index,
           isActions,
+          projectMeta: this.engine.getActiveProjectMeta(),
+          schemaVersion: this.engine.getActiveSchemaVersion(),
+          nodePortRemaps,
+        })
+      );
+
+      this.redrawNestedLinks(parentNodeID);
+      this.redrawNestedThreads(parentNodeID);
+    },
+
+    insertManySteps: async (
+      parentNodeID: string,
+      steps: { node: Creator.NodeDescriptor; data: Creator.DataDescriptor }[],
+      index: number
+    ): Promise<void> => {
+      const stepIDs = this.select(CreatorV2.stepIDsByParentNodeIDSelector, { id: parentNodeID });
+      const nodePortRemaps = index === stepIDs.length ? createPortRemap(this.engine.getNodeByID(stepIDs[stepIDs.length - 1])) : undefined;
+
+      await this.dispatch.partialSync(
+        Realtime.node.insertManySteps({
+          ...this.engine.context,
+          parentNodeID,
+          steps: steps.map((step) => ({
+            stepID: step.node.id,
+            data: {
+              ...step.data,
+              type: step.node.type,
+            },
+            ports: step.node.ports,
+          })),
+          index,
           projectMeta: this.engine.getActiveProjectMeta(),
           schemaVersion: this.engine.getActiveSchemaVersion(),
           nodePortRemaps,
@@ -486,7 +518,7 @@ class NodeManager extends EngineConsumer {
   /**
    * imports a snapshot containing multiple nodes, ports and links to the canvas
    */
-  async importSnapshot(entities: Realtime.EntityMap, coords: Coords): Promise<void> {
+  async importSnapshot(entities: Realtime.EntityMap, coords: Coords, diagramID?: string): Promise<void> {
     this.log.debug(this.log.pending('adding multiple entities from snapshot'), entities);
 
     const point = this.engine.canvas!.fromCoords(coords);
@@ -494,7 +526,7 @@ class NodeManager extends EngineConsumer {
 
     await this.dispatch(
       History.transaction(async () => {
-        await this.internal.importSnapshot(centeredEntities);
+        await this.internal.importSnapshot(centeredEntities, diagramID);
       })
     );
 
@@ -634,22 +666,77 @@ class NodeManager extends EngineConsumer {
       isActions,
       autoFocus,
       factoryData,
-    }: { nodeID?: string; autoFocus?: boolean; isActions?: boolean; factoryData?: Partial<Realtime.NodeData<Realtime.NodeDataMap[K]>> } = {},
+      nodeData = {},
+    }: {
+      nodeID?: string;
+      autoFocus?: boolean;
+      isActions?: boolean;
+      factoryData?: Partial<Realtime.NodeData<Realtime.NodeDataMap[K]>>;
+      nodeData?: Partial<Realtime.NodeData<Realtime.NodeDataMap[K]>>;
+    } = {},
     menuType: StepMenuType = StepMenuType.SIDEBAR
   ): Promise<void> {
     const { node, data } = nodeDescriptorFactory(nodeID, type, factoryData, this.select(nodeFactoryOptionsSelector));
 
     this.log.debug(this.log.pending('inserting step'), this.log.slug(node.id));
+    const overrideData = Utils.object.omit(nodeData, ['nodeID']);
+
+    const finalNodeData = { ...data, ...overrideData } as Creator.DataDescriptor;
 
     await this.dispatch(
       History.transaction(async () => {
-        await this.internal.insertStep(parentNodeID, node, data, index, { isActions });
+        await this.internal.insertStep(parentNodeID, node, finalNodeData, index, { isActions });
         // TODO: fold this into the actions that add new steps to have better atomicity
         await this.handleNewStep(node, menuType, { autoFocus });
       })
     );
 
     this.log.info(this.log.success('inserted step'), this.log.slug(node.id));
+  }
+
+  /**
+   * inserts many new steps to a block at some index
+   */
+  async insertManySteps<T>(
+    parentNodeID: string,
+    steps: Realtime.NodeData<T>[],
+    index: number,
+    {
+      autoFocus,
+    }: {
+      autoFocus?: boolean;
+    } = {}
+  ): Promise<void> {
+    const parsedSteps = steps.map((step) => {
+      const { node, data } = nodeDescriptorFactory(
+        Utils.id.objectID(),
+        step.type,
+        Utils.object.omit(step, ['nodeID']),
+        this.select(nodeFactoryOptionsSelector)
+      );
+
+      return {
+        node,
+        data: {
+          ...data,
+          ...step,
+        },
+      };
+    });
+
+    const nodeIDs = parsedSteps.map(({ node }) => node.id);
+
+    this.log.debug(this.log.pending('inserting steps'), this.log.slug(nodeIDs.join(',')));
+
+    await this.dispatch(
+      History.transaction(async () => {
+        await this.internal.insertManySteps(parentNodeID, parsedSteps, index);
+        // TODO: fold this into the actions that add new steps to have better atomicity
+        await this.handleNewStep(parsedSteps[0].node, StepMenuType.SIDEBAR, { autoFocus });
+      })
+    );
+
+    this.log.info(this.log.success('inserted step'), this.log.slug(nodeIDs.join(',')));
   }
 
   /**

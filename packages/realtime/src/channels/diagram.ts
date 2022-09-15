@@ -32,6 +32,7 @@ class DiagramChannel extends AbstractChannelControl<Realtime.Channels.DiagramCha
       this.services.project.get(creatorID, ctx.params.projectID).then(Realtime.Adapters.projectAdapter.fromDB),
       this.services.lock.getAllLocks<Realtime.diagram.awareness.LockEntityType>(ctx.params.diagramID),
     ]);
+
     const { nodes, data, ports, links } = Realtime.Adapters.creatorAdapter.fromDB(diagram, {
       platform: project.platform,
       projectType: project.type,

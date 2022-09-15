@@ -35,7 +35,7 @@ export interface LibraryDragItem {
   type: DragItem;
   name: string;
   id: string;
-  color: string;
+  color: string | null;
   nodeIDs: string[];
 }
 

@@ -34,6 +34,7 @@ export interface Node<O extends BuiltInPortRecord = BuiltInPortRecord> {
   ports: NodePorts<O>;
   parentNode: string | null;
   combinedNodes: string[];
+  blockColor?: string | null;
 }
 
 export type DBNodeStart = Omit<BaseModels.BaseBlock, 'type'> & { type: BlockType.START };

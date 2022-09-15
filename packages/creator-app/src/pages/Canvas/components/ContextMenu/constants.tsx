@@ -123,18 +123,9 @@ export const BLOCK_OPTIONS: ContextMenuOption<CanvasAction>[] = [
     shouldRender: ({ target: nodeID }, { engine }) => isBlock(nodeID, engine) || isStart(nodeID, engine),
   },
   {
-    label: 'Save to Library',
+    label: 'Save to library',
     value: CanvasAction.SAVE_TO_LIBRARY,
-    render: ({ target: nodeID }, { engine }) => {
-      const node = engine.getNodeByID(nodeID);
-      const defaultColorScheme = isChipNode(engine.getNodeByID(node?.combinedNodes[0]), node)
-        ? COLOR_PICKER_CONSTANTS.ColorScheme.DARK
-        : COLOR_PICKER_CONSTANTS.ColorScheme.LIGHT;
-
-      return (
-        <ContextTemplateLibrary defaultColorScheme={node?.type === BlockType.START ? COLOR_PICKER_CONSTANTS.ColorScheme.BLACK : defaultColorScheme} />
-      );
-    },
+    render: () => <ContextTemplateLibrary />,
     shouldRender: ({ target: nodeID }, { engine }) => !isStart(nodeID, engine),
   },
   {

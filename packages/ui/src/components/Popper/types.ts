@@ -35,6 +35,8 @@ export interface Props {
    */
   inline?: boolean;
   onClose?: VoidFunction;
+  onOpen?: VoidFunction;
+  preventClose?: (event?: Event) => boolean;
   maxWidth?: string | number;
   maxHeight?: string | number;
   children?: Children;

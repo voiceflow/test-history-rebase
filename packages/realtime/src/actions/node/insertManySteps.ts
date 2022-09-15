@@ -1,0 +1,49 @@
+import { BaseModels } from '@voiceflow/base-types';
+import * as Realtime from '@voiceflow/realtime-sdk';
+import { Context } from '@voiceflow/socket-utils';
+import { Action } from 'typescript-fsa';
+
+import { AbstractVersionDiagramAccessActionControl } from '@/actions/diagram/utils';
+
+import { extractNodes, ExtractNodesOptions } from './utils';
+
+class InsertManySteps extends AbstractVersionDiagramAccessActionControl<Realtime.node.InsertManyStepsPayload> {
+  actionCreator = Realtime.node.insertManySteps;
+
+  process = async (_ctx: Context, { payload }: Action<Realtime.node.InsertManyStepsPayload>): Promise<void> => {
+    const { diagramID, parentNodeID, steps, index, projectMeta, schemaVersion, nodePortRemaps } = payload;
+
+    const creatorData: ExtractNodesOptions & { ports: Record<string, Realtime.PortsDescriptor> } = {
+      data: {},
+      ports: {},
+      nodes: [],
+    };
+
+    steps.forEach((step) => {
+      creatorData.data[step.stepID] = step.data;
+      creatorData.ports[step.stepID] = step.ports;
+
+      creatorData.nodes.push({
+        id: step.stepID,
+        type: step.data.type,
+        x: 0,
+        y: 0,
+        parentNode: parentNodeID,
+        ports: Realtime.Utils.port.extractNodePorts(step.ports),
+        combinedNodes: [],
+      });
+    });
+
+    const stepsToCreate = extractNodes(diagramID, projectMeta, schemaVersion, creatorData) as BaseModels.BaseStep[];
+
+    await this.services.diagram.addManySteps({
+      steps: stepsToCreate,
+      index,
+      diagramID,
+      parentNodeID,
+      nodePortRemaps,
+    });
+  };
+}
+
+export default InsertManySteps;

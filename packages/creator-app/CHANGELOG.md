@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.905.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.905.0...@voiceflow/creator-app@1.905.1) (2022-09-15)
+
+
+### Bug Fixes
+
+* account page loading + e2e tests [bugfix] (DX-98) ([#6067](https://github.com/voiceflow/creator-app/issues/6067)) ([b12ce4f](https://github.com/voiceflow/creator-app/commit/b12ce4f113c1e7257a89cbbf333e21be4065b160))
+
+
+
+
+
 # [1.905.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.904.0...@voiceflow/creator-app@1.905.0) (2022-09-15)
 
 

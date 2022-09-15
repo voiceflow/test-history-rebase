@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.905.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.904.0...@voiceflow/creator-app@1.905.0) (2022-09-15)
+
+
+### Bug Fixes
+
+* popper positioning (CT-554) ([#6034](https://github.com/voiceflow/creator-app/issues/6034)) ([7a30ebb](https://github.com/voiceflow/creator-app/commit/7a30ebbd87cc7f9b70a948f6f87105d2d4518327))
+
+
+### Features
+
+* add Menu component to new Block select (CT-958) ([#6053](https://github.com/voiceflow/creator-app/issues/6053)) ([f6d436a](https://github.com/voiceflow/creator-app/commit/f6d436abc4fc75d103715597a55ba6850969ee54))
+* fix voiceflow based platform settings save (BUG-59) ([#6063](https://github.com/voiceflow/creator-app/issues/6063)) ([0412bda](https://github.com/voiceflow/creator-app/commit/0412bda7a549136596f48432966f8db99f4719b4))
+* improve text markup v2 (CT-876) ([#6064](https://github.com/voiceflow/creator-app/issues/6064)) ([b98302a](https://github.com/voiceflow/creator-app/commit/b98302a0c1d5a285b825bc629ee2940bd740b797))
+
+
+
+
+
 # [1.904.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.903.0...@voiceflow/creator-app@1.904.0) (2022-09-15)
 
 

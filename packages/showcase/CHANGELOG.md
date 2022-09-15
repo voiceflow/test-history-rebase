@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.25.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/showcase@1.24.4...@voiceflow/showcase@1.25.0) (2022-09-15)
+
+
+### Features
+
+* intent/slots AA (CT-928) ([#6025](https://github.com/voiceflow/creator-app/issues/6025)) ([11e10dc](https://github.com/voiceflow/creator-app/commit/11e10dc5549195e134eb8064ef564b6872624fa9))
+
+
+
+
+
 ## [1.24.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/showcase@1.24.3...@voiceflow/showcase@1.24.4) (2022-09-14)
 
 **Note:** Version bump only for package @voiceflow/showcase

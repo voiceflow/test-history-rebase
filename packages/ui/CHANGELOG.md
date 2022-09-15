@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.150.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.149.1...@voiceflow/ui@1.150.0) (2022-09-15)
+
+
+### Features
+
+* intent/slots AA (CT-928) ([#6025](https://github.com/voiceflow/creator-app/issues/6025)) ([11e10dc](https://github.com/voiceflow/creator-app/commit/11e10dc5549195e134eb8064ef564b6872624fa9))
+
+
+
+
+
 ## [1.149.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.149.0...@voiceflow/ui@1.149.1) (2022-09-14)
 
 

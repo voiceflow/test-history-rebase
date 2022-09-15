@@ -11,7 +11,7 @@ import { PlatformContext, ProjectTypeContext } from '@/pages/Project/contexts';
 import { Identifier } from '@/styles/constants';
 import { withKeyPress } from '@/utils/dom';
 
-import { Container, Control, Select } from '../Search/components';
+import { Container, Control, Menu, Select } from '../Search/components';
 
 const Spotlight = () => {
   const engine = React.useContext(EngineContext)!;
@@ -92,6 +92,7 @@ const Spotlight = () => {
         inputValue={inputValue}
         components={{
           Control,
+          Menu,
           IndicatorsContainer: () => null,
         }}
         autoFocus

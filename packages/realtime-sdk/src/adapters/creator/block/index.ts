@@ -71,7 +71,7 @@ const commonBlockAdapter = {
   // internal
   [BlockType.START]: startDataAdapter,
   [BlockType.COMMENT]: null,
-  [BlockType.ACTIONS]: identityAdapter,
+  [BlockType.ACTIONS]: identityAdapter.multi,
   [BlockType.COMBINED]: blockDataAdapter,
   [BlockType.DEPRECATED]: null,
   [BlockType.CHOICE_OLD]: null,

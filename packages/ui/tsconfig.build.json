@@ -4,15 +4,7 @@
     "module": "commonjs",
     "declaration": true,
     "rootDir": "src",
-    "outDir": "build/common",
-    "plugins": [
-      {
-        "transform": "@zerollup/ts-transform-paths"
-      }
-    ]
+    "outDir": "build/common"
   },
-  "include": [
-    "src/**/*",
-    "typings/**/*"
-  ]
+  "include": ["src/**/*", "typings/**/*"]
 }

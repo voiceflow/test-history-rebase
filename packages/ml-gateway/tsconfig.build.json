@@ -6,17 +6,8 @@
     "rootDir": "src",
     "outDir": "build",
     "paths": {
-      "@/*": [
-        "src/*"
-      ]
-    },
-    "plugins": [
-      {
-        "transform": "@zerollup/ts-transform-paths"
-      }
-    ]
+      "@/*": ["src/*"]
+    }
   },
-  "include": [
-    "src/**/*"
-  ]
+  "include": ["src/**/*"]
 }

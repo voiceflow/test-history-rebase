@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.26.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/showcase@1.25.1...@voiceflow/showcase@1.26.0) (2022-09-15)
+
+
+### Features
+
+* implement drop template onto canvas (CT-674) ([#5976](https://github.com/voiceflow/creator-app/issues/5976)) ([2b7d557](https://github.com/voiceflow/creator-app/commit/2b7d5572acf62df54cc4d49f57d5b83b56e9c80a))
+
+
+
+
+
 ## [1.25.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/showcase@1.25.0...@voiceflow/showcase@1.25.1) (2022-09-15)
 
 **Note:** Version bump only for package @voiceflow/showcase

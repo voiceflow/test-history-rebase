@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.17.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-sdk@1.16.0...@voiceflow/ml-sdk@1.17.0) (2022-09-15)
+
+
+### Bug Fixes
+
+* temporary realtimelocal fix [bugfix] ([#6071](https://github.com/voiceflow/creator-app/issues/6071)) ([743f91e](https://github.com/voiceflow/creator-app/commit/743f91e24f61c0bec6323c50f106e4cad63b9b97))
+
+
+### Features
+
+* implement drop template onto canvas (CT-674) ([#5976](https://github.com/voiceflow/creator-app/issues/5976)) ([2b7d557](https://github.com/voiceflow/creator-app/commit/2b7d5572acf62df54cc4d49f57d5b83b56e9c80a))
+
+
+
+
+
 # [1.16.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-sdk@1.15.0...@voiceflow/ml-sdk@1.16.0) (2022-09-15)
 
 

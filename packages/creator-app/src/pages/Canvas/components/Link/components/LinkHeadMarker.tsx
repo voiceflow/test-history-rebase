@@ -37,7 +37,7 @@ const LinkHeadMarker: React.ForwardRefRenderFunction<SVGMarkerElement, LinkHeadM
     >
       {blockViaLinkMode ? (
         <path
-          d="M12.5 8.25a.75.75 0 0 1-.75.75h-2.5a.25.25 0 0 0-.25.25v2.5a.75.75 0 0 1-1.5 0v-2.5A.25.25 0 0 0 7.25 9h-2.5a.75.75 0 0 1 0-1.5h2.5a.25.25 0 0 0 .25-.25v-2.5a.75.75 0 0 1 1.5 0v2.5c0 .138.112.25.25.25h2.5a.75.75 0 0 1 .75.75z"
+          d="M14.16 8.84H9.12a.28.28 0 0 0-.28.28v5.04a.84.84 0 0 1-1.68 0V9.12a.28.28 0 0 0-.28-.28H1.84a.84.84 0 0 1 0-1.68h5.04a.28.28 0 0 0 .28-.28V1.84a.84.84 0 0 1 1.68 0v5.04c0 .155.125.28.28.28h5.04a.84.84 0 0 1 0 1.68z"
           fill={isHighlighted ? HIGHLIGHT_COLOR : palette[PALETTE_SHADE]}
         ></path>
       ) : (

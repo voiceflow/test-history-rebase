@@ -39,7 +39,7 @@ const SubMenuButton: React.FC<SubMenuButtonProps> = ({ step, template, upgradePo
 
   const { open: openPaymentModal } = useModals<{ planType: PlanType }>(ModalType.PAYMENT);
 
-  const popper = usePopper({ strategy: 'fixed', placement: 'right-start' });
+  const popper = usePopper({ strategy: 'fixed', placement: 'right' });
 
   const onClick = async () => {
     if (!stepMenu.nodePosition) return;

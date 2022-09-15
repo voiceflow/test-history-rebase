@@ -76,6 +76,11 @@ export enum Identifier {
   CONVERSATIONS_PAGE = 'vf-conversations-container',
 
   NEW_LINK = 'vf-new-link',
+
+  // Account Page
+
+  USER_NAME_INPUT = 'vf-user-name-input',
+  USER_EMAIL_INPUT = 'vf-user-email-input',
 }
 
 export enum ClassName {

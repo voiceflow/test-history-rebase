@@ -6,6 +6,7 @@ import * as Account from '@/ducks/account';
 import { useDispatch, useSelector } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
 import { DescriptorContainer } from '@/pages/Settings/components/ContentDescriptors/components';
+import { Identifier } from '@/styles/constants';
 
 const sectionStyling = {
   paddingBottom: '24px',
@@ -35,7 +36,7 @@ const AccountProfile: React.FC = () => {
         header="Name"
       >
         <Box.Flex mr={120}>
-          <Input value={user.name ?? ''} readOnly disabled style={{ color: 'rgba(19, 33, 68, 0.65)' }} />
+          <Input id={Identifier.USER_NAME_INPUT} value={user.name ?? ''} readOnly disabled style={{ color: 'rgba(19, 33, 68, 0.65)' }} />
 
           <Box ml={16}>
             <Upload.IconUpload image={user.image} size={UploadIconVariant.EXTRA_SMALL} update={saveProfilePicture} />
@@ -54,7 +55,7 @@ const AccountProfile: React.FC = () => {
         header="Email"
       >
         <Box.Flex mr={120}>
-          <Input value={user.email ?? ''} readOnly disabled style={{ color: 'rgba(19, 33, 68, 0.65)' }} />
+          <Input id={Identifier.USER_EMAIL_INPUT} value={user.email ?? ''} readOnly disabled style={{ color: 'rgba(19, 33, 68, 0.65)' }} />
         </Box.Flex>
       </Section>
 

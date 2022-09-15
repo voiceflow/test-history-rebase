@@ -24,9 +24,9 @@ export interface ProjectPageProps extends Partial<ContentProps> {
 }
 
 const ProjectPage: React.FC<ProjectPageProps> = ({ renderHeader, renderSidebar, children, scrollable = true }) => {
-  const markup = React.useContext(MarkupContext)!;
+  const markup = React.useContext(MarkupContext);
   const onDisableModes = useDisableModes();
-  const isCreatingMarkupText = markup.creatingType === BlockType.MARKUP_TEXT;
+  const isCreatingMarkupText = markup?.creatingType === BlockType.MARKUP_TEXT;
 
   return (
     <Container isCreatingMarkupText={isCreatingMarkupText}>

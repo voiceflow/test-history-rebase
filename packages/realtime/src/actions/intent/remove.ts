@@ -7,15 +7,19 @@ import { AbstractVersionResourceControl } from '@/actions/version/utils';
 
 interface RemoveIntentPayload extends Realtime.intent.BaseIntentPayload, Realtime.actionUtils.CRUDKeyPayload {}
 
+interface Intent extends Realtime.VersionIntent<BaseModels.Version.PlatformData> {}
+
 interface RemoveIntentContextData extends BaseContextData {
-  removedIntent: Realtime.VersionIntent<BaseModels.Version.PlatformData> | null;
+  removedIntent: Intent | null;
 }
 
 class RemoveIntent extends AbstractVersionResourceControl<RemoveIntentPayload, RemoveIntentContextData> {
   protected actionCreator = Realtime.intent.crud.remove;
 
   protected process = async (ctx: Context<RemoveIntentContextData>, { payload }: Action<RemoveIntentPayload>) => {
-    ctx.data.removedIntent = await this.services.intent.delete(payload.versionID, payload.key);
+    ctx.data.removedIntent = await this.services.intent.get<Intent>(payload.versionID, payload.key).catch(() => null);
+
+    await this.services.intent.delete(payload.versionID, payload.key);
   };
 
   protected finally = async (ctx: Context<RemoveIntentContextData>, { payload }: Action<RemoveIntentPayload>) => {

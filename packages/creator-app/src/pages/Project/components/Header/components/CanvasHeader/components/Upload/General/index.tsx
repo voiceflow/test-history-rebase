@@ -38,7 +38,7 @@ const GeneralPublish: React.FC = () => {
         await nlpContext?.publish({ versionName });
 
         const { liveVersion } = await client.api.project.get(activeProjectID!, ['liveVersion']);
-        updateProjectLiveVersion(activeProjectID, liveVersion);
+        updateProjectLiveVersion(activeProjectID, liveVersion!);
       } catch (err) {
         toast.error(`Updating live version failed: ${err}`);
       }

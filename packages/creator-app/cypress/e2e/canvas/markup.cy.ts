@@ -33,7 +33,7 @@ context('Canvas - Markup', () => {
 
     canvasPage.el.markupImageControl.click();
 
-    canvasPage.el.markupImageUpload.attachFile({ filePath: 'image.png' }, { subject: 'input', force: true });
+    canvasPage.el.markupImageUpload.selectFile({ contents: 'cypress/fixtures/image.png' }, { force: true });
 
     cy.wait('@upload-image', { requestTimeout: 60000 });
 

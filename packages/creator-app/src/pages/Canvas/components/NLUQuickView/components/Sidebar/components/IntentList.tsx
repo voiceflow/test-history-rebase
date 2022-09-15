@@ -19,13 +19,13 @@ import ListItem from './ListItem';
 import { SectionProps } from './types';
 
 const IntentList: React.FC<SectionProps> = ({
-  setIsActiveItemRename,
-  isActiveItemRename,
-  setSearchLength,
   search,
   selectedID,
   setActiveTab,
+  setSearchLength,
   setSelectedItemID,
+  isActiveItemRename,
+  setIsActiveItemRename,
 }) => {
   const { setIsCreatingItem, nameChangeTransform, activeTab, setSelectedID, forceNewInlineIntent } = React.useContext(NLUQuickViewContext);
   const { renameItem, generateItemName } = React.useContext(NLUContext);
@@ -41,10 +41,10 @@ const IntentList: React.FC<SectionProps> = ({
   const firstItem = React.useMemo(() => filteredList.find((item) => item.id), [filteredList]);
 
   useListHooks({
-    setSearchLength,
+    map: allCustomIntentsMap,
     listLength: allIntents.length,
     isActiveTab,
-    map: allCustomIntentsMap,
+    setSearchLength,
   });
 
   const handleConfirmNewIntentName = React.useCallback(
@@ -78,8 +78,9 @@ const IntentList: React.FC<SectionProps> = ({
     if (isCreating) {
       try {
         const newIntentID = await createIntent({ name: generateItemName(InteractionModelTabType.INTENTS) });
-        setNewIntentID(newIntentID);
+
         setSelectedID(newIntentID);
+        setNewIntentID(newIntentID);
       } catch (e) {
         toast.error(e);
       } finally {
@@ -111,8 +112,10 @@ const IntentList: React.FC<SectionProps> = ({
       }
     >
       {createNewItemComponent()}
+
       {filteredList.map((intent) => {
         if (newIntentID === intent.id) return null;
+
         const isActive = !isCreating && selectedID === intent.id;
 
         return (

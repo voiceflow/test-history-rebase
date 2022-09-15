@@ -18,9 +18,7 @@ const exampleEmail = 'yeet@voiceflow.com';
 
 export default {
   uploadImage: () => {
-    cy.get('input[type="file"]').attachFile({
-      filePath: 'image.png',
-    });
+    cy.get('input[type="file"]').selectFile({ contents: 'cypress/fixtures/image.png' }, { force: true });
   },
   completeProfile() {
     this.el.inputByPlaceholder(TARGET_ELEMENT_TEXT.RoleDropdown).parent().click();

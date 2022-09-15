@@ -1,8 +1,8 @@
-import createAdapter from 'bidirectional-adapter';
+import { createMultiAdapter } from 'bidirectional-adapter';
 
 import { SAMLProvider } from '@/models';
 
-const samlProviderAdapter = createAdapter<SAMLProvider, SAMLProvider>(
+const samlProviderAdapter = createMultiAdapter<SAMLProvider, SAMLProvider>(
   ({ _id, issuer, entryPoint, certificate, organizationID }) => ({
     _id,
     issuer: issuer || '',

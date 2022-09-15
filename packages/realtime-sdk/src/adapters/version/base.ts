@@ -1,6 +1,6 @@
 import { Version } from '@realtime-sdk/models';
 import { BaseVersion } from '@voiceflow/base-types';
-import createAdapter, { AdapterNotImplementedError } from 'bidirectional-adapter';
+import { createMultiAdapter, notImplementedAdapter } from 'bidirectional-adapter';
 
 export type SharedFields =
   | '_version'
@@ -13,7 +13,7 @@ export type SharedFields =
   | 'templateDiagramID'
   | 'defaultStepColors';
 
-const baseVersionAdapter = createAdapter<Pick<BaseVersion.Version, '_id' | SharedFields>, Pick<Version<any>, 'id' | SharedFields>>(
+const baseVersionAdapter = createMultiAdapter<Pick<BaseVersion.Version, '_id' | SharedFields>, Pick<Version<any>, 'id' | SharedFields>>(
   ({
     _id,
     _version,
@@ -39,8 +39,6 @@ const baseVersionAdapter = createAdapter<Pick<BaseVersion.Version, '_id' | Share
     // TODO: remove when domains are released
     topics,
   }),
-  () => {
-    throw new AdapterNotImplementedError();
-  }
+  notImplementedAdapter.transformer
 );
 export default baseVersionAdapter;

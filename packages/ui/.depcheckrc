@@ -3,8 +3,7 @@
     "/build"
   ],
   "specials": [
-    "bin",
-    "ttypescript"
+    "bin"
   ],
   "ignores": [
     "@ui/*",

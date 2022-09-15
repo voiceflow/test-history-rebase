@@ -1,10 +1,9 @@
+import { NestedMongoModel } from '../_mongo';
 import { Atomic } from '../utils';
 import type VersionModel from './index';
 
-class VariableModel {
-  MODEL_PATH = 'variables' as const;
-
-  constructor(private model: VersionModel) {}
+class VariableModel extends NestedMongoModel<VersionModel> {
+  readonly MODEL_PATH = 'variables' as const;
 
   async add({ index, variable, versionID }: { index?: number; variable: string; versionID: string }): Promise<void> {
     await this.model.atomicUpdateByID(versionID, [Atomic.push([{ path: this.MODEL_PATH, value: variable, index }])]);

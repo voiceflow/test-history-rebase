@@ -1,4 +1,4 @@
-import { Nullish } from '@voiceflow/common';
+import { EmptyObject, Nullish } from '@voiceflow/common';
 import React from 'react';
 
 export const useCache = <T extends Record<string, any>>(defaultData: T, dataToUpdate: Partial<T> = defaultData): React.MutableRefObject<T> => {
@@ -9,7 +9,7 @@ export const useCache = <T extends Record<string, any>>(defaultData: T, dataToUp
   return cache;
 };
 
-export const useContextApi = <T>(api: T): T => React.useMemo(() => api, Object.values(api));
+export const useContextApi = <Api extends EmptyObject>(api: Api): Api => React.useMemo(() => api, Object.values(api));
 
 export const useCachedValue = <T>(value: T): React.MutableRefObject<T> => {
   const ref = React.useRef<T>(value);

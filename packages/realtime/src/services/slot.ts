@@ -1,45 +1,38 @@
 import { BaseModels } from '@voiceflow/base-types';
-import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { AbstractControl } from '@/control';
-import { uniqueReverse } from '@/services/utils/uniq';
 
-// TODO: refactor this to use atomic operations and the intent mongo model, similar to domain/canvasTemplate and etc models
 class SlotService extends AbstractControl {
-  public async getAll<T extends BaseModels.Version.PlatformData>(versionID: string): Promise<Realtime.VersionSlot<T>[]> {
-    return this.services.version.getSlots(versionID);
+  public async get<Slot extends BaseModels.Slot>(versionID: string, slotKey: string): Promise<Slot> {
+    return this.models.version.slot.get<Slot>(versionID, slotKey);
   }
 
-  public async replaceAll<T extends BaseModels.Version.PlatformData>(versionID: string, slots: Realtime.VersionSlot<T>[]): Promise<void> {
-    await this.services.version.patchPlatformData(versionID, { slots: uniqueReverse(slots, (slot) => slot.key || slot) });
+  public async getMany<Slot extends BaseModels.Slot>(versionID: string, slotKeys: string[]): Promise<Slot[]> {
+    return this.models.version.slot.getMany<Slot>(versionID, slotKeys);
   }
 
-  public async createMany<T extends BaseModels.Version.PlatformData>(versionID: string, slots: Realtime.VersionSlot<T>[]): Promise<void> {
-    const currentSlots = await this.getAll(versionID);
-
-    await this.replaceAll(versionID, [...currentSlots, ...slots]);
+  public async getAll<Slot extends BaseModels.Slot>(versionID: string): Promise<Slot[]> {
+    return this.models.version.slot.list<Slot>(versionID);
   }
 
-  public async create<T extends BaseModels.Version.PlatformData>(versionID: string, slot: Realtime.VersionSlot<T>): Promise<void> {
-    await this.createMany(versionID, [slot]);
+  public async create<Slot extends BaseModels.Slot>(versionID: string, slot: Slot): Promise<void> {
+    await this.models.version.slot.create(versionID, slot);
   }
 
-  public async delete<T extends BaseModels.Version.PlatformData>(versionID: string, slotID: string): Promise<void> {
-    const currentSlots = await this.getAll<T>(versionID);
-
-    await this.replaceAll(
-      versionID,
-      currentSlots.filter((slot) => slot.key !== slotID)
-    );
+  public async createMany<Slot extends BaseModels.Slot>(versionID: string, slots: Slot[]): Promise<void> {
+    await this.models.version.slot.createMany(versionID, slots);
   }
 
-  public async deleteMany<T extends BaseModels.Version.PlatformData>(versionID: string, slotIDs: string[]): Promise<void> {
-    const currentSlots = await this.getAll<T>(versionID);
+  public async update(versionID: string, slotKey: string, slot: Partial<BaseModels.Slot>): Promise<void> {
+    await this.models.version.slot.update(versionID, slotKey, slot);
+  }
 
-    await this.replaceAll(
-      versionID,
-      currentSlots.filter((slot) => !slotIDs.includes(slot.key))
-    );
+  public async delete(versionID: string, slotKey: string): Promise<void> {
+    await this.models.version.slot.delete(versionID, slotKey);
+  }
+
+  public async deleteMany(versionID: string, slotKeys: string[]): Promise<void> {
+    await this.models.version.slot.deleteMany(versionID, slotKeys);
   }
 }
 

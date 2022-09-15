@@ -10,9 +10,7 @@ export default {
   },
 
   uploadImage: (id: string) => {
-    cy.get(`#${id} input[type="file"]`).attachFile({
-      filePath: 'image.png',
-    });
+    cy.get(`#${id} input[type="file"]`).selectFile({ contents: 'cypress/fixtures/image.png' }, { force: true });
   },
 
   awaitMessage() {

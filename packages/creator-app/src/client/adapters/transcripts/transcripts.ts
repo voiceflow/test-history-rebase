@@ -1,12 +1,10 @@
-import createAdapter, { AdapterNotImplementedError } from 'bidirectional-adapter';
+import { createMultiAdapter, notImplementedAdapter } from 'bidirectional-adapter';
 
 import { Transcript } from '@/models';
 
-const transcriptAdapter = createAdapter<any, Transcript>(
+const transcriptAdapter = createMultiAdapter<any, Transcript>(
   ({ _id: id, annotations, ...data }) => ({ id, annotations: annotations || {}, ...data }),
-  () => {
-    throw new AdapterNotImplementedError();
-  }
+  notImplementedAdapter.transformer
 );
 
 export default transcriptAdapter;

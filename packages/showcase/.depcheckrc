@@ -9,7 +9,6 @@
   "ignores": [
     "@voiceflow/dependency-cruiser-config",
     "@voiceflow/vite-config",
-    "vitest",
-    "ts-node"
+    "vitest"
   ]
 }

@@ -43,25 +43,18 @@ class DndSimulatorDataTransfer {
   setDragImage(img: string, xOffset: number, yOffset: number) {}
 }
 
-Cypress.Commands.add(
-  'reactDnD',
-  { prevSubject: 'element' },
-  ($node: Cypress.Chainable<JQuery<HTMLElement>>, targetNodeSelector: string, { offsetX, offsetY }: { offsetX: number; offsetY: number }) => {
-    const dataTransfer = new DndSimulatorDataTransfer();
+Cypress.Commands.add('reactDnD', { prevSubject: 'element' }, ($node, targetNodeSelector, { offsetX, offsetY }) => {
+  const dataTransfer = new DndSimulatorDataTransfer();
 
-    cy.wrap($node)
-      .trigger('mousedown', { which: 1, force: true })
-      .trigger('dragstart', { dataTransfer, force: true })
-      .trigger('drag', { force: true });
+  cy.wrap($node).trigger('mousedown', { which: 1, force: true }).trigger('dragstart', { dataTransfer, force: true }).trigger('drag', { force: true });
 
-    cy.get(targetNodeSelector).then(($el) => {
-      const { x, y } = $el.get(0).getBoundingClientRect();
+  cy.get(targetNodeSelector).then(($el) => {
+    const { x, y } = $el.get(0).getBoundingClientRect();
 
-      cy.wrap($el.get(0))
-        .trigger('dragover', { dataTransfer, force: true })
-        .trigger('drop', { dataTransfer, force: true, clientX: x + offsetX, clientY: y + offsetY })
-        .trigger('dragend', { dataTransfer, force: true })
-        .trigger('mouseup', { force: true, which: 1 });
-    });
-  }
-);
+    cy.wrap($el.get(0))
+      .trigger('dragover', { dataTransfer, force: true })
+      .trigger('drop', { dataTransfer, force: true, clientX: x + offsetX, clientY: y + offsetY })
+      .trigger('dragend', { dataTransfer, force: true })
+      .trigger('mouseup', { force: true, which: 1 });
+  });
+});

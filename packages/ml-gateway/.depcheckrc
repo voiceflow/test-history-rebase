@@ -4,8 +4,7 @@
   ],
   "specials": [
     "bin",
-    "istanbul",
-    "ttypescript"
+    "istanbul"
   ],
   "ignores": [
     "@voiceflow/ml-sdk",
@@ -17,6 +16,7 @@
     "mocha-suite",
     "mock-require",
     "sinon",
+    "vite",
     "sinon-chai",
     "chai",
     "chai-as-promised",

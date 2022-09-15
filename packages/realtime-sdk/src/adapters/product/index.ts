@@ -1,11 +1,11 @@
 import { DBProduct, Product } from '@realtime-sdk/models';
 import { AlexaConstants, AlexaProject } from '@voiceflow/alexa-types';
 import { Utils } from '@voiceflow/common';
-import createAdapter from 'bidirectional-adapter';
+import { createMultiAdapter } from 'bidirectional-adapter';
 
 import { formatMarketPlaces, getDistributionCountries, parseLocales, parseMarketPlaces } from './utils';
 
-const productAdapter = createAdapter<DBProduct, Product>(
+const productAdapter = createMultiAdapter<DBProduct, Product>(
   // db to app
   ({
     name,

@@ -31,7 +31,7 @@ const UtteranceItem: React.FC<UtteranceItemProps> = ({ text, onRemove, onEdit, i
     </div>
   );
 
-  return connectDropTarget ? connectDragSource(connectDropTarget(item)) : item;
+  return connectDragSource && connectDropTarget ? connectDragSource(connectDropTarget(item)) : item;
 };
 
 export default withDraggable({

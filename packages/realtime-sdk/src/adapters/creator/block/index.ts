@@ -4,7 +4,7 @@ import { NodeData } from '@realtime-sdk/models';
 import { createPlatformAndProjectTypeSelector, createPlatformSelector } from '@realtime-sdk/utils/platform';
 import { BaseModels, BaseNode } from '@voiceflow/base-types';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
-import { BidirectionalAdapter, identityAdapter } from 'bidirectional-adapter';
+import { identityAdapter, MultiAdapter } from 'bidirectional-adapter';
 import moize from 'moize';
 
 import { alexaBlockAdapter, alexaOutPortAdapter, alexaOutPortAdapterV2 } from './alexa';
@@ -107,9 +107,7 @@ const getPlatformOutPortsAdapterV2 = createPlatformSelector<
 
 export const noInPortTypes = new Set([BlockType.INTENT, BlockType.COMMAND, BlockType.EVENT, BlockType.START]);
 
-type PlatformBlockAdapters = Partial<
-  Record<BlockType, BidirectionalAdapter<unknown, NodeData<unknown>, [FromDBBlockAdapterOptions], [BlockAdapterOptions]>>
->;
+type PlatformBlockAdapters = Partial<Record<BlockType, MultiAdapter<unknown, NodeData<unknown>, [FromDBBlockAdapterOptions], [BlockAdapterOptions]>>>;
 
 export const getBlockAdapters = moize(
   (platform: VoiceflowConstants.PlatformType, projectType: VoiceflowConstants.ProjectType, migrate?: boolean): PlatformBlockAdapters => {

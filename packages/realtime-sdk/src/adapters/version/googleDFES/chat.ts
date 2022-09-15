@@ -2,13 +2,13 @@ import { Version } from '@realtime-sdk/models';
 import { getPlatformGlobalVariables } from '@realtime-sdk/utils/globalVariables';
 import { DFESVersion } from '@voiceflow/google-dfes-types';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
-import createAdapter, { AdapterNotImplementedError } from 'bidirectional-adapter';
+import { createMultiAdapter, notImplementedAdapter } from 'bidirectional-adapter';
 // eslint-disable-next-line you-dont-need-lodash-underscore/omit
 import _omit from 'lodash/omit';
 
 import sharedVersionAdapter from './shared';
 
-const chatVersionAdapter = createAdapter<DFESVersion.ChatVersion, Version<DFESVersion.ChatPlatformData>>(
+const chatVersionAdapter = createMultiAdapter<DFESVersion.ChatVersion, Version<DFESVersion.ChatPlatformData>>(
   ({
     variables,
     platformData: {
@@ -23,8 +23,6 @@ const chatVersionAdapter = createAdapter<DFESVersion.ChatVersion, Version<DFESVe
     variables: variables.filter((variable) => !getPlatformGlobalVariables(VoiceflowConstants.PlatformType.VOICEFLOW).includes(variable)),
     publishing,
   }),
-  () => {
-    throw new AdapterNotImplementedError();
-  }
+  notImplementedAdapter.transformer
 );
 export default chatVersionAdapter;

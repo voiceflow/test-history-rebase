@@ -1,13 +1,12 @@
 import { BaseIntent, IntentInput } from '@realtime-sdk/models';
 import { BaseModels } from '@voiceflow/base-types';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
-import createAdapter from 'bidirectional-adapter';
+import { createMultiAdapter, createSmartMultiAdapter } from 'bidirectional-adapter';
 import { Optional, Required } from 'utility-types';
 
-export const intentInputSanitizer = ({ text, slots }: Partial<IntentInput> = {}): IntentInput => ({
-  text: text || '',
-  slots: slots || [],
-});
+import { hasValue } from '../utils';
+
+export const intentInputSanitizer = ({ text, slots }: Partial<IntentInput> = {}): IntentInput => ({ text: text || '', slots: slots || [] });
 
 export const baseIntentSlotDialogSanitizer = ({
   prompt = [],
@@ -31,18 +30,34 @@ export const baseIntentSlotSanitizer = ({
   required,
 });
 
-export const baseIntentAdapter = createAdapter<BaseModels.Intent, Omit<BaseIntent, 'slots'>, [{ platform: VoiceflowConstants.PlatformType }]>(
-  ({ key, name, noteID, inputs = [] }, { platform }) => ({
-    id: key,
-    name,
-    noteID,
-    inputs: inputs.map(intentInputSanitizer),
+export type BaseIntentAdapterKeyRemap = [['key', 'id']];
+export type BaseIntentAdapterToDBOptions = [];
+export type BaseIntentAdapterFromDBOptions = [{ platform: VoiceflowConstants.PlatformType }];
+
+export const baseIntentSmartAdapter = createSmartMultiAdapter<
+  Omit<BaseModels.Intent, 'slots'>,
+  Omit<BaseIntent, 'slots'>,
+  BaseIntentAdapterFromDBOptions,
+  BaseIntentAdapterToDBOptions,
+  BaseIntentAdapterKeyRemap
+>(
+  (dbIntent, { platform }) => ({
+    ...(hasValue(dbIntent, 'key') && { id: dbIntent.key }),
+    ...(hasValue(dbIntent, 'name') && { name: dbIntent.name }),
+    ...(hasValue(dbIntent, 'noteID') && { noteID: dbIntent.noteID }),
+    ...(hasValue(dbIntent, 'inputs') && { inputs: dbIntent.inputs.map(intentInputSanitizer) }),
     platform,
   }),
-  ({ id, name, noteID, inputs }) => ({
-    key: id,
-    name,
-    noteID,
-    inputs: inputs.map(intentInputSanitizer),
+  (intent) => ({
+    ...(hasValue(intent, 'id') && { key: intent.id }),
+    ...(hasValue(intent, 'name') && { name: intent.name }),
+    ...(hasValue(intent, 'noteID') && { noteID: intent.noteID }),
+    ...(hasValue(intent, 'inputs') && { inputs: intent.inputs.map(intentInputSanitizer) }),
   })
 );
+
+export const baseIntentAdapter = createMultiAdapter<
+  Omit<BaseModels.Intent, 'slots'>,
+  Omit<BaseIntent, 'slots'>,
+  [{ platform: VoiceflowConstants.PlatformType }]
+>(({ inputs = [], ...baseIntent }, ...args) => baseIntentSmartAdapter.fromDB({ inputs, ...baseIntent }, ...args), baseIntentSmartAdapter.toDB);

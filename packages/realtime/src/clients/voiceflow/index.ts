@@ -1,4 +1,3 @@
-/* eslint-disable new-cap */
 import * as Voiceflow from '@voiceflow/api-sdk';
 
 import logger from '@/logger';
@@ -41,7 +40,10 @@ const VoiceflowFactoryClient = ({ axios, config }: Options): VoiceflowFactory =>
   // default.default is happening due to ESM modules
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-expect-error
-  const voiceflow = new Voiceflow.default.default({ clientKey: 'realtime', apiEndpoint: `${config.CREATOR_API_ENDPOINT}/v2` });
+  const voiceflow = new (Voiceflow.default?.default ?? Voiceflow.default)({
+    clientKey: 'realtime',
+    apiEndpoint: `${config.CREATOR_API_ENDPOINT}/v2`,
+  });
 
   return (token: string) => {
     const client: Voiceflow.Client = voiceflow.generateClient({ authorization: token });

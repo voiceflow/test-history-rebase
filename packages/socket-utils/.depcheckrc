@@ -4,8 +4,7 @@
   ],
   "specials": [
     "bin",
-    "istanbul",
-    "ttypescript"
+    "istanbul"
   ],
   "ignores": [
     "@socket-utils/*",

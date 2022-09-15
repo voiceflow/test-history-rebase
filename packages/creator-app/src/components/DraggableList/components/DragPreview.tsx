@@ -10,14 +10,14 @@ export interface DragPreviewComponentProps {
   isDraggingXEnabled?: boolean;
 }
 
-export interface DragPreviewProps<P extends {}> {
+export interface DragPreviewProps<P> {
   type: string;
   options?: PreviewOptions;
   handlers: { current: DnDHandlers<any> };
   component: React.FC<P & DragPreviewComponentProps>;
 }
 
-const DragPreview = <P extends {}>({ type, component: Preview, options, handlers }: DragPreviewProps<P>) => {
+const DragPreview = <P,>({ type, component: Preview, options, handlers }: DragPreviewProps<P>) => {
   useDragPreview<P>(
     type,
     ({ getStyle, ...props }) => (
@@ -31,4 +31,4 @@ const DragPreview = <P extends {}>({ type, component: Preview, options, handlers
   return null;
 };
 
-export default React.memo(DragPreview) as <P extends {}>(props: DragPreviewProps<P>) => JSX.Element;
+export default React.memo(DragPreview) as <P>(props: DragPreviewProps<P>) => JSX.Element;

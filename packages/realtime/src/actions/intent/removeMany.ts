@@ -7,15 +7,19 @@ import { AbstractVersionResourceControl } from '@/actions/version/utils';
 
 interface RemoveManyIntentsPayload extends Realtime.intent.BaseIntentPayload, Realtime.actionUtils.CRUDKeysPayload {}
 
+interface Intent extends Realtime.VersionIntent<BaseModels.Version.PlatformData> {}
+
 interface RemoveManyIntentsContextData extends BaseContextData {
-  removedIntents: Realtime.VersionIntent<BaseModels.Version.PlatformData>[] | null;
+  removedIntents: Intent[] | null;
 }
 
 class RemoveManyIntents extends AbstractVersionResourceControl<RemoveManyIntentsPayload, RemoveManyIntentsContextData> {
   protected actionCreator = Realtime.intent.crud.removeMany;
 
   protected process = async (ctx: Context<RemoveManyIntentsContextData>, { payload }: Action<RemoveManyIntentsPayload>) => {
-    ctx.data.removedIntents = await this.services.intent.deleteMany(payload.versionID, payload.keys);
+    ctx.data.removedIntents = await this.services.intent.getMany(payload.versionID, payload.keys);
+
+    await this.services.intent.deleteMany(payload.versionID, payload.keys);
   };
 
   protected finally = async (ctx: Context<RemoveManyIntentsContextData>, { payload }: Action<RemoveManyIntentsPayload>) => {
@@ -23,7 +27,7 @@ class RemoveManyIntents extends AbstractVersionResourceControl<RemoveManyIntents
 
     if (!removedIntents || removedIntents.length === 0) return;
 
-    const noteIDsToRemove = removedIntents.filter((intent) => intent.noteID).map((intent) => intent.noteID) as string[];
+    const noteIDsToRemove = removedIntents.filter((intent) => intent.noteID).map((intent) => intent.noteID!);
 
     if (noteIDsToRemove.length) {
       await this.server.processAs(

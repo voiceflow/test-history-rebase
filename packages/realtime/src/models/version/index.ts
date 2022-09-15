@@ -1,13 +1,16 @@
 import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
+import { createSmartMultiAdapter } from 'bidirectional-adapter';
 import { ObjectId } from 'bson';
 
 import AbstractModel from '../_mongo';
-import { Adapter, Atomic, Bson } from '../utils';
+import { Atomic, Bson } from '../utils';
 import CanvasTemplate from './canvasTemplate';
 import Component from './component';
 import Domain from './domain';
+import Intent from './intent';
 import Note from './note';
+import Slot from './slot';
 import Variable from './variable';
 
 const DOUBLE_KEYS = ['_version'] as const;
@@ -24,6 +27,10 @@ class VersionModel extends AbstractModel<DBVersionModel, BaseModels.Version.Mode
 
   note = new Note(this);
 
+  slot = new Slot(this);
+
+  intent = new Intent(this);
+
   domain = new Domain(this);
 
   variable = new Variable(this);
@@ -34,7 +41,7 @@ class VersionModel extends AbstractModel<DBVersionModel, BaseModels.Version.Mode
 
   collectionName = 'versions';
 
-  adapter = Adapter.factory<DBVersionModel, BaseModels.Version.Model<BaseModels.Version.PlatformData>>(
+  adapter = createSmartMultiAdapter<DBVersionModel, BaseModels.Version.Model<BaseModels.Version.PlatformData>>(
     Utils.functional.compose(Bson.doubleToNumber(DOUBLE_KEYS), Bson.objectIdToString(OBJECT_ID_KEYS)),
     Utils.functional.compose(Bson.numberToDouble(DOUBLE_KEYS), Bson.stringToObjectId(OBJECT_ID_KEYS))
   );

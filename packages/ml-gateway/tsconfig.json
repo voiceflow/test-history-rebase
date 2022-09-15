@@ -1,35 +1,19 @@
 {
   "extends": "@voiceflow/tsconfig",
-  "ts-node": {
-    "compiler": "ttypescript"
-  },
+
   "compilerOptions": {
     "module": "esnext",
     "skipLibCheck": true,
     "baseUrl": "..",
     "paths": {
-      "@voiceflow/ml-sdk": [
-        "ml-sdk/src"
-      ],
+      "@voiceflow/ml-sdk": ["ml-sdk/src"],
       // only used to fix intra-monorepo resolution
-      "@ml-sdk/*": [
-        "ml-sdk/src/*"
-      ],
-      "@voiceflow/socket-utils": [
-        "socket-utils/src"
-      ],
+      "@ml-sdk/*": ["ml-sdk/src/*"],
+      "@voiceflow/socket-utils": ["socket-utils/src"],
       // only used to fix intra-monorepo resolution
-      "@socket-utils/*": [
-        "socket-utils/src/*"
-      ],
-      "@/*": [
-        "ml-gateway/src/*"
-      ]
+      "@socket-utils/*": ["socket-utils/src/*"],
+      "@/*": ["ml-gateway/src/*"]
     }
   },
-  "exclude": [
-    "node_modules/**/*",
-    "build/**/*",
-    "test/**/*.d.ts"
-  ]
+  "exclude": ["node_modules/**/*", "build/**/*", "test/**/*.d.ts"]
 }

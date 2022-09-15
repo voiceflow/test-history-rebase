@@ -1,10 +1,11 @@
 import { BaseModels } from '@voiceflow/base-types';
 import { AnyRecord, Utils } from '@voiceflow/common';
+import { createSmartMultiAdapter } from 'bidirectional-adapter';
 import Hashids from 'hashids/esm/hashids';
 import _ from 'lodash';
 
 import AbstractModel from '../_mongo';
-import { Adapter, Bson, HashID } from '../utils';
+import { Bson, HashID } from '../utils';
 
 const DOUBLE_KEYS = ['_version'] as const;
 const HASH_ID_KEYS = ['teamID'] as const;
@@ -31,7 +32,7 @@ class ProjectModel extends AbstractModel<DBProjectModel, BaseModels.Project.Mode
   /**
    * should not be used until the `workspaceHashID` is added to the clients
    */
-  adapter = Adapter.factory<DBProjectModel, BaseModels.Project.Model<AnyRecord, AnyRecord>>(
+  adapter = createSmartMultiAdapter<DBProjectModel, BaseModels.Project.Model<AnyRecord, AnyRecord>>(
     Utils.functional.compose(
       HashID.numberToHashID(HASH_ID_KEYS, this.workspaceHashID),
       Bson.doubleToNumber(DOUBLE_KEYS),

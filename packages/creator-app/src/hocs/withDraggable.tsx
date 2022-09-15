@@ -17,9 +17,9 @@ import compose from 'recompose/compose';
 import wrapDisplayName from 'recompose/wrapDisplayName';
 
 export interface InjectedDraggableComponentProps {
-  connectDropTarget: ConnectDropTarget;
-  connectDragSource: ConnectDragSource;
-  connectDragPreview: ConnectDragPreview;
+  connectDropTarget: ConnectDropTarget | null;
+  connectDragSource: ConnectDragSource | null;
+  connectDragPreview: ConnectDragPreview | null;
 }
 
 export interface DropOptions {

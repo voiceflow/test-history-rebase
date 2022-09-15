@@ -1,4 +1,4 @@
-import { AdapterNotImplementedError, createSimpleAdapter } from 'bidirectional-adapter';
+import { createSimpleAdapter, notImplementedAdapter } from 'bidirectional-adapter';
 import dayjs from 'dayjs';
 
 import { Billing, DBBilling } from '@/models';
@@ -24,9 +24,7 @@ const invoiceAdapter = createSimpleAdapter<DBBilling, Billing>(
         }
       : null,
   }),
-  () => {
-    throw new AdapterNotImplementedError();
-  }
+  notImplementedAdapter.transformer
 );
 
 export default invoiceAdapter;

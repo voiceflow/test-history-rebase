@@ -1,13 +1,12 @@
 import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 
+import { NestedMongoModel } from '../_mongo';
 import { Atomic } from '../utils';
 import type VersionModel from './index';
 
-class CanvasTemplateModel {
-  MODEL_PATH = 'canvasTemplates' as const;
-
-  constructor(private model: VersionModel) {}
+class CanvasTemplateModel extends NestedMongoModel<VersionModel> {
+  readonly MODEL_PATH = 'canvasTemplates' as const;
 
   async create(versionID: string, canvasTemplate: BaseModels.Version.CanvasTemplate): Promise<BaseModels.Version.CanvasTemplate> {
     await this.model.atomicUpdateByID(versionID, [Atomic.push([{ path: this.MODEL_PATH, value: canvasTemplate }])]);

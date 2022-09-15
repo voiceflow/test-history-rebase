@@ -1,11 +1,18 @@
 import { VoiceIntent, VoiceIntentSlot, VoiceIntentSlotDialog } from '@realtime-sdk/models';
 import { VoiceModels } from '@voiceflow/voice-types';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
-import createAdapter from 'bidirectional-adapter';
+import { createMultiAdapter, createSmartMultiAdapter } from 'bidirectional-adapter';
 import { denormalize, normalize } from 'normal-store';
 import { Optional, Required } from 'utility-types';
 
-import { baseIntentAdapter, baseIntentSlotDialogSanitizer, baseIntentSlotSanitizer } from './base';
+import { hasValue } from '../utils';
+import {
+  BaseIntentAdapterFromDBOptions,
+  BaseIntentAdapterKeyRemap,
+  BaseIntentAdapterToDBOptions,
+  baseIntentSlotDialogSanitizer,
+  baseIntentSlotSanitizer,
+  baseIntentSmartAdapter,
+} from './base';
 
 export const voiceIntentPromptSanitizer = ({
   text,
@@ -32,15 +39,26 @@ export const voiceIntentSlotSanitizer = ({ dialog, ...baseIntentSlot }: Required
   dialog: voiceIntentSlotDialogSanitizer(dialog),
 });
 
-const voiceIntentAdapter = createAdapter<VoiceModels.Intent<string>, VoiceIntent, [{ platform: VoiceflowConstants.PlatformType }]>(
-  ({ slots = [], ...baseIntent }, options) => ({
-    ...baseIntentAdapter.fromDB(baseIntent, options),
-    slots: normalize(slots.map(voiceIntentSlotSanitizer)),
+export const voiceIntentSmartAdapter = createSmartMultiAdapter<
+  VoiceModels.Intent<string>,
+  VoiceIntent,
+  BaseIntentAdapterFromDBOptions,
+  BaseIntentAdapterToDBOptions,
+  BaseIntentAdapterKeyRemap
+>(
+  (dbIntent, options) => ({
+    ...baseIntentSmartAdapter.fromDB(dbIntent, options),
+    ...(hasValue(dbIntent, 'slots') && { slots: normalize(dbIntent.slots.map(voiceIntentSlotSanitizer)) }),
   }),
-  ({ slots, ...baseIntent }) => ({
-    ...baseIntentAdapter.toDB(baseIntent),
-    slots: denormalize(slots).map(voiceIntentSlotSanitizer),
+  (intent) => ({
+    ...baseIntentSmartAdapter.toDB(intent),
+    ...(hasValue(intent, 'slots') && { slots: denormalize(intent.slots).map(voiceIntentSlotSanitizer) }),
   })
 );
 
-export default voiceIntentAdapter;
+export const voiceIntentAdapter = createMultiAdapter<
+  VoiceModels.Intent<string>,
+  VoiceIntent,
+  BaseIntentAdapterFromDBOptions,
+  BaseIntentAdapterToDBOptions
+>(({ slots = [], ...dbIntent }, options) => voiceIntentSmartAdapter.fromDB({ slots, ...dbIntent }, options), voiceIntentSmartAdapter.toDB);

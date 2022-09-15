@@ -1,5 +1,7 @@
-function isOnRoute(_chai) {
-  function assertIsOnRoute(page, ...args) {
+import type Chai from 'chai';
+
+function isOnRoute(_chai: Chai.ChaiStatic) {
+  _chai.Assertion.addMethod('onRoute', function (page, ...args) {
     new _chai.Assertion(page).to.have.nested.property('meta.route');
 
     if (typeof page.meta.route === 'function') {
@@ -26,15 +28,13 @@ function isOnRoute(_chai) {
     } else {
       _chai.assert.fail('page model must define a "meta.route" property to be used with this assertion');
     }
-  }
-
-  _chai.Assertion.addMethod('onRoute', assertIsOnRoute);
+  });
 }
 
-const between = (x, min, max) => x >= min && x <= max;
+const between = (x: number, min: number, max: number) => x >= min && x <= max;
 
-function hasCoords(_chai) {
-  function assertHasCoords([coordsX, coordsY], pixelDisparity = 4) {
+function hasCoords(_chai: Chai.ChaiStatic) {
+  _chai.Assertion.addMethod('coords', function ([coordsX, coordsY], pixelDisparity = 4) {
     const { left, top } = this._obj.offset();
     const x = Math.floor(left);
     const y = Math.floor(top);
@@ -45,21 +45,17 @@ function hasCoords(_chai) {
       `expected [${x}, ${y}] to not match coordinates [${coordsX}, ${coordsY}] within ${pixelDisparity} pixel disparity`,
       [x, y]
     );
-  }
-
-  _chai.Assertion.addMethod('coords', assertHasCoords);
+  });
 }
 
-function hasCanvasFocus(_chai) {
-  function assertHasCanvasFocus() {
+function hasCanvasFocus(_chai: Chai.ChaiStatic) {
+  _chai.Assertion.addMethod('canvasFocus', function () {
     if (_chai.util.flag(this, 'negate')) {
       new _chai.Assertion(this._obj).to.not.have.class('vf-canvas__node--focused');
     } else {
       new _chai.Assertion(this._obj).to.have.class('vf-canvas__node--focused');
     }
-  }
-
-  _chai.Assertion.addMethod('canvasFocus', assertHasCanvasFocus);
+  });
 }
 
 chai.use(isOnRoute);

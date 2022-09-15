@@ -1,11 +1,11 @@
-import { BidirectionalMultiAdapter, createAdapter } from 'bidirectional-adapter';
+import { createMultiAdapter, MultiAdapter } from 'bidirectional-adapter';
 
-export const booleanAdapter = createAdapter<string, boolean>(
+export const booleanAdapter = createMultiAdapter<string, boolean>(
   (value) => Boolean(Number(value)),
   (value) => String(Number(value))
 );
 
-export const jsonAdapter = createAdapter<string, any>(
+export const jsonAdapter = createMultiAdapter<string, any>(
   (json) => {
     let value = null;
 
@@ -20,4 +20,4 @@ export const jsonAdapter = createAdapter<string, any>(
   (value) => JSON.stringify(value)
 );
 
-export const jsonAdapterCreator = <T>(): BidirectionalMultiAdapter<string, T, [], []> => jsonAdapter;
+export const jsonAdapterCreator = <T>(): MultiAdapter<string, T> => jsonAdapter;

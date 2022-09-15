@@ -10,28 +10,24 @@ Cypress.Commands.add('awaitCanvasAnimation', (wait = 150) => {
   cy.wait(wait);
 });
 
-Cypress.Commands.add(
-  'dragNode',
-  { prevSubject: 'element' },
-  ($node: Cypress.Chainable<JQuery<HTMLElement>>, movementX: number, movementY: number) => {
-    cy.wrap($node).trigger('dragstart', { force: true, waitForAnimations: true });
+Cypress.Commands.add('dragNode', { prevSubject: 'element' }, ($node, movementX, movementY) => {
+  cy.wrap($node).trigger('dragstart', { force: true, waitForAnimations: true });
 
-    // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(10);
+  // eslint-disable-next-line cypress/no-unnecessary-waiting
+  cy.wait(10);
 
-    cy.document().then(($doc) => {
-      const { clientHeight, clientWidth } = $doc.body;
+  cy.document().then(($doc) => {
+    const { clientHeight, clientWidth } = $doc.body;
 
-      cy.wrap($doc)
-        .trigger('mousemove', { force: true, clientX: clientWidth / 2, clientY: clientHeight / 2, movementX, movementY })
-        .trigger('mouseup', { force: true });
-    });
+    cy.wrap($doc)
+      .trigger('mousemove', { force: true, clientX: clientWidth / 2, clientY: clientHeight / 2, movementX, movementY })
+      .trigger('mouseup', { force: true });
+  });
 
-    cy.wrap($node);
-  }
-);
+  cy.wrap($node);
+});
 
-Cypress.Commands.add('dragCanvas', (movementX: number, movementY: number) => {
+Cypress.Commands.add('dragCanvas', (movementX, movementY) => {
   cy.document().then(($doc) => {
     const { clientWidth, clientHeight } = $doc.body;
 
@@ -43,24 +39,20 @@ Cypress.Commands.add('dragCanvas', (movementX: number, movementY: number) => {
   });
 });
 
-Cypress.Commands.add(
-  'sendHotkey',
-  { prevSubject: ['optional', 'element'] },
-  ($node: Cypress.Chainable<JQuery<HTMLElement>> | undefined, hotkey: string) => {
-    if (!$node) {
-      canvasPage.el.canvas.type(hotkey);
-    } else {
-      cy.wrap($node).type(hotkey);
-    }
+Cypress.Commands.add('sendHotkey', { prevSubject: ['optional', 'element'] }, ($node, hotkey) => {
+  if (!$node) {
+    canvasPage.el.canvas.type(hotkey);
+  } else {
+    cy.wrap($node).type(hotkey);
   }
-);
-
-Cypress.Commands.add('addBlockToCanvasViaSpotlight', (blockName: string) => {
-  cy.sendHotkey('{shift} ');
-  cy.get('#vf-spotlight input').type(`${blockName}{enter}`);
 });
 
-Cypress.Commands.add('addBlockToCanvasViaStepMenu', (section: string, stepName: string, [offsetX, offsetY]: Cypress.Coords) => {
+Cypress.Commands.add('addBlockToCanvasViaSpotlight', (blockName) => {
+  cy.sendHotkey('{shift} ');
+  cy.get('#vf-spotlight input').type(`${blockName}{enter}`, { force: true });
+});
+
+Cypress.Commands.add('addBlockToCanvasViaStepMenu', (section, stepName, [offsetX, offsetY]) => {
   canvasPage.el.stepMenu.contains('.vf-step-menu__item', section).trigger('mouseover');
   // the sub menu is a popper tied to the root dom element
   cy.contains('.vf-sub-step-menu__item', stepName).reactDnD('#vf-canvas', { offsetY, offsetX }).awaitCanvasAnimation();
@@ -74,7 +66,7 @@ Cypress.Commands.add('selectAllCanvasNodes', () => {
   cy.wait(50);
 });
 
-Cypress.Commands.add('addSpeakAndChoiceBlocks', (speakBlockMessage: string) => {
+Cypress.Commands.add('addSpeakAndChoiceBlocks', (speakBlockMessage) => {
   cy.awaitCanvasAnimation();
   cy.addBlockToCanvasViaStepMenu('Talk', 'Speak', [400, 120]);
   canvasPage.el.speakBlockTextInput.type(speakBlockMessage);
@@ -97,9 +89,7 @@ Cypress.Commands.add('addSpeakAndChoiceBlocks', (speakBlockMessage: string) => {
 Cypress.Commands.add('addVisualBlock', () => {
   cy.addBlockToCanvasViaStepMenu('Talk', 'Display', [400, 400]);
 
-  cy.get('input[type="file"]').attachFile({
-    filePath: 'image.png',
-  });
+  cy.get('input[type="file"]').selectFile({ contents: 'cypress/fixtures/image.png' }, { force: true });
 
   cy.selectAllCanvasNodes();
   canvasPage.el.node.eq(0).find('.vf-canvas__step .vf-canvas__port').eq(0).click();

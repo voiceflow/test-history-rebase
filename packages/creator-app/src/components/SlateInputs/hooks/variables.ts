@@ -37,5 +37,5 @@ export const useSlateVariables = ({
     [addGlobalVariable]
   );
 
-  return useContextApi<SlatePluginsOptions[SlatePluginType.VARIABLES]>({ onCreate, variables, creatable, withSlots });
+  return useContextApi<NonNullable<SlatePluginsOptions[SlatePluginType.VARIABLES]>>({ onCreate, variables, creatable, withSlots });
 };

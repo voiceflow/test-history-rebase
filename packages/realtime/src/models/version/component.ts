@@ -1,12 +1,11 @@
 import { BaseModels } from '@voiceflow/base-types';
 
+import { NestedMongoModel } from '../_mongo';
 import { Atomic } from '../utils';
 import type VersionModel from './index';
 
-class ComponentModel {
-  MODEL_PATH = 'components' as const;
-
-  constructor(private model: VersionModel) {}
+class ComponentModel extends NestedMongoModel<VersionModel> {
+  readonly MODEL_PATH = 'components' as const;
 
   async add({ index, item, versionID }: { index?: number; item: BaseModels.Version.FolderItem; versionID: string }): Promise<void> {
     await this.model.atomicUpdateByID(versionID, [Atomic.push([{ path: this.MODEL_PATH, value: item, index }])]);

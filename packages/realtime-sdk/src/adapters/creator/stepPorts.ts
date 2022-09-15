@@ -4,7 +4,7 @@ import { SchemaVersion } from '@realtime-sdk/types';
 import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
-import createAdapter from 'bidirectional-adapter';
+import { createMultiAdapter } from 'bidirectional-adapter';
 
 import { VersionAdapterContext } from '../types';
 import {
@@ -17,7 +17,7 @@ import {
 } from './block';
 import { PortsInfo, removePortDataFalsyValues } from './block/utils';
 
-const stepPortsAdapter = createAdapter<
+const stepPortsAdapter = createMultiAdapter<
   BaseModels.StepOnlyData<BaseModels.AnyBaseStepPorts, BaseModels.BasePort[]>,
   PortsInfo,
   [{ platform: VoiceflowConstants.PlatformType; nodeType: BlockType; dbNode: BaseModels.BaseDiagramNode }],

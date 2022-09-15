@@ -1,9 +1,9 @@
 import { DBDiagram, Diagram } from '@realtime-sdk/models';
 import { BaseModels } from '@voiceflow/base-types';
-import createAdapter, { AdapterNotImplementedError } from 'bidirectional-adapter';
+import { createMultiAdapter, notImplementedAdapter } from 'bidirectional-adapter';
 
 // TODO: remove rootDiagramID when domains are released
-const diagramAdapter = createAdapter<DBDiagram, Diagram, [{ rootDiagramID?: string }] | []>(
+const diagramAdapter = createMultiAdapter<DBDiagram, Diagram, [{ rootDiagramID?: string }] | []>(
   ({ _id, name, type, children, variables, menuNodeIDs = [] }, { rootDiagramID } = {}) => ({
     id: _id,
     name,
@@ -12,9 +12,7 @@ const diagramAdapter = createAdapter<DBDiagram, Diagram, [{ rootDiagramID?: stri
     menuNodeIDs,
     subDiagrams: children,
   }),
-  () => {
-    throw new AdapterNotImplementedError();
-  }
+  notImplementedAdapter.transformer
 );
 
 export default diagramAdapter;

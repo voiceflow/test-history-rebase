@@ -2,12 +2,12 @@ import { BaseNode, Nullable } from '@voiceflow/base-types';
 import { ChatNode } from '@voiceflow/chat-types';
 import { Nullish } from '@voiceflow/common';
 import { VoiceNode } from '@voiceflow/voice-types';
-import createAdapter from 'bidirectional-adapter';
+import { createMultiAdapter } from 'bidirectional-adapter';
 
 import { NodeData } from '../../../../models';
 import { chatPromptAdapter, voicePromptAdapter } from './prompt';
 
-export const baseNoMatchAdapter = createAdapter<BaseNode.Utils.BaseStepNoMatch, NodeData.BaseNoMatch>(
+export const baseNoMatchAdapter = createMultiAdapter<BaseNode.Utils.BaseStepNoMatch, NodeData.BaseNoMatch>(
   ({ type = BaseNode.Utils.NoMatchType.REPROMPT, types, pathName = 'No match', randomize }) => ({
     types:
       types ??
@@ -20,7 +20,7 @@ export const baseNoMatchAdapter = createAdapter<BaseNode.Utils.BaseStepNoMatch, 
   ({ types, randomize, pathName }) => ({ types, pathName, randomize })
 );
 
-export const chatNoMatchAdapter = createAdapter<ChatNode.Utils.StepNoMatch, NodeData.ChatNoMatch>(
+export const chatNoMatchAdapter = createMultiAdapter<ChatNode.Utils.StepNoMatch, NodeData.ChatNoMatch>(
   ({ reprompts = [], ...baseNoMatch }) => ({
     ...baseNoMatchAdapter.fromDB(baseNoMatch),
     reprompts: chatPromptAdapter.mapFromDB(reprompts),
@@ -31,7 +31,7 @@ export const chatNoMatchAdapter = createAdapter<ChatNode.Utils.StepNoMatch, Node
   })
 );
 
-export const voiceNoMatchAdapter = createAdapter<VoiceNode.Utils.StepNoMatch<any>, NodeData.VoiceNoMatch>(
+export const voiceNoMatchAdapter = createMultiAdapter<VoiceNode.Utils.StepNoMatch<any>, NodeData.VoiceNoMatch>(
   ({ reprompts = [], ...baseNoMatch }) => ({
     ...baseNoMatchAdapter.fromDB(baseNoMatch),
     reprompts: voicePromptAdapter.mapFromDB(reprompts),

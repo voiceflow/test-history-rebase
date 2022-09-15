@@ -1,4 +1,5 @@
-import { BoxFlex, SectionV2, StrengthGauge } from '@voiceflow/ui';
+import * as Realtime from '@voiceflow/realtime-sdk';
+import { Box, SectionV2, StrengthGauge } from '@voiceflow/ui';
 import React from 'react';
 
 import IntentSelect from '@/components/IntentSelect';
@@ -11,14 +12,19 @@ import { getIntentStrengthLevel } from '@/utils/intent';
 
 import { PATH } from './constants';
 
-interface IntentsSectionProps<Data, BuiltInPorts> {
+interface IntentsSectionProps<Data, BuiltInPorts extends Realtime.BuiltInPortRecord> {
   intentID?: string | null;
   buttonID: string;
   onChange: (intentId: string | null) => void;
   editor: NodeEditorV2Props<Data, BuiltInPorts>;
 }
 
-const IntentsSection = <Data, BuiltInPorts>({ intentID, onChange, editor, buttonID }: IntentsSectionProps<Data, BuiltInPorts>): JSX.Element => {
+const IntentsSection = <Data, BuiltInPorts extends Realtime.BuiltInPortRecord>({
+  intentID,
+  onChange,
+  editor,
+  buttonID,
+}: IntentsSectionProps<Data, BuiltInPorts>): JSX.Element => {
   const [collapsed, setCollapsed] = React.useState(!intentID);
   const { intent, intentEditModal, intentIsBuiltIn, shouldDisplayRequiredEntities } = useIntent(intentID);
 
@@ -40,13 +46,13 @@ const IntentsSection = <Data, BuiltInPorts>({ intentID, onChange, editor, button
         <SectionV2.Title bold={!collapsed}>
           Attach intent
           {intentID && (
-            <BoxFlex pl={16}>
+            <Box.Flex pl={16}>
               <StrengthGauge
                 width={36}
                 level={intentIsBuiltIn ? StrengthGauge.Level.VERY_STRONG : getIntentStrengthLevel(intent?.inputs.length ?? 0)}
                 tooltipLabelMap={{ [StrengthGauge.Level.NOT_SET]: 'No utterances' }}
               />
-            </BoxFlex>
+            </Box.Flex>
           )}
         </SectionV2.Title>
       }

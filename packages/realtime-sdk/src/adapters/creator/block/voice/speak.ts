@@ -1,6 +1,6 @@
 import { Utils } from '@voiceflow/common';
 import { VoiceModels, VoiceNode } from '@voiceflow/voice-types';
-import createAdapter from 'bidirectional-adapter';
+import { createMultiAdapter } from 'bidirectional-adapter';
 
 import { DialogType } from '../../../../constants';
 import { NodeData } from '../../../../models';
@@ -8,7 +8,7 @@ import { SpeakData } from '../../../../models/Speak';
 import { baseSpeakAdapter } from '../base';
 import { createBlockAdapter } from '../utils';
 
-export const voiceSpeakDialogAdapter = createAdapter<
+export const voiceSpeakDialogAdapter = createMultiAdapter<
   VoiceModels.Prompt<any>,
   SpeakData,
   [{ audioVoice: string }],

@@ -1,12 +1,12 @@
 import { BaseNode } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
-import createAdapter from 'bidirectional-adapter';
+import { createMultiAdapter } from 'bidirectional-adapter';
 
 import { NodeData } from '../../../../models';
 import { sanitizeSetValue } from '../../../../utils/expression';
 import { createBlockAdapter, createOutPortsAdapter, createOutPortsAdapterV2, nextOnlyOutPortsAdapter, nextOnlyOutPortsAdapterV2 } from '../utils';
 
-const setExpressionAdapter = createAdapter<BaseNode.SetV2.Set, NodeData.SetExpressionV2>(
+const setExpressionAdapter = createMultiAdapter<BaseNode.SetV2.Set, NodeData.SetExpressionV2>(
   ({ expression, variable, type }) => ({
     id: Utils.id.cuid.slug(),
     type,

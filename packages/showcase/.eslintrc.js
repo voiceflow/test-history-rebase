@@ -1,5 +1,3 @@
-require('ts-node/register/transpile-only');
-
 const path = require('path');
 
 module.exports = {

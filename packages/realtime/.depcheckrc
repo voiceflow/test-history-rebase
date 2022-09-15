@@ -4,8 +4,7 @@
   ],
   "specials": [
     "bin",
-    "istanbul",
-    "ttypescript"
+    "istanbul"
   ],
   "ignores": [
     "@babel/plugin-transform-modules-commonjs",
@@ -17,6 +16,7 @@
     "sinon",
     "sinon-chai",
     "chai",
+    "vite",
     "chai-as-promised",
     "deep-equal-in-any-order"
   ]

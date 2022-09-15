@@ -39,30 +39,22 @@ context('Launch', () => {
       alexa.el.basicSkillInfo.displayName.should('have.value', displayName);
 
       // b - Upload a large icon
-      const filepath1 = 'image.png';
-      cy.fixture(filepath1).then((fileContent) =>
-        alexa.el.basicSkillInfo.largeIconUpload
-          .attachFile({
-            fileContent: fileContent.toString(),
-            fileName: filepath1,
-            mimeType: 'image/png',
-            filePath: filepath1,
-          })
-          .should('have.value', getCypressFilepathMock(filepath1))
-      );
+      const filepath1 = 'cypress/fixtures/image.png';
+
+      alexa.el.basicSkillInfo.largeIconUpload
+        .selectFile({ contents: filepath1, fileName: filepath1, mimeType: 'image/png' }, { force: true })
+        .should('have.value', getCypressFilepathMock(filepath1));
+
+      alexa.el.basicSkillInfo.largeIconUpload
+        .selectFile({ contents: filepath1, fileName: filepath1, mimeType: 'image/png' }, { force: true })
+        .should('have.value', getCypressFilepathMock(filepath1));
 
       // c - Upload a small icon
-      const filepath2 = 'image2.png';
-      cy.fixture(filepath2).then((fileContent) =>
-        alexa.el.basicSkillInfo.smallIconUpload
-          .attachFile({
-            fileContent: fileContent.toString(),
-            fileName: filepath2,
-            mimeType: 'image/png',
-            filePath: filepath2,
-          })
-          .should('have.value', getCypressFilepathMock(filepath2))
-      );
+      const filepath2 = 'cypress/fixtures/image2.png';
+
+      alexa.el.basicSkillInfo.smallIconUpload
+        .selectFile({ contents: filepath2, fileName: filepath2, mimeType: 'image/png' }, { force: true })
+        .should('have.value', getCypressFilepathMock(filepath2));
 
       // d - Wait until the upload is done before proceeding
       cy.wait('@uploadLargeIcon');

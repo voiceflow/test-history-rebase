@@ -2,7 +2,7 @@ import { ExpressionData as NodeDataExpressionData } from '@realtime-sdk/models';
 import { ADVANCE_LOGIC_TYPES, expressionfyV2, getHighestDepth, hasAdvanceChildExpression } from '@realtime-sdk/utils/expression';
 import { BaseNode } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
-import createAdapter, { AdapterNotImplementedError } from 'bidirectional-adapter';
+import { createMultiAdapter, notImplementedAdapter } from 'bidirectional-adapter';
 
 const LogicGroupConditionType = new Set<string>([BaseNode.Utils.ExpressionTypeV2.AND, BaseNode.Utils.ExpressionTypeV2.OR]);
 
@@ -86,26 +86,20 @@ export const sanitizeExpression = (
   }
 };
 
-const expressionV1toV2Adapter = createAdapter<BaseNode.Utils.Expression, NodeDataExpressionData>(
-  (expression) => {
-    const logicInterface = getLogicInterface(expression);
+const expressionV1toV2Adapter = createMultiAdapter<BaseNode.Utils.Expression, NodeDataExpressionData>((expression) => {
+  const logicInterface = getLogicInterface(expression);
 
-    return {
-      id: Utils.id.cuid(),
-      type: null,
-      value: [
-        {
-          id: Utils.id.cuid(),
-          logicInterface,
-          ...sanitizeExpression(expression, logicInterface),
-        },
-      ],
-    } as NodeDataExpressionData;
-  },
-  // will never be used
-  () => {
-    throw new AdapterNotImplementedError();
-  }
-);
+  return {
+    id: Utils.id.cuid(),
+    type: null,
+    value: [
+      {
+        id: Utils.id.cuid(),
+        logicInterface,
+        ...sanitizeExpression(expression, logicInterface),
+      },
+    ],
+  } as NodeDataExpressionData;
+}, notImplementedAdapter.transformer);
 
 export default expressionV1toV2Adapter;

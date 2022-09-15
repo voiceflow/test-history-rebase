@@ -4,7 +4,7 @@ import { Utils } from '@voiceflow/common';
 import { API_URL, PLATFORM_SERVICE_URLS } from '../../config';
 import { CREATOR_ID_KEY, DIAGRAM_ID_KEY, PROJECT_ID_KEY, PROJECT_LIST_ID_KEY, SESSION_CONTEXT, VERSION_ID_KEY, WORKSPACE_ID_KEY } from './session';
 
-Cypress.Commands.add('createProject', (platform: 'alexa' | 'google' | 'general' = 'alexa', tag?: string) => {
+Cypress.Commands.add('createProject', (platform = 'alexa', tag) => {
   cy.request('POST', `${API_URL}/workspaces`, {
     name: 'my workspace',
   }).then((res) => {
@@ -48,7 +48,7 @@ Cypress.Commands.add('createProject', (platform: 'alexa' | 'google' | 'general' 
   });
 });
 
-Cypress.Commands.add('renderTest', (platform: 'alexa' | 'google' | 'general') => {
+Cypress.Commands.add('renderTest', (platform) => {
   const versionID = SESSION_CONTEXT.get(VERSION_ID_KEY);
   cy.request({
     method: 'POST',
@@ -57,13 +57,13 @@ Cypress.Commands.add('renderTest', (platform: 'alexa' | 'google' | 'general') =>
   });
 });
 
-Cypress.Commands.add('configurePrototype', (settings: Partial<{ layout: 'voice-and-dialog' | 'text-and-dialog' | 'voice-and-visuals' }>) => {
+Cypress.Commands.add('configurePrototype', (settings) => {
   const versionID = SESSION_CONTEXT.get(VERSION_ID_KEY);
 
   cy.request('PATCH', `${API_URL}/v2/versions/${versionID}/prototype?path=settings`, settings);
 });
 
-Cypress.Commands.add('createThread', (text: string) => {
+Cypress.Commands.add('createThread', (text) => {
   const creatorID = SESSION_CONTEXT.get(CREATOR_ID_KEY);
   const projectID = SESSION_CONTEXT.get(PROJECT_ID_KEY);
   const diagramID = SESSION_CONTEXT.get(DIAGRAM_ID_KEY);
@@ -79,25 +79,22 @@ Cypress.Commands.add('createThread', (text: string) => {
   });
 });
 
-Cypress.Commands.add(
-  'createTranscript',
-  ({ sessionID, creatorID, createdAt, reportTags }: { sessionID: string; creatorID: string | null; createdAt?: number; reportTags?: string[] }) => {
-    const projectID = SESSION_CONTEXT.get(PROJECT_ID_KEY);
+Cypress.Commands.add('createTranscript', ({ sessionID, creatorID, createdAt, reportTags }) => {
+  const projectID = SESSION_CONTEXT.get(PROJECT_ID_KEY);
 
-    cy.request('PUT', `${API_URL}/v2/transcripts`, {
-      projectID,
-      sessionID,
-      creatorID,
-      device: 'desktop',
-      os: 'linux',
-      browser: 'chrome',
-      createdAt,
-      reportTags,
-    });
-  }
-);
+  cy.request('PUT', `${API_URL}/v2/transcripts`, {
+    projectID,
+    sessionID,
+    creatorID,
+    device: 'desktop',
+    os: 'linux',
+    browser: 'chrome',
+    createdAt,
+    reportTags,
+  });
+});
 
-Cypress.Commands.add('createReportTag', ({ label, tagID }: { label: string; tagID: string }) => {
+Cypress.Commands.add('createReportTag', ({ label, tagID }) => {
   const projectID = SESSION_CONTEXT.get(PROJECT_ID_KEY);
 
   cy.request('PUT', `${API_URL}/v2/projects/${projectID}/tags`, {

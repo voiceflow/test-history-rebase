@@ -13,7 +13,7 @@
     "@voiceflow/vite-config",
     "@voiceflow/dependency-cruiser-config",
     "buffer",
-    "@babel/core",
+    "chai",
     "@logux/state",
     "@types/*",
     "postcss*",
@@ -21,7 +21,6 @@
     "ignore-styles",
     "mock-local-storage",
     "tslib",
-    "ts-node",
     "node-noop",
     "jsdom-global",
     "levenary",
@@ -29,7 +28,6 @@
     "vitest",
     "react-hot-loader",
     "null-loader",
-    "stream-browserify",
-    "webpack"
+    "stream-browserify"
   ]
 }

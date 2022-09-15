@@ -2,11 +2,12 @@
 import { BaseModels } from '@voiceflow/base-types';
 import { Nullish, Struct, Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { createSmartMultiAdapter } from 'bidirectional-adapter';
 import { ObjectId } from 'bson';
 import _ from 'lodash';
 
 import AbstractModel from '../_mongo';
-import { Adapter, Atomic, AtomicEntity, Bson } from '../utils';
+import { Atomic, AtomicEntity, Bson } from '../utils';
 
 interface ManyNodeDataUpdate extends Atomic.Update {
   nodeID: string;
@@ -43,7 +44,10 @@ class DiagramModel extends AbstractModel<DBDiagramModel, BaseModels.Diagram.Mode
 
   private atomicNodeData = new AtomicEntity(DiagramModel.nodeDataPath);
 
-  adapter = Adapter.factory<DBDiagramModel, BaseModels.Diagram.Model>(Bson.objectIdToString(OBJECT_ID_KEYS), Bson.stringToObjectId(OBJECT_ID_KEYS));
+  adapter = createSmartMultiAdapter<DBDiagramModel, BaseModels.Diagram.Model>(
+    Bson.objectIdToString(OBJECT_ID_KEYS),
+    Bson.stringToObjectId(OBJECT_ID_KEYS)
+  );
 
   atomicNodePortRemap(nodePortRemaps?: Realtime.NodePortRemap[]) {
     if (!nodePortRemaps?.length) return [];

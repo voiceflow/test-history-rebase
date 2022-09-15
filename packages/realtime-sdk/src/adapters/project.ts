@@ -1,11 +1,12 @@
 import { AnyProject } from '@realtime-sdk/models';
-import { AnyRecord, BaseModels } from '@voiceflow/base-types';
+import { BaseModels } from '@voiceflow/base-types';
+import { AnyRecord } from '@voiceflow/common';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
-import createAdapter, { AdapterNotImplementedError } from 'bidirectional-adapter';
+import { createMultiAdapter, notImplementedAdapter } from 'bidirectional-adapter';
 
 import { legacyPlatformToProjectType } from '../constants/platform';
 
-const projectAdapter = createAdapter<BaseModels.Project.Model<AnyRecord, AnyRecord>, AnyProject>(
+const projectAdapter = createMultiAdapter<BaseModels.Project.Model<AnyRecord, AnyRecord>, AnyProject>(
   ({
     _id,
     name,
@@ -52,9 +53,7 @@ const projectAdapter = createAdapter<BaseModels.Project.Model<AnyRecord, AnyReco
       platformData,
     };
   },
-  () => {
-    throw new AdapterNotImplementedError();
-  }
+  notImplementedAdapter.transformer
 );
 
 export default projectAdapter;

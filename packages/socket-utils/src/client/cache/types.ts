@@ -1,15 +1,15 @@
-import { AnyBidirectionalMultiAdapter, BidirectionalMultiAdapter } from 'bidirectional-adapter';
+import { AnyMultiAdapter, MultiAdapter } from 'bidirectional-adapter';
 import { Redis } from 'ioredis';
 
 export type Hash = Record<string, string>;
 
 export type BaseKeyExtractor = (keyOptions: any) => string;
 
-export type AnyAdapter = AnyBidirectionalMultiAdapter;
+export type AnyAdapter = AnyMultiAdapter;
 
-export type BaseAdapter = BidirectionalMultiAdapter<string, any, [], []>;
+export type BaseAdapter = MultiAdapter<string, any>;
 
-export type BaseHashAdapter = BidirectionalMultiAdapter<Hash, any, [], []>;
+export type BaseHashAdapter = MultiAdapter<Hash, any>;
 
 export interface BaseOptions<K extends BaseKeyExtractor> {
   /**

@@ -1,7 +1,7 @@
 /* eslint-disable xss/no-mixed-html */
 import { BaseNode } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
-import createAdapter, { AdapterNotImplementedError } from 'bidirectional-adapter';
+import { createMultiAdapter, notImplementedAdapter } from 'bidirectional-adapter';
 
 import type { AnyTranscriptMessage, SpeakTrace } from '@/models';
 import { FormatType } from '@/models';
@@ -36,45 +36,40 @@ const transformSpeakTrace = (trace: SpeakTrace): SpeakTrace => {
   return trace;
 };
 
-const dialogAdapter = createAdapter<AnyTranscriptMessage, Message | null>(
-  (transcriptMessage) => {
-    const commonProperties = {
-      turnID: transcriptMessage.turnID,
-      startTime: transcriptMessage.startTime,
-      withAnimation: true,
-    };
+const dialogAdapter = createMultiAdapter<AnyTranscriptMessage, Message | null>((transcriptMessage) => {
+  const commonProperties = {
+    turnID: transcriptMessage.turnID,
+    startTime: transcriptMessage.startTime,
+    withAnimation: true,
+  };
 
-    if (transcriptMessage.format === FormatType.Request) {
-      return createUserMessage(transcriptMessage.payload, commonProperties);
-    }
-
-    if (transcriptMessage.format === FormatType.Trace) {
-      const trace = { ...transcriptMessage.payload, id: Utils.id.cuid() };
-      switch (trace.type) {
-        case BaseNode.Utils.TraceType.SPEAK:
-          return createSpeakMessage(transformSpeakTrace(trace), commonProperties);
-        case BaseNode.Utils.TraceType.TEXT:
-          return createTextMessage(trace, commonProperties);
-        case BaseNode.Utils.TraceType.CAROUSEL:
-          return createCarouselMessage(trace, commonProperties);
-        case BaseNode.Utils.TraceType.STREAM:
-          return createStreamMessage(trace, commonProperties);
-        case BaseNode.Utils.TraceType.DEBUG:
-          return createDebugMessage(trace, commonProperties);
-        case BaseNode.Utils.TraceType.VISUAL:
-          return createVisualMessage(trace, commonProperties);
-        case BaseNode.Utils.TraceType.PATH:
-          return createPathMessage(trace, commonProperties);
-        default:
-          return null;
-      }
-    }
-
-    return null;
-  },
-  () => {
-    throw new AdapterNotImplementedError();
+  if (transcriptMessage.format === FormatType.Request) {
+    return createUserMessage(transcriptMessage.payload, commonProperties);
   }
-);
+
+  if (transcriptMessage.format === FormatType.Trace) {
+    const trace = { ...transcriptMessage.payload, id: Utils.id.cuid() };
+    switch (trace.type) {
+      case BaseNode.Utils.TraceType.SPEAK:
+        return createSpeakMessage(transformSpeakTrace(trace), commonProperties);
+      case BaseNode.Utils.TraceType.TEXT:
+        return createTextMessage(trace, commonProperties);
+      case BaseNode.Utils.TraceType.CAROUSEL:
+        return createCarouselMessage(trace, commonProperties);
+      case BaseNode.Utils.TraceType.STREAM:
+        return createStreamMessage(trace, commonProperties);
+      case BaseNode.Utils.TraceType.DEBUG:
+        return createDebugMessage(trace, commonProperties);
+      case BaseNode.Utils.TraceType.VISUAL:
+        return createVisualMessage(trace, commonProperties);
+      case BaseNode.Utils.TraceType.PATH:
+        return createPathMessage(trace, commonProperties);
+      default:
+        return null;
+    }
+  }
+
+  return null;
+}, notImplementedAdapter.transformer);
 
 export default dialogAdapter;

@@ -1,3 +1,4 @@
+import React from 'react';
 import { SpaceProps } from 'styled-system';
 
 export interface BaseInjectedWithUploadProps {
@@ -27,7 +28,7 @@ export type AnyWithUploadProps = WithSingleUploadProps | WithMultiUploadProps;
 
 export interface ValueRendererProps {
   value: string;
-  openFileSelection: VoidFunction;
+  openFileSelection?: React.MouseEventHandler<HTMLElement>;
 }
 
 export interface RootDropAreaProps extends SpaceProps {}

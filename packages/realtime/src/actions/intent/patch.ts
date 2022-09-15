@@ -12,19 +12,10 @@ class PatchIntent extends AbstractVersionResourceControl<PatchIntentPayload> {
   process = async (_ctx: Context, { payload }: Action<PatchIntentPayload>) => {
     const { versionID, key, value, projectMeta } = payload;
 
-    const intents: Realtime.Intent[] = await this.services.intent
-      .getAll(versionID)
-      .then((intents) => Realtime.Adapters.getProjectTypeIntentAdapter<any>(projectMeta.type).mapFromDB(intents, { platform: projectMeta.platform }));
-
-    await this.services.intent.replaceAll(
+    await this.services.intent.update(
       versionID,
-      Realtime.Adapters.getProjectTypeIntentAdapter<any>(projectMeta.type).mapToDB(
-        intents.map((intent) => {
-          if (intent.id !== key) return intent;
-
-          return { ...intent, ...sanitizePatch(value) };
-        })
-      )
+      key,
+      Realtime.Adapters.getProjectTypeIntentSmartAdapter<any>(projectMeta.type).toDB(sanitizePatch(value))
     );
   };
 }

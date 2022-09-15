@@ -1,8 +1,8 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Hash } from '@voiceflow/socket-utils';
-import { createAdapter } from 'bidirectional-adapter';
+import { createMultiAdapter } from 'bidirectional-adapter';
 
-export const viewerAdapter = createAdapter<Hash, Realtime.Viewer>(
+export const viewerAdapter = createMultiAdapter<Hash, Realtime.Viewer>(
   (hash) => ({
     ...(hash as Omit<Realtime.Viewer, 'creatorID'>),
     creatorID: Number(hash.creatorID),

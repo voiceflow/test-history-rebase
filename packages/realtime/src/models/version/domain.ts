@@ -1,13 +1,12 @@
 import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 
+import { NestedMongoModel } from '../_mongo';
 import { Atomic } from '../utils';
 import type VersionModel from './index';
 
-class DomainModel {
-  MODEL_PATH = 'domains' as const;
-
-  constructor(private model: VersionModel) {}
+class DomainModel extends NestedMongoModel<VersionModel> {
+  readonly MODEL_PATH = 'domains' as const;
 
   async create(versionID: string, domain: BaseModels.Version.Domain): Promise<BaseModels.Version.Domain> {
     await this.model.atomicUpdateByID(versionID, [Atomic.push([{ path: this.MODEL_PATH, value: domain }])]);

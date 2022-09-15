@@ -19,12 +19,6 @@ class VersionService extends AbstractControl {
     return this.models.version.findByID(versionID).then(this.models.version.adapter.fromDB) as Promise<BaseModels.Version.Model<PlatformData>>;
   }
 
-  public async getIntents<PlatformData extends BaseModels.Version.PlatformData>(versionID: string): Promise<PlatformData['intents']> {
-    const { platformData } = await this.models.version.findByID(versionID, ['platformData']).then(this.models.version.adapter.fromDB);
-
-    return platformData.intents;
-  }
-
   public async getComponents(creatorID: number, versionID: string): Promise<BaseModels.Version.FolderItem[]> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 

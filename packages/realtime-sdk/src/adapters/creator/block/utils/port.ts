@@ -263,7 +263,7 @@ export const emptyOutPortsAdapter = createOutPortsAdapter(
   () => []
 );
 
-export const syncDynamicPortsLength = <T>({
+export const syncDynamicPortsLength = <T extends BuiltInPortRecord<any>>({
   nodeID,
   ports,
   length,

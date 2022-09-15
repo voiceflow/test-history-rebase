@@ -1,8 +1,8 @@
-import createAdapter from 'bidirectional-adapter';
+import { createMultiAdapter } from 'bidirectional-adapter';
 
 import { DBReportTag, ReportTag } from '@/models';
 
-const reportTagsAdapter = createAdapter<DBReportTag, ReportTag, [{ projectID: string }]>(
+const reportTagsAdapter = createMultiAdapter<DBReportTag, ReportTag, [{ projectID: string }]>(
   ({ tagID, label }, { projectID }) => ({
     id: tagID,
     label,

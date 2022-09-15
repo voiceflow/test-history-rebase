@@ -1,12 +1,12 @@
 import { DBMember, DBWorkspace, Workspace, WorkspaceActivationState } from '@realtime-sdk/models';
-import createAdapter, { AdapterNotImplementedError } from 'bidirectional-adapter';
+import { createMultiAdapter, notImplementedAdapter } from 'bidirectional-adapter';
 
 import memberAdapter from './member';
 
 export const INVALID_STATES = ['incomplete_expired', 'incomplete', 'unpaid'];
 export const WARNING_STATES = ['past_due'];
 
-const workspaceAdapter = createAdapter<DBWorkspace, Workspace>(
+const workspaceAdapter = createMultiAdapter<DBWorkspace, Workspace>(
   ({
     boards,
     created,
@@ -53,9 +53,7 @@ const workspaceAdapter = createAdapter<DBWorkspace, Workspace>(
       variableStatesLimit,
     };
   },
-  () => {
-    throw new AdapterNotImplementedError();
-  }
+  notImplementedAdapter.transformer
 );
 
 export default {
@@ -64,13 +62,9 @@ export default {
 };
 
 export const workspaceWithMembersAdapter = {
-  ...createAdapter<{ workspace: DBWorkspace; members: DBMember[] }, Workspace>(
+  ...createMultiAdapter<{ workspace: DBWorkspace; members: DBMember[] }, Workspace>(
     ({ workspace, members }) => ({ ...workspaceAdapter.fromDB(workspace), members: memberAdapter.mapFromDB(members) }),
-    () => {
-      throw new AdapterNotImplementedError();
-    }
+    notImplementedAdapter.transformer
   ),
-  mapFromDB: (_dbWorkspaces: any[]) => {
-    throw new AdapterNotImplementedError();
-  },
+  mapFromDB: notImplementedAdapter.transformer,
 };

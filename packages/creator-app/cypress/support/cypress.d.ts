@@ -124,7 +124,7 @@ declare namespace Cypress {
     /**
      * create a new transcript
      */
-    createTranscript(options: { sessionID: string; creatorID: string | null; reportTags?: string[] }): Chainable;
+    createTranscript(options: { sessionID: string; creatorID: string | null; createdAt?: number; reportTags?: string[] }): Chainable;
 
     /**
      * create a new transcript report tag
@@ -191,14 +191,6 @@ declare namespace Cypress {
      * await for all loaders on the page to resolve
      */
     awaitLoaded(): Chainable;
-
-    /**
-     * from `cypress-file-upload`
-     */
-    attachFile(
-      fixture: { filePath: string; fileName?: string; fileContent?: Blob; mimeType?: string; encoding?: string },
-      processingOptions?: { subject: 'drag-n-drop' | 'input'; force?: boolean; allowEmpty?: boolean }
-    ): Chainable;
   }
 
   interface Chainer<Subject> {

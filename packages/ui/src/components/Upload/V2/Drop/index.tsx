@@ -73,7 +73,7 @@ const UploadDrop: React.ForwardRefRenderFunction<HTMLDivElement, UploadDropProps
       {hasDisplayableValue ? (
         renderValue?.({ value, openFileSelection: onClick })
       ) : (
-        <S.DropContainer onClick={(event) => (error ? setError?.(null) : onClick(event))}>
+        <S.DropContainer onClick={(event) => (error ? setError?.(null) : onClick?.(event))}>
           <S.Container ref={ref} active={isDragActive} hasError={isDragReject || !!error} className={className}>
             {content}
           </S.Container>

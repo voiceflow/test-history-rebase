@@ -4,10 +4,10 @@ import { BaseVersion } from '@voiceflow/base-types';
 import { Nullable } from '@voiceflow/common';
 import { VoiceModels } from '@voiceflow/voice-types';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
-import createAdapter from 'bidirectional-adapter';
+import { createMultiAdapter } from 'bidirectional-adapter';
 
 const createSessionAdapter = <V extends string>({ platform }: { platform: VoiceflowConstants.PlatformType }) =>
-  createAdapter<
+  createMultiAdapter<
     BaseVersion.RestartSession | BaseVersion.ResumeSession<VoiceModels.Prompt<V>>,
     Nullable<Version.Session>,
     [{ defaultVoice: Nullable<V> }],

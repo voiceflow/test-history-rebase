@@ -1,6 +1,6 @@
 import { DBNote, Note } from '@realtime-sdk/models';
-import createAdapter, { identityAdapter } from 'bidirectional-adapter';
+import { createMultiAdapter, identityAdapter } from 'bidirectional-adapter';
 
-const noteAdapter = createAdapter<DBNote, Note>(identityAdapter.fromDB, identityAdapter.toDB);
+const noteAdapter = createMultiAdapter<DBNote, Note>(identityAdapter.transformer, identityAdapter.transformer);
 
 export default noteAdapter;

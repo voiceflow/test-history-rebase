@@ -1,6 +1,0 @@
-{
-  "baseUrl": "https://creator-app.test.e2e:3002",
-  "defaultCommandTimeout": 10000,
-  "chromeWebSecurity": false,
-  "projectId": "75gu5n"
-}

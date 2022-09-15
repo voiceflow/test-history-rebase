@@ -1,7 +1,7 @@
 import { NodeData } from '@realtime-sdk/models';
 import { AlexaNode } from '@voiceflow/alexa-types';
 import { Utils } from '@voiceflow/common';
-import createAdapter from 'bidirectional-adapter';
+import { createMultiAdapter } from 'bidirectional-adapter';
 
 import {
   createBlockAdapter,
@@ -11,7 +11,7 @@ import {
   nextAndFailOnlyOutPortsAdapterV2,
 } from '../utils';
 
-const useInfoPermissionAdapter = createAdapter<AlexaNode.UserInfo.UserInfo, NodeData.UserInfoPermission>(
+const useInfoPermissionAdapter = createMultiAdapter<AlexaNode.UserInfo.UserInfo, NodeData.UserInfoPermission>(
   ({ type, mapTo, product }) => ({ id: Utils.id.cuid.slug(), mapTo, product, selected: type }),
   ({ selected, mapTo, product }) => ({ type: selected, mapTo, product })
 );

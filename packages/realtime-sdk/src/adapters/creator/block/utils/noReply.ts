@@ -2,17 +2,17 @@ import { BaseNode, Nullable } from '@voiceflow/base-types';
 import { ChatModels, ChatNode } from '@voiceflow/chat-types';
 import { Nullish } from '@voiceflow/common';
 import { VoiceModels, VoiceNode } from '@voiceflow/voice-types';
-import createAdapter from 'bidirectional-adapter';
+import { createMultiAdapter } from 'bidirectional-adapter';
 
 import { NodeData } from '../../../../models';
 import { chatPromptAdapter, voicePromptAdapter } from './prompt';
 
-export const baseNoReplyAdapter = createAdapter<BaseNode.Utils.BaseStepNoReply, BaseNode.Utils.BaseStepNoReply>(
+export const baseNoReplyAdapter = createMultiAdapter<BaseNode.Utils.BaseStepNoReply, BaseNode.Utils.BaseStepNoReply>(
   ({ types, timeout, pathName, randomize }) => ({ types, timeout, pathName, randomize }),
   ({ types, timeout, pathName, randomize }) => ({ types, timeout, pathName, randomize })
 );
 
-export const chatNoReplyAdapter = createAdapter<ChatNode.Utils.StepNoReply, ChatNode.Utils.StepNoReply>(
+export const chatNoReplyAdapter = createMultiAdapter<ChatNode.Utils.StepNoReply, ChatNode.Utils.StepNoReply>(
   ({ reprompts, ...baseNoReply }) => ({
     ...baseNoReplyAdapter.fromDB(baseNoReply),
     reprompts: reprompts ? chatPromptAdapter.mapFromDB(reprompts) : undefined,
@@ -23,7 +23,7 @@ export const chatNoReplyAdapter = createAdapter<ChatNode.Utils.StepNoReply, Chat
   })
 );
 
-export const voiceNoReplyAdapter = createAdapter<VoiceNode.Utils.StepNoReply<any>, NodeData.VoiceNoReply>(
+export const voiceNoReplyAdapter = createMultiAdapter<VoiceNode.Utils.StepNoReply<any>, NodeData.VoiceNoReply>(
   ({ reprompts, ...baseNoReply }) => ({
     ...baseNoReplyAdapter.fromDB(baseNoReply),
     reprompts: reprompts ? voicePromptAdapter.mapFromDB(reprompts) : undefined,
@@ -44,7 +44,7 @@ const migrateRepromptToNoReply = <T extends ChatNode.Utils.StepNoReply | VoiceNo
         types: [BaseNode.Utils.NoReplyType.REPROMPT],
         randomize: false,
         reprompts: [reprompt],
-      } as T)
+      } as unknown as T)
     : null);
 
 export const chatMigrateRepromptToNoReply = (

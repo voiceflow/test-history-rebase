@@ -39,9 +39,7 @@ export default {
     get invocationNameInput() {
       return cy.get(`#${Identifier.INVOCATION_NAME_INPUT}`);
     },
-    get homeStep() {
-      return cy.get(`.${ClassName.HOME_BLOCK}`).find(`.${ClassName.CANVAS_STEP}`).first();
-    },
+
     get projectCreationStepTitle() {
       return cy.get(`#${Identifier.PROJECT_CREATION_STEP_TITLE}`);
     },

@@ -39,6 +39,12 @@ interface ClipboardContext {
   platform: VoiceflowConstants.PlatformType;
 }
 
+interface EncodeData {
+  key: string;
+  data: string;
+  version: string;
+}
+
 const ClipboardVersion = {
   V3: 'v3',
   V4: 'v4',
@@ -63,7 +69,13 @@ class ClipboardEngine extends EngineConsumer {
 
       const encryptedData = synchronousCrypto.encrypt(JSON.stringify(copyData), keyToEncrypt);
 
-      await set(CLIPBOARD_DATA_KEY, Crypto.Base64.encodeJSON({ key: keyToStore, data: encryptedData, version: this.getCurrentVersion() }));
+      const encodeData: EncodeData = {
+        key: keyToStore,
+        data: encryptedData,
+        version: this.getCurrentVersion(),
+      };
+
+      await set(CLIPBOARD_DATA_KEY, Crypto.Base64.encodeJSON(encodeData));
 
       if (!disableSuccessToast) {
         toast.success(`${copiedBlocks.length} block(s) copied to clipboard`);
@@ -73,7 +85,7 @@ class ClipboardEngine extends EngineConsumer {
     extractData: async (copiedKey: string): Promise<ClipboardContext> => {
       const b64Data = await get<string>(CLIPBOARD_DATA_KEY);
 
-      const { data, key, version: sourceVersion } = Crypto.Base64.decodeJSON(b64Data);
+      const { data, key, version: sourceVersion } = Crypto.Base64.decodeJSON<EncodeData>(b64Data);
 
       if (sourceVersion !== this.getCurrentVersion()) {
         throw new Error('clipboard version mismatch');

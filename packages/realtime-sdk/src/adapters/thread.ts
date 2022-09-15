@@ -1,8 +1,8 @@
-import createAdapter from 'bidirectional-adapter';
+import { createMultiAdapter } from 'bidirectional-adapter';
 
 import { Comment, DBComment, DBThread, Thread } from '../models';
 
-export const commentAdapter = createAdapter<DBComment, Comment>(
+export const commentAdapter = createMultiAdapter<DBComment, Comment>(
   ({ comment_id, thread_id, creator_id, created_at, ...comment }: DBComment) => ({
     ...comment,
     id: comment_id,
@@ -19,7 +19,7 @@ export const commentAdapter = createAdapter<DBComment, Comment>(
   })
 );
 
-export const threadAdapter = createAdapter<DBThread, Thread>(
+export const threadAdapter = createMultiAdapter<DBThread, Thread>(
   ({ thread_id, project_id, diagram_id, node_id, creator_id, comments, ...thread }: DBThread) => ({
     ...thread,
     id: thread_id,

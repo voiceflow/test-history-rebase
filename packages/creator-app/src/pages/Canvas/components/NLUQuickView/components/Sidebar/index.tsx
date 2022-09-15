@@ -43,18 +43,23 @@ const Sidebar: React.FC = () => {
     setSearch('');
   };
 
+  const onGoToNLUManager = () => {
+    goToNLUManager(NLUManagerOpenedOrigin.QUICKVIEW);
+    closeNLUQuickviewModal();
+  };
+
   useDidUpdateEffect(() => {
     resetSearch();
   }, [activeTab]);
 
   const sectionProps: SectionProps = {
-    setActiveTab,
-    selectedID,
+    search,
     setTitle,
     activeTab,
-    setSelectedItemID: setSelectedID,
-    search,
+    selectedID,
+    setActiveTab,
     setSearchLength,
+    setSelectedItemID: setSelectedID,
     isActiveItemRename,
     setIsActiveItemRename,
   };
@@ -62,25 +67,22 @@ const Sidebar: React.FC = () => {
   return (
     <Container>
       <HeaderSearchInput
-        placeholder={`Search ${searchLength} ${searchLength === 1 ? SearchPlaceholders[activeTab].single : SearchPlaceholders[activeTab].plural}`}
         icon="search"
-        borderLess
         value={search}
         onChange={(e) => setSearch(e.target.value)}
         iconProps={{ color: '#8da2b5', size: 14 }}
+        borderLess
+        placeholder={`Search ${searchLength} ${searchLength === 1 ? SearchPlaceholders[activeTab].single : SearchPlaceholders[activeTab].plural}`}
       />
+
       <SectionsContainer activeTab={activeTab}>
         <IntentList {...sectionProps} />
         <EntitiesList {...sectionProps} />
         <VariablesList {...sectionProps} />
       </SectionsContainer>
+
       {nluManager.isEnabled && (
-        <NLUButton
-          onClick={() => {
-            goToNLUManager(NLUManagerOpenedOrigin.QUICKVIEW);
-            closeNLUQuickviewModal();
-          }}
-        >
+        <NLUButton onClick={onGoToNLUManager}>
           <Box display="inline-block" mr={12}>
             <SvgIcon icon="fullExpand" color="#6e849a" />
           </Box>

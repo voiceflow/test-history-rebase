@@ -1,5 +1,7 @@
+// eslint-disable-next-line max-classes-per-file
 import type { EmptyObject } from '@voiceflow/common';
 import type { LoguxControl } from '@voiceflow/socket-utils';
+import { SmartMultiAdapter } from 'bidirectional-adapter';
 import { ObjectId } from 'bson';
 import _ from 'lodash';
 import { Collection, FilterQuery, FindOneAndUpdateOption, OptionalId, UpdateOneOptions, UpdateQuery, WithId } from 'mongodb';
@@ -7,7 +9,7 @@ import { Collection, FilterQuery, FindOneAndUpdateOption, OptionalId, UpdateOneO
 import { Config } from '@/types';
 
 import type { ClientMap } from '../clients';
-import { Adapter, Atomic } from './utils';
+import { Atomic } from './utils';
 
 export interface ModelDependencies {
   clients: ClientMap;
@@ -43,7 +45,7 @@ abstract class MongoModel<DBModel extends EmptyObject, Model extends EmptyObject
 
   public clients: ClientMap;
 
-  abstract adapter: Adapter.Adapter<DBModel, Model>;
+  abstract adapter: SmartMultiAdapter<DBModel, Model>;
 
   constructor(public config: Config, { clients }: ModelDependencies) {
     this.clients = clients;
@@ -267,6 +269,12 @@ abstract class MongoModel<DBModel extends EmptyObject, Model extends EmptyObject
   async deleteManyByIDs(ids: string[]): Promise<void> {
     return this.deleteMany(this.idsFilter(ids));
   }
+}
+
+export abstract class NestedMongoModel<Model extends MongoModel<any, any, any>> {
+  abstract readonly MODEL_PATH: string;
+
+  constructor(protected model: Model) {}
 }
 
 export default MongoModel;

@@ -12,7 +12,7 @@ import {
 import { BaseModels } from '@voiceflow/base-types';
 import { AnyRecord, Utils } from '@voiceflow/common';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
-import createAdapter from 'bidirectional-adapter';
+import { createMultiAdapter } from 'bidirectional-adapter';
 
 import { BlockType } from '../../constants';
 import { AdapterContext, VersionAdapterContext } from '../types';
@@ -45,7 +45,7 @@ interface OutOptions {
   portToTargets: Record<string, string>;
 }
 
-const nodeAdapter = createAdapter<BaseModels.BaseDiagramNode, OutData, [InOptions], [OutOptions]>(
+const nodeAdapter = createMultiAdapter<BaseModels.BaseDiagramNode, OutData, [InOptions], [OutOptions]>(
   // eslint-disable-next-line sonarjs/cognitive-complexity
   (dbNode, { parentNode, links, platform, projectType, context }) => {
     const siblingSteps = parentNode?.data.steps ?? [];

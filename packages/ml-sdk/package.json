@@ -24,8 +24,8 @@
   "scripts": {
     "analyze:dependencies": "depcruise --validate -- src",
     "build": "yarn clean && concurrently -c yellow,blue 'yarn:build:cjs' 'yarn:build:esm'",
-    "build:cjs": "ttsc --project tsconfig.build.json",
-    "build:esm": "ttsc --project tsconfig.module.json",
+    "build:cjs": "tsc --project tsconfig.build.json && tsc-alias -p tsconfig.build.json",
+    "build:esm": "tsc --project tsconfig.module.json && tsc-alias -p tsconfig.module.json",
     "clean": "rimraf build",
     "dev": "yarn clean && concurrently -c yellow,blue 'yarn:build:cjs --watch' 'yarn:build:esm --watch'",
     "lint": "eslint \"**/*.{js,ts}\"",

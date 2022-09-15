@@ -2,13 +2,13 @@ import { ExpressionData, ExpressionV2, LogicGroupData } from '@realtime-sdk/mode
 import { transformVariableToString } from '@realtime-sdk/utils/slot';
 import { BaseNode } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
-import createAdapter from 'bidirectional-adapter';
+import { createMultiAdapter } from 'bidirectional-adapter';
 
 /**
  * App uses variable format, convert them back into plain string for backend or visa-versa
  * only second value of ExpressionTypeV2.VARIABLE and both values of type ExpressionTypeV2.VALUE are using VariableInput Field
  */
-export const convertVariableFormat = createAdapter<BaseNode.Utils.ExpressionV2 | BaseNode.Utils.LogicGroupData, ExpressionV2 | LogicGroupData>(
+export const convertVariableFormat = createMultiAdapter<BaseNode.Utils.ExpressionV2 | BaseNode.Utils.LogicGroupData, ExpressionV2 | LogicGroupData>(
   (data) => {
     if (data.logicInterface === BaseNode.Utils.ConditionsLogicInterface.VALUE) {
       return {
@@ -50,7 +50,7 @@ export const convertVariableFormat = createAdapter<BaseNode.Utils.ExpressionV2 |
 );
 
 // add ids and change FE friendly format for variables
-export const expressionValueAdapter = createAdapter<BaseNode.Utils.ExpressionV2 | BaseNode.Utils.LogicGroupData, ExpressionV2 | LogicGroupData>(
+export const expressionValueAdapter = createMultiAdapter<BaseNode.Utils.ExpressionV2 | BaseNode.Utils.LogicGroupData, ExpressionV2 | LogicGroupData>(
   (condition) => {
     if (condition.logicInterface === BaseNode.Utils.ConditionsLogicInterface.VARIABLE) {
       return { ...convertVariableFormat.fromDB(condition), id: Utils.id.cuid() } as ExpressionV2;
@@ -81,7 +81,7 @@ export const expressionValueAdapter = createAdapter<BaseNode.Utils.ExpressionV2 
 );
 
 // adapter
-const expressionAdapterV2 = createAdapter<BaseNode.Utils.ExpressionData, ExpressionData>(
+const expressionAdapterV2 = createMultiAdapter<BaseNode.Utils.ExpressionData, ExpressionData>(
   (expression) =>
     ({
       id: Utils.id.cuid(),

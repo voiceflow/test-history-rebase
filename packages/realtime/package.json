@@ -21,7 +21,7 @@
     "@voiceflow/voice-types": "2.8.4",
     "@voiceflow/voiceflow-types": "3.20.4",
     "axios": "0.24.0",
-    "bidirectional-adapter": "1.0.0",
+    "bidirectional-adapter": "1.2.0",
     "bson": "4.6.5",
     "core-js": "3.20.3",
     "dotenv": "14.3.2",
@@ -53,7 +53,7 @@
   "private": true,
   "scripts": {
     "analyze:dependencies": "depcruise --exclude src/models.ts --validate -- src",
-    "build": "yarn clean && ttsc --project tsconfig.build.json",
+    "build": "yarn clean && tsc --project tsconfig.build.json && tsc-alias -p tsconfig.build.json",
     "clean": "rimraf build",
     "dev": "NODE_TLS_REJECT_UNAUTHORIZED=0 nodemon src/index.ts",
     "e2e": "yarn kill:e2e && NODE_ENV=e2e NODE_TLS_REJECT_UNAUTHORIZED=0 yarn start:base",

@@ -1,12 +1,19 @@
 import { ChatIntent, ChatIntentSlot, ChatIntentSlotDialog } from '@realtime-sdk/models';
 import { ChatModels } from '@voiceflow/chat-types';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
-import createAdapter from 'bidirectional-adapter';
+import { createMultiAdapter, createSmartMultiAdapter } from 'bidirectional-adapter';
 import { denormalize, normalize } from 'normal-store';
 import { Optional, Required } from 'utility-types';
 
 import { chatPromptAdapter } from '../creator/block/utils';
-import { baseIntentAdapter, baseIntentSlotDialogSanitizer, baseIntentSlotSanitizer } from './base';
+import { hasValue } from '../utils';
+import {
+  BaseIntentAdapterFromDBOptions,
+  BaseIntentAdapterKeyRemap,
+  BaseIntentAdapterToDBOptions,
+  baseIntentSlotDialogSanitizer,
+  baseIntentSlotSanitizer,
+  baseIntentSmartAdapter,
+} from './base';
 
 export const chatIntentSlotDialogSanitizer = ({
   prompt = [],
@@ -23,15 +30,24 @@ export const chatIntentSlotSanitizer = ({ dialog, ...baseIntentSlot }: Required<
   dialog: chatIntentSlotDialogSanitizer(dialog),
 });
 
-const chatIntentAdapter = createAdapter<ChatModels.Intent, ChatIntent, [{ platform: VoiceflowConstants.PlatformType }]>(
-  ({ slots = [], ...baseIntent }, options) => ({
-    ...baseIntentAdapter.fromDB(baseIntent, options),
-    slots: normalize(slots.map(chatIntentSlotSanitizer)),
+export const chatIntentSmartAdapter = createSmartMultiAdapter<
+  ChatModels.Intent,
+  ChatIntent,
+  BaseIntentAdapterFromDBOptions,
+  BaseIntentAdapterToDBOptions,
+  BaseIntentAdapterKeyRemap
+>(
+  (dbIntent, options) => ({
+    ...baseIntentSmartAdapter.fromDB(dbIntent, options),
+    ...(hasValue(dbIntent, 'slots') && { slots: normalize(dbIntent.slots.map(chatIntentSlotSanitizer)) }),
   }),
-  ({ slots, ...baseIntent }) => ({
-    ...baseIntentAdapter.toDB(baseIntent),
-    slots: denormalize(slots).map(chatIntentSlotSanitizer),
+  (intent) => ({
+    ...baseIntentSmartAdapter.toDB(intent),
+    ...(hasValue(intent, 'slots') && { slots: denormalize(intent.slots).map(chatIntentSlotSanitizer) }),
   })
 );
 
-export default chatIntentAdapter;
+export const chatIntentAdapter = createMultiAdapter<ChatModels.Intent, ChatIntent, BaseIntentAdapterFromDBOptions, BaseIntentAdapterToDBOptions>(
+  ({ slots = [], ...dbIntent }, options) => chatIntentSmartAdapter.fromDB({ slots, ...dbIntent }, options),
+  chatIntentSmartAdapter.toDB
+);

@@ -3,7 +3,7 @@ import { setDisplayName, wrapDisplayName } from 'recompose';
 
 export const withProvider =
   (Provider: React.ComponentType) =>
-  <P extends any, R>(Component: React.ComponentType<P>) =>
+  <P, R>(Component: React.ComponentType<P>) =>
     setDisplayName(wrapDisplayName(Component, 'withProvider'))(
       React.forwardRef<R, P>((props, ref) => (
         <Provider>
@@ -13,8 +13,8 @@ export const withProvider =
     );
 
 export const withContext =
-  <T extends any, K extends string>(Context: React.Context<T>, key: K) =>
-  <P extends any, R>(Component: React.ComponentType<P>) =>
+  <T, K extends string>(Context: React.Context<T>, key: K) =>
+  <P, R>(Component: React.ComponentType<P>) =>
     setDisplayName(wrapDisplayName(Component, 'withContext'))(
       React.forwardRef<R, Omit<P, K>>((props, ref) => {
         const value = React.useContext(Context);
@@ -28,8 +28,8 @@ export const withContext =
  * manipulation functions without any effect by state
  */
 export const withStaticContext =
-  <T extends any, K extends string>(Context: React.Context<T>, key: K) =>
-  <P extends any, R>(Component: React.ComponentType<P>) =>
+  <T, K extends string>(Context: React.Context<T>, key: K) =>
+  <P, R>(Component: React.ComponentType<P>) =>
     setDisplayName(wrapDisplayName(Component, 'withStaticContext'))(
       React.forwardRef<R, Omit<P, K>>((props, ref) => {
         const value = React.useContext(Context);

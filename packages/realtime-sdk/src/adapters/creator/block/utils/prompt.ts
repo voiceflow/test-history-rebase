@@ -2,14 +2,14 @@ import { AlexaConstants } from '@voiceflow/alexa-types';
 import { ChatModels } from '@voiceflow/chat-types';
 import { Utils } from '@voiceflow/common';
 import { VoiceModels } from '@voiceflow/voice-types';
-import createAdapter from 'bidirectional-adapter';
+import { createMultiAdapter } from 'bidirectional-adapter';
 
 import { DialogType, VoicePromptType } from '../../../../constants';
 import { NodeData, SpeakData } from '../../../../models';
 
 const createSlateText = (text = '') => [{ children: [{ text }] }];
 
-export const chatPromptAdapter = createAdapter<ChatModels.Prompt, ChatModels.Prompt>(
+export const chatPromptAdapter = createMultiAdapter<ChatModels.Prompt, ChatModels.Prompt>(
   (prompt: VoiceModels.Prompt<any> | VoiceModels.IntentPrompt<any> | ChatModels.Prompt) => {
     // migrate from old voice prompt types
     if ('text' in prompt) {
@@ -33,7 +33,7 @@ export const chatPromptAdapter = createAdapter<ChatModels.Prompt, ChatModels.Pro
   (prompt) => prompt
 );
 
-export const voicePromptAdapter = createAdapter<VoiceModels.Prompt<any>, NodeData.VoicePrompt>(
+export const voicePromptAdapter = createMultiAdapter<VoiceModels.Prompt<any>, NodeData.VoicePrompt>(
   (reprompt) => {
     const type = reprompt.voice === AlexaConstants.Voice.AUDIO ? VoicePromptType.AUDIO : VoicePromptType.TEXT;
 
@@ -56,7 +56,7 @@ export const voicePromptAdapter = createAdapter<VoiceModels.Prompt<any>, NodeDat
   })
 );
 
-export const voicePromptToSpeakDataAdapter = createAdapter<NodeData.VoicePrompt, SpeakData>(
+export const voicePromptToSpeakDataAdapter = createMultiAdapter<NodeData.VoicePrompt, SpeakData>(
   (reprompt) =>
     reprompt.type === VoicePromptType.AUDIO
       ? {

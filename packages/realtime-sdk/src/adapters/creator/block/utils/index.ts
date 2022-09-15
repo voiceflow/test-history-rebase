@@ -1,7 +1,7 @@
 import { AdapterContext } from '@realtime-sdk/adapters/types';
 import { BaseButton, BaseModels, BaseNode, Nullable } from '@voiceflow/base-types';
 import { AnyRecord, EmptyObject, Utils } from '@voiceflow/common';
-import createAdapter, { createSimpleAdapter } from 'bidirectional-adapter';
+import { createMultiAdapter, createSimpleAdapter } from 'bidirectional-adapter';
 
 import { NodeData } from '../../../../models';
 
@@ -32,7 +32,7 @@ export const createBlockAdapter = <
 export const chipsToIntentButtons = (chips?: Nullable<BaseButton.Chip[]>): Nullable<BaseButton.IntentButton[]> =>
   chips?.map(({ label: name }) => ({ name, type: BaseButton.ButtonType.INTENT, payload: { intentID: null } })) ?? null;
 
-export const choiceAdapter = createAdapter<BaseNode.Interaction.Choice, NodeData.InteractionChoice>(
+export const choiceAdapter = createMultiAdapter<BaseNode.Interaction.Choice, NodeData.InteractionChoice>(
   ({ intent, mappings = [] }) => ({
     id: Utils.id.cuid.slug(),
     intent,

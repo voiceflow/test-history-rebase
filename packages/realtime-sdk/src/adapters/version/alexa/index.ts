@@ -2,7 +2,7 @@ import { Version } from '@realtime-sdk/models';
 import { getPlatformGlobalVariables } from '@realtime-sdk/utils/globalVariables';
 import { AlexaConstants, AlexaVersion } from '@voiceflow/alexa-types';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
-import createAdapter, { AdapterNotImplementedError } from 'bidirectional-adapter';
+import { createMultiAdapter, notImplementedAdapter } from 'bidirectional-adapter';
 // eslint-disable-next-line you-dont-need-lodash-underscore/omit
 import _omit from 'lodash/omit';
 
@@ -11,7 +11,7 @@ import createSessionAdapter from '../session';
 
 const sessionAdapter = createSessionAdapter<AlexaConstants.Voice>({ platform: VoiceflowConstants.PlatformType.ALEXA });
 
-const alexaVersionAdapter = createAdapter<AlexaVersion.Version, Version<AlexaVersion.PlatformData>>(
+const alexaVersionAdapter = createMultiAdapter<AlexaVersion.Version, Version<AlexaVersion.PlatformData>>(
   ({
     variables,
     platformData: {
@@ -29,9 +29,7 @@ const alexaVersionAdapter = createAdapter<AlexaVersion.Version, Version<AlexaVer
     variables: variables.filter((variable) => !getPlatformGlobalVariables(VoiceflowConstants.PlatformType.ALEXA).includes(variable)),
     publishing: AlexaVersion.defaultPublishing(publishing),
   }),
-  () => {
-    throw new AdapterNotImplementedError();
-  }
+  notImplementedAdapter.transformer
 );
 
 export default alexaVersionAdapter;

@@ -29,7 +29,7 @@ const canvasUtils = {
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(50);
   },
-  getHomeBlock: () => cy.get(`.${ClassName.HOME_BLOCK}`),
+  getHomeBlock: () => cy.get(`.${ClassName.HOME_CHIP}`),
   clickHomeBlockPort: () => canvasUtils.getHomeBlock().find(`.${ClassName.CANVAS_PORT}`).click({ force: true, waitForAnimations: true }),
   getLastBlock: () => cy.get(`.${ClassName.CANVAS_BLOCK}`).last(),
   clickLastBlock: () => canvasUtils.getLastBlock().click({ force: true, waitForAnimations: true }),
@@ -50,9 +50,7 @@ const canvasUtils = {
   editor: {
     getEditor: () => cy.get(`#${Identifier.BLOCK_EDITOR}`),
     uploadImage: () => {
-      canvasUtils.editor.getEditor().find('input[type="file"]').attachFile({
-        filePath: 'image.png',
-      });
+      canvasUtils.editor.getEditor().find('input[type="file"]').selectFile({ contents: 'cypress/fixtures/image.png' }, { force: true });
     },
     addLineItem: () => {
       canvasUtils.editor.getEditor().find(`.${ClassName.EDITOR_FOOTER_BUTTON}`).last().click();

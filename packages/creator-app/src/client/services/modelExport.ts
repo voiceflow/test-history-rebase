@@ -9,7 +9,7 @@ const createModelExportService = (client: Fetch) => ({
     const exportEndpoint = `${RESOURCE_ENDPOINT}/${type}/${versionID}`;
     const exportBody = intents && intents.length > 0 ? { intents } : {};
 
-    return client.post<string>(exportEndpoint, exportBody, { returns: FetchMessageFormat.BLOB }).then(async (blob) => URL.createObjectURL(blob));
+    return client.post<Blob>(exportEndpoint, exportBody, { returns: FetchMessageFormat.BLOB }).then(async (blob) => URL.createObjectURL(blob));
   },
 });
 

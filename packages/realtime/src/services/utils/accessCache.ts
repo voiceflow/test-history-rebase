@@ -1,5 +1,5 @@
 import { KeyValueCache } from '@voiceflow/socket-utils';
-import { BidirectionalMultiAdapter } from 'bidirectional-adapter';
+import { MultiAdapter } from 'bidirectional-adapter';
 import { PickByValue } from 'utility-types';
 
 import type { ClientMap } from '@/clients';
@@ -10,7 +10,7 @@ import type { ServiceMap } from '@/services';
 const CACHE_EXPIRY = 60;
 
 type KeyFactory = (options: { resourceID: string; creatorID: number }) => string;
-type AccessAdapter = BidirectionalMultiAdapter<string, boolean, [], []>;
+type AccessAdapter = MultiAdapter<string, boolean, [], []>;
 
 class AccessCache {
   constructor(private resource: keyof PickByValue<Voiceflow, ResourceClient>, private clients: ClientMap, private services: ServiceMap) {}

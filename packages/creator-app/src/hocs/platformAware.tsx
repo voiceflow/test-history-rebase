@@ -14,11 +14,9 @@ export const platformAware: {
   ) =>
   (props) => {
     const platform = useSelector(ProjectV2.active.platformSelector);
-    const Component = React.useMemo(() => {
-      return components[platform]! || defaultComponent;
-    }, [platform]);
+    const Component = components[platform]! || defaultComponent;
 
-    return <Component {...(props as unknown as T)} />;
+    return <Component {...(props as unknown as T & React.Attributes)} />;
   };
 
 export const projectTypeAware: {
@@ -31,9 +29,7 @@ export const projectTypeAware: {
   ) =>
   (props) => {
     const projectType = useSelector(ProjectV2.active.projectTypeSelector);
-    const Component = React.useMemo(() => {
-      return components[projectType]! || defaultComponent;
-    }, [projectType]);
+    const Component = components[projectType]! || defaultComponent;
 
-    return <Component {...(props as unknown as T)} />;
+    return <Component {...(props as unknown as T & React.Attributes)} />;
   };

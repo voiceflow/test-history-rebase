@@ -127,7 +127,7 @@ export const searchableOptionsFilter = <Option, Value>(
       let searchFunction = simpleSearch;
 
       if (isMultiLevel && !isUIOnlyMenuItemOption(option) && (option as MenuItemMultilevel<Option>).options?.length && searchLabel) {
-        searchFunction = multilevelSearch;
+        searchFunction = multilevelSearch as typeof simpleSearch;
       } else if (grouped && searchLabel) {
         searchFunction = groupedSearch as typeof simpleSearch;
       }

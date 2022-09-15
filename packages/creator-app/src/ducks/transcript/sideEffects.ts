@@ -199,7 +199,10 @@ export const exportTranscript =
       const csvBlob = new Blob([exportedTranscript], { type: 'text/csv' });
 
       const url = URL.createObjectURL(csvBlob);
+
       downloadFromURL(`Conversation with ${name ?? 'Test User'}.${format}`, url);
+
+      URL.revokeObjectURL(url);
     } catch (error) {
       toast.error('Transcript export failed');
     }

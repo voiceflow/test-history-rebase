@@ -1,7 +1,7 @@
 import { SendBackActions } from '@logux/server';
 import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { ChannelContext } from '@voiceflow/socket-utils';
+import { ChannelContext, ChannelSubscribeAction } from '@voiceflow/socket-utils';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import { AbstractChannelControl } from './utils';
@@ -32,7 +32,10 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
     return this.services.version.access.canRead(Number(ctx.userId), ctx.params.versionID);
   };
 
-  protected load = async (ctx: ChannelContext<Realtime.Channels.VersionChannelParams>): Promise<SendBackActions> => {
+  protected load = async (ctx: ChannelContext<Realtime.Channels.VersionChannelParams>, action: ChannelSubscribeAction): Promise<SendBackActions> => {
+    // do not reload if resubscribing
+    if (action.since) return [];
+
     const { workspaceID, projectID, versionID } = ctx.params;
     const creatorID = Number(ctx.userId);
 

@@ -1,13 +1,23 @@
-import { styled } from '@/hocs';
+import { css, styled } from '@/hocs';
 
-const Container = styled.section`
-  position: relative;
-  display: flex;
-  width: 100vw;
-  height: 100%;
+interface ContainerProps {
+  isCreatingMarkupText: boolean;
+}
+
+const Container = styled.section<ContainerProps>`
   flex-direction: column;
+  position: relative;
   overflow: hidden;
   overflow: clip;
+  display: flex;
+  height: 100%;
+  width: 100vw;
+
+  ${({ isCreatingMarkupText }) =>
+    isCreatingMarkupText &&
+    css`
+      cursor: text;
+    `}
 `;
 
 export default Container;

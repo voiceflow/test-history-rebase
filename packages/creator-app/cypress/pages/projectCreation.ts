@@ -39,7 +39,6 @@ export default {
     get invocationNameInput() {
       return cy.get(`#${Identifier.INVOCATION_NAME_INPUT}`);
     },
-
     get projectCreationStepTitle() {
       return cy.get(`#${Identifier.PROJECT_CREATION_STEP_TITLE}`);
     },

@@ -1,4 +1,5 @@
 export { default as Body } from './Body';
+export { ClickableLayer } from './ClickableLayer';
 export { default as Container } from './Container';
 export type { ContentProps } from './Content';
 export { default as Content } from './Content';
@@ -13,3 +14,4 @@ export {
   HeaderNavLinkSidebarTitle,
   HeaderTitle,
 } from './Header';
+export { Wrapper } from './Wrapper';

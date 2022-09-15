@@ -53,7 +53,7 @@ const canvasUtils = {
       canvasUtils.editor.getEditor().find('input[type="file"]').selectFile({ contents: 'cypress/fixtures/image.png' }, { force: true });
     },
     addLineItem: () => {
-      canvasUtils.editor.getEditor().find(`.${ClassName.EDITOR_FOOTER_BUTTON}`).last().click();
+      canvasUtils.editor.getEditor().find(`.${ClassName.BUTTON}`).last().click();
     },
     speak: {
       addText: (text: string) => {
@@ -64,7 +64,8 @@ const canvasUtils = {
     visual: {},
     choice: {
       addIntent: (intentName: string) => {
-        canvasUtils.editor.getEditor().find(`.${ClassName.INTENT_SELECT_INPUT}`).last().click().type(`${intentName}{enter}`);
+        canvasUtils.editor.getEditor().find(`.${ClassName.INTENT_SELECT_INPUT}`).last().click().type(intentName);
+        cy.get(`.${ClassName.MENU}`).find(`.${ClassName.MENU_ITEM}`).contains(intentName).click();
       },
     },
   },

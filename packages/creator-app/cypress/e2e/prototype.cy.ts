@@ -16,46 +16,29 @@ context('Prototype', () => {
       cy.setup();
     });
 
-    // Flakey, need to fix
-    it.skip('switching between visuals', () => {
+    it('switching between visuals', () => {
       createSimpleDisplay();
       canvasPage.el.testButton.click();
       canvasPage.el.startPrototypeButton.click();
-      prototypePage.el.prototypeMenuDisplayButton.click();
-      prototypePage.el.displayCanvasContainer.get('.imageHolder img ').should('have.attr', 'src').and('not.equal', '');
-      cy.get(`.${ClassName.DISPLAY_TYPE_ITEM}`).eq(1).click();
-      prototypePage.el.displayCanvasContainer.get('.imageHolder img ').should('have.attr', 'src').and('not.equal', '');
+      prototypePage.el.dialog.get('.chat-dialog-content a[href$="image.png"]');
     });
-    // Flakey, need to fix
-    it.skip('Assert correct speak texts', () => {
+
+    it('Assert correct speak texts', () => {
       createSimple2BlockSpeak();
       canvasPage.el.testButton.click();
       canvasPage.el.startPrototypeButton.click();
+
       cy.get(`.${ClassName.CHAT_DIALOG_SPEAK_MESSAGE}`).eq(0).contains('Speak 1, welcome to a simple Alexa project');
-      cy.get(`.${ClassName.CHAT_DIALOG_SPEAK_MESSAGE}`).eq(1).contains('Bye, this is the end');
+      cy.get(`.${ClassName.CHAT_DIALOG_SPEAK_MESSAGE}`).should('have.length.above', 1).eq(1).contains('Bye, this is the end');
     });
 
-    // The createSimpleSpeakChoice is flakey, gunna skip for now so i can merge the bulk of the new e2es
-    it.skip('reply with buttons', () => {
+    it('reply with text', () => {
       createSimpleSpeakChoice();
       canvasPage.el.testButton.click();
       prototypePage.startPrototype();
-      cy.get(`.${ClassName.CHAT_DIALOG_SPEAK_MESSAGE}`).eq(0).contains('Test');
-      cy.get(`.${ClassName.PROTOTYPE_BUTTON}`).contains('yes').click();
-      cy.get(`.${ClassName.CHAT_DIALOG_LOADING_MESSAGE}`).should('not.be.visible');
-      cy.get(`.${ClassName.CHAT_DIALOG_SPEAK_MESSAGE}`).eq(1).contains('Yes End');
-    });
-
-    // The createSimpleSpeakChoice is flakey, gunna skip for now so i can merge the bulk of the new e2es
-    it.skip('reply with text', () => {
-      createSimpleSpeakChoice();
-      canvasPage.el.testButton.click();
-      prototypePage.startPrototype();
-      cy.get(`.${ClassName.CHAT_DIALOG_SPEAK_MESSAGE}`).eq(0).contains('Test');
       cy.get(`.${ClassName.CHAT_DIALOG_SPEAK_MESSAGE}`).eq(0).contains('Test');
       cy.get(`#${Identifier.PROTOTYPE_RESPONSE}`).type('no{enter}');
-      cy.get(`.${ClassName.CHAT_DIALOG_LOADING_MESSAGE}`).should('not.be.visible');
-      cy.get(`.${ClassName.CHAT_DIALOG_SPEAK_MESSAGE}`).eq(1).contains('No End');
+      cy.get(`.${ClassName.CHAT_DIALOG_SPEAK_MESSAGE}`).should('have.length.above', 1).eq(1).contains('No End');
     });
   });
 

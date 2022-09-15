@@ -50,6 +50,7 @@ export const createSimple2BlockSpeak = () => {
 };
 
 export const createSimpleDisplay = () => {
+  cy.intercept('POST', '/image').as('updateImage');
   init();
 
   canvasUtils.spawnNodeInGrid('display', 1, 0);
@@ -57,4 +58,5 @@ export const createSimpleDisplay = () => {
   canvasUtils.clickLastBlock();
   canvasUtils.focusLastStep();
   canvasUtils.editor.uploadImage();
+  cy.wait('@updateImage');
 };

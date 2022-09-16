@@ -5,6 +5,7 @@ import Modal, { ModalFooter } from '@/components/Modal';
 import { MODAL_WIDTH_VARIANTS, MODAL_WIDTHS, ModalType } from '@/constants';
 import * as SlotDuck from '@/ducks/slot';
 import * as SlotV2 from '@/ducks/slotV2';
+import * as Tracking from '@/ducks/tracking';
 import { useDispatch, useModals, useSelector } from '@/hooks';
 
 import EditEntityForm from './components/EntityForm/EditEntityForm';
@@ -59,7 +60,7 @@ const EditModal: React.FC = () => {
       headerBorder
     >
       <Box width="100%" overflow="auto" maxHeight={MAX_HEIGHT_CALC}>
-        <EditEntityForm slotID={data.id} />
+        <EditEntityForm slotID={data.id} creationType={Tracking.NLUEntityCreationType.NLU_QUICKVIEW} />
       </Box>
       <ModalFooter justifyContent="flex-end">
         <Button variant={ButtonVariant.PRIMARY} squareRadius onClick={close}>

@@ -2,7 +2,7 @@ import client from '@/client';
 import { BlockType, InteractionModelTabType, StepMenuType } from '@/constants';
 import { SearchTypes } from '@/contexts/SearchContext';
 
-import { CanvasCreationType, CanvasMenuLockState, EventName, IntentEditType, VariableType } from '../constants';
+import { CanvasCreationType, CanvasMenuLockState, EventName, IntentEditType, NLUEntityCreationType, VariableType } from '../constants';
 import { createProjectEventPayload, createProjectEventTracker, createVersionEventPayload, createVersionEventTracker } from '../utils';
 
 export const trackCanvasSeeShortcutsModalOpened = createProjectEventTracker((options) =>
@@ -67,6 +67,10 @@ export const trackIntentCreated = createProjectEventTracker<{ creationType: Canv
 
 export const trackEntityEdit = createProjectEventTracker<{ creationType: CanvasCreationType }>((options) =>
   client.api.analytics.track(EventName.ENTITIES_EDIT, createProjectEventPayload(options, { creation_type: options.creationType }))
+);
+
+export const trackNLUEntityEdit = createProjectEventTracker<{ creationType: NLUEntityCreationType }>((options) =>
+  client.api.analytics.track(EventName.NLU_ENTITIES_EDIT, createProjectEventPayload(options, { creation_type: options.creationType }))
 );
 
 export const trackVariableCreated = createProjectEventTracker<{ diagramID?: string; variableType: VariableType; creationType: CanvasCreationType }>(

@@ -96,6 +96,7 @@ export enum EventName {
   INTENTS_EDIT = 'Intents Edit',
   INTENT_CREATED = 'Intents Created',
   ENTITIES_EDIT = 'Entities Edit',
+  NLU_ENTITIES_EDIT = 'NLU Entity Edited',
 
   ENTITY_CREATED = 'Entity Created',
   VERSION_MANUALLY_CREATED = 'Version Manually Created',
@@ -162,6 +163,12 @@ export enum CanvasCreationType {
   EDITOR = 'editor',
   IMM = 'imm',
   PASTE = 'paste',
+}
+
+export enum NLUEntityCreationType {
+  NLU_MANAGER = 'nlu manager',
+  NLU_QUICKVIEW = 'quickview',
+  IMM = 'imm',
 }
 
 export enum NLUManagerOpenedOrigin {

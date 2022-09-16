@@ -5,6 +5,7 @@ import React from 'react';
 import Modal from '@/components/Modal';
 import { InteractionModelTabType, ModalType } from '@/constants';
 import { TextEditorVariablesPopoverProvider } from '@/contexts';
+import * as Tracking from '@/ducks/tracking';
 import { useLinkedState } from '@/hooks';
 import EditEntityForm from '@/pages/Canvas/components/EntityModalsV2/components/EntityForm/EditEntityForm';
 import EditIntentForm from '@/pages/Canvas/components/IntentModalsV2/components/IntentForm/EditIntentForm';
@@ -79,7 +80,9 @@ const NLUQuickView: React.FC = () => {
           !!modalRef && (
             <TextEditorVariablesPopoverProvider value={modalRef}>
               {showIntentForm && <EditIntentForm intentID={selectedID} />}
-              {showEntityForm && <EditEntityForm slotID={selectedID} withNameSection={false} withBottomDivider />}
+              {showEntityForm && (
+                <EditEntityForm slotID={selectedID} withNameSection={false} withBottomDivider creationType={Tracking.NLUEntityCreationType.IMM} />
+              )}
               {showVariableForm && <VariablesSection />}
             </TextEditorVariablesPopoverProvider>
           )

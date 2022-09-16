@@ -4,6 +4,7 @@ import React from 'react';
 
 import * as SlotDuck from '@/ducks/slot';
 import * as SlotV2 from '@/ducks/slotV2';
+import * as Tracking from '@/ducks/tracking';
 import { useDispatch, useLinkedState, useSelector } from '@/hooks';
 
 import EntityForm from '.';
@@ -13,9 +14,10 @@ interface EditEntityFormProps {
   withNameSection?: boolean;
   withBottomDivider?: boolean;
   colorPopperModifiers?: StrictPopperModifiers;
+  creationType: Tracking.NLUEntityCreationType;
 }
 
-const EditEntityForm: React.FC<EditEntityFormProps> = ({ colorPopperModifiers, withNameSection, slotID, withBottomDivider }) => {
+const EditEntityForm: React.FC<EditEntityFormProps> = ({ colorPopperModifiers, withNameSection, slotID, withBottomDivider, creationType }) => {
   const slot = useSelector(SlotV2.slotByIDSelector, { id: slotID });
   const patchSlot = useDispatch(SlotDuck.patchSlot, slotID);
   const defaultColor = React.useMemo(() => pickRandomDefaultColor(), []);
@@ -27,20 +29,20 @@ const EditEntityForm: React.FC<EditEntityFormProps> = ({ colorPopperModifiers, w
   if (!slot) return null;
 
   const saveType = (type: string) => {
-    patchSlot({ type });
+    patchSlot({ type }, creationType);
   };
 
   const saveName = () => {
-    patchSlot({ name });
+    patchSlot({ name }, creationType);
   };
 
   const saveValues = (values: Realtime.SlotInput[]) => {
-    patchSlot({ inputs: values });
+    patchSlot({ inputs: values }, creationType);
   };
 
   const saveColor = (color: string) => {
     setColor(color);
-    patchSlot({ color });
+    patchSlot({ color }, creationType);
   };
 
   return (

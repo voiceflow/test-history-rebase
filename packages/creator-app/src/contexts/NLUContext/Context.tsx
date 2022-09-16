@@ -10,6 +10,7 @@ import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Slot from '@/ducks/slot';
 import * as SlotV2 from '@/ducks/slotV2';
+import * as Tracking from '@/ducks/tracking';
 import * as Version from '@/ducks/version';
 import { useDeleteVariable, useDispatch, useIntentNameProcessor, useOrderedVariables, useSelector } from '@/hooks';
 import { generateSlotInput } from '@/pages/Canvas/components/SlotEdit/utils';
@@ -104,7 +105,7 @@ export const NLUProvider: React.FC = ({ children }) => {
         return;
       }
 
-      patchSlot(id, { name: formattedSlotName });
+      patchSlot(id, { name: formattedSlotName }, Tracking.NLUEntityCreationType.IMM);
     },
     [allSlotsMap, allSlots, allCustomIntents]
   );

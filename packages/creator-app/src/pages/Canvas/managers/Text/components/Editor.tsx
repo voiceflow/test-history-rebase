@@ -34,7 +34,7 @@ const Editor: NodeEditorV2<Realtime.NodeData.Text, Realtime.NodeData.TextBuiltIn
           <EditorV2.DefaultFooter tutorial={Documentation.TEXT_STEP}>
             <EditorV2.FooterActionsButton actions={[canvasVisibilityOption]} />
 
-            <Button variant={Button.Variant.PRIMARY} onClick={() => mapManager.onAdd()} squareRadius>
+            <Button variant={Button.Variant.SECONDARY} onClick={() => mapManager.onAdd()} squareRadius flat>
               Add Variant
             </Button>
           </EditorV2.DefaultFooter>

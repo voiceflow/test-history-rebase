@@ -39,7 +39,7 @@ const Editor: NodeEditorV2<Realtime.NodeData.Speak, Realtime.NodeData.SpeakBuilt
           <EditorV2.DefaultFooter tutorial={isVoiceEditor ? Documentation.SPEAK_STEP : Documentation.AUDIO_STEP}>
             <EditorV2.FooterActionsButton actions={[canvasVisibilityOption]} />
 
-            <Button variant={Button.Variant.PRIMARY} onClick={() => mapManager.onAdd()} squareRadius>
+            <Button variant={Button.Variant.SECONDARY} onClick={() => mapManager.onAdd()} squareRadius flat>
               Add Variant
             </Button>
           </EditorV2.DefaultFooter>

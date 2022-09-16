@@ -8,13 +8,15 @@ import { getNLUExportLimitDetails } from '@/config/planLimits/nluExport';
 import { ExportFormat, ExportType, ModalType, NLPProvider } from '@/constants';
 import * as IntentV2 from '@/ducks/intentV2';
 import { UpgradePrompt } from '@/ducks/tracking';
+import * as Tracking from '@/ducks/tracking';
 import { useModals, useSelector, useTrackingEvents } from '@/hooks';
 
 import { ExportContext } from './Context';
 
 const ExportFooter: React.FC<{
   withoutLink?: boolean;
-}> = ({ withoutLink }) => {
+  origin: Tracking.ModelExportOriginType;
+}> = ({ withoutLink, origin }) => {
   const { isExporting, onExport, exportType, canExport, canvasExportFormat, modelExportProvider } = React.useContext(ExportContext)!;
   const intents = useSelector(IntentV2.allIntentsSelector);
   const noModelData = exportType === ExportType.MODEL && intents.length === 0;
@@ -43,7 +45,7 @@ const ExportFooter: React.FC<{
       const planLimitDetails = getNLUExportLimitDetails(modelExportProvider);
       openUpgradeModal({ planLimitDetails, promptOrigin: UpgradePrompt.EXPORT_NLU });
     } else {
-      onExport();
+      onExport(origin);
     }
   };
 

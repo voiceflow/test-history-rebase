@@ -10,6 +10,7 @@ import * as Documentation from '@/config/documentation';
 import { Permission } from '@/config/permissions';
 import { ModalType, NLPProvider, NLPProviderLabels, PLAN_TYPE_META } from '@/constants';
 import * as Export from '@/ducks/export';
+import * as Tracking from '@/ducks/tracking';
 import { connect } from '@/hocs';
 import { useModals, usePermission } from '@/hooks';
 import { ConnectedProps } from '@/types';
@@ -35,7 +36,7 @@ const ExportModelModal: React.FC<ConnectedExportModelModalProps> = ({ exportMode
       toast.error(error);
     } else {
       setExporting(true);
-      exportModel(exportNLPProvider!).then(() => setExporting(false));
+      exportModel(exportNLPProvider!, Tracking.ModelExportOriginType.NLU_MANAGER).then(() => setExporting(false)); // placeholder to pass circleci tests
     }
   };
 

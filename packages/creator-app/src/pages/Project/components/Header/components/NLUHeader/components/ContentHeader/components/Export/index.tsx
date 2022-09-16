@@ -2,6 +2,7 @@ import { Button, ButtonVariant, Popper } from '@voiceflow/ui';
 import React from 'react';
 
 import { InteractionModelTabType } from '@/constants';
+import * as Tracking from '@/ducks/tracking';
 import {
   ExportContent,
   ExportFooter,
@@ -27,7 +28,7 @@ const Export: React.FC<ExportProps> = ({ checkedItems, activeTab }) => {
         renderContent={() => <ExportContent withDataTypes={false} checkedItems={checkedItems} />}
         renderFooter={() => (
           <FooterWrapper style={{ height: '134px' }}>
-            <ExportFooter withoutLink />
+            <ExportFooter withoutLink origin={Tracking.ModelExportOriginType.NLU_MANAGER} />
           </FooterWrapper>
         )}
       >

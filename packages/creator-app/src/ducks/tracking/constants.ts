@@ -223,3 +223,8 @@ export enum AssistantOriginType {
   NLU_MANAGER = 'NLU Manager',
   TEST_TOOL = 'Test Tool',
 }
+
+export enum ModelExportOriginType {
+  NLU_MANAGER = 'NLU Manager',
+  SHARE_MENU = 'Share Menu',
+}

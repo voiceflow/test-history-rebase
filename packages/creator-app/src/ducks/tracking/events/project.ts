@@ -4,6 +4,7 @@ import client from '@/client';
 import { ControlScheme } from '@/components/Canvas/constants';
 import { ExportFormat as CanvasExportFormat, ExportType, NLPProvider, NLUImportOrigin } from '@/constants';
 import { PrototypeSettings } from '@/ducks/prototype/types';
+import * as Tracking from '@/ducks/tracking';
 
 import { EventName } from '../constants';
 import { ProjectSessionEventInfo } from '../types';
@@ -41,8 +42,14 @@ export const trackActiveProjectPublishSuccess = createVersionEventTracker((optio
   client.api.analytics.track(EventName.PROJECT_PUBLISH_SUCCESS, createVersionEventPayload(options))
 );
 
-export const trackActiveProjectExportInteractionModel = createVersionEventTracker<{ nlpProvider: NLPProvider }>((options) =>
-  client.api.analytics.track(EventName.INTERACTION_MODEL_EXPORTED, createVersionEventPayload(options, { nlp_provider: options.nlpProvider }))
+export const trackActiveProjectExportInteractionModel = createVersionEventTracker<{
+  nlpProvider: NLPProvider;
+  origin: Tracking.ModelExportOriginType;
+}>((options) =>
+  client.api.analytics.track(
+    EventName.INTERACTION_MODEL_EXPORTED,
+    createVersionEventPayload(options, { nlp_provider: options.nlpProvider, origin: options.origin })
+  )
 );
 
 export const trackActiveProjectAlexaPublishPage = createVersionEventTracker((options) =>

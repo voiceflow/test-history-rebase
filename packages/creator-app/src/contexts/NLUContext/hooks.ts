@@ -8,6 +8,7 @@ import { InteractionModelTabType, ModalType, NLPProvider, PlatformToNLPProvider 
 import * as Export from '@/ducks/export';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
+import * as Tracking from '@/ducks/tracking';
 import { UpgradePrompt } from '@/ducks/tracking';
 import { useDispatch, useFeature, useModals, usePermission, useSelector, useTrackingEvents } from '@/hooks';
 
@@ -56,7 +57,7 @@ export const useNLUItemMenu = ({ itemID, itemType, isBuiltIn, onRename: onRename
 
         toast.info('Exporting...');
 
-        await exportModel(exportType, [itemID]);
+        await exportModel(exportType, Tracking.ModelExportOriginType.NLU_MANAGER, [itemID]);
 
         toast.success('Successfully Exported');
 

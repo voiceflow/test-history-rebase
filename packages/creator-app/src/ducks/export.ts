@@ -94,7 +94,7 @@ export const exportCanvas =
   };
 
 export const exportModel =
-  (nlpProvider: NLPProvider, intents?: string[], compilerOptions?: PrototypeRenderSyncOptions): Thunk =>
+  (nlpProvider: NLPProvider, origin: Tracking.ModelExportOriginType, intents?: string[], compilerOptions?: PrototypeRenderSyncOptions): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
     const versionID = Session.activeVersionIDSelector(state);
@@ -159,7 +159,7 @@ export const exportModel =
           throw new Error(`no provider matched: ${nlpProvider}`);
       }
 
-      dispatch(Tracking.trackActiveProjectExportInteractionModel({ nlpProvider }));
+      dispatch(Tracking.trackActiveProjectExportInteractionModel({ nlpProvider, origin }));
     } catch (error) {
       Sentry.error(error);
       toast.error('Model export failed');

@@ -7,14 +7,15 @@ import { Permission } from '@/config/permissions';
 import { GATED_EXPORT_TYPES } from '@/config/planLimits/canvasExport';
 import { ExportFormat as CanvasExportFormat, ExportType, NLPProvider, NLPProviderLabels } from '@/constants';
 import * as Export from '@/ducks/export';
+import * as Tracking from '@/ducks/tracking';
 import { useDispatch, usePermission, useTrackingEvents } from '@/hooks';
 import { PlatformContext } from '@/pages/Project/contexts';
 import { isVoiceflowPlatform } from '@/utils/typeGuards';
 
-import { getNlpModelProvider, NLP_COMPILER_OPTIONS } from './constants';
+import { getNlpModelProvider } from './constants';
 
 interface ExportValue {
-  onExport: VoidFunction;
+  onExport: (origin: Tracking.ModelExportOriginType) => void;
   exportType: ExportType;
   isExporting: boolean;
   canExport: boolean;
@@ -55,24 +56,27 @@ export const ExportProvider: React.FC = ({ children }) => {
   );
   const [modelExportIntents, setModelExportIntents] = React.useState<string[]>([]);
 
-  const onExport = React.useCallback(async () => {
-    trackingEvents.trackExportButtonClick({ format: canvasExportFormat });
-    setExporting(true);
+  const onExport = React.useCallback(
+    async (origin) => {
+      trackingEvents.trackExportButtonClick({ format: canvasExportFormat });
+      setExporting(true);
 
-    if (exportType === ExportType.CANVAS) {
-      await exportCanvas(canvasExportFormat);
-    } else if (modelExportProvider) {
-      await exportModel(modelExportProvider, modelExportIntents, NLP_COMPILER_OPTIONS);
-    }
+      if (exportType === ExportType.CANVAS) {
+        await exportCanvas(canvasExportFormat);
+      } else if (modelExportProvider) {
+        await exportModel(modelExportProvider, origin, modelExportIntents);
+      }
 
-    trackingEvents.trackProjectExported({
-      platform,
-      exportType,
-      exportFormat: canvasExportFormat,
-    });
+      trackingEvents.trackProjectExported({
+        platform,
+        exportType,
+        exportFormat: canvasExportFormat,
+      });
 
-    setExporting(false);
-  }, [exportType, modelExportProvider, modelExportIntents, canvasExportFormat]);
+      setExporting(false);
+    },
+    [exportType, modelExportProvider, modelExportIntents, canvasExportFormat]
+  );
 
   const api = useContextApi({
     onExport,

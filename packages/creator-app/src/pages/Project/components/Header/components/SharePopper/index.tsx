@@ -4,6 +4,7 @@ import { Route, Switch } from 'react-router-dom';
 
 import { Permission } from '@/config/permissions';
 import * as Session from '@/ducks/session';
+import * as Tracking from '@/ducks/tracking';
 import { usePermission, useSelector } from '@/hooks';
 import InviteContent from '@/pages/Collaborators';
 import InviteFooter from '@/pages/Collaborators/components/InviteByLink';
@@ -94,7 +95,7 @@ const SharePopper: React.FC<SharePopperProps> = ({ children }) => {
             <Switch>
               <Route path={ShareProjectTab.PROTOTYPE} render={() => <PrototypeFooter isCanvas />} />
               <Route path={ShareProjectTab.INVITE} render={() => <InviteFooter />} />
-              <Route path={ShareProjectTab.EXPORT} render={() => <ExportFooter />} />
+              <Route path={ShareProjectTab.EXPORT} render={() => <ExportFooter origin={Tracking.ModelExportOriginType.SHARE_MENU} />} />
             </Switch>
           </Footer>
         )}

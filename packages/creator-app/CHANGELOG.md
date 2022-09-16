@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.908.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.907.0...@voiceflow/creator-app@1.908.0) (2022-09-16)
+
+
+### Features
+
+* implement no drag click tooltip to template menu buttons (CT-856) ([#6070](https://github.com/voiceflow/creator-app/issues/6070)) ([46007d1](https://github.com/voiceflow/creator-app/commit/46007d1334a00fabc7782d7bdbe2060ac74df70b))
+
+
+
+
+
 # [1.907.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.906.0...@voiceflow/creator-app@1.907.0) (2022-09-16)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.157.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.156.0...@voiceflow/realtime-sdk@1.157.0) (2022-09-16)
+
+
+### Features
+
+* implement URL action type on cardV2 (CT-965) ([#6077](https://github.com/voiceflow/creator-app/issues/6077)) ([7833276](https://github.com/voiceflow/creator-app/commit/78332768bf35e4a2af7d406b13fab9c6ff852bac))
+
+
+
+
+
 # [1.156.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.155.0...@voiceflow/realtime-sdk@1.156.0) (2022-09-15)
 
 

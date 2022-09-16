@@ -1,26 +1,18 @@
 import React from 'react';
 
 import { AlexaStageType } from '@/constants/platforms';
+import * as Account from '@/ducks/account';
+import { useSelector } from '@/hooks';
 import { AlexaPublishJob } from '@/models';
-
-import Button, { ButtonVariant } from '../../components/Button';
+import Button, { ButtonVariant } from '@/pages/Project/components/Header/components/CanvasHeader/components/Upload/components/Button';
 
 interface AlexaUploadButtonProps {
-  needsLogin: boolean;
-  successfullyPublished: boolean;
   onPublish: () => void;
   alexaPublishJob: AlexaPublishJob.AnyJob | null;
-  popupOpened: boolean;
 }
 
-const AlexaUploadButton: React.FC<AlexaUploadButtonProps> = ({ needsLogin, successfullyPublished, onPublish, alexaPublishJob }) => {
-  if (needsLogin) {
-    return <Button onClick={onPublish} variant={ButtonVariant.CONNECT} />;
-  }
-
-  if (successfullyPublished) {
-    return <Button variant={ButtonVariant.SUCCESS} />;
-  }
+const AlexaUploadButton: React.FC<AlexaUploadButtonProps> = ({ onPublish, alexaPublishJob }) => {
+  const needsLogin = !!useSelector(Account.amazonAccountSelector);
 
   switch (alexaPublishJob?.stage.type) {
     case AlexaStageType.SELECT_VENDORS:
@@ -34,7 +26,7 @@ const AlexaUploadButton: React.FC<AlexaUploadButtonProps> = ({ needsLogin, succe
     case AlexaStageType.SUCCESS:
       return <Button variant={ButtonVariant.SUCCESS} />;
     default:
-      return <Button onClick={onPublish} variant={ButtonVariant.UPLOAD} />;
+      return <Button onClick={onPublish} variant={needsLogin ? ButtonVariant.CONNECT : ButtonVariant.UPLOAD} />;
   }
 };
 

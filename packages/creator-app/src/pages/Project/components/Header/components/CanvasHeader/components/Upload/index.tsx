@@ -1,8 +1,8 @@
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import { platformAware } from '@/hocs';
+import Alexa from '@/platforms/alexa/jobs/publish';
 
-import Alexa from './Alexa';
 import Dialogflow from './Dialogflow';
 import General from './General';
 import Google from './Google';

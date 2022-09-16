@@ -12,6 +12,7 @@ import { useDispatch, useEnableDisable, useEventualEngine, useSetup, useTeardown
 import TemplateEditorPopper from '@/pages/Canvas/components/TemplateEditor/Popper';
 import { ClassName } from '@/styles/constants';
 
+import ClickNoDragTooltip from '../ClickNoDragTooltip';
 import { LibraryDragItem } from '../constants';
 import * as S from '../SubMenu/styles';
 import { SubMenuButtonContainer } from '../SubMenu/SubMenuButton/styles';
@@ -31,7 +32,7 @@ const canMergeIntoOtherBlocks = (nodes: Realtime.Node[]) => nodes?.length === 1;
 const LibrarySubMenuButton: React.FC<SubMenuButtonProps> = ({ name, id, color, nodeIDs, onDrop, isDraggingPreview }) => {
   const isAutoPanning = React.useContext(AutoPanningCacheContext);
   const [isEditing, setEditing] = React.useState(false);
-  const [isClickedState, enableClickedState, clearClickedState] = useEnableDisable();
+  const [isClicked, enableClicked, clearClicked] = useEnableDisable();
   const deleteTemplate = useDispatch(CanvasTemplate.deleteCanvasTemplate);
   const updateTemplate = useDispatch(CanvasTemplate.updateCanvasTemplate);
   const { dismissAllGlobally } = React.useContext(DismissableLayerContext);
@@ -75,7 +76,7 @@ const LibrarySubMenuButton: React.FC<SubMenuButtonProps> = ({ name, id, color, n
   useTeardown(() => connectDrag(null), [connectDrag]);
 
   React.useEffect(() => {
-    if (isDragging) clearClickedState();
+    if (isDragging) clearClicked();
   }, [isDragging]);
 
   const handleSubmit = usePersistFunction(async ({ name, color }) => {
@@ -92,7 +93,7 @@ const LibrarySubMenuButton: React.FC<SubMenuButtonProps> = ({ name, id, color, n
   });
 
   const onSubmenuButtonMouseDown = usePersistFunction((event: React.MouseEvent<HTMLDivElement>) => {
-    if (!isEditing && event.button !== 2) enableClickedState();
+    if (!isEditing && event.button !== 2) enableClicked();
   });
 
   const menuOptions: OptionsMenuOption[] = React.useMemo(
@@ -129,23 +130,27 @@ const LibrarySubMenuButton: React.FC<SubMenuButtonProps> = ({ name, id, color, n
           onSubmit={handleSubmit}
         >
           {() => (
-            <SubMenuButtonContainer
-              ref={connectDrag}
-              isClicked={isClickedState && !isEditing}
-              onMouseUp={clearClickedState}
-              onMouseDown={onSubmenuButtonMouseDown}
-              isDragging={isDragging}
-              isDraggingPreview={isDraggingPreview}
-              isContextMenuOpen={isOpen || isEditing}
-              onContextMenu={onContextMenu}
-              className={ClassName.SUB_STEP_MENU_ITEM}
-              customDisplay="block"
-              isLibrary
-            >
-              <Box opacity={isDragging ? 0 : 1} display="block">
-                <Label>{name}</Label>
-              </Box>
-            </SubMenuButtonContainer>
+            <ClickNoDragTooltip>
+              {() => (
+                <SubMenuButtonContainer
+                  ref={connectDrag}
+                  isClicked={isClicked && !isEditing}
+                  onMouseUp={clearClicked}
+                  onMouseDown={onSubmenuButtonMouseDown}
+                  isDragging={isDragging}
+                  isDraggingPreview={isDraggingPreview}
+                  isContextMenuOpen={isOpen || isEditing}
+                  onContextMenu={onContextMenu}
+                  className={ClassName.SUB_STEP_MENU_ITEM}
+                  customDisplay="block"
+                  isLibrary
+                >
+                  <Box opacity={isDragging ? 0 : 1} display="block">
+                    <Label>{name}</Label>
+                  </Box>
+                </SubMenuButtonContainer>
+              )}
+            </ClickNoDragTooltip>
           )}
         </TemplateEditorPopper>
       )}

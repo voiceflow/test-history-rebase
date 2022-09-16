@@ -10,7 +10,7 @@ import { isReady } from '@/utils/job';
 
 const SelectVendorStage: React.FC = () => {
   const [trackingEvents] = useTrackingEvents();
-  const { job, publish } = React.useContext(PublishContext)!;
+  const { job, start } = React.useContext(PublishContext)!;
   const vendors = useSelector(Account.amazonVendorsSelector);
   const selectVendor = useDispatch(Account.amazon.selectVendor);
 
@@ -20,7 +20,7 @@ const SelectVendorStage: React.FC = () => {
     // start the job
     trackingEvents.trackActiveProjectPublishAttempt();
     if (isReady(job)) {
-      await publish();
+      await start();
     }
   };
 

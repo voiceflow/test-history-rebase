@@ -12,7 +12,7 @@ import PublishAmazonForm from './Form';
 export const PublishAmazon: React.FC = () => {
   const syncSelectedVendor = useDispatch(Account.amazon.syncSelectedVendor);
 
-  const { job, publish: publishToAlexa, cancel } = React.useContext(PublishContext)!;
+  const { job, start: publishToAlexa, cancel } = React.useContext(PublishContext)!;
 
   const publishAmazonModal = useModals(ModalType.PUBLISH_AMAZON);
   const publishVersionModal = useModals(ModalType.PUBLISH_VERSION_MODAL);

@@ -31,6 +31,16 @@ export interface Job<S extends JobStage = JobStage> {
   status: JobStatus;
 }
 
+export interface JobClient<J extends Job<any>, S extends string = string> {
+  run: (projectID: string, options: Record<string, unknown>) => Promise<{ job: J; projectID: string }>;
+
+  cancel: (projectID: string) => Promise<void>;
+
+  getStatus: (projectID: string) => Promise<J | null>;
+
+  updateStage: (projectID: string, stage: S, data: unknown) => Promise<void>;
+}
+
 export type JobStageData<S extends JobStage> = S extends JobStage<string, infer D> ? D : never;
 
 export namespace AlexaPublishJob {

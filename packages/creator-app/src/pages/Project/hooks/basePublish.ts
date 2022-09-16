@@ -42,7 +42,7 @@ export const useBasePublish = <T extends PublishStageType, J extends AnyJob>({
 }: PublishOptions<T, J>): BasePublishApi<J> => {
   const NO_POPUP_STAGES = [StageType.WAIT_INVOCATION_NAME, StageType.IDLE, StageType.PROGRESS, StageType.WAIT_ACCOUNT];
 
-  const { job, setJob, cancel, publish, updateCurrentStage } = React.useContext(PublishContext)! as PublishContextValue<J>;
+  const { job, setJob, cancel, start, updateCurrentStage } = React.useContext(PublishContext)! as PublishContextValue<J>;
 
   const [trackingEvents] = useTrackingEvents();
 
@@ -97,10 +97,10 @@ export const useBasePublish = <T extends PublishStageType, J extends AnyJob>({
       trackingEvents.trackActiveProjectPublishAttempt();
 
       if (jobIsReady) {
-        publish({ versionName });
+        start({ versionName });
       }
     },
-    [publish, jobIsReady, toggleLoginModal]
+    [start, jobIsReady, toggleLoginModal]
   );
 
   React.useEffect(() => {

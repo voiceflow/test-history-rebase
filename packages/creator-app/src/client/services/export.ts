@@ -1,13 +1,13 @@
 import { Nullable } from '@voiceflow/common';
 import axios from 'axios';
 
-import { Job } from '@/models';
+import { Job, JobClient } from '@/models';
 
 export const RESOURCE_ENDPOINT = 'export';
 
-const createExportService = <J extends Job, S extends string>(serviceEndpoint: string) => ({
-  run: (projectID: string) =>
-    axios.post<{ job: J; projectID: string }>(`${serviceEndpoint}/${RESOURCE_ENDPOINT}/${projectID}`).then((res) => res.data),
+const createExportService = <J extends Job, S extends string>(serviceEndpoint: string): JobClient<J, S> => ({
+  run: (projectID: string, options: Record<string, unknown>) =>
+    axios.post<{ job: J; projectID: string }>(`${serviceEndpoint}/${RESOURCE_ENDPOINT}/${projectID}`, options).then((res) => res.data),
 
   cancel: (projectID: string) => axios.post<void>(`${serviceEndpoint}/${RESOURCE_ENDPOINT}/${projectID}/cancel`).then((res) => res.data),
 

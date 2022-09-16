@@ -133,7 +133,9 @@ export const useActions = ({ editor, portID, parentPath, parentParams }: Actions
 
   const hasURLStep = Realtime.Utils.typeGuards.isURLBlockType(targetNodeSteps[0]?.type);
   const canHaveURLStep =
-    Realtime.Utils.typeGuards.isButtonsBlockType(editor.data.type) || Realtime.Utils.typeGuards.isCarouselBlockType(editor.data.type);
+    Realtime.Utils.typeGuards.isButtonsBlockType(editor.data.type) ||
+    Realtime.Utils.typeGuards.isCarouselBlockType(editor.data.type) ||
+    Realtime.Utils.typeGuards.isCardV2BlockType(editor.data.type);
   const hasNavigationStep = Realtime.Utils.typeGuards.isNavigationBlockType(targetNodeSteps[targetNodeSteps.length - 1]?.type);
 
   const actionPath = parentPath ? `${parentPath}/${PATH}` : PATH;

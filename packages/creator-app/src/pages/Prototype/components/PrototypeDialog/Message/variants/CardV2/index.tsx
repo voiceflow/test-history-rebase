@@ -1,4 +1,5 @@
 import { BaseNode } from '@voiceflow/base-types';
+import { Utils } from '@voiceflow/common';
 import { ButtonGroup } from '@voiceflow/ui';
 import React from 'react';
 
@@ -6,6 +7,7 @@ import SlateEditable from '@/components/SlateEditable';
 import { OnInteraction } from '@/pages/Prototype/types';
 import { textFieldHasValue } from '@/utils/prototypeMessage';
 
+import { handleRequestActions } from '../../../utils';
 import BaseMessage, { BaseMessageProps } from '../../Base';
 import * as S from './styles';
 
@@ -32,7 +34,12 @@ const CardV2: React.FC<CardV2Props> = ({ title, description, imageUrl, buttons, 
           {!!buttons?.length && (
             <ButtonGroup>
               {buttons.map(({ request, name }) => (
-                <S.Button key={request.type} onClick={() => onInteraction({ name, request })} color={color} hasInfo={hasInfo}>
+                <S.Button
+                  key={request.type}
+                  onClick={Utils.functional.chainVoid(handleRequestActions(request), () => onInteraction({ name, request }))}
+                  color={color}
+                  hasInfo={hasInfo}
+                >
                   {name || 'Button Label'}
                 </S.Button>
               ))}

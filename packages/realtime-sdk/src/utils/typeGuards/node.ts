@@ -38,6 +38,7 @@ export const isMarkupBlockType = createBlockTypeGuard(MARKUP_NODES);
 export const isActionsBlockType = createBlockTypeGuard(BlockType.ACTIONS);
 export const isButtonsBlockType = createBlockTypeGuard(BlockType.BUTTONS);
 export const isCarouselBlockType = createBlockTypeGuard(BlockType.CAROUSEL);
+export const isCardV2BlockType = createBlockTypeGuard(BlockType.CARDV2);
 export const isCombinedBlockType = createBlockTypeGuard(BlockType.COMBINED);
 export const isInternalBlockType = createBlockTypeGuard(INTERNAL_NODES);
 export const isNavigationBlockType = createBlockTypeGuard(NAVIGATION_NODES);

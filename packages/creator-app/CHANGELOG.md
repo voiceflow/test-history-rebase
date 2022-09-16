@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.909.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.908.0...@voiceflow/creator-app@1.909.0) (2022-09-16)
+
+
+### Bug Fixes
+
+* update variant to secondary (CT-996) ([#6080](https://github.com/voiceflow/creator-app/issues/6080)) ([ad41db4](https://github.com/voiceflow/creator-app/commit/ad41db4e5c9b433520777aa3940d791116aa26b5))
+
+
+### Features
+
+* creates/tracks NLU entity edit event (NLU-297) ([#6044](https://github.com/voiceflow/creator-app/issues/6044)) ([b3d09f7](https://github.com/voiceflow/creator-app/commit/b3d09f70c5840cb216dd39a41a783dc9a67d18e9))
+* **creator-app:** updates interaction model export event (NLU-290) ([#6052](https://github.com/voiceflow/creator-app/issues/6052)) ([228a776](https://github.com/voiceflow/creator-app/commit/228a7762b373de713fa8084ae1288dafb4a2eb37))
+
+
+
+
+
 # [1.908.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.907.0...@voiceflow/creator-app@1.908.0) (2022-09-16)
 
 

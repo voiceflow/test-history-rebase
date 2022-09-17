@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.910.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.910.2...@voiceflow/creator-app@1.910.3) (2022-09-17)
+
+
+### Bug Fixes
+
+* alexa submit refactor ([#6084](https://github.com/voiceflow/creator-app/issues/6084)) ([2f302b2](https://github.com/voiceflow/creator-app/commit/2f302b2e4b31c7dfaf4c39b85b8ed4517282ae99))
+
+
+
+
+
 ## [1.910.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.910.1...@voiceflow/creator-app@1.910.2) (2022-09-17)
 
 

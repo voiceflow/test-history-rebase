@@ -1,7 +1,7 @@
 import { TableTypes, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
-import { DOCS_BASE_LINK } from '@/config/documentation';
+import { NLU_MANAGEMENT_INTENT_CLARITY, NLU_MANAGEMENT_INTENT_CONFIDENCE } from '@/config/documentation';
 import { NLUIntent } from '@/pages/NLUManager/types';
 import { onOpenInternalURLInANewTabFactory } from '@/utils/window';
 
@@ -44,7 +44,7 @@ export const COLUMNS: TableTypes.Column<TableColumn, NLUIntent>[] = [
     sorter: (intentL, intentR) => intentL.confidence - intentR.confidence,
     tooltip: {
       html: (
-        <TippyTooltip.FooterButton onClick={onOpenInternalURLInANewTabFactory(DOCS_BASE_LINK)} buttonText="More">
+        <TippyTooltip.FooterButton onClick={onOpenInternalURLInANewTabFactory(NLU_MANAGEMENT_INTENT_CONFIDENCE)} buttonText="More">
           Confidence is a measure of a specific intents data robustness.
         </TippyTooltip.FooterButton>
       ),
@@ -61,7 +61,7 @@ export const COLUMNS: TableTypes.Column<TableColumn, NLUIntent>[] = [
     sorter: (intentL, intentR) => intentL.clarity - intentR.clarity,
     tooltip: {
       html: (
-        <TippyTooltip.FooterButton onClick={onOpenInternalURLInANewTabFactory(DOCS_BASE_LINK)} buttonText="More">
+        <TippyTooltip.FooterButton onClick={onOpenInternalURLInANewTabFactory(NLU_MANAGEMENT_INTENT_CLARITY)} buttonText="More">
           Clarity is a measure of an intents ability to be recognized, relative to the rest of your model.
         </TippyTooltip.FooterButton>
       ),

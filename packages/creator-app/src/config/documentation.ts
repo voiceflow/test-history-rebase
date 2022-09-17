@@ -80,3 +80,9 @@ export const RANDOM_STEP = 'https://www.voiceflow.com/docs/designing-logic-steps
 export const DOMAINS = 'http://www.voiceflow.com/docs/designing-domains';
 export const DOMAINS_LIVE_TOGGLE = 'http://www.voiceflow.com/docs/designing-domains#live-toggle';
 export const DOMAINS_PROJECT_TRANSFER = 'http://www.voiceflow.com/docs/designing-domains#project-transfer';
+
+// nlu
+export const NLU_MANAGEMENT_INTENT_CONFIDENCE = 'https://www.voiceflow.com/docs/nlu-management-model-optimization#toc-1';
+export const NLU_MANAGEMENT_INTENT_CLARITY = 'https://www.voiceflow.com/docs/nlu-management-model-optimization#toc-3';
+export const NLU_MANAGEMENT_CONFLICTS = 'https://www.voiceflow.com/docs/nlu-management-model-optimization#toc-4';
+export const NLU_MANAGEMENT_NLU_DATA_EXPORT = 'https://www.voiceflow.com/docs/nlu-management-nlu-data-import-export#toc-1';

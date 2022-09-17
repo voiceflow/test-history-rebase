@@ -15,8 +15,9 @@ import { ExportContext } from './Context';
 
 const ExportFooter: React.FC<{
   withoutLink?: boolean;
+  linkURL?: string;
   origin: Tracking.ModelExportOriginType;
-}> = ({ withoutLink, origin }) => {
+}> = ({ withoutLink, origin, linkURL }) => {
   const { isExporting, onExport, exportType, canExport, canvasExportFormat, modelExportProvider } = React.useContext(ExportContext)!;
   const intents = useSelector(IntentV2.allIntentsSelector);
   const noModelData = exportType === ExportType.MODEL && intents.length === 0;
@@ -54,7 +55,7 @@ const ExportFooter: React.FC<{
       {!withoutLink && exportType === ExportType.MODEL ? (
         <Link onClick={openNLUQuickview}>Open NLU Manager</Link>
       ) : (
-        <Link href={Documentation.PROJECT_EXPORT}>Learn More</Link>
+        <Link href={linkURL || Documentation.PROJECT_EXPORT}>Learn More</Link>
       )}
       <PlatformUploadButton icon="arrowSpin" label="Export" onClick={checkIfCanExport} isActive={!!isExporting} disabled={noModelData} />
     </FlexApart>

@@ -74,7 +74,7 @@ export interface TraceControllerProps {
 
 interface Options {
   props: TraceControllerProps;
-  audio: AudioController;
+  audio?: AudioController;
   logger: Logger;
   message: MessageController;
   timeout: TimeoutController;
@@ -195,7 +195,7 @@ class TraceController {
       return;
     }
 
-    this.audio.stop();
+    this.audio?.stop();
     this.props.getEngine()?.prototype.setFinalNodeID(null);
 
     if (IS_TEST) {
@@ -488,7 +488,7 @@ class TraceController {
     this.props.updateStatus(PMStatus.WAITING_USER_INTERACTION);
 
     if (pausing) {
-      this.audio.stop();
+      this.audio?.stop();
       return;
     }
 
@@ -504,7 +504,7 @@ class TraceController {
       await Utils.promise.delay(MUTED_MESSAGE_DELAY);
     } else {
       try {
-        await this.audio.play(src, {
+        await this.audio?.play(src, {
           loop: action === BaseNode.Stream.TraceStreamAction.LOOP,
           muted: this.props.isMuted,
           offset: this.streamState.offset,
@@ -550,7 +550,7 @@ class TraceController {
     if (this.props.isMuted) {
       await Utils.promise.delay(MUTED_MESSAGE_DELAY);
     } else {
-      await this.audio.play(trace.payload.src, { muted: this.props.isMuted, onError: this.setError }).catch(Utils.functional.noop);
+      await this.audio?.play(trace.payload.src, { muted: this.props.isMuted, onError: this.setError }).catch(Utils.functional.noop);
     }
   }
 

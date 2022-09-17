@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.910.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.909.1...@voiceflow/creator-app@1.910.0) (2022-09-17)
+
+
+### Features
+
+* alexa-job-interface (CT-000) ([#6076](https://github.com/voiceflow/creator-app/issues/6076)) ([a459e91](https://github.com/voiceflow/creator-app/commit/a459e9169e6e2ce03eb7b060caa5e8babd18fdbe)), closes [/github.com/voiceflow/creator-app/blob/fbc9e788e931d72b1235ef8bb1036243b3296125/packages/creator-app/src/pages/Project/hooks/basePublish.ts#L62-L78](https://github.com//github.com/voiceflow/creator-app/blob/fbc9e788e931d72b1235ef8bb1036243b3296125/packages/creator-app/src/pages/Project/hooks/basePublish.ts/issues/L62-L78) [/github.com/voiceflow/creator-app/blob/075ffd800606d73a949126a86e648744a0cd4984/packages/creator-app/src/pages/Project/components/Header/components/CanvasHeader/components/Upload/Alexa/index.tsx#L21-L32](https://github.com//github.com/voiceflow/creator-app/blob/075ffd800606d73a949126a86e648744a0cd4984/packages/creator-app/src/pages/Project/components/Header/components/CanvasHeader/components/Upload/Alexa/index.tsx/issues/L21-L32) [/github.com/voiceflow/creator-app/blob/e2610bcbf991a68df0f3edcab6eac8ad806d4fc7/packages/creator-app/src/pages/Project/hooks/alexaPublish.ts#L23-L44](https://github.com//github.com/voiceflow/creator-app/blob/e2610bcbf991a68df0f3edcab6eac8ad806d4fc7/packages/creator-app/src/pages/Project/hooks/alexaPublish.ts/issues/L23-L44)
+
+
+
+
+
 ## [1.909.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.909.0...@voiceflow/creator-app@1.909.1) (2022-09-16)
 
 

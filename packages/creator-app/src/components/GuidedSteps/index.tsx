@@ -33,7 +33,7 @@ interface GuidedStepsProps {
 
   haveFooter?: boolean;
 
-  submitText?: React.ReactNode;
+  children: (props: { disabled: boolean; submit: VoidFunction }) => JSX.Element;
 
   checkStep?: (index: number) => boolean;
 
@@ -57,7 +57,7 @@ const GuidedSteps: React.FC<GuidedStepsProps> = ({
 
   onChangeStep,
 
-  submitText,
+  children,
 
   checkStep,
 
@@ -157,8 +157,8 @@ const GuidedSteps: React.FC<GuidedStepsProps> = ({
     setFormValid(formValid);
   };
 
-  const submit = (e: React.MouseEvent, finalStepNum: number) => {
-    changeStep(e, finalStepNum);
+  const submit = (finalStepNum: number) => {
+    changeStep(null, finalStepNum);
 
     onFinishSteps?.();
   };
@@ -215,9 +215,7 @@ const GuidedSteps: React.FC<GuidedStepsProps> = ({
                             title={preventSubmit ? preventSubmit?.message : undefined}
                             distance={5}
                           >
-                            <Button disabled={!isFormValid || disabled || !!preventSubmit} onClick={(e) => submit(e, idx)}>
-                              {submitText}
-                            </Button>
+                            {children({ disabled: !isFormValid || disabled || !!preventSubmit, submit: () => submit(idx) })}
                           </TippyTooltip>
                         )}
                       </div>

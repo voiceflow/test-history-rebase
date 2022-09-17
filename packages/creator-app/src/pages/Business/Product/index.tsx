@@ -1,6 +1,6 @@
 /* eslint-disable default-case */
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { SvgIcon } from '@voiceflow/ui';
+import { Button, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
 import GuidedSteps from '@/components/GuidedSteps';
@@ -143,7 +143,13 @@ const ProductEditPage: React.FC = () => {
         </BackLink>
       </BackButtonContainer>
 
-      <GuidedSteps blocks={steps} submitText="Save Locale" step={step} checkStep={checkValidStep} onChangeStep={setStep} haveFooter />
+      <GuidedSteps blocks={steps} step={step} checkStep={checkValidStep} onChangeStep={setStep} haveFooter>
+        {({ disabled, submit }) => (
+          <Button disabled={disabled} onClick={() => submit()}>
+            Save Locale
+          </Button>
+        )}
+      </GuidedSteps>
     </>
   );
 };

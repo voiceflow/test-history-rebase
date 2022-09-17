@@ -8,6 +8,8 @@ import * as Product from '@/ducks/product';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useDispatch, useSelector } from '@/hooks';
+import { useAlexaPublishContext } from '@/platforms/alexa/jobs/publish/hooks';
+import AlexaSubmit from '@/platforms/alexa/jobs/submit';
 
 import BasicSkillInfoForm, { BasicSkillInfoDescription } from './components/BasicSkillInfoForm';
 import LocalesForm, { LocalesDescription } from './components/LocalesForm';
@@ -54,7 +56,7 @@ interface PublishAmazonFormProps {
   onPublish: VoidFunction;
 }
 
-const PublishAmazonForm: React.FC<PublishAmazonFormProps> = ({ onPublish }) => {
+const PublishAmazonForm: React.FC<PublishAmazonFormProps> = () => {
   const [saving, setSaving] = React.useState(false);
   const [idCollapse, setIdCollapse] = React.useState(false);
 
@@ -65,6 +67,7 @@ const PublishAmazonForm: React.FC<PublishAmazonFormProps> = ({ onPublish }) => {
   const inReview = useSelector(VersionV2.active.alexa.isInReviewSelector);
   const publishing = useSelector(VersionV2.active.alexa.publishingSelector);
   const projectName = useSelector(ProjectV2.active.nameSelector);
+  const { onPublish } = useAlexaPublishContext({ submit: true });
 
   const setError = useDispatch(Modal.setError);
   const updateAllProductLocales = useDispatch(Product.updateAllProductLocales);
@@ -187,19 +190,15 @@ const PublishAmazonForm: React.FC<PublishAmazonFormProps> = ({ onPublish }) => {
               centred={false}
               checkStep={checkValidStep}
               onComplete={validateForm}
-              submitText={
-                <>
-                  Submit for Review
-                  {saving && <SvgIcon icon="loader" spin inline ml="s" />}
-                </>
-              }
               disabled={saving || inReview}
               preventSubmit={
                 !skillID && {
                   message: validationContext?.isValid ? 'You must upload to Amazon at least once on the canvas before submitting for review' : '',
                 }
               }
-            />
+            >
+              {({ disabled, submit }) => <AlexaSubmit disabled={disabled || saving} onClick={submit} />}
+            </GuidedSteps>
           </form>
         </div>
       </div>

@@ -3,7 +3,10 @@ import React from 'react';
 
 import { StageComponentProps } from '@/platforms/types';
 
-const JobInterfaceDownloadStage: React.FC<StageComponentProps<{ type: any; data: { fileName: string; data: string } }>> = ({ cancel, stage }) => {
+const JobInterfaceDownloadStage: React.FC<StageComponentProps<{ type: any; data: { fileName: string; data: string; successType: any } }>> = ({
+  cancel,
+  stage,
+}) => {
   useSetup(() => {
     download(stage.data.fileName, stage.data.data, DataTypes.JSON);
     toast.success('Code successfully exported');

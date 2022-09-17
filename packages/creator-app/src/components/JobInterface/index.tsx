@@ -9,6 +9,7 @@ import { StageContent } from '@/platforms/types';
 import Popup from './Popup';
 import { getProgress } from './utils';
 
+export { default as DownloadStage } from './DownloadStage';
 export * from './hooks';
 
 interface JobInterfaceProps<J extends Job<any>> {

@@ -9,7 +9,7 @@ import { useAsyncMountUnmount, useDispatch, useSelector, useSetup, useToggle, us
 import { isNotify, isReady, isRunning } from '@/utils/job';
 
 import { ActionContainer, ContentContainer, ContentSection, Section } from '../components';
-import { getPlatformSyncAction, getUploadButton, getUploadLink } from './constants';
+import { getPlatformSyncAction, getUploadButton, getUploadButtonV2, getUploadLink } from './constants';
 
 const Export: React.FC = () => {
   const [open, toggleOpen] = useToggle(false);
@@ -19,6 +19,7 @@ const Export: React.FC = () => {
   const syncPlatform = useDispatch(platformSyncAction);
   const PlatformUploadLink = getUploadLink(platform);
   const PlatformUploadButton = getUploadButton(platform);
+  const PlatformUploadButtonV2 = getUploadButtonV2(platform);
   const PlatformUploadContent = getPlatformContent(platform);
 
   const [trackingEvents] = useTrackingEvents();
@@ -61,11 +62,16 @@ const Export: React.FC = () => {
             </Text>
 
             <ActionContainer>
-              <PlatformUploadButton isActive={isRunning(job)} onClick={exportClick} label="Export" />
-
-              <PlatformUploadPopup open={!isReady(job) && open} onClose={onClose}>
-                <PlatformUploadContent export />
-              </PlatformUploadPopup>
+              {PlatformUploadButtonV2 ? (
+                <PlatformUploadButtonV2 />
+              ) : (
+                <>
+                  <PlatformUploadButton isActive={isRunning(job)} onClick={exportClick} label="Export" />
+                  <PlatformUploadPopup open={!isReady(job) && open} onClose={onClose}>
+                    <PlatformUploadContent export />
+                  </PlatformUploadPopup>
+                </>
+              )}
             </ActionContainer>
           </BoxFlex>
         </Section>

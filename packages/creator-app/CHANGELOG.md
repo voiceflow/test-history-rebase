@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.910.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.910.3...@voiceflow/creator-app@1.910.4) (2022-09-17)
+
+
+### Bug Fixes
+
+* no waiting flows (CT-000) ([#6087](https://github.com/voiceflow/creator-app/issues/6087)) ([9403343](https://github.com/voiceflow/creator-app/commit/9403343a4551c20ab8ff35391c37cf06ee47655a)), closes [/github.com/voiceflow/creator-app/blob/1a2f9987e11e40fe2e58378c46e7d2529c08d372/packages/creator-app/src/pages/Prototype/PrototypeTool/index.ts#L23](https://github.com//github.com/voiceflow/creator-app/blob/1a2f9987e11e40fe2e58378c46e7d2529c08d372/packages/creator-app/src/pages/Prototype/PrototypeTool/index.ts/issues/L23)
+
+
+
+
+
 ## [1.910.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.910.2...@voiceflow/creator-app@1.910.3) (2022-09-17)
 
 

@@ -17,7 +17,7 @@ const DesignMenu: React.FC<DesignMenuProps> = ({ canvasOnly }) => {
   const theme = useTheme();
   const [isOpen, openMenu, closeMenu] = useEnableDisable(true);
   const [menuWidth, setWidth] = useLocalStorageState<number>(`design-menu-sizes`, theme.components.designMenu.width);
-  const [isCollapsed, setIsCollapsed] = useLocalStorageState<boolean>(`design-menu-is-collapsed`, false);
+  const [isCollapsed, setIsCollapsed] = useLocalStorageState<boolean>(`design-menu-is-collapsed`, true);
 
   const isPreviewing = useSelector(UI.isPreviewingVersion);
 

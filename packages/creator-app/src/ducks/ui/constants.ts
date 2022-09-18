@@ -20,6 +20,6 @@ export const INITIAL_STATE: UIState = {
   zoomType: ZoomType.REGULAR,
   isLoadingProjects: false,
   commentsVisible: true,
-  canvasGrid: false,
+  canvasGrid: true,
   fullScreenMode: false,
 };

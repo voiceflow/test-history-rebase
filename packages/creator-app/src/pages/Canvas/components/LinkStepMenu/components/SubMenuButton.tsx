@@ -49,7 +49,7 @@ const SubMenuButton: React.FC<SubMenuButtonProps> = ({ step, template, upgradePo
       .add([theme.components.block.width / 2, 0]);
 
     if (template) {
-      // await engine.canvasTemplate.dropTemplate(template.id, coords);
+      await engine.canvasTemplate.dropTemplate(template.id, coords);
       stepMenu.onHide({ abort: true });
     } else if (step) {
       const nodeID = await engine.node.add(step.type, coords, step.factoryData, StepMenuType.LINK);

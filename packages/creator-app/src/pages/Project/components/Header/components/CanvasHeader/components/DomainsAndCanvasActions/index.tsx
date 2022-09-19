@@ -1,4 +1,3 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box } from '@voiceflow/ui';
 import React from 'react';
 
@@ -7,7 +6,7 @@ import { Permission } from '@/config/permissions';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as Project from '@/ducks/project';
 import * as ProjectV2 from '@/ducks/projectV2';
-import { useDispatch, useEventualEngine, useFeature, useHotKeys, useLinkedState, usePermission, useSelector, useToggle } from '@/hooks';
+import { useDispatch, useEventualEngine, useHotKeys, useLinkedState, usePermission, useSelector, useToggle } from '@/hooks';
 import { Hotkey, HOTKEY_LABEL_MAP } from '@/keymap';
 import CanvasTemplateEditorNewTemplate from '@/pages/Canvas/components/TemplateEditor/NewTemplate';
 import { LastCreatedComponentContext, SelectionSetTargetsContext, SelectionTargetsContext } from '@/pages/Project/contexts';
@@ -31,8 +30,6 @@ const DomainsAndCanvasActions: React.FC = () => {
   const projectName = useSelector(ProjectV2.active.nameSelector);
 
   const getEngine = useEventualEngine();
-
-  const blockTemplate = useFeature(Realtime.FeatureFlag.BLOCK_TEMPLATE);
 
   const isPrototypingMode = usePrototypingMode();
   const [canEditProject] = usePermission(Permission.EDIT_PROJECT);
@@ -110,24 +107,23 @@ const DomainsAndCanvasActions: React.FC = () => {
             tooltip={{ title: 'Create component', hotkey: HOTKEY_LABEL_MAP[Hotkey.CREATE_COMPONENT] }}
             onClick={onCreateComponent}
           />
-          {blockTemplate.isEnabled && (
-            <CanvasTemplateEditorNewTemplate
-              isOpen={templatePopperIsOpen}
-              nodeIDs={selectedTargets}
-              onClose={() => setTemplatePopperIsOpen(false)}
-              onOpen={() => setTemplatePopperIsOpen(true)}
-            >
-              {({ onToggle }) => (
-                <HeaderIconButton
-                  icon="librarySmall"
-                  active={templatePopperIsOpen}
-                  isSmall
-                  tooltip={{ title: 'Add to library', hotkey: HOTKEY_LABEL_MAP[Hotkey.ADD_TO_LIBRARY] }}
-                  onClick={onToggle}
-                />
-              )}
-            </CanvasTemplateEditorNewTemplate>
-          )}
+          <CanvasTemplateEditorNewTemplate
+            isOpen={templatePopperIsOpen}
+            nodeIDs={selectedTargets}
+            onClose={() => setTemplatePopperIsOpen(false)}
+            onOpen={() => setTemplatePopperIsOpen(true)}
+          >
+            {({ onToggle }) => (
+              <HeaderIconButton
+                icon="librarySmall"
+                active={templatePopperIsOpen}
+                isSmall
+                tooltip={{ title: 'Add to library', hotkey: HOTKEY_LABEL_MAP[Hotkey.ADD_TO_LIBRARY] }}
+                onClick={onToggle}
+              />
+            )}
+          </CanvasTemplateEditorNewTemplate>
+
           <HeaderIconButton icon="copy" isSmall tooltip={{ title: 'Copy', hotkey: HOTKEY_LABEL_MAP[Hotkey.COPY] }} onClick={onCopy} />
         </Box.Flex>
       ) : (

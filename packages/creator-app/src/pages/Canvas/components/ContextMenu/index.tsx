@@ -1,12 +1,11 @@
 import { Eventual, Utils } from '@voiceflow/common';
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, buildVirtualElement, NestedMenu, Text, useCache, useVirtualElementPopper } from '@voiceflow/ui';
 import React from 'react';
 
 import { Permission } from '@/config/permissions';
 import { CANVAS_ZOOM_DELTA, CLIPBOARD_DATA_KEY, ModalType } from '@/constants';
 import * as UIDuck from '@/ducks/ui';
-import { useDispatch, useFeature, useModals, usePermission } from '@/hooks';
+import { useDispatch, useModals, usePermission } from '@/hooks';
 import { ClipboardContext, ContextMenuContext, ContextMenuValue, EngineContext } from '@/pages/Canvas/contexts';
 import { MarkupContext } from '@/pages/Project/contexts';
 import { Identifier } from '@/styles/constants';
@@ -103,8 +102,6 @@ const ContextMenu: React.FC = () => {
   const [canUseCommenting] = usePermission(Permission.COMMENTING);
   const [showHintFeatures] = usePermission(Permission.HINT_FEATURES);
 
-  const blockTemplate = useFeature(Realtime.FeatureFlag.BLOCK_TEMPLATE);
-
   const cache = useCache({
     engine,
     markup,
@@ -123,8 +120,6 @@ const ContextMenu: React.FC = () => {
 
     const targetOptions = TARGET_OPTIONS[contextMenu.type]({ viewerOnly: !canEditCanvas })
       .filter((option) => {
-        if (!blockTemplate.isEnabled && option.value === CanvasAction.SAVE_TO_LIBRARY) return false;
-
         return !option.shouldRender || option.shouldRender(contextMenu, cache.current);
       })
       .map(({ render, ...option }) => ({ ...option, render: render ? () => render(cache.current.contextMenu, cache.current) : undefined }));

@@ -35,8 +35,6 @@ export enum FeatureFlag {
 
   STICKERS_DROPDOWN = 'stickers_dropdown',
 
-  BLOCK_TEMPLATE = 'block_template',
-
   // canvas and editor updates
   CONDITIONS_BUILDER_V2 = 'conditions_builder_v2',
 

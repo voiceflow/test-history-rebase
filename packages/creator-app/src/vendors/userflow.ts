@@ -23,7 +23,7 @@ export const identify = async (externalID: string, user: Omit<Account, 'creator_
   });
 };
 
-const USERFLOW_CHAT_ONBOARDING_FLOW_ID = '3cf4fbe4-3d7d-41c7-8889-36d6b9467bfc';
+const USERFLOW_CHAT_ONBOARDING_FLOW_ID = 'c53799c6-8dca-4695-9d24-7ca4bfd74867';
 
 // start flows when a project is created from a template
 export const startOnboardingFlow = async (templateTag: string) => {

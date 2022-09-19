@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.912.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.912.0...@voiceflow/creator-app@1.912.1) (2022-09-19)
+
+
+### Bug Fixes
+
+* collapse step menu on first login (CT-1005) ([#6097](https://github.com/voiceflow/creator-app/issues/6097)) ([3dc3553](https://github.com/voiceflow/creator-app/commit/3dc35534d3fc3a035ff97105cb15cfa65082e4e3))
+
+
+
+
+
 # [1.912.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.911.2...@voiceflow/creator-app@1.912.0) (2022-09-19)
 
 

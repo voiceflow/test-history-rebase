@@ -6,6 +6,7 @@ import * as Router from '@/ducks/router';
 import * as UI from '@/ducks/ui';
 import { useDispatch, useEventualEngine, useHotKeys, useModals, usePermission, useSelector, useTrackingEvents } from '@/hooks';
 import { Hotkey } from '@/keymap';
+import * as ModalsV2 from '@/ModalsV2';
 import { MarkupContext } from '@/pages/Project/contexts';
 import { useCommentingToggle, useDisableModes } from '@/pages/Project/hooks';
 
@@ -32,7 +33,7 @@ const HotKeys: React.FC = () => {
   const [, trackingEventsWrapper] = useTrackingEvents();
 
   const nluQuickView = useModals(ModalType.NLU_MODEL_QUICK_VIEW);
-  const manualSaveModal = useModals(ModalType.MANUAL_SAVE_MODAL);
+  const manualSaveModal = ModalsV2.useModal(ModalsV2.Project.ManualSave);
 
   const onDisableModes = useDisableModes();
   const onToggleCommenting = useCommentingToggle();
@@ -67,7 +68,9 @@ const HotKeys: React.FC = () => {
   useHotKeys(Hotkey.MOVE_MODE, onDisableModes, { preventDefault: true }, [onDisableModes]);
   useHotKeys(Hotkey.SHOW_HIDE_UI, toggleCanvasOnly, { preventDefault: true });
   useHotKeys(Hotkey.OPEN_CMS_MODAL, onOpenImModel, { preventDefault: true, disable: !canEditCanvas }, [onOpenImModel]);
-  useHotKeys(Hotkey.OPEN_MANUAL_SAVE_MODAL, manualSaveModal.open, { preventDefault: true, disable: !canEditCanvas }, [manualSaveModal.open]);
+  useHotKeys(Hotkey.OPEN_MANUAL_SAVE_MODAL, () => manualSaveModal.openVoid({}), { preventDefault: true, disable: !canEditCanvas }, [
+    manualSaveModal.openVoid,
+  ]);
 
   useHotKeys(Hotkey.OPEN_COMMENTING, onToggleCommenting, { preventDefault: true, disable: !showHintFeatures || disableCanvasHotkeys }, [
     onToggleCommenting,

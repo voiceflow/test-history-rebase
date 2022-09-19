@@ -2,14 +2,15 @@ import { IS_SAFARI, toast, ToastCallToAction } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
 
-import { BlockType, ModalType } from '@/constants';
+import { BlockType } from '@/constants';
 import { PrototypeStatus } from '@/constants/prototype';
 import { SearchContext } from '@/contexts/SearchContext';
 import * as History from '@/ducks/history';
 import * as Prototype from '@/ducks/prototype';
 import { styled } from '@/hocs';
-import { useActiveModal, useDispatch, useHotKeys, useModals, useRegistration, useSelector } from '@/hooks';
+import { useActiveModal, useDispatch, useHotKeys, useRegistration, useSelector } from '@/hooks';
 import { getHotkeyLabel, Hotkey } from '@/keymap';
+import * as ModalsV2 from '@/ModalsV2';
 import { ClipboardContext, EngineContext, SpotlightContext } from '@/pages/Canvas/contexts';
 import { CanvasContainerAPI } from '@/pages/Canvas/types';
 import { LastCreatedComponentContext, MarkupContext, SelectionSetTargetsContext } from '@/pages/Project/contexts';
@@ -60,7 +61,7 @@ const CanvasContainer: React.FC = ({ children }) => {
   const spotlight = React.useContext(SpotlightContext)!;
   const setSelectedTargets = React.useContext(SelectionSetTargetsContext);
   const lastCreatedComponent = React.useContext(LastCreatedComponentContext)!;
-  const manualSaveModal = useModals(ModalType.MANUAL_SAVE_MODAL);
+  const manualSaveModal = ModalsV2.useModal(ModalsV2.Project.ManualSave);
   const activeModal = useActiveModal();
 
   const isEditingMode = useEditingMode();
@@ -104,7 +105,7 @@ const CanvasContainer: React.FC = ({ children }) => {
         <br />
         <ToastCallToAction
           onClick={() => {
-            manualSaveModal.open();
+            manualSaveModal.openVoid({});
           }}
         >
           <br />

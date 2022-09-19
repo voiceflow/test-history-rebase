@@ -17,7 +17,7 @@ const IntegrationActionEditor: ActionEditor<Realtime.NodeData.Integration, Realt
       <APIForm
         editor={data}
         header={<EditorV2.DefaultHeader onBack={props.goBack} />}
-        footer={<APIForm.Footer tutorial={Documentation.ACTIONS_BACKEND} />}
+        footer={<APIForm.Footer tutorial={Documentation.ACTIONS_BACKEND} editor={data} />}
       />
     );
   }

@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 import { ConfirmProps } from '@/components/ConfirmModal';
 import * as Errors from '@/config/errors';
 import { Permission } from '@/config/permissions';
+import { LimitType } from '@/config/planLimitV2';
 import { ALEXA_SUNSET_PROJECT_ID, ModalType } from '@/constants';
 import * as Project from '@/ducks/project';
 import * as ProjectList from '@/ducks/projectList';
@@ -17,13 +18,13 @@ import * as Session from '@/ducks/session';
 import * as Workspace from '@/ducks/workspace';
 import { useModals } from '@/hooks/modals';
 import { usePermission, usePermissions } from '@/hooks/permission';
-import { useModal } from '@/ModalsV2/hooks';
-import ConvertModal from '@/ModalsV2/modals/Domain/Convert';
+import * as ModalsV2 from '@/ModalsV2';
 import { ShareProjectTab } from '@/pages/Project/components/Header/constants';
 import { SharePopperContext } from '@/pages/Project/components/Header/contexts';
 import { copy } from '@/utils/clipboard';
 import * as Sentry from '@/vendors/sentry';
 
+import { usePlanLimitedAction } from './planLimitV2';
 import { useDispatch } from './realtime';
 import { useTrackingEvents } from './tracking';
 import { useActiveWorkspace } from './workspace';
@@ -128,44 +129,46 @@ export const useProjectOptions = ({
   const duplicateProject = useDispatch(Workspace.duplicateProject);
   const updateProjectPrivacy = useDispatch(Project.updateProjectPrivacy);
 
-  const targetVersionID = versionID || currentVersionID;
-
-  const convertModal = useModal(ConvertModal);
-  const { toggle: onToggleLoadingModal } = useModals(ModalType.LOADING);
-  const { open: onOpenProjectLimitModal } = useModals(ModalType.FREE_PROJECT_LIMIT);
-  const { open: onOpenProjectDownloadModal } = useModals(ModalType.PROJECT_DOWNLOAD);
+  const convertModal = ModalsV2.useModal(ModalsV2.Domain.Convert);
+  const loadingModal = ModalsV2.useModal(ModalsV2.Loading);
+  const upgradeModal = ModalsV2.useModal(ModalsV2.Upgrade);
+  const projectDownloadModal = ModalsV2.useModal(ModalsV2.Project.Download);
 
   const onDelete = useDeleteProject({ boardID, projectID, projectName });
 
   const [trackingEvents] = useTrackingEvents();
 
-  const onDuplicate = async () => {
-    if (!workspace) {
-      Sentry.error(Errors.noActiveWorkspaceID());
-      toast.genericError();
-      return;
-    }
+  const onDuplicate = usePlanLimitedAction({
+    type: LimitType.PROJECTS,
+    value: projectsCount,
+    limit: workspace?.projects ?? 2,
+    onAction: async () => {
+      if (!workspace) {
+        Sentry.error(Errors.noActiveWorkspaceID());
+        toast.genericError();
+        return;
+      }
 
-    if (!projectID) {
-      Sentry.error(Errors.noActiveProjectID());
-      toast.genericError();
-      return;
-    }
+      if (!projectID) {
+        Sentry.error(Errors.noActiveProjectID());
+        toast.genericError();
+        return;
+      }
 
-    if (projectsCount >= workspace.projects) {
-      onOpenProjectLimitModal({ projects: workspace.projects });
-      return;
-    }
+      try {
+        loadingModal.openVoid();
 
-    onToggleLoadingModal(true);
+        trackingEvents.trackProjectDuplicate({ versionID: getProjectByID({ id: projectID })?.versionID, projectID });
 
-    trackingEvents.trackProjectDuplicate({ versionID: getProjectByID({ id: projectID })?.versionID, projectID });
+        await duplicateProject(projectID, workspace.id, boardID);
 
-    await duplicateProject(projectID, workspace.id, boardID);
-
-    onToggleLoadingModal(false);
-    onDuplicated?.();
-  };
+        onDuplicated?.();
+      } finally {
+        loadingModal.close();
+      }
+    },
+    onLimited: (limit) => upgradeModal.openVoid(limit.upgradeModal),
+  });
 
   const onClone = async () => {
     if (!projectID) {
@@ -187,7 +190,7 @@ export const useProjectOptions = ({
         toast.error('Error getting import link');
       }
     } else {
-      onOpenProjectDownloadModal();
+      projectDownloadModal.openVoid();
     }
   };
 
@@ -202,6 +205,7 @@ export const useProjectOptions = ({
     convertModal.openVoid({ sourceProjectID: projectID });
   };
 
+  const targetVersionID = versionID || currentVersionID;
   const withInviteOption = withInvite && canAddCollaborators && sharePopper;
   const withDeleteOption = withDelete && canManageProjects;
   const withExportOption = canExportProject && sharePopper;
@@ -225,7 +229,7 @@ export const useProjectOptions = ({
     withDeleteOption ? { label: 'divider-2', divider: true } : null,
 
     withDeleteOption ? { label: 'Delete project', onClick: onDelete } : null,
-  ].filter((opt) => !!opt);
+  ];
 };
 
 export const useAlexaProjectSettings = (): boolean => {

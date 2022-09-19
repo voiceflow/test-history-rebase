@@ -15,6 +15,7 @@ import * as Session from '@/ducks/session';
 import { connect } from '@/hocs';
 import { useHotKeys, useModals, usePermission, useSetup, useTrackingEvents } from '@/hooks';
 import { getHotkeyLabel, Hotkey } from '@/keymap';
+import * as ModalsV2 from '@/ModalsV2';
 import { FadeLeftContainer } from '@/styles/animations';
 import { ConnectedProps } from '@/types';
 import * as Sentry from '@/vendors/sentry';
@@ -52,7 +53,7 @@ const ProjectVersions: React.FC<ConnectedProjectVersions> = ({ projectID, active
 
   const [hasFullVersionPermissions] = usePermission(Permission.FULL_PROJECT_VERSIONS);
   const [trackingEvents] = useTrackingEvents();
-  const manualSaveModal = useModals(ModalType.MANUAL_SAVE_MODAL);
+  const manualSaveModal = ModalsV2.useModal(ModalsV2.Project.ManualSave);
 
   const liveVersion = useSelector(ProjectV2.active.liveVersionSelector);
 
@@ -60,7 +61,7 @@ const ProjectVersions: React.FC<ConnectedProjectVersions> = ({ projectID, active
   const onClickUpgrade = useCallback(() => upgradeModal.open(), [upgradeModal]);
 
   const openManualSaveModal = () => {
-    manualSaveModal.open({
+    manualSaveModal.openVoid({
       reFetchVersions: reFetchAllVersions,
     });
   };

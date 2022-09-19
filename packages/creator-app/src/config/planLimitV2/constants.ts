@@ -2,6 +2,7 @@ import { PlanType } from '@voiceflow/internal';
 
 export enum LimitType {
   DOMAINS = 'DOMAINS',
+  PROJECTS = 'PROJECTS',
   MARKUP_IMAGE = 'MARKUP_IMAGE',
   MARKUP_VIDEO = 'MARKUP_VIDEO',
 }

@@ -6,7 +6,7 @@ import { LimitType } from '@/config/planLimitV2';
 import * as Domain from '@/ducks/domain';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
-import { useDispatch, useLimitedAction, useSelector } from '@/hooks';
+import { useDispatch, usePlanLimitedAction, useSelector } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
 
 import MenuInfoTooltip from './MenuInfoTooltip';
@@ -40,14 +40,14 @@ const Menu: React.FC<MenuProps> = ({ onClose }) => {
     return domains.filter(({ name }) => name.toLowerCase().includes(lowercaseSearch));
   }, [search, domains]);
 
-  const onCreate = useLimitedAction({
+  const onCreate = usePlanLimitedAction({
     type: LimitType.DOMAINS,
     value: domains.length,
     onAction: () => createModal.openVoid({ name: search }),
     onLimited: (limit) => upgradeModal.openVoid(limit.upgradeModal),
   });
 
-  const onDuplicate = useLimitedAction({
+  const onDuplicate = usePlanLimitedAction({
     type: LimitType.DOMAINS,
     value: domains.length,
     onAction: async (id: string) => {

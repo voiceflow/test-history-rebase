@@ -6,7 +6,7 @@ import { Permission } from '@/config/permissions';
 import { LimitType } from '@/config/planLimitV2';
 import { BlockType, MarkupBlockType } from '@/constants';
 import * as History from '@/ducks/history';
-import { useDispatch, useEventualEngine, useLimit, usePermission, useTrackingEvents } from '@/hooks';
+import { useDispatch, useEventualEngine, usePermission, usePlanLimit, useTrackingEvents } from '@/hooks';
 import { useAnyModeOpen, useTextMarkupMode } from '@/pages/Project/hooks/modes';
 import { upload, windowRefocused } from '@/utils/dom';
 import { imageSizeFromUrl, videoSizeFromUrl } from '@/utils/file';
@@ -40,8 +40,8 @@ export const MarkupProvider: React.FC = ({ children }) => {
   const [uploadingMedia, setUploadingMedia] = React.useState(false);
   const [creatingType, localSetCreatingType] = React.useState<Nullable<MarkupBlockType>>(isTextMarkupMode ? BlockType.MARKUP_TEXT : null);
 
-  const markupVideoLimit = useLimit(LimitType.MARKUP_VIDEO);
-  const markupImageLimit = useLimit(LimitType.MARKUP_IMAGE);
+  const markupVideoLimit = usePlanLimit({ type: LimitType.MARKUP_VIDEO });
+  const markupImageLimit = usePlanLimit({ type: LimitType.MARKUP_IMAGE });
 
   const imageUploader = Upload.useUpload({ fileType: 'image', endpoint: '/image' });
   const videoUploader = Upload.useUpload({ fileType: 'video', endpoint: '/video' });
@@ -91,7 +91,7 @@ export const MarkupProvider: React.FC = ({ children }) => {
 
       if (ALLOWED_IMAGE_TYPES.includes(extension)) {
         if (cache.current.markupImageLimit && fileSizeMB > cache.current.markupImageLimit.value) {
-          errors.push(cache.current.markupImageLimit.error);
+          errors.push(cache.current.markupImageLimit.toastError);
           return false;
         }
 
@@ -100,7 +100,7 @@ export const MarkupProvider: React.FC = ({ children }) => {
 
       if (ALLOWED_VIDEOS_TYPES.includes(extension)) {
         if (cache.current.markupVideoLimit && fileSizeMB > cache.current.markupVideoLimit.value) {
-          errors.push(cache.current.markupVideoLimit.error);
+          errors.push(cache.current.markupVideoLimit.toastError);
           return false;
         }
 

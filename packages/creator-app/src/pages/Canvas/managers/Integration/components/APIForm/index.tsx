@@ -4,7 +4,7 @@ import React from 'react';
 
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 
-import { BodySection, CaptureResponseSection, Footer, HeaderSection, ParametersSection, RequestTypeSection, SendRequestModal } from './components';
+import { BodySection, CaptureResponseSection, Footer, HeaderSection, ParametersSection, RequestTypeSection } from './components';
 import { BaseFormProps } from './types';
 
 interface APIFormProps extends BaseFormProps {
@@ -16,9 +16,7 @@ const APIForm: React.FC<APIFormProps> = ({ editor, header, footer }) => {
   const showBodySection = editor.data.selectedAction !== BaseNode.Api.APIActionType.GET;
 
   return (
-    <EditorV2 header={header ?? <EditorV2.DefaultHeader />} footer={footer ?? <Footer />}>
-      <SendRequestModal editor={editor} />
-
+    <EditorV2 header={header ?? <EditorV2.DefaultHeader />} footer={footer ?? <Footer editor={editor} />}>
       <RequestTypeSection editor={editor} />
 
       <SectionV2.Divider />

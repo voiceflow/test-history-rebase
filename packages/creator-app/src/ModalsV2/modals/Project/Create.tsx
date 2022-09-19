@@ -14,7 +14,7 @@ const Create = manager.create<{ listID?: string }>('CreateProject', () => ({ api
       type={type}
       opened={opened}
       hidden={hidden}
-      animated={animated}
+      animated={animated && !isCreatingProject}
       onExited={api.remove}
       maxWidth={450}
       className={`${ClassName.MODAL}--payment`}

@@ -29,7 +29,7 @@ const Dashboard: React.FC = () => {
   const query = location?.search ? Query.parse(location.search) : null;
 
   const [filterText, handleFilterText] = React.useState('');
-  const { open: openImportModal } = useModals(ModalType.IMPORT_PROJECT);
+  const importModal = ModalsV2.useModal(ModalsV2.Project.Import);
   const collaboratorsModal = ModalsV2.useModal(ModalsV2.Collaborators);
   const { open: openPaymentModal } = useModals(ModalType.PAYMENT);
 
@@ -39,7 +39,7 @@ const Dashboard: React.FC = () => {
 
     if (query?.import) {
       clearSearch();
-      openImportModal({ projectID: query?.import });
+      importModal.openVoid({ projectID: query?.import });
     } else if (query?.invite_collaborators) {
       collaboratorsModal.openVoid();
     } else if (query?.upgrade_workspace) {

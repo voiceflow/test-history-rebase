@@ -6,7 +6,7 @@ import * as Documentation from '@/config/documentation';
 import { LimitType } from '@/config/planLimitV2';
 import * as Project from '@/ducks/project';
 import * as ProjectV2 from '@/ducks/projectV2';
-import { useDispatch, useLimit, useSelector } from '@/hooks';
+import { useDispatch, usePlanLimit, useSelector } from '@/hooks';
 
 import { useModal } from '../../hooks';
 import manager from '../../manager';
@@ -26,7 +26,7 @@ const ConvertConfirm = manager.create<Props>(
 
       const mergeProjects = useDispatch(Project.mergeProjects);
 
-      const domainsLimit = useLimit(LimitType.DOMAINS);
+      const domainsLimit = usePlanLimit({ type: LimitType.DOMAINS });
       const upgradeModal = useModal(Upgrade);
 
       const onConfirm = async () => {

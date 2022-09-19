@@ -1,34 +1,34 @@
+import { PlanType } from '@voiceflow/internal';
+
 import * as Tracking from '@/ducks/tracking';
 
-import { PlanLimit, UpgradeModalLimit } from './types';
-import { applyStarterLimits, applyTeamLimits, onOpenBookDemoPageWithTrackingFactory, onOpenPaymentModal } from './utils';
+import { PlanLimit, UpgradeModalValueLimit } from './types';
+import { applyStarterLimits, applyTeamLimits, getUpgradeToModalProps } from './utils';
 
 const DEFAULT_MODAL = {
   title: 'Need to design larger assistants?',
   header: 'Domains',
 };
 
-const TEAM_LIMIT: UpgradeModalLimit = {
+const TEAM_LIMIT: UpgradeModalValueLimit = {
   value: 3,
-  upgradeModal: {
+  getUpgradeModal: () => ({
     ...DEFAULT_MODAL,
-    onUpgrade: onOpenBookDemoPageWithTrackingFactory(Tracking.UpgradePrompt.DOMAINS),
+    ...getUpgradeToModalProps(PlanType.ENTERPRISE, Tracking.UpgradePrompt.DOMAINS),
     description: `Upgrade to enterprise to unlock unlimited domains for all assistants in your workspace.`,
-    upgradeButtonText: 'Contact Sales',
-  },
+  }),
 };
 
-const STARTER_LIMIT: UpgradeModalLimit = {
+const STARTER_LIMIT: UpgradeModalValueLimit = {
   value: 1,
-  upgradeModal: {
+  getUpgradeModal: () => ({
     ...DEFAULT_MODAL,
-    onUpgrade: onOpenPaymentModal,
+    ...getUpgradeToModalProps(PlanType.TEAM, Tracking.UpgradePrompt.DOMAINS),
     description: `Upgrade to team to unlock ${TEAM_LIMIT.value} domains for all assistants in your workspace.`,
-    upgradeButtonText: 'Upgrade to Team',
-  },
+  }),
 };
 
-export const DOMAINS_LIMITS: PlanLimit<UpgradeModalLimit> = {
+export const DOMAINS_LIMITS: PlanLimit<UpgradeModalValueLimit> = {
   ...applyTeamLimits(TEAM_LIMIT),
   ...applyStarterLimits(STARTER_LIMIT),
 };

@@ -150,8 +150,8 @@ const NewProject: React.FC<NewProjectProps> = ({ onToggleCreating, onClose, list
         });
       }
     } finally {
-      setIsCreating(false);
       onClose();
+      setIsCreating(false);
     }
 
     if (newVersionID) {

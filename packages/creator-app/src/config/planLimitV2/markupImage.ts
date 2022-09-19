@@ -1,11 +1,11 @@
-import { PlanLimit, ToastErrorLimit } from './types';
+import { PlanLimit, ToastErrorValueLimit } from './types';
 import { applyAllLimits } from './utils';
 
-const LIMIT: ToastErrorLimit = {
+const LIMIT: ToastErrorValueLimit = {
   value: 4,
-  error: `File size must not exceed ${4}MBs`,
+  getToastError: ({ limit }) => `File size must not exceed ${limit}MBs`,
 };
 
-export const MARKUP_IMAGE_LIMITS: PlanLimit<ToastErrorLimit> = {
+export const MARKUP_IMAGE_LIMITS: PlanLimit<ToastErrorValueLimit> = {
   ...applyAllLimits(LIMIT),
 };

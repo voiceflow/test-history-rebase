@@ -1,19 +1,9 @@
 import { Utils } from '@voiceflow/realtime-sdk';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
-import {
-  ENTERPRISE_LABEL,
-  LimitDetails,
-  TEAM_LABEL,
-  UPGRADE_TO_ENTERPRISE_ACTION_LABEL,
-  UPGRADE_TO_TEAM_ACTION_LABEL,
-  upgradeToEnterpriseAction,
-  upgradeToTeamAction,
-} from '@/config/planLimits';
+import { ENTERPRISE_LABEL, LimitDetails, UPGRADE_TO_ENTERPRISE_ACTION_LABEL, upgradeToEnterpriseAction } from '@/config/planLimits';
 import { NLPProvider, NLPProviderLabels } from '@/constants';
 import { PlatformAndProjectMeta, PlatformAndProjectMetaType } from '@/pages/NewProjectV2/types';
-
-const STARTER_PROJECT_LIMIT = 2;
 
 const GATED_PROJECT_NLUS = new Set([
   <PlatformAndProjectMetaType>VoiceflowConstants.PlatformType.EINSTEIN,
@@ -24,14 +14,6 @@ const GATED_PROJECT_NLUS = new Set([
   <PlatformAndProjectMetaType>VoiceflowConstants.PlatformType.RASA,
   <PlatformAndProjectMetaType>VoiceflowConstants.PlatformType.WATSON,
 ]);
-
-export const ProjectLimitDetails: LimitDetails = {
-  modalTitle: 'New Project',
-  title: 'Need more projects?',
-  description: `You've reached your ${STARTER_PROJECT_LIMIT} free project limit. Upgrade to ${TEAM_LABEL} for unlimited projects.`,
-  submitText: UPGRADE_TO_TEAM_ACTION_LABEL,
-  onSubmit: upgradeToTeamAction,
-};
 
 const projectNLUEnterpisePlanLimitDetails = (nlpSelection: NLPProvider) => {
   return {

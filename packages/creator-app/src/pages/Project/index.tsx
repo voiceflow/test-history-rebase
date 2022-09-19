@@ -16,7 +16,6 @@ import { VersionSubscriptionGate, WorkspaceFeatureLoadingGate } from '@/gates';
 import { lazy, withBatchLoadingGate } from '@/hocs';
 import { useDispatch, useEventualEngine, useFeature, useLayoutDidUpdate, useLocalDispatch, useSelector, useTeardown, useTheme } from '@/hooks';
 import ExportModelModal from '@/pages/Canvas/components/ExportModelModal';
-import ManualSaveModal from '@/pages/Canvas/components/ManualSaveModal';
 import { useProjectPreviewMode } from '@/pages/Project/hooks';
 import Providers from '@/pages/Project/Providers';
 import PrototypeWebhook from '@/pages/PrototypeWebhook';
@@ -133,7 +132,6 @@ const Project: React.FC = () => {
 
             <Redirect to={Path.PROJECT_DOMAIN} />
           </Switch>
-          <ManualSaveModal />
         </Providers>
       </ProjectProvider>
     </MarkupProvider>

@@ -2,11 +2,12 @@ import { IconButton, IconButtonVariant, TippyTooltip, toast, ToastCallToAction }
 import React from 'react';
 
 import * as Errors from '@/config/errors';
-import { ModalType } from '@/constants';
+import { LimitType } from '@/config/planLimitV2';
 import * as Project from '@/ducks/project';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
-import { useActiveWorkspace, useDispatch, useModals, useSelector } from '@/hooks';
+import { useActiveWorkspace, useDispatch, usePlanLimitedAction, useSelector } from '@/hooks';
+import * as ModalsV2 from '@/ModalsV2';
 import { readFileAsync, upload } from '@/utils/dom';
 import * as Sentry from '@/vendors/sentry';
 
@@ -20,7 +21,7 @@ const ImportButton: React.FC = () => {
 
   const workspace = useActiveWorkspace();
 
-  const { open: openProjectLimitModal } = useModals(ModalType.FREE_PROJECT_LIMIT);
+  const upgradeModal = ModalsV2.useModal(ModalsV2.Upgrade);
 
   const onUpload = async (files: FileList) => {
     if (!files.length) return;
@@ -49,17 +50,17 @@ const ImportButton: React.FC = () => {
     }
   };
 
-  const onClickHandler = () => {
-    if (!!workspace && projects.length >= workspace.projects) {
-      openProjectLimitModal({ projects: workspace.projects });
-    } else {
-      upload(onUpload, { accept: ACCEPTED_FILE_FORMATS });
-    }
-  };
+  const onImport = usePlanLimitedAction({
+    type: LimitType.PROJECTS,
+    value: projects.length,
+    limit: workspace?.projects ?? 2,
+    onAction: () => upload(onUpload, { accept: ACCEPTED_FILE_FORMATS }),
+    onLimited: (limit) => upgradeModal.openVoid(limit.upgradeModal),
+  });
 
   return (
     <TippyTooltip title="Import .vf file" position="bottom">
-      <IconButton preventFocusStyle variant={IconButtonVariant.OUTLINE} icon="download" large onClick={onClickHandler} />
+      <IconButton preventFocusStyle variant={IconButtonVariant.OUTLINE} icon="download" large onClick={onImport} />
     </TippyTooltip>
   );
 };

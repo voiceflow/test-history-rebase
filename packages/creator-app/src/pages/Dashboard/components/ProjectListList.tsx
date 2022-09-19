@@ -6,17 +6,15 @@ import React from 'react';
 import DragLayer from '@/components/DragLayer';
 import EmptyScreen from '@/components/EmptyScreen';
 import { Permission } from '@/config/permissions';
-import { ProjectLimitDetails } from '@/config/planLimits/projects';
-import { ModalType } from '@/constants';
+import { LimitType } from '@/config/planLimitV2';
 import { ScrollContextProvider } from '@/contexts';
 import * as Modal from '@/ducks/modal';
 import * as ProjectList from '@/ducks/projectList';
 import * as ProjectListV2 from '@/ducks/projectListV2';
 import * as ProjectV2 from '@/ducks/projectV2';
-import { UpgradePrompt } from '@/ducks/tracking';
 import { WorkspaceFeatureLoadingGate, WorkspaceSubscriptionGate } from '@/gates';
 import { DragItem as BaseDragItem, HoverItem as BaseHoverItem, withBatchLoadingGate } from '@/hocs';
-import { useDispatch, useModals, usePermission, useScrollHelpers, useSelector, useTrackingEvents } from '@/hooks';
+import { useDispatch, usePermission, usePlanLimited, useScrollHelpers, useSelector } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
 import { DashboardClassName, Identifier } from '@/styles/constants';
 
@@ -62,9 +60,11 @@ const ProjectListList: React.FC<ProjectListListProps> = ({ workspace, filter, is
 
   const [canManageLists] = usePermission(Permission.MANAGE_PROJECT_LISTS);
   const { bodyRef, innerRef, scrollHelpers } = useScrollHelpers<HTMLDivElement, HTMLDivElement>();
+
+  const upgradeModal = ModalsV2.useModal(ModalsV2.Upgrade);
   const projectCreateModal = ModalsV2.useModal(ModalsV2.Project.Create);
-  const { open: openUpgradeModal } = useModals(ModalType.UPGRADE_MODAL);
-  const [trackingEvents] = useTrackingEvents();
+
+  const projectsLimit = usePlanLimited({ type: LimitType.PROJECTS, value: projects.length, limit: workspace?.projects ?? 2 });
 
   const onCreateList = React.useCallback(async () => {
     const list = await createList();
@@ -76,13 +76,10 @@ const ProjectListList: React.FC<ProjectListListProps> = ({ workspace, filter, is
 
   const onCreateProject = React.useCallback(
     (id?: string) => {
-      if (projects.length >= workspace!.projects) {
-        trackingEvents.trackUpgradePrompt({ promptType: UpgradePrompt.PROJECT_LIMIT });
-        openUpgradeModal({ planLimitDetails: ProjectLimitDetails, promptOrigin: UpgradePrompt.PROJECT_LIMIT });
+      if (projectsLimit) {
+        upgradeModal.openVoid(projectsLimit.upgradeModal);
       } else {
-        projectCreateModal.openVoid({
-          listID: id,
-        });
+        projectCreateModal.openVoid({ listID: id });
       }
     },
     [projects, workspace]

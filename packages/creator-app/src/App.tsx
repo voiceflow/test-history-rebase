@@ -14,6 +14,7 @@ import IntercomChat from '@/components/IntercomChat';
 import { RootPageProgressBar } from '@/components/PageProgressBar';
 import SeoHelmet from '@/components/SeoHelmet';
 import SupportChat from '@/components/SupportChat';
+import TrackNewCodeVersion from '@/components/TrackNewCodeVersion';
 import { SeoPage } from '@/constants/seo';
 import { compose } from '@/hocs';
 import AppModals from '@/modals/AppModals';
@@ -32,6 +33,7 @@ const App: React.FC = () => (
     <ModalsV2.Placeholder />
     <RootPageProgressBar />
     <SupportChat />
+    <TrackNewCodeVersion />
   </>
 );
 

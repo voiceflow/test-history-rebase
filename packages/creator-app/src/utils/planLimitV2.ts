@@ -4,5 +4,3 @@ import { LIMITS, Limits, LimitType } from '@/config/planLimitV2';
 
 export const getPlanLimit = <Limit extends LimitType>(limit: Limit, plan: PlanType): NonNullable<Limits[Limit][PlanType]> | null =>
   (LIMITS[limit]?.[plan] || null) as NonNullable<Limits[Limit][PlanType]> | null;
-
-export const hasPlanLimit = (limit: LimitType, plan: PlanType): boolean => Number.isFinite(getPlanLimit(limit, plan)?.value);

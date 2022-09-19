@@ -1,8 +1,7 @@
 import cloneDeep from 'lodash/cloneDeep';
 
+import { deepDraftToMarkdown } from '@/pages/Canvas/managers/Integration/components/ZapierAndGoogleEditor/components/utils';
 import { encodeCustomAPIData } from '@/utils/integration';
-
-import { deepDraftToMarkdown } from '../../../../ZapierAndGoogleEditor/components/utils';
 
 export const normalize = (data: any) => {
   const dataCreatorAPIFormat = encodeCustomAPIData(data);

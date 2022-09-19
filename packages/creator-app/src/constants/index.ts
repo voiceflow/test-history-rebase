@@ -246,13 +246,9 @@ export enum ModalType {
 
   EXPORT_MODEL = 'export-model',
 
-  MANUAL_SAVE_MODAL = 'manual-save-modal',
-
   ONBOARDING = 'onboarding',
 
-  FREE_PROJECT_LIMIT = 'free-project-limit',
   REALTIME_DENIED = 'realtime-denied',
-  PROJECT_DOWNLOAD = 'project-download',
   TESTABLE_LINKS = 'testable-links',
   CANVAS_EXPORT = 'canvas-export',
   PUBLISH_AMAZON = 'publish-amazon',
@@ -264,12 +260,9 @@ export enum ModalType {
   VARIABLE_CREATE = 'variable-create',
 
   IMPORT_SLOTS = 'import-slots',
-  IMPORT_PROJECT = 'import-project',
   IMPORT_UTTERANCES = 'import-utterances',
 
-  LOADING = 'loading',
   CONFIRM = 'confirm',
-  REFRESH = 'refresh',
 
   DIALOGFLOW_CREATE_NEW_AGENT = 'dialogflow-create-new-agent',
 
@@ -279,8 +272,6 @@ export enum ModalType {
   PUBLISH_VERSION_MODAL = 'publish-version-modal',
 
   UPGRADE_MODAL = 'upgrade-modal',
-
-  INTEGRATION_EDITOR_SEND_REQUEST_MODAL = 'integration-editor-send-request-modal',
 }
 
 export const EDITOR_SEAT_ROLES = [UserRole.EDITOR, UserRole.ADMIN, UserRole.OWNER]; // billing not included in seat roles

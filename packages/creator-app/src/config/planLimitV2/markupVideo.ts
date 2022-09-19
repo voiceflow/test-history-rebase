@@ -1,24 +1,24 @@
-import { PlanLimit, ToastErrorLimit } from './types';
+import { PlanLimit, ToastErrorValueLimit } from './types';
 import { applyEnterpriseLimits, applyStarterLimits, applyTeamLimits } from './utils';
 
-const getErrorMessage = (limitMB: number): string => `File size must not exceed ${limitMB}MBs`;
+const getToastError = (limit: { limit: number }): string => `File size must not exceed ${limit}MBs`;
 
-const STARTER_LIMIT: ToastErrorLimit = {
+const STARTER_LIMIT: ToastErrorValueLimit = {
   value: 4,
-  error: getErrorMessage(4),
+  getToastError,
 };
 
-const TEAM_LIMIT: ToastErrorLimit = {
+const TEAM_LIMIT: ToastErrorValueLimit = {
   value: 40,
-  error: getErrorMessage(40),
+  getToastError,
 };
 
-const ENTERPRISE_LIMIT: ToastErrorLimit = {
+const ENTERPRISE_LIMIT: ToastErrorValueLimit = {
   value: 200,
-  error: getErrorMessage(200),
+  getToastError,
 };
 
-export const MARKUP_VIDEO_LIMITS: PlanLimit<ToastErrorLimit> = {
+export const MARKUP_VIDEO_LIMITS: PlanLimit<ToastErrorValueLimit> = {
   ...applyTeamLimits(TEAM_LIMIT),
   ...applyStarterLimits(STARTER_LIMIT),
   ...applyEnterpriseLimits(ENTERPRISE_LIMIT),

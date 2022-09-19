@@ -4,4 +4,3 @@ export { default as Footer } from './Footer';
 export { default as HeaderSection } from './HeaderSection';
 export { default as ParametersSection } from './ParametersSection';
 export { default as RequestTypeSection } from './RequestTypeSection';
-export { default as SendRequestModal } from './SendRequestModal';

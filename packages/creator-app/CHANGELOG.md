@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.912.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.912.1...@voiceflow/creator-app@1.912.2) (2022-09-19)
+
+
+### Bug Fixes
+
+* update chat onboarding userflow [bugfix] (CT-000) ([5a12ab6](https://github.com/voiceflow/creator-app/commit/5a12ab65437296c626e2fbe262bea0ae3a518ae4))
+
+
+
+
+
 ## [1.912.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.912.0...@voiceflow/creator-app@1.912.1) (2022-09-19)
 
 

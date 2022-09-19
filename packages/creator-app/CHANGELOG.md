@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.911.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.911.1...@voiceflow/creator-app@1.911.2) (2022-09-19)
+
+
+### Bug Fixes
+
+* google export publish refactor (CT-000) ([#6086](https://github.com/voiceflow/creator-app/issues/6086)) ([c43dcf9](https://github.com/voiceflow/creator-app/commit/c43dcf9d69053ce43a43a3d577a385cf9c7e4553))
+
+
+
+
+
 ## [1.911.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.911.0...@voiceflow/creator-app@1.911.1) (2022-09-19)
 
 

@@ -12,7 +12,7 @@ import {
 } from '@/client/services';
 import { GOOGLE_SERVICE_ENDPOINT } from '@/config';
 import { GoogleStageType } from '@/constants/platforms';
-import { Account, GeneralJob, GoogleExportJob, GooglePublishJob } from '@/models';
+import { Account, GoogleExportJob, GooglePublishJob } from '@/models';
 
 import projectService from './project';
 
@@ -24,7 +24,7 @@ const googleServiceClient = {
   publish: createPublishService<GooglePublishJob.AnyJob, GoogleStageType>(`${GOOGLE_SERVICE_ENDPOINT}/v2`),
   session: createSessionService<Account.Google, { code: string }>(GOOGLE_SERVICE_ENDPOINT),
   version: createVersionService<GoogleVersion.VoiceVersion>(GOOGLE_SERVICE_ENDPOINT),
-  prototype: createPrototypeService<GeneralJob.AnyJob>(GOOGLE_SERVICE_ENDPOINT),
+  prototype: createPrototypeService(GOOGLE_SERVICE_ENDPOINT),
 };
 
 export default googleServiceClient;

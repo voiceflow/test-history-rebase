@@ -12,7 +12,7 @@ import {
 } from '@/client/services';
 import { ALEXA_SERVICE_ENDPOINT } from '@/config';
 import { AlexaStageType } from '@/constants/platforms';
-import { Account, AlexaExportJob, AlexaPublishJob, GeneralJob } from '@/models';
+import { Account, AlexaExportJob, AlexaPublishJob } from '@/models';
 
 import handlersService from './handlers';
 import projectService from './project';
@@ -26,7 +26,7 @@ const alexaClient = {
   publish: createPublishService<AlexaPublishJob.AnyJob, AlexaStageType>(ALEXA_SERVICE_ENDPOINT),
   session: createSessionService<Account.Amazon, { code: string }>(ALEXA_SERVICE_ENDPOINT),
   version: createVersionService<AlexaVersion.Version>(ALEXA_SERVICE_ENDPOINT),
-  prototype: createPrototypeService<GeneralJob.AnyJob>(ALEXA_SERVICE_ENDPOINT),
+  prototype: createPrototypeService(ALEXA_SERVICE_ENDPOINT),
 };
 
 export default alexaClient;

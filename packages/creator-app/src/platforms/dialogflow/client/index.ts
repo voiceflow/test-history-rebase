@@ -11,7 +11,7 @@ import {
 } from '@/client/services';
 import { GOOGLE_SERVICE_ENDPOINT } from '@/config';
 import { GoogleStageType } from '@/constants/platforms';
-import { DialogflowExportJob, DialogflowPublishJob, GeneralJob } from '@/models';
+import { DialogflowExportJob, DialogflowPublishJob } from '@/models';
 
 import projectService from './project';
 
@@ -24,7 +24,7 @@ const dialogflowServiceClient = {
   project: projectService,
   publish: createPublishService<DialogflowPublishJob.AnyJob, GoogleStageType>(DIALOGFLOW_ENDPOINT),
   version: createVersionService<DFESVersion.Version>(DIALOGFLOW_ENDPOINT),
-  prototype: createPrototypeService<GeneralJob.AnyJob>(DIALOGFLOW_ENDPOINT),
+  prototype: createPrototypeService(DIALOGFLOW_ENDPOINT),
 };
 
 export default dialogflowServiceClient;

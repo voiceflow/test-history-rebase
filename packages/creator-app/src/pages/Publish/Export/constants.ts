@@ -3,9 +3,9 @@ import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import UploadButton from '@/components/PlatformUploadButton';
 import * as Account from '@/ducks/account';
 import AlexaExport, { AlexaUploadLink } from '@/platforms/alexa/jobs/export';
+import GeneralExport, { GeneralUploadLink } from '@/platforms/general/jobs/export';
 import { createPlatformSelector } from '@/utils/platform';
 
-import { GeneralUploadLink } from './General';
 import { GoogleUploadButton, GoogleUploadLink } from './Google';
 
 export const getUploadLink = createPlatformSelector(
@@ -27,7 +27,7 @@ export const getUploadButtonV2 = createPlatformSelector(
   {
     [VoiceflowConstants.PlatformType.ALEXA]: AlexaExport,
   },
-  null
+  GeneralExport
 );
 
 export const getPlatformSyncAction = createPlatformSelector(

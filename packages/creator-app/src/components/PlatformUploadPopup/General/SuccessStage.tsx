@@ -1,12 +1,12 @@
 import React from 'react';
 
 import { GeneralJobSuccessType } from '@/constants/platforms';
-import { GeneralJob } from '@/models';
+import { GeneralExportJob } from '@/models';
 
 import { DownloadStage } from '../components';
 
 interface SuccessStageProps {
-  stage: GeneralJob.SuccessStage;
+  stage: GeneralExportJob.SuccessStage;
   cancel: () => void;
 }
 

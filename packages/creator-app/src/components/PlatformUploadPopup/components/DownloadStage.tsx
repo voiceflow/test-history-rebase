@@ -1,7 +1,7 @@
 import { DataTypes, download, toast, useSetup } from '@voiceflow/ui';
 import React from 'react';
 
-import { AlexaExportJob, DialogflowExportJob, GeneralJob, GoogleExportJob, JobStageData } from '@/models';
+import { AlexaExportJob, DialogflowExportJob, GeneralExportJob, GoogleExportJob, JobStageData } from '@/models';
 
 interface DownloadProps {
   cancel: () => void;
@@ -9,7 +9,7 @@ interface DownloadProps {
     | JobStageData<AlexaExportJob.SuccessStage>
     | JobStageData<GoogleExportJob.SuccessStage>
     | JobStageData<DialogflowExportJob.SuccessStage>
-    | JobStageData<GeneralJob.SuccessStage>;
+    | JobStageData<GeneralExportJob.SuccessStage>;
 }
 
 const Download: React.FC<DownloadProps> = ({ cancel, stageData }) => {

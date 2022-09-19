@@ -8,7 +8,7 @@ import {
   AlexaPublishJob,
   DialogflowExportJob,
   DialogflowPublishJob,
-  GeneralJob,
+  GeneralExportJob,
   GoogleExportJob,
   GooglePublishJob,
   JobStageData,
@@ -50,7 +50,7 @@ export type AnyErrorStageData =
   | JobStageData<DialogflowExportJob.ErrorStage>
   | JobStageData<AlexaExportJob.ErrorStage>
   | JobStageData<AlexaPublishJob.ErrorStage>
-  | JobStageData<GeneralJob.ErrorStage>;
+  | JobStageData<GeneralExportJob.ErrorStage>;
 
 export type AnyErrorStage =
   | GoogleExportJob.ErrorStage
@@ -59,7 +59,7 @@ export type AnyErrorStage =
   | DialogflowExportJob.ErrorStage
   | AlexaExportJob.ErrorStage
   | AlexaPublishJob.ErrorStage
-  | GeneralJob.ErrorStage;
+  | GeneralExportJob.ErrorStage;
 
 export type AnyPublishJobErrorType = GooglePublishJobErrorType | DialogflowPublishJobErrorType | AlexaPublishJobErrorType;
 

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Button, { ButtonVariant } from '../../components/Button';
+import Button, { ButtonVariant } from '@/pages/Project/components/Header/components/CanvasHeader/components/Upload/components/Button';
 
 interface GeneralUploadButtonProps {
   isTraining: boolean;

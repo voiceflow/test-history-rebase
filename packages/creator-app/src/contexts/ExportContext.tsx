@@ -6,9 +6,9 @@ import { useSelector } from 'react-redux';
 import client from '@/client';
 import * as ProjectV2 from '@/ducks/projectV2';
 import useJob, { JobContextValue } from '@/hooks/job';
-import { AlexaPublishJob, DialogflowPublishJob, GeneralJob, GooglePublishJob, Job, JobClient } from '@/models';
+import { AlexaPublishJob, DialogflowPublishJob, GeneralExportJob, GooglePublishJob, Job, JobClient } from '@/models';
 
-type AnyExportJob = AlexaPublishJob.AnyJob | GooglePublishJob.AnyJob | DialogflowPublishJob.AnyJob | GeneralJob.AnyJob;
+type AnyExportJob = AlexaPublishJob.AnyJob | GooglePublishJob.AnyJob | DialogflowPublishJob.AnyJob | GeneralExportJob.AnyJob;
 
 export const ExportContext = React.createContext<Nullable<JobContextValue<Job<any>>>>(null);
 export const { Consumer: ExportConsumer } = ExportContext;

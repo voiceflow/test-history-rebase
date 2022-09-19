@@ -255,7 +255,7 @@ export namespace GoogleExportJob {
   export type AnyJob = Job<IdleStage | ErrorStage | SuccessStage | ProgressStage | WaitAccountStage | WaitProjectStage | WaitInvocationNameStage>;
 }
 
-export namespace GeneralJob {
+export namespace GeneralExportJob {
   export type IdleStage = JobStage<GeneralStageType.IDLE, Record<string, unknown>>;
 
   export type ErrorStage = JobStage<

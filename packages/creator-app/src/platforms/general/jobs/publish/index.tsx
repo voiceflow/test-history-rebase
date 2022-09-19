@@ -3,6 +3,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 
 import client from '@/client';
+import { ProgressStage } from '@/components/PlatformUploadPopup/components';
 import { PublishVersionModalData } from '@/components/PublishVersionModal';
 import { ModalType } from '@/constants';
 import { NLPTrainStageType, VersionTag } from '@/constants/platforms';
@@ -11,7 +12,6 @@ import { activeProjectIDSelector } from '@/ducks/session';
 import { useDispatch, useModals, useTrackingEvents } from '@/hooks';
 import { NLPContext, NLPProvider } from '@/pages/Project/contexts/NLPContext';
 
-import ProgressStage from '../components/ProgressStage';
 import GeneralUploadButton from './components/GeneralUploadButton';
 
 const GeneralPublish: React.FC = () => {
@@ -59,7 +59,7 @@ const GeneralPublish: React.FC = () => {
   return (
     <>
       <Portal>
-        <ProgressStage job={nlpContext.job} inProgressStage={NLPTrainStageType.PROGRESS} />
+        <ProgressStage progress={progress} />
       </Portal>
       <GeneralUploadButton isTraining={isTraining} onClick={onClick} progress={progress} />
     </>

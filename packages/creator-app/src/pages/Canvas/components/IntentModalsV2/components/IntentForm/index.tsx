@@ -7,6 +7,7 @@ import React from 'react';
 import * as Intent from '@/ducks/intent';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
+import * as Tracking from '@/ducks/tracking';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useDispatch, useSelector } from '@/hooks';
 import { getUtteranceRecommendationsLocales } from '@/platforms';
@@ -22,6 +23,7 @@ import UtteranceSection from '../components/UtteranceSection';
 interface IntentFormProps {
   name: string;
   inputs: Realtime.IntentInput[];
+  creationType: Tracking.IntentEditType;
   noteID?: string;
   setName: (name: string) => void;
   saveName?: () => void;
@@ -43,6 +45,7 @@ interface IntentFormProps {
 const IntentForm: React.FC<IntentFormProps> = ({
   name,
   inputs,
+  creationType,
   setName,
   intentID,
   saveName,
@@ -135,6 +138,7 @@ const IntentForm: React.FC<IntentFormProps> = ({
 
       {withDescriptionSection && intentID && (
         <DescriptionSection
+          creationType={creationType}
           withBottomBorder={withDescriptionBottomBorder}
           intentID={intentID}
           onCreateNote={(noteID) => intentID && patchIntent(intentID, { noteID })}

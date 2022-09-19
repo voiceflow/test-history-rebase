@@ -5,6 +5,7 @@ import React from 'react';
 import Modal, { ModalFooter } from '@/components/Modal';
 import { MODAL_WIDTH_VARIANTS, MODAL_WIDTHS, ModalType } from '@/constants';
 import { TextEditorVariablesPopoverProvider } from '@/contexts';
+import * as Tracking from '@/ducks/tracking';
 import { useModals } from '@/hooks';
 import IntentForm from '@/pages/Canvas/components/IntentModalsV2/components/IntentForm';
 import { useCreateIntent } from '@/pages/Canvas/components/IntentModalsV2/CreateModal/hooks';
@@ -49,6 +50,7 @@ const CreateModal: React.FC = () => {
             <IntentForm
               name={name}
               inputs={inputs}
+              creationType={Tracking.IntentEditType.IMM}
               setName={setName}
               autofocus
               setInputs={setInputs}

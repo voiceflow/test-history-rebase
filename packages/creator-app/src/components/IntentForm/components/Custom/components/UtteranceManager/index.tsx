@@ -26,7 +26,7 @@ import * as Intent from '@/ducks/intent';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as SlotV2 from '@/ducks/slotV2';
-import { CanvasCreationType, IntentEditType } from '@/ducks/tracking/constants';
+import { CanvasCreationType } from '@/ducks/tracking/constants';
 import { useAddSlot, useDispatch, useModals, usePermission, useSelector, useTrackingEvents } from '@/hooks';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
@@ -70,8 +70,6 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({ intent, isNested, i
   const onUpdateUtterances = React.useCallback(
     (inputs) => {
       patchIntent(intentID, { inputs });
-
-      trackingEvents.trackIntentEdit({ creationType: isInModal ? IntentEditType.IMM : IntentEditType.EDITOR });
     },
     [intentID, patchIntent, isInModal]
   );

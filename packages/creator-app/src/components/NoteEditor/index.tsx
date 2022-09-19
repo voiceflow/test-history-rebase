@@ -5,11 +5,13 @@ import React from 'react';
 
 import MentionEditor, { MentionEditorProps } from '@/components/MentionEditor';
 import * as Note from '@/ducks/note';
-import { useDispatch, useLinkedState, useSelector } from '@/hooks';
+import * as Tracking from '@/ducks/tracking';
+import { useDispatch, useLinkedState, useSelector, useTrackingEvents } from '@/hooks';
 
 interface NoteEditorProps<T extends Realtime.Note> extends Omit<MentionEditorProps, 'meta' | 'value' | 'onBlur' | 'onChange'> {
   id?: string;
   type: T['type'];
+  creationType: Tracking.IntentEditType;
   onUpsert: (note: T) => void;
   inputRef?: React.Ref<HTMLInputElement>;
 }
@@ -18,6 +20,7 @@ const DEFAULT_MENTIONS: number[] = [];
 
 const NoteEditor = <T extends Realtime.Note>({
   id,
+  creationType,
   type,
   meta,
   onUpsert,
@@ -25,6 +28,8 @@ const NoteEditor = <T extends Realtime.Note>({
   ...props
 }: T['meta'] extends AnyRecord ? NoteEditorProps<T> & { meta: T['meta'] } : NoteEditorProps<T> & { meta?: T['meta'] }): React.ReactElement => {
   const note = useSelector(Note.noteByIDSelector, { id });
+
+  const [trackingEvents] = useTrackingEvents();
 
   const [value, setValue] = useLinkedState(note?.text ?? '');
   const [mentions, setMentions] = useLinkedState(note?.mentions ?? DEFAULT_MENTIONS);
@@ -34,6 +39,7 @@ const NoteEditor = <T extends Realtime.Note>({
   const onChange = (text: string, newMentions: number[]) => {
     setValue(text);
     setMentions(newMentions);
+    trackingEvents.trackIntentEdit({ creationType });
   };
 
   const onBlur = async () => {

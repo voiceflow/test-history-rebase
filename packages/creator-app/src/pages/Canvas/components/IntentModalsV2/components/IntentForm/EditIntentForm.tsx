@@ -3,12 +3,14 @@ import { toast } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Intent from '@/ducks/intent';
-import { useDidUpdateEffect, useDispatch, useIntent, useIntentNameProcessor, useLinkedState } from '@/hooks';
+import * as Tracking from '@/ducks/tracking';
+import { useDidUpdateEffect, useDispatch, useIntent, useIntentNameProcessor, useLinkedState, useTrackingEvents } from '@/hooks';
 
 import IntentForm from './index';
 
 interface EditIntentFormProps {
   intentID: string;
+  creationType: Tracking.IntentEditType;
   isNLUManager?: boolean;
   withNameSection?: boolean;
   prefilledNewUtterance?: string;
@@ -19,6 +21,7 @@ const DEFAULT_INPUTS: Realtime.IntentInput[] = [];
 
 const EditIntentForm: React.FC<EditIntentFormProps> = ({
   intentID,
+  creationType,
   isNLUManager,
   withNameSection = false,
   prefilledNewUtterance,
@@ -32,6 +35,7 @@ const EditIntentForm: React.FC<EditIntentFormProps> = ({
   const addRequiredSlot = useDispatch(Intent.addRequiredSlot);
   const removeRequiredSlot = useDispatch(Intent.removeRequiredSlot);
   const patchIntentSlotDialog = useDispatch(Intent.updateIntentSlotDialog);
+  const [trackingEvents] = useTrackingEvents();
 
   const patchIntent = useDispatch(Intent.patchIntent);
 
@@ -48,14 +52,17 @@ const EditIntentForm: React.FC<EditIntentFormProps> = ({
     }
 
     patchIntent(intentID, { name });
+    trackingEvents.trackIntentEdit({ creationType });
   };
 
   const addRequiredSlotToIntent = async (slotID: string) => {
     await addRequiredSlot(intentID, slotID);
+    trackingEvents.trackIntentEdit({ creationType });
   };
 
   const removeRequiredSlotFromIntent = async (slotID: string) => {
     await removeRequiredSlot(intentID, slotID);
+    trackingEvents.trackIntentEdit({ creationType });
   };
 
   const updateSlotDialog = (slotID: string, dialog: Partial<Realtime.IntentSlotDialog>) => {
@@ -65,6 +72,7 @@ const EditIntentForm: React.FC<EditIntentFormProps> = ({
   const onUpdateUtterances = (inputs: Realtime.IntentInput[]) => {
     setInputs(inputs);
     patchIntent(intentID, { inputs });
+    trackingEvents.trackIntentEdit({ creationType });
   };
 
   useDidUpdateEffect(() => {
@@ -77,6 +85,7 @@ const EditIntentForm: React.FC<EditIntentFormProps> = ({
     <IntentForm
       name={name}
       noteID={intent?.noteID}
+      creationType={creationType}
       inputs={inputs}
       setName={setName}
       intentID={intentID}

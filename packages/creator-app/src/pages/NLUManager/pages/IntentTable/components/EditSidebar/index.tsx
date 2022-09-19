@@ -1,5 +1,6 @@
 import React from 'react';
 
+import * as Tracking from '@/ducks/tracking';
 import EditIntentForm from '@/pages/Canvas/components/IntentModalsV2/components/IntentForm/EditIntentForm';
 import { ItemEditSidebar } from '@/pages/NLUManager/components';
 import { EditorTabs } from '@/pages/NLUManager/constants';
@@ -25,7 +26,7 @@ const EditSidebar: React.FC = () => {
         {nluManager.activeItem && (
           <>
             <CardList intent={nluManager.activeItem} />
-            <EditIntentForm intentID={nluManager.activeItem.id} isNLUManager />
+            <EditIntentForm intentID={nluManager.activeItem.id} isNLUManager creationType={Tracking.IntentEditType.NLU_MANAGER} />
           </>
         )}
       </ItemEditSidebar>

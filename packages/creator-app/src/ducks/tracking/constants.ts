@@ -152,6 +152,8 @@ export enum EventName {
 export enum IntentEditType {
   EDITOR = 'editor',
   IMM = 'imm',
+  NLU_MANAGER = 'nlu manager',
+  QUICKVIEW = 'quickview',
 }
 
 export enum VariableType {

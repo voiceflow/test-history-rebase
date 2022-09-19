@@ -6,7 +6,7 @@ import Modal from '@/components/Modal';
 import { InteractionModelTabType, ModalType } from '@/constants';
 import { TextEditorVariablesPopoverProvider } from '@/contexts';
 import * as Tracking from '@/ducks/tracking';
-import { useLinkedState } from '@/hooks';
+import { useLinkedState, useTrackingEvents } from '@/hooks';
 import EditEntityForm from '@/pages/Canvas/components/EntityModalsV2/components/EntityForm/EditEntityForm';
 import EditIntentForm from '@/pages/Canvas/components/IntentModalsV2/components/IntentForm/EditIntentForm';
 import VariablesSection from '@/pages/Canvas/components/NLUQuickView/components/VariablesSection';
@@ -37,6 +37,7 @@ const NLUQuickView: React.FC = () => {
 
   const [modalTitle, setModalTitle] = useLinkedState(title);
   const [modalRef, setModalRef] = React.useState<HTMLDivElement | null>(null);
+  const [trackingEvents] = useTrackingEvents();
 
   const emptyHeader = isCreatingItem || isEmpty;
   const EmptyBody = isCreatingItem ? Loading : EmptyView;
@@ -62,7 +63,12 @@ const NLUQuickView: React.FC = () => {
         <TitleInput
           value={emptyHeader ? '' : modalTitle}
           onBlur={() => onNameChange(modalTitle, selectedID)}
-          onChangeText={(text) => setModalTitle(nameChangeTransform(text, activeTab))}
+          onChangeText={(text) => {
+            setModalTitle(nameChangeTransform(text, activeTab));
+            if (activeTab === InteractionModelTabType.INTENTS) {
+              trackingEvents.trackIntentEdit({ creationType: Tracking.IntentEditType.IMM });
+            }
+          }}
           placeholder={emptyHeader ? '' : 'Name'}
           onEnterPress={() => onNameChange(modalTitle, selectedID)}
           disabled={emptyHeader || !canRenameItem(selectedID, activeTab)}
@@ -79,7 +85,7 @@ const NLUQuickView: React.FC = () => {
         ) : (
           !!modalRef && (
             <TextEditorVariablesPopoverProvider value={modalRef}>
-              {showIntentForm && <EditIntentForm intentID={selectedID} />}
+              {showIntentForm && <EditIntentForm intentID={selectedID} creationType={Tracking.IntentEditType.IMM} />}
               {showEntityForm && (
                 <EditEntityForm slotID={selectedID} withNameSection={false} withBottomDivider creationType={Tracking.NLUEntityCreationType.IMM} />
               )}

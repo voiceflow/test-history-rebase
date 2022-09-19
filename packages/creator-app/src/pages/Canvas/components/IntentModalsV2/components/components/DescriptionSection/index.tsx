@@ -5,16 +5,18 @@ import React from 'react';
 import NoteEditor from '@/components/NoteEditor';
 import { SectionToggleVariant, SectionVariant, UncontrolledSection } from '@/components/Section';
 import * as IntentV2 from '@/ducks/intentV2';
+import * as Tracking from '@/ducks/tracking';
 import { useSelector } from '@/hooks';
 import { DividerBorder } from '@/pages/Canvas/components/IntentModalsV2/components/components';
 
 interface DescriptionSectionProps {
   intentID: string;
+  creationType: Tracking.IntentEditType;
   onCreateNote: (noteID: string) => void;
   withBottomBorder?: boolean;
 }
 
-const DescriptionSection: React.FC<DescriptionSectionProps> = ({ intentID, withBottomBorder = true, onCreateNote }) => {
+const DescriptionSection: React.FC<DescriptionSectionProps> = ({ intentID, creationType, withBottomBorder = true, onCreateNote }) => {
   const [isCollapsed, toggleIsCollapsed] = useToggle(true);
   const intent = useSelector(IntentV2.getIntentByIDSelector)({ id: intentID });
   const inputRef = React.useRef<HTMLInputElement>(null);
@@ -47,6 +49,7 @@ const DescriptionSection: React.FC<DescriptionSectionProps> = ({ intentID, withB
         <Box paddingBottom={14} minHeight={100}>
           <NoteEditor<BaseModels.IntentNote>
             id={noteID}
+            creationType={creationType}
             type={BaseModels.NoteType.INTENT}
             meta={{ intentID }}
             height={300}

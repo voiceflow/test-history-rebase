@@ -23,13 +23,11 @@ export const identify = async (externalID: string, user: Omit<Account, 'creator_
   });
 };
 
-const USERFLOW_CHAT_ONBOARDING_FLOW_ID = 'c53799c6-8dca-4695-9d24-7ca4bfd74867';
+const USERFLOW_ALL_CHANNELS_ONBOARDING_FLOW_ID = 'c53799c6-8dca-4695-9d24-7ca4bfd74867';
 
 // start flows when a project is created from a template
-export const startOnboardingFlow = async (templateTag: string) => {
+export const startOnboardingFlow = async () => {
   if (!USERFLOW_TOKEN) return;
 
-  if (templateTag === 'onboarding:chat') {
-    await userflow.start(USERFLOW_CHAT_ONBOARDING_FLOW_ID);
-  }
+  await userflow.start(USERFLOW_ALL_CHANNELS_ONBOARDING_FLOW_ID);
 };

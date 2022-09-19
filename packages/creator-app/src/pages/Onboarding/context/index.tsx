@@ -383,7 +383,7 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
 
           goToDomain({ versionID });
 
-          Userflow.startOnboardingFlow(templateTag);
+          Userflow.startOnboardingFlow();
         }
       } else {
         goToWorkspace(workspace.id);

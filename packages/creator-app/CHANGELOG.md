@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.912.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.911.2...@voiceflow/creator-app@1.912.0) (2022-09-19)
+
+
+### Bug Fixes
+
+* prototype button label (BUG-61) ([#6091](https://github.com/voiceflow/creator-app/issues/6091)) ([f41b286](https://github.com/voiceflow/creator-app/commit/f41b286b37e8f1d39e2a540b03f5d53146132ad9))
+
+
+### Features
+
+* enable block templates (CT-554) [bugfix]  ([#6090](https://github.com/voiceflow/creator-app/issues/6090)) ([6a9ce59](https://github.com/voiceflow/creator-app/commit/6a9ce59bf454b218e813fd581ac784a80672d304))
+* **creator-app:** tracking intent edits (NLU-292) ([#6078](https://github.com/voiceflow/creator-app/issues/6078)) ([e0433ea](https://github.com/voiceflow/creator-app/commit/e0433eaede07e8d51bd2cf078e03611855a2e0c9))
+
+
+
+
+
 ## [1.911.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.911.1...@voiceflow/creator-app@1.911.2) (2022-09-19)
 
 

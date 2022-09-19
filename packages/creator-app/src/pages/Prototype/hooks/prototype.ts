@@ -103,16 +103,18 @@ const usePrototype = ({ debug, config, state, actions, isPublic, waitVisuals = t
     ({ name, request }: { name?: string; request: BaseRequest.BaseRequest | string }) => {
       perf.action(PerfAction.PROTOTYPE_INTERACTION);
 
+      let interaction = { name, request };
+
       if (_isString(request)) {
         const match = request.toLowerCase().trim();
-        const button = interactions?.find((interaction) => match === interaction.name.toLowerCase().trim());
+        const button = interactions?.find(({ name }) => match === name.toLowerCase().trim());
 
         if (button?.request) {
-          request = button.request;
+          interaction = button;
         }
       }
 
-      return prototype.interact({ name, request });
+      return prototype.interact(interaction);
     },
     [prototype, interactions]
   );

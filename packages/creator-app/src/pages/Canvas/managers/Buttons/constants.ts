@@ -12,7 +12,7 @@ export const ADD_INTENTS_KEY = 'Buttons/constants:ADD_INTENTS';
 export const buttonFactory = (): BaseNode.Buttons.Button => ({
   id: Utils.id.cuid.slug(),
   name: '',
-  actions: [BaseNode.Buttons.ButtonAction.PATH],
+  actions: [],
 });
 
 export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Buttons, Realtime.NodeData.ButtonsBuiltInPorts> = {

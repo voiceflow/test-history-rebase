@@ -1,7 +1,7 @@
 import { Utils } from '@voiceflow/realtime-sdk';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
-import { Dialogflow, Google } from '@/platforms';
+import { Dialogflow } from '@/platforms';
 
 export interface Project {
   id: string;
@@ -15,17 +15,8 @@ export interface PlatformContentProps {
   createNewAgent?: () => void;
 }
 
-export const getPlatformContent = Utils.platform.createPlatformSelector(
-  {
-    [VoiceflowConstants.PlatformType.GOOGLE]: Google.Components.PlatformUploadPopup,
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: Dialogflow.Components.PlatformUploadPopup,
-  },
-  Dialogflow.Components.PlatformUploadPopup
-);
-
 export const getPlatformPopupLayout = Utils.platform.createPlatformSelector(
   {
-    [VoiceflowConstants.PlatformType.GOOGLE]: Google.Components.PlatformUploadPopupLayout,
     [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: Dialogflow.Components.PlatformUploadPopupLayout,
   },
   Dialogflow.Components.PlatformUploadPopupLayout

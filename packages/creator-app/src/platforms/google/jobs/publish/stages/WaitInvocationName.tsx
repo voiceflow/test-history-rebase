@@ -1,5 +1,5 @@
-import { AlexaUtils } from '@voiceflow/alexa-types';
 import { Nullable } from '@voiceflow/common';
+import { GoogleUtils } from '@voiceflow/google-types';
 import { BlockText, Box, BoxFlex, Button, ButtonVariant, Input, SvgIcon, TippyTooltip, useSmartReducerV2 } from '@voiceflow/ui';
 import React from 'react';
 
@@ -7,11 +7,11 @@ import { ButtonContainer, Description, LoaderStage, StageContainer } from '@/com
 import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useDispatch, useSelector } from '@/hooks';
-import { AlexaPublishJob } from '@/models';
+import { GooglePublishJob } from '@/models';
 import { StageComponentProps } from '@/platforms/types';
 import * as Sentry from '@/vendors/sentry';
 
-const WaitInvocationName: React.FC<StageComponentProps<AlexaPublishJob.WaitInvocationNameStage>> = ({ stage, updateCurrentStage }) => {
+const WaitInvocationName: React.FC<StageComponentProps<GooglePublishJob.WaitInvocationNameStage>> = ({ stage, updateCurrentStage }) => {
   const locales = useSelector(VersionV2.active.localesSelector);
   const invocationName = useSelector(VersionV2.active.invocationNameSelector);
   const updateInvocationName = useDispatch(Version.updateInvocationName);
@@ -42,23 +42,22 @@ const WaitInvocationName: React.FC<StageComponentProps<AlexaPublishJob.WaitInvoc
 
   return (
     <StageContainer width={254}>
-      {state?.loading ? (
-        <LoaderStage>Updating Invocation Name</LoaderStage>
+      {state.loading ? (
+        <LoaderStage />
       ) : (
         <>
           <BoxFlex mb="s">
             <BlockText color="secondary" fontWeight={600} mr={4}>
               Invocation Name
             </BlockText>
-
             <TippyTooltip
               html={
                 <>
-                  Alexa listens for the Invocation Name
+                  Google listens for the Invocation Name
                   <br /> to launch your Skill
                   <br /> e.g.{' '}
                   <i>
-                    Alexa, open <b>Invocation Name</b>
+                    Okay Google, open <b>Invocation Name</b>
                   </i>
                 </>
               }
@@ -72,7 +71,7 @@ const WaitInvocationName: React.FC<StageComponentProps<AlexaPublishJob.WaitInvoc
             <Input
               value={state.name}
               placeholder="Invocation Name"
-              onChangeText={(value) => api.update({ name: value, error: AlexaUtils.getInvocationNameError(value, locales) })}
+              onChangeText={(value) => api.update({ name: value, error: GoogleUtils.getInvocationNameError(value, locales) })}
             />
           </Box>
 

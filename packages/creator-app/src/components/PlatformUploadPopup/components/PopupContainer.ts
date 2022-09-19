@@ -9,7 +9,6 @@ import { getPlatformPopupLayout } from '../constants';
 export interface PopupContainerProps {
   open?: boolean;
   jobStage?: AnyStageType | null;
-  multiSelect?: boolean;
   width?: number;
   platform: VoiceflowConstants.PlatformType;
 }
@@ -28,7 +27,7 @@ const PopupContainer = styled.div<PopupContainerProps>`
 
   ${({ open, jobStage }) => open && jobStage && Popper.baseStyles}
 
-  ${({ platform, jobStage, multiSelect }) => getPlatformPopupLayout(platform)({ jobStage, multiSelect })};
+  ${({ platform, jobStage }) => getPlatformPopupLayout(platform)({ jobStage })};
 `;
 
 export default PopupContainer;

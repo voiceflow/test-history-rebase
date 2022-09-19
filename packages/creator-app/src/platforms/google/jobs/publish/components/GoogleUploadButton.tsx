@@ -1,25 +1,19 @@
 import React from 'react';
 
 import { GoogleStageType } from '@/constants/platforms';
+import * as Account from '@/ducks/account';
+import { useSelector } from '@/hooks';
 import { GooglePublishJob } from '@/models';
-
-import Button, { ButtonVariant } from '../../components/Button';
+import Button, { ButtonVariant } from '@/pages/Project/components/Header/components/CanvasHeader/components/Upload/components/Button';
 
 interface GoogleUploadButtonProps {
-  needsLogin: boolean;
-  successfullyPublished: boolean;
   onPublish: () => void;
   googlePublishJob: GooglePublishJob.AnyJob | null;
 }
 
-const GoogleUploadButton: React.FC<GoogleUploadButtonProps> = ({ needsLogin, successfullyPublished, onPublish, googlePublishJob }) => {
-  if (needsLogin) {
-    return <Button onClick={onPublish} variant={ButtonVariant.CONNECT} />;
-  }
-
-  if (successfullyPublished) {
-    return <Button variant={ButtonVariant.SUCCESS} />;
-  }
+const GoogleUploadButton: React.FC<GoogleUploadButtonProps> = ({ onPublish, googlePublishJob }) => {
+  const google = useSelector(Account.googleAccountSelector);
+  const needsLogin = !google;
 
   switch (googlePublishJob?.stage.type) {
     case GoogleStageType.WAIT_ACCOUNT:
@@ -31,7 +25,7 @@ const GoogleUploadButton: React.FC<GoogleUploadButtonProps> = ({ needsLogin, suc
     case GoogleStageType.SUCCESS:
       return <Button variant={ButtonVariant.SUCCESS} />;
     default:
-      return <Button onClick={onPublish} variant={ButtonVariant.UPLOAD} />;
+      return <Button onClick={onPublish} variant={needsLogin ? ButtonVariant.CONNECT : ButtonVariant.UPLOAD} />;
   }
 };
 

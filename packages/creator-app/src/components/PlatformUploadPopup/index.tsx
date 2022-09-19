@@ -14,10 +14,9 @@ export interface PlatformUploadPopupProps {
   onClose: () => void;
   jobStage?: AnyStageType | null;
   className?: string;
-  multiSelect?: boolean;
 }
 
-const PlatformUploadPopup: React.FC<PlatformUploadPopupProps> = ({ open, onClose, children, jobStage, multiSelect, className }) => {
+const PlatformUploadPopup: React.FC<PlatformUploadPopupProps> = ({ open, onClose, children, jobStage, className }) => {
   const platform = useSelector(ProjectV2.active.platformSelector);
   const ref = React.useRef(null);
 
@@ -26,7 +25,7 @@ const PlatformUploadPopup: React.FC<PlatformUploadPopupProps> = ({ open, onClose
   useHotKeys(Hotkey.CLOSE_UPLOAD_MODAL, () => open && onClose(), { preventDefault: true }, [open, onClose]);
 
   return !children ? null : (
-    <PopupContainer open={open} jobStage={jobStage} multiSelect={multiSelect} className={className} platform={platform} ref={ref}>
+    <PopupContainer open={open} jobStage={jobStage} className={className} platform={platform} ref={ref}>
       <PopupTransition>{children}</PopupTransition>
     </PopupContainer>
   );

@@ -3,16 +3,11 @@ import React from 'react';
 
 import client from '@/client';
 import { LoaderStage, StageAlert, StageContainer, StageEmpty, StageProjectList } from '@/components/PlatformUploadPopup/components';
-import { useAsyncMountUnmount, useTeardown } from '@/hooks';
+import { useAsyncMountUnmount } from '@/hooks';
+import { GooglePublishJob } from '@/models';
+import { StageComponentProps } from '@/platforms/types';
 
-interface WaitProjectStageProps {
-  cancel: () => void;
-  onClose?: () => void;
-  setMultiProjects?: (value: boolean) => void;
-  updateCurrentStage: (googleProjectID: string | null) => void;
-}
-
-const WaitProjectStage: React.FC<WaitProjectStageProps> = ({ updateCurrentStage, setMultiProjects }) => {
+const WaitProjectStage: React.FC<StageComponentProps<GooglePublishJob.WaitProjectStage>> = ({ updateCurrentStage }) => {
   const [projects, setProjects] = React.useState<{ id: string; name?: string }[]>([]);
   const projectList = React.useMemo(() => projects.map(({ id, name = '' }) => ({ id, name })), [projects]);
 
@@ -29,13 +24,10 @@ const WaitProjectStage: React.FC<WaitProjectStageProps> = ({ updateCurrentStage,
       api.update({ error: false, loading: false });
 
       setProjects(projectIDs);
-      setMultiProjects?.(projectIDs.length > 0);
     } catch {
       api.update({ error: true, loading: false });
     }
   });
-
-  useTeardown(() => setMultiProjects?.(false));
 
   const stateContent = React.useMemo(() => {
     if (state.loading) return <LoaderStage />;
@@ -62,7 +54,11 @@ const WaitProjectStage: React.FC<WaitProjectStageProps> = ({ updateCurrentStage,
     );
   }, [state, projects]);
 
-  return <StageContainer noPadding>{stateContent}</StageContainer>;
+  return (
+    <StageContainer noPadding width={254}>
+      {stateContent}
+    </StageContainer>
+  );
 };
 
 export default WaitProjectStage;

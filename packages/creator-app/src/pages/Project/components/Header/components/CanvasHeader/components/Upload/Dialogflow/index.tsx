@@ -24,7 +24,6 @@ const DialogflowPublish: React.FC = () => {
     onPublish: publishToDF,
     needsLogin,
     popupOpened,
-    multiProjects,
     setMultiProjects,
     successfullyPublished,
     createNewAgent,
@@ -59,7 +58,7 @@ const DialogflowPublish: React.FC = () => {
       <Portal>
         <ProgressStage job={job} inProgressStage={DialogflowStageType.PROGRESS} />
 
-        <Popup open={isUploadPopupOpen} onClose={onCancel} jobStage={job?.stage.type} multiSelect={multiProjects}>
+        <Popup open={isUploadPopupOpen} onClose={onCancel} jobStage={job?.stage.type}>
           {shouldRenderPopupContent && (
             <Dialogflow.Components.PlatformUploadPopup setMultiProjects={setMultiProjects} createNewAgent={createNewAgent} />
           )}

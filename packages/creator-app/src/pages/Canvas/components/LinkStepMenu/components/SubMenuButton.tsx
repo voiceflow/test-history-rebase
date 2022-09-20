@@ -12,6 +12,7 @@ import { EngineContext, LinkStepMenuContext } from '@/pages/Canvas/contexts';
 import { ClassName } from '@/styles/constants';
 
 import { StyledText, TooltipContainer } from '../styles';
+import { getSingleBlockTemplatePortID } from '../utils';
 
 const BLOCK_HEADER_HEIGHT = 50.5;
 
@@ -49,7 +50,11 @@ const SubMenuButton: React.FC<SubMenuButtonProps> = ({ step, template, upgradePo
       .add([theme.components.block.width / 2, 0]);
 
     if (template) {
-      await engine.canvasTemplate.dropTemplate(template.id, coords);
+      const nodes = await engine.canvasTemplate.dropTemplate(template.id, coords);
+      const portID = getSingleBlockTemplatePortID(nodes);
+      if (portID) {
+        await engine.linkCreation.complete(portID);
+      }
       stepMenu.onHide({ abort: true });
     } else if (step) {
       const nodeID = await engine.node.add(step.type, coords, step.factoryData, StepMenuType.LINK);

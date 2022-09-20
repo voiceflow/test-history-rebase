@@ -214,14 +214,13 @@ class CanvasTemplateEngine extends EngineConsumer {
     this.engine.setActive(nodesWithData[0].node.combinedNodes[0]);
   }
 
-  async dropTemplate(templateID: string, coords: Coords): Promise<void> {
+  async dropTemplate(templateID: string, coords: Coords): Promise<Realtime.NodeWithData[]> {
     const diagramID = this.select(CreatorV2.activeDiagramIDSelector)!;
     const canvasTemplate = CanvasTemplate.canvasTemplatesByIDSelector(this.engine.store.getState(), { id: templateID });
     Errors.assertDiagramID(diagramID);
     Errors.assertCanvasTemplateID(canvasTemplate?.id);
 
-    if (!canvasTemplate) return;
-
+    if (!canvasTemplate) return [];
     try {
       this.log.debug(this.log.pending('dropping template to canvas'));
       const templateData = this.getCanvasTemplateContext(canvasTemplate);
@@ -233,9 +232,11 @@ class CanvasTemplateEngine extends EngineConsumer {
       this.trackTemplateUsed({ templateID, nodeIDs: nodesWithData.map(({ node }) => node.id), droppedInto: 'canvas' });
 
       this.log.info(this.log.success('dropped template to canvas'), this.log.value(nodesWithData.length));
+      return nodesWithData;
     } catch (err) {
       this.log.warn('error while dropping template', err);
     }
+    return [];
   }
 }
 

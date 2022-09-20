@@ -12,10 +12,10 @@ import VoiceStep from './VoiceStep';
 const SpeakStep: ConnectedStep<Realtime.NodeData.Speak, Realtime.NodeData.SpeakBuiltInPorts> = ({ data, ports, engine, palette }) => {
   const attachmentItems = React.useMemo(() => data.dialogs.filter((item) => (isVoiceItem(item) ? item.content : item.url)), [data.dialogs]);
 
+  const onOpenEditor = () => engine.setActive(data.nodeID);
+
   const previewMode = !data.canvasVisibility ? data.randomize : data.canvasVisibility === BaseNode.Utils.CanvasNodeVisibility.PREVIEW;
   const itemsToRender = previewMode && data.dialogs.length ? [data.dialogs[0]] : data.dialogs;
-
-  const onOpenEditor = () => engine.setActive(data.nodeID);
 
   const nextPortID = ports.out.builtIn[BaseModels.PortType.NEXT];
 
@@ -23,27 +23,17 @@ const SpeakStep: ConnectedStep<Realtime.NodeData.Speak, Realtime.NodeData.SpeakB
     <Step nodeID={data.nodeID}>
       <Section v2>
         {itemsToRender.length ? (
-          itemsToRender.map((item, index) =>
-            isVoiceItem(item) ? (
-              <VoiceStep
-                key={item.id}
-                item={item}
-                palette={palette}
-                nextPortID={index === itemsToRender.length - 1 ? nextPortID : null}
-                onOpenEditor={onOpenEditor}
-                attachmentItems={previewMode ? attachmentItems : []}
-              />
-            ) : (
-              <AudioStep
-                key={item.id}
-                item={item}
-                palette={palette}
-                nextPortID={index === itemsToRender.length - 1 ? nextPortID : null}
-                onOpenEditor={onOpenEditor}
-                attachmentItems={previewMode ? attachmentItems : []}
-              />
-            )
-          )
+          itemsToRender.map((item, index) => {
+            const sharedProps = {
+              key: item.id,
+              palette,
+              nextPortID: index === itemsToRender.length - 1 ? nextPortID : null,
+              onOpenEditor,
+              attachmentItems: previewMode && attachmentItems.length > 1 ? attachmentItems : [],
+            };
+
+            return isVoiceItem(item) ? <VoiceStep {...sharedProps} item={item} /> : <AudioStep {...sharedProps} item={item} />;
+          })
         ) : (
           <Item placeholder="Enter speak reply" palette={palette} />
         )}

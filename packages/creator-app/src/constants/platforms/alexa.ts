@@ -6,7 +6,6 @@ export enum AlexaStageType {
   WAIT_ACCOUNT = 'WAIT_ACCOUNT',
   WAIT_VENDORS = 'WAIT_VENDORS',
   SELECT_VENDORS = 'SELECT_VENDORS',
-  WAIT_INVOCATION_NAME = 'WAIT_INVOCATION_NAME',
 }
 
 export enum AlexaPublishJobErrorType {

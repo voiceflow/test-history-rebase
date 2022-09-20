@@ -9,7 +9,6 @@ export enum DialogflowStageType {
   PROGRESS = 'PROGRESS',
   WAIT_ACCOUNT = 'WAIT_ACCOUNT',
   WAIT_PROJECT = 'WAIT_PROJECT',
-  WAIT_INVOCATION_NAME = 'WAIT_INVOCATION_NAME',
 }
 
 export enum DialogflowPublishJobErrorType {

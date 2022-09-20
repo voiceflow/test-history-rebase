@@ -33,20 +33,11 @@ const getTitle = ({ errorType, message }: AnyErrorStageData, platform: Voiceflow
   return message;
 };
 
-const getError = <E extends AnyErrorStageData>(
-  stageError: E,
-  defaultMessage: string,
-  errorMap?: (statusCode: E) => React.ReactElement | string | null
-) => {
+const getError = <E extends AnyErrorStageData>(stageError: E, defaultMessage: string) => {
   const { errorType, error } = stageError;
 
   if (IsPublishJobRenderingError(errorType)) {
     return 'Project structure unable to build, please contact us on Intercom';
-  }
-
-  if (errorMap) {
-    const msg = errorMap(stageError);
-    if (msg) return msg;
   }
 
   const strError = _isString(error) ? error : error?.message;
@@ -56,13 +47,11 @@ const getError = <E extends AnyErrorStageData>(
 
 interface ErrorStageProps<S extends AnyErrorStage> {
   stage: S;
-  errorMap?: (statusCode: S['data']) => React.ReactElement | string | null;
   defaultMessage?: string;
 }
 
 const ErrorStage = <S extends AnyErrorStage = AnyErrorStage>({
   stage,
-  errorMap,
   defaultMessage = 'Something went wrong, please contact us on Intercom',
 }: ErrorStageProps<S>) => {
   const platform = useSelector(ProjectV2.active.platformSelector);
@@ -71,7 +60,7 @@ const ErrorStage = <S extends AnyErrorStage = AnyErrorStage>({
     <StageContainer style={{ textAlign: 'left' }} width={300}>
       <StageHeader color="#e91e63">{getTitle(stage.data, platform)}</StageHeader>
       <Box mt={12}>
-        <span>{getError(stage.data, defaultMessage, errorMap)}</span>
+        <span>{getError(stage.data, defaultMessage)}</span>
       </Box>
     </StageContainer>
   );

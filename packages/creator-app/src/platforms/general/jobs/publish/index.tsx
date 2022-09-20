@@ -3,7 +3,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 
 import client from '@/client';
-import { ProgressStage } from '@/components/PlatformUploadPopup/components';
+import PageProgressBar from '@/components/PageProgressBar';
 import { PublishVersionModalData } from '@/components/PublishVersionModal';
 import { ModalType } from '@/constants';
 import { NLPTrainStageType, VersionTag } from '@/constants/platforms';
@@ -59,7 +59,7 @@ const GeneralPublish: React.FC = () => {
   return (
     <>
       <Portal>
-        <ProgressStage progress={progress} />
+        <PageProgressBar progress={progress} />
       </Portal>
       <GeneralUploadButton isTraining={isTraining} onClick={onClick} progress={progress} />
     </>

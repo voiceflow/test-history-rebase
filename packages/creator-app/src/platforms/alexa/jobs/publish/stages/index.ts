@@ -6,7 +6,6 @@ import { AlexaPublishJob } from '@/models';
 import SelectVendorStage from './SelectVendorStage';
 import SuccessStage from './SuccessStage';
 import WaitAccountStage from './WaitAccountStage';
-import WaitInvocationName from './WaitInvocationName';
 import WaitVendorsStage from './WaitVendorsStage';
 
 export const PublishStageContent = {
@@ -21,9 +20,6 @@ export const PublishStageContent = {
   },
   [AlexaStageType.SELECT_VENDORS]: {
     Popup: { Component: SelectVendorStage, dismissable: true },
-  },
-  [AlexaStageType.WAIT_INVOCATION_NAME]: {
-    Popup: { Component: WaitInvocationName, dismissable: true },
   },
   [AlexaStageType.WAIT_ACCOUNT]: {
     Component: WaitAccountStage,

@@ -76,11 +76,7 @@ export namespace AlexaPublishJob {
 
   export type SelectVendorsStage = JobStage<AlexaStageType.SELECT_VENDORS>;
 
-  export type WaitInvocationNameStage = JobStage<AlexaStageType.WAIT_INVOCATION_NAME, { error: string }>;
-
-  export type AnyJob = Job<
-    IdleStage | ErrorStage | SuccessStage | ProgressStage | WaitAccountStage | WaitVendorsStage | WaitInvocationNameStage | SelectVendorsStage
-  >;
+  export type AnyJob = Job<IdleStage | ErrorStage | SuccessStage | ProgressStage | WaitAccountStage | WaitVendorsStage | SelectVendorsStage>;
 }
 
 export namespace AlexaExportJob {
@@ -102,9 +98,7 @@ export namespace AlexaExportJob {
 
   export type WaitVendorsStage = AlexaPublishJob.WaitVendorsStage;
 
-  export type WaitInvocationNameStage = AlexaPublishJob.WaitInvocationNameStage;
-
-  export type AnyJob = Job<IdleStage | ErrorStage | SuccessStage | ProgressStage | WaitAccountStage | WaitVendorsStage | WaitInvocationNameStage>;
+  export type AnyJob = Job<IdleStage | ErrorStage | SuccessStage | ProgressStage | WaitAccountStage | WaitVendorsStage>;
 }
 
 export namespace DialogflowPublishJob {
@@ -145,9 +139,7 @@ export namespace DialogflowPublishJob {
 
   export type WaitProjectStage = JobStage<DialogflowStageType.WAIT_PROJECT>;
 
-  export type WaitInvocationNameStage = JobStage<DialogflowStageType.WAIT_INVOCATION_NAME, { error: string }>;
-
-  export type AnyJob = Job<IdleStage | ErrorStage | SuccessStage | ProgressStage | WaitAccountStage | WaitProjectStage | WaitInvocationNameStage>;
+  export type AnyJob = Job<IdleStage | ErrorStage | SuccessStage | ProgressStage | WaitAccountStage | WaitProjectStage>;
 }
 
 export namespace GooglePublishJob {
@@ -188,9 +180,7 @@ export namespace GooglePublishJob {
 
   export type WaitProjectStage = JobStage<GoogleStageType.WAIT_PROJECT>;
 
-  export type WaitInvocationNameStage = JobStage<GoogleStageType.WAIT_INVOCATION_NAME, { error: string }>;
-
-  export type AnyJob = Job<IdleStage | ErrorStage | SuccessStage | ProgressStage | WaitAccountStage | WaitProjectStage | WaitInvocationNameStage>;
+  export type AnyJob = Job<IdleStage | ErrorStage | SuccessStage | ProgressStage | WaitAccountStage | WaitProjectStage>;
 }
 
 export namespace GoogleExportJob {
@@ -212,9 +202,7 @@ export namespace GoogleExportJob {
 
   export type WaitProjectStage = JobStage<GoogleStageType.WAIT_PROJECT>;
 
-  export type WaitInvocationNameStage = GooglePublishJob.WaitInvocationNameStage;
-
-  export type AnyJob = Job<IdleStage | ErrorStage | SuccessStage | ProgressStage | WaitAccountStage | WaitProjectStage | WaitInvocationNameStage>;
+  export type AnyJob = Job<IdleStage | ErrorStage | SuccessStage | ProgressStage | WaitAccountStage | WaitProjectStage>;
 }
 
 export namespace GeneralExportJob {

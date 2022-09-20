@@ -1,8 +1,8 @@
-import { useSmartReducerV2 } from '@voiceflow/ui';
+import { Box, useSmartReducerV2 } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';
-import { LoaderStage, StageAlert, StageContainer, StageEmpty, StageProjectList } from '@/components/PlatformUploadPopup/components';
+import { LoaderStage, StageContainer, StageEmpty, StageProjectList } from '@/components/PlatformUploadPopup/components';
 import { useAsyncMountUnmount } from '@/hooks';
 import { GooglePublishJob } from '@/models';
 import { StageComponentProps } from '@/platforms/types';
@@ -32,7 +32,7 @@ const WaitProjectStage: React.FC<StageComponentProps<GooglePublishJob.WaitProjec
   const stateContent = React.useMemo(() => {
     if (state.loading) return <LoaderStage />;
 
-    if (state.error) return <StageAlert>Failed to retrieve projects for your Google developer account</StageAlert>;
+    if (state.error) return <Box p={22}>Failed to retrieve projects for your Google developer account</Box>;
 
     if (projects.length > 0)
       return (

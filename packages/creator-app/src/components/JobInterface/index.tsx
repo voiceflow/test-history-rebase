@@ -1,7 +1,7 @@
 import { Portal, usePopper } from '@voiceflow/ui';
 import React from 'react';
 
-import { ProgressStage } from '@/components/PlatformUploadPopup/components';
+import PageProgressBar from '@/components/PageProgressBar';
 import { JobContextValue } from '@/hooks/job';
 import { Job } from '@/models';
 import { StageContent } from '@/platforms/types';
@@ -46,7 +46,7 @@ const JobInterface = <T extends Job<any>>({ context, Content, children }: React.
       )}
 
       <Portal>
-        <ProgressStage progress={progress} />
+        <PageProgressBar progress={progress} />
       </Portal>
     </>
   );

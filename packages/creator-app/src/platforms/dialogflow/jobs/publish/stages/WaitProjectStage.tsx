@@ -2,7 +2,7 @@ import { Box, Button, ButtonVariant, Input, isNetworkError, useOnClickOutside, u
 import React from 'react';
 
 import client from '@/client';
-import { LoaderStage, StageAlert, StageContainer, StageEmpty, StageProjectList } from '@/components/PlatformUploadPopup/components';
+import { LoaderStage, StageContainer, StageEmpty, StageProjectList } from '@/components/PlatformUploadPopup/components';
 import { Project } from '@/components/PlatformUploadPopup/types';
 import * as Account from '@/ducks/account';
 import * as Version from '@/ducks/version';
@@ -72,8 +72,8 @@ const WaitDFESProjectStage: React.FC<StageComponentProps<DialogflowPublishJob.Wa
 
     if (state.error)
       return (
-        <StageAlert>
-          Failed to retrieve projects for your Google developer account
+        <Box p={22}>
+          Failed to retrieve projects for Google developer account
           <hr />
           <Box.FlexCenter mt={16} flexDirection="column">
             <b>Manually Enter Google Cloud Project ID</b>
@@ -84,7 +84,7 @@ const WaitDFESProjectStage: React.FC<StageComponentProps<DialogflowPublishJob.Wa
               Submit
             </Button>
           </Box.FlexCenter>
-        </StageAlert>
+        </Box>
       );
 
     if (projects.length > 0)

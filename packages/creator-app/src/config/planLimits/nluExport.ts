@@ -33,6 +33,7 @@ export const NLUExportLimitDetails: Record<NLPProvider, LimitDetails> = {
   [NLPProvider.LUIS]: nluEnterpriseExportDetails(NLPProvider.LUIS),
   [NLPProvider.NUANCE_MIX]: nluEnterpriseExportDetails(NLPProvider.NUANCE_MIX),
   [NLPProvider.RASA]: nluEnterpriseExportDetails(NLPProvider.RASA),
+  [NLPProvider.DIALOGFLOW_CX]: nluEnterpriseExportDetails(NLPProvider.DIALOGFLOW_CX),
   [NLPProvider.VF_CSV]: {
     modalTitle: 'CSV Export',
     title: 'Need to export data as CSV?',

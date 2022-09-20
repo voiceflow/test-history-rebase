@@ -17,26 +17,31 @@ export const isAlexaPlatform = createPlatformTypeGuard<VoiceflowConstants.Platfo
 export const isGooglePlatform = createPlatformTypeGuard<VoiceflowConstants.PlatformType>(PlatformType.GOOGLE);
 export const isDialogflowPlatform = (platform?: VoiceflowConstants.PlatformType | null): platform is VoiceflowConstants.PlatformType.DIALOGFLOW_ES =>
   !!platform && legacyPlatformToProjectType(platform)?.platform === PlatformType.DIALOGFLOW_ES;
+export const isDialogflowCXPlatform = (
+  platform?: VoiceflowConstants.PlatformType | null
+): platform is VoiceflowConstants.PlatformType.DIALOGFLOW_CX => platform === PlatformType.DIALOGFLOW_CX;
 export const isVoiceflowPlatform = (platform?: VoiceflowConstants.PlatformType | null): platform is VoiceflowConstants.PlatformType.VOICEFLOW =>
   !!platform && legacyPlatformToProjectType(platform)?.platform === PlatformType.VOICEFLOW;
 
 type VoiceflowBasedPlatform = Exclude<
   VoiceflowConstants.PlatformType,
-  VoiceflowConstants.PlatformType.ALEXA | VoiceflowConstants.PlatformType.GOOGLE | VoiceflowConstants.PlatformType.DIALOGFLOW_ES
+  | VoiceflowConstants.PlatformType.ALEXA
+  | VoiceflowConstants.PlatformType.GOOGLE
+  | VoiceflowConstants.PlatformType.DIALOGFLOW_ES
+  | VoiceflowConstants.PlatformType.DIALOGFLOW_CX
 >;
 
 export const isVoiceflowBasedPlatform = (platform?: VoiceflowConstants.PlatformType | null): platform is VoiceflowBasedPlatform =>
-  !!platform && !isAlexaPlatform(platform) && !isGooglePlatform(platform) && !isDialogflowPlatform(platform);
-
-export const isOneClickChannelPlatform = createPlatformTypeGuard<VoiceflowConstants.PlatformType>([
-  PlatformType.ALEXA,
-  PlatformType.GOOGLE,
-  PlatformType.DIALOGFLOW_ES,
-]);
+  !!platform && !isAlexaPlatform(platform) && !isGooglePlatform(platform) && !isDialogflowPlatform(platform) && !isDialogflowCXPlatform(platform);
 
 export const isChatProjectType = createProjectTypeTypeGuard(ProjectType.CHAT);
 export const isVoiceProjectType = createProjectTypeTypeGuard(ProjectType.VOICE);
 
 export const isPlatformWithInvocationName = createPlatformTypeGuard(PLATFORMS_WITH_INVOCATION_NAME);
 
-export const isPlatformWithThirdPartyUpload = createPlatformTypeGuard([PlatformType.ALEXA, PlatformType.GOOGLE, PlatformType.DIALOGFLOW_ES]);
+export const isPlatformWithThirdPartyUpload = createPlatformTypeGuard([
+  PlatformType.ALEXA,
+  PlatformType.GOOGLE,
+  PlatformType.DIALOGFLOW_ES,
+  PlatformType.DIALOGFLOW_CX,
+]);

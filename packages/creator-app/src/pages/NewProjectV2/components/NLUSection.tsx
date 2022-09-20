@@ -1,3 +1,4 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { MenuItemGrouped, Select, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
@@ -6,10 +7,10 @@ import UpgradeOption from '@/components/UpgradeOption';
 import { Permission } from '@/config/permissions';
 import { getProjectNluLimitDetails, isGatedNLUType } from '@/config/planLimits/projects';
 import { UpgradePrompt } from '@/ducks/tracking';
-import { useHover, usePermission } from '@/hooks';
+import { useFeature, useHover, usePermission } from '@/hooks';
 import { Identifier } from '@/styles/constants';
 
-import { NLU_OPTIONS, PLATFORM_PROJECT_META_MAP } from '../constants';
+import { NLU_OPTIONS, NLU_OPTIONS_NO_CX, PLATFORM_PROJECT_META_MAP } from '../constants';
 import { ImportModel, PlatformAndProjectMeta, PlatformAndProjectMetaType, SupportedPlatformType } from '../types';
 import ModelImport from './ModelImport';
 import NLUSectionHeader from './NLUSectionHeader';
@@ -43,6 +44,8 @@ const NLUSection: React.FC<NLUSectionProps> = ({ value, onSelect, error, onImpor
     }
   };
 
+  const isDialogflowCXEnabled = !!useFeature(Realtime.FeatureFlag.DIALOGFLOW_CX)?.isEnabled;
+
   return (
     <Section
       {...hoverHandlers}
@@ -57,7 +60,7 @@ const NLUSection: React.FC<NLUSectionProps> = ({ value, onSelect, error, onImpor
         value={value as PlatformAndProjectMetaType}
         error={error}
         prefix={getPrefixIcon(isImportLoading, value)}
-        options={NLU_OPTIONS}
+        options={isDialogflowCXEnabled ? NLU_OPTIONS : NLU_OPTIONS_NO_CX}
         grouped
         useLayers
         onSelect={chooseCustomNLU}

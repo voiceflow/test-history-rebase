@@ -8,6 +8,7 @@ import { PlatformAndProjectMeta, PlatformAndProjectMetaType } from '@/pages/NewP
 const GATED_PROJECT_NLUS = new Set([
   <PlatformAndProjectMetaType>VoiceflowConstants.PlatformType.EINSTEIN,
   <PlatformAndProjectMetaType>VoiceflowConstants.PlatformType.DIALOGFLOW_ES,
+  <PlatformAndProjectMetaType>VoiceflowConstants.PlatformType.DIALOGFLOW_CX,
   <PlatformAndProjectMetaType>VoiceflowConstants.PlatformType.LEX,
   <PlatformAndProjectMetaType>VoiceflowConstants.PlatformType.LUIS,
   <PlatformAndProjectMetaType>VoiceflowConstants.PlatformType.NUANCE_MIX,
@@ -33,6 +34,7 @@ const projectNLUEnterpisePlanLimitDetails = (nlpSelection: NLPProvider) => {
 
 const projectNluLimitDetailsSelector = Utils.platform.createPlatformSelector<LimitDetails>({
   [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: projectNLUEnterpisePlanLimitDetails(NLPProvider.DIALOGFLOW_ES),
+  [VoiceflowConstants.PlatformType.DIALOGFLOW_CX]: projectNLUEnterpisePlanLimitDetails(NLPProvider.DIALOGFLOW_CX),
   [VoiceflowConstants.PlatformType.EINSTEIN]: projectNLUEnterpisePlanLimitDetails(NLPProvider.EINSTEIN),
   [VoiceflowConstants.PlatformType.LEX]: projectNLUEnterpisePlanLimitDetails(NLPProvider.LEX_V1),
   [VoiceflowConstants.PlatformType.LUIS]: projectNLUEnterpisePlanLimitDetails(NLPProvider.LUIS),

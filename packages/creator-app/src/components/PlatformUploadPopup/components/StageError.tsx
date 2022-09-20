@@ -59,7 +59,7 @@ const ErrorStage = <S extends AnyErrorStage = AnyErrorStage>({
   return (
     <StageContainer style={{ textAlign: 'left' }} width={300}>
       <StageHeader color="#e91e63">{getTitle(stage.data, platform)}</StageHeader>
-      <Box mt={12}>
+      <Box mt={12} style={{ wordBreak: 'break-word' }}>
         <span>{getError(stage.data, defaultMessage)}</span>
       </Box>
     </StageContainer>

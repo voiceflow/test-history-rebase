@@ -13,7 +13,6 @@ export const {
   isDialogflowPlatform,
   isRootOrMarkupBlockType,
   isVoiceflowBasedPlatform,
-  isOneClickChannelPlatform,
   isMarkupOrCombinedBlockType,
   isPlatformWithInvocationName,
   isDiagramReferencesBlockType,

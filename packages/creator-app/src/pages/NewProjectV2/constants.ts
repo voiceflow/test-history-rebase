@@ -128,6 +128,13 @@ export const PLATFORM_PROJECT_META_MAP: Record<SupportedPlatformProjectType | Pl
     },
   },
 
+  [VoiceflowConstants.PlatformType.DIALOGFLOW_CX]: {
+    type: VoiceflowConstants.PlatformType.DIALOGFLOW_CX,
+    icon: 'dialogflowCX',
+    name: 'Dialogflow CX',
+    localesText: 'Language',
+  },
+
   [VoiceflowConstants.PlatformType.LUIS]: {
     type: VoiceflowConstants.PlatformType.LUIS,
     icon: 'luis',
@@ -231,7 +238,8 @@ export const CHANNEL_OPTIONS: MenuItemGrouped<PlatformAndProjectMeta>[] = [
   },
 ];
 
-export const NLU_OPTIONS: MenuItemGrouped<PlatformAndProjectMeta>[] = [
+/** @deprecated remove after DIALOGFLOW_CX FF gone */
+export const NLU_OPTIONS_NO_CX: MenuItemGrouped<PlatformAndProjectMeta>[] = [
   {
     id: 'default',
     label: '',
@@ -250,5 +258,23 @@ export const NLU_OPTIONS: MenuItemGrouped<PlatformAndProjectMeta>[] = [
     id: 'coming-soon',
     label: 'Coming Soon',
     options: [PLATFORM_PROJECT_META_MAP[PlatformTypeUpcoming.DIALOGFLOW_CX]],
+  },
+];
+
+export const NLU_OPTIONS: MenuItemGrouped<PlatformAndProjectMeta>[] = [
+  {
+    id: 'default',
+    label: '',
+    options: [
+      PLATFORM_PROJECT_META_MAP[VoiceflowConstants.PlatformType.VOICEFLOW],
+      PLATFORM_PROJECT_META_MAP[VoiceflowConstants.PlatformType.DIALOGFLOW_ES],
+      PLATFORM_PROJECT_META_MAP[VoiceflowConstants.PlatformType.DIALOGFLOW_CX],
+      PLATFORM_PROJECT_META_MAP[VoiceflowConstants.PlatformType.WATSON],
+      PLATFORM_PROJECT_META_MAP[VoiceflowConstants.PlatformType.LUIS],
+      PLATFORM_PROJECT_META_MAP[VoiceflowConstants.PlatformType.RASA],
+      PLATFORM_PROJECT_META_MAP[VoiceflowConstants.PlatformType.EINSTEIN],
+      PLATFORM_PROJECT_META_MAP[VoiceflowConstants.PlatformType.LEX],
+      PLATFORM_PROJECT_META_MAP[VoiceflowConstants.PlatformType.NUANCE_MIX],
+    ],
   },
 ];

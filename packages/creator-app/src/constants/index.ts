@@ -81,6 +81,7 @@ export enum NLPProvider {
   WATSON = 'watson',
   EINSTEIN = 'einstein',
   DIALOGFLOW_ES = 'diagflow-es',
+  DIALOGFLOW_CX = 'diagflow-cx',
   VF_CSV = 'vf-csv',
   NUANCE_MIX = 'nuance-mix',
 }
@@ -93,6 +94,7 @@ export const PlatformToNLPProvider = {
   [VoiceflowConstants.PlatformType.LEX]: NLPProvider.LEX_V1,
   [VoiceflowConstants.PlatformType.EINSTEIN]: NLPProvider.EINSTEIN,
   [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: NLPProvider.DIALOGFLOW_ES,
+  [VoiceflowConstants.PlatformType.DIALOGFLOW_CX]: NLPProvider.DIALOGFLOW_CX,
   [VoiceflowConstants.PlatformType.NUANCE_MIX]: NLPProvider.NUANCE_MIX,
   // TODO: remove/update when DIALOGFLOW_CX fully supported
   [VoiceflowConstants.PlatformType.DIALOGFLOW_CX]: undefined,
@@ -114,6 +116,7 @@ export const NLPProviderLabels = {
   [NLPProvider.LEX_V1]: 'Amazon Lex V1',
   [NLPProvider.EINSTEIN]: 'Salesforce Einstein',
   [NLPProvider.DIALOGFLOW_ES]: 'Dialogflow ES',
+  [NLPProvider.DIALOGFLOW_CX]: 'Dialogflow CX',
   [NLPProvider.VF_CSV]: 'Voiceflow CSV',
   [NLPProvider.NUANCE_MIX]: 'Nuance Mix',
 };

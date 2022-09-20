@@ -36,6 +36,9 @@ export enum FeatureFlag {
 
   STICKERS_DROPDOWN = 'stickers_dropdown',
 
+  // integrations
+  DIALOGFLOW_CX = 'dialogflow_cx',
+
   // canvas and editor updates
   CONDITIONS_BUILDER_V2 = 'conditions_builder_v2',
 

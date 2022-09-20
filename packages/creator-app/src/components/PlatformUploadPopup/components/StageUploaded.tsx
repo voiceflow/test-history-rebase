@@ -16,7 +16,7 @@ const UploadedContainer = styled(Box)`
 
 interface UploadedProps {
   redirectUrl: string;
-  learnMoreUrl: string;
+  learnMoreUrl?: string;
   buttonText: string;
   description: string;
   image?: string;
@@ -30,7 +30,7 @@ const UploadedStage: React.FC<UploadedProps> = ({ redirectUrl, learnMoreUrl, but
         Successfully Uploaded
       </Text>
       <Text textAlign="center" mb={20} lineHeight="22px" color="#62778C">
-        {description}. <Link href={learnMoreUrl}>Learn more</Link>
+        {description}. {learnMoreUrl && <Link href={learnMoreUrl}>Learn more</Link>}
       </Text>
       <Link href={redirectUrl} target="_blank" rel="noopener noreferrer">
         <Button squareRadius>{buttonText}</Button>

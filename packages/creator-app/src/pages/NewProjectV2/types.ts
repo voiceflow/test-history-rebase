@@ -11,7 +11,7 @@ export enum PlatformTypeUpcoming {
   TWILIO_IVR = 'twilio_ivr',
   TWILIO_SMS = 'twilio_SMS',
   FB_MESSENGER = 'fb_messenger',
-  DIALOGFLOW_CX = 'df-cx',
+  DIALOGFLOW_CX = 'upcoming-df-cx',
 }
 
 export enum FileExtension {

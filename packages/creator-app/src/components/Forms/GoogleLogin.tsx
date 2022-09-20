@@ -7,6 +7,7 @@ import { connect, styled } from '@/hocs';
 import { useGoogleLogin } from '@/hooks';
 import * as Models from '@/models';
 import { ConnectedProps } from '@/types';
+import logger from '@/utils/logger';
 
 const GoogleLoginButton = styled(BaseButton)`
   position: relative;
@@ -54,7 +55,10 @@ const GoogleLogin: React.FC<GoogleLoginProps & ConnectedGoogleLoginProps> = ({
 
           (onSuccess as AccountCallback)(account!);
         })
-        .catch(onFail),
+        .catch((error) => {
+          logger.error(error);
+          onFail();
+        }),
     [onSuccess, onFail]
   );
 

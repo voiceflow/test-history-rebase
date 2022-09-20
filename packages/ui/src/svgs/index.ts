@@ -69,6 +69,7 @@ export { default as checkmark2 } from './success.svg';
 // d
 export { default as delay } from './delay.svg';
 export { default as dialogflow } from './dialogflow.svg';
+export { default as dialogflowCX } from './dialogflow-cx.svg';
 export { default as directiveV2 } from './directive-v2.svg';
 export { default as display } from './display.svg';
 export { default as displayV2 } from './display-v2.svg';

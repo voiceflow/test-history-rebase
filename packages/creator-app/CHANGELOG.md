@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.913.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.913.0...@voiceflow/creator-app@1.913.1) (2022-09-20)
+
+
+### Bug Fixes
+
+* dialogflow es publish refactor (CT-000) ([#6095](https://github.com/voiceflow/creator-app/issues/6095)) ([76d0c45](https://github.com/voiceflow/creator-app/commit/76d0c452ea38f8e6927ab1329f4fc9b5585fd7c2))
+
+
+
+
+
 # [1.913.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.912.4...@voiceflow/creator-app@1.913.0) (2022-09-20)
 
 

@@ -4,6 +4,7 @@ import React from 'react';
 
 import { BlockType } from '@/constants';
 import * as CreatorV2 from '@/ducks/creatorV2';
+import * as Domain from '@/ducks/domain';
 import { useSelector, useTrackingEvents } from '@/hooks';
 import type { NodeEditorV2Props } from '@/pages/Canvas/managers/types';
 
@@ -129,6 +130,7 @@ export const useActions = ({ editor, portID, parentPath, parentParams }: Actions
   const [trackingEvents] = useTrackingEvents();
 
   const targetNode = useSelector(CreatorV2.targetNodeByPortID, { id: portID });
+  const domainsCount = useSelector(Domain.domainsCountSelector);
   const targetNodeSteps = useSelector(CreatorV2.stepDataByParentNodeIDSelector, { id: targetNode?.id });
 
   const hasURLStep = Realtime.Utils.typeGuards.isURLBlockType(targetNodeSteps[0]?.type);
@@ -180,6 +182,7 @@ export const useActions = ({ editor, portID, parentPath, parentParams }: Actions
     hasURLStep,
     actionPath,
     canHaveURLStep,
+    withGoToDomain: domainsCount > 1,
     targetNodeSteps,
     hasNavigationStep,
     lastCreatedStepID,

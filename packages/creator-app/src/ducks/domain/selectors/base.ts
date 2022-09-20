@@ -13,6 +13,7 @@ export const {
   all: allDomainsSelector,
   map: domainsMapSelector,
   byID: domainByIDSelector,
+  count: domainsCountSelector,
   byIDs: domainsByIDsSelector,
   allIDs: allDomainIDsSelector,
 } = createCRUDSelectors(STATE_KEY);

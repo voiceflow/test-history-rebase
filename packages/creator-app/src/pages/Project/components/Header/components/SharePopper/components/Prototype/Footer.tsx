@@ -31,13 +31,14 @@ const Footer: React.FC<FooterProps> = ({ isCanvas }) => {
   const [isCompiled, setIsCompiled] = React.useState(false);
 
   const [canSharePrototype] = usePermission(Permission.SHARE_PROTOTYPE);
+  const [canRenderPrototype] = usePermission(Permission.RENDER_PROTOTYPE);
   const { open: openPaymentsModal } = useModals(ModalType.PAYMENT);
   const [trackingEvents] = useTrackingEvents();
 
   const testableLink = canSharePrototype ? `${window.location.origin}/prototype/${versionID}` : null;
 
   const onRenderPrototype = () => {
-    compilePrototype();
+    if (canRenderPrototype) compilePrototype();
 
     if (variableStateID) {
       trackingEvents.trackVariableStateApplied({ type: VariableStateAppliedType.SHAREABLE_LINK });
@@ -71,7 +72,10 @@ const Footer: React.FC<FooterProps> = ({ isCanvas }) => {
 
   useAsyncEffect(async () => {
     if (isCanvas) {
-      await compilePrototype();
+      if (canRenderPrototype) {
+        await compilePrototype();
+      }
+
       await trainingModelAPI.getDiff();
       setIsCompiled(true);
     }

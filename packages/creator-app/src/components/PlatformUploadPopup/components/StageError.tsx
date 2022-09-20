@@ -68,7 +68,7 @@ const ErrorStage = <S extends AnyErrorStage = AnyErrorStage>({
   const platform = useSelector(ProjectV2.active.platformSelector);
 
   return (
-    <StageContainer style={{ textAlign: 'left' }} width={254}>
+    <StageContainer style={{ textAlign: 'left' }} width={300}>
       <StageHeader color="#e91e63">{getTitle(stage.data, platform)}</StageHeader>
       <Box mt={12}>
         <span>{getError(stage.data, defaultMessage, errorMap)}</span>

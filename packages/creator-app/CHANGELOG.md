@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.915.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.914.0...@voiceflow/creator-app@1.915.0) (2022-09-20)
+
+
+### Bug Fixes
+
+* cleanup job interface (CT-000) ([#6106](https://github.com/voiceflow/creator-app/issues/6106)) ([5b34c66](https://github.com/voiceflow/creator-app/commit/5b34c66cb940bf76d2a859a4a71f13a2903c61d8))
+* viewer share popper (CT-974) ([#6104](https://github.com/voiceflow/creator-app/issues/6104)) ([3cc6341](https://github.com/voiceflow/creator-app/commit/3cc6341024551003dbff25c6fbb4d46305da80b4))
+
+
+### Features
+
+* hide speak step variant icon for only 1 item (CT-1006) ([#6107](https://github.com/voiceflow/creator-app/issues/6107)) ([35ed882](https://github.com/voiceflow/creator-app/commit/35ed8829ae0715f27230d35a6e262e21a62f0d42))
+
+
+
+
+
 # [1.914.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.913.2...@voiceflow/creator-app@1.914.0) (2022-09-20)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.918.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.917.1...@voiceflow/creator-app@1.918.0) (2022-09-20)
+
+
+### Features
+
+* connect single block template via link (CT-1007) ([#6103](https://github.com/voiceflow/creator-app/issues/6103)) ([a84edcd](https://github.com/voiceflow/creator-app/commit/a84edcd0ed249487cc1f26ae8e20e84a4da38a40))
+
+
+
+
+
 ## [1.917.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.917.0...@voiceflow/creator-app@1.917.1) (2022-09-20)
 
 

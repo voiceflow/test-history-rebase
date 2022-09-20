@@ -4,6 +4,7 @@ import React from 'react';
 import { SectionToggleVariant } from '@/components/Section';
 import { VariableItem } from '@/components/SlateEditable/editor';
 import { InteractionModelTabType, ModalType } from '@/constants';
+import * as Tracking from '@/ducks/tracking';
 import { useModals, useOrderedVariables } from '@/hooks';
 import ListItem from '@/pages/Canvas/components/NLUQuickView/components/Sidebar/components/ListItem';
 import { useListHooks } from '@/pages/Canvas/components/NLUQuickView/components/Sidebar/hooks';
@@ -16,7 +17,9 @@ import { SectionProps } from './types';
 const VariablesList: React.FC<SectionProps> = ({ search, setSearchLength, selectedID, setSelectedItemID, setActiveTab }) => {
   const { activeTab } = React.useContext(NLUQuickViewContext);
 
-  const createVariableModal = useModals<{ onCreated: (variables: string[]) => void }>(ModalType.VARIABLE_CREATE);
+  const createVariableModal = useModals<{ onCreated: (variables: string[]) => void; creationType: Tracking.CanvasCreationType }>(
+    ModalType.VARIABLE_CREATE
+  );
 
   const isActiveTab = React.useMemo(() => activeTab === InteractionModelTabType.VARIABLES, [activeTab]);
   const [justAddedVariables, setJustAddedVariables] = React.useState<string[] | null>(null);
@@ -46,7 +49,7 @@ const VariablesList: React.FC<SectionProps> = ({ search, setSearchLength, select
     });
   }, [justAddedVariables, variables]);
 
-  const onCreateVariable = () => createVariableModal.open({ onCreated: setJustAddedVariables });
+  const onCreateVariable = () => createVariableModal.open({ onCreated: setJustAddedVariables, creationType: Tracking.CanvasCreationType.IMM });
 
   return (
     <SectionSection

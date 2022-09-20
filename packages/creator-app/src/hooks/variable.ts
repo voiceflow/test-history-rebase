@@ -16,7 +16,7 @@ import { getPlatformGlobalVariables } from '@/utils/globalVariables';
 import { addVariablePrefix } from '@/utils/variable';
 
 export const useVariableCreation = () => {
-  const createVariableModal = useModals<{ single?: boolean; onCreated?: (names: string) => void; creationType?: CanvasCreationType }>(
+  const createVariableModal = useModals<{ single?: boolean; onCreated?: (names: string) => void; creationType: CanvasCreationType }>(
     ModalType.VARIABLE_CREATE
   );
 

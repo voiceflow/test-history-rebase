@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.152.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.152.0...@voiceflow/ui@1.152.1) (2022-09-20)
+
+
+### Bug Fixes
+
+* [bugfix] NLU UI/UX review (NLU-284) ([#6032](https://github.com/voiceflow/creator-app/issues/6032)) ([6fec496](https://github.com/voiceflow/creator-app/commit/6fec49666ec2f16ec4386c9b8f31f73d4c3198f3)), closes [/www.notion.so/voiceflow/NLU-Manager-6a284e44ede5494bb81d40e90458c1cb#da0f1b5e66a147c782aaeb1a63ce3b32](https://github.com//www.notion.so/voiceflow/NLU-Manager-6a284e44ede5494bb81d40e90458c1cb/issues/da0f1b5e66a147c782aaeb1a63ce3b32)
+
+
+
+
+
 # [1.152.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.151.0...@voiceflow/ui@1.152.0) (2022-09-15)
 
 

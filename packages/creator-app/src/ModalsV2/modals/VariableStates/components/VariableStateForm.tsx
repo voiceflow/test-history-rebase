@@ -1,24 +1,22 @@
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, Button, ButtonVariant, Input, toast } from '@voiceflow/ui';
+import { Box, Button, ButtonVariant, Input, Modal, toast } from '@voiceflow/ui';
 import { useFormik } from 'formik';
 import React from 'react';
 
 import BlockSelect from '@/components/BlockSelect';
 import InputError from '@/components/InputError';
-import Modal, { ModalFooter } from '@/components/Modal';
 import Section from '@/components/Section';
 import { SectionVariant } from '@/components/Section/constants';
 import VariableList from '@/components/VariableList';
 import VariablesSelect from '@/components/VariablesSelect';
-import { ModalType } from '@/constants';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as VariableState from '@/ducks/variableState';
-import { useDispatch, useModals, useSelector, useTrackingEvents } from '@/hooks';
+import { useDispatch, useSelector, useTrackingEvents } from '@/hooks';
 
-import { InputHint, VariableListSection } from './components';
-import { defaultValues, variableStateSchema } from './constants';
-import { VariableStateEditorValues } from './types';
+import { defaultValues, variableStateSchema } from '../constants';
+import { VariableStateEditorValues } from '../types';
+import { InputHint, VariableListSection } from '.';
 
 const getDiffValues = (variableState: Realtime.VariableState | null, values: VariableStateEditorValues) => {
   if (!variableState) return [];
@@ -30,15 +28,15 @@ const getDiffValues = (variableState: Realtime.VariableState | null, values: Var
   );
 };
 
-const VariableStatesModal: React.FC<{
-  modalType: ModalType;
+interface Props {
   saveText: string;
   title: string;
   headerActions?: React.ReactNode;
-}> = ({ modalType, saveText, title, headerActions }) => {
-  const { isOpened, data } = useModals<{ variableStateID?: string }>(modalType);
-  const { close } = useModals(modalType);
+  variableStateID?: string;
+  close: VoidFunction;
+}
 
+const VariableStateForm: React.FC<Props> = ({ saveText, title, headerActions, variableStateID, close }) => {
   const [trackingEvents] = useTrackingEvents();
 
   const getVariableStateByID = useSelector(VariableState.getVariableStateByIDSelector);
@@ -48,9 +46,9 @@ const VariableStatesModal: React.FC<{
   const updateVariableState = useDispatch(VariableState.updateState);
 
   const initialValues = React.useMemo((): VariableStateEditorValues => {
-    if (!data.variableStateID) return defaultValues;
+    if (!variableStateID) return defaultValues;
 
-    const variableState = getVariableStateByID({ id: data.variableStateID });
+    const variableState = getVariableStateByID({ id: variableStateID });
 
     if (!variableState) return defaultValues;
 
@@ -60,7 +58,7 @@ const VariableStatesModal: React.FC<{
       variables: Object.keys(variableState.variables || {}),
       variablesValues: (variableState.variables as Record<string, string>) || {},
     };
-  }, [data]);
+  }, [variableStateID]);
 
   const onSubmit = async (values: VariableStateEditorValues) => {
     const startFrom = values.startFrom || null;
@@ -71,11 +69,11 @@ const VariableStatesModal: React.FC<{
     }, {});
 
     try {
-      if (!data.variableStateID) {
+      if (!variableStateID) {
         await createVariableState({ name: values.name, variables, startFrom });
         trackingEvents.trackVariableStateCreated({ diagramID: startFrom?.diagramID || activeDiagramID });
       } else {
-        const variableState = getVariableStateByID({ id: data.variableStateID });
+        const variableState = getVariableStateByID({ id: variableStateID });
 
         values.variables.forEach((variable) => {
           if (values.variablesValues[variable] === undefined) {
@@ -90,7 +88,7 @@ const VariableStatesModal: React.FC<{
           return;
         }
 
-        await updateVariableState(data.variableStateID, {
+        await updateVariableState(variableStateID, {
           name: values.name,
           variables: values.variablesValues,
           startFrom,
@@ -119,14 +117,9 @@ const VariableStatesModal: React.FC<{
     [formik.values.variables, formik.values.variablesValues]
   );
 
-  React.useEffect(() => {
-    if (isOpened) {
-      formik.resetForm({ values: initialValues, submitCount: 0 });
-    }
-  }, [isOpened]);
-
   return (
-    <Modal id={modalType} title={title} headerActions={headerActions} verticalMargin={32} maxWidth={450}>
+    <div>
+      <Modal.Header actions={headerActions}>{title}</Modal.Header>
       <Box fullWidth>
         <Section header="Name" dividers forceDividers variant={SectionVariant.TERTIARY_TITLE}>
           <Input
@@ -185,7 +178,7 @@ const VariableStatesModal: React.FC<{
         )}
       </Box>
 
-      <ModalFooter>
+      <Modal.Footer>
         <Box mr="12px">
           <Button variant={ButtonVariant.TERTIARY} squareRadius onClick={close} disabled={formik.isSubmitting}>
             Cancel
@@ -195,9 +188,9 @@ const VariableStatesModal: React.FC<{
         <Button variant={ButtonVariant.PRIMARY} squareRadius disabled={formik.isSubmitting} onClick={formik.submitForm}>
           {saveText}
         </Button>
-      </ModalFooter>
-    </Modal>
+      </Modal.Footer>
+    </div>
   );
 };
 
-export default VariableStatesModal;
+export default VariableStateForm;

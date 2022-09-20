@@ -50,8 +50,7 @@ export enum Hotkey {
   PROTOTYPE_FULL_SCREEN_TOGGLE = 'PROTOTYPE_FULL_SCREEN_TOGGLE',
   SAVE = 'SAVE',
   CLOSE_UPLOAD_MODAL = 'CLOSE_UPLOAD_MODAL',
-  CLOSE_VARIABLE_STATE_EDITOR_MODAL = 'CLOSE_VARIABLE_STATE_EDITOR_MODAL',
-  CLOSE_VARIABLE_STATE_MANAGER_MODAL = 'CLOSE_VARIABLE_STATE_MANAGER_MODAL',
+  MODAL_CLOSE = 'MODAL_CLOSE',
 
   /**
    * @deprecated remove after topics and components are released
@@ -130,8 +129,7 @@ const HOTKEY_MAPPING: Record<Hotkey, string | string[]> = {
   [Hotkey.CLOSE_CANVAS_MODE]: SpecialKey.ESC,
   [Hotkey.CLOSE_DESIGN_MENU]: SpecialKey.ESC,
   [Hotkey.CLOSE_CANVAS_ONLY_MODE]: SpecialKey.ESC,
-  [Hotkey.CLOSE_VARIABLE_STATE_EDITOR_MODAL]: SpecialKey.ESC,
-  [Hotkey.CLOSE_VARIABLE_STATE_MANAGER_MODAL]: SpecialKey.ESC,
+  [Hotkey.MODAL_CLOSE]: SpecialKey.ESC,
   [Hotkey.TOGGLE_DESIGN_MENU_LOCK]: ['/', '?'],
   [Hotkey.OPEN_DESIGN_MENU_STEPS_TAB]: ['.', `${SpecialKey.SHIFT}+.`],
   [Hotkey.OPEN_DESIGN_MENU_LAYERS_TAB]: [',', `${SpecialKey.SHIFT}+,`],

@@ -2,18 +2,18 @@ import { Box } from '@voiceflow/ui';
 import React from 'react';
 
 import { Header, HeaderBackButton, HeaderHotkeyToAction } from '@/components/ProjectPage';
-import { ModalType } from '@/constants';
 import * as Router from '@/ducks/router';
-import { useDispatch, useModals } from '@/hooks';
+import { useDispatch } from '@/hooks';
 import { Hotkey } from '@/keymap';
+import * as ModalsV2 from '@/ModalsV2';
 
 import { Content, Settings, Share, Timer } from './components';
 
 const PrototypeHeader: React.FC = () => {
   const goToCurrentCanvas = useDispatch(Router.goToCurrentCanvas);
-  const { isOpened: isVariableStateManagerModalOpened } = useModals(ModalType.VARIABLE_STATES_MANAGER_MODAL);
-  const { isOpened: isVariableStateEditorModalOpened } = useModals(ModalType.VARIABLE_STATE_EDITOR_MODAL);
-  const disableEscHotkey = isVariableStateManagerModalOpened || isVariableStateEditorModalOpened;
+  const variableStateManageModal = ModalsV2.useModal(ModalsV2.VariableStates.Manage);
+  const variableStateCreateModal = ModalsV2.useModal(ModalsV2.VariableStates.Create);
+  const disableEscHotkey = variableStateManageModal.opened || variableStateCreateModal.opened;
 
   return (
     <Header renderLogoButton={() => <HeaderBackButton onClick={() => goToCurrentCanvas()} />}>

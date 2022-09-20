@@ -11,9 +11,9 @@ import {
 } from '@voiceflow/ui';
 import React from 'react';
 
-import { ModalType } from '@/constants';
 import * as variableState from '@/ducks/variableState';
-import { useModals, useSelector, useVariableStatesPlanLimit } from '@/hooks';
+import { useSelector, useVariableStatesPlanLimit } from '@/hooks';
+import * as ModalsV2 from '@/ModalsV2';
 
 import { SelectContainer } from './components';
 import { baseOptions, dividerOption } from './constants';
@@ -29,8 +29,8 @@ interface TestVariableStateSelectProps extends BaseSelectProps {
 const TestVariableStateSelect: React.FC<TestVariableStateSelectProps> = ({ value, loading, onChange, onUpdateStateValues, className, ...props }) => {
   const variableStates = useSelector(variableState.allVariableStatesSelector);
   const isSelectedStateUnsync = useSelector(variableState.IsVariableStateUnsyncSelector);
-  const { open: openVariableStateEditorModal } = useModals(ModalType.VARIABLE_STATE_EDITOR_MODAL);
-  const { open: openVariableStateManagerModal } = useModals(ModalType.VARIABLE_STATES_MANAGER_MODAL);
+  const variableStateCreateModal = ModalsV2.useModal(ModalsV2.VariableStates.Create);
+  const variableStateManageModal = ModalsV2.useModal(ModalsV2.VariableStates.Manage);
   const verifyStatesLimit = useVariableStatesPlanLimit();
 
   const options = React.useMemo(() => {
@@ -45,7 +45,7 @@ const TestVariableStateSelect: React.FC<TestVariableStateSelectProps> = ({ value
 
   const selected = React.useMemo(() => options.find((option) => !isUIOnlyMenuItemOption(option) && option.value === value) || null, [options, value]);
 
-  const onAddNew = verifyStatesLimit(openVariableStateEditorModal);
+  const onAddNew = verifyStatesLimit(() => variableStateCreateModal.openVoid({}));
 
   return (
     <SelectContainer
@@ -64,7 +64,7 @@ const TestVariableStateSelect: React.FC<TestVariableStateSelectProps> = ({ value
           </OverflowTippyTooltip>
 
           {option.label !== 'All project variables' && (
-            <Menu.ItemActionIcon icon="edit" onClick={() => openVariableStateManagerModal({ variableStateID: option.value })} />
+            <Menu.ItemActionIcon icon="edit" onClick={() => variableStateManageModal.openVoid({ variableStateID: option.value })} />
           )}
         </>
       )}

@@ -3,7 +3,6 @@ import React from 'react';
 import ConfirmModal from '@/components/ConfirmModal';
 import { ErrorModal, ModalBackdrop, ReduxConfirmModal, StandardModal, SuccessModal, UpgradeModal } from '@/components/modals';
 import PublishVersionModal from '@/components/PublishVersionModal';
-import { VariableStateEditorModal, VariableStatesManagerModal } from '@/components/VariableStateModals';
 import { BulkImportSlots, BulkImportUtterances } from '@/pages/Canvas/components/BulkImportModal';
 import CreateEntityModal from '@/pages/Canvas/components/EntityModalsV2/CreateModal';
 import EditEntityModal from '@/pages/Canvas/components/EntityModalsV2/EditModal';
@@ -30,8 +29,6 @@ const AppModals: React.FC = () => {
       <CreateVariableModal />
       <EditEntityModal />
 
-      <VariableStatesManagerModal />
-      <VariableStateEditorModal />
       <TestableLinkModal />
       <CanvasExportModal />
       <RealtimeDeniedModal />

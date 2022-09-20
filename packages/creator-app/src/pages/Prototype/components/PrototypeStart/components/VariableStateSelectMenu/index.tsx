@@ -2,9 +2,9 @@ import { Nullish } from '@voiceflow/common';
 import { Menu, OverflowText, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
-import { ModalType } from '@/constants';
 import * as VariableState from '@/ducks/variableState';
-import { useDispatch, useModals, useSelector, useToggle, useVariableStatesPlanLimit } from '@/hooks';
+import { useDispatch, useSelector, useToggle, useVariableStatesPlanLimit } from '@/hooks';
+import * as ModalsV2 from '@/ModalsV2';
 
 import { OverflowWrapper, SelectContainer } from './components';
 
@@ -18,11 +18,11 @@ interface VariableStateSelectMenuProps {
 }
 
 const VariableStateSelectMenu: React.FC<VariableStateSelectMenuProps> = ({ render }) => {
-  const { open: openEditorModal } = useModals(ModalType.VARIABLE_STATE_EDITOR_MODAL);
+  const variableStatesCreateModal = ModalsV2.useModal(ModalsV2.VariableStates.Create);
   const [isSelectMenuOpen, toggleSelectMenuOpen] = useToggle(false);
   const variableStates = useSelector(VariableState.allVariableStatesSelector);
   const updateSelectedVariableStateById = useDispatch(VariableState.updateSelectedVariableStateById);
-  const { open: openVariableStateManagerModal } = useModals(ModalType.VARIABLE_STATES_MANAGER_MODAL);
+  const variableStateManageModal = ModalsV2.useModal(ModalsV2.VariableStates.Manage);
   const verifyStatesLimit = useVariableStatesPlanLimit();
 
   const variableStateOptions = React.useMemo(
@@ -57,13 +57,17 @@ const VariableStateSelectMenu: React.FC<VariableStateSelectMenuProps> = ({ rende
       renderTrigger={({ ref, isOpen }) => render({ ref, isOpen, toggleSelectMenuOpen })}
       renderFooterAction={() => (
         <Menu.Footer>
-          <Menu.Footer.Action onClick={verifyStatesLimit(openEditorModal)}>Create New Persona</Menu.Footer.Action>
+          <Menu.Footer.Action onClick={verifyStatesLimit(() => variableStatesCreateModal.openVoid({}))}>Create New Persona</Menu.Footer.Action>
         </Menu.Footer>
       )}
       renderOptionLabel={(option: VariableStateOption) => (
         <OverflowWrapper>
           <OverflowText style={{ display: 'block', overflow: 'hidden' }}>{option.label}</OverflowText>
-          <SvgIcon icon="edit" variant={SvgIcon.Variant.STANDARD} onClick={() => openVariableStateManagerModal({ variableStateID: option.value })} />
+          <SvgIcon
+            icon="edit"
+            variant={SvgIcon.Variant.STANDARD}
+            onClick={() => variableStateManageModal.openVoid({ variableStateID: option.value })}
+          />
         </OverflowWrapper>
       )}
     />

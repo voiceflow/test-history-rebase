@@ -8,7 +8,7 @@ import { useModals } from './modals';
 import { useSelector } from './redux';
 import { useTrackingEvents } from './tracking';
 
-type PlanLimitHandler = (planAction: () => void) => () => void;
+type PlanLimitHandler = (planAction: () => Promise<void>) => () => void;
 
 export const useVariableStatesPlanLimit = (): PlanLimitHandler => {
   const variableStatesLimit = useSelector(WorkspaceV2.active.variableStatesLimitSelector);
@@ -18,7 +18,7 @@ export const useVariableStatesPlanLimit = (): PlanLimitHandler => {
   const { open: openVariableStateLimitModal } = useModals(ModalType.UPGRADE_MODAL);
   const [trackingEvents] = useTrackingEvents();
 
-  return (planAction: () => void) => () => {
+  return (planAction: () => Promise<void>) => () => {
     if (variableStatesLimit && variableStates.length >= variableStatesLimit) {
       trackingEvents.trackUpgradePrompt({ promptType: UpgradePrompt.VARIABLE_STATES_LIMIT });
       openVariableStateLimitModal({ planLimitDetails: LimitDetails, promptOrigin: UpgradePrompt.VARIABLE_STATES_LIMIT });

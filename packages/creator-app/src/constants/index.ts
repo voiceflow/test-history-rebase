@@ -266,9 +266,6 @@ export enum ModalType {
 
   DIALOGFLOW_CREATE_NEW_AGENT = 'dialogflow-create-new-agent',
 
-  VARIABLE_STATE_EDITOR_MODAL = 'variable-state-editor-modal',
-  VARIABLE_STATES_MANAGER_MODAL = 'variable-states-manager-modal',
-
   PUBLISH_VERSION_MODAL = 'publish-version-modal',
 
   UPGRADE_MODAL = 'upgrade-modal',

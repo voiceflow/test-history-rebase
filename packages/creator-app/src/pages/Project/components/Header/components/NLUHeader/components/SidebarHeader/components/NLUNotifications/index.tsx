@@ -38,17 +38,11 @@ const NLUNotifications: React.FC<NLUNotificationsProps> = ({ onClose }) => {
 
   return (
     <Container>
-      {notifications.length ? (
-        <ItemsContainer>
-          {notificationList.map((notification, index) => {
-            return <NotificationItem data={notification} key={index} onClose={onClose} />;
-          })}
-        </ItemsContainer>
-      ) : (
-        <Box mt={15} height={50} display="flex" alignItems="center" justifyContent="center" color="#62778c">
-          Nothing to show.
-        </Box>
-      )}
+      <ItemsContainer>
+        {notificationList.map((notification, index) => (
+          <NotificationItem data={notification} key={index} onClose={onClose} />
+        ))}
+      </ItemsContainer>
       <Box display="flex" p="0px 32px" justifyContent="flex-end" mt={14}>
         <Button variant={ButtonVariant.SECONDARY} onClick={handleRefresh} flat squareRadius>
           <Flex>

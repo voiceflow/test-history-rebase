@@ -79,6 +79,7 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({
   const [canBulkUpload] = usePermission(Permission.BULK_UPLOAD);
   const [isValidUtterance, setValidUtterance, setInvalidUtterance] = useEnableDisable(true);
   const intentUtterances = inputs || [];
+  const isRecommendationOpened = nluManager.isEditorTabActive(EditorTabs.UTTERANCE_RECOMMENDATIONS);
 
   useDidUpdateEffect(() => {
     utteranceRef.current?.clear();
@@ -150,6 +151,15 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({
     onUpdateUtterances(cleanedUtterances);
   };
 
+  const toggleRecommendationTab = () => {
+    if (isRecommendationOpened) {
+      nluManager.closeEditorTab();
+      return;
+    }
+
+    nluManager.openEditorTab(EditorTabs.UTTERANCE_RECOMMENDATIONS);
+  };
+
   return (
     <>
       <div ref={stickyTopRef} />
@@ -162,8 +172,8 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({
                 <Badge
                   flat
                   style={{ fontSize: '13px', lineHeight: '16px', minHeight: '24px' }}
-                  active={nluManager.isEditorTabActive(EditorTabs.UTTERANCE_RECOMMENDATIONS)}
-                  onClick={() => nluManager.openEditorTab(EditorTabs.UTTERANCE_RECOMMENDATIONS)}
+                  active={isRecommendationOpened}
+                  onClick={toggleRecommendationTab}
                 >
                   Recommend
                 </Badge>

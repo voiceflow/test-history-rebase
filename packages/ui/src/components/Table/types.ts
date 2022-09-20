@@ -10,6 +10,7 @@ export interface ItemProps<I extends Item> {
   index: number;
   isLast: boolean;
   isFirst: boolean;
+  items?: I[];
 }
 
 export interface Props<I extends Item> {

@@ -1,7 +1,7 @@
 import { Utils } from '@voiceflow/common';
 import * as ML from '@voiceflow/ml-sdk';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, IconButton, SectionV2, SidebarEditor, toast, useToggle } from '@voiceflow/ui';
+import { Box, FullSpinner, IconButton, SectionV2, SidebarEditor, TippyTooltip, toast, useToggle } from '@voiceflow/ui';
 import _sample from 'lodash/sample';
 import React from 'react';
 
@@ -40,6 +40,8 @@ const Recommendations: React.FC = () => {
   const { onAddSlot } = useAddSlot();
 
   const onFetchRecommendations = async () => {
+    const inputs = nluManager.activeItem?.inputs || [];
+    const allIntentInputs = new Set(inputs.map((input) => input.text));
     const utterance = _sample(nluManager.activeItem?.inputs ?? []);
 
     if (!utterance) return;
@@ -47,12 +49,16 @@ const Recommendations: React.FC = () => {
     try {
       toggleIsFetching(true);
 
-      const utterances = await waitAsyncAction(mlClient, ML.utterance.suggest, {
+      const recommendedUtterances = await waitAsyncAction(mlClient, ML.utterance.suggest, {
         utterance: fillEntities(utterance.text, { slotsMap, locales, platform }),
         numberOfUtterances: 10,
       });
 
-      setRecommendations(utterances.map((text) => ({ id: Utils.id.cuid.slug(), text, slots: [] })));
+      setRecommendations(
+        recommendedUtterances
+          .filter((recommendedUtterance) => !allIntentInputs.has(recommendedUtterance))
+          .map((text) => ({ id: Utils.id.cuid.slug(), text, slots: [] }))
+      );
 
       if (nluManager.activeItemID) {
         trackingEvents.trackUtteranceRecommendationRefreshed({ intentID: nluManager.activeItemID });
@@ -101,21 +107,28 @@ const Recommendations: React.FC = () => {
     }
   }, []);
 
+  React.useEffect(() => {
+    const inputs = nluManager.activeItem?.inputs || [];
+    const allIntentInputs = new Set(inputs.map((input) => input.text));
+    const filteredRecommendations = recommendations.filter((recommendedUtterance) => !allIntentInputs.has(recommendedUtterance.text));
+
+    if (filteredRecommendations.length !== recommendations.length) {
+      setRecommendations(filteredRecommendations);
+    }
+  }, [nluManager.activeItem?.inputs]);
+
   return (
     <Drawer open width={450} offset={450} zIndex={19} direction={Drawer.Direction.LEFT}>
       <SidebarEditor.Container>
         <SidebarEditor.Header>
           <SidebarEditor.HeaderTitle fontWeight={600}>Recommendations</SidebarEditor.HeaderTitle>
 
+          {isFetching && <FullSpinner borderLess />}
+
           <SectionV2.ActionsContainer gap={8}>
-            <IconButton
-              size={16}
-              icon="arrowSpin"
-              variant={IconButton.Variant.BASIC}
-              onClick={onFetchRecommendations}
-              iconProps={{ spinReverse: isFetching }}
-              offsetSize={0}
-            />
+            <TippyTooltip title="Refresh">
+              <IconButton size={16} icon="arrowSpin" variant={IconButton.Variant.BASIC} onClick={onFetchRecommendations} offsetSize={0} />
+            </TippyTooltip>
 
             <IconButton size={16} icon="close" variant={IconButton.Variant.BASIC} onClick={nluManager.closeEditorTab} offsetSize={0} />
           </SectionV2.ActionsContainer>
@@ -124,40 +137,41 @@ const Recommendations: React.FC = () => {
         <SidebarEditor.Content $fillHeight autoHeight autoHeightMax="100%" hideTracksWhenNotNeeded>
           <SectionV2.Content topOffset={3} bottomOffset={3}>
             <Box.Flex column gap={16}>
-              {recommendations.map((recommendation, index) => (
-                <Box.Flex key={recommendation.id} width="100%">
-                  <Utterance
-                    space
-                    slots={slots}
-                    value={recommendation.text}
-                    onBlur={(value) => onUpdateRecommendation(index, value)}
-                    readOnly={isFetching}
-                    autoFocus={false}
-                    onAddSlot={onAddSlot}
-                    onEnterPress={(value) => onUpdateRecommendation(index, value)}
-                  />
-
-                  <SectionV2.ActionsContainer gap={4}>
-                    <IconButton
-                      size={14}
-                      icon="close"
-                      variant={IconButton.Variant.BASIC}
-                      onClick={() => onRemoveRecommendation(index, recommendation.text)}
-                      disabled={isFetching}
-                      offsetSize={0}
+              {!isFetching &&
+                recommendations.map((recommendation, index) => (
+                  <Box.Flex key={recommendation.id} width="100%">
+                    <Utterance
+                      space
+                      slots={slots}
+                      value={recommendation.text}
+                      onBlur={(value) => onUpdateRecommendation(index, value)}
+                      readOnly={isFetching}
+                      autoFocus={false}
+                      onAddSlot={onAddSlot}
+                      onEnterPress={(value) => onUpdateRecommendation(index, value)}
                     />
 
-                    <IconButton
-                      size={14}
-                      icon="checkSquare"
-                      onClick={() => onAddRecommendation(index, recommendation)}
-                      variant={IconButton.Variant.BASIC}
-                      disabled={isFetching}
-                      offsetSize={0}
-                    />
-                  </SectionV2.ActionsContainer>
-                </Box.Flex>
-              ))}
+                    <SectionV2.ActionsContainer gap={4}>
+                      <IconButton
+                        size={14}
+                        icon="close"
+                        variant={IconButton.Variant.BASIC}
+                        onClick={() => onRemoveRecommendation(index, recommendation.text)}
+                        disabled={isFetching}
+                        offsetSize={0}
+                      />
+
+                      <IconButton
+                        size={14}
+                        icon="checkSquare"
+                        onClick={() => onAddRecommendation(index, recommendation)}
+                        variant={IconButton.Variant.BASIC}
+                        disabled={isFetching}
+                        offsetSize={0}
+                      />
+                    </SectionV2.ActionsContainer>
+                  </Box.Flex>
+                ))}
             </Box.Flex>
           </SectionV2.Content>
         </SidebarEditor.Content>

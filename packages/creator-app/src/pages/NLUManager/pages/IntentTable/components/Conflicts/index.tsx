@@ -1,4 +1,4 @@
-import { Box, Button, ButtonVariant, FlexEnd, IconButton, SectionV2, SidebarEditor, SvgIcon, toast } from '@voiceflow/ui';
+import { Box, Button, ButtonVariant, IconButton, SectionV2, SidebarEditor, SvgIcon, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import Drawer from '@/components/Drawer';
@@ -56,7 +56,7 @@ const Conflicts: React.FC<ConflictsProps> = ({ onChangesApplied }) => {
     <Drawer open width={1000} offset={450} zIndex={19} direction={Drawer.Direction.LEFT} style={{ width: drawerWidth }}>
       <SidebarEditor.Container>
         <SidebarEditor.Header style={{ height: `${theme.components.projectPage.header.height}px` }}>
-          <SidebarEditor.HeaderTitle fontWeight={600} fontSize={15}>
+          <SidebarEditor.HeaderTitle fontWeight={800} fontSize={15}>
             Conflicting Intents
           </SidebarEditor.HeaderTitle>
 
@@ -98,7 +98,7 @@ const Conflicts: React.FC<ConflictsProps> = ({ onChangesApplied }) => {
               </S.IntentsGrid>
             ))}
 
-            <FlexEnd style={{ marginTop: '24px' }}>
+            <S.Footer>
               <S.ContentContainer>
                 <Button variant={ButtonVariant.PRIMARY} squareRadius onClick={handleSubmit}>
                   <Box display="inline-block" position="relative" top={2}>
@@ -107,7 +107,7 @@ const Conflicts: React.FC<ConflictsProps> = ({ onChangesApplied }) => {
                   Apply Changes
                 </Button>
               </S.ContentContainer>
-            </FlexEnd>
+            </S.Footer>
           </SectionV2.Content>
         </SidebarEditor.Content>
       </SidebarEditor.Container>

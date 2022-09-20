@@ -2,7 +2,8 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Table } from '@voiceflow/ui';
 import React from 'react';
 
-import EmptyView from '@/pages/Canvas/components/NLUQuickView/components/EmptyView';
+import { EmptyScreen } from '@/pages/NLUManager/components';
+import { useTableHotkeys } from '@/pages/NLUManager/hooks';
 
 import { useNLUManager } from '../../context';
 import { EditSidebar, Row } from './components';
@@ -19,10 +20,12 @@ const EntityTable: React.FC = () => {
     getItemFilterBy: (item) => item.name,
   });
 
+  useTableHotkeys(items);
+
   return (
     <>
       <Table.Configurable
-        empty={<EmptyView pageType={nluManager.activeTab} onCreate={() => nluManager.createAndGoToItem(nluManager.search)} />}
+        empty={<EmptyScreen />}
         items={items}
         orderBy={orderBy}
         columns={COLUMNS}

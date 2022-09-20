@@ -26,7 +26,7 @@ import useEditorTab from './hooks/useEditorTab';
 import useNotifications from './hooks/useNotifications';
 import { ClarityModel, IntentNotification, NLUIntent } from './types';
 
-type AnyItem = OrderedVariable | NLUIntent | Realtime.Slot;
+export type AnyItem = OrderedVariable | NLUIntent | Realtime.Slot;
 
 export interface NLUManagerContextValue<I extends AnyItem = AnyItem> {
   items: I[];
@@ -45,7 +45,7 @@ export interface NLUManagerContextValue<I extends AnyItem = AnyItem> {
   createAndGoToItem: (name?: string) => void;
   setRenamingItemID: (itemID: string | null) => void;
   setSelectedItemIDs: (itemIDs: string[]) => void;
-  toggleActiveItemID: (id: string) => void;
+  toggleActiveItemID: (id?: string) => void;
   deleteSelectedItems: VoidFunction;
   toggleSelectedItemID: (itemID: string) => void;
   isEditorTabActive: (tab: EditorTabs) => boolean;
@@ -195,7 +195,17 @@ export const NLUManagerProvider: React.FC = ({ children }) => {
     [goToTab, activeTab, activeItemID]
   );
 
-  const toggleActiveItemID = React.useCallback((id: string) => goToItem(activeItemID === id ? null : id), [activeItemID, goToItem]);
+  const toggleActiveItemID = React.useCallback(
+    (id?: string) => {
+      if (!id) {
+        goToItem(null);
+        return;
+      }
+
+      goToItem(activeItemID === id ? null : id);
+    },
+    [activeItemID, goToItem]
+  );
 
   const createAndGoToItem = React.useCallback(
     (name?: string) => {

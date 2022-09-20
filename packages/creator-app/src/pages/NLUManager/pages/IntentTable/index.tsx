@@ -1,8 +1,9 @@
 import { Table } from '@voiceflow/ui';
 import React from 'react';
 
-import EmptyView from '@/pages/Canvas/components/NLUQuickView/components/EmptyView';
+import { EmptyScreen } from '@/pages/NLUManager/components';
 import { useNLUManager } from '@/pages/NLUManager/context';
+import { useTableHotkeys } from '@/pages/NLUManager/hooks';
 
 import { NLUIntent } from '../../types';
 import { EditSidebar, Row } from './components';
@@ -19,14 +20,16 @@ const IntentTable: React.FC = () => {
     getItemFilterBy: (item) => item.name,
   });
 
+  useTableHotkeys(items);
+
   return (
     <>
       <Table.Configurable
-        empty={<EmptyView pageType={nluManager.activeTab} onCreate={() => nluManager.createAndGoToItem(nluManager.search)} />}
+        empty={<EmptyScreen />}
         items={items}
         orderBy={orderBy}
         columns={COLUMNS}
-        renderRow={(props) => <Row {...props} />}
+        renderRow={(props) => <Row {...props} items={items} />}
         descending={descending}
         onChangeOrderBy={onChangeOrderBy}
         scrolled={nluManager.isScrolling}

@@ -1,4 +1,4 @@
-import { Box, ButtonVariant, SvgIcon, toast, useDidUpdateEffect } from '@voiceflow/ui';
+import { Box, ButtonVariant, SvgIcon, TippyTooltip, toast, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 
 import { ConfirmProps } from '@/components/ConfirmModal';
@@ -23,6 +23,7 @@ const ContentHeader: React.FC = () => {
   const nluManager = React.useContext(NLUManagerContext);
 
   const inputRef = React.useRef<HTMLInputElement>(null);
+  const [tooltipOpen, setTooltipOpen] = React.useState(false);
   const { startTraining, isTraining, isTrained } = React.useContext(TrainingModelContext);
 
   const focusInput = () => {
@@ -63,8 +64,16 @@ const ContentHeader: React.FC = () => {
   }, [isTrained]);
 
   return (
-    <Container>
-      <Box>
+    <Container style={{ position: 'relative' }}>
+      <TippyTooltip
+        html={
+          <div style={{ color: '#A2A7A8', fontSize: '15px' }}>
+            Press <span style={{ color: '#F2F7F7' }}>/</span> to search
+          </div>
+        }
+        position="bottom"
+        open={tooltipOpen}
+      >
         <SearchInput
           ref={inputRef}
           icon="search"
@@ -72,8 +81,11 @@ const ContentHeader: React.FC = () => {
           iconProps={{ color: '#8da2b5', size: 16 }}
           placeholder={`Search ${nluManager.items.length} ${getSearchPlaceholder[nluManager.activeTab](nluManager.items.length)}`}
           onChangeText={nluManager.setSearch}
+          onMouseEnter={() => setTooltipOpen(true)}
+          onMouseLeave={() => setTooltipOpen(false)}
+          onFocus={() => setTooltipOpen(false)}
         />
-      </Box>
+      </TippyTooltip>
 
       <Box.FlexCenter pr={12} gap={10}>
         {!!nluManager.selectedItemIDs.size && (

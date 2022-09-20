@@ -9,7 +9,7 @@ export const SidebarItemNumber = styled.div`
 
 export const Container = styled(FlexApart)<{ active?: boolean }>`
   ${transition('background', 'border')}
-  padding: 7px 12px 7px 16px;
+  padding: 7px 12px 7px 12px;
   border-radius: 6px;
   cursor: pointer;
   width: 100%;

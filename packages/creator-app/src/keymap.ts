@@ -70,6 +70,9 @@ export enum Hotkey {
    * @deprecated remove after nlu manager is released
    */
   CONVERSATION_PAGE_LEGACY = 'CONVERSATION_PAGE_LEGACY',
+
+  NLU_TABLE_TAB = 'NLU_TABLE_TAB',
+  NLU_TABLE_ESC = 'NLU_TABLE_ESC',
 }
 
 enum SpecialKey {
@@ -84,6 +87,7 @@ enum SpecialKey {
   DELETE = 'del',
   OPTION = 'alt',
   BACKSPACE = 'backspace',
+  TAB = 'tab',
 }
 
 /**
@@ -156,6 +160,8 @@ const HOTKEY_MAPPING: Record<Hotkey, string | string[]> = {
    * @deprecated remove after nlu manager is released
    */
   [Hotkey.CONVERSATION_PAGE_LEGACY]: '2',
+  [Hotkey.NLU_TABLE_TAB]: SpecialKey.TAB,
+  [Hotkey.NLU_TABLE_ESC]: SpecialKey.ESC,
 };
 
 const SPECIAL_KEY_LABEL: Record<SpecialKey, string> = {
@@ -170,6 +176,7 @@ const SPECIAL_KEY_LABEL: Record<SpecialKey, string> = {
   [SpecialKey.OPTION]: IS_MAC ? '⌥' : 'Alt',
   [SpecialKey.DELETE]: 'Del',
   [SpecialKey.BACKSPACE]: 'Del',
+  [SpecialKey.TAB]: 'Tab',
 };
 
 export const PLATFORM_META_KEY = IS_MAC ? SpecialKey.META : SpecialKey.CTRL;

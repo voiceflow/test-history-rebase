@@ -6,7 +6,7 @@ export enum Type {
 
 export enum Color {
   ERROR = '#e91e63',
-  DEFAULT = '#5d9df5',
+  DEFAULT = '#3D82E2',
   DISABLED = '#8da2b5',
 }
 

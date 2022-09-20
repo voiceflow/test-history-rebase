@@ -33,23 +33,25 @@ const SidebarHeader: React.FC = () => {
         NLU Model
       </Box>
 
-      <Popper width="370px" placement="bottom-start" renderContent={({ onClose }) => <NLUNotifications onClose={onClose} />}>
-        {({ ref, onToggle, isOpened }) => (
-          <ErrorBubble
-            active={isOpened}
-            onClick={() => {
-              onToggle();
-              if (!isOpened) {
-                trackingEvents.trackNLUNotificationsOpened();
-              }
-            }}
-            ref={ref}
-          >
-            <SvgIcon mr={5} color={isOpened ? '#132144' : '#6e849a'} icon="warning" inline size={16} />
-            {notifications.length}
-          </ErrorBubble>
-        )}
-      </Popper>
+      {notifications.length > 0 && (
+        <Popper width="400px" placement="bottom-start" renderContent={({ onClose }) => <NLUNotifications onClose={onClose} />}>
+          {({ ref, onToggle, isOpened }) => (
+            <ErrorBubble
+              active={isOpened}
+              onClick={() => {
+                onToggle();
+                if (!isOpened) {
+                  trackingEvents.trackNLUNotificationsOpened();
+                }
+              }}
+              ref={ref}
+            >
+              <SvgIcon mr={6} mt={1} color={isOpened ? '#132144' : '#6e849a'} icon="warning" inline size={16} />
+              {notifications.length}
+            </ErrorBubble>
+          )}
+        </Popper>
+      )}
     </SidebarHeaderContainer>
   );
 };

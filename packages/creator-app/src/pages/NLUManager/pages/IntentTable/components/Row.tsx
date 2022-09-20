@@ -9,6 +9,7 @@ import { isBuiltInIntent } from '@/utils/intent';
 
 const Row: React.FC<TableTypes.ConfigurableRowProps<Realtime.Intent>> = ({ item, children, onMouseEnter, onMouseLeave }) => {
   const nluManager = React.useContext(NLUManagerContext);
+  const isActiveItem = item.id === nluManager.activeItemID;
 
   const { options } = useNLUItemMenu({
     itemID: item.id,
@@ -21,7 +22,7 @@ const Row: React.FC<TableTypes.ConfigurableRowProps<Realtime.Intent>> = ({ item,
     <ContextMenu options={options} selfDismiss>
       {({ isOpen, onContextMenu }) => (
         <Table.Row
-          active={isOpen || item.id === nluManager.activeItemID}
+          active={isOpen || isActiveItem}
           onClick={() => nluManager.toggleActiveItemID(item.id)}
           onMouseEnter={onMouseEnter}
           onMouseLeave={onMouseLeave}

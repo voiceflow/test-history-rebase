@@ -6,6 +6,6 @@ export const Container = styled.div`
 `;
 
 export const ItemsContainer = styled.div`
-  max-height: 400px;
+  max-height: 600px;
   overflow: auto;
 `;

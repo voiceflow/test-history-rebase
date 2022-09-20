@@ -16,7 +16,6 @@ export const IntentsGrid = styled.div`
 
 export const IntentItem = styled.div`
   background-color: white;
-  min-height: 172px;
   padding: 20px 32px 24px 32px;
   border-top: solid 1px #eaeff4;
 
@@ -26,16 +25,28 @@ export const IntentItem = styled.div`
 `;
 
 export const DragIconContainer = styled.div`
+  ${transition('opacity')};
   position: absolute;
   left: -5px;
   bottom: 14px;
-  display: none;
+  opacity: 0;
+`;
+
+export const Footer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  position: sticky;
+  bottom: 0;
+  width: 100%;
+  padding: 24px 0;
+  z-index: 99;
+  background: white;
 `;
 
 export const UtteranceListItemContainer = styled.div<{ isDragging: boolean }>`
   &:hover {
     ${DragIconContainer} {
-      display: block;
+      opacity: 1;
       cursor: grab;
 
       &:active {

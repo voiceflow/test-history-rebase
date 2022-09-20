@@ -12,7 +12,7 @@ const BuiltInPrompt: React.FC<BuiltInPromptProps> = ({ setShowUtteranceSection }
         Built-in intents don’t require sample phrases. However, if you’d like to add more you can extend the intent.
       </Box>
       <Button variant={ButtonVariant.SECONDARY} onClick={() => setShowUtteranceSection(true)} flat squareRadius>
-        Extend intent
+        Extend Intent
       </Button>
     </Box>
   );

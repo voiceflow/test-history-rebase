@@ -9,7 +9,8 @@ import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Slot from '@/ducks/slot';
 import * as SlotV2 from '@/ducks/slotV2';
-import { useDispatch, useLinkedState, useModals, useSelector } from '@/hooks';
+import * as Tracking from '@/ducks/tracking';
+import { useDispatch, useLinkedState, useModals, useSelector, useTrackingEvents } from '@/hooks';
 import { applySlotNameFormatting, slotNameFormatter, validateSlotName } from '@/utils/slot';
 
 import EntityForm from './components/EntityForm';
@@ -20,6 +21,7 @@ const CreateModal: React.FC = () => {
     name: string;
     onCreate: (slot: Pick<Realtime.Slot, 'id' | 'name' | 'color'> | null) => void;
     onClose?: () => void;
+    creationType: Tracking.CanvasCreationType;
   }>(ModalType.ENTITY_CREATE);
   const createSlot = useDispatch(Slot.createSlot);
   const cache = useCache<{ created: boolean }>({ created: false });
@@ -36,6 +38,8 @@ const CreateModal: React.FC = () => {
   const nameInputRef = React.useRef<HTMLInputElement>(null);
 
   const notEmptyValues = React.useMemo(() => values.some(({ value, synonyms }) => value.trim() || synonyms.trim()), [values]);
+
+  const [trackingEvents] = useTrackingEvents();
 
   const onCreate = async () => {
     setIsCreating(true);
@@ -59,6 +63,7 @@ const CreateModal: React.FC = () => {
     await createSlot(id, { id, type, name: formattedSlotName, color, inputs: values });
     data.onCreate?.({ id, name, color } as Realtime.Slot);
     cache.current.created = true;
+    trackingEvents.trackEntityCreated({ creationType: data.creationType });
     setIsCreating(false);
     close();
   };

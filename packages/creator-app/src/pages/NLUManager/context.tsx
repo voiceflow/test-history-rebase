@@ -9,6 +9,7 @@ import { InteractionModelTabType, ModalType } from '@/constants';
 import { NLUContext } from '@/contexts';
 import * as Router from '@/ducks/router';
 import { activeProjectIDSelector } from '@/ducks/session';
+import * as Tracking from '@/ducks/tracking';
 import {
   OrderedVariable,
   useDispatch,
@@ -210,7 +211,8 @@ export const NLUManagerProvider: React.FC = ({ children }) => {
   const createAndGoToItem = React.useCallback(
     (name?: string) => {
       activeTabSelector(activeTab, {
-        [InteractionModelTabType.SLOTS]: () => addSlotModal.open({ name, onCreate: (slot: Realtime.Slot) => goToItem(slot.id) }),
+        [InteractionModelTabType.SLOTS]: () =>
+          addSlotModal.open({ name, onCreate: (slot: Realtime.Slot) => goToItem(slot.id), creationType: Tracking.CanvasCreationType.NLU_MANAGER }),
         [InteractionModelTabType.INTENTS]: () => addIntentModal.open({ name, onCreate: (id: string) => goToItem(id) }),
         [InteractionModelTabType.VARIABLES]: () => addVariableModal.open({ name, onCreate: (slot: Realtime.Slot) => goToItem(slot.id) }),
       });

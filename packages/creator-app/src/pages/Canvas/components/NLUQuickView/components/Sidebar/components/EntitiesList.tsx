@@ -8,7 +8,8 @@ import { InteractionModelTabType } from '@/constants';
 import { NLUContext } from '@/contexts';
 import * as Slot from '@/ducks/slot';
 import * as SlotV2 from '@/ducks/slotV2';
-import { useAsyncEffect, useDispatch, useOrderedEntities, useSelector } from '@/hooks';
+import * as Tracking from '@/ducks/tracking';
+import { useAsyncEffect, useDispatch, useOrderedEntities, useSelector, useTrackingEvents } from '@/hooks';
 import { NLUQuickViewContext } from '@/pages/Canvas/components/NLUQuickView/context';
 import { useFilteredList } from '@/pages/Canvas/components/NLUQuickView/hooks';
 
@@ -24,6 +25,7 @@ const EntitiesList: React.FC<SectionProps> = ({ isActiveItemRename, setIsActiveI
   const allSlotsMap = useSelector(SlotV2.slotMapSelector);
 
   const createSlot = useDispatch(Slot.createSlot);
+  const [trackingEvents] = useTrackingEvents();
 
   const sortedSlots = useOrderedEntities();
   const filteredList = useFilteredList(search, sortedSlots) as Realtime.Slot[];
@@ -73,6 +75,7 @@ const EntitiesList: React.FC<SectionProps> = ({ isActiveItemRename, setIsActiveI
         await createSlot(id, { id, name: generateItemName(InteractionModelTabType.SLOTS), inputs: [], type: CustomSlot.type, color: undefined });
         setNewSlotID(id);
         setSelectedID(id);
+        trackingEvents.trackEntityCreated({ creationType: Tracking.CanvasCreationType.IMM });
       } catch (e) {
         toast.error(e);
       } finally {

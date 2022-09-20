@@ -4,6 +4,7 @@ import React from 'react';
 
 import { ModalType } from '@/constants';
 import * as SlotV2 from '@/ducks/slotV2';
+import * as Tracking from '@/ducks/tracking';
 import { useModals } from '@/hooks/modals';
 import { useSelector } from '@/hooks/redux';
 
@@ -20,7 +21,7 @@ export const useAddSlot = () => {
   const onAddSlot = React.useCallback(
     (name: string) =>
       new Promise<Realtime.Slot | null>((resolve) => {
-        entityCreateModal.open({ name, onCreate: resolve, onClose: () => resolve(null) });
+        entityCreateModal.open({ name, onCreate: resolve, onClose: () => resolve(null), creationType: Tracking.CanvasCreationType.QUICKVIEW });
       }),
     []
   );

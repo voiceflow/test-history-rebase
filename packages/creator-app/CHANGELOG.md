@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.914.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.913.2...@voiceflow/creator-app@1.914.0) (2022-09-20)
+
+
+### Bug Fixes
+
+* fix error stage width (CT-000) ([#6101](https://github.com/voiceflow/creator-app/issues/6101)) ([31085bd](https://github.com/voiceflow/creator-app/commit/31085bde71802a37f17c6a6d1ac227283ffbb9de))
+
+
+### Features
+
+* chat choice step (CT-905) ([#6079](https://github.com/voiceflow/creator-app/issues/6079)) ([130e7fa](https://github.com/voiceflow/creator-app/commit/130e7fa8c301f6f6ea21e66df9149a1cc377e386))
+* migrate variables modals to v2 (CT-898) ([#6043](https://github.com/voiceflow/creator-app/issues/6043)) ([6d3b761](https://github.com/voiceflow/creator-app/commit/6d3b76175ba008babb63bf0b89e9bd1969f443f1))
+
+
+
+
+
 ## [1.913.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.913.1...@voiceflow/creator-app@1.913.2) (2022-09-20)
 
 

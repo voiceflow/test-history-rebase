@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.159.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.158.0...@voiceflow/realtime-sdk@1.159.0) (2022-09-20)
+
+
+### Features
+
+* chat choice step (CT-905) ([#6079](https://github.com/voiceflow/creator-app/issues/6079)) ([130e7fa](https://github.com/voiceflow/creator-app/commit/130e7fa8c301f6f6ea21e66df9149a1cc377e386))
+
+
+
+
+
 # [1.158.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.157.0...@voiceflow/realtime-sdk@1.158.0) (2022-09-19)
 
 

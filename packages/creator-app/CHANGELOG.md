@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.917.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.917.0...@voiceflow/creator-app@1.917.1) (2022-09-20)
+
+
+### Bug Fixes
+
+* setup dialogflow cx (CT-000) ([#6108](https://github.com/voiceflow/creator-app/issues/6108)) ([3f4a0c1](https://github.com/voiceflow/creator-app/commit/3f4a0c18cd5afa60c40028fcd049a60809a37606))
+
+
+
+
+
 # [1.917.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.916.0...@voiceflow/creator-app@1.917.0) (2022-09-20)
 
 

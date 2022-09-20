@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.913.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.913.1...@voiceflow/creator-app@1.913.2) (2022-09-20)
+
+
+### Bug Fixes
+
+* hide goto domain action for a single-domain projects (CT-1009) ([#6102](https://github.com/voiceflow/creator-app/issues/6102)) ([7c61e4c](https://github.com/voiceflow/creator-app/commit/7c61e4c53f7e59261d283a110bb253f4c513044c))
+
+
+
+
+
 ## [1.913.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.913.0...@voiceflow/creator-app@1.913.1) (2022-09-20)
 
 

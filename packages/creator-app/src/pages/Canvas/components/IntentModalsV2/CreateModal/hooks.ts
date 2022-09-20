@@ -8,12 +8,14 @@ import React from 'react';
 import * as Intent from '@/ducks/intent';
 import { getUniqSlots } from '@/ducks/intent/utils';
 import * as ProjectV2 from '@/ducks/projectV2';
+import * as Tracking from '@/ducks/tracking';
 import { useDispatch, useIntentNameProcessor, useSelector } from '@/hooks';
 import { applyPlatformIntentNameFormatting } from '@/utils/intent';
 
 interface CreateIntentProps {
   onCreate?: (id: string) => void;
   initialName?: string;
+  creationType: Tracking.CanvasCreationType;
 }
 
 interface CreateIntentAPI {
@@ -31,7 +33,7 @@ interface CreateIntentAPI {
   removeRequiredSlot: (slotID: string) => void;
 }
 
-export const useCreateIntent = ({ initialName, onCreate }: CreateIntentProps): CreateIntentAPI => {
+export const useCreateIntent = ({ creationType, initialName, onCreate }: CreateIntentProps): CreateIntentAPI => {
   const platform = useSelector(ProjectV2.active.platformSelector);
   const projectMeta = useSelector(ProjectV2.active.metaSelector);
 
@@ -87,7 +89,7 @@ export const useCreateIntent = ({ initialName, onCreate }: CreateIntentProps): C
         inputs,
       } as Partial<Realtime.Intent>;
 
-      const intentID = await createIntent(newIntent);
+      const intentID = await createIntent(creationType, newIntent);
 
       onCreate?.(intentID);
       reset();

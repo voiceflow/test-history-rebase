@@ -11,7 +11,12 @@ import IntentForm from '@/pages/Canvas/components/IntentModalsV2/components/Inte
 import { useCreateIntent } from '@/pages/Canvas/components/IntentModalsV2/CreateModal/hooks';
 
 const CreateModal: React.FC = () => {
-  const { close, data, isInStack } = useModals<{ id?: string; onCreate?: (id: string) => void; name?: string }>(ModalType.INTENT_CREATE);
+  const { close, data, isInStack } = useModals<{
+    id?: string;
+    onCreate?: (id: string) => void;
+    name?: string;
+    creationType: Tracking.CanvasCreationType;
+  }>(ModalType.INTENT_CREATE);
 
   const [modalRef, setModalRef] = React.useState<HTMLDivElement | null>(null);
 
@@ -29,6 +34,7 @@ const CreateModal: React.FC = () => {
     updateSlotDialog,
     removeRequiredSlot,
   } = useCreateIntent({
+    creationType: data.creationType,
     onCreate: Utils.functional.chain(data.onCreate, close),
     initialName: data.name,
   });

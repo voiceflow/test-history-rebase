@@ -8,6 +8,7 @@ import { InteractionModelTabType } from '@/constants';
 import { NLUContext } from '@/contexts';
 import * as Intent from '@/ducks/intent';
 import * as IntentV2 from '@/ducks/intentV2';
+import * as Tracking from '@/ducks/tracking';
 import { useAsyncEffect, useDispatch, useOrderedIntents, useSelector } from '@/hooks';
 import { NLUQuickViewContext } from '@/pages/Canvas/components/NLUQuickView/context';
 import { isBuiltInIntent } from '@/utils/intent';
@@ -77,8 +78,7 @@ const IntentList: React.FC<SectionProps> = ({
   useAsyncEffect(async () => {
     if (isCreating) {
       try {
-        const newIntentID = await createIntent({ name: generateItemName(InteractionModelTabType.INTENTS) });
-
+        const newIntentID = await createIntent(Tracking.CanvasCreationType.IMM, { name: generateItemName(InteractionModelTabType.INTENTS) });
         setSelectedID(newIntentID);
         setNewIntentID(newIntentID);
       } catch (e) {

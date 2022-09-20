@@ -8,6 +8,7 @@ import * as Normal from 'normal-store';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as SlotV2 from '@/ducks/slotV2';
+import * as Tracking from '@/ducks/tracking';
 import { getActiveVersionContext } from '@/ducks/version/utils';
 import { SyncThunk, Thunk } from '@/store/types';
 import { inferIntentSlotsType, inferIntentSlotType, inferIntentType, removeSlotRefFromInput } from '@/utils/intent';
@@ -18,7 +19,7 @@ import { getUniqSlots, intentProcessor } from './utils';
 const NEW_INTENT_NAME = 'intent';
 
 export const addManyIntents =
-  (values: Realtime.Intent[]): Thunk =>
+  (values: Realtime.Intent[], creationType: Tracking.CanvasCreationType): Thunk =>
   async (dispatch, getState) => {
     if (!values.length) return;
 
@@ -27,6 +28,7 @@ export const addManyIntents =
     const intents = values.map(intentProcessor.bind(null, projectMeta.type));
 
     await dispatch.sync(Realtime.intent.crud.addMany({ ...getActiveVersionContext(getState()), values: intents, projectMeta }));
+    dispatch(Tracking.trackIntentCreated({ creationType }));
   };
 
 export const patchIntent =
@@ -179,7 +181,7 @@ export const reorderIntentSlots =
   };
 
 export const createIntent =
-  (intent?: Partial<Realtime.Intent>): Thunk<string> =>
+  (creationType: Tracking.CanvasCreationType, intent?: Partial<Realtime.Intent>): Thunk<string> =>
   async (dispatch, getState) => {
     const id = intent?.id || Utils.id.cuid.slug();
     const state = getState();
@@ -208,6 +210,8 @@ export const createIntent =
         },
       })
     );
+
+    dispatch(Tracking.trackIntentCreated({ creationType }));
 
     return id;
   };

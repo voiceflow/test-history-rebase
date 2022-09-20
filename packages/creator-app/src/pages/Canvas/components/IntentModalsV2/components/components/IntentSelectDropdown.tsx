@@ -4,6 +4,7 @@ import React from 'react';
 
 import IntentSelect from '@/components/IntentSelect';
 import { ModalType } from '@/constants';
+import * as Tracking from '@/ducks/tracking';
 import { useModals } from '@/hooks';
 
 const IntentSelectDropdown: React.FC = () => {
@@ -12,7 +13,7 @@ const IntentSelectDropdown: React.FC = () => {
   const switchIntent = (value: { intent: Nullable<string> }) => {
     const intentID = value?.intent;
     closeCreateIntentModal();
-    openCreateIntentModal({ id: intentID });
+    openCreateIntentModal({ id: intentID, creationType: Tracking.CanvasCreationType.EDITOR });
   };
 
   return (

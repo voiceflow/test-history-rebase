@@ -165,8 +165,8 @@ export enum CanvasCreationType {
   EDITOR = 'editor',
   IMM = 'imm',
   PASTE = 'paste',
-  QUICKVIEW = 'quickview',
   NLU_MANAGER = 'nlu manager',
+  QUICKVIEW = 'quickview',
 }
 
 export enum NLUEntityCreationType {

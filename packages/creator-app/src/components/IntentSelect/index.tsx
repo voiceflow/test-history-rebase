@@ -8,8 +8,9 @@ import { CUSTOMIZABLE_INTENT_PREFIXS, ModalType } from '@/constants';
 import * as Intent from '@/ducks/intent';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
+import * as Tracking from '@/ducks/tracking';
 import { CanvasCreationType } from '@/ducks/tracking/constants';
-import { useDispatch, useIntentNameProcessor, useModals, useSelector, useTrackingEvents } from '@/hooks';
+import { useDispatch, useIntentNameProcessor, useModals, useSelector } from '@/hooks';
 import { ClassName } from '@/styles/constants';
 import { applyPlatformIntentNameFormatting, intentFilter, isCustomizableBuiltInIntent, prettifyIntentName } from '@/utils/intent';
 
@@ -50,8 +51,6 @@ const IntentSelect: React.FC<IntentSelectProps> = ({
 
   const createIntent = useDispatch(Intent.createIntent);
 
-  const [trackingEvents] = useTrackingEvents();
-
   const options = propOptions || allIntents;
 
   const filteredOptions = React.useMemo(
@@ -88,9 +87,7 @@ const IntentSelect: React.FC<IntentSelectProps> = ({
         CUSTOMIZABLE_INTENT_PREFIXS.includes(nextIntentID.split('.')[0]) || nextIntentID === VoiceflowConstants.IntentName.NONE;
 
       if (isDefaultBuiltIn && !intentsMap[nextIntentID]) {
-        await createIntent({ id: nextIntentID, name: nextIntentID });
-
-        trackingEvents.trackIntentCreated({ creationType: CanvasCreationType.EDITOR });
+        await createIntent(CanvasCreationType.EDITOR, { id: nextIntentID, name: nextIntentID });
       }
     }
 
@@ -103,7 +100,7 @@ const IntentSelect: React.FC<IntentSelectProps> = ({
     if (error) {
       toast.error(error);
     } else {
-      openCreateIntentModal({ name: formattedName, onCreate: onSelectIntent });
+      openCreateIntentModal({ name: formattedName, onCreate: onSelectIntent, creationType: Tracking.CanvasCreationType.QUICKVIEW });
     }
   };
 

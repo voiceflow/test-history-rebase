@@ -141,7 +141,7 @@ class ClipboardEngine extends EngineConsumer {
         .filter((intent) => intent.slots.allKeys.every((key) => isValidSlot[key]))
         .map((intent) => ({ ...intent, platform: targetPlatform }));
 
-      await Promise.all([this.dispatch(Slot.addManySlots(validSlots)), this.dispatch(Intent.addManyIntents(validIntents))]);
+      await Promise.all([this.dispatch(Slot.addManySlots(validSlots)), this.dispatch(Intent.addManyIntents(validIntents, CanvasCreationType.PASTE))]);
 
       this.internal.trackClipboardEvents({ intents: validIntents, slots: validSlots });
 

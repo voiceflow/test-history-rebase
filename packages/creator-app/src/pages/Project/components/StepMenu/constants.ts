@@ -225,7 +225,7 @@ export const CHATBOT_STEP_SECTIONS: TopStepItem[] = [
     icon: LISTEN_ICON,
     smallIcon: LISTEN_ICON_SMALL,
     label: LISTEN_LABEL,
-    steps: [BUTTONS_STEP, CAPTURE_STEP_V2],
+    steps: [BUTTONS_STEP, CHOICE_STEP, CAPTURE_STEP_V2],
   },
   {
     icon: LOGIC_ICON,

@@ -1,25 +1,18 @@
 import React from 'react';
 
 import { DialogflowStageType } from '@/constants/platforms';
+import * as Account from '@/ducks/account';
+import { useSelector } from '@/hooks';
 import { DialogflowPublishJob } from '@/models';
-
-import Button, { ButtonVariant } from '../../components/Button';
+import Button, { ButtonVariant } from '@/pages/Project/components/Header/components/CanvasHeader/components/Upload/components/Button';
 
 interface DialogflowUploadButtonProps {
-  needsLogin: boolean;
-  successfullyPublished: boolean;
   onPublish: () => void;
   dialogflowPublishJob: DialogflowPublishJob.AnyJob | null;
 }
 
-const DialogflowUploadButton: React.FC<DialogflowUploadButtonProps> = ({ needsLogin, onPublish, successfullyPublished, dialogflowPublishJob }) => {
-  if (needsLogin) {
-    return <Button onClick={onPublish} variant={ButtonVariant.CONNECT} />;
-  }
-
-  if (successfullyPublished) {
-    return <Button variant={ButtonVariant.SUCCESS} />;
-  }
+const DialogflowUploadButton: React.FC<DialogflowUploadButtonProps> = ({ onPublish, dialogflowPublishJob }) => {
+  const isLoggedIn = !!useSelector(Account.googleAccountSelector);
 
   switch (dialogflowPublishJob?.stage.type) {
     case DialogflowStageType.WAIT_ACCOUNT:
@@ -31,7 +24,7 @@ const DialogflowUploadButton: React.FC<DialogflowUploadButtonProps> = ({ needsLo
     case DialogflowStageType.SUCCESS:
       return <Button variant={ButtonVariant.SUCCESS} />;
     default:
-      return <Button onClick={onPublish} variant={ButtonVariant.UPLOAD} />;
+      return <Button onClick={onPublish} variant={isLoggedIn ? ButtonVariant.UPLOAD : ButtonVariant.CONNECT} />;
   }
 };
 

@@ -12,7 +12,6 @@ import EditIntentModal from '@/pages/Canvas/components/IntentModalsV2/EditModal'
 import CreateVariableModal from '@/pages/Canvas/components/VariableModalsV2/CreateModal';
 import { CanvasExportModal, RealtimeDeniedModal, TestableLinkModal } from '@/pages/Dashboard/RestrictionModals';
 import PaymentModal from '@/pages/Payment/PaymentModal';
-import { Dialogflow } from '@/platforms';
 
 const AppModals: React.FC = () => {
   return (
@@ -37,8 +36,6 @@ const AppModals: React.FC = () => {
       <CanvasExportModal />
       <RealtimeDeniedModal />
       <PaymentModal />
-
-      <Dialogflow.Components.CreateNewAgentModal />
 
       <BulkImportSlots />
       <BulkImportUtterances />

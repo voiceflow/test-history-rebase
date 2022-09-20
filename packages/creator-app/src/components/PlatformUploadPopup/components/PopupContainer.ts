@@ -4,8 +4,6 @@ import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { AnyStageType } from '@/constants/platforms';
 import { styled } from '@/hocs/styled';
 
-import { getPlatformPopupLayout } from '../constants';
-
 export interface PopupContainerProps {
   open?: boolean;
   jobStage?: AnyStageType | null;
@@ -26,8 +24,6 @@ const PopupContainer = styled.div<PopupContainerProps>`
   transform: translate3d(0, 0, 0);
 
   ${({ open, jobStage }) => open && jobStage && Popper.baseStyles}
-
-  ${({ platform, jobStage }) => getPlatformPopupLayout(platform)({ jobStage })};
 `;
 
 export default PopupContainer;

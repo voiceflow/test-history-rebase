@@ -1,5 +1,6 @@
 import { Nullable } from '@voiceflow/common';
 import { withContext } from '@voiceflow/ui';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 import { useSelector } from 'react-redux';
 
@@ -16,7 +17,8 @@ export const { Consumer: ExportConsumer } = ExportContext;
 export const ExportProvider: React.FC = ({ children }) => {
   const platform = useSelector(ProjectV2.active.platformSelector);
 
-  const platformClient = client.platform(platform).export as JobClient<AnyExportJob>;
+  const platformClient = (client.platform(platform).export ??
+    client.platform(VoiceflowConstants.PlatformType.VOICEFLOW).export) as JobClient<AnyExportJob>;
 
   const api = useJob<AnyExportJob>(platformClient);
 

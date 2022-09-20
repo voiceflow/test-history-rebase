@@ -16,12 +16,3 @@ export enum AlexaPublishJobErrorType {
   SUBMITTING_FOR_REVIEW = 'SUBMITTING_FOR_REVIEW',
   CHECKING_INTERACTION_MODEL_STATUS = 'CHECKING_INTERACTION_MODEL_STATUS',
 }
-
-export enum AlexaPublishJobSuccessType {
-  UPLOAD = 'UPLOAD',
-  SUBMIT = 'SUBMIT',
-}
-
-export enum AlexaExportJobSuccessType {
-  DOWNLOAD = 'DOWNLOAD',
-}

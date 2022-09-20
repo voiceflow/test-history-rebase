@@ -12,8 +12,7 @@ interface GoogleUploadButtonProps {
 }
 
 const GoogleUploadButton: React.FC<GoogleUploadButtonProps> = ({ onPublish, googlePublishJob }) => {
-  const google = useSelector(Account.googleAccountSelector);
-  const needsLogin = !google;
+  const isLoggedIn = !!useSelector(Account.googleAccountSelector);
 
   switch (googlePublishJob?.stage.type) {
     case GoogleStageType.WAIT_ACCOUNT:
@@ -25,7 +24,7 @@ const GoogleUploadButton: React.FC<GoogleUploadButtonProps> = ({ onPublish, goog
     case GoogleStageType.SUCCESS:
       return <Button variant={ButtonVariant.SUCCESS} />;
     default:
-      return <Button onClick={onPublish} variant={needsLogin ? ButtonVariant.CONNECT : ButtonVariant.UPLOAD} />;
+      return <Button onClick={onPublish} variant={isLoggedIn ? ButtonVariant.UPLOAD : ButtonVariant.CONNECT} />;
   }
 };
 

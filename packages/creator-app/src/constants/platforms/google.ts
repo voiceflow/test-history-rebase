@@ -15,12 +15,3 @@ export enum GooglePublishJobErrorType {
   SUBMITTING_FOR_REVIEW = 'SUBMITTING_FOR_REVIEW',
   CHECKING_INTERACTION_MODEL_STATUS = 'CHECKING_INTERACTION_MODEL_STATUS',
 }
-
-export enum GooglePublishJobSuccessType {
-  UPLOAD = 'UPLOAD',
-  SUBMIT = 'SUBMIT',
-}
-
-export enum GoogleExportJobSuccessType {
-  DOWNLOAD = 'DOWNLOAD',
-}

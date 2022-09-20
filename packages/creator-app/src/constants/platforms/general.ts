@@ -11,11 +11,6 @@ export enum GeneralJobErrorType {
   RENDERING = 'RENDERING',
 }
 
-export enum GeneralJobSuccessType {
-  SUCCESS = 'SUCCESS',
-  DOWNLOAD = 'DOWNLOAD',
-}
-
 export enum NLPTrainStageType {
   IDLE = 'IDLE',
   ERROR = 'ERROR',
@@ -28,10 +23,6 @@ export enum NLPTrainJobErrorType {
   COMPILING = 'COMPILING',
   UPLOADING = 'UPLOADING',
   PUBLISHING = 'PUBLISHING',
-}
-
-export enum NLPTrainJobSuccessType {
-  PUBLISH = 'PUBLISH',
 }
 
 export const GENERAL_LOCALE_NAME_MAP = {

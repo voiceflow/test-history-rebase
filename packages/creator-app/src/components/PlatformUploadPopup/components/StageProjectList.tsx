@@ -1,7 +1,7 @@
 import { Box, Text } from '@voiceflow/ui';
 import React from 'react';
 
-import { Project } from '../constants';
+import { Project } from '../types';
 import ProjectItem from './ProjectItem';
 import ProjectSelectionFooter from './ProjectSelectionFooter';
 import ProjectSelectionFooterLink from './ProjectSelectionFooterLink';

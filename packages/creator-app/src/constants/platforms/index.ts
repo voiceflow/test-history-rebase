@@ -3,16 +3,7 @@ import { GoogleConstants } from '@voiceflow/google-types';
 import { Utils } from '@voiceflow/realtime-sdk';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
-import {
-  AlexaExportJob,
-  AlexaPublishJob,
-  DialogflowExportJob,
-  DialogflowPublishJob,
-  GeneralExportJob,
-  GoogleExportJob,
-  GooglePublishJob,
-  JobStageData,
-} from '@/models';
+import { AlexaExportJob, AlexaPublishJob, DialogflowPublishJob, GeneralExportJob, GoogleExportJob, GooglePublishJob, JobStageData } from '@/models';
 import { FORMATTED_DIALOGFLOW_LOCALES_LABELS } from '@/pages/Publish/Dialogflow/utils';
 import { FORMATTED_GOOGLE_LOCALES_LABELS } from '@/pages/Publish/Google/utils';
 import LOCALE_MAP from '@/services/LocaleMap';
@@ -47,7 +38,6 @@ export type AnyErrorStageData =
   | JobStageData<GoogleExportJob.ErrorStage>
   | JobStageData<GooglePublishJob.ErrorStage>
   | JobStageData<DialogflowPublishJob.ErrorStage>
-  | JobStageData<DialogflowExportJob.ErrorStage>
   | JobStageData<AlexaExportJob.ErrorStage>
   | JobStageData<AlexaPublishJob.ErrorStage>
   | JobStageData<GeneralExportJob.ErrorStage>;
@@ -56,7 +46,6 @@ export type AnyErrorStage =
   | GoogleExportJob.ErrorStage
   | GooglePublishJob.ErrorStage
   | DialogflowPublishJob.ErrorStage
-  | DialogflowExportJob.ErrorStage
   | AlexaExportJob.ErrorStage
   | AlexaPublishJob.ErrorStage
   | GeneralExportJob.ErrorStage;

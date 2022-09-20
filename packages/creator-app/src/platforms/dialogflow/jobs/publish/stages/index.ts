@@ -1,25 +1,25 @@
 import { createUseJobInterfaceContent } from '@/components/JobInterface';
 import { ErrorStage } from '@/components/PlatformUploadPopup/components';
-import { GoogleStageType } from '@/constants/platforms';
-import { GooglePublishJob } from '@/models';
+import { DialogflowStageType } from '@/constants/platforms';
+import { DialogflowPublishJob } from '@/models';
 
 import SuccessStage from './SuccessStage';
 import WaitAccountStage from './WaitAccountStage';
 import WaitProjectStage from './WaitProjectStage';
 
 export const PublishStageContent = {
-  [GoogleStageType.ERROR]: {
+  [DialogflowStageType.ERROR]: {
     Popup: { Component: ErrorStage, closeable: true },
   },
-  [GoogleStageType.SUCCESS]: {
+  [DialogflowStageType.SUCCESS]: {
     Popup: { Component: SuccessStage, closeable: true },
   },
-  [GoogleStageType.WAIT_ACCOUNT]: {
+  [DialogflowStageType.WAIT_ACCOUNT]: {
     Component: WaitAccountStage,
   },
-  [GoogleStageType.WAIT_PROJECT]: {
-    Popup: { Component: WaitProjectStage, dismissable: true },
+  [DialogflowStageType.WAIT_PROJECT]: {
+    Popup: { Component: WaitProjectStage },
   },
 };
 
-export const useGooglePublishStageContent = createUseJobInterfaceContent<GooglePublishJob.AnyJob>(PublishStageContent);
+export const useDialogflowPublishStageContent = createUseJobInterfaceContent<DialogflowPublishJob.AnyJob>(PublishStageContent);

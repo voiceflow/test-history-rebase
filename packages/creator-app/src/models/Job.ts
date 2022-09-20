@@ -1,22 +1,14 @@
 import { JobStatus } from '@/constants';
 import {
-  AlexaExportJobSuccessType,
   AlexaPublishJobErrorType,
-  AlexaPublishJobSuccessType,
   AlexaStageType,
-  DialogflowExportJobSuccessType,
   DialogflowPublishJobErrorType,
-  DialogflowPublishJobSuccessType,
   DialogflowStageType,
   GeneralJobErrorType,
-  GeneralJobSuccessType,
   GeneralStageType,
-  GoogleExportJobSuccessType,
   GooglePublishJobErrorType,
-  GooglePublishJobSuccessType,
   GoogleStageType,
   NLPTrainJobErrorType,
-  NLPTrainJobSuccessType,
   NLPTrainStageType,
 } from '@/constants/platforms';
 
@@ -63,7 +55,6 @@ export namespace AlexaPublishJob {
       message: string;
       amazonID: string;
       versionID: string;
-      successType: AlexaPublishJobSuccessType;
       rootDiagramID: string;
       succeededLocale: string | null;
       submittedForReview?: boolean;
@@ -102,7 +93,6 @@ export namespace AlexaExportJob {
     {
       data: string;
       fileName: string;
-      successType: AlexaExportJobSuccessType;
     }
   >;
 
@@ -138,7 +128,6 @@ export namespace DialogflowPublishJob {
       googleProjectID: string;
       agentName: string;
       versionID: string;
-      successType: DialogflowPublishJobSuccessType;
       rootDiagramID: string;
       submittedForReview?: boolean;
     }
@@ -157,31 +146,6 @@ export namespace DialogflowPublishJob {
   export type WaitProjectStage = JobStage<DialogflowStageType.WAIT_PROJECT>;
 
   export type WaitInvocationNameStage = JobStage<DialogflowStageType.WAIT_INVOCATION_NAME, { error: string }>;
-
-  export type AnyJob = Job<IdleStage | ErrorStage | SuccessStage | ProgressStage | WaitAccountStage | WaitProjectStage | WaitInvocationNameStage>;
-}
-
-export namespace DialogflowExportJob {
-  export type IdleStage = DialogflowPublishJob.IdleStage;
-
-  export type ErrorStage = DialogflowPublishJob.ErrorStage;
-
-  export type SuccessStage = JobStage<
-    DialogflowStageType.SUCCESS,
-    {
-      data: string;
-      fileName: string;
-      successType: DialogflowExportJobSuccessType;
-    }
-  >;
-
-  export type ProgressStage = DialogflowPublishJob.ProgressStage;
-
-  export type WaitAccountStage = DialogflowPublishJob.WaitAccountStage;
-
-  export type WaitProjectStage = JobStage<DialogflowStageType.WAIT_PROJECT>;
-
-  export type WaitInvocationNameStage = DialogflowPublishJob.WaitInvocationNameStage;
 
   export type AnyJob = Job<IdleStage | ErrorStage | SuccessStage | ProgressStage | WaitAccountStage | WaitProjectStage | WaitInvocationNameStage>;
 }
@@ -207,7 +171,6 @@ export namespace GooglePublishJob {
       googleProjectID: string;
       agentName: string;
       versionID: string;
-      successType: GooglePublishJobSuccessType;
       rootDiagramID: string;
       submittedForReview?: boolean;
     }
@@ -240,7 +203,6 @@ export namespace GoogleExportJob {
     {
       data: string;
       fileName: string;
-      successType: GoogleExportJobSuccessType;
     }
   >;
 
@@ -272,7 +234,6 @@ export namespace GeneralExportJob {
     {
       data: string;
       fileName: string;
-      successType: GeneralJobSuccessType;
     }
   >;
 
@@ -300,7 +261,7 @@ export namespace NLPTrainJob {
     }
   >;
 
-  export type SuccessStage = JobStage<NLPTrainStageType.SUCCESS, { successType: NLPTrainJobSuccessType }>;
+  export type SuccessStage = JobStage<NLPTrainStageType.SUCCESS>;
 
   export type ProgressStage = JobStage<NLPTrainStageType.PROGRESS, { message: string; progress: number }>;
 

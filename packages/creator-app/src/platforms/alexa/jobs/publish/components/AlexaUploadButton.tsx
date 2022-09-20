@@ -12,7 +12,7 @@ interface AlexaUploadButtonProps {
 }
 
 const AlexaUploadButton: React.FC<AlexaUploadButtonProps> = ({ onPublish, alexaPublishJob }) => {
-  const needsLogin = !!useSelector(Account.amazonAccountSelector);
+  const isLoggedIn = !!useSelector(Account.amazonAccountSelector);
 
   switch (alexaPublishJob?.stage.type) {
     case AlexaStageType.SELECT_VENDORS:
@@ -26,7 +26,7 @@ const AlexaUploadButton: React.FC<AlexaUploadButtonProps> = ({ onPublish, alexaP
     case AlexaStageType.SUCCESS:
       return <Button variant={ButtonVariant.SUCCESS} />;
     default:
-      return <Button onClick={onPublish} variant={needsLogin ? ButtonVariant.CONNECT : ButtonVariant.UPLOAD} />;
+      return <Button onClick={onPublish} variant={isLoggedIn ? ButtonVariant.UPLOAD : ButtonVariant.CONNECT} />;
   }
 };
 

@@ -8,7 +8,7 @@ import SubmitStage from './SubmitStage';
 export const SubmitStageContent = {
   ...PublishStageContent,
   [AlexaStageType.SUCCESS]: {
-    Popup: { Component: SubmitStage },
+    Component: SubmitStage,
   },
 };
 

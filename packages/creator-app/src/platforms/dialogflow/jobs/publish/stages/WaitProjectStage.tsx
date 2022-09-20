@@ -1,26 +1,23 @@
-import { Box, Button, ButtonVariant, Input, isNetworkError, useSmartReducerV2 } from '@voiceflow/ui';
+import { Box, Button, ButtonVariant, Input, isNetworkError, useOnClickOutside, usePersistFunction, useSmartReducerV2 } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';
 import { LoaderStage, StageAlert, StageContainer, StageEmpty, StageProjectList } from '@/components/PlatformUploadPopup/components';
-import { Project } from '@/components/PlatformUploadPopup/constants';
+import { Project } from '@/components/PlatformUploadPopup/types';
 import * as Account from '@/ducks/account';
 import * as Version from '@/ducks/version';
-import { useAsyncMountUnmount, useDispatch, useTeardown } from '@/hooks';
-import { UploadProject } from '@/models';
+import { useAsyncMountUnmount, useDispatch } from '@/hooks';
+import * as ModalsV2 from '@/ModalsV2';
+import { DialogflowPublishJob, UploadProject } from '@/models';
+import { StageComponentProps } from '@/platforms/types';
 
-interface WaitDFESProjectStageProps {
-  cancel: VoidFunction;
-  setMultiProjects?: (value: boolean) => void;
-  createNewAgent: VoidFunction;
-  retry: (reset: () => Promise<void>) => Promise<void>;
-  updateCurrentStage: (selected: UploadProject.Dialogflow | null) => void;
-}
+import CreateNewAgentModal from './CreateNewAgentModal';
 
-const WaitDFESProjectStage: React.FC<WaitDFESProjectStageProps> = ({ updateCurrentStage, setMultiProjects, createNewAgent, retry }) => {
+const WaitDFESProjectStage: React.FC<StageComponentProps<DialogflowPublishJob.WaitProjectStage>> = ({ updateCurrentStage, retry, cancel }) => {
   const [projects, setProjects] = React.useState<UploadProject.Dialogflow[]>([]);
   const [dialogflowProjectID, setDialogflowProjectID] = React.useState('');
   const projectList = projects.map((project) => ({ id: project.googleProjectID, name: project.agentName }));
+  const containerRef = React.useRef<HTMLDivElement>(null);
 
   const loadGoogleAccount = useDispatch(Account.google.loadAccount);
   const updateAgentName = useDispatch(Version.dialogflow.updateAgentName);
@@ -33,28 +30,42 @@ const WaitDFESProjectStage: React.FC<WaitDFESProjectStageProps> = ({ updateCurre
     updateCurrentStage({ googleProjectID: selectedProject.id, agentName: selectedProject.name });
   };
 
-  useAsyncMountUnmount(async () => {
-    try {
-      const projectIDs = await client.platform.dialogflow.project.getDialogFlowESProjects();
+  const createNewAgentModal = ModalsV2.useModal(CreateNewAgentModal);
 
-      api.update({ error: false, loading: false });
-
-      setProjects(projectIDs);
-      setMultiProjects?.(projectIDs.length > 0);
-      api.update({ error: false, loading: false });
-    } catch (err) {
-      if (isNetworkError(err) && err.statusCode === 403) {
-        await retry(async () => {
-          await client.platform.google.session.unlinkAccount();
-          await loadGoogleAccount();
-        });
-      } else {
-        api.update({ error: true, loading: false });
-      }
-    }
+  const createNewAgent = usePersistFunction(() => {
+    createNewAgentModal
+      .open()
+      .then(() => updateCurrentStage(null))
+      .catch(() => cancel());
   });
 
-  useTeardown(() => setMultiProjects?.(false));
+  // we have a modal so can't use dismissable popup property, needs to be custom
+  useOnClickOutside(containerRef, () => !createNewAgentModal.opened && cancel(), []);
+
+  useAsyncMountUnmount(
+    async () => {
+      try {
+        const projectIDs = await client.platform.dialogflow.project.getDialogFlowESProjects();
+
+        api.update({ error: false, loading: false });
+
+        setProjects(projectIDs);
+        api.update({ error: false, loading: false });
+      } catch (err) {
+        if (isNetworkError(err) && err.statusCode === 403) {
+          await retry(async () => {
+            await client.platform.google.session.unlinkAccount();
+            await loadGoogleAccount();
+          });
+        } else {
+          api.update({ error: true, loading: false });
+        }
+      }
+    },
+    () => {
+      createNewAgentModal.close();
+    }
+  );
 
   const stateContent = React.useMemo(() => {
     if (state.loading) return <LoaderStage />;
@@ -96,7 +107,11 @@ const WaitDFESProjectStage: React.FC<WaitDFESProjectStageProps> = ({ updateCurre
     );
   }, [state, projects, dialogflowProjectID]);
 
-  return <StageContainer noPadding>{stateContent}</StageContainer>;
+  return (
+    <StageContainer noPadding width={254} ref={containerRef}>
+      {stateContent}
+    </StageContainer>
+  );
 };
 
 export default WaitDFESProjectStage;

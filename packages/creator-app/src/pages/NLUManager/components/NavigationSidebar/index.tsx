@@ -8,6 +8,7 @@ import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import * as Slot from '@/ducks/slot';
+import * as Tracking from '@/ducks/tracking';
 import { useDispatch, useSelector, useTrackingEvents } from '@/hooks';
 import { PLATFORM_PROJECT_META_MAP } from '@/pages/NewProjectV2/constants';
 import { useNLUImport } from '@/pages/NewProjectV2/hooks';
@@ -39,6 +40,27 @@ const NavigationSidebar: React.FC = () => {
       origin: NLUImportOrigin.NLU_MANAGER,
       nluType: PlatformToNLPProvider[platform],
     });
+
+    const isImportingIntents = importedModel && importedModel.intents && importedModel.intents.length > 0;
+    const isImportingEntities = importedModel && importedModel.slots && importedModel.slots.length > 0;
+
+    if (isImportingIntents) {
+      trackingEvents.trackIntentCreated({ creationType: Tracking.CanvasCreationType.NLU_MANAGER });
+
+      importedModel.intents.every((item) => {
+        const isImportingUtterances = item && item.inputs && item.inputs.length > 0;
+
+        if (isImportingUtterances) {
+          trackingEvents.trackNewUtteranceCreated({ intentID: item.key, creationType: Tracking.CanvasCreationType.NLU_MANAGER });
+          return false;
+        }
+        return true;
+      });
+    }
+
+    if (isImportingEntities) {
+      trackingEvents.trackEntityCreated({ creationType: Tracking.CanvasCreationType.NLU_MANAGER });
+    }
 
     if (data) {
       await Promise.all([refreshSlots(), refreshIntents()]);

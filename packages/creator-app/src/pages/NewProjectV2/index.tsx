@@ -10,6 +10,7 @@ import client from '@/client';
 import { NLUImportOrigin, PlatformToNLPProvider } from '@/constants';
 import * as Project from '@/ducks/project';
 import * as Router from '@/ducks/router';
+import * as Tracking from '@/ducks/tracking';
 import { useDispatch, useTrackingEvents } from '@/hooks';
 import LOCALE_MAP from '@/services/LocaleMap';
 import {
@@ -148,6 +149,36 @@ const NewProject: React.FC<NewProjectProps> = ({ onToggleCreating, onClose, list
           nluType: PlatformToNLPProvider[platformType],
           projectID: project.id,
         });
+
+        const isImportingIntents = importedModel && importedModel.intents && importedModel.intents.length > 0;
+        const isImportingEntities = importedModel && importedModel.slots && importedModel.slots.length > 0;
+
+        if (isImportingIntents) {
+          trackingEvents.trackIntentCreatedProjectNLUImport({
+            creationType: Tracking.CanvasCreationType.PROJECT_CREATE,
+            projectID: project.id,
+          });
+
+          importedModel.intents.every((item) => {
+            const isImportingUtterances = item && item.inputs && item.inputs.length > 0;
+
+            if (isImportingUtterances) {
+              trackingEvents.trackNewUtteranceCreatedProjectNLUImport({
+                creationType: Tracking.CanvasCreationType.PROJECT_CREATE,
+                projectID: project.id,
+              });
+              return false;
+            }
+            return true;
+          });
+        }
+
+        if (isImportingEntities) {
+          trackingEvents.trackEntityCreatedProjectNLUImport({
+            creationType: Tracking.CanvasCreationType.PROJECT_CREATE,
+            projectID: project.id,
+          });
+        }
       }
     } finally {
       onClose();

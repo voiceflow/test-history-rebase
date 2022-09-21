@@ -18,7 +18,7 @@ const DialogflowPublish: React.FC = () => {
 
   return (
     <JobInterface Content={Content} context={publishContext}>
-      <DialogflowUploadButton dialogflowPublishJob={job} onPublish={onPublish} />
+      <DialogflowUploadButton DialogflowESPublishJob={job} onPublish={onPublish} />
     </JobInterface>
   );
 };

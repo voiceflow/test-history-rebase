@@ -8,8 +8,8 @@ import { applyAlexaIntentNameFormatting, applyLUISIntentNameFormatting } from '@
 
 import alexaClient from './alexa/client';
 import { UTTERANCE_RECOMMENDATIONS_LOCALES as ALEXA_UTTERANCE_RECOMMENDATIONS_LOCALES } from './alexa/constants';
-import dialogflowClient from './dialogflow/client';
-import { UTTERANCE_RECOMMENDATIONS_LOCALES as DF_UTTERANCE_RECOMMENDATIONS_LOCALES } from './dialogflow/constants';
+import dialogflowESClient from './dialogflowES/client';
+import { UTTERANCE_RECOMMENDATIONS_LOCALES as DF_ES_UTTERANCE_RECOMMENDATIONS_LOCALES } from './dialogflowES/constants';
 import generalClient from './general/client';
 import { UTTERANCE_RECOMMENDATIONS_LOCALES as GENERAL_UTTERANCE_RECOMMENDATIONS_LOCALES } from './general/constants';
 import googleClient from './google/client';
@@ -22,14 +22,14 @@ export const platformClients = {
   alexa: alexaClient,
   google: googleClient,
   general: generalClient,
-  dialogflow: dialogflowClient,
+  dialogflowES: dialogflowESClient,
 };
 
 export const getPlatformClient = Utils.platform.createPlatformSelector<PlatformClient>(
   {
     [VoiceflowConstants.PlatformType.ALEXA]: alexaClient,
     [VoiceflowConstants.PlatformType.GOOGLE]: googleClient,
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: dialogflowClient,
+    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: dialogflowESClient,
   },
   generalClient
 );
@@ -47,7 +47,7 @@ export const getUtteranceRecommendationsLocales = Utils.platform.createPlatformS
   {
     [VoiceflowConstants.PlatformType.ALEXA]: ALEXA_UTTERANCE_RECOMMENDATIONS_LOCALES,
     [VoiceflowConstants.PlatformType.GOOGLE]: GOOGLE_UTTERANCE_RECOMMENDATIONS_LOCALES,
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: DF_UTTERANCE_RECOMMENDATIONS_LOCALES,
+    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: DF_ES_UTTERANCE_RECOMMENDATIONS_LOCALES,
   },
   GENERAL_UTTERANCE_RECOMMENDATIONS_LOCALES
 );

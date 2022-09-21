@@ -3,7 +3,7 @@ import React from 'react';
 
 import client from '@/client';
 import * as Errors from '@/config/errors';
-import { DIALOGFLOW_LEARN_MORE, getDialogflowProjectConsoleUrl } from '@/constants/platforms/dialogflow';
+import { DIALOGFLOW_ES_LEARN_MORE, getDialogflowESProjectConsoleUrl } from '@/constants/platforms/dialogflowES';
 import * as Session from '@/ducks/session';
 import { useAsyncMountUnmount, useSelector, useSetup, useTrackingEvents } from '@/hooks';
 import * as Sentry from '@/vendors/sentry';
@@ -14,7 +14,7 @@ const DialogflowPublish: React.FC = () => {
   const projectID = useSelector(Session.activeProjectIDSelector);
   const [dialogflowProjectID, setDialogflowProjectID] = React.useState<string | null>(null);
   const [trackingEvents] = useTrackingEvents();
-  const actionsConsoleLink = dialogflowProjectID ? getDialogflowProjectConsoleUrl(dialogflowProjectID) : undefined;
+  const actionsConsoleLink = dialogflowProjectID ? getDialogflowESProjectConsoleUrl(dialogflowProjectID) : undefined;
 
   useSetup(() => {
     trackingEvents.trackActiveProjectGooglePublishPage();
@@ -41,7 +41,7 @@ const DialogflowPublish: React.FC = () => {
               <Box mr={20} mb={16} color="secondary">
                 To connect your Dialogflow agent to a chat or voice channel upload your project from the canvas.
               </Box>
-              <Link href={DIALOGFLOW_LEARN_MORE}>Learn More</Link>
+              <Link href={DIALOGFLOW_ES_LEARN_MORE}>Learn More</Link>
             </Box>
 
             <BoxFlex alignItems="flex-end">

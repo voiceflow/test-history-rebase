@@ -8,12 +8,12 @@ import * as Account from '@/ducks/account';
 import * as Version from '@/ducks/version';
 import { useAsyncMountUnmount, useDispatch } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
-import { DialogflowPublishJob, UploadProject } from '@/models';
+import { DialogflowESPublishJob, UploadProject } from '@/models';
 import { StageComponentProps } from '@/platforms/types';
 
 import CreateNewAgentModal from './CreateNewAgentModal';
 
-const WaitDFESProjectStage: React.FC<StageComponentProps<DialogflowPublishJob.WaitProjectStage>> = ({ updateCurrentStage, retry, cancel }) => {
+const WaitDFESProjectStage: React.FC<StageComponentProps<DialogflowESPublishJob.WaitProjectStage>> = ({ updateCurrentStage, retry, cancel }) => {
   const [projects, setProjects] = React.useState<UploadProject.Dialogflow[]>([]);
   const [dialogflowProjectID, setDialogflowProjectID] = React.useState('');
   const projectList = projects.map((project) => ({ id: project.googleProjectID, name: project.agentName }));
@@ -45,7 +45,7 @@ const WaitDFESProjectStage: React.FC<StageComponentProps<DialogflowPublishJob.Wa
   useAsyncMountUnmount(
     async () => {
       try {
-        const projectIDs = await client.platform.dialogflow.project.getDialogFlowESProjects();
+        const projectIDs = await client.platform.dialogflowES.project.getDialogFlowESProjects();
 
         api.update({ error: false, loading: false });
 

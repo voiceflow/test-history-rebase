@@ -3,13 +3,13 @@ import { GoogleConstants } from '@voiceflow/google-types';
 import { Utils } from '@voiceflow/realtime-sdk';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
-import { AlexaExportJob, AlexaPublishJob, DialogflowPublishJob, GeneralExportJob, GoogleExportJob, GooglePublishJob, JobStageData } from '@/models';
+import { AlexaExportJob, AlexaPublishJob, DialogflowESPublishJob, GeneralExportJob, GoogleExportJob, GooglePublishJob, JobStageData } from '@/models';
 import { FORMATTED_DIALOGFLOW_LOCALES_LABELS } from '@/pages/Publish/Dialogflow/utils';
 import { FORMATTED_GOOGLE_LOCALES_LABELS } from '@/pages/Publish/Google/utils';
 import LOCALE_MAP from '@/services/LocaleMap';
 
 import { AlexaPublishJobErrorType, AlexaStageType } from './alexa';
-import { DialogflowPublishJobErrorType, DialogflowStageType } from './dialogflow';
+import { DialogflowESPublishJobErrorType, DialogflowESStageType } from './dialogflowES';
 import { GENERAL_LOCALE_NAME_MAP } from './general';
 import { GooglePublishJobErrorType, GoogleStageType } from './google';
 
@@ -37,7 +37,7 @@ export const isPublishJobSubmittingProjectError = (type: string): type is typeof
 export type AnyErrorStageData =
   | JobStageData<GoogleExportJob.ErrorStage>
   | JobStageData<GooglePublishJob.ErrorStage>
-  | JobStageData<DialogflowPublishJob.ErrorStage>
+  | JobStageData<DialogflowESPublishJob.ErrorStage>
   | JobStageData<AlexaExportJob.ErrorStage>
   | JobStageData<AlexaPublishJob.ErrorStage>
   | JobStageData<GeneralExportJob.ErrorStage>;
@@ -45,17 +45,17 @@ export type AnyErrorStageData =
 export type AnyErrorStage =
   | GoogleExportJob.ErrorStage
   | GooglePublishJob.ErrorStage
-  | DialogflowPublishJob.ErrorStage
+  | DialogflowESPublishJob.ErrorStage
   | AlexaExportJob.ErrorStage
   | AlexaPublishJob.ErrorStage
   | GeneralExportJob.ErrorStage;
 
-export type AnyPublishJobErrorType = GooglePublishJobErrorType | DialogflowPublishJobErrorType | AlexaPublishJobErrorType;
+export type AnyPublishJobErrorType = GooglePublishJobErrorType | DialogflowESPublishJobErrorType | AlexaPublishJobErrorType;
 
-export type AnyStageType = AlexaStageType | GoogleStageType | DialogflowStageType;
+export type AnyStageType = AlexaStageType | GoogleStageType | DialogflowESStageType;
 
 export * from './alexa';
-export * from './dialogflow';
+export * from './dialogflowES';
 export * from './general';
 export * from './google';
 

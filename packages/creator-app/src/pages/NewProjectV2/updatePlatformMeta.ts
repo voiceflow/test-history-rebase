@@ -49,7 +49,7 @@ export const updatePlatformMetaCalls = () => {
   };
 
   const updateDialogFlowMeta = async (versionID: string, dialogFlowLanguage: DFESConstants.Language) => {
-    await client.platform.dialogflow.version.updatePublishing(versionID, {
+    await client.platform.dialogflowES.version.updatePublishing(versionID, {
       locales: DFESConstants.LanguageToLocale[dialogFlowLanguage],
     });
   };

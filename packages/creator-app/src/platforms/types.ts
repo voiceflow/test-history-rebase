@@ -2,11 +2,11 @@ import { JobContextValue } from '@/hooks/job';
 import { Job, JobStage } from '@/models';
 
 import * as Alexa from './alexa';
-import * as Dialogflow from './dialogflow';
+import * as DialogflowES from './dialogflowES';
 import * as General from './general';
 import * as Google from './google';
 
-export type PlatformClient = typeof Alexa.client | typeof Google.client | typeof Dialogflow.client | typeof General.client;
+export type PlatformClient = typeof Alexa.client | typeof Google.client | typeof DialogflowES.client | typeof General.client;
 
 export type StageComponentProps<S extends JobStage, J extends Job<S> = Job<S>> = JobContextValue<J> & { stage: S };
 

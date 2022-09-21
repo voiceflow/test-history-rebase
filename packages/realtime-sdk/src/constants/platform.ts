@@ -1,19 +1,15 @@
 import { Nullish } from '@voiceflow/common';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
-export type NonDeprecatedPlatform =
-  | VoiceflowConstants.PlatformType.ALEXA
-  | VoiceflowConstants.PlatformType.ALEXA
-  | VoiceflowConstants.PlatformType.GOOGLE
-  | VoiceflowConstants.PlatformType.VOICEFLOW
-  | VoiceflowConstants.PlatformType.DIALOGFLOW_ES
-  | VoiceflowConstants.PlatformType.DIALOGFLOW_CX
-  | VoiceflowConstants.PlatformType.RASA
-  | VoiceflowConstants.PlatformType.WATSON
-  | VoiceflowConstants.PlatformType.EINSTEIN
-  | VoiceflowConstants.PlatformType.LUIS
-  | VoiceflowConstants.PlatformType.LEX
-  | VoiceflowConstants.PlatformType.NUANCE_MIX;
+export type NonDeprecatedPlatform = Exclude<
+  VoiceflowConstants.PlatformType,
+  | VoiceflowConstants.PlatformType.IVR
+  | VoiceflowConstants.PlatformType.CHATBOT
+  | VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT
+  | VoiceflowConstants.PlatformType.DIALOGFLOW_ES_VOICE
+  | VoiceflowConstants.PlatformType.GENERAL
+  | VoiceflowConstants.PlatformType.MOBILE_APP
+>;
 
 export type PlatformProjectType = `${NonDeprecatedPlatform}:${VoiceflowConstants.ProjectType}`;
 

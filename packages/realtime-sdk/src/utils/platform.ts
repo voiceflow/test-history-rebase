@@ -77,7 +77,8 @@ export const getPlatformAppName = createPlatformSelector(
   {
     [VoiceflowConstants.PlatformType.ALEXA]: 'Alexa Skill',
     [VoiceflowConstants.PlatformType.GOOGLE]: 'Google Action',
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: 'Dialogflow',
+    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: 'Dialogflow ES',
+    [VoiceflowConstants.PlatformType.DIALOGFLOW_CX]: 'Dialogflow CX',
     [VoiceflowConstants.PlatformType.LUIS]: 'Microsoft Luis',
     [VoiceflowConstants.PlatformType.LEX]: 'Amazon Lex',
     [VoiceflowConstants.PlatformType.RASA]: 'Rasa',
@@ -92,7 +93,8 @@ export const getPlatformProviderName = createPlatformSelector(
   {
     [VoiceflowConstants.PlatformType.ALEXA]: 'Alexa',
     [VoiceflowConstants.PlatformType.GOOGLE]: 'Google',
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: 'Dialogflow',
+    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: 'Dialogflow ES',
+    [VoiceflowConstants.PlatformType.DIALOGFLOW_CX]: 'Dialogflow CX',
   },
   'Custom'
 );

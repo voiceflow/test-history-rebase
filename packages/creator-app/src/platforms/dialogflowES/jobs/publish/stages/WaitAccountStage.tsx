@@ -3,10 +3,10 @@ import React from 'react';
 
 import { SourceType } from '@/ducks/tracking/constants';
 import * as ModalsV2 from '@/ModalsV2';
-import { DialogflowPublishJob } from '@/models';
+import { DialogflowESPublishJob } from '@/models';
 import { StageComponentProps } from '@/platforms/types';
 
-const WaitAccountStage: React.FC<StageComponentProps<DialogflowPublishJob.WaitAccountStage>> = ({ restart, cancel }) => {
+const WaitAccountStage: React.FC<StageComponentProps<DialogflowESPublishJob.WaitAccountStage>> = ({ restart, cancel }) => {
   const connectGoogleModal = ModalsV2.useModal(ModalsV2.Platform.Connect);
 
   React.useEffect(() => {

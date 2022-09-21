@@ -27,13 +27,8 @@ class NegotiateSchema extends AbstractActionControl<Realtime.version.schema.Nego
       this.services.version.get(versionID),
     ]);
     const { teamID: workspaceID } = await this.services.project.get(creatorID, projectID);
-    const canWriteProject = await this.services.project.access.canWrite(creatorID, projectID);
 
     const skipResult = { workspaceID, projectID, schemaVersion: currentSchemaVersion };
-
-    if (!canWriteProject) {
-      return skipResult;
-    }
 
     if (targetSchemaVersion > proposedSchemaVersion) {
       this.reject(SCHEMA_VERSION_NOT_SUPPORTED_MESSAGE, Realtime.ErrorCode.SCHEMA_VERSION_NOT_SUPPORTED);

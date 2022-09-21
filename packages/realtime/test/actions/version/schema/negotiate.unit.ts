@@ -75,34 +75,6 @@ describe('version.schema.NEGOTIATE action unit tests', () => {
       expect(control.$reply).to.be.calledWithExactly(Realtime.version.schema.negotiate, sinon.match.func);
     });
 
-    it('skip if user does not have write access', async () => {
-      const schemaVersion = Realtime.SchemaVersion.V1;
-      const options = {
-        services: {
-          project: {
-            get: sinon.stub().resolves({ teamID: workspaceID }),
-            access: {
-              canWrite: sinon.stub().resolves(false),
-            },
-          },
-          version: {
-            get: sinon.stub().resolves({ projectID }),
-          },
-          migrate: {
-            getTargetSchemaVersion: sinon.stub().resolves(schemaVersion),
-          },
-        },
-      };
-      const action = { payload: { versionID } };
-      const control = new NegotiateControl(options as any);
-
-      const result = await getReplyHandler(control)(context as any, action as any, {} as any);
-
-      expect(result).to.eql({ workspaceID, projectID, schemaVersion });
-      expect(options.services.version.get).to.be.calledWithExactly(versionID);
-      expect(options.services.project.get).to.be.calledWithExactly(creatorID, projectID);
-    });
-
     it("fail if target schema is outside of client's supported range", async () => {
       const options = {
         services: {

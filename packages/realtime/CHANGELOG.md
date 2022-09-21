@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.106.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.105.5...@voiceflow/realtime@1.106.0) (2022-09-21)
+
+
+### Features
+
+* allow viewers to run migrations (CT-973) ([#6112](https://github.com/voiceflow/creator-app/issues/6112)) ([e1f5c4f](https://github.com/voiceflow/creator-app/commit/e1f5c4fa9373edd49199aee11c637db2aa0c731e))
+
+
+
+
+
 ## [1.105.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.105.4...@voiceflow/realtime@1.105.5) (2022-09-20)
 
 **Note:** Version bump only for package @voiceflow/realtime

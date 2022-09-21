@@ -105,11 +105,12 @@ const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport, childr
   const { panViewport, zoomViewport, updateViewport } = useCursorControls();
 
   const onMouseUp = React.useCallback((event: MouseEvent) => {
+    const multiSelect = event.shiftKey;
+    const contextMenu = event.ctrlKey;
     const nodeRightClicked = event.button === 2;
     const middleMouseButtonClicked = event.button === 1;
-    const multiSelect = event.shiftKey;
 
-    if (event.defaultPrevented || engine.isCanvasBusy || nodeRightClicked || middleMouseButtonClicked || multiSelect) {
+    if (event.defaultPrevented || engine.isCanvasBusy || nodeRightClicked || middleMouseButtonClicked || multiSelect || contextMenu) {
       return;
     }
 

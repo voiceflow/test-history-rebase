@@ -127,6 +127,7 @@ export const useNodeDrag = ({ skipClick, skipDrag }: { skipClick?: () => boolean
   const onMouseUp = (event: React.MouseEvent) => {
     if (
       !isEditingMode ||
+      event.ctrlKey ||
       event.shiftKey ||
       contextMenu.isOpen ||
       engine.prototype.isActive ||

@@ -36,14 +36,12 @@ export const ContextMenuProvider: React.FC = ({ children }) => {
   const onOpen = React.useCallback(
     (event: React.MouseEvent, type = ContextMenuTarget.CANVAS, target: Nullable<string> = null) => {
       event.preventDefault();
+
       if (dismissOverlay.hasHandlersGlobally()) {
         dismissOverlay.dismissAllGlobally();
       }
 
-      // defense for ctrl-click on chrome and safari ¯\_(ツ)_/¯
-      if (!event.ctrlKey) {
-        dismissOverlay.addHandler('click', onHide);
-      }
+      dismissOverlay.addHandler('click', onHide);
 
       if (type === ContextMenuTarget.NODE && target && engine.selection.isOneOfManyTargets(target)) {
         menuContextApi.set({ position: [event.clientX, event.clientY], type: ContextMenuTarget.SELECTION, target: null });

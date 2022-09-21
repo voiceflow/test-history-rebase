@@ -130,7 +130,7 @@ export const useStepAPI = <T extends HTMLElement>(
           contextMenu.onOpen(event, ContextMenuTarget.NODE, nodeEntity.nodeID);
         }),
         onMouseUp: (event: React.MouseEvent) => {
-          if (event.shiftKey) return;
+          if (event.shiftKey || event.ctrlKey) return;
 
           event.preventDefault();
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.918.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.918.0...@voiceflow/creator-app@1.918.1) (2022-09-21)
+
+
+### Bug Fixes
+
+* ctrl+click context menu (CT-1012) ([#6110](https://github.com/voiceflow/creator-app/issues/6110)) ([ef956a7](https://github.com/voiceflow/creator-app/commit/ef956a7683760868ecf68514635864d98aabc326))
+
+
+
+
+
 # [1.918.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.917.1...@voiceflow/creator-app@1.918.0) (2022-09-20)
 
 

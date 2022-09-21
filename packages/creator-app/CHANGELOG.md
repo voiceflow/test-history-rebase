@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.918.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.918.1...@voiceflow/creator-app@1.918.2) (2022-09-21)
+
+
+### Bug Fixes
+
+* firefox start prototype from block button (CT-1011) ([#6111](https://github.com/voiceflow/creator-app/issues/6111)) ([8f6a316](https://github.com/voiceflow/creator-app/commit/8f6a31617b2903aa59187ae0c8a5bd9f8ffe0330))
+
+
+
+
+
 ## [1.918.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.918.0...@voiceflow/creator-app@1.918.1) (2022-09-21)
 
 

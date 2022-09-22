@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.920.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.920.0...@voiceflow/creator-app@1.920.1) (2022-09-22)
+
+
+### Bug Fixes
+
+* flush prototype pending messages  (CT-1008) ([#6109](https://github.com/voiceflow/creator-app/issues/6109)) ([81020f3](https://github.com/voiceflow/creator-app/commit/81020f3464418c966448d5e2ea5e2d89dd5cacf3))
+* link creation menu (CT-1018) ([#6119](https://github.com/voiceflow/creator-app/issues/6119)) ([e8a05d9](https://github.com/voiceflow/creator-app/commit/e8a05d9036e3a5c22899e2a22717bb375c05655d))
+* nlu import modal to v2 (CT-000) ([#6118](https://github.com/voiceflow/creator-app/issues/6118)) ([eec4d54](https://github.com/voiceflow/creator-app/commit/eec4d54c8d6322df06633f50901be79186e05e31))
+* remove the custom color context menu from library template popper (CT-1021) ([#6120](https://github.com/voiceflow/creator-app/issues/6120)) ([a78a38b](https://github.com/voiceflow/creator-app/commit/a78a38bb3825ca6e110500c970bd128d293c3ac6))
+
+
+
+
+
 # [1.920.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.919.1...@voiceflow/creator-app@1.920.0) (2022-09-22)
 
 

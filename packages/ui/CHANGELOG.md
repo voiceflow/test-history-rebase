@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.152.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.152.2...@voiceflow/ui@1.152.3) (2022-09-22)
+
+
+### Bug Fixes
+
+* link creation menu (CT-1018) ([#6119](https://github.com/voiceflow/creator-app/issues/6119)) ([e8a05d9](https://github.com/voiceflow/creator-app/commit/e8a05d9036e3a5c22899e2a22717bb375c05655d))
+* remove the custom color context menu from library template popper (CT-1021) ([#6120](https://github.com/voiceflow/creator-app/issues/6120)) ([a78a38b](https://github.com/voiceflow/creator-app/commit/a78a38bb3825ca6e110500c970bd128d293c3ac6))
+
+
+
+
+
 ## [1.152.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.152.1...@voiceflow/ui@1.152.2) (2022-09-20)
 
 

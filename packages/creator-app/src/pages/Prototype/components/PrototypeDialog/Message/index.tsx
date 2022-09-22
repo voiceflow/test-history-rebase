@@ -18,7 +18,6 @@ export interface PrototypeDialogMessageProps {
   audio?: HTMLAudioElement;
   message: Message;
   hideSessionMessages?: boolean;
-  isLoading?: boolean;
   isLast: boolean;
   isCurrent: boolean;
   isLastBubble: boolean;
@@ -41,7 +40,6 @@ export interface PrototypeDialogMessageProps {
 const PrototypeDialogMessage: React.FC<PrototypeDialogMessageProps> = ({
   message,
   hideSessionMessages,
-  isLoading,
   isLast,
   isCurrent,
   isLastBubble,
@@ -61,22 +59,20 @@ const PrototypeDialogMessage: React.FC<PrototypeDialogMessageProps> = ({
   onMessageDoubleClick,
   onInteraction,
 
-  pmStatus,
-
   audio,
+  pmStatus,
   avatarURL,
   isTranscript,
 }) => {
   const userSpeak = message.type === MessageType.USER;
 
   const botMessageProps = {
-    isFirstInSeries,
-    isLastInSeries,
-    isLastBotMessage,
-    isLoading,
     isLast,
     isLastBubble,
     onDoubleClick: onMessageDoubleClick ? () => onMessageDoubleClick(message) : undefined,
+    isLastInSeries,
+    isFirstInSeries,
+    isLastBotMessage,
   };
 
   switch (message.type) {
@@ -100,7 +96,7 @@ const PrototypeDialogMessage: React.FC<PrototypeDialogMessageProps> = ({
         />
       );
     case MessageType.TEXT:
-      return <V.Text userSpeak={userSpeak} {...botMessageProps} {...message} pmStatus={pmStatus} avatarURL={avatarURL} isLoading={isLoading} />;
+      return <V.Text userSpeak={userSpeak} {...botMessageProps} {...message} pmStatus={pmStatus} avatarURL={avatarURL} />;
     case MessageType.SPEAK:
       return (
         <V.Speak

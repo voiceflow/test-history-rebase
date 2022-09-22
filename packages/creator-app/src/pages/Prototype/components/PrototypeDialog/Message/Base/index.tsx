@@ -30,7 +30,6 @@ export interface BaseMessageProps extends S.ContainerProps {
   isLastInSeries?: boolean;
   isLastBotMessage?: boolean;
   isLastBubble?: boolean;
-  isLoading?: boolean;
   forceIcon?: boolean;
   pmStatus: Nullable<PMStatus>;
   onDoubleClick?: () => void;
@@ -53,7 +52,6 @@ const BaseMessage: React.FC<BaseMessageProps> = ({
   isLastInSeries = false,
   animationContainer = S.FadeUp,
   isLastBotMessage,
-  isLoading,
   forceIcon,
   pmStatus,
   isLastBubble,

@@ -17,7 +17,7 @@ export interface ControlCenterProps {
   setShowButtons: (val: boolean) => void;
   stepBack: VoidFunction;
   stepForward: VoidFunction;
-  inputRef: React.RefObject<HTMLInputElement>;
+  inputRef: React.RefObject<HTMLInputElement | HTMLTextAreaElement>;
   savePrototypeTest: VoidFunction;
   goBackDisabled: boolean;
 }

@@ -16,7 +16,6 @@ import { TrainingModelContext } from '@/pages/Project/contexts';
 import Prototype from '@/pages/Prototype';
 import { PrototypeContext } from '@/pages/Prototype/context';
 import { useDebug, useResetPrototype } from '@/pages/Prototype/hooks';
-import { PMStatus } from '@/pages/Prototype/types';
 import { ModelDiff } from '@/utils/prototypeModel';
 
 import { Container, EmbedContainer, TrainingSection } from './components';
@@ -48,7 +47,7 @@ const PrototypeSidebar: React.FC = () => {
   const resetPrototype = useResetPrototype();
   const getEngine = useEventualEngine();
   const [atTop, setAtTop] = React.useState(true);
-  const notStarted = (status as any) === PMStatus.IDLE;
+  const notStarted = status === PrototypeStatus.IDLE;
 
   const renderPromise = React.useMemo<Promise<void>>(async () => {
     if (canRenderPrototype) {
@@ -76,7 +75,7 @@ const PrototypeSidebar: React.FC = () => {
 
   React.useEffect(() => {
     // Reset the custom styling of the header when reset
-    if ((status as any) === PMStatus.IDLE) {
+    if (status === PrototypeStatus.IDLE) {
       setAtTop(true);
     }
   }, [status]);

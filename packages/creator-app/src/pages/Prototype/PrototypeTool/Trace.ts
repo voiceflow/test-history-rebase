@@ -136,6 +136,8 @@ class TraceController {
 
   private noReplyTimeout = 0;
 
+  private fakeLoadingPromiseTimeout = 0;
+
   public topTrace: Trace | null = null;
 
   get isPublicPrototype(): boolean {
@@ -265,6 +267,8 @@ class TraceController {
 
   // immediate display the remaining traces and not wait on any async effects
   public async flushTrace(): Promise<void> {
+    this.timeout.clearByID(this.fakeLoadingPromiseTimeout);
+
     await this.processTrace(this.trace, { onlyMessage: true });
   }
 
@@ -308,15 +312,19 @@ class TraceController {
     return this.context?.trace.find(({ type }) => BOT_TRACE_TYPES.has(type))?.id === trace.id;
   }
 
-  private async simulateLoadingDelay(trace: BotTraceType, delayMillisecondsOverride?: number) {
+  private async simulateLoadingDelay(trace: BotTraceType, { delay, skip }: { delay?: number; skip?: boolean } = {}) {
     const isVeryFirstMessage = this.isVeryFirstBotMessage(trace);
-    const delayInMilliseconds = delayMillisecondsOverride ?? this.props.globalMessageDelayMilliseconds;
+    const delayInMilliseconds = delay ?? this.props.globalMessageDelayMilliseconds;
 
-    if (isVeryFirstMessage || !delayInMilliseconds) return;
+    if (skip || isVeryFirstMessage || !delayInMilliseconds) return;
 
     this.props.updateStatus(PMStatus.FAKE_LOADING);
 
-    await this.timeout.delay(delayInMilliseconds);
+    const promise = this.timeout.delay(delayInMilliseconds);
+
+    this.fakeLoadingPromiseTimeout = promise.timeoutID;
+
+    await promise;
 
     this.props.updateStatus(PMStatus.NAVIGATING);
   }
@@ -362,15 +370,15 @@ class TraceController {
         break;
       }
       case BaseTrace.TraceType.TEXT: {
-        await this.processTextTrace(topTrace);
+        await this.processTextTrace(topTrace, { onlyMessage });
         break;
       }
       case BaseTrace.TraceType.CAROUSEL: {
-        await this.processCarouselTrace(topTrace);
+        await this.processCarouselTrace(topTrace, { onlyMessage });
         break;
       }
       case BaseTrace.TraceType.CARD_V2: {
-        await this.processCardTrace(topTrace);
+        await this.processCardTrace(topTrace, { onlyMessage });
         break;
       }
       case BaseTrace.TraceType.FLOW: {
@@ -523,23 +531,26 @@ class TraceController {
     await this.next({ type: BaseRequest.RequestType.TEXT, payload: VoiceflowConstants.IntentName.NEXT });
   }
 
-  private async processTextTrace(trace: TextTrace) {
-    await this.simulateLoadingDelay(trace, trace.payload?.slate?.messageDelayMilliseconds);
+  private async processTextTrace(trace: TextTrace, { onlyMessage }: { onlyMessage?: boolean } = {}) {
+    await this.simulateLoadingDelay(trace, { delay: trace.payload?.slate?.messageDelayMilliseconds, skip: onlyMessage });
+
     await this.message.text(trace);
   }
 
-  private async processCarouselTrace(trace: CarouselTrace) {
-    await this.simulateLoadingDelay(trace);
+  private async processCarouselTrace(trace: CarouselTrace, { onlyMessage }: { onlyMessage?: boolean } = {}) {
+    await this.simulateLoadingDelay(trace, { skip: onlyMessage });
+
     await this.message.carousel(trace);
   }
 
-  private async processCardTrace(trace: CardV2Trace) {
-    await this.simulateLoadingDelay(trace);
+  private async processCardTrace(trace: CardV2Trace, { onlyMessage }: { onlyMessage?: boolean } = {}) {
+    await this.simulateLoadingDelay(trace, { skip: onlyMessage });
+
     await this.message.card(trace);
   }
 
   private async processSpeakTrace(trace: SpeakTrace, { onlyMessage }: { onlyMessage?: boolean } = {}) {
-    await this.simulateLoadingDelay(trace);
+    await this.simulateLoadingDelay(trace, { skip: onlyMessage });
 
     this.message.speak(trace);
 

@@ -96,7 +96,6 @@ const PrototypeDialog: React.FC<DialogPrototypeProps> = ({
               color={color}
               isLast={isLast}
               isCurrent={isCurrent}
-              isLoading={isLoading}
               isLastBubble={isLastBubble}
               isLastInSeries={isLastInSeries}
               isFirstInSeries={isFirstInSeries}

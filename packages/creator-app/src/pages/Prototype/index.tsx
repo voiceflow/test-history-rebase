@@ -65,7 +65,7 @@ const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({
   });
 
   const checkPMStatus = React.useCallback((...args: PMStatus[]) => args.includes(prototypeMachineStatus as PMStatus), [prototypeMachineStatus]);
-  const isLoading = checkPMStatus(PMStatus.FETCHING_CONTEXT, PMStatus.DIALOG_PROCESSING, PMStatus.FAKE_LOADING);
+  const isLoading = checkPMStatus(PMStatus.FETCHING_CONTEXT, PMStatus.FAKE_LOADING);
 
   const isBubbleMessageShown = React.useMemo(
     () => messages.some((message) => BotMessageTypes.includes(message.type) || message.type === MessageType.USER),
@@ -143,13 +143,13 @@ const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({
 
       <UserSaysContainer>
         <Input
-          stepBack={onStepBack}
-          stepForward={onStepForward}
           locale={locale}
-          setShowButtons={setShowButtons}
-          showButtons={showButtons}
-          disabled={checkPMStatus(PMStatus.FETCHING_CONTEXT, PMStatus.IDLE, PMStatus.DIALOG_PROCESSING, PMStatus.FAKE_LOADING)}
+          stepBack={onStepBack}
+          disabled={checkPMStatus(PMStatus.FETCHING_CONTEXT, PMStatus.IDLE)}
           onUserInput={(request) => onInteraction({ request })}
+          stepForward={onStepForward}
+          showButtons={showButtons}
+          setShowButtons={setShowButtons}
         />
       </UserSaysContainer>
     </Container>

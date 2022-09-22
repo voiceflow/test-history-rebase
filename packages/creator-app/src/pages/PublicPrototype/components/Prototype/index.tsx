@@ -100,7 +100,7 @@ const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({ config, state
 
   const checkPMStatus = React.useCallback((...args: PMStatus[]) => args.includes(prototypeMachineStatus as PMStatus), [prototypeMachineStatus]);
 
-  const isLoading = checkPMStatus(PMStatus.FETCHING_CONTEXT, PMStatus.DIALOG_PROCESSING, PMStatus.FAKE_LOADING);
+  const isLoading = checkPMStatus(PMStatus.FETCHING_CONTEXT, PMStatus.FAKE_LOADING);
   const isIdle = status === PrototypeStatus.IDLE;
   const isFinished = status === PrototypeStatus.ENDED;
 

@@ -214,7 +214,12 @@ export const NLUManagerProvider: React.FC = ({ children }) => {
         [InteractionModelTabType.SLOTS]: () =>
           addSlotModal.open({ name, onCreate: (slot: Realtime.Slot) => goToItem(slot.id), creationType: Tracking.CanvasCreationType.NLU_MANAGER }),
         [InteractionModelTabType.INTENTS]: () =>
-          addIntentModal.open({ name, onCreate: (id: string) => goToItem(id), creationType: Tracking.CanvasCreationType.NLU_MANAGER }),
+          addIntentModal.open({
+            name,
+            onCreate: (id: string) => goToItem(id),
+            creationType: Tracking.CanvasCreationType.NLU_MANAGER,
+            utteranceCreationType: Tracking.CanvasCreationType.QUICKVIEW,
+          }),
         [InteractionModelTabType.VARIABLES]: () =>
           addVariableModal.open({
             name,

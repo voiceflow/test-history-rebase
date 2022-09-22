@@ -100,7 +100,12 @@ const IntentSelect: React.FC<IntentSelectProps> = ({
     if (error) {
       toast.error(error);
     } else {
-      openCreateIntentModal({ name: formattedName, onCreate: onSelectIntent, creationType: Tracking.CanvasCreationType.QUICKVIEW });
+      openCreateIntentModal({
+        name: formattedName,
+        onCreate: onSelectIntent,
+        creationType: Tracking.CanvasCreationType.QUICKVIEW,
+        utteranceCreationType: Tracking.CanvasCreationType.QUICKVIEW,
+      });
     }
   };
 

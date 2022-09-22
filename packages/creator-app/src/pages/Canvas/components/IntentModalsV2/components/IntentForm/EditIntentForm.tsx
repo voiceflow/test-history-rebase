@@ -15,12 +15,14 @@ interface EditIntentFormProps {
   withNameSection?: boolean;
   prefilledNewUtterance?: string;
   withDescriptionBottomBorder?: boolean;
+  utteranceCreationType: Tracking.CanvasCreationType;
 }
 
 const DEFAULT_INPUTS: Realtime.IntentInput[] = [];
 
 const EditIntentForm: React.FC<EditIntentFormProps> = ({
   intentID,
+  utteranceCreationType,
   creationType,
   isNLUManager,
   withNameSection = false,
@@ -85,6 +87,7 @@ const EditIntentForm: React.FC<EditIntentFormProps> = ({
     <IntentForm
       name={name}
       noteID={intent?.noteID}
+      utteranceCreationType={utteranceCreationType}
       creationType={creationType}
       inputs={inputs}
       setName={setName}

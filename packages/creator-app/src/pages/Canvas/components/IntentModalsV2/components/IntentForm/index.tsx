@@ -23,6 +23,7 @@ import UtteranceSection from '../components/UtteranceSection';
 interface IntentFormProps {
   name: string;
   inputs: Realtime.IntentInput[];
+  utteranceCreationType: Tracking.CanvasCreationType;
   creationType: Tracking.IntentEditType;
   noteID?: string;
   setName: (name: string) => void;
@@ -45,6 +46,7 @@ interface IntentFormProps {
 const IntentForm: React.FC<IntentFormProps> = ({
   name,
   inputs,
+  utteranceCreationType,
   creationType,
   setName,
   intentID,
@@ -111,6 +113,7 @@ const IntentForm: React.FC<IntentFormProps> = ({
         <UtteranceSection
           intentID={intentID ?? null}
           inputs={inputs}
+          utteranceCreationType={utteranceCreationType}
           isBuiltIn={isBuiltIn}
           autofocus={!!name && autofocus}
           withBorderTop={withNameSection}

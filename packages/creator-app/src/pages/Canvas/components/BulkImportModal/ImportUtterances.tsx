@@ -10,8 +10,9 @@ import { MODAL_WIDTH_VARIANTS, MODAL_WIDTHS, ModalType } from '@/constants';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as SlotV2 from '@/ducks/slotV2';
+import * as Tracking from '@/ducks/tracking';
 import { connect } from '@/hocs';
-import { useDebouncedCallback, useModals, useSelector } from '@/hooks';
+import { useDebouncedCallback, useModals, useSelector, useTrackingEvents } from '@/hooks';
 import { ConnectedProps } from '@/types';
 import { readFileAsText } from '@/utils/file';
 import { isCustomizableBuiltInIntent } from '@/utils/intent';
@@ -43,6 +44,8 @@ const ImportUtterances: React.FC<ConnectedImportUtterancesProps> = ({ slots, get
   );
 
   const builtIn = isCustomizableBuiltInIntent(getIntentByID({ id: data.intentID }));
+
+  const [trackingEvents] = useTrackingEvents();
 
   const findSlotsAndUtterances = useDebouncedCallback(
     DEBOUNCE_TIMEOUT,
@@ -136,6 +139,8 @@ const ImportUtterances: React.FC<ConnectedImportUtterancesProps> = ({ slots, get
       data.onUpload(validUtterances);
 
       toast.success(`${pluralize('utterance', validUtterances.length, true)} successfully imported!`);
+
+      trackingEvents.trackNewUtteranceCreated({ intentID: data.intentID, creationType: Tracking.CanvasCreationType.UTTERANCE_UPLOAD });
 
       close();
 

@@ -11,6 +11,7 @@ import * as Intent from '@/ducks/intent';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as SlotV2 from '@/ducks/slotV2';
+import * as Tracking from '@/ducks/tracking';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useAddSlot, useDispatch, useMLGatewayClient, useSelector, useTrackingEvents } from '@/hooks';
 import { useNLUManager } from '@/pages/NLUManager/context';
@@ -95,6 +96,7 @@ const Recommendations: React.FC = () => {
 
     patchIntent(nluManager.activeItem.id, { inputs: [...nluManager.activeItem.inputs, { text, slots }] });
     trackingEvents.trackUtteranceRecommendationAccepted({ utteranceName: text, intentID: nluManager.activeItem.id });
+    trackingEvents.trackNewUtteranceCreated({ intentID: nluManager.activeItem.id, creationType: Tracking.CanvasCreationType.RECOMMENDATION });
     removeRecommendation(index);
   };
 

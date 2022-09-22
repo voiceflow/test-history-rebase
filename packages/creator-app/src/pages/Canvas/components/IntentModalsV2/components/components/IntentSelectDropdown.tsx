@@ -13,7 +13,11 @@ const IntentSelectDropdown: React.FC = () => {
   const switchIntent = (value: { intent: Nullable<string> }) => {
     const intentID = value?.intent;
     closeCreateIntentModal();
-    openCreateIntentModal({ id: intentID, creationType: Tracking.CanvasCreationType.EDITOR });
+    openCreateIntentModal({
+      id: intentID,
+      creationType: Tracking.CanvasCreationType.EDITOR,
+      utteranceCreationType: Tracking.CanvasCreationType.QUICKVIEW,
+    });
   };
 
   return (

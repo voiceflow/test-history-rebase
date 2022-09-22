@@ -26,7 +26,12 @@ const EditSidebar: React.FC = () => {
         {nluManager.activeItem && (
           <>
             <CardList intent={nluManager.activeItem} />
-            <EditIntentForm intentID={nluManager.activeItem.id} isNLUManager creationType={Tracking.IntentEditType.NLU_MANAGER} />
+            <EditIntentForm
+              intentID={nluManager.activeItem.id}
+              isNLUManager
+              creationType={Tracking.IntentEditType.NLU_MANAGER}
+              utteranceCreationType={Tracking.CanvasCreationType.NLU_MANAGER}
+            />
           </>
         )}
       </ItemEditSidebar>

@@ -165,9 +165,11 @@ export enum CanvasCreationType {
   EDITOR = 'editor',
   IMM = 'imm',
   PASTE = 'paste',
-  PROJECT_CREATE = 'project create',
-  NLU_MANAGER = 'nlu manager',
   QUICKVIEW = 'quickview',
+  NLU_MANAGER = 'nlu manager',
+  UTTERANCE_UPLOAD = 'utterance upload',
+  RECOMMENDATION = 'recommendation',
+  PROJECT_CREATE = 'project create',
 }
 
 export enum NLUEntityCreationType {

@@ -26,7 +26,8 @@ import { ModalType, PREFILLED_UTTERANCE_PARAM } from '@/constants';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as SlotV2 from '@/ducks/slotV2';
-import { useAddSlot, useModals, usePermission, useSelector, useSetup } from '@/hooks';
+import * as Tracking from '@/ducks/tracking';
+import { useAddSlot, useModals, usePermission, useSelector, useSetup, useTrackingEvents } from '@/hooks';
 import UtteranceInput from '@/pages/Canvas/components/IntentModalsV2/components/components/UtteranceSection/components/UtteranceInput';
 import { EditorTabs } from '@/pages/NLUManager/constants';
 import { NLUManagerContext } from '@/pages/NLUManager/context';
@@ -42,6 +43,7 @@ interface UtteranceManagerProps {
   isBuiltIn?: boolean;
   prefilledUtterance?: string;
   withRecommendations?: boolean;
+  utteranceCreationType: Tracking.CanvasCreationType;
 }
 
 const MAX_VISIBLE_UTTERANCES = 10;
@@ -55,6 +57,7 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({
   onUpdateUtterances,
   autofocus,
   withBorderTop,
+  utteranceCreationType,
 }) => {
   const { search } = useLocation();
   const nluManager = React.useContext(NLUManagerContext);
@@ -79,6 +82,7 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({
   const [canBulkUpload] = usePermission(Permission.BULK_UPLOAD);
   const [isValidUtterance, setValidUtterance, setInvalidUtterance] = useEnableDisable(true);
   const intentUtterances = inputs || [];
+  const [trackingEvents] = useTrackingEvents();
   const isRecommendationOpened = nluManager.isEditorTabActive(EditorTabs.UTTERANCE_RECOMMENDATIONS);
 
   useDidUpdateEffect(() => {
@@ -223,7 +227,12 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({
               items={intentUtterances}
               addToStart
               divider={false}
-              beforeAdd={() => utteranceRef.current?.forceUpdate()}
+              beforeAdd={() => {
+                if (intentID) {
+                  trackingEvents.trackNewUtteranceCreated({ intentID, creationType: utteranceCreationType });
+                }
+                utteranceRef.current?.forceUpdate();
+              }}
               renderForm={({ value, onAdd, onChange, addError }) => (
                 <UtteranceInput
                   intentUtterances={intentUtterances}

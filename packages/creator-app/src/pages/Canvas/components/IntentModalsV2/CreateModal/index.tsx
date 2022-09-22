@@ -15,6 +15,7 @@ const CreateModal: React.FC = () => {
     id?: string;
     onCreate?: (id: string) => void;
     name?: string;
+    utteranceCreationType: Tracking.CanvasCreationType;
     creationType: Tracking.CanvasCreationType;
   }>(ModalType.INTENT_CREATE);
 
@@ -55,6 +56,7 @@ const CreateModal: React.FC = () => {
           <Box width="100%" overflow="auto" maxHeight="calc(100vh - 220px)">
             <IntentForm
               name={name}
+              utteranceCreationType={data.utteranceCreationType}
               inputs={inputs}
               creationType={Tracking.IntentEditType.IMM}
               setName={setName}

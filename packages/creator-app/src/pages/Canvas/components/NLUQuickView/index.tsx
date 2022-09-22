@@ -85,7 +85,13 @@ const NLUQuickView: React.FC = () => {
         ) : (
           !!modalRef && (
             <TextEditorVariablesPopoverProvider value={modalRef}>
-              {showIntentForm && <EditIntentForm intentID={selectedID} creationType={Tracking.IntentEditType.IMM} />}
+              {showIntentForm && (
+                <EditIntentForm
+                  intentID={selectedID}
+                  creationType={Tracking.IntentEditType.IMM}
+                  utteranceCreationType={Tracking.CanvasCreationType.IMM}
+                />
+              )}
               {showEntityForm && (
                 <EditEntityForm slotID={selectedID} withNameSection={false} withBottomDivider creationType={Tracking.NLUEntityCreationType.IMM} />
               )}

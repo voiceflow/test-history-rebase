@@ -5,6 +5,7 @@ import React from 'react';
 import IntentSelect from '@/components/IntentSelect';
 import { ModalType } from '@/constants';
 import * as IntentV2 from '@/ducks/intentV2';
+import * as Tracking from '@/ducks/tracking';
 import * as Transcript from '@/ducks/transcript';
 import { useDispatch, useModals, useSelector, useTrackingEvents } from '@/hooks';
 
@@ -57,7 +58,7 @@ const NoIntent: React.FC<NoIntentProps> = ({ turnID, focused, setChildDropdownIs
   const handleOpenIntentEditModal = (intentID: string) => {
     const targetIntent = getIntentByID({ id: intentID });
     setInitialUtterances(targetIntent?.inputs ?? []);
-    openEditIntentModal({ id: intentID, newUtterance: utterance });
+    openEditIntentModal({ id: intentID, newUtterance: utterance, utteranceCreationType: Tracking.CanvasCreationType.QUICKVIEW });
   };
 
   // We have to put this in a useEffect because on intentSelect, if it is builtIn, the intentSelect needs to create the intent first, and there can be race conditions with the inner code

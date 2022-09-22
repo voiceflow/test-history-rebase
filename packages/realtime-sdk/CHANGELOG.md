@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.160.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.159.2...@voiceflow/realtime-sdk@1.160.0) (2022-09-22)
+
+
+### Features
+
+* Unclassified NLU manager tab (NLU-330) ([#6075](https://github.com/voiceflow/creator-app/issues/6075)) ([bfc48d3](https://github.com/voiceflow/creator-app/commit/bfc48d3beb6c7d039355940625127205937924a9))
+
+
+
+
+
 ## [1.159.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.159.1...@voiceflow/realtime-sdk@1.159.2) (2022-09-21)
 
 

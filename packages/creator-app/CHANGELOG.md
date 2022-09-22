@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.921.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.921.0...@voiceflow/creator-app@1.921.1) (2022-09-22)
+
+
+### Bug Fixes
+
+* canvas templates diagrams + add actions support (CT-1001) ([#6115](https://github.com/voiceflow/creator-app/issues/6115)) ([1f23cd3](https://github.com/voiceflow/creator-app/commit/1f23cd384baad2c12d902bd1bdd1e25bd7ddb4de))
+
+
+
+
+
 # [1.921.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.920.1...@voiceflow/creator-app@1.921.0) (2022-09-22)
 
 

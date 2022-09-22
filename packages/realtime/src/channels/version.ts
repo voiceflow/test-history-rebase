@@ -39,11 +39,14 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
     const { workspaceID, projectID, versionID } = ctx.params;
     const creatorID = Number(ctx.userId);
 
-    const [dbCreator, threads, templateDiagram] = await Promise.all([
+    const [dbCreator, threads] = await Promise.all([
       this.services.project.getCreator(creatorID, projectID, versionID),
       this.services.thread.getAll(creatorID, projectID),
-      this.services.diagram.findOneByVersionID(versionID, { type: BaseModels.Diagram.DiagramType.TEMPLATE }),
     ]);
+
+    const templateDiagram = dbCreator.version.templateDiagramID
+      ? await this.services.diagram.get(dbCreator.version.templateDiagramID).catch(() => null)
+      : null;
 
     const slots = Realtime.Adapters.slotAdapter.mapFromDB(dbCreator.version.platformData.slots);
     const notes = Realtime.Adapters.noteAdapter.mapFromDB(dbCreator.version.notes ? Object.values(dbCreator.version.notes) : []);
@@ -55,7 +58,10 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
 
     const { platform, type: projectType } = project;
 
-    const version = Realtime.Adapters.versionAdapter.fromDB(dbCreator.version as Realtime.AnyDBVersion, { platform, projectType });
+    const version = Realtime.Adapters.versionAdapter.fromDB(
+      { ...(dbCreator.version as Realtime.AnyDBVersion), templateDiagramID: templateDiagram?._id },
+      { platform, projectType }
+    );
     const intents = Realtime.Adapters.getProjectTypeIntentAdapter<any>(projectType).mapFromDB(dbCreator.version.platformData.intents, { platform });
     const products =
       'products' in project.platformData
@@ -88,16 +94,7 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
       Realtime.version.replacePrototypeSettings({ ...actionContext, settings: prototypeSettings }),
       Realtime.version.activateVersion({ ...actionContext, projectType }),
       ...(templateDiagram
-        ? [
-            initializeTemplateDiagramAction(
-              templateDiagram,
-              {
-                platform: project.platform,
-                projectType: project.type,
-              },
-              actionContext
-            ),
-          ]
+        ? [initializeTemplateDiagramAction(templateDiagram, { platform: project.platform, projectType: project.type }, actionContext)]
         : []),
     ];
   };

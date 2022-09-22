@@ -36,6 +36,7 @@ class MigrateService extends AbstractControl {
       'topics',
       'domains',
       'components',
+      'templateDiagramID',
       'folders',
     ]);
   }

@@ -175,17 +175,15 @@ describe('Migrate service unit tests', () => {
         versionID,
         {
           _version: targetSchemaVersion,
-          variables: ['first', 'second'],
           name: 'bar',
-          topics: undefined,
+          variables: ['first', 'second'],
           folders: undefined,
           components: undefined,
           rootDiagramID: 'diagramID',
+          templateDiagramID: undefined,
           platformData: { fizz: 'buzz' },
           topics: undefined,
           domains: undefined,
-          components: undefined,
-          folders: undefined,
         },
         [[diagramID, { foo: 'bar' }]]
       );

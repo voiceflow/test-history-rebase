@@ -12,6 +12,10 @@ const addDiagramReducer = createReducer(Realtime.diagram.crud.add, (state, { ver
   if (value.type === BaseModels.Diagram.DiagramType.COMPONENT) {
     version.components.push({ sourceID: key, type: BaseModels.Version.FolderItemType.DIAGRAM });
   }
+
+  if (value.type === BaseModels.Diagram.DiagramType.TEMPLATE) {
+    version.templateDiagramID = value.id;
+  }
 });
 
 export default addDiagramReducer;

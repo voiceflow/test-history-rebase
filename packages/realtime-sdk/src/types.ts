@@ -95,6 +95,11 @@ export enum SchemaVersion {
    * migrates to domains
    */
   V3_9 = 3.9,
+
+  /**
+   * migrates multiple templates diagrams into one
+   */
+  V3_91 = 3.91,
 }
 
 export const SUPPORTED_SCHEMA_VERSIONS = Object.values(SchemaVersion)

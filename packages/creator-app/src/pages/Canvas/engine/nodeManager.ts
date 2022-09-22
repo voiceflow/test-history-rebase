@@ -524,11 +524,7 @@ class NodeManager extends EngineConsumer {
     const point = this.engine.canvas!.fromCoords(coords);
     const centeredEntities = centerNodeGroup(entities, point);
 
-    await this.dispatch(
-      History.transaction(async () => {
-        await this.internal.importSnapshot(centeredEntities, diagramID);
-      })
-    );
+    await this.dispatch(History.transaction(() => this.internal.importSnapshot(centeredEntities, diagramID)));
 
     this.log.info(this.log.success('added multiple entities from snapshot'), this.log.value(entities.nodesWithData.length));
   }

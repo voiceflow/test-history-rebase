@@ -67,13 +67,15 @@ class CanvasTemplateEngine extends EngineConsumer {
 
   async createTemplate(name: string, color: string | null, allNodeIDs: string[], coords: Coords): Promise<Realtime.CanvasTemplate | null> {
     try {
-      const nodeIDs = allNodeIDs.filter((id) => id !== Realtime.START_NODE_ID);
+      const nodeIDs = [...allNodeIDs, ...this.engine.node.getAllLinkedOutActionsNodeIDs(allNodeIDs)].filter((id) => id !== Realtime.START_NODE_ID);
       const templateData = this.getCreatorContext(nodeIDs);
       const templateDiagramID = this.select(VersionV2.active.templateDiagramIDSelector) ?? (await this.dispatch(Diagram.createTemplateDiagram()));
 
       const { nodesWithData } = await this.cloneCanvasTemplateContext(templateData, coords, templateDiagramID);
 
-      const newNodeIDs = nodesWithData.filter(({ data }) => data.type === BlockType.COMBINED).map(({ data }) => data.nodeID);
+      const newNodeIDs = nodesWithData
+        .filter(({ data }) => data.type === BlockType.COMBINED || data.type === BlockType.ACTIONS)
+        .map(({ data }) => data.nodeID);
 
       const createdTemplate = await this.dispatch(
         CanvasTemplate.createCanvasTemplate({
@@ -109,6 +111,7 @@ class CanvasTemplateEngine extends EngineConsumer {
 
   getDiagramContext(nodeIDs: string[], DiagramDataDuck: typeof CanvasTemplate | typeof CreatorV2): TemplateCanvasContext {
     const platform = this.select(ProjectV2.active.platformSelector);
+
     // cloning data to modify it later
     const { ...data } = this.select(DiagramDataDuck.nodeDataMapSelector);
 
@@ -217,12 +220,15 @@ class CanvasTemplateEngine extends EngineConsumer {
   async dropTemplate(templateID: string, coords: Coords): Promise<Realtime.NodeWithData[]> {
     const diagramID = this.select(CreatorV2.activeDiagramIDSelector)!;
     const canvasTemplate = CanvasTemplate.canvasTemplatesByIDSelector(this.engine.store.getState(), { id: templateID });
+
     Errors.assertDiagramID(diagramID);
     Errors.assertCanvasTemplateID(canvasTemplate?.id);
 
     if (!canvasTemplate) return [];
+
     try {
       this.log.debug(this.log.pending('dropping template to canvas'));
+
       const templateData = this.getCanvasTemplateContext(canvasTemplate);
 
       const { nodesWithData } = await this.cloneCanvasTemplateContext(templateData, coords, diagramID);

@@ -15,6 +15,7 @@ export type VersionUpdateData = Pick<
   | 'components'
   | 'canvasTemplates'
   | 'defaultStepColors'
+  | 'templateDiagramID'
   | 'domains'
 >;
 

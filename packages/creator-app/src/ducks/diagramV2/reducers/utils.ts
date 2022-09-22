@@ -23,6 +23,7 @@ export const addSharedNode = (state: Draft<DiagramState>, diagramID: string, sha
 
   if (sharedNode.type !== Realtime.BlockType.INTENT || !sharedNode.intentID || !sharedNode.global) return;
 
+  state.globalIntentStepMap[diagramID] ??= {};
   state.globalIntentStepMap[diagramID][sharedNode.intentID] ??= [];
   state.globalIntentStepMap[diagramID][sharedNode.intentID].push(sharedNode.nodeID);
 };

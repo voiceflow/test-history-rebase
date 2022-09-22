@@ -36,6 +36,7 @@ export function useModal(
     []
   );
   const close = React.useCallback(() => manager.close(modalID, type), []);
+  const remove = React.useCallback(() => manager.remove(modalID, type), []);
   const openVoid = React.useCallback((props?: AnyRecord, options?: T.OpenOptions) => open(props, options).catch(() => null), []);
   const updateProps = React.useCallback((props: AnyRecord = {}) => manager.update(modalID, type, props), []);
   const enableClose = React.useCallback(() => manager.enableClose(modalID, type), []);
@@ -50,6 +51,7 @@ export function useModal(
     type,
     open,
     close,
+    remove,
     opened: rendered && !modal?.closing,
     hidden: modals.state.allKeys[0] !== combinedID,
     animated: modals.animated,

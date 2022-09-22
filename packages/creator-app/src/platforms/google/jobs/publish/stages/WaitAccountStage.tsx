@@ -16,7 +16,7 @@ const WaitAccountStage: React.FC<StageComponentProps<GooglePublishJob.WaitAccoun
       .catch(() => cancel());
 
     return () => {
-      connectGoogleModal.close();
+      connectGoogleModal.remove();
     };
   }, []);
 

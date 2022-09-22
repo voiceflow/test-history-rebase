@@ -16,7 +16,7 @@ const WaitAccountStage: React.FC<StageComponentProps<DialogflowESPublishJob.Wait
       .catch(() => cancel());
 
     return () => {
-      connectGoogleModal.close();
+      connectGoogleModal.remove();
     };
   }, []);
 

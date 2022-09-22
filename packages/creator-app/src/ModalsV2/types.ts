@@ -40,6 +40,7 @@ export type ResultInternalProps<Result> = InternalProps<ResultInternalAPI<Result
 
 interface BasePublicAPI extends SharedAPI {
   close: () => Promise<void>;
+  remove: VoidFunction;
   enableClose: VoidFunction;
   preventClose: VoidFunction;
 }

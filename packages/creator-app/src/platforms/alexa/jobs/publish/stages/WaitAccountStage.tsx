@@ -16,7 +16,7 @@ const WaitAccountStage: React.FC<StageComponentProps<AlexaPublishJob.WaitAccount
       .catch(() => cancel());
 
     return () => {
-      connectAmazonModal.close();
+      connectAmazonModal.remove();
     };
   }, []);
 

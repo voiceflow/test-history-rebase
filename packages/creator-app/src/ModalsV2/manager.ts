@@ -213,29 +213,13 @@ class Manager extends EventEmitter<Events> {
       props,
       options,
       api: {
-        close: () => {
-          this.emit(Event.CLOSE, { id, type });
-        },
+        close: () => this.close(id, type),
 
-        remove: () => {
-          this.openedModals.delete(combinedID);
+        remove: () => this.remove(id, type),
 
-          this.emit(Event.REMOVE, { id, type });
+        reject: _reject,
 
-          _reject(new Error('Modal was closed!'));
-        },
-
-        resolve: (data: unknown) => {
-          this.openedModals.delete(combinedID);
-
-          _resolve(data);
-        },
-
-        reject: (error: Error) => {
-          this.openedModals.delete(combinedID);
-
-          _reject(error);
-        },
+        resolve: _resolve,
 
         enableClose: () => this.enableClose(id, type),
 
@@ -289,6 +273,24 @@ class Manager extends EventEmitter<Events> {
     }
 
     this.emit(Event.UPDATE, { id, type, payload: { props } });
+  }
+
+  remove(id: string, type: string) {
+    const combinedID = this.getCombinedID(id, type);
+
+    const openedModel = this.openedModals.get(combinedID);
+
+    if (!openedModel) {
+      logger.warn(`Modal "${combinedID}" is not opened yet.`);
+
+      return;
+    }
+
+    this.openedModals.delete(combinedID);
+
+    this.emit(Event.REMOVE, { id, type });
+
+    openedModel._reject(new Error('Modal was closed!'));
   }
 
   enableClose(id: string, type: string): void {

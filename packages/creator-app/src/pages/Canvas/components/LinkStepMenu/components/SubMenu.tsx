@@ -1,5 +1,5 @@
 import { BaseModels } from '@voiceflow/base-types';
-import { Animations, Menu, Portal, usePopper } from '@voiceflow/ui';
+import { Menu, Portal, usePopper } from '@voiceflow/ui';
 import React from 'react';
 
 import { useCanvasNodeFilter } from '@/hooks';
@@ -15,9 +15,11 @@ interface SubMenuProps {
   upgradePopperRef?: React.Ref<HTMLDivElement>;
 }
 
+const getPopperOffset = ({ placement }: { placement: string }): [number, number] => (placement === 'right-end' ? [0, 0] : [-40, 0]);
+
 const SubMenu: React.FC<SubMenuProps> = ({ steps, templates, popperContainerRef, upgradePopperRef }) => {
   const rootPopper = usePopper({
-    modifiers: [{ name: 'offset', options: { offset: [-40, 0] } }],
+    modifiers: [{ name: 'offset', options: { offset: getPopperOffset } }],
     placement: 'right-start',
   });
 
@@ -52,20 +54,13 @@ const SubMenu: React.FC<SubMenuProps> = ({ steps, templates, popperContainerRef,
       <Portal portalNode={document.body}>
         <div ref={rootPopper.setPopperElement} style={rootPopper.styles.popper} {...rootPopper.attributes.popper}>
           <div ref={popperContainerRef}>
-            <Menu>
-              {processedTemplates.map((template, index) => (
-                <Animations.FadeDownDelayedContainer key={template.name} delay={0.04 + index * 0.03}>
-                  <div>
-                    <SubMenuButton template={template} />
-                  </div>
-                </Animations.FadeDownDelayedContainer>
+            <Menu noMargins>
+              {processedTemplates.map((template) => (
+                <SubMenuButton key={template.name} template={template} />
               ))}
-              {processedSteps.map((step, index) => (
-                <Animations.FadeDownDelayedContainer key={step.label} delay={0.04 + index * 0.03}>
-                  <div>
-                    <SubMenuButton step={step} upgradePopperRef={upgradePopperRef} />
-                  </div>
-                </Animations.FadeDownDelayedContainer>
+
+              {processedSteps.map((step) => (
+                <SubMenuButton key={step.label} step={step} upgradePopperRef={upgradePopperRef} />
               ))}
             </Menu>
           </div>

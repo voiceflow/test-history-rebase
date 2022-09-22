@@ -10,13 +10,15 @@ import { EVENT_LABEL, getAllSections } from '@/pages/Project/components/StepMenu
 
 import { MenuButton } from './components';
 
+const getPopperOffset = ({ placement }: { placement: string }): [number, number] => (placement === 'right-end' ? [0, 14] : [-5, 14]);
+
 const LinkStepMenu: React.FC<{}> = () => {
   const stepMenuContext = React.useContext(LinkStepMenuContext)!;
   const virtualElement = React.useMemo(() => buildVirtualElement(stepMenuContext.position), [stepMenuContext.position]);
   const popper = useVirtualElementPopper(virtualElement, {
     strategy: 'fixed',
     placement: 'right-start',
-    modifiers: [{ name: 'offset', options: { offset: [-6, 14] } }],
+    modifiers: [{ name: 'offset', options: { offset: getPopperOffset } }],
   });
   const popperContainerRef = React.useRef<HTMLUListElement>(null);
   const subMenuContainerRef = React.useRef<HTMLDivElement>(null);
@@ -57,7 +59,7 @@ const LinkStepMenu: React.FC<{}> = () => {
     <Portal portalNode={document.body}>
       <div ref={popper.setPopperElement} style={{ ...popper.styles.popper, zIndex: 10 }} {...popper.attributes.popper}>
         {canEditCanvas && (
-          <Menu width={148} ref={popperContainerRef}>
+          <Menu ref={popperContainerRef} width={148} noMargins>
             {steps.map((step) => (
               <MenuButton key={step.label} step={step} popperContainerRef={subMenuContainerRef} upgradePopperRef={upgradePopperRef} />
             ))}

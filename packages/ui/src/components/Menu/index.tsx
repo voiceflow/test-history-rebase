@@ -41,6 +41,7 @@ function Menu<Value = void>(
     placement,
     maxHeight,
     fullWidth,
+    noMargins,
     searchable,
     selfDismiss = false,
     noTopPadding,
@@ -48,6 +49,7 @@ function Menu<Value = void>(
     maxVisibleItems,
     noBottomPadding,
     disableAnimation = false,
+    fadeDownDuration,
     multiSelectProps,
     renderFooterAction,
     swallowMouseDownEvent = true,
@@ -103,6 +105,7 @@ function Menu<Value = void>(
       inline={inline}
       className={ClassName.MENU}
       fullWidth={fullWidth}
+      noMargins={noMargins}
       noTopPadding={noTopPadding}
       withScrollbars
       data-placement={placement}
@@ -111,7 +114,7 @@ function Menu<Value = void>(
       noBottomPadding={noBottomPadding || !!footerAction}
       disableAnimation={disableAnimation}
     >
-      <FadeDownDelayedContainer duration={disableAnimation ? 0 : undefined} delay={disableAnimation ? 0 : undefined}>
+      <FadeDownDelayedContainer duration={disableAnimation ? 0 : fadeDownDuration} delay={disableAnimation ? 0 : undefined}>
         {searchable}
 
         <Scrollbars

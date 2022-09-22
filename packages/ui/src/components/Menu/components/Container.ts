@@ -36,6 +36,7 @@ export interface ContainerProps {
   inline?: boolean;
   padding?: string;
   fullWidth?: boolean;
+  noMargins?: boolean;
   noTopPadding?: boolean;
   withScrollbars?: boolean;
   nativeScrollbar?: boolean;
@@ -106,6 +107,12 @@ const Container = styled.ul<ContainerProps>`
     noBottomPadding &&
     css`
       padding-bottom: 0;
+    `}
+
+  ${({ noMargins }) =>
+    noMargins &&
+    css`
+      margin: 0;
     `}
 `;
 

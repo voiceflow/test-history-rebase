@@ -34,6 +34,7 @@ export interface BaseProps {
   disabled?: boolean;
   onToggle?: () => void;
   fullWidth?: boolean;
+  noMargins?: boolean;
   maxHeight?: number | string;
   placement?: string;
   searchable?: React.ReactNode;
@@ -44,6 +45,7 @@ export interface BaseProps {
   noBottomPadding?: boolean;
   multiSelectProps?: { buttonClick: React.MouseEventHandler; buttonLabel: React.ReactNode };
   disableAnimation?: boolean;
+  fadeDownDuration?: number;
   renderFooterAction?: Nullable<(options: { close: VoidFunction }) => React.ReactNode>;
   swallowMouseDownEvent?: boolean;
 }

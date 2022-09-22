@@ -18,6 +18,7 @@ const CONFIG: Config = {
 
   // Deployment information
   CLOUD_ENV,
+  DEPLOY_ENV: getOptionalProcessEnv('DEPLOY_ENV') || NODE_ENV,
   IS_PRIVATE_CLOUD: NODE_ENV === 'production' && CLOUD_ENV !== 'public',
   CREATOR_API_ENDPOINT: getRequiredProcessEnv('CREATOR_API_ENDPOINT'),
   ALEXA_SERVICE_ENDPOINT: getRequiredProcessEnv('ALEXA_SERVICE_ENDPOINT'),
@@ -50,6 +51,13 @@ const CONFIG: Config = {
   FEATURE_OVERRIDES: Object.fromEntries(
     Object.entries(process.env).flatMap(([key, value]) => (key.startsWith('FF_') ? [[key.substring(3).toLowerCase(), value === 'true']] : []))
   ),
+
+  // Unleash
+  UNLEASH_URL: getRequiredProcessEnv('UNLEASH_URL'),
+  UNLEASH_API_KEY: getRequiredProcessEnv('UNLEASH_API_KEY'),
+
+  // Hashid
+  TEAM_HASH: getRequiredProcessEnv('TEAM_HASH'),
 };
 
 export default CONFIG;

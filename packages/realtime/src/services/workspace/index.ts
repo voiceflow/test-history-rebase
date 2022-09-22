@@ -1,4 +1,4 @@
-import { Environment, Utils } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { AbstractControl, ControlOptions } from '../../control';
@@ -62,11 +62,7 @@ class WorkspaceService extends AbstractControl {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
     const organization = workspaceID ? await client.workspace.getOrganization(workspaceID) : undefined;
 
-    if (this.config.NODE_ENV !== Environment.PRODUCTION && Utils.object.hasProperty(this.config.FEATURE_OVERRIDES, feature)) {
-      return Promise.resolve(this.config.FEATURE_OVERRIDES[feature as string]);
-    }
-
-    return client.feature.isEnabled(feature, workspaceID, organization?.id);
+    return this.services.feature.isEnabled(feature, { workspaceID, organizationID: organization?.id });
   }
 }
 

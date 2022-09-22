@@ -6,6 +6,7 @@ import type { Config } from '../types';
 import CanvasTemplateService from './canvasTemplate';
 import DiagramService from './diagram';
 import DomainService from './domain';
+import FeatureService from './feature';
 import IntentService from './intent';
 import LockService from './lock';
 import MigrateService from './migrate';
@@ -37,6 +38,7 @@ export interface ServiceMap extends BaseServiceMap {
   project: ProjectService;
   version: VersionService;
   migrate: MigrateService;
+  feature: FeatureService;
   variable: VariableService;
   voiceflow: VoiceflowService;
   workspace: WorkspaceService;
@@ -70,6 +72,7 @@ const buildServices = ({ config, clients, models }: Options): ServiceMap => {
     project: new ProjectService(serviceOptions),
     version: new VersionService(serviceOptions),
     migrate: new MigrateService(serviceOptions),
+    feature: new FeatureService(serviceOptions),
     variable: new VariableService(serviceOptions),
     voiceflow: new VoiceflowService(serviceOptions),
     workspace: new WorkspaceService(serviceOptions),

@@ -3,7 +3,6 @@ import * as Voiceflow from '@voiceflow/api-sdk';
 import logger from '@/logger';
 
 import ExtraDiagramClient, { DiagramClient } from './diagram';
-import ExtraFeatureClient, { FeatureClient } from './feature';
 import ExtraProductClient, { ProductClient } from './product';
 import ExtraProjectClient from './project';
 import ExtraProjectListClient, { ProjectListClient } from './projectList';
@@ -18,7 +17,6 @@ interface ExtraClient {
   workspace: WorkspaceClient;
   projectList: ProjectListClient;
   product: ProductClient;
-  feature: FeatureClient;
   thread: ThreadClient;
 }
 
@@ -59,7 +57,6 @@ const VoiceflowFactoryClient = ({ axios, config }: Options): VoiceflowFactory =>
       workspace: ExtraWorkspaceClient(extraOptions),
       projectList: ExtraProjectListClient(extraOptions),
       product: ExtraProductClient(extraOptions),
-      feature: ExtraFeatureClient(extraOptions),
       thread: ExtraThreadClient(extraOptions),
     };
 

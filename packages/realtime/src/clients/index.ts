@@ -3,9 +3,11 @@ import axios, { AxiosStatic } from 'axios';
 import { Adapter } from 'socket.io-adapter';
 import { createAdapter as createIOAdapter } from 'socket.io-redis';
 
+import Hashids from './hashids';
 import MetricsClient, { Metrics } from './metrics';
 import MongoClient from './mongo';
 import { BaseOptions } from './types';
+import UnleashClient from './unleash';
 import VoiceflowFactoryClient, { VoiceflowFactory } from './voiceflow';
 
 export interface ClientMap extends BaseClientMap {
@@ -13,8 +15,10 @@ export interface ClientMap extends BaseClientMap {
   iosub: Redis;
   mongo: MongoClient;
   axios: AxiosStatic;
+  unleash: UnleashClient;
   metrics: Metrics;
   ioAdapter: typeof Adapter;
+  teamHashids: Hashids;
   voiceflowFactory: VoiceflowFactory;
 }
 
@@ -30,7 +34,9 @@ const buildClients = (options: BaseOptions): ClientMap => {
   const iosub = redis.duplicate();
   const pubsub = new PubSub({ ...options, redis });
   const metrics = MetricsClient(options);
+  const unleash = new UnleashClient(options);
   const ioAdapter = createIOAdapter({ pubClient: iopub, subClient: iosub });
+  const teamHashids = new Hashids(options.config.TEAM_HASH, 10);
   const voiceflowFactory = VoiceflowFactoryClient({ ...options, axios });
 
   return {
@@ -41,8 +47,10 @@ const buildClients = (options: BaseOptions): ClientMap => {
     redis,
     cache,
     pubsub,
+    unleash,
     metrics,
     ioAdapter,
+    teamHashids,
     voiceflowFactory,
   };
 };

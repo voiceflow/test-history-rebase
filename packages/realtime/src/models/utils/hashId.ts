@@ -1,5 +1,6 @@
 import { EmptyObject, Utils } from '@voiceflow/common';
-import type Hashids from 'hashids/esm/hashids';
+
+import type Hashids from '@/clients/hashids';
 
 import { KeyRemap } from './types';
 
@@ -20,12 +21,14 @@ const transformToHashIDFactory =
   };
 
 const transformFromHashIDFactory =
-  <ToValue>() =>
+  () =>
   <Key extends string>(keys: Key[] | ReadonlyArray<Key>, hashids: Hashids) =>
-  <Model extends { [key in Key]?: string }>(model: Model): KeyRemap<Model, Key, ToValue> => {
-    const mappedKeys = Object.fromEntries(
-      keys.flatMap((key) => (model[key] ? [[key, hashids.decode(model[key] as any)[0] as any]] : []))
-    ) as KeyRemap<Model, Key, ToValue>;
+  <Model extends { [key in Key]?: string }>(model: Model): KeyRemap<Model, Key, number> => {
+    const mappedKeys = Object.fromEntries(keys.flatMap((key) => (model[key] ? [[key, hashids.decode(model[key]!)[0]]] : []))) as KeyRemap<
+      Model,
+      Key,
+      number
+    >;
 
     return {
       ...model,
@@ -33,5 +36,5 @@ const transformFromHashIDFactory =
     };
   };
 
-export const numberToHashID = transformToHashIDFactory<number>();
-export const hashIDToNumber = transformFromHashIDFactory<number>();
+export const numberToHashID = transformToHashIDFactory();
+export const hashIDToNumber = transformFromHashIDFactory();

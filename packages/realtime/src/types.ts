@@ -6,6 +6,7 @@ export interface Config {
 
   // Deployment information
   CLOUD_ENV: string;
+  DEPLOY_ENV: string;
   IS_PRIVATE_CLOUD: boolean;
   CREATOR_API_ENDPOINT: string;
   ALEXA_SERVICE_ENDPOINT: string;
@@ -36,4 +37,11 @@ export interface Config {
   // Mongo DB
   MONGO_URI: string;
   MONGO_DB: string;
+
+  // Unleash
+  UNLEASH_URL: string;
+  UNLEASH_API_KEY: string;
+
+  // Hashid
+  TEAM_HASH: string;
 }

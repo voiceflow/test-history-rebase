@@ -5,6 +5,7 @@ export enum LimitType {
   PROJECTS = 'PROJECTS',
   MARKUP_IMAGE = 'MARKUP_IMAGE',
   MARKUP_VIDEO = 'MARKUP_VIDEO',
+  NLU_IMPORT = 'NLU_IMPORT',
 }
 
 export const TEAM_LIMIT_PLANS = [PlanType.PRO, PlanType.TEAM, PlanType.OLD_PRO, PlanType.OLD_TEAM] as const;

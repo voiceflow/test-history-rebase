@@ -2,11 +2,11 @@ import { Box, Flex, Text, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 
 import { Permission } from '@/config/permissions';
-import { NLUImportLimitDetails } from '@/config/planLimits/nluImport';
-import { ModalType, NLUImportOrigin } from '@/constants';
-import { UpgradePrompt } from '@/ducks/tracking';
+import { LimitType } from '@/config/planLimitV2';
+import { NLUImportOrigin } from '@/constants';
 import { styled } from '@/hocs';
-import { useModals, usePermission, useTrackingEvents } from '@/hooks';
+import { usePermission, usePlanLimit } from '@/hooks';
+import * as ModalsV2 from '@/ModalsV2';
 
 import { PLATFORM_PROJECT_META_MAP } from '../constants';
 import { useNLUImport } from '../hooks';
@@ -34,17 +34,16 @@ const ModelImport: React.FC<ModelImportProps> = ({ platform, onImportModel, impo
   const { onUploadClick, acceptedFileFormatsLabel, isImporting } = useNLUImport({ fileExtensions, platform, onImportModel });
 
   const [permissionImportNLU] = usePermission(Permission.BULK_UPLOAD);
-  const { open: openUpgradeModal } = useModals(ModalType.UPGRADE_MODAL);
-  const [trackingEvents] = useTrackingEvents();
+  const upgradeModal = ModalsV2.useModal(ModalsV2.Upgrade);
+  const planLimit = usePlanLimit({ type: LimitType.NLU_IMPORT });
 
   const importName = platform && PLATFORM_PROJECT_META_MAP[platform]?.importMeta?.name;
 
   const textColor = isImportLoading ? 'rgba(98, 119, 140, 0.5)' : 'rgba(98, 119, 140, 1)';
 
   const onHandleImportClick = () => {
-    if (!permissionImportNLU) {
-      trackingEvents.trackUpgradePrompt({ promptType: UpgradePrompt.IMPORT_NLU });
-      openUpgradeModal({ planLimitDetails: NLUImportLimitDetails, promptOrigin: UpgradePrompt.IMPORT_NLU });
+    if (!permissionImportNLU && planLimit) {
+      upgradeModal.open(planLimit.upgradeModal);
     } else {
       onUploadClick(NLUImportOrigin.PROJECT);
     }

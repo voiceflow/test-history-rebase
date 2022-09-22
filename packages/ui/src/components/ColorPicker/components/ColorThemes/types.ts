@@ -14,6 +14,7 @@ export interface ColorThemesProps extends ColorThemesPersistAPI {
   selectedColor?: string;
   newColorIndex?: number;
   onColorSelect: (color: string) => void;
+  disableContextMenu?: boolean;
 }
 
 export interface BaseColorProps {

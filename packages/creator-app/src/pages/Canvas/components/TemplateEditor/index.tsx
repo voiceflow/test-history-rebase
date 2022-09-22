@@ -85,7 +85,7 @@ const CanvasTemplateEditor: React.FC<TemplateEditorProps> = ({
       <S.InnerPopperContent editing={editing}>
         <S.Input autoFocus autoSelectText value={name} placeholder="Template name" onChangeText={handleNameChange} onEnterPress={handleSubmit} />
         <S.Label>Block Color</S.Label>
-        <ColorThemes colors={colors} selectedColor={normalizedColor} newColorIndex={undefined} onColorSelect={onColorChange} />
+        <ColorThemes colors={colors} selectedColor={normalizedColor} newColorIndex={undefined} onColorSelect={onColorChange} disableContextMenu />
       </S.InnerPopperContent>
 
       {!editing && (

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.920.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.919.1...@voiceflow/creator-app@1.920.0) (2022-09-22)
+
+
+### Features
+
+* **creator-app:** event tracking for utterance creation (NLU-295) ([#6114](https://github.com/voiceflow/creator-app/issues/6114)) ([15bfa21](https://github.com/voiceflow/creator-app/commit/15bfa2110bea5b895e0cbd9d7708047acde5c31e))
+
+
+
+
+
 ## [1.919.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.919.0...@voiceflow/creator-app@1.919.1) (2022-09-21)
 
 

@@ -1,29 +1,22 @@
-import { Box, ButtonVariant, SvgIcon, TippyTooltip, toast, useDidUpdateEffect } from '@voiceflow/ui';
+import { Box, ButtonVariant, SvgIcon, toast, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 
 import { ConfirmProps } from '@/components/ConfirmModal';
 import { PageProgress } from '@/components/PageProgressBar/utils';
-import { InteractionModelTabType, ModalType, PageProgressBar } from '@/constants';
+import { ModalType, PageProgressBar } from '@/constants';
 import * as Tracking from '@/ducks/tracking';
 import { useHotKeys, useModals } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import { NLUManagerContext } from '@/pages/NLUManager/context';
 import { TrainingModelContext } from '@/pages/Project/contexts';
 
-import { Container, SearchInput, TrainButton, TrashButton } from './components';
-import Export from './components/Export';
+import { Container, SearchInput, TrainButton, TrashButton } from '../../styles';
+import Export from '../Export';
 
-const getSearchPlaceholder = {
-  [InteractionModelTabType.SLOTS]: (length: number) => (length === 1 ? 'entity' : 'entities'),
-  [InteractionModelTabType.INTENTS]: (length: number) => (length === 1 ? 'intent' : 'intents'),
-  [InteractionModelTabType.VARIABLES]: (length: number) => (length === 1 ? 'variable' : 'variables'),
-};
-
-const ContentHeader: React.FC = () => {
+const IntentsHeader: React.FC = () => {
   const nluManager = React.useContext(NLUManagerContext);
 
   const inputRef = React.useRef<HTMLInputElement>(null);
-  const [tooltipOpen, setTooltipOpen] = React.useState(false);
   const { startTraining, isTraining, isTrained } = React.useContext(TrainingModelContext);
 
   const focusInput = () => {
@@ -45,13 +38,13 @@ const ContentHeader: React.FC = () => {
     confirmModal.open({
       body: (
         <>
-          Are you sure you want to delete {nluManager.selectedItemIDs.size} item(s)?
+          Are you sure you want to delete {nluManager.selectedIntentIDs.size} item(s)?
           <br />
           This action cannot be undone.
         </>
       ),
       header: 'Delete Items',
-      confirm: () => nluManager.deleteSelectedItems(),
+      confirm: () => nluManager.deleteIntents(),
       confirmButtonText: 'Delete',
     });
   };
@@ -64,37 +57,26 @@ const ContentHeader: React.FC = () => {
   }, [isTrained]);
 
   return (
-    <Container style={{ position: 'relative' }}>
-      <TippyTooltip
-        html={
-          <div style={{ color: '#A2A7A8', fontSize: '15px' }}>
-            Press <span style={{ color: '#F2F7F7' }}>/</span> to search
-          </div>
-        }
-        position="bottom"
-        open={tooltipOpen}
-      >
+    <Container>
+      <Box>
         <SearchInput
           ref={inputRef}
           icon="search"
           value={nluManager.search}
           iconProps={{ color: '#8da2b5', size: 16 }}
-          placeholder={`Search ${nluManager.items.length} ${getSearchPlaceholder[nluManager.activeTab](nluManager.items.length)}`}
+          placeholder={`Search ${nluManager.intents.length} ${nluManager.intents.length === 1 ? 'intent' : 'intents'}`}
           onChangeText={nluManager.setSearch}
-          onMouseEnter={() => setTooltipOpen(true)}
-          onMouseLeave={() => setTooltipOpen(false)}
-          onFocus={() => setTooltipOpen(false)}
         />
-      </TippyTooltip>
+      </Box>
 
       <Box.FlexCenter pr={12} gap={10}>
-        {!!nluManager.selectedItemIDs.size && (
+        {!!nluManager.selectedIntentIDs.size && (
           <TrashButton variant={ButtonVariant.SECONDARY} flat squareRadius onClick={confirmDelete}>
             <SvgIcon icon="trash" size={15} inline />
           </TrashButton>
         )}
 
-        <Export checkedItems={Array.from(nluManager.selectedItemIDs)} activeTab={nluManager.activeTab} />
+        <Export checkedItems={Array.from(nluManager.selectedIntentIDs)} />
 
         <TrainButton active={isTraining} onClick={handleTrain} squareRadius variant={ButtonVariant.PRIMARY}>
           <Box display="inline-block" position="relative" top={2}>
@@ -107,4 +89,4 @@ const ContentHeader: React.FC = () => {
   );
 };
 
-export default ContentHeader;
+export default IntentsHeader;

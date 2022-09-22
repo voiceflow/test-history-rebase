@@ -2,6 +2,7 @@ import { getNestedMenuFormattedLabel, TableTypes, useLinkedState } from '@voicef
 import React from 'react';
 
 import EditableText from '@/components/EditableText';
+import { InteractionModelTabType } from '@/constants';
 import { NLUContext } from '@/contexts';
 import { styled } from '@/hocs';
 import { NLUManagerContext } from '@/pages/NLUManager/context';
@@ -27,17 +28,16 @@ const NameColumn = <I extends NamedItem>({ item, placeholder }: NameColumnProps<
   const [localValue, setLocalValue] = useLinkedState(item.name);
 
   const onChange = (name: string) => {
-    if (nluManager.renamingItemID !== item.id) return;
-
-    nlu.renameItem(name, item.id, nluManager.activeTab);
-    nluManager.setRenamingItemID(null);
+    if (nluManager.renamingIntentID !== item.id) return;
+    nlu.renameItem(name, item.id, InteractionModelTabType.INTENTS);
+    nluManager.setRenamingIntentID(null);
   };
 
   return (
     <Text
       value={localValue}
       onBlur={() => onChange(localValue)}
-      editing={nluManager.renamingItemID === item.id}
+      editing={nluManager.renamingIntentID === item.id}
       onChange={setLocalValue}
       placeholder={placeholder}
       startEditingOnFocus={false}

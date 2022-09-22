@@ -15,10 +15,11 @@ export {
 
 interface HeaderProps {
   renderLogoButton?: () => React.ReactNode;
+  containerStyles?: React.CSSProperties;
 }
 
-const Header: React.FC<HeaderProps> = ({ children, renderLogoButton }) => (
-  <Container>
+const Header: React.FC<HeaderProps> = ({ children, renderLogoButton, containerStyles = {} }) => (
+  <Container style={containerStyles}>
     {renderLogoButton?.()}
 
     <Content>{children}</Content>

@@ -1,20 +1,19 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import * as Tracking from '@/ducks/tracking';
 import EditEntityForm from '@/pages/Canvas/components/EntityModalsV2/components/EntityForm/EditEntityForm';
 
-import { ItemEditSidebar } from '../../../components';
 import { useNLUManager } from '../../../context';
+import ItemEditSidebar from './ItemEditSidebar';
 
 const EditSidebar: React.FC = () => {
-  const nluManager = useNLUManager<Realtime.Slot>();
+  const nluManager = useNLUManager();
 
   return (
     <ItemEditSidebar>
-      {nluManager.activeItem && (
+      {nluManager.activeEntity && (
         <EditEntityForm
-          slotID={nluManager.activeItem.id}
+          slotID={nluManager.activeItemID}
           withNameSection={false}
           withBottomDivider
           colorPopperModifiers={[{ name: 'offset', options: { offset: [-240, -25] } }]}

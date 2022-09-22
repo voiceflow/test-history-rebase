@@ -3,11 +3,11 @@ import React from 'react';
 
 import Drawer from '@/components/Drawer';
 import EditableText from '@/components/EditableText';
+import { InteractionModelTabType } from '@/constants';
 import { NLUContext, useNLUItemMenu } from '@/contexts';
 import { useTheme } from '@/hooks';
 import { EDITOR_LEFT_SIDEBAR_WIDTH, EditorTabs } from '@/pages/NLUManager/constants';
-
-import { useNLUManager } from '../context';
+import { useNLUManager } from '@/pages/NLUManager/context';
 
 interface ItemEditSidebarProps {
   isBuiltIn?: boolean;
@@ -17,12 +17,14 @@ const ItemEditSidebar: React.FC<ItemEditSidebarProps> = ({ children, isBuiltIn }
   const theme = useTheme();
   const nlu = React.useContext(NLUContext);
   const nluManager = useNLUManager();
+  const { activeIntent, activeItemID } = nluManager;
+  const activeTab = InteractionModelTabType.INTENTS;
 
-  const [name, setName] = useLinkedState(nluManager.activeItem?.name ?? '');
+  const [name, setName] = useLinkedState(activeIntent?.name ?? '');
 
   const { options } = useNLUItemMenu({
     itemID: nluManager.activeItemID,
-    itemType: nluManager.activeTab,
+    itemType: InteractionModelTabType.INTENTS,
     isBuiltIn,
   });
 
@@ -33,25 +35,25 @@ const ItemEditSidebar: React.FC<ItemEditSidebarProps> = ({ children, isBuiltIn }
   const onBlurName = (event: React.FocusEvent<HTMLInputElement>) => {
     event.currentTarget.parentElement?.parentElement?.scrollTo({ left: 0 });
 
-    if (nluManager.activeItem) {
-      nlu.renameItem(name, nluManager.activeItem.id, nluManager.activeTab);
+    if (activeIntent) {
+      nlu.renameItem(name, activeIntent.id, activeTab);
     }
   };
 
   return (
-    <Drawer open={!!nluManager.activeItem} width={EDITOR_LEFT_SIDEBAR_WIDTH} direction={Drawer.Direction.LEFT}>
+    <Drawer open={!!activeIntent} width={EDITOR_LEFT_SIDEBAR_WIDTH} direction={Drawer.Direction.LEFT}>
       <SidebarEditor.Container>
         <SidebarEditor.Header
           style={nluManager.isEditorTabActive(EditorTabs.INTENT_CONFLICTS) ? { height: `${theme.components.projectPage.header.height}px` } : {}}
         >
-          <SidebarEditor.HeaderTitle fontWeight={800}>
+          <SidebarEditor.HeaderTitle fontWeight={600}>
             <EditableText
               value={name}
               onBlur={onBlurName}
               onChange={setName}
-              startEditingOnFocus={!!nluManager.activeItemID && nlu.canRenameItem(nluManager.activeItemID, nluManager.activeTab)}
+              startEditingOnFocus={!!activeItemID && nlu.canRenameItem(activeItemID, activeTab)}
             >
-              {nluManager.activeItem?.name ?? ''}
+              {activeIntent?.name ?? ''}
             </EditableText>
           </SidebarEditor.HeaderTitle>
 
@@ -63,7 +65,7 @@ const ItemEditSidebar: React.FC<ItemEditSidebarProps> = ({ children, isBuiltIn }
         </SidebarEditor.Header>
 
         <SidebarEditor.Content $fillHeight autoHeight autoHeightMax="100%" hideTracksWhenNotNeeded>
-          {nluManager.activeItem && children}
+          {activeIntent && children}
         </SidebarEditor.Content>
       </SidebarEditor.Container>
     </Drawer>

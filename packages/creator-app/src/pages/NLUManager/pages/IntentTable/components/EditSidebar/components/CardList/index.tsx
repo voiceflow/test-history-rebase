@@ -21,7 +21,7 @@ interface CardListProps {
 }
 
 const CardList: React.FC<CardListProps> = ({ intent }) => {
-  const nluManager = useNLUManager<NLUIntent>();
+  const nluManager = useNLUManager();
   const intentID = intent.id;
   const confidence = intent.confidence || 0;
   const clarityStrengthLevel = getIntentClarityStrengthLevel(intent.clarity || 0);

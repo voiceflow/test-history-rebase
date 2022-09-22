@@ -12,7 +12,7 @@ const Row: React.FC<TableTypes.ConfigurableRowProps<Realtime.Slot>> = ({ item, c
   const { options } = useNLUItemMenu({
     itemID: item.id,
     itemType: InteractionModelTabType.SLOTS,
-    onRename: () => nluManager.setRenamingItemID(item.id),
+    onRename: () => nluManager.setRenamingEntityID(item.id),
   });
 
   return (

@@ -1,7 +1,7 @@
 import { Box, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
-import { InteractionModelTabType } from '@/constants';
+import { NLURoute } from '@/config/routes';
 import { useTrackingEvents } from '@/hooks';
 import { NLUManagerContext } from '@/pages/NLUManager/context';
 
@@ -21,7 +21,7 @@ const NotificationItem: React.FC<NotificationItemProps> = ({ data, onClose }) =>
   const { title, message, itemID, type } = data;
 
   const jumpToItem = () => {
-    nluManager.goToTab(InteractionModelTabType.INTENTS, itemID);
+    nluManager.goToTab(NLURoute.INTENTS, itemID);
     trackingEvents.trackNLUNotificationsOpened();
     onClose();
   };

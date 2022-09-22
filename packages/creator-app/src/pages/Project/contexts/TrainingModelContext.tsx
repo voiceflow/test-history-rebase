@@ -6,7 +6,7 @@ import React from 'react';
 
 import client from '@/client';
 import * as Errors from '@/config/errors';
-import { InteractionModelTabType } from '@/constants';
+import { NLURoute } from '@/config/routes';
 import { NLPTrainStageType } from '@/constants/platforms';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as PrototypeDuck from '@/ducks/prototype';
@@ -77,7 +77,7 @@ export const TrainingModelProvider: React.FC = ({ children }) => {
   const goToInteractionModel = useDispatch(Router.goToInteractionModel);
   const [trackingEvents] = useTrackingEvents();
   const nluManager = useFeature(Realtime.FeatureFlag.NLU_MANAGER);
-  const goToNLUManagerEntity = useDispatch(Router.goToCurrentNLUManagerEntity);
+  const goToCurrentNLUManagerTab = useDispatch(Router.goToCurrentNLUManagerTab);
 
   const domainID = useSelector(Session.activeDomainIDSelector);
   const versionID = useSelector(Session.activeVersionIDSelector);
@@ -89,7 +89,7 @@ export const TrainingModelProvider: React.FC = ({ children }) => {
 
   const handleGoToIMM = (slotID: string) => {
     if (nluManager.isEnabled) {
-      goToNLUManagerEntity(InteractionModelTabType.SLOTS, slotID);
+      goToCurrentNLUManagerTab(NLURoute.ENTITIES, slotID);
     } else if (domainID && versionID && diagramID) {
       goToInteractionModel({ domainID, versionID, diagramID, modelType: 'slots', entityID: slotID });
     }

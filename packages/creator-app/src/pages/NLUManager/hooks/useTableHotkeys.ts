@@ -1,11 +1,11 @@
 import { useHotKeys } from '@/hooks';
 import { Hotkey } from '@/keymap';
-import { AnyItem, useNLUManager } from '@/pages/NLUManager/context';
+import { useNLUManager } from '@/pages/NLUManager/context';
 
-const useTableHotkeys = (items: AnyItem[]) => {
+const useTableHotkeys = (items: any[]) => {
   const nluManager = useNLUManager();
 
-  useHotKeys(Hotkey.NLU_TABLE_ESC, () => nluManager.toggleActiveItemID(), { preventDefault: true });
+  useHotKeys(Hotkey.NLU_TABLE_ESC, () => nluManager.toggleActiveItemID(null), { preventDefault: true });
 
   useHotKeys(
     Hotkey.NLU_TABLE_TAB,

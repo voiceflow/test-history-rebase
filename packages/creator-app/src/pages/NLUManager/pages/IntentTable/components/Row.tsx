@@ -14,7 +14,7 @@ const Row: React.FC<TableTypes.ConfigurableRowProps<Realtime.Intent>> = ({ item,
   const { options } = useNLUItemMenu({
     itemID: item.id,
     itemType: InteractionModelTabType.INTENTS,
-    onRename: () => nluManager.setRenamingItemID(item.id),
+    onRename: () => nluManager.setRenamingIntentID(item.id),
     isBuiltIn: isBuiltInIntent(item.id),
   });
 

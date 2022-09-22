@@ -1,0 +1,104 @@
+import { Box, ButtonVariant, SvgIcon, TippyTooltip, toast, useDidUpdateEffect } from '@voiceflow/ui';
+import React from 'react';
+
+import { ConfirmProps } from '@/components/ConfirmModal';
+import { PageProgress } from '@/components/PageProgressBar/utils';
+import { ModalType, PageProgressBar } from '@/constants';
+import * as Tracking from '@/ducks/tracking';
+import { useHotKeys, useModals } from '@/hooks';
+import { Hotkey } from '@/keymap';
+import { NLUManagerContext } from '@/pages/NLUManager/context';
+import { TrainingModelContext } from '@/pages/Project/contexts';
+
+import { Container, SearchInput, TrainButton, TrashButton } from '../../styles';
+import Export from '../Export';
+
+const EntitiesHeader: React.FC = () => {
+  const nluManager = React.useContext(NLUManagerContext);
+
+  const inputRef = React.useRef<HTMLInputElement>(null);
+  const [tooltipOpen, setTooltipOpen] = React.useState(false);
+  const { startTraining, isTraining, isTrained } = React.useContext(TrainingModelContext);
+
+  const focusInput = () => {
+    inputRef.current?.focus();
+  };
+
+  const handleTrain = () => {
+    if (!isTraining) {
+      startTraining(Tracking.AssistantOriginType.NLU_MANAGER);
+      PageProgress.start(PageProgressBar.NLU_MODEL_TRAINNING, 50000);
+    }
+  };
+
+  useHotKeys(Hotkey.FOCUS_NLU_MANAGER_SEARCH, focusInput, { action: 'keyup' });
+
+  const confirmModal = useModals<ConfirmProps>(ModalType.CONFIRM);
+
+  const confirmDelete = () => {
+    confirmModal.open({
+      body: (
+        <>
+          Are you sure you want to delete {nluManager.selectedEntityIDs.size} item(s)?
+          <br />
+          This action cannot be undone.
+        </>
+      ),
+      header: 'Delete Items',
+      confirm: () => nluManager.deleteEntities(),
+      confirmButtonText: 'Delete',
+    });
+  };
+
+  useDidUpdateEffect(() => {
+    if (isTrained) {
+      toast.success('Successfully trained model');
+      PageProgress.stop(PageProgressBar.NLU_MODEL_TRAINNING);
+    }
+  }, [isTrained]);
+
+  return (
+    <Container style={{ position: 'relative' }}>
+      <TippyTooltip
+        html={
+          <div style={{ color: '#A2A7A8', fontSize: '15px' }}>
+            Press <span style={{ color: '#F2F7F7' }}>/</span> to search
+          </div>
+        }
+        position="bottom"
+        open={tooltipOpen}
+      >
+        <SearchInput
+          ref={inputRef}
+          icon="search"
+          value={nluManager.search}
+          iconProps={{ color: '#8da2b5', size: 16 }}
+          placeholder={`Search ${nluManager.entities.length} ${nluManager.entities.length === 1 ? 'entity' : 'entities'}`}
+          onChangeText={nluManager.setSearch}
+          onMouseEnter={() => setTooltipOpen(true)}
+          onMouseLeave={() => setTooltipOpen(false)}
+          onFocus={() => setTooltipOpen(false)}
+        />
+      </TippyTooltip>
+
+      <Box.FlexCenter pr={12} gap={10}>
+        {!!nluManager.selectedEntityIDs.size && (
+          <TrashButton variant={ButtonVariant.SECONDARY} flat squareRadius onClick={confirmDelete}>
+            <SvgIcon icon="trash" size={15} inline />
+          </TrashButton>
+        )}
+
+        <Export checkedItems={[]} />
+
+        <TrainButton active={isTraining} onClick={handleTrain} squareRadius variant={ButtonVariant.PRIMARY}>
+          <Box display="inline-block" position="relative" top={2}>
+            <SvgIcon icon="arrowSpin" spin={isTraining} size={16} inline mr={16} />
+          </Box>
+          Train
+        </TrainButton>
+      </Box.FlexCenter>
+    </Container>
+  );
+};
+
+export default EntitiesHeader;

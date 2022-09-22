@@ -1,7 +1,8 @@
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import client from '@/client';
-import { InteractionModelTabType, NLPProvider, NLUImportOrigin } from '@/constants';
+import { NLURoute } from '@/config/routes';
+import { NLPProvider, NLUImportOrigin } from '@/constants';
 
 import { CanvasCreationType, EventName, NLUManagerOpenedOrigin } from '../constants';
 import { createProjectEventPayload, createProjectEventTracker, createWorkspaceEventPayload, createWorkspaceEventTracker } from '../utils';
@@ -80,7 +81,7 @@ export const trackNLUManagerOpened = createProjectEventTracker<{ origin: NLUMana
   client.api.analytics.track(EventName.NLU_MANAGER_OPENED, createProjectEventPayload(options, { origin }))
 );
 
-export const trackNLUManagerNavigation = createProjectEventTracker<{ tab: InteractionModelTabType }>(({ tab, ...options }) =>
+export const trackNLUManagerNavigation = createProjectEventTracker<{ tab: NLURoute }>(({ tab, ...options }) =>
   client.api.analytics.track(EventName.NLU_MANAGER_NAVIGATION, createProjectEventPayload(options, { view: tab }))
 );
 

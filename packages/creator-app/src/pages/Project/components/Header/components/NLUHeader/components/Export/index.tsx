@@ -2,7 +2,6 @@ import { Button, ButtonVariant, Popper } from '@voiceflow/ui';
 import React from 'react';
 
 import { NLU_MANAGEMENT_NLU_DATA_EXPORT } from '@/config/documentation';
-import { InteractionModelTabType } from '@/constants';
 import * as Tracking from '@/ducks/tracking';
 import {
   ExportContent,
@@ -13,10 +12,9 @@ import {
 
 interface ExportProps {
   checkedItems: string[];
-  activeTab: InteractionModelTabType;
 }
 
-const Export: React.FC<ExportProps> = ({ checkedItems, activeTab }) => {
+const Export: React.FC<ExportProps> = ({ checkedItems }) => {
   const [opened, setIsOpened] = React.useState(false);
 
   return (
@@ -36,7 +34,7 @@ const Export: React.FC<ExportProps> = ({ checkedItems, activeTab }) => {
         {({ ref }) => (
           <Button squareRadius flat variant={ButtonVariant.SECONDARY} onClick={() => setIsOpened(true)} ref={ref}>
             Export
-            {activeTab === InteractionModelTabType.INTENTS && !!checkedItems.length && ` (${checkedItems.length})`}
+            {!!checkedItems.length && ` (${checkedItems.length})`}
           </Button>
         )}
       </Popper>

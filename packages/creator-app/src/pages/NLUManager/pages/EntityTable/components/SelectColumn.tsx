@@ -8,10 +8,10 @@ const SelectColumn = <I extends TableTypes.Item>({ item }: TableTypes.ItemProps<
 
   return (
     <Checkbox
-      checked={nluManager.selectedItemIDs.has(item.id)}
+      checked={nluManager.selectedEntityIDs.has(item.id)}
       padding={false}
       onClick={stopPropagation()}
-      onChange={() => nluManager.toggleSelectedItemID(item.id)}
+      onChange={() => nluManager.toggleSelectedEntityID(item.id)}
     />
   );
 };

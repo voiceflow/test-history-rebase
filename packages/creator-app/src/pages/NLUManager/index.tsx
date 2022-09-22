@@ -6,7 +6,7 @@ import ProjectPage from '@/pages/Project/components/ProjectPage';
 
 import { NavigationSidebar } from './components';
 import { useNLUManager } from './context';
-import { EntityTable, IntentTable, VariableTable } from './pages';
+import { EntityTable, IntentTable, UnclassifiedData } from './pages';
 import * as S from './styles';
 
 const NLUManager: React.FC = () => {
@@ -30,7 +30,7 @@ const NLUManager: React.FC = () => {
           <Switch>
             <Route path={Path.NLU_MANAGER_INTENTS} component={IntentTable} />
             <Route path={Path.NLU_MANAGER_ENTITIES} component={EntityTable} />
-            <Route path={Path.NLU_MANAGER_VARIABLES} component={VariableTable} />
+            <Route path={Path.NLU_MANAGER_UNCLASSIFIED} component={UnclassifiedData} />
 
             <Redirect to={Path.NLU_MANAGER_INTENTS} />
           </Switch>

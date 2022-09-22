@@ -2,19 +2,18 @@ import React from 'react';
 
 import * as Tracking from '@/ducks/tracking';
 import EditIntentForm from '@/pages/Canvas/components/IntentModalsV2/components/IntentForm/EditIntentForm';
-import { ItemEditSidebar } from '@/pages/NLUManager/components';
 import { EditorTabs } from '@/pages/NLUManager/constants';
 import { useNLUManager } from '@/pages/NLUManager/context';
-import { NLUIntent } from '@/pages/NLUManager/types';
 import { isCustomizableBuiltInIntent } from '@/utils/intent';
 
 import Conflicts from '../Conflicts';
+import ItemEditSidebar from '../ItemEditSidebar';
 import { CardList, Recommendations } from './components';
 
 const EditSidebar: React.FC = () => {
-  const nluManager = useNLUManager<NLUIntent>();
+  const nluManager = useNLUManager();
 
-  const showEditorTab = (tab: EditorTabs) => nluManager.activeItem?.id && nluManager.isEditorTabActive(tab);
+  const showEditorTab = (tab: EditorTabs) => nluManager.activeItemID && nluManager.isEditorTabActive(tab);
 
   const handleConflictChangesApplied = () => {
     setTimeout(nluManager.fetchClarity, 2000);
@@ -22,12 +21,12 @@ const EditSidebar: React.FC = () => {
 
   return (
     <>
-      <ItemEditSidebar isBuiltIn={isCustomizableBuiltInIntent(nluManager.activeItem)}>
-        {nluManager.activeItem && (
+      <ItemEditSidebar isBuiltIn={isCustomizableBuiltInIntent(nluManager.activeIntent)}>
+        {nluManager.activeIntent && (
           <>
-            <CardList intent={nluManager.activeItem} />
+            <CardList intent={nluManager.activeIntent} />
             <EditIntentForm
-              intentID={nluManager.activeItem.id}
+              intentID={nluManager.activeItemID}
               isNLUManager
               creationType={Tracking.IntentEditType.NLU_MANAGER}
               utteranceCreationType={Tracking.CanvasCreationType.NLU_MANAGER}

@@ -8,14 +8,14 @@ const HeaderSelectColumn: React.FC = () => {
   const table = Table.useContext();
   const nluManager = React.useContext(NLUManagerContext);
 
-  const checked = !!nluManager.selectedItemIDs.size;
+  const checked = !!nluManager.selectedEntityIDs.size;
 
   return (
     <Checkbox
       type={Checkbox.Type.DASH}
       padding={false}
       checked={checked}
-      onChange={() => nluManager.setSelectedItemIDs(checked ? [] : table.items.map(Utils.object.selectID))}
+      onChange={() => nluManager.setSelectedEntityIDs(checked ? [] : table.items.map(Utils.object.selectID))}
     />
   );
 };

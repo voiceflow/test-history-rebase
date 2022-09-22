@@ -5,8 +5,7 @@ import { NLU_MANAGEMENT_INTENT_CLARITY, NLU_MANAGEMENT_INTENT_CONFIDENCE } from 
 import { NLUIntent } from '@/pages/NLUManager/types';
 import { onOpenInternalURLInANewTabFactory } from '@/utils/window';
 
-import { HeaderSelectColumn, NameColumn } from '../../components';
-import { ClarityColumn, ConfidenceColumn, EntitiesColumn, SelectColumn, UtterancesColumn } from './components';
+import { ClarityColumn, ConfidenceColumn, EntitiesColumn, HeaderSelectColumn, NameColumn, SelectColumn, UtterancesColumn } from './components';
 
 export enum TableColumn {
   NAME = 'NAME',

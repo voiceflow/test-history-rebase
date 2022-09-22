@@ -20,7 +20,7 @@ interface ConflictsProps {
 
 const Conflicts: React.FC<ConflictsProps> = ({ onChangesApplied }) => {
   const theme = useTheme();
-  const { clarity, activeItemID: intentID, closeEditorTab, items: nluIntents } = useNLUManager<NLUIntent>();
+  const { clarity, activeItemID: intentID, closeEditorTab, intents: nluIntents } = useNLUManager();
   const [trackingEvents] = useTrackingEvents();
 
   const intentsByID = React.useMemo(() => {

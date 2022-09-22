@@ -1,19 +1,29 @@
 import React from 'react';
 
 import { Header, HeaderLogoButton } from '@/components/ProjectPage';
+import { NLURoute } from '@/config/routes';
+import { useNLUManager } from '@/pages/NLUManager/context';
 import { useLogoButtonOptions } from '@/pages/Project/components/Header/hooks';
 
 import { SharePopperProvider } from '../../contexts';
-import { ContentHeader, SidebarHeader } from './components';
+import { EntitiesHeader, IntentsHeader, SidebarHeader } from './components';
+
+const headerContent: Record<NLURoute, React.FC | null> = {
+  [NLURoute.INTENTS]: IntentsHeader,
+  [NLURoute.ENTITIES]: EntitiesHeader,
+  [NLURoute.UNCLASSIFIED]: null,
+};
 
 const NLUHeader: React.FC = () => {
+  const nlu = useNLUManager();
   const logoOptions = useLogoButtonOptions();
+  const HeaderContent = headerContent[nlu.activeTab];
 
   return (
     <SharePopperProvider>
-      <Header renderLogoButton={() => <HeaderLogoButton options={logoOptions} />}>
+      <Header renderLogoButton={() => <HeaderLogoButton options={logoOptions} />} containerStyles={!HeaderContent ? { width: '310px' } : undefined}>
         <SidebarHeader />
-        <ContentHeader />
+        {HeaderContent && <HeaderContent />}
       </Header>
     </SharePopperProvider>
   );

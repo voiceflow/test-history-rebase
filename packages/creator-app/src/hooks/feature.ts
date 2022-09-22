@@ -10,6 +10,5 @@ export interface Feature {
 export const useFeature = (featureID: Realtime.FeatureFlag): Feature => {
   const featureState = React.useContext(FeatureFlagsContext)![featureID] ?? { isEnabled: false };
   const { isEnabled } = featureState;
-
   return { isEnabled };
 };

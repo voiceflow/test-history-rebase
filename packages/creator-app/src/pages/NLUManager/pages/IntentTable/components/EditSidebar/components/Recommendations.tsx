@@ -15,7 +15,6 @@ import * as Tracking from '@/ducks/tracking';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useAddSlot, useDispatch, useMLGatewayClient, useSelector, useTrackingEvents } from '@/hooks';
 import { useNLUManager } from '@/pages/NLUManager/context';
-import { NLUIntent } from '@/pages/NLUManager/types';
 import { fillEntities, validateUtterance } from '@/utils/intent';
 import { waitAsyncAction } from '@/utils/logux';
 
@@ -25,7 +24,9 @@ interface Recommendation extends Realtime.IntentInput {
 
 const Recommendations: React.FC = () => {
   const mlClient = useMLGatewayClient();
-  const nluManager = useNLUManager<NLUIntent>();
+  const nluManager = useNLUManager();
+  const currentIntent = nluManager.activeIntent;
+  const currentIntentID = nluManager.activeItemID;
 
   const slots = useSelector(SlotV2.allSlotsSelector);
   const locales = useSelector(VersionV2.active.localesSelector);
@@ -41,9 +42,9 @@ const Recommendations: React.FC = () => {
   const { onAddSlot } = useAddSlot();
 
   const onFetchRecommendations = async () => {
-    const inputs = nluManager.activeItem?.inputs || [];
+    const inputs = nluManager.activeIntent?.inputs || [];
     const allIntentInputs = new Set(inputs.map((input) => input.text));
-    const utterance = _sample(nluManager.activeItem?.inputs ?? []);
+    const utterance = _sample(inputs ?? []);
 
     if (!utterance) return;
 
@@ -61,8 +62,8 @@ const Recommendations: React.FC = () => {
           .map((text) => ({ id: Utils.id.cuid.slug(), text, slots: [] }))
       );
 
-      if (nluManager.activeItemID) {
-        trackingEvents.trackUtteranceRecommendationRefreshed({ intentID: nluManager.activeItemID });
+      if (currentIntentID) {
+        trackingEvents.trackUtteranceRecommendationRefreshed({ intentID: currentIntentID });
       }
     } catch {
       toast.warn('Failed to generate recommendations, please try again later');
@@ -81,22 +82,22 @@ const Recommendations: React.FC = () => {
 
   const onRemoveRecommendation = (index: number, text: string) => {
     removeRecommendation(index);
-    if (!nluManager.activeItemID) return;
-    trackingEvents.trackUtteranceRecommendationRejected({ utteranceName: text, intentID: nluManager.activeItemID });
+    if (!currentIntentID) return;
+    trackingEvents.trackUtteranceRecommendationRejected({ utteranceName: text, intentID: currentIntentID });
   };
 
   const onAddRecommendation = (index: number, { text, slots }: Recommendation) => {
-    if (!nluManager.activeItem) return;
+    if (!currentIntent) return;
 
-    const error = validateUtterance(text, nluManager.activeItem.id, intents, platform);
+    const error = validateUtterance(text, currentIntent.id, intents, platform);
 
     if (error) {
       toast.error(error);
     }
 
-    patchIntent(nluManager.activeItem.id, { inputs: [...nluManager.activeItem.inputs, { text, slots }] });
-    trackingEvents.trackUtteranceRecommendationAccepted({ utteranceName: text, intentID: nluManager.activeItem.id });
-    trackingEvents.trackNewUtteranceCreated({ intentID: nluManager.activeItem.id, creationType: Tracking.CanvasCreationType.RECOMMENDATION });
+    patchIntent(currentIntent.id, { inputs: [...currentIntent.inputs, { text, slots }] });
+    trackingEvents.trackUtteranceRecommendationAccepted({ utteranceName: text, intentID: nluManager.activeItemID });
+    trackingEvents.trackNewUtteranceCreated({ intentID: nluManager.activeItemID, creationType: Tracking.CanvasCreationType.RECOMMENDATION });
     removeRecommendation(index);
   };
 
@@ -104,20 +105,20 @@ const Recommendations: React.FC = () => {
     setRecommendations([]);
     onFetchRecommendations();
 
-    if (nluManager.activeItemID) {
-      trackingEvents.trackUtteranceRecommendationsOpened({ intentID: nluManager.activeItemID });
+    if (currentIntentID) {
+      trackingEvents.trackUtteranceRecommendationsOpened({ intentID: currentIntentID });
     }
   }, []);
 
   React.useEffect(() => {
-    const inputs = nluManager.activeItem?.inputs || [];
+    const inputs = nluManager.activeIntent?.inputs || [];
     const allIntentInputs = new Set(inputs.map((input) => input.text));
     const filteredRecommendations = recommendations.filter((recommendedUtterance) => !allIntentInputs.has(recommendedUtterance.text));
 
     if (filteredRecommendations.length !== recommendations.length) {
       setRecommendations(filteredRecommendations);
     }
-  }, [nluManager.activeItem?.inputs]);
+  }, [nluManager.activeIntent?.inputs]);
 
   return (
     <Drawer open width={450} offset={450} zIndex={19} direction={Drawer.Direction.LEFT}>

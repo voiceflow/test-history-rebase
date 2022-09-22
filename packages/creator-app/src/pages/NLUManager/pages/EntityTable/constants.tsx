@@ -2,8 +2,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { TableTypes } from '@voiceflow/ui';
 import React from 'react';
 
-import { HeaderSelectColumn, NameColumn, SelectColumn } from '../../components';
-import { InputsColumn, TypeColumn } from './components';
+import { HeaderSelectColumn, InputsColumn, NameColumn, SelectColumn, TypeColumn } from './components';
 
 export enum TableColumn {
   NAME = 'NAME',

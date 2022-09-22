@@ -10,14 +10,14 @@ const useEditorTab = () => {
   const inFullScreenTab = editorTab && FULLSCREEN_TABS.has(editorTab);
 
   const closeEditorTab = () => setEditorTab(null);
-  const isTabActive = (tab: EditorTabs) => editorTab === tab;
+  const isEditorTabActive = (tab: EditorTabs) => editorTab === tab;
   const openEditorTab = (tab: EditorTabs) => setEditorTab(tab);
 
   return {
     editorTab,
     openEditorTab,
     closeEditorTab,
-    isTabActive,
+    isEditorTabActive,
     inFullScreenTab,
   };
 };

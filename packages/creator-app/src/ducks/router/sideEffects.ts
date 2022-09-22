@@ -3,7 +3,7 @@ import { generatePath } from 'react-router-dom';
 
 import { PageProgress } from '@/components/PageProgressBar/utils';
 import * as Errors from '@/config/errors';
-import { Path } from '@/config/routes';
+import { NLURoute, Path } from '@/config/routes';
 import { InteractionModelTabType, PageProgressBar } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as DomainSelectors from '@/ducks/domain/selectors';
@@ -353,8 +353,8 @@ export const goToCurrentCanvasNode =
     dispatch(goToCanvasNode({ domainID, versionID, diagramID, nodeID, nodeSubPath, routeState }));
   };
 
-export const goToCurrentNLUManagerEntity =
-  (entityType: InteractionModelTabType, entityID?: string | null): SyncThunk =>
+export const goToCurrentNLUManagerTab =
+  (tab: NLURoute, itemID?: string | null): SyncThunk =>
   (dispatch, getState) => {
     const state = getState();
     const versionID = Session.activeVersionIDSelector(state);
@@ -363,10 +363,10 @@ export const goToCurrentNLUManagerEntity =
 
     dispatch(
       goTo(
-        generatePath(Path.NLU_MANAGER_ENTITY, {
+        generatePath(Path.NLU_MANAGER_TAB, {
           versionID,
-          modelType: entityType,
-          modelEntityID: entityID ? encodeURIComponent(entityID) : undefined,
+          tab,
+          itemID: itemID ? encodeURIComponent(itemID) : undefined,
         })
       )
     );

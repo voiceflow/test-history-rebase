@@ -72,7 +72,7 @@ export enum ToolsRoute {
 export enum NLURoute {
   INTENTS = 'intents',
   ENTITIES = 'entities',
-  VARIABLES = 'variables',
+  UNCLASSIFIED = 'unclassified',
 }
 
 export enum ProductRoute {
@@ -172,12 +172,12 @@ export const Path = {
   PROJECT_EXPORT: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.EXPORT, ':diagramID'),
 
   CONVERSATIONS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CONVERSATIONS, ':transcriptID?'),
-  NLU_MANAGER: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.NLU_MANAGER),
-  NLU_MANAGER_INTENTS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.NLU_MANAGER, NLURoute.INTENTS, ':entityID?'),
-  NLU_MANAGER_ENTITIES: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.NLU_MANAGER, NLURoute.ENTITIES, ':entityID?'),
-  NLU_MANAGER_VARIABLES: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.NLU_MANAGER, NLURoute.VARIABLES, ':entityID?'),
 
-  NLU_MANAGER_ENTITY: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.NLU_MANAGER, ':modelType', ':modelEntityID?'),
+  NLU_MANAGER: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.NLU_MANAGER),
+  NLU_MANAGER_INTENTS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.NLU_MANAGER, NLURoute.INTENTS, ':itemID?'),
+  NLU_MANAGER_UNCLASSIFIED: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.NLU_MANAGER, NLURoute.UNCLASSIFIED, ':itemID?'),
+  NLU_MANAGER_ENTITIES: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.NLU_MANAGER, NLURoute.ENTITIES, ':itemID?'),
+  NLU_MANAGER_TAB: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.NLU_MANAGER, ':tab', ':itemID?'),
 
   DOMAIN_CANVAS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.DOMAIN, ':domainID', DomainRoute.CANVAS, ':diagramID?'),
 

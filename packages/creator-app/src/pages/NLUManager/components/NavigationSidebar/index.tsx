@@ -1,15 +1,17 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, SvgIcon, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';
-import { InteractionModelTabType, NLUImportOrigin, PlatformToNLPProvider } from '@/constants';
+import { NLURoute } from '@/config/routes';
+import { NLUImportOrigin, PlatformToNLPProvider } from '@/constants';
 import * as Intent from '@/ducks/intent';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import * as Slot from '@/ducks/slot';
 import * as Tracking from '@/ducks/tracking';
-import { useDispatch, useSelector, useTrackingEvents } from '@/hooks';
+import { useDispatch, useFeature, useSelector, useTrackingEvents } from '@/hooks';
 import { PLATFORM_PROJECT_META_MAP } from '@/pages/NewProjectV2/constants';
 import { useNLUImport } from '@/pages/NewProjectV2/hooks';
 import { ImportModel, SupportedPlatformProjectType } from '@/pages/NewProjectV2/types';
@@ -24,6 +26,7 @@ const NavigationSidebar: React.FC = () => {
   const platform = useSelector(ProjectV2.active.platformSelector);
   const versionID = useSelector(Session.activeVersionIDSelector)!;
   const [trackingEvents] = useTrackingEvents();
+  const { isEnabled: isUnclassifiedDataEnabled } = useFeature(Realtime.FeatureFlag.NLU_MANAGER_UNCLASSIFIED);
 
   const refreshSlots = useDispatch(Slot.refreshSlots);
   const refreshIntents = useDispatch(Intent.refreshIntents);
@@ -72,34 +75,38 @@ const NavigationSidebar: React.FC = () => {
   return (
     <S.Container>
       <S.ItemsContainer>
+        {isUnclassifiedDataEnabled && (
+          <Box mb={24}>
+            <Item
+              icon="noMatch"
+              title="Unclassified"
+              onAdd={() => {}}
+              onClick={() => nluManager.goToTab(NLURoute.UNCLASSIFIED)}
+              isActive={nluManager.activeTab === NLURoute.UNCLASSIFIED}
+              createPlaceholder="unclassified"
+              counter={0}
+            />
+          </Box>
+        )}
+
         <Item
           icon="intent"
           title="Intent"
-          onAdd={nluManager.createAndGoToItem}
-          onClick={() => nluManager.goToTab(InteractionModelTabType.INTENTS)}
-          isActive={nluManager.activeTab === InteractionModelTabType.INTENTS}
+          onAdd={nluManager.createIntent}
+          onClick={() => nluManager.goToTab(NLURoute.INTENTS)}
+          isActive={nluManager.activeTab === NLURoute.INTENTS}
           createPlaceholder="intent"
-          counter={nluManager.tabItemsMap[InteractionModelTabType.INTENTS].length}
+          counter={nluManager.intents.length}
         />
 
         <Item
           icon="setV2"
           title="Entities"
-          onAdd={nluManager.createAndGoToItem}
-          onClick={() => nluManager.goToTab(InteractionModelTabType.SLOTS)}
-          isActive={nluManager.activeTab === InteractionModelTabType.SLOTS}
+          onAdd={nluManager.createEntity}
+          onClick={() => nluManager.goToTab(NLURoute.ENTITIES)}
+          isActive={nluManager.activeTab === NLURoute.ENTITIES}
           createPlaceholder="entity"
-          counter={nluManager.tabItemsMap[InteractionModelTabType.SLOTS].length}
-        />
-
-        <Item
-          icon="variables"
-          title="Variables"
-          onAdd={nluManager.createAndGoToItem}
-          onClick={() => nluManager.goToTab(InteractionModelTabType.VARIABLES)}
-          isActive={nluManager.activeTab === InteractionModelTabType.VARIABLES}
-          createPlaceholder="variable"
-          counter={nluManager.tabItemsMap[InteractionModelTabType.VARIABLES].length}
+          counter={nluManager.entities.length}
         />
       </S.ItemsContainer>
 

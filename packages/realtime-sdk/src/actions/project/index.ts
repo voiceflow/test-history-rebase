@@ -45,6 +45,10 @@ export interface ImportProjectFromFilePayload extends BaseWorkspacePayload {
   vfVersion: number;
 }
 
+export interface PatchPlatformDataPayload extends BaseProjectPayload {
+  platformData: Record<string, unknown>;
+}
+
 export const crud = createCRUDActions<AnyProject, BaseWorkspacePayload>(projectType);
 
 export const merge = Utils.protocol.createAsyncAction<MergeProjectsPayload, void>(projectType('MERGE'));
@@ -58,3 +62,5 @@ export const ejectUsers = Utils.protocol.createAction<EjectUsersPayload>(project
 export const importFromFile = Utils.protocol.createAsyncAction<ImportProjectFromFilePayload, AnyProject>(projectType('IMPORT_FROM_FILE'));
 
 export const addManyCustomThemes = Utils.protocol.createAction<AddManyCustomThemesPayload>(projectType('ADD_MANY_CUSTOM_THEMES'));
+
+export const patchPlatformData = Utils.protocol.createAction<PatchPlatformDataPayload>(projectType('PATCH_PLATFORM_DATA'));

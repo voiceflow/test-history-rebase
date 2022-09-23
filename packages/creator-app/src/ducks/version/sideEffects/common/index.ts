@@ -129,3 +129,9 @@ export const negotiateTargetVersion =
   (versionID: string): Thunk<Realtime.version.schema.NegotiateResultPayload> =>
   async (dispatch) =>
     dispatch(waitAsync(Realtime.version.schema.negotiate, { versionID, proposedSchemaVersion: Realtime.LATEST_SCHEMA_VERSION }));
+
+export const patchPublishing =
+  <T>(publishing: Partial<T>): Thunk =>
+  async (dispatch, getState) => {
+    await dispatch.sync(Realtime.version.patchPublishing({ ...getActivePlatformVersionContext(getState()), publishing }));
+  };

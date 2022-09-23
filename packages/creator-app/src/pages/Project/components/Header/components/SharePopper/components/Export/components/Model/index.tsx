@@ -2,6 +2,7 @@ import { BlockText, Divider, Select } from '@voiceflow/ui';
 import React from 'react';
 import { useSelector } from 'react-redux';
 
+import IntentsSelect from '@/components/IntentsSelect';
 import UpgradeOption from '@/components/UpgradeOption';
 import { Permission } from '@/config/permissions';
 import { getNLUExportLimitDetails, isGatedNLUExportType } from '@/config/planLimits/nluExport';
@@ -11,7 +12,6 @@ import { UpgradePrompt } from '@/ducks/tracking';
 import { usePermission } from '@/hooks';
 
 import { ExportContext } from '../../Context';
-import { IntentsSelect } from './components';
 
 const ExportModel: React.FC<{
   selectedIntents?: string[];

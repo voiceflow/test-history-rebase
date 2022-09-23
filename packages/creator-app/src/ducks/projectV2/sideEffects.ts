@@ -6,6 +6,7 @@ import * as Router from '@/ducks/router/actions';
 import { Thunk } from '@/store/types';
 
 import { idSelector } from './selectors/active/base';
+import { getActiveProjectContext } from './utils';
 
 export const ejectUsersFromProject =
   ({ key: projectID, creatorID }: Realtime.project.EjectUsersPayload): Thunk =>
@@ -21,4 +22,11 @@ export const ejectUsersFromProject =
     if (creatorID !== userID) {
       toast.info(`Another user has deleted the project`);
     }
+  };
+
+export const patchPlatformData =
+  (platformData: Record<string, unknown>): Thunk =>
+  async (dispatch, getState) => {
+    const state = getState();
+    await dispatch.sync(Realtime.project.patchPlatformData({ ...getActiveProjectContext(state), platformData }));
   };

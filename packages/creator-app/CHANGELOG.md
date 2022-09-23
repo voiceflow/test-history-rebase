@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.921.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.921.1...@voiceflow/creator-app@1.921.2) (2022-09-23)
+
+
+### Bug Fixes
+
+* modalV2 remove (CT-000) ([#6125](https://github.com/voiceflow/creator-app/issues/6125)) ([2e67a8a](https://github.com/voiceflow/creator-app/commit/2e67a8a469d2cb2b87dd93782e3f2b9d6ce44751))
+
+
+
+
+
 ## [1.921.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.921.0...@voiceflow/creator-app@1.921.1) (2022-09-22)
 
 

@@ -3,10 +3,11 @@ import React from 'react';
 
 import { Permission } from '@/config/permissions';
 import * as CanvasTemplates from '@/ducks/canvasTemplate';
+import * as CustomBlocks from '@/ducks/customBlock';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { usePermission, useSelector } from '@/hooks';
 import { LinkStepMenuContext } from '@/pages/Canvas/contexts';
-import { EVENT_LABEL, getAllSections } from '@/pages/Project/components/StepMenu/constants';
+import { EVENT_LABEL, getAllSections, LibraryStepType } from '@/pages/Project/components/StepMenu/constants';
 
 import { MenuButton } from './components';
 
@@ -27,9 +28,13 @@ const LinkStepMenu: React.FC<{}> = () => {
   const platform = useSelector(ProjectV2.active.platformSelector);
   const projectType = useSelector(ProjectV2.active.projectTypeSelector);
   const templates = useSelector(CanvasTemplates.allCanvasTemplatesSelector);
+  const customBlocks = useSelector(CustomBlocks.allCustomBlocksSelector);
   const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
 
-  const steps = getAllSections(platform, projectType, templates).filter((step) => {
+  const steps = getAllSections(platform, projectType, {
+    [LibraryStepType.BLOCK_TEMPLATES]: templates,
+    [LibraryStepType.CUSTOM_BLOCK]: customBlocks,
+  }).filter((step) => {
     if (step.label === EVENT_LABEL) return false;
     return true;
   });

@@ -47,6 +47,7 @@ export interface TextEditorProps {
   onFocus?: VoidFunction;
   onEmpty?: (isEmpty: boolean) => void;
   readOnly?: boolean;
+  disabled?: boolean;
   autoFocus?: boolean;
   iconProps?: Omit<SvgIconTypes.Props, 'icon'>;
   placeholder?: string;

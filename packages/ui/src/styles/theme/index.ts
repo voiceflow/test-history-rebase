@@ -14,9 +14,13 @@ export enum ThemeColor {
   BLUE = 'blue',
   DARK_BLUE = 'darkBlue',
   DARKER_BLUE = 'darkerBlue',
+  NAVY = 'navy',
+  SKY_BLUE = 'skyBlue',
+  CERULEAN = 'cerulean',
   BORDERS = 'borders',
   SEPARATOR = 'separator',
   SEPARATOR_SECONDARY = 'separatorSecondary',
+  ERROR = 'error',
 }
 
 const THEME = {
@@ -56,9 +60,13 @@ const THEME = {
     [ThemeColor.BLUE]: COLOR_BLUE,
     [ThemeColor.DARK_BLUE]: '#4886da',
     [ThemeColor.DARKER_BLUE]: '#3D82E2',
+    [ThemeColor.NAVY]: '#284D6C',
+    [ThemeColor.SKY_BLUE]: '#e3eff8',
+    [ThemeColor.CERULEAN]: '#3a6b93',
     [ThemeColor.BORDERS]: '#dfe3ed',
     [ThemeColor.SEPARATOR]: '#dfe3ed',
     [ThemeColor.SEPARATOR_SECONDARY]: '#eaeff4',
+    [ThemeColor.ERROR]: '#bd425f',
   },
   space: {
     xs: 4,
@@ -76,6 +84,11 @@ const THEME = {
     modal: 1010,
     popper: 1000,
     backdrop: 1005,
+  },
+  font: {
+    weight: {
+      semibold: 600,
+    },
   },
   components: {
     button: {
@@ -102,6 +115,7 @@ const THEME = {
 
     sectionV2: {
       accentBackground: '#fdfdfd',
+      accentBackground2: '#fbfbfb',
     },
   },
   transition(...propertyWhitelist: string[]): string {

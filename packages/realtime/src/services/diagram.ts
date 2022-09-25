@@ -297,6 +297,10 @@ class DiagramService extends AbstractControl {
 
     return sharedNodes;
   }
+
+  public async syncCustomBlockPorts(diagramID: string, updatePatch: Record<string, { label: string; portID: string }[]>) {
+    await this.models.diagram.syncCustomBlockPorts(diagramID, updatePatch);
+  }
 }
 
 export default DiagramService;

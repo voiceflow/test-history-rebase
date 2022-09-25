@@ -38,6 +38,7 @@ export enum BlockType {
   PROMPT = 'prompt',
   TRACE = 'trace',
   URL = 'url',
+  CUSTOM_BLOCK_POINTER = 'custom_block_pointer',
 
   // visuals
   CARD = 'card',

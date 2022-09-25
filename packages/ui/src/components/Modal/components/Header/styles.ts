@@ -4,6 +4,7 @@ import { css, styled, units } from '@ui/styles';
 interface ContainerProps {
   border?: boolean;
   capitalizeText?: boolean;
+  sticky?: boolean;
 }
 
 export const Container = styled.header<ContainerProps>`
@@ -11,10 +12,9 @@ export const Container = styled.header<ContainerProps>`
 
   width: 100%;
   padding: ${units(2.5)}px ${units(4)}px;
-  position: relative;
   font-weight: 600;
-  z-index: 1;
   color: #132144;
+  background-color: #fff;
 
   ${({ theme, border }) =>
     border &&
@@ -27,4 +27,16 @@ export const Container = styled.header<ContainerProps>`
     css`
       text-transform: capitalize;
     `}
+  
+    ${({ sticky }) =>
+    sticky
+      ? css`
+          position: sticky;
+          top: 0px;
+          z-index: 100;
+        `
+      : css`
+          position: relative;
+          z-index: 1;
+        `}
 `;

@@ -330,7 +330,8 @@ class DiagramModel extends AbstractModel<DBDiagramModel, BaseModels.Diagram.Mode
   }
 
   async patchNodeData(diagramID: string, nodeID: string, patches: Atomic.SetOperation[]) {
-    await this.atomicUpdateByID(diagramID, [this.atomicNodeData.set(nodeID, patches)]);
+    const data = this.atomicNodeData.set(nodeID, patches);
+    await this.atomicUpdateByID(diagramID, [data]);
   }
 
   private async reorderNodeData(diagramID: string, nodeID: string, { path, match, index }: Atomic.ReorderOperation) {
@@ -438,6 +439,30 @@ class DiagramModel extends AbstractModel<DBDiagramModel, BaseModels.Diagram.Mode
   async reorderMenuNodes({ index, nodeID, diagramID }: { index: number; nodeID: string; diagramID: string }) {
     await this.atomicUpdateByID(diagramID, [Atomic.pull([{ path: 'menuNodeIDs', match: nodeID }])]);
     await this.atomicUpdateByID(diagramID, [Atomic.push([{ path: 'menuNodeIDs', value: nodeID, index }])]);
+  }
+
+  async syncCustomBlockPorts(diagramID: string, updatePatch: Record<string, { label: string; portID: string }[]>) {
+    await this.pushManyNodesData(
+      diagramID,
+      Object.keys(updatePatch).reduce((nodeData, nodeID) => {
+        return [
+          ...nodeData,
+          {
+            nodeID,
+            pushes: [
+              {
+                path: 'portsV2.dynamic',
+                value: updatePatch[nodeID].map(({ label, portID }) => ({
+                  id: portID,
+                  type: label,
+                  target: null,
+                })),
+              },
+            ],
+          },
+        ];
+      }, [] as Array<{ nodeID: string; pushes: Atomic.PushOperation[] }>)
+    );
   }
 }
 

@@ -62,6 +62,7 @@ export { default as cursor } from './cursor.svg';
 export { default as cursorV2 } from './cursor-v2.svg';
 export { default as custom } from './custom.svg';
 export { default as customAction } from './custom-action.svg';
+export { default as customBlock } from './custom-block.svg';
 export { default as customResponseV2 } from './custom-response-v2.svg';
 export { default as checkmarkGreen } from './green-checkmark.svg';
 export { default as checkmark2 } from './success.svg';

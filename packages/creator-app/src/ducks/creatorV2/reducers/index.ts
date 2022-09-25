@@ -27,6 +27,7 @@ import removeManyNodes, { removeManyNodesReverter } from './removeManyNodes';
 import reorderDynamicPorts, { reorderDynamicPortsReverter } from './reorderDynamicPorts';
 import reorderSteps, { reorderStepsReverter } from './reorderSteps';
 import reset from './reset';
+import addCustomBlockPortReducer, { addCustomBlockPortReverter } from './syncCustomBlockPort';
 import transplantSteps, { transplantStepsReverter } from './transplantSteps';
 import updateManyNodeData, { updateManyNodeDataReverter } from './updateManyNodeData';
 
@@ -60,7 +61,9 @@ const creatorReducer = createRootReducer<CreatorState>(INITIAL_STATE)
   .immerCase(...addBuiltInLink)
   .immerCase(...addDynamicLink)
   .immerCase(...removeManyLinks)
-  .immerCase(...patchManyLinks);
+  .immerCase(...patchManyLinks)
+
+  .immerCase(...addCustomBlockPortReducer);
 
 export default creatorReducer;
 
@@ -93,4 +96,6 @@ export const reverters = [
   addDynamicLinkReverter,
   patchManyLinksReverter,
   removeManyLinksReverter,
+
+  addCustomBlockPortReverter,
 ];

@@ -52,6 +52,8 @@ export const OPEN_INTENT = 'https://docs.voiceflow.com/#/platform/steps/input-st
 
 export const PROJECT_CREATE = 'https://www.voiceflow.com/docs/designing-project-creation';
 
+export const CUSTOM_BLOCK_EDITOR = 'https://developer.voiceflow.com/docs/custom-blocks';
+
 // TODO: the actions documentation is not available yet
 export const ACTIONS = 'https://www.voiceflow.com/docs/designing-adding-actions';
 export const ACTIONS_BACKEND = 'https://www.voiceflow.com/docs/designing-adding-actions#backend-actions';
@@ -86,3 +88,7 @@ export const NLU_MANAGEMENT_INTENT_CONFIDENCE = 'https://www.voiceflow.com/docs/
 export const NLU_MANAGEMENT_INTENT_CLARITY = 'https://www.voiceflow.com/docs/nlu-management-model-optimization#toc-3';
 export const NLU_MANAGEMENT_CONFLICTS = 'https://www.voiceflow.com/docs/nlu-management-model-optimization#toc-4';
 export const NLU_MANAGEMENT_NLU_DATA_EXPORT = 'https://www.voiceflow.com/docs/nlu-management-nlu-data-import-export#toc-1';
+
+// Zendesk link - This is a fallback when we don't have documentation
+export const ZENDESK_URL = 'https://voiceflow.zendesk.com/hc/en-us';
+export const MVP_CUSTOM_BLOCK_EXAMPLES = 'https://github.com/voiceflow/custom-blocks';

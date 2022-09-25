@@ -11,6 +11,7 @@ import carouselAdapter, { carouselOutPortsAdapter, carouselOutPortsAdapterV2 } f
 import codeAdapter, { codeOutPortsAdapter, codeOutPortsAdapterV2 } from './code';
 import { commandOutPortsAdapter, commandOutPortsAdapterV2 } from './command';
 import componentAdapter, { componentOutPortsAdapter, componentOutPortsAdapterV2 } from './component';
+import customBlockPointerAdapter, { customBlockPointerOutPortsAdapter, customBlockPointerOutPortsAdapterV2 } from './customBlockPointer';
 import directiveAdapter, { directiveOutPortsAdapter, directiveOutPortsAdapterV2 } from './directive';
 import exitAdapter, { exitOutPortsAdapter, exitOutPortsAdapterV2 } from './exit';
 import goToDomainAdapter, { goToDomainOutPortsAdapter, goToDomainOutPortsAdapterV2 } from './goToDomain';
@@ -62,6 +63,7 @@ export const baseBlockAdapter = {
   [BlockType.INTEGRATION]: integrationAdapter,
   [BlockType.GO_TO_INTENT]: goToIntentAdapter,
   [BlockType.GO_TO_DOMAIN]: goToDomainAdapter,
+  [BlockType.CUSTOM_BLOCK_POINTER]: customBlockPointerAdapter,
 };
 
 // adapters shared across all platforms
@@ -97,6 +99,7 @@ export const baseOutPortAdapter = {
   [BlockType.INTEGRATION]: integrationOutPortsAdapter,
   [BlockType.GO_TO_INTENT]: goToIntentOutPortsAdapter,
   [BlockType.GO_TO_DOMAIN]: goToDomainOutPortsAdapter,
+  [BlockType.CUSTOM_BLOCK_POINTER]: customBlockPointerOutPortsAdapter,
 
   [BaseNode.NodeType.API]: integrationOutPortsAdapter,
   [BaseNode.NodeType.ZAPIER]: integrationOutPortsAdapter,
@@ -136,6 +139,7 @@ export const baseOutPortAdapterV2 = {
   [BlockType.INTEGRATION]: integrationOutPortsAdapterV2,
   [BlockType.GO_TO_INTENT]: goToIntentOutPortsAdapterV2,
   [BlockType.GO_TO_DOMAIN]: goToDomainOutPortsAdapterV2,
+  [BlockType.CUSTOM_BLOCK_POINTER]: customBlockPointerOutPortsAdapterV2,
 
   [BaseNode.NodeType.API]: integrationOutPortsAdapterV2,
   [BaseNode.NodeType.ZAPIER]: integrationOutPortsAdapterV2,

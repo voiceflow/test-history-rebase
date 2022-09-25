@@ -31,16 +31,30 @@ export interface TopStepItem extends BaseTopStepItem {
   isLibrary?: never;
 }
 
-export interface LibraryDragItem {
+export interface LibraryDragItem<T = unknown> {
   type: DragItem;
-  name: string;
-  id: string;
-  color: string | null;
-  nodeIDs: string[];
+  libraryType: LibraryStepType;
+  tabData: {
+    name: string;
+    id: string;
+  } & T;
 }
 
+export type TabData = BaseModels.Version.CanvasTemplate | Realtime.CustomBlock;
+
+export const isBlockTemplatesData = (_tabData: TabData, currentTab: LibraryStepType): _tabData is BaseModels.Version.CanvasTemplate => {
+  return currentTab === LibraryStepType.BLOCK_TEMPLATES;
+};
+
+export const isCustomBlockData = (_tabData: TabData, currentTab: LibraryStepType): _tabData is Realtime.CustomBlock => {
+  return currentTab === LibraryStepType.CUSTOM_BLOCK;
+};
+
 export interface TopLibraryItem extends BaseTopStepItem {
-  steps: BaseModels.Version.CanvasTemplate[];
+  librarySections: {
+    templates: BaseModels.Version.CanvasTemplate[];
+    customBlocks: Realtime.CustomBlock[];
+  };
   isLibrary: true;
 }
 
@@ -358,25 +372,32 @@ export const getStepSections = Realtime.Utils.platform.createPlatformAndProjectT
   GENERAL_STEP_SECTIONS
 );
 
-export const getLibrarySection = (templates: BaseModels.Version.CanvasTemplate[]): TopLibraryItem => {
+export interface LibrarySections {
+  [LibraryStepType.CUSTOM_BLOCK]: Realtime.CustomBlock[];
+  [LibraryStepType.BLOCK_TEMPLATES]: BaseModels.Version.CanvasTemplate[];
+}
+
+export const getLibrarySection = (library: LibrarySections): TopLibraryItem => {
   return {
     icon: 'library',
     smallIcon: 'librarySmall',
     label: 'Library',
-    steps: templates,
+    steps: [] /* dummy value */,
+    librarySections: {
+      templates: library[LibraryStepType.BLOCK_TEMPLATES],
+      customBlocks: library[LibraryStepType.CUSTOM_BLOCK],
+    },
     isLibrary: true,
   };
 };
 
-export const getAllSections = (
-  platform: VoiceflowConstants.PlatformType,
-  project: VoiceflowConstants.ProjectType,
-  templates: BaseModels.Version.CanvasTemplate[]
-) => {
+export enum LibraryStepType {
+  CUSTOM_BLOCK = 'CUSTOM_BLOCK',
+  BLOCK_TEMPLATES = 'BLOCK_TEMPLATES',
+}
+
+export const getAllSections = (platform: VoiceflowConstants.PlatformType, project: VoiceflowConstants.ProjectType, library: LibrarySections) => {
   const steps = getStepSections(platform, project);
-  if (templates.length > 0) {
-    const librarySection = getLibrarySection(templates);
-    return [...steps, librarySection];
-  }
-  return steps;
+  const librarySection = getLibrarySection(library);
+  return [...steps, librarySection];
 };

@@ -7,6 +7,7 @@ import account, * as Account from '@/ducks/account';
 import canvasTemplate, * as CanvasTemplate from '@/ducks/canvasTemplate';
 import creator, * as Creator from '@/ducks/creator';
 import creatorV2, * as CreatorV2 from '@/ducks/creatorV2';
+import customBlock, * as CustomBlock from '@/ducks/customBlock';
 import diagramV2, * as DiagramV2 from '@/ducks/diagramV2';
 import domain, * as Domain from '@/ducks/domain';
 import feature, * as Feature from '@/ducks/feature';
@@ -84,6 +85,7 @@ const getCombinedReducer = (browserHistory: BrowserHistory) =>
     [History.STATE_KEY]: history,
     [Domain.STATE_KEY]: domain,
     [CanvasTemplate.STATE_KEY]: canvasTemplate,
+    [CustomBlock.STATE_KEY]: customBlock,
   });
 
 const createReducer = ({ browserHistory, reverters, invalidators, getClientNodeID }: ReducerOptions) =>

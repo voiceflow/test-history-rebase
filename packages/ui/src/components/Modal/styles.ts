@@ -14,6 +14,7 @@ export interface ContainerProps {
   fullScreen?: boolean;
   verticalMargin?: number;
   enterAnimation?: boolean;
+  hideScrollbar?: boolean;
 }
 
 const ShowKeyframe = keyframes`
@@ -63,6 +64,19 @@ export const Container = styled.section<ContainerProps>`
             width: calc(100% - 1rem);
           }
         `};
+
+  ${({ hideScrollbar }) =>
+    hideScrollbar &&
+    css`
+      /* Hide scrollbar for Chrome, Safari and Opera */
+      ::-webkit-scrollbar {
+        display: none;
+      }
+
+      /* Hide scrollbar for IE, Edge and Firefox */
+      -ms-overflow-style: none; /* IE and Edge */
+      scrollbar-width: none; /* Firefox */
+    `}
 
   ${({ status, animated, enterAnimation }) => {
     if (!animated) return null;
@@ -146,7 +160,7 @@ export const Body = styled(Box)<{ centred?: boolean }>`
         `}
 `;
 
-export const Footer = styled(Box.Flex)`
+export const Footer = styled(Box.Flex)<{ sticky?: boolean }>`
   width: 100%;
   justify-content: ${({ justifyContent = 'flex-end' }) => justifyContent};
   padding: ${units(3)}px ${units(4)}px;
@@ -154,6 +168,13 @@ export const Footer = styled(Box.Flex)`
   border-top: 1px solid ${({ theme }) => theme.colors.separatorSecondary};
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;
+
+  ${({ sticky = false }) =>
+    sticky &&
+    css`
+      position: sticky;
+      bottom: 0;
+    `}
 `;
 
 const showKeyframes = keyframes`

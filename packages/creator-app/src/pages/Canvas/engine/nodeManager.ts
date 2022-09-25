@@ -8,6 +8,7 @@ import { createSelector } from 'reselect';
 import { BlockType, StepMenuType } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as CreatorV2 from '@/ducks/creatorV2';
+import * as CustomBlock from '@/ducks/customBlock';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Feature from '@/ducks/feature';
 import * as History from '@/ducks/history';
@@ -33,13 +34,16 @@ const nodeFactoryOptionsSelector = createSelector(
     VersionV2.active.defaultVoiceSelector,
     Feature.allActiveFeaturesSelector,
     VersionV2.active.canvasNodeVisibilitySelector,
+    CustomBlock.allCustomBlocksSelector,
   ],
-  (platform, projectType, defaultVoice, allActiveFeatures, canvasNodeVisibility) => ({
+  // eslint-disable-next-line max-params
+  (platform, projectType, defaultVoice, allActiveFeatures, canvasNodeVisibility, allCustomBlocks) => ({
     features: allActiveFeatures,
     platform,
     projectType,
     defaultVoice: defaultVoice || getPlatformDefaultVoice(platform),
     canvasNodeVisibility: canvasNodeVisibility || BaseNode.Utils.CanvasNodeVisibility.PREVIEW,
+    allCustomBlocks,
   })
 );
 

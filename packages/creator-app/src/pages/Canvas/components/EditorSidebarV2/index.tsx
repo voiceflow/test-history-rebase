@@ -142,7 +142,6 @@ const EditorSidebarV2 = () => {
       onParentChange,
       onToggleFullscreen: toggleFullscreen,
     };
-
     return (
       <NamespaceProvider value={['editor', node.type, node.id]}>
         <EditorSidebarProvider value={editorProps}>

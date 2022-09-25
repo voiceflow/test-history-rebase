@@ -114,7 +114,7 @@ export const useCombined = ({ defaultBlockColor }: { defaultBlockColor: string }
   );
 
   const [, connectBlockDrop] = useDrop({
-    accept: [DragItem.BLOCK_MENU, DragItem.COMPONENTS, DragItem.TEMPLATES],
+    accept: [DragItem.BLOCK_MENU, DragItem.COMPONENTS, DragItem.LIBRARY],
     hover: _throttle(
       (_, monitor) => {
         if (!monitor.isOver({ shallow: true })) {

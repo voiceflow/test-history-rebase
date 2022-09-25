@@ -11,14 +11,15 @@ export interface HeaderProps {
   actions?: React.ReactNode;
   infoTooltip?: React.ReactNode;
   capitalizeText?: boolean;
+  sticky?: boolean;
 }
 
 const CloseButton: React.FC<Omit<IconButtonBasicContainerProps, 'size' | 'icon' | 'variant' | 'className'>> = (props) => (
   <IconButton size={16} icon="close" variant={IconButton.Variant.BASIC} className={ClassName.MODAL_CLOSE_BUTTON_REGULAR} {...props} />
 );
 
-const Header: React.FC<HeaderProps> = ({ border, actions, children, infoTooltip, capitalizeText = true }) => (
-  <S.Container border={border} capitalizeText={capitalizeText}>
+const Header: React.FC<HeaderProps> = ({ border, actions, children, infoTooltip, capitalizeText = true, sticky = true }) => (
+  <S.Container border={border} capitalizeText={capitalizeText} sticky={sticky}>
     <Box.Flex gap={8} height="100%">
       <Box.Flex height="100%" className={ClassName.MODAL_TITLE_CONTAINER}>
         {children}

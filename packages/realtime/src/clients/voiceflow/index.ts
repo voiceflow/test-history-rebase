@@ -2,6 +2,7 @@ import * as Voiceflow from '@voiceflow/api-sdk';
 
 import logger from '@/logger';
 
+import ExtraCustomBlockClient, { CustomBlockClient } from './customBlock';
 import ExtraDiagramClient, { DiagramClient } from './diagram';
 import ExtraProductClient, { ProductClient } from './product';
 import ExtraProjectClient from './project';
@@ -18,6 +19,7 @@ interface ExtraClient {
   projectList: ProjectListClient;
   product: ProductClient;
   thread: ThreadClient;
+  customBlock: CustomBlockClient;
 }
 
 export interface Client extends Voiceflow.Client, ExtraClient {
@@ -58,6 +60,7 @@ const VoiceflowFactoryClient = ({ axios, config }: Options): VoiceflowFactory =>
       projectList: ExtraProjectListClient(extraOptions),
       product: ExtraProductClient(extraOptions),
       thread: ExtraThreadClient(extraOptions),
+      customBlock: ExtraCustomBlockClient(extraOptions),
     };
 
     Object.assign(client, extraClient);

@@ -495,6 +495,34 @@ export namespace NodeData {
   export interface UrlBuiltInPorts {
     [BaseModels.PortType.NEXT]: string;
   }
+
+  /**
+   * Defines the Pointer block type. It can be helpful to think of this as a "function pointer"
+   */
+  export interface Pointer {
+    /**
+     * ID of the base block that this pointer points to. As an analogy, this essentially
+     * specifies the "base class" that this pointer "subclass" inherits from.
+     */
+    sourceID: string;
+
+    /**
+     * Type of the base block that the Pointer points. As an analogy, this is essentially
+     * the type `T` in the pointer type `T*`
+     */
+    pointedType: BlockType;
+
+    /**
+     * The list of values passed in as arguments to this Pointer block.
+     */
+    parameters: Record<string, any>;
+
+    /**
+     * The name for this reusable Pointer block, assigned by the developer of this
+     * Pointer block.
+     */
+    pointerName: string;
+  }
 }
 
 export interface NodeDataMap {
@@ -532,6 +560,7 @@ export interface NodeDataMap {
   [BlockType.CODE]: NodeData.Code;
   [BlockType.PROMPT]: NodeData.Prompt;
   [BlockType.TRACE]: NodeData.Trace;
+  [BlockType.CUSTOM_BLOCK_POINTER]: NodeData.Pointer;
 
   [BlockType.CARD]: NodeData.Card;
   [BlockType.CAROUSEL]: NodeData.Carousel;

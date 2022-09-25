@@ -40,6 +40,8 @@ export enum FeatureFlag {
   // integrations
   DIALOGFLOW_CX = 'dialogflow_cx',
 
+  MVP_CUSTOM_BLOCK = 'mvp_custom_block',
+
   // canvas and editor updates
   CONDITIONS_BUILDER_V2 = 'conditions_builder_v2',
 

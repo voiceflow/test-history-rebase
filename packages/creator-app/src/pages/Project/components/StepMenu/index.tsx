@@ -3,11 +3,12 @@ import React from 'react';
 
 import { Permission } from '@/config/permissions';
 import * as CanvasTemplates from '@/ducks/canvasTemplate';
+import * as CustomBlocks from '@/ducks/customBlock';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { usePermission, useSelector } from '@/hooks';
 import { Identifier } from '@/styles/constants';
 
-import { getAllSections } from './constants';
+import { getAllSections, LibraryStepType } from './constants';
 import * as S from './styles';
 import TopLevelButton from './TopLevelButton';
 
@@ -17,21 +18,25 @@ const StepMenu: React.FC<{ numCollapsedSteps?: number }> = ({ numCollapsedSteps 
   const platform = useSelector(ProjectV2.active.platformSelector);
   const projectType = useSelector(ProjectV2.active.projectTypeSelector);
   const [isExpanded, toggleIsExpanded] = useLocalStorageState(STEP_MENU_EXPANDED_LOCAL_STORAGE_KEY, false);
-
   const templates = useSelector(CanvasTemplates.allCanvasTemplatesSelector);
+  const customBlocks = useSelector(CustomBlocks.allCustomBlocksSelector);
+
   const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
 
-  const steps = getAllSections(platform, projectType, templates);
+  const sections = getAllSections(platform, projectType, {
+    [LibraryStepType.BLOCK_TEMPLATES]: templates,
+    [LibraryStepType.CUSTOM_BLOCK]: customBlocks,
+  });
 
-  const stepsToShow = isExpanded ? steps : steps.slice(0, numCollapsedSteps);
+  const sectionsToShow = isExpanded ? sections : sections.slice(0, numCollapsedSteps);
 
   return (
     <>
       {canEditCanvas && (
         <S.TopLevelOuterContainer id={Identifier.STEP_MENU}>
-          <S.TopLevelInnerContainer size={stepsToShow.length}>
-            {stepsToShow.map((step, index) => (
-              <TopLevelButton key={step.label} step={step} animationIndex={Math.max(0, index - numCollapsedSteps)} />
+          <S.TopLevelInnerContainer size={sectionsToShow.length}>
+            {sectionsToShow.map((section, index) => (
+              <TopLevelButton key={section.label} section={section} animationIndex={Math.max(0, index - numCollapsedSteps)} />
             ))}
           </S.TopLevelInnerContainer>
 

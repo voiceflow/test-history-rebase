@@ -26,6 +26,8 @@ import SelectionMarquee from '@/pages/Canvas/components/SelectionMarquee';
 import TransformOverlay from '@/pages/Canvas/components/TransformOverlay';
 import { CanvasAction } from '@/pages/Canvas/constants';
 import { ContextMenuContext, EngineContext, FocusThreadContext } from '@/pages/Canvas/contexts';
+import { makeFactoryData } from '@/pages/Canvas/managers/CustomBlockPointer/utils';
+import { LibraryStepType } from '@/pages/Project/components/StepMenu/constants';
 import { MarkupContext } from '@/pages/Project/contexts';
 import { useCommentingMode, useEditingMode } from '@/pages/Project/hooks';
 import perf, { PerfAction } from '@/performance';
@@ -33,6 +35,7 @@ import { Viewport as ViewportType } from '@/types';
 import { Coords } from '@/utils/geometry';
 
 import { useCursorControls } from './hooks';
+import { isLibraryDragItem } from './utils';
 
 const withInitialViewport = connect({ viewport: Viewport.activeDiagramViewportSelector }, null, null, {
   // ignore all further updates to the viewport
@@ -85,14 +88,11 @@ interface FilesDrop extends BaseDrop {
 }
 
 interface StepMenuDrop extends BaseDrop, Omit<StepDragItem, 'type'> {}
-interface CanvasTemplateDrop extends BaseDrop, Omit<StepDragItem, 'type'>, CanvasTemplateItem {}
 
 interface ComponentsDrop extends BaseDrop, FolderItemProps {}
-type DroppableItem = FilesDrop | StepMenuDrop | ComponentsDrop | CanvasTemplateDrop;
+type DroppableItem = FilesDrop | StepMenuDrop | ComponentsDrop;
 
-const DROP_TYPES = [NativeTypes.FILE, DragItem.BLOCK_MENU, DragItem.COMPONENTS, DragItem.TEMPLATES];
-
-const isTemplateItem = (item: DroppableItem): item is CanvasTemplateDrop => item.type === DragItem.TEMPLATES;
+const DROP_TYPES = [NativeTypes.FILE, DragItem.BLOCK_MENU, DragItem.COMPONENTS, DragItem.LIBRARY];
 
 const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport, children }) => {
   const engine = React.useContext(EngineContext)!;
@@ -162,16 +162,24 @@ const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport, childr
       const { x: mouseX, y: mouseY } = monitor.getClientOffset() || item.clientOffset;
       const coords = new Coords([mouseX, mouseY]);
 
-      if (isTemplateItem(item)) {
-        await engine.canvasTemplate.dropTemplate(item.id, coords);
-      } else if ('blockType' in item) {
+      // $TODO$ - Need to extract this specific knowledge out, e.g, using polymorphism to abstract these
+      // specific calls. This list of calls is awkward to read.
+      if ('blockType' in item) {
         perf.action(PerfAction.STEP_DROP_CREATE);
         await engine.node.add(item.blockType, coords, item.factoryData);
       } else if (item.type === DragItem.COMPONENTS && 'searchMatchValue' in item) {
         perf.action(PerfAction.STEP_DROP_CREATE);
         await engine.node.add(BlockType.COMPONENT, coords, { name: item.item.name, diagramID: item.item.id });
+      } else if (isLibraryDragItem(item)) {
+        if (item.libraryType === LibraryStepType.CUSTOM_BLOCK) {
+          perf.action(PerfAction.STEP_DROP_CREATE);
+          await engine.node.add(BlockType.CUSTOM_BLOCK_POINTER, coords, makeFactoryData(item.tabData));
+        } else if (item.libraryType === LibraryStepType.BLOCK_TEMPLATES) {
+          await engine.canvasTemplate.dropTemplate(item.tabData.id, coords);
+        }
       }
     },
+
     hover: _throttle(
       (item, monitor) => {
         item.clientOffset = monitor.getClientOffset();

@@ -2,6 +2,7 @@ import { LoguxControlOptions } from '@/control';
 
 import buildCanvasTemplateActionControls from './canvasTemplates';
 import buildCreatorActionControls from './creator';
+import buildCustomBlockActionControls from './customBlock';
 import buildDiagramActionControls from './diagram';
 import buildDomainActionControls from './domain';
 import buildIntentActionControls from './intent';
@@ -23,6 +24,7 @@ const buildActions = (options: LoguxControlOptions) => ({
   ...buildDiagramActionControls(options),
   ...buildCanvasTemplateActionControls(options),
   ...buildCreatorActionControls(options),
+  ...buildCustomBlockActionControls(options),
   ...buildIntentActionControls(options),
   ...buildLinkActionControls(options),
   ...buildNodeActionControls(options),

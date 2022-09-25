@@ -109,9 +109,12 @@ const StyledEditor = styled(AceEditor).attrs({
   ${({ inputMode }) =>
     inputMode === InputMode.INPUT &&
     css`
-      &:not(.ace_focus) .ace_layer .ace_active-line,
+      &:not(.ace_focus) .ace_layer .ace_active-line {
+        background-color: #fefefe !important;
+      }
+      ,
       &:not(.ace_focus) .ace_layer .ace_gutter-active-line {
-        background-color: #fff !important;
+        background-color: #fdfdfd !important;
       }
 
       .ace_scroller .ace_layer.ace_text-layer,

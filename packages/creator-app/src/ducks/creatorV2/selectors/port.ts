@@ -16,6 +16,8 @@ export const getPortByIDSelector = createCurriedSelector(portByIDSelector);
 
 export const allPortsByIDsSelector = createSelector([creatorStateSelector, idsParamSelector], ({ ports }, portIDs) => Normal.getMany(ports, portIDs));
 
+export const allPortsSelector = createSelector([creatorStateSelector], (state) => state.ports);
+
 export const portsByNodeIDSelector = createSelector([creatorStateSelector, idParamSelector], ({ portsByNodeID }, nodeID) =>
   nodeID ? portsByNodeID[nodeID] ?? Realtime.Utils.port.createEmptyNodePorts() : Realtime.Utils.port.createEmptyNodePorts()
 );

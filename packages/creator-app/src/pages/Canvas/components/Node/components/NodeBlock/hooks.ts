@@ -73,7 +73,7 @@ export const useMergeInfo = (index: number) => {
   };
 };
 
-const ACCEPTED_DROP_ITEMS = [DragItem.BLOCK_MENU, DragItem.COMPONENTS, DragItem.TEMPLATES];
+const ACCEPTED_DROP_ITEMS = [DragItem.BLOCK_MENU, DragItem.COMPONENTS, DragItem.LIBRARY];
 
 export const useDnDHoverReorderIndicator = (index: number) => {
   const engine = React.useContext(EngineContext)!;

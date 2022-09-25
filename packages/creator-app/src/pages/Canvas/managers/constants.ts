@@ -15,6 +15,7 @@ import ChoiceManager from './Choice';
 import CodeManager from './Code';
 import CombinedManager from './Combined';
 import ComponentManager from './Component';
+import CustomBlockPointerManager from './CustomBlockPointer';
 import CustomPayloadManager from './CustomPayload';
 import DeprecatedManager from './Deprecated';
 import DirectiveManager from './Directive';
@@ -92,6 +93,7 @@ export const MANAGERS_BY_TYPE = {
   [BlockType.GO_TO_INTENT]: GoToIntentManager,
   [BlockType.GO_TO_NODE]: GoToNodeManager,
   [BlockType.GO_TO_DOMAIN]: GoToDomainManager,
+  [BlockType.CUSTOM_BLOCK_POINTER]: CustomBlockPointerManager,
 };
 
 export const MANAGERS_BY_FEATURE: Partial<Record<BlockType, Realtime.FeatureFlag>> = {};

@@ -8,12 +8,19 @@ export interface HeaderProps extends SpaceProps {
   top?: number;
   sticky?: boolean;
   sticked?: boolean;
-  bottomUint?: number;
+
+  bottomUnit?: number;
+  topUnit?: number;
+  rightUnit?: number;
+  leftUnit?: number;
 }
 
 const Header = styled.header<HeaderProps>`
   ${flexApartStyles}
-  padding: ${units(2.5)}px ${units(4)}px ${({ theme, bottomUint = 2 }) => units(bottomUint)({ theme })}px ${units(4)}px;
+  ${({ theme, topUnit = 2.5, rightUnit = 4, bottomUnit = 2, leftUnit = 4 }) => css`
+    padding: ${units(topUnit)({ theme })}px ${units(rightUnit)({ theme })}px ${units(bottomUnit)({ theme })}px ${units(leftUnit)({ theme })}px;
+  `}
+
   line-height: 1;
   ${space}
 

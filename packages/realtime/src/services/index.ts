@@ -4,6 +4,7 @@ import type { ClientMap } from '../clients';
 import type { ModelMap } from '../models';
 import type { Config } from '../types';
 import CanvasTemplateService from './canvasTemplate';
+import CustomBlockService from './customBlock';
 import DiagramService from './diagram';
 import DomainService from './domain';
 import FeatureService from './feature';
@@ -45,6 +46,7 @@ export interface ServiceMap extends BaseServiceMap {
   projectList: ProjectListService;
   variableState: VariableStateService;
   canvasTemplate: CanvasTemplateService;
+  customBlock: CustomBlockService;
 }
 
 interface Options {
@@ -79,6 +81,7 @@ const buildServices = ({ config, clients, models }: Options): ServiceMap => {
     projectList: new ProjectListService(serviceOptions),
     variableState: new VariableStateService(serviceOptions),
     canvasTemplate: new CanvasTemplateService(serviceOptions),
+    customBlock: new CustomBlockService(serviceOptions),
   };
 
   Object.assign(services, serviceMap);

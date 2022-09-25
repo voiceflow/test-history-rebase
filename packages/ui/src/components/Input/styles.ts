@@ -40,6 +40,7 @@ export interface StyledInputProps {
   error?: boolean;
   cursor?: string;
   borderColor?: string;
+  errorBorderColor?: ThemeColor;
   hideDefaultNumberControls?: boolean;
 }
 
@@ -69,9 +70,9 @@ export const inputStyle = css<StyledInputProps>`
     ${inputFocusStyle}
   }
 
-  ${({ error, borderColor }) =>
+  ${({ error, borderColor, errorBorderColor = ThemeColor.RED }) =>
     (error || borderColor) &&
     css`
-      border: 1px solid ${error ? colors(ThemeColor.RED) : borderColor} !important;
+      border: 1px solid ${error ? colors(errorBorderColor) : borderColor} !important;
     `}
 `;

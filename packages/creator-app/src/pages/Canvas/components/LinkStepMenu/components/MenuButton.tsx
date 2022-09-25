@@ -30,7 +30,7 @@ const MenuButton: React.FC<MenuButtonItem> = ({ step, popperContainerRef, upgrad
       {step.steps &&
         isHovered &&
         (step.isLibrary ? (
-          <SubMenu templates={step.steps} popperContainerRef={popperContainerRef} />
+          <SubMenu templates={step.librarySections.templates} popperContainerRef={popperContainerRef} />
         ) : (
           <SubMenu steps={step.steps} popperContainerRef={popperContainerRef} upgradePopperRef={upgradePopperRef} />
         ))}

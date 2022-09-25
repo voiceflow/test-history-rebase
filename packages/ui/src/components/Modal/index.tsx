@@ -23,6 +23,7 @@ export interface ModalProps {
   minHeight?: number;
   fullScreen?: boolean;
   verticalMargin?: number;
+  hideScrollbar?: boolean;
 }
 
 const EXTRA_ANIMATION_TIME = 0.02;
@@ -43,6 +44,7 @@ const Modal = React.forwardRef<HTMLDivElement, React.PropsWithChildren<ModalProp
       className,
       fullScreen = false,
       verticalMargin,
+      hideScrollbar = false,
     },
     ref
   ) => {
@@ -74,6 +76,7 @@ const Modal = React.forwardRef<HTMLDivElement, React.PropsWithChildren<ModalProp
                   fullScreen={fullScreen}
                   verticalMargin={verticalMargin}
                   enterAnimation={enterAnimation}
+                  hideScrollbar={hideScrollbar}
                 >
                   {children}
                 </S.Container>

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.922.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.921.3...@voiceflow/creator-app@1.922.0) (2022-09-25)
+
+
+### Features
+
+* implementing custom blocks (PL-147) ([#6028](https://github.com/voiceflow/creator-app/issues/6028)) ([688319d](https://github.com/voiceflow/creator-app/commit/688319de343b7c484e6c3e204fa777b626982ff6))
+
+
+
+
+
 ## [1.921.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.921.2...@voiceflow/creator-app@1.921.3) (2022-09-23)
 
 

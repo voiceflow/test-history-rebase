@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.161.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.160.2...@voiceflow/realtime-sdk@1.161.0) (2022-09-25)
+
+
+### Features
+
+* implementing custom blocks (PL-147) ([#6028](https://github.com/voiceflow/creator-app/issues/6028)) ([688319d](https://github.com/voiceflow/creator-app/commit/688319de343b7c484e6c3e204fa777b626982ff6))
+
+
+
+
+
 ## [1.160.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.160.1...@voiceflow/realtime-sdk@1.160.2) (2022-09-23)
 
 

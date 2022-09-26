@@ -16,7 +16,7 @@ const Footer = styled(Flex)<{ noItems?: boolean }>`
         `}
 `;
 
-const Action = styled(FlexCenter)<{ disabled?: boolean }>`
+const Action = styled(FlexCenter)<{ disabled?: boolean; borderLeftStyle?: boolean }>`
   ${transition('color', 'background-color')};
 
   flex: 1;
@@ -26,9 +26,13 @@ const Action = styled(FlexCenter)<{ disabled?: boolean }>`
   color: #3d82e2;
   background-color: #fdfdfd;
 
-  &:not(:first-child) {
-    border-left: 1px solid ${({ theme }) => theme.colors.separatorSecondary};
-  }
+  ${({ borderLeftStyle = true }) =>
+    borderLeftStyle &&
+    css`
+      &:not(:first-child) {
+        border-left: 1px solid ${({ theme }) => theme.colors.separatorSecondary};
+      }
+    `}
 
   &:hover {
     color: #3876cb;

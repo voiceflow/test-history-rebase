@@ -63,7 +63,7 @@ const NullPointerStep: React.FC<NullPointerStep> = ({ nodeID, palette, ports }) 
     <Section>
       <Item
         icon="warning"
-        placeholder="Custom block source was deleted"
+        placeholder="Custom block was deleted"
         palette={palette}
         labelVariant={StepLabelVariant.PRIMARY}
         portID={ports.out.dynamic[0]}

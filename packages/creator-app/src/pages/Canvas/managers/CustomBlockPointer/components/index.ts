@@ -1,1 +1,1 @@
-export { default as MissingCustomBlockText } from './missingCustomBlockText';
+export { default as MissingCustomBlockText } from './MissingCustomBlockText';

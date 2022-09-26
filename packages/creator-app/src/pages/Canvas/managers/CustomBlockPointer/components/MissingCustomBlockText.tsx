@@ -13,13 +13,13 @@ const Title = styled.div`
 const StyledSpan = styled.span`
   color: ${({ theme }) => theme.colors.cerulean};
   font-size: ${({ theme }) => theme.fontSizes.s}px;
-  line-height: 20px;
 `;
 
 const Container = styled.div`
   background-color: ${({ theme }) => theme.colors.skyBlue};
   padding: 16px 20px;
   border-radius: 8px;
+  line-height: 20px;
 `;
 
 const MissingCustomBlockText: React.FC = () => (

@@ -1,9 +1,11 @@
 import { Menu } from '@voiceflow/ui';
 
-import { styled } from '@/hocs';
+import { styled, transition } from '@/hocs';
 
-export const StyledAction = styled(Menu.Footer.Action)`
-  background-color: ${({ theme }) => theme.components.sectionV2.accentBackground2};
+export const StyledAction = styled(Menu.Footer.Action).attrs({ borderLeftStyle: false })`
+  ${transition('background-color')}
+  background-color: ${({ theme }) => theme.components.sectionV2.accentBackground};
+
   border-radius: 0px 0px 8px 8px;
   height: 60px;
 `;

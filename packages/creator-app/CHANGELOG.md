@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.924.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.924.0...@voiceflow/creator-app@1.924.1) (2022-09-26)
+
+
+### Bug Fixes
+
+* library step menu shows up even if no templates exist (CT-1033) [bugfix] ([#6132](https://github.com/voiceflow/creator-app/issues/6132)) ([1f27302](https://github.com/voiceflow/creator-app/commit/1f27302f37d7f4c053aac8e410fa53d854f0fe71))
+
+
+
+
+
 # [1.924.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.923.0...@voiceflow/creator-app@1.924.0) (2022-09-26)
 
 

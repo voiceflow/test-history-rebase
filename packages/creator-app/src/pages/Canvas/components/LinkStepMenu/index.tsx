@@ -7,7 +7,7 @@ import * as CustomBlocks from '@/ducks/customBlock';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { usePermission, useSelector } from '@/hooks';
 import { LinkStepMenuContext } from '@/pages/Canvas/contexts';
-import { EVENT_LABEL, getAllSections, LibraryStepType } from '@/pages/Project/components/StepMenu/constants';
+import { EVENT_LABEL, getAllSections, LibraryStepType, TopLibraryItem, TopStepItem } from '@/pages/Project/components/StepMenu/constants';
 
 import { MenuButton } from './components';
 
@@ -60,14 +60,20 @@ const LinkStepMenu: React.FC<{}> = () => {
     return null;
   }
 
+  const canRender = (step: TopStepItem | TopLibraryItem) => {
+    return !step.isLibrary || step.librarySections.templates.length;
+  };
+
   return (
     <Portal portalNode={document.body}>
       <div ref={popper.setPopperElement} style={{ ...popper.styles.popper, zIndex: 10 }} {...popper.attributes.popper}>
         {canEditCanvas && (
           <Menu ref={popperContainerRef} width={148} noMargins>
-            {steps.map((step) => (
-              <MenuButton key={step.label} step={step} popperContainerRef={subMenuContainerRef} upgradePopperRef={upgradePopperRef} />
-            ))}
+            {steps.map((step) =>
+              canRender(step) ? (
+                <MenuButton key={step.label} step={step} popperContainerRef={subMenuContainerRef} upgradePopperRef={upgradePopperRef} />
+              ) : null
+            )}
           </Menu>
         )}
       </div>

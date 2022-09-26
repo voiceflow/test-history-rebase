@@ -3,10 +3,9 @@ import React from 'react';
 
 import { GooglePromptType } from '@/constants';
 import * as Account from '@/ducks/account';
-import { connect, styled } from '@/hocs';
-import { useGoogleLogin } from '@/hooks';
+import { styled } from '@/hocs';
+import { useDispatch, useGoogleLogin } from '@/hooks';
 import * as Models from '@/models';
-import { ConnectedProps } from '@/types';
 import logger from '@/utils/logger';
 
 const GoogleLoginButton = styled(BaseButton)`
@@ -32,20 +31,15 @@ export interface GoogleLoginProps {
   skipLinkGoogleAccount?: boolean;
 }
 
-const GoogleLogin: React.FC<GoogleLoginProps & ConnectedGoogleLoginProps> = ({
-  scopes,
-  onSuccess,
-  onFail,
-  onLoad,
-  linkGoogleAccount,
-  skipLinkGoogleAccount,
-}) => {
+const GoogleLogin: React.FC<GoogleLoginProps> = ({ scopes, onSuccess, onFail, onLoad, skipLinkGoogleAccount }) => {
+  const linkGoogleAccount = useDispatch(Account.google.linkAccount);
   const login = useGoogleLogin(scopes, onLoad, GooglePromptType.CONSENT);
 
   const onLogin = React.useCallback(
     () =>
       login()
         .then(async (code) => {
+          // eslint-disable-next-line promise/always-return
           if (skipLinkGoogleAccount) {
             (onSuccess as LoginDataCallback)({ code });
             return;
@@ -70,10 +64,4 @@ const GoogleLogin: React.FC<GoogleLoginProps & ConnectedGoogleLoginProps> = ({
   );
 };
 
-const mapDispatchToProps = {
-  linkGoogleAccount: Account.google.linkAccount,
-};
-
-type ConnectedGoogleLoginProps = ConnectedProps<{}, typeof mapDispatchToProps>;
-
-export default connect(null, mapDispatchToProps)(GoogleLogin) as React.FC<GoogleLoginProps>;
+export default GoogleLogin;

@@ -1,7 +1,7 @@
 import { Nullable } from '@voiceflow/common';
 
 import client from '@/client';
-import * as Modal from '@/ducks/modal';
+import { openError } from '@/ModalsV2/utils';
 import { Account } from '@/models';
 import { Thunk } from '@/store/types';
 import * as Sentry from '@/vendors/sentry';
@@ -37,6 +37,6 @@ export const unlinkAccount = (): Thunk => async (dispatch) => {
 
     dispatch(updateAccount({ google: null }));
   } catch {
-    dispatch(Modal.setGenericError());
+    openError();
   }
 };

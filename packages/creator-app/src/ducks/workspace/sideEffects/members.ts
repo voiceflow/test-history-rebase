@@ -4,11 +4,11 @@ import { toast } from '@voiceflow/ui';
 
 import * as Errors from '@/config/errors';
 import { EDITOR_SEAT_ROLES } from '@/constants';
-import * as Modal from '@/ducks/modal';
 import * as Session from '@/ducks/session';
 import { trackInvitationCancelled, trackInvitationSent } from '@/ducks/tracking/events/invitation';
 import { waitAsync } from '@/ducks/utils';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
+import { openError } from '@/ModalsV2/utils';
 import { Thunk } from '@/store/types';
 
 import { extractErrorMessages } from '../utils';
@@ -30,7 +30,7 @@ export const acceptInvite =
         return null;
       }
 
-      dispatch(Modal.setError(err));
+      openError({ error: err });
       return null;
     }
   };

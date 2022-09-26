@@ -138,7 +138,7 @@ export const useItemConfig = (getManager: ManagerGetter, data: Realtime.NodeData
       return {
         icon: manager.icon,
         isEmpty: false,
-        defaultName: manager.factory?.()?.data.name ?? '',
+        defaultName: (manager.factory?.()?.data.name as string) ?? '',
         placeholder: manager.label ?? 'Unknown action',
       };
   }

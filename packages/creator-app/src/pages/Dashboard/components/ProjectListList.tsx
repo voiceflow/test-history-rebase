@@ -52,7 +52,6 @@ const ProjectListList: React.FC<ProjectListListProps> = ({ workspace, filter, is
   const projectLists = useSelector(ProjectListV2.allProjectListsSelector);
   const createList = useDispatch(ProjectList.createProjectList);
   const setConfirm = useDispatch(Modal.setConfirm);
-  const setError = useDispatch(Modal.setError);
   const deleteList = useDispatch(ProjectList.deleteProjectList);
   const renameList = useDispatch(ProjectList.renameProjectList);
   const transplantProjectBetweenLists = useDispatch(ProjectList.transplantProjectBetweenLists);
@@ -63,8 +62,8 @@ const ProjectListList: React.FC<ProjectListListProps> = ({ workspace, filter, is
 
   const upgradeModal = ModalsV2.useModal(ModalsV2.Upgrade);
   const projectCreateModal = ModalsV2.useModal(ModalsV2.Project.Create);
-
   const projectsLimit = usePlanLimited({ type: LimitType.PROJECTS, value: projects.length, limit: workspace?.projects ?? 2 });
+  const errorModal = ModalsV2.useModal(ModalsV2.Error);
 
   const onCreateList = React.useCallback(async () => {
     const list = await createList();
@@ -96,7 +95,7 @@ const ProjectListList: React.FC<ProjectListListProps> = ({ workspace, filter, is
       ),
 
       confirm: async () => {
-        await deleteList(id).catch((err) => setError(err.message));
+        await deleteList(id).catch((err) => errorModal.openVoid({ error: err.message }));
       },
     });
   }, []);

@@ -9,8 +9,9 @@ import ReactJson from 'react-json-view';
 
 import { textEditorContentAdapter } from '@/client/adapters/textEditor';
 import { DefaultModal } from '@/components/modals';
-import { setConfirm, setError } from '@/ducks/modal';
+import { setConfirm } from '@/ducks/modal';
 import { connect } from '@/hocs';
+import * as ModalsV2 from '@/ModalsV2';
 import { PrefixText } from '@/pages/Canvas/components/PrefixedVariableSelect/components/Prefix';
 import IntegrationsService from '@/services/Integrations';
 import { copyJSONPath } from '@/utils/dom';
@@ -102,14 +103,14 @@ class TestSection extends Component {
   };
 
   makeRequest = async () => {
-    const { data, setError } = this.props;
+    const { data } = this.props;
 
     const selected_integration = data.selectedIntegration;
     const selected_action = data.selectedAction;
     const { variableValues } = this.state;
 
-    if (!selected_action) {
-      setError(new Error('Test failed! Please select an action'));
+    if (selected_action) {
+      ModalsV2.openError({ error: new Error('Test failed! Please select an action') });
     } else {
       const actionsData = {
         user: data.user,
@@ -123,7 +124,9 @@ class TestSection extends Component {
         const test = SERVICES_MAP[selected_integration] && SERVICES_MAP[selected_integration][selected_action];
 
         if (!test) {
-          return setError(new Error(`No test found for action "${selected_action}" and integration "${selected_integration}"`));
+          return ModalsV2.openError({
+            error: new Error(`No test found for action "${selected_action}" and integration "${selected_integration}"`),
+          });
         }
 
         let params = _cloneDeep(actionsData);
@@ -157,7 +160,7 @@ class TestSection extends Component {
           });
         }
       } catch (e) {
-        setError(e);
+        ModalsV2.openError({ error: e });
         this.setState({
           test_loading: false,
           test_content: null,
@@ -169,7 +172,7 @@ class TestSection extends Component {
   checkResult = (result) => {
     if (result) {
       if (typeof result === 'object' && result.VF_STATUS_CODE >= 400) {
-        this.props.setError(`Error: Request failed with status Code: ${result.VF_STATUS_CODE}`);
+        ModalsV2.openError({ error: `Error: Request failed with status Code: ${result.VF_STATUS_CODE}` });
       }
       if (typeof result === 'string' && result.length > 10000) {
         return { response: `${result.substring(0, Math.min(result.length, 10000))}...` };
@@ -179,7 +182,7 @@ class TestSection extends Component {
       }
       return { response: result };
     }
-    this.props.setError('Something went wrong. Please check your request.');
+    ModalsV2.openError({ error: 'Something went wrong. Please check your request.' });
     return { message: 'Something went wrong. Please check your request.' };
   };
 
@@ -268,7 +271,6 @@ class TestSection extends Component {
 
 const mapDispatchToProps = {
   setConfirm: (confirm) => setConfirm(confirm),
-  setError: (error) => setError(error),
 };
 
 export default connect(null, mapDispatchToProps)(TestSection);

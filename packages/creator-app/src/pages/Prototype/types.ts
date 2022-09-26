@@ -154,7 +154,7 @@ export interface PrototypeActions {
   setActiveDiagramID?: (id: string) => void;
   updatePrototypeVisualsDataHistory?: (data: Nullable<BaseNode.Visual.StepData>[]) => void;
   updatePrototypeStatus?: (data: PrototypeStatus) => void;
-  setError?: (data: string) => void;
+  setError?: (error: string) => Promise<void>;
 }
 
 export interface PrototypeAllTypes {

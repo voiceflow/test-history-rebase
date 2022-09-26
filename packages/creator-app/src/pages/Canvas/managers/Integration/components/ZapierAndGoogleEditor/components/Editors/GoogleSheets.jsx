@@ -2,10 +2,10 @@ import { BaseNode } from '@voiceflow/base-types';
 import _isEmpty from 'lodash/isEmpty';
 import React, { useCallback, useEffect } from 'react';
 
-import { setError } from '@/ducks/modal';
 import * as Session from '@/ducks/session';
 import * as VersionV2 from '@/ducks/versionV2';
 import { connect } from '@/hocs';
+import * as ModalsV2 from '@/ModalsV2';
 import { Content } from '@/pages/Canvas/components/Editor';
 import IntegrationsService from '@/services/Integrations';
 
@@ -50,7 +50,7 @@ const SelectGoogleSheetNextStep = (data) => {
   return nextStep;
 };
 
-function GoogleSheetsEditor({ data, onChange, creatorID, versionID, setError, currentStep, toggleStep, setStep }) {
+function GoogleSheetsEditor({ data, onChange, creatorID, versionID, currentStep, toggleStep, setStep }) {
   const [headers_list, setHeadersList] = React.useState([]);
 
   const updateHeaders = useCallback(async () => {
@@ -66,9 +66,9 @@ function GoogleSheetsEditor({ data, onChange, creatorID, versionID, setError, cu
       const headers = await IntegrationsService.googleSheets.getSheetHeaders(spreadSheetId, sheetId, integrationsUser, creatorID, versionID);
       setHeadersList(headers);
     } catch (e) {
-      setError(new Error('Blank or invalid headers in spreadsheet. The first row of your spreadsheet must be a header row'));
+      ModalsV2.openError({ error: new Error('Blank or invalid headers in spreadsheet. The first row of your spreadsheet must be a header row') });
     }
-  }, [creatorID, data.sheet, data.spreadsheet, data.user, setError, versionID]);
+  }, [creatorID, data.sheet, data.spreadsheet, data.user, versionID]);
 
   useEffect(() => {
     updateHeaders();
@@ -165,10 +165,6 @@ const mapStateToProps = {
   creatorID: VersionV2.active.creatorIDSelector,
 };
 
-const mapDispatchToProps = {
-  setError,
-};
-
 const GoogleSheetsWithSteps = DropdownStepEditor(GoogleSheetsEditor, Step.SELECT_ACTION);
 
-export default connect(mapStateToProps, mapDispatchToProps)(GoogleSheetsWithSteps);
+export default connect(mapStateToProps)(GoogleSheetsWithSteps);

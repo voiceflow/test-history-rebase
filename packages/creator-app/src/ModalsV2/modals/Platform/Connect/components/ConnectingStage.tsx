@@ -4,12 +4,12 @@ import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import { linkGraphic } from '@/assets';
-import AmazonLoginButton from '@/components/Forms/AmazonLogin';
 import GoogleLoginButton from '@/components/Forms/GoogleLogin';
 import { GOOGLE_OAUTH_SCOPES } from '@/constants';
 import { getPlatformValue } from '@/utils/platform';
 
 import { PlatformAccount } from '../types';
+import AmazonLoginButton from './AmazonLogin';
 
 interface StageMeta {
   title: string;

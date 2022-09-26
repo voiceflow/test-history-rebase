@@ -44,7 +44,6 @@ const usePrototype = ({ debug, config, state, actions, isPublic, waitVisuals = t
     getEngine,
     isMuted,
     isPublic,
-    setError,
     activePaths,
     enterDiagram: setActiveDiagramID,
     waitVisuals,
@@ -62,6 +61,7 @@ const usePrototype = ({ debug, config, state, actions, isPublic, waitVisuals = t
     globalMessageDelayMilliseconds: globalDelayInMilliseconds,
     updatePrototypeVisualsData,
     updatePrototypeVisualsDataHistory,
+    setError,
   };
 
   const cache = React.useRef(cacheData);

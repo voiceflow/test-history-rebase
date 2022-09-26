@@ -152,6 +152,7 @@
     "@types/gapi.auth2": "0.0.56",
     "@types/jsonwebtoken": "8.5.8",
     "@types/lodash": "4.14.182",
+    "@types/login-with-amazon-sdk-browser": "1.0.3",
     "@types/loglevel": "1.6.3",
     "@types/markdown-to-jsx": "6.11.3",
     "@types/mousetrap": "1.6.9",

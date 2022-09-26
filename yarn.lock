@@ -4291,6 +4291,11 @@
   resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.180.tgz#4ab7c9ddfc92ec4a887886483bc14c79fb380670"
   integrity sha512-XOKXa1KIxtNXgASAnwj7cnttJxS4fksBRywK/9LzRV5YxrF80BXZIGeQSuoESQ/VkUj30Ae0+YcuHc15wJCB2g==
 
+"@types/login-with-amazon-sdk-browser@1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@types/login-with-amazon-sdk-browser/-/login-with-amazon-sdk-browser-1.0.3.tgz#6007525a3b5817141954f71bfed270e785cf3c41"
+  integrity sha512-QBkIBa6T+e1eykldYg1ngHeBdLqFsDcpBad5meIQvqDXDiC9l54/dNnmbhk/tF9y1HMmhXYFwPu5COdUkHvtZg==
+
 "@types/loglevel@1.6.3":
   version "1.6.3"
   resolved "https://registry.yarnpkg.com/@types/loglevel/-/loglevel-1.6.3.tgz#b9852b8fdfd773e18728caf3299e3aba6e5bcae6"

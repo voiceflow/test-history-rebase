@@ -75,7 +75,6 @@ const suite = createSuite(() => ({
       props: {
         debug,
         getEngine: () => engine,
-        setError: vi.fn(),
         enterDiagram: vi.fn(),
         fetchContext: vi.fn().mockReturnValue(context),
         updateStatus: vi.fn(),
@@ -92,6 +91,7 @@ const suite = createSuite(() => ({
         visualDataHistory: [null],
         updatePrototypeVisualsData: vi.fn(),
         updatePrototypeVisualsDataHistory: vi.fn(),
+        setError: vi.fn(),
       },
       audio,
       timeout,

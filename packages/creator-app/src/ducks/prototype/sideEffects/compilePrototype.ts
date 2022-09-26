@@ -1,15 +1,15 @@
 import client from '@/client';
 import * as Errors from '@/config/errors';
 import { PrototypeRenderSyncOptions } from '@/constants/prototype';
-import * as Modal from '@/ducks/modal';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
+import { openError } from '@/ModalsV2/utils';
 import { Thunk } from '@/store/types';
 import * as Sentry from '@/vendors/sentry';
 
 const compilePrototype =
   (compilerOptions?: PrototypeRenderSyncOptions): Thunk =>
-  async (dispatch, getState) => {
+  async (_, getState) => {
     const state = getState();
     const platform = ProjectV2.active.platformSelector(state);
     const projectID = Session.activeProjectIDSelector(state);
@@ -24,7 +24,7 @@ const compilePrototype =
       await platformPrototypeService.renderSync(versionID, compilerOptions);
     } catch (err) {
       Sentry.error(err);
-      dispatch(Modal.setError('Could Not Render Your Test Project'));
+      return openError({ error: 'Could Not Render Your Test Project' });
     }
   };
 

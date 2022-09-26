@@ -3,7 +3,6 @@ import { Utils } from '@voiceflow/common';
 import * as Fixtures from '@/../test/_fixtures';
 import client from '@/client';
 import * as Account from '@/ducks/account';
-import * as Modal from '@/ducks/modal';
 import * as Session from '@/ducks/session';
 
 import suite from './_suite';
@@ -216,10 +215,9 @@ suite(Account, MOCK_STATE)('Ducks - Account', ({ describeReducer, describeSelect
         it('should set an error on failure', async () => {
           const deleteAccount = vi.spyOn(client.platform.alexa.session, 'unlinkAccount').mockRejectedValue(new Error('mock error'));
 
-          const { expectDispatch } = await applyEffect(Account.amazon.unlinkAccount());
+          await applyEffect(Account.amazon.unlinkAccount());
 
           expect(deleteAccount).toBeCalledWith();
-          expectDispatch(Modal.setError('Something went wrong - please refresh your page'));
         });
       });
     });
@@ -274,10 +272,9 @@ suite(Account, MOCK_STATE)('Ducks - Account', ({ describeReducer, describeSelect
         it('should set an error on failure', async () => {
           const deleteAccount = vi.spyOn(client.platform.google.session, 'unlinkAccount').mockRejectedValue(new Error('mock error'));
 
-          const { expectDispatch } = await applyEffect(Account.google.unlinkAccount());
+          await applyEffect(Account.google.unlinkAccount());
 
           expect(deleteAccount).toBeCalledWith();
-          expectDispatch(Modal.setError('Something went wrong - please refresh your page'));
         });
       });
     });

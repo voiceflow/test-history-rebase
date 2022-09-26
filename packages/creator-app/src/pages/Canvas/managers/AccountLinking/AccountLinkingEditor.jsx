@@ -7,10 +7,10 @@ import React from 'react';
 import { SubHeader } from '@/components/Page/components';
 import Section from '@/components/Section';
 import SubHeaderTabs from '@/components/Tabs';
-import * as Modal from '@/ducks/modal';
 import * as Version from '@/ducks/version';
 import { connect } from '@/hocs';
 import { useSmartReducer } from '@/hooks';
+import * as ModalsV2 from '@/ModalsV2';
 import { Content, Controls, FormControl } from '@/pages/Canvas/components/Editor';
 
 import { Client, Domain, HelpTooltip, Scope, SpinnerContainer } from './components';
@@ -22,7 +22,7 @@ const TAB_COMPONENTS = {
   domain: Domain,
 };
 
-function AccountLinkingEditor({ data, isOpen, setError, loadAccountLinking, patchSettings }) {
+function AccountLinkingEditor({ data, isOpen, loadAccountLinking, patchSettings }) {
   const [activeTab, setActiveTab] = React.useState(null);
   const [isLoading, setLoading] = React.useState(true);
   const [state, actions] = useSmartReducer(EMPTY_ACCOUNT_DATA);
@@ -34,7 +34,7 @@ function AccountLinkingEditor({ data, isOpen, setError, loadAccountLinking, patc
     try {
       await patchSettings({ accountLinking: stateRef.current });
     } catch (err) {
-      setError({ message: 'Unable to save template' });
+      ModalsV2.openError({ error: 'Unable to save template' });
     }
   }, []);
 
@@ -49,9 +49,9 @@ function AccountLinkingEditor({ data, isOpen, setError, loadAccountLinking, patc
       }
       setLoading(false);
     } catch (err) {
-      setError({ message: 'Unable to Retrieve Account Linking Info' });
+      ModalsV2.openError({ error: 'Unable to Retrieve Account Linking Info' });
     }
-  }, [loadAccountLinking, actions, setError]);
+  }, [loadAccountLinking, actions]);
 
   React.useEffect(() => {
     stateRef.current = state;
@@ -162,7 +162,6 @@ function AccountLinkingEditor({ data, isOpen, setError, loadAccountLinking, patc
 }
 
 const mapDispatchToProps = {
-  setError: Modal.setError,
   patchSettings: Version.alexa.patchSettings,
   loadAccountLinking: Version.alexa.loadAccountLinking,
 };

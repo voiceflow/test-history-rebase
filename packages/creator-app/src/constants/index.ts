@@ -240,8 +240,6 @@ export const AV_FORMATS_STREAMING = [...AV_FILE_FORMATS, 'audio/x-mpegurl', 'app
 export enum ModalType {
   PAYMENT = 'payment',
 
-  SUCCESS = 'success',
-
   SLOT_EDIT = 'slot-edit',
   INTERACTION_MODEL = 'interaction-model',
 

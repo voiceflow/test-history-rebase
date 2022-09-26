@@ -1,4 +1,3 @@
-import { Nullable } from '@voiceflow/common';
 import { Modal } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
@@ -7,19 +6,16 @@ import { AlexaStageType, DialogflowESStageType, GoogleStageType } from '@/consta
 import * as ProjectV2 from '@/ducks/projectV2';
 import { SourceType } from '@/ducks/tracking/constants';
 import { useSelector, useTrackingEvents } from '@/hooks';
-import { Account } from '@/models';
-import * as Models from '@/models';
 
 import manager from '../../../manager';
 import { ConnectingStage, IdleStage } from './components';
+import { PlatformAccount } from './types';
 
 export interface BaseConnectProps {
   stage?: AlexaStageType | GoogleStageType | DialogflowESStageType;
   source: SourceType;
   platform?: VoiceflowConstants.PlatformType;
 }
-
-type PlatformAccount = Nullable<Account> | Models.Account.Google;
 
 const IDLE_STAGES = new Set([AlexaStageType.IDLE, GoogleStageType.IDLE, DialogflowESStageType.IDLE]);
 

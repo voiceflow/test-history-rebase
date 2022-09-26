@@ -3,11 +3,11 @@ import React from 'react';
 import validUrl from 'valid-url';
 
 import { ControlledGuidedSteps as GuidedSteps, GuidedStepsWrapper } from '@/components/GuidedSteps';
-import * as Modal from '@/ducks/modal';
 import * as Product from '@/ducks/product';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useDispatch, useSelector } from '@/hooks';
+import * as ModalsV2 from '@/ModalsV2';
 import { useAlexaPublishContext } from '@/platforms/alexa/jobs/publish/hooks';
 import AlexaSubmit from '@/platforms/alexa/jobs/submit';
 
@@ -69,7 +69,7 @@ const PublishAmazonForm: React.FC<PublishAmazonFormProps> = () => {
   const projectName = useSelector(ProjectV2.active.nameSelector);
   const { onPublish } = useAlexaPublishContext({ submit: true });
 
-  const setError = useDispatch(Modal.setError);
+  const errorModal = ModalsV2.useModal(ModalsV2.Error);
   const updateAllProductLocales = useDispatch(Product.updateAllProductLocales);
 
   const validateForm = React.useCallback(async () => {
@@ -79,28 +79,28 @@ const PublishAmazonForm: React.FC<PublishAmazonFormProps> = () => {
 
     switch (true) {
       case inReview:
-        setError('This skill is currently under review and can not be resubmitted');
+        errorModal.openVoid({ error: 'This skill is currently under review and can not be resubmitted' });
         break;
       case privacyPolicy && !validUrl.isUri(privacyPolicy):
-        setError('Privacy policy must be a url');
+        errorModal.openVoid({ error: 'Privacy policy must be a url' });
         break;
       case termsAndConditions && !validUrl.isUri(termsAndConditions):
-        setError('Terms and conditions must be a url');
+        errorModal.openVoid({ error: 'Terms and conditions must be a url' });
         break;
       case splitKeywords.length > 30:
-        setError('Limited to 30 keywords');
+        errorModal.openVoid({ error: 'Limited to 30 keywords' });
         break;
       case keywords.length - splitKeywords.length + 1 > 500:
-        setError('All keywords must be less than or equal to 30 keywords or 150 characters.');
+        errorModal.openVoid({ error: 'All keywords must be less than or equal to 30 keywords or 150 characters.' });
         break;
       case !forExport:
-        setError('Please Certify Alexa Skill Import/Export in Privacy/Complicance');
+        errorModal.openVoid({ error: 'Please Certify Alexa Skill Import/Export in Privacy/Complicance' });
         break;
       case !instructions:
-        setError('Please Provide Testing Instructions');
+        errorModal.openVoid({ error: 'Please Provide Testing Instructions' });
         break;
       case !locales?.length:
-        setError('Please select at least one locale');
+        errorModal.openVoid({ error: 'Please select at least one locale' });
         break;
       default: {
         try {
@@ -117,7 +117,7 @@ const PublishAmazonForm: React.FC<PublishAmazonFormProps> = () => {
         }
       }
     }
-  }, [setError, onPublish, inReview, publishing]);
+  }, [errorModal, onPublish, inReview, publishing]);
 
   const checkValidStep = React.useCallback(
     (stepNumber: number) => {

@@ -52,7 +52,6 @@ export interface TraceControllerProps {
   debug: boolean;
   getEngine: () => Nullish<Engine>;
   isMuted?: boolean;
-  setError: (error: string) => void;
   isPublic?: boolean;
   enterDiagram?: (diagramID: string) => void;
   contextStep: number;
@@ -69,6 +68,7 @@ export interface TraceControllerProps {
   visualDataHistory: (null | BaseNode.Visual.StepData)[];
   updatePrototypeVisualsData: (data: null | BaseNode.Visual.StepData) => void;
   updatePrototypeVisualsDataHistory: (dataHistory: (null | BaseNode.Visual.StepData)[]) => void;
+  setError: VoidFunction | ((error: string) => Promise<void>);
   globalMessageDelayMilliseconds?: number;
 }
 

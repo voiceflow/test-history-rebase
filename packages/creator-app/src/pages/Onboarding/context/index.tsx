@@ -11,7 +11,6 @@ import { Redirect, useLocation } from 'react-router-dom';
 import { receiptGraphic } from '@/assets';
 import { IS_PRIVATE_CLOUD } from '@/config';
 import { Path } from '@/config/routes';
-import { ModalType } from '@/constants';
 import { getDefaultPlatformLanguageLabel } from '@/constants/platforms';
 import * as Account from '@/ducks/account';
 import * as Project from '@/ducks/project';
@@ -21,7 +20,8 @@ import * as Tracking from '@/ducks/tracking';
 import * as Workspace from '@/ducks/workspace';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { withStripe } from '@/hocs';
-import { useDispatch, useModals, useSelector, useSmartReducer, useTrackingEvents } from '@/hooks';
+import { useDispatch, useSelector, useSmartReducer, useTrackingEvents } from '@/hooks';
+import * as ModalsV2 from '@/ModalsV2';
 import * as Sentry from '@/vendors/sentry';
 import * as Userflow from '@/vendors/userflow';
 
@@ -129,7 +129,7 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
   const hasFixedPeriod = !!query.ob_period;
   const { plan, period, couponCode, flow, seats } = OnboardingUtils.extractQueryParams(query, isLoggedIn);
   const isFirstSession = firstLogin;
-  const { open: openSuccessModal } = useModals(ModalType.SUCCESS);
+  const successModal = ModalsV2.useModal(ModalsV2.Success);
 
   // if the user has existing workspaces they are owners of
   const hasWorkspaces = React.useMemo(
@@ -391,7 +391,7 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
         if (!IS_PRIVATE_CLOUD && hasWorkspaces && !isAdminOfEnterprisePlan) {
           const message = `Your Voiceflow ${state.paymentMeta.plan} subscription has been activated.`;
 
-          openSuccessModal({ title: 'Payment Successful', message, icon: receiptGraphic, variant: ButtonVariant.TERTIARY });
+          successModal.openVoid({ header: 'Payment Successful', message, icon: receiptGraphic, buttonVariant: ButtonVariant.TERTIARY });
         }
       }
       toast.success('Successfully created workspace');

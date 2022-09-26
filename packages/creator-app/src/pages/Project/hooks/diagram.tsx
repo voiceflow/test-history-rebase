@@ -9,6 +9,7 @@ import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Domain from '@/ducks/domain';
 import * as Modal from '@/ducks/modal';
 import { useDispatch, useLinkedState, usePermission, useSelector, useToggle } from '@/hooks';
+import * as ModalsV2 from '@/ModalsV2';
 import * as Sentry from '@/vendors/sentry';
 
 interface DiagramRenameApi {
@@ -99,7 +100,6 @@ interface DiagramOptionsOptions {
 
 export const useDiagramOptions = ({ onEdit, onRename, diagramID }: DiagramOptionsOptions): MenuTypes.OptionWithoutValue[] => {
   const deleteDiagram = useDispatch(Diagram.deleteDiagram);
-  const setErrorModal = useDispatch(Modal.setError);
   const setConfirmModal = useDispatch(Modal.setConfirm);
   const duplicateComponent = useDispatch(Diagram.duplicateComponent);
   const convertComponentToTopic = useDispatch(Diagram.convertComponentToTopic);
@@ -108,6 +108,8 @@ export const useDiagramOptions = ({ onEdit, onRename, diagramID }: DiagramOption
   const getDiagramByID = useSelector(DiagramV2.getDiagramByIDSelector);
 
   const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
+
+  const errorModal = ModalsV2.useModal(ModalsV2.Error);
 
   const onDuplicate = React.useCallback(() => {
     if (!diagramID) {
@@ -144,7 +146,7 @@ export const useDiagramOptions = ({ onEdit, onRename, diagramID }: DiagramOption
 
       confirm: () => {
         deleteDiagram(diagramID).catch(() =>
-          setErrorModal(`Another user is currently using this ${label}. Please wait until they're done before deleting`)
+          errorModal.openVoid({ error: `Another user is currently using this ${label}. Please wait until they're done before deleting` })
         );
       },
     });

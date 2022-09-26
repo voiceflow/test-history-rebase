@@ -1,0 +1,64 @@
+import { Alert, Box, Button, ButtonVariant, Modal } from '@voiceflow/ui';
+import React from 'react';
+
+import { supportGraphic } from '@/assets';
+
+import manager from '../manager';
+
+const GENERIC_ERROR = 'Something went wrong - please refresh your page';
+
+interface RawError {
+  message?: unknown;
+  data?: unknown;
+  violations?: { message: React.ReactNode }[];
+  [key: string]: unknown;
+}
+
+export interface Props {
+  error?: string | RawError;
+}
+
+const Error = manager.create<Props>('Error', () => ({ api, type, opened, hidden, animated, error: propError }) => {
+  let error = propError;
+
+  if (!error) {
+    error = GENERIC_ERROR;
+  }
+
+  if (typeof error === 'string') {
+    error = { message: error };
+  }
+
+  if (!error.message && error.data) {
+    error = { ...error, message: error.data };
+  }
+
+  return (
+    <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} maxWidth={350}>
+      <Modal.Body padding="16px !important" textAlign="center">
+        <img src={supportGraphic} alt="Support" height={80} />
+        {error.message ? (
+          <>
+            <Box my={20}>{error.message}</Box>
+
+            {error.violations?.map((violation, i) => (
+              <Alert key={i} variant={Alert.Variant.DANGER}>
+                {violation.message}
+              </Alert>
+            ))}
+          </>
+        ) : (
+          <Alert variant={Alert.Variant.DANGER}>{typeof error === 'string' ? error : error.error}</Alert>
+        )}
+      </Modal.Body>
+
+      <Modal.Footer>
+        <Button variant={ButtonVariant.TERTIARY} onClick={() => api.close()}>
+          Return
+        </Button>
+      </Modal.Footer>
+    </Modal>
+  );
+});
+
+export default Error;

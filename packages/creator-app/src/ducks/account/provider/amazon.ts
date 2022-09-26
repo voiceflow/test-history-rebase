@@ -2,10 +2,10 @@ import { Nullable } from '@voiceflow/common';
 
 import client from '@/client';
 import * as Errors from '@/config/errors';
-import * as Modal from '@/ducks/modal';
 import * as Project from '@/ducks/project';
 import { ownVendorIDSelector } from '@/ducks/projectV2/selectors/active/alexa';
 import * as Session from '@/ducks/session';
+import { openError } from '@/ModalsV2/utils';
 import { Account } from '@/models';
 import { Thunk } from '@/store/types';
 import * as Sentry from '@/vendors/sentry';
@@ -40,7 +40,7 @@ export const unlinkAccount = (): Thunk => async (dispatch) => {
 
     dispatch(updateAccount({ amazon: null }));
   } catch {
-    dispatch(Modal.setGenericError());
+    openError();
   }
 };
 

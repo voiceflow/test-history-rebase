@@ -8,6 +8,7 @@ import * as Integration from '@/ducks/integration';
 import * as Modal from '@/ducks/modal';
 import * as Session from '@/ducks/session';
 import { connect } from '@/hocs';
+import * as ModalsV2 from '@/ModalsV2';
 
 class StartTrigger extends Component {
   constructor(props) {
@@ -35,7 +36,7 @@ class StartTrigger extends Component {
   }
 
   deleteUser(ev, user) {
-    const { setConfirm, clearModal, deleteUser, versionID, integration_user_error, setError } = this.props;
+    const { setConfirm, clearModal, deleteUser, versionID, integration_user_error } = this.props;
     ev.stopPropagation();
 
     const { data } = this.props;
@@ -57,14 +58,14 @@ class StartTrigger extends Component {
         try {
           await deleteUser(data.selectedIntegration, targetTrigger);
           if (integration_user_error) {
-            setError(integration_user_error);
+            ModalsV2.openError({ error: integration_user_error });
           } else if (targetTrigger.user.integration_user_id === data.user.integration_user_id) {
             this.props.onChange({
               user: {},
             });
           }
         } catch (e) {
-          setError(e);
+          ModalsV2.openError({ error: e });
         }
       },
     });
@@ -78,7 +79,6 @@ class StartTrigger extends Component {
     const {
       user_modal: AddUserModal,
       integration_users,
-      setError,
       integration_user_error,
       versionID,
       integration_users_loading: props_integration_users_loading,
@@ -99,10 +99,10 @@ class StartTrigger extends Component {
               data={this.props.data}
               onChange={this.props.onChange}
               toggle={this.toggleAddUserModal}
-              onError={(e) => setError(e)}
+              onError={(e) => ModalsV2.openError({ error: e })}
               onSuccess={(users) => {
                 if (integration_user_error) {
-                  setError(integration_user_error);
+                  ModalsV2.openError({ error: integration_user_error });
                   return;
                 }
                 const zapierUsers = users.Zapier;
@@ -166,7 +166,6 @@ const mapStateToProps = {
 const mapDispatchToProps = {
   setConfirm: Modal.setConfirm,
   clearModal: Modal.clearModal,
-  setError: Modal.setError,
   deleteUser: Integration.deleteIntegrationUser,
 };
 

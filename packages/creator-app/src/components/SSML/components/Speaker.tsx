@@ -4,6 +4,7 @@ import React from 'react';
 
 import client from '@/client';
 import { useEnableDisable } from '@/hooks/toggle';
+import * as ModalsV2 from '@/ModalsV2';
 import { ClassName } from '@/styles/constants';
 import * as Sentry from '@/vendors/sentry';
 
@@ -12,11 +13,10 @@ import SpeakerWrapper from './SpeakerWrapper';
 interface SpeakerProps {
   voice: string;
   platform?: VoiceflowConstants.PlatformType;
-  setError?: (error?: string) => void;
   getSSMLToPlay: () => string;
 }
 
-const Speaker: React.FC<SpeakerProps> = ({ voice, platform, setError, getSSMLToPlay }) => {
+const Speaker: React.FC<SpeakerProps> = ({ voice, platform, getSSMLToPlay }) => {
   const audio = React.useMemo(() => new Audio(), []);
   const [audioArray, setAudioArray] = React.useState<string[]>([]);
   const [currentAudioIndex, setCurrentAudioIndex] = React.useState<number>(0);
@@ -73,7 +73,7 @@ const Speaker: React.FC<SpeakerProps> = ({ voice, platform, setError, getSSMLToP
       audio.play();
       cashedSSML.current = ssmlToSpeak;
     } catch (err) {
-      setError?.('Unable to play SSML');
+      ModalsV2.openError({ error: 'Unable to play SSML' });
     }
 
     disableLoading();

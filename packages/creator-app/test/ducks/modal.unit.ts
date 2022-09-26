@@ -28,18 +28,6 @@ suite(Modal, MOCK_STATE)('Ducks - Modal', ({ describeReducer }) => {
       });
     });
 
-    describe('setError()', () => {
-      const message = 'failed to perform action';
-
-      it('should set a simple error modal', () => {
-        expectAction(Modal.setError(message)).toModify({ errorModal: { message } });
-      });
-
-      it('should set an error modal from an object', () => {
-        expectAction(Modal.setError({ data: message })).toModify({ errorModal: { data: message, message } });
-      });
-    });
-
     describe('setModal()', () => {
       it('should set the active modal', () => {
         const modal = { value: 'prompt user' } as any;

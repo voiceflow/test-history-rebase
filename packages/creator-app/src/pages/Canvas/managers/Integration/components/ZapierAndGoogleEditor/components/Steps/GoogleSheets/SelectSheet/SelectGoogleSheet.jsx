@@ -4,8 +4,8 @@ import Select from 'react-select';
 import AsyncSelect from 'react-select/async';
 
 import { logsIcon } from '@/assets';
-import * as Modal from '@/ducks/modal';
-import { connect, styled } from '@/hocs';
+import { styled } from '@/hocs';
+import * as ModalsV2 from '@/ModalsV2';
 import IntegrationsService from '@/services/Integrations';
 import { openURLInANewTab } from '@/utils/window';
 import * as Sentry from '@/vendors/sentry';
@@ -13,7 +13,7 @@ import * as Sentry from '@/vendors/sentry';
 const SpreadSheetIcon = styled.img`
   cursor: pointer;
 `;
-function SelectGoogleSheet({ selectedAction, data, setError, user, updateHeaders, openNextStep, onChange }) {
+function SelectGoogleSheet({ selectedAction, data, user, updateHeaders, openNextStep, onChange }) {
   const [sheets_loading, setSheetsLoading] = React.useState(false);
   const [sheets_list, setSheetList] = React.useState([]);
 
@@ -41,7 +41,7 @@ function SelectGoogleSheet({ selectedAction, data, setError, user, updateHeaders
       setSheetList(sheets);
     } catch (e) {
       Sentry.error(e);
-      setError(e);
+      ModalsV2.openError({ error: e });
     }
     setSheetsLoading(false);
   };
@@ -128,7 +128,4 @@ function SelectGoogleSheet({ selectedAction, data, setError, user, updateHeaders
   );
 }
 
-const mapDispatchToProps = {
-  setError: Modal.setError,
-};
-export default connect(null, mapDispatchToProps)(SelectGoogleSheet);
+export default SelectGoogleSheet;

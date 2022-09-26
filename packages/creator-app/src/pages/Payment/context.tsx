@@ -21,6 +21,7 @@ import {
   useSmartReducer,
   useTrackingEvents,
 } from '@/hooks';
+import * as ModalsV2 from '@/ModalsV2';
 import { DBPaymentSource } from '@/models/Billing';
 import * as Sentry from '@/vendors/sentry';
 
@@ -117,8 +118,8 @@ const PaymentContextProvider: React.FC<PaymentContextProviderProps> = ({ stripe,
 
   const checkHash = React.useRef<string | null>(null);
 
-  const { open: openSuccessModal } = useModals(ModalType.SUCCESS);
-  const { close: closePaymentsModal } = useModals(ModalType.PAYMENT);
+  const successModal = ModalsV2.useModal(ModalsV2.Success);
+  const paymentsModal = useModals(ModalType.PAYMENT);
 
   const [state, actions] = useSmartReducer({
     view: VIEWS.checkout,
@@ -208,8 +209,8 @@ const PaymentContextProvider: React.FC<PaymentContextProviderProps> = ({ stripe,
       if (onCheckout) {
         onCheckout(message);
       } else {
-        closePaymentsModal();
-        openSuccessModal({ title: 'Payment Successful', message, icon: receiptGraphic, variant: ButtonVariant.TERTIARY });
+        paymentsModal.close();
+        successModal.openVoid({ header: 'Payment Successful', message, icon: receiptGraphic, buttonVariant: ButtonVariant.TERTIARY });
       }
 
       trackingEvents.trackUpgrade({

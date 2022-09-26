@@ -1,4 +1,4 @@
-import { css, keyframes } from '@/hocs';
+import { css, keyframes } from '@/hocs/styled';
 
 const SpinKeyframes = keyframes`
   to {

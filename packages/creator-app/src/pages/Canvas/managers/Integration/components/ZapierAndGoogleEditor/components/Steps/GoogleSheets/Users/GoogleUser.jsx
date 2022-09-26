@@ -11,6 +11,7 @@ import * as Modal from '@/ducks/modal';
 import * as Session from '@/ducks/session';
 import { connect } from '@/hocs';
 import { useToggle } from '@/hooks/toggle';
+import * as ModalsV2 from '@/ModalsV2';
 
 import { DEFAULT_DATA } from '../../../../../../constants';
 import SquareButton from '../../components/SquareButton';
@@ -24,7 +25,6 @@ function AddGoogleUser({
   openNextStep,
   toggle,
   integration_users,
-  setError,
   integration_user_error,
   setConfirm,
   clearModal,
@@ -69,7 +69,7 @@ function AddGoogleUser({
           setDeletingUser(false);
 
           if (integration_user_error) {
-            setError(integration_user_error);
+            ModalsV2.openError({ error: integration_user_error });
           } else if (targetUser.user_data?.email === data?.user?.user_data?.email) {
             onChange({ user: {} });
             onChange({ ...DEFAULT_DATA[BaseNode.Utils.IntegrationType.GOOGLE_SHEETS], selectedAction: data.selectedAction });
@@ -77,7 +77,7 @@ function AddGoogleUser({
             onChange({ ...DEFAULT_DATA[BaseNode.Utils.IntegrationType.GOOGLE_SHEETS], user: data.user, selectedAction: data.selectedAction });
           }
         } catch (e) {
-          setError(e);
+          ModalsV2.openError({ error: e });
           setDeletingUser(false);
         }
       },
@@ -123,10 +123,10 @@ function AddGoogleUser({
         content={
           <AddGoogleUserModal
             toggle={toggleAddUserModal}
-            onError={(e) => setError(e)}
+            onError={(e) => ModalsV2.openError({ error: e })}
             onSuccess={(newUser) => {
               if (integration_user_error) {
-                setError(integration_user_error);
+                ModalsV2.openError({ error: integration_user_error });
                 return;
               }
 
@@ -158,7 +158,6 @@ const mapStateToProps = {
 const mapDispatchToProps = {
   setConfirm: Modal.setConfirm,
   clearModal: Modal.clearModal,
-  setError: Modal.setError,
   deleteUser: Integration.deleteIntegrationUser,
 };
 

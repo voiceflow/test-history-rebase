@@ -6,7 +6,6 @@ import React from 'react';
 import { PrototypeStatus } from '@/constants/prototype';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as Domain from '@/ducks/domain';
-import * as Modal from '@/ducks/modal';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Prototype from '@/ducks/prototype';
 import * as Recent from '@/ducks/recent';
@@ -14,6 +13,7 @@ import * as Session from '@/ducks/session';
 import * as Transcripts from '@/ducks/transcript';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useDispatch, useSelector } from '@/hooks';
+import * as ModalsV2 from '@/ModalsV2';
 
 import { ProtoConfigType, PrototypeActions, PrototypeAllTypes, PrototypeRuntimeState } from './types';
 
@@ -91,7 +91,9 @@ export const PrototypeProvider: React.FC = ({ children }) => {
   const setActiveDomainID = useDispatch(Session.setActiveDomainID);
   const updatePrototypeVisualsDataHistory = useDispatch(Prototype.updatePrototypeVisualDataHistory);
   const updatePrototypeStatus = useDispatch(Prototype.updatePrototypeStatus);
-  const setError = useDispatch(Modal.setError);
+
+  const errorModal = ModalsV2.useModal(ModalsV2.Error);
+  const setError = React.useCallback((error: string) => errorModal.open({ error }), [errorModal.open]);
 
   const setActiveDiagramAndDomainIDs = React.useCallback(
     (diagramID: string) => {

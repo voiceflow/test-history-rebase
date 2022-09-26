@@ -4,12 +4,12 @@ import { toast } from '@voiceflow/ui';
 
 import * as Errors from '@/config/errors';
 import * as Account from '@/ducks/account';
-import * as Modal from '@/ducks/modal';
 import { projectByIDSelector } from '@/ducks/projectV2/selectors';
 import { goToDashboard, goToWorkspace } from '@/ducks/router/actions';
 import * as Session from '@/ducks/session';
 import { waitAsync } from '@/ducks/utils';
 import { allWorkspaceIDsSelector } from '@/ducks/workspaceV2/selectors';
+import { openError } from '@/ModalsV2/utils';
 import { SyncThunk, Thunk } from '@/store/types';
 
 import { extractErrorFromResponseData } from '../utils';
@@ -25,7 +25,7 @@ export const createWorkspace =
     try {
       return await dispatch(waitAsync(Realtime.workspace.create, { data }));
     } catch (err) {
-      dispatch(Modal.setError(extractErrorFromResponseData(err, 'Unable to create workspace')));
+      openError({ error: extractErrorFromResponseData(err, 'Unable to create workspace') });
 
       throw err;
     }
@@ -59,7 +59,7 @@ export const deleteWorkspace =
 
       toast.success('Successfully deleted workspace');
     } catch (err) {
-      dispatch(Modal.setError(extractErrorFromResponseData(err, 'Unable to delete workspace')));
+      openError({ error: extractErrorFromResponseData(err, 'Unable to delete workspace') });
 
       throw err;
     }
@@ -124,7 +124,7 @@ export const leaveActiveWorkspace = (): Thunk => async (dispatch, getState) => {
 
     toast.success('Successfully left workspace');
   } catch (err) {
-    dispatch(Modal.setError(extractErrorFromResponseData(err, MEMBER_UPDATE_ERROR)));
+    openError({ error: extractErrorFromResponseData(err, MEMBER_UPDATE_ERROR) });
 
     throw err;
   }
@@ -147,7 +147,7 @@ export const updateActiveWorkspaceName =
 
       await dispatch.sync(Realtime.workspace.updateName({ workspaceID, name }));
     } catch (err) {
-      dispatch(Modal.setError(extractErrorFromResponseData(err, 'Invalid Workspace Name')));
+      openError({ error: extractErrorFromResponseData(err, 'Invalid Workspace Name') });
 
       throw err;
     }
@@ -165,7 +165,7 @@ export const updateActiveWorkspaceImage =
 
       await dispatch.sync(Realtime.workspace.updateImage({ workspaceID, image }));
     } catch (err) {
-      dispatch(Modal.setError('Error updating workspace image'));
+      openError({ error: 'Error updating workspace image' });
 
       throw err;
     }

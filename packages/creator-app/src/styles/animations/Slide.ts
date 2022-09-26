@@ -1,4 +1,4 @@
-import { css, keyframes, styled } from '@/hocs';
+import { css, keyframes, styled } from '@/hocs/styled';
 import { ANIMATION_SPEED } from '@/styles/theme';
 
 const SlideKeyframes = keyframes`

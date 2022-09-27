@@ -117,7 +117,7 @@
     "start:meshed": "yarn --cwd packages/creator-app start:meshed",
     "start:meshed:creator-app": "yarn --cwd packages/creator-app start:meshed",
     "start:meshed:ml-gateway": "yarn --cwd packages/ml-gateway start:meshed",
-    "start:meshed:realtime": "yarn --cwd packages/realtime start:meshed",
+    "start:meshed:cxd-api": "yarn --cwd packages/realtime start:meshed",
     "start:meshed:showcase": "yarn --cwd packages/showcase start:meshed",
     "start:proxy": "yarn --cwd packages/creator-app start:proxy",
     "test": "lerna run test --parallel ",

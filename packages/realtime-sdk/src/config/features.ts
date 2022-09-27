@@ -50,8 +50,10 @@ export enum FeatureFlag {
   BLOCK_VIA_LINK = 'block_via_link',
 
   // Identity service FFs
-  IDENTITY_WORKSPACE = 'identity_workspace',
   IDENTITY_USER = 'identity_user',
+  IDENTITY_WORKSPACE = 'identity_workspace',
+  IDENTITY_WORKSPACE_INVITE = 'identity_workspace_invite',
+  IDENTITY_WORKSPACE_MEMBER = 'identity_workspace_member',
   IDENTITY_ORGANIZATION = 'identity_organization',
-  IDENTITY_GENERAL = 'identity_general',
+  IDENTITY_SAML2_PROVIDER = 'identity_saml2_provider',
 }

@@ -26,8 +26,11 @@ export const chooseABTestVersion = (chance: Chance.Chance, versions: ModelVersio
     versions.map(({ traffic }) => traffic)
   );
 
+const deleteSubscription = (topicName: string, subscription: Subscription) =>
+  subscription.delete().catch((error) => logger.error({ message: `failed to delete subscription to topic: ${topicName}`, error }));
+
 const closeSubscription = (topicName: string, subscription: Subscription): Promise<void> =>
-  subscription.close().catch((error) => logger.error({ message: `failed to teardown subscription to topic: ${topicName}`, error }));
+  subscription.close().catch((error) => logger.error({ message: `failed to teardown the expired subscription for topic: ${topicName}`, error }));
 
 class InteractionService extends AbstractControl {
   emitter = createNanoEvents<Record<string, (response: BasePubSubPayload) => void>>();
@@ -232,7 +235,7 @@ class InteractionService extends AbstractControl {
 
   async stop(): Promise<void> {
     await Promise.allSettled(
-      Array.from(this.cache.entries()).map(([topicName, { responseSubscription }]) => closeSubscription(topicName, responseSubscription))
+      Array.from(this.cache.entries()).map(([topicName, { responseSubscription }]) => deleteSubscription(topicName, responseSubscription))
     );
   }
 }

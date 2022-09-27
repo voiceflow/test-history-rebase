@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.924.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.924.2...@voiceflow/creator-app@1.924.3) (2022-09-27)
+
+
+### Bug Fixes
+
+* placeholder (CT-1034) ([#6134](https://github.com/voiceflow/creator-app/issues/6134)) ([74e7cda](https://github.com/voiceflow/creator-app/commit/74e7cda557c49ca8864a62cb60431c5c1afd7f97))
+
+
+
+
+
 ## [1.924.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.924.1...@voiceflow/creator-app@1.924.2) (2022-09-27)
 
 

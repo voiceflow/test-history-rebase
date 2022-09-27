@@ -40,7 +40,7 @@ const IntentList: React.FC<IntentListProps> = ({ isRoot, isSearch, isActive, dia
     <S.Container>
       {!isRoot && !menuItems.length && (
         <IntentContainer disabled isPlaceholder>
-          <IntentContent>Add Intent or Component Step</IntentContent>
+          <IntentContent>Add trigger intent step</IntentContent>
         </IntentContainer>
       )}
 

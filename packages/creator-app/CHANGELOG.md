@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.924.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.924.1...@voiceflow/creator-app@1.924.2) (2022-09-27)
+
+
+### Bug Fixes
+
+* onboarding updates (CT-967) ([#6133](https://github.com/voiceflow/creator-app/issues/6133)) ([823c28d](https://github.com/voiceflow/creator-app/commit/823c28d29e3fe175f30ffbc22d93b069eb338ba7)), closes [/github.com/voiceflow/creator-api/blob/aca3b76b30eb0d1ba6aa3784123e6e51d4ece796/lib/services/accountManager/index.ts#L777-L794](https://github.com//github.com/voiceflow/creator-api/blob/aca3b76b30eb0d1ba6aa3784123e6e51d4ece796/lib/services/accountManager/index.ts/issues/L777-L794)
+
+
+
+
+
 ## [1.924.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.924.0...@voiceflow/creator-app@1.924.1) (2022-09-26)
 
 

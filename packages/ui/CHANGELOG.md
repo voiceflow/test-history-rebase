@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.155.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.154.0...@voiceflow/ui@1.155.0) (2022-09-27)
+
+
+### Features
+
+* dialogflow cx implementation (PL-170) ([#6123](https://github.com/voiceflow/creator-app/issues/6123)) ([7bb3ab0](https://github.com/voiceflow/creator-app/commit/7bb3ab01c5b38aa171403aefe40b8c79bb4cc3ea))
+
+
+
+
+
 # [1.154.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.153.0...@voiceflow/ui@1.154.0) (2022-09-26)
 
 

@@ -1,5 +1,7 @@
 export default {
-  setName: (name: string) => cy.get('input[name="name"]').type(name),
+  setFirstName: (firstName: string) => cy.get('input[placeholder="First name"]').type(firstName),
+
+  setLastName: (lastName: string) => cy.get('input[placeholder="Last name"]').type(lastName),
 
   setEmail: (email: string) => cy.get('input[name="email"]').type(email),
 

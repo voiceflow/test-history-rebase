@@ -132,9 +132,9 @@ export const ssoLogin =
 
 const createSession =
   (sessionType: SessionType) =>
-  (authRequest: unknown): Thunk<Models.Account> =>
+  (authRequest: unknown, query?: Record<string, string>): Thunk<Models.Account> =>
   async (dispatch) => {
-    const parsedQuery = parseQuery(window.location.search);
+    const parsedQuery = { ...parseQuery(window.location.search), ...query };
     const { user, token, intercomUserHMAC = null } = await client.session.create(sessionType, authRequest, parsedQuery);
 
     await dispatch(setSession({ user, token, intercomUserHMAC }));

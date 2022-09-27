@@ -21,6 +21,7 @@ context('Main', () => {
     });
 
     it('show social signup options', () => {
+      signupPage.el.socialLogin.first().scrollIntoView();
       signupPage.el.googleLogin.should('be.visible');
       signupPage.el.facebookLogin.should('be.visible');
     });

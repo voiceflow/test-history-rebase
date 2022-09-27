@@ -1,4 +1,4 @@
-import { FlexCenter } from '@voiceflow/ui';
+import { FlexCenter, Input } from '@voiceflow/ui';
 import React, { useContext } from 'react';
 
 import RadioGroup from '@/components/RadioGroup';
@@ -16,6 +16,7 @@ const TEAM_SIZES = ['Only Me', '2 - 3', '4 - 6', '7 - 10', '11 - 20', '20 +'];
 const PersonalizeWorkspace: React.FC = () => {
   const { state, actions } = useContext(OnboardingContext);
   const [userRole, setUserRole] = React.useState(state.personalizeWorkspaceMeta.role || '');
+  const [company, setCompany] = React.useState(state.personalizeWorkspaceMeta.company || '');
   const [teamSize, setTeamSize] = React.useState(state.personalizeWorkspaceMeta.teamSize || '');
   const [creatingFor, setCreatingFor] = React.useState<CreatingForType>(CreatingForType.CHAT);
   const canContinue = !!userRole && !!teamSize;
@@ -23,6 +24,7 @@ const PersonalizeWorkspace: React.FC = () => {
   const onContinue = () => {
     const workspaceMeta: PersonalizeWorkspaceMeta = {
       role: userRole,
+      company,
       teamSize,
     };
 
@@ -34,6 +36,8 @@ const PersonalizeWorkspace: React.FC = () => {
 
   return (
     <Container>
+      <Label>Company Name</Label>
+      <Input placeholder="Enter company name" value={company} onChangeText={setCompany} />
       <Label>Choose your role</Label>
       <RoleSelect userRole={userRole} setUserRole={setUserRole} />
       <Label>What are you creating for?</Label>

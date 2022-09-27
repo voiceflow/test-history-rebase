@@ -10,7 +10,8 @@ const REDIS = `redis-cli -h ${REDIS_HOST} -p 6379`;
 Cypress.Commands.add('signup', (queryString = '') => {
   cy.visit(`/signup${queryString}`);
 
-  signupPage.setName(TEST_USER);
+  signupPage.setFirstName(TEST_USER.split(' ')[0]);
+  signupPage.setLastName(TEST_USER.split(' ')[1]);
   signupPage.setEmail(TEST_EMAIL);
   signupPage.setPassword(TEST_PASSWORD);
 

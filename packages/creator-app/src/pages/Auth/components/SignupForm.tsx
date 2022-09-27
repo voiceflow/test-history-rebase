@@ -45,7 +45,8 @@ export interface SignupFormProps {
 export const SignupForm: React.FC<SignupFormProps & ConnectedPublicSignupFormProps> = ({ search, signup, promo, query, goToLogin }) => {
   const [email, setEmail] = React.useState(query.email ? replaceSpaceWithPlus(query.email)! : '');
   const [password, setPassword] = React.useState('');
-  const [name, setName] = React.useState(query.name ? query.name : '');
+  const [firstName, setFirstName] = React.useState(query.name ? query.name : '');
+  const [lastName, setLastName] = React.useState('');
   const [ssoRequired, setSsoRequired] = React.useState(false);
   const debouncedCheckSSO = useDebouncedCallback(100, async (email: string) => setSsoRequired(!!(await getDomainSAML(email))), []);
 
@@ -70,15 +71,19 @@ export const SignupForm: React.FC<SignupFormProps & ConnectedPublicSignupFormPro
       if (await getDomainSAML(email)) {
         setSsoRequired(true);
       } else {
-        await signup({
-          name,
-          email,
-          password,
-          coupon: coupon.toLowerCase(),
-          referralCode: query.referral,
-          referralRockCode: query.ref_code,
-          urlSearch: search,
-        });
+        const name = `${firstName} ${lastName}`.trim();
+        await signup(
+          {
+            name,
+            email,
+            password,
+            coupon: coupon.toLowerCase(),
+            referralCode: query.referral,
+            referralRockCode: query.ref_code,
+            urlSearch: search,
+          },
+          { utm_first_name: firstName, utm_last_name: lastName }
+        );
       }
     } catch (err) {
       toast.error(err.body.data);
@@ -126,17 +131,11 @@ export const SignupForm: React.FC<SignupFormProps & ConnectedPublicSignupFormPro
             </HeaderBox>
 
             <InputContainer>
-              <Input
-                type="text"
-                name="name"
-                value={name}
-                required
-                autoFocus
-                className="form-bg"
-                minLength={3}
-                placeholder="Full name"
-                onChangeText={(value) => setName(value)}
-              />
+              <Input type="text" value={firstName} required autoFocus minLength={1} placeholder="First name" onChangeText={setFirstName} />
+            </InputContainer>
+
+            <InputContainer>
+              <Input type="text" value={lastName} required minLength={1} placeholder="Last name" onChangeText={setLastName} />
             </InputContainer>
 
             <InputContainer>

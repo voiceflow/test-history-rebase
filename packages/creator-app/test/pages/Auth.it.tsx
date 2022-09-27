@@ -8,7 +8,8 @@ import * as hooks from '@/pages/Auth/hooks';
 import suite from '../_suite';
 import { composeWrappers, StoreProvider, ThemeProvider } from '../_utils';
 
-const TEST_NAME = 'Voiceflow Tester';
+const TEST_FIRST_NAME = 'Michelle';
+const TEST_LAST_NAME = 'Ream';
 const TEST_EMAIL = 'tests@getvoiceflow.com';
 const TEST_PASSWORD = 'password';
 
@@ -34,7 +35,8 @@ suite('Auth', () => {
 
       const utils = render(<SignupForm query={{}} search="" signup={signup} goToLogin={vi.fn()} />, { wrapper: TestWrapper });
 
-      await userEvent.type(utils.getByPlaceholderText('Full name'), TEST_NAME);
+      await userEvent.type(utils.getByPlaceholderText('First name'), TEST_FIRST_NAME);
+      await userEvent.type(utils.getByPlaceholderText('Last name'), TEST_LAST_NAME);
       await userEvent.type(utils.getByPlaceholderText('Email address'), TEST_EMAIL);
       await userEvent.type(utils.getByPlaceholderText('Password'), TEST_PASSWORD);
 
@@ -44,13 +46,17 @@ suite('Auth', () => {
 
       expect(signup.mock.calls[0]).toEqual([
         {
-          name: TEST_NAME,
+          name: `${TEST_FIRST_NAME} ${TEST_LAST_NAME}`,
           email: TEST_EMAIL,
           password: TEST_PASSWORD,
           coupon: '',
           urlSearch: '',
           referralCode: undefined,
           referralRockCode: undefined,
+        },
+        {
+          utm_first_name: TEST_FIRST_NAME,
+          utm_last_name: TEST_LAST_NAME,
         },
       ]);
     });

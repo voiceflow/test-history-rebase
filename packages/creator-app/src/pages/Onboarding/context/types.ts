@@ -29,6 +29,7 @@ export enum SpecificFlowType {
 export interface PersonalizeWorkspaceMeta {
   role: string;
   channels?: string[];
+  company: string;
   teamSize: string;
   projectType?: VoiceflowConstants.ProjectType;
 }

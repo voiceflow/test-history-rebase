@@ -44,6 +44,7 @@ export const trackOnboardingIdentify =
     name,
     role,
     email,
+    company,
     channels,
     teamSize,
     workspaceIDs,
@@ -51,6 +52,7 @@ export const trackOnboardingIdentify =
     name: string;
     role: string;
     email: string;
+    company: string;
     channels: string[];
     teamSize: string;
     workspaceIDs: string[];
@@ -61,6 +63,7 @@ export const trackOnboardingIdentify =
         name,
         role,
         email,
+        company,
         channels,
         teamsize: teamSize,
         workspace_id: workspaceIDs,

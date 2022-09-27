@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.27.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.27.0...@voiceflow/ml-gateway@1.27.1) (2022-09-27)
+
+
+### Bug Fixes
+
+* deletes all subscriptions to topic when server stop (NLU-350) ([#6117](https://github.com/voiceflow/creator-app/issues/6117)) ([eb78b85](https://github.com/voiceflow/creator-app/commit/eb78b8512ac585899bebc41ce17327de5637154e))
+
+
+
+
+
 # [1.27.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.26.0...@voiceflow/ml-gateway@1.27.0) (2022-09-15)
 
 

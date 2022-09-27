@@ -2,6 +2,8 @@ import { JobStatus } from '@/constants';
 import {
   AlexaPublishJobErrorType,
   AlexaStageType,
+  DialogflowCXPublishJobErrorType,
+  DialogflowCXStageType,
   DialogflowESPublishJobErrorType,
   DialogflowESStageType,
   GeneralJobErrorType,
@@ -140,6 +142,47 @@ export namespace DialogflowESPublishJob {
   export type WaitProjectStage = JobStage<DialogflowESStageType.WAIT_PROJECT>;
 
   export type AnyJob = Job<IdleStage | ErrorStage | SuccessStage | ProgressStage | WaitAccountStage | WaitProjectStage>;
+}
+
+export namespace DialogflowCXPublishJob {
+  export type IdleStage = JobStage<DialogflowCXStageType.IDLE, Record<string, unknown>>;
+
+  export type ErrorStage = JobStage<
+    DialogflowCXStageType.ERROR,
+    {
+      message: string;
+      errorType: DialogflowCXPublishJobErrorType;
+      error?: any;
+      googleError?: boolean;
+      statusCode?: number;
+    }
+  >;
+
+  export type SuccessStage = JobStage<
+    DialogflowCXStageType.SUCCESS,
+    {
+      message: string;
+      googleProjectID: string;
+      agentName: string;
+      versionID: string;
+      rootDiagramID: string;
+      submittedForReview?: boolean;
+    }
+  >;
+
+  export type ProgressStage = JobStage<
+    DialogflowCXStageType.PROGRESS,
+    {
+      message: string;
+      progress: number;
+    }
+  >;
+
+  export type WaitAccountStage = JobStage<DialogflowCXStageType.WAIT_ACCOUNT>;
+
+  export type WaitAgentStage = JobStage<DialogflowCXStageType.WAIT_AGENT>;
+
+  export type AnyJob = Job<IdleStage | ErrorStage | SuccessStage | ProgressStage | WaitAccountStage | WaitAgentStage>;
 }
 
 export namespace GooglePublishJob {

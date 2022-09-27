@@ -1,3 +1,4 @@
+import { Menu } from '@voiceflow/ui';
 import React from 'react';
 
 import TagSelect from '@/components/TagSelect';
@@ -25,6 +26,8 @@ const IntentsSelect: React.FC<IntentsSelectProps> = ({ value, onChange }) => {
       getOptionLabel={(id) => id && fmtIntentName(intentsMap[id], platform)}
       getOptionValue={(option) => option?.id ?? null}
       createInputPlaceholder="intents"
+      selectAllLabel="Select All Intents"
+      renderEmpty={({ search }) => <Menu.NotFound>{!search ? 'No intents exist in this assistant.' : 'No intent found.'}</Menu.NotFound>}
     />
   );
 };

@@ -10,6 +10,7 @@ import Popup from './Popup';
 import { getProgress } from './utils';
 
 export { default as DownloadStage } from './DownloadStage';
+export { default as ErrorStage } from './ErrorStage';
 export * from './hooks';
 
 interface JobInterfaceProps<J extends Job<any>> {
@@ -26,7 +27,7 @@ const JobInterface = <T extends Job<any>>({ context, Content, children }: React.
     placement: 'bottom-end',
     strategy: 'fixed',
     modifiers: [
-      { name: 'offset', options: { offset: [0, 5] } },
+      { name: 'offset', options: { offset: [50, 25] } },
       { name: 'preventOverflow', options: { boundary: document.body } },
     ],
   });
@@ -37,16 +38,15 @@ const JobInterface = <T extends Job<any>>({ context, Content, children }: React.
 
       {Content?.Component && <Content.Component {...context} stage={stage} />}
 
-      {Content?.Popup && (
-        <div ref={popper.setPopperElement} style={popper.styles.popper} {...popper.attributes.popper}>
-          <Popup dismissable={Content.Popup.dismissable} closeable={Content.Popup.closeable} cancel={context.cancel}>
-            <Content.Popup.Component {...context} stage={stage} />
-          </Popup>
-        </div>
-      )}
-
       <Portal>
         <PageProgressBar progress={progress} />
+        {Content?.Popup && (
+          <div ref={popper.setPopperElement} style={popper.styles.popper} {...popper.attributes.popper}>
+            <Popup dismissable={Content.Popup.dismissable} closeable={Content.Popup.closeable} cancel={context.cancel}>
+              <Content.Popup.Component {...context} stage={stage} />
+            </Popup>
+          </div>
+        )}
       </Portal>
     </>
   );

@@ -3,20 +3,20 @@ import React from 'react';
 
 import { SourceType } from '@/ducks/tracking/constants';
 import * as ModalsV2 from '@/ModalsV2';
-import { DialogflowESPublishJob } from '@/models';
+import { DialogflowCXPublishJob } from '@/models';
 import { StageComponentProps } from '@/platforms/types';
 
-const WaitAccountStage: React.FC<StageComponentProps<DialogflowESPublishJob.WaitAccountStage>> = ({ restart, cancel }) => {
+const WaitAccountStage: React.FC<StageComponentProps<DialogflowCXPublishJob.WaitAccountStage>> = ({ restart, cancel }) => {
   const connectGoogleModal = ModalsV2.useModal(ModalsV2.Platform.Connect);
 
   React.useEffect(() => {
     connectGoogleModal
-      .open({ source: SourceType.ACCOUNT_PAGE, platform: VoiceflowConstants.PlatformType.DIALOGFLOW_ES })
+      .open({ source: SourceType.ACCOUNT_PAGE, platform: VoiceflowConstants.PlatformType.DIALOGFLOW_CX })
       .then(() => restart())
       .catch(() => cancel());
 
     return () => {
-      connectGoogleModal.remove();
+      connectGoogleModal.close();
     };
   }, []);
 

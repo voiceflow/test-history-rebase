@@ -23,6 +23,8 @@ export const goToHome = () => goTo('');
 
 export const goToLogin = (search?: string) => goTo(`${Path.LOGIN}${search ?? ''}`);
 
+export const goToAccountIntegrations = (search?: string) => goTo(`${Path.ACCOUNT_INTEGRATIONS}${search ?? ''}`);
+
 export const goToLogout = (search?: string) => goTo(`${Path.LOGOUT}${search ?? ''}`);
 
 export const goToSignup = (search?: string) => goTo(`${Path.SIGNUP}${search ?? ''}`);

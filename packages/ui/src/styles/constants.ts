@@ -3,7 +3,7 @@ export const ANIMATION_SPEED = 0.15;
 // Colors
 export const COLOR_BLUE = '#5d9df5';
 export const COLOR_RED = '#BD425F';
-export const COLOR_GREEN = '#279745';
+export const COLOR_GREEN = '#38751F';
 export const COLOR_WHITE = '#fff';
 export const COLOR_OFF_WHITE = '#fdfdfd';
 

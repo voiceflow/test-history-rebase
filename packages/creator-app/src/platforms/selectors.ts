@@ -8,6 +8,7 @@ import { applyAlexaIntentNameFormatting, applyLUISIntentNameFormatting } from '@
 
 import alexaClient from './alexa/client';
 import { UTTERANCE_RECOMMENDATIONS_LOCALES as ALEXA_UTTERANCE_RECOMMENDATIONS_LOCALES } from './alexa/constants';
+import dialogflowCXClient from './dialogflowCX/client';
 import dialogflowESClient from './dialogflowES/client';
 import { UTTERANCE_RECOMMENDATIONS_LOCALES as DF_ES_UTTERANCE_RECOMMENDATIONS_LOCALES } from './dialogflowES/constants';
 import generalClient from './general/client';
@@ -23,6 +24,7 @@ export const platformClients = {
   google: googleClient,
   general: generalClient,
   dialogflowES: dialogflowESClient,
+  dialogflowCX: dialogflowCXClient,
 };
 
 export const getPlatformClient = Utils.platform.createPlatformSelector<PlatformClient>(
@@ -30,6 +32,7 @@ export const getPlatformClient = Utils.platform.createPlatformSelector<PlatformC
     [VoiceflowConstants.PlatformType.ALEXA]: alexaClient,
     [VoiceflowConstants.PlatformType.GOOGLE]: googleClient,
     [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: dialogflowESClient,
+    [VoiceflowConstants.PlatformType.DIALOGFLOW_CX]: dialogflowCXClient,
   },
   generalClient
 );

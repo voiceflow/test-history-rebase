@@ -1,4 +1,5 @@
-import { Modal } from '@voiceflow/ui';
+import { Utils } from '@voiceflow/realtime-sdk';
+import { Modal, toast, usePersistFunction } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
@@ -19,6 +20,48 @@ export interface BaseConnectProps {
 
 const IDLE_STAGES = new Set([AlexaStageType.IDLE, GoogleStageType.IDLE, DialogflowESStageType.IDLE]);
 
+interface StageMeta {
+  title: string;
+  projectName: string;
+  platformName: string;
+  prompt: string;
+}
+
+const getStageMeta = Utils.platform.createPlatformSelector<StageMeta>(
+  {
+    [VoiceflowConstants.PlatformType.ALEXA]: {
+      title: 'Connect to Amazon',
+      projectName: 'skill to Alexa',
+      platformName: 'Alexa',
+      prompt: 'Sign in with Amazon to upload your Alexa Skill.',
+    },
+    [VoiceflowConstants.PlatformType.GOOGLE]: {
+      title: 'Connect to Google',
+      projectName: 'Action',
+      platformName: 'Google',
+      prompt: 'Sign in with Google to upload your project.',
+    },
+    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: {
+      title: 'Connect to Dialogflow',
+      projectName: 'Dialogflow project',
+      platformName: 'Dialogflow',
+      prompt: 'Sign in with Google to connect this assistant to Dialogflow ES.',
+    },
+    [VoiceflowConstants.PlatformType.DIALOGFLOW_CX]: {
+      title: 'Connect to Dialogflow',
+      projectName: 'Dialogflow project',
+      platformName: 'Dialogflow',
+      prompt: 'Sign in with Google to connect this assistant to Dialogflow CX.',
+    },
+  },
+  {
+    title: 'Connect to Project',
+    projectName: 'Voiceflow project',
+    platformName: 'Voiceflow',
+    prompt: 'Sign in with Voiceflow to upload your project.',
+  }
+);
+
 const Connect = manager.create<BaseConnectProps, PlatformAccount>(
   'PlatformConnect',
   () =>
@@ -29,21 +72,24 @@ const Connect = manager.create<BaseConnectProps, PlatformAccount>(
 
       const currentPlatform = platform ?? activePlatform;
 
-      const onSuccess = (account: PlatformAccount) => {
+      const stageMeta = getStageMeta(currentPlatform);
+
+      const onSuccess = usePersistFunction((account: PlatformAccount) => {
         if (source) {
           trackingEvents.trackDeveloperAccountConnected(currentPlatform, source);
         }
 
+        toast.success(`${stageMeta.platformName} successfully connected`);
         api.resolve(account);
         api.close();
-      };
+      });
 
       return (
         <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} maxWidth={392}>
           {stage && IDLE_STAGES.has(stage) ? (
             <IdleStage platform={currentPlatform} />
           ) : (
-            <ConnectingStage onClose={() => api.close()} platform={currentPlatform} onSuccess={onSuccess} />
+            <ConnectingStage {...stageMeta} onClose={() => api.close()} platform={currentPlatform} onSuccess={onSuccess} />
           )}
         </Modal>
       );

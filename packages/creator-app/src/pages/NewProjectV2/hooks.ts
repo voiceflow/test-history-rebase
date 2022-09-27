@@ -37,7 +37,7 @@ export const useNLUImport = ({
       const formData = new FormData();
       formData.append('file', files[0]);
 
-      const importModelResponse: ImportModel = await platformClient.modelImport.import(platform, formData);
+      const importModelResponse: ImportModel | void = await platformClient.modelImport?.import(platform, formData);
       setIsImporting(false);
       if (importModelResponse) {
         importModelResponse.slots = getSlots(importModelResponse);

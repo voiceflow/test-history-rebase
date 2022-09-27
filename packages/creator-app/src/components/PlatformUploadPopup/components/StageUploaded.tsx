@@ -1,41 +1,31 @@
-import { Box, Button, Link, Text } from '@voiceflow/ui';
+import { Box, Button, Link, Text, ThemeColor } from '@voiceflow/ui';
 import React from 'react';
 
-import { takeoffGraphic } from '@/assets';
-import { styled } from '@/hocs/styled';
-
-const UploadedContainer = styled(Box)`
-  width: 300px;
-  padding: 24px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-`;
+import { uploaded } from '@/assets';
 
 interface UploadedProps {
   redirectUrl: string;
   learnMoreUrl?: string;
   buttonText: string;
   description: string;
-  image?: string;
 }
 
-const UploadedStage: React.FC<UploadedProps> = ({ redirectUrl, learnMoreUrl, buttonText, description, image = takeoffGraphic }) => {
+const UploadedStage: React.FC<UploadedProps> = ({ redirectUrl, learnMoreUrl, buttonText, description }) => {
   return (
-    <UploadedContainer>
-      <img alt="takeoff" height={104} src={image} />
-      <Text mt={16} mb={8} lineHeight="22px" color="#132144" fontWeight={600}>
+    <Box.FlexCenter flexDirection="column" p={24} width={300}>
+      <Box.FlexCenter size={104} borderRadius="50%" backgroundColor="#e3eff8">
+        <img alt="takeoff" height={80} src={uploaded} />
+      </Box.FlexCenter>
+      <Text mt={16} mb={8} color={ThemeColor.PRIMARY} fontWeight={600}>
         Successfully Uploaded
       </Text>
-      <Text textAlign="center" mb={20} lineHeight="22px" color="#62778C">
+      <Text textAlign="center" mb={20} color={ThemeColor.SECONDARY}>
         {description}. {learnMoreUrl && <Link href={learnMoreUrl}>Learn more</Link>}
       </Text>
       <Link href={redirectUrl} target="_blank" rel="noopener noreferrer">
         <Button squareRadius>{buttonText}</Button>
       </Link>
-    </UploadedContainer>
+    </Box.FlexCenter>
   );
 };
 

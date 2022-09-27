@@ -11,6 +11,7 @@ interface BaseTagSelectProps<Option> extends BaseSelectProps {
   options: Array<Option | UIOnlyMenuItemOption>;
   onChange: (value: string[]) => void;
   maxHeight?: number;
+  selectAllLabel?: string;
 }
 
 export interface PrimitiveTagSelectProps<Option extends Primitive> extends BaseTagSelectProps<Option>, Partial<GenericProps<Option>> {

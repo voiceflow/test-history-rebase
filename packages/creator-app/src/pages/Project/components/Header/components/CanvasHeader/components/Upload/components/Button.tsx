@@ -71,7 +71,8 @@ const getButtonProps = (
       };
     case ButtonVariant.SUCCESS:
       return {
-        icon: 'checkmarkGreen',
+        icon: 'checkSquare',
+        iconProps: { size: 18, color: '#449127' },
         ...customProps,
         tooltip: {
           html: <span>Successfully Uploaded</span>,

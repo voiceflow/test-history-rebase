@@ -1,5 +1,6 @@
 import { Nullish, Utils } from '@voiceflow/common';
 import {
+  BaseSelectProps,
   Checkbox,
   defaultMenuLabelRenderer,
   FlexApart,
@@ -59,7 +60,9 @@ function TagSelect({
   getOptionKey = (option, index) => String(getOptionValue(option) || index),
   createInputPlaceholder,
   error,
+  renderEmpty,
   useLayers,
+  selectAllLabel = 'Select All',
 }: TagSelectInternalProps): React.ReactElement {
   const [selected, setSelected] = React.useState<string[]>(() => trimNulls(value));
 
@@ -81,6 +84,22 @@ function TagSelect({
 
   useDidUpdateEffect(() => setSelected(trimNulls(value)), [value]);
 
+  // props only when options > 0
+  const optionProps: Pick<BaseSelectProps, 'renderFooterAction' | 'searchable' | 'inDropdownSearch'> =
+    options.length > 0
+      ? {
+          renderFooterAction: ({ close }) => (
+            <Menu.Footer>
+              <Menu.Footer.Action onClick={stopImmediatePropagation(Utils.functional.chainVoid(close, toggleSelectAll))}>
+                {selectedAllIntents ? 'Unselect All' : selectAllLabel}
+              </Menu.Footer.Action>
+            </Menu.Footer>
+          ),
+          searchable: true,
+          inDropdownSearch: true,
+        }
+      : {};
+
   return (
     <Select<unknown, string>
       id={id}
@@ -88,20 +107,11 @@ function TagSelect({
       renderOptionLabel={(option, searchLabel, getOptionLabel, getOptionValue) =>
         customMenuLabelRenderer(option, searchLabel, getOptionLabel, getOptionValue, isOptionSelected)
       }
-      renderFooterAction={({ close }) => (
-        <Menu.Footer>
-          <Menu.Footer.Action onClick={stopImmediatePropagation(Utils.functional.chainVoid(close, toggleSelectAll))}>
-            {selectedAllIntents ? 'Unselect All' : 'Select All'}
-          </Menu.Footer.Action>
-        </Menu.Footer>
-      )}
       fullWidth
       selectedOptions={selected}
       options={options}
       isDropdown={isDropdown}
-      inDropdownSearch
       labelSearchable={false}
-      searchable
       alwaysShowCreate
       autoDismiss={false}
       getOptionValue={getOptionValue}
@@ -117,8 +127,10 @@ function TagSelect({
       disabled={disabled}
       getOptionKey={getOptionKey}
       error={error}
+      renderEmpty={renderEmpty}
       maxHeight={maxHeight}
       useLayers={useLayers}
+      {...optionProps}
     />
   );
 }

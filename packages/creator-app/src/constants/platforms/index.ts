@@ -3,12 +3,22 @@ import { GoogleConstants } from '@voiceflow/google-types';
 import { Utils } from '@voiceflow/realtime-sdk';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
-import { AlexaExportJob, AlexaPublishJob, DialogflowESPublishJob, GeneralExportJob, GoogleExportJob, GooglePublishJob, JobStageData } from '@/models';
+import {
+  AlexaExportJob,
+  AlexaPublishJob,
+  DialogflowCXPublishJob,
+  DialogflowESPublishJob,
+  GeneralExportJob,
+  GoogleExportJob,
+  GooglePublishJob,
+  JobStageData,
+} from '@/models';
 import { FORMATTED_DIALOGFLOW_LOCALES_LABELS } from '@/pages/Publish/Dialogflow/utils';
 import { FORMATTED_GOOGLE_LOCALES_LABELS } from '@/pages/Publish/Google/utils';
 import LOCALE_MAP from '@/services/LocaleMap';
 
 import { AlexaPublishJobErrorType, AlexaStageType } from './alexa';
+import { DialogflowCXStageType } from './dialogflowCX';
 import { DialogflowESPublishJobErrorType, DialogflowESStageType } from './dialogflowES';
 import { GENERAL_LOCALE_NAME_MAP } from './general';
 import { GooglePublishJobErrorType, GoogleStageType } from './google';
@@ -38,6 +48,7 @@ export type AnyErrorStageData =
   | JobStageData<GoogleExportJob.ErrorStage>
   | JobStageData<GooglePublishJob.ErrorStage>
   | JobStageData<DialogflowESPublishJob.ErrorStage>
+  | JobStageData<DialogflowCXPublishJob.ErrorStage>
   | JobStageData<AlexaExportJob.ErrorStage>
   | JobStageData<AlexaPublishJob.ErrorStage>
   | JobStageData<GeneralExportJob.ErrorStage>;
@@ -46,15 +57,17 @@ export type AnyErrorStage =
   | GoogleExportJob.ErrorStage
   | GooglePublishJob.ErrorStage
   | DialogflowESPublishJob.ErrorStage
+  | DialogflowCXPublishJob.ErrorStage
   | AlexaExportJob.ErrorStage
   | AlexaPublishJob.ErrorStage
   | GeneralExportJob.ErrorStage;
 
-export type AnyPublishJobErrorType = GooglePublishJobErrorType | DialogflowESPublishJobErrorType | AlexaPublishJobErrorType;
+export type AnyPublishJobErrorType = GooglePublishJobErrorType | DialogflowESPublishJobErrorType | AlexaPublishJobErrorType | DialogflowCXStageType;
 
 export type AnyStageType = AlexaStageType | GoogleStageType | DialogflowESStageType;
 
 export * from './alexa';
+export * from './dialogflowCX';
 export * from './dialogflowES';
 export * from './general';
 export * from './google';
@@ -63,7 +76,8 @@ export const getPlatformName = Utils.platform.createPlatformSelector(
   {
     [VoiceflowConstants.PlatformType.ALEXA]: 'Alexa',
     [VoiceflowConstants.PlatformType.GOOGLE]: 'Google',
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: 'Dialogflow',
+    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: 'Dialogflow ES',
+    [VoiceflowConstants.PlatformType.DIALOGFLOW_CX]: 'Dialogflow CX',
     [VoiceflowConstants.PlatformType.RASA]: 'Rasa',
   },
   ''

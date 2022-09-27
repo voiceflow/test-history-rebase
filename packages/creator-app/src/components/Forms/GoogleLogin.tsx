@@ -1,4 +1,4 @@
-import { BaseButton, SvgIcon } from '@voiceflow/ui';
+import { BaseButton, SvgIcon, Text } from '@voiceflow/ui';
 import React from 'react';
 
 import { GooglePromptType } from '@/constants';
@@ -59,7 +59,7 @@ const GoogleLogin: React.FC<GoogleLoginProps> = ({ scopes, onSuccess, onFail, on
   return (
     <GoogleLoginButton className="LoginWithGoogle" onClick={onLogin}>
       <SvgIcon icon="connectGoogle" size={46} />
-      <span>Sign in with Google</span>
+      <Text fontWeight={600}>Sign in with Google</Text>
     </GoogleLoginButton>
   );
 };

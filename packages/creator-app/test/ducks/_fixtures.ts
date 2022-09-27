@@ -19,7 +19,6 @@ import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import * as Slot from '@/ducks/slot';
 import * as SlotV2 from '@/ducks/slotV2';
-import * as Thread from '@/ducks/thread';
 import * as Tracking from '@/ducks/tracking';
 import * as Transcript from '@/ducks/transcript';
 import * as UI from '@/ducks/ui';
@@ -65,7 +64,6 @@ export const MOCK_STATE: State = {
   },
   [Slot.STATE_KEY]: createCRUDState(),
   [SlotV2.STATE_KEY]: createCRUDState(),
-  [Thread.STATE_KEY]: Thread.INITIAL_STATE,
   [Tracking.STATE_KEY]: {},
   [Transcript.STATE_KEY]: Transcript.INITIAL_STATE,
   [UI.STATE_KEY]: UI.INITIAL_STATE as ReturnType<typeof UI.default>,

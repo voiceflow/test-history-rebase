@@ -4,8 +4,6 @@ export enum FeatureFlag {
   ASR_BYPASS = 'asr_bypass',
   MOTOROLA_SSO = 'motorola_sso',
   WAVENET_VOICES = 'wavenet_voices',
-  // atomic actions
-  ATOMIC_ACTIONS_COMMENTING = 'atomic_actions_commenting',
 
   // used by select private cloud instances to add a new role type
   OWNER_ROLE = 'owner_role',

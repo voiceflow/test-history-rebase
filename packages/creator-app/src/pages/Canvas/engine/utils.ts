@@ -57,10 +57,6 @@ export class EngineConsumer<C extends Record<string, unknown> = Record<string, u
     return this.engine.store.dispatch;
   }
 
-  get isAtomicActionsCommeting(): boolean {
-    return !!this.engine.isFeatureEnabled(Realtime.FeatureFlag.ATOMIC_ACTIONS_COMMENTING);
-  }
-
   bind<T extends Dispatcher<any[]>>(dispatcher: T) {
     return (...args: Parameters<T>): DispatchResult<ReturnType<T>> => this.engine.store.dispatch(dispatcher(...args));
   }

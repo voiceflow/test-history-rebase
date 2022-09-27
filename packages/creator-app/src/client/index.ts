@@ -19,7 +19,6 @@ import saml from './saml';
 import session from './session';
 import sso from './sso';
 import template from './template';
-import thread from './thread';
 import transcript from './transcript';
 import upload from './upload';
 import user from './user';
@@ -47,7 +46,6 @@ const client = {
   sso,
   saml,
   template,
-  thread,
   user,
   workspace,
   transcript,

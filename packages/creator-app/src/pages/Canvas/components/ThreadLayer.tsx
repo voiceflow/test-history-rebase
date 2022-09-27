@@ -2,10 +2,9 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { AutoPanningStateContext } from '@/contexts';
-import * as Thread from '@/ducks/thread';
-import * as ThreadV2 from '@/ducks/threadV2';
+import * as Thread from '@/ducks/threadV2';
 import * as UI from '@/ducks/ui';
-import { useDispatch, useFeature, useHotKeys, useRAF, useSelector, useTrackingEvents } from '@/hooks';
+import { useDispatch, useHotKeys, useRAF, useSelector, useTrackingEvents } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import CommentThread from '@/pages/Canvas/components/CommentThread';
 import { EngineContext, FocusThreadContext, ThreadEntityProvider } from '@/pages/Canvas/contexts';
@@ -26,11 +25,10 @@ const ThreadLayer: React.FC = () => {
   const [trackEvents] = useTrackingEvents();
   const isCommentingMode = useCommentingMode();
 
-  const threadIDs = useSelector(ThreadV2.activeDiagramThreadIDsSelector);
+  const threadIDs = useSelector(Thread.activeDiagramThreadIDsSelector);
   const commentsVisible = useSelector(UI.isCommentsVisible);
 
-  const isAACommentingEnabled = useFeature(Realtime.FeatureFlag.ATOMIC_ACTIONS_COMMENTING)?.isEnabled;
-  const updateUnreadComments = useDispatch(isAACommentingEnabled ? Realtime.thread.comment.updateUnreadComments : Thread.updateUnreadComments);
+  const updateUnreadComments = useDispatch(Realtime.thread.comment.updateUnreadComments);
   const toggleCommentVisibility = useDispatch(UI.toggleCommentVisibility);
 
   const [isCanvasMoving, setIsCanvasMoving] = React.useState<boolean>(false);

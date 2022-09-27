@@ -4,34 +4,22 @@ import { createSelector } from 'reselect';
 import * as Account from '@/ducks/account';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as Domain from '@/ducks/domain';
-import * as Feature from '@/ducks/feature';
-import * as ThreadV1 from '@/ducks/thread';
 import * as UI from '@/ducks/ui';
 import { createCRUDSelectors } from '@/ducks/utils/crudV2';
 
 import { STATE_KEY } from './constants';
 
 export const {
-  root: _rootThreadsSelector,
-  all: _allThreadsSelector,
+  root: rootThreadsSelector,
+  all: allThreadsSelector,
   map: threadsMapSelector,
   byID: threadsByIDSelector,
   byIDs: threadsByIDsSelector,
   allIDs: allThreadIDsSelector,
-  getByID: _getThreadByIDSelector,
+  getByID: getThreadByIDSelector,
 } = createCRUDSelectors(STATE_KEY);
 
-export const rootThreadsSelector = Feature.createAtomicActionsCommentingSelector([ThreadV1.rootThreadsSelector, _rootThreadsSelector]);
-export const allThreadsSelector = Feature.createAtomicActionsCommentingSelector([ThreadV1.allThreadsSelector, _allThreadsSelector]);
-
 // selectors
-const legacyGetThreadByIDSelector = createSelector(
-  ThreadV1.threadByIDSelector,
-  (threadByIDSelector) =>
-    ({ id }: { id: string }): Thread | null =>
-      threadByIDSelector(id)
-);
-export const getThreadByIDSelector = Feature.createAtomicActionsCommentingSelector([legacyGetThreadByIDSelector, _getThreadByIDSelector]);
 export const allThreadIdsSelector = createSelector([allThreadsSelector, CreatorV2.activeDiagramIDSelector], (threads, diagramID) =>
   threads.filter((thread) => thread.diagramID === diagramID).map((thread) => thread.id)
 );

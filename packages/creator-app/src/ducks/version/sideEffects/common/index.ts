@@ -5,11 +5,9 @@ import { batch } from 'react-redux';
 
 import * as Errors from '@/config/errors';
 import * as Diagram from '@/ducks/diagram';
-import * as Feature from '@/ducks/feature';
 import * as Integration from '@/ducks/integration';
 import * as Product from '@/ducks/product';
 import * as Session from '@/ducks/session';
-import * as Thread from '@/ducks/thread';
 import { waitAsync } from '@/ducks/utils';
 import * as VersionV2 from '@/ducks/versionV2';
 import * as Workspace from '@/ducks/workspace';
@@ -33,7 +31,6 @@ export const initializeVersion =
 
     const state = getState();
     const isNewWorkspace = Session.activeWorkspaceIDSelector(state) !== workspaceID;
-    const AACommentingEnabled = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.ATOMIC_ACTIONS_COMMENTING);
 
     batch(() => {
       if (isNewWorkspace) {
@@ -42,10 +39,6 @@ export const initializeVersion =
 
       dispatch(Session.setActiveProjectID(projectID));
       dispatch(Session.setActiveVersionID(versionID));
-
-      if (!AACommentingEnabled) {
-        dispatch(Thread.loadThreads(projectID));
-      }
     });
   };
 

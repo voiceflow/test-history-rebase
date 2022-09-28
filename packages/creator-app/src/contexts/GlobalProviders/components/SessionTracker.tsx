@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/common';
 import React from 'react';
 
 import * as Account from '@/ducks/account';
@@ -25,10 +26,20 @@ const SessionTracker: React.FC = () => {
   React.useEffect(() => {
     if (!isLoggedIn || workspacesEmpty) return undefined;
 
-    const workspaceIDs = WorkspaceV2.allWorkspaceIDsSelector(store.getState());
+    const state = store.getState();
+
+    const email = Account.userEmailSelector(state);
+    const creatorID = Account.userIDSelector(state);
+    const workspaceIDs = WorkspaceV2.allWorkspaceIDsSelector(state);
+    const allWorkspaces = WorkspaceV2.allWorkspacesSelector(state);
     const trackSessionTime = createSessionTracker(Date.now());
 
-    trackEvents.trackSessionBegin(workspaceIDs);
+    // Typescript doesn't see the filter as removing undefined values
+    const roles = allWorkspaces
+      .map((workspace) => workspace.members.find(({ creator_id }) => creator_id === creatorID)?.role)
+      .filter(Utils.array.isNotNullish);
+
+    trackEvents.trackSessionBegin(workspaceIDs, email, roles);
     window.addEventListener('beforeunload', trackSessionTime);
 
     return () => {

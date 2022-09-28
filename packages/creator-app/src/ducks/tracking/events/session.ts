@@ -1,3 +1,5 @@
+import { Nullable } from '@voiceflow/common';
+import { UserRole } from '@voiceflow/internal/build/constants';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import client from '@/client';
@@ -7,11 +9,11 @@ import { SyncThunk } from '@/store/types';
 import { EventName, SourceType } from '../constants';
 
 export const trackSessionBegin =
-  (workspaceIDs: string[] = []) =>
+  (workspaceIDs: string[] = [], email: Nullable<string>, roles: UserRole[]) =>
   () => {
     client.api.analytics.track(EventName.SESSION_BEGIN);
     client.api.analytics.identify({
-      traits: { workspace_id: workspaceIDs },
+      traits: { workspace_id: workspaceIDs, team_role: roles, email },
       teamhashed: ['workspace_id'],
     });
   };

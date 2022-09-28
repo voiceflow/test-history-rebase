@@ -9,6 +9,8 @@ export const userSelector = createRootSelector(STATE_KEY);
 
 export const userIDSelector = createSelector([userSelector], ({ creator_id }) => creator_id);
 
+export const userNameSelector = createSelector([userSelector], ({ name }) => name);
+
 export const isFirstLoginSelector = createSelector([userSelector], ({ first_login }) => first_login);
 
 export const userEmailSelector = createSelector([userSelector], ({ email }) => email);

@@ -48,6 +48,7 @@ const Project: React.FC = () => {
 
   const inactivitySnackbar = Snackbar.useSnackbar();
   const nluManager = useFeature(Realtime.FeatureFlag.NLU_MANAGER);
+  const disableIntegration = useFeature(Realtime.FeatureFlag.DISABLE_INTEGRATION)?.isEnabled;
 
   const isPreviewRoute = useProjectPreviewMode();
 
@@ -126,7 +127,7 @@ const Project: React.FC = () => {
 
             <Route path={Path.PROTOTYPE_WEBHOOK} component={PrototypeWebhook} />
 
-            <Route path={Path.PROJECT_PUBLISH} component={Publish} />
+            {!disableIntegration && <Route path={Path.PROJECT_PUBLISH} component={Publish} />}
 
             <Route path={Path.PROJECT_SETTINGS} component={Settings} />
 

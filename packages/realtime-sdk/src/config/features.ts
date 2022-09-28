@@ -14,6 +14,9 @@ export enum FeatureFlag {
   // permanent circuit breaker for ml-gateway integration
   ML_GATEWAY_INTEGRATION = 'ml_gateway_integration',
 
+  // permanent circuit breaker for API/integration access
+  DISABLE_INTEGRATION = 'disable_integration',
+
   ENTERPRISE_TRIAL = 'enterprise_trial',
 
   NLU_MANAGER = 'nlu_manager',

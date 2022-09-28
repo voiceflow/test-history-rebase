@@ -37,6 +37,7 @@ const RouteCanvasOptionMap: Record<CanvasOptionType, string[]> = {
 
 export const useCanvasMenuOptionsAndHotkeys = () => {
   const nluManager = useFeature(Realtime.FeatureFlag.NLU_MANAGER);
+  const disableIntegration = useFeature(Realtime.FeatureFlag.DISABLE_INTEGRATION)?.isEnabled;
 
   const match = useRouteMatch();
   const hasUnreadTranscripts = useSelector(Transcript.hasUnreadTranscriptsSelector);
@@ -76,7 +77,7 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
     preventDefault: true,
   });
   useHotKeys(Hotkey.INTEGRATION_PAGE, goToCurrentPublish, {
-    disable: !nluManager.isEnabled || !canEditProject,
+    disable: disableIntegration || !nluManager.isEnabled || !canEditProject,
     preventDefault: true,
   });
   useHotKeys(Hotkey.SETTINGS_PAGE, goToCurrentSettings, {
@@ -124,7 +125,7 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
           onClick: goToCurrentTranscript,
           withBadge: hasUnreadTranscripts,
         },
-    !canEditProject
+    !canEditProject || disableIntegration
       ? null
       : {
           icon: 'integrations',

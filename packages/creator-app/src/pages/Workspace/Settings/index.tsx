@@ -1,3 +1,4 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { BoxFlex } from '@voiceflow/ui';
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
@@ -10,7 +11,7 @@ import { Path, WorkspaceSettingsRoute } from '@/config/routes';
 import * as Router from '@/ducks/router';
 import { WorkspaceFeatureLoadingGate } from '@/gates';
 import { withBatchLoadingGate } from '@/hocs';
-import { useActiveWorkspace, useDispatch, usePermission } from '@/hooks';
+import { useActiveWorkspace, useDispatch, useFeature, usePermission } from '@/hooks';
 import RedirectWithSearch from '@/Routes/RedirectWithSearch';
 
 import Billing from './components/Billing';
@@ -21,11 +22,12 @@ import SettingsGate from './gates/SettingsGate';
 
 const Settings: React.FC = () => {
   const workspace = useActiveWorkspace();
+  const disableIntegation = useFeature(Realtime.FeatureFlag.DISABLE_INTEGRATION)?.isEnabled;
 
   const [canConfigureOrganization] = usePermission(Permission.CONFIGURE_ORGANIZATION);
   const [canViewSettingsWorkspace] = usePermission(Permission.VIEW_SETTINGS_WORKSPACE);
   const [canConfigureWorkspaceBilling] = usePermission(Permission.CONFIGURE_WORKSPACE_BILLING);
-  const [canConfigureWorkspaceDeveloper] = usePermission(Permission.CONFIGURE_WORKSPACE_DEVELOPER);
+  const canConfigureWorkspaceDeveloper = usePermission(Permission.CONFIGURE_WORKSPACE_DEVELOPER)[0] && !disableIntegation;
   const goToDashboard = useDispatch(Router.goToDashboard);
 
   const canManageSSO = canConfigureOrganization && workspace?.organizationID;

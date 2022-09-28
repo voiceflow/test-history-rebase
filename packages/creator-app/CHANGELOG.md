@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.925.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.925.3...@voiceflow/creator-app@1.925.4) (2022-09-28)
+
+
+### Bug Fixes
+
+* ux/ui issues + refactor variable states modals and limits (CT-1029) ([#6131](https://github.com/voiceflow/creator-app/issues/6131)) ([aa779fa](https://github.com/voiceflow/creator-app/commit/aa779fa18c0fe9bb923ca44f179efa6ae627a5be))
+
+
+
+
+
 ## [1.925.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.925.2...@voiceflow/creator-app@1.925.3) (2022-09-28)
 
 

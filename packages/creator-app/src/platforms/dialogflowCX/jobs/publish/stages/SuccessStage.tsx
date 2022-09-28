@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { UploadedStage } from '@/components/PlatformUploadPopup/components';
-import { DOCS_LINK } from '@/constants';
+import { DIALOGFLOW_CX_LEARN_MORE } from '@/constants/platforms';
 import { getDialogflowCXAgentUrl } from '@/constants/platforms/dialogflowCX';
 import { DialogflowCXPublishJob, JobStageData } from '@/models';
 
@@ -16,7 +16,7 @@ const SuccessStage: React.FC<SuccessStageProps> = ({ stage }) => {
     <UploadedStage
       buttonText="Open in Dialogflow CX"
       description="Your agent is now ready for use on Dialogflow CX console"
-      learnMoreUrl={DOCS_LINK}
+      learnMoreUrl={DIALOGFLOW_CX_LEARN_MORE}
       redirectUrl={getDialogflowCXAgentUrl(agentName)}
     />
   );

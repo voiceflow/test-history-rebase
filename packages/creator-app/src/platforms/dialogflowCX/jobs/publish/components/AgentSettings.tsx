@@ -15,6 +15,7 @@ import React from 'react';
 import client from '@/client';
 import IntentsSelect from '@/components/IntentsSelect';
 import RadioGroup from '@/components/RadioGroup';
+import { DIALOGFLOW_CX_LEARN_MORE } from '@/constants/platforms';
 import * as Account from '@/ducks/account';
 import * as Project from '@/ducks/projectV2';
 import * as Version from '@/ducks/version';
@@ -113,7 +114,7 @@ const AgentSettings: React.FC<AgentSettingsProps> = ({ onValid, waitOnAgent = tr
         <Box.Flex mt={12} color={ThemeColor.RED} fontSize={13}>
           <SvgIcon icon="warning" marginRight={9} />
           <span>
-            {state.error} <Link>See documentation</Link>
+            {state.error} <Link href={DIALOGFLOW_CX_LEARN_MORE}>See documentation</Link>
           </span>
         </Box.Flex>
       );

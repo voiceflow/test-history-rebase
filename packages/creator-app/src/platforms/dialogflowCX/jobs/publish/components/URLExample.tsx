@@ -2,6 +2,7 @@ import { Box, Link, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import { dialogflowCXurl } from '@/assets';
+import { DIALOGFLOW_CX_LEARN_MORE } from '@/constants/platforms';
 
 const URLExample = (
   <TippyTooltip
@@ -15,7 +16,7 @@ const URLExample = (
     interactive
     bodyOverflow
   >
-    <Link>See example</Link>
+    <Link href={DIALOGFLOW_CX_LEARN_MORE}>See example</Link>
   </TippyTooltip>
 );
 

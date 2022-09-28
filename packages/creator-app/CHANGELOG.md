@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.925.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.925.2...@voiceflow/creator-app@1.925.3) (2022-09-28)
+
+
+### Bug Fixes
+
+* add docs for dfcx (CT-000) ([#6138](https://github.com/voiceflow/creator-app/issues/6138)) ([a5c6cf8](https://github.com/voiceflow/creator-app/commit/a5c6cf8ff3fc484bbc31cb2e80f65a6c03c127fd))
+
+
+
+
+
 ## [1.925.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.925.1...@voiceflow/creator-app@1.925.2) (2022-09-27)
 
 **Note:** Version bump only for package @voiceflow/creator-app

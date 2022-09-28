@@ -21,6 +21,7 @@ export interface TippyTooltipProps extends Omit<TooltipProps, 'theme' | 'delay'>
   theme?: StringifyEnum<TooltipTheme>;
   hotkey?: string;
   bodyOverflow?: boolean;
+  distance?: number;
 }
 
 // we need this to store all opened tooltips and manually close them
@@ -41,7 +42,7 @@ const closeAll = () =>
   });
 
 const TippyTooltip: React.ForwardRefRenderFunction<Tooltip, React.PropsWithChildren<TippyTooltipProps>> = (
-  { html, title, delay, theme, disabled, children, hotkey, popperOptions, bodyOverflow, ...props },
+  { html, title, delay, theme, disabled, children, hotkey, popperOptions, bodyOverflow, distance, ...props },
   ref
 ) => {
   const tooltipRef = React.useRef<Tooltip>(null);
@@ -71,6 +72,7 @@ const TippyTooltip: React.ForwardRefRenderFunction<Tooltip, React.PropsWithChild
       theme={theme as Theme}
       disabled={disabled || IS_TEST}
       className={ClassName.TOOLTIP}
+      distance={distance}
       popperOptions={{
         ...popperOptions,
         modifiers: bodyOverflow

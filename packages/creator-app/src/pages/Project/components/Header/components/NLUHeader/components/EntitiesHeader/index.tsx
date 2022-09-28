@@ -67,6 +67,7 @@ const EntitiesHeader: React.FC = () => {
         }
         position="bottom"
         open={tooltipOpen}
+        distance={-10}
       >
         <SearchInput
           ref={inputRef}

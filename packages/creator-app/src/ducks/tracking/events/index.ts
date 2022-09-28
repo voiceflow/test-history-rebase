@@ -1,5 +1,8 @@
 export * from './canvas';
 export * from './conversations';
+// BEGIN FIXME: MVP - Custom blocks
+export * from './customBlock';
+// END FIXME: MVP - Custom blocks
 export * from './export';
 export * from './invitation';
 export * from './nlu';

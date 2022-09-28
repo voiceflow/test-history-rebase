@@ -1,8 +1,9 @@
+// BEGIN FIXME: MVP - Custom blocks
 import { Modal, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import * as CustomBlock from '@/ducks/customBlock';
-import { useDispatch } from '@/hooks';
+import { useDispatch, useTrackingEvents } from '@/hooks';
 
 import manager from '../../../../manager';
 import ModalContent, { SubmittedCustomBlock } from '../CustomBlockEditorModalContent';
@@ -10,11 +11,15 @@ import ModalContent, { SubmittedCustomBlock } from '../CustomBlockEditorModalCon
 const CustomBlockCreationModal = manager.create<{}>('CanvasCustomBlockCreationModal', () => ({ api, type, opened, hidden, animated }) => {
   const createCustomBlock = useDispatch(CustomBlock.create);
 
+  const [trackingEvents] = useTrackingEvents();
+
   const onReceiveFormData = async (customBlock: SubmittedCustomBlock) => {
     try {
       await createCustomBlock(customBlock);
       api.close();
       toast.success('Custom block created');
+
+      trackingEvents.trackNewCustomBlockCreated();
     } catch (err) {
       toast.error('Custom block creation failed');
     }
@@ -35,3 +40,4 @@ const CustomBlockCreationModal = manager.create<{}>('CanvasCustomBlockCreationMo
 });
 
 export default CustomBlockCreationModal;
+// END FIXME: MVP - Custom blocks

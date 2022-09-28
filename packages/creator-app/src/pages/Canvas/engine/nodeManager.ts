@@ -15,6 +15,7 @@ import * as History from '@/ducks/history';
 import * as Modal from '@/ducks/modal';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Tracking from '@/ducks/tracking';
+import * as TrackingEvents from '@/ducks/tracking/events';
 import * as VersionV2 from '@/ducks/versionV2';
 import { Pair, Point } from '@/types';
 import { Coords } from '@/utils/geometry';
@@ -461,6 +462,12 @@ class NodeManager extends EngineConsumer {
     );
 
     this.log.info(this.log.success('added node'), this.log.slug(nodeID));
+
+    // BEGIN FIXME - MVP - Custom Blocks
+    if (type === BlockType.CUSTOM_BLOCK_POINTER) {
+      this.dispatch(TrackingEvents.trackCustomBlockPointerCreated());
+    }
+    // END FIXME - MVP - Custom blocks
 
     return nodeID;
   }

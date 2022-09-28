@@ -10,6 +10,7 @@ import * as CreatorV2 from '@/ducks/creatorV2';
 import * as Domain from '@/ducks/domain';
 import * as Prototype from '@/ducks/prototype';
 import * as Router from '@/ducks/router';
+import * as TrackingEvents from '@/ducks/tracking/events';
 import { IDSelectorParam } from '@/ducks/utils/crudV2';
 import {
   BlockTrace,
@@ -132,6 +133,10 @@ class TraceController {
 
   private context: Prototype.Context | null = null;
 
+  // BEGIN FIXME - MVP - Custom Blocks
+  private prototypeID: string | null = null;
+  // END FIXME - MVP - Custom Blocks
+
   private streamState: StreamState = { src: null, offset: 0, token: null };
 
   private noReplyTimeout = 0;
@@ -158,6 +163,9 @@ class TraceController {
 
   public start() {
     this.startPrototypeEngine();
+    // BEGIN FIXME - MVP - Custom Blocks
+    this.prototypeID = Utils.id.objectID();
+    // END FIXME - MVP - Custom Blocks
   }
 
   public next = async (request: BaseRequest.BaseRequest | null = null): Promise<void> => {
@@ -260,6 +268,7 @@ class TraceController {
     this.trace = [];
     this.stopped = true;
     this.topTrace = null;
+    this.prototypeID = null;
 
     this.timeout.clearByID(this.noReplyTimeout);
     this.stopPrototypeEngine();
@@ -446,14 +455,21 @@ class TraceController {
   }
 
   private async processBlockTrace(trace: BlockTrace, { onlyMessage }: { isLast?: boolean; onlyMessage?: boolean } = {}) {
-    const node = this.props.getEngine()?.getNodeByID(trace.payload.blockID);
+    const engine = this.props.getEngine();
+    const node = engine?.getNodeByID(trace.payload.blockID);
+
+    // BEGIN FIXME - MVP - Custom Blocks
+    if (engine && node && node.type === BlockType.CUSTOM_BLOCK_POINTER) {
+      engine.dispatcher.dispatch(TrackingEvents.trackCustomBlockPrototyped({ prototypeID: `${this.prototypeID}` }));
+    }
+    // END FIXME - MVP - Custom Blocks
 
     if (!this.isPublicPrototype) {
       await this.waitNode(trace.payload.blockID);
     }
 
     if (node?.id) {
-      this.props.getEngine()?.selection.replace([node.id]);
+      engine?.selection.replace([node.id]);
     }
 
     if (node && !this.isPublicPrototype) {

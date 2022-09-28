@@ -145,8 +145,15 @@ export enum EventName {
   NLU_NOTIFICATIONS_OPENED = 'NLU Notifications Opened',
   NLU_NOTIFICATIONS_CLICKED = 'NLU Notifications Clicked',
 
+  // Block Template
   BLOCK_TEMPLATE_CREATED = 'Block Template Created',
   BLOCK_TEMPLATE_USED = 'Block Template Used',
+
+  // BEGIN FIXME: MVP - Custom blocks
+  NEW_CUSTOM_BLOCK_CREATED = 'New custom block created',
+  CUSTOM_BLOCK_POINTER_CREATED = 'Custom block pointer created',
+  CUSTOM_BLOCK_PROTOTYPED = 'Custom block prototyped',
+  // END FIXME: MVP - Custom blocks
 }
 
 export enum IntentEditType {

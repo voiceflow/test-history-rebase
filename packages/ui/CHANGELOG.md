@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.155.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.155.0...@voiceflow/ui@1.155.1) (2022-09-28)
+
+
+### Bug Fixes
+
+* **creator-app:** moved tooltip closer to search bar (NLU-377) ([#6128](https://github.com/voiceflow/creator-app/issues/6128)) ([04e87e8](https://github.com/voiceflow/creator-app/commit/04e87e84a124b8503198d1d24dccfc9603f25902))
+
+
+
+
+
 # [1.155.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.154.0...@voiceflow/ui@1.155.0) (2022-09-27)
 
 

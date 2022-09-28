@@ -5,7 +5,7 @@ import Drawer from '@/components/Drawer';
 import TestVariableStateSelect from '@/components/TestVariableStateSelect';
 import VariableList from '@/components/VariableList';
 import * as Session from '@/ducks/session';
-import * as variableState from '@/ducks/variableState';
+import * as VariableState from '@/ducks/variableState';
 import { useDispatch, useSelector, useTheme } from '@/hooks';
 
 import { SideBarComponentProps } from '../../types';
@@ -14,21 +14,18 @@ import { usePrototypeContextVariables } from './hooks';
 
 const TestVariablesSidebar: React.FC<SideBarComponentProps> = () => {
   const theme = useTheme();
-  const selectedVariables = useSelector(variableState.selectedVariablesStateVariablesSelector);
-  const selectedVariableState = useSelector(variableState.selectedVariableStateSelector);
+  const selectedVariables = useSelector(VariableState.selectedVariablesStateVariablesSelector);
+  const selectedSavedState = useSelector(VariableState.selectedVariableStateSavedStateSelector);
+  const selectedVariableState = useSelector(VariableState.selectedVariableStateSelector);
   const isTestVariablesSidebarOpen = useSelector(Session.isPrototypeSidebarVisibleSelector);
 
-  const updateSelectedVariableStateById = useDispatch(variableState.updateSelectedVariableStateById);
-  const updateSelectedVariableStateVariables = useDispatch(variableState.updateSelectedVariableStateVariables);
-  const updateStateValues = useDispatch(variableState.updateStateValues);
+  const updateStateValues = useDispatch(VariableState.updateStateValues);
+  const updateSelectedVariableStateByID = useDispatch(VariableState.updateSelectedVariableStateById);
   const updateIsTestVariablesSidebarOpen = useDispatch(Session.setPrototypeSidebarVisible);
-  const selectedSavedState = useSelector(variableState.selectedVariableStateSavedStateSelector);
-  const [loading, setLoading] = React.useState(false);
-  const [isOpen, setIsOpen] = useSessionStorageState('sidebarOpen', false);
+  const updateSelectedVariableStateVariables = useDispatch(VariableState.updateSelectedVariableStateVariables);
 
-  const handleVariableStateSelection = (variableStateId: string | null) => {
-    updateSelectedVariableStateById(variableStateId);
-  };
+  const [isOpen, setIsOpen] = useSessionStorageState('sidebarOpen', false);
+  const [loading, setLoading] = React.useState(false);
 
   const onUpdateStateValues = async () => {
     setLoading(true);
@@ -43,10 +40,16 @@ const TestVariablesSidebar: React.FC<SideBarComponentProps> = () => {
     }
   };
 
-  const handleToggle = (value: boolean) => {
+  const onToggle = (value: boolean) => {
     setIsOpen(value);
     updateIsTestVariablesSidebarOpen(value);
   };
+
+  React.useEffect(() => {
+    if (!selectedVariableState) {
+      updateSelectedVariableStateByID(VariableState.ALL_PROJECT_VARIABLES_ID);
+    }
+  }, [selectedVariableState]);
 
   React.useEffect(() => {
     if (selectedSavedState) {
@@ -68,7 +71,7 @@ const TestVariablesSidebar: React.FC<SideBarComponentProps> = () => {
       width={theme.components.testVariablesSidebar.width}
       zIndex={25}
       closable
-      onToggle={handleToggle}
+      onToggle={onToggle}
       direction={Drawer.Direction.RIGHT}
     >
       {variables?.length ? (
@@ -77,10 +80,11 @@ const TestVariablesSidebar: React.FC<SideBarComponentProps> = () => {
             <TestVariableStateSelect
               value={selectedVariableState?.id}
               loading={loading}
-              onChange={(value) => handleVariableStateSelection(value)}
+              onChange={updateSelectedVariableStateByID}
               onUpdateStateValues={onUpdateStateValues}
             />
           </SelectContainer>
+
           <VariableListContainer>
             <VariableList variables={variables} onChange={onChangeVariable} disabled={loading} />
           </VariableListContainer>

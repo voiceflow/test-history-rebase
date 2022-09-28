@@ -10,7 +10,7 @@ import ConditionDisplay from '../ConditionDisplay';
 import ConditionValueSelect from '../ConditionValueSelect';
 import ConditionVariableSelect from '../ConditionVariableSelect';
 import ConditionLogicSelect from './components/ConditionLogicSelect';
-import MenuContainer from './components/MenuContainer';
+import Container from './components/Container';
 
 export type ValueSelectExpressionType = BaseNode.Utils.ExpressionTypeV2.VARIABLE | BaseNode.Utils.ExpressionTypeV2.VALUE;
 
@@ -44,7 +44,7 @@ const ConditionDataSelect: React.FC<ConditionDataSelectProps> = ({ expression, i
       placement="bottom-start"
       initialOpened={expression.logicInterface && _isEmpty(expression.value[0]?.value)}
       renderContent={({ onToggle }) => (
-        <MenuContainer>
+        <Container>
           {/* to add left side value */}
           <>
             {expression.logicInterface === BaseNode.Utils.ConditionsLogicInterface.VARIABLE && (
@@ -78,7 +78,7 @@ const ConditionDataSelect: React.FC<ConditionDataSelectProps> = ({ expression, i
               </>
             )}
           </>
-        </MenuContainer>
+        </Container>
       )}
     >
       {({ ref, onToggle, isOpened }) => (

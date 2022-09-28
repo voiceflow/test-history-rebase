@@ -3,9 +3,10 @@ import { PlanType } from '@voiceflow/internal';
 export enum LimitType {
   DOMAINS = 'DOMAINS',
   PROJECTS = 'PROJECTS',
+  NLU_IMPORT = 'NLU_IMPORT',
   MARKUP_IMAGE = 'MARKUP_IMAGE',
   MARKUP_VIDEO = 'MARKUP_VIDEO',
-  NLU_IMPORT = 'NLU_IMPORT',
+  VARIABLE_STATES = 'VARIABLE_STATES',
 }
 
 export const TEAM_LIMIT_PLANS = [PlanType.PRO, PlanType.TEAM, PlanType.OLD_PRO, PlanType.OLD_TEAM] as const;

@@ -1,8 +1,6 @@
-import { Menu } from '@voiceflow/ui';
-
 import { styled } from '@/hocs';
 
-const MenuContainer = styled(Menu.Container)`
+const Container = styled.div`
   z-index: ${({ theme }) => theme.zIndex.popper};
   max-width: 440px;
   width: 440px;
@@ -12,4 +10,4 @@ const MenuContainer = styled(Menu.Container)`
   overflow-y: scroll;
 `;
 
-export default MenuContainer;
+export default Container;

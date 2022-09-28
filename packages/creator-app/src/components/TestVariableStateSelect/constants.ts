@@ -1,11 +1,11 @@
 import { createUIOnlyMenuItemOption } from '@voiceflow/ui';
 
-import * as variableState from '@/ducks/variableState';
+import * as VariableState from '@/ducks/variableState';
 
 export const baseOptions = [
   {
     label: 'All project variables',
-    value: variableState.ALL_PROJECT_VARIABLES_ID,
+    value: VariableState.ALL_PROJECT_VARIABLES_ID,
   },
 ];
 

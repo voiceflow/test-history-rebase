@@ -1,6 +1,13 @@
 import { styled } from '@/hocs';
 
-const VariableListSection = styled.div`
+export const InputHint = styled.span`
+  color: #62778c;
+  font-size: 13px;
+  padding-top: 12px;
+  display: inline-flex;
+`;
+
+export const ListSection = styled.div`
   max-height: calc(100vh - 536px);
   min-height: 40px;
   overflow: scroll;
@@ -11,5 +18,3 @@ const VariableListSection = styled.div`
     width: 0;
   }
 `;
-
-export default VariableListSection;

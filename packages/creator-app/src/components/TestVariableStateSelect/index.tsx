@@ -12,7 +12,7 @@ import {
 import React from 'react';
 
 import * as variableState from '@/ducks/variableState';
-import { useSelector, useVariableStatesPlanLimit } from '@/hooks';
+import { useCreateVariableState, useSelector } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
 
 import { SelectContainer } from './components';
@@ -29,9 +29,10 @@ interface TestVariableStateSelectProps extends BaseSelectProps {
 const TestVariableStateSelect: React.FC<TestVariableStateSelectProps> = ({ value, loading, onChange, onUpdateStateValues, className, ...props }) => {
   const variableStates = useSelector(variableState.allVariableStatesSelector);
   const isSelectedStateUnsync = useSelector(variableState.IsVariableStateUnsyncSelector);
-  const variableStateCreateModal = ModalsV2.useModal(ModalsV2.VariableStates.Create);
+
   const variableStateManageModal = ModalsV2.useModal(ModalsV2.VariableStates.Manage);
-  const verifyStatesLimit = useVariableStatesPlanLimit();
+
+  const onCreateVariableState = useCreateVariableState();
 
   const options = React.useMemo(() => {
     const statesOptions = variableStates.map((variableState) => ({ label: variableState.name, value: variableState.id }));
@@ -44,8 +45,6 @@ const TestVariableStateSelect: React.FC<TestVariableStateSelectProps> = ({ value
   const optionsMap = React.useMemo(() => Utils.array.createMap(options.filter(isNotUIOnlyMenuItemOption), Utils.object.selectValue), [options]);
 
   const selected = React.useMemo(() => options.find((option) => !isUIOnlyMenuItemOption(option) && option.value === value) || null, [options, value]);
-
-  const onAddNew = verifyStatesLimit(() => variableStateCreateModal.openVoid({}));
 
   return (
     <SelectContainer
@@ -81,7 +80,7 @@ const TestVariableStateSelect: React.FC<TestVariableStateSelectProps> = ({ value
       }
       renderFooterAction={({ close }) => (
         <Menu.Footer>
-          <Menu.Footer.Action onClick={Utils.functional.chainVoid(close, onAddNew)}>Create New Persona</Menu.Footer.Action>
+          <Menu.Footer.Action onClick={Utils.functional.chainVoid(close, onCreateVariableState)}>Create New Persona</Menu.Footer.Action>
         </Menu.Footer>
       )}
       {...props}

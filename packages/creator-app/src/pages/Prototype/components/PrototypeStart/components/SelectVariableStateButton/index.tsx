@@ -20,6 +20,7 @@ const SelectVariableStateButton: React.FC<SelectVariableStateButtonProps> = ({ o
 
   const onStartTest = () => {
     onStart();
+
     if (isVariableStateSelected) {
       trackingEvents.trackVariableStateApplied({ type: VariableStateAppliedType.LOCAL });
     }
@@ -36,18 +37,11 @@ const SelectVariableStateButton: React.FC<SelectVariableStateButtonProps> = ({ o
           <TippyTooltip title={isVariableStateSelected ? 'Reset state' : 'Select variable state'}>
             <IconedButton
               ref={ref as React.RefObject<HTMLButtonElement>}
-              variant={ButtonVariant.PRIMARY}
-              onClick={() => {
-                if (isVariableStateSelected) {
-                  updateSelectedVariableStateById(null);
-                  return;
-                }
-
-                toggleSelectMenuOpen();
-              }}
               icon={isVariableStateSelected ? 'refreshData' : 'caretDown'}
-              iconProps={isVariableStateSelected ? { size: 16, color: '#fff', marginTop: '1px', marginLeft: '1px' } : { size: 10, color: '#fff' }}
               isOpen={isOpen}
+              variant={ButtonVariant.PRIMARY}
+              onClick={() => (isVariableStateSelected ? updateSelectedVariableStateById(null) : toggleSelectMenuOpen())}
+              iconProps={isVariableStateSelected ? { size: 16, color: '#fff', marginTop: '1px', marginLeft: '1px' } : { size: 10, color: '#fff' }}
               squareRadius
             />
           </TippyTooltip>

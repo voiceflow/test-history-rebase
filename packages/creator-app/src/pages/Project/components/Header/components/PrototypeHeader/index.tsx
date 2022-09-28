@@ -11,8 +11,10 @@ import { Content, Settings, Share, Timer } from './components';
 
 const PrototypeHeader: React.FC = () => {
   const goToCurrentCanvas = useDispatch(Router.goToCurrentCanvas);
+
   const variableStateManageModal = ModalsV2.useModal(ModalsV2.VariableStates.Manage);
   const variableStateCreateModal = ModalsV2.useModal(ModalsV2.VariableStates.Create);
+
   const disableEscHotkey = variableStateManageModal.opened || variableStateCreateModal.opened;
 
   return (
@@ -21,14 +23,16 @@ const PrototypeHeader: React.FC = () => {
         label="back to designer"
         hotkey={Hotkey.CLOSE_CANVAS_MODE}
         onHotkey={goToCurrentCanvas}
-        preventDefault
         disabled={disableEscHotkey}
+        preventDefault
       />
 
       <Content>
         <Timer />
       </Content>
+
       <Settings />
+
       <Share />
 
       <Box width={12} />

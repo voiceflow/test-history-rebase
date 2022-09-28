@@ -26,7 +26,6 @@ export * from './microphone';
 export * from './mlGateway';
 export * from './modals';
 export * from './permission';
-export * from './planLimits';
 export * from './planLimitV2';
 export * from './project';
 export * from './realtime';
@@ -43,6 +42,7 @@ export * from './theme';
 export * from './toggle';
 export * from './tracking';
 export * from './variable';
+export * from './variableStates';
 export * from './workspace';
 export { useLinkedRef, useLinkedState, useRAF, useResizeObserver } from '@voiceflow/ui';
 

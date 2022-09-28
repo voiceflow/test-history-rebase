@@ -3,7 +3,7 @@ import { Menu, OverflowText, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
 import * as VariableState from '@/ducks/variableState';
-import { useDispatch, useSelector, useToggle, useVariableStatesPlanLimit } from '@/hooks';
+import { useCreateVariableState, useDispatch, useSelector, useToggle } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
 
 import { OverflowWrapper, SelectContainer } from './components';
@@ -18,18 +18,20 @@ interface VariableStateSelectMenuProps {
 }
 
 const VariableStateSelectMenu: React.FC<VariableStateSelectMenuProps> = ({ render }) => {
-  const variableStatesCreateModal = ModalsV2.useModal(ModalsV2.VariableStates.Create);
-  const [isSelectMenuOpen, toggleSelectMenuOpen] = useToggle(false);
   const variableStates = useSelector(VariableState.allVariableStatesSelector);
   const updateSelectedVariableStateById = useDispatch(VariableState.updateSelectedVariableStateById);
+
+  const [isSelectMenuOpen, toggleSelectMenuOpen] = useToggle(false);
+
   const variableStateManageModal = ModalsV2.useModal(ModalsV2.VariableStates.Manage);
-  const verifyStatesLimit = useVariableStatesPlanLimit();
+
+  const onCreateVariableState = useCreateVariableState();
 
   const variableStateOptions = React.useMemo(
     () =>
       variableStates.length
         ? variableStates.map<VariableStateOption>((state) => ({ label: state.name, value: state.id }))
-        : [{ label: 'All project variables', value: ' ' }],
+        : [{ label: 'All project variables', value: VariableState.ALL_PROJECT_VARIABLES_ID }],
     [variableStates]
   );
 
@@ -57,7 +59,7 @@ const VariableStateSelectMenu: React.FC<VariableStateSelectMenuProps> = ({ rende
       renderTrigger={({ ref, isOpen }) => render({ ref, isOpen, toggleSelectMenuOpen })}
       renderFooterAction={() => (
         <Menu.Footer>
-          <Menu.Footer.Action onClick={verifyStatesLimit(() => variableStatesCreateModal.openVoid({}))}>Create New Persona</Menu.Footer.Action>
+          <Menu.Footer.Action onClick={onCreateVariableState}>Create New Persona</Menu.Footer.Action>
         </Menu.Footer>
       )}
       renderOptionLabel={(option: VariableStateOption) => (

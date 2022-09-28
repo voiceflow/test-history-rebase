@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.926.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.925.5...@voiceflow/creator-app@1.926.0) (2022-09-28)
+
+
+### Features
+
+* added segment tracking for custom blocks (PL-149) ([#6130](https://github.com/voiceflow/creator-app/issues/6130)) ([cd4f102](https://github.com/voiceflow/creator-app/commit/cd4f102aa078070234fd1cb6575e9013cbb66947))
+
+
+
+
+
 ## [1.925.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.925.4...@voiceflow/creator-app@1.925.5) (2022-09-28)
 
 

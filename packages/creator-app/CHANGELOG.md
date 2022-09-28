@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.926.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.926.1...@voiceflow/creator-app@1.926.2) (2022-09-28)
+
+
+### Bug Fixes
+
+* identity login updates (CT-987) ([#6144](https://github.com/voiceflow/creator-app/issues/6144)) ([b7c5941](https://github.com/voiceflow/creator-app/commit/b7c59414aa19966a43f15cb5161f5baae224a530))
+
+
+
+
+
 ## [1.926.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.926.0...@voiceflow/creator-app@1.926.1) (2022-09-28)
 
 

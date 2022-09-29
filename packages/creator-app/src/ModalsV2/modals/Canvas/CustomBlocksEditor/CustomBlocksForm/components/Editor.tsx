@@ -86,6 +86,7 @@ export const Editor: React.FC<EditorProps> = ({
             </Link>
           </SectionV2.Header>
         }
+        backgroundColor={THEME.colors.white}
       >
         <SectionV2.Content style={{ marginBottom: '16px', paddingBottom: '0px' }}>
           <AceEditor

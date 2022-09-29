@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.927.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.926.2...@voiceflow/creator-app@1.927.0) (2022-09-29)
+
+
+### Features
+
+* identity send update email email (CT-925) ([#6139](https://github.com/voiceflow/creator-app/issues/6139)) ([c59c0e2](https://github.com/voiceflow/creator-app/commit/c59c0e2f83293ee2fed037136b9b8c3af901c49c))
+
+
+
+
+
 ## [1.926.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.926.1...@voiceflow/creator-app@1.926.2) (2022-09-28)
 
 

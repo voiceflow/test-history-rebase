@@ -16,7 +16,7 @@ export const normalize = (data: any) => {
  * @returns {Array} all things matching a variable format in this object
  */
 export const deepVariableSearch = (object: any) => {
-  const variables = new Set();
+  const variables = new Set<string>();
 
   const recurse = (subCollection: any) => {
     if (typeof subCollection === 'object') {

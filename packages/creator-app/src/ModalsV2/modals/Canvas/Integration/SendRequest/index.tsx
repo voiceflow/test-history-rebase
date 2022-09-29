@@ -7,20 +7,20 @@ import { useSetup } from '@/hooks';
 import manager from '../../../../manager';
 import { SetVariables, TestRequest } from './components';
 import { useRequest, useRequestVariables } from './hooks';
+import { normalize } from './utils';
 
 interface Props {
   data: Realtime.NodeData.CustomApi;
 }
 
 const SendRequest = manager.create<Props>('SendRequest', () => ({ api, type, opened, hidden, animated, data }) => {
-  const { variableValues, formattedData, hasVariables, updateVariableValue, normalizeAndSaveVariables } = useRequestVariables();
+  const formattedData = React.useMemo<Record<string, unknown>>(() => normalize(data), []);
+  const { variableValues, hasVariables, updateVariableValue } = useRequestVariables(formattedData);
   const { response, sendRequest, isLoading } = useRequest({ variableValues, formattedData });
 
   useSetup(() => {
-    const usedVariables = normalizeAndSaveVariables(data);
-    if (usedVariables?.length === 0) {
-      sendRequest();
-    }
+    if (hasVariables) return;
+    sendRequest();
   });
 
   return (

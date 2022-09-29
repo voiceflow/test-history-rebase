@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.927.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.927.2...@voiceflow/creator-app@1.927.3) (2022-09-29)
+
+
+### Bug Fixes
+
+* revert slot name formatting open (NLU-397) ([#6151](https://github.com/voiceflow/creator-app/issues/6151)) ([abe7285](https://github.com/voiceflow/creator-app/commit/abe7285d0778cd56ed4aa77b1cbe359a84903400))
+
+
+
+
+
 ## [1.927.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.927.1...@voiceflow/creator-app@1.927.2) (2022-09-29)
 
 

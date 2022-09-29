@@ -1,35 +1,53 @@
 import { Utils } from '@voiceflow/common';
 import { FullSpinner, toast, useSetup } from '@voiceflow/ui';
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 import * as Account from '@/ducks/account';
 import * as Router from '@/ducks/router';
-import { useDispatch, useSelector, useTrackingEvents } from '@/hooks';
+import * as Session from '@/ducks/session';
+import { useDispatch, useQuery, useSelector, useTrackingEvents } from '@/hooks';
 
 const ConfirmEmail: React.FC = () => {
-  const { token } = useParams<{ token: string }>();
-  const confirmEmailUpdate = useDispatch(Account.confirmEmailUpdate);
-  const isLoggedIn = useSelector(Account.isLoggedInSelector);
-  const goToLoginPage = useDispatch(Router.goToLogin);
-  const goToLogout = useDispatch(Router.goToLogout);
+  const query = useQuery();
+  const location = useLocation();
   const [trackingEvents] = useTrackingEvents();
 
+  const isLoggedIn = useSelector(Account.isLoggedInSelector);
+
+  const logout = useDispatch(Session.logout);
+  const goToLoginPage = useDispatch(Router.goToLogin);
+  const goToDashboard = useDispatch(Router.goToDashboard);
+  const confirmEmailUpdate = useDispatch(Account.confirmEmailUpdate);
+
   useSetup(async () => {
-    if (token && !isLoggedIn) {
-      toast.warn('Login to use link');
-      await goToLoginPage();
+    const confirmToken = query.get('confirmToken');
+
+    if (!confirmToken) {
+      toast.warn('Invalid verification link');
+
+      goToDashboard();
       return;
     }
-    if (!isLoggedIn) return;
-    await confirmEmailUpdate(token);
+
+    if (!isLoggedIn) {
+      toast.warn('Login to use link');
+
+      goToLoginPage('', { redirectTo: `${location.pathname}?confirmToken=${confirmToken}` });
+      return;
+    }
+
+    await confirmEmailUpdate(decodeURIComponent(confirmToken));
+
     trackingEvents.trackProfileEmailChanged();
+
     // Show the success toast before logging out
     await Utils.promise.delay(3000);
-    await goToLogout();
-  }, []);
 
-  return <FullSpinner message="Verifying Email change" />;
+    logout();
+  });
+
+  return <FullSpinner message="Verifying email change" />;
 };
 
 export default ConfirmEmail;

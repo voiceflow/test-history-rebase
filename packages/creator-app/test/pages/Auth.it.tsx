@@ -55,8 +55,10 @@ suite('Auth', () => {
           referralRockCode: undefined,
         },
         {
-          utm_first_name: TEST_FIRST_NAME,
-          utm_last_name: TEST_LAST_NAME,
+          query: {
+            utm_first_name: TEST_FIRST_NAME,
+            utm_last_name: TEST_LAST_NAME,
+          },
         },
       ]);
     });

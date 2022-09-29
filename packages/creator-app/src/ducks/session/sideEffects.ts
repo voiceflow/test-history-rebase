@@ -6,7 +6,7 @@ import client from '@/client';
 import { SSOConvertPayload, SSOLoginPayload } from '@/client/sso';
 import { SessionType } from '@/constants';
 import { resetAccount, updateAccount } from '@/ducks/account/actions';
-import { goToDashboardWithSearch, goToLogin, goToOnboarding } from '@/ducks/router/actions';
+import { goTo, goToDashboardWithSearch, goToLogin, goToOnboarding } from '@/ducks/router/actions';
 import { locationSelector } from '@/ducks/router/selectors';
 import * as Models from '@/models';
 import { SyncThunk, Thunk } from '@/store/types';
@@ -92,8 +92,15 @@ export const restoreSession = (): Thunk => async (dispatch, getState) => {
   }
 };
 
+interface SetSessionOptions {
+  user: Models.Account;
+  token: string;
+  redirectTo?: string;
+  intercomUserHMAC: string | null;
+}
+
 const setSession =
-  ({ token, user, intercomUserHMAC }: { token: string; user: Models.Account; intercomUserHMAC: string | null }): Thunk =>
+  ({ user, token, redirectTo, intercomUserHMAC }: SetSessionOptions): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
 
@@ -109,7 +116,9 @@ const setSession =
     const search = Query.parse(location.search);
 
     // Show join workspace onboarding on first login of an invite or with a workspace promo
-    if ((search.invite && user.first_login) || search.promo || search.ob_plan) {
+    if (redirectTo) {
+      dispatch(goTo(redirectTo));
+    } else if ((search.invite && user.first_login) || search.promo || search.ob_plan) {
       dispatch(goToOnboarding());
     } else if (search.invite || !user.first_login) {
       dispatch(goToDashboardWithSearch(location.search));
@@ -132,12 +141,12 @@ export const ssoLogin =
 
 const createSession =
   (sessionType: SessionType) =>
-  (authRequest: unknown, query?: Record<string, string>): Thunk<Models.Account> =>
+  (authRequest: unknown, { query, redirectTo }: { query?: Record<string, string>; redirectTo?: string } = {}): Thunk<Models.Account> =>
   async (dispatch) => {
     const parsedQuery = { ...parseQuery(window.location.search), ...query };
     const { user, token, intercomUserHMAC = null } = await client.session.create(sessionType, authRequest, parsedQuery);
 
-    await dispatch(setSession({ user, token, intercomUserHMAC }));
+    await dispatch(setSession({ user, token, redirectTo, intercomUserHMAC }));
 
     return user;
   };

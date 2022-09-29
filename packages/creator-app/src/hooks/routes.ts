@@ -1,7 +1,10 @@
+import React from 'react';
 import { useLocation, useRouteMatch } from 'react-router-dom';
 
 export const useQuery = () => {
-  return new URLSearchParams(useLocation().search);
+  const { search } = useLocation();
+
+  return React.useMemo(() => new URLSearchParams(search), [search]);
 };
 
 export const useRouteWorkspaceID = (): string | null => {

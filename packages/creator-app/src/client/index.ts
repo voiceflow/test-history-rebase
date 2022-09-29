@@ -6,6 +6,7 @@ import canvasExport from './canvasExport';
 import comment from './comment';
 import feature from './feature';
 import file from './file';
+import identity from './identity';
 import integrations from './integrations';
 import maintenance from './maintenance';
 import mlGateway from './mlGateway';
@@ -30,6 +31,7 @@ type Platform = typeof getPlatformClient & typeof platformClients;
 
 const client = {
   api,
+  identity,
 
   platform: Object.assign(getPlatformClient, platformClients) as Platform,
 

@@ -21,7 +21,7 @@ export const redirectTo = <T extends Struct>(path: string, state: T | null = nul
 
 export const goToHome = () => goTo('');
 
-export const goToLogin = (search?: string) => goTo(`${Path.LOGIN}${search ?? ''}`);
+export const goToLogin = <T extends Struct>(search?: string, state?: T | null) => goTo(`${Path.LOGIN}${search ?? ''}`, state);
 
 export const goToAccountIntegrations = (search?: string) => goTo(`${Path.ACCOUNT_INTEGRATIONS}${search ?? ''}`);
 

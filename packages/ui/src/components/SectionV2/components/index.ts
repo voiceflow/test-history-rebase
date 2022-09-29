@@ -12,6 +12,7 @@ export { default as Divider } from './Divider';
 export { default as ErrorMessage } from './ErrorMessage';
 export { default as Header } from './Header';
 export { default as InfoIconTooltip } from './InfoIconTooltip';
+export { default as InfoMessage } from './InfoMessage';
 export { default as LinkArrowIcon } from './LinkArrowIcon';
 export { default as LinkSection } from './LinkSection';
 export { default as ListItem } from './ListItem';

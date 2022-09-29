@@ -1,6 +1,10 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { toast } from '@voiceflow/ui';
+// eslint-disable-next-line you-dont-need-lodash-underscore/get
+import _get from 'lodash/get';
 
 import client from '@/client';
+import * as Feature from '@/ducks/feature';
 import { Thunk } from '@/store/types';
 
 import { updateAccount } from './actions';
@@ -34,13 +38,28 @@ export const confirmAccount =
     dispatch(updateAccount({ verified: true, first_login: true }));
   };
 
+export const sendUpdateEmailEmail =
+  (nextEmail: string, password: string): Thunk =>
+  (_dispatch, getState) => {
+    const isIdentityUserEnabled = Feature.isFeatureEnabledSelector(getState())(Realtime.FeatureFlag.IDENTITY_USER);
+
+    if (isIdentityUserEnabled) {
+      return client.identity.user.sendUpdateEmailEmail({ password, nextEmail });
+    }
+
+    return client.user.updateEmail(password, nextEmail).catch((error) => {
+      throw new Error(_get(error, ['body', 'data']) ?? '');
+    });
+  };
+
 export const confirmEmailUpdate =
   (token: string): Thunk =>
   async () => {
     try {
       await client.user.confirmEmailUpdate(token);
+
       toast.success('Email successfully updated, log in to continue');
     } catch {
-      toast.error('Invalid Verification Link - Expired or Broken');
+      toast.error('Invalid verification link - expired or broken');
     }
   };

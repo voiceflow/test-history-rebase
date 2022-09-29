@@ -26,14 +26,19 @@ const Project = lazy(() => import('@/pages/Project'));
 
 const Legal = lazy(() => import('@/components/Legal'));
 
+const Logout = lazy(() => import('@/pages/Auth/Logout'));
 const Account = lazy(() => import('@/pages/Account'));
 const Runtime = lazy(() => import('@/pages/Runtime'));
-const PublicPrototype = lazy(() => import('@/pages/PublicPrototype'));
 const Workspace = lazy(() => import('@/pages/Workspace'));
 const NewWorkspace = lazy(() => import('@/pages/Dashboard/NewWorkspace'));
-const ConfirmAccount = lazy(() => import('@/pages/Auth/ConfirmAccount'));
 const ConfirmEmail = lazy(() => import('@/pages/Auth/ConfirmEmail'));
-const Logout = lazy(() => import('@/pages/Auth/Logout'));
+const ConfirmAccount = lazy(() => import('@/pages/Auth/ConfirmAccount'));
+const PublicPrototype = lazy(() => import('@/pages/PublicPrototype'));
+
+/**
+ * @deprecated use ConfirmEmail instead, should be removed when identity service is fully rolled out
+ */
+const ConfirmEmailLegacy = lazy(() => import('@/pages/Auth/ConfirmEmailLegacy'));
 
 const Routes: React.FC = () => {
   const authToken = useSelector(Session.authTokenSelector);
@@ -42,8 +47,12 @@ const Routes: React.FC = () => {
     <Suspense fallback={<FullSpinner name="Assets" />}>
       <Switch>
         <Route exact path={Path.CONFIRM_ACCOUNT} component={ConfirmAccount} />
-        <Route exact path={Path.CONFIRM_EMAIL_UPDATE} component={ConfirmEmail} />
         <Route exact path={Path.LOGOUT} component={Logout} />
+
+        <Route exact path={Path.CONFIRM_EMAIL_UPDATE} component={ConfirmEmail} />
+        {/* should be removed when identity service is fully rolled out  */}
+        <Route exact path={LegacyPath.CONFIRM_EMAIL_UPDATE} component={ConfirmEmailLegacy} />
+
         <PublicRoute exact path={Path.RESET_PASSWORD} component={ResetPassword} />
         <PublicRoute exact path={Path.RESET} component={ResetEmail} />
         <PublicRoute exact path={Path.LOGIN} component={Login} />

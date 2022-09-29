@@ -8,11 +8,10 @@ export interface HeaderProps extends SpaceProps {
   top?: number;
   sticky?: boolean;
   sticked?: boolean;
-
-  bottomUnit?: number;
   topUnit?: number;
-  rightUnit?: number;
   leftUnit?: number;
+  rightUnit?: number;
+  bottomUnit?: number;
 }
 
 const Header = styled.header<HeaderProps>`

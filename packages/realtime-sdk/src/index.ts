@@ -1,6 +1,7 @@
 export * from './actions';
 export * as Adapters from './adapters';
 export * as Channels from './channels';
+export * as Clients from './clients';
 export * from './config';
 export * from './constants';
 export * as IO from './io';

@@ -82,7 +82,12 @@ export const SignupForm: React.FC<SignupFormProps & ConnectedPublicSignupFormPro
             referralRockCode: query.ref_code,
             urlSearch: search,
           },
-          { utm_first_name: firstName, utm_last_name: lastName }
+          {
+            query: {
+              utm_last_name: lastName,
+              utm_first_name: firstName,
+            },
+          }
         );
       }
     } catch (err) {

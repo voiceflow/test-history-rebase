@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.927.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.927.0...@voiceflow/creator-app@1.927.1) (2022-09-29)
+
+
+### Bug Fixes
+
+* modal background color (PL-205) ([#6148](https://github.com/voiceflow/creator-app/issues/6148)) ([c9990fb](https://github.com/voiceflow/creator-app/commit/c9990fb3c2fc2e7a323a261b1f2592c628ae586c))
+
+
+
+
+
 # [1.927.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.926.2...@voiceflow/creator-app@1.927.0) (2022-09-29)
 
 

@@ -4,8 +4,6 @@ import React from 'react';
 
 import Section, { SectionVariant } from '@/components/Section';
 import { CUSTOM_SLOT_TYPE } from '@/constants';
-import * as ProjectV2 from '@/ducks/projectV2';
-import { useSelector } from '@/hooks';
 import { DividerBorder } from '@/pages/Canvas/components/IntentModalsV2/components/components';
 import { applySlotNameFormatting } from '@/utils/slot';
 
@@ -48,7 +46,6 @@ const EntityForm = React.forwardRef<HTMLInputElement, EntityFormProps>(
   ) => {
     const [hasExtendedEntity, setHasExtendedEntity] = React.useState(!!values.length);
     const isCustomSlot = type === CUSTOM_SLOT_TYPE;
-    const platform = useSelector(ProjectV2.active.platformSelector);
 
     return (
       <>
@@ -65,7 +62,7 @@ const EntityForm = React.forwardRef<HTMLInputElement, EntityFormProps>(
               value={name}
               onBlur={() => saveName?.()}
               placeholder="Enter entity name"
-              onChangeText={(text) => updateName(applySlotNameFormatting(platform)(text))}
+              onChangeText={(text) => updateName(applySlotNameFormatting(text))}
             />
           </Section>
         )}

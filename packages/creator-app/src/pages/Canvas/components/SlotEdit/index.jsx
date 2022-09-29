@@ -11,12 +11,11 @@ import { Permission } from '@/config/permissions';
 import { BulkImportLimitDetails } from '@/config/planLimits/bulkImport';
 import { CUSTOM_SLOT_TYPE, ModalType, SLOT_COLORS } from '@/constants';
 import * as IntentV2 from '@/ducks/intentV2';
-import * as ProjectV2 from '@/ducks/productV2';
 import * as SlotV2 from '@/ducks/slotV2';
 import * as VersionV2 from '@/ducks/versionV2';
 import { styled } from '@/hocs';
 import { useModals, usePermission, useSelector, useTeardown, useTrackingEvents } from '@/hooks';
-import { applySlotNameFormatting, slotNameFormatter, validateSlotName } from '@/utils/slot';
+import { applySlotNameFormatting, validateSlotName } from '@/utils/slot';
 
 import { ColorSelector, SlotTag } from './components';
 import CustomLine from './components/CustomLine';
@@ -48,7 +47,6 @@ function SlotEdit({ id, name = '', type, color = _sample(SLOT_COLORS), inputs = 
   const intents = useSelector(IntentV2.allIntentsSelector);
   const slotTypes = useSelector(VersionV2.active.slotTypesSelector) ?? [];
   const getIntentsUsingSlot = useSelector(IntentV2.getIntentsUsingSlotSelector);
-  const platform = useSelector(ProjectV2.active.platformSelector);
 
   const isDeleteable = !isCreate && !!onDelete;
 
@@ -57,7 +55,7 @@ function SlotEdit({ id, name = '', type, color = _sample(SLOT_COLORS), inputs = 
   const [isSaving, setIsSaving] = React.useState(false);
   const [selectedColor, setSelectedColor] = React.useState(color);
   const [slotType, setSlotType] = React.useState(() => type || (slotTypes.length === 1 ? slotTypes[0].value : type));
-  const [slotName, setSlotName] = React.useState(() => Utils.string.removeTrailingUnderscores(applySlotNameFormatting(platform)(name)));
+  const [slotName, setSlotName] = React.useState(() => Utils.string.removeTrailingUnderscores(applySlotNameFormatting(name)));
   const [customLines, setCustomLines] = React.useState(() =>
     inputs?.length ? inputs : (slotType === CUSTOM_SLOT_TYPE && [generateSlotInput()]) || inputs
   );
@@ -73,7 +71,7 @@ function SlotEdit({ id, name = '', type, color = _sample(SLOT_COLORS), inputs = 
   const notEmptyValues = React.useMemo(() => customLines.some(({ value, synonyms }) => value.trim() || synonyms.trim()), [customLines]);
 
   const updateSlot = async () => {
-    const formattedSlotName = slotNameFormatter(platform)(slotName);
+    const formattedSlotName = Utils.string.removeTrailingUnderscores(slotName);
 
     const error = validateSlotName({
       slots: slots.filter((slot) => slot.id !== id),
@@ -157,7 +155,7 @@ function SlotEdit({ id, name = '', type, color = _sample(SLOT_COLORS), inputs = 
   }, [slotType]);
 
   React.useEffect(() => {
-    setSlotName(applySlotNameFormatting(platform)(name));
+    setSlotName(applySlotNameFormatting(name));
   }, [name]);
 
   React.useEffect(() => {
@@ -190,7 +188,7 @@ function SlotEdit({ id, name = '', type, color = _sample(SLOT_COLORS), inputs = 
             value={slotName}
             onBlur={isInteraction && onBlurInInteraction}
             placeholder="Enter Entity Name"
-            onChangeText={(value) => setSlotName(applySlotNameFormatting(platform)(value))}
+            onChangeText={(value) => setSlotName(applySlotNameFormatting(value))}
           />
 
           {isInteraction && <RemoveDropdown onRemove={() => onRemove(id)} />}

@@ -1,7 +1,9 @@
 import { AlexaConstants } from '@voiceflow/alexa-types';
+import { Utils as CommonUtils } from '@voiceflow/common';
 import { DFESConstants } from '@voiceflow/google-dfes-types';
 import { GoogleConstants } from '@voiceflow/google-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { Utils } from '@voiceflow/realtime-sdk';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import type { AnyLocale } from '@/platforms';
@@ -20,11 +22,33 @@ export const {
   CUSTOM_ENTITY_VALUE_ERROR_MSG,
 } = Realtime.Utils.slot;
 
-export const applySlotNameFormatting = (name = ''): string =>
+// even more restrictive subset (no numbers allowed, lowercase only)
+export const platformSlotFormatter = (name = '') =>
   name
     .replace(/ /g, '_')
     .replace(/[^A-Z_a-z]/g, '')
     .toLowerCase();
+
+// ensure valid javascript variable format
+export const defaultSlotFormatter = (name = '') =>
+  name
+    .replace(/ /g, '_')
+    .replace(/[^\w$]/g, '')
+    .replace(/^\d/, ''); // first character cannot be a number
+
+export const applySlotNameFormatting = Utils.platform.createPlatformSelector(
+  {
+    [VoiceflowConstants.PlatformType.ALEXA]: platformSlotFormatter,
+  },
+  defaultSlotFormatter
+);
+
+export const slotNameFormatter = Utils.platform.createPlatformSelector(
+  {
+    [VoiceflowConstants.PlatformType.ALEXA]: CommonUtils.string.removeTrailingUnderscores,
+  },
+  (name: string) => name
+);
 
 export const toVoiceflowSlotType = (type: string, platform: VoiceflowConstants.PlatformType): VoiceflowConstants.SlotType | undefined => {
   switch (platform) {

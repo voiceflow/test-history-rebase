@@ -78,10 +78,12 @@ export const getGoogleVoiceOptions = ({ locales, useWavenet }: GetVoiceOptionsPa
         .map((voiceName) => ({ value: voiceName, label: prettifyGoogleVoicesShort(voiceName) }))
     );
 
-  return localeMeta.map(({ locale, languageCode }) => ({
-    label: GoogleConstants.LocaleCodeToCountryLanguage[locale as GoogleConstants.Locale] || locale,
-    options: getLangOptions(languageCode),
-  }));
+  return localeMeta
+    .filter(({ locale, languageCode }) => locale === languageCode) // only show language options if the locale is the same as the language
+    .map(({ locale, languageCode }) => ({
+      label: GoogleConstants.LocaleCodeToCountryLanguage[locale as GoogleConstants.Locale] || locale,
+      options: getLangOptions(languageCode),
+    }));
 };
 
 export const getGoogleDialogflowVoiceOptions = (): VoiceOptionGroup<string>[] => {

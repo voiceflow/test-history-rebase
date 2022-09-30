@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.927.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.927.3...@voiceflow/creator-app@1.927.4) (2022-09-30)
+
+
+### Bug Fixes
+
+* resolve belgium dutch (BUG-45) ([#6141](https://github.com/voiceflow/creator-app/issues/6141)) ([756e4c2](https://github.com/voiceflow/creator-app/commit/756e4c29d03db891677f0568c33ae6b8f4406e65))
+
+
+
+
+
 ## [1.927.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.927.2...@voiceflow/creator-app@1.927.3) (2022-09-29)
 
 

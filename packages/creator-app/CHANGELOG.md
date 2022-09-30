@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.927.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.927.5...@voiceflow/creator-app@1.927.6) (2022-09-30)
+
+
+### Bug Fixes
+
+* build ([#6154](https://github.com/voiceflow/creator-app/issues/6154)) ([a9cae40](https://github.com/voiceflow/creator-app/commit/a9cae40d64a0d1eb99581ecae75186215eb7bd9f))
+* login with amazon broken (CT-000) ([#6153](https://github.com/voiceflow/creator-app/issues/6153)) ([9e047cd](https://github.com/voiceflow/creator-app/commit/9e047cdcad0277cc8b6515d3d12e23c1d737fb0f))
+
+
+
+
+
 ## [1.927.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.927.4...@voiceflow/creator-app@1.927.5) (2022-09-30)
 
 

@@ -14,7 +14,7 @@ const AWS_LOGIN_URI = '//api-cdn.amazon.com/sdk/login1.js';
 
 const AUTH_OPTIONS: CodeAuthorizeOptions = {
   response_type: 'code',
-  scope: 'profile',
+  scope: ['alexa::ask:skills:readwrite', 'alexa::ask:models:readwrite', 'alexa::ask:skills:test', 'profile'].join(' '),
 };
 
 interface Props {

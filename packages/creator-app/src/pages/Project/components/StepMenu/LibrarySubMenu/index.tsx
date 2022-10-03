@@ -61,7 +61,7 @@ const LibrarySubMenu: React.FC<LibrarySubMenuProps> = ({
       currentTab === LibraryStepType.BLOCK_TEMPLATES
         ? {
             entityName: 'templates',
-            docLink: Documentation.ZENDESK_URL,
+            docLink: Documentation.TEMPLATE_STEP,
           }
         : {
             entityName: 'blocks',

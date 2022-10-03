@@ -29,6 +29,7 @@ const SessionTracker: React.FC = () => {
     const state = store.getState();
 
     const email = Account.userEmailSelector(state);
+    const name = Account.userNameSelector(state)!;
     const creatorID = Account.userIDSelector(state);
     const workspaceIDs = WorkspaceV2.allWorkspaceIDsSelector(state);
     const allWorkspaces = WorkspaceV2.allWorkspacesSelector(state);
@@ -39,7 +40,7 @@ const SessionTracker: React.FC = () => {
       .map((workspace) => workspace.members.find(({ creator_id }) => creator_id === creatorID)?.role)
       .filter(Utils.array.isNotNullish);
 
-    trackEvents.trackSessionBegin(workspaceIDs, email, roles);
+    trackEvents.trackSessionBegin(workspaceIDs, email, roles, name);
     window.addEventListener('beforeunload', trackSessionTime);
 
     return () => {

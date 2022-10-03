@@ -9,11 +9,12 @@ import { SyncThunk } from '@/store/types';
 import { EventName, SourceType } from '../constants';
 
 export const trackSessionBegin =
-  (workspaceIDs: string[] = [], email: Nullable<string>, roles: UserRole[]) =>
+  (workspaceIDs: string[] = [], email: Nullable<string>, roles: UserRole[], name: string) =>
   () => {
     client.api.analytics.track(EventName.SESSION_BEGIN);
+    // Passing full name as the last name for now, as per Frank's instruction, we will fix this post feature freeze 2022
     client.api.analytics.identify({
-      traits: { workspace_id: workspaceIDs, team_role: roles, email },
+      traits: { workspace_id: workspaceIDs, team_role: roles, email, last_name: name },
       teamhashed: ['workspace_id'],
     });
   };

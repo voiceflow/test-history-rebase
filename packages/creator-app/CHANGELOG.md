@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.927.9](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.927.8...@voiceflow/creator-app@1.927.9) (2022-10-03)
+
+
+### Bug Fixes
+
+* [bugfix] NLU Manager UI/UX Review (NLU-363) ([#6140](https://github.com/voiceflow/creator-app/issues/6140)) ([cef8426](https://github.com/voiceflow/creator-app/commit/cef8426fb173ee4b96ca2c584077fe6626e56e17))
+
+
+
+
+
 ## [1.927.8](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.927.7...@voiceflow/creator-app@1.927.8) (2022-10-03)
 
 

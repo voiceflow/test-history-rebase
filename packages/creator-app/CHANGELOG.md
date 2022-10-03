@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.927.8](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.927.7...@voiceflow/creator-app@1.927.8) (2022-10-03)
+
+
+### Bug Fixes
+
+* add invite track to onboarding (CT-991) ([#6147](https://github.com/voiceflow/creator-app/issues/6147)) ([a1a40a6](https://github.com/voiceflow/creator-app/commit/a1a40a6f68657555e1cb97778b739072a52a2da5))
+
+
+
+
+
 ## [1.927.7](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.927.6...@voiceflow/creator-app@1.927.7) (2022-09-30)
 
 

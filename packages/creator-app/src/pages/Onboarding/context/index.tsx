@@ -1,5 +1,6 @@
 import { Utils } from '@voiceflow/common';
 import { BillingPeriod, PlanType, PromoType, UserRole } from '@voiceflow/internal';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { ButtonVariant, toast } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import _constant from 'lodash/constant';
@@ -17,6 +18,7 @@ import * as Project from '@/ducks/project';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import * as Tracking from '@/ducks/tracking';
+import { trackInvitationSent } from '@/ducks/tracking/events/invitation';
 import * as Workspace from '@/ducks/workspace';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { withStripe } from '@/hocs';
@@ -102,7 +104,6 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
   const dispatch = useReduxDispatch();
   const location = useLocation();
   const search = queryString.parse(location.search);
-
   const workspaces = useSelector(WorkspaceV2.allWorkspacesSelector);
   const getWorkspaceByID = useSelector(WorkspaceV2.getWorkspaceByIDSelector);
   const account = useSelector(Account.userSelector);
@@ -110,6 +111,7 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
   const currentWorkspaceID = useSelector(Session.activeWorkspaceIDSelector);
   const isLoggedIn = useSelector(Account.isLoggedInSelector);
 
+  const trackInviteSent = useDispatch(trackInvitationSent);
   const checkoutWorkspace = useDispatch(Workspace.checkout);
   const createWorkspace = useDispatch(Workspace.createWorkspace);
   const sendInvite = useDispatch(Workspace.sendInviteToActiveWorkspace);
@@ -298,9 +300,12 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
       }
     }
 
-    let workspace;
+    let workspace: Realtime.Workspace | null = null;
+    let targetWorkspaceID: string | null = null;
 
     const selectedWorkspaceID = paymentMeta.selectedWorkspaceId as string | null;
+    targetWorkspaceID = selectedWorkspaceID;
+
     if (selectedWorkspaceID) {
       workspace = getWorkspaceByID({ id: selectedWorkspaceID });
     }
@@ -315,6 +320,7 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
         }
 
         setActiveWorkspace(workspace.id);
+        targetWorkspaceID = workspace.id;
       } catch (e) {
         toast.error('Error creating workspace, please try again later');
         goToDashboard();
@@ -338,6 +344,9 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
       const { email, permission } = member;
       try {
         await sendInvite(email, permission, false);
+        if (targetWorkspaceID) {
+          trackInviteSent(targetWorkspaceID, email);
+        }
       } catch (e) {
         toast.error(`Problem inviting ${email}, please try again later`);
       }

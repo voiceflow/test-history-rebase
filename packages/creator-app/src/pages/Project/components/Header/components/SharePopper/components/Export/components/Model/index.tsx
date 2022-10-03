@@ -14,14 +14,22 @@ import { usePermission } from '@/hooks';
 import { ExportContext } from '../../Context';
 
 const ExportModel: React.FC<{
-  selectedIntents?: string[];
-}> = ({ selectedIntents }) => {
-  const { modelExportProvider, setModelExportProvider, setModelExportIntents, modelExportIntents, nlpProviderOptions, setCanExport } =
-    React.useContext(ExportContext)!;
+  selectedIntentsIds?: string[];
+}> = ({ selectedIntentsIds }) => {
+  const {
+    modelExportProvider,
+    setModelExportProvider,
+    setModelExportIntents,
+    modelExportIntents,
+    nlpProviderOptions,
+    setCanExport,
+    setCheckedExportIntents,
+  } = React.useContext(ExportContext)!;
   const intents = useSelector(IntentV2.allIntentsSelector);
   const noModelData = intents.length === 0;
   const [permissionToExport] = usePermission(Permission.NLU_EXPORT_ALL);
   const [permissionToExportCSV] = usePermission(Permission.NLU_EXPORT_CSV);
+  const [selectedIntents, setSelectedIntents] = React.useState(modelExportIntents);
 
   const modelExportSelection = (value: NLPProvider) => {
     setModelExportProvider(value);
@@ -38,11 +46,17 @@ const ExportModel: React.FC<{
     }
   }, [nlpProviderOptions]);
 
+  const handleOnChange = (intents: string[]) => {
+    setModelExportIntents(intents);
+    setSelectedIntents(intents);
+  };
+
   React.useEffect(() => {
-    if (selectedIntents) {
-      setModelExportIntents(selectedIntents);
+    if (selectedIntentsIds) {
+      setCheckedExportIntents(selectedIntentsIds);
+      setSelectedIntents(Array.from(new Set([...selectedIntentsIds, ...modelExportIntents])));
     }
-  }, [selectedIntents]);
+  }, [selectedIntentsIds]);
 
   return (
     <>
@@ -75,7 +89,7 @@ const ExportModel: React.FC<{
       ) : (
         <>
           <Divider style={{ margin: '20px 0px', width: 'calc(100% + 64px)', backgroundColor: 'rgb(234 239 242)' }} />
-          <IntentsSelect value={modelExportIntents} onChange={setModelExportIntents} />
+          <IntentsSelect value={selectedIntents} onChange={handleOnChange} />
         </>
       )}
     </>

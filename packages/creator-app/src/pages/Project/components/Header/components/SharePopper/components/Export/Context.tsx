@@ -22,10 +22,12 @@ interface ExportValue {
   setExportType: (exportType: ExportType) => void;
   setCanExport: (canExport: boolean) => void;
   nlpProviderOptions: NLPProvider[];
+  checkedExportIntents: string[];
   modelExportIntents: string[];
   canvasExportFormat: CanvasExportFormat;
   modelExportProvider?: NLPProvider;
   setModelExportIntents: (intents: string[]) => void;
+  setCheckedExportIntents: (intents: string[]) => void;
   setCanvasExportFormat: (format: CanvasExportFormat) => void;
   setModelExportProvider: (provider: NLPProvider) => void;
 }
@@ -55,6 +57,7 @@ export const ExportProvider: React.FC = ({ children }) => {
     !isVoiceflowPlatform(platform) ? nlpProviderOptions[0] : undefined
   );
   const [modelExportIntents, setModelExportIntents] = React.useState<string[]>([]);
+  const [checkedExportIntents, setCheckedExportIntents] = React.useState<string[]>([]);
 
   const onExport = React.useCallback(
     async (origin) => {
@@ -88,10 +91,12 @@ export const ExportProvider: React.FC = ({ children }) => {
     nlpProviderOptions,
     canvasExportFormat,
     modelExportIntents,
+    checkedExportIntents,
     modelExportProvider,
     setCanvasExportFormat,
     setModelExportIntents,
     setModelExportProvider,
+    setCheckedExportIntents,
   });
 
   return <ExportContext.Provider value={api}>{children}</ExportContext.Provider>;

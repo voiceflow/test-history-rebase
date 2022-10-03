@@ -15,6 +15,8 @@ export const conflictModelToFormAdapter = (
   const problematicSentences = conflictsData.problematicSentences[currentIntent.name];
   const intentUtterances = new Set(currentIntent.inputs.map((input) => input.text));
 
+  if (!problematicSentences) return {};
+
   problematicSentences.forEach((problematicSentence) => {
     const problematicSentenceIntentID = intentsByName[problematicSentence.intentID]?.id;
     if (problematicSentence.intentID === currentIntent.name) return;

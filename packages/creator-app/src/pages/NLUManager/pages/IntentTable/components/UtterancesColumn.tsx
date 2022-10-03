@@ -3,6 +3,9 @@ import React from 'react';
 
 import { NLUIntent } from '@/pages/NLUManager/types';
 
-const UtterancesColumn: React.FC<TableTypes.ItemProps<NLUIntent>> = ({ item }) => <Box minWidth={80}>{item.inputs.length}</Box>;
+import { EmptyDash } from '../../../components';
+
+const UtterancesColumn: React.FC<TableTypes.ItemProps<NLUIntent>> = ({ item }) =>
+  item.inputs.length ? <Box minWidth={80}>{item.inputs.length}</Box> : <EmptyDash />;
 
 export default UtterancesColumn;

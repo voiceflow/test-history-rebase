@@ -101,6 +101,15 @@ const Recommendations: React.FC = () => {
     removeRecommendation(index);
   };
 
+  const filteredRecommendations = React.useMemo((): Recommendation[] => {
+    const currentIntent = nluManager.activeIntent;
+    if (!currentIntent || recommendations.length === 0) return recommendations;
+
+    return recommendations.filter((recommendedUtterance) => {
+      return !validateUtterance(recommendedUtterance.text, currentIntent.id, intents, platform);
+    });
+  }, [nluManager.activeIntent, intents, platform, recommendations]);
+
   React.useEffect(() => {
     setRecommendations([]);
     onFetchRecommendations();
@@ -110,21 +119,11 @@ const Recommendations: React.FC = () => {
     }
   }, []);
 
-  React.useEffect(() => {
-    const inputs = nluManager.activeIntent?.inputs || [];
-    const allIntentInputs = new Set(inputs.map((input) => input.text));
-    const filteredRecommendations = recommendations.filter((recommendedUtterance) => !allIntentInputs.has(recommendedUtterance.text));
-
-    if (filteredRecommendations.length !== recommendations.length) {
-      setRecommendations(filteredRecommendations);
-    }
-  }, [nluManager.activeIntent?.inputs]);
-
   return (
     <Drawer open width={450} offset={450} zIndex={19} direction={Drawer.Direction.LEFT}>
       <SidebarEditor.Container>
         <SidebarEditor.Header>
-          <SidebarEditor.HeaderTitle fontWeight={600}>Recommendations</SidebarEditor.HeaderTitle>
+          <SidebarEditor.HeaderTitle fontWeight={800}>Recommendations</SidebarEditor.HeaderTitle>
 
           {isFetching && <FullSpinner borderLess />}
 
@@ -141,7 +140,7 @@ const Recommendations: React.FC = () => {
           <SectionV2.Content topOffset={3} bottomOffset={3}>
             <Box.Flex column gap={16}>
               {!isFetching &&
-                recommendations.map((recommendation, index) => (
+                filteredRecommendations.map((recommendation, index) => (
                   <Box.Flex key={recommendation.id} width="100%">
                     <Utterance
                       space
@@ -156,7 +155,7 @@ const Recommendations: React.FC = () => {
 
                     <SectionV2.ActionsContainer gap={4}>
                       <IconButton
-                        size={14}
+                        size={16}
                         icon="close"
                         variant={IconButton.Variant.BASIC}
                         onClick={() => onRemoveRecommendation(index, recommendation.text)}
@@ -165,7 +164,7 @@ const Recommendations: React.FC = () => {
                       />
 
                       <IconButton
-                        size={14}
+                        size={16}
                         icon="checkSquare"
                         onClick={() => onAddRecommendation(index, recommendation)}
                         variant={IconButton.Variant.BASIC}

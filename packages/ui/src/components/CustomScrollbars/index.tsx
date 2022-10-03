@@ -19,6 +19,7 @@ const CustomScrollbars = (props: ScrollbarProps, ref: React.Ref<T.Scrollbars>) =
         autoHide
         renderThumbVertical={(props: any) => <S.ThumbVertical {...props} />}
         renderTrackVertical={(props: any) => <S.TrackVertical {...props} />}
+        style={{ height: '100%' }}
         {...props}
       />
     </ScrollbarsContext.Provider>

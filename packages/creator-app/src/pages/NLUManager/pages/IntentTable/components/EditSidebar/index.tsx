@@ -15,10 +15,6 @@ const EditSidebar: React.FC = () => {
 
   const showEditorTab = (tab: EditorTabs) => nluManager.activeItemID && nluManager.isEditorTabActive(tab);
 
-  const handleConflictChangesApplied = () => {
-    setTimeout(nluManager.fetchClarity, 2000);
-  };
-
   return (
     <>
       <ItemEditSidebar isBuiltIn={isCustomizableBuiltInIntent(nluManager.activeIntent)}>
@@ -36,7 +32,7 @@ const EditSidebar: React.FC = () => {
       </ItemEditSidebar>
 
       {showEditorTab(EditorTabs.UTTERANCE_RECOMMENDATIONS) && <Recommendations />}
-      {showEditorTab(EditorTabs.INTENT_CONFLICTS) && <Conflicts onChangesApplied={handleConflictChangesApplied} />}
+      {showEditorTab(EditorTabs.INTENT_CONFLICTS) && <Conflicts />}
     </>
   );
 };

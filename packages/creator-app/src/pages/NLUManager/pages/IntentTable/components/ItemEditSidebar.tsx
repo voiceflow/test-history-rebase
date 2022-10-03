@@ -46,7 +46,7 @@ const ItemEditSidebar: React.FC<ItemEditSidebarProps> = ({ children, isBuiltIn }
         <SidebarEditor.Header
           style={nluManager.isEditorTabActive(EditorTabs.INTENT_CONFLICTS) ? { height: `${theme.components.projectPage.header.height}px` } : {}}
         >
-          <SidebarEditor.HeaderTitle fontWeight={600}>
+          <SidebarEditor.HeaderTitle fontWeight={800}>
             <EditableText
               value={name}
               onBlur={onBlurName}

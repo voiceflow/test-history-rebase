@@ -116,16 +116,19 @@ const useIntentConflictsForm = (intentID: string | null, conflictsData: ClarityM
     });
   };
 
-  React.useEffect(() => {
+  const calculateConflicts = (data?: ClarityModel) => {
     const activeIntent = getIntentByID({ id: intentID });
+    const clarityModel = data || conflictsData;
 
-    if (!conflictsData || !activeIntent) return;
+    if (!clarityModel || !activeIntent) return null;
 
     const currentIntent = intentsByName[activeIntent.name];
-    const newConflicts = conflictModelToFormAdapter(conflictsData, currentIntent, intentsByName);
+    const newConflicts = conflictModelToFormAdapter(clarityModel, currentIntent, intentsByName);
 
     updateConflicts(newConflicts);
-  }, []);
+
+    return newConflicts;
+  };
 
   return {
     conflicts: Object.values(conflicts),
@@ -135,6 +138,7 @@ const useIntentConflictsForm = (intentID: string | null, conflictsData: ClarityM
     updateConflicts,
     shouldApplyChanges: modifiedUtterances.length > 0,
     modifiedUtterances,
+    calculateConflicts,
   };
 };
 

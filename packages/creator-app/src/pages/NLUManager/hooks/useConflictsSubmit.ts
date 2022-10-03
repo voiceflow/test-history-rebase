@@ -1,6 +1,4 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { toast } from '@voiceflow/ui';
-import React from 'react';
 
 import * as Intent from '@/ducks/intent';
 import * as IntentV2 from '@/ducks/intentV2';
@@ -10,10 +8,9 @@ import { ConflictUtterance } from '../types';
 
 type NewIntents = Record<string, Partial<Realtime.Intent>>;
 
-const useSolveIntentConflicts = (intentID: string | null) => {
+const useConflictsSubmit = (intentID: string | null) => {
   const patchIntent = useDispatch(Intent.patchIntent);
   const intentsMap = useSelector(IntentV2.platformIntentMapSelector);
-  const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [trackingEvents] = useTrackingEvents();
 
   const getSubmitData = (modifiedUtterances: ConflictUtterance[]): NewIntents => {
@@ -64,28 +61,18 @@ const useSolveIntentConflicts = (intentID: string | null) => {
   };
 
   const submit = async (modifiedUtterances: ConflictUtterance[]) => {
-    setIsLoading(true);
-
     const submitData = getSubmitData(modifiedUtterances);
 
-    try {
-      Object.entries(submitData).forEach(async ([intentID, intent]) => {
-        await patchIntent(intentID, intent);
-      });
+    await Promise.all(Object.entries(submitData).map(([intentID, intent]) => patchIntent(intentID, intent)));
 
-      if (intentID) {
-        trackingEvents.trackConflictViewChangesApplied({ intentID });
-      }
-    } catch (e) {
-      toast.error('Something went wrong');
-    } finally {
-      setIsLoading(false);
+    if (intentID) {
+      trackingEvents.trackConflictViewChangesApplied({ intentID });
     }
 
     return submitData;
   };
 
-  return { submit, isLoading };
+  return { submit };
 };
 
-export default useSolveIntentConflicts;
+export default useConflictsSubmit;

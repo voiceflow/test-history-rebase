@@ -5,7 +5,6 @@ import { css, styled } from '@/hocs';
 export const IntentsGrid = styled.div`
   display: inline-grid;
   grid-template-columns: 1fr 1fr;
-  border-bottom: 1px solid #eaeff4;
   grid-gap: 1px;
   width: 100%;
 
@@ -35,12 +34,14 @@ export const DragIconContainer = styled.div`
 export const Footer = styled.div`
   display: flex;
   justify-content: flex-end;
+  border-top: 1px solid #eaeff4;
   position: sticky;
   bottom: 0;
   width: 100%;
   padding: 24px 0;
   z-index: 99;
-  background: white;
+  background-color: #fbfbfb;
+  height: 100%;
 `;
 
 export const UtteranceListItemContainer = styled.div<{ isDragging: boolean }>`

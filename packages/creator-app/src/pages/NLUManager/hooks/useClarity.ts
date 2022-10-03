@@ -40,6 +40,8 @@ const useClarity = (intents: Realtime.Intent[]) => {
       });
 
       setClarity(data || null);
+
+      return data;
     } catch (e) {
       throw new Error(e);
     } finally {

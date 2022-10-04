@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.110.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.109.2...@voiceflow/realtime@1.110.0) (2022-10-04)
+
+
+### Features
+
+* NLU import unclassified data modal (NLU-332) ([#6145](https://github.com/voiceflow/creator-app/issues/6145)) ([2c440e4](https://github.com/voiceflow/creator-app/commit/2c440e4fd8b63403ea6c3814df58999d4d6f35a7))
+
+
+
+
+
 ## [1.109.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.109.1...@voiceflow/realtime@1.109.2) (2022-10-04)
 
 **Note:** Version bump only for package @voiceflow/realtime

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.929.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.928.0...@voiceflow/creator-app@1.929.0) (2022-10-04)
+
+
+### Features
+
+* **creator-app:** changed create intent button to import intent (NLU-372) ([#6155](https://github.com/voiceflow/creator-app/issues/6155)) ([6995852](https://github.com/voiceflow/creator-app/commit/69958524a9ea409fc857023bf873f4020e04bdea))
+
+
+
+
+
 # [1.928.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.927.9...@voiceflow/creator-app@1.928.0) (2022-10-03)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.930.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.929.0...@voiceflow/creator-app@1.930.0) (2022-10-04)
+
+
+### Features
+
+* verify update email token via identity service (CT-926) ([#6146](https://github.com/voiceflow/creator-app/issues/6146)) ([901bc99](https://github.com/voiceflow/creator-app/commit/901bc99b6c68f385028b479ce436f4f891a42bee))
+
+
+
+
+
 # [1.929.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.928.0...@voiceflow/creator-app@1.929.0) (2022-10-04)
 
 

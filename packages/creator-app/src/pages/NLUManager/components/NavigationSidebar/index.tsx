@@ -4,14 +4,13 @@ import React from 'react';
 
 import client from '@/client';
 import { NLURoute } from '@/config/routes';
-import { NLUImportOrigin, PlatformToNLPProvider } from '@/constants';
+import { NLUImportOrigin } from '@/constants';
 import * as Intent from '@/ducks/intent';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import * as Slot from '@/ducks/slot';
-import * as Tracking from '@/ducks/tracking';
-import { useDispatch, useFeature, useSelector, useTrackingEvents } from '@/hooks';
+import { useDispatch, useFeature, useModelTracking, useSelector, useTrackingEvents } from '@/hooks';
 import { PLATFORM_PROJECT_META_MAP } from '@/pages/NewProjectV2/constants';
 import { useNLUImport } from '@/pages/NewProjectV2/hooks';
 import { ImportModel, SupportedPlatformProjectType } from '@/pages/NewProjectV2/types';
@@ -25,12 +24,13 @@ const NavigationSidebar: React.FC = () => {
 
   const platform = useSelector(ProjectV2.active.platformSelector);
   const versionID = useSelector(Session.activeVersionIDSelector)!;
-  const [trackingEvents] = useTrackingEvents();
   const { isEnabled: isUnclassifiedDataEnabled } = useFeature(Realtime.FeatureFlag.NLU_MANAGER_UNCLASSIFIED);
 
   const refreshSlots = useDispatch(Slot.refreshSlots);
   const refreshIntents = useDispatch(Intent.refreshIntents);
   const goToCurrentCanvas = useDispatch(Router.goToCurrentCanvas);
+  const [trackingEvents] = useTrackingEvents();
+  const modelImportTracking = useModelTracking();
 
   const hasImport = platform && PLATFORM_PROJECT_META_MAP[platform as SupportedPlatformProjectType]?.importMeta;
   const fileExtensions = platform && PLATFORM_PROJECT_META_MAP[platform as SupportedPlatformProjectType]?.importMeta?.fileExtensions;
@@ -38,32 +38,7 @@ const NavigationSidebar: React.FC = () => {
   const onImportModel = async (importedModel: ImportModel) => {
     const data = await client.version.patchMergeIntentsAndSlots(versionID, importedModel);
 
-    trackingEvents.trackProjectNLUImport({
-      platform,
-      origin: NLUImportOrigin.NLU_MANAGER,
-      nluType: PlatformToNLPProvider[platform],
-    });
-
-    const isImportingIntents = importedModel && importedModel.intents && importedModel.intents.length > 0;
-    const isImportingEntities = importedModel && importedModel.slots && importedModel.slots.length > 0;
-
-    if (isImportingIntents) {
-      trackingEvents.trackIntentCreated({ creationType: Tracking.CanvasCreationType.NLU_MANAGER });
-
-      importedModel.intents.every((item) => {
-        const isImportingUtterances = item && item.inputs && item.inputs.length > 0;
-
-        if (isImportingUtterances) {
-          trackingEvents.trackNewUtteranceCreated({ intentID: item.key, creationType: Tracking.CanvasCreationType.NLU_MANAGER });
-          return false;
-        }
-        return true;
-      });
-    }
-
-    if (isImportingEntities) {
-      trackingEvents.trackEntityCreated({ creationType: Tracking.CanvasCreationType.NLU_MANAGER });
-    }
+    modelImportTracking(platform, importedModel, trackingEvents);
 
     if (data) {
       await Promise.all([refreshSlots(), refreshIntents()]);

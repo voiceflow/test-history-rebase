@@ -1,8 +1,12 @@
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { Dispatch } from 'redux';
 
+import { NLUImportOrigin, PlatformToNLPProvider } from '@/constants';
+import * as Tracking from '@/ducks/tracking';
 import * as TrackingEvents from '@/ducks/tracking/events';
+import { ImportModel } from '@/pages/NewProjectV2/types';
 
 import { useActiveWorkspace } from './workspace';
 
@@ -42,4 +46,76 @@ export const useWorkspaceTracking = (): void => {
       trackEvents.trackWorkspace(workspace);
     }
   }, [workspace]);
+};
+
+export const useModelTracking = (): ((
+  platform: VoiceflowConstants.PlatformType,
+  importedModel: ImportModel,
+  trackingEvents: any,
+  projectID?: string
+) => void) => {
+  return (platform: VoiceflowConstants.PlatformType, importedModel: ImportModel, trackingEvents: any, projectID?: string) => {
+    const isImportingIntents = importedModel && importedModel.intents && importedModel.intents.length > 0;
+    const isImportingEntities = importedModel && importedModel.slots && importedModel.slots.length > 0;
+
+    if (projectID) {
+      trackingEvents.trackProjectNLUImportFromWorkspace({
+        platform,
+        origin: NLUImportOrigin.PROJECT,
+        nluType: PlatformToNLPProvider[platform],
+        projectID,
+      });
+
+      if (isImportingIntents) {
+        trackingEvents.trackIntentCreatedProjectNLUImport({
+          creationType: Tracking.CanvasCreationType.PROJECT_CREATE,
+          projectID,
+        });
+
+        importedModel.intents.every((item) => {
+          const isImportingUtterances = item && item.inputs && item.inputs.length > 0;
+
+          if (isImportingUtterances) {
+            trackingEvents.trackNewUtteranceCreatedProjectNLUImport({
+              creationType: Tracking.CanvasCreationType.PROJECT_CREATE,
+              projectID,
+            });
+            return false;
+          }
+          return true;
+        });
+      }
+
+      if (isImportingEntities) {
+        trackingEvents.trackEntityCreatedProjectNLUImport({
+          creationType: Tracking.CanvasCreationType.PROJECT_CREATE,
+          projectID,
+        });
+      }
+    } else {
+      trackingEvents.trackProjectNLUImport({
+        platform,
+        origin: NLUImportOrigin.NLU_MANAGER,
+        nluType: PlatformToNLPProvider[platform],
+      });
+
+      if (isImportingIntents) {
+        trackingEvents.trackIntentCreated({ creationType: Tracking.CanvasCreationType.NLU_MANAGER });
+
+        importedModel.intents.every((item: { inputs: string | any[]; key: any }) => {
+          const isImportingUtterances = item && item.inputs && item.inputs.length > 0;
+
+          if (isImportingUtterances) {
+            trackingEvents.trackNewUtteranceCreated({ intentID: item.key, creationType: Tracking.CanvasCreationType.NLU_MANAGER });
+            return false;
+          }
+          return true;
+        });
+      }
+
+      if (isImportingEntities) {
+        trackingEvents.trackEntityCreated({ creationType: Tracking.CanvasCreationType.NLU_MANAGER });
+      }
+    }
+  };
 };

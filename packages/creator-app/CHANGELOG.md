@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.931.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.931.2...@voiceflow/creator-app@1.931.3) (2022-10-04)
+
+
+### Bug Fixes
+
+* [bugfix] fixes nlu manager header search input position (NLU-377) ([#6160](https://github.com/voiceflow/creator-app/issues/6160)) ([2a8728c](https://github.com/voiceflow/creator-app/commit/2a8728ccd27716db1f3ec14838d4946d1f4ea461))
+
+
+
+
+
 ## [1.931.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.931.1...@voiceflow/creator-app@1.931.2) (2022-10-04)
 
 

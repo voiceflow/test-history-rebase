@@ -15,6 +15,7 @@ import history, * as History from '@/ducks/history';
 import integrationUsers, * as IntegrationUsers from '@/ducks/integration';
 import intentV2, * as IntentV2 from '@/ducks/intentV2';
 import modal, * as Modal from '@/ducks/modal';
+import nlu, * as NLU from '@/ducks/nlu';
 import note, * as Note from '@/ducks/note';
 import notifications, * as Notifications from '@/ducks/notifications';
 import productV2, * as ProductV2 from '@/ducks/productV2';
@@ -84,6 +85,7 @@ const getCombinedReducer = (browserHistory: BrowserHistory) =>
     [Domain.STATE_KEY]: domain,
     [CanvasTemplate.STATE_KEY]: canvasTemplate,
     [CustomBlock.STATE_KEY]: customBlock,
+    [NLU.STATE_KEY]: nlu,
   });
 
 const createReducer = ({ browserHistory, reverters, invalidators, getClientNodeID }: ReducerOptions) =>

@@ -47,6 +47,7 @@ export const VARIABLE_STATE_KEY = 'variable_state';
 export const VIEWPORT_KEY = 'viewport';
 export const TRANSCRIPT_KEY = 'transcript';
 export const CUSTOM_BLOCK_KEY = 'custom_block';
+export const NLU_KEY = 'nlu';
 
 export const DEFAULT_PROJECT_LIST_NAME = 'Default List';
 

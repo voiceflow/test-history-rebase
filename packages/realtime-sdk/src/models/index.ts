@@ -8,6 +8,7 @@ export * from './Expression';
 export * from './Intent';
 export * from './Link';
 export * from './Markup';
+export * from './NLUUnclassifiedData';
 export * from './Node';
 export * from './NodeData';
 export * from './Note';

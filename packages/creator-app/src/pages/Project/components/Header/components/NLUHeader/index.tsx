@@ -6,12 +6,12 @@ import { useNLUManager } from '@/pages/NLUManager/context';
 import { useLogoButtonOptions } from '@/pages/Project/components/Header/hooks';
 
 import { SharePopperProvider } from '../../contexts';
-import { EntitiesHeader, IntentsHeader, SidebarHeader } from './components';
+import { EntitiesHeader, IntentsHeader, SidebarHeader, UnclassifiedHeader } from './components';
 
 const headerContent: Record<NLURoute, React.FC | null> = {
   [NLURoute.INTENTS]: IntentsHeader,
   [NLURoute.ENTITIES]: EntitiesHeader,
-  [NLURoute.UNCLASSIFIED]: null,
+  [NLURoute.UNCLASSIFIED]: UnclassifiedHeader,
 };
 
 const NLUHeader: React.FC = () => {

@@ -11,6 +11,7 @@ import FeatureService from './feature';
 import IntentService from './intent';
 import LockService from './lock';
 import MigrateService from './migrate';
+import NluService from './nlu';
 import NoteService from './note';
 import ProductService from './product';
 import ProjectService from './project';
@@ -47,6 +48,7 @@ export interface ServiceMap extends BaseServiceMap {
   variableState: VariableStateService;
   canvasTemplate: CanvasTemplateService;
   customBlock: CustomBlockService;
+  nlu: NluService;
 }
 
 interface Options {
@@ -82,6 +84,7 @@ const buildServices = ({ config, clients, models }: Options): ServiceMap => {
     variableState: new VariableStateService(serviceOptions),
     canvasTemplate: new CanvasTemplateService(serviceOptions),
     customBlock: new CustomBlockService(serviceOptions),
+    nlu: new NluService(serviceOptions),
   };
 
   Object.assign(services, serviceMap);

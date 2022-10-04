@@ -56,6 +56,7 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
     const canvasTemplates = Realtime.Adapters.canvasTemplateAdapter.mapFromDB(dbCreator.version.canvasTemplates ?? []);
     const diagrams = Realtime.Adapters.diagramAdapter.mapFromDB(dbCreator.diagrams, { rootDiagramID: dbCreator.version.rootDiagramID });
     const variableStates = Realtime.Adapters.variableStateAdapter.mapFromDB(dbCreator.variableStates);
+    const nluUnclassifiedData = Realtime.Adapters.nlu.nluUnclassifiedDataAdapter.mapFromDB(dbCreator.version.nluUnclassifiedData ?? []);
 
     const { platform, type: projectType } = project;
 
@@ -90,6 +91,7 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
       Realtime.product.crud.replace({ ...actionContext, values: products }),
       Realtime.diagram.crud.replace({ ...actionContext, values: diagrams }),
       Realtime.variableState.crud.replace({ ...actionContext, values: variableStates }),
+      Realtime.nlu.crud.replace({ ...actionContext, values: nluUnclassifiedData }),
       Realtime.diagram.sharedNodes.load({ ...actionContext, sharedNodes }),
       Realtime.project.crud.add({ ...actionContext, value: project, key: projectID }),
       Realtime.version.crud.add({ ...actionContext, value: version, key: versionID }),

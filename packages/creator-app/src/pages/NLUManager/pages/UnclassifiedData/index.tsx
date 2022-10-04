@@ -1,10 +1,22 @@
-import { Table } from '@voiceflow/ui';
 import React from 'react';
+
+import * as NLUDuck from '@/ducks/nlu';
+import { useSelector } from '@/hooks';
 
 import EmptyScreen from './components/EmptyScreen';
 
 const UnclassifiedData: React.FC = () => {
-  return <Table.Configurable empty={<EmptyScreen />} items={[]} orderBy={null} columns={[]} renderRow={() => {}} onChangeOrderBy={() => {}} />;
+  const allUnclassifiedUtterances = useSelector(NLUDuck.allUnclassifiedUtterancesSelector);
+
+  if (!allUnclassifiedUtterances.length) return <EmptyScreen />;
+
+  return (
+    <div>
+      {allUnclassifiedUtterances.map((u) => (
+        <div key={u.utterance}>{u.utterance}</div>
+      ))}
+    </div>
+  );
 };
 
 export default UnclassifiedData;

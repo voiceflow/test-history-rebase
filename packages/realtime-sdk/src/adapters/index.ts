@@ -8,6 +8,7 @@ export { default as domainAdapter } from './domain';
 export { getProjectTypeIntentAdapter, getProjectTypeIntentSmartAdapter } from './intent';
 export * as Intent from './intent';
 export { default as memberAdapter } from './member';
+export * as nlu from './nlu';
 export { default as noteAdapter } from './note';
 export { default as productAdapter } from './product';
 export { default as projectAdapter } from './project';

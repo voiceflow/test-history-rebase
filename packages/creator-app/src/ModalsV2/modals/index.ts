@@ -8,6 +8,7 @@ export * as Domain from './Domain';
 export { default as Error } from './Error';
 export { default as Inactivity } from './Inactivity';
 export { default as Loading } from './Loading';
+export * as NLU from './NLU';
 export { default as Payment } from './Payment';
 export * as Platform from './Platform';
 export * as Project from './Project';

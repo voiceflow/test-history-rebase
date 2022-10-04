@@ -9,6 +9,7 @@ import CanvasTemplate from './canvasTemplate';
 import Component from './component';
 import Domain from './domain';
 import Intent from './intent';
+import NluUnclassifiedData from './nluUnclassifiedData';
 import Note from './note';
 import Slot from './slot';
 import Variable from './variable';
@@ -38,6 +39,8 @@ class VersionModel extends AbstractModel<DBVersionModel, BaseModels.Version.Mode
   component = new Component(this);
 
   canvasTemplate = new CanvasTemplate(this);
+
+  nluUnclassifiedData = new NluUnclassifiedData(this);
 
   collectionName = 'versions';
 

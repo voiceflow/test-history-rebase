@@ -1,10 +1,13 @@
 import { Box, Button, ButtonVariant, FlexCenter, Link, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
+import * as ModalsV2 from '@/ModalsV2';
+
 const EmptyScreen: React.FC = () => {
+  const { open } = ModalsV2.useModal(ModalsV2.NLU.Import);
   // to do implement actions behaviors
   const onLearnMore = () => {};
-  const onCreate = () => {};
+  const onCreate = () => open();
 
   return (
     <Box p="60px 74px">

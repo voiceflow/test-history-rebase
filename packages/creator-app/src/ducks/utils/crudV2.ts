@@ -191,7 +191,13 @@ export const createCRUDSelectors = <K extends keyof CRUDStateSubset, T extends N
       ({ ids }: IDsSelectorParam) =>
         Normal.getMany(normalized, ids)
   );
-  const withoutIDs = createSelector([all, idsParamSelector], (items, ids) => items.filter((item) => !ids.includes(item.id)));
+
+  const withoutIDs = createSelector([all, idsParamSelector], (items, ids) =>
+    items.filter((item) => {
+      const itemID = item.id.toString();
+      return !ids.includes(itemID);
+    })
+  );
 
   return {
     isEmpty,

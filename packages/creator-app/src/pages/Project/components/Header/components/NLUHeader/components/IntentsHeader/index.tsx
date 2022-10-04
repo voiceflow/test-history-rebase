@@ -1,28 +1,22 @@
-import { Box, ButtonVariant, SvgIcon, TippyTooltip, toast, useDidUpdateEffect } from '@voiceflow/ui';
+import { Box, ButtonVariant, SvgIcon, toast, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 
 import { ConfirmProps } from '@/components/ConfirmModal';
 import { PageProgress } from '@/components/PageProgressBar/utils';
 import { ModalType, PageProgressBar } from '@/constants';
 import * as Tracking from '@/ducks/tracking';
-import { useHotKeys, useModals } from '@/hooks';
-import { Hotkey } from '@/keymap';
+import { useModals } from '@/hooks';
 import { NLUManagerContext } from '@/pages/NLUManager/context';
 import { TrainingModelContext } from '@/pages/Project/contexts';
 
-import { Container, SearchInput, TrainButton, TrashButton } from '../../styles';
+import { Container, TrainButton, TrashButton } from '../../styles';
 import Export from '../Export';
+import NLUSearch from '../Search';
 
 const IntentsHeader: React.FC = () => {
   const nluManager = React.useContext(NLUManagerContext);
 
-  const inputRef = React.useRef<HTMLInputElement>(null);
   const { startTraining, isTraining, isTrained } = React.useContext(TrainingModelContext);
-  const [tooltipOpen, setTooltipOpen] = React.useState(false);
-
-  const focusInput = () => {
-    inputRef.current?.focus();
-  };
 
   const handleTrain = () => {
     if (!isTraining) {
@@ -30,8 +24,6 @@ const IntentsHeader: React.FC = () => {
       PageProgress.start(PageProgressBar.NLU_MODEL_TRAINNING, 50000);
     }
   };
-
-  useHotKeys(Hotkey.FOCUS_NLU_MANAGER_SEARCH, focusInput, { action: 'keyup' });
 
   const confirmModal = useModals<ConfirmProps>(ModalType.CONFIRM);
 
@@ -59,28 +51,11 @@ const IntentsHeader: React.FC = () => {
 
   return (
     <Container>
-      <TippyTooltip
-        html={
-          <div style={{ color: '#A2A7A8', fontSize: '15px' }}>
-            Press <span style={{ color: '#F2F7F7' }}>/</span> to search
-          </div>
-        }
-        position="bottom"
-        open={tooltipOpen}
-        distance={-10}
-      >
-        <SearchInput
-          ref={inputRef}
-          icon="search"
-          value={nluManager.search}
-          iconProps={{ color: '#8da2b5', size: 16 }}
-          placeholder={`Search ${nluManager.intents.length} ${nluManager.intents.length === 1 ? 'intent' : 'intents'}`}
-          onChangeText={nluManager.setSearch}
-          onMouseEnter={() => setTooltipOpen(true)}
-          onMouseLeave={() => setTooltipOpen(false)}
-          onFocus={() => setTooltipOpen(false)}
-        />
-      </TippyTooltip>
+      <NLUSearch
+        value={nluManager.search}
+        placeholder={`Search ${nluManager.intents.length} ${nluManager.intents.length === 1 ? 'intent' : 'intents'}`}
+        onChange={nluManager.setSearch}
+      />
 
       <Box.FlexCenter pr={12} gap={10}>
         {!!nluManager.selectedIntentIDs.size && (

@@ -54,7 +54,13 @@ export const sendUpdateEmailEmail =
 
 export const confirmEmailUpdate =
   (token: string): Thunk =>
-  async () => {
+  async (_dispatch, getState) => {
+    const isIdentityUserEnabled = Feature.isFeatureEnabledSelector(getState())(Realtime.FeatureFlag.IDENTITY_USER);
+
+    if (isIdentityUserEnabled) {
+      return client.identity.user.verifyUpdateEmailToken(token);
+    }
+
     try {
       await client.user.confirmEmailUpdate(token);
 

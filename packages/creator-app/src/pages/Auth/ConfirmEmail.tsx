@@ -37,14 +37,22 @@ const ConfirmEmail: React.FC = () => {
       return;
     }
 
-    await confirmEmailUpdate(decodeURIComponent(confirmToken));
+    try {
+      await confirmEmailUpdate(confirmToken);
 
-    trackingEvents.trackProfileEmailChanged();
+      trackingEvents.trackProfileEmailChanged();
 
-    // Show the success toast before logging out
-    await Utils.promise.delay(3000);
+      toast.success('Email successfully updated, log in to continue');
 
-    logout();
+      // Show the success toast before logging out
+      await Utils.promise.delay(3000);
+
+      logout();
+    } catch (error) {
+      toast.error(`Unable to update email: ${error?.message || 'invalid token'}`);
+
+      goToDashboard();
+    }
   });
 
   return <FullSpinner message="Verifying email change" />;

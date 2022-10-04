@@ -8,4 +8,8 @@ export class User extends Resource {
   public async sendUpdateEmailEmail(data: { password: string; nextEmail: string }): Promise<void> {
     await this.post('/email', data);
   }
+
+  public async verifyUpdateEmailToken(token: string): Promise<void> {
+    await this.put(`/email/${token}`);
+  }
 }

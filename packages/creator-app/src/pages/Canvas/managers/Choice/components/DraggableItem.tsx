@@ -8,6 +8,7 @@ import { LegacyMappings } from '@/components/IntentForm';
 import IntentSelect from '@/components/IntentSelect';
 import * as Intent from '@/ducks/intent';
 import * as IntentV2 from '@/ducks/intentV2';
+import * as Tracking from '@/ducks/tracking';
 import { useAutoScrollNodeIntoView, useDispatch, useIntent, useSelector } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import IntentRequiredEntitiesSection from '@/pages/Canvas/components/IntentRequiredEntitiesSection';
@@ -90,7 +91,14 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
                         onChange={onUpdate}
                         fullWidth
                         clearable
-                        leftAction={intent ? { icon: 'edit', onClick: () => intentEditModal.open({ id: intent.id }) } : undefined}
+                        leftAction={
+                          intent
+                            ? {
+                                icon: 'edit',
+                                onClick: () => intentEditModal.open({ id: intent.id, utteranceCreationType: Tracking.CanvasCreationType.QUICKVIEW }),
+                              }
+                            : undefined
+                        }
                         placeholder="Select intent"
                         renderEmpty={!availableIntents.length ? () => <div /> : null}
                         inDropdownSearch

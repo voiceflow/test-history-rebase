@@ -4,6 +4,7 @@ import React from 'react';
 
 import IntentSelect from '@/components/IntentSelect';
 import * as Intent from '@/ducks/intent';
+import * as Tracking from '@/ducks/tracking';
 import { useDispatch, useIntent } from '@/hooks';
 import IntentRequiredEntitiesSection from '@/pages/Canvas/components/IntentRequiredEntitiesSection';
 import { Entity } from '@/pages/Canvas/managers/components';
@@ -68,7 +69,11 @@ const IntentsSection = <Data, BuiltInPorts extends Realtime.BuiltInPortRecord>({
           onChange={({ intent }) => onChange(intent)}
           fullWidth
           clearable
-          leftAction={intent ? { icon: 'edit', onClick: () => intentEditModal.open({ id: intent.id }) } : undefined}
+          leftAction={
+            intent
+              ? { icon: 'edit', onClick: () => intentEditModal.open({ id: intent.id, utteranceCreationType: Tracking.CanvasCreationType.QUICKVIEW }) }
+              : undefined
+          }
           placeholder="Select trigger intent"
           inDropdownSearch
           alwaysShowCreate

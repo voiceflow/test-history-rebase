@@ -8,6 +8,7 @@ import React from 'react';
 import { ModalType } from '@/constants';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as SlotV2 from '@/ducks/slotV2';
+import * as Tracking from '@/ducks/tracking';
 import { isBuiltInIntent, validateIntentName } from '@/utils/intent';
 
 import { ModalActions, useModals } from './modals';
@@ -15,7 +16,7 @@ import { useSelector } from './redux';
 
 interface IntentData {
   intent: Nullable<Realtime.Intent>;
-  intentEditModal: ModalActions<{ id: string }>;
+  intentEditModal: ModalActions<{ id: string; utteranceCreationType: Tracking.CanvasCreationType }>;
   intentIsBuiltIn: boolean;
   intentHasRequiredEntity: boolean;
   shouldDisplayRequiredEntities: boolean;
@@ -28,7 +29,7 @@ export const useOrderedIntents = () => {
 };
 
 export const useIntent = (intentID: Nullish<string>): IntentData => {
-  const intentEditModal = useModals<{ id: string }>(ModalType.INTENT_EDIT);
+  const intentEditModal = useModals<{ id: string; utteranceCreationType: Tracking.CanvasCreationType }>(ModalType.INTENT_EDIT);
 
   const intent = useSelector(IntentV2.platformIntentByIDSelector, { id: intentID });
 

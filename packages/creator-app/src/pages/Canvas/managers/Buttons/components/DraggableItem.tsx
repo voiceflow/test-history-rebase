@@ -8,6 +8,7 @@ import { DragPreviewComponentProps, ItemComponentProps, MappedItemComponentHandl
 import IntentSelect from '@/components/IntentSelect';
 import VariablesInput from '@/components/VariablesInput';
 import * as Intent from '@/ducks/intent';
+import * as Tracking from '@/ducks/tracking';
 import { useAutoScrollNodeIntoView, useDispatch, useIntent } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import IntentRequiredEntitiesSection from '@/pages/Canvas/components/IntentRequiredEntitiesSection';
@@ -121,7 +122,15 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
                           onChange={({ intent }) => onUpdate({ intent })}
                           fullWidth
                           clearable
-                          leftAction={intent ? { icon: 'edit', onClick: () => intentEditModal.open({ id: intent.id }) } : undefined}
+                          leftAction={
+                            intent
+                              ? {
+                                  icon: 'edit',
+                                  onClick: () =>
+                                    intentEditModal.open({ id: intent.id, utteranceCreationType: Tracking.CanvasCreationType.QUICKVIEW }),
+                                }
+                              : undefined
+                          }
                           placeholder="Select trigger intent"
                           inDropdownSearch
                           alwaysShowCreate

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.165.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.164.0...@voiceflow/realtime-sdk@1.165.0) (2022-10-05)
+
+
+### Features
+
+* create user via identity service (CT-944) ([#6161](https://github.com/voiceflow/creator-app/issues/6161)) ([b52071e](https://github.com/voiceflow/creator-app/commit/b52071e90a25a22772444d81ca03d37e8171f51f))
+
+
+
+
+
 # [1.164.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.163.0...@voiceflow/realtime-sdk@1.164.0) (2022-10-04)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.931.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.931.4...@voiceflow/creator-app@1.931.5) (2022-10-05)
+
+
+### Bug Fixes
+
+* update onboarding FE identify (CT-988) ([#6162](https://github.com/voiceflow/creator-app/issues/6162)) ([c3c9168](https://github.com/voiceflow/creator-app/commit/c3c91689cf81c4223e17391b3e9c58d8a12bafea))
+
+
+
+
+
 ## [1.931.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.931.3...@voiceflow/creator-app@1.931.4) (2022-10-04)
 
 **Note:** Version bump only for package @voiceflow/creator-app

@@ -14,7 +14,9 @@ export interface NLUManagerContextValue
     ReturnType<typeof useNLUIntents>,
     ReturnType<typeof useNLUEntities>,
     ReturnType<typeof useFilter>,
-    ReturnType<typeof usePage> {}
+    ReturnType<typeof usePage> {
+  resetSelection: () => void;
+}
 
 const INITIAL_STATE: NLUManagerContextValue = {
   search: '',
@@ -31,6 +33,7 @@ const INITIAL_STATE: NLUManagerContextValue = {
   isEditorTabActive: () => false,
   isScrolling: false,
   setIsScrolling: Utils.functional.noop,
+  resetSelection: Utils.functional.noop,
   ...INTENTS_INTIAL_STATE,
   ...ENTITIES_INTIAL_STATE,
 };
@@ -48,6 +51,11 @@ export const NLUManagerProvider: React.FC = ({ children }) => {
   const editor = useEditorTab();
   const page = usePage(navigation.activeItemID);
 
+  const resetSelection = () => {
+    navigation.goToItem(null);
+    editor.closeEditorTab();
+  };
+
   const api = useContextApi<NLUManagerContextValue>({
     ...filter,
     ...navigation,
@@ -55,6 +63,7 @@ export const NLUManagerProvider: React.FC = ({ children }) => {
     ...entities,
     ...editor,
     ...page,
+    resetSelection,
   });
 
   return <NLUManagerContext.Provider value={api}>{children}</NLUManagerContext.Provider>;

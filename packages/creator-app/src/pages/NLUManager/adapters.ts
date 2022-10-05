@@ -18,11 +18,14 @@ export const conflictModelToFormAdapter = (
   if (!problematicSentences) return {};
 
   problematicSentences.forEach((problematicSentence) => {
+    const conflictingSentence = conflictsData.utteranceMapper[problematicSentence.conflictingSentence];
+    const sentence = conflictsData.utteranceMapper[problematicSentence.sentence];
     const problematicSentenceIntentID = intentsByName[problematicSentence.intentID]?.id;
-    if (problematicSentence.intentID === currentIntent.name) return;
-    if (!intentUtterances.has(problematicSentence.sentence)) return;
 
-    const addedUtterance = addedUtterancesByConflict.find((u) => u.utterance === problematicSentence.sentence);
+    if (problematicSentence.intentID === currentIntent.name) return;
+    if (!intentUtterances.has(sentence)) return;
+
+    const addedUtterance = addedUtterancesByConflict.find((u) => u.utterance === sentence);
 
     if (addedUtterance) {
       newConflicts[addedUtterance.conflictID] = {
@@ -34,9 +37,9 @@ export const conflictModelToFormAdapter = (
               ...(newConflicts[addedUtterance.conflictID].utterances[problematicSentenceIntentID] || []),
               {
                 initialIntentID: problematicSentenceIntentID,
-                initialSentence: problematicSentence.conflictingSentence,
+                initialSentence: conflictingSentence,
                 intentID: problematicSentenceIntentID,
-                sentence: problematicSentence.conflictingSentence,
+                sentence: conflictingSentence,
                 deleted: false,
               },
             ],
@@ -48,8 +51,8 @@ export const conflictModelToFormAdapter = (
       addedUtterancesByConflict = uniqBy(
         [
           ...addedUtterancesByConflict,
-          { conflictID: addedUtterance.conflictID, intentID: currentIntentID, utterance: problematicSentence.sentence },
-          { conflictID: addedUtterance.conflictID, intentID: problematicSentenceIntentID, utterance: problematicSentence.conflictingSentence },
+          { conflictID: addedUtterance.conflictID, intentID: currentIntentID, utterance: sentence },
+          { conflictID: addedUtterance.conflictID, intentID: problematicSentenceIntentID, utterance: conflictingSentence },
         ],
         (u) => u.utterance
       );
@@ -58,7 +61,7 @@ export const conflictModelToFormAdapter = (
     }
 
     const overlapUtterance = addedUtterancesByConflict.find((u) => {
-      return u.utterance === problematicSentence.conflictingSentence || u.utterance === problematicSentence.sentence;
+      return u.utterance === conflictingSentence || u.utterance === sentence;
     });
 
     if (overlapUtterance) {
@@ -70,10 +73,10 @@ export const conflictModelToFormAdapter = (
             [
               ...(newConflicts[overlapUtterance.conflictID].utterances[currentIntentID] || []),
               {
-                sentence: problematicSentence.sentence,
+                sentence,
                 intentID: currentIntentID,
                 initialIntentID: currentIntentID,
-                initialSentence: problematicSentence.sentence,
+                initialSentence: sentence,
                 deleted: false,
               },
             ],
@@ -83,10 +86,10 @@ export const conflictModelToFormAdapter = (
             [
               ...(newConflicts[overlapUtterance.conflictID].utterances[problematicSentenceIntentID] || []),
               {
-                sentence: problematicSentence.conflictingSentence,
+                sentence: conflictingSentence,
                 intentID: problematicSentenceIntentID,
                 initialIntentID: problematicSentenceIntentID,
-                initialSentence: problematicSentence.conflictingSentence,
+                initialSentence: conflictingSentence,
                 deleted: false,
               },
             ],
@@ -98,8 +101,8 @@ export const conflictModelToFormAdapter = (
       addedUtterancesByConflict = uniqBy(
         [
           ...addedUtterancesByConflict,
-          { conflictID: overlapUtterance.conflictID, intentID: currentIntentID, utterance: problematicSentence.sentence },
-          { conflictID: overlapUtterance.conflictID, intentID: problematicSentenceIntentID, utterance: problematicSentence.conflictingSentence },
+          { conflictID: overlapUtterance.conflictID, intentID: currentIntentID, utterance: sentence },
+          { conflictID: overlapUtterance.conflictID, intentID: problematicSentenceIntentID, utterance: conflictingSentence },
         ],
         (u) => u.utterance
       );
@@ -115,19 +118,19 @@ export const conflictModelToFormAdapter = (
       utterances: {
         [currentIntentID]: [
           {
-            sentence: problematicSentence.sentence,
+            sentence,
             intentID: currentIntentID,
             initialIntentID: currentIntentID,
-            initialSentence: problematicSentence.sentence,
+            initialSentence: sentence,
             deleted: false,
           },
         ],
         [problematicSentenceIntentID]: [
           {
-            sentence: problematicSentence.conflictingSentence,
+            sentence: conflictingSentence,
             intentID: problematicSentenceIntentID,
             initialIntentID: problematicSentenceIntentID,
-            initialSentence: problematicSentence.conflictingSentence,
+            initialSentence: conflictingSentence,
             deleted: false,
           },
         ],
@@ -136,8 +139,8 @@ export const conflictModelToFormAdapter = (
 
     addedUtterancesByConflict = [
       ...addedUtterancesByConflict,
-      { conflictID: newConflictID, intentID: currentIntentID, utterance: problematicSentence.sentence },
-      { conflictID: newConflictID, intentID: problematicSentenceIntentID, utterance: problematicSentence.conflictingSentence },
+      { conflictID: newConflictID, intentID: currentIntentID, utterance: sentence },
+      { conflictID: newConflictID, intentID: problematicSentenceIntentID, utterance: conflictingSentence },
     ];
   });
 

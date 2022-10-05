@@ -7,10 +7,10 @@ import { transformIntents, transformSlots } from '@/client/adapters/nluManager';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import { useMLGatewayClient, useSelector } from '@/hooks';
-import { getIntentClarityStrengthLevel, getIntentConfidenceStrengthLevel, isBuiltInIntent } from '@/utils/intent';
 import { waitAsyncAction } from '@/utils/logux';
 
-import { ClarityModel, NLUIntent } from '../types';
+import { ClarityModel } from '../types';
+import { mapClarityModelData, mapIntentsToNLUIntents } from '../utils';
 
 const useClarity = (intents: Realtime.Intent[]) => {
   const activeVersionID = useSelector(Session.activeVersionIDSelector);
@@ -39,9 +39,11 @@ const useClarity = (intents: Realtime.Intent[]) => {
         topConflicting: 2,
       });
 
-      setClarity(data || null);
+      const clarityModelData = data ? mapClarityModelData(data) : null;
 
-      return data;
+      setClarity(clarityModelData);
+
+      return clarityModelData;
     } catch (e) {
       throw new Error(e);
     } finally {
@@ -49,57 +51,7 @@ const useClarity = (intents: Realtime.Intent[]) => {
     }
   };
 
-  const getConflictingIntentIDs = (intent: Realtime.Intent): string[] => {
-    const conflicts = clarity?.problematicSentences?.[intent.name];
-    if (!conflicts) return [];
-
-    return conflicts.reduce((acc, conflict) => {
-      return Array.from(new Set([...acc, conflict.intentID]));
-    }, [] as string[]);
-  };
-
-  const getConflictingUtterances = (intent: Realtime.Intent, utterances: string[]): string[] => {
-    const conflicts = clarity?.problematicSentences?.[intent.name];
-    if (!conflicts) return [];
-    return Array.from(new Set(conflicts.filter((conflict) => utterances.includes(conflict.sentence)).map((conflict) => conflict.sentence)));
-  };
-
-  const getClarityScore = (intent: Realtime.Intent, hasConflicts?: boolean) => {
-    if (isBuiltInIntent(intent.id)) return 1;
-    const clarityByClass = clarity?.clarityByClass?.[intent.name] || 0;
-    if (!hasConflicts) return 1;
-    return clarityByClass;
-  };
-
-  const getConfidenceScore = (intent: Realtime.Intent) => {
-    if (isBuiltInIntent(intent.id)) return 100;
-    return intent.inputs.length || 0;
-  };
-
-  const nluIntents = React.useMemo(() => {
-    const intentUtterances = intents.reduce((acc, intent) => {
-      return { ...acc, [intent.id]: intent.inputs.map((input) => input.text) };
-    }, {} as Record<string, string[]>);
-
-    return intents.map((intent): NLUIntent => {
-      const conflictingIntentIDs = getConflictingIntentIDs(intent);
-      const conflictingUtterances = getConflictingUtterances(intent, intentUtterances[intent.id]);
-      const hasConflicts = conflictingIntentIDs.length > 0 && conflictingUtterances.length > 0;
-      const clarityScore = getClarityScore(intent, hasConflicts);
-      const confidence = getConfidenceScore(intent);
-
-      return {
-        ...intent,
-        clarity: clarityScore,
-        clarityLevel: getIntentClarityStrengthLevel(clarityScore),
-        confidence,
-        confidenceLevel: getIntentConfidenceStrengthLevel(confidence),
-        conflictingIntentIDs,
-        conflictingUtterances,
-        hasConflicts,
-      };
-    });
-  }, [intents, clarity]);
+  const nluIntents = React.useMemo(() => mapIntentsToNLUIntents(intents, clarity), [intents, clarity]);
 
   return { fetchClarity, clarity, nluIntents, isFetching };
 };

@@ -2,6 +2,8 @@ import * as ML from '@voiceflow/ml-sdk';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { StrengthGaugeTypes } from '@voiceflow/ui';
 
+export type ProblematicSentence = ML.Intent.Clarity.ProblematicSentence;
+
 export interface ClarityModel extends ML.intent.ClarityModelResponse {}
 
 export type NLUIntent = Realtime.Intent & {

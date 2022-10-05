@@ -116,7 +116,7 @@ const useIntentConflictsForm = (intentID: string | null, conflictsData: ClarityM
     });
   };
 
-  const calculateConflicts = (data?: ClarityModel) => {
+  const calculateConflicts = (data?: ClarityModel | null) => {
     const activeIntent = getIntentByID({ id: intentID });
     const clarityModel = data || conflictsData;
 

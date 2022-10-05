@@ -60,7 +60,7 @@ const ItemEditSidebar: React.FC<ItemEditSidebarProps> = ({ children, isBuiltIn }
           <SectionV2.ActionsContainer gap={8}>
             <SidebarEditor.HeaderActionsButton actions={actions} />
 
-            <IconButton size={16} icon="close" variant={IconButton.Variant.BASIC} onClick={() => nluManager.goToItem(null)} offsetSize={0} />
+            <IconButton size={16} icon="close" variant={IconButton.Variant.BASIC} onClick={nluManager.resetSelection} offsetSize={0} />
           </SectionV2.ActionsContainer>
         </SidebarEditor.Header>
 

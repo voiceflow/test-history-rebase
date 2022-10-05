@@ -5,7 +5,7 @@ import { useNLUManager } from '@/pages/NLUManager/context';
 const useTableHotkeys = (items: any[]) => {
   const nluManager = useNLUManager();
 
-  useHotKeys(Hotkey.NLU_TABLE_ESC, () => nluManager.toggleActiveItemID(null), { preventDefault: true });
+  useHotKeys(Hotkey.NLU_TABLE_ESC, nluManager.resetSelection, { preventDefault: true });
 
   useHotKeys(
     Hotkey.NLU_TABLE_TAB,

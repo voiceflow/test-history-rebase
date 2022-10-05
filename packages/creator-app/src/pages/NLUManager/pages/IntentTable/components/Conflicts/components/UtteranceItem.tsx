@@ -1,8 +1,11 @@
-import { Input, SectionV2, SvgIcon } from '@voiceflow/ui';
+import { SectionV2, SvgIcon } from '@voiceflow/ui';
 import _constant from 'lodash/constant';
 import React from 'react';
 
+import UtteranceInput from '@/components/Utterance';
+import * as SlotV2 from '@/ducks/slotV2';
 import { InjectedDraggableComponentProps, withDraggable } from '@/hocs';
+import { useAddSlot, useSelector } from '@/hooks';
 
 import { DragAndDropTypes } from '../constants';
 import * as S from '../styles';
@@ -17,6 +20,9 @@ interface UtteranceItemProps extends InjectedDraggableComponentProps {
 }
 
 const UtteranceItem: React.FC<UtteranceItemProps> = ({ text, onRemove, onEdit, isDragging, connectDragSource, connectDropTarget }) => {
+  const allSlots = useSelector(SlotV2.allSlotsSelector);
+  const { onAddSlot } = useAddSlot();
+
   const item = (
     <div>
       <S.UtteranceListItemContainer isDragging={!!isDragging}>
@@ -25,7 +31,14 @@ const UtteranceItem: React.FC<UtteranceItemProps> = ({ text, onRemove, onEdit, i
             <SvgIcon size={14} icon="dotsGroup" color="#becedc" />
           </S.DragIconContainer>
 
-          <Input value={text} onChangeText={onEdit} />
+          <UtteranceInput
+            space
+            slots={allSlots}
+            value={text}
+            onBlur={(data) => onEdit(data.text)}
+            onEnterPress={(data) => onEdit(data.text)}
+            onAddSlot={onAddSlot}
+          />
         </SectionV2.ListItem>
       </S.UtteranceListItemContainer>
     </div>

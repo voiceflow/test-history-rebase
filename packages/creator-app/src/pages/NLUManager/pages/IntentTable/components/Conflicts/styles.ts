@@ -7,6 +7,11 @@ export const IntentsGrid = styled.div`
   grid-template-columns: 1fr 1fr;
   grid-gap: 1px;
   width: 100%;
+  border-top: 1px solid #eaeff4;
+
+  &:first-child {
+    border-top: none;
+  }
 
   ${SectionV2.ListItemContent} {
     overflow: visible;

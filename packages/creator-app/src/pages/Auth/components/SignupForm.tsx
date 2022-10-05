@@ -1,8 +1,6 @@
 import {
   Box,
-  BoxFlexApart,
   Button,
-  ButtonVariant,
   ClickableText,
   ControlledInput,
   Input,
@@ -10,19 +8,18 @@ import {
   preventDefault,
   ThemeColor,
   toast,
+  useDebouncedCallback,
+  useThrottledCallback,
 } from '@voiceflow/ui';
-import { getSearch } from 'connected-react-router';
-import _throttle from 'lodash/throttle';
 import React from 'react';
 
 import { wordmarkLight } from '@/assets';
 import client from '@/client';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
-import { connect } from '@/hocs';
-import { useDebouncedCallback, useEnableDisable } from '@/hooks';
+import { useDispatch } from '@/hooks';
 import { Query } from '@/models';
-import { ConnectedProps, MergeArguments } from '@/types';
+import * as QueryUtil from '@/utils/query';
 import * as GoogleAnalytics from '@/vendors/googleAnalytics';
 
 import { MIN_PASSWORD_LENGTH, SSO_REQUIRED } from '../constants';
@@ -42,82 +39,74 @@ export interface SignupFormProps {
   promo?: boolean;
 }
 
-export const SignupForm: React.FC<SignupFormProps & ConnectedPublicSignupFormProps> = ({ search, signup, promo, query, goToLogin }) => {
+export const SignupForm: React.FC<SignupFormProps> = ({ promo, query }) => {
+  const signup = useDispatch(Session.signup);
+  const goToLogin = useDispatch(Router.goToLogin);
+
   const [email, setEmail] = React.useState(query.email ? replaceSpaceWithPlus(query.email)! : '');
-  const [password, setPassword] = React.useState('');
-  const [firstName, setFirstName] = React.useState(query.name ? query.name : '');
-  const [lastName, setLastName] = React.useState('');
-  const [ssoRequired, setSsoRequired] = React.useState(false);
-  const debouncedCheckSSO = useDebouncedCallback(100, async (email: string) => setSsoRequired(!!(await getDomainSAML(email))), []);
-
-  const updateEmail = (email: string) => {
-    debouncedCheckSSO(email);
-    setEmail(email);
-  };
-
-  const [isDisabled, onDisable, onEnable] = useEnableDisable(false);
-
   const [coupon, setCoupon] = React.useState('');
+  const [password, setPassword] = React.useState('');
+  const [lastName, setLastName] = React.useState('');
+  const [firstName, setFirstName] = React.useState(query.name ? query.name : '');
+  const [submitting, setSubmitting] = React.useState(false);
+  const [ssoRequired, setSsoRequired] = React.useState(false);
   const [couponValid, setCouponValid] = React.useState(false);
 
-  const isSignupDisabled = !!coupon && !couponValid;
+  const onCheckSSO = useDebouncedCallback(100, async (email: string) => {
+    const samlDOmain = await getDomainSAML(email);
 
-  const signupSubmit = async () => {
-    if (isDisabled || ssoRequired) return;
+    setSsoRequired(!!samlDOmain);
+  });
 
-    onDisable();
+  const onVerifyCoupon = useThrottledCallback(1000, async (input: string) => {
+    setCouponValid(false);
 
-    try {
-      if (await getDomainSAML(email)) {
-        setSsoRequired(true);
-      } else {
-        const name = `${firstName} ${lastName}`.trim();
-        await signup(
-          {
-            name,
-            email,
-            password,
-            coupon: coupon.toLowerCase(),
-            referralCode: query.referral,
-            referralRockCode: query.ref_code,
-            urlSearch: search,
-          },
-          {
-            query: {
-              utm_last_name: lastName,
-              utm_first_name: firstName,
-            },
-          }
-        );
-      }
-    } catch (err) {
-      toast.error(err.body.data);
+    if (!input) return;
+
+    const isValid = await client.workspace.validateCoupon(input);
+
+    if (isValid) {
+      setCouponValid(true);
     }
-    onEnable();
+  });
+
+  const onGoToLogin = () => {
+    goToLogin(QueryUtil.stringify(query));
   };
 
-  const verifyCoupon = React.useCallback(
-    _throttle<(input?: string) => Promise<void>>(async (input) => {
-      setCouponValid(false);
+  const onChangeEmail = (email: string) => {
+    setEmail(email);
+    onCheckSSO(email);
+  };
 
-      if (!input) return;
+  const onCouponChange = (value: string) => {
+    setCoupon(value.toUpperCase());
+    onVerifyCoupon(value.toLowerCase());
+  };
 
-      const isValid = await client.workspace.validateCoupon(input);
+  const onSubmit = async () => {
+    if (submitting || ssoRequired) return;
 
-      if (isValid) {
-        setCouponValid(true);
+    try {
+      setSubmitting(true);
+
+      GoogleAnalytics.sendEvent(GoogleAnalytics.Category.AUTH_SIGNUP_PAGE, GoogleAnalytics.Action.CLICK, GoogleAnalytics.Label.SIGN_UP_BUTTON);
+
+      const samlDomain = await getDomainSAML(email);
+
+      if (samlDomain) {
+        setSsoRequired(true);
+      } else {
+        await signup({ email, query, coupon, password, lastName, firstName });
       }
-    }, 1000),
-    []
-  );
+    } catch (error) {
+      const message = error?.message;
 
-  const onCouponChange = React.useCallback(
-    async (value) => {
-      setCoupon(value.toUpperCase());
-      verifyCoupon(value.toLowerCase());
-    },
-    [verifyCoupon]
-  );
+      toast.error(message ? `Unable to signup: ${message}` : 'Unable to signup, try again later');
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   React.useEffect(() => {
     if (promo && query.coupon) {
@@ -125,11 +114,14 @@ export const SignupForm: React.FC<SignupFormProps & ConnectedPublicSignupFormPro
     }
   }, [promo, query.coupon]);
 
+  const isSignupDisabled = !!coupon && !couponValid;
+
   return (
     <AuthenticationContainer dark>
       <AuthBox>
-        <form onSubmit={preventDefault(signupSubmit)}>
+        <form onSubmit={preventDefault(onSubmit)}>
           <img className="auth-logo" src={wordmarkLight} alt="logo" />
+
           <div className="auth-form-wrapper">
             <HeaderBox>
               <h1>Create your account</h1>
@@ -144,7 +136,7 @@ export const SignupForm: React.FC<SignupFormProps & ConnectedPublicSignupFormPro
             </InputContainer>
 
             <InputContainer>
-              <EmailInput value={email} onChange={updateEmail} placeholder="Email address" error={ssoRequired} />
+              <EmailInput value={email} onChange={onChangeEmail} placeholder="Email address" error={ssoRequired} />
 
               {ssoRequired && (
                 <Box mt={8} fontSize={13} color={ThemeColor.RED}>
@@ -162,37 +154,26 @@ export const SignupForm: React.FC<SignupFormProps & ConnectedPublicSignupFormPro
                 <ControlledInput
                   type="text"
                   name="promo"
-                  onChange={(e) => onCouponChange(e.target.value)}
-                  placeholder="Promo Code"
                   value={coupon}
-                  complete={couponValid}
                   error={isSignupDisabled}
+                  complete={couponValid}
+                  placeholder="Promo Code"
+                  onChangeText={onCouponChange}
                 />
               </InputContainer>
             )}
 
-            <BoxFlexApart pt={8}>
+            <Box.FlexApart pt={8}>
               <div className="auth__link">
-                <ClickableText onClick={goToLogin}>Have an account?</ClickableText>
+                <ClickableText onClick={onGoToLogin}>Have an account?</ClickableText>
               </div>
 
               <div>
-                <Button
-                  variant={ButtonVariant.PRIMARY}
-                  type="submit"
-                  disabled={isDisabled || isSignupDisabled}
-                  onClick={() =>
-                    GoogleAnalytics.sendEvent(
-                      GoogleAnalytics.Category.AUTH_SIGNUP_PAGE,
-                      GoogleAnalytics.Action.CLICK,
-                      GoogleAnalytics.Label.SIGN_UP_BUTTON
-                    )
-                  }
-                >
+                <Button type="submit" variant={Button.Variant.PRIMARY} disabled={submitting || isSignupDisabled}>
                   {query.invite ? 'Join Team' : 'Create Account'}
                 </Button>
               </div>
-            </BoxFlexApart>
+            </Box.FlexApart>
 
             <TermsAndConditionsContainer>
               By clicking "Create account", I agree to Voiceflow's{' '}
@@ -214,19 +195,4 @@ export const SignupForm: React.FC<SignupFormProps & ConnectedPublicSignupFormPro
   );
 };
 
-const mapStateToProps = {
-  search: getSearch,
-};
-
-const mapDispatchToProps = {
-  signup: Session.signup,
-  goToLogin: Router.goToLogin,
-};
-
-const mergeProps = (...[{ search }, { goToLogin }]: MergeArguments<typeof mapStateToProps, typeof mapDispatchToProps>) => ({
-  goToLogin: () => goToLogin(search),
-});
-
-type ConnectedPublicSignupFormProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps, typeof mergeProps>;
-
-export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(SignupForm) as React.FC<SignupFormProps>;
+export default SignupForm;

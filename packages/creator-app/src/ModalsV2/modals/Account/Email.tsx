@@ -25,7 +25,9 @@ const AccountEmail = manager.create('AccountEmail', () => ({ api, type, opened, 
 
       api.close();
     } catch (error) {
-      toast.error(error?.message ? `Unable to verify email: ${error.massage}` : 'Unable to verify email, try again later');
+      const message = error?.message;
+
+      toast.error(message ? `Unable to verify email: ${message}` : 'Unable to verify email, try again later');
     } finally {
       setSaving(false);
     }

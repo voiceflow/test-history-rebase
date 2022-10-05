@@ -12,6 +12,8 @@
   "ignores": [
     "@voiceflow/vite-config",
     "@voiceflow/dependency-cruiser-config",
+    "@testing-library/react",
+    "@testing-library/user-event",
     "buffer",
     "chai",
     "@logux/state",

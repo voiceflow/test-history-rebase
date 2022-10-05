@@ -1,6 +1,5 @@
 import './Account.css';
 
-import _constant from 'lodash/constant';
 import React from 'react';
 import { Redirect, RouteComponentProps } from 'react-router-dom';
 
@@ -31,7 +30,7 @@ const Signup: React.FC<SignupProps> = ({ location, ...props }) => {
       return;
     }
 
-    const isInviteValid = await client.workspace.validateInvite(query.invite).catch(_constant(false));
+    const isInviteValid = await client.workspace.validateInvite(query.invite).catch(() => false);
 
     setValid(!!isInviteValid);
   });

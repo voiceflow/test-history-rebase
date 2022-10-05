@@ -1,3 +1,4 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { parseQuery, Vendors } from '@voiceflow/ui';
 import { batch } from 'react-redux';
 import { matchPath } from 'react-router-dom';
@@ -6,13 +7,15 @@ import client from '@/client';
 import { SSOConvertPayload, SSOLoginPayload } from '@/client/sso';
 import { SessionType } from '@/constants';
 import { resetAccount, updateAccount } from '@/ducks/account/actions';
+import * as Feature from '@/ducks/feature';
 import { goTo, goToDashboardWithSearch, goToLogin, goToOnboarding } from '@/ducks/router/actions';
 import { locationSelector } from '@/ducks/router/selectors';
 import * as Models from '@/models';
+import { Query } from '@/models';
 import { SyncThunk, Thunk } from '@/store/types';
 import * as Cookies from '@/utils/cookies';
 import { generateID } from '@/utils/env';
-import * as Query from '@/utils/query';
+import * as QueryUtil from '@/utils/query';
 import * as Sentry from '@/vendors/sentry';
 import * as Support from '@/vendors/support';
 import * as Userflow from '@/vendors/userflow';
@@ -80,7 +83,7 @@ export const restoreSession = (): Thunk => async (dispatch, getState) => {
     await dispatch(identifyUser(user));
 
     const location = locationSelector(state);
-    const search = Query.parse(location.search);
+    const search = QueryUtil.parse(location.search);
     const isVerifyingPath = matchPath(location.pathname, { path: '/account/confirm/:token' });
     if ((search.promo || search.ob_plan) && !isVerifyingPath?.isExact) {
       dispatch(goToOnboarding());
@@ -113,11 +116,11 @@ const setSession =
     });
 
     const location = locationSelector(state);
-    const search = Query.parse(location.search);
+    const search = QueryUtil.parse(location.search);
 
-    // Show join workspace onboarding on first login of an invite or with a workspace promo
     if (redirectTo) {
       dispatch(goTo(redirectTo));
+      // Show join workspace onboarding on first login of an invite or with a workspace promo
     } else if ((search.invite && user.first_login) || search.promo || search.ob_plan) {
       dispatch(goToOnboarding());
     } else if (search.invite || !user.first_login) {
@@ -141,20 +144,23 @@ export const ssoLogin =
 
 const createSession =
   (sessionType: SessionType) =>
-  (authRequest: unknown, { query, redirectTo }: { query?: Record<string, string>; redirectTo?: string } = {}): Thunk<Models.Account> =>
+  (
+    authRequest: unknown,
+    { query, redirectTo, firstLogin }: { query?: Record<string, string>; redirectTo?: string; firstLogin?: boolean } = {}
+  ): Thunk<Models.Account> =>
   async (dispatch) => {
     const parsedQuery = { ...parseQuery(window.location.search), ...query };
     const { user, token, intercomUserHMAC = null } = await client.session.create(sessionType, authRequest, parsedQuery);
 
-    await dispatch(setSession({ user, token, redirectTo, intercomUserHMAC }));
+    await dispatch(setSession({ user: { ...user, first_login: firstLogin ?? user.first_login }, token, redirectTo, intercomUserHMAC }));
 
     return user;
   };
 
-export const signup = createSession(SessionType.SIGN_UP);
-export const basicAuthLogin = createSession(SessionType.BASIC_AUTH);
+const legacySignup = createSession(SessionType.SIGN_UP);
 export const googleLogin = createSession(SessionType.GOOGLE);
 export const facebookLogin = createSession(SessionType.FACEBOOK);
+export const basicAuthLogin = createSession(SessionType.BASIC_AUTH);
 
 const createAdoptSSO =
   (sessionType: SessionType) =>
@@ -167,6 +173,58 @@ const createAdoptSSO =
     return user;
   };
 
-export const basicAuthAdoptSSO = createAdoptSSO(SessionType.BASIC_AUTH);
 export const googleAdoptSSO = createAdoptSSO(SessionType.GOOGLE);
 export const facebookAdoptSSO = createAdoptSSO(SessionType.FACEBOOK);
+export const basicAuthAdoptSSO = createAdoptSSO(SessionType.BASIC_AUTH);
+
+interface SignupPayload {
+  email: string;
+  query: Query.Auth;
+  coupon: string;
+  password: string;
+  lastName: string;
+  firstName: string;
+}
+
+export const signup =
+  ({ email, query, coupon, password, lastName, firstName }: SignupPayload): Thunk<void> =>
+  async (dispatch, getState) => {
+    const isIdentityUserEnabled = Feature.isFeatureEnabledSelector(getState())(Realtime.FeatureFlag.IDENTITY_USER);
+
+    const userName = `${firstName} ${lastName}`.trim();
+
+    if (isIdentityUserEnabled) {
+      await client.identity.user.create({
+        user: { name: userName, email },
+        password,
+        metadata: {
+          utm: { utm_last_name: lastName, utm_first_name: firstName },
+          promoCode: coupon,
+          inviteParams: query,
+        },
+      });
+
+      await dispatch(basicAuthLogin({ email, password }, { query, firstLogin: true }));
+
+      return;
+    }
+
+    try {
+      await dispatch(
+        legacySignup(
+          {
+            name: userName,
+            email,
+            coupon: coupon.toLowerCase(),
+            password,
+            urlSearch: QueryUtil.stringify(query),
+            referralCode: query.referral,
+            referralRockCode: query.ref_code,
+          },
+          { query: { utm_last_name: lastName, utm_first_name: firstName } }
+        )
+      );
+    } catch (error) {
+      throw new Error(error.body.data);
+    }
+  };

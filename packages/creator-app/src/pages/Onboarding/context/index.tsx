@@ -1,4 +1,4 @@
-import { Utils } from '@voiceflow/common';
+import { Nullable, Utils } from '@voiceflow/common';
 import { BillingPeriod, PlanType, PromoType, UserRole } from '@voiceflow/internal';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { ButtonVariant, toast } from '@voiceflow/ui';
@@ -352,7 +352,7 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
       }
     });
 
-    const { role, channels, teamSize, company } = state.personalizeWorkspaceMeta;
+    const { role } = state.personalizeWorkspaceMeta;
     const { email, name: userName } = account;
 
     if (isLoginFlow) {
@@ -360,10 +360,10 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
         name: userName!,
         role,
         email: email!,
-        company,
-        channels,
-        teamSize,
-        workspaceIDs: [],
+        source: search.utm_source as Nullable<string>,
+        medium: search.utm_medium as Nullable<string>,
+        campaign: search.utm_campaign as Nullable<string>,
+        content: search.utm_content as Nullable<string>,
       });
     }
 

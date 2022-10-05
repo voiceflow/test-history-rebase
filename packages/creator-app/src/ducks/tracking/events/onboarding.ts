@@ -44,29 +44,30 @@ export const trackOnboardingIdentify =
     name,
     role,
     email,
-    company,
-    channels,
-    teamSize,
-    workspaceIDs,
+    source,
+    medium,
+    campaign,
+    content,
   }: {
     name: string;
     role: string;
     email: string;
-    company: string;
-    channels: string[];
-    teamSize: string;
-    workspaceIDs: string[];
+    source: string | null;
+    medium: string | null;
+    campaign: string | null;
+    content: string | null;
   }) =>
-  () =>
+  () => {
+    // We are just sending last_name as the full name until we refactor the db to persist both first and last name
     client.api.analytics.identify({
       traits: {
-        name,
+        last_name: name,
         role,
         email,
-        company,
-        channels,
-        teamsize: teamSize,
-        workspace_id: workspaceIDs,
+        source,
+        medium,
+        campaign,
+        content,
       },
-      teamhashed: ['workspace_id'],
     });
+  };

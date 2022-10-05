@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.932.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.932.0...@voiceflow/creator-app@1.932.1) (2022-10-05)
+
+
+### Bug Fixes
+
+* fixes conflicting utterances with slots (NLU-357) ([#6159](https://github.com/voiceflow/creator-app/issues/6159)) ([08e53ba](https://github.com/voiceflow/creator-app/commit/08e53ba9d3cfb33cad0285db35545255268b2be2))
+
+
+
+
+
 # [1.932.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.931.5...@voiceflow/creator-app@1.932.0) (2022-10-05)
 
 

@@ -60,6 +60,7 @@ export const Editor: React.FC<EditorProps> = ({
             </SectionV2.Title>
           </SectionV2.Header>
         }
+        backgroundColor={THEME.colors.white}
       >
         <SectionV2.Content bottomOffset={3}>
           <Input

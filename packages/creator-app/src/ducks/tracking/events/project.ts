@@ -202,7 +202,7 @@ export const trackDomainDuplicated = createProjectEventTracker<{ domainID: strin
     client.api.analytics.track(EventName.DOMAIN_DUPLICATED, createProjectEventPayload(options, { domain_id: domainID, project_type: platform }))
 );
 
-export const trackDomainConvert = createVersionEventTracker<{
+export const trackDomainConvert = createWorkspaceEventTracker<{
   sourcePlatform?: VoiceflowConstants.PlatformType;
   targetPlatform?: VoiceflowConstants.PlatformType;
   sourceProjectID: string;
@@ -210,7 +210,7 @@ export const trackDomainConvert = createVersionEventTracker<{
 }>(({ sourcePlatform, targetPlatform, sourceProjectID, targetProjectID, ...options }) =>
   client.api.analytics.track(
     EventName.DOMAIN_CONVERT,
-    createVersionEventPayload(options, {
+    createWorkspaceEventPayload(options, {
       origin_project_id: sourceProjectID,
       origin_project_type: sourcePlatform,
       destination_project_id: targetProjectID,

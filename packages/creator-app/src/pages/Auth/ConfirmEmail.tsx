@@ -31,7 +31,7 @@ const ConfirmEmail: React.FC = () => {
     }
 
     if (!isLoggedIn) {
-      toast.warn('Login to use link');
+      toast.warn('Login to use confirmation link');
 
       goToLoginPage('', { redirectTo: `${location.pathname}?confirmToken=${confirmToken}` });
       return;
@@ -49,7 +49,7 @@ const ConfirmEmail: React.FC = () => {
 
       logout();
     } catch (error) {
-      toast.error(`Unable to update email: ${error?.message || 'invalid token'}`);
+      toast.error(`Invalid confirmation link: ${error?.message || 'expired or broken'}`);
 
       goToDashboard();
     }

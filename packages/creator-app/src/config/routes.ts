@@ -147,8 +147,7 @@ export const Path = {
   ACCOUNT_PROFILE: toPath(RootRoute.ACCOUNT, AccountSettingsRoute.PROFILE),
   ACCOUNT_INTEGRATIONS: toPath(RootRoute.ACCOUNT, AccountSettingsRoute.INTEGRATIONS),
 
-  CONFIRM_ACCOUNT: toPath(RootRoute.ACCOUNT, 'confirm', ':token'),
-
+  VERIFY_SIGNUP_EMAIL: toPath(RootRoute.ACCOUNT, 'verify-email'),
   CONFIRM_EMAIL_UPDATE: toPath(RootRoute.ACCOUNT, 'confirm-email'),
 
   LOGOUT: toPath(RootRoute.LOGOUT),
@@ -249,6 +248,7 @@ export const Path = {
 };
 
 export const LegacyPath = {
+  CONFIRM_ACCOUNT: toPath(RootRoute.ACCOUNT, 'confirm', ':token'),
   CONFIRM_EMAIL_UPDATE: toPath(RootRoute.ACCOUNT, 'confirmEmail', ':token'),
 
   WORKSPACE_DASHBOARD: toPath('team', ':team_id?'),

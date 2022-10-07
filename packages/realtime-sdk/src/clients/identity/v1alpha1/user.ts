@@ -21,6 +21,10 @@ export class User extends Resource {
     return data;
   }
 
+  public async verifySignupEmailToken(token: string): Promise<void> {
+    await this.put(`/verify/${token}`);
+  }
+
   public async sendUpdateEmailEmail(payload: { password: string; nextEmail: string }): Promise<void> {
     await this.post('/email', payload);
   }

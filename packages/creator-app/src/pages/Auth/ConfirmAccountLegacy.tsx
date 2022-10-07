@@ -6,7 +6,10 @@ import * as Account from '@/ducks/account';
 import * as Router from '@/ducks/router';
 import { useAsyncEffect, useDispatch, useSelector } from '@/hooks';
 
-const ConfirmAccount: React.FC = () => {
+/**
+ * @deprecated use ConfirmEmail instead, should be removed when identity service is fully rolled out
+ */
+const ConfirmAccountLegacy: React.FC = () => {
   const { token } = useParams<{ token: string }>();
 
   const isVerified = useSelector(Account.userVerifiedSelector);
@@ -33,4 +36,4 @@ const ConfirmAccount: React.FC = () => {
   return <FullSpinner message="Verifying Account" />;
 };
 
-export default ConfirmAccount;
+export default ConfirmAccountLegacy;

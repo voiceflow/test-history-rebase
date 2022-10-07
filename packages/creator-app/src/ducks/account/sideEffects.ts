@@ -33,8 +33,15 @@ export const saveSocialProfilePicture =
 
 export const confirmAccount =
   (token: string): Thunk =>
-  async (dispatch) => {
-    await client.user.confirmAccount(token);
+  async (dispatch, getState) => {
+    const isIdentityUserEnabled = Feature.isFeatureEnabledSelector(getState())(Realtime.FeatureFlag.IDENTITY_USER);
+
+    if (isIdentityUserEnabled) {
+      await client.identity.user.verifySignupEmailToken(token);
+    } else {
+      await client.user.confirmAccount(token);
+    }
+
     dispatch(updateAccount({ verified: true, first_login: true }));
   };
 

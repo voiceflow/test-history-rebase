@@ -14,8 +14,8 @@ const VerifySignupEmail: React.FC = () => {
   const isLoggedIn = useSelector(Account.isLoggedInSelector);
 
   const goToLoginPage = useDispatch(Router.goToLogin);
-  const confirmAccount = useDispatch(Account.confirmAccount);
   const goToOnboarding = useDispatch(Router.goToOnboarding);
+  const verifySignupEmailToken = useDispatch(Account.verifySignupEmailToken);
 
   useAsyncEffect(async () => {
     const verificationToken = query.get('verificationToken');
@@ -46,7 +46,7 @@ const VerifySignupEmail: React.FC = () => {
     }
 
     try {
-      await confirmAccount(verificationToken);
+      await verifySignupEmailToken(verificationToken);
 
       toast.success('Email Successfully Verified');
     } catch (error) {

@@ -1,3 +1,4 @@
+import { Struct } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { toast } from '@voiceflow/ui';
 // eslint-disable-next-line you-dont-need-lodash-underscore/get
@@ -31,7 +32,7 @@ export const saveSocialProfilePicture =
     await dispatch(saveProfilePicture(s3Url.data));
   };
 
-export const confirmAccount =
+export const verifySignupEmailToken =
   (token: string): Thunk =>
   async (dispatch, getState) => {
     const isIdentityUserEnabled = Feature.isFeatureEnabledSelector(getState())(Realtime.FeatureFlag.IDENTITY_USER);
@@ -43,6 +44,18 @@ export const confirmAccount =
     }
 
     dispatch(updateAccount({ verified: true, first_login: true }));
+  };
+
+export const resendSignupVerificationEmail =
+  ({ query = {} }: { query?: Struct } = {}): Thunk =>
+  async (_dispatch, getState) => {
+    const isIdentityUserEnabled = Feature.isFeatureEnabledSelector(getState())(Realtime.FeatureFlag.IDENTITY_USER);
+
+    if (isIdentityUserEnabled) {
+      await client.identity.user.resendSignupVerificationEmail({ metadata: { inviteParams: query } });
+    } else {
+      await client.user.resendConfirmationEmail();
+    }
   };
 
 export const sendUpdateEmailEmail =

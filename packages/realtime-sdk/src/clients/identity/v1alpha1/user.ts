@@ -21,6 +21,10 @@ export class User extends Resource {
     return data;
   }
 
+  public async resendSignupVerificationEmail(payload: { metadata?: { inviteParams?: Record<string, unknown> } }): Promise<void> {
+    await this.post(`/verify`, payload);
+  }
+
   public async verifySignupEmailToken(token: string): Promise<void> {
     await this.put(`/verify/${token}`);
   }

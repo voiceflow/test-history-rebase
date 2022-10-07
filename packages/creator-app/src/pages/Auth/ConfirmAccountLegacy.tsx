@@ -15,16 +15,18 @@ const ConfirmAccountLegacy: React.FC = () => {
   const isVerified = useSelector(Account.userVerifiedSelector);
   const isLoggedIn = useSelector(Account.isLoggedInSelector);
 
-  const confirmAccount = useDispatch(Account.confirmAccount);
   const goToOnboarding = useDispatch(Router.goToOnboarding);
+  const verifySignupEmailToken = useDispatch(Account.verifySignupEmailToken);
 
   useAsyncEffect(async () => {
     if (isVerified) {
       toast.warn('Email already verified');
     } else if (token) {
       try {
-        await confirmAccount(token);
+        await verifySignupEmailToken(token);
+
         const successMessage = isLoggedIn ? 'Email Successfully Verified' : 'Email Successfully Verified, please log in to continue.';
+
         toast.success(successMessage);
       } catch (e) {
         toast.error('Invalid Verification Link - Expired or Broken');

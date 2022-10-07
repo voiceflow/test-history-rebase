@@ -23,21 +23,24 @@ export const trackIntentCreatedProjectNLUImport = createWorkspaceEventTracker<{
   creationType: CanvasCreationType;
   projectID: string;
 }>(({ creationType, projectID, ...options }) =>
-  client.api.analytics.track(EventName.INTENT_CREATED, createWorkspaceEventPayload(options, { creationType, project_id: projectID }))
+  client.api.analytics.track(EventName.INTENT_CREATED, createWorkspaceEventPayload(options, { creation_type: creationType, project_id: projectID }))
 );
 
 export const trackEntityCreatedProjectNLUImport = createWorkspaceEventTracker<{
   creationType: CanvasCreationType;
   projectID: string;
 }>(({ creationType, projectID, ...options }) =>
-  client.api.analytics.track(EventName.ENTITY_CREATED, createWorkspaceEventPayload(options, { creationType, project_id: projectID }))
+  client.api.analytics.track(EventName.ENTITY_CREATED, createWorkspaceEventPayload(options, { creation_type: creationType, project_id: projectID }))
 );
 
 export const trackNewUtteranceCreatedProjectNLUImport = createWorkspaceEventTracker<{
   creationType: CanvasCreationType;
   projectID: string;
 }>(({ creationType, projectID, ...options }) =>
-  client.api.analytics.track(EventName.PROJECT_NEW_UTTERANCE_CREATED, createWorkspaceEventPayload(options, { creationType, project_id: projectID }))
+  client.api.analytics.track(
+    EventName.PROJECT_NEW_UTTERANCE_CREATED,
+    createWorkspaceEventPayload(options, { creation_type: creationType, project_id: projectID })
+  )
 );
 
 export const trackProjectNLUImportFailed = createProjectEventTracker<{

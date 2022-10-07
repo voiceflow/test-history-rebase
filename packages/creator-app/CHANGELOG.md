@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.934.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.933.0...@voiceflow/creator-app@1.934.0) (2022-10-07)
+
+
+### Features
+
+* **creator-app:** added event tracking for entity, intent, and utterance creation on import (NLU-356) ([#6166](https://github.com/voiceflow/creator-app/issues/6166)) ([5243531](https://github.com/voiceflow/creator-app/commit/52435318b51abceba2c5d07fccc0c961e7bc9a46))
+
+
+
+
+
 # [1.933.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.932.3...@voiceflow/creator-app@1.933.0) (2022-10-07)
 
 

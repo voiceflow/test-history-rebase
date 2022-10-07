@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.166.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.165.0...@voiceflow/realtime-sdk@1.166.0) (2022-10-07)
+
+
+### Features
+
+* resend verification email via identity service (CT-998) ([#6173](https://github.com/voiceflow/creator-app/issues/6173)) ([2cb05c3](https://github.com/voiceflow/creator-app/commit/2cb05c3cc66de869cfd00848f0383a4f9e0fb879))
+* verify signup email (CT-946) ([#6172](https://github.com/voiceflow/creator-app/issues/6172)) ([7420d8b](https://github.com/voiceflow/creator-app/commit/7420d8b21e38c48ad641d78ce6610b4430833a47))
+
+
+
+
+
 # [1.165.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.164.0...@voiceflow/realtime-sdk@1.165.0) (2022-10-05)
 
 

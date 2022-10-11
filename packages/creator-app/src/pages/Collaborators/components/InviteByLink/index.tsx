@@ -1,15 +1,15 @@
+import { Utils } from '@voiceflow/common';
 import { UserRole } from '@voiceflow/internal';
-import { Button, ButtonVariant, Menu, toast } from '@voiceflow/ui';
+import { Button, ButtonVariant, Menu, toast, useSetup } from '@voiceflow/ui';
 import React from 'react';
 
-import client from '@/client';
 import DropdownWithCaret from '@/components/DropdownWithCaret';
-import * as Errors from '@/config/errors';
 import { Permission } from '@/config/permissions';
 import { EDITOR_SEAT_ROLES, ModalType } from '@/constants';
 import * as Session from '@/ducks/session';
+import * as Workspace from '@/ducks/workspace';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { useModals, usePermission, useSelector, useTrackingEvents } from '@/hooks';
+import { useDispatch, useModals, usePermission, useSelector, useTrackingEvents } from '@/hooks';
 import { Identifier } from '@/styles/constants';
 import { copy } from '@/utils/clipboard';
 import * as Sentry from '@/vendors/sentry';
@@ -29,58 +29,56 @@ const inviteLimitMessage = (
   </span>
 );
 
-type ROLE_OPTIONS = UserRole.EDITOR | UserRole.VIEWER | UserRole.ADMIN;
+type LinkUserRole = UserRole.EDITOR | UserRole.VIEWER | UserRole.ADMIN;
 
 const InviteByLinkFooter: React.FC = () => {
-  const activeWorkspaceID = useSelector(Session.activeWorkspaceIDSelector);
+  const projectID = useSelector(Session.activeProjectIDSelector)!;
   const numberOfSeats = useSelector(WorkspaceV2.active.numberOfSeatsSelector);
   const usedEditorSeats = useSelector(WorkspaceV2.active.usedEditorSeatsSelector);
   const [canManageAdminCollaborators] = usePermission(Permission.MANAGE_ADMIN_COLLABORATORS);
 
-  const [linkInvitePermission, setLinkInvitePermission] = React.useState<ROLE_OPTIONS>(UserRole.EDITOR);
-  const [inviteCode, setInviteCode] = React.useState('');
-  const [inviteLink, setInviteLink] = React.useState('');
-  const { open: openPaymentsModal } = useModals(ModalType.PAYMENT);
+  const getWorkspaceInviteLink = useDispatch(Workspace.getWorkspaceInviteLink);
+
   const [trackingEvents] = useTrackingEvents();
-  const projectID = useSelector(Session.activeProjectIDSelector)!;
+  const { open: openPaymentsModal } = useModals(ModalType.PAYMENT);
 
-  React.useEffect(() => {
-    const getInviteLink = async () => {
-      if (!activeWorkspaceID) {
-        Sentry.error(Errors.noActiveWorkspaceID());
-        toast.genericError();
-        return;
-      }
+  const [userRole, setUserRole] = React.useState<LinkUserRole>(UserRole.EDITOR);
+  const [inviteLink, setInviteLink] = React.useState('');
 
-      setInviteCode(await client.workspace.getInviteLink(activeWorkspaceID, linkInvitePermission));
-    };
-    getInviteLink();
-  }, [linkInvitePermission]);
+  const onFetchInviteLink = async (role: UserRole) => {
+    try {
+      const link = await getWorkspaceInviteLink(role);
 
-  React.useEffect(() => {
-    const { hostname, port } = window.location;
-    const host = `${hostname}${port ? `:${port}` : ''}`;
-    setInviteLink(`https://${host}/invite?invite_code=${encodeURIComponent(inviteCode)}`);
-  }, [inviteCode]);
+      setInviteLink(link);
+    } catch (error) {
+      Sentry.error(error);
 
-  const handleCopyLink = async () => {
+      toast.genericError();
+    }
+  };
+
+  const onCopyLink = async () => {
     const numberOfUsedEditorSeats = usedEditorSeats;
+
     toast.success('Link copied to your clipboard, this link expires in 72 hours.');
 
-    if (numberOfUsedEditorSeats >= numberOfSeats! && EDITOR_SEAT_ROLES.includes(linkInvitePermission)) {
-      toast.warn(inviteLimitMessage, {
-        onClick: openPaymentsModal,
-        delay: 1000,
-      });
+    if (numberOfUsedEditorSeats >= numberOfSeats! && EDITOR_SEAT_ROLES.includes(userRole)) {
+      toast.warn(inviteLimitMessage, { delay: 1000, onClick: openPaymentsModal });
     }
+
     copy(inviteLink);
+
     trackingEvents.trackProjectInviteCollaboratorsCopy({ projectID });
   };
 
-  const handlePermissionChange = (onToggle: () => void, permission: ROLE_OPTIONS) => {
-    onToggle();
-    setLinkInvitePermission(permission);
+  const onChangeRole = (role: LinkUserRole) => () => {
+    setUserRole(role);
+    onFetchInviteLink(role);
   };
+
+  useSetup(() => {
+    onFetchInviteLink(userRole);
+  });
 
   return (
     <Container>
@@ -91,15 +89,19 @@ const InviteByLinkFooter: React.FC = () => {
           alwaysBlue
           menu={(onToggle: () => void) => (
             <Menu>
-              <Menu.Item onClick={() => handlePermissionChange(onToggle, UserRole.EDITOR)}>can edit</Menu.Item>
-              <Menu.Item onClick={() => handlePermissionChange(onToggle, UserRole.VIEWER)}>can view</Menu.Item>
-              {canManageAdminCollaborators && <Menu.Item onClick={() => handlePermissionChange(onToggle, UserRole.ADMIN)}>can admin</Menu.Item>}
+              <Menu.Item onClick={Utils.functional.chainVoid(onToggle, onChangeRole(UserRole.EDITOR))}>can edit</Menu.Item>
+              <Menu.Item onClick={Utils.functional.chainVoid(onToggle, onChangeRole(UserRole.VIEWER))}>can view</Menu.Item>
+
+              {canManageAdminCollaborators && (
+                <Menu.Item onClick={Utils.functional.chainVoid(onToggle, onChangeRole(UserRole.ADMIN))}>can admin</Menu.Item>
+              )}
             </Menu>
           )}
-          text={PermissionText[linkInvitePermission]}
+          text={PermissionText[userRole]}
         />
       </DropdownContainer>
-      <Button id={Identifier.COPY_INVITE_BUTTON} variant={ButtonVariant.PRIMARY} onClick={handleCopyLink} disabled={!inviteCode} squareRadius>
+
+      <Button id={Identifier.COPY_INVITE_BUTTON} variant={ButtonVariant.PRIMARY} onClick={onCopyLink} disabled={!inviteLink} squareRadius>
         <span>Copy Link</span>
       </Button>
     </Container>

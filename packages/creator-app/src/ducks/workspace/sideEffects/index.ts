@@ -1,9 +1,12 @@
 import { Utils } from '@voiceflow/common';
+import { UserRole } from '@voiceflow/internal';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { toast } from '@voiceflow/ui';
 
+import client from '@/client';
 import * as Errors from '@/config/errors';
 import * as Account from '@/ducks/account';
+import * as Feature from '@/ducks/feature';
 import { projectByIDSelector } from '@/ducks/projectV2/selectors';
 import { goToDashboard, goToWorkspace } from '@/ducks/router/actions';
 import * as Session from '@/ducks/session';
@@ -171,4 +174,28 @@ export const updateActiveWorkspaceImage =
 
       throw err;
     }
+  };
+
+export const getWorkspaceInviteLink =
+  (userRole?: UserRole): Thunk<string> =>
+  async (_dispatch, getState) => {
+    const state = getState();
+
+    const workspaceID = Session.activeWorkspaceIDSelector(state);
+    const isIdentityWorkspaceInviteEnabled = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.IDENTITY_WORKSPACE_INVITE);
+
+    Errors.assertWorkspaceID(workspaceID);
+
+    if (isIdentityWorkspaceInviteEnabled) {
+      const { url } = await client.identity.workspaceInvitation.getInviteLink(workspaceID, userRole);
+
+      return url;
+    }
+
+    const inviteCode = await client.workspace.getInviteCode(workspaceID, userRole ?? UserRole.VIEWER);
+
+    const { hostname, port } = window.location;
+    const host = `${hostname}${port ? `:${port}` : ''}`;
+
+    return `https://${host}/invite?invite_code=${encodeURIComponent(inviteCode)}`;
   };

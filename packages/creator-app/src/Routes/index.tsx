@@ -16,8 +16,9 @@ import ResetEmail from '@/pages/Auth/ResetEmail';
 import ResetPassword from '@/pages/Auth/ResetPassword';
 import Signup from '@/pages/Auth/Signup';
 import Export from '@/pages/Export';
+import InviteLegacy from '@/pages/InviteLegacy';
 import Onboarding from '@/pages/Onboarding';
-import * as Query from '@/utils/query';
+import WorkspaceAcceptInvite from '@/pages/WorkspaceAcceptInvite';
 
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
@@ -74,6 +75,8 @@ const Routes: React.FC = () => {
 
         <Route exact path={Path.CREATOR_TERMS} component={Legal} />
 
+        {/* workspace routes  */}
+        <Route exact path={Path.WORKSPACE_ACCEPT_INVITE} component={WorkspaceAcceptInvite} />
         <Redirect exact from={Path.WORKSPACE} to={Path.DASHBOARD} />
         <PrivateRoute exact path={Path.NEW_WORKSPACE} component={NewWorkspace} />
         <PrivateRoute path={[Path.WORKSPACE, Path.DASHBOARD]} component={Workspace} />
@@ -102,26 +105,8 @@ const Routes: React.FC = () => {
         <PrivateRoute path={Path.ACCOUNT} component={Account} />
         <PrivateRoute path={Path.RUNTIME} component={Runtime} />
 
-        <Route
-          exact
-          path={Path.INVITE}
-          render={(props) => {
-            const parsed = Query.parse(props.location.search);
-            const inviteCode = parsed.invite_code;
-            const { email } = parsed;
-            const signupLink = email ? `${Path.SIGNUP}?invite=${inviteCode}&email=${email}` : `${Path.SIGNUP}?invite=${inviteCode}`;
-
-            if (inviteCode) {
-              return authToken ? <Redirect to={`${Path.DASHBOARD}?invite=${inviteCode}`} /> : <Redirect to={signupLink} />;
-            }
-            const code = props.match.params.invite_code;
-            return authToken ? (
-              <Redirect to={`${Path.DASHBOARD}?invite=${code}`} />
-            ) : (
-              <Redirect to={`${Path.SIGNUP}?invite=${code}${props.location.search}`} />
-            );
-          }}
-        />
+        {/* should be removed when identity service is fully rolled out  */}
+        <Route exact path={LegacyPath.INVITE} component={InviteLegacy} />
 
         <Route
           exact

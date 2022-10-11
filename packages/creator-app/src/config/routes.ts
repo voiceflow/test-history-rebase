@@ -92,6 +92,7 @@ export enum WorkspaceRoute {
   NEW = 'new',
   SETTINGS = 'settings',
   TEMPLATE = 'template',
+  ACCEPT_INVITE = 'accept-invite',
 }
 
 export enum WorkspaceSettingsRoute {
@@ -140,6 +141,7 @@ export const Path = {
   WORKSPACE_DEVELOPER_SETTINGS: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.SETTINGS, WorkspaceSettingsRoute.DEVELOPER),
   WORKSPACE_SSO_SETTINGS: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.SETTINGS, WorkspaceSettingsRoute.SSO),
   NEW_WORKSPACE: toPath(RootRoute.WORKSPACE, WorkspaceRoute.NEW),
+  WORKSPACE_ACCEPT_INVITE: toPath(RootRoute.WORKSPACE, WorkspaceRoute.ACCEPT_INVITE),
 
   DASHBOARD: toPath(RootRoute.DASHBOARD),
 
@@ -151,8 +153,6 @@ export const Path = {
   CONFIRM_EMAIL_UPDATE: toPath(RootRoute.ACCOUNT, 'confirm-email'),
 
   LOGOUT: toPath(RootRoute.LOGOUT),
-
-  INVITE: toPath(RootRoute.INVITE),
 
   RUNTIME: toPath(RootRoute.RUNTIME),
 
@@ -262,6 +262,8 @@ export const LegacyPath = {
   PRODUCT_LIST: toPath('tools', ':versionID', 'products'),
 
   TOOLS: toPath('tools', ':versionID'),
+
+  INVITE: toPath('invite'),
 
   MIGRATE: toPath('migrate', ':versionID'),
 

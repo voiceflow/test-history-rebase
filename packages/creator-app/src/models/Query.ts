@@ -30,6 +30,7 @@ export namespace Query {
     invite_code: string;
     referral: string /* Referral code */;
     ref_code: string /* ReferralRock referral code */;
+    inviteToken: string;
   }>;
 
   export type Canvas = Partial<{

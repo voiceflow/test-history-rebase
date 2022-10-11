@@ -17,7 +17,7 @@ suite('Client - Workspace', ({ expectMembers, stubFetch, stubAdapter }) => {
       'getPlan',
       'updateSource',
       'calculatePrice',
-      'getInviteLink',
+      'getInviteCode',
       'listAPIKeys',
       'validateCoupon',
       'getOrganization',
@@ -93,12 +93,12 @@ suite('Client - Workspace', ({ expectMembers, stubFetch, stubAdapter }) => {
     });
   });
 
-  describe('getInviteLink()', () => {
+  describe('getInviteCode()', () => {
     it('should get a link for a workspace invitation', async () => {
       const link = Utils.generate.string();
       const fetch = stubFetch('api', 'post').mockResolvedValue(link);
 
-      expect(await client.getInviteLink(WORKSPACE_ID, UserRole.VIEWER)).toEqual(link);
+      expect(await client.getInviteCode(WORKSPACE_ID, UserRole.VIEWER)).toEqual(link);
 
       expect(fetch).toBeCalledWith(`${WORKSPACES_PATH}/${WORKSPACE_ID}/inviteLink`, { role: UserRole.VIEWER });
     });

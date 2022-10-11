@@ -30,7 +30,7 @@ const workspaceClient = {
     }
   ) => api.post<Price>(`${WORKSPACES_PATH}/${workspaceID}/price`, data),
 
-  getInviteLink: (workspaceID: string, role: UserRole) => api.post<string>(`${WORKSPACES_PATH}/${workspaceID}/inviteLink`, { role }),
+  getInviteCode: (workspaceID: string, role: UserRole) => api.post<string>(`${WORKSPACES_PATH}/${workspaceID}/inviteLink`, { role }),
 
   listAPIKeys: (workspaceID: string) => apiV2.get<APIKey[]>(`${WORKSPACES_PATH}/${workspaceID}/api-keys`),
 

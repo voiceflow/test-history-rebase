@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.169.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.168.0...@voiceflow/realtime-sdk@1.169.0) (2022-10-11)
+
+
+### Features
+
+* identity workspace update (CT-1061) ([#6177](https://github.com/voiceflow/creator-app/issues/6177)) ([d020d18](https://github.com/voiceflow/creator-app/commit/d020d18b6926cf7d457a95d2a78d94f4f390d324))
+
+
+
+
+
 # [1.168.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.167.0...@voiceflow/realtime-sdk@1.168.0) (2022-10-11)
 
 

@@ -19,18 +19,18 @@ const Action: ConnectedAction<Realtime.NodeData.Url, Realtime.NodeData.UrlBuiltI
   isActive,
   onOpenEditor,
 }) => {
-  const isEmpty = !data.url;
+  const url = data.url && transformVariablesToReadable(data.url);
 
   return (
     <Popper
       placement="top-start"
       renderContent={({ onClose }) => (
         <ActionPreview
-          content={isEmpty ? 'Enter URL' : data.url}
+          content={url || 'Enter URL'}
           onClose={onClose}
           onRemove={onRemove}
           onOpenEditor={onOpenEditor}
-          onCopyContent={isEmpty ? null : copyWithToast(data.url)}
+          onCopyContent={url ? copyWithToast(url) : null}
         />
       )}
     >
@@ -38,14 +38,12 @@ const Action: ConnectedAction<Realtime.NodeData.Url, Realtime.NodeData.UrlBuiltI
         <Canvas.Action
           ref={ref}
           icon={
-            <TippyTooltip tag="div" title="URL is missing" disabled={!isEmpty || isActive} distance={2} bodyOverflow>
-              <Canvas.Action.Icon icon={isEmpty && !isActive ? 'warning' : NODE_CONFIG.icon!} />
+            <TippyTooltip tag="div" title="URL is missing" disabled={!!url || isActive} distance={2} bodyOverflow>
+              <Canvas.Action.Icon icon={!url && !isActive ? 'warning' : NODE_CONFIG.icon!} />
             </TippyTooltip>
           }
           port={<Step.ActionPort portID={ports.out.builtIn[BaseModels.PortType.NEXT]} />}
-          label={
-            <Canvas.Action.Label secondary={isEmpty}>{isEmpty ? 'Add URL' : data.name || transformVariablesToReadable(data.url)}</Canvas.Action.Label>
-          }
+          label={<Canvas.Action.Label secondary={!url}>{url ? data.name || url : 'Add URL'}</Canvas.Action.Label>}
           nodeID={data.nodeID}
           active={isOpened || isActive}
           onClick={swallowEvent(onToggle)}

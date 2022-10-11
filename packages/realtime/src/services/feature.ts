@@ -8,7 +8,7 @@ interface Context {
   organizationID?: string;
 }
 
-class SlotService extends AbstractControl {
+class FeatureService extends AbstractControl {
   private toUnleashContext({ workspaceID, organizationID, ...unleashContext }: Context = {}) {
     return {
       ...unleashContext,
@@ -26,4 +26,4 @@ class SlotService extends AbstractControl {
   }
 }
 
-export default SlotService;
+export default FeatureService;

@@ -1,4 +1,5 @@
 import * as Voiceflow from '@voiceflow/api-sdk';
+import * as Realtime from '@voiceflow/realtime-sdk';
 
 import logger from '@/logger';
 
@@ -20,6 +21,7 @@ interface ExtraClient {
   product: ProductClient;
   thread: ThreadClient;
   customBlock: CustomBlockClient;
+  identity: Realtime.Clients.Identity.V1Alpha1;
 }
 
 export interface Client extends Voiceflow.Client, ExtraClient {
@@ -52,6 +54,7 @@ const VoiceflowFactoryClient = ({ axios, config }: Options): VoiceflowFactory =>
     const google = axios.create({ baseURL: config.GOOGLE_SERVICE_ENDPOINT, headers: { authorization: token } });
     const dialogflow = axios.create({ baseURL: config.DIALOGFLOW_SERVICE_ENDPOINT, headers: { authorization: token } });
     const general = axios.create({ baseURL: config.GENERAL_SERVICE_ENDPOINT, headers: { authorization: token } });
+    const identity = new Realtime.Clients.Identity.V1Alpha1({ baseURL: config.IDENTITY_API_ENDPOINT, token });
 
     const extraOptions: ExtraOptions = { config, api, alexa, google, dialogflow, general, log: logger };
 
@@ -61,6 +64,7 @@ const VoiceflowFactoryClient = ({ axios, config }: Options): VoiceflowFactory =>
       product: ExtraProductClient(extraOptions),
       thread: ExtraThreadClient(extraOptions),
       customBlock: ExtraCustomBlockClient(extraOptions),
+      identity,
     };
 
     Object.assign(client, extraClient);

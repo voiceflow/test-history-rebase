@@ -24,6 +24,8 @@ const Client = ({ api }: ExtraOptions) => ({
 
   delete: (workspaceID: string): Promise<void> => api.delete(`/v2/workspaces/${workspaceID}`),
 
+  deleteStripeSubscription: (workspaceID: string): Promise<void> => api.delete(`/v2/workspaces/${workspaceID}'/stripe-subscription`),
+
   // members
 
   listMembers: (workspaceID: string) => api.get<Realtime.DBMember[]>(`/workspaces/${workspaceID}/members`).then((res) => res.data),

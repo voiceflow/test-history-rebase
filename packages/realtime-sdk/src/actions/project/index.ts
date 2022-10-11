@@ -22,7 +22,6 @@ export interface CreateProjectPayload extends BaseWorkspacePayload {
 }
 
 export interface EjectUsersPayload extends BaseProjectPayload {
-  key: string;
   creatorID: number;
 }
 

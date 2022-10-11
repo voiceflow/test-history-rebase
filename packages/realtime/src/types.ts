@@ -14,6 +14,8 @@ export interface Config {
   DIALOGFLOW_SERVICE_ENDPOINT: string;
   GENERAL_SERVICE_ENDPOINT: string;
 
+  IDENTITY_API_ENDPOINT: string;
+
   // Release information
   GIT_SHA: string | null;
   BUILD_NUM: string | null;

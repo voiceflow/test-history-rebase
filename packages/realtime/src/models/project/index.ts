@@ -42,6 +42,12 @@ class ProjectModel extends AbstractModel<DBProjectModel, BaseModels.Project.Mode
   async getPlatformAndType(projectID: string): Promise<{ type?: string; platform?: string }> {
     return this.findByID(projectID, ['type', 'platform']);
   }
+
+  async getIDsByWorkspaceID(workspaceID: string): Promise<string[]> {
+    const result = await this.findMany({ teamID: this.adapter.toDB({ teamID: workspaceID }).teamID }, ['_id']);
+
+    return result.map(({ _id }) => _id!.toJSON());
+  }
 }
 
 export default ProjectModel;

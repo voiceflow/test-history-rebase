@@ -4,13 +4,25 @@ import { Action } from 'typescript-fsa';
 
 import { AbstractWorkspaceChannelControl } from './utils';
 
-type RemoveWorkspacePayload = Realtime.BaseCreatorPayload & Realtime.actionUtils.CRUDKeyPayload;
+interface RemoveWorkspacePayload extends Realtime.BaseCreatorPayload, Realtime.actionUtils.CRUDKeyPayload {}
 
 class RemoveWorkspace extends AbstractWorkspaceChannelControl<RemoveWorkspacePayload> {
   protected actionCreator = Realtime.workspace.crud.remove;
 
   protected process = async (ctx: Context, { payload }: Action<RemoveWorkspacePayload>) => {
-    await this.services.workspace.delete(ctx.data.creatorID, payload.key);
+    const { creatorID } = ctx.data;
+
+    const workspace = await this.services.workspace.get(creatorID, payload.key);
+
+    await this.services.workspace.delete(creatorID, payload.key);
+
+    await Promise.all(
+      workspace.members.map((member) =>
+        this.server.process(
+          Realtime.workspace.member.eject({ removed: true, workspaceID: payload.key, workspaceName: workspace.name, creatorID: member.creator_id })
+        )
+      )
+    );
   };
 }
 

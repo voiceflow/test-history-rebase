@@ -2,6 +2,7 @@ import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { AbstractControl, ControlOptions } from '../../control';
+import logger from '../../logger';
 import AccessCache from '../utils/accessCache';
 import WorkspaceMemberService from './member';
 
@@ -54,8 +55,20 @@ class WorkspaceService extends AbstractControl {
 
   public async delete(creatorID: number, workspaceID: string): Promise<void> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
+    const identityWorkspaceEnabled = await this.services.workspace.isFeatureEnabled(creatorID, workspaceID, Realtime.FeatureFlag.IDENTITY_WORKSPACE);
 
-    await client.workspace.delete(workspaceID);
+    if (identityWorkspaceEnabled) {
+      const projectIDs = await this.models.project.getIDsByWorkspaceID(workspaceID);
+
+      if (projectIDs.length) {
+        await client.project.deleteMany(projectIDs);
+      }
+
+      await client.identity.workspace.remove(workspaceID);
+      await client.workspace.deleteStripeSubscription(workspaceID).catch((error) => logger.warn(error));
+    } else {
+      await client.workspace.delete(workspaceID);
+    }
   }
 
   public async isFeatureEnabled(creatorID: number, workspaceID: string | undefined, feature: Realtime.FeatureFlag): Promise<boolean> {

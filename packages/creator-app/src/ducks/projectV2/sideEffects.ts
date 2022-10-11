@@ -9,7 +9,7 @@ import { idSelector } from './selectors/active/base';
 import { getActiveProjectContext } from './utils';
 
 export const ejectUsersFromProject =
-  ({ key: projectID, creatorID }: Realtime.project.EjectUsersPayload): Thunk =>
+  ({ projectID, creatorID }: Realtime.project.EjectUsersPayload): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
     const userID = userIDSelector(state);

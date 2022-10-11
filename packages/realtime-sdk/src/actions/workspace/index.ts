@@ -33,6 +33,10 @@ export interface UpdateWorkspaceImagePayload extends BaseWorkspacePayload {
   image: string;
 }
 
+export interface EjectUsersPayload extends BaseWorkspacePayload {
+  creatorID: number;
+}
+
 export interface CheckoutWorkspacePayload extends BaseWorkspacePayload {
   plan: PlanType;
   seats: number;

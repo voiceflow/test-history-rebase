@@ -25,6 +25,7 @@ const CONFIG: Config = {
   GOOGLE_SERVICE_ENDPOINT,
   DIALOGFLOW_SERVICE_ENDPOINT: `${GOOGLE_SERVICE_ENDPOINT}/dialogflow/es`,
   GENERAL_SERVICE_ENDPOINT: getRequiredProcessEnv('GENERAL_SERVICE_ENDPOINT'),
+  IDENTITY_API_ENDPOINT: getRequiredProcessEnv('IDENTITY_API_ENDPOINT'),
 
   // Release information
   GIT_SHA: getOptionalProcessEnv('GIT_SHA'),

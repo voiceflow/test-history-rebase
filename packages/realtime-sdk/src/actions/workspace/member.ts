@@ -26,6 +26,7 @@ export interface ReplaceMembersPayload extends BaseWorkspacePayload {
 }
 
 export interface EjectPayload extends BaseMemberPayload {
+  removed?: boolean;
   workspaceName: string;
 }
 

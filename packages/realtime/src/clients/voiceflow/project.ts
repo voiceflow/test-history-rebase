@@ -37,6 +37,8 @@ const Client = ({ api, alexa, google, dialogflow, general }: ExtraOptions) => {
 
     deleteV2: (projectID: string): Promise<boolean> => api.delete(`/v3/projects/${projectID}`),
 
+    deleteMany: (projectIDs: string[]): Promise<boolean> => api.post(`/v2/projects/delete-many`, { projectIDs }),
+
     platform: Object.assign(getPlatform, {
       alexa: alexaClient,
       google: googleClient,

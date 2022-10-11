@@ -56,8 +56,6 @@ export const deleteWorkspace =
       dispatch(navigateToNextWorkspace(workspaceID));
 
       await dispatch.sync(Realtime.workspace.crud.remove({ key: workspaceID }));
-
-      toast.success('Successfully deleted workspace');
     } catch (err) {
       openError({ error: extractErrorFromResponseData(err, 'Unable to delete workspace') });
 
@@ -98,12 +96,16 @@ export const importProject =
   };
 
 export const ejectFromWorkspace =
-  ({ workspaceID, workspaceName }: Realtime.workspace.member.EjectPayload): Thunk =>
+  ({ removed, workspaceID, workspaceName }: Realtime.workspace.member.EjectPayload): Thunk =>
   async (dispatch) => {
     dispatch(navigateToNextWorkspace(workspaceID));
     dispatch.local(Realtime.workspace.crud.remove({ key: workspaceID }));
 
-    toast.info(`You are no longer a collaborator for "${workspaceName}" workspace`);
+    if (removed) {
+      toast.info(`The "${workspaceName}" workspace has been removed`);
+    } else {
+      toast.info(`You are no longer a collaborator for "${workspaceName}" workspace`);
+    }
   };
 
 // active workspace

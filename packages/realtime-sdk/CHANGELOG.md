@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.167.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.166.0...@voiceflow/realtime-sdk@1.167.0) (2022-10-11)
+
+
+### Features
+
+* delete workspace FE (CT-000) ([#6150](https://github.com/voiceflow/creator-app/issues/6150)) ([42aacee](https://github.com/voiceflow/creator-app/commit/42aacee8255be57604f3b7b95518b376cf425ccc))
+
+
+
+
+
 # [1.166.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.165.0...@voiceflow/realtime-sdk@1.166.0) (2022-10-07)
 
 

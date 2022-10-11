@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.936.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.935.0...@voiceflow/creator-app@1.936.0) (2022-10-11)
+
+
+### Features
+
+* get invite link via identity (CT-941) ([#6175](https://github.com/voiceflow/creator-app/issues/6175)) ([b6deef4](https://github.com/voiceflow/creator-app/commit/b6deef4ef53409f70f4fbc132d384b9411b898b3))
+
+
+
+
+
 # [1.935.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.934.0...@voiceflow/creator-app@1.935.0) (2022-10-11)
 
 

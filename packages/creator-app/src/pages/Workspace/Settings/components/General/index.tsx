@@ -1,17 +1,25 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Button, Input, Upload, UploadIconVariant } from '@voiceflow/ui';
 import React from 'react';
 
 import Section, { SectionVariant } from '@/components/Section';
 import { ActionSection, SectionVariants, SettingsSection } from '@/components/Settings';
 import { Permission } from '@/config/permissions';
+import * as Feature from '@/ducks/feature';
 import * as Workspace from '@/ducks/workspace';
-import { useActiveWorkspace, useDispatch, usePermission } from '@/hooks';
+import { useActiveWorkspace, useDispatch, usePermission, useSelector } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
+import * as Sentry from '@/vendors/sentry';
 
 const GeneralSettingsPage: React.FC = () => {
   const workspace = useActiveWorkspace()!;
+
+  const isIdentityWorkspaceEnabled = useSelector(Feature.isFeatureEnabledSelector)(Realtime.FeatureFlag.IDENTITY_WORKSPACE);
+
   const updateActiveWorkspaceName = useDispatch(Workspace.updateActiveWorkspaceName);
   const updateActiveWorkspaceImage = useDispatch(Workspace.updateActiveWorkspaceImage);
+  const updateActiveWorkspaceImageLegacy = useDispatch(Workspace.updateActiveWorkspaceImageLegacy);
+
   const [canDeleteWorkspace] = usePermission(Permission.DELETE_WORKSPACE);
   const [canConfigureWorkspace] = usePermission(Permission.CONFIGURE_WORKSPACE);
 
@@ -37,13 +45,20 @@ const GeneralSettingsPage: React.FC = () => {
         <Section variant={SectionVariant.QUATERNARY} header="Workspace Name">
           <Box.Flex mb={24}>
             <Input name="name" value={name} onBlur={saveName} onChangeText={updateName} placeholder="Board Name" readOnly={!canConfigureWorkspace} />
+
             <Box ml={16}>
-              <Upload.IconUpload
-                disabled={!canConfigureWorkspace}
-                size={UploadIconVariant.EXTRA_SMALL}
-                update={updateActiveWorkspaceImage}
-                image={workspace.image}
-              />
+              {isIdentityWorkspaceEnabled ? (
+                <Upload.Provider client={{ upload: (_endpoint, _fileType, formData) => updateActiveWorkspaceImage(formData) }} onError={Sentry.error}>
+                  <Upload.IconUpload size={UploadIconVariant.EXTRA_SMALL} image={workspace.image} disabled={!canConfigureWorkspace} />
+                </Upload.Provider>
+              ) : (
+                <Upload.IconUpload
+                  size={UploadIconVariant.EXTRA_SMALL}
+                  image={workspace.image}
+                  update={updateActiveWorkspaceImageLegacy}
+                  disabled={!canConfigureWorkspace}
+                />
+              )}
             </Box>
           </Box.Flex>
         </Section>

@@ -53,7 +53,7 @@ const GlobalProviders: React.FC<GlobalProvidersProps> = ({ history, store, persi
                                   <AutoPanningProvider>
                                     <ModalsContextProvider>
                                       <ModalsV2.Provider>
-                                        <Upload.Provider client={client.upload} onError={(error) => Sentry.error(error)}>
+                                        <Upload.Provider client={client.upload} onError={Sentry.error}>
                                           <AccountLoadingGate>
                                             <RealtimeConnectionGate>
                                               <MLProvider>

@@ -159,6 +159,27 @@ export const updateActiveWorkspaceName =
   };
 
 export const updateActiveWorkspaceImage =
+  (formData: FormData): Thunk<string> =>
+  async (dispatch, getState) => {
+    try {
+      const state = getState();
+      const workspaceID = Session.activeWorkspaceIDSelector(state);
+
+      Errors.assertWorkspaceID(workspaceID);
+
+      const { image } = await client.identity.workspace.updateImage(workspaceID, formData);
+
+      await dispatch.sync(Realtime.workspace.updateImage({ workspaceID, image }));
+
+      return image;
+    } catch (err) {
+      openError({ error: 'Error updating workspace image' });
+
+      throw err;
+    }
+  };
+
+export const updateActiveWorkspaceImageLegacy =
   (url: string | null): Thunk =>
   async (dispatch, getState) => {
     try {

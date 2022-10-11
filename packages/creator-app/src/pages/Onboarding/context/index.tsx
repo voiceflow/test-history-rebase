@@ -14,6 +14,7 @@ import { IS_PRIVATE_CLOUD } from '@/config';
 import { Path } from '@/config/routes';
 import { getDefaultPlatformLanguageLabel } from '@/constants/platforms';
 import * as Account from '@/ducks/account';
+import * as Feature from '@/ducks/feature';
 import * as Project from '@/ducks/project';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
@@ -110,6 +111,7 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
   const firstLogin = useSelector(Account.isFirstLoginSelector);
   const currentWorkspaceID = useSelector(Session.activeWorkspaceIDSelector);
   const isLoggedIn = useSelector(Account.isLoggedInSelector);
+  const isIdentityWorkspaceEnabled = useSelector(Feature.isFeatureEnabledSelector)(Realtime.FeatureFlag.IDENTITY_WORKSPACE);
 
   const trackInviteSent = useDispatch(trackInvitationSent);
   const checkoutWorkspace = useDispatch(Workspace.checkout);
@@ -121,7 +123,7 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
   const goToDashboardWithSearch = useDispatch(Router.goToDashboardWithSearch);
   const setActiveWorkspace = useDispatch(Workspace.setActive);
   const updateWorkspaceName = useDispatch(Workspace.updateActiveWorkspaceName);
-  const updateWorkspaceImage = useDispatch(Workspace.updateActiveWorkspaceImage);
+  const updateWorkspaceImageLegacy = useDispatch(Workspace.updateActiveWorkspaceImageLegacy);
   const goToWorkspace = useDispatch(Router.goToWorkspace);
   const trackInvitationAccepted = useDispatch(Tracking.trackInvitationAccepted);
   const createProject = useDispatch(Project.createProject);
@@ -314,7 +316,11 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
         if (usedSignupCoupon) {
           [workspace] = workspaces;
           updateWorkspaceName(name);
-          updateWorkspaceImage(workspaceImage);
+
+          // eslint-disable-next-line max-depth
+          if (!isIdentityWorkspaceEnabled) {
+            updateWorkspaceImageLegacy(workspaceImage);
+          }
         } else {
           workspace = await createWorkspace({ name, image: workspaceImage || undefined });
         }

@@ -5,6 +5,16 @@ export class Workspace extends Resource {
     super({ ...options, path: '/workspace' });
   }
 
+  public async update(workspaceID: string, payload: { name: string }): Promise<void> {
+    await this.patch(`/${workspaceID}`, payload);
+  }
+
+  public async updateImage(workspaceID: string, payload: unknown): Promise<{ image: string }> {
+    const { data } = await this.put<{ image: string }>(`/${workspaceID}/image`, payload);
+
+    return data;
+  }
+
   public async remove(workspaceID: string): Promise<void> {
     await this.delete(`/${workspaceID}`);
   }

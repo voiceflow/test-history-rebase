@@ -44,7 +44,13 @@ class WorkspaceService extends AbstractControl {
   public async updateName(creatorID: number, workspaceID: string, name: string): Promise<void> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
-    await client.workspace.updateName(workspaceID, name);
+    const isIdentityWorkspaceEnabled = this.services.feature.isEnabled(Realtime.FeatureFlag.IDENTITY_WORKSPACE);
+
+    if (isIdentityWorkspaceEnabled) {
+      await client.identity.workspace.update(workspaceID, { name });
+    } else {
+      await client.workspace.updateName(workspaceID, name);
+    }
   }
 
   public async updateImage(creatorID: number, workspaceID: string, image: string): Promise<void> {

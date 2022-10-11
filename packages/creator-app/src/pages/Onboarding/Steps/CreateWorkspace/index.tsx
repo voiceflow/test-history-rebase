@@ -1,5 +1,11 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { ClickableText, FlexCenter, KeyName, toast, Upload, UploadIconVariant } from '@voiceflow/ui';
 import React from 'react';
+
+import * as Feature from '@/ducks/feature';
+import * as Workspace from '@/ducks/workspace';
+import { useDispatch, useSelector } from '@/hooks';
+import * as Sentry from '@/vendors/sentry';
 
 import ContinueButton from '../../components/ContinueButton';
 import { StepID } from '../../constants';
@@ -14,6 +20,9 @@ const CreateWorkspace: React.FC = () => {
   const [workspaceImage, setWorkspaceImage] = React.useState<string | null>(createWorkspaceMeta.workspaceImage);
   const canContinue = !!workspaceName.trim() && workspaceName.length <= 32;
   const iconUploadRef = React.useRef<HTMLDivElement>(null);
+
+  const isIdentityWorkspaceEnabled = useSelector(Feature.isFeatureEnabledSelector)(Realtime.FeatureFlag.IDENTITY_WORKSPACE);
+  const updateActiveWorkspaceImage = useDispatch(Workspace.updateActiveWorkspaceImage);
 
   const onBlur = () => {
     if (workspaceName.length > 32) {
@@ -38,15 +47,21 @@ const CreateWorkspace: React.FC = () => {
         <NameInput
           value={workspaceName}
           onBlur={onBlur}
-          onKeyPress={handleInputEnterPress}
-          onChange={(event) => setWorkspaceName(event.currentTarget.value)}
           autoFocus
+          onKeyPress={handleInputEnterPress}
           placeholder="Give your workspace a name"
+          onChangeText={setWorkspaceName}
         />
       </FlexCenter>
 
       <FlexCenter>
-        <Upload.IconUpload image={workspaceImage} update={setWorkspaceImage} size={UploadIconVariant.LARGE} ref={iconUploadRef} />
+        {state.usedSignupCoupon && isIdentityWorkspaceEnabled ? (
+          <Upload.Provider client={{ upload: (_endpoint, _fileType, formData) => updateActiveWorkspaceImage(formData) }} onError={Sentry.error}>
+            <Upload.IconUpload image={workspaceImage} update={setWorkspaceImage} size={UploadIconVariant.LARGE} ref={iconUploadRef} />
+          </Upload.Provider>
+        ) : (
+          <Upload.IconUpload image={workspaceImage} update={setWorkspaceImage} size={UploadIconVariant.LARGE} ref={iconUploadRef} />
+        )}
       </FlexCenter>
 
       <LabelContainer>

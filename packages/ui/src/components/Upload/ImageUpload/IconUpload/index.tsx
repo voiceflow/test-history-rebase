@@ -33,12 +33,12 @@ const MINIMUM_ICON_SIZE = 14;
 export interface IconUploadOwnProps {
   size?: UploadIconVariant;
   image?: string | null;
+  update?: (value: string | null) => void;
   isSquare?: boolean;
   disabled?: boolean;
   canRemove?: boolean;
   className?: string;
   acceptedFileTypes?: string[];
-  update: (value: string | null) => void;
 }
 
 export interface BaseIconUploadProps extends IconUploadOwnProps, Omit<ImageInjectedWithUploadProps, 'update'> {}
@@ -106,7 +106,7 @@ export const BaseIconUpload = React.forwardRef<HTMLDivElement, BaseIconUploadPro
           notAccepted={isDragReject}
         >
           {canRemove && image && (
-            <RemoveButton top={0} right={0} onClick={stopPropagation(() => update(''))}>
+            <RemoveButton top={0} right={0} onClick={stopPropagation(() => update?.(''))}>
               <SvgIcon size={8} icon="close" color="#8da2b5" />
             </RemoveButton>
           )}

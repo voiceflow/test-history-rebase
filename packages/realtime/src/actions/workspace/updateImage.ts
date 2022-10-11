@@ -8,6 +8,11 @@ class UpdateWorkspaceImage extends AbstractWorkspaceChannelControl<Realtime.work
   protected actionCreator = Realtime.workspace.updateImage;
 
   protected process = async (ctx: Context, { payload }: Action<Realtime.workspace.UpdateWorkspaceImagePayload>) => {
+    const isIdentityWorkspaceEnabled = this.services.feature.isEnabled(Realtime.FeatureFlag.IDENTITY_WORKSPACE);
+
+    // no need to update image if identity workspace is enabled, since it's updated in upload endpoint
+    if (isIdentityWorkspaceEnabled) return;
+
     await this.services.workspace.updateImage(ctx.data.creatorID, payload.workspaceID, payload.image);
   };
 }

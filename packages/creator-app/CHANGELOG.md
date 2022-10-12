@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.938.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.937.2...@voiceflow/creator-app@1.938.0) (2022-10-12)
+
+
+### Features
+
+* fetch user via identity (CT-1058) ([#6178](https://github.com/voiceflow/creator-app/issues/6178)) ([0174c10](https://github.com/voiceflow/creator-app/commit/0174c10ecb4fcc1fe438a66fbddf78112a0f3679))
+
+
+
+
+
 ## [1.937.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.937.1...@voiceflow/creator-app@1.937.2) (2022-10-12)
 
 **Note:** Version bump only for package @voiceflow/creator-app

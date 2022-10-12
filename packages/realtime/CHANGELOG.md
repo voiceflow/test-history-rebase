@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.114.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.113.0...@voiceflow/realtime@1.114.0) (2022-10-12)
+
+
+### Features
+
+* fetch user via identity (CT-1058) ([#6178](https://github.com/voiceflow/creator-app/issues/6178)) ([0174c10](https://github.com/voiceflow/creator-app/commit/0174c10ecb4fcc1fe438a66fbddf78112a0f3679))
+
+
+
+
+
 # [1.113.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.112.0...@voiceflow/realtime@1.113.0) (2022-10-12)
 
 

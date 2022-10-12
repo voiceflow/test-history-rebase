@@ -358,13 +358,13 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
       }
     });
 
-    const { role } = state.personalizeWorkspaceMeta;
-    const { email, name: userName } = account;
+    const { role, company } = state.personalizeWorkspaceMeta;
+    const { email } = account;
 
     if (isLoginFlow) {
       trackingEvents.trackOnboardingIdentify({
-        name: userName!,
         role,
+        company,
         email: email!,
         source: search.utm_source as Nullable<string>,
         medium: search.utm_medium as Nullable<string>,

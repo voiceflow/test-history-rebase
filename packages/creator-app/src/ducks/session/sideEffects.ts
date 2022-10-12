@@ -200,14 +200,14 @@ interface SignupPayload {
 }
 
 export const signup =
-  ({ email, query, coupon, password, lastName, firstName }: SignupPayload): Thunk<void> =>
+  ({ email, query, coupon, password, lastName, firstName }: SignupPayload): Thunk<{ creatorID: number; email: string }> =>
   async (dispatch, getState) => {
     const isIdentityUserEnabled = Feature.isFeatureEnabledSelector(getState())(Realtime.FeatureFlag.IDENTITY_USER);
 
     const userName = `${firstName} ${lastName}`.trim();
 
     if (isIdentityUserEnabled) {
-      await client.identity.user.create({
+      const user = await client.identity.user.create({
         user: { name: userName, email },
         password,
         metadata: {
@@ -219,11 +219,14 @@ export const signup =
 
       await dispatch(basicAuthLogin({ email, password }, { query, firstLogin: true }));
 
-      return;
+      return {
+        creatorID: user.id,
+        email: user.email,
+      };
     }
 
     try {
-      await dispatch(
+      const user = await dispatch(
         legacySignup(
           {
             name: userName,
@@ -237,6 +240,11 @@ export const signup =
           { query: { utm_last_name: lastName, utm_first_name: firstName } }
         )
       );
+
+      return {
+        creatorID: user.creator_id,
+        email: user.email,
+      };
     } catch (error) {
       throw new Error(error.body.data);
     }

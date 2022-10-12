@@ -8,13 +8,18 @@ import { SyncThunk } from '@/store/types';
 
 import { EventName, SourceType } from '../constants';
 
+export const identifySignup = (creatorID: number, firstName: string, lastName: string, email: string) => {
+  client.api.analytics.identify({
+    traits: { first_name: firstName, last_name: lastName, user_id: creatorID, email },
+  });
+};
+
 export const trackSessionBegin =
-  (workspaceIDs: string[] = [], email: Nullable<string>, roles: UserRole[], name: string) =>
+  (workspaceIDs: string[] = [], email: Nullable<string>, roles: UserRole[]) =>
   () => {
     client.api.analytics.track(EventName.SESSION_BEGIN);
-    // Passing full name as the last name for now, as per Frank's instruction, we will fix this post feature freeze 2022
     client.api.analytics.identify({
-      traits: { workspace_id: workspaceIDs, team_role: roles, email, last_name: name },
+      traits: { workspace_id: workspaceIDs, team_role: roles, email },
       teamhashed: ['workspace_id'],
     });
   };

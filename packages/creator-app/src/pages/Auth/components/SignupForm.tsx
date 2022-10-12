@@ -17,7 +17,7 @@ import { wordmarkLight } from '@/assets';
 import client from '@/client';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
-import { useDispatch } from '@/hooks';
+import { useDispatch, useTrackingEvents } from '@/hooks';
 import { Query } from '@/models';
 import * as QueryUtil from '@/utils/query';
 import * as GoogleAnalytics from '@/vendors/googleAnalytics';
@@ -40,6 +40,8 @@ export interface SignupFormProps {
 }
 
 export const SignupForm: React.FC<SignupFormProps> = ({ promo, query }) => {
+  const [trackingEvents] = useTrackingEvents();
+
   const signup = useDispatch(Session.signup);
   const goToLogin = useDispatch(Router.goToLogin);
 
@@ -97,7 +99,8 @@ export const SignupForm: React.FC<SignupFormProps> = ({ promo, query }) => {
       if (samlDomain) {
         setSsoRequired(true);
       } else {
-        await signup({ email, query, coupon, password, lastName, firstName });
+        const user = await signup({ email, query, coupon, password, lastName, firstName });
+        trackingEvents.identifySignup(user.creatorID, firstName, lastName, user.email);
       }
     } catch (error) {
       const message = error?.message;

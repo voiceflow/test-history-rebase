@@ -41,15 +41,15 @@ export const trackOnboardingComplete =
 
 export const trackOnboardingIdentify =
   ({
-    name,
     role,
     email,
     source,
     medium,
     campaign,
     content,
+    company,
   }: {
-    name: string;
+    company: string;
     role: string;
     email: string;
     source: string | null;
@@ -58,16 +58,15 @@ export const trackOnboardingIdentify =
     content: string | null;
   }) =>
   () => {
-    // We are just sending last_name as the full name until we refactor the db to persist both first and last name
     client.api.analytics.identify({
       traits: {
-        last_name: name,
         role,
         email,
         source,
         medium,
         campaign,
         content,
+        company,
       },
     });
   };

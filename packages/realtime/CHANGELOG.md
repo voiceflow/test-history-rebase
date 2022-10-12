@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.113.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.112.0...@voiceflow/realtime@1.113.0) (2022-10-12)
+
+
+### Features
+
+* identity remove user from workspace (CT-1067) ([#6180](https://github.com/voiceflow/creator-app/issues/6180)) ([09e4e95](https://github.com/voiceflow/creator-app/commit/09e4e95fa13badbc9ab10ba30ef32df4e8f1aeda))
+
+
+
+
+
 # [1.112.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.111.1...@voiceflow/realtime@1.112.0) (2022-10-11)
 
 

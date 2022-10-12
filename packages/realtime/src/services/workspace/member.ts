@@ -17,15 +17,29 @@ class WorkspaceMemberService extends AbstractControl {
   }
 
   public async remove(creatorID: number, workspaceID: string, memberCreatorID: number): Promise<void> {
-    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+    const [client, identityWorkspaceMemberEnabled] = await Promise.all([
+      this.services.voiceflow.getClientByUserID(creatorID),
+      this.services.workspace.isFeatureEnabled(creatorID, workspaceID, Realtime.FeatureFlag.IDENTITY_WORKSPACE_MEMBER),
+    ]);
 
-    await client.workspace.removeMember(workspaceID, memberCreatorID);
+    if (identityWorkspaceMemberEnabled) {
+      await client.identity.workspaceMember.remove(workspaceID, memberCreatorID);
+    } else {
+      await client.workspace.removeMember(workspaceID, memberCreatorID);
+    }
   }
 
   public async removeSelf(creatorID: number, workspaceID: string): Promise<void> {
-    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+    const [client, identityWorkspaceMemberEnabled] = await Promise.all([
+      this.services.voiceflow.getClientByUserID(creatorID),
+      this.services.workspace.isFeatureEnabled(creatorID, workspaceID, Realtime.FeatureFlag.IDENTITY_WORKSPACE_MEMBER),
+    ]);
 
-    await client.workspace.removeSelf(workspaceID);
+    if (identityWorkspaceMemberEnabled) {
+      await client.identity.workspaceMember.removeSelf(workspaceID);
+    } else {
+      await client.workspace.removeSelf(workspaceID);
+    }
   }
 
   public async sendInvite(creatorID: number, workspaceID: string, email: string, role?: UserRole): Promise<Realtime.DBMember | null> {

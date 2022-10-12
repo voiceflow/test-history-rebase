@@ -60,8 +60,10 @@ class WorkspaceService extends AbstractControl {
   }
 
   public async delete(creatorID: number, workspaceID: string): Promise<void> {
-    const client = await this.services.voiceflow.getClientByUserID(creatorID);
-    const identityWorkspaceEnabled = await this.services.workspace.isFeatureEnabled(creatorID, workspaceID, Realtime.FeatureFlag.IDENTITY_WORKSPACE);
+    const [client, identityWorkspaceEnabled] = await Promise.all([
+      this.services.voiceflow.getClientByUserID(creatorID),
+      this.services.workspace.isFeatureEnabled(creatorID, workspaceID, Realtime.FeatureFlag.IDENTITY_WORKSPACE),
+    ]);
 
     if (identityWorkspaceEnabled) {
       const projectIDs = await this.models.project.getIDsByWorkspaceID(workspaceID);

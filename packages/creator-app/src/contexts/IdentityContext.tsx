@@ -3,13 +3,14 @@ import { PlanType, UserRole } from '@voiceflow/internal';
 import { useContextApi } from '@voiceflow/ui';
 import React from 'react';
 
+import { VirtualRole } from '@/config/permissions';
 import * as UI from '@/ducks/ui';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useSelector } from '@/hooks/redux';
 
 export interface IdentityContextValue {
   activePlan: Nullish<PlanType>;
-  activeRole: Nullish<UserRole>;
+  activeRole: Nullish<UserRole | VirtualRole>;
   organizationTrialExpired: Nullish<boolean>;
 }
 
@@ -22,7 +23,7 @@ export const IdentityProvider: React.FC = ({ children }) => {
 
   const isPreviewing = useSelector(UI.isPreviewingVersion);
 
-  const api = useContextApi({ activePlan, activeRole: isPreviewing ? UserRole.PREVIEWER : activeRole, organizationTrialExpired });
+  const api = useContextApi({ activePlan, activeRole: isPreviewing ? VirtualRole.PREVIEWER : activeRole, organizationTrialExpired });
 
   return <IdentityContext.Provider value={api}>{children}</IdentityContext.Provider>;
 };

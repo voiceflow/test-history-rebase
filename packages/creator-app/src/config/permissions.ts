@@ -1,5 +1,14 @@
 import { PlanType, UserRole } from '@voiceflow/internal';
 
+/**
+ * These roles are applied to contexts within the app that need to act as
+ * someone other than the primary authenticated user
+ */
+export enum VirtualRole {
+  GUEST = 'guest', // for "side-apps" like Prototype Share that do not require login
+  PREVIEWER = 'previewer', // for previewing old versions
+}
+
 export enum Permission {
   // organization
   CONFIGURE_ORGANIZATION = 'organization.CONFIGURE',
@@ -81,12 +90,12 @@ export enum Permission {
   API_KEY_VIEW = 'api_key.VIEW',
 }
 
-const ALL_USER_ROLES = [UserRole.ADMIN, UserRole.EDITOR, UserRole.VIEWER, UserRole.OWNER, UserRole.BILLING, UserRole.GUEST];
+const ALL_USER_ROLES = [UserRole.ADMIN, UserRole.EDITOR, UserRole.VIEWER, UserRole.OWNER, UserRole.BILLING, VirtualRole.GUEST];
 const SIGNED_USER_ROLES = [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER, UserRole.VIEWER, UserRole.BILLING];
 const EDITOR_USER_ROLES = [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER];
 const EDITOR_AND_BILLING_USER_ROLES = [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER, UserRole.BILLING];
 
-export const ROLE_PERMISSIONS: Partial<Record<Permission, UserRole[]>> = {
+export const ROLE_PERMISSIONS: Partial<Record<Permission, Array<UserRole | VirtualRole>>> = {
   [Permission.CONFIGURE_ORGANIZATION]: [UserRole.ADMIN],
 
   [Permission.ADD_COLLABORATORS]: EDITOR_AND_BILLING_USER_ROLES,
@@ -194,13 +203,13 @@ export const TRIAL_EXPIRED_NOT_ALLOWED_PERMISSIONS = [
 export const hasOrganizationTrialPermission = (permission: Permission, trialExpired: boolean) =>
   !trialExpired || !TRIAL_EXPIRED_NOT_ALLOWED_PERMISSIONS.includes(permission);
 
-export const hasRolePermission = (permission: Permission, role: UserRole) =>
+export const hasRolePermission = (permission: Permission, role: UserRole | VirtualRole) =>
   !ROLE_PERMISSIONS[permission] || ROLE_PERMISSIONS[permission]!.includes(role);
 
 export const hasPlanPermission = (permission: Permission, plan: PlanType) =>
   !PLAN_PERMISSIONS[permission] || PLAN_PERMISSIONS[permission]!.includes(plan);
 
-export const hasPermission = (permission: Permission, role: UserRole, plan: PlanType, orgTrialExpired?: boolean | null) => {
+export const hasPermission = (permission: Permission, role: UserRole | VirtualRole, plan: PlanType, orgTrialExpired?: boolean | null) => {
   const roleAllowed = hasRolePermission(permission, role);
   const planAllowed = hasPlanPermission(permission, plan);
   const trialAllowed = orgTrialExpired ? hasOrganizationTrialPermission(permission, orgTrialExpired) : true;

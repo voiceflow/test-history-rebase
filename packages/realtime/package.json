@@ -13,7 +13,7 @@
     "@voiceflow/common": "8.1.5",
     "@voiceflow/google-dfes-types": "2.14.1",
     "@voiceflow/google-types": "2.17.1",
-    "@voiceflow/internal": "2.3.1",
+    "@voiceflow/internal": "3.0.0",
     "@voiceflow/logger": "1.6.1",
     "@voiceflow/metrics": "1.4.1",
     "@voiceflow/realtime-sdk": "^1.171.0",

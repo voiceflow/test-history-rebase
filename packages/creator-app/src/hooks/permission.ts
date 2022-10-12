@@ -1,7 +1,7 @@
 import { PlanType, UserRole } from '@voiceflow/internal';
 import React from 'react';
 
-import { hasPermission, Permission } from '@/config/permissions';
+import { hasPermission, Permission, VirtualRole } from '@/config/permissions';
 import { IdentityContext, IdentityContextValue } from '@/contexts/IdentityContext';
 
 const checkPermission = (identity: IdentityContextValue, permission?: Permission) =>
@@ -35,7 +35,7 @@ export const useHasPermissions = (): ((permissions?: Permission[]) => boolean) =
 };
 
 export const useGuestPermission = (activePlan: PlanType, permission: Permission): [boolean] => {
-  const isAllowed = !!(activePlan && hasPermission(permission, UserRole.GUEST, activePlan));
+  const isAllowed = !!(activePlan && hasPermission(permission, VirtualRole.GUEST, activePlan));
 
   return [isAllowed];
 };

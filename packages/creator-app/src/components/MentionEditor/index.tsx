@@ -1,4 +1,4 @@
-import { NonNullishRecord, Utils } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 import { Mention, MentionsInput, MentionsInputProps, OnChangeHandlerFunc, SuggestionDataItem } from 'react-mentions';
@@ -15,9 +15,8 @@ import { formatNameToMention } from './utils';
 
 export { MentionPreview };
 
-const activeWorkspaceCommentingMembersSelector = createSelector(
-  [WorkspaceV2.active.membersSelector],
-  (members) => members.filter((member) => member.name && hasRolePermission(Permission.COMMENTING, member.role)) as NonNullishRecord<Realtime.Member>[]
+const activeWorkspaceCommentingMembersSelector = createSelector([WorkspaceV2.active.membersSelector], (members) =>
+  members.filter((member): member is Realtime.Member => !!member.name && hasRolePermission(Permission.COMMENTING, member.role))
 );
 
 export interface MentionEditorProps {

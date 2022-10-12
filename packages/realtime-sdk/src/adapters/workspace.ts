@@ -1,4 +1,4 @@
-import { DBMember, DBWorkspace, Workspace, WorkspaceActivationState } from '@realtime-sdk/models';
+import { DBWorkspace, Member, PendingMember, Workspace, WorkspaceActivationState } from '@realtime-sdk/models';
 import { createMultiAdapter, notImplementedAdapter } from 'bidirectional-adapter';
 
 import memberAdapter from './member';
@@ -62,7 +62,7 @@ export default {
 };
 
 export const workspaceWithMembersAdapter = {
-  ...createMultiAdapter<{ workspace: DBWorkspace; members: DBMember[] }, Workspace>(
+  ...createMultiAdapter<{ workspace: DBWorkspace; members: Array<Member | PendingMember> }, Workspace>(
     ({ workspace, members }) => ({ ...workspaceAdapter.fromDB(workspace), members: memberAdapter.mapFromDB(members) }),
     notImplementedAdapter.transformer
   ),

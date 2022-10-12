@@ -129,10 +129,8 @@ export const deleteMemberOfActiveWorkspace =
     }
   };
 
-const isVerifiedMember = (member: Realtime.Member): member is Realtime.Member & { creator_id: number } => !!member.creator_id;
-
 export const updateActiveWorkspaceMemberRole =
-  (member: Realtime.Member, role: UserRole): Thunk =>
+  (member: Realtime.Member | Realtime.PendingMember, role: UserRole): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
 
@@ -154,7 +152,7 @@ export const updateActiveWorkspaceMemberRole =
       return;
     }
 
-    if (isVerifiedMember(member)) {
+    if (member.creator_id) {
       await dispatch(updateMemberOfActiveWorkspace(member.creator_id, role));
     } else {
       await dispatch(updateInviteToActiveWorkspace(member.email, role));

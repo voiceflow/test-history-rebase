@@ -25,5 +25,5 @@ export const extractErrorFromResponseData = (
   defaultMessage: string
 ): string => err?.response?.data || err?.body?.data || (err && JSON.stringify(err)) || defaultMessage;
 
-export const extractMemberById = <T extends { creator_id: number }>(members: T[], creatorID: number): T | null =>
-  members?.find((member) => member.creator_id === creatorID) ?? null;
+export const extractMemberById = <T extends { creator_id: number | null }>(members: T[], creatorID: number): T | null =>
+  members.find((member) => member.creator_id === creatorID) ?? null;

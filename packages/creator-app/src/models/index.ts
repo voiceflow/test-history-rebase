@@ -3,6 +3,7 @@ export * from './APIKey';
 export * from './Billing';
 export * from './Display';
 export * from './Job';
+export * from './LockOwner';
 export * from './Project';
 export * from './ProjectAPIKey';
 export * from './Prototype';

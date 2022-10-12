@@ -19,7 +19,7 @@ export const Container = styled(FlexApart)<{ isLast?: boolean }>`
     `}
 `;
 
-export const UserIcon = styled(User)<{ pending?: boolean }>`
+export const UserIcon = styled(User)`
   display: flex;
   align-items: center;
   justify-content: center;

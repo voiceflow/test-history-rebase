@@ -52,7 +52,7 @@ export const usedViewerSeatsSelector = createSelector(
 
 export const memberByIDSelector = createSelector(
   [membersSelector, creatorIDParamSelector],
-  (members, creatorID) => members.find((member) => member.creator_id === creatorID) || null
+  (members, creatorID) => members.find((member): member is Realtime.Member => member.creator_id === creatorID) || null
 );
 
 export const getMemberByIDSelector = createCurriedSelector(memberByIDSelector);
@@ -61,6 +61,7 @@ export const getDistinctWorkspaceMemberByCreatorIDSelector = createSelector(
   [getMemberByIDSelector],
   (getWorkspaceMember) => (creatorID: number, nodeID: string) => {
     const workspaceMember = getWorkspaceMember({ creatorID });
+
     return workspaceMember ? { ...workspaceMember, color: getAlternativeColor(nodeID) } : null;
   }
 );

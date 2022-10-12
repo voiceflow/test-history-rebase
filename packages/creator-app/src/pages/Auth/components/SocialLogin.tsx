@@ -36,7 +36,7 @@ const SocialLogin: React.FC<SocialLoginProps & ConnectedSocialLoginProps> = ({
     let user: Account | undefined;
 
     try {
-      await googleLogin({
+      user = await googleLogin({
         name: userProfile.profileObj.name,
         email: userProfile.profileObj.email,
         googleId: userProfile.profileObj.googleId,
@@ -57,7 +57,7 @@ const SocialLogin: React.FC<SocialLoginProps & ConnectedSocialLoginProps> = ({
     let user: Account | undefined;
 
     try {
-      await facebookLogin({
+      user = await facebookLogin({
         name: fbUser.name,
         email: fbUser.email,
         fbId: fbUser.id,

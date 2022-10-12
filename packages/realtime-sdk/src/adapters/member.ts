@@ -1,20 +1,16 @@
-import { DBMember } from '@realtime-sdk/models';
+import { Member, PendingMember } from '@realtime-sdk/models';
 import { createMultiAdapter } from 'bidirectional-adapter';
 
-const memberAdapter = createMultiAdapter<DBMember, DBMember>(
-  ({ creator_id, created, email, image, name, status, seats, role }) => ({
-    creator_id,
-    created,
+const memberAdapter = createMultiAdapter<Member | PendingMember, Member | PendingMember>(
+  ({ creator_id, created, email, image, name, role }) => ({
+    role,
+    name,
     email,
     image,
-    name,
-    status,
-    seats,
-    role,
+    created,
+    creator_id,
   }),
-  (data) => ({
-    ...data,
-  })
+  (data) => data
 );
 
 export default memberAdapter;

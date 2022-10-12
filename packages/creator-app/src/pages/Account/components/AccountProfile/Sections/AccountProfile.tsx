@@ -20,9 +20,6 @@ const AccountProfile: React.FC = () => {
   const accountEmailModal = ModalsV2.useModal(ModalsV2.Account.Email);
   const accountPasswordModal = ModalsV2.useModal(ModalsV2.Account.Password);
 
-  const { gid, okta_id, fid, saml_provider_id } = user;
-  const isNotSSOUser = !gid && !okta_id && !fid && !saml_provider_id;
-
   return (
     <>
       <Section
@@ -59,7 +56,7 @@ const AccountProfile: React.FC = () => {
         </Box.Flex>
       </Section>
 
-      {isNotSSOUser && (
+      {!user.isSSO && (
         <Section customContentStyling={sectionStyling} variant={SectionVariant.QUATERNARY} header="Password">
           <DescriptorContainer style={{ margin: 0 }}>
             <Link onClick={() => accountPasswordModal.openVoid()}>Change Password</Link>

@@ -13,23 +13,19 @@ export * from './sideEffects';
 export * from './types';
 
 export const INITIAL_STATE: AccountState = {
-  loading: false,
-  first_login: false,
-  email: null,
   name: null,
-  creator_id: null,
-  admin: 0,
+  email: null,
+  isSSO: false,
   image: null,
   amazon: null,
   google: null,
-  created: null,
+  created: '',
+  loading: false,
   verified: false,
+  creator_id: null,
+  first_login: false,
   referrer_id: null,
   referral_code: null,
-  gid: null,
-  fid: null,
-  okta_id: null,
-  saml_provider_id: null,
 };
 
 // reducers

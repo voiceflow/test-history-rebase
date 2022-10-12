@@ -28,9 +28,9 @@ const Client = ({ api }: ExtraOptions) => ({
 
   // members
 
-  listMembers: (workspaceID: string) => api.get<Realtime.DBMember[]>(`/workspaces/${workspaceID}/members`).then((res) => res.data),
+  listMembers: (workspaceID: string) => api.get<Realtime.Member[]>(`/workspaces/${workspaceID}/members`).then((res) => res.data),
 
-  patchMember: (workspaceID: string, memberCreatorID: number, data: Pick<Realtime.DBMember, 'role'>): Promise<void> =>
+  patchMember: (workspaceID: string, memberCreatorID: number, data: Pick<Realtime.Member, 'role'>): Promise<void> =>
     api.patch(`/workspaces/${workspaceID}/members/${memberCreatorID}`, data),
 
   removeMember: (workspaceID: string, memberCreatorID: number): Promise<void> => api.delete(`/workspaces/${workspaceID}/members/${memberCreatorID}`),
@@ -38,7 +38,7 @@ const Client = ({ api }: ExtraOptions) => ({
   removeSelf: (workspaceID: string): Promise<void> => api.delete(`/workspaces/${workspaceID}/members/self`),
 
   sendInvite: (workspaceID: string, email: string, role?: UserRole) =>
-    api.post<Realtime.DBMember | undefined>(`/workspaces/${workspaceID}/invite`, { email, role }).then((res) => res.data ?? null),
+    api.post<Realtime.Member | undefined>(`/workspaces/${workspaceID}/invite`, { email, role }).then((res) => res.data ?? null),
 
   acceptInvite: (invite: string) => api.post<string>(`/workspaces/invite/${invite}`).then((res) => res.data),
 

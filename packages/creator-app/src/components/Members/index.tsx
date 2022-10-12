@@ -2,21 +2,18 @@ import { Flex, SvgIcon, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import User, { UserProps } from '@/components/User';
-import { LockOwner } from '@/models';
 import { Identifier } from '@/styles/constants';
 
 import { AddMemberIcon, MembersContainer, MembersWrapper } from './components';
 
 export * from './components';
 
-type PartialLockOwner = UserProps['user'] & Pick<LockOwner, 'creator_id' | 'tabID'>;
-
 export interface MembersProps {
   min?: number;
   max?: number;
   flat?: boolean;
   onAdd?: () => void;
-  members: PartialLockOwner[];
+  members: NonNullable<UserProps['user']>[];
 }
 
 const Members: React.FC<MembersProps> = ({ min = 0, max = 8, flat, onAdd, members }) => {
@@ -32,7 +29,13 @@ const Members: React.FC<MembersProps> = ({ min = 0, max = 8, flat, onAdd, member
     <MembersContainer>
       <MembersWrapper>
         {renderMembers.map((member, index) => (
-          <TippyTooltip style={{ zIndex: max - index }} key={member.tabID || member.creator_id} title={member.name} position="bottom">
+          <TippyTooltip
+            key={member.creator_id || index}
+            style={{ zIndex: max - index }}
+            title={member.name ?? ''}
+            position="bottom"
+            disabled={!member.creator_id}
+          >
             <User flat={flat} user={member} />
           </TippyTooltip>
         ))}
@@ -51,8 +54,8 @@ const Members: React.FC<MembersProps> = ({ min = 0, max = 8, flat, onAdd, member
           <TippyTooltip
             html={
               <>
-                {hiddenMembers.map((member) => (
-                  <React.Fragment key={member.tabID || member.creator_id}>
+                {hiddenMembers.map((member, index) => (
+                  <React.Fragment key={member.creator_id || index}>
                     {member.name}
                     <br />
                   </React.Fragment>

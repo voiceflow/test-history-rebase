@@ -5,7 +5,6 @@ export interface Account {
   name: string;
   creator_id: number;
   image?: string;
-  password?: string;
   created: string;
   first_login?: boolean;
   referrer_id?: number;
@@ -15,11 +14,6 @@ export interface Account {
   okta_id?: string;
   saml_provider_id?: string;
 }
-
-export type LockOwner = Account & {
-  color?: string;
-  tabID?: string;
-};
 
 export namespace Account {
   export interface Amazon {

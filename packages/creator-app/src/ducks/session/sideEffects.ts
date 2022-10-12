@@ -59,13 +59,11 @@ export const logout = (): Thunk => async (dispatch, getState) => {
 };
 
 export const identifyUser =
-  (user: Models.Account): Thunk =>
+  (user: { name: string; email: string; creatorID: number; createdAt: string }): Thunk =>
   async () => {
-    // eslint-disable-next-line camelcase
-    const { creator_id, ...userWithoutID } = user;
-    const externalID = generateID(creator_id);
+    const externalID = generateID(user.creatorID);
 
-    Vendors.LogRocket.identify(externalID, userWithoutID);
+    Vendors.LogRocket.identify(externalID, user);
     Support.identify(user);
     Userflow.identify(externalID, user);
   };
@@ -74,13 +72,28 @@ export const restoreSession = (): Thunk => async (dispatch, getState) => {
   try {
     const state = getState();
     const token = authTokenSelector(state);
-    const user = await client.user.get();
+    const isIdentityUserEnabled = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.IDENTITY_USER);
 
     if (!token) throw new Error('no auth token set');
 
-    dispatch(updateAccount(user));
+    if (isIdentityUserEnabled) {
+      // using client.user.get() for now to get SSO related fields
+      const [user, { gid, fid, okta_id, saml_provider_id }] = await Promise.all([client.identity.user.getOwn(), client.user.get()]);
 
-    await dispatch(identifyUser(user));
+      const isSSO = Boolean(gid || fid || okta_id || saml_provider_id);
+
+      dispatch(updateAccount({ ...user, isSSO, verified: user.emailVerified, creator_id: user.id }));
+
+      await dispatch(identifyUser({ ...user, creatorID: user.id }));
+    } else {
+      const { gid, fid, okta_id, saml_provider_id, ...user } = await client.user.get();
+
+      const isSSO = Boolean(gid || fid || okta_id || saml_provider_id);
+
+      dispatch(updateAccount({ ...user, isSSO }));
+
+      await dispatch(identifyUser({ ...user, createdAt: user.created, creatorID: user.creator_id }));
+    }
 
     const location = locationSelector(state);
     const search = QueryUtil.parse(location.search);
@@ -129,7 +142,7 @@ const setSession =
       dispatch(goToOnboarding());
     }
 
-    await dispatch(identifyUser(user));
+    await dispatch(identifyUser({ ...user, createdAt: user.created, creatorID: user.creator_id }));
   };
 
 export const ssoLogin =

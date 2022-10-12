@@ -6,24 +6,16 @@ export interface Board {
   projects: string[];
 }
 
-export interface Member {
+export interface PendingMember {
   creator_id: number | null;
-  seats: number;
   name: string | null;
-  email: string;
   role: UserRole;
+  email: string;
   image: string | null;
   created: string;
-  /**
-   * don't see these two properties being used
-   * it would be great if we have invite property boolean enabled
-   * to indicate user is invited but has not yet accepted
-   */
-  status: unknown;
-  invite?: string;
 }
 
-export interface DBMember extends Member {
+export interface Member extends PendingMember {
   creator_id: number;
   name: string;
   image: string;
@@ -41,21 +33,21 @@ export type WorkspaceActivationState = 'LOCKED' | 'WARNING';
 export interface Workspace {
   id: string;
   name: string;
+  plan: PlanType | null;
+  seats: number;
+  state: WorkspaceActivationState | null;
+  image: string;
   boards: Board[];
+  members: Array<PendingMember | Member>;
   created: string;
-  seatLimits: SeatLimits;
+  projects: number;
+  betaFlag: number;
   creatorID: number;
   hasSource: boolean;
-  image: string;
-  projects: number;
-  seats: number;
-  plan: PlanType | null;
-  members: DBMember[];
-  state: WorkspaceActivationState | null;
-  betaFlag: number;
+  seatLimits: SeatLimits;
   organizationID: string | null;
-  organizationTrialDaysLeft: number | null;
   variableStatesLimit: number | null;
+  organizationTrialDaysLeft: number | null;
 }
 
 export interface DBWorkspace {
@@ -73,7 +65,7 @@ export interface DBWorkspace {
   projects: number;
   seats: number;
   plan: PlanType | null;
-  members: DBMember[];
+  members: Array<PendingMember | Member>;
   beta_flag: number;
   variableStatesLimit: number | null;
 }

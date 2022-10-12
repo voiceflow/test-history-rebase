@@ -10,7 +10,7 @@ import MemberRow from './components/MemberRow';
 
 interface MemberSectionProps {
   inline?: boolean;
-  members: Realtime.DBMember[];
+  members: Array<Realtime.Member | Realtime.PendingMember>;
   resendInvite: (email: string, permissionType: UserRole | null, showToast?: boolean | undefined) => Promise<void>;
 }
 
@@ -20,14 +20,7 @@ const MemberSection: React.FC<MemberSectionProps> = ({ inline, members, resendIn
   return (
     <Wrapper id={Identifier.MEMBERS_CONTAINER}>
       {members.map((member, index) => (
-        <MemberRow
-          key={member.email}
-          inline={inline}
-          member={member}
-          pending={!member.creator_id}
-          isLast={index === members.length - 1}
-          resendInvite={resendInvite}
-        />
+        <MemberRow key={member.email} inline={inline} member={member} isLast={index === members.length - 1} resendInvite={resendInvite} />
       ))}
     </Wrapper>
   );

@@ -17,10 +17,12 @@ class RemoveWorkspace extends AbstractWorkspaceChannelControl<RemoveWorkspacePay
     await this.services.workspace.delete(creatorID, payload.key);
 
     await Promise.all(
-      workspace.members.map((member) =>
-        this.server.process(
-          Realtime.workspace.member.eject({ removed: true, workspaceID: payload.key, workspaceName: workspace.name, creatorID: member.creator_id })
-        )
+      workspace.members.map(
+        (member) =>
+          member.creator_id &&
+          this.server.process(
+            Realtime.workspace.member.eject({ removed: true, workspaceID: payload.key, workspaceName: workspace.name, creatorID: member.creator_id })
+          )
       )
     );
   };

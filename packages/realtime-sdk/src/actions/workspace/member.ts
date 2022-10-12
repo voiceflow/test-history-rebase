@@ -1,5 +1,5 @@
 import { INVITE_KEY, MEMBER_KEY } from '@realtime-sdk/constants';
-import { DBMember } from '@realtime-sdk/models';
+import { Member, PendingMember } from '@realtime-sdk/models';
 import { BaseCreatorPayload, BaseWorkspacePayload } from '@realtime-sdk/types';
 import { Utils } from '@voiceflow/common';
 import { UserRole } from '@voiceflow/internal';
@@ -14,15 +14,15 @@ export interface BaseMemberPayload extends BaseWorkspacePayload {
 }
 
 export interface AddMemberPayload extends BaseMemberPayload {
-  member: DBMember;
+  member: Member | PendingMember;
 }
 
 export interface PatchMemberPayload extends BaseMemberPayload {
-  member: Pick<DBMember, 'role'>;
+  member: Pick<Member | PendingMember, 'role'>;
 }
 
 export interface ReplaceMembersPayload extends BaseWorkspacePayload {
-  members: DBMember[];
+  members: Array<Member | PendingMember>;
 }
 
 export interface EjectPayload extends BaseMemberPayload {
@@ -60,7 +60,7 @@ export interface UpdateInvitePayload extends BaseInvitePayload {
 
 export const acceptInvite = Utils.protocol.createAsyncAction<AcceptInvitePayload, string>(inviteType('ACCEPT'));
 
-export const sendInvite = Utils.protocol.createAsyncAction<SendInvitePayload, DBMember | null>(inviteType('SEND'));
+export const sendInvite = Utils.protocol.createAsyncAction<SendInvitePayload, Member | null>(inviteType('SEND'));
 
 export const updateInvite = Utils.protocol.createAction<UpdateInvitePayload>(inviteType('UPDATE'));
 

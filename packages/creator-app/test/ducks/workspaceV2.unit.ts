@@ -47,10 +47,8 @@ const WORKSPACE: Realtime.Workspace = {
       image: 'http://example.com/avatar.png',
       creator_id: 1000,
       role: UserRole.VIEWER,
-      seats: 3,
       email: 'viewer@voiceflow.com',
       created: '',
-      status: null,
     },
   ],
 };

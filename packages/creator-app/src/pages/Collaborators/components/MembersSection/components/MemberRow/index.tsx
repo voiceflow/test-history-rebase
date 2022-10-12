@@ -1,6 +1,6 @@
 import { UserRole } from '@voiceflow/internal';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, BoxFlex, Menu, OverflowTippyTooltip } from '@voiceflow/ui';
+import { Box, Menu, OverflowTippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Account from '@/ducks/account';
@@ -37,14 +37,13 @@ const getRoleVerb = (role: UserRole) => {
 };
 
 interface MemberRowProps {
-  member: Realtime.DBMember;
+  member: Realtime.Member | Realtime.PendingMember;
   inline?: boolean;
   isLast?: boolean;
-  pending: boolean;
   resendInvite: (email: string, permissionType: UserRole | null, showToast?: boolean | undefined) => Promise<void>;
 }
 
-const MemberRow: React.FC<MemberRowProps> = ({ member, inline, pending, resendInvite, isLast }) => {
+const MemberRow: React.FC<MemberRowProps> = ({ member, inline, resendInvite, isLast }) => {
   const ownerRole = useFeature(Realtime.FeatureFlag.OWNER_ROLE);
 
   // TODO: refactor this to use the permission system
@@ -56,6 +55,7 @@ const MemberRow: React.FC<MemberRowProps> = ({ member, inline, pending, resendIn
   const cancelInvite = useDispatch(Workspace.cancelInviteToActiveWorkspace);
   const updateMemberRole = useDispatch(Workspace.updateActiveWorkspaceMemberRole);
 
+  const isPending = !member.creator_id;
   const userIsMember = userID === member.creator_id;
   const memberIsWorkspaceOwner = activeWorkspace?.creatorID === member.creator_id;
   const allowDropdown =
@@ -64,32 +64,31 @@ const MemberRow: React.FC<MemberRowProps> = ({ member, inline, pending, resendIn
   const changePermission = (role: UserRole) => updateMemberRole(member, role);
 
   const remove = () => {
-    if (pending) {
+    if (!member.creator_id) {
       cancelInvite(member.email);
-      return;
+    } else {
+      deleteMember(member.creator_id);
     }
-
-    deleteMember(member.creator_id);
   };
 
   // eslint-disable-next-line xss/no-mixed-html
   return (
     <Container className={ClassName.COLLABORATOR_LINE_ITEM} isLast={isLast} data-email={member.email}>
-      <BoxFlex flex={1} paddingY={4} overflowX="hidden">
-        <UserIcon large pending={pending} user={member} />
+      <Box.Flex flex={1} paddingY={4} overflowX="hidden">
+        <UserIcon large user={member} />
 
         <Box flex={1} overflowX="hidden">
-          {!pending && <MemberName>{member.name}</MemberName>}
+          {!isPending && <MemberName>{member.name}</MemberName>}
 
           <OverflowTippyTooltip<HTMLDivElement> style={{ display: 'block' }} title={member.email}>
             {(ref) => (
-              <MemberEmail ref={ref} pending={pending}>
+              <MemberEmail ref={ref} pending={isPending}>
                 {member.email}
               </MemberEmail>
             )}
           </OverflowTippyTooltip>
         </Box>
-      </BoxFlex>
+      </Box.Flex>
 
       <PermissionDropdown
         placement={inline ? 'bottom-end' : 'bottom-start'}
@@ -122,8 +121,8 @@ const MemberRow: React.FC<MemberRowProps> = ({ member, inline, pending, resendIn
             )}
             <DropdownItem divider />
 
-            {pending && <DropdownItem onClick={() => resendInvite(member.email, null)}>Resend Invite</DropdownItem>}
-            <DropdownItem onClick={remove}>{pending ? 'Cancel Invite' : 'Remove Access'}</DropdownItem>
+            {isPending && <DropdownItem onClick={() => resendInvite(member.email, null)}>Resend Invite</DropdownItem>}
+            <DropdownItem onClick={remove}>{isPending ? 'Cancel Invite' : 'Remove Access'}</DropdownItem>
           </Menu>
         }
       >

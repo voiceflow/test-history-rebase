@@ -4,13 +4,13 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { AbstractControl } from '../../control';
 
 class WorkspaceMemberService extends AbstractControl {
-  public async getAll(creatorID: number, workspaceID: string): Promise<Realtime.DBMember[]> {
+  public async getAll(creatorID: number, workspaceID: string): Promise<Realtime.Member[]> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
     return client.workspace.listMembers(workspaceID);
   }
 
-  public async patch(creatorID: number, workspaceID: string, memberCreatorID: number, { role }: Pick<Realtime.DBMember, 'role'>): Promise<void> {
+  public async patch(creatorID: number, workspaceID: string, memberCreatorID: number, { role }: Pick<Realtime.Member, 'role'>): Promise<void> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
     await client.workspace.patchMember(workspaceID, memberCreatorID, { role });
@@ -42,7 +42,7 @@ class WorkspaceMemberService extends AbstractControl {
     }
   }
 
-  public async sendInvite(creatorID: number, workspaceID: string, email: string, role?: UserRole): Promise<Realtime.DBMember | null> {
+  public async sendInvite(creatorID: number, workspaceID: string, email: string, role?: UserRole): Promise<Realtime.Member | null> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
     return client.workspace.sendInvite(workspaceID, email, role);

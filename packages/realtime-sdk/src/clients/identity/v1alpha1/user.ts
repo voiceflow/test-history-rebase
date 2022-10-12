@@ -7,6 +7,12 @@ export class User extends Resource {
     super({ ...options, path: '/user' });
   }
 
+  public async getOwn(): Promise<Models.User> {
+    const { data } = await this.get<Models.User>('/');
+
+    return data;
+  }
+
   public async create(payload: {
     user: { name: string; email: string };
     password: string;

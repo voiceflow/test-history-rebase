@@ -1,18 +1,17 @@
-import { NullableRecord } from '@voiceflow/common';
-
 import { Account } from '@/models';
 
-export type AccountState = NullableRecord<Account> & {
-  loading: boolean;
-  admin: number;
+export interface AccountState {
+  creator_id: number | null;
+  name: string | null;
+  email: string | null;
+  image: string | null;
+  isSSO: boolean;
   amazon: Account.Amazon | null;
   google: Account.Google | null;
+  created: string;
+  loading: boolean;
   verified: boolean;
   first_login: boolean;
   referrer_id: number | null;
   referral_code: string | null;
-  gid: string | null;
-  fid: string | null;
-  okta_id: string | null;
-  saml_provider_id: string | null;
-};
+}

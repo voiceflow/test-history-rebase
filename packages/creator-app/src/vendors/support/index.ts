@@ -2,7 +2,6 @@ import './types';
 
 import React from 'react';
 
-import { Account } from '@/models';
 import logger from '@/utils/logger';
 
 const CHAT_CLASSNAME = 'sb-chat';
@@ -27,7 +26,7 @@ export const hideChat = () => {
   el.style.display = 'none';
 };
 
-export const identify = async (user: Account) => {
+export const identify = async (user: { name: string; email: string; createdAt: string; creatorID: number }) => {
   await window.asyncSBChatReady?.();
 
   window.SBF?.getActiveUser(true, async () => {
@@ -35,8 +34,8 @@ export const identify = async (user: Account) => {
       window.SBF?.ajax(
         {
           function: USER_LOGIN_FUNCTION,
-          settings: { first_name: user.name, email: user.email, password: user.created },
-          settings_extra: { 'creator-id': [user.creator_id, 'Creator ID'] },
+          settings: { first_name: user.name, email: user.email, password: user.createdAt },
+          settings_extra: { 'creator-id': [user.creatorID, 'Creator ID'] },
         },
         (response) => {
           if (!window.SBF?.errorValidation(response) && window.SBUser) {
@@ -44,7 +43,7 @@ export const identify = async (user: Account) => {
             window.SBF?.activeUser(new window.SBUser(response[0]));
             window.SBChat?.initChat();
           } else if (response[1] === DUPLICATE_EMAIL_ERROR) {
-            window.SBF?.login(user.email, user.created, '', '', () => {
+            window.SBF?.login(user.email, user.createdAt, '', '', () => {
               window.SBChat?.initChat();
             });
           } else {

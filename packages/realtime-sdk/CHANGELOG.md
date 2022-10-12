@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.171.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.171.0...@voiceflow/realtime-sdk@1.171.1) (2022-10-12)
+
+
+### Bug Fixes
+
+* remove unused roles (DX-122) ([#6184](https://github.com/voiceflow/creator-app/issues/6184)) ([bdcce05](https://github.com/voiceflow/creator-app/commit/bdcce054daa52b700b3f82618dc26765da0bbabf)), closes [voiceflow/internal#47](https://github.com/voiceflow/internal/issues/47) [voiceflow/creator-api#1093](https://github.com/voiceflow/creator-api/issues/1093) [voiceflow/platform#214](https://github.com/voiceflow/platform/issues/214)
+
+
+
+
+
 # [1.171.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.170.0...@voiceflow/realtime-sdk@1.171.0) (2022-10-12)
 
 

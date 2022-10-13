@@ -11,9 +11,16 @@ class WorkspaceMemberService extends AbstractControl {
   }
 
   public async patch(creatorID: number, workspaceID: string, memberCreatorID: number, { role }: Pick<Realtime.Member, 'role'>): Promise<void> {
-    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+    const [client, identityWorkspaceMemberEnabled] = await Promise.all([
+      this.services.voiceflow.getClientByUserID(creatorID),
+      this.services.workspace.isFeatureEnabled(creatorID, workspaceID, Realtime.FeatureFlag.IDENTITY_WORKSPACE_MEMBER),
+    ]);
 
-    await client.workspace.patchMember(workspaceID, memberCreatorID, { role });
+    if (identityWorkspaceMemberEnabled) {
+      await client.identity.workspaceMember.update(workspaceID, memberCreatorID, { role });
+    } else {
+      await client.workspace.patchMember(workspaceID, memberCreatorID, { role });
+    }
   }
 
   public async remove(creatorID: number, workspaceID: string, memberCreatorID: number): Promise<void> {

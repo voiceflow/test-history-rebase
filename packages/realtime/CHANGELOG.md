@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.115.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.114.1...@voiceflow/realtime@1.115.0) (2022-10-13)
+
+
+### Features
+
+* patch workspace member role via identity (CT-1065) ([#6181](https://github.com/voiceflow/creator-app/issues/6181)) ([23a3693](https://github.com/voiceflow/creator-app/commit/23a36930759c1adc4d84e6e8368d3dec140ef454))
+
+
+
+
+
 ## [1.114.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.114.0...@voiceflow/realtime@1.114.1) (2022-10-12)
 
 

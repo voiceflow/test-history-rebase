@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.939.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.939.0...@voiceflow/creator-app@1.939.1) (2022-10-14)
+
+
+### Bug Fixes
+
+* rasa 3 export format (BUG-82) ([#6182](https://github.com/voiceflow/creator-app/issues/6182)) ([ae1f24f](https://github.com/voiceflow/creator-app/commit/ae1f24f58b4a2b01460a8cfc6a0f87078169533b))
+
+
+
+
+
 # [1.939.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.938.3...@voiceflow/creator-app@1.939.0) (2022-10-14)
 
 

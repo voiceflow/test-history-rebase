@@ -49,17 +49,26 @@ class WorkspaceChannel extends AbstractChannelControl<Realtime.Channels.Workspac
 
   protected load = async (ctx: ChannelContext<Realtime.Channels.WorkspaceChannelParams>): Promise<SendBackActions> => {
     const creatorID = Number(ctx.userId);
+    const { workspaceID } = ctx.params;
 
-    const [dbProjects, dbProjectLists] = await Promise.all([
-      this.services.project.getAll(creatorID, ctx.params.workspaceID),
-      this.services.projectList.getAll(creatorID, ctx.params.workspaceID),
+    const isIdentityWorkspaceEnabled = await this.services.workspace.isFeatureEnabled(
+      creatorID,
+      workspaceID,
+      Realtime.FeatureFlag.IDENTITY_WORKSPACE
+    );
+
+    const [dbProjects, dbProjectLists, workspaceMembers] = await Promise.all([
+      this.services.project.getAll(creatorID, workspaceID),
+      this.services.projectList.getAll(creatorID, workspaceID),
+      isIdentityWorkspaceEnabled ? this.services.workspace.member.getAll(creatorID, workspaceID) : Promise.resolve([]),
     ]);
 
     const [projects, projectLists] = WorkspaceChannel.normalizeProjectLists(dbProjects, dbProjectLists);
 
     return [
-      Realtime.project.crud.replace({ values: projects, workspaceID: ctx.params.workspaceID }),
-      Realtime.projectList.crud.replace({ values: projectLists, workspaceID: ctx.params.workspaceID }),
+      ...(isIdentityWorkspaceEnabled ? [Realtime.workspace.member.replace({ workspaceID, members: workspaceMembers })] : []),
+      Realtime.project.crud.replace({ values: projects, workspaceID }),
+      Realtime.projectList.crud.replace({ values: projectLists, workspaceID }),
     ];
   };
 }

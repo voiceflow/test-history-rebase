@@ -44,7 +44,7 @@ class UserService extends AbstractControl {
     let user: User | null = null;
 
     if (isIdentityUserEnabled) {
-      const ownUser = await this.services.voiceflow.getClientByToken(token).identity.user.getOwn();
+      const ownUser = await this.services.voiceflow.getClientByToken(token).identity.user.getSelf();
 
       user = { ...ownUser, creator_id: ownUser.id, image: ownUser.image ?? '' };
     } else {

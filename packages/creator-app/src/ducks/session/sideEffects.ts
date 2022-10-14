@@ -78,7 +78,7 @@ export const restoreSession = (): Thunk => async (dispatch, getState) => {
 
     if (isIdentityUserEnabled) {
       // using client.user.get() for now to get SSO related fields
-      const [user, { gid, fid, okta_id, saml_provider_id }] = await Promise.all([client.identity.user.getOwn(), client.user.get()]);
+      const [user, { gid, fid, okta_id, saml_provider_id }] = await Promise.all([client.identity.user.getSelf(), client.user.get()]);
 
       const isSSO = Boolean(gid || fid || okta_id || saml_provider_id);
 

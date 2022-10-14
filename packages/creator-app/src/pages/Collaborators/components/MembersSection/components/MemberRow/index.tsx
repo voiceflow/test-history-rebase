@@ -37,7 +37,7 @@ const getRoleVerb = (role: UserRole) => {
 };
 
 interface MemberRowProps {
-  member: Realtime.Member | Realtime.PendingMember;
+  member: Realtime.WorkspaceMember | Realtime.PendingWorkspaceMember;
   inline?: boolean;
   isLast?: boolean;
   resendInvite: (email: string, permissionType: UserRole | null, showToast?: boolean | undefined) => Promise<void>;

@@ -24,9 +24,19 @@ class WorkspaceService extends AbstractControl {
   }
 
   public async getAll(creatorID: number): Promise<Realtime.DBWorkspace[]> {
-    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+    const [client, identityWorkspaceEnabled] = await Promise.all([
+      this.services.voiceflow.getClientByUserID(creatorID),
+      this.services.feature.isEnabled(Realtime.FeatureFlag.IDENTITY_WORKSPACE, { userID: creatorID }),
+    ]);
 
-    return client.workspace.list();
+    let workspaces = await client.workspace.list();
+
+    if (identityWorkspaceEnabled) {
+      // resetting members since identity workspace list doesn't have members array in it
+      workspaces = workspaces.map((workspace) => ({ ...workspace, members: [] }));
+    }
+
+    return workspaces;
   }
 
   public async create(creatorID: number, { name, image }: { name: string; image?: string }): Promise<Realtime.DBWorkspace> {
@@ -79,11 +89,11 @@ class WorkspaceService extends AbstractControl {
     }
   }
 
-  public async isFeatureEnabled(creatorID: number, workspaceID: string | undefined, feature: Realtime.FeatureFlag): Promise<boolean> {
+  public async isFeatureEnabled(creatorID: number, workspaceID: string, feature: Realtime.FeatureFlag): Promise<boolean> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
     const organization = workspaceID ? await client.workspace.getOrganization(workspaceID) : undefined;
 
-    return this.services.feature.isEnabled(feature, { workspaceID, organizationID: organization?.id });
+    return this.services.feature.isEnabled(feature, { userID: creatorID, workspaceID, organizationID: organization?.id });
   }
 }
 

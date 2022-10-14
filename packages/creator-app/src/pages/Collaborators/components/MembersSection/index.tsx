@@ -10,7 +10,7 @@ import MemberRow from './components/MemberRow';
 
 interface MemberSectionProps {
   inline?: boolean;
-  members: Array<Realtime.Member | Realtime.PendingMember>;
+  members: Array<Realtime.WorkspaceMember | Realtime.PendingWorkspaceMember>;
   resendInvite: (email: string, permissionType: UserRole | null, showToast?: boolean | undefined) => Promise<void>;
 }
 

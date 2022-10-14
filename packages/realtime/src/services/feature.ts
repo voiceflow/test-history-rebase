@@ -4,8 +4,8 @@ import { AbstractControl } from '@/control';
 
 interface Context {
   userID?: number;
-  workspaceID?: string;
-  organizationID?: string;
+  workspaceID?: string | null;
+  organizationID?: string | null;
 }
 
 class FeatureService extends AbstractControl {

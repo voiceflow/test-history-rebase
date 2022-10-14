@@ -7,8 +7,8 @@ export class User extends Resource {
     super({ ...options, path: '/user' });
   }
 
-  public async getOwn(): Promise<Models.User> {
-    const { data } = await this.get<Models.User>('/');
+  public async getSelf(): Promise<Models.Identity.User> {
+    const { data } = await this.get<Models.Identity.User>('/');
 
     return data;
   }
@@ -21,8 +21,8 @@ export class User extends Resource {
       promoCode?: string | undefined;
       inviteParams?: Record<string, unknown>;
     };
-  }): Promise<Models.User> {
-    const { data } = await this.post<Models.User>('/', payload);
+  }): Promise<Models.Identity.User> {
+    const { data } = await this.post<Models.Identity.User>('/', payload);
 
     return data;
   }

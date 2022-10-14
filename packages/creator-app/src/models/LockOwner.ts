@@ -1,5 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 
-export interface LockOwner extends Realtime.Member {
+export interface LockOwner extends Realtime.WorkspaceMember {
   color: string;
 }

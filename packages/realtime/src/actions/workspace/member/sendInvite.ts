@@ -13,10 +13,7 @@ class SendWorkspaceInvite extends AbstractWorkspaceChannelControl<Realtime.works
     const newMember = await this.services.workspace.member.sendInvite(creatorID, payload.workspaceID, payload.email, payload.role);
 
     if (newMember) {
-      await this.server.processAs(
-        creatorID,
-        Realtime.workspace.member.add({ workspaceID: payload.workspaceID, creatorID: newMember.creator_id, member: newMember })
-      );
+      await this.server.processAs(creatorID, Realtime.workspace.member.add({ member: newMember, workspaceID: payload.workspaceID }));
     }
 
     return newMember;

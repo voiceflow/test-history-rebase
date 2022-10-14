@@ -7,6 +7,7 @@ import addMember from './member/addMember';
 import cancelInvite from './member/cancelInvite';
 import patchMember from './member/patchMember';
 import removeMember from './member/removeMember';
+import replaceMembers from './member/replaceMembers';
 import updateInvite from './member/updateInvite';
 import updateImage from './updateImage';
 import updateName from './updateName';
@@ -17,6 +18,7 @@ const realtimeWorkspaceReducer = createRootCRUDReducer(INITIAL_STATE, crudReduce
   .immerCase(...addMember)
   .immerCase(...patchMember)
   .immerCase(...removeMember)
+  .immerCase(...replaceMembers)
   .immerCase(...leave)
   .immerCase(...updateImage)
   .immerCase(...updateName)

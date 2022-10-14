@@ -1,3 +1,4 @@
+import * as Models from '@realtime-sdk/models';
 import { UserRole } from '@voiceflow/internal';
 
 import { Resource, ResourceOptions } from '../resource';
@@ -5,6 +6,12 @@ import { Resource, ResourceOptions } from '../resource';
 export class WorkspaceMember extends Resource {
   constructor(options: ResourceOptions) {
     super({ ...options, path: '/workspace-member' });
+  }
+
+  public async list(workspaceID: string): Promise<Models.Identity.WorkspaceMember[]> {
+    const { data } = await this.get<Models.Identity.WorkspaceMember[]>(`/${workspaceID}`);
+
+    return data;
   }
 
   public async update(workspaceID: string, userID: number, payload: { role: UserRole }): Promise<void> {

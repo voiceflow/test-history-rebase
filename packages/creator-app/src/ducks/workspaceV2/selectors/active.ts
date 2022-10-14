@@ -52,7 +52,7 @@ export const usedViewerSeatsSelector = createSelector(
 
 export const memberByIDSelector = createSelector(
   [membersSelector, creatorIDParamSelector],
-  (members, creatorID) => members.find((member): member is Realtime.Member => member.creator_id === creatorID) || null
+  (members, creatorID) => members.find((member): member is Realtime.WorkspaceMember => member.creator_id === creatorID) || null
 );
 
 export const getMemberByIDSelector = createCurriedSelector(memberByIDSelector);

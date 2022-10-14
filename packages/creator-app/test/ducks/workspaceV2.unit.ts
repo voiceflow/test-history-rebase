@@ -84,17 +84,16 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace V2', ({ describeReducerV2, creat
     utils.assertInitialState(Workspace.INITIAL_STATE);
 
     describeReducerV2(Realtime.workspace.member.add, ({ applyAction }) => {
-      const creatorID = 500;
-      const member = { ...WORKSPACE_MEMBER, name: 'new member', email: 'new.member@voiceflow.com', creator_id: creatorID };
+      const member = { ...WORKSPACE_MEMBER, name: 'new member', email: 'new.member@voiceflow.com', creator_id: 123 };
 
       it('add a new workspace member', () => {
-        const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, creatorID, member });
+        const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, member });
 
         expect(result.byKey[WORKSPACE_ID].members).toEqual([...WORKSPACE.members, member]);
       });
 
       it('do nothing if workspace does not exist', () => {
-        const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, workspaceID: 'foo', creatorID, member });
+        const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, workspaceID: 'foo', member });
 
         expect(result).toBe(MOCK_STATE);
       });

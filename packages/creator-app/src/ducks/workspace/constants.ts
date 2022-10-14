@@ -1,7 +1,7 @@
 import { UserRole } from '@voiceflow/internal';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
-export const UNKNOWN_MEMBER_DATA: Realtime.Member = {
+export const UNKNOWN_MEMBER_DATA: Realtime.WorkspaceMember = {
   creator_id: 0,
   role: UserRole.VIEWER,
   name: 'User Unavailable',

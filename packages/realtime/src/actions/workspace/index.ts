@@ -14,7 +14,6 @@ import {
   SendInviteControl,
   UpdateInviteControl,
 } from './member';
-import RefreshWorkspacesControl from './refresh';
 import RemoveWorkspaceControl from './remove';
 import UpdateWorkspaceImageControl from './updateImage';
 import UpdateWorkspaceNameControl from './updateName';
@@ -24,7 +23,6 @@ const buildWorkspaceActionControls = (options: LoguxControlOptions) => ({
   createWorkspaceControl: new CreateWorkspaceControl(options),
   checkoutWorkspaceControl: new CheckoutWorkspaceControl(options),
   leaveWorkspaceControl: new LeaveWorkspaceControl(options),
-  refreshWorkspacesControl: new RefreshWorkspacesControl(options),
   removeWorkspaceControl: new RemoveWorkspaceControl(options),
   updateWorkspaceImageControl: new UpdateWorkspaceImageControl(options),
   updateWorkspaceNameControl: new UpdateWorkspaceNameControl(options),

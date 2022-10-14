@@ -130,7 +130,7 @@ export const deleteMemberOfActiveWorkspace =
   };
 
 export const updateActiveWorkspaceMemberRole =
-  (member: Realtime.Member | Realtime.PendingMember, role: UserRole): Thunk =>
+  (member: Realtime.WorkspaceMember | Realtime.PendingWorkspaceMember, role: UserRole): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
 

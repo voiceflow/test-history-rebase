@@ -4,13 +4,47 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { AbstractControl } from '../../control';
 
 class WorkspaceMemberService extends AbstractControl {
-  public async getAll(creatorID: number, workspaceID: string): Promise<Realtime.Member[]> {
-    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+  public async getAll(creatorID: number, workspaceID: string): Promise<Array<Realtime.WorkspaceMember | Realtime.PendingWorkspaceMember>> {
+    const [client, identityWorkspaceMemberEnabled] = await Promise.all([
+      this.services.voiceflow.getClientByUserID(creatorID),
+      this.services.workspace.isFeatureEnabled(creatorID, workspaceID, Realtime.FeatureFlag.IDENTITY_WORKSPACE_MEMBER),
+    ]);
+
+    if (identityWorkspaceMemberEnabled) {
+      const [members, invites] = await Promise.all([
+        client.identity.workspaceMember.list(workspaceID),
+        client.identity.workspaceInvitation.list(workspaceID),
+      ]);
+
+      return [
+        ...members.map(({ user, membership }) => ({
+          name: user.name,
+          role: membership.role,
+          email: user.email,
+          image: user.image,
+          created: user.createdAt,
+          creator_id: user.id,
+        })),
+        ...invites.map((invite) => ({
+          name: null,
+          role: invite.role,
+          email: invite.email,
+          image: null,
+          created: '',
+          creator_id: null,
+        })),
+      ];
+    }
 
     return client.workspace.listMembers(workspaceID);
   }
 
-  public async patch(creatorID: number, workspaceID: string, memberCreatorID: number, { role }: Pick<Realtime.Member, 'role'>): Promise<void> {
+  public async patch(
+    creatorID: number,
+    workspaceID: string,
+    memberCreatorID: number,
+    { role }: Pick<Realtime.WorkspaceMember, 'role'>
+  ): Promise<void> {
     const [client, identityWorkspaceMemberEnabled] = await Promise.all([
       this.services.voiceflow.getClientByUserID(creatorID),
       this.services.workspace.isFeatureEnabled(creatorID, workspaceID, Realtime.FeatureFlag.IDENTITY_WORKSPACE_MEMBER),
@@ -49,7 +83,7 @@ class WorkspaceMemberService extends AbstractControl {
     }
   }
 
-  public async sendInvite(creatorID: number, workspaceID: string, email: string, role?: UserRole): Promise<Realtime.Member | null> {
+  public async sendInvite(creatorID: number, workspaceID: string, email: string, role?: UserRole): Promise<Realtime.PendingWorkspaceMember | null> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
     return client.workspace.sendInvite(workspaceID, email, role);

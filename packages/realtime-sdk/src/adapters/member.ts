@@ -1,7 +1,7 @@
-import { Member, PendingMember } from '@realtime-sdk/models';
+import { PendingWorkspaceMember, WorkspaceMember } from '@realtime-sdk/models';
 import { createMultiAdapter } from 'bidirectional-adapter';
 
-const memberAdapter = createMultiAdapter<Member | PendingMember, Member | PendingMember>(
+const memberAdapter = createMultiAdapter<WorkspaceMember | PendingWorkspaceMember, WorkspaceMember | PendingWorkspaceMember>(
   ({ creator_id, created, email, image, name, role }) => ({
     role,
     name,

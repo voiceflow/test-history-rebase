@@ -6,7 +6,7 @@ export interface Board {
   projects: string[];
 }
 
-export interface PendingMember {
+export interface PendingWorkspaceMember {
   creator_id: number | null;
   name: string | null;
   role: UserRole;
@@ -15,7 +15,7 @@ export interface PendingMember {
   created: string;
 }
 
-export interface Member extends PendingMember {
+export interface WorkspaceMember extends PendingWorkspaceMember {
   creator_id: number;
   name: string;
   image: string;
@@ -38,7 +38,7 @@ export interface Workspace {
   state: WorkspaceActivationState | null;
   image: string;
   boards: Board[];
-  members: Array<PendingMember | Member>;
+  members: Array<WorkspaceMember | PendingWorkspaceMember>;
   created: string;
   projects: number;
   betaFlag: number;
@@ -65,7 +65,7 @@ export interface DBWorkspace {
   projects: number;
   seats: number;
   plan: PlanType | null;
-  members: Array<PendingMember | Member>;
+  members: Array<WorkspaceMember | PendingWorkspaceMember>;
   beta_flag: number;
   variableStatesLimit: number | null;
 }

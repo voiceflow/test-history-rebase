@@ -75,7 +75,8 @@ export enum SessionType {
 
 export enum NLPProvider {
   LUIS = 'luis',
-  RASA = 'rasa',
+  RASA2 = 'rasa2',
+  RASA3 = 'rasa3',
   ALEXA = 'alexa',
   LEX_V1 = 'lex-v1',
   WATSON = 'watson',
@@ -89,7 +90,7 @@ export enum NLPProvider {
 export const PlatformToNLPProvider = {
   [VoiceflowConstants.PlatformType.ALEXA]: NLPProvider.ALEXA,
   [VoiceflowConstants.PlatformType.LUIS]: NLPProvider.LUIS,
-  [VoiceflowConstants.PlatformType.RASA]: NLPProvider.RASA,
+  [VoiceflowConstants.PlatformType.RASA]: NLPProvider.RASA2,
   [VoiceflowConstants.PlatformType.WATSON]: NLPProvider.WATSON,
   [VoiceflowConstants.PlatformType.LEX]: NLPProvider.LEX_V1,
   [VoiceflowConstants.PlatformType.EINSTEIN]: NLPProvider.EINSTEIN,
@@ -109,7 +110,8 @@ export const PlatformToNLPProvider = {
 } as const;
 
 export const NLPProviderLabels = {
-  [NLPProvider.RASA]: 'Rasa',
+  [NLPProvider.RASA2]: 'Rasa 2.x',
+  [NLPProvider.RASA3]: 'Rasa 3.x',
   [NLPProvider.LUIS]: 'Microsoft LUIS',
   [NLPProvider.ALEXA]: 'Amazon Alexa',
   [NLPProvider.WATSON]: 'IBM Watson',

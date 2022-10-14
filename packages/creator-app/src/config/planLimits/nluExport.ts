@@ -32,7 +32,8 @@ export const NLUExportLimitDetails: Record<NLPProvider, LimitDetails> = {
   [NLPProvider.LEX_V1]: nluEnterpriseExportDetails(NLPProvider.LEX_V1),
   [NLPProvider.LUIS]: nluEnterpriseExportDetails(NLPProvider.LUIS),
   [NLPProvider.NUANCE_MIX]: nluEnterpriseExportDetails(NLPProvider.NUANCE_MIX),
-  [NLPProvider.RASA]: nluEnterpriseExportDetails(NLPProvider.RASA),
+  [NLPProvider.RASA2]: nluEnterpriseExportDetails(NLPProvider.RASA2),
+  [NLPProvider.RASA3]: nluEnterpriseExportDetails(NLPProvider.RASA3),
   [NLPProvider.DIALOGFLOW_CX]: nluEnterpriseExportDetails(NLPProvider.DIALOGFLOW_CX),
   [NLPProvider.VF_CSV]: {
     modalTitle: 'CSV Export',

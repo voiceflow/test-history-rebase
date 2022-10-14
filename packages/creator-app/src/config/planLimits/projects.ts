@@ -39,7 +39,7 @@ const projectNluLimitDetailsSelector = Utils.platform.createPlatformSelector<Lim
   [VoiceflowConstants.PlatformType.LEX]: projectNLUEnterpisePlanLimitDetails(NLPProvider.LEX_V1),
   [VoiceflowConstants.PlatformType.LUIS]: projectNLUEnterpisePlanLimitDetails(NLPProvider.LUIS),
   [VoiceflowConstants.PlatformType.NUANCE_MIX]: projectNLUEnterpisePlanLimitDetails(NLPProvider.NUANCE_MIX),
-  [VoiceflowConstants.PlatformType.RASA]: projectNLUEnterpisePlanLimitDetails(NLPProvider.RASA),
+  [VoiceflowConstants.PlatformType.RASA]: projectNLUEnterpisePlanLimitDetails(NLPProvider.RASA2),
   [VoiceflowConstants.PlatformType.WATSON]: projectNLUEnterpisePlanLimitDetails(NLPProvider.WATSON),
 });
 

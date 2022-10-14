@@ -28,7 +28,7 @@ export const getNlpModelProvider = Utils.platform.createPlatformSelector(
     [VoiceflowConstants.PlatformType.ALEXA]: [NLPProvider.ALEXA, NLPProvider.VF_CSV],
     [VoiceflowConstants.PlatformType.GOOGLE]: [NLPProvider.DIALOGFLOW_ES, NLPProvider.VF_CSV],
     [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: [NLPProvider.DIALOGFLOW_ES, NLPProvider.VF_CSV],
-    [VoiceflowConstants.PlatformType.RASA]: [NLPProvider.RASA, NLPProvider.VF_CSV],
+    [VoiceflowConstants.PlatformType.RASA]: [NLPProvider.RASA2, NLPProvider.RASA3, NLPProvider.VF_CSV],
     [VoiceflowConstants.PlatformType.LEX]: [NLPProvider.LEX_V1, NLPProvider.VF_CSV],
     [VoiceflowConstants.PlatformType.LUIS]: [NLPProvider.LUIS, NLPProvider.VF_CSV],
     [VoiceflowConstants.PlatformType.WATSON]: [NLPProvider.WATSON, NLPProvider.VF_CSV],

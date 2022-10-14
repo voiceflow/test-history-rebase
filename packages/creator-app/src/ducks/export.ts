@@ -118,8 +118,13 @@ export const exportModel =
           downloadFromURL(`${projectName}-dialogflow-es-model.zip`, data);
           URL.revokeObjectURL(data);
           break;
-        case NLPProvider.RASA:
-          data = await client.platform.general.modelExport.exportBlob(versionID, 'rasa', intents);
+        case NLPProvider.RASA2:
+          data = await client.platform.general.modelExport.exportBlob(versionID, 'rasa2', intents);
+          downloadFromURL(`${projectName}-rasa-model.zip`, data);
+          URL.revokeObjectURL(data);
+          break;
+        case NLPProvider.RASA3:
+          data = await client.platform.general.modelExport.exportBlob(versionID, 'rasa3', intents);
           downloadFromURL(`${projectName}-rasa-model.zip`, data);
           URL.revokeObjectURL(data);
           break;

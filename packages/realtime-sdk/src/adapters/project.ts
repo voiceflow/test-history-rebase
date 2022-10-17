@@ -21,6 +21,7 @@ const projectAdapter = createMultiAdapter<BaseModels.Project.Model<AnyRecord, An
     reportTags = {},
     devVersion,
     liveVersion,
+    apiPrivacy,
     prototype,
     platformData,
     customThemes,
@@ -49,6 +50,7 @@ const projectAdapter = createMultiAdapter<BaseModels.Project.Model<AnyRecord, An
       liveVersion,
       reportTags,
       prototype,
+      apiPrivacy,
       workspaceID: teamID,
       platformData,
     };

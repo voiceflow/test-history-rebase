@@ -9,6 +9,7 @@ export { default as utteranceUploadExampleCSV } from '@/assets/csv/utterance-upl
 export { default as facebookLogo } from '@/assets/svgs/facebook.svg?url';
 export { default as googleLogo } from '@/assets/svgs/google.svg?url';
 export { default as logoDark } from '@/assets/svgs/logo-dark.svg?url';
+export { default as logo } from '@/assets/images/logo.png';
 
 // wordmarks
 export { default as wordmark } from '@/assets/images/wordmark.png';

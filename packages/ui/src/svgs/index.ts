@@ -8,6 +8,7 @@ export { default as addTopic } from './add-topic.svg';
 export { default as add2 } from './add2.svg';
 export { default as alexa } from './alexa.svg';
 export { default as amazonAlexa } from './amazon-alexa.svg';
+export { default as apperance } from './apperance.svg';
 export { default as arrow } from './arrow.svg';
 export { default as arrowDown } from './arrow-down.svg';
 export { default as arrowLeft } from './arrow-left.svg';
@@ -180,6 +181,7 @@ export { default as plusSmall } from './plus-small.svg';
 export { default as power } from './power.svg';
 export { default as preview } from './preview.svg';
 export { default as prompt } from './prompt.svg';
+export { default as publish } from './publish.svg';
 export { default as purchase } from './purchase.svg';
 
 // r

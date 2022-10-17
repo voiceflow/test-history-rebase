@@ -119,6 +119,16 @@ export const updateProjectPrivacy =
     await dispatch.sync(Realtime.project.crud.patch({ ...getActiveWorkspaceContext(getState()), key: projectID, value: { privacy } }));
   };
 
+export const updateProjectAPIPrivacy =
+  (projectID: string, apiPrivacy: BaseModels.Project.Privacy): Thunk =>
+  async (dispatch, getState) => {
+    const project = ProjectV2.projectByIDSelector(getState(), { id: projectID });
+
+    if (project?.apiPrivacy === apiPrivacy) return;
+
+    await dispatch.sync(Realtime.project.crud.patch({ ...getActiveWorkspaceContext(getState()), key: projectID, value: { apiPrivacy } }));
+  };
+
 export const updateProjectImage =
   (projectID: string, image: string): Thunk =>
   async (dispatch, getState) => {

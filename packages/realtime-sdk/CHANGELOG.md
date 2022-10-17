@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.173.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.173.1...@voiceflow/realtime-sdk@1.173.2) (2022-10-17)
+
+
+### Bug Fixes
+
+* webchat flag and tab (CT-000) ([#6196](https://github.com/voiceflow/creator-app/issues/6196)) ([d92624c](https://github.com/voiceflow/creator-app/commit/d92624c0362e4cb34796d1df9becdd10b4d9308a))
+
+
+
+
+
 ## [1.173.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.173.0...@voiceflow/realtime-sdk@1.173.1) (2022-10-17)
 
 

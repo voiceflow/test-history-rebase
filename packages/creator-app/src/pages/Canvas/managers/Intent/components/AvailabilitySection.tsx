@@ -24,7 +24,7 @@ const AvailabilitySection: React.FC<AvailabilitySectionProps> = ({ isEnabled, on
     <SectionV2.SimpleSection onClick={onChange}>
       <SectionV2.Title>Available from other topics?</SectionV2.Title>
 
-      <Toggle size={Toggle.Size.SMALL} checked={isEnabled} />
+      <Toggle size={Toggle.Size.EXTRA_SMALL} checked={isEnabled} />
     </SectionV2.SimpleSection>
   </TippyTooltip>
 );

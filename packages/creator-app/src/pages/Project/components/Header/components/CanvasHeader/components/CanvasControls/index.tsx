@@ -5,6 +5,7 @@ import React from 'react';
 import { HeaderIconButton } from '@/components/ProjectPage';
 import { Permission } from '@/config/permissions';
 import { BlockType, ModalType } from '@/constants';
+import { SearchContext } from '@/contexts/SearchContext';
 import * as Thread from '@/ducks/threadV2';
 import { useFeature, useModals, usePermission, useSelector, useTrackingEvents } from '@/hooks';
 import { Hotkey, HOTKEY_LABEL_MAP } from '@/keymap';
@@ -33,6 +34,8 @@ const CanvasHeader: React.FC = () => {
   const nluQuickView = useModals(ModalType.NLU_MODEL_QUICK_VIEW);
   const isMarkupTextActive = markup.creatingType === BlockType.MARKUP_TEXT;
   const isMarkupMediaActive = Realtime.Utils.typeGuards.isMarkupMediaBlockType(markup.creatingType);
+
+  const search = React.useContext(SearchContext);
 
   return (
     <>
@@ -72,7 +75,7 @@ const CanvasHeader: React.FC = () => {
               {(ref, onToggle, isOpen) => (
                 <HeaderIconButton
                   ref={ref}
-                  icon="addImage"
+                  icon="systemImage"
                   active={isMarkupMediaActive}
                   isSmall
                   onClick={markup.triggerMediaUpload}
@@ -87,8 +90,9 @@ const CanvasHeader: React.FC = () => {
             </Dropdown>
           ) : (
             <HeaderIconButton
-              icon="addImage"
+              icon="systemImage"
               active={isMarkupMediaActive}
+              size={18}
               isSmall
               onClick={markup.triggerMediaUpload}
               tooltip={{ title: 'Image or Video', hotkey: HOTKEY_LABEL_MAP[Hotkey.ADD_MARKUP_IMAGE] }}
@@ -117,6 +121,14 @@ const CanvasHeader: React.FC = () => {
             tooltip={{ title: 'NLU Model', hotkey: HOTKEY_LABEL_MAP[Hotkey.OPEN_CMS_MODAL] }}
           />
         )}
+
+        <HeaderIconButton
+          icon="search"
+          active={search?.isVisible}
+          isSmall
+          onClick={() => search?.toggle()}
+          tooltip={{ title: 'Search Assistant', hotkey: HOTKEY_LABEL_MAP[Hotkey.SEARCH] }}
+        />
       </Box.Flex>
     </>
   );

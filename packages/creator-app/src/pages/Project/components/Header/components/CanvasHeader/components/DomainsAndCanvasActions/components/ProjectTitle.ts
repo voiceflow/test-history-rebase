@@ -4,7 +4,7 @@ import { styled } from '@/hocs';
 const ProjectTitle = styled(EditableText)<{ $secondary?: boolean }>`
   max-width: 250px;
   overflow: hidden;
-  font-size: 16px;
+  font-size: 15px;
   white-space: nowrap;
   text-overflow: ellipsis;
   color: ${({ $secondary, theme }) => ($secondary ? theme.colors.secondary : theme.colors.primary)};

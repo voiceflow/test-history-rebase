@@ -23,7 +23,7 @@ const getDialogflowItems = (versionID: string) => [
   },
 ];
 
-const getPlatformItems = Utils.platform.createPlatformSelector<(versionID: string) => NavLinkItem[]>(
+const getPlatformItems = Utils.platform.createPlatformAndProjectTypeSelector<(versionID: string) => NavLinkItem[]>(
   {
     [VoiceflowConstants.PlatformType.ALEXA]: (versionID) => [
       { to: generatePath(Path.PUBLISH_ALEXA, { versionID }), key: 'alexa', label: 'Amazon Alexa' },
@@ -32,22 +32,28 @@ const getPlatformItems = Utils.platform.createPlatformSelector<(versionID: strin
       { to: generatePath(Path.PUBLISH_GOOGLE, { versionID }), key: 'google', label: 'Google Assistant' },
     ],
     [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: (versionID) => getDialogflowItems(versionID),
+    [VoiceflowConstants.ProjectType.CHAT]: (versionID) => [
+      { to: generatePath(Path.PUBLISH_WEBCHAT, { versionID }), key: 'webchat', label: 'Web Chat' },
+    ],
   },
   () => []
 );
 
 const IntegrationsSidebar: React.FC<SideBarComponentProps> = () => {
-  const platform = useSelector(ProjectV2.active.platformSelector);
+  const { platform, type } = useSelector(ProjectV2.active.metaSelector);
   const versionID = useSelector(Session.activeVersionIDSelector)!;
 
   const [canExportCode] = usePermission(Permission.CODE_EXPORT);
 
   const disableCodeExports = useFeature(Realtime.FeatureFlag.DISABLE_CODE_EXPORTS).isEnabled;
+  const webchat = useFeature(Realtime.FeatureFlag.WEBCHAT).isEnabled;
 
   const canUseAlexaSettings = useAlexaProjectSettings();
 
   const items = React.useMemo<NavLinkSection[]>(() => {
-    const platformItems = canUseAlexaSettings ? getPlatformItems(platform)(versionID) : [];
+    const _platformItems = canUseAlexaSettings ? getPlatformItems(platform, type)(versionID) : [];
+
+    const platformItems = webchat ? _platformItems : _platformItems.filter(({ key }) => key !== 'webchat');
 
     return [
       ...(platformItems.length

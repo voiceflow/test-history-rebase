@@ -80,6 +80,7 @@ export type AnyVoice = AlexaConstants.Voice | GoogleConstants.Voice | VoiceflowC
 export type AlexaVersion = Version<AlexaVersion.PlatformData>;
 export type GoogleVersion = Version<GoogleVersion.VoicePlatformData>;
 export type VoiceflowVersion = Version<VoiceflowVersion.PlatformData>;
+export type VoiceflowChatVersion = Version<VoiceflowVersion.ChatPlatformData>;
 export type DialogflowVersion = Version<DFESVersion.PlatformData>;
 
 export type AnyVersion = AlexaVersion | GoogleVersion | VoiceflowVersion | DialogflowVersion;

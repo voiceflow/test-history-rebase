@@ -22,6 +22,17 @@ export const patchSettings =
     await dispatch.sync(Realtime.version.patchSettings({ ...getActivePlatformVersionContext(getState()), settings }));
   };
 
+export const patchPublishing =
+  (publishing: Partial<VoiceflowVersion.ChatPublishing>): Thunk =>
+  async (dispatch, getState) => {
+    const state = getState();
+    const versionID = Session.activeVersionIDSelector(state);
+
+    Errors.assertVersionID(versionID);
+
+    await dispatch.sync(Realtime.version.patchPublishing({ ...getActivePlatformVersionContext(getState()), publishing }));
+  };
+
 export const patchDefaultStepColors =
   (defaultStepColors: Realtime.Version.DefaultStepColors): Thunk =>
   async (dispatch, getState) => {

@@ -41,6 +41,8 @@ export enum FeatureFlag {
   // integrations
   DIALOGFLOW_CX = 'dialogflow_cx',
 
+  WEBCHAT = 'webchat',
+
   MVP_CUSTOM_BLOCK = 'mvp_custom_block',
 
   // canvas and editor updates

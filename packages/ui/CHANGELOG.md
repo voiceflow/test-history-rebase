@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.159.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.159.0...@voiceflow/ui@1.159.1) (2022-10-17)
+
+
+### Bug Fixes
+
+* add api privacy patch (CT-000) ([#6193](https://github.com/voiceflow/creator-app/issues/6193)) ([664f892](https://github.com/voiceflow/creator-app/commit/664f8922cde13bc954629de884896e78d9554189))
+
+
+
+
+
 # [1.159.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.158.0...@voiceflow/ui@1.159.0) (2022-10-11)
 
 

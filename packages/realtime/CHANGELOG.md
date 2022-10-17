@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.116.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.116.0...@voiceflow/realtime@1.116.1) (2022-10-17)
+
+
+### Bug Fixes
+
+* add api privacy patch (CT-000) ([#6193](https://github.com/voiceflow/creator-app/issues/6193)) ([664f892](https://github.com/voiceflow/creator-app/commit/664f8922cde13bc954629de884896e78d9554189))
+
+
+
+
+
 # [1.116.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.115.0...@voiceflow/realtime@1.116.0) (2022-10-14)
 
 

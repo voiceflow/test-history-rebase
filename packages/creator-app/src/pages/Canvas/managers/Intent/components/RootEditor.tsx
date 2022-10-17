@@ -73,7 +73,7 @@ const RootEditor: React.FC = () => {
         </>
       )}
 
-      <SectionV2.Divider inset />
+      <SectionV2.Divider />
       <Actions.Section editor={editor} portID={editor.node.ports.out.builtIn[BaseModels.PortType.NEXT]} />
 
       <SectionV2.Divider />

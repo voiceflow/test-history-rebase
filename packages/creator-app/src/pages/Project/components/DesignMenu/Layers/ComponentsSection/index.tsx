@@ -126,9 +126,13 @@ const ComponentsSection: React.FC<ComponentsSectionProps> = ({ collapsed, setSec
           }}
           renderPlaceholder={({ width }) => (
             <S.Placeholder width={width}>
-              <SvgIcon size={72} icon="componentOutline" />
-              Components are reusable collections of blocks that can be used anywhere. <br />
-              <Link href={Documentation.COMPONENTS_LAYER}>Learn more</Link>
+              {!isSearch && (
+                <>
+                  <SvgIcon size={72} icon="componentOutline" />
+                  Components are reusable collections of blocks that can be used anywhere. <br />
+                  <Link href={Documentation.COMPONENTS_LAYER}>Learn more</Link>
+                </>
+              )}
             </S.Placeholder>
           )}
         />

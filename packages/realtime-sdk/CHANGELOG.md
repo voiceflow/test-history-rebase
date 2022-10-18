@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.175.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.174.0...@voiceflow/realtime-sdk@1.175.0) (2022-10-18)
+
+
+### Features
+
+* connect creator-app with identity workspace invitation (CT-1069) ([#6189](https://github.com/voiceflow/creator-app/issues/6189)) ([e8f7b2d](https://github.com/voiceflow/creator-app/commit/e8f7b2dab598515de4ada2e98852773a7149bc53))
+
+
+
+
+
 # [1.174.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.173.2...@voiceflow/realtime-sdk@1.174.0) (2022-10-18)
 
 

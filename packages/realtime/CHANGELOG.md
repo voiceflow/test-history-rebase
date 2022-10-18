@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.118.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.117.0...@voiceflow/realtime@1.118.0) (2022-10-18)
+
+
+### Features
+
+* find workspaces (CT-1105) ([#6197](https://github.com/voiceflow/creator-app/issues/6197)) ([71d6b83](https://github.com/voiceflow/creator-app/commit/71d6b83aeaae694ecbd8777d3954fc184331b945))
+
+
+
+
+
 # [1.117.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.116.3...@voiceflow/realtime@1.117.0) (2022-10-18)
 
 

@@ -39,7 +39,6 @@ export enum Identifier {
   SHARE_COPY_LINK_BUTTON = 'vf-share-link-button',
   SPEECH_BAR = 'vf-speech-bar',
   APPEARANCE_AND_BRANDING_DD = 'vf-appearance-and-branding-dd',
-  BRANDING_COLOR_INPUT = 'vf-branding-input',
   PROTOTYPE_PASSWORD_DD = 'vf-prototype-password-dd',
   BRAND_IMAGE_INPUT_CONTAINER = 'vf-brand-image-input-container',
   MESSAGE_ICON_INPUT_CONTAINER = 'vf-message-icon-input-container',
@@ -185,6 +184,8 @@ export enum ClassName {
 
   RADIO_GROUP = 'vf-radio-group',
   RADIO_GROUP_ITEM = 'vf-radio-group__item',
+
+  COLOR_INPUT = 'vf-color-input',
 }
 
 export enum ExternalClassName {

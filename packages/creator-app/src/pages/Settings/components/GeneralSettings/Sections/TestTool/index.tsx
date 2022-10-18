@@ -2,6 +2,7 @@ import { Utils } from '@voiceflow/realtime-sdk';
 import { Box, BoxFlex, Flex, Input, Upload, UploadIconVariant } from '@voiceflow/ui';
 import React from 'react';
 
+import ColorInput from '@/components/ColorInput';
 import Section, { SectionVariant } from '@/components/Section';
 import Upgrade from '@/components/Upgrade';
 import { Permission } from '@/config/permissions';
@@ -10,7 +11,6 @@ import * as Prototype from '@/ducks/prototype';
 import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useAlexaProjectSettings, useDispatch, usePermission, useSelector } from '@/hooks';
-import { ColorInput } from '@/pages/Project/components/Header/components/SharePopper/components/Prototype/components/AppearanceAndBranding/components';
 
 const TestToolSettings: React.FC = () => {
   const [canCustomize] = usePermission(Permission.CUSTOMIZE_PROTOTYPE);
@@ -19,6 +19,7 @@ const TestToolSettings: React.FC = () => {
 
   const durationMilliseconds = useSelector(VersionV2.active.general.messageDelaySelector);
 
+  const brandColor = useSelector(Prototype.prototypeBrandColorSelector);
   const prototypeAvatar = useSelector(Prototype.prototypeAvatarSelector);
   const updatePrototypeSettings = useDispatch(Prototype.updateSharePrototypeSettings);
   const [delayDuration, setDelayDuration] = React.useState(durationMilliseconds);
@@ -84,7 +85,12 @@ const TestToolSettings: React.FC = () => {
             customContentStyling={{ paddingBottom: '24px' }}
           >
             <BoxFlex mr={120}>
-              <ColorInput isAllowed={canCustomize} disabledBorderColor="rgba(210, 218, 226, 0.65)" />
+              <ColorInput
+                value={brandColor}
+                onChange={(brandColor) => updatePrototypeSettings({ brandColor })}
+                isAllowed={canCustomize}
+                disabledBorderColor="rgba(210, 218, 226, 0.65)"
+              />
               <Box ml={16}>
                 <Upload.IconUpload image={prototypeAvatar} size={UploadIconVariant.EXTRA_SMALL} update={savePrototypeImage} />
               </Box>

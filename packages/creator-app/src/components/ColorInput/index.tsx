@@ -4,9 +4,8 @@ import { RGBColor } from 'react-color';
 
 import { InputAction } from '@/components/ColorPicker/components';
 import ColorSelect from '@/components/ColorSelect';
-import * as Prototype from '@/ducks/prototype';
-import { useDispatch, useLinkedState, useSelector } from '@/hooks';
-import { Identifier } from '@/styles/constants';
+import { useLinkedState } from '@/hooks';
+import { ClassName } from '@/styles/constants';
 
 const getHexColor = (color: RGBColor) => {
   const rgbaColor = { a: 1, ...color };
@@ -16,15 +15,14 @@ const getHexColor = (color: RGBColor) => {
 };
 
 interface ColorInputProps {
-  isAllowed: boolean;
-  disabledBorderColor: string;
+  value: string;
+  onChange: (color: string) => void;
+  isAllowed?: boolean;
+  disabledBorderColor?: string;
 }
 
-const ColorInput: React.FC<ColorInputProps> = ({ isAllowed, disabledBorderColor }) => {
-  const brandColor = useSelector(Prototype.prototypeBrandColorSelector);
-  const updateSettings = useDispatch(Prototype.updateSharePrototypeSettings);
-
-  const [storeHex, storeRGBA] = React.useMemo(() => [removeHashFromHex(brandColor), hexToRGBA(brandColor)], [brandColor]);
+const ColorInput: React.FC<ColorInputProps> = ({ isAllowed = true, disabledBorderColor, value, onChange }) => {
+  const [storeHex, storeRGBA] = React.useMemo(() => [removeHashFromHex(value), hexToRGBA(value)], [value]);
 
   const [hex, setHex] = useLinkedState(storeHex);
   const [color, setColor] = useLinkedState(storeRGBA);
@@ -35,23 +33,22 @@ const ColorInput: React.FC<ColorInputProps> = ({ isAllowed, disabledBorderColor 
     try {
       setColor(hexToRGBA(`#${hex}`));
       setHex(upperCaseHex);
-      updateSettings({ brandColor: `#${upperCaseHex}` });
+      onChange(`#${upperCaseHex}`);
     } catch {
       setHex(removeHashFromHex(getHexColor(color)).toUpperCase());
     }
   };
 
-  const onSubmitColor = (nextColor: RGBColor) => {
+  const updateRGBColor = (nextColor: RGBColor) => {
     const nextHex = removeHashFromHex(getHexColor(nextColor)).toUpperCase();
 
     setHex(nextHex);
     setColor({ a: 1, ...nextColor });
-    updateSettings({ brandColor: `#${nextHex}` });
   };
 
   return (
     <Input
-      id={Identifier.BRANDING_COLOR_INPUT}
+      className={ClassName.COLOR_INPUT}
       value={hex}
       onBlur={onSubmitHexColor}
       cursor={isAllowed ? 'auto' : 'not-allowed'}
@@ -61,7 +58,7 @@ const ColorInput: React.FC<ColorInputProps> = ({ isAllowed, disabledBorderColor 
           color={color}
           hexInput={false}
           disabled={!isAllowed}
-          onChange={(nextColor: RGBColor) => onSubmitColor(nextColor)}
+          onChange={(nextColor: RGBColor) => updateRGBColor(nextColor)}
           alphaSlider={false}
         />
       }

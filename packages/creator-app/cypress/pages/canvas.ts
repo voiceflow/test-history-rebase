@@ -122,7 +122,7 @@ export default {
       return cy.get(`#${Identifier.APPEARANCE_AND_BRANDING_DD} > div:first-child`);
     },
     get brandingColorInput() {
-      return cy.get(`#${Identifier.BRANDING_COLOR_INPUT}`);
+      return cy.get(`.${ClassName.COLOR_INPUT} input`);
     },
     get markupText() {
       return cy.get(`.${ClassName.CANVAS_NODE}--${BlockType.MARKUP_TEXT}`);

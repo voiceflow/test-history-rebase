@@ -1,11 +1,12 @@
 import { Box, Divider } from '@voiceflow/ui';
 import React from 'react';
 
+import ColorInput from '@/components/ColorInput';
 import * as Prototype from '@/ducks/prototype';
 import { useDispatch, useSelector } from '@/hooks';
 import { Identifier } from '@/styles/constants';
 
-import { ColorInput, NegativeMarginContainer, UploadContainer, UploadImage } from './components';
+import { NegativeMarginContainer, UploadContainer, UploadImage } from './components';
 
 interface AppearanceAndBrandingProps {
   isAllowed: boolean;
@@ -14,12 +15,18 @@ interface AppearanceAndBrandingProps {
 const AppearanceAndBranding: React.FC<AppearanceAndBrandingProps> = ({ isAllowed }) => {
   const avatar = useSelector(Prototype.prototypeAvatarSelector);
   const brandImage = useSelector(Prototype.prototypeBrandImageSelector);
+  const brandColor = useSelector(Prototype.prototypeBrandColorSelector);
 
   const updateSettings = useDispatch(Prototype.updateSharePrototypeSettings);
 
   return (
     <Box cursor={isAllowed ? 'default' : 'not-allowed'}>
-      <ColorInput isAllowed={isAllowed} disabledBorderColor="rgba(210, 218, 226, 0.65)" />
+      <ColorInput
+        value={brandColor}
+        onChange={(brandColor) => updateSettings({ brandColor })}
+        isAllowed={isAllowed}
+        disabledBorderColor="rgba(210, 218, 226, 0.65)"
+      />
 
       <NegativeMarginContainer>
         <Divider style={{ marginTop: '24px', marginBottom: 0 }} />

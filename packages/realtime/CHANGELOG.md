@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.118.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.118.0...@voiceflow/realtime@1.118.1) (2022-10-18)
+
+
+### Bug Fixes
+
+* revert cxd-api to realtime ([#6202](https://github.com/voiceflow/creator-app/issues/6202)) ([f95e861](https://github.com/voiceflow/creator-app/commit/f95e861e5d9e179fb9ede3acffa0f18d7b032c9d))
+
+
+
+
+
 # [1.118.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.117.0...@voiceflow/realtime@1.118.0) (2022-10-18)
 
 

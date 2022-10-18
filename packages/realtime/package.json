@@ -67,7 +67,7 @@
     "lint:fix": "yarn lint --fix",
     "lint:quiet": "yarn lint --quiet",
     "lint:report": "yarn lint --format json -o sonar/report.json",
-    "local": "vfcli mesh connect cxd-api",
+    "local": "vfcli mesh connect realtime",
     "local:e2e": "yarn kill:e2e && NODE_ENV=e2e NODE_TLS_REJECT_UNAUTHORIZED=0 yarn dev",
     "mesh:post": "exit 0",
     "mesh:pre": "exit 0",

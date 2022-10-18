@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.174.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.173.2...@voiceflow/realtime-sdk@1.174.0) (2022-10-18)
+
+
+### Features
+
+* connect identity check invite token (CT-1072) ([#6198](https://github.com/voiceflow/creator-app/issues/6198)) ([0a18230](https://github.com/voiceflow/creator-app/commit/0a182309d635d9ff9c72121e5b841c6fc390d68f))
+
+
+
+
+
 ## [1.173.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.173.1...@voiceflow/realtime-sdk@1.173.2) (2022-10-17)
 
 

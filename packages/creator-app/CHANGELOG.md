@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.942.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.941.0...@voiceflow/creator-app@1.942.0) (2022-10-18)
+
+
+### Features
+
+* connect identity check invite token (CT-1072) ([#6198](https://github.com/voiceflow/creator-app/issues/6198)) ([0a18230](https://github.com/voiceflow/creator-app/commit/0a182309d635d9ff9c72121e5b841c6fc390d68f))
+
+
+
+
+
 # [1.941.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.940.0...@voiceflow/creator-app@1.941.0) (2022-10-18)
 
 

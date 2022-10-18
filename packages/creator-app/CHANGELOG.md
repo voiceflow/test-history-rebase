@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.941.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.940.0...@voiceflow/creator-app@1.941.0) (2022-10-18)
+
+
+### Features
+
+* webchat sections [bugfix] (CT-000) ([#6200](https://github.com/voiceflow/creator-app/issues/6200)) ([854c070](https://github.com/voiceflow/creator-app/commit/854c0702eb664ec2e53f2e007ae6821c152f89cc))
+
+
+
+
+
 # [1.940.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.939.3...@voiceflow/creator-app@1.940.0) (2022-10-17)
 
 

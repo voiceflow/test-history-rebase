@@ -84,8 +84,23 @@ class WorkspaceMemberService extends AbstractControl {
   }
 
   public async sendInvite(creatorID: number, workspaceID: string, email: string, role?: UserRole): Promise<Realtime.PendingWorkspaceMember | null> {
-    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+    const [client, identityWorkspaceInviteEnabled] = await Promise.all([
+      this.services.voiceflow.getClientByUserID(creatorID),
+      this.services.workspace.isFeatureEnabled(creatorID, workspaceID, Realtime.FeatureFlag.IDENTITY_WORKSPACE_INVITE),
+    ]);
 
+    if (identityWorkspaceInviteEnabled) {
+      const invite = await client.identity.workspaceInvitation.sendInvitation(workspaceID, email, role);
+
+      return {
+        name: null,
+        role: invite.role,
+        email: invite.email,
+        image: null,
+        created: '',
+        creator_id: null,
+      };
+    }
     return client.workspace.sendInvite(workspaceID, email, role);
   }
 

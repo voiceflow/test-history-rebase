@@ -24,4 +24,9 @@ export class WorkspaceInvitation extends Resource {
     await this.head(`/accept/${token}`);
     return true;
   }
+
+  public async sendInvitation(workspaceID: string, email: string, userRole?: UserRole): Promise<Models.Identity.WorkspaceInvite> {
+    const { data } = await this.post<Models.Identity.WorkspaceInvite>(`/${workspaceID}`, { email, role: userRole });
+    return data;
+  }
 }

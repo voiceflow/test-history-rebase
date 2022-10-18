@@ -4,6 +4,7 @@ import { toast } from '@voiceflow/ui';
 
 import * as Errors from '@/config/errors';
 import { EDITOR_SEAT_ROLES } from '@/constants';
+import * as Feature from '@/ducks/feature';
 import * as Session from '@/ducks/session';
 import { trackInvitationCancelled, trackInvitationSent } from '@/ducks/tracking/events/invitation';
 import { waitAsync } from '@/ducks/utils';
@@ -45,8 +46,9 @@ export const sendInviteToActiveWorkspace =
 
     try {
       const newMember = await dispatch(waitAsync(Realtime.workspace.member.sendInvite, { workspaceID, email, role: role ?? undefined }));
+      const isIdentityWorkspaceInviteEnabled = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.IDENTITY_WORKSPACE_INVITE);
 
-      if (newMember) {
+      if (newMember && !isIdentityWorkspaceInviteEnabled) {
         dispatch(trackInvitationSent(workspaceID, email));
       }
 

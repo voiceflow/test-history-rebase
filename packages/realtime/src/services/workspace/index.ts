@@ -33,7 +33,24 @@ class WorkspaceService extends AbstractControl {
 
     if (identityWorkspaceEnabled) {
       // resetting members since identity workspace list doesn't have members array in it
-      workspaces = workspaces.map((workspace) => ({ ...workspace, members: [] }));
+      const identityWorkspaces = await client.identity.workspace.list();
+      // this maps data from the new identity workspace to the old interface
+      // we decided to do this just to communicate the intention of fully migrating in the future.
+      // ideally all the extra data we have in the workspace interface should be fetched separately
+      const legacyWorkspaceMap = Utils.array.createMap(workspaces, (workspace) => workspace.team_id);
+
+      workspaces = identityWorkspaces.map((identityWorkspace) => {
+        const workspace = legacyWorkspaceMap[identityWorkspace.id];
+        return {
+          ...workspace,
+          name: identityWorkspace.name,
+          image: identityWorkspace.image,
+          created: identityWorkspace.createdAt,
+          team_id: identityWorkspace.id,
+          organization_id: identityWorkspace.organizationID,
+          members: [],
+        };
+      });
     }
 
     return workspaces;

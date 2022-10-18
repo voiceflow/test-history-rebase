@@ -50,6 +50,16 @@ export interface Workspace {
   organizationTrialDaysLeft: number | null;
 }
 
+export interface IdentityWorkspace {
+  id: string;
+  organizationID: string;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string;
+  name: string;
+  image: string;
+}
+
 export interface DBWorkspace {
   creator_id: number;
   team_id: string;

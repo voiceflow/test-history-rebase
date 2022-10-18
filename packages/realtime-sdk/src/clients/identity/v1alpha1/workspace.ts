@@ -1,3 +1,5 @@
+import { IdentityWorkspace } from '@realtime-sdk/models/Workspace';
+
 import { Resource, ResourceOptions } from '../resource';
 
 export class Workspace extends Resource {
@@ -17,5 +19,11 @@ export class Workspace extends Resource {
 
   public async remove(workspaceID: string): Promise<void> {
     await this.delete(`/${workspaceID}`);
+  }
+
+  public async list(): Promise<IdentityWorkspace[]> {
+    const { data } = await this.get<IdentityWorkspace[]>(`/`);
+
+    return data;
   }
 }

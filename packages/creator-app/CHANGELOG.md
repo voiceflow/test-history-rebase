@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.945.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.944.2...@voiceflow/creator-app@1.945.0) (2022-10-19)
+
+
+### Features
+
+* **creator-app:** NLUM first use tooltip + import icon indicator (NLU-373) ([#6157](https://github.com/voiceflow/creator-app/issues/6157)) ([c81cb78](https://github.com/voiceflow/creator-app/commit/c81cb7821c877c7d62d08433c9f71d3ad47c68b5))
+
+
+
+
+
 ## [1.944.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.944.1...@voiceflow/creator-app@1.944.2) (2022-10-19)
 
 

@@ -20,6 +20,12 @@ export class WorkspaceInvitation extends Resource {
     return data;
   }
 
+  public async acceptInvite(token: string): Promise<string> {
+    const { data } = await this.post<string>(`/accept/${token}`);
+
+    return data;
+  }
+
   public async checkInvite(token: string): Promise<boolean> {
     await this.head(`/accept/${token}`);
     return true;

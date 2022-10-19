@@ -105,7 +105,14 @@ class WorkspaceMemberService extends AbstractControl {
   }
 
   public async acceptInvite(creatorID: number, invite: string): Promise<string> {
-    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+    const [client, identityWorkspaceInviteEnabled] = await Promise.all([
+      this.services.voiceflow.getClientByUserID(creatorID),
+      this.services.workspace.isFeatureEnabled(creatorID, '', Realtime.FeatureFlag.IDENTITY_WORKSPACE_INVITE),
+    ]);
+
+    if (identityWorkspaceInviteEnabled) {
+      return client.identity.workspaceInvitation.acceptInvite(invite);
+    }
 
     return client.workspace.acceptInvite(invite);
   }

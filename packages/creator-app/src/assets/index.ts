@@ -31,6 +31,7 @@ export { default as supportGraphic } from '@/assets/svgs/support.svg?url';
 export { default as supportGraphicSmall } from '@/assets/svgs/support-small.svg?url';
 export { default as conversationGraphic } from '@/assets/svgs/conversation.svg?url';
 export { default as createGraphic } from '@/assets/svgs/create.svg?url';
+export { default as importIntents } from '@/assets/svgs/import-intents.svg?url';
 export { default as integrationGraphic } from '@/assets/svgs/integration.svg?url';
 export { default as lightbulbGraphic } from '@/assets/svgs/lightbulb.svg?url';
 export { default as noIntentsGraphic } from '@/assets/svgs/no-intents.svg?url';

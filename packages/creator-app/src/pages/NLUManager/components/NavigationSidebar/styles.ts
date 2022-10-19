@@ -26,6 +26,24 @@ export const ItemsContainer = styled.div`
   position: relative;
 `;
 
+export const StatusBubble = styled.div`
+  position: relative;
+  right: 6px;
+
+  &:after {
+    position: absolute;
+    left: 31px;
+    bottom: 28px;
+    display: block;
+    width: 4px;
+    height: 4px;
+    outline: solid 1px #fff;
+    border-radius: 50%;
+    background-color: #3d82e2;
+    content: '';
+  }
+`;
+
 export const Footer = styled.div`
   ${transition('background')}
   border-top: 1px solid ${({ theme }) => theme.colors.borders};

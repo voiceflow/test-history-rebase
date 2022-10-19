@@ -4,7 +4,7 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import { Path } from '@/config/routes';
 import ProjectPage from '@/pages/Project/components/ProjectPage';
 
-import { NavigationSidebar } from './components';
+import { FirstUsePopper, NavigationSidebar } from './components';
 import { useNLUManager } from './context';
 import { EntityTable, IntentTable, UnclassifiedData } from './pages';
 import * as S from './styles';
@@ -27,6 +27,7 @@ const NLUManager: React.FC = () => {
         <NavigationSidebar />
 
         <S.Content onScroll={handleScroll}>
+          <FirstUsePopper />
           <Switch>
             <Route path={Path.NLU_MANAGER_INTENTS} component={IntentTable} />
             <Route path={Path.NLU_MANAGER_ENTITIES} component={EntityTable} />

@@ -122,6 +122,7 @@ export { default as if } from './if.svg';
 export { default as ifV2 } from './if-v2.svg';
 export { default as image } from './image.svg';
 export { default as imageDropzone } from './image-dropzone.svg';
+export { default as importCircle } from './import-circle.svg';
 export { default as inFlow } from './in-flow.svg';
 export { default as info } from './info.svg';
 export { default as information } from './information.svg';

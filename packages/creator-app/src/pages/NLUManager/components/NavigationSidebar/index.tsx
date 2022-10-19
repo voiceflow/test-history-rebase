@@ -1,5 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, SvgIcon, TippyTooltip } from '@voiceflow/ui';
+import { Box, SvgIcon, TippyTooltip, useLocalStorageState } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';
@@ -20,6 +20,8 @@ import { Item } from './components';
 import * as S from './styles';
 
 const NavigationSidebar: React.FC = () => {
+  const [importClicked, setImportClicked] = useLocalStorageState('import-clicked', false);
+
   const nluManager = React.useContext(NLUManagerContext);
 
   const platform = useSelector(ProjectV2.active.platformSelector);
@@ -46,6 +48,11 @@ const NavigationSidebar: React.FC = () => {
   };
 
   const nluImport = useNLUImport({ fileExtensions, platform, onImportModel });
+
+  const onImport = () => {
+    nluImport.onUploadClick(NLUImportOrigin.NLU_MANAGER);
+    setImportClicked(true);
+  };
 
   return (
     <S.Container>
@@ -96,7 +103,8 @@ const NavigationSidebar: React.FC = () => {
           bodyOverflow
         >
           <Box px={16} pb={12}>
-            <Item onClick={() => nluImport.onUploadClick(NLUImportOrigin.NLU_MANAGER)} icon="downloadCircle" title="Import" />
+            <Item onClick={onImport} icon="importCircle" title="Import" />
+            {!importClicked && <S.StatusBubble />}
           </Box>
         </TippyTooltip>
       )}

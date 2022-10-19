@@ -22,7 +22,7 @@ const UploadedStage: React.FC<UploadedProps> = ({ redirectUrl, learnMoreUrl, but
       <Text textAlign="center" mb={20} color={ThemeColor.SECONDARY}>
         {description}. {learnMoreUrl && <Link href={learnMoreUrl}>Learn more</Link>}
       </Text>
-      <Link href={redirectUrl} target="_blank" rel="noopener noreferrer">
+      <Link href={redirectUrl}>
         <Button squareRadius>{buttonText}</Button>
       </Link>
     </Box.FlexCenter>

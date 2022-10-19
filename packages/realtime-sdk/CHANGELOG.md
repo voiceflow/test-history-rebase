@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.178.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.177.0...@voiceflow/realtime-sdk@1.178.0) (2022-10-19)
+
+
+### Features
+
+* implement update invite (CT-1070) ([#6209](https://github.com/voiceflow/creator-app/issues/6209)) ([390a1b4](https://github.com/voiceflow/creator-app/commit/390a1b42d6445cdb5e4bf31f77b76e44a02e0568))
+
+
+
+
+
 # [1.177.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.176.0...@voiceflow/realtime-sdk@1.177.0) (2022-10-19)
 
 

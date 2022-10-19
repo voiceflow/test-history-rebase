@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.120.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.120.0...@voiceflow/realtime@1.120.1) (2022-10-19)
+
+
+### Bug Fixes
+
+* component delete [bugfix] (BUG-65) ([#6204](https://github.com/voiceflow/creator-app/issues/6204)) ([fe97648](https://github.com/voiceflow/creator-app/commit/fe97648d592b119526a75ea9d2ce84612572c071)), closes [/github.com/voiceflow/creator-app/blob/4d3c28c78c2bf4915f07d741a5dca32284b5d404/packages/realtime/src/actions/domain/topicRemove.ts#L14](https://github.com//github.com/voiceflow/creator-app/blob/4d3c28c78c2bf4915f07d741a5dca32284b5d404/packages/realtime/src/actions/domain/topicRemove.ts/issues/L14)
+
+
+
+
+
 # [1.120.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.119.0...@voiceflow/realtime@1.120.0) (2022-10-19)
 
 

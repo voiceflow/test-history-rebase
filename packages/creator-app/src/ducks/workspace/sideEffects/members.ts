@@ -89,8 +89,11 @@ export const cancelInviteToActiveWorkspace =
 
     try {
       await dispatch.sync(Realtime.workspace.member.cancelInvite({ workspaceID: activeWorkspaceID, email }));
+      const isIdentityWorkspaceInviteEnabled = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.IDENTITY_WORKSPACE_INVITE);
 
-      dispatch(trackInvitationCancelled(activeWorkspaceID, email));
+      if (!isIdentityWorkspaceInviteEnabled) {
+        dispatch(trackInvitationCancelled(activeWorkspaceID, email));
+      }
 
       toast.success('Cancelled invite');
     } catch (err) {

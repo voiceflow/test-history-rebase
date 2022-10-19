@@ -35,4 +35,8 @@ export class WorkspaceInvitation extends Resource {
     const { data } = await this.post<Models.Identity.WorkspaceInvite>(`/${workspaceID}`, { email, role: userRole });
     return data;
   }
+
+  public async cancelInvite(workspaceID: string, email: string): Promise<void> {
+    await this.post<void>(`/${workspaceID}/delete`, { email });
+  }
 }

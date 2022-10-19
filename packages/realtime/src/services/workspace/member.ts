@@ -124,9 +124,16 @@ class WorkspaceMemberService extends AbstractControl {
   }
 
   public async cancelInvite(creatorID: number, workspaceID: string, email: string): Promise<void> {
-    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+    const [client, identityWorkspaceInviteEnabled] = await Promise.all([
+      this.services.voiceflow.getClientByUserID(creatorID),
+      this.services.workspace.isFeatureEnabled(creatorID, workspaceID, Realtime.FeatureFlag.IDENTITY_WORKSPACE_INVITE),
+    ]);
 
-    await client.workspace.cancelInvite(workspaceID, email);
+    if (identityWorkspaceInviteEnabled) {
+      return client.identity.workspaceInvitation.cancelInvite(workspaceID, email);
+    }
+
+    return client.workspace.cancelInvite(workspaceID, email);
   }
 }
 

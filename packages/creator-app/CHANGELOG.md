@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.944.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.943.1...@voiceflow/creator-app@1.944.0) (2022-10-19)
+
+
+### Features
+
+* implement cancel invite (CT-1071) ([#6208](https://github.com/voiceflow/creator-app/issues/6208)) ([60fb5b8](https://github.com/voiceflow/creator-app/commit/60fb5b874913d893f535c725532504fec3abc002))
+
+
+
+
+
 ## [1.943.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.943.0...@voiceflow/creator-app@1.943.1) (2022-10-18)
 
 **Note:** Version bump only for package @voiceflow/creator-app

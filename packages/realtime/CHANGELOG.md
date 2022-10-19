@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.119.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.118.1...@voiceflow/realtime@1.119.0) (2022-10-19)
+
+
+### Features
+
+* implement accept invite (CT-1073) ([#6207](https://github.com/voiceflow/creator-app/issues/6207)) ([01d9528](https://github.com/voiceflow/creator-app/commit/01d9528f345db43fd6840b3a491167f53779b14c))
+* implement cancel invite (CT-1071) ([#6208](https://github.com/voiceflow/creator-app/issues/6208)) ([60fb5b8](https://github.com/voiceflow/creator-app/commit/60fb5b874913d893f535c725532504fec3abc002))
+
+
+
+
+
 ## [1.118.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.118.0...@voiceflow/realtime@1.118.1) (2022-10-18)
 
 

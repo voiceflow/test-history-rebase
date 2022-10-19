@@ -11,7 +11,7 @@ class ComponentRemove extends AbstractDiagramResourceControl<Realtime.BaseDiagra
     const { creatorID } = ctx.data;
     const { diagramID, versionID, projectID, workspaceID } = payload;
 
-    await this.services.version.removeComponent(versionID, diagramID);
+    await Promise.all([this.services.version.removeComponent(versionID, diagramID), this.services.diagram.delete(diagramID)]);
 
     await this.server.processAs(creatorID, Realtime.diagram.crud.remove({ versionID, projectID, workspaceID, key: diagramID }));
   };

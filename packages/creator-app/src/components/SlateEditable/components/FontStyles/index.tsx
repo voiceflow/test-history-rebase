@@ -41,6 +41,7 @@ const FontStyles: React.FC = () => {
     <FormGroup
       leftColumn={
         <Select
+          useLayers
           value={fontFamily}
           options={Object.values(Font)}
           onSelect={onChangeFontFamily}
@@ -52,6 +53,7 @@ const FontStyles: React.FC = () => {
       }
       rightColumn={
         <Select
+          useLayers
           value={fontWeight}
           options={FONT_WEIGHTS_PER_FONT_FAMILY[fontFamily]}
           onSelect={onChangeFontWeight}

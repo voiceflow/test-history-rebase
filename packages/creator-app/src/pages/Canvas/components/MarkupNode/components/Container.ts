@@ -17,7 +17,9 @@ const Container = styled.div<ContainerProps>`
     backgroundColor &&
     `
     background-color: ${rgbaToHex(backgroundColor)};
-    border-radius: 8px;
+    border-radius: 6px;
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    box-shadow: rgb(0, 0, 0, 0.08) 0px 1px 3px 0px;
   `};
 
   ${({ isText, maxWidth }) =>

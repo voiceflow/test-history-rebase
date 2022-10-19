@@ -26,7 +26,7 @@ const BlockContainer = styled.div<StyledBlockContainerProps>`
   ${transition('background-color')}
 
   width: ${({ theme }) => theme.components.block.width}px;
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
   border: solid 2px #fff;
   padding: 0 ${BLOCK_CONTAINER_PADDING}px ${BLOCK_CONTAINER_PADDING}px ${BLOCK_CONTAINER_PADDING}px;
@@ -44,7 +44,7 @@ const BlockContainer = styled.div<StyledBlockContainerProps>`
 
   ::before {
     display: block;
-    border-radius: 8px;
+    border-radius: 10px;
 
     position: absolute;
     top: -3px;

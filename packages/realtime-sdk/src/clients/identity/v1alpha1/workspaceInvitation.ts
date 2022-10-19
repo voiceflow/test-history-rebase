@@ -39,4 +39,8 @@ export class WorkspaceInvitation extends Resource {
   public async cancelInvite(workspaceID: string, email: string): Promise<void> {
     await this.post<void>(`/${workspaceID}/delete`, { email });
   }
+
+  public async updateInvitation(workspaceID: string, email: string, userRole?: UserRole): Promise<void> {
+    await this.patch<void>(`/${workspaceID}`, { email, role: userRole });
+  }
 }

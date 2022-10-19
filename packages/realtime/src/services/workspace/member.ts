@@ -118,9 +118,16 @@ class WorkspaceMemberService extends AbstractControl {
   }
 
   public async updateInvite(creatorID: number, workspaceID: string, email: string, role?: UserRole): Promise<void> {
-    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+    const [client, identityWorkspaceInviteEnabled] = await Promise.all([
+      this.services.voiceflow.getClientByUserID(creatorID),
+      this.services.workspace.isFeatureEnabled(creatorID, workspaceID, Realtime.FeatureFlag.IDENTITY_WORKSPACE_INVITE),
+    ]);
 
-    await client.workspace.updateInvite(workspaceID, email, role);
+    if (identityWorkspaceInviteEnabled) {
+      return client.identity.workspaceInvitation.updateInvitation(workspaceID, email, role);
+    }
+
+    return client.workspace.updateInvite(workspaceID, email, role);
   }
 
   public async cancelInvite(creatorID: number, workspaceID: string, email: string): Promise<void> {

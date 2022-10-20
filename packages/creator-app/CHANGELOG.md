@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.949.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.948.0...@voiceflow/creator-app@1.949.0) (2022-10-20)
+
+
+### Features
+
+* cleanup link step menu (CT-000) ([#6216](https://github.com/voiceflow/creator-app/issues/6216)) ([fff3ea6](https://github.com/voiceflow/creator-app/commit/fff3ea6edbeb92a03c2d7ba2be9ff69441fd5653))
+* fix focus issue on buttons editor (CT-1028) ([#6219](https://github.com/voiceflow/creator-app/issues/6219)) ([2ea0f36](https://github.com/voiceflow/creator-app/commit/2ea0f36e33a5efc98ef60d44fd0ff53813d898df))
+
+
+
+
+
 # [1.948.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.947.0...@voiceflow/creator-app@1.948.0) (2022-10-20)
 
 

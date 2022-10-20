@@ -7,7 +7,6 @@ const MINIMUM_SCROLLBAR_WIDTH = 44;
 
 export const Container = styled.div<{ multiline?: boolean; fullWidth?: boolean }>`
   flex: 1;
-  overflow: hidden;
 
   ${({ multiline }) =>
     !multiline &&

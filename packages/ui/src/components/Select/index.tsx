@@ -188,6 +188,7 @@ function Select({
   validateCreate,
   labelSearchable = !label && searchable,
   selectedOptions,
+  nestedModifiers,
   formatInputValue,
   alwaysShowCreate = false,
   inDropdownSearch = false,
@@ -604,6 +605,7 @@ function Select({
           renderSearchSuffix={renderSearchSuffix}
           renderFooterAction={renderFooterAction}
           onChangeSearchLabel={onChangeSearchLabel}
+          nestedPopoverModifiers={nestedModifiers}
           createInputPlaceholder={createInputPlaceholder}
         />
       )}

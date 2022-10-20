@@ -1,4 +1,5 @@
 import SvgIcon, { SvgIconTypes } from '@ui/components/SvgIcon';
+import { Utils } from '@voiceflow/common';
 import React from 'react';
 
 import { Button, ButtonContainer, Container, IconContainer } from './components';
@@ -24,6 +25,7 @@ const Checkbox: React.FC<T.Props> = ({
   isFlat,
   padding = true,
   checked,
+  onChange = Utils.functional.noop,
   children,
   disabled,
   className,
@@ -49,7 +51,7 @@ const Checkbox: React.FC<T.Props> = ({
   return (
     <Container isFlat={isFlat} disabled={disabled} className={className} onClick={onLabelClick}>
       <ButtonContainer padding={padding}>
-        <Button type={inputType} checked={checked} disabled={disabled} color={checkBoxColor} {...props} />
+        <Button type={inputType} checked={checked} disabled={disabled} color={checkBoxColor} onChange={onChange} {...props} />
 
         <IconContainer isCheckbox={inputType === 'checkbox'}>
           <SvgIcon color={checkBoxColor} size={16} icon={icon} ignoreEvents />

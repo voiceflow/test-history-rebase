@@ -4,7 +4,20 @@ import { styled } from '@/hocs';
 
 export const SEARCH_INPUT_HEIGHT = 36;
 
-const SearchInput = styled(Input).attrs({ icon: 'search', iconProps: { size: 16, color: '#6e849a' } })`
+interface SearchInputProps {
+  onIconClick?: VoidFunction;
+}
+
+const SearchInput = styled(Input).attrs<SearchInputProps>(({ value, onIconClick }) => ({
+  icon: value ? 'close' : 'search',
+  iconProps: {
+    size: 16,
+    color: '#6e849a',
+    clickable: !!value,
+    onClick: value ? onIconClick : undefined,
+    style: { opacity: value ? undefined : 0.65 },
+  },
+}))<SearchInputProps>`
   min-height: ${SEARCH_INPUT_HEIGHT}px;
   background-color: transparent;
   padding: 0;
@@ -19,8 +32,6 @@ const SearchInput = styled(Input).attrs({ icon: 'search', iconProps: { size: 16,
   }
 
   ${SvgIcon.Container} {
-    opacity: 0.65;
-    color: #6e849a;
     margin-right: 10px;
   }
 `;

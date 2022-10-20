@@ -117,6 +117,7 @@ export interface BaseSelectProps {
   renderTrigger?: (options: TriggerRendererOptions) => React.ReactNode;
   inputStopProp?: boolean;
   optionsMaxSize?: number;
+  nestedModifiers?: PopperProps['modifiers'];
   labelSearchable?: boolean;
   alwaysShowCreate?: boolean;
   inDropdownSearch?: boolean;

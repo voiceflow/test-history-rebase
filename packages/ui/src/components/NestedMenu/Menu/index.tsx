@@ -96,6 +96,7 @@ function BaseNestedMenu({
   renderSearchSuffix,
   onBackFocusToParent,
   onChangeSearchLabel,
+  nestedPopoverModifiers = { offset: { enabled: true, offset: '4,0' } },
   createInputPlaceholder,
 }: NestedMenuInternalProps): React.ReactElement {
   const menuRef = React.useRef<HTMLUListElement>(null);
@@ -391,7 +392,7 @@ function BaseNestedMenu({
                   getOptionValue={getOptionValue}
                   inputWrapperNode={inputWrapperNode}
                   firstOptionIndex={firstOptionIndex}
-                  popoverModifiers={popoverModifiers}
+                  popoverModifiers={{ ...popoverModifiers, ...nestedPopoverModifiers }}
                   renderOptionLabel={renderOptionLabel}
                   focusedOptionIndex={focusedOptionIndex}
                   childFocusItemIndex={childFocusItemIndex}

@@ -64,6 +64,7 @@ export interface SharedNestedMenuProps {
   portalNode?: HTMLElement;
   renderEmpty?: Nullish<(options: { search: string; close: VoidFunction }) => React.ReactNode>;
   popoverModifiers?: PopperProps['modifiers'];
+  nestedPopoverModifiers?: PopperProps['modifiers'];
 }
 
 export type NestedMenuContainerRef = Popper;

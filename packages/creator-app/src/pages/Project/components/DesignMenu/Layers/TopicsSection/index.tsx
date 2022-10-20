@@ -7,7 +7,6 @@ import VirtualList from '@/components/VirtualList';
 import { Permission } from '@/config/permissions';
 import { DragItem } from '@/constants';
 import { useDidUpdateEffect, usePermission } from '@/hooks';
-import { withTargetValue } from '@/utils/dom';
 
 import Header from '../../Header';
 import { HEADER_MIN_HEIGHT, ITEM_HEIGHT } from '../constants';
@@ -115,7 +114,7 @@ const TopicsSection: React.FC = () => {
                 )
               }
             >
-              <SearchInput value={searchValue} onChange={withTargetValue(setSearchValue)} placeholder="Search" />
+              <SearchInput value={searchValue} onChangeText={setSearchValue} placeholder="Search" onIconClick={() => setSearchValue('')} />
             </Header>
           }
           listRef={listRef}

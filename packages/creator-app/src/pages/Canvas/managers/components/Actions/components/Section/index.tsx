@@ -62,6 +62,7 @@ const ActionsSection: React.FC<ActionsSectionProps> = ({ portID, editor, parentP
         title={<SectionV2.Title bold={withActions}>Actions</SectionV2.Title>}
         action={
           <SectionV2.AddButtonDropdown
+            maxHeight="100%"
             actions={[
               hasNavigationStep ? null : { icon: 'goToBlock', label: 'Go to Block', onClick: () => onAdd(BlockType.GO_TO_NODE) },
               hasNavigationStep ? null : { icon: 'intentSmall', label: 'Go to Intent', onClick: () => onAdd(BlockType.GO_TO_INTENT) },

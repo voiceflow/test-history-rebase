@@ -15,15 +15,17 @@ export interface Props {
   actions: Array<Option | UIOnlyMenuItemOption | null>;
   disabled?: boolean;
   placement?: BaseSelectProps['placement'];
+  maxHeight?: BaseSelectProps['maxHeight'];
 }
 
-const AddButtonDropdown: React.FC<Props> = ({ actions, disabled, placement = 'bottom-end' }) => {
+const AddButtonDropdown: React.FC<Props> = ({ actions, disabled, placement = 'bottom-end', maxHeight }) => {
   const options = actions.filter(Utils.array.isNotNullish);
 
   return (
     <Select<Option>
       options={options}
       minWidth={false}
+      maxHeight={maxHeight}
       onSelect={(option) => option.onClick?.()}
       disabled={disabled || !options.length}
       modifiers={{ offset: { enabled: true, offset: '10,10' } }}

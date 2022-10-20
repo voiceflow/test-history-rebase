@@ -12,7 +12,10 @@ const FooterActionsButton: React.FC<T.FooterActionsButtonProps> = ({ actions, pl
     minWidth={false}
     onSelect={(option) => option.onClick?.()}
     placement={placement}
-    modifiers={{ offset: { enabled: true, offset: '0,4' }, preventOverflow: { enabled: true, boundariesElement: document.body, padding: 16 } }}
+    modifiers={{
+      offset: { enabled: true, offset: '0,4' },
+      preventOverflow: { enabled: true, boundariesElement: document.body, padding: 16 },
+    }}
     getOptionKey={(_, index) => String(index)}
     isMultiLevel
     renderTrigger={({ ref, isOpen, onClick }) => (

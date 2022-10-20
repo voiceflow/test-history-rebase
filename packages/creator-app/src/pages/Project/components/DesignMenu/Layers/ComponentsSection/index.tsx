@@ -9,7 +9,6 @@ import * as Documentation from '@/config/documentation';
 import { Permission } from '@/config/permissions';
 import { DragItem } from '@/constants';
 import { useDidUpdateEffect, usePermission } from '@/hooks';
-import { withTargetValue } from '@/utils/dom';
 
 import Header from '../../Header';
 import { HEADER_MIN_HEIGHT, HORIZONTAL_DRAG_OFFSET, ITEM_HEIGHT } from '../constants';
@@ -106,7 +105,7 @@ const ComponentsSection: React.FC<ComponentsSectionProps> = ({ collapsed, setSec
               }
             >
               {(isSearch || !!components.length) && (
-                <SearchInput value={searchValue} onChange={withTargetValue(setSearchValue)} placeholder="Search" />
+                <SearchInput value={searchValue} onChangeText={setSearchValue} placeholder="Search" onIconClick={() => setSearchValue('')} />
               )}
             </Header>
           }

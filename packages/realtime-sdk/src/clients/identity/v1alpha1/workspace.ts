@@ -7,6 +7,12 @@ export class Workspace extends Resource {
     super({ ...options, path: '/workspace' });
   }
 
+  public async create(payload: { name: string; organizationID?: string; image?: string | null }): Promise<IdentityWorkspace> {
+    const { data } = await this.post('/', payload);
+
+    return data;
+  }
+
   public async update(workspaceID: string, payload: { name: string }): Promise<void> {
     await this.patch(`/${workspaceID}`, payload);
   }

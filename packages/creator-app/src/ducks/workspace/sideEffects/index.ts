@@ -11,7 +11,7 @@ import { projectByIDSelector } from '@/ducks/projectV2/selectors';
 import { goToDashboard, goToWorkspace } from '@/ducks/router/actions';
 import * as Session from '@/ducks/session';
 import { waitAsync } from '@/ducks/utils';
-import { allWorkspaceIDsSelector } from '@/ducks/workspaceV2/selectors';
+import { allWorkspaceIDsSelector, allWorkspacesSelector } from '@/ducks/workspaceV2/selectors';
 import { openError } from '@/ModalsV2/utils';
 import { SyncThunk, Thunk } from '@/store/types';
 
@@ -23,10 +23,12 @@ export * from './shared';
 const MEMBER_UPDATE_ERROR = 'Unable to Update Members';
 
 export const createWorkspace =
-  (data: { name: string; image?: string }): Thunk<Realtime.Workspace> =>
-  async (dispatch) => {
+  (payload: { name: string; image?: string }): Thunk<Realtime.Workspace> =>
+  (dispatch, getState) => {
     try {
-      return await dispatch(waitAsync(Realtime.workspace.create, { data }));
+      const workspaces = allWorkspacesSelector(getState());
+
+      return dispatch(waitAsync(Realtime.workspace.create, { ...payload, organizationID: workspaces[0]?.organizationID ?? undefined }));
     } catch (err) {
       openError({ error: extractErrorFromResponseData(err, 'Unable to create workspace') });
 

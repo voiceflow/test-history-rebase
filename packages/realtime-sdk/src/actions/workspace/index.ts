@@ -12,7 +12,9 @@ export * as member from './member';
 // creation
 
 export interface CreateWorkspacePayload {
-  data: { name: string; image?: string };
+  name: string;
+  image?: string;
+  organizationID?: string;
 }
 
 export const create = Utils.protocol.createAsyncAction<CreateWorkspacePayload, Workspace>(workspaceType('CREATE'));

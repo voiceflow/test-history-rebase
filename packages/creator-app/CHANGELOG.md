@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.947.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.946.1...@voiceflow/creator-app@1.947.0) (2022-10-20)
+
+
+### Features
+
+* identity workspace create (CT-1060) ([#6206](https://github.com/voiceflow/creator-app/issues/6206)) ([759d201](https://github.com/voiceflow/creator-app/commit/759d20184cad918fe154e743842d98f28787406b))
+
+
+
+
+
 ## [1.946.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.946.0...@voiceflow/creator-app@1.946.1) (2022-10-20)
 
 

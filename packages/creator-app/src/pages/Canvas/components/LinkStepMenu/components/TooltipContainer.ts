@@ -1,21 +1,4 @@
-import { Text } from '@voiceflow/ui';
-
-import { css, keyframes, styled } from '@/hocs';
-
-export const StyledText = styled(Text)<{ disabled: boolean; isLibrary: boolean }>`
-  display: block;
-  padding-left: ${({ isLibrary }) => (isLibrary ? 0 : 12)}px;
-  width: 100%;
-  max-width: 230px;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  ${({ disabled }) =>
-    disabled &&
-    css`
-      color: #62778c;
-    `}
-`;
+import { keyframes, styled } from '@/hocs';
 
 const animation = keyframes`
   from {
@@ -28,7 +11,7 @@ const animation = keyframes`
   }
 `;
 
-export const TooltipContainer = styled.div`
+const TooltipContainer = styled.div`
   max-width: 232px;
   position: relative;
   display: block;
@@ -42,3 +25,5 @@ export const TooltipContainer = styled.div`
   animation: ${animation} 0.12s cubic-bezier(0.165, 0.84, 0.44, 1);
   animation-fill-mode: both;
 `;
+
+export default TooltipContainer;

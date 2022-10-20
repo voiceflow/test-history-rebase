@@ -38,7 +38,7 @@ const TopLevelButton: React.FC<TopLevelButtonItem> = ({ section, animationIndex 
     <div {...hoverHandlers} className={ClassName.STEP_MENU_ITEM}>
       <Animations.FadeLeftContainer distance={-10} delay={animationIndex * 0.06} duration={0.1}>
         <S.ButtonContainer focused={isHovered} ref={rootPopper.setReferenceElement}>
-          <SvgIcon icon={section.icon} size={section.label === 'Logic' ? 24 : 22} />
+          {!!section.icon && <SvgIcon icon={section.icon} size={section.label === 'Logic' ? 24 : 22} />}
 
           <Text paddingTop="3px" fontSize="11px" fontWeight={600}>
             {section.label}

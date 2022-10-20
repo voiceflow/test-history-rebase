@@ -20,10 +20,10 @@ export interface StepItem {
 }
 
 export interface BaseTopStepItem {
-  icon: SvgIconTypes.Icon;
-  smallIcon?: SvgIconTypes.Icon;
+  icon?: SvgIconTypes.Icon;
   label: string;
   steps: unknown[];
+  smallIcon?: SvgIconTypes.Icon;
 }
 
 export interface TopStepItem extends BaseTopStepItem {
@@ -399,5 +399,6 @@ export enum LibraryStepType {
 export const getAllSections = (platform: VoiceflowConstants.PlatformType, project: VoiceflowConstants.ProjectType, library: LibrarySections) => {
   const steps = getStepSections(platform, project);
   const librarySection = getLibrarySection(library);
+
   return [...steps, librarySection];
 };

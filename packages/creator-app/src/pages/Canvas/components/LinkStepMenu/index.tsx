@@ -7,37 +7,40 @@ import * as CustomBlocks from '@/ducks/customBlock';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { usePermission, useSelector } from '@/hooks';
 import { LinkStepMenuContext } from '@/pages/Canvas/contexts';
-import { EVENT_LABEL, getAllSections, LibraryStepType, TopLibraryItem, TopStepItem } from '@/pages/Project/components/StepMenu/constants';
+import { EVENT_LABEL, getAllSections, LibraryStepType } from '@/pages/Project/components/StepMenu/constants';
 
-import { MenuButton } from './components';
+import { StepMenuItem, TemplateMenuItem } from './components';
 
 const getPopperOffset = ({ placement }: { placement: string }): [number, number] => (placement === 'right-end' ? [0, 14] : [-5, 14]);
 
-const LinkStepMenu: React.FC<{}> = () => {
-  const stepMenuContext = React.useContext(LinkStepMenuContext)!;
-  const virtualElement = React.useMemo(() => buildVirtualElement(stepMenuContext.position), [stepMenuContext.position]);
+const LinkStepMenu: React.FC = () => {
+  const { onHide, position } = React.useContext(LinkStepMenuContext)!;
+
+  const virtualElement = React.useMemo(() => buildVirtualElement(position), [position]);
+
   const popper = useVirtualElementPopper(virtualElement, {
     strategy: 'fixed',
     placement: 'right-start',
     modifiers: [{ name: 'offset', options: { offset: getPopperOffset } }],
   });
+  const upgradePopperRef = React.useRef<HTMLDivElement>(null);
   const popperContainerRef = React.useRef<HTMLUListElement>(null);
   const subMenuContainerRef = React.useRef<HTMLDivElement>(null);
-  const upgradePopperRef = React.useRef<HTMLDivElement>(null);
 
   const platform = useSelector(ProjectV2.active.platformSelector);
-  const projectType = useSelector(ProjectV2.active.projectTypeSelector);
   const templates = useSelector(CanvasTemplates.allCanvasTemplatesSelector);
+  const projectType = useSelector(ProjectV2.active.projectTypeSelector);
   const customBlocks = useSelector(CustomBlocks.allCustomBlocksSelector);
   const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
 
-  const steps = getAllSections(platform, projectType, {
-    [LibraryStepType.BLOCK_TEMPLATES]: templates,
-    [LibraryStepType.CUSTOM_BLOCK]: customBlocks,
-  }).filter((step) => {
-    if (step.label === EVENT_LABEL) return false;
-    return true;
-  });
+  const steps = React.useMemo(
+    () =>
+      getAllSections(platform, projectType, {
+        [LibraryStepType.CUSTOM_BLOCK]: customBlocks,
+        [LibraryStepType.BLOCK_TEMPLATES]: templates,
+      }).filter((step) => step.label !== EVENT_LABEL && (!step.isLibrary || step.librarySections.templates.length)),
+    [platform, projectType, templates, customBlocks]
+  );
 
   useOnClickOutside(
     [popperContainerRef],
@@ -45,24 +48,15 @@ const LinkStepMenu: React.FC<{}> = () => {
       if (
         !subMenuContainerRef.current?.contains(event.target as Node) &&
         !upgradePopperRef.current?.contains(event.target as Node) &&
-        stepMenuContext.isOpen &&
         event instanceof MouseEvent &&
-        event.clientX !== stepMenuContext.position[0] &&
-        event.clientY !== stepMenuContext.position[1]
+        event.clientX !== position[0] &&
+        event.clientY !== position[1]
       ) {
-        stepMenuContext.onHide({});
+        onHide({ abort: true });
       }
     },
-    [stepMenuContext.isOpen, stepMenuContext.onHide]
+    [onHide]
   );
-
-  if (!stepMenuContext.isOpen) {
-    return null;
-  }
-
-  const canRender = (step: TopStepItem | TopLibraryItem) => {
-    return !step.isLibrary || step.librarySections.templates.length;
-  };
 
   return (
     <Portal portalNode={document.body}>
@@ -70,9 +64,11 @@ const LinkStepMenu: React.FC<{}> = () => {
         {canEditCanvas && (
           <Menu ref={popperContainerRef} width={148} noMargins>
             {steps.map((step) =>
-              canRender(step) ? (
-                <MenuButton key={step.label} step={step} popperContainerRef={subMenuContainerRef} upgradePopperRef={upgradePopperRef} />
-              ) : null
+              step.isLibrary ? (
+                <TemplateMenuItem key={step.label} item={step} popperContainerRef={subMenuContainerRef} />
+              ) : (
+                <StepMenuItem key={step.label} item={step} upgradePopperRef={upgradePopperRef} popperContainerRef={subMenuContainerRef} />
+              )
             )}
           </Menu>
         )}
@@ -81,4 +77,10 @@ const LinkStepMenu: React.FC<{}> = () => {
   );
 };
 
-export default LinkStepMenu;
+const NewLinkContainer: React.FC = () => {
+  const stepMenuContext = React.useContext(LinkStepMenuContext)!;
+
+  return stepMenuContext.isOpen ? <LinkStepMenu /> : null;
+};
+
+export default NewLinkContainer;

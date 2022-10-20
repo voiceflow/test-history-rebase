@@ -35,7 +35,7 @@ export const useNewLinkAPI = <T extends SVGElement>() => {
   const removeEventListeners = React.useRef(Utils.functional.noop);
 
   const showStepMenu = React.useCallback((event: MouseEvent) => stepMenu.onOpen(event), []);
-  const hideStepMenu = React.useCallback(() => stepMenu.onHide({ abort: false }), []);
+  const hideStepMenu = React.useCallback(() => stepMenu.onHide(), []);
 
   React.useEffect(() => {
     engine.linkCreation.setElements(ref, markerRef);

@@ -6,12 +6,12 @@ import { EngineContext } from '@/pages/Canvas/contexts';
 import { Point } from '@/types';
 import { Coords } from '@/utils/geometry';
 
-interface LinkStepMenuValue {
+export interface LinkStepMenuValue {
   isOpen: boolean;
+  onOpen: (event: MouseEvent) => void;
+  onHide: (options?: { abort?: boolean }) => void;
   position: Point;
   nodePosition: Coords | null;
-  onOpen: (event: MouseEvent) => void;
-  onHide: ({ abort }: { abort?: boolean | undefined }) => void;
 }
 
 export const LinkStepMenuContext = React.createContext<Nullable<LinkStepMenuValue>>(null);
@@ -23,8 +23,9 @@ export const LinkStepMenuProvider: React.FC = ({ children }) => {
   const [position, setPosition] = React.useState<Point>([0, 0]);
   const [nodePosition, setNodePosition] = React.useState<Coords | null>(null);
 
-  const onHide = React.useCallback(({ abort = true }: { abort?: boolean } = {}) => {
+  const onHide = React.useCallback(({ abort }: { abort?: boolean } = {}) => {
     if (abort) engine.linkCreation.abort();
+
     setIsOpen(false);
     setPosition([0, 0]);
     setNodePosition(null);
@@ -37,6 +38,7 @@ export const LinkStepMenuProvider: React.FC = ({ children }) => {
       setPosition([event.clientX, event.clientY]);
       setNodePosition(engine.getMouseCoords() || new Coords([event.clientX, event.clientY]));
       setIsOpen(true);
+
       engine.linkCreation.blockViaLinkMenuShown();
     },
     [engine]

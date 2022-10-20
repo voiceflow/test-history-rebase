@@ -50,7 +50,9 @@ const NewLink: React.FC = () => {
   return (
     <Container>
       <HeadMarker id={NEW_LINK_ID} ref={api.markerRef} isHighlighted {...markerAttrs} blockViaLinkMode={stepMenuContext.isOpen} />
+
       {blockFromLink.isEnabled && <LinkStepMenu />}
+
       <Path
         d={path}
         id={Identifier.NEW_LINK}

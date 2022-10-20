@@ -2,6 +2,7 @@ import { IS_SAFARI, toast, ToastCallToAction } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
 
+import { CANVAS_COLOR } from '@/components/Canvas';
 import { BlockType } from '@/constants';
 import { PrototypeStatus } from '@/constants/prototype';
 import { SearchContext } from '@/contexts/SearchContext';
@@ -30,6 +31,7 @@ const Wrapper = styled.div`
   height: ${({ theme }) => (IS_SAFARI ? `calc(100vh - ${theme.components.projectPage.header.height}px)` : '100%')};
   overflow: hidden;
   overflow: clip;
+  background-color: ${CANVAS_COLOR};
 
   &.${CANVAS_MARKUP_CREATING_CLASSNAME}[data-markup-creating-type="${BlockType.MARKUP_TEXT}"] {
     cursor: text;

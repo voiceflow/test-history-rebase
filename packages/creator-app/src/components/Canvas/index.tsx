@@ -38,7 +38,8 @@ export const BUFFER_REGION = 2 ** 11; // 2048
 
 const ZOOM_FINISH_DURATION = 300;
 
-const GRID_COLOR = '#E3E4E7';
+const GRID_COLOR = '#dae2e2';
+export const CANVAS_COLOR = '#f4f6f6';
 
 export type CanvasAPI = Canvas['api'];
 
@@ -296,7 +297,7 @@ class Canvas extends React.PureComponent<
 
     if (this.props.canvasGridEnabled && !clear) {
       gridLayerEl.style.backgroundSize = backgroundSizeStyle(zoom);
-      gridLayerEl.style.backgroundImage = `radial-gradient(${GRID_COLOR} ${zoom / 70}px, #f9f9f9 ${zoom / 70}px)`;
+      gridLayerEl.style.backgroundImage = `radial-gradient(${GRID_COLOR} ${zoom / 70}px, ${CANVAS_COLOR} ${zoom / 70}px)`;
       gridLayerEl.style.backgroundPosition = backgroundPositionStyle(position);
     } else {
       gridLayerEl.style.backgroundImage = `none`;

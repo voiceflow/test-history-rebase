@@ -26,7 +26,7 @@ export const DEFAULT_SCHEME_COLORS: Record<ColorScheme, IColor> = {
   },
   [ColorScheme.LIGHT]: {
     standardColor: '#A1ADBA',
-    palette: createCustomPalette(['#EFF1F3', '#E7ECF3', '#CFD6DC', '#C0C9D1', '#B0BBC5', '#A1ADBA', '#718497', '#62778C', '#718497', '#62778C']),
+    palette: createCustomPalette(['#EFF1F3', '#dde4ea', '#ced7e0', '#C0C9D1', '#B0BBC5', '#A1ADBA', '#718497', '#62778C', '#718497', '#62778C']),
   },
   [ColorScheme.BLACK]: {
     standardColor: '#43494E',

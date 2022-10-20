@@ -1,5 +1,5 @@
 import { BaseNode } from '@voiceflow/base-types';
-import { Badge, Box, swallowEvent } from '@voiceflow/ui';
+import { Badge, Box, swallowEvent, useDebouncedCallback } from '@voiceflow/ui';
 import isEmpty from 'lodash/isEmpty';
 import React from 'react';
 
@@ -20,6 +20,8 @@ const ConditionValueSelect: React.FC<ConditionValueSelectProps> = ({ value = '',
   const [show, onShow, onHide] = useEnableDisable(false);
   const [empty, updateIsEmpty] = React.useState(true);
 
+  const debouncedSetError = useDebouncedCallback(100, setError);
+
   /**
    * using focus() on draftjs breaks the mention plugin,
    * this offers a temporary fix until library itself offers a build-in solution
@@ -29,7 +31,7 @@ const ConditionValueSelect: React.FC<ConditionValueSelectProps> = ({ value = '',
   const onUpdate = React.useCallback(
     (value: string) => {
       if (isEmpty(value)) {
-        setError();
+        debouncedSetError();
         return;
       }
 
@@ -81,7 +83,7 @@ const ConditionValueSelect: React.FC<ConditionValueSelectProps> = ({ value = '',
       />
       {error && (
         <Box fontSize={13} color="#e91e63" mt={16}>
-          {isEmpty(value) ? 'This is required input' : 'Input can only contain values or a variable, not both. No empty values.'}
+          {isEmpty(value) ? 'This is a required input' : 'Input can only contain values or a variable, not both. No empty values.'}
         </Box>
       )}
     </>

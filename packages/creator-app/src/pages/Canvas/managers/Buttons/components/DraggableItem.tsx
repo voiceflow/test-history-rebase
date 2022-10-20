@@ -50,7 +50,7 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
 
   const [attachIntentCollapsed, setAttachIntentCollapsed] = React.useState(!intent);
 
-  const autofocus = latestCreatedKey === itemKey || editor.data.buttons.length === 1;
+  const autofocus = latestCreatedKey === itemKey;
 
   const [sectionRef, scrollSectionIntoView] = useAutoScrollNodeIntoView<HTMLDivElement>({ condition: autofocus, options: { block: 'end' } });
 

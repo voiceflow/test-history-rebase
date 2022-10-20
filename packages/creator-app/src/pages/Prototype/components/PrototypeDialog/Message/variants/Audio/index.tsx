@@ -3,7 +3,7 @@ import React from 'react';
 
 import BaseMessage, { BaseMessageProps } from '../../Base';
 import { RECTANGLE_CLASS_ARRAY, WAVE_COLOR } from './constants';
-import { WaveContainer } from './styles';
+import * as S from './styles';
 
 interface AudioProps extends Omit<BaseMessageProps, 'iconProps'> {
   name: string;
@@ -48,11 +48,11 @@ const Audio: React.FC<AudioProps> = ({ audio, onPause, onContinue, audioSrc, nam
       <AudioPlayer.ProgressBar percent={audioPlayer.percent} style={{ backgroundColor: WAVE_COLOR, opacity: 0.12, top: 0 }} />
 
       <Flex style={{ position: 'relative' }}>
-        <WaveContainer playing={audioPlayer.playing}>
+        <S.WaveContainer playing={audioPlayer.playing}>
           {RECTANGLE_CLASS_ARRAY.map((val, index) => (
             <div key={index} className={`rectangle-${val}`} />
           ))}
-        </WaveContainer>
+        </S.WaveContainer>
 
         <Box color="#8f8e94" fontSize={14}>
           {AudioPlayer.formatTime(audioPlayer.currentTime)}

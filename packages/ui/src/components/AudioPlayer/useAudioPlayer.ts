@@ -103,7 +103,6 @@ function useAudioPlayer({ audio: audioProp, autoplay = false, audioURL, trackOnl
     audio.addEventListener('pause', onPause);
     audio.addEventListener('ended', onEnded);
     audio.addEventListener('error', onError);
-    audio.addEventListener('suspend', onError);
     audio.addEventListener('stalled', onError);
     audio.addEventListener('loadeddata', onLoadedData);
     audio.addEventListener('timeupdate', onTimeUpdated);
@@ -115,7 +114,6 @@ function useAudioPlayer({ audio: audioProp, autoplay = false, audioURL, trackOnl
       audio.removeEventListener('pause', onPause);
       audio.removeEventListener('ended', onEnded);
       audio.removeEventListener('error', onError);
-      audio.removeEventListener('suspend', onError);
       audio.removeEventListener('stalled', onError);
       audio.removeEventListener('loadeddata', onLoadedData);
       audio.removeEventListener('timeupdate', onTimeUpdated);

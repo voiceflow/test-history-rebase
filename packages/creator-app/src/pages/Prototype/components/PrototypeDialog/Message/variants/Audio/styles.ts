@@ -23,8 +23,6 @@ export const WaveContainer = styled(Flex)<{ playing: boolean }>`
             animation-play-state: running;
           `
         : css`
-            //-webkit-animation: load 0s ease-in-out infinite;
-            //animation: load 0s ease-in-out infinite;
             background: #8f8e93 !important;
             animation-play-state: paused;
           `}

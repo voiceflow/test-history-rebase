@@ -21,7 +21,7 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Component, Realtime.NodeD
       },
     },
     data: {
-      name: 'Component',
+      name: '',
       inputs: [],
       outputs: [],
       diagramID,

@@ -4,7 +4,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Menu, Portal, stopPropagation, SvgIcon, SvgIconTypes, TippyTooltip, usePopper } from '@voiceflow/ui';
 import React from 'react';
 
-import { getLockedStepTooltipText, isLockedStep, lockedStepTooltipButtonText, lockedStepTypes } from '@/config/planLimits/steps';
+import { getLockedStepTooltipText, isLockedStep, lockedStepTooltipButtonText, LockedStepTypes } from '@/config/planLimits/steps';
 import { ModalType, StepMenuType } from '@/constants';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useHover, useModals, useSelector, useTheme } from '@/hooks';
@@ -92,7 +92,7 @@ const SubMenuButton: React.FC<SubMenuButtonProps> = ({ step, template, upgradePo
                   onClick={isLocked ? () => openPaymentModal() : () => window.open(step?.tooltipLink, '_blank')}
                   buttonText={isLocked ? lockedStepTooltipButtonText : 'Learn More'}
                 >
-                  {getLockedStepTooltipText(step.type as lockedStepTypes)}
+                  {getLockedStepTooltipText(step.type as LockedStepTypes)}
                 </TippyTooltip.FooterButton>
               </TooltipContainer>
             </div>

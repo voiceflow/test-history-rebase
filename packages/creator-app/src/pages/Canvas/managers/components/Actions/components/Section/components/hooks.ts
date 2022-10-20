@@ -24,6 +24,7 @@ export const useItemConfig = (getManager: ManagerGetter, data: Realtime.NodeData
 
   const intentMap = useSelector(IntentV2.customIntentMapSelector);
   const domainMap = useSelector(Domain.domainsMapSelector);
+  const diagramMap = useSelector(DiagramV2.diagramMapSelector);
   const sharedNodes = useSelector(DiagramV2.sharedNodesSelector);
 
   switch (data.type) {
@@ -109,6 +110,19 @@ export const useItemConfig = (getManager: ManagerGetter, data: Realtime.NodeData
         isEmpty: !code,
         defaultName: 'Javascript',
         placeholder: 'Add javascript',
+      };
+    }
+
+    case Realtime.BlockType.COMPONENT: {
+      const { diagramID } = data as Realtime.NodeData<Realtime.NodeData.Component>;
+
+      const diagram = diagramID ? diagramMap[diagramID] : null;
+
+      return {
+        icon: manager.icon,
+        isEmpty: !diagram,
+        defaultName: diagram?.name ?? 'Component',
+        placeholder: 'Select component',
       };
     }
 

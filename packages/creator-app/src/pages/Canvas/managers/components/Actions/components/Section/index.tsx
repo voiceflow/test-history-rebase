@@ -78,6 +78,7 @@ const ActionsSection: React.FC<ActionsSectionProps> = ({ portID, editor, parentP
                 onClick: () => onAdd(BlockType.INTEGRATION, { selectedIntegration: BaseNode.Utils.IntegrationType.CUSTOM_API }),
               },
               { icon: 'systemCode', label: 'Code', onClick: () => onAdd(BlockType.CODE) },
+              { icon: 'componentOutline', label: 'Component', onClick: () => onAdd(BlockType.COMPONENT) },
             ]}
           />
         }

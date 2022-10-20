@@ -5,14 +5,14 @@ import { BlockType } from '@/constants';
 
 export const LOCKED_STEPS = new Set([BlockType.CODE, BlockType.TRACE]);
 
-export type lockedStepTypes = BlockType.CODE | BlockType.TRACE;
+export type LockedStepTypes = BlockType.CODE | BlockType.TRACE;
 
 export const LockedStepLabels = {
   [BlockType.CODE]: 'Javascript',
   [BlockType.TRACE]: 'Custom Actions',
 };
 
-export const getLockedStepTooltipText = (step: lockedStepTypes) => `Extend the power of your assistants by adding ${LockedStepLabels[step]}.`;
+export const getLockedStepTooltipText = (step: LockedStepTypes) => `Extend the power of your assistants by adding ${LockedStepLabels[step]}.`;
 
 export const lockedStepTooltipButtonText = UPGRADE_TO_TEAM_ACTION_LABEL;
 

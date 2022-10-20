@@ -5,7 +5,7 @@ import React from 'react';
 import { useDrag } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
 
-import { getLockedStepTooltipText, isLockedStep, lockedStepTooltipButtonText, lockedStepTypes } from '@/config/planLimits/steps';
+import { getLockedStepTooltipText, isLockedStep, lockedStepTooltipButtonText, LockedStepTypes } from '@/config/planLimits/steps';
 import { BlockType, DragItem, ModalType } from '@/constants';
 import { AutoPanningCacheContext } from '@/contexts';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
@@ -122,7 +122,7 @@ const SubMenuButton: React.FC<SubMenuButtonProps> = ({
                       onClick={isLocked ? () => openPaymentModal() : onOpenInternalURLInANewTabFactory(tooltipLink)}
                       buttonText={isLocked ? lockedStepTooltipButtonText : 'Learn More'}
                     >
-                      {isLocked ? getLockedStepTooltipText(type as lockedStepTypes) : tooltipText}
+                      {isLocked ? getLockedStepTooltipText(type as LockedStepTypes) : tooltipText}
                     </TippyTooltip.FooterButton>
                   ) : (
                     <TippyTooltip.Multiline width={168}>{tooltipText}</TippyTooltip.Multiline>

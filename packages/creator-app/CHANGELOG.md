@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.946.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.945.0...@voiceflow/creator-app@1.946.0) (2022-10-20)
+
+
+### Bug Fixes
+
+* variables input box-shadow (CT-1088) ([#6218](https://github.com/voiceflow/creator-app/issues/6218)) ([6406a10](https://github.com/voiceflow/creator-app/commit/6406a108aa719d3d47afa0bc537337fb717005c6))
+
+
+### Features
+
+* component action (CT-976) ([#6212](https://github.com/voiceflow/creator-app/issues/6212)) ([c93eece](https://github.com/voiceflow/creator-app/commit/c93eece14ac6ec55c60d106f596c6d142d3a34a4))
+
+
+
+
+
 # [1.945.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.944.2...@voiceflow/creator-app@1.945.0) (2022-10-19)
 
 

@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.948.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.947.0...@voiceflow/creator-app@1.948.0) (2022-10-20)
+
+
+### Bug Fixes
+
+* fix prototype audio animation (CT-1031) ([#6213](https://github.com/voiceflow/creator-app/issues/6213)) ([552ffd3](https://github.com/voiceflow/creator-app/commit/552ffd359571ac9883d090d7eec5eb89142f88cd))
+
+
+### Features
+
+* **creator-app:** updated NLU quickview arrow icons (CT-1081) ([#6214](https://github.com/voiceflow/creator-app/issues/6214)) ([ac934ae](https://github.com/voiceflow/creator-app/commit/ac934aebdf2797c1b667f1f606288b0e7d2fb366))
+
+
+
+
+
 # [1.947.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.946.1...@voiceflow/creator-app@1.947.0) (2022-10-20)
 
 

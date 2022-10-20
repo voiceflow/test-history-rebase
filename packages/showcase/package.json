@@ -1,12 +1,12 @@
 {
   "name": "@voiceflow/showcase",
-  "version": "1.26.22",
+  "version": "1.26.23",
   "author": "Voiceflow",
   "bugs": {
     "url": "https://github.com/voiceflow/creator-app/issues"
   },
   "dependencies": {
-    "@voiceflow/ui": "^1.161.1",
+    "@voiceflow/ui": "^1.161.2",
     "bootstrap": "4.6.1",
     "react": "17.0.2",
     "react-day-picker": "7.4.10",

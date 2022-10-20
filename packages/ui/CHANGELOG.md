@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.162.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.161.2...@voiceflow/ui@1.162.0) (2022-10-20)
+
+
+### Features
+
+* update canvas colours (CT-1096) ([#6203](https://github.com/voiceflow/creator-app/issues/6203)) ([695be74](https://github.com/voiceflow/creator-app/commit/695be7444ffb0735193323460ce9871af0d340ad))
+
+
+
+
+
 ## [1.161.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.161.1...@voiceflow/ui@1.161.2) (2022-10-20)
 
 

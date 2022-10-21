@@ -31,4 +31,5 @@ export default Object.assign(Snackbar, {
   PrimaryButton: S.PrimaryButton,
   Text,
   Icon: S.Icon,
+  ClickableBody: S.ClickableBody,
 });

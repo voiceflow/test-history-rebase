@@ -1,7 +1,7 @@
 import Box from '@ui/components/Box';
 import Button from '@ui/components/Button';
 import SvgIcon from '@ui/components/SvgIcon';
-import { styled } from '@ui/styles';
+import { styled, transition } from '@ui/styles';
 import * as Animations from '@ui/styles/animations';
 
 export const RECONNECT_TIMEOUT = 10;
@@ -38,5 +38,21 @@ export const Snackbar = styled(Box.FlexCenter)`
 export const Icon = styled(SvgIcon).attrs({ mx: 12 })``;
 
 export const DarkButton = styled(Button.DarkButton).attrs({ px: 12, py: 5 })``;
+
+export const ClickableBody = styled(Box.FlexCenter)`
+  padding: 6px;
+  margin: -6px;
+  height: 40px;
+  cursor: pointer;
+
+  ${Icon} {
+    ${transition('opacity')};
+    opacity: 0.85;
+  }
+
+  &:hover ${Icon} {
+    opacity: 1;
+  }
+`;
 
 export const PrimaryButton = styled(Button.PrimaryButton).attrs({ px: 12, py: 5 })``;

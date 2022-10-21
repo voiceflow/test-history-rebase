@@ -21,7 +21,7 @@ import {
 } from './components';
 import { ButtonVariant } from './constants';
 
-export type { PrimaryButtonProps, QuaternaryButtonProps, SecondaryButtonProps, TertiaryButtonProps } from './components';
+export type { DarkButtonProps, PrimaryButtonProps, QuaternaryButtonProps, SecondaryButtonProps, TertiaryButtonProps } from './components';
 export * from './components';
 export { ButtonVariant };
 

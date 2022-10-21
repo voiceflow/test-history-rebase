@@ -1,4 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { LOCATION_CHANGE, LocationChangeAction } from 'connected-react-router';
 import { createSelector } from 'reselect';
 
 import { createAction, createKeyedSelector } from '@/ducks/utils';
@@ -6,7 +7,7 @@ import { Action, Reducer, RootReducer } from '@/store/types';
 
 import { creatorStateSelector } from './selectors';
 
-export type DiagramsHistoryState = string[];
+export type DiagramsHistoryState = { diagramID: string; nodeID?: string }[];
 
 export const DIAGRAMS_HISTORY_STATE_KEY = 'diagramsHistory';
 
@@ -22,7 +23,7 @@ export enum DiagramsHistoryAction {
 
 export type DiagramsHistoryPop = Action<DiagramsHistoryAction.POP>;
 
-export type DiagramsHistoryPush = Action<DiagramsHistoryAction.PUSH, { diagramID: string }>;
+export type DiagramsHistoryPush = Action<DiagramsHistoryAction.PUSH, { diagramID: string; nodeID?: string }>;
 
 export type DiagramsHistoryClear = Action<DiagramsHistoryAction.CLEAR>;
 
@@ -32,12 +33,20 @@ type AnyDiagramsHistoryAction = DiagramsHistoryPop | DiagramsHistoryPush | Diagr
 
 export const diagramsHistoryPopReducer: Reducer<DiagramsHistoryState, DiagramsHistoryPop> = (state, _action) => state.slice(0, state.length - 1);
 
-export const diagramsHistoryPushReducer: Reducer<DiagramsHistoryState, DiagramsHistoryPush> = (state, { payload: { diagramID } }) => [
+export const diagramsHistoryPushReducer: Reducer<DiagramsHistoryState, DiagramsHistoryPush> = (state, { payload: { diagramID, nodeID } }) => [
   ...state,
-  diagramID,
+  { diagramID, nodeID },
 ];
 
-const diagramsHistoryReducer: RootReducer<DiagramsHistoryState, AnyDiagramsHistoryAction> = (state = INITIAL_DIAGRAMS_HISTORY_STATE, action) => {
+const diagramsHistoryReducer: RootReducer<DiagramsHistoryState, AnyDiagramsHistoryAction | LocationChangeAction> = (
+  state = INITIAL_DIAGRAMS_HISTORY_STATE,
+  action
+) => {
+  // If user navigates using browser controls, we should clear the history
+  if (action.type === LOCATION_CHANGE && action.payload.action === 'POP') {
+    return INITIAL_DIAGRAMS_HISTORY_STATE;
+  }
+
   switch (action.type) {
     case Realtime.creator.reset.type:
     case DiagramsHistoryAction.CLEAR:
@@ -59,15 +68,16 @@ const rootSelector = createKeyedSelector(creatorStateSelector, DIAGRAMS_HISTORY_
 
 export { rootSelector as creatorDiagramsHistorySelector };
 
-export const previousDiagramIDSelector = createSelector(
+export const previousDiagramHistoryStateSelector = createSelector(
   [rootSelector],
-  (diagramsHistory): string | null => diagramsHistory[diagramsHistory.length - 2] ?? null
+  (diagramsHistory): { diagramID: string; nodeID?: string } | null => diagramsHistory[diagramsHistory.length - 1] ?? null
 );
 
 // action creators
 
 export const diagramsHistoryPop = (): DiagramsHistoryPop => createAction(DiagramsHistoryAction.POP);
 
-export const diagramsHistoryPush = (diagramID: string): DiagramsHistoryPush => createAction(DiagramsHistoryAction.PUSH, { diagramID });
+export const diagramsHistoryPush = (diagramID: string, nodeID?: string): DiagramsHistoryPush =>
+  createAction(DiagramsHistoryAction.PUSH, { diagramID, nodeID });
 
 export const diagramsHistoryClear = (): DiagramsHistoryClear => createAction(DiagramsHistoryAction.CLEAR);

@@ -217,20 +217,26 @@ export const goToDiagram =
   };
 
 export const goToDiagramHistoryPush =
-  (diagramID: string, nodeID?: string): Thunk =>
-  async (dispatch) => {
+  (diagramID: string, nodeID?: string, activeNodeID?: string): Thunk =>
+  async (dispatch, getState) => {
+    const activeDiagramID = Session.activeDiagramIDSelector(getState());
+
+    Errors.assertDiagramID(activeDiagramID);
+
     await dispatch(goToDiagram(diagramID, nodeID));
 
-    dispatch(Creator.diagramsHistoryPush(diagramID));
+    dispatch(Creator.diagramsHistoryPush(activeDiagramID, activeNodeID));
   };
 
-export const goToDiagramHistoryPop =
-  (diagramID: string): Thunk =>
-  async (dispatch) => {
-    await dispatch(goToDiagram(diagramID));
+export const goToDiagramHistoryPop = (): Thunk => async (dispatch, getState) => {
+  const { diagramID, nodeID } = Creator.previousDiagramHistoryStateSelector(getState()) || {};
 
-    dispatch(Creator.diagramsHistoryPop());
-  };
+  Errors.assertDiagramID(diagramID);
+
+  await dispatch(goToDiagram(diagramID, nodeID));
+
+  dispatch(Creator.diagramsHistoryPop());
+};
 
 export const goToDiagramHistoryClear =
   (diagramID: string, nodeID?: string): Thunk =>

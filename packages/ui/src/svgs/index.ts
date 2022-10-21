@@ -31,6 +31,7 @@ export { default as bookmark2 } from './bookmark-2.svg';
 export { default as bookmarkActive } from './bookmark-active.svg';
 export { default as builtInIntent } from './built-in-intent.svg';
 export { default as button } from './button.svg';
+export { default as systemBack } from './system-back.svg';
 
 // c
 export { default as captureV2 } from './capture-v2.svg';

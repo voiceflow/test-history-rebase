@@ -20,7 +20,7 @@ const ComponentStep: ConnectedStep<Realtime.NodeData.Component, Realtime.NodeDat
   const onClick = () => {
     perf.action(PerfAction.COMPONENT_NODE__LINK_CLICK);
 
-    if (data.diagramID) goToDiagramHistoryPush(data.diagramID);
+    if (data.diagramID) goToDiagramHistoryPush(data.diagramID, undefined, data.nodeID);
   };
 
   const label = data.diagramID ? diagramMap[data.diagramID]?.name : null;

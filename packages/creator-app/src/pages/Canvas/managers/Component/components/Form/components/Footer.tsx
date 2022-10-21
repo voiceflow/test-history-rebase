@@ -22,7 +22,7 @@ const Footer: React.FC<FooterProps> = ({ editor, tutorial = Documentation.COMPON
   return (
     <EditorV2.DefaultFooter tutorial={tutorial}>
       {diagram && (
-        <Button variant={Button.Variant.PRIMARY} onClick={() => goToDiagram(diagram.id)} squareRadius>
+        <Button variant={Button.Variant.PRIMARY} onClick={() => goToDiagram(diagram.id, undefined, editor.nodeID)} squareRadius>
           Enter Component
         </Button>
       )}

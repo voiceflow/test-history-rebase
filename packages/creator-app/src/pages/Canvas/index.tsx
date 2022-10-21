@@ -6,6 +6,7 @@ import * as CreatorV2 from '@/ducks/creatorV2/utils/selector';
 import { DiagramSubscriptionGate } from '@/gates';
 import { compose, withBatchLoadingGate } from '@/hocs';
 import { useRAF, useRegistration, useTeardown } from '@/hooks';
+import ReturnToInstanceSnackbar from '@/pages/Canvas/components/ReturnToInstanceSnackbar';
 import { DiagramHeartbeatContext, SelectionSetTargetsContext } from '@/pages/Project/contexts';
 
 import Container from './components/CanvasContainer';
@@ -91,6 +92,8 @@ const Canvas: React.FC<CanvasProps> = ({ isPrototypingMode }) => {
           </>
         )}
       </Container>
+
+      <ReturnToInstanceSnackbar />
 
       <NLUQuickView />
       <SlotEditModal />

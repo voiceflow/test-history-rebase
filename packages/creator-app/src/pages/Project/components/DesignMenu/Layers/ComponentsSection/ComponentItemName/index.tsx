@@ -48,7 +48,7 @@ const ComponentItemName: React.ForwardRefRenderFunction<HTMLDivElement, Componen
   const [isHovered, , hoverHandlers] = useHover();
   const [isClickedState, enableClickedState, clearClickedState] = useEnableDisable();
   const [hasTCEditPermissions] = usePermission(Permission.REORDER_TOPICS_AND_COMPONENTS);
-  const goToDiagram = useDispatch(Router.goToDiagramHistoryPush);
+  const goToDiagram = useDispatch(Router.goToDiagramHistoryClear);
 
   const { inputRef, catEdit, localName, onSaveName, setLocalName, renameEnabled, toggleRenameEnabled } = useDiagramRename({
     diagramID,

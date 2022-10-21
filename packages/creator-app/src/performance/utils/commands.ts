@@ -45,7 +45,7 @@ const createCommands = (runner: Runner) => {
     },
 
     login: async (timeout = 5000): Promise<void> => {
-      window.store.dispatch(Session.basicAuthLogin(MOCK_DATA.LOGIN));
+      window.store.dispatch(Session.signin(MOCK_DATA.LOGIN));
 
       await commands.waitAction(PerfAction.DASHBOARD_RENDERED, timeout);
     },

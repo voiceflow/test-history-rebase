@@ -1,15 +1,14 @@
-import { Box, BoxFlexApart, Button, ButtonVariant, ClickableText, isNetworkError, preventDefault, ThemeColor, toast } from '@voiceflow/ui';
+import { Box, Button, ClickableText, isNetworkError, preventDefault, ThemeColor, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';
 import * as Router from '@/ducks/router';
-import { connect } from '@/hocs';
+import * as Session from '@/ducks/session';
+import { useDispatch } from '@/hooks';
 import HeaderBox from '@/pages/Auth/components/HeaderBox';
-import { ConnectedProps } from '@/types';
 
 import { EmailInput } from '../../components';
 import { SSO_REQUIRED } from '../../constants';
-import { getDomainSAML } from '../../hooks';
 import { ResetEmailStage } from '../constants';
 
 export interface ResetEmailFormProps {
@@ -18,12 +17,17 @@ export interface ResetEmailFormProps {
   setStage: (stage: ResetEmailStage) => void;
 }
 
-const ResetEmailForm: React.FC<ResetEmailFormProps & ConnectedResetEmailFormProps> = ({ email, goToLogin, setEmail, setStage }) => {
-  const [ssoRequired, setSsoRequired] = React.useState(false);
+const ResetEmailForm: React.FC<ResetEmailFormProps> = ({ email, setEmail, setStage }) => {
+  const goToLogin = useDispatch(Router.goToLogin);
+  const getSamlLoginURL = useDispatch(Session.getSamlLoginURL);
+
+  const [isSaml, setIsSaml] = React.useState(false);
 
   const resetEmail = async () => {
-    if (await getDomainSAML(email)) {
-      setSsoRequired(true);
+    const samlLoginURL = await getSamlLoginURL(email);
+
+    if (samlLoginURL) {
+      setIsSaml(true);
       return;
     }
 
@@ -48,29 +52,26 @@ const ResetEmailForm: React.FC<ResetEmailFormProps & ConnectedResetEmailFormProp
       <HeaderBox>
         <h1>Reset password</h1>
       </HeaderBox>
-      <EmailInput value={email} onChange={setEmail} error={ssoRequired} />
-      {ssoRequired && (
+
+      <EmailInput value={email} onChange={setEmail} error={isSaml} />
+
+      {isSaml && (
         <Box mt={8} fontSize={13} color={ThemeColor.RED}>
           {SSO_REQUIRED}
         </Box>
       )}
 
-      <BoxFlexApart mt={32}>
+      <Box.FlexApart mt={32}>
         <div className="auth__link">
           <ClickableText onClick={() => goToLogin()}>Back to log in</ClickableText>
         </div>
-        <Button variant={ButtonVariant.PRIMARY} type="submit">
+
+        <Button variant={Button.Variant.PRIMARY} type="submit">
           Send Recovery Email
         </Button>
-      </BoxFlexApart>
+      </Box.FlexApart>
     </form>
   );
 };
 
-const mapDispatchToProps = {
-  goToLogin: Router.goToLogin,
-};
-
-type ConnectedResetEmailFormProps = ConnectedProps<{}, typeof mapDispatchToProps>;
-
-export default connect(null, mapDispatchToProps)(ResetEmailForm) as React.FC<ResetEmailFormProps>;
+export default ResetEmailForm;

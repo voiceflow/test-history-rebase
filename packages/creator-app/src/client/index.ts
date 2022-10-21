@@ -1,6 +1,7 @@
 import { getPlatformClient, platformClients } from '@/platforms/selectors';
 
 import api from './api';
+import auth from './auth';
 import backup from './backup';
 import canvasExport from './canvasExport';
 import comment from './comment';
@@ -31,6 +32,7 @@ type Platform = typeof getPlatformClient & typeof platformClients;
 
 const client = {
   api,
+  auth,
   identity,
 
   platform: Object.assign(getPlatformClient, platformClients) as Platform,

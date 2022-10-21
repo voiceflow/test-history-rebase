@@ -1,6 +1,6 @@
 import { BillingPeriod, PlanType, PromoType } from '@voiceflow/internal';
 
-export type Query = Query.Onboarding & Query.Dashboard & Query.Auth & Query.Canvas & Query.Okta;
+export type Query = Query.Onboarding & Query.Dashboard & Query.Auth & Query.Canvas & Query.Okta & Query.SSO;
 
 export namespace Query {
   export type Onboarding = Partial<{
@@ -41,5 +41,11 @@ export namespace Query {
     code: string;
     state: string;
     error_description: string;
+  }>;
+
+  export type SSO = Partial<{
+    token_type: string;
+    is_new_user: string;
+    access_token: string;
   }>;
 }

@@ -1,9 +1,9 @@
 import * as Models from '@realtime-sdk/models';
 
-import { Resource, ResourceOptions } from '../resource';
+import { NestResource, NestResourceOptions } from '../../nest';
 
-export class User extends Resource {
-  constructor(options: ResourceOptions) {
+export class User extends NestResource {
+  constructor(options: NestResourceOptions) {
     super({ ...options, path: '/user' });
   }
 

@@ -1,9 +1,9 @@
 import { IdentityWorkspace } from '@realtime-sdk/models/Workspace';
 
-import { Resource, ResourceOptions } from '../resource';
+import { NestResource, NestResourceOptions } from '../../nest';
 
-export class Workspace extends Resource {
-  constructor(options: ResourceOptions) {
+export class Workspace extends NestResource {
+  constructor(options: NestResourceOptions) {
     super({ ...options, path: '/workspace' });
   }
 

@@ -4,6 +4,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { toast } from '@voiceflow/ui';
 
 import client from '@/client';
+import { CREATOR_APP_ENDPOINT } from '@/config';
 import * as Errors from '@/config/errors';
 import * as Account from '@/ducks/account';
 import * as Feature from '@/ducks/feature';
@@ -217,8 +218,5 @@ export const getWorkspaceInviteLink =
 
     const inviteCode = await client.workspace.getInviteCode(workspaceID, userRole ?? UserRole.VIEWER);
 
-    const { hostname, port } = window.location;
-    const host = `${hostname}${port ? `:${port}` : ''}`;
-
-    return `https://${host}/invite?invite_code=${encodeURIComponent(inviteCode)}`;
+    return `${CREATOR_APP_ENDPOINT}/invite?invite_code=${encodeURIComponent(inviteCode)}`;
   };

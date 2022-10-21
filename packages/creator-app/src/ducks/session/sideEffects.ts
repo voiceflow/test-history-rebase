@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { parseQuery, Vendors } from '@voiceflow/ui';
 import { batch } from 'react-redux';
@@ -5,6 +6,8 @@ import { matchPath } from 'react-router-dom';
 
 import client from '@/client';
 import { SSOConvertPayload, SSOLoginPayload } from '@/client/sso';
+import { CREATOR_APP_ENDPOINT } from '@/config';
+import { Path } from '@/config/routes';
 import { SessionType } from '@/constants';
 import { resetAccount, updateAccount } from '@/ducks/account/actions';
 import * as Feature from '@/ducks/feature';
@@ -59,8 +62,8 @@ export const logout = (): Thunk => async (dispatch, getState) => {
 };
 
 export const identifyUser =
-  (user: { name: string; email: string; creatorID: number; createdAt: string }): Thunk =>
-  async () => {
+  (user: { name: string; email: string; creatorID: number; createdAt: string }): SyncThunk =>
+  () => {
     const externalID = generateID(user.creatorID);
 
     Vendors.LogRocket.identify(externalID, user);
@@ -68,13 +71,19 @@ export const identifyUser =
     Userflow.identify(externalID, user);
   };
 
-export const restoreSession = (): Thunk => async (dispatch, getState) => {
-  try {
+export const getUserAccount =
+  (): Thunk<{
+    name: string;
+    email: string;
+    image: string | null;
+    isSSO: boolean;
+    verified: boolean;
+    createdAt: string;
+    creatorID: number;
+  }> =>
+  async (_dispatch, getState) => {
     const state = getState();
-    const token = authTokenSelector(state);
     const isIdentityUserEnabled = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.IDENTITY_USER);
-
-    if (!token) throw new Error('no auth token set');
 
     if (isIdentityUserEnabled) {
       // using client.user.get() for now to get SSO related fields
@@ -82,22 +91,38 @@ export const restoreSession = (): Thunk => async (dispatch, getState) => {
 
       const isSSO = Boolean(gid || fid || okta_id || saml_provider_id);
 
-      dispatch(updateAccount({ ...user, isSSO, verified: user.emailVerified, creator_id: user.id }));
-
-      await dispatch(identifyUser({ ...user, creatorID: user.id }));
-    } else {
-      const { gid, fid, okta_id, saml_provider_id, ...user } = await client.user.get();
-
-      const isSSO = Boolean(gid || fid || okta_id || saml_provider_id);
-
-      dispatch(updateAccount({ ...user, isSSO }));
-
-      await dispatch(identifyUser({ ...user, createdAt: user.created, creatorID: user.creator_id }));
+      return {
+        ...user,
+        isSSO,
+        verified: user.emailVerified,
+        creatorID: user.id,
+      };
     }
+
+    const { gid, fid, image = null, okta_id, creator_id, created, saml_provider_id, ...user } = await client.user.get();
+
+    const isSSO = Boolean(gid || fid || okta_id || saml_provider_id);
+
+    return { ...user, image, isSSO, createdAt: created, creatorID: creator_id };
+  };
+
+export const restoreSession = (): Thunk => async (dispatch, getState) => {
+  try {
+    const state = getState();
+    const token = authTokenSelector(state);
+
+    if (!token) throw new Error('no auth token set');
+
+    const userAccount = await dispatch(getUserAccount());
+
+    dispatch(updateAccount({ ...userAccount, created: userAccount.createdAt, creator_id: userAccount.creatorID }));
+
+    dispatch(identifyUser(userAccount));
 
     const location = locationSelector(state);
     const search = QueryUtil.parse(location.search);
     const isVerifyingPath = matchPath(location.pathname, { path: '/account/confirm/:token' });
+
     if ((search.promo || search.ob_plan) && !isVerifyingPath?.isExact) {
       dispatch(goToOnboarding());
     }
@@ -116,8 +141,8 @@ interface SetSessionOptions {
 }
 
 const setSession =
-  ({ user, token, redirectTo, intercomUserHMAC }: SetSessionOptions): Thunk =>
-  async (dispatch, getState) => {
+  ({ user, token, redirectTo, intercomUserHMAC }: SetSessionOptions): SyncThunk =>
+  (dispatch, getState) => {
     const state = getState();
 
     Cookies.removeLastSessionCookie();
@@ -142,7 +167,7 @@ const setSession =
       dispatch(goToOnboarding());
     }
 
-    await dispatch(identifyUser({ ...user, createdAt: user.created, creatorID: user.creator_id }));
+    dispatch(identifyUser({ ...user, createdAt: user.created, creatorID: user.creator_id }));
   };
 
 export const ssoLogin =
@@ -152,28 +177,31 @@ export const ssoLogin =
 
     const { user, token, intercomUserHMAC = null } = await client.sso.login(payload, parsedQuery);
 
-    await dispatch(setSession({ user, token, intercomUserHMAC }));
+    dispatch(setSession({ user, token, intercomUserHMAC }));
   };
+
+interface SessionOptions {
+  query?: Record<string, string>;
+  redirectTo?: string;
+  firstLogin?: boolean;
+}
 
 const createSession =
   (sessionType: SessionType) =>
-  (
-    authRequest: unknown,
-    { query, redirectTo, firstLogin }: { query?: Record<string, string>; redirectTo?: string; firstLogin?: boolean } = {}
-  ): Thunk<Models.Account> =>
+  (authRequest: unknown, { query, redirectTo, firstLogin }: SessionOptions = {}): Thunk<Models.Account> =>
   async (dispatch) => {
     const parsedQuery = { ...parseQuery(window.location.search), ...query };
     const { user, token, intercomUserHMAC = null } = await client.session.create(sessionType, authRequest, parsedQuery);
 
-    await dispatch(setSession({ user: { ...user, first_login: firstLogin ?? user.first_login }, token, redirectTo, intercomUserHMAC }));
+    dispatch(setSession({ user: { ...user, first_login: firstLogin ?? user.first_login }, token, redirectTo, intercomUserHMAC }));
 
     return user;
   };
 
 const legacySignup = createSession(SessionType.SIGN_UP);
-export const googleLogin = createSession(SessionType.GOOGLE);
-export const facebookLogin = createSession(SessionType.FACEBOOK);
-export const basicAuthLogin = createSession(SessionType.BASIC_AUTH);
+export const legacyGoogleLogin = createSession(SessionType.GOOGLE);
+export const legacyFacebookLogin = createSession(SessionType.FACEBOOK);
+export const legacyBasicAuthLogin = createSession(SessionType.BASIC_AUTH);
 
 const createAdoptSSO =
   (sessionType: SessionType) =>
@@ -181,7 +209,7 @@ const createAdoptSSO =
   async (dispatch) => {
     const { user, token, intercomUserHMAC = null } = await client.sso.convert(sessionType, payload);
 
-    await dispatch(setSession({ user, token, intercomUserHMAC }));
+    dispatch(setSession({ user, token, intercomUserHMAC }));
 
     return user;
   };
@@ -189,6 +217,50 @@ const createAdoptSSO =
 export const googleAdoptSSO = createAdoptSSO(SessionType.GOOGLE);
 export const facebookAdoptSSO = createAdoptSSO(SessionType.FACEBOOK);
 export const basicAuthAdoptSSO = createAdoptSSO(SessionType.BASIC_AUTH);
+
+interface SigninPayload {
+  email: string;
+  password: string;
+}
+
+export const signin =
+  (payload: SigninPayload, options: SessionOptions = {}): Thunk<Models.Account> =>
+  async (dispatch, getState) => {
+    const isIdentityUserEnabled = Feature.isFeatureEnabledSelector(getState())(Realtime.FeatureFlag.IDENTITY_USER);
+
+    if (isIdentityUserEnabled) {
+      const { token } = await client.auth.authenticate(payload);
+
+      dispatch(updateAuthToken(token));
+
+      const userAccount = await dispatch(getUserAccount());
+
+      const user: Models.Account = { ...userAccount, created: userAccount.createdAt, creator_id: userAccount.creatorID };
+
+      dispatch(setSession({ user, token, redirectTo: options?.redirectTo, intercomUserHMAC: null }));
+
+      return user;
+    }
+
+    return dispatch(legacyBasicAuthLogin(payload, options));
+  };
+
+interface SSOSigninPayload {
+  token: string;
+  isNewUser: boolean;
+}
+
+export const ssoSignIn =
+  ({ token, isNewUser }: SSOSigninPayload, options: SessionOptions = {}): Thunk =>
+  async (dispatch) => {
+    dispatch(updateAuthToken(token));
+
+    const userAccount = await dispatch(getUserAccount());
+
+    const user: Models.Account = { ...userAccount, created: userAccount.createdAt, creator_id: userAccount.creatorID, first_login: isNewUser };
+
+    dispatch(setSession({ user, token, redirectTo: options?.redirectTo, intercomUserHMAC: null }));
+  };
 
 interface SignupPayload {
   email: string;
@@ -217,7 +289,7 @@ export const signup =
         },
       });
 
-      await dispatch(basicAuthLogin({ email, password }, { query, firstLogin: true }));
+      await dispatch(legacyBasicAuthLogin({ email, password }, { query, firstLogin: true }));
 
       return {
         creatorID: user.id,
@@ -248,4 +320,37 @@ export const signup =
     } catch (error) {
       throw new Error(error.body.data);
     }
+  };
+
+export const googleLogin = (): Thunk => async () => {
+  const url = await client.auth.v1.sso.getGoogleLoginURL(`${CREATOR_APP_ENDPOINT}${Path.LOGIN_SSO_CALLBACK}`);
+
+  window.location.assign(url);
+};
+
+export const facebookLogin = (): Thunk => async () => {
+  const url = await client.auth.v1.sso.getFacebookLoginURL(`${CREATOR_APP_ENDPOINT}${Path.LOGIN_SSO_CALLBACK}`);
+
+  window.location.assign(url);
+};
+
+export const getSamlLoginURL =
+  (email: string): Thunk<string | null> =>
+  async (_dispatch, getState) => {
+    const isIdentityUserEnabled = Feature.isFeatureEnabledSelector(getState())(Realtime.FeatureFlag.IDENTITY_USER);
+
+    if (!Utils.emails.isValidEmail(email)) return null;
+
+    if (isIdentityUserEnabled) {
+      return client.auth.v1.sso.getSaml2LoginURL(email, `${CREATOR_APP_ENDPOINT}${Path.LOGIN_SSO_CALLBACK}`).catch(() => null);
+    }
+
+    const domain = Utils.emails.getEmailDomain(email);
+    const organizationID = await client.organization.checkDomain(domain);
+
+    if (!organizationID) return null;
+
+    const { entryPoint } = await client.organization.getSAMLLogin(organizationID);
+
+    return entryPoint;
   };

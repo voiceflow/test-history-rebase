@@ -1,10 +1,10 @@
-import { Version, VersionOptions } from '../version';
+import { NestVersion, NestVersionOptions } from '../../nest';
 import { User } from './user';
 import { Workspace } from './workspace';
 import { WorkspaceInvitation } from './workspaceInvitation';
 import { WorkspaceMember } from './workspaceMember';
 
-export class V1Alpha1 extends Version {
+export class V1Alpha1 extends NestVersion {
   public user: User;
 
   public workspace: Workspace;
@@ -13,7 +13,7 @@ export class V1Alpha1 extends Version {
 
   public workspaceInvitation: WorkspaceInvitation;
 
-  constructor(options: VersionOptions) {
+  constructor(options: NestVersionOptions) {
     super({ ...options, version: 'v1alpha1' });
 
     const resourceOptions = { axios: this.axios };

@@ -1,4 +1,5 @@
-import { Box, Flex, toast } from '@voiceflow/ui';
+import * as Realtime from '@voiceflow/realtime-sdk';
+import { Box, toast } from '@voiceflow/ui';
 import React from 'react';
 import { ReactFacebookLoginInfo } from 'react-facebook-login';
 import { GoogleLoginResponse } from 'react-google-login';
@@ -6,15 +7,16 @@ import { GoogleLoginResponse } from 'react-google-login';
 import { IS_PRIVATE_CLOUD } from '@/config';
 import * as AccountDuck from '@/ducks/account';
 import * as Session from '@/ducks/session';
-import { connect } from '@/hocs';
+import { useDispatch, useFeature } from '@/hooks';
 import { Account } from '@/models';
 import THEME from '@/styles/theme';
-import { ConnectedProps } from '@/types';
 import * as Sentry from '@/vendors/sentry';
 
 import { SocialLoginContainer } from './AuthBoxes';
-import FacebookLoginButton from './FacebookLoginButton';
-import GoogleLoginButton from './GoogleLoginButton';
+import FacebookSocialButton from './FacebookSocialButton';
+import GoogleSocialButton from './GoogleSocialButton';
+import LegacyFacebookLoginButton from './LegacyFacebookLoginButton';
+import LegacyGoogleLoginButton from './LegacyGoogleLoginButton';
 
 export interface SocialLoginProps {
   light?: boolean;
@@ -23,20 +25,20 @@ export interface SocialLoginProps {
   loginMode?: boolean;
 }
 
-const SocialLogin: React.FC<SocialLoginProps & ConnectedSocialLoginProps> = ({
-  light,
-  coupon,
-  disabled,
-  loginMode,
-  googleLogin,
-  facebookLogin,
-  saveSocialProfilePicture,
-}) => {
-  const onGoogleLogin = async (userProfile: GoogleLoginResponse) => {
+const SocialLogin: React.FC<SocialLoginProps> = ({ light, coupon, disabled, loginMode }) => {
+  const identityUser = useFeature(Realtime.FeatureFlag.IDENTITY_USER);
+
+  const googleLogin = useDispatch(Session.googleLogin);
+  const facebookLogin = useDispatch(Session.facebookLogin);
+  const legacyGoogleLogin = useDispatch(Session.legacyGoogleLogin);
+  const legacyFacebookLogin = useDispatch(Session.legacyFacebookLogin);
+  const saveSocialProfilePicture = useDispatch(AccountDuck.saveSocialProfilePicture);
+
+  const onLegacyGoogleLogin = async (userProfile: GoogleLoginResponse) => {
     let user: Account | undefined;
 
     try {
-      user = await googleLogin({
+      user = await legacyGoogleLogin({
         name: userProfile.profileObj.name,
         email: userProfile.profileObj.email,
         googleId: userProfile.profileObj.googleId,
@@ -53,11 +55,11 @@ const SocialLogin: React.FC<SocialLoginProps & ConnectedSocialLoginProps> = ({
     }
   };
 
-  const onFacebookLogin = async (fbUser: ReactFacebookLoginInfo) => {
+  const onLegacyFacebookLogin = async (fbUser: ReactFacebookLoginInfo) => {
     let user: Account | undefined;
 
     try {
-      user = await facebookLogin({
+      user = await legacyFacebookLogin({
         name: fbUser.name,
         email: fbUser.email,
         fbId: fbUser.id,
@@ -81,23 +83,25 @@ const SocialLogin: React.FC<SocialLoginProps & ConnectedSocialLoginProps> = ({
 
   return (
     <SocialLoginContainer>
-      <Flex>
+      <Box.Flex>
         <Box color={loginMode ? THEME.colors.secondary : THEME.colors.tertiary} mr={16}>
           {loginMode ? 'Or log in with' : 'Or sign up with'}
         </Box>
-        <GoogleLoginButton disabled={disabled} light={light} onLogin={onGoogleLogin} />
-        <FacebookLoginButton disabled={disabled} light={light} onLogin={onFacebookLogin} />
-      </Flex>
+
+        {identityUser.isEnabled ? (
+          <>
+            <GoogleSocialButton light={light} onClick={googleLogin} disabled={disabled} />
+            <FacebookSocialButton light={light} onClick={facebookLogin} disabled={disabled} />
+          </>
+        ) : (
+          <>
+            <LegacyGoogleLoginButton light={light} onLogin={onLegacyGoogleLogin} disabled={disabled} />
+            <LegacyFacebookLoginButton light={light} onLogin={onLegacyFacebookLogin} disabled={disabled} />
+          </>
+        )}
+      </Box.Flex>
     </SocialLoginContainer>
   );
 };
 
-const mapDispatchToProps = {
-  googleLogin: Session.googleLogin,
-  facebookLogin: Session.facebookLogin,
-  saveSocialProfilePicture: AccountDuck.saveSocialProfilePicture,
-};
-
-type ConnectedSocialLoginProps = ConnectedProps<{}, typeof mapDispatchToProps>;
-
-export default connect(null, mapDispatchToProps)(SocialLogin) as React.FC<SocialLoginProps>;
+export default SocialLogin;

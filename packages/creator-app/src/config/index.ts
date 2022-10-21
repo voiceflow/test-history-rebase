@@ -22,6 +22,7 @@ declare global {
     VF_OVERRIDE_REALTIME_ENDPOINT?: string; // realtime public endpoint
     VF_OVERRIDE_REALTIME_IO_ENDPOINT?: string; // realtime public endpoint
     VF_OVERRIDE_ML_GATEWAY_ENDPOINT?: string; // realtime public endpoint
+    VF_OVERRIDE_AUTH_API_ENDPOINT?: string; // auth public endpoint
     VF_OVERRIDE_IDENTITY_API_ENDPOINT?: string; // identity public endpoint
     VF_OVERRIDE_INTERCOM_APP_ID?: string;
     VF_OVERRIDE_AMAZON_APP_ID?: string;
@@ -70,6 +71,8 @@ function getHost() {
 
   return process.env.API_HOST!;
 }
+
+export const CREATOR_APP_ENDPOINT = `https://${window.location.hostname}${window.location.port ? `:${window.location.port}` : ''}`;
 
 export const API_HOST = window.VF_OVERRIDE_API_HOST || process.env.VF_OVERRIDE_API_HOST || getHost();
 // Currently only the e2e environment runs on 'localhost', so the check below is sufficient to distinguish between the envs.
@@ -216,6 +219,11 @@ export const IDENTITY_API_CLOUD_ENDPOINT =
 export const IDENTITY_API_LOCAL_ENDPOINT = process.env.IDENTITY_API_LOCAL_ENDPOINT!;
 export const IDENTITY_API_ENDPOINT =
   IS_E2E && process.env.VF_OVERRIDE_IDENTITY_API_ENDPOINT === '' ? IDENTITY_API_LOCAL_ENDPOINT : IDENTITY_API_CLOUD_ENDPOINT;
+
+export const AUTH_API_CLOUD_ENDPOINT =
+  window.VF_OVERRIDE_AUTH_API_ENDPOINT || process.env.VF_OVERRIDE_AUTH_API_ENDPOINT || process.env.AUTH_API_CLOUD_ENDPOINT!;
+export const AUTH_API_LOCAL_ENDPOINT = process.env.AUTH_API_LOCAL_ENDPOINT!;
+export const AUTH_API_ENDPOINT = IS_E2E && process.env.VF_OVERRIDE_AUTH_API_ENDPOINT === '' ? AUTH_API_LOCAL_ENDPOINT : AUTH_API_CLOUD_ENDPOINT;
 
 export const TRUSTED_ENDPOINTS = [API_ENDPOINT, ALEXA_SERVICE_ENDPOINT, GOOGLE_SERVICE_ENDPOINT, GENERAL_SERVICE_ENDPOINT];
 

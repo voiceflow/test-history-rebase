@@ -23,7 +23,6 @@ import * as QueryUtil from '@/utils/query';
 import * as GoogleAnalytics from '@/vendors/googleAnalytics';
 
 import { MIN_PASSWORD_LENGTH, SSO_REQUIRED } from '../constants';
-import { getDomainSAML } from '../hooks';
 import { replaceSpaceWithPlus } from '../utils';
 import { AuthBox } from './AuthBoxes';
 import AuthenticationContainer from './AuthenticationContainer';
@@ -44,20 +43,21 @@ export const SignupForm: React.FC<SignupFormProps> = ({ promo, query }) => {
 
   const signup = useDispatch(Session.signup);
   const goToLogin = useDispatch(Router.goToLogin);
+  const getSamlLoginURL = useDispatch(Session.getSamlLoginURL);
 
   const [email, setEmail] = React.useState(query.email ? replaceSpaceWithPlus(query.email)! : '');
   const [coupon, setCoupon] = React.useState('');
+  const [isSaml, setIsSaml] = React.useState(false);
   const [password, setPassword] = React.useState('');
   const [lastName, setLastName] = React.useState('');
   const [firstName, setFirstName] = React.useState(query.name ? query.name : '');
   const [submitting, setSubmitting] = React.useState(false);
-  const [ssoRequired, setSsoRequired] = React.useState(false);
   const [couponValid, setCouponValid] = React.useState(false);
 
   const onCheckSSO = useDebouncedCallback(100, async (email: string) => {
-    const samlDOmain = await getDomainSAML(email);
+    const samlLoginURL = await getSamlLoginURL(email);
 
-    setSsoRequired(!!samlDOmain);
+    setIsSaml(!!samlLoginURL);
   });
 
   const onVerifyCoupon = useThrottledCallback(1000, async (input: string) => {
@@ -87,19 +87,20 @@ export const SignupForm: React.FC<SignupFormProps> = ({ promo, query }) => {
   };
 
   const onSubmit = async () => {
-    if (submitting || ssoRequired) return;
+    if (submitting || isSaml) return;
 
     try {
       setSubmitting(true);
 
       GoogleAnalytics.sendEvent(GoogleAnalytics.Category.AUTH_SIGNUP_PAGE, GoogleAnalytics.Action.CLICK, GoogleAnalytics.Label.SIGN_UP_BUTTON);
 
-      const samlDomain = await getDomainSAML(email);
+      const samlLoginURL = await getSamlLoginURL(email);
 
-      if (samlDomain) {
-        setSsoRequired(true);
+      if (samlLoginURL) {
+        setIsSaml(true);
       } else {
         const user = await signup({ email, query, coupon, password, lastName, firstName });
+
         trackingEvents.identifySignup(user.creatorID, firstName, lastName, user.email);
       }
     } catch (error) {
@@ -139,9 +140,9 @@ export const SignupForm: React.FC<SignupFormProps> = ({ promo, query }) => {
             </InputContainer>
 
             <InputContainer>
-              <EmailInput value={email} onChange={onChangeEmail} placeholder="Email address" error={ssoRequired} />
+              <EmailInput value={email} onChange={onChangeEmail} placeholder="Email address" error={isSaml} />
 
-              {ssoRequired && (
+              {isSaml && (
                 <Box mt={8} fontSize={13} color={ThemeColor.RED}>
                   {SSO_REQUIRED}
                 </Box>

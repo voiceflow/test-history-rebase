@@ -3,8 +3,9 @@ import { AlexaModels } from '@voiceflow/alexa-types';
 export interface Account {
   email: string;
   name: string;
+  verified: boolean;
   creator_id: number;
-  image?: string;
+  image?: string | null;
   created: string;
   first_login?: boolean;
   referrer_id?: number;

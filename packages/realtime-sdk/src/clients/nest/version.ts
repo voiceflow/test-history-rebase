@@ -1,21 +1,21 @@
 import axios, { AxiosInstance } from 'axios';
 
-export interface VersionOptions {
-  token: string | null | (() => string | null);
+export interface NestVersionOptions {
+  token?: string | null | (() => string | null);
   baseURL: string;
 }
 
-interface InternalOptions extends VersionOptions {
+interface NestInternalOptions extends NestVersionOptions {
   version: string;
 }
 
-export abstract class Version {
+export abstract class NestVersion {
   private readonly token: string | null | (() => string | null);
 
   protected readonly axios: AxiosInstance;
 
-  constructor({ token, baseURL, version }: InternalOptions) {
-    this.token = token;
+  constructor({ token, baseURL, version }: NestInternalOptions) {
+    this.token = token ?? null;
     this.axios = axios.create({ baseURL: `${baseURL}/${version}` });
 
     this.axios.interceptors.request.use((config) => {

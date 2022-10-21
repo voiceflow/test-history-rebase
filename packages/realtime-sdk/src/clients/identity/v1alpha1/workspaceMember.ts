@@ -1,10 +1,10 @@
 import * as Models from '@realtime-sdk/models';
 import { UserRole } from '@voiceflow/internal';
 
-import { Resource, ResourceOptions } from '../resource';
+import { NestResource, NestResourceOptions } from '../../nest';
 
-export class WorkspaceMember extends Resource {
-  constructor(options: ResourceOptions) {
+export class WorkspaceMember extends NestResource {
+  constructor(options: NestResourceOptions) {
     super({ ...options, path: '/workspace-member' });
   }
 

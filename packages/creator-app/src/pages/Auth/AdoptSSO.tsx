@@ -7,25 +7,32 @@ import { Redirect } from 'react-router-dom';
 import { Path } from '@/config/routes';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
-import { connect } from '@/hocs';
-import { useToggle } from '@/hooks';
-import { ConnectedProps, MergeArguments } from '@/types';
+import { useDispatch, useSelector, useToggle } from '@/hooks';
 import * as Sentry from '@/vendors/sentry';
 
 import {
   AuthBox,
   AuthenticationContainer,
-  FacebookLoginButton,
-  GoogleLoginButton,
+  LegacyFacebookLoginButton,
+  LegacyGoogleLoginButton,
   PasswordInput,
   ShowPasswordIcon,
   SocialLoginContainer,
 } from './components';
 import { useOktaLogin } from './hooks';
 
-const AdoptSSO: React.FC<ConnectedAdoptSSOProps> = ({ basicAuthAdoptSSO, googleAdoptSSO, facebookAdoptSSO, email, domain, clientID }) => {
+const AdoptSSO: React.FC = () => {
+  const routerState = useSelector(Router.stateSelector);
+
+  const googleAdoptSSO = useDispatch(Session.googleAdoptSSO);
+  const facebookAdoptSSO = useDispatch(Session.facebookAdoptSSO);
+  const basicAuthAdoptSSO = useDispatch(Session.basicAuthAdoptSSO);
+
   const [password, setPassword] = React.useState('');
   const [showPassword, toggleShowPassword] = useToggle();
+
+  const { email = null, domain = null, clientID = null } = routerState;
+
   const oktaLogin = useOktaLogin(domain || '', clientID || '');
   const hasValidState = !!email && !!domain && !!clientID;
 
@@ -88,8 +95,9 @@ const AdoptSSO: React.FC<ConnectedAdoptSSOProps> = ({ basicAuthAdoptSSO, googleA
 
         <SocialLoginContainer>
           <Box.Flex>
-            <GoogleLoginButton light onLogin={onGoogleLogin} />
-            <FacebookLoginButton light onLogin={onFacebookLogin} />
+            {/* TODO: needs to use auth service for adopt/convert requests as well */}
+            <LegacyGoogleLoginButton light onLogin={onGoogleLogin} />
+            <LegacyFacebookLoginButton light onLogin={onFacebookLogin} />
           </Box.Flex>
         </SocialLoginContainer>
       </AuthBox>
@@ -97,22 +105,4 @@ const AdoptSSO: React.FC<ConnectedAdoptSSOProps> = ({ basicAuthAdoptSSO, googleA
   );
 };
 
-const mapStateToProps = {
-  routerState: Router.stateSelector,
-};
-
-const mapDispatchToProps = {
-  basicAuthAdoptSSO: Session.basicAuthAdoptSSO,
-  googleAdoptSSO: Session.googleAdoptSSO,
-  facebookAdoptSSO: Session.facebookAdoptSSO,
-};
-
-const mergeProps = (...[{ routerState }]: MergeArguments<typeof mapStateToProps, typeof mapDispatchToProps>) => ({
-  email: (routerState.email as string) || null,
-  domain: (routerState.domain as string) || null,
-  clientID: (routerState.clientID as string) || null,
-});
-
-type ConnectedAdoptSSOProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps, typeof mergeProps>;
-
-export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(AdoptSSO) as React.FC;
+export default AdoptSSO;

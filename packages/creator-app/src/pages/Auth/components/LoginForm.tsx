@@ -8,11 +8,10 @@ import { IS_PRIVATE_CLOUD } from '@/config';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import { useDispatch } from '@/hooks';
-import { Query, SAMLProvider } from '@/models';
+import { Query } from '@/models';
 import HeaderBox from '@/pages/Auth/components/HeaderBox';
 import perf, { PerfAction } from '@/performance';
 
-import { getDomainSAML } from '../hooks';
 import { replaceSpaceWithPlus } from '../utils';
 import { AuthBox } from './AuthBoxes';
 import AuthenticationContainer from './AuthenticationContainer';
@@ -28,15 +27,24 @@ export interface LoginFormProps {
 export const LoginForm: React.FC<LoginFormProps> = ({ query, children }) => {
   const location = useLocation<{ redirectTo?: string } | null>();
 
-  const [sso, setSSO] = React.useState<Partial<SAMLProvider> | null>(null);
   const [email, setEmail] = React.useState(query.email ? replaceSpaceWithPlus(query.email)! : '');
+  const [isSaml, setIsSaml] = React.useState<boolean>(false);
   const [password, setPassword] = React.useState('');
   const [showPassword, toggleShowPassword] = useToggle();
 
+  const signin = useDispatch(Session.signin);
   const goToSignup = useDispatch(Router.goToSignup, location.search);
-  const basicAuthLogin = useDispatch(Session.basicAuthLogin);
+  const getSamlLoginURL = useDispatch(Session.getSamlLoginURL);
 
-  const debouncedCheckSSO = useDebouncedCallback(100, async (email: string) => setSSO(await getDomainSAML(email)), []);
+  const debouncedCheckSSO = useDebouncedCallback(
+    100,
+    async (email: string) => {
+      const url = await getSamlLoginURL(email);
+
+      setIsSaml(!!url);
+    },
+    [getSamlLoginURL]
+  );
 
   const onChangeEmail = (email: string) => {
     debouncedCheckSSO(email);
@@ -44,17 +52,19 @@ export const LoginForm: React.FC<LoginFormProps> = ({ query, children }) => {
   };
 
   const onSubmit = async () => {
-    const ssoLogin = await getDomainSAML(email);
+    debouncedCheckSSO.cancel();
 
-    if (ssoLogin?.entryPoint) {
-      setSSO(ssoLogin);
+    const samlLoginURL = await getSamlLoginURL(email);
 
-      window.location.assign(ssoLogin.entryPoint);
+    if (samlLoginURL) {
+      setIsSaml(!!isSaml);
+
+      window.location.assign(samlLoginURL);
       return;
     }
 
     try {
-      await basicAuthLogin({ email, password }, { redirectTo: location.state?.redirectTo });
+      await signin({ email, password }, { redirectTo: location.state?.redirectTo });
     } catch (error) {
       const errText = _get(error, ['body', 'data']) || 'Unable to login, try again later';
 
@@ -81,7 +91,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ query, children }) => {
               <EmailInput value={email} onChange={onChangeEmail} />
             </InputContainer>
 
-            {!sso && (
+            {!isSaml && (
               <InputContainer className="passwordInput">
                 <PasswordInput value={password} onChange={setPassword} showPassword={showPassword} />
 
@@ -94,7 +104,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ query, children }) => {
             )}
 
             <Box.FlexApart pt={8}>
-              {sso ? (
+              {isSaml ? (
                 <Box.FlexCenter color={ThemeColor.SECONDARY}>
                   <SvgIcon icon="lockLocked" inline mr={14} />
                   SAML SSO enabled

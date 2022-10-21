@@ -27,7 +27,7 @@ export const ApperanceSection: React.FC = () => {
 
   return (
     <Section icon="apperance" title="Appearance" description="Customize the look and feel of your chat widget">
-      <SectionGroup>
+      <SectionGroup width={160}>
         <Label>Main Color</Label>
         <ColorInput value={config.color} onChange={(color) => updateConfig({ color })} />
       </SectionGroup>
@@ -42,7 +42,7 @@ export const ApperanceSection: React.FC = () => {
               </App.ChatContainer>
             </Box>
           </PreviewCrop>
-          <Box.Flex ml={-30}>
+          <Box.Flex ml={-32}>
             <SelectorLine />
             <Button variant={ButtonVariant.SECONDARY} squareRadius flat onClick={startUpload}>
               Upload Image

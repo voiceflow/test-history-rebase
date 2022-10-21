@@ -17,6 +17,7 @@ const IntegrationsHeader: React.FC = () => {
 
         <HeaderTitle leftOffset>
           <Switch>
+            <Route path={Path.PUBLISH_WEBCHAT}>Web Chat</Route>
             <Route path={Path.PUBLISH_EXPORT}>Code Export</Route>
             <Route path={Path.PUBLISH_ALEXA}>Amazon Alexa</Route>
             <Route path={Path.PUBLISH_GOOGLE}>Google Assistant</Route>

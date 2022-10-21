@@ -11,7 +11,11 @@ export const SectionIcon = styled(Box.FlexCenter)`
 `;
 
 export const SectionArrow = styled.div`
-  ${transition('transform')}
+  ${transition('transform', 'opacity')}
+
+  opacity: 0.65;
+  transform: rotate(90deg);
+  color: ${({ color, theme }) => color ?? theme.iconColors.active};
 `;
 
 export const SectionBody = styled.div`
@@ -22,6 +26,10 @@ export const SectionBody = styled.div`
 export const SectionHeader = styled(Box.Flex)`
   cursor: pointer;
   padding: 24px 32px;
+
+  &:hover ${SectionArrow} {
+    opacity: 0.85;
+  }
 `;
 
 export const SectionContainer = styled.div<{ isOpen: boolean }>`
@@ -34,7 +42,7 @@ export const SectionContainer = styled.div<{ isOpen: boolean }>`
     isOpen &&
     css`
       & ${SectionArrow} {
-        transform: rotate(90deg);
+        transform: rotate(180deg);
       }
     `}
 `;
@@ -74,6 +82,17 @@ export const PreviewCrop = styled.div`
 `;
 
 export const SelectorLine = styled.div`
+  :before {
+    content: '';
+    background-color: #d4d9e6;
+    height: 3px;
+    width: 3px;
+    border-radius: 50%;
+    display: block;
+    position: absolute;
+    margin-top: -1.5px;
+  }
+
   width: 64px;
   border-top: 1px dashed #d4d9e6;
 `;

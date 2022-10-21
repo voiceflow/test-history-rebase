@@ -53,7 +53,7 @@ export const PublishSection: React.FC = () => {
 
       <Collapse isOpen={isPublic}>
         <Divider offset={24} />
-        <Text fontSize={13}>
+        <Text>
           Copy this code snippet and paste it before the closing <Text color={ThemeColor.BLUE}>{`</body>`}</Text> tag on every page you want the
           widget to appear.
         </Text>

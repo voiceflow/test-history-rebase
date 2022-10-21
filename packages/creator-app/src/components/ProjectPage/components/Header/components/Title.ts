@@ -4,8 +4,9 @@ import { styled } from '@/hocs';
 
 const Title = styled(Box.Flex)<{ leftOffset?: boolean }>`
   height: 65px;
-  font-weight: 600;
+  font-weight: 700;
   color: #132144;
+  font-size: 18px;
   padding-left: ${({ leftOffset }) => (leftOffset ? 32 : 0)}px;
 `;
 

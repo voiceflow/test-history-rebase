@@ -24,12 +24,12 @@ const Section: React.FC<SectionProps> = ({ title, description, icon, children })
           <Box color={ThemeColor.PRIMARY} fontWeight={600}>
             {title}
           </Box>
-          <Box color={ThemeColor.SECONDARY} fontSize={13} mt={3}>
+          <Box color={ThemeColor.SECONDARY} mt={2}>
             {description}
           </Box>
         </Box>
         <SectionArrow>
-          <SvgIcon icon="arrowRight" color="rgba(110, 132, 154, 0.65)" size={12} />
+          <SvgIcon icon="arrowToggle" size={12} />
         </SectionArrow>
       </SectionHeader>
       <Collapse isOpen={isOpen}>

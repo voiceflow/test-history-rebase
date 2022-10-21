@@ -3,7 +3,7 @@ import Portal from '@ui/components/Portal';
 import SvgIcon, { SvgIconTypes } from '@ui/components/SvgIcon';
 import { ClickableText } from '@ui/components/Text';
 import { createGlobalStyle } from '@ui/styles';
-import { COLOR_BLUE, COLOR_RED } from '@ui/styles/constants';
+import { COLOR_BLUE, COLOR_GREEN, COLOR_RED } from '@ui/styles/constants';
 import React from 'react';
 import * as Toastify from 'react-toastify';
 import { Overwrite } from 'utility-types';
@@ -53,7 +53,7 @@ const toast = wrapWithMessage(Toastify.toast) as ToastMethod &
 Object.assign(toast, {
   info: wrapWithMessage(Toastify.toast.info, 'info', COLOR_BLUE),
   error: wrapWithMessage(Toastify.toast.error, 'error', COLOR_RED),
-  success: wrapWithMessage(Toastify.toast.success, 'checkmark', '#42B761'),
+  success: wrapWithMessage(Toastify.toast.success, 'checkmark', COLOR_GREEN),
   warn: wrapWithMessage(Toastify.toast.warn, 'warning', '#E5B813'),
   genericError: () => toast.error('Something went wrong. Please try again'),
   custom: (methodName: ToastMethodName, icon?: SvgIconTypes.Icon, color?: string) => wrapWithMessage(Toastify.toast[methodName], icon, color),

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.180.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.179.0...@voiceflow/realtime-sdk@1.180.0) (2022-10-21)
+
+
+### Features
+
+* login via use auth service (CT-1115) ([#6201](https://github.com/voiceflow/creator-app/issues/6201)) ([cc99eda](https://github.com/voiceflow/creator-app/commit/cc99eda5bf769c337c90a7ef516abfdaa63b067c))
+
+
+
+
+
 # [1.179.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.178.0...@voiceflow/realtime-sdk@1.179.0) (2022-10-20)
 
 

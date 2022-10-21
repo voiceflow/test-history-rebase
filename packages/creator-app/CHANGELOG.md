@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.951.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.950.0...@voiceflow/creator-app@1.951.0) (2022-10-21)
+
+
+### Bug Fixes
+
+* minor web chat ui updates (CT-1123) ([#6222](https://github.com/voiceflow/creator-app/issues/6222)) ([97f805f](https://github.com/voiceflow/creator-app/commit/97f805fc6f0b088ab41a2c040ab100d61ad04983))
+
+
+### Features
+
+* implement return to instance bar (CT-1097) ([#6205](https://github.com/voiceflow/creator-app/issues/6205)) ([b219d25](https://github.com/voiceflow/creator-app/commit/b219d25c62e0f24aa7261322499c59d3d98730fa))
+
+
+
+
+
 # [1.950.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.949.0...@voiceflow/creator-app@1.950.0) (2022-10-20)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.122.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.121.1...@voiceflow/realtime@1.122.0) (2022-10-21)
+
+
+### Features
+
+* updated channel-specific renderSync to general renderSync (PL-29) ([#5881](https://github.com/voiceflow/creator-app/issues/5881)) ([b5346f3](https://github.com/voiceflow/creator-app/commit/b5346f3ce506ed2972867502ce9c0197998e0d0c))
+
+
+
+
+
 ## [1.121.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.121.0...@voiceflow/realtime@1.121.1) (2022-10-21)
 
 **Note:** Version bump only for package @voiceflow/realtime

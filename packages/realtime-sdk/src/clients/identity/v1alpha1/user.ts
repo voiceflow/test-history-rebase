@@ -27,6 +27,10 @@ export class User extends NestResource {
     return data;
   }
 
+  public async update(payload: Pick<Models.Identity.User, 'name'>): Promise<void> {
+    await this.patch('/', payload);
+  }
+
   public async resendSignupVerificationEmail(payload: { metadata?: { inviteParams?: Record<string, unknown> } }): Promise<void> {
     await this.post(`/verify`, payload);
   }

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.953.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.953.2...@voiceflow/creator-app@1.953.3) (2022-10-24)
+
+
+### Bug Fixes
+
+* **creator-app:** [bugfix] fixed intent table select column warning icon (NLU-418) ([#6224](https://github.com/voiceflow/creator-app/issues/6224)) ([69c1d70](https://github.com/voiceflow/creator-app/commit/69c1d7092780b646dfb3c6164608c3d156301ce4))
+
+
+
+
+
 ## [1.953.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.953.1...@voiceflow/creator-app@1.953.2) (2022-10-24)
 
 

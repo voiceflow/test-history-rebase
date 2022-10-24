@@ -66,15 +66,17 @@ export const NLUProvider: React.FC = ({ children }) => {
 
       if (isBuiltInIntent(id)) {
         toast.error('Cannot rename built-in intent');
-        return;
+        throw new Error('Cannot rename built-in intent');
       }
 
       if (error) {
         toast.error(error);
-        return;
+        throw new Error(error);
       }
 
       patchIntent(id, { id, name: formattedName });
+
+      return formattedName;
     },
     [intentNameProcessor]
   );
@@ -102,7 +104,7 @@ export const NLUProvider: React.FC = ({ children }) => {
         toast.warn(error);
       } else if (error) {
         toast.error(error);
-        return;
+        throw new Error(error);
       }
 
       patchSlot(id, { name: formattedSlotName }, Tracking.NLUEntityCreationType.IMM);
@@ -156,7 +158,7 @@ export const NLUProvider: React.FC = ({ children }) => {
       },
 
       [InteractionModelTabType.VARIABLES]: {
-        rename: Utils.functional.noop,
+        rename: null,
         delete: (id: string) => deleteVariable(id),
         canRename: () => false,
         canDelete: (id: string) => canDeleteVariable(id),
@@ -181,7 +183,11 @@ export const NLUProvider: React.FC = ({ children }) => {
   );
 
   const renameItem = React.useCallback(
-    (name: string, id: string, type: InteractionModelTabType) => itemActions[type].rename(name, id),
+    (name: string, id: string, type: InteractionModelTabType) => {
+      const onRename = itemActions[type].rename;
+      if (!onRename) return;
+      onRename(name, id);
+    },
     [itemActions]
   );
 

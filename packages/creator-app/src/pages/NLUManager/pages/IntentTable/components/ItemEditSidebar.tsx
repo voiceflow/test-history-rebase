@@ -36,7 +36,11 @@ const ItemEditSidebar: React.FC<ItemEditSidebarProps> = ({ children, isBuiltIn }
     event.currentTarget.parentElement?.parentElement?.scrollTo({ left: 0 });
 
     if (activeIntent) {
-      nlu.renameItem(name, activeIntent.id, activeTab);
+      try {
+        nlu.renameItem(name, activeIntent.id, activeTab);
+      } catch (e) {
+        setName(activeIntent?.name);
+      }
     }
   };
 

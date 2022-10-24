@@ -47,18 +47,22 @@ const ListItem: React.ForwardRefRenderFunction<HTMLInputElement, ListItemProps> 
   const { options } = useNLUItemMenu({ itemID: id, itemType: type, isBuiltIn, onRename: () => setIsRenaming(true), onDelete });
 
   const endRename = () => {
-    if (localName.trim()) {
-      if (onBlur) {
-        onBlur(localName);
+    try {
+      if (localName.trim()) {
+        if (onBlur) {
+          onBlur(localName);
+        } else {
+          onRename?.(localName, id);
+        }
       } else {
-        onRename?.(localName, id);
+        setLocalName(name);
       }
-    } else {
+
+      setIsRenaming(false);
+      setIsActiveItemRename?.(false);
+    } catch (e) {
       setLocalName(name);
     }
-
-    setIsRenaming(false);
-    setIsActiveItemRename?.(false);
   };
 
   useDidUpdateEffect(() => {

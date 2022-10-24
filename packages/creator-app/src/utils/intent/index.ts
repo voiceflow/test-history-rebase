@@ -119,11 +119,16 @@ export const generalIntentFactory = (generalIntent: VoiceflowConstants.DefaultIn
   };
 };
 
-export const validateIntentName = (intentName: string, intents: Realtime.Intent[], slots: Realtime.Slot[]): Nullable<string> => {
+export const validateIntentName = (
+  intentName: string,
+  intents: Realtime.Intent[],
+  slots: Realtime.Slot[],
+  platform: VoiceflowConstants.PlatformType
+): Nullable<string> => {
   const lowerCasedIntentName = intentName.toLowerCase();
 
-  if (intents.some(({ name }) => name.toLowerCase() === lowerCasedIntentName)) {
-    return `The '${intentName}' intent already exists. `;
+  if (intents.some((intent) => fmtIntentName(intent, platform).toLowerCase() === lowerCasedIntentName)) {
+    return `The '${intentName}' intent already exists.`;
   }
 
   if (slots.some(({ name }) => name.toLowerCase() === lowerCasedIntentName)) {

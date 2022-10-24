@@ -29,8 +29,14 @@ const NameColumn = <I extends NamedItem>({ item, placeholder }: NameColumnProps<
 
   const onChange = (name: string) => {
     if (nluManager.renamingEntityID !== item.id) return;
-    nlu.renameItem(name, item.id, InteractionModelTabType.SLOTS);
-    nluManager.setRenamingEntityID(null);
+
+    try {
+      nlu.renameItem(name, item.id, InteractionModelTabType.SLOTS);
+    } catch (e) {
+      setLocalValue(item.name);
+    } finally {
+      nluManager.setRenamingEntityID(null);
+    }
   };
 
   return (

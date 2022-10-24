@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.953.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.953.0...@voiceflow/creator-app@1.953.1) (2022-10-24)
+
+
+### Bug Fixes
+
+* fixes duplicated builtin intents (NLU-261) ([#6169](https://github.com/voiceflow/creator-app/issues/6169)) ([e6a7e0c](https://github.com/voiceflow/creator-app/commit/e6a7e0c590f539c2ea928a5fbcb788fd547982e7))
+
+
+
+
+
 # [1.953.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.952.0...@voiceflow/creator-app@1.953.0) (2022-10-21)
 
 

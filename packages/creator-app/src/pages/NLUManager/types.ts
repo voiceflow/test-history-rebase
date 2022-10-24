@@ -14,6 +14,8 @@ export type NLUIntent = Realtime.Intent & {
   hasConflicts: boolean;
   conflictingIntentIDs: string[];
   conflictingUtterances: string[];
+  hasErrors: boolean;
+  hasEntityError: boolean;
 };
 
 export enum IntentNotificationTypes {

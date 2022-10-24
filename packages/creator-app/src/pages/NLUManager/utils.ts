@@ -1,6 +1,9 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { StrengthGauge } from '@voiceflow/ui';
+import * as Normal from 'normal-store';
 
 import { getIntentClarityStrengthLevel, getIntentConfidenceStrengthLevel, isBuiltInIntent } from '@/utils/intent';
+import { hasValidPrompt } from '@/utils/prompt';
 
 import { ClarityModel, NLUIntent, ProblematicSentence } from './types';
 
@@ -34,6 +37,12 @@ export const getClarityScore = (intent: Realtime.Intent, clarity: ClarityModel |
   return clarityByClass;
 };
 
+export const hasSlotsError = (intent: Realtime.Intent) => {
+  return Normal.denormalize<Realtime.IntentSlot>(intent.slots).some(
+    (intentSlot) => !!intentSlot?.required && !hasValidPrompt(intentSlot.dialog.prompt)
+  );
+};
+
 export const mapIntentsToNLUIntents = (intents: Realtime.Intent[], clarity: ClarityModel | null) => {
   const intentUtterances = intents.reduce((acc, intent) => {
     return { ...acc, [intent.id]: intent.inputs.map((input) => input.text) };
@@ -45,16 +54,23 @@ export const mapIntentsToNLUIntents = (intents: Realtime.Intent[], clarity: Clar
     const hasConflicts = conflictingIntentIDs.length > 0 && conflictingUtterances.length > 0;
     const clarityScore = getClarityScore(intent, clarity, hasConflicts);
     const confidence = getConfidenceScore(intent);
+    const hasEntityError = Normal.denormalize<Realtime.IntentSlot>(intent.slots).some(
+      (intentSlot) => !!intentSlot?.required && !hasValidPrompt(intentSlot.dialog.prompt)
+    );
+    const clarityLevel = getIntentClarityStrengthLevel(clarityScore);
+    const confidenceLevel = getIntentConfidenceStrengthLevel(confidence);
 
     return {
       ...intent,
       clarity: clarityScore,
-      clarityLevel: getIntentClarityStrengthLevel(clarityScore),
+      clarityLevel,
       confidence,
-      confidenceLevel: getIntentConfidenceStrengthLevel(confidence),
+      confidenceLevel,
       conflictingIntentIDs,
       conflictingUtterances,
       hasConflicts,
+      hasErrors: hasEntityError || confidenceLevel === StrengthGauge.Level.WEAK || clarityLevel === StrengthGauge.Level.WEAK,
+      hasEntityError,
     };
   });
 };

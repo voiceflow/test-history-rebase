@@ -5,7 +5,6 @@ import { importIntents } from '@/assets';
 import client from '@/client';
 import Popup from '@/components/JobInterface/Popup/index';
 import { NLUImportOrigin } from '@/constants';
-import { getPlatformName } from '@/constants/platforms';
 import * as Intent from '@/ducks/intent';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
@@ -14,6 +13,8 @@ import { useDispatch, useModelTracking, useSelector, useTrackingEvents } from '@
 import { PLATFORM_PROJECT_META_MAP } from '@/pages/NewProjectV2/constants';
 import { useNLUImport } from '@/pages/NewProjectV2/hooks';
 import { ImportModel, SupportedPlatformProjectType } from '@/pages/NewProjectV2/types';
+
+import { getPlatformTitle, getPopperContent } from './constants';
 
 const FirstUsePopper: React.FC = () => {
   const [getNluSeen, setNluSeen] = useLocalStorage('nlu-seen', false);
@@ -25,6 +26,7 @@ const FirstUsePopper: React.FC = () => {
   const refreshSlots = useDispatch(Slot.refreshSlots);
   const refreshIntents = useDispatch(Intent.refreshIntents);
   const modelImportTracking = useModelTracking();
+  const platformTitle = getPlatformTitle(platform);
 
   const fileExtensions = platform && PLATFORM_PROJECT_META_MAP[platform as SupportedPlatformProjectType]?.importMeta?.fileExtensions;
 
@@ -59,7 +61,7 @@ const FirstUsePopper: React.FC = () => {
             Have an existing NLU model?
           </Text>
           <Text textAlign="center" mb={20} color={ThemeColor.SECONDARY}>
-            {`Import your existing ${getPlatformName(platform) || platform.toLocaleUpperCase()} model to start improving it`}
+            {getPopperContent(platformTitle)(platform)}
           </Text>
           <Button onClick={() => nluImport.onUploadClick(NLUImportOrigin.NLU_MANAGER)} fullWidth squareRadius>
             Import Model

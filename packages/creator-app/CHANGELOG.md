@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.953.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.953.1...@voiceflow/creator-app@1.953.2) (2022-10-24)
+
+
+### Bug Fixes
+
+* **creator-app:** changed import NLU popper content when platform is VF (NLU-421) ([#6225](https://github.com/voiceflow/creator-app/issues/6225)) ([a39e928](https://github.com/voiceflow/creator-app/commit/a39e928f838d23b63204ca9e26190de27179bd73))
+
+
+
+
+
 ## [1.953.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.953.0...@voiceflow/creator-app@1.953.1) (2022-10-24)
 
 

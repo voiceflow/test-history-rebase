@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.182.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.181.0...@voiceflow/realtime-sdk@1.182.0) (2022-10-24)
+
+
+### Features
+
+* identity patch user name (CT-1059) ([#6187](https://github.com/voiceflow/creator-app/issues/6187)) ([4e37a71](https://github.com/voiceflow/creator-app/commit/4e37a715d8723d384f9f8233ed18115ecef9779a))
+
+
+
+
+
 # [1.181.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.180.0...@voiceflow/realtime-sdk@1.181.0) (2022-10-21)
 
 

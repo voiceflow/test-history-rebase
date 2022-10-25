@@ -1,3 +1,4 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { IS_IOS, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 
@@ -100,6 +101,8 @@ const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({ config, state
 
   const checkPMStatus = React.useCallback((...args: PMStatus[]) => args.includes(prototypeMachineStatus as PMStatus), [prototypeMachineStatus]);
 
+  const layout = settings.layout ?? Realtime.Utils.platform.getDefaultPrototypeLayout(settings.projectType);
+
   const isLoading = checkPMStatus(PMStatus.FETCHING_CONTEXT, PMStatus.FAKE_LOADING);
   const isIdle = status === PrototypeStatus.IDLE;
   const isFinished = status === PrototypeStatus.ENDED;
@@ -145,7 +148,7 @@ const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({ config, state
   const brandColor = isCustomizedPrototypeAllowed ? settings.brandColor : undefined;
   return (
     <Layout
-      layout={settings.layout}
+      layout={layout}
       isVisuals={isVisuals}
       isListening={isListening}
       renderSplashScreen={({ isMobile }) => (
@@ -204,7 +207,7 @@ const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({ config, state
             locale={locale}
             input={input}
             color={brandColor}
-            layout={settings.layout}
+            layout={layout}
             buttonsOnly={settings.buttonsOnly}
             onMute={onMute}
             isIdle={isIdle}

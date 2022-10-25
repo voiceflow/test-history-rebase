@@ -3,7 +3,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 
 import client from '@/client';
-import SampleEditor from '@/components/AceEditor/Sample';
+import SampleEditor from '@/components/CodePreview/Samples';
 import { ConfirmProps } from '@/components/ConfirmModal';
 import { GENERAL_RUNTIME_ENDPOINT } from '@/config';
 import { DIALOG_MANAGER_API } from '@/config/documentation';
@@ -223,7 +223,7 @@ const API: React.FC = () => {
 
         <ContentSection>
           <Section title="API Call Examples" card={false}>
-            <SampleEditor samples={samples} wrap={false} />
+            <SampleEditor samples={samples} />
           </Section>
         </ContentSection>
       </ContentContainer>

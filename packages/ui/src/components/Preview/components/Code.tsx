@@ -6,16 +6,19 @@ import { getJSCodeStyle } from '../utils';
 
 export interface PreviewCodeProps {
   code: string;
+  padding?: number | string;
+  language?: string;
+  wrapLongLines?: boolean;
 }
 
 const previewCodeStyle = getJSCodeStyle({ colors: CodeColorStyle });
 
-const PreviewCode: React.FC<PreviewCodeProps> = ({ code }) => (
+const PreviewCode: React.FC<PreviewCodeProps> = ({ code, language = 'javascript', padding = 0, wrapLongLines = true }) => (
   <SyntaxHighlighter
     style={previewCodeStyle}
-    language="javascript"
-    customStyle={{ fontFamily: 'Fira Code', fontSize: '13px', padding: 0, margin: 0 }}
-    wrapLongLines
+    language={language}
+    customStyle={{ fontFamily: 'Fira Code', fontSize: '13px', padding, margin: 0 }}
+    wrapLongLines={wrapLongLines}
   >
     {code}
   </SyntaxHighlighter>

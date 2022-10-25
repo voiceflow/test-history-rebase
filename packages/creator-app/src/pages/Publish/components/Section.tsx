@@ -13,7 +13,7 @@ const SectionCard = styled(Box)`
 `;
 
 const Section: React.FC<{ title?: string; card?: boolean }> = ({ title, children, card = true }) => (
-  <Box width="100%" m={12}>
+  <Box width="100%" p={12}>
     <Box fontWeight={600} mb={16}>
       {title}
     </Box>

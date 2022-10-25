@@ -1,19 +1,14 @@
-import 'brace';
-import 'brace/theme/cobalt';
-import 'brace/mode/javascript';
-import 'brace/mode/sh';
-import 'brace/mode/python';
-import 'brace/mode/json';
-
-import { Box, SvgIcon, TippyTooltip, toast } from '@voiceflow/ui';
+import { Box, Preview, SvgIcon, TippyTooltip, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import { copy } from '@/utils/clipboard';
 
-import { Header, Option, SampleAceEditor } from './components';
+import { Header, Option } from './styled';
 import { Sample } from './types';
 
-const SampleEditor: React.FC<{ samples: Sample[]; wrap?: boolean }> = ({ samples = [], wrap = true }) => {
+export * from './types';
+
+const SampleEditor: React.FC<{ samples: Sample[] }> = ({ samples = [] }) => {
   const [selectedIndex, setSelectedIndex] = React.useState(0);
 
   const { sample, language } = samples[selectedIndex] || { sample: '', language: '' };
@@ -24,7 +19,7 @@ const SampleEditor: React.FC<{ samples: Sample[]; wrap?: boolean }> = ({ samples
   };
 
   return (
-    <Box borderRadius={5} overflow="hidden">
+    <Box borderRadius={8} overflow="hidden">
       <Header>
         <Box>
           {samples.map(({ label }, index) => (
@@ -37,14 +32,7 @@ const SampleEditor: React.FC<{ samples: Sample[]; wrap?: boolean }> = ({ samples
           <SvgIcon icon="copy" onClick={handleCopySnippet} color="#becedc" clickable />
         </TippyTooltip>
       </Header>
-      <SampleAceEditor
-        value={sample}
-        showGutter
-        mode={language}
-        focus={false}
-        highlightActiveLine={false}
-        setOptions={{ useWorker: false, indentedSoftWrap: false, wrap, maxLines: Infinity, fontSize: 15 }}
-      />
+      <Preview.Code code={sample} wrapLongLines={false} language={language} padding="12px 24px" />
     </Box>
   );
 };

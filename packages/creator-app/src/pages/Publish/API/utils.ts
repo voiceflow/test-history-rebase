@@ -1,4 +1,4 @@
-import { Language, Sample } from '@/components/AceEditor/Sample';
+import { Language, Sample } from '@/components/CodePreview/Samples';
 
 import { curl, nodeJS, python } from './constants';
 

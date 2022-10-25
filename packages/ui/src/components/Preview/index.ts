@@ -10,6 +10,7 @@ import Header from './components/Header';
 import Popover from './components/Popover';
 import Text from './components/Text';
 import Title from './components/Title';
+import { PreviewColors as Colors } from './constants';
 
 export default Object.assign(Container, {
   Code,
@@ -23,4 +24,5 @@ export default Object.assign(Container, {
   ContentItem,
   ContentIcon,
   Button,
+  Colors,
 });

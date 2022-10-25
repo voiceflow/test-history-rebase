@@ -1,7 +1,7 @@
 import { Box, Link, Text, ThemeColor } from '@voiceflow/ui';
 import React from 'react';
 
-import { HTMLSample } from '@/components/AceEditor/HTML';
+import { PreviewHTML } from '@/components/CodePreview/HTML';
 import { GENERAL_RUNTIME_ENDPOINT } from '@/config';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { useSelector } from '@/hooks';
@@ -28,7 +28,7 @@ export const PublishSection: React.FC = () => {
         to appear.
       </Text>
       <Box my={16}>
-        <HTMLSample sample={getSample(projectID)} />
+        <PreviewHTML code={getSample(projectID)} />
       </Box>
       <Text fontSize={13} color={ThemeColor.SECONDARY}>
         Having trouble or need to customize? <Link>See documentation</Link>

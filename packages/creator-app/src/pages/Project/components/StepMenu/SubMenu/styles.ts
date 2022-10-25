@@ -1,4 +1,4 @@
-import { Text } from '@voiceflow/ui';
+import { SvgIcon, Text } from '@voiceflow/ui';
 
 import { css, keyframes, styled } from '@/hocs';
 
@@ -70,8 +70,19 @@ export const StyledText = styled(Text)<{ disabled: boolean }>`
     `}
 `;
 
-export const ContextMenuOption = styled.div`
+export const ContextMenuOption = styled.div<{ isActive?: boolean }>`
   display: flex;
   gap: 21px;
   align-items: center;
+  position: relative;
+
+  ${({ isActive }) =>
+    isActive &&
+    css`
+      ${SvgIcon.Container} {
+        transform: translateX(8px);
+        opacity: 1;
+        color: #6e849a;
+      }
+    `}
 `;

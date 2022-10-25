@@ -8,8 +8,8 @@ import * as Version from '@/ducks/versionV2';
 import { useDispatch, useSelector } from '@/hooks';
 import { upload } from '@/utils/dom';
 
-import Section from './Section';
-import { PreviewCrop, SectionGroup, SelectorLine } from './styled';
+import Section from './components/Section';
+import { PreviewCrop, SelectorLine } from './styled';
 
 export const ApperanceSection: React.FC = () => {
   const config = useSelector(Version.active.general.chatPublishingSelector);
@@ -27,11 +27,11 @@ export const ApperanceSection: React.FC = () => {
 
   return (
     <Section icon="apperance" title="Appearance" description="Customize the look and feel of your chat widget">
-      <SectionGroup width={160}>
+      <Section.Group width={160}>
         <Label>Main Color</Label>
         <ColorInput value={config.color} onChange={(color) => updateConfig({ color })} />
-      </SectionGroup>
-      <SectionGroup>
+      </Section.Group>
+      <Section.Group>
         <Label>Assistant Image</Label>
         <Box.Flex>
           <PreviewCrop>
@@ -49,7 +49,7 @@ export const ApperanceSection: React.FC = () => {
             </Button>
           </Box.Flex>
         </Box.Flex>
-      </SectionGroup>
+      </Section.Group>
     </Section>
   );
 };

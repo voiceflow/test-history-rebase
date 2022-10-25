@@ -1,7 +1,7 @@
 import { Box, Collapse, SvgIcon, ThemeColor, useLocalStorageState } from '@voiceflow/ui';
 import React from 'react';
 
-import { SectionArrow, SectionBody, SectionContainer, SectionHeader, SectionIcon } from './styled';
+import { SectionArrow, SectionBody, SectionContainer, SectionGroup, SectionHeader, SectionIcon } from './styled';
 
 interface SectionProps {
   icon: keyof typeof SvgIcon.ICONS;
@@ -39,4 +39,4 @@ const Section: React.FC<SectionProps> = ({ title, description, icon, children })
   );
 };
 
-export default Section;
+export default Object.assign(Section, { Group: SectionGroup, Container: SectionContainer });

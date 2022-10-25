@@ -1902,7 +1902,7 @@ kbd {
   width: 49px;
   height: 24px;
   padding: 0;
-  background-image: linear-gradient(#becedc85, #becedc);
+  background: #3D82E266;
   border-radius: 30px;
 
   /* background-color: #8da2b5; */
@@ -1919,16 +1919,12 @@ kbd {
   border-bottom: 1px solid rgba(226, 233, 236, 0.63) !important;
 }
 
-.react-toggle:hover:not(.react-toggle--disabled) .react-toggle-track {
-  background-color: #0000;
-}
-
 .react-toggle--checked .react-toggle-track {
-  background-image: linear-gradient(to bottom, #49a4ffa6, #0f88ff);
+  background: #3D82E2;
 }
 
 .react-toggle--checked:hover:not(.react-toggle--disabled) .react-toggle-track {
-  background-image: linear-gradient(to bottom, #49a4ffa6, #0f88ff);
+  background: #3D82E2;
 }
 
 .react-toggle-track-check {

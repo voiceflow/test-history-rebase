@@ -43,6 +43,12 @@ const sizeStyles = {
 
 const ToggleContainer = styled.div<{ size: Size }>`
   display: flex;
+
+  .react-toggle-thumb {
+    box-shadow: 0 0 0 0.5px #fff;
+    background: #fff;
+  }
+
   ${({ size }) => size !== Size.NORMAL && sizeStyles[size]}
 `;
 

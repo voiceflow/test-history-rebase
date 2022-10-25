@@ -3,7 +3,7 @@ import { Box } from '@voiceflow/ui';
 
 import { styled } from '@/hocs';
 
-import { SectionContainer } from './sections';
+import Section from './sections/components/Section';
 
 export const PreviewContainer = styled(Box.FlexCenter)`
   border-left: 1px solid #dfe3ed;
@@ -38,7 +38,7 @@ export const SettingsContainer = styled(Box.Flex)`
   min-width: 600px;
   flex-grow: 1;
 
-  & ${SectionContainer} {
+  & ${Section.Container} {
     margin-bottom: 16px;
   }
 `;

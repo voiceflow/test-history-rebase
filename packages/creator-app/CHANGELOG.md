@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.955.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.955.2...@voiceflow/creator-app@1.955.3) (2022-10-25)
+
+
+### Bug Fixes
+
+* show attach intents by default on buttons (CT-1019) ([#6192](https://github.com/voiceflow/creator-app/issues/6192)) ([b5c1979](https://github.com/voiceflow/creator-app/commit/b5c1979bc9f9b557d1a59dd8b6f47326280113c5))
+
+
+
+
+
 ## [1.955.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.955.1...@voiceflow/creator-app@1.955.2) (2022-10-25)
 
 

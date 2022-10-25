@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.955.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.955.4...@voiceflow/creator-app@1.955.5) (2022-10-25)
+
+
+### Bug Fixes
+
+* set fallback layout for public prototype (BUG-22) ([#6231](https://github.com/voiceflow/creator-app/issues/6231)) ([5e530f2](https://github.com/voiceflow/creator-app/commit/5e530f2e2de532157b8fac914c1f315f7dd243ed))
+
+
+
+
+
 ## [1.955.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.955.3...@voiceflow/creator-app@1.955.4) (2022-10-25)
 
 

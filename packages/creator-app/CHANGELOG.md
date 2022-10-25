@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.955.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.955.1...@voiceflow/creator-app@1.955.2) (2022-10-25)
+
+
+### Bug Fixes
+
+* arrow at the option should animate when active (CT-1087) ([#6230](https://github.com/voiceflow/creator-app/issues/6230)) ([8338b8b](https://github.com/voiceflow/creator-app/commit/8338b8b2681ac1c72f2548bf30dca7426c90499f))
+
+
+
+
+
 ## [1.955.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.955.0...@voiceflow/creator-app@1.955.1) (2022-10-25)
 
 

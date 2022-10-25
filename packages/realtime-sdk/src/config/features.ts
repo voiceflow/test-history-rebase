@@ -61,4 +61,6 @@ export enum FeatureFlag {
   IDENTITY_WORKSPACE_MEMBER = 'identity_workspace_member',
   IDENTITY_ORGANIZATION = 'identity_organization',
   IDENTITY_SAML2_PROVIDER = 'identity_saml2_provider',
+
+  GLOABL_NO_MATCH_NO_REPLY = 'global_no_match_no_reply',
 }

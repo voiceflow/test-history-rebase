@@ -183,13 +183,16 @@ export const loadFeatures = (): Thunk => async (dispatch) => {
 };
 
 export const loadWorkspaceFeatures = (): Thunk => async (dispatch, getState) => {
+  const isIdentityWorkspaceEnabled = isFeatureEnabledSelector(getState())(Realtime.FeatureFlag.IDENTITY_WORKSPACE);
   const workspaceID = activeWorkspaceIDSelector(getState());
 
   if (!workspaceID) {
     return;
   }
 
-  const organization = await client.workspace.getOrganization(workspaceID);
+  const organization = isIdentityWorkspaceEnabled
+    ? await client.identity.workspace.getOrganization(workspaceID)
+    : await client.workspace.getOrganization(workspaceID);
   const features = await client.feature.getStatuses({ workspaceID, organizationID: organization?.id });
 
   dispatch(setWorkspaceFeaturesLoaded(overrideFeatures(features)));

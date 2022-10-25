@@ -1,3 +1,4 @@
+/* eslint-disable no-return-await */
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
@@ -127,9 +128,17 @@ class WorkspaceService extends AbstractControl {
     }
   }
 
-  public async isFeatureEnabled(creatorID: number, workspaceID: string, feature: Realtime.FeatureFlag): Promise<boolean> {
+  private async getOrganization(creatorID: number, workspaceID: string): Promise<Realtime.Organization | undefined> {
+    const isIdentityWorkspaceEnabled = this.services.feature.isEnabled(Realtime.FeatureFlag.IDENTITY_WORKSPACE, { userID: creatorID });
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
-    const organization = workspaceID ? await client.workspace.getOrganization(workspaceID) : undefined;
+
+    return isIdentityWorkspaceEnabled
+      ? await client.identity.workspace.getOrganization(workspaceID)
+      : await client.workspace.getOrganization(workspaceID);
+  }
+
+  public async isFeatureEnabled(creatorID: number, workspaceID: string | undefined, feature: Realtime.FeatureFlag): Promise<boolean> {
+    const organization = await (workspaceID ? this.getOrganization(creatorID, workspaceID) : undefined);
 
     return this.services.feature.isEnabled(feature, { userID: creatorID, workspaceID, organizationID: organization?.id });
   }

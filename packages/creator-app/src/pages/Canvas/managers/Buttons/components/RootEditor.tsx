@@ -35,7 +35,7 @@ const RootEditor: React.FC = () => {
   const intentScopeOption = useIntentScope({ data: editor.data, onChange: editor.onChange });
   const buttonLayoutOption = useButtonLayoutOption();
 
-  const [canAddIntent, setCanAddIntent] = useLocalStorageState(ADD_INTENTS_KEY, false);
+  const [canAddIntent, setCanAddIntent] = useLocalStorageState(ADD_INTENTS_KEY, true);
   const addIntentsOption = React.useMemo(
     () => ({
       label: canAddIntent ? 'Remove intents for buttons' : 'Add intents for buttons',

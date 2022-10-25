@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.955.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.955.3...@voiceflow/creator-app@1.955.4) (2022-10-25)
+
+
+### Bug Fixes
+
+* add z-index to design menu (BUG-76) ([#6227](https://github.com/voiceflow/creator-app/issues/6227)) ([30b6c31](https://github.com/voiceflow/creator-app/commit/30b6c31fca40f62a220a659712090ae2e6a65228))
+
+
+
+
+
 ## [1.955.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.955.2...@voiceflow/creator-app@1.955.3) (2022-10-25)
 
 

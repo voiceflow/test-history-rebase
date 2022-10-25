@@ -10,6 +10,7 @@ export const FullHeightContainer = styled.aside<ContainerProps>`
   position: absolute;
   top: 0;
   bottom: 0;
+  z-index: 2;
 
   left: ${({ canvasOnly, theme }) => (canvasOnly ? 0 : theme.components.sidebarIconMenu.width)}px;
   transform: translateX(-${({ menuWidth }) => menuWidth}px);

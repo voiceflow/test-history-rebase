@@ -23,6 +23,8 @@ const ModalContainer = styled.section<ModalContainerProps>`
   width: 100%;
   max-height: calc(100% - 56px);
   background: #fff;
+  box-shadow: rgb(19 33 68 / 4%) 0px 12px 24px, rgb(19 33 68 / 4%) 0px 8px 12px, rgb(19 33 68 / 2%) 0px 4px 4px, rgb(19 33 68 / 1%) 0px 2px 2px,
+    rgb(19 33 68 / 1%) 0px 1px 1px, rgb(17 49 96 / 3%) 0px 0px 0px;
 
   ${({ fullScreen }) =>
     fullScreen &&

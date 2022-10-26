@@ -233,8 +233,8 @@ export const getIntentStrengthLevel = (count: number) => {
 
 export const getIntentClarityStrengthLevel = (count: number) => {
   if (count === 0) return StrengthGauge.Level.NOT_SET;
-  if (count < 0.8) return StrengthGauge.Level.WEAK;
-  if (count < 0.9) return StrengthGauge.Level.MEDIUM;
+  if (count < 0.4) return StrengthGauge.Level.WEAK;
+  if (count < 0.7) return StrengthGauge.Level.MEDIUM;
   if (count < 1) return StrengthGauge.Level.STRONG;
   if (count === 1) return StrengthGauge.Level.VERY_STRONG;
 

@@ -38,8 +38,8 @@ const Client = ({ api }: ExtraOptions): ThreadClient => ({
     const payload: Partial<DBThread> = {
       ...(nodeID && { node_id: nodeID }),
       ...(position && { position }),
-      ...(resolved && { resolved }),
-      ...(deleted && { deleted }),
+      ...{ resolved: resolved ?? undefined },
+      ...{ deleted: deleted ?? undefined },
     };
 
     return api.put(`${COMMENTING_PATH}/${projectID}/threads/${threadID}`, payload);

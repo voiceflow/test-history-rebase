@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.959.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.958.0...@voiceflow/creator-app@1.959.0) (2022-10-26)
+
+
+### Features
+
+* fix text editor update (CT-1020) ([#6221](https://github.com/voiceflow/creator-app/issues/6221)) ([aad05c9](https://github.com/voiceflow/creator-app/commit/aad05c91b6f541791fa54bd240e93772e693cd0e))
+
+
+
+
+
 # [1.958.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.957.1...@voiceflow/creator-app@1.958.0) (2022-10-26)
 
 

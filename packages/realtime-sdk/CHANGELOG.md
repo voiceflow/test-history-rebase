@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.185.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.184.0...@voiceflow/realtime-sdk@1.185.0) (2022-10-26)
+
+
+### Features
+
+* identity saml provider (CT-1074) ([#6186](https://github.com/voiceflow/creator-app/issues/6186)) ([d8cc872](https://github.com/voiceflow/creator-app/commit/d8cc872d094031e9ae6eaf7cf8846dabd8e2b40e))
+
+
+
+
+
 # [1.184.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.183.1...@voiceflow/realtime-sdk@1.184.0) (2022-10-26)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.184.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.183.1...@voiceflow/realtime-sdk@1.184.0) (2022-10-26)
+
+
+### Features
+
+* logout via auth service (CT-000) ([#6237](https://github.com/voiceflow/creator-app/issues/6237)) ([4aa9dff](https://github.com/voiceflow/creator-app/commit/4aa9dff47cf58d0ad47217cad3c60e8d4bbc2881))
+
+
+
+
+
 ## [1.183.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.183.0...@voiceflow/realtime-sdk@1.183.1) (2022-10-25)
 
 

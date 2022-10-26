@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.956.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.955.6...@voiceflow/creator-app@1.956.0) (2022-10-26)
+
+
+### Features
+
+* logout via auth service (CT-000) ([#6237](https://github.com/voiceflow/creator-app/issues/6237)) ([4aa9dff](https://github.com/voiceflow/creator-app/commit/4aa9dff47cf58d0ad47217cad3c60e8d4bbc2881))
+
+
+
+
+
 ## [1.955.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.955.5...@voiceflow/creator-app@1.955.6) (2022-10-25)
 
 **Note:** Version bump only for package @voiceflow/creator-app

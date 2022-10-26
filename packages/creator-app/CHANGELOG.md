@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.957.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.957.0...@voiceflow/creator-app@1.957.1) (2022-10-26)
+
+
+### Bug Fixes
+
+* [bugfix] fixed model export to include all intents (BUG-84) ([#6239](https://github.com/voiceflow/creator-app/issues/6239)) ([95df354](https://github.com/voiceflow/creator-app/commit/95df354248ff24275f310355b4efa1ed857eafa4))
+
+
+
+
+
 # [1.957.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.956.0...@voiceflow/creator-app@1.957.0) (2022-10-26)
 
 

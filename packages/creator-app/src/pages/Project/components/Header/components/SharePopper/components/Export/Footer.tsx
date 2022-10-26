@@ -6,10 +6,9 @@ import * as Documentation from '@/config/documentation';
 import { getCanvasExportLimitDetails } from '@/config/planLimits/canvasExport';
 import { getNLUExportLimitDetails } from '@/config/planLimits/nluExport';
 import { ExportFormat, ExportType, ModalType, NLPProvider } from '@/constants';
-import * as IntentV2 from '@/ducks/intentV2';
 import { UpgradePrompt } from '@/ducks/tracking';
 import * as Tracking from '@/ducks/tracking';
-import { useModals, useSelector, useTrackingEvents } from '@/hooks';
+import { useModals, useTrackingEvents } from '@/hooks';
 
 import { ExportContext } from './Context';
 
@@ -18,9 +17,9 @@ const ExportFooter: React.FC<{
   linkURL?: string;
   origin: Tracking.ModelExportOriginType;
 }> = ({ withoutLink, origin, linkURL }) => {
-  const { isExporting, onExport, exportType, canExport, canvasExportFormat, modelExportProvider } = React.useContext(ExportContext)!;
-  const intents = useSelector(IntentV2.allIntentsSelector);
-  const noModelData = exportType === ExportType.MODEL && intents.length === 0;
+  const { isExporting, onExport, exportType, canExport, canvasExportFormat, modelExportProvider, modelExportIntents } =
+    React.useContext(ExportContext)!;
+  const noModelData = exportType === ExportType.MODEL && modelExportIntents.length === 0;
 
   const [trackingEvents] = useTrackingEvents();
 

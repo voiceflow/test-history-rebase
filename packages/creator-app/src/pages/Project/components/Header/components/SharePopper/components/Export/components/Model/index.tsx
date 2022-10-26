@@ -1,4 +1,4 @@
-import { BlockText, Divider, Select } from '@voiceflow/ui';
+import { BlockText, Select, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 import { useSelector } from 'react-redux';
 
@@ -6,12 +6,16 @@ import IntentsSelect from '@/components/IntentsSelect';
 import UpgradeOption from '@/components/UpgradeOption';
 import { Permission } from '@/config/permissions';
 import { getNLUExportLimitDetails, isGatedNLUExportType } from '@/config/planLimits/nluExport';
-import { NLPProvider, NLPProviderLabels } from '@/constants';
+import { NLPProvider, NLPProviderLabels, NLPProviderToIconMap } from '@/constants';
 import * as IntentV2 from '@/ducks/intentV2';
+import * as ProjectV2 from '@/ducks/projectV2';
 import { UpgradePrompt } from '@/ducks/tracking';
 import { usePermission } from '@/hooks';
+import { PLATFORM_PROJECT_META_MAP } from '@/pages/NewProjectV2/constants';
+import { SupportedPlatformProjectType } from '@/pages/NewProjectV2/types';
 
 import { ExportContext } from '../../Context';
+import { getNLPSelectLabel } from './constants';
 
 const ExportModel: React.FC<{
   selectedIntentsIds?: string[];
@@ -30,6 +34,8 @@ const ExportModel: React.FC<{
   const [permissionToExport] = usePermission(Permission.NLU_EXPORT_ALL);
   const [permissionToExportCSV] = usePermission(Permission.NLU_EXPORT_CSV);
   const [selectedIntents, setSelectedIntents] = React.useState(modelExportIntents);
+  const platform = useSelector(ProjectV2.active.platformSelector);
+  const platformMeta = PLATFORM_PROJECT_META_MAP[platform as SupportedPlatformProjectType];
 
   const modelExportSelection = (value: NLPProvider) => {
     setModelExportProvider(value);
@@ -60,6 +66,7 @@ const ExportModel: React.FC<{
 
   return (
     <>
+      <label style={{ marginTop: 21 }}>Export format</label>
       <Select
         value={modelExportProvider}
         options={nlpProviderOptions}
@@ -68,6 +75,7 @@ const ExportModel: React.FC<{
         searchable
         placeholder="Choose an option"
         getOptionLabel={(value) => value && NLPProviderLabels[value]}
+        prefix={modelExportProvider ? <SvgIcon icon={NLPProviderToIconMap[modelExportProvider]} /> : null}
         renderOptionLabel={(option, searchLabel, getOptionLabel, getOptionValue, { isFocused }) => (
           <UpgradeOption
             option={option}
@@ -81,6 +89,11 @@ const ExportModel: React.FC<{
           />
         )}
       />
+      {/* change this text */}
+      <BlockText fontSize={13} color="#62778c" lineHeight="normal" marginTop={11}>
+        <span>{getNLPSelectLabel(platformMeta.name)(platform)}</span>
+      </BlockText>
+      <label style={{ marginTop: 24 }}>Intents</label>
 
       {noModelData ? (
         <BlockText fontSize={13} color="#62778c" lineHeight="normal" marginTop={12}>
@@ -88,7 +101,6 @@ const ExportModel: React.FC<{
         </BlockText>
       ) : (
         <>
-          <Divider style={{ margin: '20px 0px', width: 'calc(100% + 64px)', backgroundColor: 'rgb(234 239 242)' }} />
           <IntentsSelect value={selectedIntents} onChange={handleOnChange} />
         </>
       )}

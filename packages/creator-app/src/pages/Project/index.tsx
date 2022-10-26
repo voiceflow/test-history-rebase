@@ -16,6 +16,7 @@ import { VersionSubscriptionGate, WorkspaceFeatureLoadingGate } from '@/gates';
 import { lazy, withBatchLoadingGate } from '@/hocs';
 import { useDispatch, useEventualEngine, useFeature, useLayoutDidUpdate, useLocalDispatch, useSelector, useTeardown, useTheme } from '@/hooks';
 import ExportModelModal from '@/pages/Canvas/components/ExportModelModal';
+import { ExportProvider } from '@/pages/Project/components/Header/components/SharePopper/components/Export';
 import { useProjectPreviewMode } from '@/pages/Project/hooks';
 import Providers from '@/pages/Project/Providers';
 import PrototypeWebhook from '@/pages/PrototypeWebhook';
@@ -108,7 +109,9 @@ const Project: React.FC = () => {
           </>
         )}
 
-        <ExportModelModal />
+        <ExportProvider>
+          <ExportModelModal />
+        </ExportProvider>
 
         <ProjectExitTracker platform={platform} />
         <RemoveIntercom />

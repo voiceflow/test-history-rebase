@@ -10,7 +10,6 @@ import { NLUManagerContext } from '@/pages/NLUManager/context';
 import { TrainingModelContext } from '@/pages/Project/contexts';
 
 import { Container, TrainButton, TrashButton } from '../../styles';
-import Export from '../Export';
 import NLUSearch from '../Search';
 
 const IntentsHeader: React.FC = () => {
@@ -63,8 +62,6 @@ const IntentsHeader: React.FC = () => {
             <SvgIcon icon="trash" size={15} inline />
           </TrashButton>
         )}
-
-        <Export checkedItems={Array.from(nluManager.selectedIntentIDs)} />
 
         <TrainButton active={isTraining} onClick={handleTrain} squareRadius variant={ButtonVariant.PRIMARY}>
           <Box display="inline-block" position="relative" top={2}>

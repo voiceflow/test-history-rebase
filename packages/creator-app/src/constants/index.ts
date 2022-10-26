@@ -1,7 +1,7 @@
 import { AlexaNode } from '@voiceflow/alexa-types';
 import { BaseNode } from '@voiceflow/base-types';
 import { BillingPeriod, UserRole } from '@voiceflow/internal';
-import { COLOR_PICKER_CONSTANTS } from '@voiceflow/ui';
+import { COLOR_PICKER_CONSTANTS, SvgIconTypes } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import { Pair } from '@/types';
@@ -121,6 +121,20 @@ export const NLPProviderLabels = {
   [NLPProvider.DIALOGFLOW_CX]: 'Dialogflow CX',
   [NLPProvider.VF_CSV]: 'Voiceflow CSV',
   [NLPProvider.NUANCE_MIX]: 'Nuance Mix',
+};
+
+export const NLPProviderToIconMap: Record<NLPProvider, SvgIconTypes.Icon> = {
+  [NLPProvider.LUIS]: 'luis',
+  [NLPProvider.RASA2]: 'rasa',
+  [NLPProvider.RASA3]: 'rasa',
+  [NLPProvider.ALEXA]: 'alexa',
+  [NLPProvider.LEX_V1]: 'lex',
+  [NLPProvider.WATSON]: 'watson',
+  [NLPProvider.EINSTEIN]: 'salesforce',
+  [NLPProvider.DIALOGFLOW_ES]: 'dialogflow',
+  [NLPProvider.DIALOGFLOW_CX]: 'dialogflowCX',
+  [NLPProvider.VF_CSV]: 'voiceflowV',
+  [NLPProvider.NUANCE_MIX]: 'nuanceMix',
 };
 
 export const PERMISSIONS = [

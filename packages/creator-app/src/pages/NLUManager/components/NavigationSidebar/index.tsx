@@ -4,13 +4,13 @@ import React from 'react';
 
 import client from '@/client';
 import { NLURoute } from '@/config/routes';
-import { NLUImportOrigin } from '@/constants';
+import { ModalType, NLUImportOrigin } from '@/constants';
 import * as Intent from '@/ducks/intent';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import * as Slot from '@/ducks/slot';
-import { useDispatch, useFeature, useModelTracking, useSelector, useTrackingEvents } from '@/hooks';
+import { useDispatch, useFeature, useModals, useModelTracking, useSelector, useTrackingEvents } from '@/hooks';
 import { PLATFORM_PROJECT_META_MAP } from '@/pages/NewProjectV2/constants';
 import { useNLUImport } from '@/pages/NewProjectV2/hooks';
 import { ImportModel, SupportedPlatformProjectType } from '@/pages/NewProjectV2/types';
@@ -23,6 +23,7 @@ const NavigationSidebar: React.FC = () => {
   const [importClicked, setImportClicked] = useLocalStorageState('import-clicked', false);
 
   const nluManager = React.useContext(NLUManagerContext);
+  const { open: openExportModelModal } = useModals<{ checkedItems: string[] }>(ModalType.EXPORT_MODEL);
 
   const platform = useSelector(ProjectV2.active.platformSelector);
   const versionID = useSelector(Session.activeVersionIDSelector)!;
@@ -108,6 +109,9 @@ const NavigationSidebar: React.FC = () => {
           </Box>
         </TippyTooltip>
       )}
+      <Box px={16} pb={12}>
+        <Item onClick={() => openExportModelModal({ checkedItems: Array.from(nluManager.selectedIntentIDs) })} icon="uploadCircle" title="Export" />
+      </Box>
 
       <S.Footer onClick={goToCurrentCanvas}>
         <SvgIcon icon="arrowDown" size={18} color="#6e849a" inline style={{ marginRight: '10px' }} />

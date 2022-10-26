@@ -255,6 +255,7 @@ export { default as trash } from './trash.svg';
 export { default as up } from './up.svg';
 export { default as upgrade } from './upgrade.svg';
 export { default as upload } from './upload.svg';
+export { default as uploadCircle } from './upload-circle.svg';
 export { default as user } from './user.svg';
 export { default as user2 } from './user-2.svg';
 

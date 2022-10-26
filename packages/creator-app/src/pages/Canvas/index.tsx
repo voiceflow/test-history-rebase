@@ -7,6 +7,7 @@ import { DiagramSubscriptionGate } from '@/gates';
 import { compose, withBatchLoadingGate } from '@/hocs';
 import { useRAF, useRegistration, useTeardown } from '@/hooks';
 import ReturnToInstanceSnackbar from '@/pages/Canvas/components/ReturnToInstanceSnackbar';
+import { ExportProvider } from '@/pages/Project/components/Header/components/SharePopper/components/Export';
 import { DiagramHeartbeatContext, SelectionSetTargetsContext } from '@/pages/Project/contexts';
 
 import Container from './components/CanvasContainer';
@@ -97,7 +98,9 @@ const Canvas: React.FC<CanvasProps> = ({ isPrototypingMode }) => {
 
       <NLUQuickView />
       <SlotEditModal />
-      <ExportModelModal />
+      <ExportProvider>
+        <ExportModelModal />
+      </ExportProvider>
     </CanvasProviders>
   );
 };

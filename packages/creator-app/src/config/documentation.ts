@@ -5,7 +5,7 @@ export const BULK_IMPORT_SLOTS = 'https://docs.voiceflow.com/#/platform/interact
 export const BULK_IMPORT_UTTERANCES = 'https://docs.voiceflow.com/#/features/bulk-import-utterances?id=bulk-import-utterances';
 
 // export
-export const MODEL_EXPORT = 'https://docs.voiceflow.com/#/platform/interaction-model/model-manager?id=model-export';
+export const MODEL_EXPORT = 'https://www.voiceflow.com/docs/nlu-management-nlu-data-import-export#toc-1';
 export const PROJECT_EXPORT = 'https://www.voiceflow.com/docs/documentation-content-exports';
 export const PROTOTYPE_SHARE = 'https://www.voiceflow.com/docs/prototyping-sharable-prototypes';
 

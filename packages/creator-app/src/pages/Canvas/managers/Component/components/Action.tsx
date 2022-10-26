@@ -19,6 +19,7 @@ const Action: ConnectedAction<Realtime.NodeData.Component, Realtime.NodeData.Com
   reversed,
   isActive,
   onOpenEditor,
+  sourceNodeID,
 }) => {
   const diagramMap = React.useContext(DiagramMapContext)!;
   const goToDiagram = useDispatch(Router.goToDiagramHistoryPush);
@@ -35,7 +36,7 @@ const Action: ConnectedAction<Realtime.NodeData.Component, Realtime.NodeData.Com
           onClose={onClose}
           onRemove={onRemove}
           onOpenEditor={onOpenEditor}
-          onOpenTarget={isEmpty ? null : () => goToDiagram(diagram.id)}
+          onOpenTarget={isEmpty ? null : () => goToDiagram(diagram.id, undefined, sourceNodeID)}
         />
       )}
     >

@@ -1,3 +1,4 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Button, ClickableText, FlexEnd, Input, Spinner, toast, useSmartReducerV2 } from '@voiceflow/ui';
 import React from 'react';
 import { useSelector } from 'react-redux';
@@ -7,6 +8,7 @@ import Section, { SectionVariant } from '@/components/Section';
 import { SettingsSection } from '@/components/Settings';
 import { StaticTextArea } from '@/components/TextArea';
 import { API_ENDPOINT } from '@/config';
+import * as Feature from '@/ducks/feature';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useAsyncEffect, useToggle } from '@/hooks';
 import { SAMLProvider } from '@/models';
@@ -29,6 +31,8 @@ const SSOPage: React.FC = () => {
   const [initializing, toggleInitializing] = useToggle(true);
   const [loading, toggleLoading] = useToggle(false);
   const [editCertificate, toggleEditCertificate] = useToggle(true);
+
+  const isIdentityWorkspaceEnabled = useSelector(Feature.isFeatureEnabledSelector)(Realtime.FeatureFlag.IDENTITY_SAML2_PROVIDER);
 
   const [samlProvider, samlProviderAPI] = useSmartReducerV2<SAMLProvider>(DEFAULT_STATE);
 
@@ -58,7 +62,10 @@ const SSOPage: React.FC = () => {
       toast.error('no organization found');
       return;
     }
-    const provider = await client.saml.getForOrganization(organizationID);
+
+    const provider = isIdentityWorkspaceEnabled
+      ? await client.identity.provider.findOneByOrganizationDomain(organizationID)
+      : await client.saml.getForOrganization(organizationID);
     if (provider.certificate) {
       toggleEditCertificate(false);
     }

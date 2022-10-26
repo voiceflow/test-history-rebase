@@ -1,5 +1,6 @@
 import { NestVersion, NestVersionOptions } from '../../nest';
 import { ApiKey } from './api-key';
+import { Provider } from './provider';
 import { User } from './user';
 import { Workspace } from './workspace';
 import { WorkspaceInvitation } from './workspaceInvitation';
@@ -16,6 +17,8 @@ export class V1Alpha1 extends NestVersion {
 
   public workspaceInvitation: WorkspaceInvitation;
 
+  public provider: Provider;
+
   constructor(options: NestVersionOptions) {
     super({ ...options, version: 'v1alpha1' });
 
@@ -26,5 +29,6 @@ export class V1Alpha1 extends NestVersion {
     this.workspace = new Workspace(resourceOptions);
     this.workspaceMember = new WorkspaceMember(resourceOptions);
     this.workspaceInvitation = new WorkspaceInvitation(resourceOptions);
+    this.provider = new Provider(resourceOptions);
   }
 }

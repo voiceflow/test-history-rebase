@@ -5,7 +5,6 @@ import _orderBy from 'lodash/orderBy';
 import client from '@/client';
 import * as Errors from '@/config/errors';
 import { ExportFormat, NLPProvider } from '@/constants';
-import { PrototypeRenderSyncOptions } from '@/constants/prototype';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Prototype from '@/ducks/prototype';
@@ -94,7 +93,7 @@ export const exportCanvas =
   };
 
 export const exportModel =
-  (nlpProvider: NLPProvider, origin: Tracking.ModelExportOriginType, intents?: string[], compilerOptions?: PrototypeRenderSyncOptions): Thunk =>
+  (nlpProvider: NLPProvider, origin: Tracking.ModelExportOriginType, intents?: string[]): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
     const versionID = Session.activeVersionIDSelector(state);
@@ -105,7 +104,8 @@ export const exportModel =
       let data: string;
       const projectName = ProjectV2.active.nameSelector(state)?.replace(/ /g, '_');
 
-      await dispatch(Prototype.compilePrototype(compilerOptions));
+      // DO NOT REMOVE: We want to render all intents before exporting model. Exported model should include all intents whatever is used on canvas or not.
+      await dispatch(Prototype.compilePrototype({ renderUnusedIntents: true }));
 
       switch (nlpProvider) {
         case NLPProvider.ALEXA:

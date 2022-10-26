@@ -42,7 +42,7 @@ context('Prototype', () => {
     });
   });
 
-  describe('public prototype', () => {
+  describe.only('public prototype', () => {
     beforeEach(() => cy.setup());
     afterEach(() => {
       cy.teardown();
@@ -78,7 +78,6 @@ context('Prototype', () => {
         canvasPage.el.brandingDropdown.click();
         canvasPage.el.brandingColorInput.clear();
         canvasPage.el.brandingColorInput.type(CHANGED_BRANDING_HEX_COLOR);
-        canvasPage.el.brandingColorInput.blur();
         cy.wait('@updateSettings');
         prototypePage.uploadImage(Identifier.BRAND_IMAGE_INPUT_CONTAINER);
         cy.wait('@updateImage');

@@ -1,10 +1,9 @@
-import { hexToRGBA, Input, removeHashFromHex, rgbaToHex } from '@voiceflow/ui';
+import { hexToRGBA, Input, isHexColor, removeHashFromHex, rgbaToHex, useDebouncedCallback } from '@voiceflow/ui';
 import React from 'react';
 import { RGBColor } from 'react-color';
 
 import { InputAction } from '@/components/ColorPicker/components';
 import ColorSelect from '@/components/ColorSelect';
-import { useLinkedState } from '@/hooks';
 import { ClassName } from '@/styles/constants';
 
 const getHexColor = (color: RGBColor) => {
@@ -12,6 +11,14 @@ const getHexColor = (color: RGBColor) => {
   const hex = rgbaToHex(rgbaColor);
 
   return hex.slice(0, hex.length - 2);
+};
+
+const getRGBAWithFallback = (hex: string) => {
+  try {
+    return hexToRGBA(hex);
+  } catch {
+    return { r: 255, g: 255, b: 255, a: 1 };
+  }
 };
 
 interface ColorInputProps {
@@ -22,49 +29,39 @@ interface ColorInputProps {
 }
 
 const ColorInput: React.FC<ColorInputProps> = ({ isAllowed = true, disabledBorderColor, value, onChange }) => {
-  const [storeHex, storeRGBA] = React.useMemo(() => [removeHashFromHex(value), hexToRGBA(value)], [value]);
+  const [localHex, setLocalHex] = React.useState(removeHashFromHex(value));
 
-  const [hex, setHex] = useLinkedState(storeHex);
-  const [color, setColor] = useLinkedState(storeRGBA);
+  const debouncedOnChange = useDebouncedCallback(200, onChange, [localHex]);
 
-  const onSubmitHexColor = () => {
-    const upperCaseHex = hex.toUpperCase();
+  React.useEffect(() => {
+    const hashedHex = `#${localHex}`;
 
-    try {
-      setColor(hexToRGBA(`#${hex}`));
-      setHex(upperCaseHex);
-      onChange(`#${upperCaseHex}`);
-    } catch {
-      setHex(removeHashFromHex(getHexColor(color)).toUpperCase());
+    if (isHexColor(hashedHex) && hashedHex.length === 7) {
+      debouncedOnChange(hashedHex);
     }
-  };
+  }, [localHex]);
 
-  const updateRGBColor = (nextColor: RGBColor) => {
-    const nextHex = removeHashFromHex(getHexColor(nextColor)).toUpperCase();
-
-    setHex(nextHex);
-    setColor({ a: 1, ...nextColor });
-  };
+  const updateLocalHex = (nextHex: string) => setLocalHex(removeHashFromHex(nextHex).toUpperCase());
 
   return (
     <Input
       className={ClassName.COLOR_INPUT}
-      value={hex}
-      onBlur={onSubmitHexColor}
+      value={localHex}
       cursor={isAllowed ? 'auto' : 'not-allowed'}
       leftAction={<InputAction>HEX</InputAction>}
       rightAction={
         <ColorSelect
-          color={color}
+          color={getRGBAWithFallback(`#${localHex}`)}
           hexInput={false}
           disabled={!isAllowed}
-          onChange={(nextColor: RGBColor) => updateRGBColor(nextColor)}
+          onChange={(nextColor: RGBColor) => updateLocalHex(getHexColor(nextColor))}
           alphaSlider={false}
         />
       }
       disabled={!isAllowed}
-      onEnterPress={onSubmitHexColor}
-      onChangeText={(value) => setHex(removeHashFromHex(value).substring(0, 6))}
+      onChangeText={(value) => {
+        setLocalHex(removeHashFromHex(value).substring(0, 6).toUpperCase());
+      }}
       wrapperProps={{ disabledBorderColor }}
     />
   );

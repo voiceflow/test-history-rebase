@@ -14,6 +14,7 @@ interface SSMLWithVarsProps {
   icon?: SvgIconTypes.Icon | null;
   value: string;
   voice?: string;
+  onKeyDown?: (data: { text: string; slots: string[] }) => void;
   onBlur: (data: { text: string; slots: string[] }) => void;
   autofocus?: boolean;
   placeholder?: string;

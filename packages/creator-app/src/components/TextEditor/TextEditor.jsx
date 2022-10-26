@@ -1,9 +1,10 @@
-import { setRef } from '@voiceflow/ui';
-import { EditorState, RichUtils } from 'draft-js';
+import { setRef, useDebouncedCallback } from '@voiceflow/ui';
+import { EditorState, getDefaultKeyBinding, RichUtils } from 'draft-js';
 import React from 'react';
 import lifecycle from 'recompose/lifecycle';
 
 import DraftJSEditor from '@/components/DraftJSEditor';
+import { KEYSTROKE_SAVE_INTERVAL } from '@/constants';
 import { useDidUpdateEffect, useEnableDisable, useForceUpdate, useTeardown } from '@/hooks';
 import * as Sentry from '@/vendors/sentry';
 
@@ -15,6 +16,7 @@ const DEFAULT_PLUGINS = [PluginType.VARIABLES];
 function TextEditor({
   value = '',
   onBlur,
+  onKeyDown,
   onFocus,
   onEmpty,
   readOnly: propReadOnly,
@@ -50,7 +52,7 @@ function TextEditor({
   const fromStateWithAdapter = React.useMemo(() => fromState(toTextAdapters), [toTextAdapters]);
   const [editorState, updateEditorState] = React.useState(() => toState(value, fromTextConvertor(pluginsProps)));
 
-  store.merge({ readOnly, editorState, onEmpty, onBlur, onEnterPress, forceUpdate });
+  store.merge({ readOnly, editorState, onEmpty, onBlur, onKeyDown, onEnterPress, forceUpdate });
 
   const onHandlerReturn = React.useCallback(
     (e, nextEditorState) => {
@@ -91,6 +93,27 @@ function TextEditor({
       callback(nextValue);
     }
   }, [ableToHandleBlur, fromStateWithAdapter, store]);
+
+  const handleOnKeyDown = useDebouncedCallback(KEYSTROKE_SAVE_INTERVAL, (nextValue) => {
+    const callback = store.get('onKeyDown');
+
+    if (callback) {
+      // eslint-disable-next-line callback-return
+      callback(nextValue);
+    }
+  });
+
+  const keyBindingFn = React.useCallback(
+    (e) => {
+      const nextValue = fromStateWithAdapter(store.get('editorState'));
+
+      store.set('textValue', nextValue.text);
+
+      handleOnKeyDown(nextValue);
+      getDefaultKeyBinding(e);
+    },
+    [fromStateWithAdapter, store]
+  );
 
   const onEditorChange = React.useCallback(
     (newEditorState) => {
@@ -215,6 +238,7 @@ function TextEditor({
       <DraftJSEditor
         ref={onEditorRef}
         onBlur={onBlurEditor}
+        keyBindingFn={keyBindingFn}
         onFocus={onFocus}
         plugins={plugins}
         onChange={onEditorChange}

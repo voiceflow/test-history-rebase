@@ -6,14 +6,24 @@ import React from 'react';
 import SlateEditable, { SlateEditableProps, SlateEditableRef, SlateValue } from '@/components/SlateEditable';
 import { ClassName } from '@/styles/constants';
 
-export interface SlateBaseInputProps extends Omit<SlateEditableProps, 'onBlur'> {
+export interface SlateBaseInputProps extends Omit<SlateEditableProps, 'onBlur' | 'onKeyUp'> {
   onBlur?: Nullish<(value: SlateValue, event: React.FocusEvent) => void>;
+  onKeyUp?: Nullish<(value: SlateValue, event: React.KeyboardEvent) => void>;
 }
 
-const SlateBaseInput: React.ForwardRefRenderFunction<SlateEditableRef, SlateBaseInputProps> = ({ value, onBlur, children, ...props }, ref) => (
+const SlateBaseInput: React.ForwardRefRenderFunction<SlateEditableRef, SlateBaseInputProps> = (
+  { value, onBlur, onKeyUp, children, ...props },
+  ref
+) => (
   <Input className={ClassName.TEXT_EDITOR}>
     {({ ref: inputRef }) => (
-      <SlateEditable ref={composeRef(inputRef, ref)} value={value} onBlur={(event) => onBlur?.(value, event)} {...props}>
+      <SlateEditable
+        ref={composeRef(inputRef, ref)}
+        value={value}
+        onBlur={(event) => onBlur?.(value, event)}
+        onKeyUp={(event) => onKeyUp?.(value, event)}
+        {...props}
+      >
         {children}
       </SlateEditable>
     )}

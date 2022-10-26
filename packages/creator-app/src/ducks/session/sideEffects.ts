@@ -41,7 +41,9 @@ export const updateAuthToken =
     dispatch(setAuthToken(token));
   };
 
-export const resetSession = (): Thunk => async (dispatch) => {
+export const resetSession = (): SyncThunk => (dispatch) => {
+  localStorage.clear();
+
   batch(() => {
     dispatch(resetAccount());
     dispatch(updateAuthToken(null));
@@ -54,11 +56,19 @@ export const resetSession = (): Thunk => async (dispatch) => {
 export const logout = (): Thunk => async (dispatch, getState) => {
   const state = getState();
   const token = authTokenSelector(state);
+  const isIdentityUserEnabled = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.IDENTITY_USER);
+
+  client.api.analytics.flush();
+
   if (token) {
-    await client.session.delete().catch(Sentry.error);
+    if (isIdentityUserEnabled) {
+      await client.auth.revoke().catch(Sentry.error);
+    } else {
+      await client.session.delete().catch(Sentry.error);
+    }
   }
-  localStorage.clear();
-  await dispatch(resetSession());
+
+  dispatch(resetSession());
 };
 
 export const identifyUser =
@@ -129,7 +139,7 @@ export const restoreSession = (): Thunk => async (dispatch, getState) => {
   } catch (err) {
     Sentry.error(err);
 
-    await dispatch(resetSession());
+    dispatch(resetSession());
   }
 };
 
@@ -231,7 +241,7 @@ export const signin =
     if (isIdentityUserEnabled) {
       const { token } = await client.auth.authenticate(payload);
 
-      dispatch(updateAuthToken(token));
+      Cookies.setAuthCookie(token);
 
       const userAccount = await dispatch(getUserAccount());
 
@@ -289,7 +299,7 @@ export const signup =
         },
       });
 
-      await dispatch(legacyBasicAuthLogin({ email, password }, { query, firstLogin: true }));
+      await dispatch(signin({ email, password }, { query, firstLogin: true }));
 
       return {
         creatorID: user.id,

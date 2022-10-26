@@ -10,16 +10,24 @@ interface NestInternalOptions extends NestVersionOptions {
 }
 
 export abstract class NestVersion {
-  private readonly token: string | null | (() => string | null);
+  private readonly _token: string | null | (() => string | null);
 
   protected readonly axios: AxiosInstance;
 
-  constructor({ token, baseURL, version }: NestInternalOptions) {
-    this.token = token ?? null;
-    this.axios = axios.create({ baseURL: `${baseURL}/${version}` });
+  protected get token(): string | null {
+    return typeof this._token === 'function' ? this._token() : this._token;
+  }
 
+  constructor({ token = null, baseURL, version }: NestInternalOptions) {
+    this.axios = axios.create({ baseURL: `${baseURL}/${version}` });
+    this._token = token;
+
+    this.setupInterceptors();
+  }
+
+  private setupInterceptors() {
     this.axios.interceptors.request.use((config) => {
-      const token = typeof this.token === 'function' ? this.token() : this.token;
+      const { token } = this;
 
       if (token) {
         Object.assign(config, { headers: { ...config.headers, authorization: `Bearer ${token}` } });

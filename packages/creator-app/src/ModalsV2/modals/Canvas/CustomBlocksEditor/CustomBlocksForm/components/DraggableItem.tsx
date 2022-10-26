@@ -7,17 +7,13 @@ import { PathData } from './Editor';
 
 export interface DraggableItemProps extends DragPreviewComponentProps, ItemComponentProps<PathData>, MappedItemComponentHandlers<PathData> {}
 
-const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemProps> = ({
-  item,
-  onUpdate,
-  onRemove,
-  isDragging,
-  isDraggingPreview,
-  onContextMenu,
-  isContextMenuOpen,
-}) => {
+const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemProps> = (
+  { item, onUpdate, onRemove, isDragging, isDraggingPreview, onContextMenu, isContextMenuOpen },
+  ref
+) => {
+  // eslint-disable-next-line xss/no-mixed-html
   return (
-    <div style={{ marginBottom: '12px' }}>
+    <div ref={ref as React.Ref<HTMLDivElement>} style={{ marginBottom: '12px' }}>
       <SectionV2.ListItem
         isDragging={isDragging}
         isDraggingPreview={isDraggingPreview}

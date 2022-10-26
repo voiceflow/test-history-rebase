@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.958.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.957.1...@voiceflow/creator-app@1.958.0) (2022-10-26)
+
+
+### Bug Fixes
+
+* [bugfix] adds same scale for clarity and confidence score (NLU-379) ([#6238](https://github.com/voiceflow/creator-app/issues/6238)) ([9fd77ee](https://github.com/voiceflow/creator-app/commit/9fd77ee8132590e619249ba02b9fc113e3edf915))
+* add return to instance to component action (CT-1150) ([#6242](https://github.com/voiceflow/creator-app/issues/6242)) ([4c1d1dc](https://github.com/voiceflow/creator-app/commit/4c1d1dc401cdeaa8c88c322abc3d37a095c80fb2))
+
+
+### Features
+
+* add box-shadow to all modals (CT-981) ([#6220](https://github.com/voiceflow/creator-app/issues/6220)) ([594221f](https://github.com/voiceflow/creator-app/commit/594221fbeb09494c31846bfc32abcbc3013d3246))
+* fix color selector (CT-1132) ([#6232](https://github.com/voiceflow/creator-app/issues/6232)) ([dd2f4a3](https://github.com/voiceflow/creator-app/commit/dd2f4a34688996c9b6f407fd9c5058f959985937))
+* **creator-app:** added NLU export modal, removed export button (NLU-375) ([#6234](https://github.com/voiceflow/creator-app/issues/6234)) ([1d70116](https://github.com/voiceflow/creator-app/commit/1d70116c83f8da309da847bda615b59d2c37bd9a))
+
+
+
+
+
 ## [1.957.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.957.0...@voiceflow/creator-app@1.957.1) (2022-10-26)
 
 

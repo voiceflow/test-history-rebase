@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.167.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.166.0...@voiceflow/ui@1.167.0) (2022-10-27)
+
+
+### Features
+
+* NLU unclassified data table UI (NLU-395) ([#6236](https://github.com/voiceflow/creator-app/issues/6236)) ([d07ac9b](https://github.com/voiceflow/creator-app/commit/d07ac9b45925083eb21186b1b3b2866441d3040a))
+
+
+
+
+
 # [1.166.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.165.0...@voiceflow/ui@1.166.0) (2022-10-27)
 
 

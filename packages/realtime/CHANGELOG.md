@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.123.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.123.5...@voiceflow/realtime@1.123.6) (2022-10-27)
+
+
+### Bug Fixes
+
+* webchat publishing fields (CT-1137) ([#6235](https://github.com/voiceflow/creator-app/issues/6235)) ([28f47f4](https://github.com/voiceflow/creator-app/commit/28f47f4bfa3b91c502be5c195bd48ee3e5b0c99f))
+
+
+
+
+
 ## [1.123.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.123.4...@voiceflow/realtime@1.123.5) (2022-10-27)
 
 **Note:** Version bump only for package @voiceflow/realtime

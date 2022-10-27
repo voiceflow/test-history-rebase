@@ -4,6 +4,7 @@ export { default as Alert } from './Alert';
 export type { AudioPlayerProps } from './AudioPlayer';
 export { default as AudioPlayer } from './AudioPlayer';
 export { default as Badge } from './Badge';
+export { default as Banner } from './Banner';
 export type { BoxProps } from './Box';
 export {
   default as Box,

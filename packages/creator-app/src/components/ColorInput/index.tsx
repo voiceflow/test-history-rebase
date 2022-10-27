@@ -30,6 +30,8 @@ interface ColorInputProps {
 
 const ColorInput: React.FC<ColorInputProps> = ({ isAllowed = true, disabledBorderColor, value, onChange }) => {
   const [localHex, setLocalHex] = React.useState(removeHashFromHex(value));
+  const [isDisabled, setIsDisabled] = React.useState(false);
+  const disabled = isDisabled || !isAllowed;
 
   const debouncedOnChange = useDebouncedCallback(200, onChange, [localHex]);
 
@@ -47,18 +49,21 @@ const ColorInput: React.FC<ColorInputProps> = ({ isAllowed = true, disabledBorde
     <Input
       className={ClassName.COLOR_INPUT}
       value={localHex}
-      cursor={isAllowed ? 'auto' : 'not-allowed'}
+      cursor={!disabled ? 'auto' : 'not-allowed'}
       leftAction={<InputAction>HEX</InputAction>}
       rightAction={
         <ColorSelect
           color={getRGBAWithFallback(`#${localHex}`)}
-          hexInput={false}
           disabled={!isAllowed}
           onChange={(nextColor: RGBColor) => updateLocalHex(getHexColor(nextColor))}
           alphaSlider={false}
+          colors={false}
+          hexInput
+          onShow={() => setIsDisabled(true)}
+          onClose={() => setIsDisabled(false)}
         />
       }
-      disabled={!isAllowed}
+      disabled={disabled}
       onChangeText={(value) => {
         setLocalHex(removeHashFromHex(value).substring(0, 6).toUpperCase());
       }}

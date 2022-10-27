@@ -1,4 +1,4 @@
-import { COLOR_PICKER_CONSTANTS, Input, removeHashFromHex } from '@voiceflow/ui';
+import { COLOR_PICKER_CONSTANTS, Input, isHexColor, removeHashFromHex } from '@voiceflow/ui';
 import { parseToRgb, rgba } from 'polished';
 import React from 'react';
 import { RGBColor } from 'react-color';
@@ -74,6 +74,15 @@ const ColorPicker = ({
     onSubmitHexColor(color);
   };
 
+  const onChangeText = (value: string) => {
+    const hashedHex = `#${value}`;
+    setLocalHex(removeHashFromHex(value).substr(0, 6));
+
+    if (isHexColor(hashedHex) && hashedHex.length === 7) {
+      onSubmitHexColor(hashedHex);
+    }
+  };
+
   React.useEffect(() => {
     setLocalHex(removeHashFromHex(props.hex!));
   }, [props.hex]);
@@ -102,7 +111,7 @@ const ColorPicker = ({
             onFocus={onInputFocus}
             leftAction={<InputAction>HEX</InputAction>}
             onEnterPress={onEnterPress}
-            onChangeText={(value) => setLocalHex(removeHashFromHex(value).substr(0, 6))}
+            onChangeText={onChangeText}
           />
         </InputContainer>
       )}

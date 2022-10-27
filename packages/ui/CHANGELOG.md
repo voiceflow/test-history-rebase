@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.166.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.165.0...@voiceflow/ui@1.166.0) (2022-10-27)
+
+
+### Features
+
+* add Banner component (CT-1109) ([#6241](https://github.com/voiceflow/creator-app/issues/6241)) ([af43d28](https://github.com/voiceflow/creator-app/commit/af43d28c55abb2e539db027a3230434263f82a5c))
+
+
+
+
+
 # [1.165.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.164.2...@voiceflow/ui@1.165.0) (2022-10-26)
 
 

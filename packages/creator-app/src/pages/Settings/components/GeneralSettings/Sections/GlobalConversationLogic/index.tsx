@@ -11,7 +11,7 @@ import { PlatformSettingsMetaProps } from '@/pages/Settings/constants';
 import { getPlatformDefaultVoice } from '@/utils/platform';
 import { getPlatformVoiceOptions, prettifyVoice } from '@/utils/voice';
 
-import { AssistantConversationLogic } from './components';
+import AssistantConversationLogic from './AssistantConversationLogic';
 
 interface GlobalConversationLogicProps {
   platform: VoiceflowConstants.PlatformType;

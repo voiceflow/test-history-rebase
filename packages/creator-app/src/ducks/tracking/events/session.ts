@@ -1,5 +1,5 @@
 import { Nullable } from '@voiceflow/common';
-import { UserRole } from '@voiceflow/internal/build/constants';
+import { UserRole } from '@voiceflow/internal';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import client from '@/client';

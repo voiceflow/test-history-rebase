@@ -12,6 +12,7 @@ export enum SettingSections {
   DANGER_ZONE = 'Danger Zone',
   DIALOGFLOW_CONSOLE = 'Dialogflow Console',
   TEST_TOOL = 'Chat Interface',
+  GLOBAL_LOGIC = 'Global Logic',
 }
 
 export const DEFAULT_MAX_WIDTH = 700;
@@ -44,6 +45,7 @@ export const getSettingsMetaProps = Utils.platform.createPlatformAndProjectTypeS
       name: 'Alexa',
       sections: [
         SettingSections.BASIC,
+        SettingSections.GLOBAL_LOGIC,
         SettingSections.CANVAS,
         SettingSections.GLOBAL_CONVERSATION_LOGIC,
         SettingSections.TEST_TOOL,
@@ -70,6 +72,7 @@ export const getSettingsMetaProps = Utils.platform.createPlatformAndProjectTypeS
       name: 'Google',
       sections: [
         SettingSections.BASIC,
+        SettingSections.GLOBAL_LOGIC,
         SettingSections.CANVAS,
         SettingSections.GLOBAL_CONVERSATION_LOGIC,
         SettingSections.TEST_TOOL,
@@ -91,6 +94,7 @@ export const getSettingsMetaProps = Utils.platform.createPlatformAndProjectTypeS
       name: 'Dialogflow',
       sections: [
         SettingSections.BASIC,
+        SettingSections.GLOBAL_LOGIC,
         SettingSections.DIALOGFLOW_CONSOLE,
         SettingSections.CANVAS,
         SettingSections.TEST_TOOL,
@@ -107,7 +111,7 @@ export const getSettingsMetaProps = Utils.platform.createPlatformAndProjectTypeS
     },
     [VoiceflowConstants.ProjectType.CHAT]: {
       name: 'Chatbot',
-      sections: [SettingSections.BASIC, SettingSections.CANVAS, SettingSections.TEST_TOOL, SettingSections.DANGER_ZONE],
+      sections: [SettingSections.BASIC, SettingSections.GLOBAL_LOGIC, SettingSections.CANVAS, SettingSections.TEST_TOOL, SettingSections.DANGER_ZONE],
       descriptors: {
         projectName: General.ProjectName,
       },

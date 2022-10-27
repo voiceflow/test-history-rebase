@@ -15,7 +15,7 @@ import { FormControl } from '@/pages/Canvas/components/Editor';
 import { ErrorMessage } from '@/pages/Settings/components';
 import { PlatformSettingsMetaProps } from '@/pages/Settings/constants';
 
-import { REPEAT_OPTIONS, RESUME_PROMPT_MAX_LENGTH } from '../constants';
+import { REPEAT_OPTIONS, RESUME_PROMPT_MAX_LENGTH } from './constants';
 
 const SSMLComponent: any = SSML;
 

@@ -3,12 +3,13 @@ import React from 'react';
 
 import { Provider } from '../../contexts';
 import * as T from '../../types';
+import Container from '../Container';
 import * as S from './styles';
 
 const Table = <T extends T.Item>({ items, empty, header, renderRow }: T.Props<T>) => (
   <Provider items={items}>
     {items.length ? (
-      <S.Container>
+      <Container>
         {header}
 
         {items.map((item, index) => (
@@ -18,7 +19,7 @@ const Table = <T extends T.Item>({ items, empty, header, renderRow }: T.Props<T>
             <Divider offset={0} isSecondaryColor={index !== items.length - 1} />
           </React.Fragment>
         ))}
-      </S.Container>
+      </Container>
     ) : (
       <S.EmptyContainer>{empty}</S.EmptyContainer>
     )}

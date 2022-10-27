@@ -10,7 +10,7 @@ const EmptyScreen: React.FC = () => {
   const onCreate = () => open();
 
   return (
-    <Box p="60px 74px">
+    <FlexCenter style={{ width: '100%', flexDirection: 'column', height: '100%' }}>
       <FlexCenter>
         <SvgIcon size={80} icon="noContent" />
       </FlexCenter>
@@ -33,7 +33,7 @@ const EmptyScreen: React.FC = () => {
           Import Data
         </Button>
       </FlexCenter>
-    </Box>
+    </FlexCenter>
   );
 };
 

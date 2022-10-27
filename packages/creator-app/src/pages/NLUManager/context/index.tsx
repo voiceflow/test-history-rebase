@@ -7,12 +7,14 @@ import { NLURoute } from '@/config/routes';
 import { useEditorTab, useFilter, useNavigation, useNLUPersistedState, usePage } from '../hooks';
 import useNLUEntities, { ENTITIES_INTIAL_STATE } from './entity';
 import useNLUIntents, { INTENTS_INTIAL_STATE } from './intent';
+import useNLUUnclassifiedData, { UNCLASSIFIED_DATA_INTIAL_STATE } from './unclassified';
 
 export interface NLUManagerContextValue
   extends ReturnType<typeof useEditorTab>,
     ReturnType<typeof useNavigation>,
     ReturnType<typeof useNLUIntents>,
     ReturnType<typeof useNLUEntities>,
+    ReturnType<typeof useNLUUnclassifiedData>,
     ReturnType<typeof useFilter>,
     ReturnType<typeof usePage> {
   resetSelection: () => void;
@@ -36,6 +38,7 @@ const INITIAL_STATE: NLUManagerContextValue = {
   resetSelection: Utils.functional.noop,
   ...INTENTS_INTIAL_STATE,
   ...ENTITIES_INTIAL_STATE,
+  ...UNCLASSIFIED_DATA_INTIAL_STATE,
 };
 
 const INITIAL_PERSISTED_STATE = { id: INITIAL_STATE.activeItemID, tab: INITIAL_STATE.activeTab };
@@ -48,6 +51,7 @@ export const NLUManagerProvider: React.FC = ({ children }) => {
   const navigation = useNavigation({ ...state, onTabChange: updateState });
   const intents = useNLUIntents({ activeItemID: navigation.activeItemID, goToItem: navigation.goToItem });
   const entities = useNLUEntities({ activeItemID: navigation.activeItemID, goToItem: navigation.goToItem });
+  const unclassified = useNLUUnclassifiedData({ activeItemID: navigation.activeItemID });
   const editor = useEditorTab();
   const page = usePage(navigation.activeItemID);
 
@@ -61,6 +65,7 @@ export const NLUManagerProvider: React.FC = ({ children }) => {
     ...navigation,
     ...intents,
     ...entities,
+    ...unclassified,
     ...editor,
     ...page,
     resetSelection,

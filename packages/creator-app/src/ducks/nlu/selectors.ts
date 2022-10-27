@@ -2,6 +2,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { createSelector } from 'reselect';
 
 import { createCRUDSelectors } from '@/ducks/utils/crudV2';
+import * as WorkspaceV2 from '@/ducks/workspaceV2';
 
 import { STATE_KEY } from './constants';
 
@@ -16,12 +17,33 @@ export const {
 
 export const datasourceNames = createSelector([allUnclassifiedDataSelector], (datasources) => datasources.map((d) => d.name));
 
-export const allUnclassifiedUtterancesSelector = createSelector([allUnclassifiedDataSelector], (datasources) => {
-  return datasources.reduce(
-    (utterances, datasource) => [
-      ...utterances,
-      ...datasource.utterances.map((u) => ({ ...u, id: u.utterance, sourceID: datasource.id.toString() } as Realtime.NLUUnclassifiedUtterances)),
-    ],
-    [] as Realtime.NLUUnclassifiedUtterances[]
+export const allUnclassifiedUtterancesSelector = createSelector(
+  [allUnclassifiedDataSelector, WorkspaceV2.memberByCreatorIDSelector],
+  (datasources, getMemberByCreatorID): Realtime.NLUUnclassifiedUtterances[] => {
+    return datasources.reduce(
+      (utterances, datasource) => [
+        ...utterances,
+        ...datasource.utterances.map(
+          (u) =>
+            ({
+              ...u,
+              sourceID: datasource.id.toString(),
+              importedByUser: getMemberByCreatorID({ id: u.sourceID })?.name,
+              datasourceID: datasource.id,
+            } as Realtime.NLUUnclassifiedUtterances)
+        ),
+      ],
+      [] as Realtime.NLUUnclassifiedUtterances[]
+    );
+  }
+);
+
+export const utterancesByID = createSelector([allUnclassifiedUtterancesSelector], (utterances) => {
+  return utterances.reduce(
+    (utterancesByID, utterance) => ({
+      ...utterancesByID,
+      [utterance.id]: utterance,
+    }),
+    {} as Record<string, Realtime.NLUUnclassifiedUtterances>
   );
 });

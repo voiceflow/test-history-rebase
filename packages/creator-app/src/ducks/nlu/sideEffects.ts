@@ -24,7 +24,7 @@ export const importUnclassifiedData =
       creatorID,
       type: BaseModels.Version.NLUUnclassifiedDataType.NLU_DATASOURCE_IMPORT,
       name: datasourceName,
-      utterances: utterances.map((u) => ({ utterance: u, importedAt })),
+      utterances: utterances.map((u) => ({ utterance: u, importedAt, sourceID: creatorID.toString() })),
     };
 
     await dispatch.sync(

@@ -1,5 +1,5 @@
 import { FlexCenter } from '@ui/components/Flex';
-import { colors, styled, ThemeColor } from '@ui/styles';
+import { styled } from '@ui/styles';
 import { ANIMATION_SPEED } from '@ui/styles/constants';
 
 export interface DarkButtonContainerProps {
@@ -19,7 +19,7 @@ export const DarkButtonIcon = styled(FlexCenter)`
 `;
 
 export const DarkButtonContainer = styled(FlexCenter)<DarkButtonContainerProps>`
-  color: ${colors(ThemeColor.WHITE)};
+  color: #fff;
   padding: 5px 12px;
   border-radius: 6px;
   pointer-events: auto;

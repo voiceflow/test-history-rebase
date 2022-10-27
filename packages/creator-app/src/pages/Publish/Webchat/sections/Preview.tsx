@@ -1,4 +1,4 @@
-import { App, Chat, SystemResponse, UserResponse, useTheme } from '@voiceflow/react-chat';
+import { Chat, ChatWidget, SystemResponse, UserResponse } from '@voiceflow/react-chat';
 import React from 'react';
 
 import * as Version from '@/ducks/versionV2';
@@ -16,15 +16,13 @@ export const PreviewSection: React.FC = () => {
 
   const config = useSelector(Version.active.general.chatPublishingSelector);
 
-  const theme = useTheme(config);
-
   return (
-    <App.ChatContainer className={theme}>
+    <ChatWidget.ChatContainer>
       <Chat {...config} isLoading={false}>
-        <SystemResponse messages={SYSTEM_MESSAGES} image={config.image} timestamp={startTime} isLast actions={ACTIONS} />
+        <SystemResponse messages={SYSTEM_MESSAGES} avatar={config.avatar} timestamp={startTime} isLast actions={ACTIONS} />
         {/* normally a user response would never appear after buttons */}
         <UserResponse message="Sample Response" timestamp={startTime} />
       </Chat>
-    </App.ChatContainer>
+    </ChatWidget.ChatContainer>
   );
 };

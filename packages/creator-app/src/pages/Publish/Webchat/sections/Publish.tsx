@@ -8,15 +8,18 @@ import { useSelector } from '@/hooks';
 
 import Section from './components/Section';
 
-const getSample = (projectID: string) => `<script>
-  function _vf_load() {
-    window.voiceflow.chat.load({ 
-      verify: { projectID: '${projectID}' },
-      url: '${GENERAL_RUNTIME_ENDPOINT}'
-    });
-  }
-</script>
-<script src="https://unpkg.com/@voiceflow/react-chat/iframe/dist/bundle.mjs" onload="_vf_load()"></script>`;
+const getSample = (projectID: string) => `<script type="text/javascript">
+  (function(d, t) {
+      var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
+      v.onload = function() {
+        window.voiceflow.chat.load({
+          verify: { projectID: '${projectID}' },
+          url: '${GENERAL_RUNTIME_ENDPOINT}'
+        });
+      }
+      v.src = "https://cdn.voiceflow.com/widget/bundle.mjs"; v.type = "text/javascript"; s.parentNode.insertBefore(v, s);
+  })(document, 'script');
+</script>`;
 
 export const PublishSection: React.FC = () => {
   const projectID = useSelector(ProjectV2.active.idSelector)!;

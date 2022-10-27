@@ -1,3 +1,5 @@
+import { Box } from '@voiceflow/ui';
+
 import { styled } from '@/hocs';
 
 export const PreviewCrop = styled.div`
@@ -9,7 +11,7 @@ export const PreviewCrop = styled.div`
   overflow: hidden;
 `;
 
-export const SelectorLine = styled.div`
+export const SelectorLine = styled(Box)`
   :before {
     content: '';
     background-color: #d4d9e6;
@@ -21,6 +23,14 @@ export const SelectorLine = styled.div`
     margin-top: -1.5px;
   }
 
-  width: 64px;
+  position: relative;
   border-top: 1px dashed #d4d9e6;
+`;
+
+export const SelectorBox = styled.div`
+  border: 1px dashed #d4d9e6;
+  height: 36px;
+  width: 36px;
+  border-radius: 4px;
+  margin-right: -2px;
 `;

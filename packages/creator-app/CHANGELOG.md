@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.961.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.960.1...@voiceflow/creator-app@1.961.0) (2022-10-27)
+
+
+### Features
+
+* fix color selector input (CT-1132) ([#6246](https://github.com/voiceflow/creator-app/issues/6246)) ([9ed76f6](https://github.com/voiceflow/creator-app/commit/9ed76f62be370a9289d565ed39da549ca62f5294))
+* implement new Global Logic section (CT-1142) ([#6240](https://github.com/voiceflow/creator-app/issues/6240)) ([d2494c9](https://github.com/voiceflow/creator-app/commit/d2494c919a641ffca63a4ee7ecd9c500b1b84bc0))
+
+
+
+
+
 ## [1.960.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.960.0...@voiceflow/creator-app@1.960.1) (2022-10-27)
 
 

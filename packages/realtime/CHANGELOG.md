@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.124.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.123.6...@voiceflow/realtime@1.124.0) (2022-10-27)
+
+
+### Features
+
+* implement new Global Logic section (CT-1142) ([#6240](https://github.com/voiceflow/creator-app/issues/6240)) ([d2494c9](https://github.com/voiceflow/creator-app/commit/d2494c919a641ffca63a4ee7ecd9c500b1b84bc0))
+
+
+
+
+
 ## [1.123.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.123.5...@voiceflow/realtime@1.123.6) (2022-10-27)
 
 

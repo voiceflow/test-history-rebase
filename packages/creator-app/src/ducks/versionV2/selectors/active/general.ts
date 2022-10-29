@@ -4,7 +4,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { VoiceflowVersion } from '@voiceflow/voiceflow-types';
 import { createSelector } from 'reselect';
 
-import { logo } from '@/assets';
+import * as Project from '@/ducks/projectV2/selectors';
 import { nameSelector } from '@/ducks/projectV2/selectors/active/base';
 
 import { versionSelector as activeVersionSelector } from './base';
@@ -13,19 +13,21 @@ export const versionSelector = createSelector([activeVersionSelector], (version)
 
 export const settingsSelector = createSelector([versionSelector], (version) => version?.settings ?? null);
 
-export const chatPublishingSelector = createSelector([versionSelector], (version) => {
+const DEFAULT_AVATAR = 'https://cdn.voiceflow.com/assets/logo.png';
+
+export const chatPublishingSelector = createSelector([versionSelector, Project.active.nameSelector], (version, projectName) => {
   const config = (version?.publishing ?? {}) as Realtime.VoiceflowChatVersion['publishing'];
 
   return {
     ...config,
     // default values
-    image: config.image ?? logo,
-    avatar: config.avatar ?? logo,
+    title: config.title ?? projectName ?? 'Voiceflow Assistant',
+    image: config.image ?? DEFAULT_AVATAR,
+    avatar: config.avatar ?? DEFAULT_AVATAR,
     position: config.position ?? VoiceflowVersion.ChatPosition.RIGHT,
     persistence: config.persistence ?? VoiceflowVersion.ChatPersistence.LOCAL_STORAGE,
     spacing: { side: config.spacing?.side ?? 24, bottom: config.spacing?.bottom ?? 24 },
-    title: config.title ?? 'Voiceflow Assistant',
-    description: config.description ?? "Voiceflow's virtual assistant is here to help.",
+    description: config.description ?? 'Our virtual assistant is here to help you.',
     color: config.color ?? '#2E7FF1',
     watermark: config.watermark ?? true,
   };

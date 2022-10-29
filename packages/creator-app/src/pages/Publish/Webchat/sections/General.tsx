@@ -44,7 +44,7 @@ export const GeneralSection: React.FC = () => {
   const updateProperty =
     <T extends keyof Config>(property: T) =>
     (value: Nullish<Config[T]>) => {
-      if (value) updateConfig({ [property]: value });
+      if (Utils.array.isNotNullish(value)) updateConfig({ [property]: value });
     };
 
   const [sideSpacing, setSideSpacing] = useLinkedState(String(config.spacing?.side));

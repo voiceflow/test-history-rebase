@@ -10,7 +10,7 @@ export const Header = styled(FlexApart)`
 export const Option = styled.div<{ active: boolean }>`
   color: ${Preview.Colors.GREY_TEXT_COLOR};
   display: inline-block;
-  border-radius: 16px;
+  border-radius: 6px;
   padding: 6px 16px;
   cursor: pointer;
   font-weight: 600;

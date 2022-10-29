@@ -29,7 +29,7 @@ const SampleEditor: React.FC<{ samples: Sample[] }> = ({ samples = [] }) => {
           ))}
         </Box>
         <TippyTooltip title="Copy">
-          <SvgIcon icon="copy" onClick={handleCopySnippet} color="#becedc" clickable />
+          <SvgIcon icon="copy" onClick={handleCopySnippet} color="#ffffffD9" clickable />
         </TippyTooltip>
       </Header>
       <Preview.Code code={sample} wrapLongLines={false} language={language} padding="12px 24px" />

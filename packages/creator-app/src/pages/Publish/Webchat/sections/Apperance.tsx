@@ -24,7 +24,7 @@ export const ApperanceSection: React.FC = () => {
       updateConfig({ [property]: url });
     };
 
-    upload(uploadImage, { multiple: false, accept: '.jpg,.jpeg,.png' });
+    upload(uploadImage, { multiple: false, accept: '.jpg,.jpeg,.png,.svg' });
   };
 
   return (

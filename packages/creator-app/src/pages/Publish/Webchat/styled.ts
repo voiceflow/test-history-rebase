@@ -37,6 +37,7 @@ export const SettingsContainer = styled(Box.Flex)`
   overflow-y: scroll;
   min-width: 600px;
   flex-grow: 1;
+  flex-basis: 60%;
 
   & ${Section.Container} {
     margin-bottom: 16px;

@@ -29,10 +29,11 @@ const sizeStyles = {
     }
 
     .react-toggle-thumb {
-      width: 12px;
-      height: 12px;
+      width: 13px;
+      height: 13px;
       top: 2px;
       left: 2px;
+      transform: translate(-0.5px, -0.5px);
     }
 
     .react-toggle--checked .react-toggle-thumb {
@@ -43,11 +44,6 @@ const sizeStyles = {
 
 const ToggleContainer = styled.div<{ size: Size }>`
   display: flex;
-
-  .react-toggle-thumb {
-    box-shadow: 0 0 0 0.5px #fff;
-    background: #fff;
-  }
 
   ${({ size }) => size !== Size.NORMAL && sizeStyles[size]}
 `;

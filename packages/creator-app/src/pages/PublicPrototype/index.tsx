@@ -13,7 +13,6 @@ import { SeoPage } from '@/constants/seo';
 import * as PrototypeDuck from '@/ducks/prototype';
 import { useDispatch, useGuestPermission, useSelector, useSetup, useToggle, useTrackingEvents } from '@/hooks';
 import { PrototypeContext, PrototypeProvider } from '@/pages/Prototype/context';
-import { getPrototypeSessionID } from '@/utils/prototype';
 
 import { Prototype } from './components';
 import PasswordScreen from './components/PasswordScreen';
@@ -21,7 +20,7 @@ import PasswordScreen from './components/PasswordScreen';
 const PublicPrototype: React.FC<RouteComponentProps<{ versionID: string }>> = ({ match }) => {
   const setupPublicPrototype = useDispatch(PrototypeDuck.setupPublicPrototype);
   const checkSharedProtoPassword = useDispatch(PrototypeDuck.checkSharedProtoPassword);
-  const prototypeID = useSelector(PrototypeDuck.prototypeIDSelector);
+  const sessionID = useSelector(PrototypeDuck.prototypeSessionIDSelector);
   const [isLoaded, toggleLoaded] = useToggle(false);
   const [settings, setSettings] = React.useState<PrototypeDuck.PrototypeSettings & { globalMessageDelayMilliseconds?: number }>({
     plan: PlanType.STARTER,
@@ -80,10 +79,10 @@ const PublicPrototype: React.FC<RouteComponentProps<{ versionID: string }>> = ({
 
     trackingEvents.trackPublicPrototypeInteract({
       device: DEVICE_INFO.platform ?? 'unknown',
-      sessionID: getPrototypeSessionID(versionID, prototypeID),
+      sessionID,
       versionID,
     });
-  }, [match.params, prototypeID]);
+  }, [match.params, sessionID]);
 
   return isLoaded ? (
     <>

@@ -1,3 +1,5 @@
+import { Utils } from '@voiceflow/common';
+
 import { PrototypeInputMode, PrototypeStatus } from '@/constants/prototype';
 
 import { PrototypeState } from './types';
@@ -13,7 +15,7 @@ export const EMPTY_CONTEXT = {
 };
 
 export const INITIAL_STATE: PrototypeState = {
-  ID: null,
+  sessionID: Utils.id.cuid(),
   status: PrototypeStatus.IDLE,
   muted: false,
   startTime: 0,

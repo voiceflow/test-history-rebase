@@ -38,7 +38,7 @@ export interface WebhookData {
 }
 
 export interface PrototypeState {
-  ID: string | null;
+  sessionID: string;
   muted: boolean;
   showButtons: boolean;
   status: PrototypeStatus;

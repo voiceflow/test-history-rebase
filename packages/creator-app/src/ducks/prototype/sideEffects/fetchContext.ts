@@ -10,11 +10,10 @@ import * as Recent from '@/ducks/recent';
 import * as Session from '@/ducks/session';
 import { Trace } from '@/models';
 import { Thunk } from '@/store/types';
-import { getPrototypeSessionID } from '@/utils/prototype';
 import * as Sentry from '@/vendors/sentry';
 
 import { pushContextHistory, pushPrototypeVisualDataHistory, updatePrototype, updatePrototypeContext } from '../actions';
-import { prototypeContextSelector, prototypeIDSelector, prototypeSelector, prototypeVisualDataSelector } from '../selectors';
+import { prototypeContextSelector, prototypeSelector, prototypeSessionIDSelector, prototypeVisualDataSelector } from '../selectors';
 import { Context } from '../types';
 
 const getProjectExcludedTraceTypes = Realtime.Utils.platform.createProjectTypeSelector({
@@ -41,10 +40,8 @@ const fetchContext =
     const currentVisualData = prototypeVisualDataSelector(reduxState);
     const versionID = Session.activeVersionIDSelector(reduxState);
     const activeDiagramID = Session.activeDiagramIDSelector(reduxState);
-    const prototypeID = prototypeIDSelector(reduxState) || Utils.id.cuid();
-
     // unique identifier for session analytics
-    const sessionID = getPrototypeSessionID(versionID, prototypeID);
+    const sessionID = prototypeSessionIDSelector(reduxState);
 
     Errors.assertVersionID(versionID);
     Errors.assertDiagramID(activeDiagramID);
@@ -76,7 +73,7 @@ const fetchContext =
       };
 
       batch(() => {
-        dispatch(updatePrototype({ ID: prototypeID, contextStep: contextStep + 1 }));
+        dispatch(updatePrototype({ contextStep: contextStep + 1 }));
         dispatch(updatePrototypeContext(newStateObj));
         dispatch(pushContextHistory(newStateObj));
         dispatch(pushPrototypeVisualDataHistory(lastVisual ? lastVisual.payload : currentVisualData));

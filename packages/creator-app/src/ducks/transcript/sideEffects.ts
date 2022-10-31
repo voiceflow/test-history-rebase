@@ -10,7 +10,6 @@ import { patchTranscript, replaceTranscripts, updateUnreadTranscripts } from '@/
 import { transcriptByIDSelector } from '@/ducks/transcript/selectors';
 import { Browser, Device, OperatingSystem, Sentiment, SystemTag, Transcript } from '@/models';
 import { Thunk } from '@/store/types';
-import { getPrototypeSessionID } from '@/utils/prototype';
 
 export const fetchTranscripts =
   (queryParams?: string): Thunk<Transcript[]> =>
@@ -64,9 +63,8 @@ export const createTranscript = (): Thunk<string | undefined> => async (_dispatc
   const { browser, os, platform } = Bowser.parse(window.navigator.userAgent);
 
   const versionID = Session.activeVersionIDSelector(state);
-  const prototypeID = Prototype.prototypeIDSelector(state);
   // unique identifier for session analytics
-  const sessionID = getPrototypeSessionID(versionID, prototypeID);
+  const sessionID = Prototype.prototypeSessionIDSelector(state);
 
   const activeProjectID = Session.activeProjectIDSelector(state);
   const deviceType = platform.type as Device;

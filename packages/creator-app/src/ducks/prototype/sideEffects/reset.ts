@@ -45,7 +45,7 @@ const resetPrototype =
       dispatch(updatePrototypeStatus(PrototypeStatus.IDLE));
       dispatch(
         updatePrototype({
-          ID: Utils.id.cuid(),
+          sessionID: Utils.id.cuid(),
           contextStep: 0,
           contextHistory: [],
           flowIDHistory: [],

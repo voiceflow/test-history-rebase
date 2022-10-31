@@ -21,7 +21,7 @@ export const prototypeFlowIDHistorySelector = createSelector([prototypeSelector]
 
 export const prototypeContextStepSelector = createSelector([prototypeSelector], ({ contextStep }) => contextStep);
 
-export const prototypeIDSelector = createSelector([prototypeSelector], ({ ID }) => ID);
+export const prototypeSessionIDSelector = createSelector([prototypeSelector], ({ sessionID }) => sessionID);
 
 export const prototypeTimeSelector = createSelector([prototypeSelector], ({ startTime }) => startTime);
 

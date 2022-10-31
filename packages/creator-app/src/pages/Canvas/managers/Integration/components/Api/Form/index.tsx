@@ -1,18 +1,14 @@
 import { BaseNode } from '@voiceflow/base-types';
-import { SectionV2 } from '@voiceflow/ui';
+import { ContextMenu, SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 
+import TLSEditor from '../TLSEditor';
 import { BodySection, CaptureResponseSection, Footer, HeaderSection, ParametersSection, RequestTypeSection } from './components';
-import { BaseFormProps } from './types';
+import { FormProps } from './types';
 
-interface APIFormProps extends BaseFormProps {
-  header?: React.ReactNode;
-  footer?: React.ReactNode;
-}
-
-const APIForm: React.FC<APIFormProps> = ({ editor, header, footer }) => {
+const Form: React.FC<FormProps> = ({ editor, header, footer }) => {
   const showBodySection = editor.data.selectedAction !== BaseNode.Api.APIActionType.GET;
 
   return (
@@ -37,8 +33,22 @@ const APIForm: React.FC<APIFormProps> = ({ editor, header, footer }) => {
       )}
 
       <CaptureResponseSection editor={editor} />
+
+      {editor.data?.tls && (
+        <>
+          <SectionV2.Divider />
+
+          <ContextMenu options={[{ label: 'Remove', onClick: () => editor.onChange({ tls: null }) }]}>
+            {({ onContextMenu }) => (
+              <SectionV2.LinkSection onClick={() => editor.goToNested(TLSEditor.PATH)} onContextMenu={onContextMenu}>
+                <SectionV2.Title>Certificates</SectionV2.Title>
+              </SectionV2.LinkSection>
+            )}
+          </ContextMenu>
+        </>
+      )}
     </EditorV2>
   );
 };
 
-export default Object.assign(APIForm, { Footer });
+export default Object.assign(Form, { Footer });

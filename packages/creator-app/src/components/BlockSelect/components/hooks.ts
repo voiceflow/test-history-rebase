@@ -5,7 +5,8 @@ import { UIOnlyMenuItemOption } from '@voiceflow/ui';
 import React from 'react';
 
 import * as DiagramV2 from '@/ducks/diagramV2';
-import { createGroupedSelectID, useSelector } from '@/hooks';
+import { useSelector } from '@/hooks/redux';
+import { createGroupedSelectID } from '@/hooks/select';
 import { getDiagramName } from '@/utils/diagram';
 
 import { BaseProps, Group, Multilevel, Option } from '../types';

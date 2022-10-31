@@ -77,7 +77,9 @@ export interface DraggableListIndexedProps<Item, DeleteProps, ExtraItemProps> ex
   itemComponent: React.NamedExoticComponent<
     React.PropsWithoutRef<ItemComponentProps<Item> & ItemComponentHandlers<Item> & ExtraItemProps> & React.RefAttributes<HTMLElement>
   >;
-  previewComponent: React.NamedExoticComponent<ItemComponentProps<Item> & ItemComponentHandlers<Item> & ExtraItemProps & DragPreviewComponentProps>;
+  previewComponent: React.NamedExoticComponent<
+    React.PropsWithoutRef<ItemComponentProps<Item> & ItemComponentHandlers<Item> & ExtraItemProps & DragPreviewComponentProps>
+  >;
   mapManagerFactory?: never;
 }
 
@@ -102,7 +104,7 @@ interface DraggableListBaseMapManagerProps<Item, DeleteProps, ExtraItemProps> ex
     React.PropsWithoutRef<ItemComponentProps<Item> & MappedItemComponentHandlers<Item> & ExtraItemProps> & React.RefAttributes<HTMLElement>
   >;
   previewComponent: React.NamedExoticComponent<
-    ItemComponentProps<Item> & MappedItemComponentHandlers<Item> & ExtraItemProps & DragPreviewComponentProps
+    React.PropsWithoutRef<ItemComponentProps<Item> & MappedItemComponentHandlers<Item> & ExtraItemProps & DragPreviewComponentProps>
   >;
 }
 
@@ -299,7 +301,12 @@ const DraggableList: DraggableListComponent = ({
 
       {footer}
 
-      <DragPreview<Item> type={type} component={previewComponent as any} handlers={handlers} options={previewOptions} />
+      <DragPreview<React.ComponentProps<typeof previewComponent>>
+        type={type}
+        options={previewOptions}
+        handlers={handlers}
+        component={previewComponent as React.NamedExoticComponent<React.ComponentProps<typeof previewComponent>>}
+      />
 
       {!!deleteComponent && dragging && <DropDelete type={type} handlers={handlers} deleteComponent={deleteComponent} deleteProps={deleteProps} />}
     </ListContainer>

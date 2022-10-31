@@ -15,8 +15,6 @@ class LoguxClient extends Client {
 
   private pinging?: NodeJS.Timeout;
 
-  private subscriptions!: Record<string, number>;
-
   private clientEmitter = createNanoEvents<Record<ConnectionStatus | ClientEvents, VoidFunction>>();
 
   private stateChangeListener = (): void => {

@@ -14,7 +14,7 @@ import mlGateway from './mlGateway';
 import nluManager from './nluManager';
 import organization from './organization';
 import project from './project';
-import prototype from './prototype';
+import prototype, { testAPIClient } from './prototype';
 import realtime, { realtimeIO } from './realtime';
 import reportTags from './reportTags';
 import saml from './saml';
@@ -46,6 +46,7 @@ const client = {
   organization,
   project,
   prototype,
+  testAPIClient,
   session,
   sso,
   saml,

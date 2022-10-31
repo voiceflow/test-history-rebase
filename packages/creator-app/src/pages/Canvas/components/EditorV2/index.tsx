@@ -7,9 +7,9 @@ import perf, { PerfAction } from '@/performance';
 import { Identifier } from '@/styles/constants';
 
 import { EditorAnimationEffect } from '../../constants';
-import { AnimatedContent, ChipHeader, DefaultFooter, DefaultHeader, PersistCollapse, RedirectToRoot, Tutorial } from './components';
+import { AnimatedContent, ChipHeader, DefaultFooter, DefaultHeader, PersistCollapse, RedirectToRoot, Route, Tutorial } from './components';
 import { withGoBack, withRedirectToRoot } from './hocs';
-import { useEditor, useEditorDefaultActions, useSyncDynamicPorts } from './hooks';
+import { useEditor, useEditorDefaultActions, useParentMatch, useSyncDynamicPorts } from './hooks';
 import * as T from './types';
 
 export * as EditorV2Types from './types';
@@ -48,6 +48,7 @@ const EditorV2: React.FC<T.Props> = ({ header, footer, children, fillHeight, dro
 
 export default Object.assign(EditorV2, {
   useEditor,
+  useParentMatch,
   useSyncDynamicPorts,
   useEditorDefaultActions,
 
@@ -56,6 +57,7 @@ export default Object.assign(EditorV2, {
 
   AnimationEffect: EditorAnimationEffect,
 
+  Route,
   Footer: SidebarEditor.Footer,
   Header: SidebarEditor.Header,
   Tutorial,

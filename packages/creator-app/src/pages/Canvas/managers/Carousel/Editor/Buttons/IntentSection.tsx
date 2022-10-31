@@ -11,8 +11,6 @@ import { Entity } from '@/pages/Canvas/managers/components';
 import { NodeEditorV2Props } from '@/pages/Canvas/managers/types';
 import { getIntentStrengthLevel } from '@/utils/intent';
 
-import { PATH } from './constants';
-
 interface IntentsSectionProps<Data, BuiltInPorts extends Realtime.BuiltInPortRecord> {
   intentID?: string | null;
   buttonID: string;
@@ -21,10 +19,9 @@ interface IntentsSectionProps<Data, BuiltInPorts extends Realtime.BuiltInPortRec
 }
 
 const IntentsSection = <Data, BuiltInPorts extends Realtime.BuiltInPortRecord>({
+  editor,
   intentID,
   onChange,
-  editor,
-  buttonID,
 }: IntentsSectionProps<Data, BuiltInPorts>): JSX.Element => {
   const [collapsed, setCollapsed] = React.useState(!intentID);
   const { intent, intentEditModal, intentIsBuiltIn, shouldDisplayRequiredEntities } = useIntent(intentID);
@@ -86,7 +83,7 @@ const IntentsSection = <Data, BuiltInPorts extends Realtime.BuiltInPortRecord>({
           <SectionV2.Divider inset />
 
           <IntentRequiredEntitiesSection
-            onEntityClick={(entityID) => editor.goToNested({ path: `${PATH}/${Entity.PATH}`, params: { intentID: intent.id, entityID, buttonID } })}
+            onEntityClick={(entityID) => editor.goToNested({ path: Entity.PATH, params: { intentID: intent.id, entityID } })}
             onAddRequired={(entityID) => onAddRequiredEntity(intent.id, entityID)}
             intentEntities={intent.slots}
             onRemoveRequired={(entityID) => onRemoveRequiredEntity(intent.id, entityID)}

@@ -13,7 +13,19 @@ type KeyFactory = (options: { resourceID: string; creatorID: number }) => string
 type AccessAdapter = MultiAdapter<string, boolean, [], []>;
 
 class AccessCache {
-  constructor(private resource: keyof PickByValue<Voiceflow, ResourceClient>, private clients: ClientMap, private services: ServiceMap) {}
+  public canRead: ReturnType<AccessCache['createAccessResolver']>;
+
+  public canWrite: ReturnType<AccessCache['createAccessResolver']>;
+
+  constructor(private resource: keyof PickByValue<Voiceflow, ResourceClient>, private clients: ClientMap, private services: ServiceMap) {
+    const canReadCache = this.createCacheFactory(this.createKeyFactory('can-read'));
+
+    const canWriteCache = this.createCacheFactory(this.createKeyFactory('can-write'));
+
+    this.canRead = this.createAccessResolver(canReadCache, 'canRead');
+
+    this.canWrite = this.createAccessResolver(canWriteCache, 'canWrite');
+  }
 
   private createKeyFactory(action: string): KeyFactory {
     return ({ resourceID, creatorID }) => `${this.resource}:${resourceID}:${action}:${creatorID}`;
@@ -43,18 +55,6 @@ class AccessCache {
       return canRead;
     };
   }
-
-  private getCanReadKey = this.createKeyFactory('can-read');
-
-  private getCanWriteKey = this.createKeyFactory('can-write');
-
-  private canReadCache = this.createCacheFactory(this.getCanReadKey);
-
-  private canWriteCache = this.createCacheFactory(this.getCanWriteKey);
-
-  public canRead = this.createAccessResolver(this.canReadCache, 'canRead');
-
-  public canWrite = this.createAccessResolver(this.canWriteCache, 'canWrite');
 }
 
 export default AccessCache;

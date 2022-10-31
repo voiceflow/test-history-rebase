@@ -2,7 +2,6 @@ import { EmptyObject } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, ContextMenu, Input, OverflowText, OverflowTippyTooltip, SectionV2 } from '@voiceflow/ui';
 import React from 'react';
-import { useParams } from 'react-router-dom';
 
 import { DragPreviewComponentProps, ItemComponentHandlers, ItemComponentProps } from '@/components/DraggableList';
 import { BlockType } from '@/constants';
@@ -11,6 +10,7 @@ import type { ManagerGetter } from '@/pages/Canvas/contexts';
 import type { NodeEditorV2Props } from '@/pages/Canvas/managers/types';
 import { withInputBlur } from '@/utils/dom';
 
+import { PATH } from '../../../constants';
 import { useItemConfig } from './hooks';
 
 interface DraggableItemProps
@@ -21,13 +21,11 @@ interface DraggableItemProps
   editor: NodeEditorV2Props<unknown>;
   onRename: (step: Realtime.NodeData<EmptyObject>, name: string) => void;
   getManager: ManagerGetter;
-  actionPath: string;
   lastCreatedStepID: string | null;
 }
 
 const DraggableItem = React.forwardRef<HTMLElement, DraggableItemProps>((props, ref) => {
-  const params = useParams();
-  const { item, portID, editor, getManager, actionPath, onDuplicate, isDragging, lastCreatedStepID, isDraggingPreview, connectedDragRef } = props;
+  const { item, portID, editor, getManager, onDuplicate, isDragging, lastCreatedStepID, isDraggingPreview, connectedDragRef } = props;
 
   const { icon, isEmpty, defaultName, placeholder } = useItemConfig(getManager, item);
 
@@ -42,7 +40,7 @@ const DraggableItem = React.forwardRef<HTMLElement, DraggableItemProps>((props, 
   const onClick = () => {
     if (isRenaming || item.type === BlockType.EXIT) return;
 
-    editor.goToNested({ path: actionPath, params: { ...params, sourcePortID: portID, actionNodeID: item.nodeID } });
+    editor.goToNested({ path: PATH, params: { sourcePortID: portID, actionNodeID: item.nodeID } });
   };
 
   const onRemove = () => {

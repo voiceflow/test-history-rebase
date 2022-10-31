@@ -9,7 +9,7 @@ import Form from './Form';
 
 const Editor: ActionEditor<Realtime.NodeData.Url, Realtime.NodeData.UrlBuiltInPorts> = (props) => (
   <Form
-    editor={{ ...props, ...props.action }}
+    editor={props}
     header={<EditorV2.DefaultHeader onBack={props.goBack} />}
     footer={<EditorV2.DefaultFooter tutorial={Documentation.ACTIONS_BACKEND} />}
   />

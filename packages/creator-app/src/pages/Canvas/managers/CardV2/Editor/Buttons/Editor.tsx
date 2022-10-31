@@ -10,7 +10,6 @@ import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 
 import { Actions } from '../../../components';
-import { PATH } from './constants';
 
 type ButtonInfo = Partial<{
   buttonID: string;
@@ -82,12 +81,7 @@ const CardV2ButtonsEditor: React.FC = () => {
           </SectionV2.Content>
           <SectionV2.Divider inset />
 
-          <Actions.Section
-            portID={editor.node.ports.out.byKey[button.id]}
-            editor={editor}
-            parentPath={PATH}
-            parentParams={{ buttonID: params.buttonID }}
-          />
+          <Actions.Section portID={editor.node.ports.out.byKey[button.id]} editor={editor} />
           <SectionV2.Divider />
         </>
       )}

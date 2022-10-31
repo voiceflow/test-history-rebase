@@ -9,9 +9,12 @@ import { EditorSidebarProvider } from '@/pages/Canvas/components/EditorSidebarV2
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import { ManagerContext } from '@/pages/Canvas/contexts';
 
+import { useEditor } from './hooks';
+
 const ActionsEditor: React.FC = () => {
   const editor = EditorV2.useEditor();
   const getManager = React.useContext(ManagerContext)!;
+  const parentMatch = EditorV2.useParentMatch()!;
 
   const { actionNodeID } = useParams<{ actionNodeID: string }>();
 
@@ -23,11 +26,11 @@ const ActionsEditor: React.FC = () => {
     [editor.engine.node, node?.id]
   );
 
-  const action = useContextApi({
-    data: data as any,
-    node: node as any,
-    nodeID: node?.id ?? '',
-    onChange,
+  const parentEditor = useContextApi({
+    data: editor.data,
+    node: editor.node,
+    nodeID: editor.nodeID,
+    onChange: editor.onChange,
   });
 
   if (!node || !data) return null;
@@ -38,11 +41,23 @@ const ActionsEditor: React.FC = () => {
 
   if (!ActionEditor) return null;
 
+  const actionEditor = {
+    ...editor,
+    data: data as any,
+    node: node as any,
+    nodeID: node?.id ?? '',
+    onChange,
+    parentMatch,
+    parentEditor,
+  };
+
   return (
-    <EditorSidebarProvider value={{ ...editor, action }}>
-      <ActionEditor {...editor} action={action} />
+    <EditorSidebarProvider value={actionEditor}>
+      <ActionEditor {...actionEditor} />
     </EditorSidebarProvider>
   );
 };
 
-export default ActionsEditor;
+export default Object.assign(ActionsEditor, {
+  useEditor,
+});

@@ -7,7 +7,7 @@ import SlateEditable, { SlateEditableProps, SlateEditableRef, SlateValue } from 
 import { ClassName } from '@/styles/constants';
 
 export interface SlateBaseInputProps extends Omit<SlateEditableProps, 'onBlur' | 'onKeyUp'> {
-  onBlur?: Nullish<(value: SlateValue, event: React.FocusEvent) => void>;
+  onBlur?: Nullish<(value: SlateValue, event: React.FocusEvent<HTMLDivElement>) => void>;
   onKeyUp?: Nullish<(value: SlateValue, event: React.KeyboardEvent) => void>;
 }
 

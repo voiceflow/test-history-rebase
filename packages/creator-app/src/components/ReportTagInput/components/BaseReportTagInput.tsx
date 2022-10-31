@@ -76,7 +76,7 @@ const BaseReportTagInput: React.FC<BaseReportTagInputProps> = ({
     }
   };
 
-  const onKeyDown = ({ key }: React.KeyboardEvent) => {
+  const onKeyDown = ({ key }: React.KeyboardEvent<HTMLElement>) => {
     if ((key === KeyName.BACKSPACE || key === KeyName.DELETE) && !search.trim() && !!selectedTags.length) {
       const lastTagID = selectedTags[selectedTags.length - 1];
       removeTag(lastTagID);

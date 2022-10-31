@@ -405,6 +405,7 @@ export namespace NodeData {
 
   export interface CustomApi extends IntegrationDefaultProps {
     url?: string;
+    tls?: Nullable<{ cert: string | null; key: string | null }>;
     body?: BaseNode.Api.APIKeyVal[];
     headers?: BaseNode.Api.APIKeyVal[];
     mapping?: { path: string; var: string | null; index?: number }[];

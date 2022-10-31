@@ -1,6 +1,7 @@
-import axios from 'axios';
 import _isEmpty from 'lodash/isEmpty';
 import React from 'react';
+
+import client from '@/client';
 
 import { Response } from './types';
 import { deepVariableReplacement, deepVariableSearch, mapTestResponse, mapTestResponseError } from './utils';
@@ -31,7 +32,7 @@ export const useRequest = ({ formattedData, variableValues }: { formattedData: R
     setIsLoading(true);
 
     try {
-      const response = await axios.post(TEST_API_ENDPOINT, { api: requestObj });
+      const response = await client.testAPIClient.post(TEST_API_ENDPOINT, { api: requestObj });
       setResponse(mapTestResponse(response, initTime));
     } catch (error) {
       setResponse(mapTestResponseError(error, initTime));

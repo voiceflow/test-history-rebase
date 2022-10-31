@@ -6,7 +6,13 @@ import { NavLink, NavLinkProps } from 'react-router-dom';
 import NavItemContainer from './NavItemContainer';
 
 const NavItem: React.FC<NavLinkProps> = ({ children, replace = true, className, ...props }) => (
-  <NavLink className={cn(ClassName.POPPER_NAV_ITEM, className)} replace={replace} {...props}>
+  <NavLink
+    replace={replace}
+    className={
+      typeof className === 'function' ? (isActive) => cn(ClassName.POPPER_NAV_ITEM, className(isActive)) : cn(ClassName.POPPER_NAV_ITEM, className)
+    }
+    {...props}
+  >
     <NavItemContainer>{children}</NavItemContainer>
   </NavLink>
 );

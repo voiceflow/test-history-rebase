@@ -7,7 +7,7 @@ import * as Creator from '@/ducks/creator';
 import { useSelector } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import { EngineContext } from '@/pages/Canvas/contexts';
-import { Actions, NoMatchV2 } from '@/pages/Canvas/managers/components';
+import { Actions } from '@/pages/Canvas/managers/components';
 import PathSection from '@/pages/Canvas/managers/components/PathSection';
 import HelpTooltip from '@/pages/Canvas/managers/IfV2/components/HelpTooltip';
 
@@ -55,7 +55,7 @@ const NoMatchEditor: React.FC = () => {
         <>
           <SectionV2.Divider inset />
 
-          <Actions.Section portID={editor.node.ports.out.builtIn[BaseModels.PortType.NO_MATCH]} editor={editor} parentPath={NoMatchV2.PATH} />
+          <Actions.Section portID={editor.node.ports.out.builtIn[BaseModels.PortType.NO_MATCH]} editor={editor} />
         </>
       )}
     </EditorV2>

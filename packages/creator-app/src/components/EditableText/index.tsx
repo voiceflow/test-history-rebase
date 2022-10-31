@@ -8,7 +8,7 @@ import { withTargetValue } from '@/utils/dom';
 
 import { UnstyledInput, UnstyledText } from './components';
 
-export interface EditableTextProps extends Omit<AutosizeInputProps, 'ref' | 'onChange'> {
+export interface EditableTextProps extends Omit<AutosizeInputProps, 'ref' | 'onChange' | 'onBlur' | 'onFocus'> {
   id?: string;
   value: string;
   onBlur?: React.FocusEventHandler<HTMLInputElement>;

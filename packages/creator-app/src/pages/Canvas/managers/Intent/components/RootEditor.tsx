@@ -38,7 +38,9 @@ const RootEditor: React.FC = () => {
 
   return (
     <EditorV2
-      header={<EditorV2.ChipHeader color={editor.parentNodeData?.blockColor} onChangeColor={(blockColor) => editor.onParentChange({ blockColor })} />}
+      header={
+        <EditorV2.ChipHeader color={editor.parentBlockData?.blockColor} onChangeColor={(blockColor) => editor.onChangeParentBlock({ blockColor })} />
+      }
       footer={<EditorV2.DefaultFooter tutorial={Documentation.INTENT_STEP} />}
       dropLagAccept={Actions.Section.DRAG_TYPE}
     >

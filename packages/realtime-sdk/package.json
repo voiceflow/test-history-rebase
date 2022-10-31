@@ -28,7 +28,7 @@
   },
   "devDependencies": {
     "@types/faker": "5.5.9",
-    "@voiceflow/api-sdk": "3.20.7",
+    "@voiceflow/api-sdk": "3.20.16",
     "cooky-cutter": "1.5.4",
     "draft-js": "0.11.7",
     "faker": "5.5.3",
@@ -42,7 +42,7 @@
   "main": "build/common/index.js",
   "module": "build/module/index.js",
   "peerDependencies": {
-    "@voiceflow/api-sdk": "3.20.1",
+    "@voiceflow/api-sdk": "3.20.16",
     "draft-js": "^0.11.2",
     "polished": "^3.6.5"
   },

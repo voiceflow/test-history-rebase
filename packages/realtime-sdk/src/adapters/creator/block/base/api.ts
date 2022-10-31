@@ -4,8 +4,9 @@ import { BaseNode } from '@voiceflow/base-types';
 import { createBlockAdapter } from '../utils';
 
 const apiAdapter = createBlockAdapter<BaseNode.Api.StepData, NodeData.CustomApi>(
-  ({ url, body, headers, mappings, content, selectedAction, params, bodyType }) => ({
+  ({ url, body, headers, mappings, content, selectedAction, params, bodyType, tls }) => ({
     url,
+    tls: tls ? { key: tls.key ?? null, cert: tls.cert ?? null } : null,
     body,
     content,
     headers,
@@ -16,6 +17,7 @@ const apiAdapter = createBlockAdapter<BaseNode.Api.StepData, NodeData.CustomApi>
     selectedIntegration: BaseNode.Utils.IntegrationType.CUSTOM_API,
   }),
   ({
+    tls,
     url = '',
     body = [],
     content = '',
@@ -25,6 +27,7 @@ const apiAdapter = createBlockAdapter<BaseNode.Api.StepData, NodeData.CustomApi>
     bodyInputType = BaseNode.Api.APIBodyType.FORM_DATA,
     selectedAction = BaseNode.Api.APIActionType.GET,
   }) => ({
+    tls: tls ? { key: tls.key ?? undefined, cert: tls.cert ?? undefined } : undefined,
     url,
     body,
     params: parameters,

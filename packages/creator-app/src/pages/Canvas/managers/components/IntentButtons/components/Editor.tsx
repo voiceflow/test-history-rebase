@@ -9,7 +9,7 @@ import DraggableList, { DeleteComponent } from '@/components/DraggableList';
 import * as IntentV2 from '@/ducks/intentV2';
 import { useMapManager, useSelector, useToggle } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
-import { useButtonLayoutOption } from '@/pages/Canvas/managers/hooks';
+import useButtonLayoutOption from '@/pages/Canvas/managers/hooks/useButtonLayoutOption';
 import { intentButtonFactory } from '@/utils/intent';
 import { getPlatformValue } from '@/utils/platform';
 

@@ -13,28 +13,16 @@ import { PATH } from '../../constants';
 interface ActionsOptions {
   editor: NodeEditorV2Props<unknown>;
   portID: string;
-  parentPath?: string;
-  parentParams?: Record<string, string>;
 }
 
 interface OnAddOptions extends ActionsOptions {
   targetNode: Realtime.Node<Realtime.BuiltInPortRecord<string>> | null;
-  actionPath: string;
   targetNodeSteps: Realtime.NodeData<EmptyObject>[];
   hasNavigationStep: boolean;
   targetNodeIsActions: boolean;
 }
 
-const useOnAddAction = ({
-  portID,
-  editor,
-  actionPath,
-  targetNode,
-  parentParams,
-  hasNavigationStep,
-  targetNodeSteps,
-  targetNodeIsActions,
-}: OnAddOptions) => {
+const useOnAddAction = ({ portID, editor, targetNode, targetNodeSteps, hasNavigationStep, targetNodeIsActions }: OnAddOptions) => {
   const [trackingEvents] = useTrackingEvents();
 
   const [lastCreatedStepID, setLastCreatedStepID] = React.useState<string | null>(null);
@@ -114,7 +102,7 @@ const useOnAddAction = ({
     );
 
     if (type !== BlockType.EXIT) {
-      editor.goToNested({ path: actionPath, params: { ...parentParams, sourcePortID: portID, actionNodeID: nodeID } });
+      editor.goToNested({ path: PATH, params: { sourcePortID: portID, actionNodeID: nodeID } });
     }
 
     await afterAdd({ type, actionsNodeID });
@@ -126,7 +114,7 @@ const useOnAddAction = ({
   };
 };
 
-export const useActions = ({ editor, portID, parentPath, parentParams }: ActionsOptions) => {
+export const useActions = ({ editor, portID }: ActionsOptions) => {
   const [trackingEvents] = useTrackingEvents();
 
   const targetNode = useSelector(CreatorV2.targetNodeByPortID, { id: portID });
@@ -140,7 +128,6 @@ export const useActions = ({ editor, portID, parentPath, parentParams }: Actions
     Realtime.Utils.typeGuards.isCardV2BlockType(editor.data.type);
   const hasNavigationStep = Realtime.Utils.typeGuards.isNavigationBlockType(targetNodeSteps[targetNodeSteps.length - 1]?.type);
 
-  const actionPath = parentPath ? `${parentPath}/${PATH}` : PATH;
   const targetNodeIsActions = targetNode?.type === BlockType.ACTIONS;
 
   const onRemove = async (_: number, item: Realtime.NodeData<EmptyObject>) => {
@@ -166,12 +153,10 @@ export const useActions = ({ editor, portID, parentPath, parentParams }: Actions
   const { onAdd, lastCreatedStepID } = useOnAddAction({
     portID,
     editor,
-    actionPath,
     targetNode,
-    hasNavigationStep,
     targetNodeSteps,
+    hasNavigationStep,
     targetNodeIsActions,
-    parentParams,
   });
 
   return {
@@ -180,7 +165,6 @@ export const useActions = ({ editor, portID, parentPath, parentParams }: Actions
     onRename,
     onReorder,
     hasURLStep,
-    actionPath,
     canHaveURLStep,
     withGoToDomain: domainsCount > 1,
     targetNodeSteps,

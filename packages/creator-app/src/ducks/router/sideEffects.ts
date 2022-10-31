@@ -63,9 +63,13 @@ interface GoToCanvasNodeOptions extends GoToCanvasDiagramOptions {
   nodeSubPath?: string;
 }
 
+const STARTING_SLASH_REGEX = /^\//;
+
 export const goToCanvasNode = ({ nodeID, domainID, versionID, diagramID, routeState, nodeSubPath }: GoToCanvasNodeOptions) =>
   goTo(
-    `${generatePath(Path.CANVAS_NODE, { versionID, diagramID, domainID, nodeID })}${nodeSubPath ? `/${nodeSubPath}` : ''}${window.location.search}`,
+    `${generatePath(Path.CANVAS_NODE, { versionID, diagramID, domainID, nodeID })}${
+      nodeSubPath ? `/${nodeSubPath.replace(STARTING_SLASH_REGEX, '')}` : ''
+    }${window.location.search}`,
     routeState
   );
 

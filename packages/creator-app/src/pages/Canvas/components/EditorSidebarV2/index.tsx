@@ -3,7 +3,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { CustomScrollbarsTypes, stopImmediatePropagation } from '@voiceflow/ui';
 import React from 'react';
 import type { ExtractRouteParams } from 'react-router';
-import { generatePath, useRouteMatch } from 'react-router-dom';
+import { generatePath, useLocation, useRouteMatch } from 'react-router-dom';
 
 import Drawer from '@/components/Drawer';
 import { Path } from '@/config/routes';
@@ -25,9 +25,18 @@ import { useUseAutopanBlockIntoView } from './hooks';
 
 export { EditorSidebarContext } from './context';
 
+interface GoToTypes<S extends string> {
+  path: S;
+  params?: ExtractRouteParams<S>;
+  animationEffect?: EditorAnimationEffect;
+  state?: Record<string, unknown>;
+}
+
 const EditorSidebarV2 = () => {
   const theme = useTheme();
+  const location = useLocation();
   const isEditingMode = useEditingMode();
+  const canvasNodeRouteMatch = useRouteMatch(Path.CANVAS_NODE);
 
   const scrollbars = React.useRef<CustomScrollbarsTypes.Scrollbars>(null);
 
@@ -39,7 +48,7 @@ const EditorSidebarV2 = () => {
   const node = useSelector(Creator.focusedNodeSelector);
   const data = useSelector(Creator.focusedNodeDataSelector);
   const focus = useSelector(Creator.creatorFocusSelector);
-  const parentNodeData = useSelector(CreatorV2.nodeDataByIDSelector, { id: node?.parentNode }) as Nullable<
+  const parentBlockData = useSelector(CreatorV2.nodeDataByIDSelector, { id: node?.parentNode }) as Nullable<
     Realtime.NodeData<Realtime.NodeData.Combined>
   >;
 
@@ -52,13 +61,11 @@ const EditorSidebarV2 = () => {
     [engine.node, node?.id]
   );
 
-  const onParentChange = React.useCallback(
+  const onChangeParentBlock = React.useCallback(
     (value: Partial<Realtime.NodeData<Realtime.NodeData.Combined>>) =>
       node?.parentNode ? engine.node.updateData(node.parentNode, value) : Promise.resolve(),
     [engine.node, node?.parentNode]
   );
-
-  const routeMatch = useRouteMatch(Path.CANVAS_NODE);
 
   const goBack = React.useCallback(
     <S extends string>(configOrPath?: S | { path: S; params?: ExtractRouteParams<S> }) => {
@@ -82,10 +89,8 @@ const EditorSidebarV2 = () => {
     [node?.id, goToNode]
   );
 
-  const goToNested = React.useCallback(
-    <S extends string>(
-      configOrPath: S | { path: S; params?: ExtractRouteParams<S>; animationEffect?: EditorAnimationEffect; state?: Record<string, unknown> }
-    ) => {
+  const goToSibling = React.useCallback(
+    <S extends string>(configOrPath: S | GoToTypes<S>) => {
       if (!node?.id) return;
 
       if (typeof configOrPath === 'string') {
@@ -98,6 +103,26 @@ const EditorSidebarV2 = () => {
       }
     },
     [goToNode, node?.id]
+  );
+
+  const goToNested = React.useCallback(
+    <S extends string>(configOrPath: S | GoToTypes<S>) => {
+      if (!node?.id || !canvasNodeRouteMatch) return;
+
+      const parentPath = location.pathname.replace(canvasNodeRouteMatch.url, '');
+
+      if (typeof configOrPath === 'string') {
+        goToNode(node.id, parentPath ? `${parentPath}/${configOrPath}` : configOrPath);
+      } else {
+        const childPath = generatePath(configOrPath.path, configOrPath.params);
+
+        goToNode(node.id, parentPath ? `${parentPath}/${childPath}` : childPath, {
+          animationEffect: configOrPath.animationEffect,
+          ...configOrPath.state,
+        });
+      }
+    },
+    [goToNode, node?.id, location.pathname]
   );
 
   const hasData = !!data && !!node;
@@ -128,7 +153,7 @@ const EditorSidebarV2 = () => {
       label: manager.getDataLabel?.(data as any) ?? manager.label ?? '',
       engine,
       nodeID: node.id,
-      isRoot: !!routeMatch?.isExact,
+      isRoot: !!canvasNodeRouteMatch?.isExact,
       goBack,
       isOpened,
       platform,
@@ -136,12 +161,14 @@ const EditorSidebarV2 = () => {
       goToRoot,
       goToNested,
       scrollbars,
+      goToSibling,
       projectType,
       isFullscreen,
-      parentNodeData,
-      onParentChange,
+      parentBlockData,
       onToggleFullscreen: toggleFullscreen,
+      onChangeParentBlock,
     };
+
     return (
       <NamespaceProvider value={['editor', node.type, node.id]}>
         <EditorSidebarProvider value={editorProps}>

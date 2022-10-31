@@ -20,4 +20,8 @@ const prototypeClient = {
   ): Promise<Response> => axios.post<Response>(`${GENERAL_RUNTIME_ENDPOINT}/interact/${versionID}`, body, { headers }).then(({ data }) => data),
 };
 
+export const testAPIClient = axios.create({
+  baseURL: GENERAL_RUNTIME_ENDPOINT,
+});
+
 export default prototypeClient;

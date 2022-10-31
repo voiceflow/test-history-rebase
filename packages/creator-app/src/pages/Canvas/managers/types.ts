@@ -4,7 +4,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { CustomScrollbarsTypes, OptionsMenuOption, SvgIconTypes } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
-import { ExtractRouteParams } from 'react-router';
+import { ExtractRouteParams, match } from 'react-router';
 import { Optional, Overwrite } from 'utility-types';
 
 import { BlockType, HSLShades } from '@/constants';
@@ -108,13 +108,13 @@ interface GoBack {
   <S extends string>(config: { path: S; params?: ExtractRouteParams<S> }): void;
 }
 
-interface GoToNested {
+interface GoTo {
   <S extends string>(path: S): void;
   <S extends string>(config: {
     path: S;
+    state?: Record<string, unknown>;
     params?: ExtractRouteParams<S>;
     animationEffect?: EditorAnimationEffect;
-    state?: Record<string, unknown>;
   }): void;
 }
 
@@ -135,12 +135,13 @@ export interface NodeEditorV2Props<Data, BuiltInPorts extends Realtime.BuiltInPo
   platform: VoiceflowConstants.PlatformType;
   goToRoot: (animationEffect?: EditorAnimationEffect) => void;
   scrollbars: React.RefObject<CustomScrollbarsTypes.Scrollbars>;
-  goToNested: GoToNested;
+  goToNested: GoTo;
+  goToSibling: GoTo;
   projectType: VoiceflowConstants.ProjectType;
   isFullscreen: boolean;
-  parentNodeData: Nullable<Realtime.NodeData<Realtime.NodeData.Combined>>;
-  onParentChange: (value: Partial<Realtime.NodeData<Realtime.NodeData.Combined>>) => Promise<void>;
+  parentBlockData: Nullable<Realtime.NodeData<Realtime.NodeData.Combined>>;
   onToggleFullscreen: VoidFunction;
+  onChangeParentBlock: (value: Partial<Realtime.NodeData<Realtime.NodeData.Combined>>) => Promise<void>;
 }
 
 export type NodeEditorV2<Data, BuiltInPorts extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord> = React.FC<
@@ -148,8 +149,9 @@ export type NodeEditorV2<Data, BuiltInPorts extends Realtime.BuiltInPortRecord =
 >;
 
 export interface ActionEditorProps<Data, BuiltInPorts extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord>
-  extends NodeEditorV2Props<unknown> {
-  action: SharedEditorProps<Data, BuiltInPorts>;
+  extends NodeEditorV2Props<Data, BuiltInPorts> {
+  parentMatch: match & { parentUrl: string; parentPath: string };
+  parentEditor: SharedEditorProps<unknown>;
 }
 
 export type ActionEditor<Data, BuiltInPorts extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord> = React.FC<

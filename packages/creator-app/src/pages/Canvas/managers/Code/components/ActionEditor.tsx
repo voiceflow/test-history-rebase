@@ -10,9 +10,9 @@ import Form from './Form';
 
 const Editor: ActionEditor<Realtime.NodeData.Code, Realtime.NodeData.CodeBuiltInPorts> = (props) => (
   <Form
-    editor={{ ...props, ...props.action }}
+    editor={props}
     header={
-      <Form.Header editor={{ ...props, ...props.action }}>
+      <Form.Header editor={props}>
         {!props.isFullscreen && (
           <SectionV2.ActionsContainer isLeft unit={0} offsetUnit={2.75}>
             <IconButton icon="largeArrowLeft" onClick={() => props.goBack()} variant={IconButton.Variant.BASIC} />

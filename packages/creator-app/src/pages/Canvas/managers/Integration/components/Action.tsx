@@ -1,64 +1,14 @@
-import { BaseModels, BaseNode } from '@voiceflow/base-types';
+import { BaseNode } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Canvas, Popper, swallowEvent, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
-import { getCustomAPIActionLabel } from '@/utils/customApi';
+import { ConnectedAction, ConnectedActionProps } from '../../types';
+import ApiAction from './Api/Action';
 
-import Step from '../../../components/Step';
-import { ConnectedAction } from '../../types';
-import { NODE_CONFIG } from '../constants';
-import ActionPreview from './ActionPreview';
+const Action: ConnectedAction<Realtime.NodeData.Integration, Realtime.NodeData.IntegrationBuiltInPorts> = (props) => {
+  if (props.data.selectedIntegration !== BaseNode.Utils.IntegrationType.CUSTOM_API) return null;
 
-const Action: ConnectedAction<Realtime.NodeData.Integration, Realtime.NodeData.IntegrationBuiltInPorts> = ({
-  data,
-  ports,
-  onRemove,
-  reversed,
-  isActive,
-  onOpenEditor,
-}) => {
-  if (data.selectedIntegration !== BaseNode.Utils.IntegrationType.CUSTOM_API) return null;
-
-  const { url, selectedAction } = data as Realtime.NodeData.CustomApi;
-
-  const isEmpty = !url;
-
-  return (
-    <Popper
-      placement="top-start"
-      renderContent={({ onClose }) => (
-        <ActionPreview
-          title={`${getCustomAPIActionLabel(selectedAction)} request`}
-          content={url || 'Add URL'}
-          onClose={onClose}
-          onRemove={onRemove}
-          onOpenEditor={onOpenEditor}
-        />
-      )}
-    >
-      {({ ref, onToggle, isOpened }) => (
-        <Canvas.Action
-          ref={ref}
-          icon={
-            <TippyTooltip tag="div" title="API request URL missing" disabled={!isEmpty || isActive} distance={2} bodyOverflow>
-              <Canvas.Action.Icon icon={isEmpty && !isActive ? 'warning' : NODE_CONFIG.getIcon!(data)} />
-            </TippyTooltip>
-          }
-          port={<Step.ActionPort portID={ports.out.builtIn[BaseModels.PortType.NEXT]} />}
-          label={
-            <Canvas.Action.Label secondary={isEmpty}>
-              {isEmpty ? 'Add request' : data.name || `${getCustomAPIActionLabel(selectedAction)} request`}
-            </Canvas.Action.Label>
-          }
-          nodeID={data.nodeID}
-          active={isOpened || isActive}
-          onClick={swallowEvent(onToggle)}
-          reversed={reversed}
-        />
-      )}
-    </Popper>
-  );
+  return <ApiAction {...(props as ConnectedActionProps<Realtime.NodeData.CustomApi, Realtime.NodeData.IntegrationBuiltInPorts>)} />;
 };
 
 export default Action;

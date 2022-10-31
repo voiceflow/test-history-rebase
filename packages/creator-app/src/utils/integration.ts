@@ -9,7 +9,7 @@ const keyValToDB = ({ index, key, val }: { index?: number; key: string; val: str
 });
 
 export const encodeCustomAPIData = (data: Realtime.NodeData.CustomApi) => {
-  const { selectedAction, bodyInputType, body, url, headers, mapping, parameters, content } = data;
+  const { selectedAction, bodyInputType, body, url, headers, mapping, parameters, content, tls } = data;
   return {
     bodyInputType,
     body: body?.map(keyValToDB) ?? [],
@@ -25,5 +25,6 @@ export const encodeCustomAPIData = (data: Realtime.NodeData.CustomApi) => {
     method: selectedAction?.split(' ')[2] ?? '',
     params: parameters?.map(keyValToDB) ?? [],
     content,
+    tls,
   };
 };

@@ -4,7 +4,6 @@ import React from 'react';
 
 import { SectionToggleVariant } from '@/components/Section';
 import { SlateTextInput } from '@/components/SlateInputs';
-import { compose } from '@/hocs';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
 import { ListItemComponentProps } from '@/pages/Canvas/components/ListEditorContent';
@@ -14,61 +13,64 @@ import THEME from '@/styles/theme';
 
 export type TextListItemProps = ListItemComponentProps<BaseNode.Text.TextData, { header?: React.ReactNode }>;
 
-const TextListItem: React.ForwardRefRenderFunction<HTMLDivElement, TextListItemProps> = (
-  {
-    item,
-    index,
-    header,
-    itemKey,
-    onUpdate,
-    isOnlyItem,
-    isDragging,
-    onContextMenu,
-    latestCreatedKey,
-    connectedDragRef,
-    isDraggingPreview,
-    isContextMenuOpen,
-    isRandomized,
-  },
-  ref
-) => {
-  const isNew = latestCreatedKey === itemKey;
-  return (
-    <EditorSection
-      ref={ref}
-      namespace={['textListItem', item.id]}
-      header={header || `Text Variant ${index + 1}`}
-      prefix={<SvgIcon icon={NODE_CONFIG.icon!} color={THEME.buttonIconColors.default} />}
-      headerRef={connectedDragRef}
-      isDragging={isDragging}
-      suffix={isRandomized && 'randomLoop'}
-      initialOpen={isNew || isOnlyItem}
-      headerToggle
-      onContextMenu={onContextMenu}
-      collapseVariant={!isDragging && !isDraggingPreview ? SectionToggleVariant.ARROW : null}
-      isDraggingPreview={isDraggingPreview}
-      isContextMenuOpen={isContextMenuOpen}
-    >
-      {isDragging || isDraggingPreview ? null : (
-        <FormControl contentBottomUnits={2.5}>
-          <SlateTextInput
-            value={item.content}
-            onBlur={(value) => onUpdate({ content: value })}
-            autofocus={isNew}
-            extraToolbarButtons={
-              <>
-                <Divider isVertical height="15px" style={{ margin: 0 }} />
-                <MessageDelayButton
-                  delay={item.messageDelayMilliseconds}
-                  onChange={(messageDelayMilliseconds) => onUpdate({ messageDelayMilliseconds })}
-                />
-              </>
-            }
-          />
-        </FormControl>
-      )}
-    </EditorSection>
-  );
-};
+const TextListItem = React.forwardRef<HTMLElement, TextListItemProps>(
+  (
+    {
+      item,
+      index,
+      header,
+      itemKey,
+      onUpdate,
+      isOnlyItem,
+      isDragging,
+      onContextMenu,
+      latestCreatedKey,
+      connectedDragRef,
+      isDraggingPreview,
+      isContextMenuOpen,
+      isRandomized,
+    },
+    ref
+  ) => {
+    const isNew = latestCreatedKey === itemKey;
 
-export default compose(React.memo, React.forwardRef)(TextListItem);
+    return (
+      <EditorSection
+        ref={ref as React.Ref<HTMLDivElement>}
+        namespace={['textListItem', item.id]}
+        header={header || `Text Variant ${index + 1}`}
+        prefix={<SvgIcon icon={NODE_CONFIG.icon!} color={THEME.buttonIconColors.default} />}
+        headerRef={connectedDragRef}
+        isDragging={isDragging}
+        suffix={isRandomized && 'randomLoop'}
+        initialOpen={isNew || isOnlyItem}
+        headerToggle
+        onContextMenu={onContextMenu}
+        collapseVariant={!isDragging && !isDraggingPreview ? SectionToggleVariant.ARROW : null}
+        isDraggingPreview={isDraggingPreview}
+        isContextMenuOpen={isContextMenuOpen}
+      >
+        {isDragging || isDraggingPreview ? null : (
+          <FormControl contentBottomUnits={2.5}>
+            <SlateTextInput
+              value={item.content}
+              onBlur={(value) => onUpdate({ content: value })}
+              autofocus={isNew}
+              extraToolbarButtons={
+                <>
+                  <Divider isVertical height="15px" style={{ margin: 0 }} />
+                  <MessageDelayButton
+                    delay={item.messageDelayMilliseconds}
+                    onChange={(messageDelayMilliseconds) => onUpdate({ messageDelayMilliseconds })}
+                  />
+                </>
+              }
+            />
+          </FormControl>
+        )}
+      </EditorSection>
+    );
+  }
+);
+
+export default React.memo(TextListItem);

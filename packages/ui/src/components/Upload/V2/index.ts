@@ -3,6 +3,7 @@ import CSV from './CSV';
 import Drop from './Drop';
 import Image from './Image';
 import JSON from './JSON';
+import TLS from './TLS';
 
 export default {
   Audio,
@@ -10,4 +11,5 @@ export default {
   Drop,
   JSON,
   CSV,
+  TLS,
 };

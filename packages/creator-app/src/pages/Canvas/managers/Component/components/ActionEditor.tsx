@@ -7,11 +7,7 @@ import { ActionEditor } from '@/pages/Canvas/managers/types';
 import Form from './Form';
 
 const Editor: ActionEditor<Realtime.NodeData.Component, Realtime.NodeData.ComponentBuiltInPorts> = (props) => (
-  <Form
-    editor={{ ...props, ...props.action }}
-    header={<EditorV2.DefaultHeader onBack={props.goBack} />}
-    footer={<Form.Footer editor={{ ...props, ...props.action }} />}
-  />
+  <Form editor={props} header={<EditorV2.DefaultHeader onBack={props.goBack} />} footer={<Form.Footer editor={props} />} />
 );
 
 export default Editor;

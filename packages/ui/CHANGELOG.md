@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.169.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.168.1...@voiceflow/ui@1.169.0) (2022-10-31)
+
+
+### Features
+
+* upload custom tls certificate + nested actions editors (PL-120) ([#6191](https://github.com/voiceflow/creator-app/issues/6191)) ([9b030f7](https://github.com/voiceflow/creator-app/commit/9b030f7c780ac1f80299619ef8af2bf8eb5477d6))
+
+
+
+
+
 ## [1.168.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.168.0...@voiceflow/ui@1.168.1) (2022-10-31)
 
 

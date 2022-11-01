@@ -54,7 +54,9 @@ const SendInvite: React.FC<SendInviteProps> = ({ inline, sendInvite }) => {
   }, [canManageAdminCollaborators]);
 
   const onSendInviteClick = async () => {
-    if (!Utils.emails.isValidEmail(email)) {
+    const trimmedEmail = email.trim();
+
+    if (!Utils.emails.isValidEmail(trimmedEmail)) {
       setInvalid();
     } else {
       setValid();
@@ -75,7 +77,7 @@ const SendInvite: React.FC<SendInviteProps> = ({ inline, sendInvite }) => {
         return toast.error('Viewer limit reached.');
       }
 
-      sendInvite(email, role);
+      sendInvite(trimmedEmail, role);
       setEmail('');
     }
   };

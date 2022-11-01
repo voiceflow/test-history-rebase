@@ -40,11 +40,6 @@ export const StyledUser = styled(SvgIcon)`
   border-radius: 50%;
   border: 3px solid white;
   background-color: #f9f9f9;
-
-  & > * {
-    margin-left: 16px;
-    margin-top: 17px;
-  }
 `;
 
 export const AvatarContainer = styled.img`

@@ -1,4 +1,4 @@
-import { BoxFlexApart, SvgIcon } from '@voiceflow/ui';
+import { Box, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 import { useSelector } from 'react-redux';
 
@@ -40,13 +40,13 @@ const TranscriptContext: React.FC = () => {
 
   return (
     <>
-      <BoxFlexApart>
+      <Box.FlexApart>
         <StyledLogo isCustom={!!avatar}>
           {avatar ? <AvatarContainer src={avatar} /> : <SvgIcon icon="voiceflowV" size={24} color="#fff" />}
         </StyledLogo>
 
         {image ? renderUserContainer() : <StyledUser icon="user2" size={48} color="#EDEDED" />}
-      </BoxFlexApart>
+      </Box.FlexApart>
 
       <ContextTitle className={ClassName.TRANSCRIPT_USER_NAME}>Conversation between your assistant and {name || 'a test user'}</ContextTitle>
 

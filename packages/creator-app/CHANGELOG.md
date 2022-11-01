@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.962.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.962.1...@voiceflow/creator-app@1.962.2) (2022-11-01)
+
+
+### Bug Fixes
+
+* button editor autofocus [bugfix] (CT-1028) ([#6253](https://github.com/voiceflow/creator-app/issues/6253)) ([07ca2ad](https://github.com/voiceflow/creator-app/commit/07ca2adb5f5545939dfbafdcdf2b164f0b2fdc94))
+
+
+
+
+
 ## [1.962.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.962.0...@voiceflow/creator-app@1.962.1) (2022-11-01)
 
 

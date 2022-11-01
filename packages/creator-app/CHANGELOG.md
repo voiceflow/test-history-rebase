@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.962.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.962.0...@voiceflow/creator-app@1.962.1) (2022-11-01)
+
+
+### Bug Fixes
+
+* invite email & transcript user placeholder bugs (BUG-99) ([#6260](https://github.com/voiceflow/creator-app/issues/6260)) ([285a16d](https://github.com/voiceflow/creator-app/commit/285a16d8c3c3f6d496249b1acd474a557b2d7e7a))
+
+
+
+
+
 # [1.962.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.961.1...@voiceflow/creator-app@1.962.0) (2022-10-31)
 
 

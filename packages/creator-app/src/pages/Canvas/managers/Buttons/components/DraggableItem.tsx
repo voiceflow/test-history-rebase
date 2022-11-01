@@ -23,6 +23,7 @@ export interface DraggableItemProps
     MappedItemComponentHandlers<BaseNode.Buttons.Button> {
   editor: NodeEditorV2Props<Realtime.NodeData.Buttons, Realtime.NodeData.ButtonsBuiltInPorts>;
   latestCreatedKey: string | undefined;
+  itemCount: number;
   canAddIntent: boolean;
 }
 
@@ -30,6 +31,7 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
   {
     item,
     index,
+    itemCount,
     editor,
     itemKey,
     onUpdate,
@@ -50,7 +52,7 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
 
   const [attachIntentCollapsed, setAttachIntentCollapsed] = React.useState(!intent);
 
-  const autofocus = latestCreatedKey === itemKey;
+  const autofocus = latestCreatedKey === itemKey && itemCount !== 1;
 
   const [sectionRef, scrollSectionIntoView] = useAutoScrollNodeIntoView<HTMLDivElement>({ condition: autofocus, options: { block: 'end' } });
 
@@ -61,9 +63,8 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
 
   // show the intent option if already set
   const showIntent = canAddIntent || !!intent;
-
   return (
-    <EditorV2.PersistCollapse namespace={['buttonsListItem', item.id]} defaultCollapsed={!autofocus}>
+    <EditorV2.PersistCollapse namespace={['buttonsListItem', item.id]}>
       {({ collapsed, onToggle }) => (
         <>
           {index !== 0 && !isDraggingPreview && <SectionV2.Divider />}

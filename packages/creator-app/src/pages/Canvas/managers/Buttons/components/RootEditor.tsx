@@ -75,7 +75,7 @@ const RootEditor: React.FC = () => {
         <DraggableList
           type={ITEM_DRAG_TYPE}
           onEndDrag={toggleDragging}
-          itemProps={{ editor, latestCreatedKey: mapManager.latestCreatedKey, canAddIntent }}
+          itemProps={{ editor, latestCreatedKey: mapManager.latestCreatedKey, canAddIntent, itemCount: mapManager.size }}
           mapManager={mapManager}
           onStartDrag={toggleDragging}
           itemComponent={DraggableItem}

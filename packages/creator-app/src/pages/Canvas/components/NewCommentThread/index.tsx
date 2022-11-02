@@ -53,7 +53,7 @@ const NewCommentThread: React.FC<{ isHidden?: boolean }> = ({ isHidden }) => {
     <Popper
       width="350px"
       opened={!isHidden}
-      zIndex={1}
+      zIndex={21}
       modifiers={{ offset: { offset: `${-INDICATOR_DIAMETER / 2},${INDICATOR_DIAMETER / 2 + 14}` } }}
       placement="right-start"
       renderContent={({ scheduleUpdate }) => <ThreadEditor replyRef={api.commentRef} isFocused schedulePopperUpdate={scheduleUpdate} />}

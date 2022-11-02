@@ -30,8 +30,6 @@ const Audio: React.FC<AudioProps> = ({ audio, onPause, onContinue, audioSrc, nam
 
     if (audioPlayer.playing) {
       onPause?.();
-    } else {
-      onContinue?.();
     }
 
     const forcePause = () => audioPlayer.onPause();

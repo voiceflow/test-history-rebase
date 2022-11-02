@@ -38,7 +38,6 @@ const SettingsContent: React.FC = () => {
   });
 
   const canUseAlexaSettings = useAlexaProjectSettings();
-
   return (
     <Box maxWidth={DEFAULT_MAX_WIDTH}>
       {platformMeta.sections.map((section: SettingSections, index): null | React.ReactElement => {
@@ -46,7 +45,7 @@ const SettingsContent: React.FC = () => {
         const variant = section === SettingSections.DANGER_ZONE ? SectionVariants.SECONDARY : SectionVariants.PRIMARY;
 
         if ((section === SettingSections.CHANNEL_SPECIFIC_FEATURES || section === SettingSections.TEST_TOOL) && !canUseAlexaSettings) return null;
-        if (section === SettingSections.GLOBAL_CONVERSATION_LOGIC && !globalNoMatchNoReply.isEnabled) return null;
+        if (section === SettingSections.GLOBAL_LOGIC && !globalNoMatchNoReply.isEnabled) return null;
 
         return (
           <SettingsSection variant={variant} key={index} title={section}>

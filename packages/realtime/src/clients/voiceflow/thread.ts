@@ -7,6 +7,7 @@ export interface ThreadClient {
   get: (projectID: string, threadID: string) => Promise<Thread>;
   create: (projectID: string, data: NewThread) => Promise<Thread>;
   update: (projectID: string, threadID: string, data: Partial<Thread>) => Promise<Thread>;
+  removeMany: (projectID: string, data: { diagramIDs: string[] }) => Promise<void>;
   comment: {
     create: (projectID: string, threadID: string, data: NewComment) => Promise<Comment>;
     update: (projectID: string, commentID: string, data: NewComment) => Promise<Comment>;
@@ -31,6 +32,8 @@ const Client = ({ api }: ExtraOptions): ThreadClient => ({
     api
       .post<DBThread>(`${COMMENTING_PATH}/${projectID}/threads`, Adapters.threadAdapter.toDB(data as unknown as Thread))
       .then(({ data }) => Adapters.threadAdapter.fromDB(data)),
+
+  removeMany: (projectID: string, data: { diagramIDs: string[] }) => api.post(`${COMMENTING_PATH}/${projectID}/threads/remove-many`, data),
 
   update: (projectID: string, threadID: string, data: Partial<Thread>) => {
     const { nodeID, resolved, deleted, position } = data;

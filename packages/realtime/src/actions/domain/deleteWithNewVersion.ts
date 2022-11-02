@@ -29,13 +29,23 @@ class DeleteDomainWithNewVersion extends AbstractDomainResourceControl<Realtime.
     ]);
   };
 
-  protected finally = async (ctx: Context<ContextData>) => {
+  protected finally = async (ctx: Context<ContextData>, { payload }: Action<Realtime.domain.DeleteWithNewVersionPayload>) => {
+    const { creatorID, topicIDs } = ctx.data;
+    const { projectID, workspaceID } = payload;
+
+    await Promise.all([
+      this.unlockAllEntities(topicIDs),
+      this.server.processAs(creatorID, Realtime.thread.removeManyByDiagramIDs({ projectID, diagramIDs: topicIDs, workspaceID })),
+    ]);
+  };
+
+  private async unlockAllEntities(topicIDs: string[]) {
     // eslint-disable-next-line no-restricted-syntax
-    for (const topicID of ctx.data.topicIDs) {
+    for (const topicID of topicIDs) {
       // eslint-disable-next-line no-await-in-loop
       await this.services.lock.unlockAllEntities(topicID);
     }
-  };
+  }
 }
 
 export default DeleteDomainWithNewVersion;

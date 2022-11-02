@@ -23,6 +23,12 @@ class ThreadService extends AbstractControl {
     await client.thread.update(projectID, threadID, data);
   }
 
+  public async removeManyByDiagramIDs(creatorID: number, projectID: string, diagramIDs: string[]): Promise<void> {
+    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+
+    await client.thread.removeMany(projectID, { diagramIDs });
+  }
+
   public async createComment(creatorID: number, projectID: string, threadID: string, comment: Realtime.NewComment): Promise<Realtime.Comment> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
     return client.thread.comment.create(projectID, threadID, comment);

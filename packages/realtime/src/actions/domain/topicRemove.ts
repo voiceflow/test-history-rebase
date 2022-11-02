@@ -16,8 +16,14 @@ class TopicRemove extends AbstractDomainResourceControl<Realtime.domain.TopicRem
     await this.server.processAs(creatorID, Realtime.diagram.crud.remove({ versionID, projectID, workspaceID, key: topicID }));
   };
 
-  protected finally = async (_ctx: Context, { payload }: Action<Realtime.domain.TopicRemovePayload>) => {
-    await this.services.lock.unlockAllEntities(payload.topicID);
+  protected finally = async (ctx: Context, { payload }: Action<Realtime.domain.TopicRemovePayload>) => {
+    const { creatorID } = ctx.data;
+    const { topicID, projectID, workspaceID } = payload;
+
+    await Promise.all([
+      this.services.lock.unlockAllEntities(topicID),
+      this.server.processAs(creatorID, Realtime.thread.removeManyByDiagramIDs({ projectID, diagramIDs: [topicID], workspaceID })),
+    ]);
   };
 }
 

@@ -8,6 +8,7 @@ import PatchCommentControl from './comment/patch';
 import CreateThreadControl from './create';
 import PatchThreadControl from './patch';
 import RemoveThreadControl from './remove';
+import RemoveManyByDiagramIDsThreadControl from './removeManyByDiagramIDs';
 
 const buildThreadActionControls = (options: LoguxControlOptions) => ({
   // threads
@@ -15,6 +16,7 @@ const buildThreadActionControls = (options: LoguxControlOptions) => ({
   createThreadControl: new CreateThreadControl(options),
   patchThreadControl: new PatchThreadControl(options),
   removeThreadControl: new RemoveThreadControl(options),
+  removeManyByDiagramIDsThreadControl: new RemoveManyByDiagramIDsThreadControl(options),
 
   // comments
   addCommentControl: new AddCommentControl(options),

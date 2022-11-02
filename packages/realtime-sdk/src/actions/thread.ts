@@ -15,7 +15,14 @@ export const crud = createCRUDActions<Thread, BaseProjectPayload>(threadType);
 export interface CreateThreadPayload extends BaseProjectPayload {
   thread: NewThread;
 }
+
+export interface RemoveManyByDiagramIDsPayload extends BaseProjectPayload {
+  diagramIDs: string[];
+}
+
 export const create = Utils.protocol.createAsyncAction<CreateThreadPayload, Thread>(threadType('CREATE'));
+
+export const removeManyByDiagramIDs = Utils.protocol.createAction<RemoveManyByDiagramIDsPayload>(threadType('REMOVE_BY_DIAGRAM_IDS'));
 
 export interface CreateCommentPayload extends BaseProjectPayload {
   threadID: string;

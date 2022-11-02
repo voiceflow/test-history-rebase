@@ -3,6 +3,7 @@ import { createSelector } from 'reselect';
 
 import * as Account from '@/ducks/account';
 import * as CreatorV2 from '@/ducks/creatorV2';
+import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Domain from '@/ducks/domain';
 import * as UI from '@/ducks/ui';
 import { createCRUDSelectors } from '@/ducks/utils/crudV2';
@@ -10,9 +11,9 @@ import { createCRUDSelectors } from '@/ducks/utils/crudV2';
 import { STATE_KEY } from './constants';
 
 export const {
-  root: rootThreadsSelector,
   all: allThreadsSelector,
   map: threadsMapSelector,
+  root: rootThreadsSelector,
   byID: threadsByIDSelector,
   byIDs: threadsByIDsSelector,
   allIDs: allThreadIDsSelector,
@@ -24,7 +25,9 @@ export const allThreadIdsSelector = createSelector([allThreadsSelector, CreatorV
   threads.filter((thread) => thread.diagramID === diagramID).map((thread) => thread.id)
 );
 
-export const allAvailableThreads = createSelector(allThreadsSelector, (threads) => threads.filter((thread) => !thread.deleted).reverse());
+export const allAvailableThreads = createSelector([allThreadsSelector, DiagramV2.diagramMapSelector], (threads, diagramMap) =>
+  threads.filter((thread) => !thread.deleted && !!diagramMap[thread.diagramID]).reverse()
+);
 
 export const threadFilter = createSelector(
   [
@@ -47,8 +50,6 @@ export const openedThreads = createSelector([allAvailableThreads, threadFilter],
 export const resolvedThreads = createSelector([allAvailableThreads, threadFilter], (threads, filter) =>
   threads.filter((thread) => thread.resolved && filter(thread))
 );
-
-export const hasThreads = createSelector([allThreadsSelector], (threads) => !!threads.filter((thread) => !thread.deleted).length);
 
 export const activeDiagramThreadsSelector = createSelector(
   [allAvailableThreads, CreatorV2.activeDiagramIDSelector, CreatorV2.allNodeIDsSelector],

@@ -11,6 +11,7 @@ import { AdapterContext, VersionAdapterContext } from '../types';
 import { cleanupDBNodes } from './cleanup';
 import nodeAdapter from './node';
 
+export { chatPromptAdapter, voicePromptAdapter } from './block';
 export { default as nodeAdapter } from './node';
 export { default as nodeDataAdapter } from './nodeData';
 export { default as stepPortsAdapter } from './stepPorts';

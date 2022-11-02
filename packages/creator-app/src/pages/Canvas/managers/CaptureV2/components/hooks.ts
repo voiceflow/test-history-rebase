@@ -1,5 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { createUIOnlyMenuItemOption, OptionsMenuOption, UIOnlyMenuItemOption } from '@voiceflow/ui';
+import { createDividerMenuItemOption, OptionsMenuOption, UIOnlyMenuItemOption } from '@voiceflow/ui';
 import React from 'react';
 
 import { ENTIRE_USER_REPLY_ID, ENTIRE_USER_REPLY_LABEL } from './constants';
@@ -20,7 +20,7 @@ export const useEntitiesOptions = (unusedSlots: Realtime.Slot[], slot: Realtime.
 
     return [
       entireUserReplyOption,
-      createUIOnlyMenuItemOption('divider', { divider: true }),
+      createDividerMenuItemOption(),
       ...(slot ? [{ id: slot.id, label: `{${slot.name}}`, name: slot.name }] : []),
       ...unusedSlots.map((slot) => ({ id: slot.id, label: `{${slot.name}}`, name: slot.name })),
     ];

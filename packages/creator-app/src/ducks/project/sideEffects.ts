@@ -19,10 +19,11 @@ export interface CreateProjectParams {
   platform: VoiceflowConstants.PlatformType;
   language?: string;
   onboarding?: boolean;
+  templateTag?: string;
 }
 
 export const createProject =
-  ({ name, image, listID, platform, language, onboarding = false }: Partial<CreateProjectParams>, templateTag?: string): Thunk<Realtime.AnyProject> =>
+  ({ name, image, listID, platform, language, onboarding = false, templateTag }: Partial<CreateProjectParams>): Thunk<Realtime.AnyProject> =>
   async (dispatch, getState) => {
     const state = getState();
     const workspaceID = Session.activeWorkspaceIDSelector(state);

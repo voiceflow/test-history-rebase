@@ -1,4 +1,4 @@
-import { BaseSelectProps, createUIOnlyMenuItemOption, Select } from '@voiceflow/ui';
+import { BaseSelectProps, createDividerMenuItemOption, Select } from '@voiceflow/ui';
 import React from 'react';
 
 import * as VersionV2 from '@/ducks/versionV2';
@@ -20,10 +20,7 @@ const SlotSelect: React.FC<SlotSelectProps> = ({ value, onChange, className, fil
   const slotTypesMap = useSelector(VersionV2.active.slotTypesMapSelector);
 
   const options = React.useMemo(
-    () =>
-      filter
-        ? slotTypes.filter(filter)
-        : [slotTypes[0], slotTypes[1], createUIOnlyMenuItemOption('divider', { divider: true }), ...slotTypes.slice(2)],
+    () => (filter ? slotTypes.filter(filter) : [slotTypes[0], slotTypes[1], createDividerMenuItemOption(), ...slotTypes.slice(2)]),
     [slotTypes, filter]
   );
   const selected = React.useMemo(() => (value ? slotTypesMap[value] ?? null : null), [slotTypesMap, value]);

@@ -1,4 +1,4 @@
-import { createUIOnlyMenuItemOption, UIOnlyMenuItemOption } from '@voiceflow/ui';
+import { createDividerMenuItemOption, UIOnlyMenuItemOption } from '@voiceflow/ui';
 
 interface listItemProps {
   value: string;
@@ -14,5 +14,5 @@ export const createPreferredOptionsList = <T extends listItemProps>(list: T[], p
       notPreferred.push(item);
     }
   });
-  return [...preferred, createUIOnlyMenuItemOption('divider', { divider: true }), ...notPreferred];
+  return [...preferred, createDividerMenuItemOption(), ...notPreferred];
 };

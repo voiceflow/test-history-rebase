@@ -1,14 +1,15 @@
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import client from '@/client';
+import * as NLP from '@/config/nlp';
 import { NLURoute } from '@/config/routes';
-import { NLPProvider, NLUImportOrigin } from '@/constants';
+import { NLUImportOrigin } from '@/constants';
 
 import { CanvasCreationType, EventName, NLUManagerOpenedOrigin } from '../constants';
 import { createProjectEventPayload, createProjectEventTracker, createWorkspaceEventPayload, createWorkspaceEventTracker } from '../utils';
 
 export const trackProjectNLUImportFromWorkspace = createWorkspaceEventTracker<{
-  nluType: NLPProvider | undefined;
+  nluType: NLP.Constants.NLPType | undefined;
   platform: VoiceflowConstants.PlatformType;
   origin: NLUImportOrigin;
   projectID: string;
@@ -44,7 +45,7 @@ export const trackNewUtteranceCreatedProjectNLUImport = createWorkspaceEventTrac
 );
 
 export const trackProjectNLUImportFailed = createProjectEventTracker<{
-  nluType: NLPProvider | undefined;
+  nluType: NLP.Constants.NLPType | undefined;
   platform: VoiceflowConstants.PlatformType;
   origin: NLUImportOrigin;
 }>(({ nluType, platform, origin, ...options }) =>

@@ -1,6 +1,6 @@
 import { BaseModels, BaseNode } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Button, createUIOnlyMenuItemOption, SectionV2, useConst } from '@voiceflow/ui';
+import { Button, createDividerMenuItemOption, SectionV2, useConst } from '@voiceflow/ui';
 import React from 'react';
 
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
@@ -46,13 +46,7 @@ const IntentEditor: React.FC<{ disableAnimation: boolean }> = ({ disableAnimatio
         !isDragging && (
           <EditorV2.DefaultFooter tutorial={Documentation.CAPTURE_STEP}>
             <EditorV2.FooterActionsButton
-              actions={[
-                intentScopeOption,
-                utterancesOption,
-                createUIOnlyMenuItemOption('divider', { divider: true }),
-                noMatchConfig.option,
-                noReplyConfig.option,
-              ]}
+              actions={[intentScopeOption, utterancesOption, createDividerMenuItemOption(), noMatchConfig.option, noReplyConfig.option]}
             />
 
             <Button variant={Button.Variant.PRIMARY} onClick={() => mapManager.onAdd()} squareRadius>

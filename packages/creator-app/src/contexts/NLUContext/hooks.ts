@@ -2,9 +2,11 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { MenuTypes, toast, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
+import * as NLP from '@/config/nlp';
+import * as NLU from '@/config/nlu';
 import { Permission } from '@/config/permissions';
 import { getNLUExportLimitDetails } from '@/config/planLimits/nluExport';
-import { InteractionModelTabType, ModalType, NLPProvider, PlatformToNLPProvider } from '@/constants';
+import { InteractionModelTabType, ModalType } from '@/constants';
 import * as Export from '@/ducks/export';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
@@ -49,15 +51,19 @@ export const useNLUItemMenu = ({ itemID, itemType, isBuiltIn, onRename: onRename
   const onDelete = usePersistFunction(onDeleteProp);
 
   const onExport = React.useCallback(
-    async (exportType: NLPProvider) => {
+    async (nlpType: NLP.Constants.NLPType) => {
       if (!itemID) return;
 
-      if ((exportType === NLPProvider.VF_CSV && permissionToExportCSV) || permissionToExport) {
+      if ((nlpType === NLP.Constants.NLPType.VOICEFLOW && permissionToExportCSV) || permissionToExport) {
         setIsExporting(true);
 
         toast.info('Exporting...');
 
-        await exportModel(exportType, Tracking.ModelExportOriginType.NLU_MANAGER, [itemID]);
+        await exportModel({
+          origin: Tracking.ModelExportOriginType.NLU_MANAGER,
+          nlpType,
+          intents: [itemID],
+        });
 
         toast.success('Successfully Exported');
 
@@ -65,7 +71,7 @@ export const useNLUItemMenu = ({ itemID, itemType, isBuiltIn, onRename: onRename
       } else {
         trackingEvents.trackUpgradePrompt({ promptType: UpgradePrompt.EXPORT_NLU });
 
-        const planLimits = getNLUExportLimitDetails(exportType);
+        const planLimits = getNLUExportLimitDetails(nlpType);
 
         upgradeModal.open({ planLimitDetails: planLimits, promptOrigin: UpgradePrompt.EXPORT_NLU });
       }
@@ -81,13 +87,13 @@ export const useNLUItemMenu = ({ itemID, itemType, isBuiltIn, onRename: onRename
     if (!itemID) return [];
 
     const options: NLUItem[] = [];
-    const nlpProvider: null | Exclude<NLPProvider, NLPProvider.VF_CSV> = (project?.platform && PlatformToNLPProvider[project.platform]) || null;
+    const nluConfig = NLU.Config.get(project?.platform);
 
     if (canExport) {
-      options.push({ key: 'export-csv', label: 'Export CSV', onClick: () => onExport(NLPProvider.VF_CSV) });
+      options.push({ key: 'export-csv', label: 'Export CSV', onClick: () => onExport(NLP.Constants.NLPType.VOICEFLOW) });
 
-      if (nlpProvider) {
-        options.push({ key: 'export-json', label: 'Export JSON', onClick: () => onExport(nlpProvider) });
+      if (nluConfig.nlps[0] !== NLP.Voiceflow.CONFIG) {
+        options.push({ key: 'export-json', label: 'Export JSON', onClick: () => onExport(nluConfig.nlps[0].type) });
       }
     }
 

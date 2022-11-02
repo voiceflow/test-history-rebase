@@ -39,13 +39,6 @@ export enum PlanLimitCategories {
 /**
  * @deprecated use planLimitV2 instead
  */
-export const ENTERPRISE_LIMIT_PLANS = [PlanType.ENTERPRISE];
-export const TEAM_LIMIT_PLANS = [PlanType.OLD_TEAM, PlanType.TEAM, PlanType.PRO, PlanType.OLD_PRO];
-export const STARTER_LIMIT_PLANS = [PlanType.OLD_STARTER, PlanType.STARTER, PlanType.OLD_ENTERPRISE];
-
-/**
- * @deprecated use planLimitV2 instead
- */
 export const TEAM_LABEL = getPlanTypeLabel(PlanType.TEAM);
 
 /**

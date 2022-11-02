@@ -1,6 +1,7 @@
 import { PlanType } from '@voiceflow/internal';
 
-import { ENTERPRISE_LIMIT_PLANS, LimitDetails, upgradeToEnterpriseAction } from '@/config/planLimits/index';
+import { LimitDetails, upgradeToEnterpriseAction } from '@/config/planLimits';
+import { ENTERPRISE_PLANS } from '@/constants/plans';
 
 export const STARTER_PRO_EDITOR_LIMIT = 5;
 
@@ -13,4 +14,4 @@ export const EditorLimitDetails: LimitDetails = {
 };
 
 export const canAddEditor = (plan: PlanType | null | undefined, numEditors: number) =>
-  (plan && ENTERPRISE_LIMIT_PLANS.includes(plan)) || numEditors < STARTER_PRO_EDITOR_LIMIT;
+  (plan && ENTERPRISE_PLANS.includes(plan as any)) || numEditors < STARTER_PRO_EDITOR_LIMIT;

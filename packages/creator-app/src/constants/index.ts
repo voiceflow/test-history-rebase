@@ -1,11 +1,13 @@
 import { AlexaNode } from '@voiceflow/alexa-types';
 import { BaseNode } from '@voiceflow/base-types';
 import { BillingPeriod, UserRole } from '@voiceflow/internal';
-import { COLOR_PICKER_CONSTANTS, SvgIconTypes } from '@voiceflow/ui';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
+import { COLOR_PICKER_CONSTANTS } from '@voiceflow/ui';
 
 import { Pair } from '@/types';
 
+export * from './file';
+export * from './links';
+export * from './plans';
 export type { MarkupBlockType, RootOrMarkupBlockType } from '@voiceflow/realtime-sdk';
 export {
   BlockType,
@@ -72,70 +74,6 @@ export enum SessionType {
   BASIC_AUTH = 'session',
   SIGN_UP = 'user',
 }
-
-export enum NLPProvider {
-  LUIS = 'luis',
-  RASA2 = 'rasa2',
-  RASA3 = 'rasa3',
-  ALEXA = 'alexa',
-  LEX_V1 = 'lex-v1',
-  WATSON = 'watson',
-  EINSTEIN = 'einstein',
-  DIALOGFLOW_ES = 'diagflow-es',
-  DIALOGFLOW_CX = 'diagflow-cx',
-  VF_CSV = 'vf-csv',
-  NUANCE_MIX = 'nuance-mix',
-}
-
-export const PlatformToNLPProvider = {
-  [VoiceflowConstants.PlatformType.ALEXA]: NLPProvider.ALEXA,
-  [VoiceflowConstants.PlatformType.LUIS]: NLPProvider.LUIS,
-  [VoiceflowConstants.PlatformType.RASA]: NLPProvider.RASA2,
-  [VoiceflowConstants.PlatformType.WATSON]: NLPProvider.WATSON,
-  [VoiceflowConstants.PlatformType.LEX]: NLPProvider.LEX_V1,
-  [VoiceflowConstants.PlatformType.EINSTEIN]: NLPProvider.EINSTEIN,
-  [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: NLPProvider.DIALOGFLOW_ES,
-  [VoiceflowConstants.PlatformType.DIALOGFLOW_CX]: NLPProvider.DIALOGFLOW_CX,
-  [VoiceflowConstants.PlatformType.NUANCE_MIX]: NLPProvider.NUANCE_MIX,
-  // TODO: remove/update when DIALOGFLOW_CX fully supported
-  [VoiceflowConstants.PlatformType.DIALOGFLOW_CX]: undefined,
-  [VoiceflowConstants.PlatformType.GOOGLE]: undefined,
-  [VoiceflowConstants.PlatformType.GENERAL]: undefined,
-  [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_CHAT]: undefined,
-  [VoiceflowConstants.PlatformType.DIALOGFLOW_ES_VOICE]: undefined,
-  [VoiceflowConstants.PlatformType.IVR]: undefined,
-  [VoiceflowConstants.PlatformType.MOBILE_APP]: undefined,
-  [VoiceflowConstants.PlatformType.VOICEFLOW]: undefined,
-  [VoiceflowConstants.PlatformType.CHATBOT]: undefined,
-} as const;
-
-export const NLPProviderLabels = {
-  [NLPProvider.RASA2]: 'Rasa 2.x',
-  [NLPProvider.RASA3]: 'Rasa 3.x',
-  [NLPProvider.LUIS]: 'Microsoft LUIS',
-  [NLPProvider.ALEXA]: 'Amazon Alexa',
-  [NLPProvider.WATSON]: 'IBM Watson',
-  [NLPProvider.LEX_V1]: 'Amazon Lex V1',
-  [NLPProvider.EINSTEIN]: 'Salesforce Einstein',
-  [NLPProvider.DIALOGFLOW_ES]: 'Dialogflow ES',
-  [NLPProvider.DIALOGFLOW_CX]: 'Dialogflow CX',
-  [NLPProvider.VF_CSV]: 'Voiceflow CSV',
-  [NLPProvider.NUANCE_MIX]: 'Nuance Mix',
-};
-
-export const NLPProviderToIconMap: Record<NLPProvider, SvgIconTypes.Icon> = {
-  [NLPProvider.LUIS]: 'luis',
-  [NLPProvider.RASA2]: 'rasa',
-  [NLPProvider.RASA3]: 'rasa',
-  [NLPProvider.ALEXA]: 'alexa',
-  [NLPProvider.LEX_V1]: 'lex',
-  [NLPProvider.WATSON]: 'watson',
-  [NLPProvider.EINSTEIN]: 'salesforce',
-  [NLPProvider.DIALOGFLOW_ES]: 'dialogflow',
-  [NLPProvider.DIALOGFLOW_CX]: 'dialogflowCX',
-  [NLPProvider.VF_CSV]: 'voiceflowV',
-  [NLPProvider.NUANCE_MIX]: 'nuanceMix',
-};
 
 export const PERMISSIONS = [
   {
@@ -577,7 +515,3 @@ export enum StepMenuType {
   LINK = 'link',
   SIDEBAR = 'sidebar',
 }
-
-export * from './links';
-export * from './nlu';
-export * from './plans';

@@ -1,10 +1,11 @@
-import Popper from '@ui/components/Popper';
+import Popper, { PopperTypes } from '@ui/components/Popper';
 import { PopperPlacement } from '@ui/hooks';
 import React from 'react';
 
 import { Container, JSONCode, Paragraph, Section, Title } from './components';
 
 export interface TooltipProps {
+  children?: React.ReactNode | PopperTypes.Renderer;
   placement?: PopperPlacement;
   portalNode?: HTMLElement;
   initialOpened?: boolean;
@@ -17,7 +18,7 @@ const Tooltip: React.FC<TooltipProps> = ({ placement = 'auto-end', children, por
     maxHeight="500px"
     placement={placement}
     portalNode={portalNode}
-    renderContent={() => <Container>{children}</Container>}
+    renderContent={(props) => <Container>{typeof children === 'function' ? children(props) : children}</Container>}
     initialOpened={initialOpened}
     preventOverflowPadding={20}
   >

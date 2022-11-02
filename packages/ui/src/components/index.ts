@@ -110,6 +110,7 @@ export type {
   UIOnlyMenuItemOption,
 } from './NestedMenu';
 export {
+  createDividerMenuItemOption,
   createUIOnlyMenuItemOption,
   defaultMenuLabelRenderer,
   getNestedMenuFormattedLabel,

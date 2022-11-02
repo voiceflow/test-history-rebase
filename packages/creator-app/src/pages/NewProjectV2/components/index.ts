@@ -1,3 +1,4 @@
+export type { ChannelValue } from './ChannelSection';
 export { default as ChannelSection } from './ChannelSection';
 export { default as Container } from './Container';
 export { default as Footer } from './Footer';

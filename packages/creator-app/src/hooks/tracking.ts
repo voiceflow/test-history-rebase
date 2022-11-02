@@ -3,10 +3,11 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { Dispatch } from 'redux';
 
-import { NLUImportOrigin, PlatformToNLPProvider } from '@/constants';
+import * as NLU from '@/config/nlu';
+import { NLUImportOrigin } from '@/constants';
 import * as Tracking from '@/ducks/tracking';
 import * as TrackingEvents from '@/ducks/tracking/events';
-import { ImportModel } from '@/pages/NewProjectV2/types';
+import { NLUImportModel } from '@/models';
 
 import { useActiveWorkspace } from './workspace';
 
@@ -49,11 +50,11 @@ export const useWorkspaceTracking = (): void => {
 
 export const useModelTracking = (): ((
   platform: VoiceflowConstants.PlatformType,
-  importedModel: ImportModel,
+  importedModel: NLUImportModel,
   trackingEvents: any,
   projectID?: string
 ) => void) => {
-  return (platform: VoiceflowConstants.PlatformType, importedModel: ImportModel, trackingEvents: any, projectID?: string) => {
+  return (platform: VoiceflowConstants.PlatformType, importedModel: NLUImportModel, trackingEvents: any, projectID?: string) => {
     const isImportingIntents = importedModel && importedModel.intents && importedModel.intents.length > 0;
     const isImportingEntities = importedModel && importedModel.slots && importedModel.slots.length > 0;
 
@@ -61,7 +62,7 @@ export const useModelTracking = (): ((
       trackingEvents.trackProjectNLUImportFromWorkspace({
         platform,
         origin: NLUImportOrigin.PROJECT,
-        nluType: PlatformToNLPProvider[platform],
+        nluType: NLU.Config.get(platform).nlps[0].type,
         projectID,
       });
 
@@ -95,7 +96,7 @@ export const useModelTracking = (): ((
       trackingEvents.trackProjectNLUImport({
         platform,
         origin: NLUImportOrigin.NLU_MANAGER,
-        nluType: PlatformToNLPProvider[platform],
+        nluType: NLU.Config.get(platform).nlps[0].type,
       });
 
       if (isImportingIntents) {

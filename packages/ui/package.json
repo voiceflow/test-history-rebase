@@ -8,7 +8,7 @@
   "dependencies": {
     "@popperjs/core": "^2.10.1",
     "@seznam/compose-react-refs": "^1.0.6",
-    "@voiceflow/base-types": "2.71.1",
+    "@voiceflow/base-types": "2.71.3",
     "@voiceflow/common": "8.1.5",
     "bowser": "^2.11.0",
     "classnames": "^2.3.1",

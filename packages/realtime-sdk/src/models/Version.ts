@@ -15,11 +15,11 @@ export type DBVersion<
 
 export type AnyDBVersion = AlexaVersion.Version | VoiceflowVersion.Version | GoogleVersion.VoiceVersion | DFESVersion.Version;
 
-interface BasePlatformData extends BaseModels.Version.PlatformData<VoiceVersion.Settings<string> | ChatVersion.Settings, any> {
+export interface BaseVersionPlatformData extends BaseModels.Version.PlatformData<VoiceVersion.Settings<string> | ChatVersion.Settings, any> {
   status?: any;
 }
 
-export interface Version<P extends BasePlatformData>
+export interface Version<P extends BaseVersionPlatformData>
   extends Pick<DBVersion<P>, 'creatorID' | '_version' | 'variables' | 'projectID' | 'rootDiagramID' | 'templateDiagramID' | 'defaultStepColors'>,
     Required<Pick<DBVersion<P>, 'folders' | 'components'>> {
   id: string;

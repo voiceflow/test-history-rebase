@@ -4,8 +4,7 @@ import { Box, Input, Label, Select, Text, ThemeColor, TippyTooltip } from '@voic
 import { VoiceflowVersion } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
-import { ENTERPRISE_LIMIT_PLANS, TEAM_LIMIT_PLANS } from '@/config/planLimitV2';
-import { ModalType } from '@/constants';
+import { ENTERPRISE_PLANS, ModalType, TEAM_PLANS } from '@/constants';
 import { patchPublishing } from '@/ducks/version/platform/general';
 import * as Version from '@/ducks/versionV2';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
@@ -16,7 +15,7 @@ import type { Config } from '../types';
 import Section from './components/Section';
 import ToggleGroup from './components/ToggleGroup';
 
-const ENTITLED_PLANS = new Set<PlanType>([...ENTERPRISE_LIMIT_PLANS, ...TEAM_LIMIT_PLANS]);
+const ENTITLED_PLANS = new Set<PlanType>([...ENTERPRISE_PLANS, ...TEAM_PLANS]);
 
 const PERSISTENCE_LABEL_MAP: Record<string, string> = {
   [VoiceflowVersion.ChatPersistence.LOCAL_STORAGE]: 'Never forget',

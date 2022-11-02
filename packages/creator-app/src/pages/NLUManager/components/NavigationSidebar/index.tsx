@@ -3,6 +3,7 @@ import { Box, SvgIcon, TippyTooltip, useLocalStorageState } from '@voiceflow/ui'
 import React from 'react';
 
 import client from '@/client';
+import * as NLU from '@/config/nlu';
 import { NLURoute } from '@/config/routes';
 import { ModalType, NLUImportOrigin } from '@/constants';
 import * as Intent from '@/ducks/intent';
@@ -10,10 +11,8 @@ import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import * as Slot from '@/ducks/slot';
-import { useDispatch, useFeature, useModals, useModelTracking, useSelector, useTrackingEvents } from '@/hooks';
-import { PLATFORM_PROJECT_META_MAP } from '@/pages/NewProjectV2/constants';
-import { useNLUImport } from '@/pages/NewProjectV2/hooks';
-import { ImportModel, SupportedPlatformProjectType } from '@/pages/NewProjectV2/types';
+import { useDispatch, useFeature, useModals, useModelTracking, useNLUImport, useSelector, useTrackingEvents } from '@/hooks';
+import { NLUImportModel } from '@/models';
 import { NLUManagerContext } from '@/pages/NLUManager/context';
 
 import { Item } from './components';
@@ -35,10 +34,7 @@ const NavigationSidebar: React.FC = () => {
   const [trackingEvents] = useTrackingEvents();
   const modelImportTracking = useModelTracking();
 
-  const hasImport = platform && PLATFORM_PROJECT_META_MAP[platform as SupportedPlatformProjectType]?.importMeta;
-  const fileExtensions = platform && PLATFORM_PROJECT_META_MAP[platform as SupportedPlatformProjectType]?.importMeta?.fileExtensions;
-
-  const onImportModel = async (importedModel: ImportModel) => {
+  const onImport = async (importedModel: NLUImportModel) => {
     const data = await client.version.patchMergeIntentsAndSlots(versionID, importedModel);
 
     modelImportTracking(platform, importedModel, trackingEvents);
@@ -48,9 +44,9 @@ const NavigationSidebar: React.FC = () => {
     }
   };
 
-  const nluImport = useNLUImport({ fileExtensions, platform, onImportModel });
+  const nluImport = useNLUImport({ platform, onImport });
 
-  const onImport = () => {
+  const onImportClick = () => {
     nluImport.onUploadClick(NLUImportOrigin.NLU_MANAGER);
     setImportClicked(true);
   };
@@ -93,7 +89,7 @@ const NavigationSidebar: React.FC = () => {
         />
       </S.ItemsContainer>
 
-      {hasImport && (
+      {!!NLU.Config.get(platform).nlps[0].import && (
         <TippyTooltip
           html={
             <TippyTooltip.Complex title={<S.ImportTooltipTitle>{platform} import</S.ImportTooltipTitle>}>
@@ -104,7 +100,7 @@ const NavigationSidebar: React.FC = () => {
           bodyOverflow
         >
           <Box px={16} pb={12}>
-            <Item onClick={onImport} icon="importCircle" title="Import" />
+            <Item onClick={onImportClick} icon="importCircle" title="Import" />
             {!importClicked && <S.StatusBubble />}
           </Box>
         </TippyTooltip>

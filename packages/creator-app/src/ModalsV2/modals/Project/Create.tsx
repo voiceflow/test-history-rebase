@@ -21,12 +21,13 @@ const Create = manager.create<{ listID?: string }>('CreateProject', () => ({ api
       fullScreen={isCreatingProject}
     >
       {!isCreatingProject && <Modal.Header border>Create Assistant</Modal.Header>}
+
       {isCreatingProject ? (
         <FlexCenter fullHeight>
           <Spinner message="Creating Project..." />
         </FlexCenter>
       ) : (
-        <NewProjectPage onToggleCreating={setIsCreatingProject} onClose={api.close} listID={listID} />
+        <NewProjectPage listID={listID} onClose={api.close} onToggleCreating={setIsCreatingProject} />
       )}
     </Modal>
   );

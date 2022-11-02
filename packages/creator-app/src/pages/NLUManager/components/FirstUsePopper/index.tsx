@@ -9,10 +9,8 @@ import * as Intent from '@/ducks/intent';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import * as Slot from '@/ducks/slot';
-import { useDispatch, useModelTracking, useSelector, useTrackingEvents } from '@/hooks';
-import { PLATFORM_PROJECT_META_MAP } from '@/pages/NewProjectV2/constants';
-import { useNLUImport } from '@/pages/NewProjectV2/hooks';
-import { ImportModel, SupportedPlatformProjectType } from '@/pages/NewProjectV2/types';
+import { useDispatch, useModelTracking, useNLUImport, useSelector, useTrackingEvents } from '@/hooks';
+import { NLUImportModel } from '@/models';
 
 import { getPlatformTitle, getPopperContent } from './constants';
 
@@ -28,15 +26,13 @@ const FirstUsePopper: React.FC = () => {
   const modelImportTracking = useModelTracking();
   const platformTitle = getPlatformTitle(platform);
 
-  const fileExtensions = platform && PLATFORM_PROJECT_META_MAP[platform as SupportedPlatformProjectType]?.importMeta?.fileExtensions;
-
   const [open, setOpen] = React.useState(() => !getNluSeen());
 
   useSetup(() => {
     setNluSeen(true);
   });
 
-  const onImportModel = async (importedModel: ImportModel) => {
+  const onImport = async (importedModel: NLUImportModel) => {
     const data = await client.version.patchMergeIntentsAndSlots(versionID, importedModel);
 
     modelImportTracking(platform, importedModel, trackingEvents);
@@ -46,7 +42,7 @@ const FirstUsePopper: React.FC = () => {
     }
   };
 
-  const nluImport = useNLUImport({ fileExtensions, platform, onImportModel });
+  const nluImport = useNLUImport({ platform, onImport });
 
   if (!open) return null;
 

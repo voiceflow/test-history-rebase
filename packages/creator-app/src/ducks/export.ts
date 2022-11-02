@@ -4,7 +4,8 @@ import _orderBy from 'lodash/orderBy';
 
 import client from '@/client';
 import * as Errors from '@/config/errors';
-import { ExportFormat, NLPProvider } from '@/constants';
+import * as NLP from '@/config/nlp';
+import { ExportFormat } from '@/constants';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Prototype from '@/ducks/prototype';
@@ -93,78 +94,32 @@ export const exportCanvas =
   };
 
 export const exportModel =
-  (nlpProvider: NLPProvider, origin: Tracking.ModelExportOriginType, intents?: string[]): Thunk =>
+  ({ origin, nlpType, intents }: { origin: Tracking.ModelExportOriginType; nlpType: NLP.Constants.NLPType; intents?: string[] }): Thunk =>
   async (dispatch, getState) => {
+    const nlpConfig = NLP.Config.get(nlpType);
+
+    if (!nlpConfig.export) return;
+
     const state = getState();
     const versionID = Session.activeVersionIDSelector(state);
 
     Errors.assertVersionID(versionID);
 
     try {
-      let data: string;
       const projectName = ProjectV2.active.nameSelector(state)?.replace(/ /g, '_');
 
       // DO NOT REMOVE: We want to render all intents before exporting model. Exported model should include all intents whatever is used on canvas or not.
       await dispatch(Prototype.compilePrototype({ renderUnusedIntents: true }));
 
-      switch (nlpProvider) {
-        case NLPProvider.ALEXA:
-          data = await client.platform.alexa.modelExport.exportBlob(versionID, 'ask', intents);
-          downloadFromURL(`${projectName}-alexa-model.json`, data);
-          URL.revokeObjectURL(data);
-          break;
-        case NLPProvider.DIALOGFLOW_ES:
-          data = await client.platform.google.modelExport.exportBlob(versionID, 'dialogflow/es', intents);
-          downloadFromURL(`${projectName}-dialogflow-es-model.zip`, data);
-          URL.revokeObjectURL(data);
-          break;
-        case NLPProvider.RASA2:
-          data = await client.platform.general.modelExport.exportBlob(versionID, 'rasa2', intents);
-          downloadFromURL(`${projectName}-rasa-model.zip`, data);
-          URL.revokeObjectURL(data);
-          break;
-        case NLPProvider.RASA3:
-          data = await client.platform.general.modelExport.exportBlob(versionID, 'rasa3', intents);
-          downloadFromURL(`${projectName}-rasa-model.zip`, data);
-          URL.revokeObjectURL(data);
-          break;
-        case NLPProvider.LUIS:
-          data = await client.platform.general.modelExport.exportBlob(versionID, 'luis', intents);
-          downloadFromURL(`${projectName}-general-model.json`, data);
-          URL.revokeObjectURL(data);
-          break;
-        case NLPProvider.WATSON:
-          // TODO: This is missing a file extension
-          data = await client.platform.general.modelExport.exportBlob(versionID, 'watson', intents);
-          downloadFromURL(`${projectName}-watson-model`, data);
-          URL.revokeObjectURL(data);
-          break;
-        case NLPProvider.EINSTEIN:
-          // TODO: This is missing a file extension
-          data = await client.platform.general.modelExport.exportBlob(versionID, 'einstein', intents);
-          downloadFromURL(`${projectName}-einstein-model`, data);
-          URL.revokeObjectURL(data);
-          break;
-        case NLPProvider.LEX_V1:
-          // TODO: This is missing a file extension
-          data = await client.platform.general.modelExport.exportBlob(versionID, 'lexV1', intents);
-          downloadFromURL(`${projectName}-lex-model`, data);
-          URL.revokeObjectURL(data);
-          break;
-        case NLPProvider.VF_CSV:
-          data = await client.platform.general.modelExport.exportBlob(versionID, 'csv', intents);
-          downloadFromURL(`${projectName}.vf.csv`, data);
-          break;
-        case NLPProvider.NUANCE_MIX:
-          data = await client.platform.general.modelExport.exportBlob(versionID, 'nuanceMix', intents);
-          downloadFromURL(`${projectName}-nuance-mix-model.trsx.xml`, data);
-          URL.revokeObjectURL(data);
-          break;
-        default:
-          throw new Error(`no provider matched: ${nlpProvider}`);
-      }
+      const data = await nlpConfig.export.method(versionID, intents?.length ? intents : undefined);
 
-      dispatch(Tracking.trackActiveProjectExportInteractionModel({ nlpProvider, origin }));
+      const extension = intents?.length ? nlpConfig.export.intentsExtension : nlpConfig.export.defaultExtension;
+
+      downloadFromURL(`${projectName}${nlpConfig.export.fileSuffix}${extension}`, data);
+
+      URL.revokeObjectURL(data);
+
+      dispatch(Tracking.trackActiveProjectExportInteractionModel({ origin, nlpType }));
     } catch (error) {
       Sentry.error(error);
       toast.error('Model export failed');

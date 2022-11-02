@@ -1,4 +1,4 @@
-import { createUIOnlyMenuItemOption, IconButton, SectionV2, SidebarEditor, SidebarEditorTypes, useLinkedState } from '@voiceflow/ui';
+import { createDividerMenuItemOption, IconButton, SectionV2, SidebarEditor, SidebarEditorTypes, useLinkedState } from '@voiceflow/ui';
 import React from 'react';
 
 import Drawer from '@/components/Drawer';
@@ -29,7 +29,7 @@ const ItemEditSidebar: React.FC<ItemEditSidebarProps> = ({ children, isBuiltIn }
   });
 
   const actions = options.map<SidebarEditorTypes.Action>((option) =>
-    option.divider ? createUIOnlyMenuItemOption(option.key, { divider: true }) : { id: option.key, label: option.label, onClick: option.onClick }
+    option.divider ? createDividerMenuItemOption(option.key) : { id: option.key, label: option.label, onClick: option.onClick }
   );
 
   const onBlurName = (event: React.FocusEvent<HTMLInputElement>) => {

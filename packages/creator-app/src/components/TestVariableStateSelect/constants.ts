@@ -1,4 +1,4 @@
-import { createUIOnlyMenuItemOption } from '@voiceflow/ui';
+import { createDividerMenuItemOption } from '@voiceflow/ui';
 
 import * as VariableState from '@/ducks/variableState';
 
@@ -9,4 +9,4 @@ export const baseOptions = [
   },
 ];
 
-export const dividerOption = createUIOnlyMenuItemOption('divider', { divider: true });
+export const dividerOption = createDividerMenuItemOption();

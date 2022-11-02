@@ -1,50 +1,49 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { MenuItemGrouped, Select, SvgIcon } from '@voiceflow/ui';
+import { getNestedMenuFormattedLabel, MenuItemGrouped, Select, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
+import PlanPermittedMenuItem from '@/components/PlanPermittedMenuItem';
 import Section, { SectionVariant } from '@/components/Section';
-import UpgradeOption from '@/components/UpgradeOption';
+import * as NLU from '@/config/nlu';
 import { Permission } from '@/config/permissions';
-import { getProjectNluLimitDetails, isGatedNLUType } from '@/config/planLimits/projects';
+import { isGatedNLUType } from '@/config/planLimits/projects';
 import { UpgradePrompt } from '@/ducks/tracking';
 import { useFeature, useHover, usePermission } from '@/hooks';
+import { NLUImportModel } from '@/models';
 import { Identifier } from '@/styles/constants';
 
-import { NLU_OPTIONS, NLU_OPTIONS_NO_CX, PLATFORM_PROJECT_META_MAP } from '../constants';
-import { ImportModel, PlatformAndProjectMeta, PlatformAndProjectMetaType, SupportedPlatformType } from '../types';
+import { NLU_OPTIONS, NLU_OPTIONS_LEGACY, NLUOption } from '../constants';
 import ModelImport from './ModelImport';
 import NLUSectionHeader from './NLUSectionHeader';
 import SectionErrorMessage from './SectionErrorMessage';
 
 interface NLUSectionProps {
-  value: SupportedPlatformType | null;
-  error: boolean;
-  onSelect: (value: SupportedPlatformType) => void;
-  importModel: ImportModel | null;
-  onImportModel: (importModel: ImportModel) => void;
+  value: NLU.Constants.NLUType | null;
+  error: string;
+  onSelect: (value: NLU.Constants.NLUType | null) => void;
+  importModel: NLUImportModel | null;
+  onImportModel: (model: NLUImportModel) => void;
 }
 
-const getPrefixIcon = (isImportLoading: boolean, value: SupportedPlatformType | null) => {
+const getPrefixIcon = (isImportLoading: boolean, nluConfig: NLU.Base.Config | null) => {
   if (isImportLoading) return <SvgIcon size={16} icon="arrowSpin" spin />;
 
-  const meta = value && PLATFORM_PROJECT_META_MAP[value];
-
-  return meta?.icon ? <SvgIcon size={16} color={meta?.iconColor} icon={meta.icon} /> : undefined;
+  return nluConfig && <SvgIcon size={16} color={nluConfig.icon.color} icon={nluConfig.icon.name} />;
 };
 
-const NLUSection: React.FC<NLUSectionProps> = ({ value, onSelect, error, onImportModel, importModel }) => {
-  const [isImportLoading, setIsImportLoading] = React.useState(false);
-  const [permissionCustomNLU] = usePermission(Permission.NLU_CUSTOM);
+const NLUSection: React.FC<NLUSectionProps> = ({ value, error, onSelect, onImportModel, importModel }) => {
   const [isHovered, , hoverHandlers] = useHover();
-  const hasImport = value && PLATFORM_PROJECT_META_MAP[value]?.importMeta;
+  const [permissionCustomNLU] = usePermission(Permission.NLU_CUSTOM);
+  const isDialogflowCXEnabled = useFeature(Realtime.FeatureFlag.DIALOGFLOW_CX);
+  const [isImportLoading, setIsImportLoading] = React.useState(false);
 
-  const chooseCustomNLU = (value: PlatformAndProjectMetaType) => {
-    if (!isGatedNLUType(value, permissionCustomNLU) && !PLATFORM_PROJECT_META_MAP[value]?.disabled) {
-      onSelect(value as SupportedPlatformType);
+  const onSelectNLU = (value: NLU.Constants.NLUType | null) => {
+    if (!value || !isGatedNLUType(value, permissionCustomNLU)) {
+      onSelect(value);
     }
   };
 
-  const isDialogflowCXEnabled = !!useFeature(Realtime.FeatureFlag.DIALOGFLOW_CX)?.isEnabled;
+  const nluConfig = value && NLU.Config.get(value);
 
   return (
     <Section
@@ -55,38 +54,38 @@ const NLUSection: React.FC<NLUSectionProps> = ({ value, onSelect, error, onImpor
       customHeaderStyling={{ paddingTop: '24px' }}
       customContentStyling={{ paddingBottom: '0px' }}
     >
-      <Select<PlatformAndProjectMeta, MenuItemGrouped<PlatformAndProjectMeta>, PlatformAndProjectMetaType>
+      <Select<NLUOption, MenuItemGrouped<NLUOption>, NLU.Constants.NLUType>
         id={Identifier.PROJECT_CREATE_SELECT_NLU}
-        value={value as PlatformAndProjectMetaType}
-        error={error}
-        prefix={getPrefixIcon(isImportLoading, value)}
-        options={isDialogflowCXEnabled ? NLU_OPTIONS : NLU_OPTIONS_NO_CX}
+        value={value}
+        error={!!error}
+        prefix={getPrefixIcon(isImportLoading, nluConfig)}
+        options={isDialogflowCXEnabled ? NLU_OPTIONS : NLU_OPTIONS_LEGACY}
         grouped
         useLayers
-        onSelect={chooseCustomNLU}
+        onSelect={onSelectNLU}
+        clearable
         searchable
         placeholder="Select NLU"
         getOptionKey={(option) => option.type}
         getOptionValue={(option) => option?.type}
-        getOptionLabel={(option) => (option ? PLATFORM_PROJECT_META_MAP[option]?.name : '')}
+        getOptionLabel={(value) => value && NLU.Config.get(value).name}
+        clearOnSelectActive
         renderOptionLabel={(option, searchLabel, getOptionLabel, getOptionValue, { isFocused }) => (
-          <UpgradeOption<PlatformAndProjectMeta, PlatformAndProjectMetaType>
-            option={option}
+          <PlanPermittedMenuItem
+            data={{ nluType: option.type }}
+            label={getNestedMenuFormattedLabel(getOptionLabel(getOptionValue(option)), searchLabel)}
             isFocused={isFocused}
-            searchLabel={searchLabel}
-            getOptionLabel={getOptionLabel}
-            getOptionValue={getOptionValue}
-            isGated={isGatedNLUType(option.type, permissionCustomNLU)}
-            popperEnabled={true}
-            planDetails={getProjectNluLimitDetails(option)}
-            promptOrigin={UpgradePrompt.SUPPORTED_NLUS}
+            permission={option.planType ? Permission.NLU_CUSTOM : null}
+            tooltipProps={{ distance: 30 }}
+            labelTooltip={option.labelTooltip}
+            upgradePrompt={UpgradePrompt.SUPPORTED_NLUS}
           />
         )}
       />
 
-      {hasImport && (
+      {value && nluConfig?.nlps[0].import && (
         <ModelImport
-          platform={value}
+          nluConfig={nluConfig}
           importModel={importModel}
           onImportModel={onImportModel}
           isImportLoading={isImportLoading}
@@ -94,11 +93,7 @@ const NLUSection: React.FC<NLUSectionProps> = ({ value, onSelect, error, onImpor
         />
       )}
 
-      {error && (
-        <SectionErrorMessage>
-          NLU selection is required. If you don’t already use one of these providers we recommend selecting the Voiceflow option.
-        </SectionErrorMessage>
-      )}
+      {!!error && <SectionErrorMessage>{error}</SectionErrorMessage>}
     </Section>
   );
 };

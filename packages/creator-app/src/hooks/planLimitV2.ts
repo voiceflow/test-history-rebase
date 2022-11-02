@@ -39,7 +39,7 @@ export const usePlanLimit = <Limit extends LimitType>({
     return {
       ...(planLimit as any),
       value: planLimitValue,
-      toastError: planLimit.getToastError({ limit: planLimitValue, plan: activePlan }),
+      toastError: planLimit.getToastError({ limit: planLimitValue }),
     };
   }
 
@@ -47,7 +47,7 @@ export const usePlanLimit = <Limit extends LimitType>({
     return {
       ...(limit as any),
       value: planLimitValue,
-      upgradeModal: planLimit.getUpgradeModal({ limit: planLimitValue, plan: activePlan }),
+      upgradeModal: planLimit.getUpgradeModal({ limit: planLimitValue }),
     };
   }
 

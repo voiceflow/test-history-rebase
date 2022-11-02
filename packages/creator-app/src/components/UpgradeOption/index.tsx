@@ -7,6 +7,8 @@ import { useToggle, useTrackingEvents } from '@/hooks';
 
 import { UpgradeLabel, UpgradePopper } from './components';
 
+export { getLabelTooltip, getUpgradeTooltip } from './components';
+
 interface UpgradeOptionProps<T, U> {
   option: T & { disabled?: boolean };
   isFocused?: boolean;
@@ -19,6 +21,10 @@ interface UpgradeOptionProps<T, U> {
   promptOrigin: UpgradePrompt;
 }
 
+/**
+ * @deprecated use PlanPermittedMenuItem instead
+ * @returns
+ */
 const UpgradeOption = <T extends unknown, U extends unknown>({
   option,
   isFocused,
@@ -61,6 +67,7 @@ const UpgradeOption = <T extends unknown, U extends unknown>({
   };
 
   useOnClickOutside([labelRef, popperContainerRef], () => setIsShowingPopper(false), [isShowingPopper]);
+
   return (
     <Box.Flex ref={labelRef} width="100%" height="100%">
       <Box.Flex ref={popper.setReferenceElement} onClick={handleLabelClick} width="100%" height="100%">
@@ -74,6 +81,7 @@ const UpgradeOption = <T extends unknown, U extends unknown>({
           planDetails={planDetails}
         />
       </Box.Flex>
+
       {isShowingPopper && popperEnabled && (
         <UpgradePopper planLimits={planDetails} popperContainerRef={popperContainerRef} promptOrigin={promptOrigin} />
       )}

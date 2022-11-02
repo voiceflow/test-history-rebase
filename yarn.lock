@@ -4641,7 +4641,7 @@
     "@types/prop-types" "*"
     "@types/react" "^17"
 
-"@types/react@*", "@types/react@^17", "@types/react@17.0.9":
+"@types/react@*", "@types/react@17.0.9", "@types/react@^17":
   version "17.0.9"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-17.0.9.tgz#1147fb520024a62c9b3841f5cb4db89b73ddb87f"
   integrity sha512-2Cw7FvevpJxQrCb+k5t6GH1KIvmadj5uBbjPaLlJB/nZWUj56e1ZqcD6zsoMFB47MsJUTFl9RJ132A7hb3QFJA==
@@ -5001,12 +5001,23 @@
     "@voiceflow/voiceflow-types" "^3.20.20"
     ask-smapi-model "1.14.0"
 
-"@voiceflow/api-sdk@3.20.16", "@voiceflow/api-sdk@^3.20.16":
+"@voiceflow/api-sdk@3.20.16":
   version "3.20.16"
   resolved "https://registry.yarnpkg.com/@voiceflow/api-sdk/-/api-sdk-3.20.16.tgz#535cdbd3802ff1a33914e2de9da8a7b0e173c4a5"
   integrity sha512-2wWFbiPE7Rz/C8KKEFLCc+LHtYekH0mJR8Sip3H4nZbR6jW3gRYCNYQeF8mNW9Z7WZyLg3g0+ufCjCqax5LPuQ==
   dependencies:
     "@voiceflow/base-types" "^2.71.1"
+    "@voiceflow/common" "^8.1.5"
+    axios "0.24.0"
+    jwt-decode "^3.1.2"
+    superstruct "^0.10.12"
+
+"@voiceflow/api-sdk@3.20.18", "@voiceflow/api-sdk@^3.20.18":
+  version "3.20.18"
+  resolved "https://registry.yarnpkg.com/@voiceflow/api-sdk/-/api-sdk-3.20.18.tgz#a9be9871f416663a980156603a70a228e967bd80"
+  integrity sha512-Dg0Cc7Wv6G4pWlznzDu6nW5coG0hBG4uL3MSlfVqFJDekH6bz0JNrniPewF+61M9gIsVJXDHihWAhpnRJj+sTA==
+  dependencies:
+    "@voiceflow/base-types" "^2.71.3"
     "@voiceflow/common" "^8.1.5"
     axios "0.24.0"
     jwt-decode "^3.1.2"
@@ -5056,7 +5067,7 @@
     "@voiceflow/common" "^8.1.5"
     slate "0.73.0"
 
-"@voiceflow/base-types@2.71.1", "@voiceflow/base-types@^2.71.1":
+"@voiceflow/base-types@2.71.1":
   version "2.71.1"
   resolved "https://registry.yarnpkg.com/@voiceflow/base-types/-/base-types-2.71.1.tgz#cc05c11d56656968e21bc6e0e4c4418aab70b934"
   integrity sha512-v9e1PqRMR5lHRElRni6OtWSMzNPEAGywGNLWpXCi1plZu5JLStEYDhHXBmJeo7XMh9FnZkG5lIyelCINslucaw==
@@ -5064,7 +5075,7 @@
     "@voiceflow/common" "^8.1.5"
     slate "0.73.0"
 
-"@voiceflow/base-types@2.71.3", "@voiceflow/base-types@^2.71.3":
+"@voiceflow/base-types@2.71.3", "@voiceflow/base-types@^2.71.1", "@voiceflow/base-types@^2.71.3":
   version "2.71.3"
   resolved "https://registry.yarnpkg.com/@voiceflow/base-types/-/base-types-2.71.3.tgz#76e9e9ba2185f7d587e8a5cdbc7409f49dde75c4"
   integrity sha512-3WUmSoiUR1SAWAUREkvskpH/AZbaKfcFQ2ARKe5s2kTTAsCpYyfdN2/MoG8RDSSNbr19FwYux85qYhrUK8V3Xg==
@@ -11854,9 +11865,9 @@ immer@9.0.12:
   integrity sha512-lk7UNmSbAukB5B6dh9fnh5D0bJTOFKxVg2cyJWTYrWRfhLrLMBquONcUs3aFq507hNoIZEDDh8lb8UtOizSMhA==
 
 immer@^9.0.6:
-  version "9.0.15"
-  resolved "https://registry.yarnpkg.com/immer/-/immer-9.0.15.tgz#0b9169e5b1d22137aba7d43f8a81a495dd1b62dc"
-  integrity sha512-2eB/sswms9AEUSkOm4SbV5Y7Vmt/bKRwByd52jfLkW4OLYeaTP3EEiJ9agqU0O/tq6Dk62Zfj+TJSqfm1rLVGQ==
+  version "9.0.16"
+  resolved "https://registry.yarnpkg.com/immer/-/immer-9.0.16.tgz#8e7caab80118c2b54b37ad43e05758cdefad0198"
+  integrity sha512-qenGE7CstVm1NrHQbMh8YaSzTZTFNP3zPqr3YU0S0UY441j4bJTg4A2Hh5KAhwgaiU6ZZ1Ar6y/2f4TblnMReQ==
 
 immutability-helper@2.9.1:
   version "2.9.1"
@@ -17444,7 +17455,7 @@ react-dnd@13.1.1:
     dnd-core "12.0.1"
     hoist-non-react-statics "^3.3.2"
 
-react-dom@17.0.2:
+react-dom@17.0.2, react-dom@^17.0.2:
   version "17.0.2"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-17.0.2.tgz#ecffb6845e3ad8dbfcdc498f0d0a939736502c23"
   integrity sha512-s4h96KtLDUQlsENhMn1ar8t2bEa+q/YAtj8pPPdIjPDGBDIVNsrD9aXNWqspUe6AzKCIG0C1HZZLqLV7qpOBGA==
@@ -17742,7 +17753,7 @@ react-virtualized@9.22.3:
     prop-types "^15.7.2"
     react-lifecycles-compat "^3.0.4"
 
-react@17.0.2:
+react@17.0.2, react@^17.0.2:
   version "17.0.2"
   resolved "https://registry.yarnpkg.com/react/-/react-17.0.2.tgz#d0b5cc516d29eb3eee383f75b62864cfb6800037"
   integrity sha512-gnhPt75i/dq/z3/6q/0asP78D0u592D5L1pd7M8P+dck6Fu/jJeL6iVVK23fptSUZj8Vjf++7wXA8UNclGQcbA==
@@ -20764,6 +20775,11 @@ tsconfig-paths@^3.5.0, tsconfig-paths@^3.9.0:
     minimist "^1.2.0"
     strip-bom "^3.0.0"
 
+tslib@2.3.1, tslib@^2, tslib@^2.0.3, tslib@^2.1.0:
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.3.1.tgz#e8a335add5ceae51aa261d32a490158ef042ef01"
+  integrity sha512-77EbyPPpMz+FRFRuAFlWMtmgUWGe9UOG2Z25NqCwiIjRhOf5iKGuzSe5P2w1laq+FkRy4p+PCuVkJSGkzTEKVw==
+
 tslib@2.4.0:
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.4.0.tgz#7cecaa7f073ce680a05847aa77be941098f36dc3"
@@ -20773,11 +20789,6 @@ tslib@^1.10.0, tslib@^1.8.1, tslib@^1.9.0, tslib@^1.9.3:
   version "1.14.1"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.14.1.tgz#cf2d38bdc34a134bcaf1091c41f6619e2f672d00"
   integrity sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==
-
-tslib@^2, tslib@^2.0.3, tslib@^2.1.0:
-  version "2.3.1"
-  resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.3.1.tgz#e8a335add5ceae51aa261d32a490158ef042ef01"
-  integrity sha512-77EbyPPpMz+FRFRuAFlWMtmgUWGe9UOG2Z25NqCwiIjRhOf5iKGuzSe5P2w1laq+FkRy4p+PCuVkJSGkzTEKVw==
 
 tsutils@^3.21.0:
   version "3.21.0"

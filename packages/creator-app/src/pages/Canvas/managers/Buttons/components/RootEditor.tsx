@@ -1,6 +1,6 @@
 import { BaseNode } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Button, createUIOnlyMenuItemOption, useLocalStorageState } from '@voiceflow/ui';
+import { Button, createDividerMenuItemOption, useLocalStorageState } from '@voiceflow/ui';
 import React from 'react';
 
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
@@ -54,7 +54,7 @@ const RootEditor: React.FC = () => {
               actions={[
                 buttonLayoutOption,
                 intentScopeOption,
-                createUIOnlyMenuItemOption('divider', { divider: true }),
+                createDividerMenuItemOption(),
                 noMatchConfig.option,
                 noReplyConfig.option,
                 addIntentsOption,

@@ -2,9 +2,10 @@ import { PlanType } from '@voiceflow/internal';
 
 import * as Session from '@/ducks/session';
 import * as Tracking from '@/ducks/tracking';
+import { getUpgradeToModalProps } from '@/utils/upgrade';
 
 import { PlanLimit, UpgradeModalDynamicLimit } from './types';
-import { applyEnterpriseLimits, applyStarterLimits, applyTeamLimits, getUpgradeToModalProps } from './utils';
+import { applyEnterpriseLimits, applyStarterLimits, applyTeamLimits } from './utils';
 
 const DEFAULT_MODAL = {
   title: 'Need more projects?',
@@ -22,7 +23,7 @@ const STARTER_LIMIT: UpgradeModalDynamicLimit = {
 const TEAM_ENTERPRISE_LIMIT: UpgradeModalDynamicLimit = {
   getUpgradeModal: ({ limit }) => ({
     ...DEFAULT_MODAL,
-    onUpgrade: (dispatch) => dispatch(Session.showIntercom),
+    onUpgrade: (dispatch) => dispatch(Session.showIntercom()),
     description: `You've reached your ${limit} project limit. Contact us to increase project limits.`,
     upgradePrompt: Tracking.UpgradePrompt.PROJECT_LIMIT,
     upgradeButtonText: 'Contact Us',

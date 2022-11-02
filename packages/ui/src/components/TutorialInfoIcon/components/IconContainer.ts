@@ -2,10 +2,11 @@ import { css, styled, transition } from '@ui/styles';
 
 export interface IconContainerProps {
   isOpen: boolean;
+  visible: boolean;
 }
 
 const IconContainer = styled.div<IconContainerProps>`
-  ${transition('color')}
+  ${transition('color', 'opacity')}
   position: relative;
   cursor: pointer;
   display: inline-block;
@@ -15,6 +16,12 @@ const IconContainer = styled.div<IconContainerProps>`
     isOpen &&
     css`
       color: #5d9df5 !important;
+    `}
+
+  ${({ visible }) =>
+    !visible &&
+    css`
+      opacity: 0;
     `}
 
   &:hover {

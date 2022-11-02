@@ -1,9 +1,10 @@
 import { PlanType } from '@voiceflow/internal';
 
 import * as Tracking from '@/ducks/tracking';
+import { getUpgradeToModalProps } from '@/utils/upgrade';
 
 import { PlanLimit, UpgradeModalValueLimit } from './types';
-import { applyStarterLimits, getUpgradeToModalProps } from './utils';
+import { applyStarterLimits } from './utils';
 
 const STARTER_LIMIT: UpgradeModalValueLimit = {
   value: 0,

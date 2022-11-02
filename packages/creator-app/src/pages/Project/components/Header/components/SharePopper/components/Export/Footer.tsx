@@ -3,9 +3,10 @@ import React from 'react';
 
 import PlatformUploadButton from '@/components/PlatformUploadButton';
 import * as Documentation from '@/config/documentation';
+import * as NLP from '@/config/nlp';
 import { getCanvasExportLimitDetails } from '@/config/planLimits/canvasExport';
 import { getNLUExportLimitDetails } from '@/config/planLimits/nluExport';
-import { ExportFormat, ExportType, ModalType, NLPProvider } from '@/constants';
+import { ExportFormat, ExportType, ModalType } from '@/constants';
 import { UpgradePrompt } from '@/ducks/tracking';
 import * as Tracking from '@/ducks/tracking';
 import { useModals, useTrackingEvents } from '@/hooks';
@@ -17,9 +18,8 @@ const ExportFooter: React.FC<{
   linkURL?: string;
   origin: Tracking.ModelExportOriginType;
 }> = ({ withoutLink, origin, linkURL }) => {
-  const { isExporting, onExport, exportType, canExport, canvasExportFormat, modelExportProvider, modelExportIntents } =
-    React.useContext(ExportContext)!;
-  const noModelData = exportType === ExportType.MODEL && modelExportIntents.length === 0;
+  const { isExporting, onExport, exportType, canExport, canvasExportFormat, exportNLPType, exportIntents } = React.useContext(ExportContext)!;
+  const noModelData = exportType === ExportType.MODEL && exportIntents.length === 0;
 
   const [trackingEvents] = useTrackingEvents();
 
@@ -28,25 +28,34 @@ const ExportFooter: React.FC<{
 
   const checkIfCanExport = () => {
     if (isExporting) return;
+
     if (exportType === ExportType.CANVAS && canvasExportFormat && !canExport) {
       if (canvasExportFormat === ExportFormat.VF) {
         trackingEvents.trackUpgradePrompt({ promptType: UpgradePrompt.EXPORT_PROJECT_CSV });
       } else {
         trackingEvents.trackUpgradePrompt({ promptType: UpgradePrompt.EXPORT_PROJECT });
       }
+
       const planLimitDetails = getCanvasExportLimitDetails(canvasExportFormat);
       openUpgradeModal({ planLimitDetails, promptOrigin: UpgradePrompt.EXPORT_PROJECT });
-    } else if (exportType === ExportType.MODEL && modelExportProvider && !canExport) {
-      if (modelExportProvider === NLPProvider.VF_CSV) {
+
+      return;
+    }
+
+    if (exportType === ExportType.MODEL && exportNLPType && !canExport) {
+      if (exportNLPType === NLP.Constants.NLPType.VOICEFLOW) {
         trackingEvents.trackUpgradePrompt({ promptType: UpgradePrompt.EXPORT_CSV_NLU });
       } else {
         trackingEvents.trackUpgradePrompt({ promptType: UpgradePrompt.EXPORT_NLU });
       }
-      const planLimitDetails = getNLUExportLimitDetails(modelExportProvider);
+
+      const planLimitDetails = getNLUExportLimitDetails(exportNLPType);
       openUpgradeModal({ planLimitDetails, promptOrigin: UpgradePrompt.EXPORT_NLU });
-    } else {
-      onExport(origin);
+
+      return;
     }
+
+    onExport(origin);
   };
 
   return (

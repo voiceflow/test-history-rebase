@@ -44,6 +44,7 @@ const UpgradeLabel = <T extends unknown, U extends unknown>({
       ) : (
         <span>{getNestedMenuFormattedLabel(optionLabel, searchLabel)}</span>
       )}
+
       {isGated && (
         <TippyTooltip {...getUpgradeTooltip(planDetails?.tooltipText, planDetails?.tooltipButtonText, handleTooltipOnClick)}>
           <GatedFeatureIcon isItemFocused={isFocused} />

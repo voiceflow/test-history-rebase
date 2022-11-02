@@ -1,49 +1,36 @@
-import { Utils } from '@voiceflow/realtime-sdk';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
+import * as NLU from '@/config/nlu';
+import { ENTERPRISE_LABEL, UPGRADE_TO_ENTERPRISE_ACTION_LABEL, upgradeToEnterpriseAction } from '@/config/planLimits';
 
-import { ENTERPRISE_LABEL, LimitDetails, UPGRADE_TO_ENTERPRISE_ACTION_LABEL, upgradeToEnterpriseAction } from '@/config/planLimits';
-import { NLPProvider, NLPProviderLabels } from '@/constants';
-import { PlatformAndProjectMeta, PlatformAndProjectMetaType } from '@/pages/NewProjectV2/types';
-
-const GATED_PROJECT_NLUS = new Set([
-  <PlatformAndProjectMetaType>VoiceflowConstants.PlatformType.EINSTEIN,
-  <PlatformAndProjectMetaType>VoiceflowConstants.PlatformType.DIALOGFLOW_ES,
-  <PlatformAndProjectMetaType>VoiceflowConstants.PlatformType.DIALOGFLOW_CX,
-  <PlatformAndProjectMetaType>VoiceflowConstants.PlatformType.LEX,
-  <PlatformAndProjectMetaType>VoiceflowConstants.PlatformType.LUIS,
-  <PlatformAndProjectMetaType>VoiceflowConstants.PlatformType.NUANCE_MIX,
-  <PlatformAndProjectMetaType>VoiceflowConstants.PlatformType.RASA,
-  <PlatformAndProjectMetaType>VoiceflowConstants.PlatformType.WATSON,
+const GATED_PROJECT_NLUS = new Set<NLU.Constants.NLUType>([
+  NLU.Constants.NLUType.LEX,
+  NLU.Constants.NLUType.LUIS,
+  NLU.Constants.NLUType.RASA,
+  NLU.Constants.NLUType.WATSON,
+  NLU.Constants.NLUType.EINSTEIN,
+  NLU.Constants.NLUType.NUANCE_MIX,
+  NLU.Constants.NLUType.DIALOGFLOW_ES,
+  NLU.Constants.NLUType.DIALOGFLOW_CX,
 ]);
 
-const projectNLUEnterpisePlanLimitDetails = (nlpSelection: NLPProvider) => {
+const projectNLUEnterpisePlanLimitDetails = (nluType: NLU.Constants.NLUType) => {
+  const nlpConfig = NLU.Config.get(nluType).nlps[0];
+
   return {
-    modalTitle: 'NLU',
     title: 'Upgrade to use this NLU',
-    description: `${NLPProviderLabels[nlpSelection]} is an ${ENTERPRISE_LABEL} feature. Upgrade to import and export data for this NLU.`,
-    submitText: UPGRADE_TO_ENTERPRISE_ACTION_LABEL,
     onSubmit: upgradeToEnterpriseAction,
-    tooltipText: `${NLPProviderLabels[nlpSelection]} is a enterprise feature.`,
-    tooltipButtonText: UPGRADE_TO_ENTERPRISE_ACTION_LABEL,
+    modalTitle: 'NLU',
+    submitText: UPGRADE_TO_ENTERPRISE_ACTION_LABEL,
+    description: `${nlpConfig.name} is an ${ENTERPRISE_LABEL} feature. Upgrade to import and export data for this NLU.`,
+    tooltipText: `${nlpConfig.name} is a enterprise feature.`,
     tooltipOnClick: upgradeToEnterpriseAction,
     hasLabelTooltip: true,
-    labelTooltipTitle: NLPProviderLabels[nlpSelection],
-    labelTooltipText: `Import and export/upload NLU models for ${NLPProviderLabels[nlpSelection]}.`,
+    labelTooltipText: `Import and export/upload NLU models for ${nlpConfig.name}.`,
+    labelTooltipTitle: nlpConfig.name,
+    tooltipButtonText: UPGRADE_TO_ENTERPRISE_ACTION_LABEL,
   };
 };
 
-const projectNluLimitDetailsSelector = Utils.platform.createPlatformSelector<LimitDetails>({
-  [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: projectNLUEnterpisePlanLimitDetails(NLPProvider.DIALOGFLOW_ES),
-  [VoiceflowConstants.PlatformType.DIALOGFLOW_CX]: projectNLUEnterpisePlanLimitDetails(NLPProvider.DIALOGFLOW_CX),
-  [VoiceflowConstants.PlatformType.EINSTEIN]: projectNLUEnterpisePlanLimitDetails(NLPProvider.EINSTEIN),
-  [VoiceflowConstants.PlatformType.LEX]: projectNLUEnterpisePlanLimitDetails(NLPProvider.LEX_V1),
-  [VoiceflowConstants.PlatformType.LUIS]: projectNLUEnterpisePlanLimitDetails(NLPProvider.LUIS),
-  [VoiceflowConstants.PlatformType.NUANCE_MIX]: projectNLUEnterpisePlanLimitDetails(NLPProvider.NUANCE_MIX),
-  [VoiceflowConstants.PlatformType.RASA]: projectNLUEnterpisePlanLimitDetails(NLPProvider.RASA2),
-  [VoiceflowConstants.PlatformType.WATSON]: projectNLUEnterpisePlanLimitDetails(NLPProvider.WATSON),
-});
+export const getProjectNluLimitDetails = (nluType: NLU.Constants.NLUType) =>
+  GATED_PROJECT_NLUS.has(nluType) ? projectNLUEnterpisePlanLimitDetails(nluType) : null;
 
-export const getProjectNluLimitDetails = (option: PlatformAndProjectMeta) =>
-  GATED_PROJECT_NLUS.has(option.type) ? projectNluLimitDetailsSelector(option.type as VoiceflowConstants.PlatformType) : undefined;
-
-export const isGatedNLUType = (nluType: PlatformAndProjectMetaType, canUseCustomNLU: boolean) => !canUseCustomNLU && GATED_PROJECT_NLUS.has(nluType);
+export const isGatedNLUType = (nluType: NLU.Constants.NLUType, canUseCustomNLU: boolean) => !canUseCustomNLU && GATED_PROJECT_NLUS.has(nluType);

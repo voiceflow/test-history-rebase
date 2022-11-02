@@ -1,7 +1,7 @@
 import { BaseButton } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Button, createUIOnlyMenuItemOption } from '@voiceflow/ui';
+import { Button, createDividerMenuItemOption } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
@@ -39,7 +39,7 @@ const Editor: React.FC = () => {
     const usedIntents = intents.filter((intent) => usedIntentIDs.includes(intent.id));
     const unusedIntents = intents.filter((intent) => !usedIntentIDs.includes(intent.id));
 
-    return [...(usedIntents.length ? [...usedIntents, createUIOnlyMenuItemOption('divider', { divider: true })] : []), ...unusedIntents];
+    return [...(usedIntents.length ? [...usedIntents, createDividerMenuItemOption()] : []), ...unusedIntents];
   }, [intents, choices]);
 
   const label = getPlatformValue(editor.platform, { [VoiceflowConstants.PlatformType.GOOGLE]: 'Chips' }, 'Buttons');

@@ -1,4 +1,4 @@
-import type { ImportModel } from '@/pages/NewProjectV2/types';
+import { NLUImportModel } from '@/models';
 
 import { apiV2 } from './fetch';
 
@@ -13,8 +13,9 @@ const versionClient = {
       `${VERSIONS_PATH}/snapshot/${versionID}?manualSave=${manualSave}&saveVersionName=${versionName}&autoSaveFromRestore=${autoSaveFromRestore}`
     );
   },
-  patchMergeIntentsAndSlots: (versionID: string, importModel: ImportModel): Promise<ImportModel> => {
+  patchMergeIntentsAndSlots: (versionID: string, importModel: NLUImportModel): Promise<NLUImportModel> => {
     const endpoint = `${VERSIONS_PATH}/${versionID}/model`;
+
     return apiV2.patch(endpoint, importModel);
   },
 };

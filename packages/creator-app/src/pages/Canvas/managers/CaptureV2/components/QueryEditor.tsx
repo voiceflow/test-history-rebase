@@ -1,6 +1,6 @@
 import { BaseModels, BaseNode } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, createUIOnlyMenuItemOption, SectionV2, SvgIcon } from '@voiceflow/ui';
+import { Box, createDividerMenuItemOption, SectionV2, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
 import VariableSelectV2 from '@/components/VariableSelectV2';
@@ -51,9 +51,7 @@ const QueryEditor: React.FC<{ disableAnimation: boolean }> = ({ disableAnimation
       header={<EditorV2.DefaultHeader />}
       footer={
         <EditorV2.DefaultFooter tutorial={Documentation.CAPTURE_STEP}>
-          <EditorV2.FooterActionsButton
-            actions={[intentScopeOption, createUIOnlyMenuItemOption('divider', { divider: true }), noReplyConfig.option]}
-          />
+          <EditorV2.FooterActionsButton actions={[intentScopeOption, createDividerMenuItemOption(), noReplyConfig.option]} />
         </EditorV2.DefaultFooter>
       }
       dropLagAccept={Actions.Section.DRAG_TYPE}

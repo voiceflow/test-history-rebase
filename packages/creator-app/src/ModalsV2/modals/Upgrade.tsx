@@ -1,12 +1,22 @@
-import { useDispatch as useLoguxDispatch } from '@logux/redux';
 import { Utils } from '@voiceflow/common';
 import { BlockText, Box, Button, Modal, SvgIcon, useSetup } from '@voiceflow/ui';
 import React from 'react';
 
-import type { UpgradeModal } from '@/config/planLimitV2';
-import { useTrackingEvents } from '@/hooks';
+import type { UpgradePrompt } from '@/ducks/tracking';
+import { useStore, useTrackingEvents } from '@/hooks';
 
 import manager from '../manager';
+
+export interface UpgradeModal {
+  title: React.ReactNode;
+  header: React.ReactNode;
+  maxWidth?: number;
+  onUpgrade: (dispatch: ReturnType<typeof useStore>['dispatch']) => void;
+  description: React.ReactNode;
+  upgradePrompt?: UpgradePrompt;
+  cancelButtonText?: string;
+  upgradeButtonText: string;
+}
 
 const Upgrade = manager.create<UpgradeModal>(
   'Upgrade',
@@ -26,7 +36,7 @@ const Upgrade = manager.create<UpgradeModal>(
       cancelButtonText = 'Cancel',
       upgradeButtonText = 'Upgrade',
     }) => {
-      const dispatch = useLoguxDispatch();
+      const store = useStore();
 
       const [trackingEvents] = useTrackingEvents();
 
@@ -59,7 +69,7 @@ const Upgrade = manager.create<UpgradeModal>(
               {cancelButtonText}
             </Button>
 
-            <Button onClick={Utils.functional.chainVoid(api.close, () => onUpgrade(dispatch))} variant={Button.Variant.PRIMARY} squareRadius>
+            <Button onClick={Utils.functional.chainVoid(api.close, () => onUpgrade(store.dispatch))} variant={Button.Variant.PRIMARY} squareRadius>
               {upgradeButtonText}
             </Button>
           </Modal.Footer>

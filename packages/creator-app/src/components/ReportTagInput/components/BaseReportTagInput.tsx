@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import { Box, createUIOnlyMenuItemOption, KeyName, Select, SelectInputVariant, SvgIcon, swallowEvent, UIOnlyMenuItemOption } from '@voiceflow/ui';
+import { Box, createDividerMenuItemOption, KeyName, Select, SelectInputVariant, SvgIcon, swallowEvent, UIOnlyMenuItemOption } from '@voiceflow/ui';
 import _findLastIndex from 'lodash/findLastIndex';
 import React from 'react';
 
@@ -95,11 +95,7 @@ const BaseReportTagInput: React.FC<BaseReportTagInputProps> = ({
         return sortedAllTags;
       }
 
-      return Utils.array.insert<ReportTag | UIOnlyMenuItemOption>(
-        sortedAllTags,
-        lastBuiltInIndex + 1,
-        createUIOnlyMenuItemOption('divider', { divider: true })
-      );
+      return Utils.array.insert<ReportTag | UIOnlyMenuItemOption>(sortedAllTags, lastBuiltInIndex + 1, createDividerMenuItemOption());
     }
 
     return allTags.filter((tag) => !isBuiltInTag(tag.id) && filterOutSelected(tag.id, selectedValidTagIDs));

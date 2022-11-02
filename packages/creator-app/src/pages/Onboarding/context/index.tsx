@@ -383,19 +383,16 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
     try {
       if (isLoginFlow) {
         const platform = StarterPlatformType;
-        const templateTag = `onboarding:${state.personalizeWorkspaceMeta.projectType}`;
 
         if (query.import) {
           goToDashboardWithSearch(`/?import=${query.import}`);
         } else {
-          const { versionID } = await createProject(
-            {
-              platform,
-              language: getDefaultPlatformLanguageLabel(platform),
-              onboarding: true,
-            },
-            templateTag
-          );
+          const { versionID } = await createProject({
+            platform,
+            language: getDefaultPlatformLanguageLabel(platform),
+            onboarding: true,
+            templateTag: `onboarding:${state.personalizeWorkspaceMeta.projectType}`,
+          });
 
           goToDomain({ versionID });
 

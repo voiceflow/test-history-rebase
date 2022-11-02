@@ -3,33 +3,33 @@ import { useContextApi } from '@voiceflow/ui';
 import _sortBy from 'lodash/sortBy';
 import React from 'react';
 
+import * as NLP from '@/config/nlp';
+import * as NLU from '@/config/nlu';
 import { Permission } from '@/config/permissions';
 import { GATED_EXPORT_TYPES } from '@/config/planLimits/canvasExport';
-import { ExportFormat as CanvasExportFormat, ExportType, NLPProvider, NLPProviderLabels } from '@/constants';
+import { ExportFormat as CanvasExportFormat, ExportType } from '@/constants';
 import * as Export from '@/ducks/export';
 import * as Tracking from '@/ducks/tracking';
 import { useDispatch, usePermission, useTrackingEvents } from '@/hooks';
 import { PlatformContext } from '@/pages/Project/contexts';
 import { isVoiceflowPlatform } from '@/utils/typeGuards';
 
-import { getNlpModelProvider } from './constants';
-
 interface ExportValue {
   onExport: (origin: Tracking.ModelExportOriginType) => void;
+  nlpTypes: NLP.Constants.NLPType[];
+  canExport: boolean;
   exportType: ExportType;
   isExporting: boolean;
-  canExport: boolean;
-  setExportType: (exportType: ExportType) => void;
   setCanExport: (canExport: boolean) => void;
-  nlpProviderOptions: NLPProvider[];
-  checkedExportIntents: string[];
-  modelExportIntents: string[];
+  exportIntents: string[];
+  exportNLPType: NLP.Constants.NLPType | null;
+  setExportType: (exportType: ExportType) => void;
+  setExportNLPType: (provider: NLP.Constants.NLPType) => void;
+  setExportIntents: (intents: string[]) => void;
   canvasExportFormat: CanvasExportFormat;
-  modelExportProvider?: NLPProvider;
-  setModelExportIntents: (intents: string[]) => void;
-  setCheckedExportIntents: (intents: string[]) => void;
+  checkedExportIntents: string[];
   setCanvasExportFormat: (format: CanvasExportFormat) => void;
-  setModelExportProvider: (provider: NLPProvider) => void;
+  setCheckedExportIntents: (intents: string[]) => void;
 }
 
 export const ExportContext = React.createContext<Nullable<ExportValue>>(null);
@@ -37,8 +37,8 @@ export const ExportContext = React.createContext<Nullable<ExportValue>>(null);
 export const { Consumer: ExportConsumer } = ExportContext;
 
 export const ExportProvider: React.FC = ({ children }) => {
-  const exportCanvas = useDispatch(Export.exportCanvas);
   const exportModel = useDispatch(Export.exportModel);
+  const exportCanvas = useDispatch(Export.exportCanvas);
   const [permissionToExport] = usePermission(Permission.MODEL_EXPORT);
 
   const [trackingEvents] = useTrackingEvents();
@@ -48,15 +48,10 @@ export const ExportProvider: React.FC = ({ children }) => {
   const [canvasExportFormat, setCanvasExportFormat] = React.useState(CanvasExportFormat.PNG);
   const [canExport, setCanExport] = React.useState(permissionToExport || !GATED_EXPORT_TYPES.has(canvasExportFormat));
 
-  const nlpProviderOptions = React.useMemo(() => {
-    // order alphabetically by label
-    return _sortBy(getNlpModelProvider(platform), (provider) => NLPProviderLabels[provider]);
-  }, [platform]);
+  const nlpTypes = React.useMemo(() => _sortBy(NLU.Config.get(platform).nlps, (nlp) => nlp.name).map((nlp) => nlp.type), [platform]);
 
-  const [modelExportProvider, setModelExportProvider] = React.useState<NLPProvider | undefined>(
-    !isVoiceflowPlatform(platform) ? nlpProviderOptions[0] : undefined
-  );
-  const [modelExportIntents, setModelExportIntents] = React.useState<string[]>([]);
+  const [exportNLPType, setExportNLPType] = React.useState<NLP.Constants.NLPType | null>(!isVoiceflowPlatform(platform) ? nlpTypes[0] : null);
+  const [exportIntents, setExportIntents] = React.useState<string[]>([]);
   const [checkedExportIntents, setCheckedExportIntents] = React.useState<string[]>([]);
 
   const onExport = React.useCallback(
@@ -66,8 +61,12 @@ export const ExportProvider: React.FC = ({ children }) => {
 
       if (exportType === ExportType.CANVAS) {
         await exportCanvas(canvasExportFormat);
-      } else if (modelExportProvider) {
-        await exportModel(modelExportProvider, origin, modelExportIntents);
+      } else if (exportNLPType) {
+        await exportModel({
+          origin,
+          nlpType: exportNLPType,
+          intents: exportIntents,
+        });
       }
 
       trackingEvents.trackProjectExported({
@@ -78,24 +77,24 @@ export const ExportProvider: React.FC = ({ children }) => {
 
       setExporting(false);
     },
-    [exportType, modelExportProvider, modelExportIntents, canvasExportFormat]
+    [exportType, exportNLPType, exportIntents, canvasExportFormat]
   );
 
   const api = useContextApi({
+    nlpTypes,
     onExport,
+    canExport,
     exportType,
     isExporting,
-    canExport,
-    setExportType,
     setCanExport,
-    nlpProviderOptions,
+    setExportType,
+    exportIntents,
+    exportNLPType,
+    setExportIntents,
+    setExportNLPType,
     canvasExportFormat,
-    modelExportIntents,
     checkedExportIntents,
-    modelExportProvider,
     setCanvasExportFormat,
-    setModelExportIntents,
-    setModelExportProvider,
     setCheckedExportIntents,
   });
 

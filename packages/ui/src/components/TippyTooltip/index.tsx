@@ -23,6 +23,7 @@ export interface TippyTooltipProps extends Omit<TooltipProps, 'theme' | 'delay'>
   bodyOverflow?: boolean;
   distance?: number;
   offset?: number;
+  onShow?: () => void;
 }
 
 // we need this to store all opened tooltips and manually close them

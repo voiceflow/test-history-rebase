@@ -1,21 +1,19 @@
 import { Box, Flex, Text, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 
+import * as NLU from '@/config/nlu';
 import { Permission } from '@/config/permissions';
 import { LimitType } from '@/config/planLimitV2';
 import { NLUImportOrigin } from '@/constants';
 import { styled } from '@/hocs';
-import { usePermission, usePlanLimit } from '@/hooks';
+import { useNLUImport, usePermission, usePlanLimit } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
-
-import { PLATFORM_PROJECT_META_MAP } from '../constants';
-import { useNLUImport } from '../hooks';
-import { ImportModel, SupportedPlatformType } from '../types';
+import { NLUImportModel } from '@/models';
 
 interface ModelImportProps {
-  platform: SupportedPlatformType;
-  importModel: ImportModel | null;
-  onImportModel: (importModel: ImportModel) => void;
+  nluConfig: NLU.Base.Config;
+  importModel: NLUImportModel | null;
+  onImportModel: (importModel: NLUImportModel) => void;
   isImportLoading: boolean;
   setIsImportLoading: (isLoadingImport: boolean) => void;
 }
@@ -29,15 +27,12 @@ export const ImportLink = styled(Text)<{ disabled: boolean }>`
   }
 `;
 
-const ModelImport: React.FC<ModelImportProps> = ({ platform, onImportModel, importModel, isImportLoading, setIsImportLoading }) => {
-  const fileExtensions = platform && PLATFORM_PROJECT_META_MAP[platform]?.importMeta?.fileExtensions;
-  const { onUploadClick, acceptedFileFormatsLabel, isImporting } = useNLUImport({ fileExtensions, platform, onImportModel });
+const ModelImport: React.FC<ModelImportProps> = ({ nluConfig, onImportModel, importModel, isImportLoading, setIsImportLoading }) => {
+  const nluImport = useNLUImport({ platform: nluConfig.type, onImport: onImportModel });
 
   const [permissionImportNLU] = usePermission(Permission.BULK_UPLOAD);
   const upgradeModal = ModalsV2.useModal(ModalsV2.Upgrade);
   const planLimit = usePlanLimit({ type: LimitType.NLU_IMPORT });
-
-  const importName = platform && PLATFORM_PROJECT_META_MAP[platform]?.importMeta?.name;
 
   const textColor = isImportLoading ? 'rgba(98, 119, 140, 0.5)' : 'rgba(98, 119, 140, 1)';
 
@@ -45,13 +40,13 @@ const ModelImport: React.FC<ModelImportProps> = ({ platform, onImportModel, impo
     if (!permissionImportNLU && planLimit) {
       upgradeModal.open(planLimit.upgradeModal);
     } else {
-      onUploadClick(NLUImportOrigin.PROJECT);
+      nluImport.onUploadClick(NLUImportOrigin.PROJECT);
     }
   };
 
   useDidUpdateEffect(() => {
-    setIsImportLoading(isImporting);
-  }, [isImporting]);
+    setIsImportLoading(nluImport.isImporting);
+  }, [nluImport.isImporting]);
 
   return (
     <Box mt={12}>
@@ -63,13 +58,15 @@ const ModelImport: React.FC<ModelImportProps> = ({ platform, onImportModel, impo
       ) : (
         <Flex>
           <ImportLink disabled={isImportLoading} fontSize={13} onClick={onHandleImportClick}>
-            {`Import ${importName} NLU model`}
+            {`Import ${nluConfig.nlps[0].import?.name} NLU model`}
           </ImportLink>
+
           <Box color="rgba(141, 162, 181, 0.5)" pl={8} pr={8}>
             •
           </Box>
+
           <Text fontSize={13} color={textColor}>
-            {`${acceptedFileFormatsLabel} files supported`}
+            {`${nluImport.acceptedFileFormatsLabel} files supported`}
           </Text>
         </Flex>
       )}

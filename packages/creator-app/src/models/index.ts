@@ -4,6 +4,7 @@ export * from './Billing';
 export * from './Display';
 export * from './Job';
 export * from './LockOwner';
+export * from './NLU';
 export * from './Project';
 export * from './ProjectAPIKey';
 export * from './Prototype';

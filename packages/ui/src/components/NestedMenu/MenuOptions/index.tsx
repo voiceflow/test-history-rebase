@@ -65,12 +65,6 @@ function MenuOptions({
   const renderLabel = (option: unknown, options: RenderOptionLabelConfig): React.ReactNode =>
     renderOptionLabel(option, searchLabel, getOptionLabel, getOptionValue, options);
 
-  /**
-   * $TODO - Refactor this so that there are no `unknown` types here? In `renderOption`, the `option` argument is
-   *         clearly not `unknown` as it implicitly assumes `option.tooltip` exists in some of the cases, but
-   *         since `option` is typed as `unknown`, the `option.tooltip` throws a type error when spread. Perhaps
-   *         we need some kind of union type instead of `unknown`?
-   */
   const renderOption = ({ key, path, index, option }: { key: string; path: number[]; index: number; option: unknown }) => {
     const isFocused = focusedOptionIndex === index;
     const isSelectable = !isBaseMenuItem(option) || (!option.disabled && !option.readOnly);
@@ -90,12 +84,18 @@ function MenuOptions({
     }
 
     if (isBaseMenuItem(option)) {
-      return (
-        <TippyTooltip key={key} disabled={!option.tooltip} {...(option.tooltip as any)}>
-          <SelectItem {...sharedProps} {...option.menuItemProps} disabled={option.disabled} readOnly={option.readOnly}>
-            {!option.vfUIOnly && renderLabel(option, { isFocused, optionsPath: path })}
-          </SelectItem>
+      const item = (
+        <SelectItem key={key} {...sharedProps} {...option.menuItemProps} disabled={option.disabled} readOnly={option.readOnly}>
+          {!option.vfUIOnly && renderLabel(option, { isFocused, optionsPath: path })}
+        </SelectItem>
+      );
+
+      return option.tooltip ? (
+        <TippyTooltip key={key} {...option.tooltip}>
+          {item}
         </TippyTooltip>
+      ) : (
+        item
       );
     }
 

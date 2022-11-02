@@ -1,6 +1,8 @@
 import { BaseModels } from '@voiceflow/base-types';
+import { DFESConstants } from '@voiceflow/google-dfes-types';
 
-import { EXCLUDED_CONFLICTS_INTENTS } from '@/constants/nlu';
+// [NLU] TODO: move to nlu configs, should be similar to platform configs
+export const EXCLUDED_CONFLICTS_INTENTS: string[] = [DFESConstants.DialogflowESIntent.FALLBACK];
 
 export const transformIntents = (intents: BaseModels.Intent[]) => {
   return intents
@@ -18,7 +20,7 @@ export const transformIntents = (intents: BaseModels.Intent[]) => {
               return {
                 id: slot.id,
                 dialog: {
-                  // TO DO: add dialog and confirm
+                  // TODO: add dialog and confirm
                   prompt: [],
                   confirm: [],
                   utterances: slot.dialog.utterances.map((u) => u.text) as any[],

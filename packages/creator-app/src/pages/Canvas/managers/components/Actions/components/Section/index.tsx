@@ -1,6 +1,6 @@
 import { BaseNode } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { createUIOnlyMenuItemOption, SectionV2, TippyTooltip } from '@voiceflow/ui';
+import { createDividerMenuItemOption, SectionV2, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import DraggableList from '@/components/DraggableList';
@@ -67,7 +67,7 @@ const ActionsSection: React.FC<ActionsSectionProps> = ({ portID, editor, without
                 ? null
                 : { icon: 'goToDomain', label: 'Go to Domain', onClick: () => onAdd(BlockType.GO_TO_DOMAIN) },
               hasNavigationStep ? null : { icon: 'editorExit', label: 'End', onClick: () => onAdd(BlockType.EXIT) },
-              hasNavigationStep ? null : createUIOnlyMenuItemOption('divider', { divider: true }),
+              hasNavigationStep ? null : createDividerMenuItemOption(),
               { icon: 'setV2', label: 'Set variable', onClick: () => onAdd(BlockType.SETV2) },
               !withURLAction ? null : { icon: 'editorURL', label: 'Open URL', onClick: () => onAdd(BlockType.URL) },
               {

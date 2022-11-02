@@ -1,12 +1,14 @@
 import composeRef from '@seznam/compose-react-refs';
 import Menu from '@ui/components/Menu';
 import Portal from '@ui/components/Portal';
-import { useDidUpdateEffect, usePersistFunction } from '@ui/hooks';
+import { useDidUpdateEffect, useNestedPopperTheme, usePersistFunction } from '@ui/hooks';
 import { swallowEvent } from '@ui/utils';
 import { Nullable } from '@voiceflow/common';
 import React from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
+import { DismissableLayerProvider } from 'react-dismissable-layers';
 import { Popper } from 'react-popper';
+import { ThemeProvider } from 'styled-components';
 
 import MenuHeader from '../MenuHeader';
 // eslint-disable-next-line import/no-cycle
@@ -35,7 +37,6 @@ enum KeyCode {
   ARROW_LEFT = 'ArrowLeft',
   ARROW_RIGHT = 'ArrowRight',
 }
-
 export const DEFAULT_PATH = [];
 
 function BaseNestedMenu<Option extends MenuItemWithID, Value = Option>(props: NestedMenuCreatableWithIDProps<Option, Value>): React.ReactElement;
@@ -100,6 +101,7 @@ function BaseNestedMenu({
   createInputPlaceholder,
 }: NestedMenuInternalProps): React.ReactElement {
   const menuRef = React.useRef<HTMLUListElement>(null);
+  const nestedTheme = useNestedPopperTheme();
   const scrollbarsRef = React.useRef<Scrollbars>(null);
   const createInputRef = React.useRef<HTMLInputElement>(null);
   const focusedOptionRef = React.useRef<Nullable<HTMLLIElement>>(null);
@@ -319,91 +321,96 @@ function BaseNestedMenu({
 
   return (
     <Portal portalNode={portalNode || document.body}>
-      <Popper placement={placement} modifiers={{ ...popoverModifiers, isRoot: { value: isRoot } }}>
-        {({ ref, style, scheduleUpdate, placement: parentPlacement }) => {
-          dataRef.current.scheduleUpdate = scheduleUpdate;
+      <DismissableLayerProvider>
+        <ThemeProvider theme={nestedTheme}>
+          <Popper placement={placement} modifiers={{ ...popoverModifiers, isRoot: { value: isRoot } }}>
+            {({ ref, style, scheduleUpdate, placement: parentPlacement }) => {
+              dataRef.current.scheduleUpdate = scheduleUpdate;
 
-          return (
-            <MenuPopoverContainer
-              ref={composeRef(ref, containerRef)}
-              style={style}
-              isRoot={isRoot}
-              minWidth={minWidth}
-              autoWidth={autoWidth}
-              onMouseMove={onMouseMove}
-            >
-              <Menu
-                id={id}
-                ref={menuRef}
-                onHide={onHide}
-                maxHeight={maxHeight}
-                placement={parentPlacement}
-                fullWidth
-                searchable={
-                  (((creatable || (searchable && isDropdown)) && !directSearchMatch) || inDropdownSearch) && (
-                    <MenuHeader
-                      onHide={onHide}
-                      onFocus={() => !dataRef.current.blockOptionHover && onFocusItem(0)}
-                      onCreate={(val) => onCreate?.(val, scheduleUpdate)}
-                      creatable={creatable}
-                      hasOptions={!!options.length}
-                      isDropdown={isDropdown}
-                      searchable={searchable}
-                      createLabel={createLabel}
-                      searchLabel={searchLabel}
-                      createInputRef={createInputRef}
-                      newOptionLabel={newOptionLabel}
-                      inDropdownSearch={inDropdownSearch}
-                      alwaysShowCreate={alwaysShowCreate}
-                      focusedOptionRef={focusedOptionRef}
-                      isButtonDisabled={isButtonDisabled}
-                      updateSearchLabel={(value) => updateSearchLabel(formatInputValue ? formatInputValue(value) : value)}
-                      renderSearchSuffix={renderSearchSuffix}
-                      focusedOptionIndex={focusedOptionIndex}
-                      onChangeSearchLabel={onChangeSearchLabel}
-                      createInputPlaceholder={createInputPlaceholder}
-                    />
-                  )
-                }
-                scrollbarsRef={scrollbarsRef}
-                maxVisibleItems={Menu.MAX_VISIBLE_ITEMS}
-                disableAnimation={disableAnimation}
-                renderFooterAction={
-                  renderFooterAction && ((props) => renderFooterAction({ ...props, searchLabel: (searchable ? searchLabel : newOptionLabel) ?? '' }))
-                }
-                {...menuProps}
-              >
-                <MenuOptions
-                  onHide={onHide}
-                  options={options}
-                  grouped={grouped}
-                  onSelect={onSelect}
-                  placement={isRoot ? undefined : parentPlacement}
+              return (
+                <MenuPopoverContainer
+                  ref={composeRef(ref, containerRef)}
+                  style={style}
+                  isRoot={isRoot}
+                  minWidth={minWidth}
                   autoWidth={autoWidth}
-                  onItemRef={onItemRef}
-                  searchLabel={searchLabel}
-                  optionsPath={optionsPath}
-                  onFocusItem={(index) => !dataRef.current.blockOptionHover && onFocusItem(index)}
-                  renderEmpty={renderEmpty}
-                  isMultiLevel={isMultiLevel}
-                  getOptionKey={getOptionKey as GetOptionKey<unknown>}
-                  getOptionLabel={getOptionLabel}
-                  updatePosition={scheduleUpdate}
-                  getOptionValue={getOptionValue}
-                  inputWrapperNode={inputWrapperNode}
-                  firstOptionIndex={firstOptionIndex}
-                  popoverModifiers={{ ...popoverModifiers, ...nestedPopoverModifiers }}
-                  renderOptionLabel={renderOptionLabel}
-                  focusedOptionIndex={focusedOptionIndex}
-                  childFocusItemIndex={childFocusItemIndex}
-                  onBackFocusToParent={() => requestAnimationFrame(() => setChildFocusItemIndex(null))}
-                  onChildFocusItemIndex={onChildFocusItemIndex}
-                />
-              </Menu>
-            </MenuPopoverContainer>
-          );
-        }}
-      </Popper>
+                  onMouseMove={onMouseMove}
+                >
+                  <Menu
+                    id={id}
+                    ref={menuRef}
+                    onHide={onHide}
+                    maxHeight={maxHeight}
+                    placement={parentPlacement}
+                    fullWidth
+                    searchable={
+                      (((creatable || (searchable && isDropdown)) && !directSearchMatch) || inDropdownSearch) && (
+                        <MenuHeader
+                          onHide={onHide}
+                          onFocus={() => !dataRef.current.blockOptionHover && onFocusItem(0)}
+                          onCreate={(val) => onCreate?.(val, scheduleUpdate)}
+                          creatable={creatable}
+                          hasOptions={!!options.length}
+                          isDropdown={isDropdown}
+                          searchable={searchable}
+                          createLabel={createLabel}
+                          searchLabel={searchLabel}
+                          createInputRef={createInputRef}
+                          newOptionLabel={newOptionLabel}
+                          inDropdownSearch={inDropdownSearch}
+                          alwaysShowCreate={alwaysShowCreate}
+                          focusedOptionRef={focusedOptionRef}
+                          isButtonDisabled={isButtonDisabled}
+                          updateSearchLabel={(value) => updateSearchLabel(formatInputValue ? formatInputValue(value) : value)}
+                          renderSearchSuffix={renderSearchSuffix}
+                          focusedOptionIndex={focusedOptionIndex}
+                          onChangeSearchLabel={onChangeSearchLabel}
+                          createInputPlaceholder={createInputPlaceholder}
+                        />
+                      )
+                    }
+                    scrollbarsRef={scrollbarsRef}
+                    maxVisibleItems={Menu.MAX_VISIBLE_ITEMS}
+                    disableAnimation={disableAnimation}
+                    renderFooterAction={
+                      renderFooterAction &&
+                      ((props) => renderFooterAction({ ...props, searchLabel: (searchable ? searchLabel : newOptionLabel) ?? '' }))
+                    }
+                    {...menuProps}
+                  >
+                    <MenuOptions
+                      onHide={onHide}
+                      options={options}
+                      grouped={grouped}
+                      onSelect={onSelect}
+                      placement={isRoot ? undefined : parentPlacement}
+                      autoWidth={autoWidth}
+                      onItemRef={onItemRef}
+                      searchLabel={searchLabel}
+                      optionsPath={optionsPath}
+                      onFocusItem={(index) => !dataRef.current.blockOptionHover && onFocusItem(index)}
+                      renderEmpty={renderEmpty}
+                      isMultiLevel={isMultiLevel}
+                      getOptionKey={getOptionKey as GetOptionKey<unknown>}
+                      getOptionLabel={getOptionLabel}
+                      updatePosition={scheduleUpdate}
+                      getOptionValue={getOptionValue}
+                      inputWrapperNode={inputWrapperNode}
+                      firstOptionIndex={firstOptionIndex}
+                      popoverModifiers={{ ...popoverModifiers, ...nestedPopoverModifiers }}
+                      renderOptionLabel={renderOptionLabel}
+                      focusedOptionIndex={focusedOptionIndex}
+                      childFocusItemIndex={childFocusItemIndex}
+                      onBackFocusToParent={() => requestAnimationFrame(() => setChildFocusItemIndex(null))}
+                      onChildFocusItemIndex={onChildFocusItemIndex}
+                    />
+                  </Menu>
+                </MenuPopoverContainer>
+              );
+            }}
+          </Popper>
+        </ThemeProvider>
+      </DismissableLayerProvider>
     </Portal>
   );
 }

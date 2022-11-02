@@ -2,7 +2,8 @@ import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import client from '@/client';
 import { ControlScheme } from '@/components/Canvas/constants';
-import { ExportFormat as CanvasExportFormat, ExportType, NLPProvider, NLUImportOrigin } from '@/constants';
+import * as NLP from '@/config/nlp';
+import { ExportFormat as CanvasExportFormat, ExportType, NLUImportOrigin } from '@/constants';
 import { PrototypeSettings } from '@/ducks/prototype/types';
 import * as Tracking from '@/ducks/tracking';
 
@@ -43,12 +44,12 @@ export const trackActiveProjectPublishSuccess = createVersionEventTracker((optio
 );
 
 export const trackActiveProjectExportInteractionModel = createVersionEventTracker<{
-  nlpProvider: NLPProvider;
   origin: Tracking.ModelExportOriginType;
+  nlpType: NLP.Constants.NLPType;
 }>((options) =>
   client.api.analytics.track(
     EventName.INTERACTION_MODEL_EXPORTED,
-    createVersionEventPayload(options, { nlp_provider: options.nlpProvider, origin: options.origin })
+    createVersionEventPayload(options, { nlp_provider: options.nlpType, origin: options.origin })
   )
 );
 
@@ -160,7 +161,7 @@ export const trackProjectExported = createProjectEventTracker<{
 );
 
 export const trackProjectNLUImport = createProjectEventTracker<{
-  nluType: NLPProvider | undefined;
+  nluType: NLP.Constants.NLPType | undefined;
   platform: VoiceflowConstants.PlatformType;
   origin: NLUImportOrigin;
 }>(({ nluType, platform, origin, ...options }) =>

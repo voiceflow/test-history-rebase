@@ -4,15 +4,14 @@ import { useSelector } from 'react-redux';
 
 import IntentsSelect from '@/components/IntentsSelect';
 import UpgradeOption from '@/components/UpgradeOption';
+import * as NLP from '@/config/nlp';
+import * as NLU from '@/config/nlu';
 import { Permission } from '@/config/permissions';
 import { getNLUExportLimitDetails, isGatedNLUExportType } from '@/config/planLimits/nluExport';
-import { NLPProvider, NLPProviderLabels, NLPProviderToIconMap } from '@/constants';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { UpgradePrompt } from '@/ducks/tracking';
 import { usePermission } from '@/hooks';
-import { PLATFORM_PROJECT_META_MAP } from '@/pages/NewProjectV2/constants';
-import { SupportedPlatformProjectType } from '@/pages/NewProjectV2/types';
 
 import { ExportContext } from '../../Context';
 import { getNLPSelectLabel } from './constants';
@@ -20,26 +19,23 @@ import { getNLPSelectLabel } from './constants';
 const ExportModel: React.FC<{
   selectedIntentsIds?: string[];
 }> = ({ selectedIntentsIds }) => {
-  const {
-    modelExportProvider,
-    setModelExportProvider,
-    setModelExportIntents,
-    modelExportIntents,
-    nlpProviderOptions,
-    setCanExport,
-    setCheckedExportIntents,
-  } = React.useContext(ExportContext)!;
+  const { exportNLPType, setExportNLPType, setExportIntents, exportIntents, nlpTypes, setCanExport, setCheckedExportIntents } =
+    React.useContext(ExportContext)!;
   const intents = useSelector(IntentV2.allIntentsSelector);
-  const noModelData = intents.length === 0;
+  const platform = useSelector(ProjectV2.active.platformSelector);
   const [permissionToExport] = usePermission(Permission.NLU_EXPORT_ALL);
   const [permissionToExportCSV] = usePermission(Permission.NLU_EXPORT_CSV);
-  const [selectedIntents, setSelectedIntents] = React.useState(modelExportIntents);
-  const platform = useSelector(ProjectV2.active.platformSelector);
-  const platformMeta = PLATFORM_PROJECT_META_MAP[platform as SupportedPlatformProjectType];
+  const [selectedIntents, setSelectedIntents] = React.useState(exportIntents);
 
-  const modelExportSelection = (value: NLPProvider) => {
-    setModelExportProvider(value);
-    if ((!permissionToExportCSV && value === NLPProvider.VF_CSV) || (value !== NLPProvider.VF_CSV && !permissionToExport)) {
+  const noModelData = intents.length === 0;
+  const exportNLPConfig = exportNLPType && NLP.Config.get(exportNLPType);
+
+  const modelExportSelection = (value: NLP.Constants.NLPType) => {
+    setExportNLPType(value);
+
+    const isVoiceflow = value === NLP.Constants.NLPType.VOICEFLOW;
+
+    if ((!permissionToExportCSV && isVoiceflow) || (!isVoiceflow && !permissionToExport)) {
       setCanExport(false);
     } else {
       setCanExport(true);
@@ -47,20 +43,20 @@ const ExportModel: React.FC<{
   };
 
   React.useEffect(() => {
-    if (nlpProviderOptions.length === 1) {
-      setModelExportProvider(nlpProviderOptions[0]);
+    if (nlpTypes.length === 1) {
+      setExportNLPType(nlpTypes[0]);
     }
-  }, [nlpProviderOptions]);
+  }, [nlpTypes]);
 
   const handleOnChange = (intents: string[]) => {
-    setModelExportIntents(intents);
+    setExportIntents(intents);
     setSelectedIntents(intents);
   };
 
   React.useEffect(() => {
     if (selectedIntentsIds) {
       setCheckedExportIntents(selectedIntentsIds);
-      setSelectedIntents(Array.from(new Set([...selectedIntentsIds, ...modelExportIntents])));
+      setSelectedIntents(Array.from(new Set([...selectedIntentsIds, ...exportIntents])));
     }
   }, [selectedIntentsIds]);
 
@@ -68,14 +64,14 @@ const ExportModel: React.FC<{
     <>
       <label style={{ marginTop: 21 }}>Export format</label>
       <Select
-        value={modelExportProvider}
-        options={nlpProviderOptions}
+        value={exportNLPType}
+        prefix={exportNLPConfig ? <SvgIcon icon={exportNLPConfig.icon.name} color={exportNLPConfig.icon.color} /> : null}
+        options={nlpTypes}
         onSelect={modelExportSelection}
-        disabled={nlpProviderOptions.length === 1}
+        disabled={nlpTypes.length === 1}
         searchable
         placeholder="Choose an option"
-        getOptionLabel={(value) => value && NLPProviderLabels[value]}
-        prefix={modelExportProvider ? <SvgIcon icon={NLPProviderToIconMap[modelExportProvider]} /> : null}
+        getOptionLabel={(value) => value && NLP.Config.get(value).name}
         renderOptionLabel={(option, searchLabel, getOptionLabel, getOptionValue, { isFocused }) => (
           <UpgradeOption
             option={option}
@@ -89,10 +85,12 @@ const ExportModel: React.FC<{
           />
         )}
       />
+
       {/* change this text */}
       <BlockText fontSize={13} color="#62778c" lineHeight="normal" marginTop={11}>
-        <span>{getNLPSelectLabel(platformMeta.name)(platform)}</span>
+        <span>{getNLPSelectLabel(NLU.Config.get(platform).name)(platform)}</span>
       </BlockText>
+
       <label style={{ marginTop: 24 }}>Intents</label>
 
       {noModelData ? (

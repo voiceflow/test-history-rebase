@@ -131,16 +131,14 @@ const NewProject: React.FC = () => {
     let newVersionID: string | null = null;
 
     try {
-      const project = await createProject(
-        {
-          name: DEFAULT_PROJECT_NAME,
-          listID,
-          platform: Realtime.projectTypeToLegacyPlatform(selectedChannel!.platform, selectedChannel!.projectType),
-          language: getLanguage(),
-          onboarding: false,
-        },
-        getTemplateTag(selectedChannel?.platform, selectedChannel?.projectType)
-      );
+      const project = await createProject({
+        name: DEFAULT_PROJECT_NAME,
+        listID,
+        platform: Realtime.projectTypeToLegacyPlatform(selectedChannel!.platform, selectedChannel!.projectType),
+        language: getLanguage(),
+        onboarding: false,
+        templateTag: getTemplateTag(selectedChannel?.platform, selectedChannel?.projectType),
+      });
 
       newVersionID = project.versionID;
 

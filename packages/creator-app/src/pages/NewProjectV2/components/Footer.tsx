@@ -1,25 +1,22 @@
-import { BoxFlexAlignEnd, Button, ButtonVariant } from '@voiceflow/ui';
+import { Box, Button, Modal } from '@voiceflow/ui';
 import React from 'react';
-
-import Modal from '@/components/Modal';
 
 interface FooterProps {
   onCreate: () => void;
   onCancel: () => void;
-  isCreating: boolean;
 }
 
-const Footer: React.FC<FooterProps> = ({ onCreate, onCancel, isCreating }) => (
+const Footer: React.FC<FooterProps> = ({ onCreate, onCancel }) => (
   <Modal.Footer>
-    <BoxFlexAlignEnd gap={10}>
-      <Button onClick={onCancel} variant={ButtonVariant.TERTIARY} squareRadius>
+    <Box.FlexAlignEnd gap={10}>
+      <Button onClick={onCancel} variant={Button.Variant.TERTIARY} squareRadius>
         Cancel
       </Button>
 
-      <Button disabled={isCreating} onClick={onCreate} variant={ButtonVariant.PRIMARY} squareRadius>
+      <Button onClick={onCreate} variant={Button.Variant.PRIMARY} squareRadius>
         Create
       </Button>
-    </BoxFlexAlignEnd>
+    </Box.FlexAlignEnd>
   </Modal.Footer>
 );
 

@@ -24,15 +24,23 @@ export const isNotUIOnlyMenuItemOption = <T>(value: T | UIOnlyMenuItemOption): v
 
 export const createUIOnlyMenuItemOption = (
   id: string,
-  menuItemProps: UIOnlyMenuItemOption['menuItemProps'] = {},
-  tooltip: React.ReactNode = null
+  {
+    label = '',
+    tooltip = null,
+    readOnly = true,
+    disabled = false,
+    groupHeader = false,
+    menuItemProps = {},
+  }: Partial<Omit<UIOnlyMenuItemOption, 'id' | 'vfUIOnly'>> = {}
 ): UIOnlyMenuItemOption => ({
   id,
-  label: '',
+  label,
   tooltip,
   vfUIOnly: true,
-  readOnly: true,
-  disabled: false,
-  groupHeader: false,
+  readOnly,
+  disabled,
+  groupHeader,
   menuItemProps,
 });
+
+export const createDividerMenuItemOption = (id = 'divider') => createUIOnlyMenuItemOption(id, { menuItemProps: { divider: true } });

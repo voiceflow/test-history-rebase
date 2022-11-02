@@ -88,11 +88,11 @@ defaults:
           - production
 
   ignore_master_prod_break_glass_filters: &ignore_master_prod_break_glass_filters
-      branches:
-        ignore:
-          - master
-          - production
-          - /^break-glass.*$/
+    branches:
+      ignore:
+        - master
+        - production
+        - /^break-glass.*$/
 
   ignore_break_glass_deploy_filters: &ignore_break_glass_deploy_filters
     filters:
@@ -152,7 +152,6 @@ jobs:
                 cache_version: 2
 
 workflows:
-
   # Merge Queue jobs
   queue-jobs:
     jobs:
@@ -161,16 +160,14 @@ workflows:
           github_token: GITHUB_TOKEN
           enable: << pipeline.parameters.build-any >>
           force_execute: << pipeline.parameters.build-all >>
-          vf_monorepo_services: "@voiceflow/{realtime,ml-gateway}"
+          vf_monorepo_services: '@voiceflow/{realtime,ml-gateway}'
           vf_service_profile: platform
           context: dev-test
           filters:
             <<: *trying_staging_filters
 
-
   test-and-release:
     jobs:
-
       - vfcommon/install_and_build:
           <<: *slack-fail-post-step
           context: dev-test
@@ -208,6 +205,20 @@ workflows:
           <<: *slack-fail-post-step
           context: dev-test
           avoid_post_install_scripts: false
+          name: build-platform-test
+          force_execute: true
+          package: platform
+          attach_workspace: true
+          container_folder_to_copy: packages/platform/build
+          post-steps:
+            - jira/notify
+          requires:
+            - build-ui-test
+
+      - vfcommon/install_and_build:
+          <<: *slack-fail-post-step
+          context: dev-test
+          avoid_post_install_scripts: false
           name: build-realtime-sdk-test
           force_execute: true
           package: realtime-sdk
@@ -229,6 +240,7 @@ workflows:
           requires:
             - build-ml-sdk-test
             - build-realtime-sdk-test
+            - build-platform-test
             - build-ui-test
 
       - vfcommon/install_and_build:
@@ -282,6 +294,7 @@ workflows:
           requires:
             - build-ml-sdk-test
             - build-realtime-sdk-test
+            - build-platform-test
             - build-ui-test
             - build-socket-utils-test
           filters:
@@ -296,6 +309,7 @@ workflows:
           requires:
             - build-ml-sdk-test
             - build-realtime-sdk-test
+            - build-platform-test
             - build-ui-test
             - build-socket-utils-test
 
@@ -384,9 +398,8 @@ workflows:
             - build-ml-gateway-test
             - vfcommon/monorepo_release
 
-
       - vfcommon/sync_branches:
-          check_commit_message: "[bugfix]"
+          check_commit_message: '[bugfix]'
           ssh_key: << pipeline.parameters.ssh-fingerprint >>
           checkout: true
           context: dev-test
@@ -403,7 +416,7 @@ workflows:
             branches:
               only: master
 
-     # Deploy services
+      # Deploy services
       - vfcommon/post_image_push_actions:
           <<: *prod_deploy_filters
           context: dev-test
@@ -425,8 +438,8 @@ workflows:
           force_execute: << pipeline.parameters.build-backend >>
           package: ml-gateway
           build_context: packages/ml-gateway
-          dockerfile: "Dockerfile.e2e"
-          image_tag: "latest-master-e2e"
+          dockerfile: 'Dockerfile.e2e'
+          image_tag: 'latest-master-e2e'
           requires:
             - update-track-ml-gateway
           filters:
@@ -453,8 +466,8 @@ workflows:
           build_context: packages/realtime
           force_execute: << pipeline.parameters.build-backend >>
           package: realtime
-          dockerfile: "Dockerfile.e2e"
-          image_tag: "latest-master-e2e"
+          dockerfile: 'Dockerfile.e2e'
+          image_tag: 'latest-master-e2e'
           requires:
             - update-track-realtime
           filters:
@@ -489,4 +502,3 @@ workflows:
           success_slack_notify: false
           requires:
             - update-track-showcase
-

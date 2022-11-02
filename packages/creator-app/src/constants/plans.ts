@@ -1,5 +1,11 @@
 import { PlanType } from '@voiceflow/internal';
 
+export const TEAM_PLANS = [PlanType.PRO, PlanType.TEAM, PlanType.OLD_PRO, PlanType.OLD_TEAM] as const;
+
+export const STARTER_PLANS = [PlanType.STUDENT, PlanType.CREATOR, PlanType.STARTER, PlanType.OLD_STARTER] as const;
+
+export const ENTERPRISE_PLANS = [PlanType.ENTERPRISE, PlanType.OLD_ENTERPRISE] as const;
+
 export const PLAN_TYPE_META = {
   [PlanType.OLD_STARTER]: {
     label: 'Starter',

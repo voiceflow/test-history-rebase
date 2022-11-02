@@ -4,15 +4,12 @@ import React from 'react';
 import Modal, { ModalBody, ModalFooter } from '@/components/Modal';
 import { MODEL_EXPORT } from '@/config/documentation';
 import { ModalType } from '@/constants';
-import * as Export from '@/ducks/export';
 import * as Tracking from '@/ducks/tracking';
-import { connect } from '@/hocs';
 import { useModals } from '@/hooks';
-import { ExportFooter } from '@/pages/Project/components/Header/components/SharePopper/components/Export/';
+import { ExportFooter } from '@/pages/Project/components/Header/components/SharePopper/components/Export';
 import { Model } from '@/pages/Project/components/Header/components/SharePopper/components/Export/components';
-import { ConnectedProps } from '@/types';
 
-const ExportModelModal: React.FC<ConnectedExportModelModalProps> = () => {
+const ExportModelModal: React.FC = () => {
   const { data } = useModals<{ checkedItems: string[] }>(ModalType.EXPORT_MODEL);
 
   return (
@@ -27,10 +24,4 @@ const ExportModelModal: React.FC<ConnectedExportModelModalProps> = () => {
   );
 };
 
-const mapDispatchToProps = {
-  exportModel: Export.exportModel,
-};
-
-type ConnectedExportModelModalProps = ConnectedProps<{}, typeof mapDispatchToProps>;
-
-export default connect(null, mapDispatchToProps)(ExportModelModal);
+export default ExportModelModal;

@@ -1,18 +1,19 @@
 import { AlexaConstants } from '@voiceflow/alexa-types';
 import { DFESConstants } from '@voiceflow/google-dfes-types';
 import { GoogleConstants } from '@voiceflow/google-types';
+import * as Platform from '@voiceflow/platform';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import Section, { SectionVariant } from '@/components/Section';
+import * as NLU from '@/config/nlu';
 
 import { PLATFORM_PROJECT_META_MAP } from '../constants';
-import { SupportedPlatformProjectType, SupportedPlatformType } from '../types';
 import LanguageSelect from './LanguageSelect';
 
 interface LanguageSectionProps {
-  nlu: SupportedPlatformType | null;
-  channel: SupportedPlatformProjectType | null;
+  nlu: NLU.Constants.NLUType | null;
+  platform: Platform.Constants.PlatformType | null;
   language: GoogleConstants.Language | DFESConstants.Language | VoiceflowConstants.Locale | null;
   setLanguage: (value: GoogleConstants.Language | DFESConstants.Language | VoiceflowConstants.Locale | null) => void;
   alexaLocales: AlexaConstants.Locale[];
@@ -20,7 +21,8 @@ interface LanguageSectionProps {
 }
 
 const LanguageSection: React.FC<LanguageSectionProps> = (props) => {
-  const headerText = props.channel ? PLATFORM_PROJECT_META_MAP[props.channel]?.localesText : 'Language';
+  const channel = props.nlu ?? props.platform;
+  const headerText = channel ? PLATFORM_PROJECT_META_MAP[channel]?.localesText : 'Language';
 
   return (
     <Section

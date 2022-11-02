@@ -1,39 +1,40 @@
 import { AlexaConstants } from '@voiceflow/alexa-types';
+import * as Platform from '@voiceflow/platform';
 import { Select } from '@voiceflow/ui';
 import React from 'react';
 
 import TagSelect from '@/components/TagSelect';
+import * as NLU from '@/config/nlu';
 import { getLocaleLabel, LocaleArray } from '@/services/LocaleMap';
 import { Identifier } from '@/styles/constants';
 import { isAlexaPlatform } from '@/utils/typeGuards';
 
 import { DEFAULT_LANGUAGE_SELECT_PROPS, PLATFORM_PROJECT_META_MAP } from '../constants';
-import { AnyLanguage, AnyLocale, LanguageSelectProps as SelectProps, SupportedPlatformProjectType, SupportedPlatformType } from '../types';
+import { AnyLanguage, AnyLocale } from '../types';
 
 interface LanguageSelectProps {
-  nlu: SupportedPlatformType | null;
-  channel: SupportedPlatformProjectType | null;
+  nlu: NLU.Constants.NLUType | null;
+  platform: Platform.Constants.PlatformType | null;
   language: AnyLanguage | null;
   setLanguage: (value: AnyLanguage | null) => void;
   alexaLocales: AnyLocale[];
   setAlexaLocales: (locales: AnyLocale[]) => void;
 }
 
-const getLanguageSelectProps = (channel: SupportedPlatformProjectType | null, nlu: SupportedPlatformType | null) => {
-  let languageSelectProps: SelectProps = DEFAULT_LANGUAGE_SELECT_PROPS;
-
-  if (channel && PLATFORM_PROJECT_META_MAP[channel]?.languageSelectProps) {
-    languageSelectProps = PLATFORM_PROJECT_META_MAP[channel]!.languageSelectProps!;
-  }
-
+const getLanguageSelectProps = (nlu: NLU.Constants.NLUType | null, platform: Platform.Constants.PlatformType | null) => {
   if (nlu && PLATFORM_PROJECT_META_MAP[nlu]?.languageSelectProps) {
-    languageSelectProps = PLATFORM_PROJECT_META_MAP[nlu]!.languageSelectProps!;
+    return PLATFORM_PROJECT_META_MAP[nlu].languageSelectProps!;
   }
-  return languageSelectProps;
+
+  if (platform && PLATFORM_PROJECT_META_MAP[platform]?.languageSelectProps) {
+    return PLATFORM_PROJECT_META_MAP[platform].languageSelectProps!;
+  }
+
+  return DEFAULT_LANGUAGE_SELECT_PROPS;
 };
 
-const LanguageSelect: React.FC<LanguageSelectProps> = ({ language, setLanguage, alexaLocales, setAlexaLocales, channel, nlu }) =>
-  isAlexaPlatform(channel) ? (
+const LanguageSelect: React.FC<LanguageSelectProps> = ({ nlu, platform, language, setLanguage, alexaLocales, setAlexaLocales }) =>
+  isAlexaPlatform(platform) ? (
     <TagSelect
       id={Identifier.PROJECT_CREATE_SELECT_LOCALE}
       value={alexaLocales}
@@ -48,7 +49,7 @@ const LanguageSelect: React.FC<LanguageSelectProps> = ({ language, setLanguage, 
     />
   ) : (
     <Select
-      {...getLanguageSelectProps(channel, nlu)}
+      {...getLanguageSelectProps(nlu, platform)}
       id={Identifier.PROJECT_CREATE_SELECT_LANGUAGE}
       value={language}
       useLayers

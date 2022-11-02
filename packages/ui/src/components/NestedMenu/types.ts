@@ -1,10 +1,11 @@
 import { MenuTypes } from '@ui/components/Menu';
+import { TippyTooltipProps } from '@ui/components/TippyTooltip';
 import { Nullish } from '@voiceflow/common';
 import React from 'react';
 import { Popper, PopperProps } from 'react-popper';
 
 export interface BaseMenuItem {
-  tooltip?: React.ReactNode;
+  tooltip?: TippyTooltipProps | null;
   vfUIOnly?: boolean;
   disabled?: boolean;
   readOnly?: boolean;

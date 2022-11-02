@@ -1,9 +1,10 @@
 import { PlanType } from '@voiceflow/internal';
 
 import * as Tracking from '@/ducks/tracking';
+import { getUpgradeToModalProps } from '@/utils/upgrade';
 
 import { PlanLimit, UpgradeModalValueLimit } from './types';
-import { applyStarterLimits, applyTeamLimits, getUpgradeToModalProps } from './utils';
+import { applyStarterLimits, applyTeamLimits } from './utils';
 
 const DEFAULT_MODAL = {
   title: 'Need to design larger assistants?',

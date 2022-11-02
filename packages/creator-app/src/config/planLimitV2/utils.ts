@@ -1,53 +1,14 @@
-import { Utils } from '@voiceflow/common';
 import { PlanType } from '@voiceflow/internal';
 
-import { BOOK_DEMO_LINK } from '@/constants/links';
-import * as Tracking from '@/ducks/tracking';
-import type { useDispatch } from '@/hooks';
-import ModalsManager from '@/ModalsV2/manager';
-import { getPlanTypeLabel } from '@/utils/plans';
-import { onOpenInternalURLInANewTabFactory } from '@/utils/window';
-
-import { ENTERPRISE_LIMIT_PLANS, STARTER_LIMIT_PLANS, TEAM_LIMIT_PLANS } from './constants';
-import { UpgradeModal } from './types';
+import { ENTERPRISE_PLANS, STARTER_PLANS, TEAM_PLANS } from '@/constants/plans';
 
 export const applyLimitsToPlans = <Limit, Plan extends PlanType>(plans: Plan[] | ReadonlyArray<Plan>, limit: Limit): Record<Plan, Limit> =>
   Object.fromEntries(plans.map((plan) => [plan, limit])) as Record<Plan, Limit>;
 
 export const applyAllLimits = <Limit>(limit: Limit) => applyLimitsToPlans(Object.values(PlanType), limit);
 
-export const applyTeamLimits = <Limit>(limit: Limit) => applyLimitsToPlans(TEAM_LIMIT_PLANS, limit);
+export const applyTeamLimits = <Limit>(limit: Limit) => applyLimitsToPlans(TEAM_PLANS, limit);
 
-export const applyStarterLimits = <Limit>(limit: Limit) => applyLimitsToPlans(STARTER_LIMIT_PLANS, limit);
+export const applyStarterLimits = <Limit>(limit: Limit) => applyLimitsToPlans(STARTER_PLANS, limit);
 
-export const applyEnterpriseLimits = <Limit>(limit: Limit) => applyLimitsToPlans(ENTERPRISE_LIMIT_PLANS, limit);
-
-export const onOpenBookDemoPage = onOpenInternalURLInANewTabFactory(BOOK_DEMO_LINK);
-
-export const onOpenBookDemoPageWithTrackingFactory = (promptType: Tracking.UpgradePrompt) => (dispatch: ReturnType<typeof useDispatch>) => {
-  dispatch(Tracking.trackContactSales({ promptType }));
-
-  onOpenBookDemoPage();
-};
-
-// not using modal import here to avoid circular dependency
-export const onOpenPaymentModal = () => ModalsManager.open(Utils.id.cuid.slug(), 'Payment').catch(Utils.functional.noop);
-
-export const getUpgradeToModalProps = (
-  nextPlan: PlanType,
-  upgradePrompt: Tracking.UpgradePrompt
-): Pick<UpgradeModal, 'onUpgrade' | 'upgradePrompt' | 'upgradeButtonText'> => {
-  if (nextPlan === PlanType.ENTERPRISE) {
-    return {
-      onUpgrade: onOpenBookDemoPageWithTrackingFactory(upgradePrompt),
-      upgradePrompt,
-      upgradeButtonText: 'Contact Sales',
-    };
-  }
-
-  return {
-    onUpgrade: onOpenPaymentModal,
-    upgradePrompt,
-    upgradeButtonText: `Upgrade to ${getPlanTypeLabel(nextPlan)}`,
-  };
-};
+export const applyEnterpriseLimits = <Limit>(limit: Limit) => applyLimitsToPlans(ENTERPRISE_PLANS, limit);

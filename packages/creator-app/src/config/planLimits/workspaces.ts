@@ -1,6 +1,7 @@
 import { PlanType } from '@voiceflow/internal';
 
-import { ENTERPRISE_LABEL, ENTERPRISE_LIMIT_PLANS, LimitDetails, upgradeToEnterpriseAction } from '@/config/planLimits/index';
+import { ENTERPRISE_LABEL, LimitDetails, upgradeToEnterpriseAction } from '@/config/planLimits';
+import { ENTERPRISE_PLANS } from '@/constants/plans';
 
 export const WorkspacesLimitDetails: LimitDetails = {
   modalTitle: 'New Workspace',
@@ -10,4 +11,4 @@ export const WorkspacesLimitDetails: LimitDetails = {
   onSubmit: upgradeToEnterpriseAction,
 };
 
-export const canAddWorkspace = (plan: PlanType | null | undefined) => plan && ENTERPRISE_LIMIT_PLANS.includes(plan);
+export const canAddWorkspace = (plan: PlanType | null | undefined) => plan && ENTERPRISE_PLANS.includes(plan as any);

@@ -4,7 +4,7 @@ import React from 'react';
 import { hasPermission, Permission, VirtualRole } from '@/config/permissions';
 import { IdentityContext, IdentityContextValue } from '@/contexts/IdentityContext';
 
-const checkPermission = (identity: IdentityContextValue, permission?: Permission) =>
+const checkPermission = (identity: IdentityContextValue, permission?: Permission | null) =>
   !permission ||
   !!(
     identity.activeRole &&
@@ -12,7 +12,7 @@ const checkPermission = (identity: IdentityContextValue, permission?: Permission
     hasPermission(permission, identity.activeRole, identity.activePlan, identity.organizationTrialExpired)
   );
 
-export const usePermission = (permission?: Permission): [boolean, IdentityContextValue] => {
+export const usePermission = (permission?: Permission | null): [boolean, IdentityContextValue] => {
   const identity = React.useContext(IdentityContext)!;
 
   const isAllowed = checkPermission(identity, permission);
@@ -22,6 +22,7 @@ export const usePermission = (permission?: Permission): [boolean, IdentityContex
 
 export const usePermissions = (permissions: Permission[]): boolean => {
   const identity = React.useContext(IdentityContext)!;
+
   return permissions.every((permission) => checkPermission(identity, permission));
 };
 

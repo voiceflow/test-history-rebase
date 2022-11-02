@@ -1,7 +1,8 @@
 import { PlanType } from '@voiceflow/internal';
 
-import { ENTERPRISE_LIMIT_PLANS, TEAM_LIMIT_PLANS, UPGRADE_TO_TEAM_ACTION_LABEL } from '@/config/planLimits';
+import { UPGRADE_TO_TEAM_ACTION_LABEL } from '@/config/planLimits';
 import { BlockType } from '@/constants';
+import { ENTERPRISE_PLANS, TEAM_PLANS } from '@/constants/plans';
 
 export const LOCKED_STEPS = new Set([BlockType.CODE, BlockType.TRACE]);
 
@@ -17,4 +18,4 @@ export const getLockedStepTooltipText = (step: LockedStepTypes) => `Extend the p
 export const lockedStepTooltipButtonText = UPGRADE_TO_TEAM_ACTION_LABEL;
 
 export const isLockedStep = (plan: PlanType | null | undefined, step: BlockType) =>
-  plan && !(ENTERPRISE_LIMIT_PLANS.includes(plan) || TEAM_LIMIT_PLANS.includes(plan)) && LOCKED_STEPS.has(step);
+  plan && !(ENTERPRISE_PLANS.includes(plan as any) || TEAM_PLANS.includes(plan as any)) && LOCKED_STEPS.has(step);

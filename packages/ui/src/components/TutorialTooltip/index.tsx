@@ -4,7 +4,7 @@ import React from 'react';
 
 import { AnchorContainer } from './components';
 
-export interface TutorialTooltipProps extends Pick<TooltipProps, 'placement' | 'portalNode' | 'initialOpened'> {
+export interface TutorialTooltipProps extends Pick<TooltipProps, 'children' | 'placement' | 'portalNode' | 'initialOpened'> {
   title?: React.ReactNode;
   helpTitle?: React.ReactNode;
   helpMessage?: React.ReactNode;
@@ -22,28 +22,36 @@ const TutorialTooltip: React.FC<TutorialTooltipProps> = ({
   initialOpened,
   anchorRenderer,
   contentBottomUnits = 3,
-}) => (
-  <Tooltip
-    placement={placement}
-    portalNode={portalNode}
-    initialOpened={initialOpened}
-    anchorRenderer={({ ref, isOpen, onToggle }) => (
-      <AnchorContainer ref={ref} isActive={isOpen} onClick={stopPropagation(onToggle)}>
-        {anchorRenderer({ isOpen })}
-      </AnchorContainer>
-    )}
-  >
-    {title && <Tooltip.Title>{title}</Tooltip.Title>}
+}) => {
+  const renderContent = (content?: React.ReactNode) => (
+    <>
+      {title && <Tooltip.Title>{title}</Tooltip.Title>}
 
-    <Tooltip.Section marginBottomUnits={contentBottomUnits}>{children}</Tooltip.Section>
+      <Tooltip.Section marginBottomUnits={contentBottomUnits}>{content}</Tooltip.Section>
 
-    {!!(helpTitle && helpMessage) && (
-      <>
-        <Tooltip.Title>{helpTitle}</Tooltip.Title>
-        <Tooltip.Section>{helpMessage}</Tooltip.Section>
-      </>
-    )}
-  </Tooltip>
-);
+      {!!(helpTitle && helpMessage) && (
+        <>
+          <Tooltip.Title>{helpTitle}</Tooltip.Title>
+          <Tooltip.Section>{helpMessage}</Tooltip.Section>
+        </>
+      )}
+    </>
+  );
+
+  return (
+    <Tooltip
+      placement={placement}
+      portalNode={portalNode}
+      initialOpened={initialOpened}
+      anchorRenderer={({ ref, isOpen, onToggle }) => (
+        <AnchorContainer ref={ref} isActive={isOpen} onClick={stopPropagation(onToggle)}>
+          {anchorRenderer({ isOpen })}
+        </AnchorContainer>
+      )}
+    >
+      {typeof children === 'function' ? (props) => renderContent(children(props)) : renderContent(children)}
+    </Tooltip>
+  );
+};
 
 export default TutorialTooltip;

@@ -66,29 +66,10 @@ export const useDomainAndDiagramMultilevelSelectOptions = <Option extends BaseDi
   const isComponentActive = !activeDiagramType || activeDiagramType === BaseModels.Diagram.DiagramType.COMPONENT;
 
   return React.useMemo(() => {
-    const domainsHeaderItem: UIOnlyMenuItemOption = {
-      ...createUIOnlyMenuItemOption('domainsHeader'),
-      label: 'Domains',
-      groupHeader: true,
-    };
-
-    const topicsHeaderItem: UIOnlyMenuItemOption = {
-      ...createUIOnlyMenuItemOption('topicsHeader'),
-      label: 'Topics',
-      groupHeader: true,
-    };
-
-    const componentsHeaderItem: UIOnlyMenuItemOption = {
-      ...createUIOnlyMenuItemOption('componentsHeader'),
-      label: 'Components',
-      groupHeader: true,
-    };
-
-    const diagramGroupHeaderItem: UIOnlyMenuItemOption = {
-      ...createUIOnlyMenuItemOption(`${diagramGroupName}Header`),
-      label: diagramGroupName,
-      groupHeader: true,
-    };
+    const topicsHeaderItem = createUIOnlyMenuItemOption('topicsHeader', { label: 'Topics', groupHeader: true });
+    const domainsHeaderItem = createUIOnlyMenuItemOption('domainsHeader', { label: 'Domains', groupHeader: true });
+    const componentsHeaderItem = createUIOnlyMenuItemOption('componentsHeader', { label: 'Components', groupHeader: true });
+    const diagramGroupHeaderItem = createUIOnlyMenuItemOption(`${diagramGroupName}Header`, { label: diagramGroupName, groupHeader: true });
 
     const optionsMap: Record<string, DomainDiagramSelectMultilevel<Option> | Option | UIOnlyMenuItemOption> = {
       ...diagramsOptions,

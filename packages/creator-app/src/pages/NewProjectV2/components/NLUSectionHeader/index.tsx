@@ -1,7 +1,7 @@
 import { Box, Flex, TutorialInfoIcon } from '@voiceflow/ui';
 import React from 'react';
 
-import { InfoIconContainer, NLUTooltip } from './components';
+import { NLUTooltip } from './components';
 
 interface NLUSectionHeaderProps {
   showInfoIcon: boolean;
@@ -9,12 +9,10 @@ interface NLUSectionHeaderProps {
 
 const NLUSectionHeader: React.FC<NLUSectionHeaderProps> = ({ showInfoIcon }) => (
   <Flex>
-    <Box pr={8}>NLU</Box>{' '}
-    <InfoIconContainer show={showInfoIcon}>
-      <TutorialInfoIcon>
-        <NLUTooltip />
-      </TutorialInfoIcon>
-    </InfoIconContainer>
+    <Box pr={8}>NLU</Box>
+    <TutorialInfoIcon visible={showInfoIcon}>
+      <NLUTooltip />
+    </TutorialInfoIcon>
   </Flex>
 );
 

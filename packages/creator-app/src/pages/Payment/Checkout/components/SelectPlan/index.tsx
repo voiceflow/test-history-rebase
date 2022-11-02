@@ -40,8 +40,7 @@ const SelectPlan: React.FC<SelectPlanProps> = ({
       <StepSection>
         <Flex>
           {plans
-            .filter(({ id }) => id !== PlanType.OLD_ENTERPRISE)
-            .filter(({ id }) => id !== PlanType.ENTERPRISE)
+            .filter(({ id }) => id !== PlanType.ENTERPRISE && id !== PlanType.OLD_ENTERPRISE)
             .map((option) => (
               <PlanInfoCard key={option.id} plan={option} period={period} />
             ))}

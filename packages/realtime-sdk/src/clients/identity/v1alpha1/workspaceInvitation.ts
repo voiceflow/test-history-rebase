@@ -20,8 +20,8 @@ export class WorkspaceInvitation extends NestResource {
     return data;
   }
 
-  public async acceptInvite(token: string): Promise<string> {
-    const { data } = await this.post<string>(`/accept/${token}`);
+  public async acceptInvite(token: string): Promise<{ workspaceID: string }> {
+    const { data } = await this.post<{ workspaceID: string }>(`/accept/${token}`);
 
     return data;
   }

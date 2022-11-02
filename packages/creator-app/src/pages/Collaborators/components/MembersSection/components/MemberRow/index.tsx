@@ -57,7 +57,7 @@ const MemberRow: React.FC<MemberRowProps> = ({ member, inline, resendInvite, isL
 
   const isPending = !member.creator_id;
   const userIsMember = userID === member.creator_id;
-  const memberIsWorkspaceOwner = activeWorkspace?.creatorID === member.creator_id;
+  const memberIsWorkspaceOwner = activeWorkspace?.creatorID && member.creator_id && activeWorkspace?.creatorID === member.creator_id;
   const allowDropdown =
     !userIsMember && !memberIsWorkspaceOwner && !(role === UserRole.EDITOR && (member.role === UserRole.OWNER || member.role === UserRole.ADMIN));
 

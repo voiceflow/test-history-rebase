@@ -111,7 +111,9 @@ class WorkspaceMemberService extends AbstractControl {
     ]);
 
     if (identityWorkspaceInviteEnabled) {
-      return client.identity.workspaceInvitation.acceptInvite(invite);
+      const { workspaceID } = await client.identity.workspaceInvitation.acceptInvite(invite);
+
+      return workspaceID;
     }
 
     return client.workspace.acceptInvite(invite);

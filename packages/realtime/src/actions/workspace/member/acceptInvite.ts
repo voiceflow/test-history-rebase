@@ -13,10 +13,9 @@ class AcceptWorkspaceInvite extends AbstractActionControl<Realtime.workspace.mem
 
   protected process = this.reply(Realtime.workspace.member.acceptInvite, async (ctx, { payload }) => {
     const { creatorID } = ctx.data;
-    let workspaceID = '';
 
     try {
-      workspaceID = await this.services.workspace.member.acceptInvite(creatorID, payload.invite);
+      const workspaceID = await this.services.workspace.member.acceptInvite(creatorID, payload.invite);
       const workspace = await this.services.workspace.get(creatorID, workspaceID).then(Realtime.Adapters.workspaceAdapter.fromDB);
 
       // broadcast new workspace and updated member list
@@ -26,17 +25,18 @@ class AcceptWorkspaceInvite extends AbstractActionControl<Realtime.workspace.mem
         }),
         this.server.processAs(creatorID, Realtime.workspace.member.replace({ workspaceID, members: workspace.members })),
       ]);
-    } catch (error) {
-      const { data } = error.response;
-      if (data?.data) {
-        this.reject(data?.data, data?.code === 409 ? Realtime.ErrorCode.ALREADY_MEMBER_OF_WORKSPACE : undefined);
-      } else {
-        log.error(error);
-        throw error;
-      }
-    }
 
-    return workspaceID;
+      return workspaceID;
+    } catch (error) {
+      const { data } = error?.response ?? {};
+
+      if (data?.data) {
+        return this.reject(data?.data, data?.code === 409 ? Realtime.ErrorCode.ALREADY_MEMBER_OF_WORKSPACE : undefined);
+      }
+
+      log.error(error);
+      throw error;
+    }
   });
 }
 

@@ -42,7 +42,7 @@ export interface Workspace {
   created: string;
   projects: number;
   betaFlag: number;
-  creatorID: number;
+  creatorID: number | null; // workspaces created via identity service do not have creator_id
   hasSource: boolean;
   seatLimits: SeatLimits;
   organizationID: string | null;
@@ -61,7 +61,7 @@ export interface IdentityWorkspace {
 }
 
 export interface DBWorkspace {
-  creator_id: number;
+  creator_id: number | null;
   team_id: string;
   stripe_status: StripeStatus;
   name: string;

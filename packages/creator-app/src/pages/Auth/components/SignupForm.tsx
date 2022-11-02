@@ -54,7 +54,7 @@ export const SignupForm: React.FC<SignupFormProps> = ({ promo, query }) => {
   const [submitting, setSubmitting] = React.useState(false);
   const [couponValid, setCouponValid] = React.useState(false);
 
-  const onCheckSSO = useDebouncedCallback(100, async (email: string) => {
+  const onCheckSSO = useDebouncedCallback(250, async (email: string) => {
     const samlLoginURL = await getSamlLoginURL(email);
 
     setIsSaml(!!samlLoginURL);

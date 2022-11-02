@@ -8,6 +8,12 @@ export class Workspace extends NestResource {
     super({ ...options, path: '/workspace' });
   }
 
+  public async findOne(workspaceID: string): Promise<IdentityWorkspace> {
+    const { data } = await this.get<IdentityWorkspace>(`/${workspaceID}`);
+
+    return data;
+  }
+
   public async create(payload: { name: string; organizationID?: string; image?: string | null }): Promise<IdentityWorkspace> {
     const { data } = await this.post('/', payload);
 

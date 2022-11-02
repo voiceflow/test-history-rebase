@@ -245,7 +245,12 @@ export const signin =
 
       const userAccount = await dispatch(getUserAccount());
 
-      const user: Models.Account = { ...userAccount, created: userAccount.createdAt, creator_id: userAccount.creatorID };
+      const user: Models.Account = {
+        ...userAccount,
+        created: userAccount.createdAt,
+        creator_id: userAccount.creatorID,
+        first_login: options.firstLogin,
+      };
 
       dispatch(setSession({ user, token, redirectTo: options?.redirectTo, intercomUserHMAC: null }));
 

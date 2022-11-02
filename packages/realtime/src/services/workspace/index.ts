@@ -19,7 +19,28 @@ class WorkspaceService extends AbstractControl {
   }
 
   public async get(creatorID: number, workspaceID: string): Promise<Realtime.DBWorkspace> {
-    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+    const [client, identityWorkspaceEnabled] = await Promise.all([
+      this.services.voiceflow.getClientByUserID(creatorID),
+      this.services.feature.isEnabled(Realtime.FeatureFlag.IDENTITY_WORKSPACE, { userID: creatorID }),
+    ]);
+
+    if (identityWorkspaceEnabled) {
+      const [workspace, identityWorkspace, identityWorkspaceMembers] = await Promise.all([
+        client.workspace.get(workspaceID),
+        client.identity.workspace.findOne(workspaceID),
+        this.member.getAll(creatorID, workspaceID),
+      ]);
+
+      return {
+        ...workspace,
+        name: identityWorkspace.name,
+        image: identityWorkspace.image,
+        members: identityWorkspaceMembers,
+        created: identityWorkspace.createdAt,
+        team_id: identityWorkspace.id,
+        organization_id: identityWorkspace.organizationID,
+      };
+    }
 
     return client.workspace.get(workspaceID);
   }
@@ -30,18 +51,17 @@ class WorkspaceService extends AbstractControl {
       this.services.feature.isEnabled(Realtime.FeatureFlag.IDENTITY_WORKSPACE, { userID: creatorID }),
     ]);
 
-    let workspaces = await client.workspace.list();
-
     if (identityWorkspaceEnabled) {
-      // resetting members since identity workspace list doesn't have members array in it
-      const identityWorkspaces = await client.identity.workspace.list();
+      const [workspaces, identityWorkspaces] = await Promise.all([client.workspace.list(), client.identity.workspace.list()]);
+
       // this maps data from the new identity workspace to the old interface
       // we decided to do this just to communicate the intention of fully migrating in the future.
       // ideally all the extra data we have in the workspace interface should be fetched separately
       const legacyWorkspaceMap = Utils.array.createMap(workspaces, (workspace) => workspace.team_id);
 
-      workspaces = identityWorkspaces.map((identityWorkspace) => {
+      return identityWorkspaces.map((identityWorkspace) => {
         const workspace = legacyWorkspaceMap[identityWorkspace.id];
+
         return {
           ...workspace,
           name: identityWorkspace.name,
@@ -49,12 +69,13 @@ class WorkspaceService extends AbstractControl {
           created: identityWorkspace.createdAt,
           team_id: identityWorkspace.id,
           organization_id: identityWorkspace.organizationID,
+          // resetting members since identity workspace list doesn't have members array in it
           members: [],
         };
       });
     }
 
-    return workspaces;
+    return client.workspace.list();
   }
 
   public async create(

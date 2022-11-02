@@ -9,10 +9,14 @@ const SYSTEM_MESSAGES = [
   { type: 'text', text: 'How can I help you today?' },
 ];
 
-const ACTIONS = [{ label: 'Get Started' }, { label: 'Book a Demo' }, { label: 'Read Documentation' }];
+const ACTIONS = [
+  { name: 'Get Started', request: null },
+  { name: 'Book a Demo', request: null },
+  { name: 'Read Documentation', request: null },
+];
 
 export const PreviewSection: React.FC = () => {
-  const startTime = React.useMemo(() => new Date(), []);
+  const startTime = React.useMemo(() => Date.now(), []);
 
   const config = useSelector(Version.active.general.chatPublishingSelector);
 

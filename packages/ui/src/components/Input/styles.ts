@@ -17,7 +17,8 @@ export const inputFocusStyle = css`
 `;
 
 export const inputDisabledStyle = css`
-  color: ${colors(ThemeColor.QUARTERNARY)};
+  color: #132144a6;
+  border-color: #e1e4e7;
 
   ${IS_SAFARI &&
   css`

@@ -62,7 +62,6 @@ const EditorItem: React.ForwardRefRenderFunction<HTMLElement, EditorItemProps> =
                         voice={item.voice}
                         value={item.content}
                         onBlur={({ text }) => onUpdate({ content: text })}
-                        onKeyDown={({ text }) => onUpdate({ content: text })}
                         onChangeVoice={(voice) => onUpdate({ voice })}
                         skipBlurOnUnmount
                       />

@@ -1,10 +1,9 @@
-import { useCache, useDebouncedCallback, useSetup } from '@voiceflow/ui';
+import { useCache, useSetup } from '@voiceflow/ui';
 import React from 'react';
 import { Descendant, Editor } from 'slate';
 import { Editable, Slate } from 'slate-react';
 import { EditableProps } from 'slate-react/dist/components/editable';
 
-import { KEYSTROKE_SAVE_INTERVAL } from '@/constants';
 import { useForceUpdate } from '@/hooks';
 import { serializeSlateToJSX } from '@/utils/slate';
 
@@ -60,7 +59,6 @@ const SlateEditable: React.ForwardRefRenderFunction<SlateEditableRef, SlateEdita
   {
     value,
     onBlur,
-    onKeyUp,
     editor,
     onChange,
     children,
@@ -77,7 +75,7 @@ const SlateEditable: React.ForwardRefRenderFunction<SlateEditableRef, SlateEdita
 ) => {
   const [forceUpdate, contextKey] = useForceUpdate();
 
-  const cache = useCache({ onBlur, onChange, onKeyUp }, { onBlur, onChange, onKeyUp });
+  const cache = useCache({ onBlur, onChange }, { onBlur, onChange });
   const decorate = useEditorDecorate(editor);
   const onKeyDown = useEditorHotkeys(editor, editableProps.onKeyDown);
 
@@ -93,14 +91,6 @@ const SlateEditable: React.ForwardRefRenderFunction<SlateEditableRef, SlateEdita
       cache.current.onBlur?.(event);
     }
   }, []);
-
-  const onLocalKeyUp = useDebouncedCallback(
-    KEYSTROKE_SAVE_INTERVAL,
-    (event) => {
-      cache.current.onKeyUp?.(event);
-    },
-    []
-  );
 
   editor.pluginsOptions = pluginsOptions;
 
@@ -123,7 +113,6 @@ const SlateEditable: React.ForwardRefRenderFunction<SlateEditableRef, SlateEdita
           <Slate editor={editor} value={value} onChange={onLocalChange}>
             <Editable
               onBlur={onLocalBlur}
-              onKeyUp={onLocalKeyUp}
               decorate={decorate ?? undefined}
               renderLeaf={renderLeaf}
               spellCheck={spellCheck}

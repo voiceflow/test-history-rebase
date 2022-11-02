@@ -48,8 +48,6 @@ export const HOVER_THROTTLE_TIMEOUT = 24;
 
 export const WORKSPACES_LIMIT = 3;
 
-export const KEYSTROKE_SAVE_INTERVAL = 1500;
-
 export const ZERO_VECTOR: Pair<number> = [0, 0];
 
 export enum BlockCategory {

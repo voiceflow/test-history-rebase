@@ -22,7 +22,6 @@ const SSML = (
     voice,
     space,
     onBlur,
-    onKeyDown,
     locales,
     platform,
     creatable,
@@ -165,11 +164,6 @@ const SSML = (
     [onBlur]
   );
 
-  const onKeyDownCallback = React.useCallback(
-    ({ text, pluginsData }) => onKeyDown?.({ text, slots: pluginsData[PluginType.VARIABLES]?.variables || [] }),
-    [onKeyDown]
-  );
-
   const onEnterPressCallback = React.useCallback(
     ({ text, pluginsData }) => onEnterPress?.({ text, slots: pluginsData[PluginType.VARIABLES]?.variables || [] }),
     [onEnterPress]
@@ -180,7 +174,6 @@ const SSML = (
       {...props}
       ref={ref}
       onBlur={onBlurCallback}
-      onKeyDown={onKeyDownCallback}
       className={cn(ClassName.SSML, className)}
       placeholder={SSMLPlaceholder}
       onEnterPress={onEnterPress ? onEnterPressCallback : null}

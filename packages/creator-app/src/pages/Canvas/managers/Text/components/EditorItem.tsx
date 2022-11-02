@@ -56,7 +56,6 @@ const EditorItem: React.ForwardRefRenderFunction<HTMLElement, EditorItemProps> =
                     <SlateTextInput
                       value={item.content}
                       onBlur={(value) => onUpdate({ content: value })}
-                      onKeyUp={(value) => onUpdate({ content: value })}
                       extraToolbarButtons={
                         <>
                           <Divider height={15} offset={4} isVertical />

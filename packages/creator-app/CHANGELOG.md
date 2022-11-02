@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.962.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.962.2...@voiceflow/creator-app@1.962.3) (2022-11-02)
+
+
+### Bug Fixes
+
+* cleanup threads on diagram remove (CT-1079) ([#6258](https://github.com/voiceflow/creator-app/issues/6258)) ([08e48a4](https://github.com/voiceflow/creator-app/commit/08e48a482a933594dc159a8dbc2b28727c2e0856))
+* Revert "feat: fix text editor update"  [bugfix] (BUG-100) ([#6254](https://github.com/voiceflow/creator-app/issues/6254)) ([4c5b1b2](https://github.com/voiceflow/creator-app/commit/4c5b1b24e3e1eb04c308f1abe33e167574d03832))
+
+
+
+
+
 ## [1.962.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.962.1...@voiceflow/creator-app@1.962.2) (2022-11-01)
 
 

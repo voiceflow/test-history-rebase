@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.125.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.125.0...@voiceflow/realtime@1.125.1) (2022-11-02)
+
+
+### Bug Fixes
+
+* cleanup threads on diagram remove (CT-1079) ([#6258](https://github.com/voiceflow/creator-app/issues/6258)) ([08e48a4](https://github.com/voiceflow/creator-app/commit/08e48a482a933594dc159a8dbc2b28727c2e0856))
+
+
+
+
+
 # [1.125.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.124.0...@voiceflow/realtime@1.125.0) (2022-10-31)
 
 

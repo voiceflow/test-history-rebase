@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.963.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.963.1...@voiceflow/creator-app@1.963.2) (2022-11-02)
+
+
+### Bug Fixes
+
+* dont show global nomatch section [bugfix] (CT-000) ([#6267](https://github.com/voiceflow/creator-app/issues/6267)) ([6a8bb54](https://github.com/voiceflow/creator-app/commit/6a8bb54704e76cd7444510f6ad2f73384843a638)), closes [/github.com/voiceflow/creator-app/pull/6240/files#diff-7c4a5d1f6a143217e85896c291aa7e449498ef2512b0f6d644623459ec785ac4R49-R50](https://github.com//github.com/voiceflow/creator-app/pull/6240/files/issues/diff-7c4a5d1f6a143217e85896c291aa7e449498ef2512b0f6d644623459ec785ac4R49-R50)
+
+
+
+
+
 ## [1.963.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.963.0...@voiceflow/creator-app@1.963.1) (2022-11-02)
 
 

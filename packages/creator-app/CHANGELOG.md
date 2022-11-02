@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.963.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.962.3...@voiceflow/creator-app@1.963.0) (2022-11-02)
+
+
+### Features
+
+* remove onContinue call from Audio dialog (CT-89) ([#6250](https://github.com/voiceflow/creator-app/issues/6250)) ([179f1ce](https://github.com/voiceflow/creator-app/commit/179f1ce92a8f4bb271894887eb9701d636acd1df))
+
+
+
+
+
 ## [1.962.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.962.2...@voiceflow/creator-app@1.962.3) (2022-11-02)
 
 

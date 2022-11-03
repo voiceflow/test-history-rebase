@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.170.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.169.0...@voiceflow/ui@1.170.0) (2022-11-03)
+
+
+### Bug Fixes
+
+* disabled input styling (CT-1131) ([#6268](https://github.com/voiceflow/creator-app/issues/6268)) ([5efa12d](https://github.com/voiceflow/creator-app/commit/5efa12ddb25b40f35a99da97708a8bfed28f598e))
+
+
+### Features
+
+* base platform configs, nlp and nlu configs (CT-1135) ([#6065](https://github.com/voiceflow/creator-app/issues/6065)) ([42c7246](https://github.com/voiceflow/creator-app/commit/42c72463c268e64a0900ae0f3f66a575ce9b3cb4))
+
+
+
+
+
 # [1.169.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.168.1...@voiceflow/ui@1.169.0) (2022-10-31)
 
 

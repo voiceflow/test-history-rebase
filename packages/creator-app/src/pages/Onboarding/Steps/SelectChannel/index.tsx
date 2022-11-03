@@ -1,7 +1,7 @@
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
-import ChannelSelect from '@/pages/NewProject/Steps/ChannelSelect';
+import ChannelSelect from '@/pages/Onboarding/Steps/SelectChannel/ChannelSelect';
 
 import { StepID } from '../../constants';
 import { OnboardingContext } from '../../context';

@@ -2,7 +2,7 @@ import { Flex } from '@voiceflow/ui';
 
 import { styled } from '@/hocs';
 
-const Label = styled(Flex)`
+export const Label = styled(Flex)`
   width: 100%;
   font-size: 15px;
   font-weight: 600;
@@ -19,4 +19,15 @@ const Label = styled(Flex)`
   }
 `;
 
-export default Label;
+export const Container = styled.section`
+  margin-bottom: 32px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+`;
+
+export const Content = styled(Flex)`
+  flex-wrap: wrap;
+  gap: 20px;
+`;

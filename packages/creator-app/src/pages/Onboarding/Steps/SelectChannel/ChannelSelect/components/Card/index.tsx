@@ -6,8 +6,8 @@ import * as Feature from '@/ducks/feature';
 import { useSelector } from '@/hooks';
 import { ClassName } from '@/styles/constants';
 
-import { ChannelMetaType, IconType, PLATFORM_FEATURE_META } from '../../../constants';
-import { Container, FeatureStatusBubble, IconImage, PlatformDescription, PlatformFeatureBubble, PlatformIcon, PlatformName } from './components';
+import { ChannelMetaType, IconType, PLATFORM_FEATURE_META } from '../../constants';
+import { Container, FeatureStatusBubble, IconImage, PlatformDescription, PlatformFeatureBubble, PlatformIcon, PlatformName } from './styles';
 
 interface CardProps extends ChannelMetaType {
   onClick: () => void;

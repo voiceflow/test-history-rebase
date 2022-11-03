@@ -3,7 +3,7 @@ import { Utils } from '@voiceflow/common';
 import { DFESConstants } from '@voiceflow/google-dfes-types';
 import { GoogleConstants, GoogleUtils } from '@voiceflow/google-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, BoxFlex, Input, Select, Upload, UploadIconVariant, useDidUpdateEffect } from '@voiceflow/ui';
+import { Box, Input, Select, Upload, UploadIconVariant, useDidUpdateEffect } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import _constant from 'lodash/constant';
 import React from 'react';
@@ -17,7 +17,6 @@ import * as Session from '@/ducks/session';
 import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
 import { connect } from '@/hocs';
-import { SectionErrorMessage } from '@/pages/NewProject/Steps/components';
 import { FORMATTED_DIALOGFLOW_LOCALES, FORMATTED_DIALOGFLOW_LOCALES_LABELS, getDialogflowLocaleLanguage } from '@/pages/Publish/Dialogflow/utils';
 import { FORMATTED_GOOGLE_LOCALES_LABELS, FORMATTED_LOCALES, getLocaleLanguage } from '@/pages/Publish/Google/utils';
 import { DescriptorContainer } from '@/pages/Settings/components/ContentDescriptors/components';
@@ -25,7 +24,8 @@ import LOCALE_MAP from '@/services/LocaleMap';
 import { ConnectedProps } from '@/types';
 import { isAlexaPlatform, isDialogflowPlatform, isGooglePlatform, isPlatformWithInvocationName, isVoiceflowBasedPlatform } from '@/utils/typeGuards';
 
-import { PlatformSettingsMetaProps, SettingSections } from '../../../constants';
+import { PlatformSettingsMetaProps, SettingSections } from '../../../../constants';
+import { headerStyling, SectionErrorMessage, sectionStyling } from './styles';
 
 const UnTypedDropdownMultiselect: any = DropdownMultiselect;
 
@@ -34,14 +34,6 @@ interface BasicProps {
   platform: VoiceflowConstants.PlatformType;
   platformMeta: PlatformSettingsMetaProps;
 }
-
-const headerStyling = {
-  paddingBottom: '11px',
-};
-
-const sectionStyling = {
-  paddingBottom: '24px',
-};
 
 const LanguagesDescriptor: React.FC = () => <DescriptorContainer>The language(s) that your assistant supports.</DescriptorContainer>;
 
@@ -128,12 +120,12 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
         contentSuffix={descriptors.projectName}
         header="Assistant Name"
       >
-        <BoxFlex>
+        <Box.Flex>
           <Input value={newProjectName} onChangeText={setNewProjectName} onBlur={saveSettings} />
           <Box ml={16}>
             <Upload.IconUpload size={UploadIconVariant.EXTRA_SMALL} update={setProjectImage} image={projectImage ?? ''} />
           </Box>
-        </BoxFlex>
+        </Box.Flex>
       </Section>
 
       {isDialogflowPlatform(platform) && (
@@ -148,9 +140,9 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
           }
           header="Agent Name"
         >
-          <BoxFlex>
+          <Box.Flex>
             <Input value={newAgentName} onChangeText={setNewAgentName} placeholder="Enter agent name" onBlur={saveSettings} error={!newAgentName} />
-          </BoxFlex>
+          </Box.Flex>
         </Section>
       )}
 

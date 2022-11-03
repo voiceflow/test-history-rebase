@@ -1,9 +1,9 @@
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
-import { getChannelMeta } from '../../../constants';
+import { getChannelMeta } from '../../constants';
 import Card from '../Card';
-import { Container, Content, Label } from './components';
+import { Container, Content, Label } from './styles';
 
 interface SectionProps {
   name: string;

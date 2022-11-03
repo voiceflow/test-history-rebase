@@ -1,10 +1,6 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { SvgIconTypes } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
-import React from 'react';
-
-import { AmazonInvocationName, DialogflowInvocationName, GoogleInvocationName } from '@/pages/NewProject/DescriptionElements/InvocationName';
-import { AmazonLanguage, DialogflowLanguage, GeneralLanguage, GoogleLanguage } from '@/pages/NewProject/DescriptionElements/Languages';
 
 export enum PlatformFeature {
   API = 'api',
@@ -16,17 +12,6 @@ export enum PlatformFeature {
 export enum IconType {
   ICON = 'icon',
   IMAGE = 'image,',
-}
-
-export interface PlatformMetaType {
-  icon?: SvgIconTypes.Icon;
-  company: string;
-  iconColor?: string;
-  localesText?: string;
-  platformAppType: string;
-  settingsTitle: string;
-  localesDescription?: React.FC;
-  invocationDescription?: React.FC;
 }
 
 export interface ChannelMetaType {
@@ -57,48 +42,6 @@ export interface ProjectSection {
     projectType: VoiceflowConstants.ProjectType;
   }[];
 }
-
-export const getPlatformMeta = Realtime.Utils.platform.createPlatformSelector<PlatformMetaType>(
-  {
-    [VoiceflowConstants.PlatformType.ALEXA]: {
-      icon: 'amazonAlexa',
-      company: 'Amazon',
-      iconColor: '#5fcaf4',
-      localesText: 'Locales',
-      platformAppType: 'Skill',
-      settingsTitle: 'Skill Settings',
-      localesDescription: AmazonLanguage,
-      invocationDescription: AmazonInvocationName,
-    },
-    [VoiceflowConstants.PlatformType.GOOGLE]: {
-      icon: 'googleAssistant',
-      company: 'Google',
-      localesText: 'Language',
-      platformAppType: 'Action',
-      settingsTitle: 'Action Settings',
-      localesDescription: GoogleLanguage,
-      invocationDescription: GoogleInvocationName,
-    },
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: {
-      icon: 'dialogflow',
-      company: 'Google',
-      localesText: 'Language',
-      platformAppType: 'Action',
-      settingsTitle: 'Agent Settings',
-      localesDescription: DialogflowLanguage,
-      invocationDescription: DialogflowInvocationName,
-    },
-  },
-  {
-    icon: 'inFlow',
-    company: '',
-    iconColor: '#279745',
-    localesText: 'Language',
-    platformAppType: 'Assistant',
-    settingsTitle: 'Assistant Settings',
-    localesDescription: GeneralLanguage,
-  }
-);
 
 export const getChannelMeta = Realtime.Utils.platform.createPlatformAndProjectTypeSelector<ChannelMetaType>({
   [VoiceflowConstants.PlatformType.ALEXA]: {

@@ -4,17 +4,6 @@ interface SectionTitleErrorMessageProps {
   marginTop?: number;
 }
 
-export const SectionTitle = styled.label`
-  text-align: left;
-`;
-
-export const SectionDescription = styled.div`
-  text-align: left;
-  font-size: 13px;
-  color: #62778c;
-  margin-top: 10px;
-`;
-
 export const SectionErrorMessage = styled.div<SectionTitleErrorMessageProps>`
   text-align: left;
   font-size: 13px;
@@ -27,3 +16,11 @@ export const SectionErrorMessage = styled.div<SectionTitleErrorMessageProps>`
       margin-top: ${marginTop}px;
     `}
 `;
+
+export const headerStyling = {
+  paddingBottom: '11px',
+};
+
+export const sectionStyling = {
+  paddingBottom: '24px',
+};

@@ -1,8 +1,6 @@
 import { styled } from '@/hocs';
 import { Container as CreateWorkspaceContainer } from '@/pages/Onboarding/Steps/CreateWorkspace/components';
 
-export { default as Section } from './Section';
-
 export const Container = styled(CreateWorkspaceContainer)`
   width: 100%;
   max-width: 950px;

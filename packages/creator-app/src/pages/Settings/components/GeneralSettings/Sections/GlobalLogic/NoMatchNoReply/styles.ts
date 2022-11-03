@@ -21,3 +21,10 @@ export const SubSectionDescription = styled.p`
   color: #62778c;
   margin-bottom: 0;
 `;
+
+export const DelayTrigger = styled.span`
+  color: #3d82e2;
+  border-bottom: 1px dotted #3d82e2;
+  margin: 0 4px;
+  cursor: pointer;
+`;

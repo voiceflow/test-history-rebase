@@ -6,6 +6,8 @@ export { default as Collaborators } from './Collaborators';
 export * as Conversation from './Conversation';
 export * as Domain from './Domain';
 export { default as Error } from './Error';
+export { default as GlobalNoMatch } from './GlobalNoMatch';
+export { default as GlobalNoReply } from './GlobalNoReply';
 export { default as Inactivity } from './Inactivity';
 export { default as Loading } from './Loading';
 export * as NLU from './NLU';

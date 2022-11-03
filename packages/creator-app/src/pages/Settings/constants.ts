@@ -121,6 +121,7 @@ export const getSettingsMetaProps = Utils.platform.createPlatformAndProjectTypeS
     name: 'General',
     sections: [
       SettingSections.BASIC,
+      SettingSections.GLOBAL_LOGIC,
       SettingSections.CANVAS,
       SettingSections.GLOBAL_CONVERSATION_LOGIC,
       SettingSections.TEST_TOOL,

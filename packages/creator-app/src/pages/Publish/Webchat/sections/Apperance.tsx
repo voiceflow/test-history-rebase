@@ -13,6 +13,7 @@ import Section from './components/Section';
 import { PreviewCrop, SelectorBox, SelectorLine } from './styled';
 
 export const ApperanceSection: React.FC = () => {
+  const now = React.useMemo(() => Date.now(), []);
   const config = useSelector(Version.active.general.chatPublishingSelector);
   const updateConfig = useDispatch(VoiceflowVersion.patchPublishing);
 
@@ -72,7 +73,7 @@ export const ApperanceSection: React.FC = () => {
             <Box ml={12} mt={-13}>
               <ChatWidget.ChatContainer>
                 <Box backgroundColor={ThemeColor.WHITE} py={30} px={20}>
-                  <SystemResponse avatar={config.avatar} timestamp={new Date()} messages={[{ type: 'text', text: 'Lorem ipsum dolor' }]} />
+                  <SystemResponse avatar={config.avatar} timestamp={now} messages={[{ type: 'text', text: 'Lorem ipsum dolor' }]} />
                 </Box>
               </ChatWidget.ChatContainer>
             </Box>

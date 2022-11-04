@@ -27,6 +27,7 @@ const GlobalNoReplyModal = manager.create('GlobalNoReplyModal', () => ({ api, ty
       await patchSettings({
         globalNoReply: {
           prompt: value,
+          delay: settings?.globalNoReply?.delay,
         },
       });
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.965.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.965.0...@voiceflow/creator-app@1.965.1) (2022-11-04)
+
+
+### Bug Fixes
+
+* webchat project create nlu (CT-1131) ([85f107a](https://github.com/voiceflow/creator-app/commit/85f107a1d92cb19faba7d8f16a8984bc99cf5d6e))
+
+
+
+
+
 # [1.965.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.964.2...@voiceflow/creator-app@1.965.0) (2022-11-04)
 
 

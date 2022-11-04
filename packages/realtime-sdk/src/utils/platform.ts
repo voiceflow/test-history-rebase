@@ -85,6 +85,7 @@ export const getPlatformAppName = createPlatformSelector(
     [VoiceflowConstants.PlatformType.WATSON]: 'IBM Watson',
     [VoiceflowConstants.PlatformType.EINSTEIN]: 'Salesforce Einstein',
     [VoiceflowConstants.PlatformType.NUANCE_MIX]: 'Nuance Mix',
+    [VoiceflowConstants.PlatformType.WEBCHAT]: 'Web Chat',
   },
   ''
 );

@@ -49,9 +49,9 @@ export const OPTIONS: MenuItemGrouped<Option>[] = [
     options: [buildChatOption(Platform.Voiceflow.CONFIG), buildVoiceOption(Platform.Voiceflow.CONFIG)],
   },
   {
-    id: 'one-click-publish',
-    label: 'One-click publish',
-    options: [buildVoiceOption(Platform.Alexa.CONFIG), buildVoiceOption(Platform.Google.CONFIG)],
+    id: 'channels',
+    label: 'Channels',
+    options: [buildChatOption(Platform.Webchat.CONFIG), buildVoiceOption(Platform.Alexa.CONFIG), buildVoiceOption(Platform.Google.CONFIG)],
   },
   {
     id: 'coming-soon',

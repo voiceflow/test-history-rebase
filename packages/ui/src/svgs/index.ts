@@ -38,6 +38,7 @@ export { default as captureV2 } from './capture-v2.svg';
 export { default as cardV2 } from './card-v2.svg';
 export { default as caretDown } from './caret-down.svg';
 export { default as carousel } from './carousel.svg';
+export { default as chatWidget } from './chat-widget.svg';
 export { default as check } from './check.svg';
 export { default as check2 } from './check-2.svg';
 export { default as checkSquare } from './check-square.svg';

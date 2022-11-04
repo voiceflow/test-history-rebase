@@ -18,6 +18,7 @@ export enum BuiltInVariable {
 export const PlatformType = Types.satisfies<Record<string, VoiceflowConstants.PlatformType>>()({
   ALEXA: VoiceflowConstants.PlatformType.ALEXA,
   GOOGLE: VoiceflowConstants.PlatformType.GOOGLE,
+  WEBCHAT: VoiceflowConstants.PlatformType.WEBCHAT,
   VOICEFLOW: VoiceflowConstants.PlatformType.VOICEFLOW,
   DIALOGFLOW_ES: VoiceflowConstants.PlatformType.DIALOGFLOW_ES,
   DIALOGFLOW_CX: VoiceflowConstants.PlatformType.DIALOGFLOW_CX,

@@ -16,7 +16,7 @@ import { withEnterPress, withInputBlur } from '@/utils/dom';
 import { getHumanLanguageName } from '@/utils/languages';
 import { getPlatformAppName, getProjectTypeTitle } from '@/utils/platform';
 import { formatProjectName } from '@/utils/string';
-import { isPlatformWithInvocationName } from '@/utils/typeGuards';
+import { isLockedProjectType } from '@/utils/typeGuards';
 
 import {
   DropdownIconWrapper,
@@ -97,7 +97,7 @@ export const Item: React.FC<ItemProps> = ({
 
   const platformAppName = getPlatformAppName(platform);
 
-  const platformNameLabel = isPlatformWithInvocationName(platform)
+  const platformNameLabel = isLockedProjectType(platform)
     ? platformAppName
     : `${getProjectTypeTitle[projectType]} Assistant${platformAppName && `, ${platformAppName}`}`;
 

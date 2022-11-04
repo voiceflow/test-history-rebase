@@ -57,6 +57,10 @@ export const PLATFORM_PROJECT_META_MAP: Record<NLU.Constants.NLUType | Platform.
     localesText: 'Language',
   },
 
+  [Platform.Constants.PlatformType.WEBCHAT]: {
+    localesText: 'Language',
+  },
+
   [Platform.Constants.PlatformType.ALEXA]: {
     localesText: 'Locales',
     invocationDescription: 'The phrase users will use to interact with your Alexa Skill.',

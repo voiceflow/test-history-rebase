@@ -31,6 +31,16 @@ type VoiceflowBasedPlatform = Exclude<
   | VoiceflowConstants.PlatformType.DIALOGFLOW_CX
 >;
 
+// these platforms only allow the Voiceflow NLU
+export const isVoiceflowNLUOnlyPlatform = createPlatformTypeGuard<VoiceflowConstants.PlatformType>([PlatformType.WEBCHAT]);
+
+// these platforms only allow one project type
+export const isLockedProjectType = createPlatformTypeGuard<VoiceflowConstants.PlatformType>([
+  PlatformType.WEBCHAT,
+  PlatformType.ALEXA,
+  PlatformType.GOOGLE,
+]);
+
 export const isVoiceflowBasedPlatform = (platform?: VoiceflowConstants.PlatformType | null): platform is VoiceflowBasedPlatform =>
   !!platform && !isAlexaPlatform(platform) && !isGooglePlatform(platform) && !isDialogflowPlatform(platform) && !isDialogflowCXPlatform(platform);
 

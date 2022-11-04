@@ -25,7 +25,14 @@ export const getFactory =
     };
   };
 
-const LIST = [Configs.Alexa.CONFIG, Configs.Google.CONFIG, Configs.DialogflowES.CONFIG, Configs.dialogflowCX.CONFIG, Configs.Voiceflow.CONFIG];
+const LIST = [
+  Configs.Alexa.CONFIG,
+  Configs.Google.CONFIG,
+  Configs.DialogflowES.CONFIG,
+  Configs.dialogflowCX.CONFIG,
+  Configs.Voiceflow.CONFIG,
+  Configs.Webchat.CONFIG,
+];
 
 const TYPE_CONFIG_MAP = buildTypeConfigMapFactory<Configs.Base.Config>()(LIST);
 

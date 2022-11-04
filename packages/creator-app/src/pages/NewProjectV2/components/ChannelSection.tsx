@@ -1,7 +1,10 @@
+import * as Platform from '@voiceflow/platform';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { MenuItemGrouped, Select, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
 import Section, { SectionVariant } from '@/components/Section';
+import { useFeature } from '@/hooks';
 import { Identifier } from '@/styles/constants';
 
 import { Channel } from '../constants';
@@ -19,6 +22,18 @@ const ChannelSection: React.FC<ChannelSectionProps> = ({ error, value, onSelect 
   const platformConfig = Channel.getConfig(value?.platform);
   const typeConfig = value && platformConfig?.types[value.type];
 
+  const webchatEnabled = useFeature(Realtime.FeatureFlag.WEBCHAT).isEnabled;
+
+  // remove filter after flag is removed
+  const FILTERED_OPTIONS = React.useMemo(
+    () =>
+      Channel.OPTIONS.map((group) => ({
+        ...group,
+        options: group.options?.filter((option) => webchatEnabled || option.platform !== Platform.Constants.PlatformType.WEBCHAT),
+      })),
+    []
+  );
+
   return (
     <Section
       header="Channel"
@@ -35,7 +50,7 @@ const ChannelSection: React.FC<ChannelSectionProps> = ({ error, value, onSelect 
           platformConfig?.oneClickPublish && typeConfig ? <SvgIcon size={16} icon={typeConfig.icon.name} color={typeConfig.icon.color} /> : undefined
         }
         grouped
-        options={Channel.OPTIONS}
+        options={FILTERED_OPTIONS}
         onSelect={(value) => onSelect(value ? Channel.OPTIONS_MAP[value] : null)}
         useLayers
         clearable

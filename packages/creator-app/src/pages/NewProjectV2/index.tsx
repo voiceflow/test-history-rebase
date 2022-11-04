@@ -68,7 +68,10 @@ const NewProject: React.FC<NewProjectProps> = ({ listID, onClose, onToggleCreati
 
     if (Upcoming.Config.isSupported(value?.platform) || !value) return;
 
-    stateAPI.update({ type: value.type, platform: value.platform });
+    stateAPI.update({
+      type: value.type,
+      platform: value.platform,
+    });
   };
 
   const onNLUSelect = (value: NLU.Constants.NLUType | null) => {
@@ -180,8 +183,9 @@ const NewProject: React.FC<NewProjectProps> = ({ listID, onClose, onToggleCreati
             />
           ) : (
             <NLUSection
-              value={state.nlu}
+              nlu={state.nlu}
               error={state.nluError}
+              platform={state.platform}
               onSelect={onNLUSelect}
               importModel={state.importedModel}
               onImportModel={stateAPI.importedModel.set}

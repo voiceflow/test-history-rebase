@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.965.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.964.2...@voiceflow/creator-app@1.965.0) (2022-11-04)
+
+
+### Bug Fixes
+
+* actions comments (CT-1178) ([#6265](https://github.com/voiceflow/creator-app/issues/6265)) ([220c6e0](https://github.com/voiceflow/creator-app/commit/220c6e03c20bd9a20e7427800d332a797995b19e))
+* missing transcript unknown user image styles (CT-1174) ([#6261](https://github.com/voiceflow/creator-app/issues/6261)) ([6892285](https://github.com/voiceflow/creator-app/commit/689228589208fa1682da63bff3d349ce91ffe205))
+* webchat project option [bugfix] (CT-1131) ([#6269](https://github.com/voiceflow/creator-app/issues/6269)) ([1d50c6d](https://github.com/voiceflow/creator-app/commit/1d50c6db471d8e33c52b98c2cea0daf19dd2cc1e))
+
+
+### Features
+
+* unclassified page list all utterances (NLU-427) ([#6256](https://github.com/voiceflow/creator-app/issues/6256)) ([aa0ad45](https://github.com/voiceflow/creator-app/commit/aa0ad45dadb189bb32c8a248557e07c003284ec4))
+
+
+
+
+
 ## [1.964.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.964.1...@voiceflow/creator-app@1.964.2) (2022-11-04)
 
 

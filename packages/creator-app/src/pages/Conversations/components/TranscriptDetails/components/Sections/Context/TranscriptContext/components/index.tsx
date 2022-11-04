@@ -36,10 +36,18 @@ export const StyledLogo = styled.div<{ isCustom: boolean }>`
 
 export const StyledUser = styled(SvgIcon)`
   z-index: 2;
-  margin-left: -12px;
+  margin-left: -8px;
   border-radius: 50%;
-  border: 3px solid white;
+  border: 1px solid #dfe3ed;
   background-color: #f9f9f9;
+  box-shadow: rgb(252 252 252) 0px 0px 0px 3px;
+
+  & > svg {
+    height: 22px;
+    width: 22px;
+    margin-left: 13px;
+    margin-top: 13px;
+  }
 `;
 
 export const AvatarContainer = styled.img`

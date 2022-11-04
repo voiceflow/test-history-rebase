@@ -131,6 +131,7 @@ export interface BaseSelectProps {
   showNotMatchedOptions?: boolean;
   createInputPlaceholder?: string;
   showDropdownColorOnActive?: boolean;
+  width?: string;
 }
 
 interface GenericSelectProps<Option, Value> {

@@ -203,6 +203,7 @@ function Select({
   showNotMatchedOptions,
   createInputPlaceholder,
   showDropdownColorOnActive = false,
+  width,
 }: SelectInternalProps): React.ReactElement {
   const withClearIcon = clearable && !clearOnSelectActive;
   const optionLabel = isDropdown && searchable && inDropdownSearch ? '' : searchLabelProp || String(getOptionLabel(value) ?? '') || '';
@@ -472,6 +473,7 @@ function Select({
             fullWidth={fullWidth}
             onMouseDown={!disabled && !labelSearchable ? onMouseDown : undefined}
             withClearIcon={withClearIcon}
+            width={width}
           >
             {renderTrigger ? (
               renderTrigger({ ...inputProps, ref: inputRef, value: searchLabel, isOpen: opened, onOpenMenu, onHideMenu })

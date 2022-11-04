@@ -51,6 +51,7 @@ export { default as clip } from './clip.svg';
 export { default as clock } from './clock.svg';
 export { default as close } from './close.svg';
 export { default as closeSmall } from './close-small.svg';
+export { default as cluster } from './cluster.svg';
 export { default as code } from './code.svg';
 export { default as cog } from './cog.svg';
 export { default as collon } from './collon.svg';
@@ -143,6 +144,7 @@ export { default as lineCurved } from './line-curved.svg';
 export { default as lineStraight } from './line-straight.svg';
 export { default as lineText } from './line-text.svg';
 export { default as link } from './link.svg';
+export { default as list } from './list.svg';
 export { default as loader } from './loader.svg';
 export { default as lockLocked } from './locked.svg';
 export { default as luis } from './luis.svg';
@@ -185,6 +187,9 @@ export { default as preview } from './preview.svg';
 export { default as prompt } from './prompt.svg';
 export { default as publish } from './publish.svg';
 export { default as purchase } from './purchase.svg';
+
+// q
+export { default as query } from './query.svg';
 
 // r
 export { default as radar } from './radar.svg';

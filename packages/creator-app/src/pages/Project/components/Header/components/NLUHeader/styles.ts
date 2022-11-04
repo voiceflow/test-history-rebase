@@ -6,6 +6,7 @@ export const Container = styled(FlexApart)`
   flex: 2;
   padding-left: 32px;
   min-width: 500px;
+  justify-content: space-between;
 `;
 
 export const TrashButton = styled(Button).attrs({ variant: ButtonVariant.SECONDARY, flat: true })`

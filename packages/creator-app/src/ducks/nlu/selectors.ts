@@ -30,6 +30,7 @@ export const allUnclassifiedUtterancesSelector = createSelector(
               sourceID: datasource.id.toString(),
               importedByUser: getMemberByCreatorID({ id: u.sourceID })?.name,
               datasourceID: datasource.id,
+              datasourceName: datasource.name,
             } as Realtime.NLUUnclassifiedUtterances)
         ),
       ],

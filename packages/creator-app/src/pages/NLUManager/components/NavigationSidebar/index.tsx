@@ -12,6 +12,7 @@ import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import * as Slot from '@/ducks/slot';
 import { useDispatch, useFeature, useModals, useModelTracking, useNLUImport, useSelector, useTrackingEvents } from '@/hooks';
+import * as ModalsV2 from '@/ModalsV2';
 import { NLUImportModel } from '@/models';
 import { NLUManagerContext } from '@/pages/NLUManager/context';
 
@@ -20,6 +21,7 @@ import * as S from './styles';
 
 const NavigationSidebar: React.FC = () => {
   const [importClicked, setImportClicked] = useLocalStorageState('import-clicked', false);
+  const { open } = ModalsV2.useModal(ModalsV2.NLU.Import);
 
   const nluManager = React.useContext(NLUManagerContext);
   const { open: openExportModelModal } = useModals<{ checkedItems: string[] }>(ModalType.EXPORT_MODEL);
@@ -59,11 +61,11 @@ const NavigationSidebar: React.FC = () => {
             <Item
               icon="noMatch"
               title="Unclassified"
-              onAdd={() => {}}
+              onAdd={open}
               onClick={() => nluManager.goToTab(NLURoute.UNCLASSIFIED)}
               isActive={nluManager.activeTab === NLURoute.UNCLASSIFIED}
-              createPlaceholder="unclassified"
-              counter={0}
+              titleTooltip="Import data"
+              counter={nluManager.unclassifiedUtterances.length}
             />
           </Box>
         )}

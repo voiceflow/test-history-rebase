@@ -6,6 +6,7 @@ export interface SelectWrapperProps {
   fullWidth?: boolean;
   isFocused?: boolean;
   withClearIcon?: boolean;
+  width?: string;
 }
 
 const SelectWrapper = styled.div<SelectWrapperProps>`
@@ -19,8 +20,9 @@ const SelectWrapper = styled.div<SelectWrapperProps>`
       cursor: pointer;
     `};
 
-  ${({ minWidth }) =>
+  ${({ minWidth, width }) =>
     minWidth &&
+    !width &&
     css`
       min-width: 200px;
     `}
@@ -35,6 +37,12 @@ const SelectWrapper = styled.div<SelectWrapperProps>`
     withClearIcon &&
     css`
       cursor: not-allowed;
+    `}
+
+  ${({ width }) =>
+    width &&
+    css`
+      width: ${width};
     `}
 
   ${InputWrapper} {

@@ -12,10 +12,6 @@ import * as S from './styles';
 const NLUManager: React.FC = () => {
   const nluManager = useNLUManager();
 
-  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
-    nluManager.setIsScrolling(e.currentTarget.scrollTop > 0);
-  };
-
   React.useEffect(() => {
     nluManager.closeEditorTab();
     nluManager.fetchClarity();
@@ -26,7 +22,7 @@ const NLUManager: React.FC = () => {
       <S.Container>
         <NavigationSidebar />
 
-        <S.Content onScroll={handleScroll}>
+        <S.Content onScroll={nluManager.handleScroll} ref={nluManager.tableRef}>
           <FirstUsePopper />
           <Switch>
             <Route path={Path.NLU_MANAGER_INTENTS} component={IntentTable} />

@@ -6,6 +6,7 @@ import * as S from './styles';
 interface ItemProps {
   icon: SvgIconTypes.Icon;
   title: string;
+  titleTooltip?: string;
   counter?: number;
   onAdd?: VoidFunction;
   onClick: VoidFunction;
@@ -13,7 +14,7 @@ interface ItemProps {
   createPlaceholder?: string;
 }
 
-const Item: React.FC<ItemProps> = ({ createPlaceholder, onAdd, title, isActive, onClick, icon, counter }) => {
+const Item: React.FC<ItemProps> = ({ createPlaceholder, onAdd, title, titleTooltip, isActive, onClick, icon, counter }) => {
   const withAddIcon = isActive && onAdd;
 
   return (
@@ -24,7 +25,7 @@ const Item: React.FC<ItemProps> = ({ createPlaceholder, onAdd, title, isActive, 
       </BoxFlex>
 
       {withAddIcon ? (
-        <TippyTooltip title={`Create ${createPlaceholder}`}>
+        <TippyTooltip title={titleTooltip || `Create ${createPlaceholder}`}>
           <IconButton size={16} icon="plus" onClick={() => onAdd()} variant={IconButton.Variant.BASIC} />
         </TippyTooltip>
       ) : (

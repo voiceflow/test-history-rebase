@@ -36,6 +36,9 @@ const INITIAL_STATE: NLUManagerContextValue = {
   isScrolling: false,
   setIsScrolling: Utils.functional.noop,
   resetSelection: Utils.functional.noop,
+  handleScroll: Utils.functional.noop,
+  scrollToTop: Utils.functional.noop,
+  tableRef: null as any,
   ...INTENTS_INTIAL_STATE,
   ...ENTITIES_INTIAL_STATE,
   ...UNCLASSIFIED_DATA_INTIAL_STATE,
@@ -51,9 +54,9 @@ export const NLUManagerProvider: React.FC = ({ children }) => {
   const navigation = useNavigation({ ...state, onTabChange: updateState });
   const intents = useNLUIntents({ activeItemID: navigation.activeItemID, goToItem: navigation.goToItem });
   const entities = useNLUEntities({ activeItemID: navigation.activeItemID, goToItem: navigation.goToItem });
-  const unclassified = useNLUUnclassifiedData({ activeItemID: navigation.activeItemID });
   const editor = useEditorTab();
   const page = usePage(navigation.activeItemID);
+  const unclassified = useNLUUnclassifiedData({ activeItemID: navigation.activeItemID, search: filter.search, scrollToTop: page.scrollToTop });
 
   const resetSelection = () => {
     navigation.goToItem(null);

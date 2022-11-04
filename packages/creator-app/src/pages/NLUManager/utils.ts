@@ -7,6 +7,10 @@ import { hasValidPrompt } from '@/utils/prompt';
 
 import { ClarityModel, NLUIntent, ProblematicSentence } from './types';
 
+export const getUnclassifiedDataMaxRange = (page: number, utterances: Realtime.NLUUnclassifiedUtterances[]) =>
+  page * 100 + 100 > utterances.length ? utterances.length : page * 100 + 100;
+export const getUnclassifiedDataMinRange = (page: number) => page * 100;
+
 export const getConfidenceScore = (intent: Realtime.Intent) => {
   if (isBuiltInIntent(intent.id)) return 100;
   return intent.inputs.length || 0;

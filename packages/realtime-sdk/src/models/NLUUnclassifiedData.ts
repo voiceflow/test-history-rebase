@@ -5,6 +5,7 @@ export type NluUnclassifiedData = BaseModels.Version.NLUUnclassifiedData;
 interface NLUUnclassifiedUtteranceModel {
   id: string;
   datasourceID: number;
+  datasourceName: string;
   importedByUser?: string;
 }
 

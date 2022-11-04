@@ -25,15 +25,20 @@ export interface ThreadInstance extends EntityInstance, CommentAPI {
 }
 
 const threadEntitySelector = createSelector(
-  [CreatorV2.getNodeByIDSelector, ThreadV2.getThreadByIDSelector],
-  (getNode, getThread) => (threadID: string) => {
+  [CreatorV2.getNodeByIDSelector, ThreadV2.getThreadByIDSelector, CreatorV2.getLinksByPortIDSelector],
+  (getNode, getThread, getLinksByPortID) => (threadID: string) => {
     const thread = getThread({ id: threadID })!;
     const node = getNode({ id: thread?.nodeID });
+    const parentNode = getNode({ id: node?.parentNode });
 
     return {
-      thread,
       node,
-      parentNode: getNode({ id: node?.parentNode }),
+      thread,
+      parentNode,
+      actionGrantParentNode:
+        parentNode?.type === Realtime.BlockType.ACTIONS
+          ? getNode({ id: getNode({ id: getLinksByPortID({ id: parentNode.ports.in[0] })[0]?.source.nodeID })?.parentNode })
+          : null,
     };
   }
 );
@@ -85,7 +90,7 @@ class ThreadEntity extends ResourceEntity<{ thread: Realtime.Thread; node: Realt
 
   useCoordinates() {
     const { x, y, nodeID, parentNodeID, nodeX, nodeY, parentNodeX, parentNodeY, index } = this.useState((e) => {
-      const { thread, node, parentNode } = e.resolve();
+      const { thread, node, parentNode, actionGrantParentNode } = e.resolve();
 
       return {
         nodeID: thread.nodeID,
@@ -93,9 +98,9 @@ class ThreadEntity extends ResourceEntity<{ thread: Realtime.Thread; node: Realt
         y: thread.position[1],
         nodeX: node?.x,
         nodeY: node?.y,
-        parentNodeID: node?.parentNode,
-        parentNodeX: parentNode?.x,
-        parentNodeY: parentNode?.y,
+        parentNodeID: actionGrantParentNode?.id ?? node?.parentNode,
+        parentNodeX: actionGrantParentNode?.x ?? parentNode?.x,
+        parentNodeY: actionGrantParentNode?.y ?? parentNode?.y,
         index: parentNode?.combinedNodes.indexOf(thread.nodeID!),
       };
     });

@@ -1,10 +1,12 @@
 import { Utils } from '@voiceflow/common';
 import React from 'react';
 
+import { EngineContext } from '@/pages/Canvas/contexts';
 import { NodeInstance } from '@/pages/Canvas/engine/entities/nodeEntity';
 import { useElementInstance } from '@/pages/Canvas/engine/entities/utils';
 import { StepAPI } from '@/pages/Canvas/types';
 import { useEditingMode } from '@/pages/Project/hooks';
+import { Coords } from '@/utils/geometry';
 
 export interface InternalNodeInstance extends NodeInstance {
   ref: React.RefObject<HTMLElement>;
@@ -14,6 +16,7 @@ export interface InternalActionStepAPI<T extends HTMLElement = HTMLElement> exte
 
 export const useNodeInstance = () => {
   const ref = React.useRef<HTMLElement>(null);
+  const engine = React.useContext(EngineContext)!;
   const elementInstance = useElementInstance(ref);
 
   const getRect = React.useCallback(() => ref.current?.getBoundingClientRect() || null, []);
@@ -27,7 +30,11 @@ export const useNodeInstance = () => {
       getRect,
       getPosition: () => [0, 0],
       getCenterPoint: () => null,
-      getThreadAnchorCoords: () => null,
+      getThreadAnchorCoords: () => {
+        const rect = getRect();
+
+        return rect && new Coords([rect.x, rect.y]).onPlane(engine.canvas!.getPlane());
+      },
     }),
     [elementInstance]
   );

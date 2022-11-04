@@ -20,7 +20,7 @@ import NLUSectionHeader from './NLUSectionHeader';
 import SectionErrorMessage from './SectionErrorMessage';
 
 interface NLUSectionProps {
-  nlu: NLU.Constants.NLUType | null;
+  value: NLU.Constants.NLUType | null;
   error: string;
   onSelect: (value: NLU.Constants.NLUType | null) => void;
   platform: Platform.Constants.PlatformType | null;
@@ -34,9 +34,7 @@ const getPrefixIcon = (isImportLoading: boolean, nluConfig: NLU.Base.Config | nu
   return nluConfig && <SvgIcon size={16} color={nluConfig.icon.color} icon={nluConfig.icon.name} />;
 };
 
-const NLUSection: React.FC<NLUSectionProps> = ({ nlu, platform, error, onSelect, onImportModel, importModel }) => {
-  const value = isVoiceflowNLUOnlyPlatform(platform) ? NLU.Constants.NLUType.VOICEFLOW : nlu;
-
+const NLUSection: React.FC<NLUSectionProps> = ({ value, platform, error, onSelect, onImportModel, importModel }) => {
   const [isHovered, , hoverHandlers] = useHover();
   const [permissionCustomNLU] = usePermission(Permission.NLU_CUSTOM);
   const isDialogflowCXEnabled = useFeature(Realtime.FeatureFlag.DIALOGFLOW_CX);

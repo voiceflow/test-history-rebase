@@ -14,7 +14,14 @@ import * as Router from '@/ducks/router';
 import { useDispatch, useModelTracking, useTrackingEvents } from '@/hooks';
 import { NLUImportModel } from '@/models';
 import LOCALE_MAP from '@/services/LocaleMap';
-import { isAlexaPlatform, isDialogflowPlatform, isGooglePlatform, isPlatformWithInvocationName, isVoiceflowPlatform } from '@/utils/typeGuards';
+import {
+  isAlexaPlatform,
+  isDialogflowPlatform,
+  isGooglePlatform,
+  isPlatformWithInvocationName,
+  isVoiceflowNLUOnlyPlatform,
+  isVoiceflowPlatform,
+} from '@/utils/typeGuards';
 
 import { ChannelSection, ChannelValue, Container, Footer, InvocationNameSection, LanguageSection, NLUSection } from './components';
 import { DEFAULT_PROJECT_NAME, getDefaultLanguage, getLanguage, PLATFORM_PROJECT_META_MAP, Upcoming } from './constants';
@@ -71,6 +78,7 @@ const NewProject: React.FC<NewProjectProps> = ({ listID, onClose, onToggleCreati
     stateAPI.update({
       type: value.type,
       platform: value.platform,
+      nlu: isVoiceflowNLUOnlyPlatform(value.platform) ? NLU.Constants.NLUType.VOICEFLOW : null,
     });
   };
 
@@ -183,7 +191,7 @@ const NewProject: React.FC<NewProjectProps> = ({ listID, onClose, onToggleCreati
             />
           ) : (
             <NLUSection
-              nlu={state.nlu}
+              value={state.nlu}
               error={state.nluError}
               platform={state.platform}
               onSelect={onNLUSelect}

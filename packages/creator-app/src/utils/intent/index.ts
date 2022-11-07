@@ -221,15 +221,7 @@ export const inferIntentSlotType: {
   ): T extends Realtime.ChatIntentSlotDialog ? Partial<Realtime.ChatIntentSlot> : Partial<Realtime.VoiceIntentSlot>;
 } = (slot: any): any => slot;
 
-export const getIntentStrengthLevel = (count: number) => {
-  if (count === 0) return StrengthGauge.Level.NOT_SET;
-  if (count < 3) return StrengthGauge.Level.WEAK;
-  if (count < 5) return StrengthGauge.Level.MEDIUM;
-  if (count < 7) return StrengthGauge.Level.STRONG;
-  if (count >= 7) return StrengthGauge.Level.VERY_STRONG;
-
-  return StrengthGauge.Level.NOT_SET;
-};
+export const getIntentStrengthLevel = (count: number) => getIntentConfidenceStrengthLevel(count);
 
 export const getIntentClarityStrengthLevel = (count: number) => {
   if (count === 0) return StrengthGauge.Level.NOT_SET;

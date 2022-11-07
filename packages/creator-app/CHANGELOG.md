@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.966.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.966.2...@voiceflow/creator-app@1.966.3) (2022-11-07)
+
+
+### Bug Fixes
+
+* [bugfix] adds dialogflow cx import export nlp config (NLU-440) ([#6277](https://github.com/voiceflow/creator-app/issues/6277)) ([d7cb7be](https://github.com/voiceflow/creator-app/commit/d7cb7be52388bef7e7ef155da10b2f6dc8cf8652))
+
+
+
+
+
 ## [1.966.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.966.1...@voiceflow/creator-app@1.966.2) (2022-11-07)
 
 

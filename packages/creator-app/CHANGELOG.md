@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.966.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.966.0...@voiceflow/creator-app@1.966.1) (2022-11-07)
+
+
+### Bug Fixes
+
+* [bugfix] uses same scale for intent level (NLU-438) ([#6276](https://github.com/voiceflow/creator-app/issues/6276)) ([9d12f5c](https://github.com/voiceflow/creator-app/commit/9d12f5c5a365e459730aad5060523f6d9b136c7a))
+
+
+
+
+
 # [1.966.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.965.1...@voiceflow/creator-app@1.966.0) (2022-11-07)
 
 

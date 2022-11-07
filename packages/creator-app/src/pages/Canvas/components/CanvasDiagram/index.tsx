@@ -104,18 +104,29 @@ const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport, childr
   const isCommentingMode = useCommentingMode();
   const { panViewport, zoomViewport, updateViewport } = useCursorControls();
 
-  const onMouseUp = React.useCallback((event: MouseEvent) => {
-    const multiSelect = event.shiftKey;
-    const contextMenu = event.ctrlKey;
-    const nodeRightClicked = event.button === 2;
-    const middleMouseButtonClicked = event.button === 1;
+  const onMouseUp = React.useCallback(
+    (event: MouseEvent) => {
+      const multiSelect = event.shiftKey;
+      const contextMenu = event.ctrlKey;
+      const nodeRightClicked = event.button === 2;
+      const middleMouseButtonClicked = event.button === 1;
 
-    if (event.defaultPrevented || engine.isCanvasBusy || nodeRightClicked || middleMouseButtonClicked || multiSelect || contextMenu) {
-      return;
-    }
+      if (
+        event.defaultPrevented ||
+        engine.isCanvasBusy ||
+        nodeRightClicked ||
+        middleMouseButtonClicked ||
+        multiSelect ||
+        contextMenu ||
+        isCommentingMode
+      ) {
+        return;
+      }
 
-    engine.clearActivation();
-  }, []);
+      engine.clearActivation();
+    },
+    [isCommentingMode]
+  );
 
   const getZoomType = React.useCallback(() => engine.getZoomType(), []);
 

@@ -1,7 +1,6 @@
-import { Box } from '@voiceflow/ui';
+import { Box, Members } from '@voiceflow/ui';
 import React from 'react';
 
-import Members from '@/components/Members';
 import { Permission } from '@/config/permissions';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import { usePermission, useSelector } from '@/hooks';

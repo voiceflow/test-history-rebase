@@ -1,7 +1,8 @@
-import { css, styled, transition } from '@/hocs';
+import { css, styled, transition } from '@ui/styles';
 
 export interface MemberIconProps {
   flat?: boolean;
+  small?: boolean;
   large?: boolean;
   medium?: boolean;
 }
@@ -32,6 +33,14 @@ const MemberIcon = styled.div<MemberIconProps>`
       : css`
           box-shadow: 0 0 0 2px #fff, 0 1px 2px 2px rgba(17, 49, 96, 0.16);
         `}
+  ${({ small }) =>
+    small &&
+    css`
+      width: 18px;
+      height: 18px;
+      font-size: 13px;
+      line-height: 18px;
+    `}
 
   ${({ medium }) =>
     medium &&

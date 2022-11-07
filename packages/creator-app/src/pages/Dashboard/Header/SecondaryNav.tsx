@@ -1,8 +1,7 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Flex } from '@voiceflow/ui';
+import { Flex, Members } from '@voiceflow/ui';
 import React from 'react';
 
-import Members from '@/components/Members';
 import { Permission } from '@/config/permissions';
 import { usePermission } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';

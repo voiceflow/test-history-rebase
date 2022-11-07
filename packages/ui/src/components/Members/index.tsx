@@ -1,8 +1,9 @@
-import { Flex, SvgIcon, TippyTooltip } from '@voiceflow/ui';
+import Flex from '@ui/components/Flex';
+import SvgIcon from '@ui/components/SvgIcon';
+import TippyTooltip from '@ui/components/TippyTooltip';
+import User, { UserProps } from '@ui/components/User';
+import { Identifier } from '@ui/styles/constants';
 import React from 'react';
-
-import User, { UserProps } from '@/components/User';
-import { Identifier } from '@/styles/constants';
 
 import { AddMemberIcon, MembersContainer, MembersWrapper } from './components';
 
@@ -11,12 +12,13 @@ export * from './components';
 export interface MembersProps {
   min?: number;
   max?: number;
+  small?: boolean;
   flat?: boolean;
   onAdd?: () => void;
   members: NonNullable<UserProps['user']>[];
 }
 
-const Members: React.FC<MembersProps> = ({ min = 0, max = 8, flat, onAdd, members }) => {
+const Members: React.FC<MembersProps> = ({ min = 0, max = 8, flat, onAdd, members, small }) => {
   const accepted = React.useMemo(() => members.filter((member) => !!member.creator_id).reverse(), [members]);
   const renderMembers = React.useMemo(() => accepted.slice(0, max), [max, accepted]);
   const hiddenMembers = React.useMemo(() => accepted.slice(max), [max, accepted]);
@@ -36,7 +38,7 @@ const Members: React.FC<MembersProps> = ({ min = 0, max = 8, flat, onAdd, member
             position="bottom"
             disabled={!member.creator_id}
           >
-            <User flat={flat} user={member} />
+            <User flat={flat} user={member} small={small} />
           </TippyTooltip>
         ))}
 

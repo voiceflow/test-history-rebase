@@ -5173,7 +5173,7 @@
     "@voiceflow/voiceflow-types" "^3.21.0"
     googleapis "92.0.0"
 
-"@voiceflow/internal@3.0.1":
+"@voiceflow/internal@3.0.1", "@voiceflow/internal@^3.0.1":
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/@voiceflow/internal/-/internal-3.0.1.tgz#c9fbb388e3cc1cb9e3c59e9779cc81fd36437bf9"
   integrity sha512-AwqmsxVhiWrs9b7740CYnR2XMl4Kj9pEty7fLZNgW8e32yvgLsqAkRQNnWFXxPOT1Y4SO+nHxBUSQDqYC/tibQ==

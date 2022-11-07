@@ -1,3 +1,4 @@
+export { default as assistantCard } from './AssistantCard';
 export { default as badge } from './Badge';
 export { default as banner } from './Banner';
 export { default as button } from './Button';
@@ -7,6 +8,7 @@ export { default as checkbox } from './Checkbox';
 export { default as colorPicker } from './ColorPicker';
 export { default as cursor } from './Cursor';
 export { default as hueSlider } from './HueSlider';
+export { default as members } from './Members';
 export { default as popper } from './Popper';
 export { default as preview } from './Preview';
 export { default as sectionV2 } from './SectionV2';
@@ -20,4 +22,5 @@ export { default as upload } from './Upload';
 export { default as uploadV2Audio } from './UploadV2Audio';
 export { default as uploadV2Drop } from './UploadV2Drop';
 export { default as uploadV2Image } from './UploadV2Image';
+export { default as user } from './User';
 export { default as videoPlayer } from './VideoPlayer';

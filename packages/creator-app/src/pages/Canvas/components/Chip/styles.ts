@@ -1,7 +1,6 @@
-import { Flex } from '@voiceflow/ui';
+import { Flex, MemberIcon } from '@voiceflow/ui';
 
 import EditableText from '@/components/EditableText';
-import { MemberIcon } from '@/components/User';
 import { HSLShades } from '@/constants';
 import { styled, transition } from '@/hocs';
 import {

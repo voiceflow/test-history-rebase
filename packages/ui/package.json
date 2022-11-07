@@ -10,6 +10,7 @@
     "@seznam/compose-react-refs": "^1.0.6",
     "@voiceflow/base-types": "2.71.3",
     "@voiceflow/common": "8.1.5",
+    "@voiceflow/internal": "^3.0.1",
     "bowser": "^2.11.0",
     "classnames": "^2.3.1",
     "cross-fetch": "^3.0.6",

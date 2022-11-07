@@ -9,6 +9,7 @@ export const COLOR_OFF_WHITE = '#fdfdfd';
 
 export enum Identifier {
   CONTEXT_MENU = 'vf-context-menu',
+  ADD_COLLABORATORS = 'vf-add-collaborators',
 }
 
 export enum ClassName {

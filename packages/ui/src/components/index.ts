@@ -1,6 +1,7 @@
 import './LegacyButton/Button.css';
 
 export { default as Alert } from './Alert';
+export { default as AssistantCard } from './AssistantCard';
 export type { AudioPlayerProps } from './AudioPlayer';
 export { default as AudioPlayer } from './AudioPlayer';
 export { default as Badge } from './Badge';
@@ -95,6 +96,7 @@ export {
   NestedInputIconPosition,
 } from './Input';
 export { LoadCircle, default as Loader } from './Loader';
+export { default as Members } from './Members';
 export type { MenuTypes } from './Menu';
 export { default as Menu } from './Menu';
 export { default as Modal } from './Modal';
@@ -166,4 +168,6 @@ export type { DropUploadProps } from './Upload/Primitive/DropUpload';
 export type { InputRenderer } from './Upload/Primitive/LinkUpload';
 export type { LinkUploadProps } from './Upload/Primitive/LinkUpload';
 export { default as UploadV2 } from './Upload/V2';
+export type { UserData, UserProps } from './User';
+export { MemberIcon, default as User } from './User';
 export { default as VideoPlayer } from './VideoPlayer';

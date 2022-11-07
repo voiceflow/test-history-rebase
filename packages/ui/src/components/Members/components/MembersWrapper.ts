@@ -1,4 +1,4 @@
-import { styled } from '@/hocs';
+import { styled } from '@ui/styles';
 
 const MembersWrapper = styled.div`
   display: flex;

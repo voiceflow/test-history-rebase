@@ -1,7 +1,6 @@
-import { stopPropagation } from '@voiceflow/ui';
+import { stopPropagation, User } from '@voiceflow/ui';
 import React from 'react';
 
-import User from '@/components/User';
 import { StepLabelVariant } from '@/constants/canvas';
 import { useEditingMode } from '@/pages/Project/hooks';
 import { ClassName } from '@/styles/constants';

@@ -1,6 +1,5 @@
-import { Dropdown, FlexApart, Menu, SvgIcon } from '@voiceflow/ui';
+import { Dropdown, FlexApart, Menu, SvgIcon, User } from '@voiceflow/ui';
 
-import User from '@/components/User';
 import { css, styled } from '@/hocs';
 import { FadeLeft } from '@/styles/animations';
 

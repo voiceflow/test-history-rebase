@@ -1,7 +1,6 @@
-import { Button, ButtonVariant } from '@voiceflow/ui';
+import { Button, ButtonVariant, User } from '@voiceflow/ui';
 import React from 'react';
 
-import User from '@/components/User';
 import * as Account from '@/ducks/account';
 import { useSelector } from '@/hooks';
 import { LockOwner } from '@/models';

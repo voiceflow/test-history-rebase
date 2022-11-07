@@ -1,4 +1,5 @@
-import { MemberIcon } from '@/components/User';
+import { MemberIcon } from '@voiceflow/ui';
+
 import { HSLShades } from '@/constants';
 import { styled, transition } from '@/hocs';
 import {

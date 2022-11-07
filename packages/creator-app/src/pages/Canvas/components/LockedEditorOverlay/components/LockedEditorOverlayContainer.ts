@@ -1,4 +1,5 @@
-import { MemberIcon } from '@/components/User';
+import { MemberIcon } from '@voiceflow/ui';
+
 import { styled, units } from '@/hocs';
 
 const LockedEditorOverlayContainer = styled.div`

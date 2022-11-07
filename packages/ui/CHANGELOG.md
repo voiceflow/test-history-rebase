@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.172.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.171.0...@voiceflow/ui@1.172.0) (2022-11-07)
+
+
+### Features
+
+* create assistant card (CT-1110) ([#6270](https://github.com/voiceflow/creator-app/issues/6270)) ([61beed8](https://github.com/voiceflow/creator-app/commit/61beed841e90580a2ab552143ed614d6ca1a4361))
+
+
+
+
+
 # [1.171.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.170.0...@voiceflow/ui@1.171.0) (2022-11-04)
 
 

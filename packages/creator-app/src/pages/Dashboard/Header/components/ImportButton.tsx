@@ -1,4 +1,4 @@
-import { IconButton, IconButtonVariant, TippyTooltip, toast, ToastCallToAction } from '@voiceflow/ui';
+import { IconButton, IconButtonVariant, SvgIcon, TippyTooltip, toast, ToastCallToAction } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Errors from '@/config/errors';
@@ -13,7 +13,11 @@ import * as Sentry from '@/vendors/sentry';
 
 const ACCEPTED_FILE_FORMATS = '.vf,.vfr';
 
-const ImportButton: React.FC = () => {
+interface ImportButtonProps {
+  dashboardV2?: boolean;
+}
+
+const ImportButton: React.FC<ImportButtonProps> = ({ dashboardV2 }) => {
   const projects = useSelector(ProjectV2.allProjectsSelector);
 
   const goToDomain = useDispatch(Router.goToDomain);
@@ -60,7 +64,11 @@ const ImportButton: React.FC = () => {
 
   return (
     <TippyTooltip title="Import .vf file" position="bottom">
-      <IconButton preventFocusStyle variant={IconButtonVariant.OUTLINE} icon="download" large onClick={onImport} />
+      {dashboardV2 ? (
+        <SvgIcon icon="importCircle" size={16} onClick={onImport} />
+      ) : (
+        <IconButton preventFocusStyle variant={IconButtonVariant.OUTLINE} icon="download" large onClick={onImport} />
+      )}
     </TippyTooltip>
   );
 };

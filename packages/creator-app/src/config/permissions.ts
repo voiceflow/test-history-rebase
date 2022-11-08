@@ -21,6 +21,7 @@ export enum Permission {
   UPGRADE_WORKSPACE = 'workspace.UPGRADE',
   DELETE_WORKSPACE = 'workspace.DELETE',
   INVITE_BY_LINK = 'workspace.INVITE_BY_LINK',
+  INVITE = 'workspace.INVITE',
   IMPORT_PROJECT = 'workspace.IMPORT_PROJECT',
   UNABLE_TO_LEAVE_WORKSPACE = 'workspace.UNABLE_TO_LEAVE',
 
@@ -94,6 +95,7 @@ const ALL_USER_ROLES = [UserRole.ADMIN, UserRole.EDITOR, UserRole.VIEWER, UserRo
 const SIGNED_USER_ROLES = [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER, UserRole.VIEWER, UserRole.BILLING];
 const EDITOR_USER_ROLES = [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER];
 const EDITOR_AND_BILLING_USER_ROLES = [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER, UserRole.BILLING];
+const OWNER_AND_ADMIN_ROLES = [UserRole.OWNER, UserRole.ADMIN];
 
 export const ROLE_PERMISSIONS: Partial<Record<Permission, Array<UserRole | VirtualRole>>> = {
   [Permission.CONFIGURE_ORGANIZATION]: [UserRole.ADMIN],
@@ -103,6 +105,7 @@ export const ROLE_PERMISSIONS: Partial<Record<Permission, Array<UserRole | Virtu
   [Permission.MANAGE_ADMIN_COLLABORATORS]: [UserRole.ADMIN],
   [Permission.DELETE_TRANSCRIPT]: EDITOR_USER_ROLES,
   [Permission.INVITE_BY_LINK]: EDITOR_AND_BILLING_USER_ROLES,
+  [Permission.INVITE]: OWNER_AND_ADMIN_ROLES,
 
   [Permission.CONFIGURE_WORKSPACE]: [UserRole.ADMIN, UserRole.BILLING],
   [Permission.CONFIGURE_WORKSPACE_DEVELOPER]: [UserRole.ADMIN],

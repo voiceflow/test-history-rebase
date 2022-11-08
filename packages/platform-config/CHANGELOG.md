@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 1.2.0 (2022-11-08)
+
+
+### Features
+
+* rename platform into platform configs (CT-000) ([#6275](https://github.com/voiceflow/creator-app/issues/6275)) ([89b1588](https://github.com/voiceflow/creator-app/commit/89b158894af802508e2ce2d3bb0169cee691f54e))
+
+
+
+
+
 ## [1.1.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform@1.1.2...@voiceflow/platform@1.1.3) (2022-11-08)
 
 **Note:** Version bump only for package @voiceflow/platform

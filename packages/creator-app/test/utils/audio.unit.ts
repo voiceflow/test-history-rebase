@@ -1,7 +1,7 @@
 import suite from '@/../test/_suite';
 import { prettifyBucketURL } from '@/utils/audio';
 
-const AUDIO_FILE_BUCKET_NAME = 'https://s3.amazonaws.com/com.getstoryflow.audio.sandbox';
+const AUDIO_FILE_BUCKET_NAME = 'https://s3.amazonaws.com/dev-voiceflow-audio';
 
 suite('utils/audio', () => {
   describe('prettifyBucketURL', () => {

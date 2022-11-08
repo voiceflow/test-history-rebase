@@ -16,7 +16,7 @@ const withImage = createExample('Image with value', () =>
       renderInput={renderInput}
       onChange={onChange}
       ratio={75.95015576323988}
-      value="https://s3.amazonaws.com/com.voiceflow.dev.api.images/1651853928724-group-16.png"
+      value="https://s3.amazonaws.com/dev-voiceflow-images/1651853928724-group-16.png"
     />
   )
 );
@@ -28,7 +28,7 @@ const autoHeight = createExample('Image with autoHeight', () =>
       onChange={onChange}
       ratio={75.95015576323988}
       autoHeight
-      value="https://s3.amazonaws.com/com.voiceflow.dev.api.images/1651853928724-group-16.png"
+      value="https://s3.amazonaws.com/dev-voiceflow-images/1651853928724-group-16.png"
     />
   )
 );

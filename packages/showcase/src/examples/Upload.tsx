@@ -16,7 +16,7 @@ const fullImage = createExample('FullImage', () =>
       update={update}
       renderInput={renderInput}
       ratio={75.95015576323988}
-      image="https://s3.amazonaws.com/com.voiceflow.dev.api.images/1651853928724-group-16.png"
+      image="https://s3.amazonaws.com/dev-voiceflow-images/1651853928724-group-16.png"
     />
   )
 );

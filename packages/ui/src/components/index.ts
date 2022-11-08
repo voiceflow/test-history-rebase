@@ -1,6 +1,7 @@
 import './LegacyButton/Button.css';
 
 export { default as Alert } from './Alert';
+export type { AssistantCardProps } from './AssistantCard';
 export { default as AssistantCard } from './AssistantCard';
 export type { AudioPlayerProps } from './AudioPlayer';
 export { default as AudioPlayer } from './AudioPlayer';

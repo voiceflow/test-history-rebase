@@ -24,8 +24,7 @@ import {
   Title,
 } from './styles';
 
-interface AssistantCardProps {
-  wide?: boolean;
+export interface AssistantCardProps {
   title: string;
   status?: string;
   members?: UserData[];
@@ -37,19 +36,19 @@ interface AssistantCardProps {
   children?: React.ReactChild;
 }
 
-const AssistantCard: React.FC<AssistantCardProps> = ({ userRole = 'viewer', icon, image, title, status, members, options, wide, children }) => {
+const AssistantCard: React.FC<AssistantCardProps> = ({ userRole = 'viewer', icon, image, title, status, members, options, children }) => {
   const [active, setActive] = React.useState(false);
   const isViewer = userRole === UserRole.VIEWER;
 
   return (
-    <OuterContainer wide={wide}>
+    <OuterContainer>
       <CardContainer active={active}>
         <InnerContainer className="assistant-card-image">
           {image ? <ProjectImage src={image} /> : <SvgIcon icon="systemImage" size={45} color="#393E42" />}
         </InnerContainer>
 
         <InnerContainer className="assistant-card-actions">
-          <StyledLink href="#"></StyledLink>
+          <StyledLink href="#" />
           <Box.Flex zIndex={100}>
             <Box.Flex flexDirection="row">
               {children || (

@@ -1,21 +1,16 @@
 import { Link, Text } from '@ui/components/Text';
 import { colors, css, styled, ThemeColor, transition } from '@ui/styles';
 
-export const OuterContainer = styled.section<{ wide?: boolean }>`
+export const OuterContainer = styled.section`
   width: 100%;
-  ${({ wide }) =>
-    !wide &&
-    css`
-      max-width: 367px;
-    `};
 `;
 
 export const CardContainer = styled.div<{ active: boolean }>`
   width: 100%;
   height: 220px;
   background-color: #f9f9f9;
-  border-radius: 8px;
   border: #dfe3ed 1px solid;
+  border-radius: 8px;
   position: relative;
   display: flex;
   align-items: center;

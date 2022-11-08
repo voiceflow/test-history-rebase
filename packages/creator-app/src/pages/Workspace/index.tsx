@@ -1,3 +1,4 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Button, ButtonVariant } from '@voiceflow/ui';
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
@@ -8,14 +9,17 @@ import * as Router from '@/ducks/router';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { CheckInvitationGate } from '@/gates';
 import { lazy, withBatchLoadingGate } from '@/hocs';
-import { useDispatch, useSelector } from '@/hooks';
+import { useDispatch, useFeature, useSelector } from '@/hooks';
 import RedirectWithSearch from '@/Routes/RedirectWithSearch';
 
 const Settings = lazy(() => import('@/pages/Workspace/Settings'));
-const Dashboard = lazy(() => import('@/pages/Dashboard'));
+const DashboardV1 = lazy(() => import('@/pages/Dashboard'));
+const DashboardV2 = lazy(() => import('@/pages/DashboardV2'));
 
 const Workspace: React.FC = () => {
   const workspaceIDs = useSelector(WorkspaceV2.allWorkspaceIDsSelector);
+  const dashboardV2FF = useFeature(Realtime.FeatureFlag.DASHBOARD_V2);
+  const DashboardComponent = React.useMemo<typeof DashboardV2>(() => (dashboardV2FF.isEnabled ? DashboardV2 : DashboardV1), [dashboardV2FF]);
 
   const goToNewWorkspace = useDispatch(Router.goToNewWorkspace);
 
@@ -48,7 +52,7 @@ const Workspace: React.FC = () => {
       <RedirectWithSearch exact from={LegacyPath.WORKSPACE_API_KEYS} to={Path.WORKSPACE_DEVELOPER_SETTINGS} />
 
       <Route path={Path.WORKSPACE_SETTINGS} component={Settings} />
-      <Route exact path={[Path.WORKSPACE_DASHBOARD, Path.DASHBOARD]} component={Dashboard} />
+      <Route exact path={[Path.WORKSPACE_DASHBOARD, Path.DASHBOARD]} component={DashboardComponent} />
 
       <RedirectWithSearch to={Path.DASHBOARD} />
     </Switch>

@@ -43,6 +43,8 @@ export enum FeatureFlag {
 
   WEBCHAT = 'webchat',
 
+  DASHBOARD_V2 = 'dashboard_V2',
+
   MVP_CUSTOM_BLOCK = 'mvp_custom_block',
 
   // canvas and editor updates

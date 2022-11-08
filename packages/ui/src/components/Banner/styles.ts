@@ -17,8 +17,8 @@ export const CloseButton = styled(Button).attrs({ variant: Button.Variant.WHITE 
 
 export const OuterContainer = styled.div<{ isOpen: boolean }>`
   width: 100%;
-  height: 162px;
-  padding: 32px;
+  max-height: 162px;
+  padding: 0px 16px 32px;
 
   ${({ isOpen }) =>
     isOpen

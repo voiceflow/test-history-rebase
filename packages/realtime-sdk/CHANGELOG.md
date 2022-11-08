@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.191.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.190.0...@voiceflow/realtime-sdk@1.191.0) (2022-11-08)
+
+
+### Features
+
+* compose dashboard v2 (CT-1101) ([#6284](https://github.com/voiceflow/creator-app/issues/6284)) ([13fbb65](https://github.com/voiceflow/creator-app/commit/13fbb65273364f4db4e4b73a92364a32b1f681d6))
+
+
+
+
+
 # [1.190.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.189.0...@voiceflow/realtime-sdk@1.190.0) (2022-11-04)
 
 

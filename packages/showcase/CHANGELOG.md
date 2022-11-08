@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.29.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/showcase@1.28.2...@voiceflow/showcase@1.29.0) (2022-11-08)
+
+
+### Features
+
+* compose dashboard v2 (CT-1101) ([#6284](https://github.com/voiceflow/creator-app/issues/6284)) ([13fbb65](https://github.com/voiceflow/creator-app/commit/13fbb65273364f4db4e4b73a92364a32b1f681d6))
+
+
+
+
+
 ## [1.28.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/showcase@1.28.1...@voiceflow/showcase@1.28.2) (2022-11-08)
 
 **Note:** Version bump only for package @voiceflow/showcase

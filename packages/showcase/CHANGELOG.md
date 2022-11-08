@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.28.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/showcase@1.28.0...@voiceflow/showcase@1.28.1) (2022-11-08)
+
+
+### Bug Fixes
+
+* new dev bucket ([f47df2a](https://github.com/voiceflow/creator-app/commit/f47df2a1a920e6b50c23a417b20ba6000e24ebd2))
+
+
+
+
+
 # [1.28.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/showcase@1.27.7...@voiceflow/showcase@1.28.0) (2022-11-07)
 
 

@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.966.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.966.3...@voiceflow/creator-app@1.966.4) (2022-11-08)
+
+
+### Bug Fixes
+
+* audio test ([826354a](https://github.com/voiceflow/creator-app/commit/826354a5235e784481c38d437d362577635666f1))
+* new dev bucket ([f47df2a](https://github.com/voiceflow/creator-app/commit/f47df2a1a920e6b50c23a417b20ba6000e24ebd2))
+
+
+
+
+
 ## [1.966.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.966.2...@voiceflow/creator-app@1.966.3) (2022-11-07)
 
 

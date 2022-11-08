@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.967.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.966.4...@voiceflow/creator-app@1.967.0) (2022-11-08)
+
+
+### Features
+
+* **creator-app:** added clear button to NLUM search bar (NLU-420) ([#6280](https://github.com/voiceflow/creator-app/issues/6280)) ([be19783](https://github.com/voiceflow/creator-app/commit/be197832a50317ed833c69faae1883829e6eb44c))
+* dashboard header (CT-1107) ([#6248](https://github.com/voiceflow/creator-app/issues/6248)) ([5b5f78a](https://github.com/voiceflow/creator-app/commit/5b5f78a6c1a9f54800aac25a5c6211416beafbc6))
+
+
+
+
+
 ## [1.966.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.966.3...@voiceflow/creator-app@1.966.4) (2022-11-08)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.173.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.172.0...@voiceflow/ui@1.173.0) (2022-11-08)
+
+
+### Features
+
+* **creator-app:** added clear button to NLUM search bar (NLU-420) ([#6280](https://github.com/voiceflow/creator-app/issues/6280)) ([be19783](https://github.com/voiceflow/creator-app/commit/be197832a50317ed833c69faae1883829e6eb44c))
+
+
+
+
+
 # [1.172.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.171.0...@voiceflow/ui@1.172.0) (2022-11-07)
 
 

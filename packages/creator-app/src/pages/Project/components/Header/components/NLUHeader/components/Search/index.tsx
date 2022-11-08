@@ -36,11 +36,12 @@ const NLUSearch: React.FC<NLUSearchProps> = ({ value, onChange, placeholder }) =
     >
       <SearchInput
         ref={inputRef}
-        icon="search"
+        icon={value ? 'close' : 'search'}
         value={value}
         iconProps={{ color: '#8da2b5', size: 16 }}
         placeholder={placeholder}
         onChangeText={onChange}
+        onIconClick={() => onChange('')}
         onMouseEnter={() => setTooltipOpen(true)}
         onMouseLeave={() => setTooltipOpen(false)}
         onFocus={() => setTooltipOpen(false)}

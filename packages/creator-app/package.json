@@ -28,7 +28,7 @@
     "@voiceflow/google-types": "2.18.6",
     "@voiceflow/internal": "3.0.1",
     "@voiceflow/ml-sdk": "^1.19.0",
-    "@voiceflow/platform": "^1.1.3",
+    "@voiceflow/platform-config": "^1.1.2",
     "@voiceflow/react-chat": "1.28.2",
     "@voiceflow/realtime-sdk": "^1.190.0",
     "@voiceflow/ui": "^1.173.0",

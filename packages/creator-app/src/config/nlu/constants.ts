@@ -1,4 +1,4 @@
-import * as Platform from '@voiceflow/platform';
+import * as Platform from '@voiceflow/platform-config';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 export const NLUType = Platform.Utils.Types.satisfies<Record<string, VoiceflowConstants.PlatformType>>()({

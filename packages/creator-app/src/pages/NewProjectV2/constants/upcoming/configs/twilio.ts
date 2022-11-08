@@ -1,4 +1,4 @@
-import * as Platform from '@voiceflow/platform';
+import * as Platform from '@voiceflow/platform-config';
 
 import { PlatformType } from '../constants';
 import * as Base from './base';
@@ -11,8 +11,8 @@ export const CONFIG = Base.extend({
   name: 'Twilio',
 
   types: {
-    [Platform.Constants.ProjectType.CHAT]: { ...Platform.Common.Chat.Type.CONFIG, name: 'Twilio SMS' },
-    [Platform.Constants.ProjectType.VOICE]: { ...Platform.Common.Voice.Type.CONFIG, name: 'Twilio IVR' },
+    [Platform.Constants.ProjectType.CHAT]: { ...Platform.Common.Chat.CONFIG, name: 'Twilio SMS' },
+    [Platform.Constants.ProjectType.VOICE]: { ...Platform.Common.Voice.CONFIG, name: 'Twilio IVR' },
   },
 });
 

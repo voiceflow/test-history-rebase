@@ -1,4 +1,4 @@
-import * as Platform from '@voiceflow/platform';
+import * as Platform from '@voiceflow/platform-config';
 
 import { PlatformType } from '../constants';
 
@@ -11,4 +11,4 @@ export const CONFIG = Platform.Utils.Types.satisfies<Config>()({
   type: PlatformType.TWILIO,
 });
 
-export const extend = Platform.Base.extendFactory<Config>()(CONFIG);
+export const extend = Platform.Base.extendFactory<Config>(CONFIG);

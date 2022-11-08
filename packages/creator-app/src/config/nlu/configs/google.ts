@@ -1,5 +1,5 @@
 import { PlanType } from '@voiceflow/internal';
-import * as Platform from '@voiceflow/platform';
+import * as Platform from '@voiceflow/platform-config';
 
 import * as NLP from '@/config/nlp';
 

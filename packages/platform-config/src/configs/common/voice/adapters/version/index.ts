@@ -1,0 +1,31 @@
+import * as Base from '@platform-config/configs/base';
+import { VoiceVersion } from '@voiceflow/voice-types';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
+import { createMultiAdapter, notImplementedAdapter } from 'bidirectional-adapter';
+
+import * as Models from '../../models';
+import * as Publishing from './publishing';
+import * as Session from './session';
+import * as Settings from './settings';
+
+export { Publishing, Session, Settings };
+
+export const simple = createMultiAdapter<
+  Base.Adapters.Version.DBVersion<VoiceVersion.Version<string>>,
+  Models.Version.Model,
+  Base.Adapters.Version.FromDBOptions
+>(
+  (version, options) => ({
+    ...Base.Adapters.Version.simple.fromDB(version, options),
+    session: Session.simple.fromDB(version.platformData.settings.session, {
+      defaultVoice: version.platformData.settings.defaultVoice ?? VoiceflowConstants.Voice.DEFAULT,
+    }),
+    settings: Settings.simple.fromDB(version.platformData.settings, {
+      defaultVoice: version.platformData.settings.defaultVoice ?? VoiceflowConstants.Voice.DEFAULT,
+    }),
+    publishing: Publishing.simple.fromDB(version.platformData.publishing, {
+      defaultVoice: version.platformData.settings.defaultVoice ?? VoiceflowConstants.Voice.DEFAULT,
+    }),
+  }),
+  notImplementedAdapter.transformer
+);

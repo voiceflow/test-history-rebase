@@ -1,7 +1,7 @@
 import { AlexaConstants } from '@voiceflow/alexa-types';
 import { DFESConstants } from '@voiceflow/google-dfes-types';
 import { GoogleConstants } from '@voiceflow/google-types';
-import * as Platform from '@voiceflow/platform';
+import * as Platform from '@voiceflow/platform-config';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 

@@ -1,4 +1,4 @@
-import * as Platform from '@voiceflow/platform';
+import * as Platform from '@voiceflow/platform-config';
 
 import * as Configs from './configs';
 

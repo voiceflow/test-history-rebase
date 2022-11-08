@@ -2,7 +2,7 @@ import { AlexaConstants, AlexaUtils } from '@voiceflow/alexa-types';
 import { NonNullishRecord, Nullable } from '@voiceflow/common';
 import { DFESConstants } from '@voiceflow/google-dfes-types';
 import { GoogleConstants, GoogleUtils } from '@voiceflow/google-types';
-import * as Platform from '@voiceflow/platform';
+import * as Platform from '@voiceflow/platform-config';
 import { Box, toast, useSmartReducerV2 } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';

@@ -1,5 +1,5 @@
 import { AlexaConstants } from '@voiceflow/alexa-types';
-import * as Platform from '@voiceflow/platform';
+import * as Platform from '@voiceflow/platform-config';
 import { Select } from '@voiceflow/ui';
 import React from 'react';
 

@@ -1,4 +1,4 @@
-import * as Platform from '@voiceflow/platform';
+import * as Platform from '@voiceflow/platform-config';
 import { MenuItemGrouped, TippyTooltipProps } from '@voiceflow/ui';
 
 import { getLabelTooltip } from '@/components/UpgradeOption';

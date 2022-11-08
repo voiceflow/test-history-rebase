@@ -1,14 +1,7 @@
-import * as Platform from '@voiceflow/platform';
-import { SvgIconTypes } from '@voiceflow/ui';
+import * as Platform from '@voiceflow/platform-config';
 
 import { FileExtension } from '../../../constants/file';
 import { NLPType } from '../constants';
-
-export interface Icon {
-  name: SvgIconTypes.Icon;
-
-  color: string;
-}
 
 interface Import {
   name: string;
@@ -27,7 +20,7 @@ export interface Config {
 
   name: string;
 
-  icon: Icon;
+  icon: Platform.Types.Icon;
 
   import: Import | null;
 
@@ -49,4 +42,4 @@ export const CONFIG = Platform.Utils.Types.satisfies<Config>()({
   export: null,
 });
 
-export const extend = Platform.Base.extendFactory<Config>()(CONFIG);
+export const extend = Platform.ConfigUtils.Config.extendFactory<Config>(CONFIG);

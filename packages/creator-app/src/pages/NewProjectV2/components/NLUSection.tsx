@@ -1,4 +1,4 @@
-import * as Platform from '@voiceflow/platform';
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { getNestedMenuFormattedLabel, MenuItemGrouped, Select, SvgIcon } from '@voiceflow/ui';
 import React from 'react';

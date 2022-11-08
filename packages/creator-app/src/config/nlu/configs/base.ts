@@ -1,5 +1,5 @@
 import { PlanType } from '@voiceflow/internal';
-import * as Platform from '@voiceflow/platform';
+import * as Platform from '@voiceflow/platform-config';
 
 import * as NLP from '@/config/nlp';
 
@@ -16,7 +16,7 @@ export interface Config {
 
   name: string;
 
-  icon: NLP.Base.Icon;
+  icon: Platform.Types.Icon;
 
   /**
    * base nlp is used for importing
@@ -50,4 +50,4 @@ export const CONFIG = Platform.Utils.Types.satisfies<Config>()({
   planType: null,
 });
 
-export const extend = Platform.Base.extendFactory<Config>()(CONFIG);
+export const extend = Platform.Base.extendFactory<Config>(CONFIG);

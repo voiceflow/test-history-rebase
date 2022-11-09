@@ -51,6 +51,7 @@ export const createWorkspaceEventPayload = <T extends WorkspaceEventInfo, D exte
   properties: {
     ...data,
     workspace_id: workspaceID,
+    last_product_activity: Date.now(),
   },
 });
 

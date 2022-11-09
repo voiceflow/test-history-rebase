@@ -4,11 +4,12 @@ import React from 'react';
 import { SectionToggleVariant, SectionVariant, UncontrolledSection as Section } from '@/components/Section';
 import { NLPTrainStageType } from '@/constants/platforms';
 import { PrototypeStatus } from '@/constants/prototype';
+import { TrainingContext } from '@/contexts';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as PrototypeDuck from '@/ducks/prototype';
 import * as Tracking from '@/ducks/tracking';
 import { useSelector } from '@/hooks';
-import { NLPContext, TrainingModelContext } from '@/pages/Project/contexts';
+import { TrainingModelContext } from '@/pages/Project/contexts';
 
 import TrainContainer from './TrainContainer';
 import Trained from './Trained';
@@ -23,7 +24,7 @@ export interface TrainingSectionProps {
 }
 
 const TrainingSection: React.FC<TrainingSectionProps> = ({ isOpen, onOpen, toggleOpen }) => {
-  const nlp = React.useContext(NLPContext)!;
+  const nlp = React.useContext(TrainingContext)!;
   const { cancelTraining, startTraining, isTrained, isTraining, state: trainingState } = React.useContext(TrainingModelContext);
   const status = useSelector(PrototypeDuck.prototypeStatusSelector);
   const platform = useSelector(ProjectV2.active.platformSelector);

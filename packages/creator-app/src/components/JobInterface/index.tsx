@@ -5,9 +5,9 @@ import PageProgressBar from '@/components/PageProgressBar';
 import { JobContextValue } from '@/hooks/job';
 import { Job } from '@/models';
 import { StageContent } from '@/platforms/types';
+import { getProgress } from '@/utils/job';
 
 import Popup from './Popup';
-import { getProgress } from './utils';
 
 export { default as DownloadStage } from './DownloadStage';
 export { default as ErrorStage } from './ErrorStage';
@@ -21,7 +21,7 @@ interface JobInterfaceProps<J extends Job<any>> {
 const JobInterface = <T extends Job<any>>({ context, Content, children }: React.PropsWithChildren<JobInterfaceProps<T>>) => {
   const stage = context.job?.stage;
 
-  const progress = getProgress(stage);
+  const progress = getProgress(context.job);
 
   const popper = usePopper({
     placement: 'bottom-end',

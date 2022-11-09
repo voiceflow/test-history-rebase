@@ -44,3 +44,8 @@ export const isFinished = (job: Nullable<Job<any>>): boolean => job?.status === 
 export const isNotify = (job: Nullable<Job<any>>): boolean => job?.status === JobStatus.PENDING || isFinished(job);
 
 export const isReady = (job: Nullable<Job<any>>): boolean => !job || isFinished(job);
+
+export const getProgress = (job: Nullable<Job<any>>): number => {
+  const progress = job?.stage?.data?.progress;
+  return typeof progress === 'number' ? progress : 0;
+};

@@ -8,6 +8,7 @@ import client from '@/client';
 import * as Errors from '@/config/errors';
 import { NLURoute } from '@/config/routes';
 import { NLPTrainStageType } from '@/constants/platforms';
+import { TrainingContext } from '@/contexts';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as PrototypeDuck from '@/ducks/prototype';
 import * as Router from '@/ducks/router';
@@ -17,8 +18,6 @@ import { useDispatch, useFeature, useSelector, useTrackingEvents } from '@/hooks
 import { createPlatformSelector } from '@/utils/platform';
 import { getModelsDiffs, isModelChanged, ModelDiff } from '@/utils/prototypeModel';
 import * as Sentry from '@/vendors/sentry';
-
-import { NLPContext } from './NLPContext';
 
 export interface TrainingState {
   diff: ModelDiff;
@@ -72,7 +71,7 @@ export const TrainingModelProvider: React.FC = ({ children }) => {
     lastTrainedTime: 0,
   });
 
-  const nlp = React.useContext(NLPContext)!;
+  const training = React.useContext(TrainingContext)!;
   const validateModel = useDispatch(PrototypeDuck.validateModel);
   const goToInteractionModel = useDispatch(Router.goToInteractionModel);
   const [trackingEvents] = useTrackingEvents();
@@ -84,8 +83,7 @@ export const TrainingModelProvider: React.FC = ({ children }) => {
   const diagramID = useSelector(CreatorV2.activeDiagramIDSelector);
   const projectID = useSelector(Session.activeProjectIDSelector);
 
-  const isTraining = nlp.publishing || !!nlp.job;
-  const isTrained = !isModelChanged(trainingState.diff) && (!nlp.job || nlp.job.stage.type === NLPTrainStageType.SUCCESS);
+  const isTrained = !isModelChanged(trainingState.diff) && (!training.job || training.job.stage.type === NLPTrainStageType.SUCCESS);
 
   const handleGoToIMM = (slotID: string) => {
     if (nluManager.isEnabled) {
@@ -109,7 +107,7 @@ export const TrainingModelProvider: React.FC = ({ children }) => {
           </>
         );
       }
-      await nlp.publish();
+      await training.start();
     } catch (err) {
       logger.warn('Train error', err);
       toast.error('An error occurred while training the model.');
@@ -151,17 +149,17 @@ export const TrainingModelProvider: React.FC = ({ children }) => {
   };
 
   React.useEffect(() => {
-    if (!isTraining) {
+    if (!training.active) {
       getDiff();
     }
-  }, [isTraining]);
+  }, [training.active]);
 
   const api = {
     state: trainingState,
     startTraining,
-    cancelTraining: nlp.cancel,
+    cancelTraining: training.cancel,
     getDiff,
-    isTraining,
+    isTraining: training.active,
     isTrained,
   };
 

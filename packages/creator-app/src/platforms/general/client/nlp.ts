@@ -5,15 +5,15 @@ import { VersionTag } from '@/constants/platforms';
 import { NLPTrainJob } from '@/models';
 
 const createNLPService = (serviceEndpoint: string) => ({
-  publish: (projectID: string, { tag = VersionTag.DEVELOPMENT, versionName = '' }: { tag?: VersionTag; versionName?: string } = {}) =>
+  run: (projectID: string, { tag = VersionTag.DEVELOPMENT, versionName = '' }: { tag?: VersionTag; versionName?: string } = {}) =>
     axios
-      .post<{ job: NLPTrainJob.AnyJob; appID: string }>(`${serviceEndpoint}/nlp/${projectID}/publish`, {
+      .post<{ job: NLPTrainJob.AnyJob; appID: string; projectID: string }>(`${serviceEndpoint}/nlp/${projectID}/publish`, {
         tag,
         versionName,
       })
       .then((res) => res.data),
 
-  status: (projectID: string, { tag = VersionTag.DEVELOPMENT }: { tag?: VersionTag } = {}) =>
+  getStatus: (projectID: string, { tag = VersionTag.DEVELOPMENT }: { tag?: VersionTag } = {}) =>
     axios.get<Nullable<NLPTrainJob.AnyJob>>(`${serviceEndpoint}/nlp/${projectID}/status?tag=${tag}`).then((res) => res.data),
 
   cancel: (projectID: string, { tag = VersionTag.DEVELOPMENT }: { tag?: VersionTag } = {}) =>

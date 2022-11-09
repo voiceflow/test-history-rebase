@@ -1,82 +1,68 @@
-import { Portal, toast } from '@voiceflow/ui';
+import { toast, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 import { useSelector } from 'react-redux';
 
 import client from '@/client';
-import PageProgressBar from '@/components/PageProgressBar';
+import JobInterface from '@/components/JobInterface';
 import { PublishVersionModalData } from '@/components/PublishVersionModal';
 import { ModalType } from '@/constants';
-import { NLPTrainStageType, VersionTag } from '@/constants/platforms';
+import { VersionTag } from '@/constants/platforms';
+import { TrainingContext, TrainingProvider } from '@/contexts';
 import * as Project from '@/ducks/project';
 import { activeProjectIDSelector } from '@/ducks/session';
 import { useDispatch, useModals, useTrackingEvents } from '@/hooks';
-import { NLPContext, NLPProvider } from '@/pages/Project/contexts/NLPContext';
+import { getProgress } from '@/utils/job';
 
 import GeneralUploadButton from './components/GeneralUploadButton';
+import { useNLPTrainingStageContent } from './stages';
 
 const GeneralPublish: React.FC = () => {
-  const publishVersionModal = useModals<PublishVersionModalData>(ModalType.PUBLISH_VERSION_MODAL);
+  const publishNewVersionModal = useModals<PublishVersionModalData>(ModalType.PUBLISH_VERSION_MODAL);
 
   const activeProjectID = useSelector(activeProjectIDSelector)!;
 
   const updateProjectLiveVersion = useDispatch(Project.updateProjectLiveVersion);
 
-  const nlpContext = React.useContext(NLPContext)!;
-  const isTraining = !!nlpContext && (nlpContext.publishing || !!nlpContext.job);
-
-  const stageType = nlpContext.job?.stage.type;
-  const progress = nlpContext.job?.stage.type === NLPTrainStageType.PROGRESS ? nlpContext.job.stage.data.progress : 0;
+  const trainingContext = React.useContext(TrainingContext)!;
+  const { job, active } = trainingContext;
 
   const [trackingEvents] = useTrackingEvents();
 
-  const updateLiveVersion = React.useCallback(
-    async (versionName: string) => {
+  const onConfirm = usePersistFunction((versionName: string) => {
+    // modal awaits confirm before closing , start() takes a long time
+    (async () => {
       try {
         trackingEvents.trackActiveProjectPublishAttempt();
 
-        publishVersionModal.close();
-        await nlpContext?.publish({ versionName });
+        await trainingContext?.start({ versionName });
 
         const { liveVersion } = await client.api.project.get(activeProjectID!, ['liveVersion']);
         updateProjectLiveVersion(activeProjectID, liveVersion!);
       } catch (err) {
         toast.error(`Updating live version failed: ${err}`);
       }
-    },
-    [activeProjectID]
+    })();
+  });
+
+  const onPublish = usePersistFunction(() =>
+    publishNewVersionModal.open({
+      onConfirm,
+    })
   );
 
-  const onClick = React.useCallback(() => {
-    publishVersionModal.open({ onConfirm: updateLiveVersion });
-  }, [publishVersionModal, updateLiveVersion]);
-
-  React.useEffect(() => {
-    if (stageType === NLPTrainStageType.SUCCESS) {
-      trackingEvents.trackActiveProjectPublishSuccess();
-    }
-  }, [stageType]);
+  const Content = useNLPTrainingStageContent(job?.stage.type);
 
   return (
-    <>
-      <Portal>
-        <PageProgressBar progress={progress} />
-      </Portal>
-      <GeneralUploadButton isTraining={isTraining} onClick={onClick} progress={progress} />
-    </>
+    <JobInterface Content={Content} context={trainingContext}>
+      <GeneralUploadButton loading={active} progress={getProgress(job)} onClick={onPublish} />
+    </JobInterface>
   );
 };
 
-const UpdateLiveContainer: React.FC = () => {
-  // Called when we finished updating the live version and publishing to production
-  const onFinished = React.useCallback(() => {
-    toast.success('Version successfully published.');
-  }, []);
+const General: React.FC = () => (
+  <TrainingProvider tag={VersionTag.PRODUCTION}>
+    <GeneralPublish />
+  </TrainingProvider>
+);
 
-  return (
-    <NLPProvider tag={VersionTag.PRODUCTION} onFinished={onFinished}>
-      <GeneralPublish />
-    </NLPProvider>
-  );
-};
-
-export default UpdateLiveContainer;
+export default General;

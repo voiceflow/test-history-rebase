@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.969.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.969.1...@voiceflow/creator-app@1.969.2) (2022-11-09)
+
+
+### Bug Fixes
+
+* add segment timestamp fields for specific events (CT-1189) ([#6291](https://github.com/voiceflow/creator-app/issues/6291)) ([d247592](https://github.com/voiceflow/creator-app/commit/d2475922d2909c01c8b59813092be52532001452))
+
+
+
+
+
 ## [1.969.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.969.0...@voiceflow/creator-app@1.969.1) (2022-11-09)
 
 

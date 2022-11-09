@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.970.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.969.3...@voiceflow/creator-app@1.970.0) (2022-11-09)
+
+
+### Features
+
+* empty assistant search page (CT-1169) ([#6289](https://github.com/voiceflow/creator-app/issues/6289)) ([af5cebb](https://github.com/voiceflow/creator-app/commit/af5cebbe3f5512d09ac397c739e41a3e8bb834a1))
+* expired trial page (CT-1171) ([#6281](https://github.com/voiceflow/creator-app/issues/6281)) ([06feb82](https://github.com/voiceflow/creator-app/commit/06feb8299e04a77626dd4882c98b0801d559d511))
+
+
+
+
+
 ## [1.969.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.969.2...@voiceflow/creator-app@1.969.3) (2022-11-09)
 
 

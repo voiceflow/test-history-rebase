@@ -126,6 +126,7 @@ const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({ config, state
     }
 
     startPrototype();
+    savePrototypeSession();
   };
 
   useTeardown(() => {
@@ -137,13 +138,6 @@ const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({ config, state
       startPrototype();
     }
   }, [autoplay]);
-
-  useDidUpdateEffect(() => {
-    if (isFinished) {
-      onStopListening();
-      savePrototypeSession();
-    }
-  }, [isFinished]);
 
   const brandColor = isCustomizedPrototypeAllowed ? settings.brandColor : undefined;
   return (

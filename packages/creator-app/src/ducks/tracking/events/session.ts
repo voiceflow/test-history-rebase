@@ -10,7 +10,7 @@ import { EventName, SourceType } from '../constants';
 
 export const identifySignup = (creatorID: number, firstName: string, lastName: string, email: string) => {
   client.api.analytics.identify({
-    traits: { first_name: firstName, last_name: lastName, user_id: creatorID, email },
+    traits: { first_name: firstName, last_name: lastName, user_id: creatorID, email, product_sign_up_date: Date.now() },
   });
 };
 
@@ -19,7 +19,7 @@ export const trackSessionBegin =
   () => {
     client.api.analytics.track(EventName.SESSION_BEGIN);
     client.api.analytics.identify({
-      traits: { workspace_id: workspaceIDs, team_role: roles, email },
+      traits: { workspace_id: workspaceIDs, team_role: roles, email, last_product_activity: Date.now() },
       teamhashed: ['workspace_id'],
     });
   };

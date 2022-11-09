@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.969.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.969.0...@voiceflow/creator-app@1.969.1) (2022-11-09)
+
+
+### Bug Fixes
+
+* refactor training context (CT-1131) ([#6274](https://github.com/voiceflow/creator-app/issues/6274)) ([8913abf](https://github.com/voiceflow/creator-app/commit/8913abfb9c747901f271142fec07e0c8ee7db765))
+
+
+
+
+
 # [1.969.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.968.0...@voiceflow/creator-app@1.969.0) (2022-11-08)
 
 

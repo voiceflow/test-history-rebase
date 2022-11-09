@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.970.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.970.0...@voiceflow/creator-app@1.970.1) (2022-11-09)
+
+
+### Bug Fixes
+
+* timestamp added for Begin Workspace Session (CT-1189) ([#6294](https://github.com/voiceflow/creator-app/issues/6294)) ([8ba29b8](https://github.com/voiceflow/creator-app/commit/8ba29b82a089082da5dbdb20fdfd52b06e070b51))
+
+
+
+
+
 # [1.970.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.969.3...@voiceflow/creator-app@1.970.0) (2022-11-09)
 
 

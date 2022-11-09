@@ -31,12 +31,16 @@ const SearchButton: React.FC<SearchButtonProps> = ({ onSearch }) => {
     onSearch(e.target.value);
   };
 
+  const clearSearch = () => {
+    onSearch('');
+  };
+
   return (
     <>
       {isOpen ? (
         <SearchBox ref={ref}>
           <div style={{ paddingRight: '8px' }}>
-            <SvgIcon icon={hasTyped ? 'close' : 'search'} size={16} color="rgba(110, 132, 154, 0.85)" />
+            <SvgIcon icon={hasTyped ? 'close' : 'search'} size={16} color="rgba(110, 132, 154, 0.85)" onClick={hasTyped ? clearSearch : undefined} />
           </div>
           <SearchInput placeholder="Search" onChange={onSearching} />
         </SearchBox>

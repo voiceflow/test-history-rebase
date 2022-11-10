@@ -15,17 +15,14 @@ interface GeneralSettingsNoMatchNoReplySectionProps {
   platformMeta: PlatformSettingsMetaProps;
 }
 
-const GeneralSettingsNoMatchNoReplySection: React.FC<GeneralSettingsNoMatchNoReplySectionProps> = ({ platformMeta }) => {
+const GeneralSettingsNoMatchNoReplySection: React.FC<GeneralSettingsNoMatchNoReplySectionProps> = () => {
   const noMatchModal = ModalsV2.useModal(ModalsV2.GlobalNoMatch);
   const noReplyModal = ModalsV2.useModal(ModalsV2.GlobalNoReply);
-
-  const { descriptors } = platformMeta;
 
   return (
     <>
       <Section
         variant={SectionVariant.PRIMARY}
-        contentSuffix={descriptors.defaultVoice}
         customContentStyling={{
           paddingTop: 32,
           paddingBottom: 32,
@@ -43,7 +40,6 @@ const GeneralSettingsNoMatchNoReplySection: React.FC<GeneralSettingsNoMatchNoRep
       </Section>
       <Section
         variant={SectionVariant.PRIMARY}
-        contentSuffix={descriptors.defaultVoice}
         customContentStyling={{
           paddingTop: 32,
           paddingBottom: 32,

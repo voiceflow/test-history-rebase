@@ -22,9 +22,9 @@ export const SubSectionDescription = styled.p`
   margin-bottom: 0;
 `;
 
-export const DelayTrigger = styled.span`
+export const DelayTrigger = styled.span<{ onClick?: VoidFunction }>`
   color: #3d82e2;
   border-bottom: 1px dotted #3d82e2;
   margin: 0 4px;
-  cursor: pointer;
+  cursor: ${({ onClick }) => (onClick ? 'pointer' : 'default')};
 `;

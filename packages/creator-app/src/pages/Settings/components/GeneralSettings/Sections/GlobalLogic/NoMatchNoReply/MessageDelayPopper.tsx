@@ -1,11 +1,13 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Input, Popper, preventDefault, withHandler, withInputBlur } from '@voiceflow/ui';
+import { Input, Popper, preventDefault, TippyTooltip, withHandler, withInputBlur } from '@voiceflow/ui';
 import React from 'react';
 
 import { PopperContent, PopperTitle } from '@/components/SlateEditable';
+import * as ProjectV2 from '@/ducks/projectV2';
 import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useDispatch, useSelector } from '@/hooks';
+import { getDefaultNoReplyTimeoutSeconds } from '@/utils/noReply';
 
 import * as S from './styles';
 
@@ -13,6 +15,8 @@ const MessageDelayPopper: React.FC = () => {
   const patchSettings = useDispatch(Version.patchSettings);
   const settings = useSelector(VersionV2.active.settingsSelector);
   const delay = settings?.globalNoReply?.delay ?? 0;
+  const platform = useSelector(ProjectV2.active.platformSelector);
+  const isVoiceflow = Realtime.Utils.typeGuards.isVoiceflowBasedPlatform(platform);
 
   const [messageDelay, setMessageDelay] = React.useState(() => (delay ? String(delay) : ''));
 
@@ -28,6 +32,17 @@ const MessageDelayPopper: React.FC = () => {
       },
     });
   };
+
+  if (!isVoiceflow) {
+    return (
+      <TippyTooltip
+        title={`This value is not editable as it's defined by ${Realtime.Utils.platform.getPlatformProviderName(platform)}`}
+        disabled={isVoiceflow}
+      >
+        <S.DelayTrigger>{getDefaultNoReplyTimeoutSeconds(platform)}</S.DelayTrigger>
+      </TippyTooltip>
+    );
+  }
 
   return (
     <Popper

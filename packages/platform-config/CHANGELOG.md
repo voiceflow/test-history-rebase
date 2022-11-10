@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.2.2...@voiceflow/platform-config@1.3.0) (2022-11-10)
+
+
+### Features
+
+* project nlu type (CT-000) ([#6287](https://github.com/voiceflow/creator-app/issues/6287)) ([48b6220](https://github.com/voiceflow/creator-app/commit/48b622093aab16d321383ef5824be76b65d75aa3))
+
+
+
+
+
 ## [1.2.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.2.1...@voiceflow/platform-config@1.2.2) (2022-11-10)
 
 **Note:** Version bump only for package @voiceflow/platform-config

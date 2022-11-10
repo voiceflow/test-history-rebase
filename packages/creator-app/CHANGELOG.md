@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.971.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.971.1...@voiceflow/creator-app@1.971.2) (2022-11-10)
+
+
+### Bug Fixes
+
+* use quarterary buttons on webchat success [bugfix] (CT-000) ([245af28](https://github.com/voiceflow/creator-app/commit/245af283a7e62fab9ba39d36799db6dfe17619d0))
+
+
+
+
+
 ## [1.971.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.971.0...@voiceflow/creator-app@1.971.1) (2022-11-10)
 
 

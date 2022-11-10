@@ -14,18 +14,17 @@ const QuaternaryButton = styled(ButtonContainer)<QuaternaryButtonProps>`
   padding: 8px 22px 10px;
   color: ${colors(ThemeColor.BLUE)};
   font-weight: 600;
-  background-color: ${colors(ThemeColor.WHITE)};
-  background-image: linear-gradient(-180deg, #5d9df515 0%, #5d9df520 78%);
+  background-color: rgba(93, 157, 245, 0.1);
   border: 0;
   border-radius: 41px;
   box-shadow: none;
 
   &:hover {
-    background-color: #5d9df510;
+    background-color: rgba(93, 157, 245, 0.15);
   }
 
   &:active {
-    background-color: #5d9df520;
+    background-color: rgba(93, 157, 245, 0.2);
   }
 
   ${({ disabled }) =>

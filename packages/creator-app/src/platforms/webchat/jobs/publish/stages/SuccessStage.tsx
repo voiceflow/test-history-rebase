@@ -10,7 +10,7 @@ import { StageComponentProps } from '@/platforms/types';
 
 const getWidgetSessionKey = (projectID: string) => `widget_publish_${projectID}`;
 
-const SuccessStage: React.FC<StageComponentProps<NLPTrainJob.SuccessStage>> = () => {
+const SuccessStage: React.FC<StageComponentProps<NLPTrainJob.SuccessStage>> = ({ cancel }) => {
   const projectID = useSelector(Session.activeProjectIDSelector);
 
   const [firstTime, setFirstTime] = useLocalStorageState<boolean>(getWidgetSessionKey(projectID!), true);
@@ -25,7 +25,15 @@ const SuccessStage: React.FC<StageComponentProps<NLPTrainJob.SuccessStage>> = ()
             Embed Widget
           </Button>
           <Box mt={8} />
-          <Button squareRadius fullWidth variant={ButtonVariant.TERTIARY} onClick={() => setFirstTime(false)}>
+          <Button
+            squareRadius
+            fullWidth
+            variant={ButtonVariant.TERTIARY}
+            onClick={() => {
+              setFirstTime(false);
+              cancel();
+            }}
+          >
             I've Already Done This
           </Button>
         </>

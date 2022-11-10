@@ -22,7 +22,7 @@ const PULL_TIMEOUT = 3000; // 3s
 export const useJob = <J extends Job<any>>(jobClient?: JobClient<J>) => {
   const pullTimeout = React.useRef<NodeJS.Timeout>();
   const startingOptionsCache = React.useRef<Record<string, unknown>>({});
-  const [job, setJob] = React.useState<Nullable<Job<any>>>(null);
+  const [job, setJob] = React.useState<Nullable<J>>(null);
 
   const projectID = useSelector(Session.activeProjectIDSelector)!;
 
@@ -111,7 +111,7 @@ export const useJob = <J extends Job<any>>(jobClient?: JobClient<J>) => {
 
   useTeardown(stopPulling);
 
-  const setJobWithStartingOptions = React.useCallback((job: Nullable<Job<any>>, options?: Record<string, unknown>) => {
+  const setJobWithStartingOptions = React.useCallback((job: Nullable<J>, options?: Record<string, unknown>) => {
     if (options) {
       startingOptionsCache.current = options;
     }

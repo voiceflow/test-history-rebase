@@ -7,12 +7,13 @@ interface SectionProps {
   icon: keyof typeof SvgIcon.ICONS;
   title: string;
   description: string;
+  defaultOpen?: boolean;
 }
 
 const SECTION_PREFIX = 'webchat-section_';
 
-const Section: React.FC<SectionProps> = ({ title, description, icon, children }) => {
-  const [isOpen, setIsOpen] = useLocalStorageState(SECTION_PREFIX + title, false);
+const Section: React.FC<SectionProps> = ({ title, description, icon, children, defaultOpen = false }) => {
+  const [isOpen, setIsOpen] = useLocalStorageState(SECTION_PREFIX + title, defaultOpen);
 
   return (
     <SectionContainer isOpen={isOpen}>

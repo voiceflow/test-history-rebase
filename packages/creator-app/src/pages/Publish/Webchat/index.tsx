@@ -25,9 +25,9 @@ const Webchat: React.FC = () => {
     <Box display="flex" height="100%" className={theme}>
       <PrivacyToggle />
       <SettingsContainer>
+        <PublishSection />
         <GeneralSection />
         <ApperanceSection />
-        <PublishSection />
       </SettingsContainer>
       <PreviewContainer>
         <PreviewSection />

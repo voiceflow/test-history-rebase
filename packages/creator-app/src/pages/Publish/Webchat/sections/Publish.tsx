@@ -26,7 +26,7 @@ export const PublishSection: React.FC = () => {
   const projectID = useSelector(ProjectV2.active.idSelector)!;
 
   return (
-    <Section icon="publish" title="Installation" description="Add the installation code to your website">
+    <Section icon="publish" title="Installation" description="Add the installation code to your website" defaultOpen>
       <Text>
         Copy this code snippet and paste it before the closing <Text color={ThemeColor.BLUE}>{`</body>`}</Text> tag on every page you want the widget
         to appear.

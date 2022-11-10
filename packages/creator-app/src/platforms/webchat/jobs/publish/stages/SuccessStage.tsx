@@ -1,0 +1,41 @@
+import { Box, Button, ButtonVariant, useLocalStorageState } from '@voiceflow/ui';
+import React from 'react';
+
+import { UploadedStage } from '@/components/PlatformUploadPopup/components';
+import * as Router from '@/ducks/router';
+import * as Session from '@/ducks/session';
+import { useDispatch, useSelector } from '@/hooks';
+import { NLPTrainJob } from '@/models';
+import { StageComponentProps } from '@/platforms/types';
+
+const getWidgetSessionKey = (projectID: string) => `widget_publish_${projectID}`;
+
+const SuccessStage: React.FC<StageComponentProps<NLPTrainJob.SuccessStage>> = () => {
+  const projectID = useSelector(Session.activeProjectIDSelector);
+
+  const [firstTime, setFirstTime] = useLocalStorageState<boolean>(getWidgetSessionKey(projectID!), true);
+
+  const goToConsole = useDispatch(Router.goToActivePlatformPublish);
+
+  return (
+    <UploadedStage description="A new version of your assistant has been successfully published">
+      {firstTime ? (
+        <>
+          <Button squareRadius fullWidth onClick={goToConsole}>
+            Embed Widget
+          </Button>
+          <Box mt={8} />
+          <Button squareRadius fullWidth variant={ButtonVariant.TERTIARY} onClick={() => setFirstTime(false)}>
+            I've Already Done This
+          </Button>
+        </>
+      ) : (
+        <Button squareRadius fullWidth variant={ButtonVariant.TERTIARY} onClick={goToConsole}>
+          Customize Widget
+        </Button>
+      )}
+    </UploadedStage>
+  );
+};
+
+export default SuccessStage;

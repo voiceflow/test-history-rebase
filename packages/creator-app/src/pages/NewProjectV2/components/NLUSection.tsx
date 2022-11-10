@@ -1,6 +1,6 @@
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { getNestedMenuFormattedLabel, MenuItemGrouped, Select, SvgIcon } from '@voiceflow/ui';
+import { Box, getNestedMenuFormattedLabel, MenuItemGrouped, Select, SvgIcon, ThemeColor } from '@voiceflow/ui';
 import React from 'react';
 
 import PlanPermittedMenuItem from '@/components/PlanPermittedMenuItem';
@@ -48,6 +48,8 @@ const NLUSection: React.FC<NLUSectionProps> = ({ value, platform, error, onSelec
 
   const nluConfig = value && NLU.Config.get(value);
 
+  const isNLULocked = isVoiceflowNLUOnlyPlatform(platform);
+
   return (
     <Section
       {...hoverHandlers}
@@ -60,7 +62,7 @@ const NLUSection: React.FC<NLUSectionProps> = ({ value, platform, error, onSelec
       <Select<NLUOption, MenuItemGrouped<NLUOption>, NLU.Constants.NLUType>
         id={Identifier.PROJECT_CREATE_SELECT_NLU}
         value={value}
-        disabled={isVoiceflowNLUOnlyPlatform(platform)}
+        disabled={isNLULocked}
         error={!!error}
         prefix={getPrefixIcon(isImportLoading, nluConfig)}
         options={isDialogflowCXEnabled ? NLU_OPTIONS : NLU_OPTIONS_LEGACY}
@@ -87,14 +89,21 @@ const NLUSection: React.FC<NLUSectionProps> = ({ value, platform, error, onSelec
         )}
       />
 
-      {value && nluConfig?.nlps[0].import && (
-        <ModelImport
-          nluConfig={nluConfig}
-          importModel={importModel}
-          onImportModel={onImportModel}
-          isImportLoading={isImportLoading}
-          setIsImportLoading={setIsImportLoading}
-        />
+      {isNLULocked ? (
+        <Box fontSize={13} color={ThemeColor.SECONDARY} mt={12}>
+          NLU is predefined for the {platform} channel
+        </Box>
+      ) : (
+        value &&
+        nluConfig?.nlps[0].import && (
+          <ModelImport
+            nluConfig={nluConfig}
+            importModel={importModel}
+            onImportModel={onImportModel}
+            isImportLoading={isImportLoading}
+            setIsImportLoading={setIsImportLoading}
+          />
+        )
       )}
 
       {!!error && <SectionErrorMessage>{error}</SectionErrorMessage>}

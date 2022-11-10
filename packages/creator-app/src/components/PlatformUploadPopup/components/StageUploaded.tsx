@@ -4,13 +4,13 @@ import React from 'react';
 import { uploaded } from '@/assets';
 
 interface UploadedProps {
-  redirectUrl: string;
+  redirectUrl?: string;
   learnMoreUrl?: string;
-  buttonText: string;
+  buttonText?: string;
   description: string;
 }
 
-const UploadedStage: React.FC<UploadedProps> = ({ redirectUrl, learnMoreUrl, buttonText, description }) => {
+const UploadedStage: React.FC<UploadedProps> = ({ redirectUrl, learnMoreUrl, buttonText, description, children }) => {
   return (
     <Box.FlexCenter flexDirection="column" p={24} width={300}>
       <Box.FlexCenter size={104} borderRadius="50%" backgroundColor="#e3eff8">
@@ -22,9 +22,14 @@ const UploadedStage: React.FC<UploadedProps> = ({ redirectUrl, learnMoreUrl, but
       <Text textAlign="center" mb={20} color={ThemeColor.SECONDARY}>
         {description}. {learnMoreUrl && <Link href={learnMoreUrl}>Learn more</Link>}
       </Text>
-      <Link href={redirectUrl}>
-        <Button squareRadius>{buttonText}</Button>
-      </Link>
+      {buttonText && redirectUrl && (
+        <Link href={redirectUrl} width="100%">
+          <Button squareRadius fullWidth>
+            {buttonText}
+          </Button>
+        </Link>
+      )}
+      {children}
     </Box.FlexCenter>
   );
 };

@@ -19,6 +19,7 @@ export const inputFocusStyle = css`
 export const inputDisabledStyle = css`
   color: #132144a6;
   border-color: #e1e4e7;
+  box-shadow: none;
 
   ${IS_SAFARI &&
   css`

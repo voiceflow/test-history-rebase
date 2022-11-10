@@ -1,8 +1,7 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { VoiceflowVersion } from '@voiceflow/voiceflow-types';
 
-import * as Errors from '@/config/errors';
-import * as Session from '@/ducks/session';
+import * as Project from '@/ducks/projectV2';
 import { Thunk } from '@/store/types';
 
 import { getActivePlatformVersionContext } from '../utils';
@@ -15,31 +14,38 @@ export const patchSettings =
   (settings: Partial<VoiceflowVersion.Settings>): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
-    const versionID = Session.activeVersionIDSelector(state);
 
-    Errors.assertVersionID(versionID);
-
-    await dispatch.sync(Realtime.version.patchSettings({ ...getActivePlatformVersionContext(getState()), settings }));
+    await dispatch.sync(Realtime.version.patchSettings({ ...getActivePlatformVersionContext(state), settings }));
   };
 
 export const patchPublishing =
   (publishing: Partial<VoiceflowVersion.ChatPublishing>): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
-    const versionID = Session.activeVersionIDSelector(state);
 
-    Errors.assertVersionID(versionID);
+    await dispatch.sync(Realtime.version.patchPublishing({ ...getActivePlatformVersionContext(state), publishing }));
+  };
 
-    await dispatch.sync(Realtime.version.patchPublishing({ ...getActivePlatformVersionContext(getState()), publishing }));
+export const patchActiveAndLivePublishing =
+  (publishing: Partial<VoiceflowVersion.ChatPublishing>): Thunk =>
+  async (dispatch, getState) => {
+    const state = getState();
+    const activeContext = getActivePlatformVersionContext(state);
+
+    const actions = [dispatch.sync(Realtime.version.patchPublishing({ ...activeContext, publishing }))];
+
+    const liveVersion = Project.active.liveVersionSelector(state);
+    if (liveVersion) {
+      actions.push(dispatch.sync(Realtime.version.patchPublishing({ ...activeContext, versionID: liveVersion, publishing })));
+    }
+
+    await Promise.all(actions);
   };
 
 export const patchDefaultStepColors =
   (defaultStepColors: Realtime.Version.DefaultStepColors): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
-    const versionID = Session.activeVersionIDSelector(state);
 
-    Errors.assertVersionID(versionID);
-
-    await dispatch.sync(Realtime.version.patchDefaultStepColors({ ...getActivePlatformVersionContext(getState()), defaultStepColors }));
+    await dispatch.sync(Realtime.version.patchDefaultStepColors({ ...getActivePlatformVersionContext(state), defaultStepColors }));
   };

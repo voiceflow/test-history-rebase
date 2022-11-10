@@ -5,7 +5,7 @@ import { VoiceflowVersion } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import { ENTERPRISE_PLANS, ModalType, TEAM_PLANS } from '@/constants';
-import { patchPublishing } from '@/ducks/version/platform/general';
+import { patchActiveAndLivePublishing } from '@/ducks/version/platform/general';
 import * as Version from '@/ducks/versionV2';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useDispatch, useLinkedState, useModals, useSelector } from '@/hooks';
@@ -34,7 +34,7 @@ const PX_LABEL = (
 export const GeneralSection: React.FC = () => {
   const plan = useSelector(WorkspaceV2.active.planSelector);
   const config: Config = useSelector(Version.active.general.chatPublishingSelector);
-  const updateConfig = useDispatch(patchPublishing);
+  const updateConfig = useDispatch(patchActiveAndLivePublishing);
 
   const [title, setTitle] = useLinkedState(config.title);
   const [description, setDescription] = useLinkedState(config.description);

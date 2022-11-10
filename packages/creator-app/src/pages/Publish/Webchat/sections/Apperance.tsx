@@ -15,7 +15,7 @@ import { PreviewCrop, SelectorBox, SelectorLine } from './styled';
 export const ApperanceSection: React.FC = () => {
   const now = React.useMemo(() => Date.now(), []);
   const config = useSelector(Version.active.general.chatPublishingSelector);
-  const updateConfig = useDispatch(VoiceflowVersion.patchPublishing);
+  const updateConfig = useDispatch(VoiceflowVersion.patchActiveAndLivePublishing);
 
   const imageUploader = Upload.useUpload({ fileType: 'image', endpoint: '/image' });
 

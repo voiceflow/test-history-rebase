@@ -11,6 +11,7 @@ export const getPlatformIconProps = Utils.platform.createPlatformSelector<Platfo
   {
     [VoiceflowConstants.PlatformType.ALEXA]: { icon: 'amazonAlexa', iconProps: { color: '#5fcaf4' } },
     [VoiceflowConstants.PlatformType.GOOGLE]: { icon: 'googleAssistant' },
+    [VoiceflowConstants.PlatformType.WEBCHAT]: { icon: 'playOutline' },
     [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: { icon: 'dialogflow', iconProps: { height: '18px', width: '18px' } },
     [VoiceflowConstants.PlatformType.DIALOGFLOW_CX]: { icon: 'dialogflowCX', iconProps: { height: '18px', width: '18px' } },
   },

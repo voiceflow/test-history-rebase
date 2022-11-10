@@ -89,7 +89,7 @@ const getButtonProps = (
           ...(!customProps.tooltip && {
             html: (
               <div>
-                Uploading:
+                Publishing:
                 <Text ml="7px" color="rgba(255, 255, 255, 0.59)">
                   {progress || 0}%
                 </Text>

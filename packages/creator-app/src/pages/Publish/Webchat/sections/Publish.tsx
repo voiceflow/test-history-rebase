@@ -14,7 +14,8 @@ const getSample = (projectID: string) => `<script type="text/javascript">
       v.onload = function() {
         window.voiceflow.chat.load({
           verify: { projectID: '${projectID}' },
-          url: '${GENERAL_RUNTIME_ENDPOINT}'
+          url: '${GENERAL_RUNTIME_ENDPOINT}',
+          versionID: 'production'
         });
       }
       v.src = "https://cdn.voiceflow.com/widget/bundle.mjs"; v.type = "text/javascript"; s.parentNode.insertBefore(v, s);

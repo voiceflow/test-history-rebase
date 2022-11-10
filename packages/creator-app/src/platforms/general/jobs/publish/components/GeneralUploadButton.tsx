@@ -14,10 +14,8 @@ const GeneralUploadButton: React.FC<GeneralUploadButtonProps> = ({ loading, prog
   loading ? (
     <Button
       variant={ButtonVariant.LOADING}
+      progress={progress}
       customProps={{
-        tooltip: {
-          title: `Updating: ${progress} %`,
-        },
         iconProps: {
           size: iconSize,
         },
@@ -28,7 +26,7 @@ const GeneralUploadButton: React.FC<GeneralUploadButtonProps> = ({ loading, prog
       onClick={onClick}
       variant={ButtonVariant.ACTIVE}
       customProps={{
-        tooltip: { title: 'Publish' },
+        tooltip: { html: <>Publish</> },
         iconProps: {
           size: iconSize,
         },

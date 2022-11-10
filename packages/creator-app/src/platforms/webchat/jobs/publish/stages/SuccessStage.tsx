@@ -28,7 +28,7 @@ const SuccessStage: React.FC<StageComponentProps<NLPTrainJob.SuccessStage>> = ({
           <Button
             squareRadius
             fullWidth
-            variant={ButtonVariant.TERTIARY}
+            variant={ButtonVariant.QUATERNARY}
             onClick={() => {
               setFirstTime(false);
               cancel();
@@ -38,7 +38,7 @@ const SuccessStage: React.FC<StageComponentProps<NLPTrainJob.SuccessStage>> = ({
           </Button>
         </>
       ) : (
-        <Button squareRadius fullWidth variant={ButtonVariant.TERTIARY} onClick={goToConsole}>
+        <Button squareRadius fullWidth variant={ButtonVariant.QUATERNARY} onClick={goToConsole}>
           Customize Widget
         </Button>
       )}

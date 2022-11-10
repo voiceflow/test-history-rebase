@@ -1,4 +1,4 @@
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
+import * as Platform from '@voiceflow/platform-config';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { Dispatch } from 'redux';
@@ -48,74 +48,71 @@ export const useWorkspaceTracking = (): void => {
   }, [workspace]);
 };
 
-export const useModelTracking = (): ((
-  platform: VoiceflowConstants.PlatformType,
-  importedModel: NLUImportModel,
-  trackingEvents: any,
-  projectID?: string
-) => void) => {
-  return (platform: VoiceflowConstants.PlatformType, importedModel: NLUImportModel, trackingEvents: any, projectID?: string) => {
-    const isImportingIntents = importedModel && importedModel.intents && importedModel.intents.length > 0;
-    const isImportingEntities = importedModel && importedModel.slots && importedModel.slots.length > 0;
+export const useModelTracking = () => {
+  const [trackEvents] = useTrackingEvents();
+
+  return ({ nluType, projectID, importedModel }: { nluType: Platform.Constants.NLUType; projectID?: string; importedModel: NLUImportModel }) => {
+    const isImportingIntents = importedModel.intents?.length > 0;
+    const isImportingEntities = importedModel.slots?.length > 0;
+
+    const nluConfig = NLU.Config.get(nluType);
 
     if (projectID) {
-      trackingEvents.trackProjectNLUImportFromWorkspace({
-        platform,
+      trackEvents.trackProjectNLUImportFromWorkspace({
         origin: NLUImportOrigin.PROJECT,
-        nluType: NLU.Config.get(platform).nlps[0].type,
         projectID,
+        importNLPType: nluConfig.nlps[0].type,
+        targetNLUType: nluConfig.type,
       });
 
       if (isImportingIntents) {
-        trackingEvents.trackIntentCreatedProjectNLUImport({
-          creationType: Tracking.CanvasCreationType.PROJECT_CREATE,
+        trackEvents.trackIntentCreatedProjectNLUImport({
           projectID,
+          creationType: Tracking.CanvasCreationType.PROJECT_CREATE,
         });
 
-        importedModel.intents.every((item) => {
-          const isImportingUtterances = item && item.inputs && item.inputs.length > 0;
+        importedModel.intents.forEach((item) => {
+          const isImportingUtterances = item?.inputs?.length > 0;
 
           if (isImportingUtterances) {
-            trackingEvents.trackNewUtteranceCreatedProjectNLUImport({
+            trackEvents.trackNewUtteranceCreatedProjectNLUImport({
               creationType: Tracking.CanvasCreationType.PROJECT_CREATE,
               projectID,
             });
-            return false;
           }
-          return true;
         });
       }
 
       if (isImportingEntities) {
-        trackingEvents.trackEntityCreatedProjectNLUImport({
+        trackEvents.trackEntityCreatedProjectNLUImport({
           creationType: Tracking.CanvasCreationType.PROJECT_CREATE,
           projectID,
         });
       }
-    } else {
-      trackingEvents.trackProjectNLUImport({
-        platform,
-        origin: NLUImportOrigin.NLU_MANAGER,
-        nluType: NLU.Config.get(platform).nlps[0].type,
+
+      return;
+    }
+
+    trackEvents.trackProjectNLUImport({
+      origin: NLUImportOrigin.NLU_MANAGER,
+      importNLPType: nluConfig.nlps[0].type,
+      targetNLUType: nluConfig.type,
+    });
+
+    if (isImportingIntents) {
+      trackEvents.trackIntentCreated({ creationType: Tracking.CanvasCreationType.NLU_MANAGER });
+
+      importedModel.intents.forEach((item) => {
+        const isImportingUtterances = item?.inputs?.length > 0;
+
+        if (isImportingUtterances) {
+          trackEvents.trackNewUtteranceCreated({ intentID: item.key, creationType: Tracking.CanvasCreationType.NLU_MANAGER });
+        }
       });
+    }
 
-      if (isImportingIntents) {
-        trackingEvents.trackIntentCreated({ creationType: Tracking.CanvasCreationType.NLU_MANAGER });
-
-        importedModel.intents.every((item: { inputs: string | any[]; key: any }) => {
-          const isImportingUtterances = item && item.inputs && item.inputs.length > 0;
-
-          if (isImportingUtterances) {
-            trackingEvents.trackNewUtteranceCreated({ intentID: item.key, creationType: Tracking.CanvasCreationType.NLU_MANAGER });
-            return false;
-          }
-          return true;
-        });
-      }
-
-      if (isImportingEntities) {
-        trackingEvents.trackEntityCreated({ creationType: Tracking.CanvasCreationType.NLU_MANAGER });
-      }
+    if (isImportingEntities) {
+      trackEvents.trackEntityCreated({ creationType: Tracking.CanvasCreationType.NLU_MANAGER });
     }
   };
 };

@@ -1,4 +1,4 @@
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
+import * as Platform from '@voiceflow/platform-config';
 
 import { platformAware } from '@/hocs';
 import { PlatformSettingsMetaProps } from '@/pages/Settings/constants';
@@ -11,7 +11,7 @@ export interface ChannelSpecificFeaturesProps {
 
 const ChannelSpecificFeatures = platformAware<ChannelSpecificFeaturesProps>(
   {
-    [VoiceflowConstants.PlatformType.ALEXA]: AlexaFeatures,
+    [Platform.Constants.PlatformType.ALEXA]: AlexaFeatures,
   },
   () => null
 );

@@ -1,6 +1,7 @@
 import * as Base from '@platform-config/configs/base';
 import { Config as ConfigUtils } from '@platform-config/configs/utils';
 import { ProjectType } from '@platform-config/constants';
+import { TypeGuards } from '@platform-config/utils';
 
 import * as Adapters from './adapters';
 import * as Models from './models';
@@ -8,6 +9,8 @@ import * as Models from './models';
 export { Adapters, Models };
 
 export const CONFIG = Base.Type.extend({
+  is: TypeGuards.isValueFactory(ProjectType.VOICE as const),
+
   name: 'Voice Assistant',
 
   type: ProjectType.VOICE,

@@ -1,6 +1,6 @@
 import { Nullish, Struct } from '@voiceflow/common';
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 class StateInvariantError<T extends Struct = {}> extends Error {
   constructor(message: string, public data?: T) {
@@ -70,7 +70,7 @@ export const assertDomainID: (id: Nullish<string>) => asserts id is string = (id
   assert(id, noActiveDomainID());
 };
 
-export const assertPlatform: (platform: Nullish<VoiceflowConstants.PlatformType>) => asserts platform is VoiceflowConstants.PlatformType = (
+export const assertPlatform: (platform: Nullish<Platform.Constants.PlatformType>) => asserts platform is Platform.Constants.PlatformType = (
   platform
 ) => {
   assert(platform, noActivePlatform());

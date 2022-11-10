@@ -1,15 +1,15 @@
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
+import * as Platform from '@voiceflow/platform-config';
 import React from 'react';
 
 import * as ProjectV2 from '@/ducks/projectV2';
 import { useSelector } from '@/hooks/redux';
 
 export const platformAware: {
-  <T>(components: Record<VoiceflowConstants.PlatformType, React.FC<T>>, defaultComponent?: React.FC<T>): React.FC<T>;
-  <T>(components: Partial<Record<VoiceflowConstants.PlatformType, React.FC<T>>>, defaultComponent: React.FC<T>): React.FC<T>;
+  <T>(components: Record<Platform.Constants.PlatformType, React.FC<T>>, defaultComponent?: React.FC<T>): React.FC<T>;
+  <T>(components: Partial<Record<Platform.Constants.PlatformType, React.FC<T>>>, defaultComponent: React.FC<T>): React.FC<T>;
 } =
   <T,>(
-    components: Partial<Record<VoiceflowConstants.PlatformType, React.FC<T>>>,
+    components: Partial<Record<Platform.Constants.PlatformType, React.FC<T>>>,
     defaultComponent: React.FC<T> = () => <div>Platform Component is not found!</div>
   ) =>
   (props) => {
@@ -20,11 +20,11 @@ export const platformAware: {
   };
 
 export const projectTypeAware: {
-  <T>(components: Record<VoiceflowConstants.ProjectType, React.FC<T>>, defaultComponent?: React.FC<T>): React.FC<T>;
-  <T>(components: Partial<Record<VoiceflowConstants.ProjectType, React.FC<T>>>, defaultComponent: React.FC<T>): React.FC<T>;
+  <T>(components: Record<Platform.Constants.ProjectType, React.FC<T>>, defaultComponent?: React.FC<T>): React.FC<T>;
+  <T>(components: Partial<Record<Platform.Constants.ProjectType, React.FC<T>>>, defaultComponent: React.FC<T>): React.FC<T>;
 } =
   <T,>(
-    components: Partial<Record<VoiceflowConstants.ProjectType, React.FC<T>>>,
+    components: Partial<Record<Platform.Constants.ProjectType, React.FC<T>>>,
     defaultComponent: React.FC<T> = () => <div>Platform Component is not found!</div>
   ) =>
   (props) => {

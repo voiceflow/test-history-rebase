@@ -1,6 +1,6 @@
 import { BaseModels } from '@voiceflow/base-types';
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import { HSLShades } from '@/constants';
@@ -14,7 +14,7 @@ import { NODE_CONFIG } from '../constants';
 export interface StreamStepProps {
   audio: string;
   nodeID: string;
-  platform: VoiceflowConstants.PlatformType;
+  platform: Platform.Constants.PlatformType;
   nextPortID: string;
   customPause: boolean;
   pausePortID?: string;

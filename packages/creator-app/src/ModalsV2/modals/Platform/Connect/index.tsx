@@ -1,6 +1,6 @@
+import * as Platform from '@voiceflow/platform-config';
 import { Utils } from '@voiceflow/realtime-sdk';
 import { Modal, toast, usePersistFunction } from '@voiceflow/ui';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import { AlexaStageType, DialogflowESStageType, GoogleStageType } from '@/constants/platforms';
@@ -15,7 +15,7 @@ import { PlatformAccount } from './types';
 export interface BaseConnectProps {
   stage?: AlexaStageType | GoogleStageType | DialogflowESStageType;
   source: SourceType;
-  platform?: VoiceflowConstants.PlatformType;
+  platform?: Platform.Constants.PlatformType;
 }
 
 const IDLE_STAGES = new Set([AlexaStageType.IDLE, GoogleStageType.IDLE, DialogflowESStageType.IDLE]);
@@ -29,25 +29,25 @@ interface StageMeta {
 
 const getStageMeta = Utils.platform.createPlatformSelector<StageMeta>(
   {
-    [VoiceflowConstants.PlatformType.ALEXA]: {
+    [Platform.Constants.PlatformType.ALEXA]: {
       title: 'Connect to Amazon',
       projectName: 'skill to Alexa',
       platformName: 'Alexa',
       prompt: 'Sign in with Amazon to upload your Alexa Skill.',
     },
-    [VoiceflowConstants.PlatformType.GOOGLE]: {
+    [Platform.Constants.PlatformType.GOOGLE]: {
       title: 'Connect to Google',
       projectName: 'Action',
       platformName: 'Google',
       prompt: 'Sign in with Google to upload your project.',
     },
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: {
+    [Platform.Constants.PlatformType.DIALOGFLOW_ES]: {
       title: 'Connect to Dialogflow',
       projectName: 'Dialogflow project',
       platformName: 'Dialogflow',
       prompt: 'Sign in with Google to connect this assistant to Dialogflow ES.',
     },
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_CX]: {
+    [Platform.Constants.PlatformType.DIALOGFLOW_CX]: {
       title: 'Connect to Dialogflow',
       projectName: 'Dialogflow project',
       platformName: 'Dialogflow',

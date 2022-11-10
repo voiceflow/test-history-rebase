@@ -1,9 +1,7 @@
-import { PlanType } from '@voiceflow/internal';
 import * as Platform from '@voiceflow/platform-config';
 
 import * as NLP from '@/config/nlp';
-
-import { NLUType } from '../constants';
+import { Permission } from '@/config/permissions';
 
 interface Tooltip {
   title: string;
@@ -12,7 +10,9 @@ interface Tooltip {
 }
 
 export interface Config {
-  type: NLUType;
+  is: (nlu?: unknown) => boolean;
+
+  type: Platform.Constants.NLUType;
 
   name: string;
 
@@ -25,7 +25,7 @@ export interface Config {
 
   tooltip: Tooltip;
 
-  planType: PlanType | null;
+  permission: Permission.NLU_CUSTOM | null;
 }
 
 export const tooltip = (nlpConfig: NLP.Base.Config): Tooltip => ({
@@ -34,7 +34,9 @@ export const tooltip = (nlpConfig: NLP.Base.Config): Tooltip => ({
 });
 
 export const CONFIG = Platform.Utils.Types.satisfies<Config>()({
-  type: NLUType.VOICEFLOW,
+  is: Platform.Utils.TypeGuards.isValueFactory(Platform.Constants.NLUType.VOICEFLOW),
+
+  type: Platform.Constants.NLUType.VOICEFLOW,
 
   name: 'Default',
 
@@ -43,11 +45,11 @@ export const CONFIG = Platform.Utils.Types.satisfies<Config>()({
     color: '#132144',
   },
 
-  nlps: [NLP.Voiceflow.CONFIG, ...NLP.Config.getAll().filter((nlp) => nlp !== NLP.Voiceflow.CONFIG)],
+  nlps: [NLP.Voiceflow.CONFIG],
 
   tooltip: tooltip(NLP.Base.CONFIG),
 
-  planType: null,
+  permission: null,
 });
 
 export const extend = Platform.Base.extendFactory<Config>(CONFIG);

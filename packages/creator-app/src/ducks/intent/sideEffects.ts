@@ -185,29 +185,25 @@ export const createIntent =
   async (dispatch, getState) => {
     const id = intent?.id || Utils.id.cuid.slug();
     const state = getState();
-    const platform = intent?.platform || ProjectV2.active.platformSelector(state);
-    const projectType = ProjectV2.active.projectTypeSelector(state);
+    const projectMeta = ProjectV2.active.metaSelector(state);
 
     const name =
       intent?.name ||
       createNextName(
         NEW_INTENT_NAME,
         IntentV2.allIntentsSelector(state).map(({ name }) => name),
-        platform
+        projectMeta.platform
       );
     const slots = intent?.slots || { byKey: {}, allKeys: [] };
     const inputs = intent?.inputs || [];
-    const processedIntent = intentProcessor(projectType, inferIntentType({ id, name, slots, inputs, platform }));
+    const processedIntent = intentProcessor(projectMeta.type, inferIntentType({ id, name, slots, inputs }));
 
     await dispatch.sync(
       Realtime.intent.crud.add({
         ...getActiveVersionContext(getState()),
         key: id,
         value: processedIntent,
-        projectMeta: {
-          platform,
-          type: projectType,
-        },
+        projectMeta,
       })
     );
 

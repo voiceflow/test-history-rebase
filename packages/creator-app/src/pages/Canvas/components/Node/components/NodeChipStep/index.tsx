@@ -4,7 +4,7 @@ import { HSLShades } from '@/constants';
 import { ChipAPIProvider } from '@/pages/Canvas/components/Chip';
 import { EngineContext, ManagerContext, NodeEntityContext } from '@/pages/Canvas/contexts';
 import { CombinedAPI } from '@/pages/Canvas/types';
-import { PlatformContext, ProjectTypeContext } from '@/pages/Project/contexts';
+import { NLUTypeContext, PlatformContext, ProjectTypeContext } from '@/pages/Project/contexts';
 
 import NodeLifecycle from '../NodeLifecycle';
 import { useNodeInstance } from '../NodeStep/hooks';
@@ -27,6 +27,7 @@ export interface NodeStepProps {
 
 const NodeChipStep = React.forwardRef<CombinedAPI, React.PropsWithChildren<NodeStepProps>>(({ isHovered, hasLinkWarning, ...props }, ref) => {
   const engine = React.useContext(EngineContext)!;
+  const nluType = React.useContext(NLUTypeContext)!;
   const platform = React.useContext(PlatformContext)!;
   const getManager = React.useContext(ManagerContext)!;
   const nodeEntity = React.useContext(NodeEntityContext)!;
@@ -71,7 +72,7 @@ const NodeChipStep = React.forwardRef<CombinedAPI, React.PropsWithChildren<NodeS
       <NodeLifecycle />
 
       <ChipAPIProvider value={chipStepApi}>
-        <Chip data={data as any} ports={node.ports as any} engine={engine} platform={platform} projectType={projectType} />
+        <Chip data={data as any} ports={node.ports as any} engine={engine} nluType={nluType} platform={platform} projectType={projectType} />
       </ChipAPIProvider>
     </>
   );

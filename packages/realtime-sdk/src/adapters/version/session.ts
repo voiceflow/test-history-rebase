@@ -1,12 +1,17 @@
 import { Version } from '@realtime-sdk/models';
-import { getPlatformDefaultVoice } from '@realtime-sdk/utils/platform';
 import { BaseVersion } from '@voiceflow/base-types';
 import { Nullable } from '@voiceflow/common';
+import * as Platform from '@voiceflow/platform-config';
 import { VoiceModels } from '@voiceflow/voice-types';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { createMultiAdapter } from 'bidirectional-adapter';
 
-const createSessionAdapter = <V extends string>({ platform }: { platform: VoiceflowConstants.PlatformType }) =>
+const createSessionAdapter = <V extends string>({
+  type,
+  platform,
+}: {
+  type: Platform.Constants.ProjectType;
+  platform: Platform.Constants.PlatformType;
+}) =>
   createMultiAdapter<
     BaseVersion.RestartSession | BaseVersion.ResumeSession<VoiceModels.Prompt<V>>,
     Nullable<Version.Session>,
@@ -43,19 +48,17 @@ const createSessionAdapter = <V extends string>({ platform }: { platform: Voicef
         };
       }
 
-      const platformDefaultVoice = getPlatformDefaultVoice(platform);
-
       return {
         type: BaseVersion.SessionType.RESUME,
         resume: content?.trim()
           ? {
-              voice: (voice as V) || defaultVoice || (platformDefaultVoice as V),
+              voice: (voice as V) || defaultVoice || (Platform.Config.getTypeConfig(platform, type).project.voice.default as V),
               content,
             }
           : null,
         follow: followContent?.trim()
           ? {
-              voice: (followVoice as V) || defaultVoice || (platformDefaultVoice as V),
+              voice: (followVoice as V) || defaultVoice || (Platform.Config.getTypeConfig(platform, type).project.voice.default as V),
               content: followContent,
             }
           : null,

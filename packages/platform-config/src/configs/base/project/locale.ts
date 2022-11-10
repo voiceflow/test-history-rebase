@@ -37,7 +37,7 @@ export interface Config {
   defaultLocale: string | string[];
 }
 
-const CONFIG = Types.satisfies<Config>()({
+export const CONFIG = Types.satisfies<Config>()({
   list: ['en'],
 
   enum: { EN: 'en' },

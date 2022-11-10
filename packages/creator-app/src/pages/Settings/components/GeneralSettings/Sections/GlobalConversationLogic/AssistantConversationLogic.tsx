@@ -1,5 +1,5 @@
 import { BaseVersion } from '@voiceflow/base-types';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import * as Platform from '@voiceflow/platform-config';
 import { ClickableText, CONTEXT_MENU_IGNORED_CLASS_NAME, Upload } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
@@ -20,11 +20,11 @@ import { REPEAT_OPTIONS, RESUME_PROMPT_MAX_LENGTH } from './constants';
 const SSMLComponent: any = SSML;
 
 interface AssistantConversationLogicProps {
-  platform: VoiceflowConstants.PlatformType;
-  projectType: VoiceflowConstants.ProjectType;
+  platform: Platform.Constants.PlatformType;
+  projectType: Platform.Constants.ProjectType;
   platformMeta: PlatformSettingsMetaProps;
-  defaultVoice: Realtime.AnyVoice;
-  platformDefaultVoice: Realtime.AnyVoice;
+  defaultVoice: string;
+  platformDefaultVoice: string;
 }
 
 const AssistantConversationLogic: React.FC<AssistantConversationLogicProps> = ({

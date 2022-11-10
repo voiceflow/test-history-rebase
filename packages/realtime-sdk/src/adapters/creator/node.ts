@@ -11,7 +11,7 @@ import {
 } from '@realtime-sdk/utils/typeGuards';
 import { BaseModels } from '@voiceflow/base-types';
 import { AnyRecord, Utils } from '@voiceflow/common';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
+import * as Platform from '@voiceflow/platform-config';
 import { createMultiAdapter } from 'bidirectional-adapter';
 
 import { BlockType } from '../../constants';
@@ -25,9 +25,9 @@ import { generateInPort } from './utils';
 interface InOptions {
   links: Link[];
   context: AdapterContext;
-  platform: VoiceflowConstants.PlatformType;
+  platform: Platform.Constants.PlatformType;
   parentNode: BaseModels.BaseBlock | BaseModels.BaseActions | DBNodeStart | null;
-  projectType: VoiceflowConstants.ProjectType;
+  projectType: Platform.Constants.ProjectType;
 }
 
 interface OutData {
@@ -39,8 +39,8 @@ interface OutData {
 interface OutOptions {
   stepMap: Record<string, string>;
   context: VersionAdapterContext;
-  platform: VoiceflowConstants.PlatformType;
-  projectType: VoiceflowConstants.ProjectType;
+  platform: Platform.Constants.PlatformType;
+  projectType: Platform.Constants.ProjectType;
   portLinksMap: Record<string, Link>;
   portToTargets: Record<string, string>;
 }

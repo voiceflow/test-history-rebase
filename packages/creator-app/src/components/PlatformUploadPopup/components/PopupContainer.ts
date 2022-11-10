@@ -1,5 +1,5 @@
+import * as Platform from '@voiceflow/platform-config';
 import { Popper } from '@voiceflow/ui';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import { AnyStageType } from '@/constants/platforms';
 import { styled } from '@/hocs/styled';
@@ -8,7 +8,7 @@ export interface PopupContainerProps {
   open?: boolean;
   jobStage?: AnyStageType | null;
   width?: number;
-  platform: VoiceflowConstants.PlatformType;
+  platform: Platform.Constants.PlatformType;
 }
 
 const PopupContainer = styled.div<PopupContainerProps>`

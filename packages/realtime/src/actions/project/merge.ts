@@ -47,7 +47,7 @@ class MergeProjects extends AbstractProjectResourceControl<Realtime.project.Merg
       this.services.diagram.getAll(sourceProject.devVersion),
     ]);
 
-    const { type: targetProjectType, platform: targetProjectPlatform } = Realtime.Adapters.projectAdapter.fromDB(targetProject);
+    const { nlu: targetNLU, type: targetProjectType, platform: targetProjectPlatform } = Realtime.Adapters.projectAdapter.fromDB(targetProject);
 
     const projectsMerge = new ProjectsMerge({
       creatorID,
@@ -147,7 +147,7 @@ class MergeProjects extends AbstractProjectResourceControl<Realtime.project.Merg
             intents: Realtime.Adapters.getProjectTypeIntentAdapter<any>(targetProjectType).mapFromDB(mergedIntents, {
               platform: targetProjectPlatform,
             }),
-            projectMeta: { type: targetProjectType, platform: targetProjectPlatform },
+            projectMeta: { nlu: targetNLU, type: targetProjectType, platform: targetProjectPlatform },
           })
         ),
 

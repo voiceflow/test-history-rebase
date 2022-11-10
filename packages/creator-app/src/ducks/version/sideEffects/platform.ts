@@ -2,6 +2,7 @@ import { AlexaVersion } from '@voiceflow/alexa-types';
 import { Utils } from '@voiceflow/common';
 import { DFESConstants, DFESVersion } from '@voiceflow/google-dfes-types';
 import { GoogleConstants, GoogleVersion } from '@voiceflow/google-types';
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { VoiceflowConstants, VoiceflowVersion } from '@voiceflow/voiceflow-types';
 
@@ -49,22 +50,22 @@ export const updateLocales =
     const platform = ProjectV2.active.platformSelector(state);
 
     switch (platform) {
-      case VoiceflowConstants.PlatformType.ALEXA:
+      case Platform.Constants.PlatformType.ALEXA:
         dispatch(alexa.patchPublishing({ locales: locales as unknown as AlexaVersion.Publishing['locales'] }));
         return;
-      case VoiceflowConstants.PlatformType.GOOGLE:
+      case Platform.Constants.PlatformType.GOOGLE:
         dispatch(google.patchPublishing({ locales: locales as GoogleConstants.Locale[] }));
         return;
-      case VoiceflowConstants.PlatformType.DIALOGFLOW_ES:
+      case Platform.Constants.PlatformType.DIALOGFLOW_ES:
         dispatch(dialogflow.patchPublishing({ locales: locales as DFESConstants.Locale[] }));
         return;
-      case VoiceflowConstants.PlatformType.VOICEFLOW:
+      case Platform.Constants.PlatformType.VOICEFLOW:
       default:
         await dispatch(general.patchSettings({ locales: locales as VoiceflowConstants.Locale[] }));
     }
   };
 
-export const updateDefaultVoice = (defaultVoice: Realtime.AnyVoice) => patchSettings({ defaultVoice: defaultVoice as any });
+export const updateDefaultVoice = (defaultVoice: string) => patchSettings({ defaultVoice: defaultVoice as any });
 
 export const updateInvocationName =
   (invocationName: string): Thunk =>
@@ -83,13 +84,13 @@ export const updateInvocationName =
     const invocations = Utils.string.arrayStringReplace(activeInvocationName, invocationName, activeInvocations);
 
     switch (platform) {
-      case VoiceflowConstants.PlatformType.ALEXA:
+      case Platform.Constants.PlatformType.ALEXA:
         await dispatch(alexa.patchPublishing({ invocationName, invocations }));
         return;
-      case VoiceflowConstants.PlatformType.GOOGLE:
+      case Platform.Constants.PlatformType.GOOGLE:
         await dispatch(google.patchPublishing({ pronunciation: invocationName, sampleInvocations: invocations }));
         return;
-      case VoiceflowConstants.PlatformType.DIALOGFLOW_ES:
+      case Platform.Constants.PlatformType.DIALOGFLOW_ES:
         await dispatch(dialogflow.patchPublishing({ pronunciation: invocationName, sampleInvocations: invocations }));
         // eslint-disable-next-line no-useless-return
         return;

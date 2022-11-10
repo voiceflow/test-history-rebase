@@ -1,8 +1,8 @@
 import composeRef from '@seznam/compose-react-refs';
 import { BaseButton } from '@voiceflow/base-types';
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, SectionV2, UIOnlyMenuItemOption } from '@voiceflow/ui';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import { DragPreviewComponentProps, ItemComponentProps, MappedItemComponentHandlers } from '@/components/DraggableList';
@@ -49,7 +49,7 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
 
   const [sectionRef, scrollIntoView] = useAutoScrollNodeIntoView<HTMLDivElement>({ condition: autofocus, options: { block: 'end' } });
 
-  const label = getPlatformValue(editor.platform, { [VoiceflowConstants.PlatformType.GOOGLE]: 'Chip' }, 'Button');
+  const label = getPlatformValue(editor.platform, { [Platform.Constants.PlatformType.GOOGLE]: 'Chip' }, 'Button');
 
   return (
     <EditorV2.PersistCollapse namespace={['buttonItem', itemKey]} defaultCollapsed={!autofocus}>

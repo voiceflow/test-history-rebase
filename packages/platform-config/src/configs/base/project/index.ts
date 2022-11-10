@@ -6,9 +6,7 @@ import * as InvocationName from './invocationName';
 import * as Locale from './locale';
 import * as Voice from './voice';
 
-export * as InvocationName from './invocationName';
-export * as Locale from './locale';
-export * as Voice from './voice';
+export { InvocationName, Locale, Voice };
 
 export interface Config {
   /**
@@ -16,9 +14,9 @@ export interface Config {
    */
   name: string;
 
-  voice: null | Voice.Config;
+  voice: Voice.Config;
 
-  locale: null | Locale.Config;
+  locale: Locale.Config;
 
   invocationName: null | InvocationName.Config;
 
@@ -28,9 +26,9 @@ export interface Config {
 export const CONFIG = Types.satisfies<Config>()({
   name: 'Assistant',
 
-  voice: null,
+  voice: Voice.CONFIG,
 
-  locale: null,
+  locale: Locale.CONFIG,
 
   invocationName: null,
 

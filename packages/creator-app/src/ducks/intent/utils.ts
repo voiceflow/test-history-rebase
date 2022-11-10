@@ -1,5 +1,5 @@
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import _isPlainObject from 'lodash/isPlainObject';
 import { Normalized } from 'normal-store';
 
@@ -7,7 +7,7 @@ import { fmtIntentName } from '@/utils/intent';
 
 export const getUniqSlots = (inputs: Realtime.IntentInput[]): string[] => [...new Set(inputs.flatMap(({ slots }) => slots || []))];
 
-export const intentProcessor = (projectType: VoiceflowConstants.ProjectType, { inputs = [], slots, ...intent }: Realtime.Intent): Realtime.Intent => {
+export const intentProcessor = (projectType: Platform.Constants.ProjectType, { inputs = [], slots, ...intent }: Realtime.Intent): Realtime.Intent => {
   let nextSlots = slots;
 
   if (!_isPlainObject(slots)) {
@@ -27,12 +27,12 @@ export const intentProcessor = (projectType: VoiceflowConstants.ProjectType, { i
   } as Realtime.Intent;
 };
 
-export const applySingleIntentNameFormatting = (platform: VoiceflowConstants.PlatformType, intent: Realtime.Intent): Realtime.Intent => {
+export const applySingleIntentNameFormatting = (platform: Platform.Constants.PlatformType, intent: Realtime.Intent): Realtime.Intent => {
   return {
     ...intent,
     name: fmtIntentName(intent, platform),
   };
 };
 
-export const applyIntentNameFormatting = (platform: VoiceflowConstants.PlatformType, intents: Realtime.Intent[]): Realtime.Intent[] =>
+export const applyIntentNameFormatting = (platform: Platform.Constants.PlatformType, intents: Realtime.Intent[]): Realtime.Intent[] =>
   intents.map((intent) => applySingleIntentNameFormatting(platform, intent));

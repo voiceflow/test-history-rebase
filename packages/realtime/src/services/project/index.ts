@@ -1,7 +1,7 @@
 import { AnyRecord, BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { Optional } from 'utility-types';
 
 import { HEARTBEAT_EXPIRE_TIMEOUT } from '../../constants';
@@ -47,10 +47,10 @@ class ProjectService extends AbstractControl {
     return client.project.get(projectID);
   }
 
-  public async getPlatform(projectID: string): Promise<VoiceflowConstants.PlatformType> {
+  public async getPlatform(projectID: string): Promise<Platform.Constants.PlatformType> {
     const { type, platform } = await this.models.project.getPlatformAndType(projectID);
 
-    return Realtime.legacyPlatformToProjectType(platform as VoiceflowConstants.PlatformType, type as VoiceflowConstants.ProjectType).platform;
+    return Realtime.legacyPlatformToProjectType(platform, type).platform;
   }
 
   public async getCreator<
@@ -87,7 +87,9 @@ class ProjectService extends AbstractControl {
   ): Promise<Realtime.DBProject> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
-    return client.project.platform<Realtime.DBProject>(data.platform as VoiceflowConstants.PlatformType).duplicate(templateID, data, params);
+    return client.project
+      .platform<Realtime.DBProject>(Realtime.legacyPlatformToProjectType(data.platform).platform)
+      .duplicate(templateID, data, params);
   }
 
   public async importFromFile(
@@ -116,7 +118,7 @@ class ProjectService extends AbstractControl {
     data: Optional<Pick<Realtime.DBProject, 'teamID' | 'name' | '_version' | 'platform'>, 'name' | 'platform'>
   ): Promise<Realtime.AnyDBProject> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
-    const platform = (data.platform as VoiceflowConstants.PlatformType) ?? (await this.getPlatform(projectID));
+    const platform = data.platform ? Realtime.legacyPlatformToProjectType(data.platform).platform : await this.getPlatform(projectID);
 
     // do not pass platform to duplicate to do not migrate projects from "chat" to "voice"
     return client.project.platform<Realtime.AnyDBProject>(platform).duplicate(projectID, Utils.object.omit(data, ['platform']));

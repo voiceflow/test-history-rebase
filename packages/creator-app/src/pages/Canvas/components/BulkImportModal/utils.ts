@@ -1,6 +1,6 @@
 import { READABLE_VARIABLE_REGEXP } from '@voiceflow/common';
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import _isString from 'lodash/isString';
 import Papa from 'papaparse';
 
@@ -51,7 +51,7 @@ export const validateUtterances = ({
   intents: Realtime.Intent[];
   slots: Realtime.Slot[];
   builtIn: boolean;
-  platform: VoiceflowConstants.PlatformType;
+  platform: Platform.Constants.PlatformType;
 }) => {
   const errors = new Map<number, string>();
   const slotsMap = slots.reduce<Record<string, string>>((acc, slot) => Object.assign(acc, { [slot.name]: slot.id }), {});

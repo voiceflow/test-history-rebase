@@ -1,4 +1,4 @@
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
+import * as Platform from '@voiceflow/platform-config';
 import React from 'react';
 
 import * as Tracking from '@/ducks/tracking';
@@ -16,18 +16,16 @@ export enum StepID {
   SELECT_CHANNEL = 'select_channel',
 }
 
-export const StarterPlatformType = VoiceflowConstants.PlatformType.VOICEFLOW;
-
 export const CREATING_FOR_OPTIONS = [
   { id: CreatingForType.CHAT, label: 'Chat' },
   { id: CreatingForType.VOICE, label: 'Voice' },
   { id: CreatingForType.BOTH, label: 'Both' },
 ];
 
-export const getCreatingForProjectType: Record<CreatingForType, VoiceflowConstants.ProjectType> = {
-  [CreatingForType.CHAT]: VoiceflowConstants.ProjectType.CHAT,
-  [CreatingForType.VOICE]: VoiceflowConstants.ProjectType.VOICE,
-  [CreatingForType.BOTH]: VoiceflowConstants.ProjectType.CHAT,
+export const getCreatingForProjectType: Record<CreatingForType, Platform.Constants.ProjectType> = {
+  [CreatingForType.CHAT]: Platform.Constants.ProjectType.CHAT,
+  [CreatingForType.VOICE]: Platform.Constants.ProjectType.VOICE,
+  [CreatingForType.BOTH]: Platform.Constants.ProjectType.CHAT,
 };
 
 export interface StepMetaPropsType {
@@ -35,7 +33,7 @@ export interface StepMetaPropsType {
   canBack: boolean;
   canSkip: boolean;
   skipTo: (state: Partial<OnboardingContextState>) => StepID | null;
-  trackStep: (props: any, options: { skip: boolean }) => void;
+  trackStep: (props: OnboardingContextState, options: { skip: boolean }) => void;
   docsLink?: React.ReactNode;
 }
 
@@ -69,22 +67,14 @@ export const STEP_META: StepMetaProps = {
     canSkip: true,
     skipTo: () => StepID.PAYMENT,
     trackStep: ({ addCollaboratorMeta }, { skip }) =>
-      Tracking.trackOnboardingCollaborators({
-        skip,
-        bookDemo: addCollaboratorMeta.isDemoBooked,
-        collaboratorCount: addCollaboratorMeta.collaborators.length,
-      }),
+      Tracking.trackOnboardingCollaborators({ skip, bookDemo: false, collaboratorCount: addCollaboratorMeta.collaborators.length }),
   },
   [StepID.PAYMENT]: {
     title: (plan) => `Sign up for ${plan}`,
     canBack: true,
     canSkip: false,
     skipTo: () => null,
-    trackStep: ({ paymentMeta }, { skip }) =>
-      Tracking.trackOnboardingPay({
-        skip,
-        plan: paymentMeta.plan,
-      }),
+    trackStep: ({ paymentMeta }, { skip }) => Tracking.trackOnboardingPay({ skip, plan: paymentMeta.plan! }),
   },
   [StepID.JOIN_WORKSPACE]: {
     title: () => 'Join Workspace',
@@ -102,11 +92,7 @@ export const STEP_META: StepMetaProps = {
     canBack: true,
     canSkip: false,
     skipTo: () => null,
-    trackStep: ({ selectChannelMeta }, { skip }) =>
-      Tracking.trackOnboardingSelectChannel({
-        skip,
-        platform: selectChannelMeta.platform as VoiceflowConstants.PlatformType,
-      }),
+    trackStep: ({ selectChannelMeta }, { skip }) => Tracking.trackOnboardingSelectChannel({ skip, platform: selectChannelMeta.platform }),
   },
 };
 

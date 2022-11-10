@@ -1,5 +1,5 @@
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { normalize } from 'normal-store';
 
 import * as CreatorV2 from '@/ducks/creatorV2';
@@ -22,8 +22,9 @@ export const ACTION_CONTEXT = {
 };
 
 export const PROJECT_META = {
-  platform: VoiceflowConstants.PlatformType.VOICEFLOW,
-  type: VoiceflowConstants.ProjectType.VOICE,
+  nlu: Platform.Constants.NLUType.VOICEFLOW,
+  platform: Platform.Constants.PlatformType.VOICEFLOW,
+  type: Platform.Constants.ProjectType.VOICE,
 };
 
 export const NODE: Realtime.Node = {

@@ -1,5 +1,6 @@
 import { DFESConstants } from '@voiceflow/google-dfes-types';
 import { GoogleConstants } from '@voiceflow/google-types';
+import * as Platform from '@voiceflow/platform-config';
 import { Utils } from '@voiceflow/realtime-sdk';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
@@ -72,22 +73,11 @@ export * from './dialogflowES';
 export * from './general';
 export * from './google';
 
-export const getPlatformName = Utils.platform.createPlatformSelector(
-  {
-    [VoiceflowConstants.PlatformType.ALEXA]: 'Alexa',
-    [VoiceflowConstants.PlatformType.GOOGLE]: 'Google',
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: 'Dialogflow ES',
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_CX]: 'Dialogflow CX',
-    [VoiceflowConstants.PlatformType.RASA]: 'Rasa',
-  },
-  ''
-);
-
 export const getDefaultPlatformLanguageLabel = Utils.platform.createPlatformSelector(
   {
-    [VoiceflowConstants.PlatformType.ALEXA]: LOCALE_MAP[0].name,
-    [VoiceflowConstants.PlatformType.GOOGLE]: FORMATTED_GOOGLE_LOCALES_LABELS[GoogleConstants.Language.EN],
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: FORMATTED_DIALOGFLOW_LOCALES_LABELS[DFESConstants.Language.EN],
+    [Platform.Constants.PlatformType.ALEXA]: LOCALE_MAP[0].name,
+    [Platform.Constants.PlatformType.GOOGLE]: FORMATTED_GOOGLE_LOCALES_LABELS[GoogleConstants.Language.EN],
+    [Platform.Constants.PlatformType.DIALOGFLOW_ES]: FORMATTED_DIALOGFLOW_LOCALES_LABELS[DFESConstants.Language.EN],
   },
   GENERAL_LOCALE_NAME_MAP[VoiceflowConstants.Locale.EN_US]
 );

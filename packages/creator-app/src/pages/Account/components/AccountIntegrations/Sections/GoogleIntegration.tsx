@@ -1,5 +1,5 @@
+import * as Platform from '@voiceflow/platform-config';
 import { Button, ButtonVariant } from '@voiceflow/ui';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React, { useEffect, useState } from 'react';
 
 import * as Account from '@/ducks/account';
@@ -53,7 +53,7 @@ const GoogleIntegration: React.FC = () => {
         <Button
           variant={ButtonVariant.PRIMARY}
           squareRadius
-          onClick={() => connectGoogleModal.openVoid({ source: SourceType.ACCOUNT_PAGE, platform: VoiceflowConstants.PlatformType.GOOGLE })}
+          onClick={() => connectGoogleModal.openVoid({ source: SourceType.ACCOUNT_PAGE, platform: Platform.Constants.PlatformType.GOOGLE })}
         >
           Connect
         </Button>

@@ -1,12 +1,11 @@
+import * as Platform from '@voiceflow/platform-config';
 import { Box } from '@voiceflow/ui';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import _isString from 'lodash/isString';
 import React from 'react';
 
 import {
   AnyErrorStage,
   AnyErrorStageData,
-  getPlatformName,
   IsPublishJobRenderingError,
   isPublishJobSubmittingProjectError,
   isPublishJobSubmittingReviewError,
@@ -17,7 +16,7 @@ import { useSelector } from '@/hooks';
 import StageContainer from './StageContainer';
 import StageHeader from './StageHeader';
 
-const getTitle = ({ errorType, message }: AnyErrorStageData, platform: VoiceflowConstants.PlatformType) => {
+const getTitle = ({ errorType, message }: AnyErrorStageData, platform: Platform.Constants.PlatformType) => {
   if (IsPublishJobRenderingError(errorType)) {
     return 'Rendering error';
   }
@@ -27,7 +26,7 @@ const getTitle = ({ errorType, message }: AnyErrorStageData, platform: Voiceflow
   }
 
   if (isPublishJobSubmittingReviewError(errorType)) {
-    return `${getPlatformName(platform)} error response`;
+    return `${Platform.Config.get(platform).name} error response`;
   }
 
   return message;

@@ -1,6 +1,6 @@
 import { Icon } from '@platform-config/configs/types';
 import { ProjectType } from '@platform-config/constants';
-import { Types } from '@platform-config/utils';
+import { TypeGuards, Types } from '@platform-config/utils';
 
 import * as Project from '../project';
 import * as Utils from '../utils';
@@ -9,9 +9,12 @@ import * as Utils from '../utils';
  * Common config shares data between project-types.
  */
 export interface Config {
+  is: (type?: unknown) => boolean;
+
   type: ProjectType;
 
   /**
+   * used in the new project model
    * @example 'Voiceflow Assistant'
    */
   name: string;
@@ -26,6 +29,8 @@ export interface Config {
 }
 
 export const CONFIG = Types.satisfies<Config>()({
+  is: TypeGuards.isValueFactory(ProjectType.VOICE),
+
   type: ProjectType.VOICE,
 
   name: 'Voiceflow Assistant',

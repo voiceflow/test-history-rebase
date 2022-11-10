@@ -5,6 +5,7 @@ import { AlexaConstants } from '@voiceflow/alexa-types';
 import { BuiltinSlot, CustomSlot, READABLE_VARIABLE_REGEXP, SLOT_REGEXP, Utils } from '@voiceflow/common';
 import { DFESConstants } from '@voiceflow/google-dfes-types';
 import { GoogleConstants } from '@voiceflow/google-types';
+import * as Platform from '@voiceflow/platform-config';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { Optional, Required } from 'utility-types';
 
@@ -29,19 +30,19 @@ export const getSlotTypes = <L extends string>({
   natoEnabled,
 }: {
   locales: L[];
-  platform: VoiceflowConstants.PlatformType;
+  platform: Platform.Constants.PlatformType;
   natoEnabled: boolean;
 }): { label: string; value: string }[] => {
   let builtInSlots: BuiltinSlot<string, string | L>[];
   let language: string | undefined;
   switch (platform) {
-    case VoiceflowConstants.PlatformType.GOOGLE:
+    case Platform.Constants.PlatformType.GOOGLE:
       builtInSlots = [...GoogleConstants.BUILT_IN_SLOTS].sort(sortSlotsByType([GoogleConstants.SlotType.NUMBER]));
       break;
-    case VoiceflowConstants.PlatformType.DIALOGFLOW_ES:
+    case Platform.Constants.PlatformType.DIALOGFLOW_ES:
       builtInSlots = [...DFESConstants.BUILT_IN_SLOTS].sort(sortSlotsByType([DFESConstants.SlotType.NUMBER]));
       break;
-    case VoiceflowConstants.PlatformType.ALEXA:
+    case Platform.Constants.PlatformType.ALEXA:
       builtInSlots = Utils.array
         .inferUnion<BuiltinSlot<string, string | L>[]>([...AlexaConstants.BUILT_IN_SLOTS])
         .filter((slot) => !slot.locales || locales.every((locale) => slot.locales!.includes(locale)))
@@ -129,6 +130,6 @@ export const validateSlotName = ({
 export const intentSlotFactoryCreator = createProjectTypeSelector<
   (data: Required<Optional<ChatIntentSlot>, 'id'> | Required<Optional<VoiceIntentSlot>, 'id'>) => ChatIntentSlot | VoiceIntentSlot
 >({
-  [VoiceflowConstants.ProjectType.CHAT]: (data) => chatIntentSlotSanitizer(data as Required<Optional<ChatIntentSlot>, 'id'>),
-  [VoiceflowConstants.ProjectType.VOICE]: (data) => voiceIntentSlotSanitizer(data as Required<Optional<VoiceIntentSlot>, 'id'>),
+  [Platform.Constants.ProjectType.CHAT]: (data) => chatIntentSlotSanitizer(data as Required<Optional<ChatIntentSlot>, 'id'>),
+  [Platform.Constants.ProjectType.VOICE]: (data) => voiceIntentSlotSanitizer(data as Required<Optional<VoiceIntentSlot>, 'id'>),
 });

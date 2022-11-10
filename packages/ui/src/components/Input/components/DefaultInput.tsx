@@ -37,7 +37,6 @@ export interface NestedInputProps extends PlainInputProps, InlineInputProps {
   iconPosition?: NestedIconPosition;
   wrapperProps?: InputWrapperProps;
   onFocusOnClick?: () => void;
-  onIconClick?: () => void;
 }
 
 export const NestedInput = React.forwardRef<HTMLInputElement, NestedInputProps>(
@@ -55,7 +54,6 @@ export const NestedInput = React.forwardRef<HTMLInputElement, NestedInputProps>(
       iconPosition = NestedIconPosition.LEFT,
       wrapperProps,
       onFocusOnClick,
-      onIconClick,
       ...props
     },
     ref
@@ -68,7 +66,7 @@ export const NestedInput = React.forwardRef<HTMLInputElement, NestedInputProps>(
       onFocusOnClick?.();
     };
 
-    const iconComponent = typeof icon === 'string' && <SvgIcon icon={icon} onClick={onIconClick} {...iconProps} />;
+    const iconComponent = typeof icon === 'string' && <SvgIcon icon={icon} {...iconProps} />;
 
     return (
       <InputWrapper onClick={onClick} readOnly={readOnly} disabled={disabled} {...wrapperProps} error={error} className={className}>

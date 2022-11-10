@@ -2,7 +2,7 @@ import { COMPONENTS_KEY, DEFAULT_STEP_COLORS_KEY, PROTOTYPE_KEY, PUBLISHING_KEY,
 import { AnyVersion, AnyVersionPublishing, AnyVersionSettings, PrototypeSettings, Version } from '@realtime-sdk/models';
 import { BaseProjectPayload, BaseVersionPayload } from '@realtime-sdk/types';
 import { Utils } from '@voiceflow/common';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
+import * as Platform from '@voiceflow/platform-config';
 
 import { createCRUDActions } from '../utils';
 import { versionType } from './utils';
@@ -21,10 +21,11 @@ const componentsType = Utils.protocol.typeFactory(versionType(COMPONENTS_KEY));
 // RPC
 
 export interface ActivateVersionPayload {
+  type: Platform.Constants.ProjectType;
+  platform: Platform.Constants.PlatformType;
   projectID: string;
   versionID: string;
   workspaceID: string;
-  projectType: VoiceflowConstants.ProjectType;
 }
 
 export const activateVersion = Utils.protocol.createAction<ActivateVersionPayload>(versionRPCType('ACTIVATE'));
@@ -32,7 +33,8 @@ export const activateVersion = Utils.protocol.createAction<ActivateVersionPayloa
 // Other
 
 export interface PatchSettingsPayload extends BaseVersionPayload {
-  platform: VoiceflowConstants.PlatformType;
+  type: Platform.Constants.ProjectType;
+  platform: Platform.Constants.PlatformType;
   settings: Partial<AnyVersionSettings>;
 }
 
@@ -41,12 +43,14 @@ export interface PatchDefaultStepColorsPayload extends BaseVersionPayload {
 }
 
 export interface PatchSessionPayload extends BaseVersionPayload {
+  type: Platform.Constants.ProjectType;
   session: Partial<Version.Session>;
-  platform: VoiceflowConstants.PlatformType;
+  platform: Platform.Constants.PlatformType;
 }
 
 export interface PatchPublishingPayload extends BaseVersionPayload {
-  platform: VoiceflowConstants.PlatformType;
+  type: Platform.Constants.ProjectType;
+  platform: Platform.Constants.PlatformType;
   publishing: Partial<AnyVersionPublishing>;
 }
 

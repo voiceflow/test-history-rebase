@@ -1,12 +1,15 @@
+import * as Platform from '@voiceflow/platform-config';
+
 import * as NLP from '@/config/nlp';
 
-import { NLUType } from '../constants';
 import * as Base from './base';
 
 export const CONFIG = Base.extend({
-  type: NLUType.VOICEFLOW,
+  is: Platform.Utils.TypeGuards.isValueFactory(Platform.Constants.NLUType.VOICEFLOW),
 
-  name: 'Voiceflow (default)',
+  type: Platform.Constants.NLUType.VOICEFLOW,
+
+  name: 'Voiceflow',
 
   icon: NLP.Voiceflow.CONFIG.icon,
 
@@ -17,7 +20,7 @@ export const CONFIG = Base.extend({
     description: "If you don't already use one of these NLU providers, we recommend this option for the simplest experience.",
   },
 
-  planType: null,
+  permission: null,
 });
 
 export type Config = typeof CONFIG;

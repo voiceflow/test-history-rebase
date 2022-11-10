@@ -2,6 +2,7 @@ import { AlexaConstants } from '@voiceflow/alexa-types';
 import { Utils } from '@voiceflow/common';
 import { DFESConstants } from '@voiceflow/google-dfes-types';
 import { GoogleConstants } from '@voiceflow/google-types';
+import * as Platform from '@voiceflow/platform-config';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import { getPlatformValue } from './platform';
@@ -126,8 +127,8 @@ export const getGeneralVoiceOptions = ({ useWavenet }: GetVoiceOptionsParams = {
       options: getAlexaVoiceOptions(),
     },
     {
-      value: Utils.string.capitalizeFirstLetter(VoiceflowConstants.PlatformType.GOOGLE),
-      label: Utils.string.capitalizeFirstLetter(VoiceflowConstants.PlatformType.GOOGLE),
+      value: Utils.string.capitalizeFirstLetter(Platform.Constants.PlatformType.GOOGLE),
+      label: Utils.string.capitalizeFirstLetter(Platform.Constants.PlatformType.GOOGLE),
       options: getGoogleVoiceOptions({ locales: allGoogleLocales, useWavenet }),
     },
     {
@@ -138,13 +139,13 @@ export const getGeneralVoiceOptions = ({ useWavenet }: GetVoiceOptionsParams = {
   ];
 };
 
-export const getPlatformVoiceOptions = (platform: VoiceflowConstants.PlatformType, params: GetVoiceOptionsParams): VoiceOptionGroup<string>[] =>
+export const getPlatformVoiceOptions = (platform: Platform.Constants.PlatformType, params: GetVoiceOptionsParams): VoiceOptionGroup<string>[] =>
   getPlatformValue(
     platform,
     {
-      [VoiceflowConstants.PlatformType.ALEXA]: getAlexaVoiceOptions,
-      [VoiceflowConstants.PlatformType.GOOGLE]: getGoogleVoiceOptions,
-      [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: getGoogleDialogflowVoiceOptions,
+      [Platform.Constants.PlatformType.ALEXA]: getAlexaVoiceOptions,
+      [Platform.Constants.PlatformType.GOOGLE]: getGoogleVoiceOptions,
+      [Platform.Constants.PlatformType.DIALOGFLOW_ES]: getGoogleDialogflowVoiceOptions,
     },
     getGeneralVoiceOptions
   )(params);

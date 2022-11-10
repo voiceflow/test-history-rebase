@@ -1,10 +1,11 @@
+import * as Platform from '@voiceflow/platform-config';
 import { Dropdown, OverflowTippyTooltip, stopPropagation, SvgIcon, TippyTooltip } from '@voiceflow/ui';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import _constant from 'lodash/constant';
 import React from 'react';
 
 import Avatar from '@/components/Avatar';
 import { EditableTextAPI } from '@/components/EditableText';
+import * as NLU from '@/config/nlu';
 import { Permission } from '@/config/permissions';
 import { RootRoute } from '@/config/routes';
 import * as Project from '@/ducks/project';
@@ -14,9 +15,7 @@ import { PROJECT_COLORS } from '@/styles/colors';
 import { DashboardClassName } from '@/styles/constants';
 import { withEnterPress, withInputBlur } from '@/utils/dom';
 import { getHumanLanguageName } from '@/utils/languages';
-import { getPlatformAppName, getProjectTypeTitle } from '@/utils/platform';
 import { formatProjectName } from '@/utils/string';
-import { isLockedProjectType } from '@/utils/typeGuards';
 
 import {
   DropdownIconWrapper,
@@ -43,12 +42,14 @@ export interface ItemProps extends InjectedDraggableComponentProps {
   isDragLayer?: boolean;
   versionID: string;
   isDraggingPreview?: boolean;
-  platform: VoiceflowConstants.PlatformType;
-  projectType: VoiceflowConstants.ProjectType;
+  nlu: Platform.Constants.NLUType;
+  platform: Platform.Constants.PlatformType;
+  projectType: Platform.Constants.ProjectType;
 }
 
 export const Item: React.FC<ItemProps> = ({
   id,
+  nlu,
   name,
   listId,
   isLive,
@@ -62,6 +63,9 @@ export const Item: React.FC<ItemProps> = ({
   connectDragSource,
   connectDropTarget,
 }) => {
+  const projectConfig = Platform.Config.getTypeConfig(platform, projectType);
+  const platformConfig = Platform.Config.get(platform);
+
   const [canManageProjects] = usePermission(Permission.MANAGE_PROJECTS);
   const titleEditableRef = React.useRef<EditableTextAPI | null>(null);
 
@@ -95,11 +99,10 @@ export const Item: React.FC<ItemProps> = ({
 
   const hasOptions = !!options.length;
 
-  const platformAppName = getPlatformAppName(platform);
+  const nluName = NLU.Config.isSupported(platform) ? NLU.Config.get(nlu).name : platformConfig.name;
 
-  const platformNameLabel = isLockedProjectType(platform)
-    ? platformAppName
-    : `${getProjectTypeTitle[projectType]} Assistant${platformAppName && `, ${platformAppName}`}`;
+  const platformNameLabel =
+    platformConfig.oneClickPublish || NLU.Voiceflow.CONFIG.is(nlu) ? projectConfig.project.name : `${projectConfig.project.name}, ${nluName}`;
 
   const item = (
     <div>

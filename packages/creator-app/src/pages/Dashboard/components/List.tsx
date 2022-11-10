@@ -175,6 +175,7 @@ export const List: React.FC<ListProps> = ({
                           isFB={false}
                           avatarUrl={project.image}
                           name={project.name}
+                          nlu={project.nlu}
                           diagram={project.diagramID}
                           platform={project.platform}
                           projectType={project.type}

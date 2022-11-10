@@ -1,7 +1,7 @@
 import { Version } from '@realtime-sdk/models';
 import { getPlatformGlobalVariables } from '@realtime-sdk/utils/globalVariables';
 import { DFESVersion } from '@voiceflow/google-dfes-types';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
+import * as Platform from '@voiceflow/platform-config';
 import { createMultiAdapter, notImplementedAdapter } from 'bidirectional-adapter';
 // eslint-disable-next-line you-dont-need-lodash-underscore/omit
 import _omit from 'lodash/omit';
@@ -20,7 +20,7 @@ const chatVersionAdapter = createMultiAdapter<DFESVersion.ChatVersion, Version<D
     ...sharedVersionAdapter.fromDB(sharedVersion),
 
     settings: _omit(DFESVersion.defaultChatSettings(settings), 'session'),
-    variables: variables.filter((variable) => !getPlatformGlobalVariables(VoiceflowConstants.PlatformType.VOICEFLOW).includes(variable)),
+    variables: variables.filter((variable) => !getPlatformGlobalVariables(Platform.Constants.PlatformType.VOICEFLOW).includes(variable)),
     publishing,
   }),
   notImplementedAdapter.transformer

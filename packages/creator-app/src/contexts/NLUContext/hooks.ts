@@ -87,7 +87,7 @@ export const useNLUItemMenu = ({ itemID, itemType, isBuiltIn, onRename: onRename
     if (!itemID) return [];
 
     const options: NLUItem[] = [];
-    const nluConfig = NLU.Config.get(project?.platform);
+    const nluConfig = NLU.Config.get(project?.nlu);
 
     if (canExport) {
       options.push({ key: 'export-csv', label: 'Export CSV', onClick: () => onExport(NLP.Constants.NLPType.VOICEFLOW) });

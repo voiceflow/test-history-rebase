@@ -1,6 +1,6 @@
 import { BaseModels } from '@voiceflow/base-types';
 import { Struct, Utils } from '@voiceflow/common';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
+import * as Platform from '@voiceflow/platform-config';
 import { ActionCreator } from 'typescript-fsa';
 
 export enum SchemaVersion {
@@ -136,8 +136,9 @@ export interface PathPoint {
 export type PathPoints = PathPoint[];
 
 export interface ProjectMeta {
-  type: VoiceflowConstants.ProjectType;
-  platform: VoiceflowConstants.PlatformType;
+  nlu: Platform.Constants.NLUType;
+  type: Platform.Constants.ProjectType;
+  platform: Platform.Constants.PlatformType;
 }
 
 export type ActionPayload<T extends ActionCreator<any>> = ReturnType<T>['payload'];

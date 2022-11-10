@@ -1,6 +1,7 @@
 import { AlexaConstants } from '@voiceflow/alexa-types';
 import { DFESConstants } from '@voiceflow/google-dfes-types';
 import { GoogleConstants } from '@voiceflow/google-types';
+import * as Platform from '@voiceflow/platform-config';
 import { Utils } from '@voiceflow/realtime-sdk';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
@@ -29,28 +30,28 @@ export const platformClients = {
 
 export const getPlatformClient = Utils.platform.createPlatformSelector<PlatformClient>(
   {
-    [VoiceflowConstants.PlatformType.ALEXA]: alexaClient,
-    [VoiceflowConstants.PlatformType.GOOGLE]: googleClient,
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: dialogflowESClient,
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_CX]: dialogflowCXClient,
+    [Platform.Constants.PlatformType.ALEXA]: alexaClient,
+    [Platform.Constants.PlatformType.GOOGLE]: googleClient,
+    [Platform.Constants.PlatformType.DIALOGFLOW_ES]: dialogflowESClient,
+    [Platform.Constants.PlatformType.DIALOGFLOW_CX]: dialogflowCXClient,
   },
   generalClient
 );
 
 export const getPlatformIntentNameFormatter = Utils.platform.createPlatformSelector<(name: string) => string>(
   {
-    [VoiceflowConstants.PlatformType.ALEXA]: applyAlexaIntentNameFormatting,
-    [VoiceflowConstants.PlatformType.GOOGLE]: applyAlexaIntentNameFormatting,
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: applyAlexaIntentNameFormatting,
+    [Platform.Constants.PlatformType.ALEXA]: applyAlexaIntentNameFormatting,
+    [Platform.Constants.PlatformType.GOOGLE]: applyAlexaIntentNameFormatting,
+    [Platform.Constants.PlatformType.DIALOGFLOW_ES]: applyAlexaIntentNameFormatting,
   },
   applyLUISIntentNameFormatting
 );
 
 export const getUtteranceRecommendationsLocales = Utils.platform.createPlatformSelector<AnyLocale[]>(
   {
-    [VoiceflowConstants.PlatformType.ALEXA]: ALEXA_UTTERANCE_RECOMMENDATIONS_LOCALES,
-    [VoiceflowConstants.PlatformType.GOOGLE]: GOOGLE_UTTERANCE_RECOMMENDATIONS_LOCALES,
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: DF_ES_UTTERANCE_RECOMMENDATIONS_LOCALES,
+    [Platform.Constants.PlatformType.ALEXA]: ALEXA_UTTERANCE_RECOMMENDATIONS_LOCALES,
+    [Platform.Constants.PlatformType.GOOGLE]: GOOGLE_UTTERANCE_RECOMMENDATIONS_LOCALES,
+    [Platform.Constants.PlatformType.DIALOGFLOW_ES]: DF_ES_UTTERANCE_RECOMMENDATIONS_LOCALES,
   },
   GENERAL_UTTERANCE_RECOMMENDATIONS_LOCALES
 );

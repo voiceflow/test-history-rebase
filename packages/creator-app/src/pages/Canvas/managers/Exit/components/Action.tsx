@@ -1,6 +1,6 @@
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Canvas, TippyTooltip } from '@voiceflow/ui';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import { createPlatformSelector } from '@/utils/platform';
@@ -10,8 +10,8 @@ import { NODE_CONFIG } from '../constants';
 
 const getPlatformLabel = createPlatformSelector(
   {
-    [VoiceflowConstants.PlatformType.ALEXA]: 'Skill',
-    [VoiceflowConstants.PlatformType.GOOGLE]: 'Google Action',
+    [Platform.Constants.PlatformType.ALEXA]: 'Skill',
+    [Platform.Constants.PlatformType.GOOGLE]: 'Google Action',
   },
   'Assistant'
 );

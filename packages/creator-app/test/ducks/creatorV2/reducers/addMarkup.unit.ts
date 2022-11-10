@@ -1,5 +1,5 @@
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import * as CreatorV2 from '@/ducks/creatorV2';
 
@@ -27,8 +27,8 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addMarkup reducer', ({ descri
         coords,
         data,
         projectMeta: {
-          platform: VoiceflowConstants.PlatformType.VOICEFLOW,
-          type: VoiceflowConstants.ProjectType.CHAT,
+          platform: Platform.Constants.PlatformType.VOICEFLOW,
+          type: Platform.Constants.ProjectType.CHAT,
         },
       });
 
@@ -42,8 +42,8 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addMarkup reducer', ({ descri
         coords,
         data,
         projectMeta: {
-          platform: VoiceflowConstants.PlatformType.VOICEFLOW,
-          type: VoiceflowConstants.ProjectType.CHAT,
+          platform: Platform.Constants.PlatformType.VOICEFLOW,
+          type: Platform.Constants.ProjectType.CHAT,
         },
       });
 
@@ -57,8 +57,8 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addMarkup reducer', ({ descri
         coords,
         data,
         projectMeta: {
-          platform: VoiceflowConstants.PlatformType.VOICEFLOW,
-          type: VoiceflowConstants.ProjectType.CHAT,
+          platform: Platform.Constants.PlatformType.VOICEFLOW,
+          type: Platform.Constants.ProjectType.CHAT,
         },
       });
 

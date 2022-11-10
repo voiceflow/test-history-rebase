@@ -1,7 +1,7 @@
 import { BaseModels } from '@voiceflow/base-types';
 import { ChatModels } from '@voiceflow/chat-types';
+import * as Platform from '@voiceflow/platform-config';
 import { VoiceModels } from '@voiceflow/voice-types';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { Normalized } from 'normal-store';
 
 import { AnyVersionPlatformData } from './Version';
@@ -34,7 +34,6 @@ export interface BaseIntent {
   slots: Normalized<BaseIntentSlot>;
   inputs: IntentInput[];
   noteID?: string;
-  platform: VoiceflowConstants.PlatformType;
 }
 
 export interface VoiceIntent<V = string> extends BaseIntent {
@@ -45,7 +44,7 @@ export interface ChatIntent extends BaseIntent {
   slots: Normalized<ChatIntentSlot>;
 }
 
-export type ProjectTypeIntent<T extends VoiceflowConstants.ProjectType> = T extends VoiceflowConstants.ProjectType.CHAT ? ChatIntent : VoiceIntent;
+export type ProjectTypeIntent<T extends Platform.Constants.ProjectType> = T extends Platform.Constants.ProjectType.CHAT ? ChatIntent : VoiceIntent;
 
 export type Intent = ChatIntent | VoiceIntent;
 

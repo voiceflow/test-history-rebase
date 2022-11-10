@@ -1,4 +1,4 @@
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
+import * as Platform from '@voiceflow/platform-config';
 import update from 'immutability-helper';
 import { persistReducer } from 'redux-persist';
 import storageLocal from 'redux-persist/lib/storage';
@@ -12,8 +12,8 @@ export interface PrototypeConfig {
   debug: boolean;
   intent: boolean;
   isGuided: boolean;
-  platform: VoiceflowConstants.PlatformType;
-  projectType: VoiceflowConstants.ProjectType;
+  platform: Platform.Constants.PlatformType;
+  projectType: Platform.Constants.ProjectType;
   showVisuals: boolean;
 }
 

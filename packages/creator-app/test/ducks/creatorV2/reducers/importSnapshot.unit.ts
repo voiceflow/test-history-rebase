@@ -1,5 +1,5 @@
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { normalize } from 'normal-store';
 
 import * as CreatorV2 from '@/ducks/creatorV2';
@@ -33,8 +33,8 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - importSnapshot reducer', ({ d
         ports: [],
         links: [],
         projectMeta: {
-          platform: VoiceflowConstants.PlatformType.ALEXA,
-          type: VoiceflowConstants.ProjectType.VOICE,
+          platform: Platform.Constants.PlatformType.ALEXA,
+          type: Platform.Constants.ProjectType.VOICE,
         },
         schemaVersion: 1,
       });
@@ -57,8 +57,8 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - importSnapshot reducer', ({ d
         ports: [],
         links: [],
         projectMeta: {
-          platform: VoiceflowConstants.PlatformType.ALEXA,
-          type: VoiceflowConstants.ProjectType.VOICE,
+          platform: Platform.Constants.PlatformType.ALEXA,
+          type: Platform.Constants.ProjectType.VOICE,
         },
         schemaVersion: 1,
       });
@@ -81,8 +81,8 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - importSnapshot reducer', ({ d
         ports: [port],
         links: [],
         projectMeta: {
-          platform: VoiceflowConstants.PlatformType.ALEXA,
-          type: VoiceflowConstants.ProjectType.VOICE,
+          platform: Platform.Constants.PlatformType.ALEXA,
+          type: Platform.Constants.ProjectType.VOICE,
         },
         schemaVersion: 1,
       });
@@ -110,8 +110,8 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - importSnapshot reducer', ({ d
         ports: [port1, port2],
         links: [link],
         projectMeta: {
-          platform: VoiceflowConstants.PlatformType.ALEXA,
-          type: VoiceflowConstants.ProjectType.VOICE,
+          platform: Platform.Constants.PlatformType.ALEXA,
+          type: Platform.Constants.ProjectType.VOICE,
         },
         schemaVersion: 1,
       });

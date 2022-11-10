@@ -1,17 +1,47 @@
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
+import * as Platform from '@voiceflow/platform-config';
 import React from 'react';
 
-export const PlatformContext = React.createContext<VoiceflowConstants.PlatformType | null>(null);
+import * as NLU from '@/config/nlu';
+
+export const NLUTypeContext = React.createContext<Platform.Constants.NLUType | null>(null);
+export const { Provider: NLUTypeProvider, Consumer: NLUTypeConsumer } = NLUTypeContext;
+
+export const NLUTypeConfigContext = React.createContext<NLU.Base.Config>(NLU.Base.CONFIG);
+export const { Provider: NLUTypeConfigProvider, Consumer: NLUTypeConfigConsumer } = NLUTypeConfigContext;
+
+export const PlatformContext = React.createContext<Platform.Constants.PlatformType | null>(null);
 export const { Provider: PlatformProvider, Consumer: PlatformConsumer } = PlatformContext;
 
-export const ProjectTypeContext = React.createContext<VoiceflowConstants.ProjectType | null>(null);
+export const PlatformConfigContext = React.createContext<Platform.Base.Config>(Platform.Base.CONFIG);
+export const { Provider: PlatformConfigProvider, Consumer: PlatformConfigConsumer } = PlatformConfigContext;
+
+export const ProjectTypeContext = React.createContext<Platform.Constants.ProjectType | null>(null);
 export const { Provider: ProjectTypeProvider, Consumer: ProjectTypeConsumer } = ProjectTypeContext;
 
+export const ProjectTypeConfigContext = React.createContext<Platform.Base.Type.Config>(Platform.Base.Type.CONFIG);
+export const { Provider: ProjectTypeConfigProvider, Consumer: ProjectTypeConfigConsumer } = ProjectTypeConfigContext;
+
 export const ProjectProvider: React.FC<{
-  platform: VoiceflowConstants.PlatformType | null;
-  projectType: VoiceflowConstants.ProjectType | null;
-}> = ({ projectType, platform, children }) => (
-  <PlatformProvider value={platform}>
-    <ProjectTypeProvider value={projectType}>{children}</ProjectTypeProvider>
-  </PlatformProvider>
-);
+  nluType: Platform.Constants.NLUType | null;
+  platform: Platform.Constants.PlatformType | null;
+  projectType: Platform.Constants.ProjectType | null;
+}> = ({ nluType, platform, children, projectType }) => {
+  const [nluConfig, platformConfig, platformTypeConfig] = React.useMemo(
+    () => [NLU.Config.get(nluType), Platform.Config.get(platform), Platform.Config.getTypeConfig(platform, projectType)] as const,
+    [nluType, platform, projectType]
+  );
+
+  return (
+    <PlatformProvider value={platform}>
+      <PlatformConfigProvider value={platformConfig}>
+        <ProjectTypeProvider value={projectType}>
+          <ProjectTypeConfigProvider value={platformTypeConfig}>
+            <NLUTypeProvider value={nluType}>
+              <NLUTypeConfigProvider value={nluConfig}>{children}</NLUTypeConfigProvider>
+            </NLUTypeProvider>
+          </ProjectTypeConfigProvider>
+        </ProjectTypeProvider>
+      </PlatformConfigProvider>
+    </PlatformProvider>
+  );
+};

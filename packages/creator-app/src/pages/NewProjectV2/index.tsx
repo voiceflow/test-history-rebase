@@ -11,17 +11,10 @@ import client from '@/client';
 import * as NLU from '@/config/nlu';
 import * as Project from '@/ducks/project';
 import * as Router from '@/ducks/router';
-import { useDispatch, useModelTracking, useTrackingEvents } from '@/hooks';
+import { useDispatch, useModelTracking } from '@/hooks';
 import { NLUImportModel } from '@/models';
 import LOCALE_MAP from '@/services/LocaleMap';
-import {
-  isAlexaPlatform,
-  isDialogflowPlatform,
-  isGooglePlatform,
-  isPlatformWithInvocationName,
-  isVoiceflowNLUOnlyPlatform,
-  isVoiceflowPlatform,
-} from '@/utils/typeGuards';
+import { isAlexaPlatform, isDialogflowPlatform, isGooglePlatform, isPlatformWithInvocationName, isVoiceflowPlatform } from '@/utils/typeGuards';
 
 import { ChannelSection, ChannelValue, Container, Footer, InvocationNameSection, LanguageSection, NLUSection } from './components';
 import { DEFAULT_PROJECT_NAME, getDefaultLanguage, getLanguage, PLATFORM_PROJECT_META_MAP, Upcoming } from './constants';
@@ -36,7 +29,7 @@ interface NewProjectProps {
 
 const NewProject: React.FC<NewProjectProps> = ({ listID, onClose, onToggleCreating }) => {
   const [state, stateAPI] = useSmartReducerV2({
-    nlu: null as Nullable<NLU.Constants.NLUType>,
+    nlu: null as Nullable<Platform.Constants.NLUType>,
     type: null as Nullable<Platform.Constants.ProjectType>,
     platform: null as Nullable<Platform.Constants.PlatformType>,
     language: null as Nullable<AnyLanguage>,
@@ -48,7 +41,6 @@ const NewProject: React.FC<NewProjectProps> = ({ listID, onClose, onToggleCreati
     invocationNameError: '',
   });
 
-  const [trackingEvents] = useTrackingEvents();
   const modelImportTracking = useModelTracking();
 
   const createProject = useDispatch(Project.createProject);
@@ -76,13 +68,13 @@ const NewProject: React.FC<NewProjectProps> = ({ listID, onClose, onToggleCreati
     if (Upcoming.Config.isSupported(value?.platform) || !value) return;
 
     stateAPI.update({
+      nlu: Platform.Config.get(value.platform).supportedNLUs[0],
       type: value.type,
       platform: value.platform,
-      nlu: isVoiceflowNLUOnlyPlatform(value.platform) ? NLU.Constants.NLUType.VOICEFLOW : null,
     });
   };
 
-  const onNLUSelect = (value: NLU.Constants.NLUType | null) => {
+  const onNLUSelect = (value: Platform.Constants.NLUType | null) => {
     stateAPI.update({
       nlu: value,
       language: null,
@@ -99,8 +91,10 @@ const NewProject: React.FC<NewProjectProps> = ({ listID, onClose, onToggleCreati
   };
 
   type State = typeof state;
-  const isStateValid = (state: State): state is Omit<State, 'type' | 'platform'> & NonNullishRecord<Pick<State, 'type' | 'platform'>> => {
-    if (!state.type || !state.platform) {
+  const isStateValid = (
+    state: State
+  ): state is Omit<State, 'nlu' | 'type' | 'platform'> & NonNullishRecord<Pick<State, 'nlu' | 'type' | 'platform'>> => {
+    if (!state.nlu || !state.type || !state.platform) {
       toast.error('Channel selection required');
       stateAPI.channelError.set('Channel selection required');
 
@@ -129,10 +123,8 @@ const NewProject: React.FC<NewProjectProps> = ({ listID, onClose, onToggleCreati
   const onCreate = async () => {
     if (!isStateValid(state)) return;
 
-    const platformType = isVoiceflowPlatform(state.platform) ? state.nlu : state.platform;
-
-    const languageToUse: AnyLanguage = state.language || (getDefaultLanguage(platformType) as AnyLanguage);
-    const alexaLocalesToUse: AnyLocale[] = state.alexaLocales || (getDefaultLanguage(platformType) as AnyLocale[]);
+    const languageToUse: AnyLanguage = state.language || (getDefaultLanguage(state.platform) as AnyLanguage);
+    const alexaLocalesToUse: AnyLocale[] = state.alexaLocales || (getDefaultLanguage(state.platform) as AnyLocale[]);
 
     try {
       onToggleCreating(true);
@@ -140,27 +132,28 @@ const NewProject: React.FC<NewProjectProps> = ({ listID, onClose, onToggleCreati
       const project = await createProject({
         name: DEFAULT_PROJECT_NAME,
         listID,
-        platform: platformType!,
-        language: getLanguage(languageToUse!, alexaLocalesToUse, platformType!),
+        nluType: state.nlu,
+        platform: state.platform,
+        language: getLanguage(languageToUse, alexaLocalesToUse, state.platform),
         onboarding: false,
         templateTag: isVoiceflowPlatform(state.platform) ? state.type : 'default',
       });
 
       // TODO: in the future make new project parameters much more platform specific
-      if (isAlexaPlatform(platformType)) {
+      if (isAlexaPlatform(state.platform)) {
         await updateAlexaMeta(project.versionID, alexaLocalesToUse as [AlexaConstants.Locale, ...AlexaConstants.Locale[]], state.invocationName);
-      } else if (isGooglePlatform(platformType)) {
+      } else if (isGooglePlatform(state.platform)) {
         await updateGoogleMeta(project.versionID, languageToUse as GoogleConstants.Language, state.invocationName);
-      } else if (isDialogflowPlatform(platformType)) {
+      } else if (isDialogflowPlatform(state.platform)) {
         await updateDialogFlowMeta(project.versionID, languageToUse as DFESConstants.Language);
       } else {
         await updateGeneralMeta(project.versionID, languageToUse as VoiceflowConstants.Locale);
       }
 
-      if (state.importedModel && platformType && NLU.Config.get(platformType).nlps[0].import) {
+      if (state.importedModel && NLU.Config.get(state.nlu).nlps[0].import) {
         await client.version.patchMergeIntentsAndSlots(project.versionID, state.importedModel);
 
-        modelImportTracking(platformType, state.importedModel, trackingEvents, project.id);
+        modelImportTracking({ nluType: state.nlu, projectID: project.id, importedModel: state.importedModel });
       }
 
       onClose();

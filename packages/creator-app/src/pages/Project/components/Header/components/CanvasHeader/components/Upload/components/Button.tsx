@@ -1,8 +1,7 @@
+import * as Platform from '@voiceflow/platform-config';
 import { SvgIconTypes, Text, TippyTooltip, TippyTooltipProps } from '@voiceflow/ui';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
-import { getPlatformName } from '@/constants/platforms';
 import { Hotkey, HOTKEY_LABEL_MAP } from '@/keymap';
 import { PlatformContext } from '@/pages/Project/contexts';
 import { Identifier } from '@/styles/constants';
@@ -28,7 +27,7 @@ interface ConnectButtonProps {
   onClick?: () => void;
   progress?: number;
 
-  /* 
+  /*
     `customProps` used as an escape hatch in-case requirements ask for something
     similar to `Button` but with slight differences.
   */
@@ -43,7 +42,7 @@ interface ButtonProps {
 }
 
 const getButtonProps = (
-  platform: VoiceflowConstants.PlatformType,
+  platform: Platform.Constants.PlatformType,
   { variant, progress, customProps = {} }: ConnectButtonProps
 ): ButtonProps & { key?: string } => {
   const loadIconProps: ButtonProps = { icon: 'arrowSpin' as const };
@@ -54,7 +53,7 @@ const getButtonProps = (
         ...getPlatformIconProps(platform),
         ...customProps,
         tooltip: {
-          title: `Connect to ${getPlatformName(platform)}`,
+          title: `Connect to ${Platform.Config.get(platform).name}`,
           hotkey: HOTKEY_LABEL_MAP[Hotkey.UPLOAD_PROJECT],
           ...customProps.tooltip,
         },
@@ -64,7 +63,7 @@ const getButtonProps = (
         ...getPlatformIconProps(platform),
         ...customProps,
         tooltip: {
-          title: `Upload to ${getPlatformName(platform)}`,
+          title: `Upload to ${Platform.Config.get(platform).name}`,
           hotkey: HOTKEY_LABEL_MAP[Hotkey.UPLOAD_PROJECT],
           ...customProps.tooltip,
         },

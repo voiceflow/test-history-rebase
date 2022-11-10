@@ -29,6 +29,7 @@ export * from './nlu';
 export * from './permission';
 export * from './planLimitV2';
 export * from './planPermission';
+export * from './platformConfig';
 export * from './project';
 export * from './realtime';
 export * from './reducer';

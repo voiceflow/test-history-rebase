@@ -1,6 +1,6 @@
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box } from '@voiceflow/ui';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 import { useSelector } from 'react-redux';
 
@@ -14,7 +14,7 @@ import { Basic, Canvas, DangerZone, DialogflowConsole, GlobalConversationLogic, 
 
 const SectionComponents: Record<
   SettingSections,
-  React.FC<{ platform: VoiceflowConstants.PlatformType; projectType: VoiceflowConstants.ProjectType; title: SettingSections; platformMeta: any }>
+  React.FC<{ platform: Platform.Constants.PlatformType; projectType: Platform.Constants.ProjectType; title: SettingSections; platformMeta: any }>
 > = {
   [SettingSections.BASIC]: Basic,
   [SettingSections.CANVAS]: Canvas,

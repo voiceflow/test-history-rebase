@@ -1,6 +1,6 @@
 import { SLOT_REGEXP } from '@voiceflow/common';
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 const ALL_NUMBERS_REGEXP = /(\d*)/g;
 const SLOT_REGEXP2 = /({{\[\w*].\w*}})/g;
@@ -38,9 +38,9 @@ export const specialCharactersUtteranceValidator = (utterance: string) => {
 const getPlatformValidations = Realtime.Utils.platform.createPlatformSelector<((utterance: string) => string | null)[]>(
   {
     // TO DO: add special characters validation again
-    [VoiceflowConstants.PlatformType.ALEXA]: [emptyUtteranceValidator, numericUtteranceValidator],
+    [Platform.Constants.PlatformType.ALEXA]: [emptyUtteranceValidator, numericUtteranceValidator],
     // TO DO: add special characters validation again
-    [VoiceflowConstants.PlatformType.GOOGLE]: [emptyUtteranceValidator, numericUtteranceValidator],
+    [Platform.Constants.PlatformType.GOOGLE]: [emptyUtteranceValidator, numericUtteranceValidator],
   },
   [emptyUtteranceValidator]
 );
@@ -49,7 +49,7 @@ export function validateUtterance(
   utterance: string,
   intentID: string | null,
   intents: Realtime.Intent[],
-  platform: VoiceflowConstants.PlatformType
+  platform: Platform.Constants.PlatformType
 ): string {
   const utteranceWithoutSlots = utterance.replace(SLOT_REGEXP, '');
 
@@ -85,13 +85,13 @@ export const numberUtteranceFormatter = (utterance: string) => utterance.replace
 
 const getPlatformFormatters = Realtime.Utils.platform.createPlatformSelector<((utterance: string) => string)[]>(
   {
-    [VoiceflowConstants.PlatformType.ALEXA]: [numberUtteranceFormatter],
-    [VoiceflowConstants.PlatformType.GOOGLE]: [numberUtteranceFormatter],
+    [Platform.Constants.PlatformType.ALEXA]: [numberUtteranceFormatter],
+    [Platform.Constants.PlatformType.GOOGLE]: [numberUtteranceFormatter],
   },
   []
 );
 
-export const formatUtterance = (platform: VoiceflowConstants.PlatformType, text = ''): string => {
+export const formatUtterance = (platform: Platform.Constants.PlatformType, text = ''): string => {
   const formatters = getPlatformFormatters(platform);
 
   if (formatters.length === 0) return text;

@@ -1,5 +1,5 @@
+import * as Platform from '@voiceflow/platform-config';
 import { Box, Menu, SvgIcon, ThemeColor, TippyTooltip } from '@voiceflow/ui';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import dayjs from 'dayjs';
 import React from 'react';
 import { generatePath } from 'react-router-dom';
@@ -11,7 +11,7 @@ import OverflowMenu from '@/components/OverflowMenu';
 import { DIALOG_MANAGER_API } from '@/config/documentation';
 import { Path } from '@/config/routes';
 import { ModalType } from '@/constants';
-import { getPlatformName, VersionTag } from '@/constants/platforms';
+import { VersionTag } from '@/constants/platforms';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useModals, useSelector, useTrackingEvents } from '@/hooks';
@@ -34,7 +34,7 @@ import {
 
 const RESTORE_VERSION_MESSAGE = createPlatformSelector(
   {
-    [VoiceflowConstants.PlatformType.GOOGLE]: 'This action will not change your Google Actions endpoint.',
+    [Platform.Constants.PlatformType.GOOGLE]: 'This action will not change your Google Actions endpoint.',
   },
   ''
 );
@@ -80,7 +80,7 @@ const VersionItem: React.FC<Index> = ({ version, restoreEnabled, swapVersions, c
   const tooltipText = React.useMemo(() => {
     if (isLive) {
       return isPlatformWithThirdPartyUpload(platform)
-        ? `This is the most recent version uploaded to ${getPlatformName(platform)}.`
+        ? `This is the most recent version uploaded to ${Platform.Config.get(platform).name}.`
         : 'This version is live and actively being referenced by the Dialog API';
     }
     return isPlatformWithThirdPartyUpload(platform) ? 'This is an inactive version' : 'This version is not live';

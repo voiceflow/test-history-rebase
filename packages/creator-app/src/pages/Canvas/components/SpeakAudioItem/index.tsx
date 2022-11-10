@@ -1,6 +1,6 @@
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, COLOR_PICKER_CONSTANTS, CONTEXT_MENU_IGNORED_CLASS_NAME, SvgIcon, Upload } from '@voiceflow/ui';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import { SectionToggleVariant } from '@/components/Section';
@@ -16,7 +16,7 @@ export type SpeakAudioItemProps = ListItemComponentProps<
   Realtime.SpeakData,
   {
     header: React.ReactNode;
-    platform: VoiceflowConstants.PlatformType;
+    platform: Platform.Constants.PlatformType;
     isRandomized?: boolean;
   }
 >;
@@ -40,7 +40,7 @@ const SpeakAudioItem = React.forwardRef<HTMLElement, SpeakAudioItemProps>(
     },
     ref
   ) => {
-    const isGoogle = platform === VoiceflowConstants.PlatformType.GOOGLE;
+    const isGoogle = platform === Platform.Constants.PlatformType.GOOGLE;
     const isNew = latestCreatedKey === itemKey;
 
     const updateContent = React.useCallback(({ text }: { text: string }) => onUpdate({ content: text }), [onUpdate]);

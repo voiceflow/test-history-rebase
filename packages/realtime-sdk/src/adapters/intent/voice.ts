@@ -5,14 +5,7 @@ import { denormalize, normalize } from 'normal-store';
 import { Optional, Required } from 'utility-types';
 
 import { hasValue } from '../utils';
-import {
-  BaseIntentAdapterFromDBOptions,
-  BaseIntentAdapterKeyRemap,
-  BaseIntentAdapterToDBOptions,
-  baseIntentSlotDialogSanitizer,
-  baseIntentSlotSanitizer,
-  baseIntentSmartAdapter,
-} from './base';
+import { BaseIntentAdapterKeyRemap, baseIntentSlotDialogSanitizer, baseIntentSlotSanitizer, baseIntentSmartAdapter } from './base';
 
 export const voiceIntentPromptSanitizer = ({
   text,
@@ -39,15 +32,9 @@ export const voiceIntentSlotSanitizer = ({ dialog, ...baseIntentSlot }: Required
   dialog: voiceIntentSlotDialogSanitizer(dialog),
 });
 
-export const voiceIntentSmartAdapter = createSmartMultiAdapter<
-  VoiceModels.Intent<string>,
-  VoiceIntent,
-  BaseIntentAdapterFromDBOptions,
-  BaseIntentAdapterToDBOptions,
-  BaseIntentAdapterKeyRemap
->(
-  (dbIntent, options) => ({
-    ...baseIntentSmartAdapter.fromDB(dbIntent, options),
+export const voiceIntentSmartAdapter = createSmartMultiAdapter<VoiceModels.Intent<string>, VoiceIntent, [], [], BaseIntentAdapterKeyRemap>(
+  (dbIntent) => ({
+    ...baseIntentSmartAdapter.fromDB(dbIntent),
     ...(hasValue(dbIntent, 'slots') && { slots: normalize(dbIntent.slots.map(voiceIntentSlotSanitizer)) }),
   }),
   (intent) => ({
@@ -56,9 +43,7 @@ export const voiceIntentSmartAdapter = createSmartMultiAdapter<
   })
 );
 
-export const voiceIntentAdapter = createMultiAdapter<
-  VoiceModels.Intent<string>,
-  VoiceIntent,
-  BaseIntentAdapterFromDBOptions,
-  BaseIntentAdapterToDBOptions
->(({ slots = [], ...dbIntent }, options) => voiceIntentSmartAdapter.fromDB({ slots, ...dbIntent }, options), voiceIntentSmartAdapter.toDB);
+export const voiceIntentAdapter = createMultiAdapter<VoiceModels.Intent<string>, VoiceIntent>(
+  ({ slots = [], ...dbIntent }) => voiceIntentSmartAdapter.fromDB({ slots, ...dbIntent }),
+  voiceIntentSmartAdapter.toDB
+);

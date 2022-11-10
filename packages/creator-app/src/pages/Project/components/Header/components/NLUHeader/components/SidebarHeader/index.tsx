@@ -20,7 +20,7 @@ const SidebarHeader: React.FC = () => {
   const [trackingEvents] = useTrackingEvents();
 
   const showIcon = !isVoiceflowPlatform(project?.platform);
-  const nluConfig = NLU.Config.get(project?.platform);
+  const nluConfig = NLU.Config.get(project?.nlu);
 
   return (
     <SidebarHeaderContainer>

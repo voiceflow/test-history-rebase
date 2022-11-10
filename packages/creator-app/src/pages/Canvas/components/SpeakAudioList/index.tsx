@@ -1,16 +1,15 @@
 import { Nullable, Utils } from '@voiceflow/common';
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import OverflowMenu from '@/components/OverflowMenu';
 import { DialogType } from '@/constants';
 import * as VersionV2 from '@/ducks/versionV2';
-import { useSelector } from '@/hooks';
+import { useActiveProjectTypeConfig, useSelector } from '@/hooks';
 import { ControlOptions } from '@/pages/Canvas/components/Editor';
 import ListEditorContent, { ListItemComponent } from '@/pages/Canvas/components/ListEditorContent';
 import { AUDIO_MOCK_DATA, NODE_CONFIG, VOICE_MOCK_DATA } from '@/pages/Canvas/managers/Speak/constants';
-import { getPlatformDefaultVoice } from '@/utils/platform';
 
 export const speakFactory = ({ defaultVoice }: { defaultVoice: string }): Realtime.SpeakData => ({
   id: Utils.id.cuid.slug(),
@@ -32,7 +31,7 @@ const speakAudioFactory =
     type === DialogType.VOICE ? speakFactory({ defaultVoice }) : audioFactory();
 
 interface ExtraItemProps {
-  platform: VoiceflowConstants.PlatformType;
+  platform: Platform.Constants.PlatformType;
   isRandomized?: boolean;
   isDeprecated?: boolean;
 }
@@ -41,7 +40,7 @@ export type ItemComponent = ListItemComponent<Realtime.SpeakData, ExtraItemProps
 
 export interface SpeakAudioListProps {
   items: Realtime.SpeakData[];
-  platform: VoiceflowConstants.PlatformType;
+  platform: Platform.Constants.PlatformType;
   maxItems: number;
   itemName?: string;
   randomize?: boolean;
@@ -67,12 +66,14 @@ const SpeakAudioList: React.FC<SpeakAudioListProps> = ({
   getControlOptions,
   onChangeRandomize,
 }) => {
+  const projectTypeConfig = useActiveProjectTypeConfig();
+
   const updateItems = React.useCallback((newItems: Realtime.SpeakData[]) => onChangeItems?.(newItems), [onChangeItems]);
   const toggleRandomized = React.useCallback(() => onChangeRandomize?.(!randomize), [randomize, onChangeRandomize]);
 
   const defaultVoice = useSelector(VersionV2.active.defaultVoiceSelector);
 
-  const factory = speakAudioFactory({ defaultVoice: defaultVoice || getPlatformDefaultVoice(platform) });
+  const factory = speakAudioFactory({ defaultVoice: defaultVoice || projectTypeConfig.project.voice.default });
 
   return (
     <ListEditorContent

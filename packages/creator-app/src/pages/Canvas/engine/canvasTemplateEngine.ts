@@ -1,5 +1,5 @@
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import * as Errors from '@/config/errors';
 import { BlockType } from '@/constants';
@@ -30,7 +30,7 @@ interface TemplateCanvasContext {
   intents: Realtime.Intent[];
   products: Realtime.Product[];
   diagrams: Realtime.Diagram[];
-  platform: VoiceflowConstants.PlatformType;
+  platform: Platform.Constants.PlatformType;
   blockColor?: string | null;
 }
 

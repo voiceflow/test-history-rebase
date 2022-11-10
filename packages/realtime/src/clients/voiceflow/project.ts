@@ -1,7 +1,7 @@
 import { BaseModels } from '@voiceflow/base-types';
 import { Nullish } from '@voiceflow/common';
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { AxiosInstance } from 'axios';
 
 import { ExtraOptions } from './types';
@@ -25,12 +25,12 @@ const Client = ({ api, alexa, google, dialogflow, general }: ExtraOptions) => {
     typeof alexaClient | typeof googleClient | typeof dialogflowClient | typeof generalClient
   >(
     {
-      [VoiceflowConstants.PlatformType.ALEXA]: alexaClient,
-      [VoiceflowConstants.PlatformType.GOOGLE]: googleClient,
-      [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: dialogflowClient,
+      [Platform.Constants.PlatformType.ALEXA]: alexaClient,
+      [Platform.Constants.PlatformType.GOOGLE]: googleClient,
+      [Platform.Constants.PlatformType.DIALOGFLOW_ES]: dialogflowClient,
     },
     generalClient
-  ) as <P extends BaseModels.Project.Model<any, any>>(platform?: Nullish<VoiceflowConstants.PlatformType>) => ProjectPlatformClient<P>;
+  ) as <P extends BaseModels.Project.Model<any, any>>(platform?: Nullish<Platform.Constants.PlatformType>) => ProjectPlatformClient<P>;
 
   return {
     ...createResourceClient(api, 'projects'),

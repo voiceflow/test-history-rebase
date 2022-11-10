@@ -1,5 +1,5 @@
+import * as Platform from '@voiceflow/platform-config';
 import { SvgIcon } from '@voiceflow/ui';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import GoogleLoginButton from '@/components/Forms/GoogleLogin';
@@ -23,7 +23,7 @@ function AddGoogleUserModal({ addUser, user, skill_id, onSuccess, onError }) {
         skill_id,
       });
       onSuccess(newUsers);
-      trackingEvents.trackDeveloperAccountConnected(VoiceflowConstants.PlatformType.GOOGLE, SourceType.STEP);
+      trackingEvents.trackDeveloperAccountConnected(Platform.Constants.PlatformType.GOOGLE, SourceType.STEP);
     } catch (err) {
       onError(err);
     }

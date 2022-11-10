@@ -1,4 +1,4 @@
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
+import * as Platform from '@voiceflow/platform-config';
 
 import client from '@/client';
 import * as NLP from '@/config/nlp';
@@ -9,34 +9,34 @@ import { CanvasCreationType, EventName, NLUManagerOpenedOrigin } from '../consta
 import { createProjectEventPayload, createProjectEventTracker, createWorkspaceEventPayload, createWorkspaceEventTracker } from '../utils';
 
 export const trackProjectNLUImportFromWorkspace = createWorkspaceEventTracker<{
-  nluType: NLP.Constants.NLPType | undefined;
-  platform: VoiceflowConstants.PlatformType;
   origin: NLUImportOrigin;
   projectID: string;
-}>(({ nluType, platform, projectID, origin, ...options }) =>
+  importNLPType: NLP.Constants.NLPType;
+  targetNLUType: Platform.Constants.NLUType;
+}>(({ origin, projectID, importNLPType, targetNLUType, ...options }) =>
   client.api.analytics.track(
     EventName.PROJECT_NLU_IMPORT,
-    createWorkspaceEventPayload(options, { nlu_type: nluType, project_type: platform, origin, projectID })
+    createWorkspaceEventPayload(options, { nlu_type: importNLPType, project_type: targetNLUType, origin, projectID })
   )
 );
 
 export const trackIntentCreatedProjectNLUImport = createWorkspaceEventTracker<{
-  creationType: CanvasCreationType;
   projectID: string;
+  creationType: CanvasCreationType;
 }>(({ creationType, projectID, ...options }) =>
   client.api.analytics.track(EventName.INTENT_CREATED, createWorkspaceEventPayload(options, { creation_type: creationType, project_id: projectID }))
 );
 
 export const trackEntityCreatedProjectNLUImport = createWorkspaceEventTracker<{
-  creationType: CanvasCreationType;
   projectID: string;
+  creationType: CanvasCreationType;
 }>(({ creationType, projectID, ...options }) =>
   client.api.analytics.track(EventName.ENTITY_CREATED, createWorkspaceEventPayload(options, { creation_type: creationType, project_id: projectID }))
 );
 
 export const trackNewUtteranceCreatedProjectNLUImport = createWorkspaceEventTracker<{
-  creationType: CanvasCreationType;
   projectID: string;
+  creationType: CanvasCreationType;
 }>(({ creationType, projectID, ...options }) =>
   client.api.analytics.track(
     EventName.PROJECT_NEW_UTTERANCE_CREATED,
@@ -45,13 +45,13 @@ export const trackNewUtteranceCreatedProjectNLUImport = createWorkspaceEventTrac
 );
 
 export const trackProjectNLUImportFailed = createProjectEventTracker<{
-  nluType: NLP.Constants.NLPType | undefined;
-  platform: VoiceflowConstants.PlatformType;
   origin: NLUImportOrigin;
-}>(({ nluType, platform, origin, ...options }) =>
+  importNLPType: NLP.Constants.NLPType;
+  targetNLUType: Platform.Constants.NLUType;
+}>(({ origin, importNLPType, targetNLUType, ...options }) =>
   client.api.analytics.track(
     EventName.PROJECT_NLU_IMPORT_FAILED,
-    createProjectEventPayload(options, { nlu_type: nluType, project_type: platform, origin })
+    createProjectEventPayload(options, { nlu_type: importNLPType, project_type: targetNLUType, origin })
   )
 );
 

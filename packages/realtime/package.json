@@ -16,6 +16,7 @@
     "@voiceflow/internal": "3.0.1",
     "@voiceflow/logger": "1.6.1",
     "@voiceflow/metrics": "1.4.1",
+    "@voiceflow/platform-config": "^1.1.2",
     "@voiceflow/realtime-sdk": "^1.191.0",
     "@voiceflow/socket-utils": "^1.24.0",
     "@voiceflow/voice-types": "2.8.16",

@@ -1,7 +1,7 @@
 import { BaseModels } from '@voiceflow/base-types';
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { ClickableText, logger, toast, useSmartReducerV2 } from '@voiceflow/ui';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import client from '@/client';
@@ -28,8 +28,8 @@ export interface TrainingState {
 
 export const getTrainText = createPlatformSelector(
   {
-    [VoiceflowConstants.PlatformType.ALEXA]: 'Train Alexa Skill',
-    [VoiceflowConstants.PlatformType.GOOGLE]: 'Train Google Action',
+    [Platform.Constants.PlatformType.ALEXA]: 'Train Alexa Skill',
+    [Platform.Constants.PlatformType.GOOGLE]: 'Train Google Action',
   },
   'Train Assistant'
 );

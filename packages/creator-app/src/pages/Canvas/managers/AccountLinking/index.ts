@@ -1,5 +1,5 @@
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import { NodeManagerConfig } from '../types';
 import AccountLinkingEditor from './AccountLinkingEditor';
@@ -10,7 +10,7 @@ const AccountLinkingManager: NodeManagerConfig<Realtime.NodeData.AccountLinking,
   ...NODE_CONFIG,
 
   label: 'Account Linking',
-  platforms: [VoiceflowConstants.PlatformType.ALEXA],
+  platforms: [Platform.Constants.PlatformType.ALEXA],
 
   step: AccountLinkingStep,
   editor: AccountLinkingEditor,

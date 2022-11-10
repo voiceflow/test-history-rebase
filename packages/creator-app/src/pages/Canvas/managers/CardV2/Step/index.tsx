@@ -1,7 +1,7 @@
 import { BaseModels, BaseText } from '@voiceflow/base-types';
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { OverflowText, Thumbnail } from '@voiceflow/ui';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import SlateEditable from '@/components/SlateEditable';
@@ -21,7 +21,7 @@ const slateDescription = (description: BaseText.SlateTextValue) =>
   SlateEditable.EditorAPI.isNewState(description) ? '' : SlateEditable.serializeToJSX(description);
 
 const CardV2Step: ConnectedStep<Realtime.NodeData.CardV2, Realtime.NodeData.CardV2BuiltInPorts> = ({ ports, data, isLast, projectType }) => {
-  const isVoiceProject = projectType === VoiceflowConstants.ProjectType.VOICE;
+  const isVoiceProject = projectType === Platform.Constants.ProjectType.VOICE;
 
   const card = React.useMemo(
     () => ({

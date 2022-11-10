@@ -1,7 +1,7 @@
 import { BaseModels } from '@voiceflow/base-types';
 import { Nullable } from '@voiceflow/common';
+import * as Platform from '@voiceflow/platform-config';
 import { MenuTypes, toast } from '@voiceflow/ui';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 import { useSelector } from 'react-redux';
 
@@ -236,7 +236,7 @@ export const useAlexaProjectSettings = (): boolean => {
   const project = useSelector(ProjectV2.active.projectSelector);
   if (!project?.id || !project?.platform) return false;
 
-  if (project.platform !== VoiceflowConstants.PlatformType.ALEXA) return true;
+  if (project.platform !== Platform.Constants.PlatformType.ALEXA) return true;
 
   return project.id < ALEXA_SUNSET_PROJECT_ID;
 };

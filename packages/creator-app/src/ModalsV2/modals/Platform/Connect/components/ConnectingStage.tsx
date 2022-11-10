@@ -1,5 +1,5 @@
+import * as Platform from '@voiceflow/platform-config';
 import { Alert, Box, Button, ButtonVariant, LoadCircle, Modal } from '@voiceflow/ui';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import { linkGraphic } from '@/assets';
@@ -12,7 +12,7 @@ import AmazonLoginButton from './AmazonLogin';
 
 interface ConnectingStageProps {
   onClose: VoidFunction;
-  platform: VoiceflowConstants.PlatformType;
+  platform: Platform.Constants.PlatformType;
   onSuccess: (account: PlatformAccount) => void;
   title: string;
   platformName: string;
@@ -71,7 +71,7 @@ const ConnectingStage: React.FC<ConnectingStageProps> = ({ title, platformName, 
           {getPlatformValue(
             platform,
             {
-              [VoiceflowConstants.PlatformType.ALEXA]: <AmazonLoginButton disabled={loading} onLoad={onLoad} onFail={onFail} onSuccess={onSuccess} />,
+              [Platform.Constants.PlatformType.ALEXA]: <AmazonLoginButton disabled={loading} onLoad={onLoad} onFail={onFail} onSuccess={onSuccess} />,
             },
             <GoogleLoginButton scopes={GOOGLE_OAUTH_SCOPES} onLoad={onLoad} onFail={onFail} onSuccess={onSuccess} />
           )}

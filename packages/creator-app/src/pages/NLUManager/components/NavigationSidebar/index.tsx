@@ -3,7 +3,6 @@ import { Box, SvgIcon, TippyTooltip, useLocalStorageState } from '@voiceflow/ui'
 import React from 'react';
 
 import client from '@/client';
-import * as NLU from '@/config/nlu';
 import { NLURoute } from '@/config/routes';
 import { ModalType, NLUImportOrigin } from '@/constants';
 import * as Intent from '@/ducks/intent';
@@ -11,7 +10,7 @@ import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import * as Slot from '@/ducks/slot';
-import { useDispatch, useFeature, useModals, useModelTracking, useNLUImport, useSelector, useTrackingEvents } from '@/hooks';
+import { useActiveNLUConfig, useDispatch, useFeature, useModals, useModelTracking, useNLUImport, useSelector } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
 import { NLUImportModel } from '@/models';
 import { NLUManagerContext } from '@/pages/NLUManager/context';
@@ -20,6 +19,8 @@ import { Item } from './components';
 import * as S from './styles';
 
 const NavigationSidebar: React.FC = () => {
+  const nluConfig = useActiveNLUConfig();
+
   const [importClicked, setImportClicked] = useLocalStorageState('import-clicked', false);
   const { open } = ModalsV2.useModal(ModalsV2.NLU.Import);
 
@@ -33,20 +34,19 @@ const NavigationSidebar: React.FC = () => {
   const refreshSlots = useDispatch(Slot.refreshSlots);
   const refreshIntents = useDispatch(Intent.refreshIntents);
   const goToCurrentCanvas = useDispatch(Router.goToCurrentCanvas);
-  const [trackingEvents] = useTrackingEvents();
   const modelImportTracking = useModelTracking();
 
   const onImport = async (importedModel: NLUImportModel) => {
     const data = await client.version.patchMergeIntentsAndSlots(versionID, importedModel);
 
-    modelImportTracking(platform, importedModel, trackingEvents);
+    modelImportTracking({ nluType: nluConfig.type, importedModel });
 
     if (data) {
       await Promise.all([refreshSlots(), refreshIntents()]);
     }
   };
 
-  const nluImport = useNLUImport({ platform, onImport });
+  const nluImport = useNLUImport({ nluType: nluConfig.type, platform, onImport });
 
   const onImportClick = () => {
     nluImport.onUploadClick(NLUImportOrigin.NLU_MANAGER);
@@ -91,7 +91,7 @@ const NavigationSidebar: React.FC = () => {
         />
       </S.ItemsContainer>
 
-      {!!NLU.Config.get(platform).nlps[0].import && (
+      {!!nluConfig.nlps[0].import && (
         <TippyTooltip
           html={
             <TippyTooltip.Complex title={<S.ImportTooltipTitle>{platform} import</S.ImportTooltipTitle>}>

@@ -1,7 +1,7 @@
 import { BaseNode } from '@voiceflow/base-types';
+import * as Platform from '@voiceflow/platform-config';
 import { Utils } from '@voiceflow/realtime-sdk';
 import { SvgIconTypes } from '@voiceflow/ui';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 export interface DeviceInfo {
   name: string;
@@ -56,7 +56,7 @@ export const ALL_DEVICES = [...ALEXA_DEVICES];
 
 export const getDeviceList = Utils.platform.createPlatformSelector<DeviceInfo[]>(
   {
-    [VoiceflowConstants.PlatformType.ALEXA]: ALEXA_DEVICES,
+    [Platform.Constants.PlatformType.ALEXA]: ALEXA_DEVICES,
   },
   []
 );

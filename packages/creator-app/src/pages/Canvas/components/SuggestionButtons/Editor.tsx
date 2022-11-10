@@ -1,8 +1,8 @@
 import { BaseButton } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { createDividerMenuItemOption } from '@voiceflow/ui';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 import { createSelector } from 'reselect';
 
@@ -56,12 +56,12 @@ const Editor: React.FC<ConnectedButtonPageProps> = ({ focus, intents, focusedNod
           menu={<OverflowMenu placement="top-end" options={[buttonLayoutOption]} />}
           options={[
             {
-              label: `Add ${getPlatformValue(platform, { [VoiceflowConstants.PlatformType.GOOGLE]: 'Chip' }, 'Button')}`,
+              label: `Add ${getPlatformValue(platform, { [Platform.Constants.PlatformType.GOOGLE]: 'Chip' }, 'Button')}`,
               onClick: Utils.functional.chainVoidAsync(mapManager.onAdd, scrollToBottom),
             },
           ]}
           tutorial={{ content: <HelpTooltip /> }}
-          tutorialTitle={getPlatformValue(platform, { [VoiceflowConstants.PlatformType.GOOGLE]: 'Chips' }, 'Buttons')}
+          tutorialTitle={getPlatformValue(platform, { [Platform.Constants.PlatformType.GOOGLE]: 'Chips' }, 'Buttons')}
         />
       )}
       hideFooter={isDragging}

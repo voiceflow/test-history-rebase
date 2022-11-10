@@ -1,15 +1,14 @@
 import { BaseModels, BaseNode } from '@voiceflow/base-types';
-import { Utils } from '@voiceflow/realtime-sdk';
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { BoxFlex, Divider, Input, Text, ThemeColor, TippyTooltip } from '@voiceflow/ui';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import { CheckboxGroup, CheckboxOption } from '@/components/RadioGroup';
 import Section from '@/components/Section';
 import { NUMBERS_ONLY_REGEXP } from '@/constants';
 import * as History from '@/ducks/history';
-import { useDispatch, useLinkedState } from '@/hooks';
+import { useActivePlatformConfig, useDispatch, useLinkedState } from '@/hooks';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import { FollowPathSection } from '@/pages/Canvas/components/FollowPath';
 import NoMatchAndNoReplyList from '@/pages/Canvas/components/NoMatchAndNoReplyList';
@@ -18,7 +17,7 @@ import { PushToPath } from '@/pages/Canvas/managers/types';
 import { PlatformContext } from '@/pages/Project/contexts';
 import { withInputBlur } from '@/utils/dom';
 import { getDefaultNoReplyTimeoutSeconds } from '@/utils/noReply';
-import { isVoiceflowBasedPlatform } from '@/utils/typeGuards';
+import { isVoiceflowPlatform } from '@/utils/typeGuards';
 
 import NoReplyTooltip from './NoReplyTooltip';
 
@@ -42,6 +41,8 @@ export interface NoReplyFormProps {
 export const NO_REPLY_PATH_PATH_TYPE = 'noReplyPath';
 
 const NoReplyForm: React.FC<NoReplyFormProps> = ({ noReply, onChange, pushToPath }) => {
+  const platformConfig = useActivePlatformConfig();
+
   const engine = React.useContext(EngineContext)!;
   const platform = React.useContext(PlatformContext)!;
 
@@ -80,10 +81,10 @@ const NoReplyForm: React.FC<NoReplyFormProps> = ({ noReply, onChange, pushToPath
   const withReprompt = noReply.types.includes(BaseNode.Utils.NoReplyType.REPROMPT);
 
   const withDividers = !!noReply.types.length && withReprompt;
-  const isVoiceflowBased = isVoiceflowBasedPlatform(platform);
+  const isVoiceflowBased = isVoiceflowPlatform(platform);
   const withoutPathAndAlwaysRandom = Realtime.Utils.platform.createPlatformSelector(
     {
-      [VoiceflowConstants.PlatformType.ALEXA]: true,
+      [Platform.Constants.PlatformType.ALEXA]: true,
     },
     false
   )(platform);
@@ -101,10 +102,7 @@ const NoReplyForm: React.FC<NoReplyFormProps> = ({ noReply, onChange, pushToPath
       <Section dividers={withDividers} isDividerBottom>
         <FormControl label="Time Delay" contentBottomUnits={0}>
           <BoxFlex>
-            <TippyTooltip
-              title={`This value is not editable as it's defined by ${Utils.platform.getPlatformProviderName(platform)}`}
-              disabled={isVoiceflowBased}
-            >
+            <TippyTooltip title={`This value is not editable as it's defined by ${platformConfig.name}`} disabled={isVoiceflowBased}>
               <BoxFlex width={52}>
                 <Input
                   value={timeout}

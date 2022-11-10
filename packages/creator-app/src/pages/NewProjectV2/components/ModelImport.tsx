@@ -1,3 +1,4 @@
+import * as Platform from '@voiceflow/platform-config';
 import { Box, Flex, Text, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 
@@ -11,6 +12,7 @@ import * as ModalsV2 from '@/ModalsV2';
 import { NLUImportModel } from '@/models';
 
 interface ModelImportProps {
+  platform: Platform.Constants.PlatformType;
   nluConfig: NLU.Base.Config;
   importModel: NLUImportModel | null;
   onImportModel: (importModel: NLUImportModel) => void;
@@ -27,8 +29,8 @@ export const ImportLink = styled(Text)<{ disabled: boolean }>`
   }
 `;
 
-const ModelImport: React.FC<ModelImportProps> = ({ nluConfig, onImportModel, importModel, isImportLoading, setIsImportLoading }) => {
-  const nluImport = useNLUImport({ platform: nluConfig.type, onImport: onImportModel });
+const ModelImport: React.FC<ModelImportProps> = ({ platform, nluConfig, onImportModel, importModel, isImportLoading, setIsImportLoading }) => {
+  const nluImport = useNLUImport({ nluType: nluConfig.type, platform, onImport: onImportModel });
 
   const [permissionImportNLU] = usePermission(Permission.BULK_UPLOAD);
   const upgradeModal = ModalsV2.useModal(ModalsV2.Upgrade);

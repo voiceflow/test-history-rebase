@@ -1,7 +1,7 @@
 import { BaseNode, BaseRequest, BaseTrace } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { batch } from 'react-redux';
 
 import client from '@/client';
@@ -17,8 +17,8 @@ import { prototypeContextSelector, prototypeSelector, prototypeSessionIDSelector
 import { Context } from '../types';
 
 const getProjectExcludedTraceTypes = Realtime.Utils.platform.createProjectTypeSelector({
-  [VoiceflowConstants.ProjectType.CHAT]: [BaseTrace.TraceType.SPEAK],
-  [VoiceflowConstants.ProjectType.VOICE]: [],
+  [Platform.Constants.ProjectType.CHAT]: [BaseTrace.TraceType.SPEAK],
+  [Platform.Constants.ProjectType.VOICE]: [],
 });
 
 const getTargetFlowID = (trace: Trace[]) => {

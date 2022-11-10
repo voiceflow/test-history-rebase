@@ -1,6 +1,7 @@
 import { AlexaConstants } from '@voiceflow/alexa-types';
 import { BaseNode } from '@voiceflow/base-types';
 import { Nullish, Utils } from '@voiceflow/common';
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import _partition from 'lodash/partition';
 import { createSelector } from 'reselect';
@@ -20,7 +21,6 @@ import * as VersionV2 from '@/ducks/versionV2';
 import { Pair, Point } from '@/types';
 import { Coords } from '@/utils/geometry';
 import { centerNodeGroup, getNodesGroupCenter, isCommandNode } from '@/utils/node';
-import { getPlatformDefaultVoice } from '@/utils/platform';
 import reduxBatchUndo from '@/utils/reduxBatchUndo';
 import { isMarkupBlockType, isMarkupOrCombinedBlockType } from '@/utils/typeGuards';
 import * as Sentry from '@/vendors/sentry';
@@ -42,7 +42,7 @@ const nodeFactoryOptionsSelector = createSelector(
     features: allActiveFeatures,
     platform,
     projectType,
-    defaultVoice: defaultVoice || getPlatformDefaultVoice(platform),
+    defaultVoice: defaultVoice || Platform.Config.getTypeConfig(platform, projectType).project.voice.default,
     canvasNodeVisibility: canvasNodeVisibility || BaseNode.Utils.CanvasNodeVisibility.PREVIEW,
     allCustomBlocks,
   })

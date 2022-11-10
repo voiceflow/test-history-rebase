@@ -1,8 +1,8 @@
 import { ChatModels } from '@voiceflow/chat-types';
 import { Nullish, Utils } from '@voiceflow/common';
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { VoiceModels } from '@voiceflow/voice-types';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import { SlateEditorAPI } from '@/components/SlateEditable';
 import { EditorAPI } from '@/components/SlateEditable/editor';
@@ -35,8 +35,8 @@ export const voiceIntentPromptFactory = ({ defaultVoice }: PromptFactoryOptions)
 export const getPlatformIntentPromptFactory = Realtime.Utils.platform.createProjectTypeSelector<
   (options: PromptFactoryOptions) => ChatModels.Prompt | VoiceModels.IntentPrompt<string>
 >({
-  [VoiceflowConstants.ProjectType.CHAT]: chatPromptFactory,
-  [VoiceflowConstants.ProjectType.VOICE]: voiceIntentPromptFactory,
+  [Platform.Constants.ProjectType.CHAT]: chatPromptFactory,
+  [Platform.Constants.ProjectType.VOICE]: voiceIntentPromptFactory,
 });
 
 export const isEmptyPrompt = (prompt?: ChatModels.Prompt | VoicePrompt | VoiceModels.IntentPrompt<any>): boolean => {

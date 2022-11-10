@@ -1,5 +1,5 @@
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { expect } from 'chai';
 import sinon from 'sinon';
 
@@ -133,7 +133,7 @@ describe('Migrate service unit tests', () => {
       const options = {
         services: {
           project: {
-            get: sinon.stub().resolves({ type: VoiceflowConstants.ProjectType.CHAT, platform: VoiceflowConstants.PlatformType.VOICEFLOW }),
+            get: sinon.stub().resolves({ type: Platform.Constants.ProjectType.CHAT, platform: Platform.Constants.PlatformType.VOICEFLOW }),
           },
           version: {
             get: sinon.stub().resolves({

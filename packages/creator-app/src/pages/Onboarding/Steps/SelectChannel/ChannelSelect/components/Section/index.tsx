@@ -1,4 +1,4 @@
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
+import * as Platform from '@voiceflow/platform-config';
 import React from 'react';
 
 import { getChannelMeta } from '../../constants';
@@ -7,8 +7,8 @@ import { Container, Content, Label } from './styles';
 
 interface SectionProps {
   name: string;
-  onSelect: (option: { platform: VoiceflowConstants.PlatformType; projectType: VoiceflowConstants.ProjectType }) => void;
-  platforms: { platform: VoiceflowConstants.PlatformType; projectType: VoiceflowConstants.ProjectType }[];
+  onSelect: (option: { platform: Platform.Constants.PlatformType; projectType: Platform.Constants.ProjectType }) => void;
+  platforms: { platform: Platform.Constants.PlatformType; projectType: Platform.Constants.ProjectType }[];
 }
 
 const Section: React.FC<SectionProps> = ({ name, platforms, onSelect }) => {

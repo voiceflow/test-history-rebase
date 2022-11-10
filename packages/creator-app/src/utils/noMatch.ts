@@ -1,6 +1,6 @@
 import { BaseNode } from '@voiceflow/base-types';
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import { chatPromptFactory, PromptFactoryOptions, voicePromptFactory } from './prompt';
 
@@ -21,6 +21,6 @@ export const voiceNoMatchFactory = (options: NoMatchFactoryOptions): Realtime.No
 export const getPlatformNoMatchFactory = Realtime.Utils.platform.createProjectTypeSelector<
   (options: PromptFactoryOptions) => Realtime.NodeData.NoMatch
 >({
-  [VoiceflowConstants.ProjectType.CHAT]: chatNoMatchFactory,
-  [VoiceflowConstants.ProjectType.VOICE]: voiceNoMatchFactory,
+  [Platform.Constants.ProjectType.CHAT]: chatNoMatchFactory,
+  [Platform.Constants.ProjectType.VOICE]: voiceNoMatchFactory,
 });

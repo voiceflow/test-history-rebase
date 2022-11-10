@@ -1,12 +1,12 @@
+import * as Platform from '@voiceflow/platform-config';
 import { Link, Tooltip } from '@voiceflow/ui';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import * as Documentation from '@/config/documentation';
 
-const EditorInfoPopup: React.FC<{ platform: VoiceflowConstants.PlatformType }> = ({ platform }) => {
+const EditorInfoPopup: React.FC<{ platform: Platform.Constants.PlatformType }> = ({ platform }) => {
   switch (platform) {
-    case VoiceflowConstants.PlatformType.ALEXA:
+    case Platform.Constants.PlatformType.ALEXA:
       return (
         <Tooltip.Paragraph>
           The directive step will allow you to send customized directives for Alexa features that Voiceflow might not have a block for yet, or even
@@ -18,7 +18,7 @@ const EditorInfoPopup: React.FC<{ platform: VoiceflowConstants.PlatformType }> =
           <Link href={Documentation.ALEXA_DIRECTIVE_STEP}> documentation.</Link>
         </Tooltip.Paragraph>
       );
-    case VoiceflowConstants.PlatformType.GOOGLE:
+    case Platform.Constants.PlatformType.GOOGLE:
       return (
         <Tooltip.Paragraph>
           The directive step will allow you to send customized directives for Google features that Voiceflow might not have a block for yet, or even

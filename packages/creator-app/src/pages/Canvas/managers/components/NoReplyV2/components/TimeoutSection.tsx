@@ -3,7 +3,7 @@ import { BoxFlex, Input, SectionV2, Text, ThemeColor, TippyTooltip } from '@voic
 import React from 'react';
 
 import { NUMBERS_ONLY_REGEXP } from '@/constants';
-import { useLinkedState } from '@/hooks';
+import { useActivePlatformConfig, useLinkedState } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import { withInputBlur } from '@/utils/dom';
 import { getDefaultNoReplyTimeoutSeconds } from '@/utils/noReply';
@@ -14,11 +14,12 @@ interface TimeoutSectionProps {
 }
 
 const TimeoutSection: React.FC<TimeoutSectionProps> = ({ timeout: propTimeout, onChange: onChangeProp }) => {
+  const platformConfig = useActivePlatformConfig();
+
   const editor = EditorV2.useEditor();
 
-  const isVoiceflow = Realtime.Utils.typeGuards.isVoiceflowBasedPlatform(editor.platform);
-  const platformDefaultTimeout = getDefaultNoReplyTimeoutSeconds(editor.platform);
-  const [timeout, setTimeout] = useLinkedState(String(isVoiceflow && propTimeout ? propTimeout : platformDefaultTimeout));
+  const isVoiceflow = Realtime.Utils.typeGuards.isVoiceflowPlatform(editor.platform);
+  const [timeout, setTimeout] = useLinkedState(String(isVoiceflow && propTimeout ? propTimeout : getDefaultNoReplyTimeoutSeconds(editor.platform)));
 
   const onChange = (value: string) => {
     if (value !== '' && (!value.match(NUMBERS_ONLY_REGEXP) || value.length > 2)) {
@@ -31,10 +32,7 @@ const TimeoutSection: React.FC<TimeoutSectionProps> = ({ timeout: propTimeout, o
   return (
     <SectionV2.SimpleSection isAccent>
       <BoxFlex>
-        <TippyTooltip
-          title={`This value is not editable as it's defined by ${Realtime.Utils.platform.getPlatformProviderName(editor.platform)}`}
-          disabled={isVoiceflow}
-        >
+        <TippyTooltip title={`This value is not editable as it's defined by ${platformConfig.name}`} disabled={isVoiceflow}>
           <BoxFlex width={52}>
             <Input
               value={timeout}

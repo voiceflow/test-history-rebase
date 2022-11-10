@@ -1,7 +1,7 @@
 import { AlexaProject } from '@voiceflow/alexa-types';
 import { BaseModels } from '@voiceflow/base-types';
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import * as Feature from '@/ducks/feature';
 import * as Project from '@/ducks/projectV2';
@@ -41,7 +41,7 @@ const PROJECT: Realtime.AnyProject = {
   module: '',
   created: '',
   isLive: true,
-  platform: VoiceflowConstants.PlatformType.ALEXA,
+  platform: Platform.Constants.PlatformType.ALEXA,
   linkType: BaseModels.Project.LinkType.STRAIGHT,
   locales: ['en-us', 'eu-sp'],
   members: [PROJECT_MEMBER],
@@ -62,7 +62,7 @@ const MOCK_STATE: Project.ProjectState = {
       module: '',
       created: '',
       isLive: false,
-      platform: VoiceflowConstants.PlatformType.VOICEFLOW,
+      platform: Platform.Constants.PlatformType.VOICEFLOW,
       linkType: BaseModels.Project.LinkType.CURVED,
       locales: [],
       members: [],

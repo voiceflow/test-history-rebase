@@ -1,5 +1,5 @@
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { normalize } from 'normal-store';
 
 import * as CreatorV2 from '@/ducks/creatorV2';
@@ -29,8 +29,8 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - isolateSteps reducer', ({ cre
         },
         stepIDs,
         projectMeta: {
-          platform: VoiceflowConstants.PlatformType.VOICEFLOW,
-          type: VoiceflowConstants.ProjectType.CHAT,
+          platform: Platform.Constants.PlatformType.VOICEFLOW,
+          type: Platform.Constants.ProjectType.CHAT,
         },
         schemaVersion: 2,
       });
@@ -51,8 +51,8 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - isolateSteps reducer', ({ cre
         },
         stepIDs,
         projectMeta: {
-          platform: VoiceflowConstants.PlatformType.VOICEFLOW,
-          type: VoiceflowConstants.ProjectType.CHAT,
+          platform: Platform.Constants.PlatformType.VOICEFLOW,
+          type: Platform.Constants.ProjectType.CHAT,
         },
         schemaVersion: 2,
       });
@@ -73,8 +73,8 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - isolateSteps reducer', ({ cre
         },
         stepIDs,
         projectMeta: {
-          platform: VoiceflowConstants.PlatformType.VOICEFLOW,
-          type: VoiceflowConstants.ProjectType.CHAT,
+          platform: Platform.Constants.PlatformType.VOICEFLOW,
+          type: Platform.Constants.ProjectType.CHAT,
         },
         schemaVersion: 2,
       });
@@ -95,8 +95,8 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - isolateSteps reducer', ({ cre
         },
         stepIDs: [NODE_ID],
         projectMeta: {
-          platform: VoiceflowConstants.PlatformType.VOICEFLOW,
-          type: VoiceflowConstants.ProjectType.CHAT,
+          platform: Platform.Constants.PlatformType.VOICEFLOW,
+          type: Platform.Constants.ProjectType.CHAT,
         },
         schemaVersion: 2,
       });
@@ -128,8 +128,8 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - isolateSteps reducer', ({ cre
           },
           stepIDs: [stepID],
           projectMeta: {
-            platform: VoiceflowConstants.PlatformType.VOICEFLOW,
-            type: VoiceflowConstants.ProjectType.CHAT,
+            platform: Platform.Constants.PlatformType.VOICEFLOW,
+            type: Platform.Constants.ProjectType.CHAT,
           },
           schemaVersion: 2,
         }

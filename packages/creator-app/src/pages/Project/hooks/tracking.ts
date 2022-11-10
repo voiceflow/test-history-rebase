@@ -1,4 +1,4 @@
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
+import * as Platform from '@voiceflow/platform-config';
 import React from 'react';
 import { matchPath } from 'react-router';
 import { useLocation } from 'react-router-dom';
@@ -22,7 +22,13 @@ const trackingPaths = [
   { area: TrackingArea.NLU_MANAGER, path: Path.NLU_MANAGER },
 ];
 
-export function useProjectExitTracking({ platform }: { platform: VoiceflowConstants.PlatformType }): void {
+export function useProjectExitTracking({
+  nluType,
+  platform,
+}: {
+  nluType: Platform.Constants.NLUType;
+  platform: Platform.Constants.PlatformType;
+}): void {
   const projectID = useSelector(Session.activeProjectIDSelector)!;
   const workspaceID = useSelector(Session.activeWorkspaceIDSelector)!;
   const versionID = useSelector(Session.activeVersionIDSelector)!;
@@ -72,12 +78,13 @@ export function useProjectExitTracking({ platform }: { platform: VoiceflowConsta
       const durations = durationsRef.current;
 
       trackingEvents.trackProjectExit({
+        nluType,
+        platform,
+        creatorID,
         canvasSessionDuration: durations.canvas,
         prototypeSessionDuration: durations.prototype,
         transcriptsSessionDuration: durations.transcripts,
         nluManagerSessionDuration: durations.nlu,
-        platform,
-        creatorID,
       });
 
       trackingEvents.trackActiveProjectSessionDuration({

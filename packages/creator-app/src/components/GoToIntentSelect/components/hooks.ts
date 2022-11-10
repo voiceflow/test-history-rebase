@@ -1,9 +1,9 @@
 /* eslint-disable no-param-reassign */
 
 import { BaseModels } from '@voiceflow/base-types';
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { UIOnlyMenuItemOption } from '@voiceflow/ui';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import * as CreatorV2 from '@/ducks/creatorV2';
@@ -25,7 +25,7 @@ const createTopicOptions = <OptionsMap extends Record<string, Option | Group> | 
   diagramSharedNodes,
   diagramGlobalStepMap,
 }: {
-  platform: VoiceflowConstants.PlatformType;
+  platform: Platform.Constants.PlatformType;
   diagramID: string;
   optionsMap: OptionsMap;
   getIntentByID: ReturnType<typeof IntentV2.getIntentByIDSelector>;

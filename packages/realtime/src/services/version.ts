@@ -1,7 +1,7 @@
 import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { Optional } from 'utility-types';
 
 import { AbstractControl } from '../control';
@@ -125,7 +125,7 @@ class VersionService extends AbstractControl {
   public async patchPlatformSettings<T extends Realtime.AnyVersionSettings>(
     creatorID: number,
     versionID: string,
-    platform: VoiceflowConstants.PlatformType,
+    platform: Platform.Constants.PlatformType,
     settings: Partial<T>
   ): Promise<void> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
@@ -133,12 +133,19 @@ class VersionService extends AbstractControl {
     await client.version.platform(platform).patchSettings(versionID, settings);
   }
 
-  public async patchPlatformSession(
-    creatorID: number,
-    versionID: string,
-    platform: VoiceflowConstants.PlatformType,
-    session: Partial<Realtime.Version.Session>
-  ): Promise<void> {
+  public async patchPlatformSession({
+    type,
+    session,
+    platform,
+    creatorID,
+    versionID,
+  }: {
+    type: Platform.Constants.ProjectType;
+    session: Partial<Realtime.Version.Session>;
+    platform: Platform.Constants.PlatformType;
+    creatorID: number;
+    versionID: string;
+  }): Promise<void> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
     const {
@@ -147,7 +154,7 @@ class VersionService extends AbstractControl {
       },
     } = await this.get<Realtime.AnyVoiceVersionPlatformData>(versionID);
 
-    const platformSessionAdapter = Realtime.Adapters.createSessionAdapter({ platform });
+    const platformSessionAdapter = Realtime.Adapters.createSessionAdapter({ type, platform });
 
     const patchedSession = platformSessionAdapter.toDB(
       {
@@ -163,7 +170,7 @@ class VersionService extends AbstractControl {
   public async patchPlatformPublishing(
     creatorID: number,
     versionID: string,
-    platform: VoiceflowConstants.PlatformType,
+    platform: Platform.Constants.PlatformType,
     publishing: Partial<Realtime.AnyVersionPublishing>
   ): Promise<void> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);

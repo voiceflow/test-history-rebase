@@ -1,5 +1,5 @@
+import * as Platform from '@voiceflow/platform-config';
 import { Utils } from '@voiceflow/realtime-sdk';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import { Alexa, Dialogflow, General, Google, Universal } from './components/ContentDescriptors';
@@ -41,7 +41,7 @@ export interface PlatformSettingsMetaProps {
 
 export const getSettingsMetaProps = Utils.platform.createPlatformAndProjectTypeSelector<PlatformSettingsMetaProps>(
   {
-    [VoiceflowConstants.PlatformType.ALEXA]: {
+    [Platform.Constants.PlatformType.ALEXA]: {
       name: 'Alexa',
       sections: [
         SettingSections.BASIC,
@@ -68,7 +68,7 @@ export const getSettingsMetaProps = Utils.platform.createPlatformAndProjectTypeS
       },
       localeText: 'Locales',
     },
-    [VoiceflowConstants.PlatformType.GOOGLE]: {
+    [Platform.Constants.PlatformType.GOOGLE]: {
       name: 'Google',
       sections: [
         SettingSections.BASIC,
@@ -90,7 +90,7 @@ export const getSettingsMetaProps = Utils.platform.createPlatformAndProjectTypeS
       },
       localeText: 'Language',
     },
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: {
+    [Platform.Constants.PlatformType.DIALOGFLOW_ES]: {
       name: 'Dialogflow',
       sections: [
         SettingSections.BASIC,
@@ -109,7 +109,7 @@ export const getSettingsMetaProps = Utils.platform.createPlatformAndProjectTypeS
       },
       localeText: 'Language',
     },
-    [VoiceflowConstants.ProjectType.CHAT]: {
+    [Platform.Constants.ProjectType.CHAT]: {
       name: 'Chatbot',
       sections: [SettingSections.BASIC, SettingSections.GLOBAL_LOGIC, SettingSections.CANVAS, SettingSections.TEST_TOOL, SettingSections.DANGER_ZONE],
       descriptors: {

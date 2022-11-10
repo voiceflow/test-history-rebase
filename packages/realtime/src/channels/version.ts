@@ -1,14 +1,14 @@
 import { SendBackActions } from '@logux/server';
 import { BaseModels } from '@voiceflow/base-types';
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { ChannelContext, ChannelSubscribeAction } from '@voiceflow/socket-utils';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import { AbstractChannelControl } from './utils';
 
 const initializeTemplateDiagramAction = (
   templateDiagram: BaseModels.Diagram.Model<BaseModels.BaseDiagramNode>,
-  options: { platform: VoiceflowConstants.PlatformType; projectType: VoiceflowConstants.ProjectType },
+  options: { platform: Platform.Constants.PlatformType; projectType: Platform.Constants.ProjectType },
   actionContext: { projectID: string; versionID: string; workspaceID: string }
 ) => {
   const { nodes, data, ports, links } = Realtime.Adapters.creatorAdapter.fromDB(templateDiagram, {
@@ -58,13 +58,13 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
     const variableStates = Realtime.Adapters.variableStateAdapter.mapFromDB(dbCreator.variableStates);
     const nluUnclassifiedData = Realtime.Adapters.nlu.nluUnclassifiedDataAdapter.mapFromDB(dbCreator.version.nluUnclassifiedData ?? []);
 
-    const { platform, type: projectType } = project;
-
     const version = Realtime.Adapters.versionAdapter.fromDB(
       { ...(dbCreator.version as Realtime.AnyDBVersion), templateDiagramID: templateDiagram?._id },
-      { platform, projectType }
+      { platform: project.platform, projectType: project.type }
     );
-    const intents = Realtime.Adapters.getProjectTypeIntentAdapter<any>(projectType).mapFromDB(dbCreator.version.platformData.intents, { platform });
+    const intents = Realtime.Adapters.getProjectTypeIntentAdapter<any>(project.type).mapFromDB(dbCreator.version.platformData.intents, {
+      platform: project.platform,
+    });
     const products =
       'products' in project.platformData
         ? Realtime.Adapters.productAdapter.mapFromDB(Object.values((project.platformData as Realtime.AlexaProjectData).products))
@@ -75,7 +75,7 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
     const prototypeSettings = {
       ...dbCreator.version.prototype?.settings,
       layout: (dbCreator.version.prototype?.settings.layout ??
-        Realtime.Utils.platform.getDefaultPrototypeLayout(projectType)) as Realtime.PrototypeLayout,
+        Realtime.Utils.platform.getDefaultPrototypeLayout(project.type)) as Realtime.PrototypeLayout,
     };
 
     const actionContext = { projectID, versionID, workspaceID };
@@ -87,7 +87,11 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
       Realtime.customBlock.crud.replace({ ...actionContext, values: customBlocks }),
       Realtime.domain.crud.replace({ ...actionContext, values: domains }),
       Realtime.canvasTemplate.crud.replace({ ...actionContext, values: canvasTemplates }),
-      Realtime.intent.crud.replace({ ...actionContext, values: intents, projectMeta: { platform, type: projectType } }),
+      Realtime.intent.crud.replace({
+        ...actionContext,
+        values: intents,
+        projectMeta: { platform: project.platform, type: project.type, nlu: project.nlu },
+      }),
       Realtime.product.crud.replace({ ...actionContext, values: products }),
       Realtime.diagram.crud.replace({ ...actionContext, values: diagrams }),
       Realtime.variableState.crud.replace({ ...actionContext, values: variableStates }),
@@ -96,7 +100,7 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
       Realtime.project.crud.add({ ...actionContext, value: project, key: projectID }),
       Realtime.version.crud.add({ ...actionContext, value: version, key: versionID }),
       Realtime.version.replacePrototypeSettings({ ...actionContext, settings: prototypeSettings }),
-      Realtime.version.activateVersion({ ...actionContext, projectType }),
+      Realtime.version.activateVersion({ ...actionContext, type: project.type, platform: project.platform }),
       ...(templateDiagram
         ? [initializeTemplateDiagramAction(templateDiagram, { platform: project.platform, projectType: project.type }, actionContext)]
         : []),

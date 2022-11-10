@@ -1,7 +1,7 @@
 import { BaseModels, BaseNode } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import { SlateEditorAPI } from '@/components/SlateEditable';
 import { BlockType } from '@/constants';
@@ -10,7 +10,7 @@ import { isDialogflowPlatform } from '@/utils/typeGuards';
 import { NodeConfig } from '../types';
 import { buttonFactory } from './Editor/Buttons/constants';
 
-export const cardFactory = (platform?: VoiceflowConstants.PlatformType): BaseNode.Carousel.CarouselCard => ({
+export const cardFactory = (platform?: Platform.Constants.PlatformType): BaseNode.Carousel.CarouselCard => ({
   id: Utils.id.cuid.slug(),
   title: '',
   description: SlateEditorAPI.getEmptyState(),

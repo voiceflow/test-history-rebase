@@ -3,6 +3,7 @@ import { BaseButton, BaseModels } from '@voiceflow/base-types';
 import { Nullable, Nullish, SLOT_REGEXP, Utils } from '@voiceflow/common';
 import { DFESConstants } from '@voiceflow/google-dfes-types';
 import { GoogleConstants } from '@voiceflow/google-types';
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { StrengthGauge } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
@@ -58,7 +59,7 @@ export const prettifyIntentNames = <T extends Realtime.Intent>(intents: T[]): T[
 
 export const getIntentNameLabel = (name = ''): string => INTENT_LABELS[name] ?? name;
 
-export const fmtIntentName = (intent: Realtime.Intent, platform: VoiceflowConstants.PlatformType): string => {
+export const fmtIntentName = (intent: Realtime.Intent, platform: Platform.Constants.PlatformType): string => {
   let { name } = intent ?? { name: '' };
 
   name = getIntentNameLabel(name);
@@ -89,29 +90,29 @@ export const filterIntents = <T extends Realtime.Intent>(intents: T[], activeInt
 
 export const getTruncatedName = Realtime.Utils.platform.createPlatformSelector(
   {
-    [VoiceflowConstants.PlatformType.GOOGLE]: (name: string) =>
+    [Platform.Constants.PlatformType.GOOGLE]: (name: string) =>
       Utils.string.capitalizeFirstLetter(name.replace('actions.intent.', '')?.toLowerCase()).replace(/_/g, ' '),
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: (name: string) =>
+    [Platform.Constants.PlatformType.DIALOGFLOW_ES]: (name: string) =>
       Utils.string.capitalizeFirstLetter(name.replace('actions.intent.', '')?.toLowerCase()).replace(/_/g, ' '),
   },
   (name: string) => name.split('.')[1]
 );
 
 export const intentFactory =
-  <T extends VoiceflowConstants.ProjectType>(platform: VoiceflowConstants.PlatformType) =>
+  <T extends Platform.Constants.ProjectType>(platform: Platform.Constants.PlatformType) =>
   (intent: { name: string; slots?: string[] }): Realtime.ProjectTypeIntent<T> => {
     const truncatedName = getTruncatedName(platform)(intent.name);
+
     return {
       id: intent.name,
       name: truncatedName ?? getIntentNameLabel(intent.name),
       slots: { byKey: {}, allKeys: [] } as Realtime.ProjectTypeIntent<T>['slots'],
       inputs: [{ text: '', slots: intent.slots ?? [] }],
-      platform,
     } as Realtime.ProjectTypeIntent<T>;
   };
 
 export const generalIntentFactory = (generalIntent: VoiceflowConstants.DefaultIntent): Realtime.VoiceIntent => {
-  const intent = intentFactory<VoiceflowConstants.ProjectType.VOICE>(VoiceflowConstants.PlatformType.VOICEFLOW)(generalIntent);
+  const intent = intentFactory<Platform.Constants.ProjectType.VOICE>(Platform.Constants.PlatformType.VOICEFLOW)(generalIntent);
 
   return {
     ...intent,
@@ -123,7 +124,7 @@ export const validateIntentName = (
   intentName: string,
   intents: Realtime.Intent[],
   slots: Realtime.Slot[],
-  platform: VoiceflowConstants.PlatformType
+  platform: Platform.Constants.PlatformType
 ): Nullable<string> => {
   const lowerCasedIntentName = intentName.toLowerCase();
 
@@ -139,14 +140,14 @@ export const validateIntentName = (
 };
 
 export const ALEXA_BUILT_INS = AlexaConstants.BUILT_IN_INTENTS.map(
-  intentFactory<VoiceflowConstants.ProjectType.VOICE>(VoiceflowConstants.PlatformType.ALEXA)
+  intentFactory<Platform.Constants.ProjectType.VOICE>(Platform.Constants.PlatformType.ALEXA)
 );
 
 export const GOOGLE_BUILT_INS = GoogleConstants.BUILT_IN_INTENTS.map(
-  intentFactory<VoiceflowConstants.ProjectType.VOICE>(VoiceflowConstants.PlatformType.GOOGLE)
+  intentFactory<Platform.Constants.ProjectType.VOICE>(Platform.Constants.PlatformType.GOOGLE)
 );
 
-export const DIALOGFLOW_BUILT_INS = DFESConstants.BUILT_IN_INTENTS.map(intentFactory(VoiceflowConstants.PlatformType.DIALOGFLOW_ES));
+export const DIALOGFLOW_BUILT_INS = DFESConstants.BUILT_IN_INTENTS.map(intentFactory(Platform.Constants.PlatformType.DIALOGFLOW_ES));
 
 export const GENERAL_BUILT_INS_MAP = Object.keys(VoiceflowConstants.DEFAULT_INTENTS_MAP).reduce<Record<string, Realtime.Intent[]>>(
   (acc, key) => Object.assign(acc, { [key]: VoiceflowConstants.DEFAULT_INTENTS_MAP[key].map(generalIntentFactory) }),
@@ -155,9 +156,9 @@ export const GENERAL_BUILT_INS_MAP = Object.keys(VoiceflowConstants.DEFAULT_INTE
 
 export const getBuiltInIntents = Realtime.Utils.platform.createPlatformSelector(
   {
-    [VoiceflowConstants.PlatformType.ALEXA]: ALEXA_BUILT_INS,
-    [VoiceflowConstants.PlatformType.GOOGLE]: GOOGLE_BUILT_INS,
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: DIALOGFLOW_BUILT_INS,
+    [Platform.Constants.PlatformType.ALEXA]: ALEXA_BUILT_INS,
+    [Platform.Constants.PlatformType.GOOGLE]: GOOGLE_BUILT_INS,
+    [Platform.Constants.PlatformType.DIALOGFLOW_ES]: DIALOGFLOW_BUILT_INS,
   },
   GENERAL_BUILT_INS_MAP[VoiceflowConstants.Language.EN]
 );
@@ -167,10 +168,10 @@ export const isBuiltInIntent = (intentID: string): boolean =>
     (intent) => intent.id === intentID
   );
 
-export const applyPlatformIntentNameFormatting = (name: string, platform: VoiceflowConstants.PlatformType): string =>
+export const applyPlatformIntentNameFormatting = (name: string, platform: Platform.Constants.PlatformType): string =>
   getPlatformIntentNameFormatter(platform)(name);
 
-export const applyCustomizableBuiltInIntent = (name: string, platform: VoiceflowConstants.PlatformType): string => {
+export const applyCustomizableBuiltInIntent = (name: string, platform: Platform.Constants.PlatformType): string => {
   if (Realtime.Utils.typeGuards.isVoiceflowPlatform(platform)) {
     return Utils.string.capitalizeFirstLetter(removeBuiltInPrefix(name.toLowerCase()));
   }
@@ -283,7 +284,7 @@ export const getGoToIntentMeta = ({
 
 export const fillEntities = (
   utterances: string,
-  { slotsMap, locales, platform }: { slotsMap: Record<string, Realtime.Slot>; locales: AnyLocale[]; platform: VoiceflowConstants.PlatformType }
+  { slotsMap, locales, platform }: { slotsMap: Record<string, Realtime.Slot>; locales: AnyLocale[]; platform: Platform.Constants.PlatformType }
 ) => {
   const supportedLocale = getUtteranceRecommendationsLocales(platform);
   const locale = locales.find((l) => supportedLocale.includes(l)) ?? supportedLocale[0];

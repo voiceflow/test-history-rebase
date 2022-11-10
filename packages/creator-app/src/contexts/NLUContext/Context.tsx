@@ -1,7 +1,7 @@
 import { Utils } from '@voiceflow/common';
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { toast, useContextApi } from '@voiceflow/ui';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import { CUSTOM_SLOT_TYPE, InteractionModelTabType, VariableType } from '@/constants';
@@ -133,7 +133,7 @@ export const NLUProvider: React.FC = ({ children }) => {
 
           return `Intent ${numberWord}`;
         },
-        transformName: (name: string, platform: VoiceflowConstants.PlatformType) => applyPlatformIntentNameFormatting(name, platform),
+        transformName: (name: string, platform: Platform.Constants.PlatformType) => applyPlatformIntentNameFormatting(name, platform),
       },
 
       [InteractionModelTabType.SLOTS]: {

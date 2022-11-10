@@ -1,7 +1,7 @@
 import { BaseModels } from '@voiceflow/base-types';
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { toast } from '@voiceflow/ui';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import client from '@/client';
 import * as Errors from '@/config/errors';
@@ -13,24 +13,25 @@ import { getActiveWorkspaceContext } from '@/ducks/workspace/utils';
 import { Thunk } from '@/store/types';
 
 export interface CreateProjectParams {
-  name: string;
-  image: string;
+  name?: string;
+  image?: string;
   listID?: string;
-  platform: VoiceflowConstants.PlatformType;
+  nluType: Platform.Constants.NLUType;
+  platform: Platform.Constants.PlatformType;
   language?: string;
   onboarding?: boolean;
   templateTag?: string;
 }
 
 export const createProject =
-  ({ name, image, listID, platform, language, onboarding = false, templateTag }: Partial<CreateProjectParams>): Thunk<Realtime.AnyProject> =>
+  ({ name, image, listID, nluType, platform, language, onboarding = false, templateTag }: CreateProjectParams): Thunk<Realtime.AnyProject> =>
   async (dispatch, getState) => {
     const state = getState();
     const workspaceID = Session.activeWorkspaceIDSelector(state);
 
     Errors.assertWorkspaceID(workspaceID);
 
-    const platformType = platform ?? VoiceflowConstants.PlatformType.VOICEFLOW;
+    const platformType = Realtime.Utils.typeGuards.isVoiceflowPlatform(platform) ? nluType : platform;
     const templateProjectID = await client.template.getPlatformTemplate(platformType, templateTag);
 
     if (!templateProjectID) {
@@ -47,7 +48,6 @@ export const createProject =
           listID,
           channel,
           language,
-          platform: platformType,
           onboarding,
           templateID: templateProjectID,
           workspaceID,
@@ -86,6 +86,8 @@ export const mergeProjects =
 
     dispatch(
       Tracking.trackDomainConvert({
+        sourceNLUType: sourceProject?.nlu,
+        targetNLUType: targetProject?.nlu,
         sourcePlatform: sourceProject?.platform,
         targetPlatform: targetProject?.platform,
         sourceProjectID,

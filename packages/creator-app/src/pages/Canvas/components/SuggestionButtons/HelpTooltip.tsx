@@ -1,5 +1,5 @@
+import * as Platform from '@voiceflow/platform-config';
 import { Tooltip } from '@voiceflow/ui';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import { PlatformContext } from '@/pages/Project/contexts';
@@ -10,7 +10,7 @@ const HowItWorks: React.FC = () => {
 
   return (
     <Tooltip.Section marginBottomUnits={2}>
-      Add {getPlatformValue(platform, { [VoiceflowConstants.PlatformType.GOOGLE]: 'chips' }, 'buttons')} to the end of your messages in conversations
+      Add {getPlatformValue(platform, { [Platform.Constants.PlatformType.GOOGLE]: 'chips' }, 'buttons')} to the end of your messages in conversations
       to allow users to quickly trigger intents.
     </Tooltip.Section>
   );

@@ -12,6 +12,8 @@ export default defineConfig({
       { find: /@realtime-sdk\/(.*)/, replacement: path.resolve(rootDir, '../realtime-sdk/src/$1') },
       { find: /@voiceflow\/socket-utils/, replacement: path.resolve(rootDir, '../socket-utils/src') },
       { find: /@socket-utils\/(.*)/, replacement: path.resolve(rootDir, '../socket-utils/src/$1') },
+      { find: /@voiceflow\/platform-config/, replacement: path.resolve(rootDir, '../platform-config/src') },
+      { find: /@platform-config\/(.*)/, replacement: path.resolve(rootDir, '../platform-config/src/$1') },
     ],
   },
 });

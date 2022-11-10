@@ -1,7 +1,7 @@
 import { BaseText } from '@voiceflow/base-types';
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, SectionV2, UploadV2 } from '@voiceflow/ui';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import SlateEditable from '@/components/SlateEditable';
@@ -21,7 +21,7 @@ export interface CardV2Props {
 
 const CardV2: React.FC<CardV2Props> = ({ item, editor, onUpdate }) => {
   const dimensions = useImageDimensions({ url: item.imageUrl });
-  const isVoiceProject = editor.projectType === VoiceflowConstants.ProjectType.VOICE;
+  const isVoiceProject = editor.projectType === Platform.Constants.ProjectType.VOICE;
 
   const onChange =
     <Key extends keyof Realtime.NodeData.CardV2>(field: Key) =>

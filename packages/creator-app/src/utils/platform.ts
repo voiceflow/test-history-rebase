@@ -1,10 +1,3 @@
 import { Utils } from '@voiceflow/realtime-sdk';
 
-export const {
-  createPlatformSelector,
-  createAdvancedPlatformSelector,
-  getPlatformDefaultVoice,
-  getPlatformValue,
-  getPlatformAppName,
-  getProjectTypeTitle,
-} = Utils.platform;
+export const { createPlatformSelector, createAdvancedPlatformSelector, getPlatformValue } = Utils.platform;

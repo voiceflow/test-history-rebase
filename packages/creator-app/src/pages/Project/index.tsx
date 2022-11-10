@@ -37,9 +37,10 @@ export type ProjectProps = RouteComponentProps;
 
 const Project: React.FC = () => {
   const theme = useTheme();
+  const nluType = useSelector(ProjectV2.active.nluTypeSelector);
+  const platform = useSelector(ProjectV2.active.platformSelector);
   const getEngine = useEventualEngine();
   const canvasOnly = useSelector(UI.isCanvasOnlyShowingSelector);
-  const platform = useSelector(ProjectV2.active.platformSelector);
   const projectType = useSelector(ProjectV2.active.projectTypeSelector);
   const projectName = useSelector(ProjectV2.active.nameSelector);
   const isOnlyViewer = useSelector(DiagramV2.isOnlyViewerSelector);
@@ -89,7 +90,7 @@ const Project: React.FC = () => {
 
   return (
     <MarkupProvider>
-      <ProjectProvider platform={platform} projectType={projectType}>
+      <ProjectProvider nluType={nluType} platform={platform} projectType={projectType}>
         <Helmet>
           <title>{projectName}</title>
         </Helmet>
@@ -113,7 +114,7 @@ const Project: React.FC = () => {
           <ExportModelModal />
         </ExportProvider>
 
-        <ProjectExitTracker platform={platform} />
+        <ProjectExitTracker nluType={nluType} platform={platform} />
         <RemoveIntercom />
 
         <Providers>

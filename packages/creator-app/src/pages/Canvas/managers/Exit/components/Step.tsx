@@ -1,4 +1,4 @@
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
+import * as Platform from '@voiceflow/platform-config';
 import React from 'react';
 
 import { StepLabelVariant } from '@/constants/canvas';
@@ -10,8 +10,8 @@ import { NODE_CONFIG } from '../constants';
 
 const getPlatformLabel = createPlatformSelector(
   {
-    [VoiceflowConstants.PlatformType.ALEXA]: 'Skill',
-    [VoiceflowConstants.PlatformType.GOOGLE]: 'Google Action',
+    [Platform.Constants.PlatformType.ALEXA]: 'Skill',
+    [Platform.Constants.PlatformType.GOOGLE]: 'Google Action',
   },
   'Project'
 );

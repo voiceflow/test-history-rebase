@@ -1,6 +1,6 @@
 import { Utils } from '@voiceflow/common';
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { createSelector } from 'reselect';
 
 import * as Feature from '@/ducks/feature';
@@ -16,11 +16,11 @@ export const localesSelector = createSelector([projectSelector, Utils.functional
   if (!activeProject) return [];
 
   switch (activeProject.platform) {
-    case VoiceflowConstants.PlatformType.ALEXA:
+    case Platform.Constants.PlatformType.ALEXA:
       return alexa.localesSelector(rootState);
-    case VoiceflowConstants.PlatformType.GOOGLE:
+    case Platform.Constants.PlatformType.GOOGLE:
       return google.localesSelector(rootState);
-    case VoiceflowConstants.PlatformType.DIALOGFLOW_ES:
+    case Platform.Constants.PlatformType.DIALOGFLOW_ES:
       return dialogflow.localesSelector(rootState);
     default:
       return general.localesSelector(rootState);
@@ -31,9 +31,9 @@ export const invocationNameSelector = createSelector([projectSelector, Utils.fun
   if (!activeProject) return null;
 
   switch (activeProject.platform) {
-    case VoiceflowConstants.PlatformType.ALEXA:
+    case Platform.Constants.PlatformType.ALEXA:
       return alexa.invocationNameSelector(rootState);
-    case VoiceflowConstants.PlatformType.GOOGLE:
+    case Platform.Constants.PlatformType.GOOGLE:
       return google.invocationNameSelector(rootState);
     default:
       return general.invocationNameSelector(rootState);
@@ -44,9 +44,9 @@ export const invocationsSelector = createSelector([projectSelector, Utils.functi
   if (!activeProject) return [];
 
   switch (activeProject.platform) {
-    case VoiceflowConstants.PlatformType.ALEXA:
+    case Platform.Constants.PlatformType.ALEXA:
       return alexa.invocationsSelector(rootState);
-    case VoiceflowConstants.PlatformType.GOOGLE:
+    case Platform.Constants.PlatformType.GOOGLE:
       return google.invocationsSelector(rootState);
     default:
       return [];

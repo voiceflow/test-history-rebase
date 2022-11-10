@@ -1,8 +1,9 @@
 import { AlexaVersion } from '@voiceflow/alexa-types';
 import { DFESVersion } from '@voiceflow/google-dfes-types';
 import { GoogleVersion } from '@voiceflow/google-types';
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { VoiceflowConstants, VoiceflowVersion } from '@voiceflow/voiceflow-types';
+import { VoiceflowVersion } from '@voiceflow/voiceflow-types';
 import { AxiosInstance } from 'axios';
 
 import { ExtraOptions } from './types';
@@ -30,9 +31,9 @@ const Client = ({ api, alexa, google, dialogflow, general }: ExtraOptions) => {
 
   const getPlatform = Realtime.Utils.platform.createPlatformSelector(
     {
-      [VoiceflowConstants.PlatformType.ALEXA]: alexaClient as GenericVersionPlatformClient,
-      [VoiceflowConstants.PlatformType.GOOGLE]: googleClient as GenericVersionPlatformClient,
-      [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: dialogflowClient as GenericVersionPlatformClient,
+      [Platform.Constants.PlatformType.ALEXA]: alexaClient as GenericVersionPlatformClient,
+      [Platform.Constants.PlatformType.GOOGLE]: googleClient as GenericVersionPlatformClient,
+      [Platform.Constants.PlatformType.DIALOGFLOW_ES]: dialogflowClient as GenericVersionPlatformClient,
     },
     generalClient as GenericVersionPlatformClient
   );

@@ -19,9 +19,27 @@ export const getFactory =
     const isSupported = isSupportedFactory(configMap);
 
     return (platform: unknown): Config => {
-      if (isSupported(platform)) return configMap[platform];
+      if (!isSupported(platform)) return defaultValue;
 
-      return defaultValue;
+      return configMap[platform] ?? defaultValue;
+    };
+  };
+
+export const isSupportedTypeFactory =
+  <ConfigMap extends Record<string, any>>(typesConfigMap: ConfigMap) =>
+  (type: unknown): type is keyof ConfigMap =>
+    typeof type === 'string' && Utils.object.hasProperty(typesConfigMap, type);
+
+export const getTypeFactory =
+  <Config>() =>
+  <ConfigMap extends Record<string, { types: Record<string, any> }>>(configMap: ConfigMap, defaultValue: Config) => {
+    const isSupported = isSupportedFactory(configMap);
+
+    return (platform: unknown, type: unknown): Config => {
+      if (!isSupported(platform)) return defaultValue;
+      if (!isSupportedTypeFactory(configMap[platform].types)(type)) return defaultValue;
+
+      return configMap[platform].types[type] ?? defaultValue;
     };
   };
 
@@ -39,3 +57,5 @@ const TYPE_CONFIG_MAP = buildTypeConfigMapFactory<Configs.Base.Config>()(LIST);
 export const get = getFactory<Configs.Base.Config>()(TYPE_CONFIG_MAP, Configs.Base.CONFIG);
 
 export const isSupported = isSupportedFactory(TYPE_CONFIG_MAP);
+
+export const getTypeConfig = getTypeFactory<Configs.Base.Type.Config>()(TYPE_CONFIG_MAP, Configs.Base.Type.CONFIG);

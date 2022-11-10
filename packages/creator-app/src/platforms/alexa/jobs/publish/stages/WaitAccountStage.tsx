@@ -1,4 +1,4 @@
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
+import * as Platform from '@voiceflow/platform-config';
 import React from 'react';
 
 import { SourceType } from '@/ducks/tracking/constants';
@@ -11,7 +11,7 @@ const WaitAccountStage: React.FC<StageComponentProps<AlexaPublishJob.WaitAccount
 
   React.useEffect(() => {
     connectAmazonModal
-      .open({ source: SourceType.ACCOUNT_PAGE, platform: VoiceflowConstants.PlatformType.ALEXA })
+      .open({ source: SourceType.ACCOUNT_PAGE, platform: Platform.Constants.PlatformType.ALEXA })
       .then(() => restart())
       .catch(() => cancel());
 

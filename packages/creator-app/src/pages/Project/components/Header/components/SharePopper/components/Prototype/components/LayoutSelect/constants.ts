@@ -1,5 +1,5 @@
+import * as Platform from '@voiceflow/platform-config';
 import { Utils } from '@voiceflow/realtime-sdk';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import { textAndDialogGraphic, textAndDialogGraphicInactive, voiceAndVisualsGraphic, voiceAndVisualsGraphicInactive } from '@/assets';
 import { PrototypeLayout } from '@/constants/prototype';
@@ -8,7 +8,7 @@ interface OptionDetail {
   title: string;
   activeImg: string;
   inactiveImg: string;
-  description: (platform: VoiceflowConstants.PlatformType) => string;
+  description: (platform: Platform.Constants.PlatformType) => string;
 }
 
 export const OPTION_DETAILS: Record<PrototypeLayout, OptionDetail> = {
@@ -17,7 +17,7 @@ export const OPTION_DETAILS: Record<PrototypeLayout, OptionDetail> = {
     description: (platform) =>
       `Testers will use text and ${Utils.platform.getPlatformValue(
         platform,
-        { [VoiceflowConstants.PlatformType.GOOGLE]: 'chips' },
+        { [Platform.Constants.PlatformType.GOOGLE]: 'chips' },
         'buttons'
       )} input`,
     activeImg: textAndDialogGraphic,
@@ -28,7 +28,7 @@ export const OPTION_DETAILS: Record<PrototypeLayout, OptionDetail> = {
     description: (platform) =>
       `Testers will use voice and ${Utils.platform.getPlatformValue(
         platform,
-        { [VoiceflowConstants.PlatformType.GOOGLE]: 'chips' },
+        { [Platform.Constants.PlatformType.GOOGLE]: 'chips' },
         'buttons'
       )} input`,
     activeImg: textAndDialogGraphic,
@@ -53,6 +53,6 @@ const CHATBOT_LAYOUT_OPTIONS = [PrototypeLayout.TEXT_DIALOG, PrototypeLayout.VOI
 const VOICE_LAYOUT_OPTIONS = [PrototypeLayout.TEXT_DIALOG, PrototypeLayout.VOICE_DIALOG, PrototypeLayout.VOICE_VISUALS];
 
 export const getLayoutOptions = Utils.platform.createProjectTypeSelector({
-  [VoiceflowConstants.ProjectType.CHAT]: CHATBOT_LAYOUT_OPTIONS,
-  [VoiceflowConstants.ProjectType.VOICE]: VOICE_LAYOUT_OPTIONS,
+  [Platform.Constants.ProjectType.CHAT]: CHATBOT_LAYOUT_OPTIONS,
+  [Platform.Constants.ProjectType.VOICE]: VOICE_LAYOUT_OPTIONS,
 });

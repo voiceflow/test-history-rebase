@@ -1,5 +1,5 @@
 import { BaseModels } from '@voiceflow/base-types';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
+import * as Platform from '@voiceflow/platform-config';
 import { expect } from 'chai';
 import { produce } from 'immer';
 import sinon from 'sinon';
@@ -8,7 +8,7 @@ import { MigrationData } from '@/services/migrate/migrations/types';
 import migrateToV2 from '@/services/migrate/migrations/v2_0';
 
 describe('Migrate service - v2 migration unit tests', () => {
-  const migrationContext = { projectType: VoiceflowConstants.ProjectType.CHAT, platform: VoiceflowConstants.PlatformType.LUIS };
+  const migrationContext = { projectType: Platform.Constants.ProjectType.CHAT, platform: Platform.Constants.PlatformType.VOICEFLOW };
 
   afterEach(() => {
     sinon.restore();

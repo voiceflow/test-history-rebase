@@ -1,6 +1,6 @@
 import { BaseButton } from '@voiceflow/base-types';
+import * as Platform from '@voiceflow/platform-config';
 import { OptionsMenuOption, toast } from '@voiceflow/ui';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import * as Prototype from '@/ducks/prototype';
@@ -24,14 +24,14 @@ const useButtonLayoutOption = (): OptionsMenuOption => {
     await updateSharePrototypeSettings({ buttons: layout });
 
     toast.success(
-      `Global ${getPlatformValue(platform, { [VoiceflowConstants.PlatformType.GOOGLE]: 'chips' }, 'buttons')} layout updated to '${
+      `Global ${getPlatformValue(platform, { [Platform.Constants.PlatformType.GOOGLE]: 'chips' }, 'buttons')} layout updated to '${
         buttonLayoutLabel[layout]
       }'`
     );
   };
 
   return {
-    label: `${getPlatformValue(platform, { [VoiceflowConstants.PlatformType.GOOGLE]: 'Chips' }, 'Buttons')} layout`,
+    label: `${getPlatformValue(platform, { [Platform.Constants.PlatformType.GOOGLE]: 'Chips' }, 'Buttons')} layout`,
     options: [
       {
         label: <MenuCheckboxOption checked={layout === BaseButton.ButtonsLayout.STACKED}>Stacked</MenuCheckboxOption>,

@@ -1,6 +1,6 @@
+import * as Platform from '@voiceflow/platform-config';
 import { Utils } from '@voiceflow/realtime-sdk';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 import { generatePath } from 'react-router-dom';
 
@@ -25,14 +25,14 @@ const getDialogflowItems = (versionID: string) => [
 
 const getPlatformItems = Utils.platform.createPlatformAndProjectTypeSelector<(versionID: string) => NavLinkItem[]>(
   {
-    [VoiceflowConstants.PlatformType.ALEXA]: (versionID) => [
+    [Platform.Constants.PlatformType.ALEXA]: (versionID) => [
       { to: generatePath(Path.PUBLISH_ALEXA, { versionID }), key: 'alexa', label: 'Amazon Alexa' },
     ],
-    [VoiceflowConstants.PlatformType.GOOGLE]: (versionID) => [
+    [Platform.Constants.PlatformType.GOOGLE]: (versionID) => [
       { to: generatePath(Path.PUBLISH_GOOGLE, { versionID }), key: 'google', label: 'Google Assistant' },
     ],
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: (versionID) => getDialogflowItems(versionID),
-    [VoiceflowConstants.ProjectType.CHAT]: (versionID) => [
+    [Platform.Constants.PlatformType.DIALOGFLOW_ES]: (versionID) => getDialogflowItems(versionID),
+    [Platform.Constants.ProjectType.CHAT]: (versionID) => [
       { to: generatePath(Path.PUBLISH_WEBCHAT, { versionID }), key: 'webchat', label: 'Web Chat' },
     ],
   },

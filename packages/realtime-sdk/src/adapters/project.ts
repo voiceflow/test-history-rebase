@@ -1,7 +1,6 @@
 import { AnyProject } from '@realtime-sdk/models';
 import { BaseModels } from '@voiceflow/base-types';
 import { AnyRecord } from '@voiceflow/common';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { createMultiAdapter, notImplementedAdapter } from 'bidirectional-adapter';
 
 import { legacyPlatformToProjectType } from '../constants/platform';
@@ -26,10 +25,11 @@ const projectAdapter = createMultiAdapter<BaseModels.Project.Model<AnyRecord, An
     platformData,
     customThemes,
   }) => {
-    const { platform, type } = legacyPlatformToProjectType(dbPlatform as VoiceflowConstants.PlatformType, dbType as VoiceflowConstants.ProjectType);
+    const { nlu, type, platform } = legacyPlatformToProjectType(dbPlatform, dbType);
 
     return {
       id: _id,
+      nlu,
       name,
       type,
       image,

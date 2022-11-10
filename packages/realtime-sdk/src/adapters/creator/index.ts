@@ -3,7 +3,7 @@ import { CreatorDiagram, DBNodeStart, Link, Node, NodeData, Port } from '@realti
 import { isActions, isBlock, isDiagramReferencesBlockType, isMarkupBlockType, isStart } from '@realtime-sdk/utils/typeGuards';
 import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
+import * as Platform from '@voiceflow/platform-config';
 import { createSimpleAdapter } from 'bidirectional-adapter';
 import { denormalize, Normalized } from 'normal-store';
 
@@ -24,8 +24,8 @@ const creatorAdapter = createSimpleAdapter<
   CreatorDiagram,
   [
     {
-      platform: VoiceflowConstants.PlatformType;
-      projectType: VoiceflowConstants.ProjectType;
+      platform: Platform.Constants.PlatformType;
+      projectType: Platform.Constants.ProjectType;
       context: AdapterContext;
     }
   ],
@@ -33,8 +33,8 @@ const creatorAdapter = createSimpleAdapter<
     {
       nodes: Normalized<Node>;
       ports: Normalized<Port>;
-      platform: VoiceflowConstants.PlatformType;
-      projectType: VoiceflowConstants.ProjectType;
+      platform: Platform.Constants.PlatformType;
+      projectType: Platform.Constants.ProjectType;
       context: VersionAdapterContext;
       partial?: boolean;
     }

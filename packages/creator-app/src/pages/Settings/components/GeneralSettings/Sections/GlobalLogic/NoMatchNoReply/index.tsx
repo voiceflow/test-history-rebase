@@ -1,5 +1,5 @@
+import * as Platform from '@voiceflow/platform-config';
 import { Button } from '@voiceflow/ui';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import Section, { SectionVariant } from '@/components/Section';
@@ -10,8 +10,8 @@ import MessageDelayPopper from './MessageDelayPopper';
 import * as S from './styles';
 
 interface GeneralSettingsNoMatchNoReplySectionProps {
-  platform: VoiceflowConstants.PlatformType;
-  projectType: VoiceflowConstants.ProjectType;
+  platform: Platform.Constants.PlatformType;
+  projectType: Platform.Constants.ProjectType;
   platformMeta: PlatformSettingsMetaProps;
 }
 

@@ -1,4 +1,4 @@
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
+import * as Platform from '@voiceflow/platform-config';
 import React from 'react';
 
 import { SourceType } from '@/ducks/tracking/constants';
@@ -11,7 +11,7 @@ const WaitAccountStage: React.FC<StageComponentProps<DialogflowCXPublishJob.Wait
 
   React.useEffect(() => {
     connectGoogleModal
-      .open({ source: SourceType.ACCOUNT_PAGE, platform: VoiceflowConstants.PlatformType.DIALOGFLOW_CX })
+      .open({ source: SourceType.ACCOUNT_PAGE, platform: Platform.Constants.PlatformType.DIALOGFLOW_CX })
       .then(() => restart())
       .catch(() => cancel());
 

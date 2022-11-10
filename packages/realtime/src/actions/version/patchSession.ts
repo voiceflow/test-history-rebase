@@ -8,7 +8,13 @@ class PatchVersionSession extends AbstractVersionResourceControl<Realtime.versio
   protected actionCreator = Realtime.version.patchSession;
 
   protected process = async (ctx: Context, { payload }: Action<Realtime.version.PatchSessionPayload>) => {
-    await this.services.version.patchPlatformSession(ctx.data.creatorID, payload.versionID, payload.platform, payload.session);
+    await this.services.version.patchPlatformSession({
+      type: payload.type,
+      session: payload.session,
+      platform: payload.platform,
+      versionID: payload.versionID,
+      creatorID: ctx.data.creatorID,
+    });
   };
 }
 

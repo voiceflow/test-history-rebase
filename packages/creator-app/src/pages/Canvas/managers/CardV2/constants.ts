@@ -1,6 +1,6 @@
 import { BaseModels } from '@voiceflow/base-types';
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import SlateEditable from '@/components/SlateEditable';
 import { BlockType } from '@/constants';
@@ -28,7 +28,7 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.CardV2, Realtime.NodeData
     data: {
       name: 'Card',
       title: '',
-      description: options?.projectType === VoiceflowConstants.ProjectType.VOICE ? '' : SlateEditable.EditorAPI.getEmptyState(),
+      description: options?.projectType === Platform.Constants.ProjectType.VOICE ? '' : SlateEditable.EditorAPI.getEmptyState(),
       imageUrl: '',
       buttons: [],
       noMatch: null,

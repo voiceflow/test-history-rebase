@@ -1,6 +1,6 @@
 import { BaseModels } from '@voiceflow/base-types';
+import * as Platform from '@voiceflow/platform-config';
 import { pickRandomDefaultColor, toast } from '@voiceflow/ui';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import client from '@/client';
@@ -10,11 +10,17 @@ import { useTrackingEvents } from '@/hooks';
 import { NLUImportModel } from '@/models';
 import { upload } from '@/utils/dom';
 
-export const useNLUImport = ({ platform, onImport }: { platform: VoiceflowConstants.PlatformType; onImport?: (data: NLUImportModel) => void }) => {
+interface Options {
+  nluType: Platform.Constants.NLUType;
+  platform: Platform.Constants.PlatformType;
+  onImport?: (data: NLUImportModel) => void;
+}
+
+export const useNLUImport = ({ nluType, platform, onImport }: Options) => {
   const [trackingEvents] = useTrackingEvents();
   const [isImporting, setIsImporting] = React.useState(false);
 
-  const nlu = NLU.Config.get(platform);
+  const nlu = NLU.Config.get(nluType);
 
   const fileExtensions = React.useMemo(() => nlu.nlps[0].import?.extensions ?? [], [nlu]);
 
@@ -32,7 +38,7 @@ export const useNLUImport = ({ platform, onImport }: { platform: VoiceflowConsta
       const formData = new FormData();
       formData.append('file', files[0]);
 
-      const importModelResponse = await client.platform(platform).modelImport?.import(platform, formData);
+      const importModelResponse = await client.platform(platform).modelImport?.import(nluType, formData);
 
       setIsImporting(false);
 
@@ -49,9 +55,9 @@ export const useNLUImport = ({ platform, onImport }: { platform: VoiceflowConsta
 
       toast.error('File failed to import');
       trackingEvents.trackProjectNLUImportFailed({
-        platform,
         origin,
-        nluType: NLU.Config.get(platform).nlps[0].type,
+        importNLPType: nlu.nlps[0].type,
+        targetNLUType: nlu.type,
       });
     }
   };

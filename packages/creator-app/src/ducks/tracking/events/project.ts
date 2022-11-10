@@ -1,4 +1,4 @@
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
+import * as Platform from '@voiceflow/platform-config';
 
 import client from '@/client';
 import { ControlScheme } from '@/components/Canvas/constants';
@@ -125,34 +125,48 @@ export const trackProjectInviteCollaboratorsCopy = createWorkspaceEventTracker<{
 );
 
 export const trackProjectExit = createProjectEventTracker<{
-  platform: VoiceflowConstants.PlatformType | null;
+  nluType: Platform.Constants.NLUType;
+  platform: Platform.Constants.PlatformType;
+  creatorID: number;
   canvasSessionDuration: number;
   prototypeSessionDuration: number;
-  transcriptsSessionDuration: number;
   nluManagerSessionDuration: number;
-  creatorID: number;
-}>(({ platform, canvasSessionDuration, prototypeSessionDuration, transcriptsSessionDuration, nluManagerSessionDuration, creatorID, ...options }) =>
-  client.api.analytics.track(
-    EventName.PROJECT_EXIT,
-    createProjectEventPayload(options, {
-      platform,
-      canvasSessionDuration,
-      prototypeSessionDuration,
-      transcriptsSessionDuration,
-      nluManagerSessionDuration,
-      creatorID,
-    })
-  )
+  transcriptsSessionDuration: number;
+}>(
+  ({
+    nluType,
+    platform,
+    creatorID,
+    canvasSessionDuration,
+    prototypeSessionDuration,
+    transcriptsSessionDuration,
+    nluManagerSessionDuration,
+    ...options
+  }) =>
+    client.api.analytics.track(
+      EventName.PROJECT_EXIT,
+      createProjectEventPayload(options, {
+        nlu_type: nluType,
+        platform,
+        creatorID,
+        canvasSessionDuration,
+        prototypeSessionDuration,
+        transcriptsSessionDuration,
+        nluManagerSessionDuration,
+      })
+    )
 );
 
 export const trackProjectExported = createProjectEventTracker<{
-  platform: VoiceflowConstants.PlatformType;
+  nluType: Platform.Constants.NLUType;
+  platform: Platform.Constants.PlatformType;
   exportType: ExportType;
   exportFormat: CanvasExportFormat;
-}>(({ platform, exportType, exportFormat, ...options }) =>
+}>(({ nluType, platform, exportType, exportFormat, ...options }) =>
   client.api.analytics.track(
     EventName.PROJECT_EXPORTED,
     createProjectEventPayload(options, {
+      nlu_type: nluType,
       platform,
       export_type: exportType === ExportType.CANVAS ? 'Project Content' : 'Interaction Model',
       export_format: exportFormat,
@@ -161,11 +175,14 @@ export const trackProjectExported = createProjectEventTracker<{
 );
 
 export const trackProjectNLUImport = createProjectEventTracker<{
-  nluType: NLP.Constants.NLPType | undefined;
-  platform: VoiceflowConstants.PlatformType;
   origin: NLUImportOrigin;
-}>(({ nluType, platform, origin, ...options }) =>
-  client.api.analytics.track(EventName.PROJECT_NLU_IMPORT, createProjectEventPayload(options, { nlu_type: nluType, project_type: platform, origin }))
+  importNLPType: NLP.Constants.NLPType;
+  targetNLUType: Platform.Constants.NLUType;
+}>(({ origin, importNLPType, targetNLUType, ...options }) =>
+  client.api.analytics.track(
+    EventName.PROJECT_NLU_IMPORT,
+    createProjectEventPayload(options, { nlu_type: importNLPType, project_type: targetNLUType, origin })
+  )
 );
 
 export const trackTopicCreated = createProjectEventTracker((options) =>
@@ -188,34 +205,47 @@ export const trackComponentDeleted = createProjectEventTracker((options) =>
   client.api.analytics.track(EventName.COMPONENT_DELETED, createProjectEventPayload(options))
 );
 
-export const trackDomainDeleted = createProjectEventTracker<{ domainID: string; platform: VoiceflowConstants.PlatformType }>(
-  ({ domainID, platform, ...options }) =>
-    client.api.analytics.track(EventName.DOMAIN_DELETED, createProjectEventPayload(options, { domain_id: domainID, project_type: platform }))
+export const trackDomainDeleted = createProjectEventTracker<{
+  nluType: Platform.Constants.NLUType;
+  platform: Platform.Constants.PlatformType;
+  domainID: string;
+}>(({ nluType, platform, domainID, ...options }) =>
+  client.api.analytics.track(EventName.DOMAIN_DELETED, createProjectEventPayload(options, { domain_id: domainID, nlu_type: nluType, platform }))
 );
 
-export const trackDomainCreated = createProjectEventTracker<{ domainID: string; platform: VoiceflowConstants.PlatformType }>(
-  ({ domainID, platform, ...options }) =>
-    client.api.analytics.track(EventName.DOMAIN_CREATED, createProjectEventPayload(options, { domain_id: domainID, project_type: platform }))
+export const trackDomainCreated = createProjectEventTracker<{
+  nluType: Platform.Constants.NLUType;
+  platform: Platform.Constants.PlatformType;
+  domainID: string;
+}>(({ nluType, platform, domainID, ...options }) =>
+  client.api.analytics.track(EventName.DOMAIN_CREATED, createProjectEventPayload(options, { domain_id: domainID, nlu_type: nluType, platform }))
 );
 
-export const trackDomainDuplicated = createProjectEventTracker<{ domainID: string; platform: VoiceflowConstants.PlatformType }>(
-  ({ domainID, platform, ...options }) =>
-    client.api.analytics.track(EventName.DOMAIN_DUPLICATED, createProjectEventPayload(options, { domain_id: domainID, project_type: platform }))
+export const trackDomainDuplicated = createProjectEventTracker<{
+  nluType: Platform.Constants.NLUType;
+  platform: Platform.Constants.PlatformType;
+  domainID: string;
+}>(({ nluType, platform, domainID, ...options }) =>
+  client.api.analytics.track(EventName.DOMAIN_DUPLICATED, createProjectEventPayload(options, { domain_id: domainID, nlu_type: nluType, platform }))
 );
 
 export const trackDomainConvert = createWorkspaceEventTracker<{
-  sourcePlatform?: VoiceflowConstants.PlatformType;
-  targetPlatform?: VoiceflowConstants.PlatformType;
+  sourceNLUType?: Platform.Constants.NLUType;
+  targetNLUType?: Platform.Constants.NLUType;
+  sourcePlatform?: Platform.Constants.PlatformType;
+  targetPlatform?: Platform.Constants.PlatformType;
   sourceProjectID: string;
   targetProjectID: string;
-}>(({ sourcePlatform, targetPlatform, sourceProjectID, targetProjectID, ...options }) =>
+}>(({ sourceNLUType, targetNLUType, sourcePlatform, targetPlatform, sourceProjectID, targetProjectID, ...options }) =>
   client.api.analytics.track(
     EventName.DOMAIN_CONVERT,
     createWorkspaceEventPayload(options, {
+      origin_nlu_type: sourceNLUType,
+      origin_platform: sourcePlatform,
       origin_project_id: sourceProjectID,
-      origin_project_type: sourcePlatform,
+      destination_nlu_type: targetNLUType,
+      destination_platform: targetPlatform,
       destination_project_id: targetProjectID,
-      destination_project_type: targetPlatform,
     })
   )
 );

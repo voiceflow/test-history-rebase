@@ -1,6 +1,6 @@
 import { BaseModels } from '@voiceflow/base-types';
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { batch } from 'react-redux';
 
 import * as Errors from '@/config/errors';
@@ -51,8 +51,8 @@ export const importProjectContext =
     nodes: { data: Realtime.NodeData<unknown>; node: Realtime.Node }[];
     products: Realtime.Product[];
     diagrams: Realtime.Diagram[];
-    sourcePlatform: VoiceflowConstants.PlatformType;
-    targetPlatform: VoiceflowConstants.PlatformType;
+    sourcePlatform: Platform.Constants.PlatformType;
+    targetPlatform: Platform.Constants.PlatformType;
   }): Thunk<{ data: Realtime.NodeData<unknown>; node: Realtime.Node }[]> =>
   async (dispatch) => {
     let mappedNodes = nodes;

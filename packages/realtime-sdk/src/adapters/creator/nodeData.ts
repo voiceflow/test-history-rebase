@@ -1,7 +1,7 @@
 import { BlockType } from '@realtime-sdk/constants';
 import { NodeData } from '@realtime-sdk/models';
 import { BaseModels } from '@voiceflow/base-types';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
+import * as Platform from '@voiceflow/platform-config';
 import { createSimpleAdapter } from 'bidirectional-adapter';
 
 import { AdapterContext } from '../types';
@@ -11,8 +11,8 @@ import { needsMigration } from './utils';
 const nodeDataAdapter = createSimpleAdapter<
   { data: BaseModels.BaseDiagramNode['data']; type: string },
   NodeData<unknown>,
-  [{ platform: VoiceflowConstants.PlatformType; projectType: VoiceflowConstants.ProjectType; nodeID: string; context: AdapterContext }],
-  [{ platform: VoiceflowConstants.PlatformType; projectType: VoiceflowConstants.ProjectType; context: AdapterContext }]
+  [{ platform: Platform.Constants.PlatformType; projectType: Platform.Constants.ProjectType; nodeID: string; context: AdapterContext }],
+  [{ platform: Platform.Constants.PlatformType; projectType: Platform.Constants.ProjectType; context: AdapterContext }]
 >(
   ({ data: dbData, type: dbType }, { platform, projectType, nodeID, context }) => {
     const getNodeType = APP_BLOCK_TYPE_FROM_DB[dbType];

@@ -1,7 +1,7 @@
 import { BaseButton } from '@voiceflow/base-types';
 import { PlanType } from '@voiceflow/internal';
+import * as Platform from '@voiceflow/platform-config';
 import { DEVICE_INFO, FullSpinner, toast, withProvider } from '@voiceflow/ui';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
@@ -27,8 +27,8 @@ const PublicPrototype: React.FC<RouteComponentProps<{ versionID: string }>> = ({
     layout: PrototypeLayout.TEXT_DIALOG,
     buttons: BaseButton.ButtonsLayout.STACKED,
     locales: [],
-    platform: VoiceflowConstants.PlatformType.VOICEFLOW,
-    projectType: VoiceflowConstants.ProjectType.VOICE,
+    platform: Platform.Constants.PlatformType.VOICEFLOW,
+    projectType: Platform.Constants.ProjectType.VOICE,
     hasPassword: false,
     projectName: '',
     globalMessageDelayMilliseconds: 0,

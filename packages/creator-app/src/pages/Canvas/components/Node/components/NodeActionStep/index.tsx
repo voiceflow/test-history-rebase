@@ -6,7 +6,7 @@ import * as CreatorV2 from '@/ducks/creatorV2';
 import * as Tracking from '@/ducks/tracking';
 import { StepAPIProvider } from '@/pages/Canvas/components/Step/contexts';
 import { EngineContext, ManagerContext, NodeEntityContext } from '@/pages/Canvas/contexts';
-import { PlatformContext, ProjectTypeContext } from '@/pages/Project/contexts';
+import { NLUTypeContext, PlatformContext, ProjectTypeContext } from '@/pages/Project/contexts';
 
 import NodeLifecycle from '../NodeLifecycle';
 import { useActionStepAPI, useNodeInstance } from './hooks';
@@ -22,6 +22,7 @@ export interface NodeActionStepProps {
 
 const NodeActionStep: React.FC<NodeActionStepProps> = ({ isLast, reversed, isActive, sourcePortID, sourceNodeID, onOpenEditor }) => {
   const engine = React.useContext(EngineContext)!;
+  const nluType = React.useContext(NLUTypeContext)!;
   const platform = React.useContext(PlatformContext)!;
   const nodeEntity = React.useContext(NodeEntityContext)!;
   const getManager = React.useContext(ManagerContext)!;
@@ -68,6 +69,7 @@ const NodeActionStep: React.FC<NodeActionStepProps> = ({ isLast, reversed, isAct
             data={data as any}
             ports={node.ports as any}
             engine={engine}
+            nluType={nluType}
             reversed={reversed}
             platform={platform}
             isActive={isActive}

@@ -1,4 +1,5 @@
 import { BaseNode } from '@voiceflow/base-types';
+import * as Platform from '@voiceflow/platform-config';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
@@ -41,7 +42,7 @@ export const useDeviceDimension = ({
     };
   }, [device, data]);
 
-export const useInitialCanvas = ({ platform, dimension }: { platform: VoiceflowConstants.PlatformType; dimension: Dimension }) => {
+export const useInitialCanvas = ({ platform, dimension }: { platform: Platform.Constants.PlatformType; dimension: Dimension }) => {
   const theme = useTheme();
 
   return React.useMemo(() => {

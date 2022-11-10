@@ -7,8 +7,7 @@ import * as ProjectV2 from '@/ducks/projectV2';
 import { CanvasCreationType } from '@/ducks/tracking/constants';
 import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
-import { useDispatch, useSelector } from '@/hooks';
-import { getPlatformDefaultVoice } from '@/utils/platform';
+import { useActiveProjectTypeConfig, useDispatch, useSelector } from '@/hooks';
 
 interface SSMLWithVarsProps {
   icon?: SvgIconTypes.Icon | null;
@@ -22,6 +21,8 @@ interface SSMLWithVarsProps {
 }
 
 const SSMLWithVars: React.FC<SSMLWithVarsProps> = ({ icon = 'alexa', voice, autofocus, ...props }) => {
+  const projectTypeConfig = useActiveProjectTypeConfig();
+
   const ssmlRef = React.useRef<{ forceFocusToTheEnd: VoidFunction } | null>(null);
 
   const locales = useSelector(VersionV2.active.localesSelector);
@@ -34,7 +35,6 @@ const SSMLWithVars: React.FC<SSMLWithVarsProps> = ({ icon = 'alexa', voice, auto
   const updateDefaultVoice = useDispatch(Version.updateDefaultVoice);
 
   const vars = React.useMemo(() => variables.map((name) => ({ id: name, name, isVariable: true })), [variables]);
-  const platformDefaultVoice = getPlatformDefaultVoice(platform);
 
   const onAddVariable = React.useCallback(
     async (name) => {
@@ -60,15 +60,15 @@ const SSMLWithVars: React.FC<SSMLWithVarsProps> = ({ icon = 'alexa', voice, auto
     <SSML
       ref={ssmlRef}
       icon={icon}
-      voice={voice || platformDefaultVoice}
+      voice={voice || projectTypeConfig.project.voice.default}
       space
       locales={locales}
       platform={platform}
       variables={vars}
       projectType={projectType}
-      defaultVoice={defaultVoice || platformDefaultVoice}
+      defaultVoice={defaultVoice || projectTypeConfig.project.voice}
       onAddVariable={onAddVariable}
-      platformDefaultVoice={platformDefaultVoice}
+      platformDefaultVoice={projectTypeConfig.project.voice}
       onChangeDefaultVoice={updateDefaultVoice}
       {...props}
     />

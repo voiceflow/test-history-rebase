@@ -6,7 +6,7 @@ import * as Intent from '@/ducks/intent';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import * as Slot from '@/ducks/slot';
-import { useDispatch, useModelTracking, useNLUImport, useSelector, useTrackingEvents } from '@/hooks';
+import { useDispatch, useModelTracking, useNLUImport, useSelector } from '@/hooks';
 import { NLUImportModel } from '@/models';
 import EmptyView from '@/pages/NLUManager/components/EmptyView';
 import NoResultsScreen from '@/pages/NLUManager/components/NoResultsScreen';
@@ -15,24 +15,24 @@ import { useNLUManager } from '@/pages/NLUManager/context';
 const EmptyScreen: React.FC = () => {
   const nluManager = useNLUManager();
 
+  const nluType = useSelector(ProjectV2.active.nluTypeSelector);
   const platform = useSelector(ProjectV2.active.platformSelector);
   const versionID = useSelector(Session.activeVersionIDSelector)!;
   const refreshSlots = useDispatch(Slot.refreshSlots);
   const refreshIntents = useDispatch(Intent.refreshIntents);
-  const [trackingEvents] = useTrackingEvents();
   const modelImportTracking = useModelTracking();
 
   const onImport = async (importedModel: NLUImportModel) => {
     const data = await client.version.patchMergeIntentsAndSlots(versionID, importedModel);
 
-    modelImportTracking(platform, importedModel, trackingEvents);
+    modelImportTracking({ nluType, importedModel });
 
     if (data) {
       await Promise.all([refreshSlots(), refreshIntents()]);
     }
   };
 
-  const nluImport = useNLUImport({ platform, onImport });
+  const nluImport = useNLUImport({ nluType, platform, onImport });
 
   if (nluManager.search) {
     return <NoResultsScreen itemName="intents" onCleanFilters={() => nluManager.setSearch('')} />;

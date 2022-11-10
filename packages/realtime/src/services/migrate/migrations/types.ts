@@ -1,6 +1,6 @@
 import { BaseModels } from '@voiceflow/base-types';
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { Draft } from 'immer';
 
 export type VersionUpdateData = Pick<
@@ -27,8 +27,8 @@ export interface MigrationData {
 }
 
 export interface MigrationContext {
-  platform: VoiceflowConstants.PlatformType;
-  projectType: VoiceflowConstants.ProjectType;
+  platform: Platform.Constants.PlatformType;
+  projectType: Platform.Constants.ProjectType;
 }
 
 export type Transform = (data: Draft<MigrationData>, context: MigrationContext) => void;

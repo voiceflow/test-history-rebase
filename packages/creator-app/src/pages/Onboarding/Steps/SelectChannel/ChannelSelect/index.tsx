@@ -1,5 +1,5 @@
+import * as Platform from '@voiceflow/platform-config';
 import { Box, SvgIcon, useSetup } from '@voiceflow/ui';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import { Section } from './components';
@@ -7,7 +7,7 @@ import { PROJECT_SECTIONS } from './constants';
 import { Container } from './styles';
 
 interface ChannelSelectProps {
-  onSelect: (option: { platform: VoiceflowConstants.PlatformType; projectType: VoiceflowConstants.ProjectType } | null) => void;
+  onSelect: (option: { platform: Platform.Constants.PlatformType; projectType: Platform.Constants.ProjectType } | null) => void;
   isLoading: boolean;
 }
 

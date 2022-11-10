@@ -7,8 +7,6 @@ import { Optional, Required } from 'utility-types';
 import * as Models from '../models';
 
 export type KeyRemap = Base.Adapters.Intent.KeyRemap;
-export type ToDBOptions = Base.Adapters.Intent.ToDBOptions;
-export type FromDBOptions = Base.Adapters.Intent.FromDBOptions;
 
 export const promptSanitizer = ({ text, slots, voice }: Optional<Models.Intent.Prompt> = {}): Models.Intent.Prompt => ({
   text: text || '',
@@ -31,9 +29,9 @@ export const slotSanitizer = ({ dialog, ...baseIntentSlot }: Required<Optional<M
   dialog: slotDialogSanitizer(dialog),
 });
 
-export const smart = createSmartMultiAdapter<VoiceModels.Intent<string>, Models.Intent.Model, FromDBOptions, ToDBOptions, KeyRemap>(
-  (dbIntent, options) => ({
-    ...Base.Adapters.Intent.smart.fromDB(dbIntent, options),
+export const smart = createSmartMultiAdapter<VoiceModels.Intent<string>, Models.Intent.Model, [], [], KeyRemap>(
+  (dbIntent) => ({
+    ...Base.Adapters.Intent.smart.fromDB(dbIntent),
     ...(Base.Adapters.Utils.hasValue(dbIntent, 'slots') && { slots: normalize(dbIntent.slots.map(slotSanitizer)) }),
   }),
   (intent) => ({
@@ -42,8 +40,8 @@ export const smart = createSmartMultiAdapter<VoiceModels.Intent<string>, Models.
   })
 );
 
-export const simple = createMultiAdapter<VoiceModels.Intent<string>, Models.Intent.Model, FromDBOptions, ToDBOptions>(
-  ({ slots = [], ...dbIntent }, options) => smart.fromDB({ slots, ...dbIntent }, options),
+export const simple = createMultiAdapter<VoiceModels.Intent<string>, Models.Intent.Model>(
+  ({ slots = [], ...dbIntent }) => smart.fromDB({ slots, ...dbIntent }),
   smart.toDB
 );
 
@@ -51,10 +49,9 @@ export const simple = createMultiAdapter<VoiceModels.Intent<string>, Models.Inte
  * Should not be used in the configs, only in the adapters to share the logic and fix TS voice related typings
  */
 export const smartFactory = <Voice extends string>() =>
-  smart as unknown as SmartMultiAdapter<VoiceModels.Intent<Voice>, Models.Intent.Model<Voice>, FromDBOptions, ToDBOptions, KeyRemap>;
+  smart as unknown as SmartMultiAdapter<VoiceModels.Intent<Voice>, Models.Intent.Model<Voice>, [], [], KeyRemap>;
 
 /**
  * Should not be used in the configs, only in the adapters to share the logic and fix TS voice related typings
  */
-export const simpleFactory = <Voice extends string>() =>
-  simple as unknown as MultiAdapter<VoiceModels.Intent<Voice>, Models.Intent.Model<Voice>, FromDBOptions, ToDBOptions>;
+export const simpleFactory = <Voice extends string>() => simple as unknown as MultiAdapter<VoiceModels.Intent<Voice>, Models.Intent.Model<Voice>>;

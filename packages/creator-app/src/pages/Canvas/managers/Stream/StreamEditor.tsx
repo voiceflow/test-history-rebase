@@ -1,8 +1,8 @@
 import { BaseModels } from '@voiceflow/base-types';
 import { SLOT_REGEXP } from '@voiceflow/common';
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Checkbox, ErrorMessageWithDivider } from '@voiceflow/ui';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import OverflowMenu from '@/components/OverflowMenu';
@@ -27,7 +27,7 @@ const StreamEditor: NodeEditor<Realtime.NodeData.Stream, Realtime.NodeData.Strea
   const transaction = useDispatch(History.transaction);
 
   const hasPause = data.customPause;
-  const isAlexa = platform === VoiceflowConstants.PlatformType.ALEXA;
+  const isAlexa = platform === Platform.Constants.PlatformType.ALEXA;
   const toggleLoop = React.useCallback(() => onChange({ loop: !data.loop }), [data.loop, onChange]);
 
   const updateAudio = React.useCallback(

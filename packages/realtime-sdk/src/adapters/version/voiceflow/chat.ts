@@ -1,6 +1,7 @@
 import { Version } from '@realtime-sdk/models';
 import { getPlatformGlobalVariables } from '@realtime-sdk/utils/globalVariables';
-import { VoiceflowConstants, VoiceflowVersion } from '@voiceflow/voiceflow-types';
+import * as Platform from '@voiceflow/platform-config';
+import { VoiceflowVersion } from '@voiceflow/voiceflow-types';
 import { createMultiAdapter, notImplementedAdapter } from 'bidirectional-adapter';
 // eslint-disable-next-line you-dont-need-lodash-underscore/omit
 import _omit from 'lodash/omit';
@@ -19,7 +20,7 @@ const chatVersionAdapter = createMultiAdapter<VoiceflowVersion.ChatVersion, Vers
     ...sharedVersionAdapter.fromDB(sharedVersion),
 
     settings: _omit(VoiceflowVersion.defaultChatSettings(settings), 'session'),
-    variables: variables.filter((variable) => !getPlatformGlobalVariables(VoiceflowConstants.PlatformType.VOICEFLOW).includes(variable)),
+    variables: variables.filter((variable) => !getPlatformGlobalVariables(Platform.Constants.PlatformType.VOICEFLOW).includes(variable)),
     publishing,
   }),
   notImplementedAdapter.transformer

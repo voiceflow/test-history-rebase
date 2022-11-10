@@ -1,6 +1,6 @@
+import * as Platform from '@voiceflow/platform-config';
 import { Utils } from '@voiceflow/realtime-sdk';
 import { ButtonVariant, preventDefault, SvgIcon, TippyTooltip } from '@voiceflow/ui';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import ActionButton from '../../pages/PublicPrototype/components/ChatDialog/components/ActionButton';
@@ -10,7 +10,7 @@ interface SoundToggleProps {
   isMuted: boolean;
   onClick: VoidFunction;
   isMobile?: boolean;
-  projectType: VoiceflowConstants.ProjectType;
+  projectType: Platform.Constants.ProjectType;
   preventButtonDefault?: boolean;
 }
 

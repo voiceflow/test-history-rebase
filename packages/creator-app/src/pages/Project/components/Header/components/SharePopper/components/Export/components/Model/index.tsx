@@ -1,3 +1,4 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { BlockText, Select, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 import { useSelector } from 'react-redux';
@@ -5,20 +6,20 @@ import { useSelector } from 'react-redux';
 import IntentsSelect from '@/components/IntentsSelect';
 import UpgradeOption from '@/components/UpgradeOption';
 import * as NLP from '@/config/nlp';
-import * as NLU from '@/config/nlu';
 import { Permission } from '@/config/permissions';
 import { getNLUExportLimitDetails, isGatedNLUExportType } from '@/config/planLimits/nluExport';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { UpgradePrompt } from '@/ducks/tracking';
-import { usePermission } from '@/hooks';
+import { useActiveNLUConfig, usePermission } from '@/hooks';
 
 import { ExportContext } from '../../Context';
-import { getNLPSelectLabel } from './constants';
 
 const ExportModel: React.FC<{
   selectedIntentsIds?: string[];
 }> = ({ selectedIntentsIds }) => {
+  const nluConfig = useActiveNLUConfig();
+
   const { exportNLPType, setExportNLPType, setExportIntents, exportIntents, nlpTypes, setCanExport, setCheckedExportIntents } =
     React.useContext(ExportContext)!;
   const intents = useSelector(IntentV2.allIntentsSelector);
@@ -88,7 +89,9 @@ const ExportModel: React.FC<{
 
       {/* change this text */}
       <BlockText fontSize={13} color="#62778c" lineHeight="normal" marginTop={11}>
-        <span>{getNLPSelectLabel(NLU.Config.get(platform).name)(platform)}</span>
+        <span>
+          Export as .CSV, or as consumable file for {Realtime.Utils.typeGuards.isVoiceflowPlatform(platform) ? 'any NLU vendor' : nluConfig.name}.
+        </span>
       </BlockText>
 
       <label style={{ marginTop: 24 }}>Intents</label>

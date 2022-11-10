@@ -1,4 +1,5 @@
 import { PlanType } from '@voiceflow/internal';
+import * as Platform from '@voiceflow/platform-config';
 
 import * as NLU from '@/config/nlu';
 import * as Tracking from '@/ducks/tracking';
@@ -8,7 +9,7 @@ import { PlanPermission, UpgradePopperAndTooltipPermission } from './types';
 import { applyStarterPermissions, applyTeamPermissions } from './utils';
 
 interface Data {
-  nluType: NLU.Constants.NLUType;
+  nluType: Platform.Constants.NLUType;
 }
 
 const ENTERPRISE_PERMISSION: UpgradePopperAndTooltipPermission<Data> = {

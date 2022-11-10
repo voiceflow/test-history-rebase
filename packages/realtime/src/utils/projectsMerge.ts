@@ -3,9 +3,9 @@ import { BaseModels, BaseText } from '@voiceflow/base-types';
 import { ChatModels } from '@voiceflow/chat-types';
 import { AnyRecord, Utils } from '@voiceflow/common';
 import { slate } from '@voiceflow/internal';
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { VoiceModels } from '@voiceflow/voice-types';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import _ from 'lodash';
 import { Element as SlateElement } from 'slate';
 
@@ -92,13 +92,13 @@ class ProjectsMerge {
     if (!this.targetVersion.domains?.length) throw new Error('Target version has no domains');
 
     const { type: sourceType } = Realtime.legacyPlatformToProjectType(
-      this.sourceProject.platform as VoiceflowConstants.PlatformType,
-      this.sourceProject.type as VoiceflowConstants.ProjectType
+      this.sourceProject.platform as Platform.Constants.PlatformType,
+      this.sourceProject.type as Platform.Constants.ProjectType
     );
 
     const { type: targetType } = Realtime.legacyPlatformToProjectType(
-      this.targetProject.platform as VoiceflowConstants.PlatformType,
-      this.targetProject.type as VoiceflowConstants.ProjectType
+      this.targetProject.platform as Platform.Constants.PlatformType,
+      this.targetProject.type as Platform.Constants.ProjectType
     );
 
     if (sourceType !== targetType) throw new Error(`Can't merge projects of different types.`);
@@ -111,7 +111,7 @@ class ProjectsMerge {
 
   private mergeProducts() {
     // skip merge if target project is not an Alexa project
-    if (this.targetProject.platform !== VoiceflowConstants.PlatformType.ALEXA) return;
+    if (this.targetProject.platform !== Platform.Constants.PlatformType.ALEXA) return;
 
     const { products: sourceProducts = {} } = this.sourceProject.platformData as Partial<AlexaProject.PlatformData>;
     const { products: targetProducts = {} } = this.targetProject.platformData as Partial<AlexaProject.PlatformData>;

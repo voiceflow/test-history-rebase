@@ -1,6 +1,5 @@
 import { BaseIntent, IntentInput } from '@realtime-sdk/models';
 import { BaseModels } from '@voiceflow/base-types';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { createMultiAdapter, createSmartMultiAdapter } from 'bidirectional-adapter';
 import { Optional, Required } from 'utility-types';
 
@@ -31,22 +30,19 @@ export const baseIntentSlotSanitizer = ({
 });
 
 export type BaseIntentAdapterKeyRemap = [['key', 'id']];
-export type BaseIntentAdapterToDBOptions = [];
-export type BaseIntentAdapterFromDBOptions = [{ platform: VoiceflowConstants.PlatformType }];
 
 export const baseIntentSmartAdapter = createSmartMultiAdapter<
   Omit<BaseModels.Intent, 'slots'>,
   Omit<BaseIntent, 'slots'>,
-  BaseIntentAdapterFromDBOptions,
-  BaseIntentAdapterToDBOptions,
+  [],
+  [],
   BaseIntentAdapterKeyRemap
 >(
-  (dbIntent, { platform }) => ({
+  (dbIntent) => ({
     ...(hasValue(dbIntent, 'key') && { id: dbIntent.key }),
     ...(hasValue(dbIntent, 'name') && { name: dbIntent.name }),
     ...(hasValue(dbIntent, 'noteID') && { noteID: dbIntent.noteID }),
     ...(hasValue(dbIntent, 'inputs') && { inputs: dbIntent.inputs.map(intentInputSanitizer) }),
-    platform,
   }),
   (intent) => ({
     ...(hasValue(intent, 'id') && { key: intent.id }),
@@ -56,8 +52,7 @@ export const baseIntentSmartAdapter = createSmartMultiAdapter<
   })
 );
 
-export const baseIntentAdapter = createMultiAdapter<
-  Omit<BaseModels.Intent, 'slots'>,
-  Omit<BaseIntent, 'slots'>,
-  [{ platform: VoiceflowConstants.PlatformType }]
->(({ inputs = [], ...baseIntent }, ...args) => baseIntentSmartAdapter.fromDB({ inputs, ...baseIntent }, ...args), baseIntentSmartAdapter.toDB);
+export const baseIntentAdapter = createMultiAdapter<Omit<BaseModels.Intent, 'slots'>, Omit<BaseIntent, 'slots'>>(
+  ({ inputs = [], ...baseIntent }) => baseIntentSmartAdapter.fromDB({ inputs, ...baseIntent }),
+  baseIntentSmartAdapter.toDB
+);

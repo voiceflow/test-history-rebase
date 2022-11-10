@@ -1,4 +1,4 @@
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
+import * as Platform from '@voiceflow/platform-config';
 
 import * as Account from '@/ducks/account';
 import AlexaExport, { AlexaUploadLink } from '@/platforms/alexa/jobs/export';
@@ -8,23 +8,23 @@ import { createPlatformSelector } from '@/utils/platform';
 
 export const getUploadLink = createPlatformSelector(
   {
-    [VoiceflowConstants.PlatformType.ALEXA]: AlexaUploadLink,
-    [VoiceflowConstants.PlatformType.GOOGLE]: GoogleUploadLink,
+    [Platform.Constants.PlatformType.ALEXA]: AlexaUploadLink,
+    [Platform.Constants.PlatformType.GOOGLE]: GoogleUploadLink,
   },
   GeneralUploadLink
 );
 
 export const getUploadButton = createPlatformSelector(
   {
-    [VoiceflowConstants.PlatformType.ALEXA]: AlexaExport,
-    [VoiceflowConstants.PlatformType.GOOGLE]: GoogleExport,
+    [Platform.Constants.PlatformType.ALEXA]: AlexaExport,
+    [Platform.Constants.PlatformType.GOOGLE]: GoogleExport,
   },
   GeneralExport
 );
 
 export const getPlatformSyncAction = createPlatformSelector(
   {
-    [VoiceflowConstants.PlatformType.ALEXA]: Account.amazon.syncSelectedVendor,
+    [Platform.Constants.PlatformType.ALEXA]: Account.amazon.syncSelectedVendor,
   },
   () => null as any
 );

@@ -1,7 +1,7 @@
 import { Crypto } from '@voiceflow/common';
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { toast } from '@voiceflow/ui';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { get, set } from 'idb-keyval';
 import { MD5 } from 'object-hash';
 
@@ -36,7 +36,7 @@ interface ClipboardContext {
   intents: Realtime.Intent[];
   products: Realtime.Product[];
   diagrams: Realtime.Diagram[];
-  platform: VoiceflowConstants.PlatformType;
+  platform: Platform.Constants.PlatformType;
 }
 
 interface EncodeData {
@@ -148,7 +148,7 @@ class ClipboardEngine extends EngineConsumer {
       return this.dispatch(
         Version.importProjectContext({
           nodes: nodesWithData,
-          products: targetPlatform !== VoiceflowConstants.PlatformType.ALEXA ? [] : products,
+          products: targetPlatform !== Platform.Constants.PlatformType.ALEXA ? [] : products,
           diagrams,
           sourcePlatform,
           targetPlatform,

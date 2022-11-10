@@ -22,15 +22,9 @@ export const slotSanitizer = ({ dialog, ...baseIntentSlot }: Required<Optional<M
   dialog: slotDialogSanitizer(dialog),
 });
 
-export const smart = createSmartMultiAdapter<
-  ChatModels.Intent,
-  Models.Intent.Model,
-  Base.Adapters.Intent.FromDBOptions,
-  Base.Adapters.Intent.ToDBOptions,
-  Base.Adapters.Intent.KeyRemap
->(
-  (dbIntent, options) => ({
-    ...Base.Adapters.Intent.smart.fromDB(dbIntent, options),
+export const smart = createSmartMultiAdapter<ChatModels.Intent, Models.Intent.Model, [], [], Base.Adapters.Intent.KeyRemap>(
+  (dbIntent) => ({
+    ...Base.Adapters.Intent.smart.fromDB(dbIntent),
     ...(Base.Adapters.Utils.hasValue(dbIntent, 'slots') && { slots: normalize(dbIntent.slots.map(slotSanitizer)) }),
   }),
   (intent) => ({
@@ -39,9 +33,7 @@ export const smart = createSmartMultiAdapter<
   })
 );
 
-export const simple = createMultiAdapter<
-  ChatModels.Intent,
-  Models.Intent.Model,
-  Base.Adapters.Intent.FromDBOptions,
-  Base.Adapters.Intent.ToDBOptions
->(({ slots = [], ...dbIntent }, options) => smart.fromDB({ slots, ...dbIntent }, options), smart.toDB);
+export const simple = createMultiAdapter<ChatModels.Intent, Models.Intent.Model>(
+  ({ slots = [], ...dbIntent }) => smart.fromDB({ slots, ...dbIntent }),
+  smart.toDB
+);

@@ -1,6 +1,6 @@
 import { BaseButton } from '@voiceflow/base-types';
 import { Nullable } from '@voiceflow/common';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
+import * as Platform from '@voiceflow/platform-config';
 import React from 'react';
 
 // importing from Section to resolve circular dependency
@@ -24,7 +24,7 @@ const useButtonsOptionSection = ({ data, onChange, pushToPath }: NodeInterface<{
   const platform = React.useContext(PlatformContext)!;
   const toggleButtons = React.useCallback(() => onChange({ buttons: hasButtons ? null : buttonsFactory() }), [hasButtons, onChange]);
 
-  const buttonsName = getPlatformValue(platform, { [VoiceflowConstants.PlatformType.GOOGLE]: 'Chips' }, 'Buttons');
+  const buttonsName = getPlatformValue(platform, { [Platform.Constants.PlatformType.GOOGLE]: 'Chips' }, 'Buttons');
 
   return [
     isAlexaPlatform(platform)

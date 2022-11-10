@@ -1,5 +1,4 @@
 import { DialogType } from '@realtime-sdk/constants';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 export interface DBAudioData {
   audio: string;
@@ -10,10 +9,6 @@ export interface AudioData {
   url: string;
   type: DialogType.AUDIO;
   desc?: string;
-}
-
-export interface DBSSMLData {
-  voice: VoiceflowConstants.PlatformType;
 }
 
 export interface SSMLData {

@@ -4,7 +4,7 @@ import React from 'react';
 import { ChipAPIProvider } from '@/pages/Canvas/components/Chip';
 import { EngineContext, ManagerContext } from '@/pages/Canvas/contexts';
 import { CombinedAPI } from '@/pages/Canvas/types';
-import { PlatformContext, ProjectTypeContext } from '@/pages/Project/contexts';
+import { NLUTypeContext, PlatformContext, ProjectTypeContext } from '@/pages/Project/contexts';
 
 import { useCombined } from './hooks';
 import { useChipApi, useChipStepAPI } from './NodeChipStep/hooks';
@@ -15,6 +15,7 @@ const { ColorScheme, DEFAULT_SCHEME_COLORS } = COLOR_PICKER_CONSTANTS;
 
 const NodeChipStart = React.forwardRef<CombinedAPI>((_, ref) => {
   const engine = React.useContext(EngineContext)!;
+  const nluType = React.useContext(NLUTypeContext)!;
   const platform = React.useContext(PlatformContext)!;
   const getManager = React.useContext(ManagerContext)!;
 
@@ -71,7 +72,7 @@ const NodeChipStart = React.forwardRef<CombinedAPI>((_, ref) => {
       <NodeLifecycle />
 
       <ChipAPIProvider value={chipStepApi}>
-        <Chip data={data as any} ports={ports as any} engine={engine} platform={platform} projectType={projectType} />
+        <Chip data={data as any} ports={ports as any} engine={engine} platform={platform} nluType={nluType} projectType={projectType} />
       </ChipAPIProvider>
     </>
   );

@@ -1,8 +1,8 @@
 import { Nullable, Utils } from '@voiceflow/common';
 import { BillingPeriod, PlanType, PromoType, UserRole } from '@voiceflow/internal';
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { ButtonVariant, toast } from '@voiceflow/ui';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import _constant from 'lodash/constant';
 import queryString from 'query-string';
 import React from 'react';
@@ -28,7 +28,7 @@ import * as ModalsV2 from '@/ModalsV2';
 import * as Sentry from '@/vendors/sentry';
 import * as Userflow from '@/vendors/userflow';
 
-import { SELECTABLE_WORKSPACE_SPECIFIC_FLOW_TYPES, StarterPlatformType, STEP_META, StepID } from '../constants';
+import { SELECTABLE_WORKSPACE_SPECIFIC_FLOW_TYPES, STEP_META, StepID } from '../constants';
 import { CollaboratorType } from '../types';
 import {
   OnboardingContextActions,
@@ -70,7 +70,7 @@ export const OnboardingContext = React.createContext<OnboardingContextProps>({
     currentStepID: StepID?.CREATE_WORKSPACE,
     numberOfSteps: 0,
     createWorkspaceMeta: { workspaceImage: 'string', workspaceName: 'string' },
-    personalizeWorkspaceMeta: { channels: [], role: '', teamSize: '', company: '', projectType: VoiceflowConstants.ProjectType.CHAT },
+    personalizeWorkspaceMeta: { channels: [], role: '', teamSize: '', company: '', projectType: Platform.Constants.ProjectType.CHAT },
     paymentMeta: {
       period: BillingPeriod.MONTHLY,
       couponCode: '',
@@ -81,8 +81,8 @@ export const OnboardingContext = React.createContext<OnboardingContextProps>({
       role: '',
     },
     selectChannelMeta: {
-      platform: VoiceflowConstants.PlatformType.ALEXA,
-      projectType: VoiceflowConstants.ProjectType.VOICE,
+      platform: Platform.Constants.PlatformType.ALEXA,
+      projectType: Platform.Constants.ProjectType.VOICE,
     },
     sendingRequests: false,
     workspaceId: '',
@@ -196,8 +196,8 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
       role: '',
     },
     selectChannelMeta: {
-      platform: VoiceflowConstants.PlatformType.ALEXA,
-      projectType: VoiceflowConstants.ProjectType.VOICE,
+      platform: Platform.Constants.PlatformType.ALEXA,
+      projectType: Platform.Constants.ProjectType.VOICE,
     },
     sendingRequests: false,
     workspaceId: '',
@@ -382,14 +382,13 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
 
     try {
       if (isLoginFlow) {
-        const platform = StarterPlatformType;
-
         if (query.import) {
           goToDashboardWithSearch(`/?import=${query.import}`);
         } else {
           const { versionID } = await createProject({
-            platform,
-            language: getDefaultPlatformLanguageLabel(platform),
+            nluType: Platform.Constants.NLUType.VOICEFLOW,
+            platform: Platform.Constants.PlatformType.VOICEFLOW,
+            language: getDefaultPlatformLanguageLabel(Platform.Constants.PlatformType.VOICEFLOW),
             onboarding: true,
             templateTag: `onboarding:${state.personalizeWorkspaceMeta.projectType}`,
           });

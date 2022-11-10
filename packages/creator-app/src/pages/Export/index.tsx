@@ -20,6 +20,7 @@ import InitializeExportGate from './gates/InitializeExportGate';
 const ExportCanvas: React.FC = () => {
   const isOnPaidPlan = useSelector(WorkspaceV2.active.isOnPaidPlanSelector);
 
+  const nluType = useSelector(ProjectV2.active.nluTypeSelector);
   const platform = useSelector(ProjectV2.active.platformSelector);
   const projectType = useSelector(ProjectV2.active.projectTypeSelector);
 
@@ -28,7 +29,7 @@ const ExportCanvas: React.FC = () => {
   const getManager = useManager();
 
   return (
-    <ProjectProvider platform={platform} projectType={projectType}>
+    <ProjectProvider nluType={nluType} platform={platform} projectType={projectType}>
       <PresentationModeProvider>
         <MarkupProvider>
           <ManagerProvider value={getManager}>

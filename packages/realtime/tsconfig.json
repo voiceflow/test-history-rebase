@@ -8,6 +8,9 @@
       "@voiceflow/realtime-sdk": ["realtime-sdk/src"],
       // only used to fix intra-monorepo resolution
       "@realtime-sdk/*": ["realtime-sdk/src/*"],
+      "@voiceflow/platform-config": ["platform-config/src"],
+      // only used to fix intra-monorepo resolution
+      "@platform-config/*": ["platform-config/src/*"],
       "@voiceflow/socket-utils": ["socket-utils/src"],
       // only used to fix intra-monorepo resolution
       "@socket-utils/*": ["socket-utils/src/*"],

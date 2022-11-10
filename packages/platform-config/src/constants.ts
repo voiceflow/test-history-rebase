@@ -1,7 +1,7 @@
-import { Types } from '@platform-config/utils';
+import * as Types from '@platform-config/utils/types';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
-export { ProjectType } from '@voiceflow/voiceflow-types/build/esm/constants';
+export { ProjectType } from '@voiceflow/voiceflow-types/build/cjs/constants';
 
 export enum BuiltInVariable {
   LOCALE = 'locale',
@@ -22,6 +22,24 @@ export const PlatformType = Types.satisfies<Record<string, VoiceflowConstants.Pl
   VOICEFLOW: VoiceflowConstants.PlatformType.VOICEFLOW,
   DIALOGFLOW_ES: VoiceflowConstants.PlatformType.DIALOGFLOW_ES,
   DIALOGFLOW_CX: VoiceflowConstants.PlatformType.DIALOGFLOW_CX,
-});
+} as const);
 
 export type PlatformType = typeof PlatformType[keyof typeof PlatformType];
+
+export const NLUType = Types.satisfies<Record<string, VoiceflowConstants.PlatformType>>()({
+  LEX: VoiceflowConstants.PlatformType.LEX,
+  LUIS: VoiceflowConstants.PlatformType.LUIS,
+  RASA: VoiceflowConstants.PlatformType.RASA,
+  WATSON: VoiceflowConstants.PlatformType.WATSON,
+  EINSTEIN: VoiceflowConstants.PlatformType.EINSTEIN,
+  NUANCE_MIX: VoiceflowConstants.PlatformType.NUANCE_MIX,
+
+  // Some platforms have the same NLU type
+  ALEXA: PlatformType.ALEXA,
+  GOOGLE: PlatformType.GOOGLE,
+  VOICEFLOW: PlatformType.VOICEFLOW,
+  DIALOGFLOW_ES: PlatformType.DIALOGFLOW_ES,
+  DIALOGFLOW_CX: PlatformType.DIALOGFLOW_CX,
+} as const);
+
+export type NLUType = typeof NLUType[keyof typeof NLUType];

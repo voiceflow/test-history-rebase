@@ -1,11 +1,11 @@
+import * as Platform from '@voiceflow/platform-config';
 import { Utils } from '@voiceflow/realtime-sdk';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 export const getPlatformLabel = Utils.platform.createPlatformSelector(
   {
-    [VoiceflowConstants.PlatformType.ALEXA]: 'Alexa',
-    [VoiceflowConstants.PlatformType.GOOGLE]: 'Google Actions',
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: 'Dialogflow',
+    [Platform.Constants.PlatformType.ALEXA]: 'Alexa',
+    [Platform.Constants.PlatformType.GOOGLE]: 'Google Actions',
+    [Platform.Constants.PlatformType.DIALOGFLOW_ES]: 'Dialogflow',
   },
   'General Assistant'
 );

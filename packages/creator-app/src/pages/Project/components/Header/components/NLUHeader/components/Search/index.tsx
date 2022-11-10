@@ -38,13 +38,12 @@ const NLUSearch: React.FC<NLUSearchProps> = ({ value, onChange, placeholder }) =
         ref={inputRef}
         icon={value ? 'close' : 'search'}
         value={value}
-        iconProps={{ color: '#8da2b5', size: 16 }}
+        onFocus={() => setTooltipOpen(false)}
+        iconProps={{ color: '#8da2b5', size: 16, onClick: () => onChange('') }}
         placeholder={placeholder}
         onChangeText={onChange}
-        onIconClick={() => onChange('')}
         onMouseEnter={() => setTooltipOpen(true)}
         onMouseLeave={() => setTooltipOpen(false)}
-        onFocus={() => setTooltipOpen(false)}
       />
     </TippyTooltip>
   );

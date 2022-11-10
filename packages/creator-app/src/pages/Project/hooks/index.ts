@@ -1,4 +1,4 @@
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
+import * as Platform from '@voiceflow/platform-config';
 import { useCallback, useContext } from 'react';
 
 import { Permission } from '@/config/permissions';
@@ -12,7 +12,7 @@ export * from './diagram';
 export * from './modes';
 export * from './tracking';
 
-export const useIsPlatform = (platform: VoiceflowConstants.PlatformType) => {
+export const useIsPlatform = (platform: Platform.Constants.PlatformType) => {
   const activePlatform = useContext(PlatformContext);
 
   return platform === activePlatform;

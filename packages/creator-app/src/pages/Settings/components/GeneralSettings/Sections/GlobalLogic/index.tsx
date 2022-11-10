@@ -1,4 +1,4 @@
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
+import * as Platform from '@voiceflow/platform-config';
 import React from 'react';
 
 import { PlatformSettingsMetaProps } from '@/pages/Settings/constants';
@@ -6,8 +6,8 @@ import { PlatformSettingsMetaProps } from '@/pages/Settings/constants';
 import NoMatchNoReply from './NoMatchNoReply';
 
 interface GeneralSettingsSectionsGlobalLogicProps {
-  platform: VoiceflowConstants.PlatformType;
-  projectType: VoiceflowConstants.ProjectType;
+  platform: Platform.Constants.PlatformType;
+  projectType: Platform.Constants.ProjectType;
   platformMeta: PlatformSettingsMetaProps;
 }
 

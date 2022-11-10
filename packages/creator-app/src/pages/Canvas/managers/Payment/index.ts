@@ -1,5 +1,5 @@
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import { NodeManagerConfig } from '../types';
 import { NODE_CONFIG } from './constants';
@@ -10,7 +10,7 @@ const PaymentManager: NodeManagerConfig<Realtime.NodeData.Payment, Realtime.Node
   ...NODE_CONFIG,
 
   label: 'Purchase',
-  platforms: [VoiceflowConstants.PlatformType.ALEXA],
+  platforms: [Platform.Constants.PlatformType.ALEXA],
 
   step: PaymentStep,
   editor: PaymentEditor,

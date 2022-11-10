@@ -1,7 +1,7 @@
 import { BaseButton } from '@voiceflow/base-types';
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Badge, Box, UIOnlyMenuItemOption } from '@voiceflow/ui';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import numberToWords from 'number-to-words/src';
 import React from 'react';
 
@@ -67,7 +67,7 @@ const Item: React.ForwardRefRenderFunction<HTMLDivElement, ItemProps & Connected
       ref={ref}
       header={
         transformVariablesToReadable(item.name) ||
-        `${getPlatformValue(platform, { [VoiceflowConstants.PlatformType.GOOGLE]: 'Chip' }, 'Button')} ${numberToWords.toWords(index + 1)}`
+        `${getPlatformValue(platform, { [Platform.Constants.PlatformType.GOOGLE]: 'Chip' }, 'Button')} ${numberToWords.toWords(index + 1)}`
       }
       prefix={<Badge>{index + 1}</Badge>}
       headerRef={connectedDragRef}
@@ -87,7 +87,7 @@ const Item: React.ForwardRefRenderFunction<HTMLDivElement, ItemProps & Connected
               ref={variablesInputRef}
               value={item.name}
               onBlur={updateName}
-              placeholder={`Enter ${getPlatformValue(platform, { [VoiceflowConstants.PlatformType.GOOGLE]: 'chip' }, 'button')} name`}
+              placeholder={`Enter ${getPlatformValue(platform, { [Platform.Constants.PlatformType.GOOGLE]: 'chip' }, 'button')} name`}
             />
           </Box>
 

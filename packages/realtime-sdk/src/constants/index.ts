@@ -1,4 +1,4 @@
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
+import * as Platform from '@voiceflow/platform-config';
 
 export * from './block';
 export * from './platform';
@@ -54,7 +54,7 @@ export const DEFAULT_PROJECT_LIST_NAME = 'Default List';
 export const CUSTOM_SLOT_TYPE = 'Custom';
 export const LEGACY_CUSTOM_SLOT_TYPE = 'CUSTOM';
 
-export const PLATFORMS_WITH_INVOCATION_NAME = [VoiceflowConstants.PlatformType.ALEXA, VoiceflowConstants.PlatformType.GOOGLE] as const;
+export const PLATFORMS_WITH_INVOCATION_NAME = [Platform.Constants.PlatformType.ALEXA, Platform.Constants.PlatformType.GOOGLE] as const;
 
 export enum DialogType {
   AUDIO = 'audio',

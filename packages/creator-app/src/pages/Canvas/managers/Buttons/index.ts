@@ -1,5 +1,5 @@
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import * as Documentation from '@/config/documentation';
 import { NodeCategory } from '@/contexts/SearchContext/types';
@@ -13,7 +13,7 @@ const ButtonsManager: NodeManagerConfigV2<Realtime.NodeData.Buttons, Realtime.No
   ...NODE_CONFIG,
 
   label: 'Buttons',
-  projectTypes: [VoiceflowConstants.ProjectType.CHAT],
+  projectTypes: [Platform.Constants.ProjectType.CHAT],
 
   step: Step,
   editorV2: Editor,

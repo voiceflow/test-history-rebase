@@ -1,8 +1,8 @@
 import { BaseButton } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Button, createDividerMenuItemOption } from '@voiceflow/ui';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
@@ -42,7 +42,7 @@ const Editor: React.FC = () => {
     return [...(usedIntents.length ? [...usedIntents, createDividerMenuItemOption()] : []), ...unusedIntents];
   }, [intents, choices]);
 
-  const label = getPlatformValue(editor.platform, { [VoiceflowConstants.PlatformType.GOOGLE]: 'Chips' }, 'Buttons');
+  const label = getPlatformValue(editor.platform, { [Platform.Constants.PlatformType.GOOGLE]: 'Chips' }, 'Buttons');
 
   const buttonLayoutOption = useButtonLayoutOption();
 
@@ -55,7 +55,7 @@ const Editor: React.FC = () => {
             <EditorV2.FooterActionsButton actions={[buttonLayoutOption]} placement="bottom-end" />
 
             <Button variant={Button.Variant.PRIMARY} onClick={() => mapManager.onAdd()} squareRadius>
-              Add {getPlatformValue(editor.platform, { [VoiceflowConstants.PlatformType.GOOGLE]: 'Chip' }, 'Button')}
+              Add {getPlatformValue(editor.platform, { [Platform.Constants.PlatformType.GOOGLE]: 'Chip' }, 'Button')}
             </Button>
           </EditorV2.DefaultFooter>
         )

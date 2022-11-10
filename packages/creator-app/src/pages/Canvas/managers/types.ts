@@ -1,8 +1,8 @@
 import { BaseNode } from '@voiceflow/base-types';
 import { Nullable, Struct } from '@voiceflow/common';
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { CustomScrollbarsTypes, OptionsMenuOption, SvgIconTypes } from '@voiceflow/ui';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 import { ExtractRouteParams, match } from 'react-router';
 import { Optional, Overwrite } from 'utility-types';
@@ -28,8 +28,9 @@ interface BaseConnectedProps<T, O extends Realtime.BuiltInPortRecord> {
   data: Realtime.NodeData<T>;
   ports: Realtime.NodePorts<O>;
   engine: Engine;
-  platform: VoiceflowConstants.PlatformType;
-  projectType: VoiceflowConstants.ProjectType;
+  nluType: Platform.Constants.NLUType;
+  platform: Platform.Constants.PlatformType;
+  projectType: Platform.Constants.ProjectType;
 }
 
 interface BaseConnectedStepProps<T, O extends Realtime.BuiltInPortRecord> extends BaseConnectedProps<T, O> {
@@ -90,14 +91,15 @@ export interface NodeEditorPropsType<T, P extends Realtime.BuiltInPortRecord = R
   engine: Engine;
   nodeID: string;
   isOpen?: boolean;
+  nluType: Platform.Constants.NLUType;
   expanded: boolean;
   onExpand: () => void;
   onChange: NodeDataUpdater<T>;
   goToPath: GoToPath;
-  platform: VoiceflowConstants.PlatformType;
+  platform: Platform.Constants.PlatformType;
   activePath: PathEntry;
   pushToPath: PushToPath;
-  projectType: VoiceflowConstants.ProjectType;
+  projectType: Platform.Constants.ProjectType;
   popFromPath: VoidFunction;
 }
 
@@ -132,12 +134,12 @@ export interface NodeEditorV2Props<Data, BuiltInPorts extends Realtime.BuiltInPo
   engine: Engine;
   goBack: GoBack;
   isOpened: boolean;
-  platform: VoiceflowConstants.PlatformType;
+  platform: Platform.Constants.PlatformType;
   goToRoot: (animationEffect?: EditorAnimationEffect) => void;
   scrollbars: React.RefObject<CustomScrollbarsTypes.Scrollbars>;
   goToNested: GoTo;
   goToSibling: GoTo;
-  projectType: VoiceflowConstants.ProjectType;
+  projectType: Platform.Constants.ProjectType;
   isFullscreen: boolean;
   parentBlockData: Nullable<Realtime.NodeData<Realtime.NodeData.Combined>>;
   onToggleFullscreen: VoidFunction;
@@ -160,8 +162,8 @@ export type ActionEditor<Data, BuiltInPorts extends Realtime.BuiltInPortRecord =
 
 interface NodeFactoryOptions {
   features?: FeatureFlagMap;
-  platform?: VoiceflowConstants.PlatformType;
-  projectType?: VoiceflowConstants.ProjectType;
+  platform?: Platform.Constants.PlatformType;
+  projectType?: Platform.Constants.ProjectType;
   defaultVoice?: string;
   canvasNodeVisibility?: BaseNode.Utils.CanvasNodeVisibility;
   allCustomBlocks?: Realtime.CustomBlock[];
@@ -222,8 +224,8 @@ export interface BaseNodeManagerConfig<Data extends object, BuiltInPorts extends
   label?: string;
   getDataLabel?: (data: Data) => string;
 
-  platforms?: VoiceflowConstants.PlatformType[];
-  projectTypes?: VoiceflowConstants.ProjectType[];
+  platforms?: Platform.Constants.PlatformType[];
+  projectTypes?: Platform.Constants.ProjectType[];
 
   editorV2?: NodeEditorV2<Data, BuiltInPorts>;
   actionEditor?: ActionEditor<Data, BuiltInPorts>;

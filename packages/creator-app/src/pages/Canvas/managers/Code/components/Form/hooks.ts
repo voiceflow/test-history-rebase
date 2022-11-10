@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
+import * as Platform from '@voiceflow/platform-config';
 import React from 'react';
 import type AceEditorType from 'react-ace';
 
@@ -7,7 +7,7 @@ import * as DiagramV2 from '@/ducks/diagramV2';
 import { useSelector } from '@/hooks';
 import { getPlatformGlobalVariables } from '@/utils/globalVariables';
 
-export const useAceEditor = (platform: VoiceflowConstants.PlatformType) => {
+export const useAceEditor = (platform: Platform.Constants.PlatformType) => {
   const variables = useSelector(DiagramV2.active.allSlotsAndVariablesSelector);
 
   const wordList = React.useMemo(() => [...getPlatformGlobalVariables(platform), ...variables, 'voiceflow', '_system'], [platform, variables]);

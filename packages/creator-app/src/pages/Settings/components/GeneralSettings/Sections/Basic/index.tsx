@@ -2,6 +2,7 @@ import { AlexaConstants, AlexaUtils } from '@voiceflow/alexa-types';
 import { Utils } from '@voiceflow/common';
 import { DFESConstants } from '@voiceflow/google-dfes-types';
 import { GoogleConstants, GoogleUtils } from '@voiceflow/google-types';
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Input, Select, Upload, UploadIconVariant, useDidUpdateEffect } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
@@ -22,7 +23,7 @@ import { FORMATTED_GOOGLE_LOCALES_LABELS, FORMATTED_LOCALES, getLocaleLanguage }
 import { DescriptorContainer } from '@/pages/Settings/components/ContentDescriptors/components';
 import LOCALE_MAP from '@/services/LocaleMap';
 import { ConnectedProps } from '@/types';
-import { isAlexaPlatform, isDialogflowPlatform, isGooglePlatform, isPlatformWithInvocationName, isVoiceflowBasedPlatform } from '@/utils/typeGuards';
+import { isAlexaPlatform, isDialogflowPlatform, isGooglePlatform, isPlatformWithInvocationName, isVoiceflowPlatform } from '@/utils/typeGuards';
 
 import { PlatformSettingsMetaProps, SettingSections } from '../../../../constants';
 import { headerStyling, SectionErrorMessage, sectionStyling } from './styles';
@@ -31,7 +32,7 @@ const UnTypedDropdownMultiselect: any = DropdownMultiselect;
 
 interface BasicProps {
   title: SettingSections;
-  platform: VoiceflowConstants.PlatformType;
+  platform: Platform.Constants.PlatformType;
   platformMeta: PlatformSettingsMetaProps;
 }
 
@@ -66,7 +67,7 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
   const [dialogflowLanguage, setDialogflowLanguage] = React.useState<string | DFESConstants.Language>(initialDialogflowLanguage);
 
   const displayName =
-    platform === VoiceflowConstants.PlatformType.ALEXA
+    platform === Platform.Constants.PlatformType.ALEXA
       ? alexaLocales.map((localValue) => LOCALE_MAP.find((locale) => locale.value === localValue)!.label).join(', ')
       : '';
 
@@ -74,8 +75,8 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
     newInvocation &&
     Realtime.Utils.platform.createPlatformSelector<(name?: string, locales?: any[]) => string | null>(
       {
-        [VoiceflowConstants.PlatformType.ALEXA]: AlexaUtils.getInvocationNameError,
-        [VoiceflowConstants.PlatformType.GOOGLE]: GoogleUtils.getInvocationNameError,
+        [Platform.Constants.PlatformType.ALEXA]: AlexaUtils.getInvocationNameError,
+        [Platform.Constants.PlatformType.GOOGLE]: GoogleUtils.getInvocationNameError,
       },
       _constant(null)
     )(platform)(
@@ -98,7 +99,7 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
   const saveSettings = async () => {
     await Promise.all([
       updateProjectName(newProjectName),
-      !isVoiceflowBasedPlatform(platform) ? updateInvocationName(newInvocation) : null,
+      !isVoiceflowPlatform(platform) ? updateInvocationName(newInvocation) : null,
       project && projectImage ? updateProjectImage(project.id, projectImage) : null,
       newAgentName ? updateAgentName(newAgentName as string) : null,
       saveAlexaLocales(),
@@ -171,7 +172,7 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
       >
         {Realtime.Utils.platform.createPlatformSelector<() => React.ReactNode>(
           {
-            [VoiceflowConstants.PlatformType.ALEXA]: () => (
+            [Platform.Constants.PlatformType.ALEXA]: () => (
               <UnTypedDropdownMultiselect
                 options={LOCALE_MAP}
                 onSelect={(val: AlexaConstants.Locale) =>
@@ -187,7 +188,7 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
                 dropdownActive
               />
             ),
-            [VoiceflowConstants.PlatformType.GOOGLE]: () => (
+            [Platform.Constants.PlatformType.GOOGLE]: () => (
               <Select
                 value={googleLanguage}
                 options={FORMATTED_LOCALES}
@@ -199,7 +200,7 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
                 renderOptionLabel={(option) => option.name}
               />
             ),
-            [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: () => (
+            [Platform.Constants.PlatformType.DIALOGFLOW_ES]: () => (
               <Select
                 value={dialogflowLanguage}
                 options={FORMATTED_DIALOGFLOW_LOCALES}

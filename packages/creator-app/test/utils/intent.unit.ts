@@ -1,7 +1,7 @@
 /* eslint-disable sonarjs/no-duplicate-string */
 /* eslint-disable max-nested-callbacks */
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import suite from '@/../test/_suite';
 import { formatUtterance, UTTERANCE_ERROR_MESSAGES, validateUtterance } from '@/utils/intent';
@@ -12,21 +12,21 @@ suite('utils/intent', () => {
       describe('and there are no formatters', () => {
         it('returns given text', () => {
           const utterance = 'Hello from voiceflow';
-          expect(formatUtterance(VoiceflowConstants.PlatformType.LEX, utterance)).toBe(utterance);
+          expect(formatUtterance(Platform.Constants.PlatformType.VOICEFLOW, utterance)).toBe(utterance);
         });
       });
 
       describe('and platform is alexa', () => {
         it('removes all numbers', () => {
           const utterance = 'Hello from alexa with numbers 123081230';
-          expect(formatUtterance(VoiceflowConstants.PlatformType.ALEXA, utterance)).toBe('Hello from alexa with numbers ');
+          expect(formatUtterance(Platform.Constants.PlatformType.ALEXA, utterance)).toBe('Hello from alexa with numbers ');
         });
       });
 
       describe('and platform is google', () => {
         it('removes all numbers', () => {
           const utterance = 'Hello from google with numbers 123081230';
-          expect(formatUtterance(VoiceflowConstants.PlatformType.GOOGLE, utterance)).toBe('Hello from google with numbers ');
+          expect(formatUtterance(Platform.Constants.PlatformType.GOOGLE, utterance)).toBe('Hello from google with numbers ');
         });
       });
     });
@@ -34,30 +34,28 @@ suite('utils/intent', () => {
     describe('when validating', () => {
       describe('and utterance is empty', () => {
         it('returns an error', () => {
-          expect(validateUtterance('', '123', [], VoiceflowConstants.PlatformType.VOICEFLOW)).toBe(UTTERANCE_ERROR_MESSAGES.EMPTY);
+          expect(validateUtterance('', '123', [], Platform.Constants.PlatformType.VOICEFLOW)).toBe(UTTERANCE_ERROR_MESSAGES.EMPTY);
         });
       });
 
       describe('and intent already have an utterance with same text', () => {
         it('returns an error', () => {
-          const platform = VoiceflowConstants.PlatformType.VOICEFLOW;
-          const intents: Realtime.Intent[] = [
-            { id: '123', inputs: [{ text: 'hello' }], name: 'intent name', platform, slots: { allKeys: [], byKey: {} } },
-          ];
+          const intents: Realtime.Intent[] = [{ id: '123', inputs: [{ text: 'hello' }], name: 'intent name', slots: { allKeys: [], byKey: {} } }];
 
-          expect(validateUtterance('hello', '123', intents, platform)).toBe(UTTERANCE_ERROR_MESSAGES.INTENT_CONFLICT);
+          expect(validateUtterance('hello', '123', intents, Platform.Constants.PlatformType.VOICEFLOW)).toBe(
+            UTTERANCE_ERROR_MESSAGES.INTENT_CONFLICT
+          );
         });
       });
 
       describe('and other intent already have an utterance with same text', () => {
         it('returns an error', () => {
-          const platform = VoiceflowConstants.PlatformType.VOICEFLOW;
           const intents: Realtime.Intent[] = [
-            { id: '1234', inputs: [{ text: 'hello from voiceflow' }], name: 'intent name', platform, slots: { allKeys: [], byKey: {} } },
-            { id: '123', inputs: [{ text: 'hello' }], name: 'other intent', platform, slots: { allKeys: [], byKey: {} } },
+            { id: '1234', inputs: [{ text: 'hello from voiceflow' }], name: 'intent name', slots: { allKeys: [], byKey: {} } },
+            { id: '123', inputs: [{ text: 'hello' }], name: 'other intent', slots: { allKeys: [], byKey: {} } },
           ];
 
-          expect(validateUtterance('hello from voiceflow', '123', intents, platform)).toBe(
+          expect(validateUtterance('hello from voiceflow', '123', intents, Platform.Constants.PlatformType.VOICEFLOW)).toBe(
             UTTERANCE_ERROR_MESSAGES.OTHER_INTENT_CONFLICT('intent name')
           );
         });
@@ -65,25 +63,25 @@ suite('utils/intent', () => {
 
       describe('to alexa platform', () => {
         it('does not return error for a simple text', () => {
-          expect(validateUtterance('my utterance text', '123', [], VoiceflowConstants.PlatformType.ALEXA)).toBe('');
+          expect(validateUtterance('my utterance text', '123', [], Platform.Constants.PlatformType.ALEXA)).toBe('');
         });
 
         describe('and utterance contains numbers', () => {
           it('returns an error', () => {
-            expect(validateUtterance('daosnd12317', '123', [], VoiceflowConstants.PlatformType.ALEXA)).toBe(UTTERANCE_ERROR_MESSAGES.NUMBER);
+            expect(validateUtterance('daosnd12317', '123', [], Platform.Constants.PlatformType.ALEXA)).toBe(UTTERANCE_ERROR_MESSAGES.NUMBER);
           });
         });
 
         describe('and utterance contains valid special characters', () => {
           it('does not returns error', () => {
-            expect(validateUtterance('sdaipa_-.{}', '123', [], VoiceflowConstants.PlatformType.ALEXA)).toBe('');
+            expect(validateUtterance('sdaipa_-.{}', '123', [], Platform.Constants.PlatformType.ALEXA)).toBe('');
           });
         });
 
         // TO DO: add this scenario back
         describe.skip('and utterance contains invalid special characters', () => {
           it('does not returns error', () => {
-            expect(validateUtterance('sdaipa_-.{}$#', '123', [], VoiceflowConstants.PlatformType.ALEXA)).toBe(
+            expect(validateUtterance('sdaipa_-.{}$#', '123', [], Platform.Constants.PlatformType.ALEXA)).toBe(
               UTTERANCE_ERROR_MESSAGES.SPECIAL_CHARACTERS
             );
           });
@@ -92,25 +90,25 @@ suite('utils/intent', () => {
 
       describe('and platform is google', () => {
         it('does not return error for a simple text', () => {
-          expect(validateUtterance('my utterance text', '123', [], VoiceflowConstants.PlatformType.GOOGLE)).toBe('');
+          expect(validateUtterance('my utterance text', '123', [], Platform.Constants.PlatformType.GOOGLE)).toBe('');
         });
 
         describe('and utterance contains numbers', () => {
           it('returns an error', () => {
-            expect(validateUtterance('daosnd12317', '123', [], VoiceflowConstants.PlatformType.GOOGLE)).toBe(UTTERANCE_ERROR_MESSAGES.NUMBER);
+            expect(validateUtterance('daosnd12317', '123', [], Platform.Constants.PlatformType.GOOGLE)).toBe(UTTERANCE_ERROR_MESSAGES.NUMBER);
           });
         });
 
         describe('and utterance contains valid special characters', () => {
           it('does not render an error', () => {
-            expect(validateUtterance('sdaipa_-.{}', '123', [], VoiceflowConstants.PlatformType.GOOGLE)).toBe('');
+            expect(validateUtterance('sdaipa_-.{}', '123', [], Platform.Constants.PlatformType.GOOGLE)).toBe('');
           });
         });
 
         // TO DO: add this scenario back
         describe.skip('and utterance contains invalid special characters', () => {
           it('does not render an error', () => {
-            expect(validateUtterance('sdaipa_-.{}$#', '123', [], VoiceflowConstants.PlatformType.GOOGLE)).toBe(
+            expect(validateUtterance('sdaipa_-.{}$#', '123', [], Platform.Constants.PlatformType.GOOGLE)).toBe(
               UTTERANCE_ERROR_MESSAGES.SPECIAL_CHARACTERS
             );
           });
@@ -119,17 +117,17 @@ suite('utils/intent', () => {
 
       describe('and is other platform', () => {
         it('does not return error for a simple text', () => {
-          expect(validateUtterance('my utterance text', '123', [], VoiceflowConstants.PlatformType.VOICEFLOW)).toBe('');
+          expect(validateUtterance('my utterance text', '123', [], Platform.Constants.PlatformType.VOICEFLOW)).toBe('');
         });
 
         it('allows numbers', () => {
-          expect(validateUtterance('my utterance text with numbers 1203871203871230', '123', [], VoiceflowConstants.PlatformType.DIALOGFLOW_ES)).toBe(
+          expect(validateUtterance('my utterance text with numbers 1203871203871230', '123', [], Platform.Constants.PlatformType.DIALOGFLOW_ES)).toBe(
             ''
           );
         });
 
         it('allows special characters', () => {
-          expect(validateUtterance('my utterance text with special $#%#%@!#!(@#@ˆ', '123', [], VoiceflowConstants.PlatformType.RASA)).toBe('');
+          expect(validateUtterance('my utterance text with special $#%#%@!#!(@#@ˆ', '123', [], Platform.Constants.PlatformType.VOICEFLOW)).toBe('');
         });
       });
     });

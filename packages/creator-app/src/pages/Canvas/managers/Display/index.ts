@@ -1,6 +1,6 @@
 import { BaseNode } from '@voiceflow/base-types';
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import * as Documentation from '@/config/documentation';
 
@@ -15,7 +15,7 @@ const DisplayManager: NodeManagerConfigV2<Realtime.NodeData<BaseNode.Visual.APLS
 
   tooltipText: 'Display',
   tooltipLink: Documentation.DISPLAY_STEP,
-  platforms: [VoiceflowConstants.PlatformType.ALEXA],
+  platforms: [Platform.Constants.PlatformType.ALEXA],
 
   step: VisualStep,
   editorV2: VisualEditor,

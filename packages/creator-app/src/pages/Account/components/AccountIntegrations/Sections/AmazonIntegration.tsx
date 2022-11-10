@@ -1,5 +1,5 @@
+import * as Platform from '@voiceflow/platform-config';
 import { Button, ButtonVariant } from '@voiceflow/ui';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React, { useEffect, useState } from 'react';
 
 import * as Account from '@/ducks/account';
@@ -53,7 +53,7 @@ const AmazonIntegrations: React.FC = () => {
       return (
         <Button
           variant={ButtonVariant.PRIMARY}
-          onClick={() => connectAmazonModal.openVoid({ source: SourceType.ACCOUNT_PAGE, platform: VoiceflowConstants.PlatformType.ALEXA })}
+          onClick={() => connectAmazonModal.openVoid({ source: SourceType.ACCOUNT_PAGE, platform: Platform.Constants.PlatformType.ALEXA })}
           squareRadius
         >
           Connect

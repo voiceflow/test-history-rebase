@@ -1,7 +1,7 @@
 import { BaseModels, BaseNode } from '@voiceflow/base-types';
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { SvgIconTypes } from '@voiceflow/ui';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import _isFunction from 'lodash/isFunction';
 
 import { DragItem } from '@/constants';
@@ -361,13 +361,13 @@ export const DIALOGFLOW_ES_VOICE_STEP_SECTIONS: TopStepItem[] = [
 
 export const getStepSections = Realtime.Utils.platform.createPlatformAndProjectTypeSelector(
   {
-    [VoiceflowConstants.PlatformType.ALEXA]: ALEXA_STEP_SECTIONS,
-    [VoiceflowConstants.PlatformType.GOOGLE]: GOOGLE_STEP_SECTIONS,
-    [`${VoiceflowConstants.PlatformType.VOICEFLOW}:${VoiceflowConstants.ProjectType.CHAT}`]: CHATBOT_STEP_SECTIONS,
-    [`${VoiceflowConstants.PlatformType.DIALOGFLOW_ES}:${VoiceflowConstants.ProjectType.CHAT}`]: DIALOGFLOW_ES_CHAT_STEP_SECTIONS,
-    [`${VoiceflowConstants.PlatformType.DIALOGFLOW_ES}:${VoiceflowConstants.ProjectType.VOICE}`]: DIALOGFLOW_ES_VOICE_STEP_SECTIONS,
-    [VoiceflowConstants.ProjectType.CHAT]: CHATBOT_STEP_SECTIONS,
-    [VoiceflowConstants.ProjectType.VOICE]: GENERAL_STEP_SECTIONS,
+    [Platform.Constants.PlatformType.ALEXA]: ALEXA_STEP_SECTIONS,
+    [Platform.Constants.PlatformType.GOOGLE]: GOOGLE_STEP_SECTIONS,
+    [`${Platform.Constants.PlatformType.VOICEFLOW}:${Platform.Constants.ProjectType.CHAT}`]: CHATBOT_STEP_SECTIONS,
+    [`${Platform.Constants.PlatformType.DIALOGFLOW_ES}:${Platform.Constants.ProjectType.CHAT}`]: DIALOGFLOW_ES_CHAT_STEP_SECTIONS,
+    [`${Platform.Constants.PlatformType.DIALOGFLOW_ES}:${Platform.Constants.ProjectType.VOICE}`]: DIALOGFLOW_ES_VOICE_STEP_SECTIONS,
+    [Platform.Constants.ProjectType.CHAT]: CHATBOT_STEP_SECTIONS,
+    [Platform.Constants.ProjectType.VOICE]: GENERAL_STEP_SECTIONS,
   },
   GENERAL_STEP_SECTIONS
 );
@@ -396,7 +396,7 @@ export enum LibraryStepType {
   BLOCK_TEMPLATES = 'BLOCK_TEMPLATES',
 }
 
-export const getAllSections = (platform: VoiceflowConstants.PlatformType, project: VoiceflowConstants.ProjectType, library: LibrarySections) => {
+export const getAllSections = (platform: Platform.Constants.PlatformType, project: Platform.Constants.ProjectType, library: LibrarySections) => {
   const steps = getStepSections(platform, project);
   const librarySection = getLibrarySection(library);
 

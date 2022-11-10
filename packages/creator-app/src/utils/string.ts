@@ -1,20 +1,20 @@
 import { Nullable, READABLE_VARIABLE_REGEXP, SLOT_REGEXP, Utils } from '@voiceflow/common';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
+import * as Platform from '@voiceflow/platform-config';
 
 import { STRICT_LINKS_REGEXS, URL_ONLY_REGEX, VALID_LINKS_REGEXS } from '@/constants';
 import { isVoiceflowPlatform } from '@/utils/typeGuards';
 
 export const isString = (value?: unknown): value is string => typeof value === 'string';
 
-export const createNextName = (prefix: string, items: string[], platform: VoiceflowConstants.PlatformType): string => {
+export const createNextName = (prefix: string, items: string[], platform: Platform.Constants.PlatformType): string => {
   let counter = 1;
 
-  const isGeneral = isVoiceflowPlatform(platform);
+  const isVoiceflow = isVoiceflowPlatform(platform);
 
   const genIntentName = (counter: number) => {
     const name = `${prefix} ${Utils.number.convertToWord(counter)}`;
 
-    return isGeneral ? name : name.replace(Utils.number.NON_ALPHANUMERIC_REGEXP, '_');
+    return isVoiceflow ? name : name.replace(Utils.number.NON_ALPHANUMERIC_REGEXP, '_');
   };
 
   let intentName = genIntentName(counter);

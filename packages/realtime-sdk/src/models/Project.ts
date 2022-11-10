@@ -2,7 +2,8 @@ import { AlexaProject } from '@voiceflow/alexa-types';
 import { AnyRecord, BaseModels } from '@voiceflow/base-types';
 import { DFESProject } from '@voiceflow/google-dfes-types';
 import { GoogleProject } from '@voiceflow/google-types';
-import { VoiceflowConstants, VoiceflowProject } from '@voiceflow/voiceflow-types';
+import * as Platform from '@voiceflow/platform-config';
+import { VoiceflowProject } from '@voiceflow/voiceflow-types';
 
 export interface Project<D extends AnyRecord, M extends BaseModels.Project.Member<any>> {
   id: string;
@@ -18,8 +19,9 @@ export interface Project<D extends AnyRecord, M extends BaseModels.Project.Membe
   prototype?: BaseModels.Project.Prototype;
   customThemes: BaseModels.Project.Themes;
 
-  type: VoiceflowConstants.ProjectType;
-  platform: VoiceflowConstants.PlatformType;
+  nlu: Platform.Constants.NLUType;
+  type: Platform.Constants.ProjectType;
+  platform: Platform.Constants.PlatformType;
 
   _version?: number;
   diagramID: string;

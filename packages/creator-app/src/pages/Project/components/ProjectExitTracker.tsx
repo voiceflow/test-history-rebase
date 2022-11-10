@@ -1,4 +1,4 @@
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
+import * as Platform from '@voiceflow/platform-config';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
@@ -6,8 +6,8 @@ import { useProjectExitTracking } from '@/pages/Project/hooks';
 
 export type ProjectProps = RouteComponentProps;
 
-const ProjectExitTracker: React.FC<{ platform: VoiceflowConstants.PlatformType }> = ({ platform }) => {
-  useProjectExitTracking({ platform });
+const ProjectExitTracker: React.FC<{ nluType: Platform.Constants.NLUType; platform: Platform.Constants.PlatformType }> = ({ nluType, platform }) => {
+  useProjectExitTracking({ nluType, platform });
 
   return null;
 };

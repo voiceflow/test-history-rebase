@@ -1,5 +1,5 @@
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import { NodeManagerConfig } from '../types';
 import { NODE_CONFIG } from './constants';
@@ -10,7 +10,7 @@ const UserInfoManager: NodeManagerConfig<Realtime.NodeData.UserInfo, Realtime.No
   ...NODE_CONFIG,
 
   label: 'User Info',
-  platforms: [VoiceflowConstants.PlatformType.ALEXA],
+  platforms: [Platform.Constants.PlatformType.ALEXA],
 
   step: UserInfoStep,
   editor: UserInfoEditor,

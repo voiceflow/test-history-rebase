@@ -2,6 +2,7 @@ import { AlexaConstants } from '@voiceflow/alexa-types';
 import { Utils as CommonUtils } from '@voiceflow/common';
 import { DFESConstants } from '@voiceflow/google-dfes-types';
 import { GoogleConstants } from '@voiceflow/google-types';
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Utils } from '@voiceflow/realtime-sdk';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
@@ -38,27 +39,27 @@ export const defaultSlotFormatter = (name = '') =>
 
 export const applySlotNameFormatting = Utils.platform.createPlatformSelector(
   {
-    [VoiceflowConstants.PlatformType.ALEXA]: platformSlotFormatter,
+    [Platform.Constants.PlatformType.ALEXA]: platformSlotFormatter,
   },
   defaultSlotFormatter
 );
 
 export const slotNameFormatter = Utils.platform.createPlatformSelector(
   {
-    [VoiceflowConstants.PlatformType.ALEXA]: CommonUtils.string.removeTrailingUnderscores,
+    [Platform.Constants.PlatformType.ALEXA]: CommonUtils.string.removeTrailingUnderscores,
   },
   (name: string) => name
 );
 
-export const toVoiceflowSlotType = (type: string, platform: VoiceflowConstants.PlatformType): VoiceflowConstants.SlotType | undefined => {
+export const toVoiceflowSlotType = (type: string, platform: Platform.Constants.PlatformType): VoiceflowConstants.SlotType | undefined => {
   switch (platform) {
-    case VoiceflowConstants.PlatformType.ALEXA:
+    case Platform.Constants.PlatformType.ALEXA:
       return AlexaConstants.AmazonToVoiceflowSlotMap[type as AlexaConstants.SlotType] ?? VoiceflowConstants.SlotType.CUSTOM;
 
-    case VoiceflowConstants.PlatformType.GOOGLE:
+    case Platform.Constants.PlatformType.GOOGLE:
       return GoogleConstants.GOOGLE_TO_VOICEFLOW_SLOT_TYPE_MAP[type as GoogleConstants.SlotType];
 
-    case VoiceflowConstants.PlatformType.DIALOGFLOW_ES:
+    case Platform.Constants.PlatformType.DIALOGFLOW_ES:
       return DFESConstants.DIALOGFLOW_TO_VOICEFLOW_SLOT_TYPE_MAP[type as DFESConstants.SlotType];
 
     default:
@@ -66,7 +67,7 @@ export const toVoiceflowSlotType = (type: string, platform: VoiceflowConstants.P
   }
 };
 
-export const getBuiltInSynonyms = (type: string, locale: AnyLocale, platform: VoiceflowConstants.PlatformType): string[] => {
+export const getBuiltInSynonyms = (type: string, locale: AnyLocale, platform: Platform.Constants.PlatformType): string[] => {
   const voiceflowSlotType = toVoiceflowSlotType(type, platform);
   const voiceflowLocale = toVoiceflowLocale(locale, platform);
 

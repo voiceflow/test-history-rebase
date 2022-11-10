@@ -4,7 +4,7 @@ import * as Locale from './locale';
 import * as Voice from './voice';
 
 export const CONFIG = Base.Project.extend({
-  name: 'Skill',
+  name: 'Alexa Skill',
 
   voice: Voice.CONFIG,
 

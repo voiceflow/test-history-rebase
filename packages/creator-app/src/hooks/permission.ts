@@ -20,6 +20,12 @@ export const usePermission = (permission?: Permission | null): [boolean, Identit
   return [isAllowed, identity];
 };
 
+export const useHasPermission = (): ((permission?: Permission | null) => boolean) => {
+  const identity = React.useContext(IdentityContext)!;
+
+  return React.useCallback((permission?: Permission | null) => !permission || checkPermission(identity, permission), [identity]);
+};
+
 export const usePermissions = (permissions: Permission[]): boolean => {
   const identity = React.useContext(IdentityContext)!;
 

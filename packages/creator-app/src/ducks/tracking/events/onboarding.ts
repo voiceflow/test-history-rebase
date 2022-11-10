@@ -1,4 +1,4 @@
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
+import * as Platform from '@voiceflow/platform-config';
 
 import client from '@/client';
 
@@ -25,7 +25,7 @@ export const trackOnboardingPay = (properties: { skip: boolean; plan: string }) 
 export const trackOnboardingJoin = (properties: { skip: boolean; role: string }) => () =>
   client.api.analytics.track(EventName.ONBOARDING_JOIN, { properties });
 
-export const trackOnboardingSelectChannel = (properties: { skip: boolean; platform: VoiceflowConstants.PlatformType }) => () =>
+export const trackOnboardingSelectChannel = (properties: { skip: boolean; platform: Platform.Constants.PlatformType }) => () =>
   client.api.analytics.track(EventName.ONBOARDING_SELECT_CHANNEL, { properties });
 
 export const trackOnboardingComplete =

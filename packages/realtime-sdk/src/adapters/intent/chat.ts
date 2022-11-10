@@ -6,14 +6,7 @@ import { Optional, Required } from 'utility-types';
 
 import { chatPromptAdapter } from '../creator/block/utils';
 import { hasValue } from '../utils';
-import {
-  BaseIntentAdapterFromDBOptions,
-  BaseIntentAdapterKeyRemap,
-  BaseIntentAdapterToDBOptions,
-  baseIntentSlotDialogSanitizer,
-  baseIntentSlotSanitizer,
-  baseIntentSmartAdapter,
-} from './base';
+import { BaseIntentAdapterKeyRemap, baseIntentSlotDialogSanitizer, baseIntentSlotSanitizer, baseIntentSmartAdapter } from './base';
 
 export const chatIntentSlotDialogSanitizer = ({
   prompt = [],
@@ -30,15 +23,9 @@ export const chatIntentSlotSanitizer = ({ dialog, ...baseIntentSlot }: Required<
   dialog: chatIntentSlotDialogSanitizer(dialog),
 });
 
-export const chatIntentSmartAdapter = createSmartMultiAdapter<
-  ChatModels.Intent,
-  ChatIntent,
-  BaseIntentAdapterFromDBOptions,
-  BaseIntentAdapterToDBOptions,
-  BaseIntentAdapterKeyRemap
->(
-  (dbIntent, options) => ({
-    ...baseIntentSmartAdapter.fromDB(dbIntent, options),
+export const chatIntentSmartAdapter = createSmartMultiAdapter<ChatModels.Intent, ChatIntent, [], [], BaseIntentAdapterKeyRemap>(
+  (dbIntent) => ({
+    ...baseIntentSmartAdapter.fromDB(dbIntent),
     ...(hasValue(dbIntent, 'slots') && { slots: normalize(dbIntent.slots.map(chatIntentSlotSanitizer)) }),
   }),
   (intent) => ({
@@ -47,7 +34,7 @@ export const chatIntentSmartAdapter = createSmartMultiAdapter<
   })
 );
 
-export const chatIntentAdapter = createMultiAdapter<ChatModels.Intent, ChatIntent, BaseIntentAdapterFromDBOptions, BaseIntentAdapterToDBOptions>(
-  ({ slots = [], ...dbIntent }, options) => chatIntentSmartAdapter.fromDB({ slots, ...dbIntent }, options),
+export const chatIntentAdapter = createMultiAdapter<ChatModels.Intent, ChatIntent>(
+  ({ slots = [], ...dbIntent }) => chatIntentSmartAdapter.fromDB({ slots, ...dbIntent }),
   chatIntentSmartAdapter.toDB
 );

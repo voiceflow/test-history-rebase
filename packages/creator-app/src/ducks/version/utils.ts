@@ -1,9 +1,9 @@
 import { NonNullishRecord } from '@voiceflow/common';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
+import * as Platform from '@voiceflow/platform-config';
 import { createStructuredSelector } from 'reselect';
 
 import * as Errors from '@/config/errors';
-import { platformSelector } from '@/ducks/projectV2/selectors/active';
+import { nluTypeSelector, platformSelector, projectTypeSelector } from '@/ducks/projectV2/selectors/active';
 import * as Session from '@/ducks/session';
 import { State } from '@/store/types';
 
@@ -18,13 +18,15 @@ export interface ActiveDomainContext extends ActiveVersionContext {
 }
 
 export interface ActivePlatformVersionContext extends ActiveVersionContext {
-  platform: VoiceflowConstants.PlatformType;
+  nlu: Platform.Constants.NLUType;
+  type: Platform.Constants.ProjectType;
+  platform: Platform.Constants.PlatformType;
 }
 
 export const activeVersionContextSelector = createStructuredSelector<State, ActiveVersionContext>({
-  workspaceID: Session.activeWorkspaceIDSelector,
   projectID: Session.activeProjectIDSelector,
   versionID: Session.activeVersionIDSelector,
+  workspaceID: Session.activeWorkspaceIDSelector,
 });
 
 export const activeDomainContextSelector = createStructuredSelector<State, ActiveDomainContext>({
@@ -35,10 +37,12 @@ export const activeDomainContextSelector = createStructuredSelector<State, Activ
 });
 
 export const activePlatformVersionContextSelector = createStructuredSelector<State, ActivePlatformVersionContext>({
-  workspaceID: Session.activeWorkspaceIDSelector,
+  nlu: nluTypeSelector,
+  type: projectTypeSelector,
+  platform: platformSelector,
   projectID: Session.activeProjectIDSelector,
   versionID: Session.activeVersionIDSelector,
-  platform: platformSelector,
+  workspaceID: Session.activeWorkspaceIDSelector,
 });
 
 export const assertVersionContext: (context: ActiveVersionContext) => asserts context is NonNullishRecord<ActiveVersionContext> = (context) => {

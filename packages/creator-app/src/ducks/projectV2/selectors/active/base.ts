@@ -1,6 +1,6 @@
 import { BaseModels } from '@voiceflow/base-types';
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { createSelector } from 'reselect';
 
 import * as Session from '@/ducks/session';
@@ -11,11 +11,16 @@ export const projectSelector = createSelector([Session.activeProjectIDSelector, 
   getProjectByID({ id: projectID })
 );
 
-export const platformSelector = createSelector([projectSelector], (project) => project?.platform || VoiceflowConstants.PlatformType.VOICEFLOW);
+export const nluTypeSelector = createSelector([projectSelector], (project) => project?.nlu || Platform.Constants.NLUType.VOICEFLOW);
 
-export const projectTypeSelector = createSelector([projectSelector], (project) => project?.type || VoiceflowConstants.ProjectType.VOICE);
+export const platformSelector = createSelector([projectSelector], (project) => project?.platform || Platform.Constants.PlatformType.VOICEFLOW);
 
-export const metaSelector = createSelector([projectTypeSelector, platformSelector], (type, platform): Realtime.ProjectMeta => ({ type, platform }));
+export const projectTypeSelector = createSelector([projectSelector], (project) => project?.type || Platform.Constants.ProjectType.VOICE);
+
+export const metaSelector = createSelector(
+  [nluTypeSelector, projectTypeSelector, platformSelector],
+  (nlu, type, platform): Realtime.ProjectMeta => ({ nlu, type, platform })
+);
 
 export const nameSelector = createSelector([projectSelector], (project) => project?.name ?? null);
 

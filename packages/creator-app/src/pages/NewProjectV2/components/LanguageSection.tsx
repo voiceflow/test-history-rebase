@@ -6,13 +6,12 @@ import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import Section, { SectionVariant } from '@/components/Section';
-import * as NLU from '@/config/nlu';
 
 import { PLATFORM_PROJECT_META_MAP } from '../constants';
 import LanguageSelect from './LanguageSelect';
 
 interface LanguageSectionProps {
-  nlu: NLU.Constants.NLUType | null;
+  nlu: Platform.Constants.NLUType | null;
   platform: Platform.Constants.PlatformType | null;
   language: GoogleConstants.Language | DFESConstants.Language | VoiceflowConstants.Locale | null;
   setLanguage: (value: GoogleConstants.Language | DFESConstants.Language | VoiceflowConstants.Locale | null) => void;

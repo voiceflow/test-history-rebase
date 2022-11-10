@@ -6,8 +6,7 @@ import SSML from '@/components/SSML';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
-import { useDispatch, useSelector } from '@/hooks';
-import { getPlatformDefaultVoice } from '@/utils/platform';
+import { useActiveProjectTypeConfig, useDispatch, useSelector } from '@/hooks';
 
 import { isSlotsInRepromptValid } from './utils';
 
@@ -23,6 +22,8 @@ interface SSMLWithSlotsProps {
 }
 
 export const SSMLWithSlots: React.FC<SSMLWithSlotsProps> = ({ voice, slots, autofocus, ...props }) => {
+  const projectTypeConfig = useActiveProjectTypeConfig();
+
   const ssmlRef = React.useRef<{ forceFocusToTheEnd: VoidFunction } | null>(null);
 
   const locales = useSelector(VersionV2.active.localesSelector);
@@ -31,8 +32,6 @@ export const SSMLWithSlots: React.FC<SSMLWithSlotsProps> = ({ voice, slots, auto
   const defaultVoice = useSelector(VersionV2.active.defaultVoiceSelector);
 
   const updateDefaultVoice = useDispatch(Version.updateDefaultVoice);
-
-  const platformDefaultVoice = getPlatformDefaultVoice(platform);
 
   useSetup(() => {
     if (autofocus) {
@@ -43,16 +42,16 @@ export const SSMLWithSlots: React.FC<SSMLWithSlotsProps> = ({ voice, slots, auto
   return (
     <SSML
       ref={ssmlRef}
-      voice={voice || defaultVoice || platformDefaultVoice}
+      voice={voice || defaultVoice || projectTypeConfig.project.voice.default}
       space
       locales={locales}
       platform={platform}
       variables={slots}
       creatable={false}
       projectType={projectType}
-      defaultVoice={defaultVoice || platformDefaultVoice}
+      defaultVoice={defaultVoice || projectTypeConfig.project.voice.default}
       withVariablesPlugin={isSlotsInRepromptValid(platform)}
-      platformDefaultVoice={platformDefaultVoice}
+      platformDefaultVoice={projectTypeConfig.project.voice.default}
       onChangeDefaultVoice={updateDefaultVoice}
       {...props}
     />

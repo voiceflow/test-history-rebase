@@ -1,5 +1,5 @@
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import { NodeManagerConfig } from '../types';
 import CancelPaymentEditor from './CancelPaymentEditor';
@@ -10,7 +10,7 @@ const CancelPaymentManager: NodeManagerConfig<Realtime.NodeData.CancelPayment, R
   ...NODE_CONFIG,
 
   label: 'Cancel Purchase',
-  platforms: [VoiceflowConstants.PlatformType.ALEXA],
+  platforms: [Platform.Constants.PlatformType.ALEXA],
 
   step: CancelPaymentStep,
   editor: CancelPaymentEditor,

@@ -1,6 +1,6 @@
 import { Utils } from '@voiceflow/common';
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { normalize } from 'normal-store';
 
 import * as IntentV1 from '@/ducks/intent';
@@ -18,7 +18,6 @@ const ACTION_CONTEXT = { workspaceID: WORKSPACE_ID, projectID: PROJECT_ID, versi
 const INTENT: Realtime.Intent = {
   id: INTENT_ID,
   name: 'intent',
-  platform: VoiceflowConstants.PlatformType.VOICEFLOW,
   inputs: [],
   slots: {
     allKeys: [],
@@ -32,7 +31,6 @@ const MOCK_STATE: Intent.IntentState = {
     abc: {
       id: 'abc',
       name: 'alphabet intent',
-      platform: VoiceflowConstants.PlatformType.GOOGLE,
       inputs: [],
       slots: {
         allKeys: [],
@@ -126,8 +124,9 @@ suite(Intent, MOCK_STATE)('Ducks - Intent V2', ({ describeEffectV2, createState 
               ...ACTION_CONTEXT,
               values: [INTENT],
               projectMeta: {
-                platform: VoiceflowConstants.PlatformType.VOICEFLOW,
-                type: VoiceflowConstants.ProjectType.VOICE,
+                nlu: Platform.Constants.NLUType.VOICEFLOW,
+                platform: Platform.Constants.PlatformType.VOICEFLOW,
+                type: Platform.Constants.ProjectType.VOICE,
               },
             }),
           },
@@ -149,8 +148,9 @@ suite(Intent, MOCK_STATE)('Ducks - Intent V2', ({ describeEffectV2, createState 
               ...ACTION_CONTEXT,
               key: INTENT_ID,
               projectMeta: {
-                platform: VoiceflowConstants.PlatformType.VOICEFLOW,
-                type: VoiceflowConstants.ProjectType.VOICE,
+                nlu: Platform.Constants.NLUType.VOICEFLOW,
+                platform: Platform.Constants.PlatformType.VOICEFLOW,
+                type: Platform.Constants.ProjectType.VOICE,
               },
             }),
           },

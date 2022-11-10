@@ -1,7 +1,7 @@
 import { AlexaUtils } from '@voiceflow/alexa-types';
 import { GoogleUtils } from '@voiceflow/google-types';
+import * as Platform from '@voiceflow/platform-config';
 import { Input, SectionV2 } from '@voiceflow/ui';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import * as Version from '@/ducks/version';
@@ -25,8 +25,8 @@ const InvocationNameSection: React.FC = () => {
     getPlatformValue<(name?: string, locales?: any[]) => string | null>(
       platform,
       {
-        [VoiceflowConstants.PlatformType.ALEXA]: AlexaUtils.getInvocationNameError,
-        [VoiceflowConstants.PlatformType.GOOGLE]: GoogleUtils.getInvocationNameError,
+        [Platform.Constants.PlatformType.ALEXA]: AlexaUtils.getInvocationNameError,
+        [Platform.Constants.PlatformType.GOOGLE]: GoogleUtils.getInvocationNameError,
       },
       () => null
     )(newInvocation, locales);

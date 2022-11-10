@@ -1,5 +1,6 @@
 import * as Base from '@platform-config/configs/base';
-import { PlatformType, ProjectType } from '@platform-config/constants';
+import { NLUType, PlatformType, ProjectType } from '@platform-config/constants';
+import { TypeGuards } from '@platform-config/utils';
 
 import * as Chat from '../chat';
 import * as Voice from '../voice';
@@ -8,9 +9,16 @@ import * as Voice from '../voice';
  * other platforms like dialogflowCX, webchat, etc. can extend this
  */
 export const CONFIG = Base.extend({
+  is: TypeGuards.isValueFactory(PlatformType.VOICEFLOW),
+
   type: PlatformType.VOICEFLOW,
 
   name: 'Voiceflow',
+
+  /**
+   * voiceflow nlu should always be first since it's the default
+   */
+  supportedNLUs: [NLUType.VOICEFLOW, ...Object.values(NLUType).filter((nlu) => nlu !== NLUType.VOICEFLOW)],
 
   types: {
     [ProjectType.CHAT]: Chat.CONFIG,

@@ -1,17 +1,17 @@
+import * as Platform from '@voiceflow/platform-config';
 import { Utils } from '@voiceflow/realtime-sdk';
 import { Box, LoadCircle, Modal } from '@voiceflow/ui';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 export interface IdleStageProps {
-  platform: VoiceflowConstants.PlatformType;
+  platform: Platform.Constants.PlatformType;
 }
 
 const getStageTitle = Utils.platform.createPlatformSelector<string>(
   {
-    [VoiceflowConstants.PlatformType.ALEXA]: 'connect to amazon',
-    [VoiceflowConstants.PlatformType.GOOGLE]: 'connect to google',
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: 'connect to dialogflow',
+    [Platform.Constants.PlatformType.ALEXA]: 'connect to amazon',
+    [Platform.Constants.PlatformType.GOOGLE]: 'connect to google',
+    [Platform.Constants.PlatformType.DIALOGFLOW_ES]: 'connect to dialogflow',
   },
   'connect to voiceflow'
 );

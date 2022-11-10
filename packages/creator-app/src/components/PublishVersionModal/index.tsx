@@ -1,9 +1,9 @@
+import * as Platform from '@voiceflow/platform-config';
 import { Link } from '@voiceflow/ui';
 import React from 'react';
 
 import InputModal from '@/components/InputModal';
 import { ModalType } from '@/constants';
-import { getPlatformName } from '@/constants/platforms';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import { useDispatch, useSelector } from '@/hooks';
@@ -35,7 +35,7 @@ const PublishVersionModal: React.FC = () => {
   const bodyText = React.useMemo(
     () =>
       isPlatformWithThirdPartyUpload(platform) ? (
-        `This action will upload a new version to ${getPlatformName(platform)}. Confirm you want to continue.`
+        `This action will upload a new version to ${Platform.Config.get(platform).name}. Confirm you want to continue.`
       ) : (
         <>
           Publish this version to production and use it with our <Link onClick={onLinkClick}>Dialog Manager API</Link>.

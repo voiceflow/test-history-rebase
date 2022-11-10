@@ -1,6 +1,6 @@
 import { BaseButton } from '@voiceflow/base-types';
+import * as Platform from '@voiceflow/platform-config';
 import { useContextApi } from '@voiceflow/ui';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import { PrototypeStatus } from '@/constants/prototype';
@@ -25,8 +25,8 @@ const defaultPrototypeContext: PrototypeAllTypes = {
     prototypeColor: 'blue',
     prototypeAvatar: '',
     locales: [''],
-    platform: VoiceflowConstants.PlatformType.VOICEFLOW,
-    projectType: VoiceflowConstants.ProjectType.VOICE,
+    platform: Platform.Constants.PlatformType.VOICEFLOW,
+    projectType: Platform.Constants.ProjectType.VOICE,
     isMuted: false,
     durationMilliseconds: 0,
     debug: false,

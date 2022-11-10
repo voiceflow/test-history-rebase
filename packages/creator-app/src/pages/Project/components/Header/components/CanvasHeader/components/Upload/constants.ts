@@ -1,6 +1,6 @@
+import * as Platform from '@voiceflow/platform-config';
 import { Utils } from '@voiceflow/realtime-sdk';
 import { SvgIconTypes } from '@voiceflow/ui';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 interface PlatformIconProps {
   icon: SvgIconTypes.Icon;
@@ -9,11 +9,10 @@ interface PlatformIconProps {
 
 export const getPlatformIconProps = Utils.platform.createPlatformSelector<PlatformIconProps>(
   {
-    [VoiceflowConstants.PlatformType.ALEXA]: { icon: 'amazonAlexa', iconProps: { color: '#5fcaf4' } },
-    [VoiceflowConstants.PlatformType.GOOGLE]: { icon: 'googleAssistant' },
-    [VoiceflowConstants.PlatformType.WEBCHAT]: { icon: 'playOutline' },
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: { icon: 'dialogflow', iconProps: { height: '18px', width: '18px' } },
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_CX]: { icon: 'dialogflowCX', iconProps: { height: '18px', width: '18px' } },
+    [Platform.Constants.PlatformType.ALEXA]: { icon: 'amazonAlexa', iconProps: { color: '#5fcaf4' } },
+    [Platform.Constants.PlatformType.GOOGLE]: { icon: 'googleAssistant' },
+    [Platform.Constants.PlatformType.DIALOGFLOW_ES]: { icon: 'dialogflow', iconProps: { height: '18px', width: '18px' } },
+    [Platform.Constants.PlatformType.DIALOGFLOW_CX]: { icon: 'dialogflowCX', iconProps: { height: '18px', width: '18px' } },
   },
   { icon: 'ban' }
 );

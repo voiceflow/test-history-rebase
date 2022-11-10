@@ -2,7 +2,6 @@ import { BaseButton } from '@voiceflow/base-types';
 import { ChatVersion } from '@voiceflow/chat-types';
 import { PlanType } from '@voiceflow/internal';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import _constant from 'lodash/constant';
 import { batch } from 'react-redux';
 
@@ -31,10 +30,7 @@ const setupPublicPrototype =
       throw new Error('Could not retrieve permissions for prototype share');
     }
 
-    const { platform, type: projectType } = Realtime.legacyPlatformToProjectType(
-      prototype.platform as VoiceflowConstants.PlatformType,
-      prototype.type as VoiceflowConstants.ProjectType
-    );
+    const { platform, type: projectType } = Realtime.legacyPlatformToProjectType(prototype.platform, prototype.type);
 
     const rootDiagramID = prototype.context.stack?.[0].programID as string;
     const layout = (prototype?.settings.layout ?? Realtime.Utils.platform.getDefaultPrototypeLayout(projectType)) as PrototypeLayout;

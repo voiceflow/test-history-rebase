@@ -1,5 +1,5 @@
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import * as Documentation from '@/config/documentation';
 import { NodeCategory } from '@/contexts/SearchContext/types';
@@ -13,7 +13,7 @@ const TextManager: NodeManagerConfigV2<Realtime.NodeData.Text, Realtime.NodeData
   ...NODE_CONFIG,
 
   label: 'Text',
-  projectTypes: [VoiceflowConstants.ProjectType.CHAT],
+  projectTypes: [Platform.Constants.ProjectType.CHAT],
 
   step: Step,
   editorV2: Editor,

@@ -1,20 +1,20 @@
-import { PlanType } from '@voiceflow/internal';
+import * as Platform from '@voiceflow/platform-config';
 import { MenuItemGrouped, TippyTooltip, TippyTooltipProps } from '@voiceflow/ui';
 import React from 'react';
 
 import * as NLU from '@/config/nlu';
 
 export interface NLUOption {
-  type: NLU.Constants.NLUType;
+  type: Platform.Constants.NLUType;
   name: string;
-  planType: PlanType | null;
+  permission: NLU.Base.Config['permission'];
   labelTooltip: TippyTooltipProps;
 }
 
 const buildOption = (nluConfig: NLU.Base.Config): NLUOption => ({
   type: nluConfig.type,
   name: nluConfig.name,
-  planType: nluConfig.planType,
+  permission: nluConfig.permission,
   labelTooltip: {
     html: (
       <TippyTooltip.Complex title={nluConfig.tooltip.title} width={200}>

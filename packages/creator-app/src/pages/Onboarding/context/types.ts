@@ -1,5 +1,5 @@
 import { BillingPeriod, PlanType } from '@voiceflow/internal';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
+import * as Platform from '@voiceflow/platform-config';
 
 import { Query } from '@/models';
 
@@ -31,7 +31,7 @@ export interface PersonalizeWorkspaceMeta {
   channels?: string[];
   company: string;
   teamSize: string;
-  projectType?: VoiceflowConstants.ProjectType;
+  projectType?: Platform.Constants.ProjectType;
 }
 
 export interface OnboardingContextState {
@@ -60,8 +60,8 @@ export interface OnboardingContextState {
     role: string;
   };
   selectChannelMeta: {
-    platform: VoiceflowConstants.PlatformType;
-    projectType: VoiceflowConstants.ProjectType;
+    platform: Platform.Constants.PlatformType;
+    projectType: Platform.Constants.ProjectType;
   };
   sendingRequests: boolean;
   workspaceId: string;

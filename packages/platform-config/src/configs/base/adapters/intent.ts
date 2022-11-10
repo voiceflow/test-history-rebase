@@ -1,4 +1,3 @@
-import { PlatformType } from '@platform-config/constants';
 import { BaseModels } from '@voiceflow/base-types';
 import { createMultiAdapter, createSmartMultiAdapter } from 'bidirectional-adapter';
 import { Optional, Required } from 'utility-types';
@@ -27,22 +26,13 @@ export const slotSanitizer = ({ id, dialog, required = false }: Required<Optiona
 });
 
 export type KeyRemap = [['key', 'id']];
-export type ToDBOptions = [];
-export type FromDBOptions = [{ platform: PlatformType }];
 
-export const smart = createSmartMultiAdapter<
-  Omit<BaseModels.Intent, 'slots'>,
-  Omit<Models.Intent.Model, 'slots'>,
-  FromDBOptions,
-  ToDBOptions,
-  KeyRemap
->(
-  (dbIntent, { platform }) => ({
+export const smart = createSmartMultiAdapter<Omit<BaseModels.Intent, 'slots'>, Omit<Models.Intent.Model, 'slots'>, [], [], KeyRemap>(
+  (dbIntent) => ({
     ...(hasValue(dbIntent, 'key') && { id: dbIntent.key }),
     ...(hasValue(dbIntent, 'name') && { name: dbIntent.name }),
     ...(hasValue(dbIntent, 'noteID') && { noteID: dbIntent.noteID }),
     ...(hasValue(dbIntent, 'inputs') && { inputs: dbIntent.inputs.map(inputSanitizer) }),
-    platform,
   }),
   (intent) => ({
     ...(hasValue(intent, 'id') && { key: intent.id }),
@@ -52,7 +42,7 @@ export const smart = createSmartMultiAdapter<
   })
 );
 
-export const simple = createMultiAdapter<Omit<BaseModels.Intent, 'slots'>, Omit<Models.Intent.Model, 'slots'>, [{ platform: PlatformType }]>(
-  ({ inputs = [], ...baseIntent }, ...args) => smart.fromDB({ inputs, ...baseIntent }, ...args),
+export const simple = createMultiAdapter<Omit<BaseModels.Intent, 'slots'>, Omit<Models.Intent.Model, 'slots'>>(
+  ({ inputs = [], ...baseIntent }) => smart.fromDB({ inputs, ...baseIntent }),
   smart.toDB
 );

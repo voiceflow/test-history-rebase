@@ -1,5 +1,5 @@
 import { createAdvancedProjectTypeSelector } from '@realtime-sdk/utils/platform';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
+import * as Platform from '@voiceflow/platform-config';
 
 import { chatIntentAdapter, chatIntentSmartAdapter } from './chat';
 import { voiceIntentAdapter, voiceIntentSmartAdapter } from './voice';
@@ -9,11 +9,11 @@ export * from './chat';
 export * from './voice';
 
 export const getProjectTypeIntentAdapter = createAdvancedProjectTypeSelector({
-  [VoiceflowConstants.ProjectType.CHAT]: chatIntentAdapter,
-  [VoiceflowConstants.ProjectType.VOICE]: voiceIntentAdapter,
+  [Platform.Constants.ProjectType.CHAT]: chatIntentAdapter,
+  [Platform.Constants.ProjectType.VOICE]: voiceIntentAdapter,
 });
 
 export const getProjectTypeIntentSmartAdapter = createAdvancedProjectTypeSelector({
-  [VoiceflowConstants.ProjectType.CHAT]: chatIntentSmartAdapter,
-  [VoiceflowConstants.ProjectType.VOICE]: voiceIntentSmartAdapter,
+  [Platform.Constants.ProjectType.CHAT]: chatIntentSmartAdapter,
+  [Platform.Constants.ProjectType.VOICE]: voiceIntentSmartAdapter,
 });

@@ -4,13 +4,12 @@ import _sortBy from 'lodash/sortBy';
 import React from 'react';
 
 import * as NLP from '@/config/nlp';
-import * as NLU from '@/config/nlu';
 import { Permission } from '@/config/permissions';
 import { GATED_EXPORT_TYPES } from '@/config/planLimits/canvasExport';
 import { ExportFormat as CanvasExportFormat, ExportType } from '@/constants';
 import * as Export from '@/ducks/export';
 import * as Tracking from '@/ducks/tracking';
-import { useDispatch, usePermission, useTrackingEvents } from '@/hooks';
+import { useActiveNLUConfig, useDispatch, usePermission, useTrackingEvents } from '@/hooks';
 import { PlatformContext } from '@/pages/Project/contexts';
 import { isVoiceflowPlatform } from '@/utils/typeGuards';
 
@@ -37,6 +36,8 @@ export const ExportContext = React.createContext<Nullable<ExportValue>>(null);
 export const { Consumer: ExportConsumer } = ExportContext;
 
 export const ExportProvider: React.FC = ({ children }) => {
+  const nluConfig = useActiveNLUConfig();
+
   const exportModel = useDispatch(Export.exportModel);
   const exportCanvas = useDispatch(Export.exportCanvas);
   const [permissionToExport] = usePermission(Permission.MODEL_EXPORT);
@@ -48,7 +49,7 @@ export const ExportProvider: React.FC = ({ children }) => {
   const [canvasExportFormat, setCanvasExportFormat] = React.useState(CanvasExportFormat.PNG);
   const [canExport, setCanExport] = React.useState(permissionToExport || !GATED_EXPORT_TYPES.has(canvasExportFormat));
 
-  const nlpTypes = React.useMemo(() => _sortBy(NLU.Config.get(platform).nlps, (nlp) => nlp.name).map((nlp) => nlp.type), [platform]);
+  const nlpTypes = React.useMemo(() => _sortBy(nluConfig.nlps, (nlp) => nlp.name).map((nlp) => nlp.type), [nluConfig]);
 
   const [exportNLPType, setExportNLPType] = React.useState<NLP.Constants.NLPType | null>(!isVoiceflowPlatform(platform) ? nlpTypes[0] : null);
   const [exportIntents, setExportIntents] = React.useState<string[]>([]);
@@ -70,6 +71,7 @@ export const ExportProvider: React.FC = ({ children }) => {
       }
 
       trackingEvents.trackProjectExported({
+        nluType: nluConfig.type,
         platform,
         exportType,
         exportFormat: canvasExportFormat,
@@ -77,7 +79,7 @@ export const ExportProvider: React.FC = ({ children }) => {
 
       setExporting(false);
     },
-    [exportType, exportNLPType, exportIntents, canvasExportFormat]
+    [nluConfig, exportType, exportNLPType, exportIntents, canvasExportFormat]
   );
 
   const api = useContextApi({

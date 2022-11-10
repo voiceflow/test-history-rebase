@@ -1,3 +1,4 @@
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Input, Popper, preventDefault, TippyTooltip, withHandler, withInputBlur } from '@voiceflow/ui';
 import React from 'react';
@@ -16,7 +17,7 @@ const MessageDelayPopper: React.FC = () => {
   const settings = useSelector(VersionV2.active.settingsSelector);
   const delay = settings?.globalNoReply?.delay ?? 0;
   const platform = useSelector(ProjectV2.active.platformSelector);
-  const isVoiceflow = Realtime.Utils.typeGuards.isVoiceflowBasedPlatform(platform);
+  const isVoiceflow = Realtime.Utils.typeGuards.isVoiceflowPlatform(platform);
 
   const [messageDelay, setMessageDelay] = React.useState(() => (delay ? String(delay) : ''));
 
@@ -35,10 +36,7 @@ const MessageDelayPopper: React.FC = () => {
 
   if (!isVoiceflow) {
     return (
-      <TippyTooltip
-        title={`This value is not editable as it's defined by ${Realtime.Utils.platform.getPlatformProviderName(platform)}`}
-        disabled={isVoiceflow}
-      >
+      <TippyTooltip title={`This value is not editable as it's defined by ${Platform.Config.get(platform).name}`} disabled={isVoiceflow}>
         <S.DelayTrigger>{getDefaultNoReplyTimeoutSeconds(platform)}</S.DelayTrigger>
       </TippyTooltip>
     );

@@ -1,8 +1,8 @@
 import { BaseNode } from '@voiceflow/base-types';
 import { ChatNode } from '@voiceflow/chat-types';
 import { Nullish } from '@voiceflow/common';
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import { chatPromptFactory, PromptFactoryOptions, voicePromptFactory } from './prompt';
 
@@ -26,9 +26,9 @@ export const voiceNoReplyFactory = (options: NoReplyFactoryOptions): Realtime.No
 
 export const getDefaultNoReplyTimeoutSeconds = Realtime.Utils.platform.createPlatformSelector<number>(
   {
-    [VoiceflowConstants.PlatformType.ALEXA]: 8,
-    [VoiceflowConstants.PlatformType.GOOGLE]: 8,
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: 5,
+    [Platform.Constants.PlatformType.ALEXA]: 8,
+    [Platform.Constants.PlatformType.GOOGLE]: 8,
+    [Platform.Constants.PlatformType.DIALOGFLOW_ES]: 5,
   },
   10
 );
@@ -36,13 +36,13 @@ export const getDefaultNoReplyTimeoutSeconds = Realtime.Utils.platform.createPla
 type PromptFactory = (options: PromptFactoryOptions) => Realtime.NodeData.NoReply;
 
 export const getPlatformNoReplyFactory = (
-  projectType?: Nullish<VoiceflowConstants.ProjectType>,
-  platform?: Nullish<VoiceflowConstants.PlatformType>
+  projectType?: Nullish<Platform.Constants.ProjectType>,
+  platform?: Nullish<Platform.Constants.PlatformType>
 ): PromptFactory => {
   const timeout = getDefaultNoReplyTimeoutSeconds(platform);
 
   return Realtime.Utils.platform.createProjectTypeSelector<PromptFactory>({
-    [VoiceflowConstants.ProjectType.CHAT]: () => ({ ...chatNoReplyFactory(), timeout }),
-    [VoiceflowConstants.ProjectType.VOICE]: (options: PromptFactoryOptions) => ({ ...voiceNoReplyFactory(options), timeout }),
+    [Platform.Constants.ProjectType.CHAT]: () => ({ ...chatNoReplyFactory(), timeout }),
+    [Platform.Constants.ProjectType.VOICE]: (options: PromptFactoryOptions) => ({ ...voiceNoReplyFactory(options), timeout }),
   })(projectType || undefined);
 };

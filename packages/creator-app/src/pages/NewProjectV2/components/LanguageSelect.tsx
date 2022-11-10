@@ -4,7 +4,6 @@ import { Select } from '@voiceflow/ui';
 import React from 'react';
 
 import TagSelect from '@/components/TagSelect';
-import * as NLU from '@/config/nlu';
 import { getLocaleLabel, LocaleArray } from '@/services/LocaleMap';
 import { Identifier } from '@/styles/constants';
 import { isAlexaPlatform } from '@/utils/typeGuards';
@@ -13,7 +12,7 @@ import { DEFAULT_LANGUAGE_SELECT_PROPS, PLATFORM_PROJECT_META_MAP } from '../con
 import { AnyLanguage, AnyLocale } from '../types';
 
 interface LanguageSelectProps {
-  nlu: NLU.Constants.NLUType | null;
+  nlu: Platform.Constants.NLUType | null;
   platform: Platform.Constants.PlatformType | null;
   language: AnyLanguage | null;
   setLanguage: (value: AnyLanguage | null) => void;
@@ -21,7 +20,7 @@ interface LanguageSelectProps {
   setAlexaLocales: (locales: AnyLocale[]) => void;
 }
 
-const getLanguageSelectProps = (nlu: NLU.Constants.NLUType | null, platform: Platform.Constants.PlatformType | null) => {
+const getLanguageSelectProps = (nlu: Platform.Constants.NLUType | null, platform: Platform.Constants.PlatformType | null) => {
   if (nlu && PLATFORM_PROJECT_META_MAP[nlu]?.languageSelectProps) {
     return PLATFORM_PROJECT_META_MAP[nlu].languageSelectProps!;
   }

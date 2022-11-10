@@ -1,12 +1,14 @@
-import { PlanType } from '@voiceflow/internal';
+import * as Platform from '@voiceflow/platform-config';
 
 import * as NLP from '@/config/nlp';
+import { Permission } from '@/config/permissions';
 
-import { NLUType } from '../constants';
 import * as Base from './base';
 
 export const CONFIG = Base.extend({
-  type: NLUType.WATSON,
+  is: Platform.Utils.TypeGuards.isValueFactory(Platform.Constants.NLUType.WATSON),
+
+  type: Platform.Constants.NLUType.WATSON,
 
   name: 'IBM Watson',
 
@@ -16,7 +18,7 @@ export const CONFIG = Base.extend({
 
   tooltip: Base.tooltip(NLP.Watson.CONFIG),
 
-  planType: PlanType.ENTERPRISE,
+  permission: Permission.NLU_CUSTOM,
 });
 
 export type Config = typeof CONFIG;

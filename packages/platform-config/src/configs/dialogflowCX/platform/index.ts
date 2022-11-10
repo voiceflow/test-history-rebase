@@ -1,13 +1,18 @@
 import * as Base from '@platform-config/configs/base';
-import { PlatformType, ProjectType } from '@platform-config/constants';
+import { NLUType, PlatformType, ProjectType } from '@platform-config/constants';
+import { TypeGuards } from '@platform-config/utils';
 
 import * as Chat from '../chat';
 import * as Voice from '../voice';
 
 export const CONFIG = Base.extend({
+  is: TypeGuards.isValueFactory(PlatformType.DIALOGFLOW_CX),
+
   type: PlatformType.DIALOGFLOW_CX,
 
   name: 'Dialogflow CX',
+
+  supportedNLUs: [NLUType.DIALOGFLOW_CX],
 
   types: {
     [ProjectType.CHAT]: Chat.CONFIG,

@@ -1,4 +1,4 @@
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
+import * as Platform from '@voiceflow/platform-config';
 
 import { platformAware } from '@/hocs';
 import Alexa from '@/platforms/alexa/jobs/publish';
@@ -10,11 +10,11 @@ import Webchat from '@/platforms/webchat/jobs/publish';
 
 const UploadGroup = platformAware(
   {
-    [VoiceflowConstants.PlatformType.ALEXA]: Alexa,
-    [VoiceflowConstants.PlatformType.GOOGLE]: Google,
-    [VoiceflowConstants.PlatformType.WEBCHAT]: Webchat,
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_CX]: DialogflowCX,
-    [VoiceflowConstants.PlatformType.DIALOGFLOW_ES]: DialogflowES,
+    [Platform.Constants.PlatformType.ALEXA]: Alexa,
+    [Platform.Constants.PlatformType.GOOGLE]: Google,
+    [Platform.Constants.PlatformType.WEBCHAT]: Webchat,
+    [Platform.Constants.PlatformType.DIALOGFLOW_ES]: DialogflowES,
+    [Platform.Constants.PlatformType.DIALOGFLOW_CX]: DialogflowCX,
   },
   General
 );

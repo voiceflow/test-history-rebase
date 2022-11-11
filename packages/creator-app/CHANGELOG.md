@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.972.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.972.2...@voiceflow/creator-app@1.972.3) (2022-11-11)
+
+
+### Bug Fixes
+
+* [bugfix] only allows csv file import/export for diagloflow CX (NLU-440) ([#6303](https://github.com/voiceflow/creator-app/issues/6303)) ([18fce55](https://github.com/voiceflow/creator-app/commit/18fce55033895cf1f2180a767636fbc931adb3d2))
+
+
+
+
+
 ## [1.972.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.972.1...@voiceflow/creator-app@1.972.2) (2022-11-11)
 
 

@@ -22,6 +22,7 @@ const ExportModel: React.FC<{
 
   const { exportNLPType, setExportNLPType, setExportIntents, exportIntents, nlpTypes, setCanExport, setCheckedExportIntents } =
     React.useContext(ExportContext)!;
+
   const intents = useSelector(IntentV2.allIntentsSelector);
   const platform = useSelector(ProjectV2.active.platformSelector);
   const [permissionToExport] = usePermission(Permission.NLU_EXPORT_ALL);
@@ -30,6 +31,7 @@ const ExportModel: React.FC<{
 
   const noModelData = intents.length === 0;
   const exportNLPConfig = exportNLPType && NLP.Config.get(exportNLPType);
+  const nluOptions = nlpTypes.filter((nlpType) => !!NLP.Config.get(nlpType).export);
 
   const modelExportSelection = (value: NLP.Constants.NLPType) => {
     setExportNLPType(value);
@@ -44,10 +46,10 @@ const ExportModel: React.FC<{
   };
 
   React.useEffect(() => {
-    if (nlpTypes.length === 1) {
-      setExportNLPType(nlpTypes[0]);
+    if (nluOptions.length === 1) {
+      setExportNLPType(nluOptions[0]);
     }
-  }, [nlpTypes]);
+  }, [nluOptions]);
 
   const handleOnChange = (intents: string[]) => {
     setExportIntents(intents);
@@ -67,9 +69,9 @@ const ExportModel: React.FC<{
       <Select
         value={exportNLPType}
         prefix={exportNLPConfig ? <SvgIcon icon={exportNLPConfig.icon.name} color={exportNLPConfig.icon.color} /> : null}
-        options={nlpTypes}
+        options={nluOptions}
         onSelect={modelExportSelection}
-        disabled={nlpTypes.length === 1}
+        disabled={nluOptions.length === 1}
         searchable
         placeholder="Choose an option"
         getOptionLabel={(value) => value && NLP.Config.get(value).name}
@@ -90,7 +92,13 @@ const ExportModel: React.FC<{
       {/* change this text */}
       <BlockText fontSize={13} color="#62778c" lineHeight="normal" marginTop={11}>
         <span>
-          Export as .CSV, or as consumable file for {Realtime.Utils.typeGuards.isVoiceflowPlatform(platform) ? 'any NLU vendor' : nluConfig.name}.
+          {nluOptions.length === 1 && exportNLPType === NLP.Constants.NLPType.VOICEFLOW ? (
+            'Export as .CSV'
+          ) : (
+            <>
+              Export as .CSV, or as consumable file for {Realtime.Utils.typeGuards.isVoiceflowPlatform(platform) ? 'any NLU vendor' : nluConfig.name}.
+            </>
+          )}
         </span>
       </BlockText>
 

@@ -1,4 +1,3 @@
-import client from '@/client';
 import { FileExtension } from '@/constants';
 
 import { NLPType } from '../constants';
@@ -16,15 +15,10 @@ export const CONFIG = Base.extend({
 
   import: {
     name: 'Dialogflow CX',
-    extensions: [FileExtension.ZIP],
+    extensions: [FileExtension.CSV],
   },
 
-  export: {
-    method: (versionID, intents) => client.platform.google.modelExport.exportBlob(versionID, 'dialogflow/cx', intents),
-    fileSuffix: '-dialogflow-cx-model',
-    defaultExtension: FileExtension.ZIP,
-    intentsExtension: FileExtension.ZIP,
-  },
+  export: null,
 });
 
 export type Config = typeof CONFIG;

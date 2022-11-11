@@ -45,15 +45,17 @@ export const createWorkspaceEventPayload = <T extends WorkspaceEventInfo, D exte
   { workspaceID }: T,
   data: D = {} as D,
   { hashed = [], teamhashed = [] }: EventPayloadOptions<K> = {}
-): WorkspaceEventPayload<D> => ({
-  hashed,
-  teamhashed: ['workspace_id', ...teamhashed],
-  properties: {
-    ...data,
-    workspace_id: workspaceID,
-    last_product_activity: Date.now(),
-  },
-});
+): WorkspaceEventPayload<D> => {
+  return {
+    hashed,
+    teamhashed: ['workspace_id', ...teamhashed],
+    properties: {
+      ...data,
+      workspace_id: workspaceID,
+      last_product_activity: new Date().toISOString().slice(0, 10), // Format timestamp to YYYY-MM-DD for HubSpot
+    },
+  };
+};
 
 export const createProjectEventTracker = <T>(
   callback: (options: T extends AnyRecord ? ProjectEventInfo & T : ProjectEventInfo, ...args: Parameters<Thunk>) => void

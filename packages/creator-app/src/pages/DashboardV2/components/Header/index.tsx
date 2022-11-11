@@ -1,12 +1,17 @@
 import { Button } from '@voiceflow/ui';
 import React from 'react';
 
+import { useActiveWorkspace } from '@/hooks';
+
+import { WorkspaceSelector } from './components';
 import * as S from './styles';
 
 const Header: React.FC = () => {
+  const workspace = useActiveWorkspace();
+
   return (
     <S.HeaderWrapper>
-      <S.SidebarHeader>Acme Corp</S.SidebarHeader>
+      <WorkspaceSelector activeWorkspace={workspace} />
       <S.WorkspaceActions>
         <S.Title>All Assistants</S.Title>
         <S.Actions>

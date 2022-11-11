@@ -1,4 +1,4 @@
-import { Text } from '@voiceflow/ui';
+import { Box, Text } from '@voiceflow/ui';
 
 import { styled } from '@/hocs';
 
@@ -9,20 +9,6 @@ export const HeaderWrapper = styled.header`
   height: ${HEADER_HEIGHT}px;
   display: flex;
   color: #132144;
-`;
-
-export const SidebarHeader = styled.section`
-  border-right: 1px solid #dfe3ed;
-  height: 100%;
-  width: ${SIDEBAR_WIDTH}px;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  padding-left: 28px;
-  background-color: #fdfdfd;
-
-  font-size: 15px;
-  font-weight: 600;
 `;
 
 export const WorkspaceActions = styled.section`
@@ -45,4 +31,38 @@ export const Actions = styled.div`
 export const Title = styled(Text)`
   font-size: 18px;
   font-weight: 700;
+`;
+
+export const WorkspaceSelectorContainer = styled.div`
+  border-right: 1px solid #dfe3ed;
+  height: 100%;
+  width: ${SIDEBAR_WIDTH}px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 28px;
+  background-color: #fdfdfd;
+
+  font-size: 15px;
+  font-weight: 600;
+`;
+
+export const WorkspaceItemContainer = styled(Box.FlexStart)`
+  padding: 11px 0;
+  width: 100%;
+`;
+
+export const WorkspaceImage = styled.img<{ active?: boolean }>`
+  height: 24px;
+  width: 24px;
+  border-radius: ${({ active }) => (active ? '8px' : '50%')};
+  margin-right: 12px;
+`;
+
+export const WorkspaceName = styled.div`
+  max-width: 160px;
+  margin-right: 8px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 `;

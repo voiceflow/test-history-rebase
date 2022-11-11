@@ -12,6 +12,7 @@ export enum VirtualRole {
 export enum Permission {
   // organization
   CONFIGURE_ORGANIZATION = 'organization.CONFIGURE',
+  EDIT_ORGANIZATION = 'organization.EDIT',
 
   // workspace
   CONFIGURE_WORKSPACE = 'workspace.CONFIGURE',
@@ -99,6 +100,7 @@ const OWNER_AND_ADMIN_ROLES = [UserRole.OWNER, UserRole.ADMIN];
 
 export const ROLE_PERMISSIONS: Partial<Record<Permission, Array<UserRole | VirtualRole>>> = {
   [Permission.CONFIGURE_ORGANIZATION]: [UserRole.ADMIN],
+  [Permission.EDIT_ORGANIZATION]: [UserRole.OWNER],
 
   [Permission.ADD_COLLABORATORS]: EDITOR_AND_BILLING_USER_ROLES,
   [Permission.VIEW_COLLABORATORS]: SIGNED_USER_ROLES,

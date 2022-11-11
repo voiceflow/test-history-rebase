@@ -163,6 +163,7 @@ export { default as noContent } from './no-content.svg';
 export { default as noEntity } from './no-entity.svg';
 export { default as noIntent } from './no-intent.svg';
 export { default as noMatch } from './no-match.svg';
+export { default as notification } from './notification.svg';
 export { default as notifications } from './notifications.svg';
 export { default as nuanceMix } from './nuance-mix.svg';
 export { default as nubDown } from './nub-down.svg';
@@ -171,6 +172,7 @@ export { default as nubUp } from './nub-up.svg';
 // o
 export { default as offRadioButton } from './off-radio-button.svg';
 export { default as onRadioButton } from './on-radio-button.svg';
+export { default as organization } from './organization.svg';
 export { default as outlinedAdd } from './outlined-add.svg';
 export { default as outlinedCircle } from './outlined-circle.svg';
 export { default as outlinedFilledCircle } from './outlined-filled-circle.svg';
@@ -203,6 +205,7 @@ export { default as returnHome } from './return-home.svg';
 export { default as rocket } from './rocket.svg';
 
 // s
+export { default as sales } from './sales.svg';
 export { default as salesforce } from './salesforce.svg';
 export { default as sandwichMenu } from './sandwich-menu.svg';
 export { default as saveTest } from './save-test.svg';
@@ -249,6 +252,7 @@ export { default as systemUnderscore } from './system-underscore.svg';
 
 // t
 export { default as target } from './target.svg';
+export { default as team } from './team.svg';
 export { default as template } from './template.svg';
 export { default as text } from './text.svg';
 export { default as textAlignCenter } from './text-align-centre.svg';
@@ -268,12 +272,14 @@ export { default as user2 } from './user-2.svg';
 // v
 export { default as variable } from './var.svg';
 export { default as variables } from './variables.svg';
+export { default as video } from './video.svg';
 export { default as visualsPlaceholder } from './visuals-placeholder.svg';
 export { default as voiceflowV } from './voiceflow-v.svg';
 
 // w
 export { default as warning } from './warning.svg';
 export { default as watson } from './watson.svg';
+export { default as whatsNew } from './whats-new.svg';
 
 // y
 export { default as youtube } from './youtube.svg';

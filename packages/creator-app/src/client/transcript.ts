@@ -1,4 +1,7 @@
+import { BaseNode, BaseRequest } from '@voiceflow/base-types';
+
 import type { AnyTranscriptMessage, TagType, Transcript } from '@/models';
+import { FormatType } from '@/models';
 import type { Message } from '@/pages/Prototype/types';
 
 import dialogAdapter from './adapters/transcripts/dialogs';
@@ -30,9 +33,20 @@ const transcriptClient = {
     apiV2.put<{ _id: string }>(TRANSCRIPT_PATH, { ...data, projectID: projectID || undefined }),
 
   getTranscriptDialog: (projectID: string, transcriptID: string) =>
-    apiV2
-      .get<AnyTranscriptMessage[]>(`${TRANSCRIPT_PATH}/${projectID}/${transcriptID}`)
-      .then((dialogs) => dialogs.map(dialogAdapter.fromDB).filter((message): message is Message => Boolean(message))),
+    apiV2.get<AnyTranscriptMessage[]>(`${TRANSCRIPT_PATH}/${projectID}/${transcriptID}`).then((dialogs) =>
+      dialogs
+        .filter(
+          (message, i) =>
+            !i ||
+            !(
+              dialogs[i - 1].type === BaseNode.Utils.TraceType.GOTO &&
+              message.format === FormatType.Request &&
+              BaseRequest.isIntentRequest(message.payload)
+            )
+        )
+        .map(dialogAdapter.fromDB)
+        .filter((message): message is Message => Boolean(message))
+    ),
 
   getHasUnreadTranscripts: (projectID: string) =>
     apiV2.get<boolean>(`${TRANSCRIPT_PATH}/${projectID}/hasUnreadTranscripts`).then((response) => response),

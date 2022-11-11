@@ -3,13 +3,13 @@ import React from 'react';
 
 import * as S from './styles';
 
-interface ItemProps {
+export interface ItemProps {
   icon: SvgIconTypes.Icon;
   title: string;
   titleTooltip?: string;
   counter?: number;
   onAdd?: VoidFunction;
-  onClick: VoidFunction;
+  onClick?: VoidFunction;
   isActive?: boolean;
   createPlaceholder?: string;
 }

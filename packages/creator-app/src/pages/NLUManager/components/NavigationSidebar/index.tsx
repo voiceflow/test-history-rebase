@@ -3,6 +3,7 @@ import { Box, SvgIcon, TippyTooltip, useLocalStorageState } from '@voiceflow/ui'
 import React from 'react';
 
 import client from '@/client';
+import NavigationSidebar from '@/components/NavigationSidebar';
 import { NLURoute } from '@/config/routes';
 import { ModalType, NLUImportOrigin } from '@/constants';
 import * as Intent from '@/ducks/intent';
@@ -15,10 +16,9 @@ import * as ModalsV2 from '@/ModalsV2';
 import { NLUImportModel } from '@/models';
 import { NLUManagerContext } from '@/pages/NLUManager/context';
 
-import { Item } from './components';
 import * as S from './styles';
 
-const NavigationSidebar: React.FC = () => {
+const NLUNavigationSidebar: React.FC = () => {
   const nluConfig = useActiveNLUConfig();
 
   const [importClicked, setImportClicked] = useLocalStorageState('import-clicked', false);
@@ -54,11 +54,11 @@ const NavigationSidebar: React.FC = () => {
   };
 
   return (
-    <S.Container>
-      <S.ItemsContainer>
+    <NavigationSidebar>
+      <NavigationSidebar.ItemsContainer>
         {isUnclassifiedDataEnabled && (
           <Box mb={24}>
-            <Item
+            <NavigationSidebar.Item
               icon="noMatch"
               title="Unclassified"
               onAdd={open}
@@ -70,7 +70,7 @@ const NavigationSidebar: React.FC = () => {
           </Box>
         )}
 
-        <Item
+        <NavigationSidebar.Item
           icon="intent"
           title="Intent"
           onAdd={nluManager.createIntent}
@@ -80,7 +80,7 @@ const NavigationSidebar: React.FC = () => {
           counter={nluManager.intents.length}
         />
 
-        <Item
+        <NavigationSidebar.Item
           icon="setV2"
           title="Entities"
           onAdd={nluManager.createEntity}
@@ -89,7 +89,7 @@ const NavigationSidebar: React.FC = () => {
           createPlaceholder="entity"
           counter={nluManager.entities.length}
         />
-      </S.ItemsContainer>
+      </NavigationSidebar.ItemsContainer>
 
       {!!nluConfig.nlps[0].import && (
         <TippyTooltip
@@ -102,21 +102,25 @@ const NavigationSidebar: React.FC = () => {
           bodyOverflow
         >
           <Box px={16} pb={12}>
-            <Item onClick={onImportClick} icon="importCircle" title="Import" />
+            <NavigationSidebar.Item onClick={onImportClick} icon="importCircle" title="Import" />
             {!importClicked && <S.StatusBubble />}
           </Box>
         </TippyTooltip>
       )}
       <Box px={16} pb={12}>
-        <Item onClick={() => openExportModelModal({ checkedItems: Array.from(nluManager.selectedIntentIDs) })} icon="uploadCircle" title="Export" />
+        <NavigationSidebar.Item
+          onClick={() => openExportModelModal({ checkedItems: Array.from(nluManager.selectedIntentIDs) })}
+          icon="uploadCircle"
+          title="Export"
+        />
       </Box>
 
-      <S.Footer onClick={goToCurrentCanvas}>
+      <NavigationSidebar.Footer onClick={goToCurrentCanvas}>
         <SvgIcon icon="arrowDown" size={18} color="#6e849a" inline style={{ marginRight: '10px' }} />
         Go to Designer
-      </S.Footer>
-    </S.Container>
+      </NavigationSidebar.Footer>
+    </NavigationSidebar>
   );
 };
 
-export default NavigationSidebar;
+export default NLUNavigationSidebar;

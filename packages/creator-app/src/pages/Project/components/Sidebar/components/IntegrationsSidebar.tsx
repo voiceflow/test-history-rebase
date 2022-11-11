@@ -1,10 +1,9 @@
 import * as Platform from '@voiceflow/platform-config';
-import { Utils } from '@voiceflow/realtime-sdk';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 import { generatePath } from 'react-router-dom';
 
-import NavLinkSidebar, { NavLinkItem, NavLinkSection } from '@/components/NavLinkSidebar';
+import NavigationSidebar from '@/components/NavigationSidebar';
 import { Permission } from '@/config/permissions';
 import { Path } from '@/config/routes';
 import * as ProjectV2 from '@/ducks/projectV2';
@@ -13,77 +12,51 @@ import { useAlexaProjectSettings, useFeature, usePermission, useSelector } from 
 
 import { SideBarComponentProps } from '../types';
 import CanvasIconMenu from './CanvasIconMenu';
-import IconMenuOffsetContainer from './IconMenuOffsetContainer';
-
-const getDialogflowItems = (versionID: string) => [
-  {
-    to: generatePath(Path.PUBLISH_DIALOGFLOW, { versionID }),
-    key: 'dialogflow',
-    label: 'Dialogflow',
-  },
-];
-
-const getPlatformItems = Utils.platform.createPlatformAndProjectTypeSelector<(versionID: string) => NavLinkItem[]>(
-  {
-    [Platform.Constants.PlatformType.ALEXA]: (versionID) => [
-      { to: generatePath(Path.PUBLISH_ALEXA, { versionID }), key: 'alexa', label: 'Amazon Alexa' },
-    ],
-    [Platform.Constants.PlatformType.GOOGLE]: (versionID) => [
-      { to: generatePath(Path.PUBLISH_GOOGLE, { versionID }), key: 'google', label: 'Google Assistant' },
-    ],
-    [Platform.Constants.PlatformType.DIALOGFLOW_ES]: (versionID) => getDialogflowItems(versionID),
-    [Platform.Constants.ProjectType.CHAT]: (versionID) => [
-      { to: generatePath(Path.PUBLISH_WEBCHAT, { versionID }), key: 'webchat', label: 'Web Chat' },
-    ],
-  },
-  () => []
-);
 
 const IntegrationsSidebar: React.FC<SideBarComponentProps> = () => {
-  const { platform, type } = useSelector(ProjectV2.active.metaSelector);
+  const { platform } = useSelector(ProjectV2.active.metaSelector);
   const versionID = useSelector(Session.activeVersionIDSelector)!;
 
   const [canExportCode] = usePermission(Permission.CODE_EXPORT);
 
   const disableCodeExports = useFeature(Realtime.FeatureFlag.DISABLE_CODE_EXPORTS).isEnabled;
-  const webchat = useFeature(Realtime.FeatureFlag.WEBCHAT).isEnabled;
-
   const canUseAlexaSettings = useAlexaProjectSettings();
 
-  const items = React.useMemo<NavLinkSection[]>(() => {
-    const _platformItems = canUseAlexaSettings ? getPlatformItems(platform, type)(versionID) : [];
+  const platformConfig = Platform.Config.get(platform);
 
-    const platformItems = webchat ? _platformItems : _platformItems.filter(({ key }) => key !== 'webchat');
+  const publishPath = React.useMemo(() => {
+    switch (platformConfig.type) {
+      case Platform.Constants.PlatformType.ALEXA:
+        return canUseAlexaSettings ? generatePath(Path.PUBLISH_ALEXA, { versionID }) : null;
+      case Platform.Constants.PlatformType.GOOGLE:
+        return generatePath(Path.PUBLISH_GOOGLE, { versionID });
+      case Platform.Constants.PlatformType.DIALOGFLOW_ES:
+        return generatePath(Path.PUBLISH_DIALOGFLOW, { versionID });
+      case Platform.Constants.PlatformType.WEBCHAT:
+        return generatePath(Path.PUBLISH_WEBCHAT, { versionID });
+      default:
+        return null;
+    }
+  }, []);
 
-    return [
-      ...(platformItems.length
-        ? [
-            {
-              label: 'Channel',
-              key: 'channel',
-              items: platformItems,
-            },
-          ]
-        : []),
-      {
-        label: 'Developer',
-        key: 'developer',
-        items: [
-          { to: generatePath(Path.PUBLISH_API, { versionID }), key: 'api', label: 'API' },
-          ...(!disableCodeExports && canExportCode
-            ? [{ to: generatePath(Path.PUBLISH_EXPORT, { versionID }), key: 'code-export', label: 'Code Export' }]
-            : []),
-        ],
-      },
-    ];
-  }, [platform, versionID, canExportCode]);
+  const platformIcon = Object.values(platformConfig.types)[0]?.icon;
 
   return (
-    <IconMenuOffsetContainer>
+    <>
       <CanvasIconMenu />
 
-      <NavLinkSidebar items={items} />
-    </IconMenuOffsetContainer>
+      <NavigationSidebar>
+        <NavigationSidebar.ItemsContainer>
+          {publishPath && <NavigationSidebar.NavItem to={publishPath} icon={platformIcon.name} title={platformConfig.name} />}
+
+          <NavigationSidebar.NavItem to={generatePath(Path.PUBLISH_API, { versionID })} icon="channel" title="API" />
+
+          {!disableCodeExports && canExportCode && (
+            <NavigationSidebar.NavItem to={generatePath(Path.PUBLISH_EXPORT, { versionID })} icon="systemCode" title="Code Export" />
+          )}
+        </NavigationSidebar.ItemsContainer>
+      </NavigationSidebar>
+    </>
   );
 };
 

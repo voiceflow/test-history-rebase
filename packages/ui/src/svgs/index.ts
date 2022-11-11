@@ -38,6 +38,7 @@ export { default as captureV2 } from './capture-v2.svg';
 export { default as cardV2 } from './card-v2.svg';
 export { default as caretDown } from './caret-down.svg';
 export { default as carousel } from './carousel.svg';
+export { default as channel } from './channel.svg';
 export { default as chatWidget } from './chat-widget.svg';
 export { default as check } from './check.svg';
 export { default as check2 } from './check-2.svg';
@@ -272,6 +273,7 @@ export { default as user2 } from './user-2.svg';
 // v
 export { default as variable } from './var.svg';
 export { default as variables } from './variables.svg';
+export { default as versions } from './versions.svg';
 export { default as video } from './video.svg';
 export { default as visualsPlaceholder } from './visuals-placeholder.svg';
 export { default as voiceflowV } from './voiceflow-v.svg';

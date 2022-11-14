@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.973.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.973.2...@voiceflow/creator-app@1.973.3) (2022-11-14)
+
+
+### Bug Fixes
+
+* dialogflow logo size (CT-000) ([1596d45](https://github.com/voiceflow/creator-app/commit/1596d4555266afc1d1e1f56a3f58916871dbf58b))
+* webchat publish message (BUG-111) ([#6314](https://github.com/voiceflow/creator-app/issues/6314)) ([c61bd61](https://github.com/voiceflow/creator-app/commit/c61bd61e5f78899625eaa876779a764ee28c099d))
+
+
+
+
+
 ## [1.973.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.973.1...@voiceflow/creator-app@1.973.2) (2022-11-14)
 
 

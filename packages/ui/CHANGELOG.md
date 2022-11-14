@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.178.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.177.1...@voiceflow/ui@1.178.0) (2022-11-14)
+
+
+### Features
+
+* update intent local svg ([#6307](https://github.com/voiceflow/creator-app/issues/6307)) ([9c1d69a](https://github.com/voiceflow/creator-app/commit/9c1d69a5ba0b9a98b4583185e88df5d497ad3aae))
+
+
+
+
+
 ## [1.177.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.177.0...@voiceflow/ui@1.177.1) (2022-11-14)
 
 

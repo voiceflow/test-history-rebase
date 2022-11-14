@@ -13,7 +13,9 @@ const Dashboard: React.FC = () => {
       <Header />
       <S.BodyWrapper>
         <Sidebar />
-        <ProjectList />
+        <S.ContentWrapper>
+          <ProjectList />
+        </S.ContentWrapper>
       </S.BodyWrapper>
     </S.DashboardWrapper>
   );

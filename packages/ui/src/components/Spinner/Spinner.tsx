@@ -17,10 +17,14 @@ export interface SpinnerProps {
   color?: string;
   className?: string;
   borderLess?: boolean;
+  fillContainer?: boolean;
 }
 
-const Spinner: React.FC<SpinnerProps> = ({ message, name, isMd, color, className, borderLess }) => (
-  <div className={cn('text-center', className)}>
+const Spinner: React.FC<SpinnerProps> = ({ message, name, isMd, color, className, borderLess, fillContainer = false }) => (
+  <div
+    className={cn('text-center', className)}
+    style={fillContainer ? { width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' } : {}}
+  >
     <Loader isMd={isMd} color={color} borderLess={borderLess} />
     {!!(message || name) && <Text>{message || `Loading ${name}...`}</Text>}
   </div>

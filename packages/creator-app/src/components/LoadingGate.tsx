@@ -16,6 +16,9 @@ export interface LoadingGateProps {
   isLoaded: boolean;
   withoutSpinner?: boolean;
   backgroundColor?: string;
+  borderless?: boolean;
+  hasLabel?: boolean;
+  fillContainer?: boolean;
 }
 
 const LoadingGate: React.FC<LoadingGateProps> = ({
@@ -29,6 +32,9 @@ const LoadingGate: React.FC<LoadingGateProps> = ({
   isLoaded,
   withoutSpinner,
   backgroundColor,
+  borderless,
+  hasLabel = true,
+  fillContainer = false,
 }) => {
   React.useEffect(() => {
     if (isLoaded) {
@@ -47,7 +53,15 @@ const LoadingGate: React.FC<LoadingGateProps> = ({
   if (!isLoaded) {
     const SpinnerComponent = full ? FullSpinner : Spinner;
 
-    return withoutSpinner ? null : <SpinnerComponent name={label || 'Data'} zIndex={zIndex} backgroundColor={backgroundColor} />;
+    return withoutSpinner ? null : (
+      <SpinnerComponent
+        name={hasLabel ? label || 'Data' : ''}
+        zIndex={zIndex}
+        backgroundColor={backgroundColor}
+        borderLess={borderless}
+        fillContainer={fillContainer}
+      />
+    );
   }
 
   return <>{children}</>;

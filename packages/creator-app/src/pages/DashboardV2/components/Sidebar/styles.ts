@@ -11,6 +11,7 @@ export const SidebarWrapper = styled.aside`
   background-color: #fbfbfb;
   position: relative;
   color: #132144;
+  z-index: 8;
 `;
 
 export const Footer = styled.header<{ active: boolean }>`

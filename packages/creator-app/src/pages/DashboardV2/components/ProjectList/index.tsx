@@ -1,6 +1,9 @@
 import { AssistantCard, AssistantCardProps, Banner, Button } from '@voiceflow/ui';
 import React from 'react';
 
+import { withBatchLoadingGate } from '@/hocs';
+
+import { AssistantLoadingGate } from '../../gates';
 import * as S from './styles';
 
 const props = {
@@ -105,4 +108,4 @@ const ProjectList: React.FC = () => {
   );
 };
 
-export default ProjectList;
+export default withBatchLoadingGate(AssistantLoadingGate)(ProjectList);

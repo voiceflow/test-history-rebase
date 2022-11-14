@@ -144,7 +144,7 @@ const NewProject: React.FC<NewProjectProps> = ({ listID, onClose, onToggleCreati
         await updateAlexaMeta(project.versionID, alexaLocalesToUse as [AlexaConstants.Locale, ...AlexaConstants.Locale[]], state.invocationName);
       } else if (isGooglePlatform(state.platform)) {
         await updateGoogleMeta(project.versionID, languageToUse as GoogleConstants.Language, state.invocationName);
-      } else if (isDialogflowPlatform(state.platform)) {
+      } else if (isDialogflowPlatform(state.nlu as Platform.Constants.PlatformType)) {
         await updateDialogFlowMeta(project.versionID, languageToUse as DFESConstants.Language);
       } else {
         await updateGeneralMeta(project.versionID, languageToUse as VoiceflowConstants.Locale);

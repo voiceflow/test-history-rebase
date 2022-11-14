@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.177.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.176.1...@voiceflow/ui@1.177.0) (2022-11-14)
+
+
+### Features
+
+* assistant loading gate (CT-1108) ([#6296](https://github.com/voiceflow/creator-app/issues/6296)) ([6a70e04](https://github.com/voiceflow/creator-app/commit/6a70e047db923a0592f1b772e8ad6ef4aef38cea))
+
+
+
+
+
 ## [1.176.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.176.0...@voiceflow/ui@1.176.1) (2022-11-11)
 
 

@@ -21,6 +21,8 @@ export interface Config {
 
   icon: Icon;
 
+  logo: Icon['name'] | null;
+
   utils: Utils.Config;
 
   project: Project.Config;
@@ -36,6 +38,8 @@ export const CONFIG = Types.satisfies<Config>()({
   name: 'Voiceflow Assistant',
 
   icon: { name: 'voiceflowV', color: '#00a0ff' } as Icon,
+
+  logo: null,
 
   utils: Utils.CONFIG,
 

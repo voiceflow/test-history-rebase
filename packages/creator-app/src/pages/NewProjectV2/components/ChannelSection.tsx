@@ -47,7 +47,9 @@ const ChannelSection: React.FC<ChannelSectionProps> = ({ error, value, onSelect 
         error={!!error}
         value={value && Channel.getID(value)}
         prefix={
-          platformConfig?.oneClickPublish && typeConfig ? <SvgIcon size={16} icon={typeConfig.icon.name} color={typeConfig.icon.color} /> : undefined
+          platformConfig?.oneClickPublish && typeConfig ? (
+            <SvgIcon size={16} icon={typeConfig.logo ?? typeConfig.icon.name} color={typeConfig.icon.color} />
+          ) : undefined
         }
         grouped
         options={FILTERED_OPTIONS}

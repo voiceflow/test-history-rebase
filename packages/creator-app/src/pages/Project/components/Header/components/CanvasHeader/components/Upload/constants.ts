@@ -10,8 +10,8 @@ interface PlatformIconProps {
 export const getPlatformIconProps = Utils.platform.createPlatformSelector<PlatformIconProps>(
   {
     [Platform.Constants.PlatformType.ALEXA]: { icon: 'amazonAlexa', iconProps: { color: '#5fcaf4' } },
-    [Platform.Constants.PlatformType.GOOGLE]: { icon: 'googleAssistant' },
-    [Platform.Constants.PlatformType.DIALOGFLOW_ES]: { icon: 'dialogflow', iconProps: { height: '18px', width: '18px' } },
+    [Platform.Constants.PlatformType.GOOGLE]: { icon: 'googleAssistantLogo' },
+    [Platform.Constants.PlatformType.DIALOGFLOW_ES]: { icon: 'dialogflowLogo', iconProps: { height: '18px', width: '18px' } },
     [Platform.Constants.PlatformType.DIALOGFLOW_CX]: { icon: 'dialogflowCX', iconProps: { height: '18px', width: '18px' } },
   },
   { icon: 'ban' }

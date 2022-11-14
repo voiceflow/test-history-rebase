@@ -8,4 +8,6 @@ export const CONFIG = Types.partialSatisfies<Base.Type.Common.Config>()({
     name: 'dialogflow',
     color: '#FF9800',
   },
+
+  logo: 'dialogflowLogo',
 });

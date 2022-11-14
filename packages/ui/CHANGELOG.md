@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.177.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.177.0...@voiceflow/ui@1.177.1) (2022-11-14)
+
+
+### Bug Fixes
+
+* platform logo property (CT-000) ([#6309](https://github.com/voiceflow/creator-app/issues/6309)) ([6c3817f](https://github.com/voiceflow/creator-app/commit/6c3817f8f547fe6d0008585e831e2cf5cf800909))
+
+
+
+
+
 # [1.177.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.176.1...@voiceflow/ui@1.177.0) (2022-11-14)
 
 

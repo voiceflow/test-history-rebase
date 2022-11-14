@@ -72,6 +72,7 @@ export * from './dialogflowCX';
 export * from './dialogflowES';
 export * from './general';
 export * from './google';
+export * from './webchat';
 
 export const getDefaultPlatformLanguageLabel = Utils.platform.createPlatformSelector(
   {

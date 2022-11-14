@@ -1,16 +1,15 @@
 import * as Platform from '@voiceflow/platform-config';
-import { Link } from '@voiceflow/ui';
 import React from 'react';
 
 import InputModal from '@/components/InputModal';
 import { ModalType } from '@/constants';
 import * as ProjectV2 from '@/ducks/projectV2';
-import * as Router from '@/ducks/router';
-import { useDispatch, useSelector } from '@/hooks';
+import { useSelector } from '@/hooks';
 import { useModals } from '@/hooks/modals';
 import { isPlatformWithThirdPartyUpload } from '@/utils/typeGuards';
 
 export interface PublishVersionModalData {
+  message?: JSX.Element;
   onConfirm: (versionName: string) => void;
 }
 
@@ -18,30 +17,16 @@ const PublishVersionModal: React.FC = () => {
   const {
     close,
     isOpened,
-    data: { onConfirm },
+    data: { onConfirm, message },
   } = useModals<PublishVersionModalData>(ModalType.PUBLISH_VERSION_MODAL);
 
   const platform = useSelector(ProjectV2.active.platformSelector);
 
   const headerText = React.useMemo(() => (isPlatformWithThirdPartyUpload(platform) ? 'Upload new version' : 'Publish for production'), [platform]);
 
-  const goToCurrentPublish = useDispatch(Router.goToActivePlatformPublish);
-
-  const onLinkClick = () => {
-    close();
-    goToCurrentPublish();
-  };
-
   const bodyText = React.useMemo(
-    () =>
-      isPlatformWithThirdPartyUpload(platform) ? (
-        `This action will upload a new version to ${Platform.Config.get(platform).name}. Confirm you want to continue.`
-      ) : (
-        <>
-          Publish this version to production and use it with our <Link onClick={onLinkClick}>Dialog Manager API</Link>.
-        </>
-      ),
-    [platform]
+    () => message ?? `This action will upload a new version to ${Platform.Config.get(platform).name}. Confirm you want to continue.`,
+    [platform, message]
   );
 
   const confirmText = React.useMemo(() => (isPlatformWithThirdPartyUpload(platform) ? 'Upload' : 'Publish'), [platform]);

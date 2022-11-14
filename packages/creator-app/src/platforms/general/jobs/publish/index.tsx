@@ -1,6 +1,5 @@
-import { toast, usePersistFunction } from '@voiceflow/ui';
+import { Link, toast, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
-import { useSelector } from 'react-redux';
 
 import client from '@/client';
 import JobInterface from '@/components/JobInterface';
@@ -9,8 +8,9 @@ import { ModalType } from '@/constants';
 import { VersionTag } from '@/constants/platforms';
 import { TrainingContext, TrainingProvider } from '@/contexts';
 import * as Project from '@/ducks/project';
+import * as Router from '@/ducks/router';
 import { activeProjectIDSelector } from '@/ducks/session';
-import { useDispatch, useModals, useTrackingEvents } from '@/hooks';
+import { useDispatch, useModals, useSelector, useTrackingEvents } from '@/hooks';
 import { getProgress } from '@/utils/job';
 
 import GeneralUploadButton from './components/GeneralUploadButton';
@@ -44,8 +44,20 @@ const GeneralPublish: React.FC = () => {
     })();
   });
 
+  const goToCurrentPublish = useDispatch(Router.goToActivePlatformPublish);
+
+  const onLinkClick = () => {
+    publishNewVersionModal.close();
+    goToCurrentPublish();
+  };
+
   const onPublish = usePersistFunction(() =>
     publishNewVersionModal.open({
+      message: (
+        <>
+          Publish this version to production and use it with our <Link onClick={onLinkClick}>Dialog Manager API</Link>.
+        </>
+      ),
       onConfirm,
     })
   );

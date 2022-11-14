@@ -1,4 +1,4 @@
-import { toast, usePersistFunction } from '@voiceflow/ui';
+import { Link, toast, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 import { useSelector } from 'react-redux';
 
@@ -6,7 +6,7 @@ import client from '@/client';
 import JobInterface from '@/components/JobInterface';
 import { PublishVersionModalData } from '@/components/PublishVersionModal';
 import { ModalType } from '@/constants';
-import { VersionTag } from '@/constants/platforms';
+import { VersionTag, WEBCHAT_LEARN_MORE } from '@/constants/platforms';
 import { TrainingContext, TrainingProvider } from '@/contexts';
 import * as Project from '@/ducks/project';
 import { activeProjectIDSelector } from '@/ducks/session';
@@ -46,6 +46,11 @@ const WebchatPublish: React.FC = () => {
 
   const onPublish = usePersistFunction(() =>
     publishNewVersionModal.open({
+      message: (
+        <>
+          Publish this version to production and use it with your <Link href={WEBCHAT_LEARN_MORE}>Web Chat</Link>.
+        </>
+      ),
       onConfirm,
     })
   );

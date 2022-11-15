@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.974.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.973.3...@voiceflow/creator-app@1.974.0) (2022-11-15)
+
+
+### Features
+
+* platform intent and prompt adapters, utils, and models (CT-000) ([#6292](https://github.com/voiceflow/creator-app/issues/6292)) ([33badb9](https://github.com/voiceflow/creator-app/commit/33badb95d5a8011b8ff126fbc3ff86394472bc8e))
+
+
+
+
+
 ## [1.973.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.973.2...@voiceflow/creator-app@1.973.3) (2022-11-14)
 
 

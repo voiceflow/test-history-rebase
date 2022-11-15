@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.128.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.127.7...@voiceflow/realtime@1.128.0) (2022-11-15)
+
+
+### Features
+
+* platform intent and prompt adapters, utils, and models (CT-000) ([#6292](https://github.com/voiceflow/creator-app/issues/6292)) ([33badb9](https://github.com/voiceflow/creator-app/commit/33badb95d5a8011b8ff126fbc3ff86394472bc8e))
+
+
+
+
+
 ## [1.127.7](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.127.6...@voiceflow/realtime@1.127.7) (2022-11-14)
 
 **Note:** Version bump only for package @voiceflow/realtime

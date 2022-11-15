@@ -52,6 +52,13 @@ export const trackProjectBlockPrototypeTestStart = createVersionEventTracker((op
   client.api.analytics.track(EventName.PROJECT_BLOCK_TEST_START, createVersionEventPayload(options, { debug, display }));
 });
 
+export const trackProjectPrototypeEnd = createVersionEventTracker((options, _dispatch, getState) => {
+  const state = getState();
+  const contextStep = Prototype.prototypeContextStepSelector(state);
+
+  client.api.analytics.track(EventName.PROJECT_CANVAS_PROTOTYPE_END, createVersionEventPayload(options, { interactions: contextStep }));
+});
+
 export const trackPublicPrototypeView =
   ({ versionID, ...data }: { device: string; layout: PrototypeLayout; versionID: string }): SyncThunk =>
   (_, getState) => {

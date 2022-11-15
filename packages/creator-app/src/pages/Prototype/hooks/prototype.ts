@@ -84,6 +84,9 @@ const usePrototype = ({ debug, config, state, actions, isPublic, waitVisuals = t
   React.useEffect(() => {
     if (status === PMStatus.ENDED) {
       updatePrototypeStatus?.(PrototypeStatus.ENDED);
+      if (!isPublic) {
+        trackingEvents.trackProjectPrototypeEnd();
+      }
     }
   }, [status]);
 

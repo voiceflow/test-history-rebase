@@ -1,7 +1,6 @@
 import composeRef from '@seznam/compose-react-refs';
 import { BaseButton } from '@voiceflow/base-types';
 import * as Platform from '@voiceflow/platform-config';
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, SectionV2, UIOnlyMenuItemOption } from '@voiceflow/ui';
 import React from 'react';
 
@@ -22,7 +21,7 @@ export interface DraggableItemProps
     DragPreviewComponentProps,
     MappedItemComponentHandlers<BaseButton.IntentButton> {
   editor: NodeEditorV2Props<{ buttons: BaseButton.AnyButton[] }>;
-  intentOptions: Array<Realtime.Intent | UIOnlyMenuItemOption>;
+  intentOptions: Array<Platform.Base.Models.Intent.Model | UIOnlyMenuItemOption>;
   latestCreatedKey?: string;
 }
 

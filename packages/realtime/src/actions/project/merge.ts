@@ -1,4 +1,5 @@
 import { BaseModels } from '@voiceflow/base-types';
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { terminateResend } from '@voiceflow/socket-utils';
 
@@ -48,6 +49,8 @@ class MergeProjects extends AbstractProjectResourceControl<Realtime.project.Merg
     ]);
 
     const { nlu: targetNLU, type: targetProjectType, platform: targetProjectPlatform } = Realtime.Adapters.projectAdapter.fromDB(targetProject);
+
+    const targetProjectConfig = Platform.Config.getTypeConfig({ type: targetProjectType, platform: targetProjectPlatform });
 
     const projectsMerge = new ProjectsMerge({
       creatorID,
@@ -144,9 +147,7 @@ class MergeProjects extends AbstractProjectResourceControl<Realtime.project.Merg
           creatorID,
           Realtime.intent.reload({
             ...actionContext,
-            intents: Realtime.Adapters.getProjectTypeIntentAdapter<any>(targetProjectType).mapFromDB(mergedIntents, {
-              platform: targetProjectPlatform,
-            }),
+            intents: targetProjectConfig.adapters.intent.smart.mapFromDB(mergedIntents),
             projectMeta: { nlu: targetNLU, type: targetProjectType, platform: targetProjectPlatform },
           })
         ),

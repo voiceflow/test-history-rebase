@@ -1,4 +1,4 @@
-import { Config } from '@platform-config/configs/utils';
+import { Config as ConfigUtils } from '@platform-config/configs/utils';
 import { Types } from '@platform-config/utils';
 import { BaseVersion } from '@voiceflow/base-types';
 import { createSimpleAdapter, createSmartSimpleAdapter } from 'bidirectional-adapter';
@@ -23,8 +23,8 @@ export const smart = createSmartSimpleAdapter<
   FromAndToDBOptions,
   FromAndToDBOptions
 >(
-  (dbSettings) => Config.pickNonEmptyFields(dbSettings, SHARED_FIELDS),
-  (settings) => Config.pickNonEmptyFields(settings, SHARED_FIELDS)
+  (dbSettings) => ConfigUtils.pickNonEmptyFields(dbSettings, SHARED_FIELDS),
+  (settings) => ConfigUtils.pickNonEmptyFields(settings, SHARED_FIELDS)
 );
 
 export const simple = createSimpleAdapter<
@@ -36,3 +36,12 @@ export const simple = createSimpleAdapter<
   (settings, options) => smart.fromDB(BaseVersion.defaultSettings(settings), options),
   (settings, options) => smart.toDB(settings, options)
 );
+
+export const CONFIG = {
+  smart,
+  simple,
+};
+
+export type Config = typeof CONFIG;
+
+export const extend = ConfigUtils.extendFactory<Config>(CONFIG);

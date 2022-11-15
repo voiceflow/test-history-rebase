@@ -1,8 +1,6 @@
-import { ChatModels } from '@voiceflow/chat-types';
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { SectionV2 } from '@voiceflow/ui';
-import { VoiceModels } from '@voiceflow/voice-types';
 import React from 'react';
 
 import PromptForm from '@/components/PromptForm';
@@ -11,9 +9,9 @@ import { isEmptyPrompt } from '@/utils/prompt';
 interface EntityPromptSectionProps {
   title: string;
   onAdd: VoidFunction;
-  prompt: ChatModels.Prompt[] | VoiceModels.IntentPrompt<string>[];
+  prompt: unknown[];
   onRemove: VoidFunction;
-  onChange: (prompt: ChatModels.Prompt[] | VoiceModels.IntentPrompt<string>[]) => void;
+  onChange: (prompt: unknown[]) => void;
   collapsed: boolean;
   placeholder: string;
   intentEntities: Realtime.Slot[];

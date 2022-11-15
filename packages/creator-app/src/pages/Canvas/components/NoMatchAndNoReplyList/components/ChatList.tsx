@@ -1,4 +1,4 @@
-import { ChatModels } from '@voiceflow/chat-types';
+import * as Platform from '@voiceflow/platform-config';
 import React from 'react';
 
 import OverflowMenu from '@/components/OverflowMenu';
@@ -9,9 +9,9 @@ import { NoMatchChatListItem, NoReplyChatListItem } from './ListItem';
 
 export interface ChatListProps {
   randomize: boolean;
-  reprompts?: ChatModels.Prompt[];
+  reprompts?: Platform.Common.Chat.Models.Prompt.Model[];
   isNoReply?: boolean;
-  onChangeReprompts: (reprompts: ChatModels.Prompt[]) => void;
+  onChangeReprompts: (reprompts: Platform.Common.Chat.Models.Prompt.Model[]) => void;
   onChangeRandomize: () => void;
   hideRandomizeMenu?: boolean;
 }

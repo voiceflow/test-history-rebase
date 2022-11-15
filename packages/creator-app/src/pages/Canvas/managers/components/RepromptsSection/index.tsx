@@ -1,4 +1,4 @@
-import { ChatModels } from '@voiceflow/chat-types';
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, SectionV2 } from '@voiceflow/ui';
 import React from 'react';
@@ -7,15 +7,14 @@ import { MAX_ALEXA_REPROMPTS, MAX_SYSTEM_MESSAGES_COUNT } from '@/constants';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useMapManager, useSelector } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
-import { chatPromptFactory, voiceAudioPromptFactory, voicePromptFactory } from '@/utils/prompt';
 
 import { ListItem } from './components';
 
 interface RepromptsSectionProps {
   title: string;
   active: boolean;
-  onChange: (reprompts: Array<ChatModels.Prompt | Realtime.NodeData.VoicePrompt>) => Promise<void>;
-  reprompts: Array<ChatModels.Prompt | Realtime.NodeData.VoicePrompt>;
+  onChange: (reprompts: Array<Platform.Base.Models.Prompt.Model>) => Promise<void>;
+  reprompts: Array<Platform.Base.Models.Prompt.Model>;
   isRandomized: boolean;
 }
 
@@ -35,12 +34,15 @@ const RepromptsSection: React.FC<RepromptsSectionProps> = ({ title, active, repr
       title={<SectionV2.Title bold={hasReprompts}>{title}</SectionV2.Title>}
       action={
         isChat ? (
-          <SectionV2.AddButton onClick={() => mapManager.onAdd(chatPromptFactory())} disabled={mapManager.isMaxReached} />
+          <SectionV2.AddButton
+            onClick={() => mapManager.onAdd(Platform.Common.Chat.CONFIG.utils.prompt.factory())}
+            disabled={mapManager.isMaxReached}
+          />
         ) : (
           <SectionV2.AddButtonDropdown
             actions={[
-              { label: 'Speak', onClick: () => mapManager.onAdd(voicePromptFactory({ defaultVoice })) },
-              { label: 'Audio', onClick: () => mapManager.onAdd(voiceAudioPromptFactory()) },
+              { label: 'Speak', onClick: () => mapManager.onAdd(Platform.Common.Voice.CONFIG.utils.prompt.textFactory({ defaultVoice })) },
+              { label: 'Audio', onClick: () => mapManager.onAdd(Platform.Common.Voice.CONFIG.utils.prompt.audioFactory()) },
             ]}
             disabled={mapManager.isMaxReached}
           />

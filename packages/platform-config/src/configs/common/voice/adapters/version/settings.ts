@@ -1,5 +1,5 @@
 import * as Base from '@platform-config/configs/base';
-import { Config } from '@platform-config/configs/utils';
+import { Config as ConfigUtils } from '@platform-config/configs/utils';
 import { VoiceVersion } from '@voiceflow/voice-types';
 import { createSimpleAdapter, createSmartSimpleAdapter, SimpleAdapter, SmartSimpleAdapter } from 'bidirectional-adapter';
 
@@ -16,7 +16,7 @@ export const smart = createSmartSimpleAdapter<
 >(
   ({ error, globalNoMatch, globalNoReply, ...dbSettings }, { defaultVoice }) => ({
     ...Base.Adapters.Version.Settings.smart.fromDB(dbSettings, { defaultVoice: dbSettings.defaultVoice ?? defaultVoice }),
-    ...(Config.hasValue(dbSettings, 'defaultVoice') && { messageDelay: dbSettings.defaultVoice ?? defaultVoice }),
+    ...(ConfigUtils.hasValue(dbSettings, 'defaultVoice') && { messageDelay: dbSettings.defaultVoice ?? defaultVoice }),
     ...(error !== undefined && { error: error && Prompt.simple.fromDB(error) }),
     ...(globalNoMatch !== undefined && {
       globalNoMatch: { ...globalNoMatch, prompt: globalNoMatch.prompt && Prompt.simple.fromDB(globalNoMatch.prompt) },
@@ -27,7 +27,7 @@ export const smart = createSmartSimpleAdapter<
   }),
   ({ error, globalNoMatch, globalNoReply, ...settings }, { defaultVoice }) => ({
     ...Base.Adapters.Version.Settings.smart.toDB(settings, { defaultVoice: settings.defaultVoice ?? defaultVoice }),
-    ...(Config.hasValue(settings, 'defaultVoice') && { defaultVoice: settings.defaultVoice }),
+    ...(ConfigUtils.hasValue(settings, 'defaultVoice') && { defaultVoice: settings.defaultVoice }),
     ...(error !== undefined && { error: error && Prompt.simple.toDB(error) }),
     ...(globalNoMatch !== undefined && {
       globalNoMatch: { ...globalNoMatch, prompt: globalNoMatch.prompt && Prompt.simple.toDB(globalNoMatch.prompt) },
@@ -48,6 +48,15 @@ export const simple = createSimpleAdapter<
     smart.fromDB(VoiceVersion.defaultSettings(dbSettings, { defaultPromptVoice: dbSettings.defaultVoice ?? options.defaultVoice }), options),
   (settings, options) => smart.toDB(settings, options)
 );
+
+export const CONFIG = Base.Adapters.Version.Settings.extend({
+  smart,
+  simple,
+});
+
+export type Config = typeof CONFIG;
+
+export const extend = ConfigUtils.extendFactory<Config>(CONFIG);
 
 /**
  * Should not be used in the configs, only in the adapters to share the logic and fix TS voice related typings

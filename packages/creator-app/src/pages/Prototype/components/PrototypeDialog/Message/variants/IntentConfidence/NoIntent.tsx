@@ -1,4 +1,4 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import * as Platform from '@voiceflow/platform-config';
 import { ClickableText, Flex, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 
@@ -18,7 +18,7 @@ interface NoIntentProps {
   focused: boolean;
 }
 
-const determineNewUtterances = (previousInputArray: Realtime.IntentInput[], newInputArray: Realtime.IntentInput[]) => {
+const determineNewUtterances = (previousInputArray: Platform.Base.Models.Intent.Input[], newInputArray: Platform.Base.Models.Intent.Input[]) => {
   const previousUtteranceArray = new Set(previousInputArray.map(({ text }) => text));
   const newUtteranceArray = newInputArray.map(({ text }) => text);
   const netNewUtterances: string[] = [];
@@ -36,7 +36,7 @@ const NoIntent: React.FC<NoIntentProps> = ({ turnID, focused, setChildDropdownIs
   const [trackingEvents] = useTrackingEvents();
   const { annotations } = useSelector(Transcript.currentTranscriptSelector) ?? {};
   const { utteranceAddedTo: utteranceAddedToIntentID, utteranceAddedCount } = annotations?.[turnID] ?? {};
-  const [initialUtterances, setInitialUtterances] = React.useState<Realtime.IntentInput[] | null>(null);
+  const [initialUtterances, setInitialUtterances] = React.useState<Platform.Base.Models.Intent.Input[] | null>(null);
   const [targetIntentID, setTargetIntentID] = React.useState<string | null>(null);
   const getIntentByID = useSelector(IntentV2.getIntentByIDSelector);
   const activeTranscriptID = useSelector(Transcript.currentTranscriptIDSelector);
@@ -68,7 +68,7 @@ const NoIntent: React.FC<NoIntentProps> = ({ turnID, focused, setChildDropdownIs
     }
   }, [targetIntentID]);
 
-  const handleAddedUtteranceModalClose = async (intentID: string, initialUtterancesArray: Realtime.IntentInput[]) => {
+  const handleAddedUtteranceModalClose = async (intentID: string, initialUtterancesArray: Platform.Base.Models.Intent.Input[]) => {
     if (!activeTranscriptID) return;
 
     const targetIntent = getIntentByID({ id: intentID });

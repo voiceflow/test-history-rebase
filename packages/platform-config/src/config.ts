@@ -35,7 +35,7 @@ export const getTypeFactory =
   <ConfigMap extends Record<string, { types: Record<string, any> }>>(configMap: ConfigMap, defaultValue: Config) => {
     const isSupported = isSupportedFactory(configMap);
 
-    return (platform: unknown, type: unknown): Config => {
+    return ({ type, platform }: { type: unknown; platform: unknown }): Config => {
       if (!isSupported(platform)) return defaultValue;
       if (!isSupportedTypeFactory(configMap[platform].types)(type)) return defaultValue;
 

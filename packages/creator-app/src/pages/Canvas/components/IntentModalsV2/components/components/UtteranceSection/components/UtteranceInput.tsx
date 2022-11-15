@@ -1,4 +1,5 @@
 import composeRef from '@seznam/compose-react-refs';
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Badge, Box, ErrorMessage, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
@@ -6,18 +7,18 @@ import React from 'react';
 import Utterance, { UtteranceRef } from '@/components/Utterance';
 
 interface UtteranceInputProps {
-  intentUtterances: Realtime.IntentInput[];
+  intentUtterances: Platform.Base.Models.Intent.Input[];
   setValidUtterance: () => void;
   slots: Realtime.Slot[];
-  value?: Realtime.IntentInput | null;
+  value?: Platform.Base.Models.Intent.Input | null;
   updateIsEmpty: (val: boolean) => void;
   isEmpty: boolean;
   isNotAtTop: boolean;
   addError?: string;
   onAddSlot: (name: string) => Promise<Realtime.Slot | null>;
-  onAdd: (slot: Realtime.IntentInput) => void;
+  onAdd: (slot: Platform.Base.Models.Intent.Input) => void;
   isValidUtterance: boolean;
-  onChange: (slot: Realtime.IntentInput) => void;
+  onChange: (slot: Platform.Base.Models.Intent.Input) => void;
 }
 
 const UtteranceInput: React.ForwardRefRenderFunction<UtteranceRef, UtteranceInputProps> = (

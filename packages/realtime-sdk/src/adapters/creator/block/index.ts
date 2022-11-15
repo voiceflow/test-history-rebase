@@ -23,7 +23,7 @@ import startDataAdapter from './start';
 import { BlockAdapterOptions, FromDBBlockAdapterOptions, OutPortsAdapter, OutPortsAdapterV2 } from './utils';
 
 export type { OutPortsAdapter, OutPortsAdapterV2 } from './utils';
-export { chatPromptAdapter, defaultOutPortsAdapter, defaultOutPortsAdapterV2, removePortDataFalsyValues, voicePromptAdapter } from './utils';
+export { defaultOutPortsAdapter, defaultOutPortsAdapterV2, removePortDataFalsyValues } from './utils';
 
 const BLOCK_TYPE_MAPPING: [string, BlockType][] = [[BaseModels.BaseNodeType.BLOCK, BlockType.COMBINED]];
 

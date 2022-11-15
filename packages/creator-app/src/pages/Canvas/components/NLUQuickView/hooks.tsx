@@ -6,13 +6,12 @@ import * as SlotV2 from '@/ducks/slotV2';
 import { useSelector } from '@/hooks';
 import { NLUQuickViewContext } from '@/pages/Canvas/components/NLUQuickView/context';
 
-export const useFilteredList = (search: string, list: { name: string }[]) => {
-  return React.useMemo(() => {
-    return list.filter((item) => {
-      return item.name.toLowerCase().includes(search.toLowerCase().trim());
-    });
+export const useFilteredList = <Item extends { name: string }>(search: string, list: Item[]): Item[] =>
+  React.useMemo(() => {
+    const lowercasedSearch = search.toLowerCase().trim();
+
+    return list.filter((item) => item.name.toLowerCase().includes(lowercasedSearch));
   }, [search, list]);
-};
 
 export const useShowForms = () => {
   const intentsMap = useSelector(IntentV2.customIntentMapSelector);

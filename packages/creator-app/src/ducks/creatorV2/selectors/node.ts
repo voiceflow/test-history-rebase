@@ -1,4 +1,5 @@
 import { Utils } from '@voiceflow/common';
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import _sortBy from 'lodash/sortBy';
 import * as Normal from 'normal-store';
@@ -149,7 +150,7 @@ export const nodesByIDsSelector = createSelector([getNodeByIDSelector, idsParamS
 export const intentNodeDataLookupSelector = createSelector(
   [allNodeDataSelector, IntentSelectors.getIntentByIDSelector],
   (nodesData, getIntentByID) => {
-    const result: { [intentID: string]: { data: Realtime.NodeData.Intent.PlatformData; intent: Realtime.Intent; nodeID: string } } = {};
+    const result: Record<string, { data: Realtime.NodeData.Intent.PlatformData; intent: Platform.Base.Models.Intent.Model; nodeID: string }> = {};
 
     // eslint-disable-next-line no-restricted-syntax
     for (const data of nodesData) {

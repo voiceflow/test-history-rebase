@@ -1,3 +1,4 @@
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { StrengthGauge } from '@voiceflow/ui';
 import * as Normal from 'normal-store';
@@ -11,12 +12,12 @@ export const getUnclassifiedDataMaxRange = (page: number, utterances: Realtime.N
   page * 100 + 100 > utterances.length ? utterances.length : page * 100 + 100;
 export const getUnclassifiedDataMinRange = (page: number) => page * 100;
 
-export const getConfidenceScore = (intent: Realtime.Intent) => {
+export const getConfidenceScore = (intent: Platform.Base.Models.Intent.Model) => {
   if (isBuiltInIntent(intent.id)) return 100;
   return intent.inputs.length || 0;
 };
 
-export const getConflictingIntentIDs = (intent: Realtime.Intent, clarity: ClarityModel | null): string[] => {
+export const getConflictingIntentIDs = (intent: Platform.Base.Models.Intent.Model, clarity: ClarityModel | null): string[] => {
   const conflicts = clarity?.problematicSentences?.[intent.name];
   if (!conflicts || isBuiltInIntent(intent.id)) return [];
 
@@ -25,7 +26,7 @@ export const getConflictingIntentIDs = (intent: Realtime.Intent, clarity: Clarit
   }, [] as string[]);
 };
 
-export const getConflictingUtterances = (intent: Realtime.Intent, utterances: string[], clarity: ClarityModel | null): string[] => {
+export const getConflictingUtterances = (intent: Platform.Base.Models.Intent.Model, utterances: string[], clarity: ClarityModel | null): string[] => {
   if (isBuiltInIntent(intent.id)) return [];
   const conflicts = clarity?.problematicSentences?.[intent.name];
   if (!conflicts) return [];
@@ -34,20 +35,17 @@ export const getConflictingUtterances = (intent: Realtime.Intent, utterances: st
   );
 };
 
-export const getClarityScore = (intent: Realtime.Intent, clarity: ClarityModel | null, hasConflicts?: boolean) => {
+export const getClarityScore = (intent: Platform.Base.Models.Intent.Model, clarity: ClarityModel | null, hasConflicts?: boolean) => {
   if (isBuiltInIntent(intent.id)) return 1;
   const clarityByClass = clarity?.clarityByClass?.[intent.name] || 0;
   if (!hasConflicts) return 1;
   return clarityByClass;
 };
 
-export const hasSlotsError = (intent: Realtime.Intent) => {
-  return Normal.denormalize<Realtime.IntentSlot>(intent.slots).some(
-    (intentSlot) => !!intentSlot?.required && !hasValidPrompt(intentSlot.dialog.prompt)
-  );
-};
+export const hasSlotsError = (intent: Platform.Base.Models.Intent.Model) =>
+  Normal.denormalize(intent.slots).some((intentSlot) => !!intentSlot?.required && !hasValidPrompt(intentSlot.dialog.prompt));
 
-export const mapIntentsToNLUIntents = (intents: Realtime.Intent[], clarity: ClarityModel | null) => {
+export const mapIntentsToNLUIntents = (intents: Platform.Base.Models.Intent.Model[], clarity: ClarityModel | null) => {
   const intentUtterances = intents.reduce((acc, intent) => {
     return { ...acc, [intent.id]: intent.inputs.map((input) => input.text) };
   }, {} as Record<string, string[]>);
@@ -58,9 +56,7 @@ export const mapIntentsToNLUIntents = (intents: Realtime.Intent[], clarity: Clar
     const hasConflicts = conflictingIntentIDs.length > 0 && conflictingUtterances.length > 0;
     const clarityScore = getClarityScore(intent, clarity, hasConflicts);
     const confidence = getConfidenceScore(intent);
-    const hasEntityError = Normal.denormalize<Realtime.IntentSlot>(intent.slots).some(
-      (intentSlot) => !!intentSlot?.required && !hasValidPrompt(intentSlot.dialog.prompt)
-    );
+    const hasEntityError = hasSlotsError(intent);
     const clarityLevel = getIntentClarityStrengthLevel(clarityScore);
     const confidenceLevel = getIntentConfidenceStrengthLevel(confidence);
 

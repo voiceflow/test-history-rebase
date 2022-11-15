@@ -1,4 +1,4 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import * as Platform from '@voiceflow/platform-config';
 import { Box, PopperTypes, SectionV2 } from '@voiceflow/ui';
 import * as Normal from 'normal-store';
 import React from 'react';
@@ -11,8 +11,8 @@ import { OptionalEntity, RequiredEntity } from './components';
 
 interface EntitiesSectionProps {
   onAddRequired: (slotID: string) => void;
-  intentEntities: Normal.Normalized<Realtime.IntentSlot>;
-  onChangeDialog: (slotID: string, dialog: Partial<Realtime.IntentSlot['dialog']>) => void;
+  intentEntities: Normal.Normalized<Platform.Base.Models.Intent.Slot>;
+  onChangeDialog: (slotID: string, dialog: Partial<Platform.Base.Models.Intent.SlotDialog>) => void;
   onRemoveRequired: (slotID: string) => void;
   addDropdownPlacement?: PopperTypes.Placement;
 }
@@ -28,8 +28,8 @@ const EntitiesSection: React.FC<EntitiesSectionProps> = ({
   const entitiesMap = useSelector(SlotV2.slotMapSelector);
 
   const [requiredEntities, optionalEntities] = React.useMemo(() => {
-    const requiredEntities: Realtime.IntentSlot[] = [];
-    const optionalEntities: Realtime.IntentSlot[] = [];
+    const requiredEntities: Platform.Base.Models.Intent.Slot[] = [];
+    const optionalEntities: Platform.Base.Models.Intent.Slot[] = [];
 
     Normal.denormalize(intentEntities).forEach((slot) => {
       if (!slot || !entitiesMap[slot.id]) return;

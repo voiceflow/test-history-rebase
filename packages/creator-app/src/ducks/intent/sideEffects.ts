@@ -1,4 +1,5 @@
 import { Utils } from '@voiceflow/common';
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import _differenceWith from 'lodash/differenceWith';
 import _isEqual from 'lodash/isEqual';
@@ -11,32 +12,40 @@ import * as SlotV2 from '@/ducks/slotV2';
 import * as Tracking from '@/ducks/tracking';
 import { getActiveVersionContext } from '@/ducks/version/utils';
 import { SyncThunk, Thunk } from '@/store/types';
-import { inferIntentSlotsType, inferIntentSlotType, inferIntentType, removeSlotRefFromInput } from '@/utils/intent';
+import { removeSlotRefFromInput } from '@/utils/intent';
 import { createNextName } from '@/utils/string';
 
-import { getUniqSlots, intentProcessor } from './utils';
+import { getUniqSlots, intentProcessorFactory } from './utils';
 
 const NEW_INTENT_NAME = 'intent';
 
 export const addManyIntents =
-  (values: Realtime.Intent[], creationType: Tracking.CanvasCreationType): Thunk =>
+  (values: Platform.Base.Models.Intent.Model[], creationType: Tracking.CanvasCreationType): Thunk =>
   async (dispatch, getState) => {
     if (!values.length) return;
 
     const state = getState();
     const projectMeta = ProjectV2.active.metaSelector(state);
-    const intents = values.map(intentProcessor.bind(null, projectMeta.type));
+    const projectConfig = Platform.Config.getTypeConfig(projectMeta);
 
-    await dispatch.sync(Realtime.intent.crud.addMany({ ...getActiveVersionContext(getState()), values: intents, projectMeta }));
+    await dispatch.sync(
+      Realtime.intent.crud.addMany({
+        ...getActiveVersionContext(getState()),
+        values: values.map(intentProcessorFactory(projectConfig)),
+        projectMeta,
+      })
+    );
+
     dispatch(Tracking.trackIntentCreated({ creationType }));
   };
 
 export const patchIntent =
-  (id: string, data: Partial<Realtime.Intent>): SyncThunk =>
+  (id: string, data: Partial<Platform.Base.Models.Intent.Model>): SyncThunk =>
   (dispatch, getState) => {
     const state = getState();
+
     const projectMeta = ProjectV2.active.metaSelector(state);
-    const intentSlotFactory = Realtime.Utils.slot.intentSlotFactoryCreator(projectMeta.type);
+    const projectConfig = Platform.Config.getTypeConfig(projectMeta);
 
     if (!data.inputs) {
       dispatch.sync(Realtime.intent.crud.patch({ ...getActiveVersionContext(getState()), key: id, value: data, projectMeta }));
@@ -59,14 +68,19 @@ export const patchIntent =
 
     let updatedByKey = _pick(byKey, supersetKeys);
 
-    updatedByKey = newKeys.reduce((obj, slotID) => Object.assign(obj, { [slotID]: intentSlotFactory({ id: slotID }) }), updatedByKey);
+    updatedByKey = newKeys.reduce(
+      (obj, slotID) => Object.assign(obj, { [slotID]: projectConfig.utils.intent.slotFactory({ id: slotID }) }),
+      updatedByKey
+    );
 
-    const patchedIntent = inferIntentType({
-      ...data,
-      slots: inferIntentSlotsType({ byKey: updatedByKey, allKeys: [...supersetKeys] }),
-    });
-
-    dispatch.sync(Realtime.intent.crud.patch({ ...getActiveVersionContext(getState()), key: id, value: patchedIntent, projectMeta }));
+    dispatch.sync(
+      Realtime.intent.crud.patch({
+        ...getActiveVersionContext(getState()),
+        key: id,
+        value: { ...data, slots: { byKey: updatedByKey, allKeys: [...supersetKeys] } },
+        projectMeta,
+      })
+    );
   };
 
 export const addRequiredSlot =
@@ -75,7 +89,7 @@ export const addRequiredSlot =
     const state = getState();
 
     const projectMeta = ProjectV2.active.metaSelector(state);
-    const intentSlotFactory = Realtime.Utils.slot.intentSlotFactoryCreator(projectMeta.type);
+    const projectConfig = Platform.Config.getTypeConfig(projectMeta);
 
     const intent = IntentV2.intentByIDSelector(state, { id: intentID });
     if (!intent) return;
@@ -87,17 +101,21 @@ export const addRequiredSlot =
     const byKeys = {
       ...slots.byKey,
       [slotID]: {
-        ...(Normal.getOne(intent.slots, slotID) ?? intentSlotFactory({ id: slotID })),
+        ...(Normal.getOne(intent.slots, slotID) ?? projectConfig.utils.intent.slotFactory({ id: slotID })),
         required: true,
       },
     };
 
     const allKeys = [...intent.slots.allKeys.filter((id) => id !== slotID), slotID];
-    const patchedIntent = inferIntentType({
-      slots: inferIntentSlotsType({ byKey: byKeys, allKeys: Utils.array.unique(allKeys) }),
-    });
 
-    dispatch.sync(Realtime.intent.crud.patch({ ...getActiveVersionContext(getState()), key: intentID, value: patchedIntent, projectMeta }));
+    dispatch.sync(
+      Realtime.intent.crud.patch({
+        ...getActiveVersionContext(getState()),
+        key: intentID,
+        value: { slots: { byKey: byKeys, allKeys: Utils.array.unique(allKeys) } },
+        projectMeta,
+      })
+    );
   };
 
 export const removeRequiredSlot =
@@ -112,25 +130,33 @@ export const removeRequiredSlot =
     const utteranceSlots = getUniqSlots(intent.inputs);
 
     if (utteranceSlots.includes(slotID)) {
-      const patchedIntent = inferIntentType({
-        slots: Normal.patchOne(intent.slots, slotID, { required: false }),
-      });
-      dispatch.sync(Realtime.intent.crud.patch({ ...getActiveVersionContext(getState()), key: intentID, value: patchedIntent, projectMeta }));
+      dispatch.sync(
+        Realtime.intent.crud.patch({
+          ...getActiveVersionContext(getState()),
+          key: intentID,
+          value: { slots: Normal.patchOne(intent.slots, slotID, { required: false }) },
+          projectMeta,
+        })
+      );
     } else {
-      const patchedIntent = inferIntentType({
-        slots: Normal.removeOne(intent.slots, slotID),
-      });
-      dispatch.sync(Realtime.intent.crud.patch({ ...getActiveVersionContext(getState()), key: intentID, value: patchedIntent, projectMeta }));
+      dispatch.sync(
+        Realtime.intent.crud.patch({
+          ...getActiveVersionContext(getState()),
+          key: intentID,
+          value: { slots: Normal.removeOne(intent.slots, slotID) },
+          projectMeta,
+        })
+      );
     }
   };
 
 export const patchIntentSlot =
-  (id: string, slotID: string, data: Partial<Realtime.IntentSlot>): SyncThunk =>
+  (id: string, slotID: string, data: Partial<Platform.Base.Models.Intent.Slot>): SyncThunk =>
   (dispatch, getState) => {
     const intent = IntentV2.intentByIDSelector(getState(), { id });
     if (!intent) return;
 
-    dispatch(patchIntent(id, inferIntentType({ slots: Normal.patchOne(intent.slots, slotID, data) })));
+    dispatch(patchIntent(id, { slots: Normal.patchOne(intent.slots, slotID, data) }));
   };
 
 export const removeIntentSlot =
@@ -142,7 +168,7 @@ export const removeIntentSlot =
 
     const { slots, inputs } = intent;
 
-    const sanitizedInputs: Realtime.IntentInput[] = inputs.map((input: Realtime.IntentInput) => {
+    const sanitizedInputs = inputs.map<Platform.Base.Models.Intent.Input>((input) => {
       if (input?.slots && input.slots.length > 0) {
         const slotDetails = SlotV2.slotByIDSelector(state, { id: slotID });
 
@@ -157,18 +183,19 @@ export const removeIntentSlot =
       return input;
     });
 
-    dispatch(patchIntent(id, inferIntentType({ slots: Normal.removeOne(slots, slotID), inputs: sanitizedInputs })));
+    dispatch(patchIntent(id, { slots: Normal.removeOne(slots, slotID), inputs: sanitizedInputs }));
   };
 
 export const updateIntentSlotDialog =
-  (id: string, slotID: string, dialog: Partial<Realtime.IntentSlotDialog>): SyncThunk =>
+  (id: string, slotID: string, dialog: Partial<Platform.Base.Models.Intent.SlotDialog>): SyncThunk =>
   (dispatch, getState) => {
     const intent = IntentV2.intentByIDSelector(getState(), { id });
     if (!intent) return;
 
-    const slot = Utils.normalized.getNormalizedByKey(intent.slots, slotID);
+    const slot = Normal.getOne(intent.slots, slotID);
+    if (!slot) return;
 
-    dispatch(patchIntentSlot(id, slotID, inferIntentSlotType({ dialog: { ...slot.dialog, ...dialog } as Realtime.IntentSlotDialog })));
+    dispatch(patchIntentSlot(id, slotID, { dialog: { ...slot.dialog, ...dialog } }));
   };
 
 export const reorderIntentSlots =
@@ -177,15 +204,16 @@ export const reorderIntentSlots =
     const intent = IntentV2.intentByIDSelector(getState(), { id });
     if (!intent) return;
 
-    dispatch(patchIntent(id, inferIntentType({ slots: { ...intent.slots, allKeys: newAllKeys } })));
+    dispatch(patchIntent(id, { slots: { ...intent.slots, allKeys: newAllKeys } }));
   };
 
 export const createIntent =
-  (creationType: Tracking.CanvasCreationType, intent?: Partial<Realtime.Intent>): Thunk<string> =>
+  (creationType: Tracking.CanvasCreationType, intent?: Partial<Platform.Base.Models.Intent.Model>): Thunk<string> =>
   async (dispatch, getState) => {
     const id = intent?.id || Utils.id.cuid.slug();
     const state = getState();
     const projectMeta = ProjectV2.active.metaSelector(state);
+    const projectConfig = Platform.Config.getTypeConfig(projectMeta);
 
     const name =
       intent?.name ||
@@ -196,7 +224,7 @@ export const createIntent =
       );
     const slots = intent?.slots || { byKey: {}, allKeys: [] };
     const inputs = intent?.inputs || [];
-    const processedIntent = intentProcessor(projectMeta.type, inferIntentType({ id, name, slots, inputs }));
+    const processedIntent = intentProcessorFactory(projectConfig)({ id, name, slots, inputs });
 
     await dispatch.sync(
       Realtime.intent.crud.add({

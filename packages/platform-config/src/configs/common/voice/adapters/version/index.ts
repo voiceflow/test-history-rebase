@@ -1,4 +1,5 @@
 import * as Base from '@platform-config/configs/base';
+import { Config as ConfigUtils } from '@platform-config/configs/utils';
 import { VoiceVersion } from '@voiceflow/voice-types';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { createMultiAdapter, notImplementedAdapter } from 'bidirectional-adapter';
@@ -29,3 +30,17 @@ export const simple = createMultiAdapter<
   }),
   notImplementedAdapter.transformer
 );
+
+export const CONFIG = Base.Adapters.Version.extend({
+  simple,
+
+  session: Session.CONFIG,
+
+  settings: Settings.CONFIG,
+
+  publishing: Publishing.CONFIG,
+});
+
+export type Config = typeof CONFIG;
+
+export const extend = ConfigUtils.extendFactory<Config>(CONFIG);

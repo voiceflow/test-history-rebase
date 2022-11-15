@@ -23,3 +23,10 @@ export const simple = createSimpleAdapter<
   (dbSettings, options) => smart.fromDB(GoogleVersion.defaultVoiceSettings(dbSettings), options),
   (settings, options) => smart.toDB(settings, options)
 );
+
+export const CONFIG = Common.Voice.Adapters.Version.Settings.extend({
+  smart,
+  simple,
+});
+
+export type Config = typeof CONFIG;

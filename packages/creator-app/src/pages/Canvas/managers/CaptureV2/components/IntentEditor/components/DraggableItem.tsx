@@ -1,4 +1,5 @@
 import composeRef from '@seznam/compose-react-refs';
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { SectionV2 } from '@voiceflow/ui';
 import React from 'react';
@@ -7,11 +8,10 @@ import { DragPreviewComponentProps, ItemComponentProps, MappedItemComponentHandl
 import { ModalType } from '@/constants';
 import * as SlotV2 from '@/ducks/slotV2';
 import * as VersionV2 from '@/ducks/versionV2';
-import { useAddSlot, useAutoScrollNodeIntoView, useModals, useSelector } from '@/hooks';
+import { useActiveProjectTypeConfig, useAddSlot, useAutoScrollNodeIntoView, useModals, useSelector } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import { EntityPromptSection } from '@/pages/Canvas/managers/components';
 import { NodeEditorV2Props } from '@/pages/Canvas/managers/types';
-import { getPlatformIntentPromptFactory } from '@/utils/prompt';
 import { isDialogflowPlatform, isGooglePlatform } from '@/utils/typeGuards';
 
 import { ENTIRE_USER_REPLY_ID } from '../../constants';
@@ -21,8 +21,8 @@ import UtteranceSection from './UtteranceSection';
 
 export interface DraggableItemProps
   extends DragPreviewComponentProps,
-    ItemComponentProps<Realtime.IntentSlot>,
-    MappedItemComponentHandlers<Realtime.IntentSlot> {
+    ItemComponentProps<Platform.Base.Models.Intent.Slot>,
+    MappedItemComponentHandlers<Platform.Base.Models.Intent.Slot> {
   editor: NodeEditorV2Props<Realtime.NodeData.CaptureV2, Realtime.NodeData.CaptureV2BuiltInPorts>;
   selectedSlotIDs: string[];
   latestCreatedKey: string | undefined;
@@ -47,6 +47,8 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
   },
   ref
 ) => {
+  const projectConfig = useActiveProjectTypeConfig();
+
   const slot = useSelector(SlotV2.slotByIDSelector, { id: item.id });
   const usedSlots = useSelector(SlotV2.slotsByIDsSelector, { ids: selectedSlotIDs });
   const unusedSlots = useSelector(SlotV2.slotsWithoutIDsSelector, { ids: selectedSlotIDs });
@@ -74,13 +76,12 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
     onSelect(slot?.id);
   };
 
-  const onChangeDialog = (dialog: Partial<Realtime.IntentSlot['dialog']>) => {
-    onUpdate({ dialog: { ...item.dialog, ...dialog } } as Partial<Realtime.IntentSlot>);
+  const onChangeDialog = (dialog: Partial<Platform.Base.Models.Intent.Slot['dialog']>) => {
+    onUpdate({ dialog: { ...item.dialog, ...dialog } } as Partial<Platform.Base.Models.Intent.Slot>);
   };
 
   const autofocus = latestCreatedKey === itemKey || editor.data.intent?.slots.length === 1;
 
-  const intentPromptFactory = getPlatformIntentPromptFactory(editor.projectType);
   const [sectionRef, scrollIntoView] = useAutoScrollNodeIntoView<HTMLDivElement>({ condition: autofocus, options: { block: 'end' } });
 
   return (
@@ -127,9 +128,9 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
 
                         <EntityPromptSection
                           title="Entity reprompt"
-                          onAdd={() => onChangeDialog({ prompt: [intentPromptFactory({ defaultVoice })] } as Partial<Realtime.IntentSlotDialog>)}
+                          onAdd={() => onChangeDialog({ prompt: [projectConfig.utils.intent.promptFactory({ defaultVoice })] })}
                           prompt={item.dialog.prompt}
-                          onChange={(prompt) => onChangeDialog({ prompt } as Partial<Realtime.IntentSlotDialog>)}
+                          onChange={(prompt) => onChangeDialog({ prompt })}
                           onRemove={() => onChangeDialog({ prompt: [] })}
                           collapsed={!item?.dialog.prompt.length}
                           placeholder="Enter question to prompt user to fill entity"

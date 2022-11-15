@@ -49,22 +49,24 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
       ? await this.services.diagram.get(dbCreator.version.templateDiagramID).catch(() => null)
       : null;
 
+    const project = Realtime.Adapters.projectAdapter.fromDB(dbCreator.project);
+    const projectConfig = Platform.Config.getTypeConfig(project);
+
     const slots = Realtime.Adapters.slotAdapter.mapFromDB(dbCreator.version.platformData.slots);
     const notes = Realtime.Adapters.noteAdapter.mapFromDB(dbCreator.version.notes ? Object.values(dbCreator.version.notes) : []);
-    const project = Realtime.Adapters.projectAdapter.fromDB(dbCreator.project);
     const domains = Realtime.Adapters.domainAdapter.mapFromDB(dbCreator.version.domains ?? []);
-    const canvasTemplates = Realtime.Adapters.canvasTemplateAdapter.mapFromDB(dbCreator.version.canvasTemplates ?? []);
     const diagrams = Realtime.Adapters.diagramAdapter.mapFromDB(dbCreator.diagrams, { rootDiagramID: dbCreator.version.rootDiagramID });
     const variableStates = Realtime.Adapters.variableStateAdapter.mapFromDB(dbCreator.variableStates);
+    const canvasTemplates = Realtime.Adapters.canvasTemplateAdapter.mapFromDB(dbCreator.version.canvasTemplates ?? []);
     const nluUnclassifiedData = Realtime.Adapters.nlu.nluUnclassifiedDataAdapter.mapFromDB(dbCreator.version.nluUnclassifiedData ?? []);
 
     const version = Realtime.Adapters.versionAdapter.fromDB(
       { ...(dbCreator.version as Realtime.AnyDBVersion), templateDiagramID: templateDiagram?._id },
       { platform: project.platform, projectType: project.type }
     );
-    const intents = Realtime.Adapters.getProjectTypeIntentAdapter<any>(project.type).mapFromDB(dbCreator.version.platformData.intents, {
-      platform: project.platform,
-    });
+
+    const intents = projectConfig.adapters.intent.smart.mapFromDB(dbCreator.version.platformData.intents);
+
     const products =
       'products' in project.platformData
         ? Realtime.Adapters.productAdapter.mapFromDB(Object.values((project.platformData as Realtime.AlexaProjectData).products))

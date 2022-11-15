@@ -1,9 +1,8 @@
-import { NodeData, VoiceIntentSlot } from '@realtime-sdk/models';
+import { NodeData } from '@realtime-sdk/models';
 import { BaseNode } from '@voiceflow/base-types';
-import { Nullish } from '@voiceflow/common';
+import * as Platform from '@voiceflow/platform-config';
 import { VoiceNode } from '@voiceflow/voice-types';
 
-import { voiceIntentSlotSanitizer } from '../../../intent/voice';
 import { baseCaptureV2Adapter } from '../base';
 import { createBlockAdapter, voiceNoMatchAdapter, voiceNoReplyAdapter } from '../utils';
 
@@ -11,7 +10,11 @@ const captureAdapter = createBlockAdapter<VoiceNode.CaptureV2.StepData<any>, Nod
   ({ noReply, noMatch, capture, ...baseData }, options) => ({
     ...baseCaptureV2Adapter.fromDB(baseData, options),
 
-    intent: capture.type === BaseNode.CaptureV2.CaptureType.INTENT ? { slots: capture.intent.slots?.map(voiceIntentSlotSanitizer) || [] } : undefined,
+    intent:
+      capture.type === BaseNode.CaptureV2.CaptureType.INTENT
+        ? { slots: capture.intent.slots?.map(Platform.Common.Voice.CONFIG.utils.intent.slotSanitizer) || [] }
+        : undefined,
+
     noReply: noReply ? voiceNoReplyAdapter.fromDB(noReply) : null,
     noMatch: noMatch ? voiceNoMatchAdapter.fromDB(noMatch) : null,
     variable: capture.type === BaseNode.CaptureV2.CaptureType.QUERY ? capture.variable : null,
@@ -24,9 +27,15 @@ const captureAdapter = createBlockAdapter<VoiceNode.CaptureV2.StepData<any>, Nod
       captureType === BaseNode.CaptureV2.CaptureType.INTENT
         ? {
             type: captureType,
-            intent: { key: '', name: '', inputs: [], slots: (intent?.slots as Nullish<VoiceIntentSlot[]>)?.map(voiceIntentSlotSanitizer) },
+            intent: {
+              key: '',
+              name: '',
+              slots: (intent?.slots as Platform.Common.Voice.Models.Intent.Slot[])?.map(Platform.Common.Voice.CONFIG.utils.intent.slotSanitizer),
+              inputs: [],
+            },
           }
         : { type: captureType, variable },
+
     noReply: noReply && voiceNoReplyAdapter.toDB(noReply as NodeData.VoiceNoReply),
     noMatch: noMatch && voiceNoMatchAdapter.toDB(noMatch as NodeData.VoiceNoMatch),
   })

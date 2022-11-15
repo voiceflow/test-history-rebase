@@ -1,4 +1,4 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import * as Platform from '@voiceflow/platform-config';
 import {
   Badge,
   Box,
@@ -37,8 +37,8 @@ interface UtteranceManagerProps {
   creating?: boolean;
   autofocus?: boolean;
   withBorderTop?: boolean;
-  onUpdateUtterances: (data: Realtime.IntentInput[]) => void;
-  inputs: Realtime.IntentInput[];
+  onUpdateUtterances: (data: Platform.Base.Models.Intent.Input[]) => void;
+  inputs: Platform.Base.Models.Intent.Input[];
   intentID: string | null;
   isBuiltIn?: boolean;
   prefilledUtterance?: string;
@@ -131,7 +131,7 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({
     if (canBulkUpload) {
       openUtterancesBulkUploadModal({
         intentID,
-        onUpload: (utterances: Realtime.IntentInput[]) => {
+        onUpload: (utterances: Platform.Base.Models.Intent.Input[]) => {
           onUpdateUtterances([...intentUtterances, ...utterances]);
         },
       });
@@ -140,7 +140,7 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({
     }
   };
 
-  const onUpdateUtterancesHandler = (intentUtterances: Realtime.IntentInput[]) => {
+  const onUpdateUtterancesHandler = (intentUtterances: Platform.Base.Models.Intent.Input[]) => {
     const cleanedUtterances = intentUtterances.map((utterance) => {
       const text = formatUtterance(platform, utterance.text);
 

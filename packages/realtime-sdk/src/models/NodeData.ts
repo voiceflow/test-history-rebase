@@ -1,13 +1,13 @@
-import { BlockType, VoicePromptType } from '@realtime-sdk/constants';
+import { BlockType } from '@realtime-sdk/constants';
 import { AlexaNode } from '@voiceflow/alexa-types';
 import { BaseButton, BaseModels, BaseNode } from '@voiceflow/base-types';
-import { ChatModels, ChatNode } from '@voiceflow/chat-types';
+import { ChatNode } from '@voiceflow/chat-types';
 import { EmptyObject, Nullable } from '@voiceflow/common';
+import * as Platform from '@voiceflow/platform-config';
 import { VoiceNode } from '@voiceflow/voice-types';
 import { VoiceflowNode } from '@voiceflow/voiceflow-types';
 
 import { ExpressionData } from './Expression';
-import { IntentSlot } from './Intent';
 import type { Markup } from './Markup';
 import { SpeakData } from './Speak';
 
@@ -25,18 +25,8 @@ export type BlockNodeData<T> = NodeData<T> & {
 };
 
 export namespace NodeData {
-  // TODO: replace it with VoiceNode.Utils.StepNoReply<any> type
-  export interface VoicePrompt {
-    id: string;
-    type: VoicePromptType;
-    desc?: string | null;
-    audio?: string | null;
-    voice?: string | null;
-    content: string;
-  }
-
   export interface VoiceNoReply extends Omit<VoiceNode.Utils.StepNoReply<any>, 'reprompts'> {
-    reprompts?: VoicePrompt[];
+    reprompts?: Platform.Common.Voice.Models.Prompt.Model[];
   }
 
   // TODO: refactor node data types to be platform specific instead of unions
@@ -49,11 +39,11 @@ export namespace NodeData {
   }
 
   export interface VoiceNoMatch extends BaseNoMatch {
-    reprompts: VoicePrompt[];
+    reprompts: Platform.Common.Voice.Models.Prompt.Model[];
   }
 
   export interface ChatNoMatch extends BaseNoMatch {
-    reprompts: ChatModels.Prompt[];
+    reprompts: Platform.Common.Chat.Models.Prompt.Model[];
   }
 
   export type NoMatch = VoiceNoMatch | ChatNoMatch;
@@ -160,7 +150,7 @@ export namespace NodeData {
   }
 
   export interface CaptureV2 {
-    intent?: { slots: IntentSlot[] };
+    intent?: { slots: Platform.Base.Models.Intent.Slot[] };
     noReply: Nullable<NoReply>;
     noMatch: Nullable<NoMatch>;
     variable: Nullable<string>;

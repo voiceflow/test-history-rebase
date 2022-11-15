@@ -26,3 +26,15 @@ export const simple = createMultiAdapter<AlexaVersion.Version, Models.Version.Mo
   }),
   notImplementedAdapter.transformer
 );
+
+export const CONFIG = Common.Voice.Adapters.Version.extend({
+  simple,
+
+  session: Session.CONFIG,
+
+  settings: Settings.CONFIG,
+
+  publishing: Publishing.CONFIG,
+});
+
+export type Config = typeof CONFIG;

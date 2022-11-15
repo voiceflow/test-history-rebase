@@ -1,12 +1,12 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import * as Platform from '@voiceflow/platform-config';
 import uniqBy from 'lodash/uniqBy';
 
 import { ClarityModel, Conflict } from '@/pages/NLUManager/types';
 
 export const conflictModelToFormAdapter = (
   conflictsData: ClarityModel,
-  currentIntent: Realtime.Intent,
-  intentsByName: Record<string, Realtime.Intent>
+  currentIntent: Platform.Base.Models.Intent.Model,
+  intentsByName: Record<string, Platform.Base.Models.Intent.Model>
 ): Record<string, Conflict> => {
   const newConflicts: Record<string, Conflict> = {};
   let addedUtterancesByConflict: { utterance: string; conflictID: string; intentID: string }[] = [];

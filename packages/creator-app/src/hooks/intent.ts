@@ -1,5 +1,5 @@
 import { Nullable, Nullish, Utils } from '@voiceflow/common';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import * as Platform from '@voiceflow/platform-config';
 import { usePersistFunction } from '@voiceflow/ui';
 import _sortBy from 'lodash/sortBy';
 import * as Normal from 'normal-store';
@@ -16,7 +16,7 @@ import { ModalActions, useModals } from './modals';
 import { useSelector } from './redux';
 
 interface IntentData {
-  intent: Nullable<Realtime.Intent>;
+  intent: Nullable<Platform.Base.Models.Intent.Model>;
   intentEditModal: ModalActions<{ id: string; utteranceCreationType: Tracking.CanvasCreationType }>;
   intentIsBuiltIn: boolean;
   intentHasRequiredEntity: boolean;
@@ -37,7 +37,7 @@ export const useIntent = (intentID: Nullish<string>): IntentData => {
   const intentIsBuiltIn = React.useMemo(() => !!intent && isBuiltInIntent(intent.id), [intent?.id]);
 
   const intentHasRequiredEntity = React.useMemo(
-    () => !!intent?.slots && Normal.denormalize(intent.slots as Normal.Normalized<Realtime.IntentSlot>).some((entity) => entity.required),
+    () => !!intent?.slots && Normal.denormalize(intent.slots).some((entity) => entity.required),
     [intent?.slots]
   );
 

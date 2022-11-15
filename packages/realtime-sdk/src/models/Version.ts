@@ -84,7 +84,3 @@ export type VoiceflowChatVersion = Version<VoiceflowVersion.ChatPlatformData>;
 export type DialogflowVersion = Version<DFESVersion.PlatformData>;
 
 export type AnyVersion = AlexaVersion | GoogleVersion | VoiceflowVersion | DialogflowVersion;
-
-export type VersionIntent<T extends BaseModels.Version.PlatformData> = T['intents'][number];
-
-export type VersionSlot<T extends BaseModels.Version.PlatformData> = T['slots'][number];

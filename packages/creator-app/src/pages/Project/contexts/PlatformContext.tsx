@@ -27,7 +27,7 @@ export const ProjectProvider: React.FC<{
   projectType: Platform.Constants.ProjectType | null;
 }> = ({ nluType, platform, children, projectType }) => {
   const [nluConfig, platformConfig, platformTypeConfig] = React.useMemo(
-    () => [NLU.Config.get(nluType), Platform.Config.get(platform), Platform.Config.getTypeConfig(platform, projectType)] as const,
+    () => [NLU.Config.get(nluType), Platform.Config.get(platform), Platform.Config.getTypeConfig({ type: projectType, platform })] as const,
     [nluType, platform, projectType]
   );
 

@@ -1,5 +1,5 @@
 import * as ML from '@voiceflow/ml-sdk';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import * as Platform from '@voiceflow/platform-config';
 import React from 'react';
 
 import client from '@/client';
@@ -12,14 +12,14 @@ import { waitAsyncAction } from '@/utils/logux';
 import { ClarityModel } from '../types';
 import { mapClarityModelData, mapIntentsToNLUIntents } from '../utils';
 
-const useClarity = (intents: Realtime.Intent[]) => {
+const useClarity = (intents: Platform.Base.Models.Intent.Model[]) => {
   const activeVersionID = useSelector(Session.activeVersionIDSelector);
   const mlClient = useMLGatewayClient();
   const [clarity, setClarity] = React.useState<ClarityModel | null>(null);
   const [isFetching, setIsFetching] = React.useState<boolean>(false);
   const platform = useSelector(ProjectV2.active.platformSelector);
 
-  const fetchClarity = async (updatedModel?: Record<string, Partial<Realtime.Intent>>) => {
+  const fetchClarity = async (updatedModel?: Record<string, Partial<Platform.Base.Models.Intent.Model>>) => {
     if (!activeVersionID) return;
 
     setIsFetching(true);

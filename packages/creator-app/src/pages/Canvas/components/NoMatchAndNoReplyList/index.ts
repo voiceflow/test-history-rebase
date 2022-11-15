@@ -3,9 +3,16 @@ import React from 'react';
 
 import { projectTypeAware } from '@/hocs';
 
-import { ChatList, ChatListProps, VoiceList, VoiceListProps } from './components';
+import { ChatList, VoiceList } from './components';
 
-type NoMatchAndNoReplyListProps = ChatListProps | VoiceListProps;
+interface NoMatchAndNoReplyListProps {
+  randomize: boolean;
+  reprompts?: Platform.Base.Models.Prompt.Model[];
+  isNoReply?: boolean;
+  onChangeReprompts: (reprompts: Platform.Base.Models.Prompt.Model[]) => void;
+  onChangeRandomize: () => void;
+  hideRandomizeMenu?: boolean;
+}
 
 const NoMatchAndNoReplyList = projectTypeAware<NoMatchAndNoReplyListProps>({
   [Platform.Constants.ProjectType.CHAT]: ChatList as React.FC<NoMatchAndNoReplyListProps>,

@@ -1,4 +1,4 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import * as Platform from '@voiceflow/platform-config';
 import { Box, stopPropagation, TableTypes, Tag } from '@voiceflow/ui';
 import * as Normal from 'normal-store';
 import React from 'react';
@@ -9,12 +9,12 @@ import { useModals, useSelector } from '@/hooks';
 
 import EmptyDash from '../../../../components/EmptyDash';
 
-const EntitiesColumn: React.FC<TableTypes.ItemProps<Realtime.Intent>> = ({ item }) => {
+const EntitiesColumn: React.FC<TableTypes.ItemProps<Platform.Base.Models.Intent.Model>> = ({ item }) => {
   const entityEditModal = useModals(ModalType.ENTITY_EDIT);
 
   const entitiesIDs = React.useMemo(
     () =>
-      Normal.denormalize<Realtime.IntentSlot>(item.slots)
+      Normal.denormalize(item.slots)
         .filter(({ required }) => required)
         .map((slot) => slot.id),
     [item.slots]

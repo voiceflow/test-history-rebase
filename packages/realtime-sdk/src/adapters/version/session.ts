@@ -52,13 +52,13 @@ const createSessionAdapter = <V extends string>({
         type: BaseVersion.SessionType.RESUME,
         resume: content?.trim()
           ? {
-              voice: (voice as V) || defaultVoice || (Platform.Config.getTypeConfig(platform, type).project.voice.default as V),
+              voice: (voice as V) || defaultVoice || (Platform.Config.getTypeConfig({ type, platform }).project.voice.default as V),
               content,
             }
           : null,
         follow: followContent?.trim()
           ? {
-              voice: (followVoice as V) || defaultVoice || (Platform.Config.getTypeConfig(platform, type).project.voice.default as V),
+              voice: (followVoice as V) || defaultVoice || (Platform.Config.getTypeConfig({ type, platform }).project.voice.default as V),
               content: followContent,
             }
           : null,

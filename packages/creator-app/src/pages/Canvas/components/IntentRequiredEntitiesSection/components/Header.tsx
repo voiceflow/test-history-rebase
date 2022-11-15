@@ -1,3 +1,4 @@
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { PopperTypes, SectionV2 } from '@voiceflow/ui';
 import * as Normal from 'normal-store';
@@ -9,7 +10,7 @@ interface HeaderProps {
   entities: Realtime.Slot[];
   boldTitle?: boolean;
   onAddRequired: (slotID: string) => void;
-  intentEntities: Normal.Normalized<Realtime.IntentSlot>;
+  intentEntities: Normal.Normalized<Platform.Base.Models.Intent.Slot>;
   addDropdownPlacement?: PopperTypes.Placement;
 }
 

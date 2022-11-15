@@ -1,4 +1,4 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import * as Platform from '@voiceflow/platform-config';
 import { ContextMenu, Table, TableTypes } from '@voiceflow/ui';
 import React from 'react';
 
@@ -7,7 +7,7 @@ import { useNLUItemMenu } from '@/contexts/NLUContext/hooks';
 import { NLUManagerContext } from '@/pages/NLUManager/context';
 import { isBuiltInIntent } from '@/utils/intent';
 
-const Row: React.FC<TableTypes.ConfigurableRowProps<Realtime.Intent>> = ({ item, children, onMouseEnter, onMouseLeave }) => {
+const Row: React.FC<TableTypes.ConfigurableRowProps<Platform.Base.Models.Intent.Model>> = ({ item, children, onMouseEnter, onMouseLeave }) => {
   const nluManager = React.useContext(NLUManagerContext);
   const isActiveItem = item.id === nluManager.activeItemID;
 

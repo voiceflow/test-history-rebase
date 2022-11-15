@@ -33,7 +33,7 @@ interface ClipboardContext {
   ports: Realtime.Port[];
   links: Realtime.Link[];
   slots: Realtime.Slot[];
-  intents: Realtime.Intent[];
+  intents: Platform.Base.Models.Intent.Model[];
   products: Realtime.Product[];
   diagrams: Realtime.Diagram[];
   platform: Platform.Constants.PlatformType;

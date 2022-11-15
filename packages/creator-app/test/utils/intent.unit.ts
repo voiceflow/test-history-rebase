@@ -1,7 +1,6 @@
 /* eslint-disable sonarjs/no-duplicate-string */
 /* eslint-disable max-nested-callbacks */
 import * as Platform from '@voiceflow/platform-config';
-import * as Realtime from '@voiceflow/realtime-sdk';
 
 import suite from '@/../test/_suite';
 import { formatUtterance, UTTERANCE_ERROR_MESSAGES, validateUtterance } from '@/utils/intent';
@@ -40,7 +39,9 @@ suite('utils/intent', () => {
 
       describe('and intent already have an utterance with same text', () => {
         it('returns an error', () => {
-          const intents: Realtime.Intent[] = [{ id: '123', inputs: [{ text: 'hello' }], name: 'intent name', slots: { allKeys: [], byKey: {} } }];
+          const intents: Platform.Base.Models.Intent.Model[] = [
+            { id: '123', inputs: [{ text: 'hello' }], name: 'intent name', slots: { allKeys: [], byKey: {} } },
+          ];
 
           expect(validateUtterance('hello', '123', intents, Platform.Constants.PlatformType.VOICEFLOW)).toBe(
             UTTERANCE_ERROR_MESSAGES.INTENT_CONFLICT
@@ -50,7 +51,7 @@ suite('utils/intent', () => {
 
       describe('and other intent already have an utterance with same text', () => {
         it('returns an error', () => {
-          const intents: Realtime.Intent[] = [
+          const intents: Platform.Base.Models.Intent.Model[] = [
             { id: '1234', inputs: [{ text: 'hello from voiceflow' }], name: 'intent name', slots: { allKeys: [], byKey: {} } },
             { id: '123', inputs: [{ text: 'hello' }], name: 'other intent', slots: { allKeys: [], byKey: {} } },
           ];

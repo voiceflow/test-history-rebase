@@ -9,15 +9,7 @@ export * from './file';
 export * from './links';
 export * from './plans';
 export type { MarkupBlockType, RootOrMarkupBlockType } from '@voiceflow/realtime-sdk';
-export {
-  BlockType,
-  BUILT_IN_VARIABLES,
-  BuiltInVariable,
-  CUSTOM_SLOT_TYPE,
-  DialogType,
-  LEGACY_CUSTOM_SLOT_TYPE,
-  VoicePromptType,
-} from '@voiceflow/realtime-sdk';
+export { BlockType, BUILT_IN_VARIABLES, BuiltInVariable, CUSTOM_SLOT_TYPE, DialogType, LEGACY_CUSTOM_SLOT_TYPE } from '@voiceflow/realtime-sdk';
 
 export const USER_INFO_SCOPE = 'https://www.googleapis.com/auth/userinfo.profile';
 export const ACTION_BUILDER_SCOPE = 'https://www.googleapis.com/auth/actions.builder';

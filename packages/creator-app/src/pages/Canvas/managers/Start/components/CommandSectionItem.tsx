@@ -1,4 +1,4 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import * as Platform from '@voiceflow/platform-config';
 import { SectionV2, Text } from '@voiceflow/ui';
 import React from 'react';
 
@@ -6,7 +6,7 @@ import { prettifyIntentName } from '@/utils/intent';
 
 interface CommandSectionItemProps {
   onClick: () => void;
-  intent: Realtime.Intent | null;
+  intent: Platform.Base.Models.Intent.Model | null;
   onRemove: () => void;
 }
 

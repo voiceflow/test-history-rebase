@@ -1,3 +1,5 @@
+import * as Base from '@platform-config/configs/base';
+import { Config as ConfigUtils } from '@platform-config/configs/utils';
 import { AlexaConstants } from '@voiceflow/alexa-types';
 import { Utils } from '@voiceflow/common';
 import { VoiceModels } from '@voiceflow/voice-types';
@@ -7,25 +9,33 @@ import { createMultiAdapter, MultiAdapter } from 'bidirectional-adapter';
 import * as Models from '../models';
 
 export const simple = createMultiAdapter<VoiceModels.Prompt<string>, Models.Prompt.Model>(
-  (reprompt) => {
-    const type = reprompt.voice === VoiceflowConstants.Voice.AUDIO ? Models.Prompt.PromptType.AUDIO : Models.Prompt.PromptType.TEXT;
+  (prompt) => {
+    const type = prompt.voice === VoiceflowConstants.Voice.AUDIO ? Models.Prompt.PromptType.AUDIO : Models.Prompt.PromptType.TEXT;
     const isText = type === Models.Prompt.PromptType.TEXT;
 
     return {
       id: Utils.id.cuid.slug(),
       type,
-      desc: reprompt.desc,
-      voice: isText ? reprompt.voice : null,
-      audio: isText ? null : reprompt.content,
-      content: isText ? reprompt.content : '',
+      desc: prompt.desc,
+      voice: isText ? prompt.voice : null,
+      audio: isText ? null : prompt.content,
+      content: isText ? prompt.content : '',
     };
   },
-  (reprompt) => ({
-    desc: reprompt.desc ?? undefined,
-    voice: reprompt.type === Models.Prompt.PromptType.AUDIO ? VoiceflowConstants.Voice.AUDIO : reprompt.voice ?? AlexaConstants.Voice.ALEXA,
-    content: (reprompt.type === Models.Prompt.PromptType.AUDIO ? reprompt.audio : reprompt.content) ?? '',
+  (prompt) => ({
+    desc: prompt.desc ?? undefined,
+    voice: prompt.type === Models.Prompt.PromptType.AUDIO ? VoiceflowConstants.Voice.AUDIO : prompt.voice ?? AlexaConstants.Voice.ALEXA,
+    content: (prompt.type === Models.Prompt.PromptType.AUDIO ? prompt.audio : prompt.content) ?? '',
   })
 );
+
+export const CONFIG = Base.Adapters.Prompt.extend({
+  simple,
+});
+
+export type Config = typeof CONFIG;
+
+export const extend = ConfigUtils.extendFactory<Config>(CONFIG);
 
 /**
  * Should not be used in the configs, only in the adapters to share the logic and fix TS voice related typings

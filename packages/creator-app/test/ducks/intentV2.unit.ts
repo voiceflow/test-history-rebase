@@ -15,7 +15,7 @@ const VERSION_ID = 'versionID';
 const INTENT_ID = 'intentID';
 const ACTION_CONTEXT = { workspaceID: WORKSPACE_ID, projectID: PROJECT_ID, versionID: VERSION_ID };
 
-const INTENT: Realtime.Intent = {
+const INTENT: Platform.Base.Models.Intent.Model = {
   id: INTENT_ID,
   name: 'intent',
   inputs: [],

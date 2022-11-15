@@ -7,10 +7,8 @@ import { AbstractVersionResourceControl } from '@/actions/version/utils';
 
 interface RemoveManyIntentsPayload extends Realtime.intent.BaseIntentPayload, Realtime.actionUtils.CRUDKeysPayload {}
 
-interface Intent extends Realtime.VersionIntent<BaseModels.Version.PlatformData> {}
-
 interface RemoveManyIntentsContextData extends BaseContextData {
-  removedIntents: Intent[] | null;
+  removedIntents: BaseModels.Intent[] | null;
 }
 
 class RemoveManyIntents extends AbstractVersionResourceControl<RemoveManyIntentsPayload, RemoveManyIntentsContextData> {

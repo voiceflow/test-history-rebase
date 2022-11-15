@@ -1,3 +1,4 @@
+import * as Platform from '@voiceflow/platform-config';
 import { Adapters } from '@voiceflow/realtime-sdk';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
@@ -11,9 +12,9 @@ import { NoMatchVoiceListItem, NoReplyVoiceListItem } from './ListItem';
 
 export interface VoiceListProps {
   randomize: boolean;
-  reprompts?: Realtime.NodeData.VoicePrompt[];
+  reprompts?: Platform.Common.Voice.Models.Prompt.Model[];
   isNoReply?: boolean;
-  onChangeReprompts: (reprompts: Realtime.NodeData.VoicePrompt[]) => void;
+  onChangeReprompts: (reprompts: Platform.Common.Voice.Models.Prompt.Model[]) => void;
   onChangeRandomize: () => void;
   hideRandomizeMenu?: boolean;
 }
@@ -29,7 +30,7 @@ const VoiceList: React.FC<VoiceListProps> = ({
 }) => {
   const platform = React.useContext(PlatformContext)!;
 
-  const repromptsCache = React.useRef<Realtime.NodeData.VoicePrompt[]>(reprompts ?? []);
+  const repromptsCache = React.useRef<Platform.Common.Voice.Models.Prompt.Model[]>(reprompts ?? []);
   const itemsCache = React.useRef<Realtime.SpeakData[]>([]);
 
   // useManager will reset if the object changes - causes flickering

@@ -1,4 +1,5 @@
 import { BaseModels } from '@voiceflow/base-types';
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { ClickableText, Flex, SvgIcon, Tag, Tooltip } from '@voiceflow/ui';
 import React from 'react';
@@ -38,7 +39,7 @@ const LegacyMappingRow = styled(Flex)`
 `;
 
 interface LegacyMappingsProps {
-  intent: Realtime.Intent | null;
+  intent: Platform.Base.Models.Intent.Model | null;
   mappings?: BaseModels.SlotMapping[];
   isNested?: boolean;
   onDelete: VoidFunction;

@@ -5,16 +5,17 @@ import { styled } from '@/hocs';
 export const SEARCH_INPUT_HEIGHT = 36;
 
 interface SearchInputProps {
-  onIconClick?: VoidFunction;
+  // styled-components props started with $ isn't passed to the Input component
+  $onIconClick?: VoidFunction;
 }
 
-const SearchInput = styled(Input).attrs<SearchInputProps>(({ value, onIconClick }) => ({
+const SearchInput = styled(Input).attrs<SearchInputProps>(({ value, $onIconClick }) => ({
   icon: value ? 'close' : 'search',
   iconProps: {
     size: 16,
     color: '#6e849a',
     clickable: !!value,
-    onClick: value ? onIconClick : undefined,
+    onClick: value ? $onIconClick : undefined,
     style: { opacity: value ? undefined : 0.65 },
   },
 }))<SearchInputProps>`

@@ -114,7 +114,7 @@ const TopicsSection: React.FC = () => {
                 )
               }
             >
-              <SearchInput value={searchValue} onChangeText={setSearchValue} placeholder="Search" onIconClick={() => setSearchValue('')} />
+              <SearchInput value={searchValue} onChangeText={setSearchValue} placeholder="Search" $onIconClick={() => setSearchValue('')} />
             </Header>
           }
           listRef={listRef}

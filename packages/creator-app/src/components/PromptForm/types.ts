@@ -1,6 +1,5 @@
-import { ChatModels } from '@voiceflow/chat-types';
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { VoiceModels } from '@voiceflow/voice-types';
 
 interface BasePromptFormProps {
   slots: Realtime.Slot[];
@@ -9,16 +8,16 @@ interface BasePromptFormProps {
 }
 
 export interface ChatPromptFormProps extends BasePromptFormProps {
-  prompt: ChatModels.Prompt[];
-  onChange: (prompt: ChatModels.Prompt[]) => void;
+  prompt: Platform.Common.Chat.Models.Prompt.Model[];
+  onChange: (prompt: Platform.Common.Chat.Models.Prompt.Model[]) => void;
 }
 
 export interface VoicePromptFormProps extends BasePromptFormProps {
-  prompt: VoiceModels.IntentPrompt<string>[];
-  onChange: (prompt: VoiceModels.IntentPrompt<string>[]) => void;
+  prompt: Platform.Common.Voice.Models.Intent.Prompt[];
+  onChange: (prompt: Platform.Common.Voice.Models.Intent.Prompt[]) => void;
 }
 
 export interface PromptFormProps extends BasePromptFormProps {
-  prompt: VoiceModels.IntentPrompt<string>[] | ChatModels.Prompt[];
-  onChange: (prompt: VoiceModels.IntentPrompt<string>[] | ChatModels.Prompt[]) => void;
+  prompt: unknown[];
+  onChange: (prompt: unknown[]) => void;
 }

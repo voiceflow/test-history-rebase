@@ -39,19 +39,19 @@ export const getUtterances = (value: string) =>
     .filter(Boolean);
 
 export const validateUtterances = ({
-  utterances,
-  intentID,
-  intents,
   slots,
+  intents,
   builtIn,
   platform,
+  intentID,
+  utterances,
 }: {
-  utterances: string[];
-  intentID: string | null;
-  intents: Realtime.Intent[];
   slots: Realtime.Slot[];
+  intents: Platform.Base.Models.Intent.Model[];
   builtIn: boolean;
+  intentID: string | null;
   platform: Platform.Constants.PlatformType;
+  utterances: string[];
 }) => {
   const errors = new Map<number, string>();
   const slotsMap = slots.reduce<Record<string, string>>((acc, slot) => Object.assign(acc, { [slot.name]: slot.id }), {});

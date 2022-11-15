@@ -48,7 +48,7 @@ const getPlatformValidations = Realtime.Utils.platform.createPlatformSelector<((
 export function validateUtterance(
   utterance: string,
   intentID: string | null,
-  intents: Realtime.Intent[],
+  intents: Platform.Base.Models.Intent.Model[],
   platform: Platform.Constants.PlatformType
 ): string {
   const utteranceWithoutSlots = utterance.replace(SLOT_REGEXP, '');

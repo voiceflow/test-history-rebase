@@ -1,5 +1,4 @@
 import { Utils } from '@voiceflow/common';
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { IconButton, IconButtonVariant, TippyTooltip, toast } from '@voiceflow/ui';
 import React from 'react';
 
@@ -38,7 +37,7 @@ const IntentList: React.FC<SectionProps> = ({
   const isActiveTab = React.useMemo(() => activeTab === InteractionModelTabType.INTENTS, [activeTab]);
 
   const sortedIntents = useOrderedIntents();
-  const filteredList = useFilteredList(search, sortedIntents) as Realtime.Intent[];
+  const filteredList = useFilteredList(search, sortedIntents);
   const firstItem = React.useMemo(() => filteredList.find((item) => item.id), [filteredList]);
 
   useListHooks({

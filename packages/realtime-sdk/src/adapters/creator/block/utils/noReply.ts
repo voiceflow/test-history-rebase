@@ -1,11 +1,11 @@
 import { BaseNode, Nullable } from '@voiceflow/base-types';
 import { ChatModels, ChatNode } from '@voiceflow/chat-types';
 import { Nullish } from '@voiceflow/common';
+import * as Platform from '@voiceflow/platform-config';
 import { VoiceModels, VoiceNode } from '@voiceflow/voice-types';
 import { createMultiAdapter } from 'bidirectional-adapter';
 
 import { NodeData } from '../../../../models';
-import { chatPromptAdapter, voicePromptAdapter } from './prompt';
 
 export const baseNoReplyAdapter = createMultiAdapter<BaseNode.Utils.BaseStepNoReply, BaseNode.Utils.BaseStepNoReply>(
   ({ types, timeout, pathName, randomize }) => ({ types, timeout, pathName, randomize }),
@@ -15,22 +15,22 @@ export const baseNoReplyAdapter = createMultiAdapter<BaseNode.Utils.BaseStepNoRe
 export const chatNoReplyAdapter = createMultiAdapter<ChatNode.Utils.StepNoReply, ChatNode.Utils.StepNoReply>(
   ({ reprompts, ...baseNoReply }) => ({
     ...baseNoReplyAdapter.fromDB(baseNoReply),
-    reprompts: reprompts ? chatPromptAdapter.mapFromDB(reprompts) : undefined,
+    reprompts: reprompts ? Platform.Common.Chat.CONFIG.adapters.prompt.simple.mapFromDB(reprompts) : undefined,
   }),
   ({ reprompts, ...baseNoReply }) => ({
     ...baseNoReplyAdapter.toDB(baseNoReply),
-    reprompts: reprompts ? chatPromptAdapter.mapToDB(reprompts) : undefined,
+    reprompts: reprompts ? Platform.Common.Chat.CONFIG.adapters.prompt.simple.mapToDB(reprompts) : undefined,
   })
 );
 
 export const voiceNoReplyAdapter = createMultiAdapter<VoiceNode.Utils.StepNoReply<any>, NodeData.VoiceNoReply>(
   ({ reprompts, ...baseNoReply }) => ({
     ...baseNoReplyAdapter.fromDB(baseNoReply),
-    reprompts: reprompts ? voicePromptAdapter.mapFromDB(reprompts) : undefined,
+    reprompts: reprompts ? Platform.Common.Voice.CONFIG.adapters.prompt.simple.mapFromDB(reprompts) : undefined,
   }),
   ({ reprompts, ...baseNoReply }) => ({
     ...baseNoReplyAdapter.toDB(baseNoReply),
-    reprompts: reprompts ? voicePromptAdapter.mapToDB(reprompts) : undefined,
+    reprompts: reprompts ? Platform.Common.Voice.CONFIG.adapters.prompt.simple.mapToDB(reprompts) : undefined,
   })
 );
 

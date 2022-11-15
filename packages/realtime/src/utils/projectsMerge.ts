@@ -1,11 +1,9 @@
 import { AlexaProject } from '@voiceflow/alexa-types';
 import { BaseModels, BaseText } from '@voiceflow/base-types';
-import { ChatModels } from '@voiceflow/chat-types';
 import { AnyRecord, Utils } from '@voiceflow/common';
 import { slate } from '@voiceflow/internal';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { VoiceModels } from '@voiceflow/voice-types';
 import _ from 'lodash';
 import { Element as SlateElement } from 'slate';
 
@@ -66,12 +64,6 @@ class ProjectsMerge {
   private diagramIDsMap = new Map<string, string>();
 
   private mergedSlotsMap = new Map<string, BaseModels.Slot>();
-
-  static isVoiceIntentPrompt = (value: unknown): value is VoiceModels.IntentPrompt<string> =>
-    Utils.object.isObject(value) && Utils.object.hasProperty(value, 'text');
-
-  static isChatPrompt = (value: unknown): value is ChatModels.Prompt =>
-    Utils.object.isObject(value) && Utils.object.hasProperty(value, 'content') && Array.isArray(value.content);
 
   static isSlateVariableElement = (value: unknown): value is BaseText.VariableElement =>
     Utils.object.isObject(value) && SlateElement.isElement(value) && slate.isVariableElement(value);
@@ -383,7 +375,7 @@ class ProjectsMerge {
     });
 
   private remapIntentPrompt = (value: unknown): unknown => {
-    if (ProjectsMerge.isVoiceIntentPrompt(value)) {
+    if (Platform.Common.Voice.CONFIG.utils.intent.isPrompt(value)) {
       return {
         ...value,
         text: this.remapTextSlotAnnotations(value.text),
@@ -391,7 +383,7 @@ class ProjectsMerge {
       };
     }
 
-    if (ProjectsMerge.isChatPrompt(value)) {
+    if (Platform.Common.Chat.CONFIG.utils.prompt.isPrompt(value)) {
       return {
         ...value,
         content: this.remapSlateContentSlotPrompt(value.content),

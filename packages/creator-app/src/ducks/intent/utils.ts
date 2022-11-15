@@ -1,38 +1,35 @@
 import * as Platform from '@voiceflow/platform-config';
-import * as Realtime from '@voiceflow/realtime-sdk';
 import _isPlainObject from 'lodash/isPlainObject';
-import { Normalized } from 'normal-store';
 
 import { fmtIntentName } from '@/utils/intent';
 
-export const getUniqSlots = (inputs: Realtime.IntentInput[]): string[] => [...new Set(inputs.flatMap(({ slots }) => slots || []))];
+export const getUniqSlots = (inputs: Platform.Base.Models.Intent.Input[]): string[] => [...new Set(inputs.flatMap(({ slots }) => slots || []))];
 
-export const intentProcessor = (projectType: Platform.Constants.ProjectType, { inputs = [], slots, ...intent }: Realtime.Intent): Realtime.Intent => {
-  let nextSlots = slots;
+export const intentProcessorFactory =
+  (projectConfig: Platform.Base.Type.Config) =>
+  ({ inputs = [], slots, ...intent }: Platform.Base.Models.Intent.Model): Platform.Base.Models.Intent.Model => {
+    let nextSlots = slots;
 
-  if (!_isPlainObject(slots)) {
-    const allKeys = getUniqSlots(inputs);
-    const byKey = allKeys.reduce<Record<string, Realtime.ChatIntentSlot> | Record<string, Realtime.VoiceIntentSlot>>(
-      (obj, id) => Object.assign(obj, { [id]: Realtime.Utils.slot.intentSlotFactoryCreator(projectType)({ id }) }),
-      {}
-    );
+    if (!_isPlainObject(slots)) {
+      const allKeys = getUniqSlots(inputs);
+      const byKey = Object.fromEntries(allKeys.map((id) => [id, projectConfig.utils.intent.slotFactory({ id })]));
 
-    nextSlots = { byKey, allKeys } as Normalized<Realtime.ChatIntentSlot> | Normalized<Realtime.VoiceIntentSlot>;
-  }
+      nextSlots = { byKey, allKeys };
+    }
 
-  return {
-    ...intent,
-    slots: nextSlots,
-    inputs,
-  } as Realtime.Intent;
-};
-
-export const applySingleIntentNameFormatting = (platform: Platform.Constants.PlatformType, intent: Realtime.Intent): Realtime.Intent => {
-  return {
-    ...intent,
-    name: fmtIntentName(intent, platform),
+    return {
+      ...intent,
+      slots: nextSlots,
+      inputs,
+    };
   };
-};
 
-export const applyIntentNameFormatting = (platform: Platform.Constants.PlatformType, intents: Realtime.Intent[]): Realtime.Intent[] =>
-  intents.map((intent) => applySingleIntentNameFormatting(platform, intent));
+export const applySingleIntentNameFormatting = (
+  platform: Platform.Constants.PlatformType,
+  intent: Platform.Base.Models.Intent.Model
+): Platform.Base.Models.Intent.Model => ({ ...intent, name: fmtIntentName(intent, platform) });
+
+export const applyIntentNameFormatting = (
+  platform: Platform.Constants.PlatformType,
+  intents: Platform.Base.Models.Intent.Model[]
+): Platform.Base.Models.Intent.Model[] => intents.map((intent) => applySingleIntentNameFormatting(platform, intent));

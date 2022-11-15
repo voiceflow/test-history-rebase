@@ -7,7 +7,7 @@ import VariableSelectV2 from '@/components/VariableSelectV2';
 import * as Documentation from '@/config/documentation';
 import * as SlotV2 from '@/ducks/slotV2';
 import * as VersionV2 from '@/ducks/versionV2';
-import { useAddSlot, useSelector, useVariableCreation } from '@/hooks';
+import { useActiveProjectTypeConfig, useAddSlot, useSelector, useVariableCreation } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import { useIntentScope } from '@/pages/Canvas/managers/hooks';
 import { getPlatformNoMatchFactory } from '@/utils/noMatch';
@@ -19,8 +19,10 @@ import { useEntitiesOptions } from './hooks';
 
 const QueryEditor: React.FC<{ disableAnimation: boolean }> = ({ disableAnimation }) => {
   const editor = EditorV2.useEditor<Realtime.NodeData.CaptureV2, Realtime.NodeData.CaptureV2BuiltInPorts>();
-  const defaultVoice = useSelector(VersionV2.active.defaultVoiceSelector);
+  const projectConfig = useActiveProjectTypeConfig();
+
   const allSlots = useSelector(SlotV2.allSlotsSelector);
+  const defaultVoice = useSelector(VersionV2.active.defaultVoiceSelector);
   const { variables, createVariable } = useVariableCreation();
 
   const options = useEntitiesOptions(allSlots);
@@ -31,7 +33,7 @@ const QueryEditor: React.FC<{ disableAnimation: boolean }> = ({ disableAnimation
     if (!slotID || slotID === ENTIRE_USER_REPLY_ID) return;
 
     editor.onChange({
-      intent: { slots: [Realtime.Utils.slot.intentSlotFactoryCreator(editor.projectType)({ id: slotID })] },
+      intent: { slots: [projectConfig.utils.intent.slotFactory({ id: slotID })] },
       noMatch: getPlatformNoMatchFactory(editor.projectType)({ defaultVoice }),
       captureType: BaseNode.CaptureV2.CaptureType.INTENT,
     });

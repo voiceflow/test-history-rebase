@@ -105,7 +105,7 @@ const ComponentsSection: React.FC<ComponentsSectionProps> = ({ collapsed, setSec
               }
             >
               {(isSearch || !!components.length) && (
-                <SearchInput value={searchValue} onChangeText={setSearchValue} placeholder="Search" onIconClick={() => setSearchValue('')} />
+                <SearchInput value={searchValue} onChangeText={setSearchValue} placeholder="Search" $onIconClick={() => setSearchValue('')} />
               )}
             </Header>
           }

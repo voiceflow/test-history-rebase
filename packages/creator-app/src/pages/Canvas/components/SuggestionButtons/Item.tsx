@@ -1,6 +1,5 @@
 import { BaseButton } from '@voiceflow/base-types';
 import * as Platform from '@voiceflow/platform-config';
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { Badge, Box, UIOnlyMenuItemOption } from '@voiceflow/ui';
 import numberToWords from 'number-to-words/src';
 import React from 'react';
@@ -24,7 +23,7 @@ export type ItemProps = ItemComponentProps<BaseButton.IntentButton> &
   MappedItemComponentHandlers<BaseButton.IntentButton> &
   DragPreviewComponentProps & {
     isOnlyItem: boolean;
-    dividedIntents: Array<Realtime.Intent | UIOnlyMenuItemOption>;
+    dividedIntents: Array<Platform.Base.Models.Intent.Model | UIOnlyMenuItemOption>;
     latestCreatedKey?: string;
     formControlProps?: { contentBottomUnits?: number };
   };

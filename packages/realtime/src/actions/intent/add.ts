@@ -1,10 +1,11 @@
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Context } from '@voiceflow/socket-utils';
 import { Action } from 'typescript-fsa';
 
 import { AbstractVersionResourceControl } from '@/actions/version/utils';
 
-interface AddIntentPayload extends Realtime.intent.BaseIntentPayload, Realtime.actionUtils.CRUDValuePayload<Realtime.Intent> {}
+interface AddIntentPayload extends Realtime.intent.BaseIntentPayload, Realtime.actionUtils.CRUDValuePayload<Platform.Base.Models.Intent.Model> {}
 
 class AddIntent extends AbstractVersionResourceControl<AddIntentPayload> {
   protected actionCreator = Realtime.intent.crud.add;
@@ -12,8 +13,10 @@ class AddIntent extends AbstractVersionResourceControl<AddIntentPayload> {
   protected process = async (_ctx: Context, { payload }: Action<AddIntentPayload>) => {
     const { versionID, key, value, projectMeta } = payload;
 
+    const projectConfig = Platform.Config.getTypeConfig(projectMeta);
+
     await this.services.intent.create(versionID, {
-      ...Realtime.Adapters.getProjectTypeIntentAdapter<any>(projectMeta.type).toDB(value),
+      ...projectConfig.adapters.intent.simple.toDB(value),
       key,
     });
   };

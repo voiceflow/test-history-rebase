@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import * as Platform from '@voiceflow/platform-config';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import uniqBy from 'lodash/uniqBy';
 import * as Normal from 'normal-store';
@@ -10,7 +10,7 @@ import * as ProjectV2 from '@/ducks/projectV2';
 import { createCurriedSelector, createParameterSelector } from '@/ducks/utils';
 import { createCRUDSelectors, idParamSelector, idsParamSelector } from '@/ducks/utils/crudV2';
 import * as VersionV2 from '@/ducks/versionV2';
-import { fmtIntentName, GENERAL_BUILT_INS_MAP, getBuiltInIntents } from '@/utils/intent';
+import { fmtIntentName, getBuiltInIntents, VOICEFLOW_BUILT_INS_MAP } from '@/utils/intent';
 import { isVoiceflowPlatform } from '@/utils/typeGuards';
 
 import { STATE_KEY } from './constants';
@@ -31,7 +31,7 @@ export const allCustomIntentsSelector = createSelector([allIntentsSelector, Proj
 );
 
 export const customIntentMapSelector = createSelector([allCustomIntentsSelector], (intents) =>
-  intents.reduce<Record<string, Realtime.Intent>>((acc, intent) => Object.assign(acc, { [intent.id]: intent }), {})
+  intents.reduce<Record<string, Platform.Base.Models.Intent.Model>>((acc, intent) => Object.assign(acc, { [intent.id]: intent }), {})
 );
 
 export const formattedIntentNameByIDSelector = createSelector(
@@ -46,7 +46,7 @@ export const allPlatformIntentsSelector = createSelector(
     if (isVoiceflowPlatform(platform)) {
       const lang = (locales[0] ?? VoiceflowConstants.Locale.EN_US).split('-')[0];
 
-      return uniqBy([...prettifiedIntents, ...(GENERAL_BUILT_INS_MAP[lang] || GENERAL_BUILT_INS_MAP.en)], (intent) => intent.id);
+      return uniqBy([...prettifiedIntents, ...(VOICEFLOW_BUILT_INS_MAP[lang] || VOICEFLOW_BUILT_INS_MAP.en)], (intent) => intent.id);
     }
 
     return uniqBy([...prettifiedIntents, ...getBuiltInIntents(platform)], (intent) => intent.id);
@@ -54,11 +54,11 @@ export const allPlatformIntentsSelector = createSelector(
 );
 
 export const intentMapByNameSelector = createSelector([allPlatformIntentsSelector], (intents) =>
-  intents.reduce<Record<string, Realtime.Intent>>((acc, intent) => Object.assign(acc, { [intent.name]: intent }), {})
+  intents.reduce<Record<string, Platform.Base.Models.Intent.Model>>((acc, intent) => Object.assign(acc, { [intent.name]: intent }), {})
 );
 
 export const platformIntentMapSelector = createSelector([allPlatformIntentsSelector], (intents) =>
-  intents.reduce<Record<string, Realtime.Intent>>((acc, intent) => Object.assign(acc, { [intent.id]: intent }), {})
+  intents.reduce<Record<string, Platform.Base.Models.Intent.Model>>((acc, intent) => Object.assign(acc, { [intent.id]: intent }), {})
 );
 
 export const platformIntentByIDSelector = createSelector([platformIntentMapSelector, idParamSelector], (intentMap, id) =>

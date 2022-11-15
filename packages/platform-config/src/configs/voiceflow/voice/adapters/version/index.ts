@@ -4,11 +4,10 @@ import { createMultiAdapter, notImplementedAdapter } from 'bidirectional-adapter
 
 import * as Models from '../../models';
 import * as Project from '../../project';
-import * as Publishing from './publishing';
 import * as Session from './session';
 import * as Settings from './settings';
 
-export { Publishing, Session, Settings };
+export { Session, Settings };
 
 export const simple = createMultiAdapter<VoiceflowVersion.VoiceVersion, Models.Version.Model>(
   (version) => ({
@@ -20,9 +19,16 @@ export const simple = createMultiAdapter<VoiceflowVersion.VoiceVersion, Models.V
     settings: Settings.simple.fromDB(version.platformData.settings, {
       defaultVoice: version.platformData.settings.defaultVoice ?? Project.CONFIG.voice.default,
     }),
-    publishing: Publishing.smart.fromDB(version.platformData.publishing, {
-      defaultVoice: version.platformData.settings.defaultVoice ?? Project.CONFIG.voice.default,
-    }),
   }),
   notImplementedAdapter.transformer
 );
+
+export const CONFIG = Common.Voice.Adapters.Version.extend({
+  simple,
+
+  session: Session.CONFIG,
+
+  settings: Settings.CONFIG,
+});
+
+export type Config = typeof CONFIG;

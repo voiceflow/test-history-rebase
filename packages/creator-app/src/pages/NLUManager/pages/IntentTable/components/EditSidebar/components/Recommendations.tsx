@@ -1,6 +1,6 @@
 import { Utils } from '@voiceflow/common';
 import * as ML from '@voiceflow/ml-sdk';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import * as Platform from '@voiceflow/platform-config';
 import { Box, FullSpinner, IconButton, SectionV2, SidebarEditor, TippyTooltip, toast, useToggle } from '@voiceflow/ui';
 import _sample from 'lodash/sample';
 import React from 'react';
@@ -18,7 +18,7 @@ import { useNLUManager } from '@/pages/NLUManager/context';
 import { fillEntities, validateUtterance } from '@/utils/intent';
 import { waitAsyncAction } from '@/utils/logux';
 
-interface Recommendation extends Realtime.IntentInput {
+interface Recommendation extends Platform.Base.Models.Intent.Input {
   id: string;
 }
 

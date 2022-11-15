@@ -1,15 +1,11 @@
-import { chatIntentSlotSanitizer, voiceIntentSlotSanitizer } from '@realtime-sdk/adapters/intent';
 import { CUSTOM_SLOT_TYPE } from '@realtime-sdk/constants';
-import { ChatIntentSlot, Intent, Slot, VoiceIntentSlot } from '@realtime-sdk/models';
+import { Slot } from '@realtime-sdk/models';
 import { AlexaConstants } from '@voiceflow/alexa-types';
 import { BuiltinSlot, CustomSlot, READABLE_VARIABLE_REGEXP, SLOT_REGEXP, Utils } from '@voiceflow/common';
 import { DFESConstants } from '@voiceflow/google-dfes-types';
 import { GoogleConstants } from '@voiceflow/google-types';
 import * as Platform from '@voiceflow/platform-config';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
-import { Optional, Required } from 'utility-types';
-
-import { createProjectTypeSelector } from './platform';
 
 export const generalSlotTypesByLanguage = (language: string = VoiceflowConstants.Language.EN) =>
   VoiceflowConstants.SlotTypes[language]?.map<BuiltinSlot<VoiceflowConstants.SlotType, never>>((slot) => ({ type: slot.name, label: slot.label })) ||
@@ -89,7 +85,7 @@ export const validateSlotName = ({
   notEmptyValues,
 }: {
   slots: Slot[];
-  intents: Intent[];
+  intents: Platform.Base.Models.Intent.Model[];
   slotName: string;
   slotType: string;
   notEmptyValues?: boolean;
@@ -126,10 +122,3 @@ export const validateSlotName = ({
 
   return null;
 };
-
-export const intentSlotFactoryCreator = createProjectTypeSelector<
-  (data: Required<Optional<ChatIntentSlot>, 'id'> | Required<Optional<VoiceIntentSlot>, 'id'>) => ChatIntentSlot | VoiceIntentSlot
->({
-  [Platform.Constants.ProjectType.CHAT]: (data) => chatIntentSlotSanitizer(data as Required<Optional<ChatIntentSlot>, 'id'>),
-  [Platform.Constants.ProjectType.VOICE]: (data) => voiceIntentSlotSanitizer(data as Required<Optional<VoiceIntentSlot>, 'id'>),
-});

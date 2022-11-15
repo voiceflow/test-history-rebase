@@ -42,7 +42,7 @@ const nodeFactoryOptionsSelector = createSelector(
     features: allActiveFeatures,
     platform,
     projectType,
-    defaultVoice: defaultVoice || Platform.Config.getTypeConfig(platform, projectType).project.voice.default,
+    defaultVoice: defaultVoice || Platform.Config.getTypeConfig({ type: projectType, platform }).project.voice.default,
     canvasNodeVisibility: canvasNodeVisibility || BaseNode.Utils.CanvasNodeVisibility.PREVIEW,
     allCustomBlocks,
   })

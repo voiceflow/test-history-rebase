@@ -1,5 +1,5 @@
 import { Nullable } from '@voiceflow/common';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import * as Platform from '@voiceflow/platform-config';
 import { FlexCenter, SectionV2, SvgIcon, useOnScreen } from '@voiceflow/ui';
 import * as Normal from 'normal-store';
 import React from 'react';
@@ -22,21 +22,21 @@ import UtteranceSection from '../components/UtteranceSection';
 
 interface IntentFormProps {
   name: string;
-  inputs: Realtime.IntentInput[];
+  inputs: Platform.Base.Models.Intent.Input[];
   utteranceCreationType: Tracking.CanvasCreationType;
   creationType: Tracking.IntentEditType;
   noteID?: string;
   setName: (name: string) => void;
   saveName?: () => void;
-  setInputs: (inputs: Realtime.IntentInput[]) => void;
+  setInputs: (inputs: Platform.Base.Models.Intent.Input[]) => void;
   intentID?: string;
   isBuiltIn?: boolean;
   autofocus?: boolean;
   isNLUManager?: boolean;
-  intentEntities: Normal.Normalized<Realtime.IntentSlot>;
+  intentEntities: Normal.Normalized<Platform.Base.Models.Intent.Slot>;
   addRequiredSlot: (slotID: string) => void;
   withNameSection?: boolean;
-  updateSlotDialog: (slotID: string, dialog: Partial<Realtime.IntentSlotDialog>) => void;
+  updateSlotDialog: (slotID: string, dialog: Partial<Platform.Base.Models.Intent.SlotDialog>) => void;
   removeRequiredSlot: (slotID: string) => void;
   prefilledNewUtterance?: string;
   withDescriptionSection?: boolean;

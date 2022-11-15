@@ -1,6 +1,7 @@
 /* eslint-disable max-depth */
 /* eslint-disable no-restricted-syntax */
 import { BaseModels } from '@voiceflow/base-types';
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { SvgIconTypes } from '@voiceflow/ui';
 
@@ -62,7 +63,7 @@ export const buildNodeDatabase = (nodes: Realtime.NodeData<unknown>[], diagramID
   return database;
 };
 
-export const buildIntentDatabase = (intents: Realtime.Intent[]): IntentDatabaseEntry[] =>
+export const buildIntentDatabase = (intents: Platform.Base.Models.Intent.Model[]): IntentDatabaseEntry[] =>
   intents.map((intent) => ({ intentID: intent.id, targets: [intent.name] }));
 
 export const buildSlotDatabase = (slots: Realtime.Slot[]): SlotDatabaseEntry[] => slots.map((slot) => ({ slotID: slot.id, targets: [slot.name] }));

@@ -1,4 +1,5 @@
 import { SLOT_REGEXP } from '@voiceflow/common';
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Badge, Box, ErrorMessage, SectionV2, stopPropagation, SvgIcon, Text, ThemeColor, toast, useRAF } from '@voiceflow/ui';
 import React from 'react';
@@ -9,9 +10,9 @@ import EditorV2 from '@/pages/Canvas/components/EditorV2';
 
 interface UtteranceSectionProps {
   slot: Realtime.Slot;
-  onChange: (utterances: Realtime.IntentInput[]) => void;
+  onChange: (utterances: Platform.Base.Models.Intent.Input[]) => void;
   usedSlots: Realtime.Slot[];
-  utterances: Realtime.IntentInput[];
+  utterances: Platform.Base.Models.Intent.Input[];
   preventAccent?: boolean;
 }
 
@@ -22,7 +23,7 @@ const UtteranceSection: React.FC<UtteranceSectionProps> = ({ slot, usedSlots, ut
 
   const [badgeAddScheduler] = useRAF();
 
-  const validate = ({ text }: Realtime.IntentInput, { index, isUpdate }: { index: number; isUpdate: boolean }) => {
+  const validate = ({ text }: Platform.Base.Models.Intent.Input, { index, isUpdate }: { index: number; isUpdate: boolean }) => {
     let error = '';
     const trimmedText = text.trim();
 

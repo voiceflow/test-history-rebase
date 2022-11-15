@@ -1,6 +1,6 @@
 import { BaseModels, BaseNode } from '@voiceflow/base-types';
-import { ChatModels } from '@voiceflow/chat-types';
 import { Utils } from '@voiceflow/common';
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { SectionV2 } from '@voiceflow/ui';
 import React from 'react';
@@ -32,10 +32,11 @@ const RootEditor: React.FC = () => {
 
   const onChange = async (data: Partial<Realtime.NodeData.NoReply>) => {
     if (Utils.object.shallowPartialEquals(noReply, data)) return;
+
     await editor.onChange({ noReply: { ...noReply, ...data } as Realtime.NodeData.NoReply });
   };
 
-  const onChangeReprompts = async (reprompts: Array<ChatModels.Prompt | Realtime.NodeData.VoicePrompt>) => {
+  const onChangeReprompts = async (reprompts: Platform.Base.Models.Prompt.Model[]) => {
     if (!reprompts.length) {
       await onChange({ types: Utils.array.withoutValue(noReply.types, BaseNode.Utils.NoReplyType.REPROMPT), reprompts: [] });
     } else {

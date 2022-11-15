@@ -13,3 +13,10 @@ export const simple = createSimpleAdapter<DFESVersion.ChatSettings, Models.Versi
   (dbSettings) => smart.fromDB(DFESVersion.defaultChatSettings(dbSettings)),
   (settings) => smart.toDB(settings)
 );
+
+export const CONFIG = Common.Chat.Adapters.Version.Settings.extend({
+  smart,
+  simple,
+});
+
+export type Config = typeof CONFIG;

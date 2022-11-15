@@ -73,7 +73,7 @@ const NoMatchForm: React.FC<NoMatchFormProps> = ({ onChange, noMatch, pushToPath
           {withReprompt ? (
             <NoMatchAndNoReplyList
               {...noMatch}
-              onChangeReprompts={(reprompts: Realtime.NodeData.NoMatch['reprompts']) => onChange({ ...noMatch, reprompts: reprompts as any })}
+              onChangeReprompts={(reprompts) => onChange({ ...noMatch, reprompts: reprompts as any })}
               onChangeRandomize={() => onChange({ ...noMatch, randomize: !noMatch.randomize })}
             >
               {withPath && <FollowPathSection type={NO_MATCH_PATH_PATH_TYPE} pushToPath={pushToPath} />}

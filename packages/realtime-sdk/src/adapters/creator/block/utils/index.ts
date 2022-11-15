@@ -9,7 +9,6 @@ export * from './noMatch';
 export * from './noReply';
 export * from './port';
 export * from './portV2';
-export * from './prompt';
 
 export interface BlockAdapterOptions {
   context: AdapterContext;

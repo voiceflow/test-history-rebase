@@ -5,8 +5,9 @@ import { TypeGuards } from '@platform-config/utils';
 
 import * as Adapters from './adapters';
 import * as Models from './models';
+import * as Utils from './utils';
 
-export { Adapters, Models };
+export { Adapters, Models, Utils };
 
 export const CONFIG = Base.Type.extend({
   is: TypeGuards.isValueFactory(ProjectType.CHAT as const),
@@ -14,6 +15,8 @@ export const CONFIG = Base.Type.extend({
   name: 'Chat Assistant',
 
   type: ProjectType.CHAT,
+
+  utils: Utils.CONFIG,
 
   adapters: Adapters.CONFIG,
 

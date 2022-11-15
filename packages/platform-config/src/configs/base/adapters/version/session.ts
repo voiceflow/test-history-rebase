@@ -1,3 +1,4 @@
+import { Config as ConfigUtils } from '@platform-config/configs/utils';
 import { BaseVersion } from '@voiceflow/base-types';
 import { Nullable } from '@voiceflow/common';
 import { createSimpleAdapter } from 'bidirectional-adapter';
@@ -21,3 +22,11 @@ export const simple = createSimpleAdapter<DBSession, Models.Version.Session, Fro
     };
   }
 );
+
+export const CONFIG = {
+  simple,
+};
+
+export type Config = typeof CONFIG;
+
+export const extend = ConfigUtils.extendFactory<Config>(CONFIG);

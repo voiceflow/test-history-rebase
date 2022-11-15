@@ -8,7 +8,6 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { StrengthGauge } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import _sample from 'lodash/sample';
-import { Normalized } from 'normal-store';
 
 import { FILTERED_AMAZON_INTENTS } from '@/constants';
 import { AnyLocale, getPlatformIntentNameFormatter, getUtteranceRecommendationsLocales } from '@/platforms/selectors';
@@ -37,7 +36,8 @@ const INTENT_LABELS: Partial<Record<string, string>> = {
   [VoiceflowConstants.IntentName.NONE]: 'Fallback',
 };
 
-export const isCustomizableBuiltInIntent = (intent?: Nullish<Realtime.Intent>): boolean => !!intent && builtInIntentMap.has(intent.id);
+export const isCustomizableBuiltInIntent = (intent?: Nullish<Platform.Base.Models.Intent.Model>): boolean =>
+  !!intent && builtInIntentMap.has(intent.id);
 
 const CONTAIN_INTENT_REGEXP = /(\w)Intent/g;
 const CAMEL_CASE_REGEXPS = [
@@ -54,12 +54,12 @@ export const prettifyIntentName = (name = ''): string =>
     .replace(CAMEL_CASE_REGEXPS[2], '$1 $2') // camelCaseSHORT => camel Case SHORT
     .trim();
 
-export const prettifyIntentNames = <T extends Realtime.Intent>(intents: T[]): T[] =>
+export const prettifyIntentNames = <T extends Platform.Base.Models.Intent.Model>(intents: T[]): T[] =>
   intents.map((intent) => ({ ...intent, name: prettifyIntentName(intent.name) }));
 
 export const getIntentNameLabel = (name = ''): string => INTENT_LABELS[name] ?? name;
 
-export const fmtIntentName = (intent: Realtime.Intent, platform: Platform.Constants.PlatformType): string => {
+export const fmtIntentName = (intent: Platform.Base.Models.Intent.Model, platform: Platform.Constants.PlatformType): string => {
   let { name } = intent ?? { name: '' };
 
   name = getIntentNameLabel(name);
@@ -67,16 +67,14 @@ export const fmtIntentName = (intent: Realtime.Intent, platform: Platform.Consta
   return isCustomizableBuiltInIntent(intent) ? applyCustomizableBuiltInIntent(name, platform) : name;
 };
 
-export const intentFilter = <T extends Realtime.Intent>(intent: T, activeIntent: T | null = null, config: { noBuiltIns?: boolean } = {}): boolean => {
-  const { noBuiltIns } = config;
-  const isActiveIntent = intent.id === activeIntent?.id;
-  if (noBuiltIns) {
-    return !isCustomizableBuiltInIntent(intent);
-  }
+export const intentFilter = (
+  intent: Platform.Base.Models.Intent.Model,
+  activeIntent: Platform.Base.Models.Intent.Model | null = null,
+  config: { noBuiltIns?: boolean } = {}
+): boolean => {
+  if (config.noBuiltIns) return !isCustomizableBuiltInIntent(intent);
 
-  if (isActiveIntent) {
-    return true;
-  }
+  if (intent.id === activeIntent?.id) return true;
 
   if (isCustomizableBuiltInIntent(intent)) {
     return !FILTERED_AMAZON_INTENTS.includes(intent.name.replace(AMAZON_INTENT_PREFIX, ''));
@@ -84,9 +82,6 @@ export const intentFilter = <T extends Realtime.Intent>(intent: T, activeIntent:
 
   return true;
 };
-
-export const filterIntents = <T extends Realtime.Intent>(intents: T[], activeIntent?: T | null): T[] =>
-  intents.filter((intent) => intentFilter(intent, activeIntent));
 
 export const getTruncatedName = Realtime.Utils.platform.createPlatformSelector(
   {
@@ -99,20 +94,20 @@ export const getTruncatedName = Realtime.Utils.platform.createPlatformSelector(
 );
 
 export const intentFactory =
-  <T extends Platform.Constants.ProjectType>(platform: Platform.Constants.PlatformType) =>
-  (intent: { name: string; slots?: string[] }): Realtime.ProjectTypeIntent<T> => {
+  (platform: Platform.Constants.PlatformType) =>
+  (intent: { name: string; slots?: string[] }): Platform.Base.Models.Intent.Model => {
     const truncatedName = getTruncatedName(platform)(intent.name);
 
     return {
       id: intent.name,
       name: truncatedName ?? getIntentNameLabel(intent.name),
-      slots: { byKey: {}, allKeys: [] } as Realtime.ProjectTypeIntent<T>['slots'],
+      slots: { byKey: {}, allKeys: [] },
       inputs: [{ text: '', slots: intent.slots ?? [] }],
-    } as Realtime.ProjectTypeIntent<T>;
+    };
   };
 
-export const generalIntentFactory = (generalIntent: VoiceflowConstants.DefaultIntent): Realtime.VoiceIntent => {
-  const intent = intentFactory<Platform.Constants.ProjectType.VOICE>(Platform.Constants.PlatformType.VOICEFLOW)(generalIntent);
+export const voiceflowIntentFactory = (generalIntent: VoiceflowConstants.DefaultIntent): Platform.Base.Models.Intent.Model => {
+  const intent = intentFactory(Platform.Constants.PlatformType.VOICEFLOW)(generalIntent);
 
   return {
     ...intent,
@@ -122,7 +117,7 @@ export const generalIntentFactory = (generalIntent: VoiceflowConstants.DefaultIn
 
 export const validateIntentName = (
   intentName: string,
-  intents: Realtime.Intent[],
+  intents: Platform.Base.Models.Intent.Model[],
   slots: Realtime.Slot[],
   platform: Platform.Constants.PlatformType
 ): Nullable<string> => {
@@ -139,32 +134,27 @@ export const validateIntentName = (
   return null;
 };
 
-export const ALEXA_BUILT_INS = AlexaConstants.BUILT_IN_INTENTS.map(
-  intentFactory<Platform.Constants.ProjectType.VOICE>(Platform.Constants.PlatformType.ALEXA)
-);
+export const ALEXA_BUILT_INTENTS = AlexaConstants.BUILT_IN_INTENTS.map(intentFactory(Platform.Constants.PlatformType.ALEXA));
 
-export const GOOGLE_BUILT_INS = GoogleConstants.BUILT_IN_INTENTS.map(
-  intentFactory<Platform.Constants.ProjectType.VOICE>(Platform.Constants.PlatformType.GOOGLE)
-);
+export const GOOGLE_BUILT_INTENTS = GoogleConstants.BUILT_IN_INTENTS.map(intentFactory(Platform.Constants.PlatformType.GOOGLE));
 
-export const DIALOGFLOW_BUILT_INS = DFESConstants.BUILT_IN_INTENTS.map(intentFactory(Platform.Constants.PlatformType.DIALOGFLOW_ES));
+export const DIALOGFLOW_BUILT_INTENTS = DFESConstants.BUILT_IN_INTENTS.map(intentFactory(Platform.Constants.PlatformType.DIALOGFLOW_ES));
 
-export const GENERAL_BUILT_INS_MAP = Object.keys(VoiceflowConstants.DEFAULT_INTENTS_MAP).reduce<Record<string, Realtime.Intent[]>>(
-  (acc, key) => Object.assign(acc, { [key]: VoiceflowConstants.DEFAULT_INTENTS_MAP[key].map(generalIntentFactory) }),
-  {}
-);
+export const VOICEFLOW_BUILT_INS_MAP = Object.keys(VoiceflowConstants.DEFAULT_INTENTS_MAP).reduce<
+  Record<string, Platform.Base.Models.Intent.Model[]>
+>((acc, key) => Object.assign(acc, { [key]: VoiceflowConstants.DEFAULT_INTENTS_MAP[key].map(voiceflowIntentFactory) }), {});
 
 export const getBuiltInIntents = Realtime.Utils.platform.createPlatformSelector(
   {
-    [Platform.Constants.PlatformType.ALEXA]: ALEXA_BUILT_INS,
-    [Platform.Constants.PlatformType.GOOGLE]: GOOGLE_BUILT_INS,
-    [Platform.Constants.PlatformType.DIALOGFLOW_ES]: DIALOGFLOW_BUILT_INS,
+    [Platform.Constants.PlatformType.ALEXA]: ALEXA_BUILT_INTENTS,
+    [Platform.Constants.PlatformType.GOOGLE]: GOOGLE_BUILT_INTENTS,
+    [Platform.Constants.PlatformType.DIALOGFLOW_ES]: DIALOGFLOW_BUILT_INTENTS,
   },
-  GENERAL_BUILT_INS_MAP[VoiceflowConstants.Language.EN]
+  VOICEFLOW_BUILT_INS_MAP[VoiceflowConstants.Language.EN]
 );
 
 export const isBuiltInIntent = (intentID: string): boolean =>
-  [...ALEXA_BUILT_INS, ...GOOGLE_BUILT_INS, ...DIALOGFLOW_BUILT_INS, ...GENERAL_BUILT_INS_MAP[VoiceflowConstants.Language.EN]].some(
+  [...ALEXA_BUILT_INTENTS, ...GOOGLE_BUILT_INTENTS, ...DIALOGFLOW_BUILT_INTENTS, ...VOICEFLOW_BUILT_INS_MAP[VoiceflowConstants.Language.EN]].some(
     (intent) => intent.id === intentID
   );
 
@@ -198,29 +188,6 @@ export const removeSlotRefFromInput = (text: string, slotDetails: Realtime.Slot)
   text.replace(SLOT_REGEXP, (match, inner) => (inner.match(slotDetails.name) ? slotDetails.name : match));
 
 export const removeBuiltInPrefix = (name: string): string => (name.includes('.') ? name.split('.')[1] : name);
-
-export const inferIntentType: {
-  <T extends Realtime.Intent['slots']>(intent: Omit<Realtime.Intent, 'slots'> & { slots: T }): T extends Normalized<Realtime.ChatIntentSlot>
-    ? Realtime.ChatIntent
-    : Realtime.VoiceIntent;
-  <T extends Realtime.Intent['slots']>(intent: Omit<Partial<Realtime.Intent>, 'slots'> & { slots: T }): T extends Normalized<Realtime.ChatIntentSlot>
-    ? Partial<Realtime.ChatIntent>
-    : Partial<Realtime.VoiceIntent>;
-} = (intent: any): any => intent;
-
-export const inferIntentSlotsType = <T extends Realtime.IntentSlot>(slots: {
-  byKey: Record<string, T>;
-  allKeys: string[];
-}): T extends Record<string, Realtime.ChatIntentSlot> ? Normalized<Realtime.ChatIntentSlot> : Normalized<Realtime.VoiceIntentSlot> => slots as any;
-
-export const inferIntentSlotType: {
-  <T extends Realtime.IntentSlotDialog>(slot: Omit<Realtime.IntentSlotDialog, 'dialog'> & { dialog: T }): T extends Realtime.ChatIntentSlotDialog
-    ? Realtime.ChatIntentSlot
-    : Realtime.VoiceIntentSlot;
-  <T extends Realtime.IntentSlotDialog>(
-    slot: Omit<Partial<Realtime.IntentSlotDialog>, 'dialog'> & { dialog: T }
-  ): T extends Realtime.ChatIntentSlotDialog ? Partial<Realtime.ChatIntentSlot> : Partial<Realtime.VoiceIntentSlot>;
-} = (slot: any): any => slot;
 
 export const getIntentStrengthLevel = (count: number) => getIntentConfidenceStrengthLevel(count);
 
@@ -257,11 +224,11 @@ export const getGoToIntentMeta = ({
 }: {
   intentID?: Nullable<string>;
   diagramID?: Nullable<string>;
-  intentsMap: Record<string, Realtime.Intent>;
+  intentsMap: Record<string, Platform.Base.Models.Intent.Model>;
   diagramMap: Record<string, Realtime.Diagram>;
   activeDiagramType: BaseModels.Diagram.DiagramType;
   globalIntentStepMap: Record<string, Record<string, string[]>>;
-  intentNodeDataLookup: Record<string, { data: Realtime.NodeData.Intent.PlatformData; intent: Realtime.Intent; nodeID: string }>;
+  intentNodeDataLookup: Record<string, { data: Realtime.NodeData.Intent.PlatformData; intent: Platform.Base.Models.Intent.Model; nodeID: string }>;
 }) => {
   const goToIntent = intentID ? intentsMap[intentID] ?? null : null;
   const goToDiagram = diagramID ? diagramMap[diagramID] ?? null : null;

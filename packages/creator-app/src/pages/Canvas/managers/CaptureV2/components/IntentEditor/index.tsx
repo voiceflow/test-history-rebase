@@ -1,11 +1,12 @@
 import { BaseModels, BaseNode } from '@voiceflow/base-types';
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Button, createDividerMenuItemOption, SectionV2, useConst } from '@voiceflow/ui';
 import React from 'react';
 
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
 import * as Documentation from '@/config/documentation';
-import { useMapManager, useToggle } from '@/hooks';
+import { useActiveProjectTypeConfig, useMapManager, useToggle } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import { useIntentScope } from '@/pages/Canvas/managers/hooks';
 
@@ -17,7 +18,9 @@ const ITEM_DRAG_TYPE = 'capture-v2-editor';
 
 const IntentEditor: React.FC<{ disableAnimation: boolean }> = ({ disableAnimation }) => {
   const editor = EditorV2.useEditor<Realtime.NodeData.CaptureV2, Realtime.NodeData.CaptureV2BuiltInPorts>();
-  const defaultSlots = useConst<Realtime.IntentSlot[]>([]);
+  const projectConfig = useActiveProjectTypeConfig();
+
+  const defaultSlots = useConst<Platform.Base.Models.Intent.Slot[]>([]);
 
   const [isDragging, toggleDragging] = useToggle(false);
 
@@ -27,8 +30,8 @@ const IntentEditor: React.FC<{ disableAnimation: boolean }> = ({ disableAnimatio
   );
 
   const mapManager = useMapManager(editor.data.intent?.slots ?? defaultSlots, (slots) => editor.onChange({ intent: { slots } }), {
-    factory: () => Realtime.Utils.slot.intentSlotFactoryCreator(editor.projectType)({ id: '' }),
-    clone: ({ id }, cloneData) => ({ ...cloneData, id } as Realtime.IntentSlot),
+    factory: () => projectConfig.utils.intent.slotFactory({ id: '' }),
+    clone: ({ id }, cloneData) => ({ ...cloneData, id }),
   });
 
   const dynamicSelectedSlotIDs = React.useMemo(() => mapManager.items.map((item) => item.id || ''), [mapManager.items]);

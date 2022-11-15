@@ -1,9 +1,9 @@
-import { ChatIntentSlot, NodeData } from '@realtime-sdk/models';
+import { NodeData } from '@realtime-sdk/models';
 import { BaseNode } from '@voiceflow/base-types';
 import { ChatNode } from '@voiceflow/chat-types';
 import { Nullish } from '@voiceflow/common';
+import * as Platform from '@voiceflow/platform-config';
 
-import { chatIntentSlotSanitizer } from '../../../intent/chat';
 import { baseCaptureV2Adapter } from '../base';
 import { chatNoMatchAdapter, chatNoReplyAdapter, createBlockAdapter } from '../utils';
 
@@ -11,7 +11,10 @@ const captureAdapter = createBlockAdapter<ChatNode.CaptureV2.StepData, Omit<Node
   ({ noReply, noMatch, capture, ...baseData }, options) => ({
     ...baseCaptureV2Adapter.fromDB(baseData, options),
 
-    intent: capture.type === BaseNode.CaptureV2.CaptureType.INTENT ? { slots: capture.intent.slots?.map(chatIntentSlotSanitizer) || [] } : undefined,
+    intent:
+      capture.type === BaseNode.CaptureV2.CaptureType.INTENT
+        ? { slots: capture.intent.slots?.map(Platform.Common.Chat.Utils.Intent.slotSanitizer) || [] }
+        : undefined,
     noReply: noReply ? chatNoReplyAdapter.fromDB(noReply) : null,
     noMatch: noMatch ? chatNoMatchAdapter.fromDB(noMatch) : null,
     variable: capture.type === BaseNode.CaptureV2.CaptureType.QUERY ? capture.variable : null,
@@ -24,7 +27,12 @@ const captureAdapter = createBlockAdapter<ChatNode.CaptureV2.StepData, Omit<Node
       captureType === BaseNode.CaptureV2.CaptureType.INTENT
         ? {
             type: captureType,
-            intent: { key: '', name: '', inputs: [], slots: (intent?.slots as Nullish<ChatIntentSlot[]>)?.map(chatIntentSlotSanitizer) },
+            intent: {
+              key: '',
+              name: '',
+              inputs: [],
+              slots: (intent?.slots as Nullish<Platform.Common.Chat.Models.Intent.Slot[]>)?.map(Platform.Common.Chat.Utils.Intent.slotSanitizer),
+            },
           }
         : { type: captureType, variable },
     noReply: noReply && chatNoReplyAdapter.toDB(noReply as ChatNode.Utils.StepNoReply),

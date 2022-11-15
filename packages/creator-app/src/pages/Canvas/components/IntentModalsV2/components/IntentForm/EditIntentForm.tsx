@@ -1,4 +1,4 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import * as Platform from '@voiceflow/platform-config';
 import { toast } from '@voiceflow/ui';
 import React from 'react';
 
@@ -18,7 +18,7 @@ interface EditIntentFormProps {
   utteranceCreationType: Tracking.CanvasCreationType;
 }
 
-const DEFAULT_INPUTS: Realtime.IntentInput[] = [];
+const DEFAULT_INPUTS: Platform.Base.Models.Intent.Input[] = [];
 
 const EditIntentForm: React.FC<EditIntentFormProps> = ({
   intentID,
@@ -67,11 +67,11 @@ const EditIntentForm: React.FC<EditIntentFormProps> = ({
     trackingEvents.trackIntentEdit({ creationType });
   };
 
-  const updateSlotDialog = (slotID: string, dialog: Partial<Realtime.IntentSlotDialog>) => {
+  const updateSlotDialog = (slotID: string, dialog: Partial<Platform.Base.Models.Intent.SlotDialog>) => {
     patchIntentSlotDialog(intentID, slotID, dialog);
   };
 
-  const onUpdateUtterances = (inputs: Realtime.IntentInput[]) => {
+  const onUpdateUtterances = (inputs: Platform.Base.Models.Intent.Input[]) => {
     setInputs(inputs);
     patchIntent(intentID, { inputs });
     trackingEvents.trackIntentEdit({ creationType });

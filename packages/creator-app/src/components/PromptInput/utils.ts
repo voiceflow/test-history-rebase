@@ -9,7 +9,7 @@ export const getDefaultPrompt = (
   projectType: VoiceflowConstants.ProjectType,
   platform: VoiceflowConstants.PlatformType
 ): VoiceflowUtils.prompt.AnyPrompt => {
-  const defaultVoice = Platform.Config.getTypeConfig(platform, projectType).project.voice.default;
+  const defaultVoice = Platform.Config.getTypeConfig({ platform, type: projectType }).project.voice.default;
 
   if (projectType === VoiceflowConstants.ProjectType.VOICE) {
     return { content: '', voice: defaultVoice } as VoiceModels.Prompt<string>;

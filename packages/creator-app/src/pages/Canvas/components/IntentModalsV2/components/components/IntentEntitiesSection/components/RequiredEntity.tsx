@@ -1,4 +1,5 @@
 import { Utils } from '@voiceflow/common';
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Popper, SectionV2 } from '@voiceflow/ui';
 import React from 'react';
@@ -10,8 +11,8 @@ import IntentRequiredEntitiesSection from '@/pages/Canvas/components/IntentRequi
 interface RequiredEntityProps {
   entity: Realtime.Slot;
   entities: Realtime.Slot[];
-  intentEntity: Realtime.IntentSlot;
-  onChangeDialog: (slotID: string, dialog: Partial<Realtime.IntentSlotDialog>) => void;
+  intentEntity: Platform.Base.Models.Intent.Slot;
+  onChangeDialog: (slotID: string, dialog: Partial<Platform.Base.Models.Intent.SlotDialog>) => void;
   onRemoveRequired: (slotID: string) => void;
 }
 
@@ -47,7 +48,7 @@ const RequiredEntity: React.FC<RequiredEntityProps> = ({ entity, entities, inten
                 slots={entities}
                 prompt={intentEntity.dialog.prompt ?? []}
                 autofocus
-                onChange={(prompt) => !removedRef.current && onChangeDialog(intentEntity.id, { prompt } as Partial<Realtime.IntentSlotDialog>)}
+                onChange={(prompt) => !removedRef.current && onChangeDialog(intentEntity.id, { prompt })}
                 placeholder="Enter entity reprompt"
               />
             </TextEditorVariablesPopoverProvider>

@@ -17,8 +17,8 @@ export interface MarkupTransform {
 export interface EntityPrompt {
   id: string;
   name: string;
-  content: string;
   color: string;
+  content: string;
 }
 
 export type NodeDataUpdater<T> = (value: Partial<Realtime.NodeData<T>>) => Promise<void>;

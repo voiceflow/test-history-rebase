@@ -1,4 +1,5 @@
 import * as Base from '@platform-config/configs/base';
+import { Config as ConfigUtils } from '@platform-config/configs/utils';
 import { BaseVersion } from '@voiceflow/base-types';
 import { SimpleAdapter, SmartSimpleAdapter } from 'bidirectional-adapter';
 
@@ -19,3 +20,12 @@ export const simple = Base.Adapters.Version.Publishing.simple as SimpleAdapter<
   FromAndToDBOptions,
   FromAndToDBOptions
 >;
+
+export const CONFIG = Base.Adapters.Version.Publishing.extend({
+  smart,
+  simple,
+});
+
+export type Config = typeof CONFIG;
+
+export const extend = ConfigUtils.extendFactory<Config>(CONFIG);

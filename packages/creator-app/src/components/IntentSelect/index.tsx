@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import * as Platform from '@voiceflow/platform-config';
 import { Alert, BaseSelectProps, IconButton, isUIOnlyMenuItemOption, Menu, Select, toast, UIOnlyMenuItemOption } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
@@ -21,8 +21,8 @@ interface IntentSelectProps
     BaseSelectProps,
     'className' | 'options' | 'searchable' | 'optionsFilter' | 'formatInputValue' | 'isButtonDisabled' | 'renderOptionLabel'
   > {
-  intent?: Realtime.Intent | null;
-  options?: Array<Realtime.Intent | UIOnlyMenuItemOption>;
+  intent?: Platform.Base.Models.Intent.Model | null;
+  options?: Array<Platform.Base.Models.Intent.Model | UIOnlyMenuItemOption>;
   onChange: (value: { intent: string | null }) => void;
   clearable?: boolean;
   creatable?: boolean;

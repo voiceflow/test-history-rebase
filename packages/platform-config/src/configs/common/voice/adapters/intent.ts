@@ -1,42 +1,22 @@
 import * as Base from '@platform-config/configs/base';
+import { Config as ConfigUtils } from '@platform-config/configs/utils';
 import { VoiceModels } from '@voiceflow/voice-types';
 import { createMultiAdapter, createSmartMultiAdapter, MultiAdapter, SmartMultiAdapter } from 'bidirectional-adapter';
 import { denormalize, normalize } from 'normal-store';
-import { Optional, Required } from 'utility-types';
 
 import * as Models from '../models';
+import * as Utils from '../utils';
 
 export type KeyRemap = Base.Adapters.Intent.KeyRemap;
 
-export const promptSanitizer = ({ text, slots, voice }: Optional<Models.Intent.Prompt> = {}): Models.Intent.Prompt => ({
-  text: text || '',
-  slots: slots || [],
-  voice,
-});
-
-export const slotDialogSanitizer = ({
-  prompt = [],
-  confirm = [],
-  ...baseDialog
-}: Optional<Models.Intent.SlotDialog> = {}): Models.Intent.SlotDialog => ({
-  ...Base.Adapters.Intent.slotDialogSanitizer(baseDialog),
-  prompt: prompt.map(promptSanitizer),
-  confirm: confirm.map(promptSanitizer),
-});
-
-export const slotSanitizer = ({ dialog, ...baseIntentSlot }: Required<Optional<Models.Intent.Slot>, 'id'>): Models.Intent.Slot => ({
-  ...Base.Adapters.Intent.slotSanitizer(baseIntentSlot),
-  dialog: slotDialogSanitizer(dialog),
-});
-
 export const smart = createSmartMultiAdapter<VoiceModels.Intent<string>, Models.Intent.Model, [], [], KeyRemap>(
-  (dbIntent) => ({
+  ({ slots, ...dbIntent }) => ({
     ...Base.Adapters.Intent.smart.fromDB(dbIntent),
-    ...(Base.Adapters.Utils.hasValue(dbIntent, 'slots') && { slots: normalize(dbIntent.slots.map(slotSanitizer)) }),
+    ...(slots !== undefined && { slots: normalize(slots.map(Utils.Intent.slotSanitizer)) }),
   }),
-  (intent) => ({
+  ({ slots, ...intent }) => ({
     ...Base.Adapters.Intent.smart.toDB(intent),
-    ...(Base.Adapters.Utils.hasValue(intent, 'slots') && { slots: denormalize(intent.slots).map(slotSanitizer) }),
+    ...(slots !== undefined && { slots: denormalize(slots).map(Utils.Intent.slotSanitizer) }),
   })
 );
 
@@ -44,6 +24,15 @@ export const simple = createMultiAdapter<VoiceModels.Intent<string>, Models.Inte
   ({ slots = [], ...dbIntent }) => smart.fromDB({ slots, ...dbIntent }),
   smart.toDB
 );
+
+export const CONFIG = Base.Adapters.Intent.extend({
+  smart,
+  simple,
+});
+
+export type Config = typeof CONFIG;
+
+export const extend = ConfigUtils.extendFactory<Config>(CONFIG);
 
 /**
  * Should not be used in the configs, only in the adapters to share the logic and fix TS voice related typings

@@ -134,7 +134,7 @@ const NoReplyForm: React.FC<NoReplyFormProps> = ({ noReply, onChange, pushToPath
               randomize={withoutPathAndAlwaysRandom || noReply.randomize}
               reprompts={noReply.reprompts as any}
               isNoReply
-              onChangeReprompts={(reprompts: Realtime.NodeData.NoMatch['reprompts']) => onChange({ ...noReply, reprompts: reprompts as any })}
+              onChangeReprompts={(reprompts) => onChange({ ...noReply, reprompts } as Realtime.NodeData.NoReply)}
               onChangeRandomize={() => onChange({ ...noReply, randomize: !noReply.randomize })}
               hideRandomizeMenu={withoutPathAndAlwaysRandom}
             >

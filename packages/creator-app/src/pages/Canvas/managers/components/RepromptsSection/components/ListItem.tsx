@@ -1,5 +1,4 @@
-import { ChatModels } from '@voiceflow/chat-types';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import * as Platform from '@voiceflow/platform-config';
 import { SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
@@ -8,8 +7,8 @@ import { useAutoScrollNodeIntoView } from '@/hooks';
 import Prompt from './Prompt';
 
 interface ListItemProps {
-  message: ChatModels.Prompt | Realtime.NodeData.VoicePrompt;
-  onChange: (message: Partial<ChatModels.Prompt | Realtime.NodeData.VoicePrompt>) => void;
+  message: Platform.Base.Models.Prompt.Model;
+  onChange: (message: Partial<Platform.Base.Models.Prompt.Model>) => void;
   onRemove: VoidFunction;
   autoFocus?: boolean;
 }

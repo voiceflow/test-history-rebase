@@ -44,3 +44,10 @@ export const simple = createSimpleAdapter<
   (dbPublishing, options) => smart.fromDB(GoogleVersion.defaultVoicePublishing(dbPublishing), options),
   (publishing, options) => smart.toDB(publishing, options)
 );
+
+export const CONFIG = Common.Voice.Adapters.Version.Publishing.extend({
+  smart,
+  simple,
+});
+
+export type Config = typeof CONFIG;

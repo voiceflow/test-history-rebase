@@ -20,3 +20,10 @@ export const simple = createSimpleAdapter<VoiceflowVersion.ChatSettings, Models.
   (dbSettings) => smart.fromDB(VoiceflowVersion.defaultChatSettings(dbSettings)),
   (settings) => smart.toDB(settings)
 );
+
+export const CONFIG = Common.Chat.Adapters.Version.Settings.extend({
+  smart,
+  simple,
+});
+
+export type Config = typeof CONFIG;

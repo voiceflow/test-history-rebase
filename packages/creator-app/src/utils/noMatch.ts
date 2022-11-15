@@ -2,9 +2,7 @@ import { BaseNode } from '@voiceflow/base-types';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
-import { chatPromptFactory, PromptFactoryOptions, voicePromptFactory } from './prompt';
-
-interface NoMatchFactoryOptions extends PromptFactoryOptions {}
+interface NoMatchFactoryOptions extends Platform.Common.Voice.Utils.Prompt.FactoryOptions {}
 
 const BASE_NO_MATCH: Realtime.NodeData.BaseNoMatch = {
   types: [BaseNode.Utils.NoMatchType.REPROMPT],
@@ -12,14 +10,17 @@ const BASE_NO_MATCH: Realtime.NodeData.BaseNoMatch = {
   randomize: false,
 };
 
-export const chatNoMatchFactory = (): Realtime.NodeData.ChatNoMatch => ({ ...BASE_NO_MATCH, reprompts: [chatPromptFactory()] });
+export const chatNoMatchFactory = (): Realtime.NodeData.ChatNoMatch => ({
+  ...BASE_NO_MATCH,
+  reprompts: [Platform.Common.Chat.CONFIG.utils.prompt.factory()],
+});
 export const voiceNoMatchFactory = (options: NoMatchFactoryOptions): Realtime.NodeData.VoiceNoMatch => ({
   ...BASE_NO_MATCH,
-  reprompts: [voicePromptFactory(options)],
+  reprompts: [Platform.Common.Voice.CONFIG.utils.prompt.textFactory(options)],
 });
 
 export const getPlatformNoMatchFactory = Realtime.Utils.platform.createProjectTypeSelector<
-  (options: PromptFactoryOptions) => Realtime.NodeData.NoMatch
+  (options: NoMatchFactoryOptions) => Realtime.NodeData.NoMatch
 >({
   [Platform.Constants.ProjectType.CHAT]: chatNoMatchFactory,
   [Platform.Constants.ProjectType.VOICE]: voiceNoMatchFactory,

@@ -1,3 +1,4 @@
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { SectionV2 } from '@voiceflow/ui';
 import React from 'react';
@@ -9,7 +10,7 @@ interface ItemProps {
   onClick: React.MouseEventHandler<HTMLDivElement>;
   isActive?: boolean;
   contentRef?: React.Ref<HTMLDivElement>;
-  intentEntity: Realtime.IntentSlot;
+  intentEntity: Platform.Base.Models.Intent.Slot;
   onRemoveRequired: (slotID: string) => void;
 }
 

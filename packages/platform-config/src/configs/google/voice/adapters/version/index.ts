@@ -26,3 +26,15 @@ export const simple = createMultiAdapter<GoogleVersion.VoiceVersion, Models.Vers
   }),
   notImplementedAdapter.transformer
 );
+
+export const CONFIG = Common.Voice.Adapters.Version.extend({
+  simple,
+
+  session: Session.CONFIG,
+
+  settings: Settings.CONFIG,
+
+  publishing: Publishing.CONFIG,
+});
+
+export type Config = typeof CONFIG;

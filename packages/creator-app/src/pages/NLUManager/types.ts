@@ -1,22 +1,22 @@
 import * as ML from '@voiceflow/ml-sdk';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import * as Platform from '@voiceflow/platform-config';
 import { StrengthGaugeTypes } from '@voiceflow/ui';
 
 export type ProblematicSentence = ML.Intent.Clarity.ProblematicSentence;
 
 export interface ClarityModel extends ML.intent.ClarityModelResponse {}
 
-export type NLUIntent = Realtime.Intent & {
-  confidence: number;
-  confidenceLevel: StrengthGaugeTypes.Level;
+export interface NLUIntent extends Platform.Base.Models.Intent.Model {
   clarity: number;
+  hasErrors: boolean;
+  confidence: number;
   clarityLevel: StrengthGaugeTypes.Level;
   hasConflicts: boolean;
+  hasEntityError: boolean;
+  confidenceLevel: StrengthGaugeTypes.Level;
   conflictingIntentIDs: string[];
   conflictingUtterances: string[];
-  hasErrors: boolean;
-  hasEntityError: boolean;
-};
+}
 
 export enum IntentNotificationTypes {
   ENTITY_PROMPT = 'entityPrompt',

@@ -1,3 +1,4 @@
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import {
   Badge,
@@ -37,7 +38,7 @@ import UtterancesTooltip from '../UtterancesTooltip';
 import { BuiltInIntentMessage } from './components';
 
 interface UtteranceManagerProps {
-  intent: Realtime.Intent;
+  intent: Platform.Base.Models.Intent.Model;
   isNested: boolean;
   isInModal: boolean;
 }
@@ -116,7 +117,7 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({ intent, isNested, i
     if (canBulkUpload) {
       openUtterancesBulkUploadModal({
         intentID,
-        onUpload: (utterances: Realtime.IntentInput[]) => {
+        onUpload: (utterances: Platform.Base.Models.Intent.Input[]) => {
           trackingEvents.trackUtteranceBulkImport({
             intentID,
             creationType: isInModal ? CanvasCreationType.IMM : CanvasCreationType.EDITOR,

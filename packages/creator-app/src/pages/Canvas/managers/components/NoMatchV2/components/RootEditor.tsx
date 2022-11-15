@@ -1,6 +1,6 @@
 import { BaseModels, BaseNode } from '@voiceflow/base-types';
-import { ChatModels } from '@voiceflow/chat-types';
 import { Utils } from '@voiceflow/common';
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { SectionV2 } from '@voiceflow/ui';
 import React from 'react';
@@ -35,14 +35,14 @@ const RootEditor: React.FC = () => {
     await editor.onChange({ noMatch: { ...noMatch, ...data } as Realtime.NodeData.NoMatch });
   };
 
-  const onChangeReprompts = async (reprompts: Array<ChatModels.Prompt | Realtime.NodeData.VoicePrompt>) => {
+  const onChangeReprompts = async (reprompts: Platform.Base.Models.Prompt.Model[]) => {
     if (!reprompts.length) {
       await onChange({ types: Utils.array.withoutValue(noMatch.types, BaseNode.Utils.NoMatchType.REPROMPT), reprompts: [] });
     } else {
       await onChange({
         types: Utils.array.unique([...noMatch.types, BaseNode.Utils.NoMatchType.REPROMPT]),
         reprompts,
-      } as Partial<Realtime.NodeData.NoMatch>);
+      } as Realtime.NodeData.NoMatch);
     }
   };
 

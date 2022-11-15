@@ -63,7 +63,7 @@ export const Item: React.FC<ItemProps> = ({
   connectDragSource,
   connectDropTarget,
 }) => {
-  const projectConfig = Platform.Config.getTypeConfig(platform, projectType);
+  const projectConfig = Platform.Config.getTypeConfig({ type: projectType, platform });
   const platformConfig = Platform.Config.get(platform);
 
   const [canManageProjects] = usePermission(Permission.MANAGE_PROJECTS);

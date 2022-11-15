@@ -18,7 +18,7 @@ export interface Option {
 
 type UnionConfig<Type extends Platform.Constants.ProjectType> = Omit<Upcoming.Base.Config | Platform.Base.Config, 'types'> & {
   types: {
-    [Key in Type]: Omit<Platform.Base.Type.Config, 'adapters'>;
+    [Key in Type]: Omit<Platform.Base.Type.Config, 'adapters' | 'utils'>;
   };
 };
 

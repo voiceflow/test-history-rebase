@@ -1,3 +1,4 @@
+import { Config as ConfigUtils } from '@platform-config/configs/utils';
 import { BaseVersion } from '@voiceflow/base-types';
 import { createMultiAdapter, notImplementedAdapter } from 'bidirectional-adapter';
 
@@ -48,3 +49,17 @@ export const simple = createMultiAdapter<DBVersion<BaseVersion.Version>, Models.
   }),
   notImplementedAdapter.transformer
 );
+
+export const CONFIG = {
+  simple,
+
+  session: Session.CONFIG,
+
+  settings: Settings.CONFIG,
+
+  publishing: Publishing.CONFIG,
+};
+
+export type Config = typeof CONFIG;
+
+export const extend = ConfigUtils.extendFactory<Config>(CONFIG);

@@ -1,4 +1,5 @@
 import { Utils } from '@voiceflow/common';
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { IconButton, IconButtonVariant, Menu, PopperTypes, Select } from '@voiceflow/ui';
 import * as Normal from 'normal-store';
@@ -12,7 +13,7 @@ interface AddDropdownProps {
   entities: Realtime.Slot[];
   placement?: PopperTypes.Placement;
   onAddRequired: (slotID: string) => void;
-  intentEntities: Normal.Normalized<Realtime.IntentSlot>;
+  intentEntities: Normal.Normalized<Platform.Base.Models.Intent.Slot>;
 }
 
 const AddDropdown: React.FC<AddDropdownProps> = ({ entities, placement, onAddRequired, intentEntities }) => {

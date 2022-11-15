@@ -1,4 +1,5 @@
 import * as Base from '@platform-config/configs/base';
+import { Config as ConfigUtils } from '@platform-config/configs/utils';
 import { BaseVersion } from '@voiceflow/base-types';
 import { VoiceModels } from '@voiceflow/voice-types';
 import { createSimpleAdapter, SimpleAdapter } from 'bidirectional-adapter';
@@ -45,6 +46,14 @@ export const simple = createSimpleAdapter<DBSession, Models.Version.Session, Fro
     };
   }
 );
+
+export const CONFIG = Base.Adapters.Version.Session.extend({
+  simple,
+});
+
+export type Config = typeof CONFIG;
+
+export const extend = ConfigUtils.extendFactory<Config>(CONFIG);
 
 /**
  * Should not be used in the configs, only in the adapters to share the logic and fix TS voice related typings

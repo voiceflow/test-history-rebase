@@ -1,28 +1,27 @@
-import { ChatModels } from '@voiceflow/chat-types';
-import { slate } from '@voiceflow/internal';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import * as Platform from '@voiceflow/platform-config';
 import { Preview, stopPropagation, toast } from '@voiceflow/ui';
 import React from 'react';
 
+import { SlateEditorAPI } from '@/components/SlateEditable';
 import { copy } from '@/utils/clipboard';
-
-type noMatchPrompt = Realtime.NodeData.VoicePrompt | ChatModels.Prompt;
 
 interface PromptPreviewProps {
   title: string;
-  prompts: Realtime.NodeData.VoicePrompt[] | ChatModels.Prompt[];
-  onOpenEditor: () => void;
-  onClose: () => void;
+  prompts: Platform.Base.Models.Prompt.Model[];
+  onClose: VoidFunction;
+  onOpenEditor: VoidFunction;
 }
 
-const getPromptContent = (noMatchPrompt: noMatchPrompt) => {
-  if (Array.isArray(noMatchPrompt.content)) {
-    const promptContent = noMatchPrompt.content.map((value: any) => {
-      return slate.toPlaintext(value.children) as string;
-    });
-    return promptContent.join('\n');
+const getPromptContent = (prompt: Platform.Base.Models.Prompt.Model) => {
+  if (Platform.Common.Chat.CONFIG.utils.prompt.isPrompt(prompt)) {
+    return SlateEditorAPI.serialize(prompt.content);
   }
-  return noMatchPrompt.content;
+
+  if (Platform.Common.Voice.CONFIG.utils.prompt.isPrompt(prompt)) {
+    return prompt.content;
+  }
+
+  return '';
 };
 
 const PromptsPreview: React.FC<PromptPreviewProps> = ({ title, prompts, onOpenEditor, onClose }) => {

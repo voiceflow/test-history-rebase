@@ -150,6 +150,7 @@ const CanvasContainer: React.FC = ({ children }) => {
   useHotKeys(Hotkey.UNDO, undoHistory, { preventDefault: true });
   useHotKeys(Hotkey.REDO, redoHistory, { preventDefault: true });
   useHotKeys(Hotkey.SEARCH, showSearch, { preventDefault: true }, [showSearch]);
+  useHotKeys(Hotkey.NATIVE_SEARCH, showSearch, { preventDefault: true }, [showSearch]);
   useHotKeys(Hotkey.SPOTLIGHT, showSpotlight, { action: 'keyup', preventDefault: true }, [showSpotlight]);
   useHotKeys(Hotkey.DUPLICATE, onDuplicate, { preventDefault: true, disable: !isEditingMode }, [isEditingMode]);
   useHotKeys(Hotkey.CREATE_COMPONENT, onCreateComponent, { preventDefault: true });

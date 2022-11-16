@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.4.1...@voiceflow/platform-config@1.4.2) (2022-11-16)
+
+
+### Bug Fixes
+
+* publish headers refactor (CT-1234) ([#6320](https://github.com/voiceflow/creator-app/issues/6320)) ([01e6f5d](https://github.com/voiceflow/creator-app/commit/01e6f5d789edf9bd144e307694f63edca8e7ca8e))
+* whatsapp + microsoft teams project create (CT-000) ([#6311](https://github.com/voiceflow/creator-app/issues/6311)) ([4b4faf5](https://github.com/voiceflow/creator-app/commit/4b4faf5fe271e41de182ccf525666690d4d10813))
+
+
+
+
+
 ## [1.4.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.4.0...@voiceflow/platform-config@1.4.1) (2022-11-16)
 
 **Note:** Version bump only for package @voiceflow/platform-config

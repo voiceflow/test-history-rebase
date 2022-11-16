@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.19.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-sdk@1.19.0...@voiceflow/ml-sdk@1.19.1) (2022-11-16)
+
+
+### Bug Fixes
+
+* whatsapp + microsoft teams project create (CT-000) ([#6311](https://github.com/voiceflow/creator-app/issues/6311)) ([4b4faf5](https://github.com/voiceflow/creator-app/commit/4b4faf5fe271e41de182ccf525666690d4d10813))
+
+
+
+
+
 # [1.19.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-sdk@1.18.0...@voiceflow/ml-sdk@1.19.0) (2022-11-03)
 
 

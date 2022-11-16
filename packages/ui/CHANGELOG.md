@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.179.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.179.0...@voiceflow/ui@1.179.1) (2022-11-16)
+
+
+### Bug Fixes
+
+* ui Improvements ([76b7ec9](https://github.com/voiceflow/creator-app/commit/76b7ec9d2e16b0a52bf9d5d147583d465bceb786))
+* whatsapp + microsoft teams project create (CT-000) ([#6311](https://github.com/voiceflow/creator-app/issues/6311)) ([4b4faf5](https://github.com/voiceflow/creator-app/commit/4b4faf5fe271e41de182ccf525666690d4d10813))
+
+
+
+
+
 # [1.179.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.178.0...@voiceflow/ui@1.179.0) (2022-11-16)
 
 

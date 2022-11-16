@@ -29,7 +29,7 @@ const EmptyScreen: React.FC = () => {
       </FlexCenter>
 
       <FlexCenter>
-        <Button squareRadius variant={ButtonVariant.PRIMARY} onClick={onCreate}>
+        <Button variant={ButtonVariant.PRIMARY} onClick={onCreate}>
           Import Data
         </Button>
       </FlexCenter>

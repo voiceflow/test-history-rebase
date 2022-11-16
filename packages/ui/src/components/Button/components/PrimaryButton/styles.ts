@@ -30,6 +30,7 @@ export const PrimaryButtonContainer = styled(ButtonContainer)<PrimaryButtonConta
   background-size: 1px 52px;
   box-shadow: inset 0px -1px 0px 1px rgba(19, 33, 68, 0.08), 0px 1px 3px 0px rgba(19, 33, 68, 0.16), 0px 0px 1px 0px rgba(19, 33, 68, 0.08),
     0px 1px 1px 0px rgba(19, 33, 68, 0.1);
+  border-radius: 10px;
 
   ${({ disabled, canHover = true }) =>
     disabled

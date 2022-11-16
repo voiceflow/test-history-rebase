@@ -63,7 +63,7 @@ const IntentsHeader: React.FC = () => {
           </TrashButton>
         )}
 
-        <TrainButton active={isTraining} onClick={handleTrain} squareRadius variant={ButtonVariant.PRIMARY}>
+        <TrainButton active={isTraining} onClick={handleTrain} variant={ButtonVariant.PRIMARY}>
           <Box display="inline-block" position="relative" top={2}>
             <SvgIcon icon="arrowSpin" spin={isTraining} size={16} inline mr={16} />
           </Box>

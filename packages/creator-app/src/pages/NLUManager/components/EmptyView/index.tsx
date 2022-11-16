@@ -36,7 +36,7 @@ const EmptyView: React.FC<EmptyViewProps> = ({ onCreate, tab }) => {
       </FlexCenter>
 
       <FlexCenter>
-        <Button squareRadius variant={ButtonVariant.PRIMARY} onClick={onCreate}>
+        <Button variant={ButtonVariant.PRIMARY} onClick={onCreate}>
           {tab === NLURoute.INTENTS ? `Import ${namePlural}` : `Create ${name}`}
         </Button>
       </FlexCenter>

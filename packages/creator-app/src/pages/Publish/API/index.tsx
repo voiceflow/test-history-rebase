@@ -188,7 +188,7 @@ const API: React.FC = () => {
               ]}
             >
               {primaryKey && (
-                <Button onClick={() => copyKey(primaryKey.key)} variant={ButtonVariant.PRIMARY} squareRadius>
+                <Button onClick={() => copyKey(primaryKey.key)} variant={ButtonVariant.PRIMARY}>
                   Copy API Key
                 </Button>
               )}

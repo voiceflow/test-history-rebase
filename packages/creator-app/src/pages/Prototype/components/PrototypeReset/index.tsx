@@ -27,7 +27,6 @@ const PrototypeReset: React.FC<PrototypeResetProps> = ({ onSave, onClick }) => {
         <Button
           id={Identifier.SAVE_TRANSCRIPT_BUTTON}
           variant={ButtonVariant.PRIMARY}
-          squareRadius
           onClick={() => {
             onSave();
             setTranscriptSaved(false);

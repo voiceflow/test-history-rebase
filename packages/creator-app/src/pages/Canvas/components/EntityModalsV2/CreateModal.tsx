@@ -113,7 +113,7 @@ const CreateModal: React.FC = () => {
           Cancel
         </Button>
 
-        <Button width={137} disabled={isCreating} isLoading={isCreating} onClick={onCreate} variant={ButtonVariant.PRIMARY} squareRadius>
+        <Button width={137} disabled={isCreating} isLoading={isCreating} onClick={onCreate} variant={ButtonVariant.PRIMARY}>
           Create Entity
         </Button>
       </ModalFooter>

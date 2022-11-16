@@ -13,9 +13,7 @@ const WaitVendorsStage: React.FC<StageComponentProps<AlexaPublishJob.WaitVendors
     <Description>Looks like you don't have a developer account, create one to get started!</Description>
 
     <Link href="https://developer.amazon.com/login.html" onClick={cancel}>
-      <Button variant={ButtonVariant.PRIMARY} squareRadius>
-        Developer Sign Up
-      </Button>
+      <Button variant={ButtonVariant.PRIMARY}>Developer Sign Up</Button>
     </Link>
   </Box.FlexCenter>
 );

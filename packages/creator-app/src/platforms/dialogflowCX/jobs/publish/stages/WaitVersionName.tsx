@@ -93,7 +93,7 @@ const WaitVersionName: React.FC<StageComponentProps<any>> = ({ start, setJob, ca
           <Button variant={ButtonVariant.TERTIARY} onClick={onClose} squareRadius>
             Cancel
           </Button>
-          <Button variant={ButtonVariant.PRIMARY} onClick={onConfirm} squareRadius>
+          <Button variant={ButtonVariant.PRIMARY} onClick={onConfirm}>
             Upload
           </Button>
         </Modal.Footer>

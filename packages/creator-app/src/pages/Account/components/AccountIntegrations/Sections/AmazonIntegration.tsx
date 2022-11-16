@@ -44,7 +44,7 @@ const AmazonIntegrations: React.FC = () => {
   const amazonButton = () => {
     if (!amazonStatus) {
       return (
-        <Button squareRadius variant={ButtonVariant.PRIMARY} disabled>
+        <Button variant={ButtonVariant.PRIMARY} disabled>
           Loading...
         </Button>
       );
@@ -54,14 +54,13 @@ const AmazonIntegrations: React.FC = () => {
         <Button
           variant={ButtonVariant.PRIMARY}
           onClick={() => connectAmazonModal.openVoid({ source: SourceType.ACCOUNT_PAGE, platform: Platform.Constants.PlatformType.ALEXA })}
-          squareRadius
         >
           Connect
         </Button>
       );
     }
     return (
-      <Button variant={ButtonVariant.PRIMARY} squareRadius onClick={resetAmazon}>
+      <Button variant={ButtonVariant.PRIMARY} onClick={resetAmazon}>
         Reset
       </Button>
     );

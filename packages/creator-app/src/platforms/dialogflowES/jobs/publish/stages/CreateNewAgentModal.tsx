@@ -39,7 +39,7 @@ const CreateNewAgentModal = manager.create<{}, string>('CreateNewAgent', () => (
             Cancel
           </Button>
         </Box>
-        <Button variant={ButtonVariant.PRIMARY} onClick={handleSubmit} disabled={!state.agentName} isLoading={state.loading} squareRadius>
+        <Button variant={ButtonVariant.PRIMARY} onClick={handleSubmit} disabled={!state.agentName} isLoading={state.loading}>
           Continue
         </Button>
       </Modal.Footer>

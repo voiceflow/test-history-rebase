@@ -32,7 +32,7 @@ const EmptyView: React.FC<EmptyViewProps> = ({ onCreate, pageType }) => {
       </FlexCenter>
 
       <FlexCenter>
-        <Button squareRadius variant={ButtonVariant.PRIMARY} onClick={onCreate}>
+        <Button variant={ButtonVariant.PRIMARY} onClick={onCreate}>
           Create {name}
         </Button>
       </FlexCenter>

@@ -28,7 +28,7 @@ const GatedTranscripts: React.FC = () => {
               <Text color="#62778c">{TranscriptsLimitDetails.description}</Text>
               <Link href={PLAN_INFO_LINK}>Learn more</Link>
             </Box>
-            <Button variant={ButtonVariant.PRIMARY} squareRadius onClick={() => TranscriptsLimitDetails.onSubmit({ openPaymentModal })}>
+            <Button variant={ButtonVariant.PRIMARY} onClick={() => TranscriptsLimitDetails.onSubmit({ openPaymentModal })}>
               {TranscriptsLimitDetails.submitText}
             </Button>
           </BoxFlexCenter>

@@ -99,7 +99,6 @@ const Footer: React.FC<FooterProps> = ({ isCanvas }) => {
         id={Identifier.SHARE_COPY_LINK_BUTTON}
         variant={ButtonVariant.PRIMARY}
         onClick={onCopyLink}
-        squareRadius
         style={{ width: 114 }}
         disabled={isCanvas && !isCompiled}
         isLoading={isCanvas && !isCompiled}

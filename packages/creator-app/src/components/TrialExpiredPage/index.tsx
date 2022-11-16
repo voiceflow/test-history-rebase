@@ -32,7 +32,7 @@ const TrialExpiredPage: React.FC = () => {
             </Box>
             {canUpgradeWorkspace ? (
               <>
-                <Button variant={ButtonVariant.PRIMARY} squareRadius onClick={() => paymentModal.openVoid({})}>
+                <Button variant={ButtonVariant.PRIMARY} onClick={() => paymentModal.openVoid({})}>
                   Upgrade to Pro
                 </Button>
                 <Button variant={ButtonVariant.QUATERNARY} squareRadius onClick={() => paymentModal.openVoid({})}>
@@ -40,7 +40,7 @@ const TrialExpiredPage: React.FC = () => {
                 </Button>
               </>
             ) : (
-              <Button variant={ButtonVariant.PRIMARY} squareRadius onClick={notifyAdmins} disabled={notifyAdminButtonDisabled}>
+              <Button variant={ButtonVariant.PRIMARY} onClick={notifyAdmins} disabled={notifyAdminButtonDisabled}>
                 Notify workspace admins
               </Button>
             )}

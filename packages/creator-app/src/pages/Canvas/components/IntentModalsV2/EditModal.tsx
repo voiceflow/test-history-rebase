@@ -70,7 +70,7 @@ const EditModal: React.FC = () => {
       )}
 
       <ModalFooter justifyContent="flex-end">
-        <Button variant={ButtonVariant.PRIMARY} squareRadius onClick={close}>
+        <Button variant={ButtonVariant.PRIMARY} onClick={close}>
           Close
         </Button>
       </ModalFooter>

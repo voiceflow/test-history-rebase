@@ -101,7 +101,7 @@ const InviteByLinkFooter: React.FC = () => {
         />
       </DropdownContainer>
 
-      <Button id={Identifier.COPY_INVITE_BUTTON} variant={ButtonVariant.PRIMARY} onClick={onCopyLink} disabled={!inviteLink} squareRadius>
+      <Button id={Identifier.COPY_INVITE_BUTTON} variant={ButtonVariant.PRIMARY} onClick={onCopyLink} disabled={!inviteLink}>
         <span>Copy Link</span>
       </Button>
     </Container>

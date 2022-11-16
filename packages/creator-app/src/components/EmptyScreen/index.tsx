@@ -26,7 +26,7 @@ const EmptyScreen: React.FC<EmptyScreenProps> = ({ id, title, onClick, body, but
           {body} <Link href={PROTOTYPING}>Learn more</Link>
         </BodyTextContainer>
         <ButtonContainer>
-          <Button id={id} onClick={() => onClick()} variant={ButtonVariant.PRIMARY} squareRadius>
+          <Button id={id} onClick={() => onClick()} variant={ButtonVariant.PRIMARY}>
             {buttonText}
           </Button>
         </ButtonContainer>

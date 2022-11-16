@@ -43,7 +43,7 @@ const GoogleIntegration: React.FC = () => {
   const googleButton = () => {
     if (!googleStatus) {
       return (
-        <Button variant={ButtonVariant.PRIMARY} squareRadius disabled>
+        <Button variant={ButtonVariant.PRIMARY} disabled>
           Loading...
         </Button>
       );
@@ -52,7 +52,6 @@ const GoogleIntegration: React.FC = () => {
       return (
         <Button
           variant={ButtonVariant.PRIMARY}
-          squareRadius
           onClick={() => connectGoogleModal.openVoid({ source: SourceType.ACCOUNT_PAGE, platform: Platform.Constants.PlatformType.GOOGLE })}
         >
           Connect
@@ -60,7 +59,7 @@ const GoogleIntegration: React.FC = () => {
       );
     }
     return (
-      <Button variant={ButtonVariant.PRIMARY} squareRadius onClick={resetGoogle}>
+      <Button variant={ButtonVariant.PRIMARY} onClick={resetGoogle}>
         Reset
       </Button>
     );

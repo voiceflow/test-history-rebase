@@ -41,7 +41,7 @@ const UpgradeModal: React.FC = () => {
             Cancel
           </Button>
         </Box>
-        <Button variant={ButtonVariant.PRIMARY} squareRadius onClick={handleSubmit}>
+        <Button variant={ButtonVariant.PRIMARY} onClick={handleSubmit}>
           {data.planLimitDetails.submitText}
         </Button>
       </ModalFooter>

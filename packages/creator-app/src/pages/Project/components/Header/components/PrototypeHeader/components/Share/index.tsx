@@ -26,7 +26,7 @@ const Share: React.FC = () => {
       )}
     >
       {({ ref, onToggle }) => (
-        <Button id={Identifier.SHARE_BUTTON} ref={ref} squareRadius variant={ButtonVariant.PRIMARY} onClick={onToggle} disabled={!canSharePrototype}>
+        <Button id={Identifier.SHARE_BUTTON} ref={ref} variant={ButtonVariant.PRIMARY} onClick={onToggle} disabled={!canSharePrototype}>
           Share Prototype
         </Button>
       )}

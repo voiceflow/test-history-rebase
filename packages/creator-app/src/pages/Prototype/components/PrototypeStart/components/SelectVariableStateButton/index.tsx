@@ -30,7 +30,7 @@ const SelectVariableStateButton: React.FC<SelectVariableStateButtonProps> = ({ o
     <VariableStateSelectMenu
       render={({ ref, isOpen, toggleSelectMenuOpen }) => (
         <FlexCenter fullWidth style={{ marginBottom: '8px' }}>
-          <RunTestButton withIconButton squareRadius variant={ButtonVariant.PRIMARY} onClick={onStartTest} id={Identifier.PROTOTYPE_START}>
+          <RunTestButton withIconButton variant={ButtonVariant.PRIMARY} onClick={onStartTest} id={Identifier.PROTOTYPE_START}>
             Run Test
           </RunTestButton>
 
@@ -42,7 +42,6 @@ const SelectVariableStateButton: React.FC<SelectVariableStateButtonProps> = ({ o
               variant={ButtonVariant.PRIMARY}
               onClick={() => (isVariableStateSelected ? updateSelectedVariableStateById(null) : toggleSelectMenuOpen())}
               iconProps={isVariableStateSelected ? { size: 16, color: '#fff', marginTop: '1px', marginLeft: '1px' } : { size: 10, color: '#fff' }}
-              squareRadius
             />
           </TippyTooltip>
         </FlexCenter>

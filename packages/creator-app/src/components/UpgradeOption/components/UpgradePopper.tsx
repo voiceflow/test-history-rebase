@@ -53,7 +53,7 @@ const UpgradePopper = React.forwardRef<
               <Text color="#62778c">{planLimits?.description}</Text>
             </Box>
             <Box.FlexCenter>
-              <Button variant={ButtonVariant.PRIMARY} squareRadius onClick={handleOnClick}>
+              <Button variant={ButtonVariant.PRIMARY} onClick={handleOnClick}>
                 {planLimits?.submitText}
               </Button>
             </Box.FlexCenter>

@@ -44,7 +44,7 @@ const WaitAgentStage: React.FC<StageComponentProps<DialogflowCXPublishJob.WaitAg
             Cancel
           </Button>
 
-          <Button variant={ButtonVariant.PRIMARY} onClick={() => restart()} disabled={!state.valid} squareRadius>
+          <Button variant={ButtonVariant.PRIMARY} onClick={() => restart()} disabled={!state.valid}>
             Continue
           </Button>
         </Modal.Footer>

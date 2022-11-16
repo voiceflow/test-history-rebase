@@ -134,7 +134,7 @@ const Conflicts: React.FC = () => {
 
           <S.Footer>
             <S.ContentContainer>
-              <Button variant={ButtonVariant.PRIMARY} squareRadius onClick={handleSubmit} disabled={!shouldApplyChanges}>
+              <Button variant={ButtonVariant.PRIMARY} onClick={handleSubmit} disabled={!shouldApplyChanges}>
                 <Box display="inline-block" position="relative" top={2}>
                   <SvgIcon icon="arrowSpin" spin={isLoading} size={16} inline mr={16} />
                 </Box>

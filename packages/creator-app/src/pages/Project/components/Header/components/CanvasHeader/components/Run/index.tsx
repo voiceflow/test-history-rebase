@@ -30,7 +30,7 @@ const Run: React.FC = () => {
 
   return (
     <TippyTooltip title="Run" hotkey={HOTKEY_LABEL_MAP[Hotkey.RUN_MODE]} style={{ marginRight: '12px' }}>
-      <RunButton squareRadius onClick={run} id={Identifier.TEST} variant={ButtonVariant.PRIMARY}>
+      <RunButton onClick={run} id={Identifier.TEST} variant={ButtonVariant.PRIMARY}>
         <SvgIcon icon="play" width={16} height={16} />
       </RunButton>
     </TippyTooltip>

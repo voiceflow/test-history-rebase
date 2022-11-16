@@ -63,7 +63,7 @@ const EditModal: React.FC = () => {
         <EditEntityForm slotID={data.id} creationType={Tracking.NLUEntityCreationType.NLU_QUICKVIEW} />
       </Box>
       <ModalFooter justifyContent="flex-end">
-        <Button variant={ButtonVariant.PRIMARY} squareRadius onClick={close}>
+        <Button variant={ButtonVariant.PRIMARY} onClick={close}>
           Close
         </Button>
       </ModalFooter>

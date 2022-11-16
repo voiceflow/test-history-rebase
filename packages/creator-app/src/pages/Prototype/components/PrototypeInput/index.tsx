@@ -118,7 +118,7 @@ const PrototypeInput = <L extends string>({
                   Enter to send
                 </Box>
 
-                <Button id={Identifier.PROTOTYPE_RESPONSE_SEND} variant={ButtonVariant.PRIMARY} onClick={onSubmit} squareRadius>
+                <Button id={Identifier.PROTOTYPE_RESPONSE_SEND} variant={ButtonVariant.PRIMARY} onClick={onSubmit}>
                   <SvgIcon icon="send" />
                 </Button>
               </Box.Flex>

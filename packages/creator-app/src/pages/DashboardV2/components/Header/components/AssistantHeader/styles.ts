@@ -12,7 +12,12 @@ export const IconButtonContainer = styled.div`
   height: 42px;
   margin-left: 4px;
   background-color: ${({ theme }) => theme.colors.white};
-  color: rgba(110, 132, 154, 0.85);
+  color: ${({ theme }) => theme.iconColors.active};
+  opacity: 0.85;
+
+  &:hover {
+    opacity: 1;
+  }
 `;
 
 export const SearchBox = styled.div`
@@ -30,6 +35,16 @@ export const SearchBox = styled.div`
   opacity: 1;
   background-color: ${({ theme }) => theme.colors.white};
   padding-left: 16px;
+
+  div > span {
+    opacity: 0.85;
+  }
+
+  &:hover {
+    div > span {
+      opacity: 1;
+    }
+  }
 `;
 
 export const SearchInput = styled(Input)`

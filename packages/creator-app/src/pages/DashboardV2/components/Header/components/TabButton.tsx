@@ -1,7 +1,7 @@
 import { Box, Button } from '@voiceflow/ui';
 import React from 'react';
 
-import { StyledTabButton } from '../styles';
+import * as S from '../styles';
 
 interface TabButtonProps {
   title: string;
@@ -17,7 +17,7 @@ const TabButton: React.FC<TabButtonProps> = ({ title, onClick, active }) => {
           {title}
         </Button>
       ) : (
-        <StyledTabButton>{title}</StyledTabButton>
+        <S.StyledTabButton>{title}</S.StyledTabButton>
       )}
     </Box>
   );

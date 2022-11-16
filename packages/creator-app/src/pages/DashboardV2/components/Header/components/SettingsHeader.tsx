@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { HeaderContainer } from '../styles';
+import * as S from '../styles';
 import TabButton from './TabButton';
 
 interface SettingsHeaderProps {
@@ -18,10 +18,10 @@ const SettingsHeader: React.FC<SettingsHeaderProps> = ({ onSwitchTab }) => {
   };
 
   return (
-    <HeaderContainer style={{ paddingLeft: '16px', justifyContent: 'flex-start' }}>
+    <S.HeaderContainer style={{ paddingLeft: '16px', justifyContent: 'flex-start' }}>
       <TabButton title="General" onClick={() => switchTab('General')} active={selectedTab === 'General'} />
       <TabButton title="Developer" onClick={() => switchTab('Developer')} active={selectedTab === 'Developer'} />
-    </HeaderContainer>
+    </S.HeaderContainer>
   );
 };
 

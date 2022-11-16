@@ -5,7 +5,7 @@ import React from 'react';
 import { Permission } from '@/config/permissions';
 import { usePermission } from '@/hooks';
 
-import { HeaderContainer, RightSection, Title } from '../../styles';
+import * as S from '../../styles';
 import { BackButton } from './components';
 
 interface AssistantSubHeaderProps {
@@ -18,11 +18,11 @@ const AssistantSubHeader: React.FC<AssistantSubHeaderProps> = ({ workspace, titl
   const [canViewMembers] = usePermission(Permission.VIEW_COLLABORATORS);
 
   return (
-    <HeaderContainer>
+    <S.HeaderContainer>
       <BackButton onClick={onBackButtonClick} />
-      <Title>{title}</Title>
-      <RightSection>{canViewMembers && <Members members={workspace.members} />}</RightSection>
-    </HeaderContainer>
+      <S.Title>{title}</S.Title>
+      <S.RightSection>{canViewMembers && <Members members={workspace.members} />}</S.RightSection>
+    </S.HeaderContainer>
   );
 };
 

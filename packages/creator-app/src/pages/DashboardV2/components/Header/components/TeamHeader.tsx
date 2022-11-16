@@ -3,7 +3,7 @@ import React from 'react';
 import { Permission } from '@/config/permissions';
 import { usePermission } from '@/hooks';
 
-import { HeaderContainer } from '../styles';
+import * as S from '../styles';
 import TabButton from './TabButton';
 
 interface TeamHeaderProps {
@@ -23,10 +23,10 @@ const TeamHeader: React.FC<TeamHeaderProps> = ({ onSwitchTab }) => {
   };
 
   return (
-    <HeaderContainer style={{ paddingLeft: '16px', justifyContent: 'flex-start' }}>
+    <S.HeaderContainer style={{ paddingLeft: '16px', justifyContent: 'flex-start' }}>
       <TabButton title="Members" onClick={() => switchTab('Members')} active={selectedTab === 'Members'} />
       {canManageBilling && <TabButton title="Billing" onClick={() => switchTab('Billing')} active={selectedTab === 'Billing'} />}
-    </HeaderContainer>
+    </S.HeaderContainer>
   );
 };
 

@@ -40,14 +40,19 @@ const SearchButton: React.FC<SearchButtonProps> = ({ onSearch }) => {
       {isOpen ? (
         <SearchBox ref={ref}>
           <div style={{ paddingRight: '8px' }}>
-            <SvgIcon icon={hasTyped ? 'close' : 'search'} size={16} color="rgba(110, 132, 154, 0.85)" onClick={hasTyped ? clearSearch : undefined} />
+            <SvgIcon
+              icon={hasTyped ? 'close' : 'search'}
+              size={hasTyped ? 10 : 16}
+              color="rgba(110, 132, 154)"
+              onClick={hasTyped ? clearSearch : undefined}
+            />
           </div>
           <SearchInput placeholder="Search" onChange={onSearching} />
         </SearchBox>
       ) : (
-        <IconButtonContainer>
+        <IconButtonContainer onClick={onIconClick}>
           <TippyTooltip title="Press / to search" position="bottom">
-            <SvgIcon icon="search" size={16} onClick={onIconClick} />
+            <SvgIcon icon="search" size={16} />
           </TippyTooltip>
         </IconButtonContainer>
       )}

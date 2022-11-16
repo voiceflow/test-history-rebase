@@ -6,7 +6,7 @@ import { usePermission } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
 import { ImportButton } from '@/pages/Dashboard/Header/components';
 
-import { HeaderContainer, RightSection, Title } from '../../styles';
+import * as S from '../../styles';
 import { NotificationButton, SearchButton } from './components';
 import { IconButtonContainer } from './styles';
 
@@ -22,9 +22,9 @@ const AssistantHeader: React.FC<AssistantHeaderProps> = ({ onSearch }) => {
   const [canCreateProject] = usePermission(Permission.EDIT_PROJECT);
 
   return (
-    <HeaderContainer style={{ paddingLeft: '32px' }}>
-      <Title>All Assistants</Title>
-      <RightSection>
+    <S.HeaderContainer style={{ paddingLeft: '32px' }}>
+      <S.Title>All Assistants</S.Title>
+      <S.RightSection>
         <SearchButton onSearch={onSearch} />
 
         {canImportProject && (
@@ -50,8 +50,8 @@ const AssistantHeader: React.FC<AssistantHeaderProps> = ({ onSearch }) => {
             New Assistant
           </Button>
         )}
-      </RightSection>
-    </HeaderContainer>
+      </S.RightSection>
+    </S.HeaderContainer>
   );
 };
 

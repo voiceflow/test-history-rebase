@@ -16,30 +16,36 @@ const NotificationButton: React.FC<NotificationButtonProps> = ({ onClick }) => {
   const notifications = useSelector(notificationsSelector);
   const newNotifications = React.useMemo(() => notifications.filter(({ isNew }) => isNew), [notifications]);
 
+  const areNewNotifications = newNotifications.length > 0;
+
   const onNotificationClick = () => {
     readNotifications();
     onClick?.();
   };
 
   return (
-    <IconButtonContainer>
+    <IconButtonContainer
+      onClick={
+        areNewNotifications
+          ? stopPropagation(() => {
+              onNotificationClick();
+            })
+          : onClick
+      }
+    >
       <TippyTooltip title="Notifications" position="bottom">
         {newNotifications.length > 0 ? (
           <>
-            <UpdateBubble
-              onClick={stopPropagation(() => {
-                onNotificationClick();
-              })}
-            >
+            <UpdateBubble>
               <span>{newNotifications.length}</span>
             </UpdateBubble>
 
             <Numbered>
-              <SvgIcon icon="notifications" size={15} />
+              <SvgIcon icon="notificationsOutline" size={15} />
             </Numbered>
           </>
         ) : (
-          <SvgIcon icon="notifications" onClick={onClick} />
+          <SvgIcon icon="notificationsOutline" />
         )}
       </TippyTooltip>
     </IconButtonContainer>

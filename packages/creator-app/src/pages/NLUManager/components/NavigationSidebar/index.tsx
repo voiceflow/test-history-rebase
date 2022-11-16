@@ -101,7 +101,7 @@ const NLUNavigationSidebar: React.FC = () => {
           position="top"
           bodyOverflow
         >
-          <Box px={16} pb={12}>
+          <Box px={16} pb={4}>
             <NavigationSidebar.Item onClick={onImportClick} icon="importCircle" title="Import" />
             {!importClicked && <S.StatusBubble />}
           </Box>

@@ -94,6 +94,12 @@ const IntentSelect: React.FC<IntentSelectProps> = ({
     onChange({ intent: nextIntentID });
   };
 
+  const onCreateFromButton = async (name: string) => {
+    const nameIsUnchanged = name === intent?.name;
+
+    onCreate(nameIsUnchanged ? '' : name);
+  };
+
   const onCreate = async (name: string) => {
     const { error, formattedName } = intentNameProcessor(name);
 
@@ -145,7 +151,7 @@ const IntentSelect: React.FC<IntentSelectProps> = ({
         )}
         renderFooterAction={({ close, searchLabel }) => (
           <Menu.Footer>
-            <Menu.Footer.Action onClick={Utils.functional.chain(close, () => onCreate(searchLabel))}>Create New Intent</Menu.Footer.Action>
+            <Menu.Footer.Action onClick={Utils.functional.chain(close, () => onCreateFromButton(searchLabel))}>Create New Intent</Menu.Footer.Action>
           </Menu.Footer>
         )}
       />

@@ -13,7 +13,7 @@ export const Container = styled.div<{ isMainMenu?: boolean }>`
   border-right: 1px solid ${({ theme }) => theme.colors.borders};
   width: ${({ isMainMenu }) => (isMainMenu ? '254px' : '248px')};
   min-width: ${({ isMainMenu }) => (isMainMenu ? '254px' : '248px')};
-  margin-left: 0; // ${({ theme }) => theme.components.sidebarIconMenu.width}px;
+  margin-left: ${({ theme, isMainMenu }) => (isMainMenu ? 0 : theme.components.sidebarIconMenu.width)}px;
   background: #fbfbfb;
 `;
 

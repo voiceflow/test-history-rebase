@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.977.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.977.3...@voiceflow/creator-app@1.977.4) (2022-11-16)
+
+
+### Bug Fixes
+
+* adds model import endpoint call to dfcx projects (NLU-440) ([#6319](https://github.com/voiceflow/creator-app/issues/6319)) ([63fbd84](https://github.com/voiceflow/creator-app/commit/63fbd84e338562a0f85e69fa921666e059807561))
+
+
+
+
+
 ## [1.977.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.977.2...@voiceflow/creator-app@1.977.3) (2022-11-16)
 
 

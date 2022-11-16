@@ -7,12 +7,12 @@ export const CONFIG = Voiceflow.Chat.extend({
 
   icon: {
     name: 'chatWidget',
-    color: '#132144',
+    color: '#6E849AD9',
   },
 
   project: Project.CONFIG,
 
-  description: 'Deploy a webchat widget to your website in minutes.',
+  description: 'Deploy a Web Chat widget to your website in minutes.',
 });
 
 export type Config = typeof CONFIG;

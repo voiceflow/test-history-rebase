@@ -1,17 +1,21 @@
+import { ButtonVariant } from '@voiceflow/ui';
 import React from 'react';
 
 import { Header } from '@/components/ProjectPage';
 import { Permission } from '@/config/permissions';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { usePermission, useSelector } from '@/hooks';
+import { useActivePlatformConfig, usePermission, useSelector } from '@/hooks';
 import CanvasViewers from '@/pages/Project/components/CanvasViewers';
 
 import { SharePopperProvider } from '../../contexts';
 import { CanvasControls, DomainsAndCanvasActions, LogoButton, Run, Share, TrialExpired, Upload } from './components';
+import { ActionRow } from './styled';
 
 const CanvasHeader: React.FC = () => {
   const organizationTrialExpired = useSelector(WorkspaceV2.active.organizationTrialExpired);
   const [canPublish] = usePermission(Permission.CANVAS_PUBLISH);
+
+  const platformConfig = useActivePlatformConfig();
 
   return (
     <SharePopperProvider>
@@ -26,11 +30,14 @@ const CanvasHeader: React.FC = () => {
           <>
             <CanvasViewers flat withAdd={false} />
 
-            <Share />
+            <ActionRow>
+              <Share />
+              {platformConfig.oneClickPublish && <Run variant={ButtonVariant.SECONDARY} />}
 
-            {canPublish && <Upload />}
+              {canPublish && <Upload />}
 
-            <Run />
+              {!platformConfig.oneClickPublish && <Run />}
+            </ActionRow>
           </>
         )}
       </Header>

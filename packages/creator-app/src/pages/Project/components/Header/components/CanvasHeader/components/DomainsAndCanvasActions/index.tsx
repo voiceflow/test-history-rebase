@@ -15,7 +15,7 @@ import { Identifier } from '@/styles/constants';
 import { withEnterPress, withInputBlur } from '@/utils/dom';
 import { formatProjectName } from '@/utils/string';
 
-import { Container, DomainActions, ProjectTitle, ViewOnly } from './components';
+import { Container, DomainActions, PlatformLogo, ProjectTitle, ViewOnly } from './components';
 
 const DomainsAndCanvasActions: React.FC = () => {
   const [templatePopperIsOpen, setTemplatePopperIsOpen] = React.useState(false);
@@ -98,6 +98,8 @@ const DomainsAndCanvasActions: React.FC = () => {
   return (
     <Container>
       {!canEditCanvas && <ViewOnly>View only</ViewOnly>}
+
+      <PlatformLogo />
 
       {showEditorIcons ? (
         <Box.Flex gap={5}>

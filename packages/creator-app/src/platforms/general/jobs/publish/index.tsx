@@ -11,7 +11,7 @@ import * as Project from '@/ducks/project';
 import * as Router from '@/ducks/router';
 import { activeProjectIDSelector } from '@/ducks/session';
 import { useDispatch, useModals, useSelector, useTrackingEvents } from '@/hooks';
-import { getProgress } from '@/utils/job';
+import { useSimulatedProgress } from '@/hooks/job';
 
 import GeneralUploadButton from './components/GeneralUploadButton';
 import { useNLPTrainingStageContent } from './stages';
@@ -64,9 +64,11 @@ const GeneralPublish: React.FC = () => {
 
   const Content = useNLPTrainingStageContent(job?.stage.type);
 
+  const progress = useSimulatedProgress(job);
+
   return (
-    <JobInterface Content={Content} context={trainingContext}>
-      <GeneralUploadButton loading={active} progress={getProgress(job)} onClick={onPublish} />
+    <JobInterface Content={Content} context={trainingContext} progress={progress}>
+      <GeneralUploadButton loading={active} progress={progress} onClick={onPublish} />
     </JobInterface>
   );
 };

@@ -3,6 +3,7 @@ import React from 'react';
 
 import { PreviewHTML } from '@/components/CodePreview/HTML';
 import { GENERAL_RUNTIME_ENDPOINT } from '@/config';
+import { WEBCHAT_LEARN_MORE } from '@/constants/platforms';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { useSelector, useTrackingEvents } from '@/hooks';
 
@@ -37,7 +38,7 @@ export const PublishSection: React.FC = () => {
         <PreviewHTML code={getSample(projectID)} onCopy={() => trackingEvents.trackWebchatSnippetCopied()} />
       </Box>
       <Text fontSize={13} color={ThemeColor.SECONDARY}>
-        Having trouble or need to customize? <Link>See documentation</Link>
+        Having trouble or need to customize? <Link href={WEBCHAT_LEARN_MORE}>See documentation</Link>
       </Text>
     </Section>
   );

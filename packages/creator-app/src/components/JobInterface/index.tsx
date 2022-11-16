@@ -1,11 +1,11 @@
-import { Portal, usePopper } from '@voiceflow/ui';
+import { Box, Portal } from '@voiceflow/ui';
 import React from 'react';
 
 import PageProgressBar from '@/components/PageProgressBar';
 import { JobContextValue } from '@/hooks/job';
 import { Job } from '@/models';
 import { StageContent } from '@/platforms/types';
-import { getProgress } from '@/utils/job';
+import { getProgress, isRunning } from '@/utils/job';
 
 import Popup from './Popup';
 
@@ -16,36 +16,26 @@ export * from './hooks';
 interface JobInterfaceProps<J extends Job<any>> {
   context: JobContextValue<J>;
   Content: StageContent<J> | null;
+  progress?: number;
 }
 
-const JobInterface = <T extends Job<any>>({ context, Content, children }: React.PropsWithChildren<JobInterfaceProps<T>>) => {
+const JobInterface = <T extends Job<any>>({ context, Content, progress, children }: React.PropsWithChildren<JobInterfaceProps<T>>) => {
   const stage = context.job?.stage;
-
-  const progress = getProgress(context.job);
-
-  const popper = usePopper({
-    placement: 'bottom-end',
-    strategy: 'fixed',
-    modifiers: [
-      { name: 'offset', options: { offset: [50, 25] } },
-      { name: 'preventOverflow', options: { boundary: document.body } },
-    ],
-  });
 
   return (
     <>
-      <div ref={popper.setReferenceElement}>{children}</div>
+      {children}
 
       {Content?.Component && <Content.Component {...context} stage={stage} />}
 
       <Portal>
-        <PageProgressBar progress={progress} />
+        {isRunning(context.job) && <PageProgressBar progress={progress || getProgress(context.job)} />}
         {Content?.Popup && (
-          <div ref={popper.setPopperElement} style={popper.styles.popper} {...popper.attributes.popper}>
+          <Box position="fixed" top={78} right={22}>
             <Popup dismissable={Content.Popup.dismissable} closeable={Content.Popup.closeable} cancel={context.cancel}>
               <Content.Popup.Component {...context} stage={stage} />
             </Popup>
-          </div>
+          </Box>
         )}
       </Portal>
     </>

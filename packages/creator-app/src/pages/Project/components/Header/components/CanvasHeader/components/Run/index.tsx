@@ -14,7 +14,7 @@ const RunButton = styled(Button)<PrimaryButtonProps>`
   }
 `;
 
-const Run: React.FC = () => {
+const Run: React.FC<{ variant?: ButtonVariant }> = ({ variant = ButtonVariant.PRIMARY }) => {
   const goToPrototype = useDispatch(Router.goToCurrentPrototype);
   const defaultVariableState = useDispatch(VariableState.defaultVariableState);
 
@@ -28,10 +28,13 @@ const Run: React.FC = () => {
     []
   );
 
+  const iconProps: React.ComponentProps<typeof SvgIcon> =
+    variant === ButtonVariant.SECONDARY ? { icon: 'playOutline', color: '#6E849AD9' } : { icon: 'play' };
+
   return (
-    <TippyTooltip title="Run" hotkey={HOTKEY_LABEL_MAP[Hotkey.RUN_MODE]} style={{ marginRight: '12px' }}>
-      <RunButton onClick={run} id={Identifier.TEST} variant={ButtonVariant.PRIMARY}>
-        <SvgIcon icon="play" width={16} height={16} />
+    <TippyTooltip title="Run" hotkey={HOTKEY_LABEL_MAP[Hotkey.RUN_MODE]}>
+      <RunButton flat squareRadius onClick={run} id={Identifier.TEST} variant={variant}>
+        <SvgIcon width={16} height={16} {...iconProps} />
       </RunButton>
     </TippyTooltip>
   );

@@ -11,8 +11,8 @@ import { TrainingContext, TrainingProvider } from '@/contexts';
 import * as Project from '@/ducks/project';
 import { activeProjectIDSelector } from '@/ducks/session';
 import { useDispatch, useModals, useTrackingEvents } from '@/hooks';
-import GeneralUploadButton from '@/platforms/general/jobs/publish/components/GeneralUploadButton';
-import { getProgress } from '@/utils/job';
+import { useSimulatedProgress } from '@/hooks/job';
+import PublishButton from '@/pages/Project/components/Header/components/CanvasHeader/components/Upload/components/PublishButton';
 
 import { useNLPTrainingStageContent } from './stages';
 
@@ -57,9 +57,11 @@ const WebchatPublish: React.FC = () => {
 
   const Content = useNLPTrainingStageContent(job?.stage.type);
 
+  const progress = useSimulatedProgress(job);
+
   return (
-    <JobInterface Content={Content} context={trainingContext}>
-      <GeneralUploadButton loading={active} progress={getProgress(job)} onClick={onPublish} />
+    <JobInterface Content={Content} context={trainingContext} progress={progress}>
+      <PublishButton loading={active} progress={progress} onClick={onPublish} />
     </JobInterface>
   );
 };

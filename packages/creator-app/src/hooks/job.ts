@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import { JobStatus } from '@/constants';
 import * as Session from '@/ducks/session';
 import { Job, JobClient } from '@/models';
+import { getProgress, isRunning } from '@/utils/job';
 
 export interface JobContextValue<T extends Job<any>> {
   job: Nullable<T>;
@@ -119,6 +120,40 @@ export const useJob = <J extends Job<any>>(jobClient?: JobClient<J>) => {
   }, []);
 
   return useContextApi({ job, cancel, start, restart, retry, updateCurrentStage, setJob: setJobWithStartingOptions });
+};
+
+// simulate fake progress between checkpoints
+const SIMULATED_PROGRESS_RANGE = 20;
+export const useSimulatedProgress = (job: Nullable<Job<any>>) => {
+  const progress = getProgress(job);
+  const active = isRunning(job);
+  const [simulatedProgress, setSimulatedProgress] = React.useState(progress);
+  const timeout = React.useRef<NodeJS.Timeout>();
+
+  React.useEffect(() => {
+    if (!active) {
+      clearTimeout(Number(timeout.current));
+      setSimulatedProgress(0);
+      return;
+    }
+
+    if (simulatedProgress > progress) {
+      return;
+    }
+
+    clearTimeout(Number(timeout.current));
+    setSimulatedProgress(progress);
+
+    (function incrementProgress(interval = 500, depth = 0) {
+      if (depth >= SIMULATED_PROGRESS_RANGE) return;
+
+      setSimulatedProgress((prev) => Math.min(prev + 1, 99));
+      // exponential backoff
+      timeout.current = setTimeout(() => incrementProgress(interval * 1.2, depth + 1), interval);
+    })();
+  }, [progress, active]);
+
+  return simulatedProgress;
 };
 
 export default useJob;

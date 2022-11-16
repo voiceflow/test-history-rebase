@@ -1,5 +1,5 @@
 import * as Platform from '@voiceflow/platform-config';
-import { SvgIconTypes, Text, TippyTooltip, TippyTooltipProps } from '@voiceflow/ui';
+import { Button as UIButton, ButtonVariant as UIButtonVariant, SvgIconTypes, Text, TippyTooltip, TippyTooltipProps } from '@voiceflow/ui';
 import React from 'react';
 
 import { Hotkey, HOTKEY_LABEL_MAP } from '@/keymap';
@@ -7,7 +7,6 @@ import { PlatformContext } from '@/pages/Project/contexts';
 import { Identifier } from '@/styles/constants';
 
 import { getPlatformIconProps } from '../constants';
-import StyledButton from './StyledButton';
 
 export enum ButtonVariant {
   UPLOAD = 'UPLOAD',
@@ -113,7 +112,7 @@ const ConnectButton: React.FC<ConnectButtonProps> = ({ onClick, ...props }) => {
 
   return (
     <TippyTooltip {...buttonProps.tooltip} disabled={!buttonProps.tooltip} position="bottom">
-      <StyledButton id={Identifier.UPLOAD} onClick={onClick} center {...buttonProps} />
+      <UIButton flat small variant={UIButtonVariant.SECONDARY} id={Identifier.UPLOAD} onClick={onClick} center {...buttonProps} />
     </TippyTooltip>
   );
 };

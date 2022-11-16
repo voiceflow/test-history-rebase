@@ -49,7 +49,7 @@ const IntegrationsSidebar: React.FC<SideBarComponentProps> = () => {
         <NavigationSidebar.ItemsContainer>
           {publishPath && <NavigationSidebar.NavItem to={publishPath} icon={platformIcon.name} title={platformConfig.name} />}
 
-          <NavigationSidebar.NavItem to={generatePath(Path.PUBLISH_API, { versionID })} icon="channel" title="API" />
+          <NavigationSidebar.NavItem to={generatePath(Path.PUBLISH_API, { versionID })} icon="channel" title="Dialog API" />
 
           {!disableCodeExports && canExportCode && (
             <NavigationSidebar.NavItem to={generatePath(Path.PUBLISH_EXPORT, { versionID })} icon="systemCode" title="Code Export" />

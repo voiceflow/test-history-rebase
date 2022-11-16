@@ -1,19 +1,22 @@
-import { toast } from '@voiceflow/ui';
-import React, { useEffect } from 'react';
+import { Button, ButtonVariant } from '@voiceflow/ui';
+import React from 'react';
 
-import { useTrackingEvents } from '@/hooks';
+import { UploadedStage } from '@/components/PlatformUploadPopup/components';
+import * as Router from '@/ducks/router';
+import { useDispatch } from '@/hooks';
 import { NLPTrainJob } from '@/models';
 import { StageComponentProps } from '@/platforms/types';
 
 const SuccessStage: React.FC<StageComponentProps<NLPTrainJob.SuccessStage>> = () => {
-  const [trackingEvents] = useTrackingEvents();
+  const goToConsole = useDispatch(Router.goToActivePlatformPublish);
 
-  useEffect(() => {
-    toast.success('Version successfully published.');
-    trackingEvents.trackActiveProjectPublishSuccess();
-  }, []);
-
-  return null;
+  return (
+    <UploadedStage description="A new version of your assistant has been successfully published">
+      <Button squareRadius fullWidth variant={ButtonVariant.QUATERNARY} onClick={goToConsole}>
+        Dialog API
+      </Button>
+    </UploadedStage>
+  );
 };
 
 export default SuccessStage;

@@ -17,7 +17,7 @@ const UploadedStage: React.FC<UploadedProps> = ({ redirectUrl, learnMoreUrl, but
         <img alt="takeoff" height={80} src={uploaded} />
       </Box.FlexCenter>
       <Text mt={16} mb={8} color={ThemeColor.PRIMARY} fontWeight={600}>
-        Successfully Uploaded
+        Successfully Published
       </Text>
       <Text textAlign="center" mb={20} color={ThemeColor.SECONDARY}>
         {description}. {learnMoreUrl && <Link href={learnMoreUrl}>Learn more</Link>}

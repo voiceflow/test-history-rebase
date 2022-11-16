@@ -6,7 +6,7 @@ import SuccessStage from './SuccessStage';
 
 export const NLPTrainingStageContent = {
   [NLPTrainStageType.SUCCESS]: {
-    Component: SuccessStage,
+    Popup: { Component: SuccessStage, closeable: true },
   },
 };
 

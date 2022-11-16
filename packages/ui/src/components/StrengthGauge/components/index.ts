@@ -16,13 +16,21 @@ export const Container = styled(TippyTooltip)`
   align-items: center;
 `;
 
-export const Line = styled.div<{ width: number; thickness: number }>`
-  background: #dfe3ed;
+export const Line = styled.div<{ width: number; thickness: number; background?: string }>`
   display: inline-block;
   position: relative;
   border-radius: 5px;
   overflow: hidden;
   margin: 2px 0;
+
+  ${({ background }) =>
+    background
+      ? css`
+      background ${background};
+    `
+      : css`
+          background: #dfe3ed;
+        `}
 
   ${({ width }) =>
     width &&
@@ -37,15 +45,26 @@ export const Line = styled.div<{ width: number; thickness: number }>`
     `}
 `;
 
-export const StrengthLine = styled.div<{ width: number; strength: Level; thickness: number }>`
+export const StrengthLine = styled.div<{ width: number; strength?: Level; thickness: number; customColor?: string }>`
   ${transition('width')}
   width: 0;
   position: absolute;
   left: 0;
-  ${({ width, strength, thickness }) =>
+  ${({ width, thickness }) =>
     css`
       width: ${width}px;
-      background: ${StrengthColor[strength]};
       height: ${thickness}px;
+    `}
+
+  ${({ strength }) =>
+    strength &&
+    css`
+      background: ${StrengthColor[strength]};
+    `}
+
+  ${({ customColor }) =>
+    customColor &&
+    css`
+      background: ${customColor};
     `}
 `;

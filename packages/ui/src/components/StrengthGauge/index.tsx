@@ -22,13 +22,21 @@ const LINE_MULTIPLIER_MAP: Record<Level, number> = {
   [Level.VERY_STRONG]: 1,
 };
 
-const StrengthGauge: React.FC<T.Props> = ({ level = Level.NOT_SET, width = 100, thickness = 2, tooltipLabelMap }) => {
-  const strengthLineWidth = width * LINE_MULTIPLIER_MAP[level];
+const StrengthGauge: React.FC<T.Props> = ({
+  level = Level.NOT_SET,
+  width = 100,
+  thickness = 2,
+  tooltipLabelMap,
+  background,
+  customLevel,
+  customColor,
+}) => {
+  const strengthLineWidth = customLevel ? width * customLevel : width * LINE_MULTIPLIER_MAP[level];
 
   return (
     <Container title={tooltipLabelMap?.[level] || TOOLTIP_LABEL_MAP[level]} distance={8}>
-      <Line width={width} thickness={thickness}>
-        <StrengthLine thickness={thickness} width={strengthLineWidth} strength={level} />
+      <Line width={width} thickness={thickness} background={background}>
+        <StrengthLine thickness={thickness} width={strengthLineWidth} strength={level} customColor={customColor} />
       </Line>
     </Container>
   );

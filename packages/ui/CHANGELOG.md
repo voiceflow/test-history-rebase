@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.179.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.178.0...@voiceflow/ui@1.179.0) (2022-11-16)
+
+
+### Features
+
+* move header to dashboardV2 (CT-1107) ([#6299](https://github.com/voiceflow/creator-app/issues/6299)) ([cb900bb](https://github.com/voiceflow/creator-app/commit/cb900bb57fe000dd02102796537f2e560adfc9ce))
+* trial countdown card (CT-1170) ([#6271](https://github.com/voiceflow/creator-app/issues/6271)) ([2d3cff7](https://github.com/voiceflow/creator-app/commit/2d3cff7ac1f1c582e82fd5ccf468f5a1b5f540e5))
+* update primary buttons to be square by default (CT-1204) ([#6306](https://github.com/voiceflow/creator-app/issues/6306)) ([9374ef3](https://github.com/voiceflow/creator-app/commit/9374ef32f85b4858353dca397417b5c50e10e094))
+
+
+
+
+
 # [1.178.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.177.1...@voiceflow/ui@1.178.0) (2022-11-14)
 
 

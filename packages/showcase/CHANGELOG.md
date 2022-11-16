@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.30.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/showcase@1.29.8...@voiceflow/showcase@1.30.0) (2022-11-16)
+
+
+### Features
+
+* update primary buttons to be square by default (CT-1204) ([#6306](https://github.com/voiceflow/creator-app/issues/6306)) ([9374ef3](https://github.com/voiceflow/creator-app/commit/9374ef32f85b4858353dca397417b5c50e10e094))
+
+
+
+
+
 ## [1.29.8](https://github.com/voiceflow/creator-app/compare/@voiceflow/showcase@1.29.7...@voiceflow/showcase@1.29.8) (2022-11-14)
 
 **Note:** Version bump only for package @voiceflow/showcase

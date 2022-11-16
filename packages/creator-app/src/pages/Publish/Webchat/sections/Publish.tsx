@@ -4,7 +4,7 @@ import React from 'react';
 import { PreviewHTML } from '@/components/CodePreview/HTML';
 import { GENERAL_RUNTIME_ENDPOINT } from '@/config';
 import * as ProjectV2 from '@/ducks/projectV2';
-import { useSelector } from '@/hooks';
+import { useSelector, useTrackingEvents } from '@/hooks';
 
 import Section from './components/Section';
 
@@ -25,6 +25,8 @@ const getSample = (projectID: string) => `<script type="text/javascript">
 export const PublishSection: React.FC = () => {
   const projectID = useSelector(ProjectV2.active.idSelector)!;
 
+  const [trackingEvents] = useTrackingEvents();
+
   return (
     <Section icon="publish" title="Installation" description="Add the installation code to your website" defaultOpen>
       <Text>
@@ -32,7 +34,7 @@ export const PublishSection: React.FC = () => {
         to appear.
       </Text>
       <Box my={16}>
-        <PreviewHTML code={getSample(projectID)} />
+        <PreviewHTML code={getSample(projectID)} onCopy={() => trackingEvents.trackWebchatSnippetCopied()} />
       </Box>
       <Text fontSize={13} color={ThemeColor.SECONDARY}>
         Having trouble or need to customize? <Link>See documentation</Link>

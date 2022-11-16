@@ -4,17 +4,22 @@ import React, { useEffect } from 'react';
 
 import * as Project from '@/ducks/project';
 import * as ProjectV2 from '@/ducks/projectV2';
-import { useDispatch, useSelector } from '@/hooks';
+import { useDispatch, useSelector, useTrackingEvents } from '@/hooks';
 
 const PrivacyToggle: React.FC = () => {
   const projectID = useSelector(ProjectV2.active.idSelector)!;
   const project = useSelector(ProjectV2.active.projectSelector)!;
   const updateProject = useDispatch(Project.updateProjectAPIPrivacy);
 
+  const [trackingEvents] = useTrackingEvents();
+
   const isPublic = project.apiPrivacy === BaseModels.Project.Privacy.PUBLIC;
 
   const toggleProject = React.useCallback(() => {
-    updateProject(projectID, isPublic ? BaseModels.Project.Privacy.PRIVATE : BaseModels.Project.Privacy.PUBLIC);
+    const status = isPublic ? BaseModels.Project.Privacy.PRIVATE : BaseModels.Project.Privacy.PUBLIC;
+    updateProject(projectID, status);
+
+    trackingEvents.trackWebchatStatusChanged({ status });
   }, [isPublic]);
 
   // toggle privacy on by default when visiting the page

@@ -249,3 +249,16 @@ export const trackDomainConvert = createWorkspaceEventTracker<{
     })
   )
 );
+
+/** WEBCHAT EVENTS */
+export const trackWebchatSnippetCopied = createProjectEventTracker((options) =>
+  client.api.analytics.track(EventName.WEBCHAT_CONFIGURATION_SNIPPET_COPIED, createProjectEventPayload(options))
+);
+
+export const trackWebchatStatusChanged = createProjectEventTracker<{ status: string }>((options) =>
+  client.api.analytics.track(EventName.WEBCHAT_CONFIGURATION_STATUS_CHANGED, createProjectEventPayload(options, { status: options.status }))
+);
+
+export const trackWebchatCustomization = createProjectEventTracker<{ element: string }>((options) =>
+  client.api.analytics.track(EventName.WEBCHAT_CONFIGURATION_CUSTOMIZATION, createProjectEventPayload(options, { element: options.element }))
+);

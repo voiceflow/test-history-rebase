@@ -155,6 +155,12 @@ export enum EventName {
   CUSTOM_BLOCK_POINTER_CREATED = 'Custom block pointer created',
   CUSTOM_BLOCK_PROTOTYPED = 'Custom block prototyped',
   // END FIXME: MVP - Custom blocks
+
+  // BEGIN Web Chat Configuration
+  WEBCHAT_CONFIGURATION_SNIPPET_COPIED = 'Web Chat Configuration - Snippet Copied',
+  WEBCHAT_CONFIGURATION_STATUS_CHANGED = 'Web Chat Configuration - Status Changed',
+  WEBCHAT_CONFIGURATION_CUSTOMIZATION = 'Web Chat Configuration - Customization',
+  // END Web Chat Configuration
 }
 
 export enum IntentEditType {

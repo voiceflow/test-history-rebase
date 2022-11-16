@@ -2,6 +2,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { VoiceflowVersion } from '@voiceflow/voiceflow-types';
 
 import * as Project from '@/ducks/projectV2';
+import { trackWebchatCustomization } from '@/ducks/tracking';
 import { Thunk } from '@/store/types';
 
 import { getActivePlatformVersionContext } from '../utils';
@@ -27,7 +28,7 @@ export const patchPublishing =
   };
 
 export const patchActiveAndLivePublishing =
-  (publishing: Partial<VoiceflowVersion.ChatPublishing>): Thunk =>
+  (publishing: Partial<VoiceflowVersion.ChatPublishing>, track = true): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
     const activeContext = getActivePlatformVersionContext(state);
@@ -40,6 +41,10 @@ export const patchActiveAndLivePublishing =
     }
 
     await Promise.all(actions);
+
+    if (track) {
+      Object.keys(publishing).forEach((element) => dispatch(trackWebchatCustomization({ element })));
+    }
   };
 
 export const patchDefaultStepColors =

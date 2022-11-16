@@ -16,7 +16,7 @@ const Webchat: React.FC = () => {
 
   React.useEffect(() => {
     // apply default values, this is a temporary hack
-    updateConfig(config);
+    updateConfig(config, false);
   }, []);
 
   const theme = useTheme(config);

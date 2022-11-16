@@ -20,10 +20,10 @@ const ICON_MAP: Record<DialogType, SvgIconTypes.Icon> = {
 export const AUDIO_MOCK_DATA = { dialogs: [{ id: '', type: DialogType.AUDIO as const, url: '' }], randomize: true };
 export const VOICE_MOCK_DATA = { dialogs: [{ id: '', type: DialogType.VOICE as const, voice: '', content: '' }], randomize: true };
 
-export const voiceFactory = (): Realtime.SSMLData => ({
+export const voiceFactory = (data?: { voice: string }): Realtime.SSMLData => ({
   id: Utils.id.cuid.slug(),
   type: DialogType.VOICE,
-  voice: '',
+  voice: data?.voice || '',
   content: '',
 });
 

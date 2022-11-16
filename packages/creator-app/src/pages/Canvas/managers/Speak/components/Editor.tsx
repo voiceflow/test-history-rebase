@@ -5,7 +5,8 @@ import React from 'react';
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
 import * as Documentation from '@/config/documentation';
 import { DialogType } from '@/constants';
-import { useMapManager, useToggle } from '@/hooks';
+import * as VersionV2 from '@/ducks/versionV2';
+import { useMapManager, useSelector, useToggle } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import { useCanvasVisibilityOption } from '@/pages/Canvas/managers/hooks';
 import { NodeEditorV2 } from '@/pages/Canvas/managers/types';
@@ -19,7 +20,7 @@ const DRAG_TYPE = 'speak-editor';
 const Editor: NodeEditorV2<Realtime.NodeData.Speak, Realtime.NodeData.SpeakBuiltInPorts> = (editor) => {
   const canvasVisibilityOption = useCanvasVisibilityOption(editor.data.canvasVisibility, (canvasVisibility) => editor.onChange({ canvasVisibility }));
   const [isDragging, toggleDragging] = useToggle(false);
-
+  const defaultVoice = useSelector(VersionV2.active.defaultVoiceSelector);
   const isVoiceEditor = isVoiceItem(editor.data.dialogs[0]);
 
   const mapManager = useMapManager(editor.data.dialogs, (dialogs) => editor.onChange({ dialogs }), {
@@ -28,7 +29,7 @@ const Editor: NodeEditorV2<Realtime.NodeData.Speak, Realtime.NodeData.SpeakBuilt
         ? { ...data, voice: cloneData.voice, content: cloneData.content }
         : { ...data, url: cloneData.url, desc: cloneData.desc },
 
-    factory: isVoiceEditor ? voiceFactory : audioFactory,
+    factory: isVoiceEditor ? () => voiceFactory({ voice: defaultVoice as string }) : audioFactory,
   });
 
   return (

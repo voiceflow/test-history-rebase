@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.977.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.977.0...@voiceflow/creator-app@1.977.1) (2022-11-16)
+
+
+### Bug Fixes
+
+* new speak item default voice [bugfix] (CT-109) ([#6322](https://github.com/voiceflow/creator-app/issues/6322)) ([21b8db6](https://github.com/voiceflow/creator-app/commit/21b8db6bacd3d4a13ac6c72c5f83b4e27160e97a))
+
+
+
+
+
 # [1.977.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.976.2...@voiceflow/creator-app@1.977.0) (2022-11-16)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.976.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.976.0...@voiceflow/creator-app@1.976.1) (2022-11-16)
+
+
+### Bug Fixes
+
+* dialog-api publish (CT-1237) ([#6318](https://github.com/voiceflow/creator-app/issues/6318)) ([4d2a517](https://github.com/voiceflow/creator-app/commit/4d2a5172da48136785a9d83da143741fcf36736d))
+
+
+
+
+
 # [1.976.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.975.0...@voiceflow/creator-app@1.976.0) (2022-11-16)
 
 

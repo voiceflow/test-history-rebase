@@ -60,6 +60,14 @@ export const PLATFORM_PROJECT_META_MAP: Record<Platform.Constants.NLUType | Plat
     localesText: 'Language',
   },
 
+  [Platform.Constants.PlatformType.MICROSOFT_TEAMS]: {
+    localesText: 'Language',
+  },
+
+  [Platform.Constants.PlatformType.WHATSAPP]: {
+    localesText: 'Language',
+  },
+
   [Platform.Constants.PlatformType.ALEXA]: {
     localesText: 'Locales',
     invocationDescription: 'The phrase users will use to interact with your Alexa Skill.',

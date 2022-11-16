@@ -50,6 +50,8 @@ const LIST = [
   Configs.dialogflowCX.CONFIG,
   Configs.Voiceflow.CONFIG,
   Configs.Webchat.CONFIG,
+  Configs.Whatsapp.CONFIG,
+  Configs.MicrosoftTeams.CONFIG,
 ];
 
 const TYPE_CONFIG_MAP = buildTypeConfigMapFactory<Configs.Base.Config>()(LIST);

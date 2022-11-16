@@ -19,9 +19,11 @@ export const PlatformType = Types.satisfies<Record<string, VoiceflowConstants.Pl
   ALEXA: VoiceflowConstants.PlatformType.ALEXA,
   GOOGLE: VoiceflowConstants.PlatformType.GOOGLE,
   WEBCHAT: VoiceflowConstants.PlatformType.WEBCHAT,
+  WHATSAPP: VoiceflowConstants.PlatformType.WHATSAPP,
   VOICEFLOW: VoiceflowConstants.PlatformType.VOICEFLOW,
   DIALOGFLOW_ES: VoiceflowConstants.PlatformType.DIALOGFLOW_ES,
   DIALOGFLOW_CX: VoiceflowConstants.PlatformType.DIALOGFLOW_CX,
+  MICROSOFT_TEAMS: VoiceflowConstants.PlatformType.MICROSOFT_TEAMS,
 } as const);
 
 export type PlatformType = typeof PlatformType[keyof typeof PlatformType];

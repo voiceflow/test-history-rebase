@@ -1,13 +1,12 @@
-import * as Platform from '@voiceflow/platform-config';
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { MenuItemGrouped, Select, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
 import Section, { SectionVariant } from '@/components/Section';
-import { useFeature } from '@/hooks';
+import { useIsFeatureEnabled } from '@/hooks';
 import { Identifier } from '@/styles/constants';
 
 import { Channel } from '../constants';
+import * as Upcoming from '../constants/upcoming';
 import SectionErrorMessage from './SectionErrorMessage';
 
 export type ChannelValue = Pick<Channel.Option, 'type' | 'platform'>;
@@ -22,14 +21,17 @@ const ChannelSection: React.FC<ChannelSectionProps> = ({ error, value, onSelect 
   const platformConfig = Channel.getConfig(value?.platform);
   const typeConfig = value && platformConfig?.types[value.type];
 
-  const webchatEnabled = useFeature(Realtime.FeatureFlag.WEBCHAT).isEnabled;
+  const isFeatureEnabled = useIsFeatureEnabled();
 
-  // remove filter after flag is removed
-  const FILTERED_OPTIONS = React.useMemo(
+  const options = React.useMemo(
     () =>
       Channel.OPTIONS.map((group) => ({
         ...group,
-        options: group.options?.filter((option) => webchatEnabled || option.platform !== Platform.Constants.PlatformType.WEBCHAT),
+        options: group.options?.filter(
+          (option) =>
+            !option.featureFlag ||
+            (Upcoming.Config.isSupported(option.platform) ? !isFeatureEnabled(option.featureFlag) : isFeatureEnabled(option.featureFlag))
+        ),
       })),
     []
   );
@@ -52,7 +54,7 @@ const ChannelSection: React.FC<ChannelSectionProps> = ({ error, value, onSelect 
           ) : undefined
         }
         grouped
-        options={FILTERED_OPTIONS}
+        options={options}
         onSelect={(value) => onSelect(value ? Channel.OPTIONS_MAP[value] : null)}
         useLayers
         clearable

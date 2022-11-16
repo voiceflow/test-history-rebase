@@ -1,6 +1,6 @@
 export enum PlatformType {
-  TWILIO = 'twilio',
-  WHATSAPP = 'whatsapp',
-  FACEBOOK = 'facebook',
+  TWILIO = 'upcoming-twilio',
+  WHATSAPP = 'upcoming-whatsapp',
+  FACEBOOK = 'upcoming-facebook',
   DIALOGFLOW_CX = 'upcoming-df-cx',
 }

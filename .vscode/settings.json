@@ -41,5 +41,6 @@
     "**/node_modules": true,
     "**/build": true
   },
-  "typescript.tsdk": "node_modules/typescript/lib"
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "svg.preview.background": "white"
 }

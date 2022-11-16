@@ -76,7 +76,6 @@ export { default as checkmark2 } from './success.svg';
 export { default as delay } from './delay.svg';
 export { default as dialogflow } from './dialogflow.svg';
 export { default as dialogflowCX } from './dialogflow-cx.svg';
-export { default as dialogflowLogo } from './dialogflow-logo.svg';
 export { default as directiveV2 } from './directive-v2.svg';
 export { default as display } from './display.svg';
 export { default as displayV2 } from './display-v2.svg';
@@ -117,7 +116,6 @@ export { default as globeIcon } from './globe.svg';
 export { default as goToBlock } from './go-to-block.svg';
 export { default as goToDomain } from './go-to-domain.svg';
 export { default as googleAssistant } from './google-assistant.svg';
-export { default as googleAssistantLogo } from './google-assistant-logo.svg';
 export { default as googleSheets } from './google-sheets.svg';
 export { default as globe } from './images/globe.svg';
 
@@ -292,3 +290,9 @@ export { default as youtube } from './youtube.svg';
 // z
 export { default as zapier } from './zapier.svg';
 export { default as zoomOut } from './zoom-out.svg';
+
+// logos
+export { default as logoGoogleAssistant } from './google-assistant.svg';
+export { default as logoDialogflow } from './logos/dialogflow.svg';
+export { default as logoMicrosoftTeams } from './logos/microsoft-teams.svg';
+export { default as logoWhatsapp } from './logos/whatsapp.svg';

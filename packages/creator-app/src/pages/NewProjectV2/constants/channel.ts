@@ -1,4 +1,5 @@
 import * as Platform from '@voiceflow/platform-config';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { MenuItemGrouped, TippyTooltipProps } from '@voiceflow/ui';
 
 import { getLabelTooltip } from '@/components/UpgradeOption';
@@ -14,6 +15,7 @@ export interface Option {
   tooltip: TippyTooltipProps | null;
   disabled: boolean;
   platform: UnionPlatform;
+  featureFlag?: Realtime.FeatureFlag;
 }
 
 type UnionConfig<Type extends Platform.Constants.ProjectType> = Omit<Upcoming.Base.Config | Platform.Base.Config, 'types'> & {
@@ -26,7 +28,7 @@ export const getID = ({ type, platform }: Pick<Option, 'type' | 'platform'>) => 
 
 const buildOptionFactory =
   <Type extends Platform.Constants.ProjectType>(type: Type) =>
-  (config: UnionConfig<Type>): Option => {
+  (config: UnionConfig<Type>, { featureFlag }: { featureFlag?: Realtime.FeatureFlag } = {}): Option => {
     const isUpcoming = Upcoming.Config.isSupported(config.type);
 
     return {
@@ -36,6 +38,7 @@ const buildOptionFactory =
       tooltip: isUpcoming ? null : getLabelTooltip(config.types[type].name, config.types[type].description),
       disabled: isUpcoming,
       platform: config.type,
+      featureFlag,
     };
   };
 
@@ -51,13 +54,19 @@ export const OPTIONS: MenuItemGrouped<Option>[] = [
   {
     id: 'channels',
     label: 'Channels',
-    options: [buildChatOption(Platform.Webchat.CONFIG), buildVoiceOption(Platform.Alexa.CONFIG), buildVoiceOption(Platform.Google.CONFIG)],
+    options: [
+      buildChatOption(Platform.Webchat.CONFIG, { featureFlag: Realtime.FeatureFlag.WEBCHAT }),
+      buildVoiceOption(Platform.Alexa.CONFIG),
+      buildVoiceOption(Platform.Google.CONFIG),
+      buildChatOption(Platform.Whatsapp.CONFIG, { featureFlag: Realtime.FeatureFlag.WHATSAPP }),
+      buildChatOption(Platform.MicrosoftTeams.CONFIG, { featureFlag: Realtime.FeatureFlag.MICROSOFT_TEAMS }),
+    ],
   },
   {
     id: 'coming-soon',
     label: 'Coming Soon',
     options: [
-      buildChatOption(Upcoming.Whatsapp.CONFIG),
+      buildChatOption(Upcoming.Whatsapp.CONFIG, { featureFlag: Realtime.FeatureFlag.WHATSAPP }),
       buildChatOption(Upcoming.Facebook.CONFIG),
       buildVoiceOption(Upcoming.Twilio.CONFIG),
       buildChatOption(Upcoming.Twilio.CONFIG),

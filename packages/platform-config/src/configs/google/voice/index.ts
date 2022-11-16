@@ -14,7 +14,7 @@ export const CONFIG = Common.Voice.extend({
     color: '#4285F4',
   },
 
-  logo: 'googleAssistantLogo',
+  logo: 'logoGoogleAssistant',
 
   project: Project.CONFIG,
 

@@ -57,7 +57,7 @@ export const getChannelMeta = Realtime.Utils.platform.createPlatformAndProjectTy
   },
   [Platform.Constants.PlatformType.GOOGLE]: {
     name: 'Google Assistant',
-    icon: 'googleAssistantLogo',
+    icon: 'logoGoogleAssistant',
     platform: Platform.Constants.PlatformType.GOOGLE,
     projectType: Platform.Constants.ProjectType.VOICE,
     features: [PlatformFeature.DESIGN, PlatformFeature.PUBLISH],
@@ -67,7 +67,7 @@ export const getChannelMeta = Realtime.Utils.platform.createPlatformAndProjectTy
   },
   [`${Platform.Constants.PlatformType.DIALOGFLOW_ES}:${Platform.Constants.ProjectType.CHAT}`]: {
     name: 'Dialogflow Chat',
-    icon: 'dialogflowLogo',
+    icon: 'logoDialogflow',
     platform: Platform.Constants.PlatformType.DIALOGFLOW_ES,
     projectType: Platform.Constants.ProjectType.CHAT,
     features: [PlatformFeature.DESIGN, PlatformFeature.EXPORT, PlatformFeature.PUBLISH],
@@ -77,7 +77,7 @@ export const getChannelMeta = Realtime.Utils.platform.createPlatformAndProjectTy
   },
   [`${Platform.Constants.PlatformType.DIALOGFLOW_ES}:${Platform.Constants.ProjectType.VOICE}`]: {
     name: 'Dialogflow IVR',
-    icon: 'dialogflowLogo',
+    icon: 'logoDialogflow',
     platform: Platform.Constants.PlatformType.DIALOGFLOW_ES,
     projectType: Platform.Constants.ProjectType.VOICE,
     features: [PlatformFeature.DESIGN, PlatformFeature.EXPORT, PlatformFeature.PUBLISH],

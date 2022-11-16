@@ -43,6 +43,10 @@ export enum FeatureFlag {
 
   WEBCHAT = 'webchat',
 
+  WHATSAPP = 'whatsapp',
+
+  MICROSOFT_TEAMS = 'teams',
+
   DASHBOARD_V2 = 'dashboard_V2',
 
   MVP_CUSTOM_BLOCK = 'mvp_custom_block',

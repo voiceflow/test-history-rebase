@@ -1,6 +1,7 @@
 import { Dropdown, Menu, preventDefault, Text } from '@voiceflow/ui';
 import React from 'react';
 
+import NavigationSidebar from '@/components/NavigationSidebar';
 import * as Account from '@/ducks/account';
 import * as Session from '@/ducks/session';
 import { useDispatch, useSelector } from '@/hooks';
@@ -14,9 +15,9 @@ const AccountSelector: React.FC = () => {
   return (
     <>
       <Dropdown
-        offset={{ offset: [0, -5] }}
+        offset={{ offset: [24, -5] }}
         menu={
-          <Menu>
+          <Menu width={218}>
             <Menu.Item disabled>
               <Text>{user.email}</Text>
             </Menu.Item>
@@ -29,13 +30,13 @@ const AccountSelector: React.FC = () => {
             </Menu.Item>
           </Menu>
         }
-        placement="top"
+        placement="top-start"
       >
         {(ref, onToggle, isOpen) => (
-          <S.Footer ref={ref} onClick={onToggle} active={isOpen}>
+          <NavigationSidebar.Footer ref={ref} onClick={onToggle} isMainMenu isOpen={isOpen}>
             <S.StyledUser user={user} flat />
-            <div>{user.name}</div>
-          </S.Footer>
+            <S.StyledText>{user.name}</S.StyledText>
+          </NavigationSidebar.Footer>
         )}
       </Dropdown>
     </>

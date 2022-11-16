@@ -71,13 +71,19 @@ const WorkspaceSelector: React.FC<WorkspaceSelectorProps> = ({ activeWorkspace }
         }
         placement="bottom"
       >
-        {(ref, onToggle) => (
-          <S.WorkspaceSelectorContainer id="workspaceDropdown" className={`${ClassName.DROPDOWN}--active-workspace`} onClick={onToggle} ref={ref}>
+        {(ref, onToggle, isOpen) => (
+          <S.WorkspaceSelectorContainer
+            id="workspaceDropdown"
+            className={`${ClassName.DROPDOWN}--active-workspace`}
+            onClick={onToggle}
+            ref={ref}
+            isOpen={isOpen}
+          >
             <Box.Flex>
               <S.WorkspaceImage src={activeWorkspace?.image || logo} alt="logo" active />
               <S.WorkspaceName>{activeWorkspace?.name}</S.WorkspaceName>
             </Box.Flex>
-            <SvgIcon icon="arrowRightTopics" color="#6e849a" size={9} rotation={90} />
+            <SvgIcon icon="arrowRightTopics" color="#6e849a" size={10} rotation={90} />
           </S.WorkspaceSelectorContainer>
         )}
       </Dropdown>

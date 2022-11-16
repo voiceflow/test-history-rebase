@@ -1,6 +1,6 @@
 import { Box } from '@voiceflow/ui';
 
-import { styled } from '@/hocs';
+import { css, styled, transition } from '@/hocs';
 
 import { HEADER_HEIGHT, SIDEBAR_WIDTH } from '../../constants';
 
@@ -62,7 +62,8 @@ export const HeaderContainer = styled.div`
   justify-content: space-between;
 `;
 
-export const WorkspaceSelectorContainer = styled.div`
+export const WorkspaceSelectorContainer = styled.div<{ isOpen?: boolean }>`
+  ${transition('background')}
   border-right: 1px solid #dfe3ed;
   height: 100%;
   width: ${SIDEBAR_WIDTH}px;
@@ -74,6 +75,26 @@ export const WorkspaceSelectorContainer = styled.div`
 
   font-size: 15px;
   font-weight: 600;
+
+  span > svg {
+    opacity: 0.85;
+  }
+
+  ${({ isOpen }) =>
+    isOpen &&
+    css`
+      background: rgba(238, 244, 246, 1);
+    `}
+
+  &:active,
+  &:hover {
+    cursor: pointer;
+    background: rgba(238, 244, 246, 1);
+
+    span > svg {
+      opacity: 1;
+    }
+  }
 `;
 
 export const WorkspaceItemContainer = styled(Box.FlexStart)`
@@ -82,15 +103,15 @@ export const WorkspaceItemContainer = styled(Box.FlexStart)`
 `;
 
 export const WorkspaceImage = styled.img<{ active?: boolean }>`
-  height: 24px;
-  width: 24px;
-  border-radius: ${({ active }) => (active ? '8px' : '50%')};
+  height: 26px;
+  width: 26x;
+  border-radius: ${({ active }) => (active ? '6px' : '50%')};
   margin-right: 12px;
 `;
 
 export const WorkspaceName = styled.div`
-  max-width: 160px;
-  margin-right: 8px;
+  max-width: 142px;
+  margin-right: 12px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;

@@ -1,4 +1,4 @@
-import { Box, BoxFlex, IconButton, SvgIcon, SvgIconTypes, Text, TippyTooltip } from '@voiceflow/ui';
+import { Box, BoxFlex, IconButton, Link, SvgIcon, SvgIconTypes, Text, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import * as S from './styles';
@@ -12,9 +12,12 @@ export interface ItemProps {
   onClick?: VoidFunction;
   isActive?: boolean;
   createPlaceholder?: string;
+  link?: string;
+  rightText?: string;
+  isMainMenu?: boolean;
 }
 
-const Item: React.FC<ItemProps> = ({ createPlaceholder, onAdd, title, titleTooltip, isActive, onClick, icon, counter }) => {
+const Item: React.FC<ItemProps> = ({ createPlaceholder, onAdd, title, titleTooltip, isActive, onClick, icon, counter, link, rightText }) => {
   const withAddIcon = isActive && onAdd;
 
   return (
@@ -35,6 +38,12 @@ const Item: React.FC<ItemProps> = ({ createPlaceholder, onAdd, title, titleToolt
           </Text>
         )
       )}
+      {link && (
+        <Link link={link}>
+          <SvgIcon icon="editorURL" color="rgba(110, 132, 154, 0.85)" />
+        </Link>
+      )}
+      {rightText && <Text color="rgba(110, 132, 154, 0.85)">{rightText}</Text>}
     </S.Container>
   );
 };

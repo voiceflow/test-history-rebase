@@ -1,4 +1,4 @@
-import { FlexApart, SvgIcon } from '@voiceflow/ui';
+import { FlexApart, Link, SvgIcon } from '@voiceflow/ui';
 
 import { css, styled, transition } from '@/hocs';
 
@@ -18,6 +18,10 @@ export const Container = styled(FlexApart)<{ active?: boolean }>`
   background: transparent;
   border: solid 1px transparent;
 
+  ${Link} {
+    opacity: 0;
+  }
+
   ${({ active }) =>
     active &&
     css`
@@ -35,6 +39,10 @@ export const Container = styled(FlexApart)<{ active?: boolean }>`
 
     ${SvgIcon.Container} {
       opacity: 1;
+    }
+
+    ${Link} {
+      opacity: 0.85;
     }
   }
 

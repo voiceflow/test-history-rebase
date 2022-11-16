@@ -1,19 +1,19 @@
 import { SvgIcon } from '@voiceflow/ui';
 
-import { styled, transition } from '@/hocs';
+import { css, styled, transition } from '@/hocs';
 
 import Item from './components/Item';
 import NavItem from './components/NavItem';
 
-export const Container = styled.div`
+export const Container = styled.div<{ isMainMenu?: boolean }>`
   display: flex;
   justify-content: space-between;
   flex-direction: column;
   height: 100%;
   border-right: 1px solid ${({ theme }) => theme.colors.borders};
-  width: 248px;
-  min-width: 248px;
-  margin-left: ${({ theme }) => theme.components.sidebarIconMenu.width}px;
+  width: ${({ isMainMenu }) => (isMainMenu ? '254px' : '248px')};
+  min-width: ${({ isMainMenu }) => (isMainMenu ? '254px' : '248px')};
+  margin-left: 0; // ${({ theme }) => theme.components.sidebarIconMenu.width}px;
   background: #fbfbfb;
 `;
 
@@ -25,21 +25,27 @@ export const ItemsContainer = styled.div`
   position: relative;
 `;
 
-export const Footer = styled.div`
+export const Footer = styled.div<{ isMainMenu?: boolean; isOpen?: boolean }>`
   ${transition('background')}
   border-top: 1px solid ${({ theme }) => theme.colors.borders};
-  padding: 20px 32px;
+  padding: ${({ isMainMenu }) => (isMainMenu ? '20px 24px' : '20px 32px')};
   font-weight: 600;
   display: flex;
   align-items: center;
   font-size: 15px;
   cursor: pointer;
-  background: rgba(238, 244, 246, 1);
+  background: ${({ isMainMenu }) => (isMainMenu ? 'RGB(253, 253, 253)' : 'rgba(238, 244, 246, 1)')};
 
   &:hover,
   &:active {
     background: rgba(238, 244, 246, 1);
   }
+
+  ${({ isOpen }) =>
+    isOpen &&
+    css`
+      background: rgba(238, 244, 246, 1);
+    `}
 
   ${SvgIcon.Container} {
     opacity: 0.85;

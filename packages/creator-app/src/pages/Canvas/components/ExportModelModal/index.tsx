@@ -13,7 +13,7 @@ const ExportModelModal: React.FC = () => {
   const { data } = useModals<{ checkedItems: string[] }>(ModalType.EXPORT_MODEL);
 
   return (
-    <Modal id={ModalType.EXPORT_MODEL} title="NLU Export" headerBorder>
+    <Modal id={ModalType.EXPORT_MODEL} title="NLU Export" headerBorder maxWidth={450}>
       <ModalBody>
         <Model selectedIntentsIds={data.checkedItems} />
       </ModalBody>

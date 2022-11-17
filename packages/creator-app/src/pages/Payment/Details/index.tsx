@@ -1,17 +1,15 @@
 import { PlanType } from '@voiceflow/internal';
-import { Button, ButtonVariant } from '@voiceflow/ui';
+import { Button, ButtonVariant, Modal } from '@voiceflow/ui';
 import React from 'react';
 
 import BubbleText from '@/components/BubbleText';
 import ImageCarousel from '@/components/ImageCarousel';
-import { ModalFooter } from '@/components/Modal';
 import Tabs from '@/components/Tabs';
+import { upgradeToEnterpriseAction } from '@/config/planLimits';
 import { PLAN_TYPE_META } from '@/constants';
-import StartAChatButton from '@/pages/Payment/components/StartAChatButton';
 import { PaymentContextProps, withPayment } from '@/pages/Payment/context';
 import { FadeLeftContainer } from '@/styles/animations';
 
-import ChatWithUsLink from '../components/ChatWithUsLink';
 import CarouselButtons from './CarouselButtons';
 import {
   ContentContainer,
@@ -119,16 +117,17 @@ const PlansDetails: React.FC<PlansDetailsProps> = ({
         </FadeLeftContainer>
       </ContentContainer>
 
-      <ModalFooter justifyContent="space-between">
-        <ChatWithUsLink />
+      <Modal.Footer justifyContent="flex-end">
         {plan.pricing ? (
           <Button variant={ButtonVariant.PRIMARY} onClick={showCheckout}>
             Upgrade to {plan.name}
           </Button>
         ) : (
-          <StartAChatButton />
+          <Button variant={ButtonVariant.PRIMARY} onClick={upgradeToEnterpriseAction}>
+            Contact Sales
+          </Button>
         )}
-      </ModalFooter>
+      </Modal.Footer>
     </div>
   );
 };

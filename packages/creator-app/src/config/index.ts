@@ -24,7 +24,6 @@ declare global {
     VF_OVERRIDE_ML_GATEWAY_ENDPOINT?: string; // realtime public endpoint
     VF_OVERRIDE_AUTH_API_ENDPOINT?: string; // auth public endpoint
     VF_OVERRIDE_IDENTITY_API_ENDPOINT?: string; // identity public endpoint
-    VF_OVERRIDE_INTERCOM_APP_ID?: string;
     VF_OVERRIDE_AMAZON_APP_ID?: string;
     VF_OVERRIDE_GOOGLE_CLIENT_ID?: string; // Override the Google OAuth2 Client
     VF_OVERRIDE_GOOGLE_ANALYTICS_ID?: string;
@@ -161,10 +160,6 @@ export const STRIPE_KEY = IS_PRODUCTION_ENV ? STRIPE_LIVE_KEY : STRIPE_TEST_KEY;
 
 // logrocket
 export const LOGROCKET_PROJECT = process.env.LOGROCKET_PROJECT!;
-
-// intercom
-export const INTERCOM_ENABLED = (!IS_E2E && IS_PRODUCTION) || process.env.INTERCOM_ENABLED === 'true';
-export const INTERCOM_APP_ID = window.VF_OVERRIDE_INTERCOM_APP_ID || process.env.INTERCOM_APP_ID!;
 
 // sentry
 export const SENTRY_ENABLED = (!IS_E2E && IS_PRODUCTION) || process.env.SENTRY_ENABLED === 'true';

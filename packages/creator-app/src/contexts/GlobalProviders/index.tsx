@@ -5,11 +5,9 @@ import React from 'react';
 import { DismissableLayersGlobalProvider } from 'react-dismissable-layers';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { IntercomProvider } from 'react-use-intercom';
 import { ThemeProvider } from 'styled-components';
 
 import client from '@/client';
-import { INTERCOM_APP_ID } from '@/config';
 import { AccountLoadingGate, AccountSubscriptionGate, CapabilitiesGate, FeatureLoadingGate, MaintenanceGate, RealtimeConnectionGate } from '@/gates';
 import * as ModalsV2 from '@/ModalsV2';
 import THEME from '@/styles/theme';
@@ -43,35 +41,33 @@ const GlobalProviders: React.FC<GlobalProvidersProps> = ({ history, store, persi
                 <SessionTracker />
                 <FeatureFlagsProvider>
                   <FeatureLoadingGate>
-                    <IntercomProvider appId={INTERCOM_APP_ID}>
-                      <IdentityProvider>
-                        <EventualEngineProvider>
-                          <TextEditorVariablesPopoverProvider value={document.body}>
-                            <MousePositionProvider>
-                              <DismissableLayersGlobalProvider>
-                                <DragProvider>
-                                  <AutoPanningProvider>
-                                    <ModalsContextProvider>
-                                      <ModalsV2.Provider>
-                                        <Upload.Provider client={client.upload} onError={Sentry.error}>
-                                          <AccountLoadingGate>
-                                            <RealtimeConnectionGate>
-                                              <MLProvider>
-                                                <AccountSubscriptionGate>{children}</AccountSubscriptionGate>
-                                              </MLProvider>
-                                            </RealtimeConnectionGate>
-                                          </AccountLoadingGate>
-                                        </Upload.Provider>
-                                      </ModalsV2.Provider>
-                                    </ModalsContextProvider>
-                                  </AutoPanningProvider>
-                                </DragProvider>
-                              </DismissableLayersGlobalProvider>
-                            </MousePositionProvider>
-                          </TextEditorVariablesPopoverProvider>
-                        </EventualEngineProvider>
-                      </IdentityProvider>
-                    </IntercomProvider>
+                    <IdentityProvider>
+                      <EventualEngineProvider>
+                        <TextEditorVariablesPopoverProvider value={document.body}>
+                          <MousePositionProvider>
+                            <DismissableLayersGlobalProvider>
+                              <DragProvider>
+                                <AutoPanningProvider>
+                                  <ModalsContextProvider>
+                                    <ModalsV2.Provider>
+                                      <Upload.Provider client={client.upload} onError={Sentry.error}>
+                                        <AccountLoadingGate>
+                                          <RealtimeConnectionGate>
+                                            <MLProvider>
+                                              <AccountSubscriptionGate>{children}</AccountSubscriptionGate>
+                                            </MLProvider>
+                                          </RealtimeConnectionGate>
+                                        </AccountLoadingGate>
+                                      </Upload.Provider>
+                                    </ModalsV2.Provider>
+                                  </ModalsContextProvider>
+                                </AutoPanningProvider>
+                              </DragProvider>
+                            </DismissableLayersGlobalProvider>
+                          </MousePositionProvider>
+                        </TextEditorVariablesPopoverProvider>
+                      </EventualEngineProvider>
+                    </IdentityProvider>
                   </FeatureLoadingGate>
                 </FeatureFlagsProvider>
               </LifecycleProvider>

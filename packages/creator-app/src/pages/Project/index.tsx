@@ -7,7 +7,6 @@ import { batch } from 'react-redux';
 import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
 
 import InactivitySnackbar from '@/components/InactivitySnackbar';
-import { RemoveIntercom } from '@/components/IntercomChat';
 import { Path } from '@/config/routes';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as ProjectV2 from '@/ducks/projectV2';
@@ -115,7 +114,6 @@ const Project: React.FC = () => {
         </ExportProvider>
 
         <ProjectExitTracker nluType={nluType} platform={platform} />
-        <RemoveIntercom />
 
         <Providers>
           <Switch>

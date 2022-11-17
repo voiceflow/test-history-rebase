@@ -23,7 +23,7 @@ import * as Sentry from '@/vendors/sentry';
 import * as Support from '@/vendors/support';
 import * as Userflow from '@/vendors/userflow';
 
-import { setAuthToken, setIntercomUserHMAC } from './actions';
+import { setAuthToken } from './actions';
 import { authTokenSelector } from './selectors';
 
 /**
@@ -47,7 +47,6 @@ export const resetSession = (): SyncThunk => (dispatch) => {
   batch(() => {
     dispatch(resetAccount());
     dispatch(updateAuthToken(null));
-    dispatch(setIntercomUserHMAC(null));
   });
 
   dispatch(goToLogin());
@@ -147,11 +146,10 @@ interface SetSessionOptions {
   user: Models.Account;
   token: string;
   redirectTo?: string;
-  intercomUserHMAC: string | null;
 }
 
 const setSession =
-  ({ user, token, redirectTo, intercomUserHMAC }: SetSessionOptions): SyncThunk =>
+  ({ user, token, redirectTo }: SetSessionOptions): SyncThunk =>
   (dispatch, getState) => {
     const state = getState();
 
@@ -159,7 +157,6 @@ const setSession =
 
     batch(() => {
       dispatch(updateAuthToken(token));
-      dispatch(setIntercomUserHMAC(intercomUserHMAC));
       dispatch(updateAccount(user));
     });
 
@@ -185,9 +182,9 @@ export const ssoLogin =
   async (dispatch) => {
     const parsedQuery = parseQuery(window.location.search);
 
-    const { user, token, intercomUserHMAC = null } = await client.sso.login(payload, parsedQuery);
+    const { user, token } = await client.sso.login(payload, parsedQuery);
 
-    dispatch(setSession({ user, token, intercomUserHMAC }));
+    dispatch(setSession({ user, token }));
   };
 
 interface SessionOptions {
@@ -201,9 +198,9 @@ const createSession =
   (authRequest: unknown, { query, redirectTo, firstLogin }: SessionOptions = {}): Thunk<Models.Account> =>
   async (dispatch) => {
     const parsedQuery = { ...parseQuery(window.location.search), ...query };
-    const { user, token, intercomUserHMAC = null } = await client.session.create(sessionType, authRequest, parsedQuery);
+    const { user, token } = await client.session.create(sessionType, authRequest, parsedQuery);
 
-    dispatch(setSession({ user: { ...user, first_login: firstLogin ?? user.first_login }, token, redirectTo, intercomUserHMAC }));
+    dispatch(setSession({ user: { ...user, first_login: firstLogin ?? user.first_login }, token, redirectTo }));
 
     return user;
   };
@@ -217,9 +214,9 @@ const createAdoptSSO =
   (sessionType: SessionType) =>
   (payload: SSOConvertPayload): Thunk<Models.Account> =>
   async (dispatch) => {
-    const { user, token, intercomUserHMAC = null } = await client.sso.convert(sessionType, payload);
+    const { user, token } = await client.sso.convert(sessionType, payload);
 
-    dispatch(setSession({ user, token, intercomUserHMAC }));
+    dispatch(setSession({ user, token }));
 
     return user;
   };
@@ -252,7 +249,7 @@ export const signin =
         first_login: options.firstLogin,
       };
 
-      dispatch(setSession({ user, token, redirectTo: options?.redirectTo, intercomUserHMAC: null }));
+      dispatch(setSession({ user, token, redirectTo: options?.redirectTo }));
 
       return user;
     }
@@ -274,7 +271,7 @@ export const ssoSignIn =
 
     const user: Models.Account = { ...userAccount, created: userAccount.createdAt, creator_id: userAccount.creatorID, first_login: isNewUser };
 
-    dispatch(setSession({ user, token, redirectTo: options?.redirectTo, intercomUserHMAC: null }));
+    dispatch(setSession({ user, token, redirectTo: options?.redirectTo }));
   };
 
 interface SignupPayload {

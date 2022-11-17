@@ -14,10 +14,6 @@ export const browserIDSelector = createSelector([rootSelector], ({ browserID }) 
 
 export const anonymousIDSelector = createSelector([rootSelector], ({ anonymousID }) => anonymousID);
 
-export const isIntercomVisibleSelector = createSelector([rootSelector], ({ intercomVisible }) => intercomVisible);
-
-export const intercomUserHMACSelector = createSelector([rootSelector], ({ intercomUserHMAC }) => intercomUserHMAC);
-
 export const activeWorkspaceIDSelector = createSelector([rootSelector], ({ activeWorkspaceID }) => activeWorkspaceID);
 export const hasActiveWorkspaceSelector = createSelector([activeWorkspaceIDSelector], (id) => !!id);
 

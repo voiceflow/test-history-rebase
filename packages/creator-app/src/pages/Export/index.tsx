@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { RemoveIntercom } from '@/components/IntercomChat';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { VersionSubscriptionGate, WorkspaceFeatureLoadingGate } from '@/gates';
@@ -34,7 +33,6 @@ const ExportCanvas: React.FC = () => {
         <MarkupProvider>
           <ManagerProvider value={getManager}>
             <CanvasProviders key={engineKey} engine={engine}>
-              <RemoveIntercom />
               <ExportGlobalStyle />
               <ExportWatermark isOnPaidPlan={!!isOnPaidPlan} />
               <ExportCanvasDiagram onRegister={registerCanvas}>

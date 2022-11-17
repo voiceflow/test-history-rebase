@@ -8,9 +8,6 @@ export enum FeatureFlag {
   // used by select private cloud instances to add a new role type
   OWNER_ROLE = 'owner_role',
 
-  // permanent circuit breakers for vendor integrations
-  INTERCOM_INTEGRATION = 'intercom_integration',
-
   // permanent circuit breaker for ml-gateway integration
   ML_GATEWAY_INTEGRATION = 'ml_gateway_integration',
 

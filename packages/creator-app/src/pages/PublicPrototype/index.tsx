@@ -5,7 +5,6 @@ import { DEVICE_INFO, FullSpinner, toast, withProvider } from '@voiceflow/ui';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
-import { RemoveIntercom } from '@/components/IntercomChat';
 import SeoHelmet from '@/components/SeoHelmet';
 import { Permission } from '@/config/permissions';
 import { PrototypeLayout } from '@/constants/prototype';
@@ -86,7 +85,6 @@ const PublicPrototype: React.FC<RouteComponentProps<{ versionID: string }>> = ({
 
   return isLoaded ? (
     <>
-      <RemoveIntercom />
       <SeoHelmet page={SeoPage.PROTOTYPE} />
       {isAuthenticated || !canUseSharedPassword ? (
         <Prototype

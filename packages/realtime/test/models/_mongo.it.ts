@@ -7,7 +7,7 @@ import AbstractModel from '@/models/_mongo';
 
 const collectionName = 'test-collection';
 
-class TestModel extends AbstractModel<any> {
+class TestModel extends AbstractModel<any, any, string> {
   public collectionName = collectionName;
 }
 

@@ -17,7 +17,6 @@ export const SESSION_ENDPOINTS = {
 export interface SessionResponsePayload {
   user: Account;
   token: string;
-  intercomUserHMAC?: string;
 }
 
 const sessionClient = {

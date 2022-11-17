@@ -14,8 +14,6 @@ import {
   SetActiveVersionID,
   SetActiveWorkspaceID,
   SetAuthToken,
-  SetIntercomUserHMAC,
-  SetIntercomVisible,
   SetPrototypeSidebarVisible,
 } from './actions';
 import { INITIAL_STATE, STATE_KEY } from './constants';
@@ -32,7 +30,6 @@ export const tabIDPersistor = sessionPersistor<string>(STATE_KEY, 'tab_id');
 export const browserIDPersistor = localPersistor<string>(STATE_KEY, 'browser_id');
 export const anonymousIDPersistor = localPersistor<string>(STATE_KEY, 'anonymous_id');
 export const activeWorkspaceIDPersistor = localPersistor<string | null>(STATE_KEY, 'active_workspace_id');
-export const intercomUserHMACPersistor = localPersistor<string | null>(STATE_KEY, 'intercom_user_hmac');
 
 const createInitialAuthTokenState = () => ({
   value: Cookies.getAuthCookie() || null,
@@ -44,21 +41,6 @@ export const authTokenReducer: RootReducer<{ value: string | null }, SetAuthToke
   }
 
   return state;
-};
-
-export const setIntercomVisibleReducer: Reducer<SessionState, SetIntercomVisible> = (state, { payload }) => ({
-  ...state,
-  intercomVisible: payload,
-});
-
-export const setIntercomUserHMACReducer: RootReducer<string | null, SetIntercomUserHMAC> = (state = null, action) => {
-  // eslint-disable-next-line sonarjs/no-small-switch
-  switch (action.type) {
-    case SessionAction.SET_INTERCOM_USER_HMAC:
-      return action.payload;
-    default:
-      return state;
-  }
 };
 
 export const setActiveWorkspaceIDReducer: RootReducer<string | null, SetActiveWorkspaceID> = (state = null, action) => {
@@ -98,8 +80,6 @@ export const setPrototypeSidebarVisibleReducer: Reducer<SessionState, SetPrototy
 
 const sessionReducer: RootReducer<SessionState, AnySessionAction> = (state = INITIAL_STATE as SessionState, action) => {
   switch (action.type) {
-    case SessionAction.SET_INTERCOM_VISIBLE:
-      return setIntercomVisibleReducer(state, action);
     case SessionAction.SET_ACTIVE_PROJECT_ID:
       return setActiveProjectIDReducer(state, action);
     case SessionAction.SET_ACTIVE_VERSION_ID:
@@ -120,6 +100,5 @@ export default compositeReducer(sessionReducer, {
   tabID: rehydrateReducer(tabIDPersistor, Utils.id.cuid()),
   browserID: rehydrateReducer(browserIDPersistor, Utils.id.cuid()),
   anonymousID: rehydrateReducer(anonymousIDPersistor, `anonymous-${Utils.id.cuid()}`),
-  intercomUserHMAC: persistReducer(intercomUserHMACPersistor, setIntercomUserHMACReducer),
   activeWorkspaceID: persistReducer(activeWorkspaceIDPersistor, setActiveWorkspaceIDReducer),
 });

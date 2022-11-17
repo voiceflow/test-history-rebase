@@ -10,7 +10,6 @@ import 'react-day-picker/lib/style.css';
 import { ToastContainer } from '@voiceflow/ui';
 import React from 'react';
 
-import IntercomChat from '@/components/IntercomChat';
 import { RootPageProgressBar } from '@/components/PageProgressBar';
 import SeoHelmet from '@/components/SeoHelmet';
 import SupportChat from '@/components/SupportChat';
@@ -28,7 +27,6 @@ const App: React.FC = () => (
     <SeoHelmet page={SeoPage.ROOT} />
     <ToastContainer />
     <Routes />
-    <IntercomChat />
     <AppModals />
     <ModalsV2.Placeholder />
     <RootPageProgressBar />

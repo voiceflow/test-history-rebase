@@ -10,7 +10,6 @@ import { Permission } from '@/config/permissions';
 import { Path } from '@/config/routes';
 import { BOOK_DEMO_LINK, DOCS_LINK, FORUM_LINK, YOUTUBE_CHANNEL_LINK } from '@/constants';
 import * as Router from '@/ducks/router';
-import * as Session from '@/ducks/session';
 import { NLUManagerOpenedOrigin } from '@/ducks/tracking/constants';
 import * as Transcript from '@/ducks/transcript';
 import { useDispatch, useFeature, useHotKeys, usePermission, useSelector, useTrackingEvents } from '@/hooks';
@@ -172,11 +171,6 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
 };
 
 export const useHelpOptions = (): MenuTypes.OptionWithoutValue[] => {
-  const isIntercomVisible = useSelector(Session.isIntercomVisibleSelector);
-
-  const showIntercom = useDispatch(Session.showIntercom);
-  const hideIntercom = useDispatch(Session.hideIntercom);
-
   const [, trackingEventsWrapper] = useTrackingEvents();
 
   return [
@@ -202,11 +196,6 @@ export const useHelpOptions = (): MenuTypes.OptionWithoutValue[] => {
       key: 'demo',
       label: 'Book a demo',
       onClick: trackingEventsWrapper(onOpenInternalURLInANewTabFactory(BOOK_DEMO_LINK), 'trackCanvasControlHelpMenuResource', { resource: 'Demo' }),
-    },
-    {
-      key: 'intercom',
-      label: isIntercomVisible ? 'Hide Intercom' : 'Contact us',
-      onClick: trackingEventsWrapper(isIntercomVisible ? hideIntercom : showIntercom, 'trackCanvasControlHelpMenuResource', { resource: 'Intercom' }),
     },
   ];
 };

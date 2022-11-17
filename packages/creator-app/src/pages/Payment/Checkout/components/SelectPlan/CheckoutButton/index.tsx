@@ -4,7 +4,6 @@ import _isEmpty from 'lodash/isEmpty';
 import React from 'react';
 
 import { upgradeToEnterpriseAction } from '@/config/planLimits';
-import StartAChatButton from '@/pages/Payment/components/StartAChatButton';
 import { PaymentContextProps, withPayment } from '@/pages/Payment/context';
 import { Identifier } from '@/styles/constants';
 
@@ -15,11 +14,7 @@ interface CheckoutButtonProps {
 }
 
 const CheckoutButton: React.FC<CheckoutButtonProps> = ({ payment: { state, checkout } }) => {
-  const { price, period, hasPricing, errors, stripeCompleted, loading, usingExistingSource, upgradePrompt } = state;
-
-  if (!hasPricing) {
-    return <StartAChatButton />;
-  }
+  const { price, period, errors, stripeCompleted, loading, usingExistingSource, upgradePrompt } = state;
 
   if (loading.checkout) {
     return (

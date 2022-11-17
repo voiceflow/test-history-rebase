@@ -197,21 +197,6 @@ You are also able to use the flag `--logrocket` to enable it from the command li
 yarn start --logrocket
 ```
 
-### Intercom
-
-To enable Intercom when running locally, set the environment variable `VF_APP_INTERCOM_ENABLED` to `"true"`
-in the `.env.local` file in this directory. If this file doesn't exist then create one.
-
-```sh
-VF_APP_INTERCOM_ENABLED='true'
-```
-
-You are also able to use the flag `--intercom` to enable it from the command line.
-
-```sh
-yarn start --intercom
-```
-
 ### Google Analytics
 
 To enable Google Analytics when running locally, set the environment variable `VF_APP_GA_ENABLED` to `"true"`

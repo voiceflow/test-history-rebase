@@ -24,15 +24,14 @@ export interface SSOConvertPayload {
 }
 
 const ssoClient = {
-  login: (data: SSOLoginPayload, queryParams?: {}) =>
-    apiV2.post<{ token: string; user: Account; intercomUserHMAC?: string }>(`${SSO_PATH}/login`, { ...data, queryParams }),
+  login: (data: SSOLoginPayload, queryParams?: {}) => apiV2.post<{ token: string; user: Account }>(`${SSO_PATH}/login`, { ...data, queryParams }),
 
   convert: (session: SessionType, data: SSOConvertPayload) => {
     if (session === SessionType.SIGN_UP) {
       throw new Error('unable to convert account for this session type');
     }
 
-    return apiV2.post<{ token: string; user: Account; intercomUserHMAC?: string }>(`${SSO_PATH}/convert/${SSO_CONVERT_ENDPOINTS[session]}`, data);
+    return apiV2.post<{ token: string; user: Account }>(`${SSO_PATH}/convert/${SSO_CONVERT_ENDPOINTS[session]}`, data);
   },
 };
 

@@ -3,7 +3,6 @@ import React from 'react';
 
 import { Permission } from '@/config/permissions';
 import { usePermission } from '@/hooks';
-import ChatWithUsLink from '@/pages/Payment/components/ChatWithUsLink';
 import { PaymentContextProps, withPayment } from '@/pages/Payment/context';
 import { FadeLeftContainer } from '@/styles/animations';
 
@@ -37,8 +36,7 @@ const UpdatePlan: React.FC<UpdatePlanProps> = ({
         </FadeLeftContainer>
       </Container>
 
-      <Modal.Footer justifyContent="space-between">
-        <ChatWithUsLink />
+      <Modal.Footer justifyContent="flex-end">
         <CheckoutButton />
       </Modal.Footer>
     </>

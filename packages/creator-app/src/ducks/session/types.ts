@@ -7,7 +7,5 @@ export interface SessionState {
   activeProjectID: string | null;
   activeVersionID: string | null;
   activeDiagramID: string | null;
-  intercomVisible: boolean;
-  intercomUserHMAC: null | string;
   prototypeSidebarVisible: boolean;
 }

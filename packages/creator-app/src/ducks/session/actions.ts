@@ -4,8 +4,6 @@ import type { Action } from '@/store/types';
 
 export enum SessionAction {
   SET_AUTH_TOKEN = 'SESSION:SET_AUTH_TOKEN',
-  SET_INTERCOM_VISIBLE = 'SESSION:INTERCOM_VISIBLE:SET',
-  SET_INTERCOM_USER_HMAC = 'SESSION:INTERCOM_USER_HMAC:SET',
   SET_ACTIVE_WORKSPACE_ID = 'SESSION:ACTIVE_WORKSPACE_ID:SET',
   SET_ACTIVE_PROJECT_ID = 'SESSION:ACTIVE_PROJECT_ID:SET',
   SET_ACTIVE_VERSION_ID = 'SESSION:ACTIVE_VERSION_ID:SET',
@@ -17,10 +15,6 @@ export enum SessionAction {
 // action types
 
 export type SetAuthToken = Action<SessionAction.SET_AUTH_TOKEN, string | null>;
-
-export type SetIntercomVisible = Action<SessionAction.SET_INTERCOM_VISIBLE, boolean>;
-
-export type SetIntercomUserHMAC = Action<SessionAction.SET_INTERCOM_USER_HMAC, string | null>;
 
 export type SetActiveWorkspaceID = Action<SessionAction.SET_ACTIVE_WORKSPACE_ID, string | null>;
 
@@ -36,8 +30,6 @@ export type SetPrototypeSidebarVisible = Action<SessionAction.SET_PROTOTYPE_SIDE
 
 export type AnySessionAction =
   | SetAuthToken
-  | SetIntercomVisible
-  | SetIntercomUserHMAC
   | SetActiveWorkspaceID
   | SetActiveProjectID
   | SetActiveVersionID
@@ -48,13 +40,6 @@ export type AnySessionAction =
 // action creators
 
 export const setAuthToken = (token: string | null): SetAuthToken => createAction(SessionAction.SET_AUTH_TOKEN, token);
-
-export const setIntercomVisible = (isVisible: boolean): SetIntercomVisible => createAction(SessionAction.SET_INTERCOM_VISIBLE, isVisible);
-export const showIntercom = () => setIntercomVisible(true);
-export const hideIntercom = () => setIntercomVisible(false);
-
-export const setIntercomUserHMAC = (intercomUserHMAC: string | null): SetIntercomUserHMAC =>
-  createAction(SessionAction.SET_INTERCOM_USER_HMAC, intercomUserHMAC);
 
 export const setActiveWorkspaceID = (workspaceID: string | null): SetActiveWorkspaceID =>
   createAction(SessionAction.SET_ACTIVE_WORKSPACE_ID, workspaceID);

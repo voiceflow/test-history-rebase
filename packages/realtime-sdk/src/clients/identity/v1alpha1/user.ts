@@ -46,4 +46,9 @@ export class User extends NestResource {
   public async verifyUpdateEmailToken(token: string): Promise<void> {
     await this.put(`/email/${token}`);
   }
+
+  public async updateImage(file: unknown): Promise<{ image: string }> {
+    const { data } = await this.put('/image', file);
+    return data;
+  }
 }

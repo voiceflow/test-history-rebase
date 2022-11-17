@@ -6,9 +6,22 @@ import _get from 'lodash/get';
 
 import client from '@/client';
 import * as Feature from '@/ducks/feature';
+import { openError } from '@/ModalsV2/utils';
 import { Thunk } from '@/store/types';
 
 import { updateAccount } from './actions';
+
+export const updateUserProfileImage =
+  (formData: FormData): Thunk<string> =>
+  async () => {
+    try {
+      const { image } = await client.identity.user.updateImage(formData);
+      return image;
+    } catch (err) {
+      openError({ error: 'Error updating workspace image' });
+      throw err;
+    }
+  };
 
 export const saveProfilePicture =
   (url: string | null): Thunk =>

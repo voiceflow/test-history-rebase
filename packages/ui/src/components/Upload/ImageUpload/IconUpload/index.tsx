@@ -121,7 +121,7 @@ export interface IconUploadProps extends IconUploadOwnProps, Omit<SingleUploadCo
   endpoint?: string;
 }
 
-const IconUpload = React.forwardRef<HTMLDivElement, IconUploadProps>(({ update, endpoint = '/image', ...props }, ref) => {
+const IconUpload: React.ForwardRefRenderFunction<HTMLDivElement, IconUploadProps> = ({ update, endpoint = '/image', ...props }, ref) => {
   const uploadApi = useUpload({
     fileType: 'image',
     endpoint,
@@ -130,6 +130,6 @@ const IconUpload = React.forwardRef<HTMLDivElement, IconUploadProps>(({ update, 
   });
 
   return <BaseIconUpload ref={ref} update={update} {...props} {...uploadApi} />;
-});
+};
 
-export default IconUpload;
+export default React.forwardRef<HTMLDivElement, IconUploadProps>(IconUpload);

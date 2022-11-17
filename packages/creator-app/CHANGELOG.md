@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.979.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.978.0...@voiceflow/creator-app@1.979.0) (2022-11-17)
+
+
+### Features
+
+* hook up update user profile picture with identity service (CT-1240) ([#6330](https://github.com/voiceflow/creator-app/issues/6330)) ([5dd2288](https://github.com/voiceflow/creator-app/commit/5dd2288d04c10835594eb1bf1314cb170cc6eeef))
+
+
+
+
+
 # [1.978.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.977.4...@voiceflow/creator-app@1.978.0) (2022-11-17)
 
 

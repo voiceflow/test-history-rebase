@@ -292,7 +292,7 @@ export { default as zapier } from './zapier.svg';
 export { default as zoomOut } from './zoom-out.svg';
 
 // logos
-export { default as logoGoogleAssistant } from './google-assistant.svg';
 export { default as logoDialogflow } from './logos/dialogflow.svg';
+export { default as logoGoogleAssistant } from './logos/google-assistant.svg';
 export { default as logoMicrosoftTeams } from './logos/microsoft-teams.svg';
 export { default as logoWhatsapp } from './logos/whatsapp.svg';

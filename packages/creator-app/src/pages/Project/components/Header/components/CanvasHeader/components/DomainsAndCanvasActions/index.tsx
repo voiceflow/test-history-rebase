@@ -99,8 +99,6 @@ const DomainsAndCanvasActions: React.FC = () => {
     <Container>
       {!canEditCanvas && <ViewOnly>View only</ViewOnly>}
 
-      <PlatformLogo />
-
       {showEditorIcons ? (
         <Box.Flex gap={5}>
           <HeaderIconButton
@@ -130,6 +128,7 @@ const DomainsAndCanvasActions: React.FC = () => {
         </Box.Flex>
       ) : (
         <>
+          <PlatformLogo />
           <ProjectTitle
             id={Identifier.PROJECT_TITLE}
             value={formValue}

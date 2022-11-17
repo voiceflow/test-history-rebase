@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.194.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.193.2...@voiceflow/realtime-sdk@1.194.0) (2022-11-17)
+
+
+### Features
+
+* remove intercom (CT-1154) ([#6328](https://github.com/voiceflow/creator-app/issues/6328)) ([3652eed](https://github.com/voiceflow/creator-app/commit/3652eed6cd4271586a95d085a54703630de90e62))
+
+
+
+
+
 ## [1.193.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.193.1...@voiceflow/realtime-sdk@1.193.2) (2022-11-16)
 
 

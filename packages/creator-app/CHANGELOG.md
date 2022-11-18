@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.979.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.979.0...@voiceflow/creator-app@1.979.1) (2022-11-18)
+
+
+### Bug Fixes
+
+* header logo visibility [bugfix] (CT-1243) ([62abd94](https://github.com/voiceflow/creator-app/commit/62abd94da176c1768f8bc79e6377bed2e4ff1aa4))
+
+
+
+
+
 # [1.979.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.978.0...@voiceflow/creator-app@1.979.0) (2022-11-17)
 
 

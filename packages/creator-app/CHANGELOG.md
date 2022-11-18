@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.981.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.981.0...@voiceflow/creator-app@1.981.1) (2022-11-18)
+
+
+### Bug Fixes
+
+* revert nlp import modal [bugfix] (CT-000) ([42c4f5b](https://github.com/voiceflow/creator-app/commit/42c4f5b72c7d6f4eb39dccf7a2db7353c0b5165b))
+
+
+
+
+
 # [1.981.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.980.0...@voiceflow/creator-app@1.981.0) (2022-11-18)
 
 

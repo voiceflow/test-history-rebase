@@ -29,7 +29,7 @@ export const useNLUImport = ({ nluType, platform, onImport }: Options) => {
     [fileExtensions]
   );
 
-  const onFileChangeFactory = (origin: NLUImportOrigin) => async (files: FileList) => {
+  const onFileChangeFactory = (origin: NLUImportOrigin) => async (files: FileList | File[]) => {
     if (!files.length) return;
 
     try {
@@ -73,5 +73,6 @@ export const useNLUImport = ({ nluType, platform, onImport }: Options) => {
     onUploadClick,
     fileExtensions,
     acceptedFileFormatsLabel,
+    onFileChangeFactory,
   };
 };

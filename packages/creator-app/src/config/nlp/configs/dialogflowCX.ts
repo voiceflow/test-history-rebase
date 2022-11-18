@@ -15,7 +15,7 @@ export const CONFIG = Base.extend({
 
   import: {
     name: 'Dialogflow CX',
-    extensions: [FileExtension.CSV],
+    extensions: [FileExtension.ZIP],
   },
 
   export: null,

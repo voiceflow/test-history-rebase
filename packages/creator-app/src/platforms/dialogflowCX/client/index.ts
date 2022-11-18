@@ -14,9 +14,8 @@ const DIALOGFLOW_CX_ENDPOINT = `${GOOGLE_SERVICE_ENDPOINT}/dialogflow/cx`;
 
 const dialogflowCXServiceClient = {
   modelImport: {
-    // TO DO: Remove it once we have a proper endpoint for dfcx model import
     import: (_type: string, formData?: FormData) => {
-      const importEndpoint = `${RESOURCE_ENDPOINT}/${Platform.Constants.PlatformType.VOICEFLOW}`;
+      const importEndpoint = `${RESOURCE_ENDPOINT}/${Platform.Constants.NLUType.DIALOGFLOW_CX}`;
       return generalService.post<NLUImportModel>(importEndpoint, formData, { json: false }).then((res) => res);
     },
   },

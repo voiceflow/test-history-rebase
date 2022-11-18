@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.182.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.181.0...@voiceflow/ui@1.182.0) (2022-11-18)
+
+
+### Features
+
+* renew editors poppers (CT-1182) ([#6282](https://github.com/voiceflow/creator-app/issues/6282)) ([448ae8f](https://github.com/voiceflow/creator-app/commit/448ae8f536673de83165f8395dd5d73e0aaf4d43))
+
+
+
+
+
 # [1.181.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.180.1...@voiceflow/ui@1.181.0) (2022-11-18)
 
 

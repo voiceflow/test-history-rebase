@@ -27,7 +27,6 @@ export interface VariablesOptions {
   variables?: Normal.Normalized<VariableItem>;
   creatable?: boolean;
   withSlots?: boolean;
-  searchable?: boolean;
   fromDraftJS?: boolean;
 }
 

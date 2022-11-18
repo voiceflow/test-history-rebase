@@ -20,14 +20,22 @@ const Item = styled(Menu.Item)`
 `;
 
 export default function Entry({ theme, mention, isFocused, searchValue, className, ...parentProps }) {
+  const ref = React.useRef(null);
+
   const substrs = searchValue ? mention.name.split(searchValue) : [];
+
+  React.useEffect(() => {
+    if (isFocused && ref.current) {
+      ref.current.scrollIntoView({ block: 'nearest' });
+    }
+  }, [isFocused]);
 
   if (mention.id === 'EMPTY') {
     return <span {...parentProps} />;
   }
 
   return (
-    <Item {...parentProps} focused={isFocused}>
+    <Item {...parentProps} ref={ref} focused={isFocused} className={isFocused ? 'focused' : ''}>
       {substrs.length < 2
         ? mention.name
         : substrs.map((str, i) =>

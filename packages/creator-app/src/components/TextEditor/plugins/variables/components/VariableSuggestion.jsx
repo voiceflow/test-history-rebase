@@ -1,4 +1,4 @@
-import { defaultSuggestionsFilter } from '@voiceflow/draft-js-mention-plugin';
+import _sortBy from 'lodash/sortBy';
 import React from 'react';
 
 import { useToggle } from '@/hooks';
@@ -19,20 +19,23 @@ function VariableSuggestion({
   globalStore,
   onAddVariable,
   onVariableAdded,
+  notFoundMessage = 'No variables found.',
+  notExistMessage = 'No variables exist.',
   suggestOnSelection,
   MentionSuggestions,
   createInputPlaceholder,
 }) {
   const mentionRef = React.useRef();
 
-  const variablesMap = React.useMemo(() => variables.reduce((obj, slot) => Object.assign(obj, { [slot.name]: slot }), {}), [variables]);
+  const sortedVariables = React.useMemo(() => _sortBy(variables, 'name'), [variables]);
+  const variablesMap = React.useMemo(() => sortedVariables.reduce((obj, slot) => Object.assign(obj, { [slot.name]: slot }), {}), [sortedVariables]);
 
   const variableReplaceRegexp = React.useMemo(() => new RegExp(`[^\\w${characters}_ :]`, 'g'), [characters]);
 
   const [isOpen, toggleOpen] = useToggle(false);
   const [isForceOpen, toggleForceOpen] = useToggle(false);
   const [searchValue, updateSearchValue] = React.useState('');
-  const [suggestions, updateSuggestions] = React.useState(variables);
+  const [suggestions, updateSuggestions] = React.useState(sortedVariables);
   const [variableName, updateVariableName] = React.useState('');
 
   const opened = isOpen || isForceOpen;
@@ -44,24 +47,17 @@ function VariableSuggestion({
 
   store.merge({ ableToHandleBlur: !isForceOpen, ableToHandleReturn: !opened });
 
-  const onChangeVariableName = React.useCallback(
-    ({ target }) => {
-      updateVariableName(cleanUpVariableName(target.value));
-    },
-    [updateVariableName]
-  );
-
   const onMentionSearchChange = React.useCallback(
     ({ value }) => {
-      const { found, suggestions: filteredSuggestions } = defaultSuggestionsFilter(value, variables, { size: 5, showNotMatched: true });
+      const filteredSuggestions = sortedVariables.filter((suggestion) => suggestion.name.toLowerCase().includes(value));
 
       updateSearchValue(value);
       updateVariableName(cleanUpVariableName(value));
       updateSuggestions(filteredSuggestions);
 
-      mentionRef.current?.setFocus(found ? 0 : -1);
+      mentionRef.current?.setFocus(filteredSuggestions.length ? 0 : -1);
     },
-    [variables]
+    [sortedVariables]
   );
 
   const onCreateSlot = React.useCallback(
@@ -121,6 +117,7 @@ function VariableSuggestion({
       onCreateMention={onCreateSlot}
       popoverComponent={
         <Popover
+          isEmpty={suggestions.length === 0}
           creatable={creatable}
           placeholder={createInputPlaceholder}
           onBlurInput={() => !store.get('creating') && toggleForceOpen(false)}
@@ -128,7 +125,9 @@ function VariableSuggestion({
           variableName={variableName}
           onFocusInput={() => toggleForceOpen(true)}
           variablesMap={variablesMap}
-          onChangeVariableName={onChangeVariableName}
+          notExistMessage={notExistMessage}
+          notFoundMessage={notFoundMessage}
+          onChangeVariableName={onMentionSearchChange}
         />
       }
       suggestOnSelection={suggestOnSelection}

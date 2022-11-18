@@ -1,6 +1,7 @@
 import { MenuTypes } from '@ui/components/Menu';
 import { Nullable } from '@voiceflow/common';
 import React from 'react';
+import { PopperProps } from 'react-popper';
 
 import {
   GetOptionKey,
@@ -18,6 +19,7 @@ interface BaseNestedMenuProps extends SharedNestedMenuProps {
   id?: string;
   isRoot?: boolean;
   minWidth?: number;
+  maxWidth?: number;
   maxHeight?: number | string;
   menuProps?: MenuTypes.BaseProps;
   searchable?: boolean;
@@ -27,6 +29,7 @@ interface BaseNestedMenuProps extends SharedNestedMenuProps {
   createLabel?: React.ReactNode;
   containerRef?: React.Ref<HTMLDivElement>;
   onFocusOption?: (index: number) => void;
+  maxVisibleItems?: number;
   inputWrapperNode?: Nullable<HTMLDivElement>;
   isButtonDisabled?: (options: { value: string }) => boolean;
   formatInputValue?: (value: string) => string;
@@ -34,12 +37,19 @@ interface BaseNestedMenuProps extends SharedNestedMenuProps {
   inDropdownSearch?: boolean;
   disableAnimation?: boolean;
   firstOptionIndex?: number;
+  referenceElement?: PopperProps['referenceElement'];
+  onContainerClick?: React.MouseEventHandler<HTMLDivElement>;
   directSearchMatch?: boolean;
+  onCreateInputBlur?: React.FocusEventHandler<HTMLInputElement>;
+  onCreateInputFocus?: React.FocusEventHandler<HTMLInputElement>;
   focusedOptionIndex?: Nullable<number>;
   renderSearchSuffix?: Nullable<(options: { close: VoidFunction; searchLabel: string }) => React.ReactNode>;
   renderFooterAction?: Nullable<(options: { close: VoidFunction; searchLabel: string }) => React.ReactNode>;
+  popperPositionFixed?: boolean;
   onBackFocusToParent?: VoidFunction;
   onChangeSearchLabel?: React.ChangeEventHandler<HTMLInputElement>;
+  createInputAutofocus?: boolean;
+  onContainerMouseDown?: React.MouseEventHandler<HTMLDivElement>;
   createInputPlaceholder?: string;
 }
 

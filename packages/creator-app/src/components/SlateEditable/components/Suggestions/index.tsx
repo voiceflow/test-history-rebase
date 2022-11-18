@@ -18,7 +18,7 @@ const Suggestions = <T extends PopperItem>(props: SuggestionsProps<T>): React.Re
   const isSelected = isFocused && isElementSelected && props.isSelected;
   const isRendered = isPopperFocused || isSelected;
 
-  return isRendered ? <Popper {...props} isSelected={isSelected} togglePopperFocused={togglePopperFocused} /> : null;
+  return isRendered ? <Popper {...props} togglePopperFocused={togglePopperFocused} /> : null;
 };
 
 export default Suggestions;

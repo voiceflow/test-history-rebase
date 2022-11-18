@@ -1,20 +1,21 @@
-import { Nullable } from '@voiceflow/common';
+import { Nullable, Utils } from '@voiceflow/common';
 import {
   Box,
-  ClickableText,
-  getNestedMenuFormattedLabel,
+  defaultMenuLabelRenderer,
+  IconButton,
   KeyName,
   Menu,
   Portal,
   portalRootNode,
   preventDefault,
   stopPropagation,
+  SvgIcon,
   swallowEvent,
   useCache,
   useCachedValue,
   useVirtualElementPopper,
 } from '@voiceflow/ui';
-import _shuffle from 'lodash/shuffle';
+import _sortBy from 'lodash/sortBy';
 import { denormalize, Normalized } from 'normal-store';
 import React from 'react';
 import { useDismissable } from 'react-dismissable-layers';
@@ -22,23 +23,18 @@ import { useDismissable } from 'react-dismissable-layers';
 import { TextEditorVariablesPopoverContext } from '@/contexts';
 import { useLinkedState, useTheme } from '@/hooks';
 import { FadeDownDelayedContainer } from '@/styles/animations';
-import { withTargetValue } from '@/utils/dom';
 
 import { useSlateEditor } from '../../../contexts';
 import { EditorAPI } from '../../../editor';
 import Content from './Content';
 import Header from './Header';
+import Hr from './Hr';
 import Input from './Input';
 import Item from './Item';
 
 export interface PopperItem {
   id: string;
   name: string;
-}
-
-interface PopperItemToRender<T extends PopperItem> extends Omit<PopperItem, 'name'> {
-  item: T;
-  name: React.ReactNode;
 }
 
 export interface PopperProps<T extends PopperItem = PopperItem> {
@@ -51,21 +47,24 @@ export interface PopperProps<T extends PopperItem = PopperItem> {
   isSelected?: boolean;
   suggestions?: Normalized<T>;
   referenceNode: HTMLElement;
+  notExistMessage?: string;
+  notFoundMessage?: string;
   inputPlaceholder?: string;
   togglePopperFocused: (value: unknown) => void;
 }
 
 const Popper = <T extends PopperItem>({
   search,
-  onCreate,
+  onCreate: onCreateProp,
   onSelect,
   formatter,
   creatable,
   isSelected,
-  searchable,
   suggestions,
-  inputPlaceholder,
   referenceNode,
+  notExistMessage,
+  notFoundMessage,
+  inputPlaceholder,
   togglePopperFocused,
 }: PopperProps<T>): React.ReactElement<any, any> => {
   const inputRef = React.useRef<HTMLInputElement>(null);
@@ -83,60 +82,22 @@ const Popper = <T extends PopperItem>({
   const theme = useTheme();
   const editor = useSlateEditor();
   const portalNode = React.useContext(TextEditorVariablesPopoverContext);
+
+  const items = React.useMemo(() => _sortBy(suggestions ? denormalize(suggestions) : [], 'name'), [suggestions]);
   const formattedSearch = React.useMemo(() => formatter?.(search) ?? search, [search, formatter]);
-  const [localSearch, setLocalSearch] = useLinkedState(formattedSearch);
-  const [activeIndex, setActiveIndex] = React.useState(0);
 
-  const withHeader = creatable || searchable || false;
+  const [searchLabel, setSearchLabel] = useLinkedState(formattedSearch);
+  const [focusedIndex, setFocusedIndex] = React.useState(0);
 
-  const [suggestionsByNameMap, suggestionsToRender] = React.useMemo(() => {
-    const map: Record<string, PopperItem> = {};
-    const sorted: PopperItemToRender<T>[] = [];
-    const unsorted: PopperItemToRender<T>[] = [];
-    const lowerLocalSearch = localSearch.toLowerCase();
+  const itemsToRender = React.useMemo(() => items.filter((item) => item.name.toLowerCase().includes(searchLabel)), [items, searchLabel]);
+  const itemsByNameMap = React.useMemo(() => Utils.array.createMap(itemsToRender, (item) => item.name.toLowerCase()), [itemsToRender]);
 
-    if (!suggestions) {
-      return [{}, []] as const;
-    }
-
-    // eslint-disable-next-line no-restricted-syntax
-    for (const suggestion of denormalize(suggestions)) {
-      map[suggestion.name] = suggestion;
-
-      if (!withHeader) {
-        sorted.push({ ...suggestion, item: suggestion });
-      } else if (!lowerLocalSearch || suggestion.name.toLowerCase().includes(lowerLocalSearch)) {
-        sorted.push({ ...suggestion, name: getNestedMenuFormattedLabel(suggestion.name, localSearch), item: suggestion });
-      } else {
-        unsorted.push({ ...suggestion, item: suggestion });
-      }
-    }
-
-    return [map, [...sorted, ..._shuffle(unsorted)]] as const;
-  }, [localSearch, suggestions]);
-
-  const cache = useCache({
-    onCreate,
-    onSelect,
-    creatable,
-    searchable,
-    isSelected,
-    withHeader,
-    localSearch,
-    activeIndex,
-    suggestionsToRender,
-  });
-
-  const onCreateSuggestion = React.useCallback(async () => {
-    const newSuggestion = await cache.current.onCreate?.(cache.current.localSearch);
+  const onCreate = async () => {
+    const newSuggestion = await onCreateProp?.(searchLabel);
 
     if (newSuggestion) {
-      cache.current.onSelect(newSuggestion);
+      onSelect(newSuggestion);
     }
-  }, []);
-
-  const onInputChanged = (value: string) => {
-    setLocalSearch(formatter?.(value) ?? value);
   };
 
   const onFocusPopper = () => {
@@ -150,42 +111,58 @@ const Popper = <T extends PopperItem>({
     editor.blurPrevented = false;
   };
 
-  const dismissableRef = useCachedValue(popper.popperElement as Element);
+  const cache = useCache({
+    onCreate,
+    onSelect,
+    creatable,
+    isSelected,
+    focusedIndex,
+    itemsToRender,
+  });
+
+  const dismissableRef = useCachedValue(popper.popperElement);
+
   useDismissable(true, { ref: dismissableRef, onClose: () => togglePopperFocused(false) });
 
   React.useEffect(() => {
-    const onKeydown = (event: KeyboardEvent) => {
-      const indexShift = cache.current.withHeader ? 1 : 0;
+    const observer = new MutationObserver(() => popper.forceUpdate?.());
 
+    observer.observe(referenceNode, { subtree: true, childList: true });
+
+    return () => observer.disconnect();
+  }, [referenceNode, popper.forceUpdate]);
+
+  React.useEffect(() => {
+    const onKeydown = (event: KeyboardEvent) => {
       if (event.key === KeyName.ARROW_DOWN || event.key === KeyName.ARROW_UP) {
         swallowEvent()(event);
 
-        let nextIndex = cache.current.activeIndex + (event.key === KeyName.ARROW_DOWN ? 1 : -1);
+        let nextIndex = cache.current.focusedIndex + (event.key === KeyName.ARROW_DOWN ? 1 : -1);
 
-        if (nextIndex >= cache.current.suggestionsToRender.length + indexShift) {
+        if (nextIndex >= cache.current.itemsToRender.length + 1) {
           nextIndex = 0;
         } else if (nextIndex < 0) {
-          nextIndex = cache.current.suggestionsToRender.length + indexShift - 1;
+          nextIndex = cache.current.itemsToRender.length;
         }
 
-        contentRef.current?.children[nextIndex - indexShift]?.scrollIntoView({ block: 'nearest' });
+        contentRef.current?.children[nextIndex - 1]?.scrollIntoView({ block: 'nearest' });
 
-        if (cache.current.withHeader && !cache.current.isSelected) {
+        if (!cache.current.isSelected) {
           if (nextIndex === 0) {
             inputRef.current?.focus();
-          } else if (cache.current.activeIndex === 0) {
+          } else if (cache.current.focusedIndex === 0) {
             inputRef.current?.blur();
           }
         }
 
-        setActiveIndex(nextIndex);
+        setFocusedIndex(nextIndex);
       } else if (event.key === KeyName.ENTER) {
         swallowEvent()(event);
 
-        if (cache.current.creatable && cache.current.activeIndex === 0) {
-          onCreateSuggestion();
+        if (cache.current.creatable && cache.current.focusedIndex === 0) {
+          cache.current.onCreate();
         } else {
-          cache.current.onSelect(cache.current.suggestionsToRender[cache.current.activeIndex - indexShift].item);
+          cache.current.onSelect(cache.current.itemsToRender[cache.current.focusedIndex - 1]);
         }
       }
     };
@@ -200,48 +177,49 @@ const Popper = <T extends PopperItem>({
     };
   }, []);
 
-  React.useEffect(() => {
-    const observer = new MutationObserver(() => popper.forceUpdate?.());
-    observer.observe(referenceNode, { subtree: true, childList: true });
-    return () => observer.disconnect();
-  }, [referenceNode, popper.forceUpdate]);
-
   return (
     <Portal portalNode={portalNode}>
       <div ref={popper.setPopperElement} style={{ ...popper.styles.popper, zIndex: theme.zIndex.popper }} {...popper.attributes.popper}>
         <Menu.Container onMouseDown={onFocusPopper} onClick={stopPropagation()}>
           <FadeDownDelayedContainer>
-            {withHeader && (
-              <Header active={activeIndex === 0} onMouseEnter={() => setActiveIndex(0)}>
-                <Input
-                  ref={inputRef}
-                  value={localSearch}
-                  onBlur={onInputBlur}
-                  onChange={withTargetValue(onInputChanged)}
-                  placeholder={inputPlaceholder}
-                />
+            <Header onMouseEnter={() => setFocusedIndex(0)}>
+              <Box mr={12} display="inline-block">
+                <SvgIcon icon="search" size={16} color="#6E849A" />
+              </Box>
 
-                {creatable && (
-                  <Box ml={8}>
-                    <ClickableText onClick={preventDefault(onCreateSuggestion)} disabled={!localSearch || !!suggestionsByNameMap[localSearch]}>
-                      Create
-                    </ClickableText>
-                  </Box>
-                )}
-              </Header>
-            )}
+              <Input ref={inputRef} value={searchLabel} onBlur={onInputBlur} placeholder={inputPlaceholder} onChangeText={setSearchLabel} />
+
+              {creatable && (
+                <IconButton
+                  size={16}
+                  icon="plus"
+                  variant={IconButton.Variant.BASIC}
+                  onClick={Utils.functional.chainVoid(preventDefault, onCreate)}
+                  disabled={!searchLabel || !!itemsByNameMap[searchLabel]}
+                  onMouseDown={preventDefault()}
+                />
+              )}
+            </Header>
+
+            <Hr />
 
             <Content ref={contentRef}>
-              {suggestionsToRender.map((suggestion, index) => (
-                <Item
-                  key={suggestion.id}
-                  active={activeIndex === index + Number(withHeader)}
-                  onClick={() => onSelect(suggestion.item)}
-                  onMouseEnter={() => setActiveIndex(index + Number(withHeader))}
-                >
-                  {suggestion.name}
-                </Item>
-              ))}
+              {!itemsToRender.length ? (
+                <Menu.Item readOnly>
+                  <Menu.NotFound>{!searchLabel ? notExistMessage ?? 'No items exist.' : notFoundMessage ?? 'Nothing found'}</Menu.NotFound>
+                </Menu.Item>
+              ) : (
+                itemsToRender.map((item, index) => (
+                  <Item
+                    key={item.id}
+                    active={focusedIndex === index + 1}
+                    onClick={() => onSelect(item)}
+                    onMouseEnter={() => setFocusedIndex(index + 1)}
+                  >
+                    {defaultMenuLabelRenderer(item.name, searchLabel, () => item.name, Utils.functional.noop)}
+                  </Item>
+                ))
+              )}
             </Content>
           </FadeDownDelayedContainer>
         </Menu.Container>

@@ -1,21 +1,13 @@
-import { backgrounds, colors, Menu, ThemeColor } from '@voiceflow/ui';
+import { Menu } from '@voiceflow/ui';
 
-import { css, styled } from '@/hocs';
-
-export const activeStyle = css`
-  background: linear-gradient(180deg, rgba(238, 244, 246, 0.85) 0%, ${backgrounds('greyGreen')} 100%), ${colors(ThemeColor.WHITE)}fff;
-
-  &:hover {
-    background: linear-gradient(180deg, rgba(238, 244, 246, 0.85) 0%, ${backgrounds('greyGreen')} 100%), ${colors(ThemeColor.WHITE)}fff;
-  }
-`;
+import { styled } from '@/hocs';
 
 const Item = styled(Menu.Item)`
   &:hover {
     background: #fff;
   }
 
-  ${({ active }) => active && activeStyle}
+  ${({ active }) => active && Menu.Item.activeStyles}
 `;
 
 export default Item;

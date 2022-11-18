@@ -3,7 +3,7 @@ import React from 'react';
 import { PopperProps } from 'react-popper';
 
 import defaultMenuLabelRenderer from './defaultMenuLabelRenderer';
-import { DEFAULT_PATH } from './Menu';
+import Menu, { DEFAULT_PATH } from './Menu';
 import { NestedMenuInternalProps, NestedMenuMultilevelProps, NestedMenuWithIDMultilevelProps } from './Menu/types';
 import MenuOptions from './MenuOptions';
 import OptionContainer from './OptionContainer';
@@ -83,5 +83,8 @@ function NestedMenu({
 }
 
 export default Object.assign(NestedMenu, {
+  labelRenderer: defaultMenuLabelRenderer,
+
+  Menu,
   OptionContainer,
 });

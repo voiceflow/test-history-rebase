@@ -45,7 +45,7 @@ const VariablesInput = React.forwardRef<TextEditorRef, VariablesInputProps>(
       creatable,
       characters,
       onEnterPress,
-      createInputPlaceholder = 'New Variable',
+      createInputPlaceholder = 'Search variables',
       ...props
     },
     ref

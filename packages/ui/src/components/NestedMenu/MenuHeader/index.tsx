@@ -18,6 +18,8 @@ interface MenuHeaderProps {
   isDropdown?: boolean;
   searchLabel?: string;
   createLabel?: React.ReactNode;
+  onInputBlur?: React.FocusEventHandler<HTMLInputElement>;
+  onInputFocus?: React.FocusEventHandler<HTMLInputElement>;
   createInputRef?: React.Ref<HTMLInputElement>;
   newOptionLabel?: string;
   inDropdownSearch?: boolean;
@@ -28,6 +30,7 @@ interface MenuHeaderProps {
   renderSearchSuffix?: Nullable<(options: { close: VoidFunction; searchLabel: string }) => React.ReactNode>;
   focusedOptionIndex: number | null;
   onChangeSearchLabel?: React.ChangeEventHandler<HTMLInputElement>;
+  createInputAutofocus?: boolean;
   createInputPlaceholder?: string;
 }
 
@@ -41,6 +44,8 @@ const MenuHeader: React.FC<MenuHeaderProps> = ({
   isDropdown,
   searchLabel,
   createLabel = 'Create',
+  onInputBlur,
+  onInputFocus,
   createInputRef,
   newOptionLabel,
   inDropdownSearch,
@@ -51,6 +56,7 @@ const MenuHeader: React.FC<MenuHeaderProps> = ({
   renderSearchSuffix,
   focusedOptionIndex,
   onChangeSearchLabel,
+  createInputAutofocus = true,
   createInputPlaceholder,
   // eslint-disable-next-line sonarjs/cognitive-complexity
 }) => {
@@ -60,7 +66,7 @@ const MenuHeader: React.FC<MenuHeaderProps> = ({
   const inputVal = searchable ? searchLabel : newOptionLabel;
 
   useSetup(() => {
-    if (inDropdownSearch) {
+    if (inDropdownSearch && createInputAutofocus) {
       inputRef.current?.focus();
     }
   });
@@ -71,6 +77,8 @@ const MenuHeader: React.FC<MenuHeaderProps> = ({
     <MenuInput
       value={inputVal}
       onClick={(event) => !inDropdownSearch && event.stopPropagation()}
+      onBlur={onInputBlur}
+      onFocus={onInputFocus}
       inputRef={inDropdownSearch ? undefined : (node) => setRef(createInputRef, node)}
       onChange={searchable ? onChangeSearchLabel : ({ target }) => updateSearchLabel(target.value)}
       $fullWidth={!inputVal}
@@ -89,10 +97,12 @@ const MenuHeader: React.FC<MenuHeaderProps> = ({
 
             <MenuInput
               value={inputVal}
+              onBlur={onInputBlur}
               onClick={() => inputRef.current?.focus()}
+              onFocus={onInputFocus}
               inputRef={(node) => setRef(composeRef(createInputRef, inputRef), node)}
               onChange={searchable ? onChangeSearchLabel : ({ target }) => updateSearchLabel(target.value)}
-              autoFocus
+              autoFocus={createInputAutofocus}
               $fullWidth
               placeholder={createInputPlaceholder && `Search ${createInputPlaceholder}`}
             />

@@ -1,8 +1,9 @@
-import { Input, Link, Menu, Portal, preventDefault, stopPropagation } from '@voiceflow/ui';
+import { Utils } from '@voiceflow/common';
+import { Box, IconButton, Input, Menu, Portal, preventDefault, stopPropagation, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
 import { TextEditorVariablesPopoverConsumer } from '@/contexts';
-import { css, styled } from '@/hocs';
+import { styled } from '@/hocs';
 import { FadeDownDelayedContainer } from '@/styles/animations';
 
 const PopoverContainer = styled.div`
@@ -11,42 +12,40 @@ const PopoverContainer = styled.div`
 `;
 
 const Header = styled.div`
-  ${({ focused }) =>
-    focused &&
-    css`
-      background: linear-gradient(180deg, rgba(238, 244, 246, 0.85) 0%, #eef4f6 100%), #ffffff;
-
-      > input {
-        background: linear-gradient(180deg, rgba(238, 244, 246, 0.85) 0%, #eef4f6 100%), #ffffff;
-      }
-    `}
-
   align-items: center;
   display: flex;
   padding: 0 24px;
 `;
 
 const StyledInput = styled(Input)`
-  padding: 12px 0;
-  flex: 1;
+  padding: 10px 0;
+  line-height: 20px;
 `;
 
 const Hr = styled.hr`
-  margin: 0;
+  margin: 5px 0;
+`;
+
+const Content = styled.div`
+  max-height: ${({ theme }) => Menu.getMaxHeight(undefined, 6.5, theme.components.menuItem.height)};
+  overflow-y: auto;
 `;
 
 export default React.forwardRef(
   (
     {
+      isEmpty,
       onHover,
       children,
-      isFocused,
       creatable,
-      placeholder = 'New Variable',
+      placeholder = 'Search variables',
+      searchValue,
       onBlurInput,
       variablesMap,
       variableName,
       onFocusInput,
+      notExistMessage,
+      notFoundMessage,
       onCreateMention,
       onChangeVariableName,
     },
@@ -58,34 +57,43 @@ export default React.forwardRef(
           <PopoverContainer ref={ref} onClick={stopPropagation()}>
             <Menu.Container onBlur={creatable ? onBlurInput : undefined}>
               <FadeDownDelayedContainer>
-                {creatable && (
-                  <>
-                    <Header focused={isFocused} onMouseEnter={onHover}>
-                      <StyledInput
-                        value={variableName}
-                        variant="inline"
-                        onChange={onChangeVariableName}
-                        placeholder={placeholder}
-                        onMouseDown={onFocusInput}
-                        onEnterPress={onCreateMention}
-                      />
+                <Header onMouseEnter={onHover}>
+                  <Box mr={12} display="inline-block">
+                    <SvgIcon icon="search" size={16} color="#6E849A" />
+                  </Box>
 
-                      <Link
-                        textDecoration
-                        onClick={preventDefault(onCreateMention)}
-                        disabled={!variableName || !!variablesMap[variableName]}
-                        className="pointer"
-                        onMouseDown={preventDefault()}
-                      >
-                        Create
-                      </Link>
-                    </Header>
+                  <StyledInput
+                    value={variableName}
+                    variant="inline"
+                    onChange={({ target }) => onChangeVariableName({ value: target.value })}
+                    placeholder={placeholder}
+                    onMouseDown={onFocusInput}
+                    onEnterPress={onCreateMention}
+                  />
 
-                    <Hr />
-                  </>
-                )}
+                  {creatable && (
+                    <IconButton
+                      size={16}
+                      icon="plus"
+                      variant={IconButton.Variant.BASIC}
+                      onClick={Utils.functional.chainVoid(preventDefault, onCreateMention)}
+                      disabled={!variableName || !!variablesMap[variableName]}
+                      onMouseDown={preventDefault()}
+                    />
+                  )}
+                </Header>
 
-                {children}
+                <Hr />
+
+                <Content>
+                  {isEmpty ? (
+                    <Menu.Item readOnly>
+                      <Menu.NotFound>{!searchValue ? notExistMessage ?? 'No items exist.' : notFoundMessage ?? 'Nothing found'}</Menu.NotFound>
+                    </Menu.Item>
+                  ) : (
+                    children
+                  )}
+                </Content>
               </FadeDownDelayedContainer>
             </Menu.Container>
           </PopoverContainer>

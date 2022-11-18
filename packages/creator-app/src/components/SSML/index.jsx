@@ -39,7 +39,7 @@ const SSML = (
     withVariablesPlugin = true,
     platformDefaultVoice,
     onChangeDefaultVoice,
-    createInputPlaceholder = 'New Variable',
+    createInputPlaceholder = 'Search variables',
     ...props
   },
   ref

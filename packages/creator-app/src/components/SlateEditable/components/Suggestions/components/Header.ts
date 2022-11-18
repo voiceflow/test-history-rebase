@@ -1,28 +1,19 @@
-import { Menu } from '@voiceflow/ui';
-
 import { styled } from '@/hocs';
-
-import { activeStyle } from './Item';
 
 interface HeaderProps {
   active?: boolean;
 }
 
 const Header = styled.div<HeaderProps>`
-  ${Menu.itemStyles};
+  height: 42px;
+  align-items: center;
   display: flex;
-  border-bottom: 1px solid #eaeff4;
+  padding: 0 24px;
 
   input {
     user-select: auto;
     background-color: transparent;
   }
-
-  &:hover {
-    background: #fff;
-  }
-
-  ${({ active }) => active && activeStyle};
 `;
 
 export default Header;

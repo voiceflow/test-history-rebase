@@ -61,6 +61,7 @@ function BaseNestedMenu({
   isRoot = true,
   grouped,
   options,
+  maxWidth,
   onSelect,
   onCreate,
   minWidth,
@@ -82,6 +83,7 @@ function BaseNestedMenu({
   onFocusOption,
   getOptionValue,
   getOptionLabel,
+  maxVisibleItems = Menu.MAX_VISIBLE_ITEMS,
   inputWrapperNode,
   formatInputValue,
   alwaysShowCreate,
@@ -90,13 +92,20 @@ function BaseNestedMenu({
   disableAnimation,
   firstOptionIndex = 0,
   isButtonDisabled,
+  referenceElement,
+  onContainerClick,
   directSearchMatch = false,
   renderOptionLabel,
+  onCreateInputBlur,
+  onCreateInputFocus,
   focusedOptionIndex = null,
   renderFooterAction,
   renderSearchSuffix,
+  popperPositionFixed,
   onBackFocusToParent,
   onChangeSearchLabel,
+  createInputAutofocus,
+  onContainerMouseDown,
   nestedPopoverModifiers = { offset: { enabled: true, offset: '4,0' } },
   createInputPlaceholder,
 }: NestedMenuInternalProps): React.ReactElement {
@@ -323,7 +332,12 @@ function BaseNestedMenu({
     <Portal portalNode={portalNode || document.body}>
       <DismissableLayerProvider>
         <ThemeProvider theme={nestedTheme}>
-          <Popper placement={placement} modifiers={{ ...popoverModifiers, isRoot: { value: isRoot } }}>
+          <Popper
+            placement={placement}
+            modifiers={{ ...popoverModifiers, isRoot: { value: isRoot } }}
+            positionFixed={popperPositionFixed}
+            referenceElement={referenceElement}
+          >
             {({ ref, style, scheduleUpdate, placement: parentPlacement }) => {
               dataRef.current.scheduleUpdate = scheduleUpdate;
 
@@ -332,9 +346,12 @@ function BaseNestedMenu({
                   ref={composeRef(ref, containerRef)}
                   style={style}
                   isRoot={isRoot}
+                  onClick={onContainerClick}
                   minWidth={minWidth}
+                  maxWidth={maxWidth}
                   autoWidth={autoWidth}
                   onMouseMove={onMouseMove}
+                  onMouseDown={onContainerMouseDown}
                 >
                   <Menu
                     id={id}
@@ -355,6 +372,8 @@ function BaseNestedMenu({
                           searchable={searchable}
                           createLabel={createLabel}
                           searchLabel={searchLabel}
+                          onInputBlur={onCreateInputBlur}
+                          onInputFocus={onCreateInputFocus}
                           createInputRef={createInputRef}
                           newOptionLabel={newOptionLabel}
                           inDropdownSearch={inDropdownSearch}
@@ -365,12 +384,13 @@ function BaseNestedMenu({
                           renderSearchSuffix={renderSearchSuffix}
                           focusedOptionIndex={focusedOptionIndex}
                           onChangeSearchLabel={onChangeSearchLabel}
+                          createInputAutofocus={createInputAutofocus}
                           createInputPlaceholder={createInputPlaceholder}
                         />
                       )
                     }
                     scrollbarsRef={scrollbarsRef}
-                    maxVisibleItems={Menu.MAX_VISIBLE_ITEMS}
+                    maxVisibleItems={maxVisibleItems}
                     disableAnimation={disableAnimation}
                     renderFooterAction={
                       renderFooterAction &&

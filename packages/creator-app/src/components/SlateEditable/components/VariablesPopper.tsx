@@ -19,7 +19,7 @@ const formatVariable = (variable: string): string => variable.replace(SPACE_REGE
 
 const VariablesPopper: React.FC<VariablesPopperProps> = ({ leaf, textNode }) => {
   const editor = useSlateEditor();
-  const { variables, creatable, searchable, onCreate, onAdded } = usePluginOptions(PluginType.VARIABLES) ?? {};
+  const { variables, creatable, onCreate, onAdded } = usePluginOptions(PluginType.VARIABLES) ?? {};
 
   const onSelect = React.useCallback(
     (variable: VariableItem) => {
@@ -39,11 +39,12 @@ const VariablesPopper: React.FC<VariablesPopperProps> = ({ leaf, textNode }) => 
       onCreate={onCreate}
       creatable={creatable}
       formatter={formatVariable}
-      searchable={searchable}
       isSelected={leaf.isSelected}
       suggestions={variables}
       referenceNode={textNode}
-      inputPlaceholder="New Variable"
+      notFoundMessage="No variables found."
+      notExistMessage="No variables exist."
+      inputPlaceholder="Search variables"
     />
   );
 };

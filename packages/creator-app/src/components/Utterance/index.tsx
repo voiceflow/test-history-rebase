@@ -34,12 +34,21 @@ export interface UtteranceRef extends TextEditorRef {
 }
 
 const Utterance: React.ForwardRefRenderFunction<UtteranceRef, UtteranceProps> = (
-  { space, slots, creatable, noSlots, onAddSlot, characters, createInputPlaceholder = 'New Entity', onBlur, onEnterPress, ...props },
+  { space, slots, creatable, noSlots, onAddSlot, characters, createInputPlaceholder = 'Search entities', onBlur, onEnterPress, ...props },
   ref
 ) => {
   const pluginProps = React.useMemo(
     () => ({
-      [PluginType.VARIABLES]: { space, variables: slots, creatable, characters, onAddVariable: onAddSlot, createInputPlaceholder },
+      [PluginType.VARIABLES]: {
+        space,
+        variables: slots,
+        creatable,
+        characters,
+        onAddVariable: onAddSlot,
+        notFoundMessage: 'No entities found.',
+        notExistMessage: 'No entities exist.',
+        createInputPlaceholder,
+      },
     }),
     [space, slots, creatable, onAddSlot, characters, createInputPlaceholder]
   );

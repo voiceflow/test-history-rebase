@@ -2,13 +2,18 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, SvgIcon, TippyTooltip, useLocalStorageState } from '@voiceflow/ui';
 import React from 'react';
 
+import client from '@/client';
 import NavigationSidebar from '@/components/NavigationSidebar';
 import { NLURoute } from '@/config/routes';
-import { ModalType } from '@/constants';
+import { ModalType, NLUImportOrigin } from '@/constants';
+import * as Intent from '@/ducks/intent';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
-import { useActiveNLUConfig, useDispatch, useFeature, useModals, useNLUImport, useSelector } from '@/hooks';
+import * as Session from '@/ducks/session';
+import * as Slot from '@/ducks/slot';
+import { useActiveNLUConfig, useDispatch, useFeature, useModals, useModelTracking, useNLUImport, useSelector } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
+import { NLUImportModel } from '@/models';
 import { NLUManagerContext } from '@/pages/NLUManager/context';
 
 import * as S from './styles';
@@ -23,16 +28,28 @@ const NLUNavigationSidebar: React.FC = () => {
   const { open: openExportModelModal } = useModals<{ checkedItems: string[] }>(ModalType.EXPORT_MODEL);
 
   const platform = useSelector(ProjectV2.active.platformSelector);
+  const versionID = useSelector(Session.activeVersionIDSelector)!;
   const { isEnabled: isUnclassifiedDataEnabled } = useFeature(Realtime.FeatureFlag.NLU_MANAGER_UNCLASSIFIED);
 
+  const refreshSlots = useDispatch(Slot.refreshSlots);
+  const refreshIntents = useDispatch(Intent.refreshIntents);
   const goToCurrentCanvas = useDispatch(Router.goToCurrentCanvas);
+  const modelImportTracking = useModelTracking();
 
-  const nluImportIntentsModal = ModalsV2.useModal(ModalsV2.NLU.IntentImport);
+  const onImport = async (importedModel: NLUImportModel) => {
+    const data = await client.version.patchMergeIntentsAndSlots(versionID, importedModel);
 
-  const nluImport = useNLUImport({ nluType: nluConfig.type, platform });
+    modelImportTracking({ nluType: nluConfig.type, importedModel });
+
+    if (data) {
+      await Promise.all([refreshSlots(), refreshIntents()]);
+    }
+  };
+
+  const nluImport = useNLUImport({ nluType: nluConfig.type, platform, onImport });
 
   const onImportClick = () => {
-    nluImportIntentsModal.openVoid();
+    nluImport.onUploadClick(NLUImportOrigin.NLU_MANAGER);
     setImportClicked(true);
   };
 

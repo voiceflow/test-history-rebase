@@ -3,7 +3,7 @@ import SvgIcon from '@ui/components/SvgIcon';
 import React from 'react';
 import { useDropzone } from 'react-dropzone';
 
-import { FILE_TYPE_MIME_MAP, UPLOAD_ERROR } from '../../constants';
+import { UPLOAD_ERROR } from '../../constants';
 import { RootDropAreaProps, ValueRendererProps } from '../../types';
 import { UploadAPI } from '../../useUpload';
 import * as S from './styles';
@@ -38,7 +38,7 @@ const UploadDrop: React.ForwardRefRenderFunction<HTMLDivElement, UploadDropProps
   ref
 ) => {
   const { getRootProps, getInputProps, isDragActive, isDragReject } = useDropzone({
-    accept: acceptedFileTypes.map((ext) => FILE_TYPE_MIME_MAP[ext]),
+    accept: acceptedFileTypes.toString(),
     disabled: !!isLoading,
     onDropAccepted,
     onDropRejected,

@@ -15,13 +15,6 @@ export const LINK_ERROR = {
   INVALID_FILE: 'Link invalid, make sure to use link for a valid file.',
 };
 
-export const FILE_TYPE_MIME_MAP: Record<string, string> = {
-  '.csv': 'text/csv',
-  '.zip': 'application/zip',
-  '.xml': 'application/xml',
-  '.json': 'application/json',
-};
-
 export const MAX_SIZE = 10 * 1024 * 1024;
 
 export const BUCKET_PREFIX_REGEX = /(.*?)\/\d+-/;

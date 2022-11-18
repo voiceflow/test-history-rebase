@@ -100,6 +100,9 @@ export enum SchemaVersion {
    * migrates multiple templates diagrams into one
    */
   V3_91 = 3.91,
+
+  /** fixes ghost components */
+  V3_92 = 3.92,
 }
 
 export const SUPPORTED_SCHEMA_VERSIONS = Object.values(SchemaVersion)

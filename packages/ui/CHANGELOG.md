@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.183.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.182.1...@voiceflow/ui@1.183.0) (2022-11-19)
+
+
+### Features
+
+* **creator-app:** added new import modal (NLU-374) ([#6339](https://github.com/voiceflow/creator-app/issues/6339)) ([681f6e9](https://github.com/voiceflow/creator-app/commit/681f6e9cd93eb4a06a9e5665e2422e8855692db0))
+
+
+
+
+
 ## [1.182.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.182.0...@voiceflow/ui@1.182.1) (2022-11-18)
 
 

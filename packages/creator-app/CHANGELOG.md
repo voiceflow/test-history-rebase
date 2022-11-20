@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.982.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.982.1...@voiceflow/creator-app@1.982.2) (2022-11-20)
+
+
+### Bug Fixes
+
+* node move undo redo (BUG-116) ([#6337](https://github.com/voiceflow/creator-app/issues/6337)) ([72872a4](https://github.com/voiceflow/creator-app/commit/72872a4b38ccbeece9c6c6bd95b38db5cb09f82e))
+
+
+
+
+
 ## [1.982.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.982.0...@voiceflow/creator-app@1.982.1) (2022-11-20)
 
 

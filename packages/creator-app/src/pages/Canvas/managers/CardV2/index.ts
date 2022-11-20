@@ -1,6 +1,7 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import * as Documentation from '@/config/documentation';
+import { serializeSlateToText } from '@/utils/slate';
 
 import { NodeManagerConfigV2 } from '../types';
 import { NODE_CONFIG } from './constants';
@@ -13,6 +14,8 @@ const CardV2Manager: NodeManagerConfigV2<Realtime.NodeData.CardV2, Realtime.Node
 
   step: CardV2Step,
   editorV2: Editor,
+
+  getSearchParams: ({ title, description }) => [title, typeof description === 'string' ? description : serializeSlateToText(description)],
 
   tooltipText: 'Add card steps to your assistant.',
   tooltipLink: Documentation.CAROUSEL_STEP,

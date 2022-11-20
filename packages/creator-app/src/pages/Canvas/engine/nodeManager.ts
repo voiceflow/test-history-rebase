@@ -21,7 +21,6 @@ import * as VersionV2 from '@/ducks/versionV2';
 import { Pair, Point } from '@/types';
 import { Coords } from '@/utils/geometry';
 import { centerNodeGroup, getNodesGroupCenter, isCommandNode } from '@/utils/node';
-import reduxBatchUndo from '@/utils/reduxBatchUndo';
 import { isMarkupBlockType, isMarkupOrCombinedBlockType } from '@/utils/typeGuards';
 import * as Sentry from '@/vendors/sentry';
 
@@ -839,11 +838,11 @@ class NodeManager extends EngineConsumer {
     const existingNodeIDs = nodeIDs?.filter((nodeID): nodeID is string => !!nodeID && this.engine.nodes.has(nodeID));
     if (!existingNodeIDs?.length) return;
 
-    reduxBatchUndo.start();
-
-    await Promise.all([this.internal.saveLocations(existingNodeIDs), this.saveLinks(existingNodeIDs)]);
-
-    reduxBatchUndo.end();
+    await this.dispatch(
+      History.transaction(async () => {
+        await Promise.all([this.internal.saveLocations(existingNodeIDs), this.saveLinks(existingNodeIDs)]);
+      })
+    );
 
     this.log.debug(`location saved for ${this.log.value(existingNodeIDs.length)} nodes`);
   }

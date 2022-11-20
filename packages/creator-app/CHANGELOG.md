@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.982.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.982.0...@voiceflow/creator-app@1.982.1) (2022-11-20)
+
+
+### Bug Fixes
+
+* add card and carousel metadata to search (BUG-37) ([#6340](https://github.com/voiceflow/creator-app/issues/6340)) ([88cebff](https://github.com/voiceflow/creator-app/commit/88cebff4a6b313a79c5580d62e9d00b5c6ae48d4))
+
+
+
+
+
 # [1.982.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.981.1...@voiceflow/creator-app@1.982.0) (2022-11-19)
 
 

@@ -38,7 +38,7 @@ const UploadDrop: React.ForwardRefRenderFunction<HTMLDivElement, UploadDropProps
   ref
 ) => {
   const { getRootProps, getInputProps, isDragActive, isDragReject } = useDropzone({
-    accept: acceptedFileTypes.map((ext) => FILE_TYPE_MIME_MAP[ext] || ext),
+    accept: acceptedFileTypes.map((ext) => FILE_TYPE_MIME_MAP[ext] || ext).toString(),
     disabled: !!isLoading,
     onDropAccepted,
     onDropRejected,

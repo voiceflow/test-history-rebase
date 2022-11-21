@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.985.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.984.0...@voiceflow/creator-app@1.985.0) (2022-11-21)
+
+
+### Features
+
+* datadog rum ([#6333](https://github.com/voiceflow/creator-app/issues/6333)) ([83f7f01](https://github.com/voiceflow/creator-app/commit/83f7f0163e48b86cd4992d8fce809d98d9824632))
+
+
+
+
+
 # [1.984.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.983.0...@voiceflow/creator-app@1.984.0) (2022-11-21)
 
 

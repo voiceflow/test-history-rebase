@@ -1,6 +1,6 @@
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Input, Popper, preventDefault, TippyTooltip, withHandler, withInputBlur } from '@voiceflow/ui';
+import { Badge, Popper, preventDefault, TippyTooltip, withHandler, withInputBlur } from '@voiceflow/ui';
 import React from 'react';
 
 import { PopperContent, PopperTitle } from '@/components/SlateEditable';
@@ -12,17 +12,21 @@ import { getDefaultNoReplyTimeoutSeconds } from '@/utils/noReply';
 
 import * as S from './styles';
 
+const NOT_NUMBERS_REGEX = /\D/g;
+
 const MessageDelayPopper: React.FC = () => {
   const patchSettings = useDispatch(Version.patchSettings);
   const settings = useSelector(VersionV2.active.settingsSelector);
-  const delay = settings?.globalNoReply?.delay ?? 0;
+  const delay = settings?.globalNoReply?.delay ?? 10;
   const platform = useSelector(ProjectV2.active.platformSelector);
-  const isVoiceflow = Realtime.Utils.typeGuards.isVoiceflowPlatform(platform);
+  const isNoReplyDelayEditable = Realtime.Utils.typeGuards.isPlatformWithEditableNoReplyDelay(platform);
 
   const [messageDelay, setMessageDelay] = React.useState(() => (delay ? String(delay) : ''));
 
   const onSave = () => {
-    const newDelay = messageDelay !== '' ? parseInt(messageDelay, 10) : undefined;
+    const newDelay = messageDelay !== '' ? parseInt(messageDelay, 10) : 10;
+
+    if (String(newDelay) !== messageDelay) setMessageDelay(String(newDelay));
 
     if (newDelay === settings?.globalNoReply?.delay) return;
 
@@ -34,9 +38,15 @@ const MessageDelayPopper: React.FC = () => {
     });
   };
 
-  if (!isVoiceflow) {
+  const handleTextChange = (newValue: string) => {
+    if (!`${newValue}`.match(NOT_NUMBERS_REGEX)) {
+      setMessageDelay(newValue);
+    }
+  };
+
+  if (!isNoReplyDelayEditable) {
     return (
-      <TippyTooltip title={`This value is not editable as it's defined by ${Platform.Config.get(platform).name}`} disabled={isVoiceflow}>
+      <TippyTooltip title={`This value is not editable as it's defined by ${Platform.Config.get(platform).name}`}>
         <S.DelayTrigger>{getDefaultNoReplyTimeoutSeconds(platform)}</S.DelayTrigger>
       </TippyTooltip>
     );
@@ -48,22 +58,30 @@ const MessageDelayPopper: React.FC = () => {
         <PopperContent>
           <PopperTitle>Delay (S)</PopperTitle>
 
-          <Input
+          <S.DelayInput
             min={0}
-            type="number"
+            maxLength={3}
+            type="text"
             value={messageDelay}
             onBlur={withHandler(onClose)(onSave)}
             autoFocus
-            placeholder="Seconds"
-            onChangeText={setMessageDelay}
+            placeholder="10"
+            onChangeText={handleTextChange}
             onEnterPress={preventDefault(withInputBlur())}
             hideDefaultNumberControls
+            rightAction={
+              String(delay) !== messageDelay ? (
+                <Badge slide onClick={withHandler(onClose)(onSave)}>
+                  Enter
+                </Badge>
+              ) : null
+            }
           />
         </PopperContent>
       )}
     >
-      {({ ref, onToggle }) => (
-        <S.DelayTrigger ref={ref} onClick={onToggle}>
+      {({ ref, onToggle, isOpened }) => (
+        <S.DelayTrigger ref={ref} onClick={onToggle} active={isOpened}>
           {delay}
         </S.DelayTrigger>
       )}

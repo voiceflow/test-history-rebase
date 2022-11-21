@@ -12,7 +12,7 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.CaptureV2, Realtime.NodeD
 
   mergeTerminator: true,
 
-  factory: (_, { projectType, defaultVoice } = {}) => ({
+  factory: (_, { projectType, defaultVoice, features } = {}) => ({
     node: {
       ports: {
         in: [{}],
@@ -32,7 +32,7 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.CaptureV2, Realtime.NodeD
       variable: null,
       intent: { slots: [{ id: '', dialog: { prompt: [], confirm: [], utterances: [], confirmEnabled: false }, required: true }] },
       noReply: null,
-      noMatch: getPlatformNoMatchFactory(projectType)({ defaultVoice }),
+      noMatch: features?.global_no_match_no_reply ? null : getPlatformNoMatchFactory(projectType)({ defaultVoice }),
       intentScope: BaseNode.Utils.IntentScope.GLOBAL,
     },
   }),

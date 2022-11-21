@@ -59,7 +59,7 @@ const GlobalNoReplyModal = manager.create('GlobalNoReplyModal', () => ({ api, ty
       </Modal.Body>
       <Modal.Footer gap={12}>
         <Button variant={Button.Variant.PRIMARY} disabled={isSubmitting} squareRadius onClick={onSubmit}>
-          Done
+          Save
         </Button>
       </Modal.Footer>
     </Modal>

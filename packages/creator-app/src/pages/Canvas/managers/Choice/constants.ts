@@ -19,7 +19,7 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Interaction, Realtime.Nod
 
   mergeTerminator: true,
 
-  factory: (_, { projectType, defaultVoice } = {}) => ({
+  factory: (_, { projectType, defaultVoice, features } = {}) => ({
     node: {
       ports: {
         in: [{}],
@@ -33,7 +33,7 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Interaction, Realtime.Nod
 
     data: {
       name: 'Choice',
-      noMatch: getPlatformNoMatchFactory(projectType)({ defaultVoice }),
+      noMatch: features?.global_no_match_no_reply ? null : getPlatformNoMatchFactory(projectType)({ defaultVoice }),
       noReply: null,
       buttons: null,
       choices: [choiceFactory()],

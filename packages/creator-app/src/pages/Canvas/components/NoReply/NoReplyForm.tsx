@@ -17,7 +17,6 @@ import { PushToPath } from '@/pages/Canvas/managers/types';
 import { PlatformContext } from '@/pages/Project/contexts';
 import { withInputBlur } from '@/utils/dom';
 import { getDefaultNoReplyTimeoutSeconds } from '@/utils/noReply';
-import { isVoiceflowPlatform } from '@/utils/typeGuards';
 
 import NoReplyTooltip from './NoReplyTooltip';
 
@@ -81,7 +80,7 @@ const NoReplyForm: React.FC<NoReplyFormProps> = ({ noReply, onChange, pushToPath
   const withReprompt = noReply.types.includes(BaseNode.Utils.NoReplyType.REPROMPT);
 
   const withDividers = !!noReply.types.length && withReprompt;
-  const isVoiceflowBased = isVoiceflowPlatform(platform);
+  const isDelayEditable = Realtime.Utils.typeGuards.isPlatformWithEditableNoReplyDelay(platform);
   const withoutPathAndAlwaysRandom = Realtime.Utils.platform.createPlatformSelector(
     {
       [Platform.Constants.PlatformType.ALEXA]: true,
@@ -102,13 +101,13 @@ const NoReplyForm: React.FC<NoReplyFormProps> = ({ noReply, onChange, pushToPath
       <Section dividers={withDividers} isDividerBottom>
         <FormControl label="Time Delay" contentBottomUnits={0}>
           <BoxFlex>
-            <TippyTooltip title={`This value is not editable as it's defined by ${platformConfig.name}`} disabled={isVoiceflowBased}>
+            <TippyTooltip title={`This value is not editable as it's defined by ${platformConfig.name}`} disabled={isDelayEditable}>
               <BoxFlex width={52}>
                 <Input
                   value={timeout}
-                  cursor={isVoiceflowBased ? 'auto' : 'not-allowed'}
+                  cursor={isDelayEditable ? 'auto' : 'not-allowed'}
                   onBlur={() => onChange({ ...noReply, timeout: Number(timeout) })}
-                  disabled={!isVoiceflowBased}
+                  disabled={!isDelayEditable}
                   placeholder="10"
                   onEnterPress={withInputBlur()}
                   onChangeText={onChangeTimeout}

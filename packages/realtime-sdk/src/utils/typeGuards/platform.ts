@@ -1,4 +1,4 @@
-import { legacyPlatformToProjectType, PLATFORMS_WITH_INVOCATION_NAME } from '@realtime-sdk/constants';
+import { legacyPlatformToProjectType, PLATFORMS_WITH_EDITABLE_NO_REPLY_DELAY, PLATFORMS_WITH_INVOCATION_NAME } from '@realtime-sdk/constants';
 import * as Platform from '@voiceflow/platform-config';
 
 import { createTypeGuardCreator } from './utils';
@@ -13,6 +13,7 @@ export const isAlexaOrGooglePlatform = createPlatformTypeGuard<Platform.Constant
 
 export const isAlexaPlatform = createPlatformTypeGuard<Platform.Constants.PlatformType>(Platform.Constants.PlatformType.ALEXA);
 export const isGooglePlatform = createPlatformTypeGuard<Platform.Constants.PlatformType>(Platform.Constants.PlatformType.GOOGLE);
+export const isWebChatPlatform = createPlatformTypeGuard<Platform.Constants.PlatformType>(Platform.Constants.PlatformType.WEBCHAT);
 
 export const isDialogflowPlatform = (
   platform?: Platform.Constants.PlatformType | null
@@ -32,6 +33,7 @@ export const isChatProjectType = createProjectTypeTypeGuard(Platform.Constants.P
 export const isVoiceProjectType = createProjectTypeTypeGuard(Platform.Constants.ProjectType.VOICE);
 
 export const isPlatformWithInvocationName = createPlatformTypeGuard(PLATFORMS_WITH_INVOCATION_NAME);
+export const isPlatformWithEditableNoReplyDelay = createPlatformTypeGuard(PLATFORMS_WITH_EDITABLE_NO_REPLY_DELAY);
 
 export const isPlatformWithThirdPartyUpload = createPlatformTypeGuard([
   Platform.Constants.PlatformType.ALEXA,

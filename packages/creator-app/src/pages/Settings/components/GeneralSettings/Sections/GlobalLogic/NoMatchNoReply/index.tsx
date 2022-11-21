@@ -29,11 +29,11 @@ const GeneralSettingsNoMatchNoReplySection: React.FC<GeneralSettingsNoMatchNoRep
         }}
       >
         <S.Container>
-          <div>
+          <S.TextContainer>
             <S.SubSectionTitle>Global No Match</S.SubSectionTitle>
             <S.SubSectionDescription>The fallback response that will trigger if the user fails to match any intent.</S.SubSectionDescription>
-          </div>
-          <Button variant={Button.Variant.SECONDARY} squareRadius onClick={() => noMatchModal.openVoid()}>
+          </S.TextContainer>
+          <Button variant={Button.Variant.SECONDARY} flat onClick={() => noMatchModal.openVoid()}>
             Edit
           </Button>
         </S.Container>
@@ -46,13 +46,13 @@ const GeneralSettingsNoMatchNoReplySection: React.FC<GeneralSettingsNoMatchNoRep
         }}
       >
         <S.Container>
-          <div>
+          <S.TextContainer>
             <S.SubSectionTitle>Global No Reply</S.SubSectionTitle>
             <S.SubSectionDescription>
               The fallback response that will trigger if the user says nothing for <MessageDelayPopper /> seconds.
             </S.SubSectionDescription>
-          </div>
-          <Button variant={Button.Variant.SECONDARY} squareRadius onClick={() => noReplyModal.openVoid()}>
+          </S.TextContainer>
+          <Button variant={Button.Variant.SECONDARY} flat onClick={() => noReplyModal.openVoid()}>
             Edit
           </Button>
         </S.Container>

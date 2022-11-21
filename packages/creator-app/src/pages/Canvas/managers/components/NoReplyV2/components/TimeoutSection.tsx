@@ -18,8 +18,10 @@ const TimeoutSection: React.FC<TimeoutSectionProps> = ({ timeout: propTimeout, o
 
   const editor = EditorV2.useEditor();
 
-  const isVoiceflow = Realtime.Utils.typeGuards.isVoiceflowPlatform(editor.platform);
-  const [timeout, setTimeout] = useLinkedState(String(isVoiceflow && propTimeout ? propTimeout : getDefaultNoReplyTimeoutSeconds(editor.platform)));
+  const isDelayEditable = Realtime.Utils.typeGuards.isPlatformWithEditableNoReplyDelay(editor.platform);
+  const [timeout, setTimeout] = useLinkedState(
+    String(isDelayEditable && propTimeout ? propTimeout : getDefaultNoReplyTimeoutSeconds(editor.platform))
+  );
 
   const onChange = (value: string) => {
     if (value !== '' && (!value.match(NUMBERS_ONLY_REGEXP) || value.length > 2)) {
@@ -32,13 +34,13 @@ const TimeoutSection: React.FC<TimeoutSectionProps> = ({ timeout: propTimeout, o
   return (
     <SectionV2.SimpleSection isAccent>
       <BoxFlex>
-        <TippyTooltip title={`This value is not editable as it's defined by ${platformConfig.name}`} disabled={isVoiceflow}>
+        <TippyTooltip title={`This value is not editable as it's defined by ${platformConfig.name}`} disabled={isDelayEditable}>
           <BoxFlex width={52}>
             <Input
               value={timeout}
-              cursor={isVoiceflow ? 'auto' : 'not-allowed'}
+              cursor={isDelayEditable ? 'auto' : 'not-allowed'}
               onBlur={() => onChangeProp(Number(timeout))}
-              disabled={!isVoiceflow}
+              disabled={!isDelayEditable}
               placeholder="10"
               onEnterPress={withInputBlur()}
               onChangeText={onChange}

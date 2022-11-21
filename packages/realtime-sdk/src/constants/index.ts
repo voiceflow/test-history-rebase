@@ -55,6 +55,7 @@ export const CUSTOM_SLOT_TYPE = 'Custom';
 export const LEGACY_CUSTOM_SLOT_TYPE = 'CUSTOM';
 
 export const PLATFORMS_WITH_INVOCATION_NAME = [Platform.Constants.PlatformType.ALEXA, Platform.Constants.PlatformType.GOOGLE] as const;
+export const PLATFORMS_WITH_EDITABLE_NO_REPLY_DELAY = [Platform.Constants.PlatformType.VOICEFLOW, Platform.Constants.PlatformType.WEBCHAT] as const;
 
 export enum DialogType {
   AUDIO = 'audio',

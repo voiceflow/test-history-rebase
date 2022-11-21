@@ -112,12 +112,17 @@ const Recommendations: React.FC = () => {
 
   React.useEffect(() => {
     setRecommendations([]);
-    onFetchRecommendations();
 
     if (currentIntentID) {
       trackingEvents.trackUtteranceRecommendationsOpened({ intentID: currentIntentID });
     }
   }, []);
+
+  React.useEffect(() => {
+    if (recommendations.length === 0) {
+      onFetchRecommendations();
+    }
+  }, [recommendations]);
 
   return (
     <Drawer open width={450} offset={450} zIndex={19} direction={Drawer.Direction.LEFT}>

@@ -1,7 +1,7 @@
 {
   "name": "@voiceflow/creator-app",
   "description": "voiceflow Creator App",
-  "version": "1.985.0",
+  "version": "1.986.0",
   "author": "Voiceflow",
   "bugs": {
     "url": "https://github.com/voiceflow/creator-app/issues"
@@ -28,11 +28,11 @@
     "@voiceflow/google-dfes-types": "2.14.15",
     "@voiceflow/google-types": "2.18.8",
     "@voiceflow/internal": "3.0.1",
-    "@voiceflow/ml-sdk": "^1.19.1",
-    "@voiceflow/platform-config": "^1.4.9",
+    "@voiceflow/ml-sdk": "^1.20.0",
+    "@voiceflow/platform-config": "^1.5.0",
     "@voiceflow/react-chat": "1.28.2",
-    "@voiceflow/realtime-sdk": "^1.196.0",
-    "@voiceflow/ui": "^1.183.1",
+    "@voiceflow/realtime-sdk": "^1.197.0",
+    "@voiceflow/ui": "^1.184.0",
     "@voiceflow/voiceflow-types": "3.21.2",
     "apl-viewhost-web": "1.8.2",
     "axios": "0.24.0",

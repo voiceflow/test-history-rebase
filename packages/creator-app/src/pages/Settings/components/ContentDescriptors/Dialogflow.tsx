@@ -9,12 +9,6 @@ const ProjectName: React.FC = () => (
   </DescriptorContainer>
 );
 
-const TriggerPhrase: React.FC = () => (
-  <DescriptorContainer>This is the phrase you will input to initiate the web demo integration on the Dialogflow console.</DescriptorContainer>
-);
-
-const AgentName: React.FC = () => <DescriptorContainer>The name of your agent as seen on Dialogflow.</DescriptorContainer>;
-
 const Locales: React.FC = () => <DescriptorContainer>Choose the language you would like your Dialogflow project to support.</DescriptorContainer>;
 
-export default { ProjectName, Locales, TriggerPhrase, AgentName };
+export default { ProjectName, Locales };

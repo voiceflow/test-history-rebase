@@ -1,7 +1,6 @@
 import { AlexaConstants } from '@voiceflow/alexa-types';
 import { BaseNode } from '@voiceflow/base-types';
 import { Nullish, Utils } from '@voiceflow/common';
-import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import _partition from 'lodash/partition';
 import { createSelector } from 'reselect';
@@ -31,7 +30,7 @@ const nodeFactoryOptionsSelector = createSelector(
   [
     ProjectV2.active.platformSelector,
     ProjectV2.active.projectTypeSelector,
-    VersionV2.active.defaultVoiceSelector,
+    VersionV2.active.voice.defaultVoiceSelector,
     Feature.allActiveFeaturesSelector,
     VersionV2.active.canvasNodeVisibilitySelector,
     CustomBlock.allCustomBlocksSelector,
@@ -41,7 +40,7 @@ const nodeFactoryOptionsSelector = createSelector(
     features: allActiveFeatures,
     platform,
     projectType,
-    defaultVoice: defaultVoice || Platform.Config.getTypeConfig({ type: projectType, platform }).project.voice.default,
+    defaultVoice,
     canvasNodeVisibility: canvasNodeVisibility || BaseNode.Utils.CanvasNodeVisibility.PREVIEW,
     allCustomBlocks,
   })

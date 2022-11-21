@@ -18,7 +18,7 @@ interface NoMatchConfigOptions {
 export const useConfig = ({ canRemove = true }: NoMatchConfigOptions = {}): OptionalSectionConfig => {
   const editor = EditorV2.useEditor<{ noMatch?: Nullable<Realtime.NodeData.NoMatch> }>();
 
-  const defaultVoice = useSelector(VersionV2.active.defaultVoiceSelector);
+  const defaultVoice = useSelector(VersionV2.active.voice.defaultVoiceSelector);
 
   const { noMatch } = editor.data;
 

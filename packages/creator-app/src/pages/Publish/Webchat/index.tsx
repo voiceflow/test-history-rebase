@@ -2,8 +2,8 @@ import { useTheme } from '@voiceflow/react-chat';
 import { Box } from '@voiceflow/ui';
 import React from 'react';
 
-import { patchActiveAndLivePublishing } from '@/ducks/version/platform/general';
-import * as Version from '@/ducks/versionV2';
+import * as Version from '@/ducks/version';
+import * as VersionV2 from '@/ducks/versionV2';
 import { useDispatch, useSelector } from '@/hooks';
 
 import PrivacyToggle from './PrivacyToggle';
@@ -11,12 +11,12 @@ import { ApperanceSection, GeneralSection, PreviewSection, PublishSection } from
 import { PreviewContainer, SettingsContainer } from './styled';
 
 const Webchat: React.FC = () => {
-  const config = useSelector(Version.active.general.chatPublishingSelector);
-  const updateConfig = useDispatch(patchActiveAndLivePublishing);
+  const config = useSelector(VersionV2.active.voiceflow.chat.publishingSelector);
+  const updateConfig = useDispatch(Version.voiceflow.chat.patchActiveAndLivePublishing);
 
   React.useEffect(() => {
     // apply default values, this is a temporary hack
-    updateConfig(config, false);
+    updateConfig(config);
   }, []);
 
   const theme = useTheme(config);

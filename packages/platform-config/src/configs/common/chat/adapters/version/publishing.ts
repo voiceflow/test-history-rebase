@@ -5,12 +5,15 @@ import { createSimpleAdapter, createSmartSimpleAdapter } from 'bidirectional-ada
 
 import * as Models from '../../models';
 
-export const smart = createSmartSimpleAdapter<BaseVersion.Publishing, Models.Version.Publishing.Model>(
+export const smart = createSmartSimpleAdapter<BaseVersion.Publishing, Pick<Models.Version.Publishing.Model, keyof BaseVersion.Publishing>>(
   (dbPublishing) => Base.Adapters.Version.Publishing.smart.fromDB(dbPublishing, { defaultVoice: '' }),
   (publishing) => Base.Adapters.Version.Publishing.smart.toDB(publishing, { defaultVoice: '' })
 );
 
-export const simple = createSimpleAdapter<BaseVersion.Publishing, Models.Version.Publishing.Model>(smart.fromDB, smart.toDB);
+export const simple = createSimpleAdapter<BaseVersion.Publishing, Models.Version.Publishing.Model>(
+  (dbPublishing) => Base.Adapters.Version.Publishing.simple.fromDB(dbPublishing, { defaultVoice: '' }),
+  (publishing) => Base.Adapters.Version.Publishing.simple.toDB(publishing, { defaultVoice: '' })
+);
 
 export const CONFIG = Base.Adapters.Version.Publishing.extend({
   smart,

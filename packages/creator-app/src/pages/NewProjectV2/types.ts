@@ -1,4 +1,3 @@
-import { AlexaConstants } from '@voiceflow/alexa-types';
 import { Nullish } from '@voiceflow/common';
 import { DFESConstants } from '@voiceflow/google-dfes-types';
 import { GoogleConstants } from '@voiceflow/google-types';
@@ -12,7 +11,6 @@ export interface PlatformAndProjectMeta {
 }
 
 export type AnyLanguage = GoogleConstants.Language | DFESConstants.Language | VoiceflowConstants.Locale;
-export type AnyLocale = AlexaConstants.Locale;
 
 export interface LanguageSelectOption {
   value: AnyLanguage;

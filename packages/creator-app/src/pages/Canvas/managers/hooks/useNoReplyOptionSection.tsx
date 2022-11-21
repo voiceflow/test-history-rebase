@@ -29,7 +29,7 @@ const useNoReplyOptionSection = ({
   const platform = React.useContext(PlatformContext);
   const projectType = React.useContext(ProjectTypeContext);
 
-  const defaultVoice = useSelector(VersionV2.active.defaultVoiceSelector);
+  const defaultVoice = useSelector(VersionV2.active.voice.defaultVoiceSelector);
 
   const transaction = useDispatch(History.transaction);
 

@@ -1,12 +1,10 @@
-import { BaseModels } from '@voiceflow/base-types';
 import { ObjectId } from 'bson';
-import { expect } from 'chai';
 import { Db, MongoClient } from 'mongodb';
 
 import config from '@/config';
-import DiagramModel from '@/models/diagram';
+import DiagramModel, { DBDiagramModel } from '@/models/diagram';
 
-const mockDiagram: Omit<BaseModels.Diagram.Model, '_id'> = {
+const mockDiagram: Omit<DBDiagramModel, '_id'> = {
   name: 'Diagram 1',
   creatorID: 11,
   versionID: new ObjectId(1),
@@ -48,7 +46,7 @@ describe('Diagram model integrations tests', () => {
   let db: Db;
   let model: DiagramModel;
 
-  before(async () => {
+  beforeAll(async () => {
     client = await MongoClient.connect(config.MONGO_URI, { useUnifiedTopology: true });
     db = client.db(config.MONGO_DB);
     model = new DiagramModel(null as any, { clients: { mongo: { db } } } as any);
@@ -67,7 +65,7 @@ describe('Diagram model integrations tests', () => {
     await db.collection(model.collectionName).deleteMany({});
   });
 
-  after(async () => {
+  afterAll(async () => {
     await client.close();
   });
 

@@ -41,8 +41,8 @@ export const simple = createSimpleAdapter<DBSession, Models.Version.Session, Fro
 
     return {
       type: BaseVersion.SessionType.RESUME,
-      resume: content?.trim() ? { voice: voice || defaultVoice, content } : null,
-      follow: followContent?.trim() ? { voice: followVoice || defaultVoice, content: followContent } : null,
+      resume: content?.trim() ? { voice: voice || defaultVoice || '', content } : null,
+      follow: followContent?.trim() ? { voice: followVoice || defaultVoice || '', content: followContent } : null,
     };
   }
 );

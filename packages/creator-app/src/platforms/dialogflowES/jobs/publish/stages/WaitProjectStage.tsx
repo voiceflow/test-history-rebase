@@ -20,12 +20,12 @@ const WaitDFESProjectStage: React.FC<StageComponentProps<DialogflowESPublishJob.
   const containerRef = React.useRef<HTMLDivElement>(null);
 
   const loadGoogleAccount = useDispatch(Account.google.loadAccount);
-  const updateAgentName = useDispatch(Version.dialogflow.updateAgentName);
+  const updateInvocationName = useDispatch(Version.updateInvocationName);
 
   const [state, api] = useSmartReducerV2({ error: false, loading: true });
 
   const handleProjectSelected = async (selectedProject: Project) => {
-    await updateAgentName(selectedProject.name);
+    await updateInvocationName(selectedProject.name);
 
     updateCurrentStage({ googleProjectID: selectedProject.id, agentName: selectedProject.name });
   };

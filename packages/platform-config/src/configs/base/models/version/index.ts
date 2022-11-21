@@ -1,4 +1,4 @@
-import { BaseModels } from '@voiceflow/base-types';
+import { BaseVersion } from '@voiceflow/base-types';
 import { Nullable } from '@voiceflow/common';
 import { Required } from 'utility-types';
 
@@ -7,7 +7,7 @@ import * as Settings from './settings';
 
 export { Publishing, Settings };
 
-export interface PlatformData extends BaseModels.Version.PlatformData {
+export interface PlatformData extends BaseVersion.PlatformData {
   status?: unknown;
 }
 
@@ -28,7 +28,7 @@ export type ModelDBSharedFields =
   | 'templateDiagramID'
   | 'defaultStepColors';
 
-export interface Model extends Required<Pick<BaseModels.Version.Model<any>, ModelDBSharedFields>, ModelDBRequiredFields> {
+export interface Model extends Required<Pick<BaseVersion.Version, ModelDBSharedFields>, ModelDBRequiredFields> {
   id: string;
   status: Nullable<unknown>;
   session: Session;

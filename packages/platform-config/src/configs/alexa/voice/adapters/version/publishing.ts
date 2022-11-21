@@ -39,11 +39,13 @@ export const smart = createSmartSimpleAdapter<
     ...Config.pickNonEmptyFields(dbPublishing, SHARED_FIELDS),
     ...(Config.hasValue(dbPublishing, 'locales') && { locales: dbPublishing.locales }),
     ...(Config.hasValue(dbPublishing, 'invocations') && { invocationNameSamples: dbPublishing.invocations }),
+    ...(Config.hasValue(dbPublishing, 'invocationName') && { invocationName: dbPublishing.invocationName }),
   }),
   (publishing, options) => ({
     ...Common.Voice.Adapters.Version.Publishing.smart.toDB(publishing, options),
     ...Config.pickNonEmptyFields(publishing, SHARED_FIELDS),
     ...(Config.hasValue(publishing, 'locales') && { locales: publishing.locales as AlexaVersion.Publishing['locales'] }),
+    ...(Config.hasValue(publishing, 'invocationName') && { invocationName: publishing.invocationName }),
     ...(Config.hasValue(publishing, 'invocationNameSamples') && { invocations: publishing.invocationNameSamples }),
   })
 );

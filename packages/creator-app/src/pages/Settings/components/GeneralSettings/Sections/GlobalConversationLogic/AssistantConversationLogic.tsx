@@ -34,207 +34,154 @@ const AssistantConversationLogic: React.FC<AssistantConversationLogicProps> = ({
   defaultVoice,
   platformDefaultVoice,
 }) => {
-  const settings = useSelector(VersionV2.active.alexa.settingsSelector);
-  const session = useSelector(VersionV2.active.sessionSelector);
+  const session = useSelector(VersionV2.active.voice.sessionSelector);
+  const settings = useSelector(VersionV2.active.voice.settingsSelector);
 
-  const patchSettings = useDispatch(VersionDuck.alexa.patchSettings);
   const patchSession = useDispatch(VersionDuck.patchSession);
-  const updateResumePrompt = useDispatch(VersionDuck.updateResumePrompt);
-  const updateDefaultVoice = useDispatch(VersionDuck.updateDefaultVoice);
+  const patchSettings = useDispatch(VersionDuck.patchSettings);
+  const updateDefaultVoice = useDispatch(VersionDuck.voice.updateDefaultVoice);
 
   const canUseAlexaSettings = useAlexaProjectSettings();
+
+  const defaultResumePrompt = React.useMemo(
+    () => ({ voice: defaultVoice, content: '', followVoice: defaultVoice, followContent: null }),
+    [defaultVoice]
+  );
+
+  const resumePrompt = session?.resumePrompt ?? defaultResumePrompt;
 
   const { descriptors } = platformMeta;
   const { continuePrevious, allowRepeat, repeatDialog, repeatEverything } = descriptors;
 
-  const defaultResumePrompt = React.useMemo(
-    () => ({
-      content: '',
-      voice: defaultVoice,
-      followContent: '',
-      followVoice: defaultVoice,
-    }),
-    [defaultVoice]
-  );
+  const onChangeResumePrompt = (value: Partial<Platform.Common.Voice.Models.Version.SessionResumePrompt<string>>) =>
+    patchSession({ resumePrompt: { ...resumePrompt, ...value } });
 
-  const [previousSessionDialogError, setPreviousSessionDialogError] = React.useState(false);
+  const onToggleFollowUp = () =>
+    onChangeResumePrompt(resumePrompt?.followVoice ? { followContent: null, followVoice: null } : { followContent: null, followVoice: defaultVoice });
 
-  const repeat = settings?.repeat ?? BaseVersion.RepeatType.OFF;
-  const restart = session?.restart || false;
-  const resumePrompt = session?.resumePrompt || defaultResumePrompt;
-  const followUpType = session?.resumePrompt.followVoice || defaultVoice;
-  const resumePromptType = session?.resumePrompt.voice || defaultVoice;
-
-  const onChangeResumePromptType = React.useCallback((resumePromptType: string) => {
-    updateResumePrompt({ content: '', voice: resumePromptType });
-  }, []);
-
-  const onChangeFollowUpType = React.useCallback((followUpType: string) => {
-    updateResumePrompt({ followContent: '', followVoice: followUpType });
-  }, []);
-
-  const onToggleHasFollowUp = React.useCallback(() => {
-    if (resumePrompt?.followVoice) {
-      updateResumePrompt({ followContent: undefined, followVoice: undefined });
-    } else {
-      updateResumePrompt({ followContent: undefined, followVoice: defaultVoice });
-    }
-  }, [resumePrompt?.followVoice, defaultVoice]);
-
-  const onChangeResumePromptContent = React.useCallback(
-    ({ text }) => {
-      if (text === resumePrompt.content) {
-        return;
-      }
-
-      const valid = text.length <= RESUME_PROMPT_MAX_LENGTH;
-
-      updateResumePrompt({ content: text });
-      setPreviousSessionDialogError(!valid);
-    },
-    [resumePrompt.content]
-  );
-
-  const onChangeFollowUpVoice = React.useCallback((voice: string) => {
-    updateResumePrompt({ followVoice: voice });
-  }, []);
-
-  const onChangeFollowUpContent = React.useCallback(
-    ({ text }: { text: string | null }) => {
-      if (text === resumePrompt.followContent) {
-        return;
-      }
-
-      updateResumePrompt({ followContent: text });
-    },
-    [resumePrompt.followContent]
-  );
-
-  const onChangeResumePromptVoice = React.useCallback((voice: string) => {
-    updateResumePrompt({ voice });
-  }, []);
-
-  return (
+  return !canUseAlexaSettings ? null : (
     <>
-      {canUseAlexaSettings && (
-        <>
-          <Section
-            contentPrefix={continuePrevious}
-            variant={SectionVariant.QUATERNARY}
-            collapseVariant={SectionToggleVariant.TOGGLE}
-            header="Allow Users to Continue Previous Session"
-            headerToggle
-            dividers
-            isDividerNested
-            initialOpen={!restart}
-            onToggleChange={(nextRestart) => patchSession({ restart: nextRestart })}
-          >
-            <FormControl>
-              <FormControl>
-                <RadioGroup
-                  options={[
-                    { id: defaultVoice, label: 'Speak', customCheckedCondition: (val) => val !== VoiceflowConstants.Voice.AUDIO },
-                    { id: VoiceflowConstants.Voice.AUDIO, label: 'Audio', customCheckedCondition: (val) => val === VoiceflowConstants.Voice.AUDIO },
-                  ]}
-                  name="multiple"
-                  checked={resumePromptType}
-                  onChange={onChangeResumePromptType}
-                />
-              </FormControl>
+      <Section
+        header="Allow Users to Continue Previous Session"
+        variant={SectionVariant.QUATERNARY}
+        dividers
+        initialOpen={!session?.restart}
+        headerToggle
+        contentPrefix={continuePrevious}
+        onToggleChange={(nextRestart) => patchSession({ restart: nextRestart })}
+        collapseVariant={SectionToggleVariant.TOGGLE}
+        isDividerNested
+      >
+        <FormControl>
+          <FormControl>
+            <RadioGroup
+              options={[
+                { id: false, label: 'Speak' },
+                { id: true, label: 'Audio' },
+              ]}
+              name="multiple"
+              checked={resumePrompt.voice === VoiceflowConstants.Voice.AUDIO}
+              onChange={(checked) => onChangeResumePrompt({ content: '', voice: checked ? VoiceflowConstants.Voice.AUDIO : defaultVoice })}
+            />
+          </FormControl>
 
-              {resumePromptType === VoiceflowConstants.Voice.AUDIO ? (
+          {resumePrompt.voice === VoiceflowConstants.Voice.AUDIO ? (
+            <Upload.AudioUpload
+              audio={resumePrompt.content}
+              update={(src) => onChangeResumePrompt({ content: src ?? '' })}
+              className={CONTEXT_MENU_IGNORED_CLASS_NAME}
+              renderInput={VariablesInput.renderInput}
+            />
+          ) : (
+            <>
+              <SSMLComponent
+                voice={resumePrompt.voice || defaultVoice}
+                value={resumePrompt.content || ''}
+                onBlur={({ text }: { text: string }) => onChangeResumePrompt({ content: text })}
+                platform={platform}
+                projectType={projectType}
+                defaultVoice={defaultVoice}
+                onChangeVoice={(voice: string) => onChangeResumePrompt({ voice })}
+                platformDefaultVoice={platformDefaultVoice}
+                onChangeDefaultVoice={updateDefaultVoice}
+              />
+
+              {resumePrompt.content.length <= RESUME_PROMPT_MAX_LENGTH && (
+                <ErrorMessage>Confirmation message must not exceed 160 symbols.</ErrorMessage>
+              )}
+            </>
+          )}
+
+          <ClickableText style={{ marginTop: '14px' }} onClick={onToggleFollowUp}>
+            {resumePrompt.followVoice ? 'Remove Follow Up' : 'Add Follow Up'}
+          </ClickableText>
+        </FormControl>
+
+        {!!resumePrompt.followVoice && (
+          <Section isNested header="Resume Follow Up" isDividerNested variant={SectionVariant.QUATERNARY}>
+            <FormControl>
+              <RadioGroup
+                options={[
+                  { id: false, label: 'Speak' },
+                  { id: true, label: 'Audio' },
+                ]}
+                name="multiple"
+                checked={resumePrompt.followVoice === VoiceflowConstants.Voice.AUDIO}
+                onChange={(checked) =>
+                  onChangeResumePrompt({ followContent: '', followVoice: checked ? VoiceflowConstants.Voice.AUDIO : defaultVoice })
+                }
+              />
+            </FormControl>
+
+            {resumePrompt.followVoice === VoiceflowConstants.Voice.AUDIO ? (
+              <FormControl>
                 <Upload.AudioUpload
-                  audio={resumePrompt.content}
-                  update={(src) => onChangeResumePromptContent({ text: src })}
+                  audio={resumePrompt.followContent}
+                  update={(src) => onChangeResumePrompt({ followContent: src })}
                   className={CONTEXT_MENU_IGNORED_CLASS_NAME}
                   renderInput={VariablesInput.renderInput}
                 />
-              ) : (
-                <>
-                  <SSMLComponent
-                    voice={resumePrompt.voice || defaultVoice}
-                    value={resumePrompt.content || ''}
-                    onBlur={onChangeResumePromptContent}
-                    platform={platform}
-                    projectType={projectType}
-                    defaultVoice={defaultVoice}
-                    onChangeVoice={onChangeResumePromptVoice}
-                    platformDefaultVoice={platformDefaultVoice}
-                    onChangeDefaultVoice={updateDefaultVoice}
-                  />
-
-                  {previousSessionDialogError && <ErrorMessage>Confirmation message must not exceed 160 symbols.</ErrorMessage>}
-                </>
-              )}
-
-              <ClickableText style={{ marginTop: '14px' }} onClick={onToggleHasFollowUp}>
-                {resumePrompt.followVoice ? 'Remove Follow Up' : 'Add Follow Up'}
-              </ClickableText>
-            </FormControl>
-
-            {!!resumePrompt.followVoice && (
-              <Section isNested header="Resume Follow Up" isDividerNested variant={SectionVariant.QUATERNARY}>
-                <FormControl>
-                  <RadioGroup
-                    options={[
-                      { id: defaultVoice, label: 'Speak', customCheckedCondition: (val) => val !== VoiceflowConstants.Voice.AUDIO },
-                      { id: VoiceflowConstants.Voice.AUDIO, label: 'Audio', customCheckedCondition: (val) => val === VoiceflowConstants.Voice.AUDIO },
-                    ]}
-                    name="multiple"
-                    checked={followUpType}
-                    onChange={onChangeFollowUpType}
-                  />
-                </FormControl>
-
-                {followUpType === VoiceflowConstants.Voice.AUDIO ? (
-                  <FormControl>
-                    <Upload.AudioUpload
-                      renderInput={VariablesInput.renderInput}
-                      audio={resumePrompt.followContent}
-                      update={(src) => onChangeFollowUpContent({ text: src })}
-                      className={CONTEXT_MENU_IGNORED_CLASS_NAME}
-                    />
-                  </FormControl>
-                ) : (
-                  <FormControl contentBottomUnits={3}>
-                    <SSMLComponent
-                      voice={resumePrompt.followVoice || defaultVoice}
-                      value={resumePrompt.followContent || ''}
-                      onBlur={onChangeFollowUpContent}
-                      platform={platform}
-                      projectType={projectType}
-                      defaultVoice={defaultVoice}
-                      onChangeVoice={onChangeFollowUpVoice}
-                      platformDefaultVoice={platformDefaultVoice}
-                      onChangeDefaultVoice={updateDefaultVoice}
-                    />
-                  </FormControl>
-                )}
-              </Section>
+              </FormControl>
+            ) : (
+              <FormControl contentBottomUnits={3}>
+                <SSMLComponent
+                  voice={resumePrompt.followVoice || defaultVoice}
+                  value={resumePrompt.followContent || ''}
+                  onBlur={({ text }: { text: string }) => onChangeResumePrompt({ followContent: text })}
+                  platform={platform}
+                  projectType={projectType}
+                  defaultVoice={defaultVoice}
+                  onChangeVoice={(followVoice: string) => onChangeResumePrompt({ followVoice })}
+                  platformDefaultVoice={platformDefaultVoice}
+                  onChangeDefaultVoice={updateDefaultVoice}
+                />
+              </FormControl>
             )}
           </Section>
-          <Section
-            contentPrefix={allowRepeat}
-            variant={SectionVariant.QUATERNARY}
-            collapseVariant={SectionToggleVariant.TOGGLE}
-            header="Allow Users to Repeat"
-            isDividerNested
-            onToggleChange={(collapsed) => patchSettings({ repeat: collapsed ? BaseVersion.RepeatType.OFF : BaseVersion.RepeatType.DIALOG })}
-            headerToggle
-            initialOpen={repeat !== BaseVersion.RepeatType.OFF}
-          >
-            <FormControl contentBottomUnits={3}>
-              <RadioGroup
-                options={REPEAT_OPTIONS}
-                name="multiple"
-                checked={repeat ?? BaseVersion.RepeatType.DIALOG}
-                onChange={(repeat) => patchSettings({ repeat })}
-              />
-              {repeat === BaseVersion.RepeatType.DIALOG ? repeatDialog : repeatEverything}
-            </FormControl>
-          </Section>
-        </>
-      )}
+        )}
+      </Section>
+
+      <Section
+        header="Allow Users to Repeat"
+        variant={SectionVariant.QUATERNARY}
+        initialOpen={!!settings && settings.repeat !== BaseVersion.RepeatType.OFF}
+        headerToggle
+        contentPrefix={allowRepeat}
+        onToggleChange={(collapsed) => patchSettings({ repeat: collapsed ? BaseVersion.RepeatType.OFF : BaseVersion.RepeatType.DIALOG })}
+        collapseVariant={SectionToggleVariant.TOGGLE}
+        isDividerNested
+      >
+        <FormControl contentBottomUnits={3}>
+          <RadioGroup
+            name="multiple"
+            options={REPEAT_OPTIONS}
+            checked={settings?.repeat ?? BaseVersion.RepeatType.DIALOG}
+            onChange={(repeat) => patchSettings({ repeat })}
+          />
+
+          {settings?.repeat === BaseVersion.RepeatType.DIALOG ? repeatDialog : repeatEverything}
+        </FormControl>
+      </Section>
     </>
   );
 };

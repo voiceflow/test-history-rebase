@@ -17,7 +17,7 @@ interface ManyNodeDataUpdate extends Atomic.Update {
 const OBJECT_ID_KEYS = ['_id', 'versionID'] as const;
 const READ_ONLY_KEYS = ['_id', 'versionID', 'creatorID'] as const;
 
-type DBDiagramModel = Bson.StringToObjectID<BaseModels.Diagram.Model, typeof OBJECT_ID_KEYS[number]>;
+export type DBDiagramModel = Bson.StringToObjectID<BaseModels.Diagram.Model, typeof OBJECT_ID_KEYS[number]>;
 export type DiagramFilter = FilterQuery<DBDiagramModel>;
 
 class DiagramModel extends AbstractModel<DBDiagramModel, BaseModels.Diagram.Model, typeof READ_ONLY_KEYS[number]> {

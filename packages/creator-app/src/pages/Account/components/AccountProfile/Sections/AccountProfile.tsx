@@ -29,11 +29,11 @@ const AccountProfile: React.FC = () => {
       <Section
         customContentStyling={sectionStyling}
         variant={SectionVariant.QUATERNARY}
-        contentSuffix={() => (
+        contentSuffix={
           <DescriptorContainer>
             <Link onClick={() => accountNameModal.openVoid()}>Change Name</Link>
           </DescriptorContainer>
-        )}
+        }
         header="Name"
       >
         <Box.Flex mr={120}>
@@ -54,11 +54,11 @@ const AccountProfile: React.FC = () => {
       <Section
         customContentStyling={sectionStyling}
         variant={SectionVariant.QUATERNARY}
-        contentSuffix={() => (
+        contentSuffix={
           <DescriptorContainer>
             <Link onClick={() => accountEmailModal.openVoid()}>Change Email</Link>
           </DescriptorContainer>
-        )}
+        }
         header="Email"
       >
         <Box.Flex mr={120}>

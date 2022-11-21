@@ -1,41 +1,37 @@
-import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Badge, Popper, preventDefault, TippyTooltip, withHandler, withInputBlur } from '@voiceflow/ui';
 import React from 'react';
 
 import { PopperContent, PopperTitle } from '@/components/SlateEditable';
-import * as ProjectV2 from '@/ducks/projectV2';
 import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
-import { useDispatch, useSelector } from '@/hooks';
+import { useActivePlatformConfig, useDispatch, useSelector } from '@/hooks';
 import { getDefaultNoReplyTimeoutSeconds } from '@/utils/noReply';
 
 import * as S from './styles';
 
 const NOT_NUMBERS_REGEX = /\D/g;
 
-const MessageDelayPopper: React.FC = () => {
-  const patchSettings = useDispatch(Version.patchSettings);
-  const settings = useSelector(VersionV2.active.settingsSelector);
-  const delay = settings?.globalNoReply?.delay ?? 10;
-  const platform = useSelector(ProjectV2.active.platformSelector);
-  const isNoReplyDelayEditable = Realtime.Utils.typeGuards.isPlatformWithEditableNoReplyDelay(platform);
+const DEFAULT_DELAY = 10;
 
+const MessageDelayPopper: React.FC = () => {
+  const platformConfig = useActivePlatformConfig();
+
+  const settings = useSelector(VersionV2.active.settingsSelector);
+  const patchSettings = useDispatch(Version.patchSettings);
+
+  const delay = settings?.globalNoReply?.delay ?? DEFAULT_DELAY;
+  const isNoReplyDelayEditable = Realtime.Utils.typeGuards.isPlatformWithEditableNoReplyDelay(platformConfig.type);
   const [messageDelay, setMessageDelay] = React.useState(() => (delay ? String(delay) : ''));
 
   const onSave = () => {
-    const newDelay = messageDelay !== '' ? parseInt(messageDelay, 10) : 10;
+    const newDelay = messageDelay !== '' ? parseInt(messageDelay, 10) : DEFAULT_DELAY;
 
     if (String(newDelay) !== messageDelay) setMessageDelay(String(newDelay));
 
     if (newDelay === settings?.globalNoReply?.delay) return;
 
-    patchSettings({
-      globalNoReply: {
-        ...(settings?.globalNoReply as Realtime.AnyVersion['settings']),
-        delay: newDelay,
-      },
-    });
+    patchSettings({ globalNoReply: { ...settings?.globalNoReply, delay: newDelay } });
   };
 
   const handleTextChange = (newValue: string) => {
@@ -46,8 +42,8 @@ const MessageDelayPopper: React.FC = () => {
 
   if (!isNoReplyDelayEditable) {
     return (
-      <TippyTooltip title={`This value is not editable as it's defined by ${Platform.Config.get(platform).name}`}>
-        <S.DelayTrigger>{getDefaultNoReplyTimeoutSeconds(platform)}</S.DelayTrigger>
+      <TippyTooltip title={`This value is not editable as it's defined by ${platformConfig.name}`}>
+        <S.DelayTrigger>{getDefaultNoReplyTimeoutSeconds(platformConfig.type)}</S.DelayTrigger>
       </TippyTooltip>
     );
   }

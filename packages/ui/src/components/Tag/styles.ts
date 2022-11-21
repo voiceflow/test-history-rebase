@@ -1,6 +1,5 @@
-import { css, transition } from '@ui/styles';
+import { css, styled, transition } from '@ui/styles';
 import { HSLShades } from '@ui/utils/colors/hsl';
-import styled from 'styled-components';
 
 export interface Props {
   palette: HSLShades;

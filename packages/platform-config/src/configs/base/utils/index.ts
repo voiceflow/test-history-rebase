@@ -2,10 +2,11 @@ import { Config as ConfigUtils } from '@platform-config/configs/utils';
 import { Types } from '@platform-config/utils';
 
 import * as Intent from './intent';
+import * as InvocationName from './invocationName';
 import * as Locale from './locale';
 import * as Prompt from './prompt';
 
-export { Intent, Locale, Prompt };
+export { Intent, InvocationName, Locale, Prompt };
 
 export interface Config {
   prompt: Prompt.Config;
@@ -13,6 +14,8 @@ export interface Config {
   locale: Locale.Config;
 
   intent: Intent.Config;
+
+  invocationName: InvocationName.Config;
 }
 
 export const CONFIG = Types.satisfies<Config>()({
@@ -21,6 +24,8 @@ export const CONFIG = Types.satisfies<Config>()({
   locale: Locale.CONFIG,
 
   intent: Intent.CONFIG,
+
+  invocationName: InvocationName.CONFIG,
 });
 
 export const extend = ConfigUtils.extendFactory<Config>(CONFIG);

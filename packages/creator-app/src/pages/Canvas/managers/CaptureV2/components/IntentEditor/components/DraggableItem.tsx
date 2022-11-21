@@ -52,7 +52,7 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
   const slot = useSelector(SlotV2.slotByIDSelector, { id: item.id });
   const usedSlots = useSelector(SlotV2.slotsByIDsSelector, { ids: selectedSlotIDs });
   const unusedSlots = useSelector(SlotV2.slotsWithoutIDsSelector, { ids: selectedSlotIDs });
-  const defaultVoice = useSelector(VersionV2.active.defaultVoiceSelector);
+  const defaultVoice = useSelector(VersionV2.active.voice.defaultVoiceSelector);
 
   const entityEditModal = useModals(ModalType.ENTITY_EDIT);
 

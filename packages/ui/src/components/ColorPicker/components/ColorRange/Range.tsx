@@ -1,5 +1,5 @@
+import { styled } from '@ui/styles';
 import React from 'react';
-import styled from 'styled-components';
 
 const TRACK_HEIGHT = 12;
 

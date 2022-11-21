@@ -24,15 +24,14 @@ const GlobalConversationLogic: React.FC<GlobalConversationLogicProps> = ({ platf
   const wavenetVoices = useFeature(Realtime.FeatureFlag.WAVENET_VOICES);
 
   const locales = useSelector(VersionV2.active.localesSelector);
-  const defaultVoiceStore = useSelector(VersionV2.active.defaultVoiceSelector);
+  const defaultVoice = useSelector(VersionV2.active.voice.defaultVoiceSelector);
 
-  const updateDefaultVoice = useDispatch(Version.updateDefaultVoice);
+  const updateDefaultVoice = useDispatch(Version.voice.updateDefaultVoice);
 
   const voiceOptions = React.useMemo(
     () => getPlatformVoiceOptions(platform, { locales, useWavenet: !!wavenetVoices.isEnabled }),
     [locales, platform, wavenetVoices.isEnabled]
   );
-  const defaultVoice = defaultVoiceStore || projectConfig.project.voice.default;
 
   const { descriptors } = platformMeta;
 
@@ -65,7 +64,7 @@ const GlobalConversationLogic: React.FC<GlobalConversationLogicProps> = ({ platf
           placeholder={defaultVoice}
           isMultiLevel
           getOptionKey={(option) => option.value ?? option.label}
-          getOptionValue={(option) => (option?.value ?? null) as Realtime.AnyVoice | null}
+          getOptionValue={(option) => option?.value ?? null}
           getOptionLabel={(value) => prettifyVoice(value ?? '')}
           renderOptionLabel={(option) => option.label || option.value}
         />

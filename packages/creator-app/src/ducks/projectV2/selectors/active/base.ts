@@ -22,6 +22,8 @@ export const metaSelector = createSelector(
   (nlu, type, platform): Realtime.ProjectMeta => ({ nlu, type, platform })
 );
 
+export const projectConfigSelector = createSelector([metaSelector], (meta) => Platform.Config.getTypeConfig(meta));
+
 export const nameSelector = createSelector([projectSelector], (project) => project?.name ?? null);
 
 export const idSelector = Session.activeProjectIDSelector;

@@ -11,7 +11,7 @@ export type PrototypeSettings = Omit<BaseModels.Version.PrototypeSettings, 'layo
   platform: Platform.Constants.PlatformType;
   projectType: Platform.Constants.ProjectType;
   layout: PrototypeLayout;
-  locales: Realtime.AnyLocale[];
+  locales: string[];
   projectName: string;
   hasPassword: boolean;
   buttons: BaseButton.ButtonsLayout;

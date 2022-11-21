@@ -1,5 +1,6 @@
 /* eslint-disable sonarjs/no-duplicate-string, mocha/no-identical-title */
 import { BaseNode, BaseVersion } from '@voiceflow/base-types';
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import * as Session from '@/ducks/session';
@@ -16,7 +17,7 @@ const DIAGRAM_ID = 'diagramID';
 const CREATOR_ID = 999;
 const ACTION_CONTEXT = { workspaceID: WORKSPACE_ID, projectID: PROJECT_ID, versionID: VERSION_ID };
 
-const VERSION: Realtime.AnyVersion = {
+const VERSION: Platform.Base.Models.Version.Model = {
   id: VERSION_ID,
   projectID: PROJECT_ID,
   creatorID: CREATOR_ID,

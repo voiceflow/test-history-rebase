@@ -12,7 +12,7 @@ import { useActiveProjectTypeConfig, useDispatch, useSelector } from '@/hooks';
 interface SSMLWithVarsProps {
   icon?: SvgIconTypes.Icon | null;
   value: string;
-  voice?: string;
+  voice?: string | null;
   onBlur: (data: { text: string; slots: string[] }) => void;
   autofocus?: boolean;
   placeholder?: string;
@@ -29,10 +29,10 @@ const SSMLWithVars: React.FC<SSMLWithVarsProps> = ({ icon = 'alexa', voice, auto
   const platform = useSelector(ProjectV2.active.platformSelector);
   const variables = useSelector(DiagramV2.active.allSlotsAndVariablesSelector);
   const projectType = useSelector(ProjectV2.active.projectTypeSelector);
-  const defaultVoice = useSelector(VersionV2.active.defaultVoiceSelector);
+  const defaultVoice = useSelector(VersionV2.active.voice.defaultVoiceSelector);
 
   const addGlobalVariable = useDispatch(Version.addGlobalVariable);
-  const updateDefaultVoice = useDispatch(Version.updateDefaultVoice);
+  const updateDefaultVoice = useDispatch(Version.voice.updateDefaultVoice);
 
   const vars = React.useMemo(() => variables.map((name) => ({ id: name, name, isVariable: true })), [variables]);
 
@@ -60,13 +60,13 @@ const SSMLWithVars: React.FC<SSMLWithVarsProps> = ({ icon = 'alexa', voice, auto
     <SSML
       ref={ssmlRef}
       icon={icon}
-      voice={voice || projectTypeConfig.project.voice.default}
+      voice={voice || defaultVoice}
       space
       locales={locales}
       platform={platform}
       variables={vars}
       projectType={projectType}
-      defaultVoice={defaultVoice || projectTypeConfig.project.voice}
+      defaultVoice={defaultVoice}
       onAddVariable={onAddVariable}
       platformDefaultVoice={projectTypeConfig.project.voice}
       onChangeDefaultVoice={updateDefaultVoice}

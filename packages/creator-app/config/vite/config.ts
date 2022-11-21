@@ -1,3 +1,4 @@
+/* eslint-disable no-process-env */
 import defineConfig, { esbuildResolveFixup } from '@voiceflow/vite-config';
 import path from 'path';
 import rewriteAll from 'vite-plugin-rewrite-all';
@@ -62,14 +63,7 @@ export default defineConfig({
 
   test: {
     ...config.test,
-    // env vars VITEST_MAX_THREADS and VITEST_MIN_THREADS set to 16 in CI
     dir: './test',
     setupFiles: 'config/test/setup.ts',
-    restoreMocks: true,
-    coverage: {
-      ...config.test?.coverage,
-      reporter: ['html', 'text', 'text-summary', 'lcov'],
-      reportsDirectory: 'coverage',
-    },
   },
 }));

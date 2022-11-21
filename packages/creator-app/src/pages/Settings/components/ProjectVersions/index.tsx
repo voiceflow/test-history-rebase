@@ -1,4 +1,4 @@
-import { BaseModels } from '@voiceflow/base-types';
+import { BaseVersion } from '@voiceflow/base-types';
 import { Box, BoxFlexCenter, ClickableText, LoadCircle, toast } from '@voiceflow/ui';
 import ObjectID from 'bson-objectid';
 import React, { useCallback } from 'react';
@@ -36,13 +36,13 @@ export interface ProjectVersion {
 
 const DEFAULT_FETCH_LIMIT = 10;
 
-const versionAdapter = (version: BaseModels.Version.Model<BaseModels.Version.PlatformData>) => ({
+const versionAdapter = (version: BaseVersion.Version) => ({
+  name: version.name,
+  created: ObjectID.isValid(version._id) ? new ObjectID(version._id).getTimestamp().toString() : '',
   creatorID: version.creatorID,
   versionID: version._id,
   manualSave: version.manualSave,
   autoSaveFromRestore: version.autoSaveFromRestore,
-  name: version.name,
-  created: ObjectID.isValid(version._id) ? new ObjectID(version._id).getTimestamp().toString() : '',
 });
 
 const ProjectVersions: React.FC<ConnectedProjectVersions> = ({ projectID, activeVersionID, goToDomain, platform }) => {
@@ -107,14 +107,13 @@ const ProjectVersions: React.FC<ConnectedProjectVersions> = ({ projectID, active
     if (noMoreVersions) return;
     const offset = versionList.length;
     try {
-      const moreVersions = (await client.api.project.getVersionsV2(projectID!, { offset, limit })) || [];
+      const moreVersions = (await client.api.project.getVersionsV2<BaseVersion.PlatformData>(projectID!, { offset, limit })) || [];
+
       if (moreVersions.length < limit) {
         setNoMoreVersions(true);
       }
-      setVersionList([
-        ...versionList,
-        ...moreVersions.map((version) => versionAdapter(version as BaseModels.Version.Model<BaseModels.Version.PlatformData>)),
-      ]);
+
+      setVersionList([...versionList, ...moreVersions.map((version) => versionAdapter(version))]);
     } catch (err) {
       toast.error('Error fetching versions');
     } finally {

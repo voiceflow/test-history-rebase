@@ -1,48 +1,43 @@
-import { BoxFlex, Input } from '@voiceflow/ui';
+import { Box, Input } from '@voiceflow/ui';
 import React from 'react';
 
 import Section, { SectionVariant } from '@/components/Section';
 import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
-import { useDispatch, useSelector } from '@/hooks';
+import { useActiveProjectTypeConfig, useDispatch, useLinkedState, useSelector } from '@/hooks';
+import { DescriptorContainer } from '@/pages/Settings/components/ContentDescriptors/components';
 
-import { PlatformSettingsMetaProps } from '../../../constants';
+// TODO: refactor this to make it platform agnostic
+const DialogflowConsole: React.FC = () => {
+  const projectConfig = useActiveProjectTypeConfig();
 
-interface DialogflowConsoleProps {
-  platformMeta: PlatformSettingsMetaProps;
-}
+  const storedInvocationNameSamples = useSelector(VersionV2.active.invocationNameSamplesSelector);
 
-const sectionStyling = {
-  paddingBottom: '24px',
-};
+  const [invocationNameSample, setInvocationNameSample] = useLinkedState(storedInvocationNameSamples[0] ?? 'Hello');
 
-const DialogflowConsole: React.FC<DialogflowConsoleProps> = ({ platformMeta }) => {
-  const { descriptors } = platformMeta;
-  const triggerPhrase = useSelector(VersionV2.active.dialogflow.triggerPhraseSelector);
-  const [newTriggerPhrase, setNewTriggerPhrase] = React.useState(triggerPhrase[0] ?? 'Hello');
-  const saveTriggerPhrase = useDispatch(Version.dialogflow.saveTriggerPhrase);
+  const patchPublishing = useDispatch(Version.patchPublishing);
 
-  const saveSettings = async () => {
-    await Promise.all([saveTriggerPhrase([newTriggerPhrase])]);
-  };
+  const saveSettings = async () => patchPublishing({ invocationNameSamples: [invocationNameSample, ...storedInvocationNameSamples.slice(1)] });
 
   return (
     <>
-      <Section
-        customContentStyling={sectionStyling}
-        variant={SectionVariant.QUATERNARY}
-        contentSuffix={descriptors.triggerPhraseDescriptor}
-        header="Web Demo Trigger Phrase"
-      >
-        <BoxFlex>
-          <Input
-            value={newTriggerPhrase}
-            onBlur={saveSettings}
-            placeholder="Enter a phrase to trigger the Dialogflow web demo integration"
-            onChangeText={setNewTriggerPhrase}
-          />
-        </BoxFlex>
-      </Section>
+      {!!projectConfig.project.invocationName && (
+        <Section
+          header={projectConfig.project.invocationName.samplesName}
+          variant={SectionVariant.QUATERNARY}
+          contentSuffix={<DescriptorContainer>{projectConfig.project.invocationName.description}</DescriptorContainer>}
+          customContentStyling={{ paddingBottom: '24px' }}
+        >
+          <Box.Flex>
+            <Input
+              value={invocationNameSample}
+              onBlur={saveSettings}
+              placeholder={projectConfig.project.invocationName.placeholder}
+              onChangeText={setInvocationNameSample}
+            />
+          </Box.Flex>
+        </Section>
+      )}
     </>
   );
 };

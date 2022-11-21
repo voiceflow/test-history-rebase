@@ -4,7 +4,7 @@ import { ThemeColor } from './theme';
 
 export { ClassName } from './constants';
 export { createTheme, ThemeColor } from './theme';
-export { createGlobalStyle, keyframes } from 'styled-components';
+export { createGlobalStyle, keyframes, ThemeProvider } from 'styled-components';
 
 export type StyledProps<P> = ThemedStyledProps<P, DefaultTheme>;
 

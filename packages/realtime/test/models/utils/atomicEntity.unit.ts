@@ -1,11 +1,7 @@
 /* eslint-disable sonarjs/no-duplicate-string */
 import { Utils } from '@voiceflow/common';
-import chai from 'chai';
-import sinon from 'sinon';
 
 import AtomicEntity from '@/models/utils/atomicEntity';
-
-const { expect } = chai;
 
 // eslint-disable-next-line sonarjs/no-nested-template-literals
 const pathGetter = (entityID: string, path?: string) => `entities.${entityID}${path ? `.${path}` : ''}`;
@@ -15,8 +11,6 @@ const ENTITY_ID = 'id-1';
 const ENTITY_SECOND_ID = 'id-2';
 
 describe('Models | Utils | AtomicEntity', () => {
-  afterEach(() => sinon.restore());
-
   describe('pull', () => {
     it('creates pull operation', () => {
       const entity = createEntity();
@@ -186,7 +180,7 @@ describe('Models | Utils | AtomicEntity', () => {
 
   describe('set', () => {
     it('creates set operation for simple path', () => {
-      sinon.stub(Utils.id.cuid, 'slug').returns('id');
+      vi.spyOn(Utils.id.cuid, 'slug').mockReturnValue('id');
 
       const entity = createEntity();
 
@@ -206,7 +200,7 @@ describe('Models | Utils | AtomicEntity', () => {
     });
 
     it('creates set operation for array path', () => {
-      sinon.stub(Utils.id.cuid, 'slug').returns('id');
+      vi.spyOn(Utils.id.cuid, 'slug').mockReturnValue('id');
 
       const entity = createEntity();
 
@@ -228,7 +222,7 @@ describe('Models | Utils | AtomicEntity', () => {
 
   describe('setMany', () => {
     it('creates set operation for simple path', () => {
-      sinon.stub(Utils.id.cuid, 'slug').returns('id');
+      vi.spyOn(Utils.id.cuid, 'slug').mockReturnValue('id');
 
       const entity = createEntity();
 
@@ -262,7 +256,7 @@ describe('Models | Utils | AtomicEntity', () => {
     });
 
     it('creates set operation for array path', () => {
-      sinon.stub(Utils.id.cuid, 'slug').onCall(0).returns('id1').onCall(1).returns('id').onCall(2).returns('id2').onCall(3).returns('id');
+      vi.spyOn(Utils.id.cuid, 'slug').mockReturnValueOnce('id1').mockReturnValueOnce('id').mockReturnValueOnce('id2').mockReturnValueOnce('id');
 
       const entity = createEntity();
 
@@ -298,7 +292,7 @@ describe('Models | Utils | AtomicEntity', () => {
 
   describe('unset', () => {
     it('creates unset operation for simple path', () => {
-      sinon.stub(Utils.id.cuid, 'slug').returns('id');
+      vi.spyOn(Utils.id.cuid, 'slug').mockReturnValueOnce('id');
 
       const entity = createEntity();
 
@@ -313,7 +307,7 @@ describe('Models | Utils | AtomicEntity', () => {
     });
 
     it('creates unset operation for array path', () => {
-      sinon.stub(Utils.id.cuid, 'slug').returns('id');
+      vi.spyOn(Utils.id.cuid, 'slug').mockReturnValue('id');
 
       const entity = createEntity();
 
@@ -330,7 +324,7 @@ describe('Models | Utils | AtomicEntity', () => {
 
   describe('unsetMany', () => {
     it('creates unset operation for simple path', () => {
-      sinon.stub(Utils.id.cuid, 'slug').returns('id');
+      vi.spyOn(Utils.id.cuid, 'slug').mockReturnValue('id');
 
       const entity = createEntity();
 
@@ -352,7 +346,7 @@ describe('Models | Utils | AtomicEntity', () => {
     });
 
     it('creates unset operation for array path', () => {
-      sinon.stub(Utils.id.cuid, 'slug').onCall(0).returns('id1').onCall(1).returns('id').onCall(2).returns('id2').onCall(3).returns('id');
+      vi.spyOn(Utils.id.cuid, 'slug').mockReturnValueOnce('id1').mockReturnValueOnce('id').mockReturnValueOnce('id2').mockReturnValueOnce('id');
 
       const entity = createEntity();
 

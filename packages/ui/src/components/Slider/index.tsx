@@ -1,7 +1,8 @@
-import 'rc-slider/assets/index.css';
-
 import { styled } from '@ui/styles';
 import RCSlider from 'rc-slider';
+// can's just use import '...index.css' cause vite-node will crash
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import _globalRCStyles from 'rc-slider/assets/index.css';
 import React from 'react';
 
 const SliderContainer = styled(RCSlider)`

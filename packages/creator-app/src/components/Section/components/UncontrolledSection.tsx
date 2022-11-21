@@ -48,8 +48,8 @@ export type UncontrolledSectionProps = SectionContainerProps & {
   customContentStyling?: CSSProperties;
   customHeaderStyling?: CSSProperties;
   headerVariant?: HeaderVariant;
-  contentPrefix?: React.FC | string;
-  contentSuffix?: React.FC | string;
+  contentPrefix?: React.ReactNode;
+  contentSuffix?: React.ReactNode;
   emptyChildren?: boolean;
   truncatedHeader?: boolean;
   hiddenPrefix?: boolean;
@@ -92,8 +92,8 @@ const UncontrolledSection: React.ForwardRefRenderFunction<HTMLDivElement, Uncont
     customHeaderStyling,
     headerVariant,
     emptyChildren,
-    contentPrefix = React.Fragment,
-    contentSuffix = React.Fragment,
+    contentPrefix,
+    contentSuffix,
     truncatedHeader = true,
     hiddenPrefix,
     hiddenStatusContent,
@@ -105,8 +105,6 @@ const UncontrolledSection: React.ForwardRefRenderFunction<HTMLDivElement, Uncont
 ) => {
   const hasHeader = !!(prefix || suffix || header || tooltip || dropdown || status || count || collapseVariant || isLink);
   const clickHandler = onClick || (headerToggle ? toggle : undefined);
-  const ContentPrefixComponent = contentPrefix;
-  const ContentSuffixComponent = contentSuffix;
 
   // eslint-disable-next-line xss/no-mixed-html
   return (
@@ -181,9 +179,11 @@ const UncontrolledSection: React.ForwardRefRenderFunction<HTMLDivElement, Uncont
 
       {(children || emptyChildren) && (
         <ContentContainer noHeader={!hasHeader} isCollapsed={isCollapsed} sectionToggleVariant={collapseVariant} style={customContentStyling}>
-          <ContentPrefixComponent />
+          {contentPrefix}
+
           <Collapse isOpen={!isCollapsed}>{Utils.functional.isFunction(children) ? children({ isCollapsed, toggle }) : children}</Collapse>
-          <ContentSuffixComponent />
+
+          {contentSuffix}
         </ContentContainer>
       )}
     </Container>

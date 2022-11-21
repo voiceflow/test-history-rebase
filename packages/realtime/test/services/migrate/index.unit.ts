@@ -1,16 +1,10 @@
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { expect } from 'chai';
-import sinon from 'sinon';
 
 import MigrateService from '@/services/migrate';
 import { MigrationState } from '@/services/migrate/constants';
 
 describe('Migrate service unit tests', () => {
-  afterEach(() => {
-    sinon.restore();
-  });
-
   describe('migrateSchema()', () => {
     const creatorID = 123;
     const projectID = 'projectID';
@@ -24,25 +18,25 @@ describe('Migrate service unit tests', () => {
       // eslint-disable-next-line no-restricted-syntax
       for (const state of states) {
         // eslint-disable-next-line no-await-in-loop
-        await expect(generator.next()).to.eventually.eql({ done: false, value: state });
+        await expect(generator.next()).resolves.toEqual({ done: false, value: state });
       }
 
-      await expect(generator.next()).to.eventually.eql({ done: true, value: undefined });
+      await expect(generator.next()).resolves.toEqual({ done: true, value: undefined });
     };
 
     it('yield NOT_ALLOWED if migration in progress', async () => {
-      const isMigrationLocked = sinon.stub().resolves(true);
+      const isMigrationLocked = vi.fn().mockResolvedValue(true);
       const migrateService = new MigrateService({} as any);
       migrateService.isMigrationLocked = isMigrationLocked;
 
       const migrator = migrateService.migrateSchema(creatorID, projectID, versionID, clientNodeID, schemaVersion);
 
       await expectMigrationStates(migrator, [MigrationState.NOT_ALLOWED]);
-      expect(isMigrationLocked).to.be.calledWithExactly(versionID);
+      expect(isMigrationLocked).toBeCalledWith(versionID);
     });
 
     it('yield NOT_REQUIRED if active schema version already meets target version', async () => {
-      const getActiveSchemaVersion = sinon.stub().resolves(Realtime.SchemaVersion.V1);
+      const getActiveSchemaVersion = vi.fn().mockResolvedValue(Realtime.SchemaVersion.V1);
       const migrateService = new MigrateService({} as any);
       migrateService.isMigrationLocked = async () => false;
       migrateService.getActiveSchemaVersion = getActiveSchemaVersion;
@@ -50,7 +44,7 @@ describe('Migrate service unit tests', () => {
       const migrator = migrateService.migrateSchema(creatorID, projectID, versionID, clientNodeID, Realtime.SchemaVersion.V2);
 
       await expectMigrationStates(migrator, [MigrationState.NOT_REQUIRED]);
-      expect(getActiveSchemaVersion).to.be.calledWithExactly(versionID);
+      expect(getActiveSchemaVersion).toBeCalledWith(versionID);
     });
 
     it('yield NOT_SUPPORTED if active schema version is incompatible with target version', async () => {
@@ -68,11 +62,11 @@ describe('Migrate service unit tests', () => {
       const options = {
         services: {
           version: {
-            get: sinon.stub().resolves(version),
+            get: vi.fn().mockResolvedValue(version),
           },
         },
       };
-      const setActiveSchemaVersion = sinon.spy();
+      const setActiveSchemaVersion = vi.fn();
       const migrateService = new MigrateService(options as any);
       migrateService.isMigrationLocked = async () => false;
       migrateService.getActiveSchemaVersion = async () => null;
@@ -81,18 +75,18 @@ describe('Migrate service unit tests', () => {
       const migrator = migrateService.migrateSchema(creatorID, projectID, versionID, clientNodeID, Realtime.SchemaVersion.V2);
 
       await expectMigrationStates(migrator, [MigrationState.NOT_REQUIRED]);
-      expect(setActiveSchemaVersion).to.be.calledWithExactly(versionID, version._version);
+      expect(setActiveSchemaVersion).toBeCalledWith(versionID, version._version);
     });
 
     it('yield NOT_ALLOWED if unable to acquire migration lock', async () => {
       const options = {
         services: {
           version: {
-            get: sinon.stub().resolves({ _version: Realtime.SchemaVersion.V1 }),
+            get: vi.fn().mockResolvedValue({ _version: Realtime.SchemaVersion.V1 }),
           },
         },
       };
-      const acquireMigrationLock = sinon.stub().rejects();
+      const acquireMigrationLock = vi.fn().mockRejectedValue('error');
       const migrateService = new MigrateService(options as any);
       migrateService.isMigrationLocked = async () => false;
       migrateService.getActiveSchemaVersion = async () => null;
@@ -101,18 +95,18 @@ describe('Migrate service unit tests', () => {
       const migrator = migrateService.migrateSchema(creatorID, projectID, versionID, clientNodeID, Realtime.SchemaVersion.V2);
 
       await expectMigrationStates(migrator, [MigrationState.NOT_ALLOWED]);
-      expect(acquireMigrationLock).to.be.calledWithExactly(versionID, clientNodeID);
+      expect(acquireMigrationLock).toBeCalledWith(versionID, clientNodeID);
     });
 
     it('reset migration lock when error encountered', async () => {
       const options = {
         services: {
           version: {
-            get: sinon.stub().resolves({ _version: Realtime.SchemaVersion.V1 }),
+            get: vi.fn().mockResolvedValue({ _version: Realtime.SchemaVersion.V1 }),
           },
         },
       };
-      const resetMigrationLock = sinon.stub().resolves();
+      const resetMigrationLock = vi.fn().mockResolvedValue(undefined);
       const migrateService = new MigrateService(options as any);
       migrateService.isMigrationLocked = async () => false;
       migrateService.getActiveSchemaVersion = async () => null;
@@ -122,9 +116,9 @@ describe('Migrate service unit tests', () => {
       const migrator = migrateService.migrateSchema(creatorID, projectID, versionID, clientNodeID, Realtime.SchemaVersion.V2);
       const generator = migrator[Symbol.asyncIterator]();
 
-      await expect(generator.next()).to.eventually.eql({ done: false, value: MigrationState.STARTED });
-      await expect(generator.next()).to.be.rejected;
-      expect(resetMigrationLock).to.be.calledWithExactly(versionID);
+      await expect(generator.next()).resolves.toEqual({ done: false, value: MigrationState.STARTED });
+      await expect(generator.next()).to.rejects.toThrow();
+      expect(resetMigrationLock).toBeCalledWith(versionID);
     });
 
     it('perform migrations on resources and save them back to the database', async () => {
@@ -133,10 +127,10 @@ describe('Migrate service unit tests', () => {
       const options = {
         services: {
           project: {
-            get: sinon.stub().resolves({ type: Platform.Constants.ProjectType.CHAT, platform: Platform.Constants.PlatformType.VOICEFLOW }),
+            get: vi.fn().mockResolvedValue({ type: Platform.Constants.ProjectType.CHAT, platform: Platform.Constants.PlatformType.VOICEFLOW }),
           },
           version: {
-            get: sinon.stub().resolves({
+            get: vi.fn().mockResolvedValue({
               creatorID,
               projectID,
               _id: versionID,
@@ -146,10 +140,10 @@ describe('Migrate service unit tests', () => {
               name: 'bar',
               rootDiagramID: 'diagramID',
             }),
-            replaceResources: sinon.stub().resolves(),
+            replaceResources: vi.fn().mockResolvedValue(undefined),
           },
           diagram: {
-            getAll: sinon.stub().resolves([
+            getAll: vi.fn().mockResolvedValue([
               {
                 creatorID,
                 versionID,
@@ -160,7 +154,7 @@ describe('Migrate service unit tests', () => {
           },
         },
       };
-      const setActiveSchemaVersion = sinon.stub().resolves();
+      const setActiveSchemaVersion = vi.fn().mockResolvedValue(undefined);
       const migrateService = new MigrateService(options as any);
       migrateService.isMigrationLocked = async () => false;
       migrateService.getActiveSchemaVersion = async () => null;
@@ -170,8 +164,8 @@ describe('Migrate service unit tests', () => {
       const migrator = migrateService.migrateSchema(creatorID, projectID, versionID, clientNodeID, targetSchemaVersion);
 
       await expectMigrationStates(migrator, [MigrationState.STARTED, MigrationState.DONE]);
-      expect(setActiveSchemaVersion).to.be.calledWithExactly(versionID, targetSchemaVersion);
-      expect(options.services.version.replaceResources).to.be.calledWithExactly(
+      expect(setActiveSchemaVersion).toBeCalledWith(versionID, targetSchemaVersion);
+      expect(options.services.version.replaceResources).toBeCalledWith(
         versionID,
         {
           _version: targetSchemaVersion,

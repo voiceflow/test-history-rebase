@@ -94,9 +94,9 @@ export const assertProject: (projectID: string, project: Nullish<Realtime.AnyPro
   assert(project, noProjectByID(projectID));
 };
 
-export const assertVersion: (versionID: string, version: Nullish<Realtime.AnyVersion>) => asserts version is Realtime.AnyVersion = (
-  versionID,
-  version
-) => {
+export const assertVersion: (
+  versionID: string,
+  version: Nullish<Platform.Base.Models.Version.Model>
+) => asserts version is Platform.Base.Models.Version.Model = (versionID, version) => {
   assert(version, noVersionByID(versionID));
 };

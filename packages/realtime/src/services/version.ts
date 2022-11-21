@@ -1,43 +1,30 @@
-import { BaseModels } from '@voiceflow/base-types';
+import { BaseModels, BaseVersion } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { Optional } from 'utility-types';
 
 import { AbstractControl } from '../control';
 import type { DiagramPatchData } from './diagram';
 import AccessCache from './utils/accessCache';
 
-export type VersionPatchData = Partial<
-  Omit<BaseModels.Version.Model<BaseModels.Version.PlatformData>, VersionService['models']['version']['READ_ONLY_KEYS'][number]>
->;
+export type VersionPatchData = Partial<Omit<BaseVersion.Version, VersionService['models']['version']['READ_ONLY_KEYS'][number]>>;
 
 class VersionService extends AbstractControl {
   public access = new AccessCache('version', this.clients, this.services);
 
-  public async get<PlatformData extends BaseModels.Version.PlatformData>(versionID: string): Promise<BaseModels.Version.Model<PlatformData>> {
-    return this.models.version.findByID(versionID).then(this.models.version.adapter.fromDB) as Promise<BaseModels.Version.Model<PlatformData>>;
+  public async get(versionID: string): Promise<BaseVersion.Version> {
+    return this.models.version.findByID(versionID).then(this.models.version.adapter.fromDB);
   }
 
   public async getComponents(creatorID: number, versionID: string): Promise<BaseModels.Version.FolderItem[]> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
-    const fields = ['components'] as const;
-    const { components } = await client.version.get<Pick<BaseModels.Version.Model<BaseModels.Version.PlatformData>, typeof fields[number]>>(
-      versionID,
-      ['components']
-    );
+    const { components } = await client.version.get(versionID, ['components']);
 
     return components ?? [];
   }
 
-  public async getSlots<PlatformData extends BaseModels.Version.PlatformData>(versionID: string): Promise<PlatformData['slots']> {
-    const { platformData } = await this.models.version.findByID(versionID, ['platformData']).then(this.models.version.adapter.fromDB);
-
-    return platformData.slots;
-  }
-
-  async create({ manualSave = false, autoSaveFromRestore = false, ...version }: Optional<BaseModels.Version.Model<any>>) {
+  async create({ manualSave = false, autoSaveFromRestore = false, ...version }: Optional<BaseVersion.Version>) {
     return this.models.version
       .insertOne(this.models.version.adapter.toDB({ ...version, manualSave, autoSaveFromRestore }))
       .then(this.models.version.adapter.fromDB);
@@ -51,11 +38,11 @@ class VersionService extends AbstractControl {
     await this.models.version.deleteByID(versionID);
   }
 
-  public async snapshot<PlatformData extends BaseModels.Version.PlatformData>(
+  public async snapshot(
     creatorID: number,
     versionID: string,
     options: { manualSave?: boolean; name?: string; autoSaveFromRestore?: boolean } = {}
-  ): Promise<{ version: BaseModels.Version.Model<PlatformData>; diagrams: BaseModels.Diagram.Model[] }> {
+  ): Promise<{ version: BaseVersion.Version; diagrams: BaseModels.Diagram.Model[] }> {
     const oldVersion = await this.models.version.findByID(versionID).then(this.models.version.adapter.fromDB);
 
     const oldDiagramIDs = await this.models.diagram
@@ -83,7 +70,7 @@ class VersionService extends AbstractControl {
     });
 
     return {
-      version: version as BaseModels.Version.Model<PlatformData>,
+      version,
       diagrams,
     };
   }
@@ -102,11 +89,11 @@ class VersionService extends AbstractControl {
     await this.patch(versionID, { variables });
   }
 
-  public async patchPlatformData<T extends BaseModels.Version.PlatformData>(versionID: string, platformData: Partial<T>): Promise<void> {
+  public async patchPlatformData(versionID: string, platformData: Partial<BaseVersion.PlatformData>): Promise<void> {
     await this.models.version.updatePlatformData(versionID, platformData);
   }
 
-  public async patchDefaultStepColors(versionID: string, defaultStepColors: Realtime.Version.DefaultStepColors): Promise<void> {
+  public async patchDefaultStepColors(versionID: string, defaultStepColors: BaseModels.Version.DefaultStepColors): Promise<void> {
     await this.models.version.updateDefaultStepColors(versionID, defaultStepColors);
   }
 
@@ -122,15 +109,25 @@ class VersionService extends AbstractControl {
     await this.models.version.component.reorder({ index, sourceID, versionID });
   }
 
-  public async patchPlatformSettings<T extends Realtime.AnyVersionSettings>(
-    creatorID: number,
-    versionID: string,
-    platform: Platform.Constants.PlatformType,
-    settings: Partial<T>
-  ): Promise<void> {
+  public async patchPlatformSettings({
+    type,
+    platform,
+    settings,
+    creatorID,
+    versionID,
+    defaultVoice,
+  }: {
+    type: Platform.Constants.ProjectType;
+    platform: Platform.Constants.PlatformType;
+    settings: Partial<Platform.Base.Models.Version.Settings.Model>;
+    creatorID: number;
+    versionID: string;
+    defaultVoice: string;
+  }): Promise<void> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
+    const projectConfig = Platform.Config.getTypeConfig({ type, platform });
 
-    await client.version.platform(platform).patchSettings(versionID, settings);
+    await client.version.platform(platform).patchSettings(versionID, projectConfig.adapters.version.settings.smart.toDB(settings, { defaultVoice }));
   }
 
   public async patchPlatformSession({
@@ -139,43 +136,54 @@ class VersionService extends AbstractControl {
     platform,
     creatorID,
     versionID,
+    defaultVoice,
   }: {
     type: Platform.Constants.ProjectType;
-    session: Partial<Realtime.Version.Session>;
+    session: Partial<Platform.Base.Models.Version.Session>;
     platform: Platform.Constants.PlatformType;
     creatorID: number;
     versionID: string;
+    defaultVoice: string;
   }): Promise<void> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
+    const projectConfig = Platform.Config.getTypeConfig({ type, platform });
 
-    const {
-      platformData: {
-        settings: { session: dbSession, defaultVoice },
-      },
-    } = await this.get<Realtime.AnyVoiceVersionPlatformData>(versionID);
+    const { platformData } = await this.get(versionID);
 
-    const platformSessionAdapter = Realtime.Adapters.createSessionAdapter({ type, platform });
-
-    const patchedSession = platformSessionAdapter.toDB(
+    const dbSession = projectConfig.adapters.version.session.simple.toDB(
       {
-        ...platformSessionAdapter.fromDB(dbSession, { defaultVoice }),
+        ...projectConfig.adapters.version.session.simple.fromDB(platformData.settings.session, { defaultVoice }),
         ...session,
-      } as Realtime.Version.Session,
+      },
       { defaultVoice }
     );
 
-    await client.version.platform(platform).patchSettings(versionID, { session: patchedSession } as Partial<Realtime.AnyVersionSettings>);
+    if (dbSession) {
+      await client.version.platform(platform).patchSettings(versionID, { session: dbSession });
+    }
   }
 
-  public async patchPlatformPublishing(
-    creatorID: number,
-    versionID: string,
-    platform: Platform.Constants.PlatformType,
-    publishing: Partial<Realtime.AnyVersionPublishing>
-  ): Promise<void> {
+  public async patchPlatformPublishing({
+    type,
+    platform,
+    creatorID,
+    versionID,
+    publishing,
+    defaultVoice,
+  }: {
+    type: Platform.Constants.ProjectType;
+    platform: Platform.Constants.PlatformType;
+    creatorID: number;
+    versionID: string;
+    publishing: Partial<Platform.Base.Models.Version.Publishing.Model>;
+    defaultVoice: string;
+  }): Promise<void> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
+    const projectConfig = Platform.Config.getTypeConfig({ type, platform });
 
-    await client.version.platform(platform).patchPublishing(versionID, publishing);
+    await client.version
+      .platform(platform)
+      .patchPublishing(versionID, projectConfig.adapters.version.publishing.smart.toDB(publishing, { defaultVoice }));
   }
 }
 

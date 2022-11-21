@@ -12,7 +12,7 @@ const CreateNewAgentModal = manager.create<{}, string>('CreateNewAgent', () => (
     loading: false,
   });
 
-  const updateAgentName = useDispatch(Version.dialogflow.updateAgentName);
+  const updateAgentName = useDispatch(Version.updateInvocationName);
 
   const handleSubmit = async () => {
     api.loading.set(true);

@@ -4,7 +4,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Popper, SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
-import PromptForm from '@/components/PromptForm';
+import IntentPromptForm from '@/components/IntentPromptForm';
 import { TextEditorVariablesPopoverProvider } from '@/contexts';
 import IntentRequiredEntitiesSection from '@/pages/Canvas/components/IntentRequiredEntitiesSection';
 
@@ -44,7 +44,7 @@ const RequiredEntity: React.FC<RequiredEntityProps> = ({ entity, entities, inten
             contentProps={{ px: 20, bottomOffset: 2 }}
           >
             <TextEditorVariablesPopoverProvider value={document.body}>
-              <PromptForm
+              <IntentPromptForm
                 slots={entities}
                 prompt={intentEntity.dialog.prompt ?? []}
                 autofocus

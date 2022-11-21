@@ -23,7 +23,7 @@ const Editor: React.FC<EditorProps> = ({ goBack }) => {
 
   const { intentID, entityID } = useParams<{ intentID: string; entityID: string }>();
 
-  const defaultVoice = useSelector(VersionV2.active.defaultVoiceSelector);
+  const defaultVoice = useSelector(VersionV2.active.voice.defaultVoiceSelector);
   const intentEntity = useSelector(IntentV2.intentSlotByIntentIDSlotIDSelector, { id: intentID, slotID: entityID });
   const intentEntityIDs = useSelector(IntentV2.slotsByIntentIDSelector, { id: intentID });
   const intentEntities = useSelector(SlotV2.slotsByIDsSelector, { ids: intentEntityIDs });

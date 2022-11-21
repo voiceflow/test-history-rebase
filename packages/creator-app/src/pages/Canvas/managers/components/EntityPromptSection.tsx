@@ -3,7 +3,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
-import PromptForm from '@/components/PromptForm';
+import IntentPromptForm from '@/components/IntentPromptForm';
 import { isEmptyPrompt } from '@/utils/prompt';
 
 interface EntityPromptSectionProps {
@@ -48,7 +48,7 @@ const EntityPromptSection: React.FC<EntityPromptSectionProps> = ({
       collapsed={collapsed}
       contentProps={{ bottomOffset: 2.5 }}
     >
-      <PromptForm
+      <IntentPromptForm
         slots={intentEntities}
         prompt={prompt}
         onChange={(prompt) => !removingRef.current && onChange(prompt)}

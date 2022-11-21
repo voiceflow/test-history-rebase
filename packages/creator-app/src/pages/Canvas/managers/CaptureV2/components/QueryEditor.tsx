@@ -22,7 +22,7 @@ const QueryEditor: React.FC<{ disableAnimation: boolean }> = ({ disableAnimation
   const projectConfig = useActiveProjectTypeConfig();
 
   const allSlots = useSelector(SlotV2.allSlotsSelector);
-  const defaultVoice = useSelector(VersionV2.active.defaultVoiceSelector);
+  const defaultVoice = useSelector(VersionV2.active.voice.defaultVoiceSelector);
   const { variables, createVariable } = useVariableCreation();
 
   const options = useEntitiesOptions(allSlots);

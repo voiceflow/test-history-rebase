@@ -1,10 +1,10 @@
-import { BaseModels } from '@voiceflow/base-types';
+import { BaseModels, BaseVersion } from '@voiceflow/base-types';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Draft } from 'immer';
 
 export type VersionUpdateData = Pick<
-  BaseModels.Version.Model<BaseModels.Version.PlatformData>,
+  BaseVersion.Version,
   | '_version'
   | 'name'
   | 'variables'

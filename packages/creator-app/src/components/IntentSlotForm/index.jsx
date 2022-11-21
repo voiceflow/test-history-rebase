@@ -4,8 +4,8 @@ import React from 'react';
 import { withProps } from 'recompose';
 
 import ListManagerWrapper from '@/components/IntentForm/components/ListManagerWrapper';
+import IntentPromptForm from '@/components/IntentPromptForm';
 import ListManager from '@/components/ListManager';
-import PromptForm from '@/components/PromptForm';
 import Section, { SectionToggleVariant, UncontrolledSection } from '@/components/Section';
 import Utterance from '@/components/Utterance';
 import { NamespaceProvider } from '@/contexts';
@@ -94,7 +94,7 @@ function IntentSlotForm({ slot, platform, intentSlot, slotsMap, intent, standalo
         >
           <Section header="Entity Reprompt" tooltip={<SlotPromptTooltip />} isNested dividerIsNested>
             <FormControl>
-              <PromptForm
+              <IntentPromptForm
                 slots={variablesSlots}
                 prompt={prompt}
                 onChange={onChangePrompt}
@@ -175,7 +175,7 @@ function IntentSlotForm({ slot, platform, intentSlot, slotsMap, intent, standalo
               collapseVariant={SectionToggleVariant.TOGGLE}
             >
               <FormControl>
-                <PromptForm.VoiceForm
+                <IntentPromptForm.VoiceForm
                   slots={variablesSlots}
                   prompt={confirm}
                   onChange={onChangeConfirm}

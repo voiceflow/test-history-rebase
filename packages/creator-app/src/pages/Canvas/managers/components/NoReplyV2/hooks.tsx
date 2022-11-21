@@ -14,7 +14,7 @@ import { PATH } from './constants';
 export const useConfig = (): OptionalSectionConfig => {
   const editor = EditorV2.useEditor<{ noReply?: Nullable<Realtime.NodeData.NoReply> }>();
 
-  const defaultVoice = useSelector(VersionV2.active.defaultVoiceSelector);
+  const defaultVoice = useSelector(VersionV2.active.voice.defaultVoiceSelector);
 
   const { noReply } = editor.data;
 

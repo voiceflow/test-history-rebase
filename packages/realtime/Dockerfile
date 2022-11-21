@@ -18,6 +18,7 @@ RUN apk --no-cache add git dumb-init
 
 WORKDIR /usr/src/app
 COPY ./build ./
+COPY ./loaders ./loaders/
 COPY ./package.json ./
 COPY ./yarn.lock ./
 
@@ -29,4 +30,4 @@ RUN echo $NPM_TOKEN > .npmrc && \
   yarn cache clean
 
 ENTRYPOINT [ "dumb-init" ]
-CMD ["node", "--experimental-specifier-resolution=node", "index.js"]
+CMD ["node", "--experimental-specifier-resolution=node -r ./loaders/static-loader.cjs", "index.js"]

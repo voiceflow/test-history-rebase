@@ -1,8 +1,8 @@
 import { usePopper } from '@ui/hooks';
+import { styled } from '@ui/styles';
 import { stopPropagation } from '@ui/utils';
 import React from 'react';
 import { useDismissable } from 'react-dismissable-layers';
-import styled from 'styled-components';
 
 import Badge from '../../../Badge';
 import Input from '../../../Input';

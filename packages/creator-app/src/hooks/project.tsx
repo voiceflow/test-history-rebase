@@ -234,6 +234,7 @@ export const useProjectOptions = ({
 
 export const useAlexaProjectSettings = (): boolean => {
   const project = useSelector(ProjectV2.active.projectSelector);
+
   if (!project?.id || !project?.platform) return false;
 
   if (project.platform !== Platform.Constants.PlatformType.ALEXA) return true;

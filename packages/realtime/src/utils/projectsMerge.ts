@@ -1,5 +1,5 @@
 import { AlexaProject } from '@voiceflow/alexa-types';
-import { BaseModels, BaseText } from '@voiceflow/base-types';
+import { BaseModels, BaseText, BaseVersion } from '@voiceflow/base-types';
 import { AnyRecord, Utils } from '@voiceflow/common';
 import { slate } from '@voiceflow/internal';
 import * as Platform from '@voiceflow/platform-config';
@@ -10,9 +10,9 @@ import { Element as SlateElement } from 'slate';
 interface Options {
   creatorID: number;
   targetProject: BaseModels.Project.Model<AnyRecord, AnyRecord>;
-  targetVersion: BaseModels.Version.Model<BaseModels.Version.PlatformData>;
+  targetVersion: BaseVersion.Version;
   sourceProject: BaseModels.Project.Model<AnyRecord, AnyRecord>;
-  sourceVersion: BaseModels.Version.Model<BaseModels.Version.PlatformData>;
+  sourceVersion: BaseVersion.Version;
   sourceDiagrams: BaseModels.Diagram.Model[];
 }
 
@@ -21,11 +21,11 @@ class ProjectsMerge {
 
   private targetProject: BaseModels.Project.Model<AnyRecord, AnyRecord>;
 
-  private targetVersion: BaseModels.Version.Model<BaseModels.Version.PlatformData>;
+  private targetVersion: BaseVersion.Version;
 
   private sourceProject: BaseModels.Project.Model<AnyRecord, AnyRecord>;
 
-  private sourceVersion: BaseModels.Version.Model<BaseModels.Version.PlatformData>;
+  private sourceVersion: BaseVersion.Version;
 
   private sourceDiagrams: BaseModels.Diagram.Model[];
 

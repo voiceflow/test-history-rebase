@@ -6,7 +6,7 @@ import React from 'react';
 import OverflowMenu from '@/components/OverflowMenu';
 import { DialogType } from '@/constants';
 import * as VersionV2 from '@/ducks/versionV2';
-import { useActiveProjectTypeConfig, useSelector } from '@/hooks';
+import { useSelector } from '@/hooks';
 import { ControlOptions } from '@/pages/Canvas/components/Editor';
 import ListEditorContent, { ListItemComponent } from '@/pages/Canvas/components/ListEditorContent';
 import { AUDIO_MOCK_DATA, NODE_CONFIG, VOICE_MOCK_DATA } from '@/pages/Canvas/managers/Speak/constants';
@@ -66,14 +66,12 @@ const SpeakAudioList: React.FC<SpeakAudioListProps> = ({
   getControlOptions,
   onChangeRandomize,
 }) => {
-  const projectTypeConfig = useActiveProjectTypeConfig();
+  const defaultVoice = useSelector(VersionV2.active.voice.defaultVoiceSelector);
 
   const updateItems = React.useCallback((newItems: Realtime.SpeakData[]) => onChangeItems?.(newItems), [onChangeItems]);
   const toggleRandomized = React.useCallback(() => onChangeRandomize?.(!randomize), [randomize, onChangeRandomize]);
 
-  const defaultVoice = useSelector(VersionV2.active.defaultVoiceSelector);
-
-  const factory = speakAudioFactory({ defaultVoice: defaultVoice || projectTypeConfig.project.voice.default });
+  const factory = speakAudioFactory({ defaultVoice });
 
   return (
     <ListEditorContent

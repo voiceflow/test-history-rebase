@@ -1,50 +1,35 @@
-import { BaseNode } from '@voiceflow/base-types';
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { Button, Modal, toast } from '@voiceflow/ui';
-import { VoiceflowUtils } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import PromptInput from '@/components/PromptInput';
-import { getDefaultPrompt } from '@/components/PromptInput/utils';
-import * as ProjectV2 from '@/ducks/projectV2';
 import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
-import { useDispatch, useHotKeys, useSelector } from '@/hooks';
+import { useActiveProjectTypeConfig, useDispatch, useHotKeys, useSelector } from '@/hooks';
 import { Hotkey } from '@/keymap';
 
 import manager from '../../manager';
 
-const GlobalNoMatchModal = manager.create('GlobalNoMatchModal', () => ({ api, type, opened, hidden, animated }) => {
+const GlobalNoMatchModal = manager.create('GlobalNoMatchModal', () => ({ api, type, opened, hidden, animated, closePrevented }) => {
+  const projectConfig = useActiveProjectTypeConfig();
+
+  const defaultVoice = useSelector(VersionV2.active.voice.defaultVoiceSelector);
+  const globalNoMatch = useSelector(VersionV2.active.globalNoMatchSelector);
+
   const patchSettings = useDispatch(Version.patchSettings);
-  const settings = useSelector(VersionV2.active.settingsSelector);
-  const platform = useSelector(ProjectV2.active.platformSelector);
-  const projectType = useSelector(ProjectV2.active.projectTypeSelector);
 
-  const [isSubmitting, setIsSubmitting] = React.useState(false);
-  const [value, setValue] = React.useState<VoiceflowUtils.prompt.AnyPrompt>(
-    settings?.globalNoMatch?.prompt ?? getDefaultPrompt(projectType, platform)
-  );
-
-  const onUpdate = (partial: Partial<VoiceflowUtils.prompt.AnyPrompt>) =>
-    setValue((state) => ({ ...state, ...(partial as VoiceflowUtils.prompt.AnyPrompt) }));
+  const [prompt, setPrompt] = React.useState(() => globalNoMatch?.prompt ?? projectConfig.utils.prompt.factory({ defaultVoice }));
 
   const onSubmit: React.MouseEventHandler = async () => {
     try {
-      setIsSubmitting(true);
       api.preventClose();
 
-      await patchSettings({
-        globalNoMatch: {
-          prompt: value,
-        },
-      } as Partial<Realtime.AnyVersionSettings>);
+      await patchSettings({ globalNoMatch: { prompt } });
 
       api.enableClose();
       api.close();
     } catch {
+      api.enableClose();
       toast.error('Failed to update Global No Match.');
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
@@ -52,12 +37,14 @@ const GlobalNoMatchModal = manager.create('GlobalNoMatchModal', () => ({ api, ty
 
   return (
     <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} maxWidth={450}>
-      <Modal.Header actions={<Modal.Header.CloseButton disabled={isSubmitting} onClick={api.close} />}>Global No Match</Modal.Header>
+      <Modal.Header actions={<Modal.Header.CloseButton disabled={closePrevented} onClick={api.close} />}>Global No Match</Modal.Header>
+
       <Modal.Body>
-        <PromptInput onUpdate={onUpdate} value={value as BaseNode.Text.TextData} placeholder="Enter default no match response" />
+        <PromptInput value={prompt} onChange={setPrompt} placeholder="Enter default no match response" />
       </Modal.Body>
+
       <Modal.Footer gap={12}>
-        <Button variant={Button.Variant.PRIMARY} disabled={isSubmitting} squareRadius onClick={onSubmit}>
+        <Button variant={Button.Variant.PRIMARY} disabled={closePrevented} squareRadius onClick={onSubmit}>
           Save
         </Button>
       </Modal.Footer>

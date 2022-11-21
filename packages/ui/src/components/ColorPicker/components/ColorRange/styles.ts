@@ -1,5 +1,5 @@
 import IconButton from '@ui/components/IconButton';
-import styled from 'styled-components';
+import { styled } from '@ui/styles';
 
 import { BoxFlex } from '../../../Box';
 

@@ -1,5 +1,4 @@
 import { ObjectId } from 'bson';
-import { expect } from 'chai';
 import { Db, MongoClient } from 'mongodb';
 
 import config from '@/config';
@@ -16,7 +15,7 @@ describe('mongo model integrations tests', () => {
   let db: Db;
   let model: TestModel;
 
-  before(async () => {
+  beforeAll(async () => {
     client = await MongoClient.connect(config.MONGO_URI, { useUnifiedTopology: true });
     db = client.db(config.MONGO_DB);
     model = new TestModel(null as any, { clients: { mongo: { db } } } as any);
@@ -28,7 +27,7 @@ describe('mongo model integrations tests', () => {
     await db.collection(collectionName).deleteMany({});
   });
 
-  after(async () => {
+  afterAll(async () => {
     await client.close();
   });
 

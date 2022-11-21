@@ -7,8 +7,6 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Utils } from '@voiceflow/realtime-sdk';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
-import type { AnyLocale } from '@/platforms';
-
 import { toVoiceflowLocale, voiceflowLocaleToVoiceflowLang } from './locale';
 
 export const {
@@ -67,7 +65,7 @@ export const toVoiceflowSlotType = (type: string, platform: Platform.Constants.P
   }
 };
 
-export const getBuiltInSynonyms = (type: string, locale: AnyLocale, platform: Platform.Constants.PlatformType): string[] => {
+export const getBuiltInSynonyms = (type: string, locale: string, platform: Platform.Constants.PlatformType): string[] => {
   const voiceflowSlotType = toVoiceflowSlotType(type, platform);
   const voiceflowLocale = toVoiceflowLocale(locale, platform);
 

@@ -16,7 +16,7 @@ export const smart = createSmartSimpleAdapter<
 >(
   ({ error, globalNoMatch, globalNoReply, ...dbSettings }, { defaultVoice }) => ({
     ...Base.Adapters.Version.Settings.smart.fromDB(dbSettings, { defaultVoice: dbSettings.defaultVoice ?? defaultVoice }),
-    ...(ConfigUtils.hasValue(dbSettings, 'defaultVoice') && { messageDelay: dbSettings.defaultVoice ?? defaultVoice }),
+    ...(ConfigUtils.hasValue(dbSettings, 'defaultVoice') && { defaultVoice: dbSettings.defaultVoice ?? defaultVoice }),
     ...(error !== undefined && { error: error && Prompt.simple.fromDB(error) }),
     ...(globalNoMatch !== undefined && {
       globalNoMatch: { ...globalNoMatch, prompt: globalNoMatch.prompt && Prompt.simple.fromDB(globalNoMatch.prompt) },

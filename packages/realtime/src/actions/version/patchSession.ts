@@ -14,6 +14,7 @@ class PatchVersionSession extends AbstractVersionResourceControl<Realtime.versio
       platform: payload.platform,
       versionID: payload.versionID,
       creatorID: ctx.data.creatorID,
+      defaultVoice: payload.defaultVoice,
     });
   };
 }

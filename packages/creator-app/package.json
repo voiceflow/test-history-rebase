@@ -33,7 +33,6 @@
     "@voiceflow/react-chat": "1.28.2",
     "@voiceflow/realtime-sdk": "^1.196.0",
     "@voiceflow/ui": "^1.183.1",
-    "@voiceflow/voice-types": "2.8.17",
     "@voiceflow/voiceflow-types": "3.21.2",
     "apl-viewhost-web": "1.8.2",
     "axios": "0.24.0",
@@ -90,7 +89,7 @@
     "react-color": "2.19.3",
     "react-countdown": "2.3.2",
     "react-day-picker": "7.4.10",
-    "react-dismissable-layers": "0.3.0",
+    "react-dismissable-layers": "0.3.1",
     "react-dnd": "13.1.1",
     "react-dnd-html5-backend": "14.0.2",
     "react-dom": "17.0.2",
@@ -197,9 +196,8 @@
     "mock-local-storage": "1.1.23",
     "node-noop": "1.0.0",
     "null-loader": "4.0.1",
-    "tslib": "2.4.0",
-    "vite-plugin-rewrite-all": "1.0.0",
-    "vitest": "0.24.3"
+    "tslib": "2.4.1",
+    "vite-plugin-rewrite-all": "1.0.0"
   },
   "homepage": "https://github.com/voiceflow/creator-app#readme",
   "keywords": [
@@ -259,7 +257,7 @@
     "test": "vitest run --silent --coverage",
     "test:dependencies": "depcheck ",
     "test:integration": "exit 0",
-    "test:unit": "vitest run --silent --coverage .unit",
+    "test:unit": "REPORTS_DIRECTORY=coverage/unit vitest run .unit --silent --coverage",
     "types": "tsc --project tsconfig.build.json --noEmit --skipLibCheck"
   }
 }

@@ -1,12 +1,11 @@
-import { AlexaConstants, AlexaUtils } from '@voiceflow/alexa-types';
+import { AlexaConstants } from '@voiceflow/alexa-types';
 import { Utils } from '@voiceflow/common';
 import { DFESConstants } from '@voiceflow/google-dfes-types';
-import { GoogleConstants, GoogleUtils } from '@voiceflow/google-types';
+import { GoogleConstants } from '@voiceflow/google-types';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Input, Select, Upload, UploadIconVariant, useDidUpdateEffect } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
-import _constant from 'lodash/constant';
 import React from 'react';
 
 import DropdownMultiselect from '@/components/DropdownMultiselect';
@@ -14,16 +13,14 @@ import Section, { SectionVariant } from '@/components/Section';
 import { GENERAL_LOCALE_NAME_MAP, GENERAL_LOCALES_OPTIONS } from '@/constants/platforms';
 import * as Project from '@/ducks/project';
 import * as ProjectV2 from '@/ducks/projectV2';
-import * as Session from '@/ducks/session';
 import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
-import { connect } from '@/hocs';
+import { useActiveProjectTypeConfig, useDispatch, useSelector } from '@/hooks';
 import { FORMATTED_DIALOGFLOW_LOCALES, FORMATTED_DIALOGFLOW_LOCALES_LABELS, getDialogflowLocaleLanguage } from '@/pages/Publish/Dialogflow/utils';
 import { FORMATTED_GOOGLE_LOCALES_LABELS, FORMATTED_LOCALES, getLocaleLanguage } from '@/pages/Publish/Google/utils';
 import { DescriptorContainer } from '@/pages/Settings/components/ContentDescriptors/components';
 import LOCALE_MAP from '@/services/LocaleMap';
-import { ConnectedProps } from '@/types';
-import { isAlexaPlatform, isDialogflowPlatform, isGooglePlatform, isPlatformWithInvocationName, isVoiceflowPlatform } from '@/utils/typeGuards';
+import { isAlexaPlatform, isDialogflowPlatform, isGooglePlatform } from '@/utils/typeGuards';
 
 import { PlatformSettingsMetaProps, SettingSections } from '../../../../constants';
 import { headerStyling, SectionErrorMessage, sectionStyling } from './styles';
@@ -36,30 +33,25 @@ interface BasicProps {
   platformMeta: PlatformSettingsMetaProps;
 }
 
-const LanguagesDescriptor: React.FC = () => <DescriptorContainer>The language(s) that your assistant supports.</DescriptorContainer>;
-
-const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
-  invocationName,
-  agentName,
-  locales,
-  project,
-  platform,
-  platformMeta,
-  updateLocales,
-  updateProjectName,
-  updateProjectImage,
-  updateInvocationName,
-  updateAgentName,
-}) => {
+const Basic: React.FC<BasicProps> = ({ platform, platformMeta }) => {
+  const projectConfig = useActiveProjectTypeConfig();
   const { descriptors, localeText } = platformMeta;
 
-  const initialDialogflowLanguage = React.useMemo(() => getDialogflowLocaleLanguage(locales as any[]), [locales]);
-  const initialGoogleLanguage = React.useMemo(() => getLocaleLanguage(locales as GoogleConstants.Locale[]), [locales]);
+  const project = useSelector(ProjectV2.active.projectSelector);
+  const locales = useSelector(VersionV2.active.localesSelector);
+  const storedInvocationName = useSelector(VersionV2.active.invocationNameSelector);
 
-  const [newInvocation, setNewInvocation] = React.useState(invocationName ?? '');
-  const [newProjectName, setNewProjectName] = React.useState(project?.name ?? '');
+  const updateLocales = useDispatch(Version.updateLocales);
+  const updateProjectName = useDispatch(Project.updateActiveProjectName);
+  const updateProjectImage = useDispatch(Project.updateProjectImage);
+  const updateInvocationName = useDispatch(Version.updateInvocationName);
+
+  const initialGoogleLanguage = React.useMemo(() => getLocaleLanguage(locales as GoogleConstants.Locale[]), [locales]);
+  const initialDialogflowLanguage = React.useMemo(() => getDialogflowLocaleLanguage(locales as any[]), [locales]);
+
+  const [projectName, setProjectName] = React.useState(project?.name ?? '');
   const [projectImage, setProjectImage] = React.useState(project?.image ?? null);
-  const [newAgentName, setNewAgentName] = React.useState(agentName || '');
+  const [invocationName, setInvocationName] = React.useState(storedInvocationName ?? '');
 
   const [alexaLocales, setAlexaLocales] = React.useState<AlexaConstants.Locale[]>((locales || []) as AlexaConstants.Locale[]);
   const [generalLocale, setGeneralLocale] = React.useState<VoiceflowConstants.Locale>((locales as VoiceflowConstants.Locale[])[0]);
@@ -70,19 +62,6 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
     platform === Platform.Constants.PlatformType.ALEXA
       ? alexaLocales.map((localValue) => LOCALE_MAP.find((locale) => locale.value === localValue)!.label).join(', ')
       : '';
-
-  const invocationError =
-    newInvocation &&
-    Realtime.Utils.platform.createPlatformSelector<(name?: string, locales?: any[]) => string | null>(
-      {
-        [Platform.Constants.PlatformType.ALEXA]: AlexaUtils.getInvocationNameError,
-        [Platform.Constants.PlatformType.GOOGLE]: GoogleUtils.getInvocationNameError,
-      },
-      _constant(null)
-    )(platform)(
-      newInvocation,
-      isGooglePlatform(platform) ? GoogleConstants.LanguageToLocale[googleLanguage as GoogleConstants.Language] : alexaLocales
-    );
 
   const saveAlexaLocales = () => (isAlexaPlatform(platform) && locales !== alexaLocales ? updateLocales(alexaLocales) : null);
 
@@ -96,17 +75,22 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
       ? updateLocales(DFESConstants.LanguageToLocale[dialogflowLanguage as DFESConstants.Language])
       : null;
 
-  const saveSettings = async () => {
-    await Promise.all([
-      updateProjectName(newProjectName),
-      !isVoiceflowPlatform(platform) ? updateInvocationName(newInvocation) : null,
+  const invocationError = projectConfig.utils.invocationName.validate({
+    value: invocationName,
+    locales: isGooglePlatform(platform) ? GoogleConstants.LanguageToLocale[googleLanguage as GoogleConstants.Language] : alexaLocales,
+  });
+
+  const onSaveInvocationName = () => projectConfig.project.invocationName && !invocationError && updateInvocationName(invocationName);
+
+  const saveSettings = async () =>
+    Promise.all([
+      updateProjectName(projectName),
+      onSaveInvocationName(),
       project && projectImage ? updateProjectImage(project.id, projectImage) : null,
-      newAgentName ? updateAgentName(newAgentName as string) : null,
       saveAlexaLocales(),
       saveGoogleLocales(),
       saveDialogflowLocales(),
     ]);
-  };
 
   useDidUpdateEffect(() => {
     saveSettings();
@@ -115,58 +99,49 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
   return (
     <>
       <Section
-        customHeaderStyling={headerStyling}
-        customContentStyling={sectionStyling}
+        header="Assistant Name"
         variant={SectionVariant.QUATERNARY}
         contentSuffix={descriptors.projectName}
-        header="Assistant Name"
+        customHeaderStyling={headerStyling}
+        customContentStyling={sectionStyling}
       >
         <Box.Flex>
-          <Input value={newProjectName} onChangeText={setNewProjectName} onBlur={saveSettings} />
+          <Input value={projectName} onChangeText={setProjectName} onBlur={saveSettings} />
+
           <Box ml={16}>
             <Upload.IconUpload size={UploadIconVariant.EXTRA_SMALL} update={setProjectImage} image={projectImage ?? ''} />
           </Box>
         </Box.Flex>
       </Section>
 
-      {isDialogflowPlatform(platform) && (
+      {!!projectConfig.project.invocationName && (
         <Section
-          customHeaderStyling={headerStyling}
-          customContentStyling={sectionStyling}
+          header={projectConfig.project.invocationName.name}
           variant={SectionVariant.QUATERNARY}
           contentSuffix={
-            !newAgentName
-              ? () => <SectionErrorMessage marginTop={12}>Your agent requires a valid name to be uploaded</SectionErrorMessage>
-              : descriptors.agentName
-          }
-          header="Agent Name"
-        >
-          <Box.Flex>
-            <Input value={newAgentName} onChangeText={setNewAgentName} placeholder="Enter agent name" onBlur={saveSettings} error={!newAgentName} />
-          </Box.Flex>
-        </Section>
-      )}
-
-      {isPlatformWithInvocationName(platform) && (
-        <Section
-          header="Invocation Name"
-          variant={SectionVariant.QUATERNARY}
-          contentSuffix={
-            invocationError && newInvocation
-              ? () => <SectionErrorMessage marginTop={16}>{invocationError}</SectionErrorMessage>
-              : descriptors.invocationName
+            invocationError ? (
+              <SectionErrorMessage marginTop={16}>{invocationError}</SectionErrorMessage>
+            ) : (
+              <DescriptorContainer>{projectConfig.project.invocationName.description}</DescriptorContainer>
+            )
           }
           customHeaderStyling={headerStyling}
           customContentStyling={sectionStyling}
         >
-          <Input error={!!invocationError} value={newInvocation} onBlur={saveSettings} onChangeText={setNewInvocation} />
+          <Input
+            error={!!invocationError}
+            value={invocationName}
+            onBlur={onSaveInvocationName}
+            placeholder={projectConfig.project.invocationName.placeholder}
+            onChangeText={setInvocationName}
+          />
         </Section>
       )}
 
       <Section
         header={localeText || 'Language'}
         variant={SectionVariant.QUATERNARY}
-        contentSuffix={descriptors.localesDescriptor || LanguagesDescriptor}
+        contentSuffix={descriptors.localesDescriptor || <DescriptorContainer>The language(s) that your assistant supports.</DescriptorContainer>}
         customHeaderStyling={headerStyling}
         customContentStyling={sectionStyling}
       >
@@ -233,22 +208,4 @@ const Basic: React.FC<ConnectedBasicProps & BasicProps> = ({
   );
 };
 
-const mapStateToProps = {
-  versionID: Session.activeVersionIDSelector,
-  project: ProjectV2.active.projectSelector,
-  invocationName: VersionV2.active.invocationNameSelector,
-  agentName: VersionV2.active.dialogflow.agentNameSelector,
-  locales: VersionV2.active.localesSelector,
-};
-
-const mapDispatchToProps = {
-  updateInvocationName: Version.updateInvocationName,
-  updateProjectName: Project.updateActiveProjectName,
-  updateLocales: Version.updateLocales,
-  updateProjectImage: Project.updateProjectImage,
-  updateAgentName: Version.dialogflow.updateAgentName,
-};
-
-type ConnectedBasicProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
-
-export default connect(mapStateToProps, mapDispatchToProps)(Basic);
+export default Basic;

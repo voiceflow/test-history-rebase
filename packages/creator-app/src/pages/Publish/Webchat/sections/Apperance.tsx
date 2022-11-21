@@ -4,8 +4,8 @@ import { Box, Button, ButtonVariant, Label, ThemeColor, Upload } from '@voiceflo
 import React from 'react';
 
 import ColorInput from '@/components/ColorInput';
-import * as VoiceflowVersion from '@/ducks/version/platform/general';
-import * as Version from '@/ducks/versionV2';
+import * as Version from '@/ducks/version';
+import * as VersionV2 from '@/ducks/versionV2';
 import { useDispatch, useSelector } from '@/hooks';
 import { upload } from '@/utils/dom';
 
@@ -14,15 +14,15 @@ import { PreviewCrop, SelectorBox, SelectorLine } from './styled';
 
 export const ApperanceSection: React.FC = () => {
   const now = React.useMemo(() => Date.now(), []);
-  const config = useSelector(Version.active.general.chatPublishingSelector);
-  const updateConfig = useDispatch(VoiceflowVersion.patchActiveAndLivePublishing);
+  const config = useSelector(VersionV2.active.voiceflow.chat.publishingSelector);
+  const updateConfig = useDispatch(Version.voiceflow.chat.patchActiveAndLivePublishing);
 
   const imageUploader = Upload.useUpload({ fileType: 'image', endpoint: '/image' });
 
   const startUpload = (property: 'image' | 'avatar' | 'launcher') => () => {
     const uploadImage = async (files: FileList) => {
       const url = await imageUploader.onUpload('/image', files[0]);
-      updateConfig({ [property]: url });
+      updateConfig({ [property]: url }, { track: true });
     };
 
     upload(uploadImage, { multiple: false, accept: '.jpg,.jpeg,.png,.svg' });
@@ -32,7 +32,7 @@ export const ApperanceSection: React.FC = () => {
     <Section icon="apperance" title="Appearance" description="Customize the look and feel of your chat widget">
       <Section.Group width={164}>
         <Label>Main Color</Label>
-        <ColorInput value={config.color} onChange={(color) => updateConfig({ color })} />
+        <ColorInput value={config.color} onChange={(color) => updateConfig({ color }, { track: true })} />
       </Section.Group>
       <Section.Group>
         <Label>Launcher</Label>

@@ -28,10 +28,9 @@ export const SSMLWithSlots: React.FC<SSMLWithSlotsProps> = ({ voice, slots, auto
 
   const locales = useSelector(VersionV2.active.localesSelector);
   const platform = useSelector(ProjectV2.active.platformSelector);
-  const projectType = useSelector(ProjectV2.active.projectTypeSelector);
-  const defaultVoice = useSelector(VersionV2.active.defaultVoiceSelector);
+  const defaultVoice = useSelector(VersionV2.active.voice.defaultVoiceSelector);
 
-  const updateDefaultVoice = useDispatch(Version.updateDefaultVoice);
+  const updateDefaultVoice = useDispatch(Version.voice.updateDefaultVoice);
 
   useSetup(() => {
     if (autofocus) {
@@ -42,14 +41,14 @@ export const SSMLWithSlots: React.FC<SSMLWithSlotsProps> = ({ voice, slots, auto
   return (
     <SSML
       ref={ssmlRef}
-      voice={voice || defaultVoice || projectTypeConfig.project.voice.default}
+      voice={voice || defaultVoice}
       space
       locales={locales}
       platform={platform}
       variables={slots}
       creatable={false}
-      projectType={projectType}
-      defaultVoice={defaultVoice || projectTypeConfig.project.voice.default}
+      projectType={projectTypeConfig.type}
+      defaultVoice={defaultVoice}
       withVariablesPlugin={isSlotsInRepromptValid(platform)}
       platformDefaultVoice={projectTypeConfig.project.voice.default}
       onChangeDefaultVoice={updateDefaultVoice}

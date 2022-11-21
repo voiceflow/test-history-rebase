@@ -1,4 +1,4 @@
-import { BaseModels } from '@voiceflow/base-types';
+import { BaseModels, BaseVersion } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import { createSmartMultiAdapter } from 'bidirectional-adapter';
 import { ObjectId } from 'bson';
@@ -18,12 +18,9 @@ const DOUBLE_KEYS = ['_version'] as const;
 const READ_ONLY_KEYS = ['_id', 'creatorID', 'projectID'] as const;
 const OBJECT_ID_KEYS = ['_id', 'projectID', 'rootDiagramID', 'templateDiagramID'] as const;
 
-type DBVersionModel = Bson.NumberToDouble<
-  Bson.StringToObjectID<BaseModels.Version.Model<BaseModels.Version.PlatformData>, typeof OBJECT_ID_KEYS[number]>,
-  typeof DOUBLE_KEYS[number]
->;
+type DBVersionModel = Bson.NumberToDouble<Bson.StringToObjectID<BaseVersion.Version, typeof OBJECT_ID_KEYS[number]>, typeof DOUBLE_KEYS[number]>;
 
-class VersionModel extends AbstractModel<DBVersionModel, BaseModels.Version.Model<BaseModels.Version.PlatformData>, typeof READ_ONLY_KEYS[number]> {
+class VersionModel extends AbstractModel<DBVersionModel, BaseVersion.Version, typeof READ_ONLY_KEYS[number]> {
   READ_ONLY_KEYS = READ_ONLY_KEYS;
 
   note = new Note(this);
@@ -44,7 +41,7 @@ class VersionModel extends AbstractModel<DBVersionModel, BaseModels.Version.Mode
 
   collectionName = 'versions';
 
-  adapter = createSmartMultiAdapter<DBVersionModel, BaseModels.Version.Model<BaseModels.Version.PlatformData>>(
+  adapter = createSmartMultiAdapter<DBVersionModel, BaseVersion.Version>(
     Utils.functional.compose(Bson.doubleToNumber(DOUBLE_KEYS), Bson.objectIdToString(OBJECT_ID_KEYS)),
     Utils.functional.compose(Bson.numberToDouble(DOUBLE_KEYS), Bson.stringToObjectId(OBJECT_ID_KEYS))
   );

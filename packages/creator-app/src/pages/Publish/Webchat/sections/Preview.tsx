@@ -18,7 +18,7 @@ const ACTIONS = [
 export const PreviewSection: React.FC = () => {
   const startTime = React.useMemo(() => Date.now(), []);
 
-  const config = useSelector(Version.active.general.chatPublishingSelector);
+  const config = useSelector(Version.active.voiceflow.chat.publishingSelector);
 
   return (
     <ChatWidget.ChatContainer>

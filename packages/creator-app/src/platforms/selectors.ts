@@ -1,9 +1,5 @@
-import { AlexaConstants } from '@voiceflow/alexa-types';
-import { DFESConstants } from '@voiceflow/google-dfes-types';
-import { GoogleConstants } from '@voiceflow/google-types';
 import * as Platform from '@voiceflow/platform-config';
 import { Utils } from '@voiceflow/realtime-sdk';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import { applyAlexaIntentNameFormatting, applyLUISIntentNameFormatting } from '@/utils/intent/platform';
 
@@ -17,8 +13,6 @@ import { UTTERANCE_RECOMMENDATIONS_LOCALES as GENERAL_UTTERANCE_RECOMMENDATIONS_
 import googleClient from './google/client';
 import { UTTERANCE_RECOMMENDATIONS_LOCALES as GOOGLE_UTTERANCE_RECOMMENDATIONS_LOCALES } from './google/constants';
 import { PlatformClient } from './types';
-
-export type AnyLocale = VoiceflowConstants.Locale | AlexaConstants.Locale | GoogleConstants.Locale | DFESConstants.Locale;
 
 export const platformClients = {
   alexa: alexaClient,
@@ -47,7 +41,7 @@ export const getPlatformIntentNameFormatter = Utils.platform.createPlatformSelec
   applyLUISIntentNameFormatting
 );
 
-export const getUtteranceRecommendationsLocales = Utils.platform.createPlatformSelector<AnyLocale[]>(
+export const getUtteranceRecommendationsLocales = Utils.platform.createPlatformSelector<string[]>(
   {
     [Platform.Constants.PlatformType.ALEXA]: ALEXA_UTTERANCE_RECOMMENDATIONS_LOCALES,
     [Platform.Constants.PlatformType.GOOGLE]: GOOGLE_UTTERANCE_RECOMMENDATIONS_LOCALES,

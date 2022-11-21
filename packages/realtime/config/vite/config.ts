@@ -1,19 +1,37 @@
+import defineConfig from '@voiceflow/vite-config';
 import path from 'path';
-import { defineConfig } from 'vite';
 
 const rootDir = process.cwd();
 
-export default defineConfig({
-  root: rootDir,
-  resolve: {
-    alias: [
-      { find: /@\/(.*)/, replacement: path.resolve(rootDir, '/src/$1') },
-      { find: /@voiceflow\/realtime-sdk/, replacement: path.resolve(rootDir, '../realtime-sdk/src') },
-      { find: /@realtime-sdk\/(.*)/, replacement: path.resolve(rootDir, '../realtime-sdk/src/$1') },
-      { find: /@voiceflow\/socket-utils/, replacement: path.resolve(rootDir, '../socket-utils/src') },
-      { find: /@socket-utils\/(.*)/, replacement: path.resolve(rootDir, '../socket-utils/src/$1') },
-      { find: /@voiceflow\/platform-config/, replacement: path.resolve(rootDir, '../platform-config/src') },
-      { find: /@platform-config\/(.*)/, replacement: path.resolve(rootDir, '../platform-config/src/$1') },
-    ],
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-expect-error
+const universalDefineConfig: typeof defineConfig = defineConfig.default ?? defineConfig;
+
+export default universalDefineConfig({
+  name: 'Realtime',
+  rootDir,
+  aliases: ({ isServe }): Record<string, string> =>
+    isServe
+      ? {
+          '@voiceflow/realtime-sdk': path.resolve(rootDir, '../realtime-sdk/src'),
+          '@realtime-sdk': path.resolve(rootDir, '../realtime-sdk/src'),
+          '@voiceflow/socket-utils': path.resolve(rootDir, '../socket-utils/src'),
+          '@socket-utils': path.resolve(rootDir, '../socket-utils/src'),
+          '@voiceflow/ui': path.resolve(rootDir, '../ui/src'),
+          '@ui': path.resolve(rootDir, '../ui/src'),
+          '@voiceflow/platform-config': path.resolve(rootDir, '../platform-config/src'),
+          '@platform-config': path.resolve(rootDir, '../platform-config/src'),
+        }
+      : {
+          '@voiceflow/ui': path.resolve(rootDir, '../ui/build/module'),
+          '@voiceflow/platform-config': path.resolve(rootDir, '../platform-config/build/module'),
+        },
+})((config) => ({
+  ...config,
+
+  test: {
+    ...config.test,
+    dir: './test',
+    setupFiles: 'config/test/setup.ts',
   },
-});
+}));

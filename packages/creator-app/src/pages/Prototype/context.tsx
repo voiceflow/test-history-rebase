@@ -75,7 +75,7 @@ export const PrototypeProvider: React.FC = ({ children }) => {
   const updatePrototype = useDispatch(Prototype.updatePrototype);
   const isMuted = useSelector(Prototype.prototypeMutedSelector);
   const savePrototypeSession = useDispatch(Transcripts.createTranscript);
-  const durationMilliseconds = useSelector(VersionV2.active.general.messageDelaySelector);
+  const durationMilliseconds = useSelector(VersionV2.active.voiceflow.chat.messageDelaySelector);
 
   const activePaths = useSelector(Prototype.activePathsSelector);
   const getLinksByPortID = useSelector(CreatorV2.getLinksByPortIDSelector);

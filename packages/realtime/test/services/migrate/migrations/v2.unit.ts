@@ -1,8 +1,6 @@
 import { BaseModels } from '@voiceflow/base-types';
 import * as Platform from '@voiceflow/platform-config';
-import { expect } from 'chai';
 import { produce } from 'immer';
-import sinon from 'sinon';
 
 import { MigrationData } from '@/services/migrate/migrations/types';
 import migrateToV2 from '@/services/migrate/migrations/v2_0';
@@ -10,13 +8,9 @@ import migrateToV2 from '@/services/migrate/migrations/v2_0';
 describe('Migrate service - v2 migration unit tests', () => {
   const migrationContext = { projectType: Platform.Constants.ProjectType.CHAT, platform: Platform.Constants.PlatformType.VOICEFLOW };
 
-  afterEach(() => {
-    sinon.restore();
-  });
-
   it('do not transform version', async () => {
     const data = {
-      version: { _id: 'versionID' },
+      version: { _id: 'versionID' } as any,
       diagrams: [{ _id: 'diagramID', nodes: {} }],
     } as MigrationData;
 
@@ -40,8 +34,7 @@ describe('Migrate service - v2 migration unit tests', () => {
           } as any,
         },
       ],
-    } as MigrationData<any>;
-
+    } as MigrationData;
     const result = produce(data, (draft) => migrateToV2(draft, migrationContext));
 
     expect(result.diagrams).to.eql(data.diagrams);
@@ -80,8 +73,7 @@ describe('Migrate service - v2 migration unit tests', () => {
           } as any,
         },
       ],
-    } as MigrationData<any>;
-
+    } as MigrationData;
     const result = produce(data, (draft) => migrateToV2(draft, migrationContext));
 
     expect(result.diagrams).to.eql(data.diagrams);
@@ -118,8 +110,7 @@ describe('Migrate service - v2 migration unit tests', () => {
           } as any,
         },
       ],
-    } as MigrationData<any>;
-
+    } as MigrationData;
     const result = produce(data, (draft) => migrateToV2(draft, migrationContext));
 
     expect(result.diagrams).to.eql([

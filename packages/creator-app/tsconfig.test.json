@@ -1,0 +1,18 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "types": [
+      "gapi",
+      "gapi.auth2",
+      "resize-observer-browser",
+      "dayjs/plugin/relativeTime",
+      "dayjs/plugin/minMax",
+      "login-with-amazon-sdk-browser",
+      "vitest/globals"
+    ]
+  }
+}

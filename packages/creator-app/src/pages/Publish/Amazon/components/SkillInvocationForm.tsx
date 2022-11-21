@@ -13,54 +13,53 @@ import { withTargetValue } from '@/utils/dom';
 import { useValidator } from '../hooks';
 
 const SkillInvocationForm: React.FC = () => {
-  const prevInvocationName = useSelector(VersionV2.active.alexa.invocationNameSelector);
-  const invocations = useSelector(VersionV2.active.alexa.invocationsSelector);
-  const [invocationName, setInvocationName] = useLinkedState(prevInvocationName);
+  const storedInvocationName = useSelector(VersionV2.active.invocationNameSelector);
+  const storedInvocationNameSamples = useSelector(VersionV2.active.invocationNameSamplesSelector);
+
+  const updateInvocationName = useDispatch(Version.updateInvocationName);
+
+  const [invocationName, setInvocationName] = useLinkedState(storedInvocationName ?? '');
   const [invocationNameError, invocationNameValidator] = useValidator('invocationName', (invocationName: string) =>
     invocationName ? false : 'Invocation name is required.'
   );
-  const patchPublishing = useDispatch(Version.alexa.patchPublishing);
 
-  const saveInvocationName = React.useCallback(
-    () =>
-      invocationNameValidator((nextInvocationName) => {
-        const nextInvocations = prevInvocationName
-          ? Utils.string.arrayStringReplace(prevInvocationName, nextInvocationName, invocations)
-          : [`open ${nextInvocationName}`, `start ${nextInvocationName}`, `launch ${nextInvocationName}`];
+  const onUpdateInvocationName = (nextInvocationName: string) =>
+    updateInvocationName(
+      nextInvocationName,
+      storedInvocationName
+        ? Utils.string.arrayStringReplace(storedInvocationName, nextInvocationName, storedInvocationNameSamples)
+        : [`open ${nextInvocationName}`, `start ${nextInvocationName}`, `launch ${nextInvocationName}`]
+    );
 
-        patchPublishing({
-          invocationName: nextInvocationName,
-          invocations: nextInvocations,
-        });
-      })(invocationName ?? ''),
-    [prevInvocationName, invocationName, invocations]
-  );
+  const onUpdateWithValidation = () => invocationNameValidator(onUpdateInvocationName)(invocationName);
 
   return (
     <>
       <Box mb={24}>
         <Label>Invocation Name</Label>
+
         <TextInput
           type="text"
           name="invocationName"
-          placeholder="Enter an invocation name"
           value={invocationName}
-          onChange={withTargetValue(setInvocationName)}
-          onBlur={saveInvocationName}
-          touched={!!invocationNameError}
           error={invocationNameError}
+          onBlur={onUpdateWithValidation}
+          touched={!!invocationNameError}
+          onChange={withTargetValue(setInvocationName)}
+          placeholder="Enter an invocation name"
         />
       </Box>
 
       <Box mb={24}>
         <Label>Invocations</Label>
+
         <Multiple
           max={3}
           add="Add Invocation"
-          list={invocations}
+          list={storedInvocationNameSamples}
+          update={(invocationNameSamples) => updateInvocationName(invocationName, invocationNameSamples)}
           prepend="Alexa,"
           placeholder={`open/start/launch ${invocationName}`}
-          update={(invocations) => patchPublishing({ invocations })}
         />
       </Box>
     </>

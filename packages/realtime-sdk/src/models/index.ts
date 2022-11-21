@@ -23,6 +23,5 @@ export * from './Speak';
 export * from './Thread';
 export * from './Utility';
 export * from './VariableState';
-export * from './Version';
 export * from './Viewport';
 export * from './Workspace';

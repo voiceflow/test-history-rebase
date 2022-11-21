@@ -11,7 +11,8 @@
       // only used to fix intra-monorepo resolution
       "@platform-config/*": ["platform-config/src/*"],
       "@realtime-sdk/*": ["realtime-sdk/src/*"]
-    }
+    },
+    "types": []
   },
   "exclude": ["node_modules/**/*", "build/**/*"]
 }

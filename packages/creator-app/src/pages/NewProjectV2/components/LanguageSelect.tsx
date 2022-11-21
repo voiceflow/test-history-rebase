@@ -9,15 +9,15 @@ import { Identifier } from '@/styles/constants';
 import { isAlexaPlatform } from '@/utils/typeGuards';
 
 import { DEFAULT_LANGUAGE_SELECT_PROPS, PLATFORM_PROJECT_META_MAP } from '../constants';
-import { AnyLanguage, AnyLocale } from '../types';
+import { AnyLanguage } from '../types';
 
 interface LanguageSelectProps {
   nlu: Platform.Constants.NLUType | null;
   platform: Platform.Constants.PlatformType | null;
   language: AnyLanguage | null;
   setLanguage: (value: AnyLanguage | null) => void;
-  alexaLocales: AnyLocale[];
-  setAlexaLocales: (locales: AnyLocale[]) => void;
+  alexaLocales: string[];
+  setAlexaLocales: (locales: string[]) => void;
 }
 
 const getLanguageSelectProps = (nlu: Platform.Constants.NLUType | null, platform: Platform.Constants.PlatformType | null) => {

@@ -17,13 +17,6 @@ const InvocationName: React.FC = () => (
   </DescriptorContainer>
 );
 
-const InvocationNameShort: React.FC = () => (
-  <DescriptorContainer>
-    The phrase users will say or type to interact with your Google Action. This name must comply with{' '}
-    <Link href="https://developers.google.com/assistant/conversational/df-asdk/discovery">Google’s guidelines.</Link>
-  </DescriptorContainer>
-);
-
 const Locales: React.FC = () => <DescriptorContainer>Choose the language you would like your Google Action to support.</DescriptorContainer>;
 
-export default { ProjectName, InvocationName, Locales, InvocationNameShort };
+export default { ProjectName, InvocationName, Locales };

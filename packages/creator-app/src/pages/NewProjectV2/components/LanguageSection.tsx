@@ -1,4 +1,3 @@
-import { AlexaConstants } from '@voiceflow/alexa-types';
 import { DFESConstants } from '@voiceflow/google-dfes-types';
 import { GoogleConstants } from '@voiceflow/google-types';
 import * as Platform from '@voiceflow/platform-config';
@@ -15,8 +14,8 @@ interface LanguageSectionProps {
   platform: Platform.Constants.PlatformType | null;
   language: GoogleConstants.Language | DFESConstants.Language | VoiceflowConstants.Locale | null;
   setLanguage: (value: GoogleConstants.Language | DFESConstants.Language | VoiceflowConstants.Locale | null) => void;
-  alexaLocales: AlexaConstants.Locale[];
-  setAlexaLocales: (locales: AlexaConstants.Locale[]) => void;
+  alexaLocales: string[];
+  setAlexaLocales: (locales: string[]) => void;
 }
 
 const LanguageSection: React.FC<LanguageSectionProps> = (props) => {

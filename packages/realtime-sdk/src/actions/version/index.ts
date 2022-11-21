@@ -1,6 +1,7 @@
 import { COMPONENTS_KEY, DEFAULT_STEP_COLORS_KEY, PROTOTYPE_KEY, PUBLISHING_KEY, RPC_KEY, SESSION_KEY, SETTINGS_KEY } from '@realtime-sdk/constants';
-import { AnyVersion, AnyVersionPublishing, AnyVersionSettings, PrototypeSettings, Version } from '@realtime-sdk/models';
+import { PrototypeSettings } from '@realtime-sdk/models';
 import { BaseProjectPayload, BaseVersionPayload } from '@realtime-sdk/types';
+import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
 
@@ -11,12 +12,12 @@ export * as schema from './schema';
 export * as variable from './variable';
 
 const versionRPCType = Utils.protocol.typeFactory(versionType(RPC_KEY));
-const versionSettingsType = Utils.protocol.typeFactory(versionType(SETTINGS_KEY));
-const versionDefaultStepColorsType = Utils.protocol.typeFactory(versionType(DEFAULT_STEP_COLORS_KEY));
-const versionSessionType = Utils.protocol.typeFactory(versionSettingsType(SESSION_KEY));
-const versionPublishingType = Utils.protocol.typeFactory(versionType(PUBLISHING_KEY));
-const versionPrototypeType = Utils.protocol.typeFactory(versionType(PROTOTYPE_KEY));
 const componentsType = Utils.protocol.typeFactory(versionType(COMPONENTS_KEY));
+const versionSettingsType = Utils.protocol.typeFactory(versionType(SETTINGS_KEY));
+const versionSessionType = Utils.protocol.typeFactory(versionSettingsType(SESSION_KEY));
+const versionPrototypeType = Utils.protocol.typeFactory(versionType(PROTOTYPE_KEY));
+const versionPublishingType = Utils.protocol.typeFactory(versionType(PUBLISHING_KEY));
+const versionDefaultStepColorsType = Utils.protocol.typeFactory(versionType(DEFAULT_STEP_COLORS_KEY));
 
 // RPC
 
@@ -35,33 +36,36 @@ export const activateVersion = Utils.protocol.createAction<ActivateVersionPayloa
 export interface PatchSettingsPayload extends BaseVersionPayload {
   type: Platform.Constants.ProjectType;
   platform: Platform.Constants.PlatformType;
-  settings: Partial<AnyVersionSettings>;
+  settings: Partial<Platform.Base.Models.Version.Settings.Model>;
+  defaultVoice: string;
 }
 
 export interface PatchDefaultStepColorsPayload extends BaseVersionPayload {
-  defaultStepColors: Version.DefaultStepColors;
+  defaultStepColors: BaseModels.Version.DefaultStepColors;
 }
 
 export interface PatchSessionPayload extends BaseVersionPayload {
   type: Platform.Constants.ProjectType;
-  session: Partial<Version.Session>;
+  session: Partial<Platform.Base.Models.Version.Session>;
   platform: Platform.Constants.PlatformType;
+  defaultVoice: string;
 }
 
 export interface PatchPublishingPayload extends BaseVersionPayload {
   type: Platform.Constants.ProjectType;
   platform: Platform.Constants.PlatformType;
-  publishing: Partial<AnyVersionPublishing>;
+  publishing: Partial<Platform.Base.Models.Version.Publishing.Model>;
+  defaultVoice: string;
 }
 
 export interface ReorderTopicsPayload extends BaseVersionPayload {
-  toIndex: number;
   fromID: string;
+  toIndex: number;
 }
 
 export interface ReorderComponentsPayload extends BaseVersionPayload {
-  toIndex: number;
   fromID: string;
+  toIndex: number;
 }
 
 export interface ReplacePrototypeSettingsPayload extends BaseVersionPayload {
@@ -69,18 +73,18 @@ export interface ReplacePrototypeSettingsPayload extends BaseVersionPayload {
 }
 
 export interface ReloadFoldersPayload extends BaseVersionPayload {
-  folders: NonNullable<AnyVersion['folders']>;
+  folders: NonNullable<Platform.Base.Models.Version.Model['folders']>;
 }
 
 export interface AddManyComponentsPayload extends BaseVersionPayload {
-  components: NonNullable<AnyVersion['components']>;
+  components: NonNullable<Platform.Base.Models.Version.Model['components']>;
 }
 
-export const patchSettings = Utils.protocol.createAction<PatchSettingsPayload>(versionSettingsType('PATCH'));
-
-export const patchDefaultStepColors = Utils.protocol.createAction<PatchDefaultStepColorsPayload>(versionDefaultStepColorsType('PATCH'));
+export const crud = createCRUDActions<Platform.Base.Models.Version.Model, BaseProjectPayload>(versionType);
 
 export const patchSession = Utils.protocol.createAction<PatchSessionPayload>(versionSessionType('PATCH'));
+
+export const patchSettings = Utils.protocol.createAction<PatchSettingsPayload>(versionSettingsType('PATCH'));
 
 export const reloadFolders = Utils.protocol.createAction<ReloadFoldersPayload>(versionType('RELOAD_FOLDERS'));
 
@@ -90,6 +94,6 @@ export const addManyComponents = Utils.protocol.createAction<AddManyComponentsPa
 
 export const reorderComponents = Utils.protocol.createAction<ReorderComponentsPayload>(componentsType('REORDER'));
 
-export const replacePrototypeSettings = Utils.protocol.createAction<ReplacePrototypeSettingsPayload>(versionPrototypeType('REPLACE_SETTINGS'));
+export const patchDefaultStepColors = Utils.protocol.createAction<PatchDefaultStepColorsPayload>(versionDefaultStepColorsType('PATCH'));
 
-export const crud = createCRUDActions<AnyVersion, BaseProjectPayload>(versionType);
+export const replacePrototypeSettings = Utils.protocol.createAction<ReplacePrototypeSettingsPayload>(versionPrototypeType('REPLACE_SETTINGS'));

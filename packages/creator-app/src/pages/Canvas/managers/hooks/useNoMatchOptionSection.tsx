@@ -25,7 +25,7 @@ const useNoMatchOptionSection = ({
 }: NodeInterface<{ nodeID: string; noMatch?: Nullable<Realtime.NodeData.NoMatch> }>): OptionSection => {
   const projectType = React.useContext(ProjectTypeContext);
 
-  const defaultVoice = useSelector(VersionV2.active.defaultVoiceSelector);
+  const defaultVoice = useSelector(VersionV2.active.voice.defaultVoiceSelector);
 
   return [
     {

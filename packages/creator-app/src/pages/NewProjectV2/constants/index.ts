@@ -11,7 +11,7 @@ import { FORMATTED_DIALOGFLOW_LOCALES_LABELS, getPreferredDialogFlowLocales } fr
 import { FORMATTED_GOOGLE_LOCALES_LABELS, getPreferredGoogleLocales } from '@/pages/Publish/Google/utils';
 import LOCALE_MAP from '@/services/LocaleMap';
 
-import { AnyLanguage, AnyLocale, LanguageSelectProps, PlatformAndProjectMeta } from '../types';
+import { AnyLanguage, LanguageSelectProps, PlatformAndProjectMeta } from '../types';
 
 export * as Channel from './channel';
 export * from './nlu';
@@ -28,7 +28,7 @@ export const DEFAULT_LANGUAGE_SELECT_PROPS: LanguageSelectProps = {
   renderOptionLabel: (option) => option.name,
 };
 
-export const getLanguage = (language: AnyLanguage, alexaLocales: AnyLocale[], platformType: Platform.Constants.PlatformType) => {
+export const getLanguage = (language: AnyLanguage, alexaLocales: string[], platformType: Platform.Constants.PlatformType) => {
   const defaultLabel = getDefaultPlatformLanguageLabel(platformType);
 
   return Utils.platform.createPlatformSelector(
@@ -41,7 +41,7 @@ export const getLanguage = (language: AnyLanguage, alexaLocales: AnyLocale[], pl
   )(platformType);
 };
 
-export const getDefaultLanguage = Utils.platform.createPlatformSelector<AnyLanguage | AnyLocale[]>(
+export const getDefaultLanguage = Utils.platform.createPlatformSelector<string | string[]>(
   {
     [Platform.Constants.PlatformType.ALEXA]: [AlexaConstants.Locale.EN_US],
     [Platform.Constants.PlatformType.GOOGLE]: GoogleConstants.Language.EN,

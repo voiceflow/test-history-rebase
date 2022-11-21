@@ -20,7 +20,7 @@ const DRAG_TYPE = 'speak-editor';
 const Editor: NodeEditorV2<Realtime.NodeData.Speak, Realtime.NodeData.SpeakBuiltInPorts> = (editor) => {
   const canvasVisibilityOption = useCanvasVisibilityOption(editor.data.canvasVisibility, (canvasVisibility) => editor.onChange({ canvasVisibility }));
   const [isDragging, toggleDragging] = useToggle(false);
-  const defaultVoice = useSelector(VersionV2.active.defaultVoiceSelector);
+  const defaultVoice = useSelector(VersionV2.active.voice.defaultVoiceSelector);
   const isVoiceEditor = isVoiceItem(editor.data.dialogs[0]);
 
   const mapManager = useMapManager(editor.data.dialogs, (dialogs) => editor.onChange({ dialogs }), {
@@ -29,7 +29,7 @@ const Editor: NodeEditorV2<Realtime.NodeData.Speak, Realtime.NodeData.SpeakBuilt
         ? { ...data, voice: cloneData.voice, content: cloneData.content }
         : { ...data, url: cloneData.url, desc: cloneData.desc },
 
-    factory: isVoiceEditor ? () => voiceFactory({ voice: defaultVoice as string }) : audioFactory,
+    factory: isVoiceEditor ? () => voiceFactory({ voice: defaultVoice }) : audioFactory,
   });
 
   return (

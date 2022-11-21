@@ -3,15 +3,15 @@ import Portal from '@ui/components/Portal';
 import { useNestedPopperTheme } from '@ui/hooks';
 import { useCachedValue } from '@ui/hooks/cache';
 import { PopperPlacement, usePopper } from '@ui/hooks/popper';
+import { ThemeProvider } from '@ui/styles';
 import { Nullable } from '@voiceflow/common';
 import { StrictModifier } from 'newpopper';
 import React, { Fragment } from 'react';
 import { DismissableLayerProvider, useDismissable } from 'react-dismissable-layers';
-import { ThemeProvider } from 'styled-components';
 
 import { PopoverContainer } from './components';
 
-const DEFAULT_PORTAL_NODE = document.body;
+const DEFAULT_PORTAL_NODE = globalThis.document?.body;
 
 export type DropdownPlacement = PopperPlacement;
 

@@ -17,7 +17,7 @@ export * from './utils';
 export const POPOVER_MODIFIERS: PopperProps['modifiers'] = {
   hide: { enabled: false },
   autoSizing: { enabled: true, fn: undefined, order: 840 },
-  preventOverflow: { enabled: true, boundariesElement: document.body },
+  preventOverflow: { enabled: true, boundariesElement: globalThis.document?.body },
 };
 
 interface ExtraProps<Option, Value> {

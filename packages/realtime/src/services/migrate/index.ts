@@ -1,4 +1,4 @@
-import { BaseModels } from '@voiceflow/base-types';
+import { BaseModels, BaseVersion } from '@voiceflow/base-types';
 import { Nullable, Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { produce } from 'immer';
@@ -26,7 +26,7 @@ class MigrateService extends AbstractControl {
     return migrations.filter((migration) => migration.version > currentVersion && migration.version <= targetVersion);
   }
 
-  public static getVersionPatch(version: BaseModels.Version.Model<BaseModels.Version.PlatformData>): VersionUpdateData {
+  public static getVersionPatch(version: BaseVersion.Version): VersionUpdateData {
     return Utils.object.pick(version, [
       '_version',
       'name',

@@ -1,5 +1,5 @@
-import { AnyRecord, BaseModels } from '@voiceflow/base-types';
-import { Utils } from '@voiceflow/common';
+import { BaseModels, BaseProject, BaseVersion } from '@voiceflow/base-types';
+import { AnyRecord, Utils } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Optional } from 'utility-types';
@@ -53,20 +53,15 @@ class ProjectService extends AbstractControl {
     return Realtime.legacyPlatformToProjectType(platform, type).platform;
   }
 
-  public async getCreator<
-    P extends BaseModels.Project.Model<any, any> = BaseModels.Project.Model<AnyRecord, AnyRecord>,
-    V extends BaseModels.Version.Model<any, any, string> = BaseModels.Version.Model<BaseModels.Version.PlatformData>,
-    D extends BaseModels.Diagram.Model<any> = BaseModels.Diagram.Model,
-    VS extends BaseModels.VariableState.Model = BaseModels.VariableState.Model
-  >(
+  public async getCreator(
     creatorID: number,
     projectID: string,
     versionID: string
   ): Promise<{
-    project: P;
-    version: V;
-    diagrams: D[];
-    variableStates: VS[];
+    project: BaseProject.Project;
+    version: BaseVersion.Version;
+    diagrams: BaseModels.Diagram.Model[];
+    variableStates: BaseModels.VariableState.Model[];
   }> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
@@ -101,7 +96,7 @@ class ProjectService extends AbstractControl {
 
     const importJSON = JSON.parse(data) as {
       project: BaseModels.Project.Model<any, any>;
-      version: BaseModels.Version.Model<any>;
+      version: BaseVersion.Version;
       diagrams: Record<string, BaseModels.Diagram.Model<any>>;
     };
 

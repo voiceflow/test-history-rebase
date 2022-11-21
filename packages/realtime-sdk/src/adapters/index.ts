@@ -14,6 +14,4 @@ export { slotAdapter, slotSmartAdapter } from './slot';
 export { voicePromptToSpeakDataAdapter } from './speakData';
 export { commentAdapter, threadAdapter } from './thread';
 export { default as variableStateAdapter } from './variableState';
-export { default as versionAdapter } from './version';
-export { default as createSessionAdapter } from './version/session';
 export { default as workspaceAdapter, workspaceWithMembersAdapter } from './workspace';

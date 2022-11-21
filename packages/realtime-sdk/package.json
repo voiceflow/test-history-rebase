@@ -64,10 +64,10 @@
     "lint:fix": "yarn lint --fix",
     "lint:quiet": "yarn lint --quiet",
     "lint:report": "yarn lint --format json -o sonar/report.json",
-    "test": "nyc ts-mocha --project tsconfig.test.json --paths --config config/test/mocharc.yml",
+    "test": "vitest run --coverage",
     "test:dependencies": "depcheck",
-    "test:integration": "yarn test",
-    "test:unit": "yarn test",
+    "test:integration": "exit 0",
+    "test:unit": "REPORTS_DIRECTORY=coverage/unit vitest run .unit --silent --coverage",
     "types": "tsc --project tsconfig.build.json --noEmit --skipLibCheck"
   }
 }

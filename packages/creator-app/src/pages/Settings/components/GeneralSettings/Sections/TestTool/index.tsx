@@ -14,10 +14,10 @@ import { useAlexaProjectSettings, useDispatch, usePermission, useSelector } from
 
 const TestToolSettings: React.FC = () => {
   const [canCustomize] = usePermission(Permission.CUSTOMIZE_PROTOTYPE);
-  const patchSettings = useDispatch(Version.patchSettings);
+  const patchSettings = useDispatch(Version.chat.patchSettings);
   const canUseAlexaSettings = useAlexaProjectSettings();
 
-  const durationMilliseconds = useSelector(VersionV2.active.general.messageDelaySelector);
+  const durationMilliseconds = useSelector(VersionV2.active.voiceflow.chat.messageDelaySelector);
 
   const brandColor = useSelector(Prototype.prototypeBrandColorSelector);
   const prototypeAvatar = useSelector(Prototype.prototypeAvatarSelector);
@@ -41,11 +41,7 @@ const TestToolSettings: React.FC = () => {
       setDelayDuration(0);
       newDelayDuration = 0;
     }
-    await patchSettings({
-      messageDelay: {
-        durationMilliseconds: newDelayDuration,
-      },
-    });
+    await patchSettings({ messageDelay: { durationMilliseconds: newDelayDuration } });
   };
 
   return (

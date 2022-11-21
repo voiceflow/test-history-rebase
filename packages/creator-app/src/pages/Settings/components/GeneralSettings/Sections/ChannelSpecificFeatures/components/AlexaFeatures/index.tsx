@@ -2,9 +2,8 @@ import { AlexaConstants } from '@voiceflow/alexa-types';
 import React from 'react';
 
 import * as VersionV2 from '@/ducks/versionV2';
-import { connect } from '@/hocs';
+import { useSelector } from '@/hooks';
 import { PlatformSettingsMetaProps } from '@/pages/Settings/constants';
-import { ConnectedProps } from '@/types';
 
 import { Events, GadgetsToggle, ModelSensitivity } from './components';
 
@@ -12,17 +11,18 @@ export interface AlexaFeaturesOwnProps {
   platformMeta: PlatformSettingsMetaProps;
 }
 
-const MODEL_SENSITIVITY_SUPPORTED_LOCALES: string[] = [
+const MODEL_SENSITIVITY_SUPPORTED_LOCALES = new Set<string>([
   AlexaConstants.Locale.EN_US,
   AlexaConstants.Locale.EN_AU,
   AlexaConstants.Locale.EN_CA,
   AlexaConstants.Locale.EN_IN,
   AlexaConstants.Locale.EN_GB,
   AlexaConstants.Locale.DE_DE,
-];
+]);
 
-const AlexaFeatures: React.FC<ConnectedAlexaFeaturesProps & AlexaFeaturesOwnProps> = ({ locales, platformMeta }) => {
-  const modelSensitivityShown = React.useMemo(() => locales.some((locale) => MODEL_SENSITIVITY_SUPPORTED_LOCALES.includes(locale)), [locales]);
+const AlexaFeatures: React.FC<AlexaFeaturesOwnProps> = ({ platformMeta }) => {
+  const locales = useSelector(VersionV2.active.localesSelector);
+  const modelSensitivityShown = React.useMemo(() => locales.some((locale) => MODEL_SENSITIVITY_SUPPORTED_LOCALES.has(locale)), [locales]);
 
   return (
     <>
@@ -35,10 +35,4 @@ const AlexaFeatures: React.FC<ConnectedAlexaFeaturesProps & AlexaFeaturesOwnProp
   );
 };
 
-const mapStateToProps = {
-  locales: VersionV2.active.alexa.localesSelector,
-};
-
-type ConnectedAlexaFeaturesProps = ConnectedProps<typeof mapStateToProps, {}>;
-
-export default connect(mapStateToProps, null)(AlexaFeatures) as React.FC<AlexaFeaturesOwnProps>;
+export default AlexaFeatures;

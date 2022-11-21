@@ -20,7 +20,7 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['*.unit.*', 'tests/**/*', 'config/**/*', '*.config.js', '.*rc.js'],
+      files: ['*.unit.*', 'test/**/*', 'config/**/*', '*.config.js', '.*rc.js'],
       extends: ['@voiceflow/eslint-config/utility'],
       rules: {
         'import/no-extraneous-dependencies': 'off',

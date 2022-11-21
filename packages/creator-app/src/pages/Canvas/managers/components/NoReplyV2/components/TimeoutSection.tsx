@@ -4,7 +4,6 @@ import React from 'react';
 
 import { NUMBERS_ONLY_REGEXP } from '@/constants';
 import { useActivePlatformConfig, useLinkedState } from '@/hooks';
-import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import { withInputBlur } from '@/utils/dom';
 import { getDefaultNoReplyTimeoutSeconds } from '@/utils/noReply';
 
@@ -16,11 +15,9 @@ interface TimeoutSectionProps {
 const TimeoutSection: React.FC<TimeoutSectionProps> = ({ timeout: propTimeout, onChange: onChangeProp }) => {
   const platformConfig = useActivePlatformConfig();
 
-  const editor = EditorV2.useEditor();
-
-  const isDelayEditable = Realtime.Utils.typeGuards.isPlatformWithEditableNoReplyDelay(editor.platform);
+  const isDelayEditable = Realtime.Utils.typeGuards.isPlatformWithEditableNoReplyDelay(platformConfig.type);
   const [timeout, setTimeout] = useLinkedState(
-    String(isDelayEditable && propTimeout ? propTimeout : getDefaultNoReplyTimeoutSeconds(editor.platform))
+    String(isDelayEditable && propTimeout ? propTimeout : getDefaultNoReplyTimeoutSeconds(platformConfig.type))
   );
 
   const onChange = (value: string) => {

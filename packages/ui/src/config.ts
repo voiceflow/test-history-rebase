@@ -1,6 +1,6 @@
 import Bowser from 'bowser';
 
-const { browser, os, platform } = Bowser.parse(window.navigator.userAgent);
+const { browser, os, platform } = globalThis.navigator ? Bowser.parse(globalThis.navigator.userAgent) : { browser: {}, os: {}, platform: {} };
 
 export const DEVICE_INFO = {
   os: os.name,

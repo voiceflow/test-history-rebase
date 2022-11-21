@@ -1,17 +1,17 @@
 import { Nullish, Utils } from '@voiceflow/common';
 import { PlanType } from '@voiceflow/internal';
+import * as Platform from '@voiceflow/platform-config';
 import { Box, Input, Label, Select, Text, ThemeColor, TippyTooltip } from '@voiceflow/ui';
 import { VoiceflowVersion } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import { ENTERPRISE_PLANS, ModalType, TEAM_PLANS } from '@/constants';
-import { patchActiveAndLivePublishing } from '@/ducks/version/platform/general';
-import * as Version from '@/ducks/versionV2';
+import * as Version from '@/ducks/version';
+import * as VersionV2 from '@/ducks/versionV2';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useDispatch, useLinkedState, useModals, useSelector } from '@/hooks';
 import { withTargetValue } from '@/utils/dom';
 
-import type { Config } from '../types';
 import Section from './components/Section';
 import ToggleGroup from './components/ToggleGroup';
 
@@ -33,34 +33,25 @@ const PX_LABEL = (
 
 export const GeneralSection: React.FC = () => {
   const plan = useSelector(WorkspaceV2.active.planSelector);
-  const config: Config = useSelector(Version.active.general.chatPublishingSelector);
-  const updateConfig = useDispatch(patchActiveAndLivePublishing);
+  const config = useSelector(VersionV2.active.voiceflow.chat.publishingSelector);
+  const updateConfig = useDispatch(Version.voiceflow.chat.patchActiveAndLivePublishing);
 
   const [title, setTitle] = useLinkedState(config.title);
   const [description, setDescription] = useLinkedState(config.description);
   const { open: openPaymentModal } = useModals(ModalType.PAYMENT);
 
   const updateProperty =
-    <T extends keyof Config>(property: T) =>
-    (value: Nullish<Config[T]>) => {
-      if (Utils.array.isNotNullish(value)) updateConfig({ [property]: value });
+    <T extends keyof Platform.Voiceflow.Chat.Models.Version.Publishing.Model>(property: T) =>
+    (value: Nullish<Platform.Voiceflow.Chat.Models.Version.Publishing.Model[T]>) => {
+      if (Utils.array.isNotNullish(value)) updateConfig({ [property]: value }, { track: true });
     };
 
   const [sideSpacing, setSideSpacing] = useLinkedState(String(config.spacing?.side));
   const [bottomSpacing, setBottomSpacing] = useLinkedState(String(config.spacing?.bottom));
 
-  const updateSpacing = () =>
-    updateConfig({
-      spacing: {
-        side: Number(sideSpacing),
-        bottom: Number(bottomSpacing),
-      },
-    });
+  const updateSpacing = () => updateConfig({ spacing: { side: Number(sideSpacing), bottom: Number(bottomSpacing) } }, { track: true });
 
-  const toggleWatermark = () =>
-    updateConfig({
-      watermark: !config.watermark,
-    });
+  const toggleWatermark = () => updateConfig({ watermark: !config.watermark }, { track: true });
 
   const isEntitled = React.useMemo(() => !!plan && ENTITLED_PLANS.has(plan), [plan]);
 

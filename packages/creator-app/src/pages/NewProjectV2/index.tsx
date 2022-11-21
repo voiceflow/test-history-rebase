@@ -18,7 +18,7 @@ import { isAlexaPlatform, isDialogflowPlatform, isGooglePlatform, isPlatformWith
 
 import { ChannelSection, ChannelValue, Container, Footer, InvocationNameSection, LanguageSection, NLUSection } from './components';
 import { DEFAULT_PROJECT_NAME, getDefaultLanguage, getLanguage, PLATFORM_PROJECT_META_MAP, Upcoming } from './constants';
-import { AnyLanguage, AnyLocale } from './types';
+import { AnyLanguage } from './types';
 import { updatePlatformMetaCalls } from './updatePlatformMeta';
 
 interface NewProjectProps {
@@ -34,7 +34,7 @@ const NewProject: React.FC<NewProjectProps> = ({ listID, onClose, onToggleCreati
     platform: null as Nullable<Platform.Constants.PlatformType>,
     language: null as Nullable<AnyLanguage>,
     nluError: '',
-    alexaLocales: [LOCALE_MAP[0].value] as AnyLocale[],
+    alexaLocales: [LOCALE_MAP[0].value] as string[],
     channelError: '',
     importedModel: null as Nullable<NLUImportModel>,
     invocationName: '',
@@ -124,7 +124,7 @@ const NewProject: React.FC<NewProjectProps> = ({ listID, onClose, onToggleCreati
     if (!isStateValid(state)) return;
 
     const languageToUse: AnyLanguage = state.language || (getDefaultLanguage(state.platform) as AnyLanguage);
-    const alexaLocalesToUse: AnyLocale[] = state.alexaLocales || (getDefaultLanguage(state.platform) as AnyLocale[]);
+    const alexaLocalesToUse: string[] = state.alexaLocales || (getDefaultLanguage(state.platform) as string[]);
 
     try {
       onToggleCreating(true);

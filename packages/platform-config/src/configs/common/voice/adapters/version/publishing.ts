@@ -9,7 +9,7 @@ export type FromAndToDBOptions = Base.Adapters.Version.Publishing.FromAndToDBOpt
 
 export const smart = Base.Adapters.Version.Publishing.smart as SmartSimpleAdapter<
   BaseVersion.Publishing,
-  Models.Version.Publishing.Model,
+  Pick<Models.Version.Publishing.Model, keyof BaseVersion.Publishing>,
   FromAndToDBOptions,
   FromAndToDBOptions
 >;

@@ -1,8 +1,8 @@
 import IconButton, { IconButtonVariant } from '@ui/components/IconButton';
 import React from 'react';
-import { StyledProps } from 'styled-components';
 
-export interface RemoveButtonProps extends StyledProps<any> {
+export interface RemoveButtonProps {
+  style?: React.CSSProperties;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
   isActive?: boolean;
   disabled?: boolean;

@@ -10,8 +10,6 @@
     "@voiceflow/backend-utils": "4.8.2",
     "@voiceflow/base-types": "2.72.0",
     "@voiceflow/common": "8.1.5",
-    "@voiceflow/google-dfes-types": "2.14.15",
-    "@voiceflow/google-types": "2.18.8",
     "@voiceflow/internal": "3.0.1",
     "@voiceflow/logger": "1.6.1",
     "@voiceflow/metrics": "1.4.1",
@@ -39,7 +37,9 @@
     "socket.io-redis": "6.0.1",
     "typescript-fsa": "3.0.0",
     "unleash-client": "^3.15.0",
-    "utility-types": "3.10.0"
+    "utility-types": "3.10.0",
+    "react-router": "5.2.1",
+    "react-router-dom": "5.3.0"
   },
   "devDependencies": {
     "@types/mongodb": "3.5.18",
@@ -71,12 +71,12 @@
     "mesh:post": "exit 0",
     "mesh:pre": "exit 0",
     "start": "PORT=8013 CREATOR_API_ENDPOINT=https:// NODE_ENV=production yarn start:base",
-    "start:base": "node --experimental-specifier-resolution=node --max-old-space-size=8192 build/index.js",
+    "start:base": "node --experimental-specifier-resolution=node -r ./loaders/static-loader.cjs --max-old-space-size=8192 build/index.js",
     "start:meshed": "NODE_ENV=local IS_MESHED=true yarn dev",
-    "test": "yarn test:unit",
+    "test": "vitest run --coverage",
     "test:dependencies": "depcheck",
     "test:integration": "exit 0",
-    "test:unit": "NODE_ENV=test nyc --report-dir=nyc_coverage_unit ts-mocha --project tsconfig.test.json --paths --config config/test/unit/mocharc.yml",
+    "test:unit": "REPORTS_DIRECTORY=coverage/unit vitest run .unit --silent --coverage",
     "types": "tsc --project tsconfig.build.json --noEmit --skipLibCheck"
   },
   "type": "module"

@@ -19,15 +19,6 @@ const InvocationName: React.FC = () => (
   </DescriptorContainer>
 );
 
-const InvocationNameShort: React.FC = () => (
-  <DescriptorContainer>
-    The phrase users will say to interact with your Alexa Skill. This phrase must comply with the{' '}
-    <Link href="https://developer.amazon.com/en-US/docs/alexa/custom-skills/choose-the-invocation-name-for-a-custom-skill.html">
-      Invocation Name Guidelines.
-    </Link>
-  </DescriptorContainer>
-);
-
 const Locales: React.FC = () => (
   <DescriptorContainer>
     A{' '}
@@ -60,4 +51,4 @@ const ModelSensitivity: React.FC = () => (
   </DescriptorContainer>
 );
 
-export default { ProjectName, InvocationName, Locales, Gadgets, Events, ModelSensitivity, InvocationNameShort };
+export default { ProjectName, InvocationName, Locales, Gadgets, Events, ModelSensitivity };

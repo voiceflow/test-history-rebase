@@ -14,7 +14,6 @@ import { FollowPathSection } from '@/pages/Canvas/components/FollowPath';
 import NoMatchAndNoReplyList from '@/pages/Canvas/components/NoMatchAndNoReplyList';
 import { EngineContext } from '@/pages/Canvas/contexts';
 import { PushToPath } from '@/pages/Canvas/managers/types';
-import { PlatformContext } from '@/pages/Project/contexts';
 import { withInputBlur } from '@/utils/dom';
 import { getDefaultNoReplyTimeoutSeconds } from '@/utils/noReply';
 
@@ -43,9 +42,8 @@ const NoReplyForm: React.FC<NoReplyFormProps> = ({ noReply, onChange, pushToPath
   const platformConfig = useActivePlatformConfig();
 
   const engine = React.useContext(EngineContext)!;
-  const platform = React.useContext(PlatformContext)!;
 
-  const [timeout, setTimeout] = useLinkedState(String(noReply.timeout || getDefaultNoReplyTimeoutSeconds(platform)));
+  const [timeout, setTimeout] = useLinkedState(String(noReply.timeout || getDefaultNoReplyTimeoutSeconds(platformConfig.type)));
 
   const transaction = useDispatch(History.transaction);
 
@@ -80,13 +78,11 @@ const NoReplyForm: React.FC<NoReplyFormProps> = ({ noReply, onChange, pushToPath
   const withReprompt = noReply.types.includes(BaseNode.Utils.NoReplyType.REPROMPT);
 
   const withDividers = !!noReply.types.length && withReprompt;
-  const isDelayEditable = Realtime.Utils.typeGuards.isPlatformWithEditableNoReplyDelay(platform);
+  const isDelayEditable = Realtime.Utils.typeGuards.isPlatformWithEditableNoReplyDelay(platformConfig.type);
   const withoutPathAndAlwaysRandom = Realtime.Utils.platform.createPlatformSelector(
-    {
-      [Platform.Constants.PlatformType.ALEXA]: true,
-    },
+    { [Platform.Constants.PlatformType.ALEXA]: true },
     false
-  )(platform);
+  )(platformConfig.type);
 
   return (
     <>

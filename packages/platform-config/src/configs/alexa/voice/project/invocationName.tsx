@@ -1,0 +1,23 @@
+import * as Base from '@platform-config/configs/base';
+import { Config as ConfigUtils } from '@platform-config/configs/utils';
+import { Link } from '@voiceflow/ui';
+import React from 'react';
+
+export const CONFIG = Base.Project.InvocationName.extend({
+  name: 'Invocation Name',
+
+  placeholder: 'Enter an invocation name',
+
+  description: (
+    <>
+      The name users will say to interact with your Alexa Skill. This does not need to be the same as your project name, but must comply with the{' '}
+      <Link href="https://developer.amazon.com/en-US/docs/alexa/custom-skills/choose-the-invocation-name-for-a-custom-skill.html">
+        Invocation Name Guidelines.
+      </Link>
+    </>
+  ),
+});
+
+export type Config = typeof CONFIG;
+
+export const extend = ConfigUtils.extendFactory<Config>(CONFIG);

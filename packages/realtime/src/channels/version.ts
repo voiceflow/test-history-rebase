@@ -52,6 +52,12 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
     const project = Realtime.Adapters.projectAdapter.fromDB(dbCreator.project);
     const projectConfig = Platform.Config.getTypeConfig(project);
 
+    const intents = projectConfig.adapters.intent.smart.mapFromDB(dbCreator.version.platformData.intents);
+    const version = projectConfig.adapters.version.simple.fromDB(
+      { ...dbCreator.version, templateDiagramID: templateDiagram?._id },
+      { globalVariables: projectConfig.project.globalVariables }
+    );
+
     const slots = Realtime.Adapters.slotAdapter.mapFromDB(dbCreator.version.platformData.slots);
     const notes = Realtime.Adapters.noteAdapter.mapFromDB(dbCreator.version.notes ? Object.values(dbCreator.version.notes) : []);
     const domains = Realtime.Adapters.domainAdapter.mapFromDB(dbCreator.version.domains ?? []);
@@ -59,13 +65,6 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
     const variableStates = Realtime.Adapters.variableStateAdapter.mapFromDB(dbCreator.variableStates);
     const canvasTemplates = Realtime.Adapters.canvasTemplateAdapter.mapFromDB(dbCreator.version.canvasTemplates ?? []);
     const nluUnclassifiedData = Realtime.Adapters.nlu.nluUnclassifiedDataAdapter.mapFromDB(dbCreator.version.nluUnclassifiedData ?? []);
-
-    const version = Realtime.Adapters.versionAdapter.fromDB(
-      { ...(dbCreator.version as Realtime.AnyDBVersion), templateDiagramID: templateDiagram?._id },
-      { platform: project.platform, projectType: project.type }
-    );
-
-    const intents = projectConfig.adapters.intent.smart.mapFromDB(dbCreator.version.platformData.intents);
 
     const products =
       'products' in project.platformData

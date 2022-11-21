@@ -2,13 +2,13 @@ import composeRef from '@seznam/compose-react-refs';
 import Menu from '@ui/components/Menu';
 import Portal from '@ui/components/Portal';
 import { useDidUpdateEffect, useNestedPopperTheme, usePersistFunction } from '@ui/hooks';
+import { ThemeProvider } from '@ui/styles';
 import { swallowEvent } from '@ui/utils';
 import { Nullable } from '@voiceflow/common';
 import React from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { DismissableLayerProvider } from 'react-dismissable-layers';
 import { Popper } from 'react-popper';
-import { ThemeProvider } from 'styled-components';
 
 import MenuHeader from '../MenuHeader';
 // eslint-disable-next-line import/no-cycle

@@ -1,10 +1,10 @@
 import React from 'react';
-import { StyledProps } from 'styled-components';
 
 import Container, { ContainerProps } from './Container';
 import Header, { HeaderProps } from './Header';
 
-export interface SimpleSectionProps extends ContainerProps, StyledProps<any> {
+export interface SimpleSectionProps extends ContainerProps {
+  style?: React.CSSProperties;
   onClick?: VoidFunction;
   headerProps?: HeaderProps;
 }

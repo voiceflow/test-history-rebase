@@ -1,11 +1,11 @@
 import Portal, { portalRootNode } from '@ui/components/Portal';
 import { useDidUpdateEffect, useNestedPopperTheme, usePersistFunction, useTheme } from '@ui/hooks';
+import { ThemeProvider } from '@ui/styles';
 import { ClassName } from '@ui/styles/constants';
 import React from 'react';
 import { DismissableLayerProvider, useDismissable } from 'react-dismissable-layers';
 import { Manager, Popper as ReactPopper, Reference } from 'react-popper';
 import { MemoryRouter } from 'react-router-dom';
-import { ThemeProvider } from 'styled-components';
 
 import { baseStyles, Body, Container, Content, Footer, Nav, NavItem } from './components';
 import * as T from './types';

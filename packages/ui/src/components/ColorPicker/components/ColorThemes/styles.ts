@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import { styled } from '@ui/styles';
 
 import { BoxFlex } from '../../../Box';
 import { Text } from '../../../Text';

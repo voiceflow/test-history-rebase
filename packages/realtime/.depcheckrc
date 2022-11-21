@@ -7,17 +7,11 @@
     "istanbul"
   ],
   "ignores": [
-    "@babel/plugin-transform-modules-commonjs",
-    "@babel/preset-typescript",
     "@voiceflow/socket-utils",
-    "mocha",
-    "mocha-suite",
-    "mock-require",
-    "sinon",
-    "sinon-chai",
-    "chai",
     "vite",
-    "chai-as-promised",
-    "deep-equal-in-any-order"
+    "vitest",
+    "@voiceflow/vite-config",
+    "react-router",
+    "react-router-dom"
   ]
 }

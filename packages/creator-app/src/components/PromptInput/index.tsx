@@ -7,17 +7,21 @@ import { useSelector } from '@/hooks';
 import TextBasedEditor, { PromptInputTextEditorProps } from './TextEditor';
 import VoiceBasedEditor, { PromptInputVoiceEditorProps } from './VoiceEditor';
 
-type PromptInputProps = PromptInputTextEditorProps | PromptInputVoiceEditorProps;
+interface PromptInputProps {
+  value: Platform.Base.Models.Prompt.Model;
+  onChange: (data: Platform.Base.Models.Prompt.Model) => void;
+  placeholder?: string;
+}
 
 const PromptInput: React.FC<PromptInputProps> = (props) => {
   const projectType = useSelector(ProjectV2.active.projectTypeSelector);
 
   if (projectType === Platform.Constants.ProjectType.CHAT) {
-    return <TextBasedEditor {...(props as PromptInputTextEditorProps)} />;
+    return <TextBasedEditor {...(props as unknown as PromptInputTextEditorProps)} />;
   }
 
   if (projectType === Platform.Constants.ProjectType.VOICE) {
-    return <VoiceBasedEditor {...(props as PromptInputVoiceEditorProps)} />;
+    return <VoiceBasedEditor {...(props as unknown as PromptInputVoiceEditorProps)} />;
   }
 
   return null;

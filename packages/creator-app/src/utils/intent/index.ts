@@ -10,7 +10,7 @@ import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import _sample from 'lodash/sample';
 
 import { FILTERED_AMAZON_INTENTS } from '@/constants';
-import { AnyLocale, getPlatformIntentNameFormatter, getUtteranceRecommendationsLocales } from '@/platforms/selectors';
+import { getPlatformIntentNameFormatter, getUtteranceRecommendationsLocales } from '@/platforms/selectors';
 
 import { getBuiltInSynonyms } from '../slot';
 
@@ -251,7 +251,7 @@ export const getGoToIntentMeta = ({
 
 export const fillEntities = (
   utterances: string,
-  { slotsMap, locales, platform }: { slotsMap: Record<string, Realtime.Slot>; locales: AnyLocale[]; platform: Platform.Constants.PlatformType }
+  { slotsMap, locales, platform }: { slotsMap: Record<string, Realtime.Slot>; locales: string[]; platform: Platform.Constants.PlatformType }
 ) => {
   const supportedLocale = getUtteranceRecommendationsLocales(platform);
   const locale = locales.find((l) => supportedLocale.includes(l)) ?? supportedLocale[0];

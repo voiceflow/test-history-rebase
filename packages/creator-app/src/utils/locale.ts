@@ -4,9 +4,8 @@ import { GoogleConstants, GoogleUtils } from '@voiceflow/google-types';
 import * as Platform from '@voiceflow/platform-config';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
-import { AnyLocale } from '@/platforms';
-
-export const toVoiceflowLocale = (locale: AnyLocale, platform: Platform.Constants.PlatformType): VoiceflowConstants.Locale => {
+// TODO: move to platform config
+export const toVoiceflowLocale = (locale: string, platform: Platform.Constants.PlatformType): VoiceflowConstants.Locale => {
   switch (platform) {
     case Platform.Constants.PlatformType.ALEXA:
       return AlexaConstants.AmazonToVoiceflowLocaleMap[locale as AlexaConstants.Locale];

@@ -48,7 +48,7 @@ const createUseStorageHook = <S extends Storage>(storage: S) => {
   };
 };
 
-export const useLocalStorage = createUseStorageHook(localStorage);
+export const useLocalStorage = createUseStorageHook(globalThis.localStorage);
 
-export const useLocalStorageState = createUseStorageStateHook(localStorage);
-export const useSessionStorageState = createUseStorageStateHook(sessionStorage);
+export const useLocalStorageState = createUseStorageStateHook(globalThis.localStorage);
+export const useSessionStorageState = createUseStorageStateHook(globalThis.sessionStorage);

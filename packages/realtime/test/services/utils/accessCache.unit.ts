@@ -1,13 +1,6 @@
-import { expect } from 'chai';
-import sinon from 'sinon';
-
 import AccessCache from '@/services/utils/accessCache';
 
 describe('Access cache unit tests', () => {
-  afterEach(() => {
-    sinon.restore();
-  });
-
   describe('canRead', () => {
     it('check and update read access cache', async () => {
       const resourceID = 'testDiagramID';
@@ -15,13 +8,13 @@ describe('Access cache unit tests', () => {
 
       const voiceflowClient = {
         diagram: {
-          canRead: sinon.stub().resolves(true),
+          canRead: vi.fn().mockResolvedValue(true),
         },
       };
 
       const keyValueCacheClient = {
-        get: sinon.stub().resolves(null),
-        set: sinon.stub(),
+        get: vi.fn().mockResolvedValue(null),
+        set: vi.fn(),
       };
 
       const clients = {
@@ -29,23 +22,23 @@ describe('Access cache unit tests', () => {
           adapters: {
             booleanAdapter: 'booleanAdapter',
           },
-          createSet: sinon.stub(),
-          createKeyValue: sinon.stub().returns(keyValueCacheClient),
+          createSet: vi.fn(),
+          createKeyValue: vi.fn().mockReturnValue(keyValueCacheClient),
         },
       };
 
       const services = {
         voiceflow: {
-          getClientByUserID: sinon.stub().resolves(voiceflowClient),
+          getClientByUserID: vi.fn().mockResolvedValue(voiceflowClient),
         },
       };
 
       const cache = new AccessCache('diagram', clients as any, services as any);
 
-      await expect(cache.canRead(creatorID, resourceID)).to.eventually.be.true;
-      expect(keyValueCacheClient.get).to.be.calledWithExactly({ resourceID, creatorID });
-      expect(keyValueCacheClient.set).to.be.calledWithExactly({ resourceID, creatorID }, true);
-      expect(voiceflowClient.diagram.canRead).be.calledWithExactly(creatorID, resourceID);
+      await expect(cache.canRead(creatorID, resourceID)).resolves.toBe(true);
+      expect(keyValueCacheClient.get).toBeCalledWith({ resourceID, creatorID });
+      expect(keyValueCacheClient.set).toBeCalledWith({ resourceID, creatorID }, true);
+      expect(voiceflowClient.diagram.canRead).toBeCalledWith(creatorID, resourceID);
     });
   });
 });

@@ -1,17 +1,11 @@
 /* eslint-disable sonarjs/no-duplicate-string */
 import { Utils } from '@voiceflow/common';
-import chai from 'chai';
-import sinon from 'sinon';
 
 import * as Atomic from '@/models/utils/atomic';
 
-const { expect } = chai;
-
 describe('Models | Utils | Atomic', () => {
-  afterEach(() => sinon.restore());
-
   beforeEach(() => {
-    sinon.stub(Utils.id.cuid, 'slug').returns('id');
+    vi.spyOn(Utils.id.cuid, 'slug').mockReturnValue('id');
   });
 
   describe('pull', () => {

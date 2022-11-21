@@ -2,12 +2,11 @@ import { isDefaultColor } from '@ui/components/ColorPicker/utils';
 import ContextMenu from '@ui/components/ContextMenu';
 import { MenuTypes } from '@ui/components/Menu';
 import { toast } from '@ui/components/Toast';
-import { transition } from '@ui/styles';
+import { styled, transition } from '@ui/styles';
 import { stopPropagation } from '@ui/utils';
 import { isHexColor } from '@ui/utils/colors';
 import { STANDARD_GRADE } from '@ui/utils/colors/hsl';
 import React from 'react';
-import styled from 'styled-components';
 
 import TippyTooltip from '../../../TippyTooltip';
 import { AddNamePopper } from '../Poppers/AddNamePopper';

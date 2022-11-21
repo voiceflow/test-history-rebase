@@ -27,7 +27,7 @@
     "@testing-library/react": "^12.1.5",
     "jest-styled-components": "7.0.6",
     "jsdom": "^20.0.0",
-    "tslib": "2.3.1"
+    "tslib": "2.4.1"
   },
   "files": [
     "build"
@@ -60,7 +60,7 @@
     "test": "vitest run --coverage",
     "test:dependencies": "depcheck",
     "test:integration": "exit 0",
-    "test:unit": "vitest run .unit --silent --coverage",
+    "test:unit": "REPORTS_DIRECTORY=coverage/unit vitest run .unit --silent --coverage",
     "types": "tsc --project tsconfig.build.json --noEmit --skipLibCheck",
     "watch:esm": "yarn build:esm && (concurrently \"tsc --watch --project tsconfig.module.json\" \"tsc-alias -w -p tsconfig.module.json\")"
   }

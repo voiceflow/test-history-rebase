@@ -25,7 +25,7 @@ const AlexaGadgetsToggle: React.FC<AlexaGadgetsToggleOwnProps & ConnectedAlexaGa
       {gadgets.isEnabled && (
         <UncontrolledSection
           emptyChildren
-          contentPrefix={Alexa.Gadgets}
+          contentPrefix={<Alexa.Gadgets />}
           header="Custom Interface"
           headerToggle
           dividers={modelSensitivityShown}
@@ -45,7 +45,7 @@ const mapStateToProps = {
 };
 
 const mapDispatchToProps = {
-  patchSettings: Version.patchSettings,
+  patchSettings: Version.alexa.patchSettings,
 };
 
 type ConnectedAlexaGadgetsToggleProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;

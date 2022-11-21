@@ -81,7 +81,7 @@ export { toast };
 export const ToastContainer = () => (
   <>
     <ToastGlobalStyles />
-    <Portal portalNode={window.document.body}>
+    <Portal portalNode={globalThis.document.body}>
       <Toastify.ToastContainer autoClose={5000} newestOnTop closeButton={false} hideProgressBar draggable={false} pauseOnFocusLoss={false} />
     </Portal>
   </>

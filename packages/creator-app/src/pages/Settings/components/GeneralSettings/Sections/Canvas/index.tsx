@@ -44,11 +44,11 @@ const Canvas: React.FC<ConnectedBasicProps> = ({
       <Section
         header="Navigation"
         variant={SectionVariant.QUATERNARY}
-        contentSuffix={() => (
+        contentSuffix={
           <DescriptorContainer>
             {NAVIGATION_DESCRIPTIONS[canvasNavigation]} <Link href={Documentation.CANVAS_CONTROLS}>See more.</Link>
           </DescriptorContainer>
-        )}
+        }
         customHeaderStyling={headerStyling}
         customContentStyling={sectionStyling}
       >
@@ -63,11 +63,11 @@ const Canvas: React.FC<ConnectedBasicProps> = ({
         header="Connectors"
         variant={SectionVariant.QUATERNARY}
         dividers
-        contentSuffix={() => (
+        contentSuffix={
           <DescriptorContainer>
             Choose between straight or curved connection lines between blocks. <Link href={Documentation.LINK_TYPE}>See more.</Link>
           </DescriptorContainer>
-        )}
+        }
         customHeaderStyling={headerStyling}
         customContentStyling={sectionStyling}
       >
@@ -80,9 +80,9 @@ const Canvas: React.FC<ConnectedBasicProps> = ({
         dividers
         collapseVariant={SectionToggleVariant.TOGGLE}
         onToggleChange={toggleCanvasGrid}
-        contentSuffix={() => (
+        contentSuffix={
           <DescriptorContainer style={{ marginTop: '6px' }}>When on, the canvas will have a dotted background grid.</DescriptorContainer>
-        )}
+        }
         customHeaderStyling={{ paddingBottom: '0px' }}
         customContentStyling={sectionStyling}
         initialOpen={!!canvasGridEnabled}

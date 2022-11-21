@@ -1,41 +1,36 @@
-import { AlexaVersion } from '@voiceflow/alexa-types';
-import { DFESVersion } from '@voiceflow/google-dfes-types';
-import { GoogleVersion } from '@voiceflow/google-types';
+import { BaseVersion } from '@voiceflow/base-types';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { VoiceflowVersion } from '@voiceflow/voiceflow-types';
 import { AxiosInstance } from 'axios';
 
 import { ExtraOptions } from './types';
 import createResourceClient from './utils/resource';
 
-export interface VersionPlatformClient<S extends Realtime.AnyVersionSettings, P> {
-  patchSettings: (versionID: string, settings: Partial<S>) => Promise<void>;
+export interface VersionPlatformClient {
+  patchSettings: (versionID: string, settings: Partial<BaseVersion.Settings>) => Promise<void>;
 
-  patchPublishing: (versionID: string, publishing: Partial<P>) => Promise<void>;
+  patchPublishing: (versionID: string, publishing: Partial<BaseVersion.Publishing>) => Promise<void>;
 }
 
-export type GenericVersionPlatformClient = VersionPlatformClient<Realtime.AnyVersionSettings, any>;
-
-const PlatformClient = <S extends Realtime.AnyVersionSettings, P>(axios: AxiosInstance): VersionPlatformClient<S, P> => ({
+const PlatformClient = (axios: AxiosInstance): VersionPlatformClient => ({
   patchSettings: (versionID, settings) => axios.patch(`/version/${versionID}/settings`, settings),
 
   patchPublishing: (versionID, publishing) => axios.patch(`/version/${versionID}/publishing`, publishing),
 });
 
 const Client = ({ api, alexa, google, dialogflow, general }: ExtraOptions) => {
-  const alexaClient = PlatformClient<AlexaVersion.Settings, AlexaVersion.Publishing>(alexa);
-  const googleClient = PlatformClient<GoogleVersion.VoiceSettings, GoogleVersion.VoicePublishing>(google);
-  const dialogflowClient = PlatformClient<DFESVersion.Settings, DFESVersion.Publishing>(dialogflow);
-  const generalClient = PlatformClient<VoiceflowVersion.Settings, never>(general);
+  const alexaClient = PlatformClient(alexa);
+  const googleClient = PlatformClient(google);
+  const generalClient = PlatformClient(general);
+  const dialogflowClient = PlatformClient(dialogflow);
 
   const getPlatform = Realtime.Utils.platform.createPlatformSelector(
     {
-      [Platform.Constants.PlatformType.ALEXA]: alexaClient as GenericVersionPlatformClient,
-      [Platform.Constants.PlatformType.GOOGLE]: googleClient as GenericVersionPlatformClient,
-      [Platform.Constants.PlatformType.DIALOGFLOW_ES]: dialogflowClient as GenericVersionPlatformClient,
+      [Platform.Constants.PlatformType.ALEXA]: alexaClient,
+      [Platform.Constants.PlatformType.GOOGLE]: googleClient,
+      [Platform.Constants.PlatformType.DIALOGFLOW_ES]: dialogflowClient,
     },
-    generalClient as GenericVersionPlatformClient
+    generalClient
   );
 
   return {
@@ -44,8 +39,8 @@ const Client = ({ api, alexa, google, dialogflow, general }: ExtraOptions) => {
     platform: Object.assign(getPlatform, {
       alexa: alexaClient,
       google: googleClient,
-      dialogflow: dialogflowClient,
       general: generalClient,
+      dialogflow: dialogflowClient,
     }),
   };
 };

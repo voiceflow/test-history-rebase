@@ -1,6 +1,5 @@
-import { AlexaConstants } from '@voiceflow/alexa-types';
 import { Utils } from '@voiceflow/common';
-import { Box, BoxFlex, Label } from '@voiceflow/ui';
+import { Box, Label } from '@voiceflow/ui';
 import React from 'react';
 import { useSelector } from 'react-redux';
 
@@ -41,11 +40,11 @@ const LocaleButton = styled.button<{ 'data-active': boolean }>`
 `;
 
 const LocalesForm: React.FC = () => {
-  const locales = useSelector(VersionV2.active.alexa.localesSelector);
+  const locales = useSelector(VersionV2.active.localesSelector);
   const updateLocales = useDispatch(Version.updateLocales);
 
   const toggleLocale = React.useCallback(
-    (locale: AlexaConstants.Locale) => {
+    (locale: string) => {
       const nextLocales = Utils.array.toggleMembership(locales, locale);
 
       if (nextLocales.length) {
@@ -58,13 +57,13 @@ const LocalesForm: React.FC = () => {
   return (
     <Box className="pa__locale-limited" mb={24}>
       <Label>Location(s)</Label>
-      <BoxFlex flexWrap="wrap" className="locale-button-group">
+      <Box.Flex flexWrap="wrap" className="locale-button-group">
         {LOCALE_MAP.map((locale, index) => (
           <LocaleButton data-active={locales.includes(locale.value)} key={index} onClick={() => toggleLocale(locale.value)}>
             {locale.name}
           </LocaleButton>
         ))}
-      </BoxFlex>
+      </Box.Flex>
     </Box>
   );
 };

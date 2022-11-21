@@ -23,11 +23,17 @@ export const DEFAULT_LOCALE = [AlexaConstants.Locale.EN_US];
 
 export const CONFIG = Base.Project.Locale.extend({
   enum: AlexaConstants.Locale,
+
   list: Object.values(AlexaConstants.Locale),
+
   multi: true,
+
   language: false,
+
   storedIn: 'publishing',
+
   labelMap: LABEL_MAP,
+
   defaultLocale: DEFAULT_LOCALE,
 });
 

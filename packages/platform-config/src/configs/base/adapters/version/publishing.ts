@@ -9,12 +9,18 @@ export type FromAndToDBOptions = [{ defaultVoice: string }];
 
 const SHARED_FIELDS = Types.satisfies<keyof BaseVersion.Publishing>()(['selectedIntents']);
 
-const DEFAULT_VALUES: Pick<Models.Version.Publishing.Model, 'invocationName' | 'invocationNameSamples'> = {
+const DEFAULT_VALUES: Pick<Models.Version.Publishing.Model, 'locales' | 'invocationName' | 'invocationNameSamples'> = {
+  locales: [],
   invocationName: '',
   invocationNameSamples: [],
 };
 
-export const smart = createSmartSimpleAdapter<BaseVersion.Publishing, Models.Version.Publishing.Model, FromAndToDBOptions, FromAndToDBOptions>(
+export const smart = createSmartSimpleAdapter<
+  BaseVersion.Publishing,
+  Pick<Models.Version.Publishing.Model, keyof BaseVersion.Publishing>,
+  FromAndToDBOptions,
+  FromAndToDBOptions
+>(
   (dbPublishing) => ConfigUtils.pickNonEmptyFields(dbPublishing, SHARED_FIELDS),
   (publishing) => ConfigUtils.pickNonEmptyFields(publishing, SHARED_FIELDS)
 );

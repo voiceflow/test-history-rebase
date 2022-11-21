@@ -1,8 +1,8 @@
 import type { Theme } from '@ui/styles/theme';
 import React from 'react';
-import * as StyledComponents from 'styled-components';
+import { useTheme as useStyledTheme } from 'styled-components';
 
-export const useTheme = StyledComponents.useTheme as () => Theme;
+export const useTheme = useStyledTheme as () => Theme;
 
 export const useNestedPopperTheme = (zIndex?: number): Theme => {
   const theme = useTheme();

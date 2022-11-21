@@ -14,7 +14,7 @@ interface FormProps {
 
 const Form: React.FC<FormProps> = ({ editor, header, footer }) => (
   <EditorV2 header={header ?? <EditorV2.DefaultHeader />} footer={footer ?? <EditorV2.DefaultFooter />}>
-    <SectionV2.SimpleSection contentProps={{ bottomOffset: 2.5 }}>
+    <SectionV2.SimpleSection>
       <GoToIntentSelect
         value={editor.data.intent ? { intentID: editor.data.intent, diagramID: editor.data.diagramID ?? null } : null}
         onChange={(data) => editor.onChange({ intent: data?.intentID ?? null, diagramID: data?.diagramID ?? null })}

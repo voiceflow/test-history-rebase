@@ -20,7 +20,7 @@ interface RepromptsSectionProps {
 
 const RepromptsSection: React.FC<RepromptsSectionProps> = ({ title, active, reprompts, onChange }) => {
   const editor = EditorV2.useEditor();
-  const defaultVoice = useSelector(VersionV2.active.defaultVoiceSelector);
+  const defaultVoice = useSelector(VersionV2.active.voice.defaultVoiceSelector);
   const mapManager = useMapManager(reprompts, onChange, {
     getKey: (item) => item.id,
     maxItems: Realtime.Utils.typeGuards.isAlexaPlatform(editor.platform) ? MAX_ALEXA_REPROMPTS : MAX_SYSTEM_MESSAGES_COUNT,

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.183.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.183.0...@voiceflow/ui@1.183.1) (2022-11-21)
+
+
+### Bug Fixes
+
+* audio upload [bugfix] (CT-000) ([ab146fe](https://github.com/voiceflow/creator-app/commit/ab146fe38c529c4e5da43a71c8adf07331905639))
+
+
+
+
+
 # [1.183.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.182.1...@voiceflow/ui@1.183.0) (2022-11-19)
 
 

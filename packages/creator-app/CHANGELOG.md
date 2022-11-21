@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.984.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.983.0...@voiceflow/creator-app@1.984.0) (2022-11-21)
+
+
+### Bug Fixes
+
+* keep showing select in Export if no intents (NLU-447) ([#6329](https://github.com/voiceflow/creator-app/issues/6329)) ([e876d58](https://github.com/voiceflow/creator-app/commit/e876d58c67d28868cdf9884d62692f54d7a86d50))
+
+
+### Features
+
+* auto load the recommendations next batch (NLU-448) ([#6335](https://github.com/voiceflow/creator-app/issues/6335)) ([6ee8290](https://github.com/voiceflow/creator-app/commit/6ee82902f5c23c8ffc91cedd704f51be5949dc9e))
+
+
+
+
+
 # [1.983.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.982.2...@voiceflow/creator-app@1.983.0) (2022-11-21)
 
 

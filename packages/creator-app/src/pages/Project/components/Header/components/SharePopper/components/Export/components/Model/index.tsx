@@ -8,7 +8,6 @@ import UpgradeOption from '@/components/UpgradeOption';
 import * as NLP from '@/config/nlp';
 import { Permission } from '@/config/permissions';
 import { getNLUExportLimitDetails, isGatedNLUExportType } from '@/config/planLimits/nluExport';
-import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { UpgradePrompt } from '@/ducks/tracking';
 import { useActiveNLUConfig, usePermission } from '@/hooks';
@@ -23,13 +22,11 @@ const ExportModel: React.FC<{
   const { exportNLPType, setExportNLPType, setExportIntents, exportIntents, nlpTypes, setCanExport, setCheckedExportIntents } =
     React.useContext(ExportContext)!;
 
-  const intents = useSelector(IntentV2.allIntentsSelector);
   const platform = useSelector(ProjectV2.active.platformSelector);
   const [permissionToExport] = usePermission(Permission.NLU_EXPORT_ALL);
   const [permissionToExportCSV] = usePermission(Permission.NLU_EXPORT_CSV);
   const [selectedIntents, setSelectedIntents] = React.useState(exportIntents);
 
-  const noModelData = intents.length === 0;
   const exportNLPConfig = exportNLPType && NLP.Config.get(exportNLPType);
   const nluOptions = nlpTypes.filter((nlpType) => !!NLP.Config.get(nlpType).export);
 
@@ -104,15 +101,7 @@ const ExportModel: React.FC<{
 
       <label style={{ marginTop: 24 }}>Intents</label>
 
-      {noModelData ? (
-        <BlockText fontSize={13} color="#62778c" lineHeight="normal" marginTop={12}>
-          No model data currently exists
-        </BlockText>
-      ) : (
-        <>
-          <IntentsSelect value={selectedIntents} onChange={handleOnChange} />
-        </>
-      )}
+      <IntentsSelect value={selectedIntents} onChange={handleOnChange} />
     </>
   );
 };

@@ -1,3 +1,4 @@
+import { datadogRum } from '@datadog/browser-rum';
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { parseQuery, Vendors } from '@voiceflow/ui';
@@ -43,6 +44,7 @@ export const updateAuthToken =
 
 export const resetSession = (): SyncThunk => (dispatch) => {
   localStorage.clear();
+  datadogRum.clearUser();
 
   batch(() => {
     dispatch(resetAccount());
@@ -100,6 +102,13 @@ export const getUserAccount =
 
       const isSSO = Boolean(gid || fid || okta_id || saml_provider_id);
 
+      datadogRum.setUser({
+        id: user.id.toString(),
+        email: user.email,
+        name: user.name,
+        isSSO,
+      });
+
       return {
         ...user,
         isSSO,
@@ -111,6 +120,13 @@ export const getUserAccount =
     const { gid, fid, image = null, okta_id, creator_id, created, saml_provider_id, ...user } = await client.user.get();
 
     const isSSO = Boolean(gid || fid || okta_id || saml_provider_id);
+
+    datadogRum.setUser({
+      id: creator_id.toString(),
+      email: user.email,
+      name: user.name,
+      isSSO,
+    });
 
     return { ...user, image, isSSO, createdAt: created, creatorID: creator_id };
   };

@@ -9,6 +9,7 @@ import fetch from './client/fetch';
 import { SSO_CONVERT_ENDPOINTS } from './client/sso';
 import { API_ENDPOINT, LOGROCKET_PROJECT, TRUSTED_ENDPOINTS, VERSION } from './config';
 import { clearPersistedLogs } from './utils/logger';
+import * as DatadogRUM from './vendors/datadogRUM';
 import * as Google from './vendors/google';
 import * as GoogleAnalytics from './vendors/googleAnalytics';
 import * as Userflow from './vendors/userflow';
@@ -105,6 +106,8 @@ const setupApp = ({ tabID, logout, history, browserID }: { tabID: string; logout
       },
     ],
   });
+
+  DatadogRUM.initialize();
 
   Google.initialize();
 

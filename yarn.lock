@@ -1890,6 +1890,26 @@
     debug "^3.1.0"
     lodash.once "^4.1.1"
 
+"@datadog/browser-core@4.24.1":
+  version "4.24.1"
+  resolved "https://registry.yarnpkg.com/@datadog/browser-core/-/browser-core-4.24.1.tgz#770e21dd91c35fa1959a55c06e82ac743165262b"
+  integrity sha512-ADrMhFjD75STecEa+vQmuutoyKu6EVSj+EsFzOpqdfit24c7ZnyyydHIpCUtKjXGQdI1WMX0/2Xf/dM4zMCYgA==
+
+"@datadog/browser-rum-core@4.24.1":
+  version "4.24.1"
+  resolved "https://registry.yarnpkg.com/@datadog/browser-rum-core/-/browser-rum-core-4.24.1.tgz#dfc793eca5b590b794c9827240ede727ee17b6c8"
+  integrity sha512-yvGMfR99kHCJt2s87uC67B9JQGtvS1fpH08Tx9w7WI5FmrzLFIBeVOVVhORO1/t6m47ZJEa8NJsJnepZ6gQeuw==
+  dependencies:
+    "@datadog/browser-core" "4.24.1"
+
+"@datadog/browser-rum@^4.24.1":
+  version "4.24.1"
+  resolved "https://registry.yarnpkg.com/@datadog/browser-rum/-/browser-rum-4.24.1.tgz#429b8f9b224efc0471178d2a632f3fe1dc3ba4b6"
+  integrity sha512-Zt6LVqpr9Qb2Rer5nvMGHrukWiao12DrLmbO4IQs9CqmykGmejp8TEGaMqQC6dp5krgu8YCifADL4Bvj8/GlDA==
+  dependencies:
+    "@datadog/browser-core" "4.24.1"
+    "@datadog/browser-rum-core" "4.24.1"
+
 "@emotion/cache@^10.0.27", "@emotion/cache@^10.0.9":
   version "10.0.29"
   resolved "https://registry.yarnpkg.com/@emotion/cache/-/cache-10.0.29.tgz#87e7e64f412c060102d589fe7c6dc042e6f9d1e0"

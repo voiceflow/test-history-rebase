@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.987.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.986.1...@voiceflow/creator-app@1.987.0) (2022-11-22)
+
+
+### Features
+
+* nlu clustering UI structure (NLU-432) ([#6273](https://github.com/voiceflow/creator-app/issues/6273)) ([1753df5](https://github.com/voiceflow/creator-app/commit/1753df5822aa43b7cd6b6a016b250c65c60d52b2))
+
+
+
+
+
 ## [1.986.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.986.0...@voiceflow/creator-app@1.986.1) (2022-11-22)
 
 

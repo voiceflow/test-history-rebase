@@ -13,8 +13,6 @@ import * as Router from '@/ducks/router';
 import { useDispatch, useSelector } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 
-import { useNodeLabel } from './hooks';
-
 const PATH = 'command/:commandNodeID';
 
 const CommandEditor: React.FC = () => {
@@ -26,13 +24,11 @@ const CommandEditor: React.FC = () => {
   const commandNodeData = useSelector(CreatorV2.nodeDataByIDSelector, { id: commandNodeID }) as Realtime.NodeData.Command | null;
   const intent = useSelector(IntentV2.platformIntentByIDSelector, { id: commandNodeData?.intent });
 
-  const nodeLabel = useNodeLabel();
-
   const onChange = (data: Partial<Realtime.NodeData.Command>) => editor.engine.node.updateData(commandNodeID, data);
 
   return (
     <EditorV2
-      header={<EditorV2.DefaultHeader title={nodeLabel} actions={[]} onBack={() => editor.goBack()} />}
+      header={<EditorV2.DefaultHeader title="Start" actions={[]} onBack={() => editor.goBack()} />}
       footer={
         <EditorV2.DefaultFooter tutorial={Documentation.COMPONENT_STEP}>
           <Button

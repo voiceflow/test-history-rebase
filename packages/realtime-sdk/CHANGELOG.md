@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.197.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.197.0...@voiceflow/realtime-sdk@1.197.1) (2022-11-22)
+
+
+### Bug Fixes
+
+* use correct default dfes language [bugfix] (CT-1248) ([#6345](https://github.com/voiceflow/creator-app/issues/6345)) ([1bc447b](https://github.com/voiceflow/creator-app/commit/1bc447bc486d5fedc5d7deb04bed68b26cd467d2))
+
+
+
+
+
 # [1.197.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.196.0...@voiceflow/realtime-sdk@1.197.0) (2022-11-21)
 
 

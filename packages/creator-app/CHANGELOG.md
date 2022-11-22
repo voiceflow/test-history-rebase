@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.986.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.986.0...@voiceflow/creator-app@1.986.1) (2022-11-22)
+
+
+### Bug Fixes
+
+* use correct default dfes language [bugfix] (CT-1248) ([#6345](https://github.com/voiceflow/creator-app/issues/6345)) ([1bc447b](https://github.com/voiceflow/creator-app/commit/1bc447bc486d5fedc5d7deb04bed68b26cd467d2))
+
+
+
+
+
 # [1.986.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.985.0...@voiceflow/creator-app@1.986.0) (2022-11-21)
 
 

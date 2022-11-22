@@ -1,9 +1,10 @@
-import { Input } from '@voiceflow/ui';
+import { Box, Input, SvgIcon } from '@voiceflow/ui';
 
-import { styled } from '@/hocs';
+import { css, styled, transition } from '@/hocs';
 import { ANIMATION_SPEED } from '@/styles/theme';
 
-export const IconButtonContainer = styled.div`
+export const IconButtonContainer = styled.div<{ active?: boolean }>`
+  ${transition('color, opacity')};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -13,14 +14,27 @@ export const IconButtonContainer = styled.div`
   margin-left: 4px;
   background-color: ${({ theme }) => theme.colors.white};
   color: ${({ theme }) => theme.iconColors.active};
-  opacity: 0.85;
 
   &:hover {
-    opacity: 1;
+    ${SvgIcon.Container} {
+      opacity: 1;
+    }
   }
+
+  ${SvgIcon.Container} {
+    opacity: 0.85;
+  }
+
+  ${({ active }) =>
+    active &&
+    css`
+      color: ${({ theme }) => theme.colors.primary};
+      opacity: 1;
+    `}
 `;
 
 export const SearchBox = styled.div`
+  ${transition('opacity')};
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -57,4 +71,19 @@ export const SearchInput = styled(Input)`
   input::placeholder {
     line-height: 20px;
   }
+`;
+
+export const UpdateBubble = styled(Box.FlexCenter)`
+  position: absolute;
+  top: -3px;
+  right: -1px;
+  z-index: 3;
+  box-sizing: content-box;
+  width: 5px;
+  height: 5px;
+  background-color: #e0285b;
+  border-radius: 100%;
+  cursor: pointer;
+  border: 1.5px solid rgba(255, 255, 255, 1);
+  opacity: 1;
 `;

@@ -1,10 +1,9 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, ClickableText, Dropdown, IconButton, IconButtonVariant, Spinner, Text, toast } from '@voiceflow/ui';
+import { Box, Button, Dropdown, IconButton, IconButtonVariant, Link, Spinner, toast } from '@voiceflow/ui';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import client from '@/client';
-import { SettingsSection } from '@/components/Settings';
 import { TableContainer, TableRow } from '@/components/Table';
 import * as Feature from '@/ducks/feature';
 import { setConfirm } from '@/ducks/modal';
@@ -12,6 +11,8 @@ import * as Session from '@/ducks/session';
 import * as ModalsV2 from '@/ModalsV2';
 import { APIKey } from '@/models';
 import * as Sentry from '@/vendors/sentry';
+
+import { Description, SectionWrapper, Title } from './styles';
 
 const APIKeyPage: React.FC = () => {
   const dispatch = useDispatch();
@@ -64,17 +65,24 @@ const APIKeyPage: React.FC = () => {
 
   if (loading) {
     return (
-      <SettingsSection title="API Keys">
+      <SectionWrapper>
         <Spinner isMd />
-      </SettingsSection>
+      </SectionWrapper>
     );
   }
 
   return (
-    <SettingsSection title="API Keys">
-      <Box.FlexApart px={32} py={24}>
-        <Text color="secondary">({apiKeys.length}) Existing API Keys</Text>
-        <ClickableText
+    <SectionWrapper>
+      <Box.FlexApart width={700}>
+        <Box.FlexAlignStart flexDirection="column">
+          <Title>Workspace API Keys</Title>
+          <Description>
+            Read and write to your Voiceflow assistant files.
+            <Link paddingLeft="3px">Learn more</Link>
+          </Description>
+        </Box.FlexAlignStart>
+        <Button
+          variant={Button.Variant.PRIMARY}
           onClick={() =>
             createAPIKeyModal.openVoid({
               workspaceID,
@@ -82,35 +90,37 @@ const APIKeyPage: React.FC = () => {
             })
           }
         >
-          Create New API Key
-        </ClickableText>
+          Create Key
+        </Button>
       </Box.FlexApart>
       {!!apiKeys.length && (
-        <TableContainer topBorder columns={[1]}>
-          {apiKeys.map(({ _id: keyID, name }) => (
-            <TableRow key={keyID} hasBorder>
-              <Box py={16}>
-                {name}
-                <Box color="secondary" mt={6}>{`VF.${keyID}.XXX...`}</Box>
-              </Box>
-              <Dropdown
-                options={[
-                  {
-                    label: 'Delete',
-                    onClick: confirmDeleteKey(keyID),
-                  },
-                ]}
-                placement="bottom-end"
-              >
-                {(ref, onToggle, isOpen) => (
-                  <IconButton icon="ellipsis" variant={IconButtonVariant.FLAT} active={isOpen} size={15} onClick={onToggle} ref={ref} large />
-                )}
-              </Dropdown>
-            </TableRow>
-          ))}
-        </TableContainer>
+        <Box width={700} pt={16}>
+          <TableContainer topBorder columns={[1]} allBorders>
+            {apiKeys.map(({ _id: keyID, name }, index) => (
+              <TableRow key={keyID} hasBorder={index !== apiKeys.length - 1}>
+                <Box py={16}>
+                  {name}
+                  <Box color="secondary" mt={6}>{`VF.${keyID}.XXX...`}</Box>
+                </Box>
+                <Dropdown
+                  options={[
+                    {
+                      label: 'Delete',
+                      onClick: confirmDeleteKey(keyID),
+                    },
+                  ]}
+                  placement="bottom-end"
+                >
+                  {(ref, onToggle, isOpen) => (
+                    <IconButton icon="ellipsis" variant={IconButtonVariant.FLAT} active={isOpen} size={15} onClick={onToggle} ref={ref} large />
+                  )}
+                </Dropdown>
+              </TableRow>
+            ))}
+          </TableContainer>
+        </Box>
       )}
-    </SettingsSection>
+    </SectionWrapper>
   );
 };
 

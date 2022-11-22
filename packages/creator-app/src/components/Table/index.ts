@@ -12,10 +12,17 @@ export const Descriptor = styled.div`
 export const TableHeader = styled(BoxFlexCenter)`
   font-size: 13px;
   color: #62778c;
+  border-bottom: solid 1px #eaeff4;
 `;
 
-export const TableRow = styled(BoxFlexCenter)`
+export const TableRow = styled(BoxFlexCenter)<{ hasBorder?: boolean }>`
   font-size: 15px;
+
+  ${({ hasBorder }) =>
+    hasBorder &&
+    css`
+      border-bottom: solid 1px #eaeff4;
+    `}
 `;
 
 export const getColumnStyles = (columns: number[]) => {
@@ -28,7 +35,7 @@ export const getColumnStyles = (columns: number[]) => {
   );
 };
 
-export const TableContainer = styled(Box)<{ columns?: number[]; topBorder?: boolean }>`
+export const TableContainer = styled(Box)<{ columns?: number[]; topBorder?: boolean; allBorders?: boolean }>`
   padding-bottom: 10px;
 
   ${({ topBorder }) =>
@@ -37,13 +44,22 @@ export const TableContainer = styled(Box)<{ columns?: number[]; topBorder?: bool
       border-top: solid 1px #eaeff4;
     `}
 
+  ${({ allBorders }) =>
+    allBorders &&
+    css`
+      border-left: solid 1px #eaeff4;
+      border-right: solid 1px #eaeff4;
+      border-bottom: solid 1px #eaeff4;
+      border-radius: 8px;
+      padding-bottom: 0;
+    `}
+
   ${TableHeader}, ${TableRow} {
     display: flex;
     justify-content: center;
     padding-left: 32px;
     padding-right: 32px;
     min-height: 60px;
-    border-bottom: solid 1px #eaeff4;
 
     ${({ columns }) => columns && getColumnStyles(columns)}
   }

@@ -56,7 +56,7 @@ const BillingModal: React.FC<BillingModalProps> = ({ workspaceId }) => {
                   {invoices!.map((invoice, index) => {
                     const { date, amount, items } = invoice;
                     return (
-                      <TableRow key={index}>
+                      <TableRow key={index} hasBorder>
                         <span>{date}</span>
                         <span>
                           {items.map((item, index) => (

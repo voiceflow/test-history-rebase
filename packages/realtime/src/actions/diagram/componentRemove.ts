@@ -16,11 +16,13 @@ class ComponentRemove extends AbstractDiagramResourceControl<Realtime.BaseDiagra
     await this.server.processAs(creatorID, Realtime.diagram.crud.remove({ versionID, projectID, workspaceID, key: diagramID }));
   };
 
-  protected finally = async (ctx: Context, { payload }: Action<Realtime.BaseDiagramPayload>) => {
+  protected finally = async (ctx: Context, action: Action<Realtime.BaseDiagramPayload>) => {
     const { creatorID } = ctx.data;
-    const { diagramID, projectID, workspaceID } = payload;
+    const { diagramID, projectID, workspaceID } = action.payload;
 
     await Promise.all([
+      // eslint-disable-next-line promise/valid-params
+      super.finally(ctx, action),
       this.services.lock.unlockAllEntities(diagramID),
       this.server.processAs(creatorID, Realtime.thread.removeManyByDiagramIDs({ projectID, diagramIDs: [diagramID], workspaceID })),
     ]);

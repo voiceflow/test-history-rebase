@@ -7,6 +7,7 @@ import { createSelector } from 'reselect';
 
 import * as Account from '@/ducks/account';
 import { activeDiagramIDSelector } from '@/ducks/creatorV2/selectors';
+import { awarenessViewersSelector } from '@/ducks/projectV2/selectors/active';
 import { createCurriedSelector, createParameterSelector, creatorIDParamSelector } from '@/ducks/utils';
 import { idParamSelector, idsParamSelector } from '@/ducks/utils/crudV2';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
@@ -22,16 +23,14 @@ export const awarenessStateSelector = createSelector([rootDiagramSelector], (sta
 
 export const awarenessLocksSelector = createSelector([awarenessStateSelector], (awareness) => awareness.locks);
 
-export const awarenessViewersSelector = createSelector([awarenessStateSelector], (awareness) => awareness.viewers);
-
 export const diagramNormalizedViewersByIDSelector = createSelector([awarenessViewersSelector, idParamSelector], (awarenessViewers, diagramID) =>
-  diagramID && Utils.object.hasProperty(awarenessViewers, diagramID) ? awarenessViewers[diagramID] : INITIAL_DIAGRAM_VIEWERS
+  diagramID && awarenessViewers && Utils.object.hasProperty(awarenessViewers, diagramID) ? awarenessViewers[diagramID] : INITIAL_DIAGRAM_VIEWERS
 );
 
 export const allViewersCountSelector = createSelector(
   [awarenessViewersSelector, WorkspaceV2.active.hasWorkspaceSelector],
   (viewers, hasWorkspace) => {
-    if (!hasWorkspace) return 1;
+    if (!hasWorkspace || !viewers) return 1;
 
     return new Set(Object.values(viewers).flatMap((diagramViewers) => diagramViewers.allKeys)).size;
   }
@@ -45,7 +44,7 @@ export const diagramViewersByIDSelector = createSelector([diagramNormalizedViewe
 
 export const diagramsViewersByIDsSelector = createSelector([awarenessViewersSelector, idsParamSelector], (awarenessViewers, diagramIDs) =>
   _uniqBy(
-    diagramIDs.flatMap((diagramID) => Normal.denormalize(awarenessViewers[diagramID] ?? INITIAL_DIAGRAM_VIEWERS)),
+    diagramIDs.flatMap((diagramID) => Normal.denormalize(awarenessViewers?.[diagramID] ?? INITIAL_DIAGRAM_VIEWERS)),
     'creatorID'
   )
 );

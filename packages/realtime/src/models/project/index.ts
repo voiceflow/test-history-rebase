@@ -6,6 +6,7 @@ import _ from 'lodash';
 import AbstractModel from '../_mongo';
 import { Bson, HashID } from '../utils';
 
+const DATE_KEYS = ['canvasUpdatedAt'] as const;
 const DOUBLE_KEYS = ['_version'] as const;
 const READ_ONLY_KEYS = ['_id', 'teamID', 'creatorID'] as const;
 const OBJECT_ID_KEYS = ['_id', 'devVersion', 'liveVersion'] as const;
@@ -13,7 +14,7 @@ const TEAM_HASH_ID_KEYS = ['teamID'] as const;
 
 type DBProjectModel = HashID.HashIDToNumber<
   Bson.NumberToDouble<
-    Bson.StringToObjectID<BaseModels.Project.Model<AnyRecord, AnyRecord>, typeof OBJECT_ID_KEYS[number]>,
+    Bson.StringToObjectID<Bson.StringToDate<BaseModels.Project.Model<AnyRecord, AnyRecord>, typeof DATE_KEYS[number]>, typeof OBJECT_ID_KEYS[number]>,
     typeof DOUBLE_KEYS[number]
   >,
   typeof TEAM_HASH_ID_KEYS[number]
@@ -29,13 +30,15 @@ class ProjectModel extends AbstractModel<DBProjectModel, BaseModels.Project.Mode
     Utils.functional.compose(
       HashID.numberToHashID(TEAM_HASH_ID_KEYS, this.clients.teamHashids),
       Bson.doubleToNumber(DOUBLE_KEYS),
-      Bson.objectIdToString(OBJECT_ID_KEYS)
+      Bson.objectIdToString(OBJECT_ID_KEYS),
+      Bson.dateToString(DATE_KEYS)
     ),
 
     Utils.functional.compose(
       HashID.hashIDToNumber(TEAM_HASH_ID_KEYS, this.clients.teamHashids),
       Bson.numberToDouble(DOUBLE_KEYS),
-      Bson.stringToObjectId(OBJECT_ID_KEYS)
+      Bson.stringToObjectId(OBJECT_ID_KEYS),
+      Bson.stringToDate(DATE_KEYS)
     )
   );
 

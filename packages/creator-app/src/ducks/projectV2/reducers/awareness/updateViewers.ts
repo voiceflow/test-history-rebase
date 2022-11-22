@@ -5,10 +5,12 @@ import * as Normal from 'normal-store';
 import { createReducer } from '../utils';
 import { createViewer, getViewerKey } from './utils';
 
-const loadViewers = createReducer(Realtime.project.awareness.loadViewers, (state, { viewers }) => {
+const updateViewers = createReducer(Realtime.project.awareness.updateViewers, (state, { viewers, projectID }) => {
+  state.awareness.viewers[projectID] ??= {};
+
   Object.entries(viewers).forEach(([diagramID, diagramViewers]) => {
-    state.awareness.viewers[diagramID] = Normal.normalize(diagramViewers.map(createViewer), getViewerKey);
+    state.awareness.viewers[projectID][diagramID] = Normal.normalize(diagramViewers.map(createViewer), getViewerKey);
   });
 });
 
-export default loadViewers;
+export default updateViewers;

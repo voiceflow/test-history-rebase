@@ -3,16 +3,9 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["src/*"]
     },
-    "types": [
-      "gapi",
-      "gapi.auth2",
-      "resize-observer-browser",
-      "dayjs/plugin/relativeTime",
-      "dayjs/plugin/minMax",
-      "login-with-amazon-sdk-browser",
-      "vitest/globals"
-    ]
-  }
+    "types": ["vitest/globals"]
+  },
+  "exclude": ["node_modules/**/*", "build/**/*"]
 }

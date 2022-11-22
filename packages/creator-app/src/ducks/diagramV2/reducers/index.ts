@@ -3,12 +3,10 @@ import { createRootCRUDReducer } from '@/ducks/utils/crudV2';
 import { INITIAL_STATE } from '../constants';
 import addBlockReducer from './addBlock';
 import {
-  loadViewers,
   lockEntities,
   removeDiagram as awarenessRemoveDiagram,
   removeManyDiagrams as awarenessRemoveManyDiagrams,
   unlockEntities,
-  updateDiagramViewers,
   updateLockedEntities,
 } from './awareness';
 import crudReducers from './crud';
@@ -35,8 +33,6 @@ const realtimeDiagramReducer = createRootCRUDReducer(INITIAL_STATE, {
 })
   .immerCase(...addLocalVariable)
   .immerCase(...removeLocalVariable)
-  .immerCase(...loadViewers)
-  .immerCase(...updateDiagramViewers)
   .immerCase(...lockEntities)
   .immerCase(...unlockEntities)
   .immerCase(...updateLockedEntities)

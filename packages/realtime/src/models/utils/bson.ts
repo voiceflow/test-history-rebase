@@ -3,12 +3,14 @@ import { Double, ObjectId } from 'bson';
 
 import { KeyRemap } from './types';
 
-export type StringToObjectID<Model extends EmptyObject, Key extends keyof Model> = KeyRemap<Model, Key, ObjectId>;
+export type StringToDate<Model extends EmptyObject, Key extends keyof Model> = KeyRemap<Model, Key, Date>;
 
 export type NumberToDouble<Model extends EmptyObject, Key extends keyof Model> = KeyRemap<Model, Key, Double>;
 
+export type StringToObjectID<Model extends EmptyObject, Key extends keyof Model> = KeyRemap<Model, Key, ObjectId>;
+
 const transformToBsonTypeFactory =
-  <FromValue, ToClass extends typeof Double | typeof ObjectId>(Class: ToClass) =>
+  <FromValue, ToClass extends typeof Double | typeof ObjectId | typeof Date>(Class: ToClass) =>
   <Key extends string>(keys: Key[] | ReadonlyArray<Key>) =>
   <Model extends { [key in Key]?: FromValue }>(model: Model): KeyRemap<Model, Key, InstanceType<ToClass>> => {
     const mappedKeys = Object.fromEntries(
@@ -22,7 +24,7 @@ const transformToBsonTypeFactory =
   };
 
 const transformFromBsonTypeFactory =
-  <ToValue, FromClass extends Double | ObjectId>() =>
+  <ToValue, FromClass extends Double | ObjectId | Date>() =>
   <Key extends string>(keys: Key[] | ReadonlyArray<Key>) =>
   <Model extends { [key in Key]?: FromClass }>(model: Model): KeyRemap<Model, Key, ToValue> => {
     const mappedKeys = Object.fromEntries(
@@ -40,6 +42,8 @@ const transformFromBsonTypeFactory =
     };
   };
 
+export const stringToDate = transformToBsonTypeFactory<string, typeof Date>(Date);
+export const dateToString = transformFromBsonTypeFactory<string, Date>();
 export const numberToDouble = transformToBsonTypeFactory<number, typeof Double>(Double);
 export const doubleToNumber = transformFromBsonTypeFactory<number, Double>();
 export const stringToObjectId = transformToBsonTypeFactory<string, typeof ObjectId>(ObjectId);

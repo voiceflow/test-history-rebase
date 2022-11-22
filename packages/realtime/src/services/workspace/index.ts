@@ -2,6 +2,7 @@
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
+import { HEARTBEAT_EXPIRE_TIMEOUT } from '../../constants';
 import { AbstractControl, ControlOptions } from '../../control';
 import logger from '../../logger';
 import AccessCache from '../utils/accessCache';
@@ -12,10 +13,38 @@ class WorkspaceService extends AbstractControl {
 
   public member: WorkspaceMemberService;
 
+  private static getConnectedProjectsKey({ workspaceID }: { workspaceID: string }): string {
+    return `workspaces:${workspaceID}:projects`;
+  }
+
+  private connectedProjectsCache = this.clients.cache.createSet({
+    expire: HEARTBEAT_EXPIRE_TIMEOUT,
+    keyCreator: WorkspaceService.getConnectedProjectsKey,
+  });
+
   constructor(options: ControlOptions) {
     super(options);
 
     this.member = new WorkspaceMemberService(options);
+  }
+
+  public async connectProject(workspaceID: string, projectID: string): Promise<void> {
+    await this.connectedProjectsCache.add({ workspaceID }, projectID);
+  }
+
+  public async disconnectProject(workspaceID: string, projectID: string): Promise<void> {
+    await this.connectedProjectsCache.remove({ workspaceID }, projectID);
+  }
+
+  public async getConnectedProjects(workspaceID: string): Promise<string[]> {
+    return this.connectedProjectsCache.values({ workspaceID });
+  }
+
+  public async getConnectedViewersPerProject(workspaceID: string): Promise<Record<string, Record<string, Realtime.Viewer[]>>> {
+    const projectIDs = await this.getConnectedProjects(workspaceID);
+    const projectsViewers = await Promise.all(projectIDs.map((projectID) => this.services.project.getConnectedViewersPerDiagram(projectID)));
+
+    return Object.fromEntries(projectIDs.map((projectID, index) => [projectID, projectsViewers[index]]));
   }
 
   public async get(creatorID: number, workspaceID: string): Promise<Realtime.DBWorkspace> {

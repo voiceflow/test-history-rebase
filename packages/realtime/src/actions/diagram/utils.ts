@@ -24,6 +24,10 @@ export abstract class AbstractDiagramActionControl<
       workspaceID: action.payload.workspaceID,
     }),
   });
+
+  protected finally = async (ctx: Context, { payload }: Action<P>): Promise<void> => {
+    await this.services.project.setCanvasUpdatedByCreatorID(payload.projectID, ctx.data.creatorID);
+  };
 }
 
 export abstract class AbstractVersionDiagramAccessActionControl<
@@ -87,5 +91,9 @@ export abstract class AbstractDiagramResourceControl<
     ]);
 
     return newDiagram;
+  };
+
+  protected finally = async (ctx: Context, { payload }: Action<P>): Promise<void> => {
+    await this.services.project.setCanvasUpdatedByCreatorID(payload.projectID, ctx.data.creatorID);
   };
 }

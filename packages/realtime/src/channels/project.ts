@@ -14,17 +14,9 @@ class ProjectChannel extends AbstractChannelControl<Realtime.Channels.ProjectCha
   protected load = async (ctx: ChannelContext<Realtime.Channels.ProjectChannelParams>): Promise<SendBackActions> => {
     const { workspaceID, projectID } = ctx.params;
 
-    const diagramIDs = await this.services.project.getConnectedDiagrams(projectID);
-    const diagramsConnectedViewers = await Promise.all(diagramIDs.map((diagramID) => this.services.diagram.getConnectedViewers(diagramID)));
+    const viewers = await this.services.project.getConnectedViewersPerDiagram(projectID);
 
-    return Realtime.project.awareness.loadViewers({
-      viewers: diagramIDs.reduce<{ [diagramID: string]: Realtime.Viewer[] }>(
-        (acc, diagramID, index) => Object.assign(acc, { [diagramID]: diagramsConnectedViewers[index] }),
-        {}
-      ),
-      projectID,
-      workspaceID,
-    });
+    return Realtime.project.awareness.updateViewers({ viewers, projectID, workspaceID });
   };
 }
 

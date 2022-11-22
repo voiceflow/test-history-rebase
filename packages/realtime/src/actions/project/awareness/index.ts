@@ -1,1 +1,1 @@
-export { default as UpdateProjectViewersControl } from './updateViewers';
+export { default as UpdateDiagramViewersControl } from './updateDiagramViewers';

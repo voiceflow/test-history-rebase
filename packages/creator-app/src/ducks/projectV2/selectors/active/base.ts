@@ -5,10 +5,16 @@ import { createSelector } from 'reselect';
 
 import * as Session from '@/ducks/session';
 
+import { getAwarenessViewersByIDSelector } from '../awareness';
 import { getProjectByIDSelector } from '../base';
 
 export const projectSelector = createSelector([Session.activeProjectIDSelector, getProjectByIDSelector], (projectID, getProjectByID) =>
   getProjectByID({ id: projectID })
+);
+
+export const awarenessViewersSelector = createSelector(
+  [Session.activeProjectIDSelector, getAwarenessViewersByIDSelector],
+  (projectID, getAwarenessViewersByID) => getAwarenessViewersByID({ id: projectID })
 );
 
 export const nluTypeSelector = createSelector([projectSelector], (project) => project?.nlu || Platform.Constants.NLUType.VOICEFLOW);

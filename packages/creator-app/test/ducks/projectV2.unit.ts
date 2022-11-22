@@ -2,6 +2,7 @@ import { AlexaProject } from '@voiceflow/alexa-types';
 import { BaseModels } from '@voiceflow/base-types';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import * as Normal from 'normal-store';
 
 import * as Feature from '@/ducks/feature';
 import * as Project from '@/ducks/projectV2';
@@ -29,6 +30,13 @@ const PROJECT_MEMBER: BaseModels.Project.Member<AlexaProject.MemberPlatformData>
     selectedVendor: VENDOR_ID,
     vendors: [VENDOR],
   },
+};
+
+const DIAGRAM_VIEWER: Project.DiagramViewer = {
+  creatorID: CREATOR_ID,
+  creator_id: CREATOR_ID,
+  name: 'alex',
+  color: '#fff',
 };
 
 const PROJECT: Realtime.AnyProject = {
@@ -71,6 +79,17 @@ const MOCK_STATE: Project.ProjectState = {
     },
   },
   allKeys: [PROJECT_ID, 'abc'],
+
+  awareness: {
+    viewers: {
+      [PROJECT_ID]: {
+        [DIAGRAM_ID]: Normal.normalize([DIAGRAM_VIEWER, { creatorID: 10, creator_id: 10, name: 'gray', color: '#777' }], (viewer) =>
+          String(viewer.creatorID)
+        ),
+        abc: Normal.normalize([{ creatorID: 1000, creator_id: 1000, name: 'caleb', color: '#aaa' }], (viewer) => String(viewer.creatorID)),
+      },
+    },
+  },
 };
 
 suite(Project, MOCK_STATE)('Ducks - Project V2', ({ describeReducerV2, createState, ...utils }) => {
@@ -113,10 +132,71 @@ suite(Project, MOCK_STATE)('Ducks - Project V2', ({ describeReducerV2, createSta
         expect(result).toBe(MOCK_STATE);
       });
     });
+
+    describeReducerV2(Realtime.project.awareness.updateDiagramViewers, ({ applyAction }) => {
+      it('adds viewers to new diagram', () => {
+        const diagramID = 'foo';
+
+        const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, diagramID, viewers: [{ creatorID: CREATOR_ID, name: 'bar' }] });
+
+        expect(result.awareness.viewers).toEqual({
+          ...MOCK_STATE.awareness.viewers,
+          [PROJECT_ID]: {
+            ...MOCK_STATE.awareness.viewers[PROJECT_ID],
+            [diagramID]: Normal.normalize([{ creatorID: CREATOR_ID, creator_id: CREATOR_ID, name: 'bar', color: '5891FB|EFF5FF' }], (viewer) =>
+              String(viewer.creatorID)
+            ),
+          },
+        });
+      });
+
+      it('replace viewers of known diagram', () => {
+        const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, viewers: [{ creatorID: CREATOR_ID, name: 'bar' }], diagramID: DIAGRAM_ID });
+
+        expect(result.awareness.viewers[PROJECT_ID][DIAGRAM_ID]).toEqual(
+          Normal.normalize([{ creatorID: CREATOR_ID, creator_id: CREATOR_ID, name: 'bar', color: '5891FB|EFF5FF' }], (viewer) =>
+            String(viewer.creatorID)
+          )
+        );
+      });
+    });
+
+    describeReducerV2(Realtime.project.awareness.updateViewers, ({ applyAction }) => {
+      it('updates viewers of all diagrams', () => {
+        const diagramID = 'foo';
+
+        const result = applyAction(MOCK_STATE, {
+          ...ACTION_CONTEXT,
+          viewers: {
+            [DIAGRAM_ID]: [{ creatorID: 456, name: 'bar' }],
+            [diagramID]: [{ creatorID: 789, name: 'cat' }],
+          },
+        });
+
+        expect(result.awareness.viewers).toEqual({
+          ...MOCK_STATE.awareness.viewers,
+          [PROJECT_ID]: {
+            ...MOCK_STATE.awareness.viewers[PROJECT_ID],
+            [DIAGRAM_ID]: Normal.normalize([{ creatorID: 456, creator_id: 456, name: 'bar', color: '697986|EEF0F1' }], (viewer) =>
+              String(viewer.creatorID)
+            ),
+            [diagramID]: Normal.normalize([{ creatorID: 789, creator_id: 789, name: 'cat', color: 'D58B5F|FAF2ED' }], (viewer) =>
+              String(viewer.creatorID)
+            ),
+          },
+        });
+      });
+    });
   });
 
   describe('selectors', () => {
     const v2FeatureState = { [Feature.STATE_KEY]: { features: {} } };
+
+    describe('awarenessViewersSelector()', () => {
+      it('select diagram viewers state', () => {
+        expect(Project.awarenessViewersSelector(createState(MOCK_STATE))).toBe(MOCK_STATE.awareness.viewers);
+      });
+    });
 
     describe('allProjectsSelector()', () => {
       it('select all projects', () => {

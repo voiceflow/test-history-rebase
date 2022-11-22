@@ -69,6 +69,7 @@ export default <S, A extends AnyAction>(Duck: ReduxDuck<S, A>, state: S) =>
         local: vi.fn(loguxHandler('local')),
         crossTab: vi.fn(loguxHandler('crossTab')),
         sync: vi.fn(loguxHandler('sync')),
+        partialSync: vi.fn(loguxHandler('partialSync')),
         getNodeID: () => 'mockNodeID',
       });
 

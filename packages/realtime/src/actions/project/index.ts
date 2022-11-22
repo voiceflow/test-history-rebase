@@ -2,7 +2,7 @@ import { LoguxControlOptions } from '@/control';
 
 import AddProjectControl from './add';
 import AddManyCustomThemesController from './addManyCustomThemes';
-import { UpdateProjectViewersControl } from './awareness';
+import { UpdateDiagramViewersControl } from './awareness';
 import CreateProjectControl from './create';
 import DuplicateProjectControl from './duplicate';
 import EjectUsersControl from './ejectUsers';
@@ -29,7 +29,7 @@ const buildProjectActionControls = (options: LoguxControlOptions) => ({
   addManyCustomThemesController: new AddManyCustomThemesController(options),
 
   // awareness
-  updateProjectViewersControl: new UpdateProjectViewersControl(options),
+  updateDiagramViewersControl: new UpdateDiagramViewersControl(options),
 });
 
 export default buildProjectActionControls;

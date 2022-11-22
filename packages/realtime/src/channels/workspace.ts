@@ -57,9 +57,10 @@ class WorkspaceChannel extends AbstractChannelControl<Realtime.Channels.Workspac
       Realtime.FeatureFlag.IDENTITY_WORKSPACE
     );
 
-    const [dbProjects, dbProjectLists, workspaceMembers] = await Promise.all([
+    const [dbProjects, dbProjectLists, viewersPerProject, workspaceMembers] = await Promise.all([
       this.services.project.getAll(creatorID, workspaceID),
       this.services.projectList.getAll(creatorID, workspaceID),
+      this.services.workspace.getConnectedViewersPerProject(workspaceID),
       isIdentityWorkspaceEnabled ? this.services.workspace.member.getAll(creatorID, workspaceID) : Promise.resolve([]),
     ]);
 
@@ -69,6 +70,7 @@ class WorkspaceChannel extends AbstractChannelControl<Realtime.Channels.Workspac
       ...(isIdentityWorkspaceEnabled ? [Realtime.workspace.member.replace({ workspaceID, members: workspaceMembers })] : []),
       Realtime.project.crud.replace({ values: projects, workspaceID }),
       Realtime.projectList.crud.replace({ values: projectLists, workspaceID }),
+      Realtime.project.awareness.loadViewers({ viewers: viewersPerProject, workspaceID }),
     ];
   };
 }

@@ -2,6 +2,7 @@ import { BaseModels, BaseProject, BaseVersion } from '@voiceflow/base-types';
 import { AnyRecord, Utils } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import _ from 'lodash';
 import { Optional } from 'utility-types';
 
 import { HEARTBEAT_EXPIRE_TIMEOUT } from '../../constants';
@@ -9,10 +10,22 @@ import { AbstractControl, ControlOptions } from '../../control';
 import AccessCache from '../utils/accessCache';
 import ProjectMemberService from './member';
 
+const CANVAS_UPDATE_THROTTLE_TIME = 30 * 1000; // 30 seconds
+
 class ProjectService extends AbstractControl {
+  private static getCanvasUpdatedDebounceKey({ projectID }: { projectID: string }): string {
+    return `projects:${projectID}:canvas-updated-throttle`;
+  }
+
   private static getConnectedDiagramsKey({ projectID }: { projectID: string }): string {
     return `projects:${projectID}:diagrams`;
   }
+
+  // needs this to throttle canvas updates on multiple instances
+  private canvasUpdatedThrottleCache = this.clients.cache.createKeyValue({
+    expire: CANVAS_UPDATE_THROTTLE_TIME / 1000,
+    keyCreator: ProjectService.getCanvasUpdatedDebounceKey,
+  });
 
   private connectedDiagramsCache = this.clients.cache.createSet({
     expire: HEARTBEAT_EXPIRE_TIMEOUT,
@@ -39,6 +52,17 @@ class ProjectService extends AbstractControl {
 
   public async getConnectedDiagrams(projectID: string): Promise<string[]> {
     return this.connectedDiagramsCache.values({ projectID });
+  }
+
+  public async getConnectedDiagramsSize(projectID: string): Promise<number> {
+    return this.connectedDiagramsCache.size({ projectID });
+  }
+
+  public async getConnectedViewersPerDiagram(projectID: string): Promise<Record<string, Realtime.Viewer[]>> {
+    const diagramIDs = await this.services.project.getConnectedDiagrams(projectID);
+    const diagramsViewers = await Promise.all(diagramIDs.map((diagramID) => this.services.diagram.getConnectedViewers(diagramID)));
+
+    return Object.fromEntries(diagramIDs.map((diagramID, index) => [diagramID, diagramsViewers[index]]));
   }
 
   public async get<P extends AnyRecord, M extends AnyRecord>(creatorID: number, projectID: string): Promise<BaseModels.Project.Model<P, M>> {
@@ -136,6 +160,17 @@ class ProjectService extends AbstractControl {
 
     await client.project.deleteV2(projectID);
   }
+
+  // eslint-disable-next-line you-dont-need-lodash-underscore/throttle
+  public setCanvasUpdatedByCreatorID = _.throttle(async (projectID: string, creatorID: number) => {
+    // skipping if the canvas was updated in another instance
+    if (await this.canvasUpdatedThrottleCache.get({ projectID })) return;
+
+    await Promise.all([
+      this.models.project.updateByID(projectID, { canvasUpdatedAt: new Date(), canvasUpdatedByCreatorID: creatorID }),
+      this.canvasUpdatedThrottleCache.set({ projectID }, `${creatorID}`),
+    ]);
+  }, CANVAS_UPDATE_THROTTLE_TIME);
 }
 
 export default ProjectService;

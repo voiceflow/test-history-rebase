@@ -7,6 +7,19 @@ import { VoiceflowProject } from '@voiceflow/voiceflow-types';
 
 export interface Project<D extends AnyRecord, M extends BaseModels.Project.Member<any>> {
   id: string;
+  _version?: number;
+  diagramID: string;
+  versionID: string;
+  workspaceID: string;
+  liveVersion?: string;
+
+  members: M[];
+  platformData: D;
+
+  nlu: Platform.Constants.NLUType;
+  type: Platform.Constants.ProjectType;
+  platform: Platform.Constants.PlatformType;
+
   name: string;
   image: string | null;
   module: string;
@@ -14,23 +27,13 @@ export interface Project<D extends AnyRecord, M extends BaseModels.Project.Membe
   locales: string[];
   created: string;
   privacy?: BaseModels.Project.Privacy;
-  apiPrivacy?: BaseModels.Project.Privacy;
   linkType: BaseModels.Project.LinkType;
   prototype?: BaseModels.Project.Prototype;
-  customThemes: BaseModels.Project.Themes;
-
-  nlu: Platform.Constants.NLUType;
-  type: Platform.Constants.ProjectType;
-  platform: Platform.Constants.PlatformType;
-
-  _version?: number;
-  diagramID: string;
-  versionID: string;
-  liveVersion?: string;
-  workspaceID: string;
-  members: M[];
-  platformData: D;
+  apiPrivacy?: BaseModels.Project.Privacy;
   reportTags?: Record<string, { tagID: string; label: string }>;
+  customThemes: BaseModels.Project.Themes;
+  canvasUpdatedAt?: string;
+  canvasUpdatedByCreatorID?: number;
 }
 export type AnyProject = Project<AnyRecord, BaseModels.Project.Member<any>>;
 

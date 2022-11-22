@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.989.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.988.0...@voiceflow/creator-app@1.989.0) (2022-11-22)
+
+
+### Bug Fixes
+
+* change default name of start block (CT-1200) ([#6323](https://github.com/voiceflow/creator-app/issues/6323)) ([cb052ba](https://github.com/voiceflow/creator-app/commit/cb052baf1444842cdc690519fac4bd3af4ae2460))
+* project content dropdown label (CT-1245) ([#6349](https://github.com/voiceflow/creator-app/issues/6349)) ([d5ba035](https://github.com/voiceflow/creator-app/commit/d5ba0359ab1a22b36f266472c549b29465b9d67d))
+
+
+### Features
+
+* notifications dropdown (CT-1210) ([#6324](https://github.com/voiceflow/creator-app/issues/6324)) ([babc0e1](https://github.com/voiceflow/creator-app/commit/babc0e1505a00965e473437e3cdfd03443986a90))
+* workspace api page (CT-1222) ([#6326](https://github.com/voiceflow/creator-app/issues/6326)) ([010682f](https://github.com/voiceflow/creator-app/commit/010682f4f597a523891b95851006c996270668f2))
+
+
+
+
+
 # [1.988.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.987.0...@voiceflow/creator-app@1.988.0) (2022-11-22)
 
 

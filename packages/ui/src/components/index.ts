@@ -38,6 +38,8 @@ export { default as Canvas } from './Canvas';
 export { default as Card } from './Card';
 export type { CheckboxTypes } from './Checkbox';
 export { default as Checkbox } from './Checkbox';
+export type { CheckboxTypes as CheckboxMultipleTypes } from './CheckboxMultiple';
+export { default as CheckboxMultiple } from './CheckboxMultiple';
 export { default as Collapse } from './Collapse';
 export type { ColorPickerProps } from './ColorPicker';
 export { default as ColorPicker } from './ColorPicker';

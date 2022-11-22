@@ -3,8 +3,7 @@ import React from 'react';
 
 import { useNLUManager } from '@/pages/NLUManager/context';
 
-import { ListOrder } from '../../../constants';
-import { LIST_ORDER_LABELS, LIST_ORDER_OPTIONS } from '../constants';
+import { LIST_ORDER_LABELS, LIST_ORDER_OPTIONS, ListOrder } from '../../../constants';
 
 const TableOrderDropdown: React.FC = () => {
   const nluManager = useNLUManager();

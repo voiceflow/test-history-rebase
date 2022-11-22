@@ -1,5 +1,5 @@
 import { loader2Icon } from '@ui/assets';
-import { colors, css, styled, ThemeColor } from '@ui/styles';
+import { colors, css, styled, StyledProps, ThemeColor } from '@ui/styles';
 import { ClassName } from '@ui/styles/constants';
 import cn from 'classnames';
 import React from 'react';
@@ -9,6 +9,7 @@ export interface LoaderProps {
   color?: string;
   borderLess?: boolean;
   className?: string;
+  style?: StyledProps<any>;
 }
 
 const spinnerStyles = css<LoaderProps>`

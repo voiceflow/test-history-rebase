@@ -1,16 +1,14 @@
 import * as Platform from '@voiceflow/platform-config';
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { StrengthGauge } from '@voiceflow/ui';
 import * as Normal from 'normal-store';
 
 import { getIntentClarityStrengthLevel, getIntentConfidenceStrengthLevel, isBuiltInIntent } from '@/utils/intent';
 import { hasValidPrompt } from '@/utils/prompt';
 
+import { MIN_PAGINATION_ITEMS } from './pages/UnclassifiedData/constants';
 import { ClarityModel, NLUIntent, ProblematicSentence } from './types';
 
-export const getUnclassifiedDataMaxRange = (page: number, utterances: Realtime.NLUUnclassifiedUtterances[]) =>
-  page * 100 + 100 > utterances.length ? utterances.length : page * 100 + 100;
-export const getUnclassifiedDataMinRange = (page: number) => page * 100;
+export const getUnclassifiedDataMaxRange = (page: number) => page * MIN_PAGINATION_ITEMS + MIN_PAGINATION_ITEMS;
 
 export const getConfidenceScore = (intent: Platform.Base.Models.Intent.Model) => {
   if (isBuiltInIntent(intent.id)) return 100;

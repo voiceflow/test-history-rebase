@@ -9,13 +9,13 @@ export enum EditorTabs {
 }
 
 export enum UnclassifiedTabs {
-  LIST_ALL = 'LIST_ALL',
-  CLUSTER = 'CLUSTER',
+  UNCLASSIFIED_VIEW = 'UNCLASSIFIED_VIEW',
+  CLUSTERING_VIEW = 'CLUSTERING_VIEW',
 }
 
 export const UnclassifiedTabIcons: Record<UnclassifiedTabs, SvgIconTypes.Icon> = {
-  [UnclassifiedTabs.LIST_ALL]: 'list',
-  [UnclassifiedTabs.CLUSTER]: 'cluster',
+  [UnclassifiedTabs.UNCLASSIFIED_VIEW]: 'list',
+  [UnclassifiedTabs.CLUSTERING_VIEW]: 'cluster',
 };
 
 export const UnclassifiedTabItems = Object.values(UnclassifiedTabs).map((tab) => ({

@@ -2,7 +2,8 @@ import { Divider, Dropdown, FlexCenter, Menu, Slider, stopPropagation, SvgIcon, 
 import React from 'react';
 
 import { useNLUManager } from '@/pages/NLUManager/context';
-import { getUnclassifiedDataMaxRange, getUnclassifiedDataMinRange } from '@/pages/NLUManager/utils';
+import { MIN_PAGINATION_ITEMS } from '@/pages/NLUManager/pages/UnclassifiedData/constants';
+import { getUnclassifiedDataMaxRange } from '@/pages/NLUManager/utils';
 
 import * as S from './styles';
 
@@ -13,14 +14,10 @@ const TableRangeDropdown: React.FC = () => {
   const showPagination = nluManager.unclassifiedUtterances.length > PAGE_RANGE;
   const [pagination, setPagination] = React.useState(nluManager.unclassifiedDataPage);
   const pages = Math.round(nluManager.unclassifiedUtterances.length / PAGE_RANGE) - 1;
-  const maxRange = React.useMemo(
-    () => getUnclassifiedDataMaxRange(pagination, nluManager.unclassifiedUtterances),
-    [pagination, nluManager.unclassifiedUtterances]
-  );
-  const minRange = React.useMemo(() => getUnclassifiedDataMinRange(pagination), [pagination]);
+  const maxRange = React.useMemo(() => getUnclassifiedDataMaxRange(nluManager.unclassifiedDataPage), [nluManager.unclassifiedDataPage]);
 
   const handleIconLeftClick = () => {
-    if (minRange === 0) return;
+    if (maxRange === MIN_PAGINATION_ITEMS) return;
     const newPage = pagination - 1;
     setPagination(newPage);
     nluManager.setUnclassifiedDataPage(newPage);
@@ -32,6 +29,10 @@ const TableRangeDropdown: React.FC = () => {
     setPagination(newPage);
     nluManager.setUnclassifiedDataPage(newPage);
   };
+
+  React.useEffect(() => {
+    setPagination(nluManager.unclassifiedDataPage);
+  }, [nluManager.unclassifiedDataPage]);
 
   return (
     <S.DropdownContainer showPagination={showPagination}>
@@ -60,7 +61,7 @@ const TableRangeDropdown: React.FC = () => {
         {(ref, onToggle, isOpen) => (
           <S.DropdownButtonContainer ref={ref} onClick={onToggle} showPagination={showPagination}>
             <Text fontSize={13} color={isOpen ? '#3D82E2' : '#132144'}>
-              {minRange} - {maxRange}
+              1 - {maxRange}
             </Text>
             {showPagination && <SvgIcon size={8} icon="caretDown" color={isOpen ? '#3D82E2' : '#6E849A'} />}
           </S.DropdownButtonContainer>

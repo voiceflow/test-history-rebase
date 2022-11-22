@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.131.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.130.4...@voiceflow/realtime@1.131.0) (2022-11-22)
+
+
+### Features
+
+* implement last edit system (CT-1226) ([#6342](https://github.com/voiceflow/creator-app/issues/6342)) ([409074a](https://github.com/voiceflow/creator-app/commit/409074ae002db49ee44c94728c70d7ef74b05a44))
+
+
+
+
+
 ## [1.130.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.130.3...@voiceflow/realtime@1.130.4) (2022-11-22)
 
 **Note:** Version bump only for package @voiceflow/realtime

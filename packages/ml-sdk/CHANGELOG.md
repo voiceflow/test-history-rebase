@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.21.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-sdk@1.20.0...@voiceflow/ml-sdk@1.21.0) (2022-11-22)
+
+
+### Features
+
+* implement last edit system (CT-1226) ([#6342](https://github.com/voiceflow/creator-app/issues/6342)) ([409074a](https://github.com/voiceflow/creator-app/commit/409074ae002db49ee44c94728c70d7ef74b05a44))
+
+
+
+
+
 # [1.20.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-sdk@1.19.1...@voiceflow/ml-sdk@1.20.0) (2022-11-21)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.30.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.29.2...@voiceflow/ml-gateway@1.30.0) (2022-11-22)
+
+
+### Features
+
+* implement last edit system (CT-1226) ([#6342](https://github.com/voiceflow/creator-app/issues/6342)) ([409074a](https://github.com/voiceflow/creator-app/commit/409074ae002db49ee44c94728c70d7ef74b05a44))
+
+
+
+
+
 ## [1.29.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.29.1...@voiceflow/ml-gateway@1.29.2) (2022-11-21)
 
 **Note:** Version bump only for package @voiceflow/ml-gateway

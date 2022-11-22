@@ -26,6 +26,7 @@ const Canvas: React.FC = () => {
     <>
       <Select
         value={canvasExportFormat}
+        label={CANVAS_EXPORT_OPTIONS_LABELS[canvasExportFormat]}
         options={CANVAS_EXPORT_OPTIONS}
         onSelect={canvasExportSelection}
         getOptionLabel={(value) => value && CANVAS_EXPORT_OPTIONS_LABELS[value]}

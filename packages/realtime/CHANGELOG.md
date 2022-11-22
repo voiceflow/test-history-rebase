@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.130.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.130.0...@voiceflow/realtime@1.130.1) (2022-11-22)
+
+
+### Bug Fixes
+
+* attempted dockerfile fix ([e07d6f7](https://github.com/voiceflow/creator-app/commit/e07d6f7ae7c3a3090a1238a3980e25db69705a17))
+
+
+
+
+
 # [1.130.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.129.8...@voiceflow/realtime@1.130.0) (2022-11-21)
 
 

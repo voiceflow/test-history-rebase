@@ -123,7 +123,7 @@ const NewProject: React.FC<NewProjectProps> = ({ listID, onClose, onToggleCreati
   const onCreate = async () => {
     if (!isStateValid(state)) return;
 
-    const languageToUse: AnyLanguage = state.language || (getDefaultLanguage(state.platform) as AnyLanguage);
+    const languageToUse: AnyLanguage = state.language || (getDefaultLanguage(state.nlu) as AnyLanguage);
     const alexaLocalesToUse: string[] = state.alexaLocales || (getDefaultLanguage(state.platform) as string[]);
 
     try {

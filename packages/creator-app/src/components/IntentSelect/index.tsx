@@ -1,6 +1,16 @@
 import { Utils } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
-import { Alert, BaseSelectProps, IconButton, isUIOnlyMenuItemOption, Menu, Select, toast, UIOnlyMenuItemOption } from '@voiceflow/ui';
+import {
+  Alert,
+  BaseSelectProps,
+  IconButton,
+  isNotUIOnlyMenuItemOption,
+  isUIOnlyMenuItemOption,
+  Menu,
+  Select,
+  toast,
+  UIOnlyMenuItemOption,
+} from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
@@ -71,15 +81,7 @@ const IntentSelect: React.FC<IntentSelectProps> = ({
     return filteredOptions.some(({ name }) => name.toLowerCase() === searchValueLower);
   };
 
-  const optionLookup = React.useMemo(
-    () =>
-      filteredOptions.reduce<Record<string, string>>((acc, option) => {
-        acc[option.id] = option.name;
-
-        return acc;
-      }, {}),
-    [filteredOptions]
-  );
+  const optionLookup = React.useMemo(() => Object.fromEntries(filteredOptions.map((option) => [option.id, option.name])), [filteredOptions]);
 
   const onSelectIntent = async (nextIntentID: string | null) => {
     if (nextIntentID) {
@@ -87,7 +89,12 @@ const IntentSelect: React.FC<IntentSelectProps> = ({
         CUSTOMIZABLE_INTENT_PREFIXS.includes(nextIntentID.split('.')[0]) || nextIntentID === VoiceflowConstants.IntentName.NONE;
 
       if (isDefaultBuiltIn && !intentsMap[nextIntentID]) {
-        await createIntent(CanvasCreationType.EDITOR, { id: nextIntentID, name: nextIntentID });
+        const option = options.filter(isNotUIOnlyMenuItemOption).find((option) => !isUIOnlyMenuItemOption(option) && option.id === nextIntentID);
+
+        await createIntent(CanvasCreationType.EDITOR, {
+          id: nextIntentID,
+          name: option?.name || nextIntentID,
+        });
       }
     }
 

@@ -35,10 +35,10 @@ export const createPlatformAndProjectTypeSelector =
 
 export const createPlatformSelector =
   <T>(platformValues: Partial<Record<Platform.Constants.PlatformType, T>>, defaultValue?: T) =>
-  (_platform?: Nullish<Platform.Constants.PlatformType>): T => {
+  (_platform?: Nullish<Platform.Constants.PlatformType | string>): T => {
     const platform = _platform ? legacyPlatformToProjectType(_platform).platform : _platform;
 
-    const value = platform && platform in platformValues ? platformValues[platform] : defaultValue;
+    const value = platform && platform in platformValues ? platformValues[platform as Platform.Constants.PlatformType] : defaultValue;
 
     if (value == null) throw new Error(`no value for platform ${platform}`);
 

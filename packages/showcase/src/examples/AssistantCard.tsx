@@ -89,7 +89,7 @@ const owner = createExample(
       ]}
       title="Acme Chatbot"
       icon="googleAssistant"
-      userRole="owner"
+      userRole={UserRole.OWNER}
       status="Edited 4 hours ago"
     />
   ))
@@ -125,7 +125,7 @@ const wide = createExample(
       ]}
       title="Acme Chatbot"
       icon="googleAssistant"
-      userRole="owner"
+      userRole={UserRole.OWNER}
       status="Edited 4 hours ago"
     />
   ))

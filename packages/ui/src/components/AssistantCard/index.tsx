@@ -25,18 +25,31 @@ import {
 } from './styles';
 
 export interface AssistantCardProps {
-  title: string;
+  title?: string;
   status?: string;
   members?: UserData[];
-  image?: string;
-  userRole?: string;
-  icon: SvgIconTypes.Icon;
+  image?: Nullable<string>;
+  userRole?: UserRole;
+  icon?: SvgIconTypes.Icon;
+  iconColor?: string;
   options?: Nullable<OptionWithoutValue>[];
   backgroundImage?: string;
   children?: React.ReactChild;
+  onClickCTA?: () => void;
 }
 
-const AssistantCard: React.FC<AssistantCardProps> = ({ userRole = 'viewer', icon, image, title, status, members, options, children }) => {
+const AssistantCard: React.FC<AssistantCardProps> = ({
+  userRole = 'viewer',
+  onClickCTA,
+  icon,
+  iconColor,
+  image,
+  title,
+  status,
+  members,
+  options,
+  children,
+}) => {
   const [active, setActive] = React.useState(false);
   const isViewer = userRole === UserRole.VIEWER;
 
@@ -48,12 +61,12 @@ const AssistantCard: React.FC<AssistantCardProps> = ({ userRole = 'viewer', icon
         </InnerContainer>
 
         <InnerContainer className="assistant-card-actions">
-          <StyledLink href="#" />
+          <StyledLink />
           <Box.Flex zIndex={100}>
             <Box.Flex flexDirection="row">
               {children || (
                 <>
-                  <Button variant={Button.Variant.PRIMARY} squareRadius style={{ marginRight: isViewer ? 0 : 10 }}>
+                  <Button onClick={onClickCTA} variant={Button.Variant.PRIMARY} squareRadius style={{ marginRight: isViewer ? 0 : 10 }}>
                     {isViewer ? 'View' : 'Designer'}
                   </Button>
 
@@ -79,9 +92,11 @@ const AssistantCard: React.FC<AssistantCardProps> = ({ userRole = 'viewer', icon
             </Box.Flex>
           </Box.Flex>
         </InnerContainer>
-        <IconContainer>
-          <SvgIcon icon={icon} size={16} />
-        </IconContainer>
+        {icon && (
+          <IconContainer>
+            <SvgIcon color={iconColor} icon={icon} size={16} />
+          </IconContainer>
+        )}
       </CardContainer>
       <InfoContainer>
         <Title>{title}</Title>

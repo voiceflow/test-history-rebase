@@ -1,9 +1,11 @@
 import React from 'react';
+import { Route, Switch } from 'react-router-dom';
 
+import { Path } from '@/config/routes';
 import { withBatchLoadingGate } from '@/hocs';
 import { DashboardClassName } from '@/styles/constants';
 
-import { Header, ProjectList, Sidebar } from './components';
+import { Header, ProjectList, Sidebar, TeamAndBilling } from './components';
 import * as S from './components/styles';
 import { DashboardGate } from './gates';
 
@@ -14,7 +16,10 @@ const Dashboard: React.FC = () => {
       <S.BodyWrapper>
         <Sidebar />
         <S.ContentWrapper>
-          <ProjectList />
+          <Switch>
+            <Route path={Path.WORKSPACE_TEAM_AND_BILLING} component={TeamAndBilling} />
+            <Route path="/" component={ProjectList} />
+          </Switch>
         </S.ContentWrapper>
       </S.BodyWrapper>
     </S.DashboardWrapper>

@@ -61,6 +61,7 @@ const ProjectList: React.FC = () => {
         subtitle="In this course you’ll find everything you need to get started with Voiceflow from the ground up."
         buttonText="Start Course"
         onClick={() => {}}
+        p="0px 16px 32px"
       />
       <S.Item>
         <AssistantCard

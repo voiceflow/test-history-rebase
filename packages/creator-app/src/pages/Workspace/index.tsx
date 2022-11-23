@@ -52,7 +52,7 @@ const Workspace: React.FC = () => {
       <RedirectWithSearch exact from={LegacyPath.WORKSPACE_API_KEYS} to={Path.WORKSPACE_DEVELOPER_SETTINGS} />
 
       <Route path={Path.WORKSPACE_SETTINGS} component={Settings} />
-      <Route exact path={[Path.WORKSPACE_DASHBOARD, Path.DASHBOARD]} component={DashboardComponent} />
+      <Route path={[Path.WORKSPACE_DASHBOARD, Path.DASHBOARD]} component={DashboardComponent} />
 
       <RedirectWithSearch to={Path.DASHBOARD} />
     </Switch>

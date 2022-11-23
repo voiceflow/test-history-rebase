@@ -1,3 +1,4 @@
+import { replaceVariables } from '@voiceflow/common';
 import { PlanType } from '@voiceflow/internal';
 import { Box, Button, ButtonVariant, Flex, SvgIcon, Text } from '@voiceflow/ui';
 import React from 'react';
@@ -6,12 +7,14 @@ import Modal, { ModalBody, ModalFooter } from '@/components/Modal';
 import { LimitDetails, upgradeToEnterpriseAction } from '@/config/planLimits';
 import { ModalType } from '@/constants';
 import { UpgradePrompt } from '@/ducks/tracking';
-import { useModals, useTrackingEvents } from '@/hooks';
+import * as WorkspaceV2 from '@/ducks/workspaceV2';
+import { useModals, useSelector, useTrackingEvents } from '@/hooks';
 
 const UpgradeModal: React.FC = () => {
   const { close, data } = useModals<{ planLimitDetails: LimitDetails; promptOrigin: UpgradePrompt }>(ModalType.UPGRADE_MODAL);
   const { open: openPaymentModal } = useModals<{ planType: PlanType }>(ModalType.PAYMENT);
   const [trackingEvents] = useTrackingEvents();
+  const usedEditorSeats = useSelector(WorkspaceV2.active.usedEditorSeatsSelector);
 
   const handleSubmit = () => {
     if (data.planLimitDetails.onSubmit === upgradeToEnterpriseAction) {
@@ -22,6 +25,10 @@ const UpgradeModal: React.FC = () => {
 
   if (!data.planLimitDetails) return null;
 
+  const variables = {
+    usedEditorSeats,
+  };
+
   return (
     <Modal id={ModalType.UPGRADE_MODAL} title={data.planLimitDetails.modalTitle} maxWidth={392}>
       <ModalBody>
@@ -31,7 +38,7 @@ const UpgradeModal: React.FC = () => {
           </Box>
           <Text fontWeight={600}>{data.planLimitDetails.title}</Text>
           <Box mt="8px" mb="16px">
-            <Text color="#62778c">{data.planLimitDetails.description}</Text>
+            <Text color="#62778c">{replaceVariables(data.planLimitDetails.description, variables)}</Text>
           </Box>
         </Flex>
       </ModalBody>

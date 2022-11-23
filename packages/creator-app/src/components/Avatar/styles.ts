@@ -1,13 +1,13 @@
 import { css, styled } from '@/hocs';
 
-interface AvatarContainerProps {
+interface ContainerProps {
   avatarUrl?: string | null;
   noShadow?: boolean;
   noHover?: boolean;
   rgbColor?: { hex: string; rgbaFrom: string; rgbaTo: string } | null;
 }
 
-const AvatarContainer = styled.div<AvatarContainerProps>`
+export const Container = styled.div<ContainerProps>`
   font-weight: 600;
   font-size: 19px;
   text-align: center;
@@ -45,5 +45,3 @@ const AvatarContainer = styled.div<AvatarContainerProps>`
       }
     `}
 `;
-
-export default AvatarContainer;

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import AvatarContainer from '@/components/Avatar/components/AvatarContainer';
+import { Container as AvatarContainer } from '@/components/Avatar/styles';
 import DragPlaceholder from '@/components/DragPlaceholder';
 import EditableText from '@/components/EditableText';
 import { css, styled } from '@/hocs';

@@ -1,9 +1,11 @@
 import { PlanType } from '@voiceflow/internal';
 import { Box } from '@voiceflow/ui';
 import React from 'react';
+import { generatePath } from 'react-router-dom';
 
 import NavigationSidebar from '@/components/NavigationSidebar';
 import { Permission } from '@/config/permissions';
+import { Path } from '@/config/routes';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useActiveWorkspace, usePermission, useSelector } from '@/hooks';
 
@@ -13,6 +15,7 @@ import * as S from './styles';
 const DashboardNavigationSidebar: React.FC = () => {
   const plan = useSelector(WorkspaceV2.active.planSelector);
   const workspace = useActiveWorkspace();
+  const workspaceID = workspace?.id;
 
   const isOwner = usePermission(Permission.EDIT_ORGANIZATION);
   const isAdmin = usePermission(Permission.CONFIGURE_WORKSPACE);
@@ -22,8 +25,13 @@ const DashboardNavigationSidebar: React.FC = () => {
       <S.SidebarActionsContainer>
         <Box.Flex style={{ width: '100%' }} flexDirection="column" alignItems="flex-start" gap={24} paddingTop="16px">
           <S.SidebarGroup>
-            <NavigationSidebar.Item icon="goToBlock" title="Assistants" isActive />
-            <NavigationSidebar.Item icon="team" title={isAdmin ? 'Team & Billing' : 'Team'} rightText={workspace?.members.length.toString()} />
+            <NavigationSidebar.NavItem icon="goToBlock" title="Assistants" exact to={generatePath(Path.WORKSPACE_DASHBOARD, { workspaceID })} />
+            <NavigationSidebar.NavItem
+              icon="team"
+              title={isAdmin ? 'Team & Billing' : 'Team'}
+              rightText={workspace?.members.length.toString()}
+              to={generatePath(Path.WORKSPACE_TEAM_AND_BILLING, { workspaceID })}
+            />
           </S.SidebarGroup>
           <S.SidebarGroup>
             <NavigationSidebar.Item icon="video" title="Learn" link="https://www.voiceflow.com/docs" />

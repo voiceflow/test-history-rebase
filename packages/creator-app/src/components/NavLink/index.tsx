@@ -4,19 +4,19 @@ import { matchPath, useLocation } from 'react-router-dom';
 import * as Router from '@/ducks/router';
 import { useDispatch } from '@/hooks';
 
-import Item, { ItemProps } from './Item';
-
-interface NavItemProps extends Omit<ItemProps, 'onClick' | 'isActive'> {
+interface NavLinkProps {
   to: string;
   exact?: boolean;
+  as?: string | React.ComponentType<any>;
+  className?: string;
 }
 
-const NavItem: React.FC<NavItemProps> = ({ to, exact, ...itemProps }) => {
+const NavLink: React.FC<NavLinkProps> = ({ as: Item = 'button', to, exact, ...itemProps }) => {
   const location = useLocation();
   const isActive = !!matchPath(location.pathname, { path: to, exact });
   const goTo = useDispatch(Router.goTo);
 
-  return <Item onClick={() => goTo(to)} isActive={isActive} {...itemProps} />;
+  return <Item {...(Item === 'button' ? { type: 'button' } : {})} onClick={() => goTo(to)} isActive={isActive} {...itemProps} />;
 };
 
-export default NavItem;
+export default NavLink;

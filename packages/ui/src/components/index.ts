@@ -21,17 +21,26 @@ export {
   BoxFlexEnd,
   BoxFlexStart,
 } from './Box';
-export type { PrimaryButtonProps, QuaternaryButtonProps, SecondaryButtonProps, TertiaryButtonProps } from './Button';
+export type {
+  DarkButtonProps,
+  PrimaryButtonProps,
+  QuaternaryButtonProps,
+  SecondaryButtonProps,
+  TertiaryButtonProps,
+  TextButtonProps,
+} from './Button';
 export {
   BaseButton,
   baseButtonStyles,
   default as Button,
   ButtonContainer,
   ButtonVariant,
+  DarkButton,
   PrimaryButton,
   QuaternaryButton,
   SecondaryButton,
   TertiaryButton,
+  TextButton,
 } from './Button';
 export { default as ButtonGroup } from './ButtonGroup';
 export { default as Canvas } from './Canvas';

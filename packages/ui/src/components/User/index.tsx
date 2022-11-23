@@ -23,7 +23,7 @@ export interface UserProps extends MemberIconProps {
 
 export const isColorImage = (image?: string | null): image is string => image?.length === 13 && image.includes('|');
 
-const User = React.forwardRef<HTMLDivElement, UserProps>(({ user, className, ...props }, ref) => {
+const User: React.ForwardRefRenderFunction<HTMLDivElement, UserProps> = ({ user, className, ...props }, ref) => {
   // eslint-disable-next-line no-nested-ternary
   const letter = React.useMemo(() => (!user.image ? '?' : isColorImage(user.image) ? user.name?.[0] ?? '' : ''), [user]);
 
@@ -56,6 +56,6 @@ const User = React.forwardRef<HTMLDivElement, UserProps>(({ user, className, ...
       {letter}
     </MemberIcon>
   );
-});
+};
 
-export default User;
+export default React.forwardRef<HTMLDivElement, UserProps>(User);

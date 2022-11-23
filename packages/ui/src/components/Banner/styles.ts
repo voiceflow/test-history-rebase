@@ -1,5 +1,10 @@
 import Button from '@ui/components/Button';
 import { colors, css, styled, ThemeColor, transition } from '@ui/styles';
+import { space, SpaceProps } from 'styled-system';
+
+export interface OuterContainerProps extends SpaceProps {
+  isOpen: boolean;
+}
 
 export const CloseButton = styled(Button).attrs({ variant: Button.Variant.WHITE })`
   width: 24px;
@@ -15,10 +20,10 @@ export const CloseButton = styled(Button).attrs({ variant: Button.Variant.WHITE 
   box-shadow: 0px 0px 0px rgba(19, 33, 68, 0.08), 0px 1px 3px rgba(19, 33, 68, 0.12);
 `;
 
-export const OuterContainer = styled.div<{ isOpen: boolean }>`
+export const OuterContainer = styled.div<OuterContainerProps>`
   width: 100%;
   max-height: 162px;
-  padding: 0px 16px 32px;
+  ${space};
 
   ${({ isOpen }) =>
     isOpen

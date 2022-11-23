@@ -13,5 +13,13 @@ export const EditorLimitDetails: LimitDetails = {
   onSubmit: upgradeToEnterpriseAction,
 };
 
+export const EditorLimitDetailsDashboardV2: LimitDetails = {
+  modalTitle: 'Add Members',
+  title: 'Need more Editor seats?',
+  description: `You’ve use {usedEditorSeats}/${STARTER_PRO_EDITOR_LIMIT} editor seats allowed in your workspace. Contact sales to unlock more.`,
+  submitText: 'Contact Sales',
+  onSubmit: upgradeToEnterpriseAction,
+};
+
 export const canAddEditor = (plan: PlanType | null | undefined, numEditors: number) =>
   (plan && ENTERPRISE_PLANS.includes(plan as any)) || numEditors < STARTER_PRO_EDITOR_LIMIT;

@@ -2,7 +2,7 @@ import React from 'react';
 
 import { COLORS } from '@/styles/colors';
 
-import { Container } from './components';
+import * as S from './styles';
 
 export interface AvatarProps {
   className?: string;
@@ -14,10 +14,10 @@ export interface AvatarProps {
 }
 
 const Avatar: React.FC<AvatarProps> = ({ className, url, name, color, noHover, noShadow }) => (
-  <Container className={className} avatarUrl={url} rgbColor={color ? COLORS[color] : null} noHover={noHover} noShadow={noShadow}>
+  <S.Container className={className} avatarUrl={url} rgbColor={color ? COLORS[color] : null} noHover={noHover} noShadow={noShadow}>
     {' '}
     {!url && name?.toUpperCase().charAt(0)}{' '}
-  </Container>
+  </S.Container>
 );
 
 export default Avatar;

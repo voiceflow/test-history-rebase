@@ -12,7 +12,7 @@ import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useDispatch, useModals, usePermission, useSelector } from '@/hooks';
 import { ClassName } from '@/styles/constants';
 
-import * as S from '../styles';
+import * as S from './styles';
 
 interface WorkspaceSelectorProps {
   activeWorkspace: Realtime.Workspace | null;

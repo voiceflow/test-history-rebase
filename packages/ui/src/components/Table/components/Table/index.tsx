@@ -6,7 +6,7 @@ import * as T from '../../types';
 import Container from '../Container';
 import * as S from './styles';
 
-const Table = <T extends T.Item>({ items, empty, header, renderRow }: T.Props<T>) => (
+const Table = <T extends T.Item>({ items, empty, header, renderRow, hideLastDivider }: T.Props<T>) => (
   <Provider items={items}>
     {items.length ? (
       <Container>
@@ -16,7 +16,7 @@ const Table = <T extends T.Item>({ items, empty, header, renderRow }: T.Props<T>
           <React.Fragment key={item.id}>
             {renderRow({ item, index, isLast: index === items.length - 1, isFirst: index === 0 })}
 
-            <Divider offset={0} isSecondaryColor={index !== items.length - 1} />
+            <Divider height={hideLastDivider && index !== items.length - 1 ? 1 : 0} offset={0} isSecondaryColor={index !== items.length - 1} />
           </React.Fragment>
         ))}
       </Container>

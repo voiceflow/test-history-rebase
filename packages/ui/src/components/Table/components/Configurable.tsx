@@ -22,12 +22,15 @@ const Configurable = <T extends string, I extends T.Item>({
   descending,
   onChangeOrderBy,
   scrolled,
+  stickyHeader = true,
+  hideLastDivider = false,
 }: T.ConfigurableProps<T, I>) => (
   <Table
+    hideLastDivider={hideLastDivider}
     items={items}
     empty={empty}
     header={
-      <Header scrolled={scrolled}>
+      <Header scrolled={scrolled} stickyHeader={stickyHeader}>
         {columns.map(({ type, flex, label, width, sorter, tooltip }) => (
           <Header.Column
             key={type}

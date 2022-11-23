@@ -5,16 +5,16 @@ import React from 'react';
 import { Permission } from '@/config/permissions';
 import { usePermission } from '@/hooks';
 
-import * as S from '../../styles';
+import * as S from '../../../../components/Header/styles';
 import { BackButton } from './components';
 
-interface AssistantSubHeaderProps {
+interface HeaderProps {
   workspace: Realtime.Workspace;
   title: string;
   onBackButtonClick: VoidFunction;
 }
 
-const AssistantSubHeader: React.FC<AssistantSubHeaderProps> = ({ workspace, title, onBackButtonClick }) => {
+const Header: React.FC<HeaderProps> = ({ workspace, title, onBackButtonClick }) => {
   const [canViewMembers] = usePermission(Permission.VIEW_COLLABORATORS);
 
   return (
@@ -26,4 +26,4 @@ const AssistantSubHeader: React.FC<AssistantSubHeaderProps> = ({ workspace, titl
   );
 };
 
-export default AssistantSubHeader;
+export default Header;

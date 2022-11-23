@@ -6,15 +6,15 @@ import { usePermission } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
 import { ImportButton } from '@/pages/Dashboard/Header/components';
 
-import * as S from '../../styles';
+import * as S from '../../../../components/Header/styles';
 import { NotificationButton, SearchButton } from './components';
 import { IconButtonContainer } from './styles';
 
-interface AssistantHeaderProps {
+interface HeaderProps {
   onSearch: (text: string) => void;
 }
 
-const AssistantHeader: React.FC<AssistantHeaderProps> = ({ onSearch }) => {
+const Header: React.FC<HeaderProps> = ({ onSearch }) => {
   const collaboratorsModal = ModalsV2.useModal(ModalsV2.Collaborators);
   const projectCreateModal = ModalsV2.useModal(ModalsV2.Project.Create);
   const [canImportProject] = usePermission(Permission.IMPORT_PROJECT);
@@ -55,4 +55,4 @@ const AssistantHeader: React.FC<AssistantHeaderProps> = ({ onSearch }) => {
   );
 };
 
-export default AssistantHeader;
+export default Header;

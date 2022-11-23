@@ -6,9 +6,9 @@ import * as T from './types';
 export interface FilterOrderProps<T extends string, I extends T.Item> {
   items: I[];
   columns: T.Column<T, I>[];
-  filterBy?: string;
+  filterBy?: string[];
   initialOrderBy?: T;
-  getItemFilterBy?: (item: I) => string;
+  getItemFilterBy?: (item: I) => string[];
 }
 
 export const useFilterOrderItems = <T extends string, I extends T.Item>({
@@ -37,13 +37,13 @@ export const useFilterOrderItems = <T extends string, I extends T.Item>({
   );
 
   React.useEffect(() => {
-    const lowercasedFilterBy = filterBy?.toLowerCase();
-
+    const lowercasedFilterBy = filterBy?.map((item) => item.toLowerCase());
     const filteredItems =
       lowercasedFilterBy && getItemFilterBy
-        ? propItems.filter((item) => getItemFilterBy(item).toLowerCase().includes(lowercasedFilterBy))
+        ? propItems.filter((item) =>
+            getItemFilterBy(item).every((filterByItem, index) => filterByItem.toLowerCase().includes(lowercasedFilterBy[index]))
+          )
         : propItems;
-
     const sorter = orderBy ? columnsMap[orderBy].sorter : null;
     const items = sorter ? [...filteredItems].sort(sorter) : [...filteredItems];
 

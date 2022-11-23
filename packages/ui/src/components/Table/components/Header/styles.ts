@@ -1,9 +1,9 @@
 import { css, styled, transition } from '@ui/styles';
 
-export const Container = styled.div<{ scrolled?: boolean }>`
+export const Container = styled.div<{ scrolled?: boolean; stickyHeader?: boolean }>`
   ${transition('box-shadow')};
 
-  position: sticky;
+  position: ${({ stickyHeader }) => (stickyHeader ? 'sticky' : 'relative')};
   top: 0px;
   display: flex;
   flex-direction: row;

@@ -18,6 +18,7 @@ export interface Props<I extends Item> {
   empty: React.ReactNode;
   header?: React.ReactNode;
   renderRow: (props: ItemProps<I>) => React.ReactNode;
+  hideLastDivider?: boolean;
 }
 
 export interface ColumnSorter<I extends Item> {
@@ -47,6 +48,8 @@ export interface ConfigurableProps<T extends string, I extends Item> {
   descending?: boolean;
   onChangeOrderBy?: (orderBy: T) => void;
   scrolled?: boolean;
+  stickyHeader?: boolean;
+  hideLastDivider?: boolean;
 }
 
 export interface ContextValue<T extends Item> {

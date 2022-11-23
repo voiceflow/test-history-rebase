@@ -1,6 +1,7 @@
 import { Box } from '@voiceflow/ui';
 import React from 'react';
 
+import DomainActions from '@/components/DomainActions';
 import { HeaderIconButton } from '@/components/ProjectPage';
 import { Permission } from '@/config/permissions';
 import * as CreatorV2 from '@/ducks/creatorV2';
@@ -15,7 +16,7 @@ import { Identifier } from '@/styles/constants';
 import { withEnterPress, withInputBlur } from '@/utils/dom';
 import { formatProjectName } from '@/utils/string';
 
-import { Container, DomainActions, PlatformLogo, ProjectTitle, ViewOnly } from './components';
+import { Container, PlatformLogo, ProjectTitle, ViewOnly } from './components';
 
 const DomainsAndCanvasActions: React.FC = () => {
   const [templatePopperIsOpen, setTemplatePopperIsOpen] = React.useState(false);

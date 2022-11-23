@@ -9,7 +9,7 @@ import { Path } from '@/config/routes';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useActiveWorkspace, usePermission, useSelector } from '@/hooks';
 
-import { Account } from './components';
+import { Account, WorkspaceSelector } from './components';
 import * as S from './styles';
 
 const DashboardNavigationSidebar: React.FC = () => {
@@ -23,7 +23,9 @@ const DashboardNavigationSidebar: React.FC = () => {
   return (
     <NavigationSidebar isMainMenu>
       <S.SidebarActionsContainer>
-        <Box.Flex style={{ width: '100%' }} flexDirection="column" alignItems="flex-start" gap={24} paddingTop="16px">
+        <Box.Flex style={{ width: '100%' }} flexDirection="column" alignItems="flex-start" gap={17}>
+          <WorkspaceSelector activeWorkspace={workspace} />
+
           <S.SidebarGroup>
             <NavigationSidebar.NavItem icon="goToBlock" title="Assistants" exact to={generatePath(Path.WORKSPACE_DASHBOARD, { workspaceID })} />
             <NavigationSidebar.NavItem
@@ -44,6 +46,7 @@ const DashboardNavigationSidebar: React.FC = () => {
             {isOwner && <NavigationSidebar.Item icon="organization" title="Organization" />}
           </S.SidebarGroup>
         </Box.Flex>
+
         <Box.Flex style={{ width: '100%' }} flexDirection="column" alignItems="flex-start" gap={24} paddingBottom="16px">
           <S.SidebarGroup>
             {plan === PlanType.STARTER && <NavigationSidebar.Item icon="paid" title="Upgrade to Pro" />}

@@ -6,8 +6,8 @@ import { Path } from '@/config/routes';
 import { useActiveWorkspace } from '@/hooks';
 import RedirectWithSearch from '@/Routes/RedirectWithSearch';
 
-import { HeaderWrapper } from '../Header/styles';
-import Members from './Members';
+import { HeaderWrapper } from '../../components/Header/styles';
+import Members from './pages/Members';
 import * as S from './styles';
 
 const DashboardV2TeamAndBilling: React.FC = () => {

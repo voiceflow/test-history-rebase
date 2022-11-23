@@ -5,19 +5,20 @@ import { Path } from '@/config/routes';
 import { withBatchLoadingGate } from '@/hocs';
 import { DashboardClassName } from '@/styles/constants';
 
-import { Header, ProjectList, Sidebar, TeamAndBilling } from './components';
+import { Sidebar } from './components';
 import * as S from './components/styles';
 import { DashboardGate } from './gates';
+import { AssistantDomains, ProjectList, TeamAndBilling } from './pages';
 
 const Dashboard: React.FC = () => {
   return (
     <S.DashboardWrapper id="app" className={DashboardClassName.DASHBOARD}>
-      <Header />
       <S.BodyWrapper>
         <Sidebar />
         <S.ContentWrapper>
           <Switch>
             <Route path={Path.WORKSPACE_TEAM_AND_BILLING} component={TeamAndBilling} />
+            <Route path={Path.WORKSPACE_ASSISTANT_DOMAINS} component={AssistantDomains} />
             <Route path="/" component={ProjectList} />
           </Switch>
         </S.ContentWrapper>

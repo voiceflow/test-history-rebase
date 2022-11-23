@@ -3,8 +3,8 @@ import React from 'react';
 import { Permission } from '@/config/permissions';
 import { usePermission } from '@/hooks';
 
-import * as S from '../styles';
-import TabButton from './TabButton';
+import * as S from '../../../components/Header/styles';
+import TabButton from '../../../components/Header/TabButton';
 
 interface TeamHeaderProps {
   onSwitchTab: (text: string) => void;

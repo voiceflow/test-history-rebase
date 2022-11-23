@@ -1,7 +1,7 @@
 import { Box, Button } from '@voiceflow/ui';
 import React from 'react';
 
-import * as S from '../styles';
+import * as S from './styles';
 
 interface TabButtonProps {
   title: string;

@@ -12,8 +12,8 @@ export const CardContainer = styled.div<{ active: boolean }>`
   border: #dfe3ed 1px solid;
   border-radius: 8px;
   position: relative;
-  display: flex;
   align-items: center;
+  display: flex;
   justify-content: center;
 
   &:hover .assistant-card-actions {

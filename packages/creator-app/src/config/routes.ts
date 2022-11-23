@@ -95,6 +95,7 @@ export enum WorkspaceRoute {
   TEMPLATE = 'template',
   ACCEPT_INVITE = 'accept-invite',
   TEAM_AND_BILLING = 'team',
+  ASSISTANT_DOMAINS = 'assistant-domains',
 }
 
 export enum WorkspaceSettingsRoute {
@@ -143,6 +144,7 @@ export const Path = {
   WORKSPACE: toPath(RootRoute.WORKSPACE),
   WORKSPACE_DASHBOARD: toPath(RootRoute.WORKSPACE, ':workspaceID'),
   WORKSPACE_TEAM_AND_BILLING: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.TEAM_AND_BILLING),
+  WORKSPACE_ASSISTANT_DOMAINS: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.ASSISTANT_DOMAINS),
   WORKSPACE_TEAM_AND_BILLING_MEMBERS: toPath(
     RootRoute.WORKSPACE,
     ':workspaceID',

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.991.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.990.0...@voiceflow/creator-app@1.991.0) (2022-11-23)
+
+
+### Features
+
+* connect dashboard data (CT-1229) ([#6351](https://github.com/voiceflow/creator-app/issues/6351)) ([5b05170](https://github.com/voiceflow/creator-app/commit/5b05170771607c2fbdd90e4424a4cec576903190))
+
+
+
+
+
 # [1.990.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.989.0...@voiceflow/creator-app@1.990.0) (2022-11-23)
 
 

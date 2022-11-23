@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.992.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.991.0...@voiceflow/creator-app@1.992.0) (2022-11-23)
+
+
+### Features
+
+* create table component (CT-1111) ([#6304](https://github.com/voiceflow/creator-app/issues/6304)) ([9c00dd9](https://github.com/voiceflow/creator-app/commit/9c00dd94e86db4c964d227cf8a4223bcc01f58bd))
+
+
+
+
+
 # [1.991.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.990.0...@voiceflow/creator-app@1.991.0) (2022-11-23)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.187.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.186.0...@voiceflow/ui@1.187.0) (2022-11-23)
+
+
+### Features
+
+* implement members page for dashboard v2 (CT-1215) ([#6350](https://github.com/voiceflow/creator-app/issues/6350)) ([d689473](https://github.com/voiceflow/creator-app/commit/d689473d45c97cb474488b42e74020011a195ab8))
+
+
+
+
+
 # [1.186.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.185.0...@voiceflow/ui@1.186.0) (2022-11-22)
 
 

@@ -18,6 +18,8 @@ import { SeoPage } from '@/constants/seo';
 import { compose } from '@/hocs';
 import AppModals from '@/modals/AppModals';
 import * as ModalsV2 from '@/ModalsV2';
+import Beamer from '@/services/Beamer';
+import DatadogRum from '@/services/DatadogRum';
 
 import { GlobalProvidersProps, withGlobalProviders } from './contexts/GlobalProviders';
 import Routes from './Routes';
@@ -32,6 +34,8 @@ const App: React.FC = () => (
     <RootPageProgressBar />
     <SupportChat />
     <TrackNewCodeVersion />
+    <DatadogRum />
+    <Beamer />
   </>
 );
 

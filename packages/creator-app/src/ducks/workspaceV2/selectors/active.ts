@@ -38,7 +38,7 @@ export const seatLimitsSelector = createSelector([workspaceSelector], (workspace
 
 export const variableStatesLimitSelector = createSelector([workspaceSelector], (workspace) => workspace?.variableStatesLimit);
 
-export const organizationIDSelector = createSelector([workspaceSelector], (workspace) => workspace?.organizationID);
+export const organizationIDSelector = createSelector([workspaceSelector], (workspace) => workspace?.organizationID ?? null);
 
 export const usedEditorSeatsSelector = createSelector(
   [membersSelector],

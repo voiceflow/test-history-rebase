@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.993.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.992.0...@voiceflow/creator-app@1.993.0) (2022-11-25)
+
+
+### Features
+
+* add beamer app (CT-1253) ([#6357](https://github.com/voiceflow/creator-app/issues/6357)) ([cf841f7](https://github.com/voiceflow/creator-app/commit/cf841f7050685cd90137ca878458b5525ad6f6a8))
+
+
+
+
+
 # [1.992.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.991.0...@voiceflow/creator-app@1.992.0) (2022-11-23)
 
 

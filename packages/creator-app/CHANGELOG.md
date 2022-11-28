@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.996.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.995.0...@voiceflow/creator-app@1.996.0) (2022-11-28)
+
+
+### Features
+
+* general publishing job (PL-000) ([#6355](https://github.com/voiceflow/creator-app/issues/6355)) ([c539275](https://github.com/voiceflow/creator-app/commit/c539275badde4e5b91dc17c5e30c5210dd6c6104))
+
+
+
+
+
 # [1.995.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.994.0...@voiceflow/creator-app@1.995.0) (2022-11-28)
 
 

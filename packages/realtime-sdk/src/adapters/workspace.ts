@@ -1,30 +1,28 @@
-import { DBWorkspace, PendingWorkspaceMember, Workspace, WorkspaceActivationState, WorkspaceMember } from '@realtime-sdk/models';
+import { DBWorkspace, Workspace, WorkspaceActivationState } from '@realtime-sdk/models';
 import { createMultiAdapter, notImplementedAdapter } from 'bidirectional-adapter';
-
-import memberAdapter from './member';
 
 export const INVALID_STATES = ['incomplete_expired', 'incomplete', 'unpaid'];
 export const WARNING_STATES = ['past_due'];
 
 const workspaceAdapter = createMultiAdapter<DBWorkspace, Workspace>(
   ({
-    boards,
-    created,
-    creator_id,
-    hasSource,
-    image,
-    name,
-    projects,
-    seats,
-    seatLimits,
-    team_id,
-    stripe_status,
-    members,
     plan,
+    name,
+    seats,
+    image,
+    boards,
+    team_id,
+    members,
+    created,
+    projects,
+    hasSource,
     beta_flag,
+    seatLimits,
+    creator_id,
+    stripe_status,
     organization_id,
-    organization_trial_days_left,
     variableStatesLimit,
+    organization_trial_days_left,
   }) => {
     let state: WorkspaceActivationState | null = null;
     if (INVALID_STATES.includes(stripe_status)) {
@@ -36,21 +34,21 @@ const workspaceAdapter = createMultiAdapter<DBWorkspace, Workspace>(
     return {
       id: team_id,
       name,
-      boards,
-      created,
-      seatLimits,
-      creatorID: creator_id,
-      hasSource,
+      plan,
       image,
-      projects,
       seats,
       state,
-      plan,
+      boards,
       members,
+      created,
+      projects,
       betaFlag: beta_flag,
+      creatorID: creator_id,
+      hasSource,
+      seatLimits,
       organizationID: organization_id,
-      organizationTrialDaysLeft: organization_trial_days_left,
       variableStatesLimit,
+      organizationTrialDaysLeft: organization_trial_days_left,
     };
   },
   notImplementedAdapter.transformer
@@ -59,12 +57,4 @@ const workspaceAdapter = createMultiAdapter<DBWorkspace, Workspace>(
 export default {
   ...workspaceAdapter,
   mapFromDB: (dbWorkspaces: DBWorkspace[]) => workspaceAdapter.mapFromDB(dbWorkspaces),
-};
-
-export const workspaceWithMembersAdapter = {
-  ...createMultiAdapter<{ workspace: DBWorkspace; members: Array<WorkspaceMember | PendingWorkspaceMember> }, Workspace>(
-    ({ workspace, members }) => ({ ...workspaceAdapter.fromDB(workspace), members: memberAdapter.mapFromDB(members) }),
-    notImplementedAdapter.transformer
-  ),
-  mapFromDB: notImplementedAdapter.transformer,
 };

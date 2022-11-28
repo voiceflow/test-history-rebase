@@ -35,7 +35,7 @@ const StepMenuSubMenuDefaultColorPopper: React.ForwardRefRenderFunction<HTMLDivE
     <div ref={ref}>
       <S.ContextMenuOption ref={popper.setReferenceElement} isActive={isHovered}>
         Default color
-        <SvgIcon icon="arrowRight" color="#BECEDC" size={10} />
+        <SvgIcon icon="arrowRight" color="#6E849A" size={10} />
       </S.ContextMenuOption>
 
       {isHovered && (

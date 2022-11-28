@@ -49,7 +49,7 @@ export const TooltipContainer = styled.div`
   padding: 8px 16px;
   left: 50%;
   font-size: 13px;
-  border-radius: 6px;
+  border-radius: 8px;
   background-color: #33373a;
   perspective: 800px;
   transform-origin: -50% 0;

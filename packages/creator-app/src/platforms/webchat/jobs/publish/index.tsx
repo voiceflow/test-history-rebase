@@ -6,8 +6,8 @@ import client from '@/client';
 import JobInterface from '@/components/JobInterface';
 import { PublishVersionModalData } from '@/components/PublishVersionModal';
 import { ModalType } from '@/constants';
-import { VersionTag, WEBCHAT_LEARN_MORE } from '@/constants/platforms';
-import { TrainingContext, TrainingProvider } from '@/contexts';
+import { WEBCHAT_LEARN_MORE } from '@/constants/platforms';
+import { PublishContext } from '@/contexts';
 import * as Project from '@/ducks/project';
 import { activeProjectIDSelector } from '@/ducks/session';
 import { useDispatch, useModals, useTrackingEvents } from '@/hooks';
@@ -16,15 +16,15 @@ import PublishButton from '@/pages/Project/components/Header/components/CanvasHe
 
 import { useNLPTrainingStageContent } from './stages';
 
-const WebchatPublish: React.FC = () => {
+const Webchat: React.FC = () => {
   const publishNewVersionModal = useModals<PublishVersionModalData>(ModalType.PUBLISH_VERSION_MODAL);
 
   const activeProjectID = useSelector(activeProjectIDSelector)!;
 
   const updateProjectLiveVersion = useDispatch(Project.updateProjectLiveVersion);
 
-  const trainingContext = React.useContext(TrainingContext)!;
-  const { job, active } = trainingContext;
+  const publishContext = React.useContext(PublishContext)!;
+  const { job, active } = publishContext;
 
   const [trackingEvents] = useTrackingEvents();
 
@@ -34,7 +34,7 @@ const WebchatPublish: React.FC = () => {
       try {
         trackingEvents.trackActiveProjectPublishAttempt();
 
-        await trainingContext?.start({ versionName });
+        await publishContext?.start({ versionName });
 
         const { liveVersion } = await client.api.project.get(activeProjectID!, ['liveVersion']);
         updateProjectLiveVersion(activeProjectID, liveVersion!);
@@ -60,16 +60,10 @@ const WebchatPublish: React.FC = () => {
   const progress = useSimulatedProgress(job);
 
   return (
-    <JobInterface Content={Content} context={trainingContext} progress={progress}>
+    <JobInterface Content={Content} context={publishContext} progress={progress}>
       <PublishButton loading={active} progress={progress} onClick={onPublish} />
     </JobInterface>
   );
 };
-
-const Webchat: React.FC = () => (
-  <TrainingProvider tag={VersionTag.PRODUCTION}>
-    <WebchatPublish />
-  </TrainingProvider>
-);
 
 export default Webchat;

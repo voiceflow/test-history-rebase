@@ -5,8 +5,7 @@ import client from '@/client';
 import JobInterface from '@/components/JobInterface';
 import { PublishVersionModalData } from '@/components/PublishVersionModal';
 import { ModalType } from '@/constants';
-import { VersionTag } from '@/constants/platforms';
-import { TrainingContext, TrainingProvider } from '@/contexts';
+import { PublishContext } from '@/contexts';
 import * as Project from '@/ducks/project';
 import * as Router from '@/ducks/router';
 import { activeProjectIDSelector } from '@/ducks/session';
@@ -16,15 +15,15 @@ import { useSimulatedProgress } from '@/hooks/job';
 import GeneralUploadButton from './components/GeneralUploadButton';
 import { useNLPTrainingStageContent } from './stages';
 
-const GeneralPublish: React.FC = () => {
+const General: React.FC = () => {
   const publishNewVersionModal = useModals<PublishVersionModalData>(ModalType.PUBLISH_VERSION_MODAL);
 
   const activeProjectID = useSelector(activeProjectIDSelector)!;
 
   const updateProjectLiveVersion = useDispatch(Project.updateProjectLiveVersion);
 
-  const trainingContext = React.useContext(TrainingContext)!;
-  const { job, active } = trainingContext;
+  const publishContext = React.useContext(PublishContext)!;
+  const { job, active } = publishContext;
 
   const [trackingEvents] = useTrackingEvents();
 
@@ -34,7 +33,7 @@ const GeneralPublish: React.FC = () => {
       try {
         trackingEvents.trackActiveProjectPublishAttempt();
 
-        await trainingContext?.start({ versionName });
+        await publishContext?.start({ versionName });
 
         const { liveVersion } = await client.api.project.get(activeProjectID!, ['liveVersion']);
         updateProjectLiveVersion(activeProjectID, liveVersion!);
@@ -67,16 +66,10 @@ const GeneralPublish: React.FC = () => {
   const progress = useSimulatedProgress(job);
 
   return (
-    <JobInterface Content={Content} context={trainingContext} progress={progress}>
+    <JobInterface Content={Content} context={publishContext} progress={progress}>
       <GeneralUploadButton loading={active} progress={progress} onClick={onPublish} />
     </JobInterface>
   );
 };
-
-const General: React.FC = () => (
-  <TrainingProvider tag={VersionTag.PRODUCTION}>
-    <GeneralPublish />
-  </TrainingProvider>
-);
 
 export default General;

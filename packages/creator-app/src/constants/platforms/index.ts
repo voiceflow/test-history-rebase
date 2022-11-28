@@ -13,6 +13,7 @@ import {
   GoogleExportJob,
   GooglePublishJob,
   JobStageData,
+  NLPTrainJob,
 } from '@/models';
 import { FORMATTED_DIALOGFLOW_LOCALES_LABELS } from '@/pages/Publish/Dialogflow/utils';
 import { FORMATTED_GOOGLE_LOCALES_LABELS } from '@/pages/Publish/Google/utils';
@@ -52,7 +53,8 @@ export type AnyErrorStageData =
   | JobStageData<DialogflowCXPublishJob.ErrorStage>
   | JobStageData<AlexaExportJob.ErrorStage>
   | JobStageData<AlexaPublishJob.ErrorStage>
-  | JobStageData<GeneralExportJob.ErrorStage>;
+  | JobStageData<GeneralExportJob.ErrorStage>
+  | JobStageData<NLPTrainJob.ErrorStage>;
 
 export type AnyErrorStage =
   | GoogleExportJob.ErrorStage
@@ -61,7 +63,8 @@ export type AnyErrorStage =
   | DialogflowCXPublishJob.ErrorStage
   | AlexaExportJob.ErrorStage
   | AlexaPublishJob.ErrorStage
-  | GeneralExportJob.ErrorStage;
+  | GeneralExportJob.ErrorStage
+  | NLPTrainJob.ErrorStage;
 
 export type AnyPublishJobErrorType = GooglePublishJobErrorType | DialogflowESPublishJobErrorType | AlexaPublishJobErrorType | DialogflowCXStageType;
 

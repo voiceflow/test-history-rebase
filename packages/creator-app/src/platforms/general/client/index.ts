@@ -6,6 +6,7 @@ import {
   createModelExportService,
   createModelImportService,
   createPrototypeService,
+  createPublishService,
   createVersionService,
 } from '@/client/services';
 import { GENERAL_SERVICE_ENDPOINT } from '@/config';
@@ -14,7 +15,6 @@ import { GeneralExportJob } from '@/models';
 
 import createNLPService from './nlp';
 import projectService from './project';
-import publishService from './publish';
 import ttsService from './tts';
 
 const generalServiceClient = {
@@ -24,7 +24,7 @@ const generalServiceClient = {
   modelExport: createModelExportService(generalService),
   modelImport: createModelImportService(generalService),
   project: projectService,
-  publish: publishService(),
+  publish: createPublishService(GENERAL_SERVICE_ENDPOINT),
   version: createVersionService<VoiceflowVersion.Version>(GENERAL_SERVICE_ENDPOINT),
   prototype: createPrototypeService(GENERAL_SERVICE_ENDPOINT),
 };

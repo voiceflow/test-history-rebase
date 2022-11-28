@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.33.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/showcase@1.32.1...@voiceflow/showcase@1.33.0) (2022-11-28)
+
+
+### Features
+
+* make flat the secondary button default (CT-1205) ([#6352](https://github.com/voiceflow/creator-app/issues/6352)) ([a298e23](https://github.com/voiceflow/creator-app/commit/a298e23a6ebce2f8e47d0532a6ffc855a632a90a))
+
+
+
+
+
 ## [1.32.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/showcase@1.32.0...@voiceflow/showcase@1.32.1) (2022-11-23)
 
 **Note:** Version bump only for package @voiceflow/showcase

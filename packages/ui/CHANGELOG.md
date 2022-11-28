@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.190.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.189.0...@voiceflow/ui@1.190.0) (2022-11-28)
+
+
+### Features
+
+* make flat the secondary button default (CT-1205) ([#6352](https://github.com/voiceflow/creator-app/issues/6352)) ([a298e23](https://github.com/voiceflow/creator-app/commit/a298e23a6ebce2f8e47d0532a6ffc855a632a90a))
+
+
+
+
+
 # [1.189.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.188.0...@voiceflow/ui@1.189.0) (2022-11-23)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.132.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.131.5...@voiceflow/realtime@1.132.0) (2022-11-28)
+
+
+### Features
+
+* sort and uniq identity members (CT-1254) ([#6358](https://github.com/voiceflow/creator-app/issues/6358)) ([67cde17](https://github.com/voiceflow/creator-app/commit/67cde17314582e58db443821315f8e50d7e78023))
+
+
+
+
+
 ## [1.131.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.131.4...@voiceflow/realtime@1.131.5) (2022-11-28)
 
 **Note:** Version bump only for package @voiceflow/realtime

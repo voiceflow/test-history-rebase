@@ -14,7 +14,7 @@ export interface ProjectAPIKeySectionProps {
   onToggleShow: () => void;
 }
 
-const DropdownButton = styled(Button).attrs({ variant: ButtonVariant.SECONDARY, flat: true, icon: 'ellipsis' })<SecondaryButtonProps>``;
+const DropdownButton = styled(Button).attrs({ variant: ButtonVariant.SECONDARY, icon: 'ellipsis' })<SecondaryButtonProps>``;
 
 const ProjectAPIKeySection: React.FC<ProjectAPIKeySectionProps> = ({ children, title, apiKey, show, options, onToggleShow }) => {
   return (

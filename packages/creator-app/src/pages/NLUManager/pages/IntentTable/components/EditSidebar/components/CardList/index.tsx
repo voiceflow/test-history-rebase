@@ -96,7 +96,7 @@ const CardList: React.FC<CardListProps> = ({ intent }) => {
           >
             <Box mb={isConflictsViewEnabled ? 16 : 0}>{clarityMeta.message}</Box>
             {isConflictsViewEnabled && (
-              <Button onClick={triggerConflictsSlider} flat squareRadius variant={ButtonVariant.SECONDARY}>
+              <Button onClick={triggerConflictsSlider} variant={ButtonVariant.SECONDARY}>
                 {isConflictsPageOpen ? 'Hide Conflicts' : 'View Conflicts'}
               </Button>
             )}

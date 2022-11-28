@@ -212,7 +212,7 @@ const API: React.FC = () => {
                 ]}
               >
                 {secondaryKey && (
-                  <StyledButton onClick={promoteSecondaryKey} variant={ButtonVariant.SECONDARY} squareRadius style={{ whiteSpace: 'nowrap' }}>
+                  <StyledButton onClick={promoteSecondaryKey} variant={ButtonVariant.SECONDARY} style={{ whiteSpace: 'nowrap' }}>
                     Promote Key
                   </StyledButton>
                 )}

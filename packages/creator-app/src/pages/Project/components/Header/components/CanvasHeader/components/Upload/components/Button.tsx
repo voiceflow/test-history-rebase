@@ -112,7 +112,7 @@ const ConnectButton: React.FC<ConnectButtonProps> = ({ onClick, ...props }) => {
 
   return (
     <TippyTooltip {...buttonProps.tooltip} disabled={!buttonProps.tooltip} position="bottom">
-      <UIButton flat small variant={UIButtonVariant.SECONDARY} id={Identifier.UPLOAD} onClick={onClick} center {...buttonProps} />
+      <UIButton small variant={UIButtonVariant.SECONDARY} id={Identifier.UPLOAD} onClick={onClick} center {...buttonProps} />
     </TippyTooltip>
   );
 };

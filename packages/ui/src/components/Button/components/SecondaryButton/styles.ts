@@ -6,7 +6,6 @@ export interface SecondaryButtonIconProps {
   center?: boolean;
 }
 export interface SecondaryButtonContainerProps extends ButtonContainerProps {
-  flat?: boolean;
   noShadow?: boolean;
   isActive?: boolean;
   opaque?: boolean;
@@ -30,13 +29,6 @@ export const SecondaryButtonIcon = styled.span<SecondaryButtonIconProps>`
       align-items: center;
       justify-content: space-evenly;
     `}
-`;
-
-const hoverActiveStyles = css`
-  background-color: #e0ebee;
-  & ${SecondaryButtonIcon} {
-    color: ${({ theme }) => theme.buttonIconColors.hover};
-  }
 `;
 
 const flatHoverStyles = css`
@@ -63,30 +55,20 @@ export const SecondaryButtonContainer = styled(ButtonContainer)<SecondaryButtonC
   color: ${colors(ThemeColor.PRIMARY)};
   font-weight: 600;
   line-height: 22px;
-  background-color: #eef4f6d9;
   background-size: 1px 41px;
-  border: 1px solid ${colors(ThemeColor.BORDERS)};
-  ${({ square }) =>
-    square &&
-    css`
-      padding: 9px 20px 10px;
-    `}
-  ${({ flat }) =>
-    flat &&
-    css`
-      padding: 11px 19px 10px;
-      background-color: #f2f7f8;
-      border-radius: 10px;
-      box-shadow: 0 0 0 1px rgba(204, 211, 228, 0.6);
-      border: 1px solid #fff;
-    `}
+
+  padding: 11px 19px 10px;
+  background-color: #f2f7f8;
+  border-radius: 10px;
+  box-shadow: 0 0 0 1px rgba(204, 211, 228, 0.6);
+  border: 1px solid #fff;
 
   ${({ noShadow }) =>
     noShadow &&
     css`
       box-shadow: none !important;
     `}
-  ${({ flat, disabled }) =>
+  ${({ disabled }) =>
     disabled
       ? css`
           color: rgba(19, 33, 68, 0.5);
@@ -97,18 +79,18 @@ export const SecondaryButtonContainer = styled(ButtonContainer)<SecondaryButtonC
         `
       : css`
           &:hover {
-            ${flat ? flatHoverStyles : hoverActiveStyles}
+            ${flatHoverStyles}
           }
           &:active {
-            ${flat ? flatActiveStyles : hoverActiveStyles}
+            ${flatActiveStyles}
           }
         `}
-  ${({ flat, isActive }) =>
+  ${({ isActive }) =>
     isActive &&
     css`
-      ${flat ? flatActiveStyles : hoverActiveStyles}
+      ${flatActiveStyles}
       &:hover {
-        ${flat ? flatActiveStyles : hoverActiveStyles}
+        ${flatActiveStyles}
       }
     `}
 

@@ -41,7 +41,7 @@ export const ApperanceSection: React.FC = () => {
           <Box.Flex ml={-48}>
             <SelectorBox />
             <SelectorLine width={64} />
-            <Button variant={ButtonVariant.SECONDARY} squareRadius flat onClick={startUpload('launcher')}>
+            <Button variant={ButtonVariant.SECONDARY} onClick={startUpload('launcher')}>
               Upload Image
             </Button>
           </Box.Flex>
@@ -60,7 +60,7 @@ export const ApperanceSection: React.FC = () => {
           </PreviewCrop>
           <Box.Flex ml={-32}>
             <SelectorLine width={64} />
-            <Button variant={ButtonVariant.SECONDARY} squareRadius flat onClick={startUpload('image')}>
+            <Button variant={ButtonVariant.SECONDARY} onClick={startUpload('image')}>
               Upload Image
             </Button>
           </Box.Flex>
@@ -80,7 +80,7 @@ export const ApperanceSection: React.FC = () => {
           </PreviewCrop>
           <Box.Flex ml={-38}>
             <SelectorLine width={70} />
-            <Button variant={ButtonVariant.SECONDARY} squareRadius flat onClick={startUpload('avatar')}>
+            <Button variant={ButtonVariant.SECONDARY} onClick={startUpload('avatar')}>
               Upload Image
             </Button>
           </Box.Flex>

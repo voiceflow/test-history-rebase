@@ -58,7 +58,7 @@ const IntentsHeader: React.FC = () => {
 
       <Box.FlexCenter pr={12} gap={10}>
         {!!nluManager.selectedIntentIDs.size && (
-          <TrashButton variant={ButtonVariant.SECONDARY} flat squareRadius onClick={confirmDelete}>
+          <TrashButton variant={ButtonVariant.SECONDARY} onClick={confirmDelete}>
             <SvgIcon icon="trash" size={15} inline />
           </TrashButton>
         )}

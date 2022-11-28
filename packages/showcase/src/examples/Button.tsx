@@ -8,12 +8,12 @@ const examples = [ButtonVariant.PRIMARY, ButtonVariant.SECONDARY, ButtonVariant.
     createExample(variant, () => (
       <Flex column gap={16}>
         <Button variant={variant}>Default Button</Button>
-        {variant !== ButtonVariant.PRIMARY && (
+        {variant !== ButtonVariant.PRIMARY && variant !== ButtonVariant.SECONDARY && (
           <Button variant={variant} flat>
             Flat Button
           </Button>
         )}
-        {variant !== ButtonVariant.PRIMARY && (
+        {variant !== ButtonVariant.PRIMARY && variant !== ButtonVariant.SECONDARY && (
           <Button variant={variant} squareRadius>
             Square Radius
           </Button>

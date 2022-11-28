@@ -44,7 +44,7 @@ const NLUNotifications: React.FC<NLUNotificationsProps> = ({ onClose }) => {
         ))}
       </ItemsContainer>
       <Box display="flex" p="0px 32px" justifyContent="flex-end" mt={14}>
-        <Button variant={ButtonVariant.SECONDARY} onClick={handleRefresh} flat squareRadius>
+        <Button variant={ButtonVariant.SECONDARY} onClick={handleRefresh}>
           <Flex>
             <SvgIcon color="#6e849a" icon="arrowSpin" mr={12} inline spin={isLoading} />
             Refresh

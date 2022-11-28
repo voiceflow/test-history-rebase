@@ -2,7 +2,7 @@ import { Button, ButtonVariant, SecondaryButtonProps } from '@voiceflow/ui';
 
 import { css, styled, transition } from '@/hocs';
 
-const SettingsButton = styled(Button).attrs({ variant: ButtonVariant.SECONDARY, flat: true })<SecondaryButtonProps & { isActive: boolean }>`
+const SettingsButton = styled(Button).attrs({ variant: ButtonVariant.SECONDARY })<SecondaryButtonProps & { isActive: boolean }>`
   margin-right: 10px;
 
   svg {

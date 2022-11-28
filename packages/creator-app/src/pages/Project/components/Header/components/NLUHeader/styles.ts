@@ -9,7 +9,7 @@ export const Container = styled(FlexApart)`
   justify-content: space-between;
 `;
 
-export const TrashButton = styled(Button).attrs({ variant: ButtonVariant.SECONDARY, flat: true })`
+export const TrashButton = styled(Button).attrs({ variant: ButtonVariant.SECONDARY })`
   display: inline-block;
   padding: 10px 20px !important;
 

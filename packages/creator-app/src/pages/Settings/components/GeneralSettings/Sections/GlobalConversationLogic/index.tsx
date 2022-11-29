@@ -75,7 +75,6 @@ const GlobalConversationLogic: React.FC<GlobalConversationLogicProps> = ({ platf
           {
             [Platform.Constants.PlatformType.ALEXA]: assistantLogic,
             [Platform.Constants.PlatformType.GOOGLE]: assistantLogic,
-            [Platform.Constants.PlatformType.DIALOGFLOW_ES]: assistantLogic,
           },
           <></>
         )(platform)}

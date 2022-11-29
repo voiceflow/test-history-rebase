@@ -19,6 +19,6 @@ export const CONFIG = Base.extend({
   tooltip: Base.tooltip(NLP.Alexa.CONFIG),
 
   permission: Permission.NLU_CUSTOM,
-});
+})(Base.validate);
 
 export type Config = typeof CONFIG;

@@ -10,7 +10,7 @@ import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import _sample from 'lodash/sample';
 
 import { FILTERED_AMAZON_INTENTS } from '@/constants';
-import { getPlatformIntentNameFormatter, getUtteranceRecommendationsLocales } from '@/platforms/selectors';
+import { getPlatformIntentNameFormatter } from '@/platforms/selectors';
 
 import { getBuiltInSynonyms } from '../slot';
 
@@ -251,10 +251,23 @@ export const getGoToIntentMeta = ({
 
 export const fillEntities = (
   utterances: string,
-  { slotsMap, locales, platform }: { slotsMap: Record<string, Realtime.Slot>; locales: string[]; platform: Platform.Constants.PlatformType }
+  {
+    type,
+    locales,
+    slotsMap,
+    platform,
+  }: {
+    type: Platform.Constants.ProjectType;
+    locales: string[];
+    slotsMap: Record<string, Realtime.Slot>;
+    platform: Platform.Constants.PlatformType;
+  }
 ) => {
-  const supportedLocale = getUtteranceRecommendationsLocales(platform);
-  const locale = locales.find((l) => supportedLocale.includes(l)) ?? supportedLocale[0];
+  const projectConfig = Platform.Config.getTypeConfig({ type, platform });
+
+  const locale =
+    locales.find((l) => projectConfig.project.locale.utteranceRecommendations.includes(l)) ??
+    projectConfig.project.locale.utteranceRecommendations[0];
 
   return utterances.replace(SLOT_REGEXP, (_match, name: string, id: string) => {
     const slot = slotsMap[id];

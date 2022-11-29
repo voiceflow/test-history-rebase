@@ -8,6 +8,6 @@ export const simple = Common.Voice.Adapters.Intent.simpleFactory<VoiceflowConsta
 export const CONFIG = Common.Voice.Adapters.Intent.extend({
   smart,
   simple,
-});
+})(Common.Voice.Adapters.Intent.validate);
 
 export type Config = typeof CONFIG;

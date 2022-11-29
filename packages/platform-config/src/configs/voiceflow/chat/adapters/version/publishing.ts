@@ -20,25 +20,35 @@ const PLATFORM_ONLY_FILES = Types.satisfies<keyof VoiceflowVersion.ChatPublishin
   'description',
 ]);
 
-export const smart = createSmartSimpleAdapter<VoiceflowVersion.ChatPublishing, Models.Version.Publishing.Model>(
-  (dbPublishing) => ({
-    ...Common.Chat.Adapters.Version.Publishing.smart.fromDB(dbPublishing),
+export const smart = createSmartSimpleAdapter<
+  VoiceflowVersion.ChatPublishing,
+  Models.Version.Publishing.Model,
+  Common.Chat.Adapters.Version.Publishing.FromAndToDBOptions,
+  Common.Chat.Adapters.Version.Publishing.FromAndToDBOptions
+>(
+  (dbPublishing, options) => ({
+    ...Common.Chat.Adapters.Version.Publishing.smart.fromDB(dbPublishing, options),
     ...Config.pickNonEmptyFields(dbPublishing, PLATFORM_ONLY_FILES),
   }),
-  (publishing) => ({
-    ...Common.Chat.Adapters.Version.Publishing.smart.toDB(publishing),
+  (publishing, options) => ({
+    ...Common.Chat.Adapters.Version.Publishing.smart.toDB(publishing, options),
     ...Config.pickNonEmptyFields(publishing, PLATFORM_ONLY_FILES),
   })
 );
 
-export const simple = createSimpleAdapter<VoiceflowVersion.ChatPublishing, Models.Version.Publishing.Model>(
-  (dbPublishing) => smart.fromDB(dbPublishing),
-  (publishing) => smart.toDB(publishing)
+export const simple = createSimpleAdapter<
+  VoiceflowVersion.ChatPublishing,
+  Models.Version.Publishing.Model,
+  Common.Chat.Adapters.Version.Publishing.FromAndToDBOptions,
+  Common.Chat.Adapters.Version.Publishing.FromAndToDBOptions
+>(
+  (dbPublishing, options) => smart.fromDB(dbPublishing, options),
+  (publishing, options) => smart.toDB(publishing, options)
 );
 
 export const CONFIG = Common.Chat.Adapters.Version.Publishing.extend({
   smart,
   simple,
-});
+})(Common.Chat.Adapters.Version.Publishing.validate);
 
 export type Config = typeof CONFIG;

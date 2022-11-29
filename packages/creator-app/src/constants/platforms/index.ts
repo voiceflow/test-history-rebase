@@ -1,9 +1,3 @@
-import { DFESConstants } from '@voiceflow/google-dfes-types';
-import { GoogleConstants } from '@voiceflow/google-types';
-import * as Platform from '@voiceflow/platform-config';
-import { Utils } from '@voiceflow/realtime-sdk';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
-
 import {
   AlexaExportJob,
   AlexaPublishJob,
@@ -15,14 +9,10 @@ import {
   JobStageData,
   NLPTrainJob,
 } from '@/models';
-import { FORMATTED_DIALOGFLOW_LOCALES_LABELS } from '@/pages/Publish/Dialogflow/utils';
-import { FORMATTED_GOOGLE_LOCALES_LABELS } from '@/pages/Publish/Google/utils';
-import LOCALE_MAP from '@/services/LocaleMap';
 
 import { AlexaPublishJobErrorType, AlexaStageType } from './alexa';
 import { DialogflowCXStageType } from './dialogflowCX';
 import { DialogflowESPublishJobErrorType, DialogflowESStageType } from './dialogflowES';
-import { GENERAL_LOCALE_NAME_MAP } from './general';
 import { GooglePublishJobErrorType, GoogleStageType } from './google';
 
 const AnyPublishJobRenderingError = [GooglePublishJobErrorType.RENDERING, AlexaPublishJobErrorType.RENDERING, GooglePublishJobErrorType.RENDERING];
@@ -76,15 +66,6 @@ export * from './dialogflowES';
 export * from './general';
 export * from './google';
 export * from './webchat';
-
-export const getDefaultPlatformLanguageLabel = Utils.platform.createPlatformSelector(
-  {
-    [Platform.Constants.PlatformType.ALEXA]: LOCALE_MAP[0].name,
-    [Platform.Constants.PlatformType.GOOGLE]: FORMATTED_GOOGLE_LOCALES_LABELS[GoogleConstants.Language.EN],
-    [Platform.Constants.PlatformType.DIALOGFLOW_ES]: FORMATTED_DIALOGFLOW_LOCALES_LABELS[DFESConstants.Language.EN],
-  },
-  GENERAL_LOCALE_NAME_MAP[VoiceflowConstants.Locale.EN_US]
-);
 
 export enum VersionTag {
   PRODUCTION = 'production', // version is published to production

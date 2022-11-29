@@ -1,11 +1,17 @@
 import * as Base from '@platform-config/configs/base';
-import { Types } from '@platform-config/utils';
+import { Config as ConfigUtils } from '@platform-config/configs/utils';
 
 import * as InvocationName from './invocationName';
+import * as Locale from './locale';
+import * as Voice from './voice';
 
-export { InvocationName };
+export { InvocationName, Locale, Voice };
 
-export const CONFIG = Types.partialSatisfies<Base.Utils.Config>()({
+export const CONFIG = ConfigUtils.partialSatisfies<Base.Utils.Config>()({
+  voice: Voice.CONFIG,
+
+  locale: Locale.CONFIG,
+
   invocationName: InvocationName.CONFIG,
 });
 

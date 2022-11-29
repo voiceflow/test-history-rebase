@@ -29,8 +29,9 @@ export const CONFIG = Base.Utils.Intent.extend({
   slotSanitizer,
 
   slotDialogSanitizer,
-});
+})(Base.Utils.Intent.validate);
 
 export type Config = typeof CONFIG;
 
 export const extend = ConfigUtils.extendFactory<Config>(CONFIG);
+export const validate = ConfigUtils.validateFactory<Config>(CONFIG);

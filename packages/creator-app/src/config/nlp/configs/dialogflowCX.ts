@@ -19,6 +19,6 @@ export const CONFIG = Base.extend({
   },
 
   export: null,
-});
+})(Base.validate);
 
 export type Config = typeof CONFIG;

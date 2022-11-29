@@ -10,3 +10,4 @@ export const CONFIG = Types.satisfies<Config>()({
 });
 
 export const extend = ConfigUtils.extendFactory<Config>(CONFIG);
+export const validate = ConfigUtils.validateFactory<Config>(CONFIG);

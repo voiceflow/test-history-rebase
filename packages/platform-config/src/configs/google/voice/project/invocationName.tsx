@@ -14,8 +14,11 @@ export const CONFIG = Base.Project.InvocationName.extend({
       with these <Link href="https://developers.google.com/assistant/conversational/df-asdk/discovery">guidelines.</Link>
     </>
   ),
-});
+
+  defaultSamples: ['talk to'],
+})(Base.Project.InvocationName.validate);
 
 export type Config = typeof CONFIG;
 
 export const extend = ConfigUtils.extendFactory<Config>(CONFIG);
+export const validate = ConfigUtils.validateFactory<Config>(CONFIG);

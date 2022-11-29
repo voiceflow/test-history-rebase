@@ -1,5 +1,6 @@
 import * as Base from '@platform-config/configs/base';
 import { BuiltInVariable } from '@platform-config/constants';
+import React from 'react';
 
 import * as InvocationName from './invocationName';
 import * as Locale from './locale';
@@ -16,7 +17,14 @@ export const CONFIG = Base.Project.extend({
 
   invocationName: InvocationName.CONFIG,
 
+  description: (
+    <>
+      Your project name is the name of the project that you will see on your workspace dashboard. <br />
+      This is an internal name an is <b>not</b> your Invocation name.
+    </>
+  ),
+
   globalVariables: [...Base.Project.CONFIG.globalVariables, BuiltInVariable.LAST_UTTERANCE],
-});
+})(Base.Project.validate);
 
 export type Config = typeof CONFIG;

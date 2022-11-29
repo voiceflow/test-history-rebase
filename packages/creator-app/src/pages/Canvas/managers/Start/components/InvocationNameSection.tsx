@@ -1,17 +1,12 @@
-import { AlexaUtils } from '@voiceflow/alexa-types';
-import { GoogleUtils } from '@voiceflow/google-types';
-import * as Platform from '@voiceflow/platform-config';
 import { Input, SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
-import { useDispatch, useSelector } from '@/hooks';
-import { PlatformContext } from '@/pages/Project/contexts';
-import { getPlatformValue } from '@/utils/platform';
+import { useActiveProjectTypeConfig, useDispatch, useSelector } from '@/hooks';
 
 const InvocationNameSection: React.FC = () => {
-  const platform = React.useContext(PlatformContext)!;
+  const projectConfig = useActiveProjectTypeConfig();
 
   const updateInvocationName = useDispatch(Version.updateInvocationName);
 
@@ -20,16 +15,9 @@ const InvocationNameSection: React.FC = () => {
 
   const [newInvocation, setNewInvocation] = React.useState(invocationName ?? '');
 
-  const invocationError =
-    newInvocation &&
-    getPlatformValue<(name?: string, locales?: any[]) => string | null>(
-      platform,
-      {
-        [Platform.Constants.PlatformType.ALEXA]: AlexaUtils.getInvocationNameError,
-        [Platform.Constants.PlatformType.GOOGLE]: GoogleUtils.getInvocationNameError,
-      },
-      () => null
-    )(newInvocation, locales);
+  if (!projectConfig.project.invocationName) return null;
+
+  const invocationError = projectConfig.utils.invocationName.validate({ value: invocationName, locales }) || '';
 
   return (
     <SectionV2.SimpleSection isAccent>
@@ -37,7 +25,7 @@ const InvocationNameSection: React.FC = () => {
         error={!!invocationError}
         value={newInvocation}
         onBlur={() => !invocationError && updateInvocationName(newInvocation)}
-        placeholder="Enter an invocation name"
+        placeholder={projectConfig.project.invocationName.placeholder}
         onChangeText={setNewInvocation}
       />
 

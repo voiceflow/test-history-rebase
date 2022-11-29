@@ -5,6 +5,6 @@ export const CONFIG = Base.Project.extend({
   ...Voiceflow.Common.Project.CONFIG,
 
   name: 'WhatsApp',
-});
+})(Base.Project.validate);
 
 export type Config = typeof CONFIG;

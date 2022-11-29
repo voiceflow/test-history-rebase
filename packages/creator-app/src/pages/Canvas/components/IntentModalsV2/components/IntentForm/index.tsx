@@ -6,11 +6,9 @@ import React from 'react';
 
 import * as Intent from '@/ducks/intent';
 import * as IntentV2 from '@/ducks/intentV2';
-import * as ProjectV2 from '@/ducks/projectV2';
 import * as Tracking from '@/ducks/tracking';
 import * as VersionV2 from '@/ducks/versionV2';
-import { useDispatch, useSelector } from '@/hooks';
-import { getUtteranceRecommendationsLocales } from '@/platforms';
+import { useActiveProjectTypeConfig, useDispatch, useSelector } from '@/hooks';
 import { FadeDownContainer } from '@/styles/animations';
 
 import BuiltInPrompt from '../components/BuiltInPrompt';
@@ -64,8 +62,9 @@ const IntentForm: React.FC<IntentFormProps> = ({
   withDescriptionSection = false,
   withDescriptionBottomBorder,
 }) => {
+  const projectConfig = useActiveProjectTypeConfig();
+
   const locales = useSelector(VersionV2.active.localesSelector);
-  const platform = useSelector(ProjectV2.active.platformSelector);
   const intentsMap = useSelector(IntentV2.customIntentMapSelector);
 
   const patchIntent = useDispatch(Intent.patchIntent);
@@ -80,11 +79,10 @@ const IntentForm: React.FC<IntentFormProps> = ({
     entitiesDividerRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const recommendedUtterancesSupported = React.useMemo(() => {
-    const supportedLocales = getUtteranceRecommendationsLocales(platform);
-
-    return locales.some((locale) => supportedLocales.includes(locale));
-  }, [locales, platform]);
+  const recommendedUtterancesSupported = React.useMemo(
+    () => locales.some((locale) => projectConfig.project.locale.utteranceRecommendations.includes(locale)),
+    [locales, projectConfig]
+  );
 
   const intent = intentID ? intentsMap[intentID] : null;
 

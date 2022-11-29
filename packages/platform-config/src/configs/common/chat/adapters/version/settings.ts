@@ -7,11 +7,18 @@ import { createSimpleAdapter, createSmartSimpleAdapter } from 'bidirectional-ada
 import * as Models from '../../models';
 import * as Prompt from '../prompt';
 
+export type FromAndToDBOptions = Base.Adapters.Version.Settings.FromAndToDBOptions;
+
 const PLATFORM_ONLY_FILES = Types.satisfies<keyof ChatVersion.Settings>()(['messageDelay']);
 
-export const smart = createSmartSimpleAdapter<Omit<ChatVersion.Settings, 'session'>, Models.Version.Settings.Model>(
-  ({ error, globalNoMatch, globalNoReply, ...dbSettings }) => ({
-    ...Base.Adapters.Version.Settings.smart.fromDB(dbSettings, { defaultVoice: '' }),
+export const smart = createSmartSimpleAdapter<
+  Omit<ChatVersion.Settings, 'session'>,
+  Models.Version.Settings.Model,
+  FromAndToDBOptions,
+  FromAndToDBOptions
+>(
+  ({ error, globalNoMatch, globalNoReply, ...dbSettings }, options) => ({
+    ...Base.Adapters.Version.Settings.smart.fromDB(dbSettings, options),
     ...ConfigUtils.pickNonEmptyFields(dbSettings, PLATFORM_ONLY_FILES),
     ...(error !== undefined && { error: error && Prompt.simple.fromDB(error) }),
     ...(globalNoMatch !== undefined && {
@@ -21,8 +28,8 @@ export const smart = createSmartSimpleAdapter<Omit<ChatVersion.Settings, 'sessio
       globalNoReply: { ...globalNoReply, prompt: globalNoReply.prompt && Prompt.simple.fromDB(globalNoReply.prompt) },
     }),
   }),
-  ({ error, globalNoMatch, globalNoReply, ...settings }) => ({
-    ...Base.Adapters.Version.Settings.smart.toDB(settings, { defaultVoice: '' }),
+  ({ error, globalNoMatch, globalNoReply, ...settings }, options) => ({
+    ...Base.Adapters.Version.Settings.smart.toDB(settings, options),
     ...ConfigUtils.pickNonEmptyFields(settings, PLATFORM_ONLY_FILES),
     ...(error !== undefined && { error: error && Prompt.simple.toDB(error) }),
     ...(globalNoMatch !== undefined && {
@@ -34,16 +41,22 @@ export const smart = createSmartSimpleAdapter<Omit<ChatVersion.Settings, 'sessio
   })
 );
 
-export const simple = createSimpleAdapter<Omit<ChatVersion.Settings, 'session'>, Models.Version.Settings.Model>(
-  (dbSettings) => smart.fromDB(ChatVersion.defaultSettings(dbSettings)),
-  (settings) => smart.toDB(settings)
+export const simple = createSimpleAdapter<
+  Omit<ChatVersion.Settings, 'session'>,
+  Models.Version.Settings.Model,
+  FromAndToDBOptions,
+  FromAndToDBOptions
+>(
+  (dbSettings, options) => smart.fromDB(ChatVersion.defaultSettings(dbSettings), options),
+  (settings, options) => smart.toDB(settings, options)
 );
 
 export const CONFIG = Base.Adapters.Version.Settings.extend({
   smart,
   simple,
-});
+})(Base.Adapters.Version.Settings.validate);
 
 export type Config = typeof CONFIG;
 
 export const extend = ConfigUtils.extendFactory<Config>(CONFIG);
+export const validate = ConfigUtils.validateFactory<Config>(CONFIG);

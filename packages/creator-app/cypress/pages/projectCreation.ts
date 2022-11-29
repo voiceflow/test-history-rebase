@@ -24,13 +24,13 @@ export default {
     }
 
     if (language) {
-      this.el.languageSelect.open();
-      this.el.languageSelect.select(language);
+      this.el.localeSelect.open();
+      this.el.localeSelect.select(language);
     }
 
     if (locale) {
-      this.el.localeSelect.open();
-      this.el.localeSelect.select(locale);
+      this.el.multipleLocalesSelect.open();
+      this.el.multipleLocalesSelect.select(locale);
     }
 
     this.el.createProject.click();
@@ -60,11 +60,11 @@ export default {
     get nluSelect() {
       return createSelectControl(Identifier.PROJECT_CREATE_SELECT_NLU);
     },
-    get languageSelect() {
-      return createSelectControl(Identifier.PROJECT_CREATE_SELECT_LANGUAGE);
-    },
     get localeSelect() {
       return createSelectControl(Identifier.PROJECT_CREATE_SELECT_LOCALE);
+    },
+    get multipleLocalesSelect() {
+      return createSelectControl(Identifier.PROJECT_CREATE_SELECT_MULTIPLE_LOCALES);
     },
   },
 

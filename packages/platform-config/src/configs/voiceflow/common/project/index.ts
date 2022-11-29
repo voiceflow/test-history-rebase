@@ -1,8 +1,14 @@
 import * as Base from '@platform-config/configs/base';
+import { Config as ConfigUtils } from '@platform-config/configs/utils';
 import { BuiltInVariable } from '@platform-config/constants';
-import { Types } from '@platform-config/utils';
 
-export const CONFIG = Types.partialSatisfies<Base.Project.Config>()({
+import * as Locale from './locale';
+
+export { Locale };
+
+export const CONFIG = ConfigUtils.partialSatisfies<Base.Project.Config>()({
+  locale: Locale.CONFIG,
+
   invocationName: null,
 
   globalVariables: [...Base.Project.CONFIG.globalVariables, BuiltInVariable.LAST_UTTERANCE],

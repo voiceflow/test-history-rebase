@@ -25,6 +25,6 @@ export const CONFIG = Base.extend({
     defaultExtension: FileExtension.ZIP,
     intentsExtension: FileExtension.ZIP,
   },
-});
+})(Base.validate);
 
 export type Config = typeof CONFIG;

@@ -1,7 +1,7 @@
 import * as Base from '@platform-config/configs/base';
-import { Types } from '@platform-config/utils';
+import { Config as ConfigUtils } from '@platform-config/configs/utils';
 
-export const CONFIG = Types.partialSatisfies<Base.Type.Common.Config>()({
+export const CONFIG = ConfigUtils.partialSatisfies<Base.Type.Common.Config>()({
   name: 'Dialogflow ES',
 
   icon: {

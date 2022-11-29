@@ -1,9 +1,8 @@
-/* eslint-disable no-shadow */
+import * as Platform from '@voiceflow/platform-config';
 import React from 'react';
 
 import ImageIcon from '@/components/ImageIcon';
 import Section from '@/components/Section';
-import LocaleMap from '@/services/LocaleMap';
 
 import ProductHeaderInfo from './components/ProductHeaderInfo';
 
@@ -15,7 +14,10 @@ function ProductTile({
   title,
   product: { name, smallIconUri, subscriptionFrequency, locales, type } = {},
 }) {
-  const localeNames = locales ? LocaleMap.filter(({ value }) => locales.includes(value)).map(({ name }) => name) : [];
+  const localeNames = React.useMemo(
+    () => locales?.map((locale) => Platform.Alexa.CONFIG.types.voice.project.locale.labelMap[locale]) ?? [],
+    [locales]
+  );
 
   const header = (
     <ProductHeaderInfo title={title} name={name} subscriptionFrequency={subscriptionFrequency} localeNames={localeNames} type={type} edit={edit} />

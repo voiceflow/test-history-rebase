@@ -12,6 +12,6 @@ export const CONFIG = Common.Voice.Adapters.extend({
   prompt: Prompt.CONFIG,
 
   version: Version.CONFIG,
-});
+})(Common.Voice.Adapters.validate);
 
 export type Config = typeof CONFIG;

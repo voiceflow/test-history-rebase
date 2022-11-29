@@ -126,8 +126,11 @@ class VersionService extends AbstractControl {
   }): Promise<void> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
     const projectConfig = Platform.Config.getTypeConfig({ type, platform });
+    const dbSettings = projectConfig.adapters.version.settings.smart.toDB(settings, { defaultVoice });
 
-    await client.version.platform(platform).patchSettings(versionID, projectConfig.adapters.version.settings.smart.toDB(settings, { defaultVoice }));
+    if (!Object.keys(dbSettings).length) return;
+
+    await client.version.platform(platform).patchSettings(versionID, dbSettings);
   }
 
   public async patchPlatformSession({
@@ -151,16 +154,13 @@ class VersionService extends AbstractControl {
     const { platformData } = await this.get(versionID);
 
     const dbSession = projectConfig.adapters.version.session.simple.toDB(
-      {
-        ...projectConfig.adapters.version.session.simple.fromDB(platformData.settings.session, { defaultVoice }),
-        ...session,
-      },
+      { ...projectConfig.adapters.version.session.simple.fromDB(platformData.settings.session, { defaultVoice }), ...session },
       { defaultVoice }
     );
 
-    if (dbSession) {
-      await client.version.platform(platform).patchSettings(versionID, { session: dbSession });
-    }
+    if (!dbSession || !Object.keys(dbSession).length) return;
+
+    await client.version.platform(platform).patchSettings(versionID, { session: dbSession });
   }
 
   public async patchPlatformPublishing({
@@ -180,10 +180,11 @@ class VersionService extends AbstractControl {
   }): Promise<void> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
     const projectConfig = Platform.Config.getTypeConfig({ type, platform });
+    const dbPublishing = projectConfig.adapters.version.publishing.smart.toDB(publishing, { defaultVoice });
 
-    await client.version
-      .platform(platform)
-      .patchPublishing(versionID, projectConfig.adapters.version.publishing.smart.toDB(publishing, { defaultVoice }));
+    if (!Object.keys(dbPublishing).length) return;
+
+    await client.version.platform(platform).patchPublishing(versionID, dbPublishing);
   }
 }
 

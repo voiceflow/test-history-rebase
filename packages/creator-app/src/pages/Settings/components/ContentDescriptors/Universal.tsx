@@ -8,6 +8,7 @@ const ContinuePrevious: React.FC = () => (
     continue from that point.
   </DescriptorContainer>
 );
+
 const AllowRepeat: React.FC = () => (
   <DescriptorContainer variant={DescriptorVariant.PREFIX}>
     When toggled on, users will be able to say ‘repeat’ at any point in the conversation to replay the previous speak step, or all the content from

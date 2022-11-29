@@ -25,6 +25,6 @@ export const CONFIG = Base.extend({
     defaultExtension: FileExtension.XML,
     intentsExtension: FileExtension.XML,
   },
-});
+})(Base.validate);
 
 export type Config = typeof CONFIG;

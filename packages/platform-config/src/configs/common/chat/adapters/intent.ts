@@ -26,8 +26,9 @@ export const simple = createMultiAdapter<ChatModels.Intent, Models.Intent.Model>
 export const CONFIG = Base.Adapters.Intent.extend({
   smart,
   simple,
-});
+})(Base.Adapters.Intent.validate);
 
 export type Config = typeof CONFIG;
 
 export const extend = ConfigUtils.extendFactory<Config>(CONFIG);
+export const validate = ConfigUtils.validateFactory<Config>(CONFIG);

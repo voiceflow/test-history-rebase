@@ -33,6 +33,8 @@ const Recommendations: React.FC = () => {
   const intents = useSelector(IntentV2.allCustomIntentsSelector);
   const platform = useSelector(ProjectV2.active.platformSelector);
   const slotsMap = useSelector(SlotV2.slotMapSelector);
+  const projectType = useSelector(ProjectV2.active.projectTypeSelector);
+
   const patchIntent = useDispatch(Intent.patchIntent);
   const [trackingEvents] = useTrackingEvents();
 
@@ -52,7 +54,7 @@ const Recommendations: React.FC = () => {
       toggleIsFetching(true);
 
       const recommendedUtterances = await waitAsyncAction(mlClient, ML.utterance.suggest, {
-        utterance: fillEntities(utterance.text, { slotsMap, locales, platform }),
+        utterance: fillEntities(utterance.text, { type: projectType, slotsMap, locales, platform }),
         numberOfUtterances: 10,
       });
 

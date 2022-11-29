@@ -43,3 +43,4 @@ export const CONFIG = Platform.Utils.Types.satisfies<Config>()({
 });
 
 export const extend = Platform.ConfigUtils.Config.extendFactory<Config>(CONFIG);
+export const validate = Platform.ConfigUtils.Config.validateFactory<Config>(CONFIG);

@@ -13,6 +13,6 @@ export const CONFIG = Voiceflow.Chat.extend({
   project: Project.CONFIG,
 
   description: 'Deploy a Web Chat widget to your website in minutes.',
-});
+})(Voiceflow.Chat.validate);
 
 export type Config = typeof CONFIG;

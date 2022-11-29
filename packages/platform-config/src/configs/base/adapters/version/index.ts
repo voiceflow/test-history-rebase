@@ -9,7 +9,7 @@ import * as Settings from './settings';
 
 export { Publishing, Session, Settings };
 
-export type FromDBOptions = [{ globalVariables: string[] }];
+export type FromDBOptions = [{ defaultVoice: string; globalVariables: string[] }];
 export type DBVersion<V extends BaseVersion.Version<any>> = Pick<V, '_id' | 'platformData' | Models.Version.ModelDBSharedFields>;
 
 /**
@@ -19,16 +19,16 @@ export const simple = createMultiAdapter<DBVersion<BaseVersion.Version>, Models.
   (
     {
       _id,
-      _version,
       folders = {},
+      _version,
       creatorID,
       projectID,
       variables,
       components = [],
+      platformData,
       rootDiagramID,
       defaultStepColors = {},
       templateDiagramID,
-      platformData,
     },
     { globalVariables }
   ) => ({
@@ -63,3 +63,4 @@ export const CONFIG = {
 export type Config = typeof CONFIG;
 
 export const extend = ConfigUtils.extendFactory<Config>(CONFIG);
+export const validate = ConfigUtils.validateFactory<Config>(CONFIG);

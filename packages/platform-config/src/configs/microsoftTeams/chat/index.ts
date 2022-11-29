@@ -15,6 +15,6 @@ export const CONFIG = Voiceflow.Chat.extend({
   project: Project.CONFIG,
 
   description: 'Deploy an extension to Microsoft Teams',
-});
+})(Voiceflow.Chat.validate);
 
 export type Config = typeof CONFIG;

@@ -16,6 +16,6 @@ export const CONFIG = Common.Chat.extend({
   project: Project.CONFIG,
 
   adapters: Adapters.CONFIG,
-});
+})(Common.Chat.validate);
 
 export type Config = typeof CONFIG;

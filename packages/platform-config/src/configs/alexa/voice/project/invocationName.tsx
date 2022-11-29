@@ -16,8 +16,11 @@ export const CONFIG = Base.Project.InvocationName.extend({
       </Link>
     </>
   ),
-});
+
+  defaultSamples: ['open'],
+})(Base.Project.InvocationName.validate);
 
 export type Config = typeof CONFIG;
 
 export const extend = ConfigUtils.extendFactory<Config>(CONFIG);
+export const validate = ConfigUtils.validateFactory<Config>(CONFIG);

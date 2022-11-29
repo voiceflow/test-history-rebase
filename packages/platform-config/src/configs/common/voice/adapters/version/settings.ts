@@ -52,11 +52,12 @@ export const simple = createSimpleAdapter<
 export const CONFIG = Base.Adapters.Version.Settings.extend({
   smart,
   simple,
-});
+})(Base.Adapters.Version.Settings.validate);
 
 export type Config = typeof CONFIG;
 
 export const extend = ConfigUtils.extendFactory<Config>(CONFIG);
+export const validate = ConfigUtils.validateFactory<Config>(CONFIG);
 
 /**
  * Should not be used in the configs, only in the adapters to share the logic and fix TS voice related typings

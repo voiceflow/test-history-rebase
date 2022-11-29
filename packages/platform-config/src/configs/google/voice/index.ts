@@ -21,6 +21,6 @@ export const CONFIG = Common.Voice.extend({
   adapters: Adapters.CONFIG,
 
   description: 'Design, prototype and launch Google Actions with our one-click integration.',
-});
+})(Common.Voice.validate);
 
 export type Config = typeof CONFIG;

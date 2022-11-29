@@ -1,56 +1,95 @@
 import { Config as ConfigUtils } from '@platform-config/configs/utils';
 import { Types } from '@platform-config/utils';
+import React from 'react';
 
 export interface Config {
   /**
-   * list of language ids, used to render correct languages order
+   * @example 'Language' | 'Locales'
+   */
+  name: string;
+
+  /**
+   * list of locale ids, used to locales in correct order
    */
   list: string[];
 
   /**
-   * language enum
+   * locale enum
    */
   enum: Record<string, string>;
 
   /**
-   * if the project supports multiple languages
+   * indicates if the project supports multiple locales
    */
   multi: boolean;
 
   /**
-   * if the toLanguage/fromLanguage utils should be used
+   * indicates if the project supports updating the locale after creation
    */
-  language: boolean;
+  editable: boolean;
 
   /**
    * indicates where locales are stored in the version's platform data
    */
   storedIn: 'settings' | 'publishing';
+
   /**
-   * language label map
+   * locale label map
    */
   labelMap: Record<string, string>;
 
   /**
-   * language label map
+   * used in settings
    */
-  defaultLocale: string | string[];
+  description: React.ReactNode;
+
+  /**
+   * indicates that it's a language config, language is a group of locales
+   * the toLanguage/fromLanguage utils will be used
+   */
+  isLanguage: boolean;
+
+  /**
+   * list of default locales
+   */
+  defaultLocales: string[];
+
+  /**
+   * preferred locales are rendered first in the list and separated by a divider
+   */
+  preferredLocales: string[];
+
+  /**
+   * list of locale ids that support utterances recommendations
+   */
+  utteranceRecommendations: string[];
 }
 
 export const CONFIG = Types.satisfies<Config>()({
+  name: 'Language',
+
   list: ['en'],
 
   enum: { EN: 'en' },
 
   multi: false,
 
-  language: false,
+  editable: false,
 
   storedIn: 'settings',
 
   labelMap: { en: 'English' },
 
-  defaultLocale: 'en',
+  isLanguage: false,
+
+  description: 'The language(s) that your assistant supports.',
+
+  defaultLocales: ['en'],
+
+  preferredLocales: [],
+
+  utteranceRecommendations: ['en'],
 });
 
 export const extend = ConfigUtils.extendFactory<Config>(CONFIG);
+export const validate = ConfigUtils.validateFactory<Config>(CONFIG);

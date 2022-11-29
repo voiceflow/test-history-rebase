@@ -1,6 +1,7 @@
 import { Config as ConfigUtils } from '@platform-config/configs/utils';
 import { BuiltInVariable } from '@platform-config/constants';
 import { Types } from '@platform-config/utils';
+import React from 'react';
 
 import * as InvocationName from './invocationName';
 import * as Locale from './locale';
@@ -18,6 +19,8 @@ export interface Config {
 
   locale: Locale.Config;
 
+  description: React.ReactNode;
+
   invocationName: null | InvocationName.Config;
 
   globalVariables: BuiltInVariable[];
@@ -29,6 +32,8 @@ export const CONFIG = Types.satisfies<Config>()({
   voice: Voice.CONFIG,
 
   locale: Locale.CONFIG,
+
+  description: 'Your project name is the name of the project that you will see on your workspace dashboard.',
 
   invocationName: null,
 
@@ -43,3 +48,4 @@ export const CONFIG = Types.satisfies<Config>()({
 });
 
 export const extend = ConfigUtils.extendFactory<Config>(CONFIG);
+export const validate = ConfigUtils.validateFactory<Config>(CONFIG);

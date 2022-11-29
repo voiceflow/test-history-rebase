@@ -62,14 +62,14 @@ export const inputStyle = css<StyledInputProps>`
   cursor: text;
   transition: background-color 0.12s linear, color 0.12s linear, border-color 0.12s linear, box-shadow 0.12s linear, max-height 0.12s linear;
 
-  &:disabled {
-    ${inputDisabledStyle}
-  }
-
   &:active,
   &:focus,
   &:focus-within {
     ${inputFocusStyle}
+  }
+
+  &:disabled {
+    ${inputDisabledStyle}
   }
 
   ${({ error, borderColor, errorBorderColor = ThemeColor.RED }) =>

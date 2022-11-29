@@ -9,6 +9,6 @@ export const CONFIG = Base.Project.extend({
   name: 'Voice Assistant',
 
   voice: Voice.CONFIG,
-});
+})(Base.Project.validate);
 
 export type Config = typeof CONFIG;

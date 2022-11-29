@@ -5,6 +5,6 @@ export const simple = Common.Voice.Adapters.Prompt.simpleFactory<VoiceflowConsta
 
 export const CONFIG = Common.Voice.Adapters.Prompt.extend({
   simple,
-});
+})(Common.Voice.Adapters.Prompt.validate);
 
 export type Config = typeof CONFIG;

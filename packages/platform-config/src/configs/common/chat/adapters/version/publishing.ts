@@ -5,21 +5,29 @@ import { createSimpleAdapter, createSmartSimpleAdapter } from 'bidirectional-ada
 
 import * as Models from '../../models';
 
-export const smart = createSmartSimpleAdapter<BaseVersion.Publishing, Pick<Models.Version.Publishing.Model, keyof BaseVersion.Publishing>>(
-  (dbPublishing) => Base.Adapters.Version.Publishing.smart.fromDB(dbPublishing, { defaultVoice: '' }),
-  (publishing) => Base.Adapters.Version.Publishing.smart.toDB(publishing, { defaultVoice: '' })
+export type FromAndToDBOptions = Base.Adapters.Version.Publishing.FromAndToDBOptions;
+
+export const smart = createSmartSimpleAdapter<
+  BaseVersion.Publishing,
+  Pick<Models.Version.Publishing.Model, keyof BaseVersion.Publishing>,
+  FromAndToDBOptions,
+  FromAndToDBOptions
+>(
+  (dbPublishing, options) => Base.Adapters.Version.Publishing.smart.fromDB(dbPublishing, options),
+  (publishing, options) => Base.Adapters.Version.Publishing.smart.toDB(publishing, options)
 );
 
-export const simple = createSimpleAdapter<BaseVersion.Publishing, Models.Version.Publishing.Model>(
-  (dbPublishing) => Base.Adapters.Version.Publishing.simple.fromDB(dbPublishing, { defaultVoice: '' }),
-  (publishing) => Base.Adapters.Version.Publishing.simple.toDB(publishing, { defaultVoice: '' })
+export const simple = createSimpleAdapter<BaseVersion.Publishing, Models.Version.Publishing.Model, FromAndToDBOptions, FromAndToDBOptions>(
+  (dbPublishing, options) => Base.Adapters.Version.Publishing.simple.fromDB(dbPublishing, options),
+  (publishing, options) => Base.Adapters.Version.Publishing.simple.toDB(publishing, options)
 );
 
 export const CONFIG = Base.Adapters.Version.Publishing.extend({
   smart,
   simple,
-});
+})(Base.Adapters.Version.Publishing.validate);
 
 export type Config = typeof CONFIG;
 
 export const extend = ConfigUtils.extendFactory<Config>(CONFIG);
+export const validate = ConfigUtils.validateFactory<Config>(CONFIG);

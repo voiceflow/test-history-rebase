@@ -16,6 +16,6 @@ export const CONFIG = Common.Voice.extend({
   project: Project.CONFIG,
 
   adapters: Adapters.CONFIG,
-});
+})(Common.Voice.validate);
 
 export type Config = typeof CONFIG;

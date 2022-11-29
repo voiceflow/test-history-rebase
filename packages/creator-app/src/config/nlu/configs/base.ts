@@ -52,4 +52,5 @@ export const CONFIG = Platform.Utils.Types.satisfies<Config>()({
   permission: null,
 });
 
-export const extend = Platform.Base.extendFactory<Config>(CONFIG);
+export const extend = Platform.ConfigUtils.Config.extendFactory<Config>(CONFIG);
+export const validate = Platform.ConfigUtils.Config.validateFactory<Config>(CONFIG);

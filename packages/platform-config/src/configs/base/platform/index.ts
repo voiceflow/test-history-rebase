@@ -26,13 +26,11 @@ export interface Config {
   oneClickPublish: boolean;
 }
 
-export type Extendable<Config> = ExtendableValue<
-  Omit<Config, 'types'> & {
-    types: {
-      [Key in ProjectType]: Type.Config & { type: Key };
-    };
-  }
->;
+export type Extendable<Config> = ExtendableValue<Omit<Config, 'types'>> & {
+  types: {
+    [Key in ProjectType]?: ExtendableValue<Type.Config & { type: Key }>;
+  };
+};
 
 export const CONFIG = Types.satisfies<Config>()({
   is: TypeGuards.isValueFactory(PlatformType.VOICEFLOW),

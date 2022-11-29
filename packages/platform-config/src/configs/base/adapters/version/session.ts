@@ -6,7 +6,7 @@ import { createSimpleAdapter } from 'bidirectional-adapter';
 import * as Models from '../../models';
 
 export type DBSession<Prompt = unknown> = Nullable<BaseVersion.Session<Prompt>>;
-export type FromAndToDBOptions = [{ defaultVoice: Nullable<string> }];
+export type FromAndToDBOptions = [{ defaultVoice: string }];
 
 export const simple = createSimpleAdapter<DBSession, Models.Version.Session, FromAndToDBOptions, FromAndToDBOptions>(
   (session) => (session?.type === BaseVersion.SessionType.RESUME ? { restart: false, resumePrompt: null } : { restart: true, resumePrompt: null }),
@@ -30,3 +30,4 @@ export const CONFIG = {
 export type Config = typeof CONFIG;
 
 export const extend = ConfigUtils.extendFactory<Config>(CONFIG);
+export const validate = ConfigUtils.validateFactory<Config>(CONFIG);

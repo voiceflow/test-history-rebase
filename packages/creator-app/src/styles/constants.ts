@@ -62,8 +62,8 @@ export enum Identifier {
   INVOCATION_NAME_INPUT = 'vf-invocation-name-input',
   PROJECT_CREATE_SELECT_CHANNEL = 'vf-project-create__select--channel',
   PROJECT_CREATE_SELECT_NLU = 'vf-project-create__select--nlu',
-  PROJECT_CREATE_SELECT_LANGUAGE = 'vf-project-create__select--language',
   PROJECT_CREATE_SELECT_LOCALE = 'vf-project-create__select--locale',
+  PROJECT_CREATE_SELECT_MULTIPLE_LOCALES = 'vf-project-create__select--multiple-locale',
 
   // Transcripts
   SAVE_TRANSCRIPT_BUTTON = 'vf-save-conversations-button',

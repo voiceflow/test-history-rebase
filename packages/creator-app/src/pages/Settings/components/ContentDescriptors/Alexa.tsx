@@ -3,30 +3,6 @@ import React from 'react';
 
 import { DescriptorContainer, DescriptorVariant } from '@/pages/Settings/components/ContentDescriptors/components';
 
-const ProjectName: React.FC = () => (
-  <DescriptorContainer>
-    Your project name is the name of the project that you will see on your workspace dashboard. <br />
-    This is an internal name an is <b>not</b> your Invocation name.
-  </DescriptorContainer>
-);
-
-const InvocationName: React.FC = () => (
-  <DescriptorContainer>
-    The name users will say to interact with your Alexa Skill. This does not need to be the same as your project name, but must comply with the{' '}
-    <Link href="https://developer.amazon.com/en-US/docs/alexa/custom-skills/choose-the-invocation-name-for-a-custom-skill.html">
-      Invocation Name Guidelines.
-    </Link>
-  </DescriptorContainer>
-);
-
-const Locales: React.FC = () => (
-  <DescriptorContainer>
-    A{' '}
-    <Link href="https://developer.amazon.com/en-US/docs/alexa/faq/distribute-your-skill-to-additional-locales-of-the-same-language.html">locale</Link>{' '}
-    is the combination of a language and a location. Choose one or more locales you want your Skill to support.
-  </DescriptorContainer>
-);
-
 const Gadgets: React.FC = () => (
   <DescriptorContainer variant={DescriptorVariant.PREFIX}>
     Enable communication between your Skill and custom interfaces.{' '}
@@ -51,4 +27,4 @@ const ModelSensitivity: React.FC = () => (
   </DescriptorContainer>
 );
 
-export default { ProjectName, InvocationName, Locales, Gadgets, Events, ModelSensitivity };
+export default { Gadgets, Events, ModelSensitivity };

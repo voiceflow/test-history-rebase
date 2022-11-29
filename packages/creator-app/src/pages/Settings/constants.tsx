@@ -2,7 +2,7 @@ import * as Platform from '@voiceflow/platform-config';
 import { Utils } from '@voiceflow/realtime-sdk';
 import React from 'react';
 
-import { Alexa, Dialogflow, General, Google, Universal } from './components/ContentDescriptors';
+import { Alexa, General, Universal } from './components/ContentDescriptors';
 
 export enum SettingSections {
   BASIC = 'Name & Language',
@@ -21,7 +21,6 @@ export interface PlatformSettingsMetaProps {
   name: string;
   sections: SettingSections[];
   descriptors: {
-    projectName: React.ReactNode;
     localesDescriptor?: React.ReactNode;
     continuePrevious?: React.ReactNode;
     allowRepeat?: React.ReactNode;
@@ -54,13 +53,11 @@ export const getSettingsMetaProps = Utils.platform.createPlatformAndProjectTypeS
         events: <Alexa.Events />,
         gadgets: <Alexa.Gadgets />,
         allowRepeat: <Universal.AllowRepeat />,
-        projectName: <Alexa.ProjectName />,
         repeatDialog: General.RepeatDialog,
         defaultVoice: <Universal.DefaultVoice />,
         repeatEverything: General.RepeatEverything,
         continuePrevious: <Universal.ContinuePrevious />,
         modelSensitivity: <Alexa.ModelSensitivity />,
-        localesDescriptor: <Alexa.Locales />,
       },
       localeText: 'Locales',
     },
@@ -75,12 +72,10 @@ export const getSettingsMetaProps = Utils.platform.createPlatformAndProjectTypeS
         SettingSections.DANGER_ZONE,
       ],
       descriptors: {
-        projectName: <Google.ProjectName />,
         allowRepeat: <Universal.AllowRepeat />,
         repeatDialog: General.RepeatDialog,
         repeatEverything: General.RepeatEverything,
         continuePrevious: <Universal.ContinuePrevious />,
-        localesDescriptor: <Google.Locales />,
       },
       localeText: 'Language',
     },
@@ -91,22 +86,19 @@ export const getSettingsMetaProps = Utils.platform.createPlatformAndProjectTypeS
         SettingSections.GLOBAL_LOGIC,
         SettingSections.DIALOGFLOW_CONSOLE,
         SettingSections.CANVAS,
+        SettingSections.GLOBAL_CONVERSATION_LOGIC,
         SettingSections.TEST_TOOL,
         SettingSections.DANGER_ZONE,
       ],
       descriptors: {
-        projectName: <General.ProjectName />,
         repeatEverything: General.RepeatEverything,
-        localesDescriptor: <Dialogflow.Locales />,
       },
       localeText: 'Language',
     },
     [Platform.Constants.ProjectType.CHAT]: {
       name: 'Chatbot',
       sections: [SettingSections.BASIC, SettingSections.GLOBAL_LOGIC, SettingSections.CANVAS, SettingSections.TEST_TOOL, SettingSections.DANGER_ZONE],
-      descriptors: {
-        projectName: <General.ProjectName />,
-      },
+      descriptors: {},
     },
   },
   {
@@ -119,8 +111,6 @@ export const getSettingsMetaProps = Utils.platform.createPlatformAndProjectTypeS
       SettingSections.TEST_TOOL,
       SettingSections.DANGER_ZONE,
     ],
-    descriptors: {
-      projectName: <General.ProjectName />,
-    },
+    descriptors: {},
   }
 );

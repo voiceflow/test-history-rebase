@@ -25,6 +25,6 @@ export const CONFIG = Base.extend({
     defaultExtension: FileExtension.CSV,
     intentsExtension: FileExtension.CSV,
   },
-});
+})(Base.validate);
 
 export type Config = typeof CONFIG;

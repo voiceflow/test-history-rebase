@@ -55,7 +55,7 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
     const intents = projectConfig.adapters.intent.smart.mapFromDB(dbCreator.version.platformData.intents);
     const version = projectConfig.adapters.version.simple.fromDB(
       { ...dbCreator.version, templateDiagramID: templateDiagram?._id },
-      { globalVariables: projectConfig.project.globalVariables }
+      { globalVariables: projectConfig.project.globalVariables, defaultVoice: projectConfig.project.voice.default }
     );
 
     const slots = Realtime.Adapters.slotAdapter.mapFromDB(dbCreator.version.platformData.slots);

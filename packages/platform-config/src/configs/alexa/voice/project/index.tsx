@@ -1,4 +1,5 @@
 import * as Base from '@platform-config/configs/base';
+import React from 'react';
 
 import * as InvocationName from './invocationName';
 import * as Locale from './locale';
@@ -13,7 +14,14 @@ export const CONFIG = Base.Project.extend({
 
   locale: Locale.CONFIG,
 
+  description: (
+    <>
+      Your project name is the name of the project that you will see on your workspace dashboard. <br />
+      This is an internal name an is <b>not</b> your Invocation name.
+    </>
+  ),
+
   invocationName: InvocationName.CONFIG,
-});
+})(Base.Project.validate);
 
 export type Config = typeof CONFIG;

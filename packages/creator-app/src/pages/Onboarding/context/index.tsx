@@ -12,7 +12,6 @@ import { Redirect, useLocation } from 'react-router-dom';
 import { receiptGraphic } from '@/assets';
 import { IS_PRIVATE_CLOUD } from '@/config';
 import { Path } from '@/config/routes';
-import { getDefaultPlatformLanguageLabel } from '@/constants/platforms';
 import * as Account from '@/ducks/account';
 import * as Feature from '@/ducks/feature';
 import * as Project from '@/ducks/project';
@@ -388,7 +387,7 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
           const { versionID } = await createProject({
             nluType: Platform.Constants.NLUType.VOICEFLOW,
             platform: Platform.Constants.PlatformType.VOICEFLOW,
-            language: getDefaultPlatformLanguageLabel(Platform.Constants.PlatformType.VOICEFLOW),
+            language: 'English (en-US)',
             onboarding: true,
             templateTag: `onboarding:${state.personalizeWorkspaceMeta.projectType}`,
           });

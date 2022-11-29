@@ -13,8 +13,9 @@ export const CONFIG = Base.Adapters.extend({
   prompt: Prompt.CONFIG,
 
   version: Version.CONFIG,
-});
+})(Base.Adapters.validate);
 
 export type Config = typeof CONFIG;
 
 export const extend = ConfigUtils.extendFactory<Config>(CONFIG);
+export const validate = ConfigUtils.validateFactory<Config>(CONFIG);

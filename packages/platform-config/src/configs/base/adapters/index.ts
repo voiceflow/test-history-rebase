@@ -6,8 +6,6 @@ import * as Version from './version';
 
 export { Intent, Prompt, Version };
 
-export * as Utils from './utils';
-
 export const CONFIG = {
   intent: Intent.CONFIG,
 
@@ -19,3 +17,4 @@ export const CONFIG = {
 export type Config = typeof CONFIG;
 
 export const extend = ConfigUtils.extendFactory<Config>(CONFIG);
+export const validate = ConfigUtils.validateFactory<Config>(CONFIG);

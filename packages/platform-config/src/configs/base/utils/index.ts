@@ -5,10 +5,13 @@ import * as Intent from './intent';
 import * as InvocationName from './invocationName';
 import * as Locale from './locale';
 import * as Prompt from './prompt';
+import * as Voice from './voice';
 
-export { Intent, InvocationName, Locale, Prompt };
+export { Intent, InvocationName, Locale, Prompt, Voice };
 
 export interface Config {
+  voice: Voice.Config;
+
   prompt: Prompt.Config;
 
   locale: Locale.Config;
@@ -19,6 +22,8 @@ export interface Config {
 }
 
 export const CONFIG = Types.satisfies<Config>()({
+  voice: Voice.CONFIG,
+
   prompt: Prompt.CONFIG,
 
   locale: Locale.CONFIG,
@@ -29,3 +34,4 @@ export const CONFIG = Types.satisfies<Config>()({
 });
 
 export const extend = ConfigUtils.extendFactory<Config>(CONFIG);
+export const validate = ConfigUtils.validateFactory<Config>(CONFIG);

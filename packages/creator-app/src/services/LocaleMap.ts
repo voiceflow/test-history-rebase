@@ -1,30 +1,15 @@
 import { AlexaConstants, AlexaProject } from '@voiceflow/alexa-types';
 
-const LOCALE_MAP = [
-  { value: AlexaConstants.Locale.EN_US, label: 'English (US)', name: 'English (US)', inSkillProduct: true },
-  { value: AlexaConstants.Locale.EN_GB, label: 'English (UK)', name: 'English (UK)', inSkillProduct: true },
-  { value: AlexaConstants.Locale.DE_DE, label: 'German (DE)', name: 'German (DE)', inSkillProduct: true },
-  { value: AlexaConstants.Locale.JA_JP, label: 'Japanese (JP)', name: 'Japanese (JP)', inSkillProduct: true },
-  { value: AlexaConstants.Locale.ES_US, label: 'Spanish (US)', name: 'Spanish (US)', inSkillProduct: true },
-  { value: AlexaConstants.Locale.ES_ES, label: 'Spanish (ES)', name: 'Spanish (ES)', inSkillProduct: true },
-  { value: AlexaConstants.Locale.FR_FR, label: 'French (FR)', name: 'French (FR)', inSkillProduct: true },
-  { value: AlexaConstants.Locale.IT_IT, label: 'Italian (IT)', name: 'Italian (IT)', inSkillProduct: true },
-  { value: AlexaConstants.Locale.EN_AU, label: 'English (AU)', name: 'English (AU)' },
-  { value: AlexaConstants.Locale.EN_CA, label: 'English (CA)', name: 'English (CA)' },
-  { value: AlexaConstants.Locale.EN_IN, label: 'English (IN)', name: 'English (IN)' },
-  { value: AlexaConstants.Locale.ES_MX, label: 'Spanish (MX)', name: 'Spanish (MX)' },
-  { value: AlexaConstants.Locale.FR_CA, label: 'French (CA)', name: 'French (CA)' },
-  { value: AlexaConstants.Locale.PT_BR, label: 'Portuguese (BR)', name: 'Portuguese (BR)' },
-  { value: AlexaConstants.Locale.HI_IN, label: 'Hindi (IN)', name: 'Hindi (IN)' },
-];
-
-export default LOCALE_MAP;
-
-export const getLocaleLabel: Partial<Record<AlexaConstants.Locale, string>> = LOCALE_MAP.reduce(
-  (acc, cur) => ({ ...acc, [cur.value]: cur.label }),
-  {}
-);
-export const LocaleArray = Object.values(AlexaConstants.Locale);
+export const IN_SKILL_PRODUCT_LOCALES = new Set([
+  AlexaConstants.Locale.EN_US,
+  AlexaConstants.Locale.EN_GB,
+  AlexaConstants.Locale.DE_DE,
+  AlexaConstants.Locale.JA_JP,
+  AlexaConstants.Locale.ES_US,
+  AlexaConstants.Locale.ES_ES,
+  AlexaConstants.Locale.FR_FR,
+  AlexaConstants.Locale.IT_IT,
+]);
 
 export const MarketPlaceAvailability = [
   {

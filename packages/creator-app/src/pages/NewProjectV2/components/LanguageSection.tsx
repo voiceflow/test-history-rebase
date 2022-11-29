@@ -1,36 +1,31 @@
-import { DFESConstants } from '@voiceflow/google-dfes-types';
-import { GoogleConstants } from '@voiceflow/google-types';
 import * as Platform from '@voiceflow/platform-config';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
+import LocalesSelect from '@/components/LocalesSelect';
 import Section, { SectionVariant } from '@/components/Section';
 
-import { PLATFORM_PROJECT_META_MAP } from '../constants';
-import LanguageSelect from './LanguageSelect';
-
 interface LanguageSectionProps {
-  nlu: Platform.Constants.NLUType | null;
+  type: Platform.Constants.ProjectType | null;
+  locales: string[];
   platform: Platform.Constants.PlatformType | null;
-  language: GoogleConstants.Language | DFESConstants.Language | VoiceflowConstants.Locale | null;
-  setLanguage: (value: GoogleConstants.Language | DFESConstants.Language | VoiceflowConstants.Locale | null) => void;
-  alexaLocales: string[];
-  setAlexaLocales: (locales: string[]) => void;
+  onLocalesChange: (locales: string[]) => void;
 }
 
-const LanguageSection: React.FC<LanguageSectionProps> = (props) => {
-  const channel = props.nlu ?? props.platform;
-  const headerText = channel ? PLATFORM_PROJECT_META_MAP[channel]?.localesText : 'Language';
+const LanguageSection: React.FC<LanguageSectionProps> = ({ type, locales, platform, onLocalesChange }) => {
+  const projectConfig = Platform.Config.getTypeConfig({
+    type: type ?? Platform.Constants.ProjectType.VOICE,
+    platform: platform ?? Platform.Constants.PlatformType.VOICEFLOW,
+  });
 
   return (
     <Section
-      header={headerText}
+      header={projectConfig.project.locale.name}
       variant={SectionVariant.FORM}
       dividers={false}
       customHeaderStyling={{ paddingTop: '24px' }}
       customContentStyling={{ paddingBottom: '32px' }}
     >
-      <LanguageSelect {...props} />
+      <LocalesSelect type={type} platform={platform} locales={locales} onChange={onLocalesChange} />
     </Section>
   );
 };

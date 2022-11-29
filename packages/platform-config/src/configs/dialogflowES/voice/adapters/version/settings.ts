@@ -28,6 +28,6 @@ export const simple = createSimpleAdapter<
 export const CONFIG = Common.Voice.Adapters.Version.Settings.extend({
   smart,
   simple,
-});
+})(Common.Voice.Adapters.Version.Settings.validate);
 
 export type Config = typeof CONFIG;

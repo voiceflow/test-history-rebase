@@ -466,6 +466,7 @@ function Select({
             id={id}
             as={renderAsSpan ? 'span' : undefined}
             ref={ref}
+            width={width}
             onClick={!disabled && !labelSearchable ? onOpenMenu : undefined}
             tabIndex={labelSearchable || disabled ? -1 : 0}
             minWidth={minWidth}
@@ -474,7 +475,6 @@ function Select({
             fullWidth={fullWidth}
             onMouseDown={!disabled && !labelSearchable ? onMouseDown : undefined}
             withClearIcon={withClearIcon}
-            width={width}
           >
             {renderTrigger ? (
               renderTrigger({ ...inputProps, ref: inputRef, value: searchLabel, isOpen: opened, onOpenMenu, onHideMenu })

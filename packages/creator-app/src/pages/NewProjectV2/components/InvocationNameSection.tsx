@@ -11,7 +11,7 @@ interface InvocationNameSectionProps {
   value: string;
   error: string;
   onChange: (value: string) => void;
-  description?: string;
+  description?: React.ReactNode;
 }
 
 const InvocationNameSection: React.FC<InvocationNameSectionProps> = ({ value, error, onChange, description }) => (

@@ -21,6 +21,6 @@ export const CONFIG = Base.extend({
     defaultExtension: FileExtension.JSON,
     intentsExtension: FileExtension.JSON,
   },
-});
+})(Base.validate);
 
 export type Config = typeof CONFIG;

@@ -15,6 +15,6 @@ export const CONFIG = Voiceflow.Chat.extend({
   project: Project.CONFIG,
 
   description: 'Deploy a Whatsapp agent in minutes.',
-});
+})(Voiceflow.Chat.validate);
 
 export type Config = typeof CONFIG;

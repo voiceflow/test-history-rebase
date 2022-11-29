@@ -1,4 +1,5 @@
 import { Utils } from '@voiceflow/common';
+import * as Platform from '@voiceflow/platform-config';
 import { Box, Label } from '@voiceflow/ui';
 import React from 'react';
 import { useSelector } from 'react-redux';
@@ -7,7 +8,6 @@ import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
 import { css, styled, transition } from '@/hocs';
 import { useDispatch } from '@/hooks';
-import LOCALE_MAP from '@/services/LocaleMap';
 
 const LocaleButton = styled.button<{ 'data-active': boolean }>`
   flex: 1 1 auto;
@@ -39,6 +39,11 @@ const LocaleButton = styled.button<{ 'data-active': boolean }>`
   }
 `;
 
+const ORDERED_LOCALES = Utils.array.unique([
+  ...Platform.Alexa.CONFIG.types.voice.project.locale.preferredLocales,
+  ...Platform.Alexa.CONFIG.types.voice.project.locale.list,
+]);
+
 const LocalesForm: React.FC = () => {
   const locales = useSelector(VersionV2.active.localesSelector);
   const updateLocales = useDispatch(Version.updateLocales);
@@ -58,9 +63,9 @@ const LocalesForm: React.FC = () => {
     <Box className="pa__locale-limited" mb={24}>
       <Label>Location(s)</Label>
       <Box.Flex flexWrap="wrap" className="locale-button-group">
-        {LOCALE_MAP.map((locale, index) => (
-          <LocaleButton data-active={locales.includes(locale.value)} key={index} onClick={() => toggleLocale(locale.value)}>
-            {locale.name}
+        {ORDERED_LOCALES.map((locale, index) => (
+          <LocaleButton key={index} data-active={locales.includes(locale)} onClick={() => toggleLocale(locale)}>
+            {Platform.Alexa.CONFIG.types.voice.project.locale.labelMap[locale]}
           </LocaleButton>
         ))}
       </Box.Flex>

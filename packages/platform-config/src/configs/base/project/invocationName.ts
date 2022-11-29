@@ -24,6 +24,12 @@ export interface Config {
   samplesName: string;
 
   /**
+   * invocation name will be injected as the end
+   * @example 'open' | 'start'
+   */
+  defaultSamples: string[];
+
+  /**
    * @example 'Enter invocation'
    */
   samplesPlaceholder: string;
@@ -43,9 +49,12 @@ export const CONFIG = Types.satisfies<Config>()({
 
   samplesName: 'Invocations',
 
+  defaultSamples: ['open', 'start', 'launch'],
+
   samplesPlaceholder: 'Enter an invocation',
 
   samplesDescription: 'Invocations description',
 });
 
 export const extend = ConfigUtils.extendFactory<Config>(CONFIG);
+export const validate = ConfigUtils.validateFactory<Config>(CONFIG);

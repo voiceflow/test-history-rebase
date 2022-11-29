@@ -39,8 +39,9 @@ export const simple = createMultiAdapter<ChatModels.Prompt, Prompt.Model>(
 
 export const CONFIG = Base.Adapters.Prompt.extend({
   simple,
-});
+})(Base.Adapters.Prompt.validate);
 
 export type Config = typeof CONFIG;
 
 export const extend = ConfigUtils.extendFactory<Config>(CONFIG);
+export const validate = ConfigUtils.validateFactory<Config>(CONFIG);

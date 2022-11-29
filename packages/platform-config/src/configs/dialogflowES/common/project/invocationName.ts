@@ -13,8 +13,9 @@ export const CONFIG = Base.Project.InvocationName.extend({
   samplesPlaceholder: 'Enter a phrase to trigger the Dialogflow web demo integration',
 
   samplesDescription: 'This is the phrase you will input to initiate the web demo integration on the Dialogflow console.',
-});
+})(Base.Project.InvocationName.validate);
 
 export type Config = typeof CONFIG;
 
 export const extend = ConfigUtils.extendFactory<Config>(CONFIG);
+export const validate = ConfigUtils.validateFactory<Config>(CONFIG);

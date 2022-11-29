@@ -2,10 +2,7 @@ import { AlexaConstants, AlexaProject } from '@voiceflow/alexa-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { DEFAULT_PRODUCT_PHRASE, NEW_PRODUCT_ID } from '@/constants';
-import Locales, { MarketPlaceAvailability } from '@/services/LocaleMap';
-
-export const getSelectedLocales = (locales: AlexaConstants.Locale[] = []) =>
-  Locales.filter(({ value, inSkillProduct }) => locales.includes(value) && inSkillProduct);
+import { IN_SKILL_PRODUCT_LOCALES, MarketPlaceAvailability } from '@/services/LocaleMap';
 
 export const getDefaultAvailability = () =>
   MarketPlaceAvailability.reduce<Record<AlexaProject.MarketPlace, Realtime.ProductMarketPlace>>(
@@ -28,7 +25,7 @@ export const createNewProduct = (locales: AlexaConstants.Locale[]): Realtime.Pro
   summary: '',
   version: '1.0',
   phrases: [DEFAULT_PRODUCT_PHRASE],
-  locales: getSelectedLocales(locales).map(({ value }) => value),
+  locales: locales.filter((locale) => IN_SKILL_PRODUCT_LOCALES.has(locale)),
   keywords: [],
   description: '',
   taxCategory: null,

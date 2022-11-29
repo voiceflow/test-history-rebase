@@ -36,8 +36,9 @@ export const CONFIG = Base.Utils.Prompt.extend({
   textFactory,
 
   audioFactory,
-});
+})(Base.Utils.Prompt.validate);
 
 export type Config = typeof CONFIG;
 
 export const extend = ConfigUtils.extendFactory<Config>(CONFIG);
+export const validate = ConfigUtils.validateFactory<Config>(CONFIG);

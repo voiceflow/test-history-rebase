@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.997.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.997.0...@voiceflow/creator-app@1.997.1) (2022-11-29)
+
+
+### Bug Fixes
+
+* whatsapp publishing page (CT-000) ([#6367](https://github.com/voiceflow/creator-app/issues/6367)) ([b348c7d](https://github.com/voiceflow/creator-app/commit/b348c7d36ac14b6b9429e0f6f62ad2804716a848))
+
+
+
+
+
 # [1.997.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.996.0...@voiceflow/creator-app@1.997.0) (2022-11-29)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.201.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.201.0...@voiceflow/realtime-sdk@1.201.1) (2022-11-29)
+
+
+### Bug Fixes
+
+* whatsapp publishing page (CT-000) ([#6367](https://github.com/voiceflow/creator-app/issues/6367)) ([b348c7d](https://github.com/voiceflow/creator-app/commit/b348c7d36ac14b6b9429e0f6f62ad2804716a848))
+
+
+
+
+
 # [1.201.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.200.1...@voiceflow/realtime-sdk@1.201.0) (2022-11-28)
 
 

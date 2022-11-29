@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.191.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.190.1...@voiceflow/ui@1.191.0) (2022-11-29)
+
+
+### Features
+
+* move locales to platform (CT-1158) ([#6353](https://github.com/voiceflow/creator-app/issues/6353)) ([68aa8ea](https://github.com/voiceflow/creator-app/commit/68aa8eaa66070bfcda8f64bfe490a6b159d43261))
+
+
+
+
+
 ## [1.190.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.190.0...@voiceflow/ui@1.190.1) (2022-11-29)
 
 

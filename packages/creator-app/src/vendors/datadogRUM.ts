@@ -1,3 +1,4 @@
+import { datadogLogs } from '@datadog/browser-logs';
 import { datadogRum } from '@datadog/browser-rum';
 
 import { CLOUD_ENV, VERSION } from '@/config';
@@ -16,6 +17,23 @@ export const initialize = () => {
     trackResources: true,
     trackLongTasks: true,
     defaultPrivacyLevel: 'allow',
+    allowedTracingOrigins: [
+      'https://api.voiceflow.com',
+      /https:\/\/api.*\.voiceflow\.com/,
+      'https://general-service.voiceflow.com',
+      /https:\/\/general-service.*\.voiceflow\.com/,
+      'https://general-runtime.voiceflow.com',
+      /https:\/\/general-runtime.*\.voiceflow\.com/,
+    ],
+  });
+
+  datadogLogs.init({
+    clientToken: 'pubd54c024c3ce9f4333a328044b85c8154', // FIXME: refactor into env var
+    site: 'datadoghq.com',
+    forwardErrorsToLogs: true,
+    version: VERSION,
+    service: 'creator-app',
+    sampleRate: 100,
   });
 
   datadogRum.startSessionReplayRecording();

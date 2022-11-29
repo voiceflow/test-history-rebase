@@ -4,7 +4,7 @@ import * as Voiceflow from '@platform-config/configs/voiceflow';
 export const CONFIG = Base.Project.extend({
   ...Voiceflow.Common.Project.CONFIG,
 
-  name: 'Whatsapp',
+  name: 'WhatsApp',
 });
 
 export type Config = typeof CONFIG;

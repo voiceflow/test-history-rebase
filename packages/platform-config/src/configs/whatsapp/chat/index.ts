@@ -3,10 +3,10 @@ import * as Voiceflow from '@platform-config/configs/voiceflow';
 import * as Project from './project';
 
 export const CONFIG = Voiceflow.Chat.extend({
-  name: 'Whatsapp',
+  name: 'WhatsApp',
 
   icon: {
-    name: 'logoWhatsapp',
+    name: 'whatsApp',
     color: '#23b33a',
   },
 

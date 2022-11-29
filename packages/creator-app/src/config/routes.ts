@@ -63,6 +63,8 @@ export enum PublishRoute {
   EXPORT = 'export',
   GENERAL = 'general',
   WEBCHAT = 'webchat',
+  WHATSAPP = 'whatsapp',
+  TEST_WHATSAPP = 'test/whatsapp',
 }
 
 export enum ToolsRoute {
@@ -266,6 +268,9 @@ export const Path = {
   PUBLISH_EXPORT: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.EXPORT),
   PUBLISH_WEBCHAT: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.WEBCHAT),
   PUBLISH_API: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.API),
+
+  PUBLISH_WHATSAPP: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.WHATSAPP),
+  TEST_WHATSAPP: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.TEST_WHATSAPP),
 
   PROTOTYPE_WEBHOOK: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PROTOTYPE_WEBHOOK),
 };

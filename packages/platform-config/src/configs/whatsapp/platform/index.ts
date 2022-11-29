@@ -9,7 +9,7 @@ export const CONFIG = Base.extend({
 
   type: PlatformType.WHATSAPP,
 
-  name: 'Whatsapp',
+  name: 'WhatsApp',
 
   supportedNLUs: [NLUType.VOICEFLOW],
 

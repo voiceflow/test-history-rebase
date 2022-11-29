@@ -183,6 +183,7 @@ export { default as outlinedMinus } from './outlined-minus.svg';
 // p
 export { default as paid } from './paid.svg';
 export { default as pause } from './pause.svg';
+export { default as phone } from './phone.svg';
 export { default as play } from './play.svg';
 export { default as playOutline } from './play-outline.svg';
 export { default as plus } from './plus.svg';
@@ -283,6 +284,7 @@ export { default as voiceflowV } from './voiceflow-v.svg';
 export { default as warning } from './warning.svg';
 export { default as watson } from './watson.svg';
 export { default as whatsNew } from './whats-new.svg';
+export { default as whatsApp } from './whatsapp.svg';
 
 // y
 export { default as youtube } from './youtube.svg';

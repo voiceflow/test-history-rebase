@@ -102,6 +102,7 @@
     "react-input-autosize": "2.2.2",
     "react-json-view": "github:groovy-tunes/react-json-view",
     "react-mentions": "4.3.0",
+    "react-phone-number-input": "^3.2.12",
     "react-redux": "7.2.5",
     "react-router": "5.2.1",
     "react-router-dom": "5.3.0",

@@ -1,5 +1,6 @@
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { SvgIconTypes } from '@voiceflow/ui';
 import React from 'react';
 import { generatePath } from 'react-router-dom';
 
@@ -14,7 +15,8 @@ import { SideBarComponentProps } from '../types';
 import CanvasIconMenu from './CanvasIconMenu';
 
 const IntegrationsSidebar: React.FC<SideBarComponentProps> = () => {
-  const { platform } = useSelector(ProjectV2.active.metaSelector);
+  const meta = useSelector(ProjectV2.active.metaSelector);
+
   const versionID = useSelector(Session.activeVersionIDSelector)!;
 
   const [canExportCode] = usePermission(Permission.CODE_EXPORT);
@@ -22,24 +24,31 @@ const IntegrationsSidebar: React.FC<SideBarComponentProps> = () => {
   const disableCodeExports = useFeature(Realtime.FeatureFlag.DISABLE_CODE_EXPORTS).isEnabled;
   const canUseAlexaSettings = useAlexaProjectSettings();
 
-  const platformConfig = Platform.Config.get(platform);
+  const { name: title } = Platform.Config.get(meta.platform);
 
-  const publishPath = React.useMemo(() => {
-    switch (platformConfig.type) {
+  const {
+    icon: { name: icon },
+  } = Platform.Config.getTypeConfig(meta);
+
+  const publishPaths = React.useMemo<{ to: string; title: string; icon: SvgIconTypes.Icon }[]>(() => {
+    switch (meta.platform) {
       case Platform.Constants.PlatformType.ALEXA:
-        return canUseAlexaSettings ? generatePath(Path.PUBLISH_ALEXA, { versionID }) : null;
+        return canUseAlexaSettings ? [{ to: generatePath(Path.PUBLISH_ALEXA, { versionID }), title, icon }] : [];
       case Platform.Constants.PlatformType.GOOGLE:
-        return generatePath(Path.PUBLISH_GOOGLE, { versionID });
+        return [{ to: generatePath(Path.PUBLISH_GOOGLE, { versionID }), title, icon }];
       case Platform.Constants.PlatformType.DIALOGFLOW_ES:
-        return generatePath(Path.PUBLISH_DIALOGFLOW, { versionID });
+        return [{ to: generatePath(Path.PUBLISH_DIALOGFLOW, { versionID }), title, icon }];
       case Platform.Constants.PlatformType.WEBCHAT:
-        return generatePath(Path.PUBLISH_WEBCHAT, { versionID });
+        return [{ to: generatePath(Path.PUBLISH_WEBCHAT, { versionID }), title, icon }];
+      case Platform.Constants.PlatformType.WHATSAPP:
+        return [
+          { to: generatePath(Path.PUBLISH_WHATSAPP, { versionID }), title: 'WhatsApp Business', icon },
+          { to: generatePath(Path.TEST_WHATSAPP, { versionID }), title: 'Test on Phone', icon: 'phone' },
+        ];
       default:
-        return null;
+        return [];
     }
   }, []);
-
-  const platformIcon = Object.values(platformConfig.types)[0]?.icon;
 
   return (
     <>
@@ -47,7 +56,9 @@ const IntegrationsSidebar: React.FC<SideBarComponentProps> = () => {
 
       <NavigationSidebar>
         <NavigationSidebar.ItemsContainer>
-          {publishPath && <NavigationSidebar.NavItem to={publishPath} icon={platformIcon.name} title={platformConfig.name} />}
+          {publishPaths.map(({ to, icon, title }) => (
+            <NavigationSidebar.NavItem key={title} to={to} icon={icon} title={title} />
+          ))}
 
           <NavigationSidebar.NavItem to={generatePath(Path.PUBLISH_API, { versionID })} icon="channel" title="Dialog API" />
 

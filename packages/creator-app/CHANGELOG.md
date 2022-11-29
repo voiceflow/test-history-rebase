@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.997.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.996.0...@voiceflow/creator-app@1.997.0) (2022-11-29)
+
+
+### Features
+
+* apm rum link ([#6366](https://github.com/voiceflow/creator-app/issues/6366)) ([3af82f0](https://github.com/voiceflow/creator-app/commit/3af82f00ea3d546a6470a9acf4bd8e5a21a52d5c))
+
+
+
+
+
 # [1.996.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.995.0...@voiceflow/creator-app@1.996.0) (2022-11-28)
 
 

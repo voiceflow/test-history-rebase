@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.193.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.192.0...@voiceflow/ui@1.193.0) (2022-11-30)
+
+
+### Features
+
+* implement design review change requests (CT-1250) ([#6361](https://github.com/voiceflow/creator-app/issues/6361)) ([eac7d36](https://github.com/voiceflow/creator-app/commit/eac7d369d1322a927cfbeafadb9e82b9cb762077))
+
+
+
+
+
 # [1.192.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.191.0...@voiceflow/ui@1.192.0) (2022-11-30)
 
 

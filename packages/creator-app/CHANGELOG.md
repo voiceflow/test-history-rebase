@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1000.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.999.0...@voiceflow/creator-app@1.1000.0) (2022-11-30)
+
+
+### Bug Fixes
+
+* identity saml invite redirects (BUG-121) ([#6370](https://github.com/voiceflow/creator-app/issues/6370)) ([1a60d9c](https://github.com/voiceflow/creator-app/commit/1a60d9c5429d159246731b4d7606ed81835a32a7))
+
+
+### Features
+
+* implement design review change requests (CT-1250) ([#6361](https://github.com/voiceflow/creator-app/issues/6361)) ([eac7d36](https://github.com/voiceflow/creator-app/commit/eac7d369d1322a927cfbeafadb9e82b9cb762077))
+
+
+
+
+
 # [1.999.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.998.0...@voiceflow/creator-app@1.999.0) (2022-11-30)
 
 

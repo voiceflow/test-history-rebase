@@ -1,10 +1,16 @@
 import { BaseModels } from '@voiceflow/base-types';
 import { AssistantCard, AssistantCardProps } from '@voiceflow/ui';
 import React from 'react';
+import { generatePath } from 'react-router-dom';
 
-import { useActiveWorkspace } from '@/hooks';
+import { Path } from '@/config/routes';
+import * as Router from '@/ducks/router';
+import { useActiveWorkspace, useDispatch } from '@/hooks';
+import { DashboardClassName } from '@/styles/constants';
 
+import { Sidebar } from '../../components';
 import AssistantDomainsTable from '../../components/AssistantDomainsTable';
+import { BodyWrapper, ContentWrapper, DashboardWrapper } from '../../components/styles';
 import Header from './components/Header';
 import * as S from './styles';
 
@@ -98,24 +104,32 @@ export const domains = [
   },
 ];
 
-const ProjectList: React.FC = () => {
+const AssistantOverview: React.FC = () => {
   const workspace = useActiveWorkspace();
+  const workspaceID = workspace?.id;
+  const goTo = useDispatch(Router.goTo);
+
   return (
-    <>
-      <Header workspace={workspace!} title="ACME chat assistant" onBackButtonClick={() => {}} />
-      <S.ProjectListWrapper>
-        <S.Item>
-          <AssistantCard
-            {...props}
-            status="Active"
-            image="https://cm4-production-assets.s3.amazonaws.com/1667337752059-screen-shot-2022-11-01-at-18.22.20.png"
-            title="Lorem Ipsum dolor sit amet consectetur adipiscing elit"
-          />
-        </S.Item>
-        <AssistantDomainsTable domains={domains} />
-      </S.ProjectListWrapper>
-    </>
+    <DashboardWrapper id="app" className={DashboardClassName.DASHBOARD}>
+      <BodyWrapper>
+        <Sidebar />
+        <ContentWrapper>
+          <Header workspace={workspace!} title="ACME chat assistant" onBackButtonClick={() => goTo(generatePath(Path.WORKSPACE, { workspaceID }))} />
+          <S.AssistantOverviewWrapper>
+            <S.Item>
+              <AssistantCard
+                {...props}
+                status="Active"
+                image="https://cm4-production-assets.s3.amazonaws.com/1667337752059-screen-shot-2022-11-01-at-18.22.20.png"
+                title="Lorem Ipsum dolor sit amet consectetur adipiscing elit"
+              />
+            </S.Item>
+            <AssistantDomainsTable domains={domains} />
+          </S.AssistantOverviewWrapper>
+        </ContentWrapper>
+      </BodyWrapper>
+    </DashboardWrapper>
   );
 };
 
-export default ProjectList;
+export default AssistantOverview;

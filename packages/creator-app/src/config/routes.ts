@@ -42,6 +42,7 @@ export enum ProjectRoute {
   SETTINGS = 'settings',
   PROTOTYPE_WEBHOOK = 'webhook', // TODO: temporary page, remove after updated
   EXPORT = 'export',
+  ASSISTANT_OVERVIEW = 'assistant-overview',
 }
 
 export enum DomainRoute {
@@ -97,7 +98,6 @@ export enum WorkspaceRoute {
   TEMPLATE = 'template',
   ACCEPT_INVITE = 'accept-invite',
   TEAM_AND_BILLING = 'team',
-  ASSISTANT_DOMAINS = 'assistant-domains',
 }
 
 export enum WorkspaceSettingsRoute {
@@ -146,7 +146,6 @@ export const Path = {
   WORKSPACE: toPath(RootRoute.WORKSPACE),
   WORKSPACE_DASHBOARD: toPath(RootRoute.WORKSPACE, ':workspaceID'),
   WORKSPACE_TEAM_AND_BILLING: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.TEAM_AND_BILLING),
-  WORKSPACE_ASSISTANT_DOMAINS: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.ASSISTANT_DOMAINS),
   WORKSPACE_TEAM_AND_BILLING_MEMBERS: toPath(
     RootRoute.WORKSPACE,
     ':workspaceID',
@@ -190,6 +189,7 @@ export const Path = {
   PROJECT_MIGRATE: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.MIGRATE),
   PROJECT_PUBLISH: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH),
   PROJECT_SETTINGS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.SETTINGS),
+  PROJECT_ASSISTANT_OVERVIEW: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.ASSISTANT_OVERVIEW),
   PROJECT_GENERAL_SETTINGS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.SETTINGS, ProjectSettingsRoute.GENERAL),
   PROJECT_VERSION_SETTINGS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.SETTINGS, ProjectSettingsRoute.VERSION),
   PROJECT_EXPORT: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.EXPORT, ':diagramID'),

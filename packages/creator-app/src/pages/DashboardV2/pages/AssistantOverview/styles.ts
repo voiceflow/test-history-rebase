@@ -1,6 +1,6 @@
 import { styled } from '@/hocs';
 
-export const ProjectListWrapper = styled.section`
+export const AssistantOverviewWrapper = styled.section`
   width: 100%;
   flex: 1;
   overflow-y: scroll;

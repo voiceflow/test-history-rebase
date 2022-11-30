@@ -177,6 +177,7 @@ function Select({
   inputVariant = SelectInputVariant.DROPDOWN,
   renderAsSpan,
   minMenuWidth,
+  maxMenuWidth,
   isMultiLevel,
   inputStopProp = true,
   optionsFilter = searchable ? searchableOptionsFilter : defaultOptionsFilter,
@@ -600,6 +601,7 @@ function Select({
           onSelect={onSelectItem}
           onCreate={onCreateItem}
           minWidth={minMenuWidth}
+          maxWidth={maxMenuWidth}
           maxHeight={maxHeight}
           autoWidth={autoWidth}
           creatable={creatable}

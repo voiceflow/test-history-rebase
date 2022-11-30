@@ -36,11 +36,13 @@ export interface AssistantCardProps {
   backgroundImage?: string;
   children?: React.ReactChild;
   onClickCTA?: () => void;
+  onClickLink?: () => void;
 }
 
 const AssistantCard: React.FC<AssistantCardProps> = ({
   userRole = 'viewer',
   onClickCTA,
+  onClickLink,
   icon,
   iconColor,
   image,
@@ -61,7 +63,7 @@ const AssistantCard: React.FC<AssistantCardProps> = ({
         </InnerContainer>
 
         <InnerContainer className="assistant-card-actions">
-          <StyledLink />
+          <StyledLink onClick={onClickLink} />
           <Box.Flex zIndex={100}>
             <Box.Flex flexDirection="row">
               {children || (

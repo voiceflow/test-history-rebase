@@ -8,7 +8,7 @@ import { DashboardClassName } from '@/styles/constants';
 import { Sidebar } from './components';
 import * as S from './components/styles';
 import { DashboardGate } from './gates';
-import { AssistantDomains, ProjectList, TeamAndBilling } from './pages';
+import { ProjectList, TeamAndBilling } from './pages';
 
 const Dashboard: React.FC = () => {
   return (
@@ -18,7 +18,6 @@ const Dashboard: React.FC = () => {
         <S.ContentWrapper>
           <Switch>
             <Route path={Path.WORKSPACE_TEAM_AND_BILLING} component={TeamAndBilling} />
-            <Route path={Path.WORKSPACE_ASSISTANT_DOMAINS} component={AssistantDomains} />
             <Route path="/" component={ProjectList} />
           </Switch>
         </S.ContentWrapper>

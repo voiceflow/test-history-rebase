@@ -113,6 +113,7 @@ export interface BaseSelectProps {
   autoDismiss?: boolean;
   renderAsSpan?: boolean;
   minMenuWidth?: number;
+  maxMenuWidth?: number;
   inputVariant?: SelectInputVariant;
   renderTrigger?: (options: TriggerRendererOptions) => React.ReactNode;
   inputStopProp?: boolean;

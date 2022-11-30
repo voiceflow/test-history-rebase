@@ -1,6 +1,6 @@
 import { Link, SvgIcon } from '@voiceflow/ui';
 
-import { styled, transition } from '@/hocs';
+import { css, styled, transition } from '@/hocs';
 
 export const SelectWrapper = styled.div`
   margin-left: 12px;
@@ -16,6 +16,7 @@ export const Option = styled.div`
 export const Label = styled.div``;
 export const Count = styled.div`
   color: #8da2b5;
+  font-size: 13px;
 `;
 
 export const DomainRow = styled(Link)`
@@ -33,16 +34,25 @@ export const TopicRow = styled(Link)`
 `;
 
 export const StyledSVG = styled(SvgIcon)`
-  ${transition('opacity')}
+  ${transition('opacity', 'transform')}
 
   opacity: 0;
   display: inline-block;
-  transform: rotate(90deg);
+  transform: rotate(90deg) scale(0.85);
   margin-left: 8px;
   margin-top: 2px;
 `;
 
-export const StatusRow = styled.span`
+const StatusRowHover = css`
+  color: #3d82e2;
+
+  ${StyledSVG} {
+    opacity: 1;
+    transform: rotate(90deg) scale(1);
+  }
+`;
+
+export const StatusRow = styled.span<{ activeHover: boolean }>`
   ${transition('color')}
   display: flex;
   flex-direction: row;
@@ -50,12 +60,10 @@ export const StatusRow = styled.span`
   cursor: pointer;
 
   &:hover {
-    color: #3d82e2;
-
-    ${StyledSVG} {
-      opacity: 1;
-    }
+    ${StatusRowHover}
   }
+
+  ${({ activeHover }) => activeHover && StatusRowHover}
 `;
 
 export const ActionRow = styled.div`

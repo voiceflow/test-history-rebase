@@ -29,6 +29,7 @@ const Business = lazy(() => import('@/pages/Business'));
 const Migrate = lazy(() => import('@/pages/Migrate'));
 const Publish = lazy(() => import('@/pages/Publish'));
 const Settings = lazy(() => import('@/pages/Settings'));
+const AssistantOverview = lazy(() => import('@/pages/DashboardV2/pages/AssistantOverview'));
 const Conversations = lazy(() => import('@/pages/Conversations'));
 const NLUManager = lazy(() => import('@/pages/NLUManager'));
 
@@ -46,6 +47,7 @@ const Project: React.FC = () => {
   const setPreviewing = useDispatch(UI.setPreviewingVersion);
   const resetCreator = useLocalDispatch(Realtime.creator.reset);
   const resetCanvasTemplateData = useLocalDispatch(Realtime.canvasTemplate.reset);
+  const dashboardV2FF = useFeature(Realtime.FeatureFlag.DASHBOARD_V2);
 
   const inactivitySnackbar = Snackbar.useSnackbar();
   const nluManager = useFeature(Realtime.FeatureFlag.NLU_MANAGER);
@@ -132,6 +134,8 @@ const Project: React.FC = () => {
             {!disableIntegration && <Route path={Path.PROJECT_PUBLISH} component={Publish} />}
 
             <Route path={Path.PROJECT_SETTINGS} component={Settings} />
+
+            {dashboardV2FF.isEnabled && <Route path={Path.PROJECT_ASSISTANT_OVERVIEW} component={AssistantOverview} />}
 
             <Redirect to={Path.PROJECT_DOMAIN} />
           </Switch>

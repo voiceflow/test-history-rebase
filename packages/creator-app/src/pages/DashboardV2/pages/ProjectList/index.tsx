@@ -5,8 +5,6 @@ import { AssistantCardProps, Banner, Button } from '@voiceflow/ui';
 import React from 'react';
 
 import { AssistantCard } from '@/components/AssistantCard';
-import { RootRoute } from '@/config/routes';
-import * as ProjectListV2 from '@/ducks/projectListV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import { WorkspaceFeatureLoadingGate, WorkspaceSubscriptionGate } from '@/gates';
@@ -27,11 +25,9 @@ interface ProjectListProps {
 }
 
 const ProjectList: React.FC<ProjectListProps> = () => {
-  const getProjectByID = useSelector(ProjectV2.getProjectByIDSelector);
-  const projectLists = useSelector(ProjectListV2.allProjectListsSelector);
-  const goTo = useDispatch(Router.goTo);
-
-  const projects = React.useMemo(() => projectLists.map((list) => list.projects.map((id: string) => getProjectByID({ id }))).flat(), [projectLists]);
+  const projects = useSelector(ProjectV2.allProjectsSelector);
+  const goToAssistantOverview = useDispatch(Router.goToAssistantOverview);
+  const goToCanvasWithVersionID = useDispatch(Router.goToCanvasWithVersionID);
 
   return (
     <>
@@ -46,15 +42,16 @@ const ProjectList: React.FC<ProjectListProps> = () => {
         />
 
         {projects.map((item) => (
-          <S.Item key={item?.id}>
+          <S.Item key={item.id}>
             <AssistantCard
-              onClickCTA={() => goTo(`/${RootRoute.PROJECT}/${item?.versionID}/canvas/${item?.diagramID}`)}
-              projectType={item?.type}
-              platformType={item?.platform}
+              onClickCTA={() => goToCanvasWithVersionID(item.versionID)}
+              onClickLink={() => goToAssistantOverview(item.versionID)}
+              projectType={item.type}
+              platformType={item.platform}
               userRole={UserRole.OWNER}
               status="Active"
-              image={item?.image}
-              title={item?.name}
+              image={item.image}
+              title={item.name}
             />
           </S.Item>
         ))}

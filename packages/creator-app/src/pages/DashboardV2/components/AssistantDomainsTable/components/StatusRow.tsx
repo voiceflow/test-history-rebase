@@ -17,8 +17,8 @@ export const StatusRow: React.FC<{ item: Domain }> = ({ item }) => {
   );
   return (
     <Dropdown placement="bottom" selfDismiss options={options}>
-      {(ref, onToggle) => (
-        <S.StatusRow ref={ref} onClick={onToggle}>
+      {(ref, onToggle, isOpen) => (
+        <S.StatusRow ref={ref} activeHover={isOpen} onClick={onToggle}>
           {status} <S.StyledSVG icon="arrowRightTopics" size={9} />
         </S.StatusRow>
       )}

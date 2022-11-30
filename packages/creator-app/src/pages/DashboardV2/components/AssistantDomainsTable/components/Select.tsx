@@ -13,21 +13,29 @@ export const DomainsSelect: React.FC<{ value: string; items: Realtime.Domain[]; 
 }) => {
   const statusOptions = React.useMemo(
     () => [
-      { value: '', label: 'All', count: items.length },
+      {
+        value: '',
+        label: 'All',
+        count: items.length,
+        width: '132px',
+      },
       {
         value: BaseModels.Version.DomainStatus.DESIGN,
         label: 'Design',
         count: getCountByStatus(items, BaseModels.Version.DomainStatus.DESIGN),
+        width: '163px',
       },
       {
         value: BaseModels.Version.DomainStatus.REVIEW,
         label: 'In Review',
         count: getCountByStatus(items, BaseModels.Version.DomainStatus.REVIEW),
+        width: '182px',
       },
       {
         value: BaseModels.Version.DomainStatus.COMPLETE,
         label: 'Complete',
         count: getCountByStatus(items, BaseModels.Version.DomainStatus.COMPLETE),
+        width: '182px',
       },
     ],
     [items]
@@ -37,6 +45,7 @@ export const DomainsSelect: React.FC<{ value: string; items: Realtime.Domain[]; 
   const getOptionKey = React.useCallback((option) => option.value, []);
   const getOptionValue = React.useCallback((option) => option.value, []);
   const selectValue = React.useMemo(() => statusOptions.find((option) => option.value === value)?.label, [value]);
+  const selectWidth = React.useMemo(() => statusOptions.find((option) => option.value === value)?.width, [value]);
 
   return (
     <S.SelectWrapper>
@@ -55,7 +64,9 @@ export const DomainsSelect: React.FC<{ value: string; items: Realtime.Domain[]; 
         getOptionValue={getOptionValue}
         getOptionLabel={getOptionLabel}
         getOptionKey={getOptionKey}
-        width="180px"
+        minMenuWidth={148}
+        maxMenuWidth={148}
+        width={selectWidth}
       />
     </S.SelectWrapper>
   );

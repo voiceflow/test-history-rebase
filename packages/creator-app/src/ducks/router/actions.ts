@@ -3,7 +3,7 @@ import * as Platform from '@voiceflow/platform-config';
 import { CALL_HISTORY_METHOD, push, replace } from 'connected-react-router';
 import { generatePath } from 'react-router-dom';
 
-import { Path, PublishRoute } from '@/config/routes';
+import { Path, PublishRoute, RootRoute } from '@/config/routes';
 import { Action } from '@/store/types';
 import * as Query from '@/utils/query';
 import { isDialogflowPlatform } from '@/utils/typeGuards';
@@ -53,6 +53,7 @@ export const goToPrototype = (versionID: string, nodeID?: string) =>
   goTo(`${generatePath(Path.PROJECT_PROTOTYPE, { versionID })}${Query.stringify({ nodeID })}`);
 
 export const goToSettings = (versionID: string) => goTo(generatePath(Path.PROJECT_SETTINGS, { versionID }));
+export const goToAssistantOverview = (versionID: string) => goTo(generatePath(Path.PROJECT_ASSISTANT_OVERVIEW, { versionID }));
 
 export const goToPublish = (versionID: string, platform: Platform.Constants.PlatformType) => {
   let platformPath: string = platform;
@@ -91,6 +92,8 @@ interface GoToInteractionModelOptions extends GoToCanvasBaseOptions {
 }
 
 // here and above using {...options} to fix TS interfaces extend issue
+export const goToCanvasWithVersionID = (versionID: string) => goTo(`${RootRoute.PROJECT}/${versionID}/${RootRoute.CANVAS}`);
+
 export const goToCanvasTextMarkup = (options: GoToCanvasBaseOptions) => goTo(generatePath(Path.CANVAS_TEXT_MARKUP, { ...options }));
 
 export const goToInteractionModel = (options: GoToInteractionModelOptions) => goTo(`${generatePath(Path.CANVAS_MODEL, { ...options })}`);

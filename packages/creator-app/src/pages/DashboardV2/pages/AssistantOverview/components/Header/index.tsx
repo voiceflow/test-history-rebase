@@ -21,7 +21,7 @@ const Header: React.FC<HeaderProps> = ({ workspace, title, onBackButtonClick }) 
     <S.HeaderContainer>
       <BackButton onClick={onBackButtonClick} />
       <S.Title>{title}</S.Title>
-      <S.RightSection>{canViewMembers && <Members members={workspace.members} />}</S.RightSection>
+      <S.RightSection style={{ paddingRight: '18px' }}>{canViewMembers && <Members flat members={workspace.members} />}</S.RightSection>
     </S.HeaderContainer>
   );
 };

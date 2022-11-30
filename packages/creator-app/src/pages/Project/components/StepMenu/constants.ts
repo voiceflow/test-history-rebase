@@ -161,203 +161,107 @@ const DEV_ICON = 'systemDev' as const;
 const DEV_ICON_SMALL = 'systemDevSmall' as const;
 const DEV_LABEL = 'Dev';
 
-// alexa menu sections
-export const ALEXA_STEP_SECTIONS: TopStepItem[] = [
+interface CreateStepSectionsArguments {
+  talkSteps: StepItem[];
+  listenSteps: StepItem[];
+  logicSteps: StepItem[];
+  eventSteps: StepItem[];
+  devSteps: StepItem[];
+}
+
+const createStepSections = ({ talkSteps, listenSteps, logicSteps, eventSteps, devSteps }: CreateStepSectionsArguments): TopStepItem[] => [
   {
     icon: TALK_ICON,
     smallIcon: TALK_ICON_SMALL,
     label: TALK_LABEL,
-    steps: [SPEAK_STEP, AUDIO_STEP, DISPLAY_STEP, CARDV2_STEP, STREAM_STEP],
+    steps: talkSteps,
   },
   {
     icon: LISTEN_ICON,
     smallIcon: LISTEN_ICON_SMALL,
     label: LISTEN_LABEL,
-    steps: [CHOICE_STEP, CAPTURE_STEP_V2],
+    steps: listenSteps,
   },
   {
     icon: LOGIC_ICON,
     smallIcon: LOGIC_ICON_SMALL,
     label: LOGIC_LABEL,
-    steps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
+    steps: logicSteps,
   },
   {
     icon: EVENT_ICON,
     label: EVENT_LABEL,
-    steps: [INTENT_STEP, EVENT_STEP],
+    steps: eventSteps,
   },
   {
     icon: DEV_ICON,
     smallIcon: DEV_ICON_SMALL,
     label: DEV_LABEL,
-    steps: [API_STEP, CODE_STEP, TRACE_STEP, DIRECTIVE_STEP],
+    steps: devSteps,
   },
 ];
+
+// alexa menu sections
+export const ALEXA_STEP_SECTIONS = createStepSections({
+  talkSteps: [SPEAK_STEP, AUDIO_STEP, DISPLAY_STEP, CARDV2_STEP, STREAM_STEP],
+  listenSteps: [CHOICE_STEP, CAPTURE_STEP_V2],
+  logicSteps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
+  eventSteps: [INTENT_STEP, EVENT_STEP],
+  devSteps: [API_STEP, CODE_STEP, TRACE_STEP, DIRECTIVE_STEP],
+});
 
 // google menu sections
-export const GOOGLE_STEP_SECTIONS: TopStepItem[] = [
-  {
-    icon: TALK_ICON,
-    smallIcon: TALK_ICON_SMALL,
-    label: TALK_LABEL,
-    steps: [SPEAK_STEP, AUDIO_STEP, CARDV2_STEP, STREAM_STEP],
-  },
-  {
-    icon: LISTEN_ICON,
-    smallIcon: LISTEN_ICON_SMALL,
-    label: LISTEN_LABEL,
-    steps: [CHOICE_STEP, CAPTURE_STEP_V2],
-  },
-  {
-    icon: LOGIC_ICON,
-    smallIcon: LOGIC_ICON_SMALL,
-    label: LOGIC_LABEL,
-    steps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
-  },
-  {
-    icon: EVENT_ICON,
-    label: EVENT_LABEL,
-    steps: [INTENT_STEP],
-  },
-  {
-    icon: DEV_ICON,
-    smallIcon: DEV_ICON_SMALL,
-    label: DEV_LABEL,
-    steps: [API_STEP, CODE_STEP, TRACE_STEP, DIRECTIVE_STEP],
-  },
-];
+export const GOOGLE_STEP_SECTIONS = createStepSections({
+  talkSteps: [SPEAK_STEP, AUDIO_STEP, CARDV2_STEP, STREAM_STEP],
+  listenSteps: [CHOICE_STEP, CAPTURE_STEP_V2],
+  logicSteps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
+  eventSteps: [INTENT_STEP],
+  devSteps: [API_STEP, CODE_STEP, TRACE_STEP, DIRECTIVE_STEP],
+});
 
 // chatbot menu sections
-export const CHATBOT_STEP_SECTIONS: TopStepItem[] = [
-  {
-    icon: TALK_ICON,
-    smallIcon: TALK_ICON_SMALL,
-    label: TALK_LABEL,
-    steps: [TEXT_STEP, VISUAL_STEP, CARDV2_STEP, CAROUSEL_STEP],
-  },
-  {
-    icon: LISTEN_ICON,
-    smallIcon: LISTEN_ICON_SMALL,
-    label: LISTEN_LABEL,
-    steps: [BUTTONS_STEP, CHOICE_STEP, CAPTURE_STEP_V2],
-  },
-  {
-    icon: LOGIC_ICON,
-    smallIcon: LOGIC_ICON_SMALL,
-    label: LOGIC_LABEL,
-    steps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
-  },
-  {
-    icon: EVENT_ICON,
-    label: EVENT_LABEL,
-    steps: [INTENT_STEP],
-  },
-  {
-    icon: DEV_ICON,
-    smallIcon: DEV_ICON_SMALL,
-    label: DEV_LABEL,
-    steps: [API_STEP, CODE_STEP, TRACE_STEP],
-  },
-];
+export const CHATBOT_STEP_SECTIONS = createStepSections({
+  talkSteps: [TEXT_STEP, VISUAL_STEP, CARDV2_STEP, CAROUSEL_STEP],
+  listenSteps: [BUTTONS_STEP, CHOICE_STEP, CAPTURE_STEP_V2],
+  logicSteps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
+  eventSteps: [INTENT_STEP],
+  devSteps: [API_STEP, CODE_STEP, TRACE_STEP],
+});
 
 // general menu sections
-export const GENERAL_STEP_SECTIONS: TopStepItem[] = [
-  {
-    icon: TALK_ICON,
-    smallIcon: TALK_ICON_SMALL,
-    label: TALK_LABEL,
-    steps: [SPEAK_STEP, AUDIO_STEP, VISUAL_STEP],
-  },
-  {
-    icon: LISTEN_ICON,
-    smallIcon: LISTEN_ICON_SMALL,
-    label: LISTEN_LABEL,
-    steps: [CHOICE_STEP, CAPTURE_STEP_V2],
-  },
-  {
-    icon: LOGIC_ICON,
-    smallIcon: LOGIC_ICON_SMALL,
-    label: LOGIC_LABEL,
-    steps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
-  },
-  {
-    icon: EVENT_ICON,
-    label: EVENT_LABEL,
-    steps: [INTENT_STEP],
-  },
-  {
-    icon: DEV_ICON,
-    smallIcon: DEV_ICON_SMALL,
-    label: DEV_LABEL,
-    steps: [API_STEP, CODE_STEP, TRACE_STEP],
-  },
-];
+export const GENERAL_STEP_SECTIONS = createStepSections({
+  talkSteps: [SPEAK_STEP, AUDIO_STEP, VISUAL_STEP],
+  listenSteps: [CHOICE_STEP, CAPTURE_STEP_V2],
+  logicSteps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
+  eventSteps: [INTENT_STEP],
+  devSteps: [API_STEP, CODE_STEP, TRACE_STEP],
+});
 
 // dialogflow chat menu sections
-export const DIALOGFLOW_ES_CHAT_STEP_SECTIONS: TopStepItem[] = [
-  {
-    icon: TALK_ICON,
-    smallIcon: TALK_ICON_SMALL,
-    label: TALK_LABEL,
-    steps: [TEXT_STEP, VISUAL_STEP, CARDV2_STEP, CAROUSEL_STEP, CUSTOM_PAYLOAD_STEP],
-  },
-  {
-    icon: LISTEN_ICON,
-    smallIcon: LISTEN_ICON_SMALL,
-    label: LISTEN_LABEL,
-    steps: [BUTTONS_STEP, CAPTURE_STEP_V2],
-  },
-  {
-    icon: LOGIC_ICON,
-    smallIcon: LOGIC_ICON_SMALL,
-    label: LOGIC_LABEL,
-    steps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
-  },
-  {
-    icon: EVENT_ICON,
-    label: EVENT_LABEL,
-    steps: [INTENT_STEP],
-  },
-  {
-    icon: DEV_ICON,
-    smallIcon: DEV_ICON_SMALL,
-    label: DEV_LABEL,
-    steps: [API_STEP, CODE_STEP, TRACE_STEP],
-  },
-];
+export const DIALOGFLOW_ES_CHAT_STEP_SECTIONS = createStepSections({
+  talkSteps: [TEXT_STEP, VISUAL_STEP, CARDV2_STEP, CAROUSEL_STEP, CUSTOM_PAYLOAD_STEP],
+  listenSteps: [CHOICE_STEP, CAPTURE_STEP_V2],
+  logicSteps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
+  eventSteps: [INTENT_STEP],
+  devSteps: [API_STEP, CODE_STEP, TRACE_STEP],
+});
 
 // dialogflow voice menu sections
-export const DIALOGFLOW_ES_VOICE_STEP_SECTIONS: TopStepItem[] = [
-  {
-    icon: TALK_ICON,
-    smallIcon: TALK_ICON_SMALL,
-    label: TALK_LABEL,
-    steps: [SPEAK_STEP, AUDIO_STEP, CUSTOM_PAYLOAD_STEP, CARDV2_STEP],
-  },
-  {
-    icon: LISTEN_ICON,
-    smallIcon: LISTEN_ICON_SMALL,
-    label: LISTEN_LABEL,
-    steps: [CHOICE_STEP, CAPTURE_STEP_V2],
-  },
-  {
-    icon: LOGIC_ICON,
-    smallIcon: LOGIC_ICON_SMALL,
-    label: LOGIC_LABEL,
-    steps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
-  },
-  {
-    icon: EVENT_ICON,
-    label: EVENT_LABEL,
-    steps: [INTENT_STEP],
-  },
-  {
-    icon: DEV_ICON,
-    smallIcon: DEV_ICON_SMALL,
-    label: DEV_LABEL,
-    steps: [API_STEP, CODE_STEP, TRACE_STEP],
-  },
-];
+export const DIALOGFLOW_ES_VOICE_STEP_SECTIONS = createStepSections({
+  talkSteps: [SPEAK_STEP, AUDIO_STEP, CUSTOM_PAYLOAD_STEP, CARDV2_STEP],
+  listenSteps: [CHOICE_STEP, CAPTURE_STEP_V2],
+  logicSteps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
+  eventSteps: [INTENT_STEP],
+  devSteps: [API_STEP, CODE_STEP, TRACE_STEP],
+});
+
+export const MICROSOFT_TEAMS_STEP_SECTIONS = createStepSections({
+  talkSteps: [TEXT_STEP, VISUAL_STEP, CARDV2_STEP],
+  listenSteps: [BUTTONS_STEP, CHOICE_STEP, CAPTURE_STEP_V2],
+  logicSteps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
+  eventSteps: [INTENT_STEP],
+  devSteps: [API_STEP, CODE_STEP],
+});
 
 export const getStepSections = Realtime.Utils.platform.createPlatformAndProjectTypeSelector(
   {
@@ -366,6 +270,7 @@ export const getStepSections = Realtime.Utils.platform.createPlatformAndProjectT
     [`${Platform.Constants.PlatformType.VOICEFLOW}:${Platform.Constants.ProjectType.CHAT}`]: CHATBOT_STEP_SECTIONS,
     [`${Platform.Constants.PlatformType.DIALOGFLOW_ES}:${Platform.Constants.ProjectType.CHAT}`]: DIALOGFLOW_ES_CHAT_STEP_SECTIONS,
     [`${Platform.Constants.PlatformType.DIALOGFLOW_ES}:${Platform.Constants.ProjectType.VOICE}`]: DIALOGFLOW_ES_VOICE_STEP_SECTIONS,
+    [Platform.Constants.PlatformType.MICROSOFT_TEAMS]: MICROSOFT_TEAMS_STEP_SECTIONS,
     [Platform.Constants.ProjectType.CHAT]: CHATBOT_STEP_SECTIONS,
     [Platform.Constants.ProjectType.VOICE]: GENERAL_STEP_SECTIONS,
   },

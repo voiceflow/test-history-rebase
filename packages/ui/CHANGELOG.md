@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.194.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.193.0...@voiceflow/ui@1.194.0) (2022-11-30)
+
+
+### Features
+
+* assistant dropdown functions (CT-1218) ([#6363](https://github.com/voiceflow/creator-app/issues/6363)) ([9fcbfd4](https://github.com/voiceflow/creator-app/commit/9fcbfd4227d077e2760736eb2fee9e7d2301dfd4))
+
+
+
+
+
 # [1.193.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.192.0...@voiceflow/ui@1.193.0) (2022-11-30)
 
 

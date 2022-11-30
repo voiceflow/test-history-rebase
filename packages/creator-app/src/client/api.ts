@@ -9,6 +9,15 @@ const api = new API({
   apiEndpoint: `${API_ENDPOINT}/v2`,
 });
 
+const analyticsEncryption = new Crypto.Synchronous({ alg: AES, key: 'vf-analytics' });
+
 export default api.generatePublicClient({
-  analyticsEncryption: new Crypto.Synchronous({ alg: AES, key: 'vf-analytics' }),
+  analyticsEncryption,
+});
+
+export const apiV3 = new API({
+  clientKey: 'CREATOR_APP',
+  apiEndpoint: `${API_ENDPOINT}/v3`,
+}).generatePublicClient({
+  analyticsEncryption,
 });

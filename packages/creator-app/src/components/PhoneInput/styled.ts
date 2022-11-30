@@ -2,7 +2,7 @@ import { inputStyle, SvgIcon } from '@voiceflow/ui';
 
 import { styled } from '@/hocs';
 
-export const InputContainer = styled.div`
+export const InputContainer = styled.div<{ error?: boolean }>`
   display: flex;
   align-items: center;
   position: relative;

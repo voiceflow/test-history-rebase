@@ -5049,23 +5049,12 @@
     "@voiceflow/voiceflow-types" "^3.21.4"
     ask-smapi-model "1.14.0"
 
-"@voiceflow/api-sdk@3.20.18":
-  version "3.20.18"
-  resolved "https://registry.yarnpkg.com/@voiceflow/api-sdk/-/api-sdk-3.20.18.tgz#a9be9871f416663a980156603a70a228e967bd80"
-  integrity sha512-Dg0Cc7Wv6G4pWlznzDu6nW5coG0hBG4uL3MSlfVqFJDekH6bz0JNrniPewF+61M9gIsVJXDHihWAhpnRJj+sTA==
+"@voiceflow/api-sdk@3.21.0":
+  version "3.21.0"
+  resolved "https://registry.yarnpkg.com/@voiceflow/api-sdk/-/api-sdk-3.21.0.tgz#5684c0dfdc366d99e28b04241f056aa53fb19981"
+  integrity sha512-JMt2mUMdIYTAhRu7NIAp9RzaOfeOXypS2w/TFSNJd2StxW+YbgEHcDP9pL3plp8mwYKHyYKXJEPIzJmz/EAjrA==
   dependencies:
-    "@voiceflow/base-types" "^2.71.3"
-    "@voiceflow/common" "^8.1.5"
-    axios "0.24.0"
-    jwt-decode "^3.1.2"
-    superstruct "^0.10.12"
-
-"@voiceflow/api-sdk@3.20.21", "@voiceflow/api-sdk@^3.20.21":
-  version "3.20.21"
-  resolved "https://registry.yarnpkg.com/@voiceflow/api-sdk/-/api-sdk-3.20.21.tgz#e3281e182ef01d36ccd75b285e28dc90c156155f"
-  integrity sha512-Kk+pU7WZyNW3A7cvHerIkpDnDnHdiVkP8/2s2v96/jZwN0yVD3RTwqMjpVfFt0UiXYF/Wrl6r1t5r1REMihPyw==
-  dependencies:
-    "@voiceflow/base-types" "^2.73.1"
+    "@voiceflow/base-types" "^2.74.0"
     "@voiceflow/common" "^8.1.5"
     axios "0.24.0"
     jwt-decode "^3.1.2"
@@ -5127,6 +5116,14 @@
   version "2.73.1"
   resolved "https://registry.yarnpkg.com/@voiceflow/base-types/-/base-types-2.73.1.tgz#a883175b5197d91416d140e087e723f86cebbf90"
   integrity sha512-/u7QAll0bpiJ9fDISQViFpeDC2Fj6aEvyKntHiQXjjANkD0hwrvHXg0JXCpzvUxtiulFbV5JScAUzjd8WDStCA==
+  dependencies:
+    "@voiceflow/common" "^8.1.5"
+    slate "0.73.0"
+
+"@voiceflow/base-types@^2.74.0":
+  version "2.74.0"
+  resolved "https://registry.yarnpkg.com/@voiceflow/base-types/-/base-types-2.74.0.tgz#f45843e235f5c728206baac12122f8369363c40a"
+  integrity sha512-B4JJfq/FE8+SOyFckRHxjX8wXq7pzcCA31mj/WNYIDxy/ApiJHmOUljlZMwO1iReBey66yuXJbSw3gV+zkP0BA==
   dependencies:
     "@voiceflow/common" "^8.1.5"
     slate "0.73.0"
@@ -5341,6 +5338,13 @@
     slate "^0.72.3"
     ts-pattern "^4.0.5"
     type-fest "2.18.1"
+
+"@voiceflow/schema-types@1.17.0":
+  version "1.17.0"
+  resolved "https://registry.yarnpkg.com/@voiceflow/schema-types/-/schema-types-1.17.0.tgz#e306caf935b503f86c71df2a48bd446c56aa92a7"
+  integrity sha512-Vf/W3bPXMjdmekXMaLd8I6UgSFjh2gWkwZLY7nTu2mTQK2wsrn2wUNdWWdxKAAR1Z27Yd9AyjQidEzWWAuuo7Q==
+  dependencies:
+    type-fest "2.18.0"
 
 "@voiceflow/sdk-runtime@1.5.3":
   version "1.5.3"
@@ -20842,6 +20846,11 @@ type-detect@4.0.8, type-detect@^4.0.0, type-detect@^4.0.5, type-detect@^4.0.8:
   version "4.0.8"
   resolved "https://registry.yarnpkg.com/type-detect/-/type-detect-4.0.8.tgz#7646fb5f18871cfbb7749e69bd39a6388eb7450c"
   integrity sha512-0fr/mIH1dlO+x7TlcMy+bIDqKPsw/70tVyeHW787goQjhmqaZe10uwLujubK9q9Lg6Fiho1KUKDYz0Z7k7g5/g==
+
+type-fest@2.18.0:
+  version "2.18.0"
+  resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-2.18.0.tgz#fdef3a74e0a9e68ebe46054836650fb91ac3881e"
+  integrity sha512-pRS+/yrW5TjPPHNOvxhbNZexr2bS63WjrMU8a+VzEBhUi9Tz1pZeD+vQz3ut0svZ46P+SRqMEPnJmk2XnvNzTw==
 
 type-fest@2.18.1:
   version "2.18.1"

@@ -6,7 +6,7 @@
     "@logux/server": "0.12.1",
     "@opentelemetry/api-metrics": "0.26.0",
     "@voiceflow/alexa-types": "2.12.14",
-    "@voiceflow/api-sdk": "3.20.21",
+    "@voiceflow/api-sdk": "3.21.0",
     "@voiceflow/backend-utils": "4.8.2",
     "@voiceflow/base-types": "2.73.1",
     "@voiceflow/common": "8.1.5",

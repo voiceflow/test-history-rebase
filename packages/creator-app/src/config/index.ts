@@ -19,6 +19,7 @@ declare global {
     VF_OVERRIDE_GOOGLE_SERVICE_ENDPOINT?: string; // google-service public endpoint
     VF_OVERRIDE_ALEXA_SERVICE_ENDPOINT?: string; // google-service public endpoint
     VF_OVERRIDE_GENERAL_SERVICE_ENDPOINT?: string; // general-service public endpoint
+    VF_OVERRIDE_RUNTIME_API_ENDPOINT?: string; // platform runtime-api public endpoint
     VF_OVERRIDE_REALTIME_ENDPOINT?: string; // realtime public endpoint
     VF_OVERRIDE_REALTIME_IO_ENDPOINT?: string; // realtime public endpoint
     VF_OVERRIDE_ML_GATEWAY_ENDPOINT?: string; // realtime public endpoint
@@ -199,6 +200,12 @@ export const GENERAL_SERVICE_CLOUD_ENDPOINT =
 export const GENERAL_SERVICE_LOCAL_ENDPOINT = process.env.GENERAL_SERVICE_LOCAL_ENDPOINT!;
 export const GENERAL_SERVICE_ENDPOINT =
   IS_E2E && process.env.VF_OVERRIDE_GENERAL_SERVICE_ENDPOINT === '' ? GENERAL_SERVICE_LOCAL_ENDPOINT : GENERAL_SERVICE_CLOUD_ENDPOINT;
+
+export const RUNTIME_API_CLOUD_ENDPOINT =
+  window.VF_OVERRIDE_RUNTIME_API_ENDPOINT || process.env.VF_OVERRIDE_RUNTIME_API_ENDPOINT || process.env.RUNTIME_API_CLOUD_ENDPOINT!;
+export const RUNTIME_API_LOCAL_ENDPOINT = process.env.RUNTIME_API_LOCAL_ENDPOINT!;
+export const RUNTIME_API_ENDPOINT =
+  IS_E2E && process.env.VF_OVERRIDE_RUNTIME_API_ENDPOINT === '' ? RUNTIME_API_LOCAL_ENDPOINT : RUNTIME_API_CLOUD_ENDPOINT;
 
 export const GENERAL_RUNTIME_CLOUD_ENDPOINT =
   window.VF_OVERRIDE_GENERAL_RUNTIME_ENDPOINT || process.env.VF_OVERRIDE_GENERAL_RUNTIME_ENDPOINT || process.env.GENERAL_RUNTIME_CLOUD_ENDPOINT!;

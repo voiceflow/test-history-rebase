@@ -35,12 +35,8 @@ const Publish: React.FC = () => {
         {isGooglePlatform(platform) && <Route path={Path.PUBLISH_GOOGLE} component={PublishGoogle} />}
         {isDialogflowPlatform(platform) && <Route path={Path.PUBLISH_DIALOGFLOW} component={PublishDialogflow} />}
         {isWebChatPlatform(platform) && <Route path={Path.PUBLISH_WEBCHAT} component={PublishWebchat} />}
-        {isWhatsAppPlatform(platform) && (
-          <>
-            <Route path={Path.PUBLISH_WHATSAPP} component={PublishWhatsApp} />
-            <Route path={Path.TEST_WHATSAPP} component={TestWhatsApp} />
-          </>
-        )}
+        {isWhatsAppPlatform(platform) && <Route path={Path.PUBLISH_WHATSAPP} component={PublishWhatsApp} />}
+        {isWhatsAppPlatform(platform) && <Route path={Path.TEST_WHATSAPP} component={TestWhatsApp} />}
 
         <Route path={Path.PUBLISH_API} component={API} />
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1002.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1001.1...@voiceflow/creator-app@1.1002.0) (2022-11-30)
+
+
+### Features
+
+* removed custom actions and carousel from teams (PL-329) (PL-330) ([#6372](https://github.com/voiceflow/creator-app/issues/6372)) ([5ff0400](https://github.com/voiceflow/creator-app/commit/5ff04007d3bb79069272b0c2275ba3549902e7a8))
+
+
+
+
+
 ## [1.1001.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1001.0...@voiceflow/creator-app@1.1001.1) (2022-11-30)
 
 

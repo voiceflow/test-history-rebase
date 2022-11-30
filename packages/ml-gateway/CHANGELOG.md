@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.30.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.30.0...@voiceflow/ml-gateway@1.30.1) (2022-11-30)
+
+
+### Bug Fixes
+
+* whatsapp integration pages (PL-000) ([#6369](https://github.com/voiceflow/creator-app/issues/6369)) ([c04f380](https://github.com/voiceflow/creator-app/commit/c04f380aa2783f6577ea861c8cb5b82936038ebc))
+
+
+
+
+
 # [1.30.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.29.2...@voiceflow/ml-gateway@1.30.0) (2022-11-22)
 
 

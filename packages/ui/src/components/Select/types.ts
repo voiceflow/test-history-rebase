@@ -123,8 +123,11 @@ export interface BaseSelectProps {
   inDropdownSearch?: boolean;
   formatInputValue?: (value: string) => string;
   isButtonDisabled?: (options: { value: string }) => boolean;
+  isSecondaryInput?: boolean;
   renderFooterAction?: Nullable<(options: { close: VoidFunction; searchLabel: string }) => React.ReactNode>;
   renderSearchSuffix?: Nullable<(options: { close: VoidFunction; searchLabel: string }) => React.ReactNode>;
+  syncOptionsOnRender?: boolean;
+  showSearchInputIcon?: boolean;
   clearOnSelectActive?: boolean;
   nestedMenuAutoWidth?: boolean;
   autoUpdatePlacement?: boolean;

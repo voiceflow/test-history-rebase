@@ -118,6 +118,7 @@ export enum ClassName {
   THREAD = 'vf-canvas__thread',
   THREAD_INDICATOR = 'vf-canvas__thread__indicator',
   COLLABORATOR_LINE_ITEM = 'vf-collaborator-line-item',
+  INVITE_ROLE_BUTTON = 'vf-invite-role-button',
   MEMBER_ROLE_BUTTON = 'vf-member-role-button',
   LINK_SETTINGS = 'vf-link-settings',
   TEST_TYPE_OPTION = 'vf-test-type-option',

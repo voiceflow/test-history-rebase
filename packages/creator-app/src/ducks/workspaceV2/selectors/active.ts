@@ -1,10 +1,11 @@
+import { Utils } from '@voiceflow/common';
 import { PlanType } from '@voiceflow/internal';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { getAlternativeColor } from '@voiceflow/ui';
 import { createSelector } from 'reselect';
 
 import { hasOrganizationTrialPermission, hasPlanPermission, hasRolePermission, Permission } from '@/config/permissions';
-import { EDITOR_SEAT_ROLES } from '@/constants';
+import { EDITOR_SEAT_ROLES, ENTERPRISE_PLANS } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as Feature from '@/ducks/feature';
 import * as Session from '@/ducks/session';
@@ -30,9 +31,19 @@ export const numberOfSeatsSelector = createSelector([workspaceSelector], (worksp
 
 export const planSelector = createSelector([workspaceSelector], (workspace) => workspace?.plan);
 
+export const isEnterpriseSelector = createSelector([planSelector], (plan) => plan && ENTERPRISE_PLANS.includes(plan as any));
+
 export const isOnPaidPlanSelector = createSelector([planSelector], (plan) => plan && plan !== PlanType.STARTER && plan !== PlanType.OLD_STARTER);
 
 export const membersSelector = createSelector([workspaceSelector], (workspace) => workspace?.members || []);
+
+export const membersCountSelector = createSelector([membersSelector], (members) => members.length);
+
+export const activeMembersSelector = createSelector([membersSelector], (members) => members.filter(Realtime.Utils.typeGuards.isWorkspaceMember));
+
+export const activeMembersMapSelector = createSelector([activeMembersSelector], (members) =>
+  Utils.array.createMap(members, (member) => member.creator_id)
+);
 
 export const seatLimitsSelector = createSelector([workspaceSelector], (workspace) => workspace?.seatLimits);
 

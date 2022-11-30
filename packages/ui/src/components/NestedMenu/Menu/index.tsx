@@ -405,6 +405,7 @@ function BaseNestedMenu({
                       onSelect={onSelect}
                       placement={isRoot ? undefined : parentPlacement}
                       autoWidth={autoWidth}
+                      searchable={searchable}
                       onItemRef={onItemRef}
                       searchLabel={searchLabel}
                       optionsPath={optionsPath}

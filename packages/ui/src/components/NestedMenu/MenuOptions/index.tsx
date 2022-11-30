@@ -40,6 +40,7 @@ function MenuOptions({
   onSelect,
   onItemRef,
   placement = 'right-start',
+  searchable,
   onFocusItem,
   optionsPath,
   searchLabel = '',
@@ -76,6 +77,7 @@ function MenuOptions({
       onClick: stopImmediatePropagation(() => isSelectable && onSelect(getOptionValue(option), path, updatePosition)),
       isNested: grouped,
       className: ClassName.MENU_ITEM,
+      searchable,
       onMouseEnter: () => onFocusItem?.(index),
     };
 

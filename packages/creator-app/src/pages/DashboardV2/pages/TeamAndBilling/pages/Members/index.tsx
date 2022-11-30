@@ -1,13 +1,14 @@
 import { PlanType } from '@voiceflow/internal';
-import { Banner, Button, ButtonVariant, FlexCenter, TextButton } from '@voiceflow/ui';
+import { Banner, Button, ButtonVariant, FlexCenter } from '@voiceflow/ui';
 import React from 'react';
 
 import { Permission } from '@/config/permissions';
-import { EditorLimitDetailsDashboardV2, STARTER_PRO_EDITOR_LIMIT } from '@/config/planLimits/numEditors';
+import { EditorLimitDetailsDashboardV2 } from '@/config/planLimits/numEditors';
 import { ModalType } from '@/constants';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useActiveWorkspace, useModals, usePermission, useSelector } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
+import TakenSeatsMessage from '@/pages/DashboardV2/components/Workspace/TakenSeatsMessage';
 
 import MemberList from './List';
 import * as S from './styles';
@@ -17,7 +18,7 @@ const DashboardV2TeamAndBillingMembers: React.FC = () => {
   const activeWorkspace = useActiveWorkspace();
   const canEditOrganization = usePermission(Permission.EDIT_ORGANIZATION);
   const canConfigureWorkspace = usePermission(Permission.CONFIGURE_WORKSPACE);
-  const collaboratorsModal = ModalsV2.useModal(ModalsV2.Collaborators);
+  const membersModal = ModalsV2.useModal(ModalsV2.Workspace.Members);
   const updgradeModal = useModals(ModalType.UPGRADE_MODAL);
   const usedEditorSeats = useSelector(WorkspaceV2.active.usedEditorSeatsSelector);
   const isOnPaidPlanSelector = useSelector(WorkspaceV2.active.isOnPaidPlanSelector);
@@ -43,10 +44,7 @@ const DashboardV2TeamAndBillingMembers: React.FC = () => {
           <S.Title>{activeWorkspace?.members?.length} Workspace Members</S.Title>
           <S.EditorSeatsDescription>
             {canAddSeats ? (
-              <>
-                <strong>{usedEditorSeats}</strong> of {STARTER_PRO_EDITOR_LIMIT} seats taken.{' '}
-                <TextButton onClick={handleAddSeats}>Need more?</TextButton>
-              </>
+              <TakenSeatsMessage />
             ) : (
               <>
                 <strong>{usedEditorSeats} Editor seats</strong> Being used in this workspace.
@@ -60,7 +58,7 @@ const DashboardV2TeamAndBillingMembers: React.FC = () => {
               Add Seats
             </Button>
           )}
-          <Button variant={ButtonVariant.PRIMARY} onClick={() => collaboratorsModal.openVoid()}>
+          <Button variant={ButtonVariant.PRIMARY} onClick={() => membersModal.openVoid()}>
             Invite Members
           </Button>
         </FlexCenter>

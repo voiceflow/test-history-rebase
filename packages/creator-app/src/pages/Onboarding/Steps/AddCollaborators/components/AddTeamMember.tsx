@@ -1,17 +1,29 @@
+import { Utils } from '@voiceflow/common';
 import { UserRole } from '@voiceflow/internal';
-import { ClickableText, SvgIcon } from '@voiceflow/ui';
+import { ClickableText, createDividerMenuItemOption, Input, isNotUIOnlyMenuItemOption, Select, SvgIcon, UIOnlyMenuItemOption } from '@voiceflow/ui';
 import React from 'react';
 
 import InputError from '@/components/InputError';
+import SelectInputGroup from '@/components/SelectInputGroup';
 import { CollaboratorType } from '@/pages/Onboarding/types';
 
 import CollaboratorListContainer from './CollaboratorListContainer';
-import DropdownInput from './DropdownInput';
 
-const OPTIONS: { value: UserRole; label: string }[] = [
-  { value: UserRole.VIEWER, label: 'Can View' },
-  { value: UserRole.EDITOR, label: 'Can Edit' },
+type Value = UserRole | 'remove';
+
+interface Option {
+  value: UserRole | 'remove';
+  label: string;
+}
+
+const OPTIONS: Array<UIOnlyMenuItemOption | Option> = [
+  { value: UserRole.VIEWER, label: 'Can view' },
+  { value: UserRole.EDITOR, label: 'Can edit' },
+  createDividerMenuItemOption(),
+  { value: 'remove', label: 'Remove' },
 ];
+
+const OPTIONS_MAP = Utils.array.createMap(OPTIONS.filter(isNotUIOnlyMenuItemOption), (option) => option.value);
 
 export interface AddTeamMembersProps {
   errors: string[];
@@ -22,12 +34,16 @@ export interface AddTeamMembersProps {
 const AddTeamMember: React.FC<AddTeamMembersProps> = ({ errors, collaborators, onUpdate }) => {
   const [focusedIndex, setFocusedIndex] = React.useState<null | number>(null);
 
-  const onRemoveCollaborator = (index: number) => () => {
-    onUpdate(collaborators.filter((collaborator, idx) => idx !== index && collaborator));
+  const onAdd = () => {
+    onUpdate([...collaborators, { email: '', permission: UserRole.EDITOR }]);
   };
 
-  const onPermissionChange = (index: number) => (permission: UserRole) =>
-    onUpdate(collaborators.map((collaborator, idx) => (idx === index ? { ...collaborator, permission } : collaborator)));
+  const onSelectValue = (index: number) => (permission: Value) =>
+    onUpdate(
+      permission === 'remove'
+        ? collaborators.filter((collaborator, idx) => idx !== index && collaborator)
+        : collaborators.map((collaborator, idx) => (idx === index ? { ...collaborator, permission } : collaborator))
+    );
 
   const onEmailChange = (index: number) => (value: string) => {
     const list = collaborators.map((collaborator, idx) => (idx === index ? { ...collaborator, email: value } : collaborator));
@@ -35,30 +51,44 @@ const AddTeamMember: React.FC<AddTeamMembersProps> = ({ errors, collaborators, o
     onUpdate(list);
   };
 
-  const onAdd = () => {
-    onUpdate([...collaborators, { email: '', permission: UserRole.EDITOR }]);
-  };
-
   return (
     <>
       {!!collaborators.length &&
         collaborators.map((collaborator, index) => {
+          if (collaborator.permission === UserRole.ADMIN) return null;
+
           const error = focusedIndex === index ? null : errors[index];
 
-          return collaborator.permission === UserRole.ADMIN ? null : (
+          return (
             <div key={index}>
               <CollaboratorListContainer hasError={!!error}>
-                <DropdownInput
-                  onBlur={() => setFocusedIndex(null)}
-                  options={OPTIONS}
-                  onFocus={() => setFocusedIndex(index)}
-                  inputValue={collaborator.email}
-                  showDropdown={!!collaborator.email}
-                  onInputChange={onEmailChange(index)}
-                  dropdownValue={collaborator?.permission}
-                  onDropdownChange={onPermissionChange(index)}
-                  removeCollaborator={onRemoveCollaborator(index)}
-                />
+                <SelectInputGroup
+                  renderInput={(props) => (
+                    <Input
+                      {...props}
+                      error={!!error}
+                      value={collaborator.email}
+                      onBlur={() => setFocusedIndex(null)}
+                      onFocus={() => setFocusedIndex(index)}
+                      placeholder="name@example.com"
+                      onChangeText={onEmailChange(index)}
+                    />
+                  )}
+                >
+                  {(props) =>
+                    !!collaborator.email && (
+                      <Select<Option, Value>
+                        {...props}
+                        value={collaborator.permission}
+                        options={OPTIONS}
+                        onSelect={onSelectValue(index)}
+                        getOptionKey={(option) => option.value}
+                        getOptionValue={(option) => option?.value}
+                        getOptionLabel={(value) => value && OPTIONS_MAP[value]?.label}
+                      />
+                    )
+                  }
+                </SelectInputGroup>
               </CollaboratorListContainer>
 
               {!!error && <InputError>{error}</InputError>}

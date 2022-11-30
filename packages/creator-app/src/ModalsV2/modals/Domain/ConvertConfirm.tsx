@@ -41,7 +41,7 @@ const ConvertConfirm = manager.create<Props>(
             client.api.version.get(sourceProject.versionID, ['domains']),
           ]);
 
-          if (domainsLimit && targetDomains.length + sourceDomains.length >= domainsLimit.value) {
+          if (domainsLimit && targetDomains.length + sourceDomains.length >= domainsLimit.limit) {
             upgradeModal.openVoid(domainsLimit.upgradeModal);
             return;
           }

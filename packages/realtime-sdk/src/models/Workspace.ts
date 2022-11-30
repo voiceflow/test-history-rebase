@@ -16,9 +16,9 @@ export interface PendingWorkspaceMember {
 }
 
 export interface WorkspaceMember extends PendingWorkspaceMember {
-  creator_id: number;
   name: string;
   image: string;
+  creator_id: number;
 }
 
 export interface SeatLimits {

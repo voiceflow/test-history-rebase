@@ -1,16 +1,16 @@
-import { UserRole } from '@voiceflow/internal';
 import { TextButton, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
-import { useActiveWorkspace } from '@/hooks';
+import * as WorkspaceV2 from '@/ducks/workspaceV2';
+import { useSelector } from '@/hooks';
+import MemberList from '@/pages/DashboardV2/components/Workspace/MemberList';
 
-import PermissionDropdown from './PermissionDropdown';
 import RoleSelect from './RoleSelect';
 import * as S from './styles';
 import { getRoleFacets } from './utils';
 
 const DashboardV2TeamAndBillingMembersList: React.FC = () => {
-  const workspace = useActiveWorkspace();
+  const members = useSelector(WorkspaceV2.active.membersSelector);
 
   const [search, setSearch] = React.useState('');
   const [role, setRole] = React.useState('');
@@ -19,8 +19,6 @@ const DashboardV2TeamAndBillingMembersList: React.FC = () => {
     setSearch('');
     setRole('');
   });
-
-  const members = workspace?.members || [];
 
   const filteredMembers = React.useMemo(() => {
     if (!members?.length || (!role && !search)) return members;
@@ -64,18 +62,7 @@ const DashboardV2TeamAndBillingMembersList: React.FC = () => {
             </div>
           </S.NoResults>
         ) : (
-          filteredMembers.map((member) => (
-            <S.Row key={member.email}>
-              <S.Avatar large user={member} flat={!!member?.creator_id} />
-              <S.Info>
-                <S.Name>
-                  {member.name} {[UserRole.ADMIN, UserRole.OWNER].includes(member.role) && <S.Badge>{member.role}</S.Badge>}
-                </S.Name>
-                <S.Email>{member.email}</S.Email>
-              </S.Info>
-              <PermissionDropdown member={member} />
-            </S.Row>
-          ))
+          <MemberList members={filteredMembers} />
         )}
       </S.Body>
     </S.Container>

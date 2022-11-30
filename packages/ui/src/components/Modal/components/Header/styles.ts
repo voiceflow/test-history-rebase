@@ -12,6 +12,7 @@ export const Container = styled.header<ContainerProps>`
 
   width: 100%;
   padding: ${units(2.5)}px ${units(4)}px;
+  line-height: normal;
   font-weight: 600;
   color: #132144;
   background-color: #fff;
@@ -27,7 +28,7 @@ export const Container = styled.header<ContainerProps>`
     css`
       text-transform: capitalize;
     `}
-  
+
     ${({ sticky }) =>
     sticky
       ? css`

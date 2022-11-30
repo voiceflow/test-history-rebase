@@ -14,6 +14,7 @@ export interface ContainerProps extends SpaceProps {
   inline?: boolean;
   active?: boolean;
   hovered?: boolean;
+  opacity?: boolean;
   variant?: Variant;
   rotation?: number;
   clickable?: boolean;
@@ -65,6 +66,12 @@ export const Container = styled.span<ContainerProps>`
     width: inherit;
     height: inherit;
   }
+
+  ${({ opacity, reducedOpacity }) =>
+    opacity &&
+    css`
+      opacity: ${reducedOpacity ? 0.65 : 0.8};
+    `}
 
   ${({ clickable, reducedOpacity }) =>
     clickable &&

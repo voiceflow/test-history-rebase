@@ -27,7 +27,7 @@ export const Simple = styled.div`
   ${getSimpleStyles}
 `;
 
-export const LabeledHorizontal = styled(Flex)<T.LabeledHorizontalProps>`
+export const LabeledHorizontal = styled(Flex)<T.LabeledHorizontalProps & T.SimpleProps>`
   margin-bottom: 12px;
 
   ${({ isLast }) =>

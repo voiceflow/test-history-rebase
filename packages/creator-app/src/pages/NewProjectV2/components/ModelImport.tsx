@@ -4,10 +4,9 @@ import React from 'react';
 
 import * as NLU from '@/config/nlu';
 import { Permission } from '@/config/permissions';
-import { LimitType } from '@/config/planLimitV2';
 import { NLUImportOrigin } from '@/constants';
 import { styled } from '@/hocs';
-import { useNLUImport, usePermission, usePlanLimit } from '@/hooks';
+import { useNLUImport, usePlanPermissionAction } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
 import { NLUImportModel } from '@/models';
 
@@ -31,20 +30,15 @@ export const ImportLink = styled(Text)<{ disabled: boolean }>`
 
 const ModelImport: React.FC<ModelImportProps> = ({ platform, nluConfig, onImportModel, importModel, isImportLoading, setIsImportLoading }) => {
   const nluImport = useNLUImport({ nluType: nluConfig.type, platform, onImport: onImportModel });
-
-  const [permissionImportNLU] = usePermission(Permission.BULK_UPLOAD);
   const upgradeModal = ModalsV2.useModal(ModalsV2.Upgrade);
-  const planLimit = usePlanLimit({ type: LimitType.NLU_IMPORT });
+
+  const onImport = usePlanPermissionAction({
+    onAction: () => nluImport.onUploadClick(NLUImportOrigin.PROJECT),
+    onLimited: (limit) => upgradeModal.open(limit.getUpgradeModal()),
+    permission: Permission.BULK_UPLOAD,
+  });
 
   const textColor = isImportLoading ? 'rgba(98, 119, 140, 0.5)' : 'rgba(98, 119, 140, 1)';
-
-  const onHandleImportClick = () => {
-    if (!permissionImportNLU && planLimit) {
-      upgradeModal.open(planLimit.upgradeModal);
-    } else {
-      nluImport.onUploadClick(NLUImportOrigin.PROJECT);
-    }
-  };
 
   useDidUpdateEffect(() => {
     setIsImportLoading(nluImport.isImporting);
@@ -59,7 +53,7 @@ const ModelImport: React.FC<ModelImportProps> = ({ platform, nluConfig, onImport
         </Text>
       ) : (
         <Flex>
-          <ImportLink disabled={isImportLoading} fontSize={13} onClick={onHandleImportClick}>
+          <ImportLink disabled={isImportLoading} fontSize={13} onClick={onImport}>
             {`Import ${nluConfig.nlps[0].import?.name} NLU model`}
           </ImportLink>
 

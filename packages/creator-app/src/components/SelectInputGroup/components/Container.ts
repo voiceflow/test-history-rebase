@@ -1,20 +1,21 @@
-import { Flex, inputStyle, SelectWrapper } from '@voiceflow/ui';
+import { Flex, SelectWrapper } from '@voiceflow/ui';
 
 import { css, styled } from '@/hocs';
 
 interface ContainerProps {
+  error?: boolean;
+  isLeft?: boolean;
   multiline?: boolean;
   variablesInput?: boolean;
 }
 
 const Container = styled(Flex)<ContainerProps>`
-  ${inputStyle};
   display: flex;
   overflow: hidden;
 
   ${SelectWrapper} {
-    height: 40px;
-    margin: -10px 0 -10px -16px;
+    height: 42px;
+    margin: ${({ isLeft }) => (isLeft ? '-11px -16px -11px 0' : '-11px 0 -11px -16px')};
     cursor: pointer;
 
     input {
@@ -31,8 +32,8 @@ const Container = styled(Flex)<ContainerProps>`
   ${({ variablesInput }) =>
     variablesInput &&
     css`
-      padding-top: 9px;
-      padding-bottom: 9px;
+      padding-top: 10px;
+      padding-bottom: 10px;
     `}
 `;
 

@@ -4,9 +4,9 @@ import {
   Limits,
   LimitType,
   ToastErrorDynamicLimit,
-  ToastErrorValueLimit,
+  ToastErrorStaticLimit,
   UpgradeModalDynamicLimit,
-  UpgradeModalValueLimit,
+  UpgradeModalStaticLimit,
 } from '@/config/planLimitV2';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { getPlanLimit } from '@/utils/planLimitV2';
@@ -14,14 +14,14 @@ import { getPlanLimit } from '@/utils/planLimitV2';
 import { useSelector } from './redux';
 
 type InjectedLimit<PlanLimit> = PlanLimit extends ToastErrorDynamicLimit
-  ? Omit<ToastErrorDynamicLimit, 'getToastError'> & { value: number; toastError: ReturnType<ToastErrorDynamicLimit['getToastError']> }
+  ? Omit<ToastErrorDynamicLimit, 'getToastError'> & { limit: number; toastError: ReturnType<ToastErrorDynamicLimit['getToastError']> }
   : PlanLimit extends UpgradeModalDynamicLimit
-  ? Omit<UpgradeModalDynamicLimit, 'getUpgradeModal'> & { value: number; upgradeModal: ReturnType<UpgradeModalDynamicLimit['getUpgradeModal']> }
+  ? Omit<UpgradeModalDynamicLimit, 'getUpgradeModal'> & { limit: number; upgradeModal: ReturnType<UpgradeModalDynamicLimit['getUpgradeModal']> }
   : never;
 
 type WithLimitValueOption<Limit extends LimitType> = {
   type: Limit;
-} & (NonNullable<Limits[Limit][PlanType]> extends ToastErrorValueLimit | UpgradeModalValueLimit ? { limit?: never } : { limit: number });
+} & (NonNullable<Limits[Limit][PlanType]> extends ToastErrorStaticLimit | UpgradeModalStaticLimit ? { limit?: never } : { limit: number });
 
 export const usePlanLimit = <Limit extends LimitType>({
   type,
@@ -33,38 +33,51 @@ export const usePlanLimit = <Limit extends LimitType>({
 
   if (!planLimit) return null;
 
-  const planLimitValue = 'value' in planLimit ? planLimit.value : limit;
+  const planLimitValue = 'limit' in planLimit ? planLimit.limit : limit;
+
+  const rendererOptions = { limit: planLimitValue, increasableLimit: planLimit.increasableLimit };
 
   if ('getToastError' in planLimit) {
     return {
       ...(planLimit as any),
-      value: planLimitValue,
-      toastError: planLimit.getToastError({ limit: planLimitValue }),
+      limit: planLimitValue,
+      toastError: planLimit.getToastError(rendererOptions),
     };
   }
 
   if ('getUpgradeModal' in planLimit) {
     return {
-      ...(limit as any),
-      value: planLimitValue,
-      upgradeModal: planLimit.getUpgradeModal({ limit: planLimitValue }),
+      ...(planLimit as any),
+      limit: planLimitValue,
+      upgradeModal: planLimit.getUpgradeModal(rendererOptions),
     };
   }
 
   return null;
 };
 
-type LimitedOptions<Limit extends LimitType> = WithLimitValueOption<Limit> & { value?: number };
+interface PlanLimitedOptions {
+  value?: number;
+}
 
-export const usePlanLimited = <Limit extends LimitType>({
-  value = 0,
-  ...limitOptions
-}: LimitedOptions<Limit>): InjectedLimit<NonNullable<Limits[Limit][PlanType]>> | null => {
+export const useGetPlanLimited = <Limit extends LimitType>(
+  limitOptions: LimitedOptions<Limit>
+): ((options: PlanLimitedOptions) => InjectedLimit<NonNullable<Limits[Limit][PlanType]>> | null) => {
   const planLimit = usePlanLimit<Limit>(limitOptions as WithLimitValueOption<Limit>);
 
-  if (!planLimit) return null;
+  if (!planLimit) return () => null;
 
-  return planLimit && value >= planLimit.value ? planLimit : null;
+  return ({ value = 0 }) => (planLimit && value >= planLimit.limit ? planLimit : null);
+};
+
+type LimitedOptions<Limit extends LimitType> = WithLimitValueOption<Limit> & PlanLimitedOptions;
+
+export const usePlanLimited = <Limit extends LimitType>(
+  limitOptions: LimitedOptions<Limit>
+): InjectedLimit<NonNullable<Limits[Limit][PlanType]>> | null => {
+  const getPlanLimited = useGetPlanLimited<Limit>(limitOptions);
+
+  return getPlanLimited(limitOptions);
 };
 
 type LimitedActionOptions<Limit extends LimitType, Args extends any[] = []> = LimitedOptions<Limit> & {

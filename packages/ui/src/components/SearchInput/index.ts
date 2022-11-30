@@ -10,6 +10,7 @@ export interface SearchInputProps {
   searchable?: boolean;
   isDropdown?: boolean;
   borderLess?: boolean;
+  isSecondary?: boolean;
   withLeftIcon?: boolean;
   withClearIcon?: boolean;
   isDropDownOpened?: boolean;
@@ -34,6 +35,15 @@ const SearchInput = styled(Input)<SearchInputProps>`
     ellipsis &&
     css`
       text-overflow: ellipsis;
+    `}
+
+  ${({ isSecondary }) =>
+    isSecondary &&
+    css`
+      font-size: 13px;
+      color: #62778c;
+      font-weight: 600;
+      text-transform: uppercase;
     `}
 
   ${({ searchable, isDropdown }) =>

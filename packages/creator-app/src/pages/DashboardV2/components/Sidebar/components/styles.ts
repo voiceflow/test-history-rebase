@@ -47,7 +47,7 @@ export const WorkspaceItemContainer = styled(Box.FlexStart)`
 
 export const WorkspaceImage = styled.img<{ active?: boolean }>`
   height: 26px;
-  width: 26x;
+  width: 26px;
   border-radius: ${({ active }) => (active ? '6px' : '50%')};
   margin-right: 12px;
 `;

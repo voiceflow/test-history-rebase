@@ -7,6 +7,7 @@ export type { AssistantCardProps } from './AssistantCard';
 export { default as AssistantCard } from './AssistantCard';
 export type { AudioPlayerProps } from './AudioPlayer';
 export { default as AudioPlayer } from './AudioPlayer';
+export { default as Avatar } from './Avatar';
 export { default as Badge } from './Badge';
 export { default as Banner } from './Banner';
 export type { BoxProps } from './Box';
@@ -63,7 +64,7 @@ export type { CustomScrollbarsTypes } from './CustomScrollbars';
 export { default as CustomScrollbars } from './CustomScrollbars';
 export { default as Disable } from './Disable';
 export { default as Divider } from './Divider';
-export type { DropdownPlacement } from './Dropdown';
+export type { DropdownPlacement, DropdownProps } from './Dropdown';
 export { default as Dropdown } from './Dropdown';
 export { ErrorBoundaryWrapper, ErrorDescription, ErrorMessage, ErrorMessageWithDivider, Page404, Page404Wrapper, PageError } from './Error';
 export {
@@ -96,7 +97,7 @@ export type {
   IconButtonSuccessContainerProps,
 } from './IconButton';
 export { default as IconButton, IconButtonContainer, IconButtonVariant } from './IconButton';
-export type { InputTypes, StyledInputProps } from './Input';
+export type { DefaultInputProps, InputTypes, StyledInputProps } from './Input';
 export {
   ChildInput,
   ControlledInput,

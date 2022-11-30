@@ -1,9 +1,15 @@
 import { Checkbox, CheckboxTypes, Text } from '@voiceflow/ui';
 import React from 'react';
 
-const MenuCheckboxOption: React.FC<CheckboxTypes.Props> = ({ children, ...props }) => (
+interface MenuCheckboxOptionProps extends CheckboxTypes.Props {
+  pl?: number | string;
+}
+
+const MenuCheckboxOption: React.FC<MenuCheckboxOptionProps> = ({ children, pl, ...props }) => (
   <Checkbox type={Checkbox.Type.RADIO} isFlat {...props}>
-    <Text px={6}>{children}</Text>
+    <Text px={6} pl={pl}>
+      {children}
+    </Text>
   </Checkbox>
 );
 

@@ -26,7 +26,7 @@ const collaboratorHelper = {
     cy.get(`#${Identifier.COPY_INVITE_BUTTON}`).click();
   },
   setInviteEmailToViewer: () => {
-    cy.get('button[orientation="left"]').click();
+    cy.get(`.${ClassName.INVITE_ROLE_BUTTON}`).click();
     cy.get(`.${ClassName.MENU}`).get('li').contains('can view').click();
   },
   el: {

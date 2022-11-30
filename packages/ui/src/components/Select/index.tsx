@@ -190,6 +190,7 @@ function Select({
   selectedOptions,
   nestedModifiers,
   formatInputValue,
+  isSecondaryInput,
   alwaysShowCreate = false,
   inDropdownSearch = false,
   isButtonDisabled,
@@ -197,6 +198,8 @@ function Select({
   renderFooterAction,
   renderSearchSuffix,
   renderOptionsFilter,
+  showSearchInputIcon = true,
+  syncOptionsOnRender,
   nestedMenuAutoWidth = true,
   autoUpdatePlacement,
   clearOnSelectActive,
@@ -362,7 +365,9 @@ function Select({
       onSelect(newValue, optionsPath);
     }
 
-    handleOnSearchLabelChange('', { isSelectEvent: true });
+    if (inputVariant !== SelectInputVariant.DROPDOWN || searchable) {
+      handleOnSearchLabelChange('', { isSelectEvent: true });
+    }
 
     if (autoUpdatePlacement) {
       dataRef.current.updatePopperPosition = updatePopperPosition;
@@ -428,6 +433,12 @@ function Select({
     }
   }, [open]);
 
+  useDidUpdateEffect(() => {
+    if (syncOptionsOnRender) {
+      setOptionsToRender(renderOptionsFilter ? options.filter(renderOptionsFilter) : options);
+    }
+  }, [options, syncOptionsOnRender, renderOptionsFilter]);
+
   const inputProps = {
     icon,
     error,
@@ -450,12 +461,16 @@ function Select({
     isDropdown,
     borderLess,
     placeholder,
-    onMouseDown: searchable ? onMouseDown : undefined,
     rightAction,
+    onMouseDown: searchable ? onMouseDown : undefined,
+    isSecondary: isSecondaryInput,
     isDropDownOpened,
   };
 
   const hasOptions = !!selectedOptions?.length;
+
+  const caretIcon = isSecondaryInput ? 'arrowRightTopics' : 'caretDown';
+  const caretIconSize = isSecondaryInput ? 9 : 8;
 
   return (
     <Manager>
@@ -524,18 +539,21 @@ function Select({
                         type="search"
                         error={error}
                         value={isDropdown ? label : searchLabel}
+                        color={showDropdownColorOnActive && opened ? '#4a88de' : undefined}
                         autoComplete="off"
                         withLeftIcon={!!leftAction}
                         withClearIcon={withClearIcon}
-                        color={showDropdownColorOnActive && opened ? '#4a88de' : undefined}
                       />
 
-                      <SearchInputIcon
-                        icon={withClearIcon ? 'close' : 'caretDown'}
-                        size={withClearIcon ? 14 : 8}
-                        color={showDropdownColorOnActive && opened ? '#4a88de' : '#6e849a'}
-                        onClick={onIconClick}
-                      />
+                      {showSearchInputIcon && (
+                        <SearchInputIcon
+                          icon={withClearIcon ? 'close' : caretIcon}
+                          size={withClearIcon ? 14 : caretIconSize}
+                          color={showDropdownColorOnActive && opened ? '#4a88de' : '#6e849a'}
+                          rotate={!withClearIcon && isSecondaryInput}
+                          onClick={onIconClick}
+                        />
+                      )}
                     </>
                   )}
 
@@ -554,7 +572,7 @@ function Select({
                       {hasOptions ? (
                         <InputBadge>{selectedOptions.length}</InputBadge>
                       ) : (
-                        <SearchInputIcon icon="caretDown" color="#6e849a" size={8} onClick={onIconClick} />
+                        <SearchInputIcon icon={caretIcon} color="#6e849a" size={8} onClick={onIconClick} />
                       )}
                     </>
                   )}
@@ -567,7 +585,9 @@ function Select({
 
       {inline && (
         <Portal>
-          <InlineInputValue ref={inlineRef}>{isDropdown ? label : searchLabel || placeholder}</InlineInputValue>
+          <InlineInputValue ref={inlineRef} isSecondary={isSecondaryInput}>
+            {isDropdown ? label : searchLabel || placeholder}
+          </InlineInputValue>
         </Portal>
       )}
 
@@ -616,4 +636,4 @@ function Select({
   );
 }
 
-export default Select;
+export default Object.assign(Select, { SearchInput });

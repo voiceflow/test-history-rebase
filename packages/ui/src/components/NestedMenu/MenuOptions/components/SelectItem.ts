@@ -4,6 +4,7 @@ import { css, styled } from '@ui/styles';
 interface SelectItemProps {
   isGroup?: boolean;
   isNested?: boolean;
+  searchable?: boolean;
   withSubLevel?: boolean;
 }
 
@@ -33,9 +34,13 @@ const SelectItem = styled(Menu.Item)<SelectItemProps>`
       padding-right: 80px;
     `}
 
-  b {
-    text-decoration: underline;
-  }
+  ${({ searchable }) =>
+    searchable &&
+    css`
+      b {
+        text-decoration: underline;
+      }
+    `}
 `;
 
 export default SelectItem;

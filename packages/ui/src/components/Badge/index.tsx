@@ -1,4 +1,5 @@
 import { backgrounds, colors, css, styled, ThemeColor, transition, units } from '@ui/styles';
+import { space, SpaceProps } from 'styled-system';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 type BadgeProps = {
@@ -74,4 +75,24 @@ const Badge = styled.div.attrs((props) => (props.onClick ? { role: 'button' } : 
     `}
 `;
 
-export default Badge;
+const descriptiveBadgeColors = {
+  blue: '#3d82e2',
+  gray: '#949DB0',
+};
+
+export const DescriptiveBadge = styled.div<{ color?: 'blue' | 'gray' } & SpaceProps>`
+  font-size: 10px;
+  text-transform: uppercase;
+  color: ${({ color = 'blue' }) => descriptiveBadgeColors[color]};
+  font-weight: 700;
+  border-radius: 11px;
+  box-shadow: 0px 1px 0px rgba(19, 33, 68, 0.12), 0px 0px 1px rgba(19, 33, 68, 0.2);
+  background-color: #ffffff;
+  display: inline-flex;
+  padding: 3px 8px;
+  ${space}
+`;
+
+export default Object.assign(Badge, {
+  Descriptive: DescriptiveBadge,
+});

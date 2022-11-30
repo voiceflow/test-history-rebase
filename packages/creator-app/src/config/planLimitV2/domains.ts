@@ -3,7 +3,7 @@ import { PlanType } from '@voiceflow/internal';
 import * as Tracking from '@/ducks/tracking';
 import { getUpgradeToModalProps } from '@/utils/upgrade';
 
-import { PlanLimit, UpgradeModalValueLimit } from './types';
+import { PlanLimit, UpgradeModalStaticLimit } from './types';
 import { applyStarterLimits, applyTeamLimits } from './utils';
 
 const DEFAULT_MODAL = {
@@ -11,8 +11,8 @@ const DEFAULT_MODAL = {
   header: 'Domains',
 };
 
-const TEAM_LIMIT: UpgradeModalValueLimit = {
-  value: 3,
+const TEAM_LIMIT: UpgradeModalStaticLimit = {
+  limit: 3,
   getUpgradeModal: () => ({
     ...DEFAULT_MODAL,
     ...getUpgradeToModalProps(PlanType.ENTERPRISE, Tracking.UpgradePrompt.DOMAINS),
@@ -20,16 +20,16 @@ const TEAM_LIMIT: UpgradeModalValueLimit = {
   }),
 };
 
-const STARTER_LIMIT: UpgradeModalValueLimit = {
-  value: 1,
+const STARTER_LIMIT: UpgradeModalStaticLimit = {
+  limit: 1,
   getUpgradeModal: () => ({
     ...DEFAULT_MODAL,
     ...getUpgradeToModalProps(PlanType.TEAM, Tracking.UpgradePrompt.DOMAINS),
-    description: `Upgrade to team to unlock ${TEAM_LIMIT.value} domains for all assistants in your workspace.`,
+    description: `Upgrade to team to unlock ${TEAM_LIMIT.limit} domains for all assistants in your workspace.`,
   }),
 };
 
-export const DOMAINS_LIMITS: PlanLimit<UpgradeModalValueLimit> = {
+export const DOMAINS_LIMITS: PlanLimit<UpgradeModalStaticLimit> = {
   ...applyTeamLimits(TEAM_LIMIT),
   ...applyStarterLimits(STARTER_LIMIT),
 };

@@ -26,10 +26,10 @@ interface VariablesInputProps
   extends Omit<TextEditorProps, 'onBlur' | 'onEnterPress' | 'pluginsTypes' | 'pluginsProps'>,
     Omit<VariablesPluginsData, 'variables' | 'onAddVariable' | 'onVariableAdded'> {
   onBlur?: SaveCallback;
+  variant?: InputVariant;
   fullWidth?: boolean;
   multiline?: boolean;
   onEnterPress?: SaveCallback;
-  variant?: InputVariant;
 }
 
 const AVERAGE_SYMBOL_WIDTH = 9;

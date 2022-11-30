@@ -14,6 +14,7 @@ import {
 
 interface BaseMenuOptionsProps extends SharedNestedMenuProps {
   onItemRef?: (index: number) => (node: HTMLLIElement | null) => void;
+  searchable?: boolean;
   optionsPath: number[];
   searchLabel?: string;
   onFocusItem?: (index: number) => void;

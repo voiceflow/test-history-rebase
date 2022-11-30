@@ -1,5 +1,6 @@
 export * as Account from './Account';
 export { default as APLPreview } from './APLPreview';
+export { default as AssistantAccess } from './AssistantAccess';
 export * as Board from './Board';
 export * as Canvas from './Canvas';
 export { default as Collaborators } from './Collaborators';

@@ -1,4 +1,5 @@
 import { inputFocusStyle, InputWrapper } from '@ui/components/Input';
+import SearchInput from '@ui/components/SearchInput';
 import { colors, css, styled, ThemeColor } from '@ui/styles';
 
 export interface SelectWrapperProps {
@@ -18,6 +19,10 @@ const SelectWrapper = styled.div<SelectWrapperProps>`
     !!(onClick || onFocus) &&
     css`
       cursor: pointer;
+
+      ${SearchInput}[readOnly] {
+        cursor: pointer;
+      }
     `};
 
   ${({ minWidth, width }) =>

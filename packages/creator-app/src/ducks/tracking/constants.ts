@@ -224,6 +224,8 @@ export enum CanvasControlHelpMenuResource {
 export enum UpgradePrompt {
   REAL_TIME_COLLABORATION = 'Real Time Collaboration',
   PROJECT_LIMIT = 'Project Limit',
+  EDITOR_SEATS = 'Editor seats',
+  VIEWER_SEATS = 'Viewer seats',
   WORKSPACE_LIMIT = 'Workspace Limit',
   EXPORT_CSV_NLU = 'Export NLU as CSV',
   EXPORT_NLU = 'Export NLU',

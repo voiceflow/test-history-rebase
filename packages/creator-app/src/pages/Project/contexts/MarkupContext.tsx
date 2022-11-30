@@ -90,7 +90,7 @@ export const MarkupProvider: React.FC = ({ children }) => {
       const fileSizeMB = file.size / MB;
 
       if (ALLOWED_IMAGE_TYPES.includes(extension)) {
-        if (cache.current.markupImageLimit && fileSizeMB > cache.current.markupImageLimit.value) {
+        if (cache.current.markupImageLimit && fileSizeMB > cache.current.markupImageLimit.limit) {
           errors.push(cache.current.markupImageLimit.toastError);
           return false;
         }
@@ -99,7 +99,7 @@ export const MarkupProvider: React.FC = ({ children }) => {
       }
 
       if (ALLOWED_VIDEOS_TYPES.includes(extension)) {
-        if (cache.current.markupVideoLimit && fileSizeMB > cache.current.markupVideoLimit.value) {
+        if (cache.current.markupVideoLimit && fileSizeMB > cache.current.markupVideoLimit.limit) {
           errors.push(cache.current.markupVideoLimit.toastError);
           return false;
         }

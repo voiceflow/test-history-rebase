@@ -1,77 +1,53 @@
-import { BaseSelectProps, Input, setRef, useLinkedState } from '@voiceflow/ui';
+import { BaseSelectProps, stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 
-import VariablesInput from '@/components/VariablesInput';
-
-import { Container, InputWrapper } from './components';
+import * as S from './styles';
 
 export enum OrientationType {
   LEFT = 'left',
   RIGHT = 'right',
 }
 
-export interface SelectInputGroupProps {
-  value?: string;
-  onBlur?: (value: string) => void;
-  children: (props: BaseSelectProps) => React.ReactNode;
-  multiline?: boolean;
-  placeholder?: string;
-  orientation?: OrientationType;
-  variablesInput?: boolean;
-  showDropdownColorOnActive?: boolean;
+interface RenderInputProps {
+  leftAction?: React.ReactNode;
+  rightAction?: React.ReactNode;
 }
 
-const SelectInputGroup: React.FC<SelectInputGroupProps> = ({
-  value,
-  onBlur,
-  children,
-  multiline = false,
-  orientation = OrientationType.RIGHT,
-  placeholder,
-  variablesInput = true,
-}) => {
-  const inputRef = React.useRef<{ focus: VoidFunction }>(null);
+interface RenderInput {
+  (props: RenderInputProps): React.ReactElement;
+}
 
-  const [text, setText] = useLinkedState(value ?? '');
+export interface SelectInputGroupProps {
+  children: (props: BaseSelectProps) => React.ReactNode;
+  multiline?: boolean;
+  renderInput: RenderInput;
+  orientation?: OrientationType;
+}
 
-  const input = (
-    <InputWrapper>
-      {variablesInput ? (
-        <VariablesInput
-          ref={(ref) => setRef(inputRef, ref)}
-          value={text}
-          onBlur={({ text }) => onBlur?.(text)}
-          variant={Input.Variant.INLINE}
-          multiline={multiline}
-          placeholder={placeholder}
-        />
-      ) : (
-        <Input
-          ref={(ref) => setRef(inputRef, ref)}
-          value={text}
-          onBlur={() => onBlur?.(text)}
-          variant={Input.Variant.INLINE}
-          placeholder={placeholder}
-          onChangeText={setText}
-        />
-      )}
-    </InputWrapper>
-  );
+const SelectInputGroup: React.FC<SelectInputGroupProps> = ({ children, multiline, renderInput, orientation = OrientationType.RIGHT }) => {
+  const isLeft = orientation === OrientationType.LEFT;
 
-  return (
-    <Container variablesInput={variablesInput} onClick={() => inputRef.current?.focus()} multiline={multiline}>
-      {orientation === OrientationType.LEFT && input}
-
+  const child = (
+    <S.SelectContainer isLeft={isLeft} onClick={stopPropagation()}>
       {children({
         inline: true,
         minWidth: false,
+        autoWidth: false,
         borderLess: true,
-        showDropdownColorOnActive: false,
+        isSecondaryInput: true,
+        showDropdownColorOnActive: true,
       })}
+    </S.SelectContainer>
+  );
 
-      {orientation === OrientationType.RIGHT && input}
-    </Container>
+  return (
+    <S.InputContainer isLeft={isLeft} multiline={multiline}>
+      {renderInput({
+        leftAction: isLeft ? child : undefined,
+        rightAction: isLeft ? undefined : child,
+      })}
+    </S.InputContainer>
   );
 };
 
-export default SelectInputGroup;
+export default Object.assign(SelectInputGroup, { OrientationType });

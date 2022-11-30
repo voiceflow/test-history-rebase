@@ -50,6 +50,7 @@ export interface TextEditorProps {
   disabled?: boolean;
   autoFocus?: boolean;
   iconProps?: Omit<SvgIconTypes.Props, 'icon'>;
+  leftAction?: React.ReactNode;
   placeholder?: string;
   rightAction?: React.ReactNode;
   pluginsTypes?: PluginType[];

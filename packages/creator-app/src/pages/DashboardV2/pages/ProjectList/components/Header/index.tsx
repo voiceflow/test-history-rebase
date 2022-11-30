@@ -15,7 +15,7 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ onSearch }) => {
-  const collaboratorsModal = ModalsV2.useModal(ModalsV2.Collaborators);
+  const workspaceMembers = ModalsV2.useModal(ModalsV2.Workspace.Members);
   const projectCreateModal = ModalsV2.useModal(ModalsV2.Project.Create);
   const [canImportProject] = usePermission(Permission.IMPORT_PROJECT);
   const [canInviteMembers] = usePermission(Permission.INVITE);
@@ -39,7 +39,7 @@ const Header: React.FC<HeaderProps> = ({ onSearch }) => {
 
         {canInviteMembers && (
           <div style={{ marginRight: '10px' }}>
-            <Button variant={Button.Variant.SECONDARY} squareRadius onClick={() => collaboratorsModal.openVoid()}>
+            <Button variant={Button.Variant.SECONDARY} squareRadius onClick={() => workspaceMembers.openVoid()}>
               Invite
             </Button>
           </div>

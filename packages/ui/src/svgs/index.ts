@@ -91,12 +91,15 @@ export { default as editorExit } from './editor-exit.svg';
 export { default as editorURL } from './editor-url.svg';
 export { default as ellipsis } from './ellipsis.svg';
 export { default as else } from './else.svg';
+export { default as email } from './email.svg';
 export { default as emptyCheckbox } from './empty.svg';
 export { default as error } from './error.svg';
 export { default as eventV2 } from './event-v2.svg';
 export { default as exitFullscreen } from './exit-fullscreen.svg';
 export { default as expand } from './expand.svg';
 export { default as export } from './export.svg';
+export { default as itemAdd } from './expression-add.svg';
+export { default as itemMinus } from './expression-minus.svg';
 export { default as eye } from './eye.svg';
 export { default as eyeHide } from './eye-hide.svg';
 
@@ -120,8 +123,6 @@ export { default as googleSheets } from './google-sheets.svg';
 export { default as globe } from './images/globe.svg';
 
 // i
-export { default as itemAdd } from './expression-add.svg';
-export { default as itemMinus } from './expression-minus.svg';
 export { default as if } from './if.svg';
 export { default as ifV2 } from './if-v2.svg';
 export { default as image } from './image.svg';
@@ -270,7 +271,7 @@ export { default as upgrade } from './upgrade.svg';
 export { default as upload } from './upload.svg';
 export { default as uploadCircle } from './upload-circle.svg';
 export { default as user } from './user.svg';
-export { default as user2 } from './user-2.svg';
+export { default as userConversation } from './user-conversation.svg';
 
 // v
 export { default as variable } from './var.svg';

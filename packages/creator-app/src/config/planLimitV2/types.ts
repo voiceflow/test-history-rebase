@@ -5,22 +5,25 @@ import type { UpgradeModal } from '@/ModalsV2/modals/Upgrade';
 
 interface RendererProps {
   limit: number;
+  increasableLimit?: number;
 }
 
-interface BaseValueLimit {
-  value: number;
+export interface BaseLimit {
+  limit: number;
 }
 
 export interface ToastErrorDynamicLimit {
   getToastError: (props: RendererProps) => React.ReactNode;
+  increasableLimit?: number;
 }
 
-export interface ToastErrorValueLimit extends ToastErrorDynamicLimit, BaseValueLimit {}
+export interface ToastErrorStaticLimit extends BaseLimit, ToastErrorDynamicLimit {}
 
 export interface UpgradeModalDynamicLimit {
   getUpgradeModal: (props: RendererProps) => UpgradeModal;
+  increasableLimit?: number;
 }
 
-export interface UpgradeModalValueLimit extends UpgradeModalDynamicLimit, BaseValueLimit {}
+export interface UpgradeModalStaticLimit extends BaseLimit, UpgradeModalDynamicLimit {}
 
 export type PlanLimit<Limit> = Partial<Record<PlanType, Limit>>;

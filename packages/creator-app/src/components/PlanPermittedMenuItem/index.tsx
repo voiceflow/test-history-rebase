@@ -10,10 +10,10 @@ import { usePlanPermission } from '@/hooks';
 
 import * as S from './styles';
 
-interface PlanPermittedMenuItemProps {
+interface PlanPermittedMenuItemProps<P extends PlanPermissionKey> {
   label: React.ReactNode;
   isFocused?: boolean;
-  permission: PlanPermissionKey | null;
+  permission: P | null;
   popperProps?: UpgradePopperProps['popperProps'];
   upgradePrompt: UpgradePrompt;
   tooltipProps?: UpgradeTooltipProps['tooltipProps'];
@@ -26,19 +26,11 @@ interface UnknownData {
   data?: unknown;
 }
 
-type PlanPermissionWithTooltip<P extends PlanPermissionKey> = NonNullable<PlanPermissions[P][PlanType]> extends UpgradeTooltipPermission<any>
-  ? P
-  : never;
-
-type TooltipPlanPermissions = PlanPermissionWithTooltip<PlanPermissionKey>;
-
-type PlanPermissionDataProps<P extends TooltipPlanPermissions> = NonNullable<PlanPermissions[P][PlanType]> extends UpgradeTooltipPermission<
-  infer Data
->
+type PlanPermissionDataProps<P extends PlanPermissionKey> = NonNullable<PlanPermissions[P][PlanType]> extends UpgradeTooltipPermission<infer Data>
   ? { data: Data }
   : UnknownData;
 
-const PlanPermittedMenuItem = <P extends TooltipPlanPermissions>({
+const PlanPermittedMenuItem = <P extends PlanPermissionKey>({
   data,
   label,
   isFocused,
@@ -47,7 +39,7 @@ const PlanPermittedMenuItem = <P extends TooltipPlanPermissions>({
   tooltipProps,
   labelTooltip,
   upgradePrompt,
-}: PlanPermittedMenuItemProps & PlanPermissionDataProps<P>): React.ReactElement => {
+}: PlanPermittedMenuItemProps<P> & PlanPermissionDataProps<P>): React.ReactElement => {
   const planPermission = usePlanPermission(permission);
 
   const labelElement = <S.Label fullWidth>{label}</S.Label>;
@@ -65,9 +57,9 @@ const PlanPermittedMenuItem = <P extends TooltipPlanPermissions>({
     labelElement
   );
 
-  if (!planPermission) return <S.Container>{labelWithTooltip}</S.Container>;
+  if (!planPermission || !('getUpgradeTooltip' in planPermission)) return <S.Container>{labelWithTooltip}</S.Container>;
 
-  const popper = planPermission.getUpgradePopper?.(data as any);
+  const popper = 'getUpgradePopper' in planPermission && planPermission.getUpgradePopper(data as any);
   const tooltip = planPermission.getUpgradeTooltip(data as any);
 
   const content = (

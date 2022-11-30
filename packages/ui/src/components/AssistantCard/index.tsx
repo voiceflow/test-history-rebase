@@ -26,6 +26,7 @@ import {
 
 export interface AssistantCardProps {
   title?: string;
+  hasTitleComponent?: boolean;
   status?: string;
   members?: UserData[];
   image?: Nullable<string>;
@@ -47,6 +48,7 @@ const AssistantCard: React.FC<AssistantCardProps> = ({
   iconColor,
   image,
   title,
+  hasTitleComponent,
   status,
   members,
   options,
@@ -66,7 +68,7 @@ const AssistantCard: React.FC<AssistantCardProps> = ({
           <StyledLink onClick={onClickLink} />
           <Box.Flex zIndex={100}>
             <Box.Flex flexDirection="row">
-              {children || (
+              {(children && !hasTitleComponent) || (
                 <>
                   <Button onClick={onClickCTA} variant={Button.Variant.PRIMARY} squareRadius style={{ marginRight: isViewer ? 0 : 10 }}>
                     {isViewer ? 'View' : 'Designer'}
@@ -101,7 +103,8 @@ const AssistantCard: React.FC<AssistantCardProps> = ({
         )}
       </CardContainer>
       <InfoContainer>
-        <Title>{title}</Title>
+        {title && !hasTitleComponent && <Title>{title}</Title>}
+        {hasTitleComponent && children}
         <SubTitle>
           <Status>{status}</Status>
           {members && (

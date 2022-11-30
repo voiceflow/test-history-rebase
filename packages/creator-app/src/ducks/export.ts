@@ -17,10 +17,10 @@ import { jsonToCSV } from '@/utils/files';
 import * as Sentry from '@/vendors/sentry';
 
 export const exportCanvas =
-  (type: ExportFormat): Thunk =>
+  (type: ExportFormat, version?: string): Thunk =>
   async (_, getState) => {
     const state = getState();
-    const versionID = Session.activeVersionIDSelector(state);
+    const versionID = version || Session.activeVersionIDSelector(state);
     const diagramID = CreatorV2.activeDiagramIDSelector(state);
 
     Errors.assertVersionID(versionID);

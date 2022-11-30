@@ -9,7 +9,8 @@ import { ConfirmProps } from '@/components/ConfirmModal';
 import * as Errors from '@/config/errors';
 import { Permission } from '@/config/permissions';
 import { LimitType } from '@/config/planLimitV2';
-import { ALEXA_SUNSET_PROJECT_ID, ModalType } from '@/constants';
+import { ALEXA_SUNSET_PROJECT_ID, ExportFormat as CanvasExportFormat, ModalType } from '@/constants';
+import * as Export from '@/ducks/export';
 import * as Project from '@/ducks/project';
 import * as ProjectList from '@/ducks/projectList';
 import * as ProjectV2 from '@/ducks/projectV2';
@@ -99,6 +100,7 @@ export const useProjectOptions = ({
   projectName,
   onDuplicated,
   withConvertToDomain = false,
+  v2 = false,
 }: {
   boardID?: string;
   onRename?: () => void;
@@ -109,6 +111,7 @@ export const useProjectOptions = ({
   projectName?: string | null;
   onDuplicated?: () => void;
   withConvertToDomain?: boolean;
+  v2?: boolean;
   // eslint-disable-next-line sonarjs/cognitive-complexity
 }): Nullable<MenuTypes.Option>[] => {
   const sharePopper = React.useContext(SharePopperContext);
@@ -128,11 +131,13 @@ export const useProjectOptions = ({
   const goToSettings = useDispatch(Router.goToSettings);
   const duplicateProject = useDispatch(Workspace.duplicateProject);
   const updateProjectPrivacy = useDispatch(Project.updateProjectPrivacy);
+  const exportCanvas = useDispatch(Export.exportCanvas);
 
   const convertModal = ModalsV2.useModal(ModalsV2.Domain.Convert);
   const loadingModal = ModalsV2.useModal(ModalsV2.Loading);
   const upgradeModal = ModalsV2.useModal(ModalsV2.Upgrade);
   const projectDownloadModal = ModalsV2.useModal(ModalsV2.Project.Download);
+  const accessModal = ModalsV2.useModal(ModalsV2.AssistantAccess);
 
   const onDelete = useDeleteProject({ boardID, projectID, projectName });
 
@@ -205,18 +210,43 @@ export const useProjectOptions = ({
     convertModal.openVoid({ sourceProjectID: projectID });
   };
 
+  const onExport = async () => {
+    trackingEvents.trackExportButtonClick({ format: CanvasExportFormat.VF });
+
+    await exportCanvas(CanvasExportFormat.VF, versionID);
+  };
+
   const targetVersionID = versionID || currentVersionID;
-  const withInviteOption = withInvite && canAddCollaborators && sharePopper;
+  const withInviteOption = withInvite && canAddCollaborators && ((v2 && accessModal) || sharePopper);
   const withDeleteOption = withDelete && canManageProjects;
   const withExportOption = canExportProject && sharePopper;
   const withRenameOption = canManageProjects && onRename;
   const withHistoryOption = canManageProjects && targetVersionID;
   const withSettingsOption = canEditProject && targetVersionID;
 
+  if (v2) {
+    return [
+      withRenameOption ? { label: 'Rename', onClick: onRename } : null,
+      canManageProjects ? { label: 'Duplicate', onClick: onDuplicate } : null,
+      canManageProjects ? { label: 'Download', onClick: onExport } : null,
+      canManageProjects ? { label: 'Copy clone link', onClick: onClone } : null,
+      canManageProjects && withConvertToDomain ? { label: 'Convert to domain', onClick: onCovertToDomain } : null,
+
+      withSettingsOption ? { label: 'divider 1', divider: true } : null,
+      withInviteOption ? { label: 'Manage access', onClick: () => accessModal.openVoid() } : null,
+
+      withSettingsOption ? { label: 'Settings', onClick: () => goToSettings(targetVersionID) } : null,
+
+      withDeleteOption ? { label: 'divider-2', divider: true } : null,
+
+      withDeleteOption ? { label: 'Delete', onClick: onDelete } : null,
+    ];
+  }
+
   return [
     withHistoryOption ? { label: 'Version history', onClick: () => goToVersions(targetVersionID) } : null,
     withSettingsOption ? { label: 'Project settings', onClick: () => goToSettings(targetVersionID) } : null,
-    withInviteOption ? { key: 'invite', label: 'Invite collaborators', onClick: () => sharePopper.open(ShareProjectTab.INVITE) } : null,
+    withInviteOption ? { key: 'invite', label: 'Invite collaborators', onClick: () => sharePopper?.open(ShareProjectTab.INVITE) } : null,
     withExportOption ? { label: 'Export as...', onClick: () => sharePopper.open(ShareProjectTab.EXPORT) } : null,
 
     withHistoryOption || withSettingsOption || withInviteOption || withExportOption ? { label: 'divider 1', divider: true } : null,

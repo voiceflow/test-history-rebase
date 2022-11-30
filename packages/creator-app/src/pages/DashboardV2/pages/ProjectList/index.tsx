@@ -40,21 +40,23 @@ const ProjectList: React.FC<ProjectListProps> = () => {
           onClick={() => {}}
           p="0px 16px 32px"
         />
-
-        {projects.map((item) => (
-          <S.Item key={item.id}>
-            <AssistantCard
-              onClickCTA={() => goToCanvasWithVersionID(item.versionID)}
-              onClickLink={() => goToAssistantOverview(item.versionID)}
-              projectType={item.type}
-              platformType={item.platform}
-              userRole={UserRole.OWNER}
-              status="Active"
-              image={item.image}
-              title={item.name}
-            />
-          </S.Item>
-        ))}
+        {projects.map(
+          (item) =>
+            item && (
+              <S.Item key={item?.id}>
+                <AssistantCard
+                  onClickCTA={() => goToCanvasWithVersionID(item.versionID)}
+                  onClickLink={() => goToAssistantOverview(item.versionID)}
+                  projectType={item?.type}
+                  platformType={item?.platform}
+                  userRole={UserRole.OWNER}
+                  status="Active"
+                  image={item?.image}
+                  project={item}
+                />
+              </S.Item>
+            )
+        )}
 
         <S.Footer>
           <S.Title>Start with a template</S.Title>

@@ -22,7 +22,7 @@ import { Query } from '@/models';
 import * as QueryUtil from '@/utils/query';
 import * as GoogleAnalytics from '@/vendors/googleAnalytics';
 
-import { MIN_PASSWORD_LENGTH, SSO_REQUIRED } from '../constants';
+import { MIN_PASSWORD_LENGTH } from '../constants';
 import { replaceSpaceWithPlus } from '../utils';
 import { AuthBox } from './AuthBoxes';
 import AuthenticationContainer from './AuthenticationContainer';
@@ -144,7 +144,8 @@ export const SignupForm: React.FC<SignupFormProps> = ({ promo, query }) => {
 
               {isSaml && (
                 <Box mt={8} fontSize={13} color={ThemeColor.RED}>
-                  {SSO_REQUIRED}
+                  Your email domain is part of an enterprise SSO identity provider. Enter your email on the{' '}
+                  <ClickableText onClick={onGoToLogin}>log in page</ClickableText> to continue.
                 </Box>
               )}
             </InputContainer>

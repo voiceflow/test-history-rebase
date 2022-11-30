@@ -351,13 +351,13 @@ export const signup =
   };
 
 export const googleLogin = (): Thunk => async () => {
-  const url = await client.auth.v1.sso.getGoogleLoginURL(`${CREATOR_APP_ENDPOINT}${Path.LOGIN_SSO_CALLBACK}`);
+  const url = await client.auth.v1.sso.getGoogleLoginURL(`${CREATOR_APP_ENDPOINT}${Path.LOGIN_SSO_CALLBACK}${window.location.search}`);
 
   window.location.assign(url);
 };
 
 export const facebookLogin = (): Thunk => async () => {
-  const url = await client.auth.v1.sso.getFacebookLoginURL(`${CREATOR_APP_ENDPOINT}${Path.LOGIN_SSO_CALLBACK}`);
+  const url = await client.auth.v1.sso.getFacebookLoginURL(`${CREATOR_APP_ENDPOINT}${Path.LOGIN_SSO_CALLBACK}${window.location.search}`);
 
   window.location.assign(url);
 };
@@ -370,7 +370,9 @@ export const getSamlLoginURL =
     if (!Utils.emails.isValidEmail(email)) return null;
 
     if (isIdentityUserEnabled) {
-      return client.auth.v1.sso.getSaml2LoginURL(email, `${CREATOR_APP_ENDPOINT}${Path.LOGIN_SSO_CALLBACK}`).catch(() => null);
+      return client.auth.v1.sso
+        .getSaml2LoginURL(email, `${CREATOR_APP_ENDPOINT}${Path.LOGIN_SSO_CALLBACK}${window.location.search}`)
+        .catch(() => null);
     }
 
     const domain = Utils.emails.getEmailDomain(email);

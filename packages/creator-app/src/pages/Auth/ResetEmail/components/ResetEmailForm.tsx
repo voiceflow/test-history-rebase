@@ -8,7 +8,6 @@ import { useDispatch } from '@/hooks';
 import HeaderBox from '@/pages/Auth/components/HeaderBox';
 
 import { EmailInput } from '../../components';
-import { SSO_REQUIRED } from '../../constants';
 import { ResetEmailStage } from '../constants';
 
 export interface ResetEmailFormProps {
@@ -57,7 +56,8 @@ const ResetEmailForm: React.FC<ResetEmailFormProps> = ({ email, setEmail, setSta
 
       {isSaml && (
         <Box mt={8} fontSize={13} color={ThemeColor.RED}>
-          {SSO_REQUIRED}
+          Your email domain is part of an enterprise SSO identity provider. Enter your email on the{' '}
+          <ClickableText onClick={() => goToLogin()}>log in page</ClickableText> to continue.
         </Box>
       )}
 

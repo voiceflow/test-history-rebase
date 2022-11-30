@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.192.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.191.0...@voiceflow/ui@1.192.0) (2022-11-30)
+
+
+### Features
+
+* implement new invite modals (CT-1213) ([#6360](https://github.com/voiceflow/creator-app/issues/6360)) ([2fa7d61](https://github.com/voiceflow/creator-app/commit/2fa7d6145ae2d709a645cf08f444c94fbbc31c43))
+
+
+
+
+
 # [1.191.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.190.1...@voiceflow/ui@1.191.0) (2022-11-29)
 
 

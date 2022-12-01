@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1002.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1002.1...@voiceflow/creator-app@1.1002.2) (2022-12-01)
+
+
+### Bug Fixes
+
+* remove combined node editor ui and redirect to first step (CT-1180) ([#6371](https://github.com/voiceflow/creator-app/issues/6371)) ([5b9b60d](https://github.com/voiceflow/creator-app/commit/5b9b60d86bdcc4912b2181cdad9d20764ed83e6b))
+
+
+
+
+
 ## [1.1002.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1002.0...@voiceflow/creator-app@1.1002.1) (2022-12-01)
 
 

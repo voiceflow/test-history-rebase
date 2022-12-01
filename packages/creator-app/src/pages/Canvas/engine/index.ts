@@ -156,10 +156,10 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
 
   get context() {
     return {
-      workspaceID: this.select(Session.activeWorkspaceIDSelector)!,
       projectID: this.select(Session.activeProjectIDSelector)!,
       versionID: this.select(Session.activeVersionIDSelector)!,
       diagramID: this.getDiagramID()!,
+      workspaceID: this.select(Session.activeWorkspaceIDSelector)!,
     };
   }
 
@@ -553,7 +553,7 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
 
   focusDiagramNode(diagramID: string | null, nodeID: string) {
     if (!diagramID || this.getDiagramID() === diagramID) {
-      this.focusNode(nodeID, { open: true });
+      this.focusNode(nodeID, { open: true, focusOnStep: true });
     } else {
       this.store.dispatch(Router.goToDiagram(diagramID, nodeID));
     }

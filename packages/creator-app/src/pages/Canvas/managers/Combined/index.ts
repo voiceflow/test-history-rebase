@@ -14,7 +14,7 @@ const CombinedManager: BaseNodeManagerConfig<Realtime.NodeData.Combined> = {
 
   icon: 'goToBlock',
 
-  editor: CombinedEditor,
+  editorV2: CombinedEditor,
 };
 
 export default CombinedManager;

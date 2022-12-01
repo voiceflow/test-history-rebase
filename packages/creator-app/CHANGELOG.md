@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1002.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1002.0...@voiceflow/creator-app@1.1002.1) (2022-12-01)
+
+
+### Bug Fixes
+
+* [bugfix] adds NLU table separator lines (NLU-511) ([#6374](https://github.com/voiceflow/creator-app/issues/6374)) ([d02d0d4](https://github.com/voiceflow/creator-app/commit/d02d0d4e42b66f893cefd8298c8de06d522f409f))
+
+
+
+
+
 # [1.1002.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1001.1...@voiceflow/creator-app@1.1002.0) (2022-11-30)
 
 

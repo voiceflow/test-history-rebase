@@ -10,7 +10,14 @@ import * as ProjectV2 from '@/ducks/projectV2';
 import { lazy } from '@/hocs';
 import { useAlexaProjectSettings, useFeature, usePermission, useSelector } from '@/hooks';
 import ProjectPage from '@/pages/Project/components/ProjectPage';
-import { isAlexaPlatform, isDialogflowPlatform, isGooglePlatform, isWebChatPlatform, isWhatsAppPlatform } from '@/utils/typeGuards';
+import {
+  isAlexaPlatform,
+  isDialogflowPlatform,
+  isGooglePlatform,
+  isMicrosoftTeamsPlatform,
+  isWebChatPlatform,
+  isWhatsAppPlatform,
+} from '@/utils/typeGuards';
 
 const PublishAmazon = lazy(() => import('./Amazon'));
 const PublishGoogle = lazy(() => import('./Google'));
@@ -18,6 +25,7 @@ const PublishDialogflow = lazy(() => import('./Dialogflow'));
 const PublishWebchat = lazy(() => import('./Webchat'));
 const PublishWhatsApp = lazy(() => import('./WhatsApp'));
 const TestWhatsApp = lazy(() => import('./WhatsApp/test'));
+const PublishTeams = lazy(() => import('./MicrosoftTeams'));
 const Export = lazy(() => import('./Export'));
 const API = lazy(() => import('./API'));
 
@@ -37,6 +45,7 @@ const Publish: React.FC = () => {
         {isWebChatPlatform(platform) && <Route path={Path.PUBLISH_WEBCHAT} component={PublishWebchat} />}
         {isWhatsAppPlatform(platform) && <Route path={Path.PUBLISH_WHATSAPP} component={PublishWhatsApp} />}
         {isWhatsAppPlatform(platform) && <Route path={Path.TEST_WHATSAPP} component={TestWhatsApp} />}
+        {isMicrosoftTeamsPlatform(platform) && <Route path={Path.PUBLISH_TEAMS} component={PublishTeams} />}
 
         <Route path={Path.PUBLISH_API} component={API} />
 

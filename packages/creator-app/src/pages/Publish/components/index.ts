@@ -2,7 +2,9 @@ import { Box, BoxFlex, BoxFlexCenter } from '@voiceflow/ui';
 
 import { styled } from '@/hocs';
 
+export { default as PublishBanner } from './PublishBanner';
 export { default as Section } from './Section';
+export { default as WebhookField } from './WebhookField';
 
 export const FlatCard = styled(Box)`
   padding: 24px 32px;
@@ -30,4 +32,12 @@ export const ActionContainer = styled.div`
   & > div {
     float: right;
   }
+`;
+
+export const SettingsContainer = styled(Box.Flex)`
+  flex-direction: column;
+  margin: 20px 32px;
+  height: 100%;
+  overflow-y: scroll;
+  max-width: 700px;
 `;

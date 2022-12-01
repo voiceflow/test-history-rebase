@@ -1,14 +1,12 @@
 import { ProjectSecretTag } from '@voiceflow/schema-types';
-import { Box, Button, FullSpinner, ThemeColor, toast } from '@voiceflow/ui';
+import { Box, Button, FullSpinner, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';
 import PhoneInput, { formatPhoneNumber, isValidPhoneNumber, PhoneNumber } from '@/components/PhoneInput';
 import * as Session from '@/ducks/session';
 import { useAsyncEffect, useSelector } from '@/hooks';
-import { Section } from '@/pages/Publish/components';
-
-import { BannerSection, SettingsContainer } from '../styled';
+import { PublishBanner, Section, SettingsContainer } from '@/pages/Publish/components';
 
 const WhatsAppTesting: React.FC = () => {
   const [loading, setLoading] = React.useState(true);
@@ -46,17 +44,11 @@ const WhatsAppTesting: React.FC = () => {
 
   return (
     <SettingsContainer>
-      <BannerSection>
-        <Box.FlexApart>
-          <div>
-            <Box fontWeight={700} fontSize={18} color={ThemeColor.PRIMARY} mb={2}>
-              Test Your Assistant on Whatsapp
-            </Box>
-            Add your number and start testing with a single click.
-          </div>
-          <Button>Documentation</Button>
-        </Box.FlexApart>
-      </BannerSection>
+      <PublishBanner
+        title="Test Your Assistant on WhatsApp"
+        description="Add your number and start testing with a single click."
+        docUrl="https://www.voiceflow.com/"
+      />
       <Section title="Testing Number">
         <Box mb={12} fontWeight={600}>
           WhatsApp Number

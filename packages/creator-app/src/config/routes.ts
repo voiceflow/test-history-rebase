@@ -66,6 +66,7 @@ export enum PublishRoute {
   WEBCHAT = 'webchat',
   WHATSAPP = 'whatsapp',
   TEST_WHATSAPP = 'test/whatsapp',
+  MICROSOFT_TEAMS = 'ms-teams',
 }
 
 export enum ToolsRoute {
@@ -271,6 +272,8 @@ export const Path = {
 
   PUBLISH_WHATSAPP: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.WHATSAPP),
   TEST_WHATSAPP: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.TEST_WHATSAPP),
+
+  PUBLISH_TEAMS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.MICROSOFT_TEAMS),
 
   PROTOTYPE_WEBHOOK: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PROTOTYPE_WEBHOOK),
 };

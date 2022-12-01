@@ -9,6 +9,7 @@ export const {
   isMarkupBlockType,
   isChatProjectType,
   isWhatsAppPlatform,
+  isMicrosoftTeamsPlatform,
   isVoiceProjectType,
   isVoiceflowPlatform,
   isInternalBlockType,

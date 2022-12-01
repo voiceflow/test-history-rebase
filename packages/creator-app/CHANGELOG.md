@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1004.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1003.0...@voiceflow/creator-app@1.1004.0) (2022-12-01)
+
+
+### Features
+
+* fix divider render issue (CT-000) ([#6375](https://github.com/voiceflow/creator-app/issues/6375)) ([06c544c](https://github.com/voiceflow/creator-app/commit/06c544c967a3b91bf44b224f794ae955955b6e2f))
+
+
+
+
+
 # [1.1003.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1002.2...@voiceflow/creator-app@1.1003.0) (2022-12-01)
 
 

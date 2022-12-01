@@ -12,13 +12,17 @@ const Table = <T extends T.Item>({ items, empty, header, renderRow, hideLastDivi
       <Container>
         {header}
 
-        {items.map((item, index) => (
-          <React.Fragment key={item.id}>
-            {renderRow({ item, index, isLast: index === items.length - 1, isFirst: index === 0 })}
+        {items.map((item, index) => {
+          const isLast = index === items.length - 1;
 
-            <Divider height={hideLastDivider && index !== items.length - 1 ? 1 : 0} offset={0} isSecondaryColor={index !== items.length - 1} />
-          </React.Fragment>
-        ))}
+          return (
+            <React.Fragment key={item.id}>
+              {renderRow({ item, index, isLast, isFirst: index === 0 })}
+
+              {hideLastDivider && isLast ? null : <Divider offset={0} isSecondaryColor={index !== items.length - 1} />}
+            </React.Fragment>
+          );
+        })}
       </Container>
     ) : (
       <S.EmptyContainer>{empty}</S.EmptyContainer>

@@ -1,5 +1,5 @@
 import * as Platform from '@voiceflow/platform-config';
-import { ContextMenu, Table, TableTypes } from '@voiceflow/ui';
+import { ContextMenu, Divider, Table, TableTypes } from '@voiceflow/ui';
 import React from 'react';
 
 import { InteractionModelTabType } from '@/constants';
@@ -21,15 +21,18 @@ const Row: React.FC<TableTypes.ConfigurableRowProps<Platform.Base.Models.Intent.
   return (
     <ContextMenu options={options} selfDismiss>
       {({ isOpen, onContextMenu }) => (
-        <Table.Row
-          active={isOpen || isActiveItem}
-          onClick={() => nluManager.toggleActiveItemID(item.id)}
-          onMouseEnter={onMouseEnter}
-          onMouseLeave={onMouseLeave}
-          onContextMenu={onContextMenu}
-        >
-          {children}
-        </Table.Row>
+        <>
+          <Table.Row
+            active={isOpen || isActiveItem}
+            onClick={() => nluManager.toggleActiveItemID(item.id)}
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
+            onContextMenu={onContextMenu}
+          >
+            {children}
+          </Table.Row>
+          <Divider offset={0} isSecondaryColor />
+        </>
       )}
     </ContextMenu>
   );

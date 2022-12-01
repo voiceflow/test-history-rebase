@@ -1,5 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { ContextMenu, Table, TableTypes } from '@voiceflow/ui';
+import { ContextMenu, Divider, Table, TableTypes } from '@voiceflow/ui';
 import React from 'react';
 
 import { InteractionModelTabType } from '@/constants';
@@ -18,15 +18,18 @@ const Row: React.FC<TableTypes.ConfigurableRowProps<Realtime.Slot>> = ({ item, c
   return (
     <ContextMenu options={options} selfDismiss>
       {({ isOpen, onContextMenu }) => (
-        <Table.Row
-          active={isOpen || item.id === nluManager.activeItemID}
-          onClick={() => nluManager.toggleActiveItemID(item.id)}
-          onMouseLeave={onMouseLeave}
-          onMouseEnter={onMouseEnter}
-          onContextMenu={onContextMenu}
-        >
-          {children}
-        </Table.Row>
+        <>
+          <Table.Row
+            active={isOpen || item.id === nluManager.activeItemID}
+            onClick={() => nluManager.toggleActiveItemID(item.id)}
+            onMouseLeave={onMouseLeave}
+            onMouseEnter={onMouseEnter}
+            onContextMenu={onContextMenu}
+          >
+            {children}
+          </Table.Row>
+          <Divider offset={0} isSecondaryColor />
+        </>
       )}
     </ContextMenu>
   );

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1003.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1002.2...@voiceflow/creator-app@1.1003.0) (2022-12-01)
+
+
+### Features
+
+* added teams config and banner component (PL-328) ([#6373](https://github.com/voiceflow/creator-app/issues/6373)) ([eae4671](https://github.com/voiceflow/creator-app/commit/eae4671716e11171239ee5b39d0fd413029a0b7f))
+
+
+
+
+
 ## [1.1002.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1002.1...@voiceflow/creator-app@1.1002.2) (2022-12-01)
 
 

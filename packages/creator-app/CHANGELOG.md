@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1005.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1005.0...@voiceflow/creator-app@1.1005.1) (2022-12-02)
+
+
+### Bug Fixes
+
+* new training job (PL-000) ([#6376](https://github.com/voiceflow/creator-app/issues/6376)) ([8d94f5d](https://github.com/voiceflow/creator-app/commit/8d94f5d57b0f49aef2a13f537a0dcdb07171df1b))
+
+
+
+
+
 # [1.1005.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1004.0...@voiceflow/creator-app@1.1005.0) (2022-12-02)
 
 

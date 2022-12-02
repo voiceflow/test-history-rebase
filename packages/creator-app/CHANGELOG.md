@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1005.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1004.0...@voiceflow/creator-app@1.1005.0) (2022-12-02)
+
+
+### Features
+
+* transcript context meta can have subset of device, os, browser and still show nicely (PL-296) ([#6381](https://github.com/voiceflow/creator-app/issues/6381)) ([cd84f52](https://github.com/voiceflow/creator-app/commit/cd84f5296d48a49344148710e24de8b3bea13abe))
+
+
+
+
+
 # [1.1004.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1003.0...@voiceflow/creator-app@1.1004.0) (2022-12-01)
 
 

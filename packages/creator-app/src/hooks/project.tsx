@@ -136,8 +136,8 @@ export const useProjectOptions = ({
   const convertModal = ModalsV2.useModal(ModalsV2.Domain.Convert);
   const loadingModal = ModalsV2.useModal(ModalsV2.Loading);
   const upgradeModal = ModalsV2.useModal(ModalsV2.Upgrade);
+  const projectMembersModal = ModalsV2.useModal(ModalsV2.Project.Members);
   const projectDownloadModal = ModalsV2.useModal(ModalsV2.Project.Download);
-  const accessModal = ModalsV2.useModal(ModalsV2.AssistantAccess);
 
   const onDelete = useDeleteProject({ boardID, projectID, projectName });
 
@@ -217,7 +217,7 @@ export const useProjectOptions = ({
   };
 
   const targetVersionID = versionID || currentVersionID;
-  const withInviteOption = withInvite && canAddCollaborators && ((v2 && accessModal) || sharePopper);
+  const withInviteOption = withInvite && canAddCollaborators && ((v2 && projectMembersModal) || sharePopper);
   const withDeleteOption = withDelete && canManageProjects;
   const withExportOption = canExportProject && sharePopper;
   const withRenameOption = canManageProjects && onRename;
@@ -233,7 +233,7 @@ export const useProjectOptions = ({
       canManageProjects && withConvertToDomain ? { label: 'Convert to domain', onClick: onCovertToDomain } : null,
 
       withSettingsOption ? { label: 'divider 1', divider: true } : null,
-      withInviteOption ? { label: 'Manage access', onClick: () => accessModal.openVoid() } : null,
+      withInviteOption ? { label: 'Manage access', onClick: () => projectMembersModal.openVoid() } : null,
 
       withSettingsOption ? { label: 'Settings', onClick: () => goToSettings(targetVersionID) } : null,
 

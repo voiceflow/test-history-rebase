@@ -9,11 +9,15 @@ import Item, { ItemProps } from './Item';
 interface NavItemProps extends Omit<ItemProps, 'onClick' | 'isActive'> {
   to: string;
   exact?: boolean;
+  isActive?: (options: { pathname: string; exact?: boolean; matchPath: typeof matchPath }) => boolean;
 }
 
-const NavItem: React.FC<NavItemProps> = ({ to, exact, ...itemProps }) => {
+const NavItem: React.FC<NavItemProps> = ({ to, exact, isActive: isActiveProp, ...itemProps }) => {
   const location = useLocation();
-  const isActive = !!matchPath(location.pathname, { path: to, exact });
+  const isActive = isActiveProp
+    ? isActiveProp({ exact, matchPath, pathname: location.pathname })
+    : !!matchPath(location.pathname, { path: to, exact });
+
   const goTo = useDispatch(Router.goTo);
 
   return <Item onClick={() => goTo(to)} isActive={isActive} {...itemProps} />;

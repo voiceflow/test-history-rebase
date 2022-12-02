@@ -1,3 +1,4 @@
+import { Nullable } from '@voiceflow/common';
 import React from 'react';
 import { matchPath, useLocation } from 'react-router-dom';
 
@@ -17,10 +18,10 @@ export interface NavLinkSection {
 }
 
 export interface NavLinkSidebarProps {
-  items: (NavLinkItem | NavLinkSection)[];
+  items: Nullable<NavLinkItem | NavLinkSection>[];
 }
 
-const isNavLinkSection = (item: NavLinkItem | NavLinkSection): item is NavLinkSection => 'items' in item;
+const isNavLinkSection = (item: Nullable<NavLinkItem | NavLinkSection>): item is NavLinkSection => !!item && 'items' in item;
 
 const NavLinkSidebar: React.FC<NavLinkSidebarProps> = ({ items }) => {
   const location = useLocation();
@@ -48,9 +49,11 @@ const NavLinkSidebar: React.FC<NavLinkSidebarProps> = ({ items }) => {
             ))}
           </React.Fragment>
         ) : (
-          <Item key={item.key || item.to} {...item}>
-            {item.label}
-          </Item>
+          item && (
+            <Item key={item.key || item.to} {...item}>
+              {item.label}
+            </Item>
+          )
         )
       )}
     </Container>

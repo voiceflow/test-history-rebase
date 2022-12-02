@@ -12,7 +12,7 @@ const Item = styled(NavLink)<ItemProps>`
   ${flexStyles}
 
   width: 100%;
-  height: ${({ theme }) => theme.components.navLinkSidebar.itemHeight}px;
+  height: ${({ theme }) => theme.components.navSidebar.itemHeight}px;
   font-size: 15px;
   letter-spacing: 0.2px;
   color: #132144;

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Header, HeaderLogoButton } from '@/components/ProjectPage';
+import Page from '@/components/Page';
 import { NLURoute } from '@/config/routes';
 import { useNLUManager } from '@/pages/NLUManager/context';
 import { useLogoButtonOptions } from '@/pages/Project/components/Header/hooks';
@@ -21,10 +21,13 @@ const NLUHeader: React.FC = () => {
 
   return (
     <SharePopperProvider>
-      <Header renderLogoButton={() => <HeaderLogoButton options={logoOptions} />} containerStyles={!HeaderContent ? { width: '310px' } : undefined}>
+      <Page.Header
+        renderLogoButton={() => <Page.Header.LogoButton options={logoOptions} />}
+        containerStyles={!HeaderContent ? { width: '310px' } : undefined}
+      >
         <SidebarHeader />
         {HeaderContent && <HeaderContent />}
-      </Header>
+      </Page.Header>
     </SharePopperProvider>
   );
 };

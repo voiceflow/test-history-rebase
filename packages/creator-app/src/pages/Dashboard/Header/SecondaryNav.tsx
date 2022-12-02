@@ -1,5 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Flex, Members } from '@voiceflow/ui';
+import { Box, Members } from '@voiceflow/ui';
 import React from 'react';
 
 import { Permission } from '@/config/permissions';
@@ -29,11 +29,11 @@ const SecondaryNav: React.FC<SecondaryNavProps> = ({ workspace: selectedWorkspac
         />
       </ProjectSearchContainer>
 
-      <Flex>
-        {selectedWorkspace && canViewCollaborators && (
-          <Members members={selectedWorkspace.members} onAdd={canAddCollaborators ? () => collaboratorsModal.openVoid() : undefined} />
-        )}
-      </Flex>
+      {selectedWorkspace && canViewCollaborators && (
+        <Box.Flex ml={22}>
+          <Members.AvatarList members={selectedWorkspace.members} onAdd={canAddCollaborators ? () => collaboratorsModal.openVoid() : undefined} />
+        </Box.Flex>
+      )}
     </>
   );
 };

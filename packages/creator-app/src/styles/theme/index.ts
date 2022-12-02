@@ -3,7 +3,7 @@ import { createTheme } from '@voiceflow/ui';
 import { BLOCK_WIDTH } from './block';
 import BLOCK_STEP_THEME from './blockStep';
 import { ANIMATION_SPEED } from './constants';
-import PROJECT_PAGE from './projectPage';
+import PAGE from './page';
 
 export { ANIMATION_SPEED, BLOCK_WIDTH };
 
@@ -80,7 +80,7 @@ const THEME = createTheme({
     testVariablesSidebar: {
       width: 275,
     },
-    navLinkSidebar: {
+    navSidebar: {
       width: 250,
 
       itemHeight: 32,
@@ -94,7 +94,7 @@ const THEME = createTheme({
     get usedPrototypeDisplayCanvasHeight() {
       return this.header.height;
     },
-    projectPage: PROJECT_PAGE,
+    page: PAGE,
   },
   transition(...propertyWhitelist: string[]): string {
     const properties = propertyWhitelist.length ? propertyWhitelist : ['all'];

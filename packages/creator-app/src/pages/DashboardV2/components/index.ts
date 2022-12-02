@@ -1,2 +1,2 @@
-export { default as AssistantDomainsTable } from './AssistantDomainsTable';
 export { default as Sidebar } from './Sidebar';
+export { default as WorkspaceSelector } from './WorkspaceSelector';

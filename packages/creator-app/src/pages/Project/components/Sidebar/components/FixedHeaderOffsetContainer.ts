@@ -3,7 +3,7 @@ import { styled } from '@/hocs';
 const HeaderOffsetContainer = styled.div`
   position: absolute;
   left: 0;
-  top: ${({ theme }) => theme.components.projectPage.header.height}px;
+  top: ${({ theme }) => theme.components.page.header.height}px;
   bottom: 0;
 `;
 

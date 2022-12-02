@@ -1,59 +1,18 @@
 import { BaseModels } from '@voiceflow/base-types';
-import { AssistantCard, AssistantCardProps } from '@voiceflow/ui';
+import * as Platform from '@voiceflow/platform-config';
+import { AssistantCard, Box } from '@voiceflow/ui';
 import React from 'react';
-import { generatePath } from 'react-router-dom';
 
-import { Path } from '@/config/routes';
-import * as Router from '@/ducks/router';
-import { useActiveWorkspace, useDispatch } from '@/hooks';
-import { DashboardClassName } from '@/styles/constants';
+import Page from '@/components/Page';
+import * as ProjectV2 from '@/ducks/projectV2';
+import * as WorkspaceV2 from '@/ducks/workspaceV2';
+import { VersionSubscriptionGate } from '@/gates';
+import { withBatchLoadingGate } from '@/hocs';
+import { useProjectOptions, useSelector } from '@/hooks';
 
 import { Sidebar } from '../../components';
-import AssistantDomainsTable from '../../components/AssistantDomainsTable';
-import { BodyWrapper, ContentWrapper, DashboardWrapper } from '../../components/styles';
-import Header from './components/Header';
-import * as S from './styles';
-
-const props = {
-  members: [
-    {
-      name: 'Mark Doe',
-      image: '697986|EEF0F1',
-      creator_id: 853632,
-    },
-    {
-      name: 'Ronny Doe',
-      image: '5891FB|EFF5FF',
-      creator_id: 85362,
-    },
-    {
-      name: 'John Doe',
-      image: 'https://cm4-production-assets.s3.amazonaws.com/1667444778988-screen-shot-2022-11-03-at-00.06.09.png',
-      creator_id: 98226,
-    },
-    {
-      name: 'Filipe Merker',
-      image: 'https://avatars.githubusercontent.com/u/9748039?s=400&u=ce4d00fa41942fdd0b3fd4cf6fd711efb8238b89&v=4',
-      creator_id: 85363,
-    },
-  ],
-  options: [
-    { label: 'Rename', onClick: () => {} },
-    { label: 'Duplicate', onClick: () => {} },
-    { label: 'Download (.vf)', onClick: () => {} },
-    { label: 'Copy clone link', onClick: () => {} },
-    { label: 'Convert to domain', onClick: () => {} },
-    { label: 'divider', divider: true },
-    { label: 'Manage access', onClick: () => {} },
-    { label: 'Settings', onClick: () => {} },
-    { label: 'divider', divider: true },
-    { label: 'Delete', onClick: () => {} },
-  ],
-  title: 'Acme Chatbot',
-  icon: 'googleAssistant',
-  userRole: 'owner',
-  status: 'Edited 4 hours ago',
-} as AssistantCardProps;
+import { getProjectStatusAndMembers } from '../../utils';
+import { DomainsTable, Header } from './components';
 
 export const domains = [
   {
@@ -105,31 +64,43 @@ export const domains = [
 ];
 
 const AssistantOverview: React.FC = () => {
-  const workspace = useActiveWorkspace();
-  const workspaceID = workspace?.id;
-  const goTo = useDispatch(Router.goTo);
+  const project = useSelector(ProjectV2.active.projectSelector);
+  const userRole = useSelector(WorkspaceV2.active.userRoleSelector);
+  const activeViewers = useSelector(ProjectV2.active.allAwarenessViewersSelector);
+  const getMemberByIDSelector = useSelector(WorkspaceV2.active.getMemberByIDSelector);
+
+  const projectTypeConfig = Platform.Config.getTypeConfig({ type: project?.type, platform: project?.platform });
+
+  const projectOptions = useProjectOptions({
+    v2: true,
+    projectID: project?.id,
+    versionID: project?.versionID,
+    withInvite: true,
+    projectName: project?.name,
+    withConvertToDomain: true,
+  });
 
   return (
-    <DashboardWrapper id="app" className={DashboardClassName.DASHBOARD}>
-      <BodyWrapper>
-        <Sidebar />
-        <ContentWrapper>
-          <Header workspace={workspace!} title="ACME chat assistant" onBackButtonClick={() => goTo(generatePath(Path.WORKSPACE, { workspaceID }))} />
-          <S.AssistantOverviewWrapper>
-            <S.Item>
-              <AssistantCard
-                {...props}
-                status="Active"
-                image="https://cm4-production-assets.s3.amazonaws.com/1667337752059-screen-shot-2022-11-01-at-18.22.20.png"
-                title="Lorem Ipsum dolor sit amet consectetur adipiscing elit"
-              />
-            </S.Item>
-            <AssistantDomainsTable domains={domains} />
-          </S.AssistantOverviewWrapper>
-        </ContentWrapper>
-      </BodyWrapper>
-    </DashboardWrapper>
+    <Page renderHeader={() => <Header />} renderSidebar={() => <Sidebar />}>
+      {project && (
+        <Page.Content>
+          <Box mb={20}>
+            <AssistantCard
+              {...getProjectStatusAndMembers({ project, activeViewers, getMemberByIDSelector })}
+              icon={projectTypeConfig.icon.name}
+              image={project.image}
+              title={project.name}
+              options={projectOptions}
+              userRole={userRole ?? undefined}
+              iconColor={projectTypeConfig?.icon.color}
+            />
+          </Box>
+
+          <DomainsTable domains={domains} />
+        </Page.Content>
+      )}
+    </Page>
   );
 };
 
-export default AssistantOverview;
+export default withBatchLoadingGate(VersionSubscriptionGate)(AssistantOverview);

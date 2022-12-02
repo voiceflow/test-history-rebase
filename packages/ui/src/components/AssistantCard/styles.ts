@@ -119,7 +119,7 @@ export const InfoContainer = styled.header`
 `;
 
 export const MembersContainer = styled.div`
-  margin-left: -17px;
+  margin-left: 5px;
 `;
 
 export const Status = styled.div``;

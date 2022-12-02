@@ -1,7 +1,7 @@
 import { Box } from '@voiceflow/ui';
 import React from 'react';
 
-import { Header, HeaderBackButton, HeaderHotkeyToAction } from '@/components/ProjectPage';
+import Page from '@/components/Page';
 import * as Router from '@/ducks/router';
 import { useDispatch } from '@/hooks';
 import { Hotkey } from '@/keymap';
@@ -18,8 +18,8 @@ const PrototypeHeader: React.FC = () => {
   const disableEscHotkey = variableStateManageModal.opened || variableStateCreateModal.opened;
 
   return (
-    <Header renderLogoButton={() => <HeaderBackButton onClick={() => goToCurrentCanvas()} />}>
-      <HeaderHotkeyToAction
+    <Page.Header renderLogoButton={() => <Page.Header.BackButton onClick={() => goToCurrentCanvas()} />}>
+      <Page.Header.HotkeyToAction
         label="back to designer"
         hotkey={Hotkey.CLOSE_CANVAS_MODE}
         onHotkey={goToCurrentCanvas}
@@ -36,7 +36,7 @@ const PrototypeHeader: React.FC = () => {
       <Share />
 
       <Box width={12} />
-    </Header>
+    </Page.Header>
   );
 };
 

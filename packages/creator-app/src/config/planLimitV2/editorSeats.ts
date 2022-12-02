@@ -21,7 +21,7 @@ const STARTER_LIMIT: UpgradeModalDynamicLimit = {
   }),
 };
 
-const TEAM_LIMIT: UpgradeModalDynamicLimit = {
+export const TEAM_LIMIT: UpgradeModalDynamicLimit = {
   getUpgradeModal: ({ increasableLimit = 5 }) => ({
     ...DEFAULT_MODAL,
     ...getUpgradeToModalProps(PlanType.ENTERPRISE, Tracking.UpgradePrompt.EDITOR_SEATS),

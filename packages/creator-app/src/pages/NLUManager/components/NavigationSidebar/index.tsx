@@ -44,34 +44,49 @@ const NLUNavigationSidebar: React.FC = () => {
             <NavigationSidebar.Item
               icon="noMatch"
               title="Unclassified"
-              onAdd={open}
               onClick={() => nluManager.goToTab(NLURoute.UNCLASSIFIED)}
               isActive={nluManager.activeTab === NLURoute.UNCLASSIFIED}
-              titleTooltip="Import data"
-              counter={nluManager.unclassifiedUtterances.length}
-            />
+            >
+              {({ isActive }) =>
+                isActive ? (
+                  <NavigationSidebar.Item.AddButton tooltip={{ title: 'Import data' }} onClick={() => open()} />
+                ) : (
+                  <NavigationSidebar.Item.SubText>{nluManager.unclassifiedUtterances.length}</NavigationSidebar.Item.SubText>
+                )
+              }
+            </NavigationSidebar.Item>
           </Box>
         )}
 
         <NavigationSidebar.Item
           icon="intent"
           title="Intent"
-          onAdd={nluManager.createIntent}
           onClick={() => nluManager.goToTab(NLURoute.INTENTS)}
           isActive={nluManager.activeTab === NLURoute.INTENTS}
-          createPlaceholder="intent"
-          counter={nluManager.intents.length}
-        />
+        >
+          {({ isActive }) =>
+            isActive ? (
+              <NavigationSidebar.Item.AddButton tooltip={{ title: 'Create intent' }} onClick={() => nluManager.createIntent()} />
+            ) : (
+              <NavigationSidebar.Item.SubText>{nluManager.intents.length}</NavigationSidebar.Item.SubText>
+            )
+          }
+        </NavigationSidebar.Item>
 
         <NavigationSidebar.Item
           icon="setV2"
           title="Entities"
-          onAdd={nluManager.createEntity}
           onClick={() => nluManager.goToTab(NLURoute.ENTITIES)}
           isActive={nluManager.activeTab === NLURoute.ENTITIES}
-          createPlaceholder="entity"
-          counter={nluManager.entities.length}
-        />
+        >
+          {({ isActive }) =>
+            isActive ? (
+              <NavigationSidebar.Item.AddButton tooltip={{ title: 'Create entity' }} onClick={() => nluManager.createEntity()} />
+            ) : (
+              <NavigationSidebar.Item.SubText>{nluManager.entities.length}</NavigationSidebar.Item.SubText>
+            )
+          }
+        </NavigationSidebar.Item>
       </NavigationSidebar.ItemsContainer>
 
       {!!nluConfig.nlps[0].import && (
@@ -90,11 +105,12 @@ const NLUNavigationSidebar: React.FC = () => {
           </Box>
         </TippyTooltip>
       )}
+
       <Box px={16} pb={12}>
         <NavigationSidebar.Item
-          onClick={() => openExportModelModal({ checkedItems: Array.from(nluManager.selectedIntentIDs) })}
           icon="uploadCircle"
           title="Export"
+          onClick={() => openExportModelModal({ checkedItems: Array.from(nluManager.selectedIntentIDs) })}
         />
       </Box>
 

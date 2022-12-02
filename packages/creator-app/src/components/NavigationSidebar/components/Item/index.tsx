@@ -1,51 +1,31 @@
-import { Box, BoxFlex, IconButton, Link, SvgIcon, SvgIconTypes, Text, TippyTooltip } from '@voiceflow/ui';
+import { Box, SvgIconTypes } from '@voiceflow/ui';
 import React from 'react';
 
+import { AddButton } from './components';
 import * as S from './styles';
 
 export interface ItemProps {
   icon: SvgIconTypes.Icon;
   title: string;
-  titleTooltip?: string;
-  counter?: number;
-  onAdd?: VoidFunction;
   onClick?: VoidFunction;
   isActive?: boolean;
-  createPlaceholder?: string;
-  link?: string;
-  rightText?: string;
-  isMainMenu?: boolean;
+  children?: React.ReactNode | ((options: { isActive: boolean }) => React.ReactNode);
 }
 
-const Item: React.FC<ItemProps> = ({ createPlaceholder, onAdd, title, titleTooltip, isActive, onClick, icon, counter, link, rightText }) => {
-  const withAddIcon = isActive && onAdd;
+const Item: React.FC<ItemProps> = ({ icon, title, isActive = false, onClick, children }) => (
+  <S.Container active={isActive} onClick={onClick}>
+    <Box.Flex gap={12}>
+      <S.Icon icon={icon} isActive={isActive} />
 
-  return (
-    <S.Container active={isActive} onClick={onClick}>
-      <BoxFlex>
-        <SvgIcon color={isActive ? '#132144' : '#6e849a'} mr={12} icon={icon} inline />
-        <Box fontWeight={isActive ? 600 : undefined}>{title}</Box>
-      </BoxFlex>
+      <Box fontWeight={isActive ? 600 : undefined}>{title}</Box>
+    </Box.Flex>
 
-      {withAddIcon ? (
-        <TippyTooltip title={titleTooltip || `Create ${createPlaceholder}`}>
-          <IconButton size={16} icon="plus" onClick={() => onAdd()} variant={IconButton.Variant.BASIC} />
-        </TippyTooltip>
-      ) : (
-        counter != null && (
-          <Text color="#8da2b5" fontSize={13}>
-            {counter}
-          </Text>
-        )
-      )}
-      {link && (
-        <Link link={link}>
-          <SvgIcon icon="editorURL" color="rgba(110, 132, 154, 0.85)" />
-        </Link>
-      )}
-      {rightText && <Text color="rgba(110, 132, 154, 0.85)">{rightText}</Text>}
-    </S.Container>
-  );
-};
+    {typeof children === 'function' ? children({ isActive }) : children}
+  </S.Container>
+);
 
-export default Item;
+export default Object.assign(Item, {
+  SubText: S.SubText,
+  LinkIcon: S.LinkIcon,
+  AddButton,
+});

@@ -22,10 +22,15 @@ const RuntimeConfig: React.FC = () => {
   };
 
   return (
-    <Page navigateBackText="Back" onNavigateBack={goToDashboard}>
+    <Page
+      renderHeader={() => (
+        <Page.Header>
+          <Page.Header.BackButton onClick={() => goToDashboard()} />
+          <Page.Header.Title>Runtime Configuration Options</Page.Header.Title>
+        </Page.Header>
+      )}
+    >
       <Box width={900} m="0 auto" p={60}>
-        <h1>Runtime Configuration Options</h1>
-        <hr />
         <Box mb={8}>
           <Link href={GENERAL_RUNTIME_REPO}>{GENERAL_RUNTIME_REPO}</Link>
         </Box>

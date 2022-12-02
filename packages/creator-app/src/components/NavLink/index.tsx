@@ -6,8 +6,8 @@ import { useDispatch } from '@/hooks';
 
 interface NavLinkProps {
   to: string;
-  exact?: boolean;
   as?: string | React.ComponentType<any>;
+  exact?: boolean;
   className?: string;
 }
 

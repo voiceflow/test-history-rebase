@@ -7,7 +7,7 @@ const GroupLabel = styled.div<{ isActive?: boolean }>`
   ${transition('color')}
 
   width: 100%;
-  height: ${({ theme }) => theme.components.navLinkSidebar.itemHeight}px;
+  height: ${({ theme }) => theme.components.navSidebar.itemHeight}px;
   margin-top: 8px;
   font-size: 15px;
   letter-spacing: 0.2px;

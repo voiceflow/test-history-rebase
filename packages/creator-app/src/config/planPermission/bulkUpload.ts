@@ -4,7 +4,7 @@ import * as Tracking from '@/ducks/tracking';
 import { getUpgradeToModalProps } from '@/utils/upgrade';
 
 import { PlanPermission, UpgradeModalPermission } from './types';
-import { applyTeamPermissions } from './utils';
+import { applyStarterPermissions } from './utils';
 
 const TEAM_PERMISSION: UpgradeModalPermission = {
   getUpgradeModal: () => {
@@ -18,5 +18,5 @@ const TEAM_PERMISSION: UpgradeModalPermission = {
 };
 
 export const BULK_UPLOAD_PERMISSIONS: PlanPermission<UpgradeModalPermission> = {
-  ...applyTeamPermissions(TEAM_PERMISSION),
+  ...applyStarterPermissions(TEAM_PERMISSION),
 };

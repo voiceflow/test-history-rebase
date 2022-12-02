@@ -8,7 +8,7 @@ export const SidebarHeaderContainer = styled.div`
   color: #132144;
   padding: 20px 24px 20px 8px;
   justify-content: space-between;
-  min-width: ${({ theme }) => theme.components.navLinkSidebar.width - 18}px;
+  min-width: ${({ theme }) => theme.components.navSidebar.width - 16}px;
   border-right: 1px solid ${({ theme }) => theme.colors.borders};
 `;
 

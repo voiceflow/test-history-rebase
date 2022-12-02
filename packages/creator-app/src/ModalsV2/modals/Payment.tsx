@@ -9,11 +9,11 @@ import { useModal } from '../hooks';
 import manager from '../manager';
 import Success from './Success';
 
-export interface Props {
+export interface PaymentProps {
   focus?: string;
 }
 
-const Payment = manager.create<Props>('Payment', () => ({ api, focus, type, opened, hidden, animated }) => {
+const Payment = manager.create<PaymentProps>('Payment', () => ({ api, focus, type, opened, hidden, animated }) => {
   const successModal = useModal(Success);
 
   const [trackingEvents] = useTrackingEvents();

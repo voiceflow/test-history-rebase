@@ -4,7 +4,6 @@ import _find from 'lodash/find';
 import _isEmpty from 'lodash/isEmpty';
 import React from 'react';
 
-import { SubHeader } from '@/components/Page/components';
 import Section from '@/components/Section';
 import SubHeaderTabs from '@/components/Tabs';
 import * as Version from '@/ducks/version';
@@ -13,7 +12,7 @@ import { useSmartReducer } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
 import { Content, Controls, FormControl } from '@/pages/Canvas/components/Editor';
 
-import { Client, Domain, HelpTooltip, Scope, SpinnerContainer } from './components';
+import { Client, Domain, HelpTooltip, Scope, SpinnerContainer, SubHeader } from './components';
 import { CLIENT_AUTH_SCHEMES, EMPTY_ACCOUNT_DATA, TABS } from './constants';
 
 const TAB_COMPONENTS = {

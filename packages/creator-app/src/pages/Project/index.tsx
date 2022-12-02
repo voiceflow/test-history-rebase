@@ -75,7 +75,7 @@ const Project: React.FC = () => {
     const engine = getEngine();
 
     const position = engine?.canvas?.getPosition();
-    const { height } = theme.components.projectPage.header;
+    const { height } = theme.components.page.header;
 
     if (position) {
       engine?.canvas?.setPosition([position[0], position[1] + (canvasOnly ? height : -height)]);

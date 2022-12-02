@@ -16,8 +16,8 @@ interface GeneralSettingsNoMatchNoReplySectionProps {
 }
 
 const GeneralSettingsNoMatchNoReplySection: React.FC<GeneralSettingsNoMatchNoReplySectionProps> = () => {
-  const noMatchModal = ModalsV2.useModal(ModalsV2.GlobalNoMatch);
-  const noReplyModal = ModalsV2.useModal(ModalsV2.GlobalNoReply);
+  const noMatchModal = ModalsV2.useModal(ModalsV2.Canvas.GlobalNoMatch);
+  const noReplyModal = ModalsV2.useModal(ModalsV2.Canvas.GlobalNoReply);
 
   return (
     <>

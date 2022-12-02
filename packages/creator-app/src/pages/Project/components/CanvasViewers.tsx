@@ -21,8 +21,8 @@ const CanvasViewers: React.FC<CanvasViewersProps> = ({ flat, withAdd = true }) =
   if (!canViewCollaborators) return null;
 
   return (
-    <Box.Flex minWidth={53}>
-      <Members flat={flat} onAdd={withAdd && canAddCollaborators ? () => collaboratorsModal.openVoid() : undefined} members={viewers} />
+    <Box.Flex minWidth={31} ml={22}>
+      <Members.AvatarList flat={flat} onAdd={withAdd && canAddCollaborators ? () => collaboratorsModal.openVoid() : undefined} members={viewers} />
     </Box.Flex>
   );
 };

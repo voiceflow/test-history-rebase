@@ -28,7 +28,7 @@ import {
 
 const Wrapper = styled.div`
   width: ${IS_SAFARI ? '100vw' : '100%'};
-  height: ${({ theme }) => (IS_SAFARI ? `calc(100vh - ${theme.components.projectPage.header.height}px)` : '100%')};
+  height: ${({ theme }) => (IS_SAFARI ? `calc(100vh - ${theme.components.page.header.height}px)` : '100%')};
   overflow: hidden;
   overflow: clip;
   background-color: ${CANVAS_COLOR};

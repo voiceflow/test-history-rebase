@@ -2,6 +2,8 @@ import { preventDefault, stopPropagation } from '@ui/utils';
 import { Utils } from '@voiceflow/common';
 import React from 'react';
 
+import { usePersistFunction } from './cache';
+
 export function useMouseMove(onMouseMove: (event: MouseEvent) => void, dependencies: any[] = []) {
   React.useEffect(() => {
     document.addEventListener('mousemove', onMouseMove);
@@ -16,6 +18,9 @@ export const useOnClickOutside = (
   deps: any[] = []
 ): void => {
   const clickRefs = Utils.array.toArray(refs);
+
+  const persistedHandler = usePersistFunction(handler);
+
   React.useEffect(() => {
     const listener = (event: MouseEvent | TouchEvent) => {
       if (!event.target) return;
@@ -29,7 +34,8 @@ export const useOnClickOutside = (
       });
 
       if (clickInRef) return;
-      handler(event);
+
+      persistedHandler(event);
     };
     document.addEventListener('mousedown', listener);
     document.addEventListener('click', listener, true);
@@ -39,7 +45,7 @@ export const useOnClickOutside = (
       document.removeEventListener('click', listener, true);
       document.removeEventListener('touchstart', listener);
     };
-  }, [...deps, ...clickRefs, handler]);
+  }, [...deps, ...clickRefs]);
 };
 
 export const useDragTrap = () => {

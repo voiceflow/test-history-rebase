@@ -9,7 +9,7 @@ import * as UI from '@/ducks/ui';
 import { useEventualEngine, useRAF, useSelector } from '@/hooks';
 import { useEditingMode } from '@/pages/Project/hooks';
 import THEME from '@/styles/theme';
-import { HEADER_HEIGHT, SIDEBAR_WIDTH } from '@/styles/theme/projectPage';
+import { HEADER_HEIGHT, SIDEBAR_WIDTH } from '@/styles/theme/page';
 import { applyMinMaxCap } from '@/utils/math';
 
 const AUTO_PAN_PIXEL_HOP_SIZE = 15;

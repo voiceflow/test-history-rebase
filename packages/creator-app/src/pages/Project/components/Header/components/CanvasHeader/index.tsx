@@ -1,7 +1,7 @@
 import { ButtonVariant } from '@voiceflow/ui';
 import React from 'react';
 
-import { Header } from '@/components/ProjectPage';
+import Page from '@/components/Page';
 import { Permission } from '@/config/permissions';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useActivePlatformConfig, usePermission, useSelector } from '@/hooks';
@@ -19,7 +19,7 @@ const CanvasHeader: React.FC = () => {
 
   return (
     <SharePopperProvider>
-      <Header renderLogoButton={() => <LogoButton />}>
+      <Page.Header renderLogoButton={() => <LogoButton />}>
         <CanvasControls />
 
         <DomainsAndCanvasActions />
@@ -40,7 +40,7 @@ const CanvasHeader: React.FC = () => {
             </ActionRow>
           </>
         )}
-      </Header>
+      </Page.Header>
     </SharePopperProvider>
   );
 };

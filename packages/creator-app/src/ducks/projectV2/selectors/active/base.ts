@@ -1,6 +1,7 @@
 import { BaseModels } from '@voiceflow/base-types';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import * as Normal from 'normal-store';
 import { createSelector } from 'reselect';
 
 import * as Session from '@/ducks/session';
@@ -16,6 +17,12 @@ export const awarenessViewersSelector = createSelector(
   [Session.activeProjectIDSelector, getAwarenessViewersByIDSelector],
   (projectID, getAwarenessViewersByID) => getAwarenessViewersByID({ id: projectID })
 );
+
+export const allAwarenessViewersSelector = createSelector([awarenessViewersSelector], (viewersPerDiagram) =>
+  Object.values(viewersPerDiagram ?? {}).flatMap((viewers) => Normal.denormalize(viewers))
+);
+
+export const allAwarenessViewersCountSelector = createSelector([allAwarenessViewersSelector], (allViewers) => allViewers.length);
 
 export const nluTypeSelector = createSelector([projectSelector], (project) => project?.nlu || Platform.Constants.NLUType.VOICEFLOW);
 
@@ -47,3 +54,5 @@ export const liveVersionSelector = createSelector([projectSelector], (project) =
 export const vfVersionSelector = createSelector([projectSelector], (project) => project?._version ?? Realtime.CURRENT_PROJECT_VERSION);
 
 export const platformDataSelector = createSelector([projectSelector], (project) => project?.platformData ?? {});
+
+export const canvasUpdatedAtSelector = createSelector([projectSelector], (project) => project?.canvasUpdatedAt);

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
-import { Header, HeaderLogoButton, HeaderNavLinkSidebarTitle, HeaderTitle } from '@/components/ProjectPage';
+import Page from '@/components/Page';
 import { Path } from '@/config/routes';
 
 import { SharePopperProvider } from '../contexts';
@@ -12,10 +12,10 @@ const IntegrationsHeader: React.FC = () => {
 
   return (
     <SharePopperProvider>
-      <Header renderLogoButton={() => <HeaderLogoButton options={logoOptions} />}>
-        <HeaderNavLinkSidebarTitle>Integrations</HeaderNavLinkSidebarTitle>
+      <Page.Header renderLogoButton={() => <Page.Header.LogoButton options={logoOptions} />}>
+        <Page.Header.NavLinkSidebarTitle>Integrations</Page.Header.NavLinkSidebarTitle>
 
-        <HeaderTitle leftOffset>
+        <Page.Header.Title leftOffset>
           <Switch>
             <Route path={Path.PUBLISH_WEBCHAT}>Web Chat</Route>
             <Route path={Path.PUBLISH_EXPORT}>Code Export</Route>
@@ -24,8 +24,8 @@ const IntegrationsHeader: React.FC = () => {
             <Route path={Path.PUBLISH_WHATSAPP}>WhatsApp</Route>
             <Route path={Path.PUBLISH_API}>API</Route>
           </Switch>
-        </HeaderTitle>
-      </Header>
+        </Page.Header.Title>
+      </Page.Header>
     </SharePopperProvider>
   );
 };

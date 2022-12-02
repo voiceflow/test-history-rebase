@@ -36,7 +36,7 @@ export const useCommentingToggle = () => {
 };
 
 export const useDisableModes = () => {
-  const markup = useContext(MarkupContext)!;
+  const markup = useContext(MarkupContext);
   const getEngine = useEventualEngine();
 
   return useCallback(() => {

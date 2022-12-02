@@ -2,7 +2,7 @@ import { Box } from '@voiceflow/ui';
 import React from 'react';
 
 import DomainActions from '@/components/DomainActions';
-import { HeaderIconButton } from '@/components/ProjectPage';
+import Page from '@/components/Page';
 import { Permission } from '@/config/permissions';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as Project from '@/ducks/project';
@@ -102,7 +102,7 @@ const DomainsAndCanvasActions: React.FC = () => {
 
       {showEditorIcons ? (
         <Box.Flex gap={5}>
-          <HeaderIconButton
+          <Page.Header.IconButton
             icon="componentOutline"
             isSmall
             tooltip={{ title: 'Create component', hotkey: HOTKEY_LABEL_MAP[Hotkey.CREATE_COMPONENT] }}
@@ -115,7 +115,7 @@ const DomainsAndCanvasActions: React.FC = () => {
             onOpen={() => setTemplatePopperIsOpen(true)}
           >
             {({ onToggle }) => (
-              <HeaderIconButton
+              <Page.Header.IconButton
                 icon="librarySmall"
                 active={templatePopperIsOpen}
                 isSmall
@@ -125,7 +125,7 @@ const DomainsAndCanvasActions: React.FC = () => {
             )}
           </CanvasTemplateEditorNewTemplate>
 
-          <HeaderIconButton icon="copy" isSmall tooltip={{ title: 'Copy', hotkey: HOTKEY_LABEL_MAP[Hotkey.COPY] }} onClick={onCopy} />
+          <Page.Header.IconButton icon="copy" isSmall tooltip={{ title: 'Copy', hotkey: HOTKEY_LABEL_MAP[Hotkey.COPY] }} onClick={onCopy} />
         </Box.Flex>
       ) : (
         <>

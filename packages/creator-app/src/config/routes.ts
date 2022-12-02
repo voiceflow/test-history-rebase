@@ -95,10 +95,11 @@ export enum CreatorRoute {
 
 export enum WorkspaceRoute {
   NEW = 'new',
+  MEMBERS = 'members',
+  BILLING = 'billing',
   SETTINGS = 'settings',
   TEMPLATE = 'template',
   ACCEPT_INVITE = 'accept-invite',
-  TEAM_AND_BILLING = 'team',
 }
 
 export enum WorkspaceSettingsRoute {
@@ -106,11 +107,6 @@ export enum WorkspaceSettingsRoute {
   BILLING = 'billing',
   DEVELOPER = 'developer',
   SSO = 'sso',
-}
-
-export enum WorkspaceTeamAndBillingRoute {
-  MEMBERS = 'members',
-  BILLING = 'billing',
 }
 
 export enum ProjectSettingsRoute {
@@ -146,19 +142,8 @@ export const Path = {
 
   WORKSPACE: toPath(RootRoute.WORKSPACE),
   WORKSPACE_DASHBOARD: toPath(RootRoute.WORKSPACE, ':workspaceID'),
-  WORKSPACE_TEAM_AND_BILLING: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.TEAM_AND_BILLING),
-  WORKSPACE_TEAM_AND_BILLING_MEMBERS: toPath(
-    RootRoute.WORKSPACE,
-    ':workspaceID',
-    WorkspaceRoute.TEAM_AND_BILLING,
-    WorkspaceTeamAndBillingRoute.MEMBERS
-  ),
-  WORKSPACE_TEAM_AND_BILLING_BILLING: toPath(
-    RootRoute.WORKSPACE,
-    ':workspaceID',
-    WorkspaceRoute.TEAM_AND_BILLING,
-    WorkspaceTeamAndBillingRoute.BILLING
-  ),
+  WORKSPACE_MEMBERS: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.MEMBERS),
+  WORKSPACE_BILLING: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.BILLING),
   WORKSPACE_SETTINGS: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.SETTINGS),
   WORKSPACE_GENERAL_SETTINGS: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.SETTINGS, WorkspaceSettingsRoute.GENERAL),
   WORKSPACE_BILLING_SETTINGS: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.SETTINGS, WorkspaceSettingsRoute.BILLING),

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
-import { Header, HeaderLogoButton, HeaderNavLinkSidebarTitle, HeaderTitle } from '@/components/ProjectPage';
+import Page from '@/components/Page';
 import { Path } from '@/config/routes';
 
 import { SharePopperProvider } from '../../contexts';
@@ -12,16 +12,16 @@ const SettingsHeader: React.FC = () => {
 
   return (
     <SharePopperProvider>
-      <Header renderLogoButton={() => <HeaderLogoButton options={logoOptions} />}>
-        <HeaderNavLinkSidebarTitle>Settings</HeaderNavLinkSidebarTitle>
+      <Page.Header renderLogoButton={() => <Page.Header.LogoButton options={logoOptions} />}>
+        <Page.Header.NavLinkSidebarTitle>Settings</Page.Header.NavLinkSidebarTitle>
 
-        <HeaderTitle leftOffset>
+        <Page.Header.Title leftOffset>
           <Switch>
             <Route path={Path.PROJECT_GENERAL_SETTINGS}>General</Route>
             <Route path={Path.PROJECT_VERSION_SETTINGS}>All Versions</Route>
           </Switch>
-        </HeaderTitle>
-      </Header>
+        </Page.Header.Title>
+      </Page.Header>
     </SharePopperProvider>
   );
 };

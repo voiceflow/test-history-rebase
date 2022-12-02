@@ -97,6 +97,7 @@ const SIGNED_USER_ROLES = [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER, User
 const EDITOR_USER_ROLES = [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER];
 const EDITOR_AND_BILLING_USER_ROLES = [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER, UserRole.BILLING];
 const OWNER_AND_ADMIN_ROLES = [UserRole.OWNER, UserRole.ADMIN];
+const ADMIN_AND_BILLING_ROLES = [UserRole.ADMIN, UserRole.BILLING];
 
 export const ROLE_PERMISSIONS: Partial<Record<Permission, Array<UserRole | VirtualRole>>> = {
   [Permission.CONFIGURE_ORGANIZATION]: [UserRole.ADMIN],
@@ -109,10 +110,10 @@ export const ROLE_PERMISSIONS: Partial<Record<Permission, Array<UserRole | Virtu
   [Permission.INVITE_BY_LINK]: EDITOR_AND_BILLING_USER_ROLES,
   [Permission.INVITE]: OWNER_AND_ADMIN_ROLES,
 
-  [Permission.CONFIGURE_WORKSPACE]: [UserRole.ADMIN, UserRole.BILLING],
+  [Permission.CONFIGURE_WORKSPACE]: ADMIN_AND_BILLING_ROLES,
   [Permission.CONFIGURE_WORKSPACE_DEVELOPER]: [UserRole.ADMIN],
-  [Permission.CONFIGURE_WORKSPACE_BILLING]: [UserRole.ADMIN, UserRole.BILLING],
-  [Permission.VIEW_SETTINGS_WORKSPACE]: [UserRole.ADMIN, UserRole.BILLING],
+  [Permission.CONFIGURE_WORKSPACE_BILLING]: ADMIN_AND_BILLING_ROLES,
+  [Permission.VIEW_SETTINGS_WORKSPACE]: ADMIN_AND_BILLING_ROLES,
   [Permission.UPGRADE_WORKSPACE]: EDITOR_AND_BILLING_USER_ROLES,
   [Permission.DELETE_WORKSPACE]: [UserRole.ADMIN],
   [Permission.UNABLE_TO_LEAVE_WORKSPACE]: [UserRole.ADMIN, UserRole.OWNER],

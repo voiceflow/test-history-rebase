@@ -7,12 +7,12 @@ import NavItem from './components/NavItem';
 
 export const Container = styled.div<{ isMainMenu?: boolean }>`
   display: flex;
-  justify-content: space-between;
   flex-direction: column;
+  justify-content: space-between;
+  width: ${({ theme }) => theme.components.navSidebar.width}px;
+  min-width: ${({ theme }) => theme.components.navSidebar.width}px;
   height: 100%;
   border-right: 1px solid ${({ theme }) => theme.colors.borders};
-  width: ${({ isMainMenu }) => (isMainMenu ? '254px' : '248px')};
-  min-width: ${({ isMainMenu }) => (isMainMenu ? '254px' : '248px')};
   margin-left: ${({ theme, isMainMenu }) => (isMainMenu ? 0 : theme.components.sidebarIconMenu.width)}px;
   background: #fbfbfb;
 `;

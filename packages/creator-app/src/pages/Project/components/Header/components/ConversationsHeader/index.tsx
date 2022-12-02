@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { HeaderLogoButton } from '@/components/ProjectPage';
+import Page from '@/components/Page';
 
 import { SharePopperProvider } from '../../contexts';
 import { useLogoButtonOptions } from '../../hooks';
@@ -12,7 +12,7 @@ const ConversationsHeader: React.FC = () => {
   return (
     <SharePopperProvider>
       <Container>
-        <HeaderLogoButton noMargins={true} options={logoOptions} />
+        <Page.Header.LogoButton noMargins={true} options={logoOptions} />
       </Container>
     </SharePopperProvider>
   );

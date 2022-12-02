@@ -2,7 +2,7 @@ import PlatformUploadPopup from '@/components/PlatformUploadPopup';
 import { styled } from '@/hocs';
 
 const Popup = styled(PlatformUploadPopup)`
-  top: ${({ theme }) => theme.components.projectPage.header.height + -3}px !important;
+  top: ${({ theme }) => theme.components.page.header.height + -3}px !important;
   right: 16px !important;
 `;
 

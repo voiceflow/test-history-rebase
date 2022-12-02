@@ -1,7 +1,7 @@
 import { Menu, Portal, useVirtualElementPopper } from '@voiceflow/ui';
 import React from 'react';
 
-import { HeaderLogoButton } from '@/components/ProjectPage';
+import Page from '@/components/Page';
 import SidebarIconMenu from '@/components/SidebarIconMenu';
 import { useIsCanvasDesignOnly, useTheme } from '@/hooks';
 import { useLogoButtonOptions } from '@/pages/Project/components/Header/hooks';
@@ -30,8 +30,8 @@ const CanvasIconMenu: React.FC<SideBarComponentProps> = ({ withLogo = false }) =
         footerOptions={footerOptions}
         header={
           withLogo ? (
-            <HeaderLogoButton
-              style={{ height: `${theme.components.projectPage.header.height}px`, margin: '0 0 20px 0', borderBottom: '1px solid #dfe3ed' }}
+            <Page.Header.LogoButton
+              style={{ height: `${theme.components.page.header.height}px`, margin: '0 0 20px 0', borderBottom: '1px solid #dfe3ed' }}
               options={logoOptions}
               withBorder={false}
             />

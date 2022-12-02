@@ -23,6 +23,8 @@ export const goToHome = () => goTo('');
 
 export const goToLogin = <T extends Struct>(search?: string, state?: T | null) => goTo(`${Path.LOGIN}${search ?? ''}`, state);
 
+export const goToAccount = (search?: string) => goTo(`${Path.ACCOUNT}${search ?? ''}`);
+
 export const goToAccountIntegrations = (search?: string) => goTo(`${Path.ACCOUNT_INTEGRATIONS}${search ?? ''}`);
 
 export const goToLogout = (search?: string) => goTo(`${Path.LOGOUT}${search ?? ''}`);

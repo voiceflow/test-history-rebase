@@ -7,6 +7,7 @@ export interface LinkProps extends LayoutProps, SpaceProps {
   color?: string;
   isActive?: boolean;
   disabled?: boolean;
+  unstyled?: boolean;
   textDecoration?: boolean;
 }
 

@@ -1,10 +1,27 @@
-import { FlexApart, Link, SvgIcon } from '@voiceflow/ui';
+import { FlexApart, SvgIcon } from '@voiceflow/ui';
 
 import { css, styled, transition } from '@/hocs';
 
-export const SidebarItemNumber = styled.div`
-  font-size: 13px;
+export const Icon = styled(SvgIcon).attrs({ inline: true })<{ isActive?: boolean }>`
+  color: ${({ isActive }) => (isActive ? '#132144' : '#6e849a')};
+`;
+
+export const LinkIcon = styled(SvgIcon).attrs({ icon: 'editorURL' })`
+  color: #6e849a;
+`;
+
+export const SubText = styled.span`
   color: #8da2b5;
+  font-size: 13px;
+`;
+
+const activeStyle = css`
+  background: #eef4f6;
+  border: solid 1px #dfe3ed;
+
+  ${Icon} {
+    opacity: 1;
+  }
 `;
 
 export const Container = styled(FlexApart)<{ active?: boolean }>`
@@ -18,39 +35,30 @@ export const Container = styled(FlexApart)<{ active?: boolean }>`
   background: transparent;
   border: solid 1px transparent;
 
-  ${Link} {
-    opacity: 0;
-  }
-
-  ${({ active }) =>
-    active &&
-    css`
-      background: #eef4f6;
-      border: solid 1px #dfe3ed;
-    `}
-
-  ${SvgIcon.Container} {
+  ${Icon} {
     opacity: 0.85;
     align-self: center;
+  }
+
+  ${LinkIcon} {
+    opacity: 0;
   }
 
   &:hover {
     background: #eef4f6;
 
-    ${SvgIcon.Container} {
+    ${Icon} {
       opacity: 1;
     }
 
-    ${Link} {
+    ${LinkIcon} {
       opacity: 0.85;
     }
   }
 
   &:active {
-    border: solid 1px #dfe3ed;
-
-    ${SvgIcon.Container} {
-      opacity: 1;
-    }
+    ${activeStyle}
   }
+
+  ${({ active }) => active && activeStyle}
 `;

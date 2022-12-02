@@ -58,6 +58,8 @@ export const changeColorShade = (col: string, amt: number) => {
   let usePound = false;
   let color = col;
 
+  if (col === 'inherit') return 'inherit';
+
   if (col[0] === '#') {
     color = col.slice(1);
     usePound = true;

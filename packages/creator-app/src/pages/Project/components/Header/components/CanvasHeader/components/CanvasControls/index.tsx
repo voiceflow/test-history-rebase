@@ -2,7 +2,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Dropdown, stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 
-import { HeaderIconButton } from '@/components/ProjectPage';
+import Page from '@/components/Page';
 import { Permission } from '@/config/permissions';
 import { BlockType, ModalType } from '@/constants';
 import { SearchContext } from '@/contexts/SearchContext';
@@ -42,7 +42,7 @@ const CanvasHeader: React.FC = () => {
       <Box.Flex gap={8} mr={24}>
         <Dropdown menu={(onToggle) => <MoveTypePopover closePopover={onToggle} />}>
           {(ref, onToggle, isOpen) => (
-            <HeaderIconButton
+            <Page.Header.IconButton
               ref={ref}
               icon="cursorV2"
               active={!isMarkupTextActive && !isMarkupMediaActive && !isCommentingMode}
@@ -58,7 +58,7 @@ const CanvasHeader: React.FC = () => {
         </Dropdown>
 
         {canUseHintFeatures && canEditCanvas && (
-          <HeaderIconButton
+          <Page.Header.IconButton
             icon="markupImageV2"
             active={isMarkupTextActive}
             isSmall
@@ -73,7 +73,7 @@ const CanvasHeader: React.FC = () => {
           (stickersDropdown.isEnabled ? (
             <Dropdown menu={() => <StickersDropdown />}>
               {(ref, onToggle, isOpen) => (
-                <HeaderIconButton
+                <Page.Header.IconButton
                   ref={ref}
                   icon="systemImage"
                   active={isMarkupMediaActive}
@@ -89,7 +89,7 @@ const CanvasHeader: React.FC = () => {
               )}
             </Dropdown>
           ) : (
-            <HeaderIconButton
+            <Page.Header.IconButton
               icon="systemImage"
               active={isMarkupMediaActive}
               size={18}
@@ -101,7 +101,7 @@ const CanvasHeader: React.FC = () => {
           ))}
 
         {canUseHintFeatures && (
-          <HeaderIconButton
+          <Page.Header.IconButton
             icon="commentV2"
             active={isCommentingMode}
             isSmall
@@ -113,7 +113,7 @@ const CanvasHeader: React.FC = () => {
         )}
 
         {canEditCanvas && (
-          <HeaderIconButton
+          <Page.Header.IconButton
             icon="modelQuickview"
             active={nluQuickView.isOpened}
             isSmall
@@ -122,7 +122,7 @@ const CanvasHeader: React.FC = () => {
           />
         )}
 
-        <HeaderIconButton
+        <Page.Header.IconButton
           icon="search"
           active={search?.isVisible}
           isSmall

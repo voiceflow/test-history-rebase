@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
-import { Header, HeaderBackButton, HeaderTitle } from '@/components/ProjectPage';
+import Page from '@/components/Page';
 import { Path } from '@/config/routes';
 import * as Router from '@/ducks/router';
 import { useDispatch } from '@/hooks';
@@ -10,15 +10,15 @@ const BackHeader: React.FC = () => {
   const goToCurrentCanvas = useDispatch(Router.goToCurrentCanvas);
 
   return (
-    <Header renderLogoButton={() => <HeaderBackButton onClick={() => goToCurrentCanvas()} />}>
-      <HeaderTitle>
+    <Page.Header renderLogoButton={() => <Page.Header.BackButton onClick={() => goToCurrentCanvas()} />}>
+      <Page.Header.Title>
         <Switch>
           <Route path={Path.PROJECT_TOOLS}>Products</Route>
           <Route path={Path.PROJECT_MIGRATE}>Migrate</Route>
           <Route path={Path.PROTOTYPE_WEBHOOK}>Prototype Webhook</Route>
         </Switch>
-      </HeaderTitle>
-    </Header>
+      </Page.Header.Title>
+    </Page.Header>
   );
 };
 

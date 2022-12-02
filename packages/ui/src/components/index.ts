@@ -111,7 +111,7 @@ export {
   NestedInputIconPosition,
 } from './Input';
 export { LoadCircle, default as Loader } from './Loader';
-export { default as Members } from './Members';
+export * as Members from './Members';
 export type { MenuTypes } from './Menu';
 export { default as Menu } from './Menu';
 export { default as Modal } from './Modal';

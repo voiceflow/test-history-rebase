@@ -1,12 +1,13 @@
 import Box from '@ui/components/Box';
 import Button from '@ui/components/Button';
 import Dropdown from '@ui/components/Dropdown';
-import Members from '@ui/components/Members';
+import { AvatarList } from '@ui/components/Members';
 import { OptionWithoutValue } from '@ui/components/Menu/types';
 import type { SvgIconTypes } from '@ui/components/SvgIcon';
 import SvgIcon from '@ui/components/SvgIcon';
 import { UserData } from '@ui/components/User';
-import { Nullable } from '@voiceflow/common';
+import { useToggle } from '@ui/hooks';
+import { Nullable, Utils } from '@voiceflow/common';
 import { UserRole } from '@voiceflow/internal';
 import React from 'react';
 
@@ -40,6 +41,7 @@ export interface AssistantCardProps {
   onClickLink?: () => void;
 }
 
+// TODO: refactor component to remove userRole, options and etc
 const AssistantCard: React.FC<AssistantCardProps> = ({
   userRole = 'viewer',
   onClickCTA,
@@ -54,7 +56,7 @@ const AssistantCard: React.FC<AssistantCardProps> = ({
   options,
   children,
 }) => {
-  const [active, setActive] = React.useState(false);
+  const [active, toggleActive] = useToggle(false);
   const isViewer = userRole === UserRole.VIEWER;
 
   return (
@@ -66,50 +68,46 @@ const AssistantCard: React.FC<AssistantCardProps> = ({
 
         <InnerContainer className="assistant-card-actions">
           <StyledLink onClick={onClickLink} />
-          <Box.Flex zIndex={100}>
-            <Box.Flex flexDirection="row">
-              {(children && !hasTitleComponent) || (
-                <>
-                  <Button onClick={onClickCTA} variant={Button.Variant.PRIMARY} squareRadius style={{ marginRight: isViewer ? 0 : 10 }}>
-                    {isViewer ? 'View' : 'Designer'}
-                  </Button>
 
-                  {options && (
-                    <Dropdown options={options} selfDismiss placement="bottom" onClose={() => setActive(false)}>
-                      {(ref, onToggle) => (
-                        <Button
-                          ref={ref}
-                          onClick={() => {
-                            onToggle();
-                            if (!active) setActive(true);
-                          }}
-                          variant={Button.Variant.WHITE}
-                          squareRadius
-                        >
-                          <SvgIcon icon="ellipsis" size={15} />
-                        </Button>
-                      )}
-                    </Dropdown>
-                  )}
-                </>
-              )}
-            </Box.Flex>
+          <Box.Flex zIndex={100} flexDirection="row">
+            {(children && !hasTitleComponent) || (
+              <>
+                <Button onClick={onClickCTA} variant={Button.Variant.PRIMARY} squareRadius style={{ marginRight: isViewer ? 0 : 10 }}>
+                  {isViewer ? 'View' : 'Designer'}
+                </Button>
+
+                {options && (
+                  <Dropdown options={options} selfDismiss placement="bottom" onClose={() => toggleActive(false)}>
+                    {(ref, onToggle) => (
+                      <Button ref={ref} onClick={Utils.functional.chainVoid(onToggle, toggleActive)} variant={Button.Variant.WHITE} squareRadius>
+                        <SvgIcon icon="ellipsis" size={15} />
+                      </Button>
+                    )}
+                  </Dropdown>
+                )}
+              </>
+            )}
           </Box.Flex>
         </InnerContainer>
+
         {icon && (
           <IconContainer>
             <SvgIcon color={iconColor} icon={icon} size={16} />
           </IconContainer>
         )}
       </CardContainer>
+
       <InfoContainer>
         {title && !hasTitleComponent && <Title>{title}</Title>}
+
         {hasTitleComponent && children}
+
         <SubTitle>
           <Status>{status}</Status>
+
           {members && (
             <MembersContainer>
-              <Members members={members} flat small />
+              <AvatarList members={members} flat small />
             </MembersContainer>
           )}
         </SubTitle>

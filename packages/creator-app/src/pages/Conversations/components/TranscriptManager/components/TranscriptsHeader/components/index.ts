@@ -7,7 +7,7 @@ export type { TranscriptFiltersProps } from './TranscriptFilters';
 export { default as TranscriptFilters } from './TranscriptFilters';
 
 export const Container = styled(FlexApart)<{ hasShadow: boolean }>`
-  height: ${({ theme }) => theme.components.projectPage.header.height}px;
+  height: ${({ theme }) => theme.components.page.header.height}px;
   padding: 26px 32px;
   width: 100%;
   background: ${({ theme }) => theme.backgrounds.white};

@@ -59,7 +59,7 @@ const Conflicts: React.FC = () => {
     setIsScrolling(e.currentTarget.scrollTop > 0);
   };
 
-  const headerStyle = { height: `${theme.components.projectPage.header.height + 3}px` };
+  const headerStyle = { height: `${theme.components.page.header.height + 3}px` };
 
   React.useEffect(() => {
     if (!intentID) return;

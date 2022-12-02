@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { VersionTag } from '@/constants/platforms';
 import { ExportProvider, NLUProvider, PublishProvider, TrainingProvider } from '@/contexts';
 import { SearchProvider } from '@/contexts/SearchContext';
 import { NLUManagerProvider } from '@/pages/NLUManager/context';
@@ -16,7 +15,7 @@ const Providers: React.FC = ({ children }) => {
       <PrototypeProvider>
         <PublishProvider>
           <ExportProvider>
-            <TrainingProvider tag={VersionTag.DEVELOPMENT}>
+            <TrainingProvider>
               <NLUExportProvider>
                 <NLUProvider>
                   <TrainingModelProvider>

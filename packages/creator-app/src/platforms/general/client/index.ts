@@ -2,16 +2,17 @@ import { VoiceflowVersion } from '@voiceflow/voiceflow-types';
 
 import { generalService } from '@/client/fetch';
 import {
-  createExportService,
+  createJobService,
   createModelExportService,
   createModelImportService,
   createPrototypeService,
-  createPublishService,
   createVersionService,
+  EXPORT_RESOURCE_ENDPOINT,
+  PUBLISH_RESOURCE_ENDPOINT,
 } from '@/client/services';
 import { GENERAL_SERVICE_ENDPOINT } from '@/config';
-import { GeneralStageType } from '@/constants/platforms';
-import { GeneralExportJob } from '@/models';
+import { GeneralStageType, NLPTrainStageType } from '@/constants/platforms';
+import { GeneralExportJob, NLPTrainJob } from '@/models';
 
 import createNLPService from './nlp';
 import projectService from './project';
@@ -20,11 +21,12 @@ import ttsService from './tts';
 const generalServiceClient = {
   nlp: createNLPService(GENERAL_SERVICE_ENDPOINT),
   tts: ttsService,
-  export: createExportService<GeneralExportJob.AnyJob, GeneralStageType>(GENERAL_SERVICE_ENDPOINT),
+  export: createJobService<GeneralExportJob.AnyJob, GeneralStageType>(`${GENERAL_SERVICE_ENDPOINT}/${EXPORT_RESOURCE_ENDPOINT}`),
+  train: createJobService<NLPTrainJob.AnyJob, NLPTrainStageType>(`${GENERAL_SERVICE_ENDPOINT}/train`),
   modelExport: createModelExportService(generalService),
   modelImport: createModelImportService(generalService),
   project: projectService,
-  publish: createPublishService(GENERAL_SERVICE_ENDPOINT),
+  publish: createJobService(`${GENERAL_SERVICE_ENDPOINT}/${PUBLISH_RESOURCE_ENDPOINT}`),
   version: createVersionService<VoiceflowVersion.Version>(GENERAL_SERVICE_ENDPOINT),
   prototype: createPrototypeService(GENERAL_SERVICE_ENDPOINT),
 };

@@ -10,6 +10,7 @@ import { getProgress, isRunning } from '@/utils/job';
 
 export interface JobContextValue<T extends Job<any>> {
   job: Nullable<T>;
+  active: boolean;
   setJob: (job: Nullable<Job<any>>, options?: Record<string, unknown>) => void;
   cancel: () => Promise<void>;
   retry: (reset?: () => Promise<void>) => Promise<void>;
@@ -20,10 +21,11 @@ export interface JobContextValue<T extends Job<any>> {
 
 const PULL_TIMEOUT = 3000; // 3s
 
-export const useJob = <J extends Job<any>>(jobClient?: JobClient<J>) => {
+export const useJob = <J extends Job<any>, S extends string = string>(jobClient?: JobClient<J, S>) => {
   const pullTimeout = React.useRef<NodeJS.Timeout>();
   const startingOptionsCache = React.useRef<Record<string, unknown>>({});
   const [job, setJob] = React.useState<Nullable<J>>(null);
+  const [starting, setStarting] = React.useState(false);
 
   const projectID = useSelector(Session.activeProjectIDSelector)!;
 
@@ -34,10 +36,15 @@ export const useJob = <J extends Job<any>>(jobClient?: JobClient<J>) => {
   }, [projectID, jobClient]);
 
   const start = usePersistFunction(async (options: Record<string, unknown> = {}) => {
-    const result = await jobClient?.run(projectID, options);
-    startingOptionsCache.current = options;
+    try {
+      setStarting(true);
+      const result = await jobClient?.run(projectID, options);
+      startingOptionsCache.current = options;
 
-    setJob(result?.job || null);
+      setJob(result?.job || null);
+    } finally {
+      setStarting(false);
+    }
   });
 
   const restart = React.useCallback(async () => {
@@ -119,7 +126,9 @@ export const useJob = <J extends Job<any>>(jobClient?: JobClient<J>) => {
     setJob(job);
   }, []);
 
-  return useContextApi({ job, cancel, start, restart, retry, updateCurrentStage, setJob: setJobWithStartingOptions });
+  const active = starting || isRunning(job);
+
+  return useContextApi({ job, active, cancel, start, restart, retry, updateCurrentStage, setJob: setJobWithStartingOptions });
 };
 
 // simulate fake progress between checkpoints

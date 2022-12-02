@@ -1,7 +1,7 @@
 import * as Platform from '@voiceflow/platform-config';
 
 import { generalService, googleService } from '@/client/fetch';
-import { createPublishService } from '@/client/services';
+import { createJobService, PUBLISH_RESOURCE_ENDPOINT } from '@/client/services';
 import { RESOURCE_ENDPOINT } from '@/client/services/modelImport';
 import { GOOGLE_SERVICE_ENDPOINT } from '@/config';
 import { GoogleStageType } from '@/constants/platforms';
@@ -21,7 +21,7 @@ const dialogflowCXServiceClient = {
   },
   prototype: generalServiceClient.prototype,
   publish: {
-    ...createPublishService<DialogflowCXPublishJob.AnyJob, GoogleStageType>(DIALOGFLOW_CX_ENDPOINT),
+    ...createJobService<DialogflowCXPublishJob.AnyJob, GoogleStageType>(`${DIALOGFLOW_CX_ENDPOINT}/${PUBLISH_RESOURCE_ENDPOINT}`),
     checkAgent: (agentName: AgentName) => googleService.post<GCPAgent>(`dialogflow/cx/publish/agent`, { agentName }),
   },
   project: generalServiceClient.project,

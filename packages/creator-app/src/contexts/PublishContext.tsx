@@ -8,8 +8,6 @@ import client from '@/client';
 import * as ProjectV2 from '@/ducks/projectV2';
 import useJob, { JobContextValue } from '@/hooks/job';
 import { AlexaPublishJob, DialogflowESPublishJob, GooglePublishJob, Job, JobClient } from '@/models';
-import { isRunning } from '@/utils/job';
-import logger from '@/utils/logger';
 
 export type AnyJob = AlexaPublishJob.AnyJob | GooglePublishJob.AnyJob | DialogflowESPublishJob.AnyJob;
 export interface PublishContextValue<T extends Job<any>> extends JobContextValue<T> {
@@ -31,17 +29,7 @@ export const PublishProvider: React.FC = ({ children }) => {
 
   const api = useJob<AnyJob>(platformClient);
 
-  const [starting, setStarting] = React.useState(false);
-
-  const start = React.useCallback(async (...args: Parameters<typeof api.start>) => {
-    setStarting(true);
-    await api.start(...args).catch((err) => logger.error(err));
-    setStarting(false);
-  }, []);
-
-  const active = starting || isRunning(api.job);
-
-  return <PublishContext.Provider value={{ ...api, start, active }}>{children}</PublishContext.Provider>;
+  return <PublishContext.Provider value={api}>{children}</PublishContext.Provider>;
 };
 
 export const withPublish = withContext(PublishContext, 'publish');

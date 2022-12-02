@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1006.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1005.1...@voiceflow/creator-app@1.1006.0) (2022-12-02)
+
+
+### Features
+
+* refactor dashboard v2 (CT-000) ([#6378](https://github.com/voiceflow/creator-app/issues/6378)) ([2fa1c48](https://github.com/voiceflow/creator-app/commit/2fa1c488a9991bb341d16313c2300fd6e147420e))
+
+
+
+
+
 ## [1.1005.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1005.0...@voiceflow/creator-app@1.1005.1) (2022-12-02)
 
 

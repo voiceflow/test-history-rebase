@@ -2,7 +2,16 @@ import client from '@/client';
 import { BlockType, InteractionModelTabType, StepMenuType } from '@/constants';
 import { SearchTypes } from '@/contexts/SearchContext';
 
-import { CanvasCreationType, CanvasMenuLockState, EventName, IntentEditType, NLUEntityCreationType, VariableType } from '../constants';
+import {
+  CanvasCreationType,
+  CanvasMenuLockState,
+  EventName,
+  IntentEditType,
+  NLUEntityCreationType,
+  NoMatchCreationType,
+  NoMatchStepType,
+  VariableType,
+} from '../constants';
 import { createProjectEventPayload, createProjectEventTracker, createVersionEventPayload, createVersionEventTracker } from '../utils';
 
 export const trackCanvasSeeShortcutsModalOpened = createProjectEventTracker((options) =>
@@ -209,6 +218,44 @@ export const trackBlockTemplateUsed = createProjectEventTracker<{
       template_id,
       nested_steps,
       dropped_into,
+    })
+  )
+);
+
+export const trackNoMatchCreated = createProjectEventTracker<{
+  workspace_id: string | null;
+  project_id: string;
+  creation_type: NoMatchCreationType;
+  step_id?: string;
+  step_type?: NoMatchStepType;
+}>(({ workspace_id, project_id, creation_type, step_id, step_type, ...options }) =>
+  client.api.analytics.track(
+    EventName.NO_MATCH_CREATED,
+    createProjectEventPayload(options, {
+      workspace_id,
+      project_id,
+      creation_type,
+      step_id,
+      step_type,
+    })
+  )
+);
+
+export const trackNoReplyCreated = createProjectEventTracker<{
+  workspace_id: string | null;
+  project_id: string;
+  creation_type: NoMatchCreationType;
+  step_id?: string;
+  step_type?: NoMatchStepType;
+}>(({ workspace_id, project_id, creation_type, step_id, step_type, ...options }) =>
+  client.api.analytics.track(
+    EventName.NO_REPLY_CREATED,
+    createProjectEventPayload(options, {
+      workspace_id,
+      project_id,
+      creation_type,
+      step_id,
+      step_type,
     })
   )
 );

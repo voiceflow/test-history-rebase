@@ -5,6 +5,7 @@ import React from 'react';
 
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
 import * as Documentation from '@/config/documentation';
+import * as Tracking from '@/ducks/tracking';
 import { useMapManager, useToggle } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import { useButtonLayoutOption, useIntentScope } from '@/pages/Canvas/managers/hooks';
@@ -30,8 +31,8 @@ const RootEditor: React.FC = () => {
     factory: buttonFactory,
   });
 
-  const noMatchConfig = NoMatchV2.useConfig();
-  const noReplyConfig = NoReplyV2.useConfig();
+  const noMatchConfig = NoMatchV2.useConfig({ step: Tracking.NoMatchStepType.BUTTONS, step_id: editor.nodeID });
+  const noReplyConfig = NoReplyV2.useConfig({ step: Tracking.NoMatchStepType.BUTTONS, step_id: editor.nodeID });
   const intentScopeOption = useIntentScope({ data: editor.data, onChange: editor.onChange });
   const buttonLayoutOption = useButtonLayoutOption();
 

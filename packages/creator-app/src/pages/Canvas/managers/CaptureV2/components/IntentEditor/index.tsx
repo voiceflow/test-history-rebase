@@ -6,6 +6,7 @@ import React from 'react';
 
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
 import * as Documentation from '@/config/documentation';
+import * as Tracking from '@/ducks/tracking';
 import { useActiveProjectTypeConfig, useMapManager, useToggle } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import { useIntentScope } from '@/pages/Canvas/managers/hooks';
@@ -37,8 +38,8 @@ const IntentEditor: React.FC<{ disableAnimation: boolean }> = ({ disableAnimatio
   const dynamicSelectedSlotIDs = React.useMemo(() => mapManager.items.map((item) => item.id || ''), [mapManager.items]);
   const selectedSlotIDs = React.useMemo(() => dynamicSelectedSlotIDs, [dynamicSelectedSlotIDs.join('')]);
 
-  const noMatchConfig = NoMatchV2.useConfig();
-  const noReplyConfig = NoReplyV2.useConfig();
+  const noMatchConfig = NoMatchV2.useConfig({ step: Tracking.NoMatchStepType.INTENT, step_id: editor.nodeID });
+  const noReplyConfig = NoReplyV2.useConfig({ step: Tracking.NoMatchStepType.INTENT, step_id: editor.nodeID });
   const intentScopeOption = useIntentScope({ data: editor.data, onChange: editor.onChange });
   const utterancesOption = useUtterancesOption(editor.data.utterancesShown || false, editor.onChange);
 

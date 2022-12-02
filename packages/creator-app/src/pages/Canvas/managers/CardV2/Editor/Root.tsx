@@ -4,6 +4,7 @@ import React from 'react';
 
 import * as Documentation from '@/config/documentation';
 import * as CreatorV2 from '@/ducks/creatorV2';
+import * as Tracking from '@/ducks/tracking';
 import { useSelector } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import { NodeEditorV2 } from '@/pages/Canvas/managers/types';
@@ -23,8 +24,8 @@ const CardV2EditorRoot: NodeEditorV2<Realtime.NodeData.CardV2, Realtime.NodeData
     return [...parentNode.combinedNodes].pop() === editor.nodeID;
   }, [parentNode]);
 
-  const noMatchConfig = NoMatchV2.useConfig();
-  const noReplyConfig = NoReplyV2.useConfig();
+  const noMatchConfig = NoMatchV2.useConfig({ step: Tracking.NoMatchStepType.CARD, step_id: editor.nodeID });
+  const noReplyConfig = NoReplyV2.useConfig({ step: Tracking.NoMatchStepType.CARD, step_id: editor.nodeID });
 
   return (
     <EditorV2

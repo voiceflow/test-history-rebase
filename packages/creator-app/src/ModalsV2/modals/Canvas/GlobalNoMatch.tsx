@@ -2,9 +2,11 @@ import { Button, Modal, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import PromptInput from '@/components/PromptInput';
+import * as Session from '@/ducks/session';
+import * as Tracking from '@/ducks/tracking';
 import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
-import { useActiveProjectTypeConfig, useDispatch, useHotKeys, useSelector } from '@/hooks';
+import { useActiveProjectTypeConfig, useDispatch, useHotKeys, useSelector, useTrackingEvents } from '@/hooks';
 import { Hotkey } from '@/keymap';
 
 import manager from '../../manager';
@@ -12,8 +14,12 @@ import manager from '../../manager';
 const GlobalNoMatchModal = manager.create('GlobalNoMatchModal', () => ({ api, type, opened, hidden, animated, closePrevented }) => {
   const projectConfig = useActiveProjectTypeConfig();
 
+  const [trackingEvents] = useTrackingEvents();
+
   const defaultVoice = useSelector(VersionV2.active.voice.defaultVoiceSelector);
   const globalNoMatch = useSelector(VersionV2.active.globalNoMatchSelector);
+  const projectID = useSelector(Session.activeProjectIDSelector)!;
+  const workspaceID = useSelector(Session.activeWorkspaceIDSelector);
 
   const patchSettings = useDispatch(Version.patchSettings);
 
@@ -24,6 +30,12 @@ const GlobalNoMatchModal = manager.create('GlobalNoMatchModal', () => ({ api, ty
       api.preventClose();
 
       await patchSettings({ globalNoMatch: { prompt } });
+
+      trackingEvents.trackNoMatchCreated({
+        workspace_id: workspaceID,
+        project_id: projectID,
+        creation_type: Tracking.NoMatchCreationType.GLOBAL,
+      });
 
       api.enableClose();
       api.close();

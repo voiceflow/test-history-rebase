@@ -4,6 +4,7 @@ import React from 'react';
 
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
 import * as Documentation from '@/config/documentation';
+import * as Tracking from '@/ducks/tracking';
 import { useMapManager, useToggle } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import NoMatchV2 from '@/pages/Canvas/managers/components/NoMatchV2';
@@ -17,7 +18,7 @@ const IfRootEditor: React.FC = () => {
   const editor = EditorV2.useEditor<Realtime.NodeData.IfV2, Realtime.NodeData.IfV2BuiltInPorts>();
   const [isDragging, toggleDragging] = useToggle(false);
 
-  const noMatchConfig = NoMatchV2.useConfig({ canRemove: false });
+  const noMatchConfig = NoMatchV2.useConfig({ canRemove: false, step: Tracking.NoMatchStepType.IF, step_id: editor.nodeID });
   const syncDynamicPorts = EditorV2.useSyncDynamicPorts();
 
   const mapManager = useMapManager(editor.data.expressions, (expressions) => editor.onChange({ expressions }), {

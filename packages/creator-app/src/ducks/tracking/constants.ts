@@ -112,6 +112,9 @@ export enum EventName {
   COMPONENT_CREATED = 'Component Created',
   COMPONENT_DELETED = 'Component Deleted',
 
+  NO_MATCH_CREATED = 'No Match Created',
+  NO_REPLY_CREATED = 'No Reply Created',
+
   DOMAIN_CONVERT = 'Convert to Domain',
   DOMAIN_CREATED = 'Domain Created',
   DOMAIN_DELETED = 'Domain Deleted',
@@ -257,4 +260,19 @@ export enum AssistantOriginType {
 export enum ModelExportOriginType {
   NLU_MANAGER = 'NLU Manager',
   SHARE_MENU = 'Share Menu',
+}
+
+export enum NoMatchCreationType {
+  GLOBAL = 'global',
+  STEP = 'step',
+}
+
+export enum NoMatchStepType {
+  BUTTONS = 'buttons',
+  CAPTURE = 'capture',
+  CARD = 'card',
+  CAROUSEL = 'carousel',
+  CHOICE = 'choice',
+  IF = 'if',
+  INTENT = 'intent',
 }

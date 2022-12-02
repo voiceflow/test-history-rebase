@@ -6,6 +6,7 @@ import React from 'react';
 import VariableSelectV2 from '@/components/VariableSelectV2';
 import * as Documentation from '@/config/documentation';
 import * as SlotV2 from '@/ducks/slotV2';
+import * as Tracking from '@/ducks/tracking';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useActiveProjectTypeConfig, useAddSlot, useSelector, useVariableCreation } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
@@ -45,7 +46,7 @@ const QueryEditor: React.FC<{ disableAnimation: boolean }> = ({ disableAnimation
     onSelect(slot?.id ?? null);
   };
 
-  const noReplyConfig = NoReplyV2.useConfig();
+  const noReplyConfig = NoReplyV2.useConfig({ step: Tracking.NoMatchStepType.CAPTURE, step_id: editor.nodeID });
   const intentScopeOption = useIntentScope({ data: editor.data, onChange: editor.onChange });
 
   return (

@@ -38,6 +38,7 @@ const TranscriptContext: React.FC = () => {
     );
   };
 
+  const transcriptContextMeta = [device, os, browser].filter(Boolean).join('\u00A0 •\u00A0 ');
   return (
     <>
       <Box.FlexApart>
@@ -50,9 +51,7 @@ const TranscriptContext: React.FC = () => {
 
       <ContextTitle className={ClassName.TRANSCRIPT_USER_NAME}>Conversation between your assistant and {name || 'a test user'}</ContextTitle>
 
-      <ContextSubtext className={ClassName.TRANSCRIPT_CONTEXT_META}>
-        {device}&nbsp; •&nbsp; {os}&nbsp; •&nbsp; {browser}
-      </ContextSubtext>
+      <ContextSubtext className={ClassName.TRANSCRIPT_CONTEXT_META}>{transcriptContextMeta}</ContextSubtext>
     </>
   );
 };

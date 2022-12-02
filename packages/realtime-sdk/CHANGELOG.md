@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.204.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.203.2...@voiceflow/realtime-sdk@1.204.0) (2022-12-02)
+
+
+### Features
+
+* add `analytics_dashboard` feature flag (PL-336) ([#6385](https://github.com/voiceflow/creator-app/issues/6385)) ([c4f2552](https://github.com/voiceflow/creator-app/commit/c4f2552951dbcc87e1b901f98b1ec83392681df0))
+
+
+
+
+
 ## [1.203.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.203.1...@voiceflow/realtime-sdk@1.203.2) (2022-12-02)
 
 **Note:** Version bump only for package @voiceflow/realtime-sdk

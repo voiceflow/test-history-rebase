@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1007.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1006.1...@voiceflow/creator-app@1.1007.0) (2022-12-03)
+
+
+### Features
+
+* global no match/no reply tracking (CT-1264) ([#6365](https://github.com/voiceflow/creator-app/issues/6365)) ([f27cf54](https://github.com/voiceflow/creator-app/commit/f27cf54cb8f498d4a5e285e96202bfa2237d97eb))
+
+
+
+
+
 ## [1.1006.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1006.0...@voiceflow/creator-app@1.1006.1) (2022-12-02)
 
 **Note:** Version bump only for package @voiceflow/creator-app

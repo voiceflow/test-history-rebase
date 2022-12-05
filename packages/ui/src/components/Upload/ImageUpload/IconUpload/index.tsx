@@ -85,7 +85,13 @@ export const BaseIconUpload = React.forwardRef<HTMLDivElement, BaseIconUploadPro
     } else if (isLoading) {
       content = <LoadCircle color="transparent" isMd />;
     } else if (!image) {
-      content = <SvgIcon size={placeholderIconSize} color="#BECEDC" icon="image" />;
+      content = <SvgIcon size={placeholderIconSize} color="rgba(110, 132, 154, 0.85)" icon="addImage" />;
+    } else {
+      content = (
+        <S.OverlayContainer isSquare={isSquare}>
+          <SvgIcon size={placeholderIconSize} color={image ? '#ffffff' : 'rgba(110, 132, 154, 0.85)'} icon="addImage" />
+        </S.OverlayContainer>
+      );
     }
 
     return (

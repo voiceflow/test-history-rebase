@@ -1,37 +1,40 @@
-import { Button, ButtonVariant } from '@voiceflow/ui';
+import { Box, Button, ButtonVariant, SectionV2, Text } from '@voiceflow/ui';
 import React from 'react';
 
-import { ActionSection } from '@/components/Settings';
+import { SectionVariants, SettingsSection, SettingsSubSection } from '@/components/Settings';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
-import { connect } from '@/hocs';
-import { useDeleteProject } from '@/hooks';
-import { ConnectedProps } from '@/types';
+import { useDeleteProject, useSelector } from '@/hooks';
 
-const DangerZone: React.FC<ConnectedDangerZoneProps> = ({ projectName, projectID }) => {
+const DangerZone: React.FC = () => {
+  const projectName = useSelector(ProjectV2.active.nameSelector);
+  const projectID = useSelector(Session.activeProjectIDSelector);
   const deletePrompt = useDeleteProject({
     projectID,
     projectName,
   });
 
   return (
-    <ActionSection
-      heading="Delete Assistant"
-      description="This action cannot be reverted. Please proceed with caution."
-      action={
-        <Button variant={ButtonVariant.PRIMARY} onClick={deletePrompt}>
-          Delete
-        </Button>
-      }
-    />
+    <SettingsSection variant={SectionVariants.PRIMARY} title="Danger Zone" marginBottom={40}>
+      <SettingsSubSection topOffset={3} growInput={false}>
+        <Box.FlexApart width="100%">
+          <div>
+            <SectionV2.Title bold>
+              <Text>Delete Assistant</Text>
+            </SectionV2.Title>
+            <Box mt={4}>
+              <Text color="#62778c" fontSize="13px">
+                This action can't be reverted. Please proceed with caution.
+              </Text>
+            </Box>
+          </div>
+          <Button variant={ButtonVariant.SECONDARY} onClick={deletePrompt} squareRadius flat>
+            Delete
+          </Button>
+        </Box.FlexApart>
+      </SettingsSubSection>
+    </SettingsSection>
   );
 };
 
-const mapStateToProps = {
-  projectName: ProjectV2.active.nameSelector,
-  projectID: Session.activeProjectIDSelector,
-};
-
-type ConnectedDangerZoneProps = ConnectedProps<typeof mapStateToProps>;
-
-export default connect(mapStateToProps)(DangerZone);
+export default DangerZone;

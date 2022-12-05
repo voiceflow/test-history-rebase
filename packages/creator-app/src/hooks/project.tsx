@@ -80,11 +80,11 @@ export const useDeleteProject = ({
     confirmModal.open({
       body: (
         <>
-          This action can not be undone, <b>"{projectName}"</b> and all components can not be recovered
+          This action can not be undone, <b>"{projectName}"</b> and all components can not be recovered.
         </>
       ),
-      header: 'Delete Project',
-
+      header: 'Delete Assistant',
+      confirmButtonText: 'Delete Forever',
       confirm: handleDelete,
     });
   }, [canManageProjects, projectName, handleDelete]);

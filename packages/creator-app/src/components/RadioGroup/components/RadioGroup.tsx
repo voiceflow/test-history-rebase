@@ -17,6 +17,8 @@ export interface RadioGroupProps<T extends any> extends Omit<CheckboxTypes.Props
   column?: boolean;
   options?: RadioOption<T>[];
   checked?: T;
+  activeBar?: boolean;
+  noPaddingLastItem?: boolean;
   onChange: (value: T) => void;
 }
 
@@ -31,15 +33,19 @@ const RadioGroup = <T extends any = boolean>({
   onChange,
   className,
   column,
+  activeBar,
+  noPaddingLastItem,
   ...props
 }: RadioGroupProps<T>): React.ReactElement => (
-  <Container className={cn(className, ClassName.RADIO_GROUP)} column={column}>
+  <Container className={cn(className, ClassName.RADIO_GROUP)} column={column} noPaddingLastItem={noPaddingLastItem} fullWidth={activeBar}>
     {options.map((option, index) => {
       const { id, label, customCheckedCondition } = option;
 
       const isChecked = customCheckedCondition ? customCheckedCondition(checked) : checked === id;
 
-      return <RadioItem<T> key={index} column={column} id={id} label={label} isChecked={isChecked} onChange={onChange} {...props} />;
+      return (
+        <RadioItem<T> key={index} column={column} id={id} label={label} isChecked={isChecked} onChange={onChange} activeBar={activeBar} {...props} />
+      );
     })}
   </Container>
 );

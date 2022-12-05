@@ -9,14 +9,11 @@ export const DescriptorContainer = styled.div<{ variant?: DescriptorVariant }>`
   font-size: 13px;
   color: #62778c;
 
-  ${({ variant = DescriptorVariant.SUFFIX }) =>
-    variant === DescriptorVariant.PREFIX
-      ? css`
-          position: relative;
-          bottom: 6px;
-          margin-bottom: 16px;
-        `
-      : css`
-          margin-top: 12px;
-        `}
+  ${({ variant }) =>
+    variant === DescriptorVariant.PREFIX &&
+    css`
+      position: relative;
+      bottom: 6px;
+      margin-bottom: 16px;
+    `}
 `;

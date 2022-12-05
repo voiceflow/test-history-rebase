@@ -7,7 +7,7 @@ export const SectionTitle = styled.div`
   text-transform: capitalize;
 `;
 
-export const SettingsSectionContainer = styled.div`
-  margin-bottom: 40px;
+export const SettingsSectionContainer = styled.div<{ marginBottom?: number }>`
+  margin-bottom: ${({ marginBottom }) => marginBottom || 40}px;
   width: 100%;
 `;

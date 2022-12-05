@@ -1,4 +1,6 @@
+import { Box } from '@ui/components/Box';
 import { FlexCenter } from '@ui/components/Flex';
+import SvgIcon from '@ui/components/SvgIcon';
 import { css, styled, transition } from '@ui/styles';
 import { Nullable } from '@voiceflow/common';
 
@@ -19,26 +21,45 @@ interface ImageContainerProps {
 }
 
 export const ImageContainer = styled(FlexCenter)<ImageContainerProps>`
-  ${transition('background-color', 'border')}
+  ${transition('background-color', 'border', 'opacity')}
   border-radius: ${({ isSquare }) => (isSquare ? '20%' : '50%')};
-  border: 1px solid #d4d9e6;
   cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
   position: relative;
   width: ${({ size }) => `${size}px`};
   height: ${({ size }) => `${size}px`};
-  background-color: #f6f7fa;
   background-position: center center;
   background-size: cover;
   background-image: ${({ image }) => image && `url(${image})`};
-  opacity: ${({ disabled }) => (disabled ? '0.5' : '1')};
+
+  border: 1px solid rgb(225, 228, 231);
+  background-color: #ffffff;
+  opacity: 0.85;
 
   &:hover {
-    background-color: #f1f3f8;
+    opacity: 1;
   }
+
+  ${({ image }) =>
+    image &&
+    css`
+      opacity: 1;
+      ${SvgIcon.Container} {
+        opacity: 0;
+      }
+
+      &:hover {
+        background: linear-gradient(rgba(19, 33, 68, 0.6) 100%, rgba(19, 33, 68, 0.6) 100%), url(${image});
+        background-position: center center;
+        background-size: cover;
+        ${SvgIcon.Container} {
+          opacity: 1;
+        }
+      }
+    `};
 
   &:before {
     background: none;
-    border: 2px solid #fff;
+    border: none;
     border-radius: ${({ isSquare }) => (isSquare ? '20%' : '50%')};
     content: '';
     display: block;
@@ -65,6 +86,12 @@ export const ImageContainer = styled(FlexCenter)<ImageContainerProps>`
       background-color: rgba(233, 30, 99, 0.1);
       border: 1px solid red;
     `}
+
+    ${({ disabled }) =>
+    disabled &&
+    css`
+      opacity: 0;
+    `};
 `;
 
 export const IconUploadContainer = styled.div<{ isActive?: boolean }>`
@@ -81,5 +108,20 @@ export const IconUploadContainer = styled.div<{ isActive?: boolean }>`
 
   &:focus {
     outline: none;
+  }
+`;
+
+export const OverlayContainer = styled(Box)<{ isSquare?: boolean }>`
+  ${transition('background-color')}
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: ${({ isSquare }) => (isSquare ? '20%' : '50%')};
+  background-color: none;
+  &:hover {
+    background-color: rgba(19, 33, 68, 0.6);
   }
 `;

@@ -15,6 +15,7 @@ export { default as sectionV2 } from './SectionV2';
 export { default as svgIcon } from './SvgIcon';
 export { default as tabs } from './Tabs';
 export { default as tippyTooltip } from './TippyTooltip';
+export { default as toggle } from './Toggle';
 export { default as tooltip } from './Tooltip';
 export { default as tutorialInfoIcon } from './TutorialInfoIcon';
 export { default as tutorialTooltip } from './TutorialTooltip';

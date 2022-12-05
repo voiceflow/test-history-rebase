@@ -1,6 +1,12 @@
 import { css, styled } from '@/hocs';
 
-const RadioButtonContainer = styled.div<{ column?: boolean; noBottomPadding?: boolean; paddingBottom?: number; cursor?: string }>`
+const RadioButtonContainer = styled.div<{
+  column?: boolean;
+  noBottomPadding?: boolean;
+  paddingBottom?: number;
+  cursor?: string;
+  activeBar?: boolean;
+}>`
   display: inline-flex;
   align-items: center;
   vertical-align: middle;
@@ -20,6 +26,17 @@ const RadioButtonContainer = styled.div<{ column?: boolean; noBottomPadding?: bo
       : css`
           padding-bottom: 12px;
         `)}
+
+  ${({ activeBar }) =>
+    activeBar &&
+    css`
+      margin-right: 0;
+      padding-bottom: 0;
+      :not(:last-child) {
+        padding-bottom: 2px;
+        margin-right: 0;
+      }
+    `}
 `;
 
 export default RadioButtonContainer;

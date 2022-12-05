@@ -1,39 +1,30 @@
 import { BaseModels } from '@voiceflow/base-types';
-import { Link } from '@voiceflow/ui';
+import { Box, Link, SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
+import { ControlScheme } from '@/components/Canvas/constants';
 import RadioGroup from '@/components/RadioGroup';
-import Section, { SectionToggleVariant, SectionVariant } from '@/components/Section';
+import { SectionVariants, SettingsSection, SettingsSubSection } from '@/components/Settings';
 import * as Documentation from '@/config/documentation';
 import * as Project from '@/ducks/project';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import * as UI from '@/ducks/ui';
-import { connect } from '@/hocs';
+import { useDispatch, useSelector } from '@/hooks';
 import { DescriptorContainer } from '@/pages/Settings/components/ContentDescriptors/components';
-import { ConnectedProps } from '@/types';
 
+import { CanvasGrid } from './components';
 import { LINK_TYPE_OPTIONS, NAVIGATION_DESCRIPTIONS, NAVIGATION_OPTIONS, ZOOM_OPTIONS } from './constants';
 
-const headerStyling = {
-  paddingBottom: '11px',
-};
+const Canvas: React.FC = () => {
+  const canvasNavigation = useSelector(UI.canvasNavigationSelector);
+  const zoomType = useSelector(UI.zoomTypeSelector);
+  const activeProjectID = useSelector(Session.activeProjectIDSelector);
+  const activeLinkType = useSelector(ProjectV2.active.linkTypeSelector);
+  const setCanvasNavigation = useDispatch(UI.setCanvasNavigation);
+  const updateProjectLinkType = useDispatch(Project.updateProjectLinkType);
+  const setZoomType = useDispatch(UI.setZoomType);
 
-const sectionStyling = {
-  paddingBottom: '24px',
-};
-
-const Canvas: React.FC<ConnectedBasicProps> = ({
-  activeProjectID,
-  activeLinkType,
-  zoomType,
-  setZoomType,
-  canvasNavigation,
-  setCanvasNavigation,
-  updateProjectLinkType,
-  canvasGridEnabled,
-  toggleCanvasGrid,
-}) => {
   const setLinkType = React.useCallback(
     (linkType: BaseModels.Project.LinkType) => updateProjectLinkType(activeProjectID!, linkType),
     [activeProjectID]
@@ -41,73 +32,58 @@ const Canvas: React.FC<ConnectedBasicProps> = ({
 
   return (
     <>
-      <Section
-        header="Navigation"
-        variant={SectionVariant.QUATERNARY}
-        contentSuffix={
-          <DescriptorContainer>
-            {NAVIGATION_DESCRIPTIONS[canvasNavigation]} <Link href={Documentation.CANVAS_CONTROLS}>See more.</Link>
-          </DescriptorContainer>
-        }
-        customHeaderStyling={headerStyling}
-        customContentStyling={sectionStyling}
-      >
-        <RadioGroup options={NAVIGATION_OPTIONS} checked={canvasNavigation} onChange={setCanvasNavigation} />
-      </Section>
+      <SettingsSection variant={SectionVariants.PRIMARY} title="Canvas Interactions" marginBottom={16}>
+        <SettingsSubSection
+          header="Navigation"
+          leftDescription={
+            <DescriptorContainer>
+              {NAVIGATION_DESCRIPTIONS[canvasNavigation]} <Link href={Documentation.CANVAS_CONTROLS}>Learn more</Link>
+            </DescriptorContainer>
+          }
+          radioButton
+          descriptionOffset={canvasNavigation === ControlScheme.MOUSE ? 42 : 0}
+        >
+          <Box width="318px">
+            <RadioGroup
+              options={NAVIGATION_OPTIONS}
+              checked={canvasNavigation}
+              onChange={setCanvasNavigation}
+              column
+              activeBar
+              noPaddingLastItem={false}
+              width={318}
+            />
+          </Box>
+        </SettingsSubSection>
 
-      <Section header="Zoom Preference" variant={SectionVariant.QUATERNARY} customHeaderStyling={headerStyling} customContentStyling={sectionStyling}>
-        <RadioGroup options={ZOOM_OPTIONS} checked={zoomType} onChange={setZoomType} />
-      </Section>
+        <SectionV2.Divider />
 
-      <Section
-        header="Connectors"
-        variant={SectionVariant.QUATERNARY}
-        dividers
-        contentSuffix={
-          <DescriptorContainer>
-            Choose between straight or curved connection lines between blocks. <Link href={Documentation.LINK_TYPE}>See more.</Link>
-          </DescriptorContainer>
-        }
-        customHeaderStyling={headerStyling}
-        customContentStyling={sectionStyling}
-      >
-        <RadioGroup options={LINK_TYPE_OPTIONS} checked={activeLinkType} onChange={setLinkType} />
-      </Section>
+        <SettingsSubSection header="Zoom Preference" radioButton>
+          <Box width="318px">
+            <RadioGroup options={ZOOM_OPTIONS} checked={zoomType} onChange={setZoomType} column activeBar noPaddingLastItem={false} />
+          </Box>
+        </SettingsSubSection>
 
-      <Section
-        header="Canvas Grid"
-        variant={SectionVariant.QUATERNARY}
-        dividers
-        collapseVariant={SectionToggleVariant.TOGGLE}
-        onToggleChange={toggleCanvasGrid}
-        contentSuffix={
-          <DescriptorContainer style={{ marginTop: '6px' }}>When on, the canvas will have a dotted background grid.</DescriptorContainer>
-        }
-        customHeaderStyling={{ paddingBottom: '0px' }}
-        customContentStyling={sectionStyling}
-        initialOpen={!!canvasGridEnabled}
-      >
-        <span></span>
-      </Section>
+        <SectionV2.Divider />
+
+        <SettingsSubSection
+          header="Connectors"
+          leftDescription={
+            <DescriptorContainer>
+              Choose between straight or curved connection lines between blocks. <Link href={Documentation.LINK_TYPE}>Learn more</Link>
+            </DescriptorContainer>
+          }
+          radioButton
+          descriptionOffset={activeLinkType === BaseModels.Project.LinkType.CURVED ? 42 : 0}
+        >
+          <Box width="318px">
+            <RadioGroup options={LINK_TYPE_OPTIONS} checked={activeLinkType} onChange={setLinkType} column activeBar noPaddingLastItem={false} />
+          </Box>
+        </SettingsSubSection>
+      </SettingsSection>
+      <CanvasGrid />
     </>
   );
 };
 
-const mapStateToProps = {
-  canvasNavigation: UI.canvasNavigationSelector,
-  canvasGridEnabled: UI.isCanvasGridEnabledSelector,
-  zoomType: UI.zoomTypeSelector,
-  activeProjectID: Session.activeProjectIDSelector,
-  activeLinkType: ProjectV2.active.linkTypeSelector,
-};
-
-const mapDispatchToProps = {
-  setCanvasNavigation: UI.setCanvasNavigation,
-  updateProjectLinkType: Project.updateProjectLinkType,
-  setZoomType: UI.setZoomType,
-  toggleCanvasGrid: UI.toggleCanvasGrid,
-};
-
-type ConnectedBasicProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
-
-export default connect(mapStateToProps, mapDispatchToProps)(Canvas);
+export default Canvas;

@@ -10,7 +10,7 @@ import * as VersionV2 from '@/ducks/versionV2';
 import { connect } from '@/hocs';
 import { useFeature } from '@/hooks';
 import { FormControl } from '@/pages/Canvas/components/Editor';
-import { SkillEventsErrorMessage } from '@/pages/Settings/components';
+import { SkillEventsErrorMessage } from '@/pages/Settings/components/styles';
 import { PlatformSettingsMetaProps } from '@/pages/Settings/constants';
 import { ConnectedProps } from '@/types';
 

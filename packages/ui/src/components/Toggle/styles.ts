@@ -42,10 +42,24 @@ const sizeStyles = {
   `,
 };
 
-const ToggleContainer = styled.div<{ size: Size }>`
+export const ToggleContainer = styled.div<{ size: Size }>`
   display: flex;
 
   ${({ size }) => size !== Size.NORMAL && sizeStyles[size]}
 `;
 
-export default ToggleContainer;
+export const ToggleOuterContainer = styled.label<{ hasLabel: boolean }>`
+  ${({ hasLabel }) =>
+    hasLabel &&
+    css`
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 10px;
+      border: 1px solid #dfe3ed;
+      height: 42px;
+      padding: 0 16px;
+      cursor: pointer;
+      margin-bottom: 0;
+    `};
+`;

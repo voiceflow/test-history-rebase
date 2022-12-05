@@ -1,7 +1,7 @@
-import { Box, Input } from '@voiceflow/ui';
+import { Input } from '@voiceflow/ui';
 import React from 'react';
 
-import Section, { SectionVariant } from '@/components/Section';
+import { SectionVariants, SettingsSection, SettingsSubSection } from '@/components/Settings';
 import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useActiveProjectTypeConfig, useDispatch, useLinkedState, useSelector } from '@/hooks';
@@ -22,21 +22,19 @@ const DialogflowConsole: React.FC = () => {
   return (
     <>
       {!!projectConfig.project.invocationName && (
-        <Section
-          header={projectConfig.project.invocationName.samplesName}
-          variant={SectionVariant.QUATERNARY}
-          contentSuffix={<DescriptorContainer>{projectConfig.project.invocationName.description}</DescriptorContainer>}
-          customContentStyling={{ paddingBottom: '24px' }}
-        >
-          <Box.Flex>
+        <SettingsSection variant={SectionVariants.PRIMARY} marginBottom={40} title="Dialogflow Console">
+          <SettingsSubSection
+            header={projectConfig.project.invocationName.samplesName}
+            leftDescription={<DescriptorContainer>{projectConfig.project.invocationName.description}</DescriptorContainer>}
+          >
             <Input
               value={invocationNameSample}
               onBlur={saveSettings}
               placeholder={projectConfig.project.invocationName.placeholder}
               onChangeText={setInvocationNameSample}
             />
-          </Box.Flex>
-        </Section>
+          </SettingsSubSection>
+        </SettingsSection>
       )}
     </>
   );

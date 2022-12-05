@@ -3,20 +3,21 @@ import React from 'react';
 import { SectionVariants } from '@/components/Settings/constants';
 
 import SectionBox from '../SectionBox';
-import { SectionTitle, SettingsSectionContainer } from './components';
+import * as S from './styles';
 
-const SettingsSection: React.FC<{ title?: string; variant?: SectionVariants; noContentPadding?: boolean }> = ({
+const SettingsSection: React.FC<{ title?: string; variant?: SectionVariants; noContentPadding?: boolean; marginBottom?: number }> = ({
   title,
   variant,
   noContentPadding = false,
+  marginBottom,
   children,
 }) => (
-  <SettingsSectionContainer>
-    {title && <SectionTitle>{title}</SectionTitle>}
+  <S.SettingsSectionContainer marginBottom={marginBottom}>
+    {title && <S.SectionTitle>{title}</S.SectionTitle>}
     <SectionBox variant={variant} noContentPadding={noContentPadding}>
       {children}
     </SectionBox>
-  </SettingsSectionContainer>
+  </S.SettingsSectionContainer>
 );
 
 export default SettingsSection;

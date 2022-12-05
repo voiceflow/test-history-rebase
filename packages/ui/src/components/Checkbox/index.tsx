@@ -24,6 +24,7 @@ const Checkbox: React.FC<T.Props> = ({
   color = T.Color.DEFAULT,
   isFlat,
   padding = true,
+  activeBar = false,
   checked,
   onChange = Utils.functional.noop,
   children,
@@ -49,7 +50,7 @@ const Checkbox: React.FC<T.Props> = ({
   const inputType = type === T.Type.DASH ? T.Type.CHECKBOX : type;
 
   return (
-    <Container isFlat={isFlat} disabled={disabled} className={className} onClick={onLabelClick}>
+    <Container isFlat={isFlat} disabled={disabled} className={className} onClick={onLabelClick} activeBar={activeBar} isChecked={checked}>
       <ButtonContainer padding={padding}>
         <Button type={inputType} checked={checked} disabled={disabled} color={checkBoxColor} onChange={onChange} {...props} />
 

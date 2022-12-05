@@ -1,8 +1,8 @@
-import { Box, Input, Upload, UploadIconVariant, useDidUpdateEffect, useLinkedState } from '@voiceflow/ui';
+import { Box, Input, SectionV2, Upload, UploadIconVariant, useDidUpdateEffect, useLinkedState } from '@voiceflow/ui';
 import React from 'react';
 
 import LocalesSelect from '@/components/LocalesSelect';
-import Section, { SectionVariant } from '@/components/Section';
+import { SectionVariants, SettingsSection, SettingsSubSection } from '@/components/Settings';
 import * as Project from '@/ducks/project';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Version from '@/ducks/version';
@@ -10,7 +10,7 @@ import * as VersionV2 from '@/ducks/versionV2';
 import { useActivePlatformConfig, useActiveProjectTypeConfig, useDispatch, useSelector } from '@/hooks';
 import { DescriptorContainer } from '@/pages/Settings/components/ContentDescriptors/components';
 
-import { headerStyling, SectionErrorMessage, sectionStyling } from './styles';
+import { SectionErrorMessage } from './styles';
 
 const Basic: React.FC = () => {
   const projectConfig = useActiveProjectTypeConfig();
@@ -60,63 +60,56 @@ const Basic: React.FC = () => {
   }, [locales, projectImage]);
 
   return (
-    <>
-      <Section
-        header="Assistant Name"
-        variant={SectionVariant.QUATERNARY}
-        contentSuffix={<DescriptorContainer>{projectConfig.project.description}</DescriptorContainer>}
-        customHeaderStyling={headerStyling}
-        customContentStyling={sectionStyling}
-      >
-        <Box.Flex>
-          <Input value={projectName} onChangeText={setProjectName} onBlur={saveSettings} />
+    <SettingsSection variant={SectionVariants.PRIMARY} title="Name & Language" marginBottom={40}>
+      <SettingsSubSection header="Assistant Name" leftDescription={<DescriptorContainer>{projectConfig.project.description}</DescriptorContainer>}>
+        <Input value={projectName} onChangeText={setProjectName} onBlur={saveSettings} style={{ flexGrow: 1 }} />
+        <Box ml={12}>
+          <Upload.IconUpload size={UploadIconVariant.EXTRA_SMALL} isSquare update={setProjectImage} image={projectImage ?? ''} />
+        </Box>
+      </SettingsSubSection>
 
-          <Box ml={16}>
-            <Upload.IconUpload size={UploadIconVariant.EXTRA_SMALL} update={setProjectImage} image={projectImage ?? ''} />
-          </Box>
-        </Box.Flex>
-      </Section>
+      <SectionV2.Divider />
 
       {!!projectConfig.project.invocationName && (
-        <Section
-          header={projectConfig.project.invocationName.name}
-          variant={SectionVariant.QUATERNARY}
-          contentSuffix={
-            invocationError ? (
-              <SectionErrorMessage marginTop={16}>{invocationError}</SectionErrorMessage>
-            ) : (
-              <DescriptorContainer>{projectConfig.project.invocationName.description}</DescriptorContainer>
-            )
-          }
-          customHeaderStyling={headerStyling}
-          customContentStyling={sectionStyling}
-        >
-          <Input
-            error={!!invocationError}
-            value={invocationName}
-            onBlur={onSaveInvocationName}
-            placeholder={projectConfig.project.invocationName.placeholder}
-            onChangeText={setInvocationName}
-          />
-        </Section>
+        <>
+          <SettingsSubSection
+            header={projectConfig.project.invocationName.name}
+            leftDescription={
+              invocationError ? (
+                <SectionErrorMessage marginTop={16}>{invocationError}</SectionErrorMessage>
+              ) : (
+                <DescriptorContainer>{projectConfig.project.invocationName.description}</DescriptorContainer>
+              )
+            }
+          >
+            <Input
+              error={!!invocationError}
+              value={invocationName}
+              onBlur={onSaveInvocationName}
+              style={{ flexGrow: 1 }}
+              placeholder={projectConfig.project.invocationName.placeholder}
+              onChangeText={setInvocationName}
+            />
+          </SettingsSubSection>
+          <SectionV2.Divider />
+        </>
       )}
 
-      <Section
+      <SettingsSubSection
         header={projectConfig.project.locale.name}
-        variant={SectionVariant.QUATERNARY}
-        contentSuffix={<DescriptorContainer>{projectConfig.project.locale.description}</DescriptorContainer>}
-        customHeaderStyling={headerStyling}
-        customContentStyling={sectionStyling}
+        leftDescription={<DescriptorContainer>{projectConfig.project.locale.description}</DescriptorContainer>}
       >
-        <LocalesSelect
-          type={projectConfig.type}
-          locales={locales}
-          disabled={!projectConfig.project.locale.editable}
-          platform={platformConfig.type}
-          onChange={setLocales}
-        />
-      </Section>
-    </>
+        <Box style={{ flexGrow: 1 }}>
+          <LocalesSelect
+            type={projectConfig.type}
+            locales={locales}
+            disabled={!projectConfig.project.locale.editable}
+            platform={platformConfig.type}
+            onChange={setLocales}
+          />
+        </Box>
+      </SettingsSubSection>
+    </SettingsSection>
   );
 };
 

@@ -17,7 +17,7 @@ const RightSection = styled.div`
 
 const Heading = styled.div`
   color: #132144;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
   font-size: 15px;
   font-weight: 600;
 `;

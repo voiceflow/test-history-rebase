@@ -3,6 +3,8 @@ import { css, styled } from '@ui/styles';
 interface ContainerProps {
   isFlat?: boolean;
   disabled?: boolean;
+  activeBar?: boolean;
+  isChecked?: boolean;
 }
 
 const Container = styled.label<ContainerProps>`
@@ -20,6 +22,21 @@ const Container = styled.label<ContainerProps>`
     css`
       color: #132144 !important;
       font-weight: normal !important;
+    `}
+
+  ${({ activeBar, isChecked }) =>
+    activeBar &&
+    css`
+      padding: 8px 16px;
+      border: 1px solid transparent;
+      width: 100%;
+      border-radius: 8px;
+
+      ${isChecked &&
+      css`
+        background: #eef4f6;
+        border: solid 1px #dfe3ed;
+      `}
     `}
 `;
 

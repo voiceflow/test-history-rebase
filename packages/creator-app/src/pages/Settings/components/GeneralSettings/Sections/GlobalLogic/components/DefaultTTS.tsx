@@ -3,22 +3,23 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Select } from '@voiceflow/ui';
 import React from 'react';
 
-import Section, { SectionVariant } from '@/components/Section';
+import { SettingsSubSection } from '@/components/Settings/components';
 import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useActiveProjectTypeConfig, useDispatch, useFeature, useSelector } from '@/hooks';
+import { DescriptorContainer } from '@/pages/Settings/components/ContentDescriptors/components';
 import { PlatformSettingsMetaProps } from '@/pages/Settings/constants';
 import { getPlatformVoiceOptions, prettifyVoice } from '@/utils/voice';
 
 import AssistantConversationLogic from './AssistantConversationLogic';
 
-interface GlobalConversationLogicProps {
+interface DefaultTTSProps {
   platform: Platform.Constants.PlatformType;
   projectType: Platform.Constants.ProjectType;
   platformMeta: PlatformSettingsMetaProps;
 }
 
-const GlobalConversationLogic: React.FC<GlobalConversationLogicProps> = ({ platform, projectType, platformMeta }) => {
+const DefaultTTS: React.FC<DefaultTTSProps> = ({ platform, projectType, platformMeta }) => {
   const projectConfig = useActiveProjectTypeConfig();
 
   const wavenetVoices = useFeature(Realtime.FeatureFlag.WAVENET_VOICES);
@@ -47,19 +48,13 @@ const GlobalConversationLogic: React.FC<GlobalConversationLogicProps> = ({ platf
 
   return (
     <>
-      <Section
-        header="Default Voice"
-        variant={SectionVariant.QUATERNARY}
-        dividers={false}
-        contentSuffix={descriptors.defaultVoice}
-        customContentStyling={{ paddingBottom: '24px' }}
-      >
+      <SettingsSubSection header="Default TTS" leftDescription={<DescriptorContainer>{descriptors.defaultVoice}</DescriptorContainer>}>
         <Select
           value={defaultVoice}
           options={voiceOptions}
           onSelect={updateDefaultVoice}
           autoWidth={false}
-          fullWidth={false}
+          fullWidth
           searchable
           placeholder={defaultVoice}
           isMultiLevel
@@ -68,7 +63,7 @@ const GlobalConversationLogic: React.FC<GlobalConversationLogicProps> = ({ platf
           getOptionLabel={(value) => prettifyVoice(value ?? '')}
           renderOptionLabel={(option) => option.label || option.value}
         />
-      </Section>
+      </SettingsSubSection>
 
       {Realtime.Utils.typeGuards.isVoiceProjectType(projectType) &&
         Realtime.Utils.platform.createPlatformSelector(
@@ -82,4 +77,4 @@ const GlobalConversationLogic: React.FC<GlobalConversationLogicProps> = ({ platf
   );
 };
 
-export default GlobalConversationLogic;
+export default DefaultTTS;

@@ -16,11 +16,3 @@ export const SectionErrorMessage = styled.div<SectionTitleErrorMessageProps>`
       margin-top: ${marginTop}px;
     `}
 `;
-
-export const headerStyling = {
-  paddingBottom: '11px',
-};
-
-export const sectionStyling = {
-  paddingBottom: '24px',
-};

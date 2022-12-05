@@ -3,7 +3,7 @@ import { BaseModels } from '@voiceflow/base-types';
 import { ControlScheme, ZoomType } from '@/components/Canvas/constants';
 
 export const NAVIGATION_DESCRIPTIONS = {
-  [ControlScheme.TRACKPAD]: 'Pan the canvas by sliding two fingers on the trackpad. Zoom by pinching in and out.',
+  [ControlScheme.TRACKPAD]: 'Pan the canvas with two fingers on the trackpad, zoom by pinching.',
   [ControlScheme.MOUSE]: 'Click and drag to pan the canvas. Zoom by scrolling the mouse wheel.',
 };
 

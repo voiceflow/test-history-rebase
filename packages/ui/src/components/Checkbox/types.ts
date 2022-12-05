@@ -15,4 +15,5 @@ export interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
   error?: boolean;
   isFlat?: boolean;
   padding?: boolean;
+  activeBar?: boolean;
 }

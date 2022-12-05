@@ -21,7 +21,16 @@ const fullImage = createExample('FullImage', () =>
   )
 );
 const iconUpload = createExample('IconUpload', () => <Upload.IconUpload update={update} />);
+const iconUploadV2 = createExample('IconUpload', () => <Upload.IconUpload update={update} />);
 const imageGroup = createExample('ImageGroup', () => renderBaseBlock(<Upload.ImageGroup update={update} renderInput={renderInput} />));
 const jsonUpload = createExample('JsonUpload', () => renderBaseBlock(<Upload.JsonUpload fileName="test" onUpload={update} />));
 
-export default createSection('Upload', 'src/components/Upload/index.ts', [audioUpload, dropUpload, fullImage, iconUpload, imageGroup, jsonUpload]);
+export default createSection('Upload', 'src/components/Upload/index.ts', [
+  audioUpload,
+  dropUpload,
+  fullImage,
+  iconUpload,
+  iconUploadV2,
+  imageGroup,
+  jsonUpload,
+]);

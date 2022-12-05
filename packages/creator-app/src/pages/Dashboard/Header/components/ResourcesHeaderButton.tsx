@@ -5,7 +5,6 @@ import { Tooltip } from 'react-tippy';
 import * as Tracking from '@/ducks/tracking';
 import { useTrackingEvents } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
-import { VoidInternalProps } from '@/ModalsV2/types';
 import { STATIC_RESOURCES, StaticResource } from '@/pages/Canvas/components/CanvasControls/constants';
 import { useDashboardMode } from '@/pages/Project/hooks';
 import { ClassName } from '@/styles/constants';
@@ -17,7 +16,7 @@ interface Option {
   link?: string;
   icon: SvgIconTypes.Icon;
   label: string;
-  onClick?: (props?: (void & VoidInternalProps) | undefined) => Promise<unknown>;
+  onClick?: () => Promise<unknown>;
   resourceName?: Tracking.CanvasControlHelpMenuResource;
 }
 
@@ -36,7 +35,7 @@ const ResourcesHeaderButton = ({ hasShortcuts = false }) => {
         {
           icon: 'forward',
           label: 'Shortcuts',
-          onClick: shortcutModal.openVoid,
+          onClick: () => shortcutModal.openVoid(),
           resourceName: Tracking.CanvasControlHelpMenuResource.SHORTCUTS,
         },
       ]

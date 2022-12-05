@@ -6,16 +6,16 @@ import { Context } from '../context';
 import manager from '../manager';
 import * as T from '../types';
 
+export function useModal<Props extends void>(component: T.RegisteredModal<T.VoidInternalProps & { _void?: Props }>, id?: string): T.VoidPublicAPI;
 export function useModal<Props extends EmptyObject>(component: T.RegisteredModal<Props & T.VoidInternalProps>, id?: string): T.PropsPublicAPI<Props>;
 export function useModal<Props extends void, Result>(
-  component: T.RegisteredModal<Props & T.ResultInternalProps<Result>>,
+  component: T.RegisteredModal<T.ResultInternalProps<Result> & { _void?: Props }>,
   id?: string
 ): T.ResultPublicAPI<void, Result>;
 export function useModal<Props extends EmptyObject, Result>(
   component: T.RegisteredModal<Props & T.ResultInternalProps<Result>>,
   id?: string
 ): T.PropsResultPublicAPI<Omit<Props, keyof T.ResultInternalProps<Result>>, Result>;
-export function useModal(component: T.RegisteredModal<T.VoidInternalProps>, id?: string): T.VoidPublicAPI;
 export function useModal<Props extends EmptyObject>(type: string, id?: string): T.PropsPublicAPI<Props>;
 export function useModal<Props extends void, Result>(type: string, id?: string): T.ResultPublicAPI<Props, Result>;
 export function useModal<Props extends EmptyObject, Result>(type: string, id?: string): T.PropsResultPublicAPI<Props, Result>;

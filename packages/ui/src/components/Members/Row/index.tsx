@@ -39,7 +39,11 @@ const MemberRow: React.FC<MemberRowProps> = ({ member, inset, border, onRemove, 
       <S.Email>{member.name ? member.email : 'Invitation pending'}</S.Email>
     </S.Info>
 
-    {!!onChangeRoles && <RoleSelect roles={[member.role]} onRemove={onRemove} onChange={onChangeRoles} onResendInvite={onResendInvite} />}
+    {!!onChangeRoles && (
+      <S.RoleSelectContainer>
+        <RoleSelect roles={[member.role]} onRemove={onRemove} onChange={onChangeRoles} onResendInvite={onResendInvite} />
+      </S.RoleSelectContainer>
+    )}
   </S.Container>
 );
 

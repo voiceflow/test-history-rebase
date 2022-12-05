@@ -16,11 +16,12 @@ interface RoleSelectProps {
   roles: UserRole[];
   onChange: (roles: UserRole[]) => void;
   isInvite?: boolean;
+  disabled?: boolean;
   onRemove?: VoidFunction;
   onResendInvite?: VoidFunction;
 }
 
-const RoleSelect: React.FC<RoleSelectProps> = ({ roles, isInvite, onChange, onRemove, onResendInvite }) => {
+const RoleSelect: React.FC<RoleSelectProps> = ({ roles, isInvite, disabled, onChange, onRemove, onResendInvite }) => {
   const onChangeViewEditRole = (role: UserRole.EDITOR | UserRole.VIEWER) => {
     const rolesToRemove = new Set([UserRole.EDITOR, UserRole.VIEWER]);
 
@@ -73,6 +74,7 @@ const RoleSelect: React.FC<RoleSelectProps> = ({ roles, isInvite, onChange, onRe
       options={getOptions()}
       onSelect={(option) => option.onClick()}
       minWidth={false}
+      disabled={disabled}
       autoWidth={false}
       isDropdown
       borderLess

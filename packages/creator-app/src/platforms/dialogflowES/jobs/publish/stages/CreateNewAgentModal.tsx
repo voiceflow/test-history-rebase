@@ -5,7 +5,7 @@ import * as Version from '@/ducks/version';
 import { useDispatch } from '@/hooks';
 import manager from '@/ModalsV2/manager';
 
-const CreateNewAgentModal = manager.create<{}, string>('CreateNewAgent', () => ({ api: modalAPI, type, opened, hidden, animated }) => {
+const CreateNewAgentModal = manager.create<void, string>('CreateNewAgent', () => ({ api: modalAPI, type, opened, hidden, animated }) => {
   const [state, api] = useSmartReducerV2({
     agentName: '',
     error: false,

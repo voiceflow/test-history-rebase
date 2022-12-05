@@ -28,6 +28,7 @@ export enum Permission {
 
   // collaborator
   ADD_COLLABORATORS = 'collaborator.ADD',
+  ADD_COLLABORATORS_V2 = 'collaborator.ADD_V2',
   VIEW_COLLABORATORS = 'collaborator.VIEW',
   MANAGE_ADMIN_COLLABORATORS = 'collaborator.MANAGE_ADMINS',
 
@@ -98,12 +99,14 @@ const EDITOR_USER_ROLES = [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER];
 const EDITOR_AND_BILLING_USER_ROLES = [UserRole.ADMIN, UserRole.EDITOR, UserRole.OWNER, UserRole.BILLING];
 const OWNER_AND_ADMIN_ROLES = [UserRole.OWNER, UserRole.ADMIN];
 const ADMIN_AND_BILLING_ROLES = [UserRole.ADMIN, UserRole.BILLING];
+const ADMIN_OWNER_BILLING_ROLES = [UserRole.ADMIN, UserRole.OWNER, UserRole.BILLING];
 
 export const ROLE_PERMISSIONS: Partial<Record<Permission, Array<UserRole | VirtualRole>>> = {
   [Permission.CONFIGURE_ORGANIZATION]: [UserRole.ADMIN],
   [Permission.EDIT_ORGANIZATION]: [UserRole.OWNER],
 
   [Permission.ADD_COLLABORATORS]: EDITOR_AND_BILLING_USER_ROLES,
+  [Permission.ADD_COLLABORATORS_V2]: ADMIN_OWNER_BILLING_ROLES,
   [Permission.VIEW_COLLABORATORS]: SIGNED_USER_ROLES,
   [Permission.MANAGE_ADMIN_COLLABORATORS]: [UserRole.ADMIN],
   [Permission.DELETE_TRANSCRIPT]: EDITOR_USER_ROLES,
@@ -149,6 +152,17 @@ const ALL_PERMISSIONS = Object.values(PlanType);
 const ALL_BUT_STARTER_PERMISSIONS = ALL_PERMISSIONS.filter((plan) => plan !== PlanType.STARTER && plan !== PlanType.OLD_STARTER);
 
 const PTE_PERMISSIONS = [PlanType.PRO, PlanType.OLD_PRO, PlanType.TEAM, PlanType.OLD_TEAM, PlanType.ENTERPRISE, PlanType.OLD_ENTERPRISE];
+const NON_ENTERPRISE_PERMISSIONS = [
+  PlanType.OLD_STARTER,
+  PlanType.OLD_PRO,
+  PlanType.OLD_ENTERPRISE,
+  PlanType.OLD_TEAM,
+  PlanType.STARTER,
+  PlanType.STUDENT,
+  PlanType.PRO,
+  PlanType.TEAM,
+  PlanType.CREATOR,
+];
 
 export const PLAN_PERMISSIONS: Partial<Record<Permission, PlanType[]>> = {
   [Permission.CANVAS_EXPORT]: [PlanType.STUDENT, PlanType.PRO, PlanType.OLD_PRO, PlanType.TEAM, PlanType.OLD_TEAM, PlanType.ENTERPRISE],
@@ -189,6 +203,7 @@ export const PLAN_PERMISSIONS: Partial<Record<Permission, PlanType[]>> = {
   [Permission.NLU_EXPORT_CSV]: PTE_PERMISSIONS,
   [Permission.NLU_CUSTOM]: [PlanType.ENTERPRISE, PlanType.OLD_ENTERPRISE],
   [Permission.NLU_CONFLICTS]: [PlanType.ENTERPRISE, PlanType.OLD_ENTERPRISE],
+  [Permission.ADD_COLLABORATORS_V2]: NON_ENTERPRISE_PERMISSIONS,
 };
 
 export const TRIAL_EXPIRED_NOT_ALLOWED_PERMISSIONS = [

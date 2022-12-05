@@ -1,2 +1,2 @@
 export { default as CreateAPIKey } from './CreateAPIKey';
-export { default as Members } from './Members';
+export { default as Invite } from './Invite';

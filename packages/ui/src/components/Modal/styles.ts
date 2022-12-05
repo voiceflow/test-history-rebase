@@ -108,6 +108,10 @@ export const Container = styled.section<ContainerProps>`
         return null;
     }
   }}
+
+  & + & {
+    margin-top: ${units(3)}px;
+  }
 `;
 
 export interface RootProps {

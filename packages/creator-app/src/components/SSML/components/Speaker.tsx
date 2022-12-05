@@ -108,7 +108,7 @@ const Speaker: React.FC<SpeakerProps> = ({ voice, platform, getSSMLToPlay }) => 
   return (
     <TippyTooltip title={playing ? 'Stop' : 'Play'} position="top" bodyOverflow distance={0}>
       <SpeakerWrapper isPlaying={playing}>
-        <SvgIcon className={ClassName.SSML_PLAY_AUDIO} onClick={onSpeak} color="#6E849A" icon={icon} size={loading ? 14 : 16} spinReverse={loading} />
+        <SvgIcon className={ClassName.SSML_PLAY_AUDIO} onClick={onSpeak} color="#6E849A" icon={icon} size={loading ? 14 : 16} spin={loading} />
       </SpeakerWrapper>
     </TippyTooltip>
   );

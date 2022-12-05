@@ -15,11 +15,12 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ search, onSearch }) => {
-  const workspaceMembers = ModalsV2.useModal(ModalsV2.Workspace.Members);
-  const projectCreateModal = ModalsV2.useModal(ModalsV2.Project.Create);
   const [canImportProject] = usePermission(Permission.IMPORT_PROJECT);
   const [canInviteMembers] = usePermission(Permission.INVITE);
   const [canCreateProject] = usePermission(Permission.EDIT_PROJECT);
+
+  const inviteModal = ModalsV2.useModal(ModalsV2.Workspace.Invite);
+  const projectCreateModal = ModalsV2.useModal(ModalsV2.Project.Create);
 
   return (
     <Page.Header renderLogoButton={() => <WorkspaceSelector />}>
@@ -36,7 +37,7 @@ const Header: React.FC<HeaderProps> = ({ search, onSearch }) => {
 
         <Box.Flex gap={10}>
           {canInviteMembers && (
-            <Button variant={Button.Variant.SECONDARY} squareRadius onClick={() => workspaceMembers.openVoid()}>
+            <Button variant={Button.Variant.SECONDARY} squareRadius onClick={() => inviteModal.openVoid()}>
               Invite
             </Button>
           )}

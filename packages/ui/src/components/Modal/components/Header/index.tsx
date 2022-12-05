@@ -8,10 +8,10 @@ import * as S from './styles';
 
 export interface HeaderProps {
   border?: boolean;
+  sticky?: boolean;
   actions?: React.ReactNode;
   infoTooltip?: React.ReactNode;
   capitalizeText?: boolean;
-  sticky?: boolean;
 }
 
 const CloseButton: React.FC<Omit<IconButtonBasicContainerProps, 'size' | 'icon' | 'variant' | 'className'>> = (props) => (

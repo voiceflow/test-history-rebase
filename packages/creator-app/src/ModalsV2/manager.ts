@@ -100,9 +100,14 @@ class Manager extends EventEmitter<Events> {
   }
 
   // needs to use factory to make HMR work
-  create<Props extends void>(factory: () => React.FC<Props & T.VoidInternalProps>): T.RegisteredModal<Props & T.VoidInternalProps>;
+  create<Props extends void>(
+    factory: () => React.FC<T.VoidInternalProps & { _void?: Props }>
+  ): T.RegisteredModal<T.VoidInternalProps & { _void?: Props }>;
 
-  create<Props extends void>(type: string, factory: () => React.FC<Props & T.VoidInternalProps>): T.RegisteredModal<Props & T.VoidInternalProps>;
+  create<Props extends void>(
+    type: string,
+    factory: () => React.FC<T.VoidInternalProps & { _void?: Props }>
+  ): T.RegisteredModal<T.VoidInternalProps & { _void?: Props }>;
 
   create<Props extends EmptyObject>(factory: () => React.FC<Props & T.VoidInternalProps>): T.RegisteredModal<Props & T.VoidInternalProps>;
 
@@ -112,13 +117,13 @@ class Manager extends EventEmitter<Events> {
   ): T.RegisteredModal<Props & T.VoidInternalProps>;
 
   create<Props extends void, Result>(
-    factory: () => React.FC<Props & T.ResultInternalProps<Result>>
-  ): T.RegisteredModal<Props & T.ResultInternalProps<Result>>;
+    factory: () => React.FC<T.ResultInternalProps<Result> & { _void?: Props }>
+  ): T.RegisteredModal<T.ResultInternalProps<Result> & { _void?: Props }>;
 
   create<Props extends void, Result>(
     type: string,
-    factory: () => React.FC<Props & T.ResultInternalProps<Result>>
-  ): T.RegisteredModal<Props & T.ResultInternalProps<Result>>;
+    factory: () => React.FC<T.ResultInternalProps<Result> & { _void?: Props }>
+  ): T.RegisteredModal<T.ResultInternalProps<Result> & { _void?: Props }>;
 
   create<Props extends EmptyObject, Result>(
     factory: () => React.FC<Props & T.ResultInternalProps<Result>>

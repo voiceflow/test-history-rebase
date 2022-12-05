@@ -4,7 +4,7 @@ import { ThemeProvider } from '@ui/styles';
 import { ANIMATION_SPEED, ClassName } from '@ui/styles/constants';
 import cn from 'classnames';
 import React from 'react';
-import { Transition } from 'react-transition-group';
+import { Transition, TransitionStatus } from 'react-transition-group';
 import type { ExitHandler } from 'react-transition-group/Transition';
 
 import { Header } from './components';
@@ -14,6 +14,7 @@ export interface ModalProps {
   type?: string;
   hidden: boolean;
   opened: boolean;
+  stacked?: boolean;
   animated?: boolean;
   centered?: boolean;
   onExited?: ExitHandler<HTMLDivElement>;
@@ -22,8 +23,8 @@ export interface ModalProps {
   maxHeight?: number;
   minHeight?: number;
   fullScreen?: boolean;
-  verticalMargin?: number;
   hideScrollbar?: boolean;
+  verticalMargin?: number;
 }
 
 const EXTRA_ANIMATION_TIME = 0.02;
@@ -34,6 +35,7 @@ const Modal = React.forwardRef<HTMLDivElement, React.PropsWithChildren<ModalProp
       type,
       hidden,
       opened,
+      stacked = false,
       animated = true,
       children,
       centered,
@@ -53,6 +55,24 @@ const Modal = React.forwardRef<HTMLDivElement, React.PropsWithChildren<ModalProp
 
     const nestedTheme = React.useMemo(() => ({ ...theme, zIndex: { ...theme.zIndex, popper: theme.zIndex.modal + 1 } }), [theme]);
 
+    const renderContainer = ({ status, children }: { status: TransitionStatus; children: React.ReactNode }) => (
+      <S.Container
+        status={status}
+        animated={animated}
+        centered={centered}
+        maxWidth={maxWidth}
+        maxHeight={maxHeight}
+        minHeight={minHeight}
+        className={cn(ClassName.MODAL, className, `${ClassName.MODAL}--${type ?? 'unknown'}`)}
+        fullScreen={fullScreen}
+        verticalMargin={verticalMargin}
+        enterAnimation={enterAnimation}
+        hideScrollbar={hideScrollbar}
+      >
+        {children}
+      </S.Container>
+    );
+
     return (
       <ThemeProvider theme={nestedTheme}>
         <Portal portalNode={document.body}>
@@ -64,23 +84,11 @@ const Modal = React.forwardRef<HTMLDivElement, React.PropsWithChildren<ModalProp
               mountOnEnter
               unmountOnExit
             >
-              {(status) => (
-                <S.Container
-                  status={status}
-                  animated={animated}
-                  centered={centered}
-                  maxWidth={maxWidth}
-                  maxHeight={maxHeight}
-                  minHeight={minHeight}
-                  className={cn(ClassName.MODAL, className, `${ClassName.MODAL}--${type ?? 'unknown'}`)}
-                  fullScreen={fullScreen}
-                  verticalMargin={verticalMargin}
-                  enterAnimation={enterAnimation}
-                  hideScrollbar={hideScrollbar}
-                >
-                  {children}
-                </S.Container>
-              )}
+              {(status) =>
+                stacked
+                  ? React.Children.map(children, (child) => renderContainer({ status, children: child }))
+                  : renderContainer({ status, children })
+              }
             </Transition>
           </S.Root>
         </Portal>

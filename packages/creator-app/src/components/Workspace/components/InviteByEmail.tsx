@@ -1,6 +1,6 @@
 import { Utils } from '@voiceflow/common';
 import { UserRole } from '@voiceflow/internal';
-import { ButtonVariant, Flex, Input, Members, SvgIcon, toast } from '@voiceflow/ui';
+import { Box, Button, Input, Members, SvgIcon, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import InputError from '@/components/InputError';
@@ -9,17 +9,14 @@ import { LimitType } from '@/config/planLimitV2';
 import { EDITOR_SEAT_ROLES } from '@/constants';
 import * as Workspace from '@/ducks/workspace';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { useDispatch, useGetPlanLimited, useSelector } from '@/hooks';
-import { usePaymentModal, useUpgradeModal } from '@/ModalsV2/hooks';
+import { useDispatch, useGetPlanLimited, useOnAddSeats, useSelector } from '@/hooks';
 import { Identifier } from '@/styles/constants';
 
-import * as S from './styles';
-
-interface WorkspaceInviteMemberProps {
+interface InviteByEmailProps {
   buttonLabel?: string;
 }
 
-const WorkspaceInviteMember: React.FC<WorkspaceInviteMemberProps> = ({ buttonLabel = 'Add' }) => {
+const InviteByEmail: React.FC<InviteByEmailProps> = ({ buttonLabel = 'Add' }) => {
   const members = useSelector(WorkspaceV2.active.membersSelector);
   const seatLimits = useSelector(WorkspaceV2.active.seatLimitsSelector);
   const numberOfSeats = useSelector(WorkspaceV2.active.numberOfSeatsSelector);
@@ -30,8 +27,7 @@ const WorkspaceInviteMember: React.FC<WorkspaceInviteMemberProps> = ({ buttonLab
 
   const sendInvite = useDispatch(Workspace.sendInviteToActiveWorkspace);
 
-  const paymentModal = usePaymentModal();
-  const upgradeModal = useUpgradeModal();
+  const onAddSeats = useOnAddSeats();
 
   const [roles, setRoles] = React.useState<UserRole[]>([UserRole.EDITOR]);
   const [error, setError] = React.useState('');
@@ -61,11 +57,7 @@ const WorkspaceInviteMember: React.FC<WorkspaceInviteMemberProps> = ({ buttonLab
     const editorSeatLimit = getEditorSeatLimit({ value: updatedEditorSeats });
 
     if (editorSeatLimit) {
-      if (editorSeatLimit.increasableLimit && editorSeatLimit.increasableLimit > updatedEditorSeats) {
-        paymentModal.openVoid({});
-      } else {
-        upgradeModal.openVoid(editorSeatLimit.upgradeModal);
-      }
+      onAddSeats();
 
       return;
     }
@@ -87,8 +79,8 @@ const WorkspaceInviteMember: React.FC<WorkspaceInviteMemberProps> = ({ buttonLab
   };
 
   return (
-    <S.Container>
-      <Flex gap={12} fullWidth>
+    <Box width="100%">
+      <Box.Flex gap={12} fullWidth>
         <SelectInputGroup
           renderInput={(props) => (
             <Input
@@ -106,14 +98,14 @@ const WorkspaceInviteMember: React.FC<WorkspaceInviteMemberProps> = ({ buttonLab
           {() => <Members.RoleSelect roles={roles} isInvite onChange={setRoles} />}
         </SelectInputGroup>
 
-        <S.Button id={Identifier.COLLAB_SEND_INVITE_BUTTON} onClick={onSendInviteClick} disabled={error || !emails} variant={ButtonVariant.PRIMARY}>
+        <Button id={Identifier.COLLAB_SEND_INVITE_BUTTON} onClick={onSendInviteClick} disabled={!!error || !emails} variant={Button.Variant.PRIMARY}>
           {buttonLabel}
-        </S.Button>
-      </Flex>
+        </Button>
+      </Box.Flex>
 
       {error && <InputError mb={0}>{error}</InputError>}
-    </S.Container>
+    </Box>
   );
 };
 
-export default WorkspaceInviteMember;
+export default InviteByEmail;

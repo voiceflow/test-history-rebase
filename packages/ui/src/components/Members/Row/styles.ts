@@ -49,3 +49,7 @@ export const Email = styled.div`
   color: #62778c;
   font-size: 13px;
 `;
+
+export const RoleSelectContainer = styled.div`
+  margin-right: -12px;
+`;

@@ -1,3 +1,4 @@
+import { serializeToJSX } from '@voiceflow/slate-serializer/jsx';
 import { useCache, useSetup } from '@voiceflow/ui';
 import React from 'react';
 import { Descendant, Editor } from 'slate';
@@ -5,7 +6,6 @@ import { Editable, Slate } from 'slate-react';
 import { EditableProps } from 'slate-react/dist/components/editable';
 
 import { useForceUpdate } from '@/hooks';
-import { serializeSlateToJSX } from '@/utils/slate';
 
 import * as components from './components';
 import {
@@ -135,7 +135,7 @@ export default Object.assign(React.forwardRef<SlateEditableRef, SlateEditablePro
 
   EditorAPI,
   PluginType,
-  serializeToJSX: serializeSlateToJSX,
+  serializeToJSX,
   ControlledEditorProvider,
 
   useEditor: useSlateEditor,

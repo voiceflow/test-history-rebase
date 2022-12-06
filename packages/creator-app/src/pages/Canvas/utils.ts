@@ -1,13 +1,12 @@
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-
-import { SlateEditorAPI } from '@/components/SlateEditable';
+import { serializeToText } from '@voiceflow/slate-serializer/text';
 
 import { EntityPrompt } from './types';
 
 export const getIntentPromptContent = ([prompt]: unknown[]) => {
   if (Platform.Common.Chat.CONFIG.utils.prompt.isPrompt(prompt)) {
-    return SlateEditorAPI.serialize(prompt.content);
+    return serializeToText(prompt.content, { encodeVariables: false });
   }
 
   if (Platform.Common.Voice.CONFIG.utils.intent.isPrompt(prompt)) {

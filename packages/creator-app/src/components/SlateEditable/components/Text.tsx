@@ -1,4 +1,4 @@
-import { slate } from '@voiceflow/internal';
+import { getTextCSSProperties } from '@voiceflow/slate-serializer';
 import React from 'react';
 import { RenderLeafProps } from 'slate-react';
 
@@ -12,7 +12,11 @@ const Text: React.ForwardRefRenderFunction<HTMLSpanElement, TextProps> = ({ leaf
   const editor = useSlateEditor();
 
   return (
-    <span ref={ref} {...attributes} style={{ ...slate.getTextCSSProperties(leaf), ...editor.getFakeSelectionTextStyles(leaf), ...styleOverrides }}>
+    <span
+      ref={ref}
+      {...attributes}
+      style={{ ...(getTextCSSProperties(leaf) as React.CSSProperties), ...editor.getFakeSelectionTextStyles(leaf), ...styleOverrides }}
+    >
       {children}
     </span>
   );

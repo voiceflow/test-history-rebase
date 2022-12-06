@@ -1,10 +1,11 @@
 import { AlexaProject } from '@voiceflow/alexa-types';
 import { BaseModels, BaseText, BaseVersion } from '@voiceflow/base-types';
 import { AnyRecord, Utils } from '@voiceflow/common';
-import { slate } from '@voiceflow/internal';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import _ from 'lodash';
+import * as SlateSerializer from '@voiceflow/slate-serializer';
+import _mapValues from 'lodash/mapValues';
+import _unionWith from 'lodash/unionWith';
 import { Element as SlateElement } from 'slate';
 
 interface Options {
@@ -66,7 +67,7 @@ class ProjectsMerge {
   private mergedSlotsMap = new Map<string, BaseModels.Slot>();
 
   static isSlateVariableElement = (value: unknown): value is BaseText.VariableElement =>
-    Utils.object.isObject(value) && SlateElement.isElement(value) && slate.isVariableElement(value);
+    Utils.object.isObject(value) && SlateElement.isElement(value) && SlateSerializer.isVariableElement(value);
 
   constructor({ creatorID, targetProject, targetVersion, sourceProject, sourceVersion, sourceDiagrams }: Options) {
     this.creatorID = creatorID;
@@ -463,14 +464,14 @@ class ProjectsMerge {
       this.intentKeysMap.set(remappedSourceIntent.key, targetIntent.key);
 
       // merging inputs
-      const inputs = _.unionWith(
+      const inputs = _unionWith(
         targetIntent.inputs,
         remappedSourceIntent.inputs,
         (targetInput, sourceInput) => targetInput.text === sourceInput.text
       );
 
       // merging slots
-      const slots = _.unionWith(
+      const slots = _unionWith(
         targetIntent.slots ?? [],
         remappedSourceIntent.slots ?? [],
         (targetSlot, sourceSlot) => targetSlot.id === sourceSlot.id
@@ -505,7 +506,7 @@ class ProjectsMerge {
     });
 
     this.newDiagrams = this.sourceDiagrams.map(({ nodes, ...diagram }) => {
-      const remappedNodes = _.mapValues(nodes, (node) => {
+      const remappedNodes = _mapValues(nodes, (node) => {
         // it should be safe to create a huge remap ids map to remap everything in a single iteration
         const combinedIDsMap = new Map([
           ...this.noteIDsMap.entries(),

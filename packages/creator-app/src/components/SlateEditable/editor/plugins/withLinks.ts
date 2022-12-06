@@ -1,5 +1,5 @@
 import { Nullable } from '@voiceflow/common';
-import { slate } from '@voiceflow/internal';
+import { isLinkElement } from '@voiceflow/slate-serializer';
 import { Descendant, Editor, Element, Location, Node, Point, Range, Text, Transforms } from 'slate';
 
 import { ALL_URLS_REGEX } from '@/constants';
@@ -117,7 +117,7 @@ export const withLinksPlugin: Plugin = (EditorAPI: EditorAPIType) => (editor: Ed
 
 export const withLinksEditorApi: APIPlugin = (EditorAPI: EditorAPIType): EditorAPIType => {
   const LinksEditorAPI: LinksEditorAPI = {
-    isLink: (node): node is LinkElement => Element.isElement(node) && slate.isLinkElement(node),
+    isLink: (node): node is LinkElement => Element.isElement(node) && isLinkElement(node),
 
     link: (editor): Nullable<LinkElement> => {
       const entry = Editor.above(editor, {

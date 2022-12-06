@@ -1,8 +1,8 @@
 import * as Platform from '@voiceflow/platform-config';
+import { serializeToText } from '@voiceflow/slate-serializer/text';
 import { Preview, stopPropagation, toast } from '@voiceflow/ui';
 import React from 'react';
 
-import { SlateEditorAPI } from '@/components/SlateEditable';
 import { copy } from '@/utils/clipboard';
 
 interface PromptPreviewProps {
@@ -14,7 +14,7 @@ interface PromptPreviewProps {
 
 const getPromptContent = (prompt: Platform.Base.Models.Prompt.Model) => {
   if (Platform.Common.Chat.CONFIG.utils.prompt.isPrompt(prompt)) {
-    return SlateEditorAPI.serialize(prompt.content);
+    return serializeToText(prompt.content, { encodeVariables: false });
   }
 
   if (Platform.Common.Voice.CONFIG.utils.prompt.isPrompt(prompt)) {

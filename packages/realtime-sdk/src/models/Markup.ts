@@ -1,4 +1,4 @@
-import { Descendant } from 'slate';
+import { BaseText } from '@voiceflow/base-types';
 
 export namespace Markup {
   export interface Color {
@@ -13,7 +13,7 @@ export namespace Markup {
       backgroundColor: Color | null;
       scale: number;
       rotate: number;
-      content: Descendant[];
+      content: BaseText.SlateTextValue;
       overrideWidth: number | null /* Used to implement horizontal + vertical resizing of Markup Text */;
     }
 

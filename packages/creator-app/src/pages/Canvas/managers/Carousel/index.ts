@@ -1,7 +1,7 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { serializeToText } from '@voiceflow/slate-serializer/text';
 
 import * as Documentation from '@/config/documentation';
-import { serializeSlateToText } from '@/utils/slate';
 
 import { NodeManagerConfigV2 } from '../types';
 import { NODE_CONFIG } from './constants';
@@ -15,7 +15,7 @@ const CarouselManager: NodeManagerConfigV2<Realtime.NodeData.Carousel, Realtime.
   step: CarouselStep,
   editorV2: Editor,
 
-  getSearchParams: (node) => node.cards.flatMap(({ title, description }) => [title, serializeSlateToText(description)]),
+  getSearchParams: (node) => node.cards.flatMap(({ title, description }) => [title, serializeToText(description)]),
 
   tooltipText: 'Displays a selection of multi-modal cards.',
   tooltipLink: Documentation.CAROUSEL_STEP,

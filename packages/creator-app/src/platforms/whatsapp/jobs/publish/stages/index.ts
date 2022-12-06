@@ -5,7 +5,7 @@ import { NLPTrainJob } from '@/models';
 
 import SuccessStage from './SuccessStage';
 
-export const WebchatStageContent = {
+export const WhatsAppStageContent = {
   [NLPTrainStageType.SUCCESS]: {
     Popup: { Component: SuccessStage, closeable: true },
   },
@@ -14,4 +14,4 @@ export const WebchatStageContent = {
   },
 };
 
-export const useWebchatStageContent = createUseJobInterfaceContent<NLPTrainJob.AnyJob>(WebchatStageContent);
+export const useWhatsAppStageContent = createUseJobInterfaceContent<NLPTrainJob.AnyJob>(WhatsAppStageContent);

@@ -5,3 +5,4 @@ export * as General from './general';
 export * as Google from './google';
 export * from './selectors';
 export * from './types';
+export * as WhatsApp from './whatsapp';

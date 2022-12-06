@@ -9,7 +9,7 @@ import { useModals } from '@/hooks/modals';
 import { isPlatformWithThirdPartyUpload } from '@/utils/typeGuards';
 
 export interface PublishVersionModalData {
-  message?: JSX.Element;
+  message?: JSX.Element | string;
   onConfirm: (versionName: string) => void;
 }
 

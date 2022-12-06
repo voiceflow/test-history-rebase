@@ -45,7 +45,7 @@ const WebhookField: React.FC<WebhookFieldProps> = ({ subtitle, platformName }) =
     <>
       {hasPermissions && (
         <Section title="Webhook" subtitle={subtitle}>
-          <Box mb={12} fontWeight={600}>
+          <Box mb={11} fontWeight={600}>
             Webhook URL
           </Box>
           <Box.Flex gap={12}>

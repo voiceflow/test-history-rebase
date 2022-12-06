@@ -24,7 +24,7 @@ const PublishGoogle = lazy(() => import('./Google'));
 const PublishDialogflow = lazy(() => import('./Dialogflow'));
 const PublishWebchat = lazy(() => import('./Webchat'));
 const PublishWhatsApp = lazy(() => import('./WhatsApp'));
-const TestWhatsApp = lazy(() => import('./WhatsApp/test'));
+const PrototypeWhatsApp = lazy(() => import('./WhatsApp/prototype'));
 const PublishTeams = lazy(() => import('./MicrosoftTeams'));
 const Export = lazy(() => import('./Export'));
 const API = lazy(() => import('./API'));
@@ -44,7 +44,7 @@ const Publish: React.FC = () => {
         {isDialogflowPlatform(platform) && <Route path={Path.PUBLISH_DIALOGFLOW} component={PublishDialogflow} />}
         {isWebChatPlatform(platform) && <Route path={Path.PUBLISH_WEBCHAT} component={PublishWebchat} />}
         {isWhatsAppPlatform(platform) && <Route path={Path.PUBLISH_WHATSAPP} component={PublishWhatsApp} />}
-        {isWhatsAppPlatform(platform) && <Route path={Path.TEST_WHATSAPP} component={TestWhatsApp} />}
+        {isWhatsAppPlatform(platform) && <Route path={Path.PROTOTYPE_WHATSAPP} component={PrototypeWhatsApp} />}
         {isMicrosoftTeamsPlatform(platform) && <Route path={Path.PUBLISH_TEAMS} component={PublishTeams} />}
 
         <Route path={Path.PUBLISH_API} component={API} />

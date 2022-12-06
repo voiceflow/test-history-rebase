@@ -59,4 +59,4 @@ const Banner: React.FC<BannerProps> = ({
     </S.OuterContainer>
   );
 };
-export default Banner;
+export default Object.assign(Banner, { OuterContainer: S.OuterContainer });

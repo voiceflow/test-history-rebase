@@ -4,13 +4,15 @@ import React from 'react';
 import { UploadedStage } from '@/components/PlatformUploadPopup/components';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
-import { useDispatch, useSelector } from '@/hooks';
+import { useDispatch, useSelector, useSyncProjectLiveVersion } from '@/hooks';
 import { NLPTrainJob } from '@/models';
 import { StageComponentProps } from '@/platforms/types';
 
 const getWidgetSessionKey = (projectID: string) => `widget_publish_${projectID}`;
 
 const SuccessStage: React.FC<StageComponentProps<NLPTrainJob.SuccessStage>> = ({ cancel }) => {
+  useSyncProjectLiveVersion();
+
   const projectID = useSelector(Session.activeProjectIDSelector);
 
   const [firstTime, setFirstTime] = useLocalStorageState<boolean>(getWidgetSessionKey(projectID!), true);

@@ -1,8 +1,7 @@
-import { Box, BoxFlex, BoxFlexCenter } from '@voiceflow/ui';
+import { Banner, Box, BoxFlex, BoxFlexCenter } from '@voiceflow/ui';
 
 import { styled } from '@/hocs';
 
-export { default as PublishBanner } from './PublishBanner';
 export { default as Section } from './Section';
 export { default as WebhookField } from './WebhookField';
 
@@ -36,8 +35,14 @@ export const ActionContainer = styled.div`
 
 export const SettingsContainer = styled(Box.Flex)`
   flex-direction: column;
-  margin: 20px 32px;
+  margin: 0 32px;
+  padding: 32px 0;
   height: 100%;
   overflow-y: scroll;
   max-width: 700px;
+
+  & ${Banner.OuterContainer} {
+    padding: 12px;
+    margin-bottom: 8px;
+  }
 `;

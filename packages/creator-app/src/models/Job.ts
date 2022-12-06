@@ -12,6 +12,7 @@ import {
   GoogleStageType,
   NLPTrainJobErrorType,
   NLPTrainStageType,
+  TwilioPrototypeStageType,
 } from '@/constants/platforms';
 
 export interface JobStage<T extends string = string, D extends object = object> {
@@ -297,4 +298,24 @@ export namespace NLPTrainJob {
   export type ProgressStage = JobStage<NLPTrainStageType.PROGRESS, { message: string; progress: number }>;
 
   export type AnyJob = Job<IdleStage | ErrorStage | SuccessStage | ProgressStage>;
+}
+
+export namespace TwilioPrototypeJob {
+  export type IdleStage = JobStage<TwilioPrototypeStageType.IDLE>;
+
+  export type ErrorStage = JobStage<
+    TwilioPrototypeStageType.ERROR,
+    {
+      error?: any;
+      message: string;
+      errorType: NLPTrainJobErrorType;
+      progress?: number;
+    }
+  >;
+
+  export type MessagingStage = JobStage<TwilioPrototypeStageType.MESSAGING, { phoneNumber: string }>;
+
+  export type WaitNumberStage = JobStage<TwilioPrototypeStageType.WAIT_NUMBER>;
+
+  export type AnyJob = Job<IdleStage | ErrorStage | MessagingStage | WaitNumberStage>;
 }

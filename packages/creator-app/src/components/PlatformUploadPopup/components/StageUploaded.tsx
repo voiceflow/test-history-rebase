@@ -4,20 +4,22 @@ import React from 'react';
 import { uploaded } from '@/assets';
 
 interface UploadedProps {
+  title?: string;
+  imageProps?: React.ImgHTMLAttributes<HTMLImageElement>;
   redirectUrl?: string;
   learnMoreUrl?: string;
   buttonText?: string;
   description: string;
 }
 
-const UploadedStage: React.FC<UploadedProps> = ({ redirectUrl, learnMoreUrl, buttonText, description, children }) => {
+const UploadedStage: React.FC<UploadedProps> = ({ title, imageProps, redirectUrl, learnMoreUrl, buttonText, description, children }) => {
   return (
     <Box.FlexCenter flexDirection="column" p={24} width={300}>
       <Box.FlexCenter size={104} borderRadius="50%" backgroundColor="#e3eff8">
-        <img alt="takeoff" height={80} src={uploaded} />
+        <img alt="takeoff" height={80} src={uploaded} {...imageProps} />
       </Box.FlexCenter>
       <Text mt={16} mb={8} color={ThemeColor.PRIMARY} fontWeight={600}>
-        Successfully Published
+        {title || 'Successfully Published'}
       </Text>
       <Text textAlign="center" mb={20} color={ThemeColor.SECONDARY}>
         {description}. {learnMoreUrl && <Link href={learnMoreUrl}>Learn more</Link>}

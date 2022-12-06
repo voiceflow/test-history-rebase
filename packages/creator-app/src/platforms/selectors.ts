@@ -9,11 +9,13 @@ import dialogflowESClient from './dialogflowES/client';
 import generalClient from './general/client';
 import googleClient from './google/client';
 import { PlatformClient } from './types';
+import whatsappClient from './whatsapp/client';
 
 export const platformClients = {
   alexa: alexaClient,
   google: googleClient,
   general: generalClient,
+  whatsapp: whatsappClient,
   dialogflowES: dialogflowESClient,
   dialogflowCX: dialogflowCXClient,
 };

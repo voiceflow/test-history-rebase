@@ -43,7 +43,7 @@ const IntegrationsSidebar: React.FC<SideBarComponentProps> = () => {
       case Platform.Constants.PlatformType.WHATSAPP:
         return [
           { to: generatePath(Path.PUBLISH_WHATSAPP, { versionID }), title: 'WhatsApp Business', icon },
-          { to: generatePath(Path.TEST_WHATSAPP, { versionID }), title: 'Test on Phone', icon: 'phone' },
+          { to: generatePath(Path.PROTOTYPE_WHATSAPP, { versionID }), title: 'Test on Phone', icon: 'phone' },
         ];
       case Platform.Constants.PlatformType.MICROSOFT_TEAMS:
         return [{ to: generatePath(Path.PUBLISH_TEAMS, { versionID }), title, icon }];

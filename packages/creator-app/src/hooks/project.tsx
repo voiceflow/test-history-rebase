@@ -5,6 +5,7 @@ import { MenuTypes, toast } from '@voiceflow/ui';
 import React from 'react';
 import { useSelector } from 'react-redux';
 
+import client from '@/client';
 import { ConfirmProps } from '@/components/ConfirmModal';
 import * as Errors from '@/config/errors';
 import { Permission } from '@/config/permissions';
@@ -270,4 +271,19 @@ export const useAlexaProjectSettings = (): boolean => {
   if (project.platform !== Platform.Constants.PlatformType.ALEXA) return true;
 
   return project.id < ALEXA_SUNSET_PROJECT_ID;
+};
+
+export const useSyncProjectLiveVersion = () => {
+  const activeProjectID = useSelector(ProjectV2.active.idSelector);
+
+  const updateProjectLiveVersion = useDispatch(Project.updateProjectLiveVersion);
+
+  React.useEffect(() => {
+    if (!activeProjectID) return;
+
+    (async () => {
+      const { liveVersion } = await client.api.project.get(activeProjectID!, ['liveVersion']);
+      updateProjectLiveVersion(activeProjectID, liveVersion!);
+    })();
+  }, []);
 };

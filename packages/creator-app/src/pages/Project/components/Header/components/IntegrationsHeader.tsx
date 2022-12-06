@@ -22,6 +22,7 @@ const IntegrationsHeader: React.FC = () => {
             <Route path={Path.PUBLISH_ALEXA}>Amazon Alexa</Route>
             <Route path={Path.PUBLISH_GOOGLE}>Google Assistant</Route>
             <Route path={Path.PUBLISH_WHATSAPP}>WhatsApp</Route>
+            <Route path={Path.PROTOTYPE_WHATSAPP}>WhatsApp Testing</Route>
             <Route path={Path.PUBLISH_API}>API</Route>
           </Switch>
         </Page.Header.Title>

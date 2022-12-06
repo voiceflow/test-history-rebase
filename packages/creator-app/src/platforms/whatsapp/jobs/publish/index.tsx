@@ -1,20 +1,18 @@
-import { Link, toast, usePersistFunction } from '@voiceflow/ui';
+import { toast, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
 import JobInterface from '@/components/JobInterface';
 import { PublishVersionModalData } from '@/components/PublishVersionModal';
 import { ModalType } from '@/constants';
-import { WEBCHAT_LEARN_MORE } from '@/constants/platforms';
 import { PublishContext } from '@/contexts';
 import { useModals, useTrackingEvents } from '@/hooks';
 import { useSimulatedProgress } from '@/hooks/job';
 import PublishButton from '@/pages/Project/components/Header/components/CanvasHeader/components/Upload/components/PublishButton';
 
-import { useWebchatStageContent } from './stages';
+import { useWhatsAppStageContent } from './stages';
 
-const Webchat: React.FC = () => {
+const WhatsApp: React.FC = () => {
   const publishNewVersionModal = useModals<PublishVersionModalData>(ModalType.PUBLISH_VERSION_MODAL);
-
   const publishContext = React.useContext(PublishContext)!;
   const { job, active } = publishContext;
 
@@ -35,16 +33,12 @@ const Webchat: React.FC = () => {
 
   const onPublish = usePersistFunction(() =>
     publishNewVersionModal.open({
-      message: (
-        <>
-          Publish this version to production and use it with your <Link href={WEBCHAT_LEARN_MORE}>Web Chat</Link>.
-        </>
-      ),
+      message: 'Publish this version to production and use it on WhatsApp Business Messaging.',
       onConfirm,
     })
   );
 
-  const Content = useWebchatStageContent(job?.stage.type);
+  const Content = useWhatsAppStageContent(job?.stage.type);
 
   const progress = useSimulatedProgress(job);
 
@@ -55,4 +49,4 @@ const Webchat: React.FC = () => {
   );
 };
 
-export default Webchat;
+export default WhatsApp;

@@ -8,6 +8,7 @@ import {
   GooglePublishJob,
   JobStageData,
   NLPTrainJob,
+  TwilioPrototypeJob,
 } from '@/models';
 
 import { AlexaPublishJobErrorType, AlexaStageType } from './alexa';
@@ -44,7 +45,8 @@ export type AnyErrorStageData =
   | JobStageData<AlexaExportJob.ErrorStage>
   | JobStageData<AlexaPublishJob.ErrorStage>
   | JobStageData<GeneralExportJob.ErrorStage>
-  | JobStageData<NLPTrainJob.ErrorStage>;
+  | JobStageData<NLPTrainJob.ErrorStage>
+  | JobStageData<TwilioPrototypeJob.ErrorStage>;
 
 export type AnyErrorStage =
   | GoogleExportJob.ErrorStage
@@ -54,7 +56,8 @@ export type AnyErrorStage =
   | AlexaExportJob.ErrorStage
   | AlexaPublishJob.ErrorStage
   | GeneralExportJob.ErrorStage
-  | NLPTrainJob.ErrorStage;
+  | NLPTrainJob.ErrorStage
+  | TwilioPrototypeJob.ErrorStage;
 
 export type AnyPublishJobErrorType = GooglePublishJobErrorType | DialogflowESPublishJobErrorType | AlexaPublishJobErrorType | DialogflowCXStageType;
 
@@ -66,6 +69,7 @@ export * from './dialogflowES';
 export * from './general';
 export * from './google';
 export * from './webchat';
+export * from './whatsapp';
 
 export enum VersionTag {
   PRODUCTION = 'production', // version is published to production

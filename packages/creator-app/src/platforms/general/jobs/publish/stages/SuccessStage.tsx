@@ -3,11 +3,13 @@ import React from 'react';
 
 import { UploadedStage } from '@/components/PlatformUploadPopup/components';
 import * as Router from '@/ducks/router';
-import { useDispatch } from '@/hooks';
+import { useDispatch, useSyncProjectLiveVersion } from '@/hooks';
 import { NLPTrainJob } from '@/models';
 import { StageComponentProps } from '@/platforms/types';
 
 const SuccessStage: React.FC<StageComponentProps<NLPTrainJob.SuccessStage>> = () => {
+  useSyncProjectLiveVersion();
+
   const goToConsole = useDispatch(Router.goToActivePlatformPublish);
 
   return (

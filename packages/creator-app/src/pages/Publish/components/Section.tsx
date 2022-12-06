@@ -4,8 +4,8 @@ import React from 'react';
 import { styled } from '@/hocs';
 
 const Card = styled(Box)`
-  border-radius: 5px;
-  box-shadow: 0 1px 3px 0 rgba(17, 49, 96, 0.08), 0 0 1px 1px rgba(17, 49, 96, 0.08);
+  border-radius: 8px;
+  box-shadow: rgb(17 49 96 / 10%) 0px 0px 0px 1px, rgb(17 49 96 / 8%) 0px 1px 3px 0px;
   background-color: white;
   padding: 24px 32px;
 
@@ -29,7 +29,7 @@ const Section: React.FC<{ title?: JSX.Element | string; subtitle?: JSX.Element |
     <Box fontWeight={600} mb={16}>
       {title}
       {subtitle && (
-        <Box fontSize={13} fontWeight={400} color={ThemeColor.SECONDARY}>
+        <Box mt={4} fontSize={13} fontWeight={400} color={ThemeColor.SECONDARY}>
           {subtitle}
         </Box>
       )}

@@ -12,7 +12,6 @@ export const InputContainer = styled.div<{ error?: boolean }>`
     top: 18px;
     left: 46px;
     position: absolute;
-    transform: rotate(180deg);
     pointer-events: none;
     opacity: 0.85;
   }
@@ -41,11 +40,14 @@ export const InputContainer = styled.div<{ error?: boolean }>`
   }
 
   .PhoneInputCountryIcon {
-    & > * {
-      height: 16px;
-      width: 22px;
-      border-radius: 2px;
-    }
+    display: flex;
+    align-items: center;
+  }
+
+  .PhoneInputCountryIconImg {
+    height: 16px;
+    width: 22px;
+    border-radius: 3px;
   }
 
   .PhoneInputInput {

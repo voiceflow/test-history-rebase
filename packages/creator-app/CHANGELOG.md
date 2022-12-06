@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1011.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1011.0...@voiceflow/creator-app@1.1011.1) (2022-12-06)
+
+
+### Bug Fixes
+
+* wrong listen steps for DFES chat (CT-1288) [bugfix] ([#6392](https://github.com/voiceflow/creator-app/issues/6392)) ([2bba6a9](https://github.com/voiceflow/creator-app/commit/2bba6a9153fa09f68b3bcc4eb6b7854bf2e819f1))
+
+
+
+
+
 # [1.1011.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1010.0...@voiceflow/creator-app@1.1011.0) (2022-12-06)
 
 

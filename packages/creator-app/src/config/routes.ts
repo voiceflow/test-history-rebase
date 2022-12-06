@@ -98,6 +98,7 @@ export enum WorkspaceRoute {
   MEMBERS = 'members',
   BILLING = 'billing',
   SETTINGS = 'settings',
+  ORGANIZATION = 'organization',
   TEMPLATE = 'template',
   ACCEPT_INVITE = 'accept-invite',
 }
@@ -107,6 +108,12 @@ export enum WorkspaceSettingsRoute {
   BILLING = 'billing',
   DEVELOPER = 'developer',
   SSO = 'sso',
+}
+
+export enum WorkspaceOrganizationRoute {
+  GENERAL = 'general',
+  MEMBERS = 'all-members',
+  SSO = 'saml-sso',
 }
 
 export enum ProjectSettingsRoute {
@@ -142,6 +149,9 @@ export const Path = {
 
   WORKSPACE: toPath(RootRoute.WORKSPACE),
   WORKSPACE_DASHBOARD: toPath(RootRoute.WORKSPACE, ':workspaceID'),
+  WORKSPACE_GENERAL_ORG: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.ORGANIZATION, WorkspaceOrganizationRoute.GENERAL),
+  WORKSPACE_MEMBERS_ORG: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.ORGANIZATION, WorkspaceOrganizationRoute.MEMBERS),
+  WORKSPACE_SSO_ORG: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.ORGANIZATION, WorkspaceOrganizationRoute.SSO),
   WORKSPACE_MEMBERS: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.MEMBERS),
   WORKSPACE_BILLING: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.BILLING),
   WORKSPACE_SETTINGS: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.SETTINGS),

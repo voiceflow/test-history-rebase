@@ -6,6 +6,7 @@ import { generatePath } from 'react-router-dom';
 import NavigationSidebar from '@/components/NavigationSidebar';
 import { Permission } from '@/config/permissions';
 import { Path } from '@/config/routes';
+import { BLOG_LINK, BOOK_DEMO_LINK, DOCS_LINK, TEMPLATES_LINK, YOUTUBE_CHANNEL_LINK } from '@/constants';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useActiveWorkspace, usePermission, useSelector } from '@/hooks';
 
@@ -37,19 +38,19 @@ const DashboardNavigationSidebar: React.FC = () => {
         </S.Group>
 
         <S.Group>
-          <Link color="inherit" href="https://www.voiceflow.com/docs">
+          <Link color="inherit" href={YOUTUBE_CHANNEL_LINK}>
             <NavigationSidebar.Item icon="video" title="Learn">
               <NavigationSidebar.Item.LinkIcon />
             </NavigationSidebar.Item>
           </Link>
 
-          <Link color="inherit" href="https://www.voiceflow.com/templates">
+          <Link color="inherit" href={TEMPLATES_LINK}>
             <NavigationSidebar.Item icon="publish" title="Templates">
               <NavigationSidebar.Item.LinkIcon />
             </NavigationSidebar.Item>
           </Link>
 
-          <Link color="inherit" link="https://www.voiceflow.com/blog">
+          <Link color="inherit" link={BLOG_LINK}>
             <NavigationSidebar.Item icon="whatsNew" title="What's New">
               <NavigationSidebar.Item.LinkIcon />
             </NavigationSidebar.Item>
@@ -57,18 +58,35 @@ const DashboardNavigationSidebar: React.FC = () => {
         </S.Group>
 
         <S.Group>
-          <NavigationSidebar.Item icon="noMatch" title="Get Help" />
+          <Link color="inherit" link={DOCS_LINK}>
+            <NavigationSidebar.Item icon="noMatch" title="Get Help">
+              <NavigationSidebar.Item.LinkIcon />
+            </NavigationSidebar.Item>
+          </Link>
 
           {isAdmin && <NavigationSidebar.Item icon="systemSettings" title="Settings" />}
 
-          {isOwner && <NavigationSidebar.Item icon="organization" title="Organization" />}
+          {isOwner && (
+            <NavigationSidebar.NavItem
+              to={generatePath(Path.WORKSPACE_GENERAL_ORG, { workspaceID })}
+              icon="organization"
+              title="Organization"
+              isActive={({ pathname, matchPath }) =>
+                !!matchPath(pathname, { path: [Path.WORKSPACE_GENERAL_ORG, Path.WORKSPACE_MEMBERS_ORG, Path.WORKSPACE_SSO_ORG] })
+              }
+            />
+          )}
         </S.Group>
 
         <S.FillSpace />
 
         <S.Group>
           {plan === PlanType.STARTER && <NavigationSidebar.Item icon="paid" title="Upgrade to Pro" />}
-          <NavigationSidebar.Item icon="sales" title="Contact Sales" />
+          <Link color="inherit" href={BOOK_DEMO_LINK}>
+            <NavigationSidebar.Item icon="sales" title="Contact Sales">
+              <NavigationSidebar.Item.LinkIcon />
+            </NavigationSidebar.Item>
+          </Link>
         </S.Group>
       </S.GroupsContainer>
 

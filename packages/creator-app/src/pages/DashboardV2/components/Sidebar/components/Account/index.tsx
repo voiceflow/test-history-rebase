@@ -19,7 +19,7 @@ const Account: React.FC = () => {
       offset={{ offset: [24, -5] }}
       placement="top-start"
       menu={
-        <Menu width={218}>
+        <Menu>
           <Menu.Item disabled>{user.email}</Menu.Item>
 
           <Menu.Item divider />

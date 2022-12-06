@@ -5,6 +5,8 @@ export const DOCS_LINK = 'https://www.voiceflow.com/docs';
 // eslint-disable-next-line no-secrets/no-secrets
 export const YOUTUBE_CHANNEL_LINK = 'https://www.youtube.com/channel/UCbqUIYQ7J2rS6C_nk4cNTxQ';
 export const BOOK_DEMO_LINK = 'https://www.voiceflow.com/demo';
+export const TEMPLATES_LINK = 'https://www.voiceflow.com/templates';
+export const BLOG_LINK = 'https://www.voiceflow.com/blog';
 export const DESKTOP_APP_LINK = 'https://www.voiceflow.com/desktop';
 export const PLAN_INFO_LINK = 'https://www.voiceflow.com/pricing';
 export const APL_TOOL_LINK = 'https://developer.amazon.com/alexa/console/ask/displays';

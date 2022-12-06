@@ -6,11 +6,12 @@ import { WorkspaceFeatureLoadingGate, WorkspaceSubscriptionGate } from '@/gates'
 import { withBatchLoadingGate } from '@/hocs';
 
 import { DashboardGate } from './gates';
-import { MembersAndBilling, ProjectList } from './pages';
+import { MembersAndBilling, Organization, ProjectList } from './pages';
 
 const Dashboard: React.FC = () => (
   <Switch>
     <Route path={[Path.WORKSPACE_BILLING, Path.WORKSPACE_MEMBERS]} component={MembersAndBilling} />
+    <Route path={[Path.WORKSPACE_GENERAL_ORG, Path.WORKSPACE_MEMBERS_ORG, Path.WORKSPACE_SSO_ORG]} component={Organization} />
     <Route path={Path.WORKSPACE_DASHBOARD} component={ProjectList} />
   </Switch>
 );

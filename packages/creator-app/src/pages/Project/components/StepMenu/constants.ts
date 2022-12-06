@@ -240,7 +240,7 @@ export const GENERAL_STEP_SECTIONS = createStepSections({
 // dialogflow chat menu sections
 export const DIALOGFLOW_ES_CHAT_STEP_SECTIONS = createStepSections({
   talkSteps: [TEXT_STEP, VISUAL_STEP, CARDV2_STEP, CAROUSEL_STEP, CUSTOM_PAYLOAD_STEP],
-  listenSteps: [CHOICE_STEP, CAPTURE_STEP_V2],
+  listenSteps: [BUTTONS_STEP, CAPTURE_STEP_V2],
   logicSteps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
   eventSteps: [INTENT_STEP],
   devSteps: [API_STEP, CODE_STEP, TRACE_STEP],

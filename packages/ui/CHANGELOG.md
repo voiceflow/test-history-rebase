@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.199.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.198.0...@voiceflow/ui@1.199.0) (2022-12-06)
+
+
+### Features
+
+* whatsapp sandbox and fixes (PL-000) ([#6380](https://github.com/voiceflow/creator-app/issues/6380)) ([0cf1ba1](https://github.com/voiceflow/creator-app/commit/0cf1ba1b67b73357cd4458fe060b97d347dc7858))
+
+
+
+
+
 # [1.198.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.197.0...@voiceflow/ui@1.198.0) (2022-12-06)
 
 

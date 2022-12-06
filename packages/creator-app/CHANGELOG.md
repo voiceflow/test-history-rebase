@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1009.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1008.0...@voiceflow/creator-app@1.1009.0) (2022-12-06)
+
+
+### Features
+
+* double invite modals(CT-1214) ([#6382](https://github.com/voiceflow/creator-app/issues/6382)) ([b79ea57](https://github.com/voiceflow/creator-app/commit/b79ea57d390e845e7804c511bcdcaff21ec6ba54))
+
+
+
+
+
 # [1.1008.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1007.0...@voiceflow/creator-app@1.1008.0) (2022-12-05)
 
 

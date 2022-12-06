@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1011.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1010.0...@voiceflow/creator-app@1.1011.0) (2022-12-06)
+
+
+### Features
+
+* implement organization route & fix links (CT-1263) ([#6388](https://github.com/voiceflow/creator-app/issues/6388)) ([d0ec566](https://github.com/voiceflow/creator-app/commit/d0ec566df05512c19ad4dabb848ca63e4178fa95))
+
+
+
+
+
 # [1.1010.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1009.0...@voiceflow/creator-app@1.1010.0) (2022-12-06)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1012.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1011.1...@voiceflow/creator-app@1.1012.0) (2022-12-06)
+
+
+### Features
+
+* add usage analytics SDK to `client` object (PL-316) ([#6364](https://github.com/voiceflow/creator-app/issues/6364)) ([de50f89](https://github.com/voiceflow/creator-app/commit/de50f895ec47482fbc0c51ffb6bef2aabf6c92d3))
+
+
+
+
+
 ## [1.1011.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1011.0...@voiceflow/creator-app@1.1011.1) (2022-12-06)
 
 

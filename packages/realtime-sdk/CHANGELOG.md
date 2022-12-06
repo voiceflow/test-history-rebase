@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.205.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.204.3...@voiceflow/realtime-sdk@1.205.0) (2022-12-06)
+
+
+### Features
+
+* use slate-serializer library (DX-110) ([#6135](https://github.com/voiceflow/creator-app/issues/6135)) ([87f8a22](https://github.com/voiceflow/creator-app/commit/87f8a22018f67527d9748d3b3f927ff5b0c7d3e2)), closes [voiceflow/general-service#413](https://github.com/voiceflow/general-service/issues/413) [voiceflow/creator-api#1083](https://github.com/voiceflow/creator-api/issues/1083)
+
+
+
+
+
 ## [1.204.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.204.2...@voiceflow/realtime-sdk@1.204.3) (2022-12-06)
 
 **Note:** Version bump only for package @voiceflow/realtime-sdk

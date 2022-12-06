@@ -34,6 +34,7 @@
     "@voiceflow/react-chat": "1.28.2",
     "@voiceflow/realtime-sdk": "^1.204.3",
     "@voiceflow/schema-types": "1.17.0",
+    "@voiceflow/sdk-usage-analytics": "1.1.0",
     "@voiceflow/ui": "^1.199.0",
     "@voiceflow/voiceflow-types": "3.21.4",
     "apl-viewhost-web": "1.8.2",

@@ -23,6 +23,7 @@ import sso from './sso';
 import template from './template';
 import transcript from './transcript';
 import upload from './upload';
+import usageAnalytics from './usageAnalytics';
 import user from './user';
 import variableStates from './variableStates';
 import version from './version';
@@ -64,6 +65,7 @@ const client = {
   upload,
   mlGateway,
   nluManager,
+  usageAnalytics,
 };
 
 export default client;

@@ -15,6 +15,7 @@ import { SyncThunk, Thunk } from '@/store/types';
 
 import {
   goTo,
+  goToAnalytics,
   goToCanvasCommenting,
   goToCanvasCommentingThread,
   goToCanvasTextMarkup,
@@ -287,6 +288,14 @@ export const goToCurrentSettings = (): SyncThunk => (dispatch, getState) => {
   Errors.assertVersionID(versionID);
 
   dispatch(goToSettings(versionID));
+};
+
+export const goToCurrentAnalytics = (): SyncThunk => (dispatch, getState) => {
+  const versionID = Session.activeVersionIDSelector(getState());
+
+  Errors.assertVersionID(versionID);
+
+  dispatch(goToAnalytics(versionID));
 };
 
 export const goToActivePlatformPublish = (): Thunk => async (dispatch, getState) => {

@@ -19,6 +19,7 @@ export enum Hotkey {
   NLU_MANAGER_PAGE = 'NLU_MANAGER_PAGE',
   INTEGRATION_PAGE = 'INTEGRATION_PAGE',
   CONVERSATION_PAGE = 'CONVERSATION_PAGE',
+  ANALYTICS_PAGE = 'ANALYTICS_PAGE',
 
   USER_SPEECH = 'USER_SPEECH',
   OPEN_CMS_MODAL = 'OPEN_CMS_MODAL',
@@ -120,6 +121,8 @@ const HOTKEY_MAPPING: Record<Hotkey, string | string[]> = {
   [Hotkey.CONVERSATION_PAGE]: '3',
   [Hotkey.INTEGRATION_PAGE]: '4',
   [Hotkey.SETTINGS_PAGE]: '5',
+  // TODO(jonahsnider): Add proper ANALYTICS_PAGE keybind
+  [Hotkey.ANALYTICS_PAGE]: '9',
   [Hotkey.MOVE_FORWARD]: SpecialKey.RIGHT,
   [Hotkey.SHOW_HIDE_UI]: [`${SpecialKey.CTRL}+\\`, `${SpecialKey.META}+\\`],
   [Hotkey.SAVE_VERSION]: [`${SpecialKey.CTRL} + S`, `${SpecialKey.META} + S`],

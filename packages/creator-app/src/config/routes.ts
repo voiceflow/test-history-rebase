@@ -40,6 +40,7 @@ export enum ProjectRoute {
   CONVERSATIONS = 'transcripts',
   NLU_MANAGER = 'nlu',
   SETTINGS = 'settings',
+  ANALYTICS = 'analytics',
   PROTOTYPE_WEBHOOK = 'webhook', // TODO: temporary page, remove after updated
   EXPORT = 'export',
   ASSISTANT_OVERVIEW = 'assistant-overview',
@@ -197,6 +198,8 @@ export const Path = {
   NLU_MANAGER_UNCLASSIFIED: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.NLU_MANAGER, NLURoute.UNCLASSIFIED, ':itemID?'),
   NLU_MANAGER_ENTITIES: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.NLU_MANAGER, NLURoute.ENTITIES, ':itemID?'),
   NLU_MANAGER_TAB: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.NLU_MANAGER, ':tab', ':itemID?'),
+
+  ANALYTICS_DASHBOARD: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.ANALYTICS),
 
   DOMAIN_CANVAS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.DOMAIN, ':domainID', DomainRoute.CANVAS, ':diagramID?'),
 

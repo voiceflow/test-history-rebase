@@ -57,6 +57,8 @@ export const goToPrototype = (versionID: string, nodeID?: string) =>
 export const goToSettings = (versionID: string) => goTo(generatePath(Path.PROJECT_SETTINGS, { versionID }));
 export const goToAssistantOverview = (versionID: string) => goTo(generatePath(Path.PROJECT_ASSISTANT_OVERVIEW, { versionID }));
 
+export const goToAnalytics = (versionID: string) => goTo(generatePath(Path.ANALYTICS_DASHBOARD, { versionID }));
+
 export const goToPublish = (versionID: string, platform: Platform.Constants.PlatformType) => {
   let platformPath: string = platform;
 

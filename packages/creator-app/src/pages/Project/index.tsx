@@ -32,6 +32,7 @@ const Settings = lazy(() => import('@/pages/Settings'));
 const AssistantOverview = lazy(() => import('@/pages/DashboardV2/pages/AssistantOverview'));
 const Conversations = lazy(() => import('@/pages/Conversations'));
 const NLUManager = lazy(() => import('@/pages/NLUManager'));
+const AnalyticsDashboard = lazy(() => import('@/pages/AnalyticsDashboard'));
 
 export type ProjectProps = RouteComponentProps;
 
@@ -51,6 +52,7 @@ const Project: React.FC = () => {
 
   const inactivitySnackbar = Snackbar.useSnackbar();
   const nluManager = useFeature(Realtime.FeatureFlag.NLU_MANAGER);
+  const analyticsDashboard = useFeature(Realtime.FeatureFlag.ANALYTICS_DASHBOARD);
   const disableIntegration = useFeature(Realtime.FeatureFlag.DISABLE_INTEGRATION)?.isEnabled;
 
   const isPreviewRoute = useProjectPreviewMode();
@@ -124,6 +126,7 @@ const Project: React.FC = () => {
             <Route path={Path.CONVERSATIONS} component={Conversations} />
 
             {nluManager.isEnabled && <Route path={Path.NLU_MANAGER} component={NLUManager} />}
+            {nluManager.isEnabled && analyticsDashboard.isEnabled && <Route path={Path.ANALYTICS_DASHBOARD} component={AnalyticsDashboard} />}
 
             <Route path={Path.PROJECT_TOOLS} component={Business} />
 

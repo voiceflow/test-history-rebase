@@ -23,6 +23,7 @@ export enum CanvasOptionType {
   INTEGRATION = 'INTEGRATION',
   CONVERSATION = 'CONVERSATION',
   NLU_MANAGER = 'NLU_MANAGER',
+  ANALYTICS_DASHBOARD = 'ANALYTICS_DASHBOARD',
 }
 
 const RouteCanvasOptionMap: Record<CanvasOptionType, string[]> = {
@@ -32,11 +33,18 @@ const RouteCanvasOptionMap: Record<CanvasOptionType, string[]> = {
   [CanvasOptionType.INTEGRATION]: [Path.PROJECT_PUBLISH],
   [CanvasOptionType.CONVERSATION]: [Path.CONVERSATIONS],
   [CanvasOptionType.NLU_MANAGER]: [Path.NLU_MANAGER],
+  [CanvasOptionType.ANALYTICS_DASHBOARD]: [Path.ANALYTICS_DASHBOARD],
 };
 
 export const useCanvasMenuOptionsAndHotkeys = () => {
   const nluManager = useFeature(Realtime.FeatureFlag.NLU_MANAGER);
+  const analyticsDashboard = useFeature(Realtime.FeatureFlag.ANALYTICS_DASHBOARD);
   const disableIntegration = useFeature(Realtime.FeatureFlag.DISABLE_INTEGRATION)?.isEnabled;
+
+  if (analyticsDashboard.isEnabled && !nluManager.isEnabled) {
+    // TODO(jonahsnider): Temporary solution - see https://voiceflowhq.slack.com/archives/C046QQQAX18/p1670018716569129
+    throw new Error(`${Realtime.FeatureFlag.ANALYTICS_DASHBOARD} feature flag requires ${Realtime.FeatureFlag.NLU_MANAGER} to be enabled too`);
+  }
 
   const match = useRouteMatch();
   const hasUnreadTranscripts = useSelector(Transcript.hasUnreadTranscriptsSelector);
@@ -45,6 +53,7 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
   const goToCurrentCanvas = useDispatch(Router.goToCurrentCanvas);
   const goToCurrentPublish = useDispatch(Router.goToActivePlatformPublish);
   const goToCurrentSettings = useDispatch(Router.goToCurrentSettings);
+  const goToCurrentAnalytics = useDispatch(Router.goToCurrentAnalytics);
   const goToCurrentTranscript = useDispatch(Router.goToCurrentTranscript);
 
   const [canEditProject] = usePermission(Permission.EDIT_PROJECT);
@@ -75,6 +84,10 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
     disable: !nluManager.isEnabled,
     preventDefault: true,
   });
+  useHotKeys(Hotkey.ANALYTICS_PAGE, goToCurrentAnalytics, {
+    disable: !nluManager.isEnabled || !analyticsDashboard.isEnabled,
+    preventDefault: true,
+  });
   useHotKeys(Hotkey.INTEGRATION_PAGE, goToCurrentPublish, {
     disable: disableIntegration || !nluManager.isEnabled || !canEditProject,
     preventDefault: true,
@@ -85,7 +98,7 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
   });
 
   useHotKeys(Hotkey.CONVERSATION_PAGE_LEGACY, goToCurrentTranscript, {
-    disable: !!nluManager.isEnabled,
+    disable: nluManager.isEnabled,
     preventDefault: true,
   });
   useHotKeys(Hotkey.INTEGRATION_PAGE_LEGACY, goToCurrentPublish, {
@@ -124,6 +137,17 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
           onClick: goToCurrentTranscript,
           withBadge: hasUnreadTranscripts,
         },
+    nluManager.isEnabled && analyticsDashboard.isEnabled
+      ? {
+          icon: 'measure',
+          value: CanvasOptionType.ANALYTICS_DASHBOARD,
+          tooltip: {
+            title: 'Analytics',
+            hotkey: HOTKEY_LABEL_MAP[Hotkey.ANALYTICS_PAGE],
+          },
+          onClick: goToCurrentAnalytics,
+        }
+      : null,
     !canEditProject || disableIntegration
       ? null
       : {

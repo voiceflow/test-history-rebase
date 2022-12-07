@@ -155,6 +155,7 @@ export { default as lockUnlocked } from './unlocked.svg';
 
 // m
 export { default as markupImageV2 } from './markup-v2.svg';
+export { default as measure } from './measure.svg';
 export { default as microphone } from './microphone.svg';
 export { default as minus } from './minus.svg';
 export { default as modelQuickview } from './model-quickview.svg';

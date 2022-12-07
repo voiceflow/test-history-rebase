@@ -132,13 +132,22 @@ class ClipboardEngine extends EngineConsumer {
       const targetPlatform = ProjectV2.active.platformSelector(state);
       const isPlatformConversion = sourcePlatform !== targetPlatform;
       const slotTypes = new Set(VersionV2.active.slotTypesSelector(state).map((slot) => slot.value));
-      const validSlots = isPlatformConversion ? slots.filter((slot) => slotTypes.has(slot.type!)) : slots;
+
+      // ensure ids are unique
+      const slotIDs = new Set(SlotV2.allSlotIDsSelector(state));
+      const intentIDs = new Set(IntentV2.allIntentIDsSelector(state));
+
+      const validSlots = slots.filter((slot) => {
+        if (isPlatformConversion && !slotTypes.has(slot.type!)) return false;
+        return !slotIDs.has(slot.id);
+      });
+
       const isValidSlot = validSlots.reduce<Record<string, boolean>>((acc, slot) => Object.assign(acc, { [slot.id]: slotTypes.has(slot.type!) }), {});
 
       const nodesWithData = nodes.map((node) => ({ node, data: data[node.id] }));
 
       const validIntents = intents
-        .filter((intent) => intent.slots.allKeys.every((key) => isValidSlot[key]))
+        .filter((intent) => intent.slots.allKeys.every((key) => isValidSlot[key]) && !intentIDs.has(intent.id))
         .map((intent) => ({ ...intent, platform: targetPlatform }));
 
       await Promise.all([this.dispatch(Slot.addManySlots(validSlots)), this.dispatch(Intent.addManyIntents(validIntents, CanvasCreationType.PASTE))]);

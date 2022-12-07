@@ -1,7 +1,6 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
-import { useFeature, useRegistration, useTeardown } from '@/hooks';
+import { useRegistration, useTeardown } from '@/hooks';
 import { buildHeadMarker, buildPath, getMarkerAttrs, getPathPoints, HeadMarker, Path, STROKE_DEFAULT_COLOR } from '@/pages/Canvas/components/Link';
 import LinkStepMenu from '@/pages/Canvas/components/LinkStepMenu';
 import { EngineContext, IsStraightLinksContext, LinkStepMenuContext } from '@/pages/Canvas/contexts';
@@ -18,7 +17,6 @@ const NewLink: React.FC = () => {
   const engine = React.useContext(EngineContext)!;
   const isStraight = React.useContext(IsStraightLinksContext)!;
   const stepMenuContext = React.useContext(LinkStepMenuContext)!;
-  const blockFromLink = useFeature(Realtime.FeatureFlag.BLOCK_VIA_LINK);
 
   const api = useNewLinkAPI<SVGPathElement>();
   const linkedRects = api.getLinkedRects();
@@ -51,7 +49,7 @@ const NewLink: React.FC = () => {
     <Container>
       <HeadMarker id={NEW_LINK_ID} ref={api.markerRef} isHighlighted {...markerAttrs} blockViaLinkMode={stepMenuContext.isOpen} />
 
-      {blockFromLink.isEnabled && <LinkStepMenu />}
+      <LinkStepMenu />
 
       <Path
         d={path}

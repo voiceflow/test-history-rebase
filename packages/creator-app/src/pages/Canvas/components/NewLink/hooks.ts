@@ -1,10 +1,9 @@
 import { Utils } from '@voiceflow/common';
-import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { AutoPanningCacheContext } from '@/contexts';
 import * as Account from '@/ducks/account';
-import { useFeature, useRAF, useSelector } from '@/hooks';
+import { useRAF, useSelector } from '@/hooks';
 import { LinkedRects } from '@/pages/Canvas/components/Link';
 import { EngineContext, LinkStepMenuContext } from '@/pages/Canvas/contexts';
 import { NewLinkAPI } from '@/pages/Canvas/types';
@@ -20,7 +19,6 @@ export const useNewLinkAPI = <T extends SVGElement>() => {
   const engine = React.useContext(EngineContext)!;
   const isAutoPanning = React.useContext(AutoPanningCacheContext);
   const stepMenu = React.useContext(LinkStepMenuContext)!;
-  const blockFromLink = useFeature(Realtime.FeatureFlag.BLOCK_VIA_LINK);
 
   const creatorID = useSelector(Account.userIDSelector)!;
 
@@ -87,12 +85,7 @@ export const useNewLinkAPI = <T extends SVGElement>() => {
 
           if (engine.linkCreation.activeTargetPortID) {
             engine.linkCreation.complete(engine.linkCreation.activeTargetPortID);
-          } else if (
-            engine.linkCreation.blockViaLinkMode &&
-            !engine.linkCreation.blockViaLinkMenuOpened &&
-            blockFromLink.isEnabled &&
-            event.button !== 2
-          ) {
+          } else if (engine.linkCreation.blockViaLinkMode && !engine.linkCreation.blockViaLinkMenuOpened && event.button !== 2) {
             showStepMenu(event);
           } else if (!engine.linkCreation.isCompleting && !engine.linkCreation.blockViaLinkMenuOpened) {
             engine.linkCreation.abort();

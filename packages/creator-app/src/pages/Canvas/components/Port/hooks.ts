@@ -1,9 +1,7 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { swallowEvent } from '@voiceflow/ui';
 import mouseEventOffset from 'mouse-event-offset';
 import React from 'react';
 
-import { useFeature } from '@/hooks';
 import { EngineContext, PortEntityContext } from '@/pages/Canvas/contexts';
 import { useElementInstance } from '@/pages/Canvas/engine/entities/utils';
 import { useEditingMode } from '@/pages/Project/hooks';
@@ -28,7 +26,6 @@ export const useHandlers = () => {
   const portEntity = React.useContext(PortEntityContext)!;
   const engine = React.useContext(EngineContext)!;
   const isEditingMode = useEditingMode();
-  const blockFromLink = useFeature(Realtime.FeatureFlag.BLOCK_VIA_LINK);
 
   const onMouseDown = React.useCallback(
     swallowEvent((event: React.MouseEvent) => {
@@ -41,7 +38,7 @@ export const useHandlers = () => {
 
   const onMouseUp = React.useCallback((event: React.MouseEvent) => {
     if (engine.linkCreation.isSourcePort(portEntity.portID)) {
-      if (blockFromLink.isEnabled) engine.linkCreation.enableBlockViaLinkMode();
+      engine.linkCreation.enableBlockViaLinkMode();
       event.nativeEvent.stopImmediatePropagation();
     }
   }, []);

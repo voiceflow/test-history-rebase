@@ -103,6 +103,9 @@ export enum SchemaVersion {
 
   /** fixes ghost components */
   V3_92 = 3.92,
+
+  /** fixes duplicate intents and entities */
+  V3_94 = 3.94,
 }
 
 export const SUPPORTED_SCHEMA_VERSIONS = Object.values(SchemaVersion)

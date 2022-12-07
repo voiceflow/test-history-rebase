@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.200.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.199.0...@voiceflow/ui@1.200.0) (2022-12-07)
+
+
+### Features
+
+* add analytics dashboard page and sidebar button (PL-337) ([#6387](https://github.com/voiceflow/creator-app/issues/6387)) ([edf65e6](https://github.com/voiceflow/creator-app/commit/edf65e62c53336bf6273e98d4a947f2bc427de2c))
+
+
+
+
+
 # [1.199.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.198.0...@voiceflow/ui@1.199.0) (2022-12-06)
 
 

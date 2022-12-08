@@ -78,8 +78,9 @@ const NLUQuickView: React.FC = () => {
       headerActions={
         emptyHeader ? null : <HeaderOptionsComponent onRename={() => setIsActiveItemRename(true)} selectedID={selectedID} itemType={activeTab} />
       }
+      contentStyle={{ maxWidth: 'calc(100vw - 280px)', overflowX: 'hidden' }}
     >
-      <Box width="100%" overflow="auto" height="calc(100vh - 120px)">
+      <Box width="100%" overflowY="auto" height="calc(100vh - 120px)">
         {emptyHeader ? (
           <EmptyBody onCreate={handleEmptyPageCreate} pageType={activeTab} />
         ) : (

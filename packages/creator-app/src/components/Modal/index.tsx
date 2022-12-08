@@ -26,6 +26,7 @@ export interface UncontrolledModalProps {
   maxWidth?: number;
   maxHeight?: number;
   verticalMargin?: number;
+  contentStyle?: React.CSSProperties;
   className?: string;
   withHeader?: boolean;
   infoTooltip?: React.ReactNode;
@@ -62,6 +63,7 @@ export const UncontrolledModal = React.forwardRef<HTMLDivElement, React.PropsWit
       leftSidebar,
       fullScreen = false,
       capitalizeText = true,
+      contentStyle,
     },
     ref
   ) => {
@@ -84,7 +86,7 @@ export const UncontrolledModal = React.forwardRef<HTMLDivElement, React.PropsWit
             >
               {leftSidebar?.()}
 
-              <Box flex={10} maxWidth="100%">
+              <Box flex={10} maxWidth="100%" style={contentStyle}>
                 {withHeader && (
                   <UIModal.Header
                     border={headerBorder}

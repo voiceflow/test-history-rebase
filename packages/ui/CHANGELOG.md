@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.201.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.200.0...@voiceflow/ui@1.201.0) (2022-12-08)
+
+
+### Features
+
+*  dashboard v2 billing pages (CT-1217) ([#6386](https://github.com/voiceflow/creator-app/issues/6386)) ([5482481](https://github.com/voiceflow/creator-app/commit/548248171cd6a53a62974ee567be0bbd2d38500b))
+
+
+
+
+
 # [1.200.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.199.0...@voiceflow/ui@1.200.0) (2022-12-07)
 
 

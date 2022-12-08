@@ -41,7 +41,19 @@ const SearchButton: React.FC<SearchButtonProps> = ({ value, onSearch }) => {
           />
         </S.InputContainer>
       ) : (
-        <Page.Header.IconButton icon="search" size={16} isSmall onClick={onEnableSearch} tooltip={{ title: 'Press / to search' }} />
+        <Page.Header.IconButton
+          icon="search"
+          size={16}
+          isSmall
+          onClick={onEnableSearch}
+          tooltip={{
+            html: (
+              <div style={{ color: '#A2A7A8', fontSize: '13px' }}>
+                Press <span style={{ color: '#F2F7F7' }}>/</span> to search
+              </div>
+            ),
+          }}
+        />
       )}
     </>
   );

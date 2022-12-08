@@ -2,18 +2,11 @@ import { Button, Resizable, SvgIcon } from '@voiceflow/ui';
 
 import { css, styled } from '@/hocs';
 
-export const CollapseButton = styled(Button).attrs({ variant: Button.Variant.WHITE, iconProps: { size: 16 } })<{ isOpen: boolean }>`
+export const CollapseButton = styled(Button).attrs({ variant: Button.Variant.WHITE, iconProps: { size: 16 }, tiny: true })<{ isOpen: boolean }>`
   opacity: ${({ isOpen }) => (isOpen ? 0 : 1)};
-  position: absolute;
   left: ${({ isOpen, theme }) => (isOpen ? `-12px` : `${theme.components.sidebarIconMenu.width - 12}px`)};
   top: 50%;
   margin-top: ${({ isOpen, theme }) => (isOpen ? `-12px` : `${theme.components.header.height / 2 - 12}px`)};
-  width: 24px;
-  height: 24px;
-  padding: 0;
-  font-size: 16px;
-  border-radius: 50%;
-  z-index: 30;
 
   ${({ isOpen }) =>
     !isOpen &&

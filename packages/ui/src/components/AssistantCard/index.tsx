@@ -5,6 +5,7 @@ import { AvatarList } from '@ui/components/Members';
 import { OptionWithoutValue } from '@ui/components/Menu/types';
 import type { SvgIconTypes } from '@ui/components/SvgIcon';
 import SvgIcon from '@ui/components/SvgIcon';
+import TippyTooltip from '@ui/components/TippyTooltip';
 import { UserData } from '@ui/components/User';
 import { useToggle } from '@ui/hooks';
 import { Nullable, Utils } from '@voiceflow/common';
@@ -12,10 +13,11 @@ import { UserRole } from '@voiceflow/internal';
 import React from 'react';
 
 import {
+  CardActionContainer,
   CardContainer,
+  CardImageContainer,
   IconContainer,
   InfoContainer,
-  InnerContainer,
   MembersContainer,
   OuterContainer,
   ProjectImage,
@@ -34,6 +36,7 @@ export interface AssistantCardProps {
   userRole?: UserRole;
   icon?: SvgIconTypes.Icon;
   iconColor?: string;
+  iconTitle?: string;
   options?: Nullable<OptionWithoutValue>[];
   backgroundImage?: string;
   children?: React.ReactChild;
@@ -48,6 +51,7 @@ const AssistantCard: React.FC<AssistantCardProps> = ({
   onClickLink,
   icon,
   iconColor,
+  iconTitle,
   image,
   title,
   hasTitleComponent,
@@ -62,11 +66,11 @@ const AssistantCard: React.FC<AssistantCardProps> = ({
   return (
     <OuterContainer>
       <CardContainer active={active}>
-        <InnerContainer className="assistant-card-image">
+        <CardImageContainer className="assistant-card-image">
           {image ? <ProjectImage src={image} /> : <SvgIcon icon="systemImage" size={45} color="#393E42" />}
-        </InnerContainer>
+        </CardImageContainer>
 
-        <InnerContainer className="assistant-card-actions">
+        <CardActionContainer>
           <StyledLink onClick={onClickLink} />
 
           <Box.Flex zIndex={100} flexDirection="row">
@@ -78,21 +82,33 @@ const AssistantCard: React.FC<AssistantCardProps> = ({
 
                 {options && (
                   <Dropdown options={options} selfDismiss placement="bottom" onClose={() => toggleActive(false)}>
-                    {(ref, onToggle) => (
-                      <Button ref={ref} onClick={Utils.functional.chainVoid(onToggle, toggleActive)} variant={Button.Variant.WHITE} squareRadius>
-                        <SvgIcon icon="ellipsis" size={15} />
-                      </Button>
+                    {(ref, onToggle, isOpen) => (
+                      <Button
+                        ref={ref}
+                        onClick={Utils.functional.chainVoid(onToggle, toggleActive)}
+                        variant={Button.Variant.WHITE}
+                        squareRadius
+                        isActive={isOpen}
+                        icon="ellipsis"
+                        iconProps={{ size: 15 }}
+                      />
                     )}
                   </Dropdown>
                 )}
               </>
             )}
           </Box.Flex>
-        </InnerContainer>
+        </CardActionContainer>
 
         {icon && (
           <IconContainer>
-            <SvgIcon color={iconColor} icon={icon} size={16} />
+            {iconTitle ? (
+              <TippyTooltip position="top" title={iconTitle} distance={12}>
+                <SvgIcon color={iconColor} icon={icon} size={16} />
+              </TippyTooltip>
+            ) : (
+              <SvgIcon color={iconColor} icon={icon} size={16} />
+            )}
           </IconContainer>
         )}
       </CardContainer>

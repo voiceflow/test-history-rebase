@@ -18,6 +18,7 @@ interface CardProps extends AssistantCardProps {
 
 export const AssistantCard = ({ project, ...props }: CardProps) => {
   const { icon } = Platform.Config.getTypeConfig({ type: project.type, platform: project.platform });
+  const { name: platformName } = Platform.Config.get(project.platform);
   const titleRef = React.useRef<EditableTextAPI | null>(null);
 
   const [isEditing, setIsEditing] = React.useState(false);
@@ -53,6 +54,7 @@ export const AssistantCard = ({ project, ...props }: CardProps) => {
     <AssistantCardComponent
       {...props}
       icon={icon.name}
+      iconTitle={platformName}
       options={props.userRole === UserRole.VIEWER ? undefined : projectOptions}
       iconColor={icon.color}
       hasTitleComponent

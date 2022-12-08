@@ -1,6 +1,5 @@
 import Box from '@ui/components/Box';
 import Button from '@ui/components/Button';
-import SvgIcon from '@ui/components/SvgIcon';
 import React from 'react';
 
 import * as S from './styles';
@@ -50,11 +49,7 @@ const Banner: React.FC<BannerProps> = ({
             </div>
           )}
         </Box.FlexApart>
-        {isCloseable && (
-          <S.CloseButton onClick={closeBanner}>
-            <SvgIcon icon="close" size="11" />
-          </S.CloseButton>
-        )}
+        {isCloseable && <S.CloseButton onClick={closeBanner} icon="closeSmall" />}
       </S.Container>
     </S.OuterContainer>
   );

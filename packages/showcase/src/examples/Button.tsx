@@ -21,6 +21,7 @@ const examples = [ButtonVariant.PRIMARY, ButtonVariant.SECONDARY, ButtonVariant.
         <Button variant={variant} isLoading>
           is loading
         </Button>
+        {variant === ButtonVariant.WHITE && <Button variant={variant} tiny icon="closeSmall" />}
       </Flex>
     ))
 );

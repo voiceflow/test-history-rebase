@@ -22,6 +22,10 @@ const activeStyle = css`
   ${Icon} {
     opacity: 1;
   }
+
+  ${SubText} {
+    color: #62778c;
+  }
 `;
 
 export const Container = styled(FlexApart)<{ active?: boolean }>`

@@ -1,7 +1,7 @@
 import { Box, Dropdown, Menu, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
-import { logo } from '@/assets';
+import { vfLogo } from '@/assets';
 import { Permission } from '@/config/permissions';
 import { LimitType } from '@/config/planLimitV2';
 import * as Router from '@/ducks/router';
@@ -37,6 +37,7 @@ const WorkspaceSelector: React.FC = () => {
       offset={{ offset: [16, 0] }}
       menu={
         <Menu
+          noMargins
           width={250}
           maxHeight={600}
           maxVisibleItems={15}
@@ -53,7 +54,7 @@ const WorkspaceSelector: React.FC = () => {
           {workspaces.map((workspace) => (
             <Menu.Item key={workspace.id} onClick={() => goToWorkspace(workspace.id)}>
               <S.ItemContainer>
-                <S.Image src={workspace?.image || logo} alt="logo" />
+                <S.Image src={workspace?.image || vfLogo} alt="logo" />
                 <S.Name>{workspace.name}</S.Name>
               </S.ItemContainer>
             </Menu.Item>
@@ -65,7 +66,7 @@ const WorkspaceSelector: React.FC = () => {
       {(ref, onToggle, isOpen) => (
         <S.Container id="workspaceDropdown" className={`${ClassName.DROPDOWN}--active-workspace`} onClick={onToggle} ref={ref} isOpen={isOpen}>
           <Box.Flex>
-            <S.Image src={activeWorkspace?.image || logo} alt="logo" active />
+            <S.Image src={activeWorkspace?.image || vfLogo} alt="logo" active />
             <S.Name>{activeWorkspace?.name}</S.Name>
           </Box.Flex>
 

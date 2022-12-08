@@ -7,6 +7,9 @@ export const User = styled(UIUser).attrs({ flat: true })`
   height: 26px;
   box-shadow: none;
   margin-right: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 export const Name = styled(OverflowText)`

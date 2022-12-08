@@ -4,6 +4,8 @@ import { css, styled, transition } from '@ui/styles';
 
 export interface ContainerProps extends ButtonContainerProps {
   rounded?: boolean;
+  isActive?: boolean;
+  tiny?: boolean;
 }
 
 export const Icon = styled(SvgIcon)`
@@ -12,10 +14,22 @@ export const Icon = styled(SvgIcon)`
   opacity: 0.85;
 `;
 
+const activeStyles = css`
+  background-color: #f7f7f7;
+  color: #132144;
+  opacity: 1;
+  box-shadow: 0 0 0 1px rgba(19, 33, 68, 0.08), 0 2px 2px 0 rgba(19, 33, 68, 0.02), 0 2px 4px 0 rgba(19, 33, 68, 0.02),
+    0 2px 8px 0 rgba(19, 33, 68, 0.04);
+  & ${Icon} {
+    opacity: 1;
+    color: rgba(19, 33, 68, 0.85);
+  }
+`;
+
 export const Container = styled(ButtonContainer)<ContainerProps>`
   ${transition('all')}
   border-radius: ${({ rounded }) => (rounded ? '50%' : '10px')};
-  color: #132144;
+  color: #6e849a;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -23,15 +37,15 @@ export const Container = styled(ButtonContainer)<ContainerProps>`
   gap: 20px;
   background-color: #fff;
   border: 1px solid #fff;
-  box-shadow: 0 0 0 1px rgba(19, 33, 68, 0.06), 0 1px 0 0 rgba(19, 33, 68, 0.03), 0 1px 1px 0 rgba(19, 33, 68, 0.01),
-    0 2px 2px 0 rgba(19, 33, 68, 0.01), 0 4px 4px 0 rgba(19, 33, 68, 0.02), 0 8px 12px 0 rgba(19, 33, 68, 0.04);
-
+  box-shadow: 0px 1px 3px 0px rgb(19, 33, 68, 0.04), 0px 1px 1px 0px rgb(19, 33, 68, 0.01), 0px 1px 0px 0px rgb(19, 33, 68, 0.03),
+    0px 0px 0px 1px rgb(19, 33, 68, 0.06);
   cursor: pointer;
+  opacity: 1;
 
   &:hover {
-    background-color: #f9f9f9;
-    box-shadow: 0 0 0 1px rgba(19, 33, 68, 0.06), 0 1px 0 0 rgba(19, 33, 68, 0.03), 0 1px 1px 0 rgba(19, 33, 68, 0.01),
-      0 2px 2px 0 rgba(19, 33, 68, 0.01), 0 4px 4px 0 rgba(19, 33, 68, 0.02), 0 8px 12px 0 rgba(19, 33, 68, 0.04), 0 8px 24px 0 rgba(19, 33, 68, 0.04);
+    opacity: 1;
+    box-shadow: rgba(19, 33, 68, 0.06) 0px 0px 0px 1px, rgba(19, 33, 68, 0.03) 0px 1px 0px 0px, rgba(19, 33, 68, 0.01) 0px 1px 1px 0px,
+      rgba(19, 33, 68, 0.01) 0px 2px 2px 0px, rgba(19, 33, 68, 0.02) 0px 4px 4px 0px, rgba(19, 33, 68, 0.04) 0px 4px 8px 0px;
 
     & ${Icon} {
       opacity: 1;
@@ -39,15 +53,10 @@ export const Container = styled(ButtonContainer)<ContainerProps>`
   }
 
   &:active {
-    background-color: #f7f7f7;
-    box-shadow: 0 0 0 1px rgba(19, 33, 68, 0.08), 0 2px 2px 0 rgba(19, 33, 68, 0.02), 0 2px 4px 0 rgba(19, 33, 68, 0.02),
-      0 2px 8px 0 rgba(19, 33, 68, 0.04);
-
-    & ${Icon} {
-      opacity: 1;
-      color: rgba(19, 33, 68, 0.85);
-    }
+    ${activeStyles}
   }
+
+  ${({ isActive }) => isActive && activeStyles}
 
   ${({ disabled }) =>
     disabled &&
@@ -59,6 +68,18 @@ export const Container = styled(ButtonContainer)<ContainerProps>`
       & ${Icon} {
         opacity: 0.46;
       }
+    `}
+
+    ${({ tiny }) =>
+    tiny &&
+    css`
+      min-width: 24px;
+      height: 24px;
+      padding: 0;
+      gap: 0;
+      border-radius: 50%;
+      z-index: 30;
+      position: absolute;
     `}
 `;
 

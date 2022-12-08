@@ -5,38 +5,7 @@ export const OuterContainer = styled.section`
   width: 100%;
 `;
 
-export const CardContainer = styled.div<{ active: boolean }>`
-  width: 100%;
-  height: 220px;
-  background-color: #f9f9f9;
-  border: #dfe3ed 1px solid;
-  border-radius: 8px;
-  position: relative;
-  align-items: center;
-  display: flex;
-  justify-content: center;
-
-  &:hover .assistant-card-actions {
-    opacity: 1;
-  }
-
-  &:hover .assistant-card-image {
-    filter: blur(5px);
-  }
-
-  ${({ active }) =>
-    active &&
-    css`
-      & .assistant-card-actions {
-        opacity: 1 !important;
-      }
-      & .assistant-card-image {
-        filter: blur(5px) !important;
-      }
-    `}
-`;
-
-export const InnerContainer = styled.div`
+const InnerContainer = styled.div`
   ${transition('filter', 'opacity')}
   width: 100%;
   height: 100%;
@@ -44,15 +13,48 @@ export const InnerContainer = styled.div`
   justify-content: center;
   align-items: center;
   display: flex;
+`;
 
-  &.assistant-card-actions {
-    opacity: 0;
-    background: rgba(238, 244, 246, 0.7);
+export const CardActionContainer = styled(InnerContainer)`
+  opacity: 0;
+  background: rgba(238, 244, 246, 0.7);
+`;
+
+export const CardImageContainer = styled(InnerContainer)`
+  filter: blur(0);
+`;
+
+export const CardContainer = styled.div<{ active: boolean }>`
+  width: 100%;
+  height: 220px;
+  background-color: #f9f9f9;
+  box-shadow: 0px 1px 3px 0px rgba(19, 33, 68, 0.06), 0px 1px 1px 0px rgba(19, 33, 68, 0.01), 0px 1px 0px 0px rgba(19, 33, 68, 0.03),
+    0px 0px 0px 1px rgba(19, 33, 68, 0.06);
+  border-radius: 8px;
+  position: relative;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+
+  &:hover ${CardActionContainer} {
+    opacity: 1;
+    border-radius: 8px;
   }
 
-  &.assistant-card-image {
-    filter: blur(0);
+  &:hover ${CardImageContainer} {
+    filter: blur(5px);
   }
+
+  ${({ active }) =>
+    active &&
+    css`
+      & ${CardActionContainer} {
+        opacity: 1 !important;
+      }
+      & ${CardImageContainer} {
+        filter: blur(5px) !important;
+      }
+    `}
 `;
 
 export const ProjectImage = styled.div<{ src: string }>`

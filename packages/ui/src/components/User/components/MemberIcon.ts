@@ -38,7 +38,7 @@ const MemberIcon = styled.div<MemberIconProps>`
     css`
       width: 18px;
       height: 18px;
-      font-size: 13px;
+      font-size: 11px;
       line-height: 18px;
     `}
 

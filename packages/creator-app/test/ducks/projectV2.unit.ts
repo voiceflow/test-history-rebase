@@ -143,7 +143,7 @@ suite(Project, MOCK_STATE)('Ducks - Project V2', ({ describeReducerV2, createSta
           ...MOCK_STATE.awareness.viewers,
           [PROJECT_ID]: {
             ...MOCK_STATE.awareness.viewers[PROJECT_ID],
-            [diagramID]: Normal.normalize([{ creatorID: CREATOR_ID, creator_id: CREATOR_ID, name: 'bar', color: '5891FB|EFF5FF' }], (viewer) =>
+            [diagramID]: Normal.normalize([{ creatorID: CREATOR_ID, creator_id: CREATOR_ID, name: 'bar', color: '4A9B57|CFE9D4' }], (viewer) =>
               String(viewer.creatorID)
             ),
           },
@@ -154,7 +154,7 @@ suite(Project, MOCK_STATE)('Ducks - Project V2', ({ describeReducerV2, createSta
         const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, viewers: [{ creatorID: CREATOR_ID, name: 'bar' }], diagramID: DIAGRAM_ID });
 
         expect(result.awareness.viewers[PROJECT_ID][DIAGRAM_ID]).toEqual(
-          Normal.normalize([{ creatorID: CREATOR_ID, creator_id: CREATOR_ID, name: 'bar', color: '5891FB|EFF5FF' }], (viewer) =>
+          Normal.normalize([{ creatorID: CREATOR_ID, creator_id: CREATOR_ID, name: 'bar', color: '4A9B57|CFE9D4' }], (viewer) =>
             String(viewer.creatorID)
           )
         );
@@ -177,10 +177,10 @@ suite(Project, MOCK_STATE)('Ducks - Project V2', ({ describeReducerV2, createSta
           ...MOCK_STATE.awareness.viewers,
           [PROJECT_ID]: {
             ...MOCK_STATE.awareness.viewers[PROJECT_ID],
-            [DIAGRAM_ID]: Normal.normalize([{ creatorID: 456, creator_id: 456, name: 'bar', color: '697986|EEF0F1' }], (viewer) =>
+            [DIAGRAM_ID]: Normal.normalize([{ creatorID: 456, creator_id: 456, name: 'bar', color: '4A9B57|CFE9D4' }], (viewer) =>
               String(viewer.creatorID)
             ),
-            [diagramID]: Normal.normalize([{ creatorID: 789, creator_id: 789, name: 'cat', color: 'D58B5F|FAF2ED' }], (viewer) =>
+            [diagramID]: Normal.normalize([{ creatorID: 789, creator_id: 789, name: 'cat', color: 'D6528A|F5E0DC' }], (viewer) =>
               String(viewer.creatorID)
             ),
           },

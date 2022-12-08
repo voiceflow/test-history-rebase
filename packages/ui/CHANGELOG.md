@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.201.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.201.0...@voiceflow/ui@1.201.1) (2022-12-08)
+
+
+### Bug Fixes
+
+* centred selects (CT-1289) ([2064607](https://github.com/voiceflow/creator-app/commit/20646075968f3e050cd3cda082638818abc6f362))
+
+
+
+
+
 # [1.201.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.200.0...@voiceflow/ui@1.201.0) (2022-12-08)
 
 

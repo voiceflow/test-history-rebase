@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1016.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1015.0...@voiceflow/creator-app@1.1016.0) (2022-12-08)
+
+
+### Features
+
+* adding secret configuration for channel integration page (PL-328) ([#6379](https://github.com/voiceflow/creator-app/issues/6379)) ([b469046](https://github.com/voiceflow/creator-app/commit/b469046ec432fcee658e6ddd490f33739928ce45))
+
+
+
+
+
 # [1.1015.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1014.0...@voiceflow/creator-app@1.1015.0) (2022-12-08)
 
 

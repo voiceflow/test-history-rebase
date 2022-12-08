@@ -1,5 +1,6 @@
 import { Box, ThemeColor } from '@voiceflow/ui';
 import React from 'react';
+import { space } from 'styled-system';
 
 import { styled } from '@/hocs';
 
@@ -10,6 +11,8 @@ const Card = styled(Box)`
   padding: 24px 32px;
 
   color: ${({ theme }) => theme.colors.secondary};
+
+  ${space}
 `;
 
 const Divider = styled(Box)`

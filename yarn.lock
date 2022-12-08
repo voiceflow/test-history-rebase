@@ -5084,6 +5084,17 @@
     jwt-decode "^3.1.2"
     superstruct "^0.10.12"
 
+"@voiceflow/api-sdk@3.22.0":
+  version "3.22.0"
+  resolved "https://registry.yarnpkg.com/@voiceflow/api-sdk/-/api-sdk-3.22.0.tgz#bc38a88a9eeb538e410dc9d47f405f6a0417092e"
+  integrity sha512-z1iZX8IXXP5QJzI2P7cmj0QVWMwomY+y3pjruYlifwrNOPUJUL7E4IlVwc1f3PdxkoFW3romsX35NrUBgBk9dw==
+  dependencies:
+    "@voiceflow/base-types" "^2.74.0"
+    "@voiceflow/common" "^8.1.5"
+    axios "0.24.0"
+    jwt-decode "^3.1.2"
+    superstruct "^0.10.12"
+
 "@voiceflow/babel-preset@1.1.1":
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/@voiceflow/babel-preset/-/babel-preset-1.1.1.tgz#67be7867c33207ed05b572da15acc9e4b6a03aef"

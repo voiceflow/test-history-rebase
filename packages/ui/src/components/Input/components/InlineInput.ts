@@ -4,6 +4,7 @@ export interface InlineInputProps {
   inline?: boolean;
   fullWidth?: boolean;
   noOverflow?: boolean;
+  counter?: boolean;
 }
 
 const Input = styled.input<InlineInputProps>`
@@ -32,6 +33,12 @@ const Input = styled.input<InlineInputProps>`
     css`
       display: inline-flex;
     `}
+
+    ${({ counter }) =>
+    !counter &&
+    css`
+      text-align: center;
+    `};
 `;
 
 export default Input;

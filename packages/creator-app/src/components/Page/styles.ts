@@ -26,7 +26,7 @@ export const Body = styled.div`
 export const ContentContainer = styled.main<T.ContentProps>`
   position: relative;
   flex-grow: 1;
-  background: ${({ theme }) => theme.backgrounds.offWhite};
+  background: ${({ theme, white }) => (white ? theme.backgrounds.white : theme.backgrounds.offWhite)};
 
   ${({ scrollable }) =>
     scrollable

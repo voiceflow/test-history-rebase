@@ -42,13 +42,15 @@ const Error = manager.create<Props>('Error', () => ({ api, type, opened, hidden,
             <Box my={20}>{error.message}</Box>
 
             {error.violations?.map((violation, i) => (
-              <Alert key={i} variant={Alert.Variant.DANGER}>
+              <Alert key={i} variant={Alert.Variant.DANGER} mb={16}>
                 {violation.message}
               </Alert>
             ))}
           </>
         ) : (
-          <Alert variant={Alert.Variant.DANGER}>{typeof error === 'string' ? error : error.error}</Alert>
+          <Alert variant={Alert.Variant.DANGER} mb={16}>
+            {typeof error === 'string' ? error : error.error}
+          </Alert>
         )}
       </Modal.Body>
 

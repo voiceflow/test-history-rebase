@@ -46,7 +46,7 @@ const MaintenanceGate: React.FC<ConnectedMaintenanceGateProps> = ({ children, se
 
     setConfirm({
       body: (
-        <Alert mb={0}>
+        <Alert>
           Voiceflow Creator will go under planned maintenance
           <br />
           <b>{interval}</b> from now

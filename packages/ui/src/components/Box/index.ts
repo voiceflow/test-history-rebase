@@ -38,7 +38,7 @@ export type BoxProps = ColorProps &
     fullWidth?: boolean;
   };
 
-export const Box = styled.div<BoxProps>(
+export const boxStyles = css<BoxProps>(
   space,
   color,
   layout,
@@ -67,6 +67,10 @@ export const Box = styled.div<BoxProps>(
       `}
   `
 );
+
+export const Box = styled.div<BoxProps>`
+  ${boxStyles}
+`;
 
 const Flex = styled(Box)`
   ${flexStyles}

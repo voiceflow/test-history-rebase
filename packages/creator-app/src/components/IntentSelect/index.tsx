@@ -164,7 +164,7 @@ const IntentSelect: React.FC<IntentSelectProps> = ({
       />
 
       {intentMissing && (
-        <Alert variant={Alert.Variant.WARNING} mt={10}>
+        <Alert variant={Alert.Variant.WARNING} mt={10} mb={16}>
           Intent is broken or has been deleted.
         </Alert>
       )}

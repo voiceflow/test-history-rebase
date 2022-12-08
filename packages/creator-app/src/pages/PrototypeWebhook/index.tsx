@@ -41,17 +41,17 @@ const PrototypeWebhook = () => {
         <h1>Prototype Webhook URL</h1>
         <hr />
 
-        <Alert>
+        <Alert mb={16}>
           Call the prototype webhook with these patterns in the <b>POST request body</b> to simulate a user interaction
         </Alert>
 
-        <Alert>
+        <Alert mb={16}>
           <b>Text Request</b> - raw string input for the NLP/NLU to resolve
           <hr />
           <pre>{TEXT_PAYLOAD}</pre>
         </Alert>
 
-        <Alert>
+        <Alert mb={16}>
           <b>Intent Request</b> - matches with Voiceflow intent names and assigns entity (slot) values to variables
           <hr />
           <pre>{INTENT_PAYLOAD}</pre>

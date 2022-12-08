@@ -13,6 +13,7 @@ export interface StatusProps {
 
 const Status = styled.div<StatusProps>`
   font-size: 13px;
+  line-height: 1;
   color: ${({ color = StatusColor.PRIMARY }) => color};
   overflow-x: ${({ hidden = true }) => (hidden ? 'hidden' : 'initial')};
 

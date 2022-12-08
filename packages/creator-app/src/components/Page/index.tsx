@@ -1,17 +1,19 @@
 import React from 'react';
 
-import { Header } from './components';
+import { Header, Section } from './components';
 import * as S from './styles';
 import * as T from './types';
 
-const Page: React.FC<T.Props> = ({ renderHeader, renderSidebar, children, scrollable = true, className }) => (
+const Page: React.FC<T.Props> = ({ renderHeader, renderSidebar, children, scrollable = true, white, className }) => (
   <S.Container className={className}>
     {renderHeader?.()}
 
     <S.Body>
       {renderSidebar?.()}
 
-      <S.ContentContainer scrollable={scrollable}>{children}</S.ContentContainer>
+      <S.ContentContainer scrollable={scrollable} white={white}>
+        {children}
+      </S.ContentContainer>
     </S.Body>
   </S.Container>
 );
@@ -21,4 +23,5 @@ export default Object.assign(Page, {
 
   Header,
   Content: S.Content,
+  Section,
 });

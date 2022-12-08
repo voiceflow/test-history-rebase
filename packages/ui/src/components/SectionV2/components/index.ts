@@ -8,6 +8,7 @@ export { default as CollapseSection } from './CollapseSection';
 export type { ContainerProps } from './Container';
 export { default as Container } from './Container';
 export { default as Content } from './Content';
+export { default as Description } from './Description';
 export { default as Divider } from './Divider';
 export { default as ErrorMessage } from './ErrorMessage';
 export { default as Header } from './Header';

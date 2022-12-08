@@ -44,7 +44,7 @@ const RuntimeConfig: React.FC = () => {
           <Input value={runtimeEndpoint} placeholder="General Runtime Service Endpoint" onChangeText={updateRuntime} />
         </Box>
 
-        <Alert>
+        <Alert mb={16}>
           Refresh Page to Apply Changes to <b>General Runtime Endpoint</b>
         </Alert>
 
@@ -52,7 +52,7 @@ const RuntimeConfig: React.FC = () => {
         <h3>Environment Variables</h3>
         <Box my={16}>
           <label>Creator API Auth Token (CREATOR_API_AUTHORIZATION)</label>
-          <Alert>
+          <Alert mb={16}>
             <b>Creator API Auth Token</b> will stop working on signout or long inactivity
           </Alert>
           <Input value={auth} readOnly disabled />

@@ -1,50 +1,26 @@
-import { css, styled } from '@ui/styles';
-import { COLOR_BLUE } from '@ui/styles/constants';
+import { BlockText, TextProps } from '@ui/components/Text';
+import React from 'react';
 
-import { Box, BoxProps } from '../Box';
+import * as S from './styles';
 
-enum Variant {
-  DANGER = 'danger',
-  DEFAULT = 'default',
-  WARNING = 'warning',
-  UNSTYLED = 'unstyled',
+export interface AlertProps extends S.ContainerProps {
+  title?: React.ReactNode;
+  textProps?: TextProps;
 }
 
-const COLORS = {
-  [Variant.DANGER]: css`
-    color: #721c24;
-    background: #f8d7da;
-    border-color: #f8d7da;
-  `,
+const Alert: React.FC<AlertProps> = ({ title, color, children, textProps, ...rest }) => (
+  <S.Container color={color as any} {...rest}>
+    {title}
 
-  [Variant.DEFAULT]: css`
-    color: ${COLOR_BLUE};
-    background: #5d9df515;
-    border-color: #5d9df515;
-  `,
-
-  [Variant.WARNING]: css`
-    color: #856404;
-    background: #fff3cd;
-    border-color: #ffeeba;
-  `,
-
-  [Variant.UNSTYLED]: css``,
-};
-
-interface AlertProps {
-  variant?: Variant;
-}
-
-const Alert = styled(Box).attrs<BoxProps>(({ mb = '1rem' }) => ({ mb }))<AlertProps>`
-  position: relative;
-  padding: 0.75rem 1.25rem;
-  border: 1px solid transparent;
-  border-radius: 0.25rem;
-
-  ${({ variant = Variant.DEFAULT }) => COLORS[variant]}
-`;
+    {children && (
+      <BlockText mt={title ? 4 : 0} {...textProps}>
+        {children}
+      </BlockText>
+    )}
+  </S.Container>
+);
 
 export default Object.assign(Alert, {
-  Variant,
+  Title: S.Title,
+  Variant: S.Variant,
 });

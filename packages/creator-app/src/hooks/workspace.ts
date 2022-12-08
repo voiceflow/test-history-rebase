@@ -16,8 +16,8 @@ export const useOnAddSeats = () => {
   const paymentModal = usePaymentModal();
   const upgradeModal = useUpgradeModal();
 
-  return () => {
-    if (!limit?.increasableLimit || limit.increasableLimit > usedEditorSeats) {
+  return (newSeats?: number) => {
+    if (!limit?.increasableLimit || limit.increasableLimit > (newSeats ?? usedEditorSeats)) {
       paymentModal.open({});
     } else {
       upgradeModal.open(limit.upgradeModal);

@@ -123,7 +123,11 @@ export default {
     createMessage: async (params) => {
       await axios.post('/integrations/zapier/trigger', params);
 
-      return <Alert className="text-center">Successfully Triggered Zap</Alert>;
+      return (
+        <Alert mb={16} className="text-center">
+          Successfully Triggered Zap
+        </Alert>
+      );
     },
   },
 };

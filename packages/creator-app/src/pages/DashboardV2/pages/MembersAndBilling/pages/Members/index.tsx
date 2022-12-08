@@ -51,7 +51,7 @@ const DashboardV2TeamAndBillingMembers: React.FC = () => {
 
         <FlexCenter gap={10}>
           {canAddCollaborators && (
-            <Button variant={ButtonVariant.SECONDARY} nowrap onClick={onAddSeats}>
+            <Button variant={ButtonVariant.SECONDARY} nowrap onClick={() => onAddSeats()}>
               Add Seats
             </Button>
           )}

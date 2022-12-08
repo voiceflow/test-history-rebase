@@ -1,3 +1,4 @@
+import Input from '@ui/components/Input';
 import { usePopper } from '@ui/hooks';
 import { styled } from '@ui/styles';
 import { stopPropagation } from '@ui/utils';
@@ -5,7 +6,6 @@ import React from 'react';
 import { useDismissable } from 'react-dismissable-layers';
 
 import Badge from '../../../Badge';
-import Input from '../../../Input';
 import { Label, PopperContent } from '../../styles';
 
 const StyledInput = styled(Input)`

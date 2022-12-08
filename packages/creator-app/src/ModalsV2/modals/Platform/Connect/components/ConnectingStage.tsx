@@ -56,7 +56,7 @@ const ConnectingStage: React.FC<ConnectingStageProps> = ({ title, platformName, 
         )}
 
         {error && (
-          <Alert variant={Alert.Variant.DANGER} mb={0} mt={8}>
+          <Alert variant={Alert.Variant.DANGER} mt={8}>
             Login With {platformName} Failed
           </Alert>
         )}

@@ -106,7 +106,7 @@ const Migration: React.FC<MigrationProps & ConnectedMigrationProps> = ({ amazonA
 
   return (
     <Box>
-      <Alert variant={Alert.Variant.DANGER}>
+      <Alert mb={16} variant={Alert.Variant.DANGER}>
         Updating the Skill ID will cause Voiceflow to overwrite any existing content on the development version of the Skill on Alexa Developer
         Console - <b>Applies on next upload</b>
       </Alert>
@@ -138,7 +138,7 @@ const Migration: React.FC<MigrationProps & ConnectedMigrationProps> = ({ amazonA
           />
         </Box>
       ))}
-      <Alert>Please verify all the updated data is correct, or there could be catastrophic problems linking with Alexa</Alert>
+      <Alert mb={16}>Please verify all the updated data is correct, or there could be catastrophic problems linking with Alexa</Alert>
       <Button onClick={save}>Update</Button>
     </Box>
   );

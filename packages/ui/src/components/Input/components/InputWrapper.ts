@@ -8,6 +8,7 @@ export interface InputWrapperProps extends StyledInputProps {
   disabled?: boolean;
   pointerEvents?: string;
   disabledBorderColor?: string;
+  counter?: boolean;
 }
 
 const InputWrapper = styled.div<InputWrapperProps>`
@@ -36,13 +37,24 @@ const InputWrapper = styled.div<InputWrapperProps>`
       `}
   }
 
-  & > * {
-    margin-right: 12px;
-
-    :last-child {
-      margin-right: 0;
-    }
-  }
+  ${({ counter }) =>
+    counter
+      ? css`
+          border: 1px solid #d2dae2;
+          &:active,
+          &:focus,
+          &:focus-within {
+            border: 1px solid #d2dae2;
+          }
+        `
+      : css`
+          & > * {
+            margin-right: 12px;
+            :last-child {
+              margin-right: 0;
+            }
+          }
+        `};
 
   & > ${Badge}:last-child {
     margin-right: -6px;

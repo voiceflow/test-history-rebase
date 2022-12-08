@@ -1,10 +1,10 @@
 import { css, styled, transition, units } from '@ui/styles';
-import { color, ColorProps } from 'styled-system';
+import { color, ColorProps, layout, LayoutProps } from 'styled-system';
 
 import Header from './Header';
 import LinkArrowIcon from './LinkArrowIcon';
 
-export interface ContainerProps extends Pick<ColorProps, 'backgroundColor'> {
+export interface ContainerProps extends LayoutProps, Pick<ColorProps, 'backgroundColor'> {
   isLink?: boolean;
   isAccent?: boolean;
   isCollapse?: boolean;
@@ -87,6 +87,7 @@ const Container = styled.section<ContainerProps>`
     `}
 
   ${color}
+  ${layout}
 `;
 
 export default Container;

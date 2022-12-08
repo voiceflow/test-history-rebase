@@ -57,6 +57,7 @@ export enum Permission {
 
   // billing
   MANAGE_BILLING = 'billing.MANAGE',
+  MANAGE_SEATS = 'billing.SEATS',
 
   // canvas
   EDIT_CANVAS = 'canvas.EDIT',
@@ -163,6 +164,7 @@ const NON_ENTERPRISE_PERMISSIONS = [
   PlanType.TEAM,
   PlanType.CREATOR,
 ];
+const PT_PERMISSIONS = [PlanType.PRO, PlanType.OLD_PRO, PlanType.TEAM, PlanType.OLD_TEAM];
 
 export const PLAN_PERMISSIONS: Partial<Record<Permission, PlanType[]>> = {
   [Permission.CANVAS_EXPORT]: [PlanType.STUDENT, PlanType.PRO, PlanType.OLD_PRO, PlanType.TEAM, PlanType.OLD_TEAM, PlanType.ENTERPRISE],
@@ -195,6 +197,7 @@ export const PLAN_PERMISSIONS: Partial<Record<Permission, PlanType[]>> = {
     PlanType.OLD_TEAM,
     PlanType.CREATOR,
   ],
+  [Permission.MANAGE_SEATS]: PT_PERMISSIONS,
   [Permission.CODE_EXPORT]: [PlanType.ENTERPRISE, PlanType.OLD_ENTERPRISE],
   [Permission.CONFIGURE_ORGANIZATION]: [PlanType.ENTERPRISE],
   [Permission.FULL_PROJECT_VERSIONS]: ALL_BUT_STARTER_PERMISSIONS,

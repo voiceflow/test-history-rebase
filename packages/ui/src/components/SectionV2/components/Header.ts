@@ -1,10 +1,10 @@
 import { flexApartStyles } from '@ui/components/Flex';
 import { css, styled, units } from '@ui/styles';
-import { space, SpaceProps } from 'styled-system';
+import { space, SpaceProps, typography, TypographyProps } from 'styled-system';
 
 import InfoIconTooltip from './InfoIconTooltip';
 
-export interface HeaderProps extends SpaceProps {
+export interface HeaderProps extends SpaceProps, TypographyProps {
   top?: number;
   sticky?: boolean;
   sticked?: boolean;
@@ -16,12 +16,11 @@ export interface HeaderProps extends SpaceProps {
 
 const Header = styled.header<HeaderProps>`
   ${flexApartStyles}
+
   ${({ theme, topUnit = 2.5, rightUnit = 4, bottomUnit = 2, leftUnit = 4 }) => css`
     padding: ${units(topUnit)({ theme })}px ${units(rightUnit)({ theme })}px ${units(bottomUnit)({ theme })}px ${units(leftUnit)({ theme })}px;
   `}
 
-  line-height: 1;
-  ${space}
 
   ${InfoIconTooltip.StyledIcon} {
     opacity: 0;
@@ -63,6 +62,9 @@ const Header = styled.header<HeaderProps>`
         background-color: ${({ theme }) => theme.colors.separatorSecondary};
       }
     `}
+
+  ${space}
+  ${typography}
 `;
 
 export default Header;

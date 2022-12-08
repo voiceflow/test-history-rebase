@@ -59,7 +59,7 @@ const DoubleModal: React.FC<VoidInternalProps> = ({ api, type, opened, hidden, a
           No available editor seats on this workspace. Collaborators will be added to this workspace as viewers if no editor seats are created.
           <div style={{ color: '#5d9df5', float: 'right', marginTop: '5px' }}>Add Editor Seats</div>
         </span>,
-        { delay: 1000, onClick: onAddSeats }
+        { delay: 1000, onClick: () => onAddSeats() }
       );
     }
   };

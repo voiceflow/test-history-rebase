@@ -73,7 +73,7 @@ class DisplayRenderer extends React.Component<DisplayRendererProps, DisplayRende
   render() {
     if (this.state.error) {
       return (
-        <Alert variant={Alert.Variant.DANGER} mb={0}>
+        <Alert variant={Alert.Variant.DANGER}>
           Invalid APL or datasource or commands
           <hr />
           {this.state.error.toString()}

@@ -4,6 +4,7 @@ export type { HeaderTypes as Header } from './components';
 
 export interface ContentProps {
   scrollable: boolean;
+  white?: boolean;
 }
 
 export interface Props extends Partial<ContentProps> {

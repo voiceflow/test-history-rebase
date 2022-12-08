@@ -21,6 +21,7 @@ export {
   BoxFlexCenter,
   BoxFlexEnd,
   BoxFlexStart,
+  boxStyles,
 } from './Box';
 export type {
   DarkButtonProps,

@@ -60,7 +60,7 @@ const Dashboard: React.FC = () => {
       {isLocked && (
         <BoxFlexCenter height="100%" width="100%" position="absolute" zIndex={10}>
           {/* TODO: flush out subscription failed logic */}
-          <Alert variant={Alert.Variant.DANGER} className="pointer text-center">
+          <Alert variant={Alert.Variant.DANGER} mb={16} cursor="pointer" textAlign="center">
             <SvgIcon icon="ban" size={32} inline />
             <br />
             Your subscription has failed

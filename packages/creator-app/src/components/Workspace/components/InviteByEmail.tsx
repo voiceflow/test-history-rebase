@@ -57,7 +57,7 @@ const InviteByEmail: React.FC<InviteByEmailProps> = ({ buttonLabel = 'Add' }) =>
     const editorSeatLimit = getEditorSeatLimit({ value: updatedEditorSeats });
 
     if (editorSeatLimit) {
-      onAddSeats();
+      onAddSeats(updatedEditorSeats);
 
       return;
     }

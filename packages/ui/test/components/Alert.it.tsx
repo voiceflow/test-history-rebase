@@ -13,9 +13,8 @@ suite('Alert', () => {
 
     const alert = screen.getByText(text);
 
-    expect(alert).toHaveStyleRule('color', '#5d9df5');
-    expect(alert).toHaveStyleRule('background', '#5d9df515');
-    expect(alert).toHaveStyleRule('border-color', '#5d9df515');
+    expect(alert.parentElement).toHaveStyleRule('color', '#3a6b93');
+    expect(alert.parentElement).toHaveStyleRule('background', '#e3eff8');
   });
 
   it('renders danger variant', () => {
@@ -24,9 +23,8 @@ suite('Alert', () => {
 
     const alert = screen.getByText(text);
 
-    expect(alert).toHaveStyleRule('color', '#721c24');
-    expect(alert).toHaveStyleRule('background', '#f8d7da');
-    expect(alert).toHaveStyleRule('border-color', '#f8d7da');
+    expect(alert.parentElement).toHaveStyleRule('color', '#721c24');
+    expect(alert.parentElement).toHaveStyleRule('background', '#f8d7da');
   });
 
   it('renders warning variant', () => {
@@ -35,8 +33,7 @@ suite('Alert', () => {
 
     const alert = screen.getByText(text);
 
-    expect(alert).toHaveStyleRule('color', '#856404');
-    expect(alert).toHaveStyleRule('background', '#fff3cd');
-    expect(alert).toHaveStyleRule('border-color', '#ffeeba');
+    expect(alert.parentElement).toHaveStyleRule('color', '#856404');
+    expect(alert.parentElement).toHaveStyleRule('background', '#fff3cd');
   });
 });

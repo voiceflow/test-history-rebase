@@ -1,19 +1,26 @@
-import { TextButton } from '@voiceflow/ui';
+import { Text, TextButton } from '@voiceflow/ui';
 import React from 'react';
 
 import { TEAM_LIMIT } from '@/config/planLimitV2/editorSeats';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useOnAddSeats, useSelector } from '@/hooks';
 
-const TakenSeatsMessage = () => {
+export interface TakenSeatsMessageProps {
+  error?: boolean;
+  small?: boolean;
+  seats?: number;
+}
+
+const TakenSeatsMessage: React.FC<TakenSeatsMessageProps> = ({ error = false, seats, small }) => {
   const usedEditorSeats = useSelector(WorkspaceV2.active.usedEditorSeatsSelector);
 
   const onAddSeats = useOnAddSeats();
 
   return (
-    <span>
-      <strong>{usedEditorSeats}</strong> of {TEAM_LIMIT.increasableLimit} seats taken. <TextButton onClick={onAddSeats}>Need more?</TextButton>
-    </span>
+    <Text fontSize={small ? 13 : 15} color="#62778c" lineHeight={small ? '18px' : undefined}>
+      <Text color={error ? '#BD425F' : '#132144'}>{seats ?? usedEditorSeats}</Text> of {TEAM_LIMIT.increasableLimit} seats taken.{' '}
+      <TextButton onClick={() => onAddSeats(seats ?? usedEditorSeats)}>Need more?</TextButton>
+    </Text>
   );
 };
 

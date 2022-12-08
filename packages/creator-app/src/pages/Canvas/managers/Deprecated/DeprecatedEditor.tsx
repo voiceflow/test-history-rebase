@@ -8,10 +8,11 @@ import { NodeEditor } from '@/pages/Canvas/managers/types';
 
 const DeprecatedEditor: NodeEditor<Realtime.NodeData.Deprecated> = ({ data: { deprecatedType, ...originalData } }) => (
   <Section>
-    <Alert variant={Alert.Variant.WARNING}>
+    <Alert variant={Alert.Variant.WARNING} mb={16}>
       This "{deprecatedType}" block is now deprecated and is no longer available. This project will still work, but we recommend you to update this
       block as soon as possible.
     </Alert>
+
     <Section header="JSON Data" variant={SectionVariant.SECONDARY} isNested headerToggle collapseVariant={SectionToggleVariant.ARROW}>
       <AceEditor
         name="deprecatedStepJSON"

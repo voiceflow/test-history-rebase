@@ -3,7 +3,16 @@ import { Route, Switch } from 'react-router-dom';
 
 import { Path } from '@/config/routes';
 
-import { BackHeader, CanvasHeader, ConversationsHeader, IntegrationsHeader, NLUHeader, PrototypeHeader, SettingsHeader } from './components';
+import {
+  AnalyticsDashboardHeader,
+  BackHeader,
+  CanvasHeader,
+  ConversationsHeader,
+  IntegrationsHeader,
+  NLUHeader,
+  PrototypeHeader,
+  SettingsHeader,
+} from './components';
 
 const ProjectHeader: React.FC = () => (
   <Switch>
@@ -21,6 +30,8 @@ const ProjectHeader: React.FC = () => (
     <Route path={Path.PROJECT_SETTINGS} component={SettingsHeader} />
 
     <Route path={Path.CONVERSATIONS} component={ConversationsHeader} />
+
+    <Route path={Path.ANALYTICS_DASHBOARD} component={AnalyticsDashboardHeader} />
 
     <Route component={BackHeader} />
   </Switch>

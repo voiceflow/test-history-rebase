@@ -1,3 +1,4 @@
+export { default as AnalyticsDashboardHeader } from './AnalyticsDashboardHeader';
 export { default as BackHeader } from './BackHeader';
 export { default as CanvasHeader } from './CanvasHeader';
 export { default as ConversationsHeader } from './ConversationsHeader';

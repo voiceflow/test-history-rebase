@@ -1,15 +1,16 @@
 import React from 'react';
 
-import Page from '@/components/Page';
+import ProjectPage from '@/pages/Project/components/ProjectPage';
+
+import { AnalyticsDashboardContainer } from './components';
 
 const AnalyticsDashboard: React.FC = () => {
   return (
-    <Page>
-      <Page.Content>
-        <h1>Analytics Dashboard</h1>
+    <ProjectPage shouldRenderHeader={true} sideBarProps={{ withLogo: false }}>
+      <AnalyticsDashboardContainer>
         <p>super WIP!!!</p>
-      </Page.Content>
-    </Page>
+      </AnalyticsDashboardContainer>
+    </ProjectPage>
   );
 };
 

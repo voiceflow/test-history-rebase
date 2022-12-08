@@ -37,7 +37,7 @@ const SelectVariableStateButton: React.FC<SelectVariableStateButtonProps> = ({ o
           <TippyTooltip title={isVariableStateSelected ? 'Reset state' : 'Select variable state'}>
             <IconedButton
               ref={ref as React.RefObject<HTMLButtonElement>}
-              icon={isVariableStateSelected ? 'refreshData' : 'caretDown'}
+              icon={isVariableStateSelected ? 'removeData' : 'caretDown'}
               isOpen={isOpen}
               variant={ButtonVariant.PRIMARY}
               onClick={() => (isVariableStateSelected ? updateSelectedVariableStateById(null) : toggleSelectMenuOpen())}

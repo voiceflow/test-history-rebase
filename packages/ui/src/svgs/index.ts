@@ -206,6 +206,7 @@ export { default as randomV2 } from './random-v2.svg';
 export { default as rasa } from './rasa.svg';
 export { default as refreshData } from './refresh-data.svg';
 export { default as reminder } from './reminder.svg';
+export { default as removeData } from './remove-data.svg';
 export { default as returnHome } from './return-home.svg';
 export { default as rocket } from './rocket.svg';
 

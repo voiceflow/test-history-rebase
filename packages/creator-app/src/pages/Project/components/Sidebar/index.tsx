@@ -13,6 +13,7 @@ const ALL_PROJECT_SIDEBAR_PATHS = [
   Path.CANVAS_MODEL,
   Path.CANVAS_MODEL_ENTITY,
   Path.NLU_MANAGER,
+  Path.ANALYTICS_DASHBOARD,
 ];
 
 export * from './types';

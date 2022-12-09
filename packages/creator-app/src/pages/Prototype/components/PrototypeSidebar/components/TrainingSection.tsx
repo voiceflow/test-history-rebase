@@ -53,7 +53,7 @@ const TrainingSection: React.FC<TrainingSectionProps> = ({ isOpen, onOpen, toggl
           message = `An error occurred while training the model${nlpMessage ? `: ${nlpMessage}` : '.'}`;
       }
 
-      toast.error(message);
+      toast.error(message, { autoClose: false });
     }
   }, [nlp.job?.stage.type]);
 

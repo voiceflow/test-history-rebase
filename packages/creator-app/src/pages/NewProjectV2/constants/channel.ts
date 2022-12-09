@@ -59,6 +59,7 @@ export const OPTIONS: MenuItemGrouped<Option>[] = [
       buildVoiceOption(Platform.Alexa.CONFIG),
       buildVoiceOption(Platform.Google.CONFIG),
       buildChatOption(Platform.Whatsapp.CONFIG, { featureFlag: Realtime.FeatureFlag.WHATSAPP }),
+      buildChatOption(Platform.SMS.CONFIG, { featureFlag: Realtime.FeatureFlag.SMS }),
       buildChatOption(Platform.MicrosoftTeams.CONFIG, { featureFlag: Realtime.FeatureFlag.MICROSOFT_TEAMS }),
     ],
   },
@@ -69,7 +70,7 @@ export const OPTIONS: MenuItemGrouped<Option>[] = [
       buildChatOption(Upcoming.Whatsapp.CONFIG, { featureFlag: Realtime.FeatureFlag.WHATSAPP }),
       buildChatOption(Upcoming.Facebook.CONFIG),
       buildVoiceOption(Upcoming.Twilio.CONFIG),
-      buildChatOption(Upcoming.Twilio.CONFIG),
+      buildChatOption(Upcoming.Twilio.CONFIG, { featureFlag: Realtime.FeatureFlag.SMS }),
     ],
   },
 ];

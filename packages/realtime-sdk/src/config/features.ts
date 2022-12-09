@@ -45,6 +45,8 @@ export enum FeatureFlag {
 
   MICROSOFT_TEAMS = 'teams',
 
+  SMS = 'sms',
+
   DASHBOARD_V2 = 'dashboard_V2',
 
   MVP_CUSTOM_BLOCK = 'mvp_custom_block',

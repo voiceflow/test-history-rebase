@@ -5,6 +5,7 @@ export * as dialogflowCX from './dialogflowCX';
 export * as DialogflowES from './dialogflowES';
 export * as Google from './google';
 export * as MicrosoftTeams from './microsoftTeams';
+export * as SMS from './sms';
 export * as Types from './types';
 export * as ConfigUtils from './utils';
 export * as Voiceflow from './voiceflow';

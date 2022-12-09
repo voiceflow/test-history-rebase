@@ -52,6 +52,7 @@ const LIST = [
   Configs.Webchat.CONFIG,
   Configs.Whatsapp.CONFIG,
   Configs.MicrosoftTeams.CONFIG,
+  Configs.SMS.CONFIG,
 ];
 
 const TYPE_CONFIG_MAP = buildTypeConfigMapFactory<Configs.Base.Config>()(LIST);

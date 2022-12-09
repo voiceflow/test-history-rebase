@@ -15,7 +15,7 @@
     "@voiceflow/google-types": "2.18.10",
     "@voiceflow/ui": "^1.202.0",
     "@voiceflow/voice-types": "2.8.19",
-    "@voiceflow/voiceflow-types": "3.21.4",
+    "@voiceflow/voiceflow-types": "3.22.0",
     "bidirectional-adapter": "1.2.0",
     "normal-store": "1.3.0",
     "react": "^17.0.2",

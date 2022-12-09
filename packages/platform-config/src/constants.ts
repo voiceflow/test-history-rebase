@@ -20,6 +20,7 @@ export const PlatformType = Types.satisfies<Record<string, VoiceflowConstants.Pl
   GOOGLE: VoiceflowConstants.PlatformType.GOOGLE,
   WEBCHAT: VoiceflowConstants.PlatformType.WEBCHAT,
   WHATSAPP: VoiceflowConstants.PlatformType.WHATSAPP,
+  SMS: VoiceflowConstants.PlatformType.SMS,
   VOICEFLOW: VoiceflowConstants.PlatformType.VOICEFLOW,
   DIALOGFLOW_ES: VoiceflowConstants.PlatformType.DIALOGFLOW_ES,
   DIALOGFLOW_CX: VoiceflowConstants.PlatformType.DIALOGFLOW_CX,

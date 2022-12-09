@@ -40,7 +40,7 @@ const TrainingSection: React.FC<TrainingSectionProps> = ({ isOpen, onOpen, toggl
       logger.warn('Train error', nlp.job.stage.data);
 
       let message: string;
-      const nlpMessage = nlp.job.stage.data?.error?.message;
+      const nlpMessage = String(nlp.job.stage.data?.error);
 
       // eslint-disable-next-line sonarjs/no-small-switch
       switch (nlpMessage) {
@@ -50,7 +50,7 @@ const TrainingSection: React.FC<TrainingSectionProps> = ({ isOpen, onOpen, toggl
           break;
 
         default:
-          message = `An error occurred while training the model. ${nlpMessage || ''}`;
+          message = `An error occurred while training the model${nlpMessage ? `: ${nlpMessage}` : '.'}`;
       }
 
       toast.error(message);

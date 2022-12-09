@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.206.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.205.9...@voiceflow/realtime-sdk@1.206.0) (2022-12-09)
+
+
+### Features
+
+* add sms project type (PL-352) ([#6409](https://github.com/voiceflow/creator-app/issues/6409)) ([c97abc6](https://github.com/voiceflow/creator-app/commit/c97abc69989945e473d95606056fe9f0c6c843a2))
+
+
+
+
+
 ## [1.205.9](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.205.8...@voiceflow/realtime-sdk@1.205.9) (2022-12-08)
 
 **Note:** Version bump only for package @voiceflow/realtime-sdk

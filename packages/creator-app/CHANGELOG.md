@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1018.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1018.0...@voiceflow/creator-app@1.1018.1) (2022-12-10)
+
+
+### Bug Fixes
+
+* add owner to admin and billing perms [bugfix] (CT-000) ([#6410](https://github.com/voiceflow/creator-app/issues/6410)) ([fee4d73](https://github.com/voiceflow/creator-app/commit/fee4d73b0ad0867c18b8344107333223a70e7b00))
+
+
+
+
+
 # [1.1018.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1017.2...@voiceflow/creator-app@1.1018.0) (2022-12-09)
 
 

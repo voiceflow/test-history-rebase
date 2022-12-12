@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1019.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1018.3...@voiceflow/creator-app@1.1019.0) (2022-12-12)
+
+
+### Features
+
+* sms sandbox (PL-354) ([#6415](https://github.com/voiceflow/creator-app/issues/6415)) ([d826ebe](https://github.com/voiceflow/creator-app/commit/d826ebe373880764cad52181024deda2d554199d))
+
+
+
+
+
 ## [1.1018.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1018.2...@voiceflow/creator-app@1.1018.3) (2022-12-12)
 
 

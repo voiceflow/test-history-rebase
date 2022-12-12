@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1020.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1019.0...@voiceflow/creator-app@1.1020.0) (2022-12-12)
+
+
+### Features
+
+* project create modal (CT-1219) ([#6402](https://github.com/voiceflow/creator-app/issues/6402)) ([47f79b6](https://github.com/voiceflow/creator-app/commit/47f79b6fe191d1f27f21aeeb690010fe7d738d26))
+
+
+
+
+
 # [1.1019.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1018.3...@voiceflow/creator-app@1.1019.0) (2022-12-12)
 
 

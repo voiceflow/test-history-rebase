@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.37.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/showcase@1.36.3...@voiceflow/showcase@1.37.0) (2022-12-12)
+
+
+### Features
+
+* project create modal (CT-1219) ([#6402](https://github.com/voiceflow/creator-app/issues/6402)) ([47f79b6](https://github.com/voiceflow/creator-app/commit/47f79b6fe191d1f27f21aeeb690010fe7d738d26))
+
+
+
+
+
 ## [1.36.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/showcase@1.36.2...@voiceflow/showcase@1.36.3) (2022-12-08)
 
 **Note:** Version bump only for package @voiceflow/showcase

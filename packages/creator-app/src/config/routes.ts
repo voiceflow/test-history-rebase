@@ -65,6 +65,8 @@ export enum PublishRoute {
   EXPORT = 'export',
   GENERAL = 'general',
   WEBCHAT = 'webchat',
+  SMS = 'sms',
+  PROTOTYPE_SMS = 'prototype/sms',
   WHATSAPP = 'whatsapp',
   PROTOTYPE_WHATSAPP = 'prototype/whatsapp',
   MICROSOFT_TEAMS = 'ms-teams',
@@ -267,6 +269,9 @@ export const Path = {
   PUBLISH_EXPORT: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.EXPORT),
   PUBLISH_WEBCHAT: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.WEBCHAT),
   PUBLISH_API: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.API),
+
+  PUBLISH_SMS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.SMS),
+  PROTOTYPE_SMS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.PROTOTYPE_SMS),
 
   PUBLISH_WHATSAPP: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.WHATSAPP),
   PROTOTYPE_WHATSAPP: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.PROTOTYPE_WHATSAPP),

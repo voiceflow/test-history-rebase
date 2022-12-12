@@ -6,11 +6,9 @@ export const CONFIG = Voiceflow.Chat.extend({
   name: 'SMS',
 
   icon: {
-    name: 'whatsApp', // change icon
-    color: '#23b33a',
+    name: 'systemMessage', // change icon
+    color: '#6E849AD9',
   },
-
-  logo: 'logoWhatsapp', // change logo
 
   project: Project.CONFIG,
 

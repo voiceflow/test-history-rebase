@@ -112,6 +112,12 @@ const ProjectList: React.FC = () => {
             </Button>
           </UIAssistantCard>
 
+          <UIAssistantCard {...customProp} icon={Platform.SMS.CONFIG.types.chat.icon.name}>
+            <Button squareRadius variant={Button.Variant.PRIMARY}>
+              Copy Template
+            </Button>
+          </UIAssistantCard>
+
           <UIAssistantCard {...customProp} icon={Platform.MicrosoftTeams.CONFIG.types.chat.icon.name}>
             <Button squareRadius variant={Button.Variant.PRIMARY}>
               Copy Template

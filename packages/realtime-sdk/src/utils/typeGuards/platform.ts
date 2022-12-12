@@ -15,6 +15,7 @@ export const isAlexaPlatform = createPlatformTypeGuard<Platform.Constants.Platfo
 export const isGooglePlatform = createPlatformTypeGuard<Platform.Constants.PlatformType>(Platform.Constants.PlatformType.GOOGLE);
 export const isWebChatPlatform = createPlatformTypeGuard<Platform.Constants.PlatformType>(Platform.Constants.PlatformType.WEBCHAT);
 export const isWhatsAppPlatform = createPlatformTypeGuard<Platform.Constants.PlatformType>(Platform.Constants.PlatformType.WHATSAPP);
+export const isSMSPlatform = createPlatformTypeGuard<Platform.Constants.PlatformType>(Platform.Constants.PlatformType.SMS);
 export const isMicrosoftTeamsPlatform = createPlatformTypeGuard<Platform.Constants.PlatformType>(Platform.Constants.PlatformType.MICROSOFT_TEAMS);
 
 export const isDialogflowPlatform = (

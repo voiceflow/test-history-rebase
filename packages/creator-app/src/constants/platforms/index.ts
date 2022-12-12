@@ -68,6 +68,7 @@ export * from './dialogflowCX';
 export * from './dialogflowES';
 export * from './general';
 export * from './google';
+export * from './sms';
 export * from './webchat';
 export * from './whatsapp';
 

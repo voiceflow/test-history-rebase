@@ -12,6 +12,7 @@ import {
   GoogleStageType,
   NLPTrainJobErrorType,
   NLPTrainStageType,
+  SMSPublishStageType,
   TwilioPrototypeStageType,
 } from '@/constants/platforms';
 
@@ -318,4 +319,26 @@ export namespace TwilioPrototypeJob {
   export type WaitNumberStage = JobStage<TwilioPrototypeStageType.WAIT_NUMBER>;
 
   export type AnyJob = Job<IdleStage | ErrorStage | MessagingStage | WaitNumberStage>;
+}
+
+export namespace SMSPublishJob {
+  export type IdleStage = JobStage<SMSPublishStageType.IDLE>;
+
+  export type ErrorStage = JobStage<
+    SMSPublishStageType.ERROR,
+    {
+      error?: any;
+      message: string;
+      errorType: NLPTrainJobErrorType;
+      progress?: number;
+    }
+  >;
+
+  export type CheckAPISecretsStage = JobStage<SMSPublishStageType.CHECK_API_SECRETS>;
+
+  export type CheckMessagingServiceStage = JobStage<SMSPublishStageType.CHECK_MESSAGING_SERVICE>;
+
+  export type ValidateNumbersStage = JobStage<SMSPublishStageType.VALIDATE_NUMBERS>;
+
+  export type AnyJob = Job<IdleStage | ErrorStage | CheckAPISecretsStage | CheckMessagingServiceStage | ValidateNumbersStage>;
 }

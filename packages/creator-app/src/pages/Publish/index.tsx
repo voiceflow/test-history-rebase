@@ -15,6 +15,7 @@ import {
   isDialogflowPlatform,
   isGooglePlatform,
   isMicrosoftTeamsPlatform,
+  isSMSPlatform,
   isWebChatPlatform,
   isWhatsAppPlatform,
 } from '@/utils/typeGuards';
@@ -23,6 +24,8 @@ const PublishAmazon = lazy(() => import('./Amazon'));
 const PublishGoogle = lazy(() => import('./Google'));
 const PublishDialogflow = lazy(() => import('./Dialogflow'));
 const PublishWebchat = lazy(() => import('./Webchat'));
+const PublishSMS = lazy(() => import('./SMS'));
+const PrototypeSMS = lazy(() => import('./SMS/prototype'));
 const PublishWhatsApp = lazy(() => import('./WhatsApp'));
 const PrototypeWhatsApp = lazy(() => import('./WhatsApp/prototype'));
 const PublishTeams = lazy(() => import('./MicrosoftTeams'));
@@ -43,6 +46,8 @@ const Publish: React.FC = () => {
         {isGooglePlatform(platform) && <Route path={Path.PUBLISH_GOOGLE} component={PublishGoogle} />}
         {isDialogflowPlatform(platform) && <Route path={Path.PUBLISH_DIALOGFLOW} component={PublishDialogflow} />}
         {isWebChatPlatform(platform) && <Route path={Path.PUBLISH_WEBCHAT} component={PublishWebchat} />}
+        {isSMSPlatform(platform) && <Route path={Path.PUBLISH_SMS} component={PublishSMS} />}
+        {isSMSPlatform(platform) && <Route path={Path.PROTOTYPE_SMS} component={PrototypeSMS} />}
         {isWhatsAppPlatform(platform) && <Route path={Path.PUBLISH_WHATSAPP} component={PublishWhatsApp} />}
         {isWhatsAppPlatform(platform) && <Route path={Path.PROTOTYPE_WHATSAPP} component={PrototypeWhatsApp} />}
         {isMicrosoftTeamsPlatform(platform) && <Route path={Path.PUBLISH_TEAMS} component={PublishTeams} />}

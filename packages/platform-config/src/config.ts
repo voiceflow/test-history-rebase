@@ -51,6 +51,7 @@ const LIST = [
   Configs.Voiceflow.CONFIG,
   Configs.Webchat.CONFIG,
   Configs.Whatsapp.CONFIG,
+  Configs.SMS.CONFIG,
   Configs.MicrosoftTeams.CONFIG,
   Configs.SMS.CONFIG,
 ];

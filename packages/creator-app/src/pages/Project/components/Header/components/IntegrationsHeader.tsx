@@ -21,6 +21,8 @@ const IntegrationsHeader: React.FC = () => {
             <Route path={Path.PUBLISH_EXPORT}>Code Export</Route>
             <Route path={Path.PUBLISH_ALEXA}>Amazon Alexa</Route>
             <Route path={Path.PUBLISH_GOOGLE}>Google Assistant</Route>
+            <Route path={Path.PUBLISH_SMS}>SMS</Route>
+            <Route path={Path.PROTOTYPE_SMS}>SMS Testing</Route>
             <Route path={Path.PUBLISH_WHATSAPP}>WhatsApp</Route>
             <Route path={Path.PROTOTYPE_WHATSAPP}>WhatsApp Testing</Route>
             <Route path={Path.PUBLISH_API}>API</Route>

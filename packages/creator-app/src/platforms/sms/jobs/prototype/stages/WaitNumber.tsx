@@ -9,8 +9,8 @@ const WaitNumberStage: React.FC<StageComponentProps<TwilioPrototypeJob.WaitNumbe
   <WaitNumberModal
     onClose={cancel}
     onSuccess={restart}
-    tag={ProjectSecretTag.WHATSAPP_PHONE_NUMBER}
-    description="You need to have access to the WhatsApp account of the number provided to test from your phone."
+    tag={ProjectSecretTag.SMS_PHONE_NUMBER}
+    description="You need to have access to the number provided to test from your phone."
   />
 );
 

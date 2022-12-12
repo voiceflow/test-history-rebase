@@ -2,6 +2,7 @@ import * as Platform from '@voiceflow/platform-config';
 import React from 'react';
 
 import { platformAware } from '@/hocs';
+import SMS from '@/platforms/sms/jobs/prototype';
 import WhatsApp from '@/platforms/whatsapp/jobs/prototype';
 
 import RunButton from './button';
@@ -15,6 +16,7 @@ export const DefaultRun: React.FC<React.ComponentProps<typeof RunButton>> = (pro
 
 const Run = platformAware(
   {
+    [Platform.Constants.PlatformType.SMS]: SMS,
     [Platform.Constants.PlatformType.WHATSAPP]: WhatsApp,
   },
   DefaultRun

@@ -24,6 +24,8 @@ export interface Config {
   invocationName: null | InvocationName.Config;
 
   globalVariables: BuiltInVariable[];
+
+  noReply: boolean;
 }
 
 export const CONFIG = Types.satisfies<Config>()({
@@ -45,6 +47,8 @@ export const CONFIG = Types.satisfies<Config>()({
     BuiltInVariable.LOCALE,
     BuiltInVariable.INTENT_CONFIDENCE,
   ],
+
+  noReply: true,
 });
 
 export const extend = ConfigUtils.extendFactory<Config>(CONFIG);

@@ -263,6 +263,14 @@ export const MICROSOFT_TEAMS_STEP_SECTIONS = createStepSections({
   devSteps: [API_STEP, CODE_STEP],
 });
 
+export const WHATSAPP_STEP_SECTIONS = createStepSections({
+  talkSteps: [TEXT_STEP, VISUAL_STEP],
+  listenSteps: [CHOICE_STEP, CAPTURE_STEP_V2],
+  logicSteps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
+  eventSteps: [INTENT_STEP],
+  devSteps: [API_STEP, CODE_STEP],
+});
+
 export const getStepSections = Realtime.Utils.platform.createPlatformAndProjectTypeSelector(
   {
     [Platform.Constants.PlatformType.ALEXA]: ALEXA_STEP_SECTIONS,
@@ -271,6 +279,7 @@ export const getStepSections = Realtime.Utils.platform.createPlatformAndProjectT
     [`${Platform.Constants.PlatformType.DIALOGFLOW_ES}:${Platform.Constants.ProjectType.CHAT}`]: DIALOGFLOW_ES_CHAT_STEP_SECTIONS,
     [`${Platform.Constants.PlatformType.DIALOGFLOW_ES}:${Platform.Constants.ProjectType.VOICE}`]: DIALOGFLOW_ES_VOICE_STEP_SECTIONS,
     [Platform.Constants.PlatformType.MICROSOFT_TEAMS]: MICROSOFT_TEAMS_STEP_SECTIONS,
+    [Platform.Constants.PlatformType.WHATSAPP]: WHATSAPP_STEP_SECTIONS,
     [Platform.Constants.ProjectType.CHAT]: CHATBOT_STEP_SECTIONS,
     [Platform.Constants.ProjectType.VOICE]: GENERAL_STEP_SECTIONS,
   },

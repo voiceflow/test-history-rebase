@@ -41,7 +41,7 @@ const GeneralSettingsSectionsGlobalLogic: React.FC<GeneralSettingsSectionsGlobal
       )}
       {globalNoMatchNoReply && (
         <SettingsSection variant={SectionVariants.PRIMARY} marginBottom={40} title={showMessageDelaySetting || showTTSSettings ? '' : 'Global Logic'}>
-          <NoMatchNoReply platform={platform} projectType={projectType} platformMeta={platformMeta} />
+          <NoMatchNoReply />
         </SettingsSection>
       )}
     </>

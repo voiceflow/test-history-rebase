@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.206.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.206.1...@voiceflow/realtime-sdk@1.206.2) (2022-12-12)
+
+
+### Bug Fixes
+
+* twilio sandbox ff (PL-356) ([#6412](https://github.com/voiceflow/creator-app/issues/6412)) ([5881aea](https://github.com/voiceflow/creator-app/commit/5881aea6e63194616e179e886cf539613fac2fa6))
+
+
+
+
+
 ## [1.206.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.206.0...@voiceflow/realtime-sdk@1.206.1) (2022-12-12)
 
 **Note:** Version bump only for package @voiceflow/realtime-sdk

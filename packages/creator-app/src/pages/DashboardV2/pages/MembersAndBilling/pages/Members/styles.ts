@@ -20,11 +20,3 @@ export const Title = styled.h2`
   font-weight: 700;
   margin-bottom: 4px;
 `;
-
-export const EditorSeatsDescription = styled.div`
-  color: #62778c;
-
-  strong {
-    color: #132144;
-  }
-`;

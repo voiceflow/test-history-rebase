@@ -8,13 +8,13 @@ import { useDispatch } from '@/hooks';
 
 type WorkspaceMember = Realtime.WorkspaceMember | Realtime.PendingWorkspaceMember;
 
-interface WorkspaceMemberListProps {
+interface MemberListProps {
   inset?: boolean;
   hideLastDivider?: boolean;
   members: WorkspaceMember[];
 }
 
-const WorkspaceMemberList: React.FC<WorkspaceMemberListProps> = ({ inset, members, hideLastDivider = true }) => {
+const MemberList: React.FC<MemberListProps> = ({ inset, members, hideLastDivider = true }) => {
   const sendInvite = useDispatch(Workspace.sendInviteToActiveWorkspace);
   const deleteMember = useDispatch(Workspace.deleteMemberOfActiveWorkspace);
   const cancelInvite = useDispatch(Workspace.cancelInviteToActiveWorkspace);
@@ -47,4 +47,4 @@ const WorkspaceMemberList: React.FC<WorkspaceMemberListProps> = ({ inset, member
   );
 };
 
-export default WorkspaceMemberList;
+export default MemberList;

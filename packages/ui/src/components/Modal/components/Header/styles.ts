@@ -41,3 +41,19 @@ export const Container = styled.header<ContainerProps>`
           z-index: 1;
         `}
 `;
+
+export interface TitleProps {
+  large?: boolean;
+}
+
+export const Title = styled.div<TitleProps>`
+  ${({ large }) =>
+    large
+      ? css`
+          font-size: 18px;
+          font-weight: 700;
+        `
+      : css`
+          font-size: 15px;
+        `}
+`;

@@ -180,6 +180,7 @@ export { default as organization } from './organization.svg';
 export { default as outlinedAdd } from './outlined-add.svg';
 export { default as outlinedCircle } from './outlined-circle.svg';
 export { default as outlinedFilledCircle } from './outlined-filled-circle.svg';
+export { default as outlinedMicrophone } from './outlined-microphone.svg';
 export { default as outlinedMinus } from './outlined-minus.svg';
 
 // p
@@ -299,5 +300,9 @@ export { default as zoomOut } from './zoom-out.svg';
 // logos
 export { default as logoDialogflow } from './logos/dialogflow.svg';
 export { default as logoGoogleAssistant } from './logos/google-assistant.svg';
+export { default as messenger } from './logos/messenger.svg';
 export { default as logoMicrosoftTeams } from './logos/microsoft-teams.svg';
+export { default as slack } from './logos/slack.svg';
+export { default as telegram } from './logos/telegram.svg';
+export { default as twilio } from './logos/twilio.svg';
 export { default as logoWhatsapp } from './logos/whatsapp.svg';

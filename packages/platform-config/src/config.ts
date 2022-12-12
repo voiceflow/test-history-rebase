@@ -47,7 +47,7 @@ const LIST = [
   Configs.Alexa.CONFIG,
   Configs.Google.CONFIG,
   Configs.DialogflowES.CONFIG,
-  Configs.dialogflowCX.CONFIG,
+  Configs.DialogflowCX.CONFIG,
   Configs.Voiceflow.CONFIG,
   Configs.Webchat.CONFIG,
   Configs.Whatsapp.CONFIG,

@@ -22,7 +22,7 @@ const SingleModal: React.FC<VoidInternalProps> = ({ api, type, opened, hidden, a
           <Workspace.MemberList members={members} inset hideLastDivider={false} />
         </S.MemberList>
 
-        <Workspace.TakenSeatsMessage />
+        <Workspace.TakenSeatsMessage small />
       </S.InviteColumn>
 
       <Modal.Footer gap={10} sticky>

@@ -37,5 +37,6 @@ const Header: React.FC<HeaderProps> = ({ border, actions, children, infoTooltip,
 );
 
 export default Object.assign(Header, {
+  Title: S.Title,
   CloseButton,
 });

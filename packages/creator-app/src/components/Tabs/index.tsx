@@ -6,8 +6,6 @@ import { ClassName } from '@/styles/constants';
 
 import { ActiveLine, Tab as TabItem, Wrapper } from './components';
 
-export { TabPane, TabsContent } from './components';
-
 export interface Tab<V extends string = string> {
   id?: string;
   value: V;

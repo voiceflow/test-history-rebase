@@ -1,8 +1,7 @@
-import { Box, Title } from '@voiceflow/ui';
+import { Box, Switch, Title } from '@voiceflow/ui';
 import React from 'react';
 
 import RadioGroup from '@/components/RadioGroup';
-import { TabPane, TabsContent } from '@/components/Tabs';
 import { ExportType } from '@/constants';
 import { FadeLeftContainer } from '@/styles/animations';
 
@@ -28,15 +27,15 @@ const Content: React.FC<{
         </Box>
       )}
 
-      <TabsContent selected={exportType}>
-        <TabPane tabID={ExportType.MODEL}>
+      <Switch active={exportType}>
+        <Switch.Pane value={ExportType.MODEL}>
           <Model selectedIntentsIds={checkedItems} />
-        </TabPane>
+        </Switch.Pane>
 
-        <TabPane tabID={ExportType.CANVAS}>
+        <Switch.Pane value={ExportType.CANVAS}>
           <Canvas />
-        </TabPane>
-      </TabsContent>
+        </Switch.Pane>
+      </Switch>
     </FadeLeftContainer>
   );
 };

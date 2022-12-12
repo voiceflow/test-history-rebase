@@ -1,6 +1,8 @@
+import { BlockText } from '@voiceflow/ui';
+
 import { styled } from '@/hocs';
 
-export const Title = styled.h3`
+export const Title = styled(BlockText)`
   width: 100%;
   font-size: 18px;
   font-weight: 700;

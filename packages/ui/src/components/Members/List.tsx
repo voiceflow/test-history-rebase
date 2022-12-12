@@ -16,10 +16,10 @@ interface ListProps<M extends Member> {
 const List = <M extends Member>({
   inset,
   members,
-  hideLastDivider = true,
   onRemove,
   onChangeRoles,
   onResendInvite,
+  hideLastDivider = true,
 }: ListProps<M>): React.ReactElement => (
   <div>
     {members.map((member, index) => (

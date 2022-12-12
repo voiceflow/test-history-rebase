@@ -22,7 +22,6 @@ export { default as tutorialInfoIcon } from './TutorialInfoIcon';
 export { default as tutorialTooltip } from './TutorialTooltip';
 export { default as upload } from './Upload';
 export { default as uploadV2Audio } from './UploadV2Audio';
-export { default as uploadV2Drop } from './UploadV2Drop';
 export { default as uploadV2Image } from './UploadV2Image';
 export { default as user } from './User';
 export { default as videoPlayer } from './VideoPlayer';

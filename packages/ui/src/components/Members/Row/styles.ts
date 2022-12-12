@@ -22,9 +22,11 @@ export const Container = styled.div<{ inset?: boolean; border?: boolean }>`
       }
     `}
 `;
+
 export const Info = styled.div`
   margin-right: auto;
 `;
+
 export const Name = styled.div`
   display: flex;
   align-items: center;

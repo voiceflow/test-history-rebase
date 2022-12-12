@@ -30,6 +30,7 @@ const MemberSelect: React.FC<MemberSelectProps> = ({ value, members, onChange, .
       options={options}
       onSelect={(memberID) => onChange(memberID)}
       onSearch={setSearch}
+      clearable
       searchable
       iconProps={{ variant: SvgIcon.Variant.STANDARD, opacity: true }}
       placeholder="Add workspace members"
@@ -37,6 +38,7 @@ const MemberSelect: React.FC<MemberSelectProps> = ({ value, members, onChange, .
       getOptionKey={({ email }) => email}
       getOptionLabel={(value) => (value != null ? membersMap[value]?.name : undefined)}
       getOptionValue={(option) => option?.creator_id}
+      clearOnSelectActive
       renderOptionLabel={(option, searchLabel, getOptionLabel, getOptionValue, { isFocused }) => (
         <Option option={option} isFocused={isFocused} searchLabel={searchLabel}>
           {defaultMenuLabelRenderer(option, searchLabel, getOptionLabel, getOptionValue)}

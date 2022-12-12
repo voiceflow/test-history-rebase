@@ -1,4 +1,4 @@
-import { Banner, Button, ButtonVariant, FlexCenter } from '@voiceflow/ui';
+import { Banner, Button, ButtonVariant, FlexCenter, Text } from '@voiceflow/ui';
 import React from 'react';
 
 import Workspace from '@/components/Workspace';
@@ -38,15 +38,13 @@ const DashboardV2TeamAndBillingMembers: React.FC = () => {
       <S.Header>
         <div>
           <S.Title>{activeWorkspace?.members?.length} Workspace Members</S.Title>
-          <S.EditorSeatsDescription>
-            {canAddCollaborators ? (
-              <Workspace.TakenSeatsMessage />
-            ) : (
-              <>
-                <strong>{usedEditorSeats} Editor seats</strong> Being used in this workspace.
-              </>
-            )}
-          </S.EditorSeatsDescription>
+          {canAddCollaborators ? (
+            <Workspace.TakenSeatsMessage />
+          ) : (
+            <Text color="#62778c">
+              <Text color="#132144">{usedEditorSeats} Editor seats</Text> Being used in this workspace.
+            </Text>
+          )}
         </div>
 
         <FlexCenter gap={10}>

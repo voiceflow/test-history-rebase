@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1018.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1018.1...@voiceflow/creator-app@1.1018.2) (2022-12-12)
+
+
+### Bug Fixes
+
+* remove steps and settings for whatsapp (PL-334) ([#6411](https://github.com/voiceflow/creator-app/issues/6411)) ([4b54c27](https://github.com/voiceflow/creator-app/commit/4b54c27ee9ecabe0beea4e7c838f619b41d8aa64))
+
+
+
+
+
 ## [1.1018.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1018.0...@voiceflow/creator-app@1.1018.1) (2022-12-10)
 
 

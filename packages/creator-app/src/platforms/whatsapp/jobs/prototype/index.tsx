@@ -1,15 +1,19 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Dropdown, Menu, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';
 import JobInterface from '@/components/JobInterface';
+import { useFeature } from '@/hooks';
 import { useJob, useSimulatedProgress } from '@/hooks/job';
 import RunButton from '@/pages/Project/components/Header/components/CanvasHeader/components/Run/button';
 import { useRunPrototype } from '@/pages/Project/components/Header/components/CanvasHeader/components/Run/hooks';
 
 import { useTwilioPrototypeStageContent } from './stages';
 
-const TwilioPrototypeRun: React.FC<React.ComponentProps<typeof RunButton>> = ({ variant }) => {
+const TwilioPrototypeRun: React.FC<React.ComponentProps<typeof RunButton>> = (props) => {
+  const twilioSandbox = useFeature(Realtime.FeatureFlag.TWILIO_SANDBOX).isEnabled;
+
   const runPrototype = useRunPrototype();
 
   const context = useJob(client.platform.whatsapp.prototype);
@@ -43,7 +47,7 @@ const TwilioPrototypeRun: React.FC<React.ComponentProps<typeof RunButton>> = ({ 
       >
         {(ref, onToggle, isOpen) => (
           <div ref={ref}>
-            <RunButton variant={variant} loading={active} active={isOpen} onClick={onToggle} />
+            <RunButton {...props} loading={active} active={isOpen} onClick={twilioSandbox ? onToggle : runPrototype} />
           </div>
         )}
       </Dropdown>

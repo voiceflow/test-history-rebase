@@ -14,6 +14,12 @@ import { useAlexaProjectSettings, useFeature, usePermission, useSelector } from 
 import { SideBarComponentProps } from '../types';
 import CanvasIconMenu from './CanvasIconMenu';
 
+interface MenuOption {
+  to: string;
+  title: string;
+  icon: SvgIconTypes.Icon;
+}
+
 const IntegrationsSidebar: React.FC<SideBarComponentProps> = () => {
   const meta = useSelector(ProjectV2.active.metaSelector);
 
@@ -22,6 +28,7 @@ const IntegrationsSidebar: React.FC<SideBarComponentProps> = () => {
   const [canExportCode] = usePermission(Permission.CODE_EXPORT);
 
   const disableCodeExports = useFeature(Realtime.FeatureFlag.DISABLE_CODE_EXPORTS).isEnabled;
+  const twilioSandbox = useFeature(Realtime.FeatureFlag.TWILIO_SANDBOX).isEnabled;
   const canUseAlexaSettings = useAlexaProjectSettings();
 
   const { name: title } = Platform.Config.get(meta.platform);
@@ -30,7 +37,7 @@ const IntegrationsSidebar: React.FC<SideBarComponentProps> = () => {
     icon: { name: icon },
   } = Platform.Config.getTypeConfig(meta);
 
-  const publishPaths = React.useMemo<{ to: string; title: string; icon: SvgIconTypes.Icon }[]>(() => {
+  const publishPaths = React.useMemo<MenuOption[]>(() => {
     switch (meta.platform) {
       case Platform.Constants.PlatformType.ALEXA:
         return canUseAlexaSettings ? [{ to: generatePath(Path.PUBLISH_ALEXA, { versionID }), title, icon }] : [];
@@ -43,8 +50,8 @@ const IntegrationsSidebar: React.FC<SideBarComponentProps> = () => {
       case Platform.Constants.PlatformType.WHATSAPP:
         return [
           { to: generatePath(Path.PUBLISH_WHATSAPP, { versionID }), title: 'WhatsApp Business', icon },
-          { to: generatePath(Path.PROTOTYPE_WHATSAPP, { versionID }), title: 'Test on Phone', icon: 'phone' },
-        ];
+          ...(twilioSandbox ? [{ to: generatePath(Path.PROTOTYPE_WHATSAPP, { versionID }), title: 'Test on Phone', icon: 'phone' }] : []),
+        ] as MenuOption[];
       case Platform.Constants.PlatformType.MICROSOFT_TEAMS:
         return [{ to: generatePath(Path.PUBLISH_TEAMS, { versionID }), title, icon }];
       default:

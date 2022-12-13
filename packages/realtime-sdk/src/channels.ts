@@ -21,4 +21,7 @@ export const diagram = version.extend(
   ['diagramID', 'domainID'],
   ({ domainID, diagramID }) => `${DOMAIN_KEY}/${domainID}/${DIAGRAM_KEY}/${diagramID}`
 );
+
+export const legacyDiagram = version.extend(['diagramID'], ({ diagramID }) => `${DIAGRAM_KEY}/${diagramID}`);
+
 export type DiagramChannelParams = Utils.protocol.ChannelParams<typeof diagram>;

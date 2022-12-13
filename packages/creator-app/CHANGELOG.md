@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1022.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1021.0...@voiceflow/creator-app@1.1022.0) (2022-12-13)
+
+
+### Bug Fixes
+
+* only allow certain steps on sms channel (CT-000) ([#6420](https://github.com/voiceflow/creator-app/issues/6420)) ([f722a4a](https://github.com/voiceflow/creator-app/commit/f722a4a80a9356217482c35d113da813c8d744b6))
+
+
+### Features
+
+* domain updated at/by (CT-1278) ([#6408](https://github.com/voiceflow/creator-app/issues/6408)) ([bfb598d](https://github.com/voiceflow/creator-app/commit/bfb598d923f1a2962259a4bc340a8db47e0d0181))
+
+
+
+
+
 # [1.1021.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1020.2...@voiceflow/creator-app@1.1021.0) (2022-12-13)
 
 

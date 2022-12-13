@@ -43,13 +43,13 @@ export const transplantStepsReverter = createReverter(
   Realtime.node.transplantSteps,
 
   (
-    { workspaceID, projectID, versionID, diagramID, sourceParentNodeID, targetParentNodeID, stepIDs, removeSource, nodePortRemaps = [] },
+    { workspaceID, projectID, versionID, domainID, diagramID, sourceParentNodeID, targetParentNodeID, stepIDs, removeSource, nodePortRemaps = [] },
     getState
   ) => {
     const state = getState();
     const index = stepIDsByParentNodeIDSelector(state, { id: sourceParentNodeID }).indexOf(stepIDs[0]);
 
-    const ctx = { workspaceID, projectID, versionID, diagramID };
+    const ctx = { workspaceID, projectID, versionID, domainID, diagramID };
 
     // only re-add links that have been removed
     const reAddLinks = nodePortRemaps.flatMap((portRemap) => (portRemap.targetNodeID ? [] : buildLinkRecreateActions(state, ctx, portRemap)));

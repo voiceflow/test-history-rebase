@@ -1,6 +1,7 @@
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { terminateResend } from '@voiceflow/socket-utils';
+import { Context, terminateResend } from '@voiceflow/socket-utils';
+import { Action } from 'typescript-fsa';
 
 import { AbstractDomainResourceControl } from './utils';
 
@@ -25,7 +26,9 @@ class CreateDomain extends AbstractDomainResourceControl<Realtime.domain.CreateP
       ...domain,
       id: Utils.id.objectID(),
       topicIDs: [newDiagram.id],
+      updatedAt: new Date().toJSON(),
       rootDiagramID: newDiagram.id,
+      updatedBy: creatorID,
     });
 
     const newDomain = Realtime.Adapters.domainAdapter.fromDB(newDBDomain);
@@ -56,6 +59,10 @@ class CreateDomain extends AbstractDomainResourceControl<Realtime.domain.CreateP
 
     return newDomain;
   });
+
+  protected finally = async (ctx: Context, { payload }: Action<Realtime.domain.CreatePayload>): Promise<void> => {
+    await this.services.project.setUpdatedBy(payload.projectID, ctx.data.creatorID);
+  };
 }
 
 export default CreateDomain;

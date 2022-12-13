@@ -22,7 +22,7 @@ class ProjectService extends AbstractControl {
   }
 
   // needs this to throttle canvas updates on multiple instances
-  private canvasUpdatedThrottleCache = this.clients.cache.createKeyValue({
+  private updatedThrottleCache = this.clients.cache.createKeyValue({
     expire: CANVAS_UPDATE_THROTTLE_TIME / 1000,
     keyCreator: ProjectService.getCanvasUpdatedDebounceKey,
   });
@@ -162,13 +162,13 @@ class ProjectService extends AbstractControl {
   }
 
   // eslint-disable-next-line you-dont-need-lodash-underscore/throttle
-  public setCanvasUpdatedByCreatorID = _.throttle(async (projectID: string, creatorID: number) => {
+  public setUpdatedBy = _.throttle(async (projectID: string, creatorID: number) => {
     // skipping if the canvas was updated in another instance
-    if (await this.canvasUpdatedThrottleCache.get({ projectID })) return;
+    if (await this.updatedThrottleCache.get({ projectID })) return;
 
     await Promise.all([
-      this.models.project.updateByID(projectID, { canvasUpdatedAt: new Date(), canvasUpdatedByCreatorID: creatorID }),
-      this.canvasUpdatedThrottleCache.set({ projectID }, `${creatorID}`),
+      this.models.project.updateByID(projectID, { updatedAt: new Date(), updatedBy: creatorID }),
+      this.updatedThrottleCache.set({ projectID }, `${creatorID}`),
     ]);
   }, CANVAS_UPDATE_THROTTLE_TIME);
 }

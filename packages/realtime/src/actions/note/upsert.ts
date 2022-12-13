@@ -10,6 +10,10 @@ class UpsertNote extends AbstractVersionResourceControl<Realtime.note.UpsertPayl
   protected process = async (_ctx: Context, { payload }: Action<Realtime.note.UpsertPayload>) => {
     await this.services.note.upsert(payload.versionID, payload.note);
   };
+
+  protected finally = async (ctx: Context, { payload }: Action<Realtime.note.UpsertPayload>): Promise<void> => {
+    await this.services.project.setUpdatedBy(payload.projectID, ctx.data.creatorID);
+  };
 }
 
 export default UpsertNote;

@@ -85,10 +85,11 @@ export const initialize =
 
     dispatch(
       Realtime.creator.initialize({
-        workspaceID: '',
+        domainID: '',
+        diagramID,
         projectID: '',
         versionID: '',
-        diagramID,
+        workspaceID: '',
         nodesWithData: creator.nodes.map((node) => ({ node, data: creator.data[node.id] })),
         ports: creator.ports,
         links: creator.links,

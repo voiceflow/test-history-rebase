@@ -14,8 +14,8 @@ export default addBuiltinPortReducer;
 export const addBuiltinPortReverter = createReverter(
   Realtime.port.addBuiltin,
 
-  ({ workspaceID, projectID, versionID, diagramID, nodeID, portID, type }) =>
-    Realtime.port.removeBuiltin({ workspaceID, projectID, versionID, diagramID, nodeID, portID, type }),
+  ({ workspaceID, projectID, versionID, domainID, diagramID, nodeID, portID, type }) =>
+    Realtime.port.removeBuiltin({ workspaceID, projectID, versionID, domainID, diagramID, nodeID, portID, type }),
 
   [
     ...DIAGRAM_INVALIDATORS,

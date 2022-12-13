@@ -165,6 +165,7 @@ export interface BaseVersionPayload extends BaseProjectPayload {
 }
 
 export interface BaseDiagramPayload extends BaseVersionPayload {
+  domainID: string;
   diagramID: string;
 }
 

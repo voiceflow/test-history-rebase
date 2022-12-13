@@ -10,7 +10,7 @@ import { extractNodes, ExtractNodesOptions } from './utils';
 class InsertStep extends AbstractVersionDiagramAccessActionControl<Realtime.node.InsertStepPayload> {
   actionCreator = Realtime.node.insertStep;
 
-  process = async (_ctx: Context, { payload }: Action<Realtime.node.InsertStepPayload>): Promise<void> => {
+  protected process = async (_ctx: Context, { payload }: Action<Realtime.node.InsertStepPayload>): Promise<void> => {
     const { diagramID, parentNodeID, stepID, data, ports, index, isActions, projectMeta, schemaVersion, nodePortRemaps } = payload;
 
     const creatorData: ExtractNodesOptions = {
@@ -39,6 +39,13 @@ class InsertStep extends AbstractVersionDiagramAccessActionControl<Realtime.node
       parentNodeID,
       nodePortRemaps,
     });
+  };
+
+  protected finally = async (ctx: Context, { payload }: Action<Realtime.node.InsertStepPayload>): Promise<void> => {
+    await Promise.all([
+      this.services.project.setUpdatedBy(payload.projectID, ctx.data.creatorID),
+      this.services.domain.setUpdatedBy(payload.versionID, payload.domainID, ctx.data.creatorID),
+    ]);
   };
 }
 

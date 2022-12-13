@@ -1,5 +1,6 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { terminateResend } from '@voiceflow/socket-utils';
+import { Context, terminateResend } from '@voiceflow/socket-utils';
+import { Action } from 'typescript-fsa';
 
 import { AbstractVersionResourceControl } from '@/actions/version/utils';
 
@@ -8,7 +9,7 @@ class CreateProduct extends AbstractVersionResourceControl<Realtime.product.Crea
 
   protected resend = terminateResend;
 
-  process = this.reply(Realtime.product.create, async ({ data }, { payload }) => {
+  protected process = this.reply(Realtime.product.create, async ({ data }, { payload }) => {
     const { creatorID } = data;
 
     const product = await this.services.product
@@ -28,6 +29,10 @@ class CreateProduct extends AbstractVersionResourceControl<Realtime.product.Crea
 
     return product;
   });
+
+  protected finally = async (ctx: Context, { payload }: Action<Realtime.product.CreateProductPayload>): Promise<void> => {
+    await this.services.project.setUpdatedBy(payload.projectID, ctx.data.creatorID);
+  };
 }
 
 export default CreateProduct;

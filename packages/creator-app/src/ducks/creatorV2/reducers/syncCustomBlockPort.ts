@@ -15,7 +15,7 @@ export default addCustomBlockPortReducer;
 
 export const addCustomBlockPortReverter = createReverter(
   Realtime.port.syncCustomBlockPorts,
-  ({ workspaceID, projectID, versionID, diagramID, patchData }) =>
-    Realtime.port.undoSyncCustomBlockPorts({ workspaceID, projectID, versionID, diagramID, patchData }),
+  ({ workspaceID, projectID, versionID, domainID, diagramID, patchData }) =>
+    Realtime.port.undoSyncCustomBlockPorts({ workspaceID, projectID, versionID, domainID, diagramID, patchData }),
   []
 );

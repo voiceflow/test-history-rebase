@@ -1,10 +1,11 @@
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
+import * as Errors from '@/config/errors';
 import { BlockType } from '@/constants';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as CustomBlocks from '@/ducks/customBlock';
-import * as DiagramV2 from '@/ducks/diagramV2';
+import * as Session from '@/ducks/session';
 import { waitAsync } from '@/ducks/utils';
 import { getActiveVersionContext } from '@/ducks/version/utils';
 import { Thunk } from '@/store/types';
@@ -60,8 +61,11 @@ export const syncCustomBlockPorts = (): Thunk<void> => async (dispatch, getState
   const state = getState();
 
   const context = getActiveVersionContext(state);
+  const activeDomainID = Session.activeDomainIDSelector(state);
+  const activeDiagramID = CreatorV2.activeDiagramIDSelector(state);
 
-  const activeDiagramID = DiagramV2.active.diagramSelector(state)!.id;
+  Errors.assertDomainID(activeDomainID);
+  Errors.assertDiagramID(activeDiagramID);
 
   const allNodes = CreatorV2.allNodeDataSelector(state);
   const allPointers = allNodes.filter(isCustomBlockPointer);
@@ -91,6 +95,7 @@ export const syncCustomBlockPorts = (): Thunk<void> => async (dispatch, getState
     await dispatch.sync(
       Realtime.port.syncCustomBlockPorts({
         ...context,
+        domainID: activeDomainID,
         diagramID: activeDiagramID,
         patchData,
       })

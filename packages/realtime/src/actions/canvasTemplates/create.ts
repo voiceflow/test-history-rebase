@@ -1,5 +1,6 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { terminateResend } from '@voiceflow/socket-utils';
+import { Context, terminateResend } from '@voiceflow/socket-utils';
+import { Action } from 'typescript-fsa';
 
 import { AbstractVersionResourceControl } from '@/actions/version/utils';
 
@@ -8,7 +9,7 @@ class CreateCanvasTemplate extends AbstractVersionResourceControl<Realtime.canva
 
   protected resend = terminateResend;
 
-  process = this.reply(Realtime.canvasTemplate.create, async (ctx, { payload }) => {
+  protected process = this.reply(Realtime.canvasTemplate.create, async (ctx, { payload }) => {
     const { creatorID } = ctx.data;
     const { canvasTemplate, versionID, projectID, workspaceID } = payload;
 
@@ -29,6 +30,10 @@ class CreateCanvasTemplate extends AbstractVersionResourceControl<Realtime.canva
 
     return newCanvasTemplate;
   });
+
+  protected finally = async (ctx: Context, { payload }: Action<Realtime.canvasTemplate.CreateCanvasTemplatePayload>): Promise<void> => {
+    await this.services.project.setUpdatedBy(payload.projectID, ctx.data.creatorID);
+  };
 }
 
 export default CreateCanvasTemplate;

@@ -44,8 +44,15 @@ export default addBlockReducer;
 export const addBlockReverter = createReverter(
   Realtime.node.addBlock,
 
-  ({ workspaceID, projectID, versionID, diagramID, blockID, stepID }) =>
-    Realtime.node.removeMany({ workspaceID, projectID, versionID, diagramID, nodes: [{ parentNodeID: blockID }, { parentNodeID: blockID, stepID }] }),
+  ({ workspaceID, projectID, versionID, domainID, diagramID, blockID, stepID }) =>
+    Realtime.node.removeMany({
+      workspaceID,
+      projectID,
+      versionID,
+      domainID,
+      diagramID,
+      nodes: [{ parentNodeID: blockID }, { parentNodeID: blockID, stepID }],
+    }),
 
   DIAGRAM_INVALIDATORS
 );

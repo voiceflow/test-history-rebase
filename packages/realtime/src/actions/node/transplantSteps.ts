@@ -7,7 +7,7 @@ import { AbstractVersionDiagramAccessActionControl } from '@/actions/diagram/uti
 class TransplantSteps extends AbstractVersionDiagramAccessActionControl<Realtime.node.TransplantStepsPayload> {
   actionCreator = Realtime.node.transplantSteps;
 
-  process = async (_ctx: Context, { payload }: Action<Realtime.node.TransplantStepsPayload>): Promise<void> => {
+  protected process = async (_ctx: Context, { payload }: Action<Realtime.node.TransplantStepsPayload>): Promise<void> => {
     await this.services.diagram.transplantSteps({
       index: payload.index,
       stepIDs: payload.stepIDs,
@@ -17,6 +17,13 @@ class TransplantSteps extends AbstractVersionDiagramAccessActionControl<Realtime
       sourceParentNodeID: payload.sourceParentNodeID,
       targetParentNodeID: payload.targetParentNodeID,
     });
+  };
+
+  protected finally = async (ctx: Context, { payload }: Action<Realtime.node.TransplantStepsPayload>): Promise<void> => {
+    await Promise.all([
+      this.services.project.setUpdatedBy(payload.projectID, ctx.data.creatorID),
+      this.services.domain.setUpdatedBy(payload.versionID, payload.domainID, ctx.data.creatorID),
+    ]);
   };
 }
 

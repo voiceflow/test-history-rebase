@@ -7,10 +7,17 @@ import { AbstractVersionDiagramAccessActionControl } from '@/actions/diagram/uti
 class RemoveManyNodes extends AbstractVersionDiagramAccessActionControl<Realtime.node.RemoveManyPayload> {
   actionCreator = Realtime.node.removeMany;
 
-  process = async (_ctx: Context, { payload }: Action<Realtime.node.RemoveManyPayload>): Promise<void> => {
+  protected process = async (_ctx: Context, { payload }: Action<Realtime.node.RemoveManyPayload>): Promise<void> => {
     if (!payload.nodes.length) return;
 
     await this.services.diagram.removeManyNodes(payload.diagramID, payload.nodes);
+  };
+
+  protected finally = async (ctx: Context, { payload }: Action<Realtime.node.RemoveManyPayload>): Promise<void> => {
+    await Promise.all([
+      this.services.project.setUpdatedBy(payload.projectID, ctx.data.creatorID),
+      this.services.domain.setUpdatedBy(payload.versionID, payload.domainID, ctx.data.creatorID),
+    ]);
   };
 }
 

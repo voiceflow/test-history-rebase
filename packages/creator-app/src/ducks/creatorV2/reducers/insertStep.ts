@@ -31,8 +31,8 @@ export default insertStepReducer;
 export const insertStepReverter = createReverter(
   Realtime.node.insertStep,
 
-  ({ workspaceID, projectID, versionID, diagramID, parentNodeID, stepID, nodePortRemaps = [] }, getState) => {
-    const ctx = { workspaceID, projectID, versionID, diagramID };
+  ({ workspaceID, projectID, versionID, domainID, diagramID, parentNodeID, stepID, nodePortRemaps = [] }, getState) => {
+    const ctx = { workspaceID, projectID, versionID, domainID, diagramID };
     const state = getState();
 
     return [

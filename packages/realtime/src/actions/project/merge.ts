@@ -81,7 +81,11 @@ class MergeProjects extends AbstractProjectResourceControl<Realtime.project.Merg
     // storing merged data into the DB
     await Promise.all<unknown>([
       hasNewCustomThemes &&
-        this.services.project.patch(creatorID, targetProjectID, { customThemes: [...(targetProject.customThemes ?? []), ...newCustomThemes] }),
+        this.services.project.patch(creatorID, targetProjectID, {
+          customThemes: [...(targetProject.customThemes ?? []), ...newCustomThemes],
+          updatedAt: new Date().toJSON(),
+          updatedBy: creatorID,
+        }),
 
       hasNewProducts &&
         this.services.project.patchPlatformData(creatorID, targetProjectID, { products: { ...targetProject.platformData.products, ...newProducts } }),
@@ -89,7 +93,12 @@ class MergeProjects extends AbstractProjectResourceControl<Realtime.project.Merg
       (hasNewNotes || hasNewDomains || hasNewFolders || hasNewComponents) &&
         this.services.version.patch(targetVersion._id, {
           ...(hasNewNotes && { notes: { ...targetVersion.notes, ...newNotes } }),
-          ...(hasNewDomains && { domains: [...(targetVersion.domains ?? []), ...newDomains] }),
+          ...(hasNewDomains && {
+            domains: [
+              ...(targetVersion.domains ?? []),
+              ...newDomains.map((domain) => ({ ...domain, updatedAt: new Date().toJSON(), updatedBy: creatorID })),
+            ],
+          }),
           ...(hasNewFolders && { folders: { ...targetVersion.folders, ...newFolders } }),
           ...(hasNewVariables && { variables: [...(targetVersion.variables ?? []), ...newVariables] }),
           ...(hasNewComponents && { components: [...(targetVersion.components ?? []), ...newComponents] }),

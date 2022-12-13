@@ -1,7 +1,8 @@
 import { BaseModels, BaseNode, BaseUtils } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { terminateResend } from '@voiceflow/socket-utils';
+import { Context, terminateResend } from '@voiceflow/socket-utils';
+import { Action } from 'typescript-fsa';
 
 import { buildDBBlock, buildDBStep } from '@/actions/node/utils';
 
@@ -59,10 +60,17 @@ class TopicConvertFromComponent extends AbstractDomainResourceControl<Realtime.d
 
     const newDiagram = await this.createTopic(ctx, payload, domainID, primitiveDiagram);
 
-    await this.server.processAs(creatorID, Realtime.diagram.componentRemove({ versionID, projectID, workspaceID, diagramID: componentID }));
+    await this.server.processAs(creatorID, Realtime.diagram.componentRemove({ domainID, versionID, projectID, workspaceID, diagramID: componentID }));
 
     return newDiagram;
   });
+
+  protected finally = async (ctx: Context, { payload }: Action<Realtime.domain.TopicConvertFromComponentPayload>): Promise<void> => {
+    await Promise.all([
+      this.services.project.setUpdatedBy(payload.projectID, ctx.data.creatorID),
+      this.services.domain.setUpdatedBy(payload.versionID, payload.domainID, ctx.data.creatorID),
+    ]);
+  };
 }
 
 export default TopicConvertFromComponent;

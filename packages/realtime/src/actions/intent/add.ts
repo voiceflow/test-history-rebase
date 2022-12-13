@@ -20,6 +20,10 @@ class AddIntent extends AbstractVersionResourceControl<AddIntentPayload> {
       key,
     });
   };
+
+  protected finally = async (ctx: Context, { payload }: Action<AddIntentPayload>): Promise<void> => {
+    await this.services.project.setUpdatedBy(payload.projectID, ctx.data.creatorID);
+  };
 }
 
 export default AddIntent;

@@ -150,6 +150,7 @@ class DiagramChannel extends AbstractChannelControl<Realtime.Channels.DiagramCha
         Number(ctx.userId),
         Realtime.diagram.awareness.updateLockedEntities({
           locks: diagramLocks,
+          domainID: ctx.params.domainID,
           diagramID: ctx.params.diagramID,
           projectID: ctx.params.projectID,
           versionID: ctx.params.versionID,

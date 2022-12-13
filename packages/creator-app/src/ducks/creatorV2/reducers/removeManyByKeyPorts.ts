@@ -14,10 +14,12 @@ export default removeManyByKeyPortReducer;
 
 export const removeManyByKeyPortsReverter = createReverter(
   Realtime.port.removeManyByKey,
-  ({ workspaceID, projectID, versionID, diagramID, nodeID, keys }, getState) => {
+  ({ workspaceID, projectID, versionID, domainID, diagramID, nodeID, keys }, getState) => {
     const ports = portsByNodeIDSelector(getState(), { id: nodeID });
 
-    return keys.map((key) => Realtime.port.addByKey({ workspaceID, projectID, versionID, diagramID, nodeID, portID: ports.out.byKey[key], key }));
+    return keys.map((key) =>
+      Realtime.port.addByKey({ workspaceID, projectID, versionID, domainID, diagramID, nodeID, portID: ports.out.byKey[key], key })
+    );
   },
   [
     ...DIAGRAM_INVALIDATORS,

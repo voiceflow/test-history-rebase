@@ -17,6 +17,10 @@ class PatchVersionPublishing extends AbstractVersionResourceControl<Realtime.ver
       defaultVoice: payload.defaultVoice,
     });
   };
+
+  protected finally = async (ctx: Context, { payload }: Action<Realtime.version.PatchPublishingPayload>): Promise<void> => {
+    await this.services.project.setUpdatedBy(payload.projectID, ctx.data.creatorID);
+  };
 }
 
 export default PatchVersionPublishing;

@@ -10,6 +10,10 @@ class RemoveManyNotes extends AbstractVersionResourceControl<Realtime.note.Remov
   protected process = async (_ctx: Context, { payload }: Action<Realtime.note.RemoveManyPayload>) => {
     await this.services.note.deleteMany(payload.versionID, payload.noteIDs);
   };
+
+  protected finally = async (ctx: Context, { payload }: Action<Realtime.note.RemoveManyPayload>): Promise<void> => {
+    await this.services.project.setUpdatedBy(payload.projectID, ctx.data.creatorID);
+  };
 }
 
 export default RemoveManyNotes;

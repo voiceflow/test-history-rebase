@@ -10,6 +10,10 @@ class RemoveGlobalVariable extends AbstractVersionResourceControl<Realtime.versi
   protected process = async (_ctx: Context, { payload }: Action<Realtime.version.variable.GlobalVariablePayload>) => {
     await this.services.variable.delete(payload.versionID, payload.variable);
   };
+
+  protected finally = async (ctx: Context, { payload }: Action<Realtime.version.variable.GlobalVariablePayload>): Promise<void> => {
+    await this.services.project.setUpdatedBy(payload.projectID, ctx.data.creatorID);
+  };
 }
 
 export default RemoveGlobalVariable;

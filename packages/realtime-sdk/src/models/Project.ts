@@ -20,6 +20,9 @@ export interface Project<D extends AnyRecord, M extends BaseModels.Project.Membe
   type: Platform.Constants.ProjectType;
   platform: Platform.Constants.PlatformType;
 
+  updatedAt?: string;
+  updatedBy?: number;
+
   name: string;
   image: string | null;
   module: string;
@@ -32,8 +35,6 @@ export interface Project<D extends AnyRecord, M extends BaseModels.Project.Membe
   apiPrivacy?: BaseModels.Project.Privacy;
   reportTags?: Record<string, { tagID: string; label: string }>;
   customThemes: BaseModels.Project.Themes;
-  canvasUpdatedAt?: string;
-  canvasUpdatedByCreatorID?: number;
 }
 export type AnyProject = Project<AnyRecord, BaseModels.Project.Member<any>>;
 

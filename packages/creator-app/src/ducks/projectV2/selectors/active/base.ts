@@ -55,4 +55,4 @@ export const vfVersionSelector = createSelector([projectSelector], (project) => 
 
 export const platformDataSelector = createSelector([projectSelector], (project) => project?.platformData ?? {});
 
-export const canvasUpdatedAtSelector = createSelector([projectSelector], (project) => project?.canvasUpdatedAt);
+export const updatedAtSelector = createSelector([projectSelector], (project) => project?.updatedAt);

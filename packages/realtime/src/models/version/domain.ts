@@ -1,15 +1,22 @@
 import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
+import { createSmartMultiAdapter } from 'bidirectional-adapter';
 
 import { NestedMongoModel } from '../_mongo';
-import { Atomic } from '../utils';
+import { Atomic, Bson } from '../utils';
+import { DBDomainModel, DOMAIN_DATE_KEYS } from './constants';
 import type VersionModel from './index';
 
 class DomainModel extends NestedMongoModel<VersionModel> {
   readonly MODEL_PATH = 'domains' as const;
 
+  adapter = createSmartMultiAdapter<DBDomainModel, BaseModels.Version.Domain>(
+    Bson.dateToString(DOMAIN_DATE_KEYS),
+    Bson.stringToDate(DOMAIN_DATE_KEYS)
+  );
+
   async create(versionID: string, domain: BaseModels.Version.Domain): Promise<BaseModels.Version.Domain> {
-    await this.model.atomicUpdateByID(versionID, [Atomic.push([{ path: this.MODEL_PATH, value: domain }])]);
+    await this.model.atomicUpdateByID(versionID, [Atomic.push([{ path: this.MODEL_PATH, value: this.adapter.toDB(domain) }])]);
 
     return domain;
   }
@@ -17,7 +24,7 @@ class DomainModel extends NestedMongoModel<VersionModel> {
   async list(versionID: string): Promise<BaseModels.Version.Domain[]> {
     const { domains } = await this.model.findByID(versionID, [this.MODEL_PATH]);
 
-    return domains ?? [];
+    return this.adapter.mapFromDB(domains ?? []);
   }
 
   async get(versionID: string, domainID: string): Promise<BaseModels.Version.Domain> {
@@ -33,9 +40,11 @@ class DomainModel extends NestedMongoModel<VersionModel> {
   }
 
   async update(versionID: string, domainID: string, data: Partial<Omit<BaseModels.Version.Domain, 'id' | 'rootDiagramID'>>): Promise<void> {
+    const dbData = this.adapter.toDB(data);
+
     return this.model.atomicUpdateByID(
       versionID,
-      Utils.object.getKeys(data).map((key) => Atomic.set([{ path: [this.MODEL_PATH, { id: domainID }, key], value: data[key] }]))
+      Utils.object.getKeys(dbData).map((key) => Atomic.set([{ path: [this.MODEL_PATH, { id: domainID }, key], value: dbData[key] }]))
     );
   }
 

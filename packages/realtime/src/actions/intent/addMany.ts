@@ -19,6 +19,10 @@ class AddManyIntents extends AbstractVersionResourceControl<AddManyIntentsPayloa
 
     await this.services.intent.createMany(versionID, projectConfig.adapters.intent.simple.mapToDB(values));
   };
+
+  protected finally = async (ctx: Context, { payload }: Action<AddManyIntentsPayload>): Promise<void> => {
+    await this.services.project.setUpdatedBy(payload.projectID, ctx.data.creatorID);
+  };
 }
 
 export default AddManyIntents;

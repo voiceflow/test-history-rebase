@@ -15,8 +15,8 @@ export default removeDynamicPortReducer;
 export const removeDynamicPortReverter = createReverter(
   Realtime.port.removeDynamic,
 
-  ({ workspaceID, projectID, versionID, diagramID, nodeID, portID }, getState) => {
-    const ctx = { workspaceID, projectID, versionID, diagramID };
+  ({ workspaceID, projectID, versionID, domainID, diagramID, nodeID, portID }, getState) => {
+    const ctx = { workspaceID, projectID, versionID, domainID, diagramID };
     const state = getState();
     const port = portByIDSelector(state, { id: portID });
     const links = linksByPortIDSelector(state, { id: portID });

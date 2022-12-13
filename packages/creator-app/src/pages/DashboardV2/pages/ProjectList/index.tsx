@@ -55,10 +55,10 @@ const ProjectList: React.FC = () => {
 
         if (aViewers.length && !bViewers.length) return -1;
         if (bViewers.length && !aViewers.length) return 1;
-        if (a.canvasUpdatedAt && !b.canvasUpdatedAt) return -1;
-        if (b.canvasUpdatedAt && !a.canvasUpdatedAt) return 1;
+        if (a.updatedAt && !b.updatedAt) return -1;
+        if (b.updatedAt && !a.updatedAt) return 1;
 
-        return dayjs(a.canvasUpdatedAt).isAfter(b.canvasUpdatedAt) ? -1 : 1;
+        return dayjs(a.updatedAt).isAfter(b.updatedAt) ? -1 : 1;
       }),
     [projects, activeViewersPerProject]
   );

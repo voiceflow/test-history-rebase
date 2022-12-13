@@ -1,4 +1,8 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { Context } from '@voiceflow/socket-utils';
+import { Action } from 'typescript-fsa';
+
+import { WorkspaceContextData } from '@/actions/workspace/utils';
 
 import { AbstractDiagramResourceControl } from './utils';
 
@@ -32,6 +36,10 @@ class TemplateCreate extends AbstractDiagramResourceControl<Realtime.diagram.Tem
 
     return diagram;
   });
+
+  protected finally = async (ctx: Context<WorkspaceContextData>, { payload }: Action<Realtime.diagram.TemplateCreatePayload>): Promise<void> => {
+    await this.services.project.setUpdatedBy(payload.projectID, ctx.data.creatorID);
+  };
 }
 
 export default TemplateCreate;

@@ -10,6 +10,10 @@ class PatchVersionDefaultStepColors extends AbstractVersionResourceControl<Realt
   protected process = async (_ctx: Context, { payload }: Action<Realtime.version.PatchDefaultStepColorsPayload>) => {
     await this.services.version.patchDefaultStepColors(payload.versionID, payload.defaultStepColors);
   };
+
+  protected finally = async (ctx: Context, { payload }: Action<Realtime.version.PatchDefaultStepColorsPayload>): Promise<void> => {
+    await this.services.project.setUpdatedBy(payload.projectID, ctx.data.creatorID);
+  };
 }
 
 export default PatchVersionDefaultStepColors;

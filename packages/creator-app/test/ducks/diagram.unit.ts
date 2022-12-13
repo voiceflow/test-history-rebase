@@ -17,8 +17,9 @@ const WORKSPACE_ID = 'workspaceID';
 const PROJECT_ID = 'projectID';
 const VERSION_ID = 'versionID';
 const DIAGRAM_ID = 'diagramID';
+const DOMAIN_ID = 'domainId';
 const CREATOR_ID = 999;
-const ACTION_CONTEXT = { workspaceID: WORKSPACE_ID, projectID: PROJECT_ID, versionID: VERSION_ID, diagramID: DIAGRAM_ID };
+const ACTION_CONTEXT = { workspaceID: WORKSPACE_ID, projectID: PROJECT_ID, versionID: VERSION_ID, diagramID: DIAGRAM_ID, domainID: DOMAIN_ID };
 
 const DIAGRAM: Realtime.Diagram = {
   id: DIAGRAM_ID,
@@ -230,40 +231,15 @@ suite(Diagram, MOCK_STATE)('Ducks - Diagram', ({ describeReducerV2, describeEffe
   });
 
   describe('side effects', () => {
-    describeEffectV2(DiagramV1.removeLocalVariable, 'removeLocalVariable()', ({ applyEffect }) => {
-      it('remove variable from diagram in realtime', async () => {
-        const rootState = {
-          [Session.STATE_KEY]: { activeWorkspaceID: WORKSPACE_ID, activeProjectID: PROJECT_ID, activeVersionID: VERSION_ID },
-        };
-
-        const { dispatched } = await applyEffect(createState(MOCK_STATE, rootState), DIAGRAM_ID, 'fizz');
-
-        expect(dispatched).toEqual([{ sync: Realtime.diagram.removeLocalVariable({ ...ACTION_CONTEXT, variable: 'fizz' }) }]);
-      });
-    });
-
-    describeEffectV2(DiagramV1.addLocalVariable, 'addLocalVariable()', ({ applyEffect }) => {
-      it('fail if variable name is reserved javascript keyword', async () => {
-        await expect(applyEffect(createState(MOCK_STATE), DIAGRAM_ID, 'new', CanvasCreationType.IMM)).rejects.toThrow(
-          "Reserved word. You can prefix with '_' to fix this issue"
-        );
-      });
-
-      it('add variable to diagram in realtime', async () => {
-        const rootState = {
-          [Session.STATE_KEY]: { activeWorkspaceID: WORKSPACE_ID, activeProjectID: PROJECT_ID, activeVersionID: VERSION_ID },
-        };
-
-        const { dispatched } = await applyEffect(createState(MOCK_STATE, rootState), DIAGRAM_ID, 'fizz', CanvasCreationType.IMM);
-
-        expect(dispatched).toEqual([{ sync: Realtime.diagram.addLocalVariable({ ...ACTION_CONTEXT, variable: 'fizz' }) }]);
-      });
-    });
-
     describeEffectV2(DiagramV1.removeActiveDiagramVariable, 'removeActiveDiagramVariable()', ({ applyEffect }) => {
       it('remove variable from active diagram', async () => {
         const rootState = {
-          [Session.STATE_KEY]: { activeWorkspaceID: WORKSPACE_ID, activeProjectID: PROJECT_ID, activeVersionID: VERSION_ID },
+          [Session.STATE_KEY]: {
+            activeWorkspaceID: WORKSPACE_ID,
+            activeProjectID: PROJECT_ID,
+            activeVersionID: VERSION_ID,
+            activeDomainID: DOMAIN_ID,
+          },
           [CreatorV2.STATE_KEY]: { activeDiagramID: DIAGRAM_ID },
         };
 
@@ -276,7 +252,12 @@ suite(Diagram, MOCK_STATE)('Ducks - Diagram', ({ describeReducerV2, describeEffe
     describeEffectV2(DiagramV1.addActiveDiagramVariable, 'addActiveDiagramVariable()', ({ applyEffect }) => {
       it('add variable to active diagram', async () => {
         const rootState = {
-          [Session.STATE_KEY]: { activeWorkspaceID: WORKSPACE_ID, activeProjectID: PROJECT_ID, activeVersionID: VERSION_ID },
+          [Session.STATE_KEY]: {
+            activeWorkspaceID: WORKSPACE_ID,
+            activeProjectID: PROJECT_ID,
+            activeVersionID: VERSION_ID,
+            activeDomainID: DOMAIN_ID,
+          },
           [CreatorV2.STATE_KEY]: { activeDiagramID: DIAGRAM_ID },
         };
 

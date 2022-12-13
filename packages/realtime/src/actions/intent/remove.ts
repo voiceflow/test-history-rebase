@@ -23,6 +23,8 @@ class RemoveIntent extends AbstractVersionResourceControl<RemoveIntentPayload, R
   protected finally = async (ctx: Context<RemoveIntentContextData>, { payload }: Action<RemoveIntentPayload>) => {
     const { creatorID, removedIntent } = ctx.data;
 
+    await this.services.project.setUpdatedBy(payload.projectID, ctx.data.creatorID);
+
     if (removedIntent?.noteID) {
       await this.server.processAs(
         creatorID,

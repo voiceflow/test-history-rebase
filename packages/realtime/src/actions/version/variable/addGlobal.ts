@@ -10,6 +10,10 @@ class AddGlobalVariable extends AbstractVersionResourceControl<Realtime.version.
   protected process = async (_ctx: Context, { payload }: Action<Realtime.version.variable.GlobalVariablePayload>) => {
     await this.services.variable.add(payload.versionID, payload.variable);
   };
+
+  protected finally = async (ctx: Context, { payload }: Action<Realtime.version.variable.GlobalVariablePayload>): Promise<void> => {
+    await this.services.project.setUpdatedBy(payload.projectID, ctx.data.creatorID);
+  };
 }
 
 export default AddGlobalVariable;

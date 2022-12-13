@@ -17,6 +17,8 @@ const projectAdapter = createMultiAdapter<BaseModels.Project.Model<AnyRecord, An
     linkType = BaseModels.Project.LinkType.CURVED,
     platform: dbPlatform,
     _version,
+    updatedAt,
+    updatedBy,
     prototype,
     apiPrivacy,
     reportTags = {},
@@ -24,8 +26,6 @@ const projectAdapter = createMultiAdapter<BaseModels.Project.Model<AnyRecord, An
     liveVersion,
     platformData,
     customThemes,
-    canvasUpdatedAt,
-    canvasUpdatedByCreatorID,
   }) => {
     const { nlu, type, platform } = legacyPlatformToProjectType(dbPlatform, dbType);
 
@@ -45,6 +45,8 @@ const projectAdapter = createMultiAdapter<BaseModels.Project.Model<AnyRecord, An
       linkType,
       platform,
       _version,
+      updatedAt,
+      updatedBy,
       prototype,
       diagramID: '',
       versionID: devVersion!,
@@ -55,8 +57,6 @@ const projectAdapter = createMultiAdapter<BaseModels.Project.Model<AnyRecord, An
       workspaceID: teamID,
       customThemes,
       platformData,
-      canvasUpdatedAt,
-      canvasUpdatedByCreatorID,
     };
   },
   notImplementedAdapter.transformer

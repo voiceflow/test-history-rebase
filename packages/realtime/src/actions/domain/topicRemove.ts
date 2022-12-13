@@ -22,6 +22,8 @@ class TopicRemove extends AbstractDomainResourceControl<Realtime.domain.TopicRem
 
     await Promise.all([
       this.services.lock.unlockAllEntities(topicID),
+      this.services.project.setUpdatedBy(payload.projectID, ctx.data.creatorID),
+      this.services.domain.setUpdatedBy(payload.versionID, payload.domainID, ctx.data.creatorID),
       this.server.processAs(creatorID, Realtime.thread.removeManyByDiagramIDs({ projectID, diagramIDs: [topicID], workspaceID })),
     ]);
   };

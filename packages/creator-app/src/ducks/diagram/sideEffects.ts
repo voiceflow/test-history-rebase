@@ -14,7 +14,7 @@ import * as Session from '@/ducks/session';
 import * as Tracking from '@/ducks/tracking';
 import { CanvasCreationType, VariableType } from '@/ducks/tracking/constants';
 import { waitAsync } from '@/ducks/utils';
-import { ActiveVersionContext, assertVersionContext, getActiveDomainContext, getActiveVersionContext } from '@/ducks/version/utils';
+import { ActiveDomainContext, assertDomainContext, getActiveDomainContext, getActiveVersionContext } from '@/ducks/version/utils';
 import * as VersionV2 from '@/ducks/versionV2';
 import { Thunk } from '@/store/types';
 import { BLOCK_WIDTH } from '@/styles/theme';
@@ -24,30 +24,6 @@ import { AsyncActionError } from '@/utils/logux';
 import { getNodesGroupCenter } from '@/utils/node';
 
 // side effects
-
-export const removeLocalVariable =
-  (diagramID: string, variable: string): Thunk =>
-  async (dispatch, getState) => {
-    await dispatch.sync(
-      Realtime.diagram.removeLocalVariable({
-        ...getActiveVersionContext(getState()),
-        variable,
-        diagramID,
-      })
-    );
-  };
-
-export const addLocalVariable =
-  (diagramID: string, variable: string, creationType: CanvasCreationType): Thunk =>
-  async (dispatch, getState) => {
-    if (RESERVED_JS_WORDS.includes(variable)) {
-      throw new Error("Reserved word. You can prefix with '_' to fix this issue");
-    }
-
-    await dispatch.sync(Realtime.diagram.addLocalVariable({ ...getActiveVersionContext(getState()), variable, diagramID }));
-
-    dispatch(Tracking.trackVariableCreated({ variableType: VariableType.COMPONENT, diagramID, creationType }));
-  };
 
 export const createTopicDiagram =
   (name: string): Thunk<Realtime.Diagram> =>
@@ -212,7 +188,7 @@ export const duplicateComponent =
   async (dispatch, getState) => {
     const newDiagram = await dispatch(
       waitAsync(Realtime.diagram.componentDuplicate, {
-        ...getActiveVersionContext(getState()),
+        ...getActiveDomainContext(getState()),
         diagramID: componentID,
       })
     );
@@ -261,13 +237,9 @@ export const deleteDiagram =
     const isTopic = type === BaseModels.Diagram.DiagramType.TOPIC;
 
     if (isTopic) {
-      const domainID = Session.activeDomainIDSelector(state);
-
-      Errors.assertDomainID(domainID);
-
-      await dispatch.sync(Realtime.domain.topicRemove({ ...getActiveVersionContext(state), topicID: diagramID, domainID }));
+      await dispatch.sync(Realtime.domain.topicRemove({ ...getActiveDomainContext(state), topicID: diagramID }));
     } else {
-      await dispatch.sync(Realtime.diagram.componentRemove({ ...getActiveVersionContext(state), diagramID }));
+      await dispatch.sync(Realtime.diagram.componentRemove({ ...getActiveDomainContext(state), diagramID }));
     }
 
     if (isTopic) {
@@ -319,33 +291,45 @@ export const convertComponentToTopic =
 
 export const addActiveDiagramVariable =
   (variable: string, creationType: CanvasCreationType): Thunk =>
-  (dispatch, getState) => {
+  async (dispatch, getState) => {
+    if (RESERVED_JS_WORDS.includes(variable)) {
+      throw new Error("Reserved word. You can prefix with '_' to fix this issue");
+    }
+
     const activeDiagramID = CreatorV2.activeDiagramIDSelector(getState());
 
     Errors.assertDiagramID(activeDiagramID);
 
-    return dispatch(addLocalVariable(activeDiagramID, variable, creationType));
+    await dispatch.sync(Realtime.diagram.addLocalVariable({ ...getActiveDomainContext(getState()), variable, diagramID: activeDiagramID }));
+
+    dispatch(Tracking.trackVariableCreated({ diagramID: activeDiagramID, variableType: VariableType.COMPONENT, creationType }));
   };
 
 export const removeActiveDiagramVariable =
   (variable: string): Thunk =>
-  (dispatch, getState) => {
+  async (dispatch, getState) => {
     const activeDiagramID = CreatorV2.activeDiagramIDSelector(getState());
 
     Errors.assertDiagramID(activeDiagramID);
 
-    return dispatch(removeLocalVariable(activeDiagramID, variable));
+    await dispatch.sync(
+      Realtime.diagram.removeLocalVariable({
+        ...getActiveDomainContext(getState()),
+        variable,
+        diagramID: activeDiagramID,
+      })
+    );
   };
 
 export const reorderMenuNode =
   ({ toIndex, nodeID, diagramID, skipPersist }: { diagramID: string; nodeID: string; toIndex: number; skipPersist?: boolean }): Thunk =>
   async (dispatch, getState) => {
-    await dispatch.sync(Realtime.diagram.reorderMenuNode({ ...getActiveVersionContext(getState()), nodeID, toIndex, diagramID }, { skipPersist }));
+    await dispatch.sync(Realtime.diagram.reorderMenuNode({ ...getActiveDomainContext(getState()), nodeID, toIndex, diagramID }, { skipPersist }));
   };
 
 export const diagramHeartbeat =
   (
-    { diagramID, ...context }: ActiveVersionContext & { diagramID: Nullable<string> },
+    { diagramID, ...context }: ActiveDomainContext & { diagramID: Nullable<string> },
     data: {
       lock: Nullable<{ type: Realtime.diagram.awareness.LockEntityType; entityIDs: string[] }>;
       unlock: Nullable<{ type: Realtime.diagram.awareness.LockEntityType; entityIDs: string[] }>;
@@ -354,8 +338,8 @@ export const diagramHeartbeat =
     }
   ): Thunk =>
   async (dispatch) => {
+    assertDomainContext(context);
     Errors.assertDiagramID(diagramID);
-    assertVersionContext(context);
 
     await dispatch.sync(
       Realtime.diagram.awareness.heartbeat({

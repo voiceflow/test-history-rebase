@@ -156,6 +156,7 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
 
   get context() {
     return {
+      domainID: this.select(Session.activeDomainIDSelector)!,
       projectID: this.select(Session.activeProjectIDSelector)!,
       versionID: this.select(Session.activeVersionIDSelector)!,
       diagramID: this.getDiagramID()!,

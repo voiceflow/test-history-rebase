@@ -1,5 +1,9 @@
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { Context } from '@voiceflow/socket-utils';
+import { Action } from 'typescript-fsa';
+
+import { WorkspaceContextData } from '@/actions/workspace/utils';
 
 import { AbstractDiagramResourceControl } from './utils';
 
@@ -15,6 +19,10 @@ class ComponentDuplicate extends AbstractDiagramResourceControl<Realtime.BaseDia
 
     return this.createComponent(ctx, payload, { ...Utils.object.omit(dbDiagram, ['_id', 'creatorID', 'versionID']), name: uniqueName });
   });
+
+  protected finally = async (ctx: Context<WorkspaceContextData>, { payload }: Action<Realtime.BaseDiagramPayload>): Promise<void> => {
+    this.services.project.setUpdatedBy(payload.projectID, ctx.data.creatorID);
+  };
 }
 
 export default ComponentDuplicate;

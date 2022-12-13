@@ -1,7 +1,9 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Context, terminateResend } from '@voiceflow/socket-utils';
+import { Action } from 'typescript-fsa';
 
 import { AbstractProjectChannelControl } from '@/actions/project/utils';
+import { WorkspaceContextData } from '@/actions/workspace/utils';
 
 class UpdateCustomBlock extends AbstractProjectChannelControl<Realtime.customBlock.UpdatePayload> {
   protected actionCreator = Realtime.customBlock.update.started;
@@ -28,6 +30,10 @@ class UpdateCustomBlock extends AbstractProjectChannelControl<Realtime.customBlo
 
     return newCustomBlock;
   });
+
+  protected finally = async (ctx: Context<WorkspaceContextData>, { payload }: Action<Realtime.customBlock.UpdatePayload>): Promise<void> => {
+    await this.services.project.setUpdatedBy(payload.projectID, ctx.data.creatorID);
+  };
 }
 
 export default UpdateCustomBlock;

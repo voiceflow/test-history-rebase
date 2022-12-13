@@ -14,8 +14,8 @@ export default addDynamicPortReducer;
 export const addDynamicPortReverter = createReverter(
   Realtime.port.addDynamic,
 
-  ({ workspaceID, projectID, versionID, diagramID, nodeID, portID }) =>
-    Realtime.port.removeDynamic({ workspaceID, projectID, versionID, diagramID, nodeID, portID }),
+  ({ workspaceID, projectID, versionID, domainID, diagramID, nodeID, portID }) =>
+    Realtime.port.removeDynamic({ workspaceID, projectID, versionID, domainID, diagramID, nodeID, portID }),
 
   [
     ...DIAGRAM_INVALIDATORS,

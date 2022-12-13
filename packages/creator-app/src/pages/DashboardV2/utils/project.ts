@@ -12,11 +12,11 @@ export const getProjectStatusAndMembers = ({
   activeViewers?: ProjectV2.DiagramViewer[];
   getMemberByIDSelector: (options: { creatorID: number }) => Realtime.WorkspaceMember | null;
 }) => {
-  const lastUpdateByMember = project?.canvasUpdatedByCreatorID ? getMemberByIDSelector({ creatorID: project.canvasUpdatedByCreatorID }) : null;
+  const lastUpdateByMember = project?.updatedBy ? getMemberByIDSelector({ creatorID: project.updatedBy }) : null;
   const lastUpdatedByMemberList = lastUpdateByMember ? [lastUpdateByMember] : [];
 
   return {
-    status: activeViewers?.length ? 'Active' : project?.canvasUpdatedAt && dayjs(project.canvasUpdatedAt).fromNow(),
+    status: activeViewers?.length ? 'Active' : project?.updatedAt && dayjs(project.updatedAt).fromNow(),
     members: activeViewers?.length ? activeViewers : lastUpdatedByMemberList,
   };
 };

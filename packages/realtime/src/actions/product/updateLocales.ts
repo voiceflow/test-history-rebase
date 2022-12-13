@@ -7,7 +7,7 @@ import { AbstractVersionResourceControl } from '@/actions/version/utils';
 class UpdateProductLocales extends AbstractVersionResourceControl<Realtime.product.UpdateLocalesPayload> {
   protected actionCreator = Realtime.product.updateLocales;
 
-  process = async (ctx: Context, { payload }: Action<Realtime.product.UpdateLocalesPayload>) => {
+  protected process = async (ctx: Context, { payload }: Action<Realtime.product.UpdateLocalesPayload>) => {
     const { creatorID } = ctx.data;
     const products = await this.services.product.getAll(creatorID, payload.projectID).then(Realtime.Adapters.productAdapter.mapFromDB);
 
@@ -21,6 +21,10 @@ class UpdateProductLocales extends AbstractVersionResourceControl<Realtime.produ
         )
       )
     );
+  };
+
+  protected finally = async (ctx: Context, { payload }: Action<Realtime.product.UpdateLocalesPayload>): Promise<void> => {
+    await this.services.project.setUpdatedBy(payload.projectID, ctx.data.creatorID);
   };
 }
 

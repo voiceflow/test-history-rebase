@@ -33,8 +33,8 @@ const insertManyStepsReducer = createActiveDiagramReducer(Realtime.node.insertMa
 export const insertManyStepsReverter = createReverter(
   Realtime.node.insertManySteps,
 
-  ({ workspaceID, projectID, versionID, diagramID, parentNodeID, steps, nodePortRemaps = [] }, getState) => {
-    const ctx = { workspaceID, projectID, versionID, diagramID };
+  ({ workspaceID, projectID, versionID, domainID, diagramID, parentNodeID, steps, nodePortRemaps = [] }, getState) => {
+    const ctx = { workspaceID, projectID, versionID, domainID, diagramID };
     const state = getState();
 
     const nodes = steps.map(({ stepID }) => ({ parentNodeID, stepID }));

@@ -14,6 +14,10 @@ class PatchCanvasTemplate extends AbstractVersionResourceControl<Payload> {
 
     await this.services.canvasTemplate.patch(versionID, key, value);
   };
+
+  protected finally = async (ctx: Context, { payload }: Action<Payload>): Promise<void> => {
+    await this.services.project.setUpdatedBy(payload.projectID, ctx.data.creatorID);
+  };
 }
 
 export default PatchCanvasTemplate;

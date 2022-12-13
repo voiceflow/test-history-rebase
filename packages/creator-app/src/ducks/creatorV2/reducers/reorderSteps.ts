@@ -35,8 +35,8 @@ export default reorderStepsReducer;
 export const reorderStepsReverter = createReverter(
   Realtime.node.reorderSteps,
 
-  ({ workspaceID, projectID, versionID, diagramID, parentNodeID, stepID, nodePortRemaps = [] }, getState) => {
-    const ctx = { workspaceID, projectID, versionID, diagramID };
+  ({ workspaceID, projectID, versionID, domainID, diagramID, parentNodeID, stepID, nodePortRemaps = [] }, getState) => {
+    const ctx = { workspaceID, projectID, versionID, domainID, diagramID };
     const state = getState();
     const index = stepIDsByParentNodeIDSelector(state, { id: parentNodeID }).indexOf(stepID);
 

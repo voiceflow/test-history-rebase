@@ -4,9 +4,10 @@ import { createSmartMultiAdapter } from 'bidirectional-adapter';
 import { ObjectId } from 'bson';
 
 import AbstractModel from '../_mongo';
-import { Atomic, Bson } from '../utils';
+import { Adapter, Bson } from '../utils';
 import CanvasTemplate from './canvasTemplate';
 import Component from './component';
+import { DBVersionModel, VERSION_DOMAINS_KEYS, VERSION_DOUBLE_KEYS, VERSION_OBJECT_ID_KEYS, VERSION_READ_ONLY_KEYS } from './constants';
 import Domain from './domain';
 import Intent from './intent';
 import NluUnclassifiedData from './nluUnclassifiedData';
@@ -14,14 +15,8 @@ import Note from './note';
 import Slot from './slot';
 import Variable from './variable';
 
-const DOUBLE_KEYS = ['_version'] as const;
-const READ_ONLY_KEYS = ['_id', 'creatorID', 'projectID'] as const;
-const OBJECT_ID_KEYS = ['_id', 'projectID', 'rootDiagramID', 'templateDiagramID'] as const;
-
-type DBVersionModel = Bson.NumberToDouble<Bson.StringToObjectID<BaseVersion.Version, typeof OBJECT_ID_KEYS[number]>, typeof DOUBLE_KEYS[number]>;
-
-class VersionModel extends AbstractModel<DBVersionModel, BaseVersion.Version, typeof READ_ONLY_KEYS[number]> {
-  READ_ONLY_KEYS = READ_ONLY_KEYS;
+class VersionModel extends AbstractModel<DBVersionModel, BaseVersion.Version, typeof VERSION_READ_ONLY_KEYS[number]> {
+  READ_ONLY_KEYS = VERSION_READ_ONLY_KEYS;
 
   note = new Note(this);
 
@@ -42,8 +37,16 @@ class VersionModel extends AbstractModel<DBVersionModel, BaseVersion.Version, ty
   collectionName = 'versions';
 
   adapter = createSmartMultiAdapter<DBVersionModel, BaseVersion.Version>(
-    Utils.functional.compose(Bson.doubleToNumber(DOUBLE_KEYS), Bson.objectIdToString(OBJECT_ID_KEYS)),
-    Utils.functional.compose(Bson.numberToDouble(DOUBLE_KEYS), Bson.stringToObjectId(OBJECT_ID_KEYS))
+    Utils.functional.compose(
+      Adapter.mapFromDB(VERSION_DOMAINS_KEYS, this.domain.adapter),
+      Bson.doubleToNumber(VERSION_DOUBLE_KEYS),
+      Bson.objectIdToString(VERSION_OBJECT_ID_KEYS)
+    ),
+    Utils.functional.compose(
+      Adapter.mapToDB(VERSION_DOMAINS_KEYS, this.domain.adapter),
+      Bson.numberToDouble(VERSION_DOUBLE_KEYS),
+      Bson.stringToObjectId(VERSION_OBJECT_ID_KEYS)
+    )
   );
 
   async updatePrototype(versionID: string, data: Record<string, any>, path?: string) {
@@ -80,21 +83,6 @@ class VersionModel extends AbstractModel<DBVersionModel, BaseVersion.Version, ty
 
   async findManyByProjectID(projectID: string, fields?: (keyof DBVersionModel)[]): Promise<Partial<DBVersionModel>[]> {
     return this.findMany({ projectID: new ObjectId(projectID) }, fields);
-  }
-
-  /**
-   * @deprecated should be removed with domains PR
-   */
-  async reorderTopics(versionID: string, topicID: string, index: number) {
-    const version = await this.findAndAtomicUpdateByID(versionID, [Atomic.pull([{ path: 'topics', match: { sourceID: topicID } }])]);
-
-    const item = version.topics?.find((folder) => folder.sourceID === topicID);
-
-    if (!item) throw new Error('Could not find item to reorder');
-
-    await this.atomicUpdateByID(versionID, [Atomic.push([{ path: 'topics', value: item, index }])]);
-
-    return item;
   }
 }
 

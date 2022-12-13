@@ -19,6 +19,10 @@ class PatchIntent extends AbstractVersionResourceControl<PatchIntentPayload> {
 
     await this.services.intent.update(versionID, key, projectConfig.adapters.intent.smart.toDB(sanitizePatch(value)));
   };
+
+  protected finally = async (ctx: Context, { payload }: Action<PatchIntentPayload>): Promise<void> => {
+    await this.services.project.setUpdatedBy(payload.projectID, ctx.data.creatorID);
+  };
 }
 
 export default PatchIntent;

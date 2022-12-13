@@ -3,9 +3,6 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { AbstractProjectChannelControl } from '@/actions/project/utils';
 
-/**
- * NO-OP to support `createCRUDAction` actions
- */
 interface Payload extends Realtime.BaseVersionPayload, Realtime.actionUtils.CRUDKeyPayload {}
 
 class RemoveCustomBlock extends AbstractProjectChannelControl<Payload> {

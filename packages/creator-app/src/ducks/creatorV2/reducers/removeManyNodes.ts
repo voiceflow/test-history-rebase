@@ -19,7 +19,7 @@ export default removeManyNodesReducer;
 export const removeManyNodesReverter = createReverter(
   Realtime.node.removeMany,
 
-  ({ workspaceID, projectID, versionID, diagramID, nodes }, getState) => {
+  ({ workspaceID, projectID, versionID, domainID, diagramID, nodes }, getState) => {
     const state = getState();
     const projectMeta = Project.active.metaSelector(state);
     const nodeIDs = nodes.map<string>((node) => node.stepID ?? node.parentNodeID);
@@ -41,6 +41,7 @@ export const removeManyNodesReverter = createReverter(
       workspaceID,
       projectID,
       versionID,
+      domainID,
       diagramID,
       links,
       ports,

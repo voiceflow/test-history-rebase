@@ -12,6 +12,15 @@ class TopicReorder extends AbstractVersionResourceControl<Realtime.domain.TopicR
 
     await this.services.domain.topicReorder(payload.versionID, payload.domainID, payload.topicID, payload.toIndex);
   };
+
+  protected finally = async (ctx: Context, { payload, meta }: Action<Realtime.domain.TopicDuplicatePayload>): Promise<void> => {
+    if (meta?.skipPersist) return;
+
+    await Promise.all([
+      this.services.project.setUpdatedBy(payload.projectID, ctx.data.creatorID),
+      this.services.domain.setUpdatedBy(payload.versionID, payload.domainID, ctx.data.creatorID),
+    ]);
+  };
 }
 
 export default TopicReorder;

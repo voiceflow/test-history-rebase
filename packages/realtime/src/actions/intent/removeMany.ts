@@ -23,6 +23,8 @@ class RemoveManyIntents extends AbstractVersionResourceControl<RemoveManyIntents
   protected finally = async (ctx: Context<RemoveManyIntentsContextData>, { payload }: Action<RemoveManyIntentsPayload>) => {
     const { creatorID, removedIntents } = ctx.data;
 
+    await this.services.project.setUpdatedBy(payload.projectID, ctx.data.creatorID);
+
     if (!removedIntents || removedIntents.length === 0) return;
 
     const noteIDsToRemove = removedIntents.filter((intent) => intent.noteID).map((intent) => intent.noteID!);

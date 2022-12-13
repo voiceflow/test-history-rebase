@@ -6,7 +6,7 @@ import _ from 'lodash';
 import AbstractModel from '../_mongo';
 import { Bson, HashID } from '../utils';
 
-const DATE_KEYS = ['canvasUpdatedAt'] as const;
+const DATE_KEYS = ['updatedAt'] as const;
 const DOUBLE_KEYS = ['_version'] as const;
 const READ_ONLY_KEYS = ['_id', 'teamID', 'creatorID'] as const;
 const OBJECT_ID_KEYS = ['_id', 'devVersion', 'liveVersion'] as const;

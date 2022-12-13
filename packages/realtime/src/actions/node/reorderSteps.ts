@@ -7,7 +7,7 @@ import { AbstractVersionDiagramAccessActionControl } from '@/actions/diagram/uti
 class ReorderSteps extends AbstractVersionDiagramAccessActionControl<Realtime.node.ReorderStepsPayload> {
   actionCreator = Realtime.node.reorderSteps;
 
-  process = async (_ctx: Context, { payload }: Action<Realtime.node.ReorderStepsPayload>): Promise<void> => {
+  protected process = async (_ctx: Context, { payload }: Action<Realtime.node.ReorderStepsPayload>): Promise<void> => {
     await this.services.diagram.reorderSteps({
       index: payload.index,
       stepID: payload.stepID,
@@ -15,6 +15,13 @@ class ReorderSteps extends AbstractVersionDiagramAccessActionControl<Realtime.no
       parentNodeID: payload.parentNodeID,
       nodePortRemaps: payload.nodePortRemaps,
     });
+  };
+
+  protected finally = async (ctx: Context, { payload }: Action<Realtime.node.ReorderStepsPayload>): Promise<void> => {
+    await Promise.all([
+      this.services.project.setUpdatedBy(payload.projectID, ctx.data.creatorID),
+      this.services.domain.setUpdatedBy(payload.versionID, payload.domainID, ctx.data.creatorID),
+    ]);
   };
 }
 

@@ -14,8 +14,15 @@ export default addByKeyLinkReducer;
 export const addByKeyLinkReverter = createReverter(
   Realtime.link.addByKey,
 
-  ({ workspaceID, projectID, versionID, diagramID, sourceNodeID, sourcePortID, key, linkID }) =>
-    Realtime.link.removeMany({ workspaceID, projectID, versionID, diagramID, links: [{ nodeID: sourceNodeID, portID: sourcePortID, key, linkID }] }),
+  ({ workspaceID, projectID, versionID, domainID, diagramID, sourceNodeID, sourcePortID, key, linkID }) =>
+    Realtime.link.removeMany({
+      workspaceID,
+      projectID,
+      versionID,
+      domainID,
+      diagramID,
+      links: [{ nodeID: sourceNodeID, portID: sourcePortID, key, linkID }],
+    }),
 
   [
     ...DIAGRAM_INVALIDATORS,

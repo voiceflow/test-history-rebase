@@ -3,6 +3,8 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Context } from '@voiceflow/socket-utils';
 import { Action } from 'typescript-fsa';
 
+import { WorkspaceContextData } from '@/actions/workspace/utils';
+
 import { AbstractDiagramResourceControl } from '../utils';
 
 class RemoveLocalVariable extends AbstractDiagramResourceControl<Realtime.diagram.LocalVariablePayload> {
@@ -12,6 +14,13 @@ class RemoveLocalVariable extends AbstractDiagramResourceControl<Realtime.diagra
     const { variables } = await this.services.diagram.get(payload.diagramID);
 
     await this.services.diagram.patch(payload.diagramID, { variables: Utils.array.withoutValue(variables, payload.variable) });
+  };
+
+  protected finally = async (ctx: Context<WorkspaceContextData>, { payload }: Action<Realtime.diagram.LocalVariablePayload>): Promise<void> => {
+    await Promise.all([
+      this.services.project.setUpdatedBy(payload.projectID, ctx.data.creatorID),
+      this.services.domain.setUpdatedBy(payload.versionID, payload.domainID, ctx.data.creatorID),
+    ]);
   };
 }
 

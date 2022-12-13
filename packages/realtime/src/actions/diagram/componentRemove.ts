@@ -21,8 +21,7 @@ class ComponentRemove extends AbstractDiagramResourceControl<Realtime.BaseDiagra
     const { diagramID, projectID, workspaceID } = action.payload;
 
     await Promise.all([
-      // eslint-disable-next-line promise/valid-params
-      super.finally(ctx, action),
+      this.services.project.setUpdatedBy(projectID, creatorID),
       this.services.lock.unlockAllEntities(diagramID),
       this.server.processAs(creatorID, Realtime.thread.removeManyByDiagramIDs({ projectID, diagramIDs: [diagramID], workspaceID })),
     ]);

@@ -7,7 +7,7 @@ import { AbstractVersionDiagramAccessActionControl } from '@/actions/diagram/uti
 class UpdateManyNodeData extends AbstractVersionDiagramAccessActionControl<Realtime.node.UpdateManyDataPayload> {
   actionCreator = Realtime.node.updateDataMany;
 
-  process = async (_ctx: Context, { payload }: Action<Realtime.node.UpdateManyDataPayload>): Promise<void> => {
+  protected process = async (_ctx: Context, { payload }: Action<Realtime.node.UpdateManyDataPayload>): Promise<void> => {
     const nodes = payload.nodes.map((nodeData) => ({
       nodeID: nodeData.nodeID,
       ...Realtime.Adapters.nodeDataAdapter.toDB(nodeData, {
@@ -18,6 +18,13 @@ class UpdateManyNodeData extends AbstractVersionDiagramAccessActionControl<Realt
     }));
 
     await this.services.diagram.updateManyNodeData(payload.diagramID, nodes);
+  };
+
+  protected finally = async (ctx: Context, { payload }: Action<Realtime.node.UpdateManyDataPayload>): Promise<void> => {
+    await Promise.all([
+      this.services.project.setUpdatedBy(payload.projectID, ctx.data.creatorID),
+      this.services.domain.setUpdatedBy(payload.versionID, payload.domainID, ctx.data.creatorID),
+    ]);
   };
 }
 

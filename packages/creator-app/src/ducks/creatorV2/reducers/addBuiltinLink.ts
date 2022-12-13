@@ -14,8 +14,15 @@ export default addBuiltinLinkReducer;
 export const addBuiltinLinkReverter = createReverter(
   Realtime.link.addBuiltin,
 
-  ({ workspaceID, projectID, versionID, diagramID, sourceNodeID, sourcePortID, type, linkID }) =>
-    Realtime.link.removeMany({ workspaceID, projectID, versionID, diagramID, links: [{ nodeID: sourceNodeID, portID: sourcePortID, type, linkID }] }),
+  ({ workspaceID, projectID, versionID, domainID, diagramID, sourceNodeID, sourcePortID, type, linkID }) =>
+    Realtime.link.removeMany({
+      workspaceID,
+      projectID,
+      versionID,
+      domainID,
+      diagramID,
+      links: [{ nodeID: sourceNodeID, portID: sourcePortID, type, linkID }],
+    }),
 
   [
     ...DIAGRAM_INVALIDATORS,

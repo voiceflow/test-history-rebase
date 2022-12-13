@@ -4,7 +4,7 @@ import { Action } from 'typescript-fsa';
 
 import { AbstractVersionResourceControl } from '@/actions/version/utils';
 
-type AddSlotPayload = Realtime.BaseVersionPayload & Realtime.actionUtils.CRUDValuePayload<Realtime.Slot>;
+interface AddSlotPayload extends Realtime.BaseVersionPayload, Realtime.actionUtils.CRUDValuePayload<Realtime.Slot> {}
 
 class AddSlot extends AbstractVersionResourceControl<AddSlotPayload> {
   protected actionCreator = Realtime.slot.crud.add;
@@ -14,6 +14,10 @@ class AddSlot extends AbstractVersionResourceControl<AddSlotPayload> {
       ...Realtime.Adapters.slotAdapter.toDB(payload.value),
       key: payload.key,
     });
+  };
+
+  protected finally = async (ctx: Context, { payload }: Action<AddSlotPayload>): Promise<void> => {
+    await this.services.project.setUpdatedBy(payload.projectID, ctx.data.creatorID);
   };
 }
 

@@ -5,14 +5,21 @@ import { Action } from 'typescript-fsa';
 import { AbstractDiagramActionControl } from '@/actions/diagram/utils';
 
 class AddBuiltinPort extends AbstractDiagramActionControl<Realtime.port.BuiltinPayload> {
-  actionCreator = Realtime.port.addBuiltin;
+  protected actionCreator = Realtime.port.addBuiltin;
 
-  process = async (_ctx: Context, { payload }: Action<Realtime.port.BuiltinPayload>): Promise<void> => {
+  protected process = async (_ctx: Context, { payload }: Action<Realtime.port.BuiltinPayload>): Promise<void> => {
     await this.services.diagram.addBuiltInPort(payload.diagramID, payload.nodeID, payload.type, {
       id: payload.portID,
       type: payload.type,
       target: null,
     });
+  };
+
+  protected finally = async (ctx: Context, { payload }: Action<Realtime.port.BuiltinPayload>): Promise<void> => {
+    await Promise.all([
+      this.services.project.setUpdatedBy(payload.projectID, ctx.data.creatorID),
+      this.services.domain.setUpdatedBy(payload.versionID, payload.domainID, ctx.data.creatorID),
+    ]);
   };
 }
 

@@ -16,6 +16,8 @@ class PatchProject extends AbstractWorkspaceChannelControl<PatchProjectPayload> 
     await this.services.project.patch(ctx.data.creatorID, payload.key, {
       ..._.pick(payload.value, 'name', 'privacy', 'linkType', 'customThemes', 'apiPrivacy'),
       ...('image' in payload.value && { image: payload.value.image ?? undefined }),
+      updatedAt: new Date().toJSON(),
+      updatedBy: ctx.data.creatorID,
     });
   };
 }

@@ -13,7 +13,12 @@ class AddUnclassifiedData extends AbstractVersionResourceControl<AddUnclassified
 
   protected process = async (_ctx: Context, { payload }: Action<AddUnclassifiedDataPayload>) => {
     const { versionID, value } = payload;
+
     await this.services.nlu.add(versionID, value);
+  };
+
+  protected finally = async (ctx: Context, { payload }: Action<AddUnclassifiedDataPayload>): Promise<void> => {
+    await this.services.project.setUpdatedBy(payload.projectID, ctx.data.creatorID);
   };
 }
 

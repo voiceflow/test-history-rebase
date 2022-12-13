@@ -36,6 +36,7 @@ class DeleteDomainWithNewVersion extends AbstractDomainResourceControl<Realtime.
     await Promise.all([
       this.unlockAllEntities(topicIDs),
       this.server.processAs(creatorID, Realtime.thread.removeManyByDiagramIDs({ projectID, diagramIDs: topicIDs, workspaceID })),
+      this.services.project.setUpdatedBy(payload.projectID, ctx.data.creatorID),
     ]);
   };
 

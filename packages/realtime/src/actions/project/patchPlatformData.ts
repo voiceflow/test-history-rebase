@@ -11,6 +11,10 @@ class PatchProjectPlatformData extends AbstractWorkspaceChannelControl<Realtime.
   protected process = async (ctx: Context, { payload }: Action<Realtime.project.PatchPlatformDataPayload>): Promise<void> => {
     await this.services.project.patchPlatformData(ctx.data.creatorID, payload.projectID, payload.platformData);
   };
+
+  protected finally = async (ctx: Context, { payload }: Action<Realtime.project.PatchPlatformDataPayload>): Promise<void> => {
+    await this.services.project.setUpdatedBy(payload.projectID, ctx.data.creatorID);
+  };
 }
 
 export default PatchProjectPlatformData;

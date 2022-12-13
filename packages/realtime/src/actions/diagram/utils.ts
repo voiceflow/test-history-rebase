@@ -18,16 +18,13 @@ export abstract class AbstractDiagramActionControl<
 
   protected resend = (_: Context<D>, action: Action<P>): Resend => ({
     channel: Realtime.Channels.diagram.build({
+      domainID: action.payload.domainID,
       diagramID: action.payload.diagramID,
       projectID: action.payload.projectID,
       versionID: action.payload.versionID,
       workspaceID: action.payload.workspaceID,
     }),
   });
-
-  protected finally = async (ctx: Context, { payload }: Action<P>): Promise<void> => {
-    await this.services.project.setCanvasUpdatedByCreatorID(payload.projectID, ctx.data.creatorID);
-  };
 }
 
 export abstract class AbstractVersionDiagramAccessActionControl<
@@ -91,9 +88,5 @@ export abstract class AbstractDiagramResourceControl<
     ]);
 
     return newDiagram;
-  };
-
-  protected finally = async (ctx: Context, { payload }: Action<P>): Promise<void> => {
-    await this.services.project.setCanvasUpdatedByCreatorID(payload.projectID, ctx.data.creatorID);
   };
 }

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1020.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1020.0...@voiceflow/creator-app@1.1020.1) (2022-12-13)
+
+
+### Bug Fixes
+
+* add sms project option [bugfix] (CT-000) ([9505b2f](https://github.com/voiceflow/creator-app/commit/9505b2f01344f39e334442eaf62c1c5eabbf8905))
+
+
+
+
+
 # [1.1020.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1019.0...@voiceflow/creator-app@1.1020.0) (2022-12-12)
 
 

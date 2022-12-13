@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1020.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1020.1...@voiceflow/creator-app@1.1020.2) (2022-12-13)
+
+
+### Bug Fixes
+
+* double click to select cards (CT-000) ([#6419](https://github.com/voiceflow/creator-app/issues/6419)) ([30ea931](https://github.com/voiceflow/creator-app/commit/30ea9311178db93a2c157df7b71e29bc2d50f688)), closes [/github.com/voiceflow/creator-app/blob/cb86adc8e8d57dc6b66e228a0292dec86363b793/packages/creator-app/src/ModalsV2/modals/Project/Create/screens/ChooseType/index.tsx#L21-L25](https://github.com//github.com/voiceflow/creator-app/blob/cb86adc8e8d57dc6b66e228a0292dec86363b793/packages/creator-app/src/ModalsV2/modals/Project/Create/screens/ChooseType/index.tsx/issues/L21-L25)
+
+
+
+
+
 ## [1.1020.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1020.0...@voiceflow/creator-app@1.1020.1) (2022-12-13)
 
 

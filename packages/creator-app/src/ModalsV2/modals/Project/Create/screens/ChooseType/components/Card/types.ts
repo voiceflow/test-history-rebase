@@ -12,6 +12,7 @@ export interface Props {
   badge?: React.ReactNode;
   bubbles: Bubble[];
   onClick?: VoidFunction;
+  onDoubleClick?: VoidFunction;
   isActive?: boolean;
   description: React.ReactNode;
 }

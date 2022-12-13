@@ -57,6 +57,7 @@ const ChooseType: React.FC<ChooseTypeProps> = ({ name: nameProp, image: imagePro
               title="Launch & Host"
               badge={<Badge.Descriptive>New</Badge.Descriptive>}
               onClick={() => setScreen(Screen.PLATFORM_SETUP)}
+              onDoubleClick={() => onNext()}
               bubbles={PLATFORM_BUBBLES}
               isActive={screen === Screen.PLATFORM_SETUP}
               description="Design, prototype and launch your assistant on chat and voice channels."
@@ -66,6 +67,7 @@ const ChooseType: React.FC<ChooseTypeProps> = ({ name: nameProp, image: imagePro
               title="Design & Handoff"
               bubbles={NLU_BUBBLES}
               onClick={() => setScreen(Screen.NLU_SETUP)}
+              onDoubleClick={() => onNext()}
               isActive={screen === Screen.NLU_SETUP}
               description="Design, prototype and handoff your assistant to your technology vendor."
             />

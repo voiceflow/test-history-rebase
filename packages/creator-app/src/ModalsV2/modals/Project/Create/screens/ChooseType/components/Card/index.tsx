@@ -6,8 +6,8 @@ import * as T from './types';
 
 export * as CardTypes from './types';
 
-const Card: React.FC<T.Props> = ({ title, badge, bubbles, onClick, isActive, description }) => (
-  <S.Container onClick={() => onClick?.()} isActive={isActive}>
+const Card: React.FC<T.Props> = ({ title, badge, bubbles, onClick, onDoubleClick, isActive, description }) => (
+  <S.Container onClick={() => onClick?.()} onDoubleClick={onDoubleClick} isActive={isActive}>
     <S.Title>{title}</S.Title>
 
     <S.Description>{description}</S.Description>

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1021.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1020.2...@voiceflow/creator-app@1.1021.0) (2022-12-13)
+
+
+### Features
+
+* integrate voiceflow chat assistant (CT-1219) ([#6395](https://github.com/voiceflow/creator-app/issues/6395)) ([26c1d38](https://github.com/voiceflow/creator-app/commit/26c1d38f59ac74cb9e978a9633aba3999c8453a2))
+
+
+
+
+
 ## [1.1020.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1020.1...@voiceflow/creator-app@1.1020.2) (2022-12-13)
 
 

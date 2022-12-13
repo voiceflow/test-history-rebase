@@ -5,7 +5,7 @@ import { RouteComponentProps } from 'react-router-dom';
 import InnerContainer from '@/components/CreationSteps/components/Containers/InnerContainer';
 import OuterContainer from '@/components/CreationSteps/components/Containers/OuterContainer';
 import * as Account from '@/ducks/account';
-import { useSelector } from '@/hooks';
+import { useHideVoiceflowAssistant, useSelector } from '@/hooks';
 import * as Query from '@/utils/query';
 
 import { CurrentStep, Header } from './components';
@@ -17,6 +17,8 @@ export interface OnboardingProps {
 }
 
 export const Onboarding: React.FC<OnboardingProps> = ({ location, firstTime = true }) => {
+  useHideVoiceflowAssistant();
+
   const user = useSelector(Account.userSelector);
 
   const query = Query.parse(location?.search ?? '');

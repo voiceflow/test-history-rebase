@@ -10,13 +10,15 @@ import { Permission } from '@/config/permissions';
 import { PrototypeLayout } from '@/constants/prototype';
 import { SeoPage } from '@/constants/seo';
 import * as PrototypeDuck from '@/ducks/prototype';
-import { useDispatch, useGuestPermission, useSelector, useSetup, useToggle, useTrackingEvents } from '@/hooks';
+import { useDispatch, useGuestPermission, useHideVoiceflowAssistant, useSelector, useSetup, useToggle, useTrackingEvents } from '@/hooks';
 import { PrototypeContext, PrototypeProvider } from '@/pages/Prototype/context';
 
 import { Prototype } from './components';
 import PasswordScreen from './components/PasswordScreen';
 
 const PublicPrototype: React.FC<RouteComponentProps<{ versionID: string }>> = ({ match }) => {
+  useHideVoiceflowAssistant();
+
   const setupPublicPrototype = useDispatch(PrototypeDuck.setupPublicPrototype);
   const checkSharedProtoPassword = useDispatch(PrototypeDuck.checkSharedProtoPassword);
   const sessionID = useSelector(PrototypeDuck.prototypeSessionIDSelector);

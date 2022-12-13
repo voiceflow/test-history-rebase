@@ -4,6 +4,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 
 import Drawer from '@/components/Drawer';
+import HideVoiceflowAssistant from '@/components/HideVoiceflowAssistant';
 import { BlockType } from '@/constants';
 import { NamespaceProvider } from '@/contexts';
 import * as Creator from '@/ducks/creator';
@@ -165,7 +166,9 @@ const EditSidebar = () => {
       >
         {!fullScreen && !!path.length && editor}
       </Drawer>
+
       {fullScreen && <EditorModal onClose={() => setFullScreen(false)}>{editor}</EditorModal>}
+      {isOpen && <HideVoiceflowAssistant />}
     </SidebarProvider>
   );
 };

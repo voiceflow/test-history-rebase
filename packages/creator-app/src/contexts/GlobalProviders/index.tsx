@@ -24,6 +24,7 @@ import { ModalsContextProvider } from '../ModalsContext';
 import { MousePositionProvider } from '../MousePositionContext';
 import StoreProvider, { StoreProviderProps } from '../StoreProvider';
 import { TextEditorVariablesPopoverProvider } from '../TextEditorVariablesPopoverContext';
+import { VoiceflowAssistantVisibilityProvider } from '../VoiceflowAssistantVisibility';
 import SessionTracker from './components/SessionTracker';
 
 export interface GlobalProvidersProps extends StoreProviderProps {
@@ -54,7 +55,12 @@ const GlobalProviders: React.FC<GlobalProvidersProps> = ({ history, store, persi
                                         <AccountLoadingGate>
                                           <RealtimeConnectionGate>
                                             <MLProvider>
-                                              <AccountSubscriptionGate>{children}</AccountSubscriptionGate>
+                                              <AccountSubscriptionGate>
+                                                <VoiceflowAssistantVisibilityProvider>
+                                                  {/* to keep on a new line */}
+                                                  {children}
+                                                </VoiceflowAssistantVisibilityProvider>
+                                              </AccountSubscriptionGate>
                                             </MLProvider>
                                           </RealtimeConnectionGate>
                                         </AccountLoadingGate>

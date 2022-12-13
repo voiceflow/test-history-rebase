@@ -7,6 +7,7 @@ export const DEVICE_INFO = {
   version: os.version,
   browser: browser.name,
   platform: platform.type,
+  browserVersion: browser.version,
 };
 
 export const NODE_ENV = process.env.NODE_ENV!;

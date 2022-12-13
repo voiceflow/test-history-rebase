@@ -17,3 +17,4 @@ export * from './ScrollContext';
 export * from './TextEditorVariablesPopoverContext';
 export * from './TrainingContext';
 export * from './TransactionContext';
+export * from './VoiceflowAssistantVisibility';

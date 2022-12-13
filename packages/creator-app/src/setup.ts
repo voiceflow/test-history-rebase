@@ -13,6 +13,7 @@ import * as DatadogRUM from './vendors/datadogRUM';
 import * as Google from './vendors/google';
 import * as GoogleAnalytics from './vendors/googleAnalytics';
 import * as Userflow from './vendors/userflow';
+import VoiceflowAssistant from './vendors/voiceflowAssistant';
 
 const LOGOUT_HANDLER_TIMEOUT = 3000;
 
@@ -114,6 +115,8 @@ const setupApp = ({ tabID, logout, history, browserID }: { tabID: string; logout
   GoogleAnalytics.initialize(history);
 
   Userflow.initialize();
+
+  VoiceflowAssistant.initialize();
 
   // eslint-disable-next-line no-console
   console.info(

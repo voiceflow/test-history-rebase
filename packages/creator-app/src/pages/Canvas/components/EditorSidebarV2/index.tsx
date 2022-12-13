@@ -6,6 +6,7 @@ import type { ExtractRouteParams } from 'react-router';
 import { generatePath, useLocation, useRouteMatch } from 'react-router-dom';
 
 import Drawer from '@/components/Drawer';
+import HideVoiceflowAssistant from '@/components/HideVoiceflowAssistant';
 import { Path } from '@/config/routes';
 import { BlockType } from '@/constants';
 import { NamespaceProvider } from '@/contexts';
@@ -192,6 +193,8 @@ const EditorSidebarV2 = () => {
 
   return (
     <React.Fragment key={focus.target ?? 'unknown'}>
+      {isOpened && <HideVoiceflowAssistant />}
+
       <Drawer
         open={isOpened}
         width={width}

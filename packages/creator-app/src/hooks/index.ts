@@ -46,6 +46,7 @@ export * from './toggle';
 export * from './tracking';
 export * from './variable';
 export * from './variableStates';
+export * from './voiceflowAssistant';
 export * from './workspace';
 export { useLinkedRef, useLinkedState, useRAF, useResizeObserver } from '@voiceflow/ui';
 

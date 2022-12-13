@@ -3,7 +3,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 
 import { PrototypeStatus } from '@/constants/prototype';
 import * as VariableState from '@/ducks/variableState';
-import { useDispatch, useEventualEngine, useSetup, useTeardown } from '@/hooks';
+import { useDispatch, useEventualEngine, useHideVoiceflowAssistant, useSetup, useTeardown } from '@/hooks';
 import { Identifier } from '@/styles/constants';
 import * as Query from '@/utils/query';
 
@@ -34,6 +34,8 @@ const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({
   renderingPromise,
   isModelTraining,
 }) => {
+  useHideVoiceflowAssistant();
+
   const initializeVariableState = useDispatch(VariableState.initializeVariableState);
 
   const startPrototype = useStartPrototype();

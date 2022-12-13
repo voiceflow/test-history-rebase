@@ -5,7 +5,7 @@ import { useLocation } from 'react-router-dom';
 import { wordmark } from '@/assets';
 import * as Account from '@/ducks/account';
 import * as Session from '@/ducks/session';
-import { useDispatch, useSelector } from '@/hooks';
+import { useDispatch, useHideVoiceflowAssistant, useSelector } from '@/hooks';
 import { Identifier } from '@/styles/constants';
 import * as Query from '@/utils/query';
 
@@ -14,6 +14,8 @@ import Container from './components/Container';
 import Title from './components/Title';
 
 const Verify: React.FC = () => {
+  useHideVoiceflowAssistant();
+
   const email = useSelector(Account.userEmailSelector);
   const location = useLocation();
 

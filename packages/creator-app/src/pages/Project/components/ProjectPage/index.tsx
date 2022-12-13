@@ -1,6 +1,7 @@
 import React from 'react';
 import { useRouteMatch } from 'react-router-dom';
 
+import HideVoiceflowAssistant from '@/components/HideVoiceflowAssistant';
 import { BlockType } from '@/constants';
 import * as UI from '@/ducks/ui';
 import { useSelector } from '@/hooks';
@@ -49,6 +50,7 @@ const ProjectPage: React.FC<ProjectPageProps> = ({ children, shouldRenderHeader 
       isCreatingMarkupText={isCreatingMarkupText}
     >
       {children}
+      {canvasOnly && <HideVoiceflowAssistant />}
     </S.Page>
   );
 };

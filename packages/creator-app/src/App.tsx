@@ -19,6 +19,7 @@ import { compose } from '@/hocs';
 import AppModals from '@/modals/AppModals';
 import * as ModalsV2 from '@/ModalsV2';
 import Beamer from '@/services/Beamer';
+import ChatAssistant from '@/services/ChatAssistant';
 import DatadogRum from '@/services/DatadogRum';
 
 import { GlobalProvidersProps, withGlobalProviders } from './contexts/GlobalProviders';
@@ -36,6 +37,7 @@ const App: React.FC = () => (
     <TrackNewCodeVersion />
     <DatadogRum />
     <Beamer />
+    <ChatAssistant />
   </>
 );
 

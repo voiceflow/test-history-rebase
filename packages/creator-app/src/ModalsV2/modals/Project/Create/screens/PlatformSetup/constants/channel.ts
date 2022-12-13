@@ -55,6 +55,7 @@ export const OPTIONS: MenuItemGrouped<Option>[] = [
     label: 'Chatbot & SMS',
     options: [
       buildChatOption(Platform.Webchat.CONFIG, { featureFlag: Realtime.FeatureFlag.WEBCHAT }),
+      buildChatOption(Platform.SMS.CONFIG, { featureFlag: Realtime.FeatureFlag.SMS }),
       buildChatOption(Platform.Whatsapp.CONFIG, { featureFlag: Realtime.FeatureFlag.WHATSAPP }),
       buildChatOption(Platform.MicrosoftTeams.CONFIG, { featureFlag: Realtime.FeatureFlag.MICROSOFT_TEAMS }),
     ],
@@ -71,7 +72,7 @@ export const OPTIONS: MenuItemGrouped<Option>[] = [
       buildChatOption(Upcoming.Whatsapp.CONFIG, { featureFlag: Realtime.FeatureFlag.WHATSAPP }),
       buildChatOption(Upcoming.MicrosoftTeams.CONFIG, { featureFlag: Realtime.FeatureFlag.MICROSOFT_TEAMS }),
       buildChatOption(Upcoming.Facebook.CONFIG),
-      buildChatOption(Upcoming.Twilio.CONFIG),
+      buildChatOption(Upcoming.Twilio.CONFIG, { featureFlag: Realtime.FeatureFlag.SMS }),
       buildVoiceOption(Upcoming.Twilio.CONFIG),
     ],
   },

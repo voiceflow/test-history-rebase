@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ExportProvider, NLUProvider, PublishProvider, TrainingProvider } from '@/contexts';
+import { ExportProvider, NLUProvider, PrototypeJobProvider, PublishProvider, TrainingProvider } from '@/contexts';
 import { SearchProvider } from '@/contexts/SearchContext';
 import { NLUManagerProvider } from '@/pages/NLUManager/context';
 // TODO: move this context into contexts folder
@@ -13,25 +13,27 @@ const Providers: React.FC = ({ children }) => {
   return (
     <>
       <PrototypeProvider>
-        <PublishProvider>
-          <ExportProvider>
-            <TrainingProvider>
-              <NLUExportProvider>
-                <NLUProvider>
-                  <TrainingModelProvider>
-                    <NLUManagerProvider>
-                      <SelectionProvider>
-                        <SearchProvider>
-                          <LastCreatedComponentProvider>{children}</LastCreatedComponentProvider>
-                        </SearchProvider>
-                      </SelectionProvider>
-                    </NLUManagerProvider>
-                  </TrainingModelProvider>
-                </NLUProvider>
-              </NLUExportProvider>
-            </TrainingProvider>
-          </ExportProvider>
-        </PublishProvider>
+        <PrototypeJobProvider>
+          <PublishProvider>
+            <ExportProvider>
+              <TrainingProvider>
+                <NLUExportProvider>
+                  <NLUProvider>
+                    <TrainingModelProvider>
+                      <NLUManagerProvider>
+                        <SelectionProvider>
+                          <SearchProvider>
+                            <LastCreatedComponentProvider>{children}</LastCreatedComponentProvider>
+                          </SearchProvider>
+                        </SelectionProvider>
+                      </NLUManagerProvider>
+                    </TrainingModelProvider>
+                  </NLUProvider>
+                </NLUExportProvider>
+              </TrainingProvider>
+            </ExportProvider>
+          </PublishProvider>
+        </PrototypeJobProvider>
       </PrototypeProvider>
     </>
   );

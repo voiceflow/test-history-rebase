@@ -2,10 +2,10 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Dropdown, Menu, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
-import client from '@/client';
 import JobInterface from '@/components/JobInterface';
+import { PrototypeJobContext } from '@/contexts';
 import { useFeature } from '@/hooks';
-import { useJob, useSimulatedProgress } from '@/hooks/job';
+import { useSimulatedProgress } from '@/hooks/job';
 import RunButton from '@/pages/Project/components/Header/components/CanvasHeader/components/Run/button';
 import { useRunPrototype } from '@/pages/Project/components/Header/components/CanvasHeader/components/Run/hooks';
 
@@ -16,7 +16,7 @@ const TwilioPrototypeRun: React.FC<React.ComponentProps<typeof RunButton>> = (pr
 
   const runPrototype = useRunPrototype();
 
-  const context = useJob(client.platform.whatsapp.prototype);
+  const context = React.useContext(PrototypeJobContext)!;
   const { job, active } = context;
 
   const Content = useTwilioPrototypeStageContent(job?.stage.type);

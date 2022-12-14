@@ -1,9 +1,11 @@
+import { Utils } from '@voiceflow/common';
 import { Box, Button, ButtonVariant, useLocalStorageState } from '@voiceflow/ui';
 import React from 'react';
 
 import { linkGraphic } from '@/assets';
 import { UploadedStage } from '@/components/PlatformUploadPopup/components';
 import { WHATSAPP_DOCUMENTATION } from '@/constants/platforms';
+import { PrototypeJobContext } from '@/contexts';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import { useDispatch, useSelector, useSyncProjectLiveVersion } from '@/hooks';
@@ -11,14 +13,16 @@ import { NLPTrainJob } from '@/models';
 import { StageComponentProps } from '@/platforms/types';
 import { openInternalURLInANewTab } from '@/utils/window';
 
-const getWidgetSessionKey = (projectID: string) => `whatsapp_publish_${projectID}`;
+import { createWidgetSessionKey } from '../utils';
 
 const SuccessStage: React.FC<StageComponentProps<NLPTrainJob.SuccessStage>> = ({ cancel }) => {
   useSyncProjectLiveVersion();
 
   const projectID = useSelector(Session.activeProjectIDSelector);
 
-  const [firstTime, setFirstTime] = useLocalStorageState<boolean>(getWidgetSessionKey(projectID!), true);
+  const prototypeJob = React.useContext(PrototypeJobContext);
+
+  const [firstTime, setFirstTime] = useLocalStorageState<boolean>(createWidgetSessionKey(projectID!), true);
 
   const goToConsole = useDispatch(Router.goToActivePlatformPublish);
 
@@ -49,7 +53,7 @@ const SuccessStage: React.FC<StageComponentProps<NLPTrainJob.SuccessStage>> = ({
     </UploadedStage>
   ) : (
     <UploadedStage description="A new version of your assistant has been published to WhatsApp">
-      <Button fullWidth onClick={goToConsole}>
+      <Button fullWidth onClick={Utils.functional.chainVoid(prototypeJob?.start, cancel)}>
         Test on WhatsApp
       </Button>
       <Box mt={8} />

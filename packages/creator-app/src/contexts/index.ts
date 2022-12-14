@@ -13,6 +13,7 @@ export * from './MousePositionContext';
 export * from './NamespaceContext';
 export * from './NLUContext';
 export * from './ProjectConfigProvider';
+export * from './PrototypeJobContext';
 export * from './PublishContext';
 export * from './ScrollContext';
 export * from './TextEditorVariablesPopoverContext';

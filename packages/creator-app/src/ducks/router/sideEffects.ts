@@ -21,6 +21,7 @@ import {
   goToCanvasTextMarkup,
   goToConversations,
   goToNLUManager,
+  goToPlatformPrototype,
   goToPrototype,
   goToPublish,
   goToSettings,
@@ -308,6 +309,16 @@ export const goToActivePlatformPublish = (): Thunk => async (dispatch, getState)
   Errors.assertVersionID(versionID);
 
   dispatch(goToPublish(versionID, platform));
+};
+
+export const goToActivePlatformPrototype = (): Thunk => async (dispatch, getState) => {
+  const state = getState();
+  const versionID = Session.activeVersionIDSelector(state);
+  const platform = ProjectV2.active.platformSelector(state);
+
+  Errors.assertVersionID(versionID);
+
+  dispatch(goToPlatformPrototype(versionID, platform));
 };
 
 export const goToConversationsPage = (): Thunk => async (dispatch, getState) => {

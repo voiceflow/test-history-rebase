@@ -1,9 +1,9 @@
 import { Box, Dropdown, Menu, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
-import client from '@/client';
 import JobInterface from '@/components/JobInterface';
-import { useJob, useSimulatedProgress } from '@/hooks/job';
+import { PrototypeJobContext } from '@/contexts';
+import { useSimulatedProgress } from '@/hooks/job';
 import RunButton from '@/pages/Project/components/Header/components/CanvasHeader/components/Run/button';
 import { useRunPrototype } from '@/pages/Project/components/Header/components/CanvasHeader/components/Run/hooks';
 
@@ -12,7 +12,7 @@ import { useTwilioPrototypeStageContent } from './stages';
 const TwilioPrototypeRun: React.FC<React.ComponentProps<typeof RunButton>> = ({ variant }) => {
   const runPrototype = useRunPrototype();
 
-  const context = useJob(client.platform.sms.prototype);
+  const context = React.useContext(PrototypeJobContext)!;
   const { job, active } = context;
 
   const Content = useTwilioPrototypeStageContent(job?.stage.type);

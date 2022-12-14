@@ -1,15 +1,17 @@
-import { toast, usePersistFunction } from '@voiceflow/ui';
+import { toast, useLocalStorage, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
 import JobInterface from '@/components/JobInterface';
 import { PublishVersionModalData } from '@/components/PublishVersionModal';
 import { ModalType } from '@/constants';
 import { PublishContext } from '@/contexts';
-import { useModals, useTrackingEvents } from '@/hooks';
+import * as Session from '@/ducks/session';
+import { useModals, useSelector, useTrackingEvents } from '@/hooks';
 import { useSimulatedProgress } from '@/hooks/job';
 import PublishButton from '@/pages/Project/components/Header/components/CanvasHeader/components/Upload/components/PublishButton';
 
 import { useWhatsAppStageContent } from './stages';
+import { createWidgetSessionKey } from './utils';
 
 const WhatsApp: React.FC = () => {
   const publishNewVersionModal = useModals<PublishVersionModalData>(ModalType.PUBLISH_VERSION_MODAL);
@@ -18,7 +20,11 @@ const WhatsApp: React.FC = () => {
 
   const [trackingEvents] = useTrackingEvents();
 
-  const onConfirm = usePersistFunction((versionName: string) => {
+  const projectID = useSelector(Session.activeProjectIDSelector);
+
+  const [getFirstTime] = useLocalStorage<boolean>(createWidgetSessionKey(projectID!), true);
+
+  const onConfirm = usePersistFunction((versionName?: string) => {
     // modal awaits confirm before closing , start() takes a long time
     (async () => {
       try {
@@ -32,10 +38,12 @@ const WhatsApp: React.FC = () => {
   });
 
   const onPublish = usePersistFunction(() =>
-    publishNewVersionModal.open({
-      message: 'Publish this version to production and use it on WhatsApp Business Messaging.',
-      onConfirm,
-    })
+    getFirstTime()
+      ? onConfirm()
+      : publishNewVersionModal.open({
+          message: 'Publish this version to production and use it on WhatsApp Business Messaging.',
+          onConfirm,
+        })
   );
 
   const Content = useWhatsAppStageContent(job?.stage.type);

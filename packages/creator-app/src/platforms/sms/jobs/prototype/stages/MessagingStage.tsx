@@ -7,19 +7,23 @@ import { useDispatch } from '@/hooks';
 import { TwilioPrototypeJob } from '@/models';
 import { StageComponentProps } from '@/platforms/types';
 
-const MessagingStage: React.FC<StageComponentProps<TwilioPrototypeJob.MessagingStage>> = ({ stage }) => {
-  const goToConsole = useDispatch(Router.goToActivePlatformPublish);
+const MessagingStage: React.FC<StageComponentProps<TwilioPrototypeJob.MessagingStage>> = ({ stage, cancel }) => {
+  const goToSettings = useDispatch(Router.goToActivePlatformPrototype);
 
   React.useEffect(() => {
     toast.success(
       <Box textAlign="right" width="100%">
         Message sent to {formatPhoneNumber(stage.data.phoneNumber)}
         <Box mt={16}>
-          <Link onClick={goToConsole}>Update Number</Link>
+          <Link onClick={goToSettings}>Update Number</Link>
         </Box>
       </Box>,
       { autoClose: false }
     );
+
+    return () => {
+      cancel();
+    };
   }, []);
 
   return null;

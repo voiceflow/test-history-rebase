@@ -71,6 +71,9 @@ export const goToPublish = (versionID: string, platform: Platform.Constants.Plat
   return goTo(`${generatePath(Path.PROJECT_PUBLISH, { versionID })}${platform ? `/${platformPath}` : ''}`);
 };
 
+export const goToPlatformPrototype = (versionID: string, platform: Platform.Constants.PlatformType) =>
+  goTo(`${generatePath(`${Path.PROJECT_PUBLISH}/prototype/${platform}`, { versionID })}`);
+
 export const goToConversations = (versionID: string, search = window.location.search) =>
   goTo(`${generatePath(Path.CONVERSATIONS, { versionID })}${search}`);
 

@@ -6,6 +6,7 @@ import { useNLUManager } from '@/pages/NLUManager/context';
 import { useLogoButtonOptions } from '@/pages/Project/components/Header/hooks';
 
 import { SharePopperProvider } from '../../contexts';
+import LogoOnlyHeader from '../LogoOnlyHeader';
 import { EntitiesHeader, IntentsHeader, SidebarHeader, UnclassifiedHeader } from './components';
 
 const headerContent: Record<NLURoute, React.FC | null> = {
@@ -19,11 +20,13 @@ const NLUHeader: React.FC = () => {
   const logoOptions = useLogoButtonOptions();
   const HeaderContent = headerContent[nlu.activeTab];
 
-  return (
+  return nlu.inFullScreenTab ? (
+    <LogoOnlyHeader />
+  ) : (
     <SharePopperProvider>
       <Page.Header
-        renderLogoButton={() => <Page.Header.LogoButton options={logoOptions} />}
         containerStyles={!HeaderContent ? { width: '310px' } : undefined}
+        renderLogoButton={() => <Page.Header.LogoButton options={logoOptions} />}
       >
         <SidebarHeader />
         {HeaderContent && <HeaderContent />}

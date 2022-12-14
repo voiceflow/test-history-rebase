@@ -25,4 +25,4 @@ const Settings: React.FC = () => (
   </ProjectPage>
 );
 
-export default React.memo(Settings);
+export default Settings;

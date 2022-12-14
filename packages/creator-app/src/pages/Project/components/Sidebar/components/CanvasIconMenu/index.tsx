@@ -1,19 +1,15 @@
 import { Menu, Portal, useVirtualElementPopper } from '@voiceflow/ui';
 import React from 'react';
 
-import Page from '@/components/Page';
 import SidebarIconMenu from '@/components/SidebarIconMenu';
-import { useIsCanvasDesignOnly, useTheme } from '@/hooks';
-import { useLogoButtonOptions } from '@/pages/Project/components/Header/hooks';
+import { useIsCanvasDesignOnly } from '@/hooks';
 
-import { SideBarComponentProps } from '../../types';
 import { useCanvasMenuOptionsAndHotkeys, useHelpOptions } from './hooks';
 
-const CanvasIconMenu: React.FC<SideBarComponentProps> = ({ withLogo = false }) => {
-  const theme = useTheme();
+const CanvasIconMenu: React.FC = () => {
   const designOnly = useIsCanvasDesignOnly();
   const helpOptions = useHelpOptions();
-  const logoOptions = useLogoButtonOptions();
+
   const { options, activeValue, helpOpened, footerOptions, helpButtonRef } = useCanvasMenuOptionsAndHotkeys();
 
   const popper = useVirtualElementPopper(helpButtonRef.current, {
@@ -23,21 +19,7 @@ const CanvasIconMenu: React.FC<SideBarComponentProps> = ({ withLogo = false }) =
 
   return (
     <>
-      <SidebarIconMenu
-        open={!designOnly}
-        options={options}
-        activeValue={activeValue}
-        footerOptions={footerOptions}
-        header={
-          withLogo ? (
-            <Page.Header.LogoButton
-              style={{ height: `${theme.components.page.header.height}px`, margin: '0 0 20px 0', borderBottom: '1px solid #dfe3ed' }}
-              options={logoOptions}
-              withBorder={false}
-            />
-          ) : null
-        }
-      />
+      <SidebarIconMenu open={!designOnly} options={options} activeValue={activeValue} footerOptions={footerOptions} />
 
       {helpOpened && (
         <Portal>

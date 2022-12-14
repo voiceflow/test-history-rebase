@@ -1,6 +1,5 @@
 import { useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
-import { RouteComponentProps } from 'react-router-dom';
 
 import * as Transcripts from '@/ducks/transcript';
 import * as UI from '@/ducks/ui';
@@ -21,9 +20,7 @@ import MarkupImageLoading from '../MarkupImageLoading';
 import { HotKeys } from './components';
 import DiagramGate from './gates/DiagramGate';
 
-export type DiagramProps = RouteComponentProps;
-
-const Diagram: React.FC<DiagramProps> = () => {
+const Diagram: React.FC = () => {
   const canvasOnly = useSelector(UI.isCanvasOnlyShowingSelector);
   const toggleCanvasOnly = useDispatch(UI.toggleCanvasOnly);
   const checkUnreadTranscripts = useDispatch(Transcripts.updateHasUnreadTranscripts);

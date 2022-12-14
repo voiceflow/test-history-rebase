@@ -1,5 +1,5 @@
 import React from 'react';
-import { RouteComponentProps, Switch } from 'react-router-dom';
+import { Switch } from 'react-router-dom';
 
 import { Path } from '@/config/routes';
 import { lazy } from '@/hocs';
@@ -8,11 +8,11 @@ import PrivateRoute from '@/Routes/PrivateRoute';
 
 import { PageContainer } from './components';
 
-const EditProduct = lazy(() => import('./EditProduct'));
 const NewProduct = lazy(() => import('./NewProduct'));
+const EditProduct = lazy(() => import('./EditProduct'));
 const ProductsList = lazy(() => import('./ProductsList'));
 
-const Business: React.FC<RouteComponentProps> = () => (
+const Business: React.FC = () => (
   <ProjectPage>
     <PageContainer>
       <Switch>

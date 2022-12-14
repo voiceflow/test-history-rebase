@@ -2,8 +2,8 @@ import { IS_SAFARI, toast, ToastCallToAction } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
 
-import { CANVAS_COLOR } from '@/components/Canvas';
 import { BlockType } from '@/constants';
+import { CANVAS_COLOR } from '@/constants/canvas';
 import { PrototypeStatus } from '@/constants/prototype';
 import { SearchContext } from '@/contexts/SearchContext';
 import * as History from '@/ducks/history';

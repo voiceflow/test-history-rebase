@@ -16,7 +16,7 @@ import * as S from './styles';
 const DashboardNavigationSidebar: React.FC = () => {
   const plan = useSelector(WorkspaceV2.active.planSelector);
   const workspace = useActiveWorkspace();
-  const workspaceID = workspace?.id;
+  const workspaceID = workspace?.id ?? 'unknown';
 
   const isOwner = usePermission(Permission.EDIT_ORGANIZATION);
   const isAdmin = usePermission(Permission.CONFIGURE_WORKSPACE);
@@ -33,7 +33,7 @@ const DashboardNavigationSidebar: React.FC = () => {
             title={isAdmin ? 'Team & Billing' : 'Team'}
             isActive={({ pathname, matchPath }) => !!matchPath(pathname, { path: [Path.WORKSPACE_MEMBERS, Path.WORKSPACE_BILLING] })}
           >
-            <NavigationSidebar.Item.SubText>{workspace?.members.length.toString()}</NavigationSidebar.Item.SubText>
+            <NavigationSidebar.Item.SubText>{workspace?.members.length}</NavigationSidebar.Item.SubText>
           </NavigationSidebar.NavItem>
         </S.Group>
 

@@ -21,7 +21,6 @@ export interface SidebarIconMenuItem {
 
 export interface SidebarIconMenuProps<T extends SidebarIconMenuItem> {
   open: boolean;
-  header?: React.ReactNode;
   options: Nullable<T>[];
   onSelect?: (option: T, event: React.MouseEvent<HTMLDivElement>) => void;
   activeValue: string;
@@ -30,7 +29,6 @@ export interface SidebarIconMenuProps<T extends SidebarIconMenuItem> {
 
 const SidebarIconMenu = <T extends SidebarIconMenuItem>({
   open,
-  header,
   options,
   onSelect,
   activeValue,
@@ -65,9 +63,7 @@ const SidebarIconMenu = <T extends SidebarIconMenuItem>({
 
   return (
     <Drawer open={open} width={theme.components.sidebarIconMenu.width} zIndex={25} direction={Drawer.Direction.RIGHT}>
-      <Container className={cn(ClassName.SIDEBAR_ICON_MENU, open && `${ClassName.SIDEBAR_ICON_MENU}--opened`)} style={header ? { padding: 0 } : {}}>
-        {header}
-
+      <Container className={cn(ClassName.SIDEBAR_ICON_MENU, open && `${ClassName.SIDEBAR_ICON_MENU}--opened`)}>
         {options.map(renderOption)}
 
         {!!footerOptions?.length && (

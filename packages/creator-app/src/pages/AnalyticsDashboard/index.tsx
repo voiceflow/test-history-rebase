@@ -6,7 +6,7 @@ import { AnalyticsDashboardContainer } from './components';
 
 const AnalyticsDashboard: React.FC = () => {
   return (
-    <ProjectPage shouldRenderHeader={true} sideBarProps={{ withLogo: false }}>
+    <ProjectPage>
       <AnalyticsDashboardContainer>
         <p>super WIP!!!</p>
       </AnalyticsDashboardContainer>

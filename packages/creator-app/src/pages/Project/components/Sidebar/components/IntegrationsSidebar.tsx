@@ -11,7 +11,6 @@ import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import { useAlexaProjectSettings, useFeature, usePermission, useSelector } from '@/hooks';
 
-import { SideBarComponentProps } from '../types';
 import CanvasIconMenu from './CanvasIconMenu';
 
 interface MenuOption {
@@ -20,7 +19,7 @@ interface MenuOption {
   icon: SvgIconTypes.Icon;
 }
 
-const IntegrationsSidebar: React.FC<SideBarComponentProps> = () => {
+const IntegrationsSidebar: React.FC = () => {
   const meta = useSelector(ProjectV2.active.metaSelector);
 
   const versionID = useSelector(Session.activeVersionIDSelector)!;

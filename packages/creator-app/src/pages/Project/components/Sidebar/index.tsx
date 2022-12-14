@@ -3,8 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 
 import { Path } from '@/config/routes';
 
-import { CanvasIconMenu, ConversationsSidebar, IntegrationsSidebar, SettingsSidebar, TestVariablesSidebar } from './components';
-import { SideBarComponentProps } from './types';
+import { CanvasIconMenu, IntegrationsSidebar, LogoOffsetSidebar, NLUSidebar, SettingsSidebar, TestVariablesSidebar } from './components';
 
 const ALL_PROJECT_SIDEBAR_PATHS = [
   Path.DOMAIN_CANVAS,
@@ -12,23 +11,22 @@ const ALL_PROJECT_SIDEBAR_PATHS = [
   Path.CANVAS_COMMENTING_THREAD,
   Path.CANVAS_MODEL,
   Path.CANVAS_MODEL_ENTITY,
-  Path.NLU_MANAGER,
   Path.ANALYTICS_DASHBOARD,
 ];
 
-export * from './types';
-
-const ProjectSidebar: React.FC<SideBarComponentProps> = ({ ...props }) => (
+const ProjectSidebar: React.FC = () => (
   <Switch>
-    <Route path={ALL_PROJECT_SIDEBAR_PATHS} render={() => <CanvasIconMenu {...props} />} />
+    <Route path={ALL_PROJECT_SIDEBAR_PATHS} render={() => <CanvasIconMenu />} />
 
-    <Route path={Path.PROJECT_PROTOTYPE} render={() => <TestVariablesSidebar {...props} />} />
+    <Route path={Path.NLU_MANAGER} render={() => <NLUSidebar />} />
 
-    <Route path={Path.PROJECT_PUBLISH} render={() => <IntegrationsSidebar {...props} />} />
+    <Route path={Path.PROJECT_PROTOTYPE} render={() => <TestVariablesSidebar />} />
 
-    <Route path={Path.PROJECT_SETTINGS} render={() => <SettingsSidebar {...props} />} />
+    <Route path={Path.PROJECT_PUBLISH} render={() => <IntegrationsSidebar />} />
 
-    <Route path={Path.CONVERSATIONS} render={() => <ConversationsSidebar {...props} />} />
+    <Route path={Path.PROJECT_SETTINGS} render={() => <SettingsSidebar />} />
+
+    <Route path={Path.CONVERSATIONS} render={() => <LogoOffsetSidebar />} />
   </Switch>
 );
 

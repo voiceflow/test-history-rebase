@@ -50,7 +50,7 @@ context('Payment and Collaborators', () => {
     });
   });
 
-  describe('collaborators', () => {
+  describe.skip('collaborators', () => {
     const testInviteEmail = 'yeet@voiceflow.com';
     const testInviteEmail2 = 'yee2t@voiceflow.com';
     const memberRoleDropdownCanEditString = 'Editor';
@@ -91,7 +91,7 @@ context('Payment and Collaborators', () => {
       collaboratorHelper.assertSuccessToast();
     });
 
-    it.skip('upgrade to pro with 1 seat and invite editor', () => {
+    it('upgrade to pro with 1 seat and invite editor', () => {
       paymentHelper.setup();
       paymentHelper.openPaymentModal();
       paymentHelper.fillCreditCard();
@@ -102,7 +102,7 @@ context('Payment and Collaborators', () => {
       paymentHelper.assertPaymentModal();
     });
 
-    it.skip('upgrade to pro with multiple seats and invite editor', () => {
+    it('upgrade to pro with multiple seats and invite editor', () => {
       paymentHelper.setup();
       paymentHelper.openPaymentModal();
       paymentHelper.increaseEditors('3');

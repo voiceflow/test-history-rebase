@@ -3,7 +3,7 @@ import { Box, useSessionStorageState } from '@voiceflow/ui';
 import queryString from 'query-string';
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { Redirect, RouteComponentProps, useHistory } from 'react-router-dom';
+import { Redirect, useHistory } from 'react-router-dom';
 
 import EmptyScreen from '@/components/EmptyScreen';
 import LoadingGate from '@/components/LoadingGate';
@@ -24,9 +24,7 @@ import { useFilters } from './hooks';
 const PREVIOUS_TRANSCRIPT_ID_KEY = 'previous-transcript-id-key';
 const PREVIOUS_TRANSCRIPT_FILTER_KEY = 'previous-transcript-filter-key';
 
-type ConversationProps = RouteComponentProps;
-
-const Conversations: React.FC<ConversationProps> = () => {
+const Conversations: React.FC = () => {
   const history = useHistory();
 
   const [trackingEvents] = useTrackingEvents();

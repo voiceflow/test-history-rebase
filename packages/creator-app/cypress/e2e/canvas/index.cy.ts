@@ -15,6 +15,7 @@ context('Canvas', () => {
   });
 
   it('open settings', () => {
+    cy.awaitLoaded();
     canvasPage.el.tabs.settingsTab.click();
     canvasPage.el.settingsPage.should('have.length', 1);
   });

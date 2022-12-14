@@ -10,11 +10,11 @@ const Text = styled.div`
 `;
 
 export interface SpinnerProps {
-  message?: string;
   name?: string;
   isMd?: boolean;
-  isEmpty?: boolean;
   color?: string;
+  isEmpty?: boolean;
+  message?: string;
   className?: string;
   borderLess?: boolean;
   fillContainer?: boolean;

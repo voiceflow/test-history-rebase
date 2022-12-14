@@ -12,7 +12,7 @@ import * as DiagramV2 from '@/ducks/diagramV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as UI from '@/ducks/ui';
 import { VersionSubscriptionGate, WorkspaceFeatureLoadingGate } from '@/gates';
-import { lazy, withBatchLoadingGate } from '@/hocs';
+import { lazy, withBatchLoadingGate, withWorkspaceOrProjectAssetsSuspense } from '@/hocs';
 import { useDispatch, useEventualEngine, useFeature, useLayoutDidUpdate, useLocalDispatch, useSelector, useTeardown, useTheme } from '@/hooks';
 import ExportModelModal from '@/pages/Canvas/components/ExportModelModal';
 import { ExportProvider } from '@/pages/Project/components/Header/components/SharePopper/components/Export';
@@ -24,15 +24,15 @@ import ProjectExitTracker from './components/ProjectExitTracker';
 import { DIAGRAM_ROUTES, TIMEOUT_COUNT } from './constants';
 import { MarkupProvider } from './contexts';
 
-const Diagram = lazy(() => import('./components/Diagram'));
-const Business = lazy(() => import('@/pages/Business'));
-const Migrate = lazy(() => import('@/pages/Migrate'));
-const Publish = lazy(() => import('@/pages/Publish'));
-const Settings = lazy(() => import('@/pages/Settings'));
-const AssistantOverview = lazy(() => import('@/pages/DashboardV2/pages/AssistantOverview'));
-const Conversations = lazy(() => import('@/pages/Conversations'));
-const NLUManager = lazy(() => import('@/pages/NLUManager'));
-const AnalyticsDashboard = lazy(() => import('@/pages/AnalyticsDashboard'));
+const Diagram = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('./components/Diagram')));
+const Business = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/Business')));
+const Migrate = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/Migrate')));
+const Publish = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/Publish')));
+const Settings = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/Settings')));
+const NLUManager = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/NLUManager')));
+const Conversations = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/Conversations')));
+const AssistantOverview = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/DashboardV2/pages/AssistantOverview')));
+const AnalyticsDashboard = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/AnalyticsDashboard')));
 
 export type ProjectProps = RouteComponentProps;
 
@@ -124,6 +124,7 @@ const Project: React.FC = () => {
           <Route path={Path.CONVERSATIONS} component={Conversations} />
 
           {nluManager.isEnabled && <Route path={Path.NLU_MANAGER} component={NLUManager} />}
+
           {nluManager.isEnabled && analyticsDashboard.isEnabled && <Route path={Path.ANALYTICS_DASHBOARD} component={AnalyticsDashboard} />}
 
           <Route path={Path.PROJECT_TOOLS} component={Business} />

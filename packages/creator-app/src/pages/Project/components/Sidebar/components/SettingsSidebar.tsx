@@ -6,10 +6,9 @@ import { Path } from '@/config/routes';
 import * as Session from '@/ducks/session';
 import { useSelector } from '@/hooks';
 
-import { SideBarComponentProps } from '../types';
 import CanvasIconMenu from './CanvasIconMenu';
 
-const SettingsSidebar: React.FC<SideBarComponentProps> = () => {
+const SettingsSidebar: React.FC = () => {
   const versionID = useSelector(Session.activeVersionIDSelector)!;
 
   return (

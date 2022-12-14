@@ -5,6 +5,8 @@ import * as Session from '@/ducks/session';
 import * as UI from '@/ducks/ui';
 import { useDispatch, useSelector, useWorkspaceSubscription } from '@/hooks';
 
+import WorkspaceOrProjectLoader from './WorkspaceOrProjectLoader';
+
 const WorkspaceSubscriptionGate: React.FC = ({ children }) => {
   const workspaceID = useSelector(Session.activeWorkspaceIDSelector);
   const setLoadingProjects = useDispatch(UI.setLoadingProjects);
@@ -16,10 +18,16 @@ const WorkspaceSubscriptionGate: React.FC = ({ children }) => {
   }, [isSubscribed]);
 
   return (
-    <LoadingGate label="Projects" internalName={WorkspaceSubscriptionGate.name} isLoaded={isSubscribed} backgroundColor="#f9f9f9">
+    <LoadingGate
+      label="Projects"
+      isLoaded={isSubscribed}
+      component={WorkspaceOrProjectLoader}
+      internalName={WorkspaceSubscriptionGate.name}
+      backgroundColor="#f9f9f9"
+    >
       {children}
     </LoadingGate>
   );
 };
 
-export default React.memo(WorkspaceSubscriptionGate);
+export default WorkspaceSubscriptionGate;

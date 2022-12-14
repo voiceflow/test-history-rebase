@@ -3,13 +3,13 @@ import React from 'react';
 
 import Spinner, { SpinnerProps } from './Spinner';
 
-interface DiagramProps {
+interface ContainerProps {
   isAbs?: boolean;
-  zIndex?: number;
+  zIndex?: number | string;
   backgroundColor?: string;
 }
 
-const Diagram = styled.div<DiagramProps>`
+const Container = styled.div<ContainerProps>`
   position: ${({ isAbs }) => (isAbs ? 'absolute' : 'fixed')};
   top: 0;
   right: 0;
@@ -22,12 +22,12 @@ const Diagram = styled.div<DiagramProps>`
   background-color: ${(props) => props.backgroundColor || 'initial'};
 `;
 
-export type FullSpinnerProps = SpinnerProps & DiagramProps;
+export interface FullSpinnerProps extends SpinnerProps, ContainerProps {}
 
 const FullSpinner: React.FC<FullSpinnerProps> = (props) => (
-  <Diagram backgroundColor={props.backgroundColor} zIndex={props.zIndex}>
+  <Container backgroundColor={props.backgroundColor} zIndex={props.zIndex} isAbs={props.isAbs}>
     <Spinner {...props} />
-  </Diagram>
+  </Container>
 );
 
 export default FullSpinner;

@@ -3,34 +3,27 @@ import React from 'react';
 import LoadingGate from '@/components/LoadingGate';
 import * as Feature from '@/ducks/feature';
 import * as Session from '@/ducks/session';
-import { connect } from '@/hocs';
-import { ConnectedProps } from '@/types';
+import { useDispatch, useSelector } from '@/hooks';
 
-const WorkspaceFeatureLoadingGate: React.FC<ConnectedWorkspaceFeatureLoadingGateProps> = ({
-  hasActiveWorkspace,
-  isLoaded,
-  loadFeatures,
-  children,
-}) => (
-  <LoadingGate
-    label="Workspace Features"
-    internalName={WorkspaceFeatureLoadingGate.name}
-    isLoaded={!hasActiveWorkspace || isLoaded}
-    load={loadFeatures}
-  >
-    {children}
-  </LoadingGate>
-);
+import WorkspaceOrProjectLoader from './WorkspaceOrProjectLoader';
 
-const mapStateToProps = {
-  isLoaded: Feature.isWorkspaceLoadedSelector,
-  hasActiveWorkspace: Session.hasActiveWorkspaceSelector,
+const WorkspaceFeatureLoadingGate: React.FC = ({ children }) => {
+  const isLoaded = useSelector(Feature.isWorkspaceLoadedSelector);
+  const hasActiveWorkspace = useSelector(Session.hasActiveWorkspaceSelector);
+
+  const loadFeatures = useDispatch(Feature.loadWorkspaceFeatures);
+
+  return (
+    <LoadingGate
+      load={loadFeatures}
+      label="Workspace Features"
+      isLoaded={!hasActiveWorkspace || isLoaded}
+      component={WorkspaceOrProjectLoader}
+      internalName={WorkspaceFeatureLoadingGate.name}
+    >
+      {children}
+    </LoadingGate>
+  );
 };
 
-const mapDispatchToProps = {
-  loadFeatures: Feature.loadWorkspaceFeatures,
-};
-
-type ConnectedWorkspaceFeatureLoadingGateProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
-
-export default connect(mapStateToProps, mapDispatchToProps)(WorkspaceFeatureLoadingGate);
+export default WorkspaceFeatureLoadingGate;

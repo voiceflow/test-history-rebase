@@ -1,4 +1,4 @@
-import { FullSpinner, Spinner } from '@voiceflow/ui';
+import { FullSpinner, FullSpinnerProps, Spinner, SpinnerProps } from '@voiceflow/ui';
 import React from 'react';
 
 import { DEBUG_LOADING_GATES } from '@/config';
@@ -10,31 +10,33 @@ export interface LoadingGateProps {
   full?: boolean;
   load?: null | (() => void);
   label?: string;
-  internalName: string;
-  zIndex?: number;
+  zIndex?: number | string;
   unload?: () => void;
   isLoaded: boolean;
+  hasLabel?: boolean;
+  component?: React.FC<FullSpinnerProps | SpinnerProps>;
+  borderless?: boolean;
+  internalName: string;
+  fillContainer?: boolean;
   withoutSpinner?: boolean;
   backgroundColor?: string;
-  borderless?: boolean;
-  hasLabel?: boolean;
-  fillContainer?: boolean;
 }
 
 const LoadingGate: React.FC<LoadingGateProps> = ({
   full = true,
   load,
   label,
-  internalName,
   unload,
   zIndex,
+  hasLabel = true,
   children,
   isLoaded,
+  component,
+  borderless,
+  internalName,
+  fillContainer = false,
   withoutSpinner,
   backgroundColor,
-  borderless,
-  hasLabel = true,
-  fillContainer = false,
 }) => {
   React.useEffect(() => {
     if (isLoaded) {
@@ -51,15 +53,15 @@ const LoadingGate: React.FC<LoadingGateProps> = ({
   }, [isLoaded]);
 
   if (!isLoaded) {
-    const SpinnerComponent = full ? FullSpinner : Spinner;
+    const SpinnerComponent = component ?? (full ? FullSpinner : Spinner);
 
     return withoutSpinner ? null : (
       <SpinnerComponent
         name={hasLabel ? label || 'Data' : ''}
         zIndex={zIndex}
-        backgroundColor={backgroundColor}
         borderLess={borderless}
         fillContainer={fillContainer}
+        backgroundColor={backgroundColor}
       />
     );
   }

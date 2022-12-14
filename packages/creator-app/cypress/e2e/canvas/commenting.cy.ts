@@ -14,6 +14,10 @@ context('Canvas - Commenting', () => {
 
     it('enter mode with controls', () => {
       canvasPage.goToCanvas();
+      cy.awaitLoaded();
+
+      // eslint-disable-next-line cypress/no-unnecessary-waiting
+      cy.wait(120);
 
       canvasPage.el.commentingModeControl.click();
 
@@ -22,6 +26,8 @@ context('Canvas - Commenting', () => {
 
     it('enter mode with hotkey', () => {
       canvasPage.goToCanvas();
+
+      cy.awaitLoaded();
 
       cy.sendHotkey('c');
 

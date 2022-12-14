@@ -10,11 +10,9 @@ import Page from '@/components/Page';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { withBatchLoadingGate } from '@/hocs';
 import { useDispatch, useSelector } from '@/hooks';
 
 import { Sidebar } from '../../components';
-import { AssistantLoadingGate } from '../../gates';
 import { getProjectStatusAndMembers } from '../../utils';
 import { EmptySearch, Header } from './components';
 import * as S from './styles';
@@ -129,4 +127,4 @@ const ProjectList: React.FC = () => {
   );
 };
 
-export default withBatchLoadingGate(AssistantLoadingGate)(ProjectList);
+export default ProjectList;

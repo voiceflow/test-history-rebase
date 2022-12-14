@@ -154,6 +154,7 @@ export { default as SidebarEditor } from './SidebarEditor';
 export { default as Slider } from './Slider';
 export type { SnackbarTypes } from './Snackbar';
 export { default as Snackbar } from './Snackbar';
+export type { FullSpinnerProps, SpinnerProps } from './Spinner';
 export { FullSpinner, Spinner } from './Spinner';
 export type { StrengthGaugeTypes } from './StrengthGauge';
 export { default as StrengthGauge } from './StrengthGauge';

@@ -6,8 +6,6 @@ import React from 'react';
 import Page from '@/components/Page';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { VersionSubscriptionGate } from '@/gates';
-import { withBatchLoadingGate } from '@/hocs';
 import { useProjectOptions, useSelector } from '@/hooks';
 
 import { Sidebar } from '../../components';
@@ -103,4 +101,4 @@ const AssistantOverview: React.FC = () => {
   );
 };
 
-export default withBatchLoadingGate(VersionSubscriptionGate)(AssistantOverview);
+export default AssistantOverview;

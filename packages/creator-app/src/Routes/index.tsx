@@ -4,7 +4,7 @@ import { Link, Redirect, Route, Switch } from 'react-router-dom';
 
 import { LegacyPath, Path } from '@/config/routes';
 import * as Session from '@/ducks/session';
-import { lazy } from '@/hocs';
+import { lazy, withWorkspaceOrProjectAssetsSuspense } from '@/hocs';
 import { useSelector } from '@/hooks';
 import AdoptSSO from '@/pages/Auth/AdoptSSO';
 import Login from '@/pages/Auth/Login';
@@ -23,14 +23,14 @@ import WorkspaceAcceptInvite from '@/pages/WorkspaceAcceptInvite';
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
 
-const Project = lazy(() => import('@/pages/Project'));
+const Project = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/Project')));
+const Workspace = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/Workspace')));
 
 const Legal = lazy(() => import('@/components/Legal'));
 
 const Logout = lazy(() => import('@/pages/Auth/Logout'));
 const Account = lazy(() => import('@/pages/Account'));
 const Runtime = lazy(() => import('@/pages/Runtime'));
-const Workspace = lazy(() => import('@/pages/Workspace'));
 const NewWorkspace = lazy(() => import('@/pages/Dashboard/NewWorkspace'));
 const ConfirmEmail = lazy(() => import('@/pages/Auth/ConfirmEmail'));
 const PublicPrototype = lazy(() => import('@/pages/PublicPrototype'));

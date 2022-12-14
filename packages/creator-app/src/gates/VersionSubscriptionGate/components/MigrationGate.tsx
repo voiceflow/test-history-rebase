@@ -9,6 +9,7 @@ import { useDispatch, useRealtimeClient } from '@/hooks';
 import logger from '@/utils/logger';
 import { AsyncActionError } from '@/utils/logux';
 
+import WorkspaceOrProjectLoader from '../../WorkspaceOrProjectLoader';
 import { MigrationStatus, PROJECT_LOADING_GATE_LABEL } from '../constants';
 import { VersionSubscriptionContext } from '../types';
 import MigrationFailedWarning from './MigrationFailedWarning';
@@ -119,10 +120,10 @@ const MigrationGate: React.FC<MigrationGateProps> = ({ versionID, context, setCo
   return (
     <LoadingGate
       label={PROJECT_LOADING_GATE_LABEL}
-      internalName={MigrationGate.name}
-      isLoaded={!!context}
       load={loadContext}
-      backgroundColor="#f9f9f9"
+      isLoaded={!!context}
+      component={WorkspaceOrProjectLoader}
+      internalName={MigrationGate.name}
     >
       {children}
     </LoadingGate>

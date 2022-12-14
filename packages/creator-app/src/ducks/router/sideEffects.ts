@@ -25,6 +25,8 @@ import {
   goToPublish,
   goToSettings,
   goToTranscript,
+  goToWorkspace,
+  goToWorkspaceMembers,
   goToWorkspaceSettings,
   redirectTo,
   redirectToCanvasCommentingThread,
@@ -390,6 +392,24 @@ export const goToCurrentNLUManagerTab =
       )
     );
   };
+
+export const goToCurrentWorkspace = (): SyncThunk => (dispatch, getState) => {
+  const state = getState();
+  const workspaceID = Session.activeWorkspaceIDSelector(state);
+
+  Errors.assertWorkspaceID(workspaceID);
+
+  dispatch(goToWorkspace(workspaceID));
+};
+
+export const goToCurrentWorkspaceMembers = (): SyncThunk => (dispatch, getState) => {
+  const state = getState();
+  const workspaceID = Session.activeWorkspaceIDSelector(state);
+
+  Errors.assertWorkspaceID(workspaceID);
+
+  dispatch(goToWorkspaceMembers(workspaceID));
+};
 
 export const goToCurrentWorkspaceSettings = (): SyncThunk => (dispatch, getState) => {
   const state = getState();

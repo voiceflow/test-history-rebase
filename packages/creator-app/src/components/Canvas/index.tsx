@@ -4,6 +4,7 @@ import { IS_SAFARI, withContext } from '@voiceflow/ui';
 import React from 'react';
 import { DismissableLayerContext } from 'react-dismissable-layers';
 
+import { CANVAS_COLOR } from '@/constants/canvas';
 import { Identifier } from '@/styles/constants';
 import { ANIMATION_SPEED } from '@/styles/theme';
 import { Pair, Point, Viewport } from '@/types';
@@ -39,7 +40,6 @@ export const BUFFER_REGION = 2 ** 11; // 2048
 const ZOOM_FINISH_DURATION = 300;
 
 const GRID_COLOR = '#dae2e2';
-export const CANVAS_COLOR = '#f4f6f6';
 
 export type CanvasAPI = Canvas['api'];
 

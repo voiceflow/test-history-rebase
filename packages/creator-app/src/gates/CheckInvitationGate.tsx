@@ -1,26 +1,35 @@
-import { toast } from '@voiceflow/ui';
+import { toast, useLinkedState } from '@voiceflow/ui';
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 
 import LoadingGate from '@/components/LoadingGate';
 import * as Account from '@/ducks/account';
-import * as Modal from '@/ducks/modal';
 import * as Router from '@/ducks/router';
 import * as Tracking from '@/ducks/tracking';
 import * as Workspace from '@/ducks/workspace';
-import { connect } from '@/hocs';
-import { ConnectedProps, MergeArguments } from '@/types';
+import { useDispatch, useSelector } from '@/hooks';
 import * as Query from '@/utils/query';
 
-const CheckInvitationGate: React.FC<CheckInvitationGateProps> = ({ acceptInvite, trackInvitationAccepted, redirectToDashboard, children }) => {
+import WorkspaceOrProjectLoader from './WorkspaceOrProjectLoader';
+
+const CheckInvitationGate: React.FC = ({ children }) => {
   const location = useLocation();
-  const [inviteChecked, setInviteChecked] = React.useState(false);
+
+  const email = useSelector(Account.userEmailSelector);
+
+  const acceptInvite = useDispatch(Workspace.acceptInvite);
+  const redirectToDashboard = useDispatch(Router.redirectToDashboard);
+  const trackInvitationAccepted = useDispatch(Tracking.trackInvitationAccepted);
+
+  const query = React.useMemo(() => {
+    if (!location.search) return {};
+
+    return Query.parse(location.search);
+  }, [location.search]);
+
+  const [inviteChecked, setInviteChecked] = useLinkedState(!query.invite);
 
   const checkForInvite = React.useCallback(async () => {
-    if (!location.search) return;
-
-    const query = Query.parse(location.search);
-
     if (!query.invite) return;
 
     const newWorkspaceID = await acceptInvite(query.invite, redirectToDashboard);
@@ -30,38 +39,22 @@ const CheckInvitationGate: React.FC<CheckInvitationGateProps> = ({ acceptInvite,
 
     toast.success('Successfully joined workspace!');
 
-    trackInvitationAccepted(newWorkspaceID, inviteSource).catch(() => {});
+    trackInvitationAccepted(newWorkspaceID, query.email ?? email ?? undefined, inviteSource).catch(() => {});
 
     redirectToDashboard();
-  }, [location]);
+  }, [email, location]);
 
   const load = React.useCallback(async () => {
     await checkForInvite();
+
     setInviteChecked(true);
   }, [checkForInvite]);
 
   return (
-    <LoadingGate internalName={CheckInvitationGate.name} isLoaded={inviteChecked} load={load}>
+    <LoadingGate load={load} isLoaded={inviteChecked} component={WorkspaceOrProjectLoader} internalName={CheckInvitationGate.name}>
       {children}
     </LoadingGate>
   );
 };
 
-const mapStateToProps = {
-  email: Account.userEmailSelector,
-};
-
-const mapDispatchToProps = {
-  acceptInvite: Workspace.acceptInvite,
-  setModal: Modal.setModal,
-  trackInvitationAccepted: Tracking.trackInvitationAccepted,
-  redirectToDashboard: Router.redirectToDashboard,
-};
-
-const mergeProps = (...[{ email }, { trackInvitationAccepted }]: MergeArguments<typeof mapStateToProps, typeof mapDispatchToProps>) => ({
-  trackInvitationAccepted: (workspaceID: string, source: string) => trackInvitationAccepted(workspaceID, email!, source),
-});
-
-type CheckInvitationGateProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps, typeof mergeProps>;
-
-export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(CheckInvitationGate);
+export default CheckInvitationGate;

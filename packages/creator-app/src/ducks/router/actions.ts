@@ -40,6 +40,8 @@ export const goToWorkspaceWithSearch = (workspaceID: string, search: string) =>
 
 export const goToNewWorkspace = () => goTo(Path.NEW_WORKSPACE);
 
+export const goToWorkspaceMembers = (workspaceID: string) => goTo(generatePath(Path.WORKSPACE_MEMBERS, { workspaceID }));
+
 export const goToWorkspaceSettings = (workspaceID: string) => goTo(generatePath(Path.WORKSPACE_SETTINGS, { workspaceID }));
 
 export const goToWorkspaceDeveloperSettings = (workspaceID: string, search?: string) =>

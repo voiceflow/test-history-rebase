@@ -11,3 +11,5 @@ export enum StepLabelVariant {
   SECONDARY = 'secondary',
   PLACEHOLDER = 'placeholder',
 }
+
+export const CANVAS_COLOR = '#f4f6f6';

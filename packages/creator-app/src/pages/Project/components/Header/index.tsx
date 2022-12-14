@@ -7,8 +7,8 @@ import {
   AnalyticsDashboardHeader,
   BackHeader,
   CanvasHeader,
-  ConversationsHeader,
   IntegrationsHeader,
+  LogoOnlyHeader,
   NLUHeader,
   PrototypeHeader,
   SettingsHeader,
@@ -29,7 +29,7 @@ const ProjectHeader: React.FC = () => (
 
     <Route path={Path.PROJECT_SETTINGS} component={SettingsHeader} />
 
-    <Route path={Path.CONVERSATIONS} component={ConversationsHeader} />
+    <Route path={Path.CONVERSATIONS} component={LogoOnlyHeader} />
 
     <Route path={Path.ANALYTICS_DASHBOARD} component={AnalyticsDashboardHeader} />
 

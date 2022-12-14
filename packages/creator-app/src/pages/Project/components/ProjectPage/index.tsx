@@ -10,15 +10,10 @@ import { useDisableModes } from '@/pages/Project/hooks';
 
 import { DIAGRAM_ROUTES } from '../../constants';
 import Header from '../Header';
-import Sidebar, { SideBarComponentProps } from '../Sidebar';
+import Sidebar from '../Sidebar';
 import * as S from './styles';
 
-interface ProjectPageProps {
-  shouldRenderHeader?: boolean;
-  sideBarProps?: SideBarComponentProps;
-}
-
-const ProjectPage: React.FC<ProjectPageProps> = ({ children, shouldRenderHeader = true, sideBarProps }) => {
+const ProjectPage: React.FC = ({ children }) => {
   const markup = React.useContext(MarkupContext);
 
   const canvasOnly = useSelector(UI.isCanvasOnlyShowingSelector);
@@ -31,7 +26,6 @@ const ProjectPage: React.FC<ProjectPageProps> = ({ children, shouldRenderHeader 
     <S.Page
       scrollable={!isDiagramRoute}
       renderHeader={() =>
-        shouldRenderHeader &&
         !canvasOnly && (
           <S.Content>
             <Header />
@@ -42,7 +36,7 @@ const ProjectPage: React.FC<ProjectPageProps> = ({ children, shouldRenderHeader 
       renderSidebar={() =>
         !canvasOnly && (
           <S.Content>
-            <Sidebar {...sideBarProps} />
+            <Sidebar />
             {isCreatingMarkupText && <S.ClickableLayer onClick={onDisableModes} />}
           </S.Content>
         )

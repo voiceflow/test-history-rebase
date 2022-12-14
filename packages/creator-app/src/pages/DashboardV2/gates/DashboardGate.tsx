@@ -9,6 +9,8 @@ import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useDispatch, useRouteWorkspaceID, useSelector } from '@/hooks';
 import RedirectWithSearch from '@/Routes/RedirectWithSearch';
 
+import { DashboardLoader } from '../components';
+
 const DashboardGate: React.FC = ({ children }) => {
   const routeWorkspaceID = useRouteWorkspaceID();
   const activeWorkspaceID = useSelector(Session.activeWorkspaceIDSelector);
@@ -30,7 +32,7 @@ const DashboardGate: React.FC = ({ children }) => {
   const isLoaded = routeWorkspaceID === activeWorkspaceID;
 
   return (
-    <LoadingGate label="Dashboard" internalName={DashboardGate.name} isLoaded={isLoaded} load={load}>
+    <LoadingGate label="Dashboard" internalName={DashboardGate.name} isLoaded={isLoaded} load={load} component={DashboardLoader}>
       {children}
     </LoadingGate>
   );

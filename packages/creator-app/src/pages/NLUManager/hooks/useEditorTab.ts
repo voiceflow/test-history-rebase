@@ -17,8 +17,8 @@ const useEditorTab = () => {
     editorTab,
     openEditorTab,
     closeEditorTab,
-    isEditorTabActive,
     inFullScreenTab,
+    isEditorTabActive,
   };
 };
 

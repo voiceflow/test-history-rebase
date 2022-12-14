@@ -4,16 +4,16 @@ import Page from '@/components/Page';
 
 import { SharePopperProvider } from '../../contexts';
 import { useLogoButtonOptions } from '../../hooks';
-import { Container } from './components';
+import * as S from './styles';
 
 const ConversationsHeader: React.FC = () => {
   const logoOptions = useLogoButtonOptions();
 
   return (
     <SharePopperProvider>
-      <Container>
-        <Page.Header.LogoButton noMargins={true} options={logoOptions} />
-      </Container>
+      <S.Container>
+        <Page.Header.LogoButton noMargins options={logoOptions} />
+      </S.Container>
     </SharePopperProvider>
   );
 };

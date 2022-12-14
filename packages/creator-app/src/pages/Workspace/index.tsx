@@ -8,20 +8,20 @@ import { LegacyPath, Path } from '@/config/routes';
 import * as Router from '@/ducks/router';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { CheckInvitationGate } from '@/gates';
-import { lazy, withBatchLoadingGate } from '@/hocs';
+import { lazy, withBatchLoadingGate, withWorkspaceOrProjectAssetsSuspense } from '@/hocs';
 import { useDispatch, useFeature, useSelector } from '@/hooks';
 import RedirectWithSearch from '@/Routes/RedirectWithSearch';
 
-const Settings = lazy(() => import('@/pages/Workspace/Settings'));
+const Settings = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/Workspace/Settings')));
 const DashboardV1 = lazy(() => import('@/pages/Dashboard'));
-const DashboardV2 = lazy(() => import('@/pages/DashboardV2'));
+const DashboardV2 = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/DashboardV2')));
 
 const Workspace: React.FC = () => {
   const workspaceIDs = useSelector(WorkspaceV2.allWorkspaceIDsSelector);
   const dashboardV2FF = useFeature(Realtime.FeatureFlag.DASHBOARD_V2);
-  const DashboardComponent = React.useMemo<typeof DashboardV2>(() => (dashboardV2FF.isEnabled ? DashboardV2 : DashboardV1), [dashboardV2FF]);
 
   const goToNewWorkspace = useDispatch(Router.goToNewWorkspace);
+  const DashboardComponent = dashboardV2FF.isEnabled ? DashboardV2 : DashboardV1;
 
   if (!workspaceIDs.length) {
     return (

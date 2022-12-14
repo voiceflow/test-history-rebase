@@ -18,7 +18,7 @@ const NLUManager: React.FC = () => {
   }, []);
 
   return (
-    <ProjectPage sideBarProps={{ withLogo: !!nluManager.inFullScreenTab }} shouldRenderHeader={!nluManager.inFullScreenTab}>
+    <ProjectPage>
       <S.Container>
         <NavigationSidebar />
 

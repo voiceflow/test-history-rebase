@@ -12,6 +12,9 @@ context('Canvas - Markup', () => {
   it('create new text markup', () => {
     canvasPage.el.markupTextControl.click();
 
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(120);
+
     canvasPage.el.canvas.click(500, 100);
 
     // eslint-disable-next-line cypress/no-unnecessary-waiting

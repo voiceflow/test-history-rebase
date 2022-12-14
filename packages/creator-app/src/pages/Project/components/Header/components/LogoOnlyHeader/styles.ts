@@ -1,6 +1,6 @@
 import { styled } from '@/hocs';
 
-const Container = styled.div`
+export const Container = styled.div`
   position: fixed;
   top: 0;
   left: 0;
@@ -8,5 +8,3 @@ const Container = styled.div`
   border-bottom: 1px solid ${({ theme }) => theme.colors.borders};
   z-index: 10;
 `;
-
-export default Container;

@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1023.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1022.1...@voiceflow/creator-app@1.1023.0) (2022-12-14)
+
+
+### Bug Fixes
+
+* whatsapp prototype job context (CT-000) ([#6428](https://github.com/voiceflow/creator-app/issues/6428)) ([0cf952a](https://github.com/voiceflow/creator-app/commit/0cf952a8aad3cf79a24e2c36ba2377ac0bcb89a3))
+
+
+### Features
+
+* show sidebars with loaders (CT-1271) ([#6422](https://github.com/voiceflow/creator-app/issues/6422)) ([a68e5c3](https://github.com/voiceflow/creator-app/commit/a68e5c3bdbbd2aa93d1c51469482bf295e927518))
+
+
+
+
+
 ## [1.1022.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1022.0...@voiceflow/creator-app@1.1022.1) (2022-12-14)
 
 

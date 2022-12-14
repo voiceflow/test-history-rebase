@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.206.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.205.0...@voiceflow/ui@1.206.0) (2022-12-14)
+
+
+### Features
+
+* show sidebars with loaders (CT-1271) ([#6422](https://github.com/voiceflow/creator-app/issues/6422)) ([a68e5c3](https://github.com/voiceflow/creator-app/commit/a68e5c3bdbbd2aa93d1c51469482bf295e927518))
+
+
+
+
+
 # [1.205.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.204.0...@voiceflow/ui@1.205.0) (2022-12-13)
 
 

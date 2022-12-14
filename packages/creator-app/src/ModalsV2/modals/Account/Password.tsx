@@ -1,4 +1,4 @@
-import { Button, ButtonVariant, Input, Modal, toast } from '@voiceflow/ui';
+import { Button, ButtonVariant, Input, Modal, SectionV2, toast } from '@voiceflow/ui';
 // eslint-disable-next-line you-dont-need-lodash-underscore/get
 import _get from 'lodash/get';
 import React from 'react';
@@ -44,9 +44,20 @@ const AccountPassword = manager.create('AccountPassword', () => ({ api, type, op
   };
 
   return (
-    <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove}>
-      <Modal.Header>Change Password</Modal.Header>
-      <Modal.Body>
+    <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} maxWidth={400}>
+      <Modal.Header actions={<Modal.Header.CloseButton onClick={() => api.close()} />} border>
+        Edit Password
+      </Modal.Header>
+
+      <SectionV2.SimpleContentSection
+        header={
+          <SectionV2.Title bold secondary>
+            Current Password
+          </SectionV2.Title>
+        }
+        headerProps={{ bottomUnit: 1.5 }}
+        contentProps={{ bottomOffset: false }}
+      >
         <Input
           autoFocus
           type="password"
@@ -55,13 +66,28 @@ const AccountPassword = manager.create('AccountPassword', () => ({ api, type, op
           onChangeText={setCurrentPassword}
           onEnterPress={handleSave}
         />
+      </SectionV2.SimpleContentSection>
 
-        <br />
-
+      <SectionV2.SimpleContentSection
+        header={
+          <SectionV2.Title bold secondary>
+            New Password
+          </SectionV2.Title>
+        }
+        headerProps={{ bottomUnit: 1.5 }}
+        contentProps={{ bottomOffset: false }}
+      >
         <Input type="password" value={nextPassword} placeholder="New password" onEnterPress={handleSave} onChangeText={setNextPassword} />
-
-        <br />
-
+      </SectionV2.SimpleContentSection>
+      <SectionV2.SimpleContentSection
+        header={
+          <SectionV2.Title bold secondary>
+            Confrim Password
+          </SectionV2.Title>
+        }
+        headerProps={{ bottomUnit: 1.5 }}
+        contentProps={{ bottomOffset: 3 }}
+      >
         <Input
           type="password"
           value={confirmPassword}
@@ -69,7 +95,7 @@ const AccountPassword = manager.create('AccountPassword', () => ({ api, type, op
           onEnterPress={handleSave}
           placeholder="Confirm new password"
         />
-      </Modal.Body>
+      </SectionV2.SimpleContentSection>
 
       <Modal.Footer>
         <Button variant={ButtonVariant.TERTIARY} onClick={() => api.close()} style={{ marginRight: '15px' }}>

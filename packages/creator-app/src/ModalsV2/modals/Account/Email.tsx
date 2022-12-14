@@ -1,4 +1,4 @@
-import { Box, Button, Input, Modal, SectionV2, SvgIcon, toast } from '@voiceflow/ui';
+import { Alert, Button, Input, Modal, SectionV2, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Account from '@/ducks/account';
@@ -34,19 +34,26 @@ const AccountEmail = manager.create('AccountEmail', () => ({ api, type, opened, 
   };
 
   return (
-    <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove}>
-      <Modal.Header>Change Email</Modal.Header>
+    <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} maxWidth={400}>
+      <Modal.Header actions={<Modal.Header.CloseButton onClick={() => api.close()} />}>Change Email</Modal.Header>
+
+      <SectionV2.SimpleSection headerProps={{ topUnit: 0.5, bottomUnit: 2.5 }}>
+        <Alert title={<Alert.Title>Editing email address</Alert.Title>}>
+          On submission of the form below, we will send a validation to your new email. You must open that email and confirm the change to see it
+          appear in Voiceflow.
+        </Alert>
+      </SectionV2.SimpleSection>
 
       <SectionV2.SimpleContentSection
         header={
           <SectionV2.Title bold secondary>
-            Email
+            New Email
           </SectionV2.Title>
         }
         headerProps={{ topUnit: 0, bottomUnit: 1.5 }}
         contentProps={{ bottomOffset: false }}
       >
-        <Input value={nextEmail} autoFocus onChangeText={setNextEmail} placeholder="New Email" onEnterPress={onSave} />
+        <Input value={nextEmail} autoFocus onChangeText={setNextEmail} placeholder="Enter new email" onEnterPress={onSave} />
       </SectionV2.SimpleContentSection>
 
       <SectionV2.SimpleContentSection
@@ -62,16 +69,6 @@ const AccountEmail = manager.create('AccountEmail', () => ({ api, type, opened, 
       </SectionV2.SimpleContentSection>
 
       <SectionV2.Divider />
-
-      <SectionV2.SimpleSection isAccent>
-        <Box.Flex>
-          <SvgIcon icon="info" color="#3d82e2" mr={16} mb={16} />
-
-          <SectionV2.InfoMessage>
-            We will send a validation email to your new email address. Click the "Confirm email" button inside to complete the change.
-          </SectionV2.InfoMessage>
-        </Box.Flex>
-      </SectionV2.SimpleSection>
 
       <Modal.Footer gap={12}>
         <Button variant={Button.Variant.TERTIARY} onClick={() => api.close()} squareRadius>

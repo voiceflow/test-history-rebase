@@ -18,6 +18,7 @@ interface ImageContainerProps {
   notAccepted: boolean;
   isSquare?: boolean;
   disabled?: boolean;
+  isProfile?: boolean;
 }
 
 export const ImageContainer = styled(FlexCenter)<ImageContainerProps>`
@@ -51,6 +52,23 @@ export const ImageContainer = styled(FlexCenter)<ImageContainerProps>`
         background: linear-gradient(rgba(19, 33, 68, 0.6) 100%, rgba(19, 33, 68, 0.6) 100%), url(${image});
         background-position: center center;
         background-size: cover;
+        ${SvgIcon.Container} {
+          opacity: 1;
+        }
+      }
+    `};
+
+  ${({ isProfile }) =>
+    isProfile &&
+    css`
+      opacity: 1;
+      border: none;
+
+      ${SvgIcon.Container} {
+        opacity: 0;
+      }
+
+      &:hover {
         ${SvgIcon.Container} {
           opacity: 1;
         }

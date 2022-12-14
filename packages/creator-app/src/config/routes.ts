@@ -104,6 +104,8 @@ export enum WorkspaceRoute {
   ORGANIZATION = 'organization',
   TEMPLATE = 'template',
   ACCEPT_INVITE = 'accept-invite',
+  PROFILE = 'profile',
+  INTEGRATIONS = 'integrations',
 }
 
 export enum WorkspaceSettingsRoute {
@@ -157,6 +159,8 @@ export const Path = {
   WORKSPACE_SSO_ORG: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.ORGANIZATION, WorkspaceOrganizationRoute.SSO),
   WORKSPACE_MEMBERS: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.MEMBERS),
   WORKSPACE_BILLING: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.BILLING),
+  WORKSPACE_PROFILE: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.PROFILE),
+  WORKSPACE_INTEGRATIONS: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.INTEGRATIONS),
   WORKSPACE_SETTINGS: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.SETTINGS),
   WORKSPACE_GENERAL_SETTINGS: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.SETTINGS, WorkspaceSettingsRoute.GENERAL),
   WORKSPACE_BILLING_SETTINGS: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.SETTINGS, WorkspaceSettingsRoute.BILLING),

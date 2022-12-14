@@ -1,5 +1,6 @@
 import { LoadCircle } from '@ui/components/Loader';
 import SvgIcon from '@ui/components/SvgIcon';
+import User, { UserData } from '@ui/components/User';
 import { stopPropagation } from '@ui/utils';
 import { Utils } from '@voiceflow/common';
 import React from 'react';
@@ -14,6 +15,7 @@ import * as S from './styles';
 
 export enum UploadIconVariant {
   EXTRA_SMALL = 'xsmall',
+  SMALLER = 'smaller',
   SMALL = 'small',
   MEDIUM = 'medium',
   LARGE = 'large',
@@ -25,6 +27,7 @@ export const SIZE_VARIANT = {
   [UploadIconVariant.LARGE]: 120,
   [UploadIconVariant.MEDIUM]: 100,
   [UploadIconVariant.SMALL]: 80,
+  [UploadIconVariant.SMALLER]: 70,
   [UploadIconVariant.EXTRA_SMALL]: 42,
 };
 
@@ -39,6 +42,7 @@ export interface IconUploadOwnProps {
   canRemove?: boolean;
   className?: string;
   acceptedFileTypes?: string[];
+  user?: UserData;
 }
 
 export interface BaseIconUploadProps extends IconUploadOwnProps, Omit<ImageInjectedWithUploadProps, 'update'> {}
@@ -58,6 +62,7 @@ export const BaseIconUpload = React.forwardRef<HTMLDivElement, BaseIconUploadPro
       className,
       canRemove = false,
       acceptedFileTypes = IMAGE_FILE_FORMATS,
+      user,
     },
     ref
   ) => {
@@ -84,12 +89,12 @@ export const BaseIconUpload = React.forwardRef<HTMLDivElement, BaseIconUploadPro
       content = <ErrorText>Error</ErrorText>;
     } else if (isLoading) {
       content = <LoadCircle color="transparent" isMd />;
-    } else if (!image) {
+    } else if (!image && !user) {
       content = <SvgIcon size={placeholderIconSize} color="rgba(110, 132, 154, 0.85)" icon="addImage" />;
     } else {
       content = (
         <S.OverlayContainer isSquare={isSquare}>
-          <SvgIcon size={placeholderIconSize} color={image ? '#ffffff' : 'rgba(110, 132, 154, 0.85)'} icon="addImage" />
+          <SvgIcon size={placeholderIconSize} color={image || user ? '#ffffff' : 'rgba(110, 132, 154, 0.85)'} icon="addImage" />
         </S.OverlayContainer>
       );
     }
@@ -110,12 +115,14 @@ export const BaseIconUpload = React.forwardRef<HTMLDivElement, BaseIconUploadPro
           disabled={disabled}
           isLoading={isLoading}
           notAccepted={isDragReject}
+          isProfile={!!user}
         >
           {canRemove && image && (
             <RemoveButton top={0} right={0} onClick={stopPropagation(() => update?.(''))}>
               <SvgIcon size={8} icon="close" color="#8da2b5" />
             </RemoveButton>
           )}
+          {user && <User user={user} flat extraLarge square />}
           {content}
         </S.ImageContainer>
       </S.IconUploadContainer>

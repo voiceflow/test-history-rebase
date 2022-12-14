@@ -19,6 +19,7 @@ export interface UserProps extends MemberIconProps {
   pending?: boolean;
   className?: string;
   small?: boolean;
+  square?: boolean;
 }
 
 export const isColorImage = (image?: string | null): image is string => image?.length === 13 && image.includes('|');

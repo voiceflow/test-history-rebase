@@ -25,7 +25,7 @@ export const goToLogin = <T extends Struct>(search?: string, state?: T | null) =
 
 export const goToAccount = (search?: string) => goTo(`${Path.ACCOUNT}${search ?? ''}`);
 
-export const goToAccountIntegrations = (search?: string) => goTo(`${Path.ACCOUNT_INTEGRATIONS}${search ?? ''}`);
+export const goToAccountV2 = (workspaceID: string) => goTo(generatePath(Path.WORKSPACE_PROFILE, { workspaceID }));
 
 export const goToLogout = (search?: string) => goTo(`${Path.LOGOUT}${search ?? ''}`);
 

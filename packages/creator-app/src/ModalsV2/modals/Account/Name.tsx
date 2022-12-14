@@ -52,11 +52,10 @@ const AccountName = manager.create('AccountName', () => ({ api, type, opened, hi
   };
 
   return (
-    <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove}>
-      <Modal.Header>Change Name</Modal.Header>
+    <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} maxWidth={400}>
+      <Modal.Header actions={<Modal.Header.CloseButton onClick={() => api.close()} />}>Edit Name</Modal.Header>
 
       <Modal.Body>
-        <div style={{ color: '#62778c', marginBottom: '12px', fontWeight: 600 }}>Name</div>
         <Input autoFocus value={saveName} placeholder="Enter name" onChangeText={setSaveName} onEnterPress={handleSave} />
       </Modal.Body>
 

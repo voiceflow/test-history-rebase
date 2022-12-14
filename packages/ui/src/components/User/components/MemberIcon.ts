@@ -5,6 +5,8 @@ export interface MemberIconProps {
   small?: boolean;
   large?: boolean;
   medium?: boolean;
+  extraLarge?: boolean;
+  square?: boolean;
 }
 
 const MemberIcon = styled.div<MemberIconProps>`
@@ -22,7 +24,7 @@ const MemberIcon = styled.div<MemberIconProps>`
   font-weight: 600;
   text-transform: uppercase;
   user-select: none;
-  border-radius: 100%;
+  border-radius: ${({ square }) => (square ? '20%' : '100%')};
   cursor: default;
 
   ${({ flat }) =>
@@ -58,6 +60,15 @@ const MemberIcon = styled.div<MemberIconProps>`
       height: 42px;
       font-size: 18px;
       line-height: 42px;
+    `}
+
+    ${({ extraLarge }) =>
+    extraLarge &&
+    css`
+      width: 70px;
+      height: 70px;
+      font-size: 24px;
+      line-height: 70px;
     `}
 
   & > * {

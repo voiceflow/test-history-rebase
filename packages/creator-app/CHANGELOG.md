@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1022.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1022.0...@voiceflow/creator-app@1.1022.1) (2022-12-14)
+
+
+### Bug Fixes
+
+* remove chat options for specific platforms (CT-000) ([#6421](https://github.com/voiceflow/creator-app/issues/6421)) ([ff7c503](https://github.com/voiceflow/creator-app/commit/ff7c503232acde846d19fd1e9d686dfc09da015b))
+
+
+
+
+
 # [1.1022.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1021.0...@voiceflow/creator-app@1.1022.0) (2022-12-13)
 
 

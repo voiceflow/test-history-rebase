@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.137.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.137.0...@voiceflow/realtime@1.137.1) (2022-12-14)
+
+
+### Bug Fixes
+
+* legacy channel switchover [bugfix] (CT-000) ([#6426](https://github.com/voiceflow/creator-app/issues/6426)) ([3d533b7](https://github.com/voiceflow/creator-app/commit/3d533b70e5719e9d1c21a7101d4850dae8c6ad36))
+
+
+
+
+
 # [1.137.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.136.5...@voiceflow/realtime@1.137.0) (2022-12-13)
 
 

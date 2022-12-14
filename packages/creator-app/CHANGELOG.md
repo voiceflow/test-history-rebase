@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1024.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1023.0...@voiceflow/creator-app@1.1024.0) (2022-12-14)
+
+
+### Bug Fixes
+
+* toggle styles (CT-1319) ([#6431](https://github.com/voiceflow/creator-app/issues/6431)) ([39cc701](https://github.com/voiceflow/creator-app/commit/39cc70124ad32a1fd7414df92499385d6af71e74))
+
+
+### Features
+
+* track modality on project create (CT-1308) ([#6433](https://github.com/voiceflow/creator-app/issues/6433)) ([d3eea73](https://github.com/voiceflow/creator-app/commit/d3eea73390b380f1cbc231f00fa5ff74c8cb7833))
+
+
+
+
+
 # [1.1023.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1022.1...@voiceflow/creator-app@1.1023.0) (2022-12-14)
 
 

@@ -1,6 +1,6 @@
 {
   "name": "@voiceflow/platform-config",
-  "version": "1.12.2",
+  "version": "1.12.3",
   "author": "Voiceflow",
   "bugs": {
     "url": "https://github.com/voiceflow/creator-app/issues"
@@ -13,7 +13,7 @@
     "@voiceflow/common": "8.1.5",
     "@voiceflow/google-dfes-types": "2.14.22",
     "@voiceflow/google-types": "2.18.15",
-    "@voiceflow/ui": "^1.206.0",
+    "@voiceflow/ui": "^1.206.1",
     "@voiceflow/voice-types": "2.8.23",
     "@voiceflow/voiceflow-types": "3.22.3",
     "bidirectional-adapter": "1.2.0",

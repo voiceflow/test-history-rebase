@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.206.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.206.0...@voiceflow/ui@1.206.1) (2022-12-14)
+
+
+### Bug Fixes
+
+* toggle styles (CT-1319) ([#6431](https://github.com/voiceflow/creator-app/issues/6431)) ([39cc701](https://github.com/voiceflow/creator-app/commit/39cc70124ad32a1fd7414df92499385d6af71e74))
+
+
+
+
+
 # [1.206.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.205.0...@voiceflow/ui@1.206.0) (2022-12-14)
 
 

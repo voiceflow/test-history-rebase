@@ -10,17 +10,16 @@ import Section from '@/components/Section';
 import VariablesInput from '@/components/VariablesInput';
 import { HTTPS_URL_REGEX } from '@/constants';
 import * as History from '@/ducks/history';
-import { useDispatch, useEnableDisable } from '@/hooks';
+import { useActiveProjectPlatform, useDispatch, useEnableDisable } from '@/hooks';
 import { Content, Controls, FormControl } from '@/pages/Canvas/components/Editor';
 import { NodeEditor } from '@/pages/Canvas/managers/types';
-import { PlatformContext } from '@/pages/Project/contexts';
 
 import { HelpMessage, HelpTooltip, VisualsForm } from './components';
 
 const isValidURL = (url: string): boolean => !!(url.match(HTTPS_URL_REGEX) || url.match(SLOT_REGEXP));
 
 const StreamEditor: NodeEditor<Realtime.NodeData.Stream, Realtime.NodeData.StreamBuiltInPorts> = ({ data, node, engine, onChange }) => {
-  const platform = React.useContext(PlatformContext);
+  const platform = useActiveProjectPlatform();
 
   const [invalidAudio, setValidAudio, setInvalidAudio] = useEnableDisable(false);
 

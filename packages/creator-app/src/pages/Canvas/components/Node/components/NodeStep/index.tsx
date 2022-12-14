@@ -3,10 +3,10 @@ import { Portal } from '@voiceflow/ui';
 import React from 'react';
 
 import { BlockType, HSLShades } from '@/constants';
+import { useActiveProjectConfig } from '@/hooks';
 import * as Step from '@/pages/Canvas/components/Step';
 import { StepAPIProvider } from '@/pages/Canvas/components/Step/contexts';
 import { EngineContext, ManagerContext, NodeEntityContext, PortEntityProvider } from '@/pages/Canvas/contexts';
-import { NLUTypeContext, PlatformContext, ProjectTypeContext } from '@/pages/Project/contexts';
 
 import NodeLifecycle from '../NodeLifecycle';
 import NodePort from '../NodePort';
@@ -21,11 +21,10 @@ export interface NodeStepProps {
 
 const NodeStep: React.FC<NodeStepProps> = ({ isLast, palette, isDraggable }) => {
   const engine = React.useContext(EngineContext)!;
-  const nluType = React.useContext(NLUTypeContext)!;
-  const platform = React.useContext(PlatformContext)!;
-  const projectType = React.useContext(ProjectTypeContext)!;
   const nodeEntity = React.useContext(NodeEntityContext)!;
   const getManager = React.useContext(ManagerContext)!;
+  const { nlu, platform, projectType } = useActiveProjectConfig();
+
   const instance = useNodeInstance();
   const { node, data, isDragging } = nodeEntity.useState((e) => {
     const resolved = e.resolve();
@@ -68,7 +67,7 @@ const NodeStep: React.FC<NodeStepProps> = ({ isLast, palette, isDraggable }) => 
       ports={node.ports as any}
       isLast={isLast}
       engine={engine}
-      nluType={nluType}
+      nluType={nlu}
       palette={palette}
       platform={platform}
       withPorts={stepAPI.withPorts}

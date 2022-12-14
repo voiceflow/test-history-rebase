@@ -5,7 +5,7 @@ import React from 'react';
 import { PopperContent, PopperTitle } from '@/components/SlateEditable';
 import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
-import { useActivePlatformConfig, useDispatch, useSelector } from '@/hooks';
+import { useActiveProjectPlatformConfig, useDispatch, useSelector } from '@/hooks';
 import { getDefaultNoReplyTimeoutSeconds } from '@/utils/noReply';
 
 import * as S from './styles';
@@ -15,7 +15,7 @@ const NOT_NUMBERS_REGEX = /\D/g;
 const DEFAULT_DELAY = 10;
 
 const MessageDelayPopper: React.FC = () => {
-  const platformConfig = useActivePlatformConfig();
+  const platformConfig = useActiveProjectPlatformConfig();
 
   const settings = useSelector(VersionV2.active.settingsSelector);
   const patchSettings = useDispatch(Version.patchSettings);

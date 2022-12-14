@@ -2,8 +2,8 @@ import * as Platform from '@voiceflow/platform-config';
 import { Button as UIButton, ButtonVariant as UIButtonVariant, SvgIconTypes, Text, TippyTooltip, TippyTooltipProps } from '@voiceflow/ui';
 import React from 'react';
 
+import { useActiveProjectPlatform } from '@/hooks';
 import { Hotkey, HOTKEY_LABEL_MAP } from '@/keymap';
-import { PlatformContext } from '@/pages/Project/contexts';
 import { Identifier } from '@/styles/constants';
 
 import { getPlatformIconProps } from '../constants';
@@ -107,7 +107,8 @@ const getButtonProps = (
 };
 
 const ConnectButton: React.FC<ConnectButtonProps> = ({ onClick, ...props }) => {
-  const platform = React.useContext(PlatformContext)!;
+  const platform = useActiveProjectPlatform();
+
   const buttonProps = getButtonProps(platform, props);
 
   return (

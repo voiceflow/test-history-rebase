@@ -4,12 +4,12 @@ import React from 'react';
 
 import SSMLWithVars from '@/components/SSMLWithVars';
 import VariablesInput from '@/components/VariablesInput';
-import { PlatformContext } from '@/pages/Project/contexts';
+import { useActiveProjectPlatform } from '@/hooks';
 
 import { VoiceMessageProps } from '../types';
 
 const SpeakAudioItem: React.FC<VoiceMessageProps> = ({ message, autoFocus, onChange }) => {
-  const platform = React.useContext(PlatformContext)!;
+  const platform = useActiveProjectPlatform();
   const isGoogle = Realtime.Utils.typeGuards.isGooglePlatform(platform);
 
   return Realtime.isSSML(message) ? (

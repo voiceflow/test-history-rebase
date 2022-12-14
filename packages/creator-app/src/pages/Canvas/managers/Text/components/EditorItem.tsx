@@ -6,7 +6,7 @@ import React from 'react';
 
 import { DragPreviewComponentProps, ItemComponentProps, MappedItemComponentHandlers } from '@/components/DraggableList';
 import { SlateTextInput } from '@/components/SlateInputs';
-import { useAutoScrollNodeIntoView } from '@/hooks';
+import { useActiveProjectTypeConfig, useAutoScrollNodeIntoView } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import MessageDelayButton from '@/pages/Canvas/components/MessageDelayButton';
 import { NodeEditorV2Props } from '@/pages/Canvas/managers/types';
@@ -25,6 +25,8 @@ const EditorItem: React.ForwardRefRenderFunction<HTMLElement, EditorItemProps> =
 ) => {
   const autofocus = latestCreatedKey === itemKey || editor.data.texts.length === 1;
   const [sectionRef, scrollSectionIntoView] = useAutoScrollNodeIntoView<HTMLDivElement>({ condition: autofocus, options: { block: 'end' } });
+
+  const config = useActiveProjectTypeConfig();
 
   return (
     <EditorV2.PersistCollapse namespace={['text-editor-item', item.id]} defaultCollapsed={!autofocus}>
@@ -56,15 +58,18 @@ const EditorItem: React.ForwardRefRenderFunction<HTMLElement, EditorItemProps> =
                     <SlateTextInput
                       value={item.content}
                       onBlur={(value) => onUpdate({ content: value })}
+                      options={config.project.chat.toolbarOptions}
                       extraToolbarButtons={
-                        <>
-                          <Divider height={15} offset={4} isVertical />
+                        config.project.chat.messageDelay && (
+                          <>
+                            <Divider height={15} offset={4} isVertical />
 
-                          <MessageDelayButton
-                            delay={item.messageDelayMilliseconds}
-                            onChange={(messageDelayMilliseconds) => onUpdate({ messageDelayMilliseconds })}
-                          />
-                        </>
+                            <MessageDelayButton
+                              delay={item.messageDelayMilliseconds}
+                              onChange={(messageDelayMilliseconds) => onUpdate({ messageDelayMilliseconds })}
+                            />
+                          </>
+                        )
                       }
                     />
                   </SectionV2.Content>

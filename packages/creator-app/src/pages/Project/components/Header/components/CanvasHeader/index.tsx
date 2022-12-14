@@ -4,7 +4,7 @@ import React from 'react';
 import Page from '@/components/Page';
 import { Permission } from '@/config/permissions';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { useActivePlatformConfig, usePermission, useSelector } from '@/hooks';
+import { useActiveProjectPlatformConfig, usePermission, useSelector } from '@/hooks';
 import CanvasViewers from '@/pages/Project/components/CanvasViewers';
 
 import { SharePopperProvider } from '../../contexts';
@@ -15,7 +15,7 @@ const CanvasHeader: React.FC = () => {
   const organizationTrialExpired = useSelector(WorkspaceV2.active.organizationTrialExpired);
   const [canPublish] = usePermission(Permission.CANVAS_PUBLISH);
 
-  const platformConfig = useActivePlatformConfig();
+  const platformConfig = useActiveProjectPlatformConfig();
 
   return (
     <SharePopperProvider>

@@ -4,7 +4,7 @@ import { Text } from '@voiceflow/ui';
 import React from 'react';
 
 import Section from '@/components/Section';
-import { PlatformContext } from '@/pages/Project/contexts';
+import { useActiveProjectPlatform } from '@/hooks';
 import { getPlatformValue } from '@/utils/platform';
 
 import InfoTooltip from './InfoTooltip';
@@ -18,7 +18,7 @@ interface ButtonsSectionProps {
 }
 
 const ButtonsSection: React.FC<ButtonsSectionProps> = ({ pushToPath }) => {
-  const platform = React.useContext(PlatformContext)!;
+  const platform = useActiveProjectPlatform();
   const openButtons = React.useCallback(
     () =>
       pushToPath?.({

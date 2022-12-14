@@ -7,14 +7,14 @@ import * as Project from '@/ducks/project';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
-import { useActivePlatformConfig, useActiveProjectTypeConfig, useDispatch, useSelector } from '@/hooks';
+import { useActiveProjectPlatformConfig, useActiveProjectTypeConfig, useDispatch, useSelector } from '@/hooks';
 import { DescriptorContainer } from '@/pages/Settings/components/ContentDescriptors/components';
 
 import { SectionErrorMessage } from './styles';
 
 const Basic: React.FC = () => {
   const projectConfig = useActiveProjectTypeConfig();
-  const platformConfig = useActivePlatformConfig();
+  const platformConfig = useActiveProjectPlatformConfig();
 
   const project = useSelector(ProjectV2.active.projectSelector);
   const storedLocales = useSelector(VersionV2.active.localesSelector);

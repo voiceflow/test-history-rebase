@@ -10,14 +10,14 @@ import { Permission } from '@/config/permissions';
 import { getNLUExportLimitDetails, isGatedNLUExportType } from '@/config/planLimits/nluExport';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { UpgradePrompt } from '@/ducks/tracking';
-import { useActiveNLUConfig, usePermission } from '@/hooks';
+import { useActiveProjectNLUConfig, usePermission } from '@/hooks';
 
 import { ExportContext } from '../../Context';
 
 const ExportModel: React.FC<{
   selectedIntentsIds?: string[];
 }> = ({ selectedIntentsIds }) => {
-  const nluConfig = useActiveNLUConfig();
+  const nluConfig = useActiveProjectNLUConfig();
 
   const { exportNLPType, setExportNLPType, setExportIntents, exportIntents, nlpTypes, setCanExport, setCheckedExportIntents } =
     React.useContext(ExportContext)!;

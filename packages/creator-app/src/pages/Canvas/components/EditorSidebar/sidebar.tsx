@@ -9,13 +9,12 @@ import { BlockType } from '@/constants';
 import { NamespaceProvider } from '@/contexts';
 import * as Creator from '@/ducks/creator';
 import * as CreatorV2 from '@/ducks/creatorV2';
-import { useRAF, useTheme } from '@/hooks';
+import { useActiveProjectConfig, useRAF, useTheme } from '@/hooks';
 import { LockedBlockOverlay } from '@/pages/Canvas/components/LockedEditorOverlay';
 import { EngineContext, ManagerContext } from '@/pages/Canvas/contexts';
 import BlockEditor from '@/pages/Canvas/editors/BlockEditor';
 import MarkupEditor from '@/pages/Canvas/editors/MarkupEditor';
 import { NodeEditor } from '@/pages/Canvas/managers/types';
-import { NLUTypeContext, PlatformContext, ProjectTypeContext } from '@/pages/Project/contexts';
 import { useEditingMode } from '@/pages/Project/hooks';
 import { isMarkupBlockType } from '@/utils/typeGuards';
 
@@ -36,10 +35,8 @@ const EditSidebar = () => {
   const getNodeByID = useSelector(CreatorV2.getNodeByIDSelector);
 
   const engine = React.useContext(EngineContext)!;
-  const nluType = React.useContext(NLUTypeContext)!;
-  const platform = React.useContext(PlatformContext)!;
   const getManager = React.useContext(ManagerContext)!;
-  const projectType = React.useContext(ProjectTypeContext)!;
+  const { nlu, platform, projectType } = useActiveProjectConfig();
 
   const prevPathLength = React.useRef(0);
   const prevAnimationDistance = React.useRef(40);
@@ -106,7 +103,7 @@ const EditSidebar = () => {
         engine={engine}
         isOpen={isOpen}
         nodeID={node.id}
-        nluType={nluType}
+        nluType={nlu}
         platform={platform}
         onChange={updateData}
         onExpand={() => setFullScreen(true)}

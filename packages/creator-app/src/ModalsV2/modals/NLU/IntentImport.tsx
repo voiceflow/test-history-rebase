@@ -8,7 +8,7 @@ import * as Intent from '@/ducks/intent';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import * as Slot from '@/ducks/slot';
-import { useActiveNLUConfig, useDispatch, useHotKeys, useModelTracking, useNLUImport, useSelector } from '@/hooks';
+import { useActiveProjectNLUConfig, useDispatch, useHotKeys, useModelTracking, useNLUImport, useSelector } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import { NLUImportModel } from '@/models';
 
@@ -17,7 +17,7 @@ import { getDropzoneCaption } from './constants';
 import * as S from './styles';
 
 const IntentImport = manager.create('NLUImportIntents', () => ({ api, type, opened, hidden, animated, closePrevented }) => {
-  const nluConfig = useActiveNLUConfig();
+  const nluConfig = useActiveProjectNLUConfig();
   const [file, setFile] = React.useState<File | null>(null);
   const [importedModel, setImportedModel] = React.useState<NLUImportModel | null>(null);
   const platform = useSelector(ProjectV2.active.platformSelector);

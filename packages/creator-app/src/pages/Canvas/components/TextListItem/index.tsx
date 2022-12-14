@@ -4,6 +4,7 @@ import React from 'react';
 
 import { SectionToggleVariant } from '@/components/Section';
 import { SlateTextInput } from '@/components/SlateInputs';
+import { useActiveProjectTypeConfig } from '@/hooks';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
 import { ListItemComponentProps } from '@/pages/Canvas/components/ListEditorContent';
@@ -34,6 +35,8 @@ const TextListItem = React.forwardRef<HTMLElement, TextListItemProps>(
   ) => {
     const isNew = latestCreatedKey === itemKey;
 
+    const config = useActiveProjectTypeConfig();
+
     return (
       <EditorSection
         ref={ref as React.Ref<HTMLDivElement>}
@@ -55,15 +58,18 @@ const TextListItem = React.forwardRef<HTMLElement, TextListItemProps>(
             <SlateTextInput
               value={item.content}
               onBlur={(value) => onUpdate({ content: value })}
+              options={config.project.chat.toolbarOptions}
               autofocus={isNew}
               extraToolbarButtons={
-                <>
-                  <Divider isVertical height="15px" style={{ margin: 0 }} />
-                  <MessageDelayButton
-                    delay={item.messageDelayMilliseconds}
-                    onChange={(messageDelayMilliseconds) => onUpdate({ messageDelayMilliseconds })}
-                  />
-                </>
+                config.project.chat.messageDelay && (
+                  <>
+                    <Divider isVertical height="15px" style={{ margin: 0 }} />
+                    <MessageDelayButton
+                      delay={item.messageDelayMilliseconds}
+                      onChange={(messageDelayMilliseconds) => onUpdate({ messageDelayMilliseconds })}
+                    />
+                  </>
+                )
               }
             />
           </FormControl>

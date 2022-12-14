@@ -3,12 +3,12 @@ import React from 'react';
 
 import { IS_PRIVATE_CLOUD } from '@/config';
 import { BlockType } from '@/constants';
-import { ProjectTypeContext } from '@/pages/Project/contexts';
+import { useActiveProjectType } from '@/hooks';
 
 import { useFeature } from './feature';
 
 export const useCanvasNodeFilter = () => {
-  const projectType = React.useContext(ProjectTypeContext)!;
+  const projectType = useActiveProjectType();
   const gadgets = useFeature(Realtime.FeatureFlag.GADGETS);
   const promptStep = useFeature(Realtime.FeatureFlag.PROMPT_STEP);
   const chatCardStep = useFeature(Realtime.FeatureFlag.CHAT_CARD_STEP);

@@ -5,9 +5,8 @@ import React from 'react';
 import * as Documentation from '@/config/documentation';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as VersionV2 from '@/ducks/versionV2';
-import { useSelector } from '@/hooks';
+import { useActiveProjectPlatform, useSelector } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
-import { PlatformContext } from '@/pages/Project/contexts';
 import { isPlatformWithInvocationName } from '@/utils/typeGuards';
 
 import CommandsSection from './CommandsSection';
@@ -18,7 +17,7 @@ import StartLabelSection from './StartLabelSection';
 const RootEditor: React.FC = () => {
   const editor = EditorV2.useEditor<Realtime.NodeData.Start>();
 
-  const platform = React.useContext(PlatformContext)!;
+  const platform = useActiveProjectPlatform();
 
   const activeDiagramID = useSelector(CreatorV2.activeDiagramIDSelector);
   const versionRootDiagramID = useSelector(VersionV2.active.rootDiagramIDSelector);

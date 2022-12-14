@@ -11,11 +11,10 @@ import OverflowMenu from '@/components/OverflowMenu';
 import * as Creator from '@/ducks/creator';
 import * as IntentV2 from '@/ducks/intentV2';
 import { connect } from '@/hocs';
-import { useMapManager, useToggle } from '@/hooks';
+import { useActiveProjectPlatform, useMapManager, useToggle } from '@/hooks';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
 import { useUpdateData } from '@/pages/Canvas/components/EditorSidebar/hooks';
 import useButtonLayoutOption from '@/pages/Canvas/managers/hooks/useButtonLayoutOption';
-import { PlatformContext } from '@/pages/Project/contexts';
 import { ConnectedProps } from '@/types';
 import { getPlatformValue } from '@/utils/platform';
 
@@ -23,7 +22,7 @@ import HelpTooltip from './HelpTooltip';
 import Item from './Item';
 
 const Editor: React.FC<ConnectedButtonPageProps> = ({ focus, intents, focusedNode }) => {
-  const platform = React.useContext(PlatformContext)!;
+  const platform = useActiveProjectPlatform();
   const [isDragging, toggleDragging] = useToggle(false);
   const updateData = useUpdateData(focus.target || undefined);
   const updateButtons = React.useCallback((buttons: BaseButton.AnyButton[]) => updateData({ buttons }), [updateData]);

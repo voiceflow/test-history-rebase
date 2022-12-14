@@ -1,10 +1,10 @@
 import { SvgIcon, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
-import { useActivePlatformConfig, useActiveProjectTypeConfig } from '@/hooks';
+import { useActiveProjectPlatformConfig, useActiveProjectTypeConfig } from '@/hooks';
 
 const PlatformLogo: React.FC = () => {
-  const platformConfig = useActivePlatformConfig();
+  const platformConfig = useActiveProjectPlatformConfig();
   const platformTypeConfig = useActiveProjectTypeConfig();
 
   if (!platformConfig.oneClickPublish) {

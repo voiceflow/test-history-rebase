@@ -7,14 +7,14 @@ import { NLURoute } from '@/config/routes';
 import { ModalType } from '@/constants';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
-import { useActiveNLUConfig, useDispatch, useFeature, useModals, useNLUImport, useSelector } from '@/hooks';
+import { useActiveProjectNLUConfig, useDispatch, useFeature, useModals, useNLUImport, useSelector } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
 import { NLUManagerContext } from '@/pages/NLUManager/context';
 
 import * as S from './styles';
 
 const NLUNavigationSidebar: React.FC = () => {
-  const nluConfig = useActiveNLUConfig();
+  const nluConfig = useActiveProjectNLUConfig();
 
   const [importClicked, setImportClicked] = useLocalStorageState('import-clicked', false);
   const { open } = ModalsV2.useModal(ModalsV2.NLU.Import);

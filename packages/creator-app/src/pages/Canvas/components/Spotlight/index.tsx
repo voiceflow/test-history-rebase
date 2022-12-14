@@ -3,11 +3,10 @@ import { Flex, KeyName, preventDefault, SvgIcon, useDidUpdateEffect } from '@voi
 import React from 'react';
 import ReactSelect from 'react-select';
 
-import { useCanvasNodeFilter, useTrackingEvents } from '@/hooks';
+import { useActiveProjectConfig, useCanvasNodeFilter, useTrackingEvents } from '@/hooks';
 import { EngineContext, SpotlightContext } from '@/pages/Canvas/contexts';
 import { useManager } from '@/pages/Canvas/managers/utils';
 import { getStepSections, StepItem } from '@/pages/Project/components/StepMenu/constants';
-import { PlatformContext, ProjectTypeContext } from '@/pages/Project/contexts';
 import { Identifier } from '@/styles/constants';
 import { withKeyPress } from '@/utils/dom';
 
@@ -15,8 +14,7 @@ import { Container, Control, Menu, Select } from '../Search/components';
 
 const Spotlight = () => {
   const engine = React.useContext(EngineContext)!;
-  const platform = React.useContext(PlatformContext)!;
-  const projectType = React.useContext(ProjectTypeContext)!;
+  const { platform, projectType } = useActiveProjectConfig();
   // NOTE: extra protection against context being falsy needed for HMR
   const spotlight = React.useContext(SpotlightContext);
 

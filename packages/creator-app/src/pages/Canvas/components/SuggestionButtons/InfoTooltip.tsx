@@ -2,11 +2,11 @@ import * as Platform from '@voiceflow/platform-config';
 import { Tooltip } from '@voiceflow/ui';
 import React from 'react';
 
-import { PlatformContext } from '@/pages/Project/contexts';
+import { useActiveProjectPlatform } from '@/hooks';
 import { getPlatformValue } from '@/utils/platform';
 
 const InfoTooltip: React.FC = () => {
-  const platform = React.useContext(PlatformContext)!;
+  const platform = useActiveProjectPlatform();
 
   return (
     <>

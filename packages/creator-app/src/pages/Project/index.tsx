@@ -22,7 +22,7 @@ import PrototypeWebhook from '@/pages/PrototypeWebhook';
 
 import ProjectExitTracker from './components/ProjectExitTracker';
 import { DIAGRAM_ROUTES, TIMEOUT_COUNT } from './constants';
-import { MarkupProvider, ProjectProvider } from './contexts';
+import { MarkupProvider } from './contexts';
 
 const Diagram = lazy(() => import('./components/Diagram'));
 const Business = lazy(() => import('@/pages/Business'));
@@ -42,7 +42,6 @@ const Project: React.FC = () => {
   const platform = useSelector(ProjectV2.active.platformSelector);
   const getEngine = useEventualEngine();
   const canvasOnly = useSelector(UI.isCanvasOnlyShowingSelector);
-  const projectType = useSelector(ProjectV2.active.projectTypeSelector);
   const projectName = useSelector(ProjectV2.active.nameSelector);
   const isOnlyViewer = useSelector(DiagramV2.isOnlyViewerSelector);
   const setPreviewing = useDispatch(UI.setPreviewingVersion);
@@ -93,57 +92,55 @@ const Project: React.FC = () => {
 
   return (
     <MarkupProvider>
-      <ProjectProvider nluType={nluType} platform={platform} projectType={projectType}>
-        <Helmet>
-          <title>{projectName}</title>
-        </Helmet>
+      <Helmet>
+        <title>{projectName}</title>
+      </Helmet>
 
-        {!isOnlyViewer && (
-          <>
-            <IdleTimer
-              ref={(instance: IdleTimer) => {
-                idleTimer.current = instance;
-              }}
-              element={document}
-              onIdle={setIdle}
-              debounce={250}
-              timeout={TIMEOUT_COUNT}
-            />
-            <InactivitySnackbar {...inactivitySnackbar} onDismiss={setActive} />
-          </>
-        )}
+      {!isOnlyViewer && (
+        <>
+          <IdleTimer
+            ref={(instance: IdleTimer) => {
+              idleTimer.current = instance;
+            }}
+            element={document}
+            onIdle={setIdle}
+            debounce={250}
+            timeout={TIMEOUT_COUNT}
+          />
+          <InactivitySnackbar {...inactivitySnackbar} onDismiss={setActive} />
+        </>
+      )}
 
-        <ExportProvider>
-          <ExportModelModal />
-        </ExportProvider>
+      <ExportProvider>
+        <ExportModelModal />
+      </ExportProvider>
 
-        <ProjectExitTracker nluType={nluType} platform={platform} />
+      <ProjectExitTracker nluType={nluType} platform={platform} />
 
-        <Providers>
-          <Switch>
-            <Route path={DIAGRAM_ROUTES} component={Diagram} />
+      <Providers>
+        <Switch>
+          <Route path={DIAGRAM_ROUTES} component={Diagram} />
 
-            <Route path={Path.CONVERSATIONS} component={Conversations} />
+          <Route path={Path.CONVERSATIONS} component={Conversations} />
 
-            {nluManager.isEnabled && <Route path={Path.NLU_MANAGER} component={NLUManager} />}
-            {nluManager.isEnabled && analyticsDashboard.isEnabled && <Route path={Path.ANALYTICS_DASHBOARD} component={AnalyticsDashboard} />}
+          {nluManager.isEnabled && <Route path={Path.NLU_MANAGER} component={NLUManager} />}
+          {nluManager.isEnabled && analyticsDashboard.isEnabled && <Route path={Path.ANALYTICS_DASHBOARD} component={AnalyticsDashboard} />}
 
-            <Route path={Path.PROJECT_TOOLS} component={Business} />
+          <Route path={Path.PROJECT_TOOLS} component={Business} />
 
-            <Route path={Path.PROJECT_MIGRATE} component={Migrate} />
+          <Route path={Path.PROJECT_MIGRATE} component={Migrate} />
 
-            <Route path={Path.PROTOTYPE_WEBHOOK} component={PrototypeWebhook} />
+          <Route path={Path.PROTOTYPE_WEBHOOK} component={PrototypeWebhook} />
 
-            {!disableIntegration && <Route path={Path.PROJECT_PUBLISH} component={Publish} />}
+          {!disableIntegration && <Route path={Path.PROJECT_PUBLISH} component={Publish} />}
 
-            <Route path={Path.PROJECT_SETTINGS} component={Settings} />
+          <Route path={Path.PROJECT_SETTINGS} component={Settings} />
 
-            {dashboardV2FF.isEnabled && <Route path={Path.PROJECT_ASSISTANT_OVERVIEW} component={AssistantOverview} />}
+          {dashboardV2FF.isEnabled && <Route path={Path.PROJECT_ASSISTANT_OVERVIEW} component={AssistantOverview} />}
 
-            <Redirect to={Path.PROJECT_DOMAIN} />
-          </Switch>
-        </Providers>
-      </ProjectProvider>
+          <Redirect to={Path.PROJECT_DOMAIN} />
+        </Switch>
+      </Providers>
     </MarkupProvider>
   );
 };

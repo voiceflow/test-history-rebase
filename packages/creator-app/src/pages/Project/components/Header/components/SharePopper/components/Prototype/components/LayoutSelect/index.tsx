@@ -4,16 +4,14 @@ import React from 'react';
 import DropdownWithCaret from '@/components/DropdownWithCaret';
 import { PrototypeLayout } from '@/constants/prototype';
 import * as Prototype from '@/ducks/prototype';
-import { useDispatch, useLinkedState, useSelector } from '@/hooks';
-import { PlatformContext, ProjectTypeContext } from '@/pages/Project/contexts';
+import { useActiveProjectConfig, useDispatch, useLinkedState, useSelector } from '@/hooks';
 import { ClassName } from '@/styles/constants';
 
 import { LayoutItem } from './components';
 import { CUSTOM_MENU_WIDTH, getLayoutOptions, OPTION_DETAILS } from './constants';
 
 const LayoutSelect: React.FC = () => {
-  const platform = React.useContext(PlatformContext)!;
-  const projectType = React.useContext(ProjectTypeContext)!;
+  const { platform, projectType } = useActiveProjectConfig();
 
   const layout = useSelector(Prototype.prototypeLayoutSelector);
   const buttonsOnly = useSelector(Prototype.prototypeButtonsOnlySelector);

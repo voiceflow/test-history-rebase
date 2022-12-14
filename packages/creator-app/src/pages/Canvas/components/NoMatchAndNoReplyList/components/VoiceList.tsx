@@ -4,8 +4,8 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { MAX_ALEXA_REPROMPTS, MAX_SYSTEM_MESSAGES_COUNT } from '@/constants';
+import { useActiveProjectPlatform } from '@/hooks';
 import SpeakAudioList from '@/pages/Canvas/components/SpeakAudioList';
-import { PlatformContext } from '@/pages/Project/contexts';
 import { isAlexaPlatform } from '@/utils/typeGuards';
 
 import { NoMatchVoiceListItem, NoReplyVoiceListItem } from './ListItem';
@@ -28,7 +28,7 @@ const VoiceList: React.FC<VoiceListProps> = ({
   onChangeRandomize,
   hideRandomizeMenu,
 }) => {
-  const platform = React.useContext(PlatformContext)!;
+  const platform = useActiveProjectPlatform();
 
   const repromptsCache = React.useRef<Platform.Common.Voice.Models.Prompt.Model[]>(reprompts ?? []);
   const itemsCache = React.useRef<Realtime.SpeakData[]>([]);

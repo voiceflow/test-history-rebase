@@ -3,7 +3,7 @@ import { BoxFlex, Input, SectionV2, Text, ThemeColor, TippyTooltip } from '@voic
 import React from 'react';
 
 import { NUMBERS_ONLY_REGEXP } from '@/constants';
-import { useActivePlatformConfig, useLinkedState } from '@/hooks';
+import { useActiveProjectPlatformConfig, useLinkedState } from '@/hooks';
 import { withInputBlur } from '@/utils/dom';
 import { getDefaultNoReplyTimeoutSeconds } from '@/utils/noReply';
 
@@ -13,7 +13,7 @@ interface TimeoutSectionProps {
 }
 
 const TimeoutSection: React.FC<TimeoutSectionProps> = ({ timeout: propTimeout, onChange: onChangeProp }) => {
-  const platformConfig = useActivePlatformConfig();
+  const platformConfig = useActiveProjectPlatformConfig();
 
   const isDelayEditable = Realtime.Utils.typeGuards.isPlatformWithEditableNoReplyDelay(platformConfig.type);
   const [timeout, setTimeout] = useLinkedState(

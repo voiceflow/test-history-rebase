@@ -3,11 +3,10 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import * as VersionV2 from '@/ducks/versionV2';
-import { useSelector } from '@/hooks';
+import { useActiveProjectType, useSelector } from '@/hooks';
 import { NoMatchSection } from '@/pages/Canvas/components/NoMatch';
 import { PushToPath } from '@/pages/Canvas/managers/types';
 import { NodeDataUpdater } from '@/pages/Canvas/types';
-import { ProjectTypeContext } from '@/pages/Project/contexts';
 import { getPlatformNoMatchFactory } from '@/utils/noMatch';
 
 import { OptionSection } from './types';
@@ -23,7 +22,7 @@ const useNoMatchOptionSection = ({
   onChange,
   pushToPath,
 }: NodeInterface<{ nodeID: string; noMatch?: Nullable<Realtime.NodeData.NoMatch> }>): OptionSection => {
-  const projectType = React.useContext(ProjectTypeContext);
+  const projectType = useActiveProjectType();
 
   const defaultVoice = useSelector(VersionV2.active.voice.defaultVoiceSelector);
 

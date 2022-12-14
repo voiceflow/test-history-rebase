@@ -2,7 +2,6 @@ import { Input, Popper, preventDefault, TippyTooltip, useToggle, withHandler, wi
 import React from 'react';
 
 import SlateEditable from '@/components/SlateEditable';
-import { TOOLBAR_ICONS } from '@/components/SlateInputs/constants';
 
 interface DelayButtonProps {
   delay?: number;
@@ -48,7 +47,7 @@ const DelayButton: React.FC<DelayButtonProps> = ({ delay, onChange }) => {
     >
       {({ ref, isOpened }) => (
         <TippyTooltip title="Message Delay" position="top">
-          <SlateEditable.IconButton ref={ref} icon={TOOLBAR_ICONS.DELAY} active={isOpened || !!messageDelay} onClick={preventDefault(toggleOpen)} />
+          <SlateEditable.IconButton ref={ref} icon="systemMessageDelay" active={isOpened || !!messageDelay} onClick={preventDefault(toggleOpen)} />
         </TippyTooltip>
       )}
     </Popper>

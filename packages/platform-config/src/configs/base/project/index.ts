@@ -3,17 +3,20 @@ import { BuiltInVariable } from '@platform-config/constants';
 import { Types } from '@platform-config/utils';
 import React from 'react';
 
+import * as Chat from './chat';
 import * as InvocationName from './invocationName';
 import * as Locale from './locale';
 import * as Voice from './voice';
 
-export { InvocationName, Locale, Voice };
+export { Chat, InvocationName, Locale, Voice };
 
 export interface Config {
   /**
    * @example 'Skill' | 'Assistant'
    */
   name: string;
+
+  chat: Chat.Config;
 
   voice: Voice.Config;
 
@@ -30,6 +33,8 @@ export interface Config {
 
 export const CONFIG = Types.satisfies<Config>()({
   name: 'Assistant',
+
+  chat: Chat.CONFIG,
 
   voice: Voice.CONFIG,
 

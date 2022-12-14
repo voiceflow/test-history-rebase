@@ -9,8 +9,7 @@ import { GATED_EXPORT_TYPES } from '@/config/planLimits/canvasExport';
 import { ExportFormat as CanvasExportFormat, ExportType } from '@/constants';
 import * as Export from '@/ducks/export';
 import * as Tracking from '@/ducks/tracking';
-import { useActiveNLUConfig, useDispatch, usePermission, useTrackingEvents } from '@/hooks';
-import { PlatformContext } from '@/pages/Project/contexts';
+import { useActiveProjectNLUConfig, useActiveProjectPlatform, useDispatch, usePermission, useTrackingEvents } from '@/hooks';
 import { isVoiceflowPlatform } from '@/utils/typeGuards';
 
 interface ExportValue {
@@ -36,14 +35,14 @@ export const ExportContext = React.createContext<Nullable<ExportValue>>(null);
 export const { Consumer: ExportConsumer } = ExportContext;
 
 export const ExportProvider: React.FC = ({ children }) => {
-  const nluConfig = useActiveNLUConfig();
+  const nluConfig = useActiveProjectNLUConfig();
 
   const exportModel = useDispatch(Export.exportModel);
   const exportCanvas = useDispatch(Export.exportCanvas);
   const [permissionToExport] = usePermission(Permission.MODEL_EXPORT);
 
   const [trackingEvents] = useTrackingEvents();
-  const platform = React.useContext(PlatformContext)!;
+  const platform = useActiveProjectPlatform();
   const [exportType, setExportType] = React.useState<ExportType>(ExportType.MODEL);
   const [isExporting, setExporting] = React.useState(false);
   const [canvasExportFormat, setCanvasExportFormat] = React.useState(CanvasExportFormat.PNG);

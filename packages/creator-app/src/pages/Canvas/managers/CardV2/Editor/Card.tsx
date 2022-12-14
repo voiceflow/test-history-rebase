@@ -7,7 +7,7 @@ import React from 'react';
 import SlateEditable from '@/components/SlateEditable';
 import { SlateTextInput } from '@/components/SlateInputs';
 import VariablesInput from '@/components/VariablesInput';
-import { useImageDimensions } from '@/hooks';
+import { useActiveProjectTypeConfig, useImageDimensions } from '@/hooks';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import { NodeEditorV2Props } from '@/pages/Canvas/managers/types';
 
@@ -22,6 +22,8 @@ export interface CardV2Props {
 const CardV2: React.FC<CardV2Props> = ({ item, editor, onUpdate }) => {
   const dimensions = useImageDimensions({ url: item.imageUrl });
   const isVoiceProject = editor.projectType === Platform.Constants.ProjectType.VOICE;
+
+  const config = useActiveProjectTypeConfig();
 
   const onChange =
     <Key extends keyof Realtime.NodeData.CardV2>(field: Key) =>
@@ -64,6 +66,7 @@ const CardV2: React.FC<CardV2Props> = ({ item, editor, onUpdate }) => {
           ) : (
             <SlateTextInput
               value={(item.description as BaseText.SlateTextValue) || SlateEditable.EditorAPI.getEmptyState()}
+              options={config.project.chat.toolbarOptions}
               onBlur={onChange('description')}
               placeholder="Enter card description, { to add variable"
             />

@@ -8,7 +8,7 @@ import { CheckboxGroup, CheckboxOption } from '@/components/RadioGroup';
 import Section from '@/components/Section';
 import { NUMBERS_ONLY_REGEXP } from '@/constants';
 import * as History from '@/ducks/history';
-import { useActivePlatformConfig, useDispatch, useLinkedState } from '@/hooks';
+import { useActiveProjectPlatformConfig, useDispatch, useLinkedState } from '@/hooks';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import { FollowPathSection } from '@/pages/Canvas/components/FollowPath';
 import NoMatchAndNoReplyList from '@/pages/Canvas/components/NoMatchAndNoReplyList';
@@ -39,7 +39,7 @@ export interface NoReplyFormProps {
 export const NO_REPLY_PATH_PATH_TYPE = 'noReplyPath';
 
 const NoReplyForm: React.FC<NoReplyFormProps> = ({ noReply, onChange, pushToPath }) => {
-  const platformConfig = useActivePlatformConfig();
+  const platformConfig = useActiveProjectPlatformConfig();
 
   const engine = React.useContext(EngineContext)!;
 

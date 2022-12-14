@@ -3,9 +3,9 @@ import { useCallback, useContext } from 'react';
 
 import { Permission } from '@/config/permissions';
 import { ModalType } from '@/constants';
-import { useEventualEngine, useModals, usePermission } from '@/hooks';
+import { useActiveProjectPlatform, useEventualEngine, useModals, usePermission } from '@/hooks';
 
-import { MarkupContext, PlatformContext } from '../contexts';
+import { MarkupContext } from '../contexts';
 import { useCommentingMode } from './modes';
 
 export * from './diagram';
@@ -13,7 +13,7 @@ export * from './modes';
 export * from './tracking';
 
 export const useIsPlatform = (platform: Platform.Constants.PlatformType) => {
-  const activePlatform = useContext(PlatformContext);
+  const activePlatform = useActiveProjectPlatform();
 
   return platform === activePlatform;
 };

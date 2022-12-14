@@ -10,10 +10,9 @@ import { SectionToggleVariant } from '@/components/Section';
 import VariablesInput, { VariablesInputRef } from '@/components/VariablesInput';
 import * as IntentV2 from '@/ducks/intentV2';
 import { compose, connect } from '@/hocs';
-import { useSetup } from '@/hooks';
+import { useActiveProjectPlatform, useSetup } from '@/hooks';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
-import { PlatformContext } from '@/pages/Project/contexts';
 import { ConnectedProps, MergeArguments } from '@/types';
 import { getPlatformValue } from '@/utils/platform';
 import { transformVariablesToReadable } from '@/utils/slot';
@@ -48,7 +47,7 @@ const Item: React.ForwardRefRenderFunction<HTMLDivElement, ItemProps & Connected
   ref
 ) => {
   const isNew = latestCreatedKey === itemKey;
-  const platform = React.useContext(PlatformContext)!;
+  const platform = useActiveProjectPlatform();
   const variablesInputRef = React.useRef<VariablesInputRef>(null);
   const updateName = React.useCallback(({ text: name }: { text: string }) => onUpdate({ name }), [onUpdate]);
   const updateIntent = React.useCallback(({ intent }: { intent: string | null }) => onUpdate({ payload: { intentID: intent } }), [onUpdate]);

@@ -13,9 +13,8 @@ import { NamespaceProvider } from '@/contexts';
 import * as Creator from '@/ducks/creator';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as Router from '@/ducks/router';
-import { useDispatch, useSelector, useTheme, useToggle } from '@/hooks';
+import { useActiveProjectConfig, useDispatch, useSelector, useTheme, useToggle } from '@/hooks';
 import { EngineContext, ManagerContext } from '@/pages/Canvas/contexts';
-import { PlatformContext, ProjectTypeContext } from '@/pages/Project/contexts';
 import { useEditingMode } from '@/pages/Project/hooks';
 
 import { EditorAnimationEffect } from '../../constants';
@@ -42,9 +41,8 @@ const EditorSidebarV2 = () => {
   const scrollbars = React.useRef<CustomScrollbarsTypes.Scrollbars>(null);
 
   const engine = React.useContext(EngineContext)!;
-  const platform = React.useContext(PlatformContext)!;
   const getManager = React.useContext(ManagerContext)!;
-  const projectType = React.useContext(ProjectTypeContext)!;
+  const { platform, projectType } = useActiveProjectConfig();
 
   const node = useSelector(Creator.focusedNodeSelector);
   const data = useSelector(Creator.focusedNodeDataSelector);

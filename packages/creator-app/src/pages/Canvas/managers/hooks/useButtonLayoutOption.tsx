@@ -4,9 +4,8 @@ import { OptionsMenuOption, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Prototype from '@/ducks/prototype';
-import { useDispatch, useSelector } from '@/hooks';
+import { useActiveProjectPlatform, useDispatch, useSelector } from '@/hooks';
 import MenuCheckboxOption from '@/pages/Canvas/managers/components/MenuCheckboxOption';
-import { PlatformContext } from '@/pages/Project/contexts';
 import { getPlatformValue } from '@/utils/platform';
 
 const buttonLayoutLabel = {
@@ -18,7 +17,7 @@ const useButtonLayoutOption = (): OptionsMenuOption => {
   const layout = useSelector(Prototype.prototypeButtonsSelector) ?? BaseButton.ButtonsLayout.STACKED;
   const updateSharePrototypeSettings = useDispatch(Prototype.updateSharePrototypeSettings);
 
-  const platform = React.useContext(PlatformContext)!;
+  const platform = useActiveProjectPlatform();
 
   const updateButtons = async (layout: BaseButton.ButtonsLayout) => {
     await updateSharePrototypeSettings({ buttons: layout });

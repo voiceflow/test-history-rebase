@@ -10,11 +10,11 @@ import * as Intent from '@/ducks/intent';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import * as Slot from '@/ducks/slot';
-import { useActiveNLUConfig, useDispatch, useModelTracking, useNLUImport, useSelector } from '@/hooks';
+import { useActiveProjectNLUConfig, useDispatch, useModelTracking, useNLUImport, useSelector } from '@/hooks';
 import { NLUImportModel } from '@/models';
 
 const FirstUsePopper: React.FC = () => {
-  const nluConfig = useActiveNLUConfig();
+  const nluConfig = useActiveProjectNLUConfig();
 
   const [getNluSeen, setNluSeen] = useLocalStorage('nlu-seen', false);
 

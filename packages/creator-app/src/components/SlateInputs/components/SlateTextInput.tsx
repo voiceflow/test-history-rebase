@@ -1,3 +1,4 @@
+import { Base } from '@voiceflow/platform-config';
 import { Divider, stopPropagation, useContextApi } from '@voiceflow/ui';
 import React from 'react';
 
@@ -22,6 +23,7 @@ import { SlateTextInputProps } from './types';
 
 const SlateTextInput: React.ForwardRefRenderFunction<SlateEditableRef, SlateTextInputProps> = (
   {
+    options = Object.values(Base.Project.Chat.ToolbarOption), // all options available by default
     variables,
     placeholder = 'Enter text reply, {} to add variables',
     pluginsOptions,
@@ -43,6 +45,11 @@ const SlateTextInput: React.ForwardRefRenderFunction<SlateEditableRef, SlateText
 
   useSlateEditorForceNormalize(editor, [variables]);
 
+  const optionsMap = React.useMemo<Partial<Record<Base.Project.Chat.ToolbarOption, true>>>(
+    () => Object.fromEntries(options.map((option) => [option, true])),
+    [options]
+  );
+
   return (
     <SlateBaseInput
       {...props}
@@ -53,18 +60,23 @@ const SlateTextInput: React.ForwardRefRenderFunction<SlateEditableRef, SlateText
       placeholder={placeholder}
       pluginsOptions={localPluginsOptions}
     >
-      <Toolbar onClick={stopPropagation()}>
-        <TextBoldButton icon={icons.TEXT_BOLD} />
-        <TextItalicButton icon={icons.TEXT_ITALIC} />
-        <TextUnderlineButton icon={icons.TEXT_UNDERLINE} />
-        <TextStrikeThroughButton icon={icons.TEXT_STRIKE_THROUGH} />
+      {!!(options.length || extraToolbarButtons) && (
+        <Toolbar onClick={stopPropagation()}>
+          {optionsMap.TEXT_BOLD && <TextBoldButton icon={icons.TEXT_BOLD} />}
+          {optionsMap.TEXT_ITALIC && <TextItalicButton icon={icons.TEXT_ITALIC} />}
+          {optionsMap.TEXT_UNDERLINE && <TextUnderlineButton icon={icons.TEXT_UNDERLINE} />}
+          {optionsMap.TEXT_STRIKE_THROUGH && <TextStrikeThroughButton icon={icons.TEXT_STRIKE_THROUGH} />}
 
-        <Divider height={15} offset={4} isVertical />
+          {optionsMap.HYPERLINK && (
+            <>
+              <Divider height={15} offset={4} isVertical />
+              <HyperlinkButton icon={icons.HYPERLINK} />
+            </>
+          )}
 
-        <HyperlinkButton icon={icons.HYPERLINK} />
-
-        {extraToolbarButtons}
-      </Toolbar>
+          {extraToolbarButtons}
+        </Toolbar>
+      )}
     </SlateBaseInput>
   );
 };

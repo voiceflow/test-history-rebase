@@ -1,12 +1,12 @@
 import React from 'react';
 
+import { useActiveProjectPlatform } from '@/hooks';
 import Step, { Item, Section } from '@/pages/Canvas/components/Step';
-import { PlatformContext } from '@/pages/Project/contexts';
 
 import { getPlatformLabel } from '../constants';
 
 const InvalidPlatformStep: React.FC = () => {
-  const platform = React.useContext(PlatformContext)!;
+  const platform = useActiveProjectPlatform();
 
   return (
     <Step>

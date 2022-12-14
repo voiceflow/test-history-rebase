@@ -390,6 +390,7 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
             language: 'English (en-US)',
             onboarding: true,
             templateTag: `onboarding:${state.personalizeWorkspaceMeta.projectType}`,
+            projectType: state.personalizeWorkspaceMeta.projectType,
           });
 
           goToDomain({ versionID });

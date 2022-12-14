@@ -21,10 +21,21 @@ export interface CreateProjectParams {
   language?: string;
   onboarding?: boolean;
   templateTag?: string;
+  projectType: Platform.Constants.ProjectType;
 }
 
 export const createProject =
-  ({ name, image, listID, nluType, platform, language, onboarding = false, templateTag }: CreateProjectParams): Thunk<Realtime.AnyProject> =>
+  ({
+    name,
+    image,
+    listID,
+    nluType,
+    platform,
+    language,
+    onboarding = false,
+    projectType,
+    templateTag,
+  }: CreateProjectParams): Thunk<Realtime.AnyProject> =>
   async (dispatch, getState) => {
     const state = getState();
     const workspaceID = Session.activeWorkspaceIDSelector(state);
@@ -47,6 +58,7 @@ export const createProject =
           data: { name, image, _version: Realtime.CURRENT_PROJECT_VERSION },
           listID,
           channel,
+          modality: projectType,
           language,
           onboarding,
           templateID: templateProjectID,

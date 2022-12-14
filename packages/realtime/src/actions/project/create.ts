@@ -19,7 +19,7 @@ class CreateProject extends AbstractProjectResourceControl<Realtime.project.Crea
           creatorID,
           payload.templateID,
           { ..._.pick(payload.data, 'name', 'image', '_version'), teamID: payload.workspaceID },
-          { channel: payload.channel, language: payload.language, onboarding: payload.onboarding }
+          { modality: payload.modality, channel: payload.channel, language: payload.language, onboarding: payload.onboarding }
         )
         .then(Realtime.Adapters.projectAdapter.fromDB),
     ]);

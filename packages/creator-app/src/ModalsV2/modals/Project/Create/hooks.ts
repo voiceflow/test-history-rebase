@@ -93,6 +93,7 @@ export const useProjectCreate = () => {
       platform,
       language: projectConfig.project.locale.labelMap[defaultedLocales[0]],
       onboarding: false,
+      projectType: type,
       templateTag: Object.keys(platformConfig.types).length > 1 ? type : 'default',
     });
 

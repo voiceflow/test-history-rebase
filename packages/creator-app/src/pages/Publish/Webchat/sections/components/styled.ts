@@ -65,14 +65,6 @@ export const SectionGroup = styled(Box)<{ horizontal?: boolean }>`
     `}
 `;
 
-export const ToggleGroupContainer = styled(Box.FlexCenter)`
-  border-radius: 10px;
-  border: 1px solid #dfe3ed;
-  padding: 0 16px;
-  height: 42px;
-  cursor: pointer;
-`;
-
 export const PreviewCrop = styled.div`
   border-radius: 6px;
   background: linear-gradient(180deg, #eef4f6 85%, #eef4f6 100%);

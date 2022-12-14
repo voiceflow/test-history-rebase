@@ -1,7 +1,7 @@
 import { Nullish, Utils } from '@voiceflow/common';
 import { PlanType } from '@voiceflow/internal';
 import * as Platform from '@voiceflow/platform-config';
-import { Box, Input, Label, Select, Text, ThemeColor, TippyTooltip } from '@voiceflow/ui';
+import { Box, Input, Label, Select, Text, ThemeColor, TippyTooltip, Toggle } from '@voiceflow/ui';
 import { VoiceflowVersion } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
@@ -13,7 +13,6 @@ import { useDispatch, useLinkedState, useModals, useSelector } from '@/hooks';
 import { withTargetValue } from '@/utils/dom';
 
 import Section from './components/Section';
-import ToggleGroup from './components/ToggleGroup';
 
 const ENTITLED_PLANS = new Set<PlanType>([...ENTERPRISE_PLANS, ...TEAM_PLANS]);
 
@@ -115,7 +114,7 @@ export const GeneralSection: React.FC = () => {
             }
             interactive
           >
-            <ToggleGroup value={!!config.watermark} onToggle={toggleWatermark} disabled={!isEntitled} />
+            <Toggle size={Toggle.Size.EXTRA_SMALL} checked={!!config.watermark} disabled={!isEntitled} onChange={toggleWatermark} hasLabel />
           </TippyTooltip>
         </Box.FlexApart>
       </Section.Group>

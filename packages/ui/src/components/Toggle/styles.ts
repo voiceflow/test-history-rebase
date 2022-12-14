@@ -49,6 +49,8 @@ export const ToggleContainer = styled.div<{ size: Size }>`
 `;
 
 export const ToggleOuterContainer = styled.label<{ hasLabel: boolean }>`
+  margin-bottom: 0;
+
   ${({ hasLabel }) =>
     hasLabel &&
     css`
@@ -60,6 +62,5 @@ export const ToggleOuterContainer = styled.label<{ hasLabel: boolean }>`
       height: 42px;
       padding: 0 16px;
       cursor: pointer;
-      margin-bottom: 0;
     `};
 `;

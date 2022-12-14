@@ -23,6 +23,7 @@ const CanvasGrid: React.FC = () => {
               </Text>
             </Box>
           </div>
+
           <Toggle checked={canvasGridEnabled} size={Toggle.Size.EXTRA_SMALL} onChange={toggleCanvasGrid} hasLabel />
         </Box.FlexApart>
       </SettingsSubSection>

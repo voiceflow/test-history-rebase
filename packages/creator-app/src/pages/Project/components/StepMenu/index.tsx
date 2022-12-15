@@ -8,13 +8,13 @@ import * as ProjectV2 from '@/ducks/projectV2';
 import { usePermission, useSelector } from '@/hooks';
 import { Identifier } from '@/styles/constants';
 
-import { getAllSections, LibraryStepType } from './constants';
+import { EVENT_LABEL, getAllSections, LibraryStepType, TopLibraryItem, TopStepItem } from './constants';
 import * as S from './styles';
 import TopLevelButton from './TopLevelButton';
 
 const STEP_MENU_EXPANDED_LOCAL_STORAGE_KEY = 'stepMenuExpanded';
 
-const StepMenu: React.FC<{ numCollapsedSteps?: number }> = ({ numCollapsedSteps = 3 }) => {
+const StepMenu: React.FC<{ numCollapsedSteps?: number }> = ({ numCollapsedSteps = 4 }) => {
   const platform = useSelector(ProjectV2.active.platformSelector);
   const projectType = useSelector(ProjectV2.active.projectTypeSelector);
   const [isExpanded, toggleIsExpanded] = useLocalStorageState(STEP_MENU_EXPANDED_LOCAL_STORAGE_KEY, false);
@@ -23,22 +23,41 @@ const StepMenu: React.FC<{ numCollapsedSteps?: number }> = ({ numCollapsedSteps 
 
   const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
 
-  const sections = getAllSections(platform, projectType, {
-    [LibraryStepType.BLOCK_TEMPLATES]: templates,
-    [LibraryStepType.CUSTOM_BLOCK]: customBlocks,
-  });
+  const [eventSection, otherSections] = React.useMemo(() => {
+    const sections = getAllSections(platform, projectType, {
+      [LibraryStepType.BLOCK_TEMPLATES]: templates,
+      [LibraryStepType.CUSTOM_BLOCK]: customBlocks,
+    });
+    const allSections = isExpanded ? sections : sections.slice(0, numCollapsedSteps);
+    const groupedSections = new Map<string, Array<TopStepItem | TopLibraryItem>>();
 
-  const sectionsToShow = isExpanded ? sections : sections.slice(0, numCollapsedSteps);
+    allSections.forEach((section) => {
+      if (section.label === EVENT_LABEL) {
+        groupedSections.set(EVENT_LABEL, [section]);
+      } else {
+        groupedSections.set('other', [...(groupedSections.get('other') ?? []), section]);
+      }
+    });
+
+    return [groupedSections.get(EVENT_LABEL)?.[0], groupedSections.get('other')];
+  }, [platform, projectType, isExpanded, templates, customBlocks]);
 
   return (
     <>
       {canEditCanvas && (
         <S.TopLevelOuterContainer id={Identifier.STEP_MENU}>
-          <S.TopLevelInnerContainer size={sectionsToShow.length}>
-            {sectionsToShow.map((section, index) => (
-              <TopLevelButton key={section.label} section={section} animationIndex={Math.max(0, index - numCollapsedSteps)} />
-            ))}
-          </S.TopLevelInnerContainer>
+          {eventSection && (
+            <S.TopLevelInnerContainer size={1}>
+              <TopLevelButton key={eventSection.label} section={eventSection} animationIndex={Math.max(0, 0 - numCollapsedSteps)} />
+            </S.TopLevelInnerContainer>
+          )}
+          {otherSections && (
+            <S.TopLevelInnerContainer size={otherSections.length}>
+              {otherSections.map((section, index) => (
+                <TopLevelButton key={section.label} section={section} animationIndex={Math.max(0, index - numCollapsedSteps)} />
+              ))}
+            </S.TopLevelInnerContainer>
+          )}
 
           <S.StepMenuExpandButton onClick={() => toggleIsExpanded(!isExpanded)}>
             <SvgIcon icon="arrowToggleV2" size={20} color="#6e849a" inline rotation={isExpanded ? 270 : 90} />

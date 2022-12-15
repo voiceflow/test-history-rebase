@@ -30,6 +30,10 @@ export const TopLevelInnerContainer = styled.div<{ size: number }>`
   overflow: hidden;
   transition: height 0.15s ease;
 
+  & + & {
+    margin-top: 4px;
+  }
+
   ${({ size }) => css`
     height: ${size * 64 + 8}px;
   `}
@@ -37,7 +41,7 @@ export const TopLevelInnerContainer = styled.div<{ size: number }>`
 
 export const TopLevelOuterContainer = styled.div`
   position: absolute;
-  top: 16px;
+  top: 12px;
   left: 100%;
   transform: translateX(12px);
   padding: 4px;

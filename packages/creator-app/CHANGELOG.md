@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1028.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1027.0...@voiceflow/creator-app@1.1028.0) (2022-12-15)
+
+
+### Bug Fixes
+
+* show workspace delete button for owners (CT-1299) ([#6430](https://github.com/voiceflow/creator-app/issues/6430)) ([588506e](https://github.com/voiceflow/creator-app/commit/588506e8baadb90692ed7f013c7e907f4ef4fad7))
+
+
+### Features
+
+* use default secondary button icon styles (CT-1268) ([#6417](https://github.com/voiceflow/creator-app/issues/6417)) ([0e61eef](https://github.com/voiceflow/creator-app/commit/0e61eef7e4aa3522f859edb80d91520de4b53756))
+
+
+
+
+
 # [1.1027.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1026.0...@voiceflow/creator-app@1.1027.0) (2022-12-15)
 
 

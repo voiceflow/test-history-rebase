@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1026.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1025.0...@voiceflow/creator-app@1.1026.0) (2022-12-15)
+
+
+### Features
+
+* add grid and tiles to analytics dashboard (PL-341) ([#6414](https://github.com/voiceflow/creator-app/issues/6414)) ([5a2d55a](https://github.com/voiceflow/creator-app/commit/5a2d55ac20faabde6e8ba640579373565a96f815))
+* delete assistant modal (CT-1274) ([#6390](https://github.com/voiceflow/creator-app/issues/6390)) ([24c4507](https://github.com/voiceflow/creator-app/commit/24c4507a098eea37857e4366a237063d438bb4d9))
+* split event step menu item into its own section (CT-1315) ([#6432](https://github.com/voiceflow/creator-app/issues/6432)) ([9b62e09](https://github.com/voiceflow/creator-app/commit/9b62e09e83836d85563f4963ed2ebc25b01408d4))
+
+
+
+
+
 # [1.1025.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1024.0...@voiceflow/creator-app@1.1025.0) (2022-12-14)
 
 

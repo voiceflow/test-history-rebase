@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1027.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1026.0...@voiceflow/creator-app@1.1027.0) (2022-12-15)
+
+
+### Features
+
+* simplify update secret call (PL-296) ([#6398](https://github.com/voiceflow/creator-app/issues/6398)) ([c88451e](https://github.com/voiceflow/creator-app/commit/c88451e6214c3f1fb651aee590634933b8ef7954))
+
+
+
+
+
 # [1.1026.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1025.0...@voiceflow/creator-app@1.1026.0) (2022-12-15)
 
 

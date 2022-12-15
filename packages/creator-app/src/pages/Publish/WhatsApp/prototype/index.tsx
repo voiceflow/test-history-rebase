@@ -45,7 +45,7 @@ const WhatsAppTesting: React.FC = () => {
       return;
     }
 
-    await client.apiV3.projectSecret.create(projectID, ProjectSecretTag.WHATSAPP_PHONE_NUMBER, number, number);
+    await client.apiV3.projectSecret.create(projectID, ProjectSecretTag.WHATSAPP_PHONE_NUMBER, number);
 
     setRemoteValue(number);
 

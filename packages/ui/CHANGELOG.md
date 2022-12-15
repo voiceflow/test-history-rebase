@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.208.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.207.0...@voiceflow/ui@1.208.0) (2022-12-15)
+
+
+### Bug Fixes
+
+* ux enhancements (NLU-439) ([#6359](https://github.com/voiceflow/creator-app/issues/6359)) ([05c965b](https://github.com/voiceflow/creator-app/commit/05c965beab0724c096e697a21a78d962433296b5))
+
+
+### Features
+
+* created single modal to import intents and unclassified data (NLU-480) ([#6354](https://github.com/voiceflow/creator-app/issues/6354)) ([7d14dde](https://github.com/voiceflow/creator-app/commit/7d14dde8ce8576b2aa3a3460b71f649610a6ce50))
+
+
+
+
+
 # [1.207.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.206.1...@voiceflow/ui@1.207.0) (2022-12-14)
 
 

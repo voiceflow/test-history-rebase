@@ -2,16 +2,13 @@ import { Box, Button, ButtonVariant, SectionV2, Text } from '@voiceflow/ui';
 import React from 'react';
 
 import { SectionVariants, SettingsSection, SettingsSubSection } from '@/components/Settings';
-import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import { useDeleteProject, useSelector } from '@/hooks';
 
 const DangerZone: React.FC = () => {
-  const projectName = useSelector(ProjectV2.active.nameSelector);
   const projectID = useSelector(Session.activeProjectIDSelector);
   const deletePrompt = useDeleteProject({
     projectID,
-    projectName,
   });
 
   return (

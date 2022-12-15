@@ -74,7 +74,6 @@ const AssistantOverview: React.FC = () => {
     projectID: project?.id,
     versionID: project?.versionID,
     withInvite: true,
-    projectName: project?.name,
     withConvertToDomain: true,
   });
 

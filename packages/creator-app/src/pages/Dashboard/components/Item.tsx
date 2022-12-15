@@ -93,7 +93,6 @@ export const Item: React.FC<ItemProps> = ({
     onRename,
     projectID: id,
     versionID,
-    projectName: name,
     withConvertToDomain: true,
   });
 

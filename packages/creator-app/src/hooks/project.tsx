@@ -6,19 +6,16 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 
 import client from '@/client';
-import { ConfirmProps } from '@/components/ConfirmModal';
 import * as Errors from '@/config/errors';
 import { Permission } from '@/config/permissions';
 import { LimitType } from '@/config/planLimitV2';
-import { ALEXA_SUNSET_PROJECT_ID, ExportFormat as CanvasExportFormat, ModalType } from '@/constants';
+import { ALEXA_SUNSET_PROJECT_ID, ExportFormat as CanvasExportFormat } from '@/constants';
 import * as Export from '@/ducks/export';
 import * as Project from '@/ducks/project';
-import * as ProjectList from '@/ducks/projectList';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import * as Workspace from '@/ducks/workspace';
-import { useModals } from '@/hooks/modals';
 import { usePermission, usePermissions } from '@/hooks/permission';
 import * as ModalsV2 from '@/ModalsV2';
 import { ShareProjectTab } from '@/pages/Project/components/Header/constants';
@@ -31,64 +28,16 @@ import { useDispatch } from './realtime';
 import { useTrackingEvents } from './tracking';
 import { useActiveWorkspace } from './workspace';
 
-export const useDeleteProject = ({
-  boardID,
-  projectID,
-  projectName,
-}: {
-  boardID?: string;
-  projectID?: string | null;
-  projectName?: string | null;
-}): (() => void) => {
+export const useDeleteProject = ({ boardID, projectID }: { boardID?: string; projectID?: string | null }): (() => void) => {
   const [canManageProjects] = usePermission(Permission.MANAGE_PROJECTS);
 
-  const getProjectByID = useSelector(ProjectV2.getProjectByIDSelector);
-
-  const onDeleteProject = useDispatch(Project.deleteProject);
-  const onGoToDashboard = useDispatch(Router.goToDashboard);
-  const onDeleteProjectFromList = useDispatch(ProjectList.deleteProjectFromList);
-
-  const [trackingEvents] = useTrackingEvents();
-
-  const confirmModal = useModals<ConfirmProps>(ModalType.CONFIRM);
-
-  const handleDelete = React.useCallback(async () => {
-    if (!projectID) {
-      Sentry.error(Errors.noActiveProjectID());
-      toast.genericError();
-      return;
-    }
-
-    try {
-      trackingEvents.trackProjectDelete({ versionID: getProjectByID({ id: projectID })?.versionID, projectID });
-
-      if (boardID) {
-        await onDeleteProjectFromList(boardID, projectID);
-      } else {
-        await onDeleteProject(projectID);
-        onGoToDashboard();
-      }
-
-      toast.success(`Successfully deleted ${projectName}`);
-    } catch (e) {
-      toast.error(e.message);
-    }
-  }, [boardID, projectID, projectName, getProjectByID]);
+  const deleteModal = ModalsV2.useModal(ModalsV2.Project.Delete);
 
   return React.useCallback(() => {
-    if (!canManageProjects) return;
+    if (!canManageProjects || !projectID) return;
 
-    confirmModal.open({
-      body: (
-        <>
-          This action can not be undone, <b>"{projectName}"</b> and all components can not be recovered.
-        </>
-      ),
-      header: 'Delete Assistant',
-      confirmButtonText: 'Delete Forever',
-      confirm: handleDelete,
-    });
-  }, [canManageProjects, projectName, handleDelete]);
+    deleteModal.open({ projectID, boardID });
+  }, [canManageProjects]);
 };
 
 export const useProjectOptions = ({
@@ -98,7 +47,6 @@ export const useProjectOptions = ({
   projectID,
   withDelete = true,
   withInvite = false,
-  projectName,
   onDuplicated,
   withConvertToDomain = false,
   v2 = false,
@@ -109,7 +57,6 @@ export const useProjectOptions = ({
   projectID?: string | null;
   withDelete?: boolean;
   withInvite?: boolean;
-  projectName?: string | null;
   onDuplicated?: () => void;
   withConvertToDomain?: boolean;
   v2?: boolean;
@@ -140,7 +87,7 @@ export const useProjectOptions = ({
   const projectMembersModal = ModalsV2.useModal(ModalsV2.Project.Members);
   const projectDownloadModal = ModalsV2.useModal(ModalsV2.Project.Download);
 
-  const onDelete = useDeleteProject({ boardID, projectID, projectName });
+  const onDelete = useDeleteProject({ boardID, projectID });
 
   const [trackingEvents] = useTrackingEvents();
 

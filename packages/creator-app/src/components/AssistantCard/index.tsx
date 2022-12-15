@@ -44,7 +44,6 @@ export const AssistantCard = ({ project, ...props }: CardProps) => {
     onRename,
     projectID: project?.id,
     versionID: project?.versionID,
-    projectName: project?.name,
     withConvertToDomain: true,
     withInvite: true,
     v2: true,

@@ -13,11 +13,13 @@ export interface ComplexProps {
 
 const FooterButton: React.FC<ComplexProps> = ({ onClick, buttonText, title, width = 200, children }) => (
   <S.Content>
-    <Multiline width={width}>
-      {!!title && <Title>{title}</Title>}
+    {(!!title || !!children) && (
+      <Multiline width={width}>
+        {!!title && <Title>{title}</Title>}
 
-      {children}
-    </Multiline>
+        {children}
+      </Multiline>
+    )}
 
     <S.Button onClick={onClick}>{buttonText}</S.Button>
   </S.Content>

@@ -43,6 +43,7 @@ const useNavigation = ({ tab, itemID, onTabChange }: UseNavigationProps) => {
   };
 
   const toggleActiveItemID = (id: string | null) => goToItem(activeItemID === id ? null : id);
+  const [hovered, setHovered] = React.useState<string | null>(null);
 
   return {
     activeTab,
@@ -50,6 +51,8 @@ const useNavigation = ({ tab, itemID, onTabChange }: UseNavigationProps) => {
     goToItem,
     goToTab,
     toggleActiveItemID,
+    hovered,
+    setHovered,
   };
 };
 

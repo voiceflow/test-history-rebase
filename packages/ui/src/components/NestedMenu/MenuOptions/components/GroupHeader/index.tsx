@@ -6,11 +6,20 @@ interface GroupHeaderProps {
   isSmall?: boolean;
 }
 
+/**
+ * If childer === true we display Line only
+ */
 const GroupHeader: React.FC<GroupHeaderProps> = ({ isSmall, children }) => (
-  <S.Container isSmall={isSmall}>
-    <S.Title>{children}</S.Title>
-    <S.Line />
-  </S.Container>
+  <>
+    {!children ? (
+      <S.Line />
+    ) : (
+      <S.Container isSmall={isSmall}>
+        <S.Title>{children}</S.Title>
+        <S.Line />
+      </S.Container>
+    )}
+  </>
 );
 
 export default GroupHeader;

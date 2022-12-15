@@ -8,11 +8,16 @@ const ClarityColumn: React.FC<TableTypes.ItemProps<NLUIntent>> = ({ item }) => {
 
   return (
     <>
-      <Box display="inline-block" mr={12} mt={1}>
-        <StrengthGauge width={40} level={strength} />
-      </Box>
-
-      <span>{StrengthGauge.TOOLTIP_LABEL_MAP[strength].toLowerCase()}</span>
+      {strength === 'loading' ? (
+        <StrengthGauge.Spinner width={40} />
+      ) : (
+        <>
+          <Box display="inline-block" mr={12} mt={1}>
+            <StrengthGauge width={40} level={strength} />
+          </Box>
+          <span>{StrengthGauge.TOOLTIP_LABEL_MAP[strength].toLowerCase()}</span>
+        </>
+      )}
     </>
   );
 };

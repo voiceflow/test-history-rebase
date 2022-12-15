@@ -15,14 +15,14 @@ export const EMPTY_VIEW_META: Partial<Record<NLURoute, EmptyViewProps>> = {
     name: 'Intent',
     namePlural: 'Intents',
     description: 'Intents are a collection of sample phrases that aim to understand a users motivation.',
-    link: 'https://www.voiceflow.com/docs/workspaces-organizing-your-workspace',
+    link: 'https://voiceflow.zendesk.com/hc/en-us/articles/9505836012941-How-Voiceflow-s-NLU-Integrations-Work',
     svg: 'noIntent',
   },
   [NLURoute.ENTITIES]: {
     name: 'Entity',
     namePlural: 'Entities',
     description: 'Entities help to pick out important pieces of information in a user reply.',
-    link: 'https://www.voiceflow.com/docs/workspaces-organizing-your-workspace',
+    link: 'https://voiceflow.zendesk.com/hc/en-us/articles/9284239829005-Managing-Entities-Entity-Values-Slots-Synonyms',
     svg: 'noEntity',
   },
 };

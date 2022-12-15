@@ -5,6 +5,7 @@ import { Level } from '../constants';
 
 export const StrengthColor: Record<Level, string> = {
   [Level.NOT_SET]: '',
+  [Level.LOADING]: '',
   [Level.WEAK]: '#bd425f',
   [Level.MEDIUM]: '#4e8bbd',
   [Level.STRONG]: '#50a82e',

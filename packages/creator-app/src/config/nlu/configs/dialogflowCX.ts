@@ -19,6 +19,8 @@ export const CONFIG = Base.extend({
   tooltip: Base.tooltip(NLP.DialogflowCX.CONFIG),
 
   permission: Permission.NLU_CUSTOM,
+
+  helpURL: 'https://voiceflow.zendesk.com/hc/en-us/articles/9481517869325-Dialogflow-CX-Imports-Exports',
 })(Base.validate);
 
 export type Config = typeof CONFIG;

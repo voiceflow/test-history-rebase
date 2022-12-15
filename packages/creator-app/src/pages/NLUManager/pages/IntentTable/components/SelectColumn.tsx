@@ -9,7 +9,23 @@ import WarningIcon from './WarningIcon';
 const SelectColumn = <I extends NLUIntent>({ item: intent }: TableTypes.ItemProps<I>): React.ReactElement => {
   const nluManager = React.useContext(NLUManagerContext);
 
-  if (intent.hasEntityError) {
+  const [showCheckbox, setShowCheckbox] = React.useState(!intent.hasErrors);
+
+  React.useEffect(() => {
+    if (intent.hasErrors && !nluManager.selectedIntentIDs.has(intent.id)) {
+      setShowCheckbox(false);
+    }
+  }, [nluManager.selectedIntentIDs]);
+
+  React.useEffect(() => {
+    if (nluManager.hovered === intent.id) {
+      setShowCheckbox(true);
+    } else if (intent.hasErrors && !nluManager.selectedIntentIDs.has(intent.id)) {
+      setShowCheckbox(false);
+    }
+  }, [nluManager.hovered]);
+
+  if (!showCheckbox && intent.hasEntityError) {
     return (
       <TippyTooltip title="Required entity error">
         <WarningIcon />
@@ -17,15 +33,19 @@ const SelectColumn = <I extends NLUIntent>({ item: intent }: TableTypes.ItemProp
     );
   }
 
-  if (intent.hasErrors) return <WarningIcon />;
-
   return (
-    <Checkbox
-      checked={nluManager.selectedIntentIDs.has(intent.id)}
-      padding={false}
-      onClick={stopPropagation()}
-      onChange={() => nluManager.toggleSelectedIntentID(intent.id)}
-    />
+    <>
+      {showCheckbox ? (
+        <Checkbox
+          checked={nluManager.selectedIntentIDs.has(intent.id)}
+          padding={false}
+          onClick={stopPropagation()}
+          onChange={() => nluManager.toggleSelectedIntentID(intent.id)}
+        />
+      ) : (
+        <WarningIcon />
+      )}
+    </>
   );
 };
 

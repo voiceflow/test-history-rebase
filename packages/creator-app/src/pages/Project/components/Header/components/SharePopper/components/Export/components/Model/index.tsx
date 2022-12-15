@@ -1,5 +1,6 @@
+import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { BlockText, Select, SvgIcon } from '@voiceflow/ui';
+import { BlockText, Box, createDividerMenuItemOption, isNotUIOnlyMenuItemOption, Select, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 import { useSelector } from 'react-redux';
 
@@ -28,10 +29,18 @@ const ExportModel: React.FC<{
   const [selectedIntents, setSelectedIntents] = React.useState(exportIntents);
 
   const exportNLPConfig = exportNLPType && NLP.Config.get(exportNLPType);
-  const nluOptions = nlpTypes.filter((nlpType) => !!NLP.Config.get(nlpType).export);
+  const nluOptions = React.useMemo(() => {
+    const supported = nlpTypes.filter((nlpType) => !!NLP.Config.get(nlpType).export);
 
-  const modelExportSelection = (value: NLP.Constants.NLPType) => {
-    setExportNLPType(value);
+    return supported.includes(NLP.Constants.NLPType.VOICEFLOW) && supported.length > 1
+      ? [NLP.Constants.NLPType.VOICEFLOW, createDividerMenuItemOption(), ...Utils.array.withoutValue(supported, NLP.Constants.NLPType.VOICEFLOW)]
+      : supported;
+  }, [nlpTypes]);
+
+  const modelExportSelection = (value: NLP.Constants.NLPType | null) => {
+    if (!value) return;
+
+    setExportNLPType(value as NLP.Constants.NLPType);
 
     const isVoiceflow = value === NLP.Constants.NLPType.VOICEFLOW;
 
@@ -43,8 +52,9 @@ const ExportModel: React.FC<{
   };
 
   React.useEffect(() => {
-    if (nluOptions.length === 1) {
-      setExportNLPType(nluOptions[0]);
+    const nluOptionsWithoutDivider = nluOptions.filter(isNotUIOnlyMenuItemOption);
+    if (nluOptionsWithoutDivider.length === 1) {
+      setExportNLPType(nluOptionsWithoutDivider[0]);
     }
   }, [nluOptions]);
 
@@ -61,8 +71,10 @@ const ExportModel: React.FC<{
   }, [selectedIntentsIds]);
 
   return (
-    <>
-      <label style={{ marginTop: 21 }}>Export format</label>
+    <Box mt={20}>
+      <BlockText fontSize={15} color="#62778C" fontWeight={600} marginBottom={11}>
+        Export format
+      </BlockText>
       <Select
         value={exportNLPType}
         prefix={exportNLPConfig ? <SvgIcon icon={exportNLPConfig.icon.name} color={exportNLPConfig.icon.color} /> : null}
@@ -70,6 +82,8 @@ const ExportModel: React.FC<{
         onSelect={modelExportSelection}
         disabled={nluOptions.length === 1}
         searchable
+        getOptionKey={(value) => value}
+        getOptionValue={(value) => value}
         placeholder="Choose an option"
         getOptionLabel={(value) => value && NLP.Config.get(value).name}
         renderOptionLabel={(option, searchLabel, getOptionLabel, getOptionValue, { isFocused }) => (
@@ -102,7 +116,7 @@ const ExportModel: React.FC<{
       <label style={{ marginTop: 24 }}>Intents</label>
 
       <IntentsSelect value={selectedIntents} onChange={handleOnChange} />
-    </>
+    </Box>
   );
 };
 

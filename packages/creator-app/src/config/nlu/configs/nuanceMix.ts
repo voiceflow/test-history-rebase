@@ -19,6 +19,8 @@ export const CONFIG = Base.extend({
   tooltip: Base.tooltip(NLP.NuanceMix.CONFIG),
 
   permission: Permission.NLU_CUSTOM,
+
+  helpURL: 'https://voiceflow.zendesk.com/hc/en-us/articles/10827898199181',
 })(Base.validate);
 
 export type Config = typeof CONFIG;

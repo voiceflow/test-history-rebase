@@ -4,4 +4,5 @@ export enum Level {
   STRONG = 'strong',
   NOT_SET = 'not_set',
   VERY_STRONG = 'very_strong',
+  LOADING = 'loading',
 }

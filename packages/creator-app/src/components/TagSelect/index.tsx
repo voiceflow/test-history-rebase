@@ -98,7 +98,10 @@ function TagSelect({
           searchable: true,
           inDropdownSearch: true,
         }
-      : {};
+      : {
+          searchable: true, // We want to keep the search field even if no options to display, This can be changes later (NLU-447)
+          inDropdownSearch: true,
+        };
 
   return (
     <Select<unknown, string>

@@ -28,6 +28,8 @@ const INITIAL_STATE: NLUManagerContextValue = {
   goToItem: Utils.functional.noop,
   goToTab: Utils.functional.noop,
   toggleActiveItemID: Utils.functional.noop,
+  hovered: null,
+  setHovered: Utils.functional.noop,
   closeEditorTab: Utils.functional.noop,
   openEditorTab: Utils.functional.noop,
   editorTab: null,

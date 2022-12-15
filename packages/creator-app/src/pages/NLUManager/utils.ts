@@ -34,6 +34,7 @@ export const getConflictingUtterances = (intent: Platform.Base.Models.Intent.Mod
 };
 
 export const getClarityScore = (intent: Platform.Base.Models.Intent.Model, clarity: ClarityModel | null, hasConflicts?: boolean) => {
+  if (clarity === null) return -1;
   if (isBuiltInIntent(intent.id)) return 1;
   const clarityByClass = clarity?.clarityByClass?.[intent.name] || 0;
   if (!hasConflicts) return 1;
@@ -67,7 +68,11 @@ export const mapIntentsToNLUIntents = (intents: Platform.Base.Models.Intent.Mode
       conflictingIntentIDs,
       conflictingUtterances,
       hasConflicts,
-      hasErrors: hasEntityError || confidenceLevel === StrengthGauge.Level.WEAK || clarityLevel === StrengthGauge.Level.WEAK,
+      hasErrors:
+        hasEntityError ||
+        confidenceLevel === StrengthGauge.Level.WEAK ||
+        clarityLevel === StrengthGauge.Level.WEAK ||
+        confidenceLevel === StrengthGauge.Level.NOT_SET,
       hasEntityError,
     };
   });

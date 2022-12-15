@@ -192,6 +192,7 @@ export const removeBuiltInPrefix = (name: string): string => (name.includes('.')
 export const getIntentStrengthLevel = (count: number) => getIntentConfidenceStrengthLevel(count);
 
 export const getIntentClarityStrengthLevel = (count: number) => {
+  if (count === -1) return StrengthGauge.Level.LOADING;
   if (count === 0) return StrengthGauge.Level.NOT_SET;
   if (count < 0.4) return StrengthGauge.Level.WEAK;
   if (count < 0.7) return StrengthGauge.Level.MEDIUM;

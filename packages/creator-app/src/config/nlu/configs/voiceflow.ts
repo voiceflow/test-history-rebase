@@ -21,6 +21,8 @@ export const CONFIG = Base.extend({
   },
 
   permission: null,
+
+  helpURL: 'https://voiceflow.zendesk.com/hc/en-us/articles/10587264500877',
 })(Base.validate);
 
 export type Config = typeof CONFIG;

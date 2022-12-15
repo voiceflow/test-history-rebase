@@ -26,6 +26,8 @@ export interface Config {
   tooltip: Tooltip;
 
   permission: Permission.NLU_CUSTOM | null;
+
+  helpURL: string | null;
 }
 
 export const tooltip = (nlpConfig: NLP.Base.Config): Tooltip => ({
@@ -50,6 +52,8 @@ export const CONFIG = Platform.Utils.Types.satisfies<Config>()({
   tooltip: tooltip(NLP.Base.CONFIG),
 
   permission: null,
+
+  helpURL: null,
 });
 
 export const extend = Platform.ConfigUtils.Config.extendFactory<Config>(CONFIG);

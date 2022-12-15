@@ -18,14 +18,24 @@ const Row: React.FC<TableTypes.ConfigurableRowProps<Platform.Base.Models.Intent.
     isBuiltIn: isBuiltInIntent(item.id),
   });
 
+  const handleMouseEnter = () => {
+    onMouseEnter();
+    nluManager.setHovered(item.id);
+  };
+
+  const handleMouseLeave = () => {
+    onMouseLeave();
+    nluManager.setHovered(null);
+  };
+
   return (
     <ContextMenu options={options} selfDismiss>
       {({ isOpen, onContextMenu }) => (
         <Table.Row
           active={isOpen || isActiveItem}
           onClick={() => nluManager.toggleActiveItemID(item.id)}
-          onMouseEnter={onMouseEnter}
-          onMouseLeave={onMouseLeave}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
           onContextMenu={onContextMenu}
         >
           {children}

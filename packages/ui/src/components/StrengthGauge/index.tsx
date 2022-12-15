@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Container, Line, StrengthColor, StrengthLine } from './components';
 import { Level } from './constants';
+import Spinner from './Spinner';
 import * as T from './types';
 
 export * as StrengthGaugeTypes from './types';
@@ -12,6 +13,7 @@ const TOOLTIP_LABEL_MAP = {
   [Level.STRONG]: 'Strong',
   [Level.NOT_SET]: 'Empty',
   [Level.VERY_STRONG]: 'Excellent',
+  [Level.LOADING]: 'Loading',
 };
 
 const LINE_MULTIPLIER_MAP: Record<Level, number> = {
@@ -20,6 +22,7 @@ const LINE_MULTIPLIER_MAP: Record<Level, number> = {
   [Level.STRONG]: 0.7,
   [Level.NOT_SET]: 0,
   [Level.VERY_STRONG]: 1,
+  [Level.LOADING]: -1,
 };
 
 const StrengthGauge: React.FC<T.Props> = ({
@@ -42,4 +45,4 @@ const StrengthGauge: React.FC<T.Props> = ({
   );
 };
 
-export default Object.assign(StrengthGauge, { Level, TOOLTIP_LABEL_MAP, StrengthColor });
+export default Object.assign(StrengthGauge, { Level, TOOLTIP_LABEL_MAP, StrengthColor, Spinner });

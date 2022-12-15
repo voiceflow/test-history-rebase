@@ -10,6 +10,7 @@ import * as Router from '@/ducks/router';
 import { useActiveProjectNLUConfig, useDispatch, useFeature, useModals, useNLUImport, useSelector } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
 import { NLUManagerContext } from '@/pages/NLUManager/context';
+import { onOpenURLInANewTabFactory } from '@/utils/window';
 
 import * as S from './styles';
 
@@ -91,10 +92,16 @@ const NLUNavigationSidebar: React.FC = () => {
 
       {!!nluConfig.nlps[0].import && (
         <TippyTooltip
+          interactive
           html={
-            <TippyTooltip.Complex title={<S.ImportTooltipTitle>{platform} import</S.ImportTooltipTitle>}>
-              Imports must be in {nluImport.acceptedFileFormatsLabel} format
-            </TippyTooltip.Complex>
+            <>
+              <TippyTooltip.Complex title={<S.ImportTooltipTitle>{nluConfig.name} import</S.ImportTooltipTitle>}>
+                Imports must be in {nluImport.acceptedFileFormatsLabel} format
+              </TippyTooltip.Complex>
+              {!!nluConfig.helpURL && (
+                <TippyTooltip.FooterButton onClick={onOpenURLInANewTabFactory(nluConfig.helpURL)} buttonText="More"></TippyTooltip.FooterButton>
+              )}
+            </>
           }
           position="top"
           bodyOverflow

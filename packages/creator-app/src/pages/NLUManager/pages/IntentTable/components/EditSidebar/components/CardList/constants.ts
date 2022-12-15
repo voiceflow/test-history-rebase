@@ -35,6 +35,7 @@ export const getConfidenceMeta = () => ({
 
 export const getClarityMeta = (intent: NLUIntent) => ({
   [StrengthGauge.Level.NOT_SET]: { message: '' },
+  [StrengthGauge.Level.LOADING]: { message: '' },
   [StrengthGauge.Level.WEAK]: { message: clarityMetaMessage(intent) },
   [StrengthGauge.Level.MEDIUM]: { message: clarityMetaMessage(intent) },
   [StrengthGauge.Level.STRONG]: { message: clarityMetaMessage(intent) },

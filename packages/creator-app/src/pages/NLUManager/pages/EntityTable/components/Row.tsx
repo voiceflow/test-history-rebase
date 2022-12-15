@@ -15,14 +15,24 @@ const Row: React.FC<TableTypes.ConfigurableRowProps<Realtime.Slot>> = ({ item, c
     onRename: () => nluManager.setRenamingEntityID(item.id),
   });
 
+  const handleMouseEnter = () => {
+    onMouseEnter();
+    nluManager.setHovered(item.id);
+  };
+
+  const handleMouseLeave = () => {
+    onMouseLeave();
+    nluManager.setHovered(null);
+  };
+
   return (
     <ContextMenu options={options} selfDismiss>
       {({ isOpen, onContextMenu }) => (
         <Table.Row
           active={isOpen || item.id === nluManager.activeItemID}
           onClick={() => nluManager.toggleActiveItemID(item.id)}
-          onMouseLeave={onMouseLeave}
-          onMouseEnter={onMouseEnter}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
           onContextMenu={onContextMenu}
         >
           {children}

@@ -1,4 +1,4 @@
-import { Button, ButtonVariant, FlexApart, Input, SvgIcon } from '@voiceflow/ui';
+import { Button, FlexApart, Input, SvgIcon } from '@voiceflow/ui';
 
 import { styled, transition } from '@/hocs';
 
@@ -9,19 +9,9 @@ export const Container = styled(FlexApart)`
   justify-content: space-between;
 `;
 
-export const TrashButton = styled(Button).attrs({ variant: ButtonVariant.SECONDARY })`
+export const TrashButton = styled(Button)`
   display: inline-block;
   padding: 10px 20px !important;
-
-  svg {
-    ${transition('opacity', 'color')}
-    color: #8194a8;
-    opacity: 0.85;
-  }
-
-  &:hover svg {
-    opacity: 1;
-  }
 `;
 
 export const SearchInput = styled(Input)`

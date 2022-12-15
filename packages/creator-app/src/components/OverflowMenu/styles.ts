@@ -1,7 +1,7 @@
-import { ButtonVariant, SecondaryButton, SvgIcon } from '@voiceflow/ui';
+import { SecondaryButton, SvgIcon } from '@voiceflow/ui';
 import styled, { css } from 'styled-components';
 
-const OverflowMenuContainer = styled(SecondaryButton).attrs({ variant: ButtonVariant.SECONDARY })`
+export const Button = styled(SecondaryButton)`
   color: rgba(110, 132, 154, 0.85);
 
   ${({ isActive = false }) =>
@@ -22,5 +22,3 @@ const OverflowMenuContainer = styled(SecondaryButton).attrs({ variant: ButtonVar
       opacity: 0.5;
     `}
 `;
-
-export default OverflowMenuContainer;

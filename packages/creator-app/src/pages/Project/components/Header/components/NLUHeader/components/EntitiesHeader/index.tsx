@@ -57,9 +57,7 @@ const EntitiesHeader: React.FC = () => {
 
       <Box.FlexCenter pr={12} gap={10}>
         {!!nluManager.selectedEntityIDs.size && (
-          <TrashButton variant={ButtonVariant.SECONDARY} onClick={confirmDelete}>
-            <SvgIcon icon="trash" size={15} inline />
-          </TrashButton>
+          <TrashButton variant={ButtonVariant.SECONDARY} onClick={confirmDelete} icon="trash" iconProps={{ size: 15 }} />
         )}
 
         <TrainButton active={isTraining} onClick={handleTrain} variant={ButtonVariant.PRIMARY}>

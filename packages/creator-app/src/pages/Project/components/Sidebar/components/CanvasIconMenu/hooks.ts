@@ -165,7 +165,7 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
           icon: 'systemSettings',
           value: CanvasOptionType.SETTINGS,
           tooltip: {
-            title: 'Project Settings',
+            title: 'Settings',
             hotkey: HOTKEY_LABEL_MAP[nluManager.isEnabled ? Hotkey.SETTINGS_PAGE : Hotkey.SETTINGS_PAGE_LEGACY],
           },
           onClick: goToCurrentSettings,

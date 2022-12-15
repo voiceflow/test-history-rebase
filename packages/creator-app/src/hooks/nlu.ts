@@ -14,9 +14,10 @@ interface Options {
   nluType: Platform.Constants.NLUType;
   platform: Platform.Constants.PlatformType;
   onImport?: (data: NLUImportModel) => void;
+  onImportError?: () => void;
 }
 
-export const useNLUImport = ({ nluType, platform, onImport }: Options) => {
+export const useNLUImport = ({ nluType, platform, onImport, onImportError }: Options) => {
   const [trackingEvents] = useTrackingEvents();
   const [isImporting, setIsImporting] = React.useState(false);
 
@@ -29,38 +30,45 @@ export const useNLUImport = ({ nluType, platform, onImport }: Options) => {
     [fileExtensions]
   );
 
-  const onFileChangeFactory = (origin: NLUImportOrigin) => async (files: FileList | File[]) => {
-    if (!files.length) return;
+  const onFileChangeFactory =
+    (origin: NLUImportOrigin) =>
+    async (files: FileList | File[]): Promise<void | NLUImportModel> => {
+      if (!files.length) return;
 
-    try {
-      setIsImporting(true);
+      try {
+        setIsImporting(true);
 
-      const formData = new FormData();
-      formData.append('file', files[0]);
+        const formData = new FormData();
+        formData.append('file', files[0]);
 
-      const importModelResponse = await client.platform(platform).modelImport?.import(nluType, formData);
+        const importModelResponse = await client.platform(platform).modelImport?.import(nluType, formData);
 
-      setIsImporting(false);
+        setIsImporting(false);
 
-      if (!importModelResponse) return;
+        if (!importModelResponse) return;
 
-      importModelResponse.slots =
-        importModelResponse.slots?.map((slot: BaseModels.Slot) => (slot.color ? slot : { ...slot, color: pickRandomDefaultColor() })) ?? [];
+        importModelResponse.slots =
+          importModelResponse.slots?.map((slot: BaseModels.Slot) => (slot.color ? slot : { ...slot, color: pickRandomDefaultColor() })) ?? [];
 
-      toast.success(`${importModelResponse.intents.length} intents successfully imported!`);
+        toast.success(`${importModelResponse.intents.length} intents successfully imported!`);
 
-      onImport?.(importModelResponse);
-    } catch (err) {
-      setIsImporting(false);
+        onImport?.(importModelResponse);
 
-      toast.error('File failed to import');
-      trackingEvents.trackProjectNLUImportFailed({
-        origin,
-        importNLPType: nlu.nlps[0].type,
-        targetNLUType: nlu.type,
-      });
-    }
-  };
+        // eslint-disable-next-line consistent-return
+        return importModelResponse;
+      } catch (err) {
+        setIsImporting(false);
+
+        toast.error('File failed to import');
+        onImportError?.();
+
+        trackingEvents.trackProjectNLUImportFailed({
+          origin,
+          importNLPType: nlu.nlps[0].type,
+          targetNLUType: nlu.type,
+        });
+      }
+    };
 
   const onUploadClick = (origin: NLUImportOrigin) => {
     if (!fileExtensions.length) return;

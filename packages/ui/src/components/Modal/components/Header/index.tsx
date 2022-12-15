@@ -6,7 +6,7 @@ import React from 'react';
 
 import * as S from './styles';
 
-export interface HeaderProps {
+export interface HeaderProps extends React.HTMLProps<any> {
   border?: boolean;
   sticky?: boolean;
   actions?: React.ReactNode;
@@ -18,8 +18,8 @@ const CloseButton: React.FC<Omit<IconButtonBasicContainerProps, 'size' | 'icon' 
   <IconButton size={16} icon="close" variant={IconButton.Variant.BASIC} className={ClassName.MODAL_CLOSE_BUTTON_REGULAR} {...props} />
 );
 
-const Header: React.FC<HeaderProps> = ({ border, actions, children, infoTooltip, capitalizeText = true, sticky = true }) => (
-  <S.Container border={border} capitalizeText={capitalizeText} sticky={sticky}>
+const Header: React.FC<HeaderProps> = ({ border, actions, children, infoTooltip, capitalizeText = true, sticky = true, style }) => (
+  <S.Container border={border} capitalizeText={capitalizeText} sticky={sticky} style={style}>
     <Box.Flex gap={8} height="100%">
       <Box.Flex height="100%" className={ClassName.MODAL_TITLE_CONTAINER}>
         {children}

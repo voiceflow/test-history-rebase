@@ -18,7 +18,7 @@ const spinnerStyles = css<LoaderProps>`
   border-radius: 50%;
 `;
 
-const LoadContainer = styled.div<LoaderProps>`
+export const LoadContainer = styled.div<LoaderProps>`
   ${spinnerStyles}
   margin-bottom: 20px;
   box-shadow: ${({ isMd, borderLess }) => (isMd || borderLess ? 'none' : '0 1px 2px 0 rgba(17, 49, 96, 0.24);')};

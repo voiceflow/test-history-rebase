@@ -140,7 +140,7 @@ const useNLUUnclassifiedData = ({ activeItemID, search, scrollToTop }: UseNLUEnt
   React.useEffect(() => {
     const maxRange = getUnclassifiedDataMaxRange(unclassifiedDataPage);
     setFilteredUtterances(filterUtterances(maxRange));
-  }, [search]);
+  }, [search, utterances]);
 
   return {
     unclassifiedUtterances: utterances,

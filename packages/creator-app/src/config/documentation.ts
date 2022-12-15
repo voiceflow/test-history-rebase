@@ -8,6 +8,7 @@ export const BULK_IMPORT_UTTERANCES = 'https://docs.voiceflow.com/#/features/bul
 export const MODEL_EXPORT = 'https://www.voiceflow.com/docs/nlu-management-nlu-data-import-export#toc-1';
 export const PROJECT_EXPORT = 'https://www.voiceflow.com/docs/documentation-content-exports';
 export const PROTOTYPE_SHARE = 'https://www.voiceflow.com/docs/prototyping-sharable-prototypes';
+export const CSV_UNCLASSIFIED_IMPORT = 'https://voiceflow.zendesk.com/hc/en-us/articles/11102010713869';
 
 // settings
 export const CANVAS_CONTROLS = 'https://www.voiceflow.com/docs/designing-canvas-navigation#toc-1';
@@ -93,3 +94,16 @@ export const NLU_MANAGEMENT_NLU_DATA_EXPORT = 'https://www.voiceflow.com/docs/nl
 // Zendesk link - This is a fallback when we don't have documentation
 export const ZENDESK_URL = 'https://voiceflow.zendesk.com/hc/en-us';
 export const MVP_CUSTOM_BLOCK_EXAMPLES = 'https://github.com/voiceflow/custom-blocks';
+
+// nlp import
+export const NLP_IMPORT_ALEXA = 'https://voiceflow.zendesk.com/hc/en-us/articles/10827996837773';
+export const NLP_IMPORT_LEX_V1 = 'https://voiceflow.zendesk.com/hc/en-us/articles/10827936879629';
+export const NLP_IMPORT_DIALOGFLOW_CX = 'https://voiceflow.zendesk.com/hc/en-us/articles/9481517869325-Dialogflow-CX-Imports-Exports';
+export const NLP_IMPORT_DIALOGFLOW_ES = 'https://voiceflow.zendesk.com/hc/en-us/articles/9499645120781-Dialogflow-ES-Imports-Exports';
+export const NLP_IMPORT_WATSON = 'https://voiceflow.zendesk.com/hc/en-us/articles/9497124882189-IBM-Watson-Imports-Exports';
+export const NLP_IMPORT_LUIS = 'https://voiceflow.zendesk.com/hc/en-us/articles/10827676794125';
+export const NLP_IMPORT_NUANCE_MIX = 'https://voiceflow.zendesk.com/hc/en-us/articles/10827898199181';
+export const NLP_IMPORT_RASA2 = 'https://voiceflow.zendesk.com/hc/en-us/articles/10827794283021';
+export const NLP_IMPORT_RASA3 = 'https://voiceflow.zendesk.com/hc/en-us/articles/10827794283021';
+export const NLP_IMPORT_EINSTEIN = 'https://voiceflow.zendesk.com/hc/en-us/articles/10827835195149';
+export const NLP_IMPORT_VOICEFLOW = 'https://voiceflow.zendesk.com/hc/en-us/articles/10587264500877';

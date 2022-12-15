@@ -7,7 +7,7 @@ const EmptyScreen: React.FC = () => {
   const { open } = ModalsV2.useModal(ModalsV2.NLU.Import);
   // to do implement actions behaviors
   const onLearnMore = () => {};
-  const onCreate = () => open();
+  const onCreate = () => open({ importType: ModalsV2.NLU.ImportType.UNCLASSIFIED });
 
   return (
     <FlexCenter style={{ width: '100%', flexDirection: 'column', height: '100%' }}>

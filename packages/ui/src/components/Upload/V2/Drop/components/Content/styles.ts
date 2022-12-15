@@ -2,7 +2,7 @@ import SvgIcon from '@ui/components/SvgIcon';
 import { styled, transition } from '@ui/styles';
 
 export const CornerActionButton = styled(SvgIcon)`
-  ${transition('opacity')}
+  ${transition('opacity')};
   position: absolute;
   padding: 3px;
   top: 14px;

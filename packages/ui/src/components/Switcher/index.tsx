@@ -29,7 +29,7 @@ const Switcher: React.FC<SwitcherProps> = ({ value, items, onChange, isLoading }
         <S.SwitcherButton isActive={value === item.tabID} onClick={() => onChange(item.tabID)} key={item.tabID}>
           <>
             {value === item.tabID && isLoading ? (
-              <Loader isMd style={{ margin: 0, width: '22px' }} />
+              <Loader isMd />
             ) : (
               <Popper renderContent={({ onClose }) => <div onMouseLeave={() => onClose()}>{item.tooltip}</div>}>
                 {({ ref, onToggle }) => (

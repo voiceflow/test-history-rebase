@@ -18,7 +18,7 @@ const NLUNavigationSidebar: React.FC = () => {
   const nluConfig = useActiveProjectNLUConfig();
 
   const [importClicked, setImportClicked] = useLocalStorageState('import-clicked', false);
-  const { open } = ModalsV2.useModal(ModalsV2.NLU.Import);
+  const nluImportModal = ModalsV2.useModal(ModalsV2.NLU.Import);
 
   const nluManager = React.useContext(NLUManagerContext);
   const { open: openExportModelModal } = useModals<{ checkedItems: string[] }>(ModalType.EXPORT_MODEL);
@@ -28,12 +28,10 @@ const NLUNavigationSidebar: React.FC = () => {
 
   const goToCurrentCanvas = useDispatch(Router.goToCurrentCanvas);
 
-  const nluImportIntentsModal = ModalsV2.useModal(ModalsV2.NLU.IntentImport);
-
   const nluImport = useNLUImport({ nluType: nluConfig.type, platform });
 
   const onImportClick = () => {
-    nluImportIntentsModal.openVoid();
+    nluImportModal.openVoid({ importType: ModalsV2.NLU.ImportType.INTENT });
     setImportClicked(true);
   };
 
@@ -50,7 +48,10 @@ const NLUNavigationSidebar: React.FC = () => {
             >
               {({ isActive }) =>
                 isActive ? (
-                  <NavigationSidebar.Item.AddButton tooltip={{ title: 'Import data' }} onClick={() => open()} />
+                  <NavigationSidebar.Item.AddButton
+                    tooltip={{ title: 'Import data' }}
+                    onClick={() => nluImportModal.open({ importType: ModalsV2.NLU.ImportType.UNCLASSIFIED })}
+                  />
                 ) : (
                   <NavigationSidebar.Item.SubText>{nluManager.unclassifiedUtterances.length}</NavigationSidebar.Item.SubText>
                 )

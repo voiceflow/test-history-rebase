@@ -1,2 +1,1 @@
-export { default as Import } from './Import';
-export { default as IntentImport } from './IntentImport';
+export { default as Import, ImportType } from './Import';

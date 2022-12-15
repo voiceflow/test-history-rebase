@@ -85,3 +85,57 @@ export const BrowseButton = styled(PrimaryButton).attrs({ squareRadius: true })`
 export const ErrorMessage = styled.div`
   color: #ec417b;
 `;
+
+export const CornerActionButton = styled(SvgIcon)`
+  ${transition('color')}
+  position: absolute;
+  padding: 5px;
+  margin: -5px;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  color: #8da2b5;
+  display: none;
+
+  :hover {
+    color: #8da2b5;
+  }
+`;
+
+export const DropFileContainer = styled(FlexCenter)`
+  height: 100%;
+  min-height: 115px;
+  border: 1px solid #d4d9e6;
+  border-radius: 6px;
+  padding: 32px;
+  color: #62778c;
+  cursor: auto;
+  width: 100%;
+  position: relative;
+  background: white;
+  flex: 1;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  text-align: center;
+  ${transition('background', 'color', 'border-color', 'background-color')}
+
+  &:active, &:focus {
+    outline: none;
+  }
+
+  &:hover {
+    ${CornerActionButton} {
+      display: block;
+    }
+  }
+`;
+
+export const ErrorContainer = styled.div`
+  display: flex;
+  align-items: center;
+
+  ${CornerActionButton} {
+    display: block;
+  }
+`;

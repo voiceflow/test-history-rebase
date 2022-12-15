@@ -1,3 +1,4 @@
+import { LoadCircle, LoadContainer } from '@ui/components/Loader';
 import { css, styled } from '@ui/styles';
 
 export const SwitcherContainer = styled.div`
@@ -19,6 +20,24 @@ export const SwitcherButton = styled.div<{ isActive: boolean }>`
   justify-content: center;
   cursor: pointer;
   opacity: 1;
+
+  ${LoadContainer} {
+    margin: 0;
+  }
+
+  ${LoadCircle} {
+    display: none;
+    background-size: auto;
+    background-color: transparent;
+  }
+
+  ${({ isActive }) =>
+    isActive &&
+    css`
+      ${LoadCircle} {
+        display: flex;
+      }
+    `}
 `;
 
 export const Slider = styled.div<{ isActive: boolean }>`

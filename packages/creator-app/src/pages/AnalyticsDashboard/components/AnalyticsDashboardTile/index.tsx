@@ -1,7 +1,6 @@
 import { Box, Text } from '@voiceflow/ui';
 import React from 'react';
 
-import { AnalyticsDashboardChartEmpty } from '../charts';
 import * as S from './styles';
 
 interface AnalyticsDashboardTileLabel {
@@ -12,19 +11,13 @@ interface AnalyticsDashboardTileLabel {
 interface AnalyticsDashboardTileProps {
   title: string;
   description: string;
-  children?: React.ReactNode;
+  children: React.ReactNode;
   labels?: readonly AnalyticsDashboardTileLabel[];
   width: 1 | 2;
   height: 1;
 }
 
-const AnalyticsDashboardTile: React.FC<AnalyticsDashboardTileProps> = ({
-  title,
-  description,
-  width,
-  height,
-  children = <AnalyticsDashboardChartEmpty />,
-}) => {
+const AnalyticsDashboardTile: React.FC<AnalyticsDashboardTileProps> = ({ title, description, width, height, children }) => {
   return (
     <S.Tile gridWidth={width} gridHeight={height} column>
       <Box.FlexAlignStart column pt={24} pb={12} px={32}>

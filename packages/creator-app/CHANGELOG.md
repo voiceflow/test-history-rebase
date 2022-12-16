@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1031.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1030.0...@voiceflow/creator-app@1.1031.0) (2022-12-16)
+
+
+### Features
+
+* add SSO page (CT-1262) ([#6445](https://github.com/voiceflow/creator-app/issues/6445)) ([4846cd6](https://github.com/voiceflow/creator-app/commit/4846cd620e026428e5e54cadff5fe309b1673921))
+
+
+
+
+
 # [1.1030.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1029.1...@voiceflow/creator-app@1.1030.0) (2022-12-16)
 
 

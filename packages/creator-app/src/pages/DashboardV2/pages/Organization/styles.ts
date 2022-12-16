@@ -1,4 +1,6 @@
-import { css, styled, transition } from '@/hocs';
+import { Box, Input } from '@voiceflow/ui';
+
+import { css, styled, transition, units } from '@/hocs';
 
 export const LinksWrapper = styled.div`
   display: flex;
@@ -28,4 +30,21 @@ export const Link = styled.button<{ isActive?: boolean }>`
   }
 
   ${({ isActive }) => isActive && linkActiveStyle}
+`;
+
+export const Footer = styled(Box.Flex)`
+  width: 100%;
+  justify-content: ${({ justifyContent = 'flex-end' }) => justifyContent};
+  padding: ${units(3)}px ${units(4)}px;
+  background: #fbfbfb;
+  border-top: 1px solid ${({ theme }) => theme.colors.separatorSecondary};
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+`;
+
+export const VoiceflowInput = styled(Input)`
+  input {
+    text-overflow: ellipsis;
+    color: #8da2b5;
+  }
 `;

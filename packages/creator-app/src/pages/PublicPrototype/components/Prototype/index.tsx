@@ -1,5 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { IS_IOS, useDidUpdateEffect } from '@voiceflow/ui';
+import { IS_IOS, useDidUpdateEffect, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
 import { Permission } from '@/config/permissions';
@@ -29,6 +29,7 @@ const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({ config, state
   const resetPrototype = useResetPrototype();
   const [canUseASR] = useCanASR();
   const [isCustomizedPrototypeAllowed] = useGuestPermission(settings.plan, Permission.CUSTOMIZE_PROTOTYPE);
+  const [interacted, setInteracted] = React.useState(false);
   const [input, setInput] = React.useState<string>('');
 
   const { isMuted, autoplay } = config;
@@ -70,10 +71,18 @@ const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({ config, state
     [settings.layout]
   );
 
+  const handleInteraction = usePersistFunction(() => {
+    if (interacted) return;
+
+    setInteracted(true);
+    savePrototypeSession();
+  });
+
   const onTranscript = React.useCallback(
     (text: string) => {
       onInteract?.();
       onInteraction({ request: text });
+      handleInteraction();
     },
     [onInteract, onInteraction]
   );
@@ -110,6 +119,7 @@ const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({ config, state
   const sendInteraction: OnInteraction = (interaction) => {
     onInteract?.();
     onInteraction(interaction);
+    handleInteraction();
     setInput('');
   };
 
@@ -126,7 +136,6 @@ const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({ config, state
     }
 
     startPrototype();
-    savePrototypeSession();
   };
 
   useTeardown(() => {

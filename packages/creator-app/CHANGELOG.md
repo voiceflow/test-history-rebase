@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1032.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1031.0...@voiceflow/creator-app@1.1032.0) (2022-12-16)
+
+
+### Features
+
+* add filters header to analytics dashboard page (PL-342) ([#6435](https://github.com/voiceflow/creator-app/issues/6435)) ([366a031](https://github.com/voiceflow/creator-app/commit/366a0318315395ac83a725287375c63c19b3487c)), closes [#6414](https://github.com/voiceflow/creator-app/issues/6414)
+
+
+
+
+
 # [1.1031.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1030.0...@voiceflow/creator-app@1.1031.0) (2022-12-16)
 
 

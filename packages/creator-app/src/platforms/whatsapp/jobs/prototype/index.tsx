@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Dropdown, Menu, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
@@ -47,7 +48,12 @@ const TwilioPrototypeRun: React.FC<React.ComponentProps<typeof RunButton>> = (pr
       >
         {(ref, onToggle, isOpen) => (
           <div ref={ref}>
-            <RunButton {...props} loading={active} active={isOpen} onClick={twilioSandbox ? onToggle : runPrototype} />
+            <RunButton
+              {...props}
+              loading={active}
+              active={isOpen}
+              onClick={(active && Utils.functional.noop) || (twilioSandbox && onToggle) || runPrototype}
+            />
           </div>
         )}
       </Dropdown>

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1032.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1032.0...@voiceflow/creator-app@1.1032.1) (2022-12-16)
+
+
+### Bug Fixes
+
+* focus slate when variable is created [bugfix] (BUG-127) ([#6447](https://github.com/voiceflow/creator-app/issues/6447)) ([9faa12e](https://github.com/voiceflow/creator-app/commit/9faa12e3c255ea6170d017d18903f35fbc3df14b))
+
+
+
+
+
 # [1.1032.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1031.0...@voiceflow/creator-app@1.1032.0) (2022-12-16)
 
 

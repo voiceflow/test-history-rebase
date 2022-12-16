@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1029.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1029.0...@voiceflow/creator-app@1.1029.1) (2022-12-16)
+
+
+### Bug Fixes
+
+* prototype button icon fix (CT-1268) ([#6443](https://github.com/voiceflow/creator-app/issues/6443)) ([324e91c](https://github.com/voiceflow/creator-app/commit/324e91c14300aae72e87f1fc91eedb7ef775b3e7))
+
+
+
+
+
 # [1.1029.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1028.0...@voiceflow/creator-app@1.1029.0) (2022-12-15)
 
 

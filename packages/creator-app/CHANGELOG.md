@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1030.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1029.1...@voiceflow/creator-app@1.1030.0) (2022-12-16)
+
+
+### Features
+
+* create transcript after first user real interaction (CT-1251) ([#6440](https://github.com/voiceflow/creator-app/issues/6440)) ([d9123ba](https://github.com/voiceflow/creator-app/commit/d9123bac4549dc468d0b85116220bc67757bb822))
+
+
+
+
+
 ## [1.1029.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1029.0...@voiceflow/creator-app@1.1029.1) (2022-12-16)
 
 

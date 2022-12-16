@@ -135,6 +135,10 @@ export const withVariablesEditorApi: APIPlugin = (EditorAPI: EditorAPIType): Edi
 
       // space is required to work correctly
       Transforms.insertText(editor, ' ');
+
+      if (!EditorAPI.isFocused(editor)) {
+        EditorAPI.focus(editor);
+      }
     },
   };
 

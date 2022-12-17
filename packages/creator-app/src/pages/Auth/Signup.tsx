@@ -32,9 +32,13 @@ const Signup: React.FC<SignupProps> = ({ location, ...props }) => {
       return;
     }
 
-    const checkInviteMethod = identityWorkspaceInvite.isEnabled ? client.identity.workspaceInvitation.checkInvite : client.workspace.validateInvite;
+    let isInviteValid = false;
 
-    const isInviteValid = await checkInviteMethod(query.invite).catch(() => false);
+    if (identityWorkspaceInvite.isEnabled) {
+      isInviteValid = await client.identity.workspaceInvitation.checkInvite(query.invite).catch(() => false);
+    } else {
+      isInviteValid = await client.workspace.validateInvite(query.invite).catch(() => false);
+    }
 
     setValid(!!isInviteValid);
   });

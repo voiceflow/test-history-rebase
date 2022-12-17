@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1032.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1032.1...@voiceflow/creator-app@1.1032.2) (2022-12-17)
+
+
+### Bug Fixes
+
+* fix check invite method call [bugfix] (CT-000) ([#6449](https://github.com/voiceflow/creator-app/issues/6449)) ([59f1135](https://github.com/voiceflow/creator-app/commit/59f113543469fd471cf40aa932dc40637c6ef36f))
+
+
+
+
+
 ## [1.1032.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1032.0...@voiceflow/creator-app@1.1032.1) (2022-12-16)
 
 

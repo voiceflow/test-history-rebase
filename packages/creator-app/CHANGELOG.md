@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1034.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1033.1...@voiceflow/creator-app@1.1034.0) (2022-12-18)
+
+
+### Features
+
+* assistant ai project toggle UI and feature flag (HW-47) ([#6452](https://github.com/voiceflow/creator-app/issues/6452)) ([8438d98](https://github.com/voiceflow/creator-app/commit/8438d9817e2b187a36d65b61c2cae3ca4431d19d))
+
+
+
+
+
 ## [1.1033.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1033.0...@voiceflow/creator-app@1.1033.1) (2022-12-18)
 
 

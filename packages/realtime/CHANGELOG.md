@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.138.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.138.4...@voiceflow/realtime@1.138.5) (2022-12-18)
+
+
+### Bug Fixes
+
+* use old workspace create endpoint [bugfix] (CT-000) ([#6454](https://github.com/voiceflow/creator-app/issues/6454)) ([0b0a021](https://github.com/voiceflow/creator-app/commit/0b0a021b0f76cc27fd1f6034998b5c27f0c49108))
+
+
+
+
+
 ## [1.138.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.138.3...@voiceflow/realtime@1.138.4) (2022-12-18)
 
 **Note:** Version bump only for package @voiceflow/realtime

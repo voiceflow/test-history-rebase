@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.210.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.209.2...@voiceflow/realtime-sdk@1.210.0) (2022-12-18)
+
+
+### Features
+
+* new ff for utt gen (CT-000) ([#6450](https://github.com/voiceflow/creator-app/issues/6450)) ([838c6c5](https://github.com/voiceflow/creator-app/commit/838c6c56189faf89fdf945364c738f0934ad3bfa))
+
+
+
+
+
 ## [1.209.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.209.1...@voiceflow/realtime-sdk@1.209.2) (2022-12-15)
 
 

@@ -11,6 +11,7 @@ export enum SettingSections {
   DANGER_ZONE = 'Danger Zone',
   DIALOGFLOW_CONSOLE = 'Dialogflow Console',
   GLOBAL_LOGIC = 'Global Logic',
+  AI_ASSISTANT = 'AI Assistant',
 }
 
 export const DEFAULT_MAX_WIDTH = 700;
@@ -43,6 +44,7 @@ export const getSettingsMetaProps = Utils.platform.createPlatformAndProjectTypeS
         SettingSections.GLOBAL_LOGIC,
         SettingSections.CANVAS,
         SettingSections.CHANNEL_SPECIFIC_FEATURES,
+        SettingSections.AI_ASSISTANT,
         SettingSections.DANGER_ZONE,
       ],
       descriptors: {
@@ -59,7 +61,13 @@ export const getSettingsMetaProps = Utils.platform.createPlatformAndProjectTypeS
     },
     [Platform.Constants.PlatformType.GOOGLE]: {
       name: 'Google',
-      sections: [SettingSections.BASIC, SettingSections.GLOBAL_LOGIC, SettingSections.CANVAS, SettingSections.DANGER_ZONE],
+      sections: [
+        SettingSections.BASIC,
+        SettingSections.GLOBAL_LOGIC,
+        SettingSections.CANVAS,
+        SettingSections.AI_ASSISTANT,
+        SettingSections.DANGER_ZONE,
+      ],
       descriptors: {
         allowRepeat: <Universal.AllowRepeat />,
         repeatDialog: General.RepeatDialog,
@@ -75,6 +83,7 @@ export const getSettingsMetaProps = Utils.platform.createPlatformAndProjectTypeS
         SettingSections.GLOBAL_LOGIC,
         SettingSections.DIALOGFLOW_CONSOLE,
         SettingSections.CANVAS,
+        SettingSections.AI_ASSISTANT,
         SettingSections.DANGER_ZONE,
       ],
       descriptors: {
@@ -84,13 +93,25 @@ export const getSettingsMetaProps = Utils.platform.createPlatformAndProjectTypeS
     },
     [Platform.Constants.ProjectType.CHAT]: {
       name: 'Chatbot',
-      sections: [SettingSections.BASIC, SettingSections.GLOBAL_LOGIC, SettingSections.CANVAS, SettingSections.DANGER_ZONE],
+      sections: [
+        SettingSections.BASIC,
+        SettingSections.GLOBAL_LOGIC,
+        SettingSections.CANVAS,
+        SettingSections.AI_ASSISTANT,
+        SettingSections.DANGER_ZONE,
+      ],
       descriptors: {},
     },
   },
   {
     name: 'General',
-    sections: [SettingSections.BASIC, SettingSections.GLOBAL_LOGIC, SettingSections.CANVAS, SettingSections.DANGER_ZONE],
+    sections: [
+      SettingSections.BASIC,
+      SettingSections.GLOBAL_LOGIC,
+      SettingSections.CANVAS,
+      SettingSections.AI_ASSISTANT,
+      SettingSections.DANGER_ZONE,
+    ],
     descriptors: {},
   }
 );

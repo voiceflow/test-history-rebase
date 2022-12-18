@@ -74,4 +74,5 @@ export enum FeatureFlag {
 
   ANALYTICS_DASHBOARD = 'analytics_dashboard',
   GPT_UTTERANCE_GEN = 'gpt_utterance_gen',
+  ASSISTANT_AI = 'assistant_ai',
 }

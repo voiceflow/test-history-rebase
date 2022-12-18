@@ -48,6 +48,7 @@ export interface BaseProps {
   fadeDownDuration?: number;
   renderFooterAction?: Nullable<(options: { close: VoidFunction }) => React.ReactNode>;
   swallowMouseDownEvent?: boolean;
+  menuText?: string;
 }
 
 export type OnSelect<Value = void> = Value extends void ? (value?: Value) => void : (value: Value) => void;

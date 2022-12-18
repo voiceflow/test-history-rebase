@@ -29,6 +29,7 @@ export interface DropdownProps<Value = void> {
   menuWidth?: number;
   placement?: DropdownPlacement;
   autoWidth?: boolean;
+  dropdownText?: string;
   selfDismiss?: boolean;
   disabledOverlay?: boolean;
   preventOverflow?: StrictModifier<'preventOverflow'>['options'];
@@ -54,6 +55,7 @@ const Dropdown = <Value extends unknown = void>({
   disabledOverlay = false,
   preventOverflow,
   maxVisibleItems,
+  dropdownText,
 }: DropdownProps<Value>): React.ReactElement => {
   const popper = usePopper({
     placement,
@@ -90,6 +92,7 @@ const Dropdown = <Value extends unknown = void>({
                 {(typeof menu === 'function' ? menu(onToggle) : menu) ||
                   (options && (
                     <Menu<Value>
+                      menuText={dropdownText}
                       width={menuWidth}
                       options={options}
                       onSelect={onSelect}

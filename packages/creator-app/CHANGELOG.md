@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1033.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1032.3...@voiceflow/creator-app@1.1033.0) (2022-12-18)
+
+
+### Features
+
+* generate button (CT-000) ([#6451](https://github.com/voiceflow/creator-app/issues/6451)) ([befb866](https://github.com/voiceflow/creator-app/commit/befb866b060741f16085fc05d34f794dc9ba1197))
+
+
+
+
+
 ## [1.1032.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1032.2...@voiceflow/creator-app@1.1032.3) (2022-12-18)
 
 **Note:** Version bump only for package @voiceflow/creator-app

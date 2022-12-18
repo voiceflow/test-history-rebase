@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1033.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1033.0...@voiceflow/creator-app@1.1033.1) (2022-12-18)
+
+
+### Bug Fixes
+
+* whatsapp confirm hookup ([#6453](https://github.com/voiceflow/creator-app/issues/6453)) ([2626452](https://github.com/voiceflow/creator-app/commit/2626452995f7c72aae0d1e5bd3c1711eef05c6b6))
+
+
+
+
+
 # [1.1033.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1032.3...@voiceflow/creator-app@1.1033.0) (2022-12-18)
 
 

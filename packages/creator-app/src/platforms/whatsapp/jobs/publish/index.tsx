@@ -3,7 +3,8 @@ import React from 'react';
 
 import JobInterface from '@/components/JobInterface';
 import { PublishVersionModalData } from '@/components/PublishVersionModal';
-import { ModalType } from '@/constants';
+import { JobStatus, ModalType } from '@/constants';
+import { NLPTrainStageType } from '@/constants/platforms';
 import { PublishContext } from '@/contexts';
 import * as Session from '@/ducks/session';
 import { useModals, useSelector, useTrackingEvents } from '@/hooks';
@@ -39,7 +40,7 @@ const WhatsApp: React.FC = () => {
 
   const onPublish = usePersistFunction(() =>
     getFirstTime()
-      ? onConfirm()
+      ? publishContext?.setJob({ stage: { type: NLPTrainStageType.CONFIRM }, id: 'confirm', status: JobStatus.FINISHED })
       : publishNewVersionModal.open({
           message: 'Publish this version to production and use it on WhatsApp Business Messaging.',
           onConfirm,

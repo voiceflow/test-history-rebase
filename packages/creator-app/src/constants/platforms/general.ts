@@ -12,6 +12,7 @@ export enum GeneralJobErrorType {
 export enum NLPTrainStageType {
   IDLE = 'IDLE',
   ERROR = 'ERROR',
+  CONFIRM = 'CONFIRM',
   SUCCESS = 'SUCCESS',
   PROGRESS = 'PROGRESS',
 }

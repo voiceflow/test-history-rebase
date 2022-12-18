@@ -3,6 +3,7 @@ import { ErrorStage } from '@/components/PlatformUploadPopup/components';
 import { NLPTrainStageType } from '@/constants/platforms';
 import { NLPTrainJob } from '@/models';
 
+import ConnectStage from './ConnectStage';
 import SuccessStage from './SuccessStage';
 
 export const WhatsAppStageContent = {
@@ -11,6 +12,9 @@ export const WhatsAppStageContent = {
   },
   [NLPTrainStageType.ERROR]: {
     Popup: { Component: ErrorStage, closeable: true },
+  },
+  [NLPTrainStageType.CONFIRM]: {
+    Popup: { Component: ConnectStage, closeable: true },
   },
 };
 

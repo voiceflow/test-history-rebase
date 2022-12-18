@@ -11,6 +11,8 @@ import { useActiveWorkspace, useDispatch, usePermission, useSelector } from '@/h
 import * as ModalsV2 from '@/ModalsV2';
 import * as Sentry from '@/vendors/sentry';
 
+import { AIAssistSection } from './components';
+
 const GeneralSettingsPage: React.FC = () => {
   const workspace = useActiveWorkspace()!;
 
@@ -63,6 +65,8 @@ const GeneralSettingsPage: React.FC = () => {
           </Box.Flex>
         </Section>
       </SettingsSection>
+
+      <AIAssistSection />
 
       {canDeleteWorkspace && (
         <SettingsSection title="Danger Zone" variant={SectionVariants.SECONDARY}>

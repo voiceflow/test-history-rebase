@@ -1,9 +1,7 @@
 import { Box, Flex, Link, SectionV2, Text, Toggle } from '@voiceflow/ui';
 import React from 'react';
 
-import { SectionVariants, SettingsSection, SettingsSubSection } from '@/components/Settings';
-
-import * as S from './styles';
+import { SectionVariants, SettingsSection, SettingsSubSection, SettingsTitleBadge } from '@/components/Settings';
 
 const AIAssistant: React.FC = () => {
   const [checked, setChecked] = React.useState(false);
@@ -13,7 +11,7 @@ const AIAssistant: React.FC = () => {
       variant={SectionVariants.PRIMARY}
       title={
         <Flex>
-          AI Assistant <S.Badge>Beta</S.Badge>
+          AI Assistant <SettingsTitleBadge>Beta</SettingsTitleBadge>
         </Flex>
       }
       noContentPadding

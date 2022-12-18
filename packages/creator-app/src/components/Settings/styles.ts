@@ -1,6 +1,6 @@
 import { styled } from '@/hocs';
 
-export const Badge = styled.div`
+export const SettingsTitleBadge = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;

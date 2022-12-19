@@ -23,7 +23,7 @@ context('Onboarding', () => {
     });
   });
 
-  describe('Student promo plan', () => {
+  describe.skip('Student promo plan', () => {
     beforeEach(() => cy.removeTestAccount());
 
     it('new user', () => {

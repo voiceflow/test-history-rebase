@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1035.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1034.0...@voiceflow/creator-app@1.1035.0) (2022-12-19)
+
+
+### Features
+
+* adds ai assist workspace settings (CT-000) ([#6458](https://github.com/voiceflow/creator-app/issues/6458)) ([9058e0b](https://github.com/voiceflow/creator-app/commit/9058e0b39e345cb97210873836543201bf6963eb))
+
+
+
+
+
 # [1.1034.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1033.1...@voiceflow/creator-app@1.1034.0) (2022-12-18)
 
 

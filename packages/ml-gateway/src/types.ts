@@ -6,6 +6,9 @@ export interface Config {
   CLOUD_ENV: string;
   IS_PRIVATE_CLOUD: boolean;
   CREATOR_API_ENDPOINT: string;
+  BILLING_API_ENDPOINT: string;
+  AUTH_API_ENDPOINT: string;
+  ANALYTICS_API_ENDPOINT: string;
 
   // Release information
   GIT_SHA: string | null;
@@ -27,4 +30,8 @@ export interface Config {
   // Google
   FIRESTORE_MODEL_COLLECTION: string | null;
   PUBSUB_PROJECT_KEY: string | null;
+
+  // OpenAI
+  OPENAI_API_KEY: string;
+  OPENAI_ORG_ID: string;
 }

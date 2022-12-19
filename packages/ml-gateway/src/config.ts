@@ -15,6 +15,9 @@ const CONFIG: Config = {
   CLOUD_ENV,
   IS_PRIVATE_CLOUD: NODE_ENV === 'production' && CLOUD_ENV !== 'public',
   CREATOR_API_ENDPOINT: getRequiredProcessEnv('CREATOR_API_ENDPOINT'),
+  BILLING_API_ENDPOINT: getRequiredProcessEnv('BILLING_API_ENDPOINT'),
+  AUTH_API_ENDPOINT: getRequiredProcessEnv('AUTH_API_ENDPOINT'),
+  ANALYTICS_API_ENDPOINT: getRequiredProcessEnv('CREATOR_API_ENDPOINT'),
 
   // Release information
   GIT_SHA: getOptionalProcessEnv('GIT_SHA'),
@@ -36,6 +39,10 @@ const CONFIG: Config = {
   // Google
   FIRESTORE_MODEL_COLLECTION: getOptionalProcessEnv('FIRESTORE_MODEL_COLLECTION'),
   PUBSUB_PROJECT_KEY: getOptionalProcessEnv('PUBSUB_PROJECT_KEY'),
+
+  // OpenAI
+  OPENAI_API_KEY: getRequiredProcessEnv('OPENAI_API_KEY'),
+  OPENAI_ORG_ID: getRequiredProcessEnv('OPENAI_ORG_ID'),
 };
 
 export default CONFIG;

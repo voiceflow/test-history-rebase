@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.212.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.211.0...@voiceflow/realtime-sdk@1.212.0) (2022-12-19)
+
+
+### Features
+
+* gpt feature hook (CT-000) ([#6462](https://github.com/voiceflow/creator-app/issues/6462)) ([aaa5a88](https://github.com/voiceflow/creator-app/commit/aaa5a88ee27a02615be7e8bd718e3dc24b9e8f50))
+
+
+
+
+
 # [1.211.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.210.1...@voiceflow/realtime-sdk@1.211.0) (2022-12-18)
 
 

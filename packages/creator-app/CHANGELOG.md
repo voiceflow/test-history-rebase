@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1036.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1035.1...@voiceflow/creator-app@1.1036.0) (2022-12-19)
+
+
+### Features
+
+* gpt feature hook (CT-000) ([#6462](https://github.com/voiceflow/creator-app/issues/6462)) ([aaa5a88](https://github.com/voiceflow/creator-app/commit/aaa5a88ee27a02615be7e8bd718e3dc24b9e8f50))
+
+
+
+
+
 ## [1.1035.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1035.0...@voiceflow/creator-app@1.1035.1) (2022-12-19)
 
 **Note:** Version bump only for package @voiceflow/creator-app

@@ -52,7 +52,7 @@ export const InputContainer = styled.div<{ error?: boolean }>`
 
   .PhoneInputInput {
     ${inputStyle}
-    padding-left: 70px;
+    padding-left: 65px;
   }
   .PhoneInputCountrySelectArrow {
     display: none;

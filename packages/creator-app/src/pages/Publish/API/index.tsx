@@ -146,88 +146,86 @@ const API: React.FC = () => {
   }
 
   return (
-    <>
-      <ContentContainer>
-        <ContentSection>
-          <FlatCard m={12}>
-            <BoxFlex justifyContent="flex-end">
-              <SvgIcon size={64} icon="globe" />
-              <Box ml={24}>
-                <BlockText fontWeight={600} mb={8} color={ThemeColor.PRIMARY}>
-                  API Documentation
-                </BlockText>
-                <Text>
-                  Integrate your Voiceflow project with any conversational interface like a chatbot, voice assistant, IVR, web chat, and much more.{' '}
-                  <Link href={DIALOG_MANAGER_API}>See documentation</Link>
-                </Text>
-              </Box>
-            </BoxFlex>
-          </FlatCard>
-        </ContentSection>
+    <ContentContainer>
+      <ContentSection>
+        <FlatCard>
+          <BoxFlex justifyContent="flex-end">
+            <SvgIcon size={64} icon="globe" />
+            <Box ml={24}>
+              <BlockText fontWeight={600} mb={8} color={ThemeColor.PRIMARY}>
+                API Documentation
+              </BlockText>
+              <Text>
+                Integrate your Voiceflow project with any conversational interface like a chatbot, voice assistant, IVR, web chat, and much more.{' '}
+                <Link href={DIALOG_MANAGER_API}>See documentation</Link>
+              </Text>
+            </Box>
+          </BoxFlex>
+        </FlatCard>
+      </ContentSection>
 
-        {hasPermissions && (
-          <>
+      {hasPermissions && (
+        <>
+          <ProjectAPIKeySection
+            title="Primary Key"
+            apiKey={primaryKey}
+            show={showPrimaryKey}
+            onToggleShow={togglePrimaryKey}
+            options={[
+              {
+                label: 'Regenerate key',
+                onClick: () => regeneratePrimaryKey(),
+              },
+              ...(!secondaryKey
+                ? [
+                    {
+                      label: 'Create secondary key',
+                      onClick: () => createSecondaryKey(),
+                    },
+                  ]
+                : []),
+            ]}
+          >
+            {primaryKey && (
+              <Button onClick={() => copyKey(primaryKey.key)} variant={ButtonVariant.PRIMARY}>
+                Copy API Key
+              </Button>
+            )}
+          </ProjectAPIKeySection>
+
+          {!!secondaryKey && (
             <ProjectAPIKeySection
-              title="Primary Key"
-              apiKey={primaryKey}
-              show={showPrimaryKey}
-              onToggleShow={togglePrimaryKey}
+              title="Secondary Key"
+              apiKey={secondaryKey}
+              show={showSecondaryKey}
+              onToggleShow={toggleSecondaryKey}
               options={[
                 {
                   label: 'Regenerate key',
-                  onClick: () => regeneratePrimaryKey(),
+                  onClick: () => regenerateSecondaryKey(),
                 },
-                ...(!secondaryKey
-                  ? [
-                      {
-                        label: 'Create secondary key',
-                        onClick: () => createSecondaryKey(),
-                      },
-                    ]
-                  : []),
+                {
+                  label: 'Remove secondary key',
+                  onClick: () => deleteSecondaryKey(),
+                },
               ]}
             >
-              {primaryKey && (
-                <Button onClick={() => copyKey(primaryKey.key)} variant={ButtonVariant.PRIMARY}>
-                  Copy API Key
-                </Button>
+              {secondaryKey && (
+                <StyledButton onClick={promoteSecondaryKey} variant={ButtonVariant.SECONDARY} style={{ whiteSpace: 'nowrap' }}>
+                  Promote Key
+                </StyledButton>
               )}
             </ProjectAPIKeySection>
+          )}
+        </>
+      )}
 
-            {!!secondaryKey && (
-              <ProjectAPIKeySection
-                title="Secondary Key"
-                apiKey={secondaryKey}
-                show={showSecondaryKey}
-                onToggleShow={toggleSecondaryKey}
-                options={[
-                  {
-                    label: 'Regenerate key',
-                    onClick: () => regenerateSecondaryKey(),
-                  },
-                  {
-                    label: 'Remove secondary key',
-                    onClick: () => deleteSecondaryKey(),
-                  },
-                ]}
-              >
-                {secondaryKey && (
-                  <StyledButton onClick={promoteSecondaryKey} variant={ButtonVariant.SECONDARY} style={{ whiteSpace: 'nowrap' }}>
-                    Promote Key
-                  </StyledButton>
-                )}
-              </ProjectAPIKeySection>
-            )}
-          </>
-        )}
-
-        <ContentSection>
-          <Section title="API Call Examples" card={false}>
-            <SampleEditor samples={samples} />
-          </Section>
-        </ContentSection>
-      </ContentContainer>
-    </>
+      <ContentSection>
+        <Section title="API Call Examples" card={false}>
+          <SampleEditor samples={samples} />
+        </Section>
+      </ContentSection>
+    </ContentContainer>
   );
 };
 

@@ -1,50 +1,21 @@
-import { toast, useLocalStorage, usePersistFunction } from '@voiceflow/ui';
+import { usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
 import JobInterface from '@/components/JobInterface';
-import { PublishVersionModalData } from '@/components/PublishVersionModal';
-import { JobStatus, ModalType } from '@/constants';
+import { JobStatus } from '@/constants';
 import { NLPTrainStageType } from '@/constants/platforms';
 import { PublishContext } from '@/contexts';
-import * as Session from '@/ducks/session';
-import { useModals, useSelector, useTrackingEvents } from '@/hooks';
 import { useSimulatedProgress } from '@/hooks/job';
 import PublishButton from '@/pages/Project/components/Header/components/CanvasHeader/components/Upload/components/PublishButton';
 
 import { useWhatsAppStageContent } from './stages';
-import { createWidgetSessionKey } from './utils';
 
 const WhatsApp: React.FC = () => {
-  const publishNewVersionModal = useModals<PublishVersionModalData>(ModalType.PUBLISH_VERSION_MODAL);
   const publishContext = React.useContext(PublishContext)!;
   const { job, active } = publishContext;
 
-  const [trackingEvents] = useTrackingEvents();
-
-  const projectID = useSelector(Session.activeProjectIDSelector);
-
-  const [getFirstTime] = useLocalStorage<boolean>(createWidgetSessionKey(projectID!), true);
-
-  const onConfirm = usePersistFunction((versionName?: string) => {
-    // modal awaits confirm before closing , start() takes a long time
-    (async () => {
-      try {
-        trackingEvents.trackActiveProjectPublishAttempt();
-
-        await publishContext?.start({ versionName });
-      } catch (err) {
-        toast.error(`Updating live version failed: ${err}`);
-      }
-    })();
-  });
-
   const onPublish = usePersistFunction(() =>
-    getFirstTime()
-      ? publishContext?.setJob({ stage: { type: NLPTrainStageType.CONFIRM }, id: 'confirm', status: JobStatus.FINISHED })
-      : publishNewVersionModal.open({
-          message: 'Publish this version to production and use it on WhatsApp Business Messaging.',
-          onConfirm,
-        })
+    publishContext?.setJob({ stage: { type: NLPTrainStageType.CONFIRM }, id: 'confirm', status: JobStatus.FINISHED })
   );
 
   const Content = useWhatsAppStageContent(job?.stage.type);

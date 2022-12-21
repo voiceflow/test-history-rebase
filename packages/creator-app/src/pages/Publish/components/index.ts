@@ -16,12 +16,12 @@ export const FlatCard = styled(Box)`
 
 export const ContentContainer = styled(BoxFlex)`
   flex-direction: column;
-  padding: 20px;
+  padding: 32px;
   align-items: flex-start;
 `;
 
 export const ContentSection = styled(BoxFlexCenter)`
-  margin-bottom: 20px;
+  margin-bottom: 32px;
   width: 724px;
   align-items: flex-end;
 `;
@@ -37,14 +37,12 @@ export const ActionContainer = styled.div`
 
 export const SettingsContainer = styled(Box.Flex)`
   flex-direction: column;
-  margin: 0 32px;
-  padding: 32px 0;
+  padding: 32px;
   height: 100%;
   overflow-y: scroll;
-  max-width: 700px;
+  max-width: 764px;
 
   & ${Banner.OuterContainer} {
-    padding: 12px;
-    margin-bottom: 8px;
+    margin-bottom: 32px;
   }
 `;

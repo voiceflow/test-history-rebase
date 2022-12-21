@@ -28,7 +28,7 @@ const Section: React.FC<{ title?: JSX.Element | string; subtitle?: JSX.Element |
   card = true,
   className,
 }) => (
-  <Box width="100%" p={12} className={className}>
+  <Box width="100%" className={className}>
     <Box fontWeight={600} mb={16}>
       {title}
       {subtitle && (

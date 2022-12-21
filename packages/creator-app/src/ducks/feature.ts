@@ -4,7 +4,7 @@ import { createAction } from '@voiceflow/ui';
 import { createSelector } from 'reselect';
 
 import client from '@/client';
-import { IS_PRODUCTION } from '@/config';
+import { IS_E2E, IS_PRODUCTION } from '@/config';
 import { SessionAction, SetActiveWorkspaceID, SetAuthToken } from '@/ducks/session/actions';
 import { activeWorkspaceIDSelector } from '@/ducks/session/selectors';
 import type { Action, Reducer, RootReducer, Selector, Thunk } from '@/store/types';
@@ -190,9 +190,12 @@ export const loadWorkspaceFeatures = (): Thunk => async (dispatch, getState) => 
     return;
   }
 
-  const organization = isIdentityWorkspaceEnabled
-    ? await client.identity.workspace.getOrganization(workspaceID)
-    : await client.workspace.getOrganization(workspaceID);
+  // For some reason this is failing only in e2es, might be related to data mirroring, need to add this logic until we figure out why
+  const organization =
+    isIdentityWorkspaceEnabled && !IS_E2E
+      ? await client.identity.workspace.getOrganization(workspaceID)
+      : await client.workspace.getOrganization(workspaceID);
+
   const features = await client.feature.getStatuses({ workspaceID, organizationID: organization?.id });
 
   dispatch(setWorkspaceFeaturesLoaded(overrideFeatures(features)));

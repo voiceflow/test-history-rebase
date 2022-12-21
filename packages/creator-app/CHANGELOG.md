@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1036.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1036.1...@voiceflow/creator-app@1.1036.2) (2022-12-21)
+
+
+### Bug Fixes
+
+* target old getOrg endpoint (CT-000) ([#6474](https://github.com/voiceflow/creator-app/issues/6474)) ([fb30819](https://github.com/voiceflow/creator-app/commit/fb308193834cdb8f0d736d4d8ac937b3a1b8a3cd))
+
+
+
+
+
 ## [1.1036.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1036.0...@voiceflow/creator-app@1.1036.1) (2022-12-21)
 
 

@@ -1,6 +1,6 @@
 import { Menu } from '@voiceflow/ui';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 const TooltipContent = styled(Menu.Container)`
   color: #62778c;

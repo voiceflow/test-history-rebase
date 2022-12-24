@@ -4,7 +4,7 @@ import React from 'react';
 
 import { LimitDetails } from '@/config/planLimits';
 import { ModalType } from '@/constants';
-import { useModals } from '@/hooks';
+import { useModals } from '@/hooks/modals';
 
 import GatedFeatureIcon from './GatedFeatureIcon';
 import { getLabelTooltip, getUpgradeTooltip } from './getOptionTooltips';

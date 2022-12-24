@@ -1,4 +1,4 @@
-import { css, styled } from '@/hocs';
+import { css, styled } from '@/hocs/styled';
 
 export interface InputProps {
   isActive?: boolean;

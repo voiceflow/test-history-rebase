@@ -1,47 +1,53 @@
 import composeRef from '@seznam/compose-react-refs';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Badge, Box, ErrorMessage, SvgIcon } from '@voiceflow/ui';
+import { Badge, ErrorMessage, SvgIcon } from '@voiceflow/ui';
+import { EditorState } from 'draft-js';
 import React from 'react';
 
 import Utterance, { UtteranceRef } from '@/components/Utterance';
 
 interface UtteranceInputProps {
-  intentUtterances: Platform.Base.Models.Intent.Input[];
-  setValidUtterance: () => void;
+  onAdd: (slot: Platform.Base.Models.Intent.Input) => void;
   slots: Realtime.Slot[];
   value?: Platform.Base.Models.Intent.Input | null;
-  updateIsEmpty: (val: boolean) => void;
   isEmpty: boolean;
-  isNotAtTop: boolean;
+  onChange: (slot: Platform.Base.Models.Intent.Input) => void;
+  readOnly?: boolean;
   addError?: string;
   onAddSlot: (name: string) => Promise<Realtime.Slot | null>;
-  onAdd: (slot: Platform.Base.Models.Intent.Input) => void;
+  updateIsEmpty: (val: boolean) => void;
   isValidUtterance: boolean;
-  onChange: (slot: Platform.Base.Models.Intent.Input) => void;
+  setValidUtterance: () => void;
 }
 
 const UtteranceInput: React.ForwardRefRenderFunction<UtteranceRef, UtteranceInputProps> = (
-  { onChange, isValidUtterance, onAdd, onAddSlot, updateIsEmpty, addError, isNotAtTop, isEmpty, value, slots, intentUtterances, setValidUtterance },
+  { onChange, isValidUtterance, onAdd, readOnly, onAddSlot, updateIsEmpty, addError, isEmpty, value, slots, setValidUtterance },
   ref
 ) => {
   const utteranceRef = React.useRef<UtteranceRef>(null);
 
+  const onEditorStateChange = (state: EditorState) => {
+    const isEmpty = !state.getCurrentContent().hasText();
+    if (isEmpty) setValidUtterance();
+  };
+
   return (
-    <Box mb={intentUtterances.length ? -21 : -4} mt={-1} pt={1} px={32} top={58} zIndex={1000} position="sticky" backgroundColor="white">
+    <>
       <Utterance
-        onEditorStateChange={(state) => {
-          const isEmpty = !state.getCurrentContent().hasText();
-          if (isEmpty) setValidUtterance();
-        }}
         ref={composeRef(ref, utteranceRef)}
         space
         slots={slots}
         value={value?.text || ''}
         onBlur={onChange}
+        error={!isValidUtterance}
         onEmpty={updateIsEmpty}
+        readOnly={readOnly}
         onAddSlot={onAddSlot}
         iconProps={{ variant: SvgIcon.Variant.BLUE }}
+        placeholder="Add sample phrase, { to add entities"
+        onEnterPress={onAdd}
+        onEditorStateChange={onEditorStateChange}
         rightAction={
           !isEmpty && (
             <Badge slide onClick={() => utteranceRef.current && onAdd(utteranceRef.current.getCurrentUtterance())}>
@@ -49,13 +55,10 @@ const UtteranceInput: React.ForwardRefRenderFunction<UtteranceRef, UtteranceInpu
             </Badge>
           )
         }
-        placeholder="Add sample phrase, { to add entities"
-        onEnterPress={onAdd}
-        error={!isValidUtterance}
       />
-      {!isValidUtterance && <ErrorMessage mb={!intentUtterances.length ? 0 : undefined}>{addError}</ErrorMessage>}
-      {!!intentUtterances.length && <hr style={!isNotAtTop ? { marginLeft: '-32px' } : undefined} />}
-    </Box>
+
+      {!isValidUtterance && <ErrorMessage mb={0}>{addError}</ErrorMessage>}
+    </>
   );
 };
 

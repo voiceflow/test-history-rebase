@@ -6,7 +6,7 @@ import { EntityPrompt } from './types';
 
 export const getIntentPromptContent = ([prompt]: unknown[]) => {
   if (Platform.Common.Chat.CONFIG.utils.prompt.isPrompt(prompt)) {
-    return serializeToText(prompt.content, { encodeVariables: false });
+    return serializeToText(prompt.content, { encodeVariables: true });
   }
 
   if (Platform.Common.Voice.CONFIG.utils.intent.isPrompt(prompt)) {

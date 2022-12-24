@@ -1,5 +1,5 @@
 import EditableText from '@/components/EditableText';
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 const ProjectTitle = styled(EditableText)<{ $secondary?: boolean }>`
   max-width: 250px;

@@ -55,10 +55,8 @@ const VariablesInput = React.forwardRef<TextEditorRef, VariablesInputProps>(
     const containerRef = React.useRef<HTMLDivElement>(null);
     const textEditorRef = React.useRef<TextEditorRef>(null);
 
-    const slotsAndVariables = useSelector(DiagramV2.active.allSlotsAndVariablesSelector);
+    const variables = useSelector(DiagramV2.active.allSlotsAndVariablesSelector);
     const addGlobalVariable = useDispatch(Version.addGlobalVariable);
-
-    const variables = React.useMemo(() => slotsAndVariables.map((name) => ({ id: name, name, isVariable: true })), [slotsAndVariables]);
 
     const onAddVariable = React.useCallback(
       async (name?: string) => {

@@ -2,7 +2,7 @@ import React from 'react';
 
 import LoadingGate from '@/components/LoadingGate';
 import * as Feature from '@/ducks/feature';
-import { connect } from '@/hocs';
+import { connect } from '@/hocs/connect';
 import { ConnectedProps } from '@/types';
 
 const FeatureLoadingGate: React.FC<ConnectedFeatureLoadingGateProps> = ({ isLoaded, loadFeatures, children }) => (

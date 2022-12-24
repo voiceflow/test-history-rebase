@@ -6,7 +6,7 @@ import UpgradePopper, { UpgradePopperProps } from '@/components/UpgradePopper';
 import UpgradeTooltip, { UpgradeTooltipProps } from '@/components/UpgradeTooltip';
 import { PlanPermissionKey, PlanPermissions, UpgradeTooltipPermission } from '@/config/planPermission';
 import { UpgradePrompt } from '@/ducks/tracking';
-import { usePlanPermission } from '@/hooks';
+import { usePlanPermission } from '@/hooks/planPermission';
 
 import * as S from './styles';
 

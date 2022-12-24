@@ -1,6 +1,6 @@
 import { FlexCenter } from '@voiceflow/ui';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 const LeftIconContainer = styled(FlexCenter)`
   width: 30px;

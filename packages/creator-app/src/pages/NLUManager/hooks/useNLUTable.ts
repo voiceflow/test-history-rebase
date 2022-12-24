@@ -2,7 +2,7 @@ import { toast } from '@voiceflow/ui';
 import React from 'react';
 
 import { InteractionModelTabType } from '@/constants';
-import { NLUContext } from '@/contexts';
+import { NLUContext } from '@/contexts/NLUContext';
 
 import useTable from './useTable';
 

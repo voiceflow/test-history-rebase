@@ -1,5 +1,4 @@
 import composeRefs from '@seznam/compose-react-refs';
-import { Box } from '@ui/components/Box';
 import { FlexLabel } from '@ui/components/Flex';
 import { useCachedValue, useTheme } from '@ui/hooks';
 import { FadeDownDelayedContainer } from '@ui/styles/animations';
@@ -13,6 +12,7 @@ import {
   Container,
   Footer,
   getMaxHeight,
+  Hint,
   Item,
   ItemActionIcon,
   ItemIcon,
@@ -31,6 +31,7 @@ function Menu<Value = void>(props: T.PropsWithOptions<Value> & React.RefAttribut
 function Menu<Value = void>(
   {
     id,
+    hint,
     width,
     onHide,
     inline,
@@ -53,7 +54,6 @@ function Menu<Value = void>(
     fadeDownDuration,
     multiSelectProps,
     renderFooterAction,
-    menuText,
     swallowMouseDownEvent = true,
   }: T.PropsWithChildren | T.PropsWithOptions<Value>,
   ref: React.Ref<T.RefElement>
@@ -117,12 +117,8 @@ function Menu<Value = void>(
       disableAnimation={disableAnimation}
     >
       <FadeDownDelayedContainer duration={disableAnimation ? 0 : fadeDownDuration} delay={disableAnimation ? 0 : undefined}>
-        {menuText && (
-          <Box color="#62778C" p="12px 24px" fontSize={13} mt={-8} mb={8} borderBottom="1px solid #EAEFF4">
-            {menuText}
-          </Box>
-        )}
-        {searchable}
+        {searchable || (hint && <Hint>{hint}</Hint>)}
+
         <Scrollbars
           ref={scrollbarsRef}
           autoHide

@@ -3,10 +3,9 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Popper, stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 
-import { SubEditorPaths } from '@/pages/Canvas/constants';
+import { useArePromptsEmpty } from '@/hooks';
 import { EngineContext } from '@/pages/Canvas/contexts';
 import { PATH } from '@/pages/Canvas/managers/components/NoReplyV2/constants';
-import { hasValidPrompt } from '@/utils/prompt';
 
 import PromptsPreview from './PromptsPreview';
 import StepButton from './StepButton';
@@ -22,8 +21,9 @@ export interface NoReplyStepItemProps {
 const NoReplyStepItemV2: React.FC<NoReplyStepItemProps> = ({ nodeID, noReply, portID, nestedWithIcon }) => {
   const isPath = noReply?.types.includes(BaseNode.Utils.NoReplyType.PATH);
   const engine = React.useContext(EngineContext);
+  const promptsAreEmpty = useArePromptsEmpty(noReply?.reprompts);
 
-  const handleOpenEditor = () => engine?.setActive(nodeID, { nodeSubPath: SubEditorPaths.NO_REPLY });
+  const handleOpenEditor = () => engine?.setActive(nodeID, { nodeSubPath: PATH });
 
   if (!noReply?.types.length) return null;
 
@@ -42,7 +42,7 @@ const NoReplyStepItemV2: React.FC<NoReplyStepItemProps> = ({ nodeID, noReply, po
           nestedWithIcon={nestedWithIcon}
           portColor="#6e849a"
           attachment={
-            noReply.types.includes(BaseNode.Utils.NoReplyType.REPROMPT) && hasValidPrompt(noReply.reprompts) ? (
+            noReply.types.includes(BaseNode.Utils.NoReplyType.REPROMPT) && !promptsAreEmpty ? (
               <StepButton ref={ref} icon="delay" isActive={isOpened} onClick={stopPropagation(onToggle)} />
             ) : null
           }

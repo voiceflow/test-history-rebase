@@ -29,7 +29,7 @@ const CommandsSection: React.FC = () => {
   return (
     <SectionV2.ActionListSection
       title={
-        <Box.Flex gap={8}>
+        <Box.Flex>
           <SectionV2.Title bold={!!commands.length}>Commands</SectionV2.Title>
           <CommandInfoTooltip />
         </Box.Flex>

@@ -1,5 +1,5 @@
 import { Descriptor } from '@/components/Table';
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 export const Heading = styled(Descriptor)`
   padding: 20px 32px;

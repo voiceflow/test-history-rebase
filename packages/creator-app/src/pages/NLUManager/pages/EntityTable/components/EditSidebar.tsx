@@ -13,11 +13,12 @@ const EditSidebar: React.FC = () => {
     <ItemEditSidebar>
       {nluManager.activeEntity && (
         <EditEntityForm
+          key={nluManager.activeItemID}
           slotID={nluManager.activeItemID}
+          creationType={Tracking.NLUEntityCreationType.NLU_MANAGER}
           withNameSection={false}
           withBottomDivider
           colorPopperModifiers={[{ name: 'offset', options: { offset: [-240, -25] } }]}
-          creationType={Tracking.NLUEntityCreationType.NLU_MANAGER}
         />
       )}
     </ItemEditSidebar>

@@ -1,6 +1,6 @@
 import { FlexApart, FlexCenter } from '@voiceflow/ui';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 export { default as Client } from './AccountLinkClient';
 export { default as Domain } from './AccountLinkDomain';

@@ -7,6 +7,7 @@ import {
   SlateEditableRef,
   SlatePluginsOptions,
   SlatePluginType,
+  SlateValue,
   TextBoldButton,
   TextItalicButton,
   TextStrikeThroughButton,
@@ -24,6 +25,7 @@ import { SlateTextInputProps } from './types';
 const SlateTextInput: React.ForwardRefRenderFunction<SlateEditableRef, SlateTextInputProps> = (
   {
     options = Object.values(Base.Project.Chat.ToolbarOption), // all options available by default
+    onEmpty,
     variables,
     placeholder = 'Enter text reply, {} to add variables',
     pluginsOptions,
@@ -43,12 +45,27 @@ const SlateTextInput: React.ForwardRefRenderFunction<SlateEditableRef, SlateText
     [SlatePluginType.VARIABLES]: variablesOptions,
   });
 
-  useSlateEditorForceNormalize(editor, [variables]);
-
   const optionsMap = React.useMemo<Partial<Record<Base.Project.Chat.ToolbarOption, true>>>(
     () => Object.fromEntries(options.map((option) => [option, true])),
     [options]
   );
+
+  const emptyRef = React.useRef(false);
+
+  const onChange = (value: SlateValue) => {
+    setLocalValue(value);
+
+    if (!onEmpty) return;
+
+    const isEmpty = editor.isEmptyState(value);
+
+    if (isEmpty === emptyRef.current) return;
+
+    emptyRef.current = isEmpty;
+    onEmpty(editor.isEmptyState(value));
+  };
+
+  useSlateEditorForceNormalize(editor, [variables]);
 
   return (
     <SlateBaseInput
@@ -56,7 +73,7 @@ const SlateTextInput: React.ForwardRefRenderFunction<SlateEditableRef, SlateText
       ref={ref}
       value={localValue}
       editor={editor}
-      onChange={setLocalValue}
+      onChange={onChange}
       placeholder={placeholder}
       pluginsOptions={localPluginsOptions}
     >

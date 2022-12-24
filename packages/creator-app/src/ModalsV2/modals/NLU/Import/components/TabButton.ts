@@ -1,6 +1,6 @@
 import { transition } from '@voiceflow/ui';
 
-import { css, styled } from '@/hocs';
+import { css, styled } from '@/hocs/styled';
 
 const TabButton = styled.button<{ active?: boolean }>`
   ${transition('background', 'color', 'opacity')};

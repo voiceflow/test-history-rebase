@@ -9,7 +9,10 @@ import { LimitType } from '@/config/planLimitV2';
 import { EDITOR_SEAT_ROLES } from '@/constants';
 import * as Workspace from '@/ducks/workspace';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { useDispatch, useGetPlanLimited, useOnAddSeats, useSelector } from '@/hooks';
+import { useGetPlanLimited } from '@/hooks/planLimitV2';
+import { useDispatch } from '@/hooks/realtime';
+import { useSelector } from '@/hooks/redux';
+import { useOnAddSeats } from '@/hooks/workspace';
 import { Identifier } from '@/styles/constants';
 
 interface InviteByEmailProps {

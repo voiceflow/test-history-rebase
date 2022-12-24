@@ -3,12 +3,9 @@ import { createRootCRUDReducer } from '@/ducks/utils/crudV2';
 import { INITIAL_STATE } from '../constants';
 import crudReducers from './crud';
 import leave from './leave';
-import addMember from './member/addMember';
-import cancelInvite from './member/cancelInvite';
-import patchMember from './member/patchMember';
-import removeMember from './member/removeMember';
-import replaceMembers from './member/replaceMembers';
-import updateInvite from './member/updateInvite';
+import { addMember, cancelInvite, patchMember, removeMember, replaceMembers, updateInvite } from './member';
+import { loadAllQuotas, replaceQuota } from './quotas';
+import { patchSettings, replaceSettings } from './settings';
 import updateImage from './updateImage';
 import updateName from './updateName';
 
@@ -22,6 +19,10 @@ const realtimeWorkspaceReducer = createRootCRUDReducer(INITIAL_STATE, crudReduce
   .immerCase(...leave)
   .immerCase(...updateImage)
   .immerCase(...updateName)
+  .immerCase(...loadAllQuotas)
+  .immerCase(...replaceQuota)
+  .immerCase(...patchSettings)
+  .immerCase(...replaceSettings)
   .build();
 
 export default realtimeWorkspaceReducer;

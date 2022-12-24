@@ -1,24 +1,34 @@
 import { Config as ConfigUtils } from '@platform-config/configs/utils';
 import { Types } from '@platform-config/utils';
-import { Optional, Required } from 'utility-types';
+import { Utils } from '@voiceflow/common';
+import { DeepPartial, Required } from 'utility-types';
 
 import * as Models from '../models';
 
-export const inputSanitizer = ({ text, slots }: Partial<Models.Intent.Input> = {}): Models.Intent.Input => ({ text: text || '', slots: slots || [] });
+export const isPrompt = (_value?: unknown): _value is unknown => false;
+
+export const isPromptEmpty = () => true;
+
+export const promptFactory = (): unknown => ({});
+
+export const inputSanitizer = ({ text, slots }: DeepPartial<Models.Intent.Input> = {}): Models.Intent.Input => ({
+  text: text || '',
+  slots: slots?.filter(Utils.array.isNotNullish) || [],
+});
 
 export const slotDialogSanitizer = ({
   prompt = [],
   confirm = [],
   utterances = [],
   confirmEnabled = false,
-}: Partial<Models.Intent.SlotDialog> = {}): Models.Intent.SlotDialog => ({
+}: DeepPartial<Models.Intent.SlotDialog> = {}): Models.Intent.SlotDialog => ({
   prompt,
   confirm,
   utterances: utterances.map(inputSanitizer),
   confirmEnabled,
 });
 
-export const slotSanitizer = ({ id, dialog, required = false }: Required<Optional<Models.Intent.Slot>, 'id'>): Models.Intent.Slot => ({
+export const slotSanitizer = ({ id, dialog, required = false }: Required<DeepPartial<Models.Intent.Slot>, 'id'>): Models.Intent.Slot => ({
   id,
   dialog: slotDialogSanitizer(dialog),
   required,
@@ -28,15 +38,16 @@ export interface PromptFactoryOptions {
   defaultVoice?: string | null;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const promptFactory = (_options: PromptFactoryOptions): unknown => ({});
-
 export interface Config {
+  isPrompt: typeof isPrompt;
+
   slotFactory: typeof slotSanitizer;
 
   slotSanitizer: typeof slotSanitizer;
 
-  promptFactory: typeof promptFactory;
+  promptFactory: (options: PromptFactoryOptions) => unknown;
+
+  isPromptEmpty: (prompt?: unknown) => boolean;
 
   inputSanitizer: typeof inputSanitizer;
 
@@ -44,11 +55,15 @@ export interface Config {
 }
 
 export const CONFIG = Types.satisfies<Config>()({
+  isPrompt,
+
   slotFactory: slotSanitizer,
 
   slotSanitizer,
 
   promptFactory,
+
+  isPromptEmpty,
 
   inputSanitizer,
 

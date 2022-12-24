@@ -4,7 +4,7 @@ import React from 'react';
 
 import { SectionToggleVariant } from '@/components/Section';
 import { InteractionModelTabType } from '@/constants';
-import { NLUContext } from '@/contexts';
+import { NLUContext } from '@/contexts/NLUContext';
 import * as Intent from '@/ducks/intent';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as Tracking from '@/ducks/tracking';

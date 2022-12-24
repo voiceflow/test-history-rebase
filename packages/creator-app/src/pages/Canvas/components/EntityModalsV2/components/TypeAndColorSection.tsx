@@ -1,9 +1,8 @@
-import { Box, COLOR_PICKER_CONSTANTS, ColorThemes, ColorThemeUnit, isBaseOrSchemeColor, StrictPopperModifiers } from '@voiceflow/ui';
+import { Box, COLOR_PICKER_CONSTANTS, ColorThemes, ColorThemeUnit, isBaseOrSchemeColor, SectionV2, StrictPopperModifiers } from '@voiceflow/ui';
 import React from 'react';
 import { useDismissable } from 'react-dismissable-layers';
 
 import { ColorPickerPopper } from '@/components/ColorPickerPopper';
-import Section, { SectionVariant } from '@/components/Section';
 import SlotSelect from '@/components/SlotSelect';
 
 interface TypeAndColorSectionProps {
@@ -31,16 +30,20 @@ const TypeAndColorSection: React.FC<TypeAndColorSectionProps> = ({
   const baseOrSchemeColor = React.useMemo(() => isBaseOrSchemeColor(color), [color]);
 
   return (
-    <Section
-      header="Type"
-      dividers={false}
-      variant={SectionVariant.QUATERNARY}
-      backgroundColor="#fdfdfd"
-      customHeaderStyling={{ paddingTop: '16px' }}
-      customContentStyling={{ paddingBottom: '24px' }}
+    <SectionV2.SimpleContentSection
+      isAccent
+      headerProps={{ bottomUnit: 1.5, topUnit: 2.5 }}
+      contentProps={{ bottomOffset: 3 }}
+      header={
+        <Box.Flex minHeight="22px">
+          <SectionV2.Title bold secondary>
+            Type
+          </SectionV2.Title>
+        </Box.Flex>
+      }
     >
-      <Box.FlexApart>
-        <Box.Flex flex={2} mr={24}>
+      <Box.FlexApart gap={24}>
+        <Box.Flex flex={2}>
           <SlotSelect value={type} onChange={onChangeType} />
         </Box.Flex>
 
@@ -66,7 +69,7 @@ const TypeAndColorSection: React.FC<TypeAndColorSectionProps> = ({
           )}
         </Box.Flex>
       </Box.FlexApart>
-    </Section>
+    </SectionV2.SimpleContentSection>
   );
 };
 

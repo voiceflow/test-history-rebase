@@ -9,7 +9,7 @@ import client from '@/client';
 import { ModalType, UNLIMITED_EDITORS_CONST } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as Workspace from '@/ducks/workspace';
-import { withStripe } from '@/hocs';
+import { withStripe } from '@/hocs/withStripe';
 import {
   useActiveWorkspace,
   useAsyncEffect,
@@ -21,7 +21,7 @@ import {
   useSmartReducer,
   useTrackingEvents,
 } from '@/hooks';
-import * as ModalsV2 from '@/ModalsV2';
+import { useSuccessModal } from '@/ModalsV2/hooks';
 import { DBPaymentSource } from '@/models/Billing';
 import * as Sentry from '@/vendors/sentry';
 
@@ -118,7 +118,7 @@ const PaymentContextProvider: React.FC<PaymentContextProviderProps> = ({ stripe,
 
   const checkHash = React.useRef<string | null>(null);
 
-  const successModal = ModalsV2.useModal(ModalsV2.Success);
+  const successModal = useSuccessModal();
   const paymentsModal = useModals(ModalType.PAYMENT);
 
   const [state, actions] = useSmartReducer({

@@ -1,4 +1,4 @@
-import { styled, transition } from '@/hocs';
+import { styled, transition } from '@/hocs/styled';
 
 const Divider = styled.div`
   ${transition('background-color')}

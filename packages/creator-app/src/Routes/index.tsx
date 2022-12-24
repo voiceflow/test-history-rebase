@@ -4,7 +4,8 @@ import { Link, Redirect, Route, Switch } from 'react-router-dom';
 
 import { LegacyPath, Path } from '@/config/routes';
 import * as Session from '@/ducks/session';
-import { lazy, withWorkspaceOrProjectAssetsSuspense } from '@/hocs';
+import { lazy } from '@/hocs/lazy';
+import { withWorkspaceOrProjectAssetsSuspense } from '@/hocs/withWorkspaceOrProjectAssetsSuspense';
 import { useSelector } from '@/hooks';
 import AdoptSSO from '@/pages/Auth/AdoptSSO';
 import Login from '@/pages/Auth/Login';

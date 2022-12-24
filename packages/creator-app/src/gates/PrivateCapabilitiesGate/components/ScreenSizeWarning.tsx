@@ -2,7 +2,7 @@ import { PageError } from '@voiceflow/ui';
 import React from 'react';
 
 import { screenSize } from '@/assets';
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 const BlockingPage = styled.div`
   display: none;

@@ -4,8 +4,8 @@ import React from 'react';
 
 import { UploadedStage } from '@/components/PlatformUploadPopup/components';
 import { WHATSAPP_DOCUMENTATION } from '@/constants/platforms';
-import { PrototypeJobContext } from '@/contexts';
-import { useSyncProjectLiveVersion } from '@/hooks';
+import { PrototypeJobContext } from '@/contexts/PrototypeJobContext';
+import { useSyncProjectLiveVersion } from '@/hooks/project';
 import { NLPTrainJob } from '@/models';
 import { StageComponentProps } from '@/platforms/types';
 import { openInternalURLInANewTab } from '@/utils/window';

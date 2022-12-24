@@ -6,7 +6,6 @@ import React from 'react';
 
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
 import * as Documentation from '@/config/documentation';
-import * as Tracking from '@/ducks/tracking';
 import { useActiveProjectTypeConfig, useMapManager, useToggle } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import { useIntentScope } from '@/pages/Canvas/managers/hooks';
@@ -26,7 +25,7 @@ const IntentEditor: React.FC<{ disableAnimation: boolean }> = ({ disableAnimatio
   const [isDragging, toggleDragging] = useToggle(false);
 
   const onSelectQueryType = React.useCallback(
-    () => editor.onChange({ captureType: BaseNode.CaptureV2.CaptureType.QUERY, noMatch: null, intent: { slots: [] } }),
+    () => editor.onChange({ intent: { slots: [] }, noMatch: null, captureType: BaseNode.CaptureV2.CaptureType.QUERY }),
     [editor.onChange]
   );
 
@@ -38,8 +37,8 @@ const IntentEditor: React.FC<{ disableAnimation: boolean }> = ({ disableAnimatio
   const dynamicSelectedSlotIDs = React.useMemo(() => mapManager.items.map((item) => item.id || ''), [mapManager.items]);
   const selectedSlotIDs = React.useMemo(() => dynamicSelectedSlotIDs, [dynamicSelectedSlotIDs.join('')]);
 
-  const noMatchConfig = NoMatchV2.useConfig({ step: Tracking.NoMatchStepType.INTENT, step_id: editor.nodeID });
-  const noReplyConfig = NoReplyV2.useConfig({ step: Tracking.NoMatchStepType.INTENT, step_id: editor.nodeID });
+  const noMatchConfig = NoMatchV2.useConfig({ step: editor.data });
+  const noReplyConfig = NoReplyV2.useConfig({ step: editor.data });
   const intentScopeOption = useIntentScope({ data: editor.data, onChange: editor.onChange });
   const utterancesOption = useUtterancesOption(editor.data.utterancesShown || false, editor.onChange);
 
@@ -67,9 +66,9 @@ const IntentEditor: React.FC<{ disableAnimation: boolean }> = ({ disableAnimatio
         canDrag={!mapManager.isOnlyItem}
         itemProps={{
           editor,
+          selectedSlotIDs,
           latestCreatedKey: mapManager.latestCreatedKey,
           onSelectQueryType,
-          selectedSlotIDs,
         }}
         onEndDrag={toggleDragging}
         mapManager={mapManager}

@@ -1,6 +1,6 @@
 import { inputStyle, StyledInputProps } from '@voiceflow/ui';
 
-import { css, styled } from '@/hocs';
+import { css, styled } from '@/hocs/styled';
 
 type WrapperProps = StyledInputProps & {
   disabled?: boolean;

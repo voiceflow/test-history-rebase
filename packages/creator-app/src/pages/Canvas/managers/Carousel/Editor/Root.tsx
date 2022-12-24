@@ -5,7 +5,6 @@ import React from 'react';
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
 import * as Documentation from '@/config/documentation';
 import * as CreatorV2 from '@/ducks/creatorV2';
-import * as Tracking from '@/ducks/tracking';
 import { useMapManager, useSelector, useToggle } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import { NodeEditorV2 } from '@/pages/Canvas/managers/types';
@@ -41,8 +40,8 @@ const CarouselEditorRoot: NodeEditorV2<Realtime.NodeData.Carousel, Realtime.Node
     onRemove,
   });
 
-  const noMatchConfig = NoMatchV2.useConfig({ step: Tracking.NoMatchStepType.CAROUSEL, step_id: editor.nodeID });
-  const noReplyConfig = NoReplyV2.useConfig({ step: Tracking.NoMatchStepType.CAROUSEL, step_id: editor.nodeID });
+  const noMatchConfig = NoMatchV2.useConfig({ step: editor.data });
+  const noReplyConfig = NoReplyV2.useConfig({ step: editor.data });
   const carouselLayoutOption = useCarouselLayoutOption(editor.data.layout, (layout) => editor.onChange({ layout }));
 
   const actions = [carouselLayoutOption, ...(isLast ? [noMatchConfig.option, noReplyConfig.option] : [])];

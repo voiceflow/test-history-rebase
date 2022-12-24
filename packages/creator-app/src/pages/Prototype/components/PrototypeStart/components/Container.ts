@@ -1,6 +1,6 @@
 import { FlexCenter, Text } from '@voiceflow/ui';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 const Container = styled(FlexCenter).attrs({ column: true })`
   top: 15%;

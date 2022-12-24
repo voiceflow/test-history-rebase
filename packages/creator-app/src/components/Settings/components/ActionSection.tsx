@@ -1,7 +1,7 @@
 import { FlexApart } from '@voiceflow/ui';
 import React from 'react';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 const Container = styled(FlexApart)`
   padding: 24px 32px;

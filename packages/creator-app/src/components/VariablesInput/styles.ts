@@ -1,6 +1,6 @@
 import { getScrollbarWidth } from '@voiceflow/ui';
 
-import { css, styled } from '@/hocs';
+import { css, styled } from '@/hocs/styled';
 
 const SCROLLBAR_WIDTH = getScrollbarWidth();
 const MINIMUM_SCROLLBAR_WIDTH = 44;

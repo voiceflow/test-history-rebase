@@ -1,6 +1,6 @@
 import SvgIcon, { SvgIconTypes } from '@ui/components/SvgIcon';
 import { OverflowText } from '@ui/components/Text';
-import TippyTooltip from '@ui/components/TippyTooltip';
+import TippyTooltip, { TippyTooltipProps } from '@ui/components/TippyTooltip';
 import React from 'react';
 
 import ListItemActionsContainer from './ListItemActionsContainer';
@@ -13,9 +13,10 @@ export interface ListItemProps {
   action?: React.ReactNode;
   onClick?: React.MouseEventHandler<HTMLDivElement>;
   isActive?: boolean;
+  iconProps?: Omit<SvgIconTypes.Props, 'icon'> | null;
   contentRef?: React.Ref<HTMLDivElement>;
   isDragging?: boolean;
-  iconWarning?: string | null;
+  iconTooltip?: TippyTooltipProps | null;
   actionCentred?: boolean;
   onContextMenu?: React.MouseEventHandler;
   overflowHidden?: boolean;
@@ -30,26 +31,27 @@ const ListItem = React.forwardRef<HTMLDivElement, React.PropsWithChildren<ListIt
       onClick,
       isActive,
       children,
+      iconProps,
       contentRef,
       isDragging,
-      overflowHidden,
-      iconWarning,
+      iconTooltip,
       actionCentred,
       onContextMenu,
+      overflowHidden,
       isDraggingPreview,
     },
     ref
   ) => (
     <ListItemContainer ref={ref} isDragging={isDragging} isDraggingPreview={isDraggingPreview}>
       <ListItemContent ref={contentRef} onClick={onClick} isActive={isActive} onContextMenu={onContextMenu} overflowHidden={overflowHidden}>
-        {(!!iconWarning || !!icon) && (
+        {!!icon && (
           <ListItemIconContainer>
-            {iconWarning ? (
-              <TippyTooltip title={iconWarning}>
-                <SvgIcon icon="warning" color="#BF395B" />
+            {iconTooltip ? (
+              <TippyTooltip bodyOverflow {...iconTooltip}>
+                <SvgIcon icon={icon} {...iconProps} color={iconProps?.color ?? '#6e849a'} />
               </TippyTooltip>
             ) : (
-              icon && <SvgIcon icon={icon} color="#6e849a" />
+              <SvgIcon icon={icon} {...iconProps} color={iconProps?.color ?? '#6e849a'} />
             )}
           </ListItemIconContainer>
         )}

@@ -1,6 +1,6 @@
 import { SvgIcon, Text } from '@voiceflow/ui';
 
-import { css, keyframes, styled } from '@/hocs';
+import { css, keyframes, styled } from '@/hocs/styled';
 
 interface SubMenuContainerProps {
   defaultPadding?: number;

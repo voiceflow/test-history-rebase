@@ -1,6 +1,6 @@
 import { Table } from '@voiceflow/ui';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 export const Dot = styled.div`
   width: 3px;

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 import { FadeLeftContainer } from '@/styles/animations';
 
 import SettingsTabs, { Tab } from './SettingsTabs';

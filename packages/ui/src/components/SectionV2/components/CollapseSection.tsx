@@ -16,6 +16,7 @@ export interface CollapseSectionProps extends ContainerProps {
   header: ReactNodeOrRenderer;
   onToggle?: (collapsed: boolean) => void;
   children?: ReactNodeOrRenderer;
+  disabled?: boolean;
   collapsed?: boolean;
   onEntered?: VoidFunction;
   mountOnEnter?: boolean;
@@ -29,6 +30,7 @@ const CollapseSection: React.ForwardRefRenderFunction<HTMLDivElement, CollapseSe
   {
     header,
     onToggle: onToggleProp,
+    disabled,
     children,
     onEntered,
     mountOnEnter = true,
@@ -45,6 +47,8 @@ const CollapseSection: React.ForwardRefRenderFunction<HTMLDivElement, CollapseSe
   const [collapsed, setCollapsed] = React.useState(collapsedProp ?? defaultCollapsed);
 
   const onToggle = () => {
+    if (disabled) return;
+
     onToggleProp?.(!collapsed);
     setCollapsed(!collapsed);
   };

@@ -2,7 +2,7 @@ import { Box, BoxFlexCenter, Checkbox, Input, swallowEvent, Text, TippyTooltip }
 import React from 'react';
 
 import { Minus } from '@/components/InteractiveIcon';
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 import { useLinkedState } from '@/hooks';
 
 interface Path {

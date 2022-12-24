@@ -28,6 +28,7 @@ export type Option<Value = void> = Value extends void ? OptionWithoutValue : Opt
 
 export interface BaseProps {
   id?: string;
+  hint?: React.ReactNode;
   width?: number;
   inline?: boolean;
   onHide?: () => void;
@@ -48,7 +49,6 @@ export interface BaseProps {
   fadeDownDuration?: number;
   renderFooterAction?: Nullable<(options: { close: VoidFunction }) => React.ReactNode>;
   swallowMouseDownEvent?: boolean;
-  menuText?: string;
 }
 
 export type OnSelect<Value = void> = Value extends void ? (value?: Value) => void : (value: Value) => void;

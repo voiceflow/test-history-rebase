@@ -1,4 +1,4 @@
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 export const SkillEventsErrorMessage = styled.div`
   color: #e91e63;

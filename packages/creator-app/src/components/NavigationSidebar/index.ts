@@ -1,6 +1,6 @@
 import { SvgIcon } from '@voiceflow/ui';
 
-import { css, styled, transition } from '@/hocs';
+import { css, styled, transition } from '@/hocs/styled';
 
 import Item from './components/Item';
 import NavItem from './components/NavItem';

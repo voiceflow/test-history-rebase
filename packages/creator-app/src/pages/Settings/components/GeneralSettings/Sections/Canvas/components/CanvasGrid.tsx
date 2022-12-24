@@ -1,4 +1,4 @@
-import { Box, SectionV2, Text, Toggle } from '@voiceflow/ui';
+import { Box, SectionV2, Toggle } from '@voiceflow/ui';
 import React from 'react';
 
 import { SectionVariants, SettingsSection, SettingsSubSection } from '@/components/Settings';
@@ -13,16 +13,13 @@ const CanvasGrid: React.FC = () => {
     <SettingsSection variant={SectionVariants.PRIMARY}>
       <SettingsSubSection growInput={false} topOffset={3}>
         <Box.FlexApart width="100%">
-          <div>
-            <SectionV2.Title bold>
-              <Text>Canvas Grid</Text>
-            </SectionV2.Title>
-            <Box mt={4}>
-              <Text color="#62778c" fontSize="13px">
-                When on, the canvas will have a dotted background grid.
-              </Text>
-            </Box>
-          </div>
+          <Box>
+            <SectionV2.Title bold>Canvas Grid</SectionV2.Title>
+
+            <SectionV2.Description mt={4} block secondary>
+              When on, the canvas will have a dotted background grid.
+            </SectionV2.Description>
+          </Box>
 
           <Toggle checked={canvasGridEnabled} size={Toggle.Size.EXTRA_SMALL} onChange={toggleCanvasGrid} hasLabel />
         </Box.FlexApart>

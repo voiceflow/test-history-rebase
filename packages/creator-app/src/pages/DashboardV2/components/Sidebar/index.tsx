@@ -8,7 +8,9 @@ import { Permission } from '@/config/permissions';
 import { Path } from '@/config/routes';
 import { BLOG_LINK, BOOK_DEMO_LINK, DOCS_LINK, TEMPLATES_LINK, YOUTUBE_CHANNEL_LINK } from '@/constants';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { useActiveWorkspace, usePermission, useSelector } from '@/hooks';
+import { usePermission } from '@/hooks/permission';
+import { useSelector } from '@/hooks/redux';
+import { useActiveWorkspace } from '@/hooks/workspace';
 
 import { Account } from './components';
 import * as S from './styles';

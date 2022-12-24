@@ -1,7 +1,11 @@
 import React from 'react';
 
-import { ExportProvider, NLUProvider, PrototypeJobProvider, PublishProvider, TrainingProvider } from '@/contexts';
+import { ExportProvider } from '@/contexts/ExportContext';
+import { NLUProvider } from '@/contexts/NLUContext';
+import { PrototypeJobProvider } from '@/contexts/PrototypeJobContext';
+import { PublishProvider } from '@/contexts/PublishContext';
 import { SearchProvider } from '@/contexts/SearchContext';
+import { TrainingProvider } from '@/contexts/TrainingContext';
 import { NLUManagerProvider } from '@/pages/NLUManager/context';
 // TODO: move this context into contexts folder
 import { ExportProvider as NLUExportProvider } from '@/pages/Project/components/Header/components/SharePopper/components/Export/Context';

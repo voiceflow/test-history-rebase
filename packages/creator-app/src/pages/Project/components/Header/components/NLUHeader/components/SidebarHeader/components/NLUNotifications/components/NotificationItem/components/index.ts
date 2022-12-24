@@ -1,6 +1,6 @@
 import { Box } from '@voiceflow/ui';
 
-import { styled, transition } from '@/hocs';
+import { styled, transition } from '@/hocs/styled';
 
 export const IconContainer = styled.div`
   border-radius: 50%;

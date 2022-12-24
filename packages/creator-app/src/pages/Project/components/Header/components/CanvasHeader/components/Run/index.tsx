@@ -1,7 +1,7 @@
 import * as Platform from '@voiceflow/platform-config';
 import React from 'react';
 
-import { platformAware } from '@/hocs';
+import { platformAware } from '@/hocs/platformAware';
 import SMS from '@/platforms/sms/jobs/prototype';
 import WhatsApp from '@/platforms/whatsapp/jobs/prototype';
 

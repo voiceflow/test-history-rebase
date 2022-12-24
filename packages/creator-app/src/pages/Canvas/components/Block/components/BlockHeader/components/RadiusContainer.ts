@@ -1,4 +1,4 @@
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 const RadiusContainer = styled.div`
   border-radius: 5px;

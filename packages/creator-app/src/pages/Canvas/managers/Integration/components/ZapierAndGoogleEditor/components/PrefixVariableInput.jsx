@@ -3,7 +3,7 @@ import React from 'react';
 
 import VariablesInput from '@/components/VariablesInput';
 import { Container as VariablesContainer } from '@/components/VariablesInput/styles';
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 const PrefixedInput = styled(VariablesInput)`
   padding-left: 71px;

@@ -11,13 +11,12 @@ import * as ProjectV2 from '@/ducks/projectV2';
 import * as SlotV2 from '@/ducks/slotV2';
 import * as Tracking from '@/ducks/tracking';
 import { getActiveVersionContext } from '@/ducks/version/utils';
+import * as VersionV2 from '@/ducks/versionV2';
 import { SyncThunk, Thunk } from '@/store/types';
-import { removeSlotRefFromInput } from '@/utils/intent';
+import { NEW_INTENT_NAME, removeSlotRefFromInput } from '@/utils/intent';
 import { createNextName } from '@/utils/string';
 
 import { getUniqSlots, intentProcessorFactory } from './utils';
-
-const NEW_INTENT_NAME = 'intent';
 
 export const addManyIntents =
   (values: Platform.Base.Models.Intent.Model[], creationType: Tracking.CanvasCreationType): Thunk =>
@@ -89,6 +88,7 @@ export const addRequiredSlot =
     const state = getState();
 
     const projectMeta = ProjectV2.active.metaSelector(state);
+    const defaultVoice = VersionV2.active.voice.defaultVoiceSelector(state);
     const projectConfig = Platform.Config.getTypeConfig(projectMeta);
 
     const intent = IntentV2.intentByIDSelector(state, { id: intentID });
@@ -98,10 +98,16 @@ export const addRequiredSlot =
 
     if (Normal.getOne(intent.slots, slotID)?.required) return;
 
-    const byKeys = {
+    const intentSlot = Normal.getOne(intent.slots, slotID) ?? projectConfig.utils.intent.slotFactory({ id: slotID });
+
+    const byKeys: Record<string, Platform.Base.Models.Intent.Slot> = {
       ...slots.byKey,
       [slotID]: {
-        ...(Normal.getOne(intent.slots, slotID) ?? projectConfig.utils.intent.slotFactory({ id: slotID })),
+        ...intentSlot,
+        dialog: {
+          ...intentSlot.dialog,
+          prompt: intentSlot.dialog.prompt.length ? intentSlot.dialog.prompt : [projectConfig.utils.intent.promptFactory({ defaultVoice })],
+        },
         required: true,
       },
     };

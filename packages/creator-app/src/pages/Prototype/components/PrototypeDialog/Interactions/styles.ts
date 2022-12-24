@@ -1,7 +1,7 @@
 import { BoxFlex, toRGBAString } from '@voiceflow/ui';
 import SimpleBar from 'simplebar-react';
 
-import { styled, transition } from '@/hocs';
+import { styled, transition } from '@/hocs/styled';
 import { Color } from '@/types';
 
 import Message from '../Message/Base';

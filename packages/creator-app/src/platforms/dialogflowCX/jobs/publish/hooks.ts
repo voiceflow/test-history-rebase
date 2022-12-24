@@ -3,7 +3,7 @@ import React from 'react';
 
 import { JobStatus } from '@/constants';
 import { DialogflowCXStageType } from '@/constants/platforms';
-import { PublishContext, PublishContextValue } from '@/contexts';
+import { PublishContext, PublishContextValue } from '@/contexts/PublishContext';
 import * as Account from '@/ducks/account';
 import * as Project from '@/ducks/projectV2';
 import { useDispatch, useSelector, useSetup } from '@/hooks';

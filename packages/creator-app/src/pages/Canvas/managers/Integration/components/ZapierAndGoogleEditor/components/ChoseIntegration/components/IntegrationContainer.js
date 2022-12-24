@@ -1,4 +1,4 @@
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 const IntegrationContainer = styled.button`
   flex: 1;

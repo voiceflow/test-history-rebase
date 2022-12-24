@@ -3,7 +3,7 @@ import cn from 'classnames';
 import React from 'react';
 
 import * as Creator from '@/ducks/creator';
-import { connect } from '@/hocs';
+import { connect } from '@/hocs/connect';
 import { SidebarContext } from '@/pages/Canvas/components/EditorSidebar/contexts';
 import { EDITOR_BREADCRUMBS_CLASSNAME, EDITOR_HEADER_CLASSNAME } from '@/pages/Canvas/constants';
 import { EngineContext } from '@/pages/Canvas/contexts';

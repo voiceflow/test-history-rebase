@@ -1,6 +1,6 @@
 import { Box, FlexCenter } from '@voiceflow/ui';
 
-import { css, styled } from '@/hocs';
+import { css, styled } from '@/hocs/styled';
 
 export const prefixTextStyles = css`
   font-size: 13px;

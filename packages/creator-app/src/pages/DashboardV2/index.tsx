@@ -3,7 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 
 import { Path } from '@/config/routes';
 import { WorkspaceFeatureLoadingGate, WorkspaceSubscriptionGate } from '@/gates';
-import { withBatchLoadingGate } from '@/hocs';
+import { withBatchLoadingGate } from '@/hocs/withBatchLoadingGate';
 
 import { DashboardGate } from './gates';
 import { Account, MembersAndBilling, Organization, ProjectList } from './pages';

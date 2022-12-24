@@ -1,7 +1,7 @@
 import { flexStyles } from '@voiceflow/ui';
 import { NavLink, NavLinkProps } from 'react-router-dom';
 
-import { styled, transition } from '@/hocs';
+import { styled, transition } from '@/hocs/styled';
 
 export interface ItemProps extends NavLinkProps {
   nested?: boolean;

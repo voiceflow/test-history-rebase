@@ -1,7 +1,7 @@
 import { SvgIcon } from '@voiceflow/ui';
 
 import { dragPlaceholderStyles } from '@/components/DragPlaceholder';
-import { css, styled } from '@/hocs';
+import { css, styled } from '@/hocs/styled';
 
 import ItemNameContainer from '../../ItemNameContainer';
 

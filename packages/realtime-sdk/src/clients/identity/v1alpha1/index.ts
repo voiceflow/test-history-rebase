@@ -5,6 +5,7 @@ import { User } from './user';
 import { Workspace } from './workspace';
 import { WorkspaceInvitation } from './workspaceInvitation';
 import { WorkspaceMember } from './workspaceMember';
+import { WorkspaceProperty } from './workspaceProperties';
 
 export class V1Alpha1 extends NestVersion {
   public apiKey: ApiKey;
@@ -16,6 +17,8 @@ export class V1Alpha1 extends NestVersion {
   public workspaceMember: WorkspaceMember;
 
   public workspaceInvitation: WorkspaceInvitation;
+
+  public workspaceProperty: WorkspaceProperty;
 
   public provider: Provider;
 
@@ -30,5 +33,6 @@ export class V1Alpha1 extends NestVersion {
     this.workspaceMember = new WorkspaceMember(resourceOptions);
     this.workspaceInvitation = new WorkspaceInvitation(resourceOptions);
     this.provider = new Provider(resourceOptions);
+    this.workspaceProperty = new WorkspaceProperty(resourceOptions);
   }
 }

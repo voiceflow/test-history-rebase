@@ -1,6 +1,6 @@
 import { Box } from '@voiceflow/ui';
 
-import { css, styled } from '@/hocs';
+import { css, styled } from '@/hocs/styled';
 
 const MenuContentHeader = styled(Box)<{ isScrolling?: boolean }>`
   position: relative;

@@ -101,8 +101,8 @@ const addCollapseSection = createExample(
           Item with icon and action
         </SectionV2.ListItem>
 
-        <SectionV2.ListItem icon="setV2" action={<SectionV2.RemoveButton />} iconWarning="Some message" actionCentred onClick={console.log}>
-          Item with icon, action and warning
+        <SectionV2.ListItem icon="warning" iconProps={{ color: '#BF395B' }} action={<SectionV2.RemoveButton />} actionCentred onClick={console.log}>
+          Warning
         </SectionV2.ListItem>
       </SectionV2.ActionCollapseSection>
     );

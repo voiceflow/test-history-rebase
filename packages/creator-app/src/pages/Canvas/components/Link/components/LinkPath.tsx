@@ -1,7 +1,7 @@
 import { useColorPalette } from '@voiceflow/ui';
 import React from 'react';
 
-import { css, styled } from '@/hocs';
+import { css, styled } from '@/hocs/styled';
 import { LINK_HIGHLIGHTED_CLASSNAME } from '@/pages/Canvas/constants';
 
 import { HIGHLIGHT_COLOR, PALETTE_SHADE, STROKE_WIDTH } from '../constants';

@@ -1,4 +1,4 @@
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 const MaxOptionsMessage = styled.div`
   width: 100%;

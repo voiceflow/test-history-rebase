@@ -15,7 +15,7 @@ export interface VariableSelectProps extends BaseSelectProps {
 }
 
 const VariableSelect: React.FC<VariableSelectProps> = ({ value, onChange, ...props }) => {
-  const variables = useSelector(DiagramV2.active.allSlotsAndVariablesSelector);
+  const variables = useSelector(DiagramV2.active.allSlotNamesAndVariablesSelector);
   const addVariable = useDispatch(Version.addGlobalVariable);
 
   const onCreate = async (item: string) => {

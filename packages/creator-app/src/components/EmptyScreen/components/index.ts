@@ -1,6 +1,6 @@
 import { colors, ThemeColor } from '@voiceflow/ui';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 export const BodyTextContainer = styled.div`
   max-width: 250px;

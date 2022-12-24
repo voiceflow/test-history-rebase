@@ -1,4 +1,4 @@
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 const Title = styled.h3`
   margin-bottom: 20px;

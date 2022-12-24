@@ -5,7 +5,7 @@ import React from 'react';
 
 import { SectionToggleVariant } from '@/components/Section';
 import { InteractionModelTabType } from '@/constants';
-import { NLUContext } from '@/contexts';
+import { NLUContext } from '@/contexts/NLUContext';
 import * as Slot from '@/ducks/slot';
 import * as SlotV2 from '@/ducks/slotV2';
 import * as Tracking from '@/ducks/tracking';

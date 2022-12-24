@@ -1,6 +1,6 @@
 import { Text } from '@voiceflow/ui';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 import { HEADER_HEIGHT } from '@/pages/DashboardV2/constants';
 
 export const SectionWrapper = styled.section`

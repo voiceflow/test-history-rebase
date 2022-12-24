@@ -1,6 +1,6 @@
 import { IconButton, IconButtonSquareContainerProps, IconButtonVariant } from '@voiceflow/ui';
 
-import { styled, units } from '@/hocs';
+import { styled, units } from '@/hocs/styled';
 import { CANVAS_PROTOTYPE_ENABLED_CLASSNAME } from '@/pages/Canvas/constants';
 
 const StepButton = styled(IconButton).attrs({

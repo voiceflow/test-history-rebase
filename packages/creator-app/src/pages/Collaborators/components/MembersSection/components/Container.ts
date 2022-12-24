@@ -1,6 +1,6 @@
 import SimpleBar from 'simplebar-react';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 const Container = styled(SimpleBar)`
   max-height: 370px;

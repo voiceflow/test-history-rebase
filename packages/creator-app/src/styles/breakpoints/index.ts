@@ -1,6 +1,6 @@
 import { FlattenInterpolation } from 'styled-components';
 
-import { css } from '@/hocs';
+import { css } from '@/hocs/styled';
 
 import { Theme } from '../theme';
 

@@ -1,4 +1,4 @@
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 const SearchLabel = styled.span`
   color: #62778c;

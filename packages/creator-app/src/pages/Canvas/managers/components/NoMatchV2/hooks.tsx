@@ -1,8 +1,9 @@
-import { Nullable } from '@voiceflow/base-types';
+import { EmptyObject, Nullable } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { createDividerMenuItemOption } from '@voiceflow/ui';
 import React from 'react';
 
-import * as Session from '@/ducks/session';
+import * as GPT from '@/components/GPT';
 import * as Tracking from '@/ducks/tracking';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useSelector, useTrackingEvents } from '@/hooks';
@@ -11,44 +12,59 @@ import { OptionalSectionConfig } from '@/pages/Canvas/managers/types';
 import { getPlatformNoMatchFactory } from '@/utils/noMatch';
 
 import { Section } from './components';
+import type { RootEditorLocationState } from './components/RootEditor';
 import { PATH } from './constants';
 
 interface NoMatchConfigOptions {
+  step?: Realtime.NodeData<EmptyObject>;
   canRemove?: boolean;
-  step?: Tracking.NoMatchStepType;
-  step_id?: string;
 }
 
-export const useConfig = ({ canRemove = true, step, step_id }: NoMatchConfigOptions = {}): OptionalSectionConfig => {
-  const editor = EditorV2.useEditor<{ noMatch?: Nullable<Realtime.NodeData.NoMatch> }>();
-
+export const useConfig = ({ canRemove = true, step }: NoMatchConfigOptions = {}): OptionalSectionConfig => {
+  const gptResponseGen = GPT.useResponseGenFeature();
   const [trackingEvents] = useTrackingEvents();
-  const projectID = useSelector(Session.activeProjectIDSelector)!;
-  const workspaceID = useSelector(Session.activeWorkspaceIDSelector);
+
+  const editor = EditorV2.useEditor<{ noMatch?: Nullable<Realtime.NodeData.NoMatch> }>();
 
   const defaultVoice = useSelector(VersionV2.active.voice.defaultVoiceSelector);
 
   const { noMatch } = editor.data;
 
+  const onOpen = (state?: RootEditorLocationState) => editor.goToNested({ path: PATH, state: { ...state } });
+
   const onRemove = canRemove ? () => editor.onChange({ noMatch: null }) : undefined;
 
-  const addNoMatch = () => {
+  const onAdd = async (locationState?: RootEditorLocationState) => {
     trackingEvents.trackNoMatchCreated({
-      workspace_id: workspaceID,
-      project_id: projectID,
+      step_id: step?.nodeID,
+      step_type: step?.type,
       creation_type: Tracking.NoMatchCreationType.STEP,
-      step_type: step,
-      step_id,
     });
 
-    return getPlatformNoMatchFactory(editor.projectType)({ defaultVoice });
+    await editor.onChange({
+      noMatch: getPlatformNoMatchFactory(editor.projectType)({ defaultVoice, reprompts: locationState?.autogenerate ? [] : [''] }),
+    });
+
+    onOpen(locationState);
   };
 
   return {
-    option: {
-      label: noMatch ? 'Remove no match' : 'Add no match',
-      onClick: () => editor.onChange({ noMatch: noMatch ? null : addNoMatch() }),
-    },
-    section: !!noMatch && <Section onClick={() => editor.goToNested(PATH)} onRemove={onRemove} />,
+    option:
+      gptResponseGen.isEnabled && !noMatch
+        ? {
+            label: 'No match',
+            options: [
+              { label: 'Add manually', onClick: () => onAdd() },
+              createDividerMenuItemOption(),
+              { label: 'Generate 1 response', onClick: () => onAdd({ autogenerate: true, autogenerateQuantity: 1 }) },
+              { label: 'Generate 3 responses', onClick: () => onAdd({ autogenerate: true, autogenerateQuantity: 3 }) },
+              { label: 'Generate 5 responses', onClick: () => onAdd({ autogenerate: true, autogenerateQuantity: 5 }) },
+            ],
+          }
+        : {
+            label: noMatch ? 'Remove no match' : 'Add no match',
+            onClick: noMatch ? onRemove : () => onAdd(),
+          },
+    section: !!noMatch && <Section onClick={() => onOpen()} onRemove={onRemove} />,
   };
 };

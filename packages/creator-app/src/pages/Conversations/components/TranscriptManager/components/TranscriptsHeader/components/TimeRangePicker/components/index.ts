@@ -1,6 +1,6 @@
 import { Button, ClickableText, FlexApart, Popper } from '@voiceflow/ui';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 import THEME from '@/styles/theme';
 
 export const DayPickerContainer = styled.div`

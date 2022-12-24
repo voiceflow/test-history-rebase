@@ -6,7 +6,8 @@ import { SlatePluginsOptions, SlatePluginType, SlateVariableItem } from '@/compo
 import * as DiagramV2 from '@/ducks/diagramV2';
 import { CanvasCreationType } from '@/ducks/tracking/constants';
 import * as Version from '@/ducks/version';
-import { useDispatch, useSelector } from '@/hooks';
+import { useDispatch } from '@/hooks/realtime';
+import { useSelector } from '@/hooks/redux';
 
 interface SlateVariablesOptions {
   variables?: Normalized<SlateVariableItem>;

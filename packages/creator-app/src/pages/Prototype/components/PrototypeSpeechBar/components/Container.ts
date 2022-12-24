@@ -1,6 +1,6 @@
 import { Box } from '@voiceflow/ui';
 
-import { css, styled } from '@/hocs';
+import { css, styled } from '@/hocs/styled';
 
 const Container = styled(Box)<{ disabled?: boolean }>`
   width: 100%;

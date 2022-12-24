@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 const Container = styled.div`
   padding: 16px 20px;

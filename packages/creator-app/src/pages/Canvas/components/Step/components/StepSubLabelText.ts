@@ -1,7 +1,7 @@
 import { overflowTextStyles } from '@voiceflow/ui';
 
 import { StepLabelVariant } from '@/constants/canvas';
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 import { StepLabelTextProps, textLabelStyles } from './StepLabelText';
 

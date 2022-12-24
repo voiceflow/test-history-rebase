@@ -1,7 +1,7 @@
 import { Button, ButtonVariant, PrimaryButtonProps, SecondaryButtonProps, SvgIcon, SvgIconTypes, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 import { Hotkey, HOTKEY_LABEL_MAP } from '@/keymap';
 import { Identifier } from '@/styles/constants';
 

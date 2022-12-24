@@ -5,7 +5,7 @@ import client from '@/client';
 import JobInterface from '@/components/JobInterface';
 import { PublishVersionModalData } from '@/components/PublishVersionModal';
 import { ModalType } from '@/constants';
-import { PublishContext } from '@/contexts';
+import { PublishContext } from '@/contexts/PublishContext';
 import * as Project from '@/ducks/project';
 import * as Router from '@/ducks/router';
 import { activeProjectIDSelector } from '@/ducks/session';

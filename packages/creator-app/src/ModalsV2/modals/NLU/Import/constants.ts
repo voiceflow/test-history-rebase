@@ -13,17 +13,10 @@ import {
 } from '@/config/documentation';
 import { NLPType } from '@/config/nlp/constants';
 
-import { ImportIntents, ImportUnclassifiedData } from './components';
-
 export enum ImportType {
   UNCLASSIFIED = 'unclassified',
   INTENT = 'intent',
 }
-
-export const ImportTypeModalComponentMapper = {
-  [ImportType.INTENT]: ImportIntents,
-  [ImportType.UNCLASSIFIED]: ImportUnclassifiedData,
-};
 
 export const ImportModalTitle = {
   [ImportType.UNCLASSIFIED]: 'Unclassified',

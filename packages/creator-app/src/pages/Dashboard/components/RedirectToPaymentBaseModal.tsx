@@ -3,7 +3,7 @@ import React from 'react';
 
 import Modal, { ModalFooter } from '@/components/Modal';
 import { ModalType } from '@/constants';
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 import { useModals } from '@/hooks';
 
 export interface RedirectToPaymentBaseModalProps {

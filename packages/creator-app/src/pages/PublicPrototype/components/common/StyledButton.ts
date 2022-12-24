@@ -1,7 +1,7 @@
 import { changeColorShade } from '@voiceflow/ui';
 import { layout, space } from 'styled-system';
 
-import { styled, transition } from '@/hocs';
+import { styled, transition } from '@/hocs/styled';
 
 const StyledButton = styled.button`
   ${transition('background-color')};

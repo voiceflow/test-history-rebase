@@ -5,7 +5,7 @@ import DraggableList from '@/components/DraggableList';
 import { SectionToggleVariant } from '@/components/Section';
 import * as Intent from '@/ducks/intent';
 import * as SlotV2 from '@/ducks/slotV2';
-import { connect } from '@/hocs';
+import { connect } from '@/hocs/connect';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
 
 import DraggableSlotItem from './DraggableSlotItem';

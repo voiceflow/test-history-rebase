@@ -10,3 +10,8 @@ export const BLOG_LINK = 'https://www.voiceflow.com/blog';
 export const DESKTOP_APP_LINK = 'https://www.voiceflow.com/desktop';
 export const PLAN_INFO_LINK = 'https://www.voiceflow.com/pricing';
 export const APL_TOOL_LINK = 'https://developer.amazon.com/alexa/console/ask/displays';
+
+export const AI_GENERAL_LINK = 'https://voiceflow.zendesk.com/hc/en-us/categories/11695656569229-AI-Assist-BETA-';
+export const LEARN_GENERATIVE_TASKS = 'https://voiceflow.zendesk.com/hc/en-us/sections/11696014193805-Generative-Tasks';
+export const LEARN_FREESTYLE = 'https://voiceflow.zendesk.com/hc/en-us/sections/11695912012045-Freestyle';
+export const REQUEST_MORE_TOKENS = 'https://voiceflow.zendesk.com/hc/en-us/articles/11696284619533-Request-more-Tokens';

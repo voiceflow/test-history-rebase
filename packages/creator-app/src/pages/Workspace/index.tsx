@@ -8,7 +8,9 @@ import { LegacyPath, Path } from '@/config/routes';
 import * as Router from '@/ducks/router';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { CheckInvitationGate } from '@/gates';
-import { lazy, withBatchLoadingGate, withWorkspaceOrProjectAssetsSuspense } from '@/hocs';
+import { lazy } from '@/hocs/lazy';
+import { withBatchLoadingGate } from '@/hocs/withBatchLoadingGate';
+import { withWorkspaceOrProjectAssetsSuspense } from '@/hocs/withWorkspaceOrProjectAssetsSuspense';
 import { useDispatch, useFeature, useSelector } from '@/hooks';
 import RedirectWithSearch from '@/Routes/RedirectWithSearch';
 

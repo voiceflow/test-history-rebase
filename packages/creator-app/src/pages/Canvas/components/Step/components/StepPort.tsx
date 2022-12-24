@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { styled, units } from '@/hocs';
+import { styled, units } from '@/hocs/styled';
 import Port from '@/pages/Canvas/components/Port';
 import { PortEntityProvider } from '@/pages/Canvas/contexts';
 

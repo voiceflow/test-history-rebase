@@ -1,5 +1,5 @@
 import { PlaceholderText } from '@/components/SlateEditable/components/Placeholder';
-import { css, styled } from '@/hocs';
+import { css, styled } from '@/hocs/styled';
 import { LINK_HIGHLIGHTED_CLASSNAME } from '@/pages/Canvas/constants';
 
 import { HIGHLIGHT_COLOR } from '../constants';

@@ -1,9 +1,10 @@
-import { Box, Button, ButtonVariant, SectionV2, Text } from '@voiceflow/ui';
+import { Box, Button, ButtonVariant, SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
 import { SectionVariants, SettingsSection, SettingsSubSection } from '@/components/Settings';
 import * as Session from '@/ducks/session';
-import { useDeleteProject, useSelector } from '@/hooks';
+import { useDeleteProject } from '@/hooks/project';
+import { useSelector } from '@/hooks/redux';
 
 const DangerZone: React.FC = () => {
   const projectID = useSelector(Session.activeProjectIDSelector);
@@ -16,15 +17,13 @@ const DangerZone: React.FC = () => {
       <SettingsSubSection topOffset={3} growInput={false}>
         <Box.FlexApart width="100%">
           <div>
-            <SectionV2.Title bold>
-              <Text>Delete Assistant</Text>
-            </SectionV2.Title>
-            <Box mt={4}>
-              <Text color="#62778c" fontSize="13px">
-                This action can't be reverted. Please proceed with caution.
-              </Text>
-            </Box>
+            <SectionV2.Title bold>Delete Assistant</SectionV2.Title>
+
+            <SectionV2.Description mt={4} block secondary>
+              This action can't be reverted. Please proceed with caution.
+            </SectionV2.Description>
           </div>
+
           <Button variant={ButtonVariant.SECONDARY} onClick={deletePrompt} squareRadius flat>
             Delete
           </Button>

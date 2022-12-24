@@ -1,6 +1,6 @@
 import { BoxFlex } from '@voiceflow/ui';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 import SpeechBarContainer from '@/pages/Prototype/components/PrototypeSpeechBar/components/Container';
 
 const Container = styled(BoxFlex)`

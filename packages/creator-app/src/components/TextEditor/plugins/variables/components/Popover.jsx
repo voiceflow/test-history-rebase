@@ -2,8 +2,8 @@ import { Utils } from '@voiceflow/common';
 import { Box, IconButton, Input, Menu, Portal, preventDefault, stopPropagation, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
-import { TextEditorVariablesPopoverConsumer } from '@/contexts';
-import { styled } from '@/hocs';
+import { TextEditorVariablesPopoverConsumer } from '@/contexts/TextEditorVariablesPopoverContext';
+import { styled } from '@/hocs/styled';
 import { FadeDownDelayedContainer } from '@/styles/animations';
 
 const PopoverContainer = styled.div`

@@ -1,6 +1,6 @@
 import { SectionV2, transition } from '@voiceflow/ui';
 
-import { css, styled } from '@/hocs';
+import { css, styled } from '@/hocs/styled';
 
 export const IntentsGrid = styled.div`
   display: inline-grid;

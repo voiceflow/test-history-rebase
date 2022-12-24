@@ -3,7 +3,7 @@ import React from 'react';
 
 import * as NLU from '@/config/nlu';
 import * as ProjectV2 from '@/ducks/projectV2';
-import { useSelector } from '@/hooks';
+import { useSelector } from '@/hooks/redux';
 
 export const ProjectNLUTypeContext = React.createContext<Platform.Constants.NLUType>(NLU.Base.CONFIG.type);
 export const { Provider: ProjectNLUTypeProvider, Consumer: ProjectNLUTypeConsumer } = ProjectNLUTypeContext;

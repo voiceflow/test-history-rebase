@@ -1,6 +1,6 @@
 import { FlexApart, SvgIcon } from '@voiceflow/ui';
 
-import { css, styled } from '@/hocs';
+import { css, styled } from '@/hocs/styled';
 
 interface UserNameContainerProps {
   isOpen: boolean;

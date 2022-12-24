@@ -13,6 +13,7 @@ import * as Tracking from '@/ducks/tracking';
 import { isBuiltInIntent, validateIntentName } from '@/utils/intent';
 
 import { ModalActions, useModals } from './modals';
+import { useActiveProjectTypeConfig } from './platformConfig';
 import { useSelector } from './redux';
 
 interface IntentData {
@@ -68,4 +69,18 @@ export const useIntentNameProcessor = (): IntentNameProcessor => {
 
     return { error, formattedName };
   });
+};
+
+export const useAreIntentInputsEmpty = (inputs?: Platform.Base.Models.Intent.Input[]): boolean => {
+  return React.useMemo(() => !inputs || inputs.every((input) => !input.text.trim()), [inputs]);
+};
+
+export const useAreIntentPromptsEmpty = (prompts?: unknown[]): boolean => {
+  const projectTypeConfig = useActiveProjectTypeConfig();
+
+  return React.useMemo(
+    () =>
+      !prompts || prompts.every((prompt) => !projectTypeConfig.utils.intent.isPrompt(prompt) || projectTypeConfig.utils.intent.isPromptEmpty(prompt)),
+    [prompts, projectTypeConfig]
+  );
 };

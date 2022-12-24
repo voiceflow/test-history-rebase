@@ -1,4 +1,4 @@
-import { styled, transition } from '@/hocs';
+import { styled, transition } from '@/hocs/styled';
 import { ClassName } from '@/styles/constants';
 
 const ActionsContainer = styled.div<{ onlyActions?: boolean }>`

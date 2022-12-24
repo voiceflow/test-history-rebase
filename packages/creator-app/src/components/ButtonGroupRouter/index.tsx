@@ -1,7 +1,7 @@
 import React from 'react';
 
 import ButtonGroup from '@/components/ButtonGroup';
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 interface ContentContainerProps {
   maxHeight?: boolean;

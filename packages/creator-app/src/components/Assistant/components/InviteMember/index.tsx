@@ -4,7 +4,7 @@ import React from 'react';
 
 import SelectInputGroup from '@/components/SelectInputGroup';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { useSelector } from '@/hooks';
+import { useSelector } from '@/hooks/redux';
 import { Identifier } from '@/styles/constants';
 
 interface InviteMemberProps {

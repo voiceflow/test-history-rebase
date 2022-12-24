@@ -6,7 +6,8 @@ import React from 'react';
 import Page from '@/components/Page';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { useProjectOptions, useSelector } from '@/hooks';
+import { useProjectOptions } from '@/hooks/project';
+import { useSelector } from '@/hooks/redux';
 
 import { Sidebar } from '../../components';
 import { getProjectStatusAndMembers } from '../../utils';

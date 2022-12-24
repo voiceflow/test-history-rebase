@@ -26,6 +26,12 @@ export const slotSanitizer = ({ dialog, ...baseIntentSlot }: Required<Optional<M
   dialog: slotDialogSanitizer(dialog),
 });
 
+export const isPrompt = (value?: unknown): value is Models.Intent.Prompt => {
+  if (!Utils.object.isObject(value)) return false;
+
+  return Utils.object.hasProperty(value, 'text') && typeof value.text === 'string';
+};
+
 export type PromptFactoryOptions = Base.Utils.Intent.PromptFactoryOptions;
 
 export const promptFactory = ({ defaultVoice }: PromptFactoryOptions): Models.Intent.Prompt => ({
@@ -34,10 +40,10 @@ export const promptFactory = ({ defaultVoice }: PromptFactoryOptions): Models.In
   voice: defaultVoice ?? '',
 });
 
-export const isPrompt = (value?: unknown): value is Models.Intent.Prompt => {
-  if (!Utils.object.isObject(value)) return false;
+export const isPromptEmpty = (prompt?: Models.Intent.Prompt): boolean => {
+  if (!prompt) return true;
 
-  return Utils.object.hasProperty(value, 'text') && typeof value.text === 'string';
+  return !prompt.text?.trim();
 };
 
 export const CONFIG = Base.Utils.Intent.extend({
@@ -48,6 +54,8 @@ export const CONFIG = Base.Utils.Intent.extend({
   slotSanitizer,
 
   promptFactory,
+
+  isPromptEmpty,
 
   promptSanitizer,
 

@@ -4,7 +4,7 @@ import Select from 'react-select';
 import AsyncSelect from 'react-select/async';
 
 import { logsIcon } from '@/assets';
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 import * as ModalsV2 from '@/ModalsV2';
 import IntegrationsService from '@/services/Integrations';
 import { openURLInANewTab } from '@/utils/window';

@@ -1,4 +1,4 @@
-import { css, styled } from '@/hocs';
+import { css, styled } from '@/hocs/styled';
 import SpeechBarContainer from '@/pages/Prototype/components/PrototypeSpeechBar/components/Container';
 
 import InputContent from './InputContent';

@@ -4,7 +4,7 @@ import _get from 'lodash/get';
 import React from 'react';
 
 import client from '@/client';
-import { useTrackingEvents } from '@/hooks';
+import { useTrackingEvents } from '@/hooks/tracking';
 import { MIN_PASSWORD_LENGTH } from '@/pages/Auth/constants';
 
 import manager from '../../manager';
@@ -82,7 +82,7 @@ const AccountPassword = manager.create('AccountPassword', () => ({ api, type, op
       <SectionV2.SimpleContentSection
         header={
           <SectionV2.Title bold secondary>
-            Confrim Password
+            Confirm Password
           </SectionV2.Title>
         }
         headerProps={{ bottomUnit: 1.5 }}

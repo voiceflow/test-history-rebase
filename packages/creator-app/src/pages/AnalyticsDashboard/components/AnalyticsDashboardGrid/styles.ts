@@ -1,4 +1,4 @@
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 const GRID_WIDTH = 3;
 const GRID_HEIGHT = 2;

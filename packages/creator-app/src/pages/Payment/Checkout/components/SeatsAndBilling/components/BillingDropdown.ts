@@ -1,6 +1,6 @@
 import { SvgIcon } from '@voiceflow/ui';
 
-import { css, styled, transition } from '@/hocs';
+import { css, styled, transition } from '@/hocs/styled';
 
 const BillingDropdown = styled.div<{ disabled?: boolean; error?: boolean; isOpen: boolean }>`
   ${transition()};

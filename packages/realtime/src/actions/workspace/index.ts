@@ -14,7 +14,9 @@ import {
   SendInviteControl,
   UpdateInviteControl,
 } from './member';
+import { LoadAllQuotasControl, RefreshQuotaDetails, ReplaceQuotaControl } from './quotas';
 import RemoveWorkspaceControl from './remove';
+import { PatchWorkspaceSettingsControl, ReplaceWorkspaceSettingsControl } from './settings';
 import UpdateWorkspaceImageControl from './updateImage';
 import UpdateWorkspaceNameControl from './updateName';
 
@@ -37,6 +39,15 @@ const buildWorkspaceActionControls = (options: LoguxControlOptions) => ({
   replaceWorkspaceMembersControl: new ReplaceWorkspaceMembersControl(options),
   sendInviteControl: new SendInviteControl(options),
   updateInviteControl: new UpdateInviteControl(options),
+
+  // workspace quotas
+  loadAllQuotasControl: new LoadAllQuotasControl(options),
+  replaceQuotaControl: new ReplaceQuotaControl(options),
+
+  // workspace settings
+  patchWorkspaceSettingsControl: new PatchWorkspaceSettingsControl(options),
+  replaceWorkspaceSettingsControl: new ReplaceWorkspaceSettingsControl(options),
+  refreshWorkspaceQuotaDetailsControl: new RefreshQuotaDetails(options),
 });
 
 export default buildWorkspaceActionControls;

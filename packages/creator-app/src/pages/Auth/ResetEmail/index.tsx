@@ -3,7 +3,7 @@ import React from 'react';
 
 import { wordmark } from '@/assets';
 import * as Router from '@/ducks/router';
-import { connect } from '@/hocs';
+import { connect } from '@/hocs/connect';
 import { ConnectedProps } from '@/types';
 
 import { AuthBox, AuthenticationContainer } from '../components';

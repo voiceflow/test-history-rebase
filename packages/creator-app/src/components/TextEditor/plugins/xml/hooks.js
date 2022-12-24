@@ -1,6 +1,5 @@
+import { useForceUpdate } from '@voiceflow/ui';
 import React from 'react';
-
-import { useForceUpdate } from '@/hooks';
 
 export const useHoveredXmlTag = (key, linkedKey, store) => {
   const [forceUpdate] = useForceUpdate();

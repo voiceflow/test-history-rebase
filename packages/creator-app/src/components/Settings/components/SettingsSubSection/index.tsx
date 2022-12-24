@@ -1,8 +1,6 @@
-import { Box, SectionV2, Text } from '@voiceflow/ui';
+import { Box, SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 import { CSSProperties } from 'styled-components';
-
-import THEME from '@/styles/theme';
 
 import * as S from './styles';
 
@@ -35,8 +33,8 @@ const SettingSubSection: React.FC<SettingSubSectionProps> = ({
       header={
         header && (
           <SectionV2.Header style={customHeaderStyling} pb={12} pt={24}>
-            <SectionV2.Title bold>
-              <Text color={THEME.colors.secondary}>{header}</Text>
+            <SectionV2.Title bold secondary noMargin>
+              {header}
             </SectionV2.Title>
           </SectionV2.Header>
         )

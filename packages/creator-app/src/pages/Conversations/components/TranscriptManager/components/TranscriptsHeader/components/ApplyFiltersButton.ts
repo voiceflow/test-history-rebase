@@ -1,6 +1,6 @@
 import { Button } from '@voiceflow/ui';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 const ApplyFiltersButton = styled(Button)`
   float: right;

@@ -1,4 +1,4 @@
-import { css, styled } from '@/hocs';
+import { css, styled } from '@/hocs/styled';
 
 import { LINKED_LINE_HEIGHT } from '../constants';
 import LabelText from './StepLabelText';

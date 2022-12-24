@@ -10,7 +10,9 @@ import SSML from '@/components/SSML';
 import VariablesInput from '@/components/VariablesInput';
 import * as VersionDuck from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
-import { useAlexaProjectSettings, useDispatch, useSelector } from '@/hooks';
+import { useAlexaProjectSettings } from '@/hooks/project';
+import { useDispatch } from '@/hooks/realtime';
+import { useSelector } from '@/hooks/redux';
 import { ErrorMessage } from '@/pages/Settings/components/styles';
 import { PlatformSettingsMetaProps } from '@/pages/Settings/constants';
 

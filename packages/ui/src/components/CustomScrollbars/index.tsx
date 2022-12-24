@@ -27,4 +27,4 @@ const CustomScrollbars = (props: ScrollbarProps, ref: React.Ref<T.Scrollbars>) =
 
 export const useScrollbars = () => React.useContext(ScrollbarsContext);
 
-export default React.forwardRef(CustomScrollbars);
+export default Object.assign(React.forwardRef(CustomScrollbars), { useScrollbars });

@@ -3,7 +3,8 @@ import React from 'react';
 
 import { UploadedStage } from '@/components/PlatformUploadPopup/components';
 import * as Router from '@/ducks/router';
-import { useDispatch, useSyncProjectLiveVersion } from '@/hooks';
+import { useSyncProjectLiveVersion } from '@/hooks/project';
+import { useDispatch } from '@/hooks/realtime';
 import { NLPTrainJob } from '@/models';
 import { StageComponentProps } from '@/platforms/types';
 

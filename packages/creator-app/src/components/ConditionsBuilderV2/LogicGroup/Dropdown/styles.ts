@@ -1,6 +1,6 @@
 import { Box } from '@voiceflow/ui';
 
-import { css, styled, transition } from '@/hocs';
+import { css, styled, transition } from '@/hocs/styled';
 import { ClassName } from '@/styles/constants';
 
 const activeStyle = ({ active }: { active?: boolean }) =>

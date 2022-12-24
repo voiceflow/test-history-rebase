@@ -1,4 +1,4 @@
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 import BlockContainer from '@/pages/Canvas/components/Block/components/BlockContainer';
 import * as ChipStyles from '@/pages/Canvas/components/Chip/styles';
 import { DragTargetProps } from '@/pages/Canvas/components/DragTarget';

@@ -54,7 +54,7 @@ const checkLogicalExpression = (expression: estree.Expression, variables: string
 };
 
 export const useExpressionValidator = () => {
-  const variables = useSelector(DiagramV2.active.allSlotsAndVariablesSelector);
+  const variables = useSelector(DiagramV2.active.allSlotNamesAndVariablesSelector);
 
   const [error, setError] = React.useState<string>('');
 

@@ -1,6 +1,6 @@
 import RCSlider from 'rc-slider';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 const StyledSlider = styled(RCSlider)`
   margin-right: 8px;

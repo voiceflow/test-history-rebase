@@ -1,4 +1,4 @@
-import { css, styled } from '@/hocs';
+import { css, styled } from '@/hocs/styled';
 import { breakpoints } from '@/styles/breakpoints';
 
 // eslint-disable-next-line no-secrets/no-secrets

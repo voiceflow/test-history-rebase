@@ -3,12 +3,12 @@ import { Alert, toast } from '@voiceflow/ui';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import React from 'react';
-import { connect } from 'react-redux';
 
 import client from '@/client';
 import LoadingGate from '@/components/LoadingGate';
 import { MAINTENANCE_STATUS_SOURCE } from '@/config';
 import * as Modal from '@/ducks/modal';
+import { connect } from '@/hocs/connect';
 import { ConnectedProps } from '@/types';
 import { getMaintenanceCookie } from '@/utils/cookies';
 import * as Sentry from '@/vendors/sentry';

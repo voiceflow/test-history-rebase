@@ -4,7 +4,7 @@ import { UncontrolledSection } from '@/components/Section';
 import ContentContainer from '@/components/Section/components/ContentContainer';
 import SectionHeader from '@/components/Section/components/SectionHeader';
 import { InteractionModelTabType } from '@/constants';
-import { css, styled, transition } from '@/hocs';
+import { css, styled, transition } from '@/hocs/styled';
 
 export const SectionSection = styled(UncontrolledSection)<{ isExpanded: boolean }>`
   ${SectionHeader} {

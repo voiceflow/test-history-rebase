@@ -1,4 +1,4 @@
-import { createGlobalStyle, css, styled } from '@/hocs';
+import { createGlobalStyle, css, styled } from '@/hocs/styled';
 
 export interface BaseVariableTagProps {
   color?: string;

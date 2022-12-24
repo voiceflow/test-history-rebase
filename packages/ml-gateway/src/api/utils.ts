@@ -4,6 +4,7 @@ import { ValidationChain } from 'express-validator';
 
 import type { ControllersMap } from './controllers';
 import type { AbstractController } from './controllers/utils';
+import type { MiddlewaresMap } from './middlewares';
 
 type Validations = Record<string, ValidationChain>;
 
@@ -21,7 +22,7 @@ export const getInstanceMethodNames = (obj: AbstractController) => {
 
 export const responseBuilder = new BackendUtils.ResponseBuilder();
 
-export const routeWrapper = (routers: ControllersMap) => {
+export const routeWrapper = (routers: ControllersMap | MiddlewaresMap) => {
   return Object.values(routers).forEach((routes) => {
     getInstanceMethodNames(routes).forEach((route) => {
       if (typeof routes[route] === 'function') {

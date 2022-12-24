@@ -1,4 +1,4 @@
-import { css, styled } from '@/hocs';
+import { css, styled } from '@/hocs/styled';
 
 export const SectionDescription = styled.div`
   font-size: 13px;
@@ -16,7 +16,7 @@ export const SectionTitle = styled.div<{ withDescription?: boolean }>`
   ${({ withDescription }) =>
     withDescription &&
     css`
-      margin-bottom: 6px;
+      margin-bottom: 4px;
     `}
 `;
 

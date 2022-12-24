@@ -1,6 +1,6 @@
 import { Flex, MemberIcon } from '@voiceflow/ui';
 
-import { css, styled } from '@/hocs';
+import { css, styled } from '@/hocs/styled';
 import {
   CANVAS_CREATING_LINK_CLASSNAME,
   NODE_ACTIVE_CLASSNAME,

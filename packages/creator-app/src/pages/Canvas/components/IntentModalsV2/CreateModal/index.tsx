@@ -1,23 +1,28 @@
 import { Utils } from '@voiceflow/common';
-import { Box, Button, ButtonVariant, useDidUpdateEffect } from '@voiceflow/ui';
+import { Box, Button, ButtonVariant, IconButton, SectionV2, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 
 import Modal, { ModalFooter } from '@/components/Modal';
 import { MODAL_WIDTH_VARIANTS, MODAL_WIDTHS, ModalType } from '@/constants';
-import { TextEditorVariablesPopoverProvider } from '@/contexts';
+import { TextEditorVariablesPopoverProvider } from '@/contexts/TextEditorVariablesPopoverContext';
 import * as Tracking from '@/ducks/tracking';
 import { useModals } from '@/hooks';
-import IntentForm from '@/pages/Canvas/components/IntentModalsV2/components/IntentForm';
-import { useCreateIntent } from '@/pages/Canvas/components/IntentModalsV2/CreateModal/hooks';
+
+import IntentForm from '../components/IntentForm';
+import EntityPromptForm from './EntityPromptForm';
+import { useCreateIntent } from './hooks';
 
 const CreateModal: React.FC = () => {
   const { close, data, isInStack } = useModals<{
     id?: string;
-    onCreate?: (id: string) => void;
     name?: string;
-    utteranceCreationType: Tracking.CanvasCreationType;
+    onCreate?: (id: string) => void;
     creationType: Tracking.CanvasCreationType;
+    utteranceCreationType: Tracking.CanvasCreationType;
   }>(ModalType.INTENT_CREATE);
+
+  const [entityPromptSlotID, setEntityPromptSlotID] = React.useState('');
+  const [entityPromptAutogenerate, setEntityPromptAutogenerate] = React.useState(false);
 
   const [modalRef, setModalRef] = React.useState<HTMLDivElement | null>(null);
 
@@ -30,44 +35,83 @@ const CreateModal: React.FC = () => {
     creating,
     onCreate,
     setInputs,
-    addRequiredSlot,
     intentEntities,
+    addRequiredSlot,
     updateSlotDialog,
     removeRequiredSlot,
   } = useCreateIntent({
-    creationType: data.creationType,
     onCreate: Utils.functional.chain(data.onCreate, close),
     initialName: data.name,
+    creationType: data.creationType,
   });
+
+  const onEnterEntityPrompt = (slotID: string, { autogenerate = false }: { autogenerate?: boolean } = {}) => {
+    setEntityPromptSlotID(slotID);
+    setEntityPromptAutogenerate(autogenerate);
+  };
+
+  const onEntityPromptBack = () => {
+    setEntityPromptSlotID('');
+    setEntityPromptAutogenerate(false);
+  };
 
   useDidUpdateEffect(() => {
     if (isInStack) {
       reset();
       setName(data?.name || '');
     } else {
+      onEntityPromptBack();
       cancel();
     }
   }, [isInStack]);
 
   return (
-    <Modal ref={setModalRef} maxWidth={MODAL_WIDTHS[MODAL_WIDTH_VARIANTS.SMALL]} id={ModalType.INTENT_CREATE} title="Create Intent" headerBorder>
+    <Modal
+      ref={setModalRef}
+      maxWidth={MODAL_WIDTHS[MODAL_WIDTH_VARIANTS.SMALL]}
+      id={ModalType.INTENT_CREATE}
+      title={
+        <>
+          {entityPromptSlotID && (
+            <SectionV2.ActionsContainer isLeft unit={0} offsetUnit={2.75}>
+              <IconButton icon="largeArrowLeft" onClick={() => onEntityPromptBack()} variant={IconButton.Variant.BASIC} />
+            </SectionV2.ActionsContainer>
+          )}
+
+          <span>Create Intent</span>
+        </>
+      }
+      headerBorder
+    >
       {!!modalRef && (
         <TextEditorVariablesPopoverProvider value={modalRef}>
           <Box width="100%" overflow="auto" maxHeight="calc(100vh - 220px)">
-            <IntentForm
-              name={name}
-              utteranceCreationType={data.utteranceCreationType}
-              inputs={inputs}
-              creationType={Tracking.IntentEditType.IMM}
-              setName={setName}
-              autofocus
-              setInputs={setInputs}
-              intentEntities={intentEntities}
-              addRequiredSlot={addRequiredSlot}
-              updateSlotDialog={updateSlotDialog}
-              removeRequiredSlot={removeRequiredSlot}
-              withDescriptionSection={false}
-            />
+            {entityPromptSlotID ? (
+              <EntityPromptForm
+                entityID={entityPromptSlotID}
+                intentName={name}
+                autogenerate={entityPromptAutogenerate}
+                intentInputs={inputs}
+                onChangeDialog={updateSlotDialog}
+                intentEntities={intentEntities}
+              />
+            ) : (
+              <IntentForm
+                name={name}
+                inputs={inputs}
+                setName={setName}
+                autofocus
+                setInputs={setInputs}
+                creationType={Tracking.IntentEditType.IMM}
+                intentEntities={intentEntities}
+                addRequiredSlot={addRequiredSlot}
+                removeRequiredSlot={removeRequiredSlot}
+                onEnterEntityPrompt={onEnterEntityPrompt}
+                utteranceCreationType={data.utteranceCreationType}
+                onIntentNameSuggested={setName}
+                withDescriptionSection={false}
+              />
+            )}
           </Box>
         </TextEditorVariablesPopoverProvider>
       )}

@@ -1,6 +1,6 @@
 import { BoxFlexStart } from '@voiceflow/ui';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 export const Container = styled(BoxFlexStart).attrs({ column: true })`
   flex: 1;

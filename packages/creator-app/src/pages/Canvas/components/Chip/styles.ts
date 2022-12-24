@@ -2,7 +2,7 @@ import { Flex, MemberIcon } from '@voiceflow/ui';
 
 import EditableText from '@/components/EditableText';
 import { HSLShades } from '@/constants';
-import { styled, transition } from '@/hocs';
+import { styled, transition } from '@/hocs/styled';
 import {
   CANVAS_COMMENTING_ENABLED_CLASSNAME,
   CANVAS_CREATING_LINK_CLASSNAME,

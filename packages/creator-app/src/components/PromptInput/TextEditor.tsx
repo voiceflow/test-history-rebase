@@ -2,7 +2,7 @@ import * as Platform from '@voiceflow/platform-config';
 import React from 'react';
 
 import { SlateTextInput } from '@/components/SlateInputs';
-import { useActiveProjectTypeConfig } from '@/hooks';
+import { useActiveProjectTypeConfig } from '@/hooks/platformConfig';
 
 export interface PromptInputTextEditorProps {
   value: Platform.Common.Chat.Models.Prompt.Model;

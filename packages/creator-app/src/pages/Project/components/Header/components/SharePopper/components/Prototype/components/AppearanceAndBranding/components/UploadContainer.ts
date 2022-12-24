@@ -1,6 +1,6 @@
 import { FlexCenter } from '@voiceflow/ui';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 const UploadContainer = styled(FlexCenter)`
   flex-direction: row;

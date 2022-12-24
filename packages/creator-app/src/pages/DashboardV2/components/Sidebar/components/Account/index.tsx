@@ -5,7 +5,8 @@ import NavigationSidebar from '@/components/NavigationSidebar';
 import * as AccountDuck from '@/ducks/account';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
-import { useDispatch, useSelector } from '@/hooks';
+import { useDispatch } from '@/hooks/realtime';
+import { useSelector } from '@/hooks/redux';
 
 import * as S from './styles';
 

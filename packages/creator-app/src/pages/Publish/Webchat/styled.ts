@@ -1,7 +1,7 @@
 import { Chat } from '@voiceflow/react-chat';
 import { Box } from '@voiceflow/ui';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 import Section from './sections/components/Section';
 

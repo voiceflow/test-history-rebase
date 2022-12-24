@@ -1,6 +1,6 @@
 import { BoxFlexCenter } from '@voiceflow/ui';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 import { FadeDown } from '@/styles/animations';
 
 const Container = styled(BoxFlexCenter)`

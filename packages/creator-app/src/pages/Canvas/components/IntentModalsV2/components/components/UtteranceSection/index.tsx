@@ -1,8 +1,9 @@
+/* eslint-disable no-nested-ternary */
 import * as Platform from '@voiceflow/platform-config';
 import {
-  Badge,
   Box,
   ClickableText,
+  SectionV2,
   stopPropagation,
   StrengthGauge,
   SvgIcon,
@@ -10,15 +11,14 @@ import {
   toast,
   useDidUpdateEffect,
   useEnableDisable,
-  useOnScreen,
+  useSetup,
 } from '@voiceflow/ui';
 import queryString from 'query-string';
 import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 
-import ListManagerWrapper from '@/components/IntentForm/components/ListManagerWrapper';
+import * as GPT from '@/components/GPT';
 import ListManager from '@/components/ListManager';
-import Section, { SectionVariant } from '@/components/Section';
 import Utterance, { UtteranceRef } from '@/components/Utterance';
 import { Permission } from '@/config/permissions';
 import { BulkImportLimitDetails } from '@/config/planLimits/bulkImport';
@@ -27,49 +27,52 @@ import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as SlotV2 from '@/ducks/slotV2';
 import * as Tracking from '@/ducks/tracking';
-import { useAddSlot, useModals, usePermission, useSelector, useSetup, useTrackingEvents } from '@/hooks';
-import UtteranceInput from '@/pages/Canvas/components/IntentModalsV2/components/components/UtteranceSection/components/UtteranceInput';
-import { EditorTabs } from '@/pages/NLUManager/constants';
-import { NLUManagerContext } from '@/pages/NLUManager/context';
-import { formatUtterance, getIntentStrengthLevel, validateUtterance } from '@/utils/intent';
+import { useMapManager } from '@/hooks/mapManager';
+import { useModals } from '@/hooks/modals';
+import { usePermission } from '@/hooks/permission';
+import { useSelector } from '@/hooks/redux';
+import { useAddSlot } from '@/hooks/slot';
+import { useTrackingEvents } from '@/hooks/tracking';
+import { formatUtterance, getIntentStrengthLevel, isDefaultIntentName, validateUtterance } from '@/utils/intent';
 
-interface UtteranceManagerProps {
-  creating?: boolean;
-  autofocus?: boolean;
-  withBorderTop?: boolean;
-  onUpdateUtterances: (data: Platform.Base.Models.Intent.Input[]) => void;
+import UtteranceInput from './components/UtteranceInput';
+
+interface UtteranceSectionProps {
   inputs: Platform.Base.Models.Intent.Input[];
   intentID: string | null;
+  creating?: boolean;
+  autofocus?: boolean;
   isBuiltIn?: boolean;
+  intentName: string;
+  withBorderTop?: boolean;
+  onUpdateUtterances: (data: Platform.Base.Models.Intent.Input[]) => void;
   prefilledUtterance?: string;
-  withRecommendations?: boolean;
   utteranceCreationType: Tracking.CanvasCreationType;
+  onIntentNameSuggested?: (name: string) => void;
 }
 
 const MAX_VISIBLE_UTTERANCES = 10;
 
-const UtteranceManager: React.FC<UtteranceManagerProps> = ({
-  prefilledUtterance,
-  isBuiltIn,
-  withRecommendations,
-  intentID,
+const UtteranceSection: React.FC<UtteranceSectionProps> = ({
   inputs,
-  onUpdateUtterances,
+  intentID,
+  isBuiltIn,
   autofocus,
+  intentName,
   withBorderTop,
+  prefilledUtterance,
+  onUpdateUtterances,
+  onIntentNameSuggested,
   utteranceCreationType,
 }) => {
+  const history = useHistory();
   const { search } = useLocation();
-  const nluManager = React.useContext(NLUManagerContext);
 
   const queryParams = queryString.parse(search);
   const prefilledNewUtterance = prefilledUtterance || (queryParams[PREFILLED_UTTERANCE_PARAM] as string | null);
-  const history = useHistory();
-  const stickyTopRef = React.useRef<HTMLDivElement>(null);
-  const isNotAtTop = useOnScreen(stickyTopRef, { initialState: true });
 
-  const intents = useSelector(IntentV2.allIntentsSelector);
   const slots = useSelector(SlotV2.allSlotsSelector);
+  const intents = useSelector(IntentV2.allIntentsSelector);
   const platform = useSelector(ProjectV2.active.platformSelector);
 
   const utteranceRef = React.useRef<UtteranceRef>(null);
@@ -83,33 +86,6 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({
   const [isValidUtterance, setValidUtterance, setInvalidUtterance] = useEnableDisable(true);
   const intentUtterances = inputs || [];
   const [trackingEvents] = useTrackingEvents();
-  const isRecommendationOpened = nluManager.isEditorTabActive(EditorTabs.UTTERANCE_RECOMMENDATIONS);
-
-  useDidUpdateEffect(() => {
-    utteranceRef.current?.clear();
-  }, [intentID]);
-
-  React.useEffect(() => {
-    if (autofocus) {
-      utteranceRef.current?.forceFocusToTheEnd();
-    }
-
-    if (prefilledNewUtterance) {
-      utteranceRef.current?.forceFocusToTheEnd?.();
-      updateIsEmpty(false);
-    }
-  }, [prefilledNewUtterance, utteranceRef]);
-
-  useSetup(() => {
-    // Remove the prefilled utterance query param, so on another intent select, the prefill won't persist.
-    if (prefilledNewUtterance) {
-      const queryParams = new URLSearchParams(search);
-      queryParams.delete(PREFILLED_UTTERANCE_PARAM);
-      history.replace({
-        search: queryParams.toString(),
-      });
-    }
-  });
 
   const { onAddSlot } = useAddSlot();
 
@@ -155,122 +131,177 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({
     onUpdateUtterances(cleanedUtterances);
   };
 
-  const toggleRecommendationTab = () => {
-    if (isRecommendationOpened) {
-      nluManager.closeEditorTab();
-      return;
+  const onBeforeAddUtterance = () => {
+    if (intentID) {
+      trackingEvents.trackNewUtteranceCreated({ intentID, creationType: utteranceCreationType });
     }
 
-    nluManager.openEditorTab(EditorTabs.UTTERANCE_RECOMMENDATIONS);
+    utteranceRef.current?.forceUpdate();
   };
 
-  return (
-    <>
-      <div ref={stickyTopRef} />
+  useDidUpdateEffect(() => {
+    utteranceRef.current?.clear();
+  }, [intentID]);
 
-      <Section
-        suffix={
-          <Box>
-            {withRecommendations && (
-              <Box mr={16} display="inline-block">
-                <Badge
-                  flat
-                  style={{ fontSize: '13px', lineHeight: '16px', minHeight: '24px' }}
-                  active={isRecommendationOpened}
-                  onClick={toggleRecommendationTab}
-                >
-                  Recommend
-                </Badge>
-              </Box>
-            )}
-            <Box display="inline-flex" position="relative" top={2}>
-              <TippyTooltip title="Bulk Import">
-                <SvgIcon icon="upload" clickable onClick={stopPropagation(onBulkUploadClick)} />
-              </TippyTooltip>
-            </Box>
-          </Box>
-        }
-        customContentStyling={{ marginBottom: intentUtterances.length ? 25 : 8, padding: 0 }}
-        header={
-          <>
-            Utterances
-            <Box marginLeft={16} display="inline-block" position="relative" bottom="3px">
-              <StrengthGauge
-                width={40}
-                level={isBuiltIn ? StrengthGauge.Level.VERY_STRONG : getIntentStrengthLevel(intentUtterances.length)}
-                tooltipLabelMap={{ [StrengthGauge.Level.NOT_SET]: 'No utterances' }}
+  React.useEffect(() => {
+    if (autofocus) {
+      utteranceRef.current?.forceFocusToTheEnd();
+    }
+
+    if (prefilledNewUtterance) {
+      utteranceRef.current?.forceFocusToTheEnd?.();
+      updateIsEmpty(false);
+    }
+  }, [prefilledNewUtterance, utteranceRef]);
+
+  useSetup(() => {
+    // Remove the prefilled utterance query param, so on another intent select, the prefill won't persist.
+    if (prefilledNewUtterance) {
+      const queryParams = new URLSearchParams(search);
+
+      queryParams.delete(PREFILLED_UTTERANCE_PARAM);
+
+      history.replace({ search: queryParams.toString() });
+    }
+  });
+
+  const gptUtteranceGen = GPT.useUtteranceGenFeature();
+
+  const gptGenUtterances = GPT.useGenUtterances({
+    inputs: intentUtterances,
+    onAccept: (recommended) => onUpdateUtterancesHandler([...intentUtterances, ...recommended]),
+    intentName,
+    onIntentNameSuggested,
+  });
+
+  const gptGenUtterancesManager = useMapManager(gptGenUtterances.items, gptGenUtterances.onReplaceAll);
+
+  const renderMoreUtterancesToggle = ({ size }: { size: number }) => (
+    <ClickableText onClick={() => setShowAllUtterances(!showAllUtterances)}>
+      {showAllUtterances ? 'Hide some utterances' : `Show all utterances (${size})`}
+    </ClickableText>
+  );
+
+  return (
+    <SectionV2.Sticky>
+      {({ sticked }) => (
+        <SectionV2>
+          {withBorderTop && !sticked && <SectionV2.Divider />}
+
+          <ListManager
+            items={intentUtterances}
+            divider={false}
+            onUpdate={onUpdateUtterancesHandler}
+            beforeAdd={onBeforeAddUtterance}
+            addToStart
+            initialValue={{ text: prefilledNewUtterance || '', slots: [] }}
+            addValidation={addValidation}
+            maxVisibleItems={showAllUtterances ? intentUtterances.length : MAX_VISIBLE_UTTERANCES}
+            renderItem={(item, { onUpdate }) => (
+              <Utterance
+                space
+                slots={slots}
+                value={item?.text}
+                onBlur={onUpdate}
+                readOnly={!!gptGenUtterances.items.length}
+                onAddSlot={onAddSlot}
+                onEnterPress={onUpdate}
               />
-            </Box>
-          </>
-        }
-        variant={SectionVariant.QUATERNARY}
-        customHeaderStyling={{
-          paddingBottom: '16px',
-          position: 'sticky',
-          paddingTop: '20px',
-          top: 0,
-          background: 'white',
-          zIndex: 2,
-          borderTop: withBorderTop && isNotAtTop ? 'solid 1px #eaeff4' : undefined,
-        }}
-      >
-        <Box>
-          <ListManagerWrapper>
-            <ListManager
-              initialValue={{ text: prefilledNewUtterance || '', slots: [] }}
-              maxVisibleItems={showAllUtterances ? intentUtterances.length : MAX_VISIBLE_UTTERANCES}
-              renderList={({ mapManaged, itemRenderer }) => (
-                <Box pt={!isValidUtterance && !intentUtterances.length ? 8 : 21} px={32}>
-                  {mapManaged(itemRenderer)}
-                </Box>
-              )}
-              items={intentUtterances}
-              addToStart
-              divider={false}
-              beforeAdd={() => {
-                if (intentID) {
-                  trackingEvents.trackNewUtteranceCreated({ intentID, creationType: utteranceCreationType });
-                }
-                utteranceRef.current?.forceUpdate();
-              }}
-              renderForm={({ value, onAdd, onChange, addError }) => (
+            )}
+            renderList={({ mapManager, itemRenderer }) => (
+              <SectionV2.Content px={32} topOffset={mapManager.isEmpty ? 0 : 2} bottomOffset={3}>
+                {mapManager.map(itemRenderer)}
+
+                {gptUtteranceGen.isEnabled ? (
+                  <Box pt={16}>
+                    {gptGenUtterancesManager.map((item, { key, index }) => (
+                      <Box mb={16} key={key}>
+                        <GPT.Utterance
+                          input={item}
+                          slots={slots}
+                          index={mapManager.size + index + 1}
+                          onFocus={() => gptGenUtterances.onFocusItem(index)}
+                          isActive={index === gptGenUtterances.activeIndex}
+                          onReject={() => gptGenUtterances.onRejectItem(index)}
+                          onChange={(data) => gptGenUtterances.onChangeItem(index, { ...item, ...data })}
+                          activeIndex={gptGenUtterances.activeIndex}
+                        />
+                      </Box>
+                    ))}
+
+                    {mapManager.size > MAX_VISIBLE_UTTERANCES && <Box mb={16}>{renderMoreUtterancesToggle({ size: mapManager.size })}</Box>}
+
+                    <GPT.GenerateButton.Utterance
+                      disabled={!!gptGenUtterances.items.length || gptGenUtterances.fetching}
+                      isLoading={gptGenUtterances.fetching}
+                      onGenerate={({ quantity }) => gptGenUtterances.onGenerate({ quantity })}
+                      hasExtraContext={!isDefaultIntentName(intentName)}
+                      contextUtterances={mapManager.items}
+                    />
+                  </Box>
+                ) : (
+                  mapManager.size > MAX_VISIBLE_UTTERANCES && <Box pt={16}>{renderMoreUtterancesToggle({ size: mapManager.size })}</Box>
+                )}
+              </SectionV2.Content>
+            )}
+            renderForm={({ value, onAdd, onChange, addError, mapManager }) => (
+              <SectionV2.Header
+                sticky
+                column
+                sticked={sticked}
+                topUnit={2.5}
+                bottomUnit={mapManager.isEmpty && gptGenUtterancesManager.isEmpty ? 0 : 2}
+                insetBorder={!mapManager.isEmpty || !gptGenUtterancesManager.isEmpty}
+              >
+                <Box.FlexApart pb={16} width="100%">
+                  <Box.Flex gap={16} minHeight="22px">
+                    <SectionV2.Title bold secondary>
+                      Utterances
+                    </SectionV2.Title>
+
+                    <Box mt={2}>
+                      <StrengthGauge
+                        width={40}
+                        level={isBuiltIn ? StrengthGauge.Level.VERY_STRONG : getIntentStrengthLevel(intentUtterances.length)}
+                        tooltipLabelMap={{ [StrengthGauge.Level.NOT_SET]: 'No utterances' }}
+                      />
+                    </Box>
+                  </Box.Flex>
+
+                  <Box.Flex gap={16}>
+                    <TippyTooltip title="Bulk Import">
+                      <SvgIcon
+                        icon="upload"
+                        onClick={stopPropagation(onBulkUploadClick)}
+                        variant={SvgIcon.Variant.STANDARD}
+                        clickable
+                        reducedOpacity
+                      />
+                    </TippyTooltip>
+                  </Box.Flex>
+                </Box.FlexApart>
+
                 <UtteranceInput
-                  intentUtterances={intentUtterances}
-                  setValidUtterance={setValidUtterance}
                   ref={utteranceRef}
                   slots={slots}
                   value={value}
-                  updateIsEmpty={(val) => updateIsEmpty(val)}
+                  onAdd={onAdd}
                   isEmpty={isEmpty}
-                  isNotAtTop={isNotAtTop}
+                  onChange={onChange}
+                  readOnly={!!gptGenUtterances.items.length}
                   addError={addError}
                   onAddSlot={onAddSlot}
-                  onAdd={onAdd}
+                  updateIsEmpty={updateIsEmpty}
                   isValidUtterance={isValidUtterance}
-                  onChange={onChange}
+                  setValidUtterance={setValidUtterance}
                 />
-              )}
-              addValidation={addValidation}
-              onUpdate={onUpdateUtterancesHandler}
-              renderItem={(item, { onUpdate }) => (
-                <Utterance space slots={slots} value={item?.text} onBlur={onUpdate} onEnterPress={onUpdate} onAddSlot={onAddSlot} />
-              )}
-            />
-          </ListManagerWrapper>
-
-          {intentUtterances.length > MAX_VISIBLE_UTTERANCES && (
-            <Box color="#62778c" pt={16} px={32}>
-              {!showAllUtterances ? (
-                <ClickableText onClick={() => setShowAllUtterances(true)}>{`Show all utterances (${intentUtterances.length})`}</ClickableText>
-              ) : (
-                <ClickableText onClick={() => setShowAllUtterances(false)}>Hide some utterances</ClickableText>
-              )}
-            </Box>
-          )}
-        </Box>
-      </Section>
-    </>
+              </SectionV2.Header>
+            )}
+          />
+        </SectionV2>
+      )}
+    </SectionV2.Sticky>
   );
 };
 
-export default UtteranceManager;
+export default UtteranceSection;

@@ -94,3 +94,5 @@ export const hasPermissionSelector = createSelector(
     return roleAllowed && planAllowed && trialAllowed;
   }
 );
+
+export const workspaceQuotasSelector = createSelector([workspaceSelector], (workspace) => workspace?.quotas);

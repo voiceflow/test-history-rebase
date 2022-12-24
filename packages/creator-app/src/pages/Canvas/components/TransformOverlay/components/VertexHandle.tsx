@@ -1,7 +1,7 @@
 import { stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 
-import { css, styled } from '@/hocs';
+import { css, styled } from '@/hocs/styled';
 import { EngineContext } from '@/pages/Canvas/contexts';
 import { Point } from '@/types';
 

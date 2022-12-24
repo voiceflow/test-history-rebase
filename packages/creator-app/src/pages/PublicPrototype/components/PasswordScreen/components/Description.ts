@@ -1,6 +1,6 @@
 import { Description as BaseDescription } from '@voiceflow/ui';
 
-import { css, styled } from '@/hocs';
+import { css, styled } from '@/hocs/styled';
 import { breakpoints } from '@/styles/breakpoints';
 
 const Description = styled(BaseDescription)`

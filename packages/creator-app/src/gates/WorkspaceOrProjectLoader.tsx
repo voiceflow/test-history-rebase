@@ -4,7 +4,7 @@ import React from 'react';
 import { matchPath, useLocation } from 'react-router-dom';
 
 import { LegacyPath, Path } from '@/config/routes';
-import { useFeature } from '@/hooks';
+import { useFeature } from '@/hooks/feature';
 import DashboardLoader from '@/pages/DashboardV2/components/DashboardLoader';
 import ProjectLoader from '@/pages/Project/components/ProjectLoader';
 

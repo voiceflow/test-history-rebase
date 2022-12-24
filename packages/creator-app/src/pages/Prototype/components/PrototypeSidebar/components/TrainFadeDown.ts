@@ -1,6 +1,6 @@
 import { flexCenterStyles } from '@voiceflow/ui';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 import { FadeDownContainer } from '@/styles/animations';
 
 const TrainContainer = styled(FadeDownContainer)`

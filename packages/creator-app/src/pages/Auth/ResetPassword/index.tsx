@@ -4,7 +4,7 @@ import { RouteComponentProps } from 'react-router-dom';
 
 import client from '@/client';
 import * as Router from '@/ducks/router';
-import { connect } from '@/hocs';
+import { connect } from '@/hocs/connect';
 import { useAsyncMountUnmount } from '@/hooks';
 import { ConnectedProps } from '@/types';
 

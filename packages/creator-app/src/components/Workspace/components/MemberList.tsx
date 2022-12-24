@@ -4,7 +4,7 @@ import { Members } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Workspace from '@/ducks/workspace';
-import { useDispatch } from '@/hooks';
+import { useDispatch } from '@/hooks/realtime';
 
 type WorkspaceMember = Realtime.WorkspaceMember | Realtime.PendingWorkspaceMember;
 

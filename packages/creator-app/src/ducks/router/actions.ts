@@ -56,7 +56,9 @@ export const goToOnboarding = (search?: string) => goTo(`${Path.ONBOARDING}${sea
 export const goToPrototype = (versionID: string, nodeID?: string) =>
   goTo(`${generatePath(Path.PROJECT_PROTOTYPE, { versionID })}${Query.stringify({ nodeID })}`);
 
-export const goToSettings = (versionID: string) => goTo(generatePath(Path.PROJECT_SETTINGS, { versionID }));
+export const goToSettings = <T extends Struct>(versionID: string, { state }: { state?: T } = {}) =>
+  goTo(generatePath(Path.PROJECT_SETTINGS, { versionID }), state);
+
 export const goToAssistantOverview = (versionID: string) => goTo(generatePath(Path.PROJECT_ASSISTANT_OVERVIEW, { versionID }));
 
 export const goToAnalytics = (versionID: string) => goTo(generatePath(Path.ANALYTICS_DASHBOARD, { versionID }));

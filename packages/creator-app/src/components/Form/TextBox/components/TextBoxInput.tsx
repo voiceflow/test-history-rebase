@@ -2,7 +2,7 @@ import React from 'react';
 import Textarea, { TextareaAutosizeProps } from 'react-textarea-autosize';
 
 import { inputControlStyles } from '@/components/Form/styles';
-import { css, styled } from '@/hocs';
+import { css, styled } from '@/hocs/styled';
 
 export interface TextBoxInputProps extends Omit<TextareaAutosizeProps, 'ref'> {
   errorBound?: boolean;

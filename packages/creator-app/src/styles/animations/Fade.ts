@@ -1,6 +1,6 @@
 import { space, SpaceProps } from 'styled-system';
 
-import { css, keyframes, styled } from '@/hocs';
+import { css, keyframes, styled } from '@/hocs/styled';
 import { ANIMATION_SPEED } from '@/styles/theme';
 
 const FadeKeyframes = (distance = 0, height = 0) => keyframes`

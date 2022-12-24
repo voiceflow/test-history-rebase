@@ -1,7 +1,7 @@
 import { SvgIcon } from '@voiceflow/ui';
 
 import TextEditor from '@/components/TextEditor';
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 const Editor = styled(TextEditor)`
   align-items: flex-start;

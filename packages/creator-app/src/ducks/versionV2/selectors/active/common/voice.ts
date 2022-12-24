@@ -10,5 +10,5 @@ export const { versionSelector, sessionSelector, settingsSelector, publishingSel
 
 export const defaultVoiceSelector = createSelector(
   [settingsSelector, projectConfigSelector],
-  (settings, projectConfig) => settings?.defaultVoice ?? projectConfig.project.voice?.default ?? null
+  (settings, projectConfig) => settings?.defaultVoice ?? projectConfig.project.voice.default
 );

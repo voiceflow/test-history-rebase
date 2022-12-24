@@ -2,7 +2,7 @@ import { Dropdown, IconButton, IconButtonVariant, Menu, stopPropagation, SvgIcon
 import React from 'react';
 
 import { Notification, notificationsSelector, readNotifications } from '@/ducks/notifications';
-import { connect } from '@/hocs';
+import { connect } from '@/hocs/connect';
 import { useToggle } from '@/hooks/toggle';
 import { ConnectedProps } from '@/types';
 

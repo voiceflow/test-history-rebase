@@ -4,7 +4,7 @@ import React from 'react';
 
 import Section from '@/components/Section';
 import { HeaderVariant } from '@/components/Section/components/HeaderLabel';
-import { getNoMatchNoReplySectionLabel } from '@/pages/Canvas/managers/utils';
+import { getNoMatchNoReplySectionLabel } from '@/pages/Canvas/managers/utils/noMatchNoReply';
 
 export const NO_REPLY_PATH_TYPE = 'noReply';
 

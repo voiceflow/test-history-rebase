@@ -2,7 +2,7 @@ import { Box, Dropdown, Menu, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
 import JobInterface from '@/components/JobInterface';
-import { PrototypeJobContext } from '@/contexts';
+import { PrototypeJobContext } from '@/contexts/PrototypeJobContext';
 import { useSimulatedProgress } from '@/hooks/job';
 import RunButton from '@/pages/Project/components/Header/components/CanvasHeader/components/Run/button';
 import { useRunPrototype } from '@/pages/Project/components/Header/components/CanvasHeader/components/Run/hooks';

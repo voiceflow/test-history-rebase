@@ -1,6 +1,6 @@
 import { Banner, Box, BoxFlex, BoxFlexCenter } from '@voiceflow/ui';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 export type { InputField, SecretField } from './SecretsConfigSection';
 export { default as SecretsConfigSection } from './SecretsConfigSection';

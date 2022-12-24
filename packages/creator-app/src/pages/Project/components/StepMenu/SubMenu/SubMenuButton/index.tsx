@@ -7,7 +7,7 @@ import { getEmptyImage } from 'react-dnd-html5-backend';
 
 import { getLockedStepTooltipText, isLockedStep, lockedStepTooltipButtonText, LockedStepTypes } from '@/config/planLimits/steps';
 import { BlockType, DragItem, ModalType } from '@/constants';
-import { AutoPanningCacheContext } from '@/contexts';
+import { AutoPanningCacheContext } from '@/contexts/AutoPanningContext';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useEventualEngine, useHover, useModals, useSelector, useSetup, useTeardown } from '@/hooks';
 import { StepDragItem } from '@/pages/Canvas/components/CanvasDiagram';

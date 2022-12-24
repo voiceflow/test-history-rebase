@@ -1,7 +1,7 @@
 import { IO, Point } from '@voiceflow/realtime-sdk';
 
 import { MovementCalculator } from '@/components/Canvas/types';
-import { createDispatcherContext } from '@/contexts';
+import { createDispatcherContext } from '@/contexts/DispatcherContext';
 import { Pair } from '@/types';
 
 export interface RealtimeCursorEvents {

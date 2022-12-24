@@ -1,6 +1,7 @@
 export { default as ButtonContainer } from './ButtonContainer';
 export { default as Container, getItemsContainer, getMaxHeight, MAX_MENU_HEIGHT, MAX_VISIBLE_ITEMS } from './Container';
 export { default as Footer } from './Footer';
+export { default as Hint } from './Hint';
 export type { ItemProps } from './Item';
 export { default as Item, itemStyles } from './Item';
 export { default as ItemActionIcon } from './ItemActionIcon';

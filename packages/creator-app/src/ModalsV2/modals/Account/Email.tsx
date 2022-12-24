@@ -2,7 +2,7 @@ import { Alert, Button, Input, Modal, SectionV2, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Account from '@/ducks/account';
-import { useDispatch } from '@/hooks';
+import { useDispatch } from '@/hooks/realtime';
 
 import manager from '../../manager';
 

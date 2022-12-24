@@ -2,7 +2,7 @@ import { Box, Button, Flex, PrimaryButton, PrimaryButtonProps, SvgIcon, SvgIconT
 import React from 'react';
 
 import { Permission } from '@/config/permissions';
-import { css, styled } from '@/hocs';
+import { css, styled } from '@/hocs/styled';
 import { usePermission } from '@/hooks';
 import { Identifier } from '@/styles/constants';
 

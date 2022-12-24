@@ -8,7 +8,7 @@ import { Permission } from '@/config/permissions';
 import { Path } from '@/config/routes';
 import * as Router from '@/ducks/router';
 import { WorkspaceFeatureLoadingGate } from '@/gates';
-import { withBatchLoadingGate } from '@/hocs';
+import { withBatchLoadingGate } from '@/hocs/withBatchLoadingGate';
 import { useActiveWorkspace, useDispatch, useFeature, usePermission } from '@/hooks';
 import RedirectWithSearch from '@/Routes/RedirectWithSearch';
 

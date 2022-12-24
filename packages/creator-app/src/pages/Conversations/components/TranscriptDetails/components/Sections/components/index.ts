@@ -1,6 +1,6 @@
 import { Flex, FlexApart } from '@voiceflow/ui';
 
-import { css, styled } from '@/hocs';
+import { css, styled } from '@/hocs/styled';
 
 export const Container = styled(Flex)<{
   curved?: boolean;

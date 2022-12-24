@@ -3,7 +3,7 @@ import React from 'react';
 import { PublishVersionModalData } from '@/components/PublishVersionModal';
 import { JobStatus, ModalType } from '@/constants';
 import { AlexaStageType } from '@/constants/platforms';
-import { PublishContext, PublishContextValue } from '@/contexts';
+import { PublishContext, PublishContextValue } from '@/contexts/PublishContext';
 import * as Account from '@/ducks/account';
 import { useDispatch, useModals, useSetup, useStore } from '@/hooks';
 import { AlexaPublishJob } from '@/models';

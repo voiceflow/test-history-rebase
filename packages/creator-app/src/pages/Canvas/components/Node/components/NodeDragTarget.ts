@@ -1,4 +1,4 @@
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 import DragTarget, { DragTargetProps } from '@/pages/Canvas/components/DragTarget';
 import { NODE_ACTIVE_CLASSNAME, NODE_DRAGGING_CLASSNAME } from '@/pages/Canvas/constants';
 

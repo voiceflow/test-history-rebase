@@ -1,5 +1,5 @@
 import { listDragPlaceholder } from '@/assets';
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 const DragZone = styled.div`
   width: 384px;

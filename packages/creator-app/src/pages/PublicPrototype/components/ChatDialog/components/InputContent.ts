@@ -1,6 +1,6 @@
 import { BoxFlex } from '@voiceflow/ui';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 export const DESKTOP_INPUT_CONTAINER_HEIGHT = 80;
 export const MOBILE_INPUT_CONTAINER_HEIGHT = 60;

@@ -6,14 +6,14 @@ import BaseButton, { BaseButtonProps } from './BaseButton';
 export const BUTTON_HEIGHT = 42;
 
 export interface ButtonContainerProps extends BaseButtonProps, React.ButtonHTMLAttributes<HTMLButtonElement> {
+  width?: number;
   square?: boolean;
   nowrap?: boolean;
+  inline?: boolean;
+  minWidth?: number;
   isLoading?: boolean;
   fullWidth?: boolean;
-  minWidth?: number;
-  width?: number;
   squareRadius?: boolean;
-  inline?: boolean;
 }
 
 export const buttonContainerStyles = css<ButtonContainerProps>`

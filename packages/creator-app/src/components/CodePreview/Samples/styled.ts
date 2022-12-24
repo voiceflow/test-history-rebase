@@ -1,6 +1,6 @@
 import { FlexApart, Preview } from '@voiceflow/ui';
 
-import { css, styled, transition } from '@/hocs';
+import { css, styled, transition } from '@/hocs/styled';
 
 export const Header = styled(FlexApart)`
   background-color: ${Preview.Colors.GREY_DARK_BACKGROUND_COLOR};

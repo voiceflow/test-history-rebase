@@ -1,6 +1,6 @@
 import Select from 'react-select';
 
-import { styled, transition } from '@/hocs';
+import { styled, transition } from '@/hocs/styled';
 import { FadeDownDelayed } from '@/styles/animations';
 
 const SearchSelect = styled(Select)`

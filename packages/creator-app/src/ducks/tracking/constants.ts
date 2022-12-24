@@ -164,6 +164,13 @@ export enum EventName {
   WEBCHAT_CONFIGURATION_STATUS_CHANGED = 'Web Chat Configuration - Status Changed',
   WEBCHAT_CONFIGURATION_CUSTOMIZATION = 'Web Chat Configuration - Customization',
   // END Web Chat Configuration
+
+  // GPT Events
+  AI_FEATURE_TOGGLED = 'AI Feature Toggled',
+  AI_QUOTA_CHECK = 'AI Quota Check',
+  AI_QUOTA_DEPLETED = 'AI Quota Depleted',
+  NON_AI_NO_MATCH_GENERATE = 'Non AI No Match Generate',
+  AI_RESULT_JUDGEMENT = 'AI Result Judgement',
 }
 
 export enum IntentEditType {
@@ -265,14 +272,4 @@ export enum ModelExportOriginType {
 export enum NoMatchCreationType {
   GLOBAL = 'global',
   STEP = 'step',
-}
-
-export enum NoMatchStepType {
-  BUTTONS = 'buttons',
-  CAPTURE = 'capture',
-  CARD = 'card',
-  CAROUSEL = 'carousel',
-  CHOICE = 'choice',
-  IF = 'if',
-  INTENT = 'intent',
 }

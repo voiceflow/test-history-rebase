@@ -3,7 +3,7 @@ import * as Normal from 'normal-store';
 
 import { createReducer } from './utils';
 
-const updateaNameReducer = createReducer(Realtime.workspace.updateName, (state, { workspaceID, name }) => {
+const updateNameReducer = createReducer(Realtime.workspace.updateName, (state, { workspaceID, name }) => {
   const workspace = Normal.getOne(state, workspaceID);
 
   if (workspace) {
@@ -11,4 +11,4 @@ const updateaNameReducer = createReducer(Realtime.workspace.updateName, (state, 
   }
 });
 
-export default updateaNameReducer;
+export default updateNameReducer;

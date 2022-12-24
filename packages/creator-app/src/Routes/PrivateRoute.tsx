@@ -6,7 +6,7 @@ import { Path } from '@/config/routes';
 import { userVerifiedSelector } from '@/ducks/account';
 import { authTokenSelector } from '@/ducks/session';
 import { PrivateCapabilitiesGate } from '@/gates';
-import { connect } from '@/hocs';
+import { connect } from '@/hocs/connect';
 import Verify from '@/pages/Auth/Verify';
 import { ConnectedProps } from '@/types';
 

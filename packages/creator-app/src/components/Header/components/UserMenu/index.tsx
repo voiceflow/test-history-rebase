@@ -4,7 +4,8 @@ import { Link } from 'react-router-dom';
 
 import * as Account from '@/ducks/account';
 import * as Session from '@/ducks/session';
-import { connect, styled } from '@/hocs';
+import { connect } from '@/hocs/connect';
+import { styled } from '@/hocs/styled';
 import { ClassName } from '@/styles/constants';
 import { ConnectedProps } from '@/types';
 

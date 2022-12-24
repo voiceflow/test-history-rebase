@@ -1,6 +1,6 @@
 import { Flex } from '@voiceflow/ui';
 
-import { styled, transition } from '@/hocs';
+import { styled, transition } from '@/hocs/styled';
 
 export enum TrainingSectionTitleVariant {
   IDLE,

@@ -1,6 +1,6 @@
 import { Button, PrimaryButton, PrimaryButtonProps } from '@voiceflow/ui';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 interface IconedButtonProps extends PrimaryButtonProps {
   isOpen: boolean;

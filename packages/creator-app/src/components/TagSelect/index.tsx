@@ -14,10 +14,9 @@ import {
   SelectInputVariant,
   stopImmediatePropagation,
   UIOnlyMenuItemOption,
+  useDidUpdateEffect,
 } from '@voiceflow/ui';
 import React from 'react';
-
-import { useDidUpdateEffect } from '@/hooks';
 
 import { PrimitiveTagSelectProps, TagSelectInternalProps, TagSelectProps } from './types';
 

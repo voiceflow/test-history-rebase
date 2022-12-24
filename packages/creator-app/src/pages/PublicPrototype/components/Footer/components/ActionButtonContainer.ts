@@ -1,6 +1,6 @@
 import { BoxFlexCenter } from '@voiceflow/ui';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 const ActionButtonContainer = styled(BoxFlexCenter)`
   padding: 10px 15px;

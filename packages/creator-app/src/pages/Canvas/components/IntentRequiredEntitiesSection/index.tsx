@@ -12,6 +12,7 @@ interface IntentRequiredEntitiesSectionProps {
   onEntityClick: (entityID: string) => void;
   onAddRequired: (entityID: string) => void;
   intentEntities: Normal.Normalized<Platform.Base.Models.Intent.Slot>;
+  onGeneratePrompt: (entityID: string) => void;
   onRemoveRequired: (entityID: string) => void;
   addDropdownPlacement?: PopperTypes.Placement;
 }
@@ -20,6 +21,7 @@ const IntentRequiredEntitiesSection: React.FC<IntentRequiredEntitiesSectionProps
   onAddRequired,
   onEntityClick,
   intentEntities,
+  onGeneratePrompt,
   onRemoveRequired,
   addDropdownPlacement,
 }) => {
@@ -51,7 +53,8 @@ const IntentRequiredEntitiesSection: React.FC<IntentRequiredEntitiesSectionProps
               entity={entitiesMap[entity.id]}
               onClick={() => onEntityClick(entity.id)}
               intentEntity={entity}
-              onRemoveRequired={onRemoveRequired}
+              onRemoveRequired={() => onRemoveRequired(entity.id)}
+              onGeneratePrompt={() => onGeneratePrompt(entity.id)}
             />
           ))}
         </SectionV2.Content>

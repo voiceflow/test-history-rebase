@@ -1,7 +1,7 @@
 import { FlexApart } from '@voiceflow/ui';
 
 import { variableStyle } from '@/components/VariableTag';
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 export const ShortcutTitle = styled.div`
   font-weight: 500;

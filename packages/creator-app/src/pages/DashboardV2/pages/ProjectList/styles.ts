@@ -1,6 +1,6 @@
 import { BlockText } from '@voiceflow/ui';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 export const Title = styled(BlockText)`
   width: 100%;

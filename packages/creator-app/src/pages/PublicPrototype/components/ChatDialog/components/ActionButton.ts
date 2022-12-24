@@ -1,6 +1,6 @@
 import { Button, ButtonVariant, changeColorShade, PrimaryButton } from '@voiceflow/ui';
 
-import { css, styled } from '@/hocs';
+import { css, styled } from '@/hocs/styled';
 
 const ActionButton = styled(Button)<{ isMobile?: boolean; color?: string }>`
   ${({ variant }) =>

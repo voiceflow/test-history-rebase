@@ -1,6 +1,6 @@
 import { Flex, SvgIcon } from '@voiceflow/ui';
 
-import { css, styled, transition } from '@/hocs';
+import { css, styled, transition } from '@/hocs/styled';
 
 export const Container = styled(Flex)<{ runBlink: boolean }>`
   ${transition('color')}

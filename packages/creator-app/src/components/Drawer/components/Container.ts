@@ -1,4 +1,4 @@
-import { css, styled, transition } from '@/hocs';
+import { css, styled, transition } from '@/hocs/styled';
 import { SlideOut, SlideOutDirection } from '@/styles/transitions';
 
 import { DrawerProps } from '../types';

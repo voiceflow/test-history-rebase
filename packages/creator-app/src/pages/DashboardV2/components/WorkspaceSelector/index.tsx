@@ -6,7 +6,10 @@ import { Permission } from '@/config/permissions';
 import { LimitType } from '@/config/planLimitV2';
 import * as Router from '@/ducks/router';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { useDispatch, usePermission, usePlanLimitedAction, useSelector } from '@/hooks';
+import { usePermission } from '@/hooks/permission';
+import { usePlanLimitedAction } from '@/hooks/planLimitV2';
+import { useDispatch } from '@/hooks/realtime';
+import { useSelector } from '@/hooks/redux';
 import * as ModalsV2 from '@/ModalsV2';
 import { ClassName } from '@/styles/constants';
 

@@ -1,7 +1,7 @@
 import { SvgIcon } from '@voiceflow/ui';
 import { space, SpaceProps } from 'styled-system';
 
-import { css, styled, transition } from '@/hocs';
+import { css, styled, transition } from '@/hocs/styled';
 
 import { HEADER_MIN_HEIGHT } from '../Layers/constants';
 

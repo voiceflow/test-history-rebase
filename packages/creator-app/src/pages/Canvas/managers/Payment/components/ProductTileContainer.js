@@ -1,6 +1,6 @@
 import { FlexApart } from '@voiceflow/ui';
 
-import { css, styled, units } from '@/hocs';
+import { css, styled, units } from '@/hocs/styled';
 
 const ProductTileContainer = styled(FlexApart)`
   position: relative;

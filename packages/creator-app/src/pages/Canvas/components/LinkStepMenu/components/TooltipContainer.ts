@@ -1,4 +1,4 @@
-import { keyframes, styled } from '@/hocs';
+import { keyframes, styled } from '@/hocs/styled';
 
 const animation = keyframes`
   from {

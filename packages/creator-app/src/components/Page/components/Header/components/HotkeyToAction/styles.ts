@@ -1,6 +1,6 @@
 import { Flex } from '@voiceflow/ui';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 export const Container = styled(Flex)`
   color: #8da2b5;

@@ -10,7 +10,7 @@ import DraggableList, { DeleteComponent } from '@/components/DraggableList';
 import OverflowMenu from '@/components/OverflowMenu';
 import * as Creator from '@/ducks/creator';
 import * as IntentV2 from '@/ducks/intentV2';
-import { connect } from '@/hocs';
+import { connect } from '@/hocs/connect';
 import { useActiveProjectPlatform, useMapManager, useToggle } from '@/hooks';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
 import { useUpdateData } from '@/pages/Canvas/components/EditorSidebar/hooks';

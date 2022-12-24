@@ -12,7 +12,7 @@ import { ModalType } from '@/constants';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
-import { connect } from '@/hocs';
+import { connect } from '@/hocs/connect';
 import { useHotKeys, useModals, usePermission, useSetup, useTrackingEvents } from '@/hooks';
 import { getHotkeyLabel, Hotkey } from '@/keymap';
 import * as ModalsV2 from '@/ModalsV2';

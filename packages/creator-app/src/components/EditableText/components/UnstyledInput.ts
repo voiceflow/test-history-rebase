@@ -1,6 +1,6 @@
 import AutosizeInput from 'react-input-autosize';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 import { defaultTextStyles } from '../styles';
 

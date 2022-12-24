@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 
 import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
-import { css, styled, transition } from '@/hocs';
+import { css, styled, transition } from '@/hocs/styled';
 import { useDispatch } from '@/hooks';
 
 const LocaleButton = styled.button<{ 'data-active': boolean }>`

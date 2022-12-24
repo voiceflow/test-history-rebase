@@ -7,8 +7,11 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import { Permission } from '@/config/permissions';
 import { Path } from '@/config/routes';
 import * as ProjectV2 from '@/ducks/projectV2';
-import { lazy } from '@/hocs';
-import { useAlexaProjectSettings, useFeature, usePermission, useSelector } from '@/hooks';
+import { lazy } from '@/hocs/lazy';
+import { useFeature } from '@/hooks/feature';
+import { usePermission } from '@/hooks/permission';
+import { useAlexaProjectSettings } from '@/hooks/project';
+import { useSelector } from '@/hooks/redux';
 import ProjectPage from '@/pages/Project/components/ProjectPage';
 import {
   isAlexaPlatform,

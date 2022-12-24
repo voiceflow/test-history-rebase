@@ -1,6 +1,6 @@
 import { SvgIcon, transition } from '@voiceflow/ui';
 
-import { css, styled } from '@/hocs';
+import { css, styled } from '@/hocs/styled';
 
 const RequiredEntity = styled.div<{ active: boolean }>`
   ${transition('background')}

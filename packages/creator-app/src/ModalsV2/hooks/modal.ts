@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { AnyRecord, EmptyObject, Utils } from '@voiceflow/common';
 import { useCreateConst } from '@voiceflow/ui';
 import React from 'react';
@@ -19,6 +20,7 @@ export function useModal<Props extends EmptyObject, Result>(
 export function useModal<Props extends EmptyObject>(type: string, id?: string): T.PropsPublicAPI<Props>;
 export function useModal<Props extends void, Result>(type: string, id?: string): T.ResultPublicAPI<Props, Result>;
 export function useModal<Props extends EmptyObject, Result>(type: string, id?: string): T.PropsResultPublicAPI<Props, Result>;
+export function useModal<Props extends void>(type: string, id?: string): T.VoidPublicAPI;
 export function useModal(type: string, id?: string): T.VoidPublicAPI;
 export function useModal(
   registeredModal: string | T.RegisteredModal<T.VoidInternalProps> | T.RegisteredModal<AnyRecord & T.ResultInternalProps<any>>,

@@ -1,5 +1,5 @@
 import { BlockType } from '@/constants';
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 import { ClassName } from '@/styles/constants';
 
 export const Container = styled.div`

@@ -1,6 +1,6 @@
 import { Divider, SvgIcon } from '@voiceflow/ui';
 
-import { styled, transition } from '@/hocs';
+import { styled, transition } from '@/hocs/styled';
 
 export const SlotBubble = styled.div`
   ${transition('opacity', 'border')}

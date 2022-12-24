@@ -11,7 +11,7 @@ import './modes/slot';
 import './modes/utterance';
 
 /* eslint-enable simple-import-sort/imports */
-import { css, styled } from '@/hocs';
+import { css, styled } from '@/hocs/styled';
 
 import { InputMode, AceEditorColors } from './constants';
 
@@ -129,7 +129,7 @@ const StyledEditor = styled(AceEditor).attrs({
         display: none !important;
       }
     `}
-  
+
   ${({ hideIndentGuide }) =>
     hideIndentGuide &&
     css`
@@ -137,7 +137,7 @@ const StyledEditor = styled(AceEditor).attrs({
         background: none;
       }
     `}
-  
+
   ${({ hideFoldWidgets }) =>
     hideFoldWidgets &&
     css`

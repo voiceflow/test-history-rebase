@@ -1,5 +1,5 @@
 import { ContentContainer, Header } from '@/components/Section';
-import { styled, units } from '@/hocs';
+import { styled, units } from '@/hocs/styled';
 
 const PrototypeSidebarContainer = styled.div`
   display: flex;

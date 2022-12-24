@@ -2,7 +2,7 @@ import React from 'react';
 
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { VersionSubscriptionGate, WorkspaceFeatureLoadingGate } from '@/gates';
-import { withBatchLoadingGate } from '@/hocs';
+import { withBatchLoadingGate } from '@/hocs/withBatchLoadingGate';
 import { useSelector } from '@/hooks';
 import LinkLayer from '@/pages/Canvas/components/LinkLayer';
 import MarkupLayer from '@/pages/Canvas/components/MarkupLayer';

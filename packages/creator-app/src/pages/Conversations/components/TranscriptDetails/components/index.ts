@@ -1,4 +1,4 @@
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 export { default as Actions } from './Sections/Actions';
 export { default as Context } from './Sections/Context';

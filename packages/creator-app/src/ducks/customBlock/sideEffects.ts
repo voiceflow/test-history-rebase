@@ -4,7 +4,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import * as Errors from '@/config/errors';
 import { BlockType } from '@/constants';
 import * as CreatorV2 from '@/ducks/creatorV2';
-import * as CustomBlocks from '@/ducks/customBlock';
+import { allCustomBlocksSelector } from '@/ducks/customBlock/selectors';
 import * as Session from '@/ducks/session';
 import { waitAsync } from '@/ducks/utils';
 import { getActiveVersionContext } from '@/ducks/version/utils';
@@ -70,7 +70,7 @@ export const syncCustomBlockPorts = (): Thunk<void> => async (dispatch, getState
   const allNodes = CreatorV2.allNodeDataSelector(state);
   const allPointers = allNodes.filter(isCustomBlockPointer);
 
-  const allCustomBlocks = CustomBlocks.allCustomBlocksSelector(state);
+  const allCustomBlocks = allCustomBlocksSelector(state);
   const allCustomBlocksMap = new Map(allCustomBlocks.map((block) => [block.id, block]));
 
   const patchData = allPointers

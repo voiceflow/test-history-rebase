@@ -2,10 +2,17 @@ import * as Voiceflow from '@voiceflow/api-sdk';
 
 import logger from '@/logger';
 
-import { ExtraOptions, Options } from './types';
+import { ExtraOptions, Options } from '../types';
 import ExtraUserClient, { UserClient } from './user';
 
-export interface Client extends Voiceflow.Client {
+export interface ExtraClient {
+  identity: {
+    user: {
+      getSelf: () => Promise<any>;
+    };
+  };
+}
+export interface Client extends Voiceflow.Client, ExtraClient {
   user: Voiceflow.Client['user'] & UserClient;
 }
 
@@ -24,8 +31,22 @@ const VoiceflowFactoryClient = ({ axios, config }: Options): VoiceflowFactory =>
     const client: Voiceflow.Client = voiceflow.generateClient({ authorization: token });
     const api = axios.create({ baseURL: config.CREATOR_API_ENDPOINT, headers: { authorization: token } });
 
+    // TODO: replace with Realtime.Clients.Identity.V1Alpha1
+    const identity = {
+      user: {
+        getSelf: () =>
+          axios.get('/v1alpha1/identity/user', {
+            baseURL: config.IDENTITY_API_ENDPOINT,
+            headers: { authorization: token },
+          }),
+      },
+    };
+
     const extraOptions: ExtraOptions = { config, api, log: logger };
 
+    const extraClient: ExtraClient = { identity };
+
+    Object.assign(client, extraClient);
     Object.assign(client.user, ExtraUserClient(extraOptions));
 
     return client as Client;

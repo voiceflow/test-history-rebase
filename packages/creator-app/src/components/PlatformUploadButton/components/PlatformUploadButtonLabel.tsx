@@ -1,4 +1,4 @@
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 const PlatformUploadButtonLabel = styled.span`
   color: #ffffff;

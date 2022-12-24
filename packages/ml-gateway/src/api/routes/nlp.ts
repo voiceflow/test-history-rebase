@@ -1,9 +1,12 @@
 import express from 'express';
 
 import type { ControllersMap } from '../controllers';
+import type { MiddlewaresMap } from '../middlewares';
 
-const nlpRoutes = (controllers: ControllersMap) => {
+const nlpRoutes = (middlewares: MiddlewaresMap, controllers: ControllersMap) => {
   const router = express.Router();
+
+  router.use(middlewares.auth.authenticateUser);
 
   router.post('/predict/:appID', controllers.nlp.predict);
 

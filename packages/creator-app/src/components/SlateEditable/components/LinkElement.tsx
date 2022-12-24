@@ -1,7 +1,7 @@
 import React from 'react';
 import { RenderElementProps } from 'slate-react';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 import { openURLInANewTab } from '@/utils/window';
 
 import { LinkElement as LinkElementType } from '../editor/types';

@@ -1,7 +1,7 @@
 import { Utils } from '@voiceflow/common';
 import React from 'react';
 
-import { AutoPanningCacheContext } from '@/contexts';
+import { AutoPanningCacheContext } from '@/contexts/AutoPanningContext';
 import * as Account from '@/ducks/account';
 import { useRAF, useSelector } from '@/hooks';
 import { LinkedRects } from '@/pages/Canvas/components/Link';

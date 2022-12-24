@@ -1,6 +1,6 @@
 import { Menu } from '@voiceflow/ui';
 
-import { styled, transition } from '@/hocs';
+import { styled, transition } from '@/hocs/styled';
 
 export const StyledAction = styled(Menu.Footer.Action).attrs({ borderLeftStyle: false })`
   ${transition('background-color')}

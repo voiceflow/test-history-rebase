@@ -3,7 +3,7 @@ import { FlexCenter } from '@ui/components/Flex';
 import { colors, css, styled, ThemeColor, transition } from '@ui/styles';
 
 export interface PrimaryButtonContainerProps extends ButtonContainerProps {
-  canHover?: boolean;
+  isActive?: boolean;
 }
 
 export interface PrimaryButtonLabelProps {
@@ -20,8 +20,12 @@ export const PrimaryButtonIcon = styled(FlexCenter)`
   border-radius: 50%;
 `;
 
+const activeStyles = css`
+  background-color: #2f75d6;
+`;
+
 export const PrimaryButtonContainer = styled(ButtonContainer)<PrimaryButtonContainerProps>`
-  ${transition('background', 'opacity', 'box-shadow')}
+  ${transition('background-color', 'opacity', 'box-shadow')}
   color: ${colors(ThemeColor.WHITE)};
   font-weight: 600;
   white-space: nowrap;
@@ -32,7 +36,7 @@ export const PrimaryButtonContainer = styled(ButtonContainer)<PrimaryButtonConta
     0px 1px 1px 0px rgba(19, 33, 68, 0.1);
   border-radius: 10px;
 
-  ${({ disabled, canHover = true }) =>
+  ${({ disabled, isActive }) =>
     disabled
       ? css`
           box-shadow: none;
@@ -42,15 +46,10 @@ export const PrimaryButtonContainer = styled(ButtonContainer)<PrimaryButtonConta
             opacity: 0.46;
           }
         `
-      : canHover &&
-        css`
-          &:hover {
-            background-position: 0;
-          }
-        `}
+      : isActive && activeStyles}
 
   &:hover {
-    background-color: #2f75d6;
+    ${activeStyles}
   }
 `;
 

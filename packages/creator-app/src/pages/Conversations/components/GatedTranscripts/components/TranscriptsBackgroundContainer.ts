@@ -1,5 +1,5 @@
 import { blurryTranscripts } from '@/assets';
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 const TranscriptsBackgroundContainer = styled.div`
   background: rgba(249, 249, 249, 0.75) url('${blurryTranscripts}') center no-repeat;

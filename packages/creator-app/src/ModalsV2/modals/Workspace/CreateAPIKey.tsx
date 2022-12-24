@@ -45,7 +45,7 @@ const CreateAPIKey = manager.create<Props>(
       }, [opened]);
 
       const createAPIKey = async (name?: string, projectID?: string) => {
-        const { APIKey } = await client.api.apiKey.create(workspaceID, { name, projectID });
+        const { key: APIKey } = await client.api.apiKey.create(workspaceID, { name, projectID });
         toast.success('API key successfully created');
         setAPIKey(APIKey);
         setState(CreateAPIKeyState.SHOW_KEY);

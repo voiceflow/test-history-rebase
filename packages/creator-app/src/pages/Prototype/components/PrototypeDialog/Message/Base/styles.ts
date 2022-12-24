@@ -1,6 +1,6 @@
 import { layout, LayoutProps, space, SpaceProps } from 'styled-system';
 
-import { css, styled } from '@/hocs';
+import { css, styled } from '@/hocs/styled';
 import { LogoContainer } from '@/pages/Onboarding/Steps/Welcome/components';
 import { FadeProps, getAnimationStyles } from '@/styles/animations';
 

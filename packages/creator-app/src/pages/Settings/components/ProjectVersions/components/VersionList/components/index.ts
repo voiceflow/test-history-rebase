@@ -1,7 +1,7 @@
 import { Box, BoxFlexCenter } from '@voiceflow/ui';
 
 import { getColumnStyles } from '@/components/Table';
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 import { RowItem } from './VersionItem/components';
 

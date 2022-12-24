@@ -1,6 +1,6 @@
 import Canvas from '@/components/Canvas';
 import { RenderLayer } from '@/components/Canvas/components';
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 import BlockContainer from '@/pages/Canvas/components/Block/components/BlockContainer';
 import * as ChipStyles from '@/pages/Canvas/components/Chip/styles';
 import DragTarget from '@/pages/Canvas/components/DragTarget';

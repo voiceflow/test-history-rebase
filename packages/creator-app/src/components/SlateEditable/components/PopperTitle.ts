@@ -1,4 +1,4 @@
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 export const PopperTitle = styled.div`
   font-size: 13px;

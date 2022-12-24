@@ -1,6 +1,6 @@
 import { Tag } from '@voiceflow/ui';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 export const StyledTag = styled(Tag)`
   pointer-events: none;

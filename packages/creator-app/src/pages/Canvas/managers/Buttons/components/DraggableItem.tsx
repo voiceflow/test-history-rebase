@@ -148,6 +148,9 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
                           onEntityClick={(entityID) => editor.goToNested({ path: Entity.PATH, params: { intentID: intent.id, entityID } })}
                           onAddRequired={(entityID) => onAddRequiredEntity(intent.id, entityID)}
                           intentEntities={intent.slots}
+                          onGeneratePrompt={(entityID) =>
+                            editor.goToNested({ path: Entity.PATH, params: { intentID: intent.id, entityID }, state: { autogenerate: true } })
+                          }
                           onRemoveRequired={(entityID) => onRemoveRequiredEntity(intent.id, entityID)}
                           addDropdownPlacement="bottom-end"
                         />

@@ -5,6 +5,8 @@ import ServiceManager from '@/serviceManager';
 import config from '../config';
 import type { ControllersMap } from './controllers';
 import buildControllers from './controllers';
+import type { MiddlewaresMap } from './middlewares';
+import buildMiddlewares from './middlewares';
 import buildRoutes from './routes';
 import { routeWrapper } from './utils';
 
@@ -17,6 +19,8 @@ class ApiManager {
 
   controllers: ControllersMap;
 
+  middlewares: MiddlewaresMap;
+
   router: express.Router;
 
   serviceManager: ServiceManager;
@@ -24,7 +28,13 @@ class ApiManager {
   constructor(serviceManager: ServiceManager) {
     this.serviceManager = serviceManager;
     this.controllers = this.buildControllers();
+    this.middlewares = this.buildMiddlewares();
     this.router = this.buildRoutes();
+  }
+
+  private buildMiddlewares() {
+    const { clients, services } = this.serviceManager;
+    return buildMiddlewares(config, { clients, services });
   }
 
   private buildControllers() {
@@ -33,8 +43,9 @@ class ApiManager {
   }
 
   private buildRoutes() {
+    routeWrapper(this.middlewares);
     routeWrapper(this.controllers);
-    return buildRoutes(this.controllers);
+    return buildRoutes({ controllers: this.controllers, middlewares: this.middlewares });
   }
 
   start() {

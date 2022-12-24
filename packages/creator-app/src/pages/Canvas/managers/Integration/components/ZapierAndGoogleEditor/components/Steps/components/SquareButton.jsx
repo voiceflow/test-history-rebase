@@ -1,7 +1,7 @@
 import React from 'react';
 import { Tooltip } from 'react-tippy';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 const SquareButtonContainer = styled.button`
   padding: 10px;

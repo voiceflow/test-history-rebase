@@ -5,7 +5,8 @@ import { withEnterPress, withTargetValue } from '@ui/utils/dom';
 import { Utils } from '@voiceflow/common';
 import React from 'react';
 
-import { CounterInput, DefaultInput, DefaultInputProps, InlineInput, InlineInputProps } from './components';
+import { CounterInput, DefaultInput, DefaultInputProps, InlineInput, InlineInputProps, InputWrapper } from './components';
+import { inputFocusStyle } from './styles';
 import { Variant } from './types';
 
 export * from './components';
@@ -65,5 +66,9 @@ const Input = React.forwardRef<HTMLInputElement, Either<InlineVariantInputProps,
 
 export default Object.assign(Input, {
   Variant,
+
   Counter: CounterInput,
+  Container: InputWrapper,
+
+  focusStyle: inputFocusStyle,
 });

@@ -1,6 +1,6 @@
 import { Input as UIInput, Table } from '@voiceflow/ui';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 export const Container = styled(Table.Container)`
   border: #eaeff4 solid 1px;

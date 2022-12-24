@@ -1,6 +1,6 @@
 import { FlexCenter, SvgIcon } from '@voiceflow/ui';
 
-import { css, styled, transition } from '@/hocs';
+import { css, styled, transition } from '@/hocs/styled';
 
 interface IconProps {
   isOpened?: boolean;

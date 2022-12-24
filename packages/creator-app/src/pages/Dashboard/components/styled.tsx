@@ -3,7 +3,7 @@ import React from 'react';
 import { Container as AvatarContainer } from '@/components/Avatar/styles';
 import DragPlaceholder from '@/components/DragPlaceholder';
 import EditableText from '@/components/EditableText';
-import { css, styled } from '@/hocs';
+import { css, styled } from '@/hocs/styled';
 
 import Link, { LinkProps } from './Link';
 

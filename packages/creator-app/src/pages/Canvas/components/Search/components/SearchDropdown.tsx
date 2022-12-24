@@ -2,7 +2,7 @@ import { Checkbox, Dropdown, SvgIcon, swallowEvent, transition } from '@voiceflo
 import React from 'react';
 
 import { SearchContext, SearchTypes } from '@/contexts/SearchContext';
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 const SearchFilters = [
   SearchTypes.NodeCategory.BLOCK,

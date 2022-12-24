@@ -4,7 +4,9 @@ import React from 'react';
 import { UploadedStage } from '@/components/PlatformUploadPopup/components';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
-import { useDispatch, useSelector, useSyncProjectLiveVersion } from '@/hooks';
+import { useSyncProjectLiveVersion } from '@/hooks/project';
+import { useDispatch } from '@/hooks/realtime';
+import { useSelector } from '@/hooks/redux';
 import { NLPTrainJob } from '@/models';
 import { StageComponentProps } from '@/platforms/types';
 

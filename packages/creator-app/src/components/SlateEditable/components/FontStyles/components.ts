@@ -1,5 +1,5 @@
 import BaseFormGroup, { LeftColumn } from '@/components/FormGroup';
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 export const FormGroup = styled(BaseFormGroup)`
   ${LeftColumn} {

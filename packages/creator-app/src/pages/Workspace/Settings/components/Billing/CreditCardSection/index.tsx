@@ -4,7 +4,7 @@ import React from 'react';
 import client from '@/client';
 import Section, { SectionVariant } from '@/components/Section';
 import { CardElement } from '@/components/Stripe';
-import { withStripe } from '@/hocs';
+import { withStripe } from '@/hocs/withStripe';
 import { useAsyncMountUnmount } from '@/hooks';
 import { DBPaymentSource } from '@/models/Billing';
 import { ActionMapping } from '@/pages/Payment/Checkout/components/StepHeading';

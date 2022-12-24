@@ -1,6 +1,6 @@
 import { ButtonGroup, hexToRGBA, toRGBAString } from '@voiceflow/ui';
 
-import { css, styled, transition } from '@/hocs';
+import { css, styled, transition } from '@/hocs/styled';
 
 export const Card = styled.div`
   background-color: #fff;

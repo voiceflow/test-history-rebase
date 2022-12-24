@@ -17,7 +17,8 @@ const CONFIG: Config = {
   CREATOR_API_ENDPOINT: getRequiredProcessEnv('CREATOR_API_ENDPOINT'),
   BILLING_API_ENDPOINT: getRequiredProcessEnv('BILLING_API_ENDPOINT'),
   AUTH_API_ENDPOINT: getRequiredProcessEnv('AUTH_API_ENDPOINT'),
-  ANALYTICS_API_ENDPOINT: getRequiredProcessEnv('CREATOR_API_ENDPOINT'),
+  ANALYTICS_API_ENDPOINT: getRequiredProcessEnv('ANALYTICS_API_ENDPOINT'),
+  IDENTITY_API_ENDPOINT: getRequiredProcessEnv('IDENTITY_API_ENDPOINT'),
 
   // Release information
   GIT_SHA: getOptionalProcessEnv('GIT_SHA'),
@@ -30,6 +31,7 @@ const CONFIG: Config = {
   REDIS_CLUSTER_PORT: parseInt(getRequiredProcessEnv('REDIS_CLUSTER_PORT'), 10),
 
   // Logux
+  LOGUX_TIMEOUT: parseInt(getOptionalProcessEnv('LOGUX_TIMEOUT') || '40000', 10),
   LOGUX_ACTION_CHANNEL: getRequiredProcessEnv('LOGUX_ACTION_CHANNEL'),
 
   // Logging
@@ -38,6 +40,7 @@ const CONFIG: Config = {
 
   // Google
   FIRESTORE_MODEL_COLLECTION: getOptionalProcessEnv('FIRESTORE_MODEL_COLLECTION'),
+  FIRESTORE_GPTPROMPT_COLLECTION: getOptionalProcessEnv('FIRESTORE_GPTPROMPT_COLLECTION') || 'gpt-prompts',
   PUBSUB_PROJECT_KEY: getOptionalProcessEnv('PUBSUB_PROJECT_KEY'),
 
   // OpenAI

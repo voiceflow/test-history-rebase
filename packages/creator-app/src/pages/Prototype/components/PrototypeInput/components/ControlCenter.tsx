@@ -3,7 +3,7 @@ import * as React from 'react';
 
 import { PrototypeInputMode } from '@/constants/prototype';
 import * as Prototype from '@/ducks/prototype';
-import { connect } from '@/hocs';
+import { connect } from '@/hocs/connect';
 import { useHotKeys } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import { ConnectedProps } from '@/types';

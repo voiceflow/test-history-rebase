@@ -1,6 +1,6 @@
 import { Button, PrimaryButtonProps } from '@voiceflow/ui';
 
-import { css, styled } from '@/hocs';
+import { css, styled } from '@/hocs/styled';
 
 interface RunTestButtonProps extends PrimaryButtonProps {
   withIconButton: boolean;

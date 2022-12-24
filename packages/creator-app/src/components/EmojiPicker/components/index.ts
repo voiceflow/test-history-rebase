@@ -1,6 +1,6 @@
 import { colors, ThemeColor } from '@voiceflow/ui';
 
-import { css, styled } from '@/hocs';
+import { css, styled } from '@/hocs/styled';
 
 import { FAN_DIRECTION } from '../constants';
 

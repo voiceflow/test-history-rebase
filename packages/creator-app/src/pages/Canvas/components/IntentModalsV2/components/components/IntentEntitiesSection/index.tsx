@@ -7,20 +7,20 @@ import * as SlotV2 from '@/ducks/slotV2';
 import { useSelector } from '@/hooks';
 import IntentRequiredEntitiesSection from '@/pages/Canvas/components/IntentRequiredEntitiesSection';
 
-import { OptionalEntity, RequiredEntity } from './components';
+import { OptionalEntity } from './components';
 
 interface EntitiesSectionProps {
   onAddRequired: (slotID: string) => void;
+  onEnterPrompt: (slotID: string, options?: { autogenerate: boolean }) => void;
   intentEntities: Normal.Normalized<Platform.Base.Models.Intent.Slot>;
-  onChangeDialog: (slotID: string, dialog: Partial<Platform.Base.Models.Intent.SlotDialog>) => void;
   onRemoveRequired: (slotID: string) => void;
   addDropdownPlacement?: PopperTypes.Placement;
 }
 
 const EntitiesSection: React.FC<EntitiesSectionProps> = ({
   onAddRequired,
+  onEnterPrompt,
   intentEntities,
-  onChangeDialog,
   onRemoveRequired,
   addDropdownPlacement,
 }) => {
@@ -61,13 +61,13 @@ const EntitiesSection: React.FC<EntitiesSectionProps> = ({
       {hasIntentEntities && (
         <SectionV2.Content bottomOffset={2}>
           {requiredEntities.map((entity) => (
-            <RequiredEntity
+            <IntentRequiredEntitiesSection.Item
               key={entity.id}
               entity={entitiesMap[entity.id]}
-              entities={entities}
+              onClick={() => onEnterPrompt(entity.id)}
               intentEntity={entity}
-              onChangeDialog={onChangeDialog}
-              onRemoveRequired={onRemoveRequired}
+              onRemoveRequired={() => onRemoveRequired(entity.id)}
+              onGeneratePrompt={() => onEnterPrompt(entity.id, { autogenerate: true })}
             />
           ))}
 

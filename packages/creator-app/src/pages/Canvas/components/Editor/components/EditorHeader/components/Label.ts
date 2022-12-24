@@ -1,6 +1,6 @@
 import { flexLabelStyles } from '@voiceflow/ui';
 
-import { styled, transition } from '@/hocs';
+import { styled, transition } from '@/hocs/styled';
 
 const Label = styled.a.attrs({ href: '' })`
   ${flexLabelStyles}

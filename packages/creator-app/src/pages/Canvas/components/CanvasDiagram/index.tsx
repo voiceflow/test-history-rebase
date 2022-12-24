@@ -15,7 +15,7 @@ import { BlockType, DragItem, HOVER_THROTTLE_TIMEOUT, PageProgressBar } from '@/
 import { canvasNavigationSelector } from '@/ducks/ui';
 import * as UI from '@/ducks/ui';
 import * as Viewport from '@/ducks/viewport';
-import { connect } from '@/hocs';
+import { connect } from '@/hocs/connect';
 import { useSetup } from '@/hooks';
 import AutoPanLayer from '@/pages/Canvas/components/AutoPanLayer';
 import LinkLayer from '@/pages/Canvas/components/LinkLayer';

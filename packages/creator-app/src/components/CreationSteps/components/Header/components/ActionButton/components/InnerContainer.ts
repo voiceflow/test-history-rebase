@@ -1,6 +1,6 @@
 import { SvgIcon } from '@voiceflow/ui';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 const InnerContainer = styled.div`
   width: 100%;

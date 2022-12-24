@@ -1,6 +1,6 @@
 import { flexStyles, units } from '@voiceflow/ui';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 import StepItemContainer from './StepItemContainer';
 

@@ -1,11 +1,9 @@
 import { serializeToJSX } from '@voiceflow/slate-serializer/jsx';
-import { useCache, useSetup } from '@voiceflow/ui';
+import { useCache, useForceUpdate, useSetup } from '@voiceflow/ui';
 import React from 'react';
 import { Descendant, Editor } from 'slate';
 import { Editable, Slate } from 'slate-react';
 import { EditableProps } from 'slate-react/dist/components/editable';
-
-import { useForceUpdate } from '@/hooks';
 
 import * as components from './components';
 import {
@@ -43,6 +41,7 @@ export type SlateValue = Descendant[];
 
 export interface SlateEditableRef {
   focus: () => void;
+  getContent: () => Descendant[];
 }
 
 export interface SlateEditableProps extends Omit<EditableProps, 'value' | 'autoFocus' | 'onChange' | 'decorate'> {
@@ -94,7 +93,14 @@ const SlateEditable: React.ForwardRefRenderFunction<SlateEditableRef, SlateEdita
 
   editor.pluginsOptions = pluginsOptions;
 
-  React.useImperativeHandle(ref, () => ({ focus: () => EditorAPI.focus(editor) }), [editor]);
+  React.useImperativeHandle(
+    ref,
+    () => ({
+      focus: () => EditorAPI.focus(editor),
+      getContent: () => editor.children,
+    }),
+    [editor]
+  );
 
   useSetup(() => {
     if (autofocus) {

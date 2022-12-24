@@ -9,6 +9,7 @@ export interface Config {
   BILLING_API_ENDPOINT: string;
   AUTH_API_ENDPOINT: string;
   ANALYTICS_API_ENDPOINT: string;
+  IDENTITY_API_ENDPOINT: string;
 
   // Release information
   GIT_SHA: string | null;
@@ -21,6 +22,7 @@ export interface Config {
   REDIS_CLUSTER_PORT: number;
 
   // Logux
+  LOGUX_TIMEOUT: number;
   LOGUX_ACTION_CHANNEL: string;
 
   // Logging
@@ -29,9 +31,43 @@ export interface Config {
 
   // Google
   FIRESTORE_MODEL_COLLECTION: string | null;
+  FIRESTORE_GPTPROMPT_COLLECTION: string;
   PUBSUB_PROJECT_KEY: string | null;
 
   // OpenAI
   OPENAI_API_KEY: string;
   OPENAI_ORG_ID: string;
+}
+
+export interface MLRequest {
+  requestID: string;
+  locale: string;
+}
+
+export interface MLGenPromptRequest extends MLRequest {
+  examples: string[];
+  quantity: number;
+  workspaceID: string;
+}
+
+export interface MLGenUtteranceRequest extends MLGenPromptRequest {
+  intent: string;
+}
+
+export interface MLGenEntityValue extends MLRequest {
+  type: string;
+  name: string;
+  examples: string[][];
+  quantity: number;
+  workspaceID: string;
+}
+
+export interface MLGenEntityPrompt extends MLRequest {
+  type: string;
+  name: string;
+  quantity: number;
+  workspaceID: string;
+  intentName: string;
+  intentInputs: string[];
+  examples: string[];
 }

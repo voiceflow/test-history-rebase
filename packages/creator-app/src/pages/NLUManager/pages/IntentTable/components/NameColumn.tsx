@@ -3,8 +3,8 @@ import React from 'react';
 
 import EditableText from '@/components/EditableText';
 import { InteractionModelTabType } from '@/constants';
-import { NLUContext } from '@/contexts';
-import { styled } from '@/hocs';
+import { NLUContext } from '@/contexts/NLUContext';
+import { styled } from '@/hocs/styled';
 import { NLUManagerContext } from '@/pages/NLUManager/context';
 
 const Text = styled(EditableText)`

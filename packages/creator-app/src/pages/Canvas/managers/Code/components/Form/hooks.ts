@@ -8,7 +8,7 @@ import { useSelector } from '@/hooks';
 import { getPlatformGlobalVariables } from '@/utils/globalVariables';
 
 export const useAceEditor = (platform: Platform.Constants.PlatformType) => {
-  const variables = useSelector(DiagramV2.active.allSlotsAndVariablesSelector);
+  const variables = useSelector(DiagramV2.active.allSlotNamesAndVariablesSelector);
 
   const wordList = React.useMemo(() => [...getPlatformGlobalVariables(platform), ...variables, 'voiceflow', '_system'], [platform, variables]);
 

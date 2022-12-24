@@ -1,4 +1,4 @@
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 export { default as TranscriptResultsItem } from './TranscriptResultsItem';
 

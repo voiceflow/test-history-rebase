@@ -1,7 +1,7 @@
 import { useConst } from '@voiceflow/ui';
 import React from 'react';
 
-import { withNamespace } from '@/hocs';
+import { withNamespace } from '@/hocs/withNamespace';
 import { useSectionState } from '@/pages/Canvas/hooks/section';
 
 interface PersistCollapseProps {

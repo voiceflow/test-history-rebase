@@ -1,4 +1,4 @@
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 const IntegrationImageContainer = styled.div`
   text-align: center;

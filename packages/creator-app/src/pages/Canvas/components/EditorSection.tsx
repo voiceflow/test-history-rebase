@@ -1,8 +1,9 @@
 import { Utils } from '@voiceflow/common';
+import { compose } from '@voiceflow/ui';
 import React from 'react';
 
 import UncontrolledSection, { UncontrolledSectionProps } from '@/components/Section/components/UncontrolledSection';
-import { compose, withNamespace } from '@/hocs';
+import { withNamespace } from '@/hocs/withNamespace';
 import { useSectionState } from '@/pages/Canvas/hooks/section';
 
 type EditorSectionProps = Omit<UncontrolledSectionProps, 'isCollapsed' | 'toggle'> & {

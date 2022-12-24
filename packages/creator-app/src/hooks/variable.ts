@@ -20,7 +20,7 @@ export const useVariableCreation = () => {
     ModalType.VARIABLE_CREATE
   );
 
-  const variables = useSelector(DiagramV2.active.allSlotsAndVariablesSelector);
+  const variables = useSelector(DiagramV2.active.allSlotNamesAndVariablesSelector);
   const addVariable = useDispatch(Version.addGlobalVariable);
 
   const createVariable = async (item: string): Promise<string> => {

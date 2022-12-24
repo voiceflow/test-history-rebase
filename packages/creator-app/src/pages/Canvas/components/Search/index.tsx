@@ -1,4 +1,4 @@
-import { Flex, KeyName, OverflowText, SvgIcon } from '@voiceflow/ui';
+import { Flex, KeyName, OverflowText, SvgIcon, useDebouncedCallback } from '@voiceflow/ui';
 import React from 'react';
 
 import { InteractionModelTabType } from '@/constants';
@@ -8,9 +8,8 @@ import * as Creator from '@/ducks/creatorV2';
 import * as Diagram from '@/ducks/diagramV2';
 import * as Intent from '@/ducks/intentV2';
 import * as Router from '@/ducks/router';
-import * as Session from '@/ducks/session';
 import * as Slot from '@/ducks/slotV2';
-import { useDebouncedCallback, useDispatch, useSelector, useStore, useTrackingEvents } from '@/hooks';
+import { useDispatch, useSelector, useStore, useTrackingEvents } from '@/hooks';
 import { EngineContext } from '@/pages/Canvas/contexts';
 import { withKeyPress } from '@/utils/dom';
 
@@ -32,8 +31,6 @@ const SearchBar: React.FC = () => {
 
   const diagramID = useSelector(Creator.activeDiagramIDSelector)!;
   const creatorID = useSelector(Account.userIDSelector);
-  const workspaceID = useSelector(Session.activeWorkspaceIDSelector);
-  const projectID = useSelector(Session.activeProjectIDSelector)!;
   const store = useStore();
   const database = React.useRef<SearchTypes.SearchDatabase>(SearchUtils.EmptySearchDatabase);
 
@@ -76,12 +73,10 @@ const SearchBar: React.FC = () => {
       }
 
       trackingEvents.trackSearchBarResultSelected({
-        creator_id: creatorID,
-        workspace_id: workspaceID,
-        project_id: projectID,
         query,
-        resultList: options,
         selected: entry.targets[0],
+        creator_id: creatorID,
+        resultList: options,
       });
     },
     [diagramID, query]
@@ -114,12 +109,7 @@ const SearchBar: React.FC = () => {
   const options = React.useMemo(() => SearchUtils.find(query, database.current, createOption(query), search?.filters), [query, search?.filters]);
 
   const onKeyStroke = useDebouncedCallback(1000, () => {
-    trackingEvents.trackSearchBarQuery({
-      query,
-      creator_id: creatorID,
-      workspace_id: workspaceID,
-      project_id: projectID,
-    });
+    trackingEvents.trackSearchBarQuery({ query, creator_id: creatorID });
   });
 
   if (!isVisible) {

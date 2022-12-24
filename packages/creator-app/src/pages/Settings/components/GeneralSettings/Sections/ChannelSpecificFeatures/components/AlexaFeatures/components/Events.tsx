@@ -7,7 +7,7 @@ import Section, { SectionVariant } from '@/components/Section';
 import * as Session from '@/ducks/session';
 import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
-import { connect } from '@/hocs';
+import { connect } from '@/hocs/connect';
 import { useFeature } from '@/hooks';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import { SkillEventsErrorMessage } from '@/pages/Settings/components/styles';

@@ -1,6 +1,6 @@
 import { ButtonContainer } from '@voiceflow/ui';
 
-import { css, styled } from '@/hocs';
+import { css, styled } from '@/hocs/styled';
 
 const DayButton = styled(ButtonContainer)<{ selected?: boolean }>`
   width: 40px;

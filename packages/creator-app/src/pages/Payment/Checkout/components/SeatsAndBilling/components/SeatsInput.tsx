@@ -1,7 +1,7 @@
 import { Input, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
-import { styled, transition } from '@/hocs';
+import { styled, transition } from '@/hocs/styled';
 import { PaymentContextProps, withPayment } from '@/pages/Payment/context';
 import { Identifier } from '@/styles/constants';
 

@@ -15,7 +15,7 @@ const { ColorScheme, DEFAULT_SCHEME_COLORS } = COLOR_PICKER_CONSTANTS;
 
 const NodeChipStart = React.forwardRef<CombinedAPI>((_, ref) => {
   const engine = React.useContext(EngineContext)!;
-  const getManager = React.useContext(ManagerContext)!;
+  const getManager = React.useContext(ManagerContext);
 
   const { nlu, platform, projectType } = useActiveProjectConfig();
 
@@ -60,7 +60,7 @@ const NodeChipStart = React.forwardRef<CombinedAPI>((_, ref) => {
     };
   }, [onDropRef]);
 
-  const { chip: Chip } = getManager(nodeEntity.nodeType);
+  const { chip: Chip } = getManager?.(nodeEntity.nodeType) ?? {};
 
   if (!Chip) return null;
 

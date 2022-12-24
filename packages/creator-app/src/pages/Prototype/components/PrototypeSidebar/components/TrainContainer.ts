@@ -1,6 +1,6 @@
 import { Flex } from '@voiceflow/ui';
 
-import { css, styled } from '@/hocs';
+import { css, styled } from '@/hocs/styled';
 
 interface TrainContainerProps {
   isModelTraining?: boolean;

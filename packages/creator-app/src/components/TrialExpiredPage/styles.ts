@@ -1,5 +1,5 @@
 import { blurryTranscripts } from '@/assets';
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 export const SvgShadow = styled.div`
   background-color: #e3f0ff;

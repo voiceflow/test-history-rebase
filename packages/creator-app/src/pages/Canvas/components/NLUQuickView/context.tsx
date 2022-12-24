@@ -5,7 +5,7 @@ import { matchPath, useLocation } from 'react-router-dom';
 
 import { Path } from '@/config/routes';
 import { InteractionModelTabType, ModalType } from '@/constants';
-import { NLUContext } from '@/contexts';
+import { NLUContext } from '@/contexts/NLUContext';
 import * as Creator from '@/ducks/creator';
 import * as Router from '@/ducks/router';
 import { activeProjectIDSelector } from '@/ducks/session';
@@ -42,6 +42,10 @@ interface NLUQuickViewProps {
   isCreatingItem: boolean;
   setIsCreatingItem: (val: boolean) => void;
   deleteItem: (id: string, tab?: InteractionModelTabType) => void;
+  intentEntityPromptSlotID: string;
+  intentEntityPromptAutogenerate: boolean;
+  onEnterEntityPrompt: (slotID: string, options?: { autogenerate?: boolean }) => void;
+  onIntentEntityPromptBack: VoidFunction;
 }
 
 const DefaultState = {
@@ -64,6 +68,10 @@ const DefaultState = {
   isCreatingItem: false,
   setIsCreatingItem: Utils.functional.noop,
   deleteItem: Utils.functional.noop,
+  intentEntityPromptSlotID: '',
+  intentEntityPromptAutogenerate: false,
+  onEnterEntityPrompt: Utils.functional.noop,
+  onIntentEntityPromptBack: Utils.functional.noop,
 };
 
 export const NLUQuickViewContext = React.createContext<NLUQuickViewProps>(DefaultState);
@@ -72,7 +80,8 @@ export const NLUQuickViewProvider: React.FC = ({ children }) => {
   const [title, setTitle] = React.useState('');
   const [isCreatingItem, setIsCreatingItem] = React.useState(false);
   const [isActiveItemRename, setIsActiveItemRename] = React.useState(false);
-  const activeProjectID = useSelector(activeProjectIDSelector)!;
+  const [intentEntityPromptSlotID, setIntentEntityPromptSlotID] = React.useState('');
+  const [intentEntityPromptAutogenerate, setIntentEntityPromptAutogenerate] = React.useState(false);
 
   const [triggerNewInlineIntent, forceNewInlineIntent] = useForceUpdate();
   const [triggerNewInlineEntity, forceNewInlineEntity] = useForceUpdate();
@@ -82,6 +91,8 @@ export const NLUQuickViewProvider: React.FC = ({ children }) => {
   const [trackingEvents] = useTrackingEvents();
 
   const location = useLocation();
+
+  const activeProjectID = useSelector(activeProjectIDSelector)!;
 
   const goToQuickviewTab = useDispatch(Router.goToCurrentCanvasInteractionModel);
   const goToCurrentCanvas = useDispatch(Router.goToCurrentCanvas);
@@ -106,11 +117,13 @@ export const NLUQuickViewProvider: React.FC = ({ children }) => {
 
   const persistedStateRef = useCachedValue(immPersistedState);
 
-  const modelMatch = React.useMemo(() => {
-    return matchPath<{ modelType: InteractionModelTabType; modelEntityID?: string }>(location.pathname, {
-      path: [Path.CANVAS_MODEL_ENTITY, Path.CANVAS_MODEL],
-    });
-  }, [location.pathname]);
+  const modelMatch = React.useMemo(
+    () =>
+      matchPath<{ modelType: InteractionModelTabType; modelEntityID?: string }>(location.pathname, {
+        path: [Path.CANVAS_MODEL_ENTITY, Path.CANVAS_MODEL],
+      }),
+    [location.pathname]
+  );
 
   const activeTab = modelMatch?.params.modelType ?? InteractionModelTabType.INTENTS;
 
@@ -155,12 +168,15 @@ export const NLUQuickViewProvider: React.FC = ({ children }) => {
       }
 
       targetID = (targetArray[0]?.id === deletedID ? targetArray[1]?.id : targetArray[0]?.id) || '';
+
       if (targetID) {
         goToEntity(tab, targetID);
       } else {
         goToQuickviewTab(tab);
       }
 
+      setIntentEntityPromptSlotID('');
+      setIntentEntityPromptAutogenerate(false);
       trackingEvents.trackIMMNavigation({ tabName: tab });
     },
     [sortedIntents, sortedSlots, sortedVariables, goToEntity, goToQuickviewTab]
@@ -169,9 +185,21 @@ export const NLUQuickViewProvider: React.FC = ({ children }) => {
   const setSelectedID = React.useCallback(
     (id: string) => {
       goToEntity(activeTab, id);
+      setIntentEntityPromptSlotID('');
+      setIntentEntityPromptAutogenerate(false);
     },
     [activeTab, goToEntity]
   );
+
+  const onEnterEntityPrompt = React.useCallback((slotID: string, { autogenerate = false }: { autogenerate?: boolean } = {}) => {
+    setIntentEntityPromptSlotID(slotID);
+    setIntentEntityPromptAutogenerate(autogenerate);
+  }, []);
+
+  const onIntentEntityPromptBack = React.useCallback(() => {
+    setIntentEntityPromptSlotID('');
+    setIntentEntityPromptAutogenerate(false);
+  }, []);
 
   const deleteItem = React.useCallback(
     (itemID: string, tab?: InteractionModelTabType) => {
@@ -228,6 +256,14 @@ export const NLUQuickViewProvider: React.FC = ({ children }) => {
     }
   }, [isOpened, isInStack]);
 
+  useDidUpdateEffect(() => {
+    if (!isInStack) return;
+
+    setIsActiveItemRename(false);
+    setIntentEntityPromptSlotID('');
+    setIntentEntityPromptAutogenerate(false);
+  }, [isInStack]);
+
   const api: NLUQuickViewProps = useContextApi({
     title,
     setTitle,
@@ -242,12 +278,16 @@ export const NLUQuickViewProvider: React.FC = ({ children }) => {
     isCreatingItem,
     setIsCreatingItem,
     isActiveItemRename,
+    onEnterEntityPrompt,
     nameChangeTransform,
     forceNewInlineIntent,
     forceNewInlineEntity,
     setIsActiveItemRename,
     triggerNewInlineIntent,
     triggerNewInlineEntity,
+    intentEntityPromptSlotID,
+    onIntentEntityPromptBack,
+    intentEntityPromptAutogenerate,
   });
 
   return <NLUQuickViewContext.Provider value={api}>{children}</NLUQuickViewContext.Provider>;

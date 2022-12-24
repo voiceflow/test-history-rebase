@@ -1,6 +1,6 @@
 import { Button, FlexApart, Input, SvgIcon } from '@voiceflow/ui';
 
-import { styled, transition } from '@/hocs';
+import { styled, transition } from '@/hocs/styled';
 
 export const Container = styled(FlexApart)`
   flex: 2;

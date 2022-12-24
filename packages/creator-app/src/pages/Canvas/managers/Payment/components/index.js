@@ -1,6 +1,6 @@
 import { FlexCenter, FlexLabel } from '@voiceflow/ui';
 
-import { css, styled, units } from '@/hocs';
+import { css, styled, units } from '@/hocs/styled';
 
 import ProductDetails from './ProductDetails';
 import ProductTileContainer from './ProductTileContainer';

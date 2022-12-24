@@ -1,7 +1,7 @@
 import { FlexCenter } from '@voiceflow/ui';
 import React from 'react';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 const Container = styled(FlexCenter)`
   height: 100%;

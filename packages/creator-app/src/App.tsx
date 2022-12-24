@@ -7,7 +7,7 @@ import 'simplebar/dist/simplebar.min.css';
 import './App.css';
 import 'react-day-picker/lib/style.css';
 
-import { ToastContainer } from '@voiceflow/ui';
+import { compose, ToastContainer } from '@voiceflow/ui';
 import React from 'react';
 
 import { RootPageProgressBar } from '@/components/PageProgressBar';
@@ -15,7 +15,6 @@ import SeoHelmet from '@/components/SeoHelmet';
 import SupportChat from '@/components/SupportChat';
 import TrackNewCodeVersion from '@/components/TrackNewCodeVersion';
 import { SeoPage } from '@/constants/seo';
-import { compose } from '@/hocs';
 import AppModals from '@/modals/AppModals';
 import * as ModalsV2 from '@/ModalsV2';
 import Beamer from '@/services/Beamer';

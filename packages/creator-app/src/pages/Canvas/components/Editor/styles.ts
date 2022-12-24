@@ -1,4 +1,4 @@
-import { css, units } from '@/hocs';
+import { css, units } from '@/hocs/styled';
 
 export const HEADER_HEIGHT = 64;
 export const FOOTER_HEIGHT = 90;

@@ -1,6 +1,6 @@
 import { Flex, IconButton, IconButtonBaseContainerProps } from '@voiceflow/ui';
 
-import { styled, transition, units } from '@/hocs';
+import { styled, transition, units } from '@/hocs/styled';
 
 export const UpgradeText = styled.div`
   color: #132144;

@@ -1,4 +1,4 @@
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 export const HeaderContainer = styled.div`
   padding: 16px 24px;

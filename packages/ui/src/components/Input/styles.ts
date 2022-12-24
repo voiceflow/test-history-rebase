@@ -41,6 +41,7 @@ export const inputDisabledStyle = css`
 export interface StyledInputProps {
   error?: boolean;
   cursor?: string;
+  isActive?: boolean;
   borderColor?: string;
   errorBorderColor?: ThemeColor;
   hideDefaultNumberControls?: boolean;
@@ -77,4 +78,6 @@ export const inputStyle = css<StyledInputProps>`
     css`
       border: 1px solid ${error ? colors(errorBorderColor) : borderColor} !important;
     `}
+
+  ${({ isActive }) => isActive && inputFocusStyle}
 `;

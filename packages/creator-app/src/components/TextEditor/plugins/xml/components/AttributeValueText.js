@@ -1,6 +1,6 @@
 import { transparentize } from 'polished';
 
-import { styled, transition } from '@/hocs';
+import { styled, transition } from '@/hocs/styled';
 
 const AttributeValueText = styled.span`
   color: ${({ color }) => color};

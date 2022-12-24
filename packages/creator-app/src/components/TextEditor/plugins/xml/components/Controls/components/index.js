@@ -1,6 +1,6 @@
 import { Flex } from '@voiceflow/ui';
 
-import { css, styled, transition } from '@/hocs';
+import { css, styled, transition } from '@/hocs/styled';
 
 export { default as FullWidthWrapper } from './FullWidthWrapper';
 export { default as SelectInputOption } from './SelectInputOption';

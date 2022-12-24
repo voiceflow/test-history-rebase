@@ -1,6 +1,6 @@
 import { BaseButton } from '@voiceflow/base-types';
 import * as Platform from '@voiceflow/platform-config';
-import { Badge, Box, UIOnlyMenuItemOption } from '@voiceflow/ui';
+import { Badge, Box, compose, UIOnlyMenuItemOption } from '@voiceflow/ui';
 import numberToWords from 'number-to-words/src';
 import React from 'react';
 
@@ -9,7 +9,7 @@ import IntentSelect from '@/components/IntentSelect';
 import { SectionToggleVariant } from '@/components/Section';
 import VariablesInput, { VariablesInputRef } from '@/components/VariablesInput';
 import * as IntentV2 from '@/ducks/intentV2';
-import { compose, connect } from '@/hocs';
+import { connect } from '@/hocs/connect';
 import { useActiveProjectPlatform, useSetup } from '@/hooks';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';

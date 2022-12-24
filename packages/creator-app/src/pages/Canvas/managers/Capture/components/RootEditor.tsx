@@ -7,7 +7,6 @@ import SlotSelect, { SlotOption } from '@/components/SlotSelect';
 import VariableSelect from '@/components/VariableSelect';
 import * as Documentation from '@/config/documentation';
 import { CUSTOM_SLOT_TYPE } from '@/constants';
-import * as Tracking from '@/ducks/tracking';
 import { useMapManager } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 
@@ -21,7 +20,7 @@ const CaptureEditor: React.FC = () => {
 
   const mapManager = useMapManager(editor.data.examples, (examples) => editor.onChange({ examples }), { factory: () => '' });
 
-  const noReplyConfig = NoReplyV2.useConfig({ step: Tracking.NoMatchStepType.CAPTURE, step_id: editor.nodeID });
+  const noReplyConfig = NoReplyV2.useConfig({ step: editor.data });
 
   const hasReplies = !!editor.data.examples.length;
 

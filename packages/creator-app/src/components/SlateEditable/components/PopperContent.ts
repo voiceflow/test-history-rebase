@@ -1,4 +1,4 @@
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 export const PopperContent = styled.div`
   padding: 18px 23px;

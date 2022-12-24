@@ -1,6 +1,6 @@
 import { SvgIcon, transition } from '@voiceflow/ui';
 
-import { css, styled } from '@/hocs';
+import { css, styled } from '@/hocs/styled';
 
 export const Container = styled.div<{ $playing: boolean; $hasContent: boolean }>`
   ${transition('background', 'background-color')};

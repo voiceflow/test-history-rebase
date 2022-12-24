@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { css, styled } from '@/hocs';
+import { css, styled } from '@/hocs/styled';
 
 interface DividerProps {
   offset?: boolean | [left: boolean, right: boolean];

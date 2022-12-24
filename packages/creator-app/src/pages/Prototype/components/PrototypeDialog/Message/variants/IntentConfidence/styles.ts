@@ -1,6 +1,6 @@
 import { colors, FlexEnd, SvgIcon, ThemeColor } from '@voiceflow/ui';
 
-import { css, styled } from '@/hocs';
+import { css, styled } from '@/hocs/styled';
 
 export const Container = styled(FlexEnd)<{ focused?: boolean; utteranceAdded?: boolean }>`
   color: ${colors(ThemeColor.SECONDARY)};

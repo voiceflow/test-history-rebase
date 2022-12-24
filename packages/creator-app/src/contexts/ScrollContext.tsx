@@ -25,6 +25,3 @@ export const ScrollContextProvider = <T extends HTMLElement | CustomScrollbarsTy
 }: React.ProviderProps<ScrollContextValue<T>>): React.ReactElement => (
   <ScrollContext.Provider value={value as ScrollContextValue<HTMLElement | CustomScrollbarsTypes.Scrollbars>}>{children}</ScrollContext.Provider>
 );
-
-export const PropsBridgeContext = React.createContext('props-bridge-context');
-export const { Consumer: PropsBridgeContextConsumer, Provider: PropsBridgeContextProvider } = PropsBridgeContext;

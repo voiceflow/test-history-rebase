@@ -1,4 +1,4 @@
-import { css, styled } from '@/hocs';
+import { css, styled } from '@/hocs/styled';
 
 const ListContainer = styled.div<{ fullHeight?: boolean }>`
   position: relative;

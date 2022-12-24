@@ -1,6 +1,6 @@
 import { Button, Preview, transition } from '@voiceflow/ui';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 export const TableNavbarContainer = styled.div`
   position: absolute;

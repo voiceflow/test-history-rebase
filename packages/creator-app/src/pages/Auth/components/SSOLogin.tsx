@@ -4,7 +4,7 @@ import React from 'react';
 
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
-import { connect } from '@/hocs';
+import { connect } from '@/hocs/connect';
 import { ConnectedProps } from '@/types';
 import * as Sentry from '@/vendors/sentry';
 

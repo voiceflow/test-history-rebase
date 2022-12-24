@@ -1,20 +1,20 @@
-import _isNumber from 'lodash/isNumber';
+import { Box, SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
-import { useMapManager } from '@/hooks';
-
-import { ItemWrapper, RemoveIcon } from './components';
+import { MapManaged, MapManagedSimpleAPI, useMapManager } from '@/hooks/mapManager';
 
 interface RenderForm<I> {
   value?: I | null;
   onAdd: (value: I) => void;
   onChange: (value: I) => void;
   addError?: string;
+  mapManager: MapManagedSimpleAPI<I>;
 }
 
 interface ItemOptions<I> {
   key: string;
   index: number;
+  isLast: boolean;
   onUpdate: (value: I) => void;
 }
 
@@ -24,13 +24,22 @@ type ListManagerProps<I> = React.PropsWithChildren<{
   onUpdate: (items: I[]) => void;
   beforeAdd?: (value: I) => void;
   renderForm: React.FC<RenderForm<I>>;
-  renderItem?: (item: I, options: ItemOptions<I>) => React.ReactElement;
-  renderList?: React.FC<any>;
+  renderItem: (item: I, options: ItemOptions<I>) => React.ReactElement;
   addToStart?: boolean;
-  addValidation?: (value: I) => { valid: boolean; error?: string };
-  requiredItemIndex?: number;
+  renderList?: (options: {
+    items: I[];
+    onAdd: (value: I) => void;
+    onRemove: (key: string) => Promise<void>;
+    onReorder: (from: number, to: number) => Promise<void>;
+    mapManaged: MapManaged<I>;
+    mapManager: MapManagedSimpleAPI<I>;
+    itemRenderer: (item: I, options: ItemOptions<I>) => JSX.Element | null;
+    latestCreatedKey: string | undefined;
+  }) => React.ReactElement;
   initialValue?: I;
+  addValidation?: (value: I) => { valid: boolean; error?: string };
   maxVisibleItems?: number;
+  requiredItemIndex?: number;
 }>;
 
 function ListManager<I>({
@@ -43,14 +52,14 @@ function ListManager<I>({
   renderList,
   addToStart,
   addValidation,
-  requiredItemIndex,
   initialValue,
   maxVisibleItems,
+  requiredItemIndex,
 }: ListManagerProps<I>): React.ReactElement {
   const [addError, setAddError] = React.useState<string>();
   const [formValue, onChangeFormValue] = React.useState<I | null>(initialValue as I);
 
-  const mapManager = useMapManager(items, onUpdate);
+  const mapManager = useMapManager(items, onUpdate, { maxVisibleItems });
 
   const onAddItem = (value: I) => {
     const { valid, error } = addValidation ? addValidation(value) : { valid: true, error: null };
@@ -71,15 +80,15 @@ function ListManager<I>({
     }
   };
 
-  const itemRenderer = (item: I, options: ItemOptions<I>) => {
-    return options.index < (maxVisibleItems || items.length) ? (
-      <ItemWrapper key={options.key}>
-        {renderItem!(item, options)}
-
-        <RemoveIcon onClick={() => mapManager.onRemove(options.key)} isHidden={_isNumber(requiredItemIndex) && options.index === requiredItemIndex} />
-      </ItemWrapper>
-    ) : null;
-  };
+  const itemRenderer = (item: I, options: ItemOptions<I>) => (
+    <Box key={options.key} mb={options.isLast ? 0 : 16} width="100%">
+      <SectionV2.ListItem
+        action={<SectionV2.RemoveButton onClick={() => mapManager.onRemove(options.key)} disabled={options.index === requiredItemIndex} />}
+      >
+        {renderItem(item, options)}
+      </SectionV2.ListItem>
+    </Box>
+  );
 
   return (
     <>
@@ -88,6 +97,7 @@ function ListManager<I>({
         onAdd: onAddItem,
         addError,
         onChange: onChangeFormValue,
+        mapManager,
       })}
 
       {divider && !!mapManager.items.length && <hr />}
@@ -99,6 +109,7 @@ function ListManager<I>({
             onRemove: mapManager.onRemove,
             onReorder: mapManager.onReorder,
             mapManaged: mapManager.map,
+            mapManager,
             itemRenderer,
             latestCreatedKey: mapManager.latestCreatedKey,
           })

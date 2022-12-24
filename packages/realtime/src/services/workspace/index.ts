@@ -7,11 +7,16 @@ import { AbstractControl, ControlOptions } from '../../control';
 import logger from '../../logger';
 import AccessCache from '../utils/accessCache';
 import WorkspaceMemberService from './member';
+import WorkspaceSettingsService from './settings';
+
+export { default as WorkspaceSettingsService } from './settings';
 
 class WorkspaceService extends AbstractControl {
   public access = new AccessCache('workspace', this.clients, this.services);
 
   public member: WorkspaceMemberService;
+
+  public settings: WorkspaceSettingsService;
 
   private static getConnectedProjectsKey({ workspaceID }: { workspaceID: string }): string {
     return `workspaces:${workspaceID}:projects`;
@@ -26,6 +31,7 @@ class WorkspaceService extends AbstractControl {
     super(options);
 
     this.member = new WorkspaceMemberService(options);
+    this.settings = new WorkspaceSettingsService(options);
   }
 
   public async connectProject(workspaceID: string, projectID: string): Promise<void> {
@@ -54,10 +60,11 @@ class WorkspaceService extends AbstractControl {
     ]);
 
     if (identityWorkspaceEnabled) {
-      const [workspace, identityWorkspace, identityWorkspaceMembers] = await Promise.all([
+      const [workspace, identityWorkspace, identityWorkspaceMembers, identityWorkspaceSettings] = await Promise.all([
         client.workspace.get(workspaceID),
         client.identity.workspace.findOne(workspaceID),
         this.member.getAll(creatorID, workspaceID),
+        this.settings.getAll(workspaceID, creatorID),
       ]);
 
       return {
@@ -68,6 +75,7 @@ class WorkspaceService extends AbstractControl {
         created: identityWorkspace.createdAt,
         team_id: identityWorkspace.id,
         organization_id: identityWorkspace.organizationID,
+        settings: identityWorkspaceSettings,
       };
     }
 
@@ -100,6 +108,7 @@ class WorkspaceService extends AbstractControl {
           organization_id: identityWorkspace.organizationID,
           // resetting members since identity workspace list doesn't have members array in it
           members: [],
+          settings: {},
         };
       });
     }
@@ -152,6 +161,8 @@ class WorkspaceService extends AbstractControl {
 
       await client.identity.workspace.remove(workspaceID);
       await client.workspace.deleteStripeSubscription(workspaceID).catch((error) => logger.warn(error));
+      // TODO: move to identity when creator-api gets phased out
+      await this.services.billing.deleteWorkspaceQuotas(creatorID, workspaceID);
     } else {
       await client.workspace.delete(workspaceID);
     }

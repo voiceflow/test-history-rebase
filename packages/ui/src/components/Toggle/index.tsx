@@ -1,4 +1,3 @@
-import { Box } from '@ui/components/Box';
 import { stopPropagation } from '@ui/utils/dom';
 import { Utils } from '@voiceflow/common';
 import React from 'react';
@@ -18,24 +17,20 @@ interface ToggleProps {
 
 const Toggle = React.forwardRef<HTMLDivElement | ReactToggle, ToggleProps>(
   ({ size = Size.NORMAL, hasLabel = false, checked, onChange = Utils.functional.noop, ...props }, ref) => (
-    <S.ToggleOuterContainer hasLabel={hasLabel}>
-      {hasLabel && (
-        <Box mr={12} width="26px">
-          {checked ? 'On' : 'Off'}
-        </Box>
-      )}
+    <S.Container hasLabel={hasLabel}>
+      {hasLabel && <S.Label>{checked ? 'On' : 'Off'}</S.Label>}
 
-      <S.ToggleContainer size={size}>
+      <S.Content size={size}>
         <ReactToggle
           {...props}
-          checked={checked}
           ref={ref as React.LegacyRef<ReactToggle>}
+          icons={false}
+          checked={checked}
           onChange={onChange}
           onClick={stopPropagation()}
-          icons={false}
         />
-      </S.ToggleContainer>
-    </S.ToggleOuterContainer>
+      </S.Content>
+    </S.Container>
   )
 );
 

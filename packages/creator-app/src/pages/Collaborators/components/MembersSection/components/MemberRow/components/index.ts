@@ -1,6 +1,6 @@
 import { Dropdown, FlexApart, Menu, SvgIcon, User } from '@voiceflow/ui';
 
-import { css, styled } from '@/hocs';
+import { css, styled } from '@/hocs/styled';
 import { FadeLeft } from '@/styles/animations';
 
 export const Container = styled(FlexApart)<{ isLast?: boolean }>`

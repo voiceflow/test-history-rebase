@@ -14,7 +14,7 @@ import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/productV2';
 import * as SlotV2 from '@/ducks/slotV2';
 import * as VersionV2 from '@/ducks/versionV2';
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 import { useModals, usePermission, useSelector, useTeardown, useTrackingEvents } from '@/hooks';
 import { applySlotNameFormatting, slotNameFormatter, validateSlotName } from '@/utils/slot';
 

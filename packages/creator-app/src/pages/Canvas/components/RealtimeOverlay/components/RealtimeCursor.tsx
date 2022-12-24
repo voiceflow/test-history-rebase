@@ -3,7 +3,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Cursor, CursorConstants } from '@voiceflow/ui';
 import React from 'react';
 
-import { EventualEngineContext } from '@/contexts';
+import { EventualEngineContext } from '@/contexts/EventualEngineContext';
 import { useLocalDispatch, useRAF } from '@/hooks';
 
 import { RealtimeCursorContext } from '../contexts';

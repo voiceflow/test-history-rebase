@@ -1,6 +1,6 @@
 import { Input } from '@voiceflow/ui';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 export { default as AddCollaborators } from './AddCollaborators';
 export { default as ButtonSquare } from './ButtonSquare';

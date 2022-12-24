@@ -1,3 +1,4 @@
+import { serializeToText } from '@voiceflow/slate-serializer/text';
 import { Descendant, Editor, Element, Node, Range, Transforms } from 'slate';
 
 import type { EditorAPIType } from '../editorAPI';
@@ -15,6 +16,7 @@ import type {
 
 export interface BasePluginEditor {
   processText(options: TextProcessorOptions): Descendant[];
+  isEmptyState(value: Descendant[]): boolean;
   prismLanguages(): PrismLanguage[];
   registerPrismLanguage(language: PrismLanguage): void;
   registerTextProcessingMiddleware: (middleware: TextProcessorMiddleware) => void;
@@ -136,6 +138,8 @@ export const withBasePlugin: Plugin = (EditorAPI: EditorAPIType) => (editor: Edi
 
   const pluginsEditor: BasePluginEditor = {
     processText: (options) => rooTextProcessor([{ text: options.originalText }], options),
+
+    isEmptyState: (value: Descendant[]): boolean => value.every((node) => !serializeToText([node]).trim()),
 
     prismLanguages: () => PRISM_LANGUAGES,
 

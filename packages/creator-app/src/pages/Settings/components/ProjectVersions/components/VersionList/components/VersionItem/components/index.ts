@@ -2,7 +2,7 @@ import { Flex } from '@voiceflow/ui';
 
 import { StatusIndicator } from '@/components/Indicator';
 import { TableRow } from '@/components/Table';
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 export const RowItem = styled(TableRow)`
   display: flex;

@@ -1,4 +1,4 @@
-import { createGlobalStyle } from '@/hocs';
+import { createGlobalStyle } from '@/hocs/styled';
 
 const DisableOverscrollBehavior = createGlobalStyle`
   html, body {

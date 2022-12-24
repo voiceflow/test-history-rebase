@@ -1,13 +1,14 @@
 import { Utils } from '@voiceflow/common';
-import { Box, withProvider } from '@voiceflow/ui';
+import { Box, IconButton, SectionV2, withProvider } from '@voiceflow/ui';
 import React from 'react';
 
 import Modal from '@/components/Modal';
 import { InteractionModelTabType, ModalType } from '@/constants';
-import { TextEditorVariablesPopoverProvider } from '@/contexts';
+import { TextEditorVariablesPopoverProvider } from '@/contexts/TextEditorVariablesPopoverContext';
 import * as Tracking from '@/ducks/tracking';
 import { useLinkedState, useTrackingEvents } from '@/hooks';
 import EditEntityForm from '@/pages/Canvas/components/EntityModalsV2/components/EntityForm/EditEntityForm';
+import EntityPromptForm from '@/pages/Canvas/components/EntityPromptForm';
 import EditIntentForm from '@/pages/Canvas/components/IntentModalsV2/components/IntentForm/EditIntentForm';
 import VariablesSection from '@/pages/Canvas/components/NLUQuickView/components/VariablesSection';
 
@@ -24,19 +25,23 @@ const NLUQuickView: React.FC = () => {
     title,
     activeTab,
     selectedID,
+    onNameChange,
+    canRenameItem,
     isCreatingItem,
+    onEnterEntityPrompt,
+    nameChangeTransform,
+    setIsActiveItemRename,
     triggerNewInlineIntent,
     triggerNewInlineEntity,
-    canRenameItem,
-    setIsActiveItemRename,
-    onNameChange,
-    nameChangeTransform,
+    onIntentEntityPromptBack,
+    intentEntityPromptSlotID,
+    intentEntityPromptAutogenerate,
   } = React.useContext(NLUQuickViewContext);
 
   const { showIntentForm, showEntityForm, showVariableForm, isEmpty } = useShowForms();
 
-  const [modalTitle, setModalTitle] = useLinkedState(title);
   const [modalRef, setModalRef] = React.useState<HTMLDivElement | null>(null);
+  const [modalTitle, setModalTitle] = useLinkedState(title);
   const [trackingEvents] = useTrackingEvents();
 
   const emptyHeader = isCreatingItem || isEmpty;
@@ -53,26 +58,38 @@ const NLUQuickView: React.FC = () => {
 
   const HeaderOptionsComponent = tabHeaderComponentsMap[activeTab];
 
+  const onChangeName = (text: string) => {
+    setModalTitle(nameChangeTransform(text, activeTab));
+
+    if (activeTab === InteractionModelTabType.INTENTS) {
+      trackingEvents.trackIntentEdit({ creationType: Tracking.IntentEditType.IMM });
+    }
+  };
+
   return (
     <Modal
-      ref={setModalRef}
-      leftSidebar={() => <Sidebar />}
-      maxWidth={740}
       id={ModalType.NLU_MODEL_QUICK_VIEW}
+      ref={setModalRef}
+      maxWidth={740}
+      leftSidebar={() => <Sidebar />}
       title={
-        <TitleInput
-          value={emptyHeader ? '' : modalTitle}
-          onBlur={() => onNameChange(modalTitle, selectedID)}
-          onChangeText={(text) => {
-            setModalTitle(nameChangeTransform(text, activeTab));
-            if (activeTab === InteractionModelTabType.INTENTS) {
-              trackingEvents.trackIntentEdit({ creationType: Tracking.IntentEditType.IMM });
-            }
-          }}
-          placeholder={emptyHeader ? '' : 'Name'}
-          onEnterPress={() => onNameChange(modalTitle, selectedID)}
-          disabled={emptyHeader || !canRenameItem(selectedID, activeTab)}
-        />
+        <>
+          {showIntentForm && intentEntityPromptSlotID && (
+            <SectionV2.ActionsContainer isLeft unit={0} offsetUnit={2.75}>
+              <IconButton icon="largeArrowLeft" onClick={() => onIntentEntityPromptBack()} variant={IconButton.Variant.BASIC} />
+            </SectionV2.ActionsContainer>
+          )}
+
+          <TitleInput
+            value={emptyHeader ? '' : modalTitle}
+            onBlur={() => onNameChange(modalTitle, selectedID)}
+            readOnly={!!showIntentForm && !!intentEntityPromptSlotID}
+            disabled={emptyHeader || !canRenameItem(selectedID, activeTab)}
+            placeholder={emptyHeader ? '' : 'Name'}
+            onChangeText={onChangeName}
+            onEnterPress={() => onNameChange(modalTitle, selectedID)}
+          />
+        </>
       }
       headerBorder
       headerActions={
@@ -86,16 +103,31 @@ const NLUQuickView: React.FC = () => {
         ) : (
           !!modalRef && (
             <TextEditorVariablesPopoverProvider value={modalRef}>
-              {showIntentForm && (
-                <EditIntentForm
-                  intentID={selectedID}
-                  creationType={Tracking.IntentEditType.IMM}
-                  utteranceCreationType={Tracking.CanvasCreationType.IMM}
+              {showIntentForm &&
+                (intentEntityPromptSlotID ? (
+                  <>
+                    <EntityPromptForm intentID={selectedID} entityID={intentEntityPromptSlotID} autogenerate={intentEntityPromptAutogenerate} />
+                    <SectionV2.Divider />
+                  </>
+                ) : (
+                  <EditIntentForm
+                    intentID={selectedID}
+                    creationType={Tracking.IntentEditType.IMM}
+                    onEnterEntityPrompt={onEnterEntityPrompt}
+                    utteranceCreationType={Tracking.CanvasCreationType.IMM}
+                  />
+                ))}
+
+              {showEntityForm && (
+                <EditEntityForm
+                  key={selectedID}
+                  slotID={selectedID}
+                  creationType={Tracking.NLUEntityCreationType.IMM}
+                  withNameSection={false}
+                  withBottomDivider
                 />
               )}
-              {showEntityForm && (
-                <EditEntityForm slotID={selectedID} withNameSection={false} withBottomDivider creationType={Tracking.NLUEntityCreationType.IMM} />
-              )}
+
               {showVariableForm && <VariablesSection />}
             </TextEditorVariablesPopoverProvider>
           )

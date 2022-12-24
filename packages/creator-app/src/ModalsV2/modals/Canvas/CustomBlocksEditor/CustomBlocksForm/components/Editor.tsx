@@ -4,7 +4,7 @@ import React from 'react';
 import AceEditor, { InputMode } from '@/components/AceEditor';
 import DraggableList from '@/components/DraggableList';
 import * as Documentation from '@/config/documentation';
-import { useMapManager } from '@/hooks';
+import { useMapManager } from '@/hooks/mapManager';
 import THEME from '@/styles/theme';
 import { onOpenInternalURLInANewTabFactory } from '@/utils/window';
 
@@ -55,8 +55,8 @@ export const Editor: React.FC<EditorProps> = ({
       <SectionV2.CollapseSection
         header={
           <SectionV2.Header bottomUnit={1.25}>
-            <SectionV2.Title bold>
-              <Text color={THEME.colors.secondary}>Name</Text>
+            <SectionV2.Title bold secondary>
+              Name
             </SectionV2.Title>
           </SectionV2.Header>
         }
@@ -79,9 +79,10 @@ export const Editor: React.FC<EditorProps> = ({
       <SectionV2.CollapseSection
         header={
           <SectionV2.Header topUnit={0} bottomUnit={1.25}>
-            <SectionV2.Title bold>
-              <Text color={THEME.colors.secondary}>Action Body</Text>
+            <SectionV2.Title bold secondary>
+              Action Body
             </SectionV2.Title>
+
             <Link onClick={onOpenInternalURLInANewTabFactory(Documentation.MVP_CUSTOM_BLOCK_EXAMPLES)}>
               <Text fontSize={13}>See examples</Text>
             </Link>

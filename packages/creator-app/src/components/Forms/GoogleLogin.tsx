@@ -3,7 +3,7 @@ import React from 'react';
 
 import { GooglePromptType } from '@/constants';
 import * as Account from '@/ducks/account';
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 import { useDispatch, useGoogleLogin } from '@/hooks';
 import * as Models from '@/models';
 import logger from '@/utils/logger';

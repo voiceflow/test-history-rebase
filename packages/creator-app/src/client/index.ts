@@ -7,6 +7,7 @@ import canvasExport from './canvasExport';
 import comment from './comment';
 import feature from './feature';
 import file from './file';
+import gptGen from './gptGen';
 import identity from './identity';
 import integrations from './integrations';
 import maintenance from './maintenance';
@@ -66,6 +67,7 @@ const client = {
   mlGateway,
   nluManager,
   usageAnalytics,
+  gptGen,
 };
 
 export default client;

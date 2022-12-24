@@ -1,4 +1,4 @@
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 import {
   CANVAS_COMMENTING_ENABLED_CLASSNAME,
   CANVAS_MERGING_CLASSNAME,

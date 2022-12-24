@@ -5,8 +5,9 @@ import React from 'react';
 import * as NLU from '@/config/nlu';
 import { Permission } from '@/config/permissions';
 import { NLUImportOrigin } from '@/constants';
-import { useNLUImport, usePlanPermissionAction } from '@/hooks';
-import * as ModalsV2 from '@/ModalsV2';
+import { useNLUImport } from '@/hooks/nlu';
+import { usePlanPermissionAction } from '@/hooks/planPermission';
+import { useUpgradeModal } from '@/ModalsV2/hooks/helpers';
 import { NLUImportModel } from '@/models';
 
 import * as S from './styles';
@@ -22,7 +23,7 @@ interface ModelImportProps {
 
 const ModelImport: React.FC<ModelImportProps> = ({ platform, nluConfig, onImportModel, importModel, isImportLoading, setIsImportLoading }) => {
   const nluImport = useNLUImport({ nluType: nluConfig.type, platform, onImport: onImportModel });
-  const upgradeModal = ModalsV2.useModal(ModalsV2.Upgrade);
+  const upgradeModal = useUpgradeModal();
 
   const onImport = usePlanPermissionAction({
     onAction: () => nluImport.onUploadClick(NLUImportOrigin.PROJECT),

@@ -4,7 +4,7 @@ import React from 'react';
 
 import BaseRenderer from '@/components/DisplayRenderer/components/BaseRenderer';
 import * as APLDuck from '@/ducks/apl';
-import { connect } from '@/hocs';
+import { connect } from '@/hocs/connect';
 import { ALL_DEVICES } from '@/pages/Prototype/constants';
 import { ConnectedProps } from '@/types';
 import * as Sentry from '@/vendors/sentry';

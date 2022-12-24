@@ -13,6 +13,7 @@ import {
   swallowEvent,
   useCache,
   useCachedValue,
+  useLinkedState,
   useVirtualElementPopper,
 } from '@voiceflow/ui';
 import _sortBy from 'lodash/sortBy';
@@ -20,8 +21,8 @@ import { denormalize, Normalized } from 'normal-store';
 import React from 'react';
 import { useDismissable } from 'react-dismissable-layers';
 
-import { TextEditorVariablesPopoverContext } from '@/contexts';
-import { useLinkedState, useTheme } from '@/hooks';
+import { TextEditorVariablesPopoverContext } from '@/contexts/TextEditorVariablesPopoverContext';
+import { useTheme } from '@/hooks/theme';
 import { FadeDownDelayedContainer } from '@/styles/animations';
 
 import { useSlateEditor } from '../../../contexts';

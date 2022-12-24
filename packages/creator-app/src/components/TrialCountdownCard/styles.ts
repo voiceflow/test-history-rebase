@@ -1,4 +1,4 @@
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 export const CardContainer = styled.div`
   z-index: 100;
@@ -23,6 +23,6 @@ export const DaysContainer = styled.div`
   padding-right: 3px;
 `;
 
-export const StrengthContainer = styled.div`
-  margin: 0 16px 12px;
+export const ProgressContainer = styled.div`
+  margin: 2px 16px 14px;
 `;

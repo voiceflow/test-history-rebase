@@ -1,7 +1,7 @@
 import { Box, BoxFlex, Button, ButtonVariant, Dropdown, Input, MenuTypes, SecondaryButtonProps, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 import { ProjectAPIKey } from '@/models';
 
 import { ContentSection, Section } from '../../components';

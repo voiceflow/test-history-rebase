@@ -1,7 +1,7 @@
 import { Menu } from '@voiceflow/ui';
 import React from 'react';
 
-import { css, styled } from '@/hocs';
+import { css, styled } from '@/hocs/styled';
 
 const Item = styled(Menu.Item)`
   ${({ focused }) =>

@@ -7,7 +7,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Utils } from '@voiceflow/realtime-sdk';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
-import { toVoiceflowLocale, voiceflowLocaleToVoiceflowLang } from './locale';
+import { voiceflowLocaleToVoiceflowLang } from './locale';
 
 export const {
   getSlotTypes,
@@ -65,13 +65,14 @@ export const toVoiceflowSlotType = (type: string, platform: Platform.Constants.P
   }
 };
 
-export const getBuiltInSynonyms = (type: string, locale: string, platform: Platform.Constants.PlatformType): string[] => {
+export const getBuiltInSynonyms = (type: string, locale: VoiceflowConstants.Locale, platform: Platform.Constants.PlatformType): string[] => {
   const voiceflowSlotType = toVoiceflowSlotType(type, platform);
-  const voiceflowLocale = toVoiceflowLocale(locale, platform);
 
   if (!voiceflowSlotType) return [];
 
-  const slotType = VoiceflowConstants.SlotTypes[voiceflowLocaleToVoiceflowLang(voiceflowLocale)]?.find((slot) => slot.name === voiceflowSlotType);
+  const slotType = VoiceflowConstants.SlotTypes[voiceflowLocaleToVoiceflowLang(locale)]?.find((slot) => slot.name === voiceflowSlotType);
 
   return slotType ? [slotType.label, ...slotType.values] : [];
 };
+
+export const isDefaultSlotName = (name?: string | null) => !name || name.toLowerCase().startsWith('entity');

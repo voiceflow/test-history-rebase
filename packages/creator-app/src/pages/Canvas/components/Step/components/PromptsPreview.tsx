@@ -14,7 +14,7 @@ interface PromptPreviewProps {
 
 const getPromptContent = (prompt: Platform.Base.Models.Prompt.Model) => {
   if (Platform.Common.Chat.CONFIG.utils.prompt.isPrompt(prompt)) {
-    return serializeToText(prompt.content, { encodeVariables: false });
+    return serializeToText(prompt.content, { encodeVariables: true });
   }
 
   if (Platform.Common.Voice.CONFIG.utils.prompt.isPrompt(prompt)) {

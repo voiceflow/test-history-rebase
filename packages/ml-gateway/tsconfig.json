@@ -6,12 +6,12 @@
     "skipLibCheck": true,
     "baseUrl": "..",
     "paths": {
-      "@voiceflow/ml-sdk": ["ml-sdk/src"],
       // only used to fix intra-monorepo resolution
-      "@ml-sdk/*": ["ml-sdk/src/*"],
-      "@voiceflow/socket-utils": ["socket-utils/src"],
+      "@realtime-sdk/*": ["realtime-sdk/src/*"],
+      "@voiceflow/realtime-sdk": ["realtime-sdk/src"],
       // only used to fix intra-monorepo resolution
       "@socket-utils/*": ["socket-utils/src/*"],
+      "@voiceflow/socket-utils": ["socket-utils/src"],
       "@/*": ["ml-gateway/src/*"]
     }
   },

@@ -2,7 +2,7 @@ import { Box, Button as UIButton, Popper, Preview, SvgIcon } from '@voiceflow/ui
 import React from 'react';
 
 import { NLU_MANAGEMENT_CONFLICTS } from '@/config/documentation';
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 import { onOpenInternalURLInANewTabFactory } from '@/utils/window';
 
 export const MoreButton = styled(UIButton.DarkButton)`

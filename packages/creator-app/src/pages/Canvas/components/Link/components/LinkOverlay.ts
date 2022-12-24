@@ -1,4 +1,4 @@
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 const LinkOverlay = styled.path<{ isEditingMode?: boolean }>`
   fill: none;

@@ -1,5 +1,5 @@
 import { HSLShades } from '@/constants';
-import { css, styled, transition } from '@/hocs';
+import { css, styled, transition } from '@/hocs/styled';
 import { NODE_MERGE_TARGET_CLASSNAME } from '@/pages/Canvas/constants';
 
 import CaptureZone from './StepReorderCaptureZone';

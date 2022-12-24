@@ -1,6 +1,6 @@
 import { Button as UIButton, ButtonGroup, hexToRGBA, toRGBAString } from '@voiceflow/ui';
 
-import { css, styled, transition } from '@/hocs';
+import { css, styled, transition } from '@/hocs/styled';
 
 export const Container = styled.div`
   overflow-x: hidden;

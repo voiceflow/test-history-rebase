@@ -4,7 +4,7 @@ import React from 'react';
 import Drawer from '@/components/Drawer';
 import EditableText from '@/components/EditableText';
 import { InteractionModelTabType } from '@/constants';
-import { NLUContext, useNLUItemMenu } from '@/contexts';
+import { NLUContext, useNLUItemMenu } from '@/contexts/NLUContext';
 import { useTheme } from '@/hooks';
 import { EDITOR_LEFT_SIDEBAR_WIDTH, EditorTabs } from '@/pages/NLUManager/constants';
 import { useNLUManager } from '@/pages/NLUManager/context';

@@ -1,6 +1,6 @@
 import { Flex } from '@voiceflow/ui';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 export { default as Container } from './Container';
 export { default as InfoBubble } from './InfoBubble';

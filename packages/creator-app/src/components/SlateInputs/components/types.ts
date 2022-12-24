@@ -14,11 +14,12 @@ export interface SlateInputProps extends Omit<SlateBaseInputProps, 'value' | 'ed
 }
 
 export interface SlateTextInputProps extends Omit<SlateInputProps, 'topToolbar' | 'pluginsOptions'> {
+  icons?: ToolbarIcons;
+  options?: Base.Project.Chat.ToolbarOption[];
+  onEmpty?: (isEmpty: boolean) => void;
   variables?: Normalized<SlateVariableItem>;
   pluginsOptions?: Nullish<Omit<SlateEditableProps['pluginsOptions'], SlatePluginType.VARIABLES>>;
   variablesCreatable?: boolean;
   variablesWithSlots?: boolean;
   extraToolbarButtons?: React.ReactNode;
-  icons?: ToolbarIcons;
-  options?: Base.Project.Chat.ToolbarOption[];
 }

@@ -161,6 +161,41 @@ export const updateActiveWorkspaceName =
     }
   };
 
+export const toggleActiveWorkspaceAiAssist =
+  (aiAssist: boolean): Thunk =>
+  async (dispatch, getState) => {
+    try {
+      const state = getState();
+      const workspaceID = Session.activeWorkspaceIDSelector(state);
+
+      Errors.assertWorkspaceID(workspaceID);
+
+      await dispatch.sync(Realtime.workspace.settings.patch({ workspaceID, settings: { aiAssist } }));
+    } catch (err) {
+      openError({ error: 'Error toggling workspace ai assistant features' });
+
+      throw err;
+    }
+  };
+
+export const refreshWorkspaceQuotaDetails =
+  (quotaName: string): Thunk =>
+  async (dispatch, getState) => {
+    try {
+      const state = getState();
+      const workspaceID = Session.activeWorkspaceIDSelector(state);
+
+      Errors.assertWorkspaceID(workspaceID);
+
+      await dispatch.sync(Realtime.workspace.quotas.refreshQuotaDetails({ workspaceID, quotaName }));
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.log({ err });
+      openError({ error: 'Error refreshing workspace quota' });
+      throw err;
+    }
+  };
+
 export const updateActiveWorkspaceImage =
   (formData: FormData): Thunk<string> =>
   async (dispatch, getState) => {

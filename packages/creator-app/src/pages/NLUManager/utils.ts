@@ -2,8 +2,7 @@ import * as Platform from '@voiceflow/platform-config';
 import { StrengthGauge } from '@voiceflow/ui';
 import * as Normal from 'normal-store';
 
-import { getIntentClarityStrengthLevel, getIntentConfidenceStrengthLevel, isBuiltInIntent } from '@/utils/intent';
-import { hasValidPrompt } from '@/utils/prompt';
+import { getIntentClarityStrengthLevel, getIntentConfidenceStrengthLevel, isBuiltInIntent, isPromptEmpty } from '@/utils/intent';
 
 import { MIN_PAGINATION_ITEMS } from './pages/UnclassifiedData/constants';
 import { ClarityModel, NLUIntent, ProblematicSentence } from './types';
@@ -42,7 +41,7 @@ export const getClarityScore = (intent: Platform.Base.Models.Intent.Model, clari
 };
 
 export const hasSlotsError = (intent: Platform.Base.Models.Intent.Model) =>
-  Normal.denormalize(intent.slots).some((intentSlot) => !!intentSlot?.required && !hasValidPrompt(intentSlot.dialog.prompt));
+  Normal.denormalize(intent.slots).some((intentSlot) => !!intentSlot?.required && intentSlot.dialog.prompt.every(isPromptEmpty));
 
 export const mapIntentsToNLUIntents = (intents: Platform.Base.Models.Intent.Model[], clarity: ClarityModel | null) => {
   const intentUtterances = intents.reduce((acc, intent) => {

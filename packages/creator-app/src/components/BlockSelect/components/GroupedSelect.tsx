@@ -1,7 +1,7 @@
 import { Select } from '@voiceflow/ui';
 import React from 'react';
 
-import { useDiagramGroupedSelectOptions } from '@/hooks';
+import { useDiagramGroupedSelectOptions } from '@/hooks/select';
 
 import { ChildProps, Group, Option } from '../types';
 import { useDiagramsBlocksOptionsMap, useOnSelect } from './hooks';

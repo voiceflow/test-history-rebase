@@ -2,7 +2,7 @@ import React from 'react';
 import { Switch } from 'react-router-dom';
 
 import { Path } from '@/config/routes';
-import { lazy } from '@/hocs';
+import { lazy } from '@/hocs/lazy';
 import ProjectPage from '@/pages/Project/components/ProjectPage';
 import PrivateRoute from '@/Routes/PrivateRoute';
 

@@ -3,7 +3,7 @@ import React from 'react';
 
 import { Minus } from '@/components/InteractiveIcon';
 import VariablesInput from '@/components/VariablesInput';
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 const Container = styled(Flex)`
   position: relative;

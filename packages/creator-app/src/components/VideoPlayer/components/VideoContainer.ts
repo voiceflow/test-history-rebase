@@ -1,4 +1,4 @@
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 const VideoContainer = styled.div<{ width?: string | number; height?: string | number }>`
   width: ${({ width }) => (typeof width === 'number' ? `${width}px` : width) ?? '100%'};

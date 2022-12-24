@@ -1,8 +1,7 @@
-import { Box, FlexApart, Link } from '@voiceflow/ui';
+import { Box, FlexApart, Link, useToggle } from '@voiceflow/ui';
 import React from 'react';
 
 import AceEditor, { ACE_EDITOR_COLORS, ACE_EDITOR_OPTIONS_V2 } from '@/components/AceEditor';
-import { useToggle } from '@/hooks';
 
 import { RAW_ACE_EDITOR_COLORS } from '../constants';
 import { Response } from '../types';

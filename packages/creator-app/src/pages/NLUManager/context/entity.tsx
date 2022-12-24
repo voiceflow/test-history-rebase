@@ -5,7 +5,7 @@ import { InteractionModelTabType, ModalType } from '@/constants';
 import * as Tracking from '@/ducks/tracking';
 import { useModals, useOrderedEntities } from '@/hooks';
 
-import { useNLUTable } from '../hooks';
+import useNLUTable from '../hooks/useNLUTable';
 
 export const ENTITIES_INTIAL_STATE = {
   entities: [],

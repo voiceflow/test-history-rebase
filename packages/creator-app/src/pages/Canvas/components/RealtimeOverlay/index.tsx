@@ -1,7 +1,7 @@
 import { withProvider } from '@voiceflow/ui';
 import React from 'react';
 
-import { EventualEngineContext } from '@/contexts';
+import { EventualEngineContext } from '@/contexts/EventualEngineContext';
 import * as Account from '@/ducks/account';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Session from '@/ducks/session';

@@ -7,13 +7,15 @@ import { useTheme } from '@/hooks';
 import { ClassName } from '@/styles/constants';
 
 import Drawer from '../Drawer';
-import { Container, IconContainer, Item, StatusBubble } from './components';
+import * as S from './styles';
 
 export interface SidebarIconMenuItem {
   id?: string;
-  icon: SvgIconTypes.Icon;
+  icon?: SvgIconTypes.Icon;
   value: string;
   small?: boolean;
+  status?: React.ReactNode;
+  content?: React.ReactNode;
   tooltip?: TippyTooltipProps;
   onClick?: React.MouseEventHandler<HTMLDivElement>;
   withBadge?: boolean;
@@ -43,27 +45,37 @@ const SidebarIconMenu = <T extends SidebarIconMenuItem>({
 
   const renderOption = (option: Nullable<T>) => {
     if (option === null) return null;
-    return (
-      <TippyTooltip key={option.value} disabled={!option.tooltip} position="right" {...option.tooltip}>
-        <Item
-          id={option.id}
-          small={option.small}
-          onClick={(event) => onClick(option, event)}
-          isActive={option.value === activeValue}
-          className={cn(ClassName.SIDEBAR_ICON_MENU_ITEM, open && `${ClassName.SIDEBAR_ICON_MENU_ITEM}--${option.value}`)}
-        >
-          <span>
-            <IconContainer icon={option.icon} color="currentColor" />
-          </span>
-          {option.withBadge && <StatusBubble />}
-        </Item>
+
+    const item = (
+      <S.Item
+        id={option.id}
+        small={option.small}
+        onClick={(event) => onClick(option, event)}
+        isActive={option.value === activeValue}
+        className={cn(ClassName.SIDEBAR_ICON_MENU_ITEM, open && `${ClassName.SIDEBAR_ICON_MENU_ITEM}--${option.value}`)}
+      >
+        {option.icon && <S.Icon icon={option.icon} color="currentColor" />}
+
+        {option.content}
+
+        {option.status && <S.Status>{option.status}</S.Status>}
+
+        {option.withBadge && <S.StatusBubble />}
+      </S.Item>
+    );
+
+    return option.tooltip ? (
+      <TippyTooltip key={option.value} position="right" {...option.tooltip}>
+        {item}
       </TippyTooltip>
+    ) : (
+      item
     );
   };
 
   return (
     <Drawer open={open} width={theme.components.sidebarIconMenu.width} zIndex={25} direction={Drawer.Direction.RIGHT}>
-      <Container className={cn(ClassName.SIDEBAR_ICON_MENU, open && `${ClassName.SIDEBAR_ICON_MENU}--opened`)}>
+      <S.Container className={cn(ClassName.SIDEBAR_ICON_MENU, open && `${ClassName.SIDEBAR_ICON_MENU}--opened`)}>
         {options.map(renderOption)}
 
         {!!footerOptions?.length && (
@@ -72,7 +84,7 @@ const SidebarIconMenu = <T extends SidebarIconMenuItem>({
             {footerOptions.map(renderOption)}
           </>
         )}
-      </Container>
+      </S.Container>
     </Drawer>
   );
 };

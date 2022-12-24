@@ -1,4 +1,4 @@
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 import LinkPath from '@/pages/Canvas/components/Link/components/LinkPath';
 
 export interface PortLinkPathProps {

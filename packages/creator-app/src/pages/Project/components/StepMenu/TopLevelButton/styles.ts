@@ -1,6 +1,6 @@
 import { FlexCenter } from '@voiceflow/ui';
 
-import { css, styled, transition } from '@/hocs';
+import { css, styled, transition } from '@/hocs/styled';
 
 export const ButtonContainer = styled(FlexCenter)<{ focused?: boolean }>`
   ${transition('background-color')}

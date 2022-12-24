@@ -1,5 +1,7 @@
 import { PlanType, UserRole } from '@voiceflow/internal';
 
+import * as Billing from './Billing';
+
 export interface Board {
   name: string;
   board_id: string;
@@ -19,6 +21,14 @@ export interface WorkspaceMember extends PendingWorkspaceMember {
   name: string;
   image: string;
   creator_id: number;
+}
+
+export interface WorkspaceSettings {
+  aiAssist?: boolean | null;
+}
+
+export interface DBWorkspaceProperties {
+  settingsAiAssist?: boolean | null;
 }
 
 export interface SeatLimits {
@@ -48,6 +58,8 @@ export interface Workspace {
   organizationID: string | null;
   variableStatesLimit: number | null;
   organizationTrialDaysLeft: number | null;
+  quotas?: Billing.Quota[];
+  settings: WorkspaceSettings;
 }
 
 export interface IdentityWorkspace {
@@ -78,4 +90,5 @@ export interface DBWorkspace {
   members: Array<WorkspaceMember | PendingWorkspaceMember>;
   beta_flag: number;
   variableStatesLimit: number | null;
+  settings: WorkspaceSettings;
 }

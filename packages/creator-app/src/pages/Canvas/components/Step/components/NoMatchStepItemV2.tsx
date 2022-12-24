@@ -3,10 +3,9 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Popper, stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 
-import { SubEditorPaths } from '@/pages/Canvas/constants';
+import { useArePromptsEmpty } from '@/hooks';
 import { EngineContext } from '@/pages/Canvas/contexts';
 import NoMatchV2 from '@/pages/Canvas/managers/components/NoMatchV2';
-import { hasValidPrompt } from '@/utils/prompt';
 
 import PromptsPreview from './PromptsPreview';
 import StepButton from './StepButton';
@@ -22,8 +21,9 @@ export interface NoMatchStepItemProps {
 const NoMatchStepItemV2: React.FC<NoMatchStepItemProps> = ({ nodeID, noMatch, portID, nestedWithIcon }) => {
   const isPath = noMatch?.types.includes(BaseNode.Utils.NoMatchType.PATH);
   const engine = React.useContext(EngineContext);
+  const promptsAreEmpty = useArePromptsEmpty(noMatch?.reprompts);
 
-  const handleOpenEditor = () => engine?.setActive(nodeID, { nodeSubPath: SubEditorPaths.NO_MATCH });
+  const handleOpenEditor = () => engine?.setActive(nodeID, { nodeSubPath: NoMatchV2.PATH });
 
   if (!noMatch?.types.length) return null;
 
@@ -41,7 +41,7 @@ const NoMatchStepItemV2: React.FC<NoMatchStepItemProps> = ({ nodeID, noMatch, po
           portID={isPath ? portID : null}
           portColor="#6e849a"
           attachment={
-            noMatch.types.includes(BaseNode.Utils.NoMatchType.REPROMPT) && hasValidPrompt(noMatch.reprompts) ? (
+            noMatch.types.includes(BaseNode.Utils.NoMatchType.REPROMPT) && !promptsAreEmpty ? (
               <StepButton ref={ref} icon="noMatch" isActive={isOpened} onClick={stopPropagation(onToggle)} />
             ) : null
           }

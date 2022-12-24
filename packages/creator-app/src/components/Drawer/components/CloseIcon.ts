@@ -1,4 +1,4 @@
-import { styled, transition } from '@/hocs';
+import { styled, transition } from '@/hocs/styled';
 
 const CloseIcon = styled.div`
   width: 4px;

@@ -1,8 +1,7 @@
-import { Spinner } from '@voiceflow/ui';
+import { compose, Spinner } from '@voiceflow/ui';
 import React from 'react';
 
 import { Permission } from '@/config/permissions';
-import { compose } from '@/hocs';
 import { usePermission } from '@/hooks';
 
 import Checkout from './Checkout';

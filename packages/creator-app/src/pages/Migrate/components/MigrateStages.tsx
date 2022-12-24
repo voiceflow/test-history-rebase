@@ -2,7 +2,7 @@ import { Alert, Spinner } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Account from '@/ducks/account';
-import { connect } from '@/hocs';
+import { connect } from '@/hocs/connect';
 import { useAsyncMountUnmount } from '@/hooks';
 
 import Migration from './Migration';

@@ -1,4 +1,4 @@
-import { css, styled } from '@/hocs';
+import { css, styled } from '@/hocs/styled';
 
 /**
  * These borders are invisible components that are meant to be placed on top of

@@ -5,7 +5,7 @@ import { DropTargetMonitor, useDrag, useDrop } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
 
 import { HOVER_THROTTLE_TIMEOUT } from '@/constants';
-import { DragContextPreviewProps } from '@/contexts';
+import { DragContextPreviewProps } from '@/contexts/DragContext';
 
 import { DnDHandlers, DnDItem, InternalItem } from './types';
 

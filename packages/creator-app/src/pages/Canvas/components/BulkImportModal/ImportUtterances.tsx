@@ -11,7 +11,7 @@ import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as SlotV2 from '@/ducks/slotV2';
 import * as Tracking from '@/ducks/tracking';
-import { connect } from '@/hocs';
+import { connect } from '@/hocs/connect';
 import { useDebouncedCallback, useModals, useSelector, useTrackingEvents } from '@/hooks';
 import { ConnectedProps } from '@/types';
 import { readFileAsText } from '@/utils/file';

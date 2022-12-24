@@ -1,4 +1,4 @@
-import { css, styled } from '@/hocs';
+import { css, styled } from '@/hocs/styled';
 import { FadeLeft } from '@/styles/animations';
 
 export interface ContainerProps {

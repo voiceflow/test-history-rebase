@@ -1,4 +1,4 @@
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 import THEME from '@/styles/theme';
 
 const TermsAndConditionsContainer = styled.div`

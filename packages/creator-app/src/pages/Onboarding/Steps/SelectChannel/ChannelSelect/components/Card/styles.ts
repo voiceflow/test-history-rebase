@@ -1,7 +1,7 @@
 import { FlexCenter } from '@voiceflow/ui';
 import { rgba } from 'polished';
 
-import { css, styled, transition } from '@/hocs';
+import { css, styled, transition } from '@/hocs/styled';
 
 export const Container = styled.div<{ disabled?: boolean }>`
   ${transition('opacity', 'border-color', 'box-shadow', 'opacity')};

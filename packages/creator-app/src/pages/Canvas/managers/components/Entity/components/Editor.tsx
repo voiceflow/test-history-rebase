@@ -1,52 +1,47 @@
 import { SectionV2 } from '@voiceflow/ui';
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 
+import EntityPromptSection from '@/components/EntityPromptSection';
 import * as Intent from '@/ducks/intent';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as SlotV2 from '@/ducks/slotV2';
-import * as VersionV2 from '@/ducks/versionV2';
-import { useActiveProjectTypeConfig, useDispatch, useSelector } from '@/hooks';
+import { useDispatch, useSelector } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import { isAlexaPlatform } from '@/utils/typeGuards';
-
-import EntityPromptSection from '../../EntityPromptSection';
 
 interface EditorProps {
   goBack?: VoidFunction;
 }
 
 const Editor: React.FC<EditorProps> = ({ goBack }) => {
-  const projectConfig = useActiveProjectTypeConfig();
-
   const editor = EditorV2.useEditor();
 
+  const location = useLocation<{ autogenerate?: boolean }>();
   const { intentID, entityID } = useParams<{ intentID: string; entityID: string }>();
 
-  const defaultVoice = useSelector(VersionV2.active.voice.defaultVoiceSelector);
+  const intent = useSelector(IntentV2.intentByIDSelector, { id: intentID });
   const intentEntity = useSelector(IntentV2.intentSlotByIntentIDSlotIDSelector, { id: intentID, slotID: entityID });
   const intentEntityIDs = useSelector(IntentV2.slotsByIntentIDSelector, { id: intentID });
-  const intentEntities = useSelector(SlotV2.slotsByIDsSelector, { ids: intentEntityIDs });
+  const entity = useSelector(SlotV2.slotByIDSelector, { id: entityID });
+  const entities = useSelector(SlotV2.slotsByIDsSelector, { ids: intentEntityIDs });
 
   const onChangeDialog = useDispatch(Intent.updateIntentSlotDialog, intentID, entityID);
 
   const isAlexa = isAlexaPlatform(editor.platform);
-  const hasDialogConfirm = !!intentEntity?.dialog.confirm.length;
-  const withDialogConfirm = !!intentEntity?.dialog.confirmEnabled && hasDialogConfirm;
 
   return (
     <EditorV2 header={<EditorV2.DefaultHeader onBack={goBack ?? editor.goBack} />}>
-      {!!intentEntity && (
+      {!!entity && !!intentEntity && (
         <>
           <EntityPromptSection
-            title="Entity reprompt"
-            onAdd={() => onChangeDialog({ prompt: [projectConfig.utils.intent.promptFactory({ defaultVoice })] })}
-            prompt={intentEntity.dialog.prompt}
+            entity={entity}
+            prompts={intentEntity.dialog.prompt}
+            entities={entities}
             onChange={(prompt) => onChangeDialog({ prompt })}
-            onRemove={() => onChangeDialog({ prompt: [] })}
-            collapsed={!intentEntity?.dialog.prompt.length}
-            placeholder="Enter question to prompt user to fill entity"
-            intentEntities={intentEntities}
+            intentName={intent?.name ?? ''}
+            intentInputs={intent?.inputs ?? []}
+            autogenerate={location.state?.autogenerate}
           />
 
           <SectionV2.Divider />
@@ -55,13 +50,13 @@ const Editor: React.FC<EditorProps> = ({ goBack }) => {
             <>
               <EntityPromptSection
                 title="Confirmation"
-                onAdd={() => onChangeDialog({ confirm: [projectConfig.utils.intent.promptFactory({ defaultVoice })], confirmEnabled: true })}
-                prompt={intentEntity.dialog.confirm}
-                onChange={(confirm) => onChangeDialog({ confirm, confirmEnabled: true })}
-                onRemove={() => onChangeDialog({ confirm: [], confirmEnabled: false })}
-                collapsed={!withDialogConfirm}
+                entity={entity}
+                prompts={intentEntity.dialog.confirm}
+                entities={entities}
+                onChange={(confirm) => onChangeDialog({ confirm, confirmEnabled: !!confirm.length })}
                 placeholder="Yes or no question to confirm the entity value"
-                intentEntities={intentEntities}
+                intentName={intent?.name ?? ''}
+                intentInputs={intent?.inputs ?? []}
               />
 
               <SectionV2.Divider />

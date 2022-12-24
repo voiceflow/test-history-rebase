@@ -1,6 +1,6 @@
 import { inputStyle, SvgIcon } from '@voiceflow/ui';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 export const InputContainer = styled.div<{ error?: boolean }>`
   display: flex;

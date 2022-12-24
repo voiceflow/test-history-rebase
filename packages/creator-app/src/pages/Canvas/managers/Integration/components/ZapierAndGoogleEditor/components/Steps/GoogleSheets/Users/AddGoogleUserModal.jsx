@@ -7,7 +7,7 @@ import { GOOGLE_SPREADSHEETS_INTEGRATION_SCOPES } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as Integration from '@/ducks/integration';
 import { SourceType } from '@/ducks/tracking/constants';
-import { connect } from '@/hocs';
+import { connect } from '@/hocs/connect';
 import { useTrackingEvents } from '@/hooks';
 
 const GOOGLE_SHEETS = 'Google Sheets';

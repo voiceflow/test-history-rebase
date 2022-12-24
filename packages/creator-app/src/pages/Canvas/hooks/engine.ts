@@ -4,7 +4,7 @@ import React from 'react';
 import { useSelector, useStore } from 'react-redux';
 
 import { IS_DEVELOPMENT } from '@/config';
-import { MousePositionContext } from '@/contexts';
+import { MousePositionContext } from '@/contexts/MousePositionContext';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import { useForceUpdate } from '@/hooks';
 import { CanvasAction } from '@/pages/Canvas/constants';

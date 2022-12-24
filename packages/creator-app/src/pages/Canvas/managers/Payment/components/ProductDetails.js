@@ -1,6 +1,6 @@
 import { flexStyles } from '@voiceflow/ui';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 const ProductDetails = styled.div`
   ${flexStyles}

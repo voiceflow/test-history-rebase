@@ -60,8 +60,9 @@ const EditModal: React.FC = () => {
       headerBorder
     >
       <Box width="100%" overflow="auto" maxHeight={MAX_HEIGHT_CALC}>
-        <EditEntityForm slotID={data.id} creationType={Tracking.NLUEntityCreationType.NLU_QUICKVIEW} />
+        <EditEntityForm key={data.id} slotID={data.id} creationType={Tracking.NLUEntityCreationType.NLU_QUICKVIEW} />
       </Box>
+
       <ModalFooter justifyContent="flex-end">
         <Button variant={ButtonVariant.PRIMARY} onClick={close}>
           Close

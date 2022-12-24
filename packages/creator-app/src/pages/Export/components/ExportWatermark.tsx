@@ -4,7 +4,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 
 import { wordmarkDark } from '@/assets';
-import { createGlobalStyle, css } from '@/hocs';
+import { createGlobalStyle, css } from '@/hocs/styled';
 
 import { EXPORT_WATERMARK_CLASS } from '../constants';
 

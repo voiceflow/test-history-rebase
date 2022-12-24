@@ -16,6 +16,7 @@ interface SSMLWithSlotsProps {
   slots: Realtime.Slot[];
   voice?: string;
   onBlur: (data: { text: string; slots: string[] }) => void;
+  isActive?: boolean;
   autofocus?: boolean;
   placeholder?: string;
   onChangeVoice: (newVoice: string) => void;

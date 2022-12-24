@@ -1,6 +1,6 @@
 import { transition } from '@voiceflow/ui';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 export interface DropdownWrapperProps {
   size?: string;

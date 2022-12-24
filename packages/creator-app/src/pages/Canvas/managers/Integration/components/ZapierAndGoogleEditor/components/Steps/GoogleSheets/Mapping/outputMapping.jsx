@@ -3,7 +3,7 @@ import React from 'react';
 import Select from 'react-select';
 
 import VariableSelect from '@/components/VariableSelect';
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 const MapLine = styled.div`
   margin-bottom: 6px;

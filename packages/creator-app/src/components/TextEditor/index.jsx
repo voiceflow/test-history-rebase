@@ -9,12 +9,16 @@ import TextEditor from './TextEditor';
 
 export { PluginType } from './plugins';
 
-const TextEditorInput = ({ icon, variant, iconProps, className, wrapperProps, leftAction, rightAction, error, disabled, ...props }, ref) => (
+const TextEditorInput = (
+  { icon, variant, iconProps, className, wrapperProps, leftAction, rightAction, error, disabled, isActive, ...props },
+  ref
+) => (
   <Input
     ref={ref}
     icon={icon}
     error={error}
     variant={variant}
+    isActive={isActive}
     disabled={disabled}
     className={cn(ClassName.TEXT_EDITOR, CONTEXT_MENU_IGNORED_CLASS_NAME, className)}
     iconProps={iconProps}

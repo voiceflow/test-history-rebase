@@ -1,6 +1,6 @@
 import { Flex } from '@voiceflow/ui';
 
-import { styled, units } from '@/hocs';
+import { styled, units } from '@/hocs/styled';
 
 const ControlsContainer = styled(Flex)`
   & > *:not(:first-child) {

@@ -24,12 +24,13 @@ export interface DropdownProps<Value = void> {
   options?: Nullable<MenuTypes.Option<Value>>[];
   onSelect?: MenuTypes.OnSelect<Value>;
   noScroll?: boolean;
-  children: (ref: React.Ref<any>, onToggle: () => void, isOpen: boolean) => React.ReactNode;
+  children: (ref: React.Ref<any>, onToggle: () => void, isOpen: boolean, dropdown: React.ReactNode) => React.ReactNode;
+  menuHint?: React.ReactNode;
   maxHeight?: number | string;
   menuWidth?: number;
   placement?: DropdownPlacement;
   autoWidth?: boolean;
-  dropdownText?: string;
+  inlinePopper?: boolean;
   selfDismiss?: boolean;
   disabledOverlay?: boolean;
   preventOverflow?: StrictModifier<'preventOverflow'>['options'];
@@ -46,16 +47,17 @@ const Dropdown = <Value extends unknown = void>({
   options,
   noScroll,
   onSelect,
+  menuHint,
   children,
   menuWidth,
   maxHeight,
   placement = 'bottom-start',
   autoWidth = false,
   selfDismiss = false,
+  inlinePopper = false,
   disabledOverlay = false,
   preventOverflow,
   maxVisibleItems,
-  dropdownText,
 }: DropdownProps<Value>): React.ReactElement => {
   const popper = usePopper({
     placement,
@@ -73,40 +75,42 @@ const Dropdown = <Value extends unknown = void>({
   const Wrapper = portal ? Portal : Fragment;
   const wrapperProps = portal ? { portalNode: portal } : {};
 
+  const popperElement = isOpen && (
+    <Wrapper {...wrapperProps}>
+      <PopoverContainer
+        ref={popper.setPopperElement}
+        style={popper.styles.popper}
+        zIndex={zIndex}
+        noScroll={noScroll}
+        autoWidth={autoWidth}
+        {...popper.attributes.popper}
+      >
+        <DismissableLayerProvider>
+          <ThemeProvider theme={nestedTheme}>
+            {(typeof menu === 'function' ? menu(onToggle) : menu) ||
+              (options && (
+                <Menu<Value>
+                  hint={menuHint}
+                  width={menuWidth}
+                  options={options}
+                  onSelect={onSelect}
+                  onToggle={onToggle}
+                  maxHeight={maxHeight}
+                  selfDismiss={selfDismiss}
+                  maxVisibleItems={maxVisibleItems}
+                />
+              ))}
+          </ThemeProvider>
+        </DismissableLayerProvider>
+      </PopoverContainer>
+    </Wrapper>
+  );
+
   return (
     <>
-      {children(popper.setReferenceElement, onToggle, isOpen)}
+      {children(popper.setReferenceElement, onToggle, isOpen, inlinePopper && popperElement)}
 
-      {isOpen && (
-        <Wrapper {...wrapperProps}>
-          <PopoverContainer
-            ref={popper.setPopperElement}
-            style={popper.styles.popper}
-            zIndex={zIndex}
-            noScroll={noScroll}
-            autoWidth={autoWidth}
-            {...popper.attributes.popper}
-          >
-            <DismissableLayerProvider>
-              <ThemeProvider theme={nestedTheme}>
-                {(typeof menu === 'function' ? menu(onToggle) : menu) ||
-                  (options && (
-                    <Menu<Value>
-                      menuText={dropdownText}
-                      width={menuWidth}
-                      options={options}
-                      onSelect={onSelect}
-                      onToggle={onToggle}
-                      maxHeight={maxHeight}
-                      selfDismiss={selfDismiss}
-                      maxVisibleItems={maxVisibleItems}
-                    />
-                  ))}
-              </ThemeProvider>
-            </DismissableLayerProvider>
-          </PopoverContainer>
-        </Wrapper>
-      )}
+      {!inlinePopper && popperElement}
     </>
   );
 };

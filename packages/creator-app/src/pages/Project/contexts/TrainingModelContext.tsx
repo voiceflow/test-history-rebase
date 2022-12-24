@@ -8,7 +8,7 @@ import client from '@/client';
 import * as Errors from '@/config/errors';
 import { NLURoute } from '@/config/routes';
 import { NLPTrainStageType } from '@/constants/platforms';
-import { TrainingContext } from '@/contexts';
+import { TrainingContext } from '@/contexts/TrainingContext';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as PrototypeDuck from '@/ducks/prototype';
 import * as Router from '@/ducks/router';

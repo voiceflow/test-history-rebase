@@ -1,4 +1,4 @@
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 const PreviewContainer = styled.div`
   overflow-wrap: break-word;

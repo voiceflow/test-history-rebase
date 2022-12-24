@@ -24,9 +24,13 @@ export const slotSanitizer = ({ dialog, ...baseIntentSlot }: Required<Optional<M
 export const CONFIG = Base.Utils.Intent.extend({
   slotFactory: slotSanitizer,
 
+  slotSanitizer,
+
+  isPrompt: PromptUtils.isPrompt,
+
   promptFactory: PromptUtils.factory,
 
-  slotSanitizer,
+  isPromptEmpty: PromptUtils.isEmpty,
 
   slotDialogSanitizer,
 })(Base.Utils.Intent.validate);

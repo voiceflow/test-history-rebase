@@ -1,6 +1,6 @@
 import { flexApartStyles } from '@voiceflow/ui';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 import { sectionStyles } from '@/pages/Canvas/components/Editor/styles';
 
 import { HEADER_HEIGHT } from '../constants';

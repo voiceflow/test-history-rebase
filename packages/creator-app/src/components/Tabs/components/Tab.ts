@@ -1,6 +1,6 @@
 import { baseButtonStyles } from '@voiceflow/ui';
 
-import { css, styled, transition } from '@/hocs';
+import { css, styled, transition } from '@/hocs/styled';
 
 interface TabProps {
   color?: string;

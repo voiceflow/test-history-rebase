@@ -4,7 +4,7 @@ import React, { useCallback, useEffect } from 'react';
 
 import * as Session from '@/ducks/session';
 import * as VersionV2 from '@/ducks/versionV2';
-import { connect } from '@/hocs';
+import { connect } from '@/hocs/connect';
 import * as ModalsV2 from '@/ModalsV2';
 import { Content } from '@/pages/Canvas/components/Editor';
 import IntegrationsService from '@/services/Integrations';

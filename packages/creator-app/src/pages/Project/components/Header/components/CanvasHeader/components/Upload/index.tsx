@@ -1,6 +1,6 @@
 import * as Platform from '@voiceflow/platform-config';
 
-import { platformAware } from '@/hocs';
+import { platformAware } from '@/hocs/platformAware';
 import Alexa from '@/platforms/alexa/jobs/publish';
 import DialogflowCX from '@/platforms/dialogflowCX/jobs/publish';
 import DialogflowES from '@/platforms/dialogflowES/jobs/publish';

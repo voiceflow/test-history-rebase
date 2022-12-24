@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 import { DragScroll } from '@/utils/scroll';
 
 const ImageContainer = styled.div`

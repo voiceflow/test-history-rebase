@@ -5,8 +5,8 @@ import _constant from 'lodash/constant';
 import React from 'react';
 
 import { Permission } from '@/config/permissions';
-import { ScrollContextProvider } from '@/contexts';
-import { DragItem as BaseDragItem, DropOptions, InjectedDraggableComponentProps, withDraggable } from '@/hocs';
+import { ScrollContextProvider } from '@/contexts/ScrollContext';
+import { DragItem as BaseDragItem, DropOptions, InjectedDraggableComponentProps, withDraggable } from '@/hocs/withDraggable';
 import { useHorizontalScrollToNode, useLinkedState, usePermission, useScrollHelpers, useScrollStickySides } from '@/hooks';
 import { useToggle } from '@/hooks/toggle';
 import { DashboardClassName } from '@/styles/constants';

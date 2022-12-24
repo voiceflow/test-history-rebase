@@ -3,7 +3,8 @@ import React from 'react';
 
 import { TEAM_LIMIT } from '@/config/planLimitV2/editorSeats';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { useOnAddSeats, useSelector } from '@/hooks';
+import { useSelector } from '@/hooks/redux';
+import { useOnAddSeats } from '@/hooks/workspace';
 
 export interface TakenSeatsMessageProps {
   error?: boolean;

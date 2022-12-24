@@ -1,6 +1,6 @@
 import { Link, SvgIcon } from '@voiceflow/ui';
 
-import { css, styled, transition } from '@/hocs';
+import { css, styled, transition } from '@/hocs/styled';
 
 export const SelectWrapper = styled.div`
   margin-left: 12px;

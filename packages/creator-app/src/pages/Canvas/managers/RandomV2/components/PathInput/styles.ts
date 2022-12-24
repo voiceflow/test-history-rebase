@@ -1,6 +1,6 @@
 import { Box } from '@voiceflow/ui';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 export const RemoveContainer = styled(Box)<{ disabled: boolean }>`
   cursor: not-allowed;

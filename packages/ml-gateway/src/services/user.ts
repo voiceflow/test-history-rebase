@@ -1,4 +1,5 @@
 import { User } from '@voiceflow/socket-utils';
+import _debounce from 'lodash/debounce';
 
 import { AbstractControl } from '@/control';
 
@@ -31,6 +32,19 @@ class UserService extends AbstractControl {
     await Promise.all([this.userCache.set({ token }, user), this.tokenCache.set({ userID: user.creator_id }, token)]);
   }
 
+  // TODO: remove this altogether after FF
+  private async checkIdentityUserEnabled(token: string): Promise<boolean> {
+    const isIdentityUserEnabled = await this.services.voiceflow
+      .getClientByToken(token)
+      .fetch.get<{ status: boolean }>(`feature/identity_user`)
+      .catch(() => null);
+
+    return isIdentityUserEnabled?.data?.status ?? false;
+  }
+
+  // only check every 5 minutes
+  private debouncedCheckIdentityUserEnabled = _debounce(this.checkIdentityUserEnabled, 5 * 60 * 1000);
+
   public async getUserByToken(token: string): Promise<User | null> {
     const cachedUser = await this.userCache.get({ token });
 
@@ -38,7 +52,15 @@ class UserService extends AbstractControl {
       return cachedUser;
     }
 
-    const user = await this.services.voiceflow.getClientByToken(token).user.get();
+    let user: User | null = null;
+
+    if (await this.debouncedCheckIdentityUserEnabled(token)) {
+      const ownUser = await this.services.voiceflow.getClientByToken(token).identity.user.getSelf();
+
+      user = { ...ownUser, creator_id: ownUser.id, image: ownUser.image ?? '' };
+    } else {
+      user = await this.services.voiceflow.getClientByToken(token).user.get();
+    }
 
     if (user) {
       await this.cacheUser(token, user);

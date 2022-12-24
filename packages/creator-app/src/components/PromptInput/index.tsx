@@ -2,7 +2,7 @@ import * as Platform from '@voiceflow/platform-config';
 import React from 'react';
 
 import * as ProjectV2 from '@/ducks/projectV2';
-import { useSelector } from '@/hooks';
+import { useSelector } from '@/hooks/redux';
 
 import TextBasedEditor, { PromptInputTextEditorProps } from './TextEditor';
 import VoiceBasedEditor, { PromptInputVoiceEditorProps } from './VoiceEditor';

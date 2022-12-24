@@ -2,7 +2,7 @@ import React from 'react';
 
 import LoadingGate from '@/components/LoadingGate';
 import * as Account from '@/ducks/account';
-import { withSessionGate } from '@/hocs';
+import { withSessionGate } from '@/hocs/session';
 import { useCreatorSubscription, useSelector } from '@/hooks';
 
 const AccountSubscriptionGate: React.FC = ({ children }) => {

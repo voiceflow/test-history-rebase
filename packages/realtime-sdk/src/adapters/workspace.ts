@@ -23,6 +23,7 @@ const workspaceAdapter = createMultiAdapter<DBWorkspace, Workspace>(
     organization_id,
     variableStatesLimit,
     organization_trial_days_left,
+    settings,
   }) => {
     let state: WorkspaceActivationState | null = null;
     if (INVALID_STATES.includes(stripe_status)) {
@@ -49,6 +50,7 @@ const workspaceAdapter = createMultiAdapter<DBWorkspace, Workspace>(
       organizationID: organization_id,
       variableStatesLimit,
       organizationTrialDaysLeft: organization_trial_days_left,
+      settings,
     };
   },
   notImplementedAdapter.transformer

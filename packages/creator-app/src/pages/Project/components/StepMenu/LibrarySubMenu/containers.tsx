@@ -1,4 +1,4 @@
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 export const TabsContainer = styled.div`
   padding-top: 12px;

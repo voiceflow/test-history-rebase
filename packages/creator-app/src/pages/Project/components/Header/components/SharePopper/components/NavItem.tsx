@@ -2,7 +2,7 @@ import { Popper } from '@voiceflow/ui';
 import React from 'react';
 import { NavLinkProps } from 'react-router-dom';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 const PopperNavContainer = styled.div`
   a {

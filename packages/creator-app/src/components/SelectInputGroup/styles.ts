@@ -1,6 +1,6 @@
 import { InputWrapper, SelectWrapper } from '@voiceflow/ui';
 
-import { css, styled } from '@/hocs';
+import { css, styled } from '@/hocs/styled';
 
 export const SelectContainer = styled.div<{ isLeft?: boolean }>`
   ${SelectWrapper} {

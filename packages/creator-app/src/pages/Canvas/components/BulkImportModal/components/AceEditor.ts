@@ -1,5 +1,5 @@
 import BaseAceEditor from '@/components/AceEditor';
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 export default styled(BaseAceEditor).attrs({
   fontSize: 14,

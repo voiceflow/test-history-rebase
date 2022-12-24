@@ -1,7 +1,7 @@
 /* eslint-disable no-nested-ternary */
 import { IS_MAC } from '@voiceflow/ui';
 
-import { css, styled } from '@/hocs';
+import { css, styled } from '@/hocs/styled';
 
 const hotKey = IS_MAC ? '⌘↵' : 'Ctrl↵';
 

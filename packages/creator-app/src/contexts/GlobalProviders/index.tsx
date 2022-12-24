@@ -17,6 +17,7 @@ import { AutoPanningProvider } from '../AutoPanningContext';
 import { DragProvider } from '../DragContext';
 import { EventualEngineProvider } from '../EventualEngineContext';
 import { FeatureFlagsProvider } from '../FeatureFlagsContext';
+import { HotkeysContextProvider } from '../HotkeysContext';
 import { IdentityProvider } from '../IdentityContext';
 import LifecycleProvider from '../LifecycleProvider';
 import { MLProvider } from '../MLContext';
@@ -50,26 +51,28 @@ const GlobalProviders: React.FC<GlobalProvidersProps> = ({ history, store, persi
                             <DismissableLayersGlobalProvider>
                               <DragProvider>
                                 <AutoPanningProvider>
-                                  <ProjectConfigProvider>
-                                    <ModalsContextProvider>
-                                      <ModalsV2.Provider>
-                                        <Upload.Provider client={client.upload} onError={Sentry.error}>
-                                          <AccountLoadingGate>
-                                            <RealtimeConnectionGate>
-                                              <MLProvider>
-                                                <AccountSubscriptionGate>
-                                                  <VoiceflowAssistantVisibilityProvider>
-                                                    {/* to keep on a new line */}
-                                                    {children}
-                                                  </VoiceflowAssistantVisibilityProvider>
-                                                </AccountSubscriptionGate>
-                                              </MLProvider>
-                                            </RealtimeConnectionGate>
-                                          </AccountLoadingGate>
-                                        </Upload.Provider>
-                                      </ModalsV2.Provider>
-                                    </ModalsContextProvider>
-                                  </ProjectConfigProvider>
+                                  <HotkeysContextProvider>
+                                    <ProjectConfigProvider>
+                                      <ModalsContextProvider>
+                                        <ModalsV2.Provider>
+                                          <Upload.Provider client={client.upload} onError={Sentry.error}>
+                                            <AccountLoadingGate>
+                                              <RealtimeConnectionGate>
+                                                <MLProvider>
+                                                  <AccountSubscriptionGate>
+                                                    <VoiceflowAssistantVisibilityProvider>
+                                                      {/* to keep on a new line */}
+                                                      {children}
+                                                    </VoiceflowAssistantVisibilityProvider>
+                                                  </AccountSubscriptionGate>
+                                                </MLProvider>
+                                              </RealtimeConnectionGate>
+                                            </AccountLoadingGate>
+                                          </Upload.Provider>
+                                        </ModalsV2.Provider>
+                                      </ModalsContextProvider>
+                                    </ProjectConfigProvider>
+                                  </HotkeysContextProvider>
                                 </AutoPanningProvider>
                               </DragProvider>
                             </DismissableLayersGlobalProvider>

@@ -14,17 +14,19 @@ export interface SocketServerOptions {
   cwd: string;
   env: string;
   logger: Logger;
+  timeout?: number;
   loggerIgnoredActions?: string[];
 }
 
 export class SocketServer extends Logux.Server {
-  constructor({ port, cwd, env, logger, loggerIgnoredActions }: SocketServerOptions) {
+  constructor({ port, cwd, env, logger, timeout, loggerIgnoredActions }: SocketServerOptions) {
     super({
       subprotocol: SUBPROTOCOL,
       supports: SUPPORT_RANGE,
       root: cwd,
       host: '0.0.0.0',
       port,
+      timeout,
       logger: {
         info: (details: { action: AnyAction }, message) => {
           const actionType = details?.action?.type || '';

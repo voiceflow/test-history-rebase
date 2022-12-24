@@ -1,7 +1,7 @@
 import { Box } from '@voiceflow/ui';
 
 import { itemDragPlaceholder } from '@/assets';
-import { css, styled, transition } from '@/hocs';
+import { css, styled, transition } from '@/hocs/styled';
 
 interface SubMenuButtonContainerProps {
   isClicked: boolean;

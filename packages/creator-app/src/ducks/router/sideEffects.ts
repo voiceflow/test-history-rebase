@@ -1,17 +1,21 @@
 import { Struct } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { generatePath } from 'react-router-dom';
 
 import { PageProgress } from '@/components/PageProgressBar/utils';
 import * as Errors from '@/config/errors';
 import { NLURoute, Path } from '@/config/routes';
-import { InteractionModelTabType, PageProgressBar } from '@/constants';
+import { InteractionModelTabType, PageProgressBar, VariableType } from '@/constants';
 import * as Creator from '@/ducks/creator';
+import { localVariablesSelector } from '@/ducks/diagramV2/selectors/active';
 import * as DomainSelectors from '@/ducks/domain/selectors';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import * as Tracking from '@/ducks/tracking';
 import { NLUManagerOpenedOrigin } from '@/ducks/tracking/constants';
+import { globalVariablesSelector } from '@/ducks/versionV2/selectors/active';
 import { SyncThunk, Thunk } from '@/store/types';
+import { addVariablePrefix, removeVariablePrefix } from '@/utils/variable';
 
 import {
   goTo,
@@ -285,13 +289,15 @@ export const goToCurrentPrototype =
     dispatch(goToPrototype(versionID, nodeID));
   };
 
-export const goToCurrentSettings = (): SyncThunk => (dispatch, getState) => {
-  const versionID = Session.activeVersionIDSelector(getState());
+export const goToCurrentSettings =
+  (options?: { state: Struct }): SyncThunk =>
+  (dispatch, getState) => {
+    const versionID = Session.activeVersionIDSelector(getState());
 
-  Errors.assertVersionID(versionID);
+    Errors.assertVersionID(versionID);
 
-  dispatch(goToSettings(versionID));
-};
+    dispatch(goToSettings(versionID, options));
+  };
 
 export const goToCurrentAnalytics = (): SyncThunk => (dispatch, getState) => {
   const versionID = Session.activeVersionIDSelector(getState());
@@ -356,6 +362,24 @@ export const goToCurrentCanvasInteractionModelEntity =
     Errors.assertVersionID(versionID);
     Errors.assertDiagramID(diagramID);
 
+    let modelEntityID = entityID;
+
+    // entity is variable and it's not prefixed with variable type
+    if (entityType === InteractionModelTabType.VARIABLES && entityID === removeVariablePrefix(entityID)) {
+      const platform = ProjectV2.active.platformSelector(state);
+      const localVariables = localVariablesSelector(state);
+      const globalVariables = globalVariablesSelector(state);
+      const builtInVariable = Realtime.Utils.globalVariables.getPlatformGlobalVariables(platform);
+
+      if (localVariables.includes(entityID)) {
+        modelEntityID = addVariablePrefix(VariableType.LOCAL, entityID);
+      } else if (globalVariables.includes(entityID)) {
+        modelEntityID = addVariablePrefix(VariableType.GLOBAL, entityID);
+      } else if (builtInVariable.includes(entityID)) {
+        modelEntityID = addVariablePrefix(VariableType.BUILT_IN, entityID);
+      }
+    }
+
     dispatch(
       goTo(
         generatePath(Path.CANVAS_MODEL_ENTITY, {
@@ -363,7 +387,7 @@ export const goToCurrentCanvasInteractionModelEntity =
           versionID,
           diagramID,
           modelType: entityType,
-          modelEntityID: encodeURIComponent(entityID),
+          modelEntityID: encodeURIComponent(modelEntityID),
         })
       )
     );

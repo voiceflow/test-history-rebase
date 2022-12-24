@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 const ExpiredText = styled.div`
   color: #e91e63;

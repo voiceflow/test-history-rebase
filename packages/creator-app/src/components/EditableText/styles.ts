@@ -1,4 +1,4 @@
-import { css } from '@/hocs';
+import { css } from '@/hocs/styled';
 
 export const defaultTextStyles = css`
   background: none;

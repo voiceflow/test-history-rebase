@@ -1,4 +1,4 @@
-import { css, styled, transition } from '@/hocs';
+import { css, styled, transition } from '@/hocs/styled';
 
 export const LinksWrapper = styled.div`
   display: flex;

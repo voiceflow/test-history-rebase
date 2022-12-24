@@ -1,6 +1,6 @@
 import { Flex, SelectWrapper } from '@voiceflow/ui';
 
-import { css, styled } from '@/hocs';
+import { css, styled } from '@/hocs/styled';
 
 interface ContainerProps {
   error?: boolean;

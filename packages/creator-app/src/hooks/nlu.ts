@@ -6,9 +6,10 @@ import React from 'react';
 import client from '@/client';
 import * as NLU from '@/config/nlu';
 import { NLUImportOrigin } from '@/constants';
-import { useTrackingEvents } from '@/hooks';
 import { NLUImportModel } from '@/models';
 import { upload } from '@/utils/dom';
+
+import { useTrackingEvents } from './tracking';
 
 interface Options {
   nluType: Platform.Constants.NLUType;

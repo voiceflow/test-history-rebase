@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 
 import * as Account from '@/ducks/account';
 import * as Integration from '@/ducks/integration';
-import { connect } from '@/hocs';
+import { connect } from '@/hocs/connect';
 
 class FeedAddUserModal extends Component {
   constructor(props) {

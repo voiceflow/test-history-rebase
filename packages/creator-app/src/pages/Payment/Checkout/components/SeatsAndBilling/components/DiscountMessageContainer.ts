@@ -1,4 +1,4 @@
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 const DiscountMessageContainer = styled.div`
   padding: 10px 32px 12px 32px;

@@ -3,9 +3,9 @@ import React from 'react';
 
 import { IS_PRIVATE_CLOUD } from '@/config';
 import { BlockType } from '@/constants';
-import { useActiveProjectType } from '@/hooks';
 
 import { useFeature } from './feature';
+import { useActiveProjectType } from './platformConfig';
 
 export const useCanvasNodeFilter = () => {
   const projectType = useActiveProjectType();

@@ -1,4 +1,4 @@
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 const NewLineAttachmentContainer = styled.div`
   padding-top: 10px;

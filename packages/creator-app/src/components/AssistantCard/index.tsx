@@ -1,12 +1,13 @@
 import { UserRole } from '@voiceflow/internal';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { AssistantCard as AssistantCardComponent, AssistantCardProps, OverflowTippyTooltip, setRef } from '@voiceflow/ui';
+import { AssistantCard as AssistantCardComponent, AssistantCardProps, OverflowTippyTooltip, setRef, useLinkedState } from '@voiceflow/ui';
 import React from 'react';
 
 import { EditableTextAPI } from '@/components/EditableText';
 import * as Project from '@/ducks/project';
-import { useDispatch, useLinkedState, useProjectOptions } from '@/hooks';
+import { useProjectOptions } from '@/hooks/project';
+import { useDispatch } from '@/hooks/realtime';
 import { withEnterPress, withInputBlur } from '@/utils/dom';
 import { formatProjectName } from '@/utils/string';
 

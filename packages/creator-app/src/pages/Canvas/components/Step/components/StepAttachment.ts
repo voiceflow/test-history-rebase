@@ -1,6 +1,6 @@
 import { IconButton, IconButtonSquareContainerProps, IconButtonVariant } from '@voiceflow/ui';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 import { CANVAS_PROTOTYPE_ENABLED_CLASSNAME } from '@/pages/Canvas/constants';
 
 const Attachment = styled(IconButton).attrs({

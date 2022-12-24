@@ -7,7 +7,9 @@ import React from 'react';
 import client from '@/client';
 import * as Account from '@/ducks/account';
 import * as Feature from '@/ducks/feature';
-import { useDispatch, useSelector, useTrackingEvents } from '@/hooks';
+import { useDispatch } from '@/hooks/realtime';
+import { useSelector } from '@/hooks/redux';
+import { useTrackingEvents } from '@/hooks/tracking';
 
 import manager from '../../manager';
 

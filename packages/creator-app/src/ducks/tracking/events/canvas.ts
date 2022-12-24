@@ -9,7 +9,6 @@ import {
   IntentEditType,
   NLUEntityCreationType,
   NoMatchCreationType,
-  NoMatchStepType,
   VariableType,
 } from '../constants';
 import { createProjectEventPayload, createProjectEventTracker, createVersionEventPayload, createVersionEventTracker } from '../utils';
@@ -114,53 +113,25 @@ export const trackNewStepCreated = createProjectEventTracker<{
   stepType: BlockType;
   menuType: StepMenuType;
 }>(({ stepType, menuType, ...options }) =>
-  client.api.analytics.track(
-    EventName.PROJECT_NEW_STEP_CREATED,
-    createProjectEventPayload(options, {
-      step_type: stepType,
-      menu_type: menuType,
-    })
-  )
+  client.api.analytics.track(EventName.PROJECT_NEW_STEP_CREATED, createProjectEventPayload(options, { step_type: stepType, menu_type: menuType }))
 );
 
 export const trackSearchBarQuery = createProjectEventTracker<{
   query: string;
   creator_id: number | null;
-  workspace_id: string | null;
-  project_id: string;
-}>(({ query, creator_id, workspace_id, project_id, ...options }) =>
-  client.api.analytics.track(
-    EventName.SEARCH_BAR_QUERY,
-    createProjectEventPayload(options, {
-      query,
-      creator_id,
-      workspace_id,
-      project_id,
-    })
-  )
+}>(({ query, creator_id, ...options }) =>
+  client.api.analytics.track(EventName.SEARCH_BAR_QUERY, createProjectEventPayload(options, { query, creator_id }))
 );
 
 export const trackSearchBarResultSelected = createProjectEventTracker<{
-  creator_id: number | null;
-  workspace_id: string | null;
-  project_id: string;
   query: string;
-  resultList: {
-    label: React.ReactNode;
-    entry: SearchTypes.DatabaseEntry;
-  }[];
   selected: string;
-}>(({ creator_id, workspace_id, project_id, query, resultList, selected, ...options }) =>
+  creator_id: number | null;
+  resultList: { label: React.ReactNode; entry: SearchTypes.DatabaseEntry }[];
+}>(({ creator_id, query, resultList, selected, ...options }) =>
   client.api.analytics.track(
     EventName.SEARCH_BAR_RESULT_SELECTED,
-    createProjectEventPayload(options, {
-      creator_id,
-      workspace_id,
-      project_id,
-      query,
-      result_list: resultList,
-      selected,
-    })
+    createProjectEventPayload(options, { query, selected, creator_id, result_list: resultList })
   )
 );
 
@@ -179,20 +150,16 @@ export const trackActionDeleted = createProjectEventTracker<{ nodeType: BlockTyp
 );
 
 export const trackBlockTemplateCreated = createProjectEventTracker<{
-  creator_id: number | null;
-  workspace_id: string | null;
-  project_id: string;
   org_id: string | null;
+  creator_id: number | null;
   template_id: string | null;
   nested_steps: (BlockType | undefined)[];
-}>(({ creator_id, workspace_id, project_id, org_id, template_id, nested_steps, ...options }) =>
+}>(({ creator_id, org_id, template_id, nested_steps, ...options }) =>
   client.api.analytics.track(
     EventName.BLOCK_TEMPLATE_CREATED,
     createProjectEventPayload(options, {
-      creator_id,
-      workspace_id,
-      project_id,
       org_id,
+      creator_id,
       template_id,
       nested_steps,
     })
@@ -200,21 +167,17 @@ export const trackBlockTemplateCreated = createProjectEventTracker<{
 );
 
 export const trackBlockTemplateUsed = createProjectEventTracker<{
-  creator_id: number | null;
-  workspace_id: string | null;
-  project_id: string;
   org_id: string | null;
+  creator_id: number | null;
   template_id: string | null;
   nested_steps: (BlockType | undefined)[];
   dropped_into: 'canvas' | 'block';
-}>(({ creator_id, workspace_id, project_id, org_id, template_id, nested_steps, dropped_into, ...options }) =>
+}>(({ creator_id, org_id, template_id, nested_steps, dropped_into, ...options }) =>
   client.api.analytics.track(
     EventName.BLOCK_TEMPLATE_USED,
     createProjectEventPayload(options, {
-      creator_id,
-      workspace_id,
-      project_id,
       org_id,
+      creator_id,
       template_id,
       nested_steps,
       dropped_into,
@@ -223,39 +186,31 @@ export const trackBlockTemplateUsed = createProjectEventTracker<{
 );
 
 export const trackNoMatchCreated = createProjectEventTracker<{
-  workspace_id: string | null;
-  project_id: string;
-  creation_type: NoMatchCreationType;
   step_id?: string;
-  step_type?: NoMatchStepType;
-}>(({ workspace_id, project_id, creation_type, step_id, step_type, ...options }) =>
+  step_type?: BlockType;
+  creation_type: NoMatchCreationType;
+}>(({ creation_type, step_id, step_type, ...options }) =>
   client.api.analytics.track(
     EventName.NO_MATCH_CREATED,
     createProjectEventPayload(options, {
-      workspace_id,
-      project_id,
-      creation_type,
       step_id,
       step_type,
+      creation_type,
     })
   )
 );
 
 export const trackNoReplyCreated = createProjectEventTracker<{
-  workspace_id: string | null;
-  project_id: string;
-  creation_type: NoMatchCreationType;
   step_id?: string;
-  step_type?: NoMatchStepType;
-}>(({ workspace_id, project_id, creation_type, step_id, step_type, ...options }) =>
+  step_type?: BlockType;
+  creation_type: NoMatchCreationType;
+}>(({ creation_type, step_id, step_type, ...options }) =>
   client.api.analytics.track(
     EventName.NO_REPLY_CREATED,
     createProjectEventPayload(options, {
-      workspace_id,
-      project_id,
-      creation_type,
       step_id,
       step_type,
+      creation_type,
     })
   )
 );

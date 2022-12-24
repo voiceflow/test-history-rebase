@@ -1,5 +1,5 @@
 import { Eventual, Utils } from '@voiceflow/common';
-import { useCachedValue, useCreateConst, usePersistFunction } from '@voiceflow/ui';
+import { useCachedValue, useCreateConst, useForceUpdate, usePersistFunction } from '@voiceflow/ui';
 // eslint-disable-next-line lodash/import-scope
 import type { DebouncedFunc } from 'lodash';
 import _debounce from 'lodash/debounce';
@@ -10,7 +10,6 @@ import React from 'react';
 import { IS_TEST } from '@/config';
 import { TransactionContext } from '@/contexts/TransactionContext';
 
-import { useForceUpdate } from './forceUpdate';
 import { useLazy } from './lazy';
 
 const UNIQUE_TYPES = new Set(['object', 'function']);
@@ -34,12 +33,14 @@ interface MapManagedBaseOptions<Item> {
   getKey?: (value: Item) => string;
   onAdded?: (value: Item, index: number) => Eventual<void | void[]>;
   validate?: (value: Item, options: { index: number; isUpdate: boolean; originalValue: Item | null }) => boolean;
+  minItems?: number;
   maxItems?: number;
   onRemove?: (value: Item, index: number) => Eventual<void | void[]>;
   onRemoved?: (value: Item, index: number) => Eventual<void | void[]>;
   debounced?: boolean;
   onReorder?: (from: number, to: number) => Eventual<void | void[]>;
   onReordered?: (from: number, to: number) => Eventual<void | void[]>;
+  maxVisibleItems?: number;
 }
 
 export interface MapManagedSimpleOptions<Item> extends MapManagedBaseOptions<Item> {
@@ -63,8 +64,10 @@ interface MapManagedBaseAPI<Item> {
   onRemove: (key: string) => Promise<void>;
   onReorder: (from: number, to: number) => Promise<void>;
   isOnlyItem: boolean;
+  isMinReached: boolean;
   isMaxReached: boolean;
   latestCreatedKey: string | undefined;
+  getCachedItems: () => Item[];
 }
 
 export interface MapManagedSimpleAPI<Item> extends MapManagedBaseAPI<Item> {
@@ -95,11 +98,13 @@ export const useMapManager: MapManager = (
     onAdded: handleAdded,
     onRemoved: handleRemoved,
     validate = () => true,
+    minItems,
     maxItems,
     onRemove: handleRemove,
     debounced = true,
     onReorder: handleReorder,
     onReordered: handleReordered,
+    maxVisibleItems,
   } = {}
   // eslint-disable-next-line sonarjs/cognitive-complexity
 ) => {
@@ -159,6 +164,7 @@ export const useMapManager: MapManager = (
     onChange(denormalized, save);
   });
 
+  const isMinReached = useCachedValue(minItems == null ? false : normalized.current.allKeys.length <= minItems);
   const isMaxReached = useCachedValue(maxItems == null ? false : normalized.current.allKeys.length >= maxItems);
 
   const debouncedOnChange = React.useMemo<OnManagerChange<Item> | DebouncedFunc<OnManagerChange<Item>>>(
@@ -277,7 +283,7 @@ export const useMapManager: MapManager = (
 
       if (validate?.(nextValue, { index, isUpdate: true, originalValue: currValue }) === false) return;
 
-      const updated = Utils.normalized.updateNormalizedByKey(normalized.current, key, nextValue);
+      const updated = Normal.updateOne(normalized.current, key, nextValue);
 
       keyLookup.current.delete(generateLookupKey(currValue, index));
       keyLookup.current.set(generateLookupKey(updated.byKey[key], index), key);
@@ -291,6 +297,8 @@ export const useMapManager: MapManager = (
 
   const onRemove = React.useCallback(
     async (key: string) => {
+      if (isMinReached.current) return;
+
       const currValue = persistedGetItem(key);
       const currIndex = persistedGetIndex(key);
 
@@ -304,22 +312,26 @@ export const useMapManager: MapManager = (
     },
     [onSave]
   );
+  const getCachedItems = React.useCallback(() => Normal.denormalize(normalized.current), []);
 
   const memoizedRemove = React.useMemo(() => moize((key: string) => () => onRemove(key)), [onRemove]);
 
   const map = React.useCallback<MapManaged<Item>>(
-    (render) =>
-      normalized.current.allKeys.map((key, index) =>
+    (render) => {
+      const keys = typeof maxVisibleItems === 'number' ? normalized.current.allKeys.slice(0, maxVisibleItems) : normalized.current.allKeys;
+
+      return keys.map((key, index) =>
         render(persistedGetItem(key), {
           key,
           index,
-          isLast: index === normalized.current.allKeys.length - 1,
+          isLast: index === keys.length - 1,
           isFirst: index === 0,
           onUpdate: memoizedUpdate(key),
           onRemove: memoizedRemove(key),
         })
-      ),
-    [memoizedUpdate, memoizedRemove]
+      );
+    },
+    [memoizedUpdate, memoizedRemove, maxVisibleItems]
   );
 
   React.useEffect(() => memoizedUpdate.clear, [memoizedUpdate]);
@@ -340,7 +352,9 @@ export const useMapManager: MapManager = (
     isOnlyItem: normalized.current.allKeys.length === 1,
     onDuplicate,
     onAddToStart,
+    isMinReached: isMinReached.current,
     isMaxReached: isMaxReached.current,
+    getCachedItems,
     latestCreatedKey: latestCreatedKey.current,
   };
 };

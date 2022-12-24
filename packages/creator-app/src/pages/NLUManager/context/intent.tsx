@@ -5,7 +5,9 @@ import { InteractionModelTabType, ModalType } from '@/constants';
 import * as Tracking from '@/ducks/tracking';
 import { useModals, useOrderedIntents } from '@/hooks';
 
-import { useClarity, useNLUTable, useNotifications } from '../hooks';
+import useClarity from '../hooks/useClarity';
+import useNLUTable from '../hooks/useNLUTable';
+import useNotifications from '../hooks/useNotifications';
 
 export const INTENTS_INTIAL_STATE = {
   intents: [],

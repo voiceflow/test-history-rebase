@@ -1,6 +1,6 @@
 import { FlexCenter } from '@voiceflow/ui';
 
-import { css, styled } from '@/hocs';
+import { css, styled } from '@/hocs/styled';
 
 const LogoContainer = styled(FlexCenter)<{ size?: number; shadow?: boolean }>`
   border-radius: 50%;

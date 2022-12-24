@@ -1,6 +1,6 @@
 import { Box, SectionV2 } from '@voiceflow/ui';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 export const Item = styled(Box)`
   width: 100%;

@@ -1,7 +1,7 @@
 import { PlanType } from '@voiceflow/internal';
 
 import { Permission } from '@/config/permissions';
-import { getPlanPermission, PlanPermission } from '@/utils/plans';
+import { getPlanPermission, PlanPermission } from '@/utils/planPermission';
 
 import { usePermission } from './permission';
 

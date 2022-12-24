@@ -3,7 +3,7 @@ import { CustomScrollbars, CustomScrollbarsTypes } from '@voiceflow/ui';
 import React from 'react';
 import { AutoSizer, Index, List, WindowScroller } from 'react-virtualized';
 
-import { ScrollContextProvider } from '@/contexts';
+import { ScrollContextProvider } from '@/contexts/ScrollContext';
 import { useScrollHelpers } from '@/hooks';
 
 import { WindowScrollerContainer } from './components';

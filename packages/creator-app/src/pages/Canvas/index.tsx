@@ -1,10 +1,11 @@
+import { compose } from '@voiceflow/ui';
 import React from 'react';
 import { matchPath, useHistory } from 'react-router-dom';
 
 import { Path } from '@/config/routes';
 import * as CreatorV2 from '@/ducks/creatorV2/utils/selector';
 import { DiagramSubscriptionGate } from '@/gates';
-import { compose, withBatchLoadingGate } from '@/hocs';
+import { withBatchLoadingGate } from '@/hocs/withBatchLoadingGate';
 import { useRAF, useRegistration, useTeardown } from '@/hooks';
 import ReturnToInstanceSnackbar from '@/pages/Canvas/components/ReturnToInstanceSnackbar';
 import { ExportProvider } from '@/pages/Project/components/Header/components/SharePopper/components/Export';

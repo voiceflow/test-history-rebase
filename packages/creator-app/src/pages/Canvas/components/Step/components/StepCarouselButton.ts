@@ -1,4 +1,4 @@
-import { styled, units } from '@/hocs';
+import { styled, units } from '@/hocs/styled';
 
 export const StepCarouselButton = styled.div`
   display: flex;

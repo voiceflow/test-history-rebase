@@ -2,7 +2,7 @@ import { User } from '@voiceflow/socket-utils';
 
 import logger from '@/logger';
 
-import { ExtraOptions } from './types';
+import { ExtraOptions } from '../types';
 
 export interface UserClient {
   get: () => Promise<User | null>;

@@ -1,6 +1,7 @@
 import { useHotKeys } from '@/hooks';
 import { Hotkey } from '@/keymap';
-import { useNLUManager } from '@/pages/NLUManager/context';
+
+import { useNLUManager } from '../context';
 
 const useTableHotkeys = (items: any[]) => {
   const nluManager = useNLUManager();

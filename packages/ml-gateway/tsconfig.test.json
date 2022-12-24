@@ -4,9 +4,8 @@
     "module": "commonjs",
     "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "src/*"
-      ]
+      "@voiceflow/realtime-sdk": ["../../node_modules/@voiceflow/realtime-sdk"],
+      "@/*": ["src/*"]
     }
   },
   "exclude": [

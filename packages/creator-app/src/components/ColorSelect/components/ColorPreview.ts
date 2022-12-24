@@ -1,4 +1,4 @@
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 const BACKGROUND_IMAGE =
   // eslint-disable-next-line no-secrets/no-secrets

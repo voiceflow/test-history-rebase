@@ -2,7 +2,7 @@ import React from 'react';
 
 import { ConnectionStatus } from '@/client/logux';
 import LoadingGate from '@/components/LoadingGate';
-import { withSessionGate } from '@/hocs';
+import { withSessionGate } from '@/hocs/session';
 import { useLoguxSetup, useRealtimeClient } from '@/hooks';
 
 import RealtimeTimeoutControl from './components/RealtimeTimeoutControl';

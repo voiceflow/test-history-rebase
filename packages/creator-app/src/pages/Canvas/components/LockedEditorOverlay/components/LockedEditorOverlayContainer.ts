@@ -1,6 +1,6 @@
 import { MemberIcon } from '@voiceflow/ui';
 
-import { styled, units } from '@/hocs';
+import { styled, units } from '@/hocs/styled';
 
 const LockedEditorOverlayContainer = styled.div`
   height: 100%;

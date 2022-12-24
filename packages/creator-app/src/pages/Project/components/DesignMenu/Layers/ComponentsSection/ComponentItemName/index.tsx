@@ -1,10 +1,18 @@
 import { Nullable, Utils } from '@voiceflow/common';
-import { ContextMenu, getNestedMenuFormattedLabel, OverflowText, SvgIcon, SvgIconTypes, useEnableDisable, usePersistFunction } from '@voiceflow/ui';
+import {
+  compose,
+  ContextMenu,
+  getNestedMenuFormattedLabel,
+  OverflowText,
+  SvgIcon,
+  SvgIconTypes,
+  useEnableDisable,
+  usePersistFunction,
+} from '@voiceflow/ui';
 import React from 'react';
 
 import { Permission } from '@/config/permissions';
 import * as Router from '@/ducks/router';
-import { compose } from '@/hocs';
 import { useDispatch, useHover, usePermission } from '@/hooks';
 import { useDiagramOptions, useDiagramRename } from '@/pages/Project/hooks';
 import { withEnterPress, withTargetValue } from '@/utils/dom';

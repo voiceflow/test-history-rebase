@@ -1,29 +1,37 @@
+import composeRef from '@seznam/compose-react-refs';
 import { SvgIconTypes, toast, useSetup } from '@voiceflow/ui';
 import React from 'react';
 
 import SSML from '@/components/SSML';
+import { TextEditorRef } from '@/components/TextEditor/types';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { CanvasCreationType } from '@/ducks/tracking/constants';
 import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
-import { useActiveProjectTypeConfig, useDispatch, useSelector } from '@/hooks';
+import { useActiveProjectTypeConfig } from '@/hooks/platformConfig';
+import { useDispatch } from '@/hooks/realtime';
+import { useSelector } from '@/hooks/redux';
 
 interface SSMLWithVarsProps {
   icon?: SvgIconTypes.Icon | null;
   value: string;
   voice?: string | null;
   onBlur: (data: { text: string; slots: string[] }) => void;
+  onEmpty?: (isEmpty: boolean) => void;
+  onFocus?: VoidFunction;
+  readOnly?: boolean;
+  isActive?: boolean;
   autofocus?: boolean;
   placeholder?: string;
   onChangeVoice: (newVoice: string) => void;
   skipBlurOnUnmount?: boolean;
 }
 
-const SSMLWithVars: React.FC<SSMLWithVarsProps> = ({ icon = 'alexa', voice, autofocus, ...props }) => {
+const SSMLWithVars = React.forwardRef<TextEditorRef, SSMLWithVarsProps>(({ icon = 'alexa', voice, autofocus, ...props }, ref) => {
   const projectTypeConfig = useActiveProjectTypeConfig();
 
-  const ssmlRef = React.useRef<{ forceFocusToTheEnd: VoidFunction } | null>(null);
+  const ssmlRef = React.useRef<TextEditorRef>(null);
 
   const locales = useSelector(VersionV2.active.localesSelector);
   const platform = useSelector(ProjectV2.active.platformSelector);
@@ -33,8 +41,6 @@ const SSMLWithVars: React.FC<SSMLWithVarsProps> = ({ icon = 'alexa', voice, auto
 
   const addGlobalVariable = useDispatch(Version.addGlobalVariable);
   const updateDefaultVoice = useDispatch(Version.voice.updateDefaultVoice);
-
-  const vars = React.useMemo(() => variables.map((name) => ({ id: name, name, isVariable: true })), [variables]);
 
   const onAddVariable = React.useCallback(
     async (name) => {
@@ -58,13 +64,13 @@ const SSMLWithVars: React.FC<SSMLWithVarsProps> = ({ icon = 'alexa', voice, auto
 
   return (
     <SSML
-      ref={ssmlRef}
+      ref={composeRef(ref, ssmlRef)}
       icon={icon}
       voice={voice || defaultVoice}
       space
       locales={locales}
       platform={platform}
-      variables={vars}
+      variables={variables}
       projectType={projectType}
       defaultVoice={defaultVoice}
       onAddVariable={onAddVariable}
@@ -73,6 +79,6 @@ const SSMLWithVars: React.FC<SSMLWithVarsProps> = ({ icon = 'alexa', voice, auto
       {...props}
     />
   );
-};
+});
 
 export default SSMLWithVars;

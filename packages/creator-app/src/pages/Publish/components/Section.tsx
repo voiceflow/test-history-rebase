@@ -2,7 +2,7 @@ import { Box, ThemeColor } from '@voiceflow/ui';
 import React from 'react';
 import { space } from 'styled-system';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 const Card = styled(Box)`
   border-radius: 8px;

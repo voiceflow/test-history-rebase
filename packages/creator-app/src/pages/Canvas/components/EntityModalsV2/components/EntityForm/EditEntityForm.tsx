@@ -11,10 +11,10 @@ import EntityForm from '.';
 
 interface EditEntityFormProps {
   slotID: string;
+  creationType: Tracking.NLUEntityCreationType;
   withNameSection?: boolean;
   withBottomDivider?: boolean;
   colorPopperModifiers?: StrictPopperModifiers;
-  creationType: Tracking.NLUEntityCreationType;
 }
 
 const EditEntityForm: React.FC<EditEntityFormProps> = ({ colorPopperModifiers, withNameSection, slotID, withBottomDivider, creationType }) => {
@@ -47,18 +47,18 @@ const EditEntityForm: React.FC<EditEntityFormProps> = ({ colorPopperModifiers, w
 
   return (
     <EntityForm
-      colorPopperModifiers={colorPopperModifiers}
-      values={slot.inputs}
-      updateType={saveType}
-      saveValues={saveValues}
       type={type}
       name={name}
       color={color}
-      saveColor={saveColor}
-      updateName={setName}
+      values={slot.inputs}
       saveName={saveName}
+      saveColor={saveColor}
+      updateType={saveType}
+      saveValues={saveValues}
+      updateName={setName}
       withNameSection={withNameSection}
       withBottomDivider={withBottomDivider}
+      colorPopperModifiers={colorPopperModifiers}
     />
   );
 };

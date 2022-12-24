@@ -1,6 +1,6 @@
 import { Menu } from '@voiceflow/ui';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 const SelectInputOptionWrapperAbsolute = styled.div`
   ${Menu.itemStyles};

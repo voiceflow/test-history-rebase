@@ -1,6 +1,6 @@
 import { FlexApart } from '@voiceflow/ui';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 export { default as DatePicker } from './TimeRangePicker/DatePicker';
 export type { TranscriptFiltersProps } from './TranscriptFilters';

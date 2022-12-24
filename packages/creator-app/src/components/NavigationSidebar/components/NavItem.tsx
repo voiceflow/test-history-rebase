@@ -2,7 +2,7 @@ import React from 'react';
 import { matchPath, useLocation } from 'react-router-dom';
 
 import * as Router from '@/ducks/router';
-import { useDispatch } from '@/hooks';
+import { useDispatch } from '@/hooks/realtime';
 
 import Item, { ItemProps } from './Item';
 

@@ -3,7 +3,7 @@ import React from 'react';
 import { Tooltip } from 'react-tippy';
 import { withProps } from 'recompose';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 interface InteractiveIconProps {
   icon: string;

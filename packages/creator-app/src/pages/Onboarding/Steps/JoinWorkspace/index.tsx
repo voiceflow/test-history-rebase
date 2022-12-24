@@ -2,7 +2,7 @@ import { Button, FlexCenter } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Account from '@/ducks/account';
-import { connect } from '@/hocs';
+import { connect } from '@/hocs/connect';
 import { OnboardingContext } from '@/pages/Onboarding/context';
 import { ConnectedProps } from '@/types';
 

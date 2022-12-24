@@ -1,4 +1,4 @@
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 const Container = styled.div`
   z-index: ${({ theme }) => theme.zIndex.popper};

@@ -17,6 +17,8 @@ import { getBuiltInSynonyms } from '../slot';
 export * from './platform';
 export * from './utterance';
 
+export const NEW_INTENT_NAME = 'intent';
+
 const AMAZON_INTENT_PREFIX = 'AMAZON.';
 
 const amazonBuiltInIntentsArray = Object.values(AlexaConstants.AmazonIntent) as string[];
@@ -270,11 +272,29 @@ export const fillEntities = (
     locales.find((l) => projectConfig.project.locale.utteranceRecommendations.includes(l)) ??
     projectConfig.project.locale.utteranceRecommendations[0];
 
+  const voiceflowLocale = projectConfig.utils.locale.toVoiceflowLocale(locale);
+
   return utterances.replace(SLOT_REGEXP, (_match, name: string, id: string) => {
     const slot = slotsMap[id];
     const synonyms = slot?.inputs.flatMap((input) => [input.value, ...input.synonyms]) ?? [];
-    const builtInSynonyms = getBuiltInSynonyms(slot.type ?? '', locale, platform) ?? [];
+    const builtInSynonyms = getBuiltInSynonyms(slot.type ?? '', voiceflowLocale, platform) ?? [];
 
     return _sample([...synonyms, ...builtInSynonyms]) ?? name;
   });
 };
+
+export const isPromptEmpty = (prompt?: unknown): boolean => {
+  if (!prompt) return true;
+
+  if (Platform.Common.Voice.CONFIG.utils.intent.isPrompt(prompt)) {
+    return Platform.Common.Voice.CONFIG.utils.intent.isPromptEmpty(prompt);
+  }
+
+  if (Platform.Common.Chat.CONFIG.utils.intent.isPrompt(prompt)) {
+    return Platform.Common.Chat.CONFIG.utils.intent.isPromptEmpty(prompt);
+  }
+
+  return true;
+};
+
+export const isDefaultIntentName = (name?: string | null) => !name || name.toLowerCase().startsWith(NEW_INTENT_NAME);

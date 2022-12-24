@@ -1,4 +1,4 @@
-import { css, styled, transition } from '@/hocs';
+import { css, styled, transition } from '@/hocs/styled';
 
 export const Container = styled.div<{ active?: boolean }>`
   ${transition(' border', 'background')}

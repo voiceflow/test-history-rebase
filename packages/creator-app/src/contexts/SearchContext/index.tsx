@@ -1,7 +1,7 @@
 import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { useContextApi } from '@voiceflow/ui';
+import { useAsyncEffect, useContextApi } from '@voiceflow/ui';
 import React from 'react';
 import { useDismissable } from 'react-dismissable-layers';
 
@@ -9,7 +9,7 @@ import client from '@/client';
 import * as Diagram from '@/ducks/diagramV2';
 import * as Project from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
-import { useAsyncEffect, useSelector, useStore } from '@/hooks';
+import { useSelector, useStore } from '@/hooks/redux';
 
 import { Filters, NodeDatabaseEntry } from './types';
 import { buildNodeDatabase } from './utils';

@@ -4,6 +4,7 @@ export * from './conversations';
 export * from './customBlock';
 // END FIXME: MVP - Custom blocks
 export * from './export';
+export * from './gpt';
 export * from './invitation';
 export * from './nlu';
 export * from './onboarding';

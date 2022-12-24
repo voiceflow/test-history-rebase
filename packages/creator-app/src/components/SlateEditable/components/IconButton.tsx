@@ -1,7 +1,7 @@
 import { IconButton as BaseIconButton, IconButtonFlatContainerProps, IconButtonProps as BaseIconButtonProps, IconButtonVariant } from '@voiceflow/ui';
 import React from 'react';
 
-import { css, styled, transition } from '@/hocs';
+import { css, styled, transition } from '@/hocs/styled';
 
 const activeStyles = css`
   color: #132144 !important;

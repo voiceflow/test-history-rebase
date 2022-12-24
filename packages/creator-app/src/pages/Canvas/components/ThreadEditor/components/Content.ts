@@ -1,4 +1,4 @@
-import { css, styled } from '@/hocs';
+import { css, styled } from '@/hocs/styled';
 
 const Content = styled.div<{ isActive?: boolean }>`
   padding: 20px 24px;

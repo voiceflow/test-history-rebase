@@ -4,7 +4,7 @@ import React from 'react';
 import JobInterface from '@/components/JobInterface';
 import { JobStatus } from '@/constants';
 import { NLPTrainStageType } from '@/constants/platforms';
-import { PublishContext } from '@/contexts';
+import { PublishContext } from '@/contexts/PublishContext';
 import { useSimulatedProgress } from '@/hooks/job';
 import PublishButton from '@/pages/Project/components/Header/components/CanvasHeader/components/Upload/components/PublishButton';
 

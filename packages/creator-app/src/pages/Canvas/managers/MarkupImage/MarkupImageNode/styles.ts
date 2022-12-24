@@ -1,5 +1,5 @@
 import { CANVAS_SHIFT_PRESSED_CLASSNAME } from '@/components/Canvas/constants';
-import { css, styled } from '@/hocs';
+import { css, styled } from '@/hocs/styled';
 import { CANVAS_DRAGGING_CLASSNAME } from '@/pages/Canvas/constants';
 import { Identifier } from '@/styles/constants';
 

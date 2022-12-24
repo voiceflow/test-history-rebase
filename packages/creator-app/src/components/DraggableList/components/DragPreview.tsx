@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { PreviewOptions, useDragPreview } from '@/hooks';
+import { PreviewOptions, useDragPreview } from '@/hooks/dragPreview';
 
 import { DnDHandlers } from '../types';
 import DragPreviewWrapper from './DragPreviewWrapper';

@@ -1,6 +1,6 @@
 import { FlexApart } from '@voiceflow/ui';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 export const IntegrationHeader = styled(FlexApart)`
   padding: 24px 32px;

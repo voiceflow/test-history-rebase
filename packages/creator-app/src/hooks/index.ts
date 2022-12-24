@@ -4,15 +4,12 @@ export * from './callback';
 export * from './canvasNodes';
 export * from './dnd';
 export * from './dragPreview';
-export * from './effect';
 export * from './engine';
 export * from './expression';
 export * from './feature';
 export * from './files';
 export * from './focus';
-export * from './forceUpdate';
 export * from './google';
-export * from './gptFeature';
 export * from './hotkeys';
 export * from './hover';
 export * from './imperativeApi';
@@ -30,7 +27,7 @@ export * from './permission';
 export * from './planLimitV2';
 export * from './planPermission';
 export * from './platformConfig';
-export * from './project';
+export * from './prompt';
 export * from './realtime';
 export * from './reducer';
 export * from './redux';
@@ -48,6 +45,18 @@ export * from './variable';
 export * from './variableStates';
 export * from './voiceflowAssistant';
 export * from './workspace';
-export { useLinkedRef, useLinkedState, useRAF, useResizeObserver } from '@voiceflow/ui';
-
-export const useManager = () => null;
+export {
+  useAsyncDidUpdate,
+  useAsyncEffect,
+  useAsyncMountUnmount,
+  useForceUpdate,
+  useInterval,
+  useLinkedRef,
+  useLinkedState,
+  useOneTimeEffect,
+  useRAF,
+  useRegistration,
+  useResizeObserver,
+  useScheduled,
+  useTimeout,
+} from '@voiceflow/ui';

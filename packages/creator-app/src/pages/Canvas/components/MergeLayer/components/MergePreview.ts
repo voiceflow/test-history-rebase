@@ -1,4 +1,4 @@
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 import StepContainer from '@/pages/Canvas/components/Step/components/StepContainer';
 
 export interface MergePreviewProps {

@@ -1,7 +1,7 @@
 import { Flex, Text } from '@voiceflow/ui';
 import React from 'react';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 import { Response } from '../types';
 

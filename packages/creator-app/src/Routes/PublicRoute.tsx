@@ -3,7 +3,7 @@ import { Redirect, Route, RouteComponentProps } from 'react-router-dom';
 
 import { Path } from '@/config/routes';
 import { authTokenSelector } from '@/ducks/session';
-import { connect } from '@/hocs';
+import { connect } from '@/hocs/connect';
 import { ConnectedProps } from '@/types';
 
 export type PublicRouteProps<T extends object> = {

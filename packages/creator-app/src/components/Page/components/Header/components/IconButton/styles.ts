@@ -1,7 +1,7 @@
 /* eslint-disable sonarjs/no-identical-functions */
 import { BaseIconButtonProps, Box, IconButton, IconButtonOutlineContainerProps, IconButtonVariant } from '@voiceflow/ui';
 
-import { css, styled, transition } from '@/hocs';
+import { css, styled, transition } from '@/hocs/styled';
 import { ClassName } from '@/styles/constants';
 
 export const Container = styled(Box.Flex)`

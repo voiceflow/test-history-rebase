@@ -1,7 +1,6 @@
+import { useToggle } from '@voiceflow/ui';
 import _sortBy from 'lodash/sortBy';
 import React from 'react';
-
-import { useToggle } from '@/hooks';
 
 import { cleanUpVariableName } from '../utils';
 import Entry from './Entry';

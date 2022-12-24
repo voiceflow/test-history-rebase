@@ -7,8 +7,8 @@ import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Domain from '@/ducks/domain';
 import * as Session from '@/ducks/session';
 import * as VersionV2 from '@/ducks/versionV2';
-import { useSelector } from '@/hooks';
 
+import { useSelector } from '../redux';
 import { BaseSelectGroup, BaseSelectMultilevel, BaseSelectOption } from './types';
 import { isNonEmptyGroupedOptionFactory } from './utils';
 

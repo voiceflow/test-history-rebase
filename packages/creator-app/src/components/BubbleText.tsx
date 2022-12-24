@@ -1,4 +1,4 @@
-import { css, styled } from '@/hocs';
+import { css, styled } from '@/hocs/styled';
 
 const BubbleText = styled.span<{ clickable?: boolean }>`
   padding: 4px 8px;

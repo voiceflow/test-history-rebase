@@ -11,7 +11,7 @@ import { UnclassifiedDataCluster } from '@/pages/NLUManager/pages/UnclassifiedDa
 import { getUnclassifiedDataMaxRange } from '@/pages/NLUManager/utils';
 
 import { UnclassifiedTabs } from '../constants';
-import { useTable } from '../hooks';
+import useTable from '../hooks/useTable';
 
 export const UNCLASSIFIED_DATA_INTIAL_STATE = {
   unclassifiedUtterances: [],

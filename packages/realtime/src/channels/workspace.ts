@@ -57,20 +57,24 @@ class WorkspaceChannel extends AbstractChannelControl<Realtime.Channels.Workspac
       Realtime.FeatureFlag.IDENTITY_WORKSPACE
     );
 
-    const [dbProjects, dbProjectLists, viewersPerProject, workspaceMembers] = await Promise.all([
+    const [dbProjects, dbProjectLists, viewersPerProject, workspaceMembers, workspaceQuotas, workspaceSettings] = await Promise.all([
       this.services.project.getAll(creatorID, workspaceID),
       this.services.projectList.getAll(creatorID, workspaceID),
       this.services.workspace.getConnectedViewersPerProject(workspaceID),
       isIdentityWorkspaceEnabled ? this.services.workspace.member.getAll(creatorID, workspaceID) : Promise.resolve([]),
+      isIdentityWorkspaceEnabled ? this.services.billing.getWorkspaceQuotas(creatorID, workspaceID).catch(() => []) : Promise.resolve([]),
+      isIdentityWorkspaceEnabled ? this.services.workspace.settings.getAll(workspaceID, creatorID) : Promise.resolve({}),
     ]);
 
     const [projects, projectLists] = WorkspaceChannel.normalizeProjectLists(dbProjects, dbProjectLists);
 
     return [
       ...(isIdentityWorkspaceEnabled ? [Realtime.workspace.member.replace({ workspaceID, members: workspaceMembers })] : []),
+      Realtime.workspace.settings.replace({ workspaceID, settings: workspaceSettings }),
       Realtime.project.crud.replace({ values: projects, workspaceID }),
       Realtime.projectList.crud.replace({ values: projectLists, workspaceID }),
       Realtime.project.awareness.loadViewers({ viewers: viewersPerProject, workspaceID }),
+      Realtime.workspace.quotas.loadAll({ workspaceID, quotas: workspaceQuotas }),
     ];
   };
 }

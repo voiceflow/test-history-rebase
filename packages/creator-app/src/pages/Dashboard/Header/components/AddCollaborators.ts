@@ -1,4 +1,4 @@
-import { styled, units } from '@/hocs';
+import { styled, units } from '@/hocs/styled';
 
 const AddCollaborators = styled.p`
   margin-bottom: 0;

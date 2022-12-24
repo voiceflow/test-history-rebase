@@ -1,4 +1,4 @@
-import { styled, transition } from '@/hocs';
+import { styled, transition } from '@/hocs/styled';
 
 export interface IndicatorPseudoElemProps<T extends string = string> {
   size: number;

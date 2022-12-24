@@ -1,6 +1,6 @@
 import { Flex, LoadCircle } from '@voiceflow/ui';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 export { default as DialogHeader } from './DialogHeader';
 export { default as NoData } from './NoData';

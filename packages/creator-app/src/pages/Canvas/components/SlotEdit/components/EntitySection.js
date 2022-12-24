@@ -1,7 +1,7 @@
 import Section from '@/components/Section';
 import HeaderContent from '@/components/Section/components/HeaderContent';
 import StatusContent from '@/components/Section/components/StatusContent';
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 const EntitySection = styled(Section)`
   ${HeaderContent} {

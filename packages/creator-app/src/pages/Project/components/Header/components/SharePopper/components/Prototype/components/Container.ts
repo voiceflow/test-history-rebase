@@ -1,4 +1,4 @@
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 import { FadeLeftContainer } from '@/styles/animations';
 
 const Container = styled(FadeLeftContainer)`

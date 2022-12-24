@@ -13,7 +13,7 @@ interface VariablesSelectProps {
 }
 
 const VariablesSelect: React.FC<VariablesSelectProps> = ({ onChange, value, placeholder, disabled, error }) => {
-  const variables = useSelector(DiagramV2.active.allSlotsAndVariablesSelector);
+  const variables = useSelector(DiagramV2.active.allSlotNamesAndVariablesSelector);
 
   return (
     <TagSelect

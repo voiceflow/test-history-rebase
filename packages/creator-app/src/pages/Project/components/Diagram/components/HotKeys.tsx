@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Permission } from '@/config/permissions';
 import { CANVAS_ZOOM_DELTA, ModalType } from '@/constants';
+import { HotkeysContext } from '@/contexts/HotkeysContext';
 import * as Router from '@/ducks/router';
 import * as UI from '@/ducks/ui';
 import { useDispatch, useEventualEngine, useHotKeys, useModals, usePermission, useSelector, useTrackingEvents } from '@/hooks';
@@ -11,6 +12,7 @@ import { MarkupContext } from '@/pages/Project/contexts';
 import { useCommentingToggle, useDisableModes } from '@/pages/Project/hooks';
 
 const HotKeys: React.FC = () => {
+  const [hotkeysState] = React.useContext(HotkeysContext)!;
   const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
   const [showHintFeatures] = usePermission(Permission.HINT_FEATURES);
 
@@ -77,7 +79,9 @@ const HotKeys: React.FC = () => {
   ]);
   useHotKeys(Hotkey.ADD_MARKUP_TEXT, markup.toggleTextCreating, { preventDefault: true, disable: !showHintFeatures }, [markup.toggleTextCreating]);
   useHotKeys(Hotkey.ADD_MARKUP_IMAGE, markup.triggerMediaUpload, { preventDefault: true, disable: !showHintFeatures }, [markup.triggerMediaUpload]);
-  useHotKeys(Hotkey.CLOSE_CANVAS_MODE, onDisableModes, { preventDefault: true }, [onDisableModes]);
+  useHotKeys(Hotkey.CLOSE_CANVAS_MODE, onDisableModes, { preventDefault: true, disable: !!hotkeysState.disableCanvasCloseMode.length }, [
+    onDisableModes,
+  ]);
   useHotKeys(Hotkey.CLOSE_CANVAS_ONLY_MODE, toggleCanvasOnly, { disable: !isCanvasOnly, preventDefault: true });
 
   return null;

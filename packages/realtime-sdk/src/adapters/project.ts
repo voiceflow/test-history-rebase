@@ -26,6 +26,7 @@ const projectAdapter = createMultiAdapter<BaseModels.Project.Model<AnyRecord, An
     liveVersion,
     platformData,
     customThemes,
+    aiAssistSettings = {},
   }) => {
     const { nlu, type, platform } = legacyPlatformToProjectType(dbPlatform, dbType);
 
@@ -57,6 +58,7 @@ const projectAdapter = createMultiAdapter<BaseModels.Project.Model<AnyRecord, An
       workspaceID: teamID,
       customThemes,
       platformData,
+      aiAssistSettings,
     };
   },
   notImplementedAdapter.transformer

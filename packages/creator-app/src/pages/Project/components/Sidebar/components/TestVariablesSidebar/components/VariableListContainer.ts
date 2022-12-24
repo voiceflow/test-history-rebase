@@ -1,6 +1,6 @@
 import SimpleBar from 'simplebar-react';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 const VariableListContainer = styled(SimpleBar)`
   height: calc(100% - 83px);

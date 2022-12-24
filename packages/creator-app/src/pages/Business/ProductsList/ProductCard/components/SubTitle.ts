@@ -1,4 +1,4 @@
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 const SubTitle = styled.div`
   margin-bottom: 16px;

@@ -1,6 +1,6 @@
 import { colors, FlexApart, ThemeColor } from '@voiceflow/ui';
 
-import { css, styled } from '@/hocs';
+import { css, styled } from '@/hocs/styled';
 
 export const Container = styled(FlexApart)<{ hasShadow: boolean }>`
   height: ${({ theme }) => theme.components.page.header.height}px;

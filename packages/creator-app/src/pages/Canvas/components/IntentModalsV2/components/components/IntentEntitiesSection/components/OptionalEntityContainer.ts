@@ -1,6 +1,6 @@
 import { FlexCenter, SvgIcon } from '@voiceflow/ui';
 
-import { styled, transition } from '@/hocs';
+import { styled, transition } from '@/hocs/styled';
 
 const OptionalEntityContainer = styled(FlexCenter)`
   ${transition('border-color')}

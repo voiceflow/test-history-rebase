@@ -1,6 +1,6 @@
 import { transparentize } from 'polished';
 
-import { styled, transition } from '@/hocs';
+import { styled, transition } from '@/hocs/styled';
 
 const Tag = styled.span.attrs(({ color, isHovered }) => ({
   style: { color, backgroundColor: isHovered ? transparentize(0.85, color) : 'transparent' },

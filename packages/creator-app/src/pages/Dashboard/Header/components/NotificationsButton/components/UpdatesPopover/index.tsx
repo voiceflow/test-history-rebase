@@ -1,7 +1,7 @@
 import React from 'react';
 
 import * as Notifications from '@/ducks/notifications';
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 import Notification from './components/Notification';
 

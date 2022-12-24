@@ -2,11 +2,13 @@ import Text from '@ui/components/Text';
 import { styled } from '@ui/styles';
 
 export interface DescriptionProps {
+  block?: boolean;
   secondary?: boolean;
 }
 
-const Description = styled(Text).attrs<DescriptionProps>(({ secondary, color, ...props }) => ({
+const Description = styled(Text).attrs<DescriptionProps>(({ block, secondary, color, ...props }) => ({
   color: secondary ? '#62778c' : color,
+  display: block ? 'block' : undefined,
   fontSize: 13,
   lineHeight: '18px',
   ...props,

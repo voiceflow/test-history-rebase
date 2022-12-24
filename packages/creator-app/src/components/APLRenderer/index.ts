@@ -1,4 +1,4 @@
-import { lazyComponent } from '@/hocs';
+import { lazyComponent } from '@/hocs/lazy';
 
 export * from './types';
 

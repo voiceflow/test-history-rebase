@@ -7,7 +7,7 @@ import React from 'react';
 import Section, { Header, HeaderContent, StatusContent } from '@/components/Section';
 import * as Modal from '@/ducks/modal';
 import * as SlotV2 from '@/ducks/slotV2';
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 import { useDispatch, useSelector } from '@/hooks';
 
 // TODO: Deprecate this component once legacy mapping is completely deprecated

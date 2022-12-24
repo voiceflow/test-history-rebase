@@ -1,10 +1,8 @@
-import { useCache, useRAF } from '@voiceflow/ui';
+import { useCache, useForceUpdate, useRAF, useThrottledCallback } from '@voiceflow/ui';
 import React from 'react';
 import { useDragLayer, XYCoord } from 'react-dnd';
 
 import { HOVER_THROTTLE_TIMEOUT } from '@/constants';
-import { useThrottledCallback } from '@/hooks/callback';
-import { useForceUpdate } from '@/hooks/forceUpdate';
 import { useTeardown } from '@/hooks/lifecycle';
 
 export interface Options<I = any> {

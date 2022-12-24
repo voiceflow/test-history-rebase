@@ -1,23 +1,35 @@
 import composeRef from '@seznam/compose-react-refs';
-import { OverflowTippyTooltip, swallowEvent } from '@voiceflow/ui';
+import { compose, OverflowTippyTooltip, swallowEvent } from '@voiceflow/ui';
 import React from 'react';
 
 import { VariableTagTooltipStyles } from '@/components/VariableTag';
-import { ModalType } from '@/constants';
+import { InteractionModelTabType, ModalType } from '@/constants';
+import * as Router from '@/ducks/router';
 import * as SlotV2 from '@/ducks/slotV2';
-import { compose } from '@/hocs';
-import { useModals, useSelector } from '@/hooks';
+import { useModals } from '@/hooks/modals';
+import { useDispatch } from '@/hooks/realtime';
+import { useSelector } from '@/hooks/redux';
 
 import { StyledTag } from './StyledTag';
 
 const Slot = ({ mention, children }, ref) => {
   const { open: openEntityEditModal } = useModals(ModalType.ENTITY_EDIT);
   const getSlotByName = useSelector(SlotV2.slotByNameSelector);
+  const getSlotByID = useSelector(SlotV2.getSlotByIDSelector);
 
-  const onClickHandler = () => {
-    if (mention.id && !mention.isVariable) {
-      const slotID = getSlotByName(mention.name)?.id || mention.id;
+  const goToInteractionModelEntity = useDispatch(Router.goToCurrentCanvasInteractionModelEntity);
+
+  const onClickHandler = (event) => {
+    if (!mention.id) return;
+
+    swallowEvent(null, true)(event);
+
+    const slotID = getSlotByName(mention.name)?.id || mention.id;
+
+    if (getSlotByID({ id: slotID })) {
       openEntityEditModal({ id: slotID });
+    } else {
+      goToInteractionModelEntity(InteractionModelTabType.VARIABLES, mention.id);
     }
   };
 
@@ -32,10 +44,10 @@ const Slot = ({ mention, children }, ref) => {
           <StyledTag
             ref={composeRef(ref, overflowRef)}
             color={mention.color}
-            onClick={mention.isVariable ? undefined : swallowEvent(onClickHandler, true)}
-            onMouseUp={mention.isVariable ? undefined : swallowEvent(null, true)}
+            onClick={onClickHandler}
+            onMouseUp={(event) => mention.id && swallowEvent(null, true)(event)}
             isVariable={mention.isVariable}
-            onMouseDown={mention.isVariable ? undefined : swallowEvent(null, true)}
+            onMouseDown={(event) => mention.id && swallowEvent(null, true)(event)}
           >
             {children}
           </StyledTag>

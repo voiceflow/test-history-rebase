@@ -3,7 +3,7 @@ import React from 'react';
 
 import * as Transcripts from '@/ducks/transcript';
 import * as UI from '@/ducks/ui';
-import { withBatchLoadingGate } from '@/hocs';
+import { withBatchLoadingGate } from '@/hocs/withBatchLoadingGate';
 import { useDispatch, useEventualEngine, useSelector, useTeardown } from '@/hooks';
 import Canvas from '@/pages/Canvas';
 import { ManagerProvider } from '@/pages/Canvas/contexts';

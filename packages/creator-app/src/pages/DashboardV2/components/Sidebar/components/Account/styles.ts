@@ -1,6 +1,6 @@
 import { OverflowText, User as UIUser } from '@voiceflow/ui';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 export const User = styled(UIUser).attrs({ flat: true })`
   width: 26px;

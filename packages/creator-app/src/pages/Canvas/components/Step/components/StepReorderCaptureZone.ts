@@ -1,4 +1,4 @@
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 import { NODE_MERGE_TARGET_CLASSNAME } from '@/pages/Canvas/constants';
 
 const StepReorderCaptureZone = styled.div`

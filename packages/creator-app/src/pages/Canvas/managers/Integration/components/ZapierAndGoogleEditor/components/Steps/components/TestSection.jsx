@@ -10,7 +10,7 @@ import ReactJson from 'react-json-view';
 import { textEditorContentAdapter } from '@/client/adapters/textEditor';
 import { DefaultModal } from '@/components/modals';
 import { setConfirm } from '@/ducks/modal';
-import { connect } from '@/hocs';
+import { connect } from '@/hocs/connect';
 import * as ModalsV2 from '@/ModalsV2';
 import { PrefixText } from '@/pages/Canvas/components/PrefixedVariableSelect/components/Prefix';
 import IntegrationsService from '@/services/Integrations';

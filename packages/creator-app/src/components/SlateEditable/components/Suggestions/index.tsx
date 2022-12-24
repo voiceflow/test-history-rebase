@@ -1,7 +1,6 @@
+import { useToggle } from '@voiceflow/ui';
 import React from 'react';
 import { useFocused, useSelected } from 'slate-react';
-
-import { useToggle } from '@/hooks';
 
 import { Popper, PopperItem, PopperProps } from './components';
 

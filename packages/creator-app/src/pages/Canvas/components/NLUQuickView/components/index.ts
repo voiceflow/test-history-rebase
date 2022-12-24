@@ -1,6 +1,6 @@
 import { Input, ThemeColor } from '@voiceflow/ui';
 
-import { css, styled } from '@/hocs';
+import { css, styled } from '@/hocs/styled';
 import THEME from '@/styles/theme';
 
 export const TitleInput = styled(Input)<{ minWidth?: number; fontSize?: number }>`

@@ -2,7 +2,7 @@ import { COLOR_PICKER_CONSTANTS, ColorThemes } from '@voiceflow/ui';
 import React from 'react';
 
 import { customThemesSelector } from '@/ducks/projectV2/selectors/active/base';
-import { useSelector } from '@/hooks';
+import { useSelector } from '@/hooks/redux';
 
 import { Container, List } from './components';
 

@@ -28,3 +28,6 @@ export const useAddSlot = () => {
 
   return { onAddSlot, slotEditOpen: slotEditModal.isInStack };
 };
+
+export const useAreEntityInputsEmpty = (inputs: Realtime.SlotInput[]) =>
+  React.useMemo(() => inputs.every(({ value, synonyms }) => !value.trim() && !synonyms.split(',').filter((s) => s.trim()).length), [inputs]);

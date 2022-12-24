@@ -1,6 +1,6 @@
 import { colors, Flex, ThemeColor } from '@voiceflow/ui';
 
-import { css, styled, transition } from '@/hocs';
+import { css, styled, transition } from '@/hocs/styled';
 import { ClassName } from '@/styles/constants';
 
 export { default as InfoSection } from './InfoSection';

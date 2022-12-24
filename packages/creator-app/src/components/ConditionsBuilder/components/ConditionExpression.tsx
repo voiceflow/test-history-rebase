@@ -1,9 +1,8 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box } from '@voiceflow/ui';
+import { Box, SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
 import Label from '@/components/Label';
-import RemoveIcon from '@/components/ListManager/components/RemoveIcon';
 import VariablesInput from '@/components/VariablesInput';
 import { useExpressionValidator } from '@/hooks';
 
@@ -50,7 +49,7 @@ const ConditionExpression: React.FC<ConditionExpressionProps> = ({ expression, o
           skipBlurOnUnmount
         />
 
-        <RemoveIcon onClick={onDelete} />
+        <SectionV2.RemoveButton onClick={onDelete} />
       </Box.Flex>
 
       {expressionValidator.error && (

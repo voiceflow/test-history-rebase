@@ -1,7 +1,7 @@
 import { TippyTooltip, TippyTooltipProps } from '@voiceflow/ui';
 import React from 'react';
 
-import { useStore } from '@/hooks';
+import { useStore } from '@/hooks/redux';
 
 export interface UpgradeTooltipData {
   title?: React.ReactNode;

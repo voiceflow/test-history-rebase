@@ -1,4 +1,4 @@
-import { css, keyframes, styled } from '@/hocs';
+import { css, keyframes, styled } from '@/hocs/styled';
 
 const fadeIn = keyframes`
   from { opacity: 0; }

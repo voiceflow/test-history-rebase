@@ -27,7 +27,6 @@ export interface VariablesOptions {
   variables?: Normal.Normalized<VariableItem>;
   creatable?: boolean;
   withSlots?: boolean;
-  fromDraftJS?: boolean;
 }
 
 export interface VariablesEditorAPI {
@@ -40,8 +39,8 @@ export const withVariablesPlugin: Plugin = (EditorAPI: EditorAPIType) => (editor
 
   editor.registerPrismLanguage(PrismLanguage.VARIABLES);
 
-  editor.registerTextProcessingMiddleware(() => (next) => (nodes) => {
-    const { variables, fromDraftJS } = editor.pluginsOptions[PluginType.VARIABLES] ?? {};
+  editor.registerTextProcessingMiddleware(() => (next) => (nodes, { fromDraftJS }) => {
+    const { variables } = editor.pluginsOptions[PluginType.VARIABLES] ?? {};
 
     const variablesNameMap = variables
       ? Object.values(variables.byKey).reduce<Record<string, VariableItem>>((acc, variable) => Object.assign(acc, { [variable.name]: variable }), {})

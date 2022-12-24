@@ -1,9 +1,10 @@
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { SectionV2 } from '@voiceflow/ui';
+import { SectionV2, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
-import { hasValidPrompt } from '@/utils/prompt';
+import * as GPT from '@/components/GPT';
+import { useAreIntentPromptsEmpty } from '@/hooks/intent';
 
 interface ItemProps {
   entity: Realtime.Slot;
@@ -11,20 +12,35 @@ interface ItemProps {
   isActive?: boolean;
   contentRef?: React.Ref<HTMLDivElement>;
   intentEntity: Platform.Base.Models.Intent.Slot;
-  onRemoveRequired: (slotID: string) => void;
+  onRemoveRequired: VoidFunction;
+  onGeneratePrompt: VoidFunction;
 }
 
-const Item: React.FC<ItemProps> = ({ entity, onClick, isActive, contentRef, intentEntity, onRemoveRequired }) => {
-  const hasError = React.useMemo(() => !hasValidPrompt(intentEntity.dialog.prompt), [intentEntity.dialog.prompt]);
+const Item: React.FC<ItemProps> = ({ entity, onClick, isActive, contentRef, intentEntity, onRemoveRequired, onGeneratePrompt }) => {
+  const hasError = useAreIntentPromptsEmpty(intentEntity.dialog.prompt);
+  const entityReprompt = GPT.useEntityRepromptGenFeature();
+
+  const errorTooltip = !entityReprompt.isEnabled
+    ? { title: 'Prompt is missing' }
+    : {
+        html: (
+          <TippyTooltip.FooterButton buttonText="Generate response" onClick={() => onGeneratePrompt()}>
+            Entity reprompt missing.
+          </TippyTooltip.FooterButton>
+        ),
+        position: 'bottom' as const,
+        interactive: true,
+      };
 
   return (
     <SectionV2.ListItem
-      icon="setV2"
-      action={<SectionV2.RemoveButton onClick={() => onRemoveRequired(intentEntity.id)} />}
+      icon={hasError ? 'warning' : 'setV2'}
+      action={<SectionV2.RemoveButton onClick={() => onRemoveRequired()} />}
       onClick={onClick}
       isActive={isActive}
+      iconProps={{ color: hasError ? '#BF395B' : undefined }}
       contentRef={contentRef}
-      iconWarning={hasError ? 'Prompt is missing' : null}
+      iconTooltip={hasError ? errorTooltip : null}
       actionCentred
     >
       {entity.name}

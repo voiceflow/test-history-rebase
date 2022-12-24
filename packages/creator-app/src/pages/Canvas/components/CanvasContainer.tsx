@@ -5,10 +5,11 @@ import React from 'react';
 import { BlockType } from '@/constants';
 import { CANVAS_COLOR } from '@/constants/canvas';
 import { PrototypeStatus } from '@/constants/prototype';
+import { HotkeysContext } from '@/contexts/HotkeysContext';
 import { SearchContext } from '@/contexts/SearchContext';
 import * as History from '@/ducks/history';
 import * as Prototype from '@/ducks/prototype';
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 import { useActiveModal, useDispatch, useHotKeys, useRegistration, useSelector } from '@/hooks';
 import { getHotkeyLabel, Hotkey } from '@/keymap';
 import * as ModalsV2 from '@/ModalsV2';
@@ -61,6 +62,7 @@ const CanvasContainer: React.FC = ({ children }) => {
   const clipboard = React.useContext(ClipboardContext)!;
   const search = React.useContext(SearchContext);
   const spotlight = React.useContext(SpotlightContext)!;
+  const [hotkeysState] = React.useContext(HotkeysContext)!;
   const setSelectedTargets = React.useContext(SelectionSetTargetsContext);
   const lastCreatedComponent = React.useContext(LastCreatedComponentContext)!;
   const manualSaveModal = ModalsV2.useModal(ModalsV2.Project.ManualSave);
@@ -146,7 +148,7 @@ const CanvasContainer: React.FC = ({ children }) => {
 
   useHotKeys(Hotkey.CUT, cutActive, { preventDefault: true }, [cutActive]);
   useHotKeys(Hotkey.COPY, () => clipboard.copy(), { preventDefault: true, disable: !isEditingMode }, [isEditingMode]);
-  useHotKeys(Hotkey.DELETE, deleteActive, { preventDefault: true }, [deleteActive]);
+  useHotKeys(Hotkey.DELETE, deleteActive, { disable: !!hotkeysState.disableCanvasNodeDelete.length, preventDefault: true }, [deleteActive]);
   useHotKeys(Hotkey.UNDO, undoHistory, { preventDefault: true });
   useHotKeys(Hotkey.REDO, redoHistory, { preventDefault: true });
   useHotKeys(Hotkey.SEARCH, showSearch, { preventDefault: true }, [showSearch]);

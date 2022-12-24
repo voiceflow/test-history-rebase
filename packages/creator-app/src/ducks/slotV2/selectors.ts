@@ -15,6 +15,7 @@ export const {
 } = createCRUDSelectors(STATE_KEY);
 
 export const slotNamesSelector = createSelector([allSlotsSelector], (slots) => slots.map(({ name }) => name));
+export const slotNameMapSelector = createSelector([allSlotsSelector], (slots) => Object.fromEntries(slots.map((slot) => [slot.name, slot])));
 
 export const slotByNameSelector = createSelector(
   [allSlotsSelector],

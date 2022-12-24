@@ -1,6 +1,6 @@
 import { Box } from '@voiceflow/ui';
 
-import { css, styled } from '@/hocs';
+import { css, styled } from '@/hocs/styled';
 
 export const Container = styled(Box).attrs((props) => ({ mb: 32, maxWidth: 700, ...props }))``;
 

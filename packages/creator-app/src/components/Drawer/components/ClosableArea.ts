@@ -1,4 +1,4 @@
-import { css, styled, transition } from '@/hocs';
+import { css, styled, transition } from '@/hocs/styled';
 import { SlideOutDirection } from '@/styles/transitions';
 
 import CloseIcon from './CloseIcon';

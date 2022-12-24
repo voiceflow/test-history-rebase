@@ -4,7 +4,7 @@ import React from 'react';
 import { SectionToggleVariant, SectionVariant, UncontrolledSection as Section } from '@/components/Section';
 import { NLPTrainStageType } from '@/constants/platforms';
 import { PrototypeStatus } from '@/constants/prototype';
-import { TrainingContext } from '@/contexts';
+import { TrainingContext } from '@/contexts/TrainingContext';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as PrototypeDuck from '@/ducks/prototype';
 import * as Tracking from '@/ducks/tracking';

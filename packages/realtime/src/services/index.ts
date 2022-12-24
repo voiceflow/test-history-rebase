@@ -3,6 +3,7 @@ import { BaseServiceMap, SyncService } from '@voiceflow/socket-utils';
 import type { ClientMap } from '../clients';
 import type { ModelMap } from '../models';
 import type { Config } from '../types';
+import BillingService from './billing';
 import CanvasTemplateService from './canvasTemplate';
 import CustomBlockService from './customBlock';
 import DiagramService from './diagram';
@@ -24,7 +25,7 @@ import VariableStateService from './variableState';
 import VersionService from './version';
 import ViewerService from './viewer';
 import VoiceflowService from './voiceflow';
-import WorkspaceService from './workspace';
+import WorkspaceService, { WorkspaceSettingsService } from './workspace';
 
 export interface ServiceMap extends BaseServiceMap {
   user: UserService;
@@ -49,6 +50,8 @@ export interface ServiceMap extends BaseServiceMap {
   canvasTemplate: CanvasTemplateService;
   customBlock: CustomBlockService;
   nlu: NluService;
+  billing: BillingService;
+  workspaceSettings: WorkspaceSettingsService;
 }
 
 interface Options {
@@ -85,6 +88,8 @@ const buildServices = ({ config, clients, models }: Options): ServiceMap => {
     canvasTemplate: new CanvasTemplateService(serviceOptions),
     customBlock: new CustomBlockService(serviceOptions),
     nlu: new NluService(serviceOptions),
+    billing: new BillingService(serviceOptions),
+    workspaceSettings: new WorkspaceSettingsService(serviceOptions),
   };
 
   Object.assign(services, serviceMap);

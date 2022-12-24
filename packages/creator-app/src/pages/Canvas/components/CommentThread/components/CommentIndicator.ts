@@ -1,7 +1,7 @@
 import { Flex } from '@voiceflow/ui';
 
 import { CANVAS_INTERACTING_CLASSNAME } from '@/components/Canvas/constants';
-import { css, keyframes, styled, transition } from '@/hocs';
+import { css, keyframes, styled, transition } from '@/hocs/styled';
 import { CANVAS_DRAGGING_CLASSNAME, CANVAS_MERGING_CLASSNAME } from '@/pages/Canvas/constants';
 
 import { INDICATOR_DIAMETER } from '../constants';

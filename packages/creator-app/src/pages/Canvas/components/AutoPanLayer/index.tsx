@@ -2,7 +2,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import _throttle from 'lodash/throttle';
 import React from 'react';
 
-import { AutoPanningCacheContext, AutoPanningSetContext } from '@/contexts';
+import { AutoPanningCacheContext, AutoPanningSetContext } from '@/contexts/AutoPanningContext';
 import * as Creator from '@/ducks/creator';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as UI from '@/ducks/ui';

@@ -1,4 +1,4 @@
-import { css, styled } from '@/hocs';
+import { css, styled } from '@/hocs/styled';
 
 const Title = styled.div<{ marginBottom?: number; secondary?: boolean; disabled?: boolean }>`
   font-size: 15px;

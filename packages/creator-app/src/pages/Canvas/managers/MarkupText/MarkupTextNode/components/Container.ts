@@ -1,7 +1,7 @@
 import { CANVAS_SHIFT_PRESSED_CLASSNAME } from '@/components/Canvas/constants';
 import { PlaceholderText } from '@/components/SlateEditable/components/Placeholder';
 import { BlockType } from '@/constants';
-import { css, styled } from '@/hocs';
+import { css, styled } from '@/hocs/styled';
 import { CANVAS_DRAGGING_CLASSNAME, CANVAS_MARKUP_CREATING_CLASSNAME } from '@/pages/Canvas/constants';
 import { Identifier } from '@/styles/constants';
 

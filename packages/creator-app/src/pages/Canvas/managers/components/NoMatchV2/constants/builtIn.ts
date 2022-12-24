@@ -1,0 +1,205 @@
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
+
+const BUILT_IN_NO_MATCHES_BY_LANGUAGE = {
+  [VoiceflowConstants.Language.EN]: [
+    "I'm sorry, I didn't quite understand what you meant. Could you please rephrase your question or request?",
+    'Could you please provide more context or clarify your question?',
+    "I'm having trouble understanding your message. Could you try rephrasing it in a different way?",
+    "I'm sorry, but I'm not sure what you're asking. Could you please elaborate or give more details?",
+    "Could you please provide more information or clarify your question? I'm not sure I understand what you're asking.",
+    "I'm sorry, I didn't understand your message. Could you try explaining it in a different way?",
+    "I'm having trouble following your question. Could you please give more details or rephrase it?",
+    "I'm sorry, but I'm not sure what you mean. Could you try explaining it in a different way?",
+    "Could you please clarify your question or provide more information? I'm having trouble understanding what you're asking.",
+    "I'm sorry, I didn't understand your message. Could you please rephrase it or provide more context?",
+  ],
+
+  [VoiceflowConstants.Language.AR]: [
+    'عذراً، لم أفهم ما قلت. هل يمكنك إعادة الكلام؟',
+    'عذراً، لا أفهم ما تقول. هل يمكنك توضيح الموضوع؟',
+    'لم أقم بالاستماع الى ما قلت. هل يمكنك إعادة طلبك؟',
+    'عذراً، لم أفهم ما قلت. هل يمكنك إعطائني مزيد من التفاصيل؟',
+    'عذراً، لا أفهم ما تطلب. هل يمكنك إعطائني مزيد من السياق؟',
+    'عذراً، لم أفهم ما قلت. هل يمكنك إعادة المحاولة؟',
+    'عذراً، لا أفهم ما تطلب. هل يمكنك إعطائني مزيد من المعلومات؟',
+    'عذراً، لم أفهم ما قلت. هل يمكنك إعادة الكلام وإعطائني مزيد من السياق؟',
+    'عذراً، لا أدري ما تطلب. هل يمكنك توضيح الموضوع وإعطائني مزيد من التفاصيل؟',
+    'عذراً، لم أدرك ما قلت. هل يمكنك إعادة الكلام وإعطائني مزيد من التفاصيل؟',
+  ],
+
+  [VoiceflowConstants.Language.ZH]: [
+    '对不起，我不太理解你的意思。你能再重新表述一下你的问题或请求吗？',
+    '你能否提供更多的背景或澄清你的问题？',
+    '我无法理解你的信息。你能否尝试用不同的方式重新表达一下？',
+    '对不起，但我不确定你在询问什么。你能否详细阐述一下或提供更多的细节？',
+    '你能否提供更多的信息或澄清你的问题？我不确定我理解了你的问题。',
+    '对不起，我没有理解你的信息。你能否尝试用另一种方式解释一下？',
+    '我无法理解你的问题。你能否提供更多的细节或重新表达一下？',
+    '对不起，但我不确定你的意思。你能否尝试用另一种方式解释一下？',
+    '你能否澄清你的问题或提供更多的信息？我无法理解你在询问什么。',
+    '对不起，我没有理解你的信息。你能否重新表达一下或提供更多的背景？',
+  ],
+
+  [VoiceflowConstants.Language.NL]: [
+    'Sorry, ik begrijp niet helemaal wat je bedoelt. Kun je je vraag of verzoek alsjeblieft op een andere manier formuleren?',
+    'Kun je alsjeblieft meer context geven of je vraag verduidelijken?',
+    'Ik heb moeite met het begrijpen van je bericht. Kun je het op een andere manier herformuleren?',
+    'Sorry, maar ik ben niet zeker wat je vraagt. Kun je alsjeblieft uitweiden of meer details geven?',
+    'Kun je alsjeblieft meer informatie geven of je vraag verduidelijken? Ik begrijp niet helemaal wat je vraagt.',
+    'Sorry, ik heb je bericht niet begrepen. Kun je het op een andere manier uitleggen?',
+    'Ik heb moeite met het volgen van je vraag. Kun je alsjeblieft meer details geven of het op een andere manier herformuleren?',
+    'Sorry, maar ik ben niet zeker wat je bedoelt. Kun je het op een andere manier uitleggen?',
+    'Kun je alsjeblieft je vraag verduidelijken of meer informatie geven? Ik begrijp niet helemaal wat je vraagt.',
+    'Sorry, ik heb je bericht niet begrepen. Kun je het alsjeblieft op een andere manier formuleren of meer context geven?',
+  ],
+
+  [VoiceflowConstants.Language.FR]: [
+    "Désolé, je n'ai pas tout à fait compris ce que vous vouliez dire. Pourriez-vous reformuler votre question ou votre demande, s'il vous plaît ?",
+    "Pourriez-vous fournir plus de contexte ou préciser votre question, s'il vous plaît ?",
+    "J'ai du mal à comprendre votre message. Pourriez-vous le reformuler de manière différente, s'il vous plaît ?",
+    "Désolé, mais je ne suis pas sûr de ce que vous me demandez. Pourriez-vous développer ou donner plus de détails, s'il vous plaît ?",
+    "Pourriez-vous fournir plus d'informations ou préciser votre question, s'il vous plaît ? Je ne suis pas sûr de comprendre ce que vous me demandez.",
+    "Désolé, je n'ai pas compris votre message. Pourriez-vous l'expliquer de manière différente, s'il vous plaît ?",
+    "J'ai du mal à suivre votre question. Pourriez-vous donner plus de détails ou la reformuler, s'il vous plaît ?",
+    "Désolé, mais je ne suis pas sûr de ce que vous voulez dire. Pourriez-vous l'expliquer de manière différente, s'il vous plaît ?",
+    "Pourriez-vous préciser votre question ou fournir plus d'informations, s'il vous plaît ? Je n'arrive pas à comprendre ce que vous me demandez.",
+    "Désolé, je n'ai pas compris votre message. Pourriez-vous le reformuler ou fournir plus de contexte, s'il vous plaît ?",
+  ],
+
+  [VoiceflowConstants.Language.DE]: [
+    'Entschuldigung, ich habe nicht ganz verstanden, was Sie meinen. Könnten Sie Ihre Frage oder Ihre Anfrage bitte anders formulieren?',
+    'Könnten Sie bitte mehr Kontext liefern oder Ihre Frage klären?',
+    'Ich habe Schwierigkeiten, Ihre Nachricht zu verstehen. Könnten Sie es bitte anders formulieren?',
+    'Entschuldigung, aber ich bin mir nicht sicher, was Sie mich fragen. Könnten Sie bitte ausführen oder mehr Details geben?',
+    'Könnten Sie bitte mehr Informationen liefern oder Ihre Frage klären? Ich bin mir nicht sicher, ob ich verstehe, was Sie mich fragen.',
+    'Entschuldigung, ich habe Ihre Nachricht nicht verstanden. Könnten Sie es bitte anders erklären?',
+    'Ich habe Schwierigkeiten, Ihre Frage zu verfolgen. Könnten Sie bitte mehr Details geben oder es anders formulieren?',
+    'Entschuldigung, aber ich bin mir nicht sicher, was Sie meinen. Könnten Sie es bitte anders erklären?',
+    'Könnten Sie bitte Ihre Frage klären oder mehr Informationen liefern? Ich habe Schwierigkeiten, zu verstehen, was Sie mich fragen.',
+    'Entschuldigung, ich habe Ihre Nachricht nicht verstanden. Könnten Sie bitte anders formulieren oder mehr Kontext liefern?',
+  ],
+
+  [VoiceflowConstants.Language.HI]: [
+    'माफ़ कीजिये, मैंने आपका मतलब ठीक से समझा नहीं है। क्या आप अपना सवाल या अनुरोध फिर से बनाने में मदद कर सकते हैं?',
+    'क्या आप अधिक संदर्भ या अपना सवाल स्पष्ट कर सकते हैं?',
+    'मैंने अपनी संदेश को समझने में तकलीफ है। क्या आप उसे अलग तरह से फिर से व्यक्त करने में मदद कर सकते हैं?',
+    'माफ़ कीजिये, लेकिन मैं नहीं सुनता हूँ कि आप मुझसे क्या पूछ रहे हैं। क्या आप बढ़ावा दे सकते हैं या अधिक विवरण दे सकते हैं?',
+    'माफ़ कीजिये, मैंने आपकी संदेश नहीं समझी है। क्या आप उसे अलग तरह से स्पष्ट कर सकते हैं?',
+    'मैंने अपने सवाल को पढ़ने में तकलीफ है। क्या आप अधिक विवरण दे सकते हैं या उसे अलग तरह से फिर से बना सकते हैं?',
+    'क्या आप अपना सवाल स्पष्ट कर सकते हैं या अधिक जानकारी दे सकते हैं? मैं नहीं सुनता हूँ कि आप मुझसे क्या पूछ रहे हैं।',
+    'माफ़ कीजिये, मैंने आपकी संदेश नहीं समझी है। क्या आप उसे अलग तरह से फिर से बना सकते हैं या अधिक संदर्भ दे सकते हैं?',
+  ],
+
+  [VoiceflowConstants.Language.IT]: [
+    'Mi dispiace, non ho capito del tutto cosa volevi dire. Potresti riformulare la tua domanda o richiesta, per favore?',
+    'Potresti fornire più contesto o chiarire la tua domanda, per favore?',
+    'Sto avendo difficoltà a capire il tuo messaggio. Potresti riformularlo in modo diverso, per favore?',
+    'Mi dispiace, ma non sono sicuro di cosa mi stai chiedendo. Potresti esporre o fornire maggiori dettagli, per favore?',
+    'Potresti fornire più informazioni o chiarire la tua domanda, per favore? Non sono sicuro di aver capito cosa mi stai chiedendo.',
+    'Mi dispiace, non ho capito il tuo messaggio. Potresti spiegare in modo diverso, per favore?',
+    'Sto avendo difficoltà a seguire la tua domanda. Potresti fornire maggiori dettagli o riformularla, per favore?',
+    'Mi dispiace, ma non sono sicuro di cosa vuoi dire. Potresti spiegare in modo diverso, per favore?',
+    'Potresti chiarire la tua domanda o fornire più informazioni, per favore? Non riesco a capire cosa mi stai chiedendo.',
+    'Mi dispiace, non ho capito il tuo messaggio. Potresti riformularlo o fornire più contesto, per favore?',
+  ],
+
+  [VoiceflowConstants.Language.JA]: [
+    'すみません、あなたが何を言いたいのかわかりませんでした。 質問やリクエストを別のやり方で再フォーマットすることはできますか？',
+    'もっと文脈を提供するか、質問を明確にすることはできますか？',
+    'あなたのメッセージを理解するのが難しいです。 別のやり方で再度言い表すことはできますか？',
+    'すみませんが、あなたが何を聞いているのかわかりません。 もっと詳細を述べるか、より多くの詳細を提供することはできますか？',
+    'もっと情報を提供するか、質問を明確にすることはできますか？ あなたが何を聞いているのかわかりません。',
+    'すみません、あなたのメッセージを理解できませんでした。 別のやり方で説明することはできますか？',
+    '私はあなたの質問を追跡するのが難しいです。 もっと詳細を提供するか、別のやり方で再フォーマットすることはできますか？',
+    'すみませんが、あなたが何を言いたいのかわかりません。 別のやり方で説明することはできますか？',
+    '質問を明確にするか、もっと情報を提供することはできますか？ あなたが何を聞いているのかわかりません。',
+    'すみません、あなたのメッセージを理解できませんでした。 別のやり方で再フォーマットするか、もっと文脈を提供することはできますか？',
+  ],
+
+  [VoiceflowConstants.Language.KO]: [
+    '죄송합니다. 제가 제가 이해할 수 없는 질문이나 요청을 하고 있습니다. 질문 또는 요청을 다른 방식으로 재형성할 수 있을까요?',
+    '제가 이해할 수 있도록 자세히 설명하거나 질문을 정확하게 전달할 수 있을까요?',
+    '제가 메시지를 이해하기 어려운 상황입니다. 다른 방식으로 재형성할 수 있을까요?',
+    '죄송합니다만, 제가 어떤 질문을 하고 있는지 잘 모르겠습니다. 자세히 설명하거나 자세한 정보를 제공할 수 있을까요?',
+    '자세한 정보를 제공하거나 질문을 정확하게 전달할 수 있을까요? 제가 어떤 질문을 하고 있는지 잘 모르겠습니다.',
+    '죄송합니다만, 제가 메시지를 이해하지 못했습니다. 다른 방식으로 설명할 수 있을까요?',
+    '질문을 추적하기 어려운 상황입니다. 자세한 정보를 제공하거나 다른 방식으로 재형성할 수 있을까요?',
+    '죄송합니다만, 제가 어떤 의도로 질문을 하고 있는지 잘 모르겠습니다. 다른 방식으로 설명할 수 있을까요?',
+    '질문을 정확하게 전달하거나 자세한 정보를 제공할 수 있을까요? 제가 어떤 질문을 하고 있는지 잘 모르겠습니다.',
+    '죄송합니다만, 제가 메시지를 이해하지 못했습니다. 다른 방식으로 재형성할 수 있거나 자세한 정보를 제공할 수 있을까요?',
+  ],
+
+  [VoiceflowConstants.Language.MR]: [
+    'माफ करा, मी तुमची संदेश समजत नाही. क्या तुम्ही तो विविध माहितीने पुनर्स्थापित करू शकता?',
+    'माफ करा, मी तुमचे प्रश्न समजत नाही. तुम्ही तो अधिक विवरण देऊ शकता अथवा तो विविध माहितीने पुनर्स्थापित करू शकता?',
+    'माफ करा, मी तुमचे संदेश समजत नाही. तुम्ही तो अधिक विवरण देऊ शकता अथवा तो विविध माहितीने पुनर्स्थापित करू शकता?',
+    'माफ करा, मी तुमचा प्रश्न समजत नाही. तुम्ही तो अधिक विवरण देऊ शकता अथवा तो विविध माहितीने प',
+    'माफ करा, मी तुमचा प्रश्न समजत नाही. तुम्ही तो अधिक विवरण देऊ शकता अथवा तो विविध माहितीने पुनर्स्थापित करू शकता?',
+    'माफ करा, मी तुमचे संदेश समजत नाही. तुम्ही तो विविध माहितीने पुनर्स्थापित करू शकता अथवा तो अधिक विवरण देऊ शकता?',
+    'माफ करा, मी तुमचे संदेश समजले नाही. क्या तुम्ही तो विविध माहिती देऊ शकता अथवा तो ही आवश्यकताने नंतर पुनर्स्थापित करू शकता?',
+    'माफ करा, मी तुमचा प्रश्न पुनरावलोकन करण्यासाठी असमर्थ आहे. तुम्ही तो अधिक विवरण देऊ शकता अथवा तो विविध माहितीने पुनर्स्थापित करू शकता?',
+  ],
+
+  [VoiceflowConstants.Language.PT]: [
+    'Desculpe, não entendi sua mensagem. Poderia reformular ou fornecer mais informações para que eu possa compreender?',
+    'Desculpe, não consegui entender sua mensagem. Poderia reformular de outra maneira ou fornecer mais contexto?',
+    'Desculpe, mas não estou entendendo o que você está perguntando. Poderia fornecer mais detalhes ou reformular a pergunta de outra maneira?',
+    'Desculpe, não consegui acompanhar sua pergunta. Poderia fornecer mais informações ou reformular de outra maneira?',
+    'Desculpe, não estou conseguindo acompanhar sua pergunta. Poderia fornecer mais detalhes ou reformular de outra maneira?',
+    'Desculpe, mas não estou entendendo o que você está perguntando. Poderia fornecer mais informações ou reformular a pergunta de outra maneira?',
+    'Desculpe, não consegui acompanhar sua pergunta. Poderia fornecer mais detalhes ou reformular de outra maneira?',
+    'Desculpe, não entendi sua mensagem. Poderia reformular de outra maneira ou fornecer mais contexto?',
+  ],
+
+  [VoiceflowConstants.Language.ES]: [
+    'Lo siento, no entendí tu mensaje. ¿Podrías reformularlo o proporcionar más información para que pueda entenderlo mejor?',
+    'Lo siento, no estoy entendiendo tu pregunta. ¿Podrías proporcionar más detalles o reformularla de otra manera?',
+    'Lo siento, no logré entender tu mensaje. ¿Podrías reformularlo de otra manera o proporcionar más contexto?',
+    'Lo siento, pero no estoy entendiendo lo que estás preguntando. ¿Podrías proporcionar más información o reformular la pregunta de otra manera?',
+    'Lo siento, pero no estoy entendiendo lo que estás preguntando. ¿Podrías proporcionar más detalles o reformular la pregunta de otra manera?',
+    'Lo siento, no estoy entendiendo tu pregunta. ¿Podrías proporcionar más información o reformularla de otra manera?',
+  ],
+
+  [VoiceflowConstants.Language.TA]: ['மன்னிக்கவும் எனக்கு புரியவில்லை. அதை மீண்டும் வேறு விதமாக சொல்ல முடியுமா?'],
+
+  [VoiceflowConstants.Language.TE]: ['క్షమించండి నాకు అర్ధం కాలేదు. మళ్లీ వేరే విధంగా చెప్పగలరా?'],
+
+  [VoiceflowConstants.Language.TR]: [
+    'Özür dilerim, mesajınızı anlayamadım. Lütfen daha ayrıntılı bilgi verin veya mesajınızı farklı bir şekilde yeniden yazın.',
+  ],
+} as const;
+
+export const DEFAULT_BUILT_IN_NO_MATCHES = BUILT_IN_NO_MATCHES_BY_LANGUAGE[VoiceflowConstants.Language.EN];
+
+export const BUILT_IN_NO_MATCHES_BY_LOCALE: Partial<Record<VoiceflowConstants.Locale, readonly string[]>> = {
+  [VoiceflowConstants.Locale.EN_US]: BUILT_IN_NO_MATCHES_BY_LANGUAGE[VoiceflowConstants.Language.EN],
+  [VoiceflowConstants.Locale.AR_AR]: BUILT_IN_NO_MATCHES_BY_LANGUAGE[VoiceflowConstants.Language.AR],
+  [VoiceflowConstants.Locale.ZH_CN]: BUILT_IN_NO_MATCHES_BY_LANGUAGE[VoiceflowConstants.Language.ZH],
+  [VoiceflowConstants.Locale.NL_NL]: BUILT_IN_NO_MATCHES_BY_LANGUAGE[VoiceflowConstants.Language.NL],
+  [VoiceflowConstants.Locale.FR_FR]: BUILT_IN_NO_MATCHES_BY_LANGUAGE[VoiceflowConstants.Language.FR],
+  [VoiceflowConstants.Locale.DE_DE]: BUILT_IN_NO_MATCHES_BY_LANGUAGE[VoiceflowConstants.Language.DE],
+  [VoiceflowConstants.Locale.HI_IN]: BUILT_IN_NO_MATCHES_BY_LANGUAGE[VoiceflowConstants.Language.HI],
+  [VoiceflowConstants.Locale.IT_IT]: BUILT_IN_NO_MATCHES_BY_LANGUAGE[VoiceflowConstants.Language.IT],
+  [VoiceflowConstants.Locale.JA_JP]: BUILT_IN_NO_MATCHES_BY_LANGUAGE[VoiceflowConstants.Language.JA],
+  [VoiceflowConstants.Locale.KO_KR]: BUILT_IN_NO_MATCHES_BY_LANGUAGE[VoiceflowConstants.Language.KO],
+  [VoiceflowConstants.Locale.MR_IN]: BUILT_IN_NO_MATCHES_BY_LANGUAGE[VoiceflowConstants.Language.MR],
+  [VoiceflowConstants.Locale.PT_BR]: BUILT_IN_NO_MATCHES_BY_LANGUAGE[VoiceflowConstants.Language.PT],
+  [VoiceflowConstants.Locale.ES_ES]: BUILT_IN_NO_MATCHES_BY_LANGUAGE[VoiceflowConstants.Language.ES],
+  [VoiceflowConstants.Locale.ES_MX]: BUILT_IN_NO_MATCHES_BY_LANGUAGE[VoiceflowConstants.Language.ES],
+  [VoiceflowConstants.Locale.TA_IN]: BUILT_IN_NO_MATCHES_BY_LANGUAGE[VoiceflowConstants.Language.TA],
+  [VoiceflowConstants.Locale.TE_IN]: BUILT_IN_NO_MATCHES_BY_LANGUAGE[VoiceflowConstants.Language.TE],
+  [VoiceflowConstants.Locale.TR_TR]: BUILT_IN_NO_MATCHES_BY_LANGUAGE[VoiceflowConstants.Language.TR],
+
+  [VoiceflowConstants.Locale.FR_CA]: [
+    "Désolé, j'ai pas tout compris ce que tu voulais dire. Pourrais-tu reformuler ta question ou ta demande, s'il te plaît ?",
+    "Pourrais-tu fournir plus de contexte ou préciser ta question, s'il te plaît ?",
+    "J'ai de la misère à comprendre ton message. Pourrais-tu le reformuler de manière différente, s'il te plaît ?",
+    "Désolé, mais je suis pas sûr de ce que tu me demandes. Pourrais-tu développer ou donner plus de détails, s'il te plaît ?",
+    "Pourrais-tu fournir plus d'informations ou préciser ta question, s'il te plaît ? Je suis pas sûr de comprendre ce que tu me demandes.",
+    "Désolé, j'ai pas compris ton message. Pourrais-tu l'expliquer de manière différente, s'il te plaît ?",
+    "J'ai de la misère à suivre ta question. Pourrais-tu donner plus de détails ou la reformuler, s'il te plaît ?",
+    "Désolé, mais je suis pas sûr de ce que tu veux dire. Pourrais-tu l'expliquer de manière différente, s'il te plaît ?",
+    "Pourrais-tu préciser ta question ou fournir plus d'informations, s'il te plaît ? J'arrive pas à comprendre ce que tu me demandes.",
+    "Désolé, j'ai pas compris ton message. Pourrais-tu le reformuler ou fournir plus de contexte, s'il te plaît ?",
+  ],
+};

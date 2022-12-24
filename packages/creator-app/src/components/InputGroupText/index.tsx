@@ -1,6 +1,6 @@
 import { Flex } from '@voiceflow/ui';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 const InputGroupText = styled(Flex)`
   padding: 0.375rem 0.75rem;

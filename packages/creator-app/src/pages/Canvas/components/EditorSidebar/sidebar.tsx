@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 import Drawer from '@/components/Drawer';
 import HideVoiceflowAssistant from '@/components/HideVoiceflowAssistant';
 import { BlockType } from '@/constants';
-import { NamespaceProvider } from '@/contexts';
+import { NamespaceProvider } from '@/contexts/NamespaceContext';
 import * as Creator from '@/ducks/creator';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import { useActiveProjectConfig, useRAF, useTheme } from '@/hooks';

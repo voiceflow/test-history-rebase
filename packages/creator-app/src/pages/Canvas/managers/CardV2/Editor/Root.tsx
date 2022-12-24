@@ -4,7 +4,6 @@ import React from 'react';
 
 import * as Documentation from '@/config/documentation';
 import * as CreatorV2 from '@/ducks/creatorV2';
-import * as Tracking from '@/ducks/tracking';
 import { useSelector } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import { NodeEditorV2 } from '@/pages/Canvas/managers/types';
@@ -19,13 +18,10 @@ const CardV2EditorRoot: NodeEditorV2<Realtime.NodeData.CardV2, Realtime.NodeData
   const parentNode = useSelector(CreatorV2.nodeByIDSelector, { id: editor.node.parentNode });
   const card = editor.data;
 
-  const isLast = React.useMemo(() => {
-    if (!parentNode) return false;
-    return [...parentNode.combinedNodes].pop() === editor.nodeID;
-  }, [parentNode]);
+  const isLast = !!parentNode && parentNode.combinedNodes[parentNode.combinedNodes.length - 1] === editor.nodeID;
 
-  const noMatchConfig = NoMatchV2.useConfig({ step: Tracking.NoMatchStepType.CARD, step_id: editor.nodeID });
-  const noReplyConfig = NoReplyV2.useConfig({ step: Tracking.NoMatchStepType.CARD, step_id: editor.nodeID });
+  const noMatchConfig = NoMatchV2.useConfig({ step: editor.data });
+  const noReplyConfig = NoReplyV2.useConfig({ step: editor.data });
 
   return (
     <EditorV2

@@ -6,6 +6,7 @@ export { default as add } from './add.svg';
 export { default as addImage } from './add-image.svg';
 export { default as addTopic } from './add-topic.svg';
 export { default as add2 } from './add2.svg';
+export { default as ai } from './ai.svg';
 export { default as alexa } from './alexa.svg';
 export { default as amazonAlexa } from './amazon-alexa.svg';
 export { default as apperance } from './apperance.svg';

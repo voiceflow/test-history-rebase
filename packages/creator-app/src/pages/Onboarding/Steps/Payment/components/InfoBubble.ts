@@ -1,6 +1,6 @@
 import { Flex } from '@voiceflow/ui';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 const InfoBubble = styled(Flex)`
   height: 86px;

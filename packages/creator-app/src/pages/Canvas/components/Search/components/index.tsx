@@ -2,7 +2,7 @@ import { SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 import { components, ControlProps, InputProps, MenuProps } from 'react-select';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 export { default as Container } from './SearchContainer';
 export { default as Dropdown } from './SearchDropdown';

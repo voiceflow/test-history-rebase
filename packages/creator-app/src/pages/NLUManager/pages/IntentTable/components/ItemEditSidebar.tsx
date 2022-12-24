@@ -4,16 +4,17 @@ import React from 'react';
 import Drawer from '@/components/Drawer';
 import EditableText from '@/components/EditableText';
 import { InteractionModelTabType } from '@/constants';
-import { NLUContext, useNLUItemMenu } from '@/contexts';
+import { NLUContext, useNLUItemMenu } from '@/contexts/NLUContext';
 import { useTheme } from '@/hooks';
 import { EDITOR_LEFT_SIDEBAR_WIDTH, EditorTabs } from '@/pages/NLUManager/constants';
 import { useNLUManager } from '@/pages/NLUManager/context';
 
 interface ItemEditSidebarProps {
+  onBack?: VoidFunction;
   isBuiltIn?: boolean;
 }
 
-const ItemEditSidebar: React.FC<ItemEditSidebarProps> = ({ children, isBuiltIn }) => {
+const ItemEditSidebar: React.FC<ItemEditSidebarProps> = ({ children, isBuiltIn, onBack }) => {
   const theme = useTheme();
   const nlu = React.useContext(NLUContext);
   const nluManager = useNLUManager();
@@ -50,10 +51,17 @@ const ItemEditSidebar: React.FC<ItemEditSidebarProps> = ({ children, isBuiltIn }
         <SidebarEditor.Header
           style={nluManager.isEditorTabActive(EditorTabs.INTENT_CONFLICTS) ? { height: `${theme.components.page.header.height}px` } : {}}
         >
+          {!!onBack && (
+            <SectionV2.ActionsContainer isLeft unit={0} offsetUnit={2.75}>
+              <IconButton icon="largeArrowLeft" onClick={() => onBack()} variant={IconButton.Variant.BASIC} />
+            </SectionV2.ActionsContainer>
+          )}
+
           <SidebarEditor.HeaderTitle fontWeight={800}>
             <EditableText
               value={name}
               onBlur={onBlurName}
+              readOnly={!!onBack}
               onChange={setName}
               startEditingOnFocus={!!activeItemID && nlu.canRenameItem(activeItemID, activeTab)}
             >

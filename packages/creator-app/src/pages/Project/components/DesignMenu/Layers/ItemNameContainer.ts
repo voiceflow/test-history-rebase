@@ -1,6 +1,6 @@
 import { colors, Flex, SvgIcon, ThemeColor } from '@voiceflow/ui';
 
-import { css, styled, transition } from '@/hocs';
+import { css, styled, transition } from '@/hocs/styled';
 
 import SearchLabel from '../SearchLabel';
 import { ITEM_HEIGHT } from './constants';

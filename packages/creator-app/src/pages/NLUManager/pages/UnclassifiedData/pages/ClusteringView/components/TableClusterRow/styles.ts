@@ -1,4 +1,4 @@
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 export const ClusterCountBox = styled.div`
   border-radius: 6px;

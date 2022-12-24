@@ -144,6 +144,7 @@ export type { PopperTypes } from './Popper';
 export { default as Popper } from './Popper';
 export { default as Portal, portalRootNode } from './Portal';
 export { default as Preview } from './Preview';
+export { default as ProgressBar } from './ProgressBar';
 export { default as Resizable } from './Resizable';
 export { default as SearchInput, SearchInputIcon } from './SearchInput';
 export { default as SectionV2 } from './SectionV2';

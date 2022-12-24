@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { RegisterEngine } from '@/contexts';
+import { RegisterEngine } from '@/contexts/EventualEngineContext';
 import type Engine from '@/pages/Canvas/engine';
 
 import { getManager } from '../managers';

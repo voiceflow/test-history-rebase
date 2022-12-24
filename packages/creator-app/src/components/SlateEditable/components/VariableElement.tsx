@@ -6,7 +6,9 @@ import { VariableTagTooltipStyles } from '@/components/VariableTag';
 import { InteractionModelTabType, ModalType } from '@/constants';
 import * as Router from '@/ducks/router';
 import * as SlotV2 from '@/ducks/slotV2';
-import { useDispatch, useModals, useSelector } from '@/hooks';
+import { useModals } from '@/hooks/modals';
+import { useDispatch } from '@/hooks/realtime';
+import { useSelector } from '@/hooks/redux';
 
 import { StyledTag as Slot } from '../../TextEditor/plugins/variables/components/StyledTag';
 import { usePluginOptions } from '../contexts';

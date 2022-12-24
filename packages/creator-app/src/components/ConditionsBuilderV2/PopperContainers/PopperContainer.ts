@@ -1,6 +1,6 @@
 import { Popper } from '@voiceflow/ui';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 const PopperContainer = styled.div`
   ${Popper.baseStyles}

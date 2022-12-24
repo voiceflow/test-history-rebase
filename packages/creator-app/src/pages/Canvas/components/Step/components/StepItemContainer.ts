@@ -1,6 +1,6 @@
 import { Box } from '@voiceflow/ui';
 
-import { css, styled } from '@/hocs';
+import { css, styled } from '@/hocs/styled';
 
 const StepItemContainer = styled(Box.Flex)<{ nested?: boolean; nestedWithIcon?: boolean }>`
   position: relative;

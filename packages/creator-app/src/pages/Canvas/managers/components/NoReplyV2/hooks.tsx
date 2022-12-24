@@ -1,8 +1,9 @@
-import { Nullable } from '@voiceflow/base-types';
+import { EmptyObject, Nullable } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { createDividerMenuItemOption } from '@voiceflow/ui';
 import React from 'react';
 
-import * as Session from '@/ducks/session';
+import * as GPT from '@/components/GPT';
 import * as Tracking from '@/ducks/tracking';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useSelector, useTrackingEvents } from '@/hooks';
@@ -11,41 +12,58 @@ import { OptionalSectionConfig } from '@/pages/Canvas/managers/types';
 import { getPlatformNoReplyFactory } from '@/utils/noReply';
 
 import { Section } from './components';
+import type { RootEditorLocationState } from './components/RootEditor';
 import { PATH } from './constants';
 
 interface NoReplyConfigOptions {
-  step?: Tracking.NoMatchStepType;
-  step_id?: string;
+  step?: Realtime.NodeData<EmptyObject>;
 }
 
-export const useConfig = ({ step, step_id }: NoReplyConfigOptions = {}): OptionalSectionConfig => {
-  const editor = EditorV2.useEditor<{ noReply?: Nullable<Realtime.NodeData.NoReply> }>();
-
+export const useConfig = ({ step }: NoReplyConfigOptions = {}): OptionalSectionConfig => {
+  const gptResponseGen = GPT.useResponseGenFeature();
   const [trackingEvents] = useTrackingEvents();
-  const projectID = useSelector(Session.activeProjectIDSelector)!;
-  const workspaceID = useSelector(Session.activeWorkspaceIDSelector);
+
+  const editor = EditorV2.useEditor<{ noReply?: Nullable<Realtime.NodeData.NoReply> }>();
 
   const defaultVoice = useSelector(VersionV2.active.voice.defaultVoiceSelector);
 
   const { noReply } = editor.data;
 
-  const addNoReply = () => {
+  const onOpen = (state?: RootEditorLocationState) => editor.goToNested({ path: PATH, state: { ...state } });
+
+  const onRemove = () => editor.onChange({ noReply: null });
+
+  const onAdd = async (locationState?: RootEditorLocationState) => {
     trackingEvents.trackNoReplyCreated({
-      workspace_id: workspaceID,
-      project_id: projectID,
+      step_id: step?.nodeID,
+      step_type: step?.type,
       creation_type: Tracking.NoMatchCreationType.STEP,
-      step_type: step,
-      step_id,
     });
 
-    return getPlatformNoReplyFactory(editor.projectType)({ defaultVoice });
+    await editor.onChange({
+      noReply: getPlatformNoReplyFactory(editor.projectType)({ defaultVoice, reprompts: locationState?.autogenerate ? [] : [''] }),
+    });
+
+    onOpen(locationState);
   };
 
   return {
-    option: {
-      label: noReply ? 'Remove no reply' : 'Add no reply',
-      onClick: () => editor.onChange({ noReply: noReply ? null : addNoReply() }),
-    },
-    section: !!noReply && <Section onClick={() => editor.goToNested(PATH)} onRemove={() => editor.onChange({ noReply: null })} />,
+    option:
+      gptResponseGen.isEnabled && !noReply
+        ? {
+            label: 'No reply',
+            options: [
+              { label: 'Add manually', onClick: () => onAdd() },
+              createDividerMenuItemOption(),
+              { label: 'Generate 1 response', onClick: () => onAdd({ autogenerate: true, autogenerateQuantity: 1 }) },
+              { label: 'Generate 3 responses', onClick: () => onAdd({ autogenerate: true, autogenerateQuantity: 3 }) },
+              { label: 'Generate 5 responses', onClick: () => onAdd({ autogenerate: true, autogenerateQuantity: 5 }) },
+            ],
+          }
+        : {
+            label: noReply ? 'Remove no reply' : 'Add no reply',
+            onClick: noReply ? onRemove : () => onAdd(),
+          },
+    section: !!noReply && <Section onClick={() => onOpen()} onRemove={() => editor.onChange({ noReply: null })} />,
   };
 };

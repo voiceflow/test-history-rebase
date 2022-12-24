@@ -33,7 +33,7 @@ const CreateModal: React.FC = () => {
   const platform = useSelector(ProjectV2.active.platformSelector);
   const [name, setName] = useLinkedState(applySlotNameFormatting(platform)(data.name) ?? '');
   const [values, setValues] = React.useState<Realtime.SlotInput[]>([]);
-  const [color, setColor] = React.useState<string>(pickRandomDefaultColor());
+  const [color, setColor] = React.useState<string>(() => pickRandomDefaultColor());
 
   const nameInputRef = React.useRef<HTMLInputElement>(null);
 
@@ -78,6 +78,7 @@ const CreateModal: React.FC = () => {
     return () => {
       setType(CustomSlot.type);
       setName('');
+      setColor(pickRandomDefaultColor());
       setValues([]);
 
       if (!cache.current.created) {

@@ -1,5 +1,5 @@
 import { cancelIcon } from '@/assets';
-import { css, styled } from '@/hocs';
+import { css, styled } from '@/hocs/styled';
 
 const GuidedStepsWrapper = styled.div<{ disabled?: boolean; centred?: boolean }>`
   max-width: 1040px;

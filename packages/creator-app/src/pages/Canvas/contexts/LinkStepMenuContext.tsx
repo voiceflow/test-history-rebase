@@ -2,9 +2,10 @@ import { Nullable } from '@voiceflow/common';
 import { useContextApi } from '@voiceflow/ui';
 import React from 'react';
 
-import { EngineContext } from '@/pages/Canvas/contexts';
 import { Point } from '@/types';
 import { Coords } from '@/utils/geometry';
+
+import { EngineContext } from './EngineContext';
 
 export interface LinkStepMenuValue {
   isOpen: boolean;

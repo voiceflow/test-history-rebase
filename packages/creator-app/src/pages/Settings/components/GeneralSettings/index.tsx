@@ -1,10 +1,11 @@
-import { Box } from '@voiceflow/ui';
+import { Box, useSetup } from '@voiceflow/ui';
 import React from 'react';
-import { useSelector } from 'react-redux';
 
 import * as Feature from '@/ducks/feature';
 import * as ProjectV2 from '@/ducks/projectV2';
-import { useAlexaProjectSettings, useSetup, useTrackingEvents } from '@/hooks';
+import { useAlexaProjectSettings } from '@/hooks/project';
+import { useSelector } from '@/hooks/redux';
+import { useTrackingEvents } from '@/hooks/tracking';
 import { DEFAULT_MAX_WIDTH, getSettingsMetaProps, SettingSections } from '@/pages/Settings/constants';
 
 import { SectionComponents, SectionFeatureFlags } from './constants';

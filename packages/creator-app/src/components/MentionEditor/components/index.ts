@@ -1,4 +1,4 @@
-import { createGlobalStyle } from '@/hocs';
+import { createGlobalStyle } from '@/hocs/styled';
 import { FadeDownDelayed, Slide } from '@/styles/animations';
 import { Theme } from '@/styles/theme';
 

@@ -1,6 +1,6 @@
 import { FlexCenter, transition } from '@voiceflow/ui';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 export const Container = styled(FlexCenter)`
   height: 100%;

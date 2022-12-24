@@ -1,4 +1,4 @@
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 const StripeCardElementWrapper = styled.div`
   position: absolute;

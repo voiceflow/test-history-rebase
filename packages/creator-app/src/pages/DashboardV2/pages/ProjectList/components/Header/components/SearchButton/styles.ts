@@ -1,4 +1,4 @@
-import { keyframes, styled } from '@/hocs';
+import { keyframes, styled } from '@/hocs/styled';
 import { ANIMATION_SPEED } from '@/styles/theme';
 
 const widthAnimation = keyframes`

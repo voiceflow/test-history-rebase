@@ -1,7 +1,7 @@
 import { Select } from '@voiceflow/ui';
 import React from 'react';
 
-import { useDomainAndDiagramMultilevelSelectOptions } from '@/hooks';
+import { useDomainAndDiagramMultilevelSelectOptions } from '@/hooks/select';
 
 import { ChildProps, Multilevel } from '../types';
 import { useDiagramsBlocksOptionsMap, useOnSelect } from './hooks';

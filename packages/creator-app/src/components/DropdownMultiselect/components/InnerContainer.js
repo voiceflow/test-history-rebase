@@ -1,6 +1,6 @@
 import { FlexCenter } from '@voiceflow/ui';
 
-import { css, styled } from '@/hocs';
+import { css, styled } from '@/hocs/styled';
 
 const activeStyles = css`
   border: 1px solid ${({ color = '#5D9DF5' }) => color};

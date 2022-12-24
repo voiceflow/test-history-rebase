@@ -1,4 +1,4 @@
-import { css, styled, transition } from '@/hocs';
+import { css, styled, transition } from '@/hocs/styled';
 
 import { Container } from '../PrototypeDialog/Message/Base/styles';
 

@@ -1,6 +1,6 @@
 import { ClickableText } from '@voiceflow/ui';
 
-import { css, styled, transition } from '@/hocs';
+import { css, styled, transition } from '@/hocs/styled';
 
 const ItemContainer = styled.div`
   cursor: default;

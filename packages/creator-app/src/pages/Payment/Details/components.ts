@@ -1,5 +1,5 @@
 import Tab from '@/components/Tabs/components/Tab';
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 export const ContentContainer = styled.div`
   min-height: 560px;

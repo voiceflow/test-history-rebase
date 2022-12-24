@@ -1,6 +1,6 @@
 import { Input } from '@voiceflow/ui';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 const WorkspaceNameInput = styled(Input)`
   border: 1px solid rgb(210, 218, 226);

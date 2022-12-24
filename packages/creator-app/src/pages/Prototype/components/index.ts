@@ -1,4 +1,4 @@
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 export { default as ChatDisplay } from './PrototypeChatDisplay';
 export { default as Container } from './PrototypeContainer';

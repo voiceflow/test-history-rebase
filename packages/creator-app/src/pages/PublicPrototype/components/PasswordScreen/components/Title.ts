@@ -1,6 +1,6 @@
 import { Title as BaseTitle } from '@voiceflow/ui';
 
-import { css, styled } from '@/hocs';
+import { css, styled } from '@/hocs/styled';
 import { breakpoints } from '@/styles/breakpoints';
 
 const Title = styled(BaseTitle)`

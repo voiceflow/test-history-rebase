@@ -1,6 +1,6 @@
 import { Box, colors, ThemeColor } from '@voiceflow/ui';
 
-import { css, styled, transition } from '@/hocs';
+import { css, styled, transition } from '@/hocs/styled';
 
 export const SectionIcon = styled(Box.FlexCenter)`
   height: 42px;

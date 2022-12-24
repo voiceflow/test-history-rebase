@@ -1,7 +1,7 @@
 import { Box, Button as UIButton, Preview } from '@voiceflow/ui';
 import React from 'react';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 export const MoreButton = styled(UIButton.DarkButton)`
   padding: 10px 0px;

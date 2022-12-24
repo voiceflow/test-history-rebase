@@ -5,7 +5,7 @@ import workspaceClient from '@/client/workspace';
 import { SettingsSection } from '@/components/Settings';
 import { Descriptor, TableContainer, TableHeader, TableRow } from '@/components/Table';
 import * as Session from '@/ducks/session';
-import { connect } from '@/hocs';
+import { connect } from '@/hocs/connect';
 import { Billing } from '@/models/Billing';
 import { FadeLeftContainer } from '@/styles/animations';
 

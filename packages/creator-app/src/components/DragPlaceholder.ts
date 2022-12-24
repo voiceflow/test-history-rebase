@@ -1,5 +1,5 @@
 import { itemDragPlaceholder } from '@/assets';
-import { css, styled } from '@/hocs';
+import { css, styled } from '@/hocs/styled';
 
 export const dragPlaceholderStyles = css`
   background-image: url(${itemDragPlaceholder});

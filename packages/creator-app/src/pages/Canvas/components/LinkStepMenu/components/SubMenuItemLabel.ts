@@ -1,6 +1,6 @@
 import { Text } from '@voiceflow/ui';
 
-import { css, styled } from '@/hocs';
+import { css, styled } from '@/hocs/styled';
 
 const Label = styled(Text)<{ disabled?: boolean; isLibrary?: boolean }>`
   display: block;

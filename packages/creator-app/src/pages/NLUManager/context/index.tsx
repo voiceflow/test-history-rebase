@@ -4,7 +4,11 @@ import React from 'react';
 
 import { NLURoute } from '@/config/routes';
 
-import { useEditorTab, useFilter, useNavigation, useNLUPersistedState, usePage } from '../hooks';
+import useEditorTab from '../hooks/useEditorTab';
+import useFilter from '../hooks/useFilter';
+import useNavigation from '../hooks/useNavigation';
+import useNLUPersistedState from '../hooks/useNLUPersistedState';
+import usePage from '../hooks/usePage';
 import useNLUEntities, { ENTITIES_INTIAL_STATE } from './entity';
 import useNLUIntents, { INTENTS_INTIAL_STATE } from './intent';
 import useNLUUnclassifiedData, { UNCLASSIFIED_DATA_INTIAL_STATE } from './unclassified';

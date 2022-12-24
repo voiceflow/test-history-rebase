@@ -1,7 +1,7 @@
 import { ClickableText, FlexApart } from '@voiceflow/ui';
 import React from 'react';
 
-import { css, styled } from '@/hocs';
+import { css, styled } from '@/hocs/styled';
 
 const HeadingText = styled.div`
   font-size: 15px;

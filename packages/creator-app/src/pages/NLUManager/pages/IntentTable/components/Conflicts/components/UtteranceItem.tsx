@@ -4,7 +4,7 @@ import React from 'react';
 
 import UtteranceInput from '@/components/Utterance';
 import * as SlotV2 from '@/ducks/slotV2';
-import { InjectedDraggableComponentProps, withDraggable } from '@/hocs';
+import { InjectedDraggableComponentProps, withDraggable } from '@/hocs/withDraggable';
 import { useAddSlot, useSelector } from '@/hooks';
 
 import { DragAndDropTypes } from '../constants';

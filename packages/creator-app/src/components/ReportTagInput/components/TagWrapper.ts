@@ -1,7 +1,7 @@
 import { SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 const TagWrapper = styled.span<{ onClick: (e: React.MouseEvent) => void }>`
   height: 26px;

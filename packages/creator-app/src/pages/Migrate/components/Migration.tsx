@@ -8,7 +8,7 @@ import * as Account from '@/ducks/account';
 import * as ProductV2 from '@/ducks/productV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
-import { connect } from '@/hocs';
+import { connect } from '@/hocs/connect';
 import { useAsyncMountUnmount } from '@/hooks';
 import { ConnectedProps } from '@/types';
 import * as Sentry from '@/vendors/sentry';

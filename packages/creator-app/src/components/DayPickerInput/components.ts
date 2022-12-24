@@ -1,6 +1,6 @@
 import DayPicker from 'react-day-picker';
 
-import { css, styled } from '@/hocs';
+import { css, styled } from '@/hocs/styled';
 import THEME from '@/styles/theme';
 
 import leftArrow from './leftArrow.png';

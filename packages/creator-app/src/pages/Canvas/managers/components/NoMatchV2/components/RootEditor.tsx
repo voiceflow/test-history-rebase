@@ -2,19 +2,30 @@ import { BaseModels, BaseNode } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { SectionV2 } from '@voiceflow/ui';
+import { Box, SectionV2 } from '@voiceflow/ui';
 import React from 'react';
+import { useLocation } from 'react-router-dom';
 
+import * as GPT from '@/components/GPT';
+import { MAX_ALEXA_REPROMPTS, MAX_SYSTEM_MESSAGES_COUNT } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as History from '@/ducks/history';
-import { useDispatch, useSelector } from '@/hooks';
+import { useDispatch } from '@/hooks/realtime';
+import { useSelector } from '@/hooks/redux';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import { EngineContext } from '@/pages/Canvas/contexts';
 
 import Actions from '../../Actions';
+import { useGenerateBuiltInResponses } from '../../hooks';
 import PathSection from '../../PathSection';
-import RepromptsSection from '../../RepromptsSection';
+import PromptsSection, { PromptsSectionRef } from '../../PromptsSection';
+import { BUILT_IN_NO_MATCHES_BY_LOCALE, DEFAULT_BUILT_IN_NO_MATCHES } from '../constants';
 import HelpTooltip from './HelpTooltip';
+
+export interface RootEditorLocationState {
+  autogenerate?: boolean;
+  autogenerateQuantity?: number;
+}
 
 interface Data {
   noMatch: Realtime.NodeData.NoMatch;
@@ -23,10 +34,11 @@ interface Data {
 const RootEditor: React.FC = () => {
   const engine = React.useContext(EngineContext)!;
   const editor = EditorV2.useEditor<Data>();
-
-  const noMatchLinkID = useSelector(Creator.focusedNoMatchLinkIDSelector);
+  const location = useLocation<RootEditorLocationState>();
+  const promptSectionRef = React.useRef<PromptsSectionRef>(null);
 
   const transaction = useDispatch(History.transaction);
+  const noMatchLinkID = useSelector(Creator.focusedNoMatchLinkIDSelector);
 
   const { noMatch } = editor.data;
 
@@ -59,7 +71,28 @@ const RootEditor: React.FC = () => {
       await onChange({ types: Utils.array.withoutValue(noMatch.types, BaseNode.Utils.NoMatchType.PATH) });
     });
 
+  const generateBuiltInResponses = useGenerateBuiltInResponses({
+    defaultResponses: DEFAULT_BUILT_IN_NO_MATCHES,
+    responsesByLocale: BUILT_IN_NO_MATCHES_BY_LOCALE,
+  });
+
+  const gptGenPrompt = GPT.useGenPrompts({
+    examples: noMatch.reprompts,
+    onAccept: (recommended) => onChangeReprompts([...noMatch.reprompts, ...recommended]),
+    generateBuiltIn: generateBuiltInResponses,
+    acceptAllOnChange: editor.isOpened,
+  });
+
+  const gptNoMatchGen = GPT.useNoMatchNoReplyGenFeature();
+
+  React.useEffect(() => {
+    if (!location.state?.autogenerate) return;
+
+    gptGenPrompt.onGenerate({ quantity: location.state.autogenerateQuantity ?? 1 });
+  }, []);
+
   const withPath = noMatch.types.includes(BaseNode.Utils.NoMatchType.PATH);
+  const maxItems = Realtime.Utils.typeGuards.isAlexaPlatform(editor.platform) ? MAX_ALEXA_REPROMPTS : MAX_SYSTEM_MESSAGES_COUNT;
   const noMatchPortID = editor.node.ports.out.builtIn[BaseModels.PortType.NO_MATCH];
 
   return (
@@ -79,13 +112,48 @@ const RootEditor: React.FC = () => {
         </EditorV2.DefaultFooter>
       }
     >
-      <RepromptsSection
+      <PromptsSection
+        ref={promptSectionRef}
         title="No match"
         active={!!noMatch.types.includes(BaseNode.Utils.NoMatchType.REPROMPT)}
+        prompts={noMatch.reprompts}
         onChange={onChangeReprompts}
-        reprompts={noMatch.reprompts}
-        isRandomized={noMatch.randomize}
-      />
+        maxItems={maxItems}
+        readOnly={!!gptGenPrompt.items.length}
+        voiceMulti
+      >
+        {({ mapManager }) =>
+          gptNoMatchGen.isEnabled && (
+            <Box pt={mapManager.isEmpty ? 0 : 16}>
+              {gptGenPrompt.items.map((item, index) => (
+                <Box key={item.id} pb={16}>
+                  <GPT.Prompt
+                    index={mapManager.size + index + 1}
+                    prompt={item}
+                    onFocus={() => gptGenPrompt.onFocusItem(index)}
+                    isActive={editor.isOpened && index === gptGenPrompt.activeIndex}
+                    onReject={() => gptGenPrompt.onRejectItem(index)}
+                    onChange={(data) => gptGenPrompt.onChangeItem(index, { ...item, ...data })}
+                    storageKey="recommended-no-match-prompts"
+                    popperLabel="response"
+                    activeIndex={gptGenPrompt.activeIndex}
+                    popperDescription="Closing the editor or navigating away will accept all responses."
+                  />
+                </Box>
+              ))}
+
+              <GPT.GenerateButton.Prompt
+                label="response"
+                disabled={!!gptGenPrompt.items.length || gptGenPrompt.fetching || mapManager.size >= maxItems}
+                isLoading={gptGenPrompt.fetching}
+                onGenerate={({ quantity }) => gptGenPrompt.onGenerate({ quantity, examples: promptSectionRef.current?.getCurrentValues() })}
+                pluralLabel="responses"
+                hasExtraContext
+              />
+            </Box>
+          )
+        }
+      </PromptsSection>
 
       <SectionV2.Divider />
 

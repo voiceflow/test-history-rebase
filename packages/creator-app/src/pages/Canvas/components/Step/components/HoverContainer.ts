@@ -1,4 +1,4 @@
-import { css, styled } from '@/hocs';
+import { css, styled } from '@/hocs/styled';
 
 const HoverContainer = styled.div<{ readOnlyMode: boolean }>`
   :not(:last-of-type) {

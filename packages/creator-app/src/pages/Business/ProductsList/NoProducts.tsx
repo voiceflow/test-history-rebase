@@ -2,7 +2,7 @@ import { Button, ButtonVariant } from '@voiceflow/ui';
 import React from 'react';
 
 import { safeGraphic } from '@/assets';
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 const Container = styled.div`
   display: flex;

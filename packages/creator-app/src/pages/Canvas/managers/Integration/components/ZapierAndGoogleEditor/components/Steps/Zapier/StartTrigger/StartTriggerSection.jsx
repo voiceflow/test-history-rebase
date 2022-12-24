@@ -7,7 +7,7 @@ import * as Account from '@/ducks/account';
 import * as Integration from '@/ducks/integration';
 import * as Modal from '@/ducks/modal';
 import * as Session from '@/ducks/session';
-import { connect } from '@/hocs';
+import { connect } from '@/hocs/connect';
 import * as ModalsV2 from '@/ModalsV2';
 
 class StartTrigger extends Component {

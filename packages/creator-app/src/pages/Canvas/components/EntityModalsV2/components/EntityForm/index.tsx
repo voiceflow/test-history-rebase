@@ -1,11 +1,10 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { ClickableText, Input, StrictPopperModifiers } from '@voiceflow/ui';
+import { ClickableText, Input, SectionV2, StrictPopperModifiers, useLinkedState } from '@voiceflow/ui';
 import React from 'react';
 
-import Section, { SectionVariant } from '@/components/Section';
 import { CUSTOM_SLOT_TYPE } from '@/constants';
 import * as ProjectV2 from '@/ducks/projectV2';
-import { useSelector } from '@/hooks';
+import { useSelector } from '@/hooks/redux';
 import { DividerBorder } from '@/pages/Canvas/components/IntentModalsV2/components/components';
 import { applySlotNameFormatting } from '@/utils/slot';
 
@@ -46,29 +45,37 @@ const EntityForm = React.forwardRef<HTMLInputElement, EntityFormProps>(
     },
     ref
   ) => {
-    const [hasExtendedEntity, setHasExtendedEntity] = React.useState(!!values.length);
-    const isCustomSlot = type === CUSTOM_SLOT_TYPE;
+    const [hasExtendedEntity, setHasExtendedEntity] = useLinkedState(!!values.length);
+
     const platform = useSelector(ProjectV2.active.platformSelector);
+
+    const isCustomSlot = type === CUSTOM_SLOT_TYPE;
 
     return (
       <>
         {withNameSection && (
-          <Section
-            header="Name"
-            variant={SectionVariant.QUATERNARY}
-            backgroundColor="#fdfdfd"
-            customContentStyling={{ paddingBottom: '0px' }}
-            customHeaderStyling={{ paddingTop: '20px' }}
-          >
-            <Input
-              ref={ref}
-              value={name}
-              onBlur={() => saveName?.()}
-              placeholder="Enter entity name"
-              onChangeText={(text) => updateName(applySlotNameFormatting(platform)(text))}
-            />
-          </Section>
+          <>
+            <SectionV2.SimpleContentSection
+              isAccent
+              headerProps={{ bottomUnit: 1.5 }}
+              contentProps={{ bottomOffset: 0 }}
+              header={
+                <SectionV2.Title bold secondary>
+                  Name
+                </SectionV2.Title>
+              }
+            >
+              <Input
+                ref={ref}
+                value={name}
+                onBlur={() => saveName?.()}
+                placeholder="Enter entity name"
+                onChangeText={(text) => updateName(applySlotNameFormatting(platform)(text))}
+              />
+            </SectionV2.SimpleContentSection>
+          </>
         )}
+
         <TypeAndColorSection
           name={name}
           type={type}
@@ -78,7 +85,13 @@ const EntityForm = React.forwardRef<HTMLInputElement, EntityFormProps>(
           colorPopperModifiers={colorPopperModifiers}
         />
 
-        {!isCustomSlot && !hasExtendedEntity && (
+        {isCustomSlot || hasExtendedEntity ? (
+          <>
+            <SectionV2.Divider />
+
+            <ValuesSection type={type} name={name} inputs={values} onChange={(inputs) => saveValues?.(inputs)} />
+          </>
+        ) : (
           <MessageWrapper>
             <BuiltInIntentMessage>
               Entities with built-in types don't require additional sample values. If you'd like to add more you can{' '}
@@ -87,11 +100,7 @@ const EntityForm = React.forwardRef<HTMLInputElement, EntityFormProps>(
           </MessageWrapper>
         )}
 
-        {isCustomSlot || hasExtendedEntity || !!values.length ? (
-          <ValuesSection withBottomDivider={withBottomDivider} inputs={values} type={type} updateInputs={(inputs) => saveValues?.(inputs)} />
-        ) : (
-          withBottomDivider && <DividerBorder />
-        )}
+        {withBottomDivider && <DividerBorder />}
       </>
     );
   }

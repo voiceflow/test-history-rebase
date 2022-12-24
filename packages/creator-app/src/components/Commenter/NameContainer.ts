@@ -1,6 +1,6 @@
 import { Text } from '@voiceflow/ui';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 const NameContainer = styled(Text)`
   margin-left: 12px;

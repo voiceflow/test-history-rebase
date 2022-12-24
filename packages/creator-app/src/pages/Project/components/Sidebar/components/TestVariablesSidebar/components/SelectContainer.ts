@@ -1,4 +1,4 @@
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 const SelectContainer = styled.div`
   padding: 20px 24px;

@@ -1,6 +1,6 @@
 import { FlexApart, SvgIcon } from '@voiceflow/ui';
 
-import { styled, transition } from '@/hocs';
+import { styled, transition } from '@/hocs/styled';
 
 const OverflowWrapper = styled(FlexApart).attrs({ fullWidth: true })`
   height: 100%;

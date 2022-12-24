@@ -1,10 +1,9 @@
 import { BaseNode } from '@voiceflow/base-types';
 
 import client from '@/client';
-import { PrototypeLayout } from '@/constants/prototype';
-import * as Prototype from '@/ducks/prototype';
+import type { PrototypeLayout } from '@/constants/prototype';
+import { prototypeContextStepSelector, prototypeVisualDeviceSelector } from '@/ducks/prototype/selectors';
 import * as Recent from '@/ducks/recent';
-import { PrototypeConfig } from '@/ducks/recent';
 import * as Session from '@/ducks/session';
 import { SyncThunk } from '@/store/types';
 
@@ -29,7 +28,7 @@ export const trackActiveProjectPrototypeTestClick = createVersionEventTracker((o
 
 export const trackActiveProjectPrototypeTestStart = createVersionEventTracker<{
   debug: boolean;
-  config: Omit<PrototypeConfig, 'platform'>;
+  config: Omit<Recent.PrototypeConfig, 'platform'>;
   display: BaseNode.Visual.DeviceType | null;
 }>((options) =>
   client.api.analytics.track(
@@ -47,14 +46,14 @@ export const trackProjectBlockPrototypeTestStart = createVersionEventTracker((op
   const state = getState();
 
   const debug = Recent.prototypeDebugSelector(state);
-  const display = Prototype.prototypeVisualDeviceSelector(state);
+  const display = prototypeVisualDeviceSelector(state);
 
   client.api.analytics.track(EventName.PROJECT_BLOCK_TEST_START, createVersionEventPayload(options, { debug, display }));
 });
 
 export const trackProjectPrototypeEnd = createVersionEventTracker((options, _dispatch, getState) => {
   const state = getState();
-  const contextStep = Prototype.prototypeContextStepSelector(state);
+  const contextStep = prototypeContextStepSelector(state);
 
   client.api.analytics.track(EventName.PROJECT_CANVAS_PROTOTYPE_END, createVersionEventPayload(options, { interactions: contextStep }));
 });

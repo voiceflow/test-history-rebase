@@ -13,7 +13,11 @@ export const getLabelTooltip = (header: string | undefined, body: string | undef
   bodyOverflow: true,
 });
 
-export const getUpgradeTooltip = (text: string | undefined, buttonText: string | undefined, onClick: VoidFunction): TippyTooltipProps => ({
+export const getUpgradeTooltip = (
+  text: string | undefined | JSX.Element,
+  buttonText: string | undefined,
+  onClick: VoidFunction
+): TippyTooltipProps => ({
   position: 'right',
   interactive: true,
   style: { display: 'block' },

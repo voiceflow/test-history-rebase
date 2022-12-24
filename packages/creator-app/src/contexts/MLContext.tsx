@@ -4,7 +4,7 @@ import React from 'react';
 
 import client from '@/client';
 import LoguxClient from '@/client/logux';
-import { withFeatureGate } from '@/hocs';
+import { withFeatureGate } from '@/hocs/withFeature';
 import { useLoguxSetup } from '@/hooks/logux';
 
 export const MLContext = React.createContext<LoguxClient | null>(null);

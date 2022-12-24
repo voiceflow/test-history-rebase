@@ -1,6 +1,6 @@
 import { Box, BoxFlexCenter } from '@voiceflow/ui';
 
-import { css, styled } from '@/hocs';
+import { css, styled } from '@/hocs/styled';
 
 export const Descriptor = styled.div`
   font-size: 13px;

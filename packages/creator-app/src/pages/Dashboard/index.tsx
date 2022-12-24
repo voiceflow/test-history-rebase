@@ -9,7 +9,7 @@ import { ModalType } from '@/constants';
 import { SeoPage } from '@/constants/seo';
 import * as Notifications from '@/ducks/notifications';
 import * as Router from '@/ducks/router';
-import { withBatchLoadingGate } from '@/hocs';
+import { withBatchLoadingGate } from '@/hocs/withBatchLoadingGate';
 import { useActiveWorkspace, useDispatch, useModals, useSetup, useWorkspaceTracking } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
 import perf, { PerfAction } from '@/performance';

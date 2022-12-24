@@ -1,6 +1,6 @@
 import { transition } from '@voiceflow/ui';
 
-import { css, styled } from '@/hocs';
+import { css, styled } from '@/hocs/styled';
 
 export const ActionIcon = styled.div<{ selected?: boolean | undefined; left?: number }>`
   position: relative;

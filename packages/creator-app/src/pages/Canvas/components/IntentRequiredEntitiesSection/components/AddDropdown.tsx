@@ -6,7 +6,7 @@ import * as Normal from 'normal-store';
 import React from 'react';
 
 import { InteractionModelTabType } from '@/constants';
-import { NLUContext } from '@/contexts';
+import { NLUContext } from '@/contexts/NLUContext';
 import { useAddSlot } from '@/hooks';
 
 interface AddDropdownProps {

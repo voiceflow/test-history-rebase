@@ -1,7 +1,7 @@
-import { BoxFlex, SectionV2, TutorialInfoIcon } from '@voiceflow/ui';
+import { Box, SectionV2, TutorialInfoIcon } from '@voiceflow/ui';
 import React from 'react';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 import InfoTooltip from './InfoTooltip';
 
@@ -11,7 +11,6 @@ interface SectionProps {
 }
 
 const TutorialWrapper = styled.div`
-  margin-left: 10px;
   margin-top: 1px;
 `;
 
@@ -20,7 +19,7 @@ const Section: React.FC<SectionProps> = ({ label, onClick }) => (
     <SectionV2.Divider />
 
     <SectionV2.LinkSection onClick={onClick}>
-      <BoxFlex>
+      <Box.Flex>
         <SectionV2.Title>{label}</SectionV2.Title>
 
         <TutorialWrapper>
@@ -28,7 +27,7 @@ const Section: React.FC<SectionProps> = ({ label, onClick }) => (
             <InfoTooltip label={label} />
           </TutorialInfoIcon>
         </TutorialWrapper>
-      </BoxFlex>
+      </Box.Flex>
     </SectionV2.LinkSection>
   </>
 );

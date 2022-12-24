@@ -43,6 +43,8 @@ export const idSelector = Session.activeProjectIDSelector;
 
 export const linkTypeSelector = createSelector([projectSelector], (project) => project?.linkType || BaseModels.Project.LinkType.STRAIGHT);
 
+export const aiAssistSettings = createSelector([projectSelector], (project) => project?.aiAssistSettings);
+
 export const customThemesSelector = createSelector([projectSelector], (project) => project?.customThemes || []);
 
 export const isStraightLinksSelector = createSelector([linkTypeSelector], (linkType) => linkType === BaseModels.Project.LinkType.STRAIGHT);

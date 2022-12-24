@@ -1,6 +1,6 @@
 import { FlexCenter } from '@voiceflow/ui';
 
-import { css, styled } from '@/hocs';
+import { css, styled } from '@/hocs/styled';
 import { ANIMATION_SPEED } from '@/styles/theme';
 
 const UpdateBubble = styled(FlexCenter)<{ expand?: boolean }>`

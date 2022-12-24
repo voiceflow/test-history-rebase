@@ -1,8 +1,8 @@
 import { Portal, stopImmediatePropagation } from '@voiceflow/ui';
 import React from 'react';
 
-import { ModalsContext } from '@/contexts';
-import { styled } from '@/hocs';
+import { ModalsContext } from '@/contexts/ModalsContext';
+import { styled } from '@/hocs/styled';
 import { FadeContainer } from '@/styles/animations';
 
 const Backdrop = styled(FadeContainer)`

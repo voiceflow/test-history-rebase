@@ -1,6 +1,6 @@
 import { Tooltip } from 'react-tippy';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 const IntegrationHelpIcon = styled(Tooltip)`
   position: absolute;

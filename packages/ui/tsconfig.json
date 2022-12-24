@@ -10,7 +10,7 @@
     "paths": {
       "@ui/*": ["src/*"]
     },
-    "types": []
+    "types": ["dayjs/plugin/relativeTime", "dayjs/plugin/minMax"]
   },
   "exclude": ["node_modules/jest", "node_modules/**/*", "build/**/*", "coverage/**/*", "svgr.config.cjs"]
 }

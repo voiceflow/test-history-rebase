@@ -1,5 +1,5 @@
 import { ClientCRUDPayload, createCRUDActions, getCRUDActionTargets } from '@realtime-sdk/actions/utils';
-import { Workspace } from '@realtime-sdk/models';
+import { Quota, Workspace } from '@realtime-sdk/models';
 import { BaseCreatorPayload, BaseWorkspacePayload } from '@realtime-sdk/types';
 import { Utils } from '@voiceflow/common';
 import { BillingPeriod, PlanType } from '@voiceflow/internal';
@@ -8,6 +8,8 @@ import { Action, AnyAction } from 'typescript-fsa';
 import { workspaceType } from './utils';
 
 export * as member from './member';
+export * as quotas from './quotas';
+export * as settings from './settings';
 
 // creation
 
@@ -37,6 +39,10 @@ export interface UpdateWorkspaceImagePayload extends BaseWorkspacePayload {
 
 export interface EjectUsersPayload extends BaseWorkspacePayload {
   creatorID: number;
+}
+
+export interface LOAD_QUOTAS extends BaseWorkspacePayload {
+  quotas: Quota[];
 }
 
 export interface CheckoutWorkspacePayload extends BaseWorkspacePayload {

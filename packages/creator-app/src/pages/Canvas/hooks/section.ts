@@ -1,7 +1,7 @@
 import { useSessionStorageState } from '@voiceflow/ui';
 import React from 'react';
 
-import { NamespaceContext } from '@/contexts';
+import { NamespaceContext } from '@/contexts/NamespaceContext';
 import * as Session from '@/ducks/session';
 import { useSelector } from '@/hooks';
 

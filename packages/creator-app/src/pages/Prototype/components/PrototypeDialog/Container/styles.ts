@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import { css, styled } from '@/hocs';
+import { css, styled } from '@/hocs/styled';
 
 export const Outer = styled.div<{ isPublic?: boolean }>`
   position: relative;

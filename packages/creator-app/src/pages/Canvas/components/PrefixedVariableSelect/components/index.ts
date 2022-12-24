@@ -1,7 +1,7 @@
 import { FlexApart, SearchInput } from '@voiceflow/ui';
 
 import VariableSelect from '@/components/VariableSelect';
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 export { default as Prefix } from './Prefix';
 

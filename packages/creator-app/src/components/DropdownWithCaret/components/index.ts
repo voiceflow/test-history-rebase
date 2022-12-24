@@ -1,6 +1,6 @@
 import { SvgIcon } from '@voiceflow/ui';
 
-import { css, styled } from '@/hocs';
+import { css, styled } from '@/hocs/styled';
 
 import { TextVariant } from '../types';
 

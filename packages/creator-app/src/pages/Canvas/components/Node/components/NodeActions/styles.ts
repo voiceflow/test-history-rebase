@@ -1,6 +1,6 @@
 import { FlexCenter } from '@voiceflow/ui';
 
-import { css, styled } from '@/hocs';
+import { css, styled } from '@/hocs/styled';
 import { NODE_LINK_WIDTH } from '@/pages/Canvas/components/Port/constants';
 
 interface ContainerProps {

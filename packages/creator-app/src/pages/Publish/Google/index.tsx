@@ -5,7 +5,7 @@ import client from '@/client';
 import * as Documentation from '@/config/documentation';
 import * as Errors from '@/config/errors';
 import * as Session from '@/ducks/session';
-import { connect } from '@/hocs';
+import { connect } from '@/hocs/connect';
 import { useAsyncMountUnmount, useSetup, useTrackingEvents } from '@/hooks';
 import { ConnectedProps } from '@/types';
 import * as Sentry from '@/vendors/sentry';

@@ -13,19 +13,21 @@ interface EditIntentFormProps {
   creationType: Tracking.IntentEditType;
   isNLUManager?: boolean;
   withNameSection?: boolean;
+  onEnterEntityPrompt: (slotID: string, options?: { autogenerate: boolean }) => void;
+  utteranceCreationType: Tracking.CanvasCreationType;
   prefilledNewUtterance?: string;
   withDescriptionBottomBorder?: boolean;
-  utteranceCreationType: Tracking.CanvasCreationType;
 }
 
 const DEFAULT_INPUTS: Platform.Base.Models.Intent.Input[] = [];
 
 const EditIntentForm: React.FC<EditIntentFormProps> = ({
   intentID,
-  utteranceCreationType,
   creationType,
   isNLUManager,
   withNameSection = false,
+  onEnterEntityPrompt,
+  utteranceCreationType,
   prefilledNewUtterance,
   withDescriptionBottomBorder,
 }) => {
@@ -36,7 +38,6 @@ const EditIntentForm: React.FC<EditIntentFormProps> = ({
 
   const addRequiredSlot = useDispatch(Intent.addRequiredSlot);
   const removeRequiredSlot = useDispatch(Intent.removeRequiredSlot);
-  const patchIntentSlotDialog = useDispatch(Intent.updateIntentSlotDialog);
   const [trackingEvents] = useTrackingEvents();
 
   const patchIntent = useDispatch(Intent.patchIntent);
@@ -53,8 +54,17 @@ const EditIntentForm: React.FC<EditIntentFormProps> = ({
       return;
     }
 
-    patchIntent(intentID, { name });
+    patchIntent(intentID, { name: formattedName });
     trackingEvents.trackIntentEdit({ creationType });
+  };
+
+  const onIntentNameSuggested = (suggestedName: string) => {
+    const { error, formattedName } = intentNameProcessor(suggestedName, intentID);
+
+    if (error) return;
+
+    setName(formattedName);
+    patchIntent(intentID, { name: formattedName });
   };
 
   const addRequiredSlotToIntent = async (slotID: string) => {
@@ -65,10 +75,6 @@ const EditIntentForm: React.FC<EditIntentFormProps> = ({
   const removeRequiredSlotFromIntent = async (slotID: string) => {
     await removeRequiredSlot(intentID, slotID);
     trackingEvents.trackIntentEdit({ creationType });
-  };
-
-  const updateSlotDialog = (slotID: string, dialog: Partial<Platform.Base.Models.Intent.SlotDialog>) => {
-    patchIntentSlotDialog(intentID, slotID, dialog);
   };
 
   const onUpdateUtterances = (inputs: Platform.Base.Models.Intent.Input[]) => {
@@ -83,12 +89,12 @@ const EditIntentForm: React.FC<EditIntentFormProps> = ({
     }
   }, [intent]);
 
-  return intent ? (
+  if (!intent) return null;
+
+  return (
     <IntentForm
       name={name}
-      noteID={intent?.noteID}
-      utteranceCreationType={utteranceCreationType}
-      creationType={creationType}
+      noteID={intent.noteID}
       inputs={inputs}
       setName={setName}
       intentID={intentID}
@@ -96,16 +102,19 @@ const EditIntentForm: React.FC<EditIntentFormProps> = ({
       isBuiltIn={intentIsBuiltIn}
       setInputs={onUpdateUtterances}
       isNLUManager={isNLUManager}
+      creationType={creationType}
       intentEntities={intent.slots}
       withNameSection={withNameSection}
       addRequiredSlot={addRequiredSlotToIntent}
-      updateSlotDialog={updateSlotDialog}
       removeRequiredSlot={removeRequiredSlotFromIntent}
+      onEnterEntityPrompt={onEnterEntityPrompt}
       prefilledNewUtterance={prefilledNewUtterance}
+      utteranceCreationType={utteranceCreationType}
+      onIntentNameSuggested={onIntentNameSuggested}
       withDescriptionSection
       withDescriptionBottomBorder={withDescriptionBottomBorder}
     />
-  ) : null;
+  );
 };
 
 export default EditIntentForm;

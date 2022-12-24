@@ -1,7 +1,7 @@
 import { inputStyle } from '@voiceflow/ui';
 import AutosizeTextArea from 'react-textarea-autosize';
 
-import { css, styled } from '@/hocs';
+import { css, styled } from '@/hocs/styled';
 
 const textAreaStyle = css`
   box-sizing: border-box;

@@ -2,7 +2,6 @@ import { Button, Modal, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import PromptInput from '@/components/PromptInput';
-import * as Session from '@/ducks/session';
 import * as Tracking from '@/ducks/tracking';
 import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
@@ -18,8 +17,6 @@ const GlobalNoMatchModal = manager.create('GlobalNoMatchModal', () => ({ api, ty
 
   const defaultVoice = useSelector(VersionV2.active.voice.defaultVoiceSelector);
   const globalNoMatch = useSelector(VersionV2.active.globalNoMatchSelector);
-  const projectID = useSelector(Session.activeProjectIDSelector)!;
-  const workspaceID = useSelector(Session.activeWorkspaceIDSelector);
 
   const patchSettings = useDispatch(Version.patchSettings);
 
@@ -31,11 +28,7 @@ const GlobalNoMatchModal = manager.create('GlobalNoMatchModal', () => ({ api, ty
 
       await patchSettings({ globalNoMatch: { prompt } });
 
-      trackingEvents.trackNoMatchCreated({
-        workspace_id: workspaceID,
-        project_id: projectID,
-        creation_type: Tracking.NoMatchCreationType.GLOBAL,
-      });
+      trackingEvents.trackNoMatchCreated({ creation_type: Tracking.NoMatchCreationType.GLOBAL });
 
       api.enableClose();
       api.close();

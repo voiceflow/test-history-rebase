@@ -11,12 +11,12 @@ import EditorV2 from '@/pages/Canvas/components/EditorV2';
 interface UtteranceSectionProps {
   slot: Realtime.Slot;
   onChange: (utterances: Platform.Base.Models.Intent.Input[]) => void;
-  usedSlots: Realtime.Slot[];
   utterances: Platform.Base.Models.Intent.Input[];
+  usedEntities: Realtime.Slot[];
   preventAccent?: boolean;
 }
 
-const UtteranceSection: React.FC<UtteranceSectionProps> = ({ slot, usedSlots, utterances, onChange, preventAccent }) => {
+const UtteranceSection: React.FC<UtteranceSectionProps> = ({ slot, utterances, onChange, usedEntities, preventAccent }) => {
   const utteranceRef = React.useRef<UtteranceRef>(null);
   const [addError, setAddError] = React.useState('');
   const [isAddEmpty, setIsAddEmpty] = React.useState(true);
@@ -74,7 +74,7 @@ const UtteranceSection: React.FC<UtteranceSectionProps> = ({ slot, usedSlots, ut
               ref={utteranceRef}
               space
               error={!!addError}
-              slots={usedSlots}
+              slots={usedEntities}
               onEmpty={setIsAddEmpty}
               creatable={false}
               iconProps={{ variant: SvgIcon.Variant.BLUE }}
@@ -111,7 +111,7 @@ const UtteranceSection: React.FC<UtteranceSectionProps> = ({ slot, usedSlots, ut
                     <SectionV2.ListItem action={<SectionV2.RemoveButton onClick={onRemove} />}>
                       <Utterance
                         space
-                        slots={usedSlots}
+                        slots={usedEntities}
                         value={item.text}
                         onBlur={onUpdate}
                         autoFocus={false}

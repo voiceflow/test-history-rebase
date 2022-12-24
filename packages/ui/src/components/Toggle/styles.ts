@@ -42,13 +42,20 @@ const sizeStyles = {
   `,
 };
 
-export const ToggleContainer = styled.div<{ size: Size }>`
+export const Label = styled.div`
+  width: 24px;
+  color: #132144;
+  font-weight: 400;
+  margin-right: 12px;
+`;
+
+export const Content = styled.div<{ size: Size }>`
   display: flex;
 
   ${({ size }) => size !== Size.NORMAL && sizeStyles[size]}
 `;
 
-export const ToggleOuterContainer = styled.label<{ hasLabel: boolean }>`
+export const Container = styled.label<{ hasLabel: boolean }>`
   margin-bottom: 0;
 
   ${({ hasLabel }) =>

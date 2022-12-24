@@ -1,6 +1,6 @@
 import { BlockText, Box } from '@voiceflow/ui';
 
-import { css, styled, transition } from '@/hocs';
+import { css, styled, transition } from '@/hocs/styled';
 
 const activeContainerStyles = css`
   border-color: #3d82e2;

@@ -4,7 +4,7 @@ import React from 'react';
 
 import client from '@/client';
 import { useEnableDisable } from '@/hooks/toggle';
-import * as ModalsV2 from '@/ModalsV2';
+import { openError } from '@/ModalsV2/utils';
 import { ClassName } from '@/styles/constants';
 import * as Sentry from '@/vendors/sentry';
 
@@ -73,7 +73,7 @@ const Speaker: React.FC<SpeakerProps> = ({ voice, platform, getSSMLToPlay }) => 
       audio.play();
       cashedSSML.current = ssmlToSpeak;
     } catch (err) {
-      ModalsV2.openError({ error: 'Unable to play SSML' });
+      openError({ error: 'Unable to play SSML' });
     }
 
     disableLoading();

@@ -1,5 +1,5 @@
 import UIPage from '@/components/Page';
-import { css, styled } from '@/hocs';
+import { css, styled } from '@/hocs/styled';
 
 export const Page = styled(UIPage)<{ isCreatingMarkupText?: boolean }>`
   ${({ isCreatingMarkupText }) =>

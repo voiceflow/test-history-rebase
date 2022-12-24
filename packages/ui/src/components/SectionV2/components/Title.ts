@@ -23,7 +23,7 @@ const Title = styled.h5<TitleProps>`
     `};
 
   &:not(:last-child) {
-    margin-right: ${({ noMargin }) => (noMargin ? 0 : units(1.5))};
+    margin-right: ${({ noMargin }) => (noMargin ? 0 : units(1.5))}px;
   }
 `;
 

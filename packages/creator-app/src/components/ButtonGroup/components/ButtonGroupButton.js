@@ -1,6 +1,6 @@
 import { BaseButton } from '@voiceflow/ui';
 
-import { css, styled, transition } from '@/hocs';
+import { css, styled, transition } from '@/hocs/styled';
 
 const ButtonGroupButton = styled(BaseButton)`
   flex: 1;

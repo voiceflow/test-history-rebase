@@ -1,6 +1,6 @@
 import { flexStyles } from '@voiceflow/ui';
 
-import { css, styled, transition } from '@/hocs';
+import { css, styled, transition } from '@/hocs/styled';
 
 const GroupLabel = styled.div<{ isActive?: boolean }>`
   ${flexStyles}

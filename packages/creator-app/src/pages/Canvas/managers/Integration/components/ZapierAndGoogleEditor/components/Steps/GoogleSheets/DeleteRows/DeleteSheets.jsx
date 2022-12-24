@@ -1,7 +1,7 @@
 import React from 'react';
 
 import VariablesInput from '@/components/VariablesInput';
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 import NextStepButton from '../../components/NextStepButton';
 

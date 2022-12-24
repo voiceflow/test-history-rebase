@@ -7,7 +7,7 @@ import React from 'react';
 import { Tooltip } from 'react-tippy';
 
 import { PluginType } from '@/components/TextEditor';
-import { useFeature } from '@/hooks';
+import { useFeature } from '@/hooks/feature';
 import { ClassName } from '@/styles/constants';
 import { prettifyGoogleVoicesLong, prettifyVoice, voiceOptionsFilter } from '@/utils/voice';
 
@@ -139,9 +139,9 @@ const SSML = (
       [PluginType.XML]: {
         type: 'ssml',
         tags: platformTags,
-        addOptions: platformSSMLMeta.addOptions,
         icon: 'systemShootingStar',
         addLabel: 'Add effect',
+        addOptions: platformSSMLMeta.addOptions,
         newLinesAllowed: true,
         tagsSearchPlaceholder: 'effects',
         additionalControlsRenderer: additionalXMLControlsRenderer,

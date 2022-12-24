@@ -1,7 +1,7 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
-import { AutoPanningStateContext } from '@/contexts';
+import { AutoPanningStateContext } from '@/contexts/AutoPanningContext';
 import * as Thread from '@/ducks/threadV2';
 import * as UI from '@/ducks/ui';
 import { useDispatch, useHotKeys, useRAF, useSelector, useTrackingEvents } from '@/hooks';

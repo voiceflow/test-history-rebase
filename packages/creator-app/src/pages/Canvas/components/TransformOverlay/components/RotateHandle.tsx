@@ -1,7 +1,7 @@
 import { stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 import { useSwallowZoom } from '../hooks';
 import CircularHandle from './CircularHandle';

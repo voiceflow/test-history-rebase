@@ -1,4 +1,4 @@
-import { css, styled } from '@/hocs';
+import { css, styled } from '@/hocs/styled';
 import { ClassName } from '@/styles/constants';
 
 export const StepMenuExpandButton = styled.div`

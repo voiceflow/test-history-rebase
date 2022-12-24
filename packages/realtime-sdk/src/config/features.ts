@@ -78,8 +78,7 @@ export enum FeatureFlag {
   GPT_ENTITY_VALUE_GEN = 'gpt_entity_value_gen',
   GPT_ENTITY_REPROMPT_GEN = 'gpt_entity_reprompt_gen',
   GPT_NOMATCH_NOREPLY_GEN = 'gpt_nomatch_noreply_gen',
-
-  GPT_AUTOCOMPLETE = 'gpt_autocomplete',
+  GPT_FREESTYLE = 'gpt_freestyle',
 
   ASSISTANT_AI = 'assistant_ai',
 }

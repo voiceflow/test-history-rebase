@@ -1,4 +1,4 @@
-import { css, styled } from '@/hocs';
+import { css, styled } from '@/hocs/styled';
 
 export const SliderContainer = styled.div`
   padding: 16px 24px;

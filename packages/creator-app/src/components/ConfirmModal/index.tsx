@@ -3,7 +3,7 @@ import React, { CSSProperties } from 'react';
 
 import Modal, { ModalFooter, ModalProps } from '@/components/Modal';
 import { ModalType } from '@/constants';
-import { styled, units } from '@/hocs';
+import { styled, units } from '@/hocs/styled';
 import { useModals } from '@/hooks/modals';
 import { useEnableDisable } from '@/hooks/toggle';
 

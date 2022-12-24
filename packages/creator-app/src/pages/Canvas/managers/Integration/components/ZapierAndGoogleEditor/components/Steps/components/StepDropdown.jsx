@@ -1,7 +1,7 @@
 import { Collapse } from '@voiceflow/ui';
 import React from 'react';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 import StepContainer from './StepContainer';
 import StepContentContainer from './StepContentContainer';

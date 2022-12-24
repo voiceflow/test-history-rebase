@@ -1,6 +1,6 @@
 import { down } from 'styled-breakpoints';
 
-import { css, styled } from '@/hocs';
+import { css, styled } from '@/hocs/styled';
 import { FadeDownDelayed } from '@/styles/animations';
 
 export interface ModalContainerProps {

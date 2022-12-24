@@ -1,4 +1,4 @@
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 export const Text = styled.div`
   color: ${({ theme }) => theme.colors.secondary};

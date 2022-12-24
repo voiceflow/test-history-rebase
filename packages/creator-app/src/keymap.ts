@@ -75,13 +75,24 @@ export enum Hotkey {
 
   NLU_TABLE_TAB = 'NLU_TABLE_TAB',
   NLU_TABLE_ESC = 'NLU_TABLE_ESC',
+
+  GPT_GEN_NEXT_ITEM = 'GPT_GEN_NEXT_ITEM',
+  GPT_GEN_PREV_ITEM = 'GPT_GEN_PREV_ITEM',
+  GPT_GEN_ACCEPT_ALL = 'GPT_GEN_ACCEPT_ALL',
+  GPT_GEN_REJECT_ALL = 'GPT_GEN_REJECT_ALL',
+  GPT_GEN_ACCEPT_ITEM = 'GPT_GEN_ACCEPT_ITEM',
+  GPT_GEN_REJECT_ITEM = 'GPT_GEN_REJECT_ITEM',
 }
 
 enum SpecialKey {
+  UP = 'up',
+  TAB = 'tab',
   ESC = 'esc',
   LEFT = 'left',
   META = 'meta',
   CTRL = 'ctrl',
+  DOWN = 'down',
+  ENTER = 'enter',
   EQUAL = '=',
   RIGHT = 'right',
   SHIFT = 'shift',
@@ -89,7 +100,6 @@ enum SpecialKey {
   DELETE = 'del',
   OPTION = 'alt',
   BACKSPACE = 'backspace',
-  TAB = 'tab',
 }
 
 /**
@@ -101,12 +111,12 @@ const HOTKEY_MAPPING: Record<Hotkey, string | string[]> = {
   [Hotkey.COPY]: [`${SpecialKey.CTRL}+c`, `${SpecialKey.META}+c`],
   [Hotkey.UNDO]: [`${SpecialKey.CTRL}+z`, `${SpecialKey.META}+z`],
   [Hotkey.REDO]: [`${SpecialKey.CTRL}+${SpecialKey.SHIFT}+z`, `${SpecialKey.META}+${SpecialKey.SHIFT}+z`],
-  [Hotkey.SUBMIT]: 'enter',
+  [Hotkey.SUBMIT]: SpecialKey.ENTER,
   [Hotkey.DELETE]: [SpecialKey.DELETE, SpecialKey.BACKSPACE],
   [Hotkey.ZOOM_IN]: [SpecialKey.EQUAL, `${SpecialKey.SHIFT}+${SpecialKey.EQUAL}`],
   [Hotkey.ZOOM_OUT]: ['-', `${SpecialKey.SHIFT}+-`],
   [Hotkey.RUN_MODE]: 'r',
-  [Hotkey.MULTISTEP_CONTINUE_NEXT_STEP]: 'enter',
+  [Hotkey.MULTISTEP_CONTINUE_NEXT_STEP]: SpecialKey.ENTER,
   [Hotkey.MOVE_MODE]: 'v',
   [Hotkey.ROOT_NODE]: 's',
   [Hotkey.SPOTLIGHT]: `${SpecialKey.SHIFT}+${SpecialKey.SPACE}`,
@@ -167,21 +177,31 @@ const HOTKEY_MAPPING: Record<Hotkey, string | string[]> = {
   [Hotkey.CONVERSATION_PAGE_LEGACY]: '2',
   [Hotkey.NLU_TABLE_TAB]: SpecialKey.TAB,
   [Hotkey.NLU_TABLE_ESC]: SpecialKey.ESC,
+
+  [Hotkey.GPT_GEN_NEXT_ITEM]: SpecialKey.DOWN,
+  [Hotkey.GPT_GEN_PREV_ITEM]: SpecialKey.UP,
+  [Hotkey.GPT_GEN_ACCEPT_ALL]: [`${SpecialKey.CTRL}+${SpecialKey.ENTER}`, `${SpecialKey.META}+${SpecialKey.ENTER}`],
+  [Hotkey.GPT_GEN_REJECT_ALL]: SpecialKey.ESC,
+  [Hotkey.GPT_GEN_ACCEPT_ITEM]: SpecialKey.ENTER,
+  [Hotkey.GPT_GEN_REJECT_ITEM]: [SpecialKey.DELETE, SpecialKey.BACKSPACE],
 };
 
 const SPECIAL_KEY_LABEL: Record<SpecialKey, string> = {
+  [SpecialKey.UP]: '↑',
   [SpecialKey.ESC]: 'Esc',
-  [SpecialKey.LEFT]: '<',
+  [SpecialKey.TAB]: 'Tab',
+  [SpecialKey.DOWN]: '↓',
+  [SpecialKey.LEFT]: '←',
   [SpecialKey.META]: '⌘',
   [SpecialKey.CTRL]: 'Ctrl',
+  [SpecialKey.ENTER]: 'Enter',
   [SpecialKey.EQUAL]: '+',
-  [SpecialKey.RIGHT]: '>',
+  [SpecialKey.RIGHT]: '→',
   [SpecialKey.SHIFT]: '⇧',
   [SpecialKey.SPACE]: 'Space',
   [SpecialKey.OPTION]: IS_MAC ? '⌥' : 'Alt',
   [SpecialKey.DELETE]: 'Del',
   [SpecialKey.BACKSPACE]: 'Del',
-  [SpecialKey.TAB]: 'Tab',
 };
 
 export const PLATFORM_META_KEY = IS_MAC ? SpecialKey.META : SpecialKey.CTRL;

@@ -14,3 +14,4 @@ export { voicePromptToSpeakDataAdapter } from './speakData';
 export { commentAdapter, threadAdapter } from './thread';
 export { default as variableStateAdapter } from './variableState';
 export { default as workspaceAdapter } from './workspace';
+export { default as workspaceSettingsAdapter } from './workspaceSettings';

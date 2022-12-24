@@ -1,4 +1,4 @@
-import { css, styled } from '@/hocs';
+import { css, styled } from '@/hocs/styled';
 
 const ProgressLine = styled.div<{ active?: boolean }>`
   width: 24px;

@@ -83,7 +83,7 @@ interface KeyApi<S> {
   update: (payload: Partial<S> | UpdateCallback<S>) => void;
 }
 
-type API<S extends object> = {
+export type SmartReducerAPi<S extends object> = {
   set: (payload: S | SetCallback<S>) => void;
   reset: () => void;
   update: (payload: Partial<S> | UpdateCallback<S>) => void;
@@ -94,7 +94,7 @@ export const useSmartReducerV2 = <S extends object>(
   customReducer: CustomReducer<S> = (s) => s,
   customApiBuilder: <R extends object>(defaultState: S, api: { [K in keyof S]: KeyApi<S[K]> }) => R = () => ({} as any)
 ) => {
-  const apiRef = useRef(null as Nullable<API<S> & ReturnType<typeof customApiBuilder>>);
+  const apiRef = useRef(null as Nullable<SmartReducerAPi<S> & ReturnType<typeof customApiBuilder>>);
   const [state, dispatch] = useReducer(createSmartReducer(customReducer), defaultState);
 
   if (!apiRef.current) {

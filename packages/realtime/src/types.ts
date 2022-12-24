@@ -15,6 +15,7 @@ export interface Config {
   GENERAL_SERVICE_ENDPOINT: string;
 
   IDENTITY_API_ENDPOINT: string;
+  BILLING_API_ENDPOINT: string;
 
   // Release information
   GIT_SHA: string | null;

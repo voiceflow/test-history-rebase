@@ -1,6 +1,6 @@
 import { FlexApart, SvgIcon } from '@voiceflow/ui';
 
-import { css, styled, transition } from '@/hocs';
+import { css, styled, transition } from '@/hocs/styled';
 
 export const Icon = styled(SvgIcon).attrs({ inline: true })<{ isActive?: boolean }>`
   color: ${({ isActive }) => (isActive ? '#132144' : '#6e849a')};

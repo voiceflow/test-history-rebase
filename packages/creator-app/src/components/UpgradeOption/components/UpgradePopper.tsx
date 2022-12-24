@@ -6,7 +6,8 @@ import React from 'react';
 import { LimitDetails, upgradeToEnterpriseAction } from '@/config/planLimits';
 import { ModalType } from '@/constants';
 import { UpgradePrompt } from '@/ducks/tracking';
-import { useModals, useTrackingEvents } from '@/hooks';
+import { useModals } from '@/hooks/modals';
+import { useTrackingEvents } from '@/hooks/tracking';
 import { SvgShadow } from '@/pages/Conversations/components/GatedTranscripts/components';
 
 import UpgradeContainer from './UpgradeContainer';

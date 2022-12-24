@@ -5,12 +5,12 @@ import { SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
 import { DragPreviewComponentProps, ItemComponentProps, MappedItemComponentHandlers } from '@/components/DraggableList';
+import EntityPromptSection from '@/components/EntityPromptSection';
 import { ModalType } from '@/constants';
 import * as SlotV2 from '@/ducks/slotV2';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useActiveProjectTypeConfig, useAddSlot, useAutoScrollNodeIntoView, useModals, useSelector } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
-import { EntityPromptSection } from '@/pages/Canvas/managers/components';
 import { NodeEditorV2Props } from '@/pages/Canvas/managers/types';
 import { isDialogflowPlatform, isGooglePlatform } from '@/utils/typeGuards';
 
@@ -49,14 +49,14 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
 ) => {
   const projectConfig = useActiveProjectTypeConfig();
 
-  const slot = useSelector(SlotV2.slotByIDSelector, { id: item.id });
-  const usedSlots = useSelector(SlotV2.slotsByIDsSelector, { ids: selectedSlotIDs });
-  const unusedSlots = useSelector(SlotV2.slotsWithoutIDsSelector, { ids: selectedSlotIDs });
+  const entity = useSelector(SlotV2.slotByIDSelector, { id: item.id });
   const defaultVoice = useSelector(VersionV2.active.voice.defaultVoiceSelector);
+  const usedEntities = useSelector(SlotV2.slotsByIDsSelector, { ids: selectedSlotIDs });
+  const unusedEntities = useSelector(SlotV2.slotsWithoutIDsSelector, { ids: selectedSlotIDs });
 
   const entityEditModal = useModals(ModalType.ENTITY_EDIT);
 
-  const options = useEntitiesOptions(unusedSlots, slot);
+  const options = useEntitiesOptions(unusedEntities, entity);
 
   const { onAddSlot } = useAddSlot();
 
@@ -66,7 +66,10 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
     if (slotID === ENTIRE_USER_REPLY_ID) {
       onSelectQueryType();
     } else {
-      onUpdate({ id: slotID });
+      onUpdate({
+        id: slotID,
+        dialog: projectConfig.utils.intent.slotDialogSanitizer({ prompt: [projectConfig.utils.intent.promptFactory({ defaultVoice })] }),
+      });
     }
   };
 
@@ -96,7 +99,7 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
                 ref={composeRef(ref, sectionRef) as React.Ref<HTMLDivElement>}
                 header={
                   <SectionV2.Header ref={connectedDragRef} sticky sticked={sticked && !collapsed && !isDraggingPreview && !isDragging}>
-                    <SectionV2.Title bold={!collapsed}>{`Capture ${slot?.name ?? index + 1}`}</SectionV2.Title>
+                    <SectionV2.Title bold={!collapsed}>{`Capture ${entity?.name ?? index + 1}`}</SectionV2.Title>
 
                     <SectionV2.CollapseArrowIcon collapsed={collapsed} />
                   </SectionV2.Header>
@@ -115,26 +118,24 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
                     <SectionV2.Content bottomOffset={2.5}>
                       <EntitySelector
                         value={item.id}
-                        onEdit={slot ? () => entityEditModal.open({ id: slot.id }) : undefined}
+                        onEdit={entity ? () => entityEditModal.open({ id: entity.id }) : undefined}
                         options={options}
                         onCreate={onCreate}
                         onSelect={onSelect}
                       />
                     </SectionV2.Content>
 
-                    {!!slot && (
+                    {!!entity && (
                       <>
                         <SectionV2.Divider inset />
 
                         <EntityPromptSection
-                          title="Entity reprompt"
-                          onAdd={() => onChangeDialog({ prompt: [projectConfig.utils.intent.promptFactory({ defaultVoice })] })}
-                          prompt={item.dialog.prompt}
+                          entity={entity}
+                          prompts={item.dialog.prompt}
+                          entities={usedEntities}
                           onChange={(prompt) => onChangeDialog({ prompt })}
-                          onRemove={() => onChangeDialog({ prompt: [] })}
-                          collapsed={!item?.dialog.prompt.length}
-                          placeholder="Enter question to prompt user to fill entity"
-                          intentEntities={usedSlots}
+                          intentName=""
+                          intentInputs={item.dialog.utterances}
                         />
 
                         {!isGooglePlatform(editor.platform) && !isDialogflowPlatform(editor.platform) && (
@@ -144,10 +145,10 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
                                 <SectionV2.Divider inset />
 
                                 <UtteranceSection
-                                  slot={slot}
+                                  slot={entity}
                                   onChange={(utterances) => onChangeDialog({ utterances })}
-                                  usedSlots={usedSlots}
                                   utterances={item.dialog.utterances}
+                                  usedEntities={usedEntities}
                                   preventAccent
                                 />
                               </>

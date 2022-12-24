@@ -1,6 +1,6 @@
 import { Flex } from '@voiceflow/ui';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 const ButtonGroupContainer = styled(Flex)`
   background: linear-gradient(180deg, rgba(238, 244, 246, 0.52), #eef4f6);

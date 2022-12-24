@@ -160,6 +160,18 @@ export const updateProjectLinkType =
     await dispatch.sync(Realtime.project.crud.patch({ ...getActiveWorkspaceContext(getState()), key: projectID, value: { linkType } }));
   };
 
+export const updateProjectAiAssistSettings =
+  (projectID: string, aiAssistSettings: BaseModels.Project.AIAssistSettings): Thunk =>
+  async (dispatch, getState) => {
+    await dispatch.sync(
+      Realtime.project.crud.patch({
+        ...getActiveWorkspaceContext(getState()),
+        key: projectID,
+        value: { aiAssistSettings },
+      })
+    );
+  };
+
 export const updateProjectLiveVersion =
   (projectID: string, liveVersion: string): Thunk =>
   async (dispatch, getState) => {

@@ -6,19 +6,17 @@ import * as Models from '../models';
 
 const PromptTypeSet = new Set<string>(Object.values(Models.Prompt.PromptType));
 
-export type FactoryOptions = Base.Utils.Prompt.FactoryOptions;
-
-export const textFactory = ({ defaultVoice }: Base.Utils.Prompt.FactoryOptions): Models.Prompt.Model => ({
+export const textFactory = ({ content = '', defaultVoice }: Base.Utils.Prompt.FactoryOptions = {}): Models.Prompt.Model => ({
   id: Utils.id.cuid.slug(),
   type: Models.Prompt.PromptType.TEXT,
   voice: defaultVoice ?? '',
-  content: '',
+  content,
 });
 
-export const audioFactory = (): Models.Prompt.Model => ({
+export const audioFactory = ({ content = '' }: Base.Utils.Prompt.FactoryOptions = {}): Models.Prompt.Model => ({
   id: Utils.id.cuid.slug(),
   type: Models.Prompt.PromptType.AUDIO,
-  content: '',
+  content,
 });
 
 export const isPrompt = (value?: unknown): value is Models.Prompt.Model => {
@@ -28,8 +26,19 @@ export const isPrompt = (value?: unknown): value is Models.Prompt.Model => {
   return typeof value.type === 'string' && PromptTypeSet.has(value.type);
 };
 
+export const isEmpty = (prompt?: Models.Prompt.Model): boolean => {
+  if (!prompt) return true;
+
+  if (prompt.type === Models.Prompt.PromptType.TEXT) return !prompt.content?.trim?.();
+  if (prompt.type === Models.Prompt.PromptType.AUDIO) return !prompt.audio?.trim?.();
+
+  return true;
+};
+
 export const CONFIG = Base.Utils.Prompt.extend({
   factory: textFactory,
+
+  isEmpty,
 
   isPrompt,
 

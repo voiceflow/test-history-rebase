@@ -1,10 +1,9 @@
-import { setRef } from '@voiceflow/ui';
+import { setRef, useDidUpdateEffect, useEnableDisable, useForceUpdate, useTeardown } from '@voiceflow/ui';
 import { EditorState, RichUtils } from 'draft-js';
 import React from 'react';
 import lifecycle from 'recompose/lifecycle';
 
 import DraftJSEditor from '@/components/DraftJSEditor';
-import { useDidUpdateEffect, useEnableDisable, useForceUpdate, useTeardown } from '@/hooks';
 import * as Sentry from '@/vendors/sentry';
 
 import createPlugins, { PluginType } from './plugins';
@@ -104,11 +103,13 @@ function TextEditor({
         resetForceBlurOnStateChange();
       }
 
-      const isEmpty = !newEditorState.getCurrentContent().hasText();
+      if (store.get('onEmpty')) {
+        const isEmpty = newEditorState.getCurrentContent().blockMap.every((content) => !content.getText().trim());
 
-      if (isEmpty !== store.get('isEmpty')) {
-        store.get('onEmpty')?.(isEmpty);
-        store.set('isEmpty', isEmpty);
+        if (isEmpty !== store.get('isEmpty')) {
+          store.get('onEmpty')?.(isEmpty);
+          store.set('isEmpty', isEmpty);
+        }
       }
     },
     [forceBlurOnStateChange, onBlurEditor, resetForceBlurOnStateChange, store, onEditorStateChange]

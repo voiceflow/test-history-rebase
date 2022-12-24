@@ -1,6 +1,6 @@
 import { Box } from '@voiceflow/ui';
 
-import { css, styled } from '@/hocs';
+import { css, styled } from '@/hocs/styled';
 
 import { MOBILE_INPUT_CONTAINER_HEIGHT } from './InputContainer';
 

@@ -19,6 +19,7 @@ const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
     env: config.NODE_ENV,
     cwd: rootDir,
     logger,
+    timeout: config.LOGUX_TIMEOUT,
   });
 
   const serviceManager = new ServiceManager({ server, config, log: logger });

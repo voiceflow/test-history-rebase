@@ -46,20 +46,19 @@ const allVariablesSelector = createSelector(
   (globalVariables, activeDiagramVariables, platform) => [...getPlatformGlobalVariables(platform), ...globalVariables, ...activeDiagramVariables]
 );
 
-export const allSlotsAndVariablesSelector = createSelector([SlotV2.slotNamesSelector, allVariablesSelector], (slotNames, allVariables) =>
-  Utils.array.unique([...slotNames, ...allVariables])
+export const allSlotsAndVariablesSelector = createSelector([SlotV2.allSlotsSelector, allVariablesSelector], (slots, allVariables) => [
+  ...slots.map((slot) => ({ id: slot.id, name: slot.name, color: slot.color, isVariable: false })),
+  ...allVariables.map((variable) => ({ id: variable, name: variable, color: undefined, isVariable: true })),
+]);
+
+export const allSlotNamesAndVariablesSelector = createSelector([allSlotsAndVariablesSelector], (slotsAndVars) =>
+  Utils.array.unique(slotsAndVars.map((slotAndVar) => slotAndVar.name))
 );
 
-export const allSlotsAndVariablesNormalizedSelector = createSelector([SlotV2.allSlotsSelector, allVariablesSelector], (slots, allVariables) =>
+export const allSlotsAndVariablesNormalizedSelector = createSelector([allSlotsAndVariablesSelector], (slotsAndVars) =>
   normalize(
     _unionBy<{ id: string; name: string; isSlot?: boolean }>(
-      [
-        ...slots.map((slot) => ({ id: slot.id, name: slot.name, isSlot: true })),
-        ...allVariables.map((variable) => ({
-          id: variable,
-          name: variable,
-        })),
-      ],
+      slotsAndVars.map((slotAndVar) => ({ id: slotAndVar.id, name: slotAndVar.name, isSlot: !slotAndVar.isVariable })),
       'name'
     )
   )

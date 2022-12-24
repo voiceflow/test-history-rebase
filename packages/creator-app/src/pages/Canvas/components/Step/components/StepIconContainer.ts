@@ -1,6 +1,6 @@
 import { FlexCenter, transition } from '@voiceflow/ui';
 
-import { styled, units } from '@/hocs';
+import { styled, units } from '@/hocs/styled';
 import { NODE_ACTIVE_CLASSNAME } from '@/pages/Canvas/constants';
 
 import { LINE_HEIGHT } from '../constants';

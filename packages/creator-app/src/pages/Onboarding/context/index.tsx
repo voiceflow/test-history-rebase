@@ -21,7 +21,7 @@ import * as Tracking from '@/ducks/tracking';
 import { trackInvitationSent } from '@/ducks/tracking/events/invitation';
 import * as Workspace from '@/ducks/workspace';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { withStripe } from '@/hocs';
+import { withStripe } from '@/hocs/withStripe';
 import { useDispatch, useSelector, useSmartReducer, useTrackingEvents } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
 import * as Sentry from '@/vendors/sentry';

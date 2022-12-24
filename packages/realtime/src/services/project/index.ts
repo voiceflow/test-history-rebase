@@ -145,7 +145,6 @@ class ProjectService extends AbstractControl {
 
   public async patch(creatorID: number, projectID: string, { _id, ...data }: Partial<Realtime.DBProject>): Promise<void> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
-
     await client.project.update(projectID, data);
   }
 

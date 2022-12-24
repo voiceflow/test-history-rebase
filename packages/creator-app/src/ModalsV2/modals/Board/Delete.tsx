@@ -3,7 +3,8 @@ import { Box, Button, ButtonVariant, Input, Modal, Spinner } from '@voiceflow/ui
 import React from 'react';
 
 import * as Workspace from '@/ducks/workspace';
-import { useDispatch, useTrackingEvents } from '@/hooks';
+import { useDispatch } from '@/hooks/realtime';
+import { useTrackingEvents } from '@/hooks/tracking';
 
 import manager from '../../manager';
 

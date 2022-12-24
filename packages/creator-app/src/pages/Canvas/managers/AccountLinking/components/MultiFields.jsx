@@ -4,7 +4,7 @@ import React from 'react';
 
 import { Add, ButtonContainer, Minus } from '@/components/InteractiveIcon';
 import Section from '@/components/Section';
-import { styled, units } from '@/hocs';
+import { styled, units } from '@/hocs/styled';
 
 const FieldContainer = styled(Flex)`
   :not(:last-child) {

@@ -2,7 +2,7 @@ import { History } from 'history';
 import React from 'react';
 
 import * as Session from '@/ducks/session';
-import { connect } from '@/hocs';
+import { connect } from '@/hocs/connect';
 import setupApp from '@/setup';
 import { ConnectedProps } from '@/types';
 

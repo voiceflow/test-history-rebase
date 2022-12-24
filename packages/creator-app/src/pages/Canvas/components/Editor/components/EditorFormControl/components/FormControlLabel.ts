@@ -1,6 +1,6 @@
 import { flexStyles, TutorialInfoIcon } from '@voiceflow/ui';
 
-import { styled, units } from '@/hocs';
+import { styled, units } from '@/hocs/styled';
 
 const FormControlLabel = styled.label`
   ${flexStyles}

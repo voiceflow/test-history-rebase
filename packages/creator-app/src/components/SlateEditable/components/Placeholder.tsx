@@ -1,7 +1,7 @@
 import React from 'react';
 import { RenderPlaceholderProps } from 'slate-react';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 export const PlaceholderText = styled.span`
   color: #8da2b5 !important;

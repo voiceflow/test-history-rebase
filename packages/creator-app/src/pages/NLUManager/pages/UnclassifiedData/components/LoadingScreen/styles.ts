@@ -1,4 +1,4 @@
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 export const LoadingDot = styled.div`
   border-radius: 11px;

@@ -4,11 +4,11 @@ import { css, styled } from '@ui/styles';
 
 export interface InputWrapperProps extends StyledInputProps {
   cursor?: string;
+  counter?: boolean;
   readOnly?: boolean;
   disabled?: boolean;
   pointerEvents?: string;
   disabledBorderColor?: string;
-  counter?: boolean;
 }
 
 const InputWrapper = styled.div<InputWrapperProps>`

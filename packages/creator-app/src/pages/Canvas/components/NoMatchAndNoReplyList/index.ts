@@ -1,7 +1,7 @@
 import * as Platform from '@voiceflow/platform-config';
 import React from 'react';
 
-import { projectTypeAware } from '@/hocs';
+import { projectTypeAware } from '@/hocs/platformAware';
 
 import { ChatList, VoiceList } from './components';
 

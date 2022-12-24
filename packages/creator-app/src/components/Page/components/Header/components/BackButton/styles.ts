@@ -1,6 +1,6 @@
 import { SvgIcon } from '@voiceflow/ui';
 
-import { css, styled, transition } from '@/hocs';
+import { css, styled, transition } from '@/hocs/styled';
 
 export const StyledBackButton = styled.button<{ navSidebarWidth?: boolean }>`
   ${transition('background-color')}

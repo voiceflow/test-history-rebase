@@ -1,7 +1,7 @@
 import { Collapse, FlexApart, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 const HeaderContainer = styled(FlexApart)`
   cursor: pointer;

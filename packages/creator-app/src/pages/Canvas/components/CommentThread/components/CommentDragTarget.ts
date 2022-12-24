@@ -1,5 +1,5 @@
 import { CANVAS_ANIMATING_CLASSNAME } from '@/components/Canvas/constants';
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 import DragTarget from '@/pages/Canvas/components/DragTarget';
 import { ANIMATION_SPEED } from '@/styles/theme';
 

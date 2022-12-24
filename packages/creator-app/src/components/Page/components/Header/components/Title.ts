@@ -1,6 +1,6 @@
 import { Box } from '@voiceflow/ui';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 const Title = styled(Box.Flex)<{ leftOffset?: boolean }>`
   height: 65px;

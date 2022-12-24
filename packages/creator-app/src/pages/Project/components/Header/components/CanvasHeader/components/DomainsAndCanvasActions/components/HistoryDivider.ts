@@ -1,4 +1,4 @@
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 const HistoryDivider = styled.div`
   font-size: 16px;

@@ -2,7 +2,7 @@ import { Nullish, Struct } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
-class StateInvariantError<T extends Struct = {}> extends Error {
+export class StateInvariantError<T extends Struct = {}> extends Error {
   constructor(message: string, public data?: T) {
     super(message);
   }

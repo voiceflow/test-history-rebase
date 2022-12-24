@@ -1,6 +1,6 @@
 import { Flex } from '@voiceflow/ui';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 export { default as TranscriptResultsList } from './TranscriptResultsList';
 export type { TranscriptsHeaderProps } from './TranscriptsHeader';

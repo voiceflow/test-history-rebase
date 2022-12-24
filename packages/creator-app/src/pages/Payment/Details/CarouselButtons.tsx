@@ -2,7 +2,7 @@ import { IconButton, IconButtonBaseContainerProps, SvgIcon } from '@voiceflow/ui
 import React from 'react';
 
 import { ModalBody } from '@/components/Modal';
-import { styled, transition } from '@/hocs';
+import { styled, transition } from '@/hocs/styled';
 
 export interface ButtonProps extends IconButtonBaseContainerProps {
   large: true;

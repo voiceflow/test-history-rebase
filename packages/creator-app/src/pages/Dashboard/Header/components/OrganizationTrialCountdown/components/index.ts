@@ -1,6 +1,6 @@
 import { colors, ThemeColor } from '@voiceflow/ui';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 import { COUNTDOWN_COLOR_MAP, CountdownStatus } from '../constants';
 

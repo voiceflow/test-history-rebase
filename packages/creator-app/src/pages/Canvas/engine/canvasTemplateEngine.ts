@@ -49,10 +49,8 @@ class CanvasTemplateEngine extends EngineConsumer {
   };
 
   selectedTemplateTrackingData = (templateID: string, nodeIDs: string[]) => ({
-    creator_id: this.select(Account.userIDSelector),
-    workspace_id: this.select(Session.activeWorkspaceIDSelector),
-    project_id: this.select(Session.activeProjectIDSelector)!,
     org_id: this.select(WorksapceV2.active.organizationIDSelector)!,
+    creator_id: this.select(Account.userIDSelector),
     template_id: templateID,
     nested_steps: this.selectNestedSteps(nodeIDs),
   });

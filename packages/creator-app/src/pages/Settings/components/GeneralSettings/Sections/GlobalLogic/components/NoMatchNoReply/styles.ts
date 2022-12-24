@@ -1,6 +1,6 @@
 import { Flex, Input } from '@voiceflow/ui';
 
-import { styled } from '@/hocs';
+import { styled } from '@/hocs/styled';
 
 export const Container = styled(Flex)`
   align-items: center;

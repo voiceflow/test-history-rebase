@@ -1,6 +1,6 @@
 import { Flex, SvgIcon } from '@voiceflow/ui';
 
-import { css, styled } from '@/hocs';
+import { css, styled } from '@/hocs/styled';
 
 export const ValueContainer = styled.div`
   flex: 1;

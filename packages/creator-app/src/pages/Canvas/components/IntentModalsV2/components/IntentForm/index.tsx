@@ -7,8 +7,7 @@ import React from 'react';
 import * as Intent from '@/ducks/intent';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as Tracking from '@/ducks/tracking';
-import * as VersionV2 from '@/ducks/versionV2';
-import { useActiveProjectTypeConfig, useDispatch, useSelector } from '@/hooks';
+import { useDispatch, useSelector } from '@/hooks';
 import { FadeDownContainer } from '@/styles/animations';
 
 import BuiltInPrompt from '../components/BuiltInPrompt';
@@ -21,22 +20,23 @@ import UtteranceSection from '../components/UtteranceSection';
 interface IntentFormProps {
   name: string;
   inputs: Platform.Base.Models.Intent.Input[];
-  utteranceCreationType: Tracking.CanvasCreationType;
-  creationType: Tracking.IntentEditType;
   noteID?: string;
   setName: (name: string) => void;
   saveName?: () => void;
-  setInputs: (inputs: Platform.Base.Models.Intent.Input[]) => void;
   intentID?: string;
   isBuiltIn?: boolean;
   autofocus?: boolean;
+  setInputs: (inputs: Platform.Base.Models.Intent.Input[]) => void;
+  creationType: Tracking.IntentEditType;
   isNLUManager?: boolean;
   intentEntities: Normal.Normalized<Platform.Base.Models.Intent.Slot>;
   addRequiredSlot: (slotID: string) => void;
   withNameSection?: boolean;
-  updateSlotDialog: (slotID: string, dialog: Partial<Platform.Base.Models.Intent.SlotDialog>) => void;
   removeRequiredSlot: (slotID: string) => void;
+  onEnterEntityPrompt: (slotID: string, options?: { autogenerate: boolean }) => void;
+  utteranceCreationType: Tracking.CanvasCreationType;
   prefilledNewUtterance?: string;
+  onIntentNameSuggested?: (name: string) => void;
   withDescriptionSection?: boolean;
   withDescriptionBottomBorder?: boolean;
 }
@@ -44,27 +44,25 @@ interface IntentFormProps {
 const IntentForm: React.FC<IntentFormProps> = ({
   name,
   inputs,
-  utteranceCreationType,
-  creationType,
   setName,
   intentID,
   saveName,
   isBuiltIn,
   autofocus,
   setInputs,
+  creationType,
   isNLUManager,
   intentEntities,
   addRequiredSlot,
   withNameSection = true,
-  updateSlotDialog,
   removeRequiredSlot,
+  onEnterEntityPrompt,
+  utteranceCreationType,
   prefilledNewUtterance,
+  onIntentNameSuggested,
   withDescriptionSection = false,
   withDescriptionBottomBorder,
 }) => {
-  const projectConfig = useActiveProjectTypeConfig();
-
-  const locales = useSelector(VersionV2.active.localesSelector);
   const intentsMap = useSelector(IntentV2.customIntentMapSelector);
 
   const patchIntent = useDispatch(Intent.patchIntent);
@@ -78,11 +76,6 @@ const IntentForm: React.FC<IntentFormProps> = ({
   const scrollToEntities = () => {
     entitiesDividerRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
-
-  const recommendedUtterancesSupported = React.useMemo(
-    () => locales.some((locale) => projectConfig.project.locale.utteranceRecommendations.includes(locale)),
-    [locales, projectConfig]
-  );
 
   const intent = intentID ? intentsMap[intentID] : null;
 
@@ -109,15 +102,16 @@ const IntentForm: React.FC<IntentFormProps> = ({
 
       {utteranceSectionVisible && (
         <UtteranceSection
-          intentID={intentID ?? null}
           inputs={inputs}
-          utteranceCreationType={utteranceCreationType}
+          intentID={intentID ?? null}
           isBuiltIn={isBuiltIn}
           autofocus={!!name && autofocus}
+          intentName={name}
           withBorderTop={withNameSection}
           prefilledUtterance={prefilledNewUtterance}
           onUpdateUtterances={setInputs}
-          withRecommendations={isNLUManager && recommendedUtterancesSupported && !!inputs.length}
+          onIntentNameSuggested={onIntentNameSuggested}
+          utteranceCreationType={utteranceCreationType}
         />
       )}
 
@@ -129,8 +123,8 @@ const IntentForm: React.FC<IntentFormProps> = ({
 
           <IntentEntitiesSection
             onAddRequired={addRequiredSlot}
+            onEnterPrompt={onEnterEntityPrompt}
             intentEntities={intentEntities}
-            onChangeDialog={updateSlotDialog}
             onRemoveRequired={removeRequiredSlot}
             addDropdownPlacement={isNLUManager ? 'bottom-end' : 'bottom-start'}
           />
@@ -139,10 +133,10 @@ const IntentForm: React.FC<IntentFormProps> = ({
 
       {withDescriptionSection && intentID && (
         <DescriptionSection
-          creationType={creationType}
-          withBottomBorder={withDescriptionBottomBorder}
           intentID={intentID}
+          creationType={creationType}
           onCreateNote={(noteID) => intentID && patchIntent(intentID, { noteID })}
+          withBottomBorder={withDescriptionBottomBorder}
         />
       )}
 

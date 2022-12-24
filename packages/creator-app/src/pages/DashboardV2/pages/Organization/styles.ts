@@ -1,6 +1,6 @@
 import { Box, Input } from '@voiceflow/ui';
 
-import { css, styled, transition, units } from '@/hocs';
+import { css, styled, transition, units } from '@/hocs/styled';
 
 export const LinksWrapper = styled.div`
   display: flex;

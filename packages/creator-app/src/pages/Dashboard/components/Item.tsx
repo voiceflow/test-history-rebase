@@ -1,5 +1,5 @@
 import * as Platform from '@voiceflow/platform-config';
-import { Dropdown, OverflowTippyTooltip, stopPropagation, SvgIcon, TippyTooltip } from '@voiceflow/ui';
+import { Dropdown, OverflowTippyTooltip, stopPropagation, SvgIcon, TippyTooltip, useLinkedState } from '@voiceflow/ui';
 import _constant from 'lodash/constant';
 import React from 'react';
 
@@ -9,8 +9,10 @@ import * as NLU from '@/config/nlu';
 import { Permission } from '@/config/permissions';
 import { RootRoute } from '@/config/routes';
 import * as Project from '@/ducks/project';
-import { InjectedDraggableComponentProps, withDraggable } from '@/hocs';
-import { useDispatch, useLinkedState, usePermission, useProjectOptions } from '@/hooks';
+import { InjectedDraggableComponentProps, withDraggable } from '@/hocs/withDraggable';
+import { usePermission } from '@/hooks/permission';
+import { useProjectOptions } from '@/hooks/project';
+import { useDispatch } from '@/hooks/realtime';
 import { PROJECT_COLORS } from '@/styles/colors';
 import { DashboardClassName } from '@/styles/constants';
 import { withEnterPress, withInputBlur } from '@/utils/dom';

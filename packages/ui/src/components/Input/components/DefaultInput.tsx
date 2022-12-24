@@ -44,6 +44,7 @@ export const NestedInput = React.forwardRef<HTMLInputElement, NestedInputProps>(
     {
       icon,
       error,
+      isActive,
       readOnly,
       disabled,
       children,
@@ -69,7 +70,15 @@ export const NestedInput = React.forwardRef<HTMLInputElement, NestedInputProps>(
     const iconComponent = typeof icon === 'string' && <SvgIcon icon={icon} {...iconProps} />;
 
     return (
-      <InputWrapper onClick={onClick} readOnly={readOnly} disabled={disabled} {...wrapperProps} error={error} className={className}>
+      <InputWrapper
+        onClick={onClick}
+        readOnly={readOnly}
+        disabled={disabled}
+        isActive={isActive}
+        {...wrapperProps}
+        error={error}
+        className={className}
+      >
         {leftAction}
 
         {iconPosition === NestedIconPosition.LEFT && iconComponent}

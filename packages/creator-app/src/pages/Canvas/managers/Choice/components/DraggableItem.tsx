@@ -1,6 +1,6 @@
 import composeRef from '@seznam/compose-react-refs';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { BoxFlex, SectionV2, StrengthGauge } from '@voiceflow/ui';
+import { Box, SectionV2, StrengthGauge } from '@voiceflow/ui';
 import React from 'react';
 
 import { DragPreviewComponentProps, ItemComponentProps, MappedItemComponentHandlers } from '@/components/DraggableList';
@@ -58,17 +58,17 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
                 ref={composeRef(ref, sectionRef) as React.Ref<HTMLDivElement>}
                 header={
                   <SectionV2.Header ref={connectedDragRef} sticky sticked={sticked && !collapsed && !isDraggingPreview && !isDragging}>
-                    <BoxFlex>
+                    <Box.Flex gap={16}>
                       <SectionV2.Title bold={!collapsed}>{intent?.name || `Path ${index + 1}`}</SectionV2.Title>
 
-                      <BoxFlex pl={12} pt={2}>
+                      <Box.Flex pt={2}>
                         <StrengthGauge
                           width={36}
                           level={intentIsBuiltIn ? StrengthGauge.Level.VERY_STRONG : getIntentStrengthLevel(intent?.inputs.length ?? 0)}
                           tooltipLabelMap={{ [StrengthGauge.Level.NOT_SET]: 'No utterances' }}
                         />
-                      </BoxFlex>
-                    </BoxFlex>
+                      </Box.Flex>
+                    </Box.Flex>
 
                     <SectionV2.CollapseArrowIcon collapsed={collapsed} />
                   </SectionV2.Header>

@@ -16,9 +16,7 @@ const ProductionUsage: React.FC = () => {
       <SectionV2.SimpleSection headerProps={{ bottomUnit: 2 }}>
         <Box.FlexApart fullWidth>
           <Box.FlexAlignStart column gap={4}>
-            <SectionV2.Title bold noMargin>
-              Production Usage
-            </SectionV2.Title>
+            <SectionV2.Title bold>Production Usage</SectionV2.Title>
 
             <SectionV2.Description>
               {pricePerInteraction} <SectionV2.Description secondary>per interaction, per month</SectionV2.Description>

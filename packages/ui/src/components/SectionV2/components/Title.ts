@@ -1,9 +1,9 @@
-import { css, styled, units } from '@ui/styles';
+import { css, styled } from '@ui/styles';
+import { layout, LayoutProps, space, SpaceProps } from 'styled-system';
 
-export interface TitleProps {
+export interface TitleProps extends SpaceProps, LayoutProps {
   fill?: boolean;
   bold?: boolean;
-  noMargin?: boolean;
   secondary?: boolean;
 }
 
@@ -22,9 +22,8 @@ const Title = styled.h5<TitleProps>`
       flex: 1;
     `};
 
-  &:not(:last-child) {
-    margin-right: ${({ noMargin }) => (noMargin ? 0 : units(1.5))}px;
-  }
+  ${space};
+  ${layout};
 `;
 
 export default Title;

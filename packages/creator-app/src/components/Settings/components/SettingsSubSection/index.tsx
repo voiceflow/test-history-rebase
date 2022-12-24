@@ -33,7 +33,7 @@ const SettingSubSection: React.FC<SettingSubSectionProps> = ({
       header={
         header && (
           <SectionV2.Header style={customHeaderStyling} pb={12} pt={24}>
-            <SectionV2.Title bold secondary noMargin>
+            <SectionV2.Title bold secondary>
               {header}
             </SectionV2.Title>
           </SectionV2.Header>

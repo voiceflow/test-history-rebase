@@ -1,5 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { SectionV2, Text } from '@voiceflow/ui';
+import { SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
 import VariablesInput from '@/components/VariablesInput';
@@ -7,7 +7,6 @@ import * as CustomBlock from '@/ducks/customBlock';
 import { useSelector } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
-import THEME from '@/styles/theme';
 
 import { MissingCustomBlockText } from './components';
 
@@ -76,8 +75,8 @@ export const PointerEditor: React.FC = () => {
       {Object.keys(validParameters).map((paramName, index) => (
         <React.Fragment key={paramName}>
           <SectionV2.Header bottomUnit={1.375} topUnit={index === 0 ? 2.5 : 0}>
-            <SectionV2.Title bold>
-              <Text color={THEME.colors.secondary}>{paramName}</Text>
+            <SectionV2.Title bold secondary>
+              {paramName}
             </SectionV2.Title>
           </SectionV2.Header>
           <SectionV2.Content bottomOffset={3}>

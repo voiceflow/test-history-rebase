@@ -1,57 +1,64 @@
-import { Box, Flex, Link, SectionV2, Text, TippyTooltip, Toggle } from '@voiceflow/ui';
+import { BaseModels } from '@voiceflow/base-types';
+import { Box, Link, SectionV2, Toggle } from '@voiceflow/ui';
 import React from 'react';
 
 import * as GPT from '@/components/GPT';
-import { useFreestyleFeature } from '@/components/GPT';
 import { SectionVariants, SettingsSection, SettingsSubSection, SettingsTitleBadge } from '@/components/Settings';
 import * as Project from '@/ducks/project';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import { useActiveWorkspace, useDispatch, useSelector, useTrackingEvents } from '@/hooks';
+import { SettingSections } from '@/pages/Settings/constants';
 
-const ToggleTooltip: React.FC = ({ children }) => (
-  <TippyTooltip
-    html={
-      <div style={{ width: '195px', display: 'flex', justifyContent: 'left', textAlign: 'left' }}>
-        AI Assist Features have been disabled for this workspace by a workspace admin.
-      </div>
-    }
-  >
-    {children}
-  </TippyTooltip>
-);
+import { useAutoScrollSectionIntoView } from '../hooks';
+import { WorkspaceDisabledTooltip } from './components';
 
 const AIAssistant: React.FC = () => {
   const workspace = useActiveWorkspace();
-  const aiAssistSettings = useSelector(ProjectV2.active.aiAssistSettings);
-  const updateProjectAiAssistSettings = useDispatch(Project.updateProjectAiAssistSettings);
-  const activeProjectID = useSelector(Session.activeProjectIDSelector);
   const [trackingEvents] = useTrackingEvents();
-  const freestyle = useFreestyleFeature();
 
-  const handleGenerativeTasksToggle = () => {
-    if (!activeProjectID) return;
+  const activeProjectID = useSelector(Session.activeProjectIDSelector);
+  const aiAssistSettings = useSelector(ProjectV2.active.aiAssistSettings);
+
+  const updateProjectAiAssistSettings = useDispatch(Project.updateProjectAiAssistSettings);
+
+  const workspaceAIEnabled = !!workspace?.settings.aiAssist;
+
+  const onPatchAiAssistSettings = (settings: Partial<BaseModels.Project.AIAssistSettings>) => {
+    if (!activeProjectID || !workspaceAIEnabled) return;
+
+    updateProjectAiAssistSettings(activeProjectID, { ...aiAssistSettings, ...settings });
+  };
+
+  const onGenerativeTasksToggle = () => {
     const enabled = !aiAssistSettings?.generativeTasks;
-    updateProjectAiAssistSettings(activeProjectID, { ...aiAssistSettings, generativeTasks: enabled });
+
+    onPatchAiAssistSettings({ generativeTasks: enabled });
+
     trackingEvents.trackProjectGenerateAIFeatureToggled({ enabled, flag: GPT.FeatureToggle.GENERATIVE });
   };
 
-  const handleFreestyleToggle = () => {
-    if (!activeProjectID) return;
+  const onFreestyleToggle = () => {
     const enabled = !aiAssistSettings?.freestyle;
-    updateProjectAiAssistSettings(activeProjectID, { ...aiAssistSettings, freestyle: enabled });
+
+    onPatchAiAssistSettings({ freestyle: enabled });
+
     trackingEvents.trackProjectGenerateAIFeatureToggled({ enabled, flag: GPT.FeatureToggle.FREESTYLE });
   };
 
+  const freestyle = GPT.useFreestyleFeature();
+  const [sectionRef] = useAutoScrollSectionIntoView(SettingSections.AI_ASSISTANT);
+
   return (
     <SettingsSection
+      ref={sectionRef}
       variant={SectionVariants.PRIMARY}
-      title={
-        <Flex>
-          AI Assistant <SettingsTitleBadge>Beta</SettingsTitleBadge>
-        </Flex>
-      }
       noContentPadding
+      title={
+        <Box.Flex>
+          AI Assistant <SettingsTitleBadge>Beta</SettingsTitleBadge>
+        </Box.Flex>
+      }
       description={
         <>
           Leverage practical AI to design, manage and improve your assistant faster than previously possible. <Link>Learn more</Link>
@@ -59,27 +66,24 @@ const AIAssistant: React.FC = () => {
       }
     >
       <SettingsSubSection growInput={false} topOffset={3}>
-        <Box.FlexApart width="100%">
-          <div>
-            <SectionV2.Title bold>
-              <Text>Generative Tasks</Text>
-            </SectionV2.Title>
-            <Box mt={4}>
-              <Text color="#62778c" fontSize="13px">
-                Manually generate data like utterances, responses, no match etc. <Link>Learn more</Link>
-              </Text>
-            </Box>
-          </div>
+        <Box.FlexApart fullWidth>
+          <Box>
+            <SectionV2.Title bold>Generative Tasks</SectionV2.Title>
 
-          <ToggleTooltip>
+            <SectionV2.Description mt={4} block secondary>
+              Manually generate data like utterances, responses, no match etc. <Link>Learn more</Link>
+            </SectionV2.Description>
+          </Box>
+
+          <WorkspaceDisabledTooltip disabled={workspaceAIEnabled}>
             <Toggle
-              disabled={!workspace?.settings.aiAssist}
-              checked={!!workspace?.settings.aiAssist && aiAssistSettings?.generativeTasks}
               size={Toggle.Size.EXTRA_SMALL}
-              onChange={handleGenerativeTasksToggle}
+              checked={workspaceAIEnabled && aiAssistSettings?.generativeTasks}
+              disabled={!workspaceAIEnabled}
+              onChange={onGenerativeTasksToggle}
               hasLabel
             />
-          </ToggleTooltip>
+          </WorkspaceDisabledTooltip>
         </Box.FlexApart>
       </SettingsSubSection>
 
@@ -88,27 +92,24 @@ const AIAssistant: React.FC = () => {
           <SectionV2.Divider />
 
           <SettingsSubSection growInput={false} topOffset={3}>
-            <Box.FlexApart width="100%">
-              <div>
-                <SectionV2.Title bold>
-                  <Text>Freestyle</Text>
-                </SectionV2.Title>
-                <Box mt={4}>
-                  <Text color="#62778c" fontSize="13px">
-                    Auto dialog to keep the conversation on track and answer questions. <Link>Learn more</Link>
-                  </Text>
-                </Box>
-              </div>
+            <Box.FlexApart fullWidth>
+              <Box>
+                <SectionV2.Title bold>Freestyle</SectionV2.Title>
 
-              <ToggleTooltip>
+                <SectionV2.Description mt={4} block secondary>
+                  Auto dialog to keep the conversation on track and answer questions. <Link>Learn more</Link>
+                </SectionV2.Description>
+              </Box>
+
+              <WorkspaceDisabledTooltip disabled={workspaceAIEnabled}>
                 <Toggle
-                  disabled={!workspace?.settings.aiAssist}
-                  checked={!!workspace?.settings.aiAssist && aiAssistSettings?.freestyle}
                   size={Toggle.Size.EXTRA_SMALL}
-                  onChange={handleFreestyleToggle}
+                  checked={workspaceAIEnabled && aiAssistSettings?.freestyle}
+                  disabled={!workspaceAIEnabled}
+                  onChange={onFreestyleToggle}
                   hasLabel
                 />
-              </ToggleTooltip>
+              </WorkspaceDisabledTooltip>
             </Box.FlexApart>
           </SettingsSubSection>
         </>

@@ -35,11 +35,9 @@ const TypeAndColorSection: React.FC<TypeAndColorSectionProps> = ({
       headerProps={{ bottomUnit: 1.5, topUnit: 2.5 }}
       contentProps={{ bottomOffset: 3 }}
       header={
-        <Box.Flex minHeight="22px">
-          <SectionV2.Title bold secondary>
-            Type
-          </SectionV2.Title>
-        </Box.Flex>
+        <SectionV2.Title bold secondary minHeight="22px">
+          Type
+        </SectionV2.Title>
       }
     >
       <Box.FlexApart gap={24}>

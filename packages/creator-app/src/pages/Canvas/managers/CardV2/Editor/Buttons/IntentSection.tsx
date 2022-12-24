@@ -40,10 +40,11 @@ const IntentsSection = <Data, BuiltInPorts extends Realtime.BuiltInPortRecord>({
   return (
     <SectionV2.ActionCollapseSection
       title={
-        <SectionV2.Title bold={!collapsed}>
-          Attach intent
+        <Box.Flex gap={16}>
+          <SectionV2.Title bold={!collapsed}>Attach intent</SectionV2.Title>
+
           {intentID && (
-            <Box.Flex pl={16}>
+            <Box.Flex pt={2}>
               <StrengthGauge
                 width={36}
                 level={intentIsBuiltIn ? StrengthGauge.Level.VERY_STRONG : getIntentStrengthLevel(intent?.inputs.length ?? 0)}
@@ -51,7 +52,7 @@ const IntentsSection = <Data, BuiltInPorts extends Realtime.BuiltInPortRecord>({
               />
             </Box.Flex>
           )}
-        </SectionV2.Title>
+        </Box.Flex>
       }
       action={<CollapseButton onClick={onChangeCollapse} />}
       collapsed={collapsed}

@@ -60,9 +60,7 @@ const EditorSeats: React.FC = () => {
       <SectionV2.SimpleSection headerProps={{ bottomUnit: 2 }}>
         <Box.FlexApart fullWidth>
           <Box.FlexAlignStart column gap={4}>
-            <SectionV2.Title bold noMargin>
-              Editor Seats
-            </SectionV2.Title>
+            <SectionV2.Title bold>Editor Seats</SectionV2.Title>
 
             {!isPaidPlan && <Workspace.TakenSeatsMessage />}
 

@@ -37,9 +37,10 @@ const Integrations: React.FC = () => {
           )}
 
           <Box.FlexAlignStart column gap={12} fullWidth>
-            <SectionV2.Title bold noMargin secondary>
+            <SectionV2.Title bold secondary>
               Name
             </SectionV2.Title>
+
             <Box.FlexApart gap={16} fullWidth>
               <Input id={Identifier.USER_NAME_INPUT} value={user.name ?? ''} readOnly disabled />
 
@@ -55,9 +56,10 @@ const Integrations: React.FC = () => {
 
       <SectionV2.SimpleSection headerProps={{ topUnit: 3, bottomUnit: 3 }}>
         <Box.FlexAlignStart column gap={12} fullWidth>
-          <SectionV2.Title bold noMargin secondary>
+          <SectionV2.Title bold secondary>
             Email
           </SectionV2.Title>
+
           <Box.FlexApart gap={16} fullWidth>
             <Input id={Identifier.USER_EMAIL_INPUT} value={user.email ?? ''} readOnly disabled />
             <Button variant={Button.Variant.SECONDARY} flat onClick={() => accountEmailModal.openVoid()}>

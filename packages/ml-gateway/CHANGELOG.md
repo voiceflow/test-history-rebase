@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.32.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.31.1...@voiceflow/ml-gateway@1.32.0) (2022-12-24)
+
+
+### Features
+
+* GPT generative features (hack-week) ([#6489](https://github.com/voiceflow/creator-app/issues/6489)) ([7d10d16](https://github.com/voiceflow/creator-app/commit/7d10d169bc3d168fa8c8f008d6eab5b373616c90))
+
+
+
+
+
 ## [1.31.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.31.0...@voiceflow/ml-gateway@1.31.1) (2022-12-19)
 
 **Note:** Version bump only for package @voiceflow/ml-gateway

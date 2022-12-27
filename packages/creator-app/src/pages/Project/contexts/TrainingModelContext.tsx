@@ -10,9 +10,9 @@ import { NLURoute } from '@/config/routes';
 import { NLPTrainStageType } from '@/constants/platforms';
 import { TrainingContext } from '@/contexts/TrainingContext';
 import * as CreatorV2 from '@/ducks/creatorV2';
-import * as PrototypeDuck from '@/ducks/prototype';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
+import * as Slot from '@/ducks/slotV2';
 import * as Tracking from '@/ducks/tracking';
 import { useDispatch, useFeature, useSelector, useTrackingEvents } from '@/hooks';
 import { createPlatformSelector } from '@/utils/platform';
@@ -72,7 +72,6 @@ export const TrainingModelProvider: React.FC = ({ children }) => {
   });
 
   const training = React.useContext(TrainingContext)!;
-  const validateModel = useDispatch(PrototypeDuck.validateModel);
   const goToInteractionModel = useDispatch(Router.goToInteractionModel);
   const [trackingEvents] = useTrackingEvents();
   const nluManager = useFeature(Realtime.FeatureFlag.NLU_MANAGER);
@@ -82,6 +81,7 @@ export const TrainingModelProvider: React.FC = ({ children }) => {
   const versionID = useSelector(Session.activeVersionIDSelector);
   const diagramID = useSelector(CreatorV2.activeDiagramIDSelector);
   const projectID = useSelector(Session.activeProjectIDSelector);
+  const getSlot = useSelector(Slot.getSlotByIDSelector);
 
   const isTrained = !isModelChanged(trainingState.diff) && (!training.job || training.job.stage.type === NLPTrainStageType.SUCCESS);
 
@@ -93,20 +93,29 @@ export const TrainingModelProvider: React.FC = ({ children }) => {
     }
   };
 
+  React.useEffect(() => {
+    if (training.job?.stage.type === NLPTrainStageType.SUCCESS) {
+      const invalidSlots = training.job.stage.data?.validations?.invalid.slots
+        .map((key) => getSlot({ id: key })?.name)
+        .filter(Boolean)
+        .join(', ');
+
+      if (invalidSlots?.length) {
+        toast.warn(
+          <>
+            Your slots <b>{invalidSlots}</b> require custom values in order to be properly recognized during testing. Update the{' '}
+            <ClickableText onClick={() => handleGoToIMM(invalidSlots[0])}>Interaction Model</ClickableText> and train your assistant again.
+          </>,
+          { autoClose: false }
+        );
+      }
+    }
+  }, [training.job?.stage.type]);
+
   const startTraining = async (origin: Tracking.AssistantOriginType) => {
     trackingEvents.trackProjectTrainAssistant({ origin });
 
     try {
-      const { invalid } = await validateModel();
-      if (invalid.slots.length) {
-        toast.warn(
-          <>
-            Your slots <b>({invalid.slots.map(({ name }) => name).join(', ')})</b> require custom values in order to be properly recognized during
-            testing. Update the <ClickableText onClick={() => handleGoToIMM(invalid.slots[0].key)}>Interaction Model</ClickableText> and train your
-            assistant again.
-          </>
-        );
-      }
       await training.start();
     } catch (err) {
       logger.warn('Train error', err);

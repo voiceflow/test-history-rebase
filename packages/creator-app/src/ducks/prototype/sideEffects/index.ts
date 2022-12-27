@@ -17,7 +17,6 @@ export { default as resetPrototype } from './reset';
 export { default as setupPublicPrototype } from './setupPublicPrototype';
 export { default as startPrototype } from './startPrototype';
 export { default as startPublicPrototype } from './startPublicPrototype';
-export { default as validateModel } from './validateModel';
 
 export const updateSharePrototypeSettings =
   (data: Partial<Realtime.PrototypeSettings>): Thunk =>

@@ -296,7 +296,7 @@ export namespace NLPTrainJob {
 
   export type ConfirmStage = JobStage<NLPTrainStageType.CONFIRM>;
 
-  export type SuccessStage = JobStage<NLPTrainStageType.SUCCESS>;
+  export type SuccessStage = JobStage<NLPTrainStageType.SUCCESS, { validations?: { invalid: { intents: string[]; slots: string[] } } }>;
 
   export type ProgressStage = JobStage<NLPTrainStageType.PROGRESS, { message: string; progress: number }>;
 

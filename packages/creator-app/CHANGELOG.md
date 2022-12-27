@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1037.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1037.1...@voiceflow/creator-app@1.1037.2) (2022-12-27)
+
+
+### Bug Fixes
+
+* use job model validations (CT-000) ([#6444](https://github.com/voiceflow/creator-app/issues/6444)) ([e7d7bc9](https://github.com/voiceflow/creator-app/commit/e7d7bc911efa3afd831f4694b6f0a05f8634430b))
+
+
+
+
+
 ## [1.1037.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1037.0...@voiceflow/creator-app@1.1037.1) (2022-12-24)
 
 

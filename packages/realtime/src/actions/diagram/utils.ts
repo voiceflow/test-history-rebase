@@ -17,21 +17,13 @@ export abstract class AbstractDiagramActionControl<
     this.services.diagram.access.canRead(ctx.data.creatorID, action.payload.diagramID);
 
   protected resend = (_: Context<D>, action: Action<P>): Resend => ({
-    channels: [
-      Realtime.Channels.diagram.build({
-        domainID: action.payload.domainID,
-        diagramID: action.payload.diagramID,
-        projectID: action.payload.projectID,
-        versionID: action.payload.versionID,
-        workspaceID: action.payload.workspaceID,
-      }),
-      Realtime.Channels.legacyDiagram.build({
-        diagramID: action.payload.diagramID,
-        projectID: action.payload.projectID,
-        versionID: action.payload.versionID,
-        workspaceID: action.payload.workspaceID,
-      }),
-    ],
+    channel: Realtime.Channels.diagram.build({
+      domainID: action.payload.domainID,
+      diagramID: action.payload.diagramID,
+      projectID: action.payload.projectID,
+      versionID: action.payload.versionID,
+      workspaceID: action.payload.workspaceID,
+    }),
   });
 }
 

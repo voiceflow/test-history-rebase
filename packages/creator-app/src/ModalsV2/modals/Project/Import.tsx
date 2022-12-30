@@ -1,17 +1,18 @@
 import { Utils } from '@voiceflow/common';
+import { UserRole } from '@voiceflow/internal';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Button, Modal, Select, StatusCode, toast, ToastCallToAction } from '@voiceflow/ui';
 import React, { useMemo, useState } from 'react';
 
 import client from '@/client';
-import { hasRolePermission, Permission } from '@/config/permissions';
+import { hasRolePermission, Permission, ROLE_PERMISSIONS } from '@/config/permissions';
 import { LimitType } from '@/config/planLimitV2';
 import * as Account from '@/ducks/account';
 import * as Router from '@/ducks/router';
 import * as Workspace from '@/ducks/workspace';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { extractMemberById } from '@/ducks/workspaceV2/utils';
-import { useAsyncEffect, useDispatch, usePlanLimit, useSelector } from '@/hooks';
+import { useAsyncEffect, useDispatch, useFeature, usePlanLimit, useSelector } from '@/hooks';
 import * as Sentry from '@/vendors/sentry';
 
 import { useModal } from '../../hooks';
@@ -35,29 +36,35 @@ export interface Props {
   projectID?: string;
 }
 
+export interface ImportWorkspace {
+  id: string;
+  name: string;
+}
+
 const ImportModal = manager.create<Props>('ProjectImport', () => ({ api, type, opened, hidden, animated, projectID }) => {
   const creatorID = useSelector(Account.userIDSelector);
-  const workspaces = useSelector(WorkspaceV2.allWorkspacesSelector);
   const getWorkspaceByID = useSelector(WorkspaceV2.getWorkspaceByIDSelector);
 
   const goToDomain = useDispatch(Router.goToDomain);
   const importProject = useDispatch(Workspace.importProject);
   const goToWorkspace = useDispatch(Router.goToWorkspace);
+  const reduxWorkspaces = useSelector(WorkspaceV2.allWorkspacesSelector);
+
+  const identityWorkspaceMember = useFeature(Realtime.FeatureFlag.IDENTITY_WORKSPACE_MEMBER);
+
+  const [workspaces, setWorkspaces] = useState<ImportWorkspace[]>([]);
 
   const workspaceOptions = useMemo(() => workspaces.map((workspace) => ({ value: workspace.id, label: workspace.name })), [workspaces]);
   const workspaceOptionsMap = useMemo(() => Utils.array.createMap(workspaceOptions, Utils.object.selectValue), [workspaceOptions]);
 
-  const [targetWorkspace, setTargetWorkspace] = useState<typeof workspaceOptions[number] | null>(workspaceOptions[0]);
+  const [targetWorkspace, setTargetWorkspace] = useState<string | null>(null);
 
   const loadingModal = useModal(Loading);
   const upgradeModal = useModal(Upgrade);
 
   const [projectName, setProjectName] = React.useState<string | undefined>();
 
-  const chooseWorkspace = React.useCallback(
-    (workspaceID: string) => setTargetWorkspace(workspaceOptions.find(({ value }) => value === workspaceID) ?? null),
-    [workspaceOptions, setTargetWorkspace]
-  );
+  const chooseWorkspace = React.useCallback((workspaceID: string) => setTargetWorkspace(workspaceID ?? null), [workspaceOptions, setTargetWorkspace]);
 
   const planLimit = usePlanLimit({ type: LimitType.PROJECTS, limit: 2 });
 
@@ -79,49 +86,49 @@ const ImportModal = manager.create<Props>('ProjectImport', () => ({ api, type, o
       return;
     }
 
-    if (allowedToClone(workspace, creatorID)) {
-      try {
-        loadingModal.openVoid();
+    try {
+      loadingModal.openVoid();
 
-        const importedProject = await importProject(projectID, workspaceID);
+      const importedProject = await importProject(projectID, workspaceID);
 
+      goToWorkspace(workspaceID);
+
+      toast.success(
+        <>
+          Cloned project <strong>"{importedProject.name}"</strong> successfully!
+          <ToastCallToAction onClick={() => goToDomain({ versionID: importedProject.versionID })}>Open Project</ToastCallToAction>
+        </>
+      );
+    } catch (e) {
+      if (e.statusCode === StatusCode.FORBIDDEN) {
         goToWorkspace(workspaceID);
 
-        toast.success(
-          <>
-            Cloned project <strong>"{importedProject.name}"</strong> successfully!
-            <ToastCallToAction onClick={() => goToDomain({ versionID: importedProject.versionID })}>Open Project</ToastCallToAction>
-          </>
-        );
-      } catch (e) {
-        if (e.statusCode === StatusCode.FORBIDDEN) {
-          goToWorkspace(workspaceID);
-
-          // eslint-disable-next-line max-depth
-          if (planLimit) {
-            upgradeModal.openVoid(planLimit.upgradeModal);
-          }
-        } else {
-          Sentry.error(e);
-          toast.error('unable to access project');
+        // eslint-disable-next-line max-depth
+        if (planLimit) {
+          upgradeModal.openVoid(planLimit.upgradeModal);
         }
-      } finally {
-        loadingModal.close();
+      } else {
+        Sentry.error(e);
+        toast.error('unable to access project');
       }
-    } else {
-      toast.error(
-        `You are a viewer on the workspace ${workspace.name}, and therefore don’t have the permissions to clone projects to this workspace`
-      );
+    } finally {
+      loadingModal.close();
     }
   };
 
   useAsyncEffect(async () => {
-    if (!projectID) return;
-
+    let authorizedWorkspaces: ImportWorkspace[] = [];
     // get a list of workspaces with editor/owner/admin role
-    const authorizedWorkspaces = workspaces.filter((workspace) =>
-      workspace.members.some((member) => member.creator_id === creatorID && allowedToClone(workspace, creatorID))
-    );
+    if (identityWorkspaceMember.isEnabled) {
+      authorizedWorkspaces = await client.identity.workspace.list(ROLE_PERMISSIONS[Permission.MANAGE_PROJECTS] as UserRole[]);
+    } else {
+      authorizedWorkspaces = reduxWorkspaces.filter((workspace) =>
+        workspace.members.some((member) => member.creator_id === creatorID && allowedToClone(workspace, creatorID))
+      );
+    }
+    setWorkspaces(authorizedWorkspaces);
+
+    if (!projectID) return;
 
     // If user has 0 workspaces with Editor/Admin/Owner role, show toast
     if (authorizedWorkspaces.length === 0) {
@@ -137,6 +144,8 @@ const ImportModal = manager.create<Props>('ProjectImport', () => ({ api, type, o
       cloneProject(authorizedWorkspaces[0].id);
     }
 
+    setTargetWorkspace(authorizedWorkspaces[0]?.id);
+
     try {
       const importingProject = await client.api.project.get<{ name: string }>(projectID, ['name']);
 
@@ -144,11 +153,7 @@ const ImportModal = manager.create<Props>('ProjectImport', () => ({ api, type, o
     } catch {
       toast.error('Not able to retrieve project information');
     }
-  }, [targetWorkspace, projectID]);
-
-  React.useEffect(() => {
-    setTargetWorkspace(workspaceOptions[0]);
-  }, [workspaceOptions]);
+  });
 
   return (
     <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} maxWidth={392}>
@@ -156,7 +161,7 @@ const ImportModal = manager.create<Props>('ProjectImport', () => ({ api, type, o
 
       <Modal.Body>
         <Select
-          value={targetWorkspace?.value}
+          value={targetWorkspace}
           prefix="COPY TO"
           options={workspaceOptions}
           onSelect={(value) => chooseWorkspace(value)}
@@ -173,7 +178,7 @@ const ImportModal = manager.create<Props>('ProjectImport', () => ({ api, type, o
           Cancel
         </Button>
 
-        <Button onClick={() => cloneProject(targetWorkspace?.value)} squareRadius>
+        <Button onClick={() => cloneProject(targetWorkspace!)} squareRadius>
           Copy Project
         </Button>
       </Modal.Footer>

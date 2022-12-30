@@ -1,5 +1,6 @@
 import * as Models from '@realtime-sdk/models';
 import { IdentityWorkspace } from '@realtime-sdk/models/Workspace';
+import { UserRole } from '@voiceflow/internal';
 
 import { NestResource, NestResourceOptions } from '../../nest';
 
@@ -34,8 +35,8 @@ export class Workspace extends NestResource {
     await this.delete(`/${workspaceID}`);
   }
 
-  public async list(): Promise<IdentityWorkspace[]> {
-    const { data } = await this.get<IdentityWorkspace[]>(`/`);
+  public async list(roles?: UserRole[]): Promise<IdentityWorkspace[]> {
+    const { data } = await this.get<IdentityWorkspace[]>(`/`, { params: { ...(roles && { roles: roles?.join(',') }) } });
     return data;
   }
 

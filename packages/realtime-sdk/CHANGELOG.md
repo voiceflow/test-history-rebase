@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.213.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.213.1...@voiceflow/realtime-sdk@1.213.2) (2022-12-30)
+
+
+### Bug Fixes
+
+* fetch workspaces by role [bugfix] (BUG-149) ([#6495](https://github.com/voiceflow/creator-app/issues/6495)) ([1df3c13](https://github.com/voiceflow/creator-app/commit/1df3c1351b03ce88f2a451528c25ffdeda0e9eca))
+* remove legacy diagrams channel (CT-000) ([#6497](https://github.com/voiceflow/creator-app/issues/6497)) ([3ec610d](https://github.com/voiceflow/creator-app/commit/3ec610d553d62dcba95f98f790e3350a6143252d))
+
+
+
+
+
 ## [1.213.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.213.0...@voiceflow/realtime-sdk@1.213.1) (2022-12-24)
 
 **Note:** Version bump only for package @voiceflow/realtime-sdk

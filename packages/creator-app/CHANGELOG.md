@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1037.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1037.2...@voiceflow/creator-app@1.1037.3) (2022-12-30)
+
+
+### Bug Fixes
+
+* fetch workspaces by role [bugfix] (BUG-149) ([#6495](https://github.com/voiceflow/creator-app/issues/6495)) ([1df3c13](https://github.com/voiceflow/creator-app/commit/1df3c1351b03ce88f2a451528c25ffdeda0e9eca))
+
+
+
+
+
 ## [1.1037.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1037.1...@voiceflow/creator-app@1.1037.2) (2022-12-27)
 
 

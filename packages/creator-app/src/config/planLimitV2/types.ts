@@ -12,8 +12,10 @@ export interface BaseLimit {
   limit: number;
 }
 
+export type ErrorRenderer = (props: RendererProps) => React.ReactNode;
+
 export interface ToastErrorDynamicLimit {
-  getToastError: (props: RendererProps) => React.ReactNode;
+  getToastError: ErrorRenderer;
   increasableLimit?: number;
 }
 

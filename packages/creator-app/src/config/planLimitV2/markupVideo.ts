@@ -1,7 +1,8 @@
-import { PlanLimit, ToastErrorStaticLimit } from './types';
+import { ErrorRenderer, PlanLimit, ToastErrorStaticLimit } from '@/config/planLimitV2/types';
+
 import { applyEnterpriseLimits, applyStarterLimits, applyTeamLimits } from './utils';
 
-const getToastError = (limit: { limit: number }): string => `File size must not exceed ${limit}MBs`;
+const getToastError: ErrorRenderer = ({ limit }): string => `File size must not exceed ${limit}MBs`;
 
 const STARTER_LIMIT: ToastErrorStaticLimit = {
   limit: 4,

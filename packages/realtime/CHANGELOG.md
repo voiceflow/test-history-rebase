@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.141.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.141.2...@voiceflow/realtime@1.141.3) (2023-01-03)
+
+
+### Reverts
+
+* Revert "fix: remove peer dependencies (CT-000) (#6475)" ([269b958](https://github.com/voiceflow/creator-app/commit/269b958afb7d3ad8b735729e57d86569c728af23)), closes [#6475](https://github.com/voiceflow/creator-app/issues/6475)
+
+
+
+
+
 ## [1.141.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.141.1...@voiceflow/realtime@1.141.2) (2023-01-03)
 
 

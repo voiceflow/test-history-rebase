@@ -1,6 +1,7 @@
 import { PlanType } from '@voiceflow/internal';
 
 import {
+  AnyLimit,
   Limits,
   LimitType,
   ToastErrorDynamicLimit,
@@ -29,7 +30,9 @@ export const usePlanLimit = <Limit extends LimitType>({
 }: WithLimitValueOption<Limit>): InjectedLimit<NonNullable<Limits[Limit][PlanType]>> | null => {
   const activePlan = useSelector(WorkspaceV2.active.planSelector) ?? PlanType.STARTER;
 
-  const planLimit = getPlanLimit(type, activePlan);
+  // FIXME: TS 4.9 is not able to infer the type of planLimit correctly, so we need to cast it to AnyLimit
+  // remove the cast when TS issue is fixed
+  const planLimit = getPlanLimit(type, activePlan) as AnyLimit | null;
 
   if (!planLimit) return null;
 

@@ -134,7 +134,7 @@ function Menu<Value = void>(
               const { key, value, note, label, icon, onClick, ...props } = option;
 
               return (
-                <Item {...props} key={key || `${index}-${label}`} onClick={onItemClick(value, onClick)}>
+                <Item key={key || `${index}-${label}`} {...props} onClick={onItemClick(value, onClick)}>
                   {!!icon && <ItemIcon icon={icon} />}
 
                   <FlexLabel>{label || String(value)}</FlexLabel>

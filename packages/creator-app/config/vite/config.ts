@@ -1,4 +1,3 @@
-/* eslint-disable no-process-env */
 import defineConfig, { esbuildResolveFixup } from '@voiceflow/vite-config';
 import path from 'path';
 import rewriteAll from 'vite-plugin-rewrite-all';
@@ -11,6 +10,7 @@ export default defineConfig({
   name: 'Creator',
   env: loadEnv(),
   rootDir,
+  experimentalSWC: true,
   aliases: ({ isServe }) => ({
     stream: 'stream-browserify',
 

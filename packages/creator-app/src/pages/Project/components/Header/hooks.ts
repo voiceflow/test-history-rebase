@@ -1,5 +1,5 @@
 import { Nullable } from '@voiceflow/common';
-import { MenuTypes, SvgIconTypes } from '@voiceflow/ui';
+import { MenuTypes } from '@voiceflow/ui';
 
 import { DESKTOP_APP_LINK } from '@/constants';
 import * as Router from '@/ducks/router';
@@ -34,22 +34,22 @@ export const useLogoButtonOptions = ({
   });
 
   return [
-    { label: 'Back to dashboard', onClick: goToDashboard },
+    { key: 'back', label: 'Back to dashboard', onClick: goToDashboard },
 
-    { label: 'divider 1', divider: true },
+    { key: 'logo-divider-1', label: 'logo-divider-1', divider: true },
 
     toggleSearch
-      ? { icon: 'search' as SvgIconTypes.Icon, label: 'Search assistant', onClick: toggleSearch, note: HOTKEY_LABEL_MAP[Hotkey.SEARCH] }
+      ? { key: 'search', icon: 'search' as const, label: 'Search assistant', onClick: toggleSearch, note: HOTKEY_LABEL_MAP[Hotkey.SEARCH] }
       : null,
 
-    toggleSearch ? { label: 'divider 2', divider: true } : null,
+    toggleSearch ? { key: 'logo-divider-2', label: 'logo-divider-2', divider: true } : null,
 
     ...options,
 
-    uiToggle ? { key: 'divider 3', label: 'divider', divider: true } : null,
+    uiToggle ? { key: 'logo-divider-3', label: 'logo-divider-3', divider: true } : null,
     uiToggle ? { key: 'toggle-ui', label: 'Hide/Show UI', onClick: toggleCanvasOnly, note: HOTKEY_LABEL_MAP[Hotkey.SHOW_HIDE_UI] } : null,
 
-    { key: 'divider-3', label: 'divider', divider: true },
+    { key: 'logo-divider-4', label: 'logo-divider-4', divider: true },
 
     shortcuts
       ? { key: 'shortcuts', label: 'See shortcuts', onClick: wrapTrackingEvent(() => shortcutModal.openVoid(), 'trackCanvasSeeShortcutsModalOpened') }

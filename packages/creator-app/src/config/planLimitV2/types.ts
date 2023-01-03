@@ -26,4 +26,6 @@ export interface UpgradeModalDynamicLimit {
 
 export interface UpgradeModalStaticLimit extends BaseLimit, UpgradeModalDynamicLimit {}
 
+export type AnyLimit = ToastErrorStaticLimit | ToastErrorDynamicLimit | UpgradeModalStaticLimit | UpgradeModalDynamicLimit;
+
 export type PlanLimit<Limit> = Partial<Record<PlanType, Limit>>;

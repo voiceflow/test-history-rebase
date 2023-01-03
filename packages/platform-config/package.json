@@ -26,8 +26,8 @@
   },
   "devDependencies": {
     "@testing-library/react": "^12.1.5",
-    "jest-styled-components": "7.0.6",
-    "jsdom": "^20.0.0",
+    "jest-styled-components": "7.1.1",
+    "jsdom": "^20.0.3",
     "tslib": "2.4.1"
   },
   "files": [

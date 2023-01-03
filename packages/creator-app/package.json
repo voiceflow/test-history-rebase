@@ -191,18 +191,18 @@
     "@welldone-software/why-did-you-render": "^7.0.1",
     "cy2": "1.3.0",
     "cypress": "10.8.0",
-    "cypress-vite": "^1.1.1",
+    "cypress-vite": "^1.2.1",
     "identity-obj-proxy": "3.0.0",
     "ignore-styles": "5.0.1",
-    "jest-styled-components": "^7.0.8",
-    "jsdom": "^20.0.0",
+    "jest-styled-components": "^7.1.1",
+    "jsdom": "^20.0.3",
     "jsdom-global": "3.0.2",
     "levenary": "1.1.1",
     "mock-local-storage": "1.1.23",
     "node-noop": "1.0.0",
     "null-loader": "4.0.1",
     "tslib": "2.4.1",
-    "vite-plugin-rewrite-all": "1.0.0"
+    "vite-plugin-rewrite-all": "1.0.1"
   },
   "homepage": "https://github.com/voiceflow/creator-app#readme",
   "keywords": [

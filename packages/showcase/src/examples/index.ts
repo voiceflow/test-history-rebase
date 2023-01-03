@@ -12,6 +12,7 @@ export { default as hueSlider } from './HueSlider';
 export { default as membersAvatarList } from './MembersAvatarList';
 export { default as popper } from './Popper';
 export { default as preview } from './Preview';
+export { default as progressBar } from './ProgressBar';
 export { default as sectionV2 } from './SectionV2';
 export { default as svgIcon } from './SvgIcon';
 export { default as tabs } from './Tabs';

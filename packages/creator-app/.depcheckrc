@@ -28,7 +28,6 @@
     "levenary",
     "estree",
     "vitest",
-    "react-hot-loader",
     "null-loader",
     "stream-browserify"
   ]

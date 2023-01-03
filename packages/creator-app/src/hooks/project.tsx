@@ -180,7 +180,7 @@ export const useProjectOptions = ({
       canManageProjects ? { label: 'Copy clone link', onClick: onClone } : null,
       canManageProjects && withConvertToDomain ? { label: 'Convert to domain', onClick: onCovertToDomain } : null,
 
-      withSettingsOption ? { label: 'divider 1', divider: true } : null,
+      withSettingsOption ? { label: 'divider-1', divider: true } : null,
       withInviteOption ? { label: 'Manage access', onClick: () => projectMembersModal.openVoid() } : null,
 
       withSettingsOption ? { label: 'Settings', onClick: () => goToSettings(targetVersionID) } : null,
@@ -197,7 +197,7 @@ export const useProjectOptions = ({
     withInviteOption ? { key: 'invite', label: 'Invite collaborators', onClick: () => sharePopper?.open(ShareProjectTab.INVITE) } : null,
     withExportOption ? { label: 'Export as...', onClick: () => sharePopper.open(ShareProjectTab.EXPORT) } : null,
 
-    withHistoryOption || withSettingsOption || withInviteOption || withExportOption ? { label: 'divider 1', divider: true } : null,
+    withHistoryOption || withSettingsOption || withInviteOption || withExportOption ? { label: 'divider-1', divider: true } : null,
 
     withRenameOption ? { label: 'Rename project', onClick: onRename } : null,
     canManageProjects ? { label: 'Duplicate project', onClick: onDuplicate } : null,

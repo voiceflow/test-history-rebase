@@ -17,7 +17,6 @@
     "@testing-library/react",
     "react",
     "react-dom",
-    "regenerator-runtime",
-    "vite"
+    "regenerator-runtime"
   ]
 }

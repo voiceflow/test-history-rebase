@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.16.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.15.3...@voiceflow/platform-config@1.16.0) (2023-01-03)
+
+
+### Features
+
+* finish MS Teams frontend changes (PL-328) ([#6396](https://github.com/voiceflow/creator-app/issues/6396)) ([0e82e1f](https://github.com/voiceflow/creator-app/commit/0e82e1fbf72c268b978f77bd616d838097d85c46))
+
+
+
+
+
 ## [1.15.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.15.2...@voiceflow/platform-config@1.15.3) (2023-01-03)
 
 

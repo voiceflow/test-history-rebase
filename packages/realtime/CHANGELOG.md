@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.140.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.139.2...@voiceflow/realtime@1.140.0) (2023-01-03)
+
+
+### Features
+
+* freestyle ai generation (PL-000) ([#6498](https://github.com/voiceflow/creator-app/issues/6498)) ([bcacf2e](https://github.com/voiceflow/creator-app/commit/bcacf2ed29955a705c267c7065b7b49e377c5468))
+
+
+
+
+
 ## [1.139.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.139.1...@voiceflow/realtime@1.139.2) (2022-12-30)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.33.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.32.1...@voiceflow/ml-gateway@1.33.0) (2023-01-03)
+
+
+### Features
+
+* freestyle ai generation (PL-000) ([#6498](https://github.com/voiceflow/creator-app/issues/6498)) ([bcacf2e](https://github.com/voiceflow/creator-app/commit/bcacf2ed29955a705c267c7065b7b49e377c5468))
+
+
+
+
+
 ## [1.32.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.32.0...@voiceflow/ml-gateway@1.32.1) (2022-12-27)
 
 

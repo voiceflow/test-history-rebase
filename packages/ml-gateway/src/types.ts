@@ -71,3 +71,8 @@ export interface MLGenEntityPrompt extends MLRequest {
   intentInputs: string[];
   examples: string[];
 }
+
+export interface MLGenAutoComplete {
+  projectID: string;
+  transcript: string[];
+}

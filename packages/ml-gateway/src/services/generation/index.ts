@@ -2,9 +2,10 @@ import VError from '@voiceflow/verror';
 import template from 'es6-template-string';
 
 import logger from '@/logger';
-import { MLGenEntityPrompt, MLGenEntityValue, MLGenPromptRequest, MLGenUtteranceRequest } from '@/types';
+import { MLGenAutoComplete, MLGenEntityPrompt, MLGenEntityValue, MLGenPromptRequest, MLGenUtteranceRequest } from '@/types';
 
 import { AbstractControl } from '../../control';
+import { autoCompletePrompt } from './constants';
 import { convertUtterances, parseArrayString, parseObjectString } from './utils';
 
 const DEFAULT_LOCALE = 'en-US';
@@ -195,6 +196,12 @@ class GenerationService extends AbstractControl {
       'Entity reprompt generation requires at least one of the following: intentName, entityName, entityExamples',
       VError.HTTP_STATUS.BAD_REQUEST
     );
+  }
+
+  async autoComplete({ transcript }: MLGenAutoComplete) {
+    const result = await this.clients.openAI.createCompletion({ prompt: autoCompletePrompt(transcript) });
+
+    return result.text;
   }
 }
 

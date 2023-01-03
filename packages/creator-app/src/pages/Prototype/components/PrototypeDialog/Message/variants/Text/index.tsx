@@ -6,12 +6,17 @@ import BaseMessage, { BaseMessageProps } from '../../Base';
 
 interface TextProps extends Omit<BaseMessageProps, 'iconProps'> {
   slate: BaseNode.Text.TextData;
+  ai?: boolean;
 }
 
-const Text: React.FC<TextProps> = ({ slate, ...props }) => {
+const Text: React.FC<TextProps> = ({ slate, ai, ...props }) => {
   const content = React.useMemo(() => serializeToJSX(slate.content), []);
 
-  return <BaseMessage {...props}>{content}</BaseMessage>;
+  return (
+    <BaseMessage {...props} isAiMessage={ai}>
+      {content}
+    </BaseMessage>
+  );
 };
 
 export default Text;

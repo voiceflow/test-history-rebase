@@ -1,4 +1,4 @@
-import { MLGenEntityPrompt, MLGenEntityValue, MLGenPromptRequest, MLGenUtteranceRequest } from '@/types';
+import { MLGenAutoComplete, MLGenEntityPrompt, MLGenEntityValue, MLGenPromptRequest, MLGenUtteranceRequest } from '@/types';
 
 import { ApiRequest } from '../types';
 import { AbstractController } from './utils';
@@ -18,6 +18,10 @@ class GenerationController extends AbstractController {
 
   entityReprompt(req: ApiRequest<MLGenEntityPrompt>) {
     return this.services.generation.entityReprompt(req.body, req.user!.creator_id);
+  }
+
+  autoComplete(req: ApiRequest<MLGenAutoComplete>) {
+    return this.services.generation.autoComplete(req.body);
   }
 }
 

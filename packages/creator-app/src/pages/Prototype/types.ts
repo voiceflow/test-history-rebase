@@ -47,11 +47,11 @@ type GenericMessage<T extends MessageType, D = {}> = { id: string; type: T; star
 
 export type UserMessage = GenericMessage<MessageType.USER, { input: string; intentName?: string; confidence?: number | null }>;
 
-export type TextMessage = GenericMessage<MessageType.TEXT, { slate: BaseNode.Text.TextData }>;
+export type TextMessage = GenericMessage<MessageType.TEXT, { slate: BaseNode.Text.TextData; ai?: boolean }>;
 
-export type AudioMessage = GenericMessage<MessageType.AUDIO, { name: string; src?: string | null }>;
+export type AudioMessage = GenericMessage<MessageType.AUDIO, { name: string; src?: string | null; ai?: boolean }>;
 
-export type SpeakMessage = GenericMessage<MessageType.SPEAK, { message: string; voice?: string; src?: string | null }>;
+export type SpeakMessage = GenericMessage<MessageType.SPEAK, { message: string; voice?: string; src?: string | null; ai?: boolean }>;
 
 export type DebugMessage = GenericMessage<MessageType.DEBUG, { message: string }>;
 

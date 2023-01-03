@@ -10,6 +10,7 @@ import { ClassName } from '@/styles/constants';
 import BaseMessage, { BaseMessageProps } from '../../Base';
 
 interface SpeakProps extends Omit<BaseMessageProps, 'iconProps'> {
+  ai?: boolean;
   src?: string | null;
   audio?: HTMLAudioElement;
   voice?: string;
@@ -23,7 +24,7 @@ const MARKDOWN_OPTIONS: MarkdownOptions = {
   forceInline: true,
 };
 
-const Speak: React.FC<SpeakProps> = ({ src, audio, voice, message, className, onPause, onContinue, ...props }) => {
+const Speak: React.FC<SpeakProps> = ({ ai, src, audio, voice, message, className, onPause, onContinue, ...props }) => {
   const audioPlayer = AudioPlayer.useAudioPlayer({ audioURL: src });
 
   const formattedMessage = React.useMemo(
@@ -54,7 +55,7 @@ const Speak: React.FC<SpeakProps> = ({ src, audio, voice, message, className, on
   }, [audioPlayer.playing, audio]);
 
   return formattedMessage ? (
-    <BaseMessage onClick={audioPlayer.onToggle} className={cn(ClassName.CHAT_DIALOG_SPEAK_MESSAGE, className)} {...props}>
+    <BaseMessage onClick={audioPlayer.onToggle} className={cn(ClassName.CHAT_DIALOG_SPEAK_MESSAGE, className)} {...props} isAiMessage={ai}>
       <Markdown options={MARKDOWN_OPTIONS}>{formattedMessage}</Markdown>
     </BaseMessage>
   ) : null;

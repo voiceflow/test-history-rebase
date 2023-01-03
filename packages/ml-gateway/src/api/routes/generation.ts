@@ -6,6 +6,9 @@ import type { MiddlewaresMap } from '../middlewares';
 const generationRoutes = (middlewares: MiddlewaresMap, controllers: ControllersMap) => {
   const router = express.Router();
 
+  // runtime generation
+  router.post('/autocomplete', controllers.generation.autoComplete);
+
   router.use(middlewares.auth.authenticateUser);
   router.use(middlewares.billing.checkQuota);
 

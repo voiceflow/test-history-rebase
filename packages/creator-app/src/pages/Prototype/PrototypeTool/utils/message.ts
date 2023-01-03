@@ -42,13 +42,13 @@ export const createDebugMessage = ({ id, payload: { message } }: DebugTrace, com
 });
 
 export const createSpeakMessage = (
-  { id, payload: { type, message, voice, src } }: SpeakTrace,
+  { id, payload: { type, message, voice, src, ai } }: SpeakTrace,
   common: CommonProperties
 ): SpeakMessage | AudioMessage => {
   if (type === BaseNode.Speak.TraceSpeakType.AUDIO) {
-    return { id, type: MessageType.AUDIO, name: message, src, ...common };
+    return { id, type: MessageType.AUDIO, name: message, src, ai, ...common };
   }
-  return { id, type: MessageType.SPEAK, message, voice, src, ...common };
+  return { id, type: MessageType.SPEAK, message, voice, src, ai, ...common };
 };
 
 export const createStreamMessage = ({ id, payload: { src } }: StreamTrace, common: CommonProperties): StreamMessage => ({
@@ -69,6 +69,7 @@ export const createTextMessage = (trace: TextTrace, common: CommonProperties): T
   id: trace.id,
   type: MessageType.TEXT,
   slate: trace.payload.slate,
+  ai: trace.payload.ai,
   ...common,
 });
 

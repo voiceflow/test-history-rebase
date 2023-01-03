@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.212.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.212.0...@voiceflow/ui@1.212.1) (2023-01-03)
+
+
+### Bug Fixes
+
+* set white button text color to standard dark (CT-1353) ([#6499](https://github.com/voiceflow/creator-app/issues/6499)) ([755af32](https://github.com/voiceflow/creator-app/commit/755af3210300de881ccc1d45600779f6b162aac4))
+
+
+
+
+
 # [1.212.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.211.0...@voiceflow/ui@1.212.0) (2023-01-03)
 
 

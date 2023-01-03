@@ -25,6 +25,7 @@ const IntegrationsHeader: React.FC = () => {
             <Route path={Path.PROTOTYPE_SMS}>SMS Testing</Route>
             <Route path={Path.PUBLISH_WHATSAPP}>WhatsApp</Route>
             <Route path={Path.PROTOTYPE_WHATSAPP}>WhatsApp Testing</Route>
+            <Route path={Path.PUBLISH_TEAMS}>Microsoft Teams</Route>
             <Route path={Path.PUBLISH_API}>API</Route>
           </Switch>
         </Page.Header.Title>

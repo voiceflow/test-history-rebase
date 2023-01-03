@@ -4,6 +4,7 @@ export { default as LoaderStage } from './LoaderStage';
 export { default as ProjectItem } from './ProjectItem';
 export { default as ProjectSelectionFooter } from './ProjectSelectionFooter';
 export { default as ProjectSelectionFooterLink } from './ProjectSelectionFooterLink';
+export { default as StageConfigurationRequired } from './StageConfigurationRequired';
 export { default as StageContainer } from './StageContainer';
 export { default as StageEmpty } from './StageEmpty';
 export { default as ErrorStage } from './StageError';

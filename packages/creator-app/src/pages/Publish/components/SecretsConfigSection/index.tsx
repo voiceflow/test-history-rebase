@@ -10,9 +10,18 @@ export interface SecretsConfigSectionProps extends SecretsConfigProps {
   title: string | JSX.Element;
   subtitle?: string | JSX.Element;
   submitSecrets: () => any | Promise<any>;
+  className?: string;
 }
 
-const SecretsConfigSection: React.FC<SecretsConfigSectionProps> = ({ secrets, title, subtitle, secretsStore, updateSecret, submitSecrets }) => {
+const SecretsConfigSection: React.FC<SecretsConfigSectionProps> = ({
+  className,
+  secrets,
+  title,
+  subtitle,
+  secretsStore,
+  updateSecret,
+  submitSecrets,
+}) => {
   const [loading, setLoading] = React.useState(false);
 
   const onSave = async () => {
@@ -28,11 +37,11 @@ const SecretsConfigSection: React.FC<SecretsConfigSectionProps> = ({ secrets, ti
   };
 
   return (
-    <Section title={title} subtitle={subtitle} card={false}>
+    <Section className={className} title={title} subtitle={subtitle} card={false}>
       <Section.Card p={0}>
         <SecretsConfig secretsStore={secretsStore} secrets={secrets} updateSecret={updateSecret} />
         <Box.FlexEnd py={24} px={32}>
-          <Button isLoading={loading} disabled={loading} onClick={onSave}>
+          <Button isLoading={loading} disabled={loading} onClick={onSave} width={75}>
             Save
           </Button>
         </Box.FlexEnd>

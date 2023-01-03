@@ -13,9 +13,10 @@ import Section from './Section';
 interface WebhookFieldProps {
   subtitle?: JSX.Element | string;
   platformName: string;
+  className?: string;
 }
 
-const WebhookField: React.FC<WebhookFieldProps> = ({ subtitle, platformName }) => {
+const WebhookField: React.FC<WebhookFieldProps> = ({ subtitle, platformName, className }) => {
   const hasPermissions = usePermissions([Permission.API_KEY_EDIT, Permission.API_KEY_VIEW]);
   const [primaryKey, setPrimaryKey] = React.useState<string | null>(null);
 
@@ -44,7 +45,7 @@ const WebhookField: React.FC<WebhookFieldProps> = ({ subtitle, platformName }) =
   return (
     <>
       {hasPermissions && (
-        <Section title="Webhook" subtitle={subtitle}>
+        <Section className={className} title="Webhook" subtitle={subtitle}>
           <Box mb={11} fontWeight={600}>
             Webhook URL
           </Box>

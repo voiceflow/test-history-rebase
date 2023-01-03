@@ -69,7 +69,7 @@ export enum PublishRoute {
   PROTOTYPE_SMS = 'prototype/sms',
   WHATSAPP = 'whatsapp',
   PROTOTYPE_WHATSAPP = 'prototype/whatsapp',
-  MICROSOFT_TEAMS = 'ms-teams',
+  MICROSOFT_TEAMS = 'microsoft_teams',
 }
 
 export enum ToolsRoute {

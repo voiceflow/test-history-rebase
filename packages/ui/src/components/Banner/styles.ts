@@ -1,3 +1,4 @@
+import Box from '@ui/components/Box';
 import Button from '@ui/components/Button';
 import { colors, css, styled, ThemeColor } from '@ui/styles';
 import { space, SpaceProps } from 'styled-system';
@@ -65,4 +66,8 @@ export const SubTitle = styled.div`
   padding-top: 4px;
   text-align: left;
   line-height: 22px;
+`;
+
+export const ButtonBox = styled(Box)`
+  padding: 28px 32px;
 `;

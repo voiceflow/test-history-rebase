@@ -12,7 +12,7 @@ const QuaternaryButton = styled(ButtonContainer)<QuaternaryButtonProps>`
   z-index: 1;
   display: inline-block;
   padding: 8px 22px 10px;
-  color: ${colors(ThemeColor.BLUE)};
+  color: ${colors(ThemeColor.DARKER_BLUE)};
   font-weight: 600;
   background-color: rgba(93, 157, 245, 0.1);
   border: 0;

@@ -6,6 +6,7 @@ import DialogflowCX from '@/platforms/dialogflowCX/jobs/publish';
 import DialogflowES from '@/platforms/dialogflowES/jobs/publish';
 import General from '@/platforms/general/jobs/publish';
 import Google from '@/platforms/google/jobs/publish';
+import MSTeams from '@/platforms/ms-teams/jobs/publish';
 import SMS from '@/platforms/sms/jobs/publish';
 import Webchat from '@/platforms/webchat/jobs/publish';
 import WhatsApp from '@/platforms/whatsapp/jobs/publish';
@@ -17,6 +18,7 @@ const UploadGroup = platformAware(
     [Platform.Constants.PlatformType.WEBCHAT]: Webchat,
     [Platform.Constants.PlatformType.SMS]: SMS,
     [Platform.Constants.PlatformType.WHATSAPP]: WhatsApp,
+    [Platform.Constants.PlatformType.MICROSOFT_TEAMS]: MSTeams,
     [Platform.Constants.PlatformType.DIALOGFLOW_ES]: DialogflowES,
     [Platform.Constants.PlatformType.DIALOGFLOW_CX]: DialogflowCX,
   },

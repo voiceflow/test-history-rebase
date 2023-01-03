@@ -2,6 +2,7 @@ import { Input, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
 import { useToggle } from '@/hooks';
+import THEME from '@/styles/theme';
 
 export interface HideableInput {
   value: any;
@@ -22,7 +23,7 @@ const HideableInput: React.FC<HideableInput> = ({ value, placeholder, onChangeTe
       type={showSecret ? 'text' : 'password'}
       value={value}
       onChangeText={onChangeText}
-      rightAction={<SvgIcon icon={showSecret ? 'eyeHide' : 'eye'} color="#6E849A" onClick={toggleShowSecret} clickable />}
+      rightAction={<SvgIcon icon={showSecret ? 'eyeHide2' : 'eye2'} color={THEME.iconColors.active} onClick={toggleShowSecret} clickable />}
       placeholder={placeholder}
       autoComplete={autocomplete ?? 'cc-number'}
     />

@@ -9,13 +9,16 @@ export interface SecretsConfigProps {
   secrets: SecretField[];
   secretsStore: SecretsStore;
   updateSecret: (key: ProjectSecretTag, value: any) => void;
+
+  className?: string;
 }
 
-export const SecretsConfig: React.FC<SecretsConfigProps> = ({ secrets, secretsStore, updateSecret }) => {
+export const SecretsConfig: React.FC<SecretsConfigProps> = ({ secrets, secretsStore, updateSecret, className }) => {
   return (
     <form>
       {secrets.map((secret) => (
         <SecretsConfigItem
+          className={className}
           {...secret}
           key={secret.name}
           value={secretsStore[secret.secretTag]}

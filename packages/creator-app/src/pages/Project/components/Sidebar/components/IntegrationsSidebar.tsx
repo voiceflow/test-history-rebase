@@ -60,7 +60,7 @@ const IntegrationsSidebar: React.FC = () => {
           ...(twilioSandbox ? [{ to: generatePath(Path.PROTOTYPE_WHATSAPP, { versionID }), title: 'Test on Phone', icon: 'phone' }] : []),
         ] as MenuOption[];
       case Platform.Constants.PlatformType.MICROSOFT_TEAMS:
-        return [{ to: generatePath(Path.PUBLISH_TEAMS, { versionID }), title, icon }];
+        return [{ to: generatePath(Path.PUBLISH_TEAMS, { versionID }), title, icon: 'microsoftTeamsT' }];
       default:
         return [];
     }

@@ -1,13 +1,15 @@
 import * as Platform from '@voiceflow/platform-config';
-import { Banner, Link } from '@voiceflow/ui';
+import { Link } from '@voiceflow/ui';
 import React from 'react';
 
+import { MS_TEAMS_DOCUMENTATION } from '@/constants/platforms';
 import * as Session from '@/ducks/session';
 import { useSelector } from '@/hooks';
-import { SecretsConfigSection, SettingsContainer, WebhookField } from '@/pages/Publish/components';
+import { openInternalURLInANewTab } from '@/utils/window';
 
 import { useSecretsManager } from '../hooks';
 import { secretsConfig } from './constants';
+import * as S from './styles';
 
 const MicrosoftTeams: React.FC = () => {
   const secrets = React.useMemo(() => secretsConfig.map(({ secretTag }) => secretTag), [secretsConfig]);
@@ -23,15 +25,17 @@ const MicrosoftTeams: React.FC = () => {
   );
 
   return (
-    <SettingsContainer>
-      <Banner
+    <S.Container>
+      <S.Banner
         title="Publishing to Microsoft Teams"
         subtitle="Make your assistant instantly accessible on Microsoft Teams."
         buttonText="Documentation"
+        onClick={() => openInternalURLInANewTab(MS_TEAMS_DOCUMENTATION)}
         isCloseable={false}
+        small
       />
-      <WebhookField platformName="ms-teams" />
-      <SecretsConfigSection
+      <S.WebhookField platformName="ms-teams" />
+      <S.SecretsConfigSection
         title="Configuration"
         secretsStore={secretsStore}
         updateSecret={updateSecret}
@@ -39,12 +43,12 @@ const MicrosoftTeams: React.FC = () => {
         subtitle={
           <>
             Copy paste your Bot ID and Client Secret to connect your assistant to Microsoft Teams.{' '}
-            <Link href="https://www.voiceflow.com/">Learn more</Link>
+            <Link href={MS_TEAMS_DOCUMENTATION}>Learn more</Link>
           </>
         }
         secrets={secretsConfig}
       />
-    </SettingsContainer>
+    </S.Container>
   );
 };
 

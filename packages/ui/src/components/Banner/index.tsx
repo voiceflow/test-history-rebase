@@ -13,6 +13,7 @@ interface BannerProps extends Omit<S.OuterContainerProps, 'isOpen'> {
   onClose?: VoidFunction;
   isCloseable?: boolean;
   className?: string;
+  small?: boolean;
 }
 
 const Banner: React.FC<BannerProps> = ({
@@ -24,6 +25,7 @@ const Banner: React.FC<BannerProps> = ({
   onClose,
   isCloseable = true,
   className,
+  small = false,
   ...props
 }) => {
   const [isOpen, setOpen] = React.useState(true);
@@ -33,20 +35,31 @@ const Banner: React.FC<BannerProps> = ({
     if (onClose) onClose();
   };
 
+  const textboxStyle = small
+    ? {
+        pt: 24,
+        pb: 24,
+        pl: 32,
+      }
+    : {
+        px: 32,
+        py: 24,
+      };
+
   return (
     <S.OuterContainer isOpen={isOpen} className={className} {...props}>
       <S.Container backgroundImage={backgroundImage}>
         <Box.FlexApart flexDirection="row">
-          <Box.Flex flexDirection="column" style={{ padding: '24px 32px' }}>
+          <Box.Flex flexDirection="column" {...textboxStyle}>
             {title && <S.Title>{title}</S.Title>}
             {subtitle && <S.SubTitle>{subtitle}</S.SubTitle>}
           </Box.Flex>
           {buttonText && (
-            <div style={{ padding: '28px 32px' }}>
+            <S.ButtonBox px={32} py={28}>
               <Button variant={Button.Variant.PRIMARY} squareRadius onClick={onClick}>
                 {buttonText}
               </Button>
-            </div>
+            </S.ButtonBox>
           )}
         </Box.FlexApart>
         {isCloseable && <S.CloseButton onClick={closeBanner} icon="closeSmall" />}
@@ -54,4 +67,4 @@ const Banner: React.FC<BannerProps> = ({
     </S.OuterContainer>
   );
 };
-export default Object.assign(Banner, { OuterContainer: S.OuterContainer });
+export default Object.assign(Banner, { OuterContainer: S.OuterContainer, ButtonBox: S.ButtonBox });

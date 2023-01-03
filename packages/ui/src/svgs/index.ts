@@ -103,6 +103,8 @@ export { default as itemAdd } from './expression-add.svg';
 export { default as itemMinus } from './expression-minus.svg';
 export { default as eye } from './eye.svg';
 export { default as eyeHide } from './eye-hide.svg';
+export { default as eyeHide2 } from './eye-hide2.svg';
+export { default as eye2 } from './eye2.svg';
 
 // f
 export { default as filter } from './filter.svg';
@@ -158,6 +160,7 @@ export { default as lockUnlocked } from './unlocked.svg';
 export { default as markupImageV2 } from './markup-v2.svg';
 export { default as measure } from './measure.svg';
 export { default as microphone } from './microphone.svg';
+export { default as microsoftTeamsT } from './microsoft-teams-t.svg';
 export { default as minus } from './minus.svg';
 export { default as modelQuickview } from './model-quickview.svg';
 

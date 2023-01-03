@@ -63,7 +63,9 @@ class WorkspaceChannel extends AbstractChannelControl<Realtime.Channels.Workspac
       this.services.workspace.getConnectedViewersPerProject(workspaceID),
       isIdentityWorkspaceEnabled ? this.services.workspace.member.getAll(creatorID, workspaceID) : Promise.resolve([]),
       isIdentityWorkspaceEnabled ? this.services.billing.getWorkspaceQuotas(creatorID, workspaceID).catch(() => []) : Promise.resolve([]),
-      isIdentityWorkspaceEnabled ? this.services.workspace.settings.getAll(workspaceID, creatorID) : Promise.resolve({}),
+      isIdentityWorkspaceEnabled
+        ? this.services.workspace.settings.getAll(workspaceID, creatorID)
+        : Promise.resolve(Realtime.Adapters.workspaceSettingsAdapter.fromDB({})),
     ]);
 
     const [projects, projectLists] = WorkspaceChannel.normalizeProjectLists(dbProjects, dbProjectLists);

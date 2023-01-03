@@ -26,7 +26,7 @@ const projectAdapter = createMultiAdapter<BaseModels.Project.Model<AnyRecord, An
     liveVersion,
     platformData,
     customThemes,
-    aiAssistSettings = {},
+    aiAssistSettings = { generativeTasks: true },
   }) => {
     const { nlu, type, platform } = legacyPlatformToProjectType(dbPlatform, dbType);
 

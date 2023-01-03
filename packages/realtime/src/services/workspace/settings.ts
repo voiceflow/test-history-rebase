@@ -6,8 +6,13 @@ import { AbstractControl } from '../../control';
 class WorkspaceSettingsService extends AbstractControl {
   public async getAll(workspaceID: number | string, creatorID: number): Promise<Realtime.WorkspaceSettings> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
-    const properties = await client.identity.workspaceProperty.findAll(workspaceID).catch(() => ({}));
-    return Realtime.Adapters.workspaceSettingsAdapter.fromDB(properties);
+
+    try {
+      const properties = await client.identity.workspaceProperty.findAll(workspaceID);
+      return Realtime.Adapters.workspaceSettingsAdapter.fromDB(properties);
+    } catch (e) {
+      return Realtime.Adapters.workspaceSettingsAdapter.fromDB({});
+    }
   }
 
   public async patch(workspaceID: number | string, creatorID: number, settings: Realtime.WorkspaceSettings): Promise<void> {

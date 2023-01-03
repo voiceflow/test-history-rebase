@@ -1,6 +1,6 @@
 import { BuiltInVariable } from '@platform-config/constants';
 import { AnyRecord } from '@voiceflow/common';
-import { SvgIconTypes } from '@voiceflow/ui';
+import type { SvgIconTypes } from '@voiceflow/ui';
 
 export interface Icon {
   name: SvgIconTypes.Icon;

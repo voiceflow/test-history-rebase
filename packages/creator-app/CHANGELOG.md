@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1040.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1040.0...@voiceflow/creator-app@1.1040.1) (2023-01-03)
+
+
+### Bug Fixes
+
+* web-chat integration page no opening [bugfix] (BUG-154) ([#6504](https://github.com/voiceflow/creator-app/issues/6504)) ([7448bad](https://github.com/voiceflow/creator-app/commit/7448bad5c388e6eb027404af0aed91364b3c16c9))
+
+
+
+
+
 # [1.1040.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1039.3...@voiceflow/creator-app@1.1040.0) (2023-01-03)
 
 

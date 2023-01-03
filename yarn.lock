@@ -5437,7 +5437,7 @@
     "@voiceflow/common" "^8.1.5"
     slate "0.73.0"
 
-"@voiceflow/base-types@2.71.3", "@voiceflow/base-types@^2.71.3":
+"@voiceflow/base-types@2.71.3":
   version "2.71.3"
   resolved "https://registry.yarnpkg.com/@voiceflow/base-types/-/base-types-2.71.3.tgz#76e9e9ba2185f7d587e8a5cdbc7409f49dde75c4"
   integrity sha512-3WUmSoiUR1SAWAUREkvskpH/AZbaKfcFQ2ARKe5s2kTTAsCpYyfdN2/MoG8RDSSNbr19FwYux85qYhrUK8V3Xg==
@@ -5445,7 +5445,7 @@
     "@voiceflow/common" "^8.1.5"
     slate "0.73.0"
 
-"@voiceflow/base-types@2.77.1", "@voiceflow/base-types@^2.77.1":
+"@voiceflow/base-types@2.77.1", "@voiceflow/base-types@^2.71.3", "@voiceflow/base-types@^2.77.1":
   version "2.77.1"
   resolved "https://registry.yarnpkg.com/@voiceflow/base-types/-/base-types-2.77.1.tgz#e6fd07844723ca4b0d2fa013b664776bbfd5583b"
   integrity sha512-FARZ4YSPStikfzudE2YoRXbBZ1sD2fSa/Ovvd8a0YENAYL91uYp2Pf5y9PnaZScappu3ceSMa8O1fGF7dRdAwQ==
@@ -5461,20 +5461,12 @@
     "@voiceflow/common" "^8.1.5"
     slate "0.73.0"
 
-"@voiceflow/chat-types@2.13.15", "@voiceflow/chat-types@^2.13.15":
+"@voiceflow/chat-types@2.13.15", "@voiceflow/chat-types@^2.13.15", "@voiceflow/chat-types@^2.13.5":
   version "2.13.15"
   resolved "https://registry.yarnpkg.com/@voiceflow/chat-types/-/chat-types-2.13.15.tgz#1e7d0bcd412c695a8a5dc7c8f545d2a6d089f3db"
   integrity sha512-Z80AexY1kS/fd735RhicDVg0oPJK9/e6gkXI62/fWmgINjl803ITabEPZFF8zC+7Hk1incvfAimKecGPy2SegQ==
   dependencies:
     "@voiceflow/base-types" "^2.77.1"
-    "@voiceflow/common" "^8.1.5"
-
-"@voiceflow/chat-types@^2.13.5":
-  version "2.13.5"
-  resolved "https://registry.yarnpkg.com/@voiceflow/chat-types/-/chat-types-2.13.5.tgz#865c8bfb8286d2c11a8a661479db926390d4641c"
-  integrity sha512-wPToOvxmT1nkb2NIYE1w34jTgtmpIVIVFDM5tQ6iwMafl5p0c5vEKC47W41XCl5+NwDQze4iqwk/UDWbV7sJSQ==
-  dependencies:
-    "@voiceflow/base-types" "^2.71.3"
     "@voiceflow/common" "^8.1.5"
 
 "@voiceflow/commitlint-config@2.0.0":
@@ -5660,10 +5652,10 @@
   resolved "https://registry.yarnpkg.com/@voiceflow/prettier-config/-/prettier-config-1.0.7.tgz#628771e2cfb124f38c5c72164afa84b673da9d2e"
   integrity sha512-V1DFizimL6bfDdRcwFW8vYvJX9W3rTD6JcYPUsWVR6VxH6ao9mlLWC3cWpQA0nZR8QGT9OmeG4oE/i6L4cRdyw==
 
-"@voiceflow/react-chat@1.31.2":
-  version "1.31.2"
-  resolved "https://registry.yarnpkg.com/@voiceflow/react-chat/-/react-chat-1.31.2.tgz#9e579f52b5078b2751faf169ba9760487969841a"
-  integrity sha512-jIAWCZ+cAH5DiaTfuMbqQBbzFtDo09WUz/uk4KN1La3dNeLANKmNwexX3T+qHIJ4RQedwFX2ckR9a7FQXCYfBw==
+"@voiceflow/react-chat@1.33.0":
+  version "1.33.0"
+  resolved "https://registry.yarnpkg.com/@voiceflow/react-chat/-/react-chat-1.33.0.tgz#4add2323b73a36b43bad58815f11964b8111f576"
+  integrity sha512-WIVfoKtD71RNwIVyCVuvcCgIxVjX94bU33ml3hoWtJqnpolI1N/kGnOtgjYlb7Eas/an4Hz5dlHv8Sh/FAFMpw==
   dependencies:
     "@stitches/react" "^1.2.8"
     "@voiceflow/base-types" "2.71.3"
@@ -5675,8 +5667,8 @@
     csstype "3.1.0"
     cuid "^2.1.8"
     dayjs "^1.11.5"
-    react "^18.2.0"
-    react-dom "^18.2.0"
+    react "17.0.2"
+    react-dom "17.0.2"
     remeda "^1.0.1"
     slate "^0.72.3"
     ts-pattern "^4.0.5"
@@ -5781,20 +5773,12 @@
     vite-plugin-banner "0.7.0"
     vite-plugin-html "3.2.0"
 
-"@voiceflow/voice-types@2.8.26", "@voiceflow/voice-types@^2.8.26":
+"@voiceflow/voice-types@2.8.26", "@voiceflow/voice-types@^2.8.16", "@voiceflow/voice-types@^2.8.26":
   version "2.8.26"
   resolved "https://registry.yarnpkg.com/@voiceflow/voice-types/-/voice-types-2.8.26.tgz#b5e1cf6f3fe2f2fe4f8c120d7bce8d769607497c"
   integrity sha512-W5ahZXFapbU4UIP0wvYWN7E8bl+tRW8CVxaXJFc6I+HGbVguSbkgDvu1J3BVayA4TuIyLHiQbMxZyyIeKw4WsA==
   dependencies:
     "@voiceflow/base-types" "^2.77.1"
-    "@voiceflow/common" "^8.1.5"
-
-"@voiceflow/voice-types@^2.8.16":
-  version "2.8.16"
-  resolved "https://registry.yarnpkg.com/@voiceflow/voice-types/-/voice-types-2.8.16.tgz#aa9b15f09c035f5618d3e15ad60a806c3445b4ea"
-  integrity sha512-qobBCWDRk21z6VSdAAzd7fQq0xDR8EhToH4P7shd1R5JgE9V++Qbxw+jQSdBlBM76YYQlt4WvHdGjnKQBC6D6Q==
-  dependencies:
-    "@voiceflow/base-types" "^2.71.3"
     "@voiceflow/common" "^8.1.5"
 
 "@voiceflow/voiceflow-types@3.20.20":
@@ -8692,9 +8676,9 @@ dayjs@1.10.7, dayjs@^1.10.4:
   integrity sha512-P6twpd70BcPK34K26uJ1KT3wlhpuOAPoMwJzpsIWUxHZ7wpmbdZL/hQqBDfz7hGurYSa5PhzdhDHtt319hL3ig==
 
 dayjs@^1.11.5:
-  version "1.11.5"
-  resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.11.5.tgz#00e8cc627f231f9499c19b38af49f56dc0ac5e93"
-  integrity sha512-CAdX5Q3YW3Gclyo5Vpqkgpj8fSdLQcRuzfX6mC6Phy0nfJ0eGYOeS7m4mt2plDWLAtA4TqTakvbboHvUxfe4iA==
+  version "1.11.7"
+  resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.11.7.tgz#4b296922642f70999544d1144a2c25730fce63e2"
+  integrity sha512-+Yw9U6YO5TQohxLcIkrXBeY73WP3ejHWVvx8XCk3gxvQDCTEmS48ZrSZCKciI7Bhl/uCMyxYtE9UqRILmFphkQ==
 
 debounce@^1.0.0:
   version "1.2.1"
@@ -17946,14 +17930,6 @@ react-dom@17.0.2, react-dom@^17.0.2:
     object-assign "^4.1.1"
     scheduler "^0.20.2"
 
-react-dom@^18.2.0:
-  version "18.2.0"
-  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-18.2.0.tgz#22aaf38708db2674ed9ada224ca4aa708d821e3d"
-  integrity sha512-6IMTriUmvsjHUjNtEDudZfuDQUoWXVxKHhlEGSk81n4YFS+r/Kl99wXiwlVXtPBtJenozv2P+hxDsw9eA7Xo6g==
-  dependencies:
-    loose-envify "^1.1.0"
-    scheduler "^0.23.0"
-
 react-dropzone@12.0.5:
   version "12.0.5"
   resolved "https://registry.yarnpkg.com/react-dropzone/-/react-dropzone-12.0.5.tgz#f9b557484a8afd6267f670f96a770ddd3948838b"
@@ -18244,13 +18220,6 @@ react@17.0.2, react@^17.0.2:
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
-
-react@^18.2.0:
-  version "18.2.0"
-  resolved "https://registry.yarnpkg.com/react/-/react-18.2.0.tgz#555bd98592883255fa00de14f1151a917b5d77d5"
-  integrity sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ==
-  dependencies:
-    loose-envify "^1.1.0"
 
 reactcss@^1.2.0:
   version "1.2.3"
@@ -18845,9 +18814,9 @@ remark@^8.0.0:
     unified "^6.0.0"
 
 remeda@^1.0.1:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/remeda/-/remeda-1.1.0.tgz#7ace312bc69fe9250e3c04c082d1d269109be470"
-  integrity sha512-dtPAM1fP1HEorGDYyJiZUYfgzswyey0S1sD1FpCOhfgmpTJmnLz32q2WeEB1EyNLMENJuXSKWY8Hrm1CKM9lpw==
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/remeda/-/remeda-1.3.0.tgz#6dc642187e08ead2265e8c7f8517a16a69e325ce"
+  integrity sha512-DJkLBUzi0dEigDuyPtVe50aNzQq8EBQOintPaxvzwSNreXOGsRnvfGiK+cTsY+nUgGCBrcFxcvH8MIg2skfIZA==
 
 remove-trailing-separator@^1.0.1:
   version "1.1.0"
@@ -19239,13 +19208,6 @@ scheduler@^0.20.2:
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
-
-scheduler@^0.23.0:
-  version "0.23.0"
-  resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.23.0.tgz#ba8041afc3d30eb206a487b6b384002e4e61fdfe"
-  integrity sha512-CtuThmgHNg7zIZWAXi3AsyIzA3n4xx7aNyjwC2VJldO2LMVDhFK+63xGqq6CsJH4rTAt6/M+N4GhZiDYPx9eUw==
-  dependencies:
-    loose-envify "^1.1.0"
 
 schema-utils@^3.0.0:
   version "3.1.1"
@@ -21245,9 +21207,9 @@ ts-node@^9:
     yn "3.1.1"
 
 ts-pattern@^4.0.5:
-  version "4.0.5"
-  resolved "https://registry.yarnpkg.com/ts-pattern/-/ts-pattern-4.0.5.tgz#8e87db265b890ddb0dfc10deda36568296ebd5c3"
-  integrity sha512-Bq44KCEt7JVaNLa148mBCJkcQf4l7jtLEBDuDdeuLynWDA+1a60P4D0rMkqSM9mOKLQbIWUddE9h3XKyKwBeqA==
+  version "4.0.6"
+  resolved "https://registry.yarnpkg.com/ts-pattern/-/ts-pattern-4.0.6.tgz#02b17695f6385fcc6d2f3ba7962b0952f709d348"
+  integrity sha512-sFHQYD4KoysBi7e7a2mzDPvRBeqA4w+vEyRE+P5MU9VLq8eEYxgKCgD9RNEAT+itGRWUTYN+hry94GDPLb1/Yw==
 
 tsc-alias@^1.8.2:
   version "1.8.2"

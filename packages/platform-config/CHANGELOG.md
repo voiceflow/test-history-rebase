@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.15.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.14.0...@voiceflow/platform-config@1.15.0) (2023-01-03)
+
+
+### Features
+
+* vite 4 and ts 4.9 (CT-000) ([#6494](https://github.com/voiceflow/creator-app/issues/6494)) ([b7589ba](https://github.com/voiceflow/creator-app/commit/b7589baafa7fa7b99a2de3bc5dc9233c2a7946a8))
+
+
+
+
+
 # [1.14.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.13.1...@voiceflow/platform-config@1.14.0) (2023-01-03)
 
 

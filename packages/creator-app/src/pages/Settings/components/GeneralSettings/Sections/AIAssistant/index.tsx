@@ -4,6 +4,7 @@ import React from 'react';
 
 import * as GPT from '@/components/GPT';
 import { SectionVariants, SettingsSection, SettingsSubSection, SettingsTitleBadge } from '@/components/Settings';
+import { AI_GENERAL_LINK, LEARN_FREESTYLE, LEARN_GENERATIVE_TASKS } from '@/constants';
 import * as Project from '@/ducks/project';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
@@ -61,7 +62,8 @@ const AIAssistant: React.FC = () => {
       }
       description={
         <>
-          Leverage practical AI to design, manage and improve your assistant faster than previously possible. <Link>Learn more</Link>
+          Leverage practical AI to design, manage and improve your assistant faster than previously possible.{' '}
+          <Link href={AI_GENERAL_LINK}>Learn more</Link>
         </>
       }
     >
@@ -71,7 +73,7 @@ const AIAssistant: React.FC = () => {
             <SectionV2.Title bold>Generative Tasks</SectionV2.Title>
 
             <SectionV2.Description mt={4} block secondary>
-              Manually generate data like utterances, responses, no match etc. <Link>Learn more</Link>
+              Manually generate data like utterances, responses, no match etc. <Link href={LEARN_GENERATIVE_TASKS}>Learn more</Link>
             </SectionV2.Description>
           </Box>
 
@@ -97,7 +99,7 @@ const AIAssistant: React.FC = () => {
                 <SectionV2.Title bold>Freestyle</SectionV2.Title>
 
                 <SectionV2.Description mt={4} block secondary>
-                  Auto dialog to keep the conversation on track and answer questions. <Link>Learn more</Link>
+                  Auto dialog to keep the conversation on track and answer questions. <Link href={LEARN_FREESTYLE}>Learn more</Link>
                 </SectionV2.Description>
               </Box>
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1040.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1040.1...@voiceflow/creator-app@1.1040.2) (2023-01-03)
+
+
+### Bug Fixes
+
+* broken links for ai assist features (BUG-157) ([#6505](https://github.com/voiceflow/creator-app/issues/6505)) ([c292afc](https://github.com/voiceflow/creator-app/commit/c292afce352cadb02bc19dda5d2a593689954a7b))
+
+
+
+
+
 ## [1.1040.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1040.0...@voiceflow/creator-app@1.1040.1) (2023-01-03)
 
 

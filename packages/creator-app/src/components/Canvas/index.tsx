@@ -293,7 +293,8 @@ class Canvas extends React.PureComponent<
   };
 
   styleCanvasGrid({ clear = false, zoom = this.zoom, position = this.position }: { clear?: boolean; zoom?: number; position?: [number, number] }) {
-    const gridLayerEl = this.rootRef.current!;
+    const gridLayerEl = this.rootRef.current;
+    if (!gridLayerEl) return;
 
     if (this.props.canvasGridEnabled && !clear) {
       gridLayerEl.style.backgroundSize = backgroundSizeStyle(zoom);

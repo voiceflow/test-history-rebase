@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1041.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1040.2...@voiceflow/creator-app@1.1041.0) (2023-01-04)
+
+
+### Bug Fixes
+
+* [bugfix] ai assist toggles fixes (CT-000) ([#6509](https://github.com/voiceflow/creator-app/issues/6509)) ([652a8be](https://github.com/voiceflow/creator-app/commit/652a8bea1c6256d3676d3b7a9507f89e10b1a084))
+* missing href on links (BUG-156) ([#6506](https://github.com/voiceflow/creator-app/issues/6506)) ([66c2927](https://github.com/voiceflow/creator-app/commit/66c292713dca151ad1f411076e9656532f177d6f))
+
+
+### Features
+
+* set topics menu open by default [bugfix] (CT-1367) ([#6508](https://github.com/voiceflow/creator-app/issues/6508)) ([7740747](https://github.com/voiceflow/creator-app/commit/7740747ebefd20f5a0dd7a5bc9fdec1e7fadae03))
+
+
+
+
+
 ## [1.1040.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1040.1...@voiceflow/creator-app@1.1040.2) (2023-01-03)
 
 

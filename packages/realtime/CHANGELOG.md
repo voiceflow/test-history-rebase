@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.141.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.141.4...@voiceflow/realtime@1.141.5) (2023-01-04)
+
+
+### Bug Fixes
+
+* [bugfix] ai assist toggles fixes (CT-000) ([#6509](https://github.com/voiceflow/creator-app/issues/6509)) ([652a8be](https://github.com/voiceflow/creator-app/commit/652a8bea1c6256d3676d3b7a9507f89e10b1a084))
+
+
+
+
+
 ## [1.141.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.141.3...@voiceflow/realtime@1.141.4) (2023-01-03)
 
 **Note:** Version bump only for package @voiceflow/realtime

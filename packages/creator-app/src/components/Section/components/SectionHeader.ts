@@ -2,6 +2,8 @@ import { FlexApart } from '@voiceflow/ui';
 
 import { css, styled, transition, units } from '@/hocs/styled';
 
+import { ToggleArrowContainer } from './CollapseTrigger/components';
+
 interface SectionHeaderProps {
   isDragging?: boolean;
   containerToggle?: boolean;
@@ -33,6 +35,12 @@ const SectionHeader = styled(FlexApart)<SectionHeaderProps>`
     css`
       cursor: grabbing;
     `}
+
+  &:hover {
+    ${ToggleArrowContainer} {
+      opacity: 85%;
+    }
+  }
 `;
 
 export default SectionHeader;

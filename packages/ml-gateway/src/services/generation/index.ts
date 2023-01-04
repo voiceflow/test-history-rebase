@@ -12,7 +12,8 @@ const DEFAULT_LOCALE = 'en-US';
 
 class GenerationService extends AbstractControl {
   async utterance(input: MLGenUtteranceRequest, userID: number) {
-    const { requestID, locale = DEFAULT_LOCALE, intent, examples = [], quantity, workspaceID } = input;
+    const { requestID, locales: [locale = DEFAULT_LOCALE] = [], intent, examples = [], quantity, workspaceID } = input;
+
     const prompt = await this.getGenUtteranceGPTPrompt(locale, intent, examples, quantity);
     this.clients.analytics.trackGenRequest('utterance', userID, { ...input, prompt });
 
@@ -38,7 +39,8 @@ class GenerationService extends AbstractControl {
   }
 
   async prompt(input: MLGenPromptRequest, userID: number) {
-    const { requestID, locale = DEFAULT_LOCALE, examples = [], quantity, workspaceID } = input;
+    const { requestID, locales: [locale = DEFAULT_LOCALE] = [], examples = [], quantity, workspaceID } = input;
+
     const prompt = await this.getGenPromptGPTPrompt(locale, examples, quantity);
     this.clients.analytics.trackGenRequest('prompt', userID, { ...input, prompt });
 
@@ -63,7 +65,8 @@ class GenerationService extends AbstractControl {
   }
 
   async entityValue(input: MLGenEntityValue, userID: number) {
-    const { requestID, locale = DEFAULT_LOCALE, type, name, examples = [], quantity, workspaceID } = input;
+    const { requestID, locales: [locale = DEFAULT_LOCALE] = [], type, name, examples = [], quantity, workspaceID } = input;
+
     const prompt = await this.getEntityValueGPTPrompt(locale, type, name, examples, quantity);
     this.clients.analytics.trackGenRequest('entity_value', userID, { ...input, prompt });
 
@@ -89,7 +92,18 @@ class GenerationService extends AbstractControl {
   }
 
   async entityReprompt(input: MLGenEntityPrompt, userID: number) {
-    const { requestID, locale = DEFAULT_LOCALE, type, name, examples = [], intentName, intentInputs = [], quantity, workspaceID } = input;
+    const {
+      requestID,
+      locales: [locale = DEFAULT_LOCALE] = [],
+      type,
+      name,
+      examples = [],
+      intentName,
+      intentInputs = [],
+      quantity,
+      workspaceID,
+    } = input;
+
     const prompt = await this.getEntityRepromptGPTPrompt(locale, type, name, examples, intentName, intentInputs, quantity);
     this.clients.analytics.trackGenRequest('entity_reprompt', userID, { ...input, prompt });
 

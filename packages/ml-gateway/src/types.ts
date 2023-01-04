@@ -41,7 +41,7 @@ export interface Config {
 
 export interface MLRequest {
   requestID: string;
-  locale: string;
+  locales: string[];
 }
 
 export interface MLGenPromptRequest extends MLRequest {

@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1042.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1041.0...@voiceflow/creator-app@1.1042.0) (2023-01-04)
+
+
+### Bug Fixes
+
+* avoid an exception when being rapidly unmounted (DX-267) ([#6510](https://github.com/voiceflow/creator-app/issues/6510)) ([153e732](https://github.com/voiceflow/creator-app/commit/153e732278e6b3f468556b1e3b4b7ef797646b34))
+* disable AI settings for viewers (CT-1370) ([#6514](https://github.com/voiceflow/creator-app/issues/6514)) ([494f743](https://github.com/voiceflow/creator-app/commit/494f74348e924fd8d701a849af3eaa1ae13e3ca5))
+* long tts name (CT-1291) ([#6438](https://github.com/voiceflow/creator-app/issues/6438)) ([2384606](https://github.com/voiceflow/creator-app/commit/2384606a70c742726b9ae9c343ba1156327dd14a))
+* ui fixes (CT-1361) ([#6513](https://github.com/voiceflow/creator-app/issues/6513)) ([26d2a87](https://github.com/voiceflow/creator-app/commit/26d2a877503905a8b8d15e0c9bd32f5df270666e))
+
+
+### Features
+
+* connect topics (CT-1318) ([#6439](https://github.com/voiceflow/creator-app/issues/6439)) ([f2fd56a](https://github.com/voiceflow/creator-app/commit/f2fd56ad845f7475ae390149d62aee333b681705))
+
+
+
+
+
 # [1.1041.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1040.2...@voiceflow/creator-app@1.1041.0) (2023-01-04)
 
 

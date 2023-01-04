@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.214.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.214.0...@voiceflow/ui@1.214.1) (2023-01-04)
+
+
+### Bug Fixes
+
+* show placeholder for disabled upload (CT-1371) ([#6518](https://github.com/voiceflow/creator-app/issues/6518)) ([8fd8bc4](https://github.com/voiceflow/creator-app/commit/8fd8bc4c1d85d8fb27341f2743b5afadc82a61af))
+
+
+
+
+
 # [1.214.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.213.0...@voiceflow/ui@1.214.0) (2023-01-04)
 
 

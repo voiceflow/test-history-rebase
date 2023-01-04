@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1044.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1043.0...@voiceflow/creator-app@1.1044.0) (2023-01-04)
+
+
+### Features
+
+* fix section hover (CT-1197) ([#6517](https://github.com/voiceflow/creator-app/issues/6517)) ([3c8088b](https://github.com/voiceflow/creator-app/commit/3c8088b0563f1e82777d522ef8f308bd416027dc))
+
+
+
+
+
 # [1.1043.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1042.0...@voiceflow/creator-app@1.1043.0) (2023-01-04)
 
 

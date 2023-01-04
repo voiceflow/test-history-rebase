@@ -65,10 +65,11 @@ export const BaseIconUpload = React.forwardRef<HTMLDivElement, BaseIconUploadPro
       user,
     },
     ref
+    // eslint-disable-next-line sonarjs/cognitive-complexity
   ) => {
     const { getRootProps, getInputProps, isDragActive, isDragReject } = useDropzone({
       accept: acceptedFileTypes,
-      disabled: isLoading,
+      disabled: isLoading || disabled,
       onDropAccepted,
       onDropRejected: Utils.functional.noop,
     });

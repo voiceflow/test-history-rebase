@@ -108,7 +108,9 @@ export const ImageContainer = styled(FlexCenter)<ImageContainerProps>`
     ${({ disabled }) =>
     disabled &&
     css`
-      opacity: 0;
+      &:hover {
+        opacity: 0.85;
+      }
     `};
 `;
 

@@ -1,8 +1,6 @@
-import { Table } from '@voiceflow/ui';
+import { Box, Table } from '@voiceflow/ui';
 
 import { styled } from '@/hocs/styled';
-
-import { StyledSVG } from './components/styles';
 
 export const Container = styled(Table.Container)`
   box-shadow: rgba(17, 49, 96, 0.1) 0px 0px 0px 1px, rgba(17, 49, 96, 0.08) 0px 1px 3px 0px;
@@ -11,19 +9,10 @@ export const Container = styled(Table.Container)`
   min-width: auto;
 `;
 
-export const Header = styled.header`
-  background-color: rgba(237, 243, 245, 0.65);
-  border-bottom: #eaeff4 solid 1px;
+export const Header = styled(Box.FlexApart)`
   padding: 16px 32px 15px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-`;
-
-export const Filters = styled.section`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  border-bottom: #eaeff4 solid 1px;
+  background-color: rgba(237, 243, 245, 0.65);
 `;
 
 export const Actions = styled.section`
@@ -31,17 +20,11 @@ export const Actions = styled.section`
 `;
 
 export const Row = styled(Table.Row)`
-  padding-top: 23px;
-  padding-bottom: 23px;
-  cursor: auto;
+  height: 68px;
 
-  &:hover {
-    background-color: #fff;
-
-    ${StyledSVG} {
-      opacity: 1;
+  ${Table.Column} {
+    .vf-tooltip {
+      width: 100%;
     }
   }
 `;
-
-export const Cell = styled.div``;

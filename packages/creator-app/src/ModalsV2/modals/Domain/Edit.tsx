@@ -1,8 +1,8 @@
 import { Button, Input, Modal, Toggle, useLinkedState } from '@voiceflow/ui';
 import React from 'react';
 
-import Domains from '@/components/Domains';
-import * as Domain from '@/ducks/domain';
+import Domain from '@/components/Domain';
+import * as DomainDuck from '@/ducks/domain';
 import { useDispatch, useHotKeys, useSelector } from '@/hooks';
 import { Hotkey } from '@/keymap';
 
@@ -13,10 +13,10 @@ export interface Props {
 }
 
 const Edit = manager.create<Props>('DomainEdit', () => ({ api, type, opened, hidden, animated, domainID }) => {
-  const domain = useSelector(Domain.domainByIDSelector, { id: domainID });
-  const rootDomainID = useSelector(Domain.rootDomainIDSelector);
+  const domain = useSelector(DomainDuck.domainByIDSelector, { id: domainID });
+  const rootDomainID = useSelector(DomainDuck.rootDomainIDSelector);
 
-  const patch = useDispatch(Domain.patch);
+  const patch = useDispatch(DomainDuck.patch);
 
   const [name, setName] = useLinkedState(domain?.name ?? '');
   const [live, setLive] = useLinkedState(domain?.live ?? true);
@@ -33,9 +33,9 @@ const Edit = manager.create<Props>('DomainEdit', () => ({ api, type, opened, hid
     <Modal type={type} maxWidth={400} opened={opened} hidden={hidden} animated={animated} onExited={api.remove}>
       <Modal.Header
         actions={
-          <Domains.LiveToggleTooltip live={live}>
+          <Domain.LiveToggleTooltip live={live}>
             <Toggle disabled={rootDomainID === domainID} checked={live} size={Toggle.Size.EXTRA_SMALL} onChange={() => setLive(!live)} />
-          </Domains.LiveToggleTooltip>
+          </Domain.LiveToggleTooltip>
         }
       >
         Edit Domain

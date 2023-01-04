@@ -1,7 +1,6 @@
 import { Box } from '@voiceflow/ui';
 import React from 'react';
 
-import DomainActions from '@/components/DomainActions';
 import Page from '@/components/Page';
 import { Permission } from '@/config/permissions';
 import * as CreatorV2 from '@/ducks/creatorV2';
@@ -16,7 +15,7 @@ import { Identifier } from '@/styles/constants';
 import { withEnterPress, withInputBlur } from '@/utils/dom';
 import { formatProjectName } from '@/utils/string';
 
-import { Container, PlatformLogo, ProjectTitle, ViewOnly } from './components';
+import { Container, DomainsActions, PlatformLogo, ProjectTitle, ViewOnly } from './components';
 
 const DomainsAndCanvasActions: React.FC = () => {
   const [templatePopperIsOpen, setTemplatePopperIsOpen] = React.useState(false);
@@ -130,6 +129,7 @@ const DomainsAndCanvasActions: React.FC = () => {
       ) : (
         <>
           <PlatformLogo />
+
           <ProjectTitle
             id={Identifier.PROJECT_TITLE}
             value={formValue}
@@ -142,7 +142,7 @@ const DomainsAndCanvasActions: React.FC = () => {
             onKeyPress={withEnterPress(withInputBlur())}
           />
 
-          {!focused && <DomainActions />}
+          {!focused && <DomainsActions />}
         </>
       )}
     </Container>

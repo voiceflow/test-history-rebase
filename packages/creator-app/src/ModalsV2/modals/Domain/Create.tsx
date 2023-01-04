@@ -1,8 +1,8 @@
 import { Button, Input, Modal, toast, Toggle, useLinkedState } from '@voiceflow/ui';
 import React from 'react';
 
-import Domains from '@/components/Domains';
-import * as Domain from '@/ducks/domain';
+import Domain from '@/components/Domain';
+import * as DomainDuck from '@/ducks/domain';
 import { useDispatch, useHotKeys } from '@/hooks';
 import { Hotkey } from '@/keymap';
 
@@ -17,7 +17,7 @@ const Create = manager.create<Props>(
   'DomainCreate',
   () =>
     ({ api, type, name: nameProp, live: liveProp = true, opened, hidden, animated, closePrevented }) => {
-      const createDomain = useDispatch(Domain.create);
+      const createDomain = useDispatch(DomainDuck.create);
 
       const [name, setName] = useLinkedState(nameProp);
       const [live, setLive] = useLinkedState(liveProp);
@@ -44,9 +44,9 @@ const Create = manager.create<Props>(
         <Modal type={type} maxWidth={400} opened={opened} hidden={hidden} animated={animated} onExited={api.remove}>
           <Modal.Header
             actions={
-              <Domains.LiveToggleTooltip live={live}>
+              <Domain.LiveToggleTooltip live={live}>
                 <Toggle size={Toggle.Size.EXTRA_SMALL} checked={live} disabled={closePrevented} onChange={() => setLive(!live)} />
-              </Domains.LiveToggleTooltip>
+              </Domain.LiveToggleTooltip>
             }
           >
             Create Domain

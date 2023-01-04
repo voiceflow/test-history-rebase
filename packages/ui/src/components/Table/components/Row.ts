@@ -8,16 +8,21 @@ const Row = styled.div<{ active?: boolean }>`
   align-items: center;
   gap: 24px;
   padding: 16px 32px;
-  cursor: pointer;
   position: relative;
 
-  &:hover {
-    background-color: rgba(238, 244, 246, 0.3);
-  }
+  ${({ onClick }) =>
+    onClick &&
+    css`
+      cursor: pointer;
 
-  &:active {
-    background-color: rgba(238, 244, 246, 0.5);
-  }
+      &:hover {
+        background-color: rgba(238, 244, 246, 0.3);
+      }
+
+      &:active {
+        background-color: rgba(238, 244, 246, 0.5);
+      }
+    `}
 
   &:before {
     ${transition('background-color')};

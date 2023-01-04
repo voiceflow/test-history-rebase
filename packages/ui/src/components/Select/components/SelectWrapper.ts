@@ -3,12 +3,12 @@ import SearchInput from '@ui/components/SearchInput';
 import { colors, css, styled, ThemeColor } from '@ui/styles';
 
 export interface SelectWrapperProps {
+  width?: string;
   minWidth?: boolean;
   maxWidth?: string | number;
   fullWidth?: boolean;
   isFocused?: boolean;
   withClearIcon?: boolean;
-  width?: string;
 }
 
 const SelectWrapper = styled.div<SelectWrapperProps>`

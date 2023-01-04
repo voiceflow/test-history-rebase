@@ -56,6 +56,8 @@ const EditableText = React.forwardRef<EditableTextAPI, EditableTextProps>(
     useDidUpdateEffect(() => {
       if (isEditing) {
         inputRef.current?.select();
+      } else {
+        titleRef.current?.parentElement?.scrollTo({ left: 0 });
       }
     }, [isEditing]);
 

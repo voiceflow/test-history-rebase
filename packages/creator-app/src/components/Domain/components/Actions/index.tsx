@@ -2,11 +2,11 @@ import { BaseModels } from '@voiceflow/base-types';
 import { Box, Divider, Menu as UIMenu, Toggle } from '@voiceflow/ui';
 import React from 'react';
 
-import Domains from '@/components/Domains';
+import LiveToggleTooltip from '../LiveToggleTooltip';
+import { StatusActionItem } from './components';
+import { STATUS_LABELS_MAP } from './constants';
 
-import MenuItemStatusActionItem from './MenuItemStatusActionItem';
-
-export interface MenuItemActionsProps {
+export interface ActionsProps {
   live: boolean;
   onEdit: VoidFunction;
   status?: BaseModels.Version.DomainStatus;
@@ -17,14 +17,14 @@ export interface MenuItemActionsProps {
   onChangeStatus: (status: BaseModels.Version.DomainStatus) => void;
 }
 
-const MenuItemActions: React.FC<MenuItemActionsProps> = ({ live, isRoot, onEdit, status, onDelete, onDuplicate, onToggleLive, onChangeStatus }) => (
+const Actions: React.FC<ActionsProps> = ({ live, isRoot, onEdit, status, onDelete, onDuplicate, onToggleLive, onChangeStatus }) => (
   <UIMenu width={177} noBottomPadding>
     <UIMenu.Item onClick={() => onEdit()}>Rename</UIMenu.Item>
     <UIMenu.Item onClick={() => onDuplicate()}>Duplicate</UIMenu.Item>
 
     <Divider offset={8} isSecondaryColor />
 
-    <MenuItemStatusActionItem status={status} onChange={onChangeStatus} />
+    <StatusActionItem status={status} onChange={onChangeStatus} />
 
     {!isRoot && (
       <>
@@ -36,14 +36,16 @@ const MenuItemActions: React.FC<MenuItemActionsProps> = ({ live, isRoot, onEdit,
 
     <Divider offset={[8, 0]} isSecondaryColor />
 
-    <Domains.LiveToggleTooltip live={live} distance={0} position="right-start">
+    <LiveToggleTooltip live={live} distance={0} position="right-start">
       <UIMenu.Item ending onClick={() => onToggleLive(!live)} disabled={isRoot}>
         <Box mr="auto">{live ? 'Is live' : 'Is draft'}</Box>
 
         <Toggle size={Toggle.Size.EXTRA_SMALL} checked={live} disabled={isRoot} />
       </UIMenu.Item>
-    </Domains.LiveToggleTooltip>
+    </LiveToggleTooltip>
   </UIMenu>
 );
 
-export default MenuItemActions;
+export default Object.assign(Actions, {
+  STATUS_LABELS_MAP,
+});

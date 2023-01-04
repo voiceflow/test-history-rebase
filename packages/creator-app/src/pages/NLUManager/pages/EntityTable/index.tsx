@@ -30,9 +30,9 @@ const EntityTable: React.FC = () => {
         orderBy={orderBy}
         columns={COLUMNS}
         renderRow={(props) => <Row {...props} />}
+        scrolled={nluManager.isScrolling}
         descending={descending}
         onChangeOrderBy={onChangeOrderBy}
-        scrolled={nluManager.isScrolling}
       />
 
       <EditSidebar />

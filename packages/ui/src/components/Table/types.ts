@@ -10,7 +10,6 @@ export interface ItemProps<I extends Item> {
   index: number;
   isLast: boolean;
   isFirst: boolean;
-  items?: I[];
 }
 
 export interface Props<I extends Item> {
@@ -32,6 +31,7 @@ export interface Column<T extends string, I extends Item> {
   width?: number;
   sorter?: ColumnSorter<I>;
   tooltip?: TippyTooltipProps;
+  overflow?: boolean;
   ellipses?: boolean;
   component: React.ComponentType<ItemProps<I>>;
   overflowTooltip?: (props: ItemProps<I>) => TippyTooltipProps;

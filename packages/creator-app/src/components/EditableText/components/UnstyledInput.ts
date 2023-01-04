@@ -5,6 +5,8 @@ import { styled } from '@/hocs/styled';
 import { defaultTextStyles } from '../styles';
 
 const UnstyledInput = styled(AutosizeInput)`
+  text-overflow: none;
+
   input {
     ${defaultTextStyles}
   }

@@ -13,7 +13,7 @@ interface DurationProps {
 }
 
 const Duration: React.FC<DurationProps> = ({ time, short = false, color = '#8da2b5' }) => {
-  const [duration, setDuration] = React.useState<string>(() => Utils.time.getTimeDuration(time));
+  const [duration, setDuration] = React.useState(() => Utils.time.getTimeDuration(time));
 
   useInterval(() => setDuration(Utils.time.getTimeDuration(time)), DURATION_TIMEOUT);
 

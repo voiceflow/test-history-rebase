@@ -8,7 +8,7 @@ export interface LinkProps extends LayoutProps, SpaceProps {
   isActive?: boolean;
   disabled?: boolean;
   unstyled?: boolean;
-  textDecoration?: boolean;
+  $textDecoration?: boolean;
 }
 
 const PROTOCOL_POSTFIX_REGEXP = /:?\/\//;
@@ -36,8 +36,8 @@ export const linkStyles = css<LinkProps>`
       color: ${changeColorShade(color || theme.colors.blue, -60)};
     `}
 
-  ${({ textDecoration }) =>
-    !textDecoration &&
+  ${({ $textDecoration }) =>
+    !$textDecoration &&
     css`
       text-decoration: none !important;
     `}

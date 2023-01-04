@@ -29,10 +29,10 @@ const IntentTable: React.FC = () => {
         items={items}
         orderBy={orderBy}
         columns={COLUMNS}
-        renderRow={(props) => <Row {...props} items={items} />}
+        scrolled={nluManager.isScrolling}
+        renderRow={(props) => <Row {...props} />}
         descending={descending}
         onChangeOrderBy={onChangeOrderBy}
-        scrolled={nluManager.isScrolling}
       />
 
       <EditSidebar />

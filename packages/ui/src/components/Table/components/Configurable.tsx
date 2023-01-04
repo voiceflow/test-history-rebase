@@ -26,9 +26,9 @@ const Configurable = <T extends string, I extends T.Item>({
   hideLastDivider = false,
 }: T.ConfigurableProps<T, I>) => (
   <Table
-    hideLastDivider={hideLastDivider}
     items={items}
     empty={empty}
+    hideLastDivider={hideLastDivider}
     header={
       <Header scrolled={scrolled} stickyHeader={stickyHeader}>
         {columns.map(({ type, flex, label, width, sorter, tooltip }) => (
@@ -53,18 +53,9 @@ const Configurable = <T extends string, I extends T.Item>({
           renderRow({
             ...props,
             ...providerProps,
-            children: columns.map(({ type, flex, width, ellipses, component: Component, overflowTooltip }) =>
+            children: columns.map(({ type, flex, width, overflow, ellipses, component: Component, overflowTooltip }) =>
               ellipses ? (
-                <Column
-                  key={type}
-                  flex={flex}
-                  width={width}
-                  style={{
-                    whiteSpace: 'nowrap',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                  }}
-                >
+                <Column key={type} flex={flex} width={width} $overflow>
                   <OverflowTippyTooltip<HTMLDivElement> overflow {...overflowTooltip?.(props)}>
                     {(ref) => (
                       <Ellipses ref={ref}>
@@ -74,7 +65,7 @@ const Configurable = <T extends string, I extends T.Item>({
                   </OverflowTippyTooltip>
                 </Column>
               ) : (
-                <Column key={type} flex={flex} width={width}>
+                <Column key={type} flex={flex} width={width} $overflow={overflow}>
                   <Component {...props} />
                 </Column>
               )

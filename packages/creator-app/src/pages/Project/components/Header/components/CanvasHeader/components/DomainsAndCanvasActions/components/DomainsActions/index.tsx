@@ -4,7 +4,7 @@ import React from 'react';
 import * as Domain from '@/ducks/domain';
 import { useSelector } from '@/hooks';
 
-import HistoryDivider from '../../pages/Project/components/Header/components/CanvasHeader/components/DomainsAndCanvasActions/components/HistoryDivider';
+import HistoryDivider from '../HistoryDivider';
 import { Menu } from './components';
 import * as S from './styles';
 

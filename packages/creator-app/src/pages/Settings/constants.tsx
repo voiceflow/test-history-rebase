@@ -73,6 +73,7 @@ export const getSettingsMetaProps = Utils.platform.createPlatformAndProjectTypeS
         repeatDialog: General.RepeatDialog,
         repeatEverything: General.RepeatEverything,
         continuePrevious: <Universal.ContinuePrevious />,
+        defaultVoice: <Universal.DefaultVoice />,
       },
       localeText: 'Language',
     },
@@ -112,6 +113,8 @@ export const getSettingsMetaProps = Utils.platform.createPlatformAndProjectTypeS
       SettingSections.AI_ASSISTANT,
       SettingSections.DANGER_ZONE,
     ],
-    descriptors: {},
+    descriptors: {
+      defaultVoice: <Universal.DefaultVoice />,
+    },
   }
 );

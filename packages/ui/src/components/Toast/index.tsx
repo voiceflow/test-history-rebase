@@ -52,9 +52,9 @@ const toast = wrapWithMessage(Toastify.toast) as ToastMethod &
 
 Object.assign(toast, {
   info: wrapWithMessage(Toastify.toast.info, 'info', COLOR_BLUE),
-  error: wrapWithMessage(Toastify.toast.error, 'error', COLOR_RED),
+  error: wrapWithMessage(Toastify.toast.error, 'warning', COLOR_RED),
   success: wrapWithMessage(Toastify.toast.success, 'checkmark', COLOR_GREEN),
-  warn: wrapWithMessage(Toastify.toast.warn, 'warning', '#E5B813'),
+  warn: wrapWithMessage(Toastify.toast.warn, 'warning', '#D0C263'),
   genericError: () => toast.error('Something went wrong. Please try again'),
   custom: (methodName: ToastMethodName, icon?: SvgIconTypes.Icon, color?: string) => wrapWithMessage(Toastify.toast[methodName], icon, color),
 });

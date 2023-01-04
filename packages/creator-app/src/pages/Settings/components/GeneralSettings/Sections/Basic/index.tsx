@@ -76,7 +76,7 @@ const Basic: React.FC = () => {
             header={projectConfig.project.invocationName.name}
             leftDescription={
               invocationError ? (
-                <SectionErrorMessage marginTop={16}>{invocationError}</SectionErrorMessage>
+                <SectionErrorMessage marginTop={-2}>{invocationError}</SectionErrorMessage>
               ) : (
                 <DescriptorContainer>{projectConfig.project.invocationName.description}</DescriptorContainer>
               )

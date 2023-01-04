@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1043.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1042.0...@voiceflow/creator-app@1.1043.0) (2023-01-04)
+
+
+### Features
+
+* add divider to sidebar icon menu (CT-1314) ([#6437](https://github.com/voiceflow/creator-app/issues/6437)) ([a89286b](https://github.com/voiceflow/creator-app/commit/a89286b57165295ee64fbd971ffaec60d6a81272))
+
+
+
+
+
 # [1.1042.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1041.0...@voiceflow/creator-app@1.1042.0) (2023-01-04)
 
 

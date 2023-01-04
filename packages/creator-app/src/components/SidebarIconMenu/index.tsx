@@ -19,6 +19,7 @@ export interface SidebarIconMenuItem {
   tooltip?: TippyTooltipProps;
   onClick?: React.MouseEventHandler<HTMLDivElement>;
   withBadge?: boolean;
+  divider?: boolean;
 }
 
 export interface SidebarIconMenuProps<T extends SidebarIconMenuItem> {
@@ -45,6 +46,7 @@ const SidebarIconMenu = <T extends SidebarIconMenuItem>({
 
   const renderOption = (option: Nullable<T>) => {
     if (option === null) return null;
+    if (option.divider) return <S.Divider key={option.value} />;
 
     const item = (
       <S.Item

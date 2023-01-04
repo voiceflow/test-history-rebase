@@ -45,6 +45,7 @@ export const Item = styled(Box.FlexCenter)<ItemProps>`
       &:hover {
         ${Icon} {
           opacity: 1;
+          transition: 0.15s ease all;
         }
       }
     `}
@@ -91,4 +92,11 @@ export const Status = styled.div`
   font-size: 11px;
   font-weight: 600;
   text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff;
+`;
+
+export const Divider = styled.div`
+  width: 20px;
+  height: 0;
+  border-top: 1px solid #dfe3ed;
+  margin: 7.5px 0;
 `;

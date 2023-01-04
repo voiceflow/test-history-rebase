@@ -4,6 +4,7 @@ import { colors, css, styled, ThemeColor } from '@ui/styles';
 
 export interface SelectWrapperProps {
   minWidth?: boolean;
+  maxWidth?: string | number;
   fullWidth?: boolean;
   isFocused?: boolean;
   withClearIcon?: boolean;
@@ -48,6 +49,12 @@ const SelectWrapper = styled.div<SelectWrapperProps>`
     width &&
     css`
       width: ${width};
+    `}
+
+    ${({ maxWidth }) =>
+    maxWidth &&
+    css`
+      max-width: ${typeof maxWidth === 'number' ? `${maxWidth}px` : maxWidth};
     `}
 
   ${InputWrapper} {

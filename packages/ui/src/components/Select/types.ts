@@ -81,6 +81,7 @@ export interface BaseSelectProps {
   onClose?: VoidFunction;
   onSearch?: (value: string) => void;
   minWidth?: boolean;
+  maxWidth?: string | number;
   disabled?: boolean;
   useLayers?: boolean;
   placement?: PopperProps['placement'];

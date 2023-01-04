@@ -11,6 +11,7 @@ const activeStyle = css`
 
 const VoiceSelectTrigger = styled(Flex)<{ isActive?: boolean }>`
   height: 32px;
+  max-width: 250px;
 
   ${SvgIcon.Container} {
     color: #6e849a;

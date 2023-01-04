@@ -26,7 +26,7 @@ const LinkCaptionText = styled.div<LinkCaptionTextProps>`
   padding: 2px 4px;
   position: relative;
   top: -1px;
-  background-color: #f9f9f9 !important;
+  background-color: #f4f6f6 !important;
   cursor: pointer !important;
   pointer-events: ${({ isLineActive }) => (isLineActive ? 'all' : 'none')};
   margin: 0;

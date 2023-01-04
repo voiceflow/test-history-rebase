@@ -145,6 +145,7 @@ function Select({
   grouped,
   options = [],
   minWidth = true,
+  maxWidth,
   onSearch,
   disabled,
   onSelect,
@@ -486,6 +487,7 @@ function Select({
             onClick={!disabled && !labelSearchable ? onOpenMenu : undefined}
             tabIndex={labelSearchable || disabled ? -1 : 0}
             minWidth={minWidth}
+            maxWidth={maxWidth}
             isFocused={opened}
             className={cn(className, ClassName.SELECT)}
             fullWidth={fullWidth}

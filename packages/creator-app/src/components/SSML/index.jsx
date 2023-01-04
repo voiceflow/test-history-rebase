@@ -1,7 +1,7 @@
 import { Utils } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, Select, SvgIcon, TippyTooltip } from '@voiceflow/ui';
+import { Box, OverflowText, Select, SvgIcon, TippyTooltip } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
 import { Tooltip } from 'react-tippy';
@@ -92,6 +92,7 @@ const SSML = (
             options={voiceOptions}
             onSelect={onChangeVoice}
             minWidth={false}
+            maxWidth={240}
             useLayers
             autoWidth={false}
             borderLess
@@ -120,7 +121,7 @@ const SSML = (
             renderTrigger={({ ref, onOpenMenu, onHideMenu, isOpen }) => (
               <Tooltip title={voiceSelectLabel} position="top" delay={300} distance={0}>
                 <VoiceSelectTrigger ref={ref} isActive={isOpen} onClick={isOpen ? onHideMenu : onOpenMenu}>
-                  <span>{voiceSelectLabel || 'Select Voice'}</span>
+                  <OverflowText>{voiceSelectLabel || 'Select Voice'}</OverflowText>
                   <SvgIcon icon="arrowToggleV2" color="#6e849a" size={20} rotation={90} />
                 </VoiceSelectTrigger>
               </Tooltip>

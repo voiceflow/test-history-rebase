@@ -192,7 +192,7 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
               <GPT.AIUsageProgress width={36} />
             </Box.FlexCenter>
           ),
-          onClick: () => goToCurrentSettings({ state: { section: SettingSections.AI_ASSISTANT } }),
+          onClick: () => canEditProject && goToCurrentSettings({ state: { section: SettingSections.AI_ASSISTANT } }),
         }
       : null,
 

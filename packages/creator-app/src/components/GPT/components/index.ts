@@ -1,4 +1,3 @@
-export { default as AiUsageIndicator } from './AiUsageIndicator';
 export { default as AIUsageProgress } from './AIUsageProgress';
 export { default as EntityPrompt } from './EntityPrompt';
 export { default as EntityValue } from './EntityValue';

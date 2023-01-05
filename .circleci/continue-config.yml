@@ -420,6 +420,18 @@ workflows:
             branches:
               only: master
 
+      - vfcommon/sync_branches:
+          check_commit_message: "[breakglass]"
+          ssh_key: << pipeline.parameters.ssh-fingerprint >>
+          checkout: true
+          context: dev-test
+          name: sync-branches-break-glass
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
+
       # Deploy services
       - vfcommon/post_image_push_actions:
           <<: *prod_deploy_filters

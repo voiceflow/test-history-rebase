@@ -621,7 +621,7 @@ class TraceController {
     // timeout is in seconds
     this.noReplyTimeout = this.timeout.set(timeout * 1000, () => {
       this.resetInteractions();
-      this.next(null);
+      this.next({ type: BaseTrace.TraceType.NO_REPLY, payload: null });
     });
   }
 

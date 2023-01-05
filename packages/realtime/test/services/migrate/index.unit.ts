@@ -1,5 +1,5 @@
-import * as Platform from '@voiceflow/platform-config';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import * as Platform from '@voiceflow/platform-config/backend';
+import * as Realtime from '@voiceflow/realtime-sdk/backend';
 
 import MigrateService from '@/services/migrate';
 import { MigrationState } from '@/services/migrate/constants';

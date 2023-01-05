@@ -1,5 +1,5 @@
 import { BaseModels } from '@voiceflow/base-types';
-import * as Platform from '@voiceflow/platform-config';
+import * as Platform from '@voiceflow/platform-config/backend';
 import { produce } from 'immer';
 
 import { MigrationData } from '@/services/migrate/migrations/types';

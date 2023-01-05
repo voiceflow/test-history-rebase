@@ -1,5 +1,5 @@
 /* eslint-disable max-classes-per-file */
-import * as Realtime from '@voiceflow/realtime-sdk';
+import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import {
   AbstractActionControl as BaseAbstractActionControl,
   AbstractNoopActionControl as BaseAbstractNoopActionControl,

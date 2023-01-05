@@ -33,7 +33,27 @@
     "cooky-cutter": "1.5.4",
     "draft-js": "0.11.7",
     "faker": "5.5.3",
-    "polished": "3.7.2"
+    "polished": "3.7.2",
+    "vite-plugin-dts": "1.7.1"
+  },
+  "exports": {
+    ".": {
+      "types": "./build/common/index.d.ts",
+      "import": "./build/module/index.js",
+      "default": "./build/common/index.js"
+    },
+    "./backend": {
+      "types": "./build/backend/src/index.d.ts",
+      "import": "./build/backend/index.mjs",
+      "default": "./build/backend/index.cjs"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "backend": [
+        "./build/backend/src/index.d.ts"
+      ]
+    }
   },
   "files": [
     "build"
@@ -53,7 +73,8 @@
   },
   "scripts": {
     "analyze:dependencies": "depcruise --validate -- src",
-    "build": "yarn clean && concurrently -c yellow,blue 'yarn:build:cjs' 'yarn:build:esm'",
+    "build": "yarn clean && concurrently -c yellow,blue,red 'yarn:build:cjs' 'yarn:build:esm' 'yarn:build:backend'",
+    "build:backend": "vite --config ./config/vite/backend.ts build --ssr ./src/index.ts",
     "build:cjs": "tsc --project tsconfig.build.json && tsc-alias -p tsconfig.build.json",
     "build:esm": "tsc --project tsconfig.module.json && tsc-alias -p tsconfig.module.json",
     "build:watch": "yarn clean && concurrently -c yellow,blue 'yarn:build:cjs --watch' 'yarn:build:esm --watch'",

@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { BaseModels, BaseNode, BaseUtils } from '@voiceflow/base-types';
 import { AnyRecord } from '@voiceflow/common';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { Draft } from 'immer';
 
 import type { DiagramUpdateData, VersionUpdateData } from './types';

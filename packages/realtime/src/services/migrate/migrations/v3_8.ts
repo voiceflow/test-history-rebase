@@ -1,5 +1,5 @@
 import { BaseNode, BaseUtils } from '@voiceflow/base-types';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { VoiceflowNode } from '@voiceflow/voiceflow-types';
 
 import { Transform } from './types';

@@ -28,7 +28,20 @@
     "@testing-library/react": "^12.1.5",
     "jest-styled-components": "7.1.1",
     "jsdom": "^20.0.3",
-    "tslib": "2.4.1"
+    "tslib": "2.4.1",
+    "vite-plugin-dts": "1.7.1"
+  },
+  "exports": {
+    ".": {
+      "types": "./build/common/index.d.ts",
+      "import": "./build/module/index.js",
+      "default": "./build/common/index.js"
+    },
+    "./backend": {
+      "types": "./build/backend/index.d.ts",
+      "import": "./build/backend/index.mjs",
+      "default": "./build/backend/index.cjs"
+    }
   },
   "files": [
     "build"
@@ -37,17 +50,14 @@
   "license": "UNLICENSED",
   "main": "build/common/index.js",
   "module": "build/module/index.js",
-  "peerDependencies": {
-    "react-router": "5.2.1",
-    "react-router-dom": "5.3.0"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/voiceflow/creator-app.git"
   },
   "scripts": {
     "analyze:dependencies": "depcruise --validate -- src",
-    "build": "yarn clean && concurrently -c yellow,blue 'yarn:build:cjs' 'yarn:build:esm'",
+    "build": "yarn clean && concurrently -c yellow,blue,red 'yarn:build:cjs' 'yarn:build:esm' 'yarn:build:backend'",
+    "build:backend": "vite --config ./config/vite/backend.ts build --ssr ./src/index.ts",
     "build:cjs": "tsc --project tsconfig.build.json && tsc-alias -p tsconfig.build.json",
     "build:esm": "tsc --project tsconfig.module.json && tsc-alias -p tsconfig.module.json",
     "clean": "yarn clean:build",
@@ -64,5 +74,12 @@
     "test:unit": "REPORTS_DIRECTORY=coverage/unit vitest run .unit --silent --coverage",
     "types": "tsc --project tsconfig.build.json --noEmit --skipLibCheck",
     "watch:esm": "yarn build:esm && (concurrently \"tsc --watch --project tsconfig.module.json\" \"tsc-alias -w -p tsconfig.module.json\")"
+  },
+  "typesVersions": {
+    "*": {
+      "backend": [
+        "./build/backend/index.d.ts"
+      ]
+    }
   }
 }

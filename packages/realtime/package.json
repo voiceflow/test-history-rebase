@@ -72,7 +72,7 @@
     "mesh:post": "exit 0",
     "mesh:pre": "exit 0",
     "start": "PORT=8013 CREATOR_API_ENDPOINT=https:// NODE_ENV=production yarn start:base",
-    "start:base": "node --experimental-specifier-resolution=node -r ./loaders/static-loader.cjs --max-old-space-size=8192 build/index.js",
+    "start:base": "node --experimental-specifier-resolution=node --max-old-space-size=8192 build/index.js",
     "start:meshed": "NODE_ENV=local IS_MESHED=true yarn dev",
     "test": "vitest run --coverage",
     "test:dependencies": "depcheck",

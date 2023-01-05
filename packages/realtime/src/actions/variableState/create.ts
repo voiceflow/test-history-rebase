@@ -1,4 +1,4 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { terminateResend } from '@voiceflow/socket-utils';
 
 import { AbstractVersionResourceControl } from '@/actions/version/utils';

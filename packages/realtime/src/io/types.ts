@@ -1,6 +1,6 @@
 /* eslint-disable max-classes-per-file */
 import { EmptyObject } from '@voiceflow/common';
-import { IO } from '@voiceflow/realtime-sdk';
+import { IO } from '@voiceflow/realtime-sdk/backend';
 import { User } from '@voiceflow/socket-utils';
 import { Socket as IOSocket } from 'socket.io';
 

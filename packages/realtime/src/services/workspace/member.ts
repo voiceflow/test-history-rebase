@@ -1,5 +1,5 @@
 import { UserRole } from '@voiceflow/internal';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import _ from 'lodash';
 
 import { AbstractControl } from '../../control';

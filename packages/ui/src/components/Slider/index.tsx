@@ -5,7 +5,11 @@ import RCSlider from 'rc-slider';
 import _globalRCStyles from 'rc-slider/assets/index.css';
 import React from 'react';
 
-const SliderContainer = styled(RCSlider)`
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+const RCSliderFixed: typeof RCSlider = RCSlider.default ?? RCSlider;
+
+const SliderContainer = styled(RCSliderFixed)`
   margin-right: 8px;
 
   .rc-slider-dot-active {

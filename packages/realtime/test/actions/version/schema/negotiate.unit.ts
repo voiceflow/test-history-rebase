@@ -1,6 +1,6 @@
 import type { ServerMeta } from '@logux/server';
 import { Eventual } from '@voiceflow/common';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { AsyncRejectionError, Context } from '@voiceflow/socket-utils';
 import { Action } from 'typescript-fsa';
 

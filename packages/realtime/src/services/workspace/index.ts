@@ -1,6 +1,6 @@
 /* eslint-disable no-return-await */
 import { Utils } from '@voiceflow/common';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import * as Realtime from '@voiceflow/realtime-sdk/backend';
 
 import { HEARTBEAT_EXPIRE_TIMEOUT } from '../../constants';
 import { AbstractControl, ControlOptions } from '../../control';

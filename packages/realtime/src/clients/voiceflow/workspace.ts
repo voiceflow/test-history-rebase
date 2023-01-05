@@ -1,5 +1,5 @@
 import { BillingPeriod, PlanType, UserRole } from '@voiceflow/internal';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import * as Realtime from '@voiceflow/realtime-sdk/backend';
 
 import { ExtraOptions } from './types';
 import createResourceClient from './utils/resource';

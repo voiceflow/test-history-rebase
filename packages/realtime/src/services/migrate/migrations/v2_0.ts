@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { BaseModels } from '@voiceflow/base-types';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { normalize } from 'normal-store';
 
 import { Transform } from './types';

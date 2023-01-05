@@ -13,18 +13,19 @@ export default universalDefineConfig({
   aliases: ({ isServe }): Record<string, string> =>
     isServe
       ? {
-          '@voiceflow/realtime-sdk': path.resolve(rootDir, '../realtime-sdk/src'),
+          '@voiceflow/realtime-sdk/backend': path.resolve(rootDir, '../realtime-sdk/src'),
           '@realtime-sdk': path.resolve(rootDir, '../realtime-sdk/src'),
           '@voiceflow/socket-utils': path.resolve(rootDir, '../socket-utils/src'),
           '@socket-utils': path.resolve(rootDir, '../socket-utils/src'),
           '@voiceflow/ui': path.resolve(rootDir, '../ui/src'),
           '@ui': path.resolve(rootDir, '../ui/src'),
-          '@voiceflow/platform-config': path.resolve(rootDir, '../platform-config/src'),
+          '@voiceflow/platform-config/backend': path.resolve(rootDir, '../platform-config/src'),
           '@platform-config': path.resolve(rootDir, '../platform-config/src'),
         }
       : {
           '@voiceflow/ui': path.resolve(rootDir, '../ui/build/module'),
-          '@voiceflow/platform-config': path.resolve(rootDir, '../platform-config/build/module'),
+          '@voiceflow/realtime-sdk/backend': path.resolve(rootDir, '../realtime-sdk/build/module'),
+          '@voiceflow/platform-config/backend': path.resolve(rootDir, '../platform-config/build/module'),
         },
 })((config) => ({
   ...config,

@@ -17,7 +17,6 @@ ENV REGISTRY_URL=${build_REGISTRY_URL}
 WORKDIR /target
 
 COPY ./ ./
-COPY ./loaders ./loaders
 
 RUN echo $NPM_TOKEN > .npmrc && \
   sed -i -e "s#https://registry.yarnpkg.com#${REGISTRY_URL}#g" yarn.lock && \

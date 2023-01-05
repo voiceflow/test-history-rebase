@@ -1,5 +1,5 @@
 import { BaseModels } from '@voiceflow/base-types';
-import { BlockType, Markup } from '@voiceflow/realtime-sdk';
+import { BlockType, Markup } from '@voiceflow/realtime-sdk/backend';
 
 import { Transform } from './types';
 

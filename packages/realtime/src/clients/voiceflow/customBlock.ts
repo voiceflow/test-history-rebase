@@ -1,5 +1,5 @@
 import { BaseModels } from '@voiceflow/base-types';
-import { Adapters, CustomBlock } from '@voiceflow/realtime-sdk';
+import { Adapters, CustomBlock } from '@voiceflow/realtime-sdk/backend';
 
 import { ExtraOptions } from './types';
 

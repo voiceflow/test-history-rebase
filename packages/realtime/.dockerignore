@@ -1,7 +1,6 @@
 *
 
 !./build
-!./loaders
 !./package.json
 !./yarn.lock
 !./.env.e2e

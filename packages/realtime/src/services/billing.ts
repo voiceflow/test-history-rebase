@@ -1,11 +1,11 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import * as Realtime from '@voiceflow/realtime-sdk/backend';
 
 import { AbstractControl } from '@/control';
 
 class BillingService extends AbstractControl {
   public async deleteWorkspaceQuotas(creatorID: number, workspaceID: string) {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
-    client.billing.quota.deleteWorkspaceQuotas(workspaceID);
+    return client.billing.quota.deleteWorkspaceQuotas(workspaceID);
   }
 
   public async getWorkspaceQuotas(creatorID: number, workspaceID: string): Promise<Realtime.Quota[]> {
@@ -25,7 +25,8 @@ class BillingService extends AbstractControl {
 
   public async changeQuotaPlan(creatorID: number, workspaceID: string, quotaName: Realtime.QuotaNames): Promise<void> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
-    client.billing.quota.updateQuotaPlan(workspaceID, quotaName);
+
+    return client.billing.quota.updateQuotaPlan(workspaceID, quotaName);
   }
 }
 

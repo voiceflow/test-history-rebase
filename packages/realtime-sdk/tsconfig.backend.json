@@ -1,0 +1,16 @@
+{
+  "extends": "@voiceflow/tsconfig/web.json",
+  "compilerOptions": {
+    "target": "es2017",
+    "checkJs": false,
+    "skipLibCheck": true,
+    "downlevelIteration": true,
+    "allowJs": true,
+    "baseUrl": ".",
+    "paths": {
+      "@realtime-sdk/*": ["src/*"]
+    }
+  },
+  "include": ["src/**/*", "typings/**/*"],
+  "exclude": ["node_modules/**/*", "build/**/*"]
+}

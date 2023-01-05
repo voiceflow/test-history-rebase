@@ -1,4 +1,4 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { BaseContextData, Context } from '@voiceflow/socket-utils';
 import { Action } from 'typescript-fsa';
 

@@ -1,6 +1,6 @@
 import { BaseModels, BaseVersion } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
-import * as Platform from '@voiceflow/platform-config';
+import * as Platform from '@voiceflow/platform-config/backend';
 import { Optional } from 'utility-types';
 
 import { AbstractControl } from '../control';

@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1044.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1044.1...@voiceflow/creator-app@1.1044.2) (2023-01-05)
+
+
+### Bug Fixes
+
+* revert add divider to sidebar icon menu [bugfix] (CT-1314)  ([#6523](https://github.com/voiceflow/creator-app/issues/6523)) ([112d4a3](https://github.com/voiceflow/creator-app/commit/112d4a3fead76c0c9e919cf94b25ea34d18045f0))
+* send proper request type for no-reply request (BUG-148) ([#6525](https://github.com/voiceflow/creator-app/issues/6525)) ([a6e7a27](https://github.com/voiceflow/creator-app/commit/a6e7a27967f15663171585b3e434469b096a5a9e))
+
+
+
+
+
 ## [1.1044.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1044.0...@voiceflow/creator-app@1.1044.1) (2023-01-05)
 
 **Note:** Version bump only for package @voiceflow/creator-app

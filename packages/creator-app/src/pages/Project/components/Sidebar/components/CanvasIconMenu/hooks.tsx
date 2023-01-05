@@ -153,7 +153,6 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
           onClick: goToCurrentAnalytics,
         }
       : null,
-    !canEditProject ? null : { divider: true, value: 'divider' },
     !canEditProject || disableIntegration
       ? null
       : {

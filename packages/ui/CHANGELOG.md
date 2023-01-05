@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.214.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.214.1...@voiceflow/ui@1.214.2) (2023-01-05)
+
+
+### Bug Fixes
+
+* remove peer dependencies (CT-000) ([#6503](https://github.com/voiceflow/creator-app/issues/6503)) ([ec2ecb4](https://github.com/voiceflow/creator-app/commit/ec2ecb42f6fcaaedfcb86331244f99a7471ada8c))
+
+
+
+
+
 ## [1.214.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.214.0...@voiceflow/ui@1.214.1) (2023-01-04)
 
 

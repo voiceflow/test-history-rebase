@@ -427,7 +427,10 @@ workflows:
           context: dev-test
           name: sync-branches-break-glass
           requires:
-            - build
+            - build-app-test
+            - build-showcase-test
+            - build-realtime-test
+            - build-ml-gateway-test
           filters:
             branches:
               only: master

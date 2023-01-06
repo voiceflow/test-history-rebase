@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.40.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/showcase@1.39.5...@voiceflow/showcase@1.40.0) (2023-01-06)
+
+
+### Features
+
+* react 18 (CT-000) ([#6496](https://github.com/voiceflow/creator-app/issues/6496)) ([b3d66a1](https://github.com/voiceflow/creator-app/commit/b3d66a1c612e592aed710a2d8a657dd031b1ab9f))
+
+
+
+
+
 ## [1.39.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/showcase@1.39.4...@voiceflow/showcase@1.39.5) (2023-01-05)
 
 **Note:** Version bump only for package @voiceflow/showcase

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.17.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.16.3...@voiceflow/platform-config@1.17.0) (2023-01-06)
+
+
+### Features
+
+* react 18 (CT-000) ([#6496](https://github.com/voiceflow/creator-app/issues/6496)) ([b3d66a1](https://github.com/voiceflow/creator-app/commit/b3d66a1c612e592aed710a2d8a657dd031b1ab9f))
+
+
+
+
+
 ## [1.16.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.16.2...@voiceflow/platform-config@1.16.3) (2023-01-05)
 
 

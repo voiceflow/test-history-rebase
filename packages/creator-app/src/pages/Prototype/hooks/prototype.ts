@@ -50,7 +50,7 @@ const usePrototype = ({ debug, config, state, actions, isPublic, waitVisuals = t
     contextStep,
     updateStatus: setStatus,
     fetchContext: (request) => (fetchContext ? fetchContext(request, config, { isPublic }) : Promise.resolve(null)),
-    addToMessages: (message) => updateMessages([...messages, message]),
+    addToMessages: (message) => updateMessages((messages) => [...messages, message]),
     flowIDHistory,
     contextHistory,
     activeDiagramID,

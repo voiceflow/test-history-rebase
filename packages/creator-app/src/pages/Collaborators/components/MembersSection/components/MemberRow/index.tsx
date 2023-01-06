@@ -27,7 +27,7 @@ const getRoleVerb = (role: UserRole) => {
     case UserRole.EDITOR:
       return 'Editor';
     case UserRole.OWNER:
-      return 'Manager';
+      return 'Owner';
     case UserRole.BILLING:
       return 'Billing';
     case UserRole.VIEWER:

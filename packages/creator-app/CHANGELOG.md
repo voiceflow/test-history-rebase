@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1045.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1045.2...@voiceflow/creator-app@1.1045.3) (2023-01-06)
+
+
+### Bug Fixes
+
+* prototype message state race condition (CT-1385) ([#6529](https://github.com/voiceflow/creator-app/issues/6529)) ([50fcbb5](https://github.com/voiceflow/creator-app/commit/50fcbb5c405f09fb13625f49181182746e477fae))
+
+
+
+
+
 ## [1.1045.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1045.1...@voiceflow/creator-app@1.1045.2) (2023-01-06)
 
 

@@ -197,7 +197,9 @@ export const useProjectOptions = ({
     withInviteOption ? { key: 'invite', label: 'Invite collaborators', onClick: () => sharePopper?.open(ShareProjectTab.INVITE) } : null,
     withExportOption ? { label: 'Export as...', onClick: () => sharePopper.open(ShareProjectTab.EXPORT) } : null,
 
-    withHistoryOption || withSettingsOption || withInviteOption || withExportOption ? { label: 'divider-1', divider: true } : null,
+    withHistoryOption || withSettingsOption || withInviteOption || (withExportOption && canManageProjects)
+      ? { label: 'divider-1', divider: true }
+      : null,
 
     withRenameOption ? { label: 'Rename project', onClick: onRename } : null,
     canManageProjects ? { label: 'Duplicate project', onClick: onDuplicate } : null,

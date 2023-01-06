@@ -140,6 +140,7 @@ export const Item: React.OldFC<ItemProps> = ({
                   className={DashboardClassName.PROJECT_LIST_ITEM_TITLE}
                   readOnly={!isEditing}
                   value={formValue}
+                  onClick={isEditing ? stopPropagation() : undefined}
                   onBlur={onBlur}
                   onChange={updateFormValue}
                   onKeyPress={withEnterPress(withInputBlur())}

@@ -1,7 +1,6 @@
 import composeRef from '@seznam/compose-react-refs';
 import { CustomScrollbars as UICustomScrollbars, CustomScrollbarsTypes, setRef } from '@voiceflow/ui';
 import React from 'react';
-import type { ScrollbarProps } from 'react-custom-scrollbars';
 
 import { ScrollContextProvider } from '@/contexts/ScrollContext';
 import { useScrollHelpers } from '@/hooks/scroll';
@@ -9,7 +8,7 @@ import { useScrollHelpers } from '@/hooks/scroll';
 import { useScrollBarContext } from '../context';
 import WindowScrollerContainer from './WindowScrollerContainer';
 
-const CustomScrollbars = React.forwardRef<HTMLDivElement, ScrollbarProps>(({ style, children, ...props }, ref) => {
+const CustomScrollbars = React.forwardRef<HTMLDivElement, CustomScrollbarsTypes.Props>(({ style, children, ...props }, ref) => {
   const { bodyRef, scrollHelpers } = useScrollHelpers<CustomScrollbarsTypes.Scrollbars>();
   const { ref: scrollbarsRef, header, renderPlaceholder, size } = useScrollBarContext();
 

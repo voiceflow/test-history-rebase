@@ -3682,19 +3682,6 @@
   resolved "https://registry.yarnpkg.com/@react-dnd/shallowequal/-/shallowequal-4.0.2.tgz#d1b4befa423f692fa4abf1c79209702e7d8ae4b4"
   integrity sha512-/RVXdLvJxLg4QKvMoM5WlwNR9ViO9z8B/qPcc+C0Sa/teJY7QG7kJ441DwzOjMYEY7GmU4dj5EcGHIkKZiQZCA==
 
-"@react-rxjs/core@0.10.3":
-  version "0.10.3"
-  resolved "https://registry.yarnpkg.com/@react-rxjs/core/-/core-0.10.3.tgz#bbb63a9b38421d68c81b29f0f66ce998fd2d6a42"
-  integrity sha512-gHCVYPy+NO1D9cR1mWSXwOkO4MxH1ttHi2s30R4/QXE1Jx2/Z4afmyxwQ3ZrB2Z62ZvTrJBCvBnJtM/sHGQ45Q==
-  dependencies:
-    "@rx-state/core" "0.1.1"
-    use-sync-external-store "^1.0.0"
-
-"@react-rxjs/utils@0.9.5":
-  version "0.9.5"
-  resolved "https://registry.yarnpkg.com/@react-rxjs/utils/-/utils-0.9.5.tgz#e880e7bec46f6153f9402e9acc42b28225a468d2"
-  integrity sha512-RXVw8JAnBvKb23CixtrH7w5CKiiJodyck8T0s8o94XSor5XfsqpDrDk8Cq8iwyrxvvSL3+BoNAA+WCbVFTVhcg==
-
 "@redux-devtools/extension@3.2.3":
   version "3.2.3"
   resolved "https://registry.yarnpkg.com/@redux-devtools/extension/-/extension-3.2.3.tgz#589361d9a62326558c39c8a2e09c4acdbe6393e0"
@@ -3759,11 +3746,6 @@
     argparse "~1.0.9"
     colors "~1.2.1"
     string-argv "~0.3.1"
-
-"@rx-state/core@0.1.1":
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/@rx-state/core/-/core-0.1.1.tgz#915e0fca66f081843dba1c9803410b7b67703fd5"
-  integrity sha512-2EEWliEbjogBrY5C4cJcttexDorkj3ZM3PMiVusNctGl3Q7qqT1zI/H5tCRpR6avzwFQ8g+ckgxwVV+1+wJbUQ==
 
 "@semantic-release/commit-analyzer@^6.1.0":
   version "6.3.3"
@@ -17942,7 +17924,7 @@ react-countdown@2.3.5:
   dependencies:
     prop-types "^15.7.2"
 
-react-custom-scrollbars@4.2.1, react-custom-scrollbars@^4.2.1:
+react-custom-scrollbars@^4.2.1:
   version "4.2.1"
   resolved "https://registry.yarnpkg.com/react-custom-scrollbars/-/react-custom-scrollbars-4.2.1.tgz#830fd9502927e97e8a78c2086813899b2a8b66db"
   integrity sha1-gw/ZUCkn6X6KeMIIaBOJmyqLZts=
@@ -19148,19 +19130,19 @@ run-queue@^1.0.0, run-queue@^1.0.3:
   dependencies:
     aproba "^1.1.1"
 
-rxjs@7.8.0, rxjs@^7.0.0:
-  version "7.8.0"
-  resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-7.8.0.tgz#90a938862a82888ff4c7359811a595e14e1e09a4"
-  integrity sha512-F2+gxDshqmIub1KdvZkaEfGDwLNpPvk9Fs6LD/MyQxNgMds/WH9OdDDXOmxUZpME+iSK3rQCctkL0DYyytUqMg==
-  dependencies:
-    tslib "^2.1.0"
-
 rxjs@^6.4.0, rxjs@^6.6.0, rxjs@^6.6.7:
   version "6.6.7"
   resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-6.6.7.tgz#90ac018acabf491bf65044235d5863c4dab804c9"
   integrity sha512-hTdwr+7yYNIT5n4AMYp85KA6yw2Va0FLa3Rguvbpa4W3I5xynaBZo41cM3XM+4Q6fRMj3sBYIR1VAmZMXYJvRQ==
   dependencies:
     tslib "^1.9.0"
+
+rxjs@^7.0.0:
+  version "7.8.0"
+  resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-7.8.0.tgz#90a938862a82888ff4c7359811a595e14e1e09a4"
+  integrity sha512-F2+gxDshqmIub1KdvZkaEfGDwLNpPvk9Fs6LD/MyQxNgMds/WH9OdDDXOmxUZpME+iSK3rQCctkL0DYyytUqMg==
+  dependencies:
+    tslib "^2.1.0"
 
 safari-14-idb-fix@^3.0.0:
   version "3.0.0"

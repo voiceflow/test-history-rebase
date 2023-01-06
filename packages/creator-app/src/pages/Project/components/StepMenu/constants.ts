@@ -9,8 +9,8 @@ import { getManager } from '@/pages/Canvas/managers/utils';
 
 export interface StepItem {
   type: Realtime.BlockType;
-  getIcon: (manager?: ReturnType<typeof getManager>) => any;
-  getLabel: (manager?: ReturnType<typeof getManager>) => any;
+  getIcon: (manager?: ReturnType<typeof getManager>) => SvgIconTypes.Icon;
+  getLabel: (manager?: ReturnType<typeof getManager>) => string | undefined;
   getStepTooltipText: (manager?: ReturnType<typeof getManager>) => string | undefined;
   getStepTooltipLink: (manager?: ReturnType<typeof getManager>) => string | undefined;
   publicOnly?: boolean;
@@ -68,13 +68,13 @@ interface MenuStepsConfig {
   factoryData?: Realtime.NodeData<any>;
 }
 
-export const getStepIcon = ({ factoryData, manager }: StepProps) =>
+export const getStepIcon = ({ factoryData, manager }: StepProps): SvgIconTypes.Icon =>
   (_isFunction(manager.getIcon) && factoryData && manager.getIcon(factoryData)) || manager.icon!;
 
-export const getStepLabel = ({ factoryData, manager }: StepProps) =>
+export const getStepLabel = ({ factoryData, manager }: StepProps): string | undefined =>
   (_isFunction(manager.getDataLabel) && factoryData && manager.getDataLabel(factoryData)) || manager.label;
 
-export const getStepTooltipText = ({ factoryData, manager }: StepProps) =>
+export const getStepTooltipText = ({ factoryData, manager }: StepProps): string | undefined =>
   (_isFunction(manager.getTooltipText) && factoryData && manager.getTooltipText(factoryData)) || manager.tooltipText;
 
 export const getStepTooltipLink = ({ manager }: StepProps) => manager.tooltipLink;

@@ -2,7 +2,7 @@ import React from 'react';
 
 import { DisableBox } from './components';
 
-const DisableContainer: React.FC<{ disabled: boolean }> = ({ disabled, children }) => {
+const DisableContainer: React.OldFC<{ disabled: boolean }> = ({ disabled, children }) => {
   return <DisableBox disabled={disabled}>{children}</DisableBox>;
 };
 

@@ -13,7 +13,7 @@ const ReminderEditor: NodeEditor<Realtime.NodeData.Reminder, Realtime.NodeData.R
   const { reminderType, name } = data;
   const ReminderComponent = REMINDER_ROUTES.find((reminder) => reminder.id === reminderType)!.component;
 
-  const updateReminderType = React.useCallback((reminderType) => onChange({ reminderType }), [onChange]);
+  const updateReminderType = React.useCallback((reminderType: string) => onChange({ reminderType }), [onChange]);
 
   return (
     <Content

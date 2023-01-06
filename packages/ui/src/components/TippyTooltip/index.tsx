@@ -1,12 +1,20 @@
-import composeRef from '@seznam/compose-react-refs';
+/* eslint-disable import/no-extraneous-dependencies */
+import 'tippy.js/dist/tippy.css';
+import 'tippy.js/dist/backdrop.css';
+import 'tippy.js/animations/shift-away.css';
+
+import Tippy, { TippyProps } from '@tippyjs/react';
 import { IS_TEST } from '@ui/config';
 import { useCreateConst, useTeardown } from '@ui/hooks';
 import { ClassName } from '@ui/styles/constants';
 import { StringifyEnum, Utils } from '@voiceflow/common';
+import cns from 'classnames';
 import React from 'react';
-import { Theme, Tooltip, TooltipProps } from 'react-tippy';
+import type { Instance } from 'tippy.js';
+import { animateFill as animateFillPlugin } from 'tippy.js';
 
-import { Complex, FooterButton, HotkeyLabel, HotkeyText, Multiline, Title } from './components';
+import { Complex, FooterButton, HotkeyLabel, HotkeyText, Multiline, Title, WithHotkey } from './components';
+import * as S from './styles';
 
 export enum TooltipTheme {
   DARK = 'dark',
@@ -15,22 +23,24 @@ export enum TooltipTheme {
   TRANSPARENT = 'transparent',
 }
 
-export interface TippyTooltipProps extends Omit<TooltipProps, 'theme' | 'delay'> {
-  tag?: string;
-  delay?: number | [number, number];
+export interface TippyTooltipProps extends Omit<TippyProps, 'children'>, React.PropsWithChildren {
+  tag?: keyof JSX.IntrinsicElements;
+  width?: number;
+  style?: React.CSSProperties;
   theme?: StringifyEnum<TooltipTheme>;
-  hotkey?: string;
-  bodyOverflow?: boolean;
-  distance?: number;
-  offset?: number;
-  onShow?: () => void;
+  display?: React.CSSProperties['display'];
+
+  /**
+   * @deprecated use `placement` instead
+   */
+  position?: TippyProps['placement'];
 }
 
 // we need this to store all opened tooltips and manually close them
 // f.e. when canvas is zoomed/panned
-const OPENED_TOOLTIP_MAP = new Map<string, Tooltip>();
+const OPENED_TOOLTIP_MAP = new Map<string, Instance>();
 
-const registerOpenedTooltip = (id: string, tooltip: Tooltip | null) => {
+const registerOpenedTooltip = (id: string, tooltip: Instance | null) => {
   if (tooltip === null) {
     OPENED_TOOLTIP_MAP.delete(id);
   } else {
@@ -38,66 +48,72 @@ const registerOpenedTooltip = (id: string, tooltip: Tooltip | null) => {
   }
 };
 
-const closeAll = () =>
-  OPENED_TOOLTIP_MAP.forEach((tooltip) => {
-    tooltip.hideTooltip();
-  });
+const closeAll = () => OPENED_TOOLTIP_MAP.forEach((tooltip) => tooltip.hide());
 
-const TippyTooltip: React.ForwardRefRenderFunction<Tooltip, React.PropsWithChildren<TippyTooltipProps>> = (
-  { html, title, delay, theme, disabled, children, hotkey, popperOptions, bodyOverflow, distance, offset, ...props },
-  ref
-) => {
-  const tooltipRef = React.useRef<Tooltip>(null);
-  const internalId = useCreateConst(() => Utils.id.cuid.slug());
+const TippyTooltip = React.forwardRef<Element, TippyTooltipProps>(
+  (
+    {
+      tag: Tag = 'div',
+      width,
+      style,
+      arrow = false,
+      onShow,
+      onHide,
+      display = 'inline',
+      plugins,
+      disabled,
+      children,
+      appendTo = document.body,
+      position,
+      placement,
+      animation = 'shift-away',
+      className,
+      animateFill = true,
+      popperOptions,
+      ...props
+    },
+    ref
+  ) => {
+    const internalId = useCreateConst(() => Utils.id.cuid.slug());
 
-  const withHotkey = !!hotkey;
+    useTeardown(() => registerOpenedTooltip(internalId, null));
 
-  useTeardown(() => registerOpenedTooltip(internalId, null));
+    return (
+      <Tippy
+        {...props}
+        ref={ref}
+        arrow={arrow}
+        onShow={Utils.functional.chain(onShow, (instance) => registerOpenedTooltip(internalId, instance))}
+        onHide={Utils.functional.chain(onHide, () => registerOpenedTooltip(internalId, null))}
+        plugins={animateFill ? [animateFillPlugin, ...(plugins ?? [])] : plugins}
+        maxWidth={width}
+        appendTo={appendTo}
+        disabled={disabled || IS_TEST}
+        animation={animation}
+        placement={placement ?? position}
+        animateFill={animateFill}
+        popperOptions={{
+          ...popperOptions,
+          modifiers: [{ name: 'preventOverflow', options: { boundary: document.body, padding: 10 } }, ...(popperOptions?.modifiers ?? [])],
+        }}
+      >
+        <Tag style={{ display, ...style }} className={cns(ClassName.TOOLTIP, className)}>
+          {children}
+        </Tag>
+      </Tippy>
+    );
+  }
+);
 
-  // eslint-disable-next-line xss/no-mixed-html
-  return (
-    <Tooltip
-      ref={composeRef(ref, tooltipRef)}
-      html={
-        withHotkey ? (
-          <>
-            {html || title}
-            <HotkeyLabel>{hotkey}</HotkeyLabel>
-          </>
-        ) : (
-          html
-        )
-      }
-      title={withHotkey ? undefined : title}
-      // delay types are not correct in the lib
-      delay={delay as any}
-      theme={theme as Theme}
-      disabled={disabled || IS_TEST}
-      className={ClassName.TOOLTIP}
-      distance={distance}
-      offset={offset}
-      popperOptions={{
-        ...popperOptions,
-        modifiers: bodyOverflow
-          ? { preventOverflow: { enabled: true, boundariesElement: document.body, padding: 16 }, ...popperOptions?.modifiers }
-          : popperOptions?.modifiers,
-      }}
-      {...props}
-      onShow={Utils.functional.chain(props.onShow, () => registerOpenedTooltip(internalId, tooltipRef.current))}
-      onHide={Utils.functional.chain(props.onHide, () => registerOpenedTooltip(internalId, null))}
-    >
-      {children}
-    </Tooltip>
-  );
-};
-
-export default Object.assign(React.forwardRef(TippyTooltip), {
+export default Object.assign(TippyTooltip, {
   closeAll,
 
   Title,
   Complex,
   Multiline,
-  HotkeyLabel,
+  WithHotkey,
   HotkeyText,
+  HotkeyLabel,
   FooterButton,
+  GlobalStyles: S.GlobalStyle,
 });

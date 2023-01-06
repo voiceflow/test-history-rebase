@@ -20,7 +20,7 @@ interface GPTUtteranceProps {
   activeIndex?: number;
 }
 
-const GPTUtterance: React.FC<GPTUtteranceProps> = ({ index, input, onFocus, isActive, onChange, onReject, slots, activeIndex }) => {
+const GPTUtterance: React.OldFC<GPTUtteranceProps> = ({ index, input, onFocus, isActive, onChange, onReject, slots, activeIndex }) => {
   const [ref] = useAutoScrollNodeIntoView<HTMLDivElement>({ condition: isActive, options: { block: 'nearest' } }, [isActive, activeIndex]);
 
   const popper = usePopper({

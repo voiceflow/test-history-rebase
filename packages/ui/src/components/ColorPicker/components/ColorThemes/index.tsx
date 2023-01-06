@@ -8,7 +8,7 @@ import { ColorThemesProps } from './types';
 
 export const ColorThemeUnit = Color;
 
-export const ColorThemes: React.FC<ColorThemesProps> = ({ colors, selectedColor = '', onColorSelect, newColorIndex, ...props }) => {
+export const ColorThemes: React.OldFC<ColorThemesProps> = ({ colors, selectedColor = '', onColorSelect, newColorIndex, ...props }) => {
   const lowercaseSelectedColor = selectedColor.toLowerCase();
 
   return (

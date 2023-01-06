@@ -36,7 +36,7 @@ const Actions: React.FC<ActionsProps> = ({ live, isRoot, onEdit, status, onDelet
 
     <Divider offset={[8, 0]} isSecondaryColor />
 
-    <LiveToggleTooltip live={live} distance={0} position="right-start">
+    <LiveToggleTooltip live={live} offset={[0, 0]} position="right-start">
       <UIMenu.Item ending onClick={() => onToggleLive(!live)} disabled={isRoot}>
         <Box mr="auto">{live ? 'Is live' : 'Is draft'}</Box>
 

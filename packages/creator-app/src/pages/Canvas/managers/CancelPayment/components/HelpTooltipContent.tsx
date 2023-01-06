@@ -1,7 +1,7 @@
 import { Tooltip } from '@voiceflow/ui';
 import React from 'react';
 
-const HelpTooltipContent: React.FC = () => (
+const HelpTooltipContent: React.OldFC = () => (
   <>
     <Tooltip.Paragraph marginBottomUnits={3}>
       If you’re selling products inside your project, you must also gracefully handle a cancel request.

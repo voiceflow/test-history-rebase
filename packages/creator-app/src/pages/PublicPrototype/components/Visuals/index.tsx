@@ -6,12 +6,10 @@ import _throttle from 'lodash/throttle';
 import React from 'react';
 
 import * as Prototype from '@/ducks/prototype';
-import * as UI from '@/ducks/ui';
-import { connect } from '@/hocs/connect';
+import { useSelector } from '@/hooks/redux';
 import { useDeviceDimension } from '@/pages/Prototype/hooks/deviceDimensions';
 import { FadeContainer } from '@/styles/animations';
 import { ClassName } from '@/styles/constants';
-import { ConnectedProps } from '@/types';
 
 import { APL, Container, Image, ListenerContainer, PlaceholderContainer, ScaleContainer } from './components';
 import { getScale } from './utils';
@@ -24,15 +22,10 @@ interface VisualsProps {
   listeningASR: boolean;
 }
 
-const Visuals: React.FC<VisualsProps & ConnectedVisualsProps> = ({
-  data,
-  device,
-  isMobile,
-  isFullScreen,
-  onStopListening,
-  onStartListening,
-  listeningASR,
-}) => {
+const Visuals: React.OldFC<VisualsProps> = ({ isMobile, isFullScreen, onStopListening, onStartListening, listeningASR }) => {
+  const data = useSelector(Prototype.prototypeVisualDataSelector);
+  const device = useSelector(Prototype.prototypeVisualDeviceSelector);
+
   const dimension = useDeviceDimension({ data, device: device || BaseNode.Visual.DeviceType.ECHO_SHOW_10 });
   const containerRef = React.useRef<HTMLDivElement | null>(null);
   const [scale, setScale] = React.useState(1);
@@ -114,12 +107,4 @@ const Visuals: React.FC<VisualsProps & ConnectedVisualsProps> = ({
   );
 };
 
-const mapStateToProps = {
-  data: Prototype.prototypeVisualDataSelector,
-  device: Prototype.prototypeVisualDeviceSelector,
-  controlScheme: UI.canvasNavigationSelector,
-};
-
-type ConnectedVisualsProps = ConnectedProps<typeof mapStateToProps, {}>;
-
-export default connect(mapStateToProps, null)(Visuals as any) as React.FC<VisualsProps>;
+export default Visuals;

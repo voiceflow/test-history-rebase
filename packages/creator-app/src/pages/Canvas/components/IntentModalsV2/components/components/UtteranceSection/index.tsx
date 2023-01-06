@@ -53,7 +53,7 @@ interface UtteranceSectionProps {
 
 const MAX_VISIBLE_UTTERANCES = 10;
 
-const UtteranceSection: React.FC<UtteranceSectionProps> = ({
+const UtteranceSection: React.OldFC<UtteranceSectionProps> = ({
   inputs,
   intentID,
   isBuiltIn,
@@ -90,7 +90,7 @@ const UtteranceSection: React.FC<UtteranceSectionProps> = ({
   const { onAddSlot } = useAddSlot();
 
   const addValidation = React.useCallback(
-    ({ text }) => {
+    ({ text }: { text: string }) => {
       const error = validateUtterance(text, null, intents, platform);
 
       if (error) {
@@ -269,7 +269,7 @@ const UtteranceSection: React.FC<UtteranceSectionProps> = ({
                   </Box.Flex>
 
                   <Box.Flex gap={16}>
-                    <TippyTooltip title="Bulk Import">
+                    <TippyTooltip content="Bulk Import">
                       <SvgIcon
                         icon="upload"
                         onClick={stopPropagation(onBulkUploadClick)}

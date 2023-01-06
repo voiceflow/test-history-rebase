@@ -13,6 +13,7 @@
     "ignore-styles",
     "@testing-library/jest-dom",
     "@voiceflow/vite-config",
-    "regenerator-runtime"
+    "regenerator-runtime",
+    "tippy.js"
   ]
 }

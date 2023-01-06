@@ -23,7 +23,7 @@ const StepSubMenu = React.forwardRef<HTMLDivElement, StepSubMenuProps>(({ items,
         return {
           ...item,
           icon: item.getIcon(manager),
-          label: item.getLabel(manager),
+          label: item.getLabel(manager) ?? '',
           tooltipText: item.getStepTooltipText(manager),
           tooltipLink: item.getStepTooltipLink(manager),
         };

@@ -13,7 +13,7 @@ interface PromptInputProps {
   placeholder?: string;
 }
 
-const PromptInput: React.FC<PromptInputProps> = (props) => {
+const PromptInput: React.OldFC<PromptInputProps> = (props) => {
   const projectType = useSelector(ProjectV2.active.projectTypeSelector);
 
   if (projectType === Platform.Constants.ProjectType.CHAT) {

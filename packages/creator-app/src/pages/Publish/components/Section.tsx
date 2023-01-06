@@ -21,7 +21,7 @@ const Divider = styled(Box)`
   height: 1px;
 `;
 
-const Section: React.FC<{ title?: JSX.Element | string; subtitle?: JSX.Element | string; card?: boolean; className?: string }> = ({
+const Section: React.OldFC<{ title?: JSX.Element | string; subtitle?: JSX.Element | string; card?: boolean; className?: string }> = ({
   title,
   subtitle,
   children,

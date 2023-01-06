@@ -12,7 +12,7 @@ interface ItemProps {
   onClick?: VoidFunction;
 }
 
-const Item: React.FC<ItemProps> = ({ label, isLast, children, onClick }) => {
+const Item: React.OldFC<ItemProps> = ({ label, isLast, children, onClick }) => {
   const canCopy = typeof children === 'string';
 
   return (

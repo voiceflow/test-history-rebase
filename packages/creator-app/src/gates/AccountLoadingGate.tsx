@@ -5,7 +5,7 @@ import * as Account from '@/ducks/account';
 import * as Session from '@/ducks/session';
 import { useDispatch, useSelector } from '@/hooks';
 
-const AccountLoadingGate: React.FC = ({ children }) => {
+const AccountLoadingGate: React.OldFC = ({ children }) => {
   const isLoggingIn = useSelector(Account.isLoggingInSelector);
   const restoreSession = useDispatch(Session.restoreSession);
 

@@ -11,7 +11,7 @@ export interface JobInterfacePopupProps {
   cancel: VoidFunction;
 }
 
-const JobInterfacePopup: React.FC<JobInterfacePopupProps> = ({ children, dismissable, closeable, cancel }) => {
+const JobInterfacePopup: React.OldFC<JobInterfacePopupProps> = ({ children, dismissable, closeable, cancel }) => {
   const containerRef = React.useRef(null);
 
   useOnClickOutside(containerRef, () => dismissable && cancel(), []);

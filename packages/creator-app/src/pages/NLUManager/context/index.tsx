@@ -54,7 +54,7 @@ const INITIAL_PERSISTED_STATE = { id: INITIAL_STATE.activeItemID, tab: INITIAL_S
 
 export const NLUManagerContext = React.createContext<NLUManagerContextValue>(INITIAL_STATE);
 
-export const NLUManagerProvider: React.FC = ({ children }) => {
+export const NLUManagerProvider: React.OldFC = ({ children }) => {
   const { state, updateState } = useNLUPersistedState(INITIAL_PERSISTED_STATE);
   const filter = useFilter();
   const navigation = useNavigation({ ...state, onTabChange: updateState });

@@ -33,7 +33,7 @@ export interface EditorProps {
   placeholder?: string;
 }
 
-export const Editor: React.FC<EditorProps> = ({
+export const Editor: React.OldFC<EditorProps> = ({
   name,
   setName,
   nameErrorMsg,

@@ -99,16 +99,15 @@ const ImportModal = manager.create<Props>('ProjectImport', () => ({ api, type, o
           <ToastCallToAction onClick={() => goToDomain({ versionID: importedProject.versionID })}>Open Project</ToastCallToAction>
         </>
       );
-    } catch (e) {
-      if (e.statusCode === StatusCode.FORBIDDEN) {
+    } catch (err) {
+      if (err && typeof err === 'object' && 'statusCode' in err && err.statusCode === StatusCode.FORBIDDEN) {
         goToWorkspace(workspaceID);
 
-        // eslint-disable-next-line max-depth
         if (planLimit) {
           upgradeModal.openVoid(planLimit.upgradeModal);
         }
       } else {
-        Sentry.error(e);
+        Sentry.error(err);
         toast.error('unable to access project');
       }
     } finally {

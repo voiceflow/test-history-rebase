@@ -5,7 +5,7 @@ import React from 'react';
 import { useActiveProjectPlatform } from '@/hooks';
 import { getPlatformValue } from '@/utils/platform';
 
-const HowItWorks: React.FC = () => {
+const HowItWorks: React.OldFC = () => {
   const platform = useActiveProjectPlatform();
 
   return (

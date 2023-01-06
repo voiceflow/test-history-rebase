@@ -1,4 +1,3 @@
-/* eslint-disable sonarjs/no-nested-template-literals */
 import { SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 import styled, { css } from 'styled-components';
@@ -49,7 +48,7 @@ const Title = styled.h2`
     `}
 `;
 
-interface SectionProps {
+interface SectionProps extends React.PropsWithChildren {
   path: string;
   title: string;
   inline?: boolean;

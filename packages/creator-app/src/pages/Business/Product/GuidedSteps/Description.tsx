@@ -12,7 +12,7 @@ export interface DescriptionFormProps {
   advanceStep: VoidFunction;
 }
 
-const DescriptionForm: React.FC<DescriptionFormProps> = ({ advanceStep }) => {
+const DescriptionForm: React.OldFC<DescriptionFormProps> = ({ advanceStep }) => {
   const { product, setProductProperty } = React.useContext(ProductContext)!;
 
   const [name, setName, saveName] = useInputValue(product.name, setProductProperty('name'));

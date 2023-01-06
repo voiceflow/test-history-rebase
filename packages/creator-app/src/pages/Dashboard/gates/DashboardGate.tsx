@@ -9,7 +9,7 @@ import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useDispatch, useRouteWorkspaceID, useSelector } from '@/hooks';
 import RedirectWithSearch from '@/Routes/RedirectWithSearch';
 
-const DashboardGate: React.FC = ({ children }) => {
+const DashboardGate: React.OldFC = ({ children }) => {
   const routeWorkspaceID = useRouteWorkspaceID();
   const activeWorkspaceID = useSelector(Session.activeWorkspaceIDSelector);
   const workspaceIDs = useSelector(WorkspaceV2.allWorkspaceIDsSelector);

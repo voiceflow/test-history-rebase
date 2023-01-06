@@ -6,7 +6,6 @@ import { ButtonVariant, toast } from '@voiceflow/ui';
 import _constant from 'lodash/constant';
 import queryString from 'query-string';
 import React from 'react';
-import { useDispatch as useReduxDispatch } from 'react-redux';
 import { Redirect, useLocation } from 'react-router-dom';
 
 import { receiptGraphic } from '@/assets';
@@ -22,8 +21,9 @@ import { trackInvitationSent } from '@/ducks/tracking/events/invitation';
 import * as Workspace from '@/ducks/workspace';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { withStripe } from '@/hocs/withStripe';
-import { useDispatch, useSelector, useSmartReducer, useTrackingEvents } from '@/hooks';
+import { useDispatch, useSelector, useSmartReducer, useStore, useTrackingEvents } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
+import { getErrorMessage } from '@/utils/error';
 import * as Sentry from '@/vendors/sentry';
 import * as Userflow from '@/vendors/userflow';
 
@@ -94,14 +94,14 @@ export const OnboardingContext = React.createContext<OnboardingContextProps>({
 
 export const { Consumer: OnboardingConsumer } = OnboardingContext;
 
-const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
+const UnconnectedOnboardingProvider: React.OldFC<OnboardingProviderProps> = ({
   query,
   children,
   stripe,
   checkChargeable,
   isLoginFlow, // This boolean represents if the user hits the onboarding flow from a link/new signup, or from the dashboard 'create workspace' button
 }) => {
-  const dispatch = useReduxDispatch();
+  const store = useStore();
   const location = useLocation();
   const search = queryString.parse(location.search);
   const workspaces = useSelector(WorkspaceV2.allWorkspacesSelector);
@@ -337,7 +337,7 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
       try {
         await handlePayment(workspace.id, source);
       } catch (err) {
-        toast.error(err?.data || err?.message || err?.data?.data);
+        toast.error(getErrorMessage(err));
         goToDashboard();
 
         return null;
@@ -461,7 +461,7 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
       }
 
       if (isLoginFlow) {
-        dispatch(STEP_META[currentStepID].trackStep(cache.current.state, { skip: false }));
+        store.dispatch(STEP_META[currentStepID].trackStep(cache.current.state, { skip: false }));
       }
 
       if (workspaceID && isLoginFlow) {
@@ -477,7 +477,7 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
     if (cache.current.stepStack.length < stepStack.length && isLoginFlow) {
       const prevStepID: StepID = cache.current.stepStack[0];
 
-      dispatch(STEP_META[prevStepID].trackStep(cache.current.state, { skip: cache.current.skipped }));
+      store.dispatch(STEP_META[prevStepID].trackStep(cache.current.state, { skip: cache.current.skipped }));
     }
 
     cache.current.stepStack = stepStack;
@@ -511,4 +511,6 @@ const UnconnectedOnboardingProvider: React.FC<OnboardingProviderProps> = ({
   return redirectToDashboard ? <Redirect to={Path.DASHBOARD} /> : <OnboardingContext.Provider value={api}>{children}</OnboardingContext.Provider>;
 };
 
-export const OnboardingProvider = withStripe(UnconnectedOnboardingProvider) as React.FC<Omit<OnboardingProviderProps, 'stripe' | 'checkChargeable'>>;
+export const OnboardingProvider = withStripe(UnconnectedOnboardingProvider) as React.OldFC<
+  Omit<OnboardingProviderProps, 'stripe' | 'checkChargeable'>
+>;

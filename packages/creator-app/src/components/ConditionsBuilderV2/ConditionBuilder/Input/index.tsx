@@ -12,7 +12,7 @@ interface ConditionBuilderInputProps {
   onChange: (value: LogicUnitDataType) => void;
 }
 
-const ConditionBuilderInput: React.FC<ConditionBuilderInputProps> = ({ expression, onChange }) => {
+const ConditionBuilderInput: React.OldFC<ConditionBuilderInputProps> = ({ expression, onChange }) => {
   const [focused, setFocused] = React.useState<null | 'left' | 'right' | 'conditionLogic'>(null);
   const [left, right] = expression.value as [Realtime.ValueExpressionV2 | Realtime.VariableExpressionV2, Realtime.ExpressionV2];
 

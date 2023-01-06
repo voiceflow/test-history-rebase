@@ -12,7 +12,7 @@ export interface BackgroundColorProps {
   data: Realtime.NodeData<Realtime.Markup.NodeData.Text>;
 }
 
-const BackgroundColor: React.FC<BackgroundColorProps> = ({ nodeID, data }) => {
+const BackgroundColor: React.OldFC<BackgroundColorProps> = ({ nodeID, data }) => {
   const engine = React.useContext(EngineContext)!;
 
   const updateBackgroundColor = (newColor: Realtime.Markup.Color | null) => {

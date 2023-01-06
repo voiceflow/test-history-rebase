@@ -7,12 +7,12 @@ import type { Selector } from '@/store/types';
 export const createKeyedSelector = <S extends Selector<any>, K extends keyof ReturnType<S>>(
   selector: S,
   stateKey: K
-): ((state: State) => ReturnType<S>[K]) => moize.simple((state) => selector(state)[stateKey]);
+): ((state: State) => ReturnType<S>[K]) => moize((state) => selector(state)[stateKey]);
 
 export const createRootSelectorFactory =
   <S extends Record<string, any>>() =>
   <K extends keyof S>(stateKey: K): ((state: S) => S[K]) =>
-    moize.simple(({ [stateKey]: state }) => state);
+    moize(({ [stateKey]: state }) => state);
 
 export const createRootSelector = createRootSelectorFactory<State>();
 

@@ -20,7 +20,7 @@ const keywordsSelector = createSelector([VersionV2.active.alexa.publishingSelect
 const summarySelector = createSelector([VersionV2.active.alexa.publishingSelector], (publishing) => publishing?.summary);
 const descriptionSelector = createSelector([VersionV2.active.alexa.publishingSelector], (publishing) => publishing?.description);
 
-const SkillDescriptionForm: React.FC = () => {
+const SkillDescriptionForm: React.OldFC = () => {
   const isLive = useSelector(ProjectV2.active.isLiveSelector);
 
   const category = useSelector(categorySelector);
@@ -67,7 +67,7 @@ const SkillDescriptionForm: React.FC = () => {
           minRows={4}
           maxRows={4}
           placeholder="Skill Description"
-          style={{ minHeight: '94px', maxHeight: '94px' }}
+          style={{ height: 94 }}
           value={description}
           onChange={withTargetValue(setDescription)}
           onBlur={saveDescription}
@@ -86,7 +86,7 @@ const SkillDescriptionForm: React.FC = () => {
             minRows={4}
             maxRows={4}
             placeholder="What's new?"
-            style={{ minHeight: '94px', maxHeight: '94px' }}
+            style={{ height: 94 }}
             value={updatesDescription}
             onChange={withTargetValue(setUpdatesDescription)}
             onBlur={saveUpdatesDescription}
@@ -127,7 +127,7 @@ const SkillDescriptionForm: React.FC = () => {
 
 export default SkillDescriptionForm;
 
-export const SkillDescriptionDescription: React.FC = () => {
+export const SkillDescriptionDescription: React.OldFC = () => {
   const isLive = useSelector(ProjectV2.active.isLiveSelector);
 
   return (

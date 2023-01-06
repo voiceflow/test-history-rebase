@@ -11,7 +11,7 @@ export interface HeaderOptionsProps {
   isBuiltIn?: boolean;
 }
 
-const HeaderOptions: React.FC<HeaderOptionsProps> = ({ onRename, isBuiltIn, selectedID, itemType }) => {
+const HeaderOptions: React.OldFC<HeaderOptionsProps> = ({ onRename, isBuiltIn, selectedID, itemType }) => {
   const { options } = useNLUItemMenu({ itemID: selectedID, itemType, isBuiltIn, onRename });
 
   return options.length ? (

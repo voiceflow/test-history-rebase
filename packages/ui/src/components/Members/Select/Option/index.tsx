@@ -12,7 +12,7 @@ interface WorkspaceMemberSelectOptionProps {
   searchLabel?: string | null;
 }
 
-const WorkspaceMemberSelectOption: React.FC<WorkspaceMemberSelectOptionProps> = ({ option, children }) => (
+const WorkspaceMemberSelectOption: React.OldFC<WorkspaceMemberSelectOptionProps> = ({ option, children }) => (
   <Box.Flex gap={16}>
     <Avatar image={option.image} text={option.name} large />
 

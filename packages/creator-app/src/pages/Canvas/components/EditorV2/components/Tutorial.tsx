@@ -5,7 +5,7 @@ import { useEditor } from '../hooks';
 
 export interface TutorialProps extends Partial<TutorialTooltipProps> {}
 
-const Tutorial: React.FC<TutorialProps> = ({ title, children, anchorRenderer, ...tooltipProps }) => {
+const Tutorial: React.OldFC<TutorialProps> = ({ title, children, anchorRenderer, ...tooltipProps }) => {
   const editor = useEditor();
 
   return (

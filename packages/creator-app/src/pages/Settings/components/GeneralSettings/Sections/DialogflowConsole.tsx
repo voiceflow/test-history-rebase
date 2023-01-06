@@ -8,7 +8,7 @@ import { useActiveProjectTypeConfig, useDispatch, useLinkedState, useSelector } 
 import { DescriptorContainer } from '@/pages/Settings/components/ContentDescriptors/components';
 
 // TODO: refactor this to make it platform agnostic
-const DialogflowConsole: React.FC = () => {
+const DialogflowConsole: React.OldFC = () => {
   const projectConfig = useActiveProjectTypeConfig();
 
   const storedInvocationNameSamples = useSelector(VersionV2.active.invocationNameSamplesSelector);

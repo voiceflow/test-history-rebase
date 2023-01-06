@@ -19,7 +19,7 @@ interface UpdatesPopoverTypes {
   notifications: Notifications.Notification[];
 }
 
-const UpdatesPopover: React.FC<UpdatesPopoverTypes> = ({ notifications }) => (
+const UpdatesPopover: React.OldFC<UpdatesPopoverTypes> = ({ notifications }) => (
   <NotificationContainer>
     {notifications.map((notification, i) => (
       <Notification data={notification} key={i} />

@@ -11,7 +11,7 @@ export interface FormGroupProps {
   rightColumn: React.ReactNode;
 }
 
-const FormGroup: React.FC<FormGroupProps> = ({ className, leftColumn, rightColumn }) => (
+const FormGroup: React.OldFC<FormGroupProps> = ({ className, leftColumn, rightColumn }) => (
   <Container className={className}>
     <LeftColumn>{leftColumn}</LeftColumn>
     <Flex>{rightColumn}</Flex>

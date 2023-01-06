@@ -7,7 +7,7 @@ interface SectionProps extends BoxProps {
   header?: React.ReactNode;
 }
 
-const Section: React.FC<SectionProps> = ({ header, children, ...props }) => (
+const Section: React.OldFC<SectionProps> = ({ header, children, ...props }) => (
   <S.Container {...props}>
     {header}
 

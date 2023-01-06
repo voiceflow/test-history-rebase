@@ -14,7 +14,7 @@ import { SettingSections } from '@/pages/Settings/constants';
 import { useAutoScrollSectionIntoView } from '../hooks';
 import { WorkspaceDisabledTooltip } from './components';
 
-const AIAssistant: React.FC = () => {
+const AIAssistant: React.OldFC = () => {
   const workspace = useActiveWorkspace();
   const [trackingEvents] = useTrackingEvents();
 

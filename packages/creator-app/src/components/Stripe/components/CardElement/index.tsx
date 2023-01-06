@@ -38,7 +38,7 @@ interface StripeCardElementProps {
   onChangeComplete?: (complete: boolean) => void;
 }
 
-const StripeCardElement: React.FC<StripeCardElementProps> = ({ onChangeComplete, disabled = false, stripeOnChange }) => {
+const StripeCardElement: React.OldFC<StripeCardElementProps> = ({ onChangeComplete, disabled = false, stripeOnChange }) => {
   const cardElementRef = React.useRef<CardElement>(null);
   const boxRef = React.useRef<HTMLDivElement>(null);
   const errorMessageRef = React.useRef('message');
@@ -76,7 +76,7 @@ const StripeCardElement: React.FC<StripeCardElementProps> = ({ onChangeComplete,
   errorMessageRef.current = error || errorMessageRef.current;
 
   return (
-    <TippyTooltip open={!!error && focused} title={error || errorMessageRef.current} position="bottom-start" animation="fade" distance={5}>
+    <TippyTooltip visible={!!error && focused} content={error || errorMessageRef.current} placement="bottom-start" animation="fade" offset={[0, 5]}>
       <Wrapper disabled={disabled} onClick={preventDefault(onClick)} borderColor={getColor(error, complete, focused)}>
         <Box ref={boxRef} overflow="hidden" pl={2} pt={2} position="relative">
           <SvgIcon icon={getIcon(error, complete)} color={getColor(error, complete)} />

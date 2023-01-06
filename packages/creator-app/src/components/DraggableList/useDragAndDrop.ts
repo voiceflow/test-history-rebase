@@ -92,7 +92,8 @@ const useDragAndDrop = <I extends { id: string } | any>(
     void,
     { isDragging: boolean }
   >({
-    item: dragItem,
+    type,
+
     end: (_result, monitor) => {
       // reset width and height when ends the drag.
       // That way we get the current width and height when we start a new drag.
@@ -101,25 +102,30 @@ const useDragAndDrop = <I extends { id: string } | any>(
       cacheRef.current.styles.height = undefined;
       handlers.current.onDragEnd?.(props.item as I, monitor);
     },
-    begin: (monitor) => handlers.current.onDragStart?.(props.item as I, monitor),
+
+    item: (monitor) => {
+      handlers.current.onDragStart?.(props.item as I, monitor);
+
+      return dragItem;
+    },
+
     collect: (monitor) => ({ isDragging: monitor.isDragging() }),
+
     canDrag:
       typeof handlers.current.canDrag === 'function'
         ? (monitor) => (handlers.current.canDrag as Function)(dragItem, monitor)
         : handlers.current.canDrag,
-    options: { dropEffect: 'move' },
+
     isDragging: unmountableDuringDrag
       ? (monitor) => {
           const item = monitor.getItem();
 
-          return cacheRef.current.id === (item.item.id ?? item.item);
+          const id = item.item && typeof item.item === 'object' && 'id' in item.item ? item.item.id : item.item;
+
+          return cacheRef.current.id === id;
         }
       : undefined,
   });
-
-  React.useEffect(() => {
-    connectPreview(getEmptyImage(), { captureDraggingState: true });
-  }, []);
 
   // since the items can be unmounted, we should somehow map the preview with the remounted item
   React.useEffect(() => {
@@ -130,18 +136,19 @@ const useDragAndDrop = <I extends { id: string } | any>(
     };
   }, [cacheRef.current.id]);
 
-  React.useEffect(
-    () => () => {
-      connectDrop(null);
-      connectDrag(null);
-    },
-    [connectDrop, connectDrag]
-  );
+  React.useEffect(() => {
+    connectPreview(getEmptyImage(), { captureDraggingState: true });
+  }, []);
 
-  const connectedRootRef = partialDrag ? connectDrop(rootRef) : connectDrag(connectDrop(rootRef));
-  const connectedDragRef = partialDrag ? connectDrag(dragRef) : null;
+  connectDrop(rootRef);
 
-  return [{ isDragging, isDraggingXEnabled }, connectedRootRef as any, connectedDragRef as any];
+  if (partialDrag) {
+    connectDrag(dragRef);
+  } else {
+    connectDrag(rootRef);
+  }
+
+  return [{ isDragging, isDraggingXEnabled }, rootRef as any, (partialDrag ? dragRef : null) as any];
 };
 
 export default useDragAndDrop;

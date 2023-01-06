@@ -15,7 +15,7 @@ import { ClassName } from '@/styles/constants';
 
 import * as S from './styles';
 
-const WorkspaceSelector: React.FC = () => {
+const WorkspaceSelector: React.OldFC = () => {
   const upgradeModal = ModalsV2.useModal(ModalsV2.Upgrade);
 
   const [canCreatePrivateCloudWorkspace] = usePermission(Permission.CREATE_PRIVATE_CLOUD_WORKSPACE);

@@ -13,7 +13,7 @@ interface StageConfigurationRequiredProps {
   redirectCallback?: VoidFunction;
 }
 
-const StageConfigurationRequired: React.FC<StageConfigurationRequiredProps> = ({
+const StageConfigurationRequired: React.OldFC<StageConfigurationRequiredProps> = ({
   platformName,
   description,
   buttonText,

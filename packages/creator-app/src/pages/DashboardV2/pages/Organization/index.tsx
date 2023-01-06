@@ -11,7 +11,7 @@ import { Sidebar } from '../../components';
 import { Header } from './components';
 import { General, Members, SSO } from './pages';
 
-const MembersAndBilling: React.FC = () => {
+const MembersAndBilling: React.OldFC = () => {
   const workspace = useActiveWorkspace();
   const [canConfigureOrganization] = usePermission(Permission.CONFIGURE_ORGANIZATION);
 

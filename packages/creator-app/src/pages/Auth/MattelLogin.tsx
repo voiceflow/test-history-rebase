@@ -7,7 +7,7 @@ import * as Query from '@/utils/query';
 
 import { LoginForm, SSOLogin } from './components';
 
-const MattelLogin: React.FC<RouteComponentProps> = ({ location }) => {
+const MattelLogin: React.OldFC<RouteComponentProps> = ({ location }) => {
   const query = Query.parse(location.search);
 
   if (IS_PRIVATE_CLOUD) {

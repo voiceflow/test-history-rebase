@@ -10,7 +10,7 @@ export interface UploadAudioProps extends Pick<UploadBaseProps, 'value' | 'onCha
   renderInput?: InputRenderer;
 }
 
-const UploadAudio: React.FC<UploadAudioProps> = ({ endpoint = 'audio', onChange, renderInput, value }) => (
+const UploadAudio: React.OldFC<UploadAudioProps> = ({ endpoint = 'audio', onChange, renderInput, value }) => (
   <UploadBase
     label="audio file"
     value={value}

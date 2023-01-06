@@ -2,7 +2,7 @@ import { TimeRange } from '@voiceflow/internal';
 import { PopperTypes } from '@voiceflow/ui';
 import dayjs from 'dayjs';
 import React from 'react';
-import { RangeModifier } from 'react-day-picker';
+import { DateRange } from 'react-day-picker';
 
 import DropdownMultiselect from '@/components/DropdownMultiselect';
 import { isBuiltInRange } from '@/pages/Conversations/constants';
@@ -25,8 +25,8 @@ export interface DayPickerInputProps {
   currentRange: string;
 }
 
-const DatePicker: React.FC<DayPickerInputProps> = ({ onChange, currentRange }) => {
-  const getDefaultRange = (): RangeModifier & { enteredTo?: Date | null } => {
+const DatePicker: React.OldFC<DayPickerInputProps> = ({ onChange, currentRange }) => {
+  const getDefaultRange = (): DateRange & { enteredTo?: Date | null } => {
     if (!currentRange || isBuiltInRange(currentRange)) return initialRange;
 
     const date = currentRange.split('-');
@@ -47,7 +47,7 @@ const DatePicker: React.FC<DayPickerInputProps> = ({ onChange, currentRange }) =
     onChange(input);
   };
 
-  const setRangeInput = (range: RangeModifier) => {
+  const setRangeInput = (range: DateRange) => {
     const end = range.to ? range.to?.toLocaleDateString() : '';
     const start = range.from ? range.from?.toLocaleDateString() : '';
 

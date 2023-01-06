@@ -1,7 +1,7 @@
 declare module '*.svg' {
   import React from 'react';
 
-  const SVG: React.FC;
+  const SVG: React.OldFC;
 
   export default SVG;
 }

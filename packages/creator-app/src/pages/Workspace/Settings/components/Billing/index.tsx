@@ -5,17 +5,15 @@ import workspaceClient from '@/client/workspace';
 import { SettingsSection } from '@/components/Settings';
 import { Descriptor, TableContainer, TableHeader, TableRow } from '@/components/Table';
 import * as Session from '@/ducks/session';
-import { connect } from '@/hocs/connect';
+import { useSelector } from '@/hooks/redux';
 import { Billing } from '@/models/Billing';
 import { FadeLeftContainer } from '@/styles/animations';
 
 import CreditCardSection from './CreditCardSection';
 
-export interface BillingModalProps {
-  workspaceId: string;
-}
+const BillingModal: React.FC = () => {
+  const workspaceId = useSelector(Session.activeWorkspaceIDSelector)!;
 
-const BillingModal: React.FC<BillingModalProps> = ({ workspaceId }) => {
   const [hasPaid, setHasPaid] = React.useState(false);
   const [invoiceData, setInvoiceData] = React.useState<Billing>({ invoices: null, upcoming: null });
   const [loading, setLoading] = React.useState(false);
@@ -87,7 +85,4 @@ const BillingModal: React.FC<BillingModalProps> = ({ workspaceId }) => {
   );
 };
 
-const mapStateToProps = {
-  workspaceId: Session.activeWorkspaceIDSelector,
-};
-export default connect(mapStateToProps)(BillingModal);
+export default BillingModal;

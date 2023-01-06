@@ -9,7 +9,7 @@ interface SettingsSectionProps extends SectionProps {
   value: boolean;
 }
 
-const SettingsSection: React.FC<SettingsSectionProps> = ({ value, toggle, children, ...props }) => (
+const SettingsSection: React.OldFC<SettingsSectionProps> = ({ value, toggle, children, ...props }) => (
   <UncontrolledSection
     customHeaderStyling={{ padding: '24px 32px 8px', lineHeight: 'normal' }}
     onClick={toggle}

@@ -76,7 +76,7 @@ const DefaultState = {
 
 export const NLUQuickViewContext = React.createContext<NLUQuickViewProps>(DefaultState);
 
-export const NLUQuickViewProvider: React.FC = ({ children }) => {
+export const NLUQuickViewProvider: React.OldFC = ({ children }) => {
   const [title, setTitle] = React.useState('');
   const [isCreatingItem, setIsCreatingItem] = React.useState(false);
   const [isActiveItemRename, setIsActiveItemRename] = React.useState(false);

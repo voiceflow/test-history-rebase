@@ -9,7 +9,7 @@ export interface SimpleSectionProps extends ContainerProps {
   headerProps?: HeaderProps;
 }
 
-const SimpleSection: React.FC<SimpleSectionProps> = ({ onClick, children, headerProps, style, ...containerProps }) => (
+const SimpleSection: React.OldFC<SimpleSectionProps> = ({ onClick, children, headerProps, style, ...containerProps }) => (
   <Container onClick={onClick} {...containerProps} style={style}>
     <Header bottomUnit={2.5} {...headerProps}>
       {children}

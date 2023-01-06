@@ -7,7 +7,7 @@ import { EngineContext, NodeEntityContext } from '@/pages/Canvas/contexts';
 
 import * as S from './styles';
 
-const MarkupVideoNode: React.FC<ConnectedMarkupNodeProps<Realtime.Markup.NodeData.Video>> = React.forwardRef(({ data }, ref) => {
+const MarkupVideoNode: React.OldFC<ConnectedMarkupNodeProps<Realtime.Markup.NodeData.Video>> = React.forwardRef(({ data }, ref) => {
   const engine = React.useContext(EngineContext)!;
   const nodeEntity = React.useContext(NodeEntityContext)!;
 

@@ -14,7 +14,7 @@ const MenuItem: React.FC<MenuItemProps> = ({ name, isRoot, search, onClick, ...a
   <Dropdown menu={<Domain.Actions isRoot={isRoot} {...actionsProps} />} offset={{ offset: [-14, 24] }} placement="right-start" selfDismiss>
     {(ref, onToggle, isOpened) => (
       <Menu.Item active={isOpened} onClick={onClick}>
-        <OverflowTippyTooltip title={name} overflow>
+        <OverflowTippyTooltip content={name} overflow>
           {(ref) => (
             <>
               {isRoot && <Menu.ItemIcon ref={ref} icon="systemHome2" active={isOpened} />}

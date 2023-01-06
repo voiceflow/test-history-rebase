@@ -10,7 +10,7 @@ export interface MigrationFailedWarningProps {
   onReset: VoidFunction;
 }
 
-const MigrationFailedWarning: React.FC<MigrationFailedWarningProps> = ({ onReset }) => {
+const MigrationFailedWarning: React.OldFC<MigrationFailedWarningProps> = ({ onReset }) => {
   const goToDashboard = useDispatch(Router.goToDashboard);
 
   React.useEffect(() => {

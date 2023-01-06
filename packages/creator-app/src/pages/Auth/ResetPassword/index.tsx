@@ -4,15 +4,16 @@ import { RouteComponentProps } from 'react-router-dom';
 
 import client from '@/client';
 import * as Router from '@/ducks/router';
-import { connect } from '@/hocs/connect';
 import { useAsyncMountUnmount } from '@/hooks';
-import { ConnectedProps } from '@/types';
+import { useDispatch } from '@/hooks/realtime';
 
 import { AuthBox, AuthenticationContainer } from '../components';
 import { InvalidResetLink, ResetPasswordForm } from './components';
 import { ResetPasswordStage } from './constants';
 
-const ResetPassword: React.FC<RouteComponentProps<{ id: string }> & ConnectedResetPasswordProps> = ({ match, goToLogin }) => {
+const ResetPassword: React.FC<RouteComponentProps<{ id: string }>> = ({ match }) => {
+  const goToLogin = useDispatch(Router.goToLogin);
+
   const [stage, setStage] = React.useState(ResetPasswordStage.VALIDATING);
 
   const stages = {
@@ -69,10 +70,4 @@ const ResetPassword: React.FC<RouteComponentProps<{ id: string }> & ConnectedRes
   );
 };
 
-const mapDispatchToProps = {
-  goToLogin: Router.goToLogin,
-};
-
-type ConnectedResetPasswordProps = ConnectedProps<{}, typeof mapDispatchToProps>;
-
-export default connect(null, mapDispatchToProps)(ResetPassword);
+export default ResetPassword;

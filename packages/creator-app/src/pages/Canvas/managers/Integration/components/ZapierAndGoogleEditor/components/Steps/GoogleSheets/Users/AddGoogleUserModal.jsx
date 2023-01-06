@@ -1,13 +1,13 @@
 import * as Platform from '@voiceflow/platform-config';
 import { SvgIcon } from '@voiceflow/ui';
 import React from 'react';
+import { connect } from 'react-redux';
 
 import GoogleLoginButton from '@/components/Forms/GoogleLogin';
 import { GOOGLE_SPREADSHEETS_INTEGRATION_SCOPES } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as Integration from '@/ducks/integration';
 import { SourceType } from '@/ducks/tracking/constants';
-import { connect } from '@/hocs/connect';
 import { useTrackingEvents } from '@/hooks';
 
 const GOOGLE_SHEETS = 'Google Sheets';

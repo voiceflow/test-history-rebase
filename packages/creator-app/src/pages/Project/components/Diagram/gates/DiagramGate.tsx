@@ -1,5 +1,7 @@
+import { Utils } from '@voiceflow/common';
 import React from 'react';
-import { batch, useDispatch } from 'react-redux';
+import { flushSync } from 'react-dom';
+import { useDispatch } from 'react-redux';
 import { generatePath, matchPath } from 'react-router-dom';
 
 import { LegacyPath, Path } from '@/config/routes';
@@ -10,7 +12,7 @@ import * as Version from '@/ducks/versionV2';
 import { useSelector } from '@/hooks';
 import RedirectWithSearch from '@/Routes/RedirectWithSearch';
 
-const DiagramGate: React.FC = ({ children }) => {
+const DiagramGate: React.OldFC = ({ children }) => {
   const dispatch = useDispatch();
   const version = useSelector(Version.active.versionSelector);
   const rootDomainID = useSelector(Domain.rootDomainIDSelector);
@@ -19,7 +21,7 @@ const DiagramGate: React.FC = ({ children }) => {
   const getDomainIDByTopicID = useSelector(Domain.getDomainIDByTopicIDSelector);
 
   React.useEffect(() => {
-    if (!version || !rootDomainID) return;
+    if (!version || !rootDomainID) return Utils.functional.noop;
 
     const { pathname } = window.location;
     const { id: versionID, rootDiagramID } = version;
@@ -28,24 +30,29 @@ const DiagramGate: React.FC = ({ children }) => {
     const canvasMatch = matchPath<{ domainID: string; diagramID?: string }>(pathname, { path: Path.DOMAIN_CANVAS });
     const legacyCanvasMatch = matchPath<{ diagramID?: string }>(pathname, { path: LegacyPath.PROJECT_CANVAS });
 
-    batch(() => {
-      const diagramID = canvasMatch?.params.diagramID ?? legacyCanvasMatch?.params.diagramID ?? rootDiagramID;
-      const domainID = canvasMatch?.params.domainID ?? getDomainIDByTopicID({ topicID: diagramID }) ?? rootDomainID;
+    const diagramID = canvasMatch?.params.diagramID ?? legacyCanvasMatch?.params.diagramID ?? rootDiagramID;
+    const domainID = canvasMatch?.params.domainID ?? getDomainIDByTopicID({ topicID: diagramID }) ?? rootDomainID;
 
-      if (domainMatch && !domainMatch.params.domainID) {
-        dispatch(Router.redirectToCanvas({ domainID, diagramID, versionID }));
-      } else if (canvasMatch && !canvasMatch.params.diagramID) {
-        dispatch(Router.redirectToCanvas({ domainID, diagramID, versionID }));
-      } else if (legacyCanvasMatch) {
-        const matchedPath = generatePath(LegacyPath.PROJECT_CANVAS, legacyCanvasMatch.params);
+    // we need this hack to make sure that url is updated before we render children
+    // otherwise we will get an old url in the diagram/domain sync components
+    const frame = requestAnimationFrame(() => {
+      flushSync(() => {
+        if (domainMatch && !domainMatch.params.domainID) {
+          dispatch(Router.redirectToCanvas({ domainID, diagramID, versionID }));
+        } else if (canvasMatch && !canvasMatch.params.diagramID) {
+          dispatch(Router.redirectToCanvas({ domainID, diagramID, versionID }));
+        } else if (legacyCanvasMatch) {
+          const matchedPath = generatePath(LegacyPath.PROJECT_CANVAS, legacyCanvasMatch.params);
 
-        dispatch(Router.redirectToCanvas({ domainID, diagramID, versionID, extraPath: pathname.replace(matchedPath, '') }));
-        dispatch(Session.setActiveDomainID(domainID));
-      }
+          dispatch(Router.redirectToCanvas({ domainID, diagramID, versionID, extraPath: pathname.replace(matchedPath, '') }));
+        }
+      });
 
       dispatch(Session.setActiveDomainID(domainID));
       dispatch(Session.setActiveDiagramID(diagramID));
     });
+
+    return () => cancelAnimationFrame(frame);
   }, []);
 
   if (!version || !rootDomainID) return <RedirectWithSearch to={Path.DASHBOARD} />;

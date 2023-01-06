@@ -4,7 +4,7 @@ import { TextItalicButton, TextUnderlineButton } from '@/components/SlateEditabl
 
 import Button from './Button';
 
-const TextStyles: React.FC = () => (
+const TextStyles: React.OldFC = () => (
   <>
     <TextItalicButton component={Button} />
 

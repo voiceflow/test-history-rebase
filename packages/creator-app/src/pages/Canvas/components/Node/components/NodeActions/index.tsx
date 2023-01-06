@@ -28,7 +28,7 @@ interface NodeActionsProps {
   parentParams?: Record<string, string>;
 }
 
-const NodeActions: React.FC<NodeActionsProps> = ({ isChip, parentPath, parentParams, sourcePortID, sourceNodeID }) => {
+const NodeActions: React.OldFC<NodeActionsProps> = ({ isChip, parentPath, parentParams, sourcePortID, sourceNodeID }) => {
   const engine = React.useContext(EngineContext)!;
   const nodeEntity = React.useContext(NodeEntityContext)!;
   const isStraightLinks = React.useContext(IsStraightLinksContext)!;

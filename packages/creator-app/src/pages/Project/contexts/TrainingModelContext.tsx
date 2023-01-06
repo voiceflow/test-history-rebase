@@ -60,7 +60,7 @@ export const TrainingModelContext = React.createContext<TrainingModelContextValu
   cancelTraining: () => {},
 });
 
-export const TrainingModelProvider: React.FC = ({ children }) => {
+export const TrainingModelProvider: React.OldFC = ({ children }) => {
   const [trainingState, trainingStateApi] = useSmartReducerV2<TrainingState>({
     diff: {
       slots: { new: [], deleted: [], updated: [] },

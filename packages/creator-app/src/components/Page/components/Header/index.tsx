@@ -18,7 +18,7 @@ import * as T from './types';
 
 export * as HeaderTypes from './types';
 
-const Header: React.FC<T.Props> = ({ children, renderLogoButton, containerStyles = {} }) => (
+const Header: React.OldFC<T.Props> = ({ children, renderLogoButton, containerStyles = {} }) => (
   <S.Container style={containerStyles}>
     {renderLogoButton?.()}
 

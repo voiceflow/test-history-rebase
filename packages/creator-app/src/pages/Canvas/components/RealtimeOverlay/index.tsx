@@ -11,7 +11,7 @@ import { OverlayType } from '@/pages/Canvas/constants';
 import { RealtimeCursor } from './components';
 import { RealtimeCursorContext } from './contexts';
 
-const RealtimeCursorOverlayV2: React.FC = () => {
+const RealtimeCursorOverlayV2: React.OldFC = () => {
   const cursorContext = React.useContext(RealtimeCursorContext.Context);
   const eventualEngine = React.useContext(EventualEngineContext)!;
   const userID = useSelector(Account.userIDSelector);

@@ -21,7 +21,7 @@ interface RoleSelectProps {
   onResendInvite?: VoidFunction;
 }
 
-const RoleSelect: React.FC<RoleSelectProps> = ({ roles, isInvite, disabled, onChange, onRemove, onResendInvite }) => {
+const RoleSelect: React.OldFC<RoleSelectProps> = ({ roles, isInvite, disabled, onChange, onRemove, onResendInvite }) => {
   const onChangeViewEditRole = (role: UserRole.EDITOR | UserRole.VIEWER) => {
     const rolesToRemove = new Set([UserRole.EDITOR, UserRole.VIEWER]);
 

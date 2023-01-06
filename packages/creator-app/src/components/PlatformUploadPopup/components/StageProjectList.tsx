@@ -14,7 +14,7 @@ interface StageProjectListProps {
   onProjectSelected: (selectedProject: Project) => void;
 }
 
-const StageProjectList: React.FC<StageProjectListProps> = ({ projects, title, onFooterSubmit, footerSubmitText, onProjectSelected }) => {
+const StageProjectList: React.OldFC<StageProjectListProps> = ({ projects, title, onFooterSubmit, footerSubmitText, onProjectSelected }) => {
   return (
     <>
       <Box height={42} display="flex" mb={10} alignItems="flex-end" pl={24}>

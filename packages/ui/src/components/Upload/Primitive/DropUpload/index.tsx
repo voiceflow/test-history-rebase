@@ -2,6 +2,7 @@ import { Nullable } from '@voiceflow/common';
 import React from 'react';
 import { useDropzone } from 'react-dropzone';
 
+import { useFileTypesToMimeType } from '../../hooks';
 import { BaseInjectedWithUploadProps } from '../../types';
 import LinkUpload, { InputRenderer } from '../LinkUpload';
 import { UploadMode } from './constants';
@@ -48,14 +49,16 @@ const DropUpload: React.ForwardRefRenderFunction<HTMLDivElement, DropUploadProps
     onDropRejected,
     onSuccessClose,
     linkPlaceholder = 'File link',
-    acceptedFileTypes = [], // MIME FORMAT
+    acceptedFileTypes = [],
   },
   ref
 ) => {
   const [uploadMode, setUploadMode] = React.useState<UploadMode>(UploadMode.DROP);
 
+  const accept = useFileTypesToMimeType(acceptedFileTypes);
+
   const { getRootProps, getInputProps, isDragActive, isDragReject } = useDropzone({
-    accept: acceptedFileTypes.toString(),
+    accept,
     disabled: !!error || !!success || !!isLoading || uploadMode === UploadMode.LINK,
     onDropAccepted,
     onDropRejected,

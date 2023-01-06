@@ -21,7 +21,7 @@ export interface PrototypeStartProps {
   isModelTraining?: boolean;
 }
 
-const PrototypeStart: React.FC<PrototypeStartProps> = ({ isPublic, onStart, debug, isModelTraining, config }) => {
+const PrototypeStart: React.OldFC<PrototypeStartProps> = ({ isPublic, onStart, debug, isModelTraining, config }) => {
   const device = useSelector(Prototype.prototypeVisualDeviceSelector);
   const [, trackEventsWrapper] = useTrackingEvents();
 
@@ -54,7 +54,9 @@ const PrototypeStart: React.FC<PrototypeStartProps> = ({ isPublic, onStart, debu
           {isModelTraining ? (
             <TippyTooltip
               trigger="mouseenter"
-              html={<div style={{ textAlign: 'left', width: '179px', height: '36px' }}>Once training is complete you'll be able to start a test</div>}
+              content={
+                <div style={{ textAlign: 'left', width: '179px', height: '36px' }}>Once training is complete you'll be able to start a test</div>
+              }
               position="bottom"
             >
               <SelectVariableStateButton onStart={start} />

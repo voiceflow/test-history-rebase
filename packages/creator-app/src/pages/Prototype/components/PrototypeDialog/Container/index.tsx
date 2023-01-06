@@ -2,7 +2,7 @@ import React from 'react';
 
 import * as S from './styles';
 
-const Container: React.FC<{
+const Container: React.OldFC<{
   isPublic?: boolean;
   showPadding?: boolean;
   isMobile?: boolean;

@@ -1,6 +1,5 @@
 import { Eventual, Utils } from '@voiceflow/common';
 import { toast } from '@voiceflow/ui';
-import { batch } from 'react-redux';
 
 import { wrapReplayAction } from '@/ducks/utils';
 import { Thunk } from '@/store/types';
@@ -33,10 +32,8 @@ export const undo = (): Thunk => (dispatch, getState) => {
     return promise;
   }
 
-  batch(() => {
-    promise = Promise.all(transaction.apply.map((action) => dispatch.sync(wrapReplayAction(action)))).then(Utils.functional.noop);
-    dispatch(undoTransaction({ transactionID: transaction.id, revertID: Utils.id.cuid() }));
-  });
+  promise = Promise.all(transaction.apply.map((action) => dispatch.sync(wrapReplayAction(action)))).then(Utils.functional.noop);
+  dispatch(undoTransaction({ transactionID: transaction.id, revertID: Utils.id.cuid() }));
 
   return promise;
 };
@@ -52,10 +49,8 @@ export const redo = (): Thunk => (dispatch, getState) => {
     return promise;
   }
 
-  batch(() => {
-    promise = Promise.all(transaction.apply.map((action) => dispatch.sync(wrapReplayAction(action)))).then(Utils.functional.noop);
-    dispatch(redoTransaction({ transactionID: transaction.id, revertID: Utils.id.cuid() }));
-  });
+  promise = Promise.all(transaction.apply.map((action) => dispatch.sync(wrapReplayAction(action)))).then(Utils.functional.noop);
+  dispatch(redoTransaction({ transactionID: transaction.id, revertID: Utils.id.cuid() }));
 
   return promise;
 };

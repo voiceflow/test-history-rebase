@@ -3,7 +3,7 @@ import { Utils } from '@voiceflow/common';
 import { Checkbox, Menu as UIMenu } from '@voiceflow/ui';
 import React from 'react';
 
-interface CheckBoxItemProps {
+interface CheckBoxItemProps extends React.PropsWithChildren {
   status: BaseModels.Version.DomainStatus;
   onChange: (status: BaseModels.Version.DomainStatus) => void;
   activeStatus?: BaseModels.Version.DomainStatus;

@@ -2,29 +2,21 @@ import { TippyTooltip, TippyTooltipProps } from '@voiceflow/ui';
 import React from 'react';
 
 export const getLabelTooltip = (header: string | undefined, body: string | undefined, isGated = false): TippyTooltipProps => ({
-  html: (
-    <TippyTooltip.Complex title={header} width={200}>
-      {body}
-    </TippyTooltip.Complex>
-  ),
+  width: 232,
   style: { display: 'block', width: '100%' },
+  offset: [0, isGated ? 50 : 10],
+  content: <TippyTooltip.Complex title={header}>{body}</TippyTooltip.Complex>,
   position: 'right',
-  distance: isGated ? 50 : 10,
-  bodyOverflow: true,
 });
 
-export const getUpgradeTooltip = (
-  text: string | undefined | JSX.Element,
-  buttonText: string | undefined,
-  onClick: VoidFunction
-): TippyTooltipProps => ({
+export const getUpgradeTooltip = (text: React.ReactNode, buttonText: string | undefined, onClick: VoidFunction): TippyTooltipProps => ({
+  width: 232,
+  style: { display: 'block' },
+  offset: [0, 34],
   position: 'right',
   interactive: true,
-  style: { display: 'block' },
-  bodyOverflow: true,
-  distance: 34,
-  html: (
-    <TippyTooltip.FooterButton buttonText={buttonText || ''} width={200} onClick={onClick}>
+  content: (
+    <TippyTooltip.FooterButton buttonText={buttonText || ''} onClick={onClick}>
       {text}
     </TippyTooltip.FooterButton>
   ),

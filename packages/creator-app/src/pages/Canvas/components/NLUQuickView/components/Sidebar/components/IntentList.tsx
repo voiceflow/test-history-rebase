@@ -10,6 +10,7 @@ import * as IntentV2 from '@/ducks/intentV2';
 import * as Tracking from '@/ducks/tracking';
 import { useAsyncEffect, useDispatch, useOrderedIntents, useSelector } from '@/hooks';
 import { NLUQuickViewContext } from '@/pages/Canvas/components/NLUQuickView/context';
+import { getErrorMessage } from '@/utils/error';
 import { isBuiltInIntent } from '@/utils/intent';
 
 import { useFilteredList } from '../../../hooks';
@@ -18,7 +19,7 @@ import { SectionSection } from '.';
 import ListItem from './ListItem';
 import { SectionProps } from './types';
 
-const IntentList: React.FC<SectionProps> = ({
+const IntentList: React.OldFC<SectionProps> = ({
   search,
   selectedID,
   setActiveTab,
@@ -81,7 +82,7 @@ const IntentList: React.FC<SectionProps> = ({
         setSelectedID(newIntentID);
         setNewIntentID(newIntentID);
       } catch (e) {
-        toast.error(e);
+        toast.error(getErrorMessage(e));
       } finally {
         setIsCreatingItem(false);
       }
@@ -104,7 +105,7 @@ const IntentList: React.FC<SectionProps> = ({
       isCollapsed={!isActiveTab}
       suffix={
         isActiveTab && (
-          <TippyTooltip title="Create intent" position="top">
+          <TippyTooltip content="Create intent" position="top">
             <IconButton style={{ marginRight: -12 }} onClick={triggerCreate} variant={IconButtonVariant.BASIC} icon="plus" />
           </TippyTooltip>
         )

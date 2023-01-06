@@ -13,7 +13,7 @@ const AccountLinkingManager: NodeManagerConfig<Realtime.NodeData.AccountLinking,
   platforms: [Platform.Constants.PlatformType.ALEXA],
 
   step: AccountLinkingStep,
-  editor: AccountLinkingEditor,
+  editor: AccountLinkingEditor as any,
 };
 
 export default AccountLinkingManager;

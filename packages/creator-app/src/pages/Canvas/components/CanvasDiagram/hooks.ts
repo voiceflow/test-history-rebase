@@ -1,6 +1,5 @@
-import { TippyTooltip } from '@voiceflow/ui';
+import { TippyTooltip, useThrottledCallback } from '@voiceflow/ui';
 import React from 'react';
-import { throttle } from 'throttle-debounce';
 
 import { MovementCalculator } from '@/components/Canvas/types';
 import * as DiagramV2 from '@/ducks/diagramV2';
@@ -20,13 +19,14 @@ export const useCursorControls = () => {
 
   const [scheduler] = useRAF();
 
-  const moveMouse = React.useCallback(
-    throttle(10, (nextCoords: Point) => {
+  const moveMouse = useThrottledCallback(
+    10,
+    (nextCoords: Point) => {
       if (hasDiagramViewers && prevCoords.current !== nextCoords) {
         prevCoords.current = nextCoords;
         engine.io.cursorMove(nextCoords);
       }
-    }),
+    },
     [hasDiagramViewers]
   );
 

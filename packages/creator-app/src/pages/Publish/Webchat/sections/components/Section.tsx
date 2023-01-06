@@ -12,7 +12,7 @@ interface SectionProps {
 
 const SECTION_PREFIX = 'webchat-section_';
 
-const Section: React.FC<SectionProps> = ({ title, description, icon, children, defaultOpen = false }) => {
+const Section: React.OldFC<SectionProps> = ({ title, description, icon, children, defaultOpen = false }) => {
   const [isOpen, setIsOpen] = useLocalStorageState(SECTION_PREFIX + title, defaultOpen);
 
   return (

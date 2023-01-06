@@ -14,7 +14,7 @@ const sectionStyling = {
   paddingBottom: '24px',
 };
 
-const AccountProfile: React.FC = () => {
+const AccountProfile: React.OldFC = () => {
   const user = useSelector(Account.userSelector);
   const saveProfilePicture = useDispatch(Account.saveProfilePicture);
   const updateUserProfileImage = useDispatch(Account.updateUserProfileImage);

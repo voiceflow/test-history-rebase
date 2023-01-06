@@ -16,7 +16,7 @@ import { applySlotNameFormatting, slotNameFormatter, validateSlotName } from '@/
 import EntityForm from './components/EntityForm';
 import { MAX_HEIGHT_CALC } from './constants';
 
-const CreateModal: React.FC = () => {
+const CreateModal: React.OldFC = () => {
   const { close, data, isInStack } = useModals<{
     name: string;
     onCreate: (slot: Pick<Realtime.Slot, 'id' | 'name' | 'color'> | null) => void;

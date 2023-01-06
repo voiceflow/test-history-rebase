@@ -5,8 +5,9 @@ import { useLocation } from 'react-router-dom';
 import * as Account from '@/ducks/account';
 import * as Router from '@/ducks/router';
 import { useAsyncEffect, useDispatch, useQuery, useSelector } from '@/hooks';
+import { getErrorMessage } from '@/utils/error';
 
-const VerifySignupEmail: React.FC = () => {
+const VerifySignupEmail: React.OldFC = () => {
   const query = useQuery();
   const location = useLocation();
 
@@ -50,7 +51,7 @@ const VerifySignupEmail: React.FC = () => {
 
       toast.success('Email Successfully Verified');
     } catch (error) {
-      toast.error(`Invalid verification link: ${error?.message || 'expired or broken'}`);
+      toast.error(`Invalid verification link: ${getErrorMessage(error, 'expired or broken')}`);
     }
 
     goToOnboarding(search);

@@ -10,7 +10,7 @@ interface TableNavbarProps {
   showFindSimilarButton?: boolean;
 }
 
-const TableNavbar: React.FC<TableNavbarProps> = ({ showFindSimilarButton }) => {
+const TableNavbar: React.OldFC<TableNavbarProps> = ({ showFindSimilarButton }) => {
   const nluManager = useNLUManager();
   const selectedUtterances = React.useMemo(() => {
     const clusterUtterancesCount = Array.from(nluManager.selectedClusterIDs).reduce((acc, clusterID) => {

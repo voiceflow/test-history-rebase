@@ -12,7 +12,7 @@ export interface ConditionSelectProps {
   onChange: (value: BaseNode.Utils.ConditionsLogicInterface) => void;
 }
 
-const ConditionSelect: React.FC<ConditionSelectProps> = ({ onChange, additional = false, isLogicGroup = false }) => {
+const ConditionSelect: React.OldFC<ConditionSelectProps> = ({ onChange, additional = false, isLogicGroup = false }) => {
   const onSelect = (logicInterface: BaseNode.Utils.ConditionsLogicInterface) => () => onChange(logicInterface);
 
   return (

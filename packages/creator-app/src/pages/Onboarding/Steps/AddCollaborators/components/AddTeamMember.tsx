@@ -31,7 +31,7 @@ export interface AddTeamMembersProps {
   collaborators: CollaboratorType[];
 }
 
-const AddTeamMember: React.FC<AddTeamMembersProps> = ({ errors, collaborators, onUpdate }) => {
+const AddTeamMember: React.OldFC<AddTeamMembersProps> = ({ errors, collaborators, onUpdate }) => {
   const [focusedIndex, setFocusedIndex] = React.useState<null | number>(null);
 
   const onAdd = () => {

@@ -16,14 +16,15 @@ interface ItemProps {
   onGeneratePrompt: VoidFunction;
 }
 
-const Item: React.FC<ItemProps> = ({ entity, onClick, isActive, contentRef, intentEntity, onRemoveRequired, onGeneratePrompt }) => {
+const Item: React.OldFC<ItemProps> = ({ entity, onClick, isActive, contentRef, intentEntity, onRemoveRequired, onGeneratePrompt }) => {
   const hasError = useAreIntentPromptsEmpty(intentEntity.dialog.prompt);
   const entityReprompt = GPT.useEntityRepromptGenFeature();
 
   const errorTooltip = !entityReprompt.isEnabled
-    ? { title: 'Prompt is missing' }
+    ? { content: 'Prompt is missing' }
     : {
-        html: (
+        width: 232,
+        content: (
           <TippyTooltip.FooterButton buttonText="Generate response" onClick={() => onGeneratePrompt()}>
             Entity reprompt missing.
           </TippyTooltip.FooterButton>

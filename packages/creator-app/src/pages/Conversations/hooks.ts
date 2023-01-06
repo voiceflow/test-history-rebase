@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/common';
 import queryString from 'query-string';
 import React from 'react';
 import { useLocation } from 'react-router-dom';
@@ -17,7 +18,7 @@ export const useFilters = () => {
   const queryStartDate = queryParams[FilterTag.START_DATE];
 
   // eslint-disable-next-line no-nested-ternary
-  const tags = React.useMemo(() => (Array.isArray(queryTag) ? queryTag : queryTag ? [queryTag] : []), [queryTag]);
+  const tags = React.useMemo(() => (Array.isArray(queryTag) ? queryTag : queryTag ? [queryTag] : []).filter(Utils.array.isNotNullish), [queryTag]);
   const range = isString(queryRange) ? queryRange : '';
   const endDate = isString(queryEndDate) ? queryEndDate : '';
   const startDate = isString(queryStartDate) ? queryStartDate : '';

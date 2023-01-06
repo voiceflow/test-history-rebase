@@ -23,7 +23,7 @@ const PopperNavContainer = styled.div`
   }
 `;
 
-const ShareNavItem: React.FC<NavLinkProps> = ({ ...props }) => (
+const ShareNavItem: React.OldFC<NavLinkProps> = ({ ...props }) => (
   <PopperNavContainer>
     <Popper.NavItem {...props} />
   </PopperNavContainer>

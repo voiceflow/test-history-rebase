@@ -12,7 +12,7 @@ interface PlanBubble {
   disabled?: boolean;
 }
 
-const PlanBubble: React.FC<PlanBubble> = ({ plan, disabled }) => {
+const PlanBubble: React.OldFC<PlanBubble> = ({ plan, disabled }) => {
   const [canUpgrade] = usePermission(Permission.UPGRADE_WORKSPACE);
   const [canManageBilling] = usePermission(Permission.MANAGE_BILLING);
   const { open: openPaymentsModal } = useModals(ModalType.PAYMENT);

@@ -5,7 +5,7 @@ import Page from '@/components/Page';
 
 import * as S from './styles';
 
-const BillingHistory: React.FC = () => {
+const BillingHistory: React.OldFC = () => {
   const billingInfo = [
     '10 Nov 22',
     '10 Oct 22',

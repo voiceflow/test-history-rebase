@@ -67,7 +67,6 @@ export const ifOutPortsAdapterV2 = createOutPortsAdapterV2<NodeData.IfV2BuiltInP
     builtIn: {
       [BaseModels.PortType.NO_MATCH]: outPortDataToDB(noMatchPortData),
     },
-    // eslint-disable-next-line sonarjs/no-identical-functions
     dynamic: outPortsDataToDB(dynamic).map((dbPort, index) => {
       const expressionTitle = data.expressions[index]?.name;
 

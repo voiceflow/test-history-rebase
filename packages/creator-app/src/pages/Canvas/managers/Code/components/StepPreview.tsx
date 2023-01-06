@@ -12,7 +12,7 @@ interface CodePreviewProps {
   onOpenEditor: VoidFunction;
 }
 
-const CodePreview: React.FC<CodePreviewProps> = ({ codeData, onOpenEditor, onClose }) => {
+const CodePreview: React.OldFC<CodePreviewProps> = ({ codeData, onOpenEditor, onClose }) => {
   const [canOpenEditor] = usePermission(Permission.OPEN_EDITOR);
 
   return (

@@ -36,51 +36,34 @@ const SearchBar: React.FC = () => {
 
   const isVisible = !!search?.isVisible;
 
-  // rebuild the database every time search is opened
-  React.useEffect(() => {
-    if (!search?.isVisible) return;
+  const onChange = (option: SearchOption | null) => {
+    search?.hide();
 
-    const state = store.getState();
-    const intents = Intent.allCustomIntentsSelector(state);
-    const slots = Slot.allSlotsSelector(state);
-    const nodeData = Creator.allNodeDataSelector(state);
-    const diagrams = Diagram.allDiagramsSelector(state);
+    if (!option) return;
 
-    database.current[SearchTypes.SearchCategory.NODE] = search.syncNodeDatabases({
-      [diagramID]: SearchUtils.buildNodeDatabase(nodeData, diagramID, state),
-    });
-    database.current[SearchTypes.SearchCategory.INTENT] = SearchUtils.buildIntentDatabase(intents);
-    database.current[SearchTypes.SearchCategory.ENTITIES] = SearchUtils.buildSlotDatabase(slots);
-    Object.assign(database.current, SearchUtils.buildDiagramDatabases(diagrams));
-  }, [search?.isVisible]);
+    const { entry } = option;
 
-  const onChange = React.useCallback(
-    ({ entry }: SearchOption) => {
-      search?.hide();
-
-      if (SearchUtils.isIntentDatabaseEntry(entry)) {
-        goToIMEntity(InteractionModelTabType.INTENTS, entry.intentID);
-      } else if (SearchUtils.isSlotDatabaseEntry(entry)) {
-        goToIMEntity(InteractionModelTabType.SLOTS, entry.slotID);
-      } else if (SearchUtils.isDiagramDatabaseEntry(entry)) {
-        goToDiagram(entry.diagramID);
-      } else if (SearchUtils.isNodeDatabaseEntry(entry)) {
-        if (entry.diagramID !== diagramID) {
-          goToDiagram(entry.diagramID, entry.nodeID);
-        } else {
-          engine?.focusNode(entry.nodeID, { open: true, focusOnStep: true });
-        }
+    if (SearchUtils.isIntentDatabaseEntry(entry)) {
+      goToIMEntity(InteractionModelTabType.INTENTS, entry.intentID);
+    } else if (SearchUtils.isSlotDatabaseEntry(entry)) {
+      goToIMEntity(InteractionModelTabType.SLOTS, entry.slotID);
+    } else if (SearchUtils.isDiagramDatabaseEntry(entry)) {
+      goToDiagram(entry.diagramID);
+    } else if (SearchUtils.isNodeDatabaseEntry(entry)) {
+      if (entry.diagramID !== diagramID) {
+        goToDiagram(entry.diagramID, entry.nodeID);
+      } else {
+        engine?.focusNode(entry.nodeID, { open: true, focusOnStep: true });
       }
+    }
 
-      trackingEvents.trackSearchBarResultSelected({
-        query,
-        selected: entry.targets[0],
-        creator_id: creatorID,
-        resultList: options,
-      });
-    },
-    [diagramID, query]
-  );
+    trackingEvents.trackSearchBarResultSelected({
+      query,
+      selected: entry.targets[0],
+      creator_id: creatorID,
+      resultList: options,
+    });
+  };
 
   const createOption = React.useCallback(
     (query: string): SearchUtils.CreateOption<SearchOption> =>
@@ -112,6 +95,29 @@ const SearchBar: React.FC = () => {
     trackingEvents.trackSearchBarQuery({ query, creator_id: creatorID });
   });
 
+  const onInputChange = (value: string) => {
+    setQuery(value);
+    onKeyStroke();
+  };
+
+  // rebuild the database every time search is opened
+  React.useEffect(() => {
+    if (!search?.isVisible) return;
+
+    const state = store.getState();
+    const intents = Intent.allCustomIntentsSelector(state);
+    const slots = Slot.allSlotsSelector(state);
+    const nodeData = Creator.allNodeDataSelector(state);
+    const diagrams = Diagram.allDiagramsSelector(state);
+
+    database.current[SearchTypes.SearchCategory.NODE] = search.syncNodeDatabases({
+      [diagramID]: SearchUtils.buildNodeDatabase(nodeData, diagramID, state),
+    });
+    database.current[SearchTypes.SearchCategory.INTENT] = SearchUtils.buildIntentDatabase(intents);
+    database.current[SearchTypes.SearchCategory.ENTITIES] = SearchUtils.buildSlotDatabase(slots);
+    Object.assign(database.current, SearchUtils.buildDiagramDatabases(diagrams));
+  }, [search?.isVisible]);
+
   if (!isVisible) {
     return null;
   }
@@ -119,22 +125,14 @@ const SearchBar: React.FC = () => {
   return (
     <Container ref={search.searchBarRef}>
       <Select
-        filterOption={null}
         options={options}
         onChange={onChange}
-        onInputChange={(value: string) => {
-          setQuery(value);
-          onKeyStroke();
-        }}
-        components={{
-          Input,
-          Control,
-          IndicatorsContainer: Dropdown,
-          Menu,
-        }}
         autoFocus
+        components={{ Menu, Input, Control, IndicatorsContainer: Dropdown }}
         onKeyDown={withKeyPress(KeyName.ESCAPE, () => search?.hide())}
+        filterOption={null}
         placeholder="Find anything..."
+        onInputChange={onInputChange}
         maxMenuHeight={124}
         classNamePrefix="search"
       />

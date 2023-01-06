@@ -15,14 +15,14 @@ interface ActionButtons {
   onFullScreen: () => void;
 }
 
-const ActionButtons: React.FC<ActionButtons> = ({ onMute, onReset, isMuted, onFullScreen }) => {
+const ActionButtons: React.OldFC<ActionButtons> = ({ onMute, onReset, isMuted, onFullScreen }) => {
   const { projectType } = useSelector(prototypeSelector);
   const canSeeSoundToggle = Realtime.Utils.typeGuards.isChatProjectType(projectType);
 
   return (
     <>
       <ActionButtonContainer>
-        <TippyTooltip title="Fullscreen" hotkey="F">
+        <TippyTooltip content={<TippyTooltip.WithHotkey hotkey="F">Fullscreen</TippyTooltip.WithHotkey>}>
           <SvgIcon variant={SvgIcon.Variant.STANDARD} size={18} icon="fullscreen" clickable onClick={onFullScreen} />
         </TippyTooltip>
       </ActionButtonContainer>
@@ -34,7 +34,7 @@ const ActionButtons: React.FC<ActionButtons> = ({ onMute, onReset, isMuted, onFu
       )}
 
       <ActionButtonContainer>
-        <TippyTooltip title="Reset Test">
+        <TippyTooltip content="Reset Test">
           <SvgIcon icon="randomLoop" size={18} variant={SvgIcon.Variant.STANDARD} onClick={onReset} clickable />
         </TippyTooltip>
       </ActionButtonContainer>

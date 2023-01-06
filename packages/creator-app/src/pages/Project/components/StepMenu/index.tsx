@@ -14,7 +14,7 @@ import TopLevelButton from './TopLevelButton';
 
 const STEP_MENU_EXPANDED_LOCAL_STORAGE_KEY = 'stepMenuExpanded';
 
-const StepMenu: React.FC<{ numCollapsedSteps?: number }> = ({ numCollapsedSteps = 4 }) => {
+const StepMenu: React.OldFC<{ numCollapsedSteps?: number }> = ({ numCollapsedSteps = 4 }) => {
   const platform = useSelector(ProjectV2.active.platformSelector);
   const projectType = useSelector(ProjectV2.active.projectTypeSelector);
   const [isExpanded, toggleIsExpanded] = useLocalStorageState(STEP_MENU_EXPANDED_LOCAL_STORAGE_KEY, false);

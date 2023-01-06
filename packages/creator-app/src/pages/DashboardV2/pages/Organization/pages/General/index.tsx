@@ -1,6 +1,6 @@
 import React from 'react';
 
-const OrganizationGeneral: React.FC = () => {
+const OrganizationGeneral: React.OldFC = () => {
   return <div>General</div>;
 };
 

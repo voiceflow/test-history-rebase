@@ -13,7 +13,7 @@ import { StageComponentProps } from '@/platforms/types';
 
 import CreateNewAgentModal from './CreateNewAgentModal';
 
-const WaitDFESProjectStage: React.FC<StageComponentProps<DialogflowESPublishJob.WaitProjectStage>> = ({ updateCurrentStage, retry, cancel }) => {
+const WaitDFESProjectStage: React.OldFC<StageComponentProps<DialogflowESPublishJob.WaitProjectStage>> = ({ updateCurrentStage, retry, cancel }) => {
   const [projects, setProjects] = React.useState<UploadProject.Dialogflow[]>([]);
   const [dialogflowProjectID, setDialogflowProjectID] = React.useState('');
   const projectList = projects.map((project) => ({ id: project.googleProjectID, name: project.agentName }));

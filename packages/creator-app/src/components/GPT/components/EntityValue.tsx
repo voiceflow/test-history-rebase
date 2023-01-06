@@ -18,7 +18,7 @@ interface GPTEntityValueProps {
   activeIndex?: number;
 }
 
-const GPTEntityValue: React.FC<GPTEntityValueProps> = ({ index, input, onFocus, isActive, onChange, onReject, activeIndex }) => {
+const GPTEntityValue: React.OldFC<GPTEntityValueProps> = ({ index, input, onFocus, isActive, onChange, onReject, activeIndex }) => {
   const [ref] = useAutoScrollNodeIntoView<HTMLDivElement>({ condition: isActive, options: { block: 'nearest' } }, [isActive, activeIndex]);
 
   const popper = usePopper({

@@ -16,7 +16,7 @@ export interface IdentityContextValue {
 
 export const IdentityContext = React.createContext<IdentityContextValue | null>(null);
 
-export const IdentityProvider: React.FC = ({ children }) => {
+export const IdentityProvider: React.OldFC = ({ children }) => {
   const activePlan = useSelector(WorkspaceV2.active.planSelector);
   const activeRole = useSelector(WorkspaceV2.active.userRoleSelector);
   const organizationTrialExpired = useSelector(WorkspaceV2.active.organizationTrialExpired);

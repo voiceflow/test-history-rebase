@@ -9,7 +9,7 @@ export { PageProgress };
 const FORCE_STOP_TIMEOUT = 10000;
 const MAX_LOADING_TIME_SECONDS = 5;
 
-const RootPageProgressBar: React.FC = () => {
+const RootPageProgressBar: React.OldFC = () => {
   const [progress, setProgress] = React.useState<number>(-1);
   const [isStarted, toggleStarted] = useToggle(false);
   const [forceUpdate, forceUpdateKey] = useForceUpdate();

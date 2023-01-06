@@ -8,7 +8,7 @@ import WhatsApp from '@/platforms/whatsapp/jobs/prototype';
 import RunButton from './button';
 import { useRunPrototype } from './hooks';
 
-export const DefaultRun: React.FC<React.ComponentProps<typeof RunButton>> = (props) => {
+export const DefaultRun: React.OldFC<React.ComponentProps<typeof RunButton>> = (props) => {
   const run = useRunPrototype();
 
   return <RunButton onClick={run} {...props} />;

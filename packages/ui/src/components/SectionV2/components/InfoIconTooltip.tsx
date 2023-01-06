@@ -18,18 +18,11 @@ const StyledIcon = styled(SvgIcon).attrs({ size: 16, icon: 'info' })<{ opened?: 
     `}
 `;
 
-const InfoIconTooltip: React.FC<Omit<TippyTooltipProps, 'html'>> = ({ children, interactive, bodyOverflow = true, ...props }) => {
+const InfoIconTooltip: React.OldFC<Omit<TippyTooltipProps, 'content'>> = ({ children, interactive, ...props }) => {
   const [isOpen, setIsOpen] = React.useState(false);
 
   return (
-    <TippyTooltip
-      {...props}
-      html={(children as any) ?? undefined}
-      onShow={() => setIsOpen(true)}
-      onHide={() => setIsOpen(false)}
-      interactive={interactive}
-      bodyOverflow={bodyOverflow}
-    >
+    <TippyTooltip {...props} onShow={() => setIsOpen(true)} onHide={() => setIsOpen(false)} content={children} interactive={interactive}>
       <StyledIcon opened={isOpen} />
     </TippyTooltip>
   );

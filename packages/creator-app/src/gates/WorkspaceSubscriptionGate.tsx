@@ -7,7 +7,7 @@ import { useDispatch, useSelector, useWorkspaceSubscription } from '@/hooks';
 
 import WorkspaceOrProjectLoader from './WorkspaceOrProjectLoader';
 
-const WorkspaceSubscriptionGate: React.FC = ({ children }) => {
+const WorkspaceSubscriptionGate: React.OldFC = ({ children }) => {
   const workspaceID = useSelector(Session.activeWorkspaceIDSelector);
   const setLoadingProjects = useDispatch(UI.setLoadingProjects);
 

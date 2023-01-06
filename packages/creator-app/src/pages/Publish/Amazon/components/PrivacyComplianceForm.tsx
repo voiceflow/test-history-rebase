@@ -18,7 +18,7 @@ const hasAdsSelector = createSelector([VersionV2.active.alexa.publishingSelector
 const instructionsSelector = createSelector([VersionV2.active.alexa.publishingSelector], (publishing) => publishing?.instructions ?? '');
 const forExportSelector = createSelector([VersionV2.active.alexa.publishingSelector], (publishing) => !!publishing?.forExport);
 
-const PrivacyComplianceForm: React.FC = () => {
+const PrivacyComplianceForm: React.OldFC = () => {
   const hasPurchase = useSelector(hasPurchaseSelector);
   const saveHasPurchase = useDispatch((hasPurchase: boolean) => Version.alexa.patchPublishing({ hasPurchase }));
 
@@ -74,7 +74,7 @@ const PrivacyComplianceForm: React.FC = () => {
           minRows={3}
           maxRows={3}
           placeholder="Any Particular Testing Instructions for Amazon Approval Process"
-          style={{ minHeight: '94px', maxHeight: '94px' }}
+          style={{ height: 94 }}
           value={instructions}
           onChange={withTargetValue(setInstructions)}
           onBlur={saveInstructions}
@@ -88,7 +88,7 @@ const PrivacyComplianceForm: React.FC = () => {
 
 export default PrivacyComplianceForm;
 
-export const PrivacyComplianceDescription: React.FC = () => (
+export const PrivacyComplianceDescription: React.OldFC = () => (
   <>
     <div className="publish-info">
       <p className="helper-text">

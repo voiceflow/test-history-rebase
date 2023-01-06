@@ -10,6 +10,7 @@ import { Store } from '@/store/types';
 export interface StoreProviderProps {
   logux: Client;
   store: Store;
+  children: React.ReactNode;
   persistor: Persistor;
 }
 

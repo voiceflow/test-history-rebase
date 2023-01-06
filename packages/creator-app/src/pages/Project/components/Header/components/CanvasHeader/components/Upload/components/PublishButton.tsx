@@ -7,11 +7,11 @@ interface GeneralUploadButtonProps {
   onClick: () => any;
 }
 
-const PublishButton: React.FC<GeneralUploadButtonProps> = ({ loading, progress, onClick }) => {
+const PublishButton: React.OldFC<GeneralUploadButtonProps> = ({ loading, progress, onClick }) => {
   return (
     <TippyTooltip
       disabled={!loading}
-      html={
+      content={
         <>
           Publishing:
           <Text ml="7px" color="rgba(255, 255, 255, 0.59)">

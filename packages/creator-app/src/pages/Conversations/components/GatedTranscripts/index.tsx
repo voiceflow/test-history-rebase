@@ -9,7 +9,7 @@ import { useModals, useTrackingEvents } from '@/hooks';
 
 import { SvgShadow, TranscriptsBackgroundContainer, UpgradeBox } from './components';
 
-const GatedTranscripts: React.FC = () => {
+const GatedTranscripts: React.OldFC = () => {
   const { open: openPaymentModal } = useModals<{ planType: PlanType }>(ModalType.PAYMENT);
   const [trackingEvents] = useTrackingEvents();
   trackingEvents.trackUpgradePrompt({ promptType: UpgradePrompt.TRANSCRIPTS });

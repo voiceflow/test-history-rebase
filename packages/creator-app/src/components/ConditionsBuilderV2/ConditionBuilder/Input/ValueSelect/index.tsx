@@ -17,7 +17,7 @@ export interface ConditionValueSelectProps {
   onBlur: VoidFunction;
 }
 
-const ConditionValueSelect: React.FC<ConditionValueSelectProps> = ({ value = '', onChange, onClose, onFocus, onBlur }) => {
+const ConditionValueSelect: React.OldFC<ConditionValueSelectProps> = ({ value = '', onChange, onClose, onFocus, onBlur }) => {
   const inputRef = React.useRef<VariablesInputRef>(null);
   const [error, setError, resetError] = useEnableDisable(false);
   const [show, onShow, onHide] = useEnableDisable(false);

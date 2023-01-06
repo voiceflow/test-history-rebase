@@ -11,7 +11,7 @@ import { useSecretsManager } from '../hooks';
 import { secretsConfig } from './constants';
 import * as S from './styles';
 
-const MicrosoftTeams: React.FC = () => {
+const MicrosoftTeams: React.OldFC = () => {
   const secrets = React.useMemo(() => secretsConfig.map(({ secretTag }) => secretTag), [secretsConfig]);
 
   const projectID = useSelector(Session.activeProjectIDSelector)!;

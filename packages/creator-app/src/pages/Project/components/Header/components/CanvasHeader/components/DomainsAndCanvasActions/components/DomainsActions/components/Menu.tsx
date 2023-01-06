@@ -17,7 +17,7 @@ interface MenuProps {
   onClose: VoidFunction;
 }
 
-const Menu: React.FC<MenuProps> = ({ onClose }) => {
+const Menu: React.OldFC<MenuProps> = ({ onClose }) => {
   const editModal = ModalsV2.useModal(ModalsV2.Domain.Edit);
   const deleteModal = ModalsV2.useModal(ModalsV2.Domain.Delete);
   const createModal = ModalsV2.useModal(ModalsV2.Domain.Create);

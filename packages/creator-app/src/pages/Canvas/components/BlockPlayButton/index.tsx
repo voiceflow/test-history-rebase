@@ -10,7 +10,7 @@ interface PlayButtonProps {
   palette: HSLShades;
 }
 
-const BlockPlayButton: React.FC<PlayButtonProps> = ({ nodeID, palette }) => (
+const BlockPlayButton: React.OldFC<PlayButtonProps> = ({ nodeID, palette }) => (
   <S.Container>
     <PlayButton nodeID={nodeID} color={palette[700]} />
   </S.Container>

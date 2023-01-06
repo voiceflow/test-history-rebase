@@ -20,7 +20,7 @@ export interface SpinnerProps {
   fillContainer?: boolean;
 }
 
-const Spinner: React.FC<SpinnerProps> = ({ message, name, isMd, color, className, borderLess, fillContainer = false }) => (
+const Spinner: React.OldFC<SpinnerProps> = ({ message, name, isMd, color, className, borderLess, fillContainer = false }) => (
   <div
     className={cn('text-center', className)}
     style={fillContainer ? { width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' } : {}}

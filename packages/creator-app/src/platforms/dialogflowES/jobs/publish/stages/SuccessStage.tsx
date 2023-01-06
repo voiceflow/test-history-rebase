@@ -5,7 +5,7 @@ import { DIALOGFLOW_ES_LEARN_MORE, getDialogflowESAgentUrl } from '@/constants/p
 import { DialogflowESPublishJob, JobStageData } from '@/models';
 import { StageComponentProps } from '@/platforms/types';
 
-const SuccessStage: React.FC<StageComponentProps<DialogflowESPublishJob.SuccessStage>> = ({ stage }) => {
+const SuccessStage: React.OldFC<StageComponentProps<DialogflowESPublishJob.SuccessStage>> = ({ stage }) => {
   const { googleProjectID: dialogflowProjectID } = stage.data as JobStageData<DialogflowESPublishJob.SuccessStage>;
 
   return (

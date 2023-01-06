@@ -29,7 +29,7 @@ const SearchPlaceholders = {
   },
 };
 
-const Sidebar: React.FC = () => {
+const Sidebar: React.OldFC = () => {
   const { close: closeNLUQuickviewModal } = useModals(ModalType.NLU_MODEL_QUICK_VIEW);
   const { setTitle } = React.useContext(NLUQuickViewContext);
   const { activeTab, setActiveTab, selectedID, setSelectedID, isActiveItemRename, setIsActiveItemRename } = React.useContext(NLUQuickViewContext);

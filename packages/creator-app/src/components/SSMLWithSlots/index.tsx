@@ -22,7 +22,7 @@ interface SSMLWithSlotsProps {
   onChangeVoice: (newVoice: string) => void;
 }
 
-export const SSMLWithSlots: React.FC<SSMLWithSlotsProps> = ({ voice, slots, autofocus, ...props }) => {
+export const SSMLWithSlots: React.OldFC<SSMLWithSlotsProps> = ({ voice, slots, autofocus, ...props }) => {
   const projectTypeConfig = useActiveProjectTypeConfig();
 
   const ssmlRef = React.useRef<{ forceFocusToTheEnd: VoidFunction } | null>(null);

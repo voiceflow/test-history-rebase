@@ -6,7 +6,7 @@ import { EngineContext } from '@/pages/Canvas/contexts';
 import MergePreview from './components/MergePreview';
 import { useMergeLayerAPI } from './hooks';
 
-const MergeLayer: React.FC = () => {
+const MergeLayer: React.OldFC = () => {
   const ref = React.useRef<HTMLDivElement | null>(null);
   const engine = React.useContext(EngineContext)!;
   const api = useMergeLayerAPI(ref);

@@ -1,6 +1,5 @@
-import { SvgIcon } from '@voiceflow/ui';
+import { SvgIcon, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
-import { Tooltip } from 'react-tippy';
 import { withProps } from 'recompose';
 
 import { styled } from '@/hocs/styled';
@@ -30,11 +29,11 @@ export const ButtonContainer = styled.div<{ disabled?: boolean }>`
   }
 `;
 
-const InteractiveIcon: React.FC<InteractiveIconProps> = ({ onClick, icon, disabled, className, message }) => (
+const InteractiveIcon: React.OldFC<InteractiveIconProps> = ({ onClick, icon, disabled, className, message }) => (
   <ButtonContainer onClick={onClick} disabled={disabled} className={className}>
-    <Tooltip title={message}>
+    <TippyTooltip content={message}>
       <SvgIcon color="#fff" icon={icon as any} size={11} />
-    </Tooltip>
+    </TippyTooltip>
   </ButtonContainer>
 );
 

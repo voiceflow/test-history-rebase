@@ -12,7 +12,7 @@ interface LogoButtonProps {
   withBorder?: boolean;
 }
 
-const LogoButton: React.FC<LogoButtonProps> = ({ options, expandable = true, noMargins = false, withBorder = true, style }) => (
+const LogoButton: React.OldFC<LogoButtonProps> = ({ options, expandable = true, noMargins = false, withBorder = true, style }) => (
   <Box.Flex mr={noMargins ? 0 : 16} height="100%" style={style}>
     <Dropdown options={options} offset={{ offset: [16, 6] }} menuWidth={240} maxVisibleItems={options.length}>
       {(ref, onToggle, isOpened) => (

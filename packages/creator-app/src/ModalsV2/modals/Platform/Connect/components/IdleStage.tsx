@@ -16,7 +16,7 @@ const getStageTitle = Utils.platform.createPlatformSelector<string>(
   'connect to voiceflow'
 );
 
-const IdleStage: React.FC<IdleStageProps> = ({ platform }) => (
+const IdleStage: React.OldFC<IdleStageProps> = ({ platform }) => (
   <>
     <Modal.Header>{getStageTitle(platform)}</Modal.Header>
 

@@ -13,7 +13,7 @@ import * as Sentry from '@/vendors/sentry';
 
 import { AIAssistSection } from './components';
 
-const GeneralSettingsPage: React.FC = () => {
+const GeneralSettingsPage: React.OldFC = () => {
   const workspace = useActiveWorkspace()!;
 
   const isIdentityWorkspaceEnabled = useSelector(Feature.isFeatureEnabledSelector)(Realtime.FeatureFlag.IDENTITY_WORKSPACE);

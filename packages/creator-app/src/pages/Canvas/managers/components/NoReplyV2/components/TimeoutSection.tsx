@@ -12,7 +12,7 @@ interface TimeoutSectionProps {
   onChange: (timeout: number) => void;
 }
 
-const TimeoutSection: React.FC<TimeoutSectionProps> = ({ timeout: propTimeout, onChange: onChangeProp }) => {
+const TimeoutSection: React.OldFC<TimeoutSectionProps> = ({ timeout: propTimeout, onChange: onChangeProp }) => {
   const platformConfig = useActiveProjectPlatformConfig();
 
   const isDelayEditable = Realtime.Utils.typeGuards.isPlatformWithEditableNoReplyDelay(platformConfig.type);
@@ -31,7 +31,7 @@ const TimeoutSection: React.FC<TimeoutSectionProps> = ({ timeout: propTimeout, o
   return (
     <SectionV2.SimpleSection isAccent>
       <BoxFlex>
-        <TippyTooltip title={`This value is not editable as it's defined by ${platformConfig.name}`} disabled={isDelayEditable}>
+        <TippyTooltip content={`This value is not editable as it's defined by ${platformConfig.name}`} disabled={isDelayEditable}>
           <BoxFlex width={52}>
             <Input
               value={timeout}

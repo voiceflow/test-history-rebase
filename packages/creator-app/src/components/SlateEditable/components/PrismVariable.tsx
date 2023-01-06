@@ -6,7 +6,7 @@ import VariablesPopper from './VariablesPopper';
 
 const STYLE: React.CSSProperties = { fontWeight: 600 };
 
-const PrismVariable: React.FC<RenderLeafProps> = (props) => {
+const PrismVariable: React.OldFC<RenderLeafProps> = (props) => {
   const [textNode, setTextNode] = React.useState<HTMLSpanElement | null>(null);
 
   return (

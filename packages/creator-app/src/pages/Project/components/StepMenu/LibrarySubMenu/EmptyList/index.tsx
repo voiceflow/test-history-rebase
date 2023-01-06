@@ -9,7 +9,7 @@ interface EmptyListProps {
   docLink?: string;
 }
 
-const EmptyList: React.FC<EmptyListProps> = ({ entityName, docLink }) => (
+const EmptyList: React.OldFC<EmptyListProps> = ({ entityName, docLink }) => (
   <Text color={THEME.colors.secondary} fontSize={THEME.fontSizes.s}>
     No {entityName} exist. {docLink && <Link onClick={onOpenInternalURLInANewTabFactory(docLink)}>Learn more</Link>}
   </Text>

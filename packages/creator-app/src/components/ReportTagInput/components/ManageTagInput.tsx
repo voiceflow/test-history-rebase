@@ -13,7 +13,7 @@ interface ManageTagInputProps {
   selectedTags: string[];
 }
 
-const ManageTagInput: React.FC<ManageTagInputProps> = ({ selectedTags }) => {
+const ManageTagInput: React.OldFC<ManageTagInputProps> = ({ selectedTags }) => {
   const currentTranscriptID = useSelector(currentTranscriptIDSelector);
 
   const dispatchAddTag = useDispatch(addTag);

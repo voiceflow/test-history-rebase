@@ -94,12 +94,12 @@ const ColorPicker = ({
       </SaturationContainer>
 
       <HueContainer>
-        <Hue onChange={props.onChange} pointer={() => <PickerPointer />} {...props} />
+        <Hue onChange={props.onChange} pointer={PickerPointer} {...props} />
       </HueContainer>
 
       {alphaSlider && (
         <AlphaContainer>
-          <Alpha onChange={props.onChange} pointer={() => <PickerPointer />} {...props} />
+          <Alpha onChange={props.onChange} pointer={PickerPointer} {...props} />
         </AlphaContainer>
       )}
 

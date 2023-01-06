@@ -8,7 +8,7 @@ import { useSelector } from '@/hooks';
 
 import CanvasIconMenu from './CanvasIconMenu';
 
-const SettingsSidebar: React.FC = () => {
+const SettingsSidebar: React.OldFC = () => {
   const versionID = useSelector(Session.activeVersionIDSelector)!;
 
   return (

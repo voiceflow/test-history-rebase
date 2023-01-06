@@ -1,6 +1,6 @@
+import { TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 import Select from 'react-select';
-import { Tooltip } from 'react-tippy';
 
 import { equalsIcon } from '@/assets';
 import VariablesInput from '@/components/VariablesInput';
@@ -33,13 +33,12 @@ const RetrieveData = ({ headers_list, onChange, headers_loading, data, openNextS
           placeholder="Column"
         />
       </div>
-      <Tooltip
-        title="The value to match in the selected column. Leaving this blank will select a random row in the spreadsheet"
+      <TippyTooltip
+        content="The value to match in the selected column. Leaving this blank will select a random row in the spreadsheet"
         position="bottom"
-        theme="block"
       >
         <img src={equalsIcon} alt="comment" className="mr-2 ml-2" width="10px" />
-      </Tooltip>
+      </TippyTooltip>
       <div className="column-input" style={{ width: '45%' }}>
         <VariablesInput
           key={JSON.stringify(!!data.match_value)}

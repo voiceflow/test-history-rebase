@@ -1,6 +1,6 @@
 import { LoguxControlMap, LoguxControlOptions } from '@socket-utils/control';
 import type { SocketServer } from '@socket-utils/server';
-import Logger from '@voiceflow/logger';
+import { Logger } from '@voiceflow/logger';
 
 export interface ServiceManagerOptions<C> {
   config: C;

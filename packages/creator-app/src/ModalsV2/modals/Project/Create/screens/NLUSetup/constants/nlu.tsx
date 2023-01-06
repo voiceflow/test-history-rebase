@@ -16,13 +16,9 @@ const buildOption = (nluConfig: NLU.Base.Config): Option => ({
   name: nluConfig.name,
   permission: nluConfig.permission,
   labelTooltip: {
-    html: (
-      <TippyTooltip.Complex title={nluConfig.tooltip.title} width={200}>
-        {nluConfig.tooltip.description}
-      </TippyTooltip.Complex>
-    ),
+    width: 232,
+    content: <TippyTooltip.Complex title={nluConfig.tooltip.title}>{nluConfig.tooltip.description}</TippyTooltip.Complex>,
     position: 'right',
-    bodyOverflow: true,
   },
 });
 

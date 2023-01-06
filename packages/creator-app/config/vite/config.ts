@@ -46,14 +46,6 @@ export default defineConfig({
       plugins: [
         ...(config.optimizeDeps?.esbuildOptions?.plugins || []),
         esbuildResolveFixup({
-          match: /react-virtualized/,
-          resolvePath: '../../node_modules/react-virtualized/dist/umd/react-virtualized.js',
-        }),
-        esbuildResolveFixup({
-          match: /idb-keyval/,
-          resolvePath: '../../node_modules/idb-keyval/dist/index.js',
-        }),
-        esbuildResolveFixup({
           match: /xmlhttprequest-ssl/,
           resolvePath: './config/vite/polyfills/XMLHttpRequest.js',
         }),

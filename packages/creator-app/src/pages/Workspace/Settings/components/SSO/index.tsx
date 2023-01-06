@@ -26,7 +26,7 @@ const DEFAULT_STATE: SAMLProvider = {
   organizationID: '',
 };
 
-const SSOPage: React.FC = () => {
+const SSOPage: React.OldFC = () => {
   const organizationID = useSelector(WorkspaceV2.active.organizationIDSelector);
   const [initializing, toggleInitializing] = useToggle(true);
   const [loading, toggleLoading] = useToggle(false);

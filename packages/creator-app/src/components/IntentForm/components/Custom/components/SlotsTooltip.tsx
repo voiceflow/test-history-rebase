@@ -1,7 +1,7 @@
 import { Tooltip } from '@voiceflow/ui';
 import React from 'react';
 
-const SlotsTooltip: React.FC = () => (
+const SlotsTooltip: React.OldFC = () => (
   <>
     <Tooltip.Section marginBottomUnits={2}>
       Entities are best described as variables within an utterance. They help us pick out important pieces of information from a sentence that we can

@@ -1,5 +1,3 @@
-import { down } from 'styled-breakpoints';
-
 import { css, styled } from '@/hocs/styled';
 import { FadeDownDelayed } from '@/styles/animations';
 
@@ -51,7 +49,7 @@ const ModalContainer = styled.section<ModalContainerProps>`
   z-index: ${({ theme }) => theme.zIndex.modal};
   pointer-events: all;
 
-  ${down('sm')} {
+  @media (max-width: 576px) {
     left: 0;
     top: 0;
     margin: 0.5em auto;

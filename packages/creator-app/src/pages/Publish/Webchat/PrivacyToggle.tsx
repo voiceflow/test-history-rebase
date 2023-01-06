@@ -6,7 +6,7 @@ import * as Project from '@/ducks/project';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { useDispatch, useSelector, useTrackingEvents } from '@/hooks';
 
-const PrivacyToggle: React.FC = () => {
+const PrivacyToggle: React.OldFC = () => {
   const projectID = useSelector(ProjectV2.active.idSelector)!;
   const project = useSelector(ProjectV2.active.projectSelector)!;
   const updateProject = useDispatch(Project.updateProjectAPIPrivacy);
@@ -32,7 +32,7 @@ const PrivacyToggle: React.FC = () => {
     <Portal portalNode={document.body}>
       <Box position="fixed" top={22} right={32}>
         <TippyTooltip
-          title={isPublic ? 'Widget enabled and visible to website visitors' : 'Widget disabled and hidden from website visitors'}
+          content={isPublic ? 'Widget enabled and visible to website visitors' : 'Widget disabled and hidden from website visitors'}
           position="bottom"
           hideOnClick={false}
         >

@@ -8,7 +8,7 @@ interface DownloadProps {
   stageData: JobStageData<AlexaExportJob.SuccessStage> | JobStageData<GoogleExportJob.SuccessStage> | JobStageData<GeneralExportJob.SuccessStage>;
 }
 
-const Download: React.FC<DownloadProps> = ({ cancel, stageData }) => {
+const Download: React.OldFC<DownloadProps> = ({ cancel, stageData }) => {
   useSetup(() => {
     download(stageData.fileName, stageData.data, DataTypes.JSON);
     toast.success('Code successfully exported ');

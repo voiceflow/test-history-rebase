@@ -10,7 +10,7 @@ export interface PhrasesFormProps {
   advanceStep: VoidFunction;
 }
 
-const PhrasesForm: React.FC<PhrasesFormProps> = ({ advanceStep }) => {
+const PhrasesForm: React.OldFC<PhrasesFormProps> = ({ advanceStep }) => {
   const [editingPhrase, setEditingPhrase] = useState<{ value: string; index: number | null }>({ value: '', index: null });
   const { product, patchProduct } = React.useContext(ProductContext)!;
 

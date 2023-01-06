@@ -52,7 +52,7 @@ export interface SpeakAudioListProps {
   onChangeRandomize?: (newRandomize: boolean) => void;
 }
 
-const SpeakAudioList: React.FC<SpeakAudioListProps> = ({
+const SpeakAudioList: React.OldFC<SpeakAudioListProps> = ({
   items,
   itemName = 'outputs',
   children,

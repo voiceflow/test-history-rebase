@@ -37,7 +37,7 @@ export const LoadCircle = styled.span<LoaderProps>`
   animation: spin 1s linear infinite;
 `;
 
-const Loader: React.FC<LoaderProps> = ({ className, ...props }) => (
+const Loader: React.OldFC<LoaderProps> = ({ className, ...props }) => (
   <LoadContainer className={cn(ClassName.LOADER, className)} {...props}>
     <LoadCircle color={props.color} {...props} />
   </LoadContainer>

@@ -9,7 +9,7 @@ import { useAlexaExportStageContent } from './stages';
 
 export { default as AlexaUploadLink } from './components/AlexaUploadLink';
 
-const AlexaExport: React.FC = () => {
+const AlexaExport: React.OldFC = () => {
   const exportContext = React.useContext(ExportContext)!;
   const stageType = exportContext?.job?.stage?.type;
   const Content = useAlexaExportStageContent(stageType);

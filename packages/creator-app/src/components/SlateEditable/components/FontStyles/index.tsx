@@ -9,7 +9,7 @@ import { useEditorHotkey } from '../../hooks';
 import { FormGroup } from './components';
 import { Font, FONT_WEIGHTS_LABELS, FONT_WEIGHTS_PER_FONT_FAMILY, FONTS_LABELS, FontWeight } from './constants';
 
-const FontStyles: React.FC = () => {
+const FontStyles: React.OldFC = () => {
   const editor = useSlateEditor();
 
   const fontFamily = EditorAPI.textProperty(editor, TextProperty.FONT_FAMILY, Font.OPEN_SANS);

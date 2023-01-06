@@ -23,7 +23,7 @@ interface IntentListProps {
   searchMatchValue: string;
 }
 
-const IntentList: React.FC<IntentListProps> = ({ isRoot, isSearch, isActive, diagramID, menuItems, focusedNodeID, searchMatchValue }) => {
+const IntentList: React.OldFC<IntentListProps> = ({ isRoot, isSearch, isActive, diagramID, menuItems, focusedNodeID, searchMatchValue }) => {
   const reorderMenuNode = useDispatch(Diagram.reorderMenuNode);
 
   const getItemKey = useConst((item: TopicMenuItem) => item.nodeID);

@@ -7,6 +7,6 @@ interface StreamProps extends Omit<BaseMessageProps, 'iconProps'> {
   duration?: number;
 }
 
-const Stream: React.FC<StreamProps> = ({ audio, duration, ...props }) => <BaseMessage {...props}>{audio}</BaseMessage>;
+const Stream: React.OldFC<StreamProps> = ({ audio, duration, ...props }) => <BaseMessage {...props}>{audio}</BaseMessage>;
 
 export default Stream;

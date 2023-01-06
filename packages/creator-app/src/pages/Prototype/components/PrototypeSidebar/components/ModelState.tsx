@@ -17,7 +17,7 @@ enum DonutKey {
   UNTRAINED = 'UNTRAINED',
 }
 
-const ModelState: React.FC<ModelStateProps> = ({ diff, trainedModel, lastTrainedTime }) => {
+const ModelState: React.OldFC<ModelStateProps> = ({ diff, trainedModel, lastTrainedTime }) => {
   const data = React.useMemo(() => {
     const updatedDeletedSlotsCount = diff.slots.deleted.length + diff.slots.updated.length;
     const updatedDeletedIntentsCount = diff.intents.deleted.length + diff.intents.updated.length;

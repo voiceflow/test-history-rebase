@@ -13,7 +13,7 @@ interface ChooseTypeProps {
   onClose: VoidFunction;
 }
 
-const ChooseType: React.FC<ChooseTypeProps> = ({ name: nameProp, image: imageProp, onNext: onNextProp, screen: screenProp }) => {
+const ChooseType: React.OldFC<ChooseTypeProps> = ({ name: nameProp, image: imageProp, onNext: onNextProp, screen: screenProp }) => {
   const [name, setName] = useLinkedState(nameProp);
   const [image, setImage] = useLinkedState<string | null>(imageProp);
   const [screen, setScreen] = useLinkedState(screenProp);

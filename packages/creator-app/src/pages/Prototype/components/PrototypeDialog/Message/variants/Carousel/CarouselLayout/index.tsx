@@ -24,7 +24,7 @@ const CARDS_GAP = 16;
 const CARDS_WIDTH = 242;
 const VIEWPORT_PADDING = 24;
 
-const MessageVariantCarouselCarouselLayout: React.FC<MessageVariantCarouselCarouselLayoutProps> = ({
+const MessageVariantCarouselCarouselLayout: React.OldFC<MessageVariantCarouselCarouselLayoutProps> = ({
   cards,
   onInteraction,
   color,

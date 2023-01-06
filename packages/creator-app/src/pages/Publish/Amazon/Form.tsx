@@ -56,7 +56,7 @@ interface PublishAmazonFormProps {
   onPublish: VoidFunction;
 }
 
-const PublishAmazonForm: React.FC<PublishAmazonFormProps> = () => {
+const PublishAmazonForm: React.OldFC<PublishAmazonFormProps> = () => {
   const [saving, setSaving] = React.useState(false);
   const [idCollapse, setIdCollapse] = React.useState(false);
 

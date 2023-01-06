@@ -8,7 +8,7 @@ export type LabelProps = TextProps & {
   inline?: boolean;
 };
 
-const Label: React.FC<LabelProps> = ({ color = '#62778c', fontSize = 15, fontWeight = 600, inline = false, children, ...props }) =>
+const Label: React.OldFC<LabelProps> = ({ color = '#62778c', fontSize = 15, fontWeight = 600, inline = false, children, ...props }) =>
   inline ? (
     <Text fontWeight={fontWeight} color={color} fontSize={fontSize} {...props}>
       {children}

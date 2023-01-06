@@ -7,7 +7,7 @@ interface InlineBackButtonProps {
   onClick: VoidFunction;
 }
 
-const InlineBackButton: React.FC<InlineBackButtonProps> = ({ onClick }) => (
+const InlineBackButton: React.OldFC<InlineBackButtonProps> = ({ onClick }) => (
   <Box ml={18} mr={8}>
     <IconButton icon="largeArrowLeft" isSmall onClick={onClick} />
   </Box>

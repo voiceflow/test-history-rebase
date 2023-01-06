@@ -10,7 +10,7 @@ export type HotkeysContextValue = readonly [HotkeysReducerState, SmartReducerAPi
 
 export const HotkeysContext = React.createContext<HotkeysContextValue | null>(null);
 
-export const HotkeysContextProvider: React.FC = ({ children }) => {
+export const HotkeysContextProvider: React.OldFC = ({ children }) => {
   const api = useSmartReducerV2<HotkeysReducerState>({
     disableCanvasCloseMode: [],
     disableCanvasNodeDelete: [],

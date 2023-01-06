@@ -98,7 +98,7 @@ export const {
   Consumer: ActionsRouteMatchConsumer,
 } = createSelectorContext(Router.actionsMatchSelector);
 
-export const ReduxContextsProviders: React.FC = ({ children }) => (
+export const ReduxContextsProviders: React.OldFC = ({ children }) => (
   <FullScreenModeProvider>
     <IsCanvasOnlyProvider>
       <IsCreatorMenuHiddenProvider>

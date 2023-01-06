@@ -7,7 +7,7 @@ interface BackdropProps {
   closePrevented?: boolean;
 }
 
-const Backdrop: React.FC<BackdropProps> = ({ onClose, closing, closePrevented }) => (
+const Backdrop: React.OldFC<BackdropProps> = ({ onClose, closing, closePrevented }) => (
   <Portal portalNode={document.body}>
     <Modal.Backdrop
       closing={closing}

@@ -16,7 +16,7 @@ interface UncontrolledCollapseProps {
   iconProps?: Partial<SvgIconTypes.Props>;
 }
 
-export const UncontrolledCollapse: React.FC<UncontrolledCollapseProps> = ({
+export const UncontrolledCollapse: React.OldFC<UncontrolledCollapseProps> = ({
   type,
   title,
   isOpen,
@@ -49,7 +49,7 @@ export const UncontrolledCollapse: React.FC<UncontrolledCollapseProps> = ({
 
 type ControlledCollapseProps = { opened?: boolean } & Omit<UncontrolledCollapseProps, 'onToggle' | 'isOpen'>;
 
-const ControlledCollapse: React.FC<ControlledCollapseProps> = ({ opened, ...props }) => {
+const ControlledCollapse: React.OldFC<ControlledCollapseProps> = ({ opened, ...props }) => {
   const [isOpen, onToggle] = useToggle();
 
   const toggle = React.useCallback(() => onToggle(), []);

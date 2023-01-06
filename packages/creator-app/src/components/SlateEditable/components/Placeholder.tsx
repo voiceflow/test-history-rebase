@@ -13,6 +13,6 @@ export const PlaceholderText = styled.span`
   font-style: normal;
 `;
 
-const Placeholder: React.FC<RenderPlaceholderProps> = ({ attributes, children }) => <PlaceholderText {...attributes}>{children}</PlaceholderText>;
+const Placeholder: React.OldFC<RenderPlaceholderProps> = ({ attributes, children }) => <PlaceholderText {...attributes}>{children}</PlaceholderText>;
 
 export default Placeholder;

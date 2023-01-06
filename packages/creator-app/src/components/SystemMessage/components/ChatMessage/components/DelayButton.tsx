@@ -8,7 +8,7 @@ interface DelayButtonProps {
   onChange: (delay: number | undefined) => void;
 }
 
-const DelayButton: React.FC<DelayButtonProps> = ({ delay, onChange }) => {
+const DelayButton: React.OldFC<DelayButtonProps> = ({ delay, onChange }) => {
   const [isOpened, toggleOpen] = useToggle(false);
   const [messageDelay, setMessageDelay] = React.useState(delay ? String(delay) : '');
 
@@ -46,7 +46,7 @@ const DelayButton: React.FC<DelayButtonProps> = ({ delay, onChange }) => {
       )}
     >
       {({ ref, isOpened }) => (
-        <TippyTooltip title="Message Delay" position="top">
+        <TippyTooltip content="Message Delay" placement="top">
           <SlateEditable.IconButton ref={ref} icon="systemMessageDelay" active={isOpened || !!messageDelay} onClick={preventDefault(toggleOpen)} />
         </TippyTooltip>
       )}

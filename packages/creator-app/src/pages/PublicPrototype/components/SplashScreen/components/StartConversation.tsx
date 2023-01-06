@@ -18,7 +18,7 @@ export interface StartConversationProps {
 
 const NAME_MAX_LENGTH = 80;
 
-const StartConversation: React.FC<StartConversationProps> = ({
+const StartConversation: React.OldFC<StartConversationProps> = ({
   projectName,
   withStartButton,
   isVisuals,
@@ -37,7 +37,7 @@ const StartConversation: React.FC<StartConversationProps> = ({
     <Box>
       <Box fontSize={24}>
         You've been invited to have a conversation with
-        <OverflowTippyTooltip title={projectName} isChildrenOverflow={() => projectName.length >= NAME_MAX_LENGTH}>
+        <OverflowTippyTooltip content={projectName} isChildrenOverflow={() => projectName.length >= NAME_MAX_LENGTH}>
           {(ref, { isOverflow }) => (
             <Text ref={ref} ml={5} color={colorScheme || '#3d82e2'} fontWeight={600}>
               {isOverflow ? `${projectName.substring(0, NAME_MAX_LENGTH)}...` : projectName}

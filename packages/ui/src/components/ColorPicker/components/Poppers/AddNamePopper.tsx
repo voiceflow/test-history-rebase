@@ -23,7 +23,7 @@ interface PopperProps {
   value?: string;
 }
 
-export const AddNamePopper: React.FC<PopperProps> = ({ isEditing, onRename, value = '' }) => {
+export const AddNamePopper: React.OldFC<PopperProps> = ({ isEditing, onRename, value = '' }) => {
   const popperContainerRef = React.useRef<HTMLDivElement>(null);
   const [name, setName] = React.useState<string>(value);
   const rootPopper = usePopper({

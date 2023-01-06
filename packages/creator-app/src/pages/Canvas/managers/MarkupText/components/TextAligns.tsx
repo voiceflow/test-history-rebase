@@ -4,7 +4,7 @@ import { ElementAlignCenterButton, ElementAlignLeftButton, ElementAlignRightButt
 
 import Button from './Button';
 
-const TextAligns: React.FC = () => (
+const TextAligns: React.OldFC = () => (
   <>
     <ElementAlignLeftButton component={Button} />
 

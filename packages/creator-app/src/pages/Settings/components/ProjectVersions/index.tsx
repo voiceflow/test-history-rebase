@@ -2,7 +2,6 @@ import { BaseVersion } from '@voiceflow/base-types';
 import { Box, BoxFlexCenter, ClickableText, LoadCircle, toast } from '@voiceflow/ui';
 import ObjectID from 'bson-objectid';
 import React, { useCallback } from 'react';
-import { useSelector } from 'react-redux';
 
 import client from '@/client';
 import { SettingsSection } from '@/components/Settings';
@@ -12,18 +11,17 @@ import { ModalType } from '@/constants';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
-import { connect } from '@/hocs/connect';
 import { useHotKeys, useModals, usePermission, useSetup, useTrackingEvents } from '@/hooks';
+import { useDispatch } from '@/hooks/realtime';
+import { useSelector } from '@/hooks/redux';
 import { getHotkeyLabel, Hotkey } from '@/keymap';
 import * as ModalsV2 from '@/ModalsV2';
 import { FadeLeftContainer } from '@/styles/animations';
-import { ConnectedProps } from '@/types';
 import * as Sentry from '@/vendors/sentry';
 
 import { Heading, HotKeyContainer } from './components';
 import VersionList from './components/VersionList';
 import { PLATFORM_VERSION_HEADER_TEXT } from './constants';
-
 // Need to move this to general types
 export interface ProjectVersion {
   versionID: string;
@@ -45,7 +43,13 @@ const versionAdapter = (version: BaseVersion.Version) => ({
   autoSaveFromRestore: version.autoSaveFromRestore,
 });
 
-const ProjectVersions: React.FC<ConnectedProjectVersions> = ({ projectID, activeVersionID, goToDomain, platform }) => {
+const ProjectVersions: React.FC = () => {
+  const activeVersionID = useSelector(Session.activeVersionIDSelector);
+  const projectID = useSelector(Session.activeProjectIDSelector);
+  const platform = useSelector(ProjectV2.active.platformSelector);
+
+  const goToDomain = useDispatch(Router.goToDomain);
+
   const [loading, setLoading] = React.useState(true);
   const [noMoreVersions, setNoMoreVersions] = React.useState(false);
   const [versionList, setVersionList] = React.useState<ProjectVersion[]>([]);
@@ -163,16 +167,4 @@ const ProjectVersions: React.FC<ConnectedProjectVersions> = ({ projectID, active
   );
 };
 
-const mapStateToProps = {
-  activeVersionID: Session.activeVersionIDSelector,
-  projectID: Session.activeProjectIDSelector,
-  platform: ProjectV2.active.platformSelector,
-};
-
-const mapDispatchToProps = {
-  goToDomain: Router.goToDomain,
-};
-
-export type ConnectedProjectVersions = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
-
-export default connect(mapStateToProps, mapDispatchToProps)(ProjectVersions);
+export default ProjectVersions;

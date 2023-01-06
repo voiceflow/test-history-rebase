@@ -9,7 +9,7 @@ import { Canvas, Model } from './components';
 import { EXPORT_TYPE_OPTIONS } from './constants';
 import { ExportContext } from './Context';
 
-const Content: React.FC<{
+const Content: React.OldFC<{
   withDataTypes?: boolean;
   checkedItems?: string[];
 }> = ({ checkedItems, withDataTypes = true }) => {

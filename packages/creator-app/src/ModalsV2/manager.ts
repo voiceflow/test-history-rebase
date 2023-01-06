@@ -57,7 +57,7 @@ interface OpenedModal {
 }
 
 class Manager extends EventEmitter<Events> {
-  private registry = new Map<string, React.FC<T.VoidInternalProps> | React.FC<AnyRecord & T.ResultInternalProps<any>>>();
+  private registry = new Map<string, React.OldFC<T.VoidInternalProps> | React.OldFC<AnyRecord & T.ResultInternalProps<any>>>();
 
   private openedModals = new Map<string, OpenedModal>();
 
@@ -69,19 +69,19 @@ class Manager extends EventEmitter<Events> {
     return `${type}:${id}`;
   }
 
-  get(type: string): React.FC<T.VoidInternalProps> | React.FC<AnyRecord & T.ResultInternalProps<any>> | null {
+  get(type: string): React.OldFC<T.VoidInternalProps> | React.OldFC<AnyRecord & T.ResultInternalProps<any>> | null {
     return this.registry.get(type) ?? null;
   }
 
-  register<Props extends EmptyObject>(type: string, Component: React.FC<Props & T.VoidInternalProps>): void;
+  register<Props extends EmptyObject>(type: string, Component: React.OldFC<Props & T.VoidInternalProps>): void;
 
-  register<Props extends void, Result>(type: string, Component: React.FC<Props & T.ResultInternalProps<Result>>): void;
+  register<Props extends void, Result>(type: string, Component: React.OldFC<Props & T.ResultInternalProps<Result>>): void;
 
-  register<Props extends EmptyObject, Result>(type: string, Component: React.FC<Props & T.ResultInternalProps<Result>>): void;
+  register<Props extends EmptyObject, Result>(type: string, Component: React.OldFC<Props & T.ResultInternalProps<Result>>): void;
 
-  register(type: string, component: React.FC<T.VoidInternalProps>): void;
+  register(type: string, component: React.OldFC<T.VoidInternalProps>): void;
 
-  register(type: string, component: React.FC<T.VoidInternalProps> | React.FC<AnyRecord & T.ResultInternalProps<any>>): void {
+  register(type: string, component: React.OldFC<T.VoidInternalProps> | React.OldFC<AnyRecord & T.ResultInternalProps<any>>): void {
     logger.log(type, component);
 
     if (this.registry.has(type)) {
@@ -101,47 +101,47 @@ class Manager extends EventEmitter<Events> {
 
   // needs to use factory to make HMR work
   create<Props extends void>(
-    factory: () => React.FC<T.VoidInternalProps & { _void?: Props }>
+    factory: () => React.OldFC<T.VoidInternalProps & { _void?: Props }>
   ): T.RegisteredModal<T.VoidInternalProps & { _void?: Props }>;
 
   create<Props extends void>(
     type: string,
-    factory: () => React.FC<T.VoidInternalProps & { _void?: Props }>
+    factory: () => React.OldFC<T.VoidInternalProps & { _void?: Props }>
   ): T.RegisteredModal<T.VoidInternalProps & { _void?: Props }>;
 
-  create<Props extends EmptyObject>(factory: () => React.FC<Props & T.VoidInternalProps>): T.RegisteredModal<Props & T.VoidInternalProps>;
+  create<Props extends EmptyObject>(factory: () => React.OldFC<Props & T.VoidInternalProps>): T.RegisteredModal<Props & T.VoidInternalProps>;
 
   create<Props extends EmptyObject>(
     type: string,
-    factory: () => React.FC<Props & T.VoidInternalProps>
+    factory: () => React.OldFC<Props & T.VoidInternalProps>
   ): T.RegisteredModal<Props & T.VoidInternalProps>;
 
   create<Props extends void, Result>(
-    factory: () => React.FC<T.ResultInternalProps<Result> & { _void?: Props }>
+    factory: () => React.OldFC<T.ResultInternalProps<Result> & { _void?: Props }>
   ): T.RegisteredModal<T.ResultInternalProps<Result> & { _void?: Props }>;
 
   create<Props extends void, Result>(
     type: string,
-    factory: () => React.FC<T.ResultInternalProps<Result> & { _void?: Props }>
+    factory: () => React.OldFC<T.ResultInternalProps<Result> & { _void?: Props }>
   ): T.RegisteredModal<T.ResultInternalProps<Result> & { _void?: Props }>;
 
   create<Props extends EmptyObject, Result>(
-    factory: () => React.FC<Props & T.ResultInternalProps<Result>>
+    factory: () => React.OldFC<Props & T.ResultInternalProps<Result>>
   ): T.RegisteredModal<Props & T.ResultInternalProps<Result>>;
 
   create<Props extends EmptyObject, Result>(
     type: string,
-    factory: () => React.FC<Props & T.ResultInternalProps<Result>>
+    factory: () => React.OldFC<Props & T.ResultInternalProps<Result>>
   ): T.RegisteredModal<Props & T.ResultInternalProps<Result>>;
 
-  create(factory: () => React.FC<T.VoidInternalProps>): T.RegisteredModal<T.VoidInternalProps>;
+  create(factory: () => React.OldFC<T.VoidInternalProps>): T.RegisteredModal<T.VoidInternalProps>;
 
-  create(type: string, factory: () => React.FC<T.VoidInternalProps>): T.RegisteredModal<T.VoidInternalProps>;
+  create(type: string, factory: () => React.OldFC<T.VoidInternalProps>): T.RegisteredModal<T.VoidInternalProps>;
 
   create(
     ...args:
-      | [factory: () => React.FC<T.VoidInternalProps> | React.FC<AnyRecord & T.ResultInternalProps<any>>]
-      | [type: string, factory: () => React.FC<T.VoidInternalProps> | React.FC<AnyRecord & T.ResultInternalProps<any>>]
+      | [factory: () => React.OldFC<T.VoidInternalProps> | React.OldFC<AnyRecord & T.ResultInternalProps<any>>]
+      | [type: string, factory: () => React.OldFC<T.VoidInternalProps> | React.OldFC<AnyRecord & T.ResultInternalProps<any>>]
   ): T.RegisteredModal<T.ResultInternalProps<any>> | T.RegisteredModal<T.VoidInternalProps> {
     const [type, factory] = args.length === 1 ? [Utils.id.cuid.slug(), args[0]] : args;
 

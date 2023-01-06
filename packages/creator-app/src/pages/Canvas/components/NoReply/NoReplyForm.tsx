@@ -38,7 +38,7 @@ export interface NoReplyFormProps {
 
 export const NO_REPLY_PATH_PATH_TYPE = 'noReplyPath';
 
-const NoReplyForm: React.FC<NoReplyFormProps> = ({ noReply, onChange, pushToPath }) => {
+const NoReplyForm: React.OldFC<NoReplyFormProps> = ({ noReply, onChange, pushToPath }) => {
   const platformConfig = useActiveProjectPlatformConfig();
 
   const engine = React.useContext(EngineContext)!;
@@ -97,7 +97,7 @@ const NoReplyForm: React.FC<NoReplyFormProps> = ({ noReply, onChange, pushToPath
       <Section dividers={withDividers} isDividerBottom>
         <FormControl label="Time Delay" contentBottomUnits={0}>
           <BoxFlex>
-            <TippyTooltip title={`This value is not editable as it's defined by ${platformConfig.name}`} disabled={isDelayEditable}>
+            <TippyTooltip content={`This value is not editable as it's defined by ${platformConfig.name}`} disabled={isDelayEditable}>
               <BoxFlex width={52}>
                 <Input
                   value={timeout}

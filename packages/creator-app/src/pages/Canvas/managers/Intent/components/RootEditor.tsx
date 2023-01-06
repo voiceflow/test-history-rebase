@@ -16,7 +16,7 @@ import IntentRequiredEntitiesSection from '@/pages/Canvas/components/IntentRequi
 import { Actions, Entity } from '../../components';
 import AvailabilitySection from './AvailabilitySection';
 
-const RootEditor: React.FC = () => {
+const RootEditor: React.OldFC = () => {
   const editor = EditorV2.useEditor<Realtime.NodeData.Intent, Realtime.NodeData.IntentBuiltInPorts>();
 
   const onAddRequiredEntity = useDispatch(Intent.addRequiredSlot);

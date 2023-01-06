@@ -12,7 +12,7 @@ import { GroupedSelect, MultilevelSelect } from './components';
 import { Props } from './types';
 import { createCombinedID } from './utils';
 
-const GoToIntentSelect: React.FC<Props> = ({ value, placeholder = 'Behave as user triggered intent', ...props }) => {
+const GoToIntentSelect: React.OldFC<Props> = ({ value, placeholder = 'Behave as user triggered intent', ...props }) => {
   const allDomains = useSelector(Domain.allDomainsSelector);
   const activeDiagram = useSelector(DiagramV2.active.diagramSelector);
   const globalIntentStepMap = useSelector(DiagramV2.globalIntentStepMapSelector);

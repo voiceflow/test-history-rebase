@@ -1,4 +1,3 @@
-/* eslint-disable sonarjs/no-identical-functions */
 import { Popper } from '@voiceflow/ui';
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';

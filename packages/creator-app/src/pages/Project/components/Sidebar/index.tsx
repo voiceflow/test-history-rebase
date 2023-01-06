@@ -14,7 +14,7 @@ const ALL_PROJECT_SIDEBAR_PATHS = [
   Path.ANALYTICS_DASHBOARD,
 ];
 
-const ProjectSidebar: React.FC = () => (
+const ProjectSidebar: React.OldFC = () => (
   <Switch>
     <Route path={ALL_PROJECT_SIDEBAR_PATHS} render={() => <CanvasIconMenu />} />
 

@@ -9,7 +9,7 @@ interface TextProps extends Omit<BaseMessageProps, 'iconProps'> {
   ai?: boolean;
 }
 
-const Text: React.FC<TextProps> = ({ slate, ai, ...props }) => {
+const Text: React.OldFC<TextProps> = ({ slate, ai, ...props }) => {
   const content = React.useMemo(() => serializeToJSX(slate.content), []);
 
   return (

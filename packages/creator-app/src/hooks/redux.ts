@@ -1,4 +1,4 @@
-import { useLinkedState } from '@voiceflow/ui';
+import { useCreateConst, useLinkedState } from '@voiceflow/ui';
 import { useCallback } from 'react';
 import * as ReactRedux from 'react-redux';
 
@@ -11,16 +11,22 @@ export const useSelector = <T, A extends any[]>(selector: Selector<T, A>, ...arg
 
 export const useStore = ReactRedux.useStore as () => Store;
 
+export const useInitialValueSelector = <T, A extends any[]>(selector: Selector<T, A>, ...args: A): T => {
+  const store = useStore();
+
+  return useCreateConst(() => selector(store.getState(), ...args));
+};
+
 export const useBoundValue = <T>(selector: Selector<T>, createAction: (value: NonNullable<T>) => Dispatchable | null) => {
-  const stateValue = ReactRedux.useSelector(selector);
+  const store = useStore();
+  const stateValue = useSelector(selector);
   const [localValue, setLocalValue] = useLinkedState(stateValue);
-  const dispatch = ReactRedux.useDispatch();
 
   const saveValue = useCallback(() => {
     const result = createAction(localValue!);
 
     if (result) {
-      dispatch(result);
+      store.dispatch(result);
     }
   }, [localValue]);
 

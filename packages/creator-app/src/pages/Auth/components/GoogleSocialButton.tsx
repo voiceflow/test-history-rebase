@@ -10,7 +10,7 @@ export interface GoogleSocialButtonProps {
   disabled?: boolean;
 }
 
-const GoogleSocialButton: React.FC<GoogleSocialButtonProps> = ({ light, disabled, onClick }) => (
+const GoogleSocialButton: React.OldFC<GoogleSocialButtonProps> = ({ light, disabled, onClick }) => (
   <SocialButton onClick={!disabled && onClick} light={light}>
     <img src={googleLogo} alt="Google Login" />
     Google

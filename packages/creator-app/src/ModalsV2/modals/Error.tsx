@@ -8,7 +8,7 @@ import manager from '../manager';
 const GENERIC_ERROR = 'Something went wrong - please refresh your page';
 
 interface RawError {
-  message?: unknown;
+  message?: React.ReactNode;
   data?: unknown;
   violations?: { message: React.ReactNode }[];
   [key: string]: unknown;
@@ -30,7 +30,7 @@ const Error = manager.create<Props>('Error', () => ({ api, type, opened, hidden,
   }
 
   if (!error.message && error.data) {
-    error = { ...error, message: error.data };
+    error = { ...error, message: typeof error.data === 'string' ? error.data : JSON.stringify(error.data) };
   }
 
   return (
@@ -49,7 +49,7 @@ const Error = manager.create<Props>('Error', () => ({ api, type, opened, hidden,
           </>
         ) : (
           <Alert variant={Alert.Variant.DANGER} mb={16}>
-            {typeof error === 'string' ? error : error.error}
+            {typeof error === 'string' ? error : (error.error as any)}
           </Alert>
         )}
       </Modal.Body>

@@ -11,7 +11,7 @@ interface PlayButtonProps {
   nodeID?: string;
 }
 
-const PlayButton: React.FC<PlayButtonProps> = ({ nodeID, color }) => {
+const PlayButton: React.OldFC<PlayButtonProps> = ({ nodeID, color }) => {
   const updatePrototype = useDispatch(Prototype.updatePrototype);
   const goToCurrentPrototype = useDispatch(Router.goToCurrentPrototype);
   const currentDiagramVariableState = useDispatch(VariableState.currentDiagramVariableState);
@@ -28,7 +28,7 @@ const PlayButton: React.FC<PlayButtonProps> = ({ nodeID, color }) => {
   };
 
   return (
-    <TippyTooltip title="Start test from here">
+    <TippyTooltip content="Start test from here">
       <SvgIcon icon="play" clickable color={color} style={{ transform: 'scale(1.2)' }} onClick={startTestFromBlock} />
     </TippyTooltip>
   );

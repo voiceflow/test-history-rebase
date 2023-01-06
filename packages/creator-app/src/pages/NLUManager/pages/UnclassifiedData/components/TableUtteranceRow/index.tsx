@@ -16,7 +16,7 @@ interface TableUtteranceRowProps {
   onSelect: (utteranceID: string) => void;
 }
 
-const TableUtteranceRow: React.FC<TableUtteranceRowProps> = ({ rowIndex, item: u, allItems, isActive, onSelect }) => {
+const TableUtteranceRow: React.OldFC<TableUtteranceRowProps> = ({ rowIndex, item: u, allItems, isActive, onSelect }) => {
   return (
     <>
       <UnclassifiedTable.Row key={u.utterance} active={isActive} onClick={() => onSelect(u.id)}>

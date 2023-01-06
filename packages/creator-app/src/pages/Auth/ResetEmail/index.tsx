@@ -3,14 +3,15 @@ import React from 'react';
 
 import { wordmark } from '@/assets';
 import * as Router from '@/ducks/router';
-import { connect } from '@/hocs/connect';
-import { ConnectedProps } from '@/types';
+import { useDispatch } from '@/hooks/realtime';
 
 import { AuthBox, AuthenticationContainer } from '../components';
 import { ResetEmailForm } from './components';
 import { ResetEmailStage } from './constants';
 
-const ResetEmail: React.FC<ConnectedResetEmailProps> = ({ goToLogin }) => {
+const ResetEmail: React.FC = () => {
+  const goToLogin = useDispatch(Router.goToLogin);
+
   const [email, setEmail] = React.useState('');
   const [stage, setStage] = React.useState(ResetEmailStage.IDLE);
 
@@ -42,10 +43,4 @@ const ResetEmail: React.FC<ConnectedResetEmailProps> = ({ goToLogin }) => {
   );
 };
 
-const mapDispatchToProps = {
-  goToLogin: Router.goToLogin,
-};
-
-type ConnectedResetEmailProps = ConnectedProps<{}, typeof mapDispatchToProps>;
-
-export default connect(null, mapDispatchToProps)(ResetEmail);
+export default ResetEmail;

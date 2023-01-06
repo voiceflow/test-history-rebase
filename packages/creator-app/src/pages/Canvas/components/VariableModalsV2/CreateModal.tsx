@@ -7,7 +7,7 @@ import { CanvasCreationType } from '@/ducks/tracking';
 import { useModals } from '@/hooks';
 import { useCreateVariables } from '@/pages/Canvas/components/VariableModalsV2/hooks';
 
-const CreateModal: React.FC = () => {
+const CreateModal: React.OldFC = () => {
   const { close, data, isOpened } = useModals<{
     name?: string;
     single?: boolean;

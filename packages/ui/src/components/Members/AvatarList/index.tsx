@@ -16,7 +16,7 @@ export interface AvatarListProps {
   members: NonNullable<UserProps['user']>[];
 }
 
-const AvatarList: React.FC<AvatarListProps> = ({ min = 0, max = 8, flat, onAdd, members, small }) => {
+const AvatarList: React.OldFC<AvatarListProps> = ({ min = 0, max = 8, flat, onAdd, members, small }) => {
   const accepted = React.useMemo(() => members.filter((member) => !!member.creator_id).reverse(), [members]);
   const renderMembers = React.useMemo(() => accepted.slice(0, max), [max, accepted]);
   const hiddenMembers = React.useMemo(() => accepted.slice(max), [max, accepted]);
@@ -32,7 +32,7 @@ const AvatarList: React.FC<AvatarListProps> = ({ min = 0, max = 8, flat, onAdd, 
           <TippyTooltip
             key={member.creator_id || index}
             style={{ zIndex: max - index }}
-            title={member.name ?? ''}
+            content={member.name ?? ''}
             position="bottom"
             disabled={!member.creator_id}
           >
@@ -41,7 +41,7 @@ const AvatarList: React.FC<AvatarListProps> = ({ min = 0, max = 8, flat, onAdd, 
         ))}
 
         {onAdd && (
-          <TippyTooltip title="Add Collaborators" position="bottom">
+          <TippyTooltip content="Add Collaborators" position="bottom">
             <S.AddIcon id={Identifier.ADD_COLLABORATORS} onClick={onAdd}>
               <SvgIcon icon="plus" size={12} />
             </S.AddIcon>
@@ -52,7 +52,7 @@ const AvatarList: React.FC<AvatarListProps> = ({ min = 0, max = 8, flat, onAdd, 
       {accepted.length > max && (
         <Flex>
           <TippyTooltip
-            html={
+            content={
               <>
                 {hiddenMembers.map((member, index) => (
                   <React.Fragment key={member.creator_id || index}>

@@ -27,7 +27,7 @@ export const COLUMNS: TableTypes.Column<TableColumn, Realtime.Slot>[] = [
     sorter: (slotL, slotR) => slotL.name.localeCompare(slotR.name),
     ellipses: true,
     component: (props) => <NameColumn {...props} placeholder="Enter intent name" />,
-    overflowTooltip: ({ item }) => ({ title: item.name }),
+    overflowTooltip: ({ item }) => ({ content: item.name }),
   },
 
   {
@@ -46,7 +46,7 @@ export const COLUMNS: TableTypes.Column<TableColumn, Realtime.Slot>[] = [
     ellipses: true,
     component: InputsColumn,
     overflowTooltip: ({ item }) => ({
-      title: item.inputs
+      content: item.inputs
         .map(({ value }) => value.trim())
         .filter(Boolean)
         .join(', '),

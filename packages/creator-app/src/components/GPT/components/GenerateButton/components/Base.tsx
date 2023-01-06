@@ -16,7 +16,7 @@ export interface BaseGenerateButtonProps {
 
 const MIN_MENU_WIDTH = 350;
 
-const BaseGenerateButton: React.FC<BaseGenerateButtonProps> = ({
+const BaseGenerateButton: React.OldFC<BaseGenerateButtonProps> = ({
   options,
   onClick,
   menuHint,

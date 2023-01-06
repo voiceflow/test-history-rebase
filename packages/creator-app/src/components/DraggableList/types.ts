@@ -13,15 +13,13 @@ export interface InternalItem<I> {
   isDraggingXEnabled?: boolean;
 }
 
+export type BaseItemData<Item> = Omit<InternalItem<Item>, 'type'>;
+
 export type DnDItem<I extends { id: string } | any> = Omit<InternalItem<I>, 'type'> & { type: string | symbol };
 
-interface DnDDropTargetMonitor<I> extends DropTargetMonitor {
-  getItem: () => DnDItem<I>;
-}
+interface DnDDropTargetMonitor<I> extends DropTargetMonitor<DnDItem<I>> {}
 
-interface DnDDragSourceMonitor<I> extends DragSourceMonitor {
-  getItem: () => DnDItem<I>;
-}
+interface DnDDragSourceMonitor<I> extends DragSourceMonitor<DnDItem<I>> {}
 
 export interface DnDHandlers<I> {
   onDrop?: (item: DnDItem<I>, monitor: DnDDropTargetMonitor<I>) => void;

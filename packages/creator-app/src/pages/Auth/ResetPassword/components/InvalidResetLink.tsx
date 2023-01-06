@@ -1,10 +1,9 @@
-import { Box, BoxFlexApart, Button, ButtonVariant, ClickableText, isNetworkError, preventDefault, toast } from '@voiceflow/ui';
+import { Box, Button, ButtonVariant, ClickableText, isNetworkError, preventDefault, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';
 import * as Router from '@/ducks/router';
-import { connect } from '@/hocs/connect';
-import { ConnectedProps } from '@/types';
+import { useDispatch } from '@/hooks/realtime';
 
 import { EmailInput } from '../../components';
 import { ResetPasswordStage } from '../constants';
@@ -13,7 +12,9 @@ export interface InvalidResetLinkProps {
   setStage: (stage: ResetPasswordStage) => void;
 }
 
-const InvalidResetLink: React.FC<InvalidResetLinkProps & ConnectedInvalidResetLinkProps> = ({ goToLogin, setStage }) => {
+const InvalidResetLink: React.FC<InvalidResetLinkProps> = ({ setStage }) => {
+  const goToLogin = useDispatch(Router.goToLogin);
+
   const [email, setEmail] = React.useState('');
 
   const resetEmail = async () => {
@@ -40,7 +41,7 @@ const InvalidResetLink: React.FC<InvalidResetLinkProps & ConnectedInvalidResetLi
           <EmailInput value={email} onChange={setEmail} />
         </Box>
 
-        <BoxFlexApart mt={32}>
+        <Box.FlexApart mt={32}>
           <div className="auth__link">
             <ClickableText onClick={() => goToLogin()}>Back to Signing in</ClickableText>
           </div>
@@ -50,16 +51,10 @@ const InvalidResetLink: React.FC<InvalidResetLinkProps & ConnectedInvalidResetLi
               Reset Password
             </Button>
           </div>
-        </BoxFlexApart>
+        </Box.FlexApart>
       </form>
     </div>
   );
 };
 
-const mapDispatchToProps = {
-  goToLogin: Router.goToLogin,
-};
-
-type ConnectedInvalidResetLinkProps = ConnectedProps<{}, typeof mapDispatchToProps>;
-
-export default connect(null, mapDispatchToProps)(InvalidResetLink) as React.FC<InvalidResetLinkProps>;
+export default InvalidResetLink;

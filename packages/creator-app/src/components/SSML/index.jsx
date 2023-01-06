@@ -4,7 +4,6 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, OverflowText, Select, SvgIcon, TippyTooltip } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
-import { Tooltip } from 'react-tippy';
 
 import { PluginType } from '@/components/TextEditor';
 import { useFeature } from '@/hooks/feature';
@@ -107,10 +106,9 @@ const SSML = (
                 {withDefaultVoice && !option.options && (
                   <DefaultVoiceContainer active={option?.value === defaultVoice}>
                     <TippyTooltip
-                      title={option?.value === defaultVoice ? 'Remove as Default' : 'Set as Default Voice'}
+                      content={option?.value === defaultVoice ? 'Remove as Default' : 'Set as Default Voice'}
                       disabled={option?.value === defaultVoice && option?.value === platformDefaultVoice}
                       hideOnClick={false}
-                      popperOptions={{ modifiers: { preventOverflow: { enabled: false } } }}
                     >
                       <SvgIcon icon="star" onClick={(e) => onDefaultVoice(option, e)} />
                     </TippyTooltip>
@@ -119,12 +117,12 @@ const SSML = (
               </VoiceItem>
             )}
             renderTrigger={({ ref, onOpenMenu, onHideMenu, isOpen }) => (
-              <Tooltip title={voiceSelectLabel} position="top" delay={300} distance={0}>
+              <TippyTooltip content={voiceSelectLabel} placement="top" delay={300} offset={[0, 0]}>
                 <VoiceSelectTrigger ref={ref} isActive={isOpen} onClick={isOpen ? onHideMenu : onOpenMenu}>
                   <OverflowText>{voiceSelectLabel || 'Select Voice'}</OverflowText>
                   <SvgIcon icon="arrowToggleV2" color="#6e849a" size={20} rotation={90} />
                 </VoiceSelectTrigger>
-              </Tooltip>
+              </TippyTooltip>
             )}
           />
         )}

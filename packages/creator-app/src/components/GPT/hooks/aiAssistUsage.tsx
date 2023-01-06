@@ -32,9 +32,11 @@ export const useAIUsageTooltip = (): TippyTooltipProps => {
   return {
     style: { display: 'block' },
     interactive: true,
-    bodyOverflow: true,
-    onShow: () => trackingEvents.trackAIQuotaCheck({ quota: gptQuota.quota, consume: gptQuota.consumed }),
-    html: (
+    width: 232,
+    onShow: () => {
+      trackingEvents.trackAIQuotaCheck({ quota: gptQuota.quota, consume: gptQuota.consumed });
+    },
+    content: (
       <TippyTooltip.FooterButton buttonText="Request more tokens" onClick={() => openURLInANewTab(REQUEST_MORE_TOKENS)}>
         <TippyTooltip.Title>AI Assist Usage</TippyTooltip.Title>
 

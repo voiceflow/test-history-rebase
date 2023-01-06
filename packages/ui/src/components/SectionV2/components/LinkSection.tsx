@@ -8,7 +8,7 @@ export interface LinkSectionProps {
   onContextMenu?: React.MouseEventHandler;
 }
 
-const LinkSection: React.FC<LinkSectionProps> = ({ onClick, children, onContextMenu }) => (
+const LinkSection: React.OldFC<LinkSectionProps> = ({ onClick, children, onContextMenu }) => (
   <SimpleSection isLink onClick={onClick} onContextMenu={onContextMenu}>
     {children}
 

@@ -16,7 +16,7 @@ import { useValidator } from '../hooks';
 const largeIconSelector = createSelector([VersionV2.active.alexa.publishingSelector], (publishing) => publishing?.largeIcon);
 const smallIconSelector = createSelector([VersionV2.active.alexa.publishingSelector], (publishing) => publishing?.smallIcon);
 
-const BasicSkillInfoForm: React.FC = () => {
+const BasicSkillInfoForm: React.OldFC = () => {
   const [projectNameError, projectNameValidator] = useValidator('name', (name: string) => (name ? false : 'Display name is required.'));
   const [projectName, setProjectName, saveProjectName] = useBoundValue(
     ProjectV2.active.nameSelector,
@@ -71,7 +71,7 @@ const BasicSkillInfoForm: React.FC = () => {
 
 export default BasicSkillInfoForm;
 
-export const BasicSkillInfoDescription: React.FC = () => (
+export const BasicSkillInfoDescription: React.OldFC = () => (
   <>
     <div className="publish-info">
       <p className="helper-text">

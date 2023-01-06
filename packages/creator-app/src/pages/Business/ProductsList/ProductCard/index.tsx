@@ -1,8 +1,7 @@
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Dropdown, IconButton, IconButtonVariant, stopPropagation, SvgIcon } from '@voiceflow/ui';
+import { Dropdown, IconButton, IconButtonVariant, stopPropagation, SvgIcon, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
-import { Tooltip } from 'react-tippy';
 
 import * as Product from '@/ducks/product';
 import * as Router from '@/ducks/router';
@@ -17,7 +16,7 @@ export interface ProductCardProps {
   product: Realtime.Product;
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+const ProductCard: React.OldFC<ProductCardProps> = ({ product }) => {
   const versionID = useSelector(Session.activeVersionIDSelector)!;
   const { name, subscriptionFrequency, description, locales, type, smallIconUri } = product;
 
@@ -66,9 +65,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       </Dropdown>
 
       <Status>
-        <Tooltip
+        <TippyTooltip
           position="top"
-          html={
+          content={
             <TooltipInfo>
               <StatusText>{isComplete ? 'Complete' : 'Incomplete product cannot be uploaded to Alexa'}</StatusText>
               {missingInfo.map((info, index) => (
@@ -76,7 +75,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               ))}
             </TooltipInfo>
           }
-          distance={10}
+          offset={[0, 10]}
         >
           <SvgIcon
             icon={isComplete ? 'outlinedFilledCircle' : 'outlinedCircle'}
@@ -84,7 +83,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             size={14}
             className="status-indicator"
           />
-        </Tooltip>
+        </TippyTooltip>
       </Status>
     </Container>
   );

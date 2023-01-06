@@ -10,7 +10,7 @@ interface BlockEditorProps extends HeaderProps {
   animationDistance?: number;
 }
 
-const Editor: React.FC<BlockEditorProps> = ({ children, hideHeader, animationDistance, ...headerProps }) => {
+const Editor: React.OldFC<BlockEditorProps> = ({ children, hideHeader, animationDistance, ...headerProps }) => {
   useSetup(() => {
     perf.action(PerfAction.EDITOR_RENDERED);
   });

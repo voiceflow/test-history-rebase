@@ -3,7 +3,7 @@ import React from 'react';
 
 import { DescriptorContainer, DescriptorVariant } from '@/pages/Settings/components/ContentDescriptors/components';
 
-const Gadgets: React.FC = () => (
+const Gadgets: React.OldFC = () => (
   <DescriptorContainer variant={DescriptorVariant.PREFIX}>
     Enable communication between your Skill and custom interfaces.{' '}
     <Link href="https://developer.amazon.com/en-US/docs/alexa/alexa-gadgets-toolkit/custom-interface.html">Custom Interfaces</Link> enable a skill to
@@ -11,7 +11,7 @@ const Gadgets: React.FC = () => (
   </DescriptorContainer>
 );
 
-const Events: React.FC = () => (
+const Events: React.OldFC = () => (
   <DescriptorContainer variant={DescriptorVariant.PREFIX} style={{ marginTop: '6px' }}>
     <Link href="https://developer.amazon.com/en-US/docs/alexa/smapi/skill-events-in-alexa-skills.html">Alexa Skill Events</Link> can be used to notify
     you if a certain event occurs, such as a user linking their account. The notification comes in form of a request to your Skill, which you can then
@@ -19,7 +19,7 @@ const Events: React.FC = () => (
   </DescriptorContainer>
 );
 
-const ModelSensitivity: React.FC = () => (
+const ModelSensitivity: React.OldFC = () => (
   <DescriptorContainer>
     As you increase the sensitivity, AMAZON.FallbackIntent captures more user utterances that aren't supported by your custom intents. By default,
     this is set to low.

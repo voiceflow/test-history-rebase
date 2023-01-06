@@ -5,6 +5,7 @@
     "module": "esnext",
     "skipLibCheck": true,
     "baseUrl": "..",
+    "exactOptionalPropertyTypes": false,
     "paths": {
       // only used to fix intra-monorepo resolution
       "@realtime-sdk/*": ["realtime-sdk/src/*"],

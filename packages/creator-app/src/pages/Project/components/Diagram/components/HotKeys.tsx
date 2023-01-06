@@ -11,7 +11,7 @@ import * as ModalsV2 from '@/ModalsV2';
 import { MarkupContext } from '@/pages/Project/contexts';
 import { useCommentingToggle, useDisableModes } from '@/pages/Project/hooks';
 
-const HotKeys: React.FC = () => {
+const HotKeys: React.OldFC = () => {
   const [hotkeysState] = React.useContext(HotkeysContext)!;
   const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
   const [showHintFeatures] = usePermission(Permission.HINT_FEATURES);

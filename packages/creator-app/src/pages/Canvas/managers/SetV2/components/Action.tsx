@@ -31,7 +31,7 @@ const Action: ConnectedAction<Realtime.NodeData.SetV2, Realtime.NodeData.SetV2Bu
         <Canvas.Action
           ref={ref}
           icon={
-            <TippyTooltip tag="div" title="Variable is missing" disabled={!isEmpty || isActive} distance={2} bodyOverflow>
+            <TippyTooltip tag="div" content="Variable is missing" disabled={!isEmpty || isActive} offset={[0, 2]}>
               <Canvas.Action.Icon icon={isEmpty && !isActive ? 'warning' : NODE_CONFIG.icon!} />
             </TippyTooltip>
           }

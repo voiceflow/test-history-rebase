@@ -10,7 +10,7 @@ interface SplashEditorProps {
   imageURL: string | null;
 }
 
-const SplashEditor: React.FC<SplashEditorProps> = ({ title, onChange, imageURL }) => (
+const SplashEditor: React.OldFC<SplashEditorProps> = ({ title, onChange, imageURL }) => (
   <Box bg="#fdfdfd">
     <SectionV2.Content>
       <FormControl>

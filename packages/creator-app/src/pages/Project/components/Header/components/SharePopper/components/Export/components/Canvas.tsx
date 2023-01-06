@@ -12,7 +12,7 @@ import { usePermission } from '@/hooks';
 import { CANVAS_EXPORT_OPTIONS, CANVAS_EXPORT_OPTIONS_LABELS } from '../constants';
 import { ExportContext } from '../Context';
 
-const Canvas: React.FC = () => {
+const Canvas: React.OldFC = () => {
   const { canvasExportFormat, setCanvasExportFormat, setCanExport } = React.useContext(ExportContext)!;
   const [canExportWithoutBranding] = usePermission(Permission.CANVAS_EXPORT);
   const [permissionToExport] = usePermission(Permission.MODEL_EXPORT);

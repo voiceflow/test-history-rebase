@@ -1,7 +1,7 @@
 import { Box, Link } from '@voiceflow/ui';
 import React from 'react';
 
-const GeneralUploadLink: React.FC = () => {
+const GeneralUploadLink: React.OldFC = () => {
   return (
     <>
       Generate an executable project version to run on your own infrastructure.

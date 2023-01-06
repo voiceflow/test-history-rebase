@@ -11,9 +11,7 @@ import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as SlotV2 from '@/ducks/slotV2';
 import * as Tracking from '@/ducks/tracking';
-import { connect } from '@/hocs/connect';
 import { useDebouncedCallback, useModals, useSelector, useTrackingEvents } from '@/hooks';
-import { ConnectedProps } from '@/types';
 import { readFileAsText } from '@/utils/file';
 import { isCustomizableBuiltInIntent } from '@/utils/intent';
 
@@ -23,7 +21,11 @@ import { getUniqSlots, getUtterances, validateUtterances } from './utils';
 
 const DEBOUNCE_TIMEOUT = 300;
 
-const ImportUtterances: React.FC<ConnectedImportUtterancesProps> = ({ slots, getIntentByID, intents }) => {
+const ImportUtterances: React.FC = () => {
+  const slots = useSelector(SlotV2.allSlotsSelector);
+  const intents = useSelector(IntentV2.allIntentsSelector);
+  const getIntentByID = useSelector(IntentV2.getIntentByIDSelector);
+
   const [state, stateApi] = useSmartReducerV2({
     errors: null as null | Map<number, string>,
     slotsCount: 0,
@@ -249,12 +251,4 @@ const ImportUtterances: React.FC<ConnectedImportUtterancesProps> = ({ slots, get
   );
 };
 
-const mapStateToProps = {
-  slots: SlotV2.allSlotsSelector,
-  intents: IntentV2.allIntentsSelector,
-  getIntentByID: IntentV2.getIntentByIDSelector,
-};
-
-type ConnectedImportUtterancesProps = ConnectedProps<typeof mapStateToProps>;
-
-export default connect(mapStateToProps)(ImportUtterances);
+export default ImportUtterances;

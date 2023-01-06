@@ -11,9 +11,10 @@ import { setConfirm } from '@/ducks/modal';
 import * as Session from '@/ducks/session';
 import * as ModalsV2 from '@/ModalsV2';
 import { APIKey } from '@/models';
+import { getErrorMessage } from '@/utils/error';
 import * as Sentry from '@/vendors/sentry';
 
-const APIKeyPage: React.FC = () => {
+const APIKeyPage: React.OldFC = () => {
   const dispatch = useDispatch();
   const workspaceID = useSelector(Session.activeWorkspaceIDSelector)!;
   const isIdentityWorkspaceEnabled = useSelector(Feature.isFeatureEnabledSelector)(Realtime.FeatureFlag.IDENTITY_WORKSPACE);
@@ -32,7 +33,7 @@ const APIKeyPage: React.FC = () => {
       setAPIKeys(keys);
     } catch (error) {
       Sentry.error(error);
-      toast.error(error);
+      toast.error(getErrorMessage(error));
     } finally {
       setLoading(false);
     }

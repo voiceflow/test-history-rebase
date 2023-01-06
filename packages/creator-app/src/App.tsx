@@ -1,13 +1,10 @@
 // Import Dependent CSS, attempt to deprecate
 
-import 'react-tippy/dist/tippy.css';
-import 'react-toastify/dist/ReactToastify.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'simplebar/dist/simplebar.min.css';
 import './App.css';
-import 'react-day-picker/lib/style.css';
 
-import { compose, ToastContainer } from '@voiceflow/ui';
+import { TippyTooltip, ToastContainer } from '@voiceflow/ui';
 import React from 'react';
 
 import { RootPageProgressBar } from '@/components/PageProgressBar';
@@ -21,12 +18,13 @@ import Beamer from '@/services/Beamer';
 import ChatAssistant from '@/services/ChatAssistant';
 import DatadogRum from '@/services/DatadogRum';
 
-import { GlobalProvidersProps, withGlobalProviders } from './contexts/GlobalProviders';
+import { withGlobalProviders } from './contexts/GlobalProviders';
 import Routes from './Routes';
 
 const App: React.FC = () => (
   <>
     <SeoHelmet page={SeoPage.ROOT} />
+    <TippyTooltip.GlobalStyles />
     <ToastContainer />
     <Routes />
     <AppModals />
@@ -40,4 +38,4 @@ const App: React.FC = () => (
   </>
 );
 
-export default compose(withGlobalProviders)(App) as React.FC<GlobalProvidersProps>;
+export default withGlobalProviders(App);

@@ -15,7 +15,7 @@ export interface NoReplyStepItemProps {
   noReply?: Nullable<Realtime.NodeData.NoReply>;
 }
 
-const NoReplyStepItem: React.FC<NoReplyStepItemProps> = ({ noReply, portID }) => {
+const NoReplyStepItem: React.OldFC<NoReplyStepItemProps> = ({ noReply, portID }) => {
   const isPath = noReply?.types.includes(BaseNode.Utils.NoReplyType.PATH);
   const promptsAreEmpty = useArePromptsEmpty(noReply?.reprompts);
 

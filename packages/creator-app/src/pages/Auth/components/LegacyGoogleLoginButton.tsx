@@ -15,7 +15,7 @@ export interface LegacyGoogleLoginButtonProps {
 // vitest uses ES imports only, so the cjs modules with default named export not converted to default ES export
 const GglLogin: typeof GoogleLogin = IS_TEST ? (GoogleLogin as any).default || GoogleLogin : GoogleLogin;
 
-const LegacyGoogleLoginButton: React.FC<LegacyGoogleLoginButtonProps> = ({ light, disabled, onLogin }) => (
+const LegacyGoogleLoginButton: React.OldFC<LegacyGoogleLoginButtonProps> = ({ light, disabled, onLogin }) => (
   <GglLogin
     clientId={GOOGLE_CLIENT_ID}
     render={(renderProps) => <GoogleSocialButton onClick={renderProps?.onClick} light={light} disabled={disabled} />}

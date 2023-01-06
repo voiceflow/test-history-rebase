@@ -2,6 +2,7 @@ import { Nullable, Utils } from '@voiceflow/common';
 import AlexaAPLRenderer, * as APL from 'apl-viewhost-web';
 import React from 'react';
 
+import { normalizeError } from '@/utils/error';
 import * as Sentry from '@/vendors/sentry';
 
 import aplInitializer from './initializer';
@@ -14,7 +15,7 @@ const DEFAULT_VIEWPORT = {
   isRound: false,
 };
 
-const APLRenderer: React.FC<APLRendererProps> = ({
+const APLRenderer: React.OldFC<APLRendererProps> = ({
   content: contentString,
   data,
   viewport = DEFAULT_VIEWPORT,
@@ -66,9 +67,18 @@ const APLRenderer: React.FC<APLRendererProps> = ({
 
         if (commands) {
           try {
-            await new Promise((resolve) => renderer?.context.executeCommands(commands).then(resolve));
-          } catch (e) {
-            onCommandFail?.(e);
+            await new Promise<void>((resolve, reject) => {
+              if (renderer) {
+                const action = renderer.context.executeCommands(commands);
+                // eslint-disable-next-line promise/catch-or-return
+                action.then(() => resolve());
+                action.addTerminateCallback(reject);
+              } else {
+                resolve();
+              }
+            });
+          } catch (error) {
+            onCommandFail?.(normalizeError(error));
           }
         }
       } catch (error) {

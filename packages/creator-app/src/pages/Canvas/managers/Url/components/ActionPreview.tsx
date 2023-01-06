@@ -15,7 +15,7 @@ interface ActionPreviewProps {
   onCopyContent: Nullable<VoidFunction>;
 }
 
-const ActionPreview: React.FC<ActionPreviewProps> = ({ content, onClose, onRemove, onOpenEditor, onCopyContent }) => {
+const ActionPreview: React.OldFC<ActionPreviewProps> = ({ content, onClose, onRemove, onOpenEditor, onCopyContent }) => {
   const [canOpenEditor] = usePermission(Permission.OPEN_EDITOR);
 
   useHotKeys(Hotkey.DELETE, onRemove);

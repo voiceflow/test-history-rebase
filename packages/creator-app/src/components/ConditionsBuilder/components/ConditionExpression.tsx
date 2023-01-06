@@ -14,7 +14,7 @@ export interface ConditionExpressionProps {
   onDelete: () => void;
 }
 
-const ConditionExpression: React.FC<ConditionExpressionProps> = ({ expression, onChange, onDelete }) => {
+const ConditionExpression: React.OldFC<ConditionExpressionProps> = ({ expression, onChange, onDelete }) => {
   const expressionValidator = useExpressionValidator();
 
   const onUpdate = React.useCallback(

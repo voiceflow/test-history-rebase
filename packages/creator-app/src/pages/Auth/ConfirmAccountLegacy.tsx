@@ -9,7 +9,7 @@ import { useAsyncEffect, useDispatch, useSelector } from '@/hooks';
 /**
  * @deprecated use ConfirmEmail instead, should be removed when identity service is fully rolled out
  */
-const ConfirmAccountLegacy: React.FC = () => {
+const ConfirmAccountLegacy: React.OldFC = () => {
   const { token } = useParams<{ token: string }>();
 
   const isVerified = useSelector(Account.userVerifiedSelector);

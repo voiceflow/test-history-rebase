@@ -12,7 +12,7 @@ import ZapierImg from './IntegrationZapierImg';
 
 const Integration = ({ data, onClick }) => (
   <Container className="d-flex flex-column align-items-center" onClick={() => onClick(data.type)}>
-    <HelpIcon title={data.tooltip} position="left">
+    <HelpIcon content={data.tooltip} position="left">
       ?
     </HelpIcon>
 

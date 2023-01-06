@@ -15,7 +15,14 @@ interface EntityPromptFormProps {
   intentEntities: Normal.Normalized<Platform.Base.Models.Intent.Slot>;
 }
 
-const EntityPromptForm: React.FC<EntityPromptFormProps> = ({ entityID, intentName, autogenerate, intentInputs, intentEntities, onChangeDialog }) => {
+const EntityPromptForm: React.OldFC<EntityPromptFormProps> = ({
+  entityID,
+  intentName,
+  autogenerate,
+  intentInputs,
+  intentEntities,
+  onChangeDialog,
+}) => {
   const intentEntity = Normal.getOne(intentEntities, entityID);
 
   const entity = useSelector(SlotV2.slotByIDSelector, { id: entityID });

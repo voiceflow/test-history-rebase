@@ -5,7 +5,7 @@ import { SectionVariants, SettingsSection, SettingsSubSection } from '@/componen
 import * as UI from '@/ducks/ui';
 import { useDispatch, useSelector } from '@/hooks';
 
-const CanvasGrid: React.FC = () => {
+const CanvasGrid: React.OldFC = () => {
   const canvasGridEnabled = useSelector(UI.isCanvasGridEnabledSelector);
   const toggleCanvasGrid = useDispatch(UI.toggleCanvasGrid);
 

@@ -1,5 +1,3 @@
-import { batch } from 'react-redux';
-
 import { PrototypeStatus } from '@/constants/prototype';
 import { selectedStartFromDiagramIDSelector, selectedStartFromNodeIDSelector, selectedVariablesSelector } from '@/ducks/variableState/selectors';
 import { SyncThunk } from '@/store/types';
@@ -35,10 +33,8 @@ const startPrototype = (): SyncThunk => (dispatch, getState) => {
     variables,
   };
 
-  batch(() => {
-    dispatch(pushContextHistory(context));
-    dispatch(pushPrototypeVisualDataHistory(null));
-    dispatch(updatePrototype({ status: PrototypeStatus.ACTIVE, context, startTime: Date.now(), flowIDHistory }));
-  });
+  dispatch(pushContextHistory(context));
+  dispatch(pushPrototypeVisualDataHistory(null));
+  dispatch(updatePrototype({ status: PrototypeStatus.ACTIVE, context, startTime: Date.now(), flowIDHistory }));
 };
 export default startPrototype;

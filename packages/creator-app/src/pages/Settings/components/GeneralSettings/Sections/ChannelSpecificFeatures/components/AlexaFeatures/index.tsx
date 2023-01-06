@@ -22,7 +22,7 @@ const MODEL_SENSITIVITY_SUPPORTED_LOCALES = new Set<string>([
   AlexaConstants.Locale.DE_DE,
 ]);
 
-const AlexaFeatures: React.FC<AlexaFeaturesOwnProps> = ({ platformMeta }) => {
+const AlexaFeatures: React.OldFC<AlexaFeaturesOwnProps> = ({ platformMeta }) => {
   const locales = useSelector(VersionV2.active.localesSelector);
   const modelSensitivityShown = React.useMemo(() => locales.some((locale: string) => MODEL_SENSITIVITY_SUPPORTED_LOCALES.has(locale)), [locales]);
 

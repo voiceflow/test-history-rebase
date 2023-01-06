@@ -10,7 +10,7 @@ import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useDispatch, useModals, usePermission, useSelector } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
 
-const SettingsButton: React.FC = () => {
+const SettingsButton: React.OldFC = () => {
   const plan = useSelector(WorkspaceV2.active.planSelector);
   const isOnPaidPlan = useSelector(WorkspaceV2.active.isOnPaidPlanSelector);
 
@@ -26,7 +26,7 @@ const SettingsButton: React.FC = () => {
   const isViewer = activeRole === UserRole.VIEWER;
 
   return (
-    <TippyTooltip title="Settings" position="bottom">
+    <TippyTooltip content="Settings" position="bottom">
       <Dropdown
         menu={
           <Menu noBottomPadding>

@@ -13,7 +13,7 @@ import EntityPromptForm from '@/pages/Canvas/components/EntityPromptForm';
 import IntentSelectDropdown from './components/components/IntentSelectDropdown';
 import EditIntentForm from './components/IntentForm/EditIntentForm';
 
-const EditModal: React.FC = () => {
+const EditModal: React.OldFC = () => {
   const { close, data, open, isInStack } = useModals<{ id: string; newUtterance?: string; utteranceCreationType: Tracking.CanvasCreationType }>(
     ModalType.INTENT_EDIT
   );

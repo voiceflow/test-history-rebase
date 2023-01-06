@@ -6,6 +6,6 @@ import { getVariableDescription } from '@/utils/variable';
 
 import EmptyDash from '../../../../components/EmptyDash';
 
-const DescriptionColumn: React.FC<TableTypes.ItemProps<OrderedVariable>> = ({ item }) => <>{getVariableDescription(item.name) || <EmptyDash />}</>;
+const DescriptionColumn: React.OldFC<TableTypes.ItemProps<OrderedVariable>> = ({ item }) => <>{getVariableDescription(item.name) || <EmptyDash />}</>;
 
 export default DescriptionColumn;

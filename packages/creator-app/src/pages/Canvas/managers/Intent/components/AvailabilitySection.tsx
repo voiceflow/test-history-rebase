@@ -6,9 +6,10 @@ interface AvailabilitySectionProps {
   isEnabled: boolean;
 }
 
-const AvailabilitySection: React.FC<AvailabilitySectionProps> = ({ isEnabled, onChange }) => (
+const AvailabilitySection: React.OldFC<AvailabilitySectionProps> = ({ isEnabled, onChange }) => (
   <TippyTooltip
-    html={
+    width={208}
+    content={
       <TippyTooltip.Multiline>
         <TippyTooltip.Title>{isEnabled ? 'Enabled' : 'Disabled'}</TippyTooltip.Title>
         {isEnabled
@@ -16,10 +17,9 @@ const AvailabilitySection: React.FC<AvailabilitySectionProps> = ({ isEnabled, on
           : "When toggled off, this intent acts as 'Local', meaning it can only be triggered if the user is actively in this topic."}
       </TippyTooltip.Multiline>
     }
-    style={{ display: 'block' }}
-    position="bottom-end"
-    distance={-10}
-    bodyOverflow
+    offset={[-16, -10]}
+    display="block"
+    placement="bottom-end"
   >
     <SectionV2.SimpleSection onClick={onChange}>
       <SectionV2.Title>Available from other topics?</SectionV2.Title>

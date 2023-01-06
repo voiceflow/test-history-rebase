@@ -10,7 +10,7 @@ import * as Cookies from '@/utils/cookies';
 
 const GENERAL_RUNTIME_REPO = 'https://github.com/voiceflow/general-runtime';
 
-const RuntimeConfig: React.FC = () => {
+const RuntimeConfig: React.OldFC = () => {
   const auth = React.useMemo(() => Cookies.getAuthCookie(), []);
   const [runtimeEndpoint, updateRuntimeEndpoint] = React.useState(localStorage.getItem(GENERAL_RUNTIME_ENDPOINT_TAG) || '');
 

@@ -55,7 +55,10 @@ export const useSyncDynamicPorts = (): {
 } => {
   const editor = useEditor();
 
-  const onAdd = React.useCallback((_, index: number) => editor.engine.port.addDynamic(editor.nodeID, index), [editor.engine.port, editor.nodeID]);
+  const onAdd = React.useCallback(
+    (_: unknown, index: number) => editor.engine.port.addDynamic(editor.nodeID, index),
+    [editor.engine.port, editor.nodeID]
+  );
 
   const onRemove = React.useCallback(
     (_: unknown, index: number) => editor.engine.port.removeDynamic(editor.node.ports.out.dynamic[index]),

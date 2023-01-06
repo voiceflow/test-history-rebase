@@ -3,7 +3,7 @@ import React from 'react';
 
 import * as Documentation from '@/config/documentation';
 
-const HelpTooltip: React.FC = () => (
+const HelpTooltip: React.OldFC = () => (
   <>
     <Tooltip.Paragraph marginBottomUnits={3}>
       Account linking enables your project to connect the user's identity with their identity in a different system. You can read more on how it works{' '}

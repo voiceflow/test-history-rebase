@@ -49,7 +49,7 @@ interface CarouselButtonsProps {
   disableRight: boolean;
 }
 
-const CarouselButtons: React.FC<CarouselButtonsProps> = ({ onLeftClick, onRightClick, disableLeft, disableRight }) => (
+const CarouselButtons: React.OldFC<CarouselButtonsProps> = ({ onLeftClick, onRightClick, disableLeft, disableRight }) => (
   <Container>
     <LeftButton large icon="arrowLeft" size={13} onClick={onLeftClick} disabled={disableLeft} />
     <RightButton large icon="arrowRight" size={13} onClick={onRightClick} disabled={disableRight} />

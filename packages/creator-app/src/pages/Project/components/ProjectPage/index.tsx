@@ -13,7 +13,7 @@ import Header from '../Header';
 import Sidebar from '../Sidebar';
 import * as S from './styles';
 
-const ProjectPage: React.FC = ({ children }) => {
+const ProjectPage: React.OldFC = ({ children }) => {
   const markup = React.useContext(MarkupContext);
 
   const canvasOnly = useSelector(UI.isCanvasOnlyShowingSelector);

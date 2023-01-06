@@ -18,7 +18,15 @@ interface ModalContentProps {
   style?: CustomBlocksFormProps['style'];
 }
 
-const ModalContent: React.FC<ModalContentProps> = ({ currentFormVal, title, confirmText, onSubmit, onCancel, detectDuplicateNames, style = {} }) => {
+const ModalContent: React.OldFC<ModalContentProps> = ({
+  currentFormVal,
+  title,
+  confirmText,
+  onSubmit,
+  onCancel,
+  detectDuplicateNames,
+  style = {},
+}) => {
   const onReceiveFormData = async ({ name, stopOnBlock, body, paths }: Form) =>
     onSubmit({
       name,

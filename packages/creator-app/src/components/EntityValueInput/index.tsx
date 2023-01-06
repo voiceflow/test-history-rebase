@@ -11,7 +11,7 @@ interface EntityValueInputProps {
   onChange: (data: Omit<Realtime.SlotInput, 'id'>) => void;
 }
 
-const EntityValueInput: React.FC<EntityValueInputProps> = ({ entity, readOnly, isActive, onChange }) => {
+const EntityValueInput: React.OldFC<EntityValueInputProps> = ({ entity, readOnly, isActive, onChange }) => {
   const [isFocused, setFocused] = React.useState(false);
   const [localValue, setLocalValue] = useLinkedState(entity.value);
   const [localSynonyms, setLocalSynonyms] = useLinkedState(entity.synonyms);

@@ -16,7 +16,7 @@ interface UtteranceSectionProps {
   preventAccent?: boolean;
 }
 
-const UtteranceSection: React.FC<UtteranceSectionProps> = ({ slot, utterances, onChange, usedEntities, preventAccent }) => {
+const UtteranceSection: React.OldFC<UtteranceSectionProps> = ({ slot, utterances, onChange, usedEntities, preventAccent }) => {
   const utteranceRef = React.useRef<UtteranceRef>(null);
   const [addError, setAddError] = React.useState('');
   const [isAddEmpty, setIsAddEmpty] = React.useState(true);

@@ -2,7 +2,6 @@ import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { batch } from 'react-redux';
 
 import * as Errors from '@/config/errors';
 import * as Diagram from '@/ducks/diagram';
@@ -35,14 +34,12 @@ export const initializeVersion =
     const state = getState();
     const isNewWorkspace = Session.activeWorkspaceIDSelector(state) !== workspaceID;
 
-    batch(() => {
-      if (isNewWorkspace) {
-        dispatch(Workspace.setActive(workspaceID));
-      }
+    if (isNewWorkspace) {
+      dispatch(Workspace.setActive(workspaceID));
+    }
 
-      dispatch(Session.setActiveProjectID(projectID));
-      dispatch(Session.setActiveVersionID(versionID));
-    });
+    dispatch(Session.setActiveProjectID(projectID));
+    dispatch(Session.setActiveVersionID(versionID));
   };
 
 export const importProjectContext =

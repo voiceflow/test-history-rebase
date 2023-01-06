@@ -12,7 +12,7 @@ interface NameSectionProps {
   hasBottomPadding?: boolean;
 }
 
-const NameSection: React.FC<NameSectionProps> = ({ isBuiltIn, name, hasBottomPadding, setName, autofocus, saveName }) => {
+const NameSection: React.OldFC<NameSectionProps> = ({ isBuiltIn, name, hasBottomPadding, setName, autofocus, saveName }) => {
   const inputRef = React.useRef<HTMLInputElement>(null);
 
   React.useEffect(() => {

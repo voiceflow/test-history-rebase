@@ -7,8 +7,9 @@ import * as Account from '@/ducks/account';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import { useDispatch, useQuery, useSelector, useTrackingEvents } from '@/hooks';
+import { getErrorMessage } from '@/utils/error';
 
-const ConfirmEmail: React.FC = () => {
+const ConfirmEmail: React.OldFC = () => {
   const query = useQuery();
   const location = useLocation();
   const [trackingEvents] = useTrackingEvents();
@@ -49,7 +50,7 @@ const ConfirmEmail: React.FC = () => {
 
       logout();
     } catch (error) {
-      toast.error(`Invalid confirmation link: ${error?.message || 'expired or broken'}`);
+      toast.error(`Invalid confirmation link: ${getErrorMessage(error, 'expired or broken')}`);
 
       goToDashboard();
     }

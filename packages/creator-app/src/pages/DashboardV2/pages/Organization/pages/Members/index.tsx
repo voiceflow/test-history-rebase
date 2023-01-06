@@ -1,6 +1,6 @@
 import React from 'react';
 
-const OrganizationMembers: React.FC = () => {
+const OrganizationMembers: React.OldFC = () => {
   return <div>Members</div>;
 };
 

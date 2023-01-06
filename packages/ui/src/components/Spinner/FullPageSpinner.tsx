@@ -24,7 +24,7 @@ const Container = styled.div<ContainerProps>`
 
 export interface FullSpinnerProps extends SpinnerProps, ContainerProps {}
 
-const FullSpinner: React.FC<FullSpinnerProps> = (props) => (
+const FullSpinner: React.OldFC<FullSpinnerProps> = (props) => (
   <Container backgroundColor={props.backgroundColor} zIndex={props.zIndex} isAbs={props.isAbs}>
     <Spinner {...props} />
   </Container>

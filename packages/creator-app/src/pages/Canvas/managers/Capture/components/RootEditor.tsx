@@ -13,7 +13,7 @@ import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import { NoReplyV2 } from '../../components';
 import ListItem from './ListItem';
 
-const CaptureEditor: React.FC = () => {
+const CaptureEditor: React.OldFC = () => {
   const editor = EditorV2.useEditor<Realtime.NodeData.Capture, Realtime.NodeData.CaptureBuiltInPorts>();
 
   const slotFilter = React.useCallback((slotType: SlotOption) => slotType?.value !== AlexaConstants.SlotType.SEARCHQUERY, []);

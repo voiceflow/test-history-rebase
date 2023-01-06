@@ -17,7 +17,7 @@ interface Data {
 
 const DEFAULT_IF_NO_MATCH_LABEL = 'Else';
 
-const NoMatchEditor: React.FC = () => {
+const NoMatchEditor: React.OldFC = () => {
   const engine = React.useContext(EngineContext)!;
   const editor = EditorV2.useEditor<Data, Realtime.NodeData.IfV2BuiltInPorts>();
   const noMatchLinkID = useSelector(Creator.focusedNoMatchLinkIDSelector);

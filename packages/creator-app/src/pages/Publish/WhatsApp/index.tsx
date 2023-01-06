@@ -5,7 +5,7 @@ import { WHATSAPP_DOCUMENTATION } from '@/constants/platforms';
 import { SettingsContainer, WebhookField } from '@/pages/Publish/components';
 import { openInternalURLInANewTab } from '@/utils/window';
 
-const WhatsApp: React.FC = () => (
+const WhatsApp: React.OldFC = () => (
   <SettingsContainer>
     <Banner
       title="Publishing to WhatsApp Business"

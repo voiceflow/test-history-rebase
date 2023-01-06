@@ -27,7 +27,7 @@ const SelectColumn = <I extends NLUIntent>({ item: intent }: TableTypes.ItemProp
 
   if (!showCheckbox && intent.hasEntityError) {
     return (
-      <TippyTooltip title="Required entity error">
+      <TippyTooltip content="Required entity error">
         <WarningIcon />
       </TippyTooltip>
     );

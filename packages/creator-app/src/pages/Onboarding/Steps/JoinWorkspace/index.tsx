@@ -2,14 +2,17 @@ import { Button, FlexCenter } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Account from '@/ducks/account';
-import { connect } from '@/hocs/connect';
+import { useDispatch } from '@/hooks/realtime';
+import { useSelector } from '@/hooks/redux';
 import { OnboardingContext } from '@/pages/Onboarding/context';
-import { ConnectedProps } from '@/types';
 
 import { FieldsContainer, Label, NameInput, ProfilePicUpload, RoleSelect } from '../components';
 import { Container } from './components';
 
-const JoinWorkspace: React.FC<ConnectedJoinWorkspaceProps> = ({ user, saveProfilePicture }) => {
+const JoinWorkspace: React.FC = () => {
+  const user = useSelector(Account.userSelector);
+  const saveProfilePicture = useDispatch(Account.saveProfilePicture);
+
   const { actions } = React.useContext(OnboardingContext);
 
   const [userRole, setUserRole] = React.useState('');
@@ -46,14 +49,4 @@ const JoinWorkspace: React.FC<ConnectedJoinWorkspaceProps> = ({ user, saveProfil
   );
 };
 
-const mapStateToProps = {
-  user: Account.userSelector,
-};
-
-const mapDispatchToProps = {
-  saveProfilePicture: Account.saveProfilePicture,
-};
-
-export type ConnectedJoinWorkspaceProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
-
-export default connect(mapStateToProps, mapDispatchToProps)(JoinWorkspace);
+export default JoinWorkspace;

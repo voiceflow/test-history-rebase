@@ -6,7 +6,7 @@ import logger from '@/utils/logger';
 
 const log = logger.child('LoadingGate');
 
-export interface LoadingGateProps {
+export interface LoadingGateProps extends React.PropsWithChildren {
   full?: boolean;
   load?: null | (() => void);
   label?: string;
@@ -14,7 +14,7 @@ export interface LoadingGateProps {
   unload?: () => void;
   isLoaded: boolean;
   hasLabel?: boolean;
-  component?: React.FC<FullSpinnerProps | SpinnerProps>;
+  component?: React.OldFC<FullSpinnerProps | SpinnerProps>;
   borderless?: boolean;
   internalName: string;
   fillContainer?: boolean;
@@ -22,7 +22,7 @@ export interface LoadingGateProps {
   backgroundColor?: string;
 }
 
-const LoadingGate: React.FC<LoadingGateProps> = ({
+const LoadingGate: React.OldFC<LoadingGateProps> = ({
   full = true,
   load,
   label,

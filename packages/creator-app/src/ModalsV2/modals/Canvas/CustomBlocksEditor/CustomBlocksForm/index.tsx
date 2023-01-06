@@ -29,7 +29,7 @@ export interface CustomBlocksFormProps {
   detectDuplicateNames: boolean;
 }
 
-export const CustomBlocksForm: React.FC<CustomBlocksFormProps> = ({
+export const CustomBlocksForm: React.OldFC<CustomBlocksFormProps> = ({
   title,
   confirmText,
   onCancel,

@@ -1,6 +1,6 @@
 import { CustomScrollbarsTypes, IconButton, TippyTooltip, useConst, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
-import { List } from 'react-virtualized';
+import { VariableSizeList } from 'react-window';
 
 import DraggableList from '@/components/DraggableList';
 import VirtualList from '@/components/VirtualList';
@@ -13,11 +13,10 @@ import { HEADER_MIN_HEIGHT, ITEM_HEIGHT } from '../constants';
 import SearchInput, { SEARCH_INPUT_HEIGHT } from '../SearchInput';
 import { TopicItem, useTopics } from './hooks';
 import TopicItemComponent from './TopicItem';
+import VirtualListItem from './VirtualListItem';
 
-const TOPIC_ITEM_HEIGHT = ITEM_HEIGHT;
-
-const TopicsSection: React.FC = () => {
-  const listRef = React.useRef<List>(null);
+const TopicsSection: React.OldFC = () => {
+  const listRef = React.useRef<VariableSizeList<TopicItem[]>>(null);
   const scrollBarsRef = React.useRef<CustomScrollbarsTypes.Scrollbars>(null);
 
   const [canReorder] = usePermission(Permission.REORDER_TOPICS_AND_COMPONENTS);
@@ -48,31 +47,34 @@ const TopicsSection: React.FC = () => {
   const topics = isSearch ? searchTopicsItems : topicsItems;
   const opened = isSearch ? searchOpenedTopics : openedIDs;
 
-  const rowHeight = usePersistFunction(({ index }: { index: number }) => {
-    const topic = topics[index];
-    const isOpened = opened[topic.id];
-
-    if (!isOpened) {
-      return TOPIC_ITEM_HEIGHT;
-    }
-
-    return TOPIC_ITEM_HEIGHT + ITEM_HEIGHT * (topic.menuItems.length || 1);
-  });
-
   const canDrag = usePersistFunction(() => !isSearch && canReorder);
-  const getItemKey = useConst((item: TopicItem) => item.id);
+  const getDNDItemKey = useConst((item: TopicItem) => item.id);
+  const getVirtualItemKey = useConst((index: number, data: TopicItem[]) => data[index].id);
+  const itemSize = React.useCallback(
+    (index: number) => {
+      const topic = topics[index];
+      const isOpened = opened[topic.id];
+
+      if (!isOpened) {
+        return ITEM_HEIGHT;
+      }
+
+      return ITEM_HEIGHT + ITEM_HEIGHT * (topic.menuItems.length || 1);
+    },
+    [openedIDs, topics]
+  );
 
   useDidUpdateEffect(() => {
-    listRef.current?.recomputeRowHeights();
+    listRef.current?.resetAfterIndex(0);
   }, [opened, topics]);
 
   useDidUpdateEffect(() => {
     const index = topics.findIndex(({ id }) => id === lastCreatedDiagramID);
 
     if (index !== -1) {
-      const offset = Array.from({ length: index + 1 }).reduce<number>((acc, _, i) => acc + rowHeight({ index: i }), 0);
+      const offset = Array.from({ length: index + 1 }).reduce<number>((acc, _, index) => acc + itemSize(index), 0);
 
-      scrollBarsRef.current?.scrollTop(offset + HEADER_MIN_HEIGHT + SEARCH_INPUT_HEIGHT);
+      scrollBarsRef.current?.scrollTop?.(offset + HEADER_MIN_HEIGHT + SEARCH_INPUT_HEIGHT);
     }
   }, [lastCreatedDiagramID]);
 
@@ -93,22 +95,28 @@ const TopicsSection: React.FC = () => {
       }}
       onReorder={onReorderTopics}
       onEndDrag={onDragEnd}
-      getItemKey={getItemKey}
+      getItemKey={getDNDItemKey}
       onStartDrag={onDragStart}
       itemComponent={TopicItemComponent}
       previewComponent={TopicItemComponent}
       unmountableDuringDrag
     >
-      {({ renderItem }) => (
-        <VirtualList
-          ref={scrollBarsRef}
+      {() => (
+        <VirtualList<TopicItem[]>
+          ref={listRef}
           size={topics.length}
+          itemKey={getVirtualItemKey}
+          itemSize={itemSize}
+          listData={topics}
+          scrollbarsRef={scrollBarsRef}
+          itemComponent={VirtualListItem}
+          estimatedItemSize={ITEM_HEIGHT}
           header={
             <Header
               label="Topics"
               rightAction={
                 canEditCanvas && (
-                  <TippyTooltip title="Create topic" delay={500}>
+                  <TippyTooltip content="Create topic" delay={500}>
                     <IconButton icon="plus" variant={IconButton.Variant.BASIC} onClick={onCreateTopic} offsetSize={0} />
                   </TippyTooltip>
                 )
@@ -117,20 +125,6 @@ const TopicsSection: React.FC = () => {
               <SearchInput value={searchValue} onChangeText={setSearchValue} placeholder="Search" $onIconClick={() => setSearchValue('')} />
             </Header>
           }
-          listRef={listRef}
-          rowHeight={rowHeight}
-          renderItem={(index) => {
-            const item = topics[index];
-
-            return renderItem({
-              key: item.id,
-              item,
-              index,
-              isLast: index === topics.length - 1,
-              isFirst: index === 0,
-              itemKey: item.id,
-            });
-          }}
         />
       )}
     </DraggableList>

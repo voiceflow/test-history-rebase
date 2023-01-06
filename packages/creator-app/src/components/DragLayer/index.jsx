@@ -1,13 +1,27 @@
 import React, { useMemo } from 'react';
-import { DragLayer } from 'react-dnd';
-import compose from 'recompose/compose';
+import { useDragLayer } from 'react-dnd';
 
 import withRootPortal from '@/hocs/withRootPortal';
 
-function CustomDragLayer(props) {
-  const { _diff, _item, _offset, children, _initSourceClientOffset, ...ownProps } = props;
+function CustomDragLayer({ children, ...props }) {
+  const { _item, _diff, _offset, _initSourceClientOffset } = useDragLayer((monitor) => {
+    const item = monitor.getItem();
+    const offset = monitor.getClientOffset() || {};
+    const initClientOffset = monitor.getInitialClientOffset() || {};
+    const initSourceClientOffset = monitor.getInitialSourceClientOffset() || {};
+    const diffX = initClientOffset.x - initSourceClientOffset.x;
+    const diffY = initClientOffset.y - initSourceClientOffset.y;
 
-  const child = useMemo(() => (_item ? children(_item, ownProps) : null), [_item]);
+    return {
+      _item: item,
+      _diff: { x: diffX, y: diffY },
+      _offset: offset,
+      _initSourceClientOffset: initSourceClientOffset,
+    };
+  });
+
+  const child = useMemo(() => (_item ? children(_item, props) : null), [_item]);
+
   if (!_item) {
     return null;
   }
@@ -29,21 +43,4 @@ function CustomDragLayer(props) {
   );
 }
 
-export default compose(
-  withRootPortal(),
-  DragLayer((monitor) => {
-    const item = monitor.getItem();
-    const offset = monitor.getClientOffset() || {};
-    const initClientOffset = monitor.getInitialClientOffset() || {};
-    const initSourceClientOffset = monitor.getInitialSourceClientOffset() || {};
-    const diffX = initClientOffset.x - initSourceClientOffset.x;
-    const diffY = initClientOffset.y - initSourceClientOffset.y;
-
-    return {
-      _item: item,
-      _diff: { x: diffX, y: diffY },
-      _offset: offset,
-      _initSourceClientOffset: initSourceClientOffset,
-    };
-  })
-)(CustomDragLayer);
+export default withRootPortal()(CustomDragLayer);

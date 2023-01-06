@@ -11,7 +11,7 @@ import ItemContainer from './ItemContainer';
 
 type ThreadItemProps = ThreadType;
 
-const ThreadItem: React.FC<ThreadItemProps> = ({ id: threadID, resolved, comments }) => {
+const ThreadItem: React.OldFC<ThreadItemProps> = ({ id: threadID, resolved, comments }) => {
   const engine = React.useContext(EngineContext)!;
   const focusThread = React.useContext(FocusThreadContext)!;
 
@@ -42,7 +42,7 @@ const ThreadItem: React.FC<ThreadItemProps> = ({ id: threadID, resolved, comment
         <Commenter creatorID={comment.creatorID} />
 
         {resolved && (
-          <TippyTooltip title="Mark Unresolved" distance={1}>
+          <TippyTooltip content="Mark Unresolved" offset={[0, 1]}>
             <IconButton
               size={16}
               icon="checkmarkFilled"

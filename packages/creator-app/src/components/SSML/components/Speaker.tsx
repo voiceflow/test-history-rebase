@@ -16,7 +16,7 @@ interface SpeakerProps {
   getSSMLToPlay: () => string;
 }
 
-const Speaker: React.FC<SpeakerProps> = ({ voice, platform, getSSMLToPlay }) => {
+const Speaker: React.OldFC<SpeakerProps> = ({ voice, platform, getSSMLToPlay }) => {
   const audio = React.useMemo(() => new Audio(), []);
   const [audioArray, setAudioArray] = React.useState<string[]>([]);
   const [currentAudioIndex, setCurrentAudioIndex] = React.useState<number>(0);
@@ -106,7 +106,7 @@ const Speaker: React.FC<SpeakerProps> = ({ voice, platform, getSSMLToPlay }) => 
   const icon = loading ? 'arrowSpin' : playing ? 'systemStopOutline' : 'playOutline';
 
   return (
-    <TippyTooltip title={playing ? 'Stop' : 'Play'} position="top" bodyOverflow distance={0}>
+    <TippyTooltip content={playing ? 'Stop' : 'Play'} placement="top" offset={[0, 0]}>
       <SpeakerWrapper isPlaying={playing}>
         <SvgIcon className={ClassName.SSML_PLAY_AUDIO} onClick={onSpeak} color="#6E849A" icon={icon} size={loading ? 14 : 16} spin={loading} />
       </SpeakerWrapper>

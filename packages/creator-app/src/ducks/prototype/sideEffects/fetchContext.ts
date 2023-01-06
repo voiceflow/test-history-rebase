@@ -2,7 +2,6 @@ import { BaseNode, BaseRequest, BaseTrace } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { batch } from 'react-redux';
 
 import client from '@/client';
 import * as Errors from '@/config/errors';
@@ -72,12 +71,10 @@ const fetchContext =
         trace: trace?.map((t) => ({ ...t, id: Utils.id.cuid() })) ?? [],
       };
 
-      batch(() => {
-        dispatch(updatePrototype({ contextStep: contextStep + 1 }));
-        dispatch(updatePrototypeContext(newStateObj));
-        dispatch(pushContextHistory(newStateObj));
-        dispatch(pushPrototypeVisualDataHistory(lastVisual ? lastVisual.payload : currentVisualData));
-      });
+      dispatch(updatePrototype({ contextStep: contextStep + 1 }));
+      dispatch(updatePrototypeContext(newStateObj));
+      dispatch(pushContextHistory(newStateObj));
+      dispatch(pushPrototypeVisualDataHistory(lastVisual ? lastVisual.payload : currentVisualData));
 
       return newStateObj;
     } catch (err) {

@@ -6,7 +6,7 @@ import { usePermission } from '@/hooks';
 
 import { BillingHistory, CancelSubscription, EditorSeats, PaymentDetails, ProductionUsage } from './components';
 
-const DashboardV2Billing: React.FC = () => {
+const DashboardV2Billing: React.OldFC = () => {
   const canManageSeats = usePermission(Permission.MANAGE_SEATS);
   const hasCard = true;
   const hasBillingHistory = true;

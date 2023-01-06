@@ -30,7 +30,7 @@ export interface EditorControlsProps {
   tutorialTitle?: React.ReactNode;
 }
 
-const EditorControls: React.FC<EditorControlsProps> = ({ tutorial, anchor, tutorialTitle, options = [], menu, children }) => {
+const EditorControls: React.OldFC<EditorControlsProps> = ({ tutorial, anchor, tutorialTitle, options = [], menu, children }) => {
   const getManager = React.useContext(ManagerContext)!;
 
   return (

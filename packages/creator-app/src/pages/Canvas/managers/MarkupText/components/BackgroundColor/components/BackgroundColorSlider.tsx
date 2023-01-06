@@ -3,7 +3,6 @@ import { colorGetReadableAlfa, colorReadableAlfaToOpacity, preventDefault, useDi
 import React from 'react';
 
 import ColorSelect from '@/components/ColorSelect';
-import OpacitySliderHandle from '@/components/SlateEditable/components/OpacitySliderHandle';
 import SliderInputGroup from '@/components/SliderInputGroup';
 import { NUMBERS_ONLY_REGEXP } from '@/constants';
 import { withEnterPress } from '@/utils/dom';
@@ -13,7 +12,7 @@ export interface BackgroundColorSliderProps {
   onChangeColor: (color: Realtime.Markup.Color) => void;
 }
 
-const BackgroundColorSlider: React.FC<BackgroundColorSliderProps> = ({ color, onChangeColor }) => {
+const BackgroundColorSlider: React.OldFC<BackgroundColorSliderProps> = ({ color, onChangeColor }) => {
   const [pickerInputFocused, togglePickerInputFocused] = useToggle();
 
   const [inputOpacity, setInputOpacity] = React.useState(() => colorGetReadableAlfa(color));
@@ -84,7 +83,17 @@ const BackgroundColorSlider: React.FC<BackgroundColorSliderProps> = ({ color, on
       }}
       sliderValue={+inputOpacity}
       inputAction="%"
-      sliderProps={{ min: 0, autoFocus: false, handle: OpacitySliderHandle }}
+      sliderProps={{
+        min: 0,
+        onBlur: preventDefault(),
+        onFocus: preventDefault(),
+        autoFocus: false,
+        handleRender: (origin: React.ReactElement<React.ComponentProps<'div'>>) =>
+          React.cloneElement(origin, {
+            onMouseDown: preventDefault(origin.props.onMouseDown),
+            onTouchStart: preventDefault(origin.props.onTouchStart),
+          }),
+      }}
       sliderPrefix={
         <ColorSelect
           color={color}

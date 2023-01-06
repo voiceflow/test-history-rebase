@@ -3,13 +3,13 @@ import { Spinner } from '@voiceflow/ui';
 import cn from 'classnames';
 import _get from 'lodash/get';
 import React from 'react';
+import { connect } from 'react-redux';
 
 import { DefaultModal } from '@/components/modals';
 import * as Account from '@/ducks/account';
 import * as Integration from '@/ducks/integration';
 import * as Modal from '@/ducks/modal';
 import * as Session from '@/ducks/session';
-import { connect } from '@/hocs/connect';
 import { useToggle } from '@/hooks/toggle';
 import * as ModalsV2 from '@/ModalsV2';
 

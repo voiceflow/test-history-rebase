@@ -16,7 +16,7 @@ interface DescriptionSectionProps {
   withBottomBorder?: boolean;
 }
 
-const DescriptionSection: React.FC<DescriptionSectionProps> = ({ intentID, creationType, withBottomBorder = true, onCreateNote }) => {
+const DescriptionSection: React.OldFC<DescriptionSectionProps> = ({ intentID, creationType, withBottomBorder = true, onCreateNote }) => {
   const [isCollapsed, toggleIsCollapsed] = useToggle(true);
   const intent = useSelector(IntentV2.getIntentByIDSelector)({ id: intentID });
   const inputRef = React.useRef<HTMLInputElement>(null);

@@ -50,13 +50,14 @@ const Editor: NodeEditorV2<Realtime.NodeData.RandomV2> = ({ data, onChange }) =>
       <SectionV2.Divider />
 
       <TippyTooltip
-        html={
+        width={208}
+        content={
           <TippyTooltip.Multiline>When on, the step will ignore paths that have already been activated in a given session.</TippyTooltip.Multiline>
         }
-        style={{ cursor: 'pointer', display: 'block' }}
-        distance={-10}
+        style={{ cursor: 'pointer' }}
+        display="block"
+        offset={[0, -10]}
         position="bottom-end"
-        bodyOverflow
       >
         <SectionV2.SimpleSection onClick={toggle}>
           <SectionV2.Title>Ignore duplicate paths</SectionV2.Title>

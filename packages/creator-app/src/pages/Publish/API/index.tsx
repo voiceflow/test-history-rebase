@@ -19,7 +19,7 @@ import ProjectAPIKeySection from './components/section';
 import StyledButton from './components/StyledButton';
 import { getSamples } from './utils';
 
-const API: React.FC = () => {
+const API: React.OldFC = () => {
   const [loading, setLoading] = React.useState(true);
   const [primaryKey, setPrimaryKey] = React.useState<ProjectAPIKey | null>(null);
   const [secondaryKey, setSecondaryKey] = React.useState<ProjectAPIKey | null>(null);

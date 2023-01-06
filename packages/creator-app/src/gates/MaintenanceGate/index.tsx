@@ -1,6 +1,6 @@
 import { Utils } from '@voiceflow/common';
 import { Alert, toast } from '@voiceflow/ui';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import dayjs from 'dayjs';
 import React from 'react';
 
@@ -8,8 +8,7 @@ import client from '@/client';
 import LoadingGate from '@/components/LoadingGate';
 import { MAINTENANCE_STATUS_SOURCE } from '@/config';
 import * as Modal from '@/ducks/modal';
-import { connect } from '@/hocs/connect';
-import { ConnectedProps } from '@/types';
+import { useDispatch } from '@/hooks/realtime';
 import { getMaintenanceCookie } from '@/utils/cookies';
 import * as Sentry from '@/vendors/sentry';
 
@@ -35,10 +34,12 @@ const getMaintenance = async () => {
   return { startTimeUtc, endTimeUtc };
 };
 
-const MaintenanceGate: React.FC<ConnectedMaintenanceGateProps> = ({ children, setConfirm }) => {
+const MaintenanceGate: React.FC<React.PropsWithChildren> = ({ children }) => {
+  const setConfirm = useDispatch(Modal.setConfirm);
+
   const [checked, updateChecked] = React.useState(false);
 
-  const action = React.useCallback((interval = null) => {
+  const action = React.useCallback((interval: string | null = null) => {
     if (!interval) {
       window.location.replace('https://voiceflow.com/maintenance');
       throw new Error('MAINTENANCE');
@@ -74,7 +75,7 @@ const MaintenanceGate: React.FC<ConnectedMaintenanceGateProps> = ({ children, se
       try {
         await client.maintenance.check();
       } catch (err) {
-        if (err?.response?.status === 503) {
+        if (err instanceof AxiosError && err.response?.status === 503) {
           action();
           return;
         }
@@ -130,10 +131,4 @@ const MaintenanceGate: React.FC<ConnectedMaintenanceGateProps> = ({ children, se
   );
 };
 
-const mapDispatchToProps = {
-  setConfirm: Modal.setConfirm,
-};
-
-type ConnectedMaintenanceGateProps = ConnectedProps<{}, typeof mapDispatchToProps>;
-
-export default connect(null, mapDispatchToProps)(MaintenanceGate);
+export default MaintenanceGate;

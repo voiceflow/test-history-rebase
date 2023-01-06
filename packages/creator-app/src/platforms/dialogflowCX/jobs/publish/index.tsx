@@ -8,7 +8,7 @@ import DialogflowCXUploadButton from './components/DialogflowCXUploadButton';
 import { useDialogflowCXPublishContext } from './hooks';
 import { useDialogflowCXPublishStageContent } from './stages';
 
-const DialogflowPublish: React.FC = () => {
+const DialogflowPublish: React.OldFC = () => {
   const publishContext = useDialogflowCXPublishContext();
 
   const { job, onPublish } = publishContext;

@@ -6,6 +6,7 @@ import { allReportTagsSelector } from '@/ducks/reportTag/selectors';
 import { activeProjectIDSelector } from '@/ducks/session';
 import { SystemTag } from '@/models';
 import { Thunk } from '@/store/types';
+import { getErrorMessage } from '@/utils/error';
 
 import { addReportTag, patchReportTag, removeReportTag, replaceReportTags } from './actions';
 
@@ -64,7 +65,7 @@ export const createTag =
 
       return newTag.id;
     } catch (e) {
-      toast.error(e);
+      toast.error(getErrorMessage(e));
       return null;
     }
   };

@@ -30,7 +30,7 @@ const Action: ConnectedAction<Realtime.NodeData.GoToIntent> = ({ data, engine, r
         <Canvas.Action
           ref={ref}
           icon={
-            <TippyTooltip tag="div" title="Intent is missing" disabled={!isEmpty || isActive} distance={2} bodyOverflow>
+            <TippyTooltip tag="div" content="Intent is missing" disabled={!isEmpty || isActive} offset={[0, 2]}>
               <Canvas.Action.Icon icon={isEmpty && !isActive ? 'warning' : NODE_CONFIG.icon!} />
             </TippyTooltip>
           }

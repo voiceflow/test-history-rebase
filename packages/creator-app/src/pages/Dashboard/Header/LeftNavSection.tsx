@@ -20,7 +20,7 @@ interface LeftNavSectionProps {
   activeWorkspace: Realtime.Workspace | null;
 }
 
-const LeftNavSection: React.FC<LeftNavSectionProps> = ({ activeWorkspace }) => {
+const LeftNavSection: React.OldFC<LeftNavSectionProps> = ({ activeWorkspace }) => {
   const plan = useSelector(WorkspaceV2.active.planSelector);
   const [canCreatePrivateCloudWorkspace] = usePermission(Permission.CREATE_PRIVATE_CLOUD_WORKSPACE);
   const workspaces = useSelector(WorkspaceV2.allWorkspacesSelector);

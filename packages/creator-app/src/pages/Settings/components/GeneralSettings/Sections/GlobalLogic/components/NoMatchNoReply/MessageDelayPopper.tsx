@@ -14,7 +14,7 @@ const NOT_NUMBERS_REGEX = /\D/g;
 
 const DEFAULT_DELAY = 10;
 
-const MessageDelayPopper: React.FC = () => {
+const MessageDelayPopper: React.OldFC = () => {
   const platformConfig = useActiveProjectPlatformConfig();
 
   const settings = useSelector(VersionV2.active.settingsSelector);
@@ -42,7 +42,7 @@ const MessageDelayPopper: React.FC = () => {
 
   if (!isNoReplyDelayEditable) {
     return (
-      <TippyTooltip title={`This value is not editable as it's defined by ${platformConfig.name}`}>
+      <TippyTooltip content={`This value is not editable as it's defined by ${platformConfig.name}`}>
         <S.DelayTrigger>{getDefaultNoReplyTimeoutSeconds(platformConfig.type)}</S.DelayTrigger>
       </TippyTooltip>
     );

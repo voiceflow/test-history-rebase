@@ -4,8 +4,7 @@ import React from 'react';
 
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
-import { connect } from '@/hocs/connect';
-import { ConnectedProps } from '@/types';
+import { useDispatch } from '@/hooks/realtime';
 import * as Sentry from '@/vendors/sentry';
 
 import { useOktaLogin } from '../hooks';
@@ -19,7 +18,9 @@ export interface SSOLoginProps {
   disabled?: boolean;
 }
 
-const SSOLogin: React.FC<SSOLoginProps & ConnectedSSOLoginProps> = ({ domain, clientID, light, coupon, ssoLogin, goToAdoptSSO }) => {
+const SSOLogin: React.OldFC<SSOLoginProps> = ({ domain, clientID, light, coupon }) => {
+  const ssoLogin = useDispatch(Session.ssoLogin);
+  const goToAdoptSSO = useDispatch(Router.goToAdoptSSO);
   const oktaLogin = useOktaLogin(domain, clientID);
 
   const onSSOLogin = async () => {
@@ -57,11 +58,4 @@ const SSOLogin: React.FC<SSOLoginProps & ConnectedSSOLoginProps> = ({ domain, cl
   );
 };
 
-const mapDispatchToProps = {
-  ssoLogin: Session.ssoLogin,
-  goToAdoptSSO: Router.goToAdoptSSO,
-};
-
-type ConnectedSSOLoginProps = ConnectedProps<{}, typeof mapDispatchToProps>;
-
-export default connect(null, mapDispatchToProps)(SSOLogin) as React.FC<SSOLoginProps>;
+export default SSOLogin;

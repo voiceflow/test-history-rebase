@@ -10,42 +10,25 @@ interface TeamAndBillingMemberListRoleSelectProps {
   facets: Record<UserRole | 'all', number>;
 }
 
-const roles = [
-  { value: '', label: 'All' },
-  {
-    value: UserRole.EDITOR,
-    label: 'Editor',
-  },
-  {
-    value: UserRole.VIEWER,
-    label: 'Viewer',
-  },
-  {
-    value: UserRole.ADMIN,
-    label: 'Admin',
-  },
-  {
-    value: UserRole.BILLING,
-    label: 'Billing',
-  },
-  {
-    value: UserRole.OWNER,
-    label: 'Owner',
-  },
-] as const;
+const ROLES: Array<{ value: UserRole | 'all'; label: string }> = [
+  { value: 'all', label: 'All' },
+  { value: UserRole.EDITOR, label: 'Editor' },
+  { value: UserRole.VIEWER, label: 'Viewer' },
+  { value: UserRole.ADMIN, label: 'Admin' },
+  { value: UserRole.BILLING, label: 'Billing' },
+  { value: UserRole.OWNER, label: 'Owner' },
+];
 
 const TeamAndBillingMemberListRoleSelect: React.FC<TeamAndBillingMemberListRoleSelectProps> = ({ value, onChange, facets }) => {
-  const statusOptions = React.useMemo(() => roles.map((option) => ({ ...option, count: facets[option.value || 'all'] ?? 0 })), [facets]);
+  const statusOptions = React.useMemo(() => ROLES.map((option) => ({ ...option, count: facets[option.value] ?? 0 })), [facets]);
 
-  const getOptionKey = React.useCallback((option) => option.value, []);
-  const getOptionValue = React.useCallback((option) => option.value, []);
   const selectValue = React.useMemo(() => statusOptions.find((option) => option.value === value)?.label, [value]);
 
   return (
     <Select
       value={selectValue}
       options={statusOptions}
-      onSelect={(option) => onChange(option || '')}
+      onSelect={(value) => onChange(value === 'all' ? '' : value)}
       placeholder={selectValue}
       renderOptionLabel={(option) => (
         <S.Option>
@@ -54,9 +37,9 @@ const TeamAndBillingMemberListRoleSelect: React.FC<TeamAndBillingMemberListRoleS
         </S.Option>
       )}
       prefix="ROLE"
-      getOptionValue={getOptionValue}
+      getOptionValue={(option) => option?.value}
       getOptionLabel={(label) => label}
-      getOptionKey={getOptionKey}
+      getOptionKey={(option) => option.value}
       width="145px"
     />
   );

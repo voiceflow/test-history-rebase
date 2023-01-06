@@ -25,7 +25,7 @@ export interface TabsProps<V extends string = string> {
 }
 
 const Tabs = <V extends string = string>({ as = 'button', options, selected, onChange, innerRef }: TabsProps<V>): React.ReactElement<any, any> => {
-  const tabsRef = React.useRef<Record<string, HTMLElement | null>>({});
+  const tabsRef = React.useRef<Record<string, Element | null>>({});
   const activeLineRef = React.useRef<HTMLDivElement>(null);
 
   const genKey = useKeygen();
@@ -33,7 +33,7 @@ const Tabs = <V extends string = string>({ as = 'button', options, selected, onC
 
   const selectedOption = React.useMemo(() => options.find(({ value }) => value === selected), [options, selected]);
 
-  const onRef = (value: string) => (node: HTMLElement | null) => {
+  const onRef = (value: string) => (node: Element | null) => {
     tabsRef.current[value] = node;
   };
 
@@ -44,7 +44,9 @@ const Tabs = <V extends string = string>({ as = 'button', options, selected, onC
     const selectedNode = selectedOption ? tabsRef.current[selectedOption.value] : null;
 
     if (selectedNode && selectedNode.parentNode) {
-      const parentNode = selectedNode.parentNode as HTMLElement; // eslint-disable-line xss/no-mixed-html
+      const { parentNode } = selectedNode;
+
+      if (!(parentNode instanceof Element)) return;
 
       scheduler(() => {
         const { left: wrapperNodeLeft } = parentNode.getBoundingClientRect();
@@ -81,7 +83,7 @@ const Tabs = <V extends string = string>({ as = 'button', options, selected, onC
             {...tooltip}
             tag="div"
             key={genKey(value)}
-            ref={(instance) => onRef(value)(instance?.tooltipDOM ?? null)}
+            ref={(instance) => onRef(value)(instance ?? null)}
             style={{ display: 'block', height: '100%', ...tooltip.style }}
           >
             {tab}

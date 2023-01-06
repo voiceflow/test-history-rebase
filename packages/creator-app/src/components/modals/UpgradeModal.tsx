@@ -10,7 +10,7 @@ import { UpgradePrompt } from '@/ducks/tracking';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useModals, useSelector, useTrackingEvents } from '@/hooks';
 
-const UpgradeModal: React.FC = () => {
+const UpgradeModal: React.OldFC = () => {
   const { close, data } = useModals<{ planLimitDetails: LimitDetails; promptOrigin: UpgradePrompt }>(ModalType.UPGRADE_MODAL);
   const { open: openPaymentModal } = useModals<{ planType: PlanType }>(ModalType.PAYMENT);
   const [trackingEvents] = useTrackingEvents();

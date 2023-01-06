@@ -15,7 +15,7 @@ interface SlotSelectProps extends BaseSelectProps {
   onChange: (value: string) => void;
 }
 
-const SlotSelect: React.FC<SlotSelectProps> = ({ value, onChange, className, filter, ...props }) => {
+const SlotSelect: React.OldFC<SlotSelectProps> = ({ value, onChange, className, filter, ...props }) => {
   const slotTypes = useSelector(VersionV2.active.slotTypesSelector);
   const slotTypesMap = useSelector(VersionV2.active.slotTypesMapSelector);
 

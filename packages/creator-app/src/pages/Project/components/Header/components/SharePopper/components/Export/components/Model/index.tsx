@@ -15,7 +15,7 @@ import { useActiveProjectNLUConfig, usePermission } from '@/hooks';
 
 import { ExportContext } from '../../Context';
 
-const ExportModel: React.FC<{
+const ExportModel: React.OldFC<{
   selectedIntentsIds?: string[];
 }> = ({ selectedIntentsIds }) => {
   const nluConfig = useActiveProjectNLUConfig();

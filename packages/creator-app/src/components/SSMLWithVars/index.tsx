@@ -12,6 +12,7 @@ import * as VersionV2 from '@/ducks/versionV2';
 import { useActiveProjectTypeConfig } from '@/hooks/platformConfig';
 import { useDispatch } from '@/hooks/realtime';
 import { useSelector } from '@/hooks/redux';
+import { getErrorMessage } from '@/utils/error';
 
 interface SSMLWithVarsProps {
   icon?: SvgIconTypes.Icon | null;
@@ -43,13 +44,13 @@ const SSMLWithVars = React.forwardRef<TextEditorRef, SSMLWithVarsProps>(({ icon 
   const updateDefaultVoice = useDispatch(Version.voice.updateDefaultVoice);
 
   const onAddVariable = React.useCallback(
-    async (name) => {
+    async (name: string) => {
       try {
         await addGlobalVariable(name, CanvasCreationType.EDITOR);
 
         return { id: name, name, isVariable: true };
       } catch (err) {
-        toast.error(err.message);
+        toast.error(getErrorMessage(err));
         return null;
       }
     },

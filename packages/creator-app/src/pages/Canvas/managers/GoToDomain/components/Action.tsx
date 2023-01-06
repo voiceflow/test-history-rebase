@@ -36,7 +36,7 @@ const GoToDomainAction: ConnectedAction<Realtime.NodeData.GoToDomain> = ({ data,
         <Canvas.Action
           ref={ref}
           icon={
-            <TippyTooltip tag="div" title="Domain is missing" disabled={!isEmpty || isActive} distance={2} bodyOverflow>
+            <TippyTooltip tag="div" content="Domain is missing" disabled={!isEmpty || isActive} offset={[0, 2]}>
               <Canvas.Action.Icon icon={isEmpty && !isActive ? 'warning' : NODE_CONFIG.icon!} />
             </TippyTooltip>
           }

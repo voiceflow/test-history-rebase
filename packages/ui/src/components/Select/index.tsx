@@ -394,7 +394,7 @@ function Select({
         onHideMenu();
       }
     } catch (error) {
-      toast.warn(error?.message || error?.toString?.() || 'something went wrong');
+      toast.warn(error instanceof Error ? error.message || JSON.stringify(error) : 'something went wrong');
     }
   };
 

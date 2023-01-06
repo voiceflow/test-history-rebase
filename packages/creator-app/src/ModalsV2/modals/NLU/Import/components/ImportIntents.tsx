@@ -26,7 +26,7 @@ interface ImportIntentsProps extends T.VoidInternalProps {
   setTabState: (state: ModalsState) => void;
 }
 
-const ImportIntents: React.FC<ImportIntentsProps> = ({
+const ImportIntents: React.OldFC<ImportIntentsProps> = ({
   api,
   tabState,
   setTabState,

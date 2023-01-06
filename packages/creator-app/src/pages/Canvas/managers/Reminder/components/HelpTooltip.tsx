@@ -1,7 +1,7 @@
 import { Tooltip } from '@voiceflow/ui';
 import React from 'react';
 
-const HelpTooltip: React.FC = () => (
+const HelpTooltip: React.OldFC = () => (
   <>
     <Tooltip.Paragraph>
       The reminder block can be used to send both scheduled remidners and timed reminder to the user. You can add variables to both the trigger time

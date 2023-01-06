@@ -10,7 +10,7 @@ export interface EditorFormControlProps {
   tooltipProps?: TutorialInfoIconProps['tooltipProps'];
 }
 
-const EditorFormControl: React.FC<EditorFormControlProps> = ({ label, children, contentBottomUnits, tooltip, tooltipProps }) => (
+const EditorFormControl: React.OldFC<EditorFormControlProps> = ({ label, children, contentBottomUnits, tooltip, tooltipProps }) => (
   <>
     {label && (
       <Label>

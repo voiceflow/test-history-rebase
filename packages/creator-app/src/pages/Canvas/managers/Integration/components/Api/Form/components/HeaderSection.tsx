@@ -8,7 +8,7 @@ import { expressionFactory } from '../constants';
 import { BaseFormProps } from '../types';
 import * as APIEditorSectionStyles from './styles';
 
-const HeaderSection: React.FC<BaseFormProps> = ({ editor }) => {
+const HeaderSection: React.OldFC<BaseFormProps> = ({ editor }) => {
   const mapManager = useMapManager(editor.data.headers ?? [], (headers) => editor.onChange({ headers }), {
     factory: expressionFactory,
   });

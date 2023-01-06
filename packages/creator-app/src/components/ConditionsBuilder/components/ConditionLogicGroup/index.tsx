@@ -21,7 +21,7 @@ export interface ConditionLogicGroupProps {
   updateBaseType: (value: BaseNode.Utils.ExpressionTypeV2.AND | BaseNode.Utils.ExpressionTypeV2.OR) => void;
 }
 
-const ConditionLogicGroup: React.FC<ConditionLogicGroupProps> = ({ expression, onChange, onDelete, firstItem, baseLogicType, updateBaseType }) => {
+const ConditionLogicGroup: React.OldFC<ConditionLogicGroupProps> = ({ expression, onChange, onDelete, firstItem, baseLogicType, updateBaseType }) => {
   const addNewCondition = (logicInterface: BaseNode.Utils.ConditionsLogicInterface) => {
     const values: any = getDefaultValue(logicInterface);
     onChange({ ...expression, value: [{ ...values }] });

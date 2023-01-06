@@ -25,7 +25,7 @@ interface StepSubMenuItemProps {
   upgradePopperRef?: React.Ref<HTMLDivElement>;
 }
 
-const StepSubMenuItem: React.FC<StepSubMenuItemProps> = ({ item, upgradePopperRef }) => {
+const StepSubMenuItem: React.OldFC<StepSubMenuItemProps> = ({ item, upgradePopperRef }) => {
   const plan = useSelector(WorkspaceV2.active.planSelector);
   const [isHovered, , hoverHandlers] = useHover();
 
@@ -61,9 +61,8 @@ const StepSubMenuItem: React.FC<StepSubMenuItemProps> = ({ item, upgradePopperRe
         <Portal portalNode={document.body}>
           <div ref={popper.setPopperElement} style={{ ...popper.styles.popper, paddingLeft: '6px' }} {...popper.attributes.popper}>
             <div ref={upgradePopperRef}>
-              <TooltipContainer>
+              <TooltipContainer width={isLocked ? 232 : 200}>
                 <TippyTooltip.FooterButton
-                  width={isLocked ? 200 : 168}
                   onClick={() => (isLocked ? openPaymentModal() : item.tooltipLink && window.open(item.tooltipLink, '_blank'))}
                   buttonText={isLocked ? lockedStepTooltipButtonText : 'Learn More'}
                 >

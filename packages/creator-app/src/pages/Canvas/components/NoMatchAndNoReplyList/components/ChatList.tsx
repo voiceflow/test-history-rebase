@@ -16,7 +16,7 @@ export interface ChatListProps {
   hideRandomizeMenu?: boolean;
 }
 
-const ChatList: React.FC<ChatListProps> = ({
+const ChatList: React.OldFC<ChatListProps> = ({
   children,
   randomize,
   reprompts = [],

@@ -34,7 +34,7 @@ const getIcon = ({ nluConfig, isImportLoading }: { nluConfig: NLU.Base.Config | 
   return nluConfig && <SvgIcon size={16} color={nluConfig.icon.color} icon={nluConfig.icon.name} />;
 };
 
-const PlatformSetup: React.FC<PlatformSetupProps> = ({
+const PlatformSetup: React.OldFC<PlatformSetupProps> = ({
   nlu,
   type,
   onNext: onNextProp,
@@ -156,7 +156,7 @@ const PlatformSetup: React.FC<PlatformSetupProps> = ({
                 }
                 isFocused={isFocused}
                 permission={option.permission}
-                tooltipProps={{ distance: 30 }}
+                tooltipProps={{ offset: [0, 30] }}
                 labelTooltip={option.labelTooltip}
                 upgradePrompt={UpgradePrompt.SUPPORTED_NLUS}
               />

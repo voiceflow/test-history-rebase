@@ -27,17 +27,15 @@ const OverflowTippyTooltip = <E extends HTMLElement = HTMLElement>({
 
   useResizeObserver(ref, checkForOverflow);
 
-  // eslint-disable-next-line xss/no-mixed-html
-  React.useLayoutEffect(() => checkForOverflow(), [props.title, props.html]);
+  React.useLayoutEffect(() => checkForOverflow(), [props.content]);
 
   return (
     <TippyTooltip
       style={{ ...(overflow && { display: 'flex', overflow: 'hidden' }), ...style }}
       delay={[300, 0]}
+      offset={[0, 6]}
       disabled={!isOverflow}
       position="top"
-      distance={6}
-      bodyOverflow
       {...props}
     >
       {children(ref, { isOverflow })}

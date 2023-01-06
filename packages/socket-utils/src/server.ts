@@ -1,6 +1,6 @@
 import * as Logux from '@logux/server';
 import { Environment } from '@voiceflow/common';
-import Logger from '@voiceflow/logger';
+import { Logger } from '@voiceflow/logger';
 import { Action, AnyAction } from 'typescript-fsa';
 
 const SUBPROTOCOL = '1.0.0';

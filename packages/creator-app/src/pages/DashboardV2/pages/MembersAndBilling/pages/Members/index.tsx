@@ -10,7 +10,7 @@ import * as ModalsV2 from '@/ModalsV2';
 import MemberList from './List';
 import * as S from './styles';
 
-const DashboardV2TeamAndBillingMembers: React.FC = () => {
+const DashboardV2TeamAndBillingMembers: React.OldFC = () => {
   const activeWorkspace = useActiveWorkspace();
 
   const usedEditorSeats = useSelector(WorkspaceV2.active.usedEditorSeatsSelector);

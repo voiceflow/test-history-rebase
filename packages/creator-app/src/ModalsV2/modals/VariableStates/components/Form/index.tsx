@@ -22,7 +22,7 @@ interface Props {
 
 const FORM_ID = 'variable-state-form';
 
-const Form: React.FC<Props> = ({ value, onSubmit }) => {
+const Form: React.OldFC<Props> = ({ value, onSubmit }) => {
   const initialValues = React.useMemo((): FormValues => {
     if (!value) return { name: '', startFrom: null, variables: [], variablesValues: {} };
 

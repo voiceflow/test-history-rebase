@@ -76,7 +76,7 @@ reducer
   .case(actions.remove, (state, payload) => Normal.removeOne(state, manager.getCombinedID(payload.id, payload.type)))
   .case(actions.update, (state, payload) => Normal.patchOne(state, manager.getCombinedID(payload.id, payload.type), payload.update));
 
-export const Provider: React.FC = ({ children }) => {
+export const Provider: React.OldFC = ({ children }) => {
   const [state, dispatch] = React.useReducer(reducer, initialState);
 
   const prevAllKeysLengthRef = React.useRef(state.allKeys.length);

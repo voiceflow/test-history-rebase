@@ -35,7 +35,7 @@ const PublishTeams = lazy(() => import('./MicrosoftTeams'));
 const Export = lazy(() => import('./Export'));
 const API = lazy(() => import('./API'));
 
-const Publish: React.FC = () => {
+const Publish: React.OldFC = () => {
   const { platform } = useSelector(ProjectV2.active.metaSelector);
   const [canCodeExport] = usePermission(Permission.CODE_EXPORT);
   const disableCodeExports = useFeature(Realtime.FeatureFlag.DISABLE_CODE_EXPORTS).isEnabled;

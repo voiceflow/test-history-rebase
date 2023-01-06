@@ -23,7 +23,7 @@ export interface NavLinkSidebarProps {
 
 const isNavLinkSection = (item: Nullable<NavLinkItem | NavLinkSection>): item is NavLinkSection => !!item && 'items' in item;
 
-const NavLinkSidebar: React.FC<NavLinkSidebarProps> = ({ items }) => {
+const NavLinkSidebar: React.OldFC<NavLinkSidebarProps> = ({ items }) => {
   const location = useLocation();
 
   return (

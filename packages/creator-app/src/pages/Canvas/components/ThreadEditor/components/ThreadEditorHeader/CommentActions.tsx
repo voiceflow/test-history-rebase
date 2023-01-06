@@ -18,7 +18,7 @@ export interface CommentActionsProps {
   isThreadEditing?: boolean;
 }
 
-const CommentActions: React.FC<CommentActionsProps> = ({
+const CommentActions: React.OldFC<CommentActionsProps> = ({
   onPost,
   onEdit,
   comment,
@@ -63,7 +63,7 @@ const CommentActions: React.FC<CommentActionsProps> = ({
           )}
 
           {!!comment && !!onResolve && (
-            <TippyTooltip title="Mark Resolved" distance={1} disabled={isThreadEditing}>
+            <TippyTooltip content="Mark Resolved" offset={[0, 1]} disabled={isThreadEditing}>
               <BoxFlex ml={16}>
                 <IconButton
                   size={16}

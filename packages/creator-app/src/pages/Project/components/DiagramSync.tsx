@@ -3,7 +3,7 @@ import React from 'react';
 import * as Session from '@/ducks/session';
 import { useDispatch, useRouteDiagramID, useSelector } from '@/hooks';
 
-const DiagramSync: React.FC = () => {
+const DiagramSync: React.OldFC = () => {
   const routeDiagramID = useRouteDiagramID();
   const activeDiagramID = useSelector(Session.activeDiagramIDSelector);
   const isSynced = routeDiagramID === activeDiagramID;

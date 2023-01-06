@@ -25,11 +25,12 @@ const DropdownIcon = styled(SvgIcon)`
   }
 `;
 
-const SearchDropdown: React.FC = () => {
+const SearchDropdown: React.OldFC = () => {
   const search = React.useContext(SearchContext);
 
   const options = SearchFilters.map((filter) => {
     const checked = search?.filters[filter] !== false;
+
     return {
       label: (
         <Checkbox type={Checkbox.Type.CHECKBOX} readOnly checked={checked} isFlat>

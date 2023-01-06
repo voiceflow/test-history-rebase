@@ -8,7 +8,7 @@ export interface PermissionGateProps {
   permission: Permission;
 }
 
-const PermissionGate: React.FC<PermissionGateProps> = ({ permission, children }) => {
+const PermissionGate: React.OldFC<PermissionGateProps> = ({ permission, children }) => {
   const [isAllowed, { activeRole }] = usePermission(permission);
 
   if (!isAllowed) return null;

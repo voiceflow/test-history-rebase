@@ -5,13 +5,13 @@ import Divider from './Divider';
 import PanelContainer, { PanelContainerProps } from './PanelContainer';
 import PanelContent from './PanelContent';
 
-export interface PanelProps extends PanelContainerProps, Omit<React.ComponentProps<'div'>, 'ref'> {
+export interface PanelProps extends PanelContainerProps, Omit<React.ComponentProps<'div'>, 'ref' | 'children'> {
   children?: (options: { collapsed: boolean; setHeight: (height: number) => void }) => React.ReactNode;
 }
 
 export interface PanelPropsInjected extends PanelProps {
-  collapsed: boolean;
   innerRef: (node: HTMLDivElement | null) => void;
+  collapsed: boolean;
   setHeight: (height: number) => void;
   withDivider?: boolean;
   renderDivider?: (props: { onDividerMouseDown: (event: React.MouseEvent<HTMLDivElement>) => void }) => React.ReactNode;

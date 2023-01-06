@@ -9,6 +9,6 @@ interface ButtonProps {
   onMouseDown: React.MouseEventHandler<HTMLButtonElement>;
 }
 
-const Button: React.FC<ButtonProps> = ({ active, ...props }) => <IconButton activeClick={active} {...props} />;
+const Button: React.OldFC<ButtonProps> = ({ active, ...props }) => <IconButton activeClick={active} {...props} />;
 
 export default Button;

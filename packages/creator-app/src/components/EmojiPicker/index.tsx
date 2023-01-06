@@ -34,7 +34,7 @@ interface EmojiPickerProps {
   value: EMOJI_OPTION | null;
 }
 
-const EmojiPicker: React.FC<EmojiPickerProps> = ({ onChange, value, fanDirection, options }) => {
+const EmojiPicker: React.OldFC<EmojiPickerProps> = ({ onChange, value, fanDirection, options }) => {
   const [isHovering, setIsHovering] = React.useState(false);
   const [currentEmotion, setCurrentEmotion] = React.useState(value || EMOJI_OPTION.DEFAULT);
 

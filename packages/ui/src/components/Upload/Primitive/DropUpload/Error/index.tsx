@@ -8,7 +8,7 @@ interface ErrorProps {
   onClearError: VoidFunction;
 }
 
-const Error: React.FC<ErrorProps> = ({ error, onClearError }) => (
+const Error: React.OldFC<ErrorProps> = ({ error, onClearError }) => (
   <>
     <StatusIcon icon="error" />
     <S.ErrorMessage>

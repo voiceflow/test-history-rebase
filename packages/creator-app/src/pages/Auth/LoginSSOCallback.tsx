@@ -9,7 +9,7 @@ import { useDispatch, useFeature } from '@/hooks';
 import OKTA from '@/utils/okta';
 import * as Query from '@/utils/query';
 
-const LoginSSOCallback: React.FC = () => {
+const LoginSSOCallback: React.OldFC = () => {
   const location = useLocation();
 
   const ssoSignIn = useDispatch(Session.ssoSignIn);

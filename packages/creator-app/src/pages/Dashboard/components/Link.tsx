@@ -5,10 +5,10 @@ import { useDispatch } from '@/hooks';
 
 export interface LinkProps {
   to: string;
-  component?: React.FC<{ onClick: VoidFunction }> | string;
+  component?: React.OldFC<{ onClick: VoidFunction }> | string;
 }
 
-const Link: React.FC<LinkProps> = (props) => {
+const Link: React.OldFC<LinkProps> = (props) => {
   const goTo = useDispatch(Router.goTo);
   const { to, component: Component = 'div', ...ownProps } = props;
 

@@ -3,7 +3,7 @@ import React from 'react';
 import Multiline from './Multiline';
 import Title from './Title';
 
-export interface ComplexProps {
+export interface ComplexProps extends React.PropsWithChildren {
   title?: React.ReactNode;
   width?: number;
 }

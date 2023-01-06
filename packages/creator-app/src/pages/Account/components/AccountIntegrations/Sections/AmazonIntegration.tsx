@@ -10,7 +10,7 @@ import * as ModalsV2 from '@/ModalsV2';
 
 import * as S from './styles';
 
-const AmazonIntegrations: React.FC = () => {
+const AmazonIntegrations: React.OldFC = () => {
   const [amazonStatus, setAmazonStatus] = useState(false);
   const user = useSelector(Account.userSelector);
   const loadAmazonAccount = useDispatch(Account.amazon.loadAccount);

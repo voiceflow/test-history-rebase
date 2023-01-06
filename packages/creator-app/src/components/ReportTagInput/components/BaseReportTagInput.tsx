@@ -28,7 +28,7 @@ export interface BaseReportTagInputProps {
 
 const filterOutSelected = (id: string, selectedTagIDs: string[]) => !selectedTagIDs.includes(id);
 
-const BaseReportTagInput: React.FC<BaseReportTagInputProps> = ({
+const BaseReportTagInput: React.OldFC<BaseReportTagInputProps> = ({
   addTag,
   removeTag,
   className,

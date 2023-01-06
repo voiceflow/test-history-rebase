@@ -6,7 +6,7 @@ import React from 'react';
 
 import { Permission } from '@/config/permissions';
 import { ScrollContextProvider } from '@/contexts/ScrollContext';
-import { DragItem as BaseDragItem, DropOptions, InjectedDraggableComponentProps, withDraggable } from '@/hocs/withDraggable';
+import { DragItem as BaseDragItem, DropOptions, HoverItem, InjectedDraggableComponentProps, withDraggable } from '@/hocs/withDraggable';
 import { useHorizontalScrollToNode, useLinkedState, usePermission, useScrollHelpers, useScrollStickySides } from '@/hooks';
 import { useToggle } from '@/hooks/toggle';
 import { DashboardClassName } from '@/styles/constants';
@@ -15,22 +15,23 @@ import { withEnterPress, withTargetValue } from '@/utils/dom';
 import DragZone from './DragZone';
 import Item from './Item';
 
-type DragItem = BaseDragItem<'onDrag', 'onMove'>;
-
 interface DropContainerProps {
   className?: string;
-  connectDropTarget?: (element: JSX.Element) => JSX.Element;
+  connectedRootRef?: React.RefObject<HTMLDivElement>;
 }
 
-const DropItem: React.FC<DropContainerProps> = ({ children, className, connectDropTarget }) => {
-  return connectDropTarget ? connectDropTarget(<div className={className}>{children}</div>) : null;
-};
+const DropItem: React.OldFC<DropContainerProps> = ({ children, className, connectedRootRef }) => (
+  <div ref={connectedRootRef} className={className}>
+    {children}
+  </div>
+);
 
 const DropContainer = withDraggable({
   name: 'dashboard-item',
   canDrag: _constant(false),
   onDropKey: 'onDrop',
   onMoveKey: 'onMove',
+  dropOnly: true,
 })(DropItem);
 
 export interface ListProps extends InjectedDraggableComponentProps {
@@ -41,7 +42,7 @@ export interface ListProps extends InjectedDraggableComponentProps {
   createProject: (listID: string) => void;
   onRename?: (listID: string, name: string) => void;
   onRemove: (list: { id: string; name?: string; projects?: Realtime.AnyProject[] }) => void;
-  onMoveProject?: (drag: DragItem, hover: DragItem) => void;
+  onMoveProject?: (drag: BaseDragItem<'onDrag', 'onMove'>, hover: HoverItem<'onDrag', 'onMove'>) => void;
   onDropProject?: (dropOptions: DropOptions) => void;
   clearNewBoard: VoidFunction;
   isCreated?: boolean;
@@ -50,7 +51,7 @@ export interface ListProps extends InjectedDraggableComponentProps {
   isDraggingPreview?: boolean;
 }
 
-export const List: React.FC<ListProps> = ({
+export const List: React.OldFC<ListProps> = ({
   id,
   name,
   isNew,
@@ -62,10 +63,9 @@ export const List: React.FC<ListProps> = ({
   clearNewBoard,
   onMoveProject,
   onDropProject,
-  connectDragSource,
-  isDraggingPreview,
-  connectDropTarget,
   createProject,
+  connectedRootRef,
+  isDraggingPreview,
 }) => {
   const isEmpty = !projects || !projects.length;
 
@@ -95,8 +95,9 @@ export const List: React.FC<ListProps> = ({
     }
   }, []);
 
-  const list = (
+  return (
     <div
+      ref={canManageLists ? connectedRootRef : undefined}
       style={{ cursor: !canManageLists ? 'default' : undefined }}
       className={cn(DashboardClassName.LIST, {
         '__is-draggable __is-dragging': isDraggingPreview,
@@ -176,7 +177,6 @@ export const List: React.FC<ListProps> = ({
                           avatarUrl={project.image}
                           name={project.name}
                           nlu={project.nlu}
-                          diagram={project.diagramID}
                           platform={project.platform}
                           projectType={project.type}
                           onDrop={onDropProject}
@@ -211,14 +211,12 @@ export const List: React.FC<ListProps> = ({
       {isDragging && <DragZone className={DashboardClassName.LIST_DRAGZONE} />}
     </div>
   );
-
-  return canManageLists && connectDragSource && connectDropTarget ? connectDragSource(connectDropTarget(list)) : list;
 };
 
 export default withDraggable({
   name: 'dashboard-list',
   styles: { display: 'flex' },
-  canDrag: (props) => !props.disableDragging,
+  canDrag: (monitor) => !monitor.getItem()?.disableDragging,
   canDrop: _constant(true),
   onMoveKey: 'onMove',
   onDropKey: 'onDrop',

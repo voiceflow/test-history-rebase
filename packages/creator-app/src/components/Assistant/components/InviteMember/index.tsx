@@ -12,7 +12,7 @@ interface InviteMemberProps {
   memberIDs: number[];
 }
 
-const InviteMember: React.FC<InviteMemberProps> = ({ onAdd: onAddProp, memberIDs }) => {
+const InviteMember: React.OldFC<InviteMemberProps> = ({ onAdd: onAddProp, memberIDs }) => {
   const workspaceActiveMembers = useSelector(WorkspaceV2.active.activeMembersSelector);
 
   const [roles, setRoles] = React.useState<UserRole[]>([UserRole.EDITOR]);

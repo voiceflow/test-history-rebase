@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { CanvasAPI } from '@/components/Canvas';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { VersionSubscriptionGate, WorkspaceFeatureLoadingGate } from '@/gates';
 import { withBatchLoadingGate } from '@/hocs/withBatchLoadingGate';
@@ -15,11 +16,11 @@ import { MarkupProvider } from '@/pages/Project/contexts';
 import { ExportCanvasDiagram, ExportGlobalStyle, ExportWatermark } from './components';
 import InitializeExportGate from './gates/InitializeExportGate';
 
-const ExportCanvas: React.FC = () => {
+const ExportCanvas: React.OldFC = () => {
   const isOnPaidPlan = useSelector(WorkspaceV2.active.isOnPaidPlanSelector);
 
   const [engine, engineKey] = useEngine();
-  const registerCanvas = React.useCallback((api) => engine.registerCanvas(api), []);
+  const registerCanvas = React.useCallback((api: CanvasAPI | null) => engine.registerCanvas(api), []);
   const getManager = useManager();
 
   return (

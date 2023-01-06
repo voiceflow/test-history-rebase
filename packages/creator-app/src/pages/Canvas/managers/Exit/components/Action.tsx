@@ -17,7 +17,7 @@ const getPlatformLabel = createPlatformSelector(
 );
 
 const Action: ConnectedAction<Realtime.NodeData.Exit> = ({ data, reversed, platform, isActive }) => (
-  <TippyTooltip tag="div" title={`${getPlatformLabel(platform)} ends in the active state.`} distance={4} position="top-start" bodyOverflow>
+  <TippyTooltip tag="div" content={`${getPlatformLabel(platform)} ends in the active state.`} offset={[0, 4]} position="top-start">
     <Canvas.Action
       icon={<Canvas.Action.Icon icon={NODE_CONFIG.icon!} />}
       label={<Canvas.Action.Label>{data.name || 'End'}</Canvas.Action.Label>}

@@ -6,7 +6,7 @@ import * as ModalsV2 from '@/ModalsV2';
 import { GooglePublishJob } from '@/models';
 import { StageComponentProps } from '@/platforms/types';
 
-const WaitAccountStage: React.FC<StageComponentProps<GooglePublishJob.WaitAccountStage>> = ({ restart, cancel }) => {
+const WaitAccountStage: React.OldFC<StageComponentProps<GooglePublishJob.WaitAccountStage>> = ({ restart, cancel }) => {
   const connectGoogleModal = ModalsV2.useModal(ModalsV2.Platform.Connect);
 
   React.useEffect(() => {

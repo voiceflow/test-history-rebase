@@ -21,7 +21,7 @@ interface EditIntentFormProps {
 
 const DEFAULT_INPUTS: Platform.Base.Models.Intent.Input[] = [];
 
-const EditIntentForm: React.FC<EditIntentFormProps> = ({
+const EditIntentForm: React.OldFC<EditIntentFormProps> = ({
   intentID,
   creationType,
   isNLUManager,

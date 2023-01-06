@@ -6,7 +6,7 @@ import { DEFAULT_MAX_WIDTH } from '@/pages/Settings/constants';
 
 import { AccountProfile } from './Sections';
 
-const AccountProfileSection: React.FC = () => {
+const AccountProfileSection: React.OldFC = () => {
   return (
     <Box maxWidth={DEFAULT_MAX_WIDTH}>
       <SettingsSection variant={SectionVariants.PRIMARY} title="Profile">

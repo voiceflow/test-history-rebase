@@ -15,7 +15,7 @@ export interface CanvasTemplateEditorPopperProps extends TemplateEditorProps {
   hasManager?: boolean;
 }
 
-const CanvasTemplateEditorPopper: React.FC<CanvasTemplateEditorPopperProps> = ({
+const CanvasTemplateEditorPopper: React.OldFC<CanvasTemplateEditorPopperProps> = ({
   isOpen,
   onClose,
   onOpen,

@@ -1,8 +1,9 @@
 import './polyfills';
 
+import { inspect } from 'node:util';
+
 import { LoguxError } from '@logux/core';
 import { serializeError, SocketServer } from '@voiceflow/socket-utils';
-import { inspect } from 'node:util';
 import path from 'path';
 import { fileURLToPath } from 'url';
 

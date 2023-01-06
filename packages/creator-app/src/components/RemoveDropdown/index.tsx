@@ -8,7 +8,7 @@ export interface RemoveDropDownProps {
   deleteText?: string;
 }
 
-const RemoveDropDown: React.FC<RemoveDropDownProps> = ({ onRemove, deleteText = 'Delete' }) => (
+const RemoveDropDown: React.OldFC<RemoveDropDownProps> = ({ onRemove, deleteText = 'Delete' }) => (
   <Container>
     <Dropdown options={[{ label: deleteText, onClick: onRemove }]}>
       {(ref, onToggle, isOpen) => <IconButton icon="ellipsis" variant={IconButtonVariant.FLAT} active={isOpen} onClick={onToggle} ref={ref} />}

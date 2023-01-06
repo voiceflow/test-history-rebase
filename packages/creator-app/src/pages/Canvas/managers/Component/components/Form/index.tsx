@@ -16,7 +16,7 @@ interface FormProps {
   footer?: React.ReactNode;
 }
 
-const Form: React.FC<FormProps> = ({ editor, header, footer }) => {
+const Form: React.OldFC<FormProps> = ({ editor, header, footer }) => {
   const diagram = useSelector(DiagramV2.diagramByIDSelector, { id: editor.data.diagramID });
 
   return (

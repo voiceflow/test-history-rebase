@@ -54,7 +54,7 @@ const ColorWrapper = styled.div<BaseColorProps>`
   }
 `;
 
-export const Color: React.FC<ColorProps> = ({
+export const Color: React.OldFC<ColorProps> = ({
   selected,
   colorData,
   name,
@@ -115,7 +115,7 @@ export const Color: React.FC<ColorProps> = ({
       {({ onContextMenu }) => (
         <TippyTooltip
           disabled={!name}
-          html={
+          content={
             <WrapperTooltip>
               <Tooltip>{name}</Tooltip>
             </WrapperTooltip>

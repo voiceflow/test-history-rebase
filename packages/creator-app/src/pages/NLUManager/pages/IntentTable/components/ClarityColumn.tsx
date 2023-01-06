@@ -3,7 +3,7 @@ import React from 'react';
 
 import { NLUIntent } from '@/pages/NLUManager/types';
 
-const ClarityColumn: React.FC<TableTypes.ItemProps<NLUIntent>> = ({ item: { clarityLevel } }) =>
+const ClarityColumn: React.OldFC<TableTypes.ItemProps<NLUIntent>> = ({ item: { clarityLevel } }) =>
   clarityLevel === StrengthGauge.Level.LOADING ? (
     <StrengthGauge width={40} level={clarityLevel} />
   ) : (

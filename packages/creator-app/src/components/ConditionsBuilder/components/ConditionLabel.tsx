@@ -9,7 +9,7 @@ export interface ConditionLabelProps {
   onChange?: (value: BaseNode.Utils.ExpressionTypeV2.AND | BaseNode.Utils.ExpressionTypeV2.OR) => void;
 }
 
-const ConditionLabel: React.FC<ConditionLabelProps> = ({ actionable = false, onChange, children }) =>
+const ConditionLabel: React.OldFC<ConditionLabelProps> = ({ actionable = false, onChange, children }) =>
   actionable ? (
     <Dropdown
       menu={() => (

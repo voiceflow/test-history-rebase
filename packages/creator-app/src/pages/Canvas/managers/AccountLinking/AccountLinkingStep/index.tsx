@@ -18,7 +18,7 @@ export interface AccountLinkingStepProps {
   palette: HSLShades;
 }
 
-export const AccountLinkingStep: React.FC<AccountLinkingStepProps> = ({ isConfigured, nodeID, nextPortID, palette }) => (
+export const AccountLinkingStep: React.OldFC<AccountLinkingStepProps> = ({ isConfigured, nodeID, nextPortID, palette }) => (
   <Step nodeID={nodeID}>
     <Section>
       <Item

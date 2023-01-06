@@ -5,7 +5,7 @@ import EmptyView from '@/pages/NLUManager/components/EmptyView';
 import NoResultsScreen from '@/pages/NLUManager/components/NoResultsScreen';
 import { useNLUManager } from '@/pages/NLUManager/context';
 
-const EmptyScreen: React.FC = () => {
+const EmptyScreen: React.OldFC = () => {
   const nluManager = useNLUManager();
   const nluImportIntentsModal = ModalsV2.useModal(ModalsV2.NLU.Import);
 

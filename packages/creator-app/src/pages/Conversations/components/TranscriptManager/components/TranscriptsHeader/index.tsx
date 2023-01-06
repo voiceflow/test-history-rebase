@@ -7,7 +7,7 @@ export interface TranscriptsHeaderProps extends TranscriptFiltersProps {
   resultCount: number;
 }
 
-const TranscriptsHeader: React.FC<TranscriptsHeaderProps> = ({ hasShadow, resultCount, ...props }) => (
+const TranscriptsHeader: React.OldFC<TranscriptsHeaderProps> = ({ hasShadow, resultCount, ...props }) => (
   <Container hasShadow={hasShadow}>
     <b>Transcripts ({resultCount})</b>
     <TranscriptFilters {...props} />

@@ -27,7 +27,7 @@ export interface MigrationGateProps
     setContext: (context: VersionSubscriptionContext) => void;
   }> {}
 
-const MigrationGate: React.FC<MigrationGateProps> = ({ versionID, context, setContext, children }) => {
+const MigrationGate: React.OldFC<MigrationGateProps> = ({ versionID, context, setContext, children }) => {
   const realtimeClient = useRealtimeClient();
 
   const [status, setStatus] = React.useState(MigrationStatus.IDLE);

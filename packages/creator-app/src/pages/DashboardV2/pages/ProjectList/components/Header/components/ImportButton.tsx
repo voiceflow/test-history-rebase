@@ -14,7 +14,7 @@ import * as Sentry from '@/vendors/sentry';
 
 const ACCEPTED_FILE_FORMATS = '.vf,.vfr';
 
-const ImportButton: React.FC = () => {
+const ImportButton: React.OldFC = () => {
   const projects = useSelector(ProjectV2.allProjectsSelector);
 
   const goToDomain = useDispatch(Router.goToDomain);
@@ -59,7 +59,7 @@ const ImportButton: React.FC = () => {
     onLimited: (limit) => upgradeModal.openVoid(limit.upgradeModal),
   });
 
-  return <Page.Header.IconButton icon="importCircle" size={16} isSmall onClick={onImport} tooltip={{ title: 'Import .vf file' }} />;
+  return <Page.Header.IconButton icon="importCircle" size={16} isSmall onClick={onImport} tooltip={{ content: 'Import .vf file' }} />;
 };
 
 export default ImportButton;

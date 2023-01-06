@@ -94,7 +94,7 @@ const DraggableItem = React.forwardRef<HTMLElement, DraggableItemProps>((props, 
                 onEnterPress={withInputBlur()}
               />
             ) : (
-              <OverflowTippyTooltip overflow title={isEmpty ? placeholder : localName}>
+              <OverflowTippyTooltip overflow content={isEmpty ? placeholder : localName}>
                 {(ref) => (
                   <OverflowText ref={ref} color={isEmpty ? '#8da2b5' : 'currentColor'}>
                     <span>{isEmpty ? placeholder : localName}</span>

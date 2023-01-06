@@ -14,7 +14,7 @@ import { onOpenURLInANewTabFactory } from '@/utils/window';
 
 import * as S from './styles';
 
-const NLUNavigationSidebar: React.FC = () => {
+const NLUNavigationSidebar: React.OldFC = () => {
   const nluConfig = useActiveProjectNLUConfig();
 
   const [importClicked, setImportClicked] = useLocalStorageState('import-clicked', false);
@@ -49,7 +49,7 @@ const NLUNavigationSidebar: React.FC = () => {
               {({ isActive }) =>
                 isActive ? (
                   <NavigationSidebar.Item.AddButton
-                    tooltip={{ title: 'Import data' }}
+                    tooltip={{ content: 'Import data' }}
                     onClick={() => nluImportModal.open({ importType: ModalsV2.NLU.ImportType.UNCLASSIFIED })}
                   />
                 ) : (
@@ -68,7 +68,7 @@ const NLUNavigationSidebar: React.FC = () => {
         >
           {({ isActive }) =>
             isActive ? (
-              <NavigationSidebar.Item.AddButton tooltip={{ title: 'Create intent' }} onClick={() => nluManager.createIntent()} />
+              <NavigationSidebar.Item.AddButton tooltip={{ content: 'Create intent' }} onClick={() => nluManager.createIntent()} />
             ) : (
               <NavigationSidebar.Item.SubText>{nluManager.intents.length}</NavigationSidebar.Item.SubText>
             )
@@ -83,7 +83,7 @@ const NLUNavigationSidebar: React.FC = () => {
         >
           {({ isActive }) =>
             isActive ? (
-              <NavigationSidebar.Item.AddButton tooltip={{ title: 'Create entity' }} onClick={() => nluManager.createEntity()} />
+              <NavigationSidebar.Item.AddButton tooltip={{ content: 'Create entity' }} onClick={() => nluManager.createEntity()} />
             ) : (
               <NavigationSidebar.Item.SubText>{nluManager.entities.length}</NavigationSidebar.Item.SubText>
             )
@@ -93,19 +93,20 @@ const NLUNavigationSidebar: React.FC = () => {
 
       {!!nluConfig.nlps[0].import && (
         <TippyTooltip
+          width={232}
+          placement="top"
           interactive
-          html={
+          content={
             <>
               <TippyTooltip.Complex title={<S.ImportTooltipTitle>{nluConfig.name} import</S.ImportTooltipTitle>}>
                 Imports must be in {nluImport.acceptedFileFormatsLabel} format
               </TippyTooltip.Complex>
+
               {!!nluConfig.helpURL && (
                 <TippyTooltip.FooterButton onClick={onOpenURLInANewTabFactory(nluConfig.helpURL)} buttonText="More"></TippyTooltip.FooterButton>
               )}
             </>
           }
-          position="top"
-          bodyOverflow
         >
           <Box px={16} pb={4}>
             <NavigationSidebar.Item onClick={onImportClick} icon="importCircle" title="Import" />

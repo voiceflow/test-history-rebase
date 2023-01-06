@@ -10,7 +10,7 @@ import PublishButton from '@/pages/Project/components/Header/components/CanvasHe
 
 import { useWhatsAppStageContent } from './stages';
 
-const WhatsApp: React.FC = () => {
+const WhatsApp: React.OldFC = () => {
   const publishContext = React.useContext(PublishContext)!;
   const { job, active } = publishContext;
 

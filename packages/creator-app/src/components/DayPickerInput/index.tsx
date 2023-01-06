@@ -5,7 +5,7 @@ import React from 'react';
 
 import VariablesInput from '@/components/VariablesInput';
 
-import { DayPickerContainer, FORMAT, TimeRangePicker, WEEKDAYS } from './components';
+import { DayPickerContainer, FORMAT, TimeRangePicker } from './components';
 
 export interface DayPickerInputProps {
   date?: string | Date;
@@ -39,11 +39,10 @@ const DayPickerInput: React.FC<DayPickerInputProps> = ({ date, onChange }) => {
       renderContent={({ onToggle }) => (
         <DayPickerContainer>
           <TimeRangePicker
+            selected={selectedDay}
+            disabled={{ before: currentDate }}
             onDayClick={Utils.functional.chain(onDayClick, onToggle)}
-            initialMonth={selectedDay}
-            selectedDays={selectedDay}
-            disabledDays={{ before: currentDate }}
-            weekdaysShort={WEEKDAYS}
+            defaultMonth={selectedDay}
           />
         </DayPickerContainer>
       )}

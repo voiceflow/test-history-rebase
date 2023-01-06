@@ -3,7 +3,7 @@ import React from 'react';
 
 import Page from '@/components/Page';
 
-const PaymentDetails: React.FC = () => {
+const PaymentDetails: React.OldFC = () => {
   const cardDetails = '... 8707, card expires 4 / 23';
 
   return (

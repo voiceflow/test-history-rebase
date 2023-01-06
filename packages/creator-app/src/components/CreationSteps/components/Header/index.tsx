@@ -16,7 +16,7 @@ interface CreationHeaderProps {
   stepStack: any[];
 }
 
-const CreationHeader: React.FC<CreationHeaderProps> = ({
+const CreationHeader: React.OldFC<CreationHeaderProps> = ({
   hasBackButton,
   stepBack,
   canCancel,

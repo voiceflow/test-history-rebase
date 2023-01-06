@@ -18,7 +18,7 @@ export interface TranscriptFiltersProps {
   startDate: string;
 }
 
-const TranscriptFilters: React.FC<TranscriptFiltersProps> = ({ tags, range, endDate, startDate }) => {
+const TranscriptFilters: React.OldFC<TranscriptFiltersProps> = ({ tags, range, endDate, startDate }) => {
   const history = useHistory();
 
   const [trackingEvents] = useTrackingEvents();

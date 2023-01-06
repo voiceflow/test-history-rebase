@@ -12,7 +12,7 @@ interface MessageDelayButtonProps {
   onChange: (delay: number | undefined) => void;
 }
 
-const MessageDelayButton: React.FC<MessageDelayButtonProps> = ({ icon = 'systemMessageDelay', delay, onChange }) => {
+const MessageDelayButton: React.OldFC<MessageDelayButtonProps> = ({ icon = 'systemMessageDelay', delay, onChange }) => {
   const [isOpened, toggleOpen] = useToggle(false);
   const durationMilliseconds = useSelector(VersionV2.active.voiceflow.chat.messageDelaySelector);
 
@@ -49,7 +49,7 @@ const MessageDelayButton: React.FC<MessageDelayButtonProps> = ({ icon = 'systemM
       )}
     >
       {({ ref, isOpened }) => (
-        <TippyTooltip title="Message Delay" position="top">
+        <TippyTooltip content="Message Delay" placement="top">
           <IconButton ref={ref} icon={icon} active={isOpened || !!messageDelay} onClick={preventDefault(toggleOpen)} />
         </TippyTooltip>
       )}

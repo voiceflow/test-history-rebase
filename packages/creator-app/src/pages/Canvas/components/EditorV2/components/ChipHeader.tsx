@@ -13,7 +13,7 @@ interface ChipHeaderProps extends Partial<Omit<SidebarEditorTypes.HeaderProps, '
   onChangeColor: (color: string) => void;
 }
 
-const ChipHeader: React.FC<ChipHeaderProps> = ({ title, color, colorScheme = COLOR_PICKER_CONSTANTS.ColorScheme.DARK, onChangeColor }) => {
+const ChipHeader: React.OldFC<ChipHeaderProps> = ({ title, color, colorScheme = COLOR_PICKER_CONSTANTS.ColorScheme.DARK, onChangeColor }) => {
   const editor = useEditor();
   const popperContainerRef = React.useRef<HTMLDivElement>(null);
   const [isShowingPicker, togglePopper] = useDismissable(false, { ref: popperContainerRef });

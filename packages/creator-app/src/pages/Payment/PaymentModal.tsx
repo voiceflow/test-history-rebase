@@ -11,7 +11,7 @@ interface PaymentType {
   focus: string;
 }
 
-const PaymentModal: React.FC = () => {
+const PaymentModal: React.OldFC = () => {
   const [trackingEvents] = useTrackingEvents();
 
   const { isOpened, data } = useModals<PaymentType>(ModalType.PAYMENT);

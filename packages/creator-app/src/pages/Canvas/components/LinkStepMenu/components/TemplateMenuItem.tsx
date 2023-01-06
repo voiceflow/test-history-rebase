@@ -10,7 +10,7 @@ interface TemplateMenuItemProps {
   popperContainerRef?: React.Ref<HTMLDivElement>;
 }
 
-const TemplateMenuItem: React.FC<TemplateMenuItemProps> = ({ item, popperContainerRef }) => (
+const TemplateMenuItem: React.OldFC<TemplateMenuItemProps> = ({ item, popperContainerRef }) => (
   <MenuItem icon={item.smallIcon ?? item.icon} label={item.label}>
     {!!item.librarySections.templates.length && <TemplateSubMenu ref={popperContainerRef} items={item.librarySections.templates} />}
   </MenuItem>

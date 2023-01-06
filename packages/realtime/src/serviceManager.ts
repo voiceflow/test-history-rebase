@@ -1,4 +1,4 @@
-import Logger from '@voiceflow/logger';
+import { Logger } from '@voiceflow/logger';
 import { AbstractServiceManager, ServiceManagerOptions } from '@voiceflow/socket-utils';
 
 import buildActions, { ActionMap } from './actions';

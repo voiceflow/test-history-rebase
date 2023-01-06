@@ -22,7 +22,7 @@ interface MoveTypePopoverProps {
   closePopover: () => void;
 }
 
-const MoveTypePopover: React.FC<MoveTypePopoverProps> = ({ closePopover }) => {
+const MoveTypePopover: React.OldFC<MoveTypePopoverProps> = ({ closePopover }) => {
   const canvasNavigation = useSelector(UI.canvasNavigationSelector);
   const setCanvasNavigation = useDispatch(UI.setCanvasNavigation);
   const [trackEvents] = useTrackingEvents();

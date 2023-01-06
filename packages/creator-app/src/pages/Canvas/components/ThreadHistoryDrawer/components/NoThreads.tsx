@@ -9,7 +9,7 @@ export interface NoCommentsProps {
   type?: FilterType;
 }
 
-const NoComments: React.FC<NoCommentsProps> = ({ type }) => {
+const NoComments: React.OldFC<NoCommentsProps> = ({ type }) => {
   const isResolved = type === FilterType.RESOLVED;
 
   const mainText = type ? `No ${isResolved ? 'resolved' : 'open'} threads` : 'No threads exist';

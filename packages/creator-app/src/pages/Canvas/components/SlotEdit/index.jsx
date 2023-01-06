@@ -202,7 +202,7 @@ function SlotEdit({ id, name = '', type, color = _sample(SLOT_COLORS), inputs = 
         variant="tertiary"
         header="Entity Type"
         infix={
-          <TippyTooltip title="Bulk Import">
+          <TippyTooltip content="Bulk Import">
             <SvgIcon icon="upload" clickable onClick={stopPropagation(onBulkUploadClick)} />
           </TippyTooltip>
         }

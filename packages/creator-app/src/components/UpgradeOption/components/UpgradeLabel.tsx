@@ -39,7 +39,7 @@ const UpgradeLabel = <T extends unknown, U extends unknown>({
     <FlexApart fullWidth>
       {planDetails?.hasLabelTooltip ? (
         <TippyTooltip {...getLabelTooltip(planDetails.labelTooltipTitle, planDetails.labelTooltipText, isGated)}>
-          <span>{getNestedMenuFormattedLabel(optionLabel, searchLabel)}</span>
+          {getNestedMenuFormattedLabel(optionLabel, searchLabel)}
         </TippyTooltip>
       ) : (
         <span>{getNestedMenuFormattedLabel(optionLabel, searchLabel)}</span>

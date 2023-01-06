@@ -14,7 +14,7 @@ interface FooterProps extends BaseFormProps {
   tutorial?: EditorV2Types.DefaultFooter.Props['tutorial'];
 }
 
-const Footer: React.FC<FooterProps> = ({ editor, tutorial = Documentation.API_STEP }) => {
+const Footer: React.OldFC<FooterProps> = ({ editor, tutorial = Documentation.API_STEP }) => {
   const sendRequestModal = ModalsV2.useModal(ModalsV2.Canvas.Integration.SendRequest);
 
   const tlsUpload = useFeature(Realtime.FeatureFlag.TLS_UPLOAD);

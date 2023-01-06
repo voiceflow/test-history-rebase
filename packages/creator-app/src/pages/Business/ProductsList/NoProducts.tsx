@@ -33,7 +33,7 @@ export interface NoProductsProps {
   onClick: React.MouseEventHandler;
 }
 
-const NoProducts: React.FC<NoProductsProps> = ({ onClick }) => (
+const NoProducts: React.OldFC<NoProductsProps> = ({ onClick }) => (
   <Container>
     <img src={safeGraphic} alt="no products" height={100} />
     <Title>No products exists</Title>

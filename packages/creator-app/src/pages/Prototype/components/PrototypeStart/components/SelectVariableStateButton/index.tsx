@@ -13,7 +13,7 @@ interface SelectVariableStateButtonProps {
   onStart: () => void;
 }
 
-const SelectVariableStateButton: React.FC<SelectVariableStateButtonProps> = ({ onStart }) => {
+const SelectVariableStateButton: React.OldFC<SelectVariableStateButtonProps> = ({ onStart }) => {
   const isVariableStateSelected = useSelector(VariableState.isVariableStateSelected);
   const updateSelectedVariableStateById = useDispatch(VariableState.updateSelectedVariableStateById);
   const [trackingEvents] = useTrackingEvents();
@@ -34,7 +34,7 @@ const SelectVariableStateButton: React.FC<SelectVariableStateButtonProps> = ({ o
             Run Test
           </RunTestButton>
 
-          <TippyTooltip title={isVariableStateSelected ? 'Reset state' : 'Select variable state'}>
+          <TippyTooltip content={isVariableStateSelected ? 'Reset state' : 'Select variable state'}>
             <IconedButton
               ref={ref as React.RefObject<HTMLButtonElement>}
               icon={isVariableStateSelected ? 'removeData' : 'caretDown'}

@@ -3,21 +3,13 @@
   "compilerOptions": {
     "skipLibCheck": true,
     "baseUrl": "..",
+    "exactOptionalPropertyTypes": false,
     "paths": {
-      "@voiceflow/socket-utils": [
-        "socket-utils/src"
-      ],
+      "@voiceflow/socket-utils": ["socket-utils/src"],
       // only used to fix intra-monorepo resolution
-      "@socket-utils/*": [
-        "socket-utils/src/*"
-      ],
-      "@ml-sdk/*": [
-        "ml-sdk/src/*"
-      ]
+      "@socket-utils/*": ["socket-utils/src/*"],
+      "@ml-sdk/*": ["ml-sdk/src/*"]
     }
   },
-  "exclude": [
-    "node_modules/**/*",
-    "build/**/*"
-  ]
+  "exclude": ["node_modules/**/*", "build/**/*"]
 }

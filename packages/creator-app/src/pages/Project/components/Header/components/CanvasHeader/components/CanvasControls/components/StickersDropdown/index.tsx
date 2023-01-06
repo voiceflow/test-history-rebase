@@ -4,7 +4,7 @@ import React from 'react';
 import { Container, Sticker } from './components';
 import { STICKERS } from './constants';
 
-const StickersDropdown: React.FC = () => {
+const StickersDropdown: React.OldFC = () => {
   return (
     <Menu noTopPadding noBottomPadding>
       <div style={{ padding: '20px' }}>

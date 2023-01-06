@@ -22,7 +22,7 @@ export const COLUMNS: TableTypes.Column<TableColumn, Realtime.Domain>[] = [
     sorter: (domainL, domainR) => domainL.name.localeCompare(domainR.name),
     ellipses: true,
     component: DomainCell,
-    overflowTooltip: ({ item }) => ({ title: item.name }),
+    overflowTooltip: ({ item }) => ({ content: item.name }),
   },
   {
     type: TableColumn.STATUS,

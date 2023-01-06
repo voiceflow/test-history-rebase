@@ -5,7 +5,7 @@ import { currentTranscriptSelector } from '@/ducks/transcript';
 
 import { Actions, Container, Context, Notes, Tags } from './components';
 
-const TranscriptDetails: React.FC = () => {
+const TranscriptDetails: React.OldFC = () => {
   const currentTranscript = useSelector(currentTranscriptSelector);
 
   return (

@@ -8,7 +8,7 @@ import { LinkEntityProvider } from '@/pages/Canvas/contexts';
 
 import LinkLayerSvg from './components/LinkLayerSvg';
 
-const LinkLayer: React.FC = () => {
+const LinkLayer: React.OldFC = () => {
   const linkIDs = useSelector(CreatorV2.allLinkIDsSelector);
 
   return (

@@ -1,7 +1,7 @@
 import { Box, Link } from '@voiceflow/ui';
 import React from 'react';
 
-const GoogleUploadLink: React.FC = () => {
+const GoogleUploadLink: React.OldFC = () => {
   return (
     <>
       Upload to Google and generate an executable project version to run on your own infrastructure.

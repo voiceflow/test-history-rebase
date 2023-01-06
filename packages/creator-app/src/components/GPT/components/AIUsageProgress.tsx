@@ -18,7 +18,7 @@ interface AIUsageProgressProps {
   width?: number | string;
 }
 
-const AIUsageProgress: React.FC<AIUsageProgressProps> = ({ width }) => {
+const AIUsageProgress: React.OldFC<AIUsageProgressProps> = ({ width }) => {
   const gptQuota = useGPTQuotas();
 
   const percent = gptQuota.consumed / gptQuota.quota;

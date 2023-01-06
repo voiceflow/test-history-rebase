@@ -12,7 +12,7 @@ interface ASRSpeechBarProps {
   locale: string;
 }
 
-const ASRSpeechBar: React.FC<ASRSpeechBarProps> = ({ onTranscript, isMicrophonePermissionGranted, onCheckMicrophonePermission, locale }) => {
+const ASRSpeechBar: React.OldFC<ASRSpeechBarProps> = ({ onTranscript, isMicrophonePermissionGranted, onCheckMicrophonePermission, locale }) => {
   const { listening, onStopListening, onStartListening, processingTranscription } = useASR({ onTranscript, locale });
 
   const cache = useCache({ onStopListening, onStartListening });

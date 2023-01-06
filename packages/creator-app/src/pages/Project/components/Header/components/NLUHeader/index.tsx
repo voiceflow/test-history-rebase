@@ -9,13 +9,13 @@ import { SharePopperProvider } from '../../contexts';
 import LogoOnlyHeader from '../LogoOnlyHeader';
 import { EntitiesHeader, IntentsHeader, SidebarHeader, UnclassifiedHeader } from './components';
 
-const headerContent: Record<NLURoute, React.FC | null> = {
+const headerContent: Record<NLURoute, React.OldFC | null> = {
   [NLURoute.INTENTS]: IntentsHeader,
   [NLURoute.ENTITIES]: EntitiesHeader,
   [NLURoute.UNCLASSIFIED]: UnclassifiedHeader,
 };
 
-const NLUHeader: React.FC = () => {
+const NLUHeader: React.OldFC = () => {
   const nlu = useNLUManager();
   const logoOptions = useLogoButtonOptions();
   const HeaderContent = headerContent[nlu.activeTab];

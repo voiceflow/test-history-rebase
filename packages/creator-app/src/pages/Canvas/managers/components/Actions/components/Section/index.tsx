@@ -21,7 +21,7 @@ interface ActionsSectionProps {
   withoutURL?: boolean;
 }
 
-const ActionsSection: React.FC<ActionsSectionProps> = ({ portID, editor, withoutURL }) => {
+const ActionsSection: React.OldFC<ActionsSectionProps> = ({ portID, editor, withoutURL }) => {
   const getManager = React.useContext(ManagerContext)!;
 
   const {
@@ -44,8 +44,9 @@ const ActionsSection: React.FC<ActionsSectionProps> = ({ portID, editor, without
   return (
     <TippyTooltip
       tag="div"
-      html={
-        <TippyTooltip.FooterButton buttonText="More" width={200} onClick={onOpenInternalURLInANewTabFactory(ACTIONS)}>
+      width={232}
+      content={
+        <TippyTooltip.FooterButton buttonText="More" onClick={onOpenInternalURLInANewTabFactory(ACTIONS)}>
           Use actions to nest navigation and backend logic in a single step.
         </TippyTooltip.FooterButton>
       }
@@ -53,7 +54,6 @@ const ActionsSection: React.FC<ActionsSectionProps> = ({ portID, editor, without
       position="bottom"
       disabled={withActions}
       interactive
-      bodyOverflow
     >
       <SectionV2.ActionListSection
         title={<SectionV2.Title bold={withActions}>Actions</SectionV2.Title>}

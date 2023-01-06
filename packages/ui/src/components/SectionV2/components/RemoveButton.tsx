@@ -8,7 +8,7 @@ export interface RemoveButtonProps {
   disabled?: boolean;
 }
 
-const RemoveButton: React.FC<RemoveButtonProps> = ({ onClick, isActive, style, disabled }) => (
+const RemoveButton: React.OldFC<RemoveButtonProps> = ({ onClick, isActive, style, disabled }) => (
   <IconButton size={16} icon="minus" onClick={onClick} variant={IconButtonVariant.BASIC} activeClick={isActive} style={style} disabled={disabled} />
 );
 

@@ -42,7 +42,7 @@ interface ActionMappingProps {
   actions: Action[];
 }
 
-export const ActionMapping: React.FC<ActionMappingProps> = ({ actions }) => (
+export const ActionMapping: React.OldFC<ActionMappingProps> = ({ actions }) => (
   <>
     {actions.map((action, index) => (
       <React.Fragment key={index}>
@@ -62,7 +62,7 @@ interface StepHeadingProps {
   noBottomPadding: boolean;
 }
 
-const StepHeading: React.FC<StepHeadingProps> = ({ heading, actions, noBottomPadding, className }) => (
+const StepHeading: React.OldFC<StepHeadingProps> = ({ heading, actions, noBottomPadding, className }) => (
   <Container className={className} noBottomPadding={noBottomPadding}>
     <HeadingText>{heading}</HeadingText>
     <div>

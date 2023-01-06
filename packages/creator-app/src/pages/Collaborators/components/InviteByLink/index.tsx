@@ -31,7 +31,7 @@ const inviteLimitMessage = (
 
 type LinkUserRole = UserRole.EDITOR | UserRole.VIEWER | UserRole.ADMIN;
 
-const InviteByLinkFooter: React.FC = () => {
+const InviteByLinkFooter: React.OldFC = () => {
   const projectID = useSelector(Session.activeProjectIDSelector)!;
   const numberOfSeats = useSelector(WorkspaceV2.active.numberOfSeatsSelector);
   const usedEditorSeats = useSelector(WorkspaceV2.active.usedEditorSeatsSelector);
@@ -87,7 +87,7 @@ const InviteByLinkFooter: React.FC = () => {
         <DropdownWithCaret
           padding="0px 7px"
           alwaysBlue
-          menu={(onToggle: () => void) => (
+          menu={(onToggle) => (
             <Menu>
               <Menu.Item onClick={Utils.functional.chainVoid(onToggle, onChangeRole(UserRole.EDITOR))}>can edit</Menu.Item>
               <Menu.Item onClick={Utils.functional.chainVoid(onToggle, onChangeRole(UserRole.VIEWER))}>can view</Menu.Item>

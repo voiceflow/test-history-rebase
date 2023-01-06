@@ -37,7 +37,7 @@ export interface UploadBaseProps {
   label: string;
 }
 
-const UploadBase: React.FC<UploadBaseProps & SingleUploadConfig> = ({
+const UploadBase: React.OldFC<UploadBaseProps & SingleUploadConfig> = ({
   acceptedFileTypes = [],
   linkInputPlaceholder,
   rootDropAreaProps,
@@ -60,7 +60,7 @@ const UploadBase: React.FC<UploadBaseProps & SingleUploadConfig> = ({
         finalMessage = `File type not support. ${acceptedFileTypes.join(', ')} file types are supported`;
       }
 
-      toast.custom('error', 'warning', '#bd425f')(finalMessage);
+      toast.custom({ method: 'error', icon: 'warning', color: '#bd425f', content: finalMessage });
     },
     [acceptedFileTypes]
   );

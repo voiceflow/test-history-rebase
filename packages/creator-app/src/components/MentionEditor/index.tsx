@@ -29,7 +29,7 @@ export interface MentionEditorProps {
   inputRef?: React.Ref<HTMLInputElement>;
 }
 
-export const MentionEditor: React.FC<MentionEditorProps> = ({ onChange, onBlur, value = '', placeholder, inputProps, height, inputRef }) => {
+export const MentionEditor: React.OldFC<MentionEditorProps> = ({ onChange, onBlur, value = '', placeholder, inputProps, height, inputRef }) => {
   const theme = useTheme();
   const members = useSelector(activeWorkspaceCommentingMembersSelector);
 

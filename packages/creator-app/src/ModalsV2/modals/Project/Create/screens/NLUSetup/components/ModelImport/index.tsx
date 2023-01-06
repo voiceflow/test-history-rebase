@@ -21,7 +21,7 @@ interface ModelImportProps {
   setIsImportLoading: (isLoadingImport: boolean) => void;
 }
 
-const ModelImport: React.FC<ModelImportProps> = ({ platform, nluConfig, onImportModel, importModel, isImportLoading, setIsImportLoading }) => {
+const ModelImport: React.OldFC<ModelImportProps> = ({ platform, nluConfig, onImportModel, importModel, isImportLoading, setIsImportLoading }) => {
   const nluImport = useNLUImport({ nluType: nluConfig.type, platform, onImport: onImportModel });
   const upgradeModal = useUpgradeModal();
 

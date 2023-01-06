@@ -1,6 +1,8 @@
+import React from 'react';
+
 import { JSColorStyle } from './types';
 
-export const getJSCodeStyle = (options: { colors: JSColorStyle }) => ({
+export const getJSCodeStyle = (options: { colors: JSColorStyle }): Record<string, React.CSSProperties> => ({
   hljs: {
     display: 'block',
     overflowX: 'auto',
@@ -34,11 +36,11 @@ export const getJSCodeStyle = (options: { colors: JSColorStyle }) => ({
   },
   'hljs-name': {
     color: options.colors.variableToken,
-    fontWeight: '600',
+    fontWeight: 600,
   },
   'hljs-type': {
     color: '#d88',
-    fontWeight: '600',
+    fontWeight: 600,
   },
   'hljs-attribute': {
     color: '#d88',
@@ -83,10 +85,10 @@ export const getJSCodeStyle = (options: { colors: JSColorStyle }) => ({
     color: '#777',
   },
   'hljs-doctag': {
-    fontWeight: '600',
+    fontWeight: 600,
   },
   'hljs-strong': {
-    fontWeight: '600',
+    fontWeight: 600,
   },
   'hljs-emphasis': {
     fontStyle: 'italic',

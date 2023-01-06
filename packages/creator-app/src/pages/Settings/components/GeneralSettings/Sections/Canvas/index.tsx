@@ -16,7 +16,7 @@ import { DescriptorContainer } from '@/pages/Settings/components/ContentDescript
 import { CanvasGrid } from './components';
 import { LINK_TYPE_OPTIONS, NAVIGATION_DESCRIPTIONS, NAVIGATION_OPTIONS, ZOOM_OPTIONS } from './constants';
 
-const Canvas: React.FC = () => {
+const Canvas: React.OldFC = () => {
   const canvasNavigation = useSelector(UI.canvasNavigationSelector);
   const zoomType = useSelector(UI.zoomTypeSelector);
   const activeProjectID = useSelector(Session.activeProjectIDSelector);

@@ -23,6 +23,7 @@ import {
 } from '@/hooks';
 import { useSuccessModal } from '@/ModalsV2/hooks';
 import { DBPaymentSource } from '@/models/Billing';
+import { getErrorMessage } from '@/utils/error';
 import * as Sentry from '@/vendors/sentry';
 
 export const PaymentContext = React.createContext<PaymentContextProps | null>(null);
@@ -105,7 +106,7 @@ interface PaymentContextProviderProps {
   checkChargeable: (source: stripe.Source) => Promise<void>;
 }
 
-const PaymentContextProvider: React.FC<PaymentContextProviderProps> = ({ stripe, children, onCheckout, checkChargeable }) => {
+const PaymentContextProvider: React.OldFC<PaymentContextProviderProps> = ({ stripe, children, onCheckout, checkChargeable }) => {
   const workspace = useActiveWorkspace();
   const referrerID = useSelector(Account.referrerIDSelector);
   const referralCode = useSelector(Account.referralCodeSelector);
@@ -164,7 +165,7 @@ const PaymentContextProvider: React.FC<PaymentContextProviderProps> = ({ stripe,
 
         actions.update({ price: Math.ceil(price / 100), errors, discount });
       } catch (err) {
-        actions.setErrors(err?.body?.errors);
+        actions.setErrors(getErrorMessage(err));
       } finally {
         stopFetchingPrice();
       }
@@ -221,15 +222,8 @@ const PaymentContextProvider: React.FC<PaymentContextProviderProps> = ({ stripe,
       });
     } catch (err) {
       stopCheckingOut();
-      let error;
 
-      if (err?.body?.errors) {
-        error = Object.keys(err.body.errors)
-          .map((key) => err.body.errors[key].message)
-          .join('\n');
-      }
-
-      toast.error(error || err?.data?.data || err?.message);
+      toast.error(getErrorMessage(err));
     }
   };
 

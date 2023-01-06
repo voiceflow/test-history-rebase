@@ -2,7 +2,7 @@ import React from 'react';
 import { setDisplayName, wrapDisplayName } from 'recompose';
 
 export const withProvider =
-  (Provider: React.ComponentType) =>
+  (Provider: React.ComponentType<React.PropsWithChildren>) =>
   <P, R>(Component: React.ComponentType<P>) =>
     setDisplayName(wrapDisplayName(Component, 'withProvider'))(
       React.forwardRef<R, P>((props, ref) => (

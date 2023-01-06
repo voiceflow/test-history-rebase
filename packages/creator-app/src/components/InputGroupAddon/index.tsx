@@ -37,7 +37,7 @@ interface InputGroupAddonProps {
   className?: string;
 }
 
-const InputGroupAddon: React.FC<InputGroupAddonProps> = ({ addonType, className, children }): React.ReactElement => {
+const InputGroupAddon: React.OldFC<InputGroupAddonProps> = ({ addonType, className, children }): React.ReactElement => {
   return (
     <Wrapper className={`${className || ''} ${addonType}`} addonType={addonType}>
       {children}

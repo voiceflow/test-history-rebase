@@ -8,7 +8,7 @@ import * as VersionV2 from '@/ducks/versionV2';
 import { useDispatch, useFeature, useSelector } from '@/hooks';
 import { Alexa } from '@/pages/Settings/components/ContentDescriptors';
 
-const AlexaGadgetsToggle: React.FC = () => {
+const AlexaGadgetsToggle: React.OldFC = () => {
   const customInterfaceEnabled = useSelector(VersionV2.active.alexa.customInterfaceSelector);
   const patchSettings = useDispatch(Version.alexa.patchSettings);
   const gadgets = useFeature(Realtime.FeatureFlag.GADGETS);

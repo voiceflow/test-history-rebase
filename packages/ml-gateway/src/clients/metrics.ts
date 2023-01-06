@@ -16,7 +16,7 @@ class Metrics extends VFMetrics.Client.Metrics {
     super({ ...config, SERVICE_NAME: 'ml-gateway' });
 
     super.once('ready', ({ port, path }: VFMetrics.Client.Events['ready']) => {
-      log.info(`[metrics] exporter ready ${log.vars({ port, path })}`);
+      log.info(`[metrics] exporter ready port=%s, path=%s`, port, path);
     });
 
     this.counters = {

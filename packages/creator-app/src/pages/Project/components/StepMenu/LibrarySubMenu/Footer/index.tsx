@@ -6,7 +6,7 @@ export interface LibrarySubMenuFooterProps {
   openCustomBlocksEditorModal: VoidFunction;
 }
 
-const LibrarySubMenuFooter: React.FC<LibrarySubMenuFooterProps> = ({ openCustomBlocksEditorModal }) => (
+const LibrarySubMenuFooter: React.OldFC<LibrarySubMenuFooterProps> = ({ openCustomBlocksEditorModal }) => (
   <StyledAction onClick={openCustomBlocksEditorModal}>Add Custom Block</StyledAction>
 );
 

@@ -10,7 +10,7 @@ interface AnalyticsDashboardFiltersHeaderProps {
   setPeriodFilter: (periodFilter: PeriodFilterOption) => void;
 }
 
-const AnalyticsDashboardFiltersHeader: React.FC<AnalyticsDashboardFiltersHeaderProps> = ({ periodFilter, setPeriodFilter }) => {
+const AnalyticsDashboardFiltersHeader: React.OldFC<AnalyticsDashboardFiltersHeaderProps> = ({ periodFilter, setPeriodFilter }) => {
   return (
     <S.Container px={32} py={16}>
       <Select

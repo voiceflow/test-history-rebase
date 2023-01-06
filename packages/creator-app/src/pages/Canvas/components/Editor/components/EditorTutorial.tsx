@@ -9,7 +9,7 @@ export interface EditorTutorialProps {
   tutorialTitle: React.ReactNode;
 }
 
-const EditorTutorial: React.FC<EditorTutorialProps> = ({ title, anchor, tutorialTitle, helpTitle, helpMessage, children, ...tooltipProps }) => (
+const EditorTutorial: React.OldFC<EditorTutorialProps> = ({ title, anchor, tutorialTitle, helpTitle, helpMessage, children, ...tooltipProps }) => (
   <TutorialTooltip
     {...tooltipProps}
     title={tutorialTitle || `${title} Block Tutorial`}

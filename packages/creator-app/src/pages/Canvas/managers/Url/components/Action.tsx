@@ -38,7 +38,7 @@ const Action: ConnectedAction<Realtime.NodeData.Url, Realtime.NodeData.UrlBuiltI
         <Canvas.Action
           ref={ref}
           icon={
-            <TippyTooltip tag="div" title="URL is missing" disabled={!!url || isActive} distance={2} bodyOverflow>
+            <TippyTooltip tag="div" content="URL is missing" disabled={!!url || isActive} offset={[0, 2]}>
               <Canvas.Action.Icon icon={!url && !isActive ? 'warning' : NODE_CONFIG.icon!} />
             </TippyTooltip>
           }

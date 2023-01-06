@@ -3,7 +3,7 @@ import React from 'react';
 
 export const RECONNECT_TIMEOUT = 10;
 
-const RealtimeTimeoutControl: React.FC = () => {
+const RealtimeTimeoutControl: React.OldFC = () => {
   const [countdown, setCountdown] = React.useState(RECONNECT_TIMEOUT);
 
   React.useEffect(() => {

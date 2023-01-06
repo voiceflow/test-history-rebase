@@ -12,7 +12,7 @@ import {
 } from '@/pages/Canvas/constants';
 import { NodeEntityContext } from '@/pages/Canvas/contexts';
 
-const NodeStyles: React.FC = () => {
+const NodeStyles: React.OldFC = () => {
   const nodeEntity = React.useContext(NodeEntityContext)!;
   const { isHighlighted, isSelected, isPrototypeHighlighted, isFocused, isMergeTarget, isThreadTarget, isDragging } = nodeEntity.useState((e) => ({
     isHighlighted: e.isHighlighted,

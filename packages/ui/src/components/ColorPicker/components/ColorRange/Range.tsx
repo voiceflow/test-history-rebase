@@ -97,7 +97,7 @@ export const RangeTrack = styled.span`
   z-index: 0;
 `;
 
-export const Range: React.FC<{ [key: string]: unknown }> = (props): React.ReactElement => (
+export const Range: React.OldFC<{ [key: string]: unknown }> = (props): React.ReactElement => (
   <RangeContainer>
     <RangeSlider {...props} />
     <RangeTrack />

@@ -10,7 +10,7 @@ export interface PromptButtonProps extends HoverButtonProps {
   hasExtraContext?: boolean;
 }
 
-const PromptButton: React.FC<PromptButtonProps> = ({ disabled, contextPrompts, hasExtraContext, ...props }) => {
+const PromptButton: React.OldFC<PromptButtonProps> = ({ disabled, contextPrompts, hasExtraContext, ...props }) => {
   const promptsAreEmpty = useArePromptsEmpty(contextPrompts);
 
   return <Hover {...props} disabled={disabled || (!hasExtraContext && promptsAreEmpty)} />;

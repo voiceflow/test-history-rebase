@@ -4,6 +4,6 @@ import { ThemeContext } from 'styled-components';
 
 const theme = createTheme({});
 
-export const ThemeProvider: React.FC = ({ children }) => {
+export const ThemeProvider: React.OldFC = ({ children }) => {
   return <ThemeContext.Provider value={theme}>{children}</ThemeContext.Provider>;
 };

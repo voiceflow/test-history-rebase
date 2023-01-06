@@ -12,7 +12,7 @@ export type EventualEngineContextType = null | {
 export const EventualEngineContext = React.createContext<EventualEngineContextType>(null);
 export const { Consumer: EventualEngineConsumer } = EventualEngineContext;
 
-export const EventualEngineProvider: React.FC = ({ children }) => {
+export const EventualEngineProvider: React.OldFC = ({ children }) => {
   const engineRef = React.useRef<Engine | null>(null);
 
   const get = React.useCallback(() => engineRef.current, []);
@@ -29,7 +29,7 @@ export interface RegisterEngineProps {
   engine: Engine;
 }
 
-export const RegisterEngine: React.FC<RegisterEngineProps> = ({ engine }) => {
+export const RegisterEngine: React.OldFC<RegisterEngineProps> = ({ engine }) => {
   const engineContext = React.useContext(EventualEngineContext)!;
 
   React.useEffect(() => {

@@ -16,7 +16,7 @@ import { DraggableItem } from './components';
 
 const ITEM_DRAG_TYPE = 'capture-v2-editor';
 
-const IntentEditor: React.FC<{ disableAnimation: boolean }> = ({ disableAnimation }) => {
+const IntentEditor: React.OldFC<{ disableAnimation: boolean }> = ({ disableAnimation }) => {
   const editor = EditorV2.useEditor<Realtime.NodeData.CaptureV2, Realtime.NodeData.CaptureV2BuiltInPorts>();
   const projectConfig = useActiveProjectTypeConfig();
 

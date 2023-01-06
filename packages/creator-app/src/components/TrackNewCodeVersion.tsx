@@ -7,7 +7,7 @@ import * as ModalsV2 from '@/ModalsV2';
 
 const log = logger.child('refreshModal');
 
-const TrackNewCodeVersion: React.FC = () => {
+const TrackNewCodeVersion: React.OldFC = () => {
   const pageCache = React.useRef<string>();
   const refreshModal = ModalsV2.useModal(ModalsV2.Refresh);
 

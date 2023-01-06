@@ -35,7 +35,7 @@ export interface NoMatchFormProps {
 
 export const NO_MATCH_PATH_PATH_TYPE = 'noMatchPath';
 
-const NoMatchForm: React.FC<NoMatchFormProps> = ({ onChange, noMatch, pushToPath }) => {
+const NoMatchForm: React.OldFC<NoMatchFormProps> = ({ onChange, noMatch, pushToPath }) => {
   const engine = React.useContext(EngineContext)!;
 
   const noMatchLinkID = useSelector(Creator.focusedNoMatchLinkIDSelector);

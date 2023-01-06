@@ -5,7 +5,7 @@ import VoiceflowAssistant from '@/vendors/voiceflowAssistant';
 
 export const VoiceflowAssistantVisibilityContext = React.createContext<React.Dispatch<React.SetStateAction<string[]>>>(() => {});
 
-export const VoiceflowAssistantVisibilityProvider: React.FC = ({ children }) => {
+export const VoiceflowAssistantVisibilityProvider: React.OldFC = ({ children }) => {
   const [ids, setIDs] = React.useState<string[]>([]);
 
   useDidUpdateEffect(() => {

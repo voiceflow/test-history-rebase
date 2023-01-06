@@ -30,7 +30,7 @@ const PX_LABEL = (
   </Text>
 );
 
-export const GeneralSection: React.FC = () => {
+export const GeneralSection: React.OldFC = () => {
   const plan = useSelector(WorkspaceV2.active.planSelector);
   const config = useSelector(VersionV2.active.voiceflow.chat.publishingSelector);
   const updateConfig = useDispatch(Version.voiceflow.chat.patchActiveAndLivePublishing);
@@ -105,9 +105,10 @@ export const GeneralSection: React.FC = () => {
             </Text>
           </div>
           <TippyTooltip
+            width={232}
             disabled={isEntitled}
             position="bottom"
-            html={
+            content={
               <TippyTooltip.FooterButton buttonText="Upgrade to Pro" onClick={() => openPaymentModal()}>
                 This is a Pro feature. Upgrade to remove Voiceflow branding.
               </TippyTooltip.FooterButton>

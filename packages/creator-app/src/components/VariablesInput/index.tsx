@@ -8,6 +8,7 @@ import * as DiagramV2 from '@/ducks/diagramV2';
 import { CanvasCreationType } from '@/ducks/tracking/constants';
 import * as Version from '@/ducks/version';
 import { useDispatch, useRAF, useSelector } from '@/hooks';
+import { getErrorMessage } from '@/utils/error';
 
 import * as S from './styles';
 
@@ -67,7 +68,7 @@ const VariablesInput = React.forwardRef<TextEditorRef, VariablesInputProps>(
 
           return { id: name, name, isVariable: true };
         } catch (err) {
-          toast.error(err.message);
+          toast.error(getErrorMessage(err));
 
           return null;
         }

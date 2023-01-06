@@ -11,7 +11,7 @@ export interface SpotlightContextValue {
 export const SpotlightContext = React.createContext<SpotlightContextValue | null>(null);
 export const { Consumer: SpotlightConsumer } = SpotlightContext;
 
-export const SpotlightProvider: React.FC = ({ children }) => {
+export const SpotlightProvider: React.OldFC = ({ children }) => {
   const [isVisible, toggle, hide] = useDismissable();
 
   const api = useContextApi({ isVisible, toggle, hide });

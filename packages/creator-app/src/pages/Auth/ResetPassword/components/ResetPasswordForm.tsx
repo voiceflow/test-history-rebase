@@ -1,10 +1,9 @@
-import { Box, BoxFlexApart, Button, ButtonVariant, ClickableText, preventDefault, toast } from '@voiceflow/ui';
+import { Box, Button, ButtonVariant, ClickableText, preventDefault, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';
 import * as Router from '@/ducks/router';
-import { connect } from '@/hocs/connect';
-import { ConnectedProps } from '@/types';
+import { useDispatch } from '@/hooks/realtime';
 
 import { PasswordInput } from '../../components';
 import { MIN_PASSWORD_LENGTH } from '../../constants';
@@ -15,7 +14,9 @@ export interface ResetPasswordFormProps {
   setStage: (stage: ResetPasswordStage) => void;
 }
 
-const ResetPasswordForm: React.FC<ResetPasswordFormProps & ConnectedResetPasswordFormProps> = ({ resetCode, goToLogin, setStage }) => {
+const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({ resetCode, setStage }) => {
+  const goToLogin = useDispatch(Router.goToLogin);
+
   const [password, setPassword] = React.useState('');
   const [confirm, setConfirm] = React.useState('');
 
@@ -46,7 +47,7 @@ const ResetPasswordForm: React.FC<ResetPasswordFormProps & ConnectedResetPasswor
         <PasswordInput value={confirm} onChange={setConfirm} name="confirm" placeholder="Confirm Password" isInvalid={password !== confirm} />
       </Box>
 
-      <BoxFlexApart mt={32}>
+      <Box.FlexApart mt={32}>
         <div className="auth__link">
           <ClickableText onClick={() => goToLogin()}>Back to Signing in</ClickableText>
         </div>
@@ -56,15 +57,9 @@ const ResetPasswordForm: React.FC<ResetPasswordFormProps & ConnectedResetPasswor
             Update Password
           </Button>
         </div>
-      </BoxFlexApart>
+      </Box.FlexApart>
     </form>
   );
 };
 
-const mapDispatchToProps = {
-  goToLogin: Router.goToLogin,
-};
-
-type ConnectedResetPasswordFormProps = ConnectedProps<{}, typeof mapDispatchToProps>;
-
-export default connect(null, mapDispatchToProps)(ResetPasswordForm) as React.FC<ResetPasswordFormProps>;
+export default ResetPasswordForm;

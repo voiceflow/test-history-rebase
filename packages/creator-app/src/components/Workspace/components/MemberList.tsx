@@ -14,7 +14,7 @@ interface MemberListProps {
   members: WorkspaceMember[];
 }
 
-const MemberList: React.FC<MemberListProps> = ({ inset, members, hideLastDivider = true }) => {
+const MemberList: React.OldFC<MemberListProps> = ({ inset, members, hideLastDivider = true }) => {
   const sendInvite = useDispatch(Workspace.sendInviteToActiveWorkspace);
   const deleteMember = useDispatch(Workspace.deleteMemberOfActiveWorkspace);
   const cancelInvite = useDispatch(Workspace.cancelInviteToActiveWorkspace);

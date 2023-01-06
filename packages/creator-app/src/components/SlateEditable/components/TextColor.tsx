@@ -18,9 +18,8 @@ import { withEnterPress } from '@/utils/dom';
 import { DEFAULT_COLOR, TextProperty } from '../constants';
 import { useSlateEditor } from '../contexts';
 import { EditorAPI } from '../editor';
-import OpacitySliderHandle from './OpacitySliderHandle';
 
-const TextColor: React.FC = () => {
+const TextColor: React.OldFC = () => {
   const editor = useSlateEditor();
 
   const color = EditorAPI.textProperty(editor, TextProperty.COLOR, DEFAULT_COLOR);
@@ -113,7 +112,17 @@ const TextColor: React.FC = () => {
       }}
       sliderValue={+inputOpacity}
       inputAction="%"
-      sliderProps={{ min: 0, autoFocus: false, handle: OpacitySliderHandle }}
+      sliderProps={{
+        min: 0,
+        onBlur: preventDefault(),
+        onFocus: preventDefault(),
+        autoFocus: false,
+        handleRender: (origin: React.ReactElement<React.ComponentProps<'div'>>) =>
+          React.cloneElement(origin, {
+            onMouseDown: preventDefault(origin.props.onMouseDown),
+            onTouchStart: preventDefault(origin.props.onTouchStart),
+          }),
+      }}
       sliderPrefix={
         <ColorSelect
           color={color}

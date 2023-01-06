@@ -10,7 +10,7 @@ import * as Sentry from '@/vendors/sentry';
 
 import { ContentContainer, ContentSection, Section } from '../components';
 
-const DialogflowPublish: React.FC = () => {
+const DialogflowPublish: React.OldFC = () => {
   const projectID = useSelector(Session.activeProjectIDSelector);
   const [dialogflowProjectID, setDialogflowProjectID] = React.useState<string | null>(null);
   const [trackingEvents] = useTrackingEvents();

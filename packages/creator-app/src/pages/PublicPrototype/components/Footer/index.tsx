@@ -10,7 +10,7 @@ interface FooterProps {
   onFullScreen: () => void;
 }
 
-const Footer: React.FC<FooterProps> = ({ children, ...props }) => (
+const Footer: React.OldFC<FooterProps> = ({ children, ...props }) => (
   <OuterContainer>
     <LeftEdge />
 

@@ -10,7 +10,7 @@ interface GeneralUploadButtonProps {
 
 const iconSize = 18;
 
-const GeneralUploadButton: React.FC<GeneralUploadButtonProps> = ({ loading, progress, onClick }) =>
+const GeneralUploadButton: React.OldFC<GeneralUploadButtonProps> = ({ loading, progress, onClick }) =>
   loading ? (
     <Button
       variant={ButtonVariant.LOADING}
@@ -26,7 +26,7 @@ const GeneralUploadButton: React.FC<GeneralUploadButtonProps> = ({ loading, prog
       onClick={onClick}
       variant={ButtonVariant.ACTIVE}
       customProps={{
-        tooltip: { html: <>Publish</> },
+        tooltip: { content: 'Publish' },
         iconProps: {
           size: iconSize,
         },

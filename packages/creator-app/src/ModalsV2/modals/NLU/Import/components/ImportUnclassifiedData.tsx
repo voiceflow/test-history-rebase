@@ -17,7 +17,7 @@ interface ImportUnclassifiedDataProps extends T.VoidInternalProps {
   setTabState: (state: ModalsState) => void;
 }
 
-const ImportUnclassifiedData: React.FC<ImportUnclassifiedDataProps> = ({
+const ImportUnclassifiedData: React.OldFC<ImportUnclassifiedDataProps> = ({
   tabState,
   setTabState,
   api,

@@ -14,7 +14,7 @@ interface SettingsTypeProps {
   onChange: (type: BaseModels.Project.LinkType) => void;
 }
 
-const SettingsType: React.FC<SettingsTypeProps> = ({ type, isOpen, onToggle, onChange }) => {
+const SettingsType: React.OldFC<SettingsTypeProps> = ({ type, isOpen, onToggle, onChange }) => {
   const isStraightLink = type === BaseModels.Project.LinkType.STRAIGHT;
 
   const popper = usePopper({

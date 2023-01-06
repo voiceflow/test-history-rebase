@@ -3,7 +3,9 @@ import Select from 'react-select';
 import { styled, transition } from '@/hocs/styled';
 import { FadeDownDelayed } from '@/styles/animations';
 
-const SearchSelect = styled(Select)`
+import { SearchOption } from '../types';
+
+export const searchSelectFactory = <T>() => styled(Select<T, false>)`
   overflow: hidden;
   border-radius: 10px;
   box-shadow: inset rgb(0 0 0 / 50%) 0px -1px 0px 0px, rgb(0 0 0 / 16%) 0px 1px 3px 0px;
@@ -31,13 +33,14 @@ const SearchSelect = styled(Select)`
     cursor: text;
   }
 
-  .search__input {
+  .search__input-container {
     color: #f2f7f7;
   }
 
   .search__menu-notice--no-options {
     color: #f2f7f780;
   }
+
   .search__menu {
     border-radius: 0;
     padding: 0px 8px;
@@ -46,6 +49,7 @@ const SearchSelect = styled(Select)`
     box-shadow: inset rgb(0 0 0 / 50%) 0px -1px 0px 0px, rgb(0 0 0 / 16%) 0px 1px 3px 0px;
     background-color: transparent;
   }
+
   .search__menu-list {
     ${FadeDownDelayed}
     overflow: hidden;
@@ -53,6 +57,7 @@ const SearchSelect = styled(Select)`
     padding-top: 0;
     padding-bottom: 8px;
   }
+
   .search__option {
     border-radius: 6px;
     padding: 10px 16px;
@@ -60,6 +65,7 @@ const SearchSelect = styled(Select)`
     cursor: pointer;
     ${transition('background-color')}
   }
+
   .search__option--is-focused {
     background-color: #4b5052;
   }
@@ -68,5 +74,7 @@ const SearchSelect = styled(Select)`
     background-color: #4b5052;
   }
 `;
+
+const SearchSelect = searchSelectFactory<SearchOption>();
 
 export default SearchSelect;

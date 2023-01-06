@@ -23,7 +23,7 @@ export interface TrainingSectionProps {
   toggleOpen: () => void;
 }
 
-const TrainingSection: React.FC<TrainingSectionProps> = ({ isOpen, onOpen, toggleOpen }) => {
+const TrainingSection: React.OldFC<TrainingSectionProps> = ({ isOpen, onOpen, toggleOpen }) => {
   const nlp = React.useContext(TrainingContext)!;
   const { cancelTraining, startTraining, isTrained, isTraining, state: trainingState } = React.useContext(TrainingModelContext);
   const status = useSelector(PrototypeDuck.prototypeStatusSelector);
@@ -60,7 +60,7 @@ const TrainingSection: React.FC<TrainingSectionProps> = ({ isOpen, onOpen, toggl
   return (
     <Section
       header={
-        <TippyTooltip title={!isTrained ? 'Assistant needs training' : 'Assistant fully trained'} disabled={isOpen}>
+        <TippyTooltip content={!isTrained ? 'Assistant needs training' : 'Assistant fully trained'} disabled={isOpen}>
           <Flex>
             <TrainingSectionTitle
               variant={

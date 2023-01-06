@@ -24,7 +24,7 @@ interface ErrorProps {
   message?: React.ReactNode;
 }
 
-const PageError: React.FC<ErrorProps> = ({
+const PageError: React.OldFC<ErrorProps> = ({
   icon = <img src={error500Graphic} height={80} alt="500 Error" />,
   title = 'Sorry, something went wrong',
   message,

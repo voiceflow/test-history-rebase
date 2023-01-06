@@ -16,7 +16,7 @@ export interface RotateHandleProps {
   onDragStart: (event: React.DragEvent<HTMLDivElement>) => void;
 }
 
-const RotateHandle: React.FC<RotateHandleProps> = ({ onDragStart }) => {
+const RotateHandle: React.OldFC<RotateHandleProps> = ({ onDragStart }) => {
   const ref = useSwallowZoom<HTMLDivElement>();
 
   return <OffsetCircularHandle draggable onMouseDown={stopPropagation()} onDragStart={onDragStart} ref={ref} />;

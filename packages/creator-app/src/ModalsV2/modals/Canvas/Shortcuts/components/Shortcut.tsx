@@ -8,7 +8,7 @@ export interface ShortcutProps {
   command: React.ReactNode;
 }
 
-const Shortcut: React.FC<ShortcutProps> = ({ command, title }) => (
+const Shortcut: React.OldFC<ShortcutProps> = ({ command, title }) => (
   <ShortcutContainer>
     <ShortcutTitle>{title}</ShortcutTitle>
 

@@ -1,6 +1,5 @@
-import { Dropdown, IconButton, stopPropagation, SvgIcon } from '@voiceflow/ui';
+import { Dropdown, IconButton, stopPropagation, SvgIcon, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
-import { Tooltip } from 'react-tippy';
 
 import { addFakeSelection, addTag, removeFakeSelection } from '../../utils';
 import { ControlsWrapper, FullWidthWrapper, HistoryWrapper, SelectOption, TagsSelect, Wrapper } from './components';
@@ -69,7 +68,7 @@ export default function Controls({
   }, [store, globalStore]);
 
   const renderTrigger = ({ onOpenMenu, onHideMenu, isOpen }) => (
-    <Tooltip title={addLabel} position="top" distance={0}>
+    <TippyTooltip content={addLabel} position="top" offset={[0, 0]}>
       <IconButton
         icon={icon}
         variant={IconButton.Variant.BASIC}
@@ -79,7 +78,7 @@ export default function Controls({
         transparent
         activeClick={isOpen}
       />
-    </Tooltip>
+    </TippyTooltip>
   );
 
   return (
@@ -91,7 +90,7 @@ export default function Controls({
           {!!tagsHistory.length && historyTooltip && (
             <Dropdown onClose={onHideFakeSelection} onSelect={onAddTag} options={tagsHistory} placement="bottom-end">
               {(ref, onToggle, isOpen) => (
-                <Tooltip title={historyTooltip} position="top">
+                <TippyTooltip content={historyTooltip} position="top">
                   <HistoryWrapper
                     onClick={(e) => {
                       onShowFakeSelection();
@@ -102,7 +101,7 @@ export default function Controls({
                   >
                     <SvgIcon icon="clock" />
                   </HistoryWrapper>
-                </Tooltip>
+                </TippyTooltip>
               )}
             </Dropdown>
           )}

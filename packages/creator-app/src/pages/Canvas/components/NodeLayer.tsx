@@ -19,7 +19,7 @@ const useCustomBlockPortsSync = () => {
   }, [allCustomBlocks]);
 };
 
-const NodeLayer: React.FC = () => {
+const NodeLayer: React.OldFC = () => {
   const blockIDs = useSelector(CreatorV2.blockIDsSelector);
 
   useCustomBlockPortsSync();

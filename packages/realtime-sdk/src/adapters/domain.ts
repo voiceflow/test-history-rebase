@@ -1,4 +1,3 @@
-/* eslint-disable sonarjs/no-identical-functions */
 import { Domain } from '@realtime-sdk/models';
 import { BaseModels } from '@voiceflow/base-types';
 import { createMultiAdapter } from 'bidirectional-adapter';

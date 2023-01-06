@@ -8,7 +8,7 @@ export interface ShowPasswordIconProps {
   onClick: VoidFunction;
 }
 
-const ShowPasswordIcon: React.FC<ShowPasswordIconProps> = ({ showPassword, onClick }) => (
+const ShowPasswordIcon: React.OldFC<ShowPasswordIconProps> = ({ showPassword, onClick }) => (
   // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
   <img onClick={onClick} className={cn('viewPassword', { hiddenEye: showPassword })} src={showPassword ? eyeHideIcon : eyeIcon} alt="" />
 );

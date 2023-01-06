@@ -19,6 +19,7 @@ import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import { useDispatch, useTrackingEvents } from '@/hooks';
 import { Query } from '@/models';
+import { getErrorMessage } from '@/utils/error';
 import * as QueryUtil from '@/utils/query';
 import * as GoogleAnalytics from '@/vendors/googleAnalytics';
 
@@ -38,7 +39,7 @@ export interface SignupFormProps {
   promo?: boolean;
 }
 
-export const SignupForm: React.FC<SignupFormProps> = ({ promo, query }) => {
+export const SignupForm: React.OldFC<SignupFormProps> = ({ promo, query }) => {
   const [trackingEvents] = useTrackingEvents();
 
   const signup = useDispatch(Session.signup);
@@ -104,9 +105,9 @@ export const SignupForm: React.FC<SignupFormProps> = ({ promo, query }) => {
         trackingEvents.identifySignup(user.creatorID, firstName, lastName, user.email);
       }
     } catch (error) {
-      const message = error?.message;
+      const message = getErrorMessage(error);
 
-      toast.error(message ? `Unable to signup: ${message}` : 'Unable to signup, try again later');
+      toast.error(`Unable to signup: ${message}`);
     } finally {
       setSubmitting(false);
     }

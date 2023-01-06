@@ -14,8 +14,9 @@ const getNextScheduledTimeout = (schedule: string[]) => {
   const todayTimes = schedule.map((time) => dayjs(time, SCHEDULE_FORMAT));
   const tomorrowTimes = todayTimes.map((date) => dayjs(date).add(1, 'day'));
   const validTimes = [...todayTimes, ...tomorrowTimes].filter((date) => date.isAfter(now));
+  const minDate = dayjs.min(...validTimes);
 
-  return dayjs.min(validTimes).valueOf() - now.valueOf();
+  return minDate ? minDate.valueOf() - now.valueOf() : 4 * 60 * 60 * 1000;
 };
 
 export const useAsyncEffect = (effect: () => Promise<void>, dependencies: unknown[] = []): void =>

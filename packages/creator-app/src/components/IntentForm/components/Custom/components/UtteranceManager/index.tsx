@@ -43,7 +43,7 @@ interface UtteranceManagerProps {
   isInModal: boolean;
 }
 
-const UtteranceManager: React.FC<UtteranceManagerProps> = ({ intent, isNested, isInModal, children }) => {
+const UtteranceManager: React.OldFC<UtteranceManagerProps> = ({ intent, isNested, isInModal, children }) => {
   const { search } = useLocation();
   const queryParams = queryString.parse(search);
   const prefilledNewUtterance = queryParams[PREFILLED_UTTERANCE_PARAM] as string | null;
@@ -69,7 +69,7 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({ intent, isNested, i
   const platform = useSelector(ProjectV2.active.platformSelector);
 
   const onUpdateUtterances = React.useCallback(
-    (inputs) => {
+    (inputs: Platform.Base.Models.Intent.Input[]) => {
       patchIntent(intentID, { inputs });
     },
     [intentID, patchIntent, isInModal]
@@ -100,7 +100,7 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({ intent, isNested, i
   const { onAddSlot } = useAddSlot();
 
   const addValidation = React.useCallback(
-    ({ text }) => {
+    ({ text }: { text: string }) => {
       const error = validateUtterance(text, intentID, customIntents, platform);
 
       if (error) {
@@ -159,7 +159,7 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({ intent, isNested, i
         header="Utterances"
         initialOpen={intent.inputs.length === 0}
         infix={
-          <TippyTooltip title="Bulk Import">
+          <TippyTooltip content="Bulk Import">
             <SvgIcon icon="upload" clickable onClick={stopPropagation(onBulkUploadClick)} />
           </TippyTooltip>
         }
@@ -175,7 +175,7 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({ intent, isNested, i
             <ListManager
               items={intent.inputs}
               addToStart
-              initialValue={prefilledNewUtterance ? { text: prefilledNewUtterance, slots: [] } : null}
+              initialValue={prefilledNewUtterance ? { text: prefilledNewUtterance, slots: [] } : undefined}
               beforeAdd={() => {
                 trackingEvents.trackNewUtteranceCreated({
                   intentID,
@@ -200,7 +200,7 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({ intent, isNested, i
                       iconProps={{ variant: SvgIcon.Variant.BLUE }}
                       rightAction={
                         !isEmpty && (
-                          <Badge slide onClick={() => onAdd(utteranceRef.current?.getCurrentUtterance() ?? null)}>
+                          <Badge slide onClick={() => utteranceRef.current && onAdd(utteranceRef.current.getCurrentUtterance())}>
                             Enter
                           </Badge>
                         )

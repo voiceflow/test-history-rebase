@@ -4,14 +4,10 @@
     "skipLibCheck": true,
     "allowJs": true,
     "baseUrl": ".",
+    "exactOptionalPropertyTypes": false,
     "paths": {
-      "@socket-utils/*": [
-        "src/*"
-      ]
+      "@socket-utils/*": ["src/*"]
     }
   },
-  "exclude": [
-    "node_modules/**/*",
-    "build/**/*"
-  ]
+  "exclude": ["node_modules/**/*", "build/**/*"]
 }

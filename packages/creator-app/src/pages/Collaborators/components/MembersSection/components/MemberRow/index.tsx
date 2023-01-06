@@ -43,7 +43,7 @@ interface MemberRowProps {
   resendInvite: (email: string, permissionType: UserRole | null, showToast?: boolean | undefined) => Promise<void>;
 }
 
-const MemberRow: React.FC<MemberRowProps> = ({ member, inline, resendInvite, isLast }) => {
+const MemberRow: React.OldFC<MemberRowProps> = ({ member, inline, resendInvite, isLast }) => {
   const ownerRole = useFeature(Realtime.FeatureFlag.OWNER_ROLE);
 
   // TODO: refactor this to use the permission system
@@ -80,7 +80,7 @@ const MemberRow: React.FC<MemberRowProps> = ({ member, inline, resendInvite, isL
         <Box flex={1} overflowX="hidden">
           {!isPending && <MemberName>{member.name}</MemberName>}
 
-          <OverflowTippyTooltip<HTMLDivElement> style={{ display: 'block' }} title={member.email}>
+          <OverflowTippyTooltip<HTMLDivElement> style={{ display: 'block' }} content={member.email}>
             {(ref) => (
               <MemberEmail ref={ref} pending={isPending}>
                 {member.email}

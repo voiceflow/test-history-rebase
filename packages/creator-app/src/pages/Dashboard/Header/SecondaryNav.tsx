@@ -13,7 +13,7 @@ interface SecondaryNavProps {
   handleFilterText: (text: string) => void;
 }
 
-const SecondaryNav: React.FC<SecondaryNavProps> = ({ workspace: selectedWorkspace, handleFilterText }) => {
+const SecondaryNav: React.OldFC<SecondaryNavProps> = ({ workspace: selectedWorkspace, handleFilterText }) => {
   const collaboratorsModal = ModalsV2.useModal(ModalsV2.Collaborators);
   const [canAddCollaborators] = usePermission(Permission.ADD_COLLABORATORS);
   const [canViewCollaborators] = usePermission(Permission.VIEW_COLLABORATORS);

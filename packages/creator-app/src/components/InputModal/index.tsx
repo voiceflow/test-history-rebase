@@ -28,7 +28,7 @@ export interface InputModalProps {
   };
 }
 
-const InputModal: React.FC<InputModalProps> = ({ modalType, isOpened, close, data }) => {
+const InputModal: React.OldFC<InputModalProps> = ({ modalType, isOpened, close, data }) => {
   const { canCancel = true, header, body, input, confirm, style } = data;
 
   const [inputVal, setInputVal] = React.useState('');

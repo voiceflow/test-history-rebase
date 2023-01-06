@@ -11,7 +11,7 @@ import { BODY_OPTIONS, expressionFactory } from '../constants';
 import { BaseFormProps } from '../types';
 import * as S from './styles';
 
-const BodySection: React.FC<BaseFormProps> = ({ editor }) => {
+const BodySection: React.OldFC<BaseFormProps> = ({ editor }) => {
   const { body, content, bodyInputType } = editor.data;
 
   const [aceContent, setAceContent] = useLinkedState(content);

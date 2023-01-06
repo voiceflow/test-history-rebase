@@ -17,25 +17,24 @@ export interface ConditionDisplayProps {
   isActive: boolean;
   isLogicGroup?: boolean;
 }
-const ConditionDisplay: React.FC<ConditionDisplayProps> = ({ expression, isActive, onDelete, error, isLogicGroup }) => {
-  const leftValue = isVariable(String(expression?.value?.[0]?.value))
-    ? transformVariableToString(expression?.value?.[0]?.value as string)
-    : expression.value[0]?.value;
-
+const ConditionDisplay: React.OldFC<ConditionDisplayProps> = ({ expression, isActive, onDelete, error, isLogicGroup }) => {
+  const firstValue = expression?.value?.[0]?.value;
+  const secondValue = expression?.value?.[1]?.value;
   const logicType = expression.type;
 
-  const rightValue = isVariable(String(expression?.value?.[1]?.value))
-    ? transformVariableToString(expression?.value?.[1]?.value as string)
-    : expression.value[1]?.value;
+  const leftValue = isVariable(String(firstValue)) ? transformVariableToString(String(firstValue)) : firstValue;
+  const rightValue = isVariable(String(secondValue)) ? transformVariableToString(String(secondValue)) : secondValue;
 
   const placeholder = !leftValue && expression.value[0]?.type === BaseNode.Utils.ExpressionTypeV2.VARIABLE ? 'Variable' : 'Value';
 
   return (
     <ConditionDisplayContainer isActive={isActive} isInvalid={error} isLogicGroup={isLogicGroup}>
       <LabelWrapper>
-        <Text>
-          <b>{leftValue || placeholder}</b> {ExpressionDisplayLabel[logicType!].toLowerCase()} <b>{rightValue}</b>
-        </Text>
+        {logicType && (
+          <Text>
+            <b>{String(leftValue) || placeholder}</b> {ExpressionDisplayLabel[logicType].toLowerCase()} <b>{String(rightValue)}</b>
+          </Text>
+        )}
       </LabelWrapper>
 
       <Box.Flex pr={16} pl={12}>

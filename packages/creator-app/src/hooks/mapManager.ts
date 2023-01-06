@@ -193,7 +193,7 @@ export const useMapManager: MapManager = (
   );
 
   const commitInsert = React.useCallback(
-    async (key, value, index, updated) => {
+    async (key: string, value: Item, index: number, updated: Normal.Normalized<Item>) => {
       keyLookup.current.set(generateLookupKey(value, index), key);
       latestCreatedKey.current = key;
 

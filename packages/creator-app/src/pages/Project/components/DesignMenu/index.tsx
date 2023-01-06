@@ -13,7 +13,7 @@ interface DesignMenuProps {
   canvasOnly: boolean;
 }
 
-const DesignMenu: React.FC<DesignMenuProps> = ({ canvasOnly }) => {
+const DesignMenu: React.OldFC<DesignMenuProps> = ({ canvasOnly }) => {
   const theme = useTheme();
   const [isOpen, openMenu, closeMenu] = useEnableDisable(true);
   const [menuWidth, setWidth] = useLocalStorageState<number>(`design-menu-sizes`, theme.components.designMenu.width);

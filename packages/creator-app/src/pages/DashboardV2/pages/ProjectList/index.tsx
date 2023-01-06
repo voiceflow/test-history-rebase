@@ -23,7 +23,7 @@ const customProp: AssistantCardProps = {
   status: 'By Voiceflow',
 };
 
-const ProjectList: React.FC = () => {
+const ProjectList: React.OldFC = () => {
   const [search, setSearch] = React.useState('');
 
   const projects = useSelector(ProjectV2.allProjectsSelector);

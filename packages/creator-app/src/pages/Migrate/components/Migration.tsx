@@ -8,9 +8,7 @@ import * as Account from '@/ducks/account';
 import * as ProductV2 from '@/ducks/productV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
-import { connect } from '@/hocs/connect';
-import { useAsyncMountUnmount } from '@/hooks';
-import { ConnectedProps } from '@/types';
+import { useAsyncMountUnmount, useSelector } from '@/hooks';
 import * as Sentry from '@/vendors/sentry';
 
 interface MigrationProps {
@@ -18,7 +16,12 @@ interface MigrationProps {
   onSuccess: () => void;
 }
 
-const Migration: React.FC<MigrationProps & ConnectedMigrationProps> = ({ amazonAccount, productMap, projectID, selectedVendor, onSuccess }) => {
+const Migration: React.OldFC<MigrationProps> = ({ onSuccess }) => {
+  const projectID = useSelector(Session.activeProjectIDSelector);
+  const productMap = useSelector(ProductV2.productMapSelector);
+  const amazonAccount = useSelector(Account.amazonAccountSelector);
+  const selectedVendor = useSelector(ProjectV2.active.alexa.ownVendorIDSelector);
+
   const [vendorID, setVendorID] = React.useState<string>(selectedVendor ?? '');
   const [projectMember, setProjectMember] = React.useState<AlexaProject.MemberPlatformData | null>(null);
   const [skillID, setSkillID] = React.useState<string>('');
@@ -144,13 +147,4 @@ const Migration: React.FC<MigrationProps & ConnectedMigrationProps> = ({ amazonA
   );
 };
 
-const mapStateToProps = {
-  projectID: Session.activeProjectIDSelector,
-  amazonAccount: Account.amazonAccountSelector,
-  selectedVendor: ProjectV2.active.alexa.ownVendorIDSelector,
-  productMap: ProductV2.productMapSelector,
-};
-
-type ConnectedMigrationProps = ConnectedProps<typeof mapStateToProps>;
-
-export default connect(mapStateToProps)(Migration) as React.FC<MigrationProps>;
+export default Migration;

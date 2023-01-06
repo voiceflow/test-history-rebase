@@ -12,7 +12,7 @@ interface IntentsSelectProps {
   onChange: (intents: string[]) => void;
 }
 
-const IntentsSelect: React.FC<IntentsSelectProps> = ({ value, onChange }) => {
+const IntentsSelect: React.OldFC<IntentsSelectProps> = ({ value, onChange }) => {
   const platform = useSelector(ProjectV2.active.platformSelector);
   const intents = useSelector(IntentV2.allIntentsSelector);
   const intentsMap = useSelector(IntentV2.intentsMapSelector);

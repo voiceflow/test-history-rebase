@@ -2,8 +2,7 @@ import { Alert, Spinner } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Account from '@/ducks/account';
-import { connect } from '@/hocs/connect';
-import { useAsyncMountUnmount } from '@/hooks';
+import { useAsyncMountUnmount, useDispatch } from '@/hooks';
 
 import Migration from './Migration';
 
@@ -17,7 +16,9 @@ export interface MigrateStagesProps {
   syncSelectedVendor: () => Promise<void>;
 }
 
-const MigrateStages: React.FC<MigrateStagesProps> = ({ syncSelectedVendor }) => {
+const MigrateStages: React.FC = () => {
+  const syncSelectedVendor = useDispatch(Account.amazon.syncSelectedVendor);
+
   const [stage, setStage] = React.useState(Stage.LOADING);
 
   useAsyncMountUnmount(async () => {
@@ -36,8 +37,4 @@ const MigrateStages: React.FC<MigrateStagesProps> = ({ syncSelectedVendor }) => 
   }
 };
 
-const mapDispatchToProps = {
-  syncSelectedVendor: Account.amazon.syncSelectedVendor,
-};
-
-export default connect(null, mapDispatchToProps)(MigrateStages);
+export default MigrateStages;

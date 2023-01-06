@@ -3,6 +3,7 @@ import React from 'react';
 
 import * as Account from '@/ducks/account';
 import { useDispatch } from '@/hooks/realtime';
+import { getErrorMessage } from '@/utils/error';
 
 import manager from '../../manager';
 
@@ -25,9 +26,9 @@ const AccountEmail = manager.create('AccountEmail', () => ({ api, type, opened, 
 
       api.close();
     } catch (error) {
-      const message = error?.message;
+      const message = getErrorMessage(error);
 
-      toast.error(message ? `Unable to verify email: ${message}` : 'Unable to verify email, try again later');
+      toast.error(`Unable to verify email: ${message}`);
     } finally {
       setSaving(false);
     }

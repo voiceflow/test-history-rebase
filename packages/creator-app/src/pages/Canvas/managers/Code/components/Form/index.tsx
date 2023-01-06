@@ -15,7 +15,7 @@ interface FormProps {
   footer?: React.ReactNode;
 }
 
-const Form: React.FC<FormProps> = ({ editor, header, footer }) => {
+const Form: React.OldFC<FormProps> = ({ editor, header, footer }) => {
   const [editorState, onUpdateEditorState] = useLinkedState(editor.data.code);
 
   const aceEditorRef = useAceEditor(editor.platform);

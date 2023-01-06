@@ -52,8 +52,11 @@ const getButtonProps = (
         ...getPlatformIconProps(platform),
         ...customProps,
         tooltip: {
-          title: `Connect to ${Platform.Config.get(platform).name}`,
-          hotkey: HOTKEY_LABEL_MAP[Hotkey.UPLOAD_PROJECT],
+          content: (
+            <TippyTooltip.WithHotkey hotkey={HOTKEY_LABEL_MAP[Hotkey.UPLOAD_PROJECT]}>
+              Connect to {Platform.Config.get(platform).name}
+            </TippyTooltip.WithHotkey>
+          ),
           ...customProps.tooltip,
         },
       };
@@ -62,8 +65,11 @@ const getButtonProps = (
         ...getPlatformIconProps(platform),
         ...customProps,
         tooltip: {
-          title: `Upload to ${Platform.Config.get(platform).name}`,
-          hotkey: HOTKEY_LABEL_MAP[Hotkey.UPLOAD_PROJECT],
+          content: (
+            <TippyTooltip.WithHotkey hotkey={HOTKEY_LABEL_MAP[Hotkey.UPLOAD_PROJECT]}>
+              Upload to {Platform.Config.get(platform).name}
+            </TippyTooltip.WithHotkey>
+          ),
           ...customProps.tooltip,
         },
       };
@@ -73,7 +79,7 @@ const getButtonProps = (
         iconProps: { size: 18, color: '#449127' },
         ...customProps,
         tooltip: {
-          html: <span>Successfully Uploaded</span>,
+          content: <span>Successfully Uploaded</span>,
           ...customProps.tooltip,
         },
       };
@@ -85,7 +91,7 @@ const getButtonProps = (
         iconProps: { spin: true, ...customProps.iconProps },
         tooltip: {
           ...(!customProps.tooltip && {
-            html: (
+            content: (
               <div>
                 Publishing:
                 <Text ml="7px" color="rgba(255, 255, 255, 0.59)">
@@ -106,7 +112,7 @@ const getButtonProps = (
   }
 };
 
-const ConnectButton: React.FC<ConnectButtonProps> = ({ onClick, ...props }) => {
+const ConnectButton: React.OldFC<ConnectButtonProps> = ({ onClick, ...props }) => {
   const platform = useActiveProjectPlatform();
 
   const buttonProps = getButtonProps(platform, props);

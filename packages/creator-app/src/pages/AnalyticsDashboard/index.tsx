@@ -6,7 +6,7 @@ import ProjectPage from '@/pages/Project/components/ProjectPage';
 import { AnalyticsDashboardContainer, AnalyticsDashboardFiltersHeader, AnalyticsDashboardGrid, AnalyticsDashboardTile, Charts } from './components';
 import { PeriodFilterOption } from './components/AnalyticsDashboardFiltersHeader/constants';
 
-const AnalyticsDashboard: React.FC = () => {
+const AnalyticsDashboard: React.OldFC = () => {
   const [periodFilter, setPeriodFilter] = React.useState(PeriodFilterOption.LAST_7_DAYS);
 
   return (

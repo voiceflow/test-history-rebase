@@ -18,11 +18,6 @@ export * as InputTypes from './types';
  */
 export { Variant as InputVariant, NestedIconPosition as NestedInputIconPosition } from './types';
 
-const INPUT_VARIANTS = {
-  [Variant.INLINE]: InlineInput,
-  [Variant.DEFAULT]: DefaultInput,
-};
-
 interface SharedProps {
   onChangeText?: (value: string) => void;
   onEnterPress?: React.KeyboardEventHandler<HTMLInputElement>;
@@ -41,8 +36,7 @@ interface BaseDefaultVariantInputProps extends SharedProps {
 export type DefaultVariantInputProps = BaseDefaultVariantInputProps & DefaultInputProps;
 
 const Input = React.forwardRef<HTMLInputElement, Either<InlineVariantInputProps, DefaultVariantInputProps>>(
-  ({ variant = Variant.DEFAULT, onChange, autoSelectText, onKeyPress, onChangeText, onEnterPress, ...props }, ref) => {
-    const Component = INPUT_VARIANTS[variant];
+  ({ variant = Variant.DEFAULT, onChange, children, autoSelectText, onKeyPress, onChangeText, onEnterPress, ...props }, ref) => {
     const localRef = React.useRef<HTMLInputElement>(null);
 
     useSetup(() => {
@@ -51,16 +45,18 @@ const Input = React.forwardRef<HTMLInputElement, Either<InlineVariantInputProps,
       }
     });
 
-    return variant === Variant.INLINE && props.children ? (
-      props.children({ ref })
-    ) : (
-      <Component
-        {...props}
-        ref={composeRefs(ref, localRef)}
-        onChange={Utils.functional.chain(onChange, onChangeText && withTargetValue(onChangeText))}
-        onKeyPress={Utils.functional.chain(onKeyPress, onEnterPress && withEnterPress(onEnterPress))}
-      />
-    );
+    const sharedProps = {
+      ...props,
+      ref: composeRefs<HTMLInputElement>(ref, localRef),
+      onChange: Utils.functional.chain<[React.ChangeEvent<HTMLInputElement>]>(onChange, onChangeText && withTargetValue(onChangeText)),
+      onKeyPress: Utils.functional.chain<[React.KeyboardEvent<HTMLInputElement>]>(onKeyPress, onEnterPress && withEnterPress(onEnterPress)),
+    };
+
+    if (variant === Variant.INLINE) {
+      return children ? children({ ref }) : <InlineInput {...sharedProps} />;
+    }
+
+    return <DefaultInput {...sharedProps}>{children}</DefaultInput>;
   }
 );
 

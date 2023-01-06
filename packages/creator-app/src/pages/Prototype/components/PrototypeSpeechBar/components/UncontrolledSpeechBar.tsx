@@ -21,7 +21,7 @@ export interface UncontrolledSpeechBarProps {
   colorScheme?: string;
 }
 
-const UncontrolledSpeechBar: React.FC<UncontrolledSpeechBarProps> = ({
+const UncontrolledSpeechBar: React.OldFC<UncontrolledSpeechBarProps> = ({
   isMobile,
   disabled,
   isListening,

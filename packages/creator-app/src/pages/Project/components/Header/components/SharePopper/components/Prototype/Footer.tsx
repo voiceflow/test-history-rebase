@@ -18,7 +18,7 @@ interface FooterProps {
   isCanvas?: boolean;
 }
 
-const Footer: React.FC<FooterProps> = ({ isCanvas }) => {
+const Footer: React.OldFC<FooterProps> = ({ isCanvas }) => {
   const versionID = useSelector(Session.activeVersionIDSelector);
   const compilePrototype = useDispatch(Prototype.compilePrototype);
   const layoutType = useSelector(Prototype.prototypeLayoutSelector);

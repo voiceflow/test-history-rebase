@@ -49,7 +49,7 @@ interface IconButtonProps {
   onMouseDown: React.MouseEventHandler<HTMLButtonElement>;
 }
 
-type PropertyButton = React.FC<{ component?: React.FC<IconButtonProps>; icon?: SvgIconTypes.Icon }>;
+type PropertyButton = React.OldFC<{ component?: React.OldFC<IconButtonProps>; icon?: SvgIconTypes.Icon }>;
 
 const createButton =
   ({ icon: defaultIcon, hotkey, isActive, onAction }: CreateButtonOptions): PropertyButton =>

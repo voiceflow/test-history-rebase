@@ -9,7 +9,7 @@ import * as SlotV2 from '@/ducks/slotV2';
 import { NLUManagerOpenedOrigin } from '@/ducks/tracking/constants';
 import { useDispatch, useFeature, useModals, useSelector } from '@/hooks';
 
-const EntitySelectDropdown: React.FC = () => {
+const EntitySelectDropdown: React.OldFC = () => {
   const { close, open } = useModals(ModalType.ENTITY_EDIT);
   const nluManager = useFeature(Realtime.FeatureFlag.NLU_MANAGER);
 

@@ -8,7 +8,7 @@ interface ThumbnailPopperProps {
   imageUrl: string;
 }
 
-const ThumbnailPopper: React.FC<ThumbnailPopperProps> = ({ children, imageUrl }) => {
+const ThumbnailPopper: React.OldFC<ThumbnailPopperProps> = ({ children, imageUrl }) => {
   const { isHovered, hoverHandlers } = useHover();
 
   return (

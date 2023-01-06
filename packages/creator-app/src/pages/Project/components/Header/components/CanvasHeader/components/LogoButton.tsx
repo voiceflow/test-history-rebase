@@ -9,7 +9,7 @@ interface LogoButtonProps {
   style?: React.CSSProperties;
 }
 
-const LogoButton: React.FC<LogoButtonProps> = (props) => {
+const LogoButton: React.OldFC<LogoButtonProps> = (props) => {
   const search = useContext(SearchContext);
   const logoOptions = useLogoButtonOptions({ uiToggle: true, shortcuts: true, toggleSearch: search?.toggle });
 

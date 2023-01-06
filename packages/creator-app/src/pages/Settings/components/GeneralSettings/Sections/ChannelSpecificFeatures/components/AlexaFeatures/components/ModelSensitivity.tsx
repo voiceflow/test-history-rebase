@@ -18,7 +18,7 @@ const OPTIONS = [
   { name: 'High', value: AlexaVersion.ModelSensitivity.HIGH },
 ];
 
-const ModelSensitivity: React.FC<ModelSensitivityOwnProps> = ({ platformMeta }) => {
+const ModelSensitivity: React.OldFC<ModelSensitivityOwnProps> = ({ platformMeta }) => {
   const modelSensitivity = useSelector(VersionV2.active.alexa.modelSensitivitySelector);
   const patchSettings = useDispatch(Version.alexa.patchSettings);
 

@@ -45,7 +45,7 @@ export interface ProjectListListProps {
   isLocked: boolean;
 }
 
-const ProjectListList: React.FC<ProjectListListProps> = ({ workspace, filter, isLocked }) => {
+const ProjectListList: React.OldFC<ProjectListListProps> = ({ workspace, filter, isLocked }) => {
   const [newListID, setNewListID] = React.useState<string | null>(null);
 
   const projects = useSelector(ProjectV2.allProjectsSelector);
@@ -179,7 +179,7 @@ const ProjectListList: React.FC<ProjectListListProps> = ({ workspace, filter, is
                       className={DashboardClassName.ADD_LIST_BUTTON}
                       style={{ flex: '0 0 auto', alignSelf: 'flex-start', margin: '15px 27px', minWidth: '0' }}
                     >
-                      <TippyTooltip distance={8} title="Add new list" position="bottom">
+                      <TippyTooltip offset={[0, 8]} content="Add new list" position="bottom">
                         <IconButton large icon="add2" onClick={onCreateList} size={13} />
                       </TippyTooltip>
                     </BoxFlex>

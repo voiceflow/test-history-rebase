@@ -11,7 +11,7 @@ interface Props {
   close: VoidFunction;
 }
 
-const SetVariables: React.FC<Props> = ({ variableValues, updateVariableValue, sendRequest, isLoading, close }) => (
+const SetVariables: React.OldFC<Props> = ({ variableValues, updateVariableValue, sendRequest, isLoading, close }) => (
   <>
     <Modal.Header>Set Variables</Modal.Header>
     <Modal.Body>

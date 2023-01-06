@@ -9,7 +9,7 @@ export interface PromptInputVoiceEditorProps {
   placeholder?: string;
 }
 
-const PromptInputVoiceEditor: React.FC<PromptInputVoiceEditorProps> = ({ value, onChange, placeholder }) => (
+const PromptInputVoiceEditor: React.OldFC<PromptInputVoiceEditorProps> = ({ value, onChange, placeholder }) => (
   <SSMLWithVars
     icon={null}
     voice={value.voice}

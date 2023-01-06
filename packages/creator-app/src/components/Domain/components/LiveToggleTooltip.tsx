@@ -6,19 +6,20 @@ import { onOpenInternalURLInANewTabFactory } from '@/utils/window';
 
 export interface Props {
   live: boolean;
+  offset?: TippyTooltipProps['offset'];
   children: React.ReactNode;
-  distance?: number;
-  position?: TippyTooltipProps['position'];
+  position?: TippyTooltipProps['placement'];
 }
 
-const LiveToggleTooltip: React.FC<Props> = ({ live, children, distance, position }) => (
+const LiveToggleTooltip: React.OldFC<Props> = ({ live, children, offset, position }) => (
   <TippyTooltip
     tag="div"
-    html={
+    width={232}
+    content={
       <TippyTooltip.FooterButton
         title={live ? 'Live' : 'Draft'}
-        buttonText="More"
         onClick={onOpenInternalURLInANewTabFactory(Documentation.DOMAINS_LIVE_TOGGLE)}
+        buttonText="More"
       >
         {live
           ? 'When toggled on, this domain is accessible during tests, and to customers if the assistant is in production.'
@@ -26,10 +27,9 @@ const LiveToggleTooltip: React.FC<Props> = ({ live, children, distance, position
       </TippyTooltip.FooterButton>
     }
     delay={[500, 0]}
-    distance={distance}
-    position={position}
+    offset={offset}
+    placement={position}
     interactive
-    bodyOverflow
   >
     {children}
   </TippyTooltip>

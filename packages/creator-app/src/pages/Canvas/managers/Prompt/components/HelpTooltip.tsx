@@ -1,7 +1,7 @@
 import { Tooltip } from '@voiceflow/ui';
 import React from 'react';
 
-const HelpTooltip: React.FC = () => (
+const HelpTooltip: React.OldFC = () => (
   <>
     <Tooltip.Paragraph marginBottomUnits={3}>We can think of the prompt step as a stop and listen inside our project.</Tooltip.Paragraph>
 

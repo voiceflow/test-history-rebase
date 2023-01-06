@@ -13,7 +13,7 @@ interface SharePasswordScreenProps {
   settings: PrototypeDuck.PrototypeSettings;
 }
 
-const SharePasswordScreen: React.FC<SharePasswordScreenProps> = ({ settings, checkLogin }) => {
+const SharePasswordScreen: React.OldFC<SharePasswordScreenProps> = ({ settings, checkLogin }) => {
   const [isCustomizedPrototypeAllowed] = useGuestPermission(settings.plan, Permission.CUSTOMIZE_PROTOTYPE);
 
   return (

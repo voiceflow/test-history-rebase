@@ -5,14 +5,15 @@ import client from '@/client';
 import * as Documentation from '@/config/documentation';
 import * as Errors from '@/config/errors';
 import * as Session from '@/ducks/session';
-import { connect } from '@/hocs/connect';
 import { useAsyncMountUnmount, useSetup, useTrackingEvents } from '@/hooks';
-import { ConnectedProps } from '@/types';
+import { useSelector } from '@/hooks/redux';
 import * as Sentry from '@/vendors/sentry';
 
 import { ContentContainer, ContentSection, Section } from '../components';
 
-const GooglePublish: React.FC<ConnectedGooglePublishProps> = ({ projectID }) => {
+const GooglePublish: React.FC = () => {
+  const projectID = useSelector(Session.activeProjectIDSelector);
+
   const [googleProjectID, setGoogleProjectID] = React.useState<string | null>(null);
   const [trackingEvents] = useTrackingEvents();
 
@@ -58,10 +59,4 @@ const GooglePublish: React.FC<ConnectedGooglePublishProps> = ({ projectID }) => 
   );
 };
 
-const mapStateToProps = {
-  projectID: Session.activeProjectIDSelector,
-};
-
-type ConnectedGooglePublishProps = ConnectedProps<typeof mapStateToProps>;
-
-export default connect(mapStateToProps)(GooglePublish) as React.FC<ConnectedGooglePublishProps>;
+export default GooglePublish;

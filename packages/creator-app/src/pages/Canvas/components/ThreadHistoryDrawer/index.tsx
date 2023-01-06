@@ -33,7 +33,7 @@ export interface ThreadHistoryDrawerProps {
   focusedTarget?: string | null;
 }
 
-export const ThreadHistoryDrawer: React.FC<ThreadHistoryDrawerProps> = () => {
+export const ThreadHistoryDrawer: React.OldFC<ThreadHistoryDrawerProps> = () => {
   const theme = useTheme();
   const history = useHistory();
   const canvasRendered = useCanvasRendered();

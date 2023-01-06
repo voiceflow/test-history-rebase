@@ -22,7 +22,7 @@ export interface PrototypeProps {
   locale: string;
 }
 
-const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({
+const Prototype: React.OldFC<PrototypeProps & PrototypeAllTypes> = ({
   actions,
   state,
   atTop,

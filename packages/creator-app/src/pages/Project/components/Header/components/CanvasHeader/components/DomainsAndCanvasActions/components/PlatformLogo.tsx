@@ -3,7 +3,7 @@ import React from 'react';
 
 import { useActiveProjectPlatformConfig, useActiveProjectTypeConfig } from '@/hooks';
 
-const PlatformLogo: React.FC = () => {
+const PlatformLogo: React.OldFC = () => {
   const platformConfig = useActiveProjectPlatformConfig();
   const platformTypeConfig = useActiveProjectTypeConfig();
 
@@ -12,7 +12,7 @@ const PlatformLogo: React.FC = () => {
   }
 
   return (
-    <TippyTooltip style={{ marginRight: 10 }} title={platformTypeConfig.name}>
+    <TippyTooltip style={{ marginRight: 10 }} content={platformTypeConfig.name}>
       <SvgIcon icon={platformTypeConfig.logo ?? platformTypeConfig.icon.name} color={platformTypeConfig.icon.color} />
     </TippyTooltip>
   );

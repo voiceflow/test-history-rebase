@@ -9,7 +9,7 @@ import { useNLUManager } from './context';
 import { EntityTable, IntentTable, UnclassifiedData } from './pages';
 import * as S from './styles';
 
-const NLUManager: React.FC = () => {
+const NLUManager: React.OldFC = () => {
   const nluManager = useNLUManager();
 
   React.useEffect(() => {

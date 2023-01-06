@@ -8,7 +8,7 @@ interface IntentSelectDropdownProps {
   onChange: (intentID: string) => void;
 }
 
-const IntentSelectDropdown: React.FC<IntentSelectDropdownProps> = ({ onChange }) => {
+const IntentSelectDropdown: React.OldFC<IntentSelectDropdownProps> = ({ onChange }) => {
   const switchIntent = (value: { intent: Nullable<string> }) => {
     if (!value?.intent) return;
 

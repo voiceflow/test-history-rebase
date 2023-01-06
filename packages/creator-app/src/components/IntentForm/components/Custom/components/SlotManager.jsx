@@ -5,7 +5,7 @@ import DraggableList from '@/components/DraggableList';
 import { SectionToggleVariant } from '@/components/Section';
 import * as Intent from '@/ducks/intent';
 import * as SlotV2 from '@/ducks/slotV2';
-import { connect } from '@/hocs/connect';
+import { useDispatch, useSelector } from '@/hooks';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
 
 import DraggableSlotItem from './DraggableSlotItem';
@@ -13,7 +13,10 @@ import SlotsTooltip from './SlotsTooltip';
 
 export const SLOT_PATH_TYPE = 'slot';
 
-function SlotManager({ intent, slotsMap, reorderIntentSlots, pushToPath, isNested }) {
+function SlotManager({ intent, pushToPath, isNested }) {
+  const slotsMap = useSelector(SlotV2.slotMapSelector);
+  const reorderIntentSlots = useDispatch(Intent.reorderIntentSlots);
+
   const intentID = intent.id;
   const allSlotKeys = intent.slots.allKeys;
 
@@ -60,12 +63,4 @@ function SlotManager({ intent, slotsMap, reorderIntentSlots, pushToPath, isNeste
   );
 }
 
-const mapStateToProps = {
-  slotsMap: SlotV2.slotMapSelector,
-};
-
-const mapDispatchToProps = {
-  reorderIntentSlots: Intent.reorderIntentSlots,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(SlotManager);
+export default SlotManager;

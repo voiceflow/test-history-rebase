@@ -2,23 +2,18 @@ import React from 'react';
 
 import LoadingGate from '@/components/LoadingGate';
 import * as Feature from '@/ducks/feature';
-import { connect } from '@/hocs/connect';
-import { ConnectedProps } from '@/types';
+import { useDispatch } from '@/hooks/realtime';
+import { useSelector } from '@/hooks/redux';
 
-const FeatureLoadingGate: React.FC<ConnectedFeatureLoadingGateProps> = ({ isLoaded, loadFeatures, children }) => (
-  <LoadingGate label="Features" internalName={FeatureLoadingGate.name} isLoaded={isLoaded} load={loadFeatures}>
-    {children}
-  </LoadingGate>
-);
+const FeatureLoadingGate: React.FC<React.PropsWithChildren> = ({ children }) => {
+  const isLoaded = useSelector(Feature.isLoadedSelector);
+  const loadFeatures = useDispatch(Feature.loadFeatures);
 
-const mapStateToProps = {
-  isLoaded: Feature.isLoadedSelector,
+  return (
+    <LoadingGate label="Features" internalName={FeatureLoadingGate.name} isLoaded={isLoaded} load={loadFeatures}>
+      {children}
+    </LoadingGate>
+  );
 };
 
-const mapDispatchToProps = {
-  loadFeatures: Feature.loadFeatures,
-};
-
-type ConnectedFeatureLoadingGateProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
-
-export default connect(mapStateToProps, mapDispatchToProps)(FeatureLoadingGate);
+export default FeatureLoadingGate;

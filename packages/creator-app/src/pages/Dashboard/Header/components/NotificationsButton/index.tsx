@@ -1,10 +1,10 @@
 import { Dropdown, IconButton, IconButtonVariant, Menu, stopPropagation, SvgIcon, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
-import { Notification, notificationsSelector, readNotifications } from '@/ducks/notifications';
-import { connect } from '@/hocs/connect';
+import * as Notifications from '@/ducks/notifications';
+import { useDispatch } from '@/hooks/realtime';
+import { useSelector } from '@/hooks/redux';
 import { useToggle } from '@/hooks/toggle';
-import { ConnectedProps } from '@/types';
 
 import Numbered from './components/Numbered';
 import UpdateBubble from './components/UpdateBubble';
@@ -15,15 +15,18 @@ const DEFAULT_MESSAGE = [
     details: 'There are no new updates available.',
     type: 'empty',
     created: 0,
-  } as unknown as Notification,
+  } as unknown as Notifications.Notification,
 ];
 
-const NotificationsButton: React.FC<ConnectedNotificationsButton> = ({ notifications, readNotifications }) => {
+const NotificationsButton: React.FC = () => {
+  const notifications = useSelector(Notifications.notificationsSelector);
+  const readNotifications = useDispatch(Notifications.readNotifications);
+
   const [onHover, toggleUpdatesHover] = useToggle(false);
   const newNotifications = React.useMemo(() => notifications.filter(({ isNew }) => isNew), [notifications]);
 
   return (
-    <TippyTooltip title="Notifications" position="bottom">
+    <TippyTooltip content="Notifications" position="bottom">
       {/* notifications component */}
       <Dropdown
         menu={
@@ -75,14 +78,4 @@ const NotificationsButton: React.FC<ConnectedNotificationsButton> = ({ notificat
   );
 };
 
-const mapStateToProps = {
-  notifications: notificationsSelector,
-};
-
-const mapDispatchToProps = {
-  readNotifications,
-};
-
-type ConnectedNotificationsButton = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
-
-export default connect(mapStateToProps, mapDispatchToProps)(NotificationsButton);
+export default NotificationsButton;

@@ -36,7 +36,7 @@ const Slot = ({ mention, children }, ref) => {
   return (
     <OverflowTippyTooltip
       delay={300}
-      title={mention.name}
+      content={mention.name}
       isChildrenOverflow={(node) => node.firstElementChild?.scrollWidth > node.firstElementChild?.clientWidth}
     >
       {(overflowRef, { isOverflow }) => (

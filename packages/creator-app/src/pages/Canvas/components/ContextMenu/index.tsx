@@ -88,7 +88,7 @@ const OPTION_HANDLERS: Record<CanvasAction, OptionHandler> = {
 
 const isCanvasActionValue = (value: string): value is CanvasAction => Object.values<string>(CanvasAction).includes(value);
 
-const ContextMenu: React.FC = () => {
+const ContextMenu: React.OldFC = () => {
   const toggleCanvasOnly = useDispatch(UIDuck.toggleCanvasOnly);
 
   const engine = React.useContext(EngineContext)!;

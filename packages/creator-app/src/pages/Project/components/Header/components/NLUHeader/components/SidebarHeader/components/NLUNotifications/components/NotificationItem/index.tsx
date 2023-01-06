@@ -14,7 +14,7 @@ interface NotificationItemProps {
   onClose: () => void;
 }
 
-const NotificationItem: React.FC<NotificationItemProps> = ({ data, onClose }) => {
+const NotificationItem: React.OldFC<NotificationItemProps> = ({ data, onClose }) => {
   const nluManager = React.useContext(NLUManagerContext);
   const [trackingEvents] = useTrackingEvents();
 

@@ -12,7 +12,7 @@ interface PathInputProps {
   removeDisabled?: boolean;
 }
 
-const PathInput: React.FC<PathInputProps> = ({ value: propValue, onChange, onRemove, removeDisabled = false }) => {
+const PathInput: React.OldFC<PathInputProps> = ({ value: propValue, onChange, onRemove, removeDisabled = false }) => {
   const [value, setValue] = useLinkedState(propValue);
 
   return (

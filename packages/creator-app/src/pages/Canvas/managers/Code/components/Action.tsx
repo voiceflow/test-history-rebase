@@ -27,7 +27,7 @@ const Action: ConnectedAction<Realtime.NodeData.Code, Realtime.NodeData.CodeBuil
         <Canvas.Action
           ref={ref}
           icon={
-            <TippyTooltip tag="div" title="Code is missing" disabled={!isEmpty || isActive} distance={2} bodyOverflow>
+            <TippyTooltip tag="div" content="Code is missing" disabled={!isEmpty || isActive} offset={[0, 2]}>
               <Canvas.Action.Icon icon={isEmpty && !isActive ? 'warning' : NODE_CONFIG.icon!} />
             </TippyTooltip>
           }

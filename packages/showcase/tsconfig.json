@@ -3,21 +3,13 @@
   "compilerOptions": {
     "module": "esnext",
     "baseUrl": "..",
+    "exactOptionalPropertyTypes": false,
     "paths": {
       // only used to fix intra-monorepo resolution
-      "@ui/*": [
-        "ui/src/*"
-      ],
-      "@voiceflow/ui": [
-        "ui/src"
-      ],
-      "@/*": [
-        "showcase/src/*"
-      ]
+      "@ui/*": ["ui/src/*"],
+      "@voiceflow/ui": ["ui/src"],
+      "@/*": ["showcase/src/*"]
     }
   },
-  "exclude": [
-    "node_modules/**/*",
-    "build/**/*"
-  ]
+  "exclude": ["node_modules/**/*", "build/**/*"]
 }

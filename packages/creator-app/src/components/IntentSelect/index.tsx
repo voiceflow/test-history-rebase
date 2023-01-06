@@ -40,7 +40,7 @@ interface IntentSelectProps
   withMissingAlert?: boolean;
 }
 
-const IntentSelect: React.FC<IntentSelectProps> = ({
+const IntentSelect: React.OldFC<IntentSelectProps> = ({
   intent,
   options: propOptions,
   onChange,

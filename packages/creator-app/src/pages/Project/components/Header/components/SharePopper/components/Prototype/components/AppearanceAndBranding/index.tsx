@@ -12,7 +12,7 @@ interface AppearanceAndBrandingProps {
   isAllowed: boolean;
 }
 
-const AppearanceAndBranding: React.FC<AppearanceAndBrandingProps> = ({ isAllowed }) => {
+const AppearanceAndBranding: React.OldFC<AppearanceAndBrandingProps> = ({ isAllowed }) => {
   const avatar = useSelector(Prototype.prototypeAvatarSelector);
   const brandImage = useSelector(Prototype.prototypeBrandImageSelector);
   const brandColor = useSelector(Prototype.prototypeBrandColorSelector);

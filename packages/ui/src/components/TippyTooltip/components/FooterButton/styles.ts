@@ -11,48 +11,48 @@ export const Content = styled.div`
   transition-delay: 0.005s;
   transition-timing-function: ease;
 
-  .tippy-popper[x-placement^='top'] & {
+  .tippy-box[data-placement^='top'] & {
     transform: translateY(20px) scale(0);
     transform-origin: center bottom;
   }
 
-  .tippy-popper[x-placement^='top'] .tippy-tooltip .leave + .tippy-tooltip-content & {
+  .tippy-box[data-placement^='top'] .tippy-content[data-state='hidden'] & {
     transform: translateY(20px) scale(0);
   }
 
-  .tippy-popper[x-placement^='bottom'] & {
+  .tippy-box[data-placement^='bottom'] & {
     transform: translateY(-20px) scale(0);
     transform-origin: center top;
   }
 
-  .tippy-popper[x-placement^='bottom'] .tippy-tooltip .leave + .tippy-tooltip-content & {
+  .tippy-box[data-placement^='bottom'] .tippy-content[data-state='hidden'] & {
     transform: translateY(-20px) scale(0);
   }
 
-  .tippy-popper[x-placement^='right'] & {
+  .tippy-box[data-placement^='right'] & {
     transform: translateX(-20px) scale(0);
     transform-origin: left center;
   }
 
-  .tippy-popper[x-placement^='right'] .tippy-tooltip .leave + .tippy-tooltip-content & {
+  .tippy-box[data-placement^='right'] .tippy-content[data-state='hidden'] & {
     transform: translateX(-20px) scale(0);
   }
 
-  .tippy-popper[x-placement^='left'] & {
+  .tippy-box[data-placement^='left'] & {
     transform: translateX(20px) scale(0);
     transform-origin: right center;
   }
 
-  .tippy-popper[x-placement^='left'] .tippy-tooltip .leave + .tippy-tooltip-content & {
+  .tippy-box[data-placement^='left'] .tippy-content[data-state='hidden'] & {
     transform: translateX(20px) scale(0);
   }
 
-  .tippy-popper .tippy-tooltip .enter + .tippy-tooltip-content & {
+  .tippy-box .tippy-content[data-state='visible'] & {
     opacity: 1;
     transform: translateX(0) scale(1);
   }
 
-  .tippy-popper .tippy-tooltip .leave + .tippy-tooltip-content & {
+  .tippy-box .tippy-content[data-state='hidden'] & {
     opacity: 0;
   }
 `;

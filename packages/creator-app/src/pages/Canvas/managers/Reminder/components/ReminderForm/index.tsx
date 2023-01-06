@@ -31,7 +31,7 @@ export interface ReminderFormProps {
   withDate?: boolean;
 }
 
-const ReminderForm: React.FC<ReminderFormProps> = ({ data, withDate, onChange }) => {
+const ReminderForm: React.OldFC<ReminderFormProps> = ({ data, withDate, onChange }) => {
   const { text, voice, recurrence, recurrenceBool, reminderType, date, hours, minutes, seconds, timezone } = data;
 
   const updateTime =
@@ -39,11 +39,11 @@ const ReminderForm: React.FC<ReminderFormProps> = ({ data, withDate, onChange })
     ({ text }: { text: string }) =>
       onChange({ [key]: text });
 
-  const updateDate = React.useCallback((date) => onChange({ date }), [onChange]);
-  const updateTimezone = React.useCallback((timezone) => onChange({ timezone }), [onChange]);
+  const updateDate = React.useCallback((date: string | Date) => onChange({ date: date instanceof Date ? date.toJSON() : date }), [onChange]);
+  const updateTimezone = React.useCallback((timezone?: string) => onChange({ timezone }), [onChange]);
 
   const updateRecurrenceType = React.useCallback(
-    (freq) =>
+    (freq: AlexaNode.Reminder.RecurrenceFreq) =>
       onChange({
         recurrence: {
           ...recurrence,

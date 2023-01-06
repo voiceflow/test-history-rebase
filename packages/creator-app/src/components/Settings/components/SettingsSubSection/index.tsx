@@ -16,7 +16,7 @@ interface SettingSubSectionProps {
   growInput?: boolean;
 }
 
-const SettingSubSection: React.FC<SettingSubSectionProps> = ({
+const SettingSubSection: React.OldFC<SettingSubSectionProps> = ({
   header,
   rightDescription,
   leftDescription,

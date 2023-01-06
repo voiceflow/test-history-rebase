@@ -12,7 +12,7 @@ export interface TooltipProps {
   anchorRenderer: (props: { ref: React.Ref<any>; isOpen: boolean; onToggle: VoidFunction; onClose: VoidFunction }) => React.ReactNode;
 }
 
-const Tooltip: React.FC<TooltipProps> = ({ placement = 'auto-end', children, portalNode, anchorRenderer, initialOpened }) => (
+const Tooltip: React.OldFC<TooltipProps> = ({ placement = 'auto-end', children, portalNode, anchorRenderer, initialOpened }) => (
   <Popper
     width="410px"
     maxHeight="500px"

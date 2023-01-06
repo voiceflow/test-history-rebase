@@ -19,7 +19,7 @@ export interface ReminderStepProps {
   palette: HSLShades;
 }
 
-export const ReminderStep: React.FC<ReminderStepProps> = ({ label, withPorts, nodeID, successPortID, failurePortID, palette }) => (
+export const ReminderStep: React.OldFC<ReminderStepProps> = ({ label, withPorts, nodeID, successPortID, failurePortID, palette }) => (
   <Step nodeID={nodeID}>
     <Section>
       <Item icon={NODE_CONFIG.icon} label={label} palette={palette} placeholder="Set a reminder" labelVariant={StepLabelVariant.SECONDARY} />

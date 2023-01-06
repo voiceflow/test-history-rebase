@@ -27,7 +27,7 @@ export interface ConditionLogicSelectProps {
   onClose: VoidFunction;
 }
 
-const ConditionLogicSelect: React.FC<ConditionLogicSelectProps> = ({ value, onChange, onOpen, onClose }) => {
+const ConditionLogicSelect: React.OldFC<ConditionLogicSelectProps> = ({ value, onChange, onOpen, onClose }) => {
   return (
     <Select
       isDropdown

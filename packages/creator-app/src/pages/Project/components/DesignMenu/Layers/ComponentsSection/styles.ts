@@ -2,10 +2,10 @@ import { colors, FlexCenter, SvgIcon, ThemeColor } from '@voiceflow/ui';
 
 import { styled, transition } from '@/hocs/styled';
 
-export const Placeholder = styled.p<{ width: number }>`
+export const Placeholder = styled.p<{ width: number | string | undefined }>`
   position: relative;
   min-height: 141px;
-  width: ${({ width }) => width}px;
+  width: ${({ width = '100%' }) => (typeof width === 'number' ? `${width}px` : width)};
   padding: 0 24px;
   font-size: 13px;
   line-height: 1.53;

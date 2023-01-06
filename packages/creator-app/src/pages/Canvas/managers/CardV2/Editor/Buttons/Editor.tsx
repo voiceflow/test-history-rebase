@@ -37,7 +37,7 @@ const findButtonInfo = (card: Realtime.NodeData.CardV2, buttonID: string): Butto
   return result;
 };
 
-const CardV2ButtonsEditor: React.FC = () => {
+const CardV2ButtonsEditor: React.OldFC = () => {
   const inputRef = React.useRef<VariablesInputRef>(null);
   const editor = EditorV2.useEditor<Realtime.NodeData.CardV2>();
   const params = useParams<{ buttonID: string }>();

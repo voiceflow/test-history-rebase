@@ -97,9 +97,13 @@ export const NestedInput = React.forwardRef<HTMLInputElement, NestedInputProps>(
 
 export type DefaultInputProps = Either<NestedInputProps, PlainInputProps>;
 
-const Input = React.forwardRef<HTMLInputElement, DefaultInputProps>(({ nested, ...props }, ref) => {
-  if (props.icon || props.children || props.leftAction || props.rightAction || nested) {
-    return <NestedInput {...props} ref={ref} />;
+const Input = React.forwardRef<HTMLInputElement, DefaultInputProps>(({ nested, children, ...props }, ref) => {
+  if (props.icon || children || props.leftAction || props.rightAction || nested) {
+    return (
+      <NestedInput {...props} ref={ref}>
+        {children}
+      </NestedInput>
+    );
   }
 
   return <PlainInput {...props} ref={ref} />;

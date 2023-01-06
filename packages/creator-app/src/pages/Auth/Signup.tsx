@@ -18,7 +18,7 @@ export type SignupProps = RouteComponentProps & {
   promo?: boolean;
 };
 
-const Signup: React.FC<SignupProps> = ({ location, ...props }) => {
+const Signup: React.OldFC<SignupProps> = ({ location, ...props }) => {
   const query = Query.parse(location.search);
 
   const [isValid, setValid] = React.useState<boolean | null>(null);

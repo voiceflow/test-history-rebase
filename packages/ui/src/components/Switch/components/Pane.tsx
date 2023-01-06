@@ -7,7 +7,7 @@ export interface PaneProps {
   children: React.ReactElement | React.ReactElement[];
 }
 
-const Pane: React.FC<PaneProps> = ({ value, children }) => {
+const Pane: React.OldFC<PaneProps> = ({ value, children }) => {
   const activeTab = React.useContext(SwitchContext);
 
   return activeTab === value ? <>{children}</> : null;

@@ -16,7 +16,7 @@ interface MembersListProps {
   memberRolesMap: Partial<Record<number, UserRole[]>>;
 }
 
-const MembersList: React.FC<MembersListProps> = ({ memberIDs, onRemove, onChangeRoles, memberRolesMap }) => {
+const MembersList: React.OldFC<MembersListProps> = ({ memberIDs, onRemove, onChangeRoles, memberRolesMap }) => {
   const workspace = useSelector(WorkspaceV2.active.workspaceSelector);
   const activeMembersMap = useSelector(WorkspaceV2.active.activeMembersMapSelector);
   const workspaceMembersCount = useSelector(WorkspaceV2.active.membersCountSelector);

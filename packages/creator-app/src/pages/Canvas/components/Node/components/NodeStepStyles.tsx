@@ -14,7 +14,7 @@ export interface NodeStepStylesProps {
   hasLinkWarning: boolean;
 }
 
-const NodeStepStyles: React.FC<NodeStepStylesProps> = ({ isHovered, hasLinkWarning }) => {
+const NodeStepStyles: React.OldFC<NodeStepStylesProps> = ({ isHovered, hasLinkWarning }) => {
   const nodeEntity = React.useContext(NodeEntityContext)!;
   const { isActive, isHighlighted, isThreadTarget } = nodeEntity.useState((e) => ({
     isActive: e.isActive,

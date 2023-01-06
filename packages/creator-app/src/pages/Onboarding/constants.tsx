@@ -33,7 +33,7 @@ export interface StepMetaPropsType {
   canBack: boolean;
   canSkip: boolean;
   skipTo: (state: Partial<OnboardingContextState>) => StepID | null;
-  trackStep: (props: OnboardingContextState, options: { skip: boolean }) => void;
+  trackStep: (props: OnboardingContextState, options: { skip: boolean }) => () => void;
   docsLink?: React.ReactNode;
 }
 

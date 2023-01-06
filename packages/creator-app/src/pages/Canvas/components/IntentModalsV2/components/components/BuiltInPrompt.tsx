@@ -5,7 +5,7 @@ interface BuiltInPromptProps {
   setShowUtteranceSection: (val: boolean) => void;
 }
 
-const BuiltInPrompt: React.FC<BuiltInPromptProps> = ({ setShowUtteranceSection }) => {
+const BuiltInPrompt: React.OldFC<BuiltInPromptProps> = ({ setShowUtteranceSection }) => {
   return (
     <Box padding="24px 32px" backgroundColor="#fdfdfd">
       <Box color="#62778c" mb={16}>

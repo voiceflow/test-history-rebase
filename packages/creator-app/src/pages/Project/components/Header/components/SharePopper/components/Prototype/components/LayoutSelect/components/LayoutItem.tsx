@@ -9,7 +9,7 @@ interface LayoutItemProps {
   description?: string;
 }
 
-const LayoutItem: React.FC<LayoutItemProps> = ({ src, title, description }) => {
+const LayoutItem: React.OldFC<LayoutItemProps> = ({ src, title, description }) => {
   const theme = useTheme();
 
   return (

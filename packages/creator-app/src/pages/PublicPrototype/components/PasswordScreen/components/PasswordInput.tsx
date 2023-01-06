@@ -11,7 +11,7 @@ export interface PasswordInputProps {
   colorScheme?: string;
 }
 
-const PasswordInput: React.FC<PasswordInputProps> = ({ checkLogin, colorScheme }) => {
+const PasswordInput: React.OldFC<PasswordInputProps> = ({ checkLogin, colorScheme }) => {
   const [value, setValue] = React.useState('');
 
   const onSubmit = () => checkLogin(value);

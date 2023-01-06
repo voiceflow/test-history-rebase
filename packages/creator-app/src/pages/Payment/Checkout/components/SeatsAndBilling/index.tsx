@@ -20,7 +20,7 @@ interface SeatsAndBillingProps {
   payment: PaymentContextProps;
 }
 
-const SeatsAndBilling: React.FC<SeatsAndBillingProps> = ({
+const SeatsAndBilling: React.OldFC<SeatsAndBillingProps> = ({
   payment: {
     state: { plan, price, period, seats, errors, hasPricing, loading, upgradePrompt },
     actions: { setPeriod, setSeats, toggleUpgradePrompt },
@@ -76,7 +76,7 @@ const SeatsAndBilling: React.FC<SeatsAndBillingProps> = ({
                 placement="bottom-start"
               >
                 {(ref, onToggle, isOpen) => (
-                  <TippyTooltip disabled={!periodError} title={periodError} position="top-start" theme="warning" distance={5}>
+                  <TippyTooltip disabled={!periodError} content={periodError} position="top-start" theme="warning" offset={[0, 5]}>
                     <BillingDropdown
                       id={Identifier.PAYMENT_MODAL_BILLING_CYCLE_DROPDOWN}
                       ref={ref}

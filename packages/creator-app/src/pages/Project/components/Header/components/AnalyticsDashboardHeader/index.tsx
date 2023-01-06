@@ -6,7 +6,7 @@ import Page from '@/components/Page';
 import { SharePopperProvider } from '../../contexts';
 import { useLogoButtonOptions } from '../../hooks';
 
-const AnalyticsDashboardHeader: React.FC = () => {
+const AnalyticsDashboardHeader: React.OldFC = () => {
   const logoOptions = useLogoButtonOptions();
 
   return (
@@ -15,7 +15,7 @@ const AnalyticsDashboardHeader: React.FC = () => {
         <Page.Header.Title>Analytics</Page.Header.Title>
 
         <Page.Header.RightSection>
-          <Page.Header.IconButton icon="refreshData" isSmall tooltip={{ title: 'Refresh' }} />
+          <Page.Header.IconButton icon="refreshData" isSmall tooltip={{ content: 'Refresh' }} />
 
           <Button variant={ButtonVariant.PRIMARY}>Share</Button>
         </Page.Header.RightSection>

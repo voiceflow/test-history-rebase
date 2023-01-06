@@ -10,13 +10,13 @@ import * as Support from '@/vendors/support';
 
 const NO_RENDER_PAGES = [Path.PUBLIC_PROTOTYPE, Path.PROJECT_DEMO, Path.PROJECT_PROTOTYPE];
 
-const SupportChat: React.FC = () => {
+const SupportChat: React.OldFC = () => {
   Support.useSupportChat();
 
   return null;
 };
 
-const SupportRouter: React.FC = () => {
+const SupportRouter: React.OldFC = () => {
   const assistantIntegration = useFeature(Realtime.FeatureFlag.ASSISTANT_INTEGRATION);
   const isLoggedIn = useSelector(Account.isLoggedInSelector);
   const shouldRender = !useRouteMatch(NO_RENDER_PAGES);

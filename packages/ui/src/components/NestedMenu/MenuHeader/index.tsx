@@ -34,7 +34,7 @@ interface MenuHeaderProps {
   createInputPlaceholder?: string;
 }
 
-const MenuHeader: React.FC<MenuHeaderProps> = ({
+const MenuHeader: React.OldFC<MenuHeaderProps> = ({
   onHide,
   onFocus,
   onCreate,

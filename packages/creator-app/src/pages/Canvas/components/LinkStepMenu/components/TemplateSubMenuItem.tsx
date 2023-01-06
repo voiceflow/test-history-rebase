@@ -10,7 +10,7 @@ interface TemplateSubMenuItemProps {
   item: BaseModels.Version.CanvasTemplate;
 }
 
-const TemplateSubMenuItem: React.FC<TemplateSubMenuItemProps> = ({ item }) => {
+const TemplateSubMenuItem: React.OldFC<TemplateSubMenuItemProps> = ({ item }) => {
   const onClick = useOnCreate(async ({ coords, engine, stepMenu }) => {
     const nodes = await engine.canvasTemplate.dropTemplate(item.id, coords);
     const portID = getSingleBlockTemplatePortID(nodes);

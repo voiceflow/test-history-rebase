@@ -8,7 +8,7 @@ export interface EmailInputProps extends ControlProps<string> {
   placeholder?: string;
 }
 
-const EmailInput: React.FC<EmailInputProps> = ({ value, onChange, placeholder = 'Email', error }) => (
+const EmailInput: React.OldFC<EmailInputProps> = ({ value, onChange, placeholder = 'Email', error }) => (
   <Input type="email" name="email" value={value} error={error} onChangeText={onChange} placeholder={placeholder} required minLength={6} />
 );
 

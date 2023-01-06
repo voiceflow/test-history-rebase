@@ -17,7 +17,7 @@ interface IntentRequiredEntitiesSectionProps {
   addDropdownPlacement?: PopperTypes.Placement;
 }
 
-const IntentRequiredEntitiesSection: React.FC<IntentRequiredEntitiesSectionProps> = ({
+const IntentRequiredEntitiesSection: React.OldFC<IntentRequiredEntitiesSectionProps> = ({
   onAddRequired,
   onEntityClick,
   intentEntities,

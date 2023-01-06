@@ -15,7 +15,7 @@ export interface LegacyFacebookLoginButtonProps {
 // vitest uses ES imports only, so the cjs modules with default named export not converted to default ES export
 const FBLogin: typeof FacebookLogin = IS_TEST ? (FacebookLogin as any).default || FacebookLogin : FacebookLogin;
 
-const LegacyFacebookLoginButton: React.FC<LegacyFacebookLoginButtonProps> = ({ light, disabled, onLogin }) => (
+const LegacyFacebookLoginButton: React.OldFC<LegacyFacebookLoginButtonProps> = ({ light, disabled, onLogin }) => (
   <FBLogin
     appId={FACEBOOK_APP_ID}
     fields="name,email,picture"

@@ -6,7 +6,7 @@ import * as T from './types';
 
 export * as CardTypes from './types';
 
-const Card: React.FC<T.Props> = ({ title, badge, bubbles, onClick, onDoubleClick, isActive, description }) => (
+const Card: React.OldFC<T.Props> = ({ title, badge, bubbles, onClick, onDoubleClick, isActive, description }) => (
   <S.Container onClick={() => onClick?.()} onDoubleClick={onDoubleClick} isActive={isActive}>
     <S.Title>{title}</S.Title>
 
@@ -16,7 +16,7 @@ const Card: React.FC<T.Props> = ({ title, badge, bubbles, onClick, onDoubleClick
 
     <Box.Flex>
       {bubbles.map(({ name, icon, color }, index) => (
-        <TippyTooltip key={name} title={name} distance={4} bodyOverflow>
+        <TippyTooltip key={name} content={name} offset={[0, 4]}>
           <S.Bubble zIndex={bubbles.length - index}>
             <SvgIcon icon={icon} color={color} />
           </S.Bubble>

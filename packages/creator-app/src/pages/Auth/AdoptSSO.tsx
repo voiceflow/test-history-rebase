@@ -21,7 +21,7 @@ import {
 } from './components';
 import { useOktaLogin } from './hooks';
 
-const AdoptSSO: React.FC = () => {
+const AdoptSSO: React.OldFC = () => {
   const routerState = useSelector(Router.stateSelector);
 
   const googleAdoptSSO = useDispatch(Session.googleAdoptSSO);

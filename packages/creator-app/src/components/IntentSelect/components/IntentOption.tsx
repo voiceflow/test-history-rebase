@@ -14,12 +14,12 @@ interface IntentOptionProps {
   getOptionValue: GetOptionValue<Platform.Base.Models.Intent.Model, string>;
 }
 
-const IntentOption: React.FC<IntentOptionProps> = ({ option, isFocused, searchLabel, getOptionLabel, getOptionValue }) => (
+const IntentOption: React.OldFC<IntentOptionProps> = ({ option, isFocused, searchLabel, getOptionLabel, getOptionValue }) => (
   <FlexApart fullWidth>
     <span>{getNestedMenuFormattedLabel(getOptionLabel(getOptionValue(option)), searchLabel)}</span>
 
     {isCustomizableBuiltInIntent(option) && (
-      <TippyTooltip position="top" title="Built-in intent" bodyOverflow>
+      <TippyTooltip placement="top" content="Built-in intent">
         <BuiltInIntentIcon isItemFocused={isFocused} />
       </TippyTooltip>
     )}

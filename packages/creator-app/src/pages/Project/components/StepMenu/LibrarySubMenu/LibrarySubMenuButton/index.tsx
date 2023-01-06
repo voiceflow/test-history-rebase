@@ -8,7 +8,7 @@ import { getEmptyImage } from 'react-dnd-html5-backend';
 import { BlockType, DragItem } from '@/constants';
 import { AutoPanningCacheContext } from '@/contexts/AutoPanningContext';
 import * as CanvasTemplate from '@/ducks/canvasTemplate';
-import { useDispatch, useEnableDisable, useEventualEngine, useSetup, useTeardown } from '@/hooks';
+import { useDispatch, useEnableDisable, useEventualEngine } from '@/hooks';
 import TemplateEditorPopper from '@/pages/Canvas/components/TemplateEditor/Popper';
 import { makeFactoryData } from '@/pages/Canvas/managers/CustomBlockPointer/utils';
 import { ClassName } from '@/styles/constants';
@@ -40,28 +40,32 @@ const useDragState = ({ tabData, type, onDrop }: Pick<SubMenuButtonProps, 'tabDa
   const getEngine = useEventualEngine();
 
   const [{ isDragging }, connectDrag, connectPreview] = useDrag<LibraryDragItem, unknown, { isDragging: boolean }>({
-    item: { type: DragItem.LIBRARY, libraryType: type, tabData },
-    collect: (monitor) => ({ isDragging: monitor.isDragging() }),
+    type: DragItem.LIBRARY,
 
-    begin: () => {
+    item: () => {
       const engine = getEngine();
-      if (!engine) return;
-      engine.drag.setDraggingToCreate(true);
 
-      if (type === LibraryStepType.BLOCK_TEMPLATES) {
+      engine?.drag.setDraggingToCreate(true);
+
+      if (engine && type === LibraryStepType.BLOCK_TEMPLATES) {
         const canvasTemplateData = tabData as any; /* $TODO - Get rid of this any */
         const nodes = engine.select(CanvasTemplate.nodesByIDsSelector, { ids: canvasTemplateData.nodeIDs });
-        if (!canMergeIntoOtherBlocks(nodes)) return;
 
-        const [node] = nodes;
+        if (canMergeIntoOtherBlocks(nodes)) {
+          const [node] = nodes;
 
-        const steps = engine.select(CanvasTemplate.nodesDataByIDsSelector, { ids: node.combinedNodes });
+          const steps = engine.select(CanvasTemplate.nodesDataByIDsSelector, { ids: node.combinedNodes });
 
-        engine.merge.setVirtualSource(BlockType.COMBINED, node, { nodes: steps, meta: { templateID: tabData.id } });
-      } else if (type === LibraryStepType.CUSTOM_BLOCK && isCustomBlockData(tabData, type)) {
+          engine.merge.setVirtualSource(BlockType.COMBINED, node, { nodes: steps, meta: { templateID: tabData.id } });
+        }
+      } else if (engine && type === LibraryStepType.CUSTOM_BLOCK && isCustomBlockData(tabData, type)) {
         engine.merge.setVirtualSource(BlockType.CUSTOM_BLOCK_POINTER, makeFactoryData(tabData));
       }
+
+      return { type: DragItem.LIBRARY, libraryType: type, tabData };
     },
+
+    collect: (monitor) => ({ isDragging: monitor.isDragging() }),
 
     end: () => {
       onDrop();
@@ -72,11 +76,9 @@ const useDragState = ({ tabData, type, onDrop }: Pick<SubMenuButtonProps, 'tabDa
     },
   });
 
-  useSetup(() => {
+  React.useEffect(() => {
     connectPreview(getEmptyImage(), { captureDraggingState: true });
-  });
-
-  useTeardown(() => connectDrag(null), [connectDrag]);
+  }, []);
 
   return {
     isDragging,
@@ -116,7 +118,7 @@ const useIntrinsicState = (props: Pick<SubMenuButtonProps, 'tabData' | 'type' | 
   };
 };
 
-const LibrarySubMenuButton: React.FC<SubMenuButtonProps> = ({ label, type, tabData, onDrop, onEdit, onDelete, isDraggingPreview }) => {
+const LibrarySubMenuButton: React.OldFC<SubMenuButtonProps> = ({ label, type, tabData, onDrop, onEdit, onDelete, isDraggingPreview }) => {
   const {
     dragAPI: { isDragging, connectDrag },
     clickAPI: { isClicked, clearClicked, onSubmenuButtonMouseDown },
@@ -214,7 +216,7 @@ type ConnectedSubMenuButtonProps = Omit<SubMenuButtonProps, 'onEdit' | 'onDelete
   type: LibraryStepType;
 };
 
-const ConnectedLibrarySubMenuButton: React.FC<ConnectedSubMenuButtonProps> = (props) => {
+const ConnectedLibrarySubMenuButton: React.OldFC<ConnectedSubMenuButtonProps> = (props) => {
   const { type, tabData } = props;
   const { onEdit, onDelete } = useContextDropdown(type, tabData);
   return <LibrarySubMenuButton {...props} onEdit={onEdit} onDelete={onDelete} />;

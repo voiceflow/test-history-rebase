@@ -10,7 +10,7 @@ interface PortActionsProps {
   parentParams?: Record<string, string>;
 }
 
-const PortActions: React.FC<PortActionsProps> = ({ isChip, parentPath, parentParams }) => {
+const PortActions: React.OldFC<PortActionsProps> = ({ isChip, parentPath, parentParams }) => {
   const sourcePortEntity = React.useContext(PortEntityContext)!;
 
   const { sourcePortID, sourceNodeID, targetNodeID } = sourcePortEntity.useState((e) => ({

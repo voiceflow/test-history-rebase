@@ -4,7 +4,7 @@ import React from 'react';
 
 import EmptyDash from '../../../../components/EmptyDash';
 
-const InputsColumn: React.FC<TableTypes.ItemProps<Realtime.Slot>> = ({ item }) => {
+const InputsColumn: React.OldFC<TableTypes.ItemProps<Realtime.Slot>> = ({ item }) => {
   const values = React.useMemo(
     () =>
       item.inputs

@@ -24,7 +24,7 @@ interface PrototypeProps {
   globalDelayInMilliseconds: number;
 }
 
-const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({ config, state, actions, settings, onInteract, globalDelayInMilliseconds }) => {
+const Prototype: React.OldFC<PrototypeProps & PrototypeAllTypes> = ({ config, state, actions, settings, onInteract, globalDelayInMilliseconds }) => {
   const startPrototype = useStartPublicPrototype();
   const resetPrototype = useResetPrototype();
   const [canUseASR] = useCanASR();

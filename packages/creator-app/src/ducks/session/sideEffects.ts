@@ -2,7 +2,6 @@ import { datadogRum } from '@datadog/browser-rum';
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { parseQuery, Vendors } from '@voiceflow/ui';
-import { batch } from 'react-redux';
 import { matchPath } from 'react-router-dom';
 
 import client from '@/client';
@@ -19,6 +18,7 @@ import { Query } from '@/models';
 import { SyncThunk, Thunk } from '@/store/types';
 import * as Cookies from '@/utils/cookies';
 import { generateID } from '@/utils/env';
+import { normalizeError } from '@/utils/error';
 import * as QueryUtil from '@/utils/query';
 import * as Sentry from '@/vendors/sentry';
 import * as Support from '@/vendors/support';
@@ -46,10 +46,8 @@ export const resetSession = (): SyncThunk => (dispatch) => {
   localStorage.clear();
   datadogRum.clearUser();
 
-  batch(() => {
-    dispatch(resetAccount());
-    dispatch(updateAuthToken(null));
-  });
+  dispatch(resetAccount());
+  dispatch(updateAuthToken(null));
 
   dispatch(goToLogin());
 };
@@ -171,10 +169,8 @@ const setSession =
 
     Cookies.removeLastSessionCookie();
 
-    batch(() => {
-      dispatch(updateAuthToken(token));
-      dispatch(updateAccount(user));
-    });
+    dispatch(updateAuthToken(token));
+    dispatch(updateAccount(user));
 
     const location = locationSelector(state);
     const search = QueryUtil.parse(location.search);
@@ -346,7 +342,7 @@ export const signup =
         email: user.email,
       };
     } catch (error) {
-      throw new Error(error.body.data);
+      throw normalizeError(error);
     }
   };
 

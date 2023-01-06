@@ -8,7 +8,7 @@ import { TextVariant } from './types';
 
 interface DropdownWithCaretProps {
   placement?: DropdownPlacement;
-  menu: React.ReactNode;
+  menu: React.ReactNode | ((onToggle: () => void) => void);
   text: string | React.ReactNode;
   padding?: string;
   disabled?: boolean;
@@ -21,7 +21,7 @@ interface DropdownWithCaretProps {
   border?: string;
 }
 
-const DropdownWithCaret: React.FC<DropdownWithCaretProps> = ({
+const DropdownWithCaret: React.OldFC<DropdownWithCaretProps> = ({
   placement = 'bottom-start',
   textVariant = TextVariant.primary,
   menu,

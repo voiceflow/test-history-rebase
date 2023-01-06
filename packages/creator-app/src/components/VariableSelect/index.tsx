@@ -5,6 +5,7 @@ import * as DiagramV2 from '@/ducks/diagramV2';
 import { CanvasCreationType } from '@/ducks/tracking/constants';
 import * as Version from '@/ducks/version';
 import { useDispatch, useSelector } from '@/hooks';
+import { getErrorMessage } from '@/utils/error';
 
 export interface VariableSelectProps extends BaseSelectProps {
   value?: string | null;
@@ -14,7 +15,7 @@ export interface VariableSelectProps extends BaseSelectProps {
   creatable?: boolean;
 }
 
-const VariableSelect: React.FC<VariableSelectProps> = ({ value, onChange, ...props }) => {
+const VariableSelect: React.OldFC<VariableSelectProps> = ({ value, onChange, ...props }) => {
   const variables = useSelector(DiagramV2.active.allSlotNamesAndVariablesSelector);
   const addVariable = useDispatch(Version.addGlobalVariable);
 
@@ -25,7 +26,7 @@ const VariableSelect: React.FC<VariableSelectProps> = ({ value, onChange, ...pro
       await addVariable(item, CanvasCreationType.EDITOR);
       onChange(item);
     } catch (err) {
-      toast.error(err.message);
+      toast.error(getErrorMessage(err));
     }
   };
 

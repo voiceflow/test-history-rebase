@@ -10,7 +10,7 @@ interface EmptyViewProps {
   pageType: InteractionModelTabType;
 }
 
-const EmptyView: React.FC<EmptyViewProps> = ({ onCreate, pageType }) => {
+const EmptyView: React.OldFC<EmptyViewProps> = ({ onCreate, pageType }) => {
   const { namePlural, name, description, link, svg } = EMPTY_VIEW_META[pageType];
 
   return (

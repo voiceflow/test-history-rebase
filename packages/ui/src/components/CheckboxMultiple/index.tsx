@@ -25,7 +25,7 @@ export const getCheckboxColor = (color: string, error?: boolean, disabled?: bool
   return color;
 };
 
-const Checkbox: React.FC<T.Props> = ({
+const Checkbox: React.OldFC<T.Props> = ({
   type = T.Type.CHECKBOX,
   error,
   color = T.Color.DEFAULT,

@@ -47,7 +47,7 @@ const findButtonInfo = (cards: Realtime.NodeData.Carousel.Card[], buttonID: stri
   return result;
 };
 
-const CarouselButtonsEditor: React.FC = () => {
+const CarouselButtonsEditor: React.OldFC = () => {
   const inputRef = React.useRef<VariablesInputRef>(null);
   const chatCarouselIntent = useFeature(Realtime.FeatureFlag.CHAT_CAROUSEL_INTENT);
   const editor = EditorV2.useEditor<Realtime.NodeData.Carousel>();

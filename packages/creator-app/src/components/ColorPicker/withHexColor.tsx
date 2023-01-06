@@ -29,13 +29,7 @@ const withHexColor =
     }, [color]);
 
     return (
-      <Component
-        {...(props as any)}
-        color={rgba}
-        onChange={onLocalChange}
-        onChangeComplete={onChangeComplete}
-        onChangeCompleted={onChangeCompleted}
-      />
+      <Component {...(props as P)} color={rgba} onChange={onLocalChange} onChangeComplete={onChangeComplete} onChangeCompleted={onChangeCompleted} />
     );
   };
 

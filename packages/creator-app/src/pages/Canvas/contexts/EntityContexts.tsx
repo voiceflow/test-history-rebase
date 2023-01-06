@@ -13,7 +13,7 @@ const createResourceEntityProvider =
   <T extends ResourceEntity<any, any>>(
     EntityContext: React.Context<T | null>,
     EngineEntity: { new (engine: Engine, id: string): T }
-  ): React.FC<{ id: string }> =>
+  ): React.OldFC<{ id: string }> =>
   ({ id, children }) => {
     const engine = React.useContext(EngineContext)!;
     const entity = React.useMemo(() => new EngineEntity(engine, id), []);

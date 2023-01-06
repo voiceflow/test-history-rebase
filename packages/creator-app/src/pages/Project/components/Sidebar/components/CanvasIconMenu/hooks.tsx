@@ -1,6 +1,6 @@
 import { Nullable } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, MenuTypes } from '@voiceflow/ui';
+import { Box, MenuTypes, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 import { useDismissable } from 'react-dismissable-layers';
 import { useRouteMatch } from 'react-router-dom';
@@ -119,7 +119,9 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
     {
       icon: 'systemLayers',
       value: CanvasOptionType.DESIGNER,
-      tooltip: { title: 'Designer', hotkey: HOTKEY_LABEL_MAP[Hotkey.DESIGN_PAGE] },
+      tooltip: {
+        content: <TippyTooltip.WithHotkey hotkey={HOTKEY_LABEL_MAP[Hotkey.DESIGN_PAGE]}>Designer</TippyTooltip.WithHotkey>,
+      },
       onClick: goToCurrentCanvas,
     },
     !nluManager.isEnabled
@@ -127,7 +129,9 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
       : {
           icon: 'systemModel',
           value: CanvasOptionType.NLU_MANAGER,
-          tooltip: { title: 'NLU Manager', hotkey: HOTKEY_LABEL_MAP[Hotkey.NLU_MANAGER_PAGE] },
+          tooltip: {
+            content: <TippyTooltip.WithHotkey hotkey={HOTKEY_LABEL_MAP[Hotkey.NLU_MANAGER_PAGE]}>NLU Manager</TippyTooltip.WithHotkey>,
+          },
           onClick: () => goToNLUManager(NLUManagerOpenedOrigin.LEFT_NAV),
         },
     !canViewConversations
@@ -136,8 +140,11 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
           icon: 'systemTranscripts',
           value: CanvasOptionType.CONVERSATION,
           tooltip: {
-            title: 'Transcripts',
-            hotkey: HOTKEY_LABEL_MAP[nluManager.isEnabled ? Hotkey.CONVERSATION_PAGE : Hotkey.CONVERSATION_PAGE_LEGACY],
+            content: (
+              <TippyTooltip.WithHotkey hotkey={HOTKEY_LABEL_MAP[nluManager.isEnabled ? Hotkey.CONVERSATION_PAGE : Hotkey.CONVERSATION_PAGE_LEGACY]}>
+                Transcripts
+              </TippyTooltip.WithHotkey>
+            ),
           },
           onClick: goToCurrentTranscript,
           withBadge: hasUnreadTranscripts,
@@ -147,8 +154,7 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
           icon: 'measure',
           value: CanvasOptionType.ANALYTICS_DASHBOARD,
           tooltip: {
-            title: 'Analytics',
-            hotkey: HOTKEY_LABEL_MAP[Hotkey.ANALYTICS_PAGE],
+            content: <TippyTooltip.WithHotkey hotkey={HOTKEY_LABEL_MAP[Hotkey.ANALYTICS_PAGE]}>Analytics</TippyTooltip.WithHotkey>,
           },
           onClick: goToCurrentAnalytics,
         }
@@ -159,8 +165,11 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
           icon: 'integrations',
           value: CanvasOptionType.INTEGRATION,
           tooltip: {
-            title: 'Integration',
-            hotkey: HOTKEY_LABEL_MAP[nluManager.isEnabled ? Hotkey.INTEGRATION_PAGE : Hotkey.INTEGRATION_PAGE_LEGACY],
+            content: (
+              <TippyTooltip.WithHotkey hotkey={HOTKEY_LABEL_MAP[nluManager.isEnabled ? Hotkey.INTEGRATION_PAGE : Hotkey.INTEGRATION_PAGE_LEGACY]}>
+                Integration
+              </TippyTooltip.WithHotkey>
+            ),
           },
           onClick: goToCurrentPublish,
         },
@@ -170,8 +179,11 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
           icon: 'systemSettings',
           value: CanvasOptionType.SETTINGS,
           tooltip: {
-            title: 'Settings',
-            hotkey: HOTKEY_LABEL_MAP[nluManager.isEnabled ? Hotkey.SETTINGS_PAGE : Hotkey.SETTINGS_PAGE_LEGACY],
+            content: (
+              <TippyTooltip.WithHotkey hotkey={HOTKEY_LABEL_MAP[nluManager.isEnabled ? Hotkey.SETTINGS_PAGE : Hotkey.SETTINGS_PAGE_LEGACY]}>
+                Settings
+              </TippyTooltip.WithHotkey>
+            ),
           },
           onClick: () => goToCurrentSettings(),
         },
@@ -200,7 +212,7 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
       icon: 'info',
       value: CanvasOptionType.HELP,
       small: true,
-      tooltip: { title: 'Help' },
+      tooltip: { content: 'Help' },
       onClick: (event) => {
         helpButtonRef.current = event.currentTarget;
         toggleHelpOpened();

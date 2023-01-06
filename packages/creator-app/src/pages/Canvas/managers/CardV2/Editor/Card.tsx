@@ -19,7 +19,7 @@ export interface CardV2Props {
   onUpdate: (value: Partial<Realtime.NodeData<Realtime.NodeData.CardV2>>, save?: boolean | undefined) => Promise<void>;
 }
 
-const CardV2: React.FC<CardV2Props> = ({ item, editor, onUpdate }) => {
+const CardV2: React.OldFC<CardV2Props> = ({ item, editor, onUpdate }) => {
   const dimensions = useImageDimensions({ url: item.imageUrl });
   const isVoiceProject = editor.projectType === Platform.Constants.ProjectType.VOICE;
 

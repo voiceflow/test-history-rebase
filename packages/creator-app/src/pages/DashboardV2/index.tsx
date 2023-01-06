@@ -8,7 +8,7 @@ import { withBatchLoadingGate } from '@/hocs/withBatchLoadingGate';
 import { DashboardGate } from './gates';
 import { Account, MembersAndBilling, Organization, ProjectList } from './pages';
 
-const Dashboard: React.FC = () => (
+const Dashboard: React.OldFC = () => (
   <Switch>
     <Route path={[Path.WORKSPACE_PROFILE, Path.WORKSPACE_INTEGRATIONS]} component={Account} />
     <Route path={[Path.WORKSPACE_BILLING, Path.WORKSPACE_MEMBERS]} component={MembersAndBilling} />

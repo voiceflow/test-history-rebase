@@ -11,7 +11,7 @@ import NLUSearch from '../Search';
 import { UnclassifiedTabItems } from './constants';
 import * as S from './styles';
 
-const UnclassifiedHeader: React.FC = () => {
+const UnclassifiedHeader: React.OldFC = () => {
   const nluManager = React.useContext(NLUManagerContext);
 
   const inputRef = React.useRef<HTMLInputElement>(null);

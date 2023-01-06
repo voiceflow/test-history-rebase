@@ -25,7 +25,7 @@ interface EntityPromptSectionProps {
   intentInputs: Platform.Base.Models.Intent.Input[];
 }
 
-const EntityPromptSection: React.FC<EntityPromptSectionProps> = ({
+const EntityPromptSection: React.OldFC<EntityPromptSectionProps> = ({
   title = 'Entity reprompt',
   entity,
   prompts,

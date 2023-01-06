@@ -8,7 +8,7 @@ import { useDispatch } from '@/hooks/realtime';
 import { NLPTrainJob } from '@/models';
 import { StageComponentProps } from '@/platforms/types';
 
-const SuccessStage: React.FC<StageComponentProps<NLPTrainJob.SuccessStage>> = () => {
+const SuccessStage: React.OldFC<StageComponentProps<NLPTrainJob.SuccessStage>> = () => {
   useSyncProjectLiveVersion();
 
   const goToConsole = useDispatch(Router.goToActivePlatformPublish);

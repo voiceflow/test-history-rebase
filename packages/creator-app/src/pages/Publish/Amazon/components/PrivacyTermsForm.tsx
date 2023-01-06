@@ -19,7 +19,7 @@ const privacyPolicySelector = createSelector([VersionV2.active.alexa.publishingS
 const termsAndConditionsSelector = createSelector([VersionV2.active.alexa.publishingSelector], (publishing) => publishing?.termsAndConditions);
 const forChildrenSelector = createSelector([VersionV2.active.alexa.publishingSelector], (publishing) => !!publishing?.forChildren);
 
-const PrivacyTermsForm: React.FC = () => {
+const PrivacyTermsForm: React.OldFC = () => {
   const generatedTerms = useSelector(generatedTermsSelector);
   const [privacyPolicy, setPrivacyPolicy, savePrivacyPolicy] = useBoundValue(privacyPolicySelector, (privacyPolicy) =>
     Version.alexa.patchPublishing({ privacyPolicy })
@@ -82,7 +82,7 @@ const PrivacyTermsForm: React.FC = () => {
 
 export default PrivacyTermsForm;
 
-export const PrivacyTermsDescription: React.FC = () => (
+export const PrivacyTermsDescription: React.OldFC = () => (
   <>
     <div className="publish-info">
       <p className="helper-text">

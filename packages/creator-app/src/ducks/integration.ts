@@ -1,9 +1,9 @@
 import axios from 'axios';
-import _get from 'lodash/get';
 import { createSelector } from 'reselect';
 
 import { createAction, createRootSelector } from '@/ducks/utils';
 import { Action, RootReducer, Thunk } from '@/store/types';
+import { getErrorMessage, normalizeError } from '@/utils/error';
 
 export interface IntegrationUser {
   platform: string;
@@ -161,16 +161,18 @@ const buildDictByPlatform = (users: IntegrationUser[]) =>
   }, {});
 
 export const fetchIntegrationUsers = (): Thunk => async (dispatch) => {
-  dispatch(fetchIntegrationUsersBegin());
   try {
+    dispatch(fetchIntegrationUsersBegin());
+
     const resp = await axios.post<IntegrationUser[]>('/integrations/get_users');
 
     const dictByPlatform = buildDictByPlatform(resp.data);
 
     dispatch(fetchIntegrationUsersSuccess(dictByPlatform));
-  } catch (e) {
-    dispatch(fetchIntegrationUsersFailure(e));
-    throw e;
+  } catch (error) {
+    dispatch(fetchIntegrationUsersFailure(normalizeError(error)));
+
+    throw normalizeError(error);
   }
 };
 
@@ -196,17 +198,12 @@ export const addIntegrationUser =
       dispatch(addIntegrationUserSuccess(dictByPlatform));
 
       return dictByPlatform;
-    } catch (e) {
-      dispatch(addIntegrationUserFailure(e));
-      let error = _get(e, ['response', 'data']);
-      if (e.response && typeof e.response.data === 'string') {
-        error = e.response.data;
-      } else if (typeof e === 'string') {
-        error = e;
-      } else if (e.response) {
-        error = `Error occured: ${JSON.stringify(e.response.data)}`;
-      }
-      throw error;
+    } catch (error) {
+      const message = getErrorMessage(error);
+
+      dispatch(addIntegrationUserFailure(message));
+
+      throw message;
     }
   };
 
@@ -231,7 +228,7 @@ export const deleteIntegrationUser =
 
       dispatch(deleteIntegrationUserSuccess(dictByPlatform));
     } catch (e) {
-      dispatch(deleteIntegrationUserFailure(e));
+      dispatch(deleteIntegrationUserFailure(normalizeError(e)));
       throw e;
     }
   };

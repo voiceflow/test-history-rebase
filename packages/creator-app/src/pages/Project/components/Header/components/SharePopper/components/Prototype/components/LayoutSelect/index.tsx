@@ -10,7 +10,7 @@ import { ClassName } from '@/styles/constants';
 import { LayoutItem } from './components';
 import { CUSTOM_MENU_WIDTH, getLayoutOptions, OPTION_DETAILS } from './constants';
 
-const LayoutSelect: React.FC = () => {
+const LayoutSelect: React.OldFC = () => {
   const { platform, projectType } = useActiveProjectConfig();
 
   const layout = useSelector(Prototype.prototypeLayoutSelector);
@@ -38,7 +38,7 @@ const LayoutSelect: React.FC = () => {
     <Box pr={32}>
       <DropdownWithCaret
         fullWidth
-        menu={(onToggle: () => void) => (
+        menu={(onToggle) => (
           <Menu width={CUSTOM_MENU_WIDTH}>
             {layoutOptions.map((option) => (
               <Menu.Item

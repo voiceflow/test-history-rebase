@@ -3,7 +3,7 @@ import React from 'react';
 
 import * as S from './styles';
 
-const LoadingScreen: React.FC = () => {
+const LoadingScreen: React.OldFC = () => {
   return (
     <div>
       {Array.from(Array(10).keys()).map((i) => (

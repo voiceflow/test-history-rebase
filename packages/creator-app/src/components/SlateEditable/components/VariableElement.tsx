@@ -19,7 +19,7 @@ interface VariableElementProps extends Omit<RenderElementProps, 'element'> {
   element: VariableElementType;
 }
 
-const VariableElement: React.FC<VariableElementProps> = ({ attributes, element, children }) => {
+const VariableElement: React.OldFC<VariableElementProps> = ({ attributes, element, children }) => {
   const { id, name, isSlot } = element;
   const slot = useSelector(SlotV2.slotByIDSelector, { id: isSlot ? id : null });
   const entityEditModal = useModals(ModalType.ENTITY_EDIT);
@@ -31,7 +31,7 @@ const VariableElement: React.FC<VariableElementProps> = ({ attributes, element, 
 
   return (
     <span contentEditable={false} {...attributes}>
-      <OverflowTippyTooltip title={varName}>
+      <OverflowTippyTooltip content={varName}>
         {(ref, { isOverflow }) => (
           <>
             {isOverflow && <VariableTagTooltipStyles />}

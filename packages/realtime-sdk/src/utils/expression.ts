@@ -109,14 +109,10 @@ export const hasAdvanceChildExpression = (expression: BaseNode.Utils.Expression)
     return true;
   }
 
-  if (
+  return (
     (Array.isArray(expression.value) && expression.value.some((data: any) => ADVANCE_LOGIC_TYPES.includes(data.type))) ||
     isDeepestExpressionAdvance(expression)
-  ) {
-    return true;
-  }
-
-  return false;
+  );
 };
 
 /**

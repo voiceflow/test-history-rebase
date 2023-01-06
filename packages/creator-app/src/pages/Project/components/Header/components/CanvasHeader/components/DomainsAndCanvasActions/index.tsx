@@ -1,4 +1,4 @@
-import { Box } from '@voiceflow/ui';
+import { Box, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import Page from '@/components/Page';
@@ -17,7 +17,7 @@ import { formatProjectName } from '@/utils/string';
 
 import { Container, DomainsActions, PlatformLogo, ProjectTitle, ViewOnly } from './components';
 
-const DomainsAndCanvasActions: React.FC = () => {
+const DomainsAndCanvasActions: React.OldFC = () => {
   const [templatePopperIsOpen, setTemplatePopperIsOpen] = React.useState(false);
 
   const selectedTargets = React.useContext(SelectionTargetsContext);
@@ -104,7 +104,9 @@ const DomainsAndCanvasActions: React.FC = () => {
           <Page.Header.IconButton
             icon="componentOutline"
             isSmall
-            tooltip={{ title: 'Create component', hotkey: HOTKEY_LABEL_MAP[Hotkey.CREATE_COMPONENT] }}
+            tooltip={{
+              content: <TippyTooltip.WithHotkey hotkey={HOTKEY_LABEL_MAP[Hotkey.CREATE_COMPONENT]}>Create component</TippyTooltip.WithHotkey>,
+            }}
             onClick={onCreateComponent}
           />
           <CanvasTemplateEditorNewTemplate
@@ -118,13 +120,22 @@ const DomainsAndCanvasActions: React.FC = () => {
                 icon="librarySmall"
                 active={templatePopperIsOpen}
                 isSmall
-                tooltip={{ title: 'Add to library', hotkey: HOTKEY_LABEL_MAP[Hotkey.ADD_TO_LIBRARY] }}
+                tooltip={{
+                  content: <TippyTooltip.WithHotkey hotkey={HOTKEY_LABEL_MAP[Hotkey.ADD_TO_LIBRARY]}>Add to library</TippyTooltip.WithHotkey>,
+                }}
                 onClick={onToggle}
               />
             )}
           </CanvasTemplateEditorNewTemplate>
 
-          <Page.Header.IconButton icon="copy" isSmall tooltip={{ title: 'Copy', hotkey: HOTKEY_LABEL_MAP[Hotkey.COPY] }} onClick={onCopy} />
+          <Page.Header.IconButton
+            icon="copy"
+            isSmall
+            tooltip={{
+              content: <TippyTooltip.WithHotkey hotkey={HOTKEY_LABEL_MAP[Hotkey.COPY]}>Copy</TippyTooltip.WithHotkey>,
+            }}
+            onClick={onCopy}
+          />
         </Box.Flex>
       ) : (
         <>

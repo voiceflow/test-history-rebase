@@ -8,7 +8,7 @@ interface EditorModalProps {
   onClose: VoidFunction;
 }
 
-const EditorModal: React.FC<EditorModalProps> = ({ onClose, children }) => {
+const EditorModal: React.OldFC<EditorModalProps> = ({ onClose, children }) => {
   const data = useSelector(Creator.focusedNodeDataSelector);
 
   return (

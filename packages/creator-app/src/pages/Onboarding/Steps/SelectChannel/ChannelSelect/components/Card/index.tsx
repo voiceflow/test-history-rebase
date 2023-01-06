@@ -1,6 +1,5 @@
-import { Box, SvgIcon } from '@voiceflow/ui';
+import { Box, SvgIcon, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
-import { Tooltip } from 'react-tippy';
 
 import * as Feature from '@/ducks/feature';
 import { useSelector } from '@/hooks';
@@ -14,7 +13,7 @@ interface CardProps extends ChannelMetaType {
   disabled?: boolean;
 }
 
-const Card: React.FC<CardProps> = ({
+const Card: React.OldFC<CardProps> = ({
   icon,
   name,
   onClick,
@@ -65,9 +64,9 @@ const Card: React.FC<CardProps> = ({
               const tooltip = typeof description === 'string' ? description : description(platform);
 
               return (
-                <Tooltip key={featureID} title={tooltip} position="top">
+                <TippyTooltip key={featureID} content={tooltip} position="top">
                   <PlatformFeatureBubble color={color}>{name} </PlatformFeatureBubble>
-                </Tooltip>
+                </TippyTooltip>
               );
             })}
           </div>

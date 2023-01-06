@@ -17,7 +17,7 @@ import { ENTIRE_USER_REPLY_ID, ENTIRE_USER_REPLY_LABEL } from './constants';
 import EntitySelector from './EntitySelector';
 import { useEntitiesOptions } from './hooks';
 
-const QueryEditor: React.FC<{ disableAnimation: boolean }> = ({ disableAnimation }) => {
+const QueryEditor: React.OldFC<{ disableAnimation: boolean }> = ({ disableAnimation }) => {
   const editor = EditorV2.useEditor<Realtime.NodeData.CaptureV2, Realtime.NodeData.CaptureV2BuiltInPorts>();
   const projectConfig = useActiveProjectTypeConfig();
 

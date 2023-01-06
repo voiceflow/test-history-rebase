@@ -12,7 +12,7 @@ import { StageComponentProps } from '@/platforms/types';
 
 const getWidgetSessionKey = (projectID: string) => `widget_publish_${projectID}`;
 
-const SuccessStage: React.FC<StageComponentProps<NLPTrainJob.SuccessStage>> = ({ cancel }) => {
+const SuccessStage: React.OldFC<StageComponentProps<NLPTrainJob.SuccessStage>> = ({ cancel }) => {
   useSyncProjectLiveVersion();
 
   const projectID = useSelector(Session.activeProjectIDSelector);

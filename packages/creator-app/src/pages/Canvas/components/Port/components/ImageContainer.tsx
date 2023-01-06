@@ -67,7 +67,7 @@ const Background = styled.div<{ borderRadius?: number }>`
   `}
 `;
 
-const ImageContainer: React.FC = ({ children }) => (
+const ImageContainer: React.OldFC = ({ children }) => (
   <Container>
     <Background />
 

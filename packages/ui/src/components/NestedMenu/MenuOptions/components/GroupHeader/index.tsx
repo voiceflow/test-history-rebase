@@ -9,7 +9,7 @@ interface GroupHeaderProps {
 /**
  * If childer === true we display Line only
  */
-const GroupHeader: React.FC<GroupHeaderProps> = ({ isSmall, children }) => (
+const GroupHeader: React.OldFC<GroupHeaderProps> = ({ isSmall, children }) => (
   <>
     {!children ? (
       <S.Line />

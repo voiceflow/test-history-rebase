@@ -13,7 +13,7 @@ export interface EditProductProps {
   productID: string;
 }
 
-const EditProduct: React.FC<RouteComponentProps<{ productID: string }>> = ({ match }) => {
+const EditProduct: React.OldFC<RouteComponentProps<{ productID: string }>> = ({ match }) => {
   const { productID } = match.params;
 
   const product = useSelector(ProductV2.productByIDSelector, { id: productID });

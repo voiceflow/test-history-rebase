@@ -59,7 +59,7 @@ export const AssistantCard = ({ project, ...props }: CardProps) => {
       iconColor={icon.color}
       hasTitleComponent
     >
-      <OverflowTippyTooltip title={project?.name} overflow>
+      <OverflowTippyTooltip content={project?.name} overflow>
         {(ref) => (
           <Title
             ref={(editableText) => {

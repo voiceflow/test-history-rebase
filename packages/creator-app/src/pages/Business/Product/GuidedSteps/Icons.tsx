@@ -9,7 +9,7 @@ export interface IconFormProps {
   advanceStep: VoidFunction;
 }
 
-const IconForm: React.FC<IconFormProps> = ({ advanceStep }) => {
+const IconForm: React.OldFC<IconFormProps> = ({ advanceStep }) => {
   const { product, setProductPropertyNullable } = React.useContext(ProductContext)!;
 
   return (

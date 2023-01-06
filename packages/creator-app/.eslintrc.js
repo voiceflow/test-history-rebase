@@ -30,6 +30,7 @@ module.exports = {
     'eslint-comments/no-unused-disable': 'warn',
 
     'sonarjs/cognitive-complexity': 'warn',
+    'sonarjs/prefer-single-boolean-return': 'off',
 
     'you-dont-need-lodash-underscore/last': 'warn',
     'you-dont-need-lodash-underscore/throttle': 'warn',
@@ -45,6 +46,8 @@ module.exports = {
 
     // common pattern when writing styled components
     'sonarjs/no-nested-template-literals': 'off',
+
+    'import/extensions': ['error', 'ignorePackages', { ts: 'never', js: 'never', tsx: 'never', jsx: 'never' }],
   },
   settings: {
     'import/resolver': {

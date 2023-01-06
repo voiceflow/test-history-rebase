@@ -21,7 +21,7 @@ export interface UploadCSVProps extends Pick<UploadDropProps, 'value'> {
 
 const ACCEPTED_FILE_TYPES = ['.csv'];
 
-const UploadCSV: React.FC<UploadCSVProps> = ({ value, onReadFile, onUpload, onRemove }) => {
+const UploadCSV: React.OldFC<UploadCSVProps> = ({ value, onReadFile, onUpload, onRemove }) => {
   const [error, setError] = React.useState<null | string>(null);
 
   const onDropAccepted = async (acceptedFiles: File[]) => {

@@ -6,7 +6,7 @@ import { SharePopperContext } from '../../../../contexts';
 import SharePopper from '../../../SharePopper';
 import { ShareButton } from './components';
 
-const Share: React.FC = () => {
+const Share: React.OldFC = () => {
   const sharePopper = React.useContext(SharePopperContext)!;
 
   return (

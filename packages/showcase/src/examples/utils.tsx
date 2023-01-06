@@ -1,9 +1,6 @@
 import React from 'react';
 
-import Example from '@/components/Example';
-import Section from '@/components/Section';
-
-interface ComponentProps {
+interface ComponentProps extends React.PropsWithChildren {
   isPage?: boolean;
 }
 

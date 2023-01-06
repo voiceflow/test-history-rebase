@@ -12,7 +12,7 @@ interface FormProps {
   footer?: React.ReactNode;
 }
 
-const Form: React.FC<FormProps> = ({ editor, header, footer }) => (
+const Form: React.OldFC<FormProps> = ({ editor, header, footer }) => (
   <EditorV2 header={header ?? <EditorV2.DefaultHeader />} footer={footer ?? <EditorV2.DefaultFooter />}>
     <SectionV2.SimpleSection>
       <GoToIntentSelect

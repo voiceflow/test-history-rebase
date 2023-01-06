@@ -21,7 +21,7 @@ export interface ConditionDataSelectProps {
   onChange: (value: LogicUnitDataType) => void;
 }
 
-const ConditionDataSelect: React.FC<ConditionDataSelectProps> = ({ expression, isLogicGroup, onChange, onDelete }) => {
+const ConditionDataSelect: React.OldFC<ConditionDataSelectProps> = ({ expression, isLogicGroup, onChange, onDelete }) => {
   // methods
   const onValueUpdate = React.useCallback(
     (key: number) => (values: { value: string }) => {

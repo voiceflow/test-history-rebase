@@ -28,7 +28,7 @@ interface ColorInputProps {
   disabledBorderColor?: string;
 }
 
-const ColorInput: React.FC<ColorInputProps> = ({ isAllowed = true, disabledBorderColor, value, onChange }) => {
+const ColorInput: React.OldFC<ColorInputProps> = ({ isAllowed = true, disabledBorderColor, value, onChange }) => {
   const [localHex, setLocalHex] = React.useState(removeHashFromHex(value));
   const [isDisabled, setIsDisabled] = React.useState(false);
   const disabled = isDisabled || !isAllowed;

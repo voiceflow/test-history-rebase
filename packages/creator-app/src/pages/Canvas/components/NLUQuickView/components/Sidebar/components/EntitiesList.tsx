@@ -12,13 +12,21 @@ import * as Tracking from '@/ducks/tracking';
 import { useAsyncEffect, useDispatch, useOrderedEntities, useSelector, useTrackingEvents } from '@/hooks';
 import { NLUQuickViewContext } from '@/pages/Canvas/components/NLUQuickView/context';
 import { useFilteredList } from '@/pages/Canvas/components/NLUQuickView/hooks';
+import { getErrorMessage } from '@/utils/error';
 
 import { useCreatingItem, useListHooks } from '../hooks';
 import { SectionSection } from './index';
 import ListItem from './ListItem';
 import { SectionProps } from './types';
 
-const EntitiesList: React.FC<SectionProps> = ({ isActiveItemRename, setIsActiveItemRename, setSearchLength, selectedID, search, setActiveTab }) => {
+const EntitiesList: React.OldFC<SectionProps> = ({
+  isActiveItemRename,
+  setIsActiveItemRename,
+  setSearchLength,
+  selectedID,
+  search,
+  setActiveTab,
+}) => {
   const { activeTab, setSelectedID, setIsCreatingItem, nameChangeTransform, forceNewInlineEntity } = React.useContext(NLUQuickViewContext);
 
   const allSlots = useSelector(SlotV2.allSlotsSelector);
@@ -77,7 +85,7 @@ const EntitiesList: React.FC<SectionProps> = ({ isActiveItemRename, setIsActiveI
         setSelectedID(id);
         trackingEvents.trackEntityCreated({ creationType: Tracking.CanvasCreationType.IMM });
       } catch (e) {
-        toast.error(e);
+        toast.error(getErrorMessage(e));
       } finally {
         setIsCreatingItem(false);
       }
@@ -99,7 +107,7 @@ const EntitiesList: React.FC<SectionProps> = ({ isActiveItemRename, setIsActiveI
       collapseVariant={isActiveTab ? null : SectionToggleVariant.ARROW}
       suffix={
         isActiveTab && (
-          <TippyTooltip title="Create entity" position="top">
+          <TippyTooltip content="Create entity" position="top">
             <IconButton style={{ marginRight: -12 }} onClick={triggerCreate} variant={IconButtonVariant.BASIC} icon="plus" />
           </TippyTooltip>
         )

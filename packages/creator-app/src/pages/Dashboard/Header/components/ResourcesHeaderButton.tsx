@@ -1,6 +1,5 @@
-import { IconButton, IconButtonVariant, Select, SvgIcon, SvgIconTypes } from '@voiceflow/ui';
+import { IconButton, IconButtonVariant, Select, SvgIcon, SvgIconTypes, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
-import { Tooltip } from 'react-tippy';
 
 import * as Tracking from '@/ducks/tracking';
 import { useTrackingEvents } from '@/hooks';
@@ -54,7 +53,7 @@ const ResourcesHeaderButton = ({ hasShortcuts = false }) => {
   };
 
   return (
-    <Tooltip title="Learn" position="bottom">
+    <TippyTooltip content="Learn" position="bottom">
       <Select
         className={`${ClassName.MENU}--resources`}
         options={dropdownOptions}
@@ -75,7 +74,7 @@ const ResourcesHeaderButton = ({ hasShortcuts = false }) => {
           </>
         )}
       />
-    </Tooltip>
+    </TippyTooltip>
   );
 };
 

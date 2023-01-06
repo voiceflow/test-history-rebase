@@ -19,7 +19,7 @@ export interface CancelPaymentStepProps {
   palette: HSLShades;
 }
 
-export const CancelPaymentStep: React.FC<CancelPaymentStepProps> = ({ label, nodeID, successPortID, failurePortID, withPorts, palette }) => (
+export const CancelPaymentStep: React.OldFC<CancelPaymentStepProps> = ({ label, nodeID, successPortID, failurePortID, withPorts, palette }) => (
   <Step nodeID={nodeID}>
     <Section>
       <Item

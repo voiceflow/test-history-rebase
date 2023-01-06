@@ -7,7 +7,7 @@ import { useDispatch } from '@/hooks';
 import { TwilioPrototypeJob } from '@/models';
 import { StageComponentProps } from '@/platforms/types';
 
-const MessagingStage: React.FC<StageComponentProps<TwilioPrototypeJob.MessagingStage>> = ({ stage, cancel }) => {
+const MessagingStage: React.OldFC<StageComponentProps<TwilioPrototypeJob.MessagingStage>> = ({ stage, cancel }) => {
   const goToSettings = useDispatch(Router.goToActivePlatformPrototype);
 
   React.useEffect(() => {

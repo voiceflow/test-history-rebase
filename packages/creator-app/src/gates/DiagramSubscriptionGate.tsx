@@ -7,7 +7,7 @@ import * as Session from '@/ducks/session';
 import { useDiagramSubscription, useSelector } from '@/hooks';
 import { DiagramHeartbeatProvider } from '@/pages/Project/contexts';
 
-const DiagramSubscriptionGate: React.FC = ({ children }) => {
+const DiagramSubscriptionGate: React.OldFC = ({ children }) => {
   const domainID = useSelector(Session.activeDomainIDSelector);
   const diagramID = useSelector(Session.activeDiagramIDSelector);
   const projectID = useSelector(Session.activeProjectIDSelector);

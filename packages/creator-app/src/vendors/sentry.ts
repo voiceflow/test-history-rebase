@@ -9,10 +9,9 @@ export const init = () => {
 
   Sentry.init({
     dsn: SENTRY_DSN,
+    environment: IS_PRODUCTION ? CLOUD_ENV : APP_ENV,
     integrations: [new Integrations.BrowserTracing()],
     tracesSampleRate: 0.1,
-    environment: IS_PRODUCTION ? CLOUD_ENV : APP_ENV,
-    logLevel: 1,
   });
 };
 
@@ -23,7 +22,7 @@ export const breadcrumb = (category: string, message: string, data?: Record<stri
     category,
     message,
     data,
-    level: Sentry.Severity.Info,
+    level: 'info',
   });
 };
 

@@ -47,7 +47,7 @@ const ListItem = React.forwardRef<HTMLDivElement, React.PropsWithChildren<ListIt
         {!!icon && (
           <ListItemIconContainer>
             {iconTooltip ? (
-              <TippyTooltip bodyOverflow {...iconTooltip}>
+              <TippyTooltip {...iconTooltip}>
                 <SvgIcon icon={icon} {...iconProps} color={iconProps?.color ?? '#6e849a'} />
               </TippyTooltip>
             ) : (

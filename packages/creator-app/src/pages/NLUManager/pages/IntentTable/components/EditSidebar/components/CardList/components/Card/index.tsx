@@ -9,7 +9,7 @@ interface CardProps {
   onClose: () => void;
 }
 
-const Card: React.FC<CardProps> = ({ color, title, onClose, children }) => (
+const Card: React.OldFC<CardProps> = ({ color, title, onClose, children }) => (
   <S.Container>
     <S.TitleContainer color={color}>
       {title}

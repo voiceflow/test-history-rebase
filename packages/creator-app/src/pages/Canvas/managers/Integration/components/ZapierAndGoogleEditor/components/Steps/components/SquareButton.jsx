@@ -1,5 +1,5 @@
+import { TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
-import { Tooltip } from 'react-tippy';
 
 import { styled } from '@/hocs/styled';
 
@@ -19,7 +19,7 @@ const SquareButtonContainer = styled.button`
   }
 `;
 
-const HelpIcon = styled(Tooltip)`
+const HelpIcon = styled(TippyTooltip)`
   position: absolute;
   right: 12px;
   top: 12px;
@@ -28,7 +28,7 @@ const HelpIcon = styled(Tooltip)`
   height: 25px;
 `;
 
-const Help = ({ tooltip }) => <HelpIcon title={tooltip}>?</HelpIcon>;
+const Help = ({ tooltip }) => <HelpIcon content={tooltip}>?</HelpIcon>;
 
 const SquareButton = ({ text, tooltip, onClick }) => (
   <SquareButtonContainer onClick={onClick}>

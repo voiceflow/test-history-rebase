@@ -6,7 +6,7 @@ import { Point } from '@/types';
 export const MousePositionContext = React.createContext<React.MutableRefObject<Point>>({ current: [0, 0] as Point });
 export const { Consumer: MousePositionConsumer } = MousePositionContext;
 
-export const MousePositionProvider: React.FC = ({ children }) => {
+export const MousePositionProvider: React.OldFC = ({ children }) => {
   const mousePositionContext = React.useRef<Point>([0, 0]);
 
   useMouseMove(({ clientX, clientY }) => {

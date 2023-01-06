@@ -9,7 +9,7 @@ import PublishButton from '@/pages/Project/components/Header/components/CanvasHe
 import { useAlexaPublishContext } from './hooks';
 import { useAlexaPublishStageContent } from './stages';
 
-const AlexaPublish: React.FC = () => {
+const AlexaPublish: React.OldFC = () => {
   const publishContext = useAlexaPublishContext();
 
   const { job, active, onPublish } = publishContext;

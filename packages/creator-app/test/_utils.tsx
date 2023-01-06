@@ -5,9 +5,9 @@ import { ThemeContext } from 'styled-components';
 
 import theme from '../src/styles/theme';
 
-export const ThemeProvider: React.FC = ({ children }) => <ThemeContext.Provider value={theme}>{children}</ThemeContext.Provider>;
+export const ThemeProvider: React.OldFC = ({ children }) => <ThemeContext.Provider value={theme}>{children}</ThemeContext.Provider>;
 
-export const StoreProvider: React.FC = ({ children }) => {
+export const StoreProvider: React.OldFC = ({ children }) => {
   const store = {
     getState: () => ({}),
     dispatch: Utils.functional.noop,
@@ -19,7 +19,7 @@ export const StoreProvider: React.FC = ({ children }) => {
 };
 
 export const composeWrappers =
-  (...wrappers: React.FC[]): React.FC =>
+  (...wrappers: React.OldFC[]): React.OldFC =>
   ({ children }) => {
     if (!wrappers.length) return <>{children}</>;
 

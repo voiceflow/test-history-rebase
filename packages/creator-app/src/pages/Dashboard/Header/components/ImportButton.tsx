@@ -17,7 +17,7 @@ interface ImportButtonProps {
   dashboardV2?: boolean;
 }
 
-const ImportButton: React.FC<ImportButtonProps> = ({ dashboardV2 }) => {
+const ImportButton: React.OldFC<ImportButtonProps> = ({ dashboardV2 }) => {
   const projects = useSelector(ProjectV2.allProjectsSelector);
 
   const goToDomain = useDispatch(Router.goToDomain);
@@ -63,7 +63,7 @@ const ImportButton: React.FC<ImportButtonProps> = ({ dashboardV2 }) => {
   });
 
   return (
-    <TippyTooltip title="Import .vf file" position="bottom">
+    <TippyTooltip content="Import .vf file" position="bottom">
       {dashboardV2 ? (
         <SvgIcon icon="importCircle" size={16} onClick={onImport} />
       ) : (

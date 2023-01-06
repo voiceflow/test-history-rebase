@@ -8,7 +8,7 @@ import * as ModalsV2 from '@/ModalsV2';
 import { CountdownColors, TOTAL_TRIAL_DAYS } from './constants';
 import * as S from './styles';
 
-const TrialCountdownCard: React.FC = () => {
+const TrialCountdownCard: React.OldFC = () => {
   const trialDaysLeft = useSelector(WorkspaceV2.active.organizationTrialDaysLeft);
   const paymentModal = ModalsV2.useModal(ModalsV2.Payment);
 

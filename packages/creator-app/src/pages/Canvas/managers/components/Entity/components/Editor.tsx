@@ -14,7 +14,7 @@ interface EditorProps {
   goBack?: VoidFunction;
 }
 
-const Editor: React.FC<EditorProps> = ({ goBack }) => {
+const Editor: React.OldFC<EditorProps> = ({ goBack }) => {
   const editor = EditorV2.useEditor();
 
   const location = useLocation<{ autogenerate?: boolean }>();

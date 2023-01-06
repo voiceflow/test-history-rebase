@@ -22,7 +22,7 @@ export interface ActionButtonsProps {
   buttonsOnly?: boolean;
 }
 
-const ActionButtons: React.FC<ActionButtonsProps> = ({
+const ActionButtons: React.OldFC<ActionButtonsProps> = ({
   color,
   noSend = false,
   onMute,
@@ -43,7 +43,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
     <BoxFlexEnd ml={16}>
       {!buttonsOnly && !testEnded && (
         <>
-          <TippyTooltip title="Reset Test" disabled={disabled}>
+          <TippyTooltip content="Reset Test" disabled={disabled}>
             <ActionButton
               square
               isGray

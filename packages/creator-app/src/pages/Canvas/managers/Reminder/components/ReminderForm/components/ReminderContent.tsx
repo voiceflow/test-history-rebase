@@ -10,7 +10,7 @@ interface ReminderContentProps {
   onChange: (value: Partial<{ text: string; voice: string }>) => void;
 }
 
-const ReminderContent: React.FC<ReminderContentProps> = ({ value, voice, onChange }) => {
+const ReminderContent: React.OldFC<ReminderContentProps> = ({ value, voice, onChange }) => {
   const updateUpsellMessage = React.useCallback(({ text }: { text: string }) => onChange({ text }), [onChange]);
 
   const updateVoice = React.useCallback((voice: string) => onChange({ voice }), [onChange]);

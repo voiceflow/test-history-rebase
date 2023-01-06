@@ -11,7 +11,7 @@ interface ComponentSelectProps extends Pick<BaseSelectProps, 'icon' | 'iconProps
   componentID: Nullable<string>;
 }
 
-const ComponentSelect: React.FC<ComponentSelectProps> = ({ componentID, onChange, ...props }) => {
+const ComponentSelect: React.OldFC<ComponentSelectProps> = ({ componentID, onChange, ...props }) => {
   const componentDiagrams = useSelector(DiagramV2.active.componentDiagramsSelector);
 
   const createEmptyComponent = useDispatch(Diagram.createEmptyComponent);

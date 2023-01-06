@@ -10,7 +10,7 @@ interface SSOTargetURLFieldProps {
   onChangeText: (text: string) => void;
 }
 
-const SSOTargetURLField: React.FC<SSOTargetURLFieldProps> = ({ entryPoint, onChangeText }) => {
+const SSOTargetURLField: React.OldFC<SSOTargetURLFieldProps> = ({ entryPoint, onChangeText }) => {
   return (
     <SectionV2.SimpleSection>
       <Box.FlexAlignStart fullWidth>

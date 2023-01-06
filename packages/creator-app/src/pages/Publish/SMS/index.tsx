@@ -5,7 +5,7 @@ import { WHATSAPP_DOCUMENTATION } from '@/constants/platforms';
 import { SettingsContainer, WebhookField } from '@/pages/Publish/components';
 import { openInternalURLInANewTab } from '@/utils/window';
 
-const SMS: React.FC = () => (
+const SMS: React.OldFC = () => (
   <SettingsContainer>
     <Banner
       title="Publishing to SMS"

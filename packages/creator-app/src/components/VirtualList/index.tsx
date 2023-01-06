@@ -1,81 +1,69 @@
-import composeRef from '@seznam/compose-react-refs';
-import { CustomScrollbars, CustomScrollbarsTypes } from '@voiceflow/ui';
+import { CustomScrollbarsTypes } from '@voiceflow/ui';
 import React from 'react';
-import { AutoSizer, Index, List, WindowScroller } from 'react-virtualized';
+import AutoSizer from 'react-virtualized-auto-sizer';
+import { ListChildComponentProps, ListItemKeySelector, VariableSizeList } from 'react-window';
 
-import { ScrollContextProvider } from '@/contexts/ScrollContext';
-import { useScrollHelpers } from '@/hooks';
+import { CustomScrollbars } from './components';
+import { PlaceholderRenderer, ScrollBarContextProvider } from './context';
 
-import { WindowScrollerContainer } from './components';
-
-export interface VirtualListProps {
+export interface VirtualListProps<T> {
   id?: string;
   size: number;
   header?: React.ReactNode;
-  listRef?: React.Ref<List>;
-  rowHeight?: number | ((index: Index) => number);
+  itemSize: (index: number) => number;
+  listData: T;
+  itemKey?: ListItemKeySelector<T>;
   listStyle?: React.CSSProperties;
   className?: string;
-  renderItem: (index: number) => React.ReactNode;
-  renderPlaceholder?: (props: { width: number; height: number }) => React.ReactNode;
+  adjustHeight?: number;
+  scrollbarsRef?: React.Ref<CustomScrollbarsTypes.Scrollbars>;
+  itemComponent: React.ComponentType<ListChildComponentProps<T>>;
+  renderPlaceholder?: PlaceholderRenderer;
+  estimatedItemSize?: number;
 }
 
-const VirtualList: React.ForwardRefRenderFunction<CustomScrollbarsTypes.Scrollbars, VirtualListProps> = (
-  { id, size, header, listRef, className, rowHeight = 42, listStyle, renderItem, renderPlaceholder },
-  ref
-) => {
-  const [scrollbars, setCustomScrollBars] = React.useState<CustomScrollbarsTypes.Scrollbars | null>(null);
-  const { bodyRef, scrollHelpers } = useScrollHelpers<CustomScrollbarsTypes.Scrollbars>();
+const VirtualList = <T extends unknown>(
+  {
+    id,
+    size,
+    header,
+    itemKey,
+    itemSize,
+    listData,
+    listStyle,
+    className,
+    adjustHeight = 0,
+    scrollbarsRef,
+    itemComponent,
+    renderPlaceholder,
+    estimatedItemSize,
+  }: VirtualListProps<T>,
+  ref: React.ForwardedRef<VariableSizeList<T>>
+) => (
+  <ScrollBarContextProvider value={{ ref: scrollbarsRef, header, renderPlaceholder, size }}>
+    <AutoSizer>
+      {({ width, height }) => (
+        <div id={id} className={className}>
+          <VariableSizeList
+            ref={ref}
+            width={width}
+            style={listStyle}
+            height={height + adjustHeight}
+            itemKey={itemKey}
+            itemData={listData}
+            itemSize={itemSize}
+            itemCount={size}
+            outerElementType={CustomScrollbars}
+            estimatedItemSize={estimatedItemSize}
+          >
+            {itemComponent}
+          </VariableSizeList>
+        </div>
+      )}
+    </AutoSizer>
+  </ScrollBarContextProvider>
+);
 
-  const rowRenderer = React.useCallback(
-    ({ key, index, style }: { key: string; index: number; style: object }) => (
-      <div key={key} style={style}>
-        {renderItem(index)}
-      </div>
-    ),
-    [renderItem]
-  );
-
-  return (
-    <CustomScrollbars ref={composeRef<CustomScrollbarsTypes.Scrollbars>(ref, bodyRef, setCustomScrollBars)}>
-      <ScrollContextProvider value={scrollHelpers}>
-        {header}
-
-        {!scrollbars ? null : (
-          <WindowScrollerContainer className={className}>
-            <WindowScroller scrollElement={scrollbars.view}>
-              {({ height, isScrolling, registerChild, scrollTop }) =>
-                !!height && (
-                  <AutoSizer disableHeight={true}>
-                    {({ width }) => (
-                      <div id={id} ref={registerChild}>
-                        {!size && renderPlaceholder ? (
-                          renderPlaceholder({ width, height })
-                        ) : (
-                          <List
-                            ref={listRef}
-                            width={width}
-                            style={listStyle}
-                            height={height}
-                            rowCount={size}
-                            scrollTop={scrollTop}
-                            rowHeight={rowHeight}
-                            autoHeight
-                            rowRenderer={rowRenderer}
-                            isScrolling={isScrolling}
-                          />
-                        )}
-                      </div>
-                    )}
-                  </AutoSizer>
-                )
-              }
-            </WindowScroller>
-          </WindowScrollerContainer>
-        )}
-      </ScrollContextProvider>
-    </CustomScrollbars>
-  );
-};
-
-export default React.memo(React.forwardRef<CustomScrollbarsTypes.Scrollbars, VirtualListProps>(VirtualList));
+export default React.forwardRef<VariableSizeList<any>, VirtualListProps<any>>(VirtualList) as <T>(
+  props: VirtualListProps<T> & React.RefAttributes<VariableSizeList<T>>
+) => JSX.Element | null;

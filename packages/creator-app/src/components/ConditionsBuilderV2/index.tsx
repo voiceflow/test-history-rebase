@@ -13,7 +13,7 @@ export interface ConditionsBuilderV2Props extends StyledProps<any> {
   onChange: (value: Realtime.ExpressionData) => void;
 }
 
-const ConditionsBuilderV2: React.FC<ConditionsBuilderV2Props> = ({ expression, onChange }) => {
+const ConditionsBuilderV2: React.OldFC<ConditionsBuilderV2Props> = ({ expression, onChange }) => {
   return (
     <Box pt={16} pb={16}>
       <Popper placement="left-start" renderContent={() => <ConditionsPopper expression={expression} onChange={onChange} />}>

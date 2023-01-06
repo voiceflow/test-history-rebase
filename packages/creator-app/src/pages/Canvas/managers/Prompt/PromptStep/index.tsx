@@ -19,7 +19,7 @@ export interface PromptStepProps {
   noReplyPortID?: Nullable<string>;
 }
 
-export const PromptStep: React.FC<PromptStepProps> = ({ nodeID, noMatch, noReply, noMatchPortID, noReplyPortID, palette }) => (
+export const PromptStep: React.OldFC<PromptStepProps> = ({ nodeID, noMatch, noReply, noMatchPortID, noReplyPortID, palette }) => (
   <Step nodeID={nodeID}>
     <Section>
       <Item icon={NODE_CONFIG.icon} label={WAITING_FOR_INTENT_PLACEHOLDER} portID={null} palette={palette} labelVariant={StepLabelVariant.PRIMARY} />

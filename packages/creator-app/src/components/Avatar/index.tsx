@@ -13,7 +13,7 @@ export interface AvatarProps {
   noShadow?: boolean;
 }
 
-const Avatar: React.FC<AvatarProps> = ({ className, url, name, color, noHover, noShadow }) => (
+const Avatar: React.OldFC<AvatarProps> = ({ className, url, name, color, noHover, noShadow }) => (
   <S.Container className={className} avatarUrl={url} rgbColor={color ? COLORS[color] : null} noHover={noHover} noShadow={noShadow}>
     {' '}
     {!url && name?.toUpperCase().charAt(0)}{' '}

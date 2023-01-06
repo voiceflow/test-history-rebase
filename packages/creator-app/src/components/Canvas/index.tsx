@@ -69,7 +69,7 @@ export interface CanvasProps {
 }
 
 class Canvas extends React.PureComponent<
-  WithRequired<CanvasProps, 'controlScheme'> & { dismissableLayer: React.ContextType<typeof DismissableLayerContext> }
+  WithRequired<CanvasProps, 'controlScheme'> & React.PropsWithChildren<{ dismissableLayer: React.ContextType<typeof DismissableLayerContext> }>
 > {
   static defaultProps: CanvasProps = {
     scrollTimeout: SCROLL_TIMEOUT,
@@ -528,4 +528,4 @@ class Canvas extends React.PureComponent<
   }
 }
 
-export default withContext(DismissableLayerContext, 'dismissableLayer')(Canvas) as React.FC<CanvasProps>;
+export default withContext(DismissableLayerContext, 'dismissableLayer')(Canvas) as React.OldFC<CanvasProps>;

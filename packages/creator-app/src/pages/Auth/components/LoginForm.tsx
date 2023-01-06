@@ -24,7 +24,7 @@ export interface LoginFormProps {
   query: Query.Auth;
 }
 
-export const LoginForm: React.FC<LoginFormProps> = ({ query, children }) => {
+export const LoginForm: React.OldFC<LoginFormProps> = ({ query, children }) => {
   const location = useLocation<{ redirectTo?: string } | null>();
 
   const [email, setEmail] = React.useState(query.email ? replaceSpaceWithPlus(query.email)! : '');

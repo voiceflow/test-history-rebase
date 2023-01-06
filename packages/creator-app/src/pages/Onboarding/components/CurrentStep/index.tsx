@@ -8,7 +8,7 @@ import { FadeLeftContainer } from '@/styles/animations';
 
 import { STEP_COMPONENTS } from './constants';
 
-const CurrentStep: React.FC<OnboardingStepProps> = (props) => {
+const CurrentStep: React.OldFC<OnboardingStepProps> = (props) => {
   const { state } = useContext(OnboardingContext);
   const { currentStepID } = state;
 

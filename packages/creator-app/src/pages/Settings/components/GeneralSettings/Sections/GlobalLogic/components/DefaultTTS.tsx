@@ -19,7 +19,7 @@ interface DefaultTTSProps {
   platformMeta: PlatformSettingsMetaProps;
 }
 
-const DefaultTTS: React.FC<DefaultTTSProps> = ({ platform, projectType, platformMeta }) => {
+const DefaultTTS: React.OldFC<DefaultTTSProps> = ({ platform, projectType, platformMeta }) => {
   const projectConfig = useActiveProjectTypeConfig();
 
   const wavenetVoices = useFeature(Realtime.FeatureFlag.WAVENET_VOICES);

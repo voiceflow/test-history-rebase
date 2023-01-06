@@ -10,7 +10,7 @@ import { useAsyncEffect, useSelector } from '@/hooks';
 import { Section, SettingsContainer } from '@/pages/Publish/components';
 import { openInternalURLInANewTab } from '@/utils/window';
 
-const SMSTesting: React.FC = () => {
+const SMSTesting: React.OldFC = () => {
   const [loading, setLoading] = React.useState(true);
   const [remoteValue, setRemoteValue] = React.useState<string | undefined>();
   const [value, setValue] = React.useState<PhoneNumber | undefined>();

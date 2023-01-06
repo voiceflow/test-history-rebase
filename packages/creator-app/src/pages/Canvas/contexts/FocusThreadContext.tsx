@@ -12,7 +12,7 @@ export interface FocusThreadContextValue {
 export const FocusThreadContext = React.createContext<FocusThreadContextValue | null>(null);
 export const { Consumer: FocusThreadConsumer } = FocusThreadContext;
 
-export const FocusThreadProvider: React.FC = ({ children }) => {
+export const FocusThreadProvider: React.OldFC = ({ children }) => {
   const engine = React.useContext(EngineContext)!;
 
   const [focusedID, setFocusedID] = React.useState<string | null>(null);

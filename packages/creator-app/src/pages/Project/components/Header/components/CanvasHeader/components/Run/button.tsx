@@ -18,7 +18,7 @@ interface RunButtonProps {
   active?: boolean;
 }
 
-const RunButton: React.FC<RunButtonProps> = ({ variant = ButtonVariant.PRIMARY, loading = false, onClick, active = false }) => {
+const RunButton: React.OldFC<RunButtonProps> = ({ variant = ButtonVariant.PRIMARY, loading = false, onClick, active = false }) => {
   const iconProps: SvgIconTypes.Props = { icon: 'play' };
 
   if (variant === ButtonVariant.SECONDARY) {
@@ -39,7 +39,7 @@ const RunButton: React.FC<RunButtonProps> = ({ variant = ButtonVariant.PRIMARY, 
   };
 
   return (
-    <TippyTooltip title="Run" hotkey={HOTKEY_LABEL_MAP[Hotkey.RUN_MODE]}>
+    <TippyTooltip content={<TippyTooltip.WithHotkey hotkey={HOTKEY_LABEL_MAP[Hotkey.RUN_MODE]}>Run</TippyTooltip.WithHotkey>}>
       {variant === ButtonVariant.SECONDARY ? (
         <StyledButton {...commonProps} icon={iconProps.icon} iconProps={iconProps} />
       ) : (

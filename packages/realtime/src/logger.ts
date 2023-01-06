@@ -1,13 +1,13 @@
-import { Logger, LogLevel, MiddlewareVerbosity } from '@voiceflow/logger';
+import { createLogger as createVFLogger, LogFormat, LogLevel } from '@voiceflow/logger';
 
 import config from './config';
 
 export const createLogger = () =>
-  new Logger({
+  createVFLogger({
     level: config.LOG_LEVEL as LogLevel,
-    pretty: ['local', 'test', 'e2e'].includes(config.NODE_ENV || ''),
-    middlewareVerbosity: config.MIDDLEWARE_VERBOSITY as MiddlewareVerbosity,
+    format: ['local', 'test', 'e2e'].includes(config.NODE_ENV || '') ? LogFormat.INLINE : LogFormat.JSON,
   });
 
 const log = createLogger();
+
 export default log;

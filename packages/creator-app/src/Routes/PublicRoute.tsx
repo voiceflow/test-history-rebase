@@ -3,8 +3,7 @@ import { Redirect, Route, RouteComponentProps } from 'react-router-dom';
 
 import { Path } from '@/config/routes';
 import { authTokenSelector } from '@/ducks/session';
-import { connect } from '@/hocs/connect';
-import { ConnectedProps } from '@/types';
+import { useSelector } from '@/hooks/redux';
 
 export type PublicRouteProps<T extends object> = {
   path: string | string[];
@@ -13,31 +12,27 @@ export type PublicRouteProps<T extends object> = {
   exact?: boolean;
 } & Omit<T, keyof RouteComponentProps>;
 
-const PublicRoute = <T extends object>({ component: Component, authToken, ...rest }: PublicRouteProps<T> & ConnectedPublicRouteProps) => (
-  <Route
-    {...(rest as any)}
-    render={(props) =>
-      authToken ? (
-        <Redirect
-          to={{
-            pathname: Path.DASHBOARD,
-            search: props.location.search,
-            state: { from: props.location },
-          }}
-        />
-      ) : (
-        <Component {...props} {...(rest as any)} />
-      )
-    }
-  />
-);
+const PublicRoute = <T extends object>({ component: Component, ...rest }: PublicRouteProps<T>) => {
+  const authToken = useSelector(authTokenSelector);
 
-const mapStateToProps = {
-  authToken: authTokenSelector,
+  return (
+    <Route
+      {...(rest as any)}
+      render={(props) =>
+        authToken ? (
+          <Redirect
+            to={{
+              pathname: Path.DASHBOARD,
+              search: props.location.search,
+              state: { from: props.location },
+            }}
+          />
+        ) : (
+          <Component {...props} {...(rest as any)} />
+        )
+      }
+    />
+  );
 };
 
-type ConnectedPublicRouteProps = ConnectedProps<typeof mapStateToProps>;
-
-export default connect(mapStateToProps)(PublicRoute) as {
-  <T extends object>(props: PublicRouteProps<T>): React.ReactElement;
-};
+export default PublicRoute;

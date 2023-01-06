@@ -6,7 +6,7 @@ import { UpgradePrompt } from '@/ducks/tracking';
 import { useModals, useTrackingEvents } from '@/hooks';
 import BaseModal from '@/pages/Dashboard/components/RedirectToPaymentBaseModal';
 
-const RealtimeDeniedModal: React.FC = () => {
+const RealtimeDeniedModal: React.OldFC = () => {
   const { isOpened } = useModals(ModalType.REALTIME_DENIED);
   const [trackingEvents] = useTrackingEvents();
 

@@ -12,7 +12,7 @@ interface TableClusterRowProps {
   onSelect: (utteranceID: string) => void;
 }
 
-const TableClusterRow: React.FC<TableClusterRowProps> = ({ utterance, utteranceCount, isActive, onSelect }) => {
+const TableClusterRow: React.OldFC<TableClusterRowProps> = ({ utterance, utteranceCount, isActive, onSelect }) => {
   return (
     <>
       <UnclassifiedTable.Row key={utterance} active={isActive} onClick={() => onSelect(utterance)}>

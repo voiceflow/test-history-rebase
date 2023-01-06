@@ -16,7 +16,7 @@ export interface PlatformUploadPopupProps {
   className?: string;
 }
 
-const PlatformUploadPopup: React.FC<PlatformUploadPopupProps> = ({ open, onClose, children, jobStage, className }) => {
+const PlatformUploadPopup: React.OldFC<PlatformUploadPopupProps> = ({ open, onClose, children, jobStage, className }) => {
   const platform = useSelector(ProjectV2.active.platformSelector);
   const ref = React.useRef(null);
 

@@ -10,7 +10,7 @@ interface EntityURLFieldProps {
   onChange: (text: string) => void;
 }
 
-const EntityURLField: React.FC<EntityURLFieldProps> = ({ issuer, onChange }) => {
+const EntityURLField: React.OldFC<EntityURLFieldProps> = ({ issuer, onChange }) => {
   return (
     <SectionV2.SimpleSection>
       <Box.FlexAlignStart fullWidth>

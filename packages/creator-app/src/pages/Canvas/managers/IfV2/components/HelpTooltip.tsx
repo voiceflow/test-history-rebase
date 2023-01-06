@@ -1,7 +1,7 @@
 import { Tooltip } from '@voiceflow/ui';
 import React from 'react';
 
-const HelpTooltip: React.FC = () => (
+const HelpTooltip: React.OldFC = () => (
   <>
     <Tooltip.Paragraph>The IF block allows you to provide your system with a condition, that is resolved as either true, or false.</Tooltip.Paragraph>
 

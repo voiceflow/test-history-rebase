@@ -6,12 +6,12 @@ interface WorkspaceDisabledTooltipProps {
   disabled?: boolean;
 }
 
-const WorkspaceDisabledTooltip: React.FC<WorkspaceDisabledTooltipProps> = ({ children, disabled }) =>
+const WorkspaceDisabledTooltip: React.OldFC<WorkspaceDisabledTooltipProps> = ({ children, disabled }) =>
   disabled ? (
     <>{children}</>
   ) : (
     <TippyTooltip
-      html={
+      content={
         <Box width={195} textAlign="left">
           AI Assist features have been disabled for this workspace by a workspace admin.
         </Box>

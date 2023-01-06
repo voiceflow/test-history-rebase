@@ -9,7 +9,7 @@ interface HeaderProps {
   editor: NodeEditorV2Props<Realtime.NodeData.Code, Realtime.NodeData.CodeBuiltInPorts>;
 }
 
-const Header: React.FC<HeaderProps> = ({ editor, children }) => (
+const Header: React.OldFC<HeaderProps> = ({ editor, children }) => (
   <EditorV2.Header>
     {children}
 

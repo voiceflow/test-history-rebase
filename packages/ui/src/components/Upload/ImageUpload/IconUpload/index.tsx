@@ -6,7 +6,8 @@ import { Utils } from '@voiceflow/common';
 import React from 'react';
 import { useDropzone } from 'react-dropzone';
 
-import { IMAGE_FILE_FORMATS } from '../../constants';
+import { IMAGE_FILE_TYPES } from '../../constants';
+import { useFileTypesToMimeType } from '../../hooks';
 import { ImageInjectedWithUploadProps } from '../../types';
 import { SingleUploadConfig, useUpload } from '../../useUpload';
 import { hasValidImages } from '../../utils';
@@ -61,14 +62,16 @@ export const BaseIconUpload = React.forwardRef<HTMLDivElement, BaseIconUploadPro
       disabled,
       className,
       canRemove = false,
-      acceptedFileTypes = IMAGE_FILE_FORMATS,
+      acceptedFileTypes = IMAGE_FILE_TYPES,
       user,
     },
     ref
     // eslint-disable-next-line sonarjs/cognitive-complexity
   ) => {
+    const accept = useFileTypesToMimeType(acceptedFileTypes);
+
     const { getRootProps, getInputProps, isDragActive, isDragReject } = useDropzone({
-      accept: acceptedFileTypes,
+      accept,
       disabled: isLoading || disabled,
       onDropAccepted,
       onDropRejected: Utils.functional.noop,
@@ -103,7 +106,13 @@ export const BaseIconUpload = React.forwardRef<HTMLDivElement, BaseIconUploadPro
     return (
       <S.IconUploadContainer className={className} {...(getRootProps() as any)} isActive={isDragActive}>
         {!disabled && (
-          <S.IconUploadInput onChange={onDropAccepted} ref={iconUploadInput} type="file" accept={acceptedFileTypes} {...(getInputProps() as any)} />
+          <S.IconUploadInput
+            ref={iconUploadInput}
+            type="file"
+            accept={Object.keys(accept).join(',')}
+            onChange={onDropAccepted}
+            {...(getInputProps() as any)}
+          />
         )}
 
         <S.ImageContainer

@@ -3,10 +3,8 @@ import * as React from 'react';
 
 import { PrototypeInputMode } from '@/constants/prototype';
 import * as Prototype from '@/ducks/prototype';
-import { connect } from '@/hocs/connect';
-import { useHotKeys } from '@/hooks';
+import { useHotKeys, useSelector } from '@/hooks';
 import { Hotkey } from '@/keymap';
-import { ConnectedProps } from '@/types';
 
 import { ButtonGroupSplitter, ControlButton, ControlsContainer } from './index';
 
@@ -24,19 +22,20 @@ export interface ControlCenterProps {
 
 const ICON_COLOR = '#99a8b8';
 
-const ControlCenter: React.FC<ConnectedControlCenterProps & ControlCenterProps> = ({
+const ControlCenter: React.FC<ControlCenterProps> = ({
   stepBack,
   stepForward,
-  history,
   showButtons,
   setShowButtons,
   inputMode,
   setInputMode,
   inputRef,
-  contextStep,
   goBackDisabled,
   savePrototypeTest,
 }) => {
+  const history = useSelector(Prototype.prototypeContextHistorySelector);
+  const contextStep = useSelector(Prototype.prototypeContextStepSelector);
+
   const goForwardDisabled = contextStep === history.length - 1;
 
   const handleOnForward = React.useCallback(() => {
@@ -58,19 +57,19 @@ const ControlCenter: React.FC<ConnectedControlCenterProps & ControlCenterProps> 
 
   return (
     <ControlsContainer>
-      <TippyTooltip title="Text" position="top">
+      <TippyTooltip content="Text" position="top">
         <ControlButton active={inputMode === PrototypeInputMode.TEXT} onClick={() => setInputMode(PrototypeInputMode.TEXT)}>
           <SvgIcon icon="text" size={16} color={ICON_COLOR} />
         </ControlButton>
       </TippyTooltip>
 
-      <TippyTooltip title="Voice" position="top">
+      <TippyTooltip content="Voice" position="top">
         <ControlButton active={inputMode === PrototypeInputMode.VOICE} onClick={() => setInputMode(PrototypeInputMode.VOICE)}>
           <SvgIcon icon="microphone" size={16} color={ICON_COLOR} />
         </ControlButton>
       </TippyTooltip>
 
-      <TippyTooltip title="Buttons" position="top">
+      <TippyTooltip content="Buttons" position="top">
         <ControlButton active={showButtons} onClick={() => setShowButtons(!showButtons)}>
           <SvgIcon icon="action" size={16} color={ICON_COLOR} />
         </ControlButton>
@@ -78,20 +77,20 @@ const ControlCenter: React.FC<ConnectedControlCenterProps & ControlCenterProps> 
 
       <ButtonGroupSplitter />
 
-      <TippyTooltip title="Back" position="top">
+      <TippyTooltip content="Back" position="top">
         <ControlButton active={false} disabled={goBackDisabled} onClick={handleOnBackward} style={{ transform: 'scaleX(-1)' }}>
           <SvgIcon icon="forward" size={16} color={ICON_COLOR} />
         </ControlButton>
       </TippyTooltip>
 
-      <TippyTooltip title="Forward" position="top">
+      <TippyTooltip content="Forward" position="top">
         <ControlButton disabled={goForwardDisabled} active={false} onClick={handleOnForward}>
           <SvgIcon icon="forward" size={16} color={ICON_COLOR} />
         </ControlButton>
       </TippyTooltip>
 
       <ButtonGroupSplitter />
-      <TippyTooltip title="Save Transcript" position="top">
+      <TippyTooltip content="Save Transcript" position="top">
         <ControlButton active={false} onClick={savePrototypeTest}>
           <SvgIcon icon="saveTest" size={16} color={ICON_COLOR} />
         </ControlButton>
@@ -100,11 +99,4 @@ const ControlCenter: React.FC<ConnectedControlCenterProps & ControlCenterProps> 
   );
 };
 
-const mapStateToProps = {
-  history: Prototype.prototypeContextHistorySelector,
-  contextStep: Prototype.prototypeContextStepSelector,
-};
-
-type ConnectedControlCenterProps = ConnectedProps<typeof mapStateToProps>;
-
-export default connect(mapStateToProps)(ControlCenter) as React.FC<ControlCenterProps>;
+export default ControlCenter;

@@ -8,7 +8,7 @@ import { useFeature } from '@/hooks/feature';
 import DashboardLoader from '@/pages/DashboardV2/components/DashboardLoader';
 import ProjectLoader from '@/pages/Project/components/ProjectLoader';
 
-const WorkspaceOrProjectLoader: React.FC<FullSpinnerProps> = (props) => {
+const WorkspaceOrProjectLoader: React.OldFC<FullSpinnerProps> = (props) => {
   const location = useLocation();
   const dashboardV2 = useFeature(Realtime.FeatureFlag.DASHBOARD_V2);
 

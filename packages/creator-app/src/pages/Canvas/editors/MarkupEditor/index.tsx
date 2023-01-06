@@ -6,7 +6,7 @@ interface EditorProps {
   animationDistance?: number;
 }
 
-const Editor: React.FC<EditorProps> = ({ children, animationDistance }) => (
+const Editor: React.OldFC<EditorProps> = ({ children, animationDistance }) => (
   <Container>
     <EditorContentAnimation distance={animationDistance}>{children}</EditorContentAnimation>
   </Container>

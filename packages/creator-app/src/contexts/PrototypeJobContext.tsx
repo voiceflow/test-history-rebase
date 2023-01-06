@@ -13,7 +13,7 @@ export type AnyPrototypeJob = TwilioPrototypeJob.AnyJob;
 export const PrototypeJobContext = React.createContext<Nullable<JobContextValue<Job<any>>>>(null);
 export const { Consumer: PrototypeJobConsumer } = PrototypeJobContext;
 
-export const PrototypeJobProvider: React.FC = ({ children }) => {
+export const PrototypeJobProvider: React.OldFC = ({ children }) => {
   const platform = useSelector(ProjectV2.active.platformSelector);
 
   const platformClient = React.useMemo(() => {

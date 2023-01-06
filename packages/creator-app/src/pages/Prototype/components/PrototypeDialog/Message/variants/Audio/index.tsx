@@ -16,7 +16,7 @@ interface AudioProps extends Omit<BaseMessageProps, 'iconProps'> {
   onContinue?: VoidFunction;
 }
 
-const Audio: React.FC<AudioProps> = ({ audio, onPause, onContinue, audioSrc, name, isCurrent, trackOnly, allowPause, ...props }) => {
+const Audio: React.OldFC<AudioProps> = ({ audio, onPause, onContinue, audioSrc, name, isCurrent, trackOnly, allowPause, ...props }) => {
   const audioPlayer = AudioPlayer.useAudioPlayer({ audio: trackOnly ? audio : undefined, audioURL: audioSrc, trackOnly });
 
   const onTogglePlay = () => {

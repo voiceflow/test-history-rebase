@@ -30,7 +30,7 @@ interface SendInviteProps {
   sendInvite: (email: string, role: UserRole) => void;
 }
 
-const SendInvite: React.FC<SendInviteProps> = ({ inline, sendInvite }) => {
+const SendInvite: React.OldFC<SendInviteProps> = ({ inline, sendInvite }) => {
   const [canManageAdminCollaborators] = usePermission(Permission.MANAGE_ADMIN_COLLABORATORS);
   const seatLimits = useSelector(WorkspaceV2.active.seatLimitsSelector);
   const numberOfSeats = useSelector(WorkspaceV2.active.numberOfSeatsSelector);

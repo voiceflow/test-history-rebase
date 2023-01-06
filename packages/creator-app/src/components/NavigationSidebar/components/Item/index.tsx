@@ -12,7 +12,7 @@ export interface ItemProps {
   children?: React.ReactNode | ((options: { isActive: boolean }) => React.ReactNode);
 }
 
-const Item: React.FC<ItemProps> = ({ icon, title, isActive = false, onClick, children }) => (
+const Item: React.OldFC<ItemProps> = ({ icon, title, isActive = false, onClick, children }) => (
   <S.Container active={isActive} onClick={onClick}>
     <Box.Flex gap={12}>
       <S.Icon icon={icon} isActive={isActive} />

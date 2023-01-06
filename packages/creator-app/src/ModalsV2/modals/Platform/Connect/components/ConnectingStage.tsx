@@ -19,7 +19,7 @@ interface ConnectingStageProps {
   prompt: string | JSX.Element;
 }
 
-const ConnectingStage: React.FC<ConnectingStageProps> = ({ title, platformName, prompt, onClose, platform, onSuccess }) => {
+const ConnectingStage: React.OldFC<ConnectingStageProps> = ({ title, platformName, prompt, onClose, platform, onSuccess }) => {
   const [error, setError] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
 

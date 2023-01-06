@@ -17,7 +17,7 @@ const NOT_VALID_VAR_REGEXP = /\W/g;
 
 const formatVariable = (variable: string): string => variable.replace(SPACE_REGEXP, '_').replace(NOT_VALID_VAR_REGEXP, '');
 
-const VariablesPopper: React.FC<VariablesPopperProps> = ({ leaf, textNode }) => {
+const VariablesPopper: React.OldFC<VariablesPopperProps> = ({ leaf, textNode }) => {
   const editor = useSlateEditor();
   const { variables, creatable, onCreate, onAdded } = usePluginOptions(PluginType.VARIABLES) ?? {};
 

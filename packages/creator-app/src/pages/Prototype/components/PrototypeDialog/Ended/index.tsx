@@ -12,7 +12,7 @@ interface PrototypeEndedProps {
   isTranscript?: boolean;
 }
 
-const PrototypeEnded: React.FC<PrototypeEndedProps> = ({ stepBack, isTranscript }) => {
+const PrototypeEnded: React.OldFC<PrototypeEndedProps> = ({ stepBack, isTranscript }) => {
   const contextStep = useSelector(Prototype.prototypeContextStepSelector);
   const getEngine = useEventualEngine();
   const goBackDisabled = contextStep <= 1;

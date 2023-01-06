@@ -13,7 +13,7 @@ interface ASRContentProps {
   onCheckMicrophonePermission?: () => void;
 }
 
-const ASRContent: React.FC<ASRContentProps> = ({
+const ASRContent: React.OldFC<ASRContentProps> = ({
   isMicrophoneAvailable,
   onCheckMicrophonePermission,
   listeningASR,

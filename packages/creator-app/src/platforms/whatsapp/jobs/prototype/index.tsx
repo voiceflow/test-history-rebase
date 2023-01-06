@@ -12,7 +12,7 @@ import { useRunPrototype } from '@/pages/Project/components/Header/components/Ca
 
 import { useTwilioPrototypeStageContent } from './stages';
 
-const TwilioPrototypeRun: React.FC<React.ComponentProps<typeof RunButton>> = (props) => {
+const TwilioPrototypeRun: React.OldFC<React.ComponentProps<typeof RunButton>> = (props) => {
   const twilioSandbox = useFeature(Realtime.FeatureFlag.TWILIO_SANDBOX).isEnabled;
 
   const runPrototype = useRunPrototype();

@@ -52,7 +52,7 @@ interface UploadButtonContainerProps extends Partial<PrimaryButtonProps> {
   isActive: boolean;
 }
 
-const UploadButtonContainer: React.FC<UploadButtonContainerProps> = ({
+const UploadButtonContainer: React.OldFC<UploadButtonContainerProps> = ({
   icon = 'rocket',
   onClick,
   isActive,
@@ -78,7 +78,7 @@ const UploadButtonContainer: React.FC<UploadButtonContainerProps> = ({
 
   if (tooltip) {
     return (
-      <TippyTooltip html={<Box width={180}>{tooltip}</Box>} position="bottom" disabled={!canEditCanvas}>
+      <TippyTooltip content={<Box width={180}>{tooltip}</Box>} placement="bottom" disabled={!canEditCanvas}>
         {component}
       </TippyTooltip>
     );

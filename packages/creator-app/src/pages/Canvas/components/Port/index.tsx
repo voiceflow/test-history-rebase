@@ -17,7 +17,7 @@ interface PortProps {
   parentActionsParams?: Record<string, string>;
 }
 
-const Port: React.FC<PortProps> = ({ flat, isChip, palette, withoutLink, parentActionsPath, parentActionsParams }) => {
+const Port: React.OldFC<PortProps> = ({ flat, isChip, palette, withoutLink, parentActionsPath, parentActionsParams }) => {
   const portEntity = React.useContext(PortEntityContext)!;
   const instance = usePortInstance<HTMLDivElement>();
   const { isConnected, isHighlighted, isConnectedToActions, isLinkCreationHighlighted, isFinalPrototypeUnlinkedPort } = portEntity.useState((e) => ({

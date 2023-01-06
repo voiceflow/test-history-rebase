@@ -22,7 +22,7 @@ const RightSection = styled.div`
   flex: 1;
 `;
 
-const SettingsContainer: React.FC<{ tabs: Tab[] }> = ({ tabs, children }) => (
+const SettingsContainer: React.OldFC<{ tabs: Tab[] }> = ({ tabs, children }) => (
   <InnerContainer>
     <LeftSection>
       <SettingsTabs tabs={tabs} />

@@ -8,7 +8,7 @@ import { ClassName } from '@/styles/constants';
 
 import { AvatarContainer, ContextSubtext, ContextTitle, DefaultUserContainer, LetterContainer, StyledLogo, StyledUser } from './components';
 
-const TranscriptContext: React.FC = () => {
+const TranscriptContext: React.OldFC = () => {
   const { device, os, browser, name, image } = useSelector(currentTranscriptSelector) ?? {};
 
   const avatar = useSelector(Prototype.prototypeAvatarSelector);

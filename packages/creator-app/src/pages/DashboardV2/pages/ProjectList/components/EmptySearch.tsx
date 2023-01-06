@@ -5,7 +5,7 @@ interface SearchButtonProps {
   onClear: VoidFunction;
 }
 
-const EmptySearchPage: React.FC<SearchButtonProps> = ({ onClear }) => (
+const EmptySearchPage: React.OldFC<SearchButtonProps> = ({ onClear }) => (
   <Box.FlexCenter flexDirection="column" width="100%" height="100%">
     <SvgIcon icon="noContent" size={80} />
 

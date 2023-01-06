@@ -22,7 +22,7 @@ export interface LogicGroupProps {
   logicIndex?: number;
 }
 
-const LogicGroup: React.FC<LogicGroupProps> = ({
+const LogicGroup: React.OldFC<LogicGroupProps> = ({
   expression,
   onAddComponent,
   onDelete,

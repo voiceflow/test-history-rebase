@@ -7,6 +7,7 @@ import * as ProjectList from '@/ducks/projectList';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import { useDispatch, useSelector, useTrackingEvents } from '@/hooks';
+import { getErrorMessage } from '@/utils/error';
 import * as Sentry from '@/vendors/sentry';
 
 import manager from '../../manager';
@@ -45,7 +46,7 @@ const Delete = manager.create<Props>('ProjectDelete', () => ({ api, type, opened
       api.close();
       toast.success(`Successfully deleted ${project?.name}`);
     } catch (e) {
-      toast.error(e.message);
+      toast.error(getErrorMessage(e));
     }
   };
 

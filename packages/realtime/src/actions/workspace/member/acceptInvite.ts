@@ -1,5 +1,6 @@
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { terminateResend, unrestrictedAccess } from '@voiceflow/socket-utils';
+import { AxiosError } from 'axios';
 
 import { AbstractActionControl } from '@/actions/utils';
 import log from '@/logger';
@@ -28,10 +29,8 @@ class AcceptWorkspaceInvite extends AbstractActionControl<Realtime.workspace.mem
 
       return workspaceID;
     } catch (error) {
-      const { data } = error?.response ?? {};
-
-      if (data?.data) {
-        return this.reject(data?.data, data?.code === 409 ? Realtime.ErrorCode.ALREADY_MEMBER_OF_WORKSPACE : undefined);
+      if (error instanceof AxiosError && error.response?.status === 409) {
+        return this.reject(error.response.data, Realtime.ErrorCode.ALREADY_MEMBER_OF_WORKSPACE);
       }
 
       log.error(error);

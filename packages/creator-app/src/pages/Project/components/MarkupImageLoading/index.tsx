@@ -4,7 +4,7 @@ import { MarkupContext } from '@/pages/Project/contexts';
 
 import { Container, Loader, LoadingContainer } from './components';
 
-const ImageLoading: React.FC = () => {
+const ImageLoading: React.OldFC = () => {
   const markup = React.useContext(MarkupContext)!;
 
   return !markup.uploadingMedia ? null : (

@@ -16,7 +16,7 @@ interface ActionPreviewProps {
   onOpenEditor: VoidFunction;
 }
 
-const ActionPreview: React.FC<ActionPreviewProps> = ({ sets, onClose, onRemove, onOpenEditor }) => {
+const ActionPreview: React.OldFC<ActionPreviewProps> = ({ sets, onClose, onRemove, onOpenEditor }) => {
   const [canOpenEditor] = usePermission(Permission.OPEN_EDITOR);
 
   useHotKeys(Hotkey.DELETE, onRemove);

@@ -13,7 +13,7 @@ interface Props {
   close: VoidFunction;
 }
 
-const TestRequest: React.FC<Props> = ({ response, sendRequest, isLoading, close }) => {
+const TestRequest: React.OldFC<Props> = ({ response, sendRequest, isLoading, close }) => {
   const [activeTab, setActiveTab] = React.useState<ModalTabs>(ModalTabs.BODY);
 
   return (

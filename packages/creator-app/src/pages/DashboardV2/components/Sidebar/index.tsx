@@ -15,7 +15,7 @@ import { useActiveWorkspace } from '@/hooks/workspace';
 import { Account } from './components';
 import * as S from './styles';
 
-const DashboardNavigationSidebar: React.FC = () => {
+const DashboardNavigationSidebar: React.OldFC = () => {
   const plan = useSelector(WorkspaceV2.active.planSelector);
   const workspace = useActiveWorkspace();
   const workspaceID = workspace?.id ?? 'unknown';

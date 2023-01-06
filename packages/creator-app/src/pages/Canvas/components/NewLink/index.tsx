@@ -13,7 +13,7 @@ import { useNewLinkAPI } from './hooks';
 export const NEW_LINK_ID = 'newLink';
 export const HEAD_MARKER = buildHeadMarker(NEW_LINK_ID);
 
-const NewLink: React.FC = () => {
+const NewLink: React.OldFC = () => {
   const engine = React.useContext(EngineContext)!;
   const isStraight = React.useContext(IsStraightLinksContext)!;
   const stepMenuContext = React.useContext(LinkStepMenuContext)!;

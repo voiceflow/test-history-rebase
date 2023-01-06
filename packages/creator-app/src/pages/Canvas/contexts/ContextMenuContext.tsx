@@ -22,7 +22,7 @@ export type ContextMenuValue = Partial<MenuContext> & {
 export const ContextMenuContext = React.createContext<Nullable<ContextMenuValue>>(null);
 export const { Consumer: ContextMenuConsumer } = ContextMenuContext;
 
-export const ContextMenuProvider: React.FC = ({ children }) => {
+export const ContextMenuProvider: React.OldFC = ({ children }) => {
   const engine = React.useContext(EngineContext)!;
   const dismissOverlay = React.useContext(DismissableLayerContext)!;
 

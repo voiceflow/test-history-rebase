@@ -8,7 +8,7 @@ import * as Workspace from '@/ducks/workspace';
 import { useActiveWorkspace, useDispatch, useFeature, useTrackingEvents } from '@/hooks';
 import { openURLInANewTab } from '@/utils/window';
 
-const AIAssistSection: React.FC = () => {
+const AIAssistSection: React.OldFC = () => {
   const { isEnabled: isAssistantAiEnabled } = useFeature(Realtime.FeatureFlag.ASSISTANT_AI);
   const workspace = useActiveWorkspace()!;
   const toggleAiAssist = useDispatch(Workspace.toggleActiveWorkspaceAiAssist);

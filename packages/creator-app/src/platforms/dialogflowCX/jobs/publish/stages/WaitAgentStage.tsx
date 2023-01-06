@@ -12,7 +12,7 @@ interface WaitAgentState {
   valid: boolean;
 }
 
-const WaitAgentStage: React.FC<StageComponentProps<DialogflowCXPublishJob.WaitAgentStage>> = ({ restart, cancel }) => {
+const WaitAgentStage: React.OldFC<StageComponentProps<DialogflowCXPublishJob.WaitAgentStage>> = ({ restart, cancel }) => {
   const [state, api] = useSmartReducerV2<WaitAgentState>({
     opened: true,
     valid: false,

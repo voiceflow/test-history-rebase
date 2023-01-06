@@ -2,12 +2,13 @@ import * as Platform from '@voiceflow/platform-config';
 import { Dropdown, OverflowTippyTooltip, stopPropagation, SvgIcon, TippyTooltip, useLinkedState } from '@voiceflow/ui';
 import _constant from 'lodash/constant';
 import React from 'react';
+import { generatePath } from 'react-router-dom';
 
 import Avatar from '@/components/Avatar';
 import { EditableTextAPI } from '@/components/EditableText';
 import * as NLU from '@/config/nlu';
 import { Permission } from '@/config/permissions';
-import { RootRoute } from '@/config/routes';
+import { LegacyPath } from '@/config/routes';
 import * as Project from '@/ducks/project';
 import { InjectedDraggableComponentProps, withDraggable } from '@/hocs/withDraggable';
 import { usePermission } from '@/hooks/permission';
@@ -32,38 +33,36 @@ import {
 
 export interface ItemProps extends InjectedDraggableComponentProps {
   id: string;
+  nlu: Platform.Constants.NLUType;
   name: string;
-  created: string;
-  diagram: string;
-  isOver?: boolean;
   listId: string;
-  language: string[];
   isLive?: boolean;
+  isOver?: boolean;
+  created: string;
+  platform: Platform.Constants.PlatformType;
+  language: string[];
   avatarUrl?: string | null;
+  versionID: string;
   isDragging?: boolean;
   isDragLayer?: boolean;
-  versionID: string;
-  isDraggingPreview?: boolean;
-  nlu: Platform.Constants.NLUType;
-  platform: Platform.Constants.PlatformType;
   projectType: Platform.Constants.ProjectType;
+  isDraggingPreview?: boolean;
 }
 
-export const Item: React.FC<ItemProps> = ({
+export const Item: React.OldFC<ItemProps> = ({
   id,
   nlu,
   name,
   listId,
   isLive,
-  diagram,
   platform,
   language,
   versionID,
   avatarUrl,
   isDragging,
   projectType,
-  connectDragSource,
-  connectDropTarget,
+  connectedRootRef,
+  isDraggingPreview,
 }) => {
   const projectConfig = Platform.Config.getTypeConfig({ type: projectType, platform });
   const platformConfig = Platform.Config.get(platform);
@@ -105,9 +104,9 @@ export const Item: React.FC<ItemProps> = ({
   const platformNameLabel =
     platformConfig.oneClickPublish || NLU.Voiceflow.CONFIG.is(nlu) ? projectConfig.project.name : `${projectConfig.project.name}, ${nluName}`;
 
-  const item = (
-    <div>
-      <ProjectListItem hasOptions={hasOptions} to={`/${RootRoute.PROJECT}/${versionID}/canvas/${diagram}`} hidden={isDragging} tabIndex={0}>
+  return (
+    <div ref={canManageProjects && !isDraggingPreview ? connectedRootRef : undefined}>
+      <ProjectListItem to={generatePath(LegacyPath.PROJECT_CANVAS, { versionID })} hidden={isDragging} tabIndex={0} hasOptions={hasOptions}>
         <Dropdown options={options} selfDismiss>
           {(ref, onToggle, isOpen) =>
             hasOptions ? (
@@ -128,7 +127,7 @@ export const Item: React.FC<ItemProps> = ({
 
         <ProjectNameWrapper>
           <ProjectTitleDetails>
-            <OverflowTippyTooltip title={name} overflow>
+            <OverflowTippyTooltip content={name} overflow>
               {(ref) => (
                 <ProjectTitle
                   ref={(editableText) => {
@@ -156,7 +155,12 @@ export const Item: React.FC<ItemProps> = ({
             </ProjectTitleCaption>
           </ProjectTitleDetails>
 
-          <TippyTooltip position="top" title={isLive ? 'Production' : 'Design'} className={DashboardClassName.PROJECT_LIST_ITEM_STATUS} distance={10}>
+          <TippyTooltip
+            offset={[0, 10]}
+            content={isLive ? 'Production' : 'Design'}
+            position="top"
+            className={DashboardClassName.PROJECT_LIST_ITEM_STATUS}
+          >
             <SvgIcon
               icon={isLive ? 'outlinedFilledCircle' : 'outlinedCircle'}
               color={isLive ? '#43A047' : '#059fe4'}
@@ -170,13 +174,11 @@ export const Item: React.FC<ItemProps> = ({
       {isDragging && <ProjectListDragZone />}
     </div>
   );
-
-  return canManageProjects && connectDragSource && connectDropTarget ? connectDragSource(connectDropTarget(item)) : item;
 };
 
 export default withDraggable({
   name: 'dashboard-item',
-  canDrag: (props) => !props.disableDragging,
+  canDrag: (monitor) => !monitor.getItem()?.disableDragging,
   canDrop: _constant(true),
   onDropKey: 'onDrop',
   onMoveKey: 'onMove',

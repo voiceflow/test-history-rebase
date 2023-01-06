@@ -9,7 +9,7 @@ import RoleSelect from './RoleSelect';
 import * as S from './styles';
 import { getRoleFacets } from './utils';
 
-const DashboardV2TeamAndBillingMembersList: React.FC = () => {
+const DashboardV2TeamAndBillingMembersList: React.OldFC = () => {
   const members = useSelector(WorkspaceV2.active.membersSelector);
 
   const [search, setSearch] = React.useState('');

@@ -44,8 +44,6 @@ const useClarity = (intents: Platform.Base.Models.Intent.Model[]) => {
       setClarity(clarityModelData);
 
       return clarityModelData;
-    } catch (e) {
-      throw new Error(e);
     } finally {
       setIsFetching(false);
     }

@@ -2,15 +2,21 @@ import { History } from 'history';
 import React from 'react';
 
 import * as Session from '@/ducks/session';
-import { connect } from '@/hocs/connect';
+import { useDispatch } from '@/hooks/realtime';
+import { useSelector } from '@/hooks/redux';
 import setupApp from '@/setup';
-import { ConnectedProps } from '@/types';
 
 export interface LifecycleProviderProps {
   history: History;
+  children: React.ReactNode;
 }
 
-const LifecycleProvider: React.FC<LifecycleProviderProps & ConnectedLifecycleProviderProps> = ({ history, browserID, tabID, children, logout }) => {
+const LifecycleProvider: React.FC<LifecycleProviderProps> = ({ history, children }) => {
+  const tabID = useSelector(Session.tabIDSelector);
+  const browserID = useSelector(Session.browserIDSelector);
+
+  const logout = useDispatch(Session.logout);
+
   React.useEffect(() => {
     setupApp({
       tabID,
@@ -23,15 +29,4 @@ const LifecycleProvider: React.FC<LifecycleProviderProps & ConnectedLifecyclePro
   return <>{children}</>;
 };
 
-const mapStateToProps = {
-  tabID: Session.tabIDSelector,
-  browserID: Session.browserIDSelector,
-};
-
-const mapDispatchToProps = {
-  logout: Session.logout,
-};
-
-type ConnectedLifecycleProviderProps = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
-
-export default connect(mapStateToProps, mapDispatchToProps)(LifecycleProvider) as React.FC<LifecycleProviderProps>;
+export default LifecycleProvider;

@@ -7,6 +7,7 @@ module.exports = {
     'sonarjs/no-nested-template-literals': 'off',
 
     'jsx-a11y/no-autofocus': 'off',
+    'import/extensions': ['error', 'ignorePackages', { ts: 'never', js: 'never', tsx: 'never', jsx: 'never' }],
   },
   settings: {
     'import/resolver': {

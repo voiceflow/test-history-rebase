@@ -10,7 +10,7 @@ import * as ModalsV2 from '@/ModalsV2';
 
 import * as S from './styles';
 
-const GoogleIntegration: React.FC = () => {
+const GoogleIntegration: React.OldFC = () => {
   const [googleStatus, setGoogleStatus] = useState(false);
   const user = useSelector(Account.userSelector);
   const loadGoogleAccount = useDispatch(Account.google.loadAccount);

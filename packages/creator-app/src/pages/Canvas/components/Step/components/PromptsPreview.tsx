@@ -24,7 +24,7 @@ const getPromptContent = (prompt: Platform.Base.Models.Prompt.Model) => {
   return '';
 };
 
-const PromptsPreview: React.FC<PromptPreviewProps> = ({ title, prompts, onOpenEditor, onClose }) => {
+const PromptsPreview: React.OldFC<PromptPreviewProps> = ({ title, prompts, onOpenEditor, onClose }) => {
   const copyTextToClipboard = (value: string) => {
     copy(value);
     toast.success('Copied to clipboard');

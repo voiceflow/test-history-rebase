@@ -6,7 +6,7 @@ import { useSelector } from '@/hooks';
 
 import VariableStateSelectMenu from './VariableStateSelectMenu';
 
-const SelectedVariableStateText: React.FC = () => {
+const SelectedVariableStateText: React.OldFC = () => {
   const selectedVariableStateName = useSelector(VariableState.getSelectedVariableStateNameSelector);
 
   if (!selectedVariableStateName) return null;

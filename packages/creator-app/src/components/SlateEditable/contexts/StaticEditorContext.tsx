@@ -15,7 +15,7 @@ interface ControlledEditorProviderProps extends EditorProviderProps {
   contextKey: number;
 }
 
-export const ControlledEditorProvider: React.FC<ControlledEditorProviderProps> = ({ editor, contextKey, children }) => {
+export const ControlledEditorProvider: React.OldFC<ControlledEditorProviderProps> = ({ editor, contextKey, children }) => {
   const context = React.useMemo<[Editor]>(() => [editor], [contextKey]);
 
   return (

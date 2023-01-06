@@ -12,7 +12,7 @@ interface SearchButtonProps {
   onSearch: (text: string) => void;
 }
 
-const SearchButton: React.FC<SearchButtonProps> = ({ value, onSearch }) => {
+const SearchButton: React.OldFC<SearchButtonProps> = ({ value, onSearch }) => {
   const ref = React.useRef(null);
   const [isOpen, setOpen] = React.useState(false);
 
@@ -47,7 +47,7 @@ const SearchButton: React.FC<SearchButtonProps> = ({ value, onSearch }) => {
           isSmall
           onClick={onEnableSearch}
           tooltip={{
-            html: (
+            content: (
               <div style={{ color: '#A2A7A8', fontSize: '13px' }}>
                 Press <span style={{ color: '#F2F7F7' }}>/</span> to search
               </div>

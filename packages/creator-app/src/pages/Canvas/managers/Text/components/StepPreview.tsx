@@ -14,7 +14,7 @@ interface StepPreviewProps {
   onOpenEditor: VoidFunction;
 }
 
-const StepPreview: React.FC<StepPreviewProps> = ({ items, onClose, onOpenEditor }) => {
+const StepPreview: React.OldFC<StepPreviewProps> = ({ items, onClose, onOpenEditor }) => {
   const [canOpenEditor] = usePermission(Permission.OPEN_EDITOR);
 
   const onCopyAll = () => {

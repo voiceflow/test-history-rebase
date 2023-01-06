@@ -34,7 +34,7 @@ interface SeatsInputProps {
   value: number;
 }
 
-const SeatsInput: React.FC<SeatsInputProps> = ({ payment, errorMessage, hasError, onChange, value }) => {
+const SeatsInput: React.OldFC<SeatsInputProps> = ({ payment, errorMessage, hasError, onChange, value }) => {
   const initialValue = React.useMemo(() => value ?? 0, []);
   const inputRef = React.useRef<HTMLInputElement>(null);
   const errorTooltip = errorMessage ? <ErrorTooltipContainer>{errorMessage}</ErrorTooltipContainer> : <span />;
@@ -56,11 +56,11 @@ const SeatsInput: React.FC<SeatsInputProps> = ({ payment, errorMessage, hasError
 
   return (
     <TippyTooltip
-      open={hasError && hasFocus && !fetchingResponse && value !== 0 && !!errorMessage}
-      position="top-start"
       theme="warning"
-      html={errorTooltip}
-      distance={5}
+      offset={[0, 5]}
+      visible={hasError && hasFocus && !fetchingResponse && value !== 0 && !!errorMessage}
+      content={errorTooltip}
+      position="top-start"
     >
       <SeatsInputBox
         id={Identifier.PAYMENT_SEATS_INPUT}
@@ -80,4 +80,4 @@ const SeatsInput: React.FC<SeatsInputProps> = ({ payment, errorMessage, hasError
   );
 };
 
-export default withPayment(SeatsInput) as React.FC<SeatsInputProps>;
+export default withPayment(SeatsInput) as React.OldFC<SeatsInputProps>;

@@ -9,7 +9,7 @@ interface ContinueButtonProps {
   onClick: VoidFunction;
 }
 
-const ContinueButton: React.FC<ContinueButtonProps> = ({ disabled, onClick, children }) => {
+const ContinueButton: React.OldFC<ContinueButtonProps> = ({ disabled, onClick, children }) => {
   useHotKeys(
     Hotkey.MULTISTEP_CONTINUE_NEXT_STEP,
     () => {

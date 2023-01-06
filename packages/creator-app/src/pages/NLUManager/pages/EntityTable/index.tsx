@@ -8,7 +8,7 @@ import { EditSidebar, Row } from './components';
 import EmptyScreen from './components/EmptyScreen';
 import { COLUMNS, TableColumn } from './constants';
 
-const EntityTable: React.FC = () => {
+const EntityTable: React.OldFC = () => {
   const nluManager = useNLUManager();
   const search = React.useMemo(() => [nluManager.search], [nluManager.search]);
 

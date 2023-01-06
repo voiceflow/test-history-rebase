@@ -11,7 +11,7 @@ import RedirectWithSearch from '@/Routes/RedirectWithSearch';
 
 import { DashboardLoader } from '../components';
 
-const DashboardGate: React.FC = ({ children }) => {
+const DashboardGate: React.OldFC = ({ children }) => {
   const routeWorkspaceID = useRouteWorkspaceID();
   const activeWorkspaceID = useSelector(Session.activeWorkspaceIDSelector);
   const workspaceIDs = useSelector(WorkspaceV2.allWorkspaceIDsSelector);

@@ -15,7 +15,7 @@ export interface VariableListProps {
   disabled?: boolean;
 }
 
-const VariableList: React.FC<VariableListProps> = ({ variables, onChange, onChangeList, canDelete, disabled }) => {
+const VariableList: React.OldFC<VariableListProps> = ({ variables, onChange, onChangeList, canDelete, disabled }) => {
   const handleChange = (newVar: Variable, index: number) => {
     onChange?.(newVar);
     onChangeList?.(Utils.array.replace(variables, index, newVar));

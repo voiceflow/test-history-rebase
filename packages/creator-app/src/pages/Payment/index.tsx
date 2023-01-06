@@ -15,7 +15,7 @@ interface PaymentProps {
   onCheckout?: (message: string) => void;
 }
 
-const Payment: React.FC<PaymentProps> = ({ focus, payment }) => {
+const Payment: React.OldFC<PaymentProps> = ({ focus, payment }) => {
   const [isAllowed] = usePermission(Permission.UPGRADE_WORKSPACE);
 
   React.useEffect(() => {
@@ -39,4 +39,4 @@ const Payment: React.FC<PaymentProps> = ({ focus, payment }) => {
 };
 
 // provider and consumer within the same component
-export default compose(withPaymentProvider, withPayment)(Payment) as React.FC<PaymentProps>;
+export default compose(withPaymentProvider, withPayment)(Payment) as React.OldFC<PaymentProps>;

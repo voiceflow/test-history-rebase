@@ -6,7 +6,7 @@ import { InteractionModelTabType } from '@/constants';
 import { useNLUItemMenu } from '@/contexts/NLUContext/hooks';
 import { NLUManagerContext } from '@/pages/NLUManager/context';
 
-const Row: React.FC<TableTypes.ConfigurableRowProps<Realtime.Slot>> = ({ item, children, onMouseEnter, onMouseLeave }) => {
+const Row: React.OldFC<TableTypes.ConfigurableRowProps<Realtime.Slot>> = ({ item, children, onMouseEnter, onMouseLeave }) => {
   const nluManager = React.useContext(NLUManagerContext);
 
   const { options } = useNLUItemMenu({

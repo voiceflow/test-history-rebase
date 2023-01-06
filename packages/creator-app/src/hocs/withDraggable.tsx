@@ -1,25 +1,11 @@
 import _constant from 'lodash/constant';
 import _throttle from 'lodash/throttle';
 import React from 'react';
-import {
-  ConnectDragPreview,
-  ConnectDragSource,
-  ConnectDropTarget,
-  DragSource,
-  DragSourceSpec,
-  DropTarget,
-  DropTargetMonitor,
-  DropTargetSpec,
-} from 'react-dnd';
+import { DragSourceHookSpec, useDrag, useDrop } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
-import { findDOMNode } from 'react-dom';
-import compose from 'recompose/compose';
-import wrapDisplayName from 'recompose/wrapDisplayName';
 
 export interface InjectedDraggableComponentProps {
-  connectDropTarget: ConnectDropTarget | null;
-  connectDragSource: ConnectDragSource | null;
-  connectDragPreview: ConnectDragPreview | null;
+  connectedRootRef: React.RefObject<HTMLDivElement>;
 }
 
 export interface DropOptions {
@@ -28,7 +14,9 @@ export interface DropOptions {
 }
 
 type DynamicDropProps<D extends string> = Partial<Record<D, (dropOptions: DropOptions) => void>>;
-type DynamicMoveProps<D extends string, M extends string> = Partial<Record<M, (dragItem: DragItem<D, M>, props: DragItem<D, M>) => void>>;
+type DynamicMoveProps<D extends string, M extends string> = Partial<
+  Record<M, (dragItem: DragItem<D, M>, props: ExposedDraggableComponentProps<D, M>) => void>
+>;
 
 export type ExposedDraggableComponentProps<D extends string, M extends string> = DynamicDropProps<D> &
   DynamicMoveProps<D, M> & {
@@ -51,8 +39,9 @@ export interface DraggableOptions<D extends string, M extends string> {
   styles?: React.CSSProperties;
   onDropKey: D;
   onMoveKey: M;
-  canDrag?: DragSourceSpec<ExposedDraggableComponentProps<D, M>, {}>['canDrag'];
+  canDrag?: DragSourceHookSpec<ExposedDraggableComponentProps<D, M>, {}, {}>['canDrag'];
   canDrop?: (props: ExposedDraggableComponentProps<D, M>) => boolean;
+  dropOnly?: boolean;
   allowXTransform?: boolean;
   allowYTransform?: boolean;
 }
@@ -65,85 +54,80 @@ export const withDraggable =
     canDrop = _constant(true),
     onDropKey,
     onMoveKey,
+    dropOnly,
     allowXTransform = false,
     allowYTransform = true,
   }: DraggableOptions<D, M>) =>
   <P extends object>(Wrapper: React.FC<P>) => {
     type Props = ExposedDraggableComponentProps<D, M>;
 
-    class WithDraggable extends React.Component<P & Props & InjectedDraggableComponentProps> {
-      static displayName = wrapDisplayName(Wrapper, 'WithDraggable');
+    return (props: Omit<P, keyof InjectedDraggableComponentProps> & Props) => {
+      const rootRef = React.useRef<HTMLElement>(null);
 
-      componentDidMount() {
-        const { connectDragPreview } = this.props;
+      const [, connectDrop] = useDrop<DragItem<D, M>>({
+        accept: name,
 
-        connectDragPreview?.(getEmptyImage(), { captureDraggingState: true });
+        hover: _throttle((item: DragItem<D, M>) => {
+          if (!item || (canDrop && !canDrop(props))) return;
+
+          const { id: dragId } = item;
+          const { index: hoverIndex, id: hoverId } = props;
+
+          if (dragId === hoverId) return;
+
+          props[onMoveKey]?.(item, props);
+
+          item.index = hoverIndex;
+          item.listId = props.listId;
+        }, 150),
+      });
+
+      const [{ isDragging }, connectDrag, connectPreview] = useDrag<Props, unknown, { isDragging: boolean }>({
+        type: name,
+
+        canDrag,
+
+        item: () => {
+          const { onToggleDragging } = props;
+
+          onToggleDragging?.(true);
+
+          return {
+            ...props,
+            _width: rootRef.current?.clientWidth,
+            _height: rootRef.current?.clientHeight,
+            _styles: styles,
+            dragType: name,
+            _initialListId: props.listId,
+            _allowXTransform: allowXTransform,
+            _allowYTransform: allowYTransform,
+            isDraggingPreview: true,
+          };
+        },
+
+        end: (props, monitor) => {
+          const item = monitor.getItem<DragItem>();
+          const { [onDropKey]: onDrop, onToggleDragging } = props;
+
+          onDrop?.({ toListId: item.listId!, fromListId: item._initialListId, ...props });
+          onToggleDragging?.(false);
+        },
+
+        collect: (monitor) => ({ isDragging: monitor.isDragging() }),
+
+        isDragging: (monitor) => !props.isFB && props.id === monitor.getItem().id,
+      });
+
+      React.useEffect(() => {
+        connectPreview(getEmptyImage(), { captureDraggingState: true });
+      }, []);
+
+      connectDrop(rootRef);
+
+      if (!dropOnly) {
+        connectDrag(rootRef);
       }
 
-      render() {
-        return <Wrapper {...this.props} />;
-      }
-    }
-
-    const panelSource: DragSourceSpec<Props, {}> = {
-      canDrag,
-      endDrag(props, monitor) {
-        const item = monitor.getItem() as DragItem;
-        const { [onDropKey]: onDrop, onToggleDragging } = props;
-
-        onDrop?.({ toListId: item.listId!, fromListId: item._initialListId, ...props });
-        onToggleDragging?.(false);
-      },
-      beginDrag(props, _, component) {
-        const { onToggleDragging } = props;
-        // eslint-disable-next-line react/no-find-dom-node
-        const { clientWidth, clientHeight } = findDOMNode(component) as Element;
-
-        onToggleDragging?.(true);
-
-        return {
-          ...props,
-          _width: clientWidth,
-          _height: clientHeight,
-          _styles: styles,
-          dragType: name,
-          _initialListId: props.listId,
-          _allowXTransform: allowXTransform,
-          _allowYTransform: allowYTransform,
-          isDraggingPreview: true,
-        };
-      },
-      isDragging: (props, monitor) => !props.isFB && props.id === monitor.getItem().id,
+      return <Wrapper {...(props as P)} isDragging={isDragging} connectedRootRef={rootRef} />;
     };
-
-    const panelTarget: DropTargetSpec<Props> = {
-      hover: _throttle((props: Props, monitor: DropTargetMonitor, component: any) => {
-        const dragItem = monitor.getItem() as DragItem;
-
-        if (!component || !dragItem || (canDrop && !canDrop(props))) return;
-
-        const { id: dragId } = dragItem;
-        const { index: hoverIndex, id: hoverId } = props;
-
-        if (dragId === hoverId) return;
-
-        props[onMoveKey]?.(dragItem, props as DragItem<D, M>);
-
-        const item = monitor.getItem();
-
-        item.index = hoverIndex;
-        item.listId = props.listId;
-      }, 150),
-    };
-
-    return compose(
-      DropTarget(name, panelTarget, (connect) => ({
-        connectDropTarget: connect.dropTarget(),
-      })),
-      DragSource(name, panelSource, (connect, monitor) => ({
-        isDragging: monitor.isDragging(),
-        connectDragSource: connect.dragSource(),
-        connectDragPreview: connect.dragPreview(),
-      }))
-    )(WithDraggable as any) as React.ComponentType<Omit<P, keyof InjectedDraggableComponentProps> & Props>;
   };

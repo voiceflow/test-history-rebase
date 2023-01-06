@@ -16,7 +16,7 @@ interface FormProps {
   footer?: React.ReactNode | ((props: { mapManager: MapManagedFactoryAPI<Realtime.NodeData.SetExpressionV2> }) => React.ReactNode);
 }
 
-const Form: React.FC<FormProps> = ({ editor, header, footer, children }) => {
+const Form: React.OldFC<FormProps> = ({ editor, header, footer, children }) => {
   const [isDragging, toggleDragging] = useToggle(false);
 
   const mapManager = useMapManager(editor.data.sets, (sets) => editor.onChange({ sets }), {

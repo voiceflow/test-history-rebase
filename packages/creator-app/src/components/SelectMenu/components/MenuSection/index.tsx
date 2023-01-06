@@ -11,7 +11,7 @@ interface MenuSectionProps {
   className?: string;
 }
 
-const MenuSection: React.FC<MenuSectionProps> = ({ title, enabled, toggleSection, className, children }) => (
+const MenuSection: React.OldFC<MenuSectionProps> = ({ title, enabled, toggleSection, className, children }) => (
   <>
     <HeaderContainer>
       <Checkbox checked={enabled} onChange={toggleSection} className={className}>

@@ -3,7 +3,7 @@ import React from 'react';
 
 import { activeProjectGraphic } from '@/assets';
 
-const SessionLocked: React.FC = ({ children }) => (
+const SessionLocked: React.OldFC = ({ children }) => (
   <Page404Wrapper>
     <img src={activeProjectGraphic} alt="Active Project" height={62} />
 

@@ -15,7 +15,7 @@ export interface DirectiveStepProps {
   palette: HSLShades;
 }
 
-export const DirectiveStep: React.FC<DirectiveStepProps> = ({ nodeID, nextPortID, palette }) => (
+export const DirectiveStep: React.OldFC<DirectiveStepProps> = ({ nodeID, nextPortID, palette }) => (
   <Step nodeID={nodeID}>
     <Section>
       <Item

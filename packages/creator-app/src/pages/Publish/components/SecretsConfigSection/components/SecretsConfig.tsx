@@ -13,7 +13,7 @@ export interface SecretsConfigProps {
   className?: string;
 }
 
-export const SecretsConfig: React.FC<SecretsConfigProps> = ({ secrets, secretsStore, updateSecret, className }) => {
+export const SecretsConfig: React.OldFC<SecretsConfigProps> = ({ secrets, secretsStore, updateSecret, className }) => {
   return (
     <form>
       {secrets.map((secret) => (

@@ -7,7 +7,7 @@ interface ErrorTextProps {
   errorMessage: string | null;
 }
 
-const ErrorText: React.FC<ErrorTextProps> = ({ errorMessage }) => {
+const ErrorText: React.OldFC<ErrorTextProps> = ({ errorMessage }) => {
   return errorMessage ? (
     <div style={{ marginTop: 11 }}>
       <Text color={THEME.colors.error} fontSize={13}>

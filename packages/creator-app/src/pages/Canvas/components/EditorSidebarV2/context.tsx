@@ -11,7 +11,7 @@ interface EditorSidebarProviderProps {
   value: NodeEditorV2Props<any, any> | ActionEditorProps<any, any>;
 }
 
-export const EditorSidebarProvider: React.FC<EditorSidebarProviderProps> = ({ value, children }) => {
+export const EditorSidebarProvider: React.OldFC<EditorSidebarProviderProps> = ({ value, children }) => {
   const api = useContextApi(value);
 
   return <EditorSidebarContext.Provider value={api}>{children}</EditorSidebarContext.Provider>;

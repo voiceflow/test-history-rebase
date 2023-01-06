@@ -3,7 +3,7 @@ import React from 'react';
 
 import { NLUIntent } from '@/pages/NLUManager/types';
 
-const ConfidenceColumn: React.FC<TableTypes.ItemProps<NLUIntent>> = ({ item }) => {
+const ConfidenceColumn: React.OldFC<TableTypes.ItemProps<NLUIntent>> = ({ item }) => {
   const strength = item.confidenceLevel;
 
   return (

@@ -5,9 +5,8 @@ import _throttle from 'lodash/throttle';
 import React from 'react';
 import { useDrop, XYCoord } from 'react-dnd';
 import { NativeTypes } from 'react-dnd-html5-backend';
-import { useSelector } from 'react-redux';
 
-import Canvas from '@/components/Canvas';
+import Canvas, { CanvasAPI } from '@/components/Canvas';
 import Crosshair from '@/components/Crosshair';
 import { DragPreviewComponentProps, ItemComponentProps } from '@/components/DraggableList';
 import { PageProgress } from '@/components/PageProgressBar';
@@ -15,8 +14,7 @@ import { BlockType, DragItem, HOVER_THROTTLE_TIMEOUT, PageProgressBar } from '@/
 import { canvasNavigationSelector } from '@/ducks/ui';
 import * as UI from '@/ducks/ui';
 import * as Viewport from '@/ducks/viewport';
-import { connect } from '@/hocs/connect';
-import { useSetup } from '@/hooks';
+import { useInitialValueSelector, useSelector, useSetup } from '@/hooks';
 import AutoPanLayer from '@/pages/Canvas/components/AutoPanLayer';
 import LinkLayer from '@/pages/Canvas/components/LinkLayer';
 import MarkupLayer from '@/pages/Canvas/components/MarkupLayer';
@@ -31,20 +29,14 @@ import { LibraryStepType } from '@/pages/Project/components/StepMenu/constants';
 import { MarkupContext } from '@/pages/Project/contexts';
 import { useCommentingMode, useEditingMode } from '@/pages/Project/hooks';
 import perf, { PerfAction } from '@/performance';
-import { Viewport as ViewportType } from '@/types';
 import { Coords } from '@/utils/geometry';
 
 import { useCursorControls } from './hooks';
 import { isLibraryDragItem } from './utils';
 
-const withInitialViewport = connect({ viewport: Viewport.activeDiagramViewportSelector }, null, null, {
-  // ignore all further updates to the viewport
-  areStatesEqual: () => true,
-});
-
 export interface StepDragItem {
   type: DragItem;
-  icon: SvgIconTypes.Icon | React.FC;
+  icon: SvgIconTypes.Icon | React.OldFC;
   label: string;
   blockType: BlockType;
   factoryData?: Realtime.NodeData<any>;
@@ -74,10 +66,6 @@ export interface FolderItemProps extends ItemComponentProps<ComponentItem>, Drag
 
 export interface CanvasTemplateItemProps extends ItemComponentProps<CanvasTemplateItem>, DragPreviewComponentProps {}
 
-interface ConnectedCanvasDiagramProps {
-  viewport: ViewportType;
-}
-
 interface BaseDrop {
   type: string;
   clientOffset: XYCoord;
@@ -94,10 +82,12 @@ type DroppableItem = FilesDrop | StepMenuDrop | ComponentsDrop;
 
 const DROP_TYPES = [NativeTypes.FILE, DragItem.BLOCK_MENU, DragItem.COMPONENTS, DragItem.LIBRARY];
 
-const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport, children }) => {
+const CanvasDiagram: React.FC<React.PropsWithChildren> = ({ children }) => {
+  const canvasGridEnabled = useSelector(UI.isCanvasGridEnabledSelector);
+  const viewport = useInitialValueSelector(Viewport.activeDiagramViewportSelector);
+
   const engine = React.useContext(EngineContext)!;
   const markup = React.useContext(MarkupContext)!;
-  const canvasGridEnabled = useSelector(UI.isCanvasGridEnabledSelector);
   const focusThread = React.useContext(FocusThreadContext)!;
   const contextMenu = React.useContext(ContextMenuContext)!;
   const isEditingMode = useEditingMode();
@@ -153,7 +143,7 @@ const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport, childr
     [isCommentingMode, markup]
   );
 
-  const registerCanvas = React.useCallback((api) => engine.registerCanvas(api), []);
+  const registerCanvas = React.useCallback((api: CanvasAPI | null) => engine.registerCanvas(api), []);
 
   const startGroupSelection = React.useCallback<React.MouseEventHandler>(
     (event) => isEditingMode && engine.groupSelection.start([event.clientX, event.clientY]),
@@ -168,7 +158,7 @@ const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport, childr
         return;
       }
 
-      if (monitor.didDrop() && monitor.getDropResult()?.captured) return;
+      if (monitor.didDrop() && monitor.getDropResult<{ captured?: boolean }>()?.captured) return;
 
       const { x: mouseX, y: mouseY } = monitor.getClientOffset() || item.clientOffset;
       const coords = new Coords([mouseX, mouseY]);
@@ -229,7 +219,7 @@ const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport, childr
     <>
       <Canvas
         controlScheme={navigation}
-        viewport={viewport}
+        viewport={viewport ?? undefined}
         onClick={onClickCanvas}
         onMouseUp={onMouseUp}
         onChange={updateViewport}
@@ -262,4 +252,4 @@ const CanvasDiagram: React.FC<ConnectedCanvasDiagramProps> = ({ viewport, childr
   );
 };
 
-export default withInitialViewport(CanvasDiagram);
+export default CanvasDiagram;

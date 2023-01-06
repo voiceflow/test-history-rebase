@@ -10,7 +10,7 @@ interface PersistCollapseProps {
   defaultCollapsed?: boolean;
 }
 
-const PersistCollapse: React.FC<PersistCollapseProps> = ({ children, defaultCollapsed = false, className }) => {
+const PersistCollapse: React.OldFC<PersistCollapseProps> = ({ children, defaultCollapsed = false, className }) => {
   const initialState = useConst({ isOpen: !defaultCollapsed });
 
   const [state, setState] = useSectionState<{ isOpen: boolean }>({

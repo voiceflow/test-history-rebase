@@ -4,7 +4,7 @@ import { RenderElementProps } from 'slate-react';
 import { ElementProperty } from '../constants';
 import { useSlateEditor } from '../contexts';
 
-const DefaultElement: React.FC<RenderElementProps> = ({ attributes, children, element }) => {
+const DefaultElement: React.OldFC<RenderElementProps> = ({ attributes, children, element }) => {
   const editor = useSlateEditor();
   const Tag = editor.isInline(element) ? 'span' : 'div';
 

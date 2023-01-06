@@ -28,7 +28,7 @@ interface AssistantConversationLogicProps {
   platformDefaultVoice: string;
 }
 
-const AssistantConversationLogic: React.FC<AssistantConversationLogicProps> = ({
+const AssistantConversationLogic: React.OldFC<AssistantConversationLogicProps> = ({
   platform,
   projectType,
   platformMeta,

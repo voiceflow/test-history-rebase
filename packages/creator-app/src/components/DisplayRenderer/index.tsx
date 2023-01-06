@@ -1,7 +1,6 @@
 import { AlexaConstants } from '@voiceflow/alexa-types';
-import { Alert } from '@voiceflow/ui';
+import { Alert, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
-import { Tooltip } from 'react-tippy';
 
 import { APLRendererProps } from '../APLRenderer';
 import { BaseRenderer, Container } from './components';
@@ -96,7 +95,7 @@ class DisplayRenderer extends React.Component<DisplayRendererProps, DisplayRende
         {this.props.withControls && (
           <div className="d-flex justify-content-center pt-2">
             {DEVICES.map((type) => [type, AlexaConstants.APL_DEVICE_CONFIG[type]] as const).map(([type, device]) => (
-              <Tooltip title={device.name} position="bottom" animation="fade" arrow key={type}>
+              <TippyTooltip content={device.name} position="bottom" animation="fade" key={type}>
                 {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions,jsx-a11y/click-events-have-key-events */}
                 <div
                   className={type === this.state.device ? 'svg-active' : ''}
@@ -104,7 +103,7 @@ class DisplayRenderer extends React.Component<DisplayRendererProps, DisplayRende
                   dangerouslySetInnerHTML={{ __html: device.svgIcon }}
                   onClick={() => this.changeDevice(type)}
                 />
-              </Tooltip>
+              </TippyTooltip>
             ))}
           </div>
         )}

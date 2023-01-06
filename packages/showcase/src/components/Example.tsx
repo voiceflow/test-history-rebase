@@ -15,7 +15,7 @@ const Title = styled.h4`
   margin-top: 0.6em;
 `;
 
-interface ExampleProps extends ExampleOptions {
+interface ExampleProps extends ExampleOptions, React.PropsWithChildren {
   title: string;
 }
 

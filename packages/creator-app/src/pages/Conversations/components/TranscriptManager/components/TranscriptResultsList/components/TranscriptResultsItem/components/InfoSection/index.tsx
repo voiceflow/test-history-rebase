@@ -13,7 +13,7 @@ interface InfoSection {
   isRead: boolean;
 }
 
-const InfoSection: React.FC<InfoSection> = ({ active, name, date, isRead, tags }) => {
+const InfoSection: React.OldFC<InfoSection> = ({ active, name, date, isRead, tags }) => {
   const formattedDate = React.useMemo(() => `${dayjs(date).format('h:mm a, MMM Do')}`, [date]);
 
   return (

@@ -16,7 +16,7 @@ interface ButtonsPreviewProps {
   onOpenEditor: VoidFunction;
 }
 
-const CapturePreview: React.FC<ButtonsPreviewProps> = ({ prompt, onOpenEditor, onClose }) => {
+const CapturePreview: React.OldFC<ButtonsPreviewProps> = ({ prompt, onOpenEditor, onClose }) => {
   const [canOpenEditor] = usePermission(Permission.OPEN_EDITOR);
   const onOpenEntityModal = useDispatch(Router.goToCurrentCanvasInteractionModelEntity, InteractionModelTabType.SLOTS);
 

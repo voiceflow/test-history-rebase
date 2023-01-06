@@ -22,7 +22,7 @@ interface MenuOption {
   icon: SvgIconTypes.Icon;
 }
 
-const IntegrationsSidebar: React.FC = () => {
+const IntegrationsSidebar: React.OldFC = () => {
   const meta = useSelector(ProjectV2.active.metaSelector);
 
   const versionID = useSelector(Session.activeVersionIDSelector)!;

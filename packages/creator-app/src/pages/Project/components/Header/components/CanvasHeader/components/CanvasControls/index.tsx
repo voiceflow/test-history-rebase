@@ -1,5 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, Dropdown, stopPropagation } from '@voiceflow/ui';
+import { Box, Dropdown, stopPropagation, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import Page from '@/components/Page';
@@ -15,7 +15,7 @@ import { ClassName } from '@/styles/constants';
 
 import { MoveTypePopover, StickersDropdown } from './components';
 
-const CanvasHeader: React.FC = () => {
+const CanvasHeader: React.OldFC = () => {
   const markup = React.useContext(MarkupContext)!;
 
   const hasUnreadComments = useSelector(Thread.hasUnreadCommentsSelector);
@@ -48,10 +48,12 @@ const CanvasHeader: React.FC = () => {
               active={!isMarkupTextActive && !isMarkupMediaActive && !isCommentingMode}
               isSmall
               onClick={onDisableModes}
-              tooltip={{ title: 'Move', hotkey: HOTKEY_LABEL_MAP[Hotkey.MOVE_MODE] }}
+              tooltip={{
+                content: <TippyTooltip.WithHotkey hotkey={HOTKEY_LABEL_MAP[Hotkey.MOVE_MODE]}>Move</TippyTooltip.WithHotkey>,
+              }}
               expandable
               expandActive={isOpen}
-              expandTooltip={{ title: 'Move type', distance: 32 }}
+              expandTooltip={{ content: 'Move type', offset: [0, 32] }}
               onExpandClick={stopPropagation(onToggle)}
             />
           )}
@@ -62,7 +64,9 @@ const CanvasHeader: React.FC = () => {
             icon="markupImageV2"
             active={isMarkupTextActive}
             isSmall
-            tooltip={{ title: 'Text Markup', hotkey: HOTKEY_LABEL_MAP[Hotkey.ADD_MARKUP_TEXT] }}
+            tooltip={{
+              content: <TippyTooltip.WithHotkey hotkey={HOTKEY_LABEL_MAP[Hotkey.ADD_MARKUP_TEXT]}>Text Markup</TippyTooltip.WithHotkey>,
+            }}
             onClick={markup.toggleTextCreating}
             className={`${ClassName.CANVAS_CONTROL}--markup-text`}
           />
@@ -79,11 +83,13 @@ const CanvasHeader: React.FC = () => {
                   active={isMarkupMediaActive}
                   isSmall
                   onClick={markup.triggerMediaUpload}
-                  tooltip={{ title: 'Image or Video', hotkey: HOTKEY_LABEL_MAP[Hotkey.ADD_MARKUP_IMAGE] }}
+                  tooltip={{
+                    content: <TippyTooltip.WithHotkey hotkey={HOTKEY_LABEL_MAP[Hotkey.ADD_MARKUP_IMAGE]}>Image or Video</TippyTooltip.WithHotkey>,
+                  }}
                   className={`${ClassName.CANVAS_CONTROL}--markup-image`}
                   expandable
                   expandActive={isOpen}
-                  expandTooltip={{ title: 'Stickers', distance: 32 }}
+                  expandTooltip={{ content: 'Stickers', offset: [0, 32] }}
                   onExpandClick={stopPropagation(onToggle)}
                 />
               )}
@@ -95,7 +101,9 @@ const CanvasHeader: React.FC = () => {
               size={18}
               isSmall
               onClick={markup.triggerMediaUpload}
-              tooltip={{ title: 'Image or Video', hotkey: HOTKEY_LABEL_MAP[Hotkey.ADD_MARKUP_IMAGE] }}
+              tooltip={{
+                content: <TippyTooltip.WithHotkey hotkey={HOTKEY_LABEL_MAP[Hotkey.ADD_MARKUP_IMAGE]}>Image or Video</TippyTooltip.WithHotkey>,
+              }}
               className={`${ClassName.CANVAS_CONTROL}--markup-image`}
             />
           ))}
@@ -105,7 +113,9 @@ const CanvasHeader: React.FC = () => {
             icon="commentV2"
             active={isCommentingMode}
             isSmall
-            tooltip={{ title: 'Comment', hotkey: HOTKEY_LABEL_MAP[Hotkey.OPEN_COMMENTING] }}
+            tooltip={{
+              content: <TippyTooltip.WithHotkey hotkey={HOTKEY_LABEL_MAP[Hotkey.OPEN_COMMENTING]}>Comment</TippyTooltip.WithHotkey>,
+            }}
             onClick={onToggleCommenting}
             className={`${ClassName.CANVAS_CONTROL}--commenting`}
             withBadge={hasUnreadComments}
@@ -118,7 +128,9 @@ const CanvasHeader: React.FC = () => {
             active={nluQuickView.isOpened}
             isSmall
             onClick={trackingEventsWrapper(nluQuickView.open, 'trackCanvasControlInteractionModel')}
-            tooltip={{ title: 'NLU Model', hotkey: HOTKEY_LABEL_MAP[Hotkey.OPEN_CMS_MODAL] }}
+            tooltip={{
+              content: <TippyTooltip.WithHotkey hotkey={HOTKEY_LABEL_MAP[Hotkey.OPEN_CMS_MODAL]}>NLU Model</TippyTooltip.WithHotkey>,
+            }}
           />
         )}
 
@@ -127,7 +139,9 @@ const CanvasHeader: React.FC = () => {
           active={search?.isVisible}
           isSmall
           onClick={() => search?.toggle()}
-          tooltip={{ title: 'Search Assistant', hotkey: HOTKEY_LABEL_MAP[Hotkey.SEARCH] }}
+          tooltip={{
+            content: <TippyTooltip.WithHotkey hotkey={HOTKEY_LABEL_MAP[Hotkey.SEARCH]}>Search Assistant</TippyTooltip.WithHotkey>,
+          }}
         />
       </Box.Flex>
     </>

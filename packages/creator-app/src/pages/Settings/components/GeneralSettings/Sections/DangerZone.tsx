@@ -6,7 +6,7 @@ import * as Session from '@/ducks/session';
 import { useDeleteProject } from '@/hooks/project';
 import { useSelector } from '@/hooks/redux';
 
-const DangerZone: React.FC = () => {
+const DangerZone: React.OldFC = () => {
   const projectID = useSelector(Session.activeProjectIDSelector);
   const deletePrompt = useDeleteProject({
     projectID,

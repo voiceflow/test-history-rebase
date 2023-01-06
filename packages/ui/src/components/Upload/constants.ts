@@ -1,4 +1,4 @@
-export const IMAGE_FILE_FORMATS = ['image/jpeg', 'image/png', 'image/gif'];
+export const IMAGE_FILE_TYPES = ['.jpg', '.jpeg', '.png', '.gif'];
 export const HTTPS_URL_REGEX = /https:\/\/(www\.)?[\w#%+.:=@~-]{2,256}\.[a-z]{2,10}\b([\w#%&+./:=?@~-]*)/;
 
 export const UPLOAD_ERROR = {
@@ -16,6 +16,15 @@ export const LINK_ERROR = {
 };
 
 export const FILE_TYPE_MIME_MAP: Record<string, string> = {
+  '.jpg': 'image/jpeg',
+  '.jpeg': 'image/jpeg',
+  '.png': 'image/png',
+  '.gif': 'image/gif',
+  '.webp': 'image/webp',
+  '.mp4': 'video/mp4',
+  '.mpeg': 'video/mpeg',
+  '.webm': 'video/webm',
+  '.mp3': 'audio/mpeg',
   '.csv': 'text/csv',
   '.zip': 'application/zip',
   '.xml': 'application/xml',

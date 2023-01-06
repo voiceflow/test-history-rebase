@@ -6,7 +6,7 @@ import { Description } from '@/components/PlatformUploadPopup/components';
 import { AlexaPublishJob } from '@/models';
 import { StageComponentProps } from '@/platforms/types';
 
-const WaitVendorsStage: React.FC<StageComponentProps<AlexaPublishJob.WaitVendorsStage>> = ({ cancel }) => (
+const WaitVendorsStage: React.OldFC<StageComponentProps<AlexaPublishJob.WaitVendorsStage>> = ({ cancel }) => (
   <Box.FlexCenter p={22} width={254} flexDirection="column" textAlign="center">
     <img src={supportGraphicSmall} alt="" />
 

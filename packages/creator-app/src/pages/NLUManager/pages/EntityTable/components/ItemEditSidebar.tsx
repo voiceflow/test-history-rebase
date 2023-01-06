@@ -13,7 +13,7 @@ interface ItemEditSidebarProps {
   isBuiltIn?: boolean;
 }
 
-const ItemEditSidebar: React.FC<ItemEditSidebarProps> = ({ children, isBuiltIn }) => {
+const ItemEditSidebar: React.OldFC<ItemEditSidebarProps> = ({ children, isBuiltIn }) => {
   const theme = useTheme();
   const nlu = React.useContext(NLUContext);
   const nluManager = useNLUManager();

@@ -29,7 +29,7 @@ const defaultHandle = ({ axis, onMouseDown }: { axis: ResizableProps['axis']; on
   return <Component onMouseDown={onMouseDown} />;
 };
 
-const Resizable: React.FC<ResizableProps> = ({
+const Resizable: React.OldFC<ResizableProps> = ({
   children,
   disabled,
   minHeight,

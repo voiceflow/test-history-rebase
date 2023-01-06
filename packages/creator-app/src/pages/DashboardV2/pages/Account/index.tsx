@@ -9,7 +9,7 @@ import { Sidebar } from '../../components';
 import { Header } from './components';
 import { Integrations, Profile } from './pages';
 
-const Account: React.FC = () => {
+const Account: React.OldFC = () => {
   return (
     <Page white renderSidebar={() => <Sidebar />} renderHeader={() => <Header />}>
       <Page.Content>

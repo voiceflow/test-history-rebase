@@ -28,7 +28,7 @@ const useHeaderActions = (customBlock: Realtime.CustomBlock | null) => {
   return [...editorDefaultActions, editSourceAction];
 };
 
-export const PointerEditor: React.FC = () => {
+export const PointerEditor: React.OldFC = () => {
   const editor = EditorV2.useEditor<Realtime.NodeData.Pointer>();
 
   const { pointerName, parameters, sourceID } = editor.data;

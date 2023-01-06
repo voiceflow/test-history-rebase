@@ -15,7 +15,7 @@ export * from './constants';
 export type { LinkedRects } from './utils';
 export * from './utils';
 
-const Link: React.FC = () => {
+const Link: React.OldFC = () => {
   const linkEntity = React.useContext(LinkEntityContext)!;
   const isEditingMode = useEditingMode();
 

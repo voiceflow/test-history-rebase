@@ -80,7 +80,7 @@ export function useUpload<C extends AnyUploadConfig>(config: C): UploadAPI {
         }
       } catch (error) {
         config.update?.(null);
-        uploadApi.onError(error);
+        uploadApi.onError(error instanceof Error ? error : new Error(JSON.stringify(error)));
         const finalErrorMessage = errorMessage || UPLOAD_ERROR.UNKNOWN;
         onError?.(finalErrorMessage);
         setError(finalErrorMessage);

@@ -18,7 +18,7 @@ export interface LinkStepMenuValue {
 export const LinkStepMenuContext = React.createContext<Nullable<LinkStepMenuValue>>(null);
 export const { Consumer: LinkStepMenuConsumer } = LinkStepMenuContext;
 
-export const LinkStepMenuProvider: React.FC = ({ children }) => {
+export const LinkStepMenuProvider: React.OldFC = ({ children }) => {
   const engine = React.useContext(EngineContext)!;
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
   const [position, setPosition] = React.useState<Point>([0, 0]);

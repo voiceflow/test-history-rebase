@@ -7,7 +7,7 @@ import EditorV2 from '@/pages/Canvas/components/EditorV2';
 
 import { useNodeLabel } from './hooks';
 
-const StartLabelSection: React.FC = () => {
+const StartLabelSection: React.OldFC = () => {
   const editor = EditorV2.useEditor<Realtime.NodeData.Start>();
   const nodeLabel = useNodeLabel();
 

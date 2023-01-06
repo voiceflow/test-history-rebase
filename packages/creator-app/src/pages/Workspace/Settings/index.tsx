@@ -19,7 +19,7 @@ import Sidebar from './components/Sidebar';
 import SSO from './components/SSO';
 import SettingsGate from './gates/SettingsGate';
 
-const Settings: React.FC = () => {
+const Settings: React.OldFC = () => {
   const workspace = useActiveWorkspace();
   const disableIntegation = useFeature(Realtime.FeatureFlag.DISABLE_INTEGRATION)?.isEnabled;
 

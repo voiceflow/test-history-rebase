@@ -9,7 +9,7 @@ interface DefaultHeaderProps extends Partial<Omit<SidebarEditorTypes.HeaderProps
   actions?: SidebarEditorTypes.Action[];
 }
 
-const DefaultHeader: React.FC<DefaultHeaderProps> = ({ title, actions, onBack }) => {
+const DefaultHeader: React.OldFC<DefaultHeaderProps> = ({ title, actions, onBack }) => {
   const editor = useEditor();
   const defaultActions = useEditorDefaultActions();
 

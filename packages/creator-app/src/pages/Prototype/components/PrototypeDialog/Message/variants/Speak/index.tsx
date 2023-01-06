@@ -1,6 +1,6 @@
 import { AudioPlayer, Link, stopPropagation } from '@voiceflow/ui';
 import cn from 'classnames';
-import Markdown, { MarkdownOptions } from 'markdown-to-jsx';
+import Markdown, { MarkdownToJSX } from 'markdown-to-jsx';
 import React from 'react';
 
 import { ALL_URLS_REGEX, NEW_LINE_REGEX, SSML_TAG_REGEX } from '@/constants';
@@ -19,12 +19,12 @@ interface SpeakProps extends Omit<BaseMessageProps, 'iconProps'> {
   onContinue?: VoidFunction;
 }
 
-const MARKDOWN_OPTIONS: MarkdownOptions = {
-  overrides: { a: (props) => <Link {...props} onClick={stopPropagation()} /> },
+const MARKDOWN_OPTIONS: MarkdownToJSX.Options = {
+  overrides: { a: { component: (props: React.AnchorHTMLAttributes<HTMLAnchorElement>) => <Link {...props} onClick={stopPropagation()} /> } },
   forceInline: true,
 };
 
-const Speak: React.FC<SpeakProps> = ({ ai, src, audio, voice, message, className, onPause, onContinue, ...props }) => {
+const Speak: React.OldFC<SpeakProps> = ({ ai, src, audio, voice, message, className, onPause, onContinue, ...props }) => {
   const audioPlayer = AudioPlayer.useAudioPlayer({ audioURL: src });
 
   const formattedMessage = React.useMemo(

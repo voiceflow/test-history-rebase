@@ -11,7 +11,7 @@ interface ResponseBodyProps {
   response: Response;
 }
 
-const ResponseBody: React.FC<ResponseBodyProps> = ({ response }) => {
+const ResponseBody: React.OldFC<ResponseBodyProps> = ({ response }) => {
   const [showRawData, toggleRawData] = useToggle(false);
 
   return (

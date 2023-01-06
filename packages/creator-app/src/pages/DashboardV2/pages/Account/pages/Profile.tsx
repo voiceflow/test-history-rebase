@@ -9,7 +9,7 @@ import * as ModalsV2 from '@/ModalsV2';
 import { Identifier } from '@/styles/constants';
 import * as Sentry from '@/vendors/sentry';
 
-const Profile: React.FC = () => {
+const Profile: React.OldFC = () => {
   const user = useSelector(Account.userSelector);
   const saveProfilePicture = useDispatch(Account.saveProfilePicture);
   const updateUserProfileImage = useDispatch(Account.updateUserProfileImage);

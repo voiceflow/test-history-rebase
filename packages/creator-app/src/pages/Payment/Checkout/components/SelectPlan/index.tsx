@@ -15,7 +15,7 @@ interface SelectPlanProps {
   payment: PaymentContextProps;
 }
 
-const SelectPlan: React.FC<SelectPlanProps> = ({
+const SelectPlan: React.OldFC<SelectPlanProps> = ({
   payment: {
     state: { plans, period },
   },

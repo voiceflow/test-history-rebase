@@ -12,7 +12,7 @@ interface SnackbarProps extends SnackbarTypes.InstanceProps {
   showOverlay?: boolean;
 }
 
-const Snackbar: React.FC<SnackbarProps> = ({ isOpen, children, showOverlay }) => {
+const Snackbar: React.OldFC<SnackbarProps> = ({ isOpen, children, showOverlay }) => {
   if (!isOpen) return null;
 
   return (

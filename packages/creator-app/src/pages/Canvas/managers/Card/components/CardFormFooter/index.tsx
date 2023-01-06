@@ -13,7 +13,7 @@ interface CardFormFooterProps {
   isStandard?: boolean;
 }
 
-const CardFormFooter: React.FC<CardFormFooterProps> = ({ isStandard, onChange, data }) => {
+const CardFormFooter: React.OldFC<CardFormFooterProps> = ({ isStandard, onChange, data }) => {
   const tutorial = {
     content: <HelpTooltip />,
     helpMessage: <HelpMessage />,

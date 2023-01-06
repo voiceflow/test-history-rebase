@@ -13,7 +13,7 @@ export interface MigrationInProgressWarningProps {
   onFailed: VoidFunction;
 }
 
-const MigrationInProgressWarning: React.FC<MigrationInProgressWarningProps> = ({ versionID, onComplete, onFailed }) => {
+const MigrationInProgressWarning: React.OldFC<MigrationInProgressWarningProps> = ({ versionID, onComplete, onFailed }) => {
   const goToDashboard = useDispatch(Router.goToDashboard);
 
   useMigrationFailedObserver(versionID, onFailed);

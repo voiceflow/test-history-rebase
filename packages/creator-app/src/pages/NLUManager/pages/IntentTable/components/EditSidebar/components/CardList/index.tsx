@@ -20,7 +20,7 @@ interface CardListProps {
   intent: NLUIntent;
 }
 
-const CardList: React.FC<CardListProps> = ({ intent }) => {
+const CardList: React.OldFC<CardListProps> = ({ intent }) => {
   const nluManager = useNLUManager();
   const intentID = intent.id;
   const confidence = intent.confidence || 0;

@@ -34,7 +34,7 @@ export interface PreviewButtonIconProps extends SpaceProps, React.HTMLAttributes
   icon: SvgIconTypes.Icon;
 }
 
-const PreviewButtonIcon: React.FC<PreviewButtonIconProps> = ({ icon, ...props }) => (
+const PreviewButtonIcon: React.OldFC<PreviewButtonIconProps> = ({ icon, ...props }) => (
   <ButtonContainer {...props}>
     <ButtonIcon icon={icon} color="rgba(255, 255, 255, 0.85)" />
   </ButtonContainer>

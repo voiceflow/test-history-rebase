@@ -6,15 +6,14 @@ import * as S from './styles';
 
 export interface ComplexProps {
   title?: React.ReactNode;
-  width?: number;
   onClick: React.MouseEventHandler<HTMLDivElement>;
   buttonText: string;
 }
 
-const FooterButton: React.FC<ComplexProps> = ({ onClick, buttonText, title, width = 200, children }) => (
+const FooterButton: React.OldFC<ComplexProps> = ({ title, onClick, buttonText, children }) => (
   <S.Content>
     {(!!title || !!children) && (
-      <Multiline width={width}>
+      <Multiline>
         {!!title && <Title>{title}</Title>}
 
         {children}

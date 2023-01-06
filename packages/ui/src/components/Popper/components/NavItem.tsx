@@ -5,7 +5,7 @@ import { NavLink, NavLinkProps } from 'react-router-dom';
 
 import NavItemContainer from './NavItemContainer';
 
-const NavItem: React.FC<NavLinkProps> = ({ children, replace = true, className, ...props }) => (
+const NavItem: React.OldFC<NavLinkProps> = ({ children, replace = true, className, ...props }) => (
   <NavLink
     replace={replace}
     className={

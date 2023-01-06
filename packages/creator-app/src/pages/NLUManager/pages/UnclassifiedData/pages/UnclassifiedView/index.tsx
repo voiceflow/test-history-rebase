@@ -6,7 +6,7 @@ import { useNLUManager } from '@/pages/NLUManager/context';
 import { LoadingScreen, TableFooter, TableNavbar, TableTopBadge, TableUtteranceRow } from '../../components';
 import EmptyScreen from '../../components/EmptyScreen';
 
-const UnclassifiedView: React.FC = ({ children }) => {
+const UnclassifiedView: React.OldFC = ({ children }) => {
   const nluManager = useNLUManager();
   const loaderRef = React.useRef<HTMLDivElement>(null);
   const isBottom = useOnScreen(loaderRef);

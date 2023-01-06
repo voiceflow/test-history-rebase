@@ -12,7 +12,7 @@ export const SectionFeatureFlags: Partial<Record<SettingSections, Realtime.Featu
 
 export const SectionComponents: Record<
   SettingSections,
-  React.FC<{ platform: Platform.Constants.PlatformType; projectType: Platform.Constants.ProjectType; title: SettingSections; platformMeta: any }>
+  React.OldFC<{ platform: Platform.Constants.PlatformType; projectType: Platform.Constants.ProjectType; title: SettingSections; platformMeta: any }>
 > = {
   [SettingSections.BASIC]: Basic,
   [SettingSections.CANVAS]: Canvas,

@@ -14,7 +14,7 @@ export interface ConditionValueSelectProps {
   onClose?: () => void;
 }
 
-const ConditionValueSelect: React.FC<ConditionValueSelectProps> = ({ value = '', onChange, onClose }) => {
+const ConditionValueSelect: React.OldFC<ConditionValueSelectProps> = ({ value = '', onChange, onClose }) => {
   const inputRef = React.useRef<VariablesInputRef>(null);
   const [error, setError, resetError] = useEnableDisable(false);
   const [show, onShow, onHide] = useEnableDisable(false);

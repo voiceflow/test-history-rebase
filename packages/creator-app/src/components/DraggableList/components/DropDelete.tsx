@@ -27,16 +27,9 @@ const DropDelete = <I, P>({ type, handlers, deleteProps, deleteComponent: Delete
     },
   });
 
-  React.useEffect(
-    () => () => {
-      connectDrop(null);
-    },
-    [connectDrop]
-  );
+  connectDrop(rootRef);
 
-  const connectTarget = connectDrop(rootRef);
-
-  return <Delete ref={connectTarget} {...(deleteProps as any)} />;
+  return <Delete ref={rootRef} {...(deleteProps as any)} />;
 };
 
 export default React.memo(DropDelete) as <I, P>(props: DropDeleteProps<I, P>) => JSX.Element;

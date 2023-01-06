@@ -1,9 +1,9 @@
 import { Button, FlexCenter, Input } from '@voiceflow/ui';
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 import * as Account from '@/ducks/account';
 import * as Integration from '@/ducks/integration';
-import { connect } from '@/hocs/connect';
 
 class FeedAddUserModal extends Component {
   constructor(props) {

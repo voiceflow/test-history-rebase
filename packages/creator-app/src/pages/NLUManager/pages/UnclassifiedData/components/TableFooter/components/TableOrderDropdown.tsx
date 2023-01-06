@@ -5,7 +5,7 @@ import { useNLUManager } from '@/pages/NLUManager/context';
 
 import { LIST_ORDER_LABELS, LIST_ORDER_OPTIONS, ListOrder } from '../../../constants';
 
-const TableOrderDropdown: React.FC = () => {
+const TableOrderDropdown: React.OldFC = () => {
   const nluManager = useNLUManager();
 
   return (

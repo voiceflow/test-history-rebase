@@ -4,9 +4,8 @@ import React from 'react';
 
 import BaseRenderer from '@/components/DisplayRenderer/components/BaseRenderer';
 import * as APLDuck from '@/ducks/apl';
-import { connect } from '@/hocs/connect';
+import { useDispatch } from '@/hooks/realtime';
 import { ALL_DEVICES } from '@/pages/Prototype/constants';
-import { ConnectedProps } from '@/types';
 import * as Sentry from '@/vendors/sentry';
 
 const MemoizedBaseRenderer = React.memo(BaseRenderer);
@@ -18,7 +17,9 @@ interface APLProps {
   dimension: { width: number; height: number };
 }
 
-const APL: React.FC<APLProps & ConnectedAPLProps> = ({ data, device, resolveAPL, dimension }) => {
+const APL: React.FC<APLProps> = ({ data, device, dimension }) => {
+  const resolveAPL = useDispatch(APLDuck.resolveAPL);
+
   const [aplContext, setAPLContext] = React.useState<{ apl: string; data: string; commands: string } | null>(null);
 
   const isRound = device === BaseNode.Visual.DeviceType.ECHO_SPOT;
@@ -67,10 +68,4 @@ const APL: React.FC<APLProps & ConnectedAPLProps> = ({ data, device, resolveAPL,
   );
 };
 
-const mapDispatchToProps = {
-  resolveAPL: APLDuck.resolveAPL,
-};
-
-type ConnectedAPLProps = ConnectedProps<{}, typeof mapDispatchToProps>;
-
-export default connect(null, mapDispatchToProps)(APL) as React.FC<APLProps>;
+export default APL;

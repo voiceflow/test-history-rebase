@@ -12,7 +12,7 @@ import PublishButton from '@/pages/Project/components/Header/components/CanvasHe
 
 import { useWebchatStageContent } from './stages';
 
-const Webchat: React.FC = () => {
+const Webchat: React.OldFC = () => {
   const publishNewVersionModal = useModals<PublishVersionModalData>(ModalType.PUBLISH_VERSION_MODAL);
 
   const publishContext = React.useContext(PublishContext)!;

@@ -9,7 +9,7 @@ interface MenuItemProps {
   label: React.ReactNode;
 }
 
-const MenuItemProps: React.FC<MenuItemProps> = ({ icon, label, children }) => {
+const MenuItemProps: React.OldFC<MenuItemProps> = ({ icon, label, children }) => {
   const [isHovered, , hoverHandlers] = useHover();
 
   return (

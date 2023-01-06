@@ -7,7 +7,7 @@ import type { State } from '@/ducks';
 export const createSelectorContext = <T extends (state: State) => any>(selector: T) => {
   const Context = React.createContext<Nullable<ReturnType<T>>>(null);
 
-  const Provider: React.FC = ({ children }) => {
+  const Provider: React.OldFC = ({ children }) => {
     const value = useSelector(selector);
 
     return <Context.Provider value={value ?? null}>{children}</Context.Provider>;

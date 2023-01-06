@@ -5,7 +5,7 @@ export interface RedirectWithSearchProps extends RedirectProps {
   to: string;
 }
 
-const RedirectWithSearch: React.FC<RedirectWithSearchProps> = ({ to, ...props }) => (
+const RedirectWithSearch: React.OldFC<RedirectWithSearchProps> = ({ to, ...props }) => (
   <Redirect {...props} to={`${to.split('?')[0]}${window.location.search}`} />
 );
 

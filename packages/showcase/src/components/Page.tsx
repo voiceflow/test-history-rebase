@@ -61,7 +61,7 @@ li {
 }
 `;
 
-const Page: React.FC = ({ children }) => (
+const Page: React.FC<React.PropsWithChildren> = ({ children }) => (
   <Container>
     <GlobalStyles />
     {children}

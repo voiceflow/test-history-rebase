@@ -20,7 +20,7 @@ import { tabHeaderComponentsMap } from './constants';
 import { NLUQuickViewContext, NLUQuickViewProvider } from './context';
 import { useShowForms } from './hooks';
 
-const NLUQuickView: React.FC = () => {
+const NLUQuickView: React.OldFC = () => {
   const {
     title,
     activeTab,

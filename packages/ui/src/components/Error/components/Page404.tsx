@@ -3,7 +3,7 @@ import React from 'react';
 
 import Page404Wrapper from './Page404Wrapper';
 
-const Page404: React.FC = ({ children }) => (
+const Page404: React.OldFC = ({ children }) => (
   <Page404Wrapper>
     <div>
       <img src={error404Graphic} height={128} alt="404 Not Found" />

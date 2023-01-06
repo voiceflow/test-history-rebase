@@ -7,7 +7,7 @@ import * as VersionV2 from '@/ducks/versionV2';
 import { useDispatch, useSelector } from '@/hooks';
 import { DescriptorContainer } from '@/pages/Settings/components/ContentDescriptors/components';
 
-const MessageDelay: React.FC = () => {
+const MessageDelay: React.OldFC = () => {
   const patchSettings = useDispatch(Version.chat.patchSettings);
 
   const durationMilliseconds = useSelector(VersionV2.active.voiceflow.chat.messageDelaySelector);

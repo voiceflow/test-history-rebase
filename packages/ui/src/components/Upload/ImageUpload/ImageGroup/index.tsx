@@ -1,7 +1,7 @@
 import Flex from '@ui/components/Flex';
 import React from 'react';
 
-import { IMAGE_FILE_FORMATS } from '../../constants';
+import { IMAGE_FILE_TYPES } from '../../constants';
 import DropUpload from '../../Primitive/DropUpload';
 import { InputRenderer } from '../../Primitive/LinkUpload';
 import { SingleUploadConfig, useUpload } from '../../useUpload';
@@ -31,7 +31,7 @@ const ImageGroup = React.forwardRef<HTMLDivElement, ImageGroupProps>(({ update, 
           onUpdate={update}
           setError={setError}
           clearError={() => setError(null)}
-          acceptedFileTypes={IMAGE_FILE_FORMATS}
+          acceptedFileTypes={IMAGE_FILE_TYPES}
           {...props}
           error={error}
           isLoading={isLoading}
@@ -44,7 +44,7 @@ const ImageGroup = React.forwardRef<HTMLDivElement, ImageGroupProps>(({ update, 
       <S.Icon
         image={image}
         update={update}
-        acceptedFileTypes={IMAGE_FILE_FORMATS}
+        acceptedFileTypes={IMAGE_FILE_TYPES}
         canRemove
         {...props}
         error={error}

@@ -46,7 +46,7 @@ const ImageContainer = styled.div<ContainerProps>`
         `}
 `;
 
-const StepImage: React.FC<StepImageProps> = ({ noContainer, image, position, aspectRatio, borderRadius }) => {
+const StepImage: React.OldFC<StepImageProps> = ({ noContainer, image, position, aspectRatio, borderRadius }) => {
   const Container = noContainer ? React.Fragment : ImageContainer;
 
   return (

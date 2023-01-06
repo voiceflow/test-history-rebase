@@ -6,11 +6,11 @@ import _cloneDeep from 'lodash/cloneDeep';
 import _isEmpty from 'lodash/isEmpty';
 import React, { Component } from 'react';
 import ReactJson from 'react-json-view';
+import { connect } from 'react-redux';
 
 import { textEditorContentAdapter } from '@/client/adapters/textEditor';
 import { DefaultModal } from '@/components/modals';
 import { setConfirm } from '@/ducks/modal';
-import { connect } from '@/hocs/connect';
 import * as ModalsV2 from '@/ModalsV2';
 import { PrefixText } from '@/pages/Canvas/components/PrefixedVariableSelect/components/Prefix';
 import IntegrationsService from '@/services/Integrations';

@@ -6,7 +6,7 @@ export interface AddButtonProps {
   onClick: React.MouseEventHandler<HTMLButtonElement>;
 }
 
-const AddButton: React.FC<AddButtonProps> = ({ tooltip, onClick }) => {
+const AddButton: React.OldFC<AddButtonProps> = ({ tooltip, onClick }) => {
   const button = <IconButton size={16} icon="plus" onClick={onClick} variant={IconButton.Variant.BASIC} />;
 
   return tooltip ? (

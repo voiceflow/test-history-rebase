@@ -11,7 +11,7 @@ export interface TutorialInfoIconProps {
   tooltipProps?: Omit<TutorialTooltipProps, 'placement' | 'portalNode' | 'anchorRenderer'>;
 }
 
-const TutorialInfoIcon: React.FC<TutorialInfoIconProps> = ({ visible = true, children, placement = 'bottom-start', tooltipProps }) => (
+const TutorialInfoIcon: React.OldFC<TutorialInfoIconProps> = ({ visible = true, children, placement = 'bottom-start', tooltipProps }) => (
   <TutorialTooltip
     {...tooltipProps}
     placement={placement}

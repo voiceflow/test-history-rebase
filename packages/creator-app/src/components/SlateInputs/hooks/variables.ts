@@ -8,6 +8,7 @@ import { CanvasCreationType } from '@/ducks/tracking/constants';
 import * as Version from '@/ducks/version';
 import { useDispatch } from '@/hooks/realtime';
 import { useSelector } from '@/hooks/redux';
+import { getErrorMessage } from '@/utils/error';
 
 interface SlateVariablesOptions {
   variables?: Normalized<SlateVariableItem>;
@@ -30,7 +31,7 @@ export const useSlateVariables = ({
 
         return { id: name, name };
       } catch (err) {
-        toast.error(err.message);
+        toast.error(getErrorMessage(err));
 
         return null;
       }

@@ -13,7 +13,7 @@ import { isVoiceflowPlatform } from '@/utils/typeGuards';
 import { ErrorBubble, SidebarHeaderContainer } from './components';
 import NLUNotifications from './components/NLUNotifications';
 
-const SidebarHeader: React.FC = () => {
+const SidebarHeader: React.OldFC = () => {
   const projectID = useSelector(Session.activeProjectIDSelector)!;
   const project = useSelector(ProjectV2.getProjectByIDSelector)({ id: projectID });
   const { notifications } = useNLUManager();

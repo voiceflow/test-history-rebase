@@ -1,6 +1,6 @@
 import { READABLE_VARIABLE_REGEXP, SLOT_REGEXP } from '@voiceflow/common';
 
-import { BUCKET_PREFIX_REGEX, BUCKET_STRING, HTTPS_URL_REGEX, IMAGE_FILE_FORMATS, LINK_ERROR, MAX_SIZE, UPLOAD_ERROR } from './constants';
+import { BUCKET_PREFIX_REGEX, BUCKET_STRING, HTTPS_URL_REGEX, IMAGE_FILE_TYPES, LINK_ERROR, MAX_SIZE, UPLOAD_ERROR } from './constants';
 
 export const transformVariablesToReadable = (text?: string) => text?.replace(SLOT_REGEXP, '{$1}').trim() || '';
 export const hasVariables = (value: string) => !!value.match(READABLE_VARIABLE_REGEXP);
@@ -45,6 +45,7 @@ export const validateFiles = (files: File[]) => {
   return null;
 };
 
-export const hasValidImages = (acceptedFiles: File[]) => (!IMAGE_FILE_FORMATS.includes(acceptedFiles[0].type) ? 'File type Not Supported' : null);
+export const hasValidImages = (acceptedFiles: File[]) =>
+  !IMAGE_FILE_TYPES.includes(`.${acceptedFiles[0].type.split('/')[1] || acceptedFiles[0].type}`) ? 'File type Not Supported' : null;
 
 export const prettifyBucketURL = (url = '') => (url?.includes(BUCKET_STRING) ? url?.replace(BUCKET_PREFIX_REGEX, '') : url);

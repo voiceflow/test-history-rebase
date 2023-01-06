@@ -16,7 +16,7 @@ export interface Tab {
 interface SettingsTabsProps {
   tabs: Tab[];
 }
-const SettingsTabs: React.FC<SettingsTabsProps> = ({ tabs }) => {
+const SettingsTabs: React.OldFC<SettingsTabsProps> = ({ tabs }) => {
   const { url } = useRouteMatch();
 
   return (

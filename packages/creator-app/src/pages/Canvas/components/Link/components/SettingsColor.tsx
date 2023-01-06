@@ -13,7 +13,7 @@ interface SettingsColorProps {
   onChange: (color: string) => void;
 }
 
-const SettingsColor: React.FC<SettingsColorProps> = ({ color, isOpen, onToggle, onChange }) => {
+const SettingsColor: React.OldFC<SettingsColorProps> = ({ color, isOpen, onToggle, onChange }) => {
   return (
     <>
       <Button isActive={isOpen} onClick={onToggle} tooltipTitle="Color">

@@ -15,13 +15,10 @@ import { waitAsync } from '@/ducks/utils';
 import { allWorkspaceIDsSelector, allWorkspacesSelector } from '@/ducks/workspaceV2/selectors';
 import { openError } from '@/ModalsV2/utils';
 import { SyncThunk, Thunk } from '@/store/types';
-
-import { extractErrorFromResponseData } from '../utils';
+import { getErrorMessage } from '@/utils/error';
 
 export * from './members';
 export * from './shared';
-
-const MEMBER_UPDATE_ERROR = 'Unable to Update Members';
 
 export const createWorkspace =
   (payload: { name: string; image?: string }): Thunk<Realtime.Workspace> =>
@@ -31,7 +28,7 @@ export const createWorkspace =
 
       return dispatch(waitAsync(Realtime.workspace.create, { ...payload, organizationID: workspaces[0]?.organizationID ?? undefined }));
     } catch (err) {
-      openError({ error: extractErrorFromResponseData(err, 'Unable to create workspace') });
+      openError({ error: getErrorMessage(err, 'Unable to create workspace') });
 
       throw err;
     }
@@ -63,7 +60,7 @@ export const deleteWorkspace =
 
       await dispatch.sync(Realtime.workspace.crud.remove({ key: workspaceID }));
     } catch (err) {
-      openError({ error: extractErrorFromResponseData(err, 'Unable to delete workspace') });
+      openError({ error: getErrorMessage(err, 'Unable to delete workspace') });
 
       throw err;
     }
@@ -132,7 +129,7 @@ export const leaveActiveWorkspace = (): Thunk => async (dispatch, getState) => {
 
     toast.success('Successfully left workspace');
   } catch (err) {
-    openError({ error: extractErrorFromResponseData(err, MEMBER_UPDATE_ERROR) });
+    openError({ error: getErrorMessage(err, 'Unable to Update Members') });
 
     throw err;
   }
@@ -155,7 +152,7 @@ export const updateActiveWorkspaceName =
 
       await dispatch.sync(Realtime.workspace.updateName({ workspaceID, name }));
     } catch (err) {
-      openError({ error: extractErrorFromResponseData(err, 'Invalid Workspace Name') });
+      openError({ error: getErrorMessage(err, 'Invalid Workspace Name') });
 
       throw err;
     }
@@ -189,8 +186,6 @@ export const refreshWorkspaceQuotaDetails =
 
       await dispatch.sync(Realtime.workspace.quotas.refreshQuotaDetails({ workspaceID, quotaName }));
     } catch (err) {
-      // eslint-disable-next-line no-console
-      console.log({ err });
       openError({ error: 'Error refreshing workspace quota' });
       throw err;
     }

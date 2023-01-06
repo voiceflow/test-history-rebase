@@ -15,7 +15,7 @@ interface ConditionBuilderProps {
   hasAddButton?: boolean;
 }
 
-const ConditionBuilder: React.FC<ConditionBuilderProps> = ({ expression, onDelete, onAddComponent, onChange, hasAddButton = false }) => {
+const ConditionBuilder: React.OldFC<ConditionBuilderProps> = ({ expression, onDelete, onAddComponent, onChange, hasAddButton = false }) => {
   return (
     <Box.Flex>
       <S.Container>{expression && <ConditionInput expression={expression as LogicUnitDataType} onChange={onChange} />}</S.Container>

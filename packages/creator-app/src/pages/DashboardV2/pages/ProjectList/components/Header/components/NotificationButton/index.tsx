@@ -17,7 +17,7 @@ const DEFAULT_MESSAGE = [
   } as unknown as Notification,
 ];
 
-const NotificationButton: React.FC = () => {
+const NotificationButton: React.OldFC = () => {
   const notifications = useSelector(notificationsSelector);
   const newNotifications = React.useMemo(() => notifications.filter(({ isNew }) => isNew), [notifications]);
 
@@ -38,7 +38,7 @@ const NotificationButton: React.FC = () => {
             active={isOpened}
             isSmall
             onClick={Utils.functional.chainVoid(onToggle, readNotifications)}
-            tooltip={{ title: 'Notifications' }}
+            tooltip={{ content: 'Notifications' }}
           />
 
           {areNewNotifications && <S.UpdateBubble />}

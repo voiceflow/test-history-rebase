@@ -10,7 +10,7 @@ import { stickerSize } from '../constants';
 import Image, { StickerProps } from './Image';
 import ImageContainer from './ImageContainer';
 
-const Sticker: React.FC<StickerProps> = ({ url }) => {
+const Sticker: React.OldFC<StickerProps> = ({ url }) => {
   const getEngine = useEventualEngine();
   const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
 

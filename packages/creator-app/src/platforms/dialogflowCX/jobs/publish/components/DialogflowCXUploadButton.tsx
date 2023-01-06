@@ -11,7 +11,7 @@ interface DialogflowUploadButtonProps {
   dialogflowPublishJob: DialogflowCXPublishJob.AnyJob | null;
 }
 
-const DialogflowCXUploadButton: React.FC<DialogflowUploadButtonProps> = ({ onPublish, dialogflowPublishJob }) => {
+const DialogflowCXUploadButton: React.OldFC<DialogflowUploadButtonProps> = ({ onPublish, dialogflowPublishJob }) => {
   const isLoggedIn = !!useSelector(Account.googleAccountSelector);
 
   switch (dialogflowPublishJob?.stage.type) {

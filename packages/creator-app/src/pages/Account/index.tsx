@@ -12,7 +12,7 @@ import AccountIntegrationsSection from './components/AccountIntegrations';
 import AccountProfileSection from './components/AccountProfile';
 import AccountSidebar from './components/AccountSidebar';
 
-const AccountPage: React.FC = () => {
+const AccountPage: React.OldFC = () => {
   const goToDashboard = useDispatch(Router.goToDashboard);
 
   return (

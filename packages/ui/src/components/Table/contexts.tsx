@@ -10,7 +10,7 @@ export const DEFAULT_STATE: T.ContextValue<any> = {
 export const Context = React.createContext<T.ContextValue<any>>(DEFAULT_STATE);
 export const { Consumer: ContextConsumer } = Context;
 
-export const Provider: React.FC<T.ContextValue<any>> = ({ children, ...props }) => {
+export const Provider: React.OldFC<T.ContextValue<any>> = ({ children, ...props }) => {
   const api = useContextApi(props);
 
   return <Context.Provider value={api}>{children}</Context.Provider>;
@@ -29,7 +29,7 @@ export const ROW_DEFAULT_STATE: T.RowContextValue<any> = {
 export const RowContext = React.createContext<T.RowContextValue<any>>(ROW_DEFAULT_STATE);
 export const { Consumer: RowContextConsumer } = RowContext;
 
-export const RowProvider: React.FC<T.RowProviderProps> = ({ children, ...props }) => {
+export const RowProvider: React.OldFC<T.RowProviderProps> = ({ children, ...props }) => {
   const [hovered, onMouseEnter, onMouseLeave] = useEnableDisable(false);
 
   const api = useContextApi({ ...props, hovered });

@@ -144,7 +144,7 @@ export const featureSelectorFactory =
       const [valueV1, valueV2] = reducer ? reducer(rawValueV1, rawValueV2, param1, param2, param3) : [rawValueV1, rawValueV2];
 
       return isFeatureEnabled(feature) ? valueV2 : valueV1;
-    });
+    }) as any;
 
 export const isLoadedSelector = createSelector([rootSelector], ({ isLoaded }) => isLoaded);
 

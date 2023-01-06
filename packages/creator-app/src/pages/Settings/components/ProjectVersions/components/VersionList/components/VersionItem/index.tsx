@@ -3,7 +3,6 @@ import { Box, Menu, SvgIcon, ThemeColor, TippyTooltip } from '@voiceflow/ui';
 import dayjs from 'dayjs';
 import React from 'react';
 import { generatePath } from 'react-router-dom';
-import { Tooltip } from 'react-tippy';
 
 import { ConfirmProps } from '@/components/ConfirmModal';
 import { StatusIndicator } from '@/components/Indicator';
@@ -47,7 +46,7 @@ interface Index {
   tag: VersionTag;
 }
 
-const VersionItem: React.FC<Index> = ({ version, restoreEnabled, swapVersions, creatorID, tag }) => {
+const VersionItem: React.OldFC<Index> = ({ version, restoreEnabled, swapVersions, creatorID, tag }) => {
   const confirmModal = useModals<ConfirmProps>(ModalType.CONFIRM);
 
   const member = useSelector(WorkspaceV2.active.memberByIDSelector, { creatorID });
@@ -122,20 +121,21 @@ const VersionItem: React.FC<Index> = ({ version, restoreEnabled, swapVersions, c
   return (
     <RowItem>
       <ColumnItemContainer>
-        <Tooltip title={dayjs(version.created).format('MMM Do, YYYY, h:mm A')}>{dayjs(version.created).fromNow()}</Tooltip>
+        <TippyTooltip content={dayjs(version.created).format('MMM Do, YYYY, h:mm A')}>{dayjs(version.created).fromNow()}</TippyTooltip>
       </ColumnItemContainer>
       <ColumnItemContainer style={{ color }}>
-        <TippyTooltip title={name} disabled={!manualSave}>
+        <TippyTooltip content={name} disabled={!manualSave}>
           {name}
         </TippyTooltip>
       </ColumnItemContainer>
       <ColumnItemContainer>{member?.name}</ColumnItemContainer>
       <TippyTooltip
+        width={232}
         position="top"
         interactive={true}
-        html={
+        content={
           !isPlatformWithThirdPartyUpload(platform) && isLive ? (
-            <TippyTooltip.FooterButton buttonText="More" width={200} onClick={onOpenInternalURLInANewTabFactory(DIALOG_MANAGER_API)}>
+            <TippyTooltip.FooterButton buttonText="More" onClick={onOpenInternalURLInANewTabFactory(DIALOG_MANAGER_API)}>
               <div>{tooltipText}</div>
             </TippyTooltip.FooterButton>
           ) : (

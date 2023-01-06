@@ -9,7 +9,7 @@ interface FollowPathPathProps {
   pushToPath?: PushToPath;
 }
 
-const FollowPathSection: React.FC<FollowPathPathProps> = ({ type, pushToPath }) => {
+const FollowPathSection: React.OldFC<FollowPathPathProps> = ({ type, pushToPath }) => {
   const onOpenPath = React.useCallback(() => pushToPath?.({ type, label: 'Path' }), [type, pushToPath]);
 
   return <Section header="Path" isLink onClick={onOpenPath} headerVariant={HeaderVariant.LINK} />;

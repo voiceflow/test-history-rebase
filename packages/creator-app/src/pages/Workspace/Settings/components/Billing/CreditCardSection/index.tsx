@@ -8,16 +8,7 @@ import { withStripe } from '@/hocs/withStripe';
 import { useAsyncMountUnmount } from '@/hooks';
 import { DBPaymentSource } from '@/models/Billing';
 import { ActionMapping } from '@/pages/Payment/Checkout/components/StepHeading';
-
-const parseError = (err: any) => {
-  let error;
-  if (err?.body?.errors) {
-    error = Object.keys(err.body.errors)
-      .map((key) => err.body.errors[key].message)
-      .join('\n');
-  }
-  return error;
-};
+import { getErrorMessage } from '@/utils/error';
 
 export interface CreditCardSectionProps {
   stripe: stripe.Stripe;
@@ -26,7 +17,7 @@ export interface CreditCardSectionProps {
   setStripeCompleted?: (complete: boolean) => void;
 }
 
-const CreditCardSection: React.FC<CreditCardSectionProps> = ({ setStripeCompleted, workspaceId, stripe, checkChargeable }) => {
+const CreditCardSection: React.OldFC<CreditCardSectionProps> = ({ setStripeCompleted, workspaceId, stripe, checkChargeable }) => {
   const [paymentSource, setPaymentSource] = React.useState<DBPaymentSource | null>();
   const [usingExistingSource, setUsingExistingSource] = React.useState(true);
   const [updatingSource, setUpdatingSource] = React.useState(false);
@@ -61,8 +52,7 @@ const CreditCardSection: React.FC<CreditCardSectionProps> = ({ setStripeComplete
 
       handleSuccessfulUpdate(newSource);
     } catch (err) {
-      const error = parseError(err);
-      toast.error(error || err?.data?.data || err?.message);
+      toast.error(getErrorMessage(err));
     } finally {
       setUpdatingSource(false);
     }
@@ -87,4 +77,4 @@ const CreditCardSection: React.FC<CreditCardSectionProps> = ({ setStripeComplete
   );
 };
 
-export default withStripe(CreditCardSection) as React.FC<Omit<CreditCardSectionProps, 'stripe' | 'checkChargeable'>>;
+export default withStripe(CreditCardSection) as React.OldFC<Omit<CreditCardSectionProps, 'stripe' | 'checkChargeable'>>;

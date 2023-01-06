@@ -13,7 +13,7 @@ import { PrototypeProvider } from '@/pages/Prototype/context';
 
 import { LastCreatedComponentProvider, SelectionProvider, TrainingModelProvider } from './contexts';
 
-const Providers: React.FC = ({ children }) => {
+const Providers: React.OldFC = ({ children }) => {
   return (
     <>
       <PrototypeProvider>

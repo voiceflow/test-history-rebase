@@ -16,7 +16,7 @@ export interface ConditionsPopperProps {
   onChange: (value: Realtime.ExpressionData) => void;
 }
 
-const ConditionsPopper: React.FC<ConditionsPopperProps> = ({ expression, onChange }) => {
+const ConditionsPopper: React.OldFC<ConditionsPopperProps> = ({ expression, onChange }) => {
   const [activeTab, setIsActiveTab] = React.useState<ConditionsEditorTabs>(ConditionsEditorTabs.BUILDER);
 
   const addAdditionalBuilderComponent = (logicInterface: BaseNode.Utils.ConditionsLogicInterface) => {

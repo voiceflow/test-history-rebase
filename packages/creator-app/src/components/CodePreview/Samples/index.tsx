@@ -8,7 +8,7 @@ import { Sample } from './types';
 
 export * from './types';
 
-const SampleEditor: React.FC<{ samples: Sample[] }> = ({ samples = [] }) => {
+const SampleEditor: React.OldFC<{ samples: Sample[] }> = ({ samples = [] }) => {
   const [selectedIndex, setSelectedIndex] = React.useState(0);
 
   const { sample, language } = samples[selectedIndex] || { sample: '', language: '' };
@@ -28,7 +28,7 @@ const SampleEditor: React.FC<{ samples: Sample[] }> = ({ samples = [] }) => {
             </Option>
           ))}
         </Box>
-        <TippyTooltip title="Copy">
+        <TippyTooltip content="Copy">
           <SvgIcon icon="copy" onClick={handleCopySnippet} color="#ffffffD9" clickable />
         </TippyTooltip>
       </Header>

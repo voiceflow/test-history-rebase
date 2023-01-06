@@ -45,7 +45,7 @@ export interface AssistantCardProps {
 }
 
 // TODO: refactor component to remove userRole, options and etc
-const AssistantCard: React.FC<AssistantCardProps> = ({
+const AssistantCard: React.OldFC<AssistantCardProps> = ({
   userRole = 'viewer',
   onClickCTA,
   onClickLink,
@@ -103,7 +103,7 @@ const AssistantCard: React.FC<AssistantCardProps> = ({
         {icon && (
           <IconContainer>
             {iconTitle ? (
-              <TippyTooltip position="top" title={iconTitle} distance={12}>
+              <TippyTooltip placement="top" content={iconTitle} offset={[12, 0]}>
                 <SvgIcon color={iconColor} icon={icon} size={16} />
               </TippyTooltip>
             ) : (

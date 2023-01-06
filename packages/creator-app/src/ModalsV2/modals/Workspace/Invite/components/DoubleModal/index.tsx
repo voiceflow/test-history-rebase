@@ -14,7 +14,7 @@ import { VoidInternalProps } from '@/ModalsV2/types';
 import { copyWithToast } from '@/utils/clipboard';
 import * as Sentry from '@/vendors/sentry';
 
-const DoubleModal: React.FC<VoidInternalProps> = ({ api, type, opened, hidden, animated }) => {
+const DoubleModal: React.OldFC<VoidInternalProps> = ({ api, type, opened, hidden, animated }) => {
   const projectID = useSelector(Session.activeProjectIDSelector)!;
 
   const numberOfSeats = useSelector(WorkspaceV2.active.numberOfSeatsSelector);

@@ -16,7 +16,7 @@ interface SubMenuProps {
   onDrop: VoidFunction;
 }
 
-const SubMenu: React.FC<SubMenuProps> = ({ steps, onDrop }) => {
+const SubMenu: React.OldFC<SubMenuProps> = ({ steps, onDrop }) => {
   const [activeStepType, setActiveStepType] = React.useState<null | Realtime.BlockType>(null);
 
   const menuRef = React.useRef<HTMLDivElement>(null);

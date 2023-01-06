@@ -9,7 +9,7 @@ export interface ValidationContext {
 export const ValidationContext = React.createContext<ValidationContext | null>(null);
 export const { Consumer: ValidationConsumer } = ValidationContext;
 
-export const ValidationProvider: React.FC = ({ children }) => {
+export const ValidationProvider: React.OldFC = ({ children }) => {
   const [errors, setErrors] = React.useState<Record<string, string | null>>({});
 
   const isValid = useMemo(() => !Object.values(errors).some(Boolean), [errors]);

@@ -19,12 +19,12 @@ interface UtteranceItemProps extends InjectedDraggableComponentProps {
   isDraggingPreview?: boolean;
 }
 
-const UtteranceItem: React.FC<UtteranceItemProps> = ({ text, onRemove, onEdit, isDragging, connectDragSource, connectDropTarget }) => {
+const UtteranceItem: React.FC<UtteranceItemProps> = ({ text, onRemove, onEdit, isDragging, connectedRootRef }) => {
   const allSlots = useSelector(SlotV2.allSlotsSelector);
   const { onAddSlot } = useAddSlot();
 
-  const item = (
-    <div>
+  return (
+    <div ref={connectedRootRef}>
       <S.UtteranceListItemContainer isDragging={!!isDragging}>
         <SectionV2.ListItem action={<SectionV2.RemoveButton onClick={onRemove} />}>
           <S.DragIconContainer>
@@ -43,8 +43,6 @@ const UtteranceItem: React.FC<UtteranceItemProps> = ({ text, onRemove, onEdit, i
       </S.UtteranceListItemContainer>
     </div>
   );
-
-  return connectDragSource && connectDropTarget ? connectDragSource(connectDropTarget(item)) : item;
 };
 
 export default withDraggable({

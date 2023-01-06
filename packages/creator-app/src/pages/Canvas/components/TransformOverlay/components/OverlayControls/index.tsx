@@ -22,7 +22,7 @@ export interface OverlayControlsProps {
   children: (renderProps: OverlayControlsRenderProps) => React.ReactNode;
 }
 
-const OverlayControls: React.FC<OverlayControlsProps> = ({ children }) => {
+const OverlayControls: React.OldFC<OverlayControlsProps> = ({ children }) => {
   const engine = React.useContext(EngineContext)!;
 
   const data = useSelector(Creator.focusedNodeDataSelector) as Realtime.NodeData<Realtime.Markup.AnyNodeData> | null;

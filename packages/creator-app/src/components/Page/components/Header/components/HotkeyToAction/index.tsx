@@ -14,7 +14,7 @@ interface HotkeyToActionProps {
   preventDefault?: boolean;
 }
 
-const HotkeyToAction: React.FC<HotkeyToActionProps> = ({ id, label, hotkey, onHotkey, preventDefault, disabled }) => {
+const HotkeyToAction: React.OldFC<HotkeyToActionProps> = ({ id, label, hotkey, onHotkey, preventDefault, disabled }) => {
   useHotKeys(hotkey, onHotkey, { preventDefault, disable: disabled }, [onHotkey]);
 
   return (

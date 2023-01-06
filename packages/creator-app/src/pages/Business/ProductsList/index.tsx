@@ -11,7 +11,7 @@ import { List } from './components';
 import NoProducts from './NoProducts';
 import ProductCard from './ProductCard';
 
-const ProductList: React.FC = () => {
+const ProductList: React.OldFC = () => {
   const versionID = useSelector(Session.activeVersionIDSelector)!;
   const products = useSelector(ProductV2.allProductsSelector);
   const goToNewProduct = useDispatch(Router.goToNewProduct, versionID);

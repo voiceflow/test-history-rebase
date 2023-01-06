@@ -1,7 +1,7 @@
 import { Dropdown, IconButton, IconButtonVariant, stopPropagation } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { ListChildComponentProps } from 'react-window';
 
 import { TranscriptExportFormat } from '@/client/transcript';
 import { Permission } from '@/config/permissions';
@@ -9,26 +9,22 @@ import * as Modal from '@/ducks/modal';
 import * as Router from '@/ducks/router';
 import * as Transcript from '@/ducks/transcript';
 import { useDispatch, usePermission, useTrackingEvents } from '@/hooks';
-import { SystemTag, Transcript as TranscriptModel } from '@/models';
+import { SystemTag } from '@/models';
 import { ClassName } from '@/styles/constants';
 import { isSentimentTag } from '@/utils/reportTag';
 
+import { ListData } from '../../types';
 import { Container, InfoSection, ReadStatusDot, StatusIcons } from './components';
 
-interface ResultsItem {
-  data: TranscriptModel;
-  format: TranscriptExportFormat;
-  active?: boolean;
-  isLastItem?: boolean;
-}
-
-const TranscriptResultsItem: React.FC<ResultsItem> = ({ data, format, active = false, isLastItem = false }) => {
-  const { id, reportTags, unread, createdAt, name } = data;
+const TranscriptResultsItem: React.FC<ListChildComponentProps<ListData>> = ({ data, index, style }) => {
+  const { transcripts, currentTranscriptID } = data;
+  const item = transcripts[index];
+  const isLastItem = transcripts.length === index + 1;
+  const { id, reportTags, unread, createdAt, name } = item;
+  const isActive = String(currentTranscriptID) === String(id);
 
   const [trackingEvents] = useTrackingEvents();
   const [canDeleteTranscript] = usePermission(Permission.DELETE_TRANSCRIPT);
-
-  const allTranscripts = useSelector(Transcript.allTranscriptsSelector);
 
   const markAsRead = useDispatch(Transcript.markAsRead);
   const confirmDelete = useDispatch(Modal.setConfirm);
@@ -50,13 +46,14 @@ const TranscriptResultsItem: React.FC<ResultsItem> = ({ data, format, active = f
       confirm: () => {
         deleteTranscript(id);
         trackingEvents.trackConversationDeleted();
-        if (allTranscripts.length) goToTargetTranscript(allTranscripts[0].id);
+
+        if (transcripts.length) goToTargetTranscript(transcripts[0].id);
       },
     });
   };
 
   const onExport = async () => {
-    await exportTranscript(format, id, name);
+    await exportTranscript(TranscriptExportFormat.CSV, id, name);
 
     trackingEvents.trackConversationExported();
   };
@@ -67,40 +64,42 @@ const TranscriptResultsItem: React.FC<ResultsItem> = ({ data, format, active = f
   );
 
   React.useEffect(() => {
-    if (active && unread) {
+    if (isActive && unread) {
       markAsRead(id);
     }
-  }, [active]);
+  }, [isActive]);
 
   return (
-    <Dropdown
-      options={[
-        { value: 'export', label: 'Export', onClick: onExport },
-        ...(canDeleteTranscript ? [{ value: 'delete', label: 'Delete', onClick: onDelete }] : []),
-      ]}
-    >
-      {(ref, onToggle, isOpen) => (
-        <Container
-          id={id}
-          active={active}
-          onClick={goToTarget}
-          menuOpen={isOpen}
-          className={cn(ClassName.TRANSCRIPT_ITEM, { active })}
-          isLastItem={isLastItem}
-        >
-          <ReadStatusDot read={!unread} />
+    <div style={style}>
+      <Dropdown
+        options={[
+          { value: 'export', label: 'Export', onClick: onExport },
+          ...(canDeleteTranscript ? [{ value: 'delete', label: 'Delete', onClick: onDelete }] : []),
+        ]}
+      >
+        {(ref, onToggle, isOpen) => (
+          <Container
+            id={id}
+            active={isActive}
+            onClick={goToTarget}
+            menuOpen={isOpen}
+            className={cn(ClassName.TRANSCRIPT_ITEM, { active: isActive })}
+            isLastItem={isLastItem}
+          >
+            <ReadStatusDot read={!unread} />
 
-          <InfoSection active={active} name={name} date={createdAt} isRead={!unread} tags={reportTags} />
+            <InfoSection active={isActive} name={name} date={createdAt} isRead={!unread} tags={reportTags} />
 
-          <div className={ClassName.TRANSCRIPT_ITEM_DROPDOWN_BUTTON}>
-            <IconButton icon="ellipsis" variant={IconButtonVariant.SUBTLE} size={15} onClick={stopPropagation(onToggle)} ref={ref} />
-          </div>
+            <div className={ClassName.TRANSCRIPT_ITEM_DROPDOWN_BUTTON}>
+              <IconButton icon="ellipsis" variant={IconButtonVariant.SUBTLE} size={15} onClick={stopPropagation(onToggle)} ref={ref} />
+            </div>
 
-          {!isOpen && <StatusIcons id={id} reviewed={isReviewed} saved={isSaved} sentiment={sentiment} />}
-        </Container>
-      )}
-    </Dropdown>
+            {!isOpen && <StatusIcons id={id} reviewed={isReviewed} saved={isSaved} sentiment={sentiment} />}
+          </Container>
+        )}
+      </Dropdown>
+    </div>
   );
 };
 
-export default TranscriptResultsItem;
+export default React.memo(TranscriptResultsItem);

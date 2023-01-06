@@ -12,7 +12,7 @@ interface EntitySelectorProps {
   onSelect: (slotID: string | null) => void;
 }
 
-const EntitySelector: React.FC<EntitySelectorProps> = ({ value, options, onEdit, onSelect, onCreate }) => {
+const EntitySelector: React.OldFC<EntitySelectorProps> = ({ value, options, onEdit, onSelect, onCreate }) => {
   const optionsMap = React.useMemo(() => Utils.array.createMap(options.filter(isNotUIOnlyMenuItemOption), Utils.object.selectID), [options]);
 
   return (

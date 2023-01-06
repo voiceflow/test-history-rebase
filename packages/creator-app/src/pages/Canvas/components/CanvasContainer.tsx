@@ -55,7 +55,7 @@ const Wrapper = styled.div`
   }
 `;
 
-const CanvasContainer: React.FC = ({ children }) => {
+const CanvasContainer: React.OldFC = ({ children }) => {
   const ref = React.useRef<HTMLDivElement>(null);
   const engine = React.useContext(EngineContext)!;
   const markup = React.useContext(MarkupContext)!;
@@ -99,8 +99,9 @@ const CanvasContainer: React.FC = ({ children }) => {
     []
   );
 
-  const onSave = React.useCallback((e) => {
-    if (e.shiftKey) return;
+  const onSave = React.useCallback((event: KeyboardEvent) => {
+    if (event.shiftKey) return;
+
     const projectVersionsV2Message = (
       <>
         Voiceflow automatically saves your work.
@@ -117,6 +118,7 @@ const CanvasContainer: React.FC = ({ children }) => {
         </ToastCallToAction>
       </>
     );
+
     toast.info(projectVersionsV2Message, { toastId: 'canvas-container-save-hotkey-info' });
   }, []);
 

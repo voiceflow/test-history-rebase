@@ -9,7 +9,7 @@ interface MobileVoiceInstructionProps {
   colorScheme?: string;
 }
 
-const MobileVoiceInstruction: React.FC<MobileVoiceInstructionProps> = ({ onStart, colorScheme }) => (
+const MobileVoiceInstruction: React.OldFC<MobileVoiceInstructionProps> = ({ onStart, colorScheme }) => (
   <Container isMobile>
     <ContentContainer centerAlign>
       <Box>

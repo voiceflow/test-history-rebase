@@ -3,7 +3,7 @@ import LogRocket from 'logrocket';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-interface ErrorBoundaryProps {
+interface ErrorBoundaryProps extends React.PropsWithChildren {
   show?: boolean;
 }
 

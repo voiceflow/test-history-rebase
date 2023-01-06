@@ -18,7 +18,7 @@ const Settings = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages
 const DashboardV1 = lazy(() => import('@/pages/Dashboard'));
 const DashboardV2 = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/DashboardV2')));
 
-const Workspace: React.FC = () => {
+const Workspace: React.OldFC = () => {
   const workspaceIDs = useSelector(WorkspaceV2.allWorkspaceIDsSelector);
   const dashboardV2FF = useFeature(Realtime.FeatureFlag.DASHBOARD_V2);
 

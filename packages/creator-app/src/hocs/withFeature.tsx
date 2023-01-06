@@ -12,28 +12,28 @@ export const withFeatureSwitcher = <T extends object>(feature: Realtime.FeatureF
     return isEnabled ? <FeatureComponent {...props} /> : <Component {...props} />;
   });
 
-export const withFeatureEnabled = (feature: Realtime.FeatureFlag): HOC =>
+export const withFeatureEnabled = (feature: Realtime.FeatureFlag): HOC<React.PropsWithChildren> =>
   createHOC('withFeatureEnabled')((Component) => (props) => {
     const { isEnabled } = useFeature(feature);
 
     return isEnabled ? <Component {...props} /> : null;
   });
 
-export const withFeatureDisabled = (feature: Realtime.FeatureFlag): HOC =>
+export const withFeatureDisabled = (feature: Realtime.FeatureFlag): HOC<React.PropsWithChildren> =>
   createHOC('withFeatureDisabled')((Component) => (props) => {
     const { isEnabled } = useFeature(feature);
 
     return isEnabled ? null : <Component {...props} />;
   });
 
-export const withFeatureGate = (feature: Realtime.FeatureFlag): HOC =>
+export const withFeatureGate = (feature: Realtime.FeatureFlag): HOC<React.PropsWithChildren> =>
   createHOC('withFeatureGate')((Component) => (props) => {
     const { isEnabled } = useFeature(feature);
 
     return isEnabled ? <Component {...props} /> : <>{props.children}</>;
   });
 
-export const withoutFeatureGate = (feature: Realtime.FeatureFlag): HOC =>
+export const withoutFeatureGate = (feature: Realtime.FeatureFlag): HOC<React.PropsWithChildren> =>
   createHOC('withoutFeatureGate')((Component) => (props) => {
     const { isEnabled } = useFeature(feature);
 

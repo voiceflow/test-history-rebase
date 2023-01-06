@@ -1,7 +1,6 @@
 import { AlexaConstants, AlexaProject } from '@voiceflow/alexa-types';
-import { Box, Button, ButtonVariant, Dropdown, Input, Label, SvgIcon } from '@voiceflow/ui';
+import { Box, Button, ButtonVariant, Dropdown, Input, Label, SvgIcon, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
-import { Tooltip } from 'react-tippy';
 
 import TextInput from '@/components/Form/TextInput';
 import * as VersionV2 from '@/ducks/versionV2';
@@ -45,7 +44,7 @@ export interface PricingFormProps {
   advanceStep: VoidFunction;
 }
 
-const PricingForm: React.FC<PricingFormProps> = ({ advanceStep }) => {
+const PricingForm: React.OldFC<PricingFormProps> = ({ advanceStep }) => {
   const parentalControl = useSelector(VersionV2.active.alexa.parentalControlSelector);
   const { product, patchProduct, setProductProperty } = React.useContext(ProductContext)!;
 
@@ -61,10 +60,10 @@ const PricingForm: React.FC<PricingFormProps> = ({ advanceStep }) => {
           <RadioButtonGroup>
             {PRODUCT_TYPES.map(({ value, label }, index) => (
               <div key={index}>
-                <Tooltip
+                <TippyTooltip
                   disabled={!(value === AlexaConstants.ProductType.CONSUMABLE && parentalControl)}
                   position="top"
-                  title={
+                  content={
                     value === AlexaConstants.ProductType.CONSUMABLE && parentalControl
                       ? 'Consumables are not available for kid skills at this time.'
                       : undefined
@@ -81,7 +80,7 @@ const PricingForm: React.FC<PricingFormProps> = ({ advanceStep }) => {
                     />
                     <span>{label}</span>
                   </RadioButtonLabel>
-                </Tooltip>
+                </TippyTooltip>
               </div>
             ))}
           </RadioButtonGroup>

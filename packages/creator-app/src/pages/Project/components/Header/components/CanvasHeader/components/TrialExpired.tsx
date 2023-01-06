@@ -10,6 +10,6 @@ const ExpiredText = styled.div`
   margin-right: 32px;
 `;
 
-const TrialExpired: React.FC = () => <ExpiredText>Trial expired</ExpiredText>;
+const TrialExpired: React.OldFC = () => <ExpiredText>Trial expired</ExpiredText>;
 
 export default TrialExpired;

@@ -4,7 +4,7 @@ import React from 'react';
 
 import { NLUManagerContext } from '@/pages/NLUManager/context';
 
-const HeaderSelectColumn: React.FC = () => {
+const HeaderSelectColumn: React.OldFC = () => {
   const table = Table.useContext();
   const nluManager = React.useContext(NLUManagerContext);
 

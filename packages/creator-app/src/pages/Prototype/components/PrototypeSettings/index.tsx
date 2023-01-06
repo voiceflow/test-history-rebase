@@ -12,7 +12,7 @@ interface PrototypeSettingsProps {
   showTitle?: boolean;
 }
 
-const PrototypeSettings: React.FC<PrototypeSettingsProps> = ({ showTitle }) => {
+const PrototypeSettings: React.OldFC<PrototypeSettingsProps> = ({ showTitle }) => {
   const config = useSelector(Recent.recentPrototypeSelector);
   const updateSettings = useDispatch(Recent.updateRecentPrototype);
   const toggleSetting = (setting: keyof typeof config) => () => updateSettings({ [setting]: !config[setting] });

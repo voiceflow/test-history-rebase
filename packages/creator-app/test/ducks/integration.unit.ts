@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 
 import * as Integration from '@/ducks/integration';
 
@@ -187,27 +187,26 @@ suite(Integration, MOCK_STATE)('Ducks - Integration', ({ describeReducer, descri
 
       it('should catch error with response.data string', async () => {
         const errorMessage = Utils.generate.string();
-        const mockError: any = { response: { data: errorMessage } };
+        const mockError: any = new AxiosError(undefined, undefined, undefined, undefined, { data: errorMessage } as any);
         vi.spyOn(axios, 'post').mockRejectedValue(mockError);
 
         const { expectDispatch, error } = await catchEffect(Integration.addIntegrationUser(integration, userData));
 
         expectDispatch(Integration.addIntegrationUserBegin());
-        expectDispatch(Integration.addIntegrationUserFailure(mockError));
+        expectDispatch(Integration.addIntegrationUserFailure(errorMessage));
         expect(error).toBe(errorMessage);
       });
 
       it('should catch error with response.data object', async () => {
-        const errorObject = { message: 'uh oh!' };
-        const expectedMessage = 'Error occured: {"message":"uh oh!"}';
-        const mockError: any = { response: { data: errorObject } };
+        const mockError: any = new AxiosError(undefined, undefined, undefined, undefined, { data: { message: 'uh oh!' } } as any);
+
         vi.spyOn(axios, 'post').mockRejectedValue(mockError);
 
         const { expectDispatch, error } = await catchEffect(Integration.addIntegrationUser(integration, userData));
 
         expectDispatch(Integration.addIntegrationUserBegin());
-        expectDispatch(Integration.addIntegrationUserFailure(mockError));
-        expect(error).toBe(expectedMessage);
+        expectDispatch(Integration.addIntegrationUserFailure('uh oh!'));
+        expect(error).toBe('uh oh!');
       });
 
       it('should catch string error', async () => {

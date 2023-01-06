@@ -22,7 +22,7 @@ interface GPTPromptProps {
   popperDescription: string;
 }
 
-const GPTPrompt: React.FC<GPTPromptProps> = ({
+const GPTPrompt: React.OldFC<GPTPromptProps> = ({
   index,
   prompt,
   onFocus,

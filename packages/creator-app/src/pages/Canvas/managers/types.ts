@@ -42,7 +42,7 @@ export interface ConnectedStepProps<T = {}, O extends Realtime.BuiltInPortRecord
   isLast?: boolean;
 }
 
-export type ConnectedStep<T = {}, O extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord> = React.FC<ConnectedStepProps<T, O>>;
+export type ConnectedStep<T = {}, O extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord> = React.OldFC<ConnectedStepProps<T, O>>;
 
 export interface ConnectedActionProps<T = {}, O extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord>
   extends BaseConnectedStepProps<T, O> {
@@ -54,11 +54,11 @@ export interface ConnectedActionProps<T = {}, O extends Realtime.BuiltInPortReco
   onOpenEditor: (routState?: Struct) => void;
 }
 
-export type ConnectedAction<T = {}, O extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord> = React.FC<ConnectedActionProps<T, O>>;
+export type ConnectedAction<T = {}, O extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord> = React.OldFC<ConnectedActionProps<T, O>>;
 
 export interface ConnectedChipProps<T = {}, O extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord> extends BaseConnectedProps<T, O> {}
 
-export type ConnectedChip<T = {}, O extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord> = React.FC<ConnectedChipProps<T, O>>;
+export type ConnectedChip<T = {}, O extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord> = React.OldFC<ConnectedChipProps<T, O>>;
 
 interface NodeDescriptorPorts<T extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord> {
   in: PortDescriptor[];
@@ -103,7 +103,7 @@ export interface NodeEditorPropsType<T, P extends Realtime.BuiltInPortRecord = R
   popFromPath: VoidFunction;
 }
 
-export type NodeEditor<T, P extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord, E = {}> = React.FC<NodeEditorPropsType<T, P> & E>;
+export type NodeEditor<T, P extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord, E = {}> = React.OldFC<NodeEditorPropsType<T, P> & E>;
 
 interface GoBack {
   <S extends string>(path?: S): void;
@@ -146,7 +146,7 @@ export interface NodeEditorV2Props<Data, BuiltInPorts extends Realtime.BuiltInPo
   onChangeParentBlock: (value: Partial<Realtime.NodeData<Realtime.NodeData.Combined>>) => Promise<void>;
 }
 
-export type NodeEditorV2<Data, BuiltInPorts extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord> = React.FC<
+export type NodeEditorV2<Data, BuiltInPorts extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord> = React.OldFC<
   NodeEditorV2Props<Data, BuiltInPorts>
 >;
 
@@ -156,7 +156,7 @@ export interface ActionEditorProps<Data, BuiltInPorts extends Realtime.BuiltInPo
   parentEditor: SharedEditorProps<unknown>;
 }
 
-export type ActionEditor<Data, BuiltInPorts extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord> = React.FC<
+export type ActionEditor<Data, BuiltInPorts extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord> = React.OldFC<
   ActionEditorProps<Data, BuiltInPorts>
 >;
 
@@ -238,7 +238,7 @@ export interface BaseNodeManagerConfig<Data extends object, BuiltInPorts extends
   /**
    * @deprecated use nested routes instead
    */
-  editorsByPath?: Record<string, React.FC<any>>;
+  editorsByPath?: Record<string, React.OldFC<any>>;
 
   step?: ConnectedStep<Data, BuiltInPorts>;
   chip?: ConnectedChip<Data, BuiltInPorts>;
@@ -276,7 +276,7 @@ export interface NodeManagerConfigV2<Data extends object, BuiltInPorts extends R
 export interface MarkupNodeManagerConfig<Data extends object, BuiltInPorts extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord>
   extends BaseNodeManagerConfig<Data, BuiltInPorts> {
   factory: NodeManagerFactory<Data, BuiltInPorts>;
-  markupNode: Data extends Realtime.Markup.AnyNodeData ? React.FC<ConnectedMarkupNodeProps<Data>> : never;
+  markupNode: Data extends Realtime.Markup.AnyNodeData ? React.OldFC<ConnectedMarkupNodeProps<Data>> : never;
 }
 
 export interface OptionalSectionConfig {

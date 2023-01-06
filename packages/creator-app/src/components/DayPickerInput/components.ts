@@ -1,4 +1,6 @@
-import DayPicker from 'react-day-picker';
+import 'react-day-picker/dist/style.css';
+
+import { DayPicker } from 'react-day-picker';
 
 import { css, styled } from '@/hocs/styled';
 import THEME from '@/styles/theme';
@@ -6,18 +8,17 @@ import THEME from '@/styles/theme';
 import leftArrow from './leftArrow.png';
 import rightArrow from './rightArrow.png';
 
-export const WEEKDAYS = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 export const FORMAT = 'MM/DD/YYYY';
 
-export const TimeRangePicker = styled(DayPicker)<{ isConversation?: boolean; isRangeSelected?: boolean }>`
-  & .DayPicker-Day--selected:not(.DayPicker-Day--start):not(.DayPicker-Day--outside):not(.DayPicker-Day--end) {
+export const TimeRangePicker = styled(DayPicker)<{ isRangeSelected?: boolean }>`
+  & .rdp-day_selected:not(.rdp-day_range_start):not(.rdp-day_outside):not(.rdp-day_range_end) {
     background-color: ${THEME.backgrounds.lightBlue};
     color: ${THEME.colors.primary};
-    border-radius: 0;
+    border-radius: 50% !important;
   }
 
-  & .DayPicker-Day {
-    border-radius: 0;
+  & .rdp-day {
+    border-radius: 50%;
     font-size: 13px;
     font-family: Open Sans;
     padding: 12px 14px;
@@ -27,7 +28,7 @@ export const TimeRangePicker = styled(DayPicker)<{ isConversation?: boolean; isR
     }
   }
 
-  & .DayPicker-Day--start:not(.DayPicker-Day--outside) {
+  & .rdp-day_range_start:not(.rdp-day_outside) {
     border-radius: 50% !important;
     position: relative;
 
@@ -47,11 +48,11 @@ export const TimeRangePicker = styled(DayPicker)<{ isConversation?: boolean; isR
     }
   }
 
-  & .DayPicker-Day--outside {
+  & .rdp-day_outside {
     cursor: pointer;
   }
 
-  & .DayPicker-Day--end:not(.DayPicker-Day--outside) {
+  & .rdp-day_range_end:not(.rdp-day_outside) {
     border-radius: 50% !important;
     position: relative;
 
@@ -71,89 +72,57 @@ export const TimeRangePicker = styled(DayPicker)<{ isConversation?: boolean; isR
     }
   }
 
-  & .DayPicker-Weekday {
-    padding: 9px;
-  }
-
-  & .DayPicker-Day--sundays {
-    ${({ isRangeSelected }) =>
-      isRangeSelected &&
-      css`
-        border-start-start-radius: 50% !important;
-        border-end-start-radius: 50% !important;
-      `};
-  }
-
-  & .DayPicker-Day--saturdays {
-    ${({ isRangeSelected }) =>
-      isRangeSelected &&
-      css`
-        border-start-end-radius: 50% !important;
-        border-end-end-radius: 50% !important;
-      `}
-  }
-
-  & .DayPicker-Weekdays {
+  & .rdp-head_row {
     font-size: 13x;
     padding-left: 10px;
     font-family: Open Sans;
-    & > * > * {
-      padding-right: 26px;
-    }
   }
 
-  & .DayPicker--selected {
-     border-radius: 0 !important;
+  & .rdp-head_cell {
+    padding: 9px;
   }
 
-  & .DayPicker-Day--today {
+  & .rdp-day_selected {
+    border-radius: 0 !important;
+  }
+
+  & .rdp-day_today:not(.rdp-day_outside) {
     background-color: ${THEME.backgrounds.greyGreen};
     color: ${THEME.colors.primary};
     border-radius: 50%;
   }
 
-  & .DayPicker-Months {
+  & .rdp-months {
     font-size: 13px;
     font-family: Open Sans;
-
-    & .DayPicker-Month {
-      & > * {
-        display: table-caption;
-        text-align: center;
-      }
-    }
   }
 
-  ${({ isConversation }) =>
-    isConversation
-      ? css`
-          & .DayPicker-NavBar {
-            & > .DayPicker-NavButton--prev {
-              margin: -1px 590px 0px 0px;
-              background-image: url(${leftArrow});
-            }
+  & .rdp-caption_label {
+    text-align: center;
+  }
 
-            & > .DayPicker-NavButton--next {
-              margin-top: -1px;
-              margin-right: 12px;
-              background-image: url(${rightArrow});
-            }
-          }
-        `
-      : css`
-          & .DayPicker-NavBar {
-            & > .DayPicker-NavButton--prev {
-              margin: -1px 265px 0px 0px;
-              background-image: url(${leftArrow});
-            }
+  & .rdp-nav {
+    .rdp-nav_button_previous {
+      background-image: url(${leftArrow});
+      background-size: 40%;
+      background-repeat: no-repeat;
+      background-position: center;
 
-            & > .DayPicker-NavButton--next {
-              margin-top: -1px;
-              margin-right: 10px;
-              background-image: url(${rightArrow});
-            }
-          }
-        `};
+      svg {
+        display: none;
+      }
+    }
+
+    .rdp-nav_button_next {
+      background-image: url(${rightArrow});
+      background-size: 40%;
+      background-repeat: no-repeat;
+      background-position: center;
+
+      svg {
+        display: none;
+      }
+    }
   }
 `;
 

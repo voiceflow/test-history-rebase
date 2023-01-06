@@ -69,7 +69,7 @@ const IntentListItem: React.ForwardRefRenderFunction<HTMLDivElement, IntentListI
 
   // eslint-disable-next-line xss/no-mixed-html
   return (
-    <OverflowTippyTooltip<HTMLDivElement> title={item.name}>
+    <OverflowTippyTooltip<HTMLDivElement> content={item.name}>
       {(tooltipRef) => (
         <S.IntentContainer
           ref={ref}

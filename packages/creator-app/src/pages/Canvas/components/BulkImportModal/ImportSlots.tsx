@@ -16,7 +16,7 @@ import { AceEditor, Errors, Separator } from './components';
 import { ACCEPTED_FILE_TYPES, DEBOUNCE_TIMEOUT, FILE_SIZE_LIMIT_BYTES, FILE_SIZE_LIMIT_KB, UPLOAD_VARIANTS, UploadType } from './constants';
 import { getSlotsWithSynonyms, validateSlots } from './utils';
 
-const ImportSlots: React.FC = () => {
+const ImportSlots: React.OldFC = () => {
   const [state, stateApi] = useSmartReducerV2({
     errors: null as null | Map<number, string>,
     validSlots: [] as string[][],

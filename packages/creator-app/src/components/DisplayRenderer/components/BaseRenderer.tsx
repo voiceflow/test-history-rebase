@@ -13,7 +13,6 @@ interface BaseRendererProps {
   onFail: (error: Error) => void;
 }
 
-// eslint-disable-next-line react/display-name
 const BaseRenderer: React.FC<BaseRendererProps> = ({ onFail, scale, apl, data, commands, viewport }) => (
   <APLRenderer
     content={apl}

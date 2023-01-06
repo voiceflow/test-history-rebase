@@ -26,7 +26,14 @@ interface TestVariableStateSelectProps extends BaseSelectProps {
   onUpdateStateValues: () => Promise<void>;
 }
 
-const TestVariableStateSelect: React.FC<TestVariableStateSelectProps> = ({ value, loading, onChange, onUpdateStateValues, className, ...props }) => {
+const TestVariableStateSelect: React.OldFC<TestVariableStateSelectProps> = ({
+  value,
+  loading,
+  onChange,
+  onUpdateStateValues,
+  className,
+  ...props
+}) => {
   const variableStates = useSelector(variableState.allVariableStatesSelector);
   const isSelectedStateUnsync = useSelector(variableState.IsVariableStateUnsyncSelector);
 
@@ -58,7 +65,7 @@ const TestVariableStateSelect: React.FC<TestVariableStateSelectProps> = ({ value
       getOptionLabel={(value) => value && optionsMap[value]?.label}
       renderOptionLabel={(option: VariableStateOption) => (
         <>
-          <OverflowTippyTooltip title={option.label} overflow position="top-start">
+          <OverflowTippyTooltip content={option.label} overflow placement="top-start">
             {(overflowref) => <OverflowText ref={overflowref}>{option.label}</OverflowText>}
           </OverflowTippyTooltip>
 
@@ -73,7 +80,7 @@ const TestVariableStateSelect: React.FC<TestVariableStateSelectProps> = ({ value
       prefix={
         isSelectedStateUnsync &&
         !loading && (
-          <TippyTooltip title="Update state values">
+          <TippyTooltip content="Update state values">
             <SvgIcon icon="arrowSpin" clickable color="#132144" onClick={onUpdateStateValues} size={16} />
           </TippyTooltip>
         )

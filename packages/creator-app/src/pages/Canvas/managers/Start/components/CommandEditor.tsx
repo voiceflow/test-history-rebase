@@ -15,7 +15,7 @@ import EditorV2 from '@/pages/Canvas/components/EditorV2';
 
 const PATH = 'command/:commandNodeID';
 
-const CommandEditor: React.FC = () => {
+const CommandEditor: React.OldFC = () => {
   const editor = EditorV2.useEditor<Realtime.NodeData.Command>();
   const { commandNodeID } = useParams<{ commandNodeID: string }>();
 

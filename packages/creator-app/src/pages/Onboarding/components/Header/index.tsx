@@ -5,7 +5,7 @@ import { Container } from '@/components/CreationSteps/components/StepStatus/comp
 import { STEP_META, StepID } from '@/pages/Onboarding/constants';
 import { OnboardingContext } from '@/pages/Onboarding/context';
 
-const OnboardingHeader: React.FC = () => {
+const OnboardingHeader: React.OldFC = () => {
   const { state, actions } = useContext(OnboardingContext);
   const { numberOfSteps, currentStepID, stepStack, paymentMeta, createWorkspaceMeta, justCreatingWorkspace } = state;
   const { stepBack, stepForward, onCancel } = actions;

@@ -43,7 +43,7 @@ export interface BaseStepProps {
 
 export type StepProps = BaseStepProps;
 
-const Step: React.FC<StepProps> = ({ nodeID, image, disableHighlightStyle, children, imagePosition, imageAspectRatio, dividerOffset }) => {
+const Step: React.OldFC<StepProps> = ({ nodeID, image, disableHighlightStyle, children, imagePosition, imageAspectRatio, dividerOffset }) => {
   const stepAPI = React.useContext(StepAPIContext);
   const isEditingMode = useEditingMode();
 

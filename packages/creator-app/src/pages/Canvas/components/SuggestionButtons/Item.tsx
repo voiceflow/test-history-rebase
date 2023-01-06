@@ -1,6 +1,6 @@
 import { BaseButton } from '@voiceflow/base-types';
 import * as Platform from '@voiceflow/platform-config';
-import { Badge, Box, compose, UIOnlyMenuItemOption } from '@voiceflow/ui';
+import { Badge, Box, UIOnlyMenuItemOption } from '@voiceflow/ui';
 import numberToWords from 'number-to-words/src';
 import React from 'react';
 
@@ -9,11 +9,9 @@ import IntentSelect from '@/components/IntentSelect';
 import { SectionToggleVariant } from '@/components/Section';
 import VariablesInput, { VariablesInputRef } from '@/components/VariablesInput';
 import * as IntentV2 from '@/ducks/intentV2';
-import { connect } from '@/hocs/connect';
-import { useActiveProjectPlatform, useSetup } from '@/hooks';
+import { useActiveProjectPlatform, useSelector, useSetup } from '@/hooks';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
-import { ConnectedProps, MergeArguments } from '@/types';
 import { getPlatformValue } from '@/utils/platform';
 import { transformVariablesToReadable } from '@/utils/slot';
 import { isGooglePlatform } from '@/utils/typeGuards';
@@ -27,11 +25,10 @@ export type ItemProps = ItemComponentProps<BaseButton.IntentButton> &
     formControlProps?: { contentBottomUnits?: number };
   };
 
-const Item: React.ForwardRefRenderFunction<HTMLDivElement, ItemProps & ConnectedItemProps> = (
+const Item: React.ForwardRefRenderFunction<HTMLElement, ItemProps> = (
   {
     item,
     index,
-    intent,
     itemKey,
     onUpdate,
     isOnlyItem,
@@ -46,6 +43,8 @@ const Item: React.ForwardRefRenderFunction<HTMLDivElement, ItemProps & Connected
   },
   ref
 ) => {
+  const intent = useSelector(IntentV2.platformIntentByIDSelector, { id: item.payload.intentID });
+
   const isNew = latestCreatedKey === itemKey;
   const platform = useActiveProjectPlatform();
   const variablesInputRef = React.useRef<VariablesInputRef>(null);
@@ -60,9 +59,10 @@ const Item: React.ForwardRefRenderFunction<HTMLDivElement, ItemProps & Connected
     }
   });
 
+  // eslint-disable-next-line xss/no-mixed-html
   return (
     <EditorSection
-      ref={ref}
+      ref={ref as React.RefObject<HTMLDivElement>}
       header={
         transformVariablesToReadable(item.name) ||
         `${getPlatformValue(platform, { [Platform.Constants.PlatformType.GOOGLE]: 'Chip' }, 'Button')} ${numberToWords.toWords(index + 1)}`
@@ -107,18 +107,4 @@ const Item: React.ForwardRefRenderFunction<HTMLDivElement, ItemProps & Connected
   );
 };
 
-const mapStateToProps = {
-  intent: IntentV2.getPlatformIntentByIDSelector,
-};
-
-const mergeProps = (...[{ intent: getIntentByID }, , { item }]: MergeArguments<typeof mapStateToProps, {}, ItemProps>) => {
-  return {
-    intent: getIntentByID({ id: item.payload.intentID }),
-  };
-};
-
-type ConnectedItemProps = ConnectedProps<typeof mapStateToProps, {}, typeof mergeProps>;
-
-export default compose(connect(mapStateToProps, null, mergeProps, { forwardRef: true }), React.forwardRef)(Item) as React.ForwardRefExoticComponent<
-  React.PropsWithoutRef<ItemProps> & React.RefAttributes<HTMLElement>
->;
+export default React.forwardRef(Item);

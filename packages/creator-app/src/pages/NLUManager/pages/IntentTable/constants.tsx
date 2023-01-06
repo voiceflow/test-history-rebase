@@ -32,7 +32,7 @@ export const COLUMNS: TableTypes.Column<TableColumn, NLUIntent>[] = [
     sorter: (intentL, intentR) => intentL.name.localeCompare(intentR.name),
     ellipses: true,
     component: (props) => <NameColumn {...props} placeholder="Enter intent name" />,
-    overflowTooltip: ({ item }) => ({ title: item.name }),
+    overflowTooltip: ({ item }) => ({ content: item.name }),
   },
 
   {
@@ -42,7 +42,8 @@ export const COLUMNS: TableTypes.Column<TableColumn, NLUIntent>[] = [
     label: 'Confidence',
     sorter: (intentL, intentR) => intentL.confidence - intentR.confidence,
     tooltip: {
-      html: (
+      width: 232,
+      content: (
         <TippyTooltip.FooterButton onClick={onOpenInternalURLInANewTabFactory(NLU_MANAGEMENT_INTENT_CONFIDENCE)} buttonText="More">
           Confidence is a measure of a specific intents data robustness.
         </TippyTooltip.FooterButton>
@@ -59,7 +60,8 @@ export const COLUMNS: TableTypes.Column<TableColumn, NLUIntent>[] = [
     label: 'Clarity',
     sorter: (intentL, intentR) => intentL.clarity - intentR.clarity,
     tooltip: {
-      html: (
+      width: 232,
+      content: (
         <TippyTooltip.FooterButton onClick={onOpenInternalURLInANewTabFactory(NLU_MANAGEMENT_INTENT_CLARITY)} buttonText="More">
           Clarity is a measure of an intents ability to be recognized, relative to the rest of your model.
         </TippyTooltip.FooterButton>

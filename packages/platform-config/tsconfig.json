@@ -7,6 +7,7 @@
     "downlevelIteration": true,
     "allowJs": true,
     "baseUrl": ".",
+    "exactOptionalPropertyTypes": false,
     "paths": {
       "@platform-config/*": ["src/*"],
       "@voiceflow/ui": ["../ui/src"],

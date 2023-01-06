@@ -8,7 +8,7 @@ import { AlexaPublishJob, JobStageData } from '@/models';
 import { ALEXA_LEARN_MORE_URL, ALEXA_SIMULATOR_URL } from '@/platforms/alexa/constants';
 import { StageComponentProps } from '@/platforms/types';
 
-const SuccessStage: React.FC<StageComponentProps<AlexaPublishJob.SuccessStage>> = ({ stage }) => {
+const SuccessStage: React.OldFC<StageComponentProps<AlexaPublishJob.SuccessStage>> = ({ stage }) => {
   const locales = useSelector(VersionV2.active.localesSelector);
   const updateActiveVendor = useDispatch(Project.alexa.updateActiveVendor);
   const { succeededLocale, amazonID, selectedVendorID } = stage.data as JobStageData<AlexaPublishJob.SuccessStage>;

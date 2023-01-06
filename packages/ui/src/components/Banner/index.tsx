@@ -16,7 +16,7 @@ interface BannerProps extends Omit<S.OuterContainerProps, 'isOpen'> {
   small?: boolean;
 }
 
-const Banner: React.FC<BannerProps> = ({
+const Banner: React.OldFC<BannerProps> = ({
   title,
   subtitle,
   buttonText,

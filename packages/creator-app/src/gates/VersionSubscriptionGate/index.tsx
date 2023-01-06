@@ -1,5 +1,4 @@
 import React from 'react';
-import { batch } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
 import { Path } from '@/config/routes';
@@ -9,7 +8,7 @@ import { useDispatch, useRouteVersionID, useTeardown } from '@/hooks';
 import { MigrationGate, SchemaChannelSubscriptionGate, VersionChannelSubscriptionGate } from './components';
 import { VersionSubscriptionContext } from './types';
 
-const VersionSubscriptionGate: React.FC = ({ children }) => {
+const VersionSubscriptionGate: React.OldFC = ({ children }) => {
   const versionID = useRouteVersionID();
 
   const [context, setContext] = React.useState<VersionSubscriptionContext | null>(null);
@@ -20,12 +19,10 @@ const VersionSubscriptionGate: React.FC = ({ children }) => {
   const setActiveDiagramID = useDispatch(Session.setActiveDiagramID);
 
   useTeardown(() => {
-    batch(() => {
-      setActiveDomainID(null);
-      setActiveProjectID(null);
-      setActiveVersionID(null);
-      setActiveDiagramID(null);
-    });
+    setActiveDomainID(null);
+    setActiveProjectID(null);
+    setActiveVersionID(null);
+    setActiveDiagramID(null);
   });
 
   if (!versionID) {

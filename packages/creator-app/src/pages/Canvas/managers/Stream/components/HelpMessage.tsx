@@ -3,7 +3,7 @@ import React from 'react';
 
 import * as Documentation from '@/config/documentation';
 
-const HelpMessage: React.FC = () => (
+const HelpMessage: React.OldFC = () => (
   <Tooltip.Paragraph>
     Read more about about the stream step <Link href={Documentation.STREAM_STEP}>here</Link>.
   </Tooltip.Paragraph>

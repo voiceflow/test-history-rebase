@@ -1,8 +1,9 @@
-import RCSlider from 'rc-slider';
+import RCSlider, { SliderProps } from 'rc-slider';
+import React from 'react';
 
 import { styled } from '@/hocs/styled';
 
-const StyledSlider = styled(RCSlider)`
+const StyledSlider = styled(RCSlider as React.FC<SliderProps<number>>)`
   margin-right: 8px;
 
   .rc-slider-track {

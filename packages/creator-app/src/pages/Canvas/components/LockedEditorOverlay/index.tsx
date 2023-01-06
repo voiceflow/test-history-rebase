@@ -14,7 +14,7 @@ export interface LockedEditorOverlayProps {
   prevOwner: LockOwner | null;
 }
 
-const LockedEditorOverlay: React.FC<LockedEditorOverlayProps> = ({ lockOwner, prevOwner, acquireLock }) => {
+const LockedEditorOverlay: React.OldFC<LockedEditorOverlayProps> = ({ lockOwner, prevOwner, acquireLock }) => {
   const userID = useSelector(Account.userIDSelector);
 
   if (lockOwner && lockOwner.creator_id !== userID) {
@@ -48,9 +48,9 @@ export interface LockedBlockOverlayProps {
   children?: (forceUpdateKey: number | null) => React.ReactNode;
 }
 
-export const PassthroughBlockOverlay: React.FC<LockedBlockOverlayProps> = ({ children }) => <>{children?.(-1)}</>;
+export const PassthroughBlockOverlay: React.OldFC<LockedBlockOverlayProps> = ({ children }) => <>{children?.(-1)}</>;
 
-export const LockedBlockOverlay: React.FC<LockedBlockOverlayProps> = ({ nodeID, disabled = false, children }) => {
+export const LockedBlockOverlay: React.OldFC<LockedBlockOverlayProps> = ({ nodeID, disabled = false, children }) => {
   const { lockOwner, prevOwner, acquireLock, forceUpdateKey } = useEditLock(nodeID, disabled);
 
   return (

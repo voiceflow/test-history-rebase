@@ -2,6 +2,8 @@ import { Utils } from '@voiceflow/common';
 import { BaseSelectProps, defaultMenuLabelRenderer, IconButton, Menu, Select, toast } from '@voiceflow/ui';
 import React from 'react';
 
+import { getErrorMessage } from '@/utils/error';
+
 export interface VariableSelectProps extends BaseSelectProps {
   value?: string | null;
   options: string[];
@@ -10,14 +12,14 @@ export interface VariableSelectProps extends BaseSelectProps {
   onCreate: (value: string) => Promise<string>;
 }
 
-const VariableSelectV2: React.FC<VariableSelectProps> = ({ value, options, onChange, onCreate: onCreateProp, ...props }) => {
+const VariableSelectV2: React.OldFC<VariableSelectProps> = ({ value, options, onChange, onCreate: onCreateProp, ...props }) => {
   const onCreate = async (value: string) => {
     try {
       const newVariable = await onCreateProp(value);
 
       onChange(newVariable);
     } catch (err) {
-      toast.error(err.message);
+      toast.error(getErrorMessage(err));
     }
   };
 

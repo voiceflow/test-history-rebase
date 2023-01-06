@@ -10,7 +10,7 @@ import PrivacyToggle from './PrivacyToggle';
 import { ApperanceSection, GeneralSection, PreviewSection, PublishSection } from './sections';
 import { PreviewContainer, SettingsContainer } from './styled';
 
-const Webchat: React.FC = () => {
+const Webchat: React.OldFC = () => {
   const config = useSelector(VersionV2.active.voiceflow.chat.publishingSelector);
   const updateConfig = useDispatch(Version.voiceflow.chat.patchActiveAndLivePublishing);
 

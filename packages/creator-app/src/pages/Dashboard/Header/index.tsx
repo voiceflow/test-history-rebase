@@ -16,7 +16,7 @@ interface DashboardHeaderProps {
   handleFilterText: (text: string) => void;
 }
 
-const DashboardHeader: React.FC<DashboardHeaderProps> = ({ handleFilterText, workspace: activeWorkspace }) => {
+const DashboardHeader: React.OldFC<DashboardHeaderProps> = ({ handleFilterText, workspace: activeWorkspace }) => {
   const [canConfigureWorkspace] = usePermission(Permission.CONFIGURE_WORKSPACE);
   const goToWorkspaceSettings = useDispatch(Router.goToCurrentWorkspaceSettings);
 

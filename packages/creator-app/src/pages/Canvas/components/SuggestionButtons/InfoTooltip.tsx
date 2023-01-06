@@ -5,7 +5,7 @@ import React from 'react';
 import { useActiveProjectPlatform } from '@/hooks';
 import { getPlatformValue } from '@/utils/platform';
 
-const InfoTooltip: React.FC = () => {
+const InfoTooltip: React.OldFC = () => {
   const platform = useActiveProjectPlatform();
 
   return (

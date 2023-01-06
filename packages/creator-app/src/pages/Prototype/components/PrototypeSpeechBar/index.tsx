@@ -11,7 +11,7 @@ export interface PrototypeSpeechBarProps {
   onTranscript: (input: string) => void;
 }
 
-const PrototypeSpeechBar: React.FC<PrototypeSpeechBarProps> = ({ locale, onTranscript }) => {
+const PrototypeSpeechBar: React.OldFC<PrototypeSpeechBarProps> = ({ locale, onTranscript }) => {
   const [canUseASR] = useCanASR();
 
   const {

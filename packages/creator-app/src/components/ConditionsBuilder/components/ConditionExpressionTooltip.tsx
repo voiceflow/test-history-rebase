@@ -4,7 +4,7 @@ import React from 'react';
 import ListItem from '@/components/ConditionsBuilder/components/ListItem';
 import { SupportedOperations } from '@/components/ConditionsBuilder/constants';
 
-const ConditionExpressionTooltip: React.FC = () => (
+const ConditionExpressionTooltip: React.OldFC = () => (
   <TutorialInfoIcon>
     <Text>{`This input accepts plain text numbers, variables using "{" and mathematical expressions.`}</Text>
 

@@ -13,7 +13,7 @@ interface HeaderProps extends S.ContainerProps {
   onClick?: VoidFunction;
 }
 
-const Header: React.FC<HeaderProps> = ({ label, children, collapsed, forceSticky, rightAction, onClick, ...containerProps }) => {
+const Header: React.OldFC<HeaderProps> = ({ label, children, collapsed, forceSticky, rightAction, onClick, ...containerProps }) => {
   const { scrollRef } = useScrollContext<CustomScrollbarsTypes.Scrollbars>();
   const [isHeaderSticky] = useScrollStickySides(scrollRef);
 

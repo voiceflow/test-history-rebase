@@ -18,7 +18,7 @@ interface Multiple {
   placeholder?: string;
 }
 
-const Multiple: React.FC<Multiple> = ({ max, add, list, update, prepend, isDisabled, placeholder }) => {
+const Multiple: React.OldFC<Multiple> = ({ max, add, list, update, prepend, isDisabled, placeholder }) => {
   const [localList, setLocalList] = useLinkedState(list.length ? list : ['']);
 
   const onDelete = (index: number) => () => {

@@ -15,7 +15,7 @@ import StepLinkedLabelText from './StepLinkedLabelText';
 import StepPort from './StepPort';
 import StepTitle from './StepTitle';
 
-const StepItem: React.FC<ItemProps> = ({
+const StepItem: React.OldFC<ItemProps> = ({
   children,
   icon,
   iconColor,

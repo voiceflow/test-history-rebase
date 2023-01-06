@@ -7,7 +7,7 @@ import { AlexaStageType } from '@/constants/platforms';
 import { useAlexaPublishContext } from '../publish/hooks';
 import { useAlexaSubmitStageContent } from './stages';
 
-const AlexaSubmit: React.FC<{ disabled?: boolean; onClick: VoidFunction }> = ({ disabled, onClick }) => {
+const AlexaSubmit: React.OldFC<{ disabled?: boolean; onClick: VoidFunction }> = ({ disabled, onClick }) => {
   const publishContext = useAlexaPublishContext({ submit: true });
 
   const stageType = publishContext?.job?.stage?.type;

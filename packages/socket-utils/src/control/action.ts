@@ -40,10 +40,15 @@ export abstract class AbstractActionControl<
 
         await ctx.sendBack(actionCreators.done({ params: action.payload, result }, { actionID: action.meta?.actionID }));
       } catch (err) {
-        const errorPayload =
-          err instanceof AsyncRejectionError
-            ? ({ message: err.message, code: err.code } as E)
-            : ({ message: `unhandled error: ${err?.message}` } as E);
+        let errorPayload: E;
+
+        if (err instanceof AsyncRejectionError) {
+          errorPayload = { message: err.message, code: err.code } as E;
+        } else if (err && typeof err === 'object' && 'message' in err) {
+          errorPayload = { message: `unhandled error: ${err?.message}` } as E;
+        } else {
+          errorPayload = { message: `unhandled error: ${JSON.stringify(err)}` } as E;
+        }
 
         await ctx.sendBack(actionCreators.failed({ params: action.payload, error: errorPayload }, { actionID: action.meta?.actionID }));
       }

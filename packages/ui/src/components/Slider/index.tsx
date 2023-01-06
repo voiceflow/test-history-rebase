@@ -1,5 +1,5 @@
 import { styled } from '@ui/styles';
-import RCSlider from 'rc-slider';
+import RCSlider, { SliderProps } from 'rc-slider';
 // can's just use import '...index.css' cause vite-node will crash
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import _globalRCStyles from 'rc-slider/assets/index.css';
@@ -7,7 +7,7 @@ import React from 'react';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-const RCSliderFixed: typeof RCSlider = RCSlider.default ?? RCSlider;
+const RCSliderFixed: React.FC<SliderProps<number>> = RCSlider.default ?? RCSlider;
 
 const SliderContainer = styled(RCSliderFixed)`
   margin-right: 8px;
@@ -37,9 +37,7 @@ const SliderContainer = styled(RCSliderFixed)`
   }
 `;
 
-export type SliderProps = React.ComponentProps<typeof RCSlider>;
-
-const Slider: React.FC<SliderProps> = ({ min = 1, max = 100, value = 0, step = 1, ...props }) => (
+const Slider: React.FC<SliderProps<number>> = ({ min = 1, max = 100, value = 0, step = 1, ...props }) => (
   <SliderContainer min={min} max={max} value={value} step={step} {...props} />
 );
 

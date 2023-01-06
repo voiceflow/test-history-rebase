@@ -11,8 +11,8 @@ const animation = keyframes`
   }
 `;
 
-const TooltipContainer = styled.div`
-  max-width: 232px;
+const TooltipContainer = styled.div<{ width: number }>`
+  width: ${({ width }) => width}px;
   position: relative;
   display: block;
   padding: 8px 16px;

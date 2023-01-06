@@ -19,7 +19,7 @@ export interface VoiceListProps {
   hideRandomizeMenu?: boolean;
 }
 
-const VoiceList: React.FC<VoiceListProps> = ({
+const VoiceList: React.OldFC<VoiceListProps> = ({
   reprompts,
   randomize,
   children,

@@ -15,11 +15,20 @@ export type EditorContentProps = React.ComponentProps<typeof ContentContainer> &
   hideFooter?: boolean;
 };
 
-const EditorContent: React.FC<EditorContentProps> = ({ footer, children, hideFooter, fillHeight = false, ...props }) => {
+const isScrollToArgs = (args: [ScrollToOptions] | [number, number]): args is [ScrollToOptions] => typeof args[0] === 'object';
+
+const EditorContent: React.OldFC<EditorContentProps> = ({ footer, children, hideFooter, fillHeight = false, ...props }) => {
   const containerRef = React.useRef<HTMLDivElement>();
 
-  const scrollTo = React.useCallback((...args) => containerRef.current?.scrollTo(...args), []);
-  const scrollToBottom = React.useCallback((behavior = 'smooth') => scrollTo({ top: containerRef.current?.scrollHeight, behavior }), [scrollTo]);
+  const scrollTo = React.useCallback(
+    (...args: [ScrollToOptions] | [number, number]) =>
+      isScrollToArgs(args) ? containerRef.current?.scrollTo(args[0]) : containerRef.current?.scrollTo(...args),
+    []
+  );
+  const scrollToBottom = React.useCallback(
+    (behavior: ScrollBehavior = 'smooth') => scrollTo({ top: containerRef.current?.scrollHeight, behavior }),
+    [scrollTo]
+  );
 
   return (
     <>

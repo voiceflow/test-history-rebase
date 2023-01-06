@@ -12,7 +12,7 @@ interface FilterMenuProps {
   setFilter: (type: FilterType) => void;
 }
 
-const FilterMenu: React.FC<FilterMenuProps> = ({ setFilter, filter }) => {
+const FilterMenu: React.OldFC<FilterMenuProps> = ({ setFilter, filter }) => {
   const openThreads = useSelector(Thread.openedThreads);
   const resolvedThreads = useSelector(Thread.resolvedThreads);
   const commentsVisible = useSelector(UI.isCommentsVisible);

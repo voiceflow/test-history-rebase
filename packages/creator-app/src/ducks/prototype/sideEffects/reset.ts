@@ -1,5 +1,4 @@
 import { Utils } from '@voiceflow/common';
-import { batch } from 'react-redux';
 
 import { PrototypeStatus } from '@/constants/prototype';
 import * as Domain from '@/ducks/domain/selectors';
@@ -38,23 +37,22 @@ const resetPrototype =
     const visualState = prototypeVisualSelector(state);
     const startFrom = VariableState.selectedVariableStateSelector(state)?.startFrom;
 
-    batch(() => {
-      if (redirect && startFrom) {
-        dispatch(redirectToPrototypeDiagram(startFrom.diagramID, startFrom.stepID));
-      }
-      dispatch(updatePrototypeStatus(PrototypeStatus.IDLE));
-      dispatch(
-        updatePrototype({
-          sessionID: Utils.id.cuid(),
-          contextStep: 0,
-          contextHistory: [],
-          flowIDHistory: [],
-          activePaths: {},
-          autoplay: false,
-          visual: { ...visualState, data: null, dataHistory: [] },
-        })
-      );
-    });
+    if (redirect && startFrom) {
+      dispatch(redirectToPrototypeDiagram(startFrom.diagramID, startFrom.stepID));
+    }
+
+    dispatch(updatePrototypeStatus(PrototypeStatus.IDLE));
+    dispatch(
+      updatePrototype({
+        sessionID: Utils.id.cuid(),
+        contextStep: 0,
+        contextHistory: [],
+        flowIDHistory: [],
+        activePaths: {},
+        autoplay: false,
+        visual: { ...visualState, data: null, dataHistory: [] },
+      })
+    );
   };
 
 export default resetPrototype;

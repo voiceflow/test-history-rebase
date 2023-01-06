@@ -10,7 +10,7 @@ export interface PrototypeResetProps {
   onSave: VoidFunction;
 }
 
-const PrototypeReset: React.FC<PrototypeResetProps> = ({ onSave, onClick }) => {
+const PrototypeReset: React.OldFC<PrototypeResetProps> = ({ onSave, onClick }) => {
   const [transcriptSaved, setTranscriptSaved] = React.useState(true);
   return (
     <Container>

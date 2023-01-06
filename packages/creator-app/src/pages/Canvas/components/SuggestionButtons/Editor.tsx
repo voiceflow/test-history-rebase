@@ -10,18 +10,25 @@ import DraggableList, { DeleteComponent } from '@/components/DraggableList';
 import OverflowMenu from '@/components/OverflowMenu';
 import * as Creator from '@/ducks/creator';
 import * as IntentV2 from '@/ducks/intentV2';
-import { connect } from '@/hocs/connect';
-import { useActiveProjectPlatform, useMapManager, useToggle } from '@/hooks';
+import { useActiveProjectPlatform, useMapManager, useSelector, useToggle } from '@/hooks';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
 import { useUpdateData } from '@/pages/Canvas/components/EditorSidebar/hooks';
 import useButtonLayoutOption from '@/pages/Canvas/managers/hooks/useButtonLayoutOption';
-import { ConnectedProps } from '@/types';
 import { getPlatformValue } from '@/utils/platform';
 
 import HelpTooltip from './HelpTooltip';
 import Item from './Item';
 
-const Editor: React.FC<ConnectedButtonPageProps> = ({ focus, intents, focusedNode }) => {
+const focusedNodeWithButtonsSelector = createSelector(
+  Creator.focusedNodeDataSelector,
+  (data) => data as Realtime.NodeData<{ buttons?: BaseButton.AnyButton[]; choices?: Realtime.NodeData.InteractionChoice[] }>
+);
+
+const Editor: React.FC = () => {
+  const focus = useSelector(Creator.creatorFocusSelector);
+  const intents = useSelector(IntentV2.allPlatformIntentsSelector);
+  const focusedNode = useSelector(focusedNodeWithButtonsSelector);
+
   const platform = useActiveProjectPlatform();
   const [isDragging, toggleDragging] = useToggle(false);
   const updateData = useUpdateData(focus.target || undefined);
@@ -81,17 +88,4 @@ const Editor: React.FC<ConnectedButtonPageProps> = ({ focus, intents, focusedNod
   );
 };
 
-const focusedNodeWithButtonsSelector = createSelector(
-  Creator.focusedNodeDataSelector,
-  (data) => data as Realtime.NodeData<{ buttons?: BaseButton.AnyButton[]; choices?: Realtime.NodeData.InteractionChoice[] }>
-);
-
-const mapStateToProps = {
-  focus: Creator.creatorFocusSelector,
-  intents: IntentV2.allPlatformIntentsSelector,
-  focusedNode: focusedNodeWithButtonsSelector,
-};
-
-type ConnectedButtonPageProps = ConnectedProps<typeof mapStateToProps>;
-
-export default connect(mapStateToProps)(Editor);
+export default Editor;

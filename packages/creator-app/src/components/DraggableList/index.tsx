@@ -1,6 +1,6 @@
 import compositeRef from '@seznam/compose-react-refs';
 import { Nullable } from '@voiceflow/common';
-import { ContextMenuProps, useCache, usePersistFunction } from '@voiceflow/ui';
+import { ContextMenuProps, useCache, useContextApi, usePersistFunction } from '@voiceflow/ui';
 // eslint-disable-next-line you-dont-need-lodash-underscore/throttle
 import _throttle from 'lodash/throttle';
 import React from 'react';
@@ -22,10 +22,12 @@ import {
   ListContainer,
   MappedItemComponentHandlers,
 } from './components';
-import { DnDHandlers, DnDItem as DnDInternalItem, InternalItem } from './types';
+import { ChildrenContextProvider, useChildrenContext } from './context';
+import { BaseItemData, DnDHandlers, DnDItem as DnDInternalItem } from './types';
 
-export { DeleteComponent };
+export { DeleteComponent, useChildrenContext as useDraggableListChildrenContext };
 export type {
+  BaseItemData,
   ContextMenuOption,
   DeleteComponentProps,
   DragPreviewComponentProps,
@@ -33,8 +35,6 @@ export type {
   ItemComponentProps,
   MappedItemComponentHandlers,
 };
-
-export type BaseItemData<Item> = Omit<InternalItem<Item>, 'type'>;
 
 export type IndexableEditActionHandler<Item> = (index: number, item: Item, data: BaseItemData<Item>) => void;
 
@@ -48,6 +48,7 @@ export interface DraggableListHandlers<Item> {
 
 interface DraggableListBaseProps<Item, DeleteProps, ExtraItemProps> extends DraggableListHandlers<Item> {
   type: string;
+  flex?: boolean;
   filter?: (item: Item) => boolean;
   footer?: React.ReactNode;
   onDrop?: (item: DnDInternalItem<Item>) => unknown;
@@ -129,6 +130,7 @@ interface DraggableListComponent {
 
 const DraggableList: DraggableListComponent = ({
   type,
+  flex,
   footer = null,
   filter,
   onDrop,
@@ -220,13 +222,6 @@ const DraggableList: DraggableListComponent = ({
     [onStartDrag]
   );
 
-  React.useEffect(
-    () => () => {
-      connectDrop(null);
-    },
-    [connectDrop]
-  );
-
   const handlers = useCache<DnDHandlers<Item>>({
     onDrop,
     canDrag,
@@ -239,29 +234,52 @@ const DraggableList: DraggableListComponent = ({
     deleteHovered,
   });
 
-  const renderItem = (data: (BaseItemData<Item> & MappedItemComponentHandlers<Item>) | BaseItemData<Item>) => (
-    <DnDItem
-      {...itemProps}
-      onRemove={onDeleteDrop}
-      onDuplicate={onItemDuplicate}
-      {...data}
-      type={type}
-      handlers={handlers}
-      partialDrag={partialDragItem}
-      itemComponent={itemComponent as any}
-      contextMenuProps={contextMenuProps}
-      contextMenuOptions={contextMenuOptions}
-      unmountableDuringDrag={unmountableDuringDrag}
-      withContextMenuDelete={withContextMenuDelete}
-      contextMenuDeleteLabel={contextMenuDeleteLabel}
-      contextMenuSelfDismiss={contextMenuSelfDismiss}
-      withContextMenuDuplicate={withContextMenuDuplicate}
-      disableReorderingWhileDraggingX={disableReorderingWhileDraggingX}
-    />
+  const itemExtraProps = useContextApi(itemProps ?? {});
+
+  const renderItem = React.useCallback(
+    (data: (BaseItemData<Item> & MappedItemComponentHandlers<Item>) | BaseItemData<Item>) => (
+      <DnDItem
+        {...itemExtraProps}
+        onRemove={onDeleteDrop}
+        onDuplicate={onItemDuplicate}
+        {...data}
+        type={type}
+        handlers={handlers}
+        partialDrag={partialDragItem}
+        itemComponent={itemComponent as any}
+        contextMenuProps={contextMenuProps}
+        contextMenuOptions={contextMenuOptions}
+        unmountableDuringDrag={unmountableDuringDrag}
+        withContextMenuDelete={withContextMenuDelete}
+        contextMenuDeleteLabel={contextMenuDeleteLabel}
+        contextMenuSelfDismiss={contextMenuSelfDismiss}
+        withContextMenuDuplicate={withContextMenuDuplicate}
+        disableReorderingWhileDraggingX={disableReorderingWhileDraggingX}
+      />
+    ),
+    [
+      type,
+      handlers,
+      onDeleteDrop,
+      itemComponent,
+      itemExtraProps,
+      onItemDuplicate,
+      partialDragItem,
+      contextMenuProps,
+      contextMenuOptions,
+      unmountableDuringDrag,
+      withContextMenuDelete,
+      contextMenuDeleteLabel,
+      contextMenuSelfDismiss,
+      withContextMenuDuplicate,
+      disableReorderingWhileDraggingX,
+    ]
   );
 
+  const childContext = useContextApi({ renderItem });
+
   return (
-    <ListContainer ref={compositeRef(connectDrop as any, containerRef)} fullHeight={fullHeight}>
+    <ListContainer ref={compositeRef(connectDrop as any, containerRef)} flex={flex} fullHeight={fullHeight}>
       {!props.children &&
         (props.mapManager
           ? props.mapManager.map((item, { key, index, isFirst, isLast, onRemove, onUpdate }) => {
@@ -297,7 +315,7 @@ const DraggableList: DraggableListComponent = ({
               return renderItem(itemData);
             }))}
 
-      {!!props.children && props.children({ renderItem })}
+      {!!props.children && <ChildrenContextProvider value={childContext}>{props.children({ renderItem })}</ChildrenContextProvider>}
 
       {footer}
 

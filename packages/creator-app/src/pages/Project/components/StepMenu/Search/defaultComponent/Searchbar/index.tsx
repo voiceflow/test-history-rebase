@@ -26,7 +26,7 @@ interface SearchbarProps {
   placeholder?: string;
 }
 
-const Searchbar: React.FC<SearchbarProps> = ({ value, placeholder = 'Search', onSearch, onCancel }) => {
+const Searchbar: React.OldFC<SearchbarProps> = ({ value, placeholder = 'Search', onSearch, onCancel }) => {
   const isInputEmpty = !value;
 
   return (

@@ -1,7 +1,7 @@
 import { Tooltip } from '@voiceflow/ui';
 import React from 'react';
 
-const HelpTooltip: React.FC = () => (
+const HelpTooltip: React.OldFC = () => (
   <>
     <Tooltip.Paragraph marginBottomUnits={2}>
       The stream step allows you to stream audio files longer than 240 seconds at a higher quality than than adding an audio file to a speak block.

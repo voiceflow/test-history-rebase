@@ -20,7 +20,7 @@ export interface NodeActionStepProps {
   onOpenEditor: (actionNodeID: string, routeState?: Struct) => void;
 }
 
-const NodeActionStep: React.FC<NodeActionStepProps> = ({ isLast, reversed, isActive, sourcePortID, sourceNodeID, onOpenEditor }) => {
+const NodeActionStep: React.OldFC<NodeActionStepProps> = ({ isLast, reversed, isActive, sourcePortID, sourceNodeID, onOpenEditor }) => {
   const engine = React.useContext(EngineContext)!;
   const nodeEntity = React.useContext(NodeEntityContext)!;
   const getManager = React.useContext(ManagerContext)!;

@@ -9,7 +9,7 @@ interface ResponseHeadersProps {
   response: Response;
 }
 
-const ResponseHeaders: React.FC<ResponseHeadersProps> = ({ response }) => {
+const ResponseHeaders: React.OldFC<ResponseHeadersProps> = ({ response }) => {
   if (!response.headers?.length) return null;
 
   return (

@@ -4,33 +4,31 @@ import React from 'react';
 
 import AceEditor, { ACE_EDITOR_OPTIONS } from '@/components/AceEditor';
 import Section, { SectionVariant } from '@/components/Section';
-import * as Session from '@/ducks/session';
 import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
-import { connect } from '@/hocs/connect';
 import { useFeature } from '@/hooks';
+import { useDispatch } from '@/hooks/realtime';
+import { useSelector } from '@/hooks/redux';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import { SkillEventsErrorMessage } from '@/pages/Settings/components/styles';
 import { PlatformSettingsMetaProps } from '@/pages/Settings/constants';
-import { ConnectedProps } from '@/types';
+import { getErrorMessage } from '@/utils/error';
 
 interface AlexaEventsOwnProps {
   platformMeta: PlatformSettingsMetaProps;
   modelSensitivityShown?: boolean;
 }
 
-const AlexaEvents: React.FC<ConnectedAlexaEvents & AlexaEventsOwnProps> = ({
-  propAlexaEvents,
-  platformMeta,
-  patchSettings,
-  modelSensitivityShown,
-}) => {
+const AlexaEvents: React.OldFC<AlexaEventsOwnProps> = ({ platformMeta, modelSensitivityShown }) => {
+  const propAlexaEvents = useSelector(VersionV2.active.alexa.eventsSelector);
+  const patchSettings = useDispatch(Version.alexa.patchSettings);
+
   const { descriptors } = platformMeta;
   const { events } = descriptors;
   const gadgetsFeat = useFeature(Realtime.FeatureFlag.GADGETS);
 
   const [alexaEvents, setAlexaEvents] = React.useState(propAlexaEvents || '');
-  const [alexaEventError, setAlexaEventError] = React.useState(null);
+  const [alexaEventError, setAlexaEventError] = React.useState<string | null>(null);
 
   const updateAlexaEvents = (value: string) => {
     try {
@@ -39,7 +37,7 @@ const AlexaEvents: React.FC<ConnectedAlexaEvents & AlexaEventsOwnProps> = ({
         setAlexaEventError(null);
       }
     } catch (error) {
-      setAlexaEventError(error.toString());
+      setAlexaEventError(getErrorMessage(error));
     }
     setAlexaEvents(value);
   };
@@ -85,15 +83,4 @@ const AlexaEvents: React.FC<ConnectedAlexaEvents & AlexaEventsOwnProps> = ({
   );
 };
 
-const mapStateToProps = {
-  propAlexaEvents: VersionV2.active.alexa.eventsSelector,
-  projectID: Session.activeProjectIDSelector,
-};
-
-const mapDispatchToProps = {
-  patchSettings: Version.alexa.patchSettings,
-};
-
-type ConnectedAlexaEvents = ConnectedProps<typeof mapStateToProps, typeof mapDispatchToProps>;
-
-export default connect(mapStateToProps, mapDispatchToProps)(AlexaEvents) as React.FC<AlexaEventsOwnProps>;
+export default AlexaEvents;

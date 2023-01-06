@@ -50,7 +50,7 @@ export const setActiveVersionID = (versionID: string | null): SetActiveVersionID
 
 export const setActiveDiagramID = (diagramID: string | null): SetActiveDiagramID => createAction(SessionAction.SET_ACTIVE_DIAGRAM_ID, diagramID);
 
-export const setActiveDomainID = (diagramID: string | null): SetActiveDomainID => createAction(SessionAction.SET_ACTIVE_DOMAIN_ID, diagramID);
+export const setActiveDomainID = (domainID: string | null): SetActiveDomainID => createAction(SessionAction.SET_ACTIVE_DOMAIN_ID, domainID);
 
 export const setPrototypeSidebarVisible = (isVisible: boolean): SetPrototypeSidebarVisible =>
   createAction(SessionAction.SET_PROTOTYPE_SIDEBAR_VISIBLE, isVisible);

@@ -12,7 +12,7 @@ interface NLUSearchProps {
   placeholder: string;
 }
 
-const NLUSearch: React.FC<NLUSearchProps> = ({ value, onChange, placeholder }) => {
+const NLUSearch: React.OldFC<NLUSearchProps> = ({ value, onChange, placeholder }) => {
   const [tooltipOpen, setTooltipOpen] = React.useState(false);
   const inputRef = React.useRef<HTMLInputElement>(null);
 
@@ -24,15 +24,14 @@ const NLUSearch: React.FC<NLUSearchProps> = ({ value, onChange, placeholder }) =
 
   return (
     <TippyTooltip
-      html={
+      content={
         <div style={{ color: '#A2A7A8', fontSize: '13px' }}>
           Press <span style={{ color: '#F2F7F7' }}>/</span> to search
         </div>
       }
       position="bottom"
-      open={tooltipOpen}
-      distance={-6}
-      offset={-33}
+      visible={tooltipOpen}
+      offset={[-33, -6]}
     >
       <SearchInput
         ref={inputRef}

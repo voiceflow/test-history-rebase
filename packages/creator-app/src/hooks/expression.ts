@@ -6,6 +6,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 
 import * as DiagramV2 from '@/ducks/diagramV2';
+import { getErrorMessage } from '@/utils/error';
 import { transformVariableToString } from '@/utils/slot';
 
 const VALID_STRING_REGEX = /'.+'/gi;
@@ -95,11 +96,13 @@ export const useExpressionValidator = () => {
         if (message === 'Unexpected identifier') {
           message = `string ${text} must be in quotes. Solution: '${text}'`;
         }
-      } else {
-        message = error?.message;
       }
 
-      setError(message || 'Expression syntax is invalid.');
+      if (!message) {
+        message = getErrorMessage(error, 'Expression syntax is invalid.');
+      }
+
+      setError(message);
 
       return false;
     }

@@ -21,7 +21,7 @@ interface IntentItemProps {
   onMoveUtterance: (payload: MoveUtterancePayload) => void;
 }
 
-const IntentItem: React.FC<IntentItemProps> = ({ intent, conflictID, utterances, onEditUtterance, onDeleteUtterance, onMoveUtterance }) => {
+const IntentItem: React.OldFC<IntentItemProps> = ({ intent, conflictID, utterances, onEditUtterance, onDeleteUtterance, onMoveUtterance }) => {
   const intentUtterances = React.useMemo(() => utterances.filter((u) => !u.deleted), [utterances]);
   const intentName = intent?.name || '';
   const intentID = intent?.id || '';

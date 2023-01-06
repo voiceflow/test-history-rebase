@@ -9,7 +9,7 @@ import { useaGoogleExportStageContent } from './stages';
 
 export { default as GoogleUploadLink } from './components/GoogleUploadLink';
 
-const GoogleExport: React.FC = () => {
+const GoogleExport: React.OldFC = () => {
   const exportContext = React.useContext(ExportContext)!;
   const stageType = exportContext?.job?.stage?.type;
   const Content = useaGoogleExportStageContent(stageType);

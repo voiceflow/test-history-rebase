@@ -18,7 +18,7 @@ interface TagLineItemProps {
   onUndoDelete: (tag: ReportTag) => void;
 }
 
-const TagLineItem: React.FC<TagLineItemProps> = ({ tags, onUndoDelete, onDelete, tag }) => {
+const TagLineItem: React.OldFC<TagLineItemProps> = ({ tags, onUndoDelete, onDelete, tag }) => {
   const updateTag = useDispatch(ReportTagDuck.updateTag);
 
   const [tagVal, setTagVal] = React.useState(tag.label);

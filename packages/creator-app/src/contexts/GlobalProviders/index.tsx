@@ -29,11 +29,11 @@ import { TextEditorVariablesPopoverProvider } from '../TextEditorVariablesPopove
 import { VoiceflowAssistantVisibilityProvider } from '../VoiceflowAssistantVisibility';
 import SessionTracker from './components/SessionTracker';
 
-export interface GlobalProvidersProps extends StoreProviderProps {
+export interface GlobalProvidersProps extends Omit<StoreProviderProps, 'children'> {
   history: History;
 }
 /* eslint-disable-next-line xss/no-mixed-html */
-const GlobalProviders: React.FC<GlobalProvidersProps> = ({ history, store, persistor, logux, children }) => (
+const GlobalProviders: React.OldFC<GlobalProvidersProps> = ({ history, store, persistor, logux, children }) => (
   <StoreProvider store={store} persistor={persistor} logux={logux}>
     <ConnectedRouter history={history}>
       <DndProvider backend={HTML5Backend}>
@@ -94,8 +94,8 @@ const GlobalProviders: React.FC<GlobalProvidersProps> = ({ history, store, persi
 export default GlobalProviders;
 
 export const withGlobalProviders =
-  <T extends object>(Component: React.FC<T>) =>
-  ({ history, store, persistor, logux, ...props }: T & GlobalProvidersProps) =>
+  <T extends object>(Component: React.FC<T>): React.FC<T & GlobalProvidersProps> =>
+  ({ history, store, persistor, logux, ...props }) =>
     (
       <GlobalProviders history={history} store={store} persistor={persistor} logux={logux}>
         <Component {...(props as T)} />

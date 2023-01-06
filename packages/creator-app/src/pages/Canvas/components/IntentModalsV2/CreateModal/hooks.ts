@@ -10,6 +10,7 @@ import { getUniqSlots } from '@/ducks/intent/utils';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Tracking from '@/ducks/tracking';
 import { useActiveProjectTypeConfig, useDispatch, useIntentNameProcessor, useSelector } from '@/hooks';
+import { getErrorMessage } from '@/utils/error';
 import { applyPlatformIntentNameFormatting } from '@/utils/intent';
 
 interface CreateIntentProps {
@@ -92,7 +93,7 @@ export const useCreateIntent = ({ creationType, initialName, onCreate }: CreateI
       onCreate?.(intentID);
       reset();
     } catch (e) {
-      toast.error(e);
+      toast.error(getErrorMessage(e));
     }
   };
 

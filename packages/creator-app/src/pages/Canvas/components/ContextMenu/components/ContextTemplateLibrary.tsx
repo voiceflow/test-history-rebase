@@ -6,7 +6,7 @@ import { EngineContext } from '@/pages/Canvas/contexts';
 
 import * as S from './styles';
 
-export const ContextTemplateLibrary: React.FC = () => {
+export const ContextTemplateLibrary: React.OldFC = () => {
   const engine = React.useContext(EngineContext)!;
   const targets = engine.activation.getTargets();
 

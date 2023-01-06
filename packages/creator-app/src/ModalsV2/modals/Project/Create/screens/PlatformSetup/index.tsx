@@ -24,7 +24,15 @@ interface PlatformSetupProps {
   }) => void;
 }
 
-const PlatformSetup: React.FC<PlatformSetupProps> = ({ type, onNext: onNextProp, onClose, locales, platform, onChangeLocales, onChangePlatform }) => {
+const PlatformSetup: React.OldFC<PlatformSetupProps> = ({
+  type,
+  onNext: onNextProp,
+  onClose,
+  locales,
+  platform,
+  onChangeLocales,
+  onChangePlatform,
+}) => {
   const projectConfig = Platform.Config.getTypeConfig({ type, platform });
 
   const dashboardV2 = useFeature(Realtime.FeatureFlag.DASHBOARD_V2);

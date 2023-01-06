@@ -1,7 +1,7 @@
 import { Utils } from '@voiceflow/common';
 import { Flex, KeyName, preventDefault, SvgIcon, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
-import ReactSelect from 'react-select';
+import { SelectInstance } from 'react-select';
 
 import { useActiveProjectConfig, useCanvasNodeFilter, useTrackingEvents } from '@/hooks';
 import { EngineContext, SpotlightContext } from '@/pages/Canvas/contexts';
@@ -10,7 +10,14 @@ import { getStepSections, StepItem } from '@/pages/Project/components/StepMenu/c
 import { Identifier } from '@/styles/constants';
 import { withKeyPress } from '@/utils/dom';
 
-import { Container, Control, Menu, Select } from '../Search/components';
+import { Container, Control, Menu, searchSelectFactory } from '../Search/components';
+
+interface Option extends StepItem {
+  value: string;
+  label: React.ReactNode;
+}
+
+const Select = searchSelectFactory<Option>();
 
 const Spotlight = () => {
   const engine = React.useContext(EngineContext)!;
@@ -18,14 +25,16 @@ const Spotlight = () => {
   // NOTE: extra protection against context being falsy needed for HMR
   const spotlight = React.useContext(SpotlightContext);
 
-  const selectRef = React.useRef<ReactSelect>(null);
+  const selectRef = React.useRef<SelectInstance<Option, false>>(null);
   const [inputValue, setInputValue] = React.useState('');
   const [trackingEvents] = useTrackingEvents();
   const getManager = useManager();
 
   const isVisible = !!spotlight?.isVisible;
 
-  const onChange = async (step: StepItem) => {
+  const onChange = async (step: StepItem | null) => {
+    if (!step) return;
+
     await engine.node.add(step.type, engine.getMouseCoords(), step.factoryData);
 
     spotlight?.hide();
@@ -37,14 +46,11 @@ const Spotlight = () => {
     () =>
       getStepSections(platform, projectType)
         .flatMap((section) => Utils.array.inferUnion(section.steps))
-        .filter((step) => {
-          if (!Utils.object.hasProperty(step, 'type')) return false;
-
-          return nodeFilter(step);
-        })
-        .map((step) => {
+        .filter((step) => Utils.object.hasProperty(step, 'type') && nodeFilter(step))
+        .map<Option>((step) => {
           const manager = getManager(step.type);
-          const value = step.getLabel(manager);
+          const value = step.getLabel(manager) || '';
+
           return {
             ...step,
             value,
@@ -59,6 +65,18 @@ const Spotlight = () => {
     [platform, nodeFilter]
   );
 
+  const trimmedValue = inputValue.toLowerCase().trim();
+
+  const filteredOptions = React.useMemo(
+    () =>
+      options
+        .filter(({ value }) => value.toLowerCase().includes(trimmedValue))
+        .sort(
+          (leftOption, rightOption) => leftOption.value.toLowerCase().indexOf(trimmedValue) - rightOption.value.toLowerCase().indexOf(trimmedValue)
+        ),
+    [options, trimmedValue]
+  );
+
   useDidUpdateEffect(() => {
     if (isVisible) {
       trackingEvents.trackCanvasSpotlightOpened();
@@ -66,33 +84,23 @@ const Spotlight = () => {
   }, [isVisible]);
 
   React.useLayoutEffect(() => {
-    selectRef.current?.select.focusOption('first');
+    selectRef.current?.focusOption('first');
   }, [inputValue]);
 
   if (!isVisible) {
     return null;
   }
 
-  const trimmedValue = inputValue.toLowerCase().trim();
-
-  const filteredOptions = options
-    .filter(({ value }) => value.toLowerCase().includes(trimmedValue))
-    .sort((leftOption, rightOption) => leftOption.value.toLowerCase().indexOf(trimmedValue) - rightOption.value.toLowerCase().indexOf(trimmedValue));
-
   return (
     <Container id={Identifier.SPOTLIGHT} onClick={preventDefault()}>
       <Select
         ref={selectRef}
         value={null}
-        onBlur={spotlight?.hide}
+        onBlur={() => spotlight?.hide()}
         options={filteredOptions}
         onChange={onChange}
         inputValue={inputValue}
-        components={{
-          Control,
-          Menu,
-          IndicatorsContainer: () => null,
-        }}
+        components={{ Menu, Control, IndicatorsContainer: () => null }}
         autoFocus
         onKeyDown={withKeyPress(KeyName.ESCAPE, () => spotlight?.hide())}
         placeholder="Add Block"

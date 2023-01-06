@@ -27,7 +27,7 @@ const Description = styled.div`
   font-size: 13px;
 `;
 
-const ActionSection: React.FC<{ heading: string; description: string; action: React.ReactNode }> = ({ heading, description, action }) => (
+const ActionSection: React.OldFC<{ heading: string; description: string; action: React.ReactNode }> = ({ heading, description, action }) => (
   <Container>
     <LeftSection>
       <Heading>{heading}</Heading>

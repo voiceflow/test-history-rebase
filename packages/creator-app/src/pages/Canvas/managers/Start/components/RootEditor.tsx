@@ -14,7 +14,7 @@ import { useNodeLabel } from './hooks';
 import InvocationNameSection from './InvocationNameSection';
 import StartLabelSection from './StartLabelSection';
 
-const RootEditor: React.FC = () => {
+const RootEditor: React.OldFC = () => {
   const editor = EditorV2.useEditor<Realtime.NodeData.Start>();
 
   const platform = useActiveProjectPlatform();

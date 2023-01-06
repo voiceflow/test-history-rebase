@@ -1,9 +1,9 @@
+import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Snackbar, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import IdleTimer from 'react-idle-timer';
-import { batch } from 'react-redux';
+import { useIdleTimer } from 'react-idle-timer';
 import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
 
 import InactivitySnackbar from '@/components/InactivitySnackbar';
@@ -38,7 +38,7 @@ const AnalyticsDashboard = withWorkspaceOrProjectAssetsSuspense(lazy(() => impor
 
 export type ProjectProps = RouteComponentProps;
 
-const Project: React.FC = () => {
+const Project: React.OldFC = () => {
   const theme = useTheme();
   const nluType = useSelector(ProjectV2.active.nluTypeSelector);
   const platform = useSelector(ProjectV2.active.platformSelector);
@@ -58,21 +58,38 @@ const Project: React.FC = () => {
 
   const isPreviewRoute = useProjectPreviewMode();
 
-  const idleTimer = React.useRef<IdleTimer | null>(null);
-
   const setActive = usePersistFunction(() => {
     inactivitySnackbar.close();
-    idleTimer.current?.reset();
+    idleTimer.reset();
   });
 
   const setIdle = usePersistFunction(() => {
     inactivitySnackbar.open();
-    idleTimer.current?.pause();
+    idleTimer.pause();
+  });
+
+  const idleTimer = useIdleTimer({
+    onIdle: setIdle,
+    element: document,
+    timeout: TIMEOUT_COUNT,
+    debounce: 250,
+    startOnMount: false,
+    startManually: true,
   });
 
   React.useEffect(() => {
     setPreviewing(!!isPreviewRoute);
   }, [isPreviewRoute]);
+
+  React.useEffect(() => {
+    if (isOnlyViewer) return Utils.functional.noop;
+
+    idleTimer.start();
+
+    return () => {
+      idleTimer.reset();
+    };
+  }, [isOnlyViewer]);
 
   useLayoutDidUpdate(() => {
     const engine = getEngine();
@@ -85,12 +102,10 @@ const Project: React.FC = () => {
     }
   }, [canvasOnly]);
 
-  useTeardown(() =>
-    batch(() => {
-      resetCreator();
-      resetCanvasTemplateData();
-    })
-  );
+  useTeardown(() => {
+    resetCreator();
+    resetCanvasTemplateData();
+  });
 
   return (
     <MarkupProvider>
@@ -98,20 +113,7 @@ const Project: React.FC = () => {
         <title>{projectName}</title>
       </Helmet>
 
-      {!isOnlyViewer && (
-        <>
-          <IdleTimer
-            ref={(instance: IdleTimer) => {
-              idleTimer.current = instance;
-            }}
-            element={document}
-            onIdle={setIdle}
-            debounce={250}
-            timeout={TIMEOUT_COUNT}
-          />
-          <InactivitySnackbar {...inactivitySnackbar} onDismiss={setActive} />
-        </>
-      )}
+      {!isOnlyViewer && <InactivitySnackbar {...inactivitySnackbar} onDismiss={setActive} />}
 
       <ExportProvider>
         <ExportModelModal />

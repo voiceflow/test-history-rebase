@@ -6,7 +6,7 @@ import { styled } from '@/hocs/styled';
 
 export { default as Container } from './SearchContainer';
 export { default as Dropdown } from './SearchDropdown';
-export { default as Select } from './SearchSelect';
+export { searchSelectFactory, default as Select } from './SearchSelect';
 
 export const Control: React.FC<ControlProps<any, any>> = ({ children, ...props }) => (
   <components.Control {...props}>
@@ -25,7 +25,7 @@ const NothingFound = styled.div`
 `;
 
 // omit onBlur to prevent resetting value
-export const Input: React.FC<InputProps & { onBlur: any }> = ({ onBlur, ...props }) => <components.Input {...props} />;
+export const Input: React.FC<InputProps<any>> = ({ onBlur, ...props }) => <components.Input {...props} />;
 
-export const Menu: React.FC<MenuProps<any, any>> = ({ children, ...props }) =>
+export const Menu: React.FC<MenuProps<any, false>> = ({ children, ...props }) =>
   props.options.length ? <components.Menu {...props}>{children}</components.Menu> : <NothingFound>Nothing found</NothingFound>;

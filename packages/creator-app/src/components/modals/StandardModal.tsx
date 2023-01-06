@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from '@/hooks';
 
 import { UncontrolledBackdrop } from './ModalBackdrop';
 
-const StandardModal: React.FC = () => {
+const StandardModal: React.OldFC = () => {
   const modal = useSelector((state) => state.modal.modal);
   const closeModal = useDispatch(ModalDuck.clearModal);
 

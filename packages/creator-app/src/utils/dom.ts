@@ -5,6 +5,8 @@ import _isString from 'lodash/isString';
 import { IS_E2E_TEST } from '@/config';
 import { Point } from '@/types';
 
+import { copy } from './clipboard';
+
 export { swallowKeyPress, withEnterPress, withInputBlur, withKeyPress, withTargetValue } from '@voiceflow/ui';
 
 declare global {
@@ -128,23 +130,14 @@ export const scrollTo = (node: HTMLElement | null, { top = 0, left = 0, ...opts 
   }
 };
 
-export const copyJSONPath = (copy_event: { name: string; namespace: string[] }) => {
-  const total_path = copy_event.namespace.slice();
+export const copyJSONPath = (copyEvent: { name: string; namespace: string[] }) => {
+  const totalPath = copyEvent.namespace.slice();
 
-  if (copy_event.name !== '') {
-    total_path.push(copy_event.name);
+  if (copyEvent.name !== '') {
+    totalPath.push(copyEvent.name);
   }
 
-  // Copy to clipboard
-  const el = document.createElement('textarea');
-  el.value = total_path.join('.');
-  el.setAttribute('readonly', '');
-  el.style.position = 'absolute';
-  el.style.left = '-9999px';
-  document.body.appendChild(el);
-  el.select();
-  document.execCommand('copy');
-  document.body.removeChild(el);
+  copy(totalPath.join('.'));
 };
 
 export const moveCursorToEnd = (el: HTMLInputElement) => {

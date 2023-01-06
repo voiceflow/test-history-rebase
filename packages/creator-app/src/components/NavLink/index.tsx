@@ -11,7 +11,7 @@ interface NavLinkProps {
   className?: string;
 }
 
-const NavLink: React.FC<NavLinkProps> = ({ as: Item = 'button', to, exact, ...itemProps }) => {
+const NavLink: React.OldFC<NavLinkProps> = ({ as: Item = 'button', to, exact, ...itemProps }) => {
   const location = useLocation();
   const isActive = !!matchPath(location.pathname, { path: to, exact });
   const goTo = useDispatch(Router.goTo);

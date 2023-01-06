@@ -24,7 +24,7 @@ const UploadContext = React.createContext<UploadValue>({
 
 export const { Consumer: ExportConsumer } = UploadContext;
 
-const UploadProvider: React.FC<UploadProviderProps> = ({ children, client, onError }) => {
+const UploadProvider: React.OldFC<UploadProviderProps> = ({ children, client, onError }) => {
   const upload = React.useCallback((endpoint: string, fileType: UploadFileType, file: FormData) => {
     return client.upload(endpoint, fileType, file);
   }, []);

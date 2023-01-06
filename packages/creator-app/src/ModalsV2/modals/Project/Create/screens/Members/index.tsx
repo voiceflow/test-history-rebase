@@ -14,7 +14,7 @@ interface MembersProps {
   memberRolesMap: Partial<Record<number, UserRole[]>>;
 }
 
-const Members: React.FC<MembersProps> = ({ onAdd, onNext, onClose, onRemove, memberIDs, onChangeRoles, memberRolesMap }) => {
+const Members: React.OldFC<MembersProps> = ({ onAdd, onNext, onClose, onRemove, memberIDs, onChangeRoles, memberRolesMap }) => {
   return (
     <>
       <SectionV2.SimpleContentSection

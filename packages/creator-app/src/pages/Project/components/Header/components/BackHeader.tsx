@@ -6,7 +6,7 @@ import { Path } from '@/config/routes';
 import * as Router from '@/ducks/router';
 import { useDispatch } from '@/hooks';
 
-const BackHeader: React.FC = () => {
+const BackHeader: React.OldFC = () => {
   const goToCurrentCanvas = useDispatch(Router.goToCurrentCanvas);
 
   return (

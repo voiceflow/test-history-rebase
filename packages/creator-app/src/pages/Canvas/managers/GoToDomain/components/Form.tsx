@@ -13,7 +13,7 @@ interface FormProps {
   footer?: React.ReactNode;
 }
 
-const Form: React.FC<FormProps> = ({ editor, header, footer }) => {
+const Form: React.OldFC<FormProps> = ({ editor, header, footer }) => {
   const domains = useSelector(Domain.allDomainsSelector);
   const domainMap = useSelector(Domain.domainsMapSelector);
 

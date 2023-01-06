@@ -24,7 +24,7 @@ import { useFilters } from './hooks';
 const PREVIOUS_TRANSCRIPT_ID_KEY = 'previous-transcript-id-key';
 const PREVIOUS_TRANSCRIPT_FILTER_KEY = 'previous-transcript-filter-key';
 
-const Conversations: React.FC = () => {
+const Conversations: React.OldFC = () => {
   const history = useHistory();
 
   const [trackingEvents] = useTrackingEvents();

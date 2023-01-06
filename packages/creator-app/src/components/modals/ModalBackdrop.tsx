@@ -20,13 +20,13 @@ interface UncontrolledBackdropProps {
   onClose: VoidFunction;
 }
 
-export const UncontrolledBackdrop: React.FC<UncontrolledBackdropProps> = ({ onClose }) => (
+export const UncontrolledBackdrop: React.OldFC<UncontrolledBackdropProps> = ({ onClose }) => (
   <Portal portalNode={document.body}>
     <Backdrop onPaste={stopImmediatePropagation()} onClick={onClose} />
   </Portal>
 );
 
-const ModalBackdrop: React.FC = () => {
+const ModalBackdrop: React.OldFC = () => {
   const { openedId, close } = React.useContext(ModalsContext);
 
   return <>{!!openedId && <UncontrolledBackdrop onClose={() => openedId && close(openedId)} />}</>;

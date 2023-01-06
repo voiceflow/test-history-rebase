@@ -14,7 +14,7 @@ export const getResponseMetadata = ({ response, initTime }: { response?: AxiosRe
 };
 
 export const getResponseHeaders = (response: AxiosResponse<any, any>) => {
-  return Object.keys(response.headers).map((headerKey) => ({ key: headerKey, val: response.headers[headerKey] }));
+  return Object.keys(response.headers).map((headerKey) => ({ key: headerKey, val: response.headers[headerKey] || '' }));
 };
 
 export const mapTestResponse = (response: AxiosResponse<any, any>, initTime: number): Response => ({

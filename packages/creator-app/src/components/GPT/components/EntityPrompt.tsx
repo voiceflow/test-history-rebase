@@ -20,7 +20,7 @@ interface GPTEntityPromptProps {
   activeIndex?: number;
 }
 
-const GPTEntityPrompt: React.FC<GPTEntityPromptProps> = ({ index, prompt, onFocus, isActive, onChange, onReject, entities, activeIndex }) => {
+const GPTEntityPrompt: React.OldFC<GPTEntityPromptProps> = ({ index, prompt, onFocus, isActive, onChange, onReject, entities, activeIndex }) => {
   const [ref] = useAutoScrollNodeIntoView<HTMLDivElement>({ condition: isActive, options: { block: 'nearest' } }, [isActive, activeIndex]);
 
   const popper = usePopper({

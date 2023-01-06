@@ -14,7 +14,7 @@ export interface VariableInputProps {
   disabled?: boolean;
 }
 
-const VariableInput: React.FC<VariableInputProps> = ({ name, value, disabled, onChange }) => {
+const VariableInput: React.OldFC<VariableInputProps> = ({ name, value, disabled, onChange }) => {
   const [inputValue, setInputValue] = React.useState(value);
   const editableTextRef = React.useRef<HTMLInputElement | null>(null);
   const [isFocused, enableFocus, disableFocus] = useEnableDisable();

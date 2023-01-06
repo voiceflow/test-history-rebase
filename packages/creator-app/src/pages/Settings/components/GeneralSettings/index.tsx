@@ -10,7 +10,7 @@ import { DEFAULT_MAX_WIDTH, getSettingsMetaProps, SettingSections } from '@/page
 
 import { SectionComponents, SectionFeatureFlags } from './constants';
 
-const SettingsContent: React.FC = () => {
+const SettingsContent: React.OldFC = () => {
   const platform = useSelector(ProjectV2.active.platformSelector);
   const projectType = useSelector(ProjectV2.active.projectTypeSelector);
   const platformMeta = getSettingsMetaProps(platform, projectType);

@@ -6,7 +6,7 @@ interface SectionProps {
   onRemove: VoidFunction;
 }
 
-const Section: React.FC<SectionProps> = ({ onClick, onRemove }) => {
+const Section: React.OldFC<SectionProps> = ({ onClick, onRemove }) => {
   const options: MenuTypes.OptionWithoutValue[] = [{ label: 'Remove', onClick: onRemove }];
 
   return (

@@ -9,7 +9,7 @@ import { useModals, useSelector } from '@/hooks';
 
 import EmptyDash from '../../../../components/EmptyDash';
 
-const EntitiesColumn: React.FC<TableTypes.ItemProps<Platform.Base.Models.Intent.Model>> = ({ item }) => {
+const EntitiesColumn: React.OldFC<TableTypes.ItemProps<Platform.Base.Models.Intent.Model>> = ({ item }) => {
   const entityEditModal = useModals(ModalType.ENTITY_EDIT);
 
   const entitiesIDs = React.useMemo(

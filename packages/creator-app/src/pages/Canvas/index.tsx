@@ -31,7 +31,7 @@ interface CanvasProps {
   isPrototypingMode?: boolean;
 }
 
-const Canvas: React.FC<CanvasProps> = ({ isPrototypingMode }) => {
+const Canvas: React.OldFC<CanvasProps> = ({ isPrototypingMode }) => {
   const [engine, engineKey] = useEngine();
 
   // using history to do not rerender on the every location change
@@ -106,4 +106,4 @@ const Canvas: React.FC<CanvasProps> = ({ isPrototypingMode }) => {
   );
 };
 
-export default compose(React.memo, withBatchLoadingGate(DiagramSubscriptionGate))(Canvas) as React.FC<CanvasProps>;
+export default compose(React.memo, withBatchLoadingGate(DiagramSubscriptionGate))(Canvas) as React.OldFC<CanvasProps>;

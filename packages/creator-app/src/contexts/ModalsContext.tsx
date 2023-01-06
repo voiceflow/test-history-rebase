@@ -43,7 +43,7 @@ const deleteFromStack = (stack: ModalStack, id: ModalType): ModalStack => stack.
 
 const DEFAULT_DATA = {};
 
-export const ModalsContextProvider: React.FC = ({ children }) => {
+export const ModalsContextProvider: React.OldFC = ({ children }) => {
   const [stack, updateStack] = React.useState<ModalStack>([]);
   const prevStackRef = React.useRef(stack.length);
   const stackModalIds = React.useMemo(() => stack.map(({ id }) => id), [stack]);
@@ -52,7 +52,7 @@ export const ModalsContextProvider: React.FC = ({ children }) => {
     (id: ModalType, data: object) => updateStack((prevStack) => (prevStackIncludes(prevStack, id) ? stack : addToStack(prevStack, { id, data }))),
     []
   );
-  const close = React.useCallback((id) => updateStack((prevStack) => deleteFromStack(prevStack, id)), [updateStack]);
+  const close = React.useCallback((id: ModalType) => updateStack((prevStack) => deleteFromStack(prevStack, id)), [updateStack]);
 
   const toggle = React.useCallback(
     (id: ModalType, data: object) =>

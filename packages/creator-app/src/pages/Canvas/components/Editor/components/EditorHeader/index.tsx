@@ -3,11 +3,10 @@ import cn from 'classnames';
 import React from 'react';
 
 import * as Creator from '@/ducks/creator';
-import { connect } from '@/hocs/connect';
+import { useSelector } from '@/hooks/redux';
 import { SidebarContext } from '@/pages/Canvas/components/EditorSidebar/contexts';
 import { EDITOR_BREADCRUMBS_CLASSNAME, EDITOR_HEADER_CLASSNAME } from '@/pages/Canvas/constants';
 import { EngineContext } from '@/pages/Canvas/contexts';
-import { ConnectedProps } from '@/types';
 
 import { ActiveLabel, Breadcrumbs, Container, Divider, Label } from './components';
 
@@ -18,7 +17,9 @@ export interface HeaderProps {
   className?: string;
 }
 
-const EditorHeader: React.FC<ConnectedHeaderProps & HeaderProps> = ({ path = [], data, className, goToPath }) => {
+const EditorHeader: React.FC<HeaderProps> = ({ path = [], className, goToPath }) => {
+  const data = useSelector(Creator.focusedNodeDataSelector);
+
   const sidebar = React.useContext(SidebarContext)!;
   const engine = React.useContext(EngineContext)!;
   const { headerActions } = sidebar.state;
@@ -62,10 +63,4 @@ const EditorHeader: React.FC<ConnectedHeaderProps & HeaderProps> = ({ path = [],
   );
 };
 
-const mapStateToProps = {
-  data: Creator.focusedNodeDataSelector,
-};
-
-type ConnectedHeaderProps = ConnectedProps<typeof mapStateToProps>;
-
-export default connect(mapStateToProps)(EditorHeader) as React.FC<HeaderProps>;
+export default EditorHeader;

@@ -12,7 +12,7 @@ interface CertificateFieldProps {
   onEditCertificate: VoidFunction;
 }
 
-const CertificateField: React.FC<CertificateFieldProps> = ({ editCertificate, certificate, onChange, onEditCertificate }) => {
+const CertificateField: React.OldFC<CertificateFieldProps> = ({ editCertificate, certificate, onChange, onEditCertificate }) => {
   return (
     <SectionV2.SimpleSection>
       <Box.FlexAlignStart fullWidth>

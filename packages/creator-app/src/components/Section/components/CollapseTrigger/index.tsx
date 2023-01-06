@@ -11,7 +11,7 @@ interface CollapseTriggerProps {
   disabled?: boolean;
 }
 
-const CollapseTrigger: React.FC<CollapseTriggerProps> = ({ disabled, onToggle, isCollapsed, variant }) => (
+const CollapseTrigger: React.OldFC<CollapseTriggerProps> = ({ disabled, onToggle, isCollapsed, variant }) => (
   <Container disabled={disabled}>
     {variant === SectionToggleVariant.ARROW && (
       <ToggleArrowContainer onClick={onToggle as React.MouseEventHandler} isCollapsed={isCollapsed}>

@@ -24,7 +24,7 @@ export interface SelectInputGroupProps {
   orientation?: OrientationType;
 }
 
-const SelectInputGroup: React.FC<SelectInputGroupProps> = ({ children, multiline, renderInput, orientation = OrientationType.RIGHT }) => {
+const SelectInputGroup: React.OldFC<SelectInputGroupProps> = ({ children, multiline, renderInput, orientation = OrientationType.RIGHT }) => {
   const isLeft = orientation === OrientationType.LEFT;
 
   const child = (

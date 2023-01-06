@@ -10,7 +10,7 @@ import { Identifier } from '@/styles/constants';
 
 import { Container, UpgradeIcon, UpgradeText } from './components';
 
-const UpgradeButton: React.FC = () => {
+const UpgradeButton: React.OldFC = () => {
   const isWorkspaceOnPaidPlan = useSelector(WorkspaceV2.active.isOnPaidPlanSelector);
 
   const { open: openPaymentsModal } = useModals(ModalType.PAYMENT);

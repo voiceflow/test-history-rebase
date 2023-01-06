@@ -7,6 +7,6 @@ export interface PortalProps {
   portalNode?: HTMLElement | null;
 }
 
-const Portal: React.FC<PortalProps> = ({ children, portalNode }) => createPortal(children, portalNode ?? portalRootNode);
+const Portal: React.OldFC<PortalProps> = ({ children, portalNode }) => createPortal(children, portalNode ?? portalRootNode);
 
 export default Portal;

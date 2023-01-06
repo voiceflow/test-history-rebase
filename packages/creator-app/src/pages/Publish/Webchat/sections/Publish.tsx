@@ -23,7 +23,7 @@ const getSample = (projectID: string) => `<script type="text/javascript">
   })(document, 'script');
 </script>`;
 
-export const PublishSection: React.FC = () => {
+export const PublishSection: React.OldFC = () => {
   const projectID = useSelector(ProjectV2.active.idSelector)!;
 
   const [trackingEvents] = useTrackingEvents();

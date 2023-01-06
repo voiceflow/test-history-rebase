@@ -5,7 +5,7 @@ import ProjectPage from '@/pages/Project/components/ProjectPage';
 import MigrateContainer from './components/MigrateContainer';
 import MigrateStages from './components/MigrateStages';
 
-const MigratePage: React.FC = () => (
+const MigratePage: React.OldFC = () => (
   <ProjectPage>
     <MigrateContainer>
       <h1>Skill Migration Tool</h1>

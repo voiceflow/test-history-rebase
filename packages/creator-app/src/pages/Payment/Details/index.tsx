@@ -34,7 +34,7 @@ interface PlansDetailsProps {
   payment: PaymentContextProps;
 }
 
-const PlansDetails: React.FC<PlansDetailsProps> = ({
+const PlansDetails: React.OldFC<PlansDetailsProps> = ({
   payment: {
     state: { plan, plans },
     actions: { showCheckout, setPlan },

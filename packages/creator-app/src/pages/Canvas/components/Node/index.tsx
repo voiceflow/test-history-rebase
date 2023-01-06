@@ -12,7 +12,7 @@ import { ClassName } from '@/styles/constants';
 
 import { Container, Lifecycle, NodeChipStart, NodeCombined, Styles } from './components';
 
-const Node: React.FC = () => {
+const Node: React.OldFC = () => {
   const engine = React.useContext(EngineContext)!;
   const nodeEntity = React.useContext(NodeEntityContext)!;
 

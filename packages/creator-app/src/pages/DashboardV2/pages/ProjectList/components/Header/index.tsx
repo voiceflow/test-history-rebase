@@ -14,7 +14,7 @@ interface HeaderProps {
   onSearch: (text: string) => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ search, onSearch }) => {
+const Header: React.OldFC<HeaderProps> = ({ search, onSearch }) => {
   const [canImportProject] = usePermission(Permission.IMPORT_PROJECT);
   const [canInviteMembers] = usePermission(Permission.INVITE);
   const [canCreateProject] = usePermission(Permission.EDIT_PROJECT);

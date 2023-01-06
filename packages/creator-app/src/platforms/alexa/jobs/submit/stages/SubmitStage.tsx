@@ -35,7 +35,7 @@ const SubmitForReviewModal = manager.create<SubmitForReviewModalProps>(
       )
 );
 
-const SubmitForReview: React.FC<StageComponentProps<AlexaPublishJob.SuccessStage>> = ({ cancel, stage }) => {
+const SubmitForReview: React.OldFC<StageComponentProps<AlexaPublishJob.SuccessStage>> = ({ cancel, stage }) => {
   const submitForReviewModal = ModalsV2.useModal(SubmitForReviewModal);
   const locales = useSelector(VersionV2.active.localesSelector);
 

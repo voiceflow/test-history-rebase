@@ -9,7 +9,7 @@ import { Permission } from '@/config/permissions';
 import { Path } from '@/config/routes';
 import { useActiveWorkspace, useFeature, usePermission } from '@/hooks';
 
-const Sidebar: React.FC = () => {
+const Sidebar: React.OldFC = () => {
   const workspace = useActiveWorkspace();
   const disableIntegation = useFeature(Realtime.FeatureFlag.DISABLE_INTEGRATION)?.isEnabled;
 

@@ -23,7 +23,7 @@ type ListManagerProps<I> = React.PropsWithChildren<{
   divider?: boolean;
   onUpdate: (items: I[]) => void;
   beforeAdd?: (value: I) => void;
-  renderForm: React.FC<RenderForm<I>>;
+  renderForm: React.OldFC<RenderForm<I>>;
   renderItem: (item: I, options: ItemOptions<I>) => React.ReactElement;
   addToStart?: boolean;
   renderList?: (options: {

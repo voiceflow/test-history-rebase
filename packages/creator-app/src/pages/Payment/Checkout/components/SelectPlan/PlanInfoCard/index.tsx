@@ -21,7 +21,7 @@ export interface PlanInfoCardProps {
   period: BillingPeriod;
 }
 
-const PlanInfoCard: React.FC<PlanInfoCardProps> = ({ plan, period }) => {
+const PlanInfoCard: React.OldFC<PlanInfoCardProps> = ({ plan, period }) => {
   const { pricing, highlights, name, id } = plan;
   const price = (pricing[period]?.price ?? 0) / 100 || null;
   const halfLength = highlights.length / 2;

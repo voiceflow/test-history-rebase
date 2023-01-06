@@ -17,7 +17,7 @@ interface PlanPermittedMenuItemProps<P extends PlanPermissionKey> {
   popperProps?: UpgradePopperProps['popperProps'];
   upgradePrompt: UpgradePrompt;
   tooltipProps?: UpgradeTooltipProps['tooltipProps'];
-  // react-tippy doesn't support nested tooltips
+  // TippyTooltip doesn't support nested tooltips
   // so we need to have a label tooltip and upgrade tooltip on the same level
   labelTooltip?: TippyTooltipProps;
 }
@@ -48,7 +48,7 @@ const PlanPermittedMenuItem = <P extends PlanPermissionKey>({
       tag="div"
       style={{ display: 'flex', width: '100%', height: '100%' }}
       delay={[200, 0]}
-      distance={planPermission ? 46 : 30}
+      offset={[0, planPermission ? 46 : 30]}
       {...labelTooltip}
     >
       {labelElement}

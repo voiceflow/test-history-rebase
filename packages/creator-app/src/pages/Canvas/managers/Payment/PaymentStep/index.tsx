@@ -20,7 +20,7 @@ export interface PaymentStepProps {
   palette: HSLShades;
 }
 
-export const PaymentStep: React.FC<PaymentStepProps> = ({ label, upsellMessage, withPorts, nodeID, successPortID, failurePortID, palette }) => (
+export const PaymentStep: React.OldFC<PaymentStepProps> = ({ label, upsellMessage, withPorts, nodeID, successPortID, failurePortID, palette }) => (
   <Step nodeID={nodeID}>
     <Section>
       <Item icon={NODE_CONFIG.icon} label={label} palette={palette} placeholder="Select a product" labelVariant={StepLabelVariant.SECONDARY} />

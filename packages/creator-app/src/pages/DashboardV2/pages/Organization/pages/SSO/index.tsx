@@ -22,7 +22,7 @@ const DEFAULT_STATE: SAMLProvider = {
   organizationID: '',
 };
 
-const OrganizationSSO: React.FC = () => {
+const OrganizationSSO: React.OldFC = () => {
   const organizationID = useSelector(WorkspaceV2.active.organizationIDSelector);
   const [loading, toggleLoading] = useToggle(false);
   const [editCertificate, toggleEditCertificate] = useToggle(true);

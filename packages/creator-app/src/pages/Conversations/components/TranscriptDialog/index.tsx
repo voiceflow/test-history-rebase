@@ -19,7 +19,7 @@ export type { TurnMap };
 const DEBUG_LOCAL_STORAGE_BOOL_KEY = 'show_conversation_debugs';
 const INTENT_CONF_LOCAL_STORAGE_BOOL_KEY = 'show_conversation_intent_conf';
 
-const TranscriptDialog: React.FC = () => {
+const TranscriptDialog: React.OldFC = () => {
   const color = useSelector(Prototype.prototypeBrandColorSelector);
   const avatar = useSelector(Prototype.prototypeAvatarSelector);
   const activeProjectID = useSelector(activeProjectIDSelector)!;

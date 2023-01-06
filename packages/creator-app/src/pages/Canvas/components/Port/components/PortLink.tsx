@@ -17,7 +17,7 @@ export interface PortLinkProps {
   isNew?: boolean;
 }
 
-const PortLink: React.FC<PortLinkProps> = ({ linkID, isHighlighted, isNew }) => {
+const PortLink: React.OldFC<PortLinkProps> = ({ linkID, isHighlighted, isNew }) => {
   const engine = React.useContext(EngineContext)!;
   const portEntity = React.useContext(PortEntityContext)!;
   const isStraightLinks = React.useContext(IsStraightLinksContext)!;

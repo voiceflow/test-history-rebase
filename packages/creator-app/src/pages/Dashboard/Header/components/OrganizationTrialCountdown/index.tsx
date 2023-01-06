@@ -8,7 +8,7 @@ import { useFeature, useSelector } from '@/hooks';
 import { CountdownContainer, CountdownIcon, CountdownText } from './components';
 import { CountdownStatus, MIN_TRIAL_DAYS, TRIAL_DAYS_WARNING } from './constants';
 
-const OrganizationTrialCountdown: React.FC = () => {
+const OrganizationTrialCountdown: React.OldFC = () => {
   const { isEnabled: isEnterpriseTrialEnabled } = useFeature(Realtime.FeatureFlag.ENTERPRISE_TRIAL);
   const trialDaysLeft = useSelector(WorkspaceV2.active.organizationTrialDaysLeft);
 
@@ -23,7 +23,7 @@ const OrganizationTrialCountdown: React.FC = () => {
 
   return (
     <CountdownContainer>
-      <TippyTooltip title="Days left in trial" position="bottom">
+      <TippyTooltip content="Days left in trial" position="bottom">
         <CountdownIcon status={countdownStatus} daysLeft={trialDaysLeft}>
           {trialDaysLeft}
         </CountdownIcon>

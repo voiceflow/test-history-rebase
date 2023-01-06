@@ -13,7 +13,7 @@ import { useModals, useTrackingEvents } from '@/hooks';
 
 import { ExportContext } from './Context';
 
-const ExportFooter: React.FC<{
+const ExportFooter: React.OldFC<{
   withoutLink?: boolean;
   linkURL?: string;
   origin: Tracking.ModelExportOriginType;

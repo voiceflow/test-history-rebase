@@ -7,7 +7,7 @@ import * as Query from '@/utils/query';
 
 import { LoginForm, SSOLogin } from './components';
 
-const MotorolaLogin: React.FC<RouteComponentProps> = ({ location }) => {
+const MotorolaLogin: React.OldFC<RouteComponentProps> = ({ location }) => {
   const query = Query.parse(location.search);
 
   if (!IS_MOTOROLA_PRIVATE_CLOUD) {

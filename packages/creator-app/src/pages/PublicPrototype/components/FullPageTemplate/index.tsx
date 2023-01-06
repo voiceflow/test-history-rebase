@@ -16,7 +16,7 @@ interface ShareSplashScreenProps {
   hideVFBranding?: boolean;
 }
 
-const FullPageTemplate: React.FC<ShareSplashScreenProps> = ({
+const FullPageTemplate: React.OldFC<ShareSplashScreenProps> = ({
   colorScheme,
   isVisuals,
   isMobile,

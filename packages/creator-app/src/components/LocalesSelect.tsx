@@ -14,7 +14,7 @@ interface LocalesSelectProps {
   onChange: (values: string[]) => void;
 }
 
-const LocalesSelect: React.FC<LocalesSelectProps> = ({ type, locales, platform, disabled, onChange }) => {
+const LocalesSelect: React.OldFC<LocalesSelectProps> = ({ type, locales, platform, disabled, onChange }) => {
   const projectConfig = Platform.Config.getTypeConfig({ type, platform });
 
   const preferredOptions = React.useMemo(

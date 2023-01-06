@@ -13,7 +13,7 @@ export interface StepPlaceholderProps {
   isLast: boolean;
 }
 
-const StepPlaceholder: React.FC<StepPlaceholderProps> = ({ palette, isLast }) => {
+const StepPlaceholder: React.OldFC<StepPlaceholderProps> = ({ palette, isLast }) => {
   const [forceHover, setForceHover] = React.useState(true);
 
   React.useEffect(() => {

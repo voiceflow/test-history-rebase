@@ -13,7 +13,7 @@ import { Coords } from '@/utils/geometry';
 
 import Engine from '../engine';
 
-const createEngine = moize.simple((...args: ConstructorParameters<typeof Engine>) => new Engine(...args));
+const createEngine = moize((...args: ConstructorParameters<typeof Engine>) => new Engine(...args));
 
 // used only in the HMR
 let $recreateEngine: ((Class: typeof Engine) => void) | null = null;

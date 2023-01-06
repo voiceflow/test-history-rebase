@@ -1,7 +1,7 @@
 import Button, { ButtonVariant } from '@ui/components/Button';
 import React from 'react';
 
-import { IMAGE_FILE_FORMATS } from '../../constants';
+import { IMAGE_FILE_TYPES } from '../../constants';
 import { validateFiles, validateImageUrl } from '../../utils';
 import UploadBase, { UploadBaseProps } from '../Base';
 import { InputRenderer } from '../LinkInput';
@@ -16,8 +16,8 @@ export interface UploadImageProps extends Pick<UploadBaseProps, 'value' | 'onCha
   onlyUpload?: boolean;
 }
 
-const UploadImage: React.FC<UploadImageProps> = ({
-  acceptedFileTypes = IMAGE_FILE_FORMATS,
+const UploadImage: React.OldFC<UploadImageProps> = ({
+  acceptedFileTypes = IMAGE_FILE_TYPES,
   autoHeight,
   endpoint = '/image',
   onChange,

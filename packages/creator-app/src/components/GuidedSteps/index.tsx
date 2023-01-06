@@ -40,7 +40,7 @@ interface GuidedStepsProps {
   onComplete?: () => void;
 }
 
-const GuidedSteps: React.FC<GuidedStepsProps> = ({
+const GuidedSteps: React.OldFC<GuidedStepsProps> = ({
   centred,
 
   blocks,
@@ -210,10 +210,10 @@ const GuidedSteps: React.FC<GuidedStepsProps> = ({
                           </Button>
                         ) : (
                           <TippyTooltip
+                            offset={[0, 5]}
+                            content={preventSubmit ? preventSubmit?.message : undefined}
                             disabled={!showPreventSubmitTooltip}
-                            position="top-end"
-                            title={preventSubmit ? preventSubmit?.message : undefined}
-                            distance={5}
+                            placement="top-end"
                           >
                             {children({ disabled: !isFormValid || disabled || !!preventSubmit, submit: () => submit(idx) })}
                           </TippyTooltip>
@@ -234,7 +234,7 @@ const GuidedSteps: React.FC<GuidedStepsProps> = ({
 
 export default GuidedSteps;
 
-export const ControlledGuidedSteps: React.FC<Omit<GuidedStepsProps, 'step' | 'onChangeStep'>> = (props) => {
+export const ControlledGuidedSteps: React.OldFC<Omit<GuidedStepsProps, 'step' | 'onChangeStep'>> = (props) => {
   const [currentStep, setCurrentStep] = React.useState(0);
 
   return <GuidedSteps {...props} step={currentStep} onChangeStep={setCurrentStep} />;

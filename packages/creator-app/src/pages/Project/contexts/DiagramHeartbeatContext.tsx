@@ -27,7 +27,7 @@ interface DiagramHeartbeatProviderProps {
   context: ActiveDomainContext;
 }
 
-export const DiagramHeartbeatProvider: React.FC<DiagramHeartbeatProviderProps> = ({ diagramID, context, children, isSubscribed }) => {
+export const DiagramHeartbeatProvider: React.OldFC<DiagramHeartbeatProviderProps> = ({ diagramID, context, children, isSubscribed }) => {
   const heartbeatIsActive = isSubscribed;
 
   // heartbeat action is attached to a specific context, component should remount for new action

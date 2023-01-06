@@ -24,7 +24,7 @@ const Container = styled(BoxFlexCenter)`
   }
 `;
 
-const PathSection: React.FC<PathSectionProps> = ({ path, index, onUpdate, onRemove, updateDefaultPath }) => {
+const PathSection: React.OldFC<PathSectionProps> = ({ path, index, onUpdate, onRemove, updateDefaultPath }) => {
   const [label, setLabel] = useLinkedState(path.label);
   return (
     <Container>
@@ -37,7 +37,7 @@ const PathSection: React.FC<PathSectionProps> = ({ path, index, onUpdate, onRemo
         value={label}
         placeholder="Add path name"
         rightAction={
-          <TippyTooltip title={path.isDefault ? 'Default Path' : 'Assign as default path'} position="top" distance={8}>
+          <TippyTooltip content={path.isDefault ? 'Default Path' : 'Assign as default path'} position="top" offset={[0, 8]}>
             <Checkbox checked={path.isDefault} onChange={swallowEvent(() => updateDefaultPath(index))} padding={false} />
           </TippyTooltip>
         }
@@ -45,7 +45,7 @@ const PathSection: React.FC<PathSectionProps> = ({ path, index, onUpdate, onRemo
         onChangeText={setLabel}
       />
       <Box ml={16}>
-        <TippyTooltip title={onRemove ? 'Remove path' : 'Action step must have at least 1 path'} position="top" distance={8}>
+        <TippyTooltip content={onRemove ? 'Remove path' : 'Action step must have at least 1 path'} position="top" offset={[0, 8]}>
           <Minus onClick={onRemove} disabled={!onRemove} />
         </TippyTooltip>
       </Box>

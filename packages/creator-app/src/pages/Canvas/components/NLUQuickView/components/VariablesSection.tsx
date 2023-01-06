@@ -6,7 +6,7 @@ import { NLUQuickViewContext } from '@/pages/Canvas/components/NLUQuickView/cont
 import THEME from '@/styles/theme';
 import { getVariableDescription } from '@/utils/variable';
 
-const VariablesSection: React.FC = () => {
+const VariablesSection: React.OldFC = () => {
   const { selectedID } = React.useContext(NLUQuickViewContext);
   const [, variablesMap] = useOrderedVariables();
 

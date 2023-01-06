@@ -32,7 +32,7 @@ interface HeaderProps {
   subHeaderRenderer?: () => React.ReactNode;
 }
 
-const Header: React.FC<HeaderProps> = ({
+const Header: React.OldFC<HeaderProps> = ({
   title,
   withUserMenu = true,
   withLogo,

@@ -16,7 +16,7 @@ interface AddDropdownProps {
   intentEntities: Normal.Normalized<Platform.Base.Models.Intent.Slot>;
 }
 
-const AddDropdown: React.FC<AddDropdownProps> = ({ entities, placement, onAddRequired, intentEntities }) => {
+const AddDropdown: React.OldFC<AddDropdownProps> = ({ entities, placement, onAddRequired, intentEntities }) => {
   const { onAddSlot } = useAddSlot();
   const { generateItemName } = React.useContext(NLUContext);
   const searchValue = React.useRef<string>('');

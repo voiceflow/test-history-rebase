@@ -15,7 +15,7 @@ interface GeneralSettingsSectionsGlobalLogicProps {
   platformMeta: PlatformSettingsMetaProps;
 }
 
-const GeneralSettingsSectionsGlobalLogic: React.FC<GeneralSettingsSectionsGlobalLogicProps> = ({ platform, projectType, platformMeta }) => {
+const GeneralSettingsSectionsGlobalLogic: React.OldFC<GeneralSettingsSectionsGlobalLogicProps> = ({ platform, projectType, platformMeta }) => {
   const globalNoMatchNoReply = useFeature(Realtime.FeatureFlag.GLOABL_NO_MATCH_NO_REPLY);
   const showMessageDelaySetting = Utils.typeGuards.isChatProjectType(projectType);
   const showTTSSettings =

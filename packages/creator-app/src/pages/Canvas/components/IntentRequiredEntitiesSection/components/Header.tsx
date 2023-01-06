@@ -14,7 +14,7 @@ interface HeaderProps {
   addDropdownPlacement?: PopperTypes.Placement;
 }
 
-const Header: React.FC<HeaderProps> = ({ entities, boldTitle, onAddRequired, intentEntities, addDropdownPlacement }) => (
+const Header: React.OldFC<HeaderProps> = ({ entities, boldTitle, onAddRequired, intentEntities, addDropdownPlacement }) => (
   <SectionV2.Header>
     <SectionV2.Title bold={!!boldTitle}>Required entities</SectionV2.Title>
 

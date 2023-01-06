@@ -11,7 +11,7 @@ export interface JsonUploadProps {
   isLoading?: boolean;
 }
 
-const JsonUpload: React.FC<JsonUploadProps> = ({ fileName, onUpload, isLoading, onRemove }) => {
+const JsonUpload: React.OldFC<JsonUploadProps> = ({ fileName, onUpload, isLoading, onRemove }) => {
   const [error, setError] = React.useState<null | string>(null);
 
   return (

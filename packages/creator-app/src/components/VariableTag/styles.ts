@@ -41,7 +41,7 @@ export const variableStyle = css<BaseVariableTagProps>`
 `;
 
 export const VariableTagTooltipStyles = createGlobalStyle`
-  .tippy-popper {
+  .tippy-box {
     max-width: 600px;
   }
 `;

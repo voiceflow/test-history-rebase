@@ -23,7 +23,7 @@ interface ValuesSectionProps {
   withBottomDivider?: boolean;
 }
 
-const ValuesSection: React.FC<ValuesSectionProps> = ({ type, name, inputs, onChange }) => {
+const ValuesSection: React.OldFC<ValuesSectionProps> = ({ type, name, inputs, onChange }) => {
   const valueRef = React.useRef<HTMLInputElement | null>(null);
 
   const [canBulkUpload] = usePermission(Permission.BULK_UPLOAD);
@@ -187,7 +187,7 @@ const ValuesSection: React.FC<ValuesSectionProps> = ({ type, name, inputs, onCha
                     Values
                   </SectionV2.Title>
 
-                  <TippyTooltip title="Bulk Import">
+                  <TippyTooltip content="Bulk Import">
                     <SvgIcon icon="upload" variant={SvgIcon.Variant.STANDARD} onClick={stopPropagation(onBulkUploadClick)} clickable reducedOpacity />
                   </TippyTooltip>
                 </Box.FlexApart>

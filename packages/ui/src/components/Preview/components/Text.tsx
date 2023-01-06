@@ -4,7 +4,7 @@ import { SpaceProps } from 'styled-system';
 
 import { PreviewColors } from '../constants';
 
-const PreviewText: React.FC<SpaceProps> = ({ children, ...props }) => (
+const PreviewText: React.OldFC<SpaceProps> = ({ children, ...props }) => (
   <Text color={PreviewColors.GREY_TEXT_COLOR} fontSize={13} lineHeight="18px" style={{ wordBreak: 'break-word', whiteSpace: 'pre-wrap' }} {...props}>
     {children}
   </Text>

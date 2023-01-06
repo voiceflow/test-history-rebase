@@ -7,6 +7,7 @@ import { ChatList, VoiceList } from './components';
 
 interface NoMatchAndNoReplyListProps {
   randomize: boolean;
+  children?: React.ReactNode;
   reprompts?: Platform.Base.Models.Prompt.Model[];
   isNoReply?: boolean;
   onChangeReprompts: (reprompts: Platform.Base.Models.Prompt.Model[]) => void;

@@ -10,7 +10,7 @@ interface EmptyViewProps {
   tab: NLURoute;
 }
 
-const EmptyView: React.FC<EmptyViewProps> = ({ onCreate, tab }) => {
+const EmptyView: React.OldFC<EmptyViewProps> = ({ onCreate, tab }) => {
   const tabContent = EMPTY_VIEW_META[tab];
 
   if (!tabContent) return null;

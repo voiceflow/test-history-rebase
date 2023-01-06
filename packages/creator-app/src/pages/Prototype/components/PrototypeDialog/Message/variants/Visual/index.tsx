@@ -12,7 +12,7 @@ interface VisualProps extends BaseMessageProps {
   isTranscript?: boolean;
 }
 
-const Visual: React.FC<VisualProps> = ({ visual, isTranscript, ...props }) => {
+const Visual: React.OldFC<VisualProps> = ({ visual, isTranscript, ...props }) => {
   const isImageType = visual.visualType === BaseNode.Visual.VisualType.IMAGE;
   const imageURL = isImageType ? visual.image : visual.imageURL;
 

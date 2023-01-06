@@ -12,7 +12,7 @@ import { DescriptorContainer } from '@/pages/Settings/components/ContentDescript
 
 import { SectionErrorMessage } from './styles';
 
-const Basic: React.FC = () => {
+const Basic: React.OldFC = () => {
   const projectConfig = useActiveProjectTypeConfig();
   const platformConfig = useActiveProjectPlatformConfig();
 

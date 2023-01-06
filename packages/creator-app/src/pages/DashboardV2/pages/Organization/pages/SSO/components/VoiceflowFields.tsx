@@ -7,7 +7,7 @@ import { copyWithToast } from '@/utils/clipboard';
 import * as S from '../../../styles';
 import { INPUT_WIDTH } from '../constants';
 
-const VoiceflowFields: React.FC<{ acsURL: string; entityID: string }> = ({ acsURL, entityID }) => {
+const VoiceflowFields: React.OldFC<{ acsURL: string; entityID: string }> = ({ acsURL, entityID }) => {
   return (
     <Page.Section
       mb={24}

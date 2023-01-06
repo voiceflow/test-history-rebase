@@ -14,7 +14,7 @@ interface ChoiceItemProps extends ChoiceItemType {
   onOpenEditor: VoidFunction;
 }
 
-const ChoiceItem: React.FC<ChoiceItemProps> = ({ label, portID, index, prompts, palette, onOpenEditor }) => (
+const ChoiceItem: React.OldFC<ChoiceItemProps> = ({ label, portID, index, prompts, palette, onOpenEditor }) => (
   <Item
     v2
     icon={index === 0 ? NODE_CONFIG.icon! : null}

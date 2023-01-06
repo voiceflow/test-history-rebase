@@ -15,7 +15,7 @@ export interface HideableInput {
   autocomplete?: string;
 }
 
-const HideableInput: React.FC<HideableInput> = ({ value, placeholder, onChangeText, autocomplete }) => {
+const HideableInput: React.OldFC<HideableInput> = ({ value, placeholder, onChangeText, autocomplete }) => {
   const [showSecret, toggleShowSecret] = useToggle();
 
   return (

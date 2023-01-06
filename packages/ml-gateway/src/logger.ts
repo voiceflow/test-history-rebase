@@ -1,11 +1,10 @@
-import { Logger, LogLevel, MiddlewareVerbosity } from '@voiceflow/logger';
+import { createLogger, LogFormat, LogLevel } from '@voiceflow/logger';
 
 import config from './config';
 
-const log = new Logger({
+const log = createLogger({
   level: config.LOG_LEVEL as LogLevel,
-  pretty: ['local', 'test', 'e2e'].includes(config.NODE_ENV || ''),
-  middlewareVerbosity: config.MIDDLEWARE_VERBOSITY as MiddlewareVerbosity,
+  format: ['local', 'test', 'e2e'].includes(config.NODE_ENV || '') ? LogFormat.INLINE : LogFormat.JSON,
 });
 
 export default log;

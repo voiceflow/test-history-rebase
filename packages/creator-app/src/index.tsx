@@ -6,7 +6,7 @@ import './polyfills';
 
 import { createBrowserHistory } from 'history';
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 
 import client from '@/client';
 import * as Sentry from '@/vendors/sentry';
@@ -28,5 +28,6 @@ window.addEventListener('beforeunload', () => {
 const logux = client.realtime();
 const { store, persistor } = createStore(logux, history);
 
-// Render ReactDOM
-ReactDOM.render(<App history={history} store={store} persistor={persistor} logux={logux} />, document.getElementById('root'));
+const root = createRoot(document.getElementById('root')!);
+
+root.render(<App history={history} store={store} persistor={persistor} logux={logux} />);

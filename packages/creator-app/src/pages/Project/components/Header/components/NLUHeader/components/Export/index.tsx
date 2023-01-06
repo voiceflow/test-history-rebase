@@ -14,7 +14,7 @@ interface ExportProps {
   checkedItems: string[];
 }
 
-const Export: React.FC<ExportProps> = ({ checkedItems }) => {
+const Export: React.OldFC<ExportProps> = ({ checkedItems }) => {
   const [opened, setIsOpened] = React.useState(false);
 
   return (

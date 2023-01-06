@@ -25,7 +25,7 @@ export interface SocialLoginProps {
   loginMode?: boolean;
 }
 
-const SocialLogin: React.FC<SocialLoginProps> = ({ light, coupon, disabled, loginMode }) => {
+const SocialLogin: React.OldFC<SocialLoginProps> = ({ light, coupon, disabled, loginMode }) => {
   const identityUser = useFeature(Realtime.FeatureFlag.IDENTITY_USER);
 
   const googleLogin = useDispatch(Session.googleLogin);

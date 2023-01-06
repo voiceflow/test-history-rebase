@@ -19,7 +19,7 @@ export interface NodeStepProps {
   isDraggable: boolean;
 }
 
-const NodeStep: React.FC<NodeStepProps> = ({ isLast, palette, isDraggable }) => {
+const NodeStep: React.OldFC<NodeStepProps> = ({ isLast, palette, isDraggable }) => {
   const engine = React.useContext(EngineContext)!;
   const nodeEntity = React.useContext(NodeEntityContext)!;
   const getManager = React.useContext(ManagerContext)!;

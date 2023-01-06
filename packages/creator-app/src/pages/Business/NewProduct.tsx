@@ -11,7 +11,7 @@ import { useDispatch, useSelector, useTeardown } from '@/hooks';
 import { ProductProvider } from './contexts';
 import ProductForm from './Product';
 
-const NewProduct: React.FC = () => {
+const NewProduct: React.OldFC = () => {
   const locales = useSelector(VersionV2.active.localesSelector) as AlexaConstants.Locale[];
   const [product, setProduct] = React.useState(() => createNewProduct(locales));
   const productRef = useCachedValue(product);

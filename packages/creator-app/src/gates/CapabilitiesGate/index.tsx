@@ -5,7 +5,7 @@ import WebsocketDisabledWarning from './components/WebsocketDisabledWarning';
 /**
  * check that the device meets certain capabilities before loading the app
  */
-const CapabilitiesGate: React.FC = ({ children }) => {
+const CapabilitiesGate: React.OldFC = ({ children }) => {
   const websocketsSupported = !!window.WebSocket;
 
   if (!websocketsSupported) {

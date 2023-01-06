@@ -12,20 +12,20 @@ export interface UpgradeTooltipData {
 }
 
 export interface UpgradeTooltipProps extends UpgradeTooltipData {
-  tooltipProps?: Omit<TippyTooltipProps, 'title' | 'html' | 'interactive'>;
+  tooltipProps?: Omit<TippyTooltipProps, 'content' | 'interactive'>;
 }
 
-const UpgradeTooltip: React.FC<UpgradeTooltipProps> = ({ title, onUpgrade, children, description, tooltipProps, upgradeButtonText }) => {
+const UpgradeTooltip: React.OldFC<UpgradeTooltipProps> = ({ title, onUpgrade, children, description, tooltipProps, upgradeButtonText }) => {
   const store = useStore();
 
   return (
     <TippyTooltip
-      position="right"
-      bodyOverflow
+      placement="right"
+      width={232}
       {...tooltipProps}
       interactive
-      html={
-        <TippyTooltip.FooterButton title={title} buttonText={upgradeButtonText} width={200} onClick={() => onUpgrade(store.dispatch)}>
+      content={
+        <TippyTooltip.FooterButton title={title} buttonText={upgradeButtonText} onClick={() => onUpgrade(store.dispatch)}>
           {description}
         </TippyTooltip.FooterButton>
       }

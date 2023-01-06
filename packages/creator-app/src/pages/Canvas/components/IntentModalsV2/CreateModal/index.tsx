@@ -12,7 +12,7 @@ import IntentForm from '../components/IntentForm';
 import EntityPromptForm from './EntityPromptForm';
 import { useCreateIntent } from './hooks';
 
-const CreateModal: React.FC = () => {
+const CreateModal: React.OldFC = () => {
   const { close, data, isInStack } = useModals<{
     id?: string;
     name?: string;

@@ -40,6 +40,7 @@ export const useHover = (
       if (!onStart?.(event)) return;
 
       if (hoverDelay) {
+        window.clearTimeout(startTimeoutRef.current);
         startTimeoutRef.current = window.setTimeout(hovered, hoverDelay);
       } else {
         hovered();

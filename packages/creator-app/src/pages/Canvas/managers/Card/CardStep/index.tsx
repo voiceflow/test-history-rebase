@@ -18,7 +18,7 @@ export interface CardStepProps {
   palette: HSLShades;
 }
 
-export const CardStep: React.FC<CardStepProps> = ({ title, image, nodeID, nextPortID, palette }) => (
+export const CardStep: React.OldFC<CardStepProps> = ({ title, image, nodeID, nextPortID, palette }) => (
   <Step nodeID={nodeID} image={image}>
     <Section>
       <Item

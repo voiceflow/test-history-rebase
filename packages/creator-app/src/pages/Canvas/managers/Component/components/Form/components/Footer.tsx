@@ -14,7 +14,7 @@ interface FooterProps {
   tutorial?: EditorV2Types.DefaultFooter.Props['tutorial'];
 }
 
-const Footer: React.FC<FooterProps> = ({ editor, tutorial = Documentation.COMPONENT_STEP }) => {
+const Footer: React.OldFC<FooterProps> = ({ editor, tutorial = Documentation.COMPONENT_STEP }) => {
   const diagram = useSelector(DiagramV2.diagramByIDSelector, { id: editor.data.diagramID });
 
   const goToDiagram = useDispatch(Router.goToDiagramHistoryPush);

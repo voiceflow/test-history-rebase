@@ -18,7 +18,7 @@ export interface LogicInterfaceHandlerProps {
   updateBaseType: (value: BaseNode.Utils.ExpressionTypeV2.AND | BaseNode.Utils.ExpressionTypeV2.OR) => void;
 }
 
-const LogicInterfaceHandler: React.FC<LogicInterfaceHandlerProps> = ({
+const LogicInterfaceHandler: React.OldFC<LogicInterfaceHandlerProps> = ({
   expression,
   onChange,
   onDelete,

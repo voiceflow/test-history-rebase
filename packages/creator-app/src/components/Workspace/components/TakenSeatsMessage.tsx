@@ -12,7 +12,7 @@ export interface TakenSeatsMessageProps {
   seats?: number;
 }
 
-const TakenSeatsMessage: React.FC<TakenSeatsMessageProps> = ({ error = false, seats, small }) => {
+const TakenSeatsMessage: React.OldFC<TakenSeatsMessageProps> = ({ error = false, seats, small }) => {
   const usedEditorSeats = useSelector(WorkspaceV2.active.usedEditorSeatsSelector);
 
   const onAddSeats = useOnAddSeats();

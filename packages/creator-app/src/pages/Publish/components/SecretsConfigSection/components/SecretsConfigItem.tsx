@@ -12,7 +12,7 @@ export interface SecretsConfigItemProps extends SecretField {
   className?: string;
 }
 
-export const SecretsConfigItem: React.FC<SecretsConfigItemProps> = ({
+export const SecretsConfigItem: React.OldFC<SecretsConfigItemProps> = ({
   name,
   value,
   onChangeValue,

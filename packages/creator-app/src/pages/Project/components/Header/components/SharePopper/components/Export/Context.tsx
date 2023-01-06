@@ -34,7 +34,7 @@ export const ExportContext = React.createContext<Nullable<ExportValue>>(null);
 
 export const { Consumer: ExportConsumer } = ExportContext;
 
-export const ExportProvider: React.FC = ({ children }) => {
+export const ExportProvider: React.OldFC = ({ children }) => {
   const nluConfig = useActiveProjectNLUConfig();
 
   const exportModel = useDispatch(Export.exportModel);
@@ -55,7 +55,7 @@ export const ExportProvider: React.FC = ({ children }) => {
   const [checkedExportIntents, setCheckedExportIntents] = React.useState<string[]>([]);
 
   const onExport = React.useCallback(
-    async (origin) => {
+    async (origin: Tracking.ModelExportOriginType) => {
       trackingEvents.trackExportButtonClick({ format: canvasExportFormat });
       setExporting(true);
 

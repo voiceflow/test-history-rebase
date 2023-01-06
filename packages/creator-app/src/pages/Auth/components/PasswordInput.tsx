@@ -12,7 +12,7 @@ export interface PasswordInputProps extends ControlProps<string> {
   showPassword?: boolean;
 }
 
-const PasswordInput: React.FC<PasswordInputProps> = ({
+const PasswordInput: React.OldFC<PasswordInputProps> = ({
   name = 'password',
   value,
   onChange,

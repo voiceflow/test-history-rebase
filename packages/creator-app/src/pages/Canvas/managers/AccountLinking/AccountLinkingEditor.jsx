@@ -3,11 +3,11 @@ import _filter from 'lodash/filter';
 import _find from 'lodash/find';
 import _isEmpty from 'lodash/isEmpty';
 import React from 'react';
+import { connect } from 'react-redux';
 
 import Section from '@/components/Section';
 import SubHeaderTabs from '@/components/Tabs';
 import * as Version from '@/ducks/version';
-import { connect } from '@/hocs/connect';
 import { useSmartReducer } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
 import { Content, Controls, FormControl } from '@/pages/Canvas/components/Editor';

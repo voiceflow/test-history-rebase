@@ -24,7 +24,7 @@ interface Props {
   disabled?: boolean;
 }
 
-const AmazonLoginButton: React.FC<Props> = ({ onLoad, onFail, onSuccess, disabled = false }) => {
+const AmazonLoginButton: React.OldFC<Props> = ({ onLoad, onFail, onSuccess, disabled = false }) => {
   const linkAmazonAccount = useDispatch(Account.amazon.linkAccount);
 
   const triggerLogin = async () => {

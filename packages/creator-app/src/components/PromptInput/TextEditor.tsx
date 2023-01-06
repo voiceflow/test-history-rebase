@@ -10,7 +10,7 @@ export interface PromptInputTextEditorProps {
   placeholder?: string;
 }
 
-const PromptInputTextEditor: React.FC<PromptInputTextEditorProps> = ({ value, onChange, placeholder }) => {
+const PromptInputTextEditor: React.OldFC<PromptInputTextEditorProps> = ({ value, onChange, placeholder }) => {
   const config = useActiveProjectTypeConfig();
 
   return (

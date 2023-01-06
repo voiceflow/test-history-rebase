@@ -1,8 +1,7 @@
 import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, Flex, SvgIcon, useDidUpdateEffect } from '@voiceflow/ui';
+import { Box, Flex, SvgIcon, TippyTooltip, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
-import { Tooltip } from 'react-tippy';
 
 import Drawer from '@/components/Drawer';
 import { SectionVariant, UncontrolledSection as Section } from '@/components/Section';
@@ -27,7 +26,7 @@ export interface TrainingState {
   lastTrainedTime: number;
 }
 
-const PrototypeSidebar: React.FC = () => {
+const PrototypeSidebar: React.OldFC = () => {
   const theme = useTheme();
   const debugEnabled = useDebug();
   const [canRenderPrototype] = usePermission(Permission.RENDER_PROTOTYPE);
@@ -118,14 +117,14 @@ const PrototypeSidebar: React.FC = () => {
               )}
 
               <Box display="inline-block">
-                <Tooltip title="Reset Test">
+                <TippyTooltip content="Reset Test">
                   <SvgIcon
                     icon="randomLoop"
                     color={notStarted ? '#BECEDC' : undefined}
                     clickable={!notStarted}
                     onClick={() => (notStarted ? null : resetPrototype())}
                   />
-                </Tooltip>
+                </TippyTooltip>
               </Box>
             </Flex>
           }

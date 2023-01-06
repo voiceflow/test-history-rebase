@@ -6,7 +6,10 @@ import { useProjectExitTracking } from '@/pages/Project/hooks';
 
 export type ProjectProps = RouteComponentProps;
 
-const ProjectExitTracker: React.FC<{ nluType: Platform.Constants.NLUType; platform: Platform.Constants.PlatformType }> = ({ nluType, platform }) => {
+const ProjectExitTracker: React.OldFC<{ nluType: Platform.Constants.NLUType; platform: Platform.Constants.PlatformType }> = ({
+  nluType,
+  platform,
+}) => {
   useProjectExitTracking({ nluType, platform });
 
   return null;

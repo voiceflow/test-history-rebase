@@ -1,5 +1,5 @@
 /* eslint-disable simple-import-sort/exports */
-// MAKE SURE TO USE @/assets/… import paths to get the correct import type for SVGs (string vs React.FC)
+// MAKE SURE TO USE @/assets/… import paths to get the correct import type for SVGs (string vs React.OldFC)
 
 // csv files
 export { default as slotUploadExampleCSV } from '@/assets/csv/slot-upload-example.csv?url';

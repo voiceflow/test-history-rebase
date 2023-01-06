@@ -9,7 +9,7 @@ import { getLockedStepTooltipText, isLockedStep, lockedStepTooltipButtonText, Lo
 import { BlockType, DragItem, ModalType } from '@/constants';
 import { AutoPanningCacheContext } from '@/contexts/AutoPanningContext';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { useEventualEngine, useHover, useModals, useSelector, useSetup, useTeardown } from '@/hooks';
+import { useEventualEngine, useHover, useModals, useSelector } from '@/hooks';
 import { StepDragItem } from '@/pages/Canvas/components/CanvasDiagram';
 import { ClassName } from '@/styles/constants';
 import { onOpenInternalURLInANewTabFactory } from '@/utils/window';
@@ -21,8 +21,8 @@ import * as S from './styles';
 
 interface SubMenuButtonProps {
   type: BlockType;
-  icon: SvgIconTypes.Icon | React.FC;
-  label: string;
+  icon: SvgIconTypes.Icon | React.OldFC;
+  label?: string;
   onDrop: VoidFunction;
   tooltipText?: string;
   tooltipLink?: string;
@@ -31,7 +31,7 @@ interface SubMenuButtonProps {
   isFocused?: boolean;
 }
 
-const SubMenuButton: React.FC<SubMenuButtonProps> = ({
+const SubMenuButton: React.OldFC<SubMenuButtonProps> = ({
   type,
   icon,
   label,
@@ -66,13 +66,16 @@ const SubMenuButton: React.FC<SubMenuButtonProps> = ({
   const { open: openPaymentModal } = useModals(ModalType.PAYMENT);
 
   const [{ isDragging }, connectDrag, connectPreview] = useDrag<StepDragItem, unknown, { isDragging: boolean }>({
-    item: { type: DragItem.BLOCK_MENU, icon, label, blockType: type, factoryData },
-    collect: (monitor) => ({ isDragging: monitor.isDragging() }),
+    type: DragItem.BLOCK_MENU,
 
-    begin: () => {
+    item: () => {
       getEngine()?.merge.setVirtualSource(type, factoryData);
       getEngine()?.drag.setDraggingToCreate(true);
+
+      return { type: DragItem.BLOCK_MENU, icon, label: label ?? '', blockType: type, factoryData };
     },
+
+    collect: (monitor) => ({ isDragging: monitor.isDragging() }),
 
     end: () => {
       onDrop();
@@ -83,11 +86,9 @@ const SubMenuButton: React.FC<SubMenuButtonProps> = ({
     },
   });
 
-  useSetup(() => {
+  React.useEffect(() => {
     connectPreview(getEmptyImage(), { captureDraggingState: true });
-  });
-
-  useTeardown(() => connectDrag(null), [connectDrag]);
+  }, []);
 
   const containerRef = isLocked ? popper.setReferenceElement : composeRef<HTMLDivElement>(connectDrag, popper.setReferenceElement);
 
@@ -97,15 +98,15 @@ const SubMenuButton: React.FC<SubMenuButtonProps> = ({
         <S.SubMenuButtonContainer
           {...hoverHandlers}
           ref={containerRef}
+          disabled={!!isLocked}
+          className={ClassName.SUB_STEP_MENU_ITEM}
           isClicked={isClicked}
-          onMouseDown={enableClicked}
           onMouseUp={clearClicked}
           isDragging={isDragging}
+          onMouseDown={enableClicked}
+          onContextMenu={onContextMenu}
           isDraggingPreview={isDraggingPreview}
           isContextMenuOpen={isOpen && isFocused}
-          className={ClassName.SUB_STEP_MENU_ITEM}
-          disabled={isLocked as boolean}
-          onContextMenu={onContextMenu}
         >
           <Box.FlexStart width="100%" opacity={isDragging ? 0 : 1}>
             <SvgIcon icon={icon} size={16} color={isLocked ? '#62778c' : '#132144'} />
@@ -116,7 +117,7 @@ const SubMenuButton: React.FC<SubMenuButtonProps> = ({
           {!isClickNoDragTooltipOpen && !isDragging && isHovered && tooltipText && (
             <Portal portalNode={document.body}>
               <div ref={popper.setPopperElement} style={{ ...popper.styles.popper, paddingLeft: '6px' }} {...popper.attributes.popper}>
-                <TooltipContainer>
+                <TooltipContainer width={tooltipLink ? 232 : 200}>
                   {tooltipLink ? (
                     <TippyTooltip.FooterButton
                       onClick={isLocked ? () => openPaymentModal() : onOpenInternalURLInANewTabFactory(tooltipLink)}
@@ -125,7 +126,7 @@ const SubMenuButton: React.FC<SubMenuButtonProps> = ({
                       {isLocked ? getLockedStepTooltipText(type as LockedStepTypes) : tooltipText}
                     </TippyTooltip.FooterButton>
                   ) : (
-                    <TippyTooltip.Multiline width={168}>{tooltipText}</TippyTooltip.Multiline>
+                    <TippyTooltip.Multiline>{tooltipText}</TippyTooltip.Multiline>
                   )}
                 </TooltipContainer>
               </div>

@@ -8,7 +8,7 @@ interface PreviewHTMLProps {
   onCopy?: () => void;
 }
 
-export const PreviewHTML: React.FC<PreviewHTMLProps> = ({ code, onCopy }) => {
+export const PreviewHTML: React.OldFC<PreviewHTMLProps> = ({ code, onCopy }) => {
   return (
     <Box position="relative" borderRadius={8} overflow="hidden">
       <Preview.Code code={code} wrapLongLines={false} padding="20px 24px" />

@@ -1,4 +1,4 @@
-import Logger from '@voiceflow/logger';
+import { Logger } from '@voiceflow/logger';
 import cbor from 'cbor';
 import IORedis from 'ioredis';
 

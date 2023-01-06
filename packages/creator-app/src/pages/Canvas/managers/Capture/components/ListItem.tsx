@@ -10,7 +10,7 @@ interface ListItemProps {
   autofocus?: boolean;
 }
 
-const ListItem: React.FC<ListItemProps> = ({ value, onChange, onRemove, autofocus }) => {
+const ListItem: React.OldFC<ListItemProps> = ({ value, onChange, onRemove, autofocus }) => {
   const [ref] = useAutoScrollNodeIntoView<HTMLDivElement>({ options: { block: 'end' }, condition: autofocus });
 
   return (

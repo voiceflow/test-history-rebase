@@ -1,13 +1,14 @@
 import { LoadCircle } from '@ui/components/Loader';
 import SvgIcon from '@ui/components/SvgIcon';
+import TippyTooltip from '@ui/components/TippyTooltip';
 import { useEnableDisable } from '@ui/hooks';
 import { stopPropagation } from '@ui/utils';
 import { Nullable, READABLE_VARIABLE_REGEXP, Utils } from '@voiceflow/common';
 import React from 'react';
 import { useDropzone } from 'react-dropzone';
-import { Tooltip } from 'react-tippy';
 
-import { HTTPS_URL_REGEX, IMAGE_FILE_FORMATS, UPLOAD_ERROR } from '../../constants';
+import { HTTPS_URL_REGEX, IMAGE_FILE_TYPES, UPLOAD_ERROR } from '../../constants';
+import { useFileTypesToMimeType } from '../../hooks';
 import DropUpload, { DropUploadProps } from '../../Primitive/DropUpload';
 import { InputRenderer } from '../../Primitive/LinkUpload';
 import { SingleUploadConfig, useUpload } from '../../useUpload';
@@ -39,9 +40,9 @@ export interface FullImageProps extends Omit<SingleUploadConfig, 'fileType' | 'e
 const FullImage = React.forwardRef<HTMLDivElement, FullImageProps>(
   ({ image, ratio, update, canUseLink = true, showRemove = true, imageHeight, endpoint = 'image', errorMessage, renderInput }, ref) => {
     const { error, setError, isLoading, onDropAccepted, onDropRejected } = useUpload({
+      update,
       fileType: 'image',
       endpoint,
-      update,
       validate: validateFiles,
       errorMessage,
     });
@@ -49,8 +50,10 @@ const FullImage = React.forwardRef<HTMLDivElement, FullImageProps>(
     const [loadError, setLoadError] = React.useState<Nullable<string>>(null);
     const [removeButton, showRemoveButton, hideRemoveButton] = useEnableDisable(false);
 
+    const accept = useFileTypesToMimeType(IMAGE_FILE_TYPES);
+
     const { getRootProps, getInputProps, isDragActive, isDragReject } = useDropzone({
-      accept: IMAGE_FILE_FORMATS,
+      accept,
       disabled: isLoading,
       onDropAccepted,
       onDropRejected: Utils.functional.noop,
@@ -79,7 +82,7 @@ const FullImage = React.forwardRef<HTMLDivElement, FullImageProps>(
     } else if (isLoading) {
       content = <LoadCircle color="transparent" isMd />;
     } else if (loadError) {
-      content = <Tooltip title={image || undefined}>{image}</Tooltip>;
+      content = <TippyTooltip content={image || undefined}>{image}</TippyTooltip>;
     } else if (image) {
       content = <S.Image src={image} ratio={ratio} />;
     }
@@ -94,7 +97,7 @@ const FullImage = React.forwardRef<HTMLDivElement, FullImageProps>(
         isActive={isDragActive}
         autoHeight={!!ratio}
       >
-        <S.ImageUploadInput ref={imageUploadRef} type="file" accept={IMAGE_FILE_FORMATS.join(',')} {...getInputProps()} />
+        <S.ImageUploadInput ref={imageUploadRef} type="file" accept={Object.keys(accept).join(',')} {...getInputProps()} />
 
         {showRemove && removeButton && (
           <RemoveButton onClick={stopPropagation(() => update(''))}>
@@ -121,7 +124,7 @@ const FullImage = React.forwardRef<HTMLDivElement, FullImageProps>(
         onDropAccepted={onDropAccepted}
         onDropRejected={onDropRejected}
         linkPlaceholder="Add link or variable using '{'"
-        acceptedFileTypes={IMAGE_FILE_FORMATS}
+        acceptedFileTypes={IMAGE_FILE_TYPES}
       />
     );
   }

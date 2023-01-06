@@ -3,7 +3,7 @@ import React from 'react';
 
 import * as S from './styles';
 
-const AnalyticsDashboardChartEmpty: React.FC = () => {
+const AnalyticsDashboardChartEmpty: React.OldFC = () => {
   return (
     <S.Container>
       <Text fontSize="15px" color="#62778C">

@@ -11,8 +11,8 @@ import { waitAsync } from '@/ducks/utils';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { openError } from '@/ModalsV2/utils';
 import { Thunk } from '@/store/types';
+import { getErrorMessage } from '@/utils/error';
 
-import { extractErrorMessages } from '../utils';
 import { setActive } from './shared';
 
 export const acceptInvite =
@@ -25,13 +25,13 @@ export const acceptInvite =
 
       return workspaceID;
     } catch (err) {
-      if (err?.code === Realtime.ErrorCode.ALREADY_MEMBER_OF_WORKSPACE) {
+      if (err && typeof err === 'object' && 'code' in err && err.code === Realtime.ErrorCode.ALREADY_MEMBER_OF_WORKSPACE) {
         toast.success('You are already a member of this workspace.');
         redirect?.();
         return null;
       }
 
-      openError({ error: err });
+      openError({ error: getErrorMessage(err) });
       return null;
     }
   };
@@ -56,7 +56,7 @@ export const sendInviteToActiveWorkspace =
         toast.success('Sent invite');
       }
     } catch (err) {
-      toast.error(extractErrorMessages(err));
+      toast.error(getErrorMessage(err));
       throw err;
     }
   };
@@ -74,7 +74,7 @@ export const updateInviteToActiveWorkspace =
 
       toast.success('Updated permissions');
     } catch (err) {
-      toast.error(extractErrorMessages(err));
+      toast.error(getErrorMessage(err));
       throw err;
     }
   };
@@ -97,7 +97,7 @@ export const cancelInviteToActiveWorkspace =
 
       toast.success('Cancelled invite');
     } catch (err) {
-      toast.error(extractErrorMessages(err));
+      toast.error(getErrorMessage(err));
       throw err;
     }
   };
@@ -113,7 +113,7 @@ export const updateMemberOfActiveWorkspace =
     try {
       await dispatch.sync(Realtime.workspace.member.patch({ workspaceID, creatorID, member: { role } }));
     } catch (err) {
-      toast.error(extractErrorMessages(err));
+      toast.error(getErrorMessage(err));
       throw err;
     }
   };
@@ -129,7 +129,7 @@ export const deleteMemberOfActiveWorkspace =
     try {
       await dispatch.sync(Realtime.workspace.member.remove({ workspaceID: activeWorkspaceID, creatorID }));
     } catch (err) {
-      toast.error(extractErrorMessages(err));
+      toast.error(getErrorMessage(err));
       throw err;
     }
   };

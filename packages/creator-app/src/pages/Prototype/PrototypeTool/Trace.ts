@@ -397,7 +397,7 @@ class TraceController {
       }
       case BaseTrace.TraceType.END: {
         await this.processEndTrace();
-        break;
+        return;
       }
       case BaseTrace.TraceType.VISUAL: {
         await this.processVisualTrace(topTrace);

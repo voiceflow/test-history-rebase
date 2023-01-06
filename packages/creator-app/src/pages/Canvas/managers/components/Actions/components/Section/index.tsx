@@ -80,7 +80,8 @@ const ActionsSection: React.FC<ActionsSectionProps> = ({ portID, editor, without
             ]}
           />
         }
-        contentProps={{ bottomOffset: 2.5 }}
+        headerProps={{ bottomUnit: 1.5 }}
+        contentProps={{ bottomOffset: 2 }}
       >
         {withActions && (
           <DraggableList

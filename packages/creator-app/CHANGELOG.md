@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1044.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1044.2...@voiceflow/creator-app@1.1044.3) (2023-01-06)
+
+
+### Bug Fixes
+
+* action editor padding (CT-1363) ([#6524](https://github.com/voiceflow/creator-app/issues/6524)) ([71131ad](https://github.com/voiceflow/creator-app/commit/71131ad115d9f3a14f8136e0b21a926f61f08b44))
+* give owner at least admin permission [bugfix] (CT-1372) ([#6526](https://github.com/voiceflow/creator-app/issues/6526)) ([035ae70](https://github.com/voiceflow/creator-app/commit/035ae709d1311f8e62796dd5fe76299306b3d65c))
+
+
+
+
+
 ## [1.1044.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1044.1...@voiceflow/creator-app@1.1044.2) (2023-01-05)
 
 

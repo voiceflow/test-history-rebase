@@ -21,7 +21,8 @@ class GenerationService extends AbstractControl {
     try {
       response = await this.clients.openAI.createCompletion({ prompt });
       const { data } = await this.services.billing.consumeGenerationQuota(workspaceID, response.tokensUsed!);
-      const parsedResult = parseObjectString<{ utterances: string[]; intent_name?: string }>(response.text);
+      const result = parseObjectString<{ utterances: string[]; intent_name?: string }>(response.text);
+      const parsedResult = { intent_name: result.intent_name, utterances: result.utterances.filter((u) => !examples.includes(u)) };
       const { utterances, intent_name } = parsedResult;
       this.clients.analytics.trackGenResponse('utterance', userID, { ...input, prompt, utterances, parsedResult });
 
@@ -49,7 +50,7 @@ class GenerationService extends AbstractControl {
       // ideally returns string array
       response = await this.clients.openAI.createCompletion({ prompt });
       const { data } = await this.services.billing.consumeGenerationQuota(workspaceID, response.tokensUsed!);
-      const parsedResult = parseArrayString<string[]>(response.text);
+      const parsedResult = parseArrayString<string[]>(response.text).filter((item) => !examples.includes(item));
       this.clients.analytics.trackGenResponse('prompt', userID, { ...input, prompt, parsedResult });
 
       return {
@@ -77,6 +78,7 @@ class GenerationService extends AbstractControl {
       const parsedResult = parseObjectString<Record<string, string[]>>(response.text);
       // transform object to array of arrays of strings, with key as first element
       const results = Object.entries(parsedResult).reduce<string[][]>((acc, [key, value]) => [...acc, [key, ...value]], []);
+
       this.clients.analytics.trackGenResponse('entity_value', userID, { ...input, prompt, parsedResult });
 
       return {
@@ -111,7 +113,8 @@ class GenerationService extends AbstractControl {
     try {
       response = await this.clients.openAI.createCompletion({ prompt });
       const { data } = await this.services.billing.consumeGenerationQuota(workspaceID, response.tokensUsed!);
-      const parsedResult = parseObjectString<{ eg: string[] }>(response.text);
+      const result = parseObjectString<{ eg: string[] }>(response.text);
+      const parsedResult = { eg: result.eg.filter((u) => !examples.includes(u)) };
       this.clients.analytics.trackGenResponse('entity_reprompt', userID, { ...input, prompt, parsedResult });
       const { eg } = parsedResult;
 

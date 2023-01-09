@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.40.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/showcase@1.40.0...@voiceflow/showcase@1.40.1) (2023-01-09)
+
+
+### Bug Fixes
+
+* remove oldfc from showcase (CT-000) ([#6536](https://github.com/voiceflow/creator-app/issues/6536)) ([b026281](https://github.com/voiceflow/creator-app/commit/b026281ab261e7140e9a02e8be08981c0493a5f5))
+
+
+
+
+
 # [1.40.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/showcase@1.39.5...@voiceflow/showcase@1.40.0) (2023-01-06)
 
 

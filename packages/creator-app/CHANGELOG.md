@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1046.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1046.0...@voiceflow/creator-app@1.1046.1) (2023-01-09)
+
+
+### Bug Fixes
+
+* dayjs format typo [bugfix] (CT-000) ([#6538](https://github.com/voiceflow/creator-app/issues/6538)) ([49af708](https://github.com/voiceflow/creator-app/commit/49af708f7bd19cf250d4dd905223089d1cac6251))
+* typo (CT-000) ([#6537](https://github.com/voiceflow/creator-app/issues/6537)) ([a7ea702](https://github.com/voiceflow/creator-app/commit/a7ea702da7a006d05da7e1821e4dec35a89f2d5f))
+
+
+
+
+
 # [1.1046.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1045.4...@voiceflow/creator-app@1.1046.0) (2023-01-09)
 
 

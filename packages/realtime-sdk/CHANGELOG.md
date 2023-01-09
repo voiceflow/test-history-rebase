@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.215.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.215.2...@voiceflow/realtime-sdk@1.215.3) (2023-01-09)
+
+
+### Bug Fixes
+
+* vite backend types (CT-000) ([#6542](https://github.com/voiceflow/creator-app/issues/6542)) ([687d5ba](https://github.com/voiceflow/creator-app/commit/687d5ba5d2b3fc52865af4baebad0d383c49c2c1))
+
+
+
+
+
 ## [1.215.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.215.1...@voiceflow/realtime-sdk@1.215.2) (2023-01-09)
 
 **Note:** Version bump only for package @voiceflow/realtime-sdk

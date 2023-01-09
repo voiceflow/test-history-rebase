@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.17.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.17.2...@voiceflow/platform-config@1.17.3) (2023-01-09)
+
+
+### Bug Fixes
+
+* vite backend types (CT-000) ([#6542](https://github.com/voiceflow/creator-app/issues/6542)) ([687d5ba](https://github.com/voiceflow/creator-app/commit/687d5ba5d2b3fc52865af4baebad0d383c49c2c1))
+
+
+
+
+
 ## [1.17.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.17.1...@voiceflow/platform-config@1.17.2) (2023-01-09)
 
 **Note:** Version bump only for package @voiceflow/platform-config

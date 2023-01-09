@@ -57,7 +57,7 @@ const AIAssistant: React.OldFC = () => {
       noContentPadding
       title={
         <Box.Flex>
-          AI Assistant <SettingsTitleBadge>Beta</SettingsTitleBadge>
+          AI Assist <SettingsTitleBadge>Beta</SettingsTitleBadge>
         </Box.Flex>
       }
       description={

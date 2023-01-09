@@ -23,7 +23,7 @@ export default defineConfig({
     },
   },
 
-  plugins: [dts({ tsConfigFilePath: path.resolve(rootDir, 'tsconfig.backend.json') })],
+  plugins: [dts({ tsConfigFilePath: path.resolve(rootDir, 'tsconfig.build.json'), insertTypesEntry: true })],
 
   ssr: {
     noExternal: [

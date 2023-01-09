@@ -71,13 +71,19 @@ export const logout = (): Thunk => async (dispatch, getState) => {
 };
 
 export const identifyUser =
-  (user: { name: string; email: string; creatorID: number; createdAt: string }): SyncThunk =>
+  (user: { name: string; email: string; creatorID: number; createdAt: string }, isSSO?: boolean): SyncThunk =>
   () => {
     const externalID = generateID(user.creatorID);
 
     Vendors.LogRocket.identify(externalID, user);
     Support.identify(user);
     Userflow.identify(externalID, user);
+    datadogRum.setUser({
+      id: user.creatorID?.toString(),
+      email: user.email,
+      name: user.name,
+      isSSO,
+    });
   };
 
 export const getUserAccount =
@@ -160,10 +166,11 @@ interface SetSessionOptions {
   user: Models.Account;
   token: string;
   redirectTo?: string;
+  isSSO?: boolean;
 }
 
 const setSession =
-  ({ user, token, redirectTo }: SetSessionOptions): SyncThunk =>
+  ({ user, token, redirectTo, isSSO }: SetSessionOptions): SyncThunk =>
   (dispatch, getState) => {
     const state = getState();
 
@@ -175,6 +182,8 @@ const setSession =
     const location = locationSelector(state);
     const search = QueryUtil.parse(location.search);
 
+    dispatch(identifyUser({ ...user, createdAt: user.created, creatorID: user.creator_id }, isSSO));
+
     if (redirectTo) {
       dispatch(goTo(redirectTo));
       // Show join workspace onboarding on first login of an invite or with a workspace promo
@@ -185,8 +194,6 @@ const setSession =
     } else {
       dispatch(goToOnboarding());
     }
-
-    dispatch(identifyUser({ ...user, createdAt: user.created, creatorID: user.creator_id }));
   };
 
 export const ssoLogin =
@@ -196,7 +203,7 @@ export const ssoLogin =
 
     const { user, token } = await client.sso.login(payload, parsedQuery);
 
-    dispatch(setSession({ user, token }));
+    dispatch(setSession({ user, token, isSSO: true }));
   };
 
 interface SessionOptions {
@@ -212,7 +219,8 @@ const createSession =
     const parsedQuery = { ...parseQuery(window.location.search), ...query };
     const { user, token } = await client.session.create(sessionType, authRequest, parsedQuery);
 
-    dispatch(setSession({ user: { ...user, first_login: firstLogin ?? user.first_login }, token, redirectTo }));
+    const isSSO = [SessionType.GOOGLE, SessionType.FACEBOOK].includes(sessionType);
+    dispatch(setSession({ user: { ...user, first_login: firstLogin ?? user.first_login }, token, redirectTo, isSSO }));
 
     return user;
   };
@@ -228,7 +236,7 @@ const createAdoptSSO =
   async (dispatch) => {
     const { user, token } = await client.sso.convert(sessionType, payload);
 
-    dispatch(setSession({ user, token }));
+    dispatch(setSession({ user, token, isSSO: true }));
 
     return user;
   };
@@ -283,7 +291,7 @@ export const ssoSignIn =
 
     const user: Models.Account = { ...userAccount, created: userAccount.createdAt, creator_id: userAccount.creatorID, first_login: isNewUser };
 
-    dispatch(setSession({ user, token, redirectTo: options?.redirectTo }));
+    dispatch(setSession({ user, token, redirectTo: options?.redirectTo, isSSO: true }));
   };
 
 interface SignupPayload {

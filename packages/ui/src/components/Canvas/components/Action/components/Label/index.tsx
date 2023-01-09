@@ -9,7 +9,7 @@ export interface Props {
 
 const RIGHT_PART_SIZE = 14;
 
-const Label: React.OldFC<Props> = ({ secondary, children }) => (
+const Label: React.FC<Props> = ({ secondary, children }) => (
   <S.Container secondary={secondary}>
     <S.LeftPart>{children.substring(0, children.length - RIGHT_PART_SIZE)}</S.LeftPart>
     <S.RightPart>{children.substring(children.length - RIGHT_PART_SIZE, children.length)}</S.RightPart>

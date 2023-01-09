@@ -37,7 +37,7 @@ export interface UploadBaseProps {
   label: string;
 }
 
-const UploadBase: React.OldFC<UploadBaseProps & SingleUploadConfig> = ({
+const UploadBase: React.FC<UploadBaseProps & SingleUploadConfig> = ({
   acceptedFileTypes = [],
   linkInputPlaceholder,
   rootDropAreaProps,

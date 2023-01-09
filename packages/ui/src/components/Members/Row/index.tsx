@@ -19,7 +19,7 @@ interface MemberRowProps {
 
 const ROLES = new Set([UserRole.ADMIN, UserRole.OWNER]);
 
-const MemberRow: React.OldFC<MemberRowProps> = ({ member, inset, border, onRemove, onChangeRoles, onResendInvite }) => (
+const MemberRow: React.FC<MemberRowProps> = ({ member, inset, border, onRemove, onChangeRoles, onResendInvite }) => (
   <S.Container inset={inset} border={border}>
     <Avatar large text={member.name || member.email} image={member.image} />
 

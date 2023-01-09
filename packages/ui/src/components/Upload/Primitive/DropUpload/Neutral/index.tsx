@@ -11,7 +11,7 @@ interface NeutralProps {
   onCornerAction?: VoidFunction;
 }
 
-const Neutral: React.OldFC<NeutralProps> = ({ onCornerAction, cornerIcon, label = 'file' }) => (
+const Neutral: React.FC<NeutralProps> = ({ onCornerAction, cornerIcon, label = 'file' }) => (
   <>
     {onCornerAction && cornerIcon && <CornerActionButton onClick={swallowEvent(onCornerAction)} size={12} icon={cornerIcon} />}
     <S.Message>

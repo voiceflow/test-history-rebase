@@ -8,7 +8,7 @@ interface VideoPlayerProps {
   height?: number | string;
 }
 
-const VideoPlayer: React.OldFC<VideoPlayerProps> = ({ src, height, width }) => (
+const VideoPlayer: React.FC<VideoPlayerProps> = ({ src, height, width }) => (
   <Container height={height} width={width}>
     <Player src={src} allowFullScreen />
   </Container>

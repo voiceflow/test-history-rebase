@@ -16,7 +16,7 @@ interface MemberSelectProps
   onChange: (memberID: number | null) => void;
 }
 
-const MemberSelect: React.OldFC<MemberSelectProps> = ({ value, members, onChange, ...props }) => {
+const MemberSelect: React.FC<MemberSelectProps> = ({ value, members, onChange, ...props }) => {
   const [search, setSearch] = React.useState('');
   const membersMap = React.useMemo(() => Utils.array.createMap(members, (member) => member.creator_id), [members]);
   const options = React.useMemo(() => members.map((member) => ({ ...member, menuItemProps: { height: 64 } })), [members]);

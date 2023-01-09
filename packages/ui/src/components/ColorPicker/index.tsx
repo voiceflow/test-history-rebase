@@ -24,7 +24,7 @@ export interface ColorPickerProps extends ColorThemesPersistAPI {
   defaultColorScheme?: ColorScheme;
 }
 
-export const ColorPicker: React.OldFC<ColorPickerProps> = ({
+export const ColorPicker: React.FC<ColorPickerProps> = ({
   tagName = '',
   onChange,
   customThemes = [],

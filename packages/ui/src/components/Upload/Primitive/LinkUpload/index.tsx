@@ -39,7 +39,7 @@ export interface LinkUploadProps {
   renderInput?: InputRenderer;
 }
 
-const LinkUpload: React.OldFC<LinkUploadProps> = ({ onUpdate, onBack, validate = validURL, placeholder, renderInput }) => {
+const LinkUpload: React.FC<LinkUploadProps> = ({ onUpdate, onBack, validate = validURL, placeholder, renderInput }) => {
   const [value, setValue] = React.useState('');
   const [error, setError] = React.useState<Nullable<string>>(null);
   const variablesRef = React.useRef<any>();

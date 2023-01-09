@@ -13,15 +13,7 @@ export interface ActionListSectionProps extends ContainerProps {
   contentProps?: ContentProps;
 }
 
-const ActionListSection: React.OldFC<ActionListSectionProps> = ({
-  title,
-  children,
-  action,
-  sticky,
-  headerProps,
-  contentProps,
-  ...containerProps
-}) => (
+const ActionListSection: React.FC<ActionListSectionProps> = ({ title, children, action, sticky, headerProps, contentProps, ...containerProps }) => (
   <Sticky disabled={!sticky}>
     {({ sticked }) => (
       <Container {...containerProps}>

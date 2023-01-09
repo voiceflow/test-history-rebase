@@ -7,7 +7,7 @@ export interface UploadContentProps {
   onRemove: () => void;
 }
 
-const UploadContent: React.OldFC<UploadContentProps> = ({ value, onRemove }) => {
+const UploadContent: React.FC<UploadContentProps> = ({ value, onRemove }) => {
   return (
     <S.Container>
       <S.CornerActionButton onClick={onRemove} size={14} icon="close" />

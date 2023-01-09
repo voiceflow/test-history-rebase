@@ -18,7 +18,7 @@ interface SwitcherProps {
   isLoading?: boolean;
 }
 
-const Switcher: React.OldFC<SwitcherProps> = ({ value, items, onChange, isLoading }) => {
+const Switcher: React.FC<SwitcherProps> = ({ value, items, onChange, isLoading }) => {
   if (items.length < 2) return null;
 
   return (

@@ -34,7 +34,7 @@ export interface ControlledInputProps extends NestedInputProps {
   onEnterPress?: React.KeyboardEventHandler<HTMLInputElement>;
 }
 
-const ControlledInput: React.OldFC<ControlledInputProps> = ({
+const ControlledInput: React.FC<ControlledInputProps> = ({
   error,
   message,
   complete,

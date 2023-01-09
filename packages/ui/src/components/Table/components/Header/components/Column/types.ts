@@ -1,6 +1,6 @@
 import type { TippyTooltipProps } from '@ui/components/TippyTooltip';
 
-export interface Props {
+export interface Props extends React.PropsWithChildren {
   flex: number;
   width?: number;
   active?: boolean;

@@ -14,7 +14,7 @@ export interface ProgressBarPropsProps {
   progress: number;
 }
 
-const ProgressBarProps: React.OldFC<ProgressBarPropsProps> = ({ color, width, loading, height, progress, background }) => (
+const ProgressBarProps: React.FC<ProgressBarPropsProps> = ({ color, width, loading, height, progress, background }) => (
   <S.Container width={width} height={height} loading={loading} background={background}>
     {!loading && <S.Progress color={color} height={height} progress={progress}></S.Progress>}
   </S.Container>

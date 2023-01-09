@@ -18,13 +18,13 @@ export const ErrorDescription = styled.p`
   margin-bottom: 24px;
   text-align: center;
 `;
-interface ErrorProps {
+interface ErrorProps extends React.PropsWithChildren {
   icon?: React.ReactNode;
   title?: React.ReactNode;
   message?: React.ReactNode;
 }
 
-const PageError: React.OldFC<ErrorProps> = ({
+const PageError: React.FC<ErrorProps> = ({
   icon = <img src={error500Graphic} height={80} alt="500 Error" />,
   title = 'Sorry, something went wrong',
   message,

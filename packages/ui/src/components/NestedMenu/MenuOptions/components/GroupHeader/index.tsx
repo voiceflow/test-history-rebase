@@ -2,14 +2,14 @@ import React from 'react';
 
 import * as S from './styles';
 
-interface GroupHeaderProps {
+interface GroupHeaderProps extends React.PropsWithChildren {
   isSmall?: boolean;
 }
 
 /**
  * If childer === true we display Line only
  */
-const GroupHeader: React.OldFC<GroupHeaderProps> = ({ isSmall, children }) => (
+const GroupHeader: React.FC<GroupHeaderProps> = ({ isSmall, children }) => (
   <>
     {!children ? (
       <S.Line />

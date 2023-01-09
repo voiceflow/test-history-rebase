@@ -17,7 +17,7 @@ export interface UploadLinkInputProps {
 
 export type { InputRenderer };
 
-const UploadLinkInput: React.OldFC<UploadLinkInputProps> = ({ onChangeText, value = '', validate = validateURL, placeholder, renderInput }) => {
+const UploadLinkInput: React.FC<UploadLinkInputProps> = ({ onChangeText, value = '', validate = validateURL, placeholder, renderInput }) => {
   const [error, setError] = React.useState<Nullable<string>>(null);
   const inputRef = React.useRef<HTMLDivElement & { getCurrentValue: () => { text: string } }>();
 

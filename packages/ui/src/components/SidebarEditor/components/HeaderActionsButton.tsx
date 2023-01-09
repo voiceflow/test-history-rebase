@@ -6,7 +6,7 @@ import type { OptionsMenuOption } from '../../OptionsMenu';
 import Select from '../../Select';
 import * as T from '../types';
 
-const HeaderActionsButton: React.OldFC<T.HeaderActionsButtonProps> = ({ actions, placement = 'bottom-end' }) => {
+const HeaderActionsButton: React.FC<T.HeaderActionsButtonProps> = ({ actions, placement = 'bottom-end' }) => {
   const options = actions.filter(Utils.array.isNotNullish);
 
   if (!options.length) return null;

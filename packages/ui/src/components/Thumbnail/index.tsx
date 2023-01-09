@@ -7,7 +7,7 @@ export interface ThumbnailProps extends S.ContainerProps, Partial<S.BaseFrameSty
   src?: string | null;
 }
 
-const Thumbnail: React.OldFC<ThumbnailProps> = ({ src, size = 'sm', ...containerProps }) => (
+const Thumbnail: React.FC<ThumbnailProps> = ({ src, size = 'sm', ...containerProps }) => (
   <S.Container {...containerProps}>
     {src ? (
       <ThumnailPopper imageUrl={src}>

@@ -14,7 +14,7 @@ export interface OptionsMenuProps {
   options: Array<OptionsMenuOption | UIOnlyMenuItemOption>;
 }
 
-const OptionsMenu: React.OldFC<OptionsMenuProps> = ({ onHide, options = [] }) => (
+const OptionsMenu: React.FC<OptionsMenuProps> = ({ onHide, options = [] }) => (
   <NestedMenu
     onHide={onHide}
     options={options}

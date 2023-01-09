@@ -12,7 +12,7 @@ interface ColorRangeProps {
   saveHue: (hue: string) => void;
 }
 
-export const ColorRange: React.OldFC<ColorRangeProps> = ({ hue, setHue, saveHue }) => (
+export const ColorRange: React.FC<ColorRangeProps> = ({ hue, setHue, saveHue }) => (
   <RangeContainer>
     <Range min={HUE_MIN} max={HUE_MAX} value={hue} onChange={preventDefault(withTargetValue(setHue))} />
 

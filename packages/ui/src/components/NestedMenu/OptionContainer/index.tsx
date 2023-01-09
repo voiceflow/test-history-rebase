@@ -3,11 +3,11 @@ import { Popper, PopperProps } from 'react-popper';
 
 import Portal from '../../Portal';
 
-export interface NestedMenuOptionContainerProps {
+export interface NestedMenuOptionContainerProps extends React.PropsWithChildren {
   placement?: PopperProps['placement'];
 }
 
-const NestedMenuOptionContainer: React.OldFC<NestedMenuOptionContainerProps> = ({ children, placement = 'right-start' }) => (
+const NestedMenuOptionContainer: React.FC<NestedMenuOptionContainerProps> = ({ children, placement = 'right-start' }) => (
   <Portal portalNode={document.body}>
     <Popper
       placement={placement}

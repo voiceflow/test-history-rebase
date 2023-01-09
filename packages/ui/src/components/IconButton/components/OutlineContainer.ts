@@ -23,7 +23,7 @@ const activeStyle = css<OutlineContainerProps>`
   }
 `;
 
-const OutlineContainer = styled(IconButtonContainer as React.OldFC<OutlineContainerProps>)`
+const OutlineContainer = styled(IconButtonContainer as React.FC<OutlineContainerProps>)`
   ${transition('border', 'background', 'color', 'box-shadow', 'opacity')}
   color: ${({ color, theme }) => color ?? theme.colors.tertiary};
   background: ${colors(ThemeColor.WHITE)};

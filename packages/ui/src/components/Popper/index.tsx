@@ -12,7 +12,7 @@ import * as T from './types';
 
 export * as PopperTypes from './types';
 
-const Popper: React.OldFC<T.Props> = ({
+const Popper: React.FC<T.Props> = ({
   width,
   height,
   inline,

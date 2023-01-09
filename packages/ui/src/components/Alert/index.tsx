@@ -8,7 +8,7 @@ export interface AlertProps extends S.ContainerProps, React.PropsWithChildren {
   textProps?: TextProps;
 }
 
-const Alert: React.OldFC<AlertProps> = ({ title, color, children, textProps, ...rest }) => (
+const Alert: React.FC<AlertProps> = ({ title, color, children, textProps, ...rest }) => (
   <S.Container color={color as any} {...rest}>
     {title}
 

@@ -5,7 +5,7 @@ import React from 'react';
 import * as S from './styles';
 import * as T from './types';
 
-const Column: React.OldFC<T.Props> = ({ flex, active, width, onClick, tooltip, sortable, children, descending }) => {
+const Column: React.FC<T.Props> = ({ flex, active, width, onClick, tooltip, sortable, children, descending }) => {
   const nubUpColor = active && !descending ? '#132144' : '#becedc';
   const nubDownColor = active && descending ? '#132144' : '#becedc';
 

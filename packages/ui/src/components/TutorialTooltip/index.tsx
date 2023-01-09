@@ -12,7 +12,7 @@ export interface TutorialTooltipProps extends Pick<TooltipProps, 'children' | 'p
   contentBottomUnits?: number;
 }
 
-const TutorialTooltip: React.OldFC<TutorialTooltipProps> = ({
+const TutorialTooltip: React.FC<TutorialTooltipProps> = ({
   title,
   children,
   placement = 'top-start',

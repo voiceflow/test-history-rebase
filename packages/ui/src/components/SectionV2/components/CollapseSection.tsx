@@ -12,7 +12,7 @@ export interface RendererProps {
 
 type ReactNodeOrRenderer = React.ReactNode | ((props: RendererProps) => React.ReactNode);
 
-export interface CollapseSectionProps extends ContainerProps {
+export interface CollapseSectionProps extends Omit<ContainerProps, 'children'> {
   header: ReactNodeOrRenderer;
   onToggle?: (collapsed: boolean) => void;
   children?: ReactNodeOrRenderer;

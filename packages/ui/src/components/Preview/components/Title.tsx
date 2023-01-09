@@ -4,7 +4,7 @@ import { SpaceProps } from 'styled-system';
 
 import { PreviewColors } from '../constants';
 
-const PreviewTitle: React.OldFC<SpaceProps> = ({ children, ...props }) => (
+const PreviewTitle: React.FC<React.PropsWithChildren<SpaceProps>> = ({ children, ...props }) => (
   <Text color={PreviewColors.GREY_TITLE_COLOR} fontSize={13} fontWeight={600} {...props}>
     {children}
   </Text>

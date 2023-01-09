@@ -18,7 +18,7 @@ export interface Props {
   maxHeight?: BaseSelectProps['maxHeight'];
 }
 
-const AddButtonDropdown: React.OldFC<Props> = ({ actions, disabled, placement = 'bottom-end', maxHeight }) => {
+const AddButtonDropdown: React.FC<Props> = ({ actions, disabled, placement = 'bottom-end', maxHeight }) => {
   const options = actions.filter(Utils.array.isNotNullish);
 
   return (

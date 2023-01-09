@@ -6,13 +6,13 @@ import { DeepNonNullable } from 'utility-types';
 import { Member } from '../../types';
 import * as S from './styles';
 
-interface WorkspaceMemberSelectOptionProps {
+interface WorkspaceMemberSelectOptionProps extends React.PropsWithChildren {
   option: DeepNonNullable<Member>;
   isFocused?: boolean;
   searchLabel?: string | null;
 }
 
-const WorkspaceMemberSelectOption: React.OldFC<WorkspaceMemberSelectOptionProps> = ({ option, children }) => (
+const WorkspaceMemberSelectOption: React.FC<WorkspaceMemberSelectOptionProps> = ({ option, children }) => (
   <Box.Flex gap={16}>
     <Avatar image={option.image} text={option.name} large />
 

@@ -18,7 +18,7 @@ const getIcon = (type: T.Type, checked?: boolean): SvgIconTypes.Icon => {
   }
 };
 
-const Checkbox: React.OldFC<T.Props> = ({
+const Checkbox: React.FC<T.Props> = ({
   type = T.Type.CHECKBOX,
   error,
   color = T.Color.DEFAULT,

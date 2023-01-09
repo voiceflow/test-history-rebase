@@ -16,7 +16,7 @@ export interface AvatarListProps {
   members: NonNullable<UserProps['user']>[];
 }
 
-const AvatarList: React.OldFC<AvatarListProps> = ({ min = 0, max = 8, flat, onAdd, members, small }) => {
+const AvatarList: React.FC<AvatarListProps> = ({ min = 0, max = 8, flat, onAdd, members, small }) => {
   const accepted = React.useMemo(() => members.filter((member) => !!member.creator_id).reverse(), [members]);
   const renderMembers = React.useMemo(() => accepted.slice(0, max), [max, accepted]);
   const hiddenMembers = React.useMemo(() => accepted.slice(max), [max, accepted]);

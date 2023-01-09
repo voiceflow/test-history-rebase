@@ -8,11 +8,11 @@ import * as SnackbarTypes from './types';
 export const RECONNECT_TIMEOUT = 10;
 export { SnackbarTypes };
 
-interface SnackbarProps extends SnackbarTypes.InstanceProps {
+interface SnackbarProps extends SnackbarTypes.InstanceProps, React.PropsWithChildren {
   showOverlay?: boolean;
 }
 
-const Snackbar: React.OldFC<SnackbarProps> = ({ isOpen, children, showOverlay }) => {
+const Snackbar: React.FC<SnackbarProps> = ({ isOpen, children, showOverlay }) => {
   if (!isOpen) return null;
 
   return (

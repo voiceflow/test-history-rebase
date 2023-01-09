@@ -6,7 +6,7 @@ import type { OptionsMenuOption } from '../../OptionsMenu';
 import Select from '../../Select';
 import * as T from '../types';
 
-const FooterActionsButton: React.OldFC<T.FooterActionsButtonProps> = ({ actions, placement = 'bottom' }) => (
+const FooterActionsButton: React.FC<T.FooterActionsButtonProps> = ({ actions, placement = 'bottom' }) => (
   <Select<OptionsMenuOption>
     options={actions.filter(Utils.array.isNotNullish)}
     minWidth={false}

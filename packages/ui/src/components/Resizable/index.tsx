@@ -3,7 +3,7 @@ import React from 'react';
 import * as S from './styles';
 import useResize from './useResize';
 
-interface ResizableProps {
+interface ResizableProps extends React.PropsWithChildren {
   onResize?: (dimensions: [number, number]) => void;
   onResizeEnd?: (dimensions: [number, number]) => void;
   onResizeStart?: () => void;
@@ -29,7 +29,7 @@ const defaultHandle = ({ axis, onMouseDown }: { axis: ResizableProps['axis']; on
   return <Component onMouseDown={onMouseDown} />;
 };
 
-const Resizable: React.OldFC<ResizableProps> = ({
+const Resizable: React.FC<ResizableProps> = ({
   children,
   disabled,
   minHeight,

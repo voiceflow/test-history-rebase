@@ -16,7 +16,7 @@ export interface AudioPlayerProps {
   showDuration?: boolean;
 }
 
-const AudioPlayer: React.OldFC<AudioPlayerProps> = ({ link, title, onClose, autoplay = false, showDuration = false, className }) => {
+const AudioPlayer: React.FC<AudioPlayerProps> = ({ link, title, onClose, autoplay = false, showDuration = false, className }) => {
   const containerRef = React.useRef<HTMLDivElement | null>(null);
 
   const audioPlayer = useAudioPlayer({ autoplay, audioURL: link });

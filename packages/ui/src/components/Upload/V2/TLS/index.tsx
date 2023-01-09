@@ -10,7 +10,7 @@ export interface UploadTLSProps extends Pick<UploadBaseProps, 'onChange'> {
   value: string;
 }
 
-const UploadTLS: React.OldFC<UploadTLSProps> = ({ onChange, label, value }) => {
+const UploadTLS: React.FC<UploadTLSProps> = ({ onChange, label, value }) => {
   return (
     <UploadBase
       label={label}

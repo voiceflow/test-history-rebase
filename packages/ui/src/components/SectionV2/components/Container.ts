@@ -4,7 +4,7 @@ import { color, ColorProps, layout, LayoutProps } from 'styled-system';
 import Header from './Header';
 import LinkArrowIcon from './LinkArrowIcon';
 
-export interface ContainerProps extends LayoutProps, Pick<ColorProps, 'backgroundColor'> {
+export interface ContainerProps extends LayoutProps, Pick<ColorProps, 'backgroundColor'>, React.PropsWithChildren {
   isLink?: boolean;
   isAccent?: boolean;
   isCollapse?: boolean;

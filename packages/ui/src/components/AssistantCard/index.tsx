@@ -27,7 +27,7 @@ import {
   Title,
 } from './styles';
 
-export interface AssistantCardProps {
+export interface AssistantCardProps extends React.PropsWithChildren {
   title?: string;
   hasTitleComponent?: boolean;
   status?: string;
@@ -39,13 +39,12 @@ export interface AssistantCardProps {
   iconTitle?: string;
   options?: Nullable<OptionWithoutValue>[];
   backgroundImage?: string;
-  children?: React.ReactChild;
   onClickCTA?: () => void;
   onClickLink?: () => void;
 }
 
 // TODO: refactor component to remove userRole, options and etc
-const AssistantCard: React.OldFC<AssistantCardProps> = ({
+const AssistantCard: React.FC<AssistantCardProps> = ({
   userRole = 'viewer',
   onClickCTA,
   onClickLink,

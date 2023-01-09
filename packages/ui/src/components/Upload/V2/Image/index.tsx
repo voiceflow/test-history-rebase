@@ -16,7 +16,7 @@ export interface UploadImageProps extends Pick<UploadBaseProps, 'value' | 'onCha
   onlyUpload?: boolean;
 }
 
-const UploadImage: React.OldFC<UploadImageProps> = ({
+const UploadImage: React.FC<UploadImageProps> = ({
   acceptedFileTypes = IMAGE_FILE_TYPES,
   autoHeight,
   endpoint = '/image',

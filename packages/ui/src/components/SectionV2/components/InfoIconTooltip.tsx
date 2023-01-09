@@ -18,7 +18,7 @@ const StyledIcon = styled(SvgIcon).attrs({ size: 16, icon: 'info' })<{ opened?: 
     `}
 `;
 
-const InfoIconTooltip: React.OldFC<Omit<TippyTooltipProps, 'content'>> = ({ children, interactive, ...props }) => {
+const InfoIconTooltip: React.FC<React.PropsWithChildren<Omit<TippyTooltipProps, 'content'>>> = ({ children, interactive, ...props }) => {
   const [isOpen, setIsOpen] = React.useState(false);
 
   return (

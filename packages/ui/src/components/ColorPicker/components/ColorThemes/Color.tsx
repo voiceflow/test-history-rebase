@@ -54,7 +54,7 @@ const ColorWrapper = styled.div<BaseColorProps>`
   }
 `;
 
-export const Color: React.OldFC<ColorProps> = ({
+export const Color: React.FC<ColorProps> = ({
   selected,
   colorData,
   name,

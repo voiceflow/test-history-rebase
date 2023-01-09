@@ -12,7 +12,7 @@ export interface AudioUploadProps {
   renderInput: InputRenderer;
 }
 
-const AudioUpload: React.OldFC<AudioUploadProps> = ({ audio, update, className, renderInput }) =>
+const AudioUpload: React.FC<AudioUploadProps> = ({ audio, update, className, renderInput }) =>
   audio ? (
     <AudioPlayer title={prettifyBucketURL(audio)} link={audio} onClose={() => update(null)} />
   ) : (

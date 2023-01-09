@@ -8,7 +8,7 @@ export interface StickyProps {
   initialSticked?: boolean;
 }
 
-const Sticky: React.OldFC<StickyProps> = ({ top, children, disabled, initialSticked }) => {
+const Sticky: React.FC<StickyProps> = ({ top, children, disabled, initialSticked }) => {
   const visibilityNodeRef = React.useRef<HTMLDivElement>(null);
 
   const isOnScreen = useOnScreen(visibilityNodeRef, { disabled, initialState: initialSticked });

@@ -24,7 +24,7 @@ export interface UploadJSONProps extends Pick<UploadDropProps, 'value'> {
 
 const ACCEPTED_FILE_TYPES = ['.json', '.JSON', 'application/json'];
 
-const UploadJSON: React.OldFC<UploadJSONProps> = ({ onChange, onClose, value }) => {
+const UploadJSON: React.FC<UploadJSONProps> = ({ onChange, onClose, value }) => {
   const [error, setError] = React.useState<null | string>(null);
 
   const onDropAccepted = async (acceptedFiles: File[]) => {

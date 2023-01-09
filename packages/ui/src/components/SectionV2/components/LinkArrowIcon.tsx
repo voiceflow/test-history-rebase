@@ -8,7 +8,7 @@ export interface LinkArrowIconProps {
   className?: string;
 }
 
-const LinkArrowIcon: React.OldFC<LinkArrowIconProps> = ({ className }) => (
+const LinkArrowIcon: React.FC<LinkArrowIconProps> = ({ className }) => (
   <Status color={Status.Color.SECONDARY} hidden={false}>
     <SvgIcon icon="arrowToggle" size={10} inline className={className} rotation={90} />
   </Status>

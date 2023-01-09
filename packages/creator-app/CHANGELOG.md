@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1046.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1046.1...@voiceflow/creator-app@1.1046.2) (2023-01-09)
+
+
+### Bug Fixes
+
+* standardise integration pages styles (PL-376) ([#6521](https://github.com/voiceflow/creator-app/issues/6521)) ([4edc4b8](https://github.com/voiceflow/creator-app/commit/4edc4b84a222d07a9880fcc8a3b71c85d4f58bc8))
+
+
+
+
+
 ## [1.1046.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1046.0...@voiceflow/creator-app@1.1046.1) (2023-01-09)
 
 

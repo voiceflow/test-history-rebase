@@ -9,7 +9,6 @@ import {
   CollapseArrowIcon,
   CollapseSection,
   Container,
-  ContainerProps,
   Content,
   Description,
   Divider,
@@ -28,13 +27,11 @@ import {
   Sticky,
   Title,
 } from './components';
+import * as T from './types';
 
-export interface SectionV2Props extends ContainerProps {
-  header?: React.ReactNode;
-  children?: React.ReactNode;
-}
+export * as SectionV2Types from './types';
 
-const SectionV2 = React.forwardRef<HTMLDivElement, SectionV2Props>(({ header, children, ...containerProps }, ref) => (
+const SectionV2 = React.forwardRef<HTMLDivElement, T.Props>(({ header, children, ...containerProps }, ref) => (
   <Container ref={ref} {...containerProps}>
     {header}
     {children}
@@ -47,11 +44,11 @@ export default Object.assign(SectionV2, {
   Status,
   Header,
   Divider,
-  Description,
   Content,
   ListItem,
   AddButton,
   Container,
+  Description,
   LinkSection,
   InfoMessage,
   ErrorMessage,

@@ -2,8 +2,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Button, Input, Upload, UploadIconVariant } from '@voiceflow/ui';
 import React from 'react';
 
-import Section, { SectionVariant } from '@/components/Section';
-import { ActionSection, SectionVariants, SettingsSection } from '@/components/Settings';
+import * as Settings from '@/components/Settings';
 import { Permission } from '@/config/permissions';
 import * as Feature from '@/ducks/feature';
 import * as Workspace from '@/ducks/workspace';
@@ -13,7 +12,7 @@ import * as Sentry from '@/vendors/sentry';
 
 import { AIAssistSection } from './components';
 
-const GeneralSettingsPage: React.OldFC = () => {
+const GeneralSettingsPage: React.FC = () => {
   const workspace = useActiveWorkspace()!;
 
   const isIdentityWorkspaceEnabled = useSelector(Feature.isFeatureEnabledSelector)(Realtime.FeatureFlag.IDENTITY_WORKSPACE);
@@ -43,12 +42,19 @@ const GeneralSettingsPage: React.OldFC = () => {
 
   return (
     <>
-      <SettingsSection title="General">
-        <Section variant={SectionVariant.QUATERNARY} header="Workspace Name">
-          <Box.Flex mb={24}>
-            <Input name="name" value={name} onBlur={saveName} onChangeText={updateName} placeholder="Board Name" readOnly={!canConfigureWorkspace} />
+      <Settings.Section title="General">
+        <Settings.Card>
+          <Settings.SubSection header="Workspace Name">
+            <Box.FlexApart gap={16}>
+              <Input
+                name="name"
+                value={name}
+                onBlur={saveName}
+                readOnly={!canConfigureWorkspace}
+                onChangeText={updateName}
+                placeholder="Board Name"
+              />
 
-            <Box ml={16}>
               {isIdentityWorkspaceEnabled ? (
                 <Upload.Provider client={{ upload: (_endpoint, _fileType, formData) => updateActiveWorkspaceImage(formData) }} onError={Sentry.error}>
                   <Upload.IconUpload size={UploadIconVariant.EXTRA_SMALL} image={workspace.image} disabled={!canConfigureWorkspace} />
@@ -61,21 +67,21 @@ const GeneralSettingsPage: React.OldFC = () => {
                   disabled={!canConfigureWorkspace}
                 />
               )}
-            </Box>
-          </Box.Flex>
-        </Section>
-      </SettingsSection>
+            </Box.FlexApart>
+          </Settings.SubSection>
+        </Settings.Card>
+      </Settings.Section>
 
       <AIAssistSection />
 
       {canDeleteWorkspace && (
-        <SettingsSection title="Danger Zone" variant={SectionVariants.SECONDARY}>
-          <ActionSection
-            heading="Delete Workspace"
-            description="This action cannot be reverted, proceed with caution"
+        <Settings.Section title="Danger Zone">
+          <Settings.ActionSubSection
+            title="Delete Workspace"
             action={<Button onClick={() => boardDeleteModal.openVoid({ workspace })}>Delete Workspace</Button>}
+            description="This action cannot be reverted, proceed with caution"
           />
-        </SettingsSection>
+        </Settings.Section>
       )}
     </>
   );

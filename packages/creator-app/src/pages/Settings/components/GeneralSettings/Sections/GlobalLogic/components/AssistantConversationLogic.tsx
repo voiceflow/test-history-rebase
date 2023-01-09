@@ -5,7 +5,7 @@ import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import RadioGroup from '@/components/RadioGroup';
-import { SettingsSubSection } from '@/components/Settings/components';
+import * as Settings from '@/components/Settings';
 import SSML from '@/components/SSML';
 import VariablesInput from '@/components/VariablesInput';
 import * as VersionDuck from '@/ducks/version';
@@ -28,7 +28,7 @@ interface AssistantConversationLogicProps {
   platformDefaultVoice: string;
 }
 
-const AssistantConversationLogic: React.OldFC<AssistantConversationLogicProps> = ({
+const AssistantConversationLogic: React.FC<AssistantConversationLogicProps> = ({
   platform,
   projectType,
   platformMeta,
@@ -65,43 +65,48 @@ const AssistantConversationLogic: React.OldFC<AssistantConversationLogicProps> =
   return !canUseAlexaSettings ? null : (
     <>
       <SectionV2.Divider />
-      <SettingsSubSection header="Allow Users to Continue Previous Session" rightDescription={continuePrevious}>
-        <Toggle checked={restart} size={Toggle.Size.SMALL} onChange={() => patchSession({ restart: !restart })} hasLabel />
-      </SettingsSubSection>
+
+      <Settings.SubSection header="Allow Users to Continue Previous Session">
+        <Box.FlexAround gap={24}>
+          {continuePrevious}
+
+          <Toggle checked={restart} size={Toggle.Size.SMALL} onChange={() => patchSession({ restart: !restart })} hasLabel />
+        </Box.FlexAround>
+      </Settings.SubSection>
 
       {restart && (
         <>
-          <SettingsSubSection growInput={false} radioButton>
-            <Box width="318px">
+          <Settings.SubSection splitView>
+            <Settings.SubSection.RadioGroupContainer>
               <RadioGroup
+                width="318px"
+                column
                 options={[
                   { id: false, label: 'Speak' },
-                  {
-                    id: true,
-                    label: 'Audio',
-                  },
+                  { id: true, label: 'Audio' },
                 ]}
                 name="multiple"
                 checked={resumePrompt.voice === VoiceflowConstants.Voice.AUDIO}
                 onChange={(checked) => onChangeResumePrompt({ content: '', voice: checked ? VoiceflowConstants.Voice.AUDIO : defaultVoice })}
                 activeBar
-                column
                 noPaddingLastItem={false}
               />
-            </Box>
-          </SettingsSubSection>
+            </Settings.SubSection.RadioGroupContainer>
+
+            <div />
+          </Settings.SubSection>
 
           {resumePrompt.voice === VoiceflowConstants.Voice.AUDIO ? (
-            <SettingsSubSection>
+            <Settings.SubSection>
               <Upload.AudioUpload
                 audio={resumePrompt.content}
                 update={(src) => onChangeResumePrompt({ content: src ?? '' })}
                 className={CONTEXT_MENU_IGNORED_CLASS_NAME}
                 renderInput={VariablesInput.renderInput}
               />
-            </SettingsSubSection>
+            </Settings.SubSection>
           ) : (
-            <SettingsSubSection>
+            <Settings.SubSection>
               <SSMLComponent
                 voice={resumePrompt.voice || defaultVoice}
                 value={resumePrompt.content || ''}
@@ -117,51 +122,50 @@ const AssistantConversationLogic: React.OldFC<AssistantConversationLogicProps> =
               {resumePrompt.content.length >= RESUME_PROMPT_MAX_LENGTH && (
                 <ErrorMessage>Confirmation message must not exceed 160 symbols.</ErrorMessage>
               )}
-            </SettingsSubSection>
+            </Settings.SubSection>
           )}
 
-          <SettingsSubSection>
-            <ClickableText style={{ marginTop: '14px' }} onClick={onToggleFollowUp}>
-              {resumePrompt.followVoice ? 'Remove Follow Up' : 'Add Follow Up'}
-            </ClickableText>
-          </SettingsSubSection>
+          <Settings.SubSection contentProps={{ topOffset: 1.5 }}>
+            <ClickableText onClick={onToggleFollowUp}>{resumePrompt.followVoice ? 'Remove Follow Up' : 'Add Follow Up'}</ClickableText>
+          </Settings.SubSection>
 
           {!!resumePrompt.followVoice && (
             <>
               <SectionV2.Divider inset />
-              <SettingsSubSection header="Resume Follow Up" topOffset={0} radioButton>
-                <Box width="318px">
+
+              <Settings.SubSection header="Resume Follow Up" contentProps={{ topOffset: 0 }} splitView>
+                <Settings.SubSection.RadioGroupContainer>
                   <RadioGroup
+                    name="multiple"
+                    width="318px"
+                    column
                     options={[
                       { id: false, label: 'Speak' },
-                      {
-                        id: true,
-                        label: 'Audio',
-                      },
+                      { id: true, label: 'Audio' },
                     ]}
-                    name="multiple"
                     checked={resumePrompt.followVoice === VoiceflowConstants.Voice.AUDIO}
                     onChange={(checked) =>
                       onChangeResumePrompt({ followContent: '', followVoice: checked ? VoiceflowConstants.Voice.AUDIO : defaultVoice })
                     }
                     activeBar
-                    column
                     noPaddingLastItem={false}
                   />
-                </Box>
-              </SettingsSubSection>
+                </Settings.SubSection.RadioGroupContainer>
+
+                <div />
+              </Settings.SubSection>
 
               {resumePrompt.followVoice === VoiceflowConstants.Voice.AUDIO ? (
-                <SettingsSubSection>
+                <Settings.SubSection>
                   <Upload.AudioUpload
                     renderInput={VariablesInput.renderInput}
                     audio={resumePrompt.followContent}
                     update={(src) => onChangeResumePrompt({ followContent: src })}
                     className={CONTEXT_MENU_IGNORED_CLASS_NAME}
                   />
-                </SettingsSubSection>
+                </Settings.SubSection>
               ) : (
-                <SettingsSubSection>
+                <Settings.SubSection>
                   <SSMLComponent
                     voice={resumePrompt.followVoice || defaultVoice}
                     value={resumePrompt.followContent || ''}
@@ -173,7 +177,7 @@ const AssistantConversationLogic: React.OldFC<AssistantConversationLogicProps> =
                     platformDefaultVoice={platformDefaultVoice}
                     onChangeDefaultVoice={updateDefaultVoice}
                   />
-                </SettingsSubSection>
+                </Settings.SubSection>
               )}
             </>
           )}
@@ -182,34 +186,40 @@ const AssistantConversationLogic: React.OldFC<AssistantConversationLogicProps> =
 
       <SectionV2.Divider />
 
-      <SettingsSubSection header="Allow Users to Repeat" customHeaderStyling={{ paddingBottom: '4px' }} rightDescription={allowRepeat || <></>}>
-        <Toggle
-          checked={repeat !== BaseVersion.RepeatType.OFF}
-          size={Toggle.Size.SMALL}
-          onChange={() =>
-            patchSettings({ repeat: repeat === BaseVersion.RepeatType.OFF ? BaseVersion.RepeatType.DIALOG : BaseVersion.RepeatType.OFF })
-          }
-          hasLabel
-        />
-      </SettingsSubSection>
+      <Settings.SubSection header="Allow Users to Repeat">
+        <Box.FlexAround gap={24}>
+          {allowRepeat}
+
+          <Toggle
+            size={Toggle.Size.SMALL}
+            checked={repeat !== BaseVersion.RepeatType.OFF}
+            onChange={() =>
+              patchSettings({ repeat: repeat === BaseVersion.RepeatType.OFF ? BaseVersion.RepeatType.DIALOG : BaseVersion.RepeatType.OFF })
+            }
+            hasLabel
+          />
+        </Box.FlexAround>
+      </Settings.SubSection>
+
       {repeat !== BaseVersion.RepeatType.OFF && (
-        <SettingsSubSection
-          radioButton
-          leftDescription={repeat === BaseVersion.RepeatType.DIALOG ? repeatDialog : repeatEverything}
-          descriptionOffset={repeat === BaseVersion.RepeatType.DIALOG ? 0 : 42}
-        >
-          <Box width="318px" pb={24}>
+        <Settings.SubSection splitView>
+          <Settings.SubSection.RadioGroupContainer>
             <RadioGroup
-              options={REPEAT_OPTIONS}
               name="multiple"
-              checked={repeat ?? BaseVersion.RepeatType.DIALOG}
+              width="318px"
+              column
+              options={REPEAT_OPTIONS}
+              checked={repeat || BaseVersion.RepeatType.DIALOG}
               onChange={(repeat) => patchSettings({ repeat })}
               activeBar
-              column
               noPaddingLastItem={false}
             />
-          </Box>
-        </SettingsSubSection>
+          </Settings.SubSection.RadioGroupContainer>
+
+          <Settings.SubSection.RadioGroupDescription offset={repeat === BaseVersion.RepeatType.ALL}>
+            {repeat === BaseVersion.RepeatType.DIALOG ? repeatDialog : repeatEverything}
+          </Settings.SubSection.RadioGroupDescription>
+        </Settings.SubSection>
       )}
     </>
   );

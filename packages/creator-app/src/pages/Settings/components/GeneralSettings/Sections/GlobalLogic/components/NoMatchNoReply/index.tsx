@@ -1,14 +1,13 @@
 import * as Platform from '@voiceflow/platform-config';
-import { Button } from '@voiceflow/ui';
+import { Box, Button, SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
-import Section, { SectionVariant } from '@/components/Section';
+import * as Settings from '@/components/Settings';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { useSelector } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
 
 import MessageDelayPopper from './MessageDelayPopper';
-import * as S from './styles';
 
 const GeneralSettingsNoMatchNoReplySection: React.OldFC = () => {
   const meta = useSelector(ProjectV2.active.metaSelector);
@@ -19,43 +18,42 @@ const GeneralSettingsNoMatchNoReplySection: React.OldFC = () => {
 
   return (
     <>
-      <Section
-        variant={SectionVariant.PRIMARY}
-        customContentStyling={{
-          paddingTop: 32,
-          paddingBottom: 32,
-        }}
-      >
-        <S.Container>
-          <S.TextContainer>
-            <S.SubSectionTitle>Global No Match</S.SubSectionTitle>
-            <S.SubSectionDescription>The fallback response that will trigger if the user fails to match any intent.</S.SubSectionDescription>
-          </S.TextContainer>
+      <Settings.SubSection contentProps={{ topOffset: 3 }}>
+        <Box.FlexApart gap={24}>
+          <div>
+            <Settings.SubSection.Title>Global No Match</Settings.SubSection.Title>
+
+            <Settings.SubSection.Description>
+              The fallback response that will trigger if the user fails to match any intent.
+            </Settings.SubSection.Description>
+          </div>
+
           <Button variant={Button.Variant.SECONDARY} flat onClick={() => noMatchModal.openVoid()}>
             Edit
           </Button>
-        </S.Container>
-      </Section>
+        </Box.FlexApart>
+      </Settings.SubSection>
+
       {project.noReply && (
-        <Section
-          variant={SectionVariant.PRIMARY}
-          customContentStyling={{
-            paddingTop: 32,
-            paddingBottom: 32,
-          }}
-        >
-          <S.Container>
-            <S.TextContainer>
-              <S.SubSectionTitle>Global No Reply</S.SubSectionTitle>
-              <S.SubSectionDescription>
-                The fallback response that will trigger if the user says nothing for <MessageDelayPopper /> seconds.
-              </S.SubSectionDescription>
-            </S.TextContainer>
-            <Button variant={Button.Variant.SECONDARY} flat onClick={() => noReplyModal.openVoid()}>
-              Edit
-            </Button>
-          </S.Container>
-        </Section>
+        <>
+          <SectionV2.Divider />
+
+          <Settings.SubSection contentProps={{ topOffset: 3 }}>
+            <Box.FlexApart gap={24}>
+              <div>
+                <Settings.SubSection.Title>Global No Reply</Settings.SubSection.Title>
+
+                <Settings.SubSection.Description>
+                  The fallback response that will trigger if the user says nothing for <MessageDelayPopper /> seconds.
+                </Settings.SubSection.Description>
+              </div>
+
+              <Button variant={Button.Variant.SECONDARY} flat onClick={() => noReplyModal.openVoid()}>
+                Edit
+              </Button>
+            </Box.FlexApart>
+          </Settings.SubSection>
+        </>
       )}
     </>
   );

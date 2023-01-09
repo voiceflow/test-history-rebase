@@ -70,16 +70,20 @@ const AmazonIntegrations: React.OldFC = () => {
     <div className="card">
       <S.IntegrationHeader>
         <h5 className="mb-0 font-weight-bold">Amazon Alexa</h5>
+
         <div className="super-center">{amazonButton()}</div>
       </S.IntegrationHeader>
+
       {user.amazon && (
         <S.IntegrationInfo>
           <S.IntegrationInfoItem>
             <S.PropName> Name: </S.PropName> {user.amazon.profile.name}
           </S.IntegrationInfoItem>
+
           <S.IntegrationInfoItem>
             <S.PropName> Email: </S.PropName> {user.amazon.profile.email}
           </S.IntegrationInfoItem>
+
           <S.IntegrationInfoItem>
             <S.PropName> User Id: </S.PropName> {user.amazon.profile.user_id}
           </S.IntegrationInfoItem>

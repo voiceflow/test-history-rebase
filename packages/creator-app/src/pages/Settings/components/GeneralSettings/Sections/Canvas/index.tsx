@@ -1,22 +1,21 @@
 import { BaseModels } from '@voiceflow/base-types';
-import { Box, Link, SectionV2 } from '@voiceflow/ui';
+import { Link, SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
 import { ControlScheme } from '@/components/Canvas/constants';
 import RadioGroup from '@/components/RadioGroup';
-import { SectionVariants, SettingsSection, SettingsSubSection } from '@/components/Settings';
+import * as Settings from '@/components/Settings';
 import * as Documentation from '@/config/documentation';
 import * as Project from '@/ducks/project';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import * as UI from '@/ducks/ui';
 import { useDispatch, useSelector } from '@/hooks';
-import { DescriptorContainer } from '@/pages/Settings/components/ContentDescriptors/components';
 
 import { CanvasGrid } from './components';
 import { LINK_TYPE_OPTIONS, NAVIGATION_DESCRIPTIONS, NAVIGATION_OPTIONS, ZOOM_OPTIONS } from './constants';
 
-const Canvas: React.OldFC = () => {
+const Canvas: React.FC = () => {
   const canvasNavigation = useSelector(UI.canvasNavigationSelector);
   const zoomType = useSelector(UI.zoomTypeSelector);
   const activeProjectID = useSelector(Session.activeProjectIDSelector);
@@ -32,55 +31,58 @@ const Canvas: React.OldFC = () => {
 
   return (
     <>
-      <SettingsSection variant={SectionVariants.PRIMARY} title="Canvas Interactions" marginBottom={16}>
-        <SettingsSubSection
-          header="Navigation"
-          leftDescription={
-            <DescriptorContainer>
+      <Settings.Section title="Canvas Interactions" mb={16}>
+        <Settings.Card>
+          <Settings.SubSection header="Navigation" splitView>
+            <Settings.SubSection.RadioGroupContainer>
+              <RadioGroup
+                width={318}
+                column
+                options={NAVIGATION_OPTIONS}
+                checked={canvasNavigation}
+                onChange={setCanvasNavigation}
+                activeBar
+                noPaddingLastItem={false}
+              />
+            </Settings.SubSection.RadioGroupContainer>
+
+            <Settings.SubSection.RadioGroupDescription offset={canvasNavigation === ControlScheme.MOUSE}>
               {NAVIGATION_DESCRIPTIONS[canvasNavigation]} <Link href={Documentation.CANVAS_CONTROLS}>Learn more</Link>
-            </DescriptorContainer>
-          }
-          radioButton
-          descriptionOffset={canvasNavigation === ControlScheme.MOUSE ? 42 : 0}
-        >
-          <Box width="318px">
-            <RadioGroup
-              options={NAVIGATION_OPTIONS}
-              checked={canvasNavigation}
-              onChange={setCanvasNavigation}
-              column
-              activeBar
-              noPaddingLastItem={false}
-              width={318}
-            />
-          </Box>
-        </SettingsSubSection>
+            </Settings.SubSection.RadioGroupDescription>
+          </Settings.SubSection>
 
-        <SectionV2.Divider />
+          <SectionV2.Divider />
 
-        <SettingsSubSection header="Zoom Preference" radioButton>
-          <Box width="318px">
-            <RadioGroup options={ZOOM_OPTIONS} checked={zoomType} onChange={setZoomType} column activeBar noPaddingLastItem={false} />
-          </Box>
-        </SettingsSubSection>
+          <Settings.SubSection header="Zoom Preference" splitView>
+            <Settings.SubSection.RadioGroupContainer>
+              <RadioGroup width={318} options={ZOOM_OPTIONS} checked={zoomType} onChange={setZoomType} column activeBar noPaddingLastItem={false} />
+            </Settings.SubSection.RadioGroupContainer>
 
-        <SectionV2.Divider />
+            <div />
+          </Settings.SubSection>
 
-        <SettingsSubSection
-          header="Connectors"
-          leftDescription={
-            <DescriptorContainer>
+          <SectionV2.Divider />
+
+          <Settings.SubSection header="Connectors" splitView>
+            <Settings.SubSection.RadioGroupContainer>
+              <RadioGroup
+                width={318}
+                column
+                options={LINK_TYPE_OPTIONS}
+                checked={activeLinkType}
+                onChange={setLinkType}
+                activeBar
+                noPaddingLastItem={false}
+              />
+            </Settings.SubSection.RadioGroupContainer>
+
+            <Settings.SubSection.RadioGroupDescription offset={activeLinkType === BaseModels.Project.LinkType.CURVED}>
               Choose between straight or curved connection lines between blocks. <Link href={Documentation.LINK_TYPE}>Learn more</Link>
-            </DescriptorContainer>
-          }
-          radioButton
-          descriptionOffset={activeLinkType === BaseModels.Project.LinkType.CURVED ? 42 : 0}
-        >
-          <Box width="318px">
-            <RadioGroup options={LINK_TYPE_OPTIONS} checked={activeLinkType} onChange={setLinkType} column activeBar noPaddingLastItem={false} />
-          </Box>
-        </SettingsSubSection>
-      </SettingsSection>
+            </Settings.SubSection.RadioGroupDescription>
+          </Settings.SubSection>
+        </Settings.Card>
+      </Settings.Section>
+
       <CanvasGrid />
     </>
   );

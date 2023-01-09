@@ -7,10 +7,10 @@ import * as VersionV2 from '@/ducks/versionV2';
 import { useDispatch, useSelector } from '@/hooks';
 
 import PrivacyToggle from './PrivacyToggle';
-import { ApperanceSection, GeneralSection, PreviewSection, PublishSection } from './sections';
-import { PreviewContainer, SettingsContainer } from './styled';
+import { AppearanceSection, GeneralSection, PreviewSection, PublishSection } from './sections';
+import * as S from './styles';
 
-const Webchat: React.OldFC = () => {
+const Webchat: React.FC = () => {
   const config = useSelector(VersionV2.active.voiceflow.chat.publishingSelector);
   const updateConfig = useDispatch(Version.voiceflow.chat.patchActiveAndLivePublishing);
 
@@ -22,16 +22,20 @@ const Webchat: React.OldFC = () => {
   const theme = useTheme(config);
 
   return (
-    <Box display="flex" height="100%" className={theme}>
+    <Box display="flex" minHeight="100%" className={theme}>
       <PrivacyToggle />
-      <SettingsContainer>
+
+      <S.SettingsContainer>
         <PublishSection />
+
         <GeneralSection />
-        <ApperanceSection />
-      </SettingsContainer>
-      <PreviewContainer>
+
+        <AppearanceSection />
+      </S.SettingsContainer>
+
+      <S.PreviewContainer>
         <PreviewSection />
-      </PreviewContainer>
+      </S.PreviewContainer>
     </Box>
   );
 };

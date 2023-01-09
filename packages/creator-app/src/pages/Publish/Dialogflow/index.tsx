@@ -1,14 +1,14 @@
-import { Box, BoxFlex, Button, ButtonVariant, Link, toast } from '@voiceflow/ui';
+import { Box, Button, ButtonVariant, Link, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';
+import * as Settings from '@/components/Settings';
 import * as Errors from '@/config/errors';
 import { DIALOGFLOW_ES_LEARN_MORE, getDialogflowESProjectConsoleUrl } from '@/constants/platforms/dialogflowES';
 import * as Session from '@/ducks/session';
 import { useAsyncMountUnmount, useSelector, useSetup, useTrackingEvents } from '@/hooks';
+import { openURLInANewTab } from '@/utils/window';
 import * as Sentry from '@/vendors/sentry';
-
-import { ContentContainer, ContentSection, Section } from '../components';
 
 const DialogflowPublish: React.OldFC = () => {
   const projectID = useSelector(Session.activeProjectIDSelector);
@@ -33,30 +33,33 @@ const DialogflowPublish: React.OldFC = () => {
   });
 
   return (
-    <ContentContainer>
-      <ContentSection style={{ width: '700px' }}>
-        <Section title="Publish">
-          <BoxFlex alignItems="flex-end">
-            <Box>
-              <Box mr={20} mb={16} color="secondary">
-                To connect your Dialogflow agent to a chat or voice channel upload your project from the canvas.
-              </Box>
-              <Link href={DIALOGFLOW_ES_LEARN_MORE}>Learn More</Link>
-            </Box>
+    <Settings.PageContent>
+      <Settings.Section title="Publish">
+        <Settings.Card>
+          <Settings.SubSection contentProps={{ topOffset: 3 }}>
+            <Box.FlexApart gap={24}>
+              <div>
+                <Settings.SubSection.Title>Dialogflow Console</Settings.SubSection.Title>
 
-            <BoxFlex alignItems="flex-end">
-              <Box mt={32} ml={20}>
-                <Link href={actionsConsoleLink}>
-                  <Button variant={ButtonVariant.PRIMARY} disabled={!dialogflowProjectID} nowrap>
-                    Dialogflow Console
-                  </Button>
-                </Link>
-              </Box>
-            </BoxFlex>
-          </BoxFlex>
-        </Section>
-      </ContentSection>
-    </ContentContainer>
+                <Settings.SubSection.Description>
+                  To connect your Dialogflow agent to a chat or voice channel upload your project from the canvas.{' '}
+                  <Link href={DIALOGFLOW_ES_LEARN_MORE}>Learn More</Link>
+                </Settings.SubSection.Description>
+              </div>
+
+              <Button
+                nowrap
+                variant={ButtonVariant.PRIMARY}
+                onClick={() => actionsConsoleLink && openURLInANewTab(actionsConsoleLink)}
+                disabled={!dialogflowProjectID}
+              >
+                Open Console
+              </Button>
+            </Box.FlexApart>
+          </Settings.SubSection>
+        </Settings.Card>
+      </Settings.Section>
+    </Settings.PageContent>
   );
 };
 

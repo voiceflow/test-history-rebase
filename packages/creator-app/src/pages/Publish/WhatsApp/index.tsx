@@ -1,28 +1,32 @@
 import { Banner, Link } from '@voiceflow/ui';
 import React from 'react';
 
+import * as Settings from '@/components/Settings';
 import { WHATSAPP_DOCUMENTATION } from '@/constants/platforms';
-import { SettingsContainer, WebhookField } from '@/pages/Publish/components';
 import { openInternalURLInANewTab } from '@/utils/window';
 
-const WhatsApp: React.OldFC = () => (
-  <SettingsContainer>
-    <Banner
-      title="Publishing to WhatsApp Business"
-      subtitle="Make your assistant instantly accessible on WhatsApp."
-      buttonText="Documentation"
-      onClick={() => openInternalURLInANewTab(WHATSAPP_DOCUMENTATION)}
-      isCloseable={false}
-    />
-    <WebhookField
-      subtitle={
+import * as PublishingComponents from '../components';
+
+const WhatsApp: React.FC = () => (
+  <Settings.PageContent>
+    <Settings.Section>
+      <Banner
+        title="Publishing to WhatsApp Business"
+        onClick={() => openInternalURLInANewTab(WHATSAPP_DOCUMENTATION)}
+        subtitle="Make your assistant instantly accessible on WhatsApp."
+        buttonText="Documentation"
+      />
+    </Settings.Section>
+
+    <PublishingComponents.WebhookField
+      description={
         <>
           Voiceflow uses Twilio as its messaging partner for WhatsApp Business Messaging. <Link href={WHATSAPP_DOCUMENTATION}>Learn More</Link>
         </>
       }
       platformName="twilio-messaging"
     />
-  </SettingsContainer>
+  </Settings.PageContent>
 );
 
 export default WhatsApp;

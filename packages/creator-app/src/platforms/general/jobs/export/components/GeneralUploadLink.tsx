@@ -1,15 +1,11 @@
-import { Box, Link } from '@voiceflow/ui';
+import { Link } from '@voiceflow/ui';
 import React from 'react';
 
-const GeneralUploadLink: React.OldFC = () => {
-  return (
-    <>
-      Generate an executable project version to run on your own infrastructure.
-      <Box mt={10}>
-        <Link href="https://github.com/voiceflow/general-runtime#configurations">Learn More</Link>
-      </Box>
-    </>
-  );
-};
+const GeneralUploadLink: React.FC = () => (
+  <>
+    Generate an executable project version to run on your own infrastructure.{' '}
+    <Link href="https://github.com/voiceflow/general-runtime#configurations">Learn More</Link>
+  </>
+);
 
 export default GeneralUploadLink;

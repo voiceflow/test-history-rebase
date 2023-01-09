@@ -4,15 +4,14 @@ import React from 'react';
 import Workspace from '@/components/Workspace';
 import { Permission } from '@/config/permissions';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { useActiveWorkspace, useOnAddSeats, usePermission, useSelector } from '@/hooks';
+import { useOnAddSeats, usePermission, useSelector } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
 
 import MemberList from './List';
 import * as S from './styles';
 
-const DashboardV2TeamAndBillingMembers: React.OldFC = () => {
-  const activeWorkspace = useActiveWorkspace();
-
+const DashboardV2TeamAndBillingMembers: React.FC = () => {
+  const membersCount = useSelector(WorkspaceV2.active.membersCountSelector);
   const usedEditorSeats = useSelector(WorkspaceV2.active.usedEditorSeatsSelector);
   const isOnPaidPlanSelector = useSelector(WorkspaceV2.active.isOnPaidPlanSelector);
 
@@ -31,13 +30,14 @@ const DashboardV2TeamAndBillingMembers: React.OldFC = () => {
           title="Unlock your teams potential"
           onClick={() => paymentModal.open({})}
           subtitle="Upgrade to unlock unlimited assistant and so much more."
-          isCloseable={false}
           buttonText="Upgrade Now"
         />
       )}
+
       <S.Header>
         <div>
-          <S.Title>{activeWorkspace?.members?.length} Workspace Members</S.Title>
+          <S.Title>{membersCount} Workspace Members</S.Title>
+
           {canAddCollaborators ? (
             <Workspace.TakenSeatsMessage />
           ) : (

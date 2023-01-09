@@ -1,19 +1,17 @@
-import { Box } from '@voiceflow/ui';
 import React from 'react';
 
-import { SectionVariants, SettingsSection } from '@/components/Settings';
-import { DEFAULT_MAX_WIDTH } from '@/pages/Settings/constants';
+import * as Settings from '@/components/Settings';
 
 import { AccountProfile } from './Sections';
 
-const AccountProfileSection: React.OldFC = () => {
-  return (
-    <Box maxWidth={DEFAULT_MAX_WIDTH}>
-      <SettingsSection variant={SectionVariants.PRIMARY} title="Profile">
+const AccountProfileSection: React.FC = () => (
+  <Settings.PageContent>
+    <Settings.Section title="Profile">
+      <Settings.Card>
         <AccountProfile />
-      </SettingsSection>
-    </Box>
-  );
-};
+      </Settings.Card>
+    </Settings.Section>
+  </Settings.PageContent>
+);
 
 export default AccountProfileSection;

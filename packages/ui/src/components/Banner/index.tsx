@@ -1,70 +1,49 @@
-import Box from '@ui/components/Box';
+import Box, { BoxProps } from '@ui/components/Box';
 import Button from '@ui/components/Button';
+import { useLocalStorageState } from '@ui/hooks/storage';
 import React from 'react';
 
 import * as S from './styles';
 
-interface BannerProps extends Omit<S.OuterContainerProps, 'isOpen'> {
+interface BannerProps extends BoxProps {
   title?: string;
-  subtitle?: string;
-  buttonText?: string;
-  onClick?: VoidFunction;
-  backgroundImage?: string;
-  onClose?: VoidFunction;
-  isCloseable?: boolean;
-  className?: string;
   small?: boolean;
+  onClick?: VoidFunction;
+  subtitle?: string;
+  closeKey?: string;
+  className?: string;
+  buttonText?: string;
+  backgroundImage?: string;
 }
 
-const Banner: React.FC<BannerProps> = ({
-  title,
-  subtitle,
-  buttonText,
-  onClick,
-  backgroundImage,
-  onClose,
-  isCloseable = true,
-  className,
-  small = false,
-  ...props
-}) => {
-  const [isOpen, setOpen] = React.useState(true);
+const Banner: React.FC<BannerProps> = ({ small = false, title, onClick, closeKey, subtitle, buttonText, backgroundImage, ...props }) => {
+  const [isClosed, setIsClosed] = useLocalStorageState(closeKey ?? 'unknown-close-key', false);
 
-  const closeBanner = () => {
-    setOpen(false);
-    if (onClose) onClose();
-  };
-
-  const textboxStyle = small
-    ? {
-        pt: 24,
-        pb: 24,
-        pl: 32,
-      }
-    : {
-        px: 32,
-        py: 24,
-      };
+  if (isClosed) return null;
 
   return (
-    <S.OuterContainer isOpen={isOpen} className={className} {...props}>
+    <S.OuterContainer {...props}>
       <S.Container backgroundImage={backgroundImage}>
         <Box.FlexApart flexDirection="row">
-          <Box.Flex flexDirection="column" {...textboxStyle}>
+          <S.TextContainer small={small}>
             {title && <S.Title>{title}</S.Title>}
+
             {subtitle && <S.SubTitle>{subtitle}</S.SubTitle>}
-          </Box.Flex>
+          </S.TextContainer>
+
           {buttonText && (
-            <S.ButtonBox px={32} py={28}>
-              <Button variant={Button.Variant.PRIMARY} squareRadius onClick={onClick}>
-                {buttonText}
-              </Button>
-            </S.ButtonBox>
+            <Button variant={Button.Variant.PRIMARY} squareRadius onClick={onClick}>
+              {buttonText}
+            </Button>
           )}
         </Box.FlexApart>
-        {isCloseable && <S.CloseButton onClick={closeBanner} icon="closeSmall" />}
+
+        {closeKey && <S.CloseButton onClick={() => setIsClosed(true)} icon="closeSmall" />}
       </S.Container>
     </S.OuterContainer>
   );
 };
-export default Object.assign(Banner, { OuterContainer: S.OuterContainer, ButtonBox: S.ButtonBox });
+export default Object.assign(Banner, {
+  TextContainer: S.TextContainer,
+  OuterContainer: S.OuterContainer,
+});

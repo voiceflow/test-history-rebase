@@ -1,8 +1,8 @@
-import { Spinner } from '@voiceflow/ui';
+import { Box, Spinner } from '@voiceflow/ui';
 import React, { useEffect } from 'react';
 
 import workspaceClient from '@/client/workspace';
-import { SettingsSection } from '@/components/Settings';
+import * as Settings from '@/components/Settings';
 import { Descriptor, TableContainer, TableHeader, TableRow } from '@/components/Table';
 import * as Session from '@/ducks/session';
 import { useSelector } from '@/hooks/redux';
@@ -38,48 +38,55 @@ const BillingModal: React.FC = () => {
 
   return (
     <>
-      <SettingsSection title="Billing">
-        {loading ? (
-          <Spinner isMd />
-        ) : (
-          <FadeLeftContainer>
-            {hasPaid ? (
-              <>
-                <TableContainer columns={[3, 8, 1]}>
-                  <TableHeader>
-                    <span>Date</span>
-                    <span>Subscription</span>
-                    <span>Paid</span>
-                  </TableHeader>
-                  {invoices!.map((invoice, index) => {
-                    const { date, amount, items } = invoice;
-                    return (
-                      <TableRow key={index} hasBorder>
-                        <span>{date}</span>
-                        <span>
-                          {items.map((item, index) => (
-                            <div key={index}>{item}</div>
-                          ))}
-                        </span>
-                        <span>${amount}</span>
-                      </TableRow>
-                    );
-                  })}
-                </TableContainer>
-                <Descriptor>
-                  Your <b>{upcoming!.items}</b> renews on {upcoming!.date}
-                </Descriptor>
-              </>
-            ) : (
-              <Descriptor>This workspace has no active subscription</Descriptor>
-            )}
-          </FadeLeftContainer>
-        )}
-      </SettingsSection>
+      <Settings.Section title="Billing">
+        <Settings.Card>
+          {loading ? (
+            <Box.FlexCenter pt={20}>
+              <Spinner isMd />
+            </Box.FlexCenter>
+          ) : (
+            <FadeLeftContainer>
+              {hasPaid ? (
+                <>
+                  <TableContainer columns={[3, 8, 1]}>
+                    <TableHeader>
+                      <span>Date</span>
+                      <span>Subscription</span>
+                      <span>Paid</span>
+                    </TableHeader>
+                    {invoices!.map((invoice, index) => {
+                      const { date, amount, items } = invoice;
+                      return (
+                        <TableRow key={index} hasBorder>
+                          <span>{date}</span>
+                          <span>
+                            {items.map((item, index) => (
+                              <div key={index}>{item}</div>
+                            ))}
+                          </span>
+                          <span>${amount}</span>
+                        </TableRow>
+                      );
+                    })}
+                  </TableContainer>
+                  <Descriptor>
+                    Your <b>{upcoming!.items}</b> renews on {upcoming!.date}
+                  </Descriptor>
+                </>
+              ) : (
+                <Descriptor>This workspace has no active subscription</Descriptor>
+              )}
+            </FadeLeftContainer>
+          )}
+        </Settings.Card>
+      </Settings.Section>
+
       {!loading && hasPaid && (
-        <SettingsSection title="Payment">
-          <CreditCardSection workspaceId={workspaceId} />
-        </SettingsSection>
+        <Settings.Section title="Payment">
+          <Settings.Card>
+            <CreditCardSection workspaceId={workspaceId} />
+          </Settings.Card>
+        </Settings.Section>
       )}
     </>
   );

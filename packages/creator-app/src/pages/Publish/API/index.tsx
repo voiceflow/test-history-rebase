@@ -1,10 +1,11 @@
-import { BlockText, Box, BoxFlex, Button, ButtonVariant, FullSpinner, Link, SvgIcon, Text, ThemeColor, toast, useToggle } from '@voiceflow/ui';
+import { Banner, Button, SectionV2, toast, useToggle } from '@voiceflow/ui';
 import React from 'react';
 import { useSelector } from 'react-redux';
 
 import client from '@/client';
 import SampleEditor from '@/components/CodePreview/Samples';
 import { ConfirmProps } from '@/components/ConfirmModal';
+import * as Settings from '@/components/Settings';
 import { GENERAL_RUNTIME_ENDPOINT } from '@/config';
 import { DIALOG_MANAGER_API } from '@/config/documentation';
 import { Permission } from '@/config/permissions';
@@ -13,13 +14,12 @@ import * as Session from '@/ducks/session';
 import { useAsyncEffect, useModals, usePermissions, useSetup, useTrackingEvents } from '@/hooks';
 import { ProjectAPIKey } from '@/models';
 import { copy } from '@/utils/clipboard';
+import { openInternalURLInANewTab } from '@/utils/window';
 
-import { ContentContainer, ContentSection, FlatCard, Section } from '../components';
-import ProjectAPIKeySection from './components/section';
-import StyledButton from './components/StyledButton';
+import ProjectAPIKeySection from './components/ProjectAPIKeySection';
 import { getSamples } from './utils';
 
-const API: React.OldFC = () => {
+const API: React.FC = () => {
   const [loading, setLoading] = React.useState(true);
   const [primaryKey, setPrimaryKey] = React.useState<ProjectAPIKey | null>(null);
   const [secondaryKey, setSecondaryKey] = React.useState<ProjectAPIKey | null>(null);
@@ -55,6 +55,7 @@ const API: React.OldFC = () => {
         const apiKey = await client.project.createAPIKey({ workspaceID, projectID });
         fetchedApiKey = apiKey;
       }
+
       setPrimaryKey(fetchedApiKey);
 
       // find secondary key
@@ -141,91 +142,86 @@ const API: React.OldFC = () => {
     toast.success('Copied API Key');
   };
 
-  if (loading) {
-    return <FullSpinner />;
-  }
-
   return (
-    <ContentContainer>
-      <ContentSection>
-        <FlatCard>
-          <BoxFlex justifyContent="flex-end">
-            <SvgIcon size={64} icon="globe" />
-            <Box ml={24}>
-              <BlockText fontWeight={600} mb={8} color={ThemeColor.PRIMARY}>
-                API Documentation
-              </BlockText>
-              <Text>
-                Integrate your Voiceflow project with any conversational interface like a chatbot, voice assistant, IVR, web chat, and much more.{' '}
-                <Link href={DIALOG_MANAGER_API}>See documentation</Link>
-              </Text>
-            </Box>
-          </BoxFlex>
-        </FlatCard>
-      </ContentSection>
+    <Settings.PageContent>
+      <Settings.Section>
+        <Banner
+          small
+          title="Run your assistant via API"
+          onClick={() => openInternalURLInANewTab(DIALOG_MANAGER_API)}
+          subtitle="Make your assistant accessible on any channel or interface."
+          buttonText="See Usecases"
+        />
+      </Settings.Section>
 
       {hasPermissions && (
-        <>
-          <ProjectAPIKeySection
-            title="Primary Key"
-            apiKey={primaryKey}
-            show={showPrimaryKey}
-            onToggleShow={togglePrimaryKey}
-            options={[
-              {
-                label: 'Regenerate key',
-                onClick: () => regeneratePrimaryKey(),
-              },
-              ...(!secondaryKey
-                ? [
-                    {
-                      label: 'Create secondary key',
-                      onClick: () => createSecondaryKey(),
-                    },
-                  ]
-                : []),
-            ]}
-          >
-            {primaryKey && (
-              <Button onClick={() => copyKey(primaryKey.key)} variant={ButtonVariant.PRIMARY}>
-                Copy API Key
-              </Button>
-            )}
-          </ProjectAPIKeySection>
-
-          {!!secondaryKey && (
+        <Settings.Section title="Keys">
+          <Settings.Card>
             <ProjectAPIKeySection
-              title="Secondary Key"
-              apiKey={secondaryKey}
-              show={showSecondaryKey}
-              onToggleShow={toggleSecondaryKey}
+              show={showPrimaryKey}
+              title="Primary Key"
+              apiKey={primaryKey}
+              loading={loading}
+              onToggleShow={togglePrimaryKey}
               options={[
-                {
-                  label: 'Regenerate key',
-                  onClick: () => regenerateSecondaryKey(),
-                },
-                {
-                  label: 'Remove secondary key',
-                  onClick: () => deleteSecondaryKey(),
-                },
+                { label: 'Regenerate key', onClick: () => regeneratePrimaryKey() },
+                secondaryKey ? null : { label: 'Create secondary key', onClick: () => createSecondaryKey() },
               ]}
             >
-              {secondaryKey && (
-                <StyledButton onClick={promoteSecondaryKey} variant={ButtonVariant.SECONDARY} style={{ whiteSpace: 'nowrap' }}>
-                  Promote Key
-                </StyledButton>
+              {(primaryKey || loading) && (
+                <Button
+                  width={134}
+                  small
+                  nowrap
+                  onClick={() => primaryKey && copyKey(primaryKey.key)}
+                  variant={Button.Variant.SECONDARY}
+                  disabled={loading}
+                  isLoading={loading}
+                >
+                  Copy API Key
+                </Button>
               )}
             </ProjectAPIKeySection>
-          )}
-        </>
+
+            {!!secondaryKey && (
+              <>
+                <SectionV2.Divider />
+
+                <ProjectAPIKeySection
+                  show={showSecondaryKey}
+                  title="Secondary Key"
+                  apiKey={secondaryKey}
+                  loading={loading}
+                  onToggleShow={toggleSecondaryKey}
+                  options={[
+                    { label: 'Regenerate key', onClick: () => regenerateSecondaryKey() },
+                    { label: 'Remove secondary key', onClick: () => deleteSecondaryKey() },
+                  ]}
+                >
+                  {(secondaryKey || loading) && (
+                    <Button
+                      width={134}
+                      small
+                      nowrap
+                      onClick={promoteSecondaryKey}
+                      variant={Button.Variant.SECONDARY}
+                      disabled={loading}
+                      isLoading={loading}
+                    >
+                      Promote Key
+                    </Button>
+                  )}
+                </ProjectAPIKeySection>
+              </>
+            )}
+          </Settings.Card>
+        </Settings.Section>
       )}
 
-      <ContentSection>
-        <Section title="API Call Examples" card={false}>
-          <SampleEditor samples={samples} />
-        </Section>
-      </ContentSection>
-    </ContentContainer>
+      <Settings.Section title="API Call Examples">
+        <SampleEditor samples={samples} />
+      </Settings.Section>
+    </Settings.PageContent>
   );
 };
 

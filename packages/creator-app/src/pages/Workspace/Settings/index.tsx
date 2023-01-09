@@ -1,9 +1,9 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box } from '@voiceflow/ui';
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
 import Page from '@/components/Page';
+import * as SettingsUI from '@/components/Settings';
 import { Permission } from '@/config/permissions';
 import { Path } from '@/config/routes';
 import * as Router from '@/ducks/router';
@@ -19,7 +19,7 @@ import Sidebar from './components/Sidebar';
 import SSO from './components/SSO';
 import SettingsGate from './gates/SettingsGate';
 
-const Settings: React.OldFC = () => {
+const Settings: React.FC = () => {
   const workspace = useActiveWorkspace();
   const disableIntegation = useFeature(Realtime.FeatureFlag.DISABLE_INTEGRATION)?.isEnabled;
 
@@ -47,17 +47,19 @@ const Settings: React.OldFC = () => {
       )}
       renderSidebar={() => <Sidebar />}
     >
-      <Box maxWidth={900} p={32}>
-        <Switch>
-          <Route path={Path.WORKSPACE_GENERAL_SETTINGS} component={General} />
+      <Page.Content>
+        <SettingsUI.PageContent>
+          <Switch>
+            <Route path={Path.WORKSPACE_GENERAL_SETTINGS} component={General} />
 
-          {canManageSSO && <Route path={Path.WORKSPACE_SSO_SETTINGS} component={SSO} />}
-          {canConfigureWorkspaceBilling && <Route path={Path.WORKSPACE_BILLING_SETTINGS} component={Billing} />}
-          {canConfigureWorkspaceDeveloper && <Route path={Path.WORKSPACE_DEVELOPER_SETTINGS} component={Developer} />}
+            {canManageSSO && <Route path={Path.WORKSPACE_SSO_SETTINGS} component={SSO} />}
+            {canConfigureWorkspaceBilling && <Route path={Path.WORKSPACE_BILLING_SETTINGS} component={Billing} />}
+            {canConfigureWorkspaceDeveloper && <Route path={Path.WORKSPACE_DEVELOPER_SETTINGS} component={Developer} />}
 
-          <Redirect to={Path.WORKSPACE_GENERAL_SETTINGS} />
-        </Switch>
-      </Box>
+            <Redirect to={Path.WORKSPACE_GENERAL_SETTINGS} />
+          </Switch>
+        </SettingsUI.PageContent>
+      </Page.Content>
     </Page>
   );
 };

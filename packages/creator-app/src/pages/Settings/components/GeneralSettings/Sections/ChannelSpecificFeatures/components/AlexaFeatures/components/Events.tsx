@@ -1,31 +1,17 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
-import { toast } from '@voiceflow/ui';
+import { Box, Link, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import AceEditor, { ACE_EDITOR_OPTIONS } from '@/components/AceEditor';
-import Section, { SectionVariant } from '@/components/Section';
+import * as Settings from '@/components/Settings';
 import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
-import { useFeature } from '@/hooks';
 import { useDispatch } from '@/hooks/realtime';
 import { useSelector } from '@/hooks/redux';
-import { FormControl } from '@/pages/Canvas/components/Editor';
-import { SkillEventsErrorMessage } from '@/pages/Settings/components/styles';
-import { PlatformSettingsMetaProps } from '@/pages/Settings/constants';
 import { getErrorMessage } from '@/utils/error';
 
-interface AlexaEventsOwnProps {
-  platformMeta: PlatformSettingsMetaProps;
-  modelSensitivityShown?: boolean;
-}
-
-const AlexaEvents: React.OldFC<AlexaEventsOwnProps> = ({ platformMeta, modelSensitivityShown }) => {
+const AlexaEvents: React.FC = () => {
   const propAlexaEvents = useSelector(VersionV2.active.alexa.eventsSelector);
   const patchSettings = useDispatch(Version.alexa.patchSettings);
-
-  const { descriptors } = platformMeta;
-  const { events } = descriptors;
-  const gadgetsFeat = useFeature(Realtime.FeatureFlag.GADGETS);
 
   const [alexaEvents, setAlexaEvents] = React.useState(propAlexaEvents || '');
   const [alexaEventError, setAlexaEventError] = React.useState<string | null>(null);
@@ -49,37 +35,39 @@ const AlexaEvents: React.OldFC<AlexaEventsOwnProps> = ({ platformMeta, modelSens
       toast.error('Settings Save Error');
     }
   };
+
   return (
-    <Section
-      contentPrefix={events}
-      header="Alexa Skill Events"
-      variant={SectionVariant.QUATERNARY}
-      dividers={gadgetsFeat.isEnabled || modelSensitivityShown}
-      isDividerNested
-    >
-      {alexaEventError && (
-        <SkillEventsErrorMessage>
-          <FormControl>{alexaEventError}</FormControl>
-        </SkillEventsErrorMessage>
-      )}
-      <FormControl contentBottomUnits={3.2}>
+    <Settings.SubSection header="Alexa Skill Events">
+      <Box fullWidth>
+        <Settings.SubSection.Description mb={16}>
+          <Link href="https://developer.amazon.com/en-US/docs/alexa/smapi/skill-events-in-alexa-skills.html">Alexa Skill Events</Link> can be used to
+          notify you if a certain event occurs, such as a user linking their account. The notification comes in form of a request to your Skill, which
+          you can then act on.
+        </Settings.SubSection.Description>
+
+        {alexaEventError && (
+          <Settings.SubSection.Description error mb={8}>
+            {alexaEventError}
+          </Settings.SubSection.Description>
+        )}
+
         <AceEditor
-          hasBorder
-          onBlur={save}
           name="datasource_editor"
           mode="json"
-          placeholder="Input skill events JSON configuration"
-          onChange={updateAlexaEvents}
-          fontSize={14}
-          showPrintMargin={false}
-          showGutter={true}
-          highlightActiveLine={true}
           value={alexaEvents}
-          editorProps={{ $blockScrolling: true }}
+          onBlur={save}
+          onChange={updateAlexaEvents}
+          hasBorder
+          fontSize={14}
           setOptions={ACE_EDITOR_OPTIONS}
+          showGutter={true}
+          editorProps={{ $blockScrolling: true }}
+          placeholder="Input skill events JSON configuration"
+          showPrintMargin={false}
+          highlightActiveLine={true}
         />
-      </FormControl>
-    </Section>
+      </Box>
+    </Settings.SubSection>
   );
 };
 

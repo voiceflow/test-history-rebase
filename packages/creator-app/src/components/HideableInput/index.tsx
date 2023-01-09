@@ -5,9 +5,9 @@ import { useToggle } from '@/hooks';
 import THEME from '@/styles/theme';
 
 export interface HideableInput {
-  value: any;
-  onChangeText?: (newText: string) => void | Promise<void>;
+  value: string;
   placeholder?: string;
+  onChangeText?: (newText: string) => void;
 
   /**
    * See here: https://www.chromium.org/developers/design-documents/create-amazing-password-forms/#use-autocomplete-attributes
@@ -22,10 +22,10 @@ const HideableInput: React.OldFC<HideableInput> = ({ value, placeholder, onChang
     <Input
       type={showSecret ? 'text' : 'password'}
       value={value}
-      onChangeText={onChangeText}
       rightAction={<SvgIcon icon={showSecret ? 'eyeHide2' : 'eye2'} color={THEME.iconColors.active} onClick={toggleShowSecret} clickable />}
       placeholder={placeholder}
       autoComplete={autocomplete ?? 'cc-number'}
+      onChangeText={onChangeText}
     />
   );
 };

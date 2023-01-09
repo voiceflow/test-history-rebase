@@ -1,10 +1,10 @@
-import { BoxFlex, Text } from '@voiceflow/ui';
+import { Box } from '@voiceflow/ui';
 import React from 'react';
 
+import * as Settings from '@/components/Settings';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { useAsyncMountUnmount, useDispatch, useSelector, useSetup, useTrackingEvents } from '@/hooks';
 
-import { ActionContainer, ContentContainer, ContentSection, Section } from '../components';
 import { getPlatformSyncAction, getUploadButton, getUploadLink } from './constants';
 
 const Export: React.OldFC = () => {
@@ -25,21 +25,25 @@ const Export: React.OldFC = () => {
   });
 
   return (
-    <ContentContainer>
-      <ContentSection>
-        <Section title="Runtime Export">
-          <BoxFlex>
-            <Text>
-              <PlatformUploadLink />
-            </Text>
+    <Settings.PageContent>
+      <Settings.Section>
+        <Settings.Card>
+          <Settings.SubSection contentProps={{ topOffset: 3 }}>
+            <Box.FlexApart gap={24}>
+              <div>
+                <Settings.SubSection.Title>Runtime Export</Settings.SubSection.Title>
 
-            <ActionContainer>
+                <Settings.SubSection.Description>
+                  <PlatformUploadLink />
+                </Settings.SubSection.Description>
+              </div>
+
               <PlatformUploadButton />
-            </ActionContainer>
-          </BoxFlex>
-        </Section>
-      </ContentSection>
-    </ContentContainer>
+            </Box.FlexApart>
+          </Settings.SubSection>
+        </Settings.Card>
+      </Settings.Section>
+    </Settings.PageContent>
   );
 };
 

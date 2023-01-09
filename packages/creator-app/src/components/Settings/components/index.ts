@@ -1,5 +1,7 @@
-export { default as ActionSection } from './ActionSection';
-export { default as SettingsContainer } from './SettingsContainer';
-export { default as SettingsSection } from './SettingsSection';
-export { default as SettingsSubSection } from './SettingsSubSection';
-export { default as SettingsTabs } from './SettingsTabs';
+export { default as ActionSubSection } from './ActionSubSection';
+export { default as Badge } from './Badge';
+export { default as Card } from './Card';
+export { default as PageContent } from './PageContent';
+export { default as Section } from './Section';
+export { default as SubSection } from './SubSection';
+export { default as Tabs } from './Tabs';

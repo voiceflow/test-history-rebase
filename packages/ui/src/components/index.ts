@@ -147,7 +147,7 @@ export { default as Preview } from './Preview';
 export { default as ProgressBar } from './ProgressBar';
 export { default as Resizable } from './Resizable';
 export { default as SearchInput, SearchInputIcon } from './SearchInput';
-export { default as SectionV2 } from './SectionV2';
+export { default as SectionV2, SectionV2Types } from './SectionV2';
 export type { BaseSelectProps, FilterResult, OptionsFilter } from './Select';
 export { default as Select, SelectInputVariant, SelectWrapper } from './Select';
 export type { SidebarEditorTypes } from './SidebarEditor';

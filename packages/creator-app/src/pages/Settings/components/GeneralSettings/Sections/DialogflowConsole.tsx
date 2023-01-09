@@ -1,14 +1,12 @@
 import { Input } from '@voiceflow/ui';
 import React from 'react';
 
-import { SectionVariants, SettingsSection, SettingsSubSection } from '@/components/Settings';
+import * as Settings from '@/components/Settings';
 import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useActiveProjectTypeConfig, useDispatch, useLinkedState, useSelector } from '@/hooks';
-import { DescriptorContainer } from '@/pages/Settings/components/ContentDescriptors/components';
 
-// TODO: refactor this to make it platform agnostic
-const DialogflowConsole: React.OldFC = () => {
+const DialogflowConsole: React.FC = () => {
   const projectConfig = useActiveProjectTypeConfig();
 
   const storedInvocationNameSamples = useSelector(VersionV2.active.invocationNameSamplesSelector);
@@ -19,24 +17,23 @@ const DialogflowConsole: React.OldFC = () => {
 
   const saveSettings = async () => patchPublishing({ invocationNameSamples: [invocationNameSample, ...storedInvocationNameSamples.slice(1)] });
 
+  if (!projectConfig.project.invocationName) return null;
+
   return (
-    <>
-      {!!projectConfig.project.invocationName && (
-        <SettingsSection variant={SectionVariants.PRIMARY} marginBottom={40} title="Dialogflow Console">
-          <SettingsSubSection
-            header={projectConfig.project.invocationName.samplesName}
-            leftDescription={<DescriptorContainer>{projectConfig.project.invocationName.description}</DescriptorContainer>}
-          >
-            <Input
-              value={invocationNameSample}
-              onBlur={saveSettings}
-              placeholder={projectConfig.project.invocationName.placeholder}
-              onChangeText={setInvocationNameSample}
-            />
-          </SettingsSubSection>
-        </SettingsSection>
-      )}
-    </>
+    <Settings.Section title="Dialogflow Console">
+      <Settings.Card>
+        <Settings.SubSection header={projectConfig.project.invocationName.samplesName} splitView>
+          <Input
+            value={invocationNameSample}
+            onBlur={saveSettings}
+            placeholder={projectConfig.project.invocationName.placeholder}
+            onChangeText={setInvocationNameSample}
+          />
+
+          <Settings.SubSection.Description>{projectConfig.project.invocationName.description}</Settings.SubSection.Description>
+        </Settings.SubSection>
+      </Settings.Card>
+    </Settings.Section>
   );
 };
 

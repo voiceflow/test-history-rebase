@@ -151,7 +151,8 @@ const PlatformSetup: React.OldFC<PlatformSetupProps> = ({
                 label={
                   <Box.Flex gap={16}>
                     {getIcon({ nluConfig: NLU.Config.get(option.type) })}
-                    {getNestedMenuFormattedLabel(getOptionLabel(getOptionValue(option)), searchLabel)}
+
+                    <span>{getNestedMenuFormattedLabel(getOptionLabel(getOptionValue(option)), searchLabel)}</span>
                   </Box.Flex>
                 }
                 isFocused={isFocused}

@@ -4,6 +4,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
+import Page from '@/components/Page';
 import { Permission } from '@/config/permissions';
 import { Path } from '@/config/routes';
 import * as ProjectV2 from '@/ducks/projectV2';
@@ -23,19 +24,20 @@ import {
   isWhatsAppPlatform,
 } from '@/utils/typeGuards';
 
+import API from './API';
+
 const PublishAmazon = lazy(() => import('./Amazon'));
 const PublishGoogle = lazy(() => import('./Google'));
 const PublishDialogflow = lazy(() => import('./Dialogflow'));
 const PublishWebchat = lazy(() => import('./Webchat'));
 const PublishSMS = lazy(() => import('./SMS'));
-const PrototypeSMS = lazy(() => import('./SMS/prototype'));
+const PrototypeSMS = lazy(() => import('./SMS/Prototype'));
 const PublishWhatsApp = lazy(() => import('./WhatsApp'));
-const PrototypeWhatsApp = lazy(() => import('./WhatsApp/prototype'));
+const PrototypeWhatsApp = lazy(() => import('./WhatsApp/Prototype'));
 const PublishTeams = lazy(() => import('./MicrosoftTeams'));
 const Export = lazy(() => import('./Export'));
-const API = lazy(() => import('./API'));
 
-const Publish: React.OldFC = () => {
+const Publish: React.FC = () => {
   const { platform } = useSelector(ProjectV2.active.metaSelector);
   const [canCodeExport] = usePermission(Permission.CODE_EXPORT);
   const disableCodeExports = useFeature(Realtime.FeatureFlag.DISABLE_CODE_EXPORTS).isEnabled;
@@ -43,22 +45,24 @@ const Publish: React.OldFC = () => {
 
   return (
     <ProjectPage>
-      <Switch>
-        {!disableCodeExports && canCodeExport && <Route path={Path.PUBLISH_EXPORT} component={Export} />}
-        {isAlexaPlatform(platform) && canUseAlexaSettings && <Route path={Path.PUBLISH_ALEXA} component={PublishAmazon} />}
-        {isGooglePlatform(platform) && <Route path={Path.PUBLISH_GOOGLE} component={PublishGoogle} />}
-        {isDialogflowPlatform(platform) && <Route path={Path.PUBLISH_DIALOGFLOW} component={PublishDialogflow} />}
-        {isWebChatPlatform(platform) && <Route path={Path.PUBLISH_WEBCHAT} component={PublishWebchat} />}
-        {isSMSPlatform(platform) && <Route path={Path.PUBLISH_SMS} component={PublishSMS} />}
-        {isSMSPlatform(platform) && <Route path={Path.PROTOTYPE_SMS} component={PrototypeSMS} />}
-        {isWhatsAppPlatform(platform) && <Route path={Path.PUBLISH_WHATSAPP} component={PublishWhatsApp} />}
-        {isWhatsAppPlatform(platform) && <Route path={Path.PROTOTYPE_WHATSAPP} component={PrototypeWhatsApp} />}
-        {isMicrosoftTeamsPlatform(platform) && <Route path={Path.PUBLISH_TEAMS} component={PublishTeams} />}
+      <Page.Content>
+        <Switch>
+          {!disableCodeExports && canCodeExport && <Route path={Path.PUBLISH_EXPORT} component={Export} />}
+          {isAlexaPlatform(platform) && canUseAlexaSettings && <Route path={Path.PUBLISH_ALEXA} component={PublishAmazon} />}
+          {isGooglePlatform(platform) && <Route path={Path.PUBLISH_GOOGLE} component={PublishGoogle} />}
+          {isDialogflowPlatform(platform) && <Route path={Path.PUBLISH_DIALOGFLOW} component={PublishDialogflow} />}
+          {isWebChatPlatform(platform) && <Route path={Path.PUBLISH_WEBCHAT} component={PublishWebchat} />}
+          {isSMSPlatform(platform) && <Route path={Path.PUBLISH_SMS} component={PublishSMS} />}
+          {isSMSPlatform(platform) && <Route path={Path.PROTOTYPE_SMS} component={PrototypeSMS} />}
+          {isWhatsAppPlatform(platform) && <Route path={Path.PUBLISH_WHATSAPP} component={PublishWhatsApp} />}
+          {isWhatsAppPlatform(platform) && <Route path={Path.PROTOTYPE_WHATSAPP} component={PrototypeWhatsApp} />}
+          {isMicrosoftTeamsPlatform(platform) && <Route path={Path.PUBLISH_TEAMS} component={PublishTeams} />}
 
-        <Route path={Path.PUBLISH_API} component={API} />
+          <Route path={Path.PUBLISH_API} component={API} />
 
-        <Redirect to={Path.PUBLISH_API} />
-      </Switch>
+          <Redirect to={Path.PUBLISH_API} />
+        </Switch>
+      </Page.Content>
     </ProjectPage>
   );
 };

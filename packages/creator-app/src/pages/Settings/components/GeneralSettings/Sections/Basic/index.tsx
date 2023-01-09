@@ -2,17 +2,14 @@ import { Box, Input, SectionV2, Upload, UploadIconVariant, useDidUpdateEffect, u
 import React from 'react';
 
 import LocalesSelect from '@/components/LocalesSelect';
-import { SectionVariants, SettingsSection, SettingsSubSection } from '@/components/Settings';
+import * as Settings from '@/components/Settings';
 import * as Project from '@/ducks/project';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useActiveProjectPlatformConfig, useActiveProjectTypeConfig, useDispatch, useSelector } from '@/hooks';
-import { DescriptorContainer } from '@/pages/Settings/components/ContentDescriptors/components';
 
-import { SectionErrorMessage } from './styles';
-
-const Basic: React.OldFC = () => {
+const Basic: React.FC = () => {
   const projectConfig = useActiveProjectTypeConfig();
   const platformConfig = useActiveProjectPlatformConfig();
 
@@ -60,46 +57,42 @@ const Basic: React.OldFC = () => {
   }, [locales, projectImage]);
 
   return (
-    <SettingsSection variant={SectionVariants.PRIMARY} title="Name & Language" marginBottom={40}>
-      <SettingsSubSection header="Assistant Name" leftDescription={<DescriptorContainer>{projectConfig.project.description}</DescriptorContainer>}>
-        <Input value={projectName} onChangeText={setProjectName} onBlur={saveSettings} style={{ flexGrow: 1 }} />
-        <Box ml={12}>
-          <Upload.IconUpload size={UploadIconVariant.EXTRA_SMALL} isSquare update={setProjectImage} image={projectImage ?? ''} />
-        </Box>
-      </SettingsSubSection>
+    <Settings.Section title="Name & Language">
+      <Settings.Card>
+        <Settings.SubSection header="Assistant Name" splitView>
+          <Box.Flex gap={12} fullWidth>
+            <Input value={projectName} onChangeText={setProjectName} onBlur={saveSettings} style={{ flexGrow: 1 }} />
 
-      <SectionV2.Divider />
+            <Upload.IconUpload size={UploadIconVariant.EXTRA_SMALL} isSquare update={setProjectImage} image={projectImage ?? ''} />
+          </Box.Flex>
 
-      {!!projectConfig.project.invocationName && (
-        <>
-          <SettingsSubSection
-            header={projectConfig.project.invocationName.name}
-            leftDescription={
-              invocationError ? (
-                <SectionErrorMessage marginTop={-2}>{invocationError}</SectionErrorMessage>
-              ) : (
-                <DescriptorContainer>{projectConfig.project.invocationName.description}</DescriptorContainer>
-              )
-            }
-          >
-            <Input
-              error={!!invocationError}
-              value={invocationName}
-              onBlur={onSaveInvocationName}
-              style={{ flexGrow: 1 }}
-              placeholder={projectConfig.project.invocationName.placeholder}
-              onChangeText={setInvocationName}
-            />
-          </SettingsSubSection>
-          <SectionV2.Divider />
-        </>
-      )}
+          <Settings.SubSection.Description>{projectConfig.project.description}</Settings.SubSection.Description>
+        </Settings.SubSection>
 
-      <SettingsSubSection
-        header={projectConfig.project.locale.name}
-        leftDescription={<DescriptorContainer>{projectConfig.project.locale.description}</DescriptorContainer>}
-      >
-        <Box style={{ flexGrow: 1 }}>
+        <SectionV2.Divider />
+
+        {!!projectConfig.project.invocationName && (
+          <>
+            <Settings.SubSection header={projectConfig.project.invocationName.name} splitView>
+              <Input
+                error={!!invocationError}
+                value={invocationName}
+                style={{ flexGrow: 1 }}
+                onBlur={onSaveInvocationName}
+                placeholder={projectConfig.project.invocationName.placeholder}
+                onChangeText={setInvocationName}
+              />
+
+              <Settings.SubSection.Description error={!!invocationError}>
+                {invocationError || projectConfig.project.invocationName.description}
+              </Settings.SubSection.Description>
+            </Settings.SubSection>
+
+            <SectionV2.Divider />
+          </>
+        )}
+
+        <Settings.SubSection header={projectConfig.project.locale.name} splitView>
           <LocalesSelect
             type={projectConfig.type}
             locales={locales}
@@ -107,9 +100,11 @@ const Basic: React.OldFC = () => {
             platform={platformConfig.type}
             onChange={setLocales}
           />
-        </Box>
-      </SettingsSubSection>
-    </SettingsSection>
+
+          <Settings.SubSection.Description>{projectConfig.project.locale.description}</Settings.SubSection.Description>
+        </Settings.SubSection>
+      </Settings.Card>
+    </Settings.Section>
   );
 };
 

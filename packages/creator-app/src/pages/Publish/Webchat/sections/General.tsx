@@ -1,10 +1,11 @@
 import { Nullish, Utils } from '@voiceflow/common';
 import { PlanType } from '@voiceflow/internal';
 import * as Platform from '@voiceflow/platform-config';
-import { Box, Input, Label, Select, Text, ThemeColor, TippyTooltip, Toggle } from '@voiceflow/ui';
+import { Box, Input, SectionV2, Select, TippyTooltip, Toggle } from '@voiceflow/ui';
 import { VoiceflowVersion } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
+import * as Settings from '@/components/Settings';
 import { ENTERPRISE_PLANS, ModalType, TEAM_PLANS } from '@/constants';
 import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
@@ -24,13 +25,13 @@ const PERSISTENCE_OPTIONS = Object.keys(PERSISTENCE_LABEL_MAP) as VoiceflowVersi
 
 const POSITION_OPTIONS = Object.values(VoiceflowVersion.ChatPosition);
 
-const PX_LABEL = (
-  <Text color={ThemeColor.SECONDARY} fontWeight={600}>
+const pxLabel = (
+  <SectionV2.Title bold fill={false} secondary>
     PX
-  </Text>
+  </SectionV2.Title>
 );
 
-export const GeneralSection: React.OldFC = () => {
+export const GeneralSection: React.FC = () => {
   const plan = useSelector(WorkspaceV2.active.planSelector);
   const config = useSelector(VersionV2.active.voiceflow.chat.publishingSelector);
   const updateConfig = useDispatch(Version.voiceflow.chat.patchActiveAndLivePublishing);
@@ -56,16 +57,15 @@ export const GeneralSection: React.OldFC = () => {
 
   return (
     <Section icon="filter" title="General" description="Add a name and description for your assistant">
-      <Section.Group>
-        <Label>Name</Label>
+      <Settings.SubSection header="Name" headerProps={{ px: 0, pt: 0 }} contentProps={{ px: 0 }}>
         <Input value={title} onChangeText={setTitle} onBlur={withTargetValue(updateProperty('title'))} />
-      </Section.Group>
-      <Section.Group>
-        <Label>Description</Label>
+      </Settings.SubSection>
+
+      <Settings.SubSection header="Description" headerProps={{ px: 0, pt: 0 }} contentProps={{ px: 0 }}>
         <Input value={description} onChangeText={setDescription} onBlur={withTargetValue(updateProperty('description'))} />
-      </Section.Group>
-      <Section.Group>
-        <Label>Chat Persistence</Label>
+      </Settings.SubSection>
+
+      <Settings.SubSection header="Chat Persistence" headerProps={{ px: 0, pt: 0 }} contentProps={{ px: 0 }}>
         <Select<VoiceflowVersion.ChatPersistence>
           value={config.persistence}
           onSelect={updateProperty('persistence')}
@@ -73,10 +73,10 @@ export const GeneralSection: React.OldFC = () => {
           getOptionLabel={(value) => value && PERSISTENCE_LABEL_MAP[value]}
           clearable={false}
         />
-      </Section.Group>
-      <Section.Group horizontal>
-        <Box>
-          <Label>Position</Label>
+      </Settings.SubSection>
+
+      <Box.FlexApart gap={16}>
+        <Settings.SubSection header="Position" headerProps={{ px: 0, pt: 0 }} contentProps={{ px: 0 }}>
           <Select<VoiceflowVersion.ChatPosition>
             value={config.position}
             onSelect={updateProperty('position')}
@@ -84,41 +84,39 @@ export const GeneralSection: React.OldFC = () => {
             getOptionLabel={(value) => value && Utils.string.capitalizeFirstLetter(value)}
             clearable={false}
           />
-        </Box>
-        <Box>
-          <Label>Side Spacing</Label>
-          <Input type="number" value={sideSpacing} onChangeText={setSideSpacing} onBlur={updateSpacing} rightAction={PX_LABEL} />
-        </Box>
-        <Box>
-          <Label>Bottom Spacing</Label>
-          <Input type="number" value={bottomSpacing} onChangeText={setBottomSpacing} onBlur={updateSpacing} rightAction={PX_LABEL} />
-        </Box>
-      </Section.Group>
-      <Section.Group>
-        <Box.FlexApart>
+        </Settings.SubSection>
+
+        <Settings.SubSection header="Side Spacing" headerProps={{ px: 0, pt: 0 }} contentProps={{ px: 0 }}>
+          <Input type="number" value={sideSpacing} onChangeText={setSideSpacing} onBlur={updateSpacing} rightAction={pxLabel} />
+        </Settings.SubSection>
+
+        <Settings.SubSection header="Bottom Spacing" headerProps={{ px: 0, pt: 0 }} contentProps={{ px: 0 }}>
+          <Input type="number" value={bottomSpacing} onChangeText={setBottomSpacing} onBlur={updateSpacing} rightAction={pxLabel} />
+        </Settings.SubSection>
+      </Box.FlexApart>
+
+      <Settings.SubSection headerProps={{ px: 0, pt: 0 }} contentProps={{ px: 0, pb: 0 }}>
+        <Box.FlexApart gap={24}>
           <div>
-            <Box color={ThemeColor.PRIMARY} fontWeight={600}>
-              Powered By
-            </Box>
-            <Text color={ThemeColor.SECONDARY} fontSize={13}>
-              Display a Voiceflow link to help us spread the word.
-            </Text>
+            <Settings.SubSection.Title>Powered By</Settings.SubSection.Title>
+            <Settings.SubSection.Description>Display a Voiceflow link to help us spread the word.</Settings.SubSection.Description>
           </div>
+
           <TippyTooltip
             width={232}
             disabled={isEntitled}
             position="bottom"
+            interactive
             content={
               <TippyTooltip.FooterButton buttonText="Upgrade to Pro" onClick={() => openPaymentModal()}>
                 This is a Pro feature. Upgrade to remove Voiceflow branding.
               </TippyTooltip.FooterButton>
             }
-            interactive
           >
             <Toggle size={Toggle.Size.EXTRA_SMALL} checked={!!config.watermark} disabled={!isEntitled} onChange={toggleWatermark} hasLabel />
           </TippyTooltip>
         </Box.FlexApart>
-      </Section.Group>
+      </Settings.SubSection>
     </Section>
   );
 };

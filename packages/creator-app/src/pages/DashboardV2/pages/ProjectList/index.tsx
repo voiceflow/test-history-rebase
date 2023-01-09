@@ -72,8 +72,8 @@ const ProjectList: React.OldFC = () => {
         <Banner
           mb={32}
           title="Learn Voiceflow with video tutorials"
-          onClick={() => {}}
           subtitle="In this course you’ll find everything you need to get started with Voiceflow from the ground up."
+          closeKey="dashboard-learn-banner"
           buttonText="Start Course"
         />
 

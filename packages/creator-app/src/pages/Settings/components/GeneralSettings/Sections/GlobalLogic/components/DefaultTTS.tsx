@@ -3,11 +3,10 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Select } from '@voiceflow/ui';
 import React from 'react';
 
-import { SettingsSubSection } from '@/components/Settings/components';
+import * as Settings from '@/components/Settings';
 import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useActiveProjectTypeConfig, useDispatch, useFeature, useSelector } from '@/hooks';
-import { DescriptorContainer } from '@/pages/Settings/components/ContentDescriptors/components';
 import { PlatformSettingsMetaProps } from '@/pages/Settings/constants';
 import { getPlatformVoiceOptions, prettifyVoice } from '@/utils/voice';
 
@@ -19,7 +18,7 @@ interface DefaultTTSProps {
   platformMeta: PlatformSettingsMetaProps;
 }
 
-const DefaultTTS: React.OldFC<DefaultTTSProps> = ({ platform, projectType, platformMeta }) => {
+const DefaultTTS: React.FC<DefaultTTSProps> = ({ platform, projectType, platformMeta }) => {
   const projectConfig = useActiveProjectTypeConfig();
 
   const wavenetVoices = useFeature(Realtime.FeatureFlag.WAVENET_VOICES);
@@ -48,7 +47,7 @@ const DefaultTTS: React.OldFC<DefaultTTSProps> = ({ platform, projectType, platf
 
   return (
     <>
-      <SettingsSubSection header="Default TTS" leftDescription={<DescriptorContainer>{descriptors.defaultVoice}</DescriptorContainer>}>
+      <Settings.SubSection header="Default TTS" splitView>
         <Select
           value={defaultVoice}
           options={voiceOptions}
@@ -63,7 +62,9 @@ const DefaultTTS: React.OldFC<DefaultTTSProps> = ({ platform, projectType, platf
           getOptionLabel={(value) => prettifyVoice(value ?? '')}
           renderOptionLabel={(option) => option.label || option.value}
         />
-      </SettingsSubSection>
+
+        <Settings.SubSection.Description>{descriptors.defaultVoice}</Settings.SubSection.Description>
+      </Settings.SubSection>
 
       {Realtime.Utils.typeGuards.isVoiceProjectType(projectType) &&
         Realtime.Utils.platform.createPlatformSelector(

@@ -1,4 +1,4 @@
-import { Box, Preview, SvgIcon, TippyTooltip, toast } from '@voiceflow/ui';
+import { Box, Preview, TippyTooltip, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import { copy } from '@/utils/clipboard';
@@ -28,11 +28,12 @@ const SampleEditor: React.OldFC<{ samples: Sample[] }> = ({ samples = [] }) => {
             </Option>
           ))}
         </Box>
+
         <TippyTooltip content="Copy">
-          <SvgIcon icon="copy" onClick={handleCopySnippet} color="#ffffffD9" clickable />
+          <Preview.ButtonIcon icon="copy" onClick={handleCopySnippet} />
         </TippyTooltip>
       </Header>
-      <Preview.Code code={sample} wrapLongLines={false} language={language} padding="12px 24px" />
+      <Preview.Code code={sample} wrapLongLines={false} language={language} padding="20px 24px" />
     </Box>
   );
 };

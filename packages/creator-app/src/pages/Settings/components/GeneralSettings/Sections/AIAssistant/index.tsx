@@ -3,7 +3,7 @@ import { Box, Link, SectionV2, Toggle } from '@voiceflow/ui';
 import React from 'react';
 
 import * as GPT from '@/components/GPT';
-import { SectionVariants, SettingsSection, SettingsSubSection, SettingsTitleBadge } from '@/components/Settings';
+import * as Settings from '@/components/Settings';
 import { AI_GENERAL_LINK, LEARN_FREESTYLE, LEARN_GENERATIVE_TASKS } from '@/constants';
 import * as Project from '@/ducks/project';
 import * as ProjectV2 from '@/ducks/projectV2';
@@ -14,7 +14,7 @@ import { SettingSections } from '@/pages/Settings/constants';
 import { useAutoScrollSectionIntoView } from '../hooks';
 import { WorkspaceDisabledTooltip } from './components';
 
-const AIAssistant: React.OldFC = () => {
+const AIAssistant: React.FC = () => {
   const workspace = useActiveWorkspace();
   const [trackingEvents] = useTrackingEvents();
 
@@ -51,13 +51,11 @@ const AIAssistant: React.OldFC = () => {
   const [sectionRef] = useAutoScrollSectionIntoView(SettingSections.AI_ASSISTANT);
 
   return (
-    <SettingsSection
+    <Settings.Section
       ref={sectionRef}
-      variant={SectionVariants.PRIMARY}
-      noContentPadding
       title={
         <Box.Flex>
-          AI Assist <SettingsTitleBadge>Beta</SettingsTitleBadge>
+          AI Assist <Settings.Badge>Beta</Settings.Badge>
         </Box.Flex>
       }
       description={
@@ -67,56 +65,58 @@ const AIAssistant: React.OldFC = () => {
         </>
       }
     >
-      <SettingsSubSection growInput={false} topOffset={3}>
-        <Box.FlexApart fullWidth>
-          <Box>
-            <SectionV2.Title bold>Generative Tasks</SectionV2.Title>
+      <Settings.Card>
+        <Settings.SubSection contentProps={{ topOffset: 3 }}>
+          <Box.FlexApart fullWidth>
+            <div>
+              <Settings.SubSection.Title>Generative Tasks</Settings.SubSection.Title>
 
-            <SectionV2.Description mt={4} block secondary>
-              Manually generate data like utterances, responses, no match etc. <Link href={LEARN_GENERATIVE_TASKS}>Learn more</Link>
-            </SectionV2.Description>
-          </Box>
+              <Settings.SubSection.Description>
+                Manually generate data like utterances, responses, no match etc. <Link href={LEARN_GENERATIVE_TASKS}>Learn more</Link>
+              </Settings.SubSection.Description>
+            </div>
 
-          <WorkspaceDisabledTooltip disabled={workspaceAIEnabled}>
-            <Toggle
-              size={Toggle.Size.EXTRA_SMALL}
-              checked={workspaceAIEnabled && aiAssistSettings?.generativeTasks}
-              disabled={!workspaceAIEnabled}
-              onChange={onGenerativeTasksToggle}
-              hasLabel
-            />
-          </WorkspaceDisabledTooltip>
-        </Box.FlexApart>
-      </SettingsSubSection>
+            <WorkspaceDisabledTooltip disabled={workspaceAIEnabled}>
+              <Toggle
+                size={Toggle.Size.EXTRA_SMALL}
+                checked={workspaceAIEnabled && aiAssistSettings?.generativeTasks}
+                disabled={!workspaceAIEnabled}
+                onChange={onGenerativeTasksToggle}
+                hasLabel
+              />
+            </WorkspaceDisabledTooltip>
+          </Box.FlexApart>
+        </Settings.SubSection>
 
-      {freestyle.isEnabled && (
-        <>
-          <SectionV2.Divider />
+        {freestyle.isEnabled && (
+          <>
+            <SectionV2.Divider />
 
-          <SettingsSubSection growInput={false} topOffset={3}>
-            <Box.FlexApart fullWidth>
-              <Box>
-                <SectionV2.Title bold>Freestyle</SectionV2.Title>
+            <Settings.SubSection contentProps={{ topOffset: 3 }}>
+              <Box.FlexApart fullWidth>
+                <Box>
+                  <Settings.SubSection.Title>Freestyle</Settings.SubSection.Title>
 
-                <SectionV2.Description mt={4} block secondary>
-                  Auto dialog to keep the conversation on track and answer questions. <Link href={LEARN_FREESTYLE}>Learn more</Link>
-                </SectionV2.Description>
-              </Box>
+                  <Settings.SubSection.Description mt={4}>
+                    Auto dialog to keep the conversation on track and answer questions. <Link href={LEARN_FREESTYLE}>Learn more</Link>
+                  </Settings.SubSection.Description>
+                </Box>
 
-              <WorkspaceDisabledTooltip disabled={workspaceAIEnabled}>
-                <Toggle
-                  size={Toggle.Size.EXTRA_SMALL}
-                  checked={workspaceAIEnabled && aiAssistSettings?.freestyle}
-                  disabled={!workspaceAIEnabled}
-                  onChange={onFreestyleToggle}
-                  hasLabel
-                />
-              </WorkspaceDisabledTooltip>
-            </Box.FlexApart>
-          </SettingsSubSection>
-        </>
-      )}
-    </SettingsSection>
+                <WorkspaceDisabledTooltip disabled={workspaceAIEnabled}>
+                  <Toggle
+                    size={Toggle.Size.EXTRA_SMALL}
+                    checked={workspaceAIEnabled && aiAssistSettings?.freestyle}
+                    disabled={!workspaceAIEnabled}
+                    onChange={onFreestyleToggle}
+                    hasLabel
+                  />
+                </WorkspaceDisabledTooltip>
+              </Box.FlexApart>
+            </Settings.SubSection>
+          </>
+        )}
+      </Settings.Card>
+    </Settings.Section>
   );
 };
 

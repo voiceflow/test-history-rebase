@@ -169,7 +169,7 @@ export const toggleActiveWorkspaceAiAssist =
 
       await dispatch.sync(Realtime.workspace.settings.patch({ workspaceID, settings: { aiAssist } }));
     } catch (err) {
-      openError({ error: 'Error toggling workspace ai assistant features' });
+      openError({ error: 'Error toggling workspace ai assist features' });
 
       throw err;
     }

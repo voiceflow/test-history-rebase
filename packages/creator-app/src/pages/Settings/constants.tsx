@@ -2,7 +2,7 @@ import * as Platform from '@voiceflow/platform-config';
 import { Utils } from '@voiceflow/realtime-sdk';
 import React from 'react';
 
-import { Alexa, General, Universal } from './components/ContentDescriptors';
+import * as ContentDescriptors from './components/ContentDescriptors';
 
 export enum SettingSections {
   BASIC = 'Name & Language',
@@ -11,7 +11,7 @@ export enum SettingSections {
   DANGER_ZONE = 'Danger Zone',
   DIALOGFLOW_CONSOLE = 'Dialogflow Console',
   GLOBAL_LOGIC = 'Global Logic',
-  AI_ASSISTANT = 'AI Assistant',
+  AI_ASSISTANT = 'AI Assist',
 }
 
 export const DEFAULT_MAX_WIDTH = 700;
@@ -23,11 +23,8 @@ export interface PlatformSettingsMetaProps {
     localesDescriptor?: React.ReactNode;
     continuePrevious?: React.ReactNode;
     allowRepeat?: React.ReactNode;
-    gadgets?: React.ReactNode;
-    events?: React.ReactNode;
-    repeatDialog?: any;
-    repeatEverything?: any;
-    modelSensitivity?: React.ReactNode;
+    repeatDialog?: React.ReactNode;
+    repeatEverything?: React.ReactNode;
     defaultVoice?: React.ReactNode;
     triggerPhraseDescriptor?: React.ReactNode;
     agentName?: React.ReactNode;
@@ -48,14 +45,11 @@ export const getSettingsMetaProps = Utils.platform.createPlatformAndProjectTypeS
         SettingSections.DANGER_ZONE,
       ],
       descriptors: {
-        events: <Alexa.Events />,
-        gadgets: <Alexa.Gadgets />,
-        allowRepeat: <Universal.AllowRepeat />,
-        repeatDialog: General.RepeatDialog,
-        defaultVoice: <Universal.DefaultVoice />,
-        repeatEverything: General.RepeatEverything,
-        continuePrevious: <Universal.ContinuePrevious />,
-        modelSensitivity: <Alexa.ModelSensitivity />,
+        allowRepeat: <ContentDescriptors.AllowRepeat />,
+        repeatDialog: <ContentDescriptors.RepeatDialog />,
+        defaultVoice: <ContentDescriptors.DefaultVoice />,
+        repeatEverything: <ContentDescriptors.RepeatEverything />,
+        continuePrevious: <ContentDescriptors.ContinuePrevious />,
       },
       localeText: 'Locales',
     },
@@ -69,11 +63,11 @@ export const getSettingsMetaProps = Utils.platform.createPlatformAndProjectTypeS
         SettingSections.DANGER_ZONE,
       ],
       descriptors: {
-        allowRepeat: <Universal.AllowRepeat />,
-        repeatDialog: General.RepeatDialog,
-        repeatEverything: General.RepeatEverything,
-        continuePrevious: <Universal.ContinuePrevious />,
-        defaultVoice: <Universal.DefaultVoice />,
+        allowRepeat: <ContentDescriptors.AllowRepeat />,
+        repeatDialog: <ContentDescriptors.RepeatDialog />,
+        repeatEverything: <ContentDescriptors.RepeatEverything />,
+        continuePrevious: <ContentDescriptors.ContinuePrevious />,
+        defaultVoice: <ContentDescriptors.DefaultVoice />,
       },
       localeText: 'Language',
     },
@@ -88,7 +82,7 @@ export const getSettingsMetaProps = Utils.platform.createPlatformAndProjectTypeS
         SettingSections.DANGER_ZONE,
       ],
       descriptors: {
-        repeatEverything: General.RepeatEverything,
+        repeatEverything: <ContentDescriptors.RepeatEverything />,
       },
       localeText: 'Language',
     },
@@ -105,7 +99,7 @@ export const getSettingsMetaProps = Utils.platform.createPlatformAndProjectTypeS
     },
   },
   {
-    name: 'General',
+    name: 'ContentDescriptors',
     sections: [
       SettingSections.BASIC,
       SettingSections.GLOBAL_LOGIC,
@@ -114,7 +108,7 @@ export const getSettingsMetaProps = Utils.platform.createPlatformAndProjectTypeS
       SettingSections.DANGER_ZONE,
     ],
     descriptors: {
-      defaultVoice: <Universal.DefaultVoice />,
+      defaultVoice: <ContentDescriptors.DefaultVoice />,
     },
   }
 );

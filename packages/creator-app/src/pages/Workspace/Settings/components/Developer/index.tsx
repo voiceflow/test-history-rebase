@@ -4,7 +4,7 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import client from '@/client';
-import { SettingsSection } from '@/components/Settings';
+import * as Settings from '@/components/Settings';
 import { TableContainer, TableRow } from '@/components/Table';
 import * as Feature from '@/ducks/feature';
 import { setConfirm } from '@/ducks/modal';
@@ -14,7 +14,7 @@ import { APIKey } from '@/models';
 import { getErrorMessage } from '@/utils/error';
 import * as Sentry from '@/vendors/sentry';
 
-const APIKeyPage: React.OldFC = () => {
+const APIKeyPage: React.FC = () => {
   const dispatch = useDispatch();
   const workspaceID = useSelector(Session.activeWorkspaceIDSelector)!;
   const isIdentityWorkspaceEnabled = useSelector(Feature.isFeatureEnabledSelector)(Realtime.FeatureFlag.IDENTITY_WORKSPACE);
@@ -65,53 +65,45 @@ const APIKeyPage: React.OldFC = () => {
 
   if (loading) {
     return (
-      <SettingsSection title="API Keys">
-        <Spinner isMd />
-      </SettingsSection>
+      <Settings.Section title="API Keys">
+        <Settings.Card>
+          <Box.FlexCenter pt={20}>
+            <Spinner isMd />
+          </Box.FlexCenter>
+        </Settings.Card>
+      </Settings.Section>
     );
   }
 
   return (
-    <SettingsSection title="API Keys">
-      <Box.FlexApart px={32} py={24}>
-        <Text color="secondary">({apiKeys.length}) Existing API Keys</Text>
-        <ClickableText
-          onClick={() =>
-            createAPIKeyModal.openVoid({
-              workspaceID,
-              onCreate: fetchAPIKeys,
-            })
-          }
-        >
-          Create New API Key
-        </ClickableText>
-      </Box.FlexApart>
-      {!!apiKeys.length && (
-        <TableContainer topBorder columns={[1]}>
-          {apiKeys.map(({ _id: keyID, name }) => (
-            <TableRow key={keyID} hasBorder>
-              <Box py={16}>
-                {name}
-                <Box color="secondary" mt={6}>{`VF.${keyID}.XXX...`}</Box>
-              </Box>
-              <Dropdown
-                options={[
-                  {
-                    label: 'Delete',
-                    onClick: confirmDeleteKey(keyID),
-                  },
-                ]}
-                placement="bottom-end"
-              >
-                {(ref, onToggle, isOpen) => (
-                  <IconButton icon="ellipsis" variant={IconButtonVariant.FLAT} active={isOpen} size={15} onClick={onToggle} ref={ref} large />
-                )}
-              </Dropdown>
-            </TableRow>
-          ))}
-        </TableContainer>
-      )}
-    </SettingsSection>
+    <Settings.Section title="API Keys">
+      <Settings.Card>
+        <Box.FlexApart px={32} py={24}>
+          <Text color="secondary">({apiKeys.length}) Existing API Keys</Text>
+
+          <ClickableText onClick={() => createAPIKeyModal.openVoid({ workspaceID, onCreate: fetchAPIKeys })}>Create New API Key</ClickableText>
+        </Box.FlexApart>
+
+        {!!apiKeys.length && (
+          <TableContainer topBorder columns={[1]}>
+            {apiKeys.map(({ _id: keyID, name }, index) => (
+              <TableRow key={keyID} hasBorder={index + 1 !== apiKeys.length}>
+                <Box py={16}>
+                  {name}
+                  <Box color="secondary" mt={6}>{`VF.${keyID}.XXX...`}</Box>
+                </Box>
+
+                <Dropdown options={[{ label: 'Delete', onClick: confirmDeleteKey(keyID) }]} placement="bottom-end">
+                  {(ref, onToggle, isOpen) => (
+                    <IconButton icon="ellipsis" variant={IconButtonVariant.FLAT} active={isOpen} size={15} onClick={onToggle} ref={ref} large />
+                  )}
+                </Dropdown>
+              </TableRow>
+            ))}
+          </TableContainer>
+        )}
+      </Settings.Card>
+    </Settings.Section>
   );
 };
 

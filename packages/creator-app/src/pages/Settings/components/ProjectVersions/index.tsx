@@ -1,10 +1,10 @@
 import { BaseVersion } from '@voiceflow/base-types';
-import { Box, BoxFlexCenter, ClickableText, LoadCircle, toast } from '@voiceflow/ui';
+import { Box, ClickableText, LoadCircle, toast } from '@voiceflow/ui';
 import ObjectID from 'bson-objectid';
 import React, { useCallback } from 'react';
 
 import client from '@/client';
-import { SettingsSection } from '@/components/Settings';
+import * as Settings from '@/components/Settings';
 import * as Errors from '@/config/errors';
 import { Permission } from '@/config/permissions';
 import { ModalType } from '@/constants';
@@ -22,14 +22,15 @@ import * as Sentry from '@/vendors/sentry';
 import { Heading, HotKeyContainer } from './components';
 import VersionList from './components/VersionList';
 import { PLATFORM_VERSION_HEADER_TEXT } from './constants';
-// Need to move this to general types
+
+// TODO: Need to move this to general types
 export interface ProjectVersion {
+  name?: string;
+  created: string;
   versionID: string;
   creatorID: number;
-  name?: string;
   manualSave: boolean;
   autoSaveFromRestore: boolean;
-  created: string;
 }
 
 const DEFAULT_FETCH_LIMIT = 10;
@@ -133,8 +134,8 @@ const ProjectVersions: React.FC = () => {
   useHotKeys(Hotkey.OPEN_MANUAL_SAVE_MODAL, openManualSaveModal, { preventDefault: true, disable: !canEditCanvas }, [manualSaveModal.open]);
 
   return (
-    <Box>
-      <SettingsSection noContentPadding>
+    <Settings.Section>
+      <Settings.Card>
         <Heading>
           <>
             {PLATFORM_VERSION_HEADER_TEXT(platform)} To manually save a version, use the shortcut{' '}
@@ -147,23 +148,24 @@ const ProjectVersions: React.FC = () => {
             )}
           </>
         </Heading>
+
         {loading ? (
-          <BoxFlexCenter minHeight={320}>
+          <Box.FlexCenter minHeight={320}>
             <LoadCircle />
-          </BoxFlexCenter>
+          </Box.FlexCenter>
         ) : (
           <FadeLeftContainer>
             <VersionList
-              liveVersion={liveVersion}
-              activeVersionID={activeVersionID}
               versions={versionList}
+              liveVersion={liveVersion}
               swapVersions={swapVersions}
               fetchVersions={fetchBackupsV2}
+              activeVersionID={activeVersionID}
             />
           </FadeLeftContainer>
         )}
-      </SettingsSection>
-    </Box>
+      </Settings.Card>
+    </Settings.Section>
   );
 };
 

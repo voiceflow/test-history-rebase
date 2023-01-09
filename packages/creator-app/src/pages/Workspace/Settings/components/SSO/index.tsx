@@ -1,18 +1,16 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, Button, ClickableText, FlexEnd, Input, Spinner, toast, useSmartReducerV2 } from '@voiceflow/ui';
+import { Box, Button, ClickableText, FlexEnd, Input, SectionV2, Spinner, toast, useSmartReducerV2 } from '@voiceflow/ui';
 import React from 'react';
 import { useSelector } from 'react-redux';
 
 import client from '@/client';
-import Section, { SectionVariant } from '@/components/Section';
-import { SettingsSection } from '@/components/Settings';
+import * as Settings from '@/components/Settings';
 import { StaticTextArea } from '@/components/TextArea';
 import { API_ENDPOINT } from '@/config';
 import * as Feature from '@/ducks/feature';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useAsyncEffect, useToggle } from '@/hooks';
 import { SAMLProvider } from '@/models';
-import { DescriptorContainer } from '@/pages/Settings/components/ContentDescriptors/components';
 import { copyWithToast } from '@/utils/clipboard';
 
 const ENTITY_ID = 'https://voiceflow.com';
@@ -26,7 +24,7 @@ const DEFAULT_STATE: SAMLProvider = {
   organizationID: '',
 };
 
-const SSOPage: React.OldFC = () => {
+const SSOPage: React.FC = () => {
   const organizationID = useSelector(WorkspaceV2.active.organizationIDSelector);
   const [initializing, toggleInitializing] = useToggle(true);
   const [loading, toggleLoading] = useToggle(false);
@@ -77,46 +75,59 @@ const SSOPage: React.OldFC = () => {
 
   if (initializing) {
     return (
-      <SettingsSection title={TITLE}>
-        <Spinner isMd />
-      </SettingsSection>
+      <Settings.Section title={TITLE}>
+        <Settings.Card>
+          <Box.FlexCenter pt={20}>
+            <Spinner isMd />
+          </Box.FlexCenter>
+        </Settings.Card>
+      </Settings.Section>
     );
   }
 
   return (
-    <SettingsSection title={TITLE}>
-      <Section variant={SectionVariant.QUATERNARY} dividers={false} header="Audience URI (SP Entity ID)">
-        <Box maxWidth={480}>
+    <Settings.Section title={TITLE}>
+      <Settings.Card>
+        <Settings.SubSection header="Audience URI (SP Entity ID)" splitView>
           <Input value={ENTITY_ID} disabled rightAction={<ClickableText onClick={copyWithToast(ENTITY_ID)}>copy</ClickableText>} />
-        </Box>
-      </Section>
-      <Section variant={SectionVariant.QUATERNARY} dividers={false} header="ACS/Callback URL">
-        <Box mb={24} maxWidth={480}>
+
+          <div />
+        </Settings.SubSection>
+
+        <SectionV2.Divider inset />
+
+        <Settings.SubSection header="ACS/Callback URL" splitView>
           <Input value={ACS_URL} disabled rightAction={<ClickableText onClick={copyWithToast(ACS_URL)}>copy</ClickableText>} />
-          <DescriptorContainer>
+
+          <Settings.SubSection.Description>
             This may be called <b>Assertion Consumer Service URL</b>, <b>Post-back URL</b>, or <b>Callback URL</b>. The endpoint where the IdP will
             redirect with its authentication response.
-          </DescriptorContainer>
-        </Box>
-      </Section>
-      <Section variant={SectionVariant.QUATERNARY} header="Entity ID URL">
-        <Box mb={24} maxWidth={480}>
+          </Settings.SubSection.Description>
+        </Settings.SubSection>
+
+        <SectionV2.Divider inset />
+
+        <Settings.SubSection header="Entity ID URL" splitView>
           <Input placeholder="Enter entity ID URL" value={samlProvider.issuer} onChangeText={(issuer) => samlProviderAPI.update({ issuer })} />
-          <DescriptorContainer>The IdP Entity ID for the identity provider your organization uses.</DescriptorContainer>
-        </Box>
-      </Section>
-      <Section variant={SectionVariant.QUATERNARY} isDividerNested header="IdP SSO Target URL">
-        <Box mb={24} maxWidth={480}>
+
+          <Settings.SubSection.Description>The IdP Entity ID for the identity provider your organization uses.</Settings.SubSection.Description>
+        </Settings.SubSection>
+
+        <SectionV2.Divider inset />
+
+        <Settings.SubSection header="IdP SSO Target URL" splitView>
           <Input
-            placeholder="Enter SSO target URL"
             value={samlProvider.entryPoint}
+            placeholder="Enter SSO target URL"
             onChangeText={(entryPoint) => samlProviderAPI.update({ entryPoint })}
           />
-          <DescriptorContainer>The URL users of your organization will be directed to on log in.</DescriptorContainer>
-        </Box>
-      </Section>
-      <Section variant={SectionVariant.QUATERNARY} isDividerNested header="X.509 certificate">
-        <Box mb={24} maxWidth={480}>
+
+          <Settings.SubSection.Description>The URL users of your organization will be directed to on log in.</Settings.SubSection.Description>
+        </Settings.SubSection>
+
+        <SectionV2.Divider inset />
+
+        <Settings.SubSection header="X.509 certificate" splitView>
           {editCertificate ? (
             <StaticTextArea
               rows={5}
@@ -129,16 +140,21 @@ const SSOPage: React.OldFC = () => {
               <b>{samlProvider.certificate}</b> (<ClickableText onClick={onEditCertificate}>edit</ClickableText>)
             </Box>
           )}
-        </Box>
-      </Section>
-      <Section>
-        <FlexEnd>
-          <Button onClick={onSave} disabled={loading}>
-            Save Configuration
-          </Button>
-        </FlexEnd>
-      </Section>
-    </SettingsSection>
+
+          <div />
+        </Settings.SubSection>
+
+        <SectionV2.Divider />
+
+        <Settings.SubSection contentProps={{ topOffset: 3 }}>
+          <FlexEnd>
+            <Button onClick={onSave} disabled={loading}>
+              Save Configuration
+            </Button>
+          </FlexEnd>
+        </Settings.SubSection>
+      </Settings.Card>
+    </Settings.Section>
   );
 };
 

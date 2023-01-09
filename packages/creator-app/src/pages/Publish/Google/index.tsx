@@ -1,15 +1,14 @@
-import { Box, BoxFlex, Button, ButtonVariant, Link, toast } from '@voiceflow/ui';
+import { Box, Button, ButtonVariant, Link, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';
+import * as Settings from '@/components/Settings';
 import * as Documentation from '@/config/documentation';
 import * as Errors from '@/config/errors';
 import * as Session from '@/ducks/session';
 import { useAsyncMountUnmount, useSetup, useTrackingEvents } from '@/hooks';
 import { useSelector } from '@/hooks/redux';
 import * as Sentry from '@/vendors/sentry';
-
-import { ContentContainer, ContentSection, Section } from '../components';
 
 const GooglePublish: React.FC = () => {
   const projectID = useSelector(Session.activeProjectIDSelector);
@@ -34,28 +33,28 @@ const GooglePublish: React.FC = () => {
   });
 
   return (
-    <ContentContainer>
-      <ContentSection>
-        <Section title="Publish">
-          <BoxFlex alignItems="flex-end">
-            <Box>
-              <Box mb={16} color="tertiary">
-                To publish your Google Action visit the Actions Console to submit your project for review
-              </Box>
-              <Link href={Documentation.GOOGLE_ACTIONS}>Learn More</Link>
-            </Box>
+    <Settings.PageContent>
+      <Settings.Section title="Publish">
+        <Settings.Card>
+          <Settings.SubSection contentProps={{ topOffset: 3 }}>
+            <Box.FlexApart gap={24}>
+              <div>
+                <Settings.SubSection.Title>Actions Console</Settings.SubSection.Title>
 
-            <BoxFlex ml={16}>
-              <Link href={googleProjectID ? `https://console.actions.google.com/project/${googleProjectID}/directoryinformation/` : undefined}>
-                <Button variant={ButtonVariant.SECONDARY} disabled={!googleProjectID} nowrap>
-                  Actions Console
-                </Button>
-              </Link>
-            </BoxFlex>
-          </BoxFlex>
-        </Section>
-      </ContentSection>
-    </ContentContainer>
+                <Settings.SubSection.Description>
+                  To publish your Google Action visit the Actions Console to submit your project for review.{' '}
+                  <Link href={Documentation.GOOGLE_ACTIONS}>Learn More</Link>
+                </Settings.SubSection.Description>
+              </div>
+
+              <Button nowrap variant={ButtonVariant.PRIMARY} disabled={!googleProjectID}>
+                Open Console
+              </Button>
+            </Box.FlexApart>
+          </Settings.SubSection>
+        </Settings.Card>
+      </Settings.Section>
+    </Settings.PageContent>
   );
 };
 

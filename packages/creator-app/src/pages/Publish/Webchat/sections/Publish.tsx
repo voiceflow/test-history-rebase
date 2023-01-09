@@ -2,6 +2,7 @@ import { Box, Link, Text, ThemeColor } from '@voiceflow/ui';
 import React from 'react';
 
 import { PreviewHTML } from '@/components/CodePreview/HTML';
+import * as Settings from '@/components/Settings';
 import { GENERAL_RUNTIME_ENDPOINT } from '@/config';
 import { WEBCHAT_LEARN_MORE } from '@/constants/platforms';
 import * as ProjectV2 from '@/ducks/projectV2';
@@ -34,12 +35,14 @@ export const PublishSection: React.OldFC = () => {
         Copy this code snippet and paste it before the closing <Text color={ThemeColor.BLUE}>{`</body>`}</Text> tag on every page you want the widget
         to appear.
       </Text>
+
       <Box my={16}>
         <PreviewHTML code={getSample(projectID)} onCopy={() => trackingEvents.trackWebchatSnippetCopied()} />
       </Box>
-      <Text fontSize={13} color={ThemeColor.SECONDARY}>
+
+      <Settings.SubSection.Description>
         Having trouble or need to customize? <Link href={WEBCHAT_LEARN_MORE}>See documentation</Link>
-      </Text>
+      </Settings.SubSection.Description>
     </Section>
   );
 };

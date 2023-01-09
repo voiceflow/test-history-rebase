@@ -17,9 +17,9 @@ export interface RadioGroupProps<T extends any> extends Omit<CheckboxTypes.Props
   column?: boolean;
   options?: RadioOption<T>[];
   checked?: T;
+  onChange: (value: T) => void;
   activeBar?: boolean;
   noPaddingLastItem?: boolean;
-  onChange: (value: T) => void;
 }
 
 const YES_NO_RADIO_BUTTONS: RadioOption<boolean>[] = [

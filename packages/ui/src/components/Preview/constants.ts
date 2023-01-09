@@ -19,7 +19,7 @@ export enum PreviewColors {
 }
 
 export const CodeColorStyle: JSColorStyle = {
-  backgroundColor: PreviewColors.GREY_BACKGROUND_COLOR,
+  backgroundColor: PreviewColors.GREY_DARK_BACKGROUND_COLOR,
   defaultColor: PreviewColors.CODE_COLOR,
   statements: PreviewColors.SYNTAX_COLOR,
   strings: PreviewColors.STRING_COLOR,

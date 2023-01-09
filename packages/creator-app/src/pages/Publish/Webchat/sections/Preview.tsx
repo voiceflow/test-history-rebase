@@ -15,7 +15,7 @@ const ACTIONS = [
   { name: 'Read Documentation', request: null },
 ];
 
-export const PreviewSection: React.OldFC = () => {
+export const PreviewSection: React.FC = () => {
   const startTime = React.useMemo(() => Date.now(), []);
 
   const config = useSelector(Version.active.voiceflow.chat.publishingSelector);

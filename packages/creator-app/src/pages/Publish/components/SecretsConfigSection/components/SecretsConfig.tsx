@@ -1,30 +1,31 @@
 import { ProjectSecretTag } from '@voiceflow/schema-types';
+import { SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
 import { SecretsStore } from '../../../hooks';
 import { SecretField } from '../types';
-import { SecretsConfigItem } from './SecretsConfigItem';
+import SecretsConfigItem from './SecretsConfigItem';
 
 export interface SecretsConfigProps {
   secrets: SecretField[];
-  secretsStore: SecretsStore;
   updateSecret: (key: ProjectSecretTag, value: any) => void;
-
-  className?: string;
+  secretsStore: SecretsStore;
 }
 
-export const SecretsConfig: React.OldFC<SecretsConfigProps> = ({ secrets, secretsStore, updateSecret, className }) => {
-  return (
-    <form>
-      {secrets.map((secret) => (
+const SecretsConfig: React.FC<SecretsConfigProps> = ({ secrets, secretsStore, updateSecret }) => (
+  <>
+    {secrets.map((secret, index) => (
+      <React.Fragment key={secret.name}>
         <SecretsConfigItem
-          className={className}
           {...secret}
-          key={secret.name}
           value={secretsStore[secret.secretTag]}
-          onChangeValue={(newValue: any) => updateSecret(secret.secretTag, newValue)}
+          onChangeValue={(newValue) => updateSecret(secret.secretTag, newValue)}
         />
-      ))}
-    </form>
-  );
-};
+
+        {index !== secrets.length - 1 && <SectionV2.Divider inset />}
+      </React.Fragment>
+    ))}
+  </>
+);
+
+export default SecretsConfig;

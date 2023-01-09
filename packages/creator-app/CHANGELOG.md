@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1046.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1045.4...@voiceflow/creator-app@1.1046.0) (2023-01-09)
+
+
+### Bug Fixes
+
+* maintenance window day format (BUG-164) ([#6533](https://github.com/voiceflow/creator-app/issues/6533)) ([663fc29](https://github.com/voiceflow/creator-app/commit/663fc29e077b7506d95593bdcbf3badc3be6c8a4))
+
+
+### Features
+
+* sso rum stuff (CT-000) ([#6448](https://github.com/voiceflow/creator-app/issues/6448)) ([20dc2a7](https://github.com/voiceflow/creator-app/commit/20dc2a783b8f183c6f6dde9cf6fb34cd81feeaa7))
+
+
+
+
+
 ## [1.1045.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1045.3...@voiceflow/creator-app@1.1045.4) (2023-01-06)
 
 

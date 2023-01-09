@@ -1,4 +1,3 @@
-/* eslint-disable sonarjs/no-identical-functions */
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { isNetworkError, toast, usePersistFunction, useSmartReducerV2 } from '@voiceflow/ui';
@@ -133,9 +132,8 @@ export const useGen = <T, D = string>({ onAccept, generate, disabled, examples, 
 
     if (state.items.length) {
       onAccept(state.items);
+      onTrack('accept', state.items, state.dbItems);
     }
-
-    onTrack('accept', state.items, state.dbItems);
 
     stateAPI.reset();
   });
@@ -143,7 +141,9 @@ export const useGen = <T, D = string>({ onAccept, generate, disabled, examples, 
   const onRejectAll = usePersistFunction(() => {
     if (disabled) return;
 
-    onTrack('reject', state.items, state.dbItems);
+    if (state.items.length) {
+      onTrack('reject', state.items, state.dbItems);
+    }
 
     stateAPI.reset();
   });

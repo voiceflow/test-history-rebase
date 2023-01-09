@@ -14,7 +14,7 @@ interface InfoSection {
 }
 
 const InfoSection: React.OldFC<InfoSection> = ({ active, name, date, isRead, tags }) => {
-  const formattedDate = React.useMemo(() => `${dayjs(date).format('h:mm a, MMM Do')}`, [date]);
+  const formattedDate = React.useMemo(() => `${dayjs(date).format('h:mm a, MMM D')}`, [date]);
 
   return (
     <Container className={ClassName.TRANSCRIPT_ITEM_META}>

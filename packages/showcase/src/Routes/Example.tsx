@@ -17,7 +17,7 @@ const Content = styled.div`
   background-color: #fafafa;
 `;
 
-const ExampleRoute: React.OldFC = () => {
+const ExampleRoute: React.FC = () => {
   const { example } = useParams<{ example?: keyof typeof examples }>();
 
   const section = example && examples[example];

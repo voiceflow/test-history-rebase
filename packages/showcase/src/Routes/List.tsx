@@ -13,7 +13,7 @@ const Content = styled.div`
   overflow: auto;
 `;
 
-const List: React.OldFC = () => {
+const List: React.FC = () => {
   const history = useHistory();
 
   return (

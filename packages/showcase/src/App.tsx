@@ -13,7 +13,7 @@ import { BrowserRouter } from 'react-router-dom';
 import Page from '@/components/Page';
 import Routes from '@/Routes';
 
-const App: React.OldFC = () => (
+const App: React.FC = () => (
   <DismissableLayersGlobalProvider>
     <BrowserRouter>
       <Page>

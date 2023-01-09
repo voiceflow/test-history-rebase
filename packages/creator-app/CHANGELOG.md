@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1046.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1046.2...@voiceflow/creator-app@1.1046.3) (2023-01-09)
+
+
+### Bug Fixes
+
+* judgement tracking event [bugfix] (BUG-150) ([#6540](https://github.com/voiceflow/creator-app/issues/6540)) ([c47fac4](https://github.com/voiceflow/creator-app/commit/c47fac4105135706834b75c8e00e4db41f312ba1))
+
+
+
+
+
 ## [1.1046.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1046.1...@voiceflow/creator-app@1.1046.2) (2023-01-09)
 
 

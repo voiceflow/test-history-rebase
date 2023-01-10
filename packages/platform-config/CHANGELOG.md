@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.18.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.17.3...@voiceflow/platform-config@1.18.0) (2023-01-10)
+
+
+### Features
+
+* add publishing to sms projects (PL-304) ([#6543](https://github.com/voiceflow/creator-app/issues/6543)) ([2e36695](https://github.com/voiceflow/creator-app/commit/2e366950adf2e0f900afdbb052f52e939bd49da7))
+
+
+
+
+
 ## [1.17.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.17.2...@voiceflow/platform-config@1.17.3) (2023-01-09)
 
 

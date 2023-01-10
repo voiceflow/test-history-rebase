@@ -1,4 +1,4 @@
-import { PlanType, UserRole } from '@voiceflow/internal';
+import { UserRole } from '@voiceflow/internal';
 import React from 'react';
 
 import { IS_PRIVATE_CLOUD } from '@/config';
@@ -35,7 +35,7 @@ const ChatAssistant: React.OldFC = () => {
   }, [activeWorkspace?.id, activeWorkspace?.name, activeWorkspace?.plan]);
 
   React.useEffect(() => {
-    const isDisabled = IS_PRIVATE_CLOUD || activeWorkspace?.plan === PlanType.ENTERPRISE || activeWorkspace?.plan === PlanType.OLD_ENTERPRISE;
+    const isDisabled = IS_PRIVATE_CLOUD;
 
     if (!user.creator_id || !user.email || isDisabled) return undefined;
 

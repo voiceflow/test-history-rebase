@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1047.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1046.4...@voiceflow/creator-app@1.1047.0) (2023-01-10)
+
+
+### Features
+
+* open enterprise on VF Assistant (VF-000) ([#6546](https://github.com/voiceflow/creator-app/issues/6546)) ([6d30703](https://github.com/voiceflow/creator-app/commit/6d3070395e8bb8a2cb2bee432952d747b9548364))
+
+
+
+
+
 ## [1.1046.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1046.3...@voiceflow/creator-app@1.1046.4) (2023-01-09)
 
 **Note:** Version bump only for package @voiceflow/creator-app

@@ -57,7 +57,6 @@ const TwilioPrototypeRun: React.OldFC<React.ComponentProps<typeof RunButton>> = 
             </Menu.Item>
           </Menu>
         )}
-        offset={{ offset: [0, 5] }}
         placement="bottom"
       >
         {(ref, onToggle, isOpen, dropdownElement) => (

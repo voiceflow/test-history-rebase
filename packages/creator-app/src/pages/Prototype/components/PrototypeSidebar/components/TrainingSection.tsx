@@ -36,11 +36,14 @@ const TrainingSection: React.OldFC<TrainingSectionProps> = ({ isOpen, onOpen, to
   }, [status]);
 
   React.useEffect(() => {
-    if (nlp.job?.stage.type === NLPTrainStageType.ERROR) {
-      logger.warn('Train error', nlp.job.stage.data);
+    const stage = nlp.job?.stage;
+
+    if (stage?.type === NLPTrainStageType.ERROR) {
+      logger.warn('Train error', stage.data);
 
       let message: string;
-      const nlpMessage = String(nlp.job.stage.data?.error);
+      const error = stage.data?.error?.message || stage.data?.error;
+      const nlpMessage = typeof error === 'string' ? error : JSON.stringify(error);
 
       // eslint-disable-next-line sonarjs/no-small-switch
       switch (nlpMessage) {

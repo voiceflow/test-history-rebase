@@ -9,7 +9,7 @@ export const CONFIG = Base.extend({
 
   type: PlatformType.SMS,
 
-  name: 'SMS',
+  name: 'Twilio SMS',
 
   supportedNLUs: [NLUType.VOICEFLOW],
 

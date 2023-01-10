@@ -79,6 +79,7 @@ export const API_HOST = window.VF_OVERRIDE_API_HOST || process.env.VF_OVERRIDE_A
 // Currently only the e2e environment runs on 'localhost', so the check below is sufficient to distinguish between the envs.
 export const API_ENDPOINT = `https://${API_HOST}${API_HOST === 'localhost' ? ':8003' : ''}`;
 export const API_V2_ENDPOINT = `${API_ENDPOINT}/v2`;
+export const API_V3_ENDPOINT = `${API_ENDPOINT}/v3`;
 
 export const ROOT_DOMAIN = process.env.ROOT_DOMAIN || (API_HOST === 'localhost' ? 'localhost' : '.voiceflow.com');
 export const VERSION = window.VF_OVERRIDE_SEM_VER ? `v${window.VF_OVERRIDE_SEM_VER}` : process.env.VERSION!;

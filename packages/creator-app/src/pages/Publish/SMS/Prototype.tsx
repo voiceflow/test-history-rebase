@@ -5,7 +5,7 @@ import React from 'react';
 import client from '@/client';
 import PhoneInput, { isValidPhoneNumber, PhoneNumber } from '@/components/PhoneInput';
 import * as Settings from '@/components/Settings';
-import { WHATSAPP_DOCUMENTATION } from '@/constants/platforms';
+import { SMS_DOCUMENTATION } from '@/constants/platforms';
 import * as Session from '@/ducks/session';
 import { useAsyncEffect, useSelector } from '@/hooks';
 import { openInternalURLInANewTab } from '@/utils/window';
@@ -59,7 +59,7 @@ const SMSTesting: React.FC = () => {
         <Banner
           title="Test Your Assistant via SMS"
           subtitle="Add your number and start testing with a single click."
-          onClick={() => openInternalURLInANewTab(WHATSAPP_DOCUMENTATION)}
+          onClick={() => openInternalURLInANewTab(SMS_DOCUMENTATION)}
           buttonText="Documentation"
         />
       </Settings.Section>

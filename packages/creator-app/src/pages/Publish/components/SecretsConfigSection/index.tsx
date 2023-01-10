@@ -11,9 +11,20 @@ export interface SecretsConfigSectionProps extends SecretsConfigProps {
   title: React.ReactNode;
   description?: React.ReactNode;
   submitSecrets: () => void;
+  onSuccess?: VoidFunction;
+  onError?: VoidFunction;
 }
 
-const SecretsConfigSection: React.FC<SecretsConfigSectionProps> = ({ title, secrets, description, secretsStore, updateSecret, submitSecrets }) => {
+const SecretsConfigSection: React.FC<SecretsConfigSectionProps> = ({
+  title,
+  secrets,
+  description,
+  secretsStore,
+  updateSecret,
+  submitSecrets,
+  onError = () => toast.error('Failed to save secrets'),
+  onSuccess = () => toast.success('Saved'),
+}) => {
   const [loading, setLoading] = React.useState(false);
 
   const onSave = async () => {
@@ -21,10 +32,9 @@ const SecretsConfigSection: React.FC<SecretsConfigSectionProps> = ({ title, secr
       setLoading(true);
 
       await submitSecrets();
-
-      toast.success('Saved');
+      await onSuccess();
     } catch {
-      toast.error('Failed to save secrets');
+      await onError();
     } finally {
       setLoading(false);
     }

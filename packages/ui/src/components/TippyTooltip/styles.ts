@@ -4,6 +4,7 @@ export const GlobalStyle = createGlobalStyle`
   .tippy-box {
     border-radius: 8px;
     background-color: #2b2f32;
+    color: #f2f7f7;
   }
 
   .tippy-box .tippy-content {

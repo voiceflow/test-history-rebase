@@ -3,11 +3,11 @@ import * as Voiceflow from '@platform-config/configs/voiceflow';
 import * as Project from './project';
 
 export const CONFIG = Voiceflow.Chat.extend({
-  name: 'SMS',
+  name: 'Twilio SMS',
 
   icon: {
-    name: 'systemMessage', // change icon
-    color: '#6E849AD9',
+    name: 'twilio',
+    color: '#CF272D',
   },
 
   project: Project.CONFIG,

@@ -336,11 +336,26 @@ export namespace SMSPublishJob {
     }
   >;
 
+  export type SuccessStage = JobStage<NLPTrainStageType.SUCCESS>;
+
   export type CheckAPISecretsStage = JobStage<SMSPublishStageType.CHECK_API_SECRETS>;
 
-  export type CheckMessagingServiceStage = JobStage<SMSPublishStageType.CHECK_MESSAGING_SERVICE>;
+  export type CheckServiceStage = JobStage<SMSPublishStageType.CHECK_SERVICE>;
 
   export type ValidateNumbersStage = JobStage<SMSPublishStageType.VALIDATE_NUMBERS>;
 
-  export type AnyJob = Job<IdleStage | ErrorStage | CheckAPISecretsStage | CheckMessagingServiceStage | ValidateNumbersStage>;
+  export type IntegrationInvalidCredentialsStage = JobStage<SMSPublishStageType.INTEGRATION_INVALID_CREDENTIALS>;
+
+  export type IntegrationResourceNotFoundStage = JobStage<SMSPublishStageType.INTEGRATION_RESOURCE_NOT_FOUND>;
+
+  export type AnyJob = Job<
+    | IdleStage
+    | ErrorStage
+    | SuccessStage
+    | CheckAPISecretsStage
+    | CheckServiceStage
+    | ValidateNumbersStage
+    | IntegrationInvalidCredentialsStage
+    | IntegrationResourceNotFoundStage
+  >;
 }

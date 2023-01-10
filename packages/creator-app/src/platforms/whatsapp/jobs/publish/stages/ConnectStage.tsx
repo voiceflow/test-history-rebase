@@ -59,10 +59,7 @@ const ConnectStage: React.OldFC<StageComponentProps<NLPTrainJob.ConfirmStage>> =
     <UploadedStage
       title="Connect to WhatsApp"
       description="Connect your assistant to your WhatsApp Business account"
-      imageProps={{
-        src: linkGraphic,
-        height: 67,
-      }}
+      imageProps={{ src: linkGraphic, height: 67 }}
     >
       <Button squareRadius fullWidth onClick={goToConsole}>
         Connect to WhatsApp

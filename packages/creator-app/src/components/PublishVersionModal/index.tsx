@@ -22,7 +22,7 @@ const PublishVersionModal: React.OldFC = () => {
 
   const platform = useSelector(ProjectV2.active.platformSelector);
 
-  const headerText = React.useMemo(() => (isPlatformWithThirdPartyUpload(platform) ? 'Upload new version' : 'Publish for production'), [platform]);
+  const headerText = React.useMemo(() => (isPlatformWithThirdPartyUpload(platform) ? 'Upload new version' : 'Publish for Production'), [platform]);
 
   const bodyText = React.useMemo(
     () => message ?? `This action will upload a new version to ${Platform.Config.get(platform).name}. Confirm you want to continue.`,

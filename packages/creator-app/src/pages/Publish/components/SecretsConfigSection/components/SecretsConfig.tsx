@@ -22,7 +22,7 @@ const SecretsConfig: React.FC<SecretsConfigProps> = ({ secrets, secretsStore, up
           onChangeValue={(newValue) => updateSecret(secret.secretTag, newValue)}
         />
 
-        {index !== secrets.length - 1 && <SectionV2.Divider inset />}
+        {index !== secrets.length - 1 && <SectionV2.Divider />}
       </React.Fragment>
     ))}
   </>

@@ -8,7 +8,7 @@ export const CONFIG = Base.Project.extend({
 
   chat: Chat.CONFIG,
 
-  name: 'SMS',
+  name: 'Twilio SMS',
 })(Base.Project.validate);
 
 export type Config = typeof CONFIG;

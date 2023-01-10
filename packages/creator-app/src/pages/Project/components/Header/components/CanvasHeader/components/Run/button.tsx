@@ -11,10 +11,9 @@ const StyledButton = styled(Button)<PrimaryButtonProps | SecondaryButtonProps>`
   }
 `;
 
-interface RunButtonProps {
+interface RunButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;
   loading?: boolean;
-  onClick?: VoidFunction;
   active?: boolean;
 }
 

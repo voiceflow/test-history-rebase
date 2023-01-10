@@ -8,6 +8,7 @@ import {
   GooglePublishJob,
   JobStageData,
   NLPTrainJob,
+  SMSPublishJob,
   TwilioPrototypeJob,
 } from '@/models';
 
@@ -46,7 +47,8 @@ export type AnyErrorStageData =
   | JobStageData<AlexaPublishJob.ErrorStage>
   | JobStageData<GeneralExportJob.ErrorStage>
   | JobStageData<NLPTrainJob.ErrorStage>
-  | JobStageData<TwilioPrototypeJob.ErrorStage>;
+  | JobStageData<TwilioPrototypeJob.ErrorStage>
+  | JobStageData<SMSPublishJob.ErrorStage>;
 
 export type AnyErrorStage =
   | GoogleExportJob.ErrorStage
@@ -57,7 +59,8 @@ export type AnyErrorStage =
   | AlexaPublishJob.ErrorStage
   | GeneralExportJob.ErrorStage
   | NLPTrainJob.ErrorStage
-  | TwilioPrototypeJob.ErrorStage;
+  | TwilioPrototypeJob.ErrorStage
+  | SMSPublishJob.ErrorStage;
 
 export type AnyPublishJobErrorType = GooglePublishJobErrorType | DialogflowESPublishJobErrorType | AlexaPublishJobErrorType | DialogflowCXStageType;
 

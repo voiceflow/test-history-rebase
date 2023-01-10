@@ -28,8 +28,9 @@ export const PLATFORM_BUBBLES: CardTypes.Bubble[] = [
     icon: Upcoming.Slack.CONFIG.types.chat.logo,
   },
   {
-    name: Upcoming.Twilio.CONFIG.name,
-    icon: Upcoming.Twilio.CONFIG.types.chat.logo,
+    name: Platform.SMS.CONFIG.name,
+    icon: Platform.SMS.CONFIG.types.chat.icon.name,
+    color: Platform.SMS.CONFIG.types.chat.icon.color,
   },
   {
     name: Platform.Alexa.CONFIG.name,

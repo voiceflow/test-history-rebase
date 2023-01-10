@@ -12,7 +12,7 @@ import { useRunPrototype } from '@/pages/Project/components/Header/components/Ca
 
 import { useTwilioPrototypeStageContent } from './stages';
 
-const TwilioPrototypeRun: React.OldFC<React.ComponentProps<typeof RunButton>> = (props) => {
+const TwilioPrototypeRun: React.OldFC<React.ComponentProps<typeof RunButton>> = ({ variant }) => {
   const twilioSandbox = useFeature(Realtime.FeatureFlag.TWILIO_SANDBOX).isEnabled;
 
   const runPrototype = useRunPrototype();
@@ -24,9 +24,23 @@ const TwilioPrototypeRun: React.OldFC<React.ComponentProps<typeof RunButton>> = 
 
   const progress = useSimulatedProgress(job);
 
+  const buttonProps = {
+    variant,
+    loading: active,
+  };
+
+  if (!twilioSandbox) {
+    return (
+      <JobInterface Content={Content} context={context} progress={progress}>
+        <RunButton {...buttonProps} onClick={(active && Utils.functional.noop) || runPrototype} />
+      </JobInterface>
+    );
+  }
+
   return (
     <JobInterface Content={Content} context={context} progress={progress}>
       <Dropdown
+        inlinePopper
         menu={() => (
           <Menu>
             <Menu.Item onClick={runPrototype}>
@@ -46,14 +60,10 @@ const TwilioPrototypeRun: React.OldFC<React.ComponentProps<typeof RunButton>> = 
         offset={{ offset: [0, 5] }}
         placement="bottom"
       >
-        {(ref, onToggle, isOpen) => (
-          <div ref={ref}>
-            <RunButton
-              {...props}
-              loading={active}
-              active={isOpen}
-              onClick={(active && Utils.functional.noop) || (twilioSandbox && onToggle) || runPrototype}
-            />
+        {(ref, onToggle, isOpen, dropdownElement) => (
+          <div ref={ref} onMouseEnter={() => !isOpen && onToggle()} onMouseLeave={() => isOpen && onToggle()}>
+            <RunButton {...buttonProps} active={isOpen} onClick={runPrototype} />
+            {!active && dropdownElement}
           </div>
         )}
       </Dropdown>

@@ -51,7 +51,7 @@ const IntegrationsSidebar: React.OldFC = () => {
         return [{ to: generatePath(Path.PUBLISH_WEBCHAT, { versionID }), title, icon }];
       case Platform.Constants.PlatformType.SMS:
         return [
-          { to: generatePath(Path.PUBLISH_SMS, { versionID }), title: 'SMS', icon },
+          { to: generatePath(Path.PUBLISH_SMS, { versionID }), title: 'Twilio SMS', icon },
           { to: generatePath(Path.PROTOTYPE_SMS, { versionID }), title: 'Test via SMS', icon: 'phone' },
         ];
       case Platform.Constants.PlatformType.WHATSAPP:

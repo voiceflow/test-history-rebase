@@ -15,7 +15,7 @@ const SubSection: React.FC<SubSectionProps> = ({ header, children, splitView, he
   <SectionV2
     header={
       header && (
-        <SectionV2.Header topUnit={3} bottomUnit={1.5} {...headerProps}>
+        <SectionV2.Header topUnit={3} bottomUnit={1.375} {...headerProps}>
           <SectionV2.Title bold secondary>
             {header}
           </SectionV2.Title>

@@ -21,7 +21,7 @@ const SuccessStage: React.FC<StageComponentProps<SMSPublishJob.SuccessStage>> = 
         Test on Phone
       </Button>
       <Box mt={8} />
-      <Button squareRadius fullWidth variant={ButtonVariant.QUATERNARY} onClick={openInternalURLInANewTab(SMS_DOCUMENTATION)}>
+      <Button squareRadius fullWidth variant={ButtonVariant.QUATERNARY} onClick={() => openInternalURLInANewTab(SMS_DOCUMENTATION)}>
         See Documentation
       </Button>
     </UploadedStage>

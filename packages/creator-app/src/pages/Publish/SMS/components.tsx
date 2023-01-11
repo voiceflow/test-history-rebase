@@ -10,10 +10,9 @@ import { onOpenInternalURLInANewTabFactory } from '@/utils/window';
 const OptionTooltip = styled(TippyTooltip)`
   width: 100%;
   height: 100%;
-  display: flex;
   cursor: no-drop;
-  alignitems: center;
-  justifycontent: space-between;
+  align-items: center;
+  justify-content: space-between;
 `;
 
 export const serviceOptionRenderer = (service: MessagingServiceType & { disabled?: boolean }) => {
@@ -21,6 +20,7 @@ export const serviceOptionRenderer = (service: MessagingServiceType & { disabled
 
   return (
     <OptionTooltip
+      display="flex"
       interactive
       content={
         <TippyTooltip.FooterButton buttonText="More" onClick={onOpenInternalURLInANewTabFactory(SMS_DOCUMENTATION)}>

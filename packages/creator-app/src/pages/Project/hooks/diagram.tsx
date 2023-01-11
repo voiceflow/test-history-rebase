@@ -141,7 +141,7 @@ export const useDiagramOptions = ({ onEdit, onRename, diagramID }: DiagramOption
     const label = getDiagramByID({ id: diagramID })?.type === BaseModels.Diagram.DiagramType.TOPIC ? 'topic' : 'component';
 
     setConfirmModal({
-      body: 'This action will permanently delete all contents of the component and can not be reversed. Are you sure you want to continue?',
+      body: `This action will permanently delete all contents of the ${label} and can not be reversed. Are you sure you want to continue?`,
       header: `Delete ${label}`,
 
       confirm: () => {

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1049.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1049.4...@voiceflow/creator-app@1.1049.5) (2023-01-11)
+
+
+### Bug Fixes
+
+* inactive snackbar fix (CT-1389) ([#6557](https://github.com/voiceflow/creator-app/issues/6557)) ([157f718](https://github.com/voiceflow/creator-app/commit/157f718d859c3435f3178eef5d374a3dfe119941)), closes [/github.com/voiceflow/creator-app/blob/409074ae002db49ee44c94728c70d7ef74b05a44/packages/creator-app/src/ducks/diagramV2/selectors/awareness.ts#L35](https://github.com//github.com/voiceflow/creator-app/blob/409074ae002db49ee44c94728c70d7ef74b05a44/packages/creator-app/src/ducks/diagramV2/selectors/awareness.ts/issues/L35) [/github.com/voiceflow/creator-app/blob/409074ae002db49ee44c94728c70d7ef74b05a44/packages/creator-app/src/ducks/diagramV2/selectors/awareness.ts#L39](https://github.com//github.com/voiceflow/creator-app/blob/409074ae002db49ee44c94728c70d7ef74b05a44/packages/creator-app/src/ducks/diagramV2/selectors/awareness.ts/issues/L39) [/github.com/voiceflow/creator-app/blob/b3d66a1c612e592aed710a2d8a657dd031b1ab9f/packages/creator-app/src/pages/Project/index.tsx#L116](https://github.com//github.com/voiceflow/creator-app/blob/b3d66a1c612e592aed710a2d8a657dd031b1ab9f/packages/creator-app/src/pages/Project/index.tsx/issues/L116)
+
+
+
+
+
 ## [1.1049.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1049.3...@voiceflow/creator-app@1.1049.4) (2023-01-11)
 
 

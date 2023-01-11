@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.41.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/showcase@1.40.3...@voiceflow/showcase@1.41.0) (2023-01-11)
+
+
+### Features
+
+* reusable donut chart component (DX-288) ([#6541](https://github.com/voiceflow/creator-app/issues/6541)) ([e15e7ef](https://github.com/voiceflow/creator-app/commit/e15e7eff8653f152e25a68b997576df8dd5ab6dc)), closes [#6441](https://github.com/voiceflow/creator-app/issues/6441) [#5b9fd7](https://github.com/voiceflow/creator-app/issues/5b9fd7) [#cf4767](https://github.com/voiceflow/creator-app/issues/cf4767)
+
+
+
+
+
 ## [1.40.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/showcase@1.40.2...@voiceflow/showcase@1.40.3) (2023-01-10)
 
 **Note:** Version bump only for package @voiceflow/showcase

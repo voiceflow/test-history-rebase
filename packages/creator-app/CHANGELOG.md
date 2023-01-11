@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1048.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1048.1...@voiceflow/creator-app@1.1048.2) (2023-01-11)
+
+
+### Bug Fixes
+
+* enable freestyle on new project [bugfix] (CT-1386) ([#6549](https://github.com/voiceflow/creator-app/issues/6549)) ([2693492](https://github.com/voiceflow/creator-app/commit/2693492d72a44188d33b3098685297c7ece57b55))
+
+
+
+
+
 ## [1.1048.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1048.0...@voiceflow/creator-app@1.1048.1) (2023-01-10)
 
 

@@ -1,7 +1,7 @@
 import { UserRole } from '@voiceflow/internal';
 import { createSelector } from 'reselect';
 
-import * as Account from '@/ducks/account';
+import { userIDSelector } from '@/ducks/account/selectors';
 import { createParameterSelector } from '@/ducks/utils';
 import { createCRUDSelectors, idParamSelector } from '@/ducks/utils/crudV2';
 import { createCurriedSelector } from '@/ducks/utils/selector';
@@ -18,7 +18,7 @@ export const {
   getByID: getWorkspaceByIDSelector,
 } = createCRUDSelectors(STATE_KEY);
 
-export const isAdminOfAnyWorkspaceSelector = createSelector([allWorkspacesSelector, Account.userIDSelector], (workspaces, userID) =>
+export const isAdminOfAnyWorkspaceSelector = createSelector([allWorkspacesSelector, userIDSelector], (workspaces, userID) =>
   workspaces.some(({ members }) => members.some(({ creator_id: creatorID, role }) => userID === creatorID && role === UserRole.ADMIN))
 );
 

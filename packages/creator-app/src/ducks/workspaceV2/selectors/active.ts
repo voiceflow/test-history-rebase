@@ -6,7 +6,7 @@ import { createSelector } from 'reselect';
 
 import { hasOrganizationTrialPermission, hasPlanPermission, hasRolePermission, Permission } from '@/config/permissions';
 import { EDITOR_SEAT_ROLES, ENTERPRISE_PLANS } from '@/constants';
-import * as Account from '@/ducks/account';
+import { userIDSelector } from '@/ducks/account/selectors';
 import * as Feature from '@/ducks/feature';
 import * as Session from '@/ducks/session';
 import { createCurriedSelector, creatorIDParamSelector } from '@/ducks/utils';
@@ -79,7 +79,7 @@ export const getDistinctWorkspaceMemberByCreatorIDSelector = createSelector(
 
 export const hasMemberByIDSelector = createSelector([getMemberByIDSelector], (getMember) => (creatorID: number) => !!getMember({ creatorID }));
 
-export const userRoleSelector = createSelector([getMemberByIDSelector, Account.userIDSelector], (getMember, creatorID) => {
+export const userRoleSelector = createSelector([getMemberByIDSelector, userIDSelector], (getMember, creatorID) => {
   if (!creatorID) return null;
   return getMember({ creatorID })?.role;
 });

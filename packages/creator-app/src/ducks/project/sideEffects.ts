@@ -1,4 +1,5 @@
 import { BaseModels } from '@voiceflow/base-types';
+import { PlanType } from '@voiceflow/internal';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { toast } from '@voiceflow/ui';
@@ -10,6 +11,7 @@ import * as Session from '@/ducks/session';
 import * as Tracking from '@/ducks/tracking';
 import { waitAsync } from '@/ducks/utils';
 import { getActiveWorkspaceContext } from '@/ducks/workspace/utils';
+import { workspaceSelector } from '@/ducks/workspaceV2/selectors/active';
 import { Thunk } from '@/store/types';
 
 export interface CreateProjectParams {
@@ -38,9 +40,11 @@ export const createProject =
   }: CreateProjectParams): Thunk<Realtime.AnyProject> =>
   async (dispatch, getState) => {
     const state = getState();
-    const workspaceID = Session.activeWorkspaceIDSelector(state);
+    const workspace = workspaceSelector(state);
 
-    Errors.assertWorkspaceID(workspaceID);
+    Errors.assertWorkspaceID(workspace?.id);
+
+    const workspaceID = workspace.id;
 
     const platformType = Realtime.Utils.typeGuards.isVoiceflowPlatform(platform) ? nluType : platform;
     const templateProjectID = await client.template.getPlatformTemplate(platformType, templateTag);
@@ -53,7 +57,7 @@ export const createProject =
     try {
       const channel = templateTag?.split(':')[1] || platformType;
 
-      return await dispatch(
+      const project = await dispatch(
         waitAsync(Realtime.project.create, {
           data: { name, image, _version: Realtime.CURRENT_PROJECT_VERSION },
           listID,
@@ -65,6 +69,19 @@ export const createProject =
           workspaceID,
         })
       );
+
+      // TODO: remove after legal confirmation added, this is a temporary auto-enable for ph launch
+      if (![PlanType.ENTERPRISE, PlanType.OLD_ENTERPRISE].includes(workspace.plan!)) {
+        await dispatch.sync(
+          Realtime.project.crud.patch({
+            workspaceID,
+            key: project.id,
+            value: { aiAssistSettings: { freestyle: true } },
+          })
+        );
+      }
+
+      return project;
     } catch (err) {
       toast.error('Error creating project, please try again later or contact support.');
       throw new Error('error creating project');

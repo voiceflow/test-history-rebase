@@ -76,7 +76,7 @@ export const createProject =
           Realtime.project.crud.patch({
             workspaceID,
             key: project.id,
-            value: { aiAssistSettings: { freestyle: true } },
+            value: { aiAssistSettings: { freestyle: true, generativeTasks: true } },
           })
         );
       }

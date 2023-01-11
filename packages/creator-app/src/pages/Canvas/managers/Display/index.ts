@@ -13,7 +13,7 @@ const DisplayManager: NodeManagerConfigV2<Realtime.NodeData<BaseNode.Visual.APLS
   ...NODE_CONFIG,
   label: 'Display',
 
-  tooltipText: 'Display',
+  tooltipText: 'Create or upload visuals formatted in Alexa Presentation Language (APL).',
   tooltipLink: Documentation.DISPLAY_STEP,
   platforms: [Platform.Constants.PlatformType.ALEXA],
 

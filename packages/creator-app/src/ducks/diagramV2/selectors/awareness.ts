@@ -32,7 +32,7 @@ export const allViewersCountSelector = createSelector(
   (viewers, hasWorkspace) => {
     if (!hasWorkspace || !viewers) return 1;
 
-    return new Set(Object.values(viewers).flatMap((diagramViewers) => diagramViewers.allKeys)).size;
+    return new Set(Object.values(viewers).flatMap((diagramViewers) => diagramViewers.allKeys)).size || 1;
   }
 );
 

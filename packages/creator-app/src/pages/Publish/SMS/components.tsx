@@ -1,4 +1,4 @@
-import { Box, TippyTooltip } from '@voiceflow/ui';
+import { Box, OverflowText, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import { SMS_DOCUMENTATION } from '@/constants/platforms';
@@ -32,7 +32,7 @@ export const serviceOptionRenderer = (service: MessagingServiceType & { disabled
       }
       position="right"
     >
-      {service.name}
+      <OverflowText mr={4}>{service.name}</OverflowText>
       <WarningIcon />
     </OptionTooltip>
   );

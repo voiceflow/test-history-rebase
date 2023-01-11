@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1049.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1048.2...@voiceflow/creator-app@1.1049.0) (2023-01-11)
+
+
+### Bug Fixes
+
+* sms styling fixes [bugfix] (CT-000) ([c00acaf](https://github.com/voiceflow/creator-app/commit/c00acaf2373c075c517e04c0eec917898aecfeb8))
+
+
+### Features
+
+* turn it on ([#6550](https://github.com/voiceflow/creator-app/issues/6550)) ([9afcdbb](https://github.com/voiceflow/creator-app/commit/9afcdbb251d4d737b783949a810f7764ace789c1))
+
+
+
+
+
 ## [1.1048.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1048.1...@voiceflow/creator-app@1.1048.2) (2023-01-11)
 
 

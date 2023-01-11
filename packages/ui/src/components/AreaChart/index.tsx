@@ -1,4 +1,5 @@
 import { useCreateConst } from '@ui/hooks';
+import { abbreviateNumber } from '@ui/utils/format';
 import { Utils } from '@voiceflow/common';
 import React from 'react';
 import * as Recharts from 'recharts';
@@ -6,7 +7,7 @@ import * as Recharts from 'recharts';
 import { AreaChartGradient, AreaChartTick, AreaChartTooltip } from './components';
 import { MonthlyDateFormatter, SimpleFormatter, WeeklyDateFormatter, YearlyDateFormatter } from './formatters';
 import { AreaChartDatum, AreaChartFormatter } from './types';
-import { abbreviateNumber, getMaxY } from './utils';
+import { getMaxY } from './utils';
 
 export * from './types';
 

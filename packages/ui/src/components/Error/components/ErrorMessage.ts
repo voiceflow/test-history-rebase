@@ -5,7 +5,7 @@ export interface ErrorMessageProps extends SpaceProps {}
 
 const ErrorMessage = styled.p<ErrorMessageProps>`
   padding-top: 12px;
-  color: #e91e63;
+  color: #bd425f;
   font-size: 13px;
   line-height: normal;
   ${space}

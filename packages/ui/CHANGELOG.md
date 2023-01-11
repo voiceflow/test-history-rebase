@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.218.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.217.1...@voiceflow/ui@1.218.0) (2023-01-11)
+
+
+### Features
+
+* reusable area chart component (DX-290) ([#6555](https://github.com/voiceflow/creator-app/issues/6555)) ([e471431](https://github.com/voiceflow/creator-app/commit/e471431e49cb1634fcc3431ede9ec823b9fcdbb6)), closes [#6545](https://github.com/voiceflow/creator-app/issues/6545) [voiceflow/creator-app#6541](https://github.com/voiceflow/creator-app/issues/6541)
+
+
+
+
+
 ## [1.217.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.217.0...@voiceflow/ui@1.217.1) (2023-01-11)
 
 

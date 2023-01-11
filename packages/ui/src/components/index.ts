@@ -3,6 +3,8 @@
 import _globalButtonStyle from './LegacyButton/Button.css';
 
 export { default as Alert } from './Alert';
+export type { AreaChartDatum } from './AreaChart';
+export { default as AreaChart } from './AreaChart';
 export type { AssistantCardProps } from './AssistantCard';
 export { default as AssistantCard } from './AssistantCard';
 export type { AudioPlayerProps } from './AudioPlayer';

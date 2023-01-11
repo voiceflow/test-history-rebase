@@ -1,4 +1,5 @@
 export { default as alert } from './Alert';
+export { default as areaChart } from './AreaChart';
 export { default as assistantCard } from './AssistantCard';
 export { default as badge } from './Badge';
 export { default as banner } from './Banner';

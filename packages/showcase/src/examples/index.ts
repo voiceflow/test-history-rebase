@@ -8,6 +8,7 @@ export { default as canvasPort } from './CanvasPort';
 export { default as checkbox } from './Checkbox';
 export { default as colorPicker } from './ColorPicker';
 export { default as cursor } from './Cursor';
+export { default as donutChart } from './DonutChart';
 export { default as hueSlider } from './HueSlider';
 export { default as membersAvatarList } from './MembersAvatarList';
 export { default as popper } from './Popper';

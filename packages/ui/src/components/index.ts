@@ -65,6 +65,8 @@ export type { CustomScrollbarsTypes } from './CustomScrollbars';
 export { default as CustomScrollbars } from './CustomScrollbars';
 export { default as Disable } from './Disable';
 export { default as Divider } from './Divider';
+export type { DonutChartDatum } from './DonutChart';
+export { default as DonutChart } from './DonutChart';
 export type { DropdownPlacement, DropdownProps } from './Dropdown';
 export { default as Dropdown } from './Dropdown';
 export { ErrorBoundaryWrapper, ErrorDescription, ErrorMessage, ErrorMessageWithDivider, Page404, Page404Wrapper, PageError } from './Error';

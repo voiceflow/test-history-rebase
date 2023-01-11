@@ -1,0 +1,31 @@
+import { styled } from '@ui/styles';
+
+export const Container = styled.div`
+  background: #33373a;
+  border-radius: 8px;
+  min-width: 122px;
+  font-family: 'Open Sans', sans-serif;
+`;
+
+export const Label = styled.div`
+  font-weight: 600;
+  font-size: 13px;
+  color: #c0c5c6;
+  padding: 12px 16px 0 16px;
+`;
+
+export const Details = styled.div`
+  font-weight: 400;
+  font-size: 20px;
+  color: #f2f7f7;
+  padding: 0 16px 12px 16px;
+`;
+
+export const Percentage = styled.span`
+  color: #f2f7f7;
+`;
+
+export const Total = styled.span`
+  margin-left: 4px;
+  color: #a2a7a8;
+`;

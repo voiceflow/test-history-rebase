@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1051.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1050.0...@voiceflow/creator-app@1.1051.0) (2023-01-12)
+
+
+### Features
+
+* fetch data in analytics dashboard (PL-372) ([#6446](https://github.com/voiceflow/creator-app/issues/6446)) ([67df982](https://github.com/voiceflow/creator-app/commit/67df982b2e1fd1727e49a02054aef2c78ef0e2f5))
+
+
+
+
+
 # [1.1050.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1049.6...@voiceflow/creator-app@1.1050.0) (2023-01-12)
 
 

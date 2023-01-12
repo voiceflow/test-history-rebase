@@ -6,11 +6,12 @@ export interface FlexProps {
   inline?: boolean;
   fullWidth?: boolean;
   fullHeight?: boolean;
+  alignItems?: 'flex-start' | 'flex-end' | 'center' | 'baseline' | 'stretch';
 }
 
 export const flexStyles = css<FlexProps>`
   display: ${({ inline }) => (inline ? 'inline-flex' : 'flex')};
-  align-items: center;
+  align-items: ${({ alignItems }) => alignItems || 'center'};
 
   ${({ gap }) =>
     gap &&

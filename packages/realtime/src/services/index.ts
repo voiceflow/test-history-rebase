@@ -14,6 +14,7 @@ import LockService from './lock';
 import MigrateService from './migrate';
 import NluService from './nlu';
 import NoteService from './note';
+import OrganizationService from './organization';
 import ProductService from './product';
 import ProjectService from './project';
 import ProjectListService from './projectList';
@@ -44,6 +45,7 @@ export interface ServiceMap extends BaseServiceMap {
   feature: FeatureService;
   variable: VariableService;
   voiceflow: VoiceflowService;
+  organization: OrganizationService;
   workspace: WorkspaceService;
   projectList: ProjectListService;
   variableState: VariableStateService;
@@ -82,6 +84,7 @@ const buildServices = ({ config, clients, models }: Options): ServiceMap => {
     feature: new FeatureService(serviceOptions),
     variable: new VariableService(serviceOptions),
     voiceflow: new VoiceflowService(serviceOptions),
+    organization: new OrganizationService(serviceOptions),
     workspace: new WorkspaceService(serviceOptions),
     projectList: new ProjectListService(serviceOptions),
     variableState: new VariableStateService(serviceOptions),

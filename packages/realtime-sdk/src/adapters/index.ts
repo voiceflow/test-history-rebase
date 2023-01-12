@@ -6,6 +6,7 @@ export { default as diagramAdapter } from './diagram';
 export { default as domainAdapter } from './domain';
 export * as nlu from './nlu';
 export { default as noteAdapter } from './note';
+export { default as organizationAdapter } from './organization';
 export { default as productAdapter } from './product';
 export { default as projectAdapter } from './project';
 export { default as projectListAdapter } from './projectList';

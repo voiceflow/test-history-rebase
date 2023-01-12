@@ -8,6 +8,7 @@ export * as link from './link';
 export * as nlu from './nlu';
 export * as node from './node';
 export * as note from './note';
+export * as organization from './organization';
 export * as port from './port';
 export * as product from './product';
 export * as project from './project';

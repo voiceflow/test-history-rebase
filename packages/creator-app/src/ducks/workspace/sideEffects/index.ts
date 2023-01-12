@@ -21,12 +21,18 @@ export * from './members';
 export * from './shared';
 
 export const createWorkspace =
-  (payload: { name: string; image?: string }): Thunk<Realtime.Workspace> =>
+  (payload: { name: string; image?: string; organizationID?: string }): Thunk<Realtime.Workspace> =>
   (dispatch, getState) => {
     try {
       const workspaces = allWorkspacesSelector(getState());
 
-      return dispatch(waitAsync(Realtime.workspace.create, { ...payload, organizationID: workspaces[0]?.organizationID ?? undefined }));
+      return dispatch(
+        waitAsync(Realtime.workspace.create, {
+          name: payload.name,
+          image: payload.image,
+          organizationID: (payload.organizationID || workspaces[0]?.organizationID) ?? undefined,
+        })
+      );
     } catch (err) {
       openError({ error: getErrorMessage(err, 'Unable to create workspace') });
 

@@ -12,9 +12,11 @@ class CreatorChannel extends AbstractChannelControl<Realtime.Channels.CreatorCha
   };
 
   protected load = async (ctx: ChannelContext<Realtime.Channels.CreatorChannelParams>): Promise<SendBackActions> => {
-    const workspaces = await this.services.workspace.getAll(Number(ctx.userId)).then(Realtime.Adapters.workspaceAdapter.mapFromDB);
-
-    return Realtime.workspace.crud.replace({ values: workspaces });
+    const [workspaces, organizations] = await Promise.all([
+      this.services.workspace.getAll(Number(ctx.userId)).then(Realtime.Adapters.workspaceAdapter.mapFromDB),
+      this.services.organization.getAll(Number(ctx.userId)).then(Realtime.Adapters.organizationAdapter.mapFromDB),
+    ]);
+    return [Realtime.workspace.crud.replace({ values: workspaces }), Realtime.organization.crud.replace({ values: organizations })];
   };
 }
 

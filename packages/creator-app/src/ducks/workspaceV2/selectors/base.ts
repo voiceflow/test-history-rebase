@@ -22,6 +22,12 @@ export const isAdminOfAnyWorkspaceSelector = createSelector([allWorkspacesSelect
   workspaces.some(({ members }) => members.some(({ creator_id: creatorID, role }) => userID === creatorID && role === UserRole.ADMIN))
 );
 
+export const workspacesWhereIsAdminSelector = createSelector([allWorkspacesSelector, userIDSelector], (workspaces, userID) =>
+  workspaces.filter(({ members }) =>
+    members.some(({ creator_id: creatorID, role }) => userID === creatorID && (role === UserRole.ADMIN || role === UserRole.OWNER))
+  )
+);
+
 export const allMembersSelector = createSelector([allWorkspacesSelector], (workspaces) => workspaces.flatMap(({ members }) => members));
 
 const memberByCreatorID = createSelector([allMembersSelector, idParamSelector], (members, userID) => {

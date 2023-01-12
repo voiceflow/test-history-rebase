@@ -17,6 +17,7 @@ import * as S from './styles';
 
 const WorkspaceSelector: React.OldFC = () => {
   const upgradeModal = ModalsV2.useModal(ModalsV2.Upgrade);
+  const createWorkspaceModal = ModalsV2.useModal(ModalsV2.Workspace.Create);
 
   const [canCreatePrivateCloudWorkspace] = usePermission(Permission.CREATE_PRIVATE_CLOUD_WORKSPACE);
 
@@ -25,13 +26,12 @@ const WorkspaceSelector: React.OldFC = () => {
   const isAdminOfAnyWorkspace = useSelector(WorkspaceV2.isAdminOfAnyWorkspaceSelector);
 
   const goToWorkspace = useDispatch(Router.goToWorkspace);
-  const goToNewWorkspace = useDispatch(Router.goToNewWorkspace);
 
   const showCreateWorkspaceButton = isAdminOfAnyWorkspace || canCreatePrivateCloudWorkspace;
 
   const onCreateWorkspace = usePlanLimitedAction({
     type: LimitType.WORKSPACES,
-    onAction: () => goToNewWorkspace(),
+    onAction: () => createWorkspaceModal.openVoid(),
     onLimited: (limit) => upgradeModal.openVoid(limit.upgradeModal),
   });
 

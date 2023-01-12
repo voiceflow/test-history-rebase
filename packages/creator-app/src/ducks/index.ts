@@ -18,6 +18,7 @@ import modal, * as Modal from '@/ducks/modal';
 import nlu, * as NLU from '@/ducks/nlu';
 import note, * as Note from '@/ducks/note';
 import notifications, * as Notifications from '@/ducks/notifications';
+import organizations, * as Organizations from '@/ducks/organization';
 import productV2, * as ProductV2 from '@/ducks/productV2';
 import projectListV2, * as ProjectListV2 from '@/ducks/projectListV2';
 import projectV2, * as ProjectV2 from '@/ducks/projectV2';
@@ -86,6 +87,7 @@ const getCombinedReducer = (browserHistory: BrowserHistory) =>
     [CanvasTemplate.STATE_KEY]: canvasTemplate,
     [CustomBlock.STATE_KEY]: customBlock,
     [NLU.STATE_KEY]: nlu,
+    [Organizations.STATE_KEY]: organizations,
   });
 
 const createReducer = ({ browserHistory, reverters, invalidators, getClientNodeID }: ReducerOptions) =>

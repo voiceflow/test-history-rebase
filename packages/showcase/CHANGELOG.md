@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.43.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/showcase@1.42.0...@voiceflow/showcase@1.43.0) (2023-01-12)
+
+
+### Features
+
+* reusable bar chart component (DX-289) ([#6547](https://github.com/voiceflow/creator-app/issues/6547)) ([51bcb2b](https://github.com/voiceflow/creator-app/commit/51bcb2ba7a9a4d3e9090c1e574310b8bdb9935e4)), closes [#6441](https://github.com/voiceflow/creator-app/issues/6441) [voiceflow/creator-app#6541](https://github.com/voiceflow/creator-app/issues/6541) [voiceflow/creator-app#6545](https://github.com/voiceflow/creator-app/issues/6545)
+
+
+
+
+
 # [1.42.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/showcase@1.41.1...@voiceflow/showcase@1.42.0) (2023-01-11)
 
 

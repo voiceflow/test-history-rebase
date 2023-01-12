@@ -4,15 +4,17 @@ import React from 'react';
 import ProjectPage from '@/pages/Project/components/ProjectPage';
 
 import { AnalyticsDashboardContainer, AnalyticsDashboardFiltersHeader, AnalyticsDashboardGrid, AnalyticsDashboardTile, Charts } from './components';
-import { PeriodFilterOption } from './components/AnalyticsDashboardFiltersHeader/constants';
+import { AnalyticsDashboardContext } from './context';
 
-const AnalyticsDashboard: React.OldFC = () => {
-  const [periodFilter, setPeriodFilter] = React.useState(PeriodFilterOption.LAST_7_DAYS);
+const AnalyticsDashboard: React.FC = () => {
+  const analyticsDashboard = React.useContext(AnalyticsDashboardContext);
+
+  const { interactions, recognitionRate, users, sessions, topIntents } = analyticsDashboard;
 
   return (
     <ProjectPage>
       <AnalyticsDashboardContainer>
-        <AnalyticsDashboardFiltersHeader periodFilter={periodFilter} setPeriodFilter={setPeriodFilter} />
+        <AnalyticsDashboardFiltersHeader />
         <AnalyticsDashboardGrid>
           {/* Row 1 */}
           <AnalyticsDashboardTile
@@ -21,7 +23,7 @@ const AnalyticsDashboard: React.OldFC = () => {
             width={2}
             height={1}
           >
-            <Charts.AnalyticsDashboardChartEmpty />
+            <Charts.AnalyticsDashboardChartGraph query={interactions} />
           </AnalyticsDashboardTile>
           <AnalyticsDashboardTile
             title="Recognition rate"
@@ -33,18 +35,18 @@ const AnalyticsDashboard: React.OldFC = () => {
             width={1}
             height={1}
           >
-            <Charts.AnalyticsDashboardChartEmpty />
+            <Charts.AnalyticsDashboardChartDonut query={recognitionRate} />
           </AnalyticsDashboardTile>
 
           {/* Row 2 */}
           <AnalyticsDashboardTile title="Users" description="Unique users that have engaged with your assistant." width={1} height={1}>
-            <Charts.AnalyticsDashboardChartEmpty />
+            <Charts.AnalyticsDashboardChartGraph query={users} />
           </AnalyticsDashboardTile>
           <AnalyticsDashboardTile title="Sessions" description="Unique users that have engaged with your assistant." width={1} height={1}>
-            <Charts.AnalyticsDashboardChartEmpty />
+            <Charts.AnalyticsDashboardChartGraph query={sessions} />
           </AnalyticsDashboardTile>
           <AnalyticsDashboardTile title="Top Intents" description="The most popular queries users ask your assistant." width={1} height={1}>
-            <Charts.AnalyticsDashboardChartEmpty />
+            <Charts.AnalyticsDashboardChartBars query={topIntents} />
           </AnalyticsDashboardTile>
         </AnalyticsDashboardGrid>
       </AnalyticsDashboardContainer>

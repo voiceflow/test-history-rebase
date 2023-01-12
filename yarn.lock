@@ -5687,6 +5687,11 @@
     ts-pattern "^4.0.5"
     type-fest "2.18.1"
 
+"@voiceflow/schema-dto@1.3.0":
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/@voiceflow/schema-dto/-/schema-dto-1.3.0.tgz#707a1e90d24021154db4ead24730748b5b1b5806"
+  integrity sha512-jCwwc9rfg7gFOZq6dt6j9PRFE6ZBAWL62ixslbdaCCdUraEcjLBTomx0fklEsTFcNr3qEzC5DZ3lMGlSBXFDkg==
+
 "@voiceflow/schema-types@1.25.0":
   version "1.25.0"
   resolved "https://registry.yarnpkg.com/@voiceflow/schema-types/-/schema-types-1.25.0.tgz#af82659b4896d61ef9760515917892de1af82f11"
@@ -5712,10 +5717,10 @@
     "@voiceflow/base-types" "2.71.3"
     http-errors "2.0.0"
 
-"@voiceflow/sdk-usage-analytics@1.5.0":
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/@voiceflow/sdk-usage-analytics/-/sdk-usage-analytics-1.5.0.tgz#4a4a4b191eb838ae72d04f6a7a8b012cfd5042a9"
-  integrity sha512-hXO5QAXebacZzt0wakyQdVlVP+U1IXz+O1fsrffwxRZ3KjdiG97Mcm5XED/7zRUnOTxAIaDoQFjNZ2afwGi2gg==
+"@voiceflow/sdk-usage-analytics@1.5.1":
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/@voiceflow/sdk-usage-analytics/-/sdk-usage-analytics-1.5.1.tgz#23ba0a037a07999b2565117c3aa94a434180beae"
+  integrity sha512-Tn/2OFnJdYCbw7x1hPWdF+480N2loT2KfpYy98gt1PgCnlJfS4QwRzuOlmG3cQYoA8c1RAcIhunG3nJefBrp4w==
 
 "@voiceflow/semantic-release-config@1.1.0":
   version "1.1.0"
@@ -15545,7 +15550,7 @@ nerf-dart@^1.0.0:
   resolved "https://registry.yarnpkg.com/nerf-dart/-/nerf-dart-1.0.0.tgz#e6dab7febf5ad816ea81cf5c629c5a0ebde72c1a"
   integrity sha1-5tq3/r9a2Bbqgc9cYpxaDr3nLBo=
 
-nestjs-zod@^1.2.1:
+nestjs-zod@1.2.1, nestjs-zod@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/nestjs-zod/-/nestjs-zod-1.2.1.tgz#bdbdaa46417497d051d03af6a13699352e292687"
   integrity sha512-N7kv1GysXFk7ESRGUxQUweAdbSKBwonlJzMxQnSEEBvanUWjZDCks4pdMflRH7Ocw5N7h3oAaXT6jC2EeL/NqQ==

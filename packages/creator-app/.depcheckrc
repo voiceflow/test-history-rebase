@@ -29,6 +29,8 @@
     "estree",
     "vitest",
     "null-loader",
-    "stream-browserify"
+    "stream-browserify",
+    "@voiceflow/schema-dto",
+    "nestjs-zod"
   ]
 }

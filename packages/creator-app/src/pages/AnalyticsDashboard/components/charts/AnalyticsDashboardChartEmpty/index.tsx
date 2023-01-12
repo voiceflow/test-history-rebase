@@ -1,14 +1,22 @@
-import { Text } from '@voiceflow/ui';
+import { SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
+import { QueryState } from '../../../constants';
+import { QueryResult } from '../../../types';
 import * as S from './styles';
 
-const AnalyticsDashboardChartEmpty: React.OldFC = () => {
+interface AnalyticsDashboardChartEmptyProps {
+  query: QueryResult<object>;
+}
+
+const AnalyticsDashboardChartEmpty: React.FC<AnalyticsDashboardChartEmptyProps> = ({ query }) => {
+  if (query.state === QueryState.LOADING || query.state === QueryState.ERROR) {
+    throw new RangeError('Empty chart should only be rendered when query is finished.');
+  }
+
   return (
     <S.Container>
-      <Text fontSize="15px" color="#62778C">
-        Report is empty because no data matches filters.
-      </Text>
+      <SectionV2.Title secondary>Report is empty because no data matches filters.</SectionV2.Title>
     </S.Container>
   );
 };

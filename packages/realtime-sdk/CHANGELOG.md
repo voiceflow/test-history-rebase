@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.216.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.215.8...@voiceflow/realtime-sdk@1.216.0) (2023-01-12)
+
+
+### Features
+
+* create workspace modals (CT-1227) ([#6429](https://github.com/voiceflow/creator-app/issues/6429)) ([c8b5579](https://github.com/voiceflow/creator-app/commit/c8b5579971885d45afea61565b57ea261cd5cd83))
+
+
+
+
+
 ## [1.215.8](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.215.7...@voiceflow/realtime-sdk@1.215.8) (2023-01-12)
 
 **Note:** Version bump only for package @voiceflow/realtime-sdk

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.220.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.219.0...@voiceflow/ui@1.220.0) (2023-01-12)
+
+
+### Features
+
+* create workspace modals (CT-1227) ([#6429](https://github.com/voiceflow/creator-app/issues/6429)) ([c8b5579](https://github.com/voiceflow/creator-app/commit/c8b5579971885d45afea61565b57ea261cd5cd83))
+
+
+
+
+
 # [1.219.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.218.0...@voiceflow/ui@1.219.0) (2023-01-12)
 
 

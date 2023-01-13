@@ -1,4 +1,5 @@
 import { BaseModels } from '@voiceflow/base-types';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Link, SectionV2, Toggle } from '@voiceflow/ui';
 import React from 'react';
 
@@ -8,7 +9,7 @@ import { AI_GENERAL_LINK, LEARN_FREESTYLE, LEARN_GENERATIVE_TASKS } from '@/cons
 import * as Project from '@/ducks/project';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
-import { useActiveWorkspace, useDispatch, useSelector, useTrackingEvents } from '@/hooks';
+import { useActiveWorkspace, useDispatch, useFeature, useSelector, useTrackingEvents } from '@/hooks';
 import { SettingSections } from '@/pages/Settings/constants';
 
 import { useAutoScrollSectionIntoView } from '../hooks';
@@ -47,7 +48,7 @@ const AIAssistant: React.FC = () => {
     trackingEvents.trackProjectGenerateAIFeatureToggled({ enabled, flag: GPT.FeatureToggle.FREESTYLE });
   };
 
-  const freestyle = GPT.useFreestyleFeature();
+  const { isEnabled: isFreestyleEnabled } = useFeature(Realtime.FeatureFlag.GPT_FREESTYLE);
   const [sectionRef] = useAutoScrollSectionIntoView(SettingSections.AI_ASSISTANT);
 
   return (
@@ -88,7 +89,7 @@ const AIAssistant: React.FC = () => {
           </Box.FlexApart>
         </Settings.SubSection>
 
-        {freestyle.isEnabled && (
+        {isFreestyleEnabled && (
           <>
             <SectionV2.Divider />
 

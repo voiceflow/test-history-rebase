@@ -7,6 +7,7 @@ export const IconContainer = styled(Box.FlexCenter)`
   width: 42px;
   border-radius: 6px;
   background: linear-gradient(180deg, #eef4f6 85%, #eef4f6 100%);
+  flex-shrink: 0;
   color: ${colors(ThemeColor.PRIMARY)};
 `;
 

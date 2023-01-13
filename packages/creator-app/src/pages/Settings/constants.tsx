@@ -8,6 +8,7 @@ export enum SettingSections {
   BASIC = 'Name & Language',
   CANVAS = 'Canvas Interactions',
   CHANNEL_SPECIFIC_FEATURES = 'Channel Specific Features',
+  METADATA = 'Metadata',
   DANGER_ZONE = 'Danger Zone',
   DIALOGFLOW_CONSOLE = 'Dialogflow Console',
   GLOBAL_LOGIC = 'Global Logic',
@@ -42,6 +43,7 @@ export const getSettingsMetaProps = Utils.platform.createPlatformAndProjectTypeS
         SettingSections.CANVAS,
         SettingSections.CHANNEL_SPECIFIC_FEATURES,
         SettingSections.AI_ASSISTANT,
+        SettingSections.METADATA,
         SettingSections.DANGER_ZONE,
       ],
       descriptors: {
@@ -60,6 +62,7 @@ export const getSettingsMetaProps = Utils.platform.createPlatformAndProjectTypeS
         SettingSections.GLOBAL_LOGIC,
         SettingSections.CANVAS,
         SettingSections.AI_ASSISTANT,
+        SettingSections.METADATA,
         SettingSections.DANGER_ZONE,
       ],
       descriptors: {
@@ -79,6 +82,7 @@ export const getSettingsMetaProps = Utils.platform.createPlatformAndProjectTypeS
         SettingSections.DIALOGFLOW_CONSOLE,
         SettingSections.CANVAS,
         SettingSections.AI_ASSISTANT,
+        SettingSections.METADATA,
         SettingSections.DANGER_ZONE,
       ],
       descriptors: {
@@ -93,6 +97,7 @@ export const getSettingsMetaProps = Utils.platform.createPlatformAndProjectTypeS
         SettingSections.GLOBAL_LOGIC,
         SettingSections.CANVAS,
         SettingSections.AI_ASSISTANT,
+        SettingSections.METADATA,
         SettingSections.DANGER_ZONE,
       ],
       descriptors: {},
@@ -105,6 +110,7 @@ export const getSettingsMetaProps = Utils.platform.createPlatformAndProjectTypeS
       SettingSections.GLOBAL_LOGIC,
       SettingSections.CANVAS,
       SettingSections.AI_ASSISTANT,
+      SettingSections.METADATA,
       SettingSections.DANGER_ZONE,
     ],
     descriptors: {

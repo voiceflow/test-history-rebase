@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.19.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.19.0...@voiceflow/platform-config@1.19.1) (2023-01-13)
+
+
+### Bug Fixes
+
+* revert path change [bugfix] (NLU-321) ([#6569](https://github.com/voiceflow/creator-app/issues/6569)) ([1e5fc6b](https://github.com/voiceflow/creator-app/commit/1e5fc6b8a356cd9f840271417ad0ae9517006b64))
+
+
+
+
+
 # [1.19.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.18.5...@voiceflow/platform-config@1.19.0) (2023-01-13)
 
 

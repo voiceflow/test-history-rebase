@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1052.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1052.0...@voiceflow/creator-app@1.1052.1) (2023-01-13)
+
+
+### Bug Fixes
+
+* fixes freestyle toggle (CT-1402) ([#6558](https://github.com/voiceflow/creator-app/issues/6558)) ([e8e5e83](https://github.com/voiceflow/creator-app/commit/e8e5e83b3312b2125536352b11c03c39c9d02ace))
+
+
+
+
+
 # [1.1052.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1051.2...@voiceflow/creator-app@1.1052.0) (2023-01-13)
 
 

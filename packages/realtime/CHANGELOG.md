@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.144.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.144.0...@voiceflow/realtime@1.144.1) (2023-01-13)
+
+
+### Bug Fixes
+
+* realtime rejected promises [bugfix] (CT-1440) ([#6568](https://github.com/voiceflow/creator-app/issues/6568)) ([c5e3f1a](https://github.com/voiceflow/creator-app/commit/c5e3f1af0c15fdd55f73661b92c464686f9a652c))
+
+
+
+
+
 # [1.144.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.143.0...@voiceflow/realtime@1.144.0) (2023-01-13)
 
 

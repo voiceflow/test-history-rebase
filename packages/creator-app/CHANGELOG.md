@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1051.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1051.1...@voiceflow/creator-app@1.1051.2) (2023-01-13)
+
+
+### Bug Fixes
+
+* create workspace limit (CT-1227) ([#6561](https://github.com/voiceflow/creator-app/issues/6561)) ([60abf16](https://github.com/voiceflow/creator-app/commit/60abf16b24594d67a4fe4dfe0c78ad696bd948c2))
+* fix menu message in NLU Export (NLU-549) ([#6559](https://github.com/voiceflow/creator-app/issues/6559)) ([8eb8c1f](https://github.com/voiceflow/creator-app/commit/8eb8c1f47eef8a791f2377ec21d2f1ca0573c1cb))
+
+
+
+
+
 ## [1.1051.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1051.0...@voiceflow/creator-app@1.1051.1) (2023-01-13)
 
 

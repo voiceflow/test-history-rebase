@@ -5,6 +5,8 @@ import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import _ from 'lodash';
 import { Optional } from 'utility-types';
 
+import logger from '@/logger';
+
 import { HEARTBEAT_EXPIRE_TIMEOUT } from '../../constants';
 import { AbstractControl, ControlOptions } from '../../control';
 import AccessCache from '../utils/accessCache';
@@ -168,7 +170,7 @@ class ProjectService extends AbstractControl {
     await Promise.all([
       this.models.project.updateByID(projectID, { updatedAt: new Date(), updatedBy: creatorID }),
       this.updatedThrottleCache.set({ projectID }, `${creatorID}`),
-    ]);
+    ]).catch((error) => logger.warn(error));
   }, CANVAS_UPDATE_THROTTLE_TIME);
 }
 

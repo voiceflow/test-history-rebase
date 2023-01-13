@@ -48,9 +48,7 @@ const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
   });
 
   process.on('unhandledRejection', async (r, p) => {
-    logger.warn(`${r} Unhandled rejection at: ${inspect(p)}`);
-
-    await gracefulShutdown();
+    logger.error(`${r} Unhandled rejection at: ${inspect(p)}`);
   });
 
   try {

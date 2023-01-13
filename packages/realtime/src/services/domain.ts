@@ -2,6 +2,7 @@ import { BaseModels } from '@voiceflow/base-types';
 import _ from 'lodash';
 
 import { AbstractControl } from '@/control';
+import logger from '@/logger';
 
 const CANVAS_UPDATE_THROTTLE_TIME = 30 * 1000; // 30 seconds
 
@@ -56,7 +57,7 @@ class DomainService extends AbstractControl {
     await Promise.all([
       this.models.version.domain.update(versionID, domainID, { updatedAt: new Date().toJSON(), updatedBy: creatorID }),
       this.updatedThrottleCache.set({ versionID, domainID }, `${creatorID}`),
-    ]);
+    ]).catch((error) => logger.warn(error));
   }, CANVAS_UPDATE_THROTTLE_TIME);
 }
 

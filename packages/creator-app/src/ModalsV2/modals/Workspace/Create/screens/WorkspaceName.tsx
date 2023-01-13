@@ -1,30 +1,37 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, Button, ErrorMessage, Input, Modal, toast, Upload, UploadIconVariant } from '@voiceflow/ui';
+import { Box, Button, ErrorMessage, Input, Modal, Upload, UploadIconVariant } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Feature from '@/ducks/feature';
-import * as Router from '@/ducks/router';
 import * as Workspace from '@/ducks/workspace';
 import { useDispatch, useSelector } from '@/hooks';
 import * as Sentry from '@/vendors/sentry';
 
 interface WorkspaceNameProps {
+  workspaceName: string;
+  workspaceImage: string | null;
+  onCreateWorkspace: VoidFunction;
+  onChangeName: React.Dispatch<React.SetStateAction<string>>;
+  onChangeImage: React.Dispatch<React.SetStateAction<string | null>>;
   onClose: VoidFunction;
-  organization: Realtime.Organization | null;
+  creating?: boolean;
 }
 
-const WorkspaceName: React.FC<WorkspaceNameProps> = ({ onClose, organization }) => {
-  const [workspaceName, setWorkspaceName] = React.useState('');
+const WorkspaceName: React.FC<WorkspaceNameProps> = ({
+  workspaceName,
+  workspaceImage,
+  onCreateWorkspace,
+  onChangeName,
+  onChangeImage,
+  onClose,
+  creating,
+}) => {
   const [nameError, setNameError] = React.useState<string | null>(null);
-  const [workspaceImage, setWorkspaceImage] = React.useState<string | null>(null);
+
   const canContinue = !!workspaceName.trim() && workspaceName.length <= 32;
 
   const isIdentityWorkspaceEnabled = useSelector(Feature.isFeatureEnabledSelector)(Realtime.FeatureFlag.IDENTITY_WORKSPACE);
   const updateActiveWorkspaceImage = useDispatch(Workspace.updateActiveWorkspaceImage);
-  const createWorkspace = useDispatch(Workspace.createWorkspace);
-  const setActiveWorkspace = useDispatch(Workspace.setActive);
-  const goToDashboard = useDispatch(Router.goToDashboard);
-  const goToWorkspace = useDispatch(Router.goToWorkspace);
 
   const onBlur = () => {
     if (workspaceName.length > 32) {
@@ -36,22 +43,6 @@ const WorkspaceName: React.FC<WorkspaceNameProps> = ({ onClose, organization }) 
     }
   };
 
-  const onCreateWorkspace = async () => {
-    try {
-      const workspace = await createWorkspace({
-        name: workspaceName,
-        image: workspaceImage || undefined,
-        organizationID: organization?.id || undefined,
-      });
-      setActiveWorkspace(workspace.id);
-      goToWorkspace(workspace.id);
-      onClose();
-    } catch (e) {
-      toast.error('Error creating workspace, please try again later');
-      onClose();
-      goToDashboard();
-    }
-  };
   return (
     <>
       <Modal.Body>
@@ -61,7 +52,7 @@ const WorkspaceName: React.FC<WorkspaceNameProps> = ({ onClose, organization }) 
               autoFocus
               value={workspaceName}
               placeholder="Enter workspace name"
-              onChangeText={setWorkspaceName}
+              onChangeText={onChangeName}
               onBlur={onBlur}
               error={!!nameError}
             />
@@ -69,10 +60,10 @@ const WorkspaceName: React.FC<WorkspaceNameProps> = ({ onClose, organization }) 
           </Box>
           {isIdentityWorkspaceEnabled ? (
             <Upload.Provider client={{ upload: (_endpoint, _fileType, formData) => updateActiveWorkspaceImage(formData) }} onError={Sentry.error}>
-              <Upload.IconUpload image={workspaceImage} update={setWorkspaceImage} size={UploadIconVariant.EXTRA_SMALL} isSquare />
+              <Upload.IconUpload image={workspaceImage} update={onChangeImage} size={UploadIconVariant.EXTRA_SMALL} isSquare />
             </Upload.Provider>
           ) : (
-            <Upload.IconUpload image={workspaceImage} update={setWorkspaceImage} size={UploadIconVariant.EXTRA_SMALL} isSquare />
+            <Upload.IconUpload image={workspaceImage} update={onChangeImage} size={UploadIconVariant.EXTRA_SMALL} isSquare />
           )}
         </Box.FlexApart>
       </Modal.Body>
@@ -81,7 +72,7 @@ const WorkspaceName: React.FC<WorkspaceNameProps> = ({ onClose, organization }) 
           Cancel
         </Button>
 
-        <Button disabled={!workspaceName || !canContinue} onClick={onCreateWorkspace}>
+        <Button disabled={!workspaceName || !canContinue || creating} onClick={onCreateWorkspace}>
           Create
         </Button>
       </Modal.Footer>

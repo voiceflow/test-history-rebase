@@ -31,6 +31,7 @@ const WorkspaceSelector: React.OldFC = () => {
 
   const onCreateWorkspace = usePlanLimitedAction({
     type: LimitType.WORKSPACES,
+    value: workspaces.length,
     onAction: () => createWorkspaceModal.openVoid(),
     onLimited: (limit) => upgradeModal.openVoid(limit.upgradeModal),
   });

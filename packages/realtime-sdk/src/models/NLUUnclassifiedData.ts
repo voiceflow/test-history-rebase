@@ -1,14 +1,12 @@
 import { BaseModels } from '@voiceflow/base-types';
 
-export type NluUnclassifiedData = BaseModels.Version.NLUUnclassifiedData;
-
-interface NLUUnclassifiedUtteranceModel {
+export interface NLUUnclassifiedUtterances extends BaseModels.Version.NLUUnclassifiedUtterances {
   id: string;
-  datasourceID: number;
-  datasourceName: string;
-  importedByUser?: string;
 }
 
-export type NLUUnclassifiedUtterances = BaseModels.Version.NLUUnclassifiedUtterances & NLUUnclassifiedUtteranceModel;
+export interface NluUnclassifiedData extends Omit<BaseModels.Version.NLUUnclassifiedData, 'key'> {
+  id: string;
+  utterances: NLUUnclassifiedUtterances[];
+}
 
 export const { NLUUnclassifiedDataType } = BaseModels.Version;

@@ -52,7 +52,7 @@ const useNLUUnclassifiedData = ({ activeItemID, search, scrollToTop }: UseNLUEnt
   const table = useTable(activeItemID);
   const [selectedUnclassifiedTab, setSelectedUnclassifiedTab] = React.useState(UNCLASSIFIED_DATA_INTIAL_STATE.selectedUnclassifiedTab);
   const [unclassifiedDataPage, setUnclassifiedDataPage] = React.useState(UNCLASSIFIED_DATA_INTIAL_STATE.unclassifiedDataPage);
-  const [filteredUtterances, setFilteredUtterances] = React.useState(utterances);
+  const [filteredUtterances, setFilteredUtterances] = React.useState<Realtime.NLUUnclassifiedUtterances[]>(utterances);
   const [isUnclassifiedDataLoading, setIsUnclassifiedDataLoading] = React.useState(false);
 
   const [unclassifiedDataClusters, setUnclassifiedDataClusters] = React.useState<UnclassifiedDataCluster[]>([]);
@@ -95,7 +95,7 @@ const useNLUUnclassifiedData = ({ activeItemID, search, scrollToTop }: UseNLUEnt
   const filterUtterances = (maxRange: number) => {
     const utterancesToSort = search ? searchUtterances(utterances, search) : utterances;
 
-    const sortedUtterances = utterancesToSort.slice(0, maxRange).sort((a, b) => new Date(b.importedAt).getTime() - new Date(a.importedAt).getTime());
+    const sortedUtterances = utterancesToSort.slice(0, maxRange).sort((a, b) => a.utterance.localeCompare(b.utterance));
 
     return unclassifiedListOrder === ListOrder.NEWEST ? sortedUtterances : sortedUtterances.reverse();
   };

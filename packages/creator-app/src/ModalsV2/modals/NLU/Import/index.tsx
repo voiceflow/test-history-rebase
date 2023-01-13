@@ -1,6 +1,7 @@
 import React from 'react';
 
 import manager from '@/ModalsV2/manager';
+import { NLUManagerProvider } from '@/pages/NLUManager/context';
 
 import { ImportIntents, ImportUnclassifiedData } from './components';
 import { ImportType } from './constants';
@@ -32,19 +33,21 @@ const NLUImport = manager.create<{ importType: ImportType }>(
       }, [opened]);
 
       return (
-        <Component
-          api={api}
-          type={type}
-          opened={opened}
-          hidden={hidden}
-          animated={animated}
-          closePrevented={closePrevented}
-          id={id}
-          rendered={rendered}
-          onChangeModalTab={setImportType}
-          tabState={tabState}
-          setTabState={setTabState}
-        />
+        <NLUManagerProvider>
+          <Component
+            api={api}
+            type={type}
+            opened={opened}
+            hidden={hidden}
+            animated={animated}
+            closePrevented={closePrevented}
+            id={id}
+            rendered={rendered}
+            onChangeModalTab={setImportType}
+            tabState={tabState}
+            setTabState={setTabState}
+          />
+        </NLUManagerProvider>
       );
     }
 );

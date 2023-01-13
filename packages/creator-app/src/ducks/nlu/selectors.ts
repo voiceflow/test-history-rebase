@@ -19,22 +19,18 @@ export const datasourceNames = createSelector([allUnclassifiedDataSelector], (da
 
 export const allUnclassifiedUtterancesSelector = createSelector(
   [allUnclassifiedDataSelector, WorkspaceV2.memberByCreatorIDSelector],
-  (datasources, getMemberByCreatorID): Realtime.NLUUnclassifiedUtterances[] => {
-    return datasources.reduce(
-      (utterances, datasource) => [
-        ...utterances,
-        ...datasource.utterances.map(
-          (u) =>
-            ({
-              ...u,
-              sourceID: datasource.id.toString(),
-              importedByUser: getMemberByCreatorID({ id: u.sourceID })?.name,
-              datasourceID: datasource.id,
-              datasourceName: datasource.name,
-            } as Realtime.NLUUnclassifiedUtterances)
-        ),
-      ],
-      [] as Realtime.NLUUnclassifiedUtterances[]
+  (datasources, getMemberByCreatorID) => {
+    return datasources.flatMap(
+      (datasource) =>
+        datasource.utterances.map((u) => ({
+          ...u,
+          sourceID: datasource.id,
+          importedByUser: getMemberByCreatorID({ id: u.sourceID })?.name,
+          datasourceID: datasource.id,
+          datasourceName: datasource.name,
+          importedAt: datasource.importedAt,
+        })),
+      []
     );
   }
 );

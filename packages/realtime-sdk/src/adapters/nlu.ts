@@ -4,12 +4,12 @@ import { Utils } from '@voiceflow/common';
 import { createMultiAdapter } from 'bidirectional-adapter';
 
 export const nluUnclassifiedDataAdapter = createMultiAdapter<BaseModels.Version.NLUUnclassifiedData, NluUnclassifiedData>(
-  ({ id, name, type, utterances, creatorID }) => ({
-    id,
+  ({ key, name, type, utterances, creatorID }) => ({
+    id: key ?? Utils.id.cuid(),
     name,
     type,
     utterances: utterances.map((u) => ({ id: Utils.generate.id(), ...u })),
     creatorID,
   }),
-  ({ id, name, type, utterances, creatorID }) => ({ id, name, type, utterances, creatorID })
+  ({ id, name, type, utterances, creatorID }) => ({ key: id, name, type, utterances: utterances.map(({ id: _, ...u }) => u), creatorID })
 );

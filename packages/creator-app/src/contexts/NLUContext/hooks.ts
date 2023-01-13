@@ -1,5 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { MenuTypes, toast, usePersistFunction } from '@voiceflow/ui';
+import { downloadFromURL, MenuTypes, toast, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
 import * as NLP from '@/config/nlp';
@@ -8,6 +8,7 @@ import { Permission } from '@/config/permissions';
 import { getNLUExportLimitDetails } from '@/config/planLimits/nluExport';
 import { InteractionModelTabType, ModalType } from '@/constants';
 import * as Export from '@/ducks/export';
+import * as Nlu from '@/ducks/nlu';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import * as Tracking from '@/ducks/tracking';
@@ -125,5 +126,78 @@ export const useNLUItemMenu = ({ itemID, itemType, isBuiltIn, onRename: onRename
   return {
     options: memoizedOptions,
     exporting,
+  };
+};
+
+interface useDataSourceMenuProps {
+  items?: string[] | null;
+  dataSourceID: string;
+  dataSourceName: string;
+}
+
+export const useDataSourceMenu = ({ items, dataSourceName, dataSourceID }: useDataSourceMenuProps) => {
+  const [permissionToDownloadUnclassified] = usePermission(Permission.NLU_UNCLASSIFIED_DOWNLOAD);
+  const canDelete = usePermission(Permission.NLU_UNCLASSIFIED_DELETE);
+  const [downloading, setIsDownloading] = React.useState(false);
+  const onDeleteUnclassified = useDispatch(Nlu.deleteUnclassified);
+  const [trackingEvents] = useTrackingEvents();
+  const upgradeModal = useModals(ModalType.UPGRADE_MODAL);
+
+  const handleDownload = React.useCallback(async () => {
+    if (!items?.length) return;
+
+    if (permissionToDownloadUnclassified) {
+      setIsDownloading(true);
+
+      toast.info('Downloading...');
+
+      const data = items.join('\r\n');
+      const blob = new Blob([data], { type: 'octet/stream' });
+      const url = window.URL.createObjectURL(blob);
+
+      downloadFromURL(`${NLP.Constants.NLPType.VOICEFLOW}-${dataSourceName}.csv`, url);
+      URL.revokeObjectURL(data);
+      toast.success('Successfully Exported');
+
+      setIsDownloading(false);
+    } else {
+      trackingEvents.trackUpgradePrompt({ promptType: UpgradePrompt.EXPORT_NLU });
+
+      const planLimits = getNLUExportLimitDetails(NLP.Constants.NLPType.VOICEFLOW);
+
+      upgradeModal.open({ planLimitDetails: planLimits, promptOrigin: UpgradePrompt.EXPORT_NLU });
+    }
+  }, [items]);
+
+  const memoizedOptions = React.useMemo<NLUItem[]>(() => {
+    if (!items) return [];
+
+    const options: NLUItem[] = [];
+
+    if (permissionToDownloadUnclassified) {
+      options.push({
+        key: 'download',
+        label: 'Download',
+        onClick: handleDownload,
+      });
+    }
+
+    if (canDelete) {
+      if (options.length) {
+        options.push({ key: 'divider-1', label: 'divider-1', divider: true });
+      }
+
+      options.push({
+        key: 'delete',
+        label: 'Delete',
+        onClick: () => onDeleteUnclassified(dataSourceID),
+      });
+    }
+    return options;
+  }, [items, onDeleteUnclassified, canDelete]);
+
+  return {
+    options: memoizedOptions,
+    downloading,
   };
 };

@@ -6,16 +6,16 @@
     "url": "https://github.com/voiceflow/creator-app/issues"
   },
   "dependencies": {
-    "@voiceflow/alexa-types": "2.12.22",
-    "@voiceflow/base-types": "2.77.1",
-    "@voiceflow/chat-types": "2.13.15",
+    "@voiceflow/alexa-types": "2.12.24",
+    "@voiceflow/base-types": "2.77.2",
+    "@voiceflow/chat-types": "2.13.16",
     "@voiceflow/common": "8.1.5",
-    "@voiceflow/google-dfes-types": "2.14.25",
-    "@voiceflow/google-types": "2.18.18",
+    "@voiceflow/google-dfes-types": "2.14.27",
+    "@voiceflow/google-types": "2.18.20",
     "@voiceflow/internal": "3.0.1",
     "@voiceflow/platform-config": "^1.18.5",
-    "@voiceflow/voice-types": "2.8.26",
-    "@voiceflow/voiceflow-types": "3.22.6",
+    "@voiceflow/voice-types": "2.8.27",
+    "@voiceflow/voiceflow-types": "3.23.0",
     "axios": "1.2.2",
     "bidirectional-adapter": "^1.2.1",
     "dayjs": "1.11.7",
@@ -29,7 +29,7 @@
   },
   "devDependencies": {
     "@types/faker": "5.5.9",
-    "@voiceflow/api-sdk": "3.22.7",
+    "@voiceflow/api-sdk": "3.22.8",
     "cooky-cutter": "1.5.4",
     "draft-js": "0.11.7",
     "faker": "5.5.3",
@@ -46,13 +46,6 @@
       "types": "./build/backend/src/index.d.ts",
       "import": "./build/backend/index.mjs",
       "default": "./build/backend/index.cjs"
-    }
-  },
-  "typesVersions": {
-    "*": {
-      "backend": [
-        "./build/backend/src/index.d.ts"
-      ]
     }
   },
   "files": [
@@ -90,5 +83,12 @@
     "test:integration": "exit 0",
     "test:unit": "REPORTS_DIRECTORY=coverage/unit vitest run .unit --silent --coverage",
     "types": "tsc --project tsconfig.build.json --noEmit --skipLibCheck"
+  },
+  "typesVersions": {
+    "*": {
+      "backend": [
+        "./build/backend/src/index.d.ts"
+      ]
+    }
   }
 }

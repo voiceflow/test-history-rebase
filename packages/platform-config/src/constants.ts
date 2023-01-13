@@ -1,7 +1,7 @@
 import * as Types from '@platform-config/utils/types';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
-export { ProjectType } from '@voiceflow/voiceflow-types/build/cjs/constants';
+export { ProjectType } from '@voiceflow/voiceflow-types/build/esm/constants';
 
 export enum BuiltInVariable {
   LOCALE = 'locale',

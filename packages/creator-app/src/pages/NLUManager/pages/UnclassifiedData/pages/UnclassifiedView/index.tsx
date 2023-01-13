@@ -27,7 +27,7 @@ const UnclassifiedView: React.OldFC = ({ children }) => {
         {nluManager.isUnclassifiedDataLoading && <LoadingScreen />}
 
         {!nluManager.isUnclassifiedDataLoading &&
-          nluManager.filteredUtterances.map((u, index) => (
+          nluManager.filteredUtterances.map((u: any, index) => (
             <TableUtteranceRow
               key={u.id}
               onSelect={() => nluManager.toggleSelectedUnclassifiedUtteranceID(u.id)}

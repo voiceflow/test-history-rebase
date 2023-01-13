@@ -10,6 +10,7 @@ import * as T from '@/ModalsV2/types';
 import { ImportType } from '../constants';
 import { CSVFile, IntentUnclassifiedData, ModalsState } from '../types';
 import TabButton from './TabButton';
+import UnclassifedDataSourceSettings from './UnclassifedDataSourceSettings';
 
 interface ImportUnclassifiedDataProps extends T.VoidInternalProps {
   onChangeModalTab: (tab: ImportType) => void;
@@ -35,6 +36,7 @@ const ImportUnclassifiedData: React.OldFC<ImportUnclassifiedDataProps> = ({
   const importUnclassifiedData = useDispatch(NLUDuck.importUnclassifiedData);
   const datasourceNames = useSelector(NLUDuck.datasourceNames);
   const [isImporting, setIsImporting] = React.useState(false);
+  const [openDataSource, setOpenDataSource] = React.useState(false);
 
   const setImportedFile = (file: CSVFile | null) => {
     setTabState({ ...tabState, [ImportType.UNCLASSIFIED]: { ...tabState[ImportType.UNCLASSIFIED], file } });
@@ -98,67 +100,81 @@ const ImportUnclassifiedData: React.OldFC<ImportUnclassifiedDataProps> = ({
     }
   };
 
+  const onSettingClick = () => {
+    setOpenDataSource(true);
+  };
+
   useHotKeys(Hotkey.SUBMIT, onImport, { preventDefault: true });
   useHotKeys(Hotkey.NLU_TABLE_ESC, api.close);
 
   return (
     <Modal type={type} maxWidth={450} opened={opened} hidden={hidden} animated={animated} onExited={api.remove}>
-      <Modal.Header border actions={<SvgIcon icon="systemSettings" size={16} clickable color="#6E849A" />} style={{ padding: '12px 32px 12px 16px' }}>
-        <FlexCenter>
-          <Box mr={2}>
-            <TabButton onClick={() => onChangeModalTab(ImportType.INTENT)} active>
-              Intents
-            </TabButton>
-          </Box>
+      {openDataSource ? (
+        <UnclassifedDataSourceSettings onClose={() => api.close()} onBack={() => setOpenDataSource(false)} closePrevented={closePrevented} />
+      ) : (
+        <>
+          <Modal.Header
+            border
+            actions={<SvgIcon icon="systemSettings" size={16} clickable color="#6E849A" onClick={onSettingClick} />}
+            style={{ padding: '12px 32px 12px 16px' }}
+          >
+            <FlexCenter>
+              <Box mr={2}>
+                <TabButton onClick={() => onChangeModalTab(ImportType.INTENT)} active>
+                  Intents
+                </TabButton>
+              </Box>
 
-          <TabButton>Unclassified</TabButton>
-        </FlexCenter>
-      </Modal.Header>
+              <TabButton>Unclassified</TabButton>
+            </FlexCenter>
+          </Modal.Header>
 
-      <Modal.Body>
-        <Box mt={25}>
-          <Input
-            error={!!errorMessage}
-            value={name}
-            readOnly={closePrevented}
-            placeholder="Name data source"
-            onChangeText={changeDataSourceName}
-            onEnterPress={onImport}
-          />
+          <Modal.Body>
+            <Box mt={25}>
+              <Input
+                error={!!errorMessage}
+                value={name}
+                readOnly={closePrevented}
+                placeholder="Name data source"
+                onChangeText={changeDataSourceName}
+                onEnterPress={onImport}
+              />
 
-          {errorMessage && <div style={{ color: '#BD425F', fontSize: 13, marginTop: '11px' }}>{errorMessage}</div>}
+              {errorMessage && <div style={{ color: '#BD425F', fontSize: 13, marginTop: '11px' }}>{errorMessage}</div>}
 
-          <Box mt={20} mb={12}>
-            <UploadV2.CSV value={importedFile?.fileName} onReadFile={onFileUpload} onRemove={() => setImportedFile(null)} />
-          </Box>
+              <Box mt={20} mb={12}>
+                <UploadV2.CSV value={importedFile?.fileName} onReadFile={onFileUpload} onRemove={() => setImportedFile(null)} />
+              </Box>
 
-          {importedUtterances.length === 0 ? (
-            <Text color="#62778C" fontSize={13}>
-              CSV should contain one utterance per row. <Link href={CSV_UNCLASSIFIED_IMPORT}>Learn more</Link>
-            </Text>
-          ) : (
-            <Text color="#62778C" fontSize={13}>
-              {importedUtterances.length} unclassified utterances recognized.
-            </Text>
-          )}
-        </Box>
-      </Modal.Body>
+              {importedUtterances.length === 0 ? (
+                <Text color="#62778C" fontSize={13}>
+                  CSV should contain one utterance per row. <Link href={CSV_UNCLASSIFIED_IMPORT}>Learn more</Link>
+                </Text>
+              ) : (
+                <Text color="#62778C" fontSize={13}>
+                  {importedUtterances.length} unclassified utterances recognized.
+                </Text>
+              )}
+            </Box>
+          </Modal.Body>
 
-      <Modal.Footer gap={12}>
-        <Button onClick={() => api.close()} variant={Button.Variant.TERTIARY} disabled={closePrevented} squareRadius>
-          Cancel
-        </Button>
+          <Modal.Footer gap={12}>
+            <Button onClick={() => api.close()} variant={Button.Variant.TERTIARY} disabled={closePrevented} squareRadius>
+              Cancel
+            </Button>
 
-        <Button
-          onClick={onImport}
-          disabled={isImporting || importedUtterances.length === 0 || closePrevented}
-          squareRadius
-          isLoading={isImporting}
-          style={isImporting ? { width: '92px' } : {}}
-        >
-          Upload
-        </Button>
-      </Modal.Footer>
+            <Button
+              onClick={onImport}
+              disabled={isImporting || importedUtterances.length === 0 || closePrevented}
+              squareRadius
+              isLoading={isImporting}
+              style={isImporting ? { width: '92px' } : {}}
+            >
+              Upload
+            </Button>
+          </Modal.Footer>
+        </>
+      )}
     </Modal>
   );
 };

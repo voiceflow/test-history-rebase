@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.35.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.34.1...@voiceflow/ml-gateway@1.35.0) (2023-01-13)
+
+
+### Features
+
+* unclassified Manage data sources (NLU-321) ([#6548](https://github.com/voiceflow/creator-app/issues/6548)) ([eb0cb7b](https://github.com/voiceflow/creator-app/commit/eb0cb7b5d64db499c65b22f692e06685b99a4f40))
+
+
+
+
+
 ## [1.34.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.34.0...@voiceflow/ml-gateway@1.34.1) (2023-01-07)
 
 

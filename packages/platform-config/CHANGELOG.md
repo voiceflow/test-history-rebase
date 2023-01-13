@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.19.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.18.5...@voiceflow/platform-config@1.19.0) (2023-01-13)
+
+
+### Features
+
+* unclassified Manage data sources (NLU-321) ([#6548](https://github.com/voiceflow/creator-app/issues/6548)) ([eb0cb7b](https://github.com/voiceflow/creator-app/commit/eb0cb7b5d64db499c65b22f692e06685b99a4f40))
+
+
+
+
+
 ## [1.18.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.18.4...@voiceflow/platform-config@1.18.5) (2023-01-12)
 
 **Note:** Version bump only for package @voiceflow/platform-config

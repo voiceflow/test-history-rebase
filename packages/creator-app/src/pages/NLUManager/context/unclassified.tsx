@@ -140,8 +140,12 @@ const useNLUUnclassifiedData = ({ activeItemID, search, scrollToTop }: UseNLUEnt
     const utterancesToSort = search ? searchUtterances(unclusteredUtterances, search) : unclusteredUtterances;
 
     const sortedUtterances = utterancesToSort
-      .slice(0, maxRange)
-      .sort(similarityScores ? (a, b) => similarityScores[b.id] - similarityScores[a.id] : (a, b) => a.utterance.localeCompare(b.utterance));
+      .sort(
+        similarityScores
+          ? (a, b) => similarityScores[b.id] - similarityScores[a.id]
+          : (a, b) => new Date(b.importedAt).getTime() - new Date(a.importedAt).getTime()
+      )
+      .slice(0, maxRange);
 
     return unclassifiedListOrder === ListOrder.NEWEST ? sortedUtterances : sortedUtterances.reverse();
   };

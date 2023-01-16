@@ -14,10 +14,7 @@ const TableRangeDropdown: React.OldFC = () => {
   const showPagination = nluManager.unclassifiedUtterances.length > PAGE_RANGE;
   const [pagination, setPagination] = React.useState(nluManager.unclassifiedDataPage);
   const pages = Math.round(nluManager.totalUnclassifiedItems / PAGE_RANGE);
-  const maxRange = React.useMemo(() => {
-    const range = getUnclassifiedDataMaxRange(nluManager.unclassifiedDataPage);
-    return range > nluManager.totalUnclassifiedItems ? nluManager.totalUnclassifiedItems : range;
-  }, [nluManager.unclassifiedDataPage]);
+  const maxRange = React.useMemo(() => getUnclassifiedDataMaxRange(nluManager.unclassifiedDataPage), [nluManager.unclassifiedDataPage]);
 
   const handleIconLeftClick = () => {
     if (maxRange === MIN_PAGINATION_ITEMS) return;

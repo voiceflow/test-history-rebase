@@ -5,6 +5,7 @@ import { styled } from '@/hocs/styled';
 
 export const MoreButton = styled(UIButton.DarkButton)`
   padding: 10px 0px;
+  font-size: 13px;
 `;
 
 const ClusteringTabTooltip: React.OldFC = () => {
@@ -19,9 +20,7 @@ const ClusteringTabTooltip: React.OldFC = () => {
       </Preview.Content>
 
       <Box p="0px 4px 4px 4px">
-        <MoreButton onClick={() => null} fontSize={13}>
-          More
-        </MoreButton>
+        <MoreButton onClick={() => null}>More</MoreButton>
       </Box>
     </Preview>
   );

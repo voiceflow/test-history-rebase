@@ -35,6 +35,8 @@ const closeSubscription = (topicName: string, subscription: Subscription): Promi
 class InteractionService extends AbstractControl {
   emitter = createNanoEvents<Record<string, (response: BasePubSubPayload) => void>>();
 
+  DEFAULT_REQUEST_TIMEOUT = DEFAULT_REQUEST_TIMEOUT;
+
   private chance = Chance();
 
   private cache = new Map<string, TopicWithSubscription>();
@@ -132,7 +134,9 @@ class InteractionService extends AbstractControl {
         return acc;
       }
 
-      acc.push(topicName);
+      if (topicName) {
+        acc.push(topicName);
+      }
 
       return acc;
     }, []);
@@ -187,7 +191,8 @@ class InteractionService extends AbstractControl {
     subscriberID: string,
     modelConfig: ModelConfiguration,
     request: Request,
-    timeout = DEFAULT_REQUEST_TIMEOUT
+    timeout = DEFAULT_REQUEST_TIMEOUT,
+    appendRequest = true
   ): Promise<Result> {
     const versions = Object.values(modelConfig);
 
@@ -225,7 +230,7 @@ class InteractionService extends AbstractControl {
     const response = await this.sendRequestToTopic<Result>(
       subscriberID,
       normalVersion.topic,
-      InteractionService.internalRequest(request, ModelFlag.NORMAL),
+      appendRequest ? InteractionService.internalRequest(request, ModelFlag.NORMAL) : (request as any),
       timeout
     );
     sendShadowTraffic();

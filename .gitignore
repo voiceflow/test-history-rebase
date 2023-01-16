@@ -93,4 +93,7 @@ certs/*
 #Circleci
 output.file
 
+# vite
+vite.config.ts.timestamp*
+
 packages/**/yarn.lock

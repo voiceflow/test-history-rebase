@@ -35,7 +35,9 @@ export interface ProjectVersion {
 
 const DEFAULT_FETCH_LIMIT = 10;
 
-const versionAdapter = (version: BaseVersion.Version) => ({
+type Version = Omit<BaseVersion.Version, 'nluUnclassifiedData'>;
+
+const versionAdapter = (version: Version) => ({
   name: version.name,
   created: ObjectID.isValid(version._id) ? new ObjectID(version._id).getTimestamp().toString() : '',
   creatorID: version.creatorID,

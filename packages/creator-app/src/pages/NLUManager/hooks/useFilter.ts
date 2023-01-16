@@ -1,7 +1,14 @@
 import React from 'react';
 
-const useFilter = () => {
+import { NLURoute } from '@/config/routes';
+
+const useFilter = (activeTab: NLURoute) => {
   const [search, setSearch] = React.useState('');
+
+  React.useEffect(() => {
+    setSearch('');
+  }, [activeTab]);
+
   return { search, setSearch };
 };
 

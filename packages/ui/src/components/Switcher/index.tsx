@@ -41,7 +41,7 @@ const Switcher: React.FC<SwitcherProps> = ({ value, items, onChange, isLoading }
                     }}
                     icon={item.icon}
                     size={16}
-                    color={item.tabID === value ? '#132144' : '#6E849A'}
+                    color={item.tabID === value ? '#132144' : SvgIcon.DEFAULT_COLOR}
                     style={{ zIndex: 1 }}
                     clickable
                   />

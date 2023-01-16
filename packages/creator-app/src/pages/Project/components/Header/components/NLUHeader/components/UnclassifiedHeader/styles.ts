@@ -6,5 +6,13 @@ export const ShadowBox = styled.div`
   width: 100%;
   height: 60px;
   background: white;
-  box-shadow: 0px 6px 12px 1px rgba(19, 33, 68, 0.04);
+  box-shadow: 10px 6px 12px 1px rgba(19, 33, 68, 0.04);
+`;
+
+export const QueryIconContainer = styled.div`
+  width: 42px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;

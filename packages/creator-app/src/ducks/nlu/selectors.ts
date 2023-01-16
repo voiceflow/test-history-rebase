@@ -2,7 +2,6 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { createSelector } from 'reselect';
 
 import { createCRUDSelectors } from '@/ducks/utils/crudV2';
-import * as WorkspaceV2 from '@/ducks/workspaceV2';
 
 import { STATE_KEY } from './constants';
 
@@ -18,20 +17,9 @@ export const {
 export const datasourceNames = createSelector([allUnclassifiedDataSelector], (datasources) => datasources.map((d) => d.name));
 
 export const allUnclassifiedUtterancesSelector = createSelector(
-  [allUnclassifiedDataSelector, WorkspaceV2.memberByCreatorIDSelector],
-  (datasources, getMemberByCreatorID) => {
-    return datasources.flatMap(
-      (datasource) =>
-        datasource.utterances.map((u) => ({
-          ...u,
-          sourceID: datasource.id,
-          importedByUser: getMemberByCreatorID({ id: u.sourceID })?.name,
-          datasourceID: datasource.id,
-          datasourceName: datasource.name,
-          importedAt: datasource.importedAt,
-        })),
-      []
-    );
+  [allUnclassifiedDataSelector],
+  (datasources): Realtime.NLUUnclassifiedUtterances[] => {
+    return datasources.flatMap((datasource) => datasource.utterances, []);
   }
 );
 

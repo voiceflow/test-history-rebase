@@ -27,6 +27,7 @@ export {
   BoxFlexStart,
   boxStyles,
 } from './Box';
+export { default as Bubble } from './Bubble';
 export type {
   DarkButtonProps,
   PrimaryButtonProps,

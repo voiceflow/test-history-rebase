@@ -1,4 +1,4 @@
-import { Checkbox, stopPropagation, TableTypes, TippyTooltip } from '@voiceflow/ui';
+import { Checkbox, stopPropagation, Table, TableTypes, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import { NLUManagerContext } from '@/pages/NLUManager/context';
@@ -8,24 +8,13 @@ import WarningIcon from './WarningIcon';
 
 const SelectColumn = <I extends NLUIntent>({ item: intent }: TableTypes.ItemProps<I>): React.ReactElement => {
   const nluManager = React.useContext(NLUManagerContext);
+  const rowContext = Table.useRowContext();
 
-  const [showCheckbox, setShowCheckbox] = React.useState(!intent.hasErrors);
+  const isSelected = nluManager.selectedIntentIDs.has(intent.id);
+  const isActive = nluManager.activeItemID === intent.id || isSelected;
+  const isHovered = rowContext.hovered;
 
-  React.useEffect(() => {
-    if (intent.hasErrors && !nluManager.selectedIntentIDs.has(intent.id)) {
-      setShowCheckbox(false);
-    }
-  }, [nluManager.selectedIntentIDs]);
-
-  React.useEffect(() => {
-    if (nluManager.hovered === intent.id) {
-      setShowCheckbox(true);
-    } else if (intent.hasErrors && !nluManager.selectedIntentIDs.has(intent.id)) {
-      setShowCheckbox(false);
-    }
-  }, [nluManager.hovered]);
-
-  if (!showCheckbox && intent.hasEntityError) {
+  if (intent.hasEntityError && !isActive && !isHovered) {
     return (
       <TippyTooltip content="Required entity error">
         <WarningIcon />
@@ -33,20 +22,9 @@ const SelectColumn = <I extends NLUIntent>({ item: intent }: TableTypes.ItemProp
     );
   }
 
-  return (
-    <>
-      {showCheckbox ? (
-        <Checkbox
-          checked={nluManager.selectedIntentIDs.has(intent.id)}
-          padding={false}
-          onClick={stopPropagation()}
-          onChange={() => nluManager.toggleSelectedIntentID(intent.id)}
-        />
-      ) : (
-        <WarningIcon />
-      )}
-    </>
-  );
+  if (intent.hasErrors && !isActive && !isHovered) return <WarningIcon />;
+
+  return <Checkbox checked={isSelected} padding={false} onClick={stopPropagation()} onChange={() => nluManager.toggleSelectedIntentID(intent.id)} />;
 };
 
 export default SelectColumn;

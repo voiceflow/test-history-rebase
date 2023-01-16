@@ -45,6 +45,8 @@ const NLUNavigationSidebar: React.OldFC = () => {
               title="Unclassified"
               onClick={() => nluManager.goToTab(NLURoute.UNCLASSIFIED)}
               isActive={nluManager.activeTab === NLURoute.UNCLASSIFIED}
+              style={{ marginBottom: 0 }}
+              clickable
             >
               {({ isActive }) =>
                 isActive ? (
@@ -62,9 +64,10 @@ const NLUNavigationSidebar: React.OldFC = () => {
 
         <NavigationSidebar.Item
           icon="intent"
-          title="Intent"
+          title="Intents"
           onClick={() => nluManager.goToTab(NLURoute.INTENTS)}
           isActive={nluManager.activeTab === NLURoute.INTENTS}
+          clickable
         >
           {({ isActive }) =>
             isActive ? (
@@ -80,6 +83,7 @@ const NLUNavigationSidebar: React.OldFC = () => {
           title="Entities"
           onClick={() => nluManager.goToTab(NLURoute.ENTITIES)}
           isActive={nluManager.activeTab === NLURoute.ENTITIES}
+          clickable
         >
           {({ isActive }) =>
             isActive ? (
@@ -108,7 +112,7 @@ const NLUNavigationSidebar: React.OldFC = () => {
             </>
           }
         >
-          <Box px={16} pb={4}>
+          <Box px={16}>
             <NavigationSidebar.Item onClick={onImportClick} icon="importCircle" title="Import" />
             {!importClicked && <S.StatusBubble />}
           </Box>
@@ -120,6 +124,7 @@ const NLUNavigationSidebar: React.OldFC = () => {
           icon="uploadCircle"
           title="Export"
           onClick={() => openExportModelModal({ checkedItems: Array.from(nluManager.selectedIntentIDs) })}
+          clickable
         />
       </Box>
 

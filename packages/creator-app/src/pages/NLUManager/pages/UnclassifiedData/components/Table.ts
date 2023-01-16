@@ -9,7 +9,7 @@ export const RowButtons = styled.div`
 `;
 
 export const Row = styled(Table.Row)`
-  height: 88px;
+  padding: 20px 32px;
   display: flex;
   justify-content: space-between;
 

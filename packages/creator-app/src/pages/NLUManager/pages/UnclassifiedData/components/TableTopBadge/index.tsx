@@ -1,4 +1,4 @@
-import { SvgIcon, Text } from '@voiceflow/ui';
+import { Bubble } from '@voiceflow/ui';
 import React from 'react';
 
 import { useNLUManager } from '@/pages/NLUManager/context';
@@ -11,11 +11,10 @@ const TableTopBadge: React.OldFC = () => {
   if (!isScrolling) return null;
 
   return (
-    <S.BadgeContainer onClick={scrollToTop}>
-      <SvgIcon icon="arrowDown" size={14} rotation={180} color="#F2F7F7" />
-      <Text fontSize={13} color="#F2F7F7">
+    <S.BadgeContainer>
+      <Bubble onClick={scrollToTop} direction="up">
         Top
-      </Text>
+      </Bubble>
     </S.BadgeContainer>
   );
 };

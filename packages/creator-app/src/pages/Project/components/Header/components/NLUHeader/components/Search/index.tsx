@@ -1,4 +1,4 @@
-import { TippyTooltip } from '@voiceflow/ui';
+import { SvgIcon, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import { useHotKeys } from '@/hooks';
@@ -38,7 +38,7 @@ const NLUSearch: React.OldFC<NLUSearchProps> = ({ value, onChange, placeholder }
         icon={value ? 'close' : 'search'}
         value={value}
         onFocus={() => setTooltipOpen(false)}
-        iconProps={{ color: '#8da2b5', size: 16, onClick: () => onChange('') }}
+        iconProps={{ color: SvgIcon.DEFAULT_COLOR, size: 16, onClick: () => onChange(''), clickable: true }}
         placeholder={placeholder}
         onChangeText={onChange}
         onMouseEnter={() => setTooltipOpen(true)}

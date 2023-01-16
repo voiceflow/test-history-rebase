@@ -37,6 +37,6 @@ const SvgIcon = React.forwardRef<HTMLSpanElement, T.Props>(({ icon, size = 16, c
 export default Object.assign(React.memo(SvgIcon), {
   ICONS,
   Variant,
-
+  DEFAULT_COLOR: '#6E849A',
   Container: S.Container,
 });

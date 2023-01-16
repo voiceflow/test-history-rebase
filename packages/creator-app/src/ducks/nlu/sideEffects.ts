@@ -7,26 +7,34 @@ import { getActiveVersionContext } from '@/ducks/version/utils';
 import { Thunk } from '@/store/types';
 
 export const importUnclassifiedData =
-  (datasourceName: string, utterances: string[]): Thunk<Realtime.NluUnclassifiedData | null> =>
+  (datasourceName: string, utterances: string[]): Thunk<Realtime.NLUUnclassifiedData | null> =>
   async (dispatch, getState) => {
-    const id = Utils.id.cuid.slug();
+    const dataSourceID = Utils.id.cuid.slug();
     const creatorID = Account.userIDSelector(getState());
+    const importedAt = new Date();
 
     if (!creatorID) return null;
 
-    const data: Realtime.NluUnclassifiedData = {
-      id,
+    const data: Realtime.NLUUnclassifiedData = {
+      id: dataSourceID,
       creatorID,
       type: BaseModels.Version.NLUUnclassifiedDataType.NLU_DATASOURCE_IMPORT,
       name: datasourceName,
-      importedAt: new Date().toJSON(),
-      utterances: utterances.map((u) => ({ id: Utils.id.cuid.slug(), utterance: u, sourceID: creatorID.toString() })),
+      importedAt: importedAt.toJSON(),
+      utterances: utterances.map((u) => ({
+        id: Utils.id.cuid.slug(),
+        utterance: u,
+        sourceID: dataSourceID,
+        importedAt,
+        datasourceID: dataSourceID,
+        datasourceName,
+      })),
     };
 
     await dispatch.sync(
       Realtime.nlu.crud.add({
         ...getActiveVersionContext(getState()),
-        key: id,
+        key: dataSourceID,
         value: data,
       })
     );

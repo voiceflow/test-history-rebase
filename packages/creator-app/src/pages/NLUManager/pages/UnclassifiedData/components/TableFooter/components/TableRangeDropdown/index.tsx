@@ -1,4 +1,4 @@
-import { Divider, Dropdown, FlexCenter, Menu, Slider, stopPropagation, SvgIcon, Text } from '@voiceflow/ui';
+import { Box, Divider, Dropdown, FlexCenter, Menu, Slider, stopPropagation, SvgIcon, Text } from '@voiceflow/ui';
 import React from 'react';
 
 import { useNLUManager } from '@/pages/NLUManager/context';
@@ -13,8 +13,11 @@ const TableRangeDropdown: React.OldFC = () => {
   const nluManager = useNLUManager();
   const showPagination = nluManager.unclassifiedUtterances.length > PAGE_RANGE;
   const [pagination, setPagination] = React.useState(nluManager.unclassifiedDataPage);
-  const pages = Math.round(nluManager.unclassifiedUtterances.length / PAGE_RANGE) - 1;
-  const maxRange = React.useMemo(() => getUnclassifiedDataMaxRange(nluManager.unclassifiedDataPage), [nluManager.unclassifiedDataPage]);
+  const pages = Math.round(nluManager.totalUnclassifiedItems / PAGE_RANGE);
+  const maxRange = React.useMemo(() => {
+    const range = getUnclassifiedDataMaxRange(nluManager.unclassifiedDataPage);
+    return range > nluManager.totalUnclassifiedItems ? nluManager.totalUnclassifiedItems : range;
+  }, [nluManager.unclassifiedDataPage]);
 
   const handleIconLeftClick = () => {
     if (maxRange === MIN_PAGINATION_ITEMS) return;
@@ -24,13 +27,20 @@ const TableRangeDropdown: React.OldFC = () => {
   };
 
   const handleIconRightClick = () => {
-    if (maxRange === nluManager.unclassifiedUtterances.length) return;
     const newPage = pagination + 1;
+    if (newPage > pages) return;
+    setPagination(newPage);
+    nluManager.setUnclassifiedDataPage(newPage);
+  };
+
+  const handleDataChange = (newPage: number) => {
+    if (newPage > pages) return;
     setPagination(newPage);
     nluManager.setUnclassifiedDataPage(newPage);
   };
 
   React.useEffect(() => {
+    if (nluManager.unclassifiedDataPage === pagination) return;
     setPagination(nluManager.unclassifiedDataPage);
   }, [nluManager.unclassifiedDataPage]);
 
@@ -40,14 +50,7 @@ const TableRangeDropdown: React.OldFC = () => {
         menu={() => (
           <Menu width={283} swallowMouseDownEvent={false}>
             <S.SliderContainer onClick={stopPropagation()}>
-              <Slider
-                min={0}
-                max={pages}
-                included
-                onChange={setPagination}
-                onAfterChange={() => nluManager.setUnclassifiedDataPage(pagination)}
-                value={pagination}
-              />
+              <Slider min={0} max={pages} included onChange={handleDataChange} value={pagination} color="#3d82e2" />
 
               <FlexCenter>
                 <SvgIcon icon="arrowLeftSmall" color="#6E849A" clickable onClick={handleIconLeftClick} />
@@ -63,16 +66,16 @@ const TableRangeDropdown: React.OldFC = () => {
             <Text fontSize={13} color={isOpen ? '#3D82E2' : '#132144'}>
               1 - {maxRange}
             </Text>
-            {showPagination && <SvgIcon size={8} icon="caretDown" color={isOpen ? '#3D82E2' : '#6E849A'} />}
+            {showPagination && <SvgIcon size={8} icon="caretDown" color={isOpen ? '#3D82E2' : SvgIcon.DEFAULT_COLOR} />}
           </S.DropdownButtonContainer>
         )}
       </Dropdown>
 
-      <div style={{ marginBottom: '3px' }}>
+      <Box mb={3}>
         <Text fontSize={13} color="#62778C">
           of {nluManager.unclassifiedUtterances.length}
         </Text>
-      </div>
+      </Box>
     </S.DropdownContainer>
   );
 };

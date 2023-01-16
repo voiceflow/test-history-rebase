@@ -10,7 +10,7 @@ import Component from './component';
 import { DBVersionModel, VERSION_DOMAINS_KEYS, VERSION_DOUBLE_KEYS, VERSION_OBJECT_ID_KEYS, VERSION_READ_ONLY_KEYS } from './constants';
 import Domain from './domain';
 import Intent from './intent';
-import NluUnclassifiedData from './nluUnclassifiedData';
+import NLUUnclassifiedData from './nluUnclassifiedData';
 import Note from './note';
 import Slot from './slot';
 import Variable from './variable';
@@ -32,7 +32,7 @@ class VersionModel extends AbstractModel<DBVersionModel, BaseVersion.Version, ty
 
   canvasTemplate = new CanvasTemplate(this);
 
-  nluUnclassifiedData = new NluUnclassifiedData(this);
+  nluUnclassifiedData = new NLUUnclassifiedData(this);
 
   collectionName = 'versions';
 

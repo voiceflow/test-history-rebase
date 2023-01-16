@@ -13,10 +13,6 @@ class RemoveUnclassifiedData extends AbstractVersionResourceControl<RemoveUnclas
     const { versionID, key } = payload;
     await this.services.nlu.remove(versionID, key);
   };
-
-  protected finally = async (ctx: Context, { payload }: Action<RemoveUnclassifiedDataPayload>): Promise<void> => {
-    await this.services.project.setUpdatedBy(payload.projectID, ctx.data.creatorID);
-  };
 }
 
 export default RemoveUnclassifiedData;

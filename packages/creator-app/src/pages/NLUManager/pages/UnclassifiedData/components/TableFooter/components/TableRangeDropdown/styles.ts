@@ -1,7 +1,7 @@
 import { css, styled } from '@/hocs/styled';
 
 export const SliderContainer = styled.div`
-  padding: 16px 24px;
+  padding: 8px 24px;
   gap: 24px;
   display: flex;
 `;

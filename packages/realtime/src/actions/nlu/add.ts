@@ -6,7 +6,7 @@ import { AbstractVersionResourceControl } from '@/actions/version/utils';
 
 interface AddUnclassifiedDataPayload
   extends Realtime.nlu.BaseNLUUnclassifiedDataPayload,
-    Realtime.actionUtils.CRUDValuePayload<Realtime.NluUnclassifiedData> {}
+    Realtime.actionUtils.CRUDValuePayload<Realtime.NLUUnclassifiedData> {}
 
 class AddUnclassifiedData extends AbstractVersionResourceControl<AddUnclassifiedDataPayload> {
   protected actionCreator = Realtime.nlu.crud.add;

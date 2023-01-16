@@ -1,6 +1,6 @@
 import { Nullable } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
-import { FlexCenter, SectionV2, SvgIcon, useOnScreen } from '@voiceflow/ui';
+import { Box, Bubble, SectionV2, useOnScreen } from '@voiceflow/ui';
 import * as Normal from 'normal-store';
 import React from 'react';
 
@@ -8,11 +8,9 @@ import * as Intent from '@/ducks/intent';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as Tracking from '@/ducks/tracking';
 import { useDispatch, useSelector } from '@/hooks';
-import { FadeDownContainer } from '@/styles/animations';
 
 import BuiltInPrompt from '../components/BuiltInPrompt';
 import DescriptionSection from '../components/DescriptionSection';
-import { JumpToEntitiesBubble } from '../components/index';
 import IntentEntitiesSection from '../components/IntentEntitiesSection';
 import NameSection from '../components/NameSection';
 import UtteranceSection from '../components/UtteranceSection';
@@ -141,14 +139,11 @@ const IntentForm: React.OldFC<IntentFormProps> = ({
       )}
 
       {!isEntitiesVisible && !isBuiltIn && (
-        <FlexCenter style={{ position: 'sticky', bottom: '20px', zIndex: 1000 }}>
-          <FadeDownContainer>
-            <JumpToEntitiesBubble onClick={scrollToEntities}>
-              <SvgIcon icon="arrowDown" color="white" style={{ display: 'inline-block', marginRight: 4 }} />
-              Entities
-            </JumpToEntitiesBubble>
-          </FadeDownContainer>
-        </FlexCenter>
+        <Box.FlexCenter position="sticky" bottom="20px" zIndex={1000}>
+          <Bubble onClick={scrollToEntities} direction="down">
+            Entities
+          </Bubble>
+        </Box.FlexCenter>
       )}
     </>
   );

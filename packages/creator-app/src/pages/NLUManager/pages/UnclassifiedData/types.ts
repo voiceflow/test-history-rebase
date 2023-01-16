@@ -1,5 +1,10 @@
 export interface UnclassifiedDataCluster {
   id: string;
   name: string;
-  utterancesCount: number;
+  utteranceIDs: string[];
+}
+
+export interface ClusteringMatch {
+  intentID: string;
+  intentMatchScore: number;
 }

@@ -3,6 +3,8 @@ import React from 'react';
 
 import * as ModalsV2 from '@/ModalsV2';
 
+import * as S from './styles';
+
 const EmptyScreen: React.OldFC = () => {
   const { open } = ModalsV2.useModal(ModalsV2.NLU.Import);
   // to do implement actions behaviors
@@ -10,29 +12,30 @@ const EmptyScreen: React.OldFC = () => {
   const onCreate = () => open({ importType: ModalsV2.NLU.ImportType.UNCLASSIFIED });
 
   return (
-    <FlexCenter style={{ width: '100%', flexDirection: 'column', height: '100%' }}>
+    <S.Container>
       <FlexCenter>
         <SvgIcon size={80} icon="noContent" />
       </FlexCenter>
 
       <FlexCenter>
         <Box mt={16} fontWeight={600}>
-          Insuficient data to cluster
+          No unclassified data exist
         </Box>
       </FlexCenter>
 
       <FlexCenter>
-        <Box mt={8} mb={16} textAlign="center" color="#62778c" maxWidth={250}>
-          We were unable to cluster utterances as there&apos;s not enough unclassified data. <Link onClick={onLearnMore}>Learn more</Link>
+        <Box mt={8} mb={16} textAlign="center" color="#62778c" maxWidth={300}>
+          Unclassified user response data from tests, prototyes or the live assistant allows you to fill gaps in your model.{' '}
+          <Link onClick={onLearnMore}>Learn more</Link>
         </Box>
       </FlexCenter>
 
       <FlexCenter>
-        <Button squareRadius variant={ButtonVariant.PRIMARY} onClick={onCreate}>
+        <Button variant={ButtonVariant.PRIMARY} onClick={onCreate}>
           Import Data
         </Button>
       </FlexCenter>
-    </FlexCenter>
+    </S.Container>
   );
 };
 

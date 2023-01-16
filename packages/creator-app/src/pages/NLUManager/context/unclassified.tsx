@@ -6,8 +6,11 @@ import { PageProgress } from '@/components/PageProgressBar/utils';
 import { PageProgressBar } from '@/constants';
 import * as NLUDuck from '@/ducks/nlu';
 import { useSelector } from '@/hooks';
-import { ListOrder, UNCLASSIFIED_DATA_CLUSTERS } from '@/pages/NLUManager/pages/UnclassifiedData/constants';
+import useUnclassifiedFindSimilar from '@/pages/NLUManager/hooks/useUnclassifiedFindSimilar';
+import useUtteranceClustering from '@/pages/NLUManager/hooks/useUtteranceClustering';
+import { ListOrder } from '@/pages/NLUManager/pages/UnclassifiedData/constants';
 import { UnclassifiedDataCluster } from '@/pages/NLUManager/pages/UnclassifiedData/types';
+import { mapClusteringData } from '@/pages/NLUManager/pages/UnclassifiedData/utils';
 import { getUnclassifiedDataMaxRange } from '@/pages/NLUManager/utils';
 
 import { UnclassifiedTabs } from '../constants';
@@ -20,19 +23,26 @@ export const UNCLASSIFIED_DATA_INTIAL_STATE = {
   selectedUnclassifiedUtteranceIDs: new Set([]),
   toggleSelectedUnclassifiedUtteranceID: Utils.functional.noop,
   selectedUnclassifiedTab: UnclassifiedTabs.UNCLASSIFIED_VIEW,
-  changeUnclassifiedPageTab: Utils.functional.noop,
+  changeUnclassifiedPageTab: async () => {},
   unclassifiedListOrder: ListOrder.NEWEST,
   unclassifiedSetListOrder: Utils.functional.noop,
   unclassifiedDataPage: 0,
   setUnclassifiedDataPage: Utils.functional.noop,
-  loadMoreUnclassifiedData: Utils.functional.noop,
+  loadMoreUnclassifiedData: async () => {},
   isUnclassifiedDataLoading: false,
   selectedClusterIDs: new Set<string>([]),
   toggleClusterSelection: Utils.functional.noop,
   isClusteringUnclassifiedData: false,
-  clusterUnclassifiedData: Utils.functional.noop,
+  clusterUnclassifiedData: async () => {},
   unclassifiedDataClusters: [],
   resetSelectedUnclassifiedData: Utils.functional.noop,
+  setSelectedClusterIDs: Utils.functional.noop,
+  setSelectedUnclassifiedUtteranceIDs: Utils.functional.noop,
+  totalUnclassifiedItems: 0,
+  similarityScores: null as Record<string, number> | null,
+  findSimilar: async () => {},
+  isFindingSimilar: false,
+  similarCluster: null as UnclassifiedDataCluster | null,
 };
 
 interface UseNLUEntitiesProps {
@@ -54,10 +64,18 @@ const useNLUUnclassifiedData = ({ activeItemID, search, scrollToTop }: UseNLUEnt
   const [unclassifiedDataPage, setUnclassifiedDataPage] = React.useState(UNCLASSIFIED_DATA_INTIAL_STATE.unclassifiedDataPage);
   const [filteredUtterances, setFilteredUtterances] = React.useState<Realtime.NLUUnclassifiedUtterances[]>(utterances);
   const [isUnclassifiedDataLoading, setIsUnclassifiedDataLoading] = React.useState(false);
+  const [clusteredUtterances, setClusteredUtterances] = React.useState<Record<string, string>>({});
 
+  const { findSimilarUtterances, similarityScores, setSimilarityScores } = useUnclassifiedFindSimilar();
+  const [isFindingSimilar, setIsFindingSimilar] = React.useState(UNCLASSIFIED_DATA_INTIAL_STATE.isFindingSimilar);
+
+  const { clusterUtterances } = useUtteranceClustering();
   const [unclassifiedDataClusters, setUnclassifiedDataClusters] = React.useState<UnclassifiedDataCluster[]>([]);
   const [selectedClusterIDs, setSelectedClusterIDs] = React.useState(UNCLASSIFIED_DATA_INTIAL_STATE.selectedClusterIDs);
   const [isClusteringUnclassifiedData, setIsClusteringUnclassifiedData] = React.useState(false);
+
+  const similarCluster =
+    unclassifiedDataClusters?.length === 1 && Object.keys(similarityScores || {}).length > 0 ? unclassifiedDataClusters[0] : null;
 
   const toggleClusterSelection = (clusterID: string) => {
     if (selectedClusterIDs.has(clusterID)) {
@@ -70,32 +88,60 @@ const useNLUUnclassifiedData = ({ activeItemID, search, scrollToTop }: UseNLUEnt
     setSelectedClusterIDs(new Set([...selectedClusterIDs, clusterID]));
   };
 
-  // TO DO: Remove this timeout once we integrate with clustering model
-  const clusterUnclassifiedData = () => {
+  const totalUnclassifiedItems = React.useMemo(() => {
+    if (selectedUnclassifiedTab === UnclassifiedTabs.CLUSTERING_VIEW && unclassifiedDataClusters) {
+      const unclassifiedUtterances = utterances.filter((u) => !clusteredUtterances[u.utterance]);
+      return unclassifiedDataClusters.length + unclassifiedUtterances.length;
+    }
+
+    return utterances.length;
+  }, [selectedUnclassifiedTab, utterances, unclassifiedDataClusters, clusteredUtterances]);
+
+  const clusterUnclassifiedData = async () => {
+    if (utterances.length === 0) return;
+
     setIsClusteringUnclassifiedData(true);
     PageProgress.start(PageProgressBar.NLU_CLUSTERING);
 
-    setTimeout(() => {
-      setUnclassifiedDataClusters(UNCLASSIFIED_DATA_CLUSTERS);
+    try {
+      const clusteringData = await clusterUtterances();
+
+      if (clusteringData) {
+        const { clusters, clusteredUtterances } = mapClusteringData(clusteringData, utterances);
+        setUnclassifiedDataClusters(clusters);
+        setClusteredUtterances(clusteredUtterances);
+      }
+    } finally {
       setIsClusteringUnclassifiedData(false);
       PageProgress.stop(PageProgressBar.NLU_CLUSTERING);
-    }, 1000);
+    }
   };
 
-  const changeUnclassifiedPageTab = (tab: UnclassifiedTabs) => {
+  const changeUnclassifiedPageTab = async (tab: UnclassifiedTabs) => {
+    setIsUnclassifiedDataLoading(true);
+
     if (tab === UnclassifiedTabs.CLUSTERING_VIEW) {
-      clusterUnclassifiedData();
+      await clusterUnclassifiedData();
+    } else {
+      setClusteredUtterances({} as any);
     }
 
     setSelectedUnclassifiedTab(tab);
     scrollToTop();
     resetSelectedUnclassifiedData();
+
+    setTimeout(() => setIsUnclassifiedDataLoading(false), 300);
   };
 
   const filterUtterances = (maxRange: number) => {
-    const utterancesToSort = search ? searchUtterances(utterances, search) : utterances;
+    const unclusteredUtterances = utterances.filter((u) =>
+      u.id ? !clusteredUtterances[u.id] && !similarCluster?.utteranceIDs.includes(u.id) : true
+    );
+    const utterancesToSort = search ? searchUtterances(unclusteredUtterances, search) : unclusteredUtterances;
 
-    const sortedUtterances = utterancesToSort.slice(0, maxRange).sort((a, b) => a.utterance.localeCompare(b.utterance));
+    const sortedUtterances = utterancesToSort
+      .slice(0, maxRange)
+      .sort(similarityScores ? (a, b) => similarityScores[b.id] - similarityScores[a.id] : (a, b) => a.utterance.localeCompare(b.utterance));
 
     return unclassifiedListOrder === ListOrder.NEWEST ? sortedUtterances : sortedUtterances.reverse();
   };
@@ -110,7 +156,7 @@ const useNLUUnclassifiedData = ({ activeItemID, search, scrollToTop }: UseNLUEnt
     }, 300);
   };
 
-  const loadMoreUnclassifiedData = () => {
+  const loadMoreUnclassifiedData = async () => {
     const maxRange = getUnclassifiedDataMaxRange(unclassifiedDataPage);
     const newPage = unclassifiedDataPage + 1;
     const newMaxRange = getUnclassifiedDataMaxRange(newPage);
@@ -121,6 +167,8 @@ const useNLUUnclassifiedData = ({ activeItemID, search, scrollToTop }: UseNLUEnt
   };
 
   const resetSelectedUnclassifiedData = () => {
+    setIsFindingSimilar(false);
+    setSimilarityScores(null);
     table.setSelectedItemIDs([]);
     setSelectedClusterIDs(new Set([]));
   };
@@ -132,6 +180,55 @@ const useNLUUnclassifiedData = ({ activeItemID, search, scrollToTop }: UseNLUEnt
     }
   };
 
+  const toggleSelectedUnclassifiedUtteranceID = (itemID: string | null) => {
+    if (!itemID || similarCluster?.utteranceIDs.includes(itemID)) {
+      setSimilarityScores(null);
+      setIsFindingSimilar(false);
+      table.setSelectedItemIDs([]);
+      return;
+    }
+
+    if (table.selectedItemIDs.size > 0 && similarCluster?.utteranceIDs && similarCluster?.utteranceIDs?.length > 0) {
+      setUnclassifiedDataClusters([
+        {
+          ...similarCluster,
+          utteranceIDs: [itemID, ...similarCluster.utteranceIDs],
+        },
+      ]);
+    } else {
+      setSimilarityScores(null);
+      setIsFindingSimilar(false);
+      table.toggleSelectedItemID(itemID);
+    }
+  };
+
+  const findSimilar = async () => {
+    if (isFindingSimilar) {
+      setSimilarityScores(null);
+      setIsFindingSimilar(false);
+      return;
+    }
+
+    setIsFindingSimilar(true);
+    const selectedIds = Array.from(table.selectedItemIDs);
+    const firstUtterance = utterancesByID[selectedIds[0]];
+    const targetPhrase = firstUtterance.utterance;
+    setIsUnclassifiedDataLoading(true);
+
+    try {
+      await findSimilarUtterances(targetPhrase);
+      setUnclassifiedDataClusters([
+        {
+          id: '1',
+          name: firstUtterance.utterance,
+          utteranceIDs: selectedIds,
+        },
+      ]);
+    } finally {
+      setIsUnclassifiedDataLoading(false);
+    }
+  };
+
   React.useEffect(() => {
     const maxRange = getUnclassifiedDataMaxRange(unclassifiedDataPage);
     handleDataChange(maxRange);
@@ -140,13 +237,14 @@ const useNLUUnclassifiedData = ({ activeItemID, search, scrollToTop }: UseNLUEnt
   React.useEffect(() => {
     const maxRange = getUnclassifiedDataMaxRange(unclassifiedDataPage);
     setFilteredUtterances(filterUtterances(maxRange));
-  }, [search, utterances]);
+  }, [search, unclassifiedDataClusters, clusteredUtterances, similarCluster, utterances]);
 
   return {
+    totalUnclassifiedItems,
     unclassifiedUtterances: utterances,
     filteredUtterances,
-    activeUnclassifiedUtterance: activeItemID && utterancesByID[activeItemID],
-    toggleSelectedUnclassifiedUtteranceID: table.toggleSelectedItemID,
+    activeUnclassifiedUtterance: table.selectedItemIDs.size >= 1 ? utterancesByID[Array.from(table.selectedItemIDs)[0]] : null,
+    toggleSelectedUnclassifiedUtteranceID,
     selectedUnclassifiedUtteranceIDs: table.selectedItemIDs,
     selectedUnclassifiedTab,
     changeUnclassifiedPageTab,
@@ -162,6 +260,12 @@ const useNLUUnclassifiedData = ({ activeItemID, search, scrollToTop }: UseNLUEnt
     clusterUnclassifiedData,
     unclassifiedDataClusters,
     resetSelectedUnclassifiedData,
+    findSimilar,
+    similarityScores,
+    similarCluster,
+    setSelectedClusterIDs,
+    setSelectedUnclassifiedUtteranceIDs: table.setSelectedItemIDs,
+    isFindingSimilar,
   };
 };
 

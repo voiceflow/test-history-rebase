@@ -107,6 +107,7 @@ export { default as eyeHide2 } from './eye-hide2.svg';
 export { default as eye2 } from './eye2.svg';
 
 // f
+export { default as fail } from './fail.svg';
 export { default as filter } from './filter.svg';
 export { default as fireHD8 } from './fire-hd-8.svg';
 export { default as fireHD10 } from './fire-hd-10.svg';

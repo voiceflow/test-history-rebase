@@ -10,13 +10,14 @@ export interface ItemProps {
   onClick?: VoidFunction;
   isActive?: boolean;
   children?: React.ReactNode | ((options: { isActive: boolean }) => React.ReactNode);
+  style?: React.CSSProperties;
+  clickable?: boolean;
 }
 
-const Item: React.OldFC<ItemProps> = ({ icon, title, isActive = false, onClick, children }) => (
-  <S.Container active={isActive} onClick={onClick}>
+const Item: React.FC<ItemProps> = ({ icon, title, isActive = false, clickable, onClick, children, style }) => (
+  <S.Container active={isActive} onClick={onClick} style={style}>
     <Box.Flex gap={12}>
-      <S.Icon icon={icon} isActive={isActive} />
-
+      <S.Icon icon={icon} isActive={isActive} clickable={clickable} />
       <Box fontWeight={isActive ? 600 : undefined}>{title}</Box>
     </Box.Flex>
 

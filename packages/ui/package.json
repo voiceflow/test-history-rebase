@@ -9,7 +9,7 @@
     "@popperjs/core": "^2.10.1",
     "@seznam/compose-react-refs": "^1.0.6",
     "@tippyjs/react": "^4.2.6",
-    "@voiceflow/base-types": "2.77.2",
+    "@voiceflow/base-types": "2.78.0",
     "@voiceflow/common": "8.1.5",
     "@voiceflow/internal": "^3.0.1",
     "bowser": "^2.11.0",

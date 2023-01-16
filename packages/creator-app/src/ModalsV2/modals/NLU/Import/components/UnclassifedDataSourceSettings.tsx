@@ -19,6 +19,7 @@ const UnclassifedDataSourceSettings: React.FC<DataSetProps> = ({ closePrevented,
     () =>
       unclassifiedUtterances.reduce<Record<string, { utterances: string[]; dataSourceID: string; dataSourceName: string }>>(
         (acc, { sourceID, utterance, datasourceName }) => {
+          if (!sourceID) return acc;
           acc[sourceID] ??= { dataSourceID: sourceID, utterances: [], dataSourceName: datasourceName };
           acc[sourceID].utterances.push(utterance);
           return acc;

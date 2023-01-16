@@ -24,6 +24,9 @@ export interface ContainerProps extends SpaceProps {
   reducedOpacity?: boolean;
 }
 
+const DEFAULT_OPACITY = 0.85;
+const REDUCED_OPACITY = 0.65;
+
 export const Container = styled.span<ContainerProps>`
   ${space}
   ${transition('opacity', 'background', 'color', 'transform')}
@@ -70,7 +73,7 @@ export const Container = styled.span<ContainerProps>`
   ${({ opacity, reducedOpacity }) =>
     opacity &&
     css`
-      opacity: ${reducedOpacity ? 0.65 : 0.8};
+      opacity: ${reducedOpacity ? REDUCED_OPACITY : DEFAULT_OPACITY};
     `}
 
   ${({ clickable, reducedOpacity }) =>
@@ -78,10 +81,10 @@ export const Container = styled.span<ContainerProps>`
     css`
       display: block;
       cursor: pointer;
-      opacity: ${reducedOpacity ? 0.65 : 0.8};
+      opacity: ${reducedOpacity ? REDUCED_OPACITY : DEFAULT_OPACITY};
 
       &:hover {
-        opacity: ${reducedOpacity ? 0.85 : 1};
+        opacity: ${reducedOpacity ? DEFAULT_OPACITY : 1};
       }
 
       &:active {
@@ -95,7 +98,7 @@ export const Container = styled.span<ContainerProps>`
     const clickableStyle =
       clickable &&
       css`
-        opacity: ${reducedOpacity ? 0.85 : 1};
+        opacity: ${reducedOpacity ? DEFAULT_OPACITY : 1};
       `;
 
     if (!variant) return clickableStyle;

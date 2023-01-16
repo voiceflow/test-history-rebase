@@ -13,6 +13,7 @@ export enum Hotkey {
   ZOOM_OUT = 'ZOOM_OUT',
   SPOTLIGHT = 'SPOTLIGHT',
   ROOT_NODE = 'ROOT_NODE',
+  SELECT_ALL = 'SELECT_ALL',
 
   DESIGN_PAGE = 'DESIGN_PAGE',
   SETTINGS_PAGE = 'SETTINGS_PAGE',
@@ -113,6 +114,7 @@ const HOTKEY_MAPPING: Record<Hotkey, string | string[]> = {
   [Hotkey.REDO]: [`${SpecialKey.CTRL}+${SpecialKey.SHIFT}+z`, `${SpecialKey.META}+${SpecialKey.SHIFT}+z`],
   [Hotkey.SUBMIT]: SpecialKey.ENTER,
   [Hotkey.DELETE]: [SpecialKey.DELETE, SpecialKey.BACKSPACE],
+  [Hotkey.SELECT_ALL]: [`${SpecialKey.CTRL}+a`, `${SpecialKey.META}+a`],
   [Hotkey.ZOOM_IN]: [SpecialKey.EQUAL, `${SpecialKey.SHIFT}+${SpecialKey.EQUAL}`],
   [Hotkey.ZOOM_OUT]: ['-', `${SpecialKey.SHIFT}+-`],
   [Hotkey.RUN_MODE]: 'r',

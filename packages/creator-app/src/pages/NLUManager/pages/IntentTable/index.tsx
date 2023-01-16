@@ -1,11 +1,12 @@
 import { Table } from '@voiceflow/ui';
 import React from 'react';
 
+import { useHotKeys } from '@/hooks';
+import { Hotkey } from '@/keymap';
 import { useNLUManager } from '@/pages/NLUManager/context';
 import { useTableHotkeys } from '@/pages/NLUManager/hooks';
 
-import { EditSidebar, Row } from './components';
-import EmptyScreen from './components/EmptyScreen';
+import { EditSidebar, EmptyScreen, IntentTableToolbar, Row } from './components';
 import { COLUMNS, TableColumn } from './constants';
 
 const IntentTable: React.OldFC = () => {
@@ -20,7 +21,12 @@ const IntentTable: React.OldFC = () => {
     getItemFilterBy: (item) => [item.name],
   });
 
+  const selectAllItems = () => {
+    nluManager.setSelectedIntentIDs(nluManager.intents.map((i) => i.id));
+  };
+
   useTableHotkeys(items);
+  useHotKeys(Hotkey.SELECT_ALL, selectAllItems, { action: 'keyup' });
 
   return (
     <>
@@ -36,6 +42,7 @@ const IntentTable: React.OldFC = () => {
       />
 
       <EditSidebar />
+      <IntentTableToolbar />
     </>
   );
 };

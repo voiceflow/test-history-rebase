@@ -56,14 +56,13 @@ export const NLUManagerContext = React.createContext<NLUManagerContextValue>(INI
 
 export const NLUManagerProvider: React.OldFC = ({ children }) => {
   const { state, updateState } = useNLUPersistedState(INITIAL_PERSISTED_STATE);
-  const filter = useFilter();
   const navigation = useNavigation({ ...state, onTabChange: updateState });
+  const filter = useFilter(navigation.activeTab);
   const intents = useNLUIntents({ activeItemID: navigation.activeItemID, goToItem: navigation.goToItem });
   const entities = useNLUEntities({ activeItemID: navigation.activeItemID, goToItem: navigation.goToItem });
   const editor = useEditorTab();
   const page = usePage(navigation.activeItemID);
   const unclassified = useNLUUnclassifiedData({ activeItemID: navigation.activeItemID, search: filter.search, scrollToTop: page.scrollToTop });
-
   const resetSelection = () => {
     navigation.goToItem(null);
     editor.closeEditorTab();

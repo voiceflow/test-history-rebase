@@ -7,7 +7,13 @@ import { useNLUItemMenu } from '@/contexts/NLUContext/hooks';
 import { NLUManagerContext } from '@/pages/NLUManager/context';
 import { isBuiltInIntent } from '@/utils/intent';
 
-const Row: React.OldFC<TableTypes.ConfigurableRowProps<Platform.Base.Models.Intent.Model>> = ({ item, children, onMouseEnter, onMouseLeave }) => {
+const Row: React.OldFC<TableTypes.ConfigurableRowProps<Platform.Base.Models.Intent.Model>> = ({
+  item,
+  children,
+  onMouseEnter,
+  onMouseLeave,
+  hovered,
+}) => {
   const nluManager = React.useContext(NLUManagerContext);
   const isActiveItem = item.id === nluManager.activeItemID;
 
@@ -32,7 +38,7 @@ const Row: React.OldFC<TableTypes.ConfigurableRowProps<Platform.Base.Models.Inte
     <ContextMenu options={options} selfDismiss>
       {({ isOpen, onContextMenu }) => (
         <Table.Row
-          active={isOpen || isActiveItem}
+          active={isOpen || isActiveItem || hovered}
           onClick={() => nluManager.toggleActiveItemID(item.id)}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}

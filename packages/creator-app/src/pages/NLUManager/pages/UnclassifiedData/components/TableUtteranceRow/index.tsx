@@ -1,39 +1,73 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, Button, Checkbox, Divider, FlexCenter, FlexStart, stopPropagation, SvgIcon, Text, toast } from '@voiceflow/ui';
+import {
+  Box,
+  Button,
+  Checkbox,
+  Divider,
+  FlexCenter,
+  FlexStart,
+  getNestedMenuFormattedLabel,
+  stopPropagation,
+  SvgIcon,
+  Text,
+  TippyTooltip,
+  toast,
+} from '@voiceflow/ui';
 import React from 'react';
 
-import * as NLU from '@/ducks/nlu';
+import * as WorkspaceV2 from '@/ducks/workspaceV2';
+import { useSelector } from '@/hooks';
+import { useNLUManager } from '@/pages/NLUManager/context';
 import { copy } from '@/utils/clipboard';
 
 import { formatImportedAt } from '../../utils';
 import * as UnclassifiedTable from '../Table';
+import { getSimilarityStrength } from './constants';
 import * as S from './styles';
 
 interface TableUtteranceRowProps {
   rowIndex: number;
-  item: ReturnType<typeof NLU.allUnclassifiedUtterancesSelector>[number];
-  allItems: ReturnType<typeof NLU.allUnclassifiedUtterancesSelector> | Realtime.NLUUnclassifiedUtterances[];
+  item: Realtime.NLUUnclassifiedUtterances;
+  allItems: Realtime.NLUUnclassifiedUtterances[];
   isActive: boolean;
   onSelect: (utteranceID: string) => void;
+  similarity?: number | null;
 }
 
-const TableUtteranceRow: React.OldFC<TableUtteranceRowProps> = ({ rowIndex, item: u, allItems, isActive, onSelect }) => {
+const TableUtteranceRow: React.FC<TableUtteranceRowProps> = ({ rowIndex, item: u, allItems, isActive, similarity, onSelect }) => {
+  const nluManager = useNLUManager();
+  const [isHovering, setIsHovering] = React.useState(false);
+  const getMemberByCreatorID = useSelector(WorkspaceV2.memberByCreatorIDSelector);
+  const importedByUser = getMemberByCreatorID({ id: u.sourceID })?.name;
+
   return (
     <>
-      <UnclassifiedTable.Row key={u.id} active={isActive} onClick={() => onSelect(u.id)}>
+      <UnclassifiedTable.Row
+        key={u.id}
+        active={isActive}
+        onClick={() => onSelect(u.id)}
+        onMouseEnter={() => setIsHovering(true)}
+        onMouseLeave={() => setIsHovering(false)}
+      >
         <FlexStart style={{ alignItems: 'flex-start' }}>
-          <Checkbox checked={isActive} onClick={stopPropagation(() => onSelect(u.id))} />
+          {similarity != null && !isHovering ? (
+            <S.SimilarityText color={getSimilarityStrength(similarity)}>{similarity}</S.SimilarityText>
+          ) : (
+            <Checkbox checked={isActive} onClick={stopPropagation(() => onSelect(u.id))} />
+          )}
+
           <Box ml={12}>
-            <Box mb={8}>{u.utterance}</Box>
+            <S.TextContainer mb={8}>{getNestedMenuFormattedLabel(u.utterance, nluManager.search)}</S.TextContainer>
+
             <FlexCenter style={{ justifyContent: 'flex-start' }}>
               <Text fontSize={13} color="#62778C">
                 {u.importedAt ? formatImportedAt(new Date(u.importedAt)) : 'Unknown'}
               </Text>
               <S.Dot />
               <Text fontSize={13} color="#62778C">
-                {u.importedByUser && (
+                {importedByUser && (
                   <>
-                    Imported by <span style={{ color: 'black' }}>{u.importedByUser}</span>
+                    Imported by <span style={{ color: 'black' }}>{importedByUser}</span>
                   </>
                 )}
               </Text>
@@ -49,18 +83,22 @@ const TableUtteranceRow: React.OldFC<TableUtteranceRowProps> = ({ rowIndex, item
           <Button squareRadius onClick={stopPropagation(() => {})}>
             Assign to Intent
           </Button>
-          <Box
-            ml={26}
-            mr={24}
+          <S.CopyIconContainer
             onClick={stopPropagation(() => {
               copy(u.utterance);
               toast.success('Copied to clipboard');
             })}
           >
-            <SvgIcon icon="copy" color="#6E849A" size={16} clickable />
-          </Box>
+            <TippyTooltip content="Copy" position="top">
+              <SvgIcon icon="copy" color={SvgIcon.DEFAULT_COLOR} size={16} clickable />
+            </TippyTooltip>
+          </S.CopyIconContainer>
           {/* TO DO: create delete behavior */}
-          <SvgIcon icon="trash" color="#6E849A" size={16} onClick={stopPropagation(() => {})} />
+          <S.DeleteIconContainer>
+            <TippyTooltip content="Delete" position="top">
+              <SvgIcon icon="trash" color={SvgIcon.DEFAULT_COLOR} size={16} onClick={stopPropagation(() => {})} clickable />
+            </TippyTooltip>
+          </S.DeleteIconContainer>
         </UnclassifiedTable.RowButtons>
       </UnclassifiedTable.Row>
       {rowIndex < allItems.length - 1 && <Divider offset={0} isSecondaryColor />}

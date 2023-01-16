@@ -1,11 +1,12 @@
 import { Table } from '@voiceflow/ui';
 import React from 'react';
 
+import { useHotKeys } from '@/hooks';
+import { Hotkey } from '@/keymap';
 import { useTableHotkeys } from '@/pages/NLUManager/hooks';
 
 import { useNLUManager } from '../../context';
-import { EditSidebar, Row } from './components';
-import EmptyScreen from './components/EmptyScreen';
+import { EditSidebar, EmptyScreen, EntityTableToolbar, Row } from './components';
 import { COLUMNS, TableColumn } from './constants';
 
 const EntityTable: React.OldFC = () => {
@@ -20,7 +21,12 @@ const EntityTable: React.OldFC = () => {
     getItemFilterBy: (item) => [item.name],
   });
 
+  const selectAllItems = () => {
+    nluManager.setSelectedEntityIDs(nluManager.entities.map((e) => e.id));
+  };
+
   useTableHotkeys(items);
+  useHotKeys(Hotkey.SELECT_ALL, selectAllItems, { action: 'keyup' });
 
   return (
     <>
@@ -36,6 +42,7 @@ const EntityTable: React.OldFC = () => {
       />
 
       <EditSidebar />
+      <EntityTableToolbar />
     </>
   );
 };

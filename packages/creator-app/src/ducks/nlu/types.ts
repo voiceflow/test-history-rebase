@@ -2,4 +2,4 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { CRUDState } from '@/ducks/utils/crudV2';
 
-export interface NLUState extends CRUDState<Realtime.NluUnclassifiedData> {}
+export interface NLUState extends CRUDState<Realtime.NLUUnclassifiedData> {}

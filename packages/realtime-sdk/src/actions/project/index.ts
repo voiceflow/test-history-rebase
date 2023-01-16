@@ -39,6 +39,11 @@ export interface AddManyCustomThemesPayload extends BaseProjectPayload {
   values: DBProject['customThemes'];
 }
 
+export interface ImportProjectPayload extends BaseWorkspacePayload {
+  project: AnyProject;
+}
+
+/** @deprecated use ImportProjectPayloadInstead */
 export interface ImportProjectFromFilePayload extends BaseWorkspacePayload {
   data: string;
   vfVersion: number;
@@ -58,6 +63,9 @@ export const duplicate = Utils.protocol.createAsyncAction<DuplicateProjectPayloa
 
 export const ejectUsers = Utils.protocol.createAction<EjectUsersPayload>(projectType('KICK_USERS'));
 
+export const importProject = Utils.protocol.createAction<ImportProjectPayload>(projectType('IMPORT_PROJECT'));
+
+/** @deprecated use ImportProjectPayloadInstead */
 export const importFromFile = Utils.protocol.createAsyncAction<ImportProjectFromFilePayload, AnyProject>(projectType('IMPORT_FROM_FILE'));
 
 export const addManyCustomThemes = Utils.protocol.createAction<AddManyCustomThemesPayload>(projectType('ADD_MANY_CUSTOM_THEMES'));

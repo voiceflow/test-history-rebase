@@ -7,6 +7,7 @@ import CreateProjectControl from './create';
 import DuplicateProjectControl from './duplicate';
 import EjectUsersControl from './ejectUsers';
 import ImportProjectFromFileControl from './importFromFile';
+import ImportProjectControl from './importProject';
 import MergeProjectsControl from './merge';
 import PatchProjectControl from './patch';
 import PatchPlatformDataControl from './patchPlatformData';
@@ -25,6 +26,8 @@ const buildProjectActionControls = (options: LoguxControlOptions) => ({
   patchPlatformDataControl: new PatchPlatformDataControl(options),
   alexaUpdateVendorControl: new AlexaUpdateVendorControl(options),
   removeManyProjectsControl: new RemoveManyProjectsControl(options),
+  importProjectControl: new ImportProjectControl(options),
+  /** @deprecated use ImportProject instead */
   importProjectFromFileControl: new ImportProjectFromFileControl(options),
   addManyCustomThemesController: new AddManyCustomThemesController(options),
 

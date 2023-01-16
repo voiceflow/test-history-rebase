@@ -51,13 +51,17 @@ class DomainService extends AbstractControl {
 
   // eslint-disable-next-line you-dont-need-lodash-underscore/throttle
   public setUpdatedBy = _.throttle(async (versionID: string, domainID: string, creatorID: number) => {
-    // skipping if the canvas was updated in another instance
-    if (await this.updatedThrottleCache.get({ versionID, domainID })) return;
+    try {
+      // skipping if the canvas was updated in another instance
+      if (await this.updatedThrottleCache.get({ versionID, domainID })) return;
 
-    await Promise.all([
-      this.models.version.domain.update(versionID, domainID, { updatedAt: new Date().toJSON(), updatedBy: creatorID }),
-      this.updatedThrottleCache.set({ versionID, domainID }, `${creatorID}`),
-    ]).catch((error) => logger.warn(error));
+      await Promise.all([
+        this.models.version.domain.update(versionID, domainID, { updatedAt: new Date().toJSON(), updatedBy: creatorID }),
+        this.updatedThrottleCache.set({ versionID, domainID }, `${creatorID}`),
+      ]);
+    } catch (error) {
+      logger.warn(error);
+    }
   }, CANVAS_UPDATE_THROTTLE_TIME);
 }
 

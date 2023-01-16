@@ -1,4 +1,4 @@
-import { BaseModels } from '@voiceflow/base-types';
+import { BaseModels, BaseVersion } from '@voiceflow/base-types';
 import { PlanType } from '@voiceflow/internal';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
@@ -91,7 +91,22 @@ export const createProject =
 export const importProjectFromFile =
   (workspaceID: string, data: string): Thunk<Realtime.AnyProject> =>
   async (dispatch) => {
-    return dispatch(waitAsync(Realtime.project.importFromFile, { data, vfVersion: Realtime.CURRENT_PROJECT_VERSION, workspaceID }));
+    const importJSON = JSON.parse(data) as {
+      project: BaseModels.Project.Model<any, any>;
+      version: BaseVersion.Version;
+      diagrams: Record<string, BaseModels.Diagram.Model<any>>;
+    };
+
+    if (importJSON.project && typeof importJSON.project === 'object') {
+      importJSON.project._version = Realtime.CURRENT_PROJECT_VERSION;
+    }
+
+    // use HTTP API to import project because payload is too large for websockets
+    const project = await client.api.version.import(workspaceID, JSON.parse(data)).then(Realtime.Adapters.projectAdapter.fromDB);
+
+    await dispatch.sync(Realtime.project.importProject({ project, workspaceID }));
+
+    return project;
   };
 
 export const deleteProject =

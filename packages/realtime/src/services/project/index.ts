@@ -113,6 +113,7 @@ class ProjectService extends AbstractControl {
       .duplicate(templateID, data, params);
   }
 
+  /** @deprecated use ImportProject instead */
   public async importFromFile(
     creatorID: number,
     workspaceID: string,
@@ -164,13 +165,17 @@ class ProjectService extends AbstractControl {
 
   // eslint-disable-next-line you-dont-need-lodash-underscore/throttle
   public setUpdatedBy = _.throttle(async (projectID: string, creatorID: number) => {
-    // skipping if the canvas was updated in another instance
-    if (await this.updatedThrottleCache.get({ projectID })) return;
+    try {
+      // skipping if the canvas was updated in another instance
+      if (await this.updatedThrottleCache.get({ projectID })) return;
 
-    await Promise.all([
-      this.models.project.updateByID(projectID, { updatedAt: new Date(), updatedBy: creatorID }),
-      this.updatedThrottleCache.set({ projectID }, `${creatorID}`),
-    ]).catch((error) => logger.warn(error));
+      await Promise.all([
+        this.models.project.updateByID(projectID, { updatedAt: new Date(), updatedBy: creatorID }),
+        this.updatedThrottleCache.set({ projectID }, `${creatorID}`),
+      ]);
+    } catch (error) {
+      logger.warn(error);
+    }
   }, CANVAS_UPDATE_THROTTLE_TIME);
 }
 

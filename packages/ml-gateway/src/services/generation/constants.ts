@@ -20,5 +20,5 @@ export const autoCompletePrompt = (
   transcript: string[]
 ) => `You are writing a conversation between an AI chatbot and a person, the person is labelled P2. AI chatbot shouldn't answer anything it is not confident about or be rude. Below is the transcript between them:
 ${transcript} 
-AI should answer P2's last question and ask for an answer to the AI's previous statement. What should it say?
+AI should answer P2's last question unless it is unless it is about [sex, self harm, race, drugs, violence, death, medical advice, financial advice] and then ask for an answer to the AI's previous statement. What should it say?
 AI:`;

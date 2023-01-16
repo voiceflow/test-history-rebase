@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.36.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.36.0...@voiceflow/ml-gateway@1.36.1) (2023-01-16)
+
+
+### Bug Fixes
+
+* Added topic guard for freestyle (BUG-173) ([#6571](https://github.com/voiceflow/creator-app/issues/6571)) ([e759da3](https://github.com/voiceflow/creator-app/commit/e759da3689455d27e7d380a02f88a3ad045c046b))
+
+
+
+
+
 # [1.36.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.35.0...@voiceflow/ml-gateway@1.36.0) (2023-01-16)
 
 

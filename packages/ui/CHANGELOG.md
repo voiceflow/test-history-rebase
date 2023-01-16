@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.222.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.222.0...@voiceflow/ui@1.222.1) (2023-01-16)
+
+
+### Bug Fixes
+
+* add loading state to Clarity and Confidence scores (CT-1432) ([#6567](https://github.com/voiceflow/creator-app/issues/6567)) ([3f04735](https://github.com/voiceflow/creator-app/commit/3f04735a8abed646dab07a5584f025ab5d7dfa72))
+
+
+
+
+
 # [1.222.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.221.0...@voiceflow/ui@1.222.0) (2023-01-16)
 
 

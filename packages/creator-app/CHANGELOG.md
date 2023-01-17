@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1054.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1053.4...@voiceflow/creator-app@1.1054.0) (2023-01-17)
+
+
+### Features
+
+* allow underscore as start of variable names (BUG-122) ([#6577](https://github.com/voiceflow/creator-app/issues/6577)) ([737a088](https://github.com/voiceflow/creator-app/commit/737a0884c3a27b67643e6307603f94b53714745f))
+
+
+
+
+
 ## [1.1053.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1053.3...@voiceflow/creator-app@1.1053.4) (2023-01-17)
 
 

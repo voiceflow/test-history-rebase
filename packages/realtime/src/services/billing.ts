@@ -5,6 +5,7 @@ import { AbstractControl } from '@/control';
 class BillingService extends AbstractControl {
   public async deleteWorkspaceQuotas(creatorID: number, workspaceID: string) {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
+
     return client.billing.quota.deleteWorkspaceQuotas(workspaceID);
   }
 

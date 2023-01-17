@@ -43,7 +43,7 @@ interface MemberRowProps {
   resendInvite: (email: string, permissionType: UserRole | null, showToast?: boolean | undefined) => Promise<void>;
 }
 
-const MemberRow: React.OldFC<MemberRowProps> = ({ member, inline, resendInvite, isLast }) => {
+const MemberRow: React.FC<MemberRowProps> = ({ member, inline, resendInvite, isLast }) => {
   const ownerRole = useFeature(Realtime.FeatureFlag.OWNER_ROLE);
 
   // TODO: refactor this to use the permission system
@@ -57,9 +57,10 @@ const MemberRow: React.OldFC<MemberRowProps> = ({ member, inline, resendInvite, 
 
   const isPending = !member.creator_id;
   const userIsMember = userID === member.creator_id;
+  const userIsViewer = role === UserRole.VIEWER;
+  const memberIsAdminOrOwner = member.role === UserRole.OWNER || member.role === UserRole.ADMIN;
   const memberIsWorkspaceOwner = activeWorkspace?.creatorID && member.creator_id && activeWorkspace?.creatorID === member.creator_id;
-  const allowDropdown =
-    !userIsMember && !memberIsWorkspaceOwner && !(role === UserRole.EDITOR && (member.role === UserRole.OWNER || member.role === UserRole.ADMIN));
+  const allowDropdown = !userIsMember && !memberIsWorkspaceOwner && !userIsViewer && !(role === UserRole.EDITOR && memberIsAdminOrOwner);
 
   const changePermission = (role: UserRole) => updateMemberRole(member, role);
 

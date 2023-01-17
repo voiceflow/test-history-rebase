@@ -10,7 +10,7 @@ interface CollaboratorsProps {
   inline?: boolean;
 }
 
-const Collaborators: React.OldFC<CollaboratorsProps> = ({ inline }) => {
+const Collaborators: React.FC<CollaboratorsProps> = ({ inline }) => {
   const workspace = useActiveWorkspace();
   const sendInvite = useDispatch(Workspace.sendInviteToActiveWorkspace);
 

@@ -31,10 +31,11 @@ const inviteLimitMessage = (
 
 type LinkUserRole = UserRole.EDITOR | UserRole.VIEWER | UserRole.ADMIN;
 
-const InviteByLinkFooter: React.OldFC = () => {
+const InviteByLinkFooter: React.FC = () => {
   const projectID = useSelector(Session.activeProjectIDSelector)!;
   const numberOfSeats = useSelector(WorkspaceV2.active.numberOfSeatsSelector);
   const usedEditorSeats = useSelector(WorkspaceV2.active.usedEditorSeatsSelector);
+  const [canAddCollaborators] = usePermission(Permission.ADD_COLLABORATORS);
   const [canManageAdminCollaborators] = usePermission(Permission.MANAGE_ADMIN_COLLABORATORS);
 
   const getWorkspaceInviteLink = useDispatch(Workspace.getWorkspaceInviteLink);
@@ -85,7 +86,9 @@ const InviteByLinkFooter: React.OldFC = () => {
       <DropdownContainer>
         <span>Anyone with link</span>
         <DropdownWithCaret
+          text={PermissionText[userRole]}
           padding="0px 7px"
+          disabled={!canAddCollaborators}
           alwaysBlue
           menu={(onToggle) => (
             <Menu>
@@ -97,11 +100,10 @@ const InviteByLinkFooter: React.OldFC = () => {
               )}
             </Menu>
           )}
-          text={PermissionText[userRole]}
         />
       </DropdownContainer>
 
-      <Button id={Identifier.COPY_INVITE_BUTTON} variant={ButtonVariant.PRIMARY} onClick={onCopyLink} disabled={!inviteLink}>
+      <Button id={Identifier.COPY_INVITE_BUTTON} variant={ButtonVariant.PRIMARY} onClick={onCopyLink} disabled={!inviteLink || !canAddCollaborators}>
         <span>Copy Link</span>
       </Button>
     </Container>

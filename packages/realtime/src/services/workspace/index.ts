@@ -161,8 +161,9 @@ class WorkspaceService extends AbstractControl {
 
       await client.identity.workspace.remove(workspaceID);
       await client.workspace.deleteStripeSubscription(workspaceID).catch((error) => logger.warn(error));
+
       // TODO: move to identity when creator-api gets phased out
-      await this.services.billing.deleteWorkspaceQuotas(creatorID, workspaceID);
+      await this.services.billing.deleteWorkspaceQuotas(creatorID, workspaceID).catch((error) => logger.warn(error));
     } else {
       await client.workspace.delete(workspaceID);
     }

@@ -30,8 +30,10 @@ interface SendInviteProps {
   sendInvite: (email: string, role: UserRole) => void;
 }
 
-const SendInvite: React.OldFC<SendInviteProps> = ({ inline, sendInvite }) => {
+const SendInvite: React.FC<SendInviteProps> = ({ inline, sendInvite }) => {
+  const [canAddCollaborators] = usePermission(Permission.ADD_COLLABORATORS);
   const [canManageAdminCollaborators] = usePermission(Permission.MANAGE_ADMIN_COLLABORATORS);
+
   const seatLimits = useSelector(WorkspaceV2.active.seatLimitsSelector);
   const numberOfSeats = useSelector(WorkspaceV2.active.numberOfSeatsSelector);
   const usedEditorSeats = useSelector(WorkspaceV2.active.usedEditorSeatsSelector);
@@ -87,7 +89,15 @@ const SendInvite: React.OldFC<SendInviteProps> = ({ inline, sendInvite }) => {
       <Flex>
         <SelectInputGroup
           renderInput={(props) => (
-            <Input {...props} value={email} error={isInvalid} onFocus={setValid} placeholder="Enter email" onChangeText={setEmail} />
+            <Input
+              {...props}
+              value={email}
+              error={isInvalid}
+              onFocus={setValid}
+              readOnly={!canAddCollaborators}
+              placeholder="Enter email"
+              onChangeText={setEmail}
+            />
           )}
         >
           {(props) => (
@@ -96,6 +106,7 @@ const SendInvite: React.OldFC<SendInviteProps> = ({ inline, sendInvite }) => {
               value={role}
               options={options}
               onSelect={setRole}
+              disabled={!canAddCollaborators}
               className={ClassName.INVITE_ROLE_BUTTON}
               getOptionKey={(option) => option.value}
               getOptionValue={(option) => option?.value}
@@ -104,7 +115,7 @@ const SendInvite: React.OldFC<SendInviteProps> = ({ inline, sendInvite }) => {
           )}
         </SelectInputGroup>
 
-        <SendInviteButton id={Identifier.COLLAB_SEND_INVITE_BUTTON} onClick={onSendInviteClick} disabled={isInvalid}>
+        <SendInviteButton id={Identifier.COLLAB_SEND_INVITE_BUTTON} onClick={onSendInviteClick} disabled={isInvalid || !canAddCollaborators}>
           Send
         </SendInviteButton>
       </Flex>

@@ -19,7 +19,7 @@ const realtimeClient = (): LoguxClient =>
 
     // no user specified initially
     userId: 'false',
-    timeout: 3000, // down from default 20 seconds
+    timeout: 7000, // down from default 20 seconds
     ping: 5000, // down from default 10 seconds
   });
 

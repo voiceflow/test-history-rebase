@@ -1,23 +1,32 @@
 import { Snackbar } from '@voiceflow/ui';
 import React from 'react';
 
+import { useRealtimeClient } from '@/hooks';
+
 export const RECONNECT_TIMEOUT = 10;
 
 const RealtimeTimeoutControl: React.OldFC = () => {
   const [countdown, setCountdown] = React.useState(RECONNECT_TIMEOUT);
+  const [terminated, setTerminated] = React.useState(false);
+
+  const client = useRealtimeClient();
 
   React.useEffect(() => {
     const interval = setInterval(() => {
       setCountdown((countdown) => {
-        if (countdown <= 1) clearInterval(interval);
+        if (countdown < 1) {
+          clearInterval(interval);
+          setTerminated(true);
+          client.destroy();
+
+          return countdown;
+        }
         return countdown - 1;
       });
     }, 1000);
 
     return () => clearInterval(interval);
   }, []);
-
-  const terminated = countdown <= 0;
 
   return (
     <Snackbar isOpen showOverlay={terminated}>

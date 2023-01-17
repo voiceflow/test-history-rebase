@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1053.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1053.3...@voiceflow/creator-app@1.1053.4) (2023-01-17)
+
+
+### Bug Fixes
+
+* workspace leave and viewer ui (BUG-170) ([#6576](https://github.com/voiceflow/creator-app/issues/6576)) ([7cbe488](https://github.com/voiceflow/creator-app/commit/7cbe488219766055a217b7a839a58af1f9703b57))
+
+
+
+
+
 ## [1.1053.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1053.2...@voiceflow/creator-app@1.1053.3) (2023-01-16)
 
 **Note:** Version bump only for package @voiceflow/creator-app

@@ -156,7 +156,7 @@ export const PERIOD_NAME = {
 };
 
 export const NUMBERS_ONLY_REGEXP = /^\d+$/;
-export const VALID_VARIABLE_NAME = /^[A-Za-z]\w{0,64}$/;
+export const VALID_VARIABLE_NAME = /^[A-Z_a-z]\w{0,64}$/;
 
 export const AV_FILE_FORMATS = [
   'audio/pcm',

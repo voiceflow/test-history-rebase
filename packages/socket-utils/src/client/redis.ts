@@ -11,4 +11,5 @@ export interface RedisConfig {
 
 export type RedisClientOptions = BaseClientOptions<RedisConfig>;
 
-export const RedisClient = ({ config }: RedisClientOptions): Redis => new IORedis(config.REDIS_CLUSTER_PORT, config.REDIS_CLUSTER_HOST);
+export const RedisClient = ({ config }: RedisClientOptions, options?: IORedis.RedisOptions): Redis =>
+  new IORedis(config.REDIS_CLUSTER_PORT, config.REDIS_CLUSTER_HOST, options);

@@ -34,8 +34,6 @@ export enum FeatureFlag {
 
   DISABLE_CODE_EXPORTS = 'disable_code_exports',
 
-  STICKERS_DROPDOWN = 'stickers_dropdown',
-
   // integrations
   DIALOGFLOW_CX = 'dialogflow_cx',
 

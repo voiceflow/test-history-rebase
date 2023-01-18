@@ -7,13 +7,13 @@ import { BlockType, ModalType } from '@/constants';
 import { Permission } from '@/constants/permissions';
 import { SearchContext } from '@/contexts/SearchContext';
 import * as Thread from '@/ducks/threadV2';
-import { useFeature, useModals, usePermission, useSelector, useTrackingEvents } from '@/hooks';
+import { useModals, usePermission, useSelector, useTrackingEvents } from '@/hooks';
 import { Hotkey, HOTKEY_LABEL_MAP } from '@/keymap';
 import { MarkupContext } from '@/pages/Project/contexts';
 import { useCommentingMode, useCommentingToggle, useDisableModes } from '@/pages/Project/hooks';
 import { ClassName } from '@/styles/constants';
 
-import { MoveTypePopover, StickersDropdown } from './components';
+import { MoveTypePopover } from './components';
 
 const CanvasHeader: React.OldFC = () => {
   const markup = React.useContext(MarkupContext)!;
@@ -28,8 +28,6 @@ const CanvasHeader: React.OldFC = () => {
   const onToggleCommenting = useCommentingToggle();
 
   const [, trackingEventsWrapper] = useTrackingEvents();
-
-  const stickersDropdown = useFeature(Realtime.FeatureFlag.STICKERS_DROPDOWN);
 
   const nluQuickView = useModals(ModalType.NLU_MODEL_QUICK_VIEW);
   const isMarkupTextActive = markup.creatingType === BlockType.MARKUP_TEXT;
@@ -72,41 +70,19 @@ const CanvasHeader: React.OldFC = () => {
           />
         )}
 
-        {canUseHintFeatures &&
-          canEditCanvas &&
-          (stickersDropdown.isEnabled ? (
-            <Dropdown menu={() => <StickersDropdown />}>
-              {(ref, onToggle, isOpen) => (
-                <Page.Header.IconButton
-                  ref={ref}
-                  icon="systemImage"
-                  active={isMarkupMediaActive}
-                  isSmall
-                  onClick={markup.triggerMediaUpload}
-                  tooltip={{
-                    content: <TippyTooltip.WithHotkey hotkey={HOTKEY_LABEL_MAP[Hotkey.ADD_MARKUP_IMAGE]}>Image or Video</TippyTooltip.WithHotkey>,
-                  }}
-                  className={`${ClassName.CANVAS_CONTROL}--markup-image`}
-                  expandable
-                  expandActive={isOpen}
-                  expandTooltip={{ content: 'Stickers', offset: [0, 32] }}
-                  onExpandClick={stopPropagation(onToggle)}
-                />
-              )}
-            </Dropdown>
-          ) : (
-            <Page.Header.IconButton
-              icon="systemImage"
-              active={isMarkupMediaActive}
-              size={18}
-              isSmall
-              onClick={markup.triggerMediaUpload}
-              tooltip={{
-                content: <TippyTooltip.WithHotkey hotkey={HOTKEY_LABEL_MAP[Hotkey.ADD_MARKUP_IMAGE]}>Image or Video</TippyTooltip.WithHotkey>,
-              }}
-              className={`${ClassName.CANVAS_CONTROL}--markup-image`}
-            />
-          ))}
+        {canUseHintFeatures && canEditCanvas && (
+          <Page.Header.IconButton
+            icon="systemImage"
+            active={isMarkupMediaActive}
+            size={18}
+            isSmall
+            onClick={markup.triggerMediaUpload}
+            tooltip={{
+              content: <TippyTooltip.WithHotkey hotkey={HOTKEY_LABEL_MAP[Hotkey.ADD_MARKUP_IMAGE]}>Image or Video</TippyTooltip.WithHotkey>,
+            }}
+            className={`${ClassName.CANVAS_CONTROL}--markup-image`}
+          />
+        )}
 
         {canUseHintFeatures && (
           <Page.Header.IconButton

@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.219.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.218.2...@voiceflow/realtime-sdk@1.219.0) (2023-01-18)
+
+
+### Features
+
+* normalize workspace members (CT-000) ([#6582](https://github.com/voiceflow/creator-app/issues/6582)) ([2525d85](https://github.com/voiceflow/creator-app/commit/2525d854fdd14f3234c77c76316ef780c75da734))
+* remove stickers feature (CT-1453) ([#6580](https://github.com/voiceflow/creator-app/issues/6580)) ([2810871](https://github.com/voiceflow/creator-app/commit/2810871eda3a1dc9f38e5d2c721f960e10059249))
+
+
+
+
+
 ## [1.218.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.218.1...@voiceflow/realtime-sdk@1.218.2) (2023-01-16)
 
 **Note:** Version bump only for package @voiceflow/realtime-sdk

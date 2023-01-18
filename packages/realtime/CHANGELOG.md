@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.146.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.145.3...@voiceflow/realtime@1.146.0) (2023-01-18)
+
+
+### Features
+
+* normalize workspace members (CT-000) ([#6582](https://github.com/voiceflow/creator-app/issues/6582)) ([2525d85](https://github.com/voiceflow/creator-app/commit/2525d854fdd14f3234c77c76316ef780c75da734))
+
+
+
+
+
 ## [1.145.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.145.2...@voiceflow/realtime@1.145.3) (2023-01-17)
 
 

@@ -27,7 +27,7 @@ const buildClients = (options: BaseOptions): ClientMap => {
     axios,
   };
 
-  const redis = RedisClient(options, { enableOfflineQueue: false, autoResendUnfulfilledCommands: false });
+  const redis = RedisClient(options);
   const cache = new Cache({ redis });
   const mongo = new MongoClient(options);
   const iopub = redis.duplicate();

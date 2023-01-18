@@ -19,16 +19,17 @@ import { useHistory, useLocation } from 'react-router-dom';
 import ListManager from '@/components/ListManager';
 import { ContentContainer, SectionToggleVariant } from '@/components/Section';
 import Utterance, { UtteranceRef } from '@/components/Utterance';
-import { Permission } from '@/config/permissions';
-import { BulkImportLimitDetails } from '@/config/planLimits/bulkImport';
 import { ModalType, PREFILLED_UTTERANCE_PARAM } from '@/constants';
+import { Permission } from '@/constants/permissions';
 import * as Creator from '@/ducks/creator';
 import * as Intent from '@/ducks/intent';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as SlotV2 from '@/ducks/slotV2';
 import { CanvasCreationType } from '@/ducks/tracking/constants';
-import { useAddSlot, useDispatch, useModals, usePermission, useSelector, useTrackingEvents } from '@/hooks';
+import { useAddSlot, useDispatch, useModals, useSelector, useTrackingEvents } from '@/hooks';
+import { usePermissionAction } from '@/hooks/permission';
+import { useUpgradeModal } from '@/ModalsV2/hooks';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
 import { isCustomizableBuiltInIntent, validateUtterance } from '@/utils/intent';
@@ -37,13 +38,13 @@ import ListManagerWrapper from '../../../ListManagerWrapper';
 import UtterancesTooltip from '../UtterancesTooltip';
 import { BuiltInIntentMessage } from './components';
 
-interface UtteranceManagerProps {
+interface UtteranceManagerProps extends React.PropsWithChildren {
   intent: Platform.Base.Models.Intent.Model;
   isNested: boolean;
   isInModal: boolean;
 }
 
-const UtteranceManager: React.OldFC<UtteranceManagerProps> = ({ intent, isNested, isInModal, children }) => {
+const UtteranceManager: React.FC<UtteranceManagerProps> = ({ intent, isNested, isInModal, children }) => {
   const { search } = useLocation();
   const queryParams = queryString.parse(search);
   const prefilledNewUtterance = queryParams[PREFILLED_UTTERANCE_PARAM] as string | null;
@@ -52,16 +53,16 @@ const UtteranceManager: React.OldFC<UtteranceManagerProps> = ({ intent, isNested
   const { isOpened: entityEditOpened } = useModals<{ name: string; onCreate: (slot: Realtime.Slot) => void }>(ModalType.ENTITY_EDIT);
 
   const slots = useSelector(SlotV2.allSlotsSelector);
-  const customIntents = useSelector(IntentV2.allCustomIntentsSelector);
   const focus = useSelector(Creator.creatorFocusSelector);
+  const customIntents = useSelector(IntentV2.allCustomIntentsSelector);
 
   const patchIntent = useDispatch(Intent.patchIntent);
 
   const intentID = intent.id;
   const utteranceRef = React.useRef<UtteranceRef>(null);
-  const [canBulkUpload] = usePermission(Permission.BULK_UPLOAD);
+
   const [isEmpty, updateIsEmpty] = React.useState(true);
-  const { open: openUpgradeModal } = useModals(ModalType.UPGRADE_MODAL);
+  const upgradeModal = useUpgradeModal();
   const { open: openUtterancesBulkUploadModal } = useModals(ModalType.IMPORT_UTTERANCES);
   const [isValidUtterance, setValidUtterance, setInvalidUtterance] = useEnableDisable(true);
   const isBuiltIn = isCustomizableBuiltInIntent(intent);
@@ -113,22 +114,19 @@ const UtteranceManager: React.OldFC<UtteranceManagerProps> = ({ intent, isNested
     [intentID, customIntents, setInvalidUtterance, setValidUtterance]
   );
 
-  const onBulkUploadClick = () => {
-    if (canBulkUpload) {
+  const onBulkUploadClick = usePermissionAction(Permission.BULK_UPLOAD, {
+    onAction: () =>
       openUtterancesBulkUploadModal({
         intentID,
         onUpload: (utterances: Platform.Base.Models.Intent.Input[]) => {
-          trackingEvents.trackUtteranceBulkImport({
-            intentID,
-            creationType: isInModal ? CanvasCreationType.IMM : CanvasCreationType.EDITOR,
-          });
+          trackingEvents.trackUtteranceBulkImport({ intentID, creationType: isInModal ? CanvasCreationType.IMM : CanvasCreationType.EDITOR });
+
           onUpdateUtterances([...intent.inputs, ...utterances]);
         },
-      });
-    } else {
-      openUpgradeModal({ planLimitDetails: BulkImportLimitDetails });
-    }
-  };
+      }),
+
+    onPlanForbid: ({ planConfig }) => upgradeModal.openVoid(planConfig.upgradeModal()),
+  });
 
   // For the side editor collapse
   useDidUpdateEffect(() => {

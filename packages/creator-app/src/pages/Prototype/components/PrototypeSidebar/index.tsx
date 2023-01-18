@@ -6,7 +6,7 @@ import React from 'react';
 import Drawer from '@/components/Drawer';
 import { SectionVariant, UncontrolledSection as Section } from '@/components/Section';
 import SoundToggle from '@/components/SoundToggle';
-import { Permission } from '@/config/permissions';
+import { Permission } from '@/constants/permissions';
 import { PrototypeStatus } from '@/constants/prototype';
 import * as PrototypeDuck from '@/ducks/prototype';
 import { useDispatch, useEventualEngine, usePermission, useTheme } from '@/hooks';

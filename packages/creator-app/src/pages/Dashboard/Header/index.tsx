@@ -2,7 +2,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import Header from '@/components/Header';
-import { Permission } from '@/config/permissions';
+import { Permission } from '@/constants/permissions';
 import * as Router from '@/ducks/router';
 import { useDispatch, usePermission } from '@/hooks';
 

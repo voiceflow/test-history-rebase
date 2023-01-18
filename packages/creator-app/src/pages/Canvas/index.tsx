@@ -20,7 +20,6 @@ import ExportModelModal from './components/ExportModelModal';
 import NLUQuickView from './components/NLUQuickView';
 import RealtimeOverlay from './components/RealtimeOverlay';
 import Search from './components/Search';
-import SlotEditModal from './components/SlotEdit/SlotEditModal';
 import Spotlight from './components/Spotlight';
 import ThreadHistoryDrawer from './components/ThreadHistoryDrawer';
 import ThreadLayer from './components/ThreadLayer';
@@ -98,7 +97,6 @@ const Canvas: React.OldFC<CanvasProps> = ({ isPrototypingMode }) => {
       <ReturnToInstanceSnackbar />
 
       <NLUQuickView />
-      <SlotEditModal />
       <ExportProvider>
         <ExportModelModal />
       </ExportProvider>

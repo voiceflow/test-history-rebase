@@ -4,68 +4,73 @@ import React from 'react';
 import PlatformUploadButton from '@/components/PlatformUploadButton';
 import * as Documentation from '@/config/documentation';
 import * as NLP from '@/config/nlp';
-import { getCanvasExportLimitDetails } from '@/config/planLimits/canvasExport';
-import { getNLUExportLimitDetails } from '@/config/planLimits/nluExport';
-import { ExportFormat, ExportType, ModalType } from '@/constants';
-import { UpgradePrompt } from '@/ducks/tracking';
+import { ExportType, ModalType } from '@/constants';
+import { Permission } from '@/constants/permissions';
 import * as Tracking from '@/ducks/tracking';
-import { useModals, useTrackingEvents } from '@/hooks';
+import { useModals } from '@/hooks/modals';
+import { usePermissionAction } from '@/hooks/permission';
+import { useUpgradeModal } from '@/ModalsV2/hooks';
 
 import { ExportContext } from './Context';
 
-const ExportFooter: React.OldFC<{
-  withoutLink?: boolean;
-  linkURL?: string;
+interface ExportFooterProps {
   origin: Tracking.ModelExportOriginType;
-}> = ({ withoutLink, origin, linkURL }) => {
-  const { isExporting, onExport, exportType, canExport, canvasExportFormat, exportNLPType, exportIntents } = React.useContext(ExportContext)!;
+  linkURL?: string;
+  withoutLink?: boolean;
+}
+
+const ExportFooter: React.FC<ExportFooterProps> = ({ origin, linkURL, withoutLink }) => {
+  const { onExport, exportType, isExporting, canvasExportFormat, exportNLPType, exportIntents } = React.useContext(ExportContext)!;
   const noModelData = exportType === ExportType.MODEL && exportIntents.length === 0;
 
-  const [trackingEvents] = useTrackingEvents();
+  const upgradeModal = useUpgradeModal();
+  const { open: openNLUQuickView } = useModals(ModalType.NLU_MODEL_QUICK_VIEW);
 
-  const { open: openNLUQuickview } = useModals(ModalType.NLU_MODEL_QUICK_VIEW);
-  const { open: openUpgradeModal } = useModals(ModalType.UPGRADE_MODAL);
+  const onExportCanvas = usePermissionAction(Permission.CANVAS_EXPORT, {
+    onAction: () => onExport(origin),
 
-  const checkIfCanExport = () => {
+    isAllowed: ({ planConfig }) => !planConfig?.isPaidExportFormat(canvasExportFormat),
+
+    onPlanForbid: ({ planConfig }) =>
+      planConfig.isPaidExportFormat(canvasExportFormat) && upgradeModal.openVoid(planConfig.upgradeModal({ format: canvasExportFormat })),
+  });
+
+  const onExportNLUAll = usePermissionAction(Permission.NLU_EXPORT_ALL, {
+    onAction: () => onExport(origin),
+
+    onPlanForbid: ({ planConfig }) => exportNLPType && upgradeModal.openVoid(planConfig.upgradeModal({ nlpType: exportNLPType })),
+  });
+
+  const onExportNLUCSV = usePermissionAction(Permission.NLU_EXPORT_CSV, {
+    onAction: () => onExport(origin),
+
+    onPlanForbid: ({ planConfig }) => upgradeModal.openVoid(planConfig.upgradeModal()),
+  });
+
+  const onExportClick = () => {
     if (isExporting) return;
 
-    if (exportType === ExportType.CANVAS && canvasExportFormat && !canExport) {
-      if (canvasExportFormat === ExportFormat.VF) {
-        trackingEvents.trackUpgradePrompt({ promptType: UpgradePrompt.EXPORT_PROJECT_CSV });
-      } else {
-        trackingEvents.trackUpgradePrompt({ promptType: UpgradePrompt.EXPORT_PROJECT });
-      }
-
-      const planLimitDetails = getCanvasExportLimitDetails(canvasExportFormat);
-      openUpgradeModal({ planLimitDetails, promptOrigin: UpgradePrompt.EXPORT_PROJECT });
-
+    if (exportType === ExportType.CANVAS) {
+      onExportCanvas();
       return;
     }
 
-    if (exportType === ExportType.MODEL && exportNLPType && !canExport) {
-      if (exportNLPType === NLP.Constants.NLPType.VOICEFLOW) {
-        trackingEvents.trackUpgradePrompt({ promptType: UpgradePrompt.EXPORT_CSV_NLU });
-      } else {
-        trackingEvents.trackUpgradePrompt({ promptType: UpgradePrompt.EXPORT_NLU });
-      }
-
-      const planLimitDetails = getNLUExportLimitDetails(exportNLPType);
-      openUpgradeModal({ planLimitDetails, promptOrigin: UpgradePrompt.EXPORT_NLU });
-
+    if (exportNLPType === NLP.Constants.NLPType.VOICEFLOW) {
+      onExportNLUCSV();
       return;
     }
 
-    onExport(origin);
+    onExportNLUAll();
   };
 
   return (
     <FlexApart fullWidth>
       {!withoutLink && exportType === ExportType.MODEL ? (
-        <Link onClick={openNLUQuickview}>Open NLU Manager</Link>
+        <Link onClick={() => openNLUQuickView()}>Open NLU Manager</Link>
       ) : (
         <Link href={linkURL || Documentation.PROJECT_EXPORT}>Learn More</Link>
       )}
-      <PlatformUploadButton icon="arrowSpin" label="Export" onClick={checkIfCanExport} isActive={!!isExporting} disabled={noModelData} />
+      <PlatformUploadButton icon="arrowSpin" label="Export" onClick={onExportClick} isActive={!!isExporting} disabled={noModelData} />
     </FlexApart>
   );
 };

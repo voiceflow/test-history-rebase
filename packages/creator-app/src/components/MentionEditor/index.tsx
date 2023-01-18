@@ -5,9 +5,10 @@ import { Mention, MentionsInput, MentionsInputProps, OnChangeHandlerFunc, Sugges
 import { createSelector } from 'reselect';
 
 import Commenter from '@/components/Commenter';
-import { hasRolePermission, Permission } from '@/config/permissions';
+import { Permission } from '@/constants/permissions';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useSelector, useTheme } from '@/hooks';
+import { hasRolePermission } from '@/utils/rolePermission';
 
 import MentionPreview from '../CommentPreview';
 import { MentionEditorContainer, mentionEditorStyle, mentionStyle, MentionSuggestionStyles } from './components';

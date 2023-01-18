@@ -3,7 +3,7 @@ import { MenuTypes, toast, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Errors from '@/config/errors';
-import { Permission } from '@/config/permissions';
+import { Permission } from '@/constants/permissions';
 import * as Diagram from '@/ducks/diagram';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Domain from '@/ducks/domain';
@@ -31,7 +31,7 @@ interface DiagramRenameOptions {
 
 export const useDiagramRename = ({ diagramID, autoSelect, diagramName, onNameChanged }: DiagramRenameOptions): DiagramRenameApi => {
   const inputRef = React.useRef<HTMLInputElement>(null);
-  const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
+  const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
   const [localName, _setLocalName] = useLinkedState(diagramName ?? '');
   const [renameEnabled, toggleRenameEnabled] = useToggle(false);
 
@@ -107,7 +107,7 @@ export const useDiagramOptions = ({ onEdit, onRename, diagramID }: DiagramOption
   const rootDiagramID = useSelector(Domain.active.rootDiagramIDSelector);
   const getDiagramByID = useSelector(DiagramV2.getDiagramByIDSelector);
 
-  const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
+  const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
 
   const errorModal = ModalsV2.useModal(ModalsV2.Error);
 

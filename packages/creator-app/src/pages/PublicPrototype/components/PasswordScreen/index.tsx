@@ -1,7 +1,7 @@
 import { Box } from '@voiceflow/ui';
 import React from 'react';
 
-import { Permission } from '@/config/permissions';
+import { Permission } from '@/constants/permissions';
 import * as PrototypeDuck from '@/ducks/prototype';
 import { useGuestPermission } from '@/hooks';
 

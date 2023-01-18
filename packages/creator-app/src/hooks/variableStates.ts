@@ -1,4 +1,4 @@
-import { LimitType } from '@/config/planLimitV2';
+import { LimitType } from '@/constants/limits';
 import * as VariableState from '@/ducks/variableState';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useCreateVariableStateModal, useUpgradeModal } from '@/ModalsV2/hooks';
@@ -13,11 +13,11 @@ export const useCreateVariableState = (): VoidFunction => {
   const createModal = useCreateVariableStateModal();
   const upgradeModal = useUpgradeModal();
 
-  return usePlanLimitedAction({
-    type: LimitType.VARIABLE_STATES,
+  return usePlanLimitedAction(LimitType.VARIABLE_STATES, {
     limit: variableStatesLimit ?? 1,
     value: variableStates.length,
+
+    onLimit: (config) => upgradeModal.openVoid(config.upgradeModal(config.payload)),
     onAction: () => createModal.open(),
-    onLimited: (limit) => upgradeModal.openVoid(limit.upgradeModal),
   });
 };

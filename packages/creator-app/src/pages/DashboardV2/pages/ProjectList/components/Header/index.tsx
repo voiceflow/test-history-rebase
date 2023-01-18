@@ -2,7 +2,7 @@ import { Box, Button } from '@voiceflow/ui';
 import React from 'react';
 
 import Page from '@/components/Page';
-import { Permission } from '@/config/permissions';
+import { Permission } from '@/constants/permissions';
 import { usePermission } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
 

@@ -1,10 +1,20 @@
 import { PlanType } from '@voiceflow/internal';
 
-export const TEAM_PLANS = [PlanType.PRO, PlanType.TEAM, PlanType.OLD_PRO, PlanType.OLD_TEAM] as const;
+export const TEAM_PLANS = [PlanType.PRO, PlanType.TEAM, PlanType.OLD_PRO, PlanType.OLD_TEAM] satisfies PlanType[];
 
-export const STARTER_PLANS = [PlanType.STUDENT, PlanType.CREATOR, PlanType.STARTER, PlanType.OLD_STARTER] as const;
+export const STARTER_PLANS = [PlanType.STARTER, PlanType.OLD_STARTER] satisfies PlanType[];
 
-export const ENTERPRISE_PLANS = [PlanType.ENTERPRISE, PlanType.OLD_ENTERPRISE] as const;
+export const PERSONAL_PLANS = [PlanType.STUDENT, PlanType.CREATOR] satisfies PlanType[];
+
+export const ENTERPRISE_PLANS = [PlanType.ENTERPRISE, PlanType.OLD_ENTERPRISE] satisfies PlanType[];
+
+export const ALL_PLANS = [...STARTER_PLANS, ...TEAM_PLANS, ...PERSONAL_PLANS, ...ENTERPRISE_PLANS] satisfies PlanType[];
+
+export const PAID_PLANS = [...TEAM_PLANS, ...PERSONAL_PLANS, ...ENTERPRISE_PLANS] satisfies PlanType[];
+
+export const TEAM_PLUS_PLANS = [...TEAM_PLANS, ...ENTERPRISE_PLANS] satisfies PlanType[];
+
+export const NON_ENTERPRISE_PLANS = [...TEAM_PLANS, ...STARTER_PLANS, ...PERSONAL_PLANS, PlanType.OLD_ENTERPRISE] satisfies PlanType[];
 
 export const PLAN_TYPE_META = {
   [PlanType.OLD_STARTER]: {

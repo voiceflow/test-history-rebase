@@ -2,7 +2,7 @@ import { IconButton, IconButtonVariant, SvgIcon, TippyTooltip, toast, ToastCallT
 import React from 'react';
 
 import * as Errors from '@/config/errors';
-import { LimitType } from '@/config/planLimitV2';
+import { LimitType } from '@/constants/limits';
 import * as Project from '@/ducks/project';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
@@ -54,12 +54,12 @@ const ImportButton: React.OldFC<ImportButtonProps> = ({ dashboardV2 }) => {
     }
   };
 
-  const onImport = usePlanLimitedAction({
-    type: LimitType.PROJECTS,
+  const onImport = usePlanLimitedAction(LimitType.PROJECTS, {
     value: projects.length,
     limit: workspace?.projects ?? 2,
+
+    onLimit: (config) => upgradeModal.openVoid(config.upgradeModal(config.payload)),
     onAction: () => upload(onUpload, { accept: ACCEPTED_FILE_FORMATS }),
-    onLimited: (limit) => upgradeModal.openVoid(limit.upgradeModal),
   });
 
   return (

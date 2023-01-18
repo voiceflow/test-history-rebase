@@ -3,33 +3,46 @@ import React from 'react';
 
 import type { UpgradePopperData } from '@/components/UpgradePopper';
 import type { UpgradeTooltipData } from '@/components/UpgradeTooltip';
+import type { Permission } from '@/constants/permissions';
 import type { UpgradeModal } from '@/ModalsV2/modals/Upgrade';
 
-type ConditionalGetter<Data, Return> = Data extends {} ? (data: Data) => Return : () => Return;
+export type ActionGetter<Data, Return> = Data extends {} ? (data: Data) => Return : () => Return;
 
-export interface ToastErrorPermission<Data = void> {
-  getToastError: ConditionalGetter<Data, React.ReactNode>;
+export interface BasePlanPermission {
+  plans: ReadonlyArray<PlanType>;
+  permission: Permission;
 }
 
-export interface UpgradeModalPermission<Data = void> {
-  getUpgradeModal: ConditionalGetter<Data, UpgradeModal>;
+export interface ToastErrorPlanPermission<Data = void> extends BasePlanPermission {
+  toastError: ActionGetter<Data, React.ReactNode>;
 }
 
-export interface UpgradePopperPermission<Data = void> {
-  getUpgradePopper: ConditionalGetter<Data, UpgradePopperData>;
+export interface UpgradeModalPlanPermission<Data = void> extends BasePlanPermission {
+  upgradeModal: ActionGetter<Data, UpgradeModal>;
 }
 
-export interface UpgradeTooltipPermission<Data = void> {
-  getUpgradeTooltip: ConditionalGetter<Data, UpgradeTooltipData>;
+export interface UpgradePopperPlanPermission<Data = void> extends BasePlanPermission {
+  upgradePopper: ActionGetter<Data, UpgradePopperData>;
 }
 
-export interface UpgradePopperAndTooltipPermission<Data> extends UpgradePopperPermission<Data>, UpgradeTooltipPermission<Data> {}
+export interface UpgradeTooltipPlanPermission<Data = void> extends BasePlanPermission {
+  upgradeTooltip: ActionGetter<Data, UpgradeTooltipData>;
+}
 
-export type AnyPermission<Data> =
-  | ToastErrorPermission<Data>
-  | UpgradeModalPermission<Data>
-  | UpgradePopperPermission<Data>
-  | UpgradeTooltipPermission<Data>
-  | UpgradePopperAndTooltipPermission<Data>;
+export interface UpgradePopperAndTooltipPlanPermission<Data = void>
+  extends BasePlanPermission,
+    UpgradePopperPlanPermission<Data>,
+    UpgradeTooltipPlanPermission<Data> {}
 
-export type PlanPermission<Permission> = Partial<Record<PlanType, Permission>>;
+export interface UpgradeModalAndTooltipPlanPermission<Data = void>
+  extends BasePlanPermission,
+    UpgradeModalPlanPermission<Data>,
+    UpgradeTooltipPlanPermission<Data> {}
+
+export type AnyPlanPermission<Data> =
+  | BasePlanPermission
+  | ToastErrorPlanPermission<Data>
+  | UpgradeModalPlanPermission<Data>
+  | UpgradePopperPlanPermission<Data>
+  | UpgradeTooltipPlanPermission<Data>
+  | UpgradePopperAndTooltipPlanPermission<Data>;

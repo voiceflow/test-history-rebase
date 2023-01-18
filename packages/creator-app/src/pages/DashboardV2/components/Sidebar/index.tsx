@@ -4,9 +4,9 @@ import React from 'react';
 import { generatePath } from 'react-router-dom';
 
 import NavigationSidebar from '@/components/NavigationSidebar';
-import { Permission } from '@/config/permissions';
 import { Path } from '@/config/routes';
 import { BLOG_LINK, BOOK_DEMO_LINK, DOCS_LINK, TEMPLATES_LINK, YOUTUBE_CHANNEL_LINK } from '@/constants';
+import { Permission } from '@/constants/permissions';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { usePermission } from '@/hooks/permission';
 import { useSelector } from '@/hooks/redux';

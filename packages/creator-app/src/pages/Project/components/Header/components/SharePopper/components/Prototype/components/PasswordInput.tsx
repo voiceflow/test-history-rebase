@@ -2,8 +2,8 @@ import { BlockText, ClickableText, Divider, Input, NestedInputIconPosition } fro
 import React from 'react';
 
 import { SectionToggleVariant, SectionVariant, UncontrolledSection } from '@/components/Section';
-import { Permission } from '@/config/permissions';
 import { ModalType, RESPONSE_COLOR_CODES as COLOR_CODES } from '@/constants';
+import { Permission } from '@/constants/permissions';
 import * as Prototype from '@/ducks/prototype';
 import { useDispatch, useLinkedState, useModals, usePermission, useSelector, useToggle } from '@/hooks';
 import THEME from '@/styles/theme';

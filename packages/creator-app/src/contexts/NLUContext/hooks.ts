@@ -4,16 +4,17 @@ import React from 'react';
 
 import * as NLP from '@/config/nlp';
 import * as NLU from '@/config/nlu';
-import { Permission } from '@/config/permissions';
-import { getNLUExportLimitDetails } from '@/config/planLimits/nluExport';
-import { InteractionModelTabType, ModalType } from '@/constants';
+import { InteractionModelTabType } from '@/constants';
+import { Permission } from '@/constants/permissions';
 import * as Export from '@/ducks/export';
 import * as Nlu from '@/ducks/nlu';
 import * as ProjectV2 from '@/ducks/projectV2';
-import * as Session from '@/ducks/session';
 import * as Tracking from '@/ducks/tracking';
-import { UpgradePrompt } from '@/ducks/tracking';
-import { useDispatch, useFeature, useModals, usePermission, useSelector, useTrackingEvents } from '@/hooks';
+import { useFeature } from '@/hooks/feature';
+import { usePermission, usePermissionAction } from '@/hooks/permission';
+import { useDispatch } from '@/hooks/realtime';
+import { useSelector } from '@/hooks/redux';
+import { useUpgradeModal } from '@/ModalsV2/hooks';
 
 import { NLUContext } from './Context';
 
@@ -32,17 +33,11 @@ interface useNLUItemMenuProps {
 
 export const useNLUItemMenu = ({ itemID, itemType, isBuiltIn, onRename: onRenameProp, onDelete: onDeleteProp }: useNLUItemMenuProps) => {
   const nlu = React.useContext(NLUContext);
-  const upgradeModal = useModals(ModalType.UPGRADE_MODAL);
+  const upgradeModal = useUpgradeModal();
 
-  const projectID = useSelector(Session.activeProjectIDSelector)!;
-  const project = useSelector(ProjectV2.projectByIDSelector, { id: projectID });
+  const project = useSelector(ProjectV2.active.projectSelector);
 
   const nluManager = useFeature(Realtime.FeatureFlag.NLU_MANAGER);
-
-  const [permissionToExport] = usePermission(Permission.NLU_EXPORT_ALL);
-  const [permissionToExportCSV] = usePermission(Permission.NLU_EXPORT_CSV);
-
-  const [trackingEvents] = useTrackingEvents();
 
   const [exporting, setIsExporting] = React.useState(false);
 
@@ -51,33 +46,34 @@ export const useNLUItemMenu = ({ itemID, itemType, isBuiltIn, onRename: onRename
   const onRename = usePersistFunction(onRenameProp);
   const onDelete = usePersistFunction(onDeleteProp);
 
-  const onExport = React.useCallback(
-    async (nlpType: NLP.Constants.NLPType) => {
-      if (!itemID) return;
+  const onExportModel = usePersistFunction(async (nlpType: NLP.Constants.NLPType) => {
+    if (!itemID) return;
 
-      if ((nlpType === NLP.Constants.NLPType.VOICEFLOW && permissionToExportCSV) || permissionToExport) {
-        setIsExporting(true);
+    setIsExporting(true);
 
-        toast.info('Exporting...');
+    toast.info('Exporting...');
 
-        await exportModel({
-          origin: Tracking.ModelExportOriginType.NLU_MANAGER,
-          nlpType,
-          intents: [itemID],
-        });
+    await exportModel({ origin: Tracking.ModelExportOriginType.NLU_MANAGER, nlpType, intents: [itemID] });
 
-        toast.success('Successfully Exported');
+    toast.success('Successfully Exported');
 
-        setIsExporting(false);
-      } else {
-        trackingEvents.trackUpgradePrompt({ promptType: UpgradePrompt.EXPORT_NLU });
+    setIsExporting(false);
+  });
 
-        const planLimits = getNLUExportLimitDetails(nlpType);
+  const onExportAll = usePersistFunction(
+    usePermissionAction(Permission.NLU_EXPORT_ALL, {
+      onAction: onExportModel,
 
-        upgradeModal.open({ planLimitDetails: planLimits, promptOrigin: UpgradePrompt.EXPORT_NLU });
-      }
-    },
-    [itemID, exportModel, upgradeModal.open]
+      onPlanForbid: ({ args: [nlpType], planConfig }) => upgradeModal.openVoid(planConfig.upgradeModal({ nlpType })),
+    })
+  );
+
+  const onExportCSV = usePersistFunction(
+    usePermissionAction(Permission.NLU_EXPORT_CSV, {
+      onAction: () => onExportModel(NLP.Constants.NLPType.VOICEFLOW),
+
+      onPlanForbid: ({ planConfig }) => upgradeModal.openVoid(planConfig.upgradeModal()),
+    })
   );
 
   const canDelete = !!itemID && nlu.canDeleteItem(itemID, itemType);
@@ -91,10 +87,10 @@ export const useNLUItemMenu = ({ itemID, itemType, isBuiltIn, onRename: onRename
     const nluConfig = NLU.Config.get(project?.nlu);
 
     if (canExport) {
-      options.push({ key: 'export-csv', label: 'Export CSV', onClick: () => onExport(NLP.Constants.NLPType.VOICEFLOW) });
+      options.push({ key: 'export-csv', label: 'Export CSV', onClick: () => onExportCSV() });
 
       if (nluConfig.nlps[0] !== NLP.Voiceflow.CONFIG) {
-        options.push({ key: 'export-json', label: 'Export JSON', onClick: () => onExport(nluConfig.nlps[0].type) });
+        options.push({ key: 'export-json', label: 'Export JSON', onClick: () => onExportAll(nluConfig.nlps[0].type) });
       }
     }
 
@@ -121,7 +117,7 @@ export const useNLUItemMenu = ({ itemID, itemType, isBuiltIn, onRename: onRename
       });
     }
     return options;
-  }, [itemID, itemType, onRename, isBuiltIn, canDelete, canRename, canExport, nlu.deleteItem, onExport]);
+  }, [itemID, itemType, onRename, isBuiltIn, canDelete, canRename, canExport, nlu.deleteItem, onExportCSV, onExportAll]);
 
   return {
     options: memoizedOptions,
@@ -136,53 +132,42 @@ interface useDataSourceMenuProps {
 }
 
 export const useDataSourceMenu = ({ items, dataSourceName, dataSourceID }: useDataSourceMenuProps) => {
-  const [permissionToDownloadUnclassified] = usePermission(Permission.NLU_UNCLASSIFIED_DOWNLOAD);
-  const canDelete = usePermission(Permission.NLU_UNCLASSIFIED_DELETE);
-  const [downloading, setIsDownloading] = React.useState(false);
   const onDeleteUnclassified = useDispatch(Nlu.deleteUnclassified);
-  const [trackingEvents] = useTrackingEvents();
-  const upgradeModal = useModals(ModalType.UPGRADE_MODAL);
 
-  const handleDownload = React.useCallback(async () => {
-    if (!items?.length) return;
+  const deleteUnclassified = usePermission(Permission.NLU_UNCLASSIFIED_DELETE);
 
-    if (permissionToDownloadUnclassified) {
-      setIsDownloading(true);
+  const [downloading, setIsDownloading] = React.useState(false);
 
-      toast.info('Downloading...');
+  const onDownload = usePersistFunction(async () => {
+    if (!items) return;
 
-      const data = items.join('\r\n');
-      const blob = new Blob([data], { type: 'octet/stream' });
-      const url = window.URL.createObjectURL(blob);
+    setIsDownloading(true);
 
-      downloadFromURL(`${NLP.Constants.NLPType.VOICEFLOW}-${dataSourceName}.csv`, url);
-      URL.revokeObjectURL(data);
-      toast.success('Successfully Exported');
+    toast.info('Downloading...');
 
-      setIsDownloading(false);
-    } else {
-      trackingEvents.trackUpgradePrompt({ promptType: UpgradePrompt.EXPORT_NLU });
+    const data = items.join('\r\n');
+    const blob = new Blob([data], { type: 'octet/stream' });
+    const url = window.URL.createObjectURL(blob);
 
-      const planLimits = getNLUExportLimitDetails(NLP.Constants.NLPType.VOICEFLOW);
+    downloadFromURL(`${NLP.Constants.NLPType.VOICEFLOW}-${dataSourceName}.csv`, url);
+    URL.revokeObjectURL(data);
+    toast.success('Successfully Exported');
 
-      upgradeModal.open({ planLimitDetails: planLimits, promptOrigin: UpgradePrompt.EXPORT_NLU });
-    }
-  }, [items]);
+    setIsDownloading(false);
+  });
 
   const memoizedOptions = React.useMemo<NLUItem[]>(() => {
     if (!items) return [];
 
-    const options: NLUItem[] = [];
-
-    if (permissionToDownloadUnclassified) {
-      options.push({
+    const options: NLUItem[] = [
+      {
         key: 'download',
         label: 'Download',
-        onClick: handleDownload,
-      });
-    }
+        onClick: onDownload,
+      },
+    ];
 
-    if (canDelete) {
+    if (deleteUnclassified.allowed) {
       if (options.length) {
         options.push({ key: 'divider-1', label: 'divider-1', divider: true });
       }
@@ -193,8 +178,9 @@ export const useDataSourceMenu = ({ items, dataSourceName, dataSourceID }: useDa
         onClick: () => onDeleteUnclassified(dataSourceID),
       });
     }
+
     return options;
-  }, [items, onDeleteUnclassified, canDelete]);
+  }, [items, onDeleteUnclassified, deleteUnclassified.allowed]);
 
   return {
     options: memoizedOptions,

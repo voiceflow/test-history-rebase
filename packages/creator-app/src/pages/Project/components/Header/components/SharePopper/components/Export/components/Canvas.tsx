@@ -1,26 +1,17 @@
-import { Box, Select } from '@voiceflow/ui';
+import { Box, defaultMenuLabelRenderer, Select } from '@voiceflow/ui';
 import React from 'react';
 
+import PermittedMenuItem from '@/components/PermittedMenuItem';
 import Upgrade from '@/components/Upgrade';
-import UpgradeOption from '@/components/UpgradeOption';
-import { Permission } from '@/config/permissions';
-import { GATED_EXPORT_TYPES, getCanvasExportLimitDetails, isGatedCanvasExportType } from '@/config/planLimits/canvasExport';
-import { ExportFormat } from '@/constants';
-import { UpgradePrompt } from '@/ducks/tracking';
+import { Permission } from '@/constants/permissions';
 import { usePermission } from '@/hooks';
 
 import { CANVAS_EXPORT_OPTIONS, CANVAS_EXPORT_OPTIONS_LABELS } from '../constants';
 import { ExportContext } from '../Context';
 
-const Canvas: React.OldFC = () => {
-  const { canvasExportFormat, setCanvasExportFormat, setCanExport } = React.useContext(ExportContext)!;
-  const [canExportWithoutBranding] = usePermission(Permission.CANVAS_EXPORT);
-  const [permissionToExport] = usePermission(Permission.MODEL_EXPORT);
-
-  const canvasExportSelection = (value: ExportFormat) => {
-    setCanvasExportFormat(value);
-    setCanExport(permissionToExport || !GATED_EXPORT_TYPES.has(value));
-  };
+const Canvas: React.FC = () => {
+  const { allowed: isAllowed, planConfig } = usePermission(Permission.CANVAS_EXPORT);
+  const { canvasExportFormat, setCanvasExportFormat } = React.useContext(ExportContext)!;
 
   return (
     <>
@@ -28,22 +19,21 @@ const Canvas: React.OldFC = () => {
         value={canvasExportFormat}
         label={CANVAS_EXPORT_OPTIONS_LABELS[canvasExportFormat]}
         options={CANVAS_EXPORT_OPTIONS}
-        onSelect={canvasExportSelection}
+        onSelect={setCanvasExportFormat}
         getOptionLabel={(value) => value && CANVAS_EXPORT_OPTIONS_LABELS[value]}
-        renderOptionLabel={(option, searchLabel, getOptionLabel, getOptionValue, { isFocused }) => (
-          <UpgradeOption<ExportFormat, ExportFormat>
-            option={option}
-            isFocused={isFocused}
-            searchLabel={searchLabel}
-            getOptionLabel={getOptionLabel}
-            getOptionValue={getOptionValue}
-            isGated={isGatedCanvasExportType(option, permissionToExport)}
-            planDetails={getCanvasExportLimitDetails(option)}
-            promptOrigin={UpgradePrompt.EXPORT_PROJECT}
+        renderOptionLabel={(format, searchLabel, getOptionLabel, getOptionValue, options) => (
+          <PermittedMenuItem
+            data={{ format }}
+            label={defaultMenuLabelRenderer(format, searchLabel, getOptionLabel, getOptionValue, options)}
+            isFocused={options.isFocused}
+            isAllowed={planConfig && !planConfig.isPaidExportFormat(format)}
+            permission={Permission.CANVAS_EXPORT}
+            tooltipProps={{ offset: [0, 30] }}
           />
         )}
       />
-      {!canExportWithoutBranding && (
+
+      {!isAllowed && (
         <Box position="absolute" left={0} right={0} bottom={0}>
           <Upgrade>Remove branding from PNG & PDF exports.</Upgrade>
         </Box>

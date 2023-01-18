@@ -1,7 +1,7 @@
 import { Box, Button, Flex, PrimaryButton, PrimaryButtonProps, SvgIcon, SvgIconTypes, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
-import { Permission } from '@/config/permissions';
+import { Permission } from '@/constants/permissions';
 import { css, styled } from '@/hocs/styled';
 import { usePermission } from '@/hooks';
 import { Identifier } from '@/styles/constants';
@@ -61,7 +61,7 @@ const UploadButtonContainer: React.OldFC<UploadButtonContainerProps> = ({
   children,
   ...props
 }) => {
-  const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
+  const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
 
   const component = (
     <>

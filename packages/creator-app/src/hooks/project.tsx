@@ -7,16 +7,16 @@ import { useSelector } from 'react-redux';
 
 import client from '@/client';
 import * as Errors from '@/config/errors';
-import { Permission } from '@/config/permissions';
-import { LimitType } from '@/config/planLimitV2';
 import { ALEXA_SUNSET_PROJECT_ID, ExportFormat as CanvasExportFormat } from '@/constants';
+import { LimitType } from '@/constants/limits';
+import { Permission } from '@/constants/permissions';
 import * as Export from '@/ducks/export';
 import * as Project from '@/ducks/project';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import * as Workspace from '@/ducks/workspace';
-import { usePermission, usePermissions } from '@/hooks/permission';
+import { useHasPermissions, usePermission } from '@/hooks/permission';
 import * as ModalsV2 from '@/ModalsV2';
 import { ShareProjectTab } from '@/pages/Project/components/Header/constants';
 import { SharePopperContext } from '@/pages/Project/components/Header/contexts';
@@ -64,7 +64,7 @@ export const useProjectOptions = ({
 }): Nullable<MenuTypes.Option>[] => {
   const sharePopper = React.useContext(SharePopperContext);
 
-  const canExportProject = usePermissions([Permission.CANVAS_EXPORT, Permission.MODEL_EXPORT]);
+  const canExportProject = useHasPermissions([Permission.CANVAS_EXPORT, Permission.MODEL_EXPORT]);
   const [canEditProject] = usePermission(Permission.EDIT_PROJECT);
   const [canShareProject] = usePermission(Permission.SHARE_PROJECT);
   const [canManageProjects] = usePermission(Permission.MANAGE_PROJECTS);
@@ -91,10 +91,12 @@ export const useProjectOptions = ({
 
   const [trackingEvents] = useTrackingEvents();
 
-  const onDuplicate = usePlanLimitedAction({
-    type: LimitType.PROJECTS,
+  const onDuplicate = usePlanLimitedAction(LimitType.PROJECTS, {
     value: projectsCount,
     limit: workspace?.projects ?? 2,
+
+    onLimit: (config) => upgradeModal.openVoid(config.upgradeModal(config.payload)),
+
     onAction: async () => {
       if (!workspace) {
         Sentry.error(Errors.noActiveWorkspaceID());
@@ -120,7 +122,6 @@ export const useProjectOptions = ({
         loadingModal.close();
       }
     },
-    onLimited: (limit) => upgradeModal.openVoid(limit.upgradeModal),
   });
 
   const onClone = async () => {

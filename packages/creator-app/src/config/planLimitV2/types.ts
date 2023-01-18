@@ -1,6 +1,7 @@
 import type { PlanType } from '@voiceflow/internal';
 import React from 'react';
 
+import { LimitType } from '@/constants/limits';
 import type { UpgradeModal } from '@/ModalsV2/modals/Upgrade';
 
 interface RendererProps {
@@ -8,26 +9,29 @@ interface RendererProps {
   increasableLimit?: number;
 }
 
-export interface BaseLimit {
+export interface BaseStaticLimit {
   limit: number;
 }
 
 export type ErrorRenderer = (props: RendererProps) => React.ReactNode;
 
 export interface ToastErrorDynamicLimit {
-  getToastError: ErrorRenderer;
+  toastError: ErrorRenderer;
   increasableLimit?: number;
 }
 
-export interface ToastErrorStaticLimit extends BaseLimit, ToastErrorDynamicLimit {}
+export interface ToastErrorStaticLimit extends BaseStaticLimit, ToastErrorDynamicLimit {}
 
 export interface UpgradeModalDynamicLimit {
-  getUpgradeModal: (props: RendererProps) => UpgradeModal;
+  upgradeModal: (props: RendererProps) => UpgradeModal;
   increasableLimit?: number;
 }
 
-export interface UpgradeModalStaticLimit extends BaseLimit, UpgradeModalDynamicLimit {}
+export interface UpgradeModalStaticLimit extends BaseStaticLimit, UpgradeModalDynamicLimit {}
 
 export type AnyLimit = ToastErrorStaticLimit | ToastErrorDynamicLimit | UpgradeModalStaticLimit | UpgradeModalDynamicLimit;
 
-export type PlanLimit<Limit> = Partial<Record<PlanType, Limit>>;
+export interface PlanLimit {
+  limit: LimitType;
+  limits: Partial<Record<PlanType, AnyLimit>>;
+}

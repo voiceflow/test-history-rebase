@@ -1,7 +1,7 @@
 import { Button, ButtonVariant, Popper } from '@voiceflow/ui';
 import React from 'react';
 
-import { Permission } from '@/config/permissions';
+import { Permission } from '@/constants/permissions';
 import { usePermission } from '@/hooks';
 import { PrototypeContent, PrototypeFooter } from '@/pages/Project/components/Header/components/SharePopper/components';
 import { Identifier } from '@/styles/constants';

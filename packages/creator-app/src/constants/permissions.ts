@@ -1,0 +1,109 @@
+export const ROLE_PERMISSION_DEFAULT_WARN_MESSAGE = 'You do not have permission to this feature';
+
+export const PLAN_PERMISSION_DEFAULT_WARN_MESSAGE = 'This feature is not available on your current plan';
+
+export const TRIAL_EXPIRED_PERMISSION_DEFAULT_WARN_MESSAGE = 'Your trial has expired. Please upgrade to continue using this feature.';
+
+// TODO: refactor keys, should be prefixed with the domain name, FE WORKSPACE_, PROJECT_, etc
+export enum Permission {
+  // organization
+  CONFIGURE_ORGANIZATION = 'organization.CONFIGURE',
+  EDIT_ORGANIZATION = 'organization.EDIT',
+
+  // workspace
+  WORKSPACE_CREATE = 'workspace.CREATE',
+  CONFIGURE_WORKSPACE = 'workspace.CONFIGURE',
+  CONFIGURE_WORKSPACE_DEVELOPER = 'workspace.CONFIGURE_DEVELOPER',
+  CONFIGURE_WORKSPACE_BILLING = 'workspace.CONFIGURE_DEVELOPER',
+  VIEW_SETTINGS_WORKSPACE = 'workspace.VIEW_SETTINGS',
+  UPGRADE_WORKSPACE = 'workspace.UPGRADE',
+  DELETE_WORKSPACE = 'workspace.DELETE',
+  INVITE_BY_LINK = 'workspace.INVITE_BY_LINK',
+  INVITE = 'workspace.INVITE',
+  IMPORT_PROJECT = 'workspace.IMPORT_PROJECT',
+  UNABLE_TO_LEAVE_WORKSPACE = 'workspace.UNABLE_TO_LEAVE',
+
+  // collaborator
+  ADD_COLLABORATORS = 'collaborator.ADD',
+  ADD_COLLABORATORS_V2 = 'collaborator.ADD_V2',
+  VIEW_COLLABORATORS = 'collaborator.VIEW',
+  MANAGE_ADMIN_COLLABORATORS = 'collaborator.MANAGE_ADMINS',
+
+  // project
+  MANAGE_PROJECTS = 'project.MANAGE',
+  SHARE_PROJECT = 'project.SHARE',
+  EDIT_PROJECT = 'project.EDIT',
+
+  // export
+  CODE_EXPORT = 'export.CODE',
+  MODEL_EXPORT = 'export.MODEL', // to be removed once revised permissions feature is implemented
+  MODAL_PDF_PNG_EXPORT = 'export.MODAL_ALL',
+
+  // prototype
+  SHARE_PROTOTYPE = 'prototype.SHARE',
+  TRAIN_PROTOTYPE = 'prototype.TRAIN',
+  RENDER_PROTOTYPE = 'prototype.RENDER',
+  CUSTOMIZE_PROTOTYPE = 'prototype.CUSTOMIZE',
+  SHARE_PROTOTYPE_PASSWORD = 'prototype.SHARE_PASSWORD',
+
+  // project versions
+  FULL_PROJECT_VERSIONS = 'versions.PROJECT_VERSIONS',
+
+  // project list
+  PROJECT_LIST_MANAGE = 'project_list.MANAGE',
+
+  // billing
+  BILLING_SEATS = 'billing.SEATS',
+  BILLING_MANAGE = 'billing.MANAGE',
+
+  // canvas
+  CANVAS_EDIT = 'canvas.EDIT',
+  CANVAS_MARKUP = 'canvas.MARKUP',
+  CANVAS_EXPORT = 'canvas.EXPORT',
+  CANVAS_PUBLISH = 'canvas.PUBLISH',
+  CANVAS_REALTIME = 'canvas.REALTIME',
+  CANVAS_PAID_STEPS = 'canvas.PAID_STEPS',
+  CANVAS_OPEN_EDITOR = 'canvas.OPEN_EDITOR',
+  CANVAS_HINT_FEATURES = 'canvas.HINT_FEATURES',
+
+  // features
+  COMMENTING = 'feature.COMMENTING',
+  BULK_UPLOAD = 'feature.BULK_UPLOAD',
+
+  // Transcript
+  DELETE_TRANSCRIPT = 'transcripts.DELETE',
+  VIEW_CONVERSATIONS = 'transcripts.VIEW',
+  TRANSCRIPTS_ENABLED = 'transcripts.ENABLED',
+
+  // private cloud
+  PRIVATE_CLOUD_WORKSPACE_CREATE = 'private_cloud.workspace.CREATE',
+
+  // T&C
+  REORDER_TOPICS_AND_COMPONENTS = 'topics_components.REORDER',
+
+  // NLU
+  NLU_CUSTOM = 'nlu.CUSTOM_PROJECT',
+  NLU_CONFLICTS = 'nlu.VIEW_CONFLICTS',
+  NLU_EXPORT_ALL = 'nlu.EXPORT_ALL',
+  NLU_EXPORT_CSV = 'nlu.EXPORT_CSV',
+  NLU_UNCLASSIFIED_DELETE = 'nlu.NLU_UNCLASSIFIED_DELETE',
+
+  // API keys
+  API_KEY_EDIT = 'api_key.EDIT',
+  API_KEY_VIEW = 'api_key.VIEW',
+}
+
+export const TRIAL_EXPIRED_NOT_ALLOWED_PERMISSIONS = [
+  Permission.COMMENTING,
+  Permission.CANVAS_EDIT,
+  Permission.CODE_EXPORT,
+  Permission.EDIT_PROJECT,
+  Permission.EDIT_PROJECT,
+  Permission.MODEL_EXPORT,
+  Permission.SHARE_PROJECT,
+  Permission.MANAGE_PROJECTS,
+  Permission.MANAGE_PROJECTS,
+  Permission.ADD_COLLABORATORS,
+  Permission.VIEW_CONVERSATIONS,
+  Permission.CANVAS_HINT_FEATURES,
+];

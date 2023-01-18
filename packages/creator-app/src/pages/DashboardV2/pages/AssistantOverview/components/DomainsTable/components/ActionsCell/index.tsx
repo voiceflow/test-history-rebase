@@ -3,7 +3,7 @@ import { Dropdown, IconButton, Table, TableTypes, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import Domain from '@/components/Domain';
-import { LimitType } from '@/config/planLimitV2';
+import { LimitType } from '@/constants/limits';
 import * as DomainDuck from '@/ducks/domain';
 import { useDispatch, usePlanLimitedAction, useSelector } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
@@ -22,9 +22,10 @@ const ActionsCell: React.FC<TableTypes.ItemProps<Realtime.Domain>> = ({ item }) 
   const getDomainByID = useSelector(DomainDuck.getDomainByIDSelector);
   const duplicateDomain = useDispatch(DomainDuck.duplicate);
 
-  const onDuplicate = usePlanLimitedAction({
-    type: LimitType.DOMAINS,
+  const onDuplicate = usePlanLimitedAction(LimitType.DOMAINS, {
     value: table.items.length,
+
+    onLimit: (config) => upgradeModal.openVoid(config.upgradeModal()),
     onAction: async () => {
       const domainToDuplicate = getDomainByID({ id: item.id });
 
@@ -34,7 +35,6 @@ const ActionsCell: React.FC<TableTypes.ItemProps<Realtime.Domain>> = ({ item }) 
 
       toast.success(`Successfully duplicated "${domainToDuplicate.name}" domain.`);
     },
-    onLimited: (limit) => upgradeModal.openVoid(limit.upgradeModal),
   });
 
   return (

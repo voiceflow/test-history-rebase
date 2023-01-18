@@ -2,7 +2,7 @@ import { Box, Members } from '@voiceflow/ui';
 import React from 'react';
 
 import Page from '@/components/Page';
-import { Permission } from '@/config/permissions';
+import { Permission } from '@/constants/permissions';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';

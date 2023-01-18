@@ -2,7 +2,7 @@ import { Utils } from '@voiceflow/common';
 import { Preview, stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 
-import { Permission } from '@/config/permissions';
+import { Permission } from '@/constants/permissions';
 import { usePermission } from '@/hooks/permission';
 import { copyWithToast } from '@/utils/clipboard';
 
@@ -15,7 +15,7 @@ interface StepPreviewProps {
 }
 
 const StepPreview: React.OldFC<StepPreviewProps> = ({ items, onClose, onOpenEditor }) => {
-  const [canOpenEditor] = usePermission(Permission.OPEN_EDITOR);
+  const [canOpenEditor] = usePermission(Permission.CANVAS_OPEN_EDITOR);
 
   const onCopyAll = () => {
     const allVariants = items.map((item) => item.text).join(' | ');

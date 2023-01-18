@@ -7,9 +7,9 @@ import { useRouteMatch } from 'react-router-dom';
 
 import * as GPT from '@/components/GPT';
 import { SidebarIconMenuItem } from '@/components/SidebarIconMenu';
-import { Permission } from '@/config/permissions';
 import { Path } from '@/config/routes';
 import { BOOK_DEMO_LINK, DOCS_LINK, FORUM_LINK, YOUTUBE_CHANNEL_LINK } from '@/constants';
+import { Permission } from '@/constants/permissions';
 import * as Router from '@/ducks/router';
 import { NLUManagerOpenedOrigin } from '@/ducks/tracking/constants';
 import * as Transcript from '@/ducks/transcript';

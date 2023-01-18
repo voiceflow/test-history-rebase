@@ -1,7 +1,7 @@
 import { compose, Spinner } from '@voiceflow/ui';
 import React from 'react';
 
-import { Permission } from '@/config/permissions';
+import { Permission } from '@/constants/permissions';
 import { usePermission } from '@/hooks';
 
 import Checkout from './Checkout';
@@ -39,4 +39,4 @@ const Payment: React.OldFC<PaymentProps> = ({ focus, payment }) => {
 };
 
 // provider and consumer within the same component
-export default compose(withPaymentProvider, withPayment)(Payment) as React.OldFC<PaymentProps>;
+export default compose(withPaymentProvider, withPayment)(Payment) as React.FC<PaymentProps>;

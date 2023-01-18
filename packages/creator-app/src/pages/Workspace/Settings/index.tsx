@@ -4,8 +4,8 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 
 import Page from '@/components/Page';
 import * as SettingsUI from '@/components/Settings';
-import { Permission } from '@/config/permissions';
 import { Path } from '@/config/routes';
+import { Permission } from '@/constants/permissions';
 import * as Router from '@/ducks/router';
 import { WorkspaceFeatureLoadingGate } from '@/gates';
 import { withBatchLoadingGate } from '@/hocs/withBatchLoadingGate';
@@ -28,7 +28,7 @@ const Settings: React.FC = () => {
   const [canConfigureOrganization] = usePermission(Permission.CONFIGURE_ORGANIZATION);
   const [canViewSettingsWorkspace] = usePermission(Permission.VIEW_SETTINGS_WORKSPACE);
   const [canConfigureWorkspaceBilling] = usePermission(Permission.CONFIGURE_WORKSPACE_BILLING);
-  const canConfigureWorkspaceDeveloper = usePermission(Permission.CONFIGURE_WORKSPACE_DEVELOPER)[0] && !disableIntegation;
+  const canConfigureWorkspaceDeveloper = usePermission(Permission.CONFIGURE_WORKSPACE_DEVELOPER).allowed && !disableIntegation;
 
   const canManageSSO = canConfigureOrganization && workspace?.organizationID;
 

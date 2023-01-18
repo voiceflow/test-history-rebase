@@ -5,8 +5,8 @@ import React from 'react';
 import { generatePath } from 'react-router-dom';
 
 import NavigationSidebar from '@/components/NavigationSidebar';
-import { Permission } from '@/config/permissions';
 import { Path } from '@/config/routes';
+import { Permission } from '@/constants/permissions';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import { useFeature } from '@/hooks/feature';

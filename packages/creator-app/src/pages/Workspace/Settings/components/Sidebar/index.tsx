@@ -5,17 +5,17 @@ import { generatePath } from 'react-router-dom';
 
 import NavLinkSidebar from '@/components/NavLinkSidebar';
 import PlanBubble from '@/components/PlanBubble';
-import { Permission } from '@/config/permissions';
 import { Path } from '@/config/routes';
+import { Permission } from '@/constants/permissions';
 import { useActiveWorkspace, useFeature, usePermission } from '@/hooks';
 
-const Sidebar: React.OldFC = () => {
+const Sidebar: React.FC = () => {
   const workspace = useActiveWorkspace();
-  const disableIntegation = useFeature(Realtime.FeatureFlag.DISABLE_INTEGRATION)?.isEnabled;
+  const disableIntegration = useFeature(Realtime.FeatureFlag.DISABLE_INTEGRATION)?.isEnabled;
 
   const [canConfigureOrganization] = usePermission(Permission.CONFIGURE_ORGANIZATION);
   const [canConfigureWorkspaceBilling] = usePermission(Permission.CONFIGURE_WORKSPACE_BILLING);
-  const canConfigureWorkspaceDeveloper = usePermission(Permission.CONFIGURE_WORKSPACE_DEVELOPER)[0] && !disableIntegation;
+  const canConfigureWorkspaceDeveloper = usePermission(Permission.CONFIGURE_WORKSPACE_DEVELOPER)[0] && !disableIntegration;
 
   const canManageSSO = canConfigureOrganization && workspace?.organizationID;
 

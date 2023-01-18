@@ -5,8 +5,8 @@ import React from 'react';
 
 import DragLayer from '@/components/DragLayer';
 import EmptyScreen from '@/components/EmptyScreen';
-import { Permission } from '@/config/permissions';
-import { LimitType } from '@/config/planLimitV2';
+import { LimitType } from '@/constants/limits';
+import { Permission } from '@/constants/permissions';
 import { ScrollContextProvider } from '@/contexts/ScrollContext';
 import * as Modal from '@/ducks/modal';
 import * as ProjectList from '@/ducks/projectList';
@@ -15,7 +15,7 @@ import * as ProjectV2 from '@/ducks/projectV2';
 import { WorkspaceFeatureLoadingGate, WorkspaceSubscriptionGate } from '@/gates';
 import { withBatchLoadingGate } from '@/hocs/withBatchLoadingGate';
 import { DragItem as BaseDragItem, HoverItem as BaseHoverItem } from '@/hocs/withDraggable';
-import { useDispatch, usePermission, usePlanLimited, useScrollHelpers, useSelector } from '@/hooks';
+import { useDispatch, usePermission, usePlanLimitedConfig, useScrollHelpers, useSelector } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
 import { DashboardClassName, Identifier } from '@/styles/constants';
 
@@ -58,12 +58,12 @@ const ProjectListList: React.OldFC<ProjectListListProps> = ({ workspace, filter,
   const transplantProjectBetweenLists = useDispatch(ProjectList.transplantProjectBetweenLists);
   const moveProjectList = useDispatch(ProjectList.moveProjectList);
 
-  const [canManageLists] = usePermission(Permission.MANAGE_PROJECT_LISTS);
+  const [canManageLists] = usePermission(Permission.PROJECT_LIST_MANAGE);
   const { bodyRef, innerRef, scrollHelpers } = useScrollHelpers<HTMLDivElement, HTMLDivElement>();
 
   const upgradeModal = ModalsV2.useModal(ModalsV2.Upgrade);
   const projectCreateModal = ModalsV2.useModal(ModalsV2.Project.Create);
-  const projectsLimit = usePlanLimited({ type: LimitType.PROJECTS, value: projects.length, limit: workspace?.projects ?? 2 });
+  const projectsLimitConfig = usePlanLimitedConfig(LimitType.PROJECTS, { value: projects.length, limit: workspace?.projects ?? 2 });
   const errorModal = ModalsV2.useModal(ModalsV2.Error);
 
   const onCreateList = React.useCallback(async () => {
@@ -76,8 +76,8 @@ const ProjectListList: React.OldFC<ProjectListListProps> = ({ workspace, filter,
 
   const onCreateProject = React.useCallback(
     (id?: string) => {
-      if (projectsLimit) {
-        upgradeModal.openVoid(projectsLimit.upgradeModal);
+      if (projectsLimitConfig) {
+        upgradeModal.openVoid(projectsLimitConfig.upgradeModal(projectsLimitConfig.payload));
       } else {
         projectCreateModal.openVoid({ listID: id });
       }

@@ -1,103 +1,96 @@
 import { PlanType } from '@voiceflow/internal';
+import React from 'react';
 
-import {
-  AnyLimit,
-  Limits,
-  LimitType,
-  ToastErrorDynamicLimit,
-  ToastErrorStaticLimit,
-  UpgradeModalDynamicLimit,
-  UpgradeModalStaticLimit,
-} from '@/config/planLimitV2';
+import { BaseStaticLimit } from '@/config/planLimitV2';
+import { LimitType } from '@/constants/limits';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { getPlanLimit } from '@/utils/planLimitV2';
+import { getPlanLimitConfig, PlanLimitConfig } from '@/utils/planLimitV2';
 
 import { useSelector } from './redux';
 
-type InjectedLimit<PlanLimit> = PlanLimit extends ToastErrorDynamicLimit
-  ? Omit<ToastErrorDynamicLimit, 'getToastError'> & { limit: number; toastError: ReturnType<ToastErrorDynamicLimit['getToastError']> }
-  : PlanLimit extends UpgradeModalDynamicLimit
-  ? Omit<UpgradeModalDynamicLimit, 'getUpgradeModal'> & { limit: number; upgradeModal: ReturnType<UpgradeModalDynamicLimit['getUpgradeModal']> }
-  : never;
+type PlanLimitConfigOptions<Limit extends LimitType> = PlanLimitConfig<Limit> extends BaseStaticLimit ? [] : [{ limit: number }];
 
-type WithLimitValueOption<Limit extends LimitType> = {
-  type: Limit;
-} & (NonNullable<Limits[Limit][PlanType]> extends ToastErrorStaticLimit | UpgradeModalStaticLimit ? { limit?: never } : { limit: number });
+type PlanLimitData<Limit extends LimitType> = PlanLimitConfig<Limit> & {
+  limit: number;
+  payload: { limit: number; increasableLimit: number };
+};
 
-export const usePlanLimit = <Limit extends LimitType>({
-  type,
-  limit = 0,
-}: WithLimitValueOption<Limit>): InjectedLimit<NonNullable<Limits[Limit][PlanType]>> | null => {
+export const usePlanLimitConfig = <Limit extends LimitType>(
+  limitType: Limit,
+  ...options: PlanLimitConfigOptions<Limit>
+): PlanLimitData<Limit> | null => {
+  const [{ limit = 0 } = {}] = options;
   const activePlan = useSelector(WorkspaceV2.active.planSelector) ?? PlanType.STARTER;
 
-  // FIXME: TS 4.9 is not able to infer the type of planLimit correctly, so we need to cast it to AnyLimit
-  // remove the cast when TS issue is fixed
-  const planLimit = getPlanLimit(type, activePlan) as AnyLimit | null;
+  return React.useMemo(() => {
+    const planLimit = getPlanLimitConfig(limitType, activePlan);
 
-  if (!planLimit) return null;
+    if (!planLimit) return null;
 
-  const planLimitValue = 'limit' in planLimit ? planLimit.limit : limit;
+    const planLimitValue = 'limit' in planLimit ? planLimit.limit : limit;
 
-  const rendererOptions = { limit: planLimitValue, increasableLimit: planLimit.increasableLimit };
-
-  if ('getToastError' in planLimit) {
     return {
-      ...(planLimit as any),
+      ...planLimit,
       limit: planLimitValue,
-      toastError: planLimit.getToastError(rendererOptions),
-    };
-  }
-
-  if ('getUpgradeModal' in planLimit) {
-    return {
-      ...(planLimit as any),
-      limit: planLimitValue,
-      upgradeModal: planLimit.getUpgradeModal(rendererOptions),
-    };
-  }
-
-  return null;
+      payload: {
+        limit: planLimitValue,
+        increasableLimit: 'increasableLimit' in planLimit ? planLimit.increasableLimit : undefined,
+      },
+    } as PlanLimitData<Limit>;
+  }, [limitType, limit, activePlan]);
 };
 
 interface PlanLimitedOptions {
   value?: number;
 }
 
-export const useGetPlanLimited = <Limit extends LimitType>(
-  limitOptions: LimitedOptions<Limit>
-): ((options: PlanLimitedOptions) => InjectedLimit<NonNullable<Limits[Limit][PlanType]>> | null) => {
-  const planLimit = usePlanLimit<Limit>(limitOptions as WithLimitValueOption<Limit>);
+export const useGetPlanLimitedConfig = <Limit extends LimitType>(
+  limitType: Limit,
+  ...options: PlanLimitConfigOptions<Limit>
+): ((options?: PlanLimitedOptions) => PlanLimitData<Limit> | null) => {
+  const planLimit = usePlanLimitConfig(limitType, ...options);
 
-  if (!planLimit) return () => null;
-
-  return ({ value = 0 }) => (planLimit && value >= planLimit.limit ? planLimit : null);
+  return React.useCallback(({ value = 0 } = {}) => (planLimit && value >= planLimit.limit ? planLimit : null), [planLimit]);
 };
 
-type LimitedOptions<Limit extends LimitType> = WithLimitValueOption<Limit> & PlanLimitedOptions;
+type PlanLimitedConfigOptions<Limit extends LimitType> = PlanLimitConfig<Limit> extends BaseStaticLimit
+  ? [] | [PlanLimitedOptions]
+  : [PlanLimitedOptions & BaseStaticLimit];
 
-export const usePlanLimited = <Limit extends LimitType>(
-  limitOptions: LimitedOptions<Limit>
-): InjectedLimit<NonNullable<Limits[Limit][PlanType]>> | null => {
-  const getPlanLimited = useGetPlanLimited<Limit>(limitOptions);
+export const usePlanLimitedConfig = <Limit extends LimitType>(
+  limitType: Limit,
+  ...options: PlanLimitedConfigOptions<Limit>
+): PlanLimitData<Limit> | null => {
+  const getPlanLimited = useGetPlanLimitedConfig<Limit>(limitType, ...(options as PlanLimitConfigOptions<Limit>));
 
-  return getPlanLimited(limitOptions);
+  return getPlanLimited(options[0]);
 };
 
-type LimitedActionOptions<Limit extends LimitType, Args extends any[] = []> = LimitedOptions<Limit> & {
+interface PlanLimitedActions<Limit extends LimitType, Args extends any[] = []> {
+  /**
+   * the callback is called if the limit is reached
+   */
+  onLimit: (config: PlanLimitData<Limit>) => void;
+
+  /**
+   * the callback is called if the limit is not reached
+   */
   onAction: (...args: Args) => void;
-  onLimited: (limit: InjectedLimit<NonNullable<Limits[Limit][PlanType]>>) => void;
-};
+}
 
-export const usePlanLimitedAction = <Limit extends LimitType, Args extends any[] = void[]>({
-  onAction,
-  onLimited,
-  ...limitedOptions
-}: LimitedActionOptions<Limit, Args>): ((...args: Args) => void) => {
-  const limit = usePlanLimited<Limit>(limitedOptions as LimitedOptions<Limit>);
+type PlanLimitedActionOptions<Limit extends LimitType, Args extends any[] = []> = PlanLimitedActions<Limit, Args> &
+  PlanLimitedOptions &
+  (PlanLimitConfig<Limit> extends BaseStaticLimit ? unknown : BaseStaticLimit);
+
+export const usePlanLimitedAction = <Limit extends LimitType, Args extends any[] = void[]>(
+  limitType: Limit,
+  { onLimit, onAction, ...limitedOptions }: PlanLimitedActionOptions<Limit, Args>
+): ((...args: Args) => void) => {
+  const config = usePlanLimitedConfig<Limit>(limitType, limitedOptions as any);
 
   return (...args: Args) => {
-    if (limit) {
-      onLimited(limit);
+    if (config) {
+      onLimit(config);
     } else {
       onAction(...args);
     }

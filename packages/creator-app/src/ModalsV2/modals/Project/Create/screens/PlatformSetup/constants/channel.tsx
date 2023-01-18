@@ -1,8 +1,7 @@
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { MenuItemGrouped, SvgIconTypes, TippyTooltipProps } from '@voiceflow/ui';
-
-import { getLabelTooltip } from '@/components/UpgradeOption';
+import { MenuItemGrouped, SvgIconTypes, TippyTooltip, TippyTooltipProps } from '@voiceflow/ui';
+import React from 'react';
 
 import { Upcoming } from '../../../constants';
 
@@ -38,7 +37,15 @@ const buildOptionFactory =
       name: config.types[type].name,
       icon: config.types[type].logo ?? config.types[type].icon.name,
       type,
-      tooltip: isUpcoming ? null : getLabelTooltip(config.types[type].name, config.types[type].description),
+      tooltip: isUpcoming
+        ? null
+        : {
+            width: 232,
+            style: { display: 'block', width: '100%' },
+            offset: [0, 10],
+            content: <TippyTooltip.Complex title={config.types[type].name}>{config.types[type].description}</TippyTooltip.Complex>,
+            position: 'right',
+          },
       disabled: isUpcoming,
       platform: config.type,
       iconColor: config.types[type].logo ? undefined : config.types[type].icon.color,

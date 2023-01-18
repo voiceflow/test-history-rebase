@@ -5,28 +5,28 @@ import React from 'react';
 
 import InputError from '@/components/InputError';
 import SelectInputGroup from '@/components/SelectInputGroup';
-import { LimitType } from '@/config/planLimitV2';
-import { EDITOR_SEAT_ROLES } from '@/constants';
+import { LimitType } from '@/constants/limits';
 import * as Workspace from '@/ducks/workspace';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { useGetPlanLimited } from '@/hooks/planLimitV2';
+import { useGetPlanLimitedConfig } from '@/hooks/planLimitV2';
 import { useDispatch } from '@/hooks/realtime';
 import { useSelector } from '@/hooks/redux';
 import { useOnAddSeats } from '@/hooks/workspace';
 import { Identifier } from '@/styles/constants';
+import { isEditorUserRole } from '@/utils/role';
 
 interface InviteByEmailProps {
   buttonLabel?: string;
 }
 
-const InviteByEmail: React.OldFC<InviteByEmailProps> = ({ buttonLabel = 'Add' }) => {
+const InviteByEmail: React.FC<InviteByEmailProps> = ({ buttonLabel = 'Add' }) => {
   const members = useSelector(WorkspaceV2.active.membersSelector);
-  const seatLimits = useSelector(WorkspaceV2.active.seatLimitsSelector);
   const numberOfSeats = useSelector(WorkspaceV2.active.numberOfSeatsSelector);
   const usedEditorSeats = useSelector(WorkspaceV2.active.usedEditorSeatsSelector);
   const usedViewerSeats = useSelector(WorkspaceV2.active.usedViewerSeatsSelector);
+  const viewerSeatLimits = useSelector(WorkspaceV2.active.viewerSeatLimitsSelector);
 
-  const getEditorSeatLimit = useGetPlanLimited({ type: LimitType.EDITOR_SEATS, limit: numberOfSeats ?? 1 });
+  const getEditorSeatLimit = useGetPlanLimitedConfig(LimitType.EDITOR_SEATS, { limit: numberOfSeats });
 
   const sendInvite = useDispatch(Workspace.sendInviteToActiveWorkspace);
 
@@ -54,7 +54,7 @@ const InviteByEmail: React.OldFC<InviteByEmailProps> = ({ buttonLabel = 'Add' })
     setError('');
 
     const role = roles[0]; // FIXME: we don't support multiple roles yet;
-    const isEditorRole = EDITOR_SEAT_ROLES.includes(role);
+    const isEditorRole = isEditorUserRole(role);
     const updatedEditorSeats = usedEditorSeats + (isEditorRole ? emailsToInvite.length : 0);
     const updatedViewerSeats = usedViewerSeats + (isEditorRole ? 0 : emailsToInvite.length);
     const editorSeatLimit = getEditorSeatLimit({ value: updatedEditorSeats });
@@ -65,7 +65,7 @@ const InviteByEmail: React.OldFC<InviteByEmailProps> = ({ buttonLabel = 'Add' })
       return;
     }
 
-    if (updatedViewerSeats >= (seatLimits?.viewer ?? 5) && role === UserRole.VIEWER) {
+    if (updatedViewerSeats >= viewerSeatLimits && role === UserRole.VIEWER) {
       toast.error('Viewer limit reached.');
       return;
     }

@@ -4,7 +4,7 @@ import cn from 'classnames';
 import _constant from 'lodash/constant';
 import React from 'react';
 
-import { Permission } from '@/config/permissions';
+import { Permission } from '@/constants/permissions';
 import { ScrollContextProvider } from '@/contexts/ScrollContext';
 import { DragItem as BaseDragItem, DropOptions, HoverItem, InjectedDraggableComponentProps, withDraggable } from '@/hocs/withDraggable';
 import { useHorizontalScrollToNode, useLinkedState, usePermission, useScrollHelpers, useScrollStickySides } from '@/hooks';
@@ -72,7 +72,7 @@ export const List: React.OldFC<ListProps> = ({
   const listRef = React.useRef<HTMLDivElement | null>(null);
   const inputRef = React.useRef<HTMLInputElement>(null);
 
-  const [canManageLists] = usePermission(Permission.MANAGE_PROJECT_LISTS);
+  const [canManageLists] = usePermission(Permission.PROJECT_LIST_MANAGE);
   const [canManageProjects] = usePermission(Permission.MANAGE_PROJECTS);
 
   const [localName, setLocalName] = useLinkedState(name);

@@ -4,8 +4,8 @@ import { VariableSizeList } from 'react-window';
 
 import DraggableList from '@/components/DraggableList';
 import VirtualList from '@/components/VirtualList';
-import { Permission } from '@/config/permissions';
 import { DragItem } from '@/constants';
+import { Permission } from '@/constants/permissions';
 import { useDidUpdateEffect, usePermission } from '@/hooks';
 
 import Header from '../../Header';
@@ -20,7 +20,7 @@ const TopicsSection: React.OldFC = () => {
   const scrollBarsRef = React.useRef<CustomScrollbarsTypes.Scrollbars>(null);
 
   const [canReorder] = usePermission(Permission.REORDER_TOPICS_AND_COMPONENTS);
-  const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
+  const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
 
   const {
     openedIDs,

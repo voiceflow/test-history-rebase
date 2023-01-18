@@ -1,6 +1,8 @@
 import { Utils } from '@voiceflow/common';
 import { PlanType } from '@voiceflow/internal';
 
+import type { UpgradePopperData } from '@/components/UpgradePopper';
+import type { UpgradeTooltipData } from '@/components/UpgradeTooltip';
 import { BOOK_DEMO_LINK } from '@/constants/links';
 import * as Tracking from '@/ducks/tracking';
 import type { useDispatch } from '@/hooks';
@@ -21,7 +23,7 @@ export const onOpenBookDemoPageWithTrackingFactory = (promptType: Tracking.Upgra
 // not using modal import here to avoid circular dependency
 export const onOpenPaymentModal = () => ModalsManager.open(Utils.id.cuid.slug(), 'Payment').catch(Utils.functional.noop);
 
-export const getUpgradeToModalProps = (
+export const getUpgradeModalProps = (
   nextPlan: PlanType,
   upgradePrompt: Tracking.UpgradePrompt
 ): Pick<UpgradeModal, 'onUpgrade' | 'upgradePrompt' | 'upgradeButtonText'> => {
@@ -39,3 +41,13 @@ export const getUpgradeToModalProps = (
     upgradeButtonText: `Upgrade to ${getPlanTypeLabel(nextPlan)}`,
   };
 };
+
+export const getUpgradePopperProps = (
+  nextPlan: PlanType,
+  upgradePrompt: Tracking.UpgradePrompt
+): Pick<UpgradePopperData, 'onUpgrade' | 'upgradePrompt' | 'upgradeButtonText'> => getUpgradeModalProps(nextPlan, upgradePrompt);
+
+export const getUpgradeTooltipProps = (
+  nextPlan: PlanType,
+  upgradePrompt: Tracking.UpgradePrompt
+): Pick<UpgradeTooltipData, 'onUpgrade' | 'upgradeButtonText'> => getUpgradeModalProps(nextPlan, upgradePrompt);

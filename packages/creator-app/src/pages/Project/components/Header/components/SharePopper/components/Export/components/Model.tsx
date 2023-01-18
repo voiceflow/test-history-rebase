@@ -1,25 +1,21 @@
 import { Utils } from '@voiceflow/common';
-import { BlockText, Box, createDividerMenuItemOption, isNotUIOnlyMenuItemOption, Select, SvgIcon } from '@voiceflow/ui';
+import { BlockText, Box, createDividerMenuItemOption, defaultMenuLabelRenderer, isNotUIOnlyMenuItemOption, Select, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
 import IntentsSelect from '@/components/IntentsSelect';
-import UpgradeOption from '@/components/UpgradeOption';
+import PermittedMenuItem from '@/components/PermittedMenuItem';
 import * as NLP from '@/config/nlp';
-import { Permission } from '@/config/permissions';
-import { getNLUExportLimitDetails, isGatedNLUExportType } from '@/config/planLimits/nluExport';
-import { UpgradePrompt } from '@/ducks/tracking';
-import { usePermission } from '@/hooks';
+import { Permission } from '@/constants/permissions';
 
-import { ExportContext } from '../../Context';
+import { ExportContext } from '../Context';
 
-const ExportModel: React.OldFC<{
+interface ExportModelProps {
   selectedIntentsIds?: string[];
-}> = ({ selectedIntentsIds }) => {
-  const { exportNLPType, setExportNLPType, setExportIntents, exportIntents, nlpTypes, setCanExport, setCheckedExportIntents } =
-    React.useContext(ExportContext)!;
+}
 
-  const [permissionToExport] = usePermission(Permission.NLU_EXPORT_ALL);
-  const [permissionToExportCSV] = usePermission(Permission.NLU_EXPORT_CSV);
+const ExportModel: React.FC<ExportModelProps> = ({ selectedIntentsIds }) => {
+  const { exportNLPType, setExportNLPType, setExportIntents, exportIntents, nlpTypes, setCheckedExportIntents } = React.useContext(ExportContext)!;
+
   const [selectedIntents, setSelectedIntents] = React.useState(exportIntents);
 
   const exportNLPConfig = exportNLPType && NLP.Config.get(exportNLPType);
@@ -35,14 +31,6 @@ const ExportModel: React.OldFC<{
     if (!value) return;
 
     setExportNLPType(value as NLP.Constants.NLPType);
-
-    const isVoiceflow = value === NLP.Constants.NLPType.VOICEFLOW;
-
-    if ((!permissionToExportCSV && isVoiceflow) || (!isVoiceflow && !permissionToExport)) {
-      setCanExport(false);
-    } else {
-      setCanExport(true);
-    }
   };
 
   React.useEffect(() => {
@@ -69,6 +57,7 @@ const ExportModel: React.OldFC<{
       <BlockText fontSize={15} color="#62778C" fontWeight={600} marginBottom={11}>
         Export format
       </BlockText>
+
       <Select
         value={exportNLPType}
         prefix={exportNLPConfig ? <SvgIcon icon={exportNLPConfig.icon.name} color={exportNLPConfig.icon.color} /> : null}
@@ -80,16 +69,13 @@ const ExportModel: React.OldFC<{
         getOptionValue={(value) => value}
         placeholder="Choose an option"
         getOptionLabel={(value) => value && NLP.Config.get(value).name}
-        renderOptionLabel={(option, searchLabel, getOptionLabel, getOptionValue, { isFocused }) => (
-          <UpgradeOption
-            option={option}
-            isFocused={isFocused}
-            searchLabel={searchLabel}
-            getOptionLabel={getOptionLabel}
-            getOptionValue={getOptionValue}
-            isGated={isGatedNLUExportType(option, permissionToExport, permissionToExportCSV)}
-            planDetails={getNLUExportLimitDetails(option)}
-            promptOrigin={UpgradePrompt.EXPORT_NLU}
+        renderOptionLabel={(nlpType, searchLabel, getOptionLabel, getOptionValue, options) => (
+          <PermittedMenuItem
+            data={{ nlpType }}
+            label={defaultMenuLabelRenderer(nlpType, searchLabel, getOptionLabel, getOptionValue, options)}
+            isFocused={options.isFocused}
+            permission={nlpType === NLP.Constants.NLPType.VOICEFLOW ? Permission.NLU_EXPORT_CSV : Permission.NLU_EXPORT_ALL}
+            tooltipProps={{ offset: [0, 30] }}
           />
         )}
       />
@@ -97,11 +83,9 @@ const ExportModel: React.OldFC<{
       {/* change this text */}
       <BlockText fontSize={13} color="#62778c" lineHeight="normal" marginTop={11}>
         <span>
-          {nluOptions.length === 1 && exportNLPType === NLP.Constants.NLPType.VOICEFLOW ? (
-            'Export as .CSV'
-          ) : (
-            <>Export as .CSV, or as consumable file for any NLU vendor.</>
-          )}
+          {nluOptions.length === 1 && exportNLPType === NLP.Constants.NLPType.VOICEFLOW
+            ? 'Export as .CSV'
+            : 'Export as .CSV, or as consumable file for any NLU vendor.'}
         </span>
       </BlockText>
 

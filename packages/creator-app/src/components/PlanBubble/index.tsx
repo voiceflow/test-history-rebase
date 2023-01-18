@@ -2,8 +2,8 @@ import { PlanType } from '@voiceflow/internal';
 import React from 'react';
 
 import BubbleText from '@/components/BubbleText';
-import { Permission } from '@/config/permissions';
 import { ModalType, PLAN_TYPE_META } from '@/constants';
+import { Permission } from '@/constants/permissions';
 import { useModals, usePermission } from '@/hooks';
 import { DashboardClassName } from '@/styles/constants';
 
@@ -12,11 +12,11 @@ interface PlanBubble {
   disabled?: boolean;
 }
 
-const PlanBubble: React.OldFC<PlanBubble> = ({ plan, disabled }) => {
-  const [canUpgrade] = usePermission(Permission.UPGRADE_WORKSPACE);
-  const [canManageBilling] = usePermission(Permission.MANAGE_BILLING);
+const PlanBubble: React.FC<PlanBubble> = ({ plan, disabled }) => {
+  const upgradeWorkspacePermission = usePermission(Permission.UPGRADE_WORKSPACE);
+  const [canManageBilling] = usePermission(Permission.BILLING_MANAGE);
   const { open: openPaymentsModal } = useModals(ModalType.PAYMENT);
-  const allowedToClick = !disabled && canUpgrade && canManageBilling;
+  const allowedToClick = !disabled && upgradeWorkspacePermission.allowed && canManageBilling;
 
   if (!plan) return null;
 

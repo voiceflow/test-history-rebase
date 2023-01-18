@@ -2,8 +2,8 @@ import { Button, ButtonVariant, Link, toast, ToastCallToAction } from '@voiceflo
 import React from 'react';
 
 import * as Documentation from '@/config/documentation';
-import { Permission } from '@/config/permissions';
 import { ModalType } from '@/constants';
+import { Permission } from '@/constants/permissions';
 import * as Prototype from '@/ducks/prototype';
 import * as Session from '@/ducks/session';
 import { VariableStateAppliedType } from '@/ducks/tracking';

@@ -5,14 +5,16 @@ import React from 'react';
 import { useDrag } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
 
-import { getLockedStepTooltipText, isLockedStep, lockedStepTooltipButtonText, LockedStepTypes } from '@/config/planLimits/steps';
-import { BlockType, DragItem, ModalType } from '@/constants';
+import { BlockType, DragItem } from '@/constants';
+import { Permission } from '@/constants/permissions';
 import { AutoPanningCacheContext } from '@/contexts/AutoPanningContext';
-import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { useEventualEngine, useHover, useModals, useSelector } from '@/hooks';
+import { useEventualEngine } from '@/hooks/engine';
+import { useHover } from '@/hooks/hover';
+import { usePermission } from '@/hooks/permission';
+import { usePaymentModal } from '@/ModalsV2/hooks';
 import { StepDragItem } from '@/pages/Canvas/components/CanvasDiagram';
 import { ClassName } from '@/styles/constants';
-import { onOpenInternalURLInANewTabFactory } from '@/utils/window';
+import { openInternalURLInANewTab } from '@/utils/window';
 
 import ClickNoDragTooltip from '../../ClickNoDragTooltip';
 import DefaultColorPopper from '../DefaultColorPopper';
@@ -21,35 +23,41 @@ import * as S from './styles';
 
 interface SubMenuButtonProps {
   type: BlockType;
-  icon: SvgIconTypes.Icon | React.OldFC;
+  icon: SvgIconTypes.Icon | React.FC;
   label?: string;
   onDrop: VoidFunction;
+  isFocused?: boolean;
   tooltipText?: string;
   tooltipLink?: string;
   factoryData?: Partial<Realtime.NodeData<unknown>>;
   isDraggingPreview?: boolean;
-  isFocused?: boolean;
 }
 
-const SubMenuButton: React.OldFC<SubMenuButtonProps> = ({
+const SubMenuButton: React.FC<SubMenuButtonProps> = ({
   type,
   icon,
   label,
   onDrop,
+  isFocused,
   tooltipText,
   tooltipLink,
   factoryData,
   isDraggingPreview,
-  isFocused,
 }) => {
-  const popper = usePopper({ strategy: 'fixed', placement: 'right-start' });
   const getEngine = useEventualEngine();
+  const paymentModal = usePaymentModal();
+
   const isAutoPanning = React.useContext(AutoPanningCacheContext);
-  const plan = useSelector(WorkspaceV2.active.planSelector);
-  const isLocked = isLockedStep(plan, type);
+
   const [isClicked, enableClicked, clearClicked] = useEnableDisable();
-  const [showPopper, , popperHoverHandlers] = useHover();
+  const paidStepsPermission = usePermission(Permission.CANVAS_PAID_STEPS);
+
+  const isLocked = !paidStepsPermission.allowed && paidStepsPermission.planConfig?.isPaidStep(type);
+
   const [isHovered, , hoverHandlers] = useHover({ hoverDelay: isLocked ? 0 : 1600 });
+  const [showPopper, , popperHoverHandlers] = useHover();
+
+  const popper = usePopper({ strategy: 'fixed', placement: 'right-start' });
 
   const menuOptions = React.useMemo(
     () =>
@@ -62,8 +70,6 @@ const SubMenuButton: React.OldFC<SubMenuButtonProps> = ({
       ] as OptionsMenuOption[],
     [showPopper]
   );
-
-  const { open: openPaymentModal } = useModals(ModalType.PAYMENT);
 
   const [{ isDragging }, connectDrag, connectPreview] = useDrag<StepDragItem, unknown, { isDragging: boolean }>({
     type: DragItem.BLOCK_MENU,
@@ -91,6 +97,7 @@ const SubMenuButton: React.OldFC<SubMenuButtonProps> = ({
   }, []);
 
   const containerRef = isLocked ? popper.setReferenceElement : composeRef<HTMLDivElement>(connectDrag, popper.setReferenceElement);
+  const upgradeTooltip = isLocked ? paidStepsPermission.planConfig?.upgradeTooltip({ stepType: type }) : null;
 
   const button = (isOpen?: boolean, onContextMenu?: React.MouseEventHandler) => (
     <ClickNoDragTooltip>
@@ -111,19 +118,19 @@ const SubMenuButton: React.OldFC<SubMenuButtonProps> = ({
           <Box.FlexStart width="100%" opacity={isDragging ? 0 : 1}>
             <SvgIcon icon={icon} size={16} color={isLocked ? '#62778c' : '#132144'} />
 
-            <StyledText disabled={isLocked as boolean}>{label}</StyledText>
+            <StyledText disabled={isLocked}>{label}</StyledText>
           </Box.FlexStart>
 
           {!isClickNoDragTooltipOpen && !isDragging && isHovered && tooltipText && (
             <Portal portalNode={document.body}>
               <div ref={popper.setPopperElement} style={{ ...popper.styles.popper, paddingLeft: '6px' }} {...popper.attributes.popper}>
-                <TooltipContainer width={tooltipLink ? 232 : 200}>
-                  {tooltipLink ? (
+                <TooltipContainer width={tooltipLink || isLocked ? 232 : 200}>
+                  {tooltipLink || isLocked ? (
                     <TippyTooltip.FooterButton
-                      onClick={isLocked ? () => openPaymentModal() : onOpenInternalURLInANewTabFactory(tooltipLink)}
-                      buttonText={isLocked ? lockedStepTooltipButtonText : 'Learn More'}
+                      onClick={() => (tooltipLink && !isLocked ? openInternalURLInANewTab(tooltipLink) : paymentModal.openVoid({}))}
+                      buttonText={upgradeTooltip?.upgradeButtonText ?? 'Learn More'}
                     >
-                      {isLocked ? getLockedStepTooltipText(type as LockedStepTypes) : tooltipText}
+                      {upgradeTooltip?.description ?? tooltipText}
                     </TippyTooltip.FooterButton>
                   ) : (
                     <TippyTooltip.Multiline>{tooltipText}</TippyTooltip.Multiline>

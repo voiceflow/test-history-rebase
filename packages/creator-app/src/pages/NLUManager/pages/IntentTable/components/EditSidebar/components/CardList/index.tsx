@@ -2,10 +2,10 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Button, ButtonVariant, StrengthGauge, useLocalStorageState } from '@voiceflow/ui';
 import React from 'react';
 
-import { Permission } from '@/config/permissions';
-import { NluViewConflictsLimitDetails } from '@/config/planLimits/nluConflicts';
-import { ModalType } from '@/constants';
-import { useFeature, useModals, usePermission } from '@/hooks';
+import { Permission } from '@/constants/permissions';
+import { useFeature } from '@/hooks/feature';
+import { usePermissionAction } from '@/hooks/permission';
+import { useUpgradeModal } from '@/ModalsV2/hooks';
 import { EditorTabs } from '@/pages/NLUManager/constants';
 import { useNLUManager } from '@/pages/NLUManager/context';
 import { NLUIntent } from '@/pages/NLUManager/types';
@@ -20,7 +20,7 @@ interface CardListProps {
   intent: NLUIntent;
 }
 
-const CardList: React.OldFC<CardListProps> = ({ intent }) => {
+const CardList: React.FC<CardListProps> = ({ intent }) => {
   const nluManager = useNLUManager();
   const intentID = intent.id;
   const confidence = intent.confidence || 0;
@@ -39,24 +39,22 @@ const CardList: React.OldFC<CardListProps> = ({ intent }) => {
   const showClarityMessage = !dismissedIntentNotifications?.clarity && clarityMeta.message && intent.hasConflicts;
   const showConfidenceMessage = !dismissedIntentNotifications?.confidence && confidenceMeta.message;
 
-  const [permissionToViewConflicts] = usePermission(Permission.NLU_CONFLICTS);
-  const { open: openUpgradeModal } = useModals(ModalType.UPGRADE_MODAL);
+  const upgradeModal = useUpgradeModal();
 
   const { isEnabled: isConflictsViewEnabled } = useFeature(Realtime.FeatureFlag.NLU_MANAGER_CONFLICTS_VIEW);
 
-  const triggerConflictsSlider = () => {
-    if (isConflictsPageOpen) {
-      nluManager.closeEditorTab();
-      return;
-    }
+  const onOpenConflictEditor = usePermissionAction(Permission.NLU_CONFLICTS, {
+    onAction: () => {
+      if (isConflictsPageOpen) {
+        nluManager.closeEditorTab();
+        return;
+      }
 
-    if (!permissionToViewConflicts) {
-      openUpgradeModal({ planLimitDetails: NluViewConflictsLimitDetails });
-      return;
-    }
+      nluManager.openEditorTab(EditorTabs.INTENT_CONFLICTS);
+    },
 
-    nluManager.openEditorTab(EditorTabs.INTENT_CONFLICTS);
-  };
+    onPlanForbid: ({ planConfig }) => upgradeModal.openVoid(planConfig.upgradeModal()),
+  });
 
   const handleCloseNotification = (notificationID: 'clarity' | 'confidence') => {
     setDismissedNotifications({ ...dismissedNotifications, [intentID]: { ...dismissedIntentNotifications, [notificationID]: true } });
@@ -96,7 +94,7 @@ const CardList: React.OldFC<CardListProps> = ({ intent }) => {
           >
             <Box mb={isConflictsViewEnabled ? 16 : 0}>{clarityMeta.message}</Box>
             {isConflictsViewEnabled && (
-              <Button onClick={triggerConflictsSlider} variant={ButtonVariant.SECONDARY}>
+              <Button onClick={onOpenConflictEditor} variant={ButtonVariant.SECONDARY}>
                 {isConflictsPageOpen ? 'Hide Conflicts' : 'View Conflicts'}
               </Button>
             )}

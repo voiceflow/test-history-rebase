@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { Permission } from '@/config/permissions';
 import { CANVAS_ZOOM_DELTA, ModalType } from '@/constants';
+import { Permission } from '@/constants/permissions';
 import { HotkeysContext } from '@/contexts/HotkeysContext';
 import * as Router from '@/ducks/router';
 import * as UI from '@/ducks/ui';
@@ -13,8 +13,8 @@ import { useCommentingToggle, useDisableModes } from '@/pages/Project/hooks';
 
 const HotKeys: React.OldFC = () => {
   const [hotkeysState] = React.useContext(HotkeysContext)!;
-  const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
-  const [showHintFeatures] = usePermission(Permission.HINT_FEATURES);
+  const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
+  const [showHintFeatures] = usePermission(Permission.CANVAS_HINT_FEATURES);
 
   const isCanvasOnly = useSelector(UI.isCanvasOnlyShowingSelector);
 

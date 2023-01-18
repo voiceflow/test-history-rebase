@@ -1,7 +1,7 @@
 import { SvgIcon, useLocalStorageState } from '@voiceflow/ui';
 import React from 'react';
 
-import { Permission } from '@/config/permissions';
+import { Permission } from '@/constants/permissions';
 import * as CanvasTemplates from '@/ducks/canvasTemplate';
 import * as CustomBlocks from '@/ducks/customBlock';
 import * as ProjectV2 from '@/ducks/projectV2';
@@ -21,7 +21,7 @@ const StepMenu: React.OldFC<{ numCollapsedSteps?: number }> = ({ numCollapsedSte
   const templates = useSelector(CanvasTemplates.allCanvasTemplatesSelector);
   const customBlocks = useSelector(CustomBlocks.allCustomBlocksSelector);
 
-  const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
+  const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
 
   const [eventSection, otherSections] = React.useMemo(() => {
     const sections = getAllSections(platform, projectType, {

@@ -1,16 +1,19 @@
 import { Utils } from '@voiceflow/common';
 import { UserRole } from '@voiceflow/internal';
-import { Flex, Input, Select, toast } from '@voiceflow/ui';
+import { Flex, Input, Select, toast, useEnableDisable } from '@voiceflow/ui';
 import React from 'react';
 
 import InputError from '@/components/InputError';
 import SelectInputGroup from '@/components/SelectInputGroup';
-import { Permission } from '@/config/permissions';
-import { canAddEditor, EditorLimitDetails } from '@/config/planLimits/numEditors';
-import { EDITOR_SEAT_ROLES, ModalType } from '@/constants';
+import { LimitType } from '@/constants/limits';
+import { Permission } from '@/constants/permissions';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { useEnableDisable, useModals, usePermission, useSelector } from '@/hooks';
+import { usePermission } from '@/hooks/permission';
+import { useGetPlanLimitedConfig } from '@/hooks/planLimitV2';
+import { useSelector } from '@/hooks/redux';
+import { useOnAddSeats } from '@/hooks/workspace';
 import { ClassName, Identifier } from '@/styles/constants';
+import { isEditorUserRole } from '@/utils/role';
 
 import Container from './components/Container';
 import SendInviteButton from './components/SendInviteButton';
@@ -34,14 +37,14 @@ const SendInvite: React.FC<SendInviteProps> = ({ inline, sendInvite }) => {
   const [canAddCollaborators] = usePermission(Permission.ADD_COLLABORATORS);
   const [canManageAdminCollaborators] = usePermission(Permission.MANAGE_ADMIN_COLLABORATORS);
 
-  const seatLimits = useSelector(WorkspaceV2.active.seatLimitsSelector);
   const numberOfSeats = useSelector(WorkspaceV2.active.numberOfSeatsSelector);
   const usedEditorSeats = useSelector(WorkspaceV2.active.usedEditorSeatsSelector);
   const usedViewerSeats = useSelector(WorkspaceV2.active.usedViewerSeatsSelector);
+  const viewerSeatLimits = useSelector(WorkspaceV2.active.viewerSeatLimitsSelector);
 
-  const plan = useSelector(WorkspaceV2.active.planSelector);
-  const { open: openUpgradeModal } = useModals(ModalType.UPGRADE_MODAL);
-  const { open: openPaymentsModal } = useModals(ModalType.PAYMENT);
+  const getEditorSeatLimit = useGetPlanLimitedConfig(LimitType.EDITOR_SEATS, { limit: numberOfSeats });
+
+  const onAddSeats = useOnAddSeats();
 
   const [role, setRole] = React.useState(UserRole.EDITOR);
   const [email, setEmail] = React.useState('');
@@ -63,19 +66,18 @@ const SendInvite: React.FC<SendInviteProps> = ({ inline, sendInvite }) => {
 
     setValid();
 
-    const paidEditorSeats = numberOfSeats!;
+    const isEditorRole = isEditorUserRole(role);
+    const updatedEditorSeats = usedEditorSeats + (isEditorRole ? 1 : 0);
+    const updatedViewerSeats = usedViewerSeats + (isEditorRole ? 0 : 1);
+    const editorSeatLimit = getEditorSeatLimit({ value: updatedEditorSeats });
 
-    if (usedEditorSeats >= paidEditorSeats && canAddEditor(plan, usedEditorSeats) && EDITOR_SEAT_ROLES.includes(role)) {
-      openPaymentsModal();
+    if (editorSeatLimit) {
+      onAddSeats(updatedEditorSeats);
+
       return;
     }
 
-    if (!canAddEditor(plan, usedEditorSeats) && EDITOR_SEAT_ROLES.includes(role)) {
-      openUpgradeModal({ planLimitDetails: EditorLimitDetails });
-      return;
-    }
-
-    if (usedViewerSeats >= (seatLimits?.viewer ?? 0) && role === UserRole.VIEWER) {
+    if (updatedViewerSeats >= viewerSeatLimits && role === UserRole.VIEWER) {
       toast.error('Viewer limit reached.');
       return;
     }

@@ -3,7 +3,7 @@ import React from 'react';
 
 import { SectionToggleVariant, UncontrolledSection } from '@/components/Section';
 import Upgrade from '@/components/Upgrade';
-import { Permission } from '@/config/permissions';
+import { Permission } from '@/constants/permissions';
 import { ScrollContextProvider } from '@/contexts/ScrollContext';
 import * as VariableState from '@/ducks/variableState';
 import { usePermission, useSelector } from '@/hooks';

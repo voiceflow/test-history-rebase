@@ -57,7 +57,7 @@ export const TooltipContainer = styled.div<{ width: number }>`
   animation-fill-mode: both;
 `;
 
-export const StyledText = styled(Text)<{ disabled: boolean }>`
+export const StyledText = styled(Text)<{ disabled?: boolean }>`
   padding-left: 12px;
   width: 100%;
   font-size: 15px;

@@ -3,8 +3,8 @@ import { Box, Dropdown, stopPropagation, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import Page from '@/components/Page';
-import { Permission } from '@/config/permissions';
 import { BlockType, ModalType } from '@/constants';
+import { Permission } from '@/constants/permissions';
 import { SearchContext } from '@/contexts/SearchContext';
 import * as Thread from '@/ducks/threadV2';
 import { useFeature, useModals, usePermission, useSelector, useTrackingEvents } from '@/hooks';
@@ -20,8 +20,8 @@ const CanvasHeader: React.OldFC = () => {
 
   const hasUnreadComments = useSelector(Thread.hasUnreadCommentsSelector);
 
-  const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
-  const [canUseHintFeatures] = usePermission(Permission.HINT_FEATURES);
+  const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
+  const [canUseHintFeatures] = usePermission(Permission.CANVAS_HINT_FEATURES);
 
   const onDisableModes = useDisableModes();
   const isCommentingMode = useCommentingMode();

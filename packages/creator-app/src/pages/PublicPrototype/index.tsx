@@ -6,7 +6,7 @@ import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
 import SeoHelmet from '@/components/SeoHelmet';
-import { Permission } from '@/config/permissions';
+import { Permission } from '@/constants/permissions';
 import { PrototypeLayout } from '@/constants/prototype';
 import { SeoPage } from '@/constants/seo';
 import * as PrototypeDuck from '@/ducks/prototype';

@@ -6,12 +6,12 @@ import React from 'react';
 import EntityValueInput from '@/components/EntityValueInput';
 import * as GPT from '@/components/GPT';
 import ListManager from '@/components/ListManager';
-import { Permission } from '@/config/permissions';
-import { BulkImportLimitDetails } from '@/config/planLimits/bulkImport';
 import { CUSTOM_SLOT_TYPE, ModalType } from '@/constants';
-import { useModals, usePermission } from '@/hooks';
-import { generateSlotInput, mergeSlotInputs } from '@/pages/Canvas/components/SlotEdit/utils';
-import { isDefaultSlotName } from '@/utils/slot';
+import { Permission } from '@/constants/permissions';
+import { useModals } from '@/hooks/modals';
+import { usePermissionAction } from '@/hooks/permission';
+import { useUpgradeModal } from '@/ModalsV2/hooks';
+import { generateSlotInput, isDefaultSlotName, mergeSlotInputs } from '@/utils/slot';
 
 const MAX_VISIBLE_VALUES = 10;
 
@@ -26,9 +26,7 @@ interface ValuesSectionProps {
 const ValuesSection: React.OldFC<ValuesSectionProps> = ({ type, name, inputs, onChange }) => {
   const valueRef = React.useRef<HTMLInputElement | null>(null);
 
-  const [canBulkUpload] = usePermission(Permission.BULK_UPLOAD);
-
-  const { open: openUpgradeModal } = useModals(ModalType.UPGRADE_MODAL);
+  const upgradeModal = useUpgradeModal();
   const { open: openSlotsBulkUploadModal } = useModals(ModalType.IMPORT_SLOTS);
 
   const [newValueText, setNewValueText] = React.useState('');
@@ -43,20 +41,18 @@ const ValuesSection: React.OldFC<ValuesSectionProps> = ({ type, name, inputs, on
     onChange(lines);
   };
 
-  const onBulkUploadClick = () => {
-    if (!canBulkUpload) {
-      openUpgradeModal({ planLimitDetails: BulkImportLimitDetails });
-      return;
-    }
+  const onBulkUploadClick = usePermissionAction(Permission.BULK_UPLOAD, {
+    onAction: () =>
+      openSlotsBulkUploadModal({
+        onUpload: (slots: string[][]) => {
+          const newCustomLines = slots.map(([value, ...synonyms]) => generateSlotInput(value, synonyms.join(', ')));
 
-    openSlotsBulkUploadModal({
-      onUpload: (slots: string[][]) => {
-        const newCustomLines = slots.map(([value, ...synonyms]) => generateSlotInput(value, synonyms.join(', ')));
+          onChange(mergeSlotInputs(newCustomLines, customLines));
+        },
+      }),
 
-        onChange(mergeSlotInputs(newCustomLines, customLines));
-      },
-    });
-  };
+    onPlanForbid: ({ planConfig }) => upgradeModal.openVoid(planConfig.upgradeModal()),
+  });
 
   const isValidNewInput = (input: Realtime.SlotInput) => {
     if (!input) return false;

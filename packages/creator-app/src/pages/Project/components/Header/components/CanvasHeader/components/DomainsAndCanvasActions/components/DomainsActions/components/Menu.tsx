@@ -2,7 +2,7 @@ import { Utils } from '@voiceflow/common';
 import { Menu as UIMenu, stopImmediatePropagation, toast } from '@voiceflow/ui';
 import React from 'react';
 
-import { LimitType } from '@/config/planLimitV2';
+import { LimitType } from '@/constants/limits';
 import * as Domain from '@/ducks/domain';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
@@ -40,16 +40,17 @@ const Menu: React.OldFC<MenuProps> = ({ onClose }) => {
     return domains.filter(({ name }) => name.toLowerCase().includes(lowercaseSearch));
   }, [search, domains]);
 
-  const onCreate = usePlanLimitedAction({
-    type: LimitType.DOMAINS,
+  const onCreate = usePlanLimitedAction(LimitType.DOMAINS, {
     value: domains.length,
+
+    onLimit: (config) => upgradeModal.openVoid(config.upgradeModal()),
     onAction: () => createModal.openVoid({ name: search }),
-    onLimited: (limit) => upgradeModal.openVoid(limit.upgradeModal),
   });
 
-  const onDuplicate = usePlanLimitedAction({
-    type: LimitType.DOMAINS,
+  const onDuplicate = usePlanLimitedAction(LimitType.DOMAINS, {
     value: domains.length,
+
+    onLimit: (config) => upgradeModal.openVoid(config.upgradeModal()),
     onAction: async (id: string) => {
       const domainToDuplicate = getDomainByID({ id });
 
@@ -59,7 +60,6 @@ const Menu: React.OldFC<MenuProps> = ({ onClose }) => {
 
       toast.success(`Successfully duplicated "${domainToDuplicate.name}" domain.`);
     },
-    onLimited: (limit) => upgradeModal.openVoid(limit.upgradeModal),
   });
 
   return (

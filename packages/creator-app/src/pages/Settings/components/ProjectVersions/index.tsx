@@ -6,8 +6,8 @@ import React, { useCallback } from 'react';
 import client from '@/client';
 import * as Settings from '@/components/Settings';
 import * as Errors from '@/config/errors';
-import { Permission } from '@/config/permissions';
 import { ModalType } from '@/constants';
+import { Permission } from '@/constants/permissions';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
@@ -56,7 +56,7 @@ const ProjectVersions: React.FC = () => {
   const [loading, setLoading] = React.useState(true);
   const [noMoreVersions, setNoMoreVersions] = React.useState(false);
   const [versionList, setVersionList] = React.useState<ProjectVersion[]>([]);
-  const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
+  const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
 
   const [hasFullVersionPermissions] = usePermission(Permission.FULL_PROJECT_VERSIONS);
   const [trackingEvents] = useTrackingEvents();

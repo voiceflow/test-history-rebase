@@ -2,8 +2,8 @@ import { UserRole } from '@voiceflow/internal';
 import { ClickableText, Dropdown, IconButton, IconButtonVariant, Menu, Text, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
-import { Permission } from '@/config/permissions';
 import { ModalType, PLAN_TYPE_META } from '@/constants';
+import { Permission } from '@/constants/permissions';
 import * as Router from '@/ducks/router';
 import * as Workspace from '@/ducks/workspace';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';

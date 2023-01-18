@@ -3,7 +3,11 @@ import { Flex, KeyName, preventDefault, SvgIcon, useDidUpdateEffect } from '@voi
 import React from 'react';
 import { SelectInstance } from 'react-select';
 
-import { useActiveProjectConfig, useCanvasNodeFilter, useTrackingEvents } from '@/hooks';
+import { Permission } from '@/constants/permissions';
+import { useCanvasNodeFilter } from '@/hooks/canvasNodes';
+import { usePermission } from '@/hooks/permission';
+import { useActiveProjectConfig } from '@/hooks/platformConfig';
+import { useTrackingEvents } from '@/hooks/tracking';
 import { EngineContext, SpotlightContext } from '@/pages/Canvas/contexts';
 import { useManager } from '@/pages/Canvas/managers/utils';
 import { getStepSections, StepItem } from '@/pages/Project/components/StepMenu/constants';
@@ -24,6 +28,7 @@ const Spotlight = () => {
   const { platform, projectType } = useActiveProjectConfig();
   // NOTE: extra protection against context being falsy needed for HMR
   const spotlight = React.useContext(SpotlightContext);
+  const paidStepsPermission = usePermission(Permission.CANVAS_PAID_STEPS);
 
   const selectRef = React.useRef<SelectInstance<Option, false>>(null);
   const [inputValue, setInputValue] = React.useState('');
@@ -46,7 +51,12 @@ const Spotlight = () => {
     () =>
       getStepSections(platform, projectType)
         .flatMap((section) => Utils.array.inferUnion(section.steps))
-        .filter((step) => Utils.object.hasProperty(step, 'type') && nodeFilter(step))
+        .filter(
+          (step) =>
+            Utils.object.hasProperty(step, 'type') &&
+            nodeFilter(step) &&
+            (paidStepsPermission.allowed || !paidStepsPermission.planConfig?.isPaidStep(step.type))
+        )
         .map<Option>((step) => {
           const manager = getManager(step.type);
           const value = step.getLabel(manager) || '';
@@ -62,7 +72,7 @@ const Spotlight = () => {
             ),
           };
         }),
-    [platform, nodeFilter]
+    [platform, nodeFilter, paidStepsPermission]
   );
 
   const trimmedValue = inputValue.toLowerCase().trim();

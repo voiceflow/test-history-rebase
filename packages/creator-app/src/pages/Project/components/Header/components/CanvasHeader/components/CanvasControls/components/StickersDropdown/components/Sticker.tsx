@@ -1,8 +1,8 @@
 import { useCache } from '@voiceflow/ui';
 import React from 'react';
 
-import { Permission } from '@/config/permissions';
 import { BlockType } from '@/constants';
+import { Permission } from '@/constants/permissions';
 import * as History from '@/ducks/history';
 import { useDispatch, useEventualEngine, usePermission } from '@/hooks';
 
@@ -12,7 +12,7 @@ import ImageContainer from './ImageContainer';
 
 const Sticker: React.OldFC<StickerProps> = ({ url }) => {
   const getEngine = useEventualEngine();
-  const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
+  const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
 
   const cache = useCache({ getEngine, canEditCanvas });
 

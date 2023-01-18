@@ -2,7 +2,7 @@ import { Popper, PopperTypes, useSessionStorageState } from '@voiceflow/ui';
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
-import { Permission } from '@/config/permissions';
+import { Permission } from '@/constants/permissions';
 import * as Session from '@/ducks/session';
 import * as Tracking from '@/ducks/tracking';
 import { usePermission, useSelector } from '@/hooks';

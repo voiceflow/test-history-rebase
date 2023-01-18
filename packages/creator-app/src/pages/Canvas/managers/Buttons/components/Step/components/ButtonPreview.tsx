@@ -2,8 +2,8 @@ import { Utils } from '@voiceflow/common';
 import { Box, BoxFlex, Preview, stopPropagation, Tag } from '@voiceflow/ui';
 import React from 'react';
 
-import { Permission } from '@/config/permissions';
 import { InteractionModelTabType } from '@/constants';
+import { Permission } from '@/constants/permissions';
 import * as Router from '@/ducks/router';
 import { useDispatch } from '@/hooks';
 import { usePermission } from '@/hooks/permission';
@@ -18,7 +18,7 @@ interface ButtonsPreviewProps {
 }
 
 const ButtonPreview: React.OldFC<ButtonsPreviewProps> = ({ prompts, onOpenEditor, onClose }) => {
-  const [canOpenEditor] = usePermission(Permission.OPEN_EDITOR);
+  const [canOpenEditor] = usePermission(Permission.CANVAS_OPEN_EDITOR);
   const onOpenEntityModal = useDispatch(Router.goToCurrentCanvasInteractionModelEntity, InteractionModelTabType.SLOTS);
 
   return (

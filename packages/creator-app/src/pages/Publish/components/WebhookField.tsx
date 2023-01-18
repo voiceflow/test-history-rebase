@@ -4,9 +4,9 @@ import React from 'react';
 import client from '@/client';
 import * as Settings from '@/components/Settings';
 import { RUNTIME_API_ENDPOINT } from '@/config';
-import { Permission } from '@/config/permissions';
+import { Permission } from '@/constants/permissions';
 import * as Session from '@/ducks/session';
-import { useAsyncEffect, usePermissions, useSelector } from '@/hooks';
+import { useAsyncEffect, useHasPermissions, useSelector } from '@/hooks';
 import { copyWithToast } from '@/utils/clipboard';
 
 interface WebhookFieldProps {
@@ -15,7 +15,7 @@ interface WebhookFieldProps {
 }
 
 const WebhookField: React.FC<WebhookFieldProps> = ({ description, platformName }) => {
-  const hasPermissions = usePermissions([Permission.API_KEY_EDIT, Permission.API_KEY_VIEW]);
+  const hasPermissions = useHasPermissions([Permission.API_KEY_EDIT, Permission.API_KEY_VIEW]);
   const [primaryKey, setPrimaryKey] = React.useState<string | null>(null);
 
   const projectID = useSelector(Session.activeProjectIDSelector)!;

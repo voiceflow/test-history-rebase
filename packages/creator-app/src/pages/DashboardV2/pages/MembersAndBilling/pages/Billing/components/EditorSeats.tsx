@@ -3,7 +3,7 @@ import React from 'react';
 
 import Page from '@/components/Page';
 import Workspace from '@/components/Workspace';
-import { Permission } from '@/config/permissions';
+import { Permission } from '@/constants/permissions';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { usePermission, useSelector } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
@@ -20,7 +20,7 @@ const EditorSeats: React.OldFC = () => {
   const isEnterprise = useSelector(WorkspaceV2.active.isEnterpriseSelector);
   const isPaidPlan = useSelector(WorkspaceV2.active.isOnPaidPlanSelector);
   const nextBillingDate = '10 Jan 2023';
-  const canManageSeats = usePermission(Permission.MANAGE_SEATS);
+  const canManageSeats = usePermission(Permission.BILLING_SEATS);
 
   return (
     <Page.Section

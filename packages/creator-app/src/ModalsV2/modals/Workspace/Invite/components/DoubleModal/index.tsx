@@ -4,24 +4,24 @@ import React from 'react';
 
 import SelectInputGroup from '@/components/SelectInputGroup';
 import WorkspaceUI from '@/components/Workspace';
-import { LimitType } from '@/config/planLimitV2';
-import { EDITOR_SEAT_ROLES } from '@/constants';
+import { LimitType } from '@/constants/limits';
 import * as Session from '@/ducks/session';
 import * as Workspace from '@/ducks/workspace';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { useDispatch, useGetPlanLimited, useOnAddSeats, useSelector, useSetup, useTrackingEvents } from '@/hooks';
+import { useDispatch, useGetPlanLimitedConfig, useOnAddSeats, useSelector, useSetup, useTrackingEvents } from '@/hooks';
 import { VoidInternalProps } from '@/ModalsV2/types';
 import { copyWithToast } from '@/utils/clipboard';
+import { isEditorUserRole } from '@/utils/role';
 import * as Sentry from '@/vendors/sentry';
 
-const DoubleModal: React.OldFC<VoidInternalProps> = ({ api, type, opened, hidden, animated }) => {
+const DoubleModal: React.FC<VoidInternalProps> = ({ api, type, opened, hidden, animated }) => {
   const projectID = useSelector(Session.activeProjectIDSelector)!;
 
   const numberOfSeats = useSelector(WorkspaceV2.active.numberOfSeatsSelector);
   const usedEditorSeats = useSelector(WorkspaceV2.active.usedEditorSeatsSelector);
 
   const [trackingEvents] = useTrackingEvents();
-  const getEditorSeatLimit = useGetPlanLimited({ type: LimitType.EDITOR_SEATS, limit: numberOfSeats ?? 1 });
+  const getEditorSeatLimit = useGetPlanLimitedConfig(LimitType.EDITOR_SEATS, { limit: numberOfSeats });
 
   const getWorkspaceInviteLink = useDispatch(Workspace.getWorkspaceInviteLink);
 
@@ -45,7 +45,7 @@ const DoubleModal: React.OldFC<VoidInternalProps> = ({ api, type, opened, hidden
   };
 
   const onCopyLink = async () => {
-    const isEditorRole = EDITOR_SEAT_ROLES.includes(roles[0]);
+    const isEditorRole = isEditorUserRole(roles[0]);
     const updatedEditorSeats = usedEditorSeats + (isEditorRole ? 1 : 0);
     const editorSeatLimit = getEditorSeatLimit({ value: updatedEditorSeats });
 

@@ -3,7 +3,7 @@ import { PlanType, UserRole } from '@voiceflow/internal';
 import { useContextApi } from '@voiceflow/ui';
 import React from 'react';
 
-import { VirtualRole } from '@/config/permissions';
+import { VirtualRole } from '@/constants/roles';
 import * as UI from '@/ducks/ui';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useSelector } from '@/hooks/redux';

@@ -4,10 +4,9 @@ import { Box, Button, defaultMenuLabelRenderer, getNestedMenuFormattedLabel, Mod
 import React from 'react';
 
 import LocalesSelect from '@/components/LocalesSelect';
-import PlanPermittedMenuItem from '@/components/PlanPermittedMenuItem';
+import PermittedMenuItem from '@/components/PermittedMenuItem';
 import * as NLU from '@/config/nlu';
-import { UpgradePrompt } from '@/ducks/tracking';
-import { useFeature, useHasPermission } from '@/hooks';
+import { useFeature, useGetPermission } from '@/hooks';
 import { NLUImportModel } from '@/models';
 import { Identifier } from '@/styles/constants';
 
@@ -52,7 +51,7 @@ const PlatformSetup: React.OldFC<PlatformSetupProps> = ({
 
   const dashboardV2 = useFeature(Realtime.FeatureFlag.DASHBOARD_V2);
 
-  const hasPermission = useHasPermission();
+  const gasPermission = useGetPermission();
   const isDialogflowCXEnabled = useFeature(Realtime.FeatureFlag.DIALOGFLOW_CX);
 
   const [nluError, setNLUError] = React.useState('');
@@ -60,7 +59,7 @@ const PlatformSetup: React.OldFC<PlatformSetupProps> = ({
   const [isImportLoading, setIsImportLoading] = React.useState(false);
 
   const onSelectNLU = (value: Platform.Constants.NLUType | null) => {
-    if (value && !hasPermission(NLU.Config.get(value).permission)) return;
+    if (value && !gasPermission(NLU.Config.get(value).permission).allowed) return;
 
     onChangeNLU({
       nlu: value,
@@ -146,7 +145,7 @@ const PlatformSetup: React.OldFC<PlatformSetupProps> = ({
             getOptionLabel={(value) => (value === Platform.Constants.NLUType.VOICEFLOW ? 'Voiceflow (default)' : value && NLU.Config.get(value).name)}
             clearOnSelectActive
             renderOptionLabel={(option, searchLabel, getOptionLabel, getOptionValue, { isFocused }) => (
-              <PlanPermittedMenuItem
+              <PermittedMenuItem
                 data={{ nluType: option.type }}
                 label={
                   <Box.Flex gap={16}>
@@ -159,7 +158,6 @@ const PlatformSetup: React.OldFC<PlatformSetupProps> = ({
                 permission={option.permission}
                 tooltipProps={{ offset: [0, 30] }}
                 labelTooltip={option.labelTooltip}
-                upgradePrompt={UpgradePrompt.SUPPORTED_NLUS}
               />
             )}
           />

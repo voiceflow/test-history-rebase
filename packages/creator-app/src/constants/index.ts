@@ -1,6 +1,6 @@
 import { AlexaNode } from '@voiceflow/alexa-types';
 import { BaseNode } from '@voiceflow/base-types';
-import { BillingPeriod, UserRole } from '@voiceflow/internal';
+import { BillingPeriod } from '@voiceflow/internal';
 import { COLOR_PICKER_CONSTANTS } from '@voiceflow/ui';
 
 import { Pair } from '@/types';
@@ -8,6 +8,7 @@ import { Pair } from '@/types';
 export * from './file';
 export * from './links';
 export * from './plans';
+export * from './roles';
 export type { MarkupBlockType, RootOrMarkupBlockType } from '@voiceflow/realtime-sdk';
 export { BlockType, BUILT_IN_VARIABLES, BuiltInVariable, CUSTOM_SLOT_TYPE, DialogType, LEGACY_CUSTOM_SLOT_TYPE } from '@voiceflow/realtime-sdk';
 
@@ -215,8 +216,6 @@ export enum ModalType {
 
   UPGRADE_MODAL = 'upgrade-modal',
 }
-
-export const EDITOR_SEAT_ROLES = [UserRole.EDITOR, UserRole.ADMIN, UserRole.OWNER]; // billing not included in seat roles
 
 export const SLOT_COLORS = [
   '#4F9ED1',

@@ -240,12 +240,13 @@ export enum UpgradePrompt {
   EXPORT_CSV_NLU = 'Export NLU as CSV',
   EXPORT_NLU = 'Export NLU',
   IMPORT_NLU = 'Import NLU',
+  NLU_CONFLICTS = 'NLU Conflicts',
   SUPPORTED_NLUS = 'Supported NLUs',
   EXPORT_PROJECT = 'Export Project as PNG or PDF',
-  EXPORT_PROJECT_CSV = 'Export Project as CSV',
   TRANSCRIPTS = 'Transcripts',
   VARIABLE_STATES_LIMIT = 'Variable States Limit',
   DOMAINS = 'Domains',
+  LOCKED_STEPS = 'Locked Steps',
 }
 
 export enum SourceType {

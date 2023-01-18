@@ -5,8 +5,8 @@ import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
 import Page from '@/components/Page';
-import { Permission } from '@/config/permissions';
 import { Path } from '@/config/routes';
+import { Permission } from '@/constants/permissions';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { lazy } from '@/hocs/lazy';
 import { useFeature } from '@/hooks/feature';

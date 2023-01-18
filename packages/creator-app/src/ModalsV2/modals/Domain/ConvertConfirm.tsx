@@ -3,10 +3,10 @@ import React from 'react';
 
 import client from '@/client';
 import * as Documentation from '@/config/documentation';
-import { LimitType } from '@/config/planLimitV2';
+import { LimitType } from '@/constants/limits';
 import * as Project from '@/ducks/project';
 import * as ProjectV2 from '@/ducks/projectV2';
-import { useDispatch, usePlanLimit, useSelector } from '@/hooks';
+import { useDispatch, usePlanLimitConfig, useSelector } from '@/hooks';
 
 import { useModal } from '../../hooks';
 import manager from '../../manager';
@@ -26,8 +26,8 @@ const ConvertConfirm = manager.create<Props>(
 
       const mergeProjects = useDispatch(Project.mergeProjects);
 
-      const domainsLimit = usePlanLimit({ type: LimitType.DOMAINS });
       const upgradeModal = useModal(Upgrade);
+      const domainsLimitConfig = usePlanLimitConfig(LimitType.DOMAINS);
 
       const onConfirm = async () => {
         if (!targetProject || !sourceProject) {
@@ -41,8 +41,8 @@ const ConvertConfirm = manager.create<Props>(
             client.api.version.get(sourceProject.versionID, ['domains']),
           ]);
 
-          if (domainsLimit && targetDomains.length + sourceDomains.length >= domainsLimit.limit) {
-            upgradeModal.openVoid(domainsLimit.upgradeModal);
+          if (domainsLimitConfig && targetDomains.length + sourceDomains.length >= domainsLimitConfig.limit) {
+            upgradeModal.openVoid(domainsLimitConfig.upgradeModal());
             return;
           }
 

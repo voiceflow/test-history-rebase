@@ -2,8 +2,8 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
 import Page from '@/components/Page';
-import { Permission } from '@/config/permissions';
 import { Path } from '@/config/routes';
+import { Permission } from '@/constants/permissions';
 import { useActiveWorkspace, usePermission } from '@/hooks';
 import RedirectWithSearch from '@/Routes/RedirectWithSearch';
 

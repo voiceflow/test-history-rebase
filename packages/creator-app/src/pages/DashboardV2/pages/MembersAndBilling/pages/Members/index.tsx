@@ -2,7 +2,7 @@ import { Banner, Button, ButtonVariant, FlexCenter, Text } from '@voiceflow/ui';
 import React from 'react';
 
 import Workspace from '@/components/Workspace';
-import { Permission } from '@/config/permissions';
+import { Permission } from '@/constants/permissions';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useOnAddSeats, usePermission, useSelector } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';

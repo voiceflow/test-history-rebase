@@ -1,26 +1,30 @@
-import { ErrorRenderer, PlanLimit, ToastErrorStaticLimit } from '@/config/planLimitV2/types';
+import { LimitType } from '@/constants/limits';
 
+import { ErrorRenderer, PlanLimit, ToastErrorStaticLimit } from './types';
 import { applyEnterpriseLimits, applyStarterLimits, applyTeamLimits } from './utils';
 
-const getToastError: ErrorRenderer = ({ limit }): string => `File size must not exceed ${limit}MBs`;
+const toastError: ErrorRenderer = ({ limit }): string => `File size must not exceed ${limit}MBs`;
 
-const STARTER_LIMIT: ToastErrorStaticLimit = {
+const STARTER_LIMIT = {
   limit: 4,
-  getToastError,
-};
+  toastError,
+} satisfies ToastErrorStaticLimit;
 
-const TEAM_LIMIT: ToastErrorStaticLimit = {
+const TEAM_LIMIT = {
   limit: 40,
-  getToastError,
-};
+  toastError,
+} satisfies ToastErrorStaticLimit;
 
-const ENTERPRISE_LIMIT: ToastErrorStaticLimit = {
+const ENTERPRISE_LIMIT = {
   limit: 200,
-  getToastError,
-};
+  toastError,
+} satisfies ToastErrorStaticLimit;
 
-export const MARKUP_VIDEO_LIMITS: PlanLimit<ToastErrorStaticLimit> = {
-  ...applyTeamLimits(TEAM_LIMIT),
-  ...applyStarterLimits(STARTER_LIMIT),
-  ...applyEnterpriseLimits(ENTERPRISE_LIMIT),
-};
+export const MARKUP_VIDEO_LIMITS = {
+  limit: LimitType.MARKUP_VIDEO,
+  limits: {
+    ...applyTeamLimits(TEAM_LIMIT),
+    ...applyStarterLimits(STARTER_LIMIT),
+    ...applyEnterpriseLimits(ENTERPRISE_LIMIT),
+  },
+} satisfies PlanLimit;

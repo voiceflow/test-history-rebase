@@ -1,8 +1,8 @@
 import { IconButtonVariant } from '@voiceflow/ui';
 import React from 'react';
 
-import { Permission } from '@/config/permissions';
 import { ModalType } from '@/constants';
+import { Permission } from '@/constants/permissions';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import PermissionGate from '@/gates/PermissionGate';
 import { useModals, useSelector } from '@/hooks';

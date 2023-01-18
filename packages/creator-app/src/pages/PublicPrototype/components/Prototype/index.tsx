@@ -2,7 +2,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { IS_IOS, useDidUpdateEffect, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
-import { Permission } from '@/config/permissions';
+import { Permission } from '@/constants/permissions';
 import { PrototypeLayout, PrototypeStatus } from '@/constants/prototype';
 import * as PrototypeDuck from '@/ducks/prototype';
 import { useASR, useCanASR, useGuestPermission, useSpeechRecognition, useTeardown } from '@/hooks';

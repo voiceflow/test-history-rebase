@@ -2,7 +2,7 @@ import { Box, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import Page from '@/components/Page';
-import { Permission } from '@/config/permissions';
+import { Permission } from '@/constants/permissions';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as Project from '@/ducks/project';
 import * as ProjectV2 from '@/ducks/projectV2';
@@ -33,7 +33,7 @@ const DomainsAndCanvasActions: React.OldFC = () => {
 
   const isPrototypingMode = usePrototypingMode();
   const [canEditProject] = usePermission(Permission.EDIT_PROJECT);
-  const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
+  const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
 
   const [focused, setFocused] = useToggle(false);
   const [formValue, updateFormValue] = useLinkedState(projectName ?? '');

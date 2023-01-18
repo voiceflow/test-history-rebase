@@ -1,7 +1,7 @@
 import _isFunction from 'lodash/isFunction';
 import React from 'react';
 
-import { Permission } from '@/config/permissions';
+import { Permission } from '@/constants/permissions';
 import { usePermission } from '@/hooks';
 
 export interface PermissionGateProps {

@@ -3,10 +3,10 @@ import { Box, Flex, Text, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 
 import * as NLU from '@/config/nlu';
-import { Permission } from '@/config/permissions';
 import { NLUImportOrigin } from '@/constants';
+import { Permission } from '@/constants/permissions';
 import { useNLUImport } from '@/hooks/nlu';
-import { usePlanPermissionAction } from '@/hooks/planPermission';
+import { usePermissionAction } from '@/hooks/permission';
 import { useUpgradeModal } from '@/ModalsV2/hooks/helpers';
 import { NLUImportModel } from '@/models';
 
@@ -21,14 +21,13 @@ interface ModelImportProps {
   setIsImportLoading: (isLoadingImport: boolean) => void;
 }
 
-const ModelImport: React.OldFC<ModelImportProps> = ({ platform, nluConfig, onImportModel, importModel, isImportLoading, setIsImportLoading }) => {
+const ModelImport: React.FC<ModelImportProps> = ({ platform, nluConfig, onImportModel, importModel, isImportLoading, setIsImportLoading }) => {
   const nluImport = useNLUImport({ nluType: nluConfig.type, platform, onImport: onImportModel });
   const upgradeModal = useUpgradeModal();
 
-  const onImport = usePlanPermissionAction({
+  const onImport = usePermissionAction(Permission.BULK_UPLOAD, {
     onAction: () => nluImport.onUploadClick(NLUImportOrigin.PROJECT),
-    onLimited: (limit) => upgradeModal.open(limit.getUpgradeModal()),
-    permission: Permission.BULK_UPLOAD,
+    onPlanForbid: ({ planConfig }) => upgradeModal.open(planConfig.upgradeModal()),
   });
 
   const textColor = isImportLoading ? 'rgba(98, 119, 140, 0.5)' : 'rgba(98, 119, 140, 1)';

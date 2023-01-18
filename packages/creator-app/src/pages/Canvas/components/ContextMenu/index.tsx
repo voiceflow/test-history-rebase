@@ -2,8 +2,8 @@ import { Eventual, Utils } from '@voiceflow/common';
 import { Box, buildVirtualElement, NestedMenu, Text, useCache, useVirtualElementPopper } from '@voiceflow/ui';
 import React from 'react';
 
-import { Permission } from '@/config/permissions';
 import { CANVAS_ZOOM_DELTA, CLIPBOARD_DATA_KEY, ModalType } from '@/constants';
+import { Permission } from '@/constants/permissions';
 import * as UIDuck from '@/ducks/ui';
 import { useDispatch, useModals, usePermission } from '@/hooks';
 import { ClipboardContext, ContextMenuContext, ContextMenuValue, EngineContext } from '@/pages/Canvas/contexts';
@@ -95,12 +95,12 @@ const ContextMenu: React.OldFC = () => {
   const markup = React.useContext(MarkupContext)!;
   const clipboard = React.useContext(ClipboardContext)!;
   const contextMenu = React.useContext(ContextMenuContext)!;
-  const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
+  const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
 
   const upgradeModal = useModals(ModalType.PAYMENT);
 
   const [canUseCommenting] = usePermission(Permission.COMMENTING);
-  const [showHintFeatures] = usePermission(Permission.HINT_FEATURES);
+  const [showHintFeatures] = usePermission(Permission.CANVAS_HINT_FEATURES);
 
   const cache = useCache({
     engine,

@@ -5,8 +5,8 @@ import { XYCoord } from 'react-dnd';
 import DraggableList from '@/components/DraggableList';
 import VirtualList from '@/components/VirtualList';
 import * as Documentation from '@/config/documentation';
-import { Permission } from '@/config/permissions';
 import { DragItem } from '@/constants';
+import { Permission } from '@/constants/permissions';
 import { useDidUpdateEffect, usePermission } from '@/hooks';
 
 import Header from '../../Header';

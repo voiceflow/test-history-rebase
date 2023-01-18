@@ -1,18 +1,19 @@
 import { Utils } from '@voiceflow/common';
-import { UserRole } from '@voiceflow/internal';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Button, Modal, Select, StatusCode, toast, ToastCallToAction } from '@voiceflow/ui';
 import React, { useMemo, useState } from 'react';
 
 import client from '@/client';
-import { hasRolePermission, Permission, ROLE_PERMISSIONS } from '@/config/permissions';
-import { LimitType } from '@/config/planLimitV2';
+import { ROLE_PERMISSIONS } from '@/config/rolePermission';
+import { LimitType } from '@/constants/limits';
+import { Permission } from '@/constants/permissions';
 import * as Account from '@/ducks/account';
 import * as Router from '@/ducks/router';
 import * as Workspace from '@/ducks/workspace';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { extractMemberById } from '@/ducks/workspaceV2/utils';
-import { useAsyncEffect, useDispatch, useFeature, usePlanLimit, useSelector } from '@/hooks';
+import { useAsyncEffect, useDispatch, useFeature, usePlanLimitConfig, useSelector } from '@/hooks';
+import { hasRolePermission } from '@/utils/rolePermission';
 import * as Sentry from '@/vendors/sentry';
 
 import { useModal } from '../../hooks';
@@ -66,7 +67,7 @@ const ImportModal = manager.create<Props>('ProjectImport', () => ({ api, type, o
 
   const chooseWorkspace = React.useCallback((workspaceID: string) => setTargetWorkspace(workspaceID ?? null), [workspaceOptions, setTargetWorkspace]);
 
-  const planLimit = usePlanLimit({ type: LimitType.PROJECTS, limit: 2 });
+  const projectLimitConfig = usePlanLimitConfig(LimitType.PROJECTS, { limit: 2 });
 
   const cloneProject = async (workspaceID?: string) => {
     if (!projectID || !workspaceID) return;
@@ -79,10 +80,10 @@ const ImportModal = manager.create<Props>('ProjectImport', () => ({ api, type, o
 
     const projectCountPerWorkspace = workspace.boards.reduce((acc, board) => acc + (board.projects.length || 0), 0);
 
-    if (planLimit && projectCountPerWorkspace >= workspace.projects) {
+    if (projectLimitConfig && projectCountPerWorkspace >= workspace.projects) {
       goToWorkspace(workspaceID);
 
-      upgradeModal.openVoid(planLimit.upgradeModal);
+      upgradeModal.openVoid(projectLimitConfig.upgradeModal(projectLimitConfig.payload));
       return;
     }
 
@@ -103,8 +104,8 @@ const ImportModal = manager.create<Props>('ProjectImport', () => ({ api, type, o
       if (err && typeof err === 'object' && 'statusCode' in err && err.statusCode === StatusCode.FORBIDDEN) {
         goToWorkspace(workspaceID);
 
-        if (planLimit) {
-          upgradeModal.openVoid(planLimit.upgradeModal);
+        if (projectLimitConfig) {
+          upgradeModal.openVoid(projectLimitConfig.upgradeModal(projectLimitConfig.payload));
         }
       } else {
         Sentry.error(err);
@@ -119,7 +120,7 @@ const ImportModal = manager.create<Props>('ProjectImport', () => ({ api, type, o
     let authorizedWorkspaces: ImportWorkspace[] = [];
     // get a list of workspaces with editor/owner/admin role
     if (identityWorkspaceMember.isEnabled) {
-      authorizedWorkspaces = await client.identity.workspace.list(ROLE_PERMISSIONS[Permission.MANAGE_PROJECTS] as UserRole[]);
+      authorizedWorkspaces = await client.identity.workspace.list(ROLE_PERMISSIONS[Permission.MANAGE_PROJECTS].roles);
     } else {
       authorizedWorkspaces = reduxWorkspaces.filter((workspace) =>
         workspace.members.some((member) => member.creator_id === creatorID && allowedToClone(workspace, creatorID))

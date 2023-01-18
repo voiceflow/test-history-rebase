@@ -1,16 +1,6 @@
-import { PlanType } from '@voiceflow/internal';
+import { AnyPlanPermission } from './types';
 
-import { ENTERPRISE_PLANS, STARTER_PLANS, TEAM_PLANS } from '@/constants/plans';
+type PlanPermissionRecord<P extends AnyPlanPermission<any>> = { [K in P['permission']]: Extract<P, { permission: K }> };
 
-export const applyPermissionsToPlans = <Permission, Plan extends PlanType>(
-  plans: Plan[] | ReadonlyArray<Plan>,
-  permission: Permission
-): Record<Plan, Permission> => Object.fromEntries(plans.map((plan) => [plan, permission])) as Record<Plan, Permission>;
-
-export const applyAllPermissions = <Permission>(permission: Permission) => applyPermissionsToPlans(Object.values(PlanType), permission);
-
-export const applyTeamPermissions = <Permission>(permission: Permission) => applyPermissionsToPlans(TEAM_PLANS, permission);
-
-export const applyStarterPermissions = <Permission>(permission: Permission) => applyPermissionsToPlans(STARTER_PLANS, permission);
-
-export const applyEnterprisePermissions = <Permission>(permission: Permission) => applyPermissionsToPlans(ENTERPRISE_PLANS, permission);
+export const buildPlanPermissionRecord = <P extends AnyPlanPermission<any>>(permissions: ReadonlyArray<P>): PlanPermissionRecord<P> =>
+  Object.fromEntries(permissions.map((config) => [config.permission, config])) as PlanPermissionRecord<P>;

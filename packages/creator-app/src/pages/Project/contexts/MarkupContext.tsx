@@ -2,11 +2,11 @@ import { Nullable, Utils } from '@voiceflow/common';
 import { toast, Upload, useCache, useContextApi, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 
-import { Permission } from '@/config/permissions';
-import { LimitType } from '@/config/planLimitV2';
 import { BlockType, MarkupBlockType } from '@/constants';
+import { LimitType } from '@/constants/limits';
+import { Permission } from '@/constants/permissions';
 import * as History from '@/ducks/history';
-import { useDispatch, useEventualEngine, usePermission, usePlanLimit, useTrackingEvents } from '@/hooks';
+import { useDispatch, useEventualEngine, usePermission, usePlanLimitConfig, useTrackingEvents } from '@/hooks';
 import { useAnyModeOpen, useTextMarkupMode } from '@/pages/Project/hooks/modes';
 import { upload, windowRefocused } from '@/utils/dom';
 import { imageSizeFromUrl, videoSizeFromUrl } from '@/utils/file';
@@ -36,12 +36,12 @@ export const MarkupProvider: React.OldFC = ({ children }) => {
   const getEngine = useEventualEngine();
   const isAnyModeOpen = useAnyModeOpen();
   const isTextMarkupMode = useTextMarkupMode();
-  const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
+  const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
   const [uploadingMedia, setUploadingMedia] = React.useState(false);
   const [creatingType, localSetCreatingType] = React.useState<Nullable<MarkupBlockType>>(isTextMarkupMode ? BlockType.MARKUP_TEXT : null);
 
-  const markupVideoLimit = usePlanLimit({ type: LimitType.MARKUP_VIDEO });
-  const markupImageLimit = usePlanLimit({ type: LimitType.MARKUP_IMAGE });
+  const videoLimitConfig = usePlanLimitConfig(LimitType.MARKUP_VIDEO);
+  const imageLimitConfig = usePlanLimitConfig(LimitType.MARKUP_IMAGE);
 
   const imageUploader = Upload.useUpload({ fileType: 'image', endpoint: '/image' });
   const videoUploader = Upload.useUpload({ fileType: 'video', endpoint: '/video' });
@@ -51,8 +51,8 @@ export const MarkupProvider: React.OldFC = ({ children }) => {
     isAnyModeOpen,
     canEditCanvas,
     uploadingMedia,
-    markupVideoLimit,
-    markupImageLimit,
+    videoLimitConfig,
+    imageLimitConfig,
     isMediaUploading: imageUploader.isLoading || videoUploader.isLoading,
   });
 
@@ -90,8 +90,8 @@ export const MarkupProvider: React.OldFC = ({ children }) => {
       const fileSizeMB = file.size / MB;
 
       if (ALLOWED_IMAGE_TYPES.includes(extension)) {
-        if (cache.current.markupImageLimit && fileSizeMB > cache.current.markupImageLimit.limit) {
-          errors.push(cache.current.markupImageLimit.toastError);
+        if (cache.current.imageLimitConfig && fileSizeMB > cache.current.imageLimitConfig.limit) {
+          errors.push(cache.current.imageLimitConfig.toastError(cache.current.imageLimitConfig.payload));
           return false;
         }
 
@@ -99,8 +99,8 @@ export const MarkupProvider: React.OldFC = ({ children }) => {
       }
 
       if (ALLOWED_VIDEOS_TYPES.includes(extension)) {
-        if (cache.current.markupVideoLimit && fileSizeMB > cache.current.markupVideoLimit.limit) {
-          errors.push(cache.current.markupVideoLimit.toastError);
+        if (cache.current.videoLimitConfig && fileSizeMB > cache.current.videoLimitConfig.limit) {
+          errors.push(cache.current.videoLimitConfig.toastError(cache.current.videoLimitConfig.payload));
           return false;
         }
 

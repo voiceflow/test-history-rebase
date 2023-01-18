@@ -4,14 +4,15 @@ import { Button, ButtonVariant, Menu, toast, useSetup } from '@voiceflow/ui';
 import React from 'react';
 
 import DropdownWithCaret from '@/components/DropdownWithCaret';
-import { Permission } from '@/config/permissions';
-import { EDITOR_SEAT_ROLES, ModalType } from '@/constants';
+import { ModalType } from '@/constants';
+import { Permission } from '@/constants/permissions';
 import * as Session from '@/ducks/session';
 import * as Workspace from '@/ducks/workspace';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useDispatch, useModals, usePermission, useSelector, useTrackingEvents } from '@/hooks';
 import { Identifier } from '@/styles/constants';
 import { copy } from '@/utils/clipboard';
+import { isEditorUserRole } from '@/utils/role';
 import * as Sentry from '@/vendors/sentry';
 
 import { Container, DropdownContainer } from './components';
@@ -63,7 +64,7 @@ const InviteByLinkFooter: React.FC = () => {
 
     toast.success('Link copied to your clipboard, this link expires in 72 hours.');
 
-    if (numberOfUsedEditorSeats >= numberOfSeats! && EDITOR_SEAT_ROLES.includes(userRole)) {
+    if (numberOfUsedEditorSeats >= numberOfSeats && isEditorUserRole(userRole)) {
       toast.warn(inviteLimitMessage, { delay: 1000, onClick: openPaymentsModal });
     }
 

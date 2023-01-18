@@ -3,7 +3,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Preview, stopPropagation, Text } from '@voiceflow/ui';
 import React from 'react';
 
-import { Permission } from '@/config/permissions';
+import { Permission } from '@/constants/permissions';
 import { useHotKeys } from '@/hooks/hotkeys';
 import { usePermission } from '@/hooks/permission';
 import { Hotkey } from '@/keymap';
@@ -17,7 +17,7 @@ interface ActionPreviewProps {
 }
 
 const ActionPreview: React.OldFC<ActionPreviewProps> = ({ sets, onClose, onRemove, onOpenEditor }) => {
-  const [canOpenEditor] = usePermission(Permission.OPEN_EDITOR);
+  const [canOpenEditor] = usePermission(Permission.CANVAS_OPEN_EDITOR);
 
   useHotKeys(Hotkey.DELETE, onRemove);
 

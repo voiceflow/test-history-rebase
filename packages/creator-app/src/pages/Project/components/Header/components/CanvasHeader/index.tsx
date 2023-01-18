@@ -2,7 +2,7 @@ import { ButtonVariant } from '@voiceflow/ui';
 import React from 'react';
 
 import Page from '@/components/Page';
-import { Permission } from '@/config/permissions';
+import { Permission } from '@/constants/permissions';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useActiveProjectPlatformConfig, usePermission, useSelector } from '@/hooks';
 import CanvasViewers from '@/pages/Project/components/CanvasViewers';

@@ -3,7 +3,7 @@ import { Box, Button, Input, Upload, UploadIconVariant } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Settings from '@/components/Settings';
-import { Permission } from '@/config/permissions';
+import { Permission } from '@/constants/permissions';
 import * as Feature from '@/ducks/feature';
 import * as Workspace from '@/ducks/workspace';
 import { useActiveWorkspace, useDispatch, usePermission, useSelector } from '@/hooks';

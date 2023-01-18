@@ -7,8 +7,8 @@ import { Redirect, useHistory } from 'react-router-dom';
 
 import EmptyScreen from '@/components/EmptyScreen';
 import LoadingGate from '@/components/LoadingGate';
-import { Permission } from '@/config/permissions';
 import { Path } from '@/config/routes';
+import { Permission } from '@/constants/permissions';
 import * as ReportTag from '@/ducks/reportTag';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';

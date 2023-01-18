@@ -3,7 +3,6 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { toast } from '@voiceflow/ui';
 
 import * as Errors from '@/config/errors';
-import { EDITOR_SEAT_ROLES } from '@/constants';
 import * as Feature from '@/ducks/feature';
 import * as Session from '@/ducks/session';
 import { trackInvitationCancelled, trackInvitationSent } from '@/ducks/tracking/events/invitation';
@@ -12,6 +11,7 @@ import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { openError } from '@/ModalsV2/utils';
 import { Thunk } from '@/store/types';
 import { getErrorMessage } from '@/utils/error';
+import { isEditorUserRole } from '@/utils/role';
 
 import { setActive } from './shared';
 
@@ -139,20 +139,21 @@ export const updateActiveWorkspaceMemberRole =
   async (dispatch, getState) => {
     const state = getState();
 
+    const numberOfSeats = WorkspaceV2.active.numberOfSeatsSelector(state);
+    const viewerSeatLimits = WorkspaceV2.active.viewerSeatLimitsSelector(state);
     const numberOfUsedViewerSeats = WorkspaceV2.active.usedViewerSeatsSelector(state);
     const numberOfUsedEditorSeats = WorkspaceV2.active.usedEditorSeatsSelector(state);
-    const seatLimits = WorkspaceV2.active.seatLimitsSelector(state);
-    const seats = WorkspaceV2.active.numberOfSeatsSelector(state);
 
     if (role === member.role) {
       return;
     }
 
-    if (!EDITOR_SEAT_ROLES.includes(member.role) && EDITOR_SEAT_ROLES.includes(role) && numberOfUsedEditorSeats >= (seats ?? 1)) {
+    if (!isEditorUserRole(member.role) && isEditorUserRole(role) && numberOfUsedEditorSeats >= numberOfSeats) {
       toast.error('You have reached your max editor seats usage.');
       return;
     }
-    if (role === UserRole.VIEWER && numberOfUsedViewerSeats >= (seatLimits?.viewer ?? 0)) {
+
+    if (role === UserRole.VIEWER && numberOfUsedViewerSeats >= viewerSeatLimits) {
       toast.error('You have reached your max viewer seats usage.');
       return;
     }

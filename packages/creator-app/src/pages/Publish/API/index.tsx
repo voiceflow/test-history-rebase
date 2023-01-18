@@ -8,10 +8,10 @@ import { ConfirmProps } from '@/components/ConfirmModal';
 import * as Settings from '@/components/Settings';
 import { GENERAL_RUNTIME_ENDPOINT } from '@/config';
 import { DIALOG_MANAGER_API } from '@/config/documentation';
-import { Permission } from '@/config/permissions';
 import { ModalType } from '@/constants';
+import { Permission } from '@/constants/permissions';
 import * as Session from '@/ducks/session';
-import { useAsyncEffect, useModals, usePermissions, useSetup, useTrackingEvents } from '@/hooks';
+import { useAsyncEffect, useHasPermissions, useModals, useSetup, useTrackingEvents } from '@/hooks';
 import { ProjectAPIKey } from '@/models';
 import { copy } from '@/utils/clipboard';
 import { openInternalURLInANewTab } from '@/utils/window';
@@ -26,7 +26,7 @@ const API: React.FC = () => {
   const [showPrimaryKey, togglePrimaryKey] = useToggle(false);
   const [showSecondaryKey, toggleSecondaryKey] = useToggle(false);
 
-  const hasPermissions = usePermissions([Permission.API_KEY_EDIT, Permission.API_KEY_VIEW]);
+  const hasPermissions = useHasPermissions([Permission.API_KEY_EDIT, Permission.API_KEY_VIEW]);
 
   const workspaceID = useSelector(Session.activeWorkspaceIDSelector)!;
   const projectID = useSelector(Session.activeProjectIDSelector)!;

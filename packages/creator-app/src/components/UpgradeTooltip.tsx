@@ -3,11 +3,10 @@ import React from 'react';
 
 import { useStore } from '@/hooks/redux';
 
-export interface UpgradeTooltipData {
+export interface UpgradeTooltipData extends React.PropsWithChildren {
   title?: React.ReactNode;
   onUpgrade: (dispatch: ReturnType<typeof useStore>['dispatch']) => void;
   description: React.ReactNode;
-
   upgradeButtonText: string;
 }
 
@@ -15,13 +14,13 @@ export interface UpgradeTooltipProps extends UpgradeTooltipData {
   tooltipProps?: Omit<TippyTooltipProps, 'content' | 'interactive'>;
 }
 
-const UpgradeTooltip: React.OldFC<UpgradeTooltipProps> = ({ title, onUpgrade, children, description, tooltipProps, upgradeButtonText }) => {
+const UpgradeTooltip: React.FC<UpgradeTooltipProps> = ({ title, onUpgrade, children, description, tooltipProps, upgradeButtonText }) => {
   const store = useStore();
 
   return (
     <TippyTooltip
-      placement="right"
       width={232}
+      placement="right"
       {...tooltipProps}
       interactive
       content={

@@ -1,8 +1,8 @@
 import queryString from 'query-string';
 import { useLocation, useRouteMatch } from 'react-router-dom';
 
-import { Permission } from '@/config/permissions';
 import { Path } from '@/config/routes';
+import { Permission } from '@/constants/permissions';
 import { usePermission } from '@/hooks';
 import { QUERY_PARAMS } from '@/pages/Project/constants';
 
@@ -31,7 +31,7 @@ export const useAnyModeOpen = () => {
 };
 
 export const useEditingMode = () => {
-  const [canEditCanvas] = usePermission(Permission.EDIT_CANVAS);
+  const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
   const isCommentingMode = useCommentingMode();
   const isPrototypingMode = usePrototypingMode();
 

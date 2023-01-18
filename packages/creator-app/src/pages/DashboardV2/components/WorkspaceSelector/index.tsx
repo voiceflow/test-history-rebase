@@ -2,12 +2,10 @@ import { Box, Dropdown, Menu, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
 import { vfLogo } from '@/assets';
-import { Permission } from '@/config/permissions';
-import { LimitType } from '@/config/planLimitV2';
+import { Permission } from '@/constants/permissions';
 import * as Router from '@/ducks/router';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { usePermission } from '@/hooks/permission';
-import { usePlanLimitedAction } from '@/hooks/planLimitV2';
+import { usePermission, usePermissionAction } from '@/hooks/permission';
 import { useDispatch } from '@/hooks/realtime';
 import { useSelector } from '@/hooks/redux';
 import * as ModalsV2 from '@/ModalsV2';
@@ -15,11 +13,9 @@ import { ClassName } from '@/styles/constants';
 
 import * as S from './styles';
 
-const WorkspaceSelector: React.OldFC = () => {
+const WorkspaceSelector: React.FC = () => {
   const upgradeModal = ModalsV2.useModal(ModalsV2.Upgrade);
   const createWorkspaceModal = ModalsV2.useModal(ModalsV2.Workspace.Create);
-
-  const [canCreatePrivateCloudWorkspace] = usePermission(Permission.CREATE_PRIVATE_CLOUD_WORKSPACE);
 
   const workspaces = useSelector(WorkspaceV2.allWorkspacesSelector);
   const activeWorkspace = useSelector(WorkspaceV2.active.workspaceSelector);
@@ -27,13 +23,13 @@ const WorkspaceSelector: React.OldFC = () => {
 
   const goToWorkspace = useDispatch(Router.goToWorkspace);
 
+  const [canCreatePrivateCloudWorkspace] = usePermission(Permission.PRIVATE_CLOUD_WORKSPACE_CREATE);
+
   const showCreateWorkspaceButton = isAdminOfAnyWorkspace || canCreatePrivateCloudWorkspace;
 
-  const onCreateWorkspace = usePlanLimitedAction({
-    type: LimitType.WORKSPACES,
-    value: workspaces.length,
+  const onCreateWorkspace = usePermissionAction(Permission.WORKSPACE_CREATE, {
     onAction: () => createWorkspaceModal.openVoid(),
-    onLimited: (limit) => upgradeModal.openVoid(limit.upgradeModal),
+    onPlanForbid: ({ planConfig }) => upgradeModal.openVoid(planConfig.upgradeModal()),
   });
 
   return (

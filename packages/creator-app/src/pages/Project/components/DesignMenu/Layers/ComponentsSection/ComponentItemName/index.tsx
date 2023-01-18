@@ -11,7 +11,7 @@ import {
 } from '@voiceflow/ui';
 import React from 'react';
 
-import { Permission } from '@/config/permissions';
+import { Permission } from '@/constants/permissions';
 import * as Router from '@/ducks/router';
 import { useDispatch, useHover, usePermission } from '@/hooks';
 import { useDiagramOptions, useDiagramRename } from '@/pages/Project/hooks';

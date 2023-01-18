@@ -2,7 +2,7 @@ import { Nullable, Utils } from '@voiceflow/common';
 import { Preview, stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 
-import { Permission } from '@/config/permissions';
+import { Permission } from '@/constants/permissions';
 import { useHotKeys } from '@/hooks/hotkeys';
 import { usePermission } from '@/hooks/permission';
 import { Hotkey } from '@/keymap';
@@ -16,7 +16,7 @@ interface ActionPreviewProps {
 }
 
 const ActionPreview: React.OldFC<ActionPreviewProps> = ({ onClose, content, onRemove, onOpenEditor, onOpenTarget }) => {
-  const [canOpenEditor] = usePermission(Permission.OPEN_EDITOR);
+  const [canOpenEditor] = usePermission(Permission.CANVAS_OPEN_EDITOR);
 
   useHotKeys(Hotkey.DELETE, onRemove);
 

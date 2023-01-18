@@ -13,9 +13,8 @@ import * as SlotV2 from '@/ducks/slotV2';
 import * as Tracking from '@/ducks/tracking';
 import * as Version from '@/ducks/version';
 import { useDeleteVariable, useDispatch, useIntentNameProcessor, useOrderedVariables, useSelector } from '@/hooks';
-import { generateSlotInput } from '@/pages/Canvas/components/SlotEdit/utils';
 import { applyPlatformIntentNameFormatting, isBuiltInIntent } from '@/utils/intent';
-import { applySlotNameFormatting, CUSTOM_ENTITY_VALUE_ERROR_MSG, slotNameFormatter, validateSlotName } from '@/utils/slot';
+import { applySlotNameFormatting, CUSTOM_ENTITY_VALUE_ERROR_MSG, generateSlotInput, slotNameFormatter, validateSlotName } from '@/utils/slot';
 
 interface NLUContextValue {
   renameItem: (newName: string, id: string, type: InteractionModelTabType) => void;

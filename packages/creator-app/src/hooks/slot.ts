@@ -15,7 +15,6 @@ export const useOrderedEntities = () => {
 };
 
 export const useAddSlot = () => {
-  const slotEditModal = useModals(ModalType.SLOT_EDIT);
   const entityCreateModal = useModals(ModalType.ENTITY_CREATE);
 
   const onAddSlot = React.useCallback(
@@ -26,7 +25,7 @@ export const useAddSlot = () => {
     []
   );
 
-  return { onAddSlot, slotEditOpen: slotEditModal.isInStack };
+  return { onAddSlot };
 };
 
 export const useAreEntityInputsEmpty = (inputs: Realtime.SlotInput[]) =>

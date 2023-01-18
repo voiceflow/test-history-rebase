@@ -4,7 +4,7 @@ import React from 'react';
 import { ListChildComponentProps } from 'react-window';
 
 import { TranscriptExportFormat } from '@/client/transcript';
-import { Permission } from '@/config/permissions';
+import { Permission } from '@/constants/permissions';
 import * as Modal from '@/ducks/modal';
 import * as Router from '@/ducks/router';
 import * as Transcript from '@/ducks/transcript';

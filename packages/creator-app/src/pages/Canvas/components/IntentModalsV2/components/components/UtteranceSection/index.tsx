@@ -1,4 +1,3 @@
-/* eslint-disable no-nested-ternary */
 import * as Platform from '@voiceflow/platform-config';
 import {
   Box,
@@ -20,19 +19,19 @@ import { useHistory, useLocation } from 'react-router-dom';
 import * as GPT from '@/components/GPT';
 import ListManager from '@/components/ListManager';
 import Utterance, { UtteranceRef } from '@/components/Utterance';
-import { Permission } from '@/config/permissions';
-import { BulkImportLimitDetails } from '@/config/planLimits/bulkImport';
 import { ModalType, PREFILLED_UTTERANCE_PARAM } from '@/constants';
+import { Permission } from '@/constants/permissions';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as SlotV2 from '@/ducks/slotV2';
 import * as Tracking from '@/ducks/tracking';
 import { useMapManager } from '@/hooks/mapManager';
 import { useModals } from '@/hooks/modals';
-import { usePermission } from '@/hooks/permission';
+import { usePermissionAction } from '@/hooks/permission';
 import { useSelector } from '@/hooks/redux';
 import { useAddSlot } from '@/hooks/slot';
 import { useTrackingEvents } from '@/hooks/tracking';
+import { useUpgradeModal } from '@/ModalsV2/hooks';
 import { formatUtterance, getIntentStrengthLevel, isDefaultIntentName, validateUtterance } from '@/utils/intent';
 
 import UtteranceInput from './components/UtteranceInput';
@@ -80,9 +79,9 @@ const UtteranceSection: React.OldFC<UtteranceSectionProps> = ({
   const [showAllUtterances, setShowAllUtterances] = React.useState(false);
   const [isEmpty, updateIsEmpty] = React.useState(true);
 
-  const { open: openUpgradeModal } = useModals(ModalType.UPGRADE_MODAL);
+  const upgradeModal = useUpgradeModal();
   const { open: openUtterancesBulkUploadModal } = useModals(ModalType.IMPORT_UTTERANCES);
-  const [canBulkUpload] = usePermission(Permission.BULK_UPLOAD);
+
   const [isValidUtterance, setValidUtterance, setInvalidUtterance] = useEnableDisable(true);
   const intentUtterances = inputs || [];
   const [trackingEvents] = useTrackingEvents();
@@ -103,18 +102,17 @@ const UtteranceSection: React.OldFC<UtteranceSectionProps> = ({
     [intents, setInvalidUtterance, setValidUtterance]
   );
 
-  const onBulkUploadClick = () => {
-    if (canBulkUpload) {
+  const onBulkUploadClick = usePermissionAction(Permission.BULK_UPLOAD, {
+    onAction: () =>
       openUtterancesBulkUploadModal({
         intentID,
         onUpload: (utterances: Platform.Base.Models.Intent.Input[]) => {
           onUpdateUtterances([...intentUtterances, ...utterances]);
         },
-      });
-    } else {
-      openUpgradeModal({ planLimitDetails: BulkImportLimitDetails });
-    }
-  };
+      }),
+
+    onPlanForbid: ({ planConfig }) => upgradeModal.openVoid(planConfig.upgradeModal()),
+  });
 
   const onUpdateUtterancesHandler = (intentUtterances: Platform.Base.Models.Intent.Input[]) => {
     const cleanedUtterances = intentUtterances.map((utterance) => {

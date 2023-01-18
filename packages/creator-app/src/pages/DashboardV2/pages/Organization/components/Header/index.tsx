@@ -3,8 +3,8 @@ import { generatePath } from 'react-router-dom';
 
 import NavLink from '@/components/NavLink';
 import Page from '@/components/Page';
-import { Permission } from '@/config/permissions';
 import { Path } from '@/config/routes';
+import { Permission } from '@/constants/permissions';
 import { useActiveWorkspace, usePermission } from '@/hooks';
 
 import { WorkspaceSelector } from '../../../../components';

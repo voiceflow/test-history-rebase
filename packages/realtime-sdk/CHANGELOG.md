@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.220.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.219.0...@voiceflow/realtime-sdk@1.220.0) (2023-01-18)
+
+
+### Features
+
+* retrofit old dashboard (CT-1379) ([#6560](https://github.com/voiceflow/creator-app/issues/6560)) ([dafb48e](https://github.com/voiceflow/creator-app/commit/dafb48ee92ac9e40c19dc7747306430fffb55380))
+
+
+
+
+
 # [1.219.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.218.2...@voiceflow/realtime-sdk@1.219.0) (2023-01-18)
 
 

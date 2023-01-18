@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1056.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1055.0...@voiceflow/creator-app@1.1056.0) (2023-01-18)
+
+
+### Features
+
+* implement initial message for global no-match and no-reply (CT-1384) ([#6556](https://github.com/voiceflow/creator-app/issues/6556)) ([a4d394f](https://github.com/voiceflow/creator-app/commit/a4d394ffbc3a55ec76d575b981c5c858e5e0288b))
+* retrofit old dashboard (CT-1379) ([#6560](https://github.com/voiceflow/creator-app/issues/6560)) ([dafb48e](https://github.com/voiceflow/creator-app/commit/dafb48ee92ac9e40c19dc7747306430fffb55380))
+
+
+
+
+
 # [1.1055.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1054.2...@voiceflow/creator-app@1.1055.0) (2023-01-18)
 
 

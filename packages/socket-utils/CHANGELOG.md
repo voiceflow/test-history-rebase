@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.26.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/socket-utils@1.26.0...@voiceflow/socket-utils@1.26.1) (2023-01-18)
+
+
+### Bug Fixes
+
+* redis ungraceful quit [bugfix] (CT-000) ([#6585](https://github.com/voiceflow/creator-app/issues/6585)) ([4f0dec7](https://github.com/voiceflow/creator-app/commit/4f0dec7ff6b6001a985d82e1f6ecec05b2814df8))
+
+
+
+
+
 # [1.26.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/socket-utils@1.25.0...@voiceflow/socket-utils@1.26.0) (2023-01-06)
 
 

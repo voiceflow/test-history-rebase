@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.147.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.146.0...@voiceflow/realtime@1.147.0) (2023-01-18)
+
+
+### Bug Fixes
+
+* redis ungraceful quit [bugfix] (CT-000) ([#6585](https://github.com/voiceflow/creator-app/issues/6585)) ([4f0dec7](https://github.com/voiceflow/creator-app/commit/4f0dec7ff6b6001a985d82e1f6ecec05b2814df8))
+
+
+### Features
+
+* retrofit old dashboard (CT-1379) ([#6560](https://github.com/voiceflow/creator-app/issues/6560)) ([dafb48e](https://github.com/voiceflow/creator-app/commit/dafb48ee92ac9e40c19dc7747306430fffb55380))
+
+
+
+
+
 # [1.146.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.145.3...@voiceflow/realtime@1.146.0) (2023-01-18)
 
 

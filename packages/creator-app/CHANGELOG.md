@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1054.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1054.0...@voiceflow/creator-app@1.1054.1) (2023-01-18)
+
+
+### Bug Fixes
+
+* debug realtime test [bugfix] (CT-000) ([#6575](https://github.com/voiceflow/creator-app/issues/6575)) ([e007a71](https://github.com/voiceflow/creator-app/commit/e007a71d447251957c73d7aa4447b8776a971ec9)), closes [/github.com/logux/core/blob/40a367aa156242e655685f65dab5401e35b4cb03/base-node/index.js#L252-L255](https://github.com//github.com/logux/core/blob/40a367aa156242e655685f65dab5401e35b4cb03/base-node/index.js/issues/L252-L255)
+
+
+
+
+
 # [1.1054.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1053.4...@voiceflow/creator-app@1.1054.0) (2023-01-17)
 
 

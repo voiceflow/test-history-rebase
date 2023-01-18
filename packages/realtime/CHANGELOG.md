@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.147.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.147.0...@voiceflow/realtime@1.147.1) (2023-01-18)
+
+
+### Reverts
+
+* Revert "feat: normalize workspace members (CT-000) (#6582)" ([28b7884](https://github.com/voiceflow/creator-app/commit/28b78845056f84b8429e5cbefe8ffe9996600ca7)), closes [#6582](https://github.com/voiceflow/creator-app/issues/6582)
+* Revert "fix: redis ungraceful quit [bugfix] (CT-000) (#6585)" ([eb47318](https://github.com/voiceflow/creator-app/commit/eb4731844f8a3c70fc7cc05ad03c9e7ea6b0a858)), closes [#6585](https://github.com/voiceflow/creator-app/issues/6585)
+
+
+
+
+
 # [1.147.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.146.0...@voiceflow/realtime@1.147.0) (2023-01-18)
 
 

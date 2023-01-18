@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1056.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1056.0...@voiceflow/creator-app@1.1056.1) (2023-01-18)
+
+
+### Reverts
+
+* Revert "feat: normalize workspace members (CT-000) (#6582)" ([28b7884](https://github.com/voiceflow/creator-app/commit/28b78845056f84b8429e5cbefe8ffe9996600ca7)), closes [#6582](https://github.com/voiceflow/creator-app/issues/6582)
+
+
+
+
+
 # [1.1056.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1055.0...@voiceflow/creator-app@1.1056.0) (2023-01-18)
 
 

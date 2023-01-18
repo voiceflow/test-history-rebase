@@ -10,19 +10,25 @@ import updateImage from './updateImage';
 import updateName from './updateName';
 
 const realtimeWorkspaceReducer = createRootCRUDReducer(INITIAL_STATE, crudReducers)
-  .immerCase(...cancelInvite)
-  .immerCase(...updateInvite)
-  .immerCase(...addMember)
-  .immerCase(...patchMember)
-  .immerCase(...removeMember)
-  .immerCase(...replaceMembers)
   .immerCase(...leave)
-  .immerCase(...updateImage)
   .immerCase(...updateName)
-  .immerCase(...loadAllQuotas)
-  .immerCase(...replaceQuota)
+  .immerCase(...updateImage)
+
+  // settings
   .immerCase(...patchSettings)
   .immerCase(...replaceSettings)
+
+  // quotas
+  .immerCase(...replaceQuota)
+  .immerCase(...loadAllQuotas)
+
+  // members
+  .immerCase(...addMember)
+  .immerCase(...patchMember)
+  .immerCase(...cancelInvite)
+  .immerCase(...updateInvite)
+  .immerCase(...removeMember)
+  .immerCase(...replaceMembers)
   .build();
 
 export default realtimeWorkspaceReducer;

@@ -8,7 +8,8 @@ const replaceMembersReducer = createReducer(Realtime.workspace.member.replace, (
 
   if (!workspace) return;
 
-  workspace.members = members;
+  workspace.members = Normal.normalize(members.filter(Realtime.Utils.typeGuards.isWorkspaceMember), (member) => String(member.creator_id));
+  workspace.pendingMembers = Normal.normalize(members.filter(Realtime.Utils.typeGuards.isWorkspacePendingMember), (member) => member.email);
 });
 
 export default replaceMembersReducer;

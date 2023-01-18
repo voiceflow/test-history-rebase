@@ -19,13 +19,13 @@ const WorkspaceSelector: React.FC = () => {
 
   const workspaces = useSelector(WorkspaceV2.allWorkspacesSelector);
   const activeWorkspace = useSelector(WorkspaceV2.active.workspaceSelector);
-  const isAdminOfAnyWorkspace = useSelector(WorkspaceV2.isAdminOfAnyWorkspaceSelector);
+  const isAdminOrOwnerOfAnyWorkspace = useSelector(WorkspaceV2.isAdminOrOwnerOfAnyWorkspaceSelector);
 
   const goToWorkspace = useDispatch(Router.goToWorkspace);
 
   const [canCreatePrivateCloudWorkspace] = usePermission(Permission.PRIVATE_CLOUD_WORKSPACE_CREATE);
 
-  const showCreateWorkspaceButton = isAdminOfAnyWorkspace || canCreatePrivateCloudWorkspace;
+  const showCreateWorkspaceButton = isAdminOrOwnerOfAnyWorkspace || canCreatePrivateCloudWorkspace;
 
   const onCreateWorkspace = usePermissionAction(Permission.WORKSPACE_CREATE, {
     onAction: () => createWorkspaceModal.openVoid(),

@@ -5,11 +5,10 @@ import { createReducer } from '../utils';
 
 const patchMemberReducer = createReducer(Realtime.workspace.member.patch, (state, { workspaceID, creatorID, member: patch }) => {
   const workspace = Normal.getOne(state, workspaceID);
-  const member = workspace?.members.find((member) => member.creator_id === creatorID);
 
-  if (member) {
-    Object.assign(member, patch);
-  }
+  if (!workspace) return;
+
+  workspace.members = Normal.patch(workspace.members, String(creatorID), patch);
 });
 
 export default patchMemberReducer;

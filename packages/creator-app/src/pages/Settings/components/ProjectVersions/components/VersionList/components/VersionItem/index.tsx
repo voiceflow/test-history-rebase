@@ -38,15 +38,15 @@ const RESTORE_VERSION_MESSAGE = createPlatformSelector(
   ''
 );
 
-interface Index {
+interface VersionItemProps {
+  tag: VersionTag;
   version: ProjectVersion;
   swapVersions: (versionID: string) => Promise<void>;
   restoreEnabled: boolean;
   creatorID: number;
-  tag: VersionTag;
 }
 
-const VersionItem: React.OldFC<Index> = ({ version, restoreEnabled, swapVersions, creatorID, tag }) => {
+const VersionItem: React.FC<VersionItemProps> = ({ version, restoreEnabled, swapVersions, creatorID, tag }) => {
   const confirmModal = useModals<ConfirmProps>(ModalType.CONFIRM);
 
   const member = useSelector(WorkspaceV2.active.memberByIDSelector, { creatorID });
@@ -128,7 +128,7 @@ const VersionItem: React.OldFC<Index> = ({ version, restoreEnabled, swapVersions
           {name}
         </TippyTooltip>
       </ColumnItemContainer>
-      <ColumnItemContainer>{member?.name}</ColumnItemContainer>
+      <ColumnItemContainer>{member?.name ?? 'Unknown'}</ColumnItemContainer>
       <TippyTooltip
         width={232}
         position="top"

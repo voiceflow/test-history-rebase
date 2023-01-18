@@ -4,7 +4,7 @@ import { noAccess } from '@voiceflow/socket-utils';
 
 import { AbstractWorkspaceChannelControl } from '../utils';
 
-class AddWorkspaceMember extends AbstractWorkspaceChannelControl<Realtime.workspace.member.AddMemberPayload> {
+class AddPendingWorkspaceMember extends AbstractWorkspaceChannelControl<Realtime.workspace.member.AddMemberPayload> {
   protected actionCreator = Realtime.workspace.member.add;
 
   protected access = noAccess(this);
@@ -12,4 +12,4 @@ class AddWorkspaceMember extends AbstractWorkspaceChannelControl<Realtime.worksp
   protected process = Utils.functional.noop;
 }
 
-export default AddWorkspaceMember;
+export default AddPendingWorkspaceMember;

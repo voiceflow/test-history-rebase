@@ -6,9 +6,9 @@ import { createReducer } from '../utils';
 const removeMemberReducer = createReducer(Realtime.workspace.member.remove, (state, { workspaceID, creatorID }) => {
   const workspace = Normal.getOne(state, workspaceID);
 
-  if (workspace) {
-    workspace.members = workspace.members.filter((member) => member.creator_id !== creatorID);
-  }
+  if (!workspace) return;
+
+  workspace.members = Normal.removeOne(workspace.members, String(creatorID));
 });
 
 export default removeMemberReducer;

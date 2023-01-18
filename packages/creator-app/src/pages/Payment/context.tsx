@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import { BillingPeriod, PlanType, UserRole } from '@voiceflow/internal';
+import { BillingPeriod, PlanType } from '@voiceflow/internal';
 import { ButtonVariant, toast, withContext } from '@voiceflow/ui';
 import _isEmpty from 'lodash/isEmpty';
 import React from 'react';
@@ -9,6 +9,7 @@ import client from '@/client';
 import { ModalType, UNLIMITED_EDITORS_CONST } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as Workspace from '@/ducks/workspace';
+import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { withStripe } from '@/hocs/withStripe';
 import {
   useActiveWorkspace,
@@ -106,10 +107,11 @@ interface PaymentContextProviderProps {
   checkChargeable: (source: stripe.Source) => Promise<void>;
 }
 
-const PaymentContextProvider: React.OldFC<PaymentContextProviderProps> = ({ stripe, children, onCheckout, checkChargeable }) => {
+const PaymentContextProvider: React.FC<PaymentContextProviderProps> = ({ stripe, children, onCheckout, checkChargeable }) => {
   const workspace = useActiveWorkspace();
   const referrerID = useSelector(Account.referrerIDSelector);
   const referralCode = useSelector(Account.referralCodeSelector);
+  const usedEditorSeats = useSelector(WorkspaceV2.active.usedEditorSeatsSelector);
 
   const checkoutWorkspace = useDispatch(Workspace.checkout);
 
@@ -251,11 +253,9 @@ const PaymentContextProvider: React.OldFC<PaymentContextProviderProps> = ({ stri
 
       let numberOfSeats = seats;
       let stripePromotion: string | null = null;
+
       if (numberOfSeats === UNLIMITED_EDITORS_CONST) {
-        const editorCount = workspace.members.filter(
-          ({ role, creator_id }) => !!creator_id && (role === UserRole.EDITOR || role === UserRole.ADMIN)
-        ).length;
-        numberOfSeats = editorCount;
+        numberOfSeats = usedEditorSeats;
       }
 
       // fetch promo code associated with referral code

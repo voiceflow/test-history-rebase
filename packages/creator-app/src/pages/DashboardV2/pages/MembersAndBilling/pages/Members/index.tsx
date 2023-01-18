@@ -11,7 +11,7 @@ import MemberList from './List';
 import * as S from './styles';
 
 const DashboardV2TeamAndBillingMembers: React.FC = () => {
-  const membersCount = useSelector(WorkspaceV2.active.membersCountSelector);
+  const membersCount = useSelector(WorkspaceV2.active.allNormalizedMembersCountSelector);
   const usedEditorSeats = useSelector(WorkspaceV2.active.usedEditorSeatsSelector);
   const isOnPaidPlanSelector = useSelector(WorkspaceV2.active.isOnPaidPlanSelector);
 

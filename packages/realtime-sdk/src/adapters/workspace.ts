@@ -1,5 +1,7 @@
 import { DBWorkspace, Workspace, WorkspaceActivationState } from '@realtime-sdk/models';
+import { isWorkspaceMember, isWorkspacePendingMember } from '@realtime-sdk/utils/typeGuards';
 import { createMultiAdapter, notImplementedAdapter } from 'bidirectional-adapter';
+import * as Normal from 'normal-store';
 
 export const INVALID_STATES = ['incomplete_expired', 'incomplete', 'unpaid'];
 export const WARNING_STATES = ['past_due'];
@@ -15,6 +17,7 @@ const workspaceAdapter = createMultiAdapter<DBWorkspace, Workspace>(
     members,
     created,
     projects,
+    settings = { aiAssist: true },
     hasSource,
     beta_flag,
     seatLimits,
@@ -23,7 +26,6 @@ const workspaceAdapter = createMultiAdapter<DBWorkspace, Workspace>(
     organization_id,
     variableStatesLimit,
     organization_trial_days_left,
-    settings = { aiAssist: true },
   }) => {
     let state: WorkspaceActivationState | null = null;
     if (INVALID_STATES.includes(stripe_status)) {
@@ -40,23 +42,21 @@ const workspaceAdapter = createMultiAdapter<DBWorkspace, Workspace>(
       seats,
       state,
       boards,
-      members,
+      members: Normal.normalize(members.filter(isWorkspaceMember), (member) => String(member.creator_id)),
       created,
       projects,
+      settings,
       betaFlag: beta_flag,
       creatorID: creator_id,
       hasSource,
       seatLimits,
+      pendingMembers: Normal.normalize(members.filter(isWorkspacePendingMember), (member) => member.email),
       organizationID: organization_id,
       variableStatesLimit,
       organizationTrialDaysLeft: organization_trial_days_left,
-      settings,
     };
   },
   notImplementedAdapter.transformer
 );
 
-export default {
-  ...workspaceAdapter,
-  mapFromDB: (dbWorkspaces: DBWorkspace[]) => workspaceAdapter.mapFromDB(dbWorkspaces),
-};
+export default workspaceAdapter;

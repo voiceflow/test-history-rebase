@@ -213,8 +213,6 @@ export enum ModalType {
   DIALOGFLOW_CREATE_NEW_AGENT = 'dialogflow-create-new-agent',
 
   PUBLISH_VERSION_MODAL = 'publish-version-modal',
-
-  UPGRADE_MODAL = 'upgrade-modal',
 }
 
 export const SLOT_COLORS = [

@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect';
 
 import { createCRUDSelectors } from '@/ducks/utils/crudV2';
-import * as WorksapceV2 from '@/ducks/workspaceV2';
+import * as WorkspaceV2 from '@/ducks/workspaceV2';
 
 import { STATE_KEY } from '../constants';
 
@@ -13,6 +13,6 @@ export const {
 } = createCRUDSelectors(STATE_KEY);
 
 export const organizationsWhereIsAdminSelector = createSelector(
-  [allOrganizationsSelector, WorksapceV2.workspacesWhereIsAdminSelector],
+  [allOrganizationsSelector, WorkspaceV2.workspacesWhereIsAdminOrOwnerSelector],
   (organizations, workspaces) => organizations.filter(({ id }) => workspaces.some(({ organizationID }) => id === organizationID))
 );

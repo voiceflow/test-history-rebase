@@ -1,7 +1,7 @@
 import React from 'react';
 
 import ConfirmModal from '@/components/ConfirmModal';
-import { ModalBackdrop, ReduxConfirmModal, StandardModal, UpgradeModal } from '@/components/modals';
+import { ModalBackdrop, ReduxConfirmModal, StandardModal } from '@/components/modals';
 import PublishVersionModal from '@/components/PublishVersionModal';
 import { BulkImportSlots, BulkImportUtterances } from '@/pages/Canvas/components/BulkImportModal';
 import CreateEntityModal from '@/pages/Canvas/components/EntityModalsV2/CreateModal';
@@ -19,7 +19,6 @@ const AppModals: React.OldFC = () => {
       <ConfirmModal />
       <ReduxConfirmModal />
       <StandardModal />
-      <UpgradeModal />
 
       <EditIntentModal />
       <CreateIntentModal />

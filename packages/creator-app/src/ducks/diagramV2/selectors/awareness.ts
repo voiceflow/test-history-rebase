@@ -56,7 +56,7 @@ export const hasExternalDiagramViewersByIDSelector = createSelector(
 
 export const diagramViewerByIDAndCreatorIDSelector = createSelector(
   [diagramNormalizedViewersByIDSelector, creatorIDParamSelector],
-  (normalizedViewers, creatorID) => Normal.getOne(normalizedViewers, String(creatorID))
+  (normalizedViewers, creatorID) => (creatorID !== null ? Normal.getOne(normalizedViewers, String(creatorID)) : null)
 );
 
 export const activeDiagramLocksSelector = createSelector([awarenessLocksSelector, activeDiagramIDSelector], (locks, diagramID) =>
@@ -112,7 +112,7 @@ const activeDiagramLockOwnerClientNodeIDCreatorIDSelector = createSelector(
 );
 
 export const activeDiagramLockOwnerSelector = createSelector(
-  [Account.userIDSelector, activeDiagramLockOwnerClientNodeIDCreatorIDSelector, WorkspaceV2.active.getDistinctWorkspaceMemberByCreatorIDSelector],
+  [Account.userIDSelector, activeDiagramLockOwnerClientNodeIDCreatorIDSelector, WorkspaceV2.active.getDistinctMemberByCreatorIDSelector],
   (creatorID, [clientNodeID, lockOwnerID], getWorkspaceMember) => {
     if (!lockOwnerID || !clientNodeID) return null;
     if (creatorID === lockOwnerID) return null;

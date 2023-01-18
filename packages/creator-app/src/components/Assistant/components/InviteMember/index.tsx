@@ -12,8 +12,8 @@ interface InviteMemberProps {
   memberIDs: number[];
 }
 
-const InviteMember: React.OldFC<InviteMemberProps> = ({ onAdd: onAddProp, memberIDs }) => {
-  const workspaceActiveMembers = useSelector(WorkspaceV2.active.activeMembersSelector);
+const InviteMember: React.FC<InviteMemberProps> = ({ onAdd: onAddProp, memberIDs }) => {
+  const members = useSelector(WorkspaceV2.active.normalizedMembersSelector);
 
   const [roles, setRoles] = React.useState<UserRole[]>([UserRole.EDITOR]);
   const [memberID, setMemberID] = React.useState<number | null>(null);
@@ -25,10 +25,7 @@ const InviteMember: React.OldFC<InviteMemberProps> = ({ onAdd: onAddProp, member
     setMemberID(null);
   };
 
-  const membersToAdd = React.useMemo(
-    () => workspaceActiveMembers.filter((member) => !memberIDs.includes(member.creator_id)),
-    [memberIDs, workspaceActiveMembers]
-  );
+  const membersToAdd = React.useMemo(() => members.filter((member) => !memberIDs.includes(member.creator_id)), [memberIDs, members]);
 
   return (
     <Flex gap={12} fullWidth>

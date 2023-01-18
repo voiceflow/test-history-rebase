@@ -1,4 +1,5 @@
 import { Button, Modal, toast } from '@voiceflow/ui';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import PromptInput from '@/components/PromptInput';
@@ -20,7 +21,9 @@ const GlobalNoMatchModal = manager.create('GlobalNoMatchModal', () => ({ api, ty
 
   const patchSettings = useDispatch(Version.patchSettings);
 
-  const [prompt, setPrompt] = React.useState(() => globalNoMatch?.prompt ?? projectConfig.utils.prompt.factory({ defaultVoice }));
+  const [prompt, setPrompt] = React.useState(
+    () => globalNoMatch?.prompt ?? projectConfig.utils.prompt.factory({ defaultVoice, content: VoiceflowConstants.defaultMessages.globalNoMatch })
+  );
 
   const onSubmit: React.MouseEventHandler = async () => {
     try {

@@ -25,11 +25,11 @@ const Header: React.OldFC = () => {
           </NavLink>
         )}
 
-        {workspace?.id && (
+        {/* {workspace?.id && (
           <NavLink as={Page.Header.Tab} to={generatePath(Path.WORKSPACE_MEMBERS_ORG, { workspaceID: workspace.id })} exact>
             All Members
           </NavLink>
-        )}
+        )} */}
 
         {canManageSSO && (
           <NavLink as={Page.Header.Tab} to={generatePath(Path.WORKSPACE_SSO_ORG, { workspaceID: workspace?.id })} exact>

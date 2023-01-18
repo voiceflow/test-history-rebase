@@ -1,9 +1,14 @@
 import { DBWorkspaceProperties, WorkspaceSettings } from '@realtime-sdk/models';
 import { createMultiAdapter } from 'bidirectional-adapter';
 
+// TODO: use smart adapter to handle default values
+
 const workspaceSettingsAdapter = createMultiAdapter<DBWorkspaceProperties, WorkspaceSettings>(
-  ({ settingsAiAssist }) => ({ aiAssist: settingsAiAssist == null ? true : settingsAiAssist }),
-  ({ aiAssist }) => ({ settingsAiAssist: aiAssist })
+  ({ settingsAiAssist, settingsDashboardKanban }) => ({
+    aiAssist: settingsAiAssist == null ? true : settingsAiAssist,
+    kanban: Boolean(settingsDashboardKanban),
+  }),
+  ({ aiAssist, dashboardKanban }) => ({ settingsAiAssist: aiAssist, settingsDashboardKanban: dashboardKanban })
 );
 
 export default workspaceSettingsAdapter;

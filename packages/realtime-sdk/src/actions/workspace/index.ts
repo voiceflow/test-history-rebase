@@ -1,5 +1,5 @@
 import { ClientCRUDPayload, createCRUDActions, getCRUDActionTargets } from '@realtime-sdk/actions/utils';
-import { Quota, Workspace } from '@realtime-sdk/models';
+import { Quota, Workspace, WorkspaceSettings } from '@realtime-sdk/models';
 import { BaseCreatorPayload, BaseWorkspacePayload } from '@realtime-sdk/types';
 import { Utils } from '@voiceflow/common';
 import { BillingPeriod, PlanType } from '@voiceflow/internal';
@@ -17,6 +17,7 @@ export interface CreateWorkspacePayload {
   name: string;
   image?: string;
   organizationID?: string;
+  settings?: WorkspaceSettings;
 }
 
 export const create = Utils.protocol.createAsyncAction<CreateWorkspacePayload, Workspace>(workspaceType('CREATE'));

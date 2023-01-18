@@ -65,7 +65,16 @@ const DashboardNavigationSidebar: React.FC = () => {
             </NavigationSidebar.Item>
           </Link>
 
-          {isAdmin && <NavigationSidebar.Item icon="systemSettings" title="Settings" />}
+          {isAdmin && (
+            <NavigationSidebar.NavItem
+              to={generatePath(Path.WORKSPACE_GENERAL_SETTINGS, { workspaceID })}
+              icon="systemSettings"
+              title="Settings"
+              isActive={({ pathname, matchPath }) =>
+                !!matchPath(pathname, { path: [Path.WORKSPACE_GENERAL_SETTINGS, Path.WORKSPACE_DEVELOPER_SETTINGS] })
+              }
+            />
+          )}
 
           {isOwner && (
             <NavigationSidebar.NavItem

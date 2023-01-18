@@ -17,7 +17,6 @@ const workspaceAdapter = createMultiAdapter<DBWorkspace, Workspace>(
     members,
     created,
     projects,
-    settings = { aiAssist: true },
     hasSource,
     beta_flag,
     seatLimits,
@@ -26,6 +25,7 @@ const workspaceAdapter = createMultiAdapter<DBWorkspace, Workspace>(
     organization_id,
     variableStatesLimit,
     organization_trial_days_left,
+    settings = { aiAssist: true, dashboardKanban: false },
   }) => {
     let state: WorkspaceActivationState | null = null;
     if (INVALID_STATES.includes(stripe_status)) {

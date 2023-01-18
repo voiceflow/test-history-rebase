@@ -67,7 +67,7 @@ const ProjectList: React.OldFC = () => {
   );
 
   return (
-    <Page renderHeader={() => <Header search={search} onSearch={setSearch} />} renderSidebar={() => <Sidebar />}>
+    <Page white renderHeader={() => <Header search={search} onSearch={setSearch} />} renderSidebar={() => <Sidebar />}>
       <Page.Content>
         <Banner
           mb={32}

@@ -16,7 +16,7 @@ import {
 } from './member';
 import { LoadAllQuotasControl, RefreshQuotaDetails, ReplaceQuotaControl } from './quotas';
 import RemoveWorkspaceControl from './remove';
-import { PatchWorkspaceSettingsControl, ReplaceWorkspaceSettingsControl } from './settings';
+import { PatchWorkspaceSettingsControl, ReplaceWorkspaceSettingsControl, ToggleDashboardKanbanControl } from './settings';
 import UpdateWorkspaceImageControl from './updateImage';
 import UpdateWorkspaceNameControl from './updateName';
 
@@ -45,6 +45,7 @@ const buildWorkspaceActionControls = (options: LoguxControlOptions) => ({
   replaceQuotaControl: new ReplaceQuotaControl(options),
 
   // workspace settings
+  toggleDashboardKanbanControl: new ToggleDashboardKanbanControl(options),
   patchWorkspaceSettingsControl: new PatchWorkspaceSettingsControl(options),
   replaceWorkspaceSettingsControl: new ReplaceWorkspaceSettingsControl(options),
   refreshWorkspaceQuotaDetailsControl: new RefreshQuotaDetails(options),

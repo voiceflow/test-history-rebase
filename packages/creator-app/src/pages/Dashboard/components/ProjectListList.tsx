@@ -43,9 +43,10 @@ export interface ProjectListListProps {
   workspace: Realtime.Workspace | null;
   filter: string;
   isLocked: boolean;
+  fullHeightContainer?: boolean;
 }
 
-const ProjectListList: React.OldFC<ProjectListListProps> = ({ workspace, filter, isLocked }) => {
+const ProjectListList: React.OldFC<ProjectListListProps> = ({ workspace, filter, isLocked, fullHeightContainer }) => {
   const [newListID, setNewListID] = React.useState<string | null>(null);
 
   const projects = useSelector(ProjectV2.allProjectsSelector);
@@ -113,7 +114,7 @@ const ProjectListList: React.OldFC<ProjectListListProps> = ({ workspace, filter,
   return (
     <div
       id="dashboard"
-      className={cn({ 'thanos-ed': isLocked })}
+      className={cn({ 'thanos-ed': isLocked, 'full-height': fullHeightContainer })}
       onClickCapture={(e) => {
         // prevent all click events
         if (isLocked) {

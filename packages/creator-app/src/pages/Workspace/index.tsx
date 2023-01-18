@@ -19,6 +19,7 @@ const DashboardV1 = lazy(() => import('@/pages/Dashboard'));
 const DashboardV2 = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/DashboardV2')));
 
 const Workspace: React.OldFC = () => {
+  const dashboardV2 = useFeature(Realtime.FeatureFlag.DASHBOARD_V2)?.isEnabled;
   const workspaceIDs = useSelector(WorkspaceV2.allWorkspaceIDsSelector);
   const dashboardV2FF = useFeature(Realtime.FeatureFlag.DASHBOARD_V2);
 
@@ -53,7 +54,7 @@ const Workspace: React.OldFC = () => {
       <RedirectWithSearch exact from={Path.WORKSPACE} to={Path.DASHBOARD} />
       <RedirectWithSearch exact from={LegacyPath.WORKSPACE_API_KEYS} to={Path.WORKSPACE_DEVELOPER_SETTINGS} />
 
-      <Route path={Path.WORKSPACE_SETTINGS} component={Settings} />
+      {!dashboardV2 && <Route path={Path.WORKSPACE_SETTINGS} component={Settings} />}
       <Route path={[Path.WORKSPACE_DASHBOARD, Path.DASHBOARD]} component={DashboardComponent} />
 
       <RedirectWithSearch to={Path.DASHBOARD} />

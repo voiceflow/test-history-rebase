@@ -24,6 +24,9 @@ export const createWorkspace =
   (payload: { name: string; image?: string; organizationID?: string }): Thunk<Realtime.Workspace> =>
   (dispatch, getState) => {
     try {
+      const state = getState();
+
+      const dashboardV2 = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.DASHBOARD_V2);
       const workspaces = allWorkspacesSelector(getState());
 
       return dispatch(
@@ -31,6 +34,9 @@ export const createWorkspace =
           name: payload.name,
           image: payload.image,
           organizationID: (payload.organizationID || workspaces[0]?.organizationID) ?? undefined,
+          settings: {
+            dashboardKanban: dashboardV2,
+          },
         })
       );
     } catch (err) {
@@ -176,6 +182,23 @@ export const toggleActiveWorkspaceAiAssist =
       await dispatch.sync(Realtime.workspace.settings.patch({ workspaceID, settings: { aiAssist } }));
     } catch (err) {
       openError({ error: 'Error toggling workspace ai assist features' });
+
+      throw err;
+    }
+  };
+
+export const toggleActiveWorkspaceDashboardKanban =
+  (dashboardKanban: boolean): Thunk =>
+  async (dispatch, getState) => {
+    try {
+      const state = getState();
+      const workspaceID = Session.activeWorkspaceIDSelector(state);
+
+      Errors.assertWorkspaceID(workspaceID);
+
+      await dispatch.sync(Realtime.workspace.settings.toggleDashboardKanban({ workspaceID, enabled: dashboardKanban }));
+    } catch (err) {
+      openError({ error: 'Error toggling workspace kanban mode' });
 
       throw err;
     }

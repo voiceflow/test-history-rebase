@@ -26,10 +26,12 @@ export interface WorkspaceMember extends PendingWorkspaceMember {
 
 export interface WorkspaceSettings {
   aiAssist?: boolean | null;
+  dashboardKanban?: boolean | null;
 }
 
 export interface DBWorkspaceProperties {
   settingsAiAssist?: boolean | null;
+  settingsDashboardKanban?: boolean | null;
 }
 
 export interface SeatLimits {

@@ -115,10 +115,19 @@ class WorkspaceService extends AbstractControl {
     return client.workspace.list();
   }
 
-  public async create(creatorID: number, { name, image }: { name: string; image?: string; organizationID?: string }): Promise<Realtime.DBWorkspace> {
+  public async create(
+    creatorID: number,
+    { name, image, settings }: { name: string; image?: string; organizationID?: string; settings?: Realtime.WorkspaceSettings }
+  ): Promise<Realtime.DBWorkspace> {
     const [client] = await Promise.all([this.services.voiceflow.getClientByUserID(creatorID)]);
 
-    return client.workspace.create({ name, image });
+    const workspace = await client.workspace.create({ name, image });
+
+    if (settings) {
+      await this.settings.patch(workspace.team_id, creatorID, settings);
+    }
+
+    return workspace;
   }
 
   public async checkout(creatorID: number, data: Realtime.workspace.CheckoutWorkspacePayload): Promise<void> {

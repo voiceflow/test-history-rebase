@@ -21,7 +21,7 @@ export const createParameterSelector =
   (_: unknown, params: T): ReturnType<typeof selector> =>
     selector(params);
 
-export const creatorIDParamSelector = createParameterSelector((params: { creatorID: number | null }) => params.creatorID);
+export const creatorIDParamSelector = createParameterSelector((params: { creatorID: number }) => params.creatorID);
 
 export const projectIDParamSelector = createParameterSelector((params: { projectID: string }) => params.projectID);
 

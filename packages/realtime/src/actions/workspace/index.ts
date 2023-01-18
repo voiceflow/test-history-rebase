@@ -30,15 +30,15 @@ const buildWorkspaceActionControls = (options: LoguxControlOptions) => ({
   updateWorkspaceNameControl: new UpdateWorkspaceNameControl(options),
 
   // workspace member
-  addMemberControl: new AddMemberControl(options),
-  sendInviteControl: new SendInviteControl(options),
-  ejectMemberControl: new EjectMemberControl(options),
-  updateInviteControl: new UpdateInviteControl(options),
   acceptInviteControl: new AcceptInviteControl(options),
+  addMemberControl: new AddMemberControl(options),
   cancelInviteControl: new CancelInviteControl(options),
+  ejectMemberControl: new EjectMemberControl(options),
   patchWorkspaceMemberControl: new PatchWorkspaceMemberControl(options),
   removeWorkspaceMemberControl: new RemoveWorkspaceMemberControl(options),
   replaceWorkspaceMembersControl: new ReplaceWorkspaceMembersControl(options),
+  sendInviteControl: new SendInviteControl(options),
+  updateInviteControl: new UpdateInviteControl(options),
 
   // workspace quotas
   loadAllQuotasControl: new LoadAllQuotasControl(options),

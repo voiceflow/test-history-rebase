@@ -20,7 +20,7 @@ interface InviteByEmailProps {
 }
 
 const InviteByEmail: React.FC<InviteByEmailProps> = ({ buttonLabel = 'Add' }) => {
-  const members = useSelector(WorkspaceV2.active.allNormalizedMembersSelector);
+  const members = useSelector(WorkspaceV2.active.membersSelector);
   const numberOfSeats = useSelector(WorkspaceV2.active.numberOfSeatsSelector);
   const usedEditorSeats = useSelector(WorkspaceV2.active.usedEditorSeatsSelector);
   const usedViewerSeats = useSelector(WorkspaceV2.active.usedViewerSeatsSelector);

@@ -20,7 +20,7 @@ import { ProjectListList } from './components';
 import { DashboardGate } from './gates';
 import DashboardHeader from './Header';
 
-const Dashboard: React.FC = () => {
+const Dashboard: React.OldFC = () => {
   const location = useLocation();
   const workspace = useActiveWorkspace();
   const fetchNotifications = useDispatch(Notifications.fetchNotifications);

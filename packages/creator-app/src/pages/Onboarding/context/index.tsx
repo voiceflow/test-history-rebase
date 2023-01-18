@@ -1,10 +1,9 @@
 import { Nullable, Utils } from '@voiceflow/common';
-import { BillingPeriod, PlanType, PromoType } from '@voiceflow/internal';
+import { BillingPeriod, PlanType, PromoType, UserRole } from '@voiceflow/internal';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { ButtonVariant, toast } from '@voiceflow/ui';
 import _constant from 'lodash/constant';
-import * as Normal from 'normal-store';
 import queryString from 'query-string';
 import React from 'react';
 import { Redirect, useLocation } from 'react-router-dom';
@@ -25,7 +24,6 @@ import { withStripe } from '@/hocs/withStripe';
 import { useDispatch, useSelector, useSmartReducer, useStore, useTrackingEvents } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
 import { getErrorMessage } from '@/utils/error';
-import { isAdminOrOwnerUserRole } from '@/utils/role';
 import * as Sentry from '@/vendors/sentry';
 import * as Userflow from '@/vendors/userflow';
 
@@ -139,24 +137,24 @@ const UnconnectedOnboardingProvider: React.OldFC<OnboardingProviderProps> = ({
   // if the user has existing workspaces they are owners of
   const hasWorkspaces = React.useMemo(
     () =>
-      workspaces.some(
+      !!workspaces.filter(
         (workspace) =>
-          Normal.denormalize(workspace.members).some((member) => member.creator_id === account.creator_id && isAdminOrOwnerUserRole(member.role)) &&
+          workspace.members?.some((member) => member.creator_id === account.creator_id && member.role === UserRole.ADMIN) &&
           // to fix the issue when the payment step is shown after coupon code was used
           // we are creating workspace (name = Personal) during the signup if the coupon code is used
           (!isLoginFlow || !(workspace.name === 'Personal' && workspace.plan !== PlanType.STARTER))
-      ),
+      ).length,
     [workspaces.length, account.creator_id, isLoginFlow]
   );
 
   const isAdminOfEnterprisePlan = React.useMemo(
     () =>
       workspaces.some((workspace) => {
-        if (workspace.plan !== PlanType.ENTERPRISE) return false;
+        const isEnterpriseWorkspace = workspace.plan === PlanType.ENTERPRISE;
 
-        return Normal.denormalize(workspace.members).some(
-          (member) => member.creator_id === account.creator_id && isAdminOrOwnerUserRole(member.role)
-        );
+        if (!isEnterpriseWorkspace) return false;
+
+        return workspace.members?.some((member) => member.creator_id === account.creator_id && member.role === UserRole.ADMIN);
       }),
     [workspaces, account.creator_id]
   );
@@ -218,9 +216,7 @@ const UnconnectedOnboardingProvider: React.OldFC<OnboardingProviderProps> = ({
 
   React.useEffect(() => {
     const usedSignupCoupon = workspaces.length === 1 && workspaces[0].name === 'Personal';
-
     actions.setUsedSignupCoupon(usedSignupCoupon);
-
     if (usedSignupCoupon) {
       setActiveWorkspace(workspaces[0].id);
     }

@@ -9,11 +9,11 @@ import RoleSelect from './RoleSelect';
 import * as S from './styles';
 import { getRoleFacets } from './utils';
 
-const DashboardV2TeamAndBillingMembersList: React.FC = () => {
-  const members = useSelector(WorkspaceV2.active.allNormalizedMembersSelector);
+const DashboardV2TeamAndBillingMembersList: React.OldFC = () => {
+  const members = useSelector(WorkspaceV2.active.membersSelector);
 
-  const [role, setRole] = React.useState('');
   const [search, setSearch] = React.useState('');
+  const [role, setRole] = React.useState('');
 
   const clearFilters = usePersistFunction(() => {
     setSearch('');
@@ -21,17 +21,15 @@ const DashboardV2TeamAndBillingMembersList: React.FC = () => {
   });
 
   const filteredMembers = React.useMemo(() => {
-    if (!members.length || (!role && !search)) return members;
+    if (!members?.length || (!role && !search)) return members;
 
     const lowSearch = search.toLowerCase();
 
     return members.filter((member) => {
       if (role && member.role !== role) return false;
-
       if (search) {
         return member.name?.toLowerCase().includes(lowSearch) || member.email?.toLocaleLowerCase().includes(lowSearch);
       }
-
       return true;
     });
   }, [search, role, members]);

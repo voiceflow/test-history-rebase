@@ -1,5 +1,4 @@
 import { PlanType, UserRole } from '@voiceflow/internal';
-import { Normalized } from 'normal-store';
 
 import * as Billing from './Billing';
 
@@ -51,19 +50,28 @@ export interface Workspace {
   state: WorkspaceActivationState | null;
   image: string;
   boards: Board[];
-  quotas?: Billing.Quota[];
-  members: Normalized<WorkspaceMember>;
+  members: Array<WorkspaceMember | PendingWorkspaceMember>;
   created: string;
   projects: number;
-  settings: WorkspaceSettings;
   betaFlag: number;
   creatorID: number | null; // workspaces created via identity service do not have creator_id
   hasSource: boolean;
   seatLimits: SeatLimits;
-  pendingMembers: Normalized<PendingWorkspaceMember>;
   organizationID: string | null;
   variableStatesLimit: number | null;
   organizationTrialDaysLeft: number | null;
+  quotas?: Billing.Quota[];
+  settings: WorkspaceSettings;
+}
+
+export interface IdentityWorkspace {
+  id: string;
+  organizationID: string;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string;
+  name: string;
+  image: string;
 }
 
 export interface DBWorkspace {

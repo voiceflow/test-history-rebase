@@ -16,7 +16,7 @@ interface DashboardHeaderProps {
   handleFilterText: (text: string) => void;
 }
 
-const DashboardHeader: React.FC<DashboardHeaderProps> = ({ handleFilterText, workspace: activeWorkspace }) => {
+const DashboardHeader: React.OldFC<DashboardHeaderProps> = ({ handleFilterText, workspace: activeWorkspace }) => {
   const [canConfigureWorkspace] = usePermission(Permission.CONFIGURE_WORKSPACE);
   const goToWorkspaceSettings = useDispatch(Router.goToCurrentWorkspaceSettings);
 
@@ -29,7 +29,7 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({ handleFilterText, wor
       centerRenderer={() => <CenterNavSection />}
       disableLogoClick={!canConfigureWorkspace}
       onLogoClick={() => goToWorkspaceSettings()}
-      subHeaderRenderer={() => <SecondaryNav handleFilterText={handleFilterText} />}
+      subHeaderRenderer={() => <SecondaryNav handleFilterText={handleFilterText} workspace={activeWorkspace} />}
     />
   );
 };

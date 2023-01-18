@@ -3,7 +3,7 @@ import { Dropdown, Flex, FlexApart, SvgIcon, TippyTooltip } from '@voiceflow/ui'
 import _isNumber from 'lodash/isNumber';
 import React from 'react';
 
-import { TEAM_INCREASE_LIMIT } from '@/config/planLimitV2/editorSeats';
+import { STARTER_PRO_EDITOR_LIMIT } from '@/config/planLimits/numEditors';
 import { PERIOD_NAME } from '@/constants';
 import StepSection from '@/pages/Payment/components/Section';
 import { PaymentContextProps, PaymentErrors, withPayment } from '@/pages/Payment/context';
@@ -46,7 +46,7 @@ const SeatsAndBilling: React.OldFC<SeatsAndBillingProps> = ({
   const canSetSeats = (seats: number) => {
     setSeats(seats.toString());
 
-    if ((seats <= TEAM_INCREASE_LIMIT && upgradePrompt) || (seats > TEAM_INCREASE_LIMIT && !upgradePrompt)) {
+    if ((seats <= STARTER_PRO_EDITOR_LIMIT && upgradePrompt) || (seats > STARTER_PRO_EDITOR_LIMIT && !upgradePrompt)) {
       toggleUpgradePrompt();
     }
   };

@@ -1,16 +1,18 @@
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Button, Modal, Select, StatusCode, toast, ToastCallToAction, useAsyncEffect } from '@voiceflow/ui';
+import { Button, Modal, Select, StatusCode, toast, ToastCallToAction } from '@voiceflow/ui';
 import React, { useMemo, useState } from 'react';
 
 import client from '@/client';
+import { ROLE_PERMISSIONS } from '@/config/rolePermission';
 import { LimitType } from '@/constants/limits';
 import { Permission } from '@/constants/permissions';
 import * as Account from '@/ducks/account';
 import * as Router from '@/ducks/router';
 import * as Workspace from '@/ducks/workspace';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { useDispatch, usePlanLimitConfig, useSelector } from '@/hooks';
+import { extractMemberById } from '@/ducks/workspaceV2/utils';
+import { useAsyncEffect, useDispatch, useFeature, usePlanLimitConfig, useSelector } from '@/hooks';
 import { hasRolePermission } from '@/utils/rolePermission';
 import * as Sentry from '@/vendors/sentry';
 
@@ -20,13 +22,13 @@ import Loading from '../Loading';
 import Upgrade from '../Upgrade';
 
 const allowedToClone = (workspace: Realtime.Workspace, creatorID: number | null): boolean => {
-  if (!creatorID) return false;
+  if (!creatorID) {
+    return false;
+  }
 
-  const member = workspace.members.byKey[creatorID];
+  const creatorRole = extractMemberById(workspace.members ?? [], creatorID)?.role;
 
-  if (!member) return false;
-
-  return hasRolePermission(Permission.MANAGE_PROJECTS, member.role);
+  return !!creatorRole && hasRolePermission(Permission.MANAGE_PROJECTS, creatorRole);
 };
 
 const getCopyProjectTitle = (projectName?: string) => (!projectName ? 'Copy Project' : `Copy Project: ${projectName}`);
@@ -47,9 +49,11 @@ const ImportModal = manager.create<Props>('ProjectImport', () => ({ api, type, o
   const goToDomain = useDispatch(Router.goToDomain);
   const importProject = useDispatch(Workspace.importProject);
   const goToWorkspace = useDispatch(Router.goToWorkspace);
-  const allWorkspaces = useSelector(WorkspaceV2.allWorkspacesSelector);
+  const reduxWorkspaces = useSelector(WorkspaceV2.allWorkspacesSelector);
 
-  const workspaces = useMemo(() => allWorkspaces.filter((workspace) => allowedToClone(workspace, creatorID)), [allWorkspaces, creatorID]);
+  const identityWorkspaceMember = useFeature(Realtime.FeatureFlag.IDENTITY_WORKSPACE_MEMBER);
+
+  const [workspaces, setWorkspaces] = useState<ImportWorkspace[]>([]);
 
   const workspaceOptions = useMemo(() => workspaces.map((workspace) => ({ value: workspace.id, label: workspace.name })), [workspaces]);
   const workspaceOptionsMap = useMemo(() => Utils.array.createMap(workspaceOptions, Utils.object.selectValue), [workspaceOptions]);
@@ -113,10 +117,21 @@ const ImportModal = manager.create<Props>('ProjectImport', () => ({ api, type, o
   };
 
   useAsyncEffect(async () => {
+    let authorizedWorkspaces: ImportWorkspace[] = [];
+    // get a list of workspaces with editor/owner/admin role
+    if (identityWorkspaceMember.isEnabled) {
+      authorizedWorkspaces = await client.identity.workspace.list(ROLE_PERMISSIONS[Permission.MANAGE_PROJECTS].roles);
+    } else {
+      authorizedWorkspaces = reduxWorkspaces.filter((workspace) =>
+        workspace.members.some((member) => member.creator_id === creatorID && allowedToClone(workspace, creatorID))
+      );
+    }
+    setWorkspaces(authorizedWorkspaces);
+
     if (!projectID) return;
 
     // If user has 0 workspaces with Editor/Admin/Owner role, show toast
-    if (workspaces.length === 0) {
+    if (authorizedWorkspaces.length === 0) {
       toast.error('You do not have permission to copy project to any of your workspaces');
 
       // setTimeout needed to prevent race condition and creating unclickable overlay
@@ -124,12 +139,12 @@ const ImportModal = manager.create<Props>('ProjectImport', () => ({ api, type, o
       return;
     }
 
-    setTargetWorkspace(workspaces[0].id);
-
     // If user has only 1 workspace with Editor/Admin/Owner role, automatically add it
-    if (workspaces.length === 1) {
-      cloneProject(workspaces[0].id);
+    if (authorizedWorkspaces.length === 1) {
+      cloneProject(authorizedWorkspaces[0].id);
     }
+
+    setTargetWorkspace(authorizedWorkspaces[0]?.id);
 
     try {
       const importingProject = await client.api.project.get<{ name: string }>(projectID, ['name']);
@@ -138,7 +153,7 @@ const ImportModal = manager.create<Props>('ProjectImport', () => ({ api, type, o
     } catch {
       toast.error('Not able to retrieve project information');
     }
-  }, []);
+  });
 
   return (
     <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} maxWidth={392}>

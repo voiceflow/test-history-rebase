@@ -1,5 +1,4 @@
 import { Utils } from '@voiceflow/common';
-import * as Normal from 'normal-store';
 import React from 'react';
 
 import * as Account from '@/ducks/account';
@@ -35,8 +34,9 @@ const SessionTracker: React.OldFC = () => {
     const allWorkspaces = WorkspaceV2.allWorkspacesSelector(state);
     const trackSessionTime = createSessionTracker(Date.now());
 
+    // Typescript doesn't see the filter as removing undefined values
     const roles = allWorkspaces
-      .map((workspace) => Normal.denormalize(workspace.members).find((member) => member.creator_id === creatorID)?.role)
+      .map((workspace) => workspace.members.find(({ creator_id }) => creator_id === creatorID)?.role)
       .filter(Utils.array.isNotNullish);
 
     trackEvents.trackSessionBegin(workspaceIDs, email, roles);

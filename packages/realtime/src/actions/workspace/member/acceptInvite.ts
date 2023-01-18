@@ -17,14 +17,14 @@ class AcceptWorkspaceInvite extends AbstractActionControl<Realtime.workspace.mem
 
     try {
       const workspaceID = await this.services.workspace.member.acceptInvite(creatorID, payload.invite);
-      const dbWorkspace = await this.services.workspace.get(creatorID, workspaceID);
+      const workspace = await this.services.workspace.get(creatorID, workspaceID).then(Realtime.Adapters.workspaceAdapter.fromDB);
 
       // broadcast new workspace and updated member list
       await Promise.all([
-        this.server.process(Realtime.workspace.crud.add({ key: workspaceID, value: Realtime.Adapters.workspaceAdapter.fromDB(dbWorkspace) }), {
+        this.server.process(Realtime.workspace.crud.add({ key: workspaceID, value: workspace }), {
           channel: Realtime.Channels.creator.build({ creatorID: ctx.userId }),
         }),
-        this.server.processAs(creatorID, Realtime.workspace.member.replace({ workspaceID, members: dbWorkspace.members })),
+        this.server.processAs(creatorID, Realtime.workspace.member.replace({ workspaceID, members: workspace.members })),
       ]);
 
       return workspaceID;

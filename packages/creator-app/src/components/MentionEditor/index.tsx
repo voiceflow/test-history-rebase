@@ -1,4 +1,5 @@
 import { Utils } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 import { Mention, MentionsInput, MentionsInputProps, OnChangeHandlerFunc, SuggestionDataItem } from 'react-mentions';
 import { createSelector } from 'reselect';
@@ -15,8 +16,8 @@ import { formatNameToMention } from './utils';
 
 export { MentionPreview };
 
-const activeWorkspaceCommentingMembersSelector = createSelector([WorkspaceV2.active.normalizedMembersSelector], (members) =>
-  members.filter((member) => hasRolePermission(Permission.COMMENTING, member.role))
+const activeWorkspaceCommentingMembersSelector = createSelector([WorkspaceV2.active.membersSelector], (members) =>
+  members.filter((member): member is Realtime.WorkspaceMember => !!member.name && hasRolePermission(Permission.COMMENTING, member.role))
 );
 
 export interface MentionEditorProps {
@@ -24,12 +25,12 @@ export interface MentionEditorProps {
   onBlur?: () => void;
   height?: number;
   onChange: (value: string, mentions: number[]) => void;
-  inputRef?: React.Ref<HTMLInputElement>;
   inputProps?: Omit<MentionsInputProps, 'children'>;
   placeholder: string;
+  inputRef?: React.Ref<HTMLInputElement>;
 }
 
-export const MentionEditor: React.FC<MentionEditorProps> = ({ onChange, onBlur, value = '', placeholder, inputProps, height, inputRef }) => {
+export const MentionEditor: React.OldFC<MentionEditorProps> = ({ onChange, onBlur, value = '', placeholder, inputProps, height, inputRef }) => {
   const theme = useTheme();
   const members = useSelector(activeWorkspaceCommentingMembersSelector);
 

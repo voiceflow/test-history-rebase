@@ -37,7 +37,8 @@ interface TableUtteranceRowProps {
 const TableUtteranceRow: React.FC<TableUtteranceRowProps> = ({ rowIndex, item: u, allItems, isActive, similarity, onSelect }) => {
   const nluManager = useNLUManager();
   const [isHovering, setIsHovering] = React.useState(false);
-  const importedByUser = useSelector(WorkspaceV2.active.memberByIDSelector, { creatorID: u.sourceID ? parseInt(u.sourceID, 10) : null });
+  const getMemberByCreatorID = useSelector(WorkspaceV2.memberByCreatorIDSelector);
+  const importedByUser = getMemberByCreatorID({ id: u.sourceID })?.name;
 
   return (
     <>
@@ -66,7 +67,7 @@ const TableUtteranceRow: React.FC<TableUtteranceRowProps> = ({ rowIndex, item: u
               <Text fontSize={13} color="#62778C">
                 {importedByUser && (
                   <>
-                    Imported by <span style={{ color: 'black' }}>{importedByUser.name}</span>
+                    Imported by <span style={{ color: 'black' }}>{importedByUser}</span>
                   </>
                 )}
               </Text>

@@ -1,22 +1,20 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Members } from '@voiceflow/ui';
 import React from 'react';
 
 import { Permission } from '@/constants/permissions';
-import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { usePermission, useSelector } from '@/hooks';
+import { usePermission } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
 
 import { ProjectSearchContainer, ProjectSearchInput } from './components';
 
 interface SecondaryNavProps {
+  workspace: Realtime.Workspace | null;
   handleFilterText: (text: string) => void;
 }
 
-const SecondaryNav: React.FC<SecondaryNavProps> = ({ handleFilterText }) => {
-  const members = useSelector(WorkspaceV2.active.normalizedMembersSelector);
-
+const SecondaryNav: React.OldFC<SecondaryNavProps> = ({ workspace: selectedWorkspace, handleFilterText }) => {
   const collaboratorsModal = ModalsV2.useModal(ModalsV2.Collaborators);
-
   const [canAddCollaborators] = usePermission(Permission.ADD_COLLABORATORS);
   const [canViewCollaborators] = usePermission(Permission.VIEW_COLLABORATORS);
 
@@ -31,9 +29,9 @@ const SecondaryNav: React.FC<SecondaryNavProps> = ({ handleFilterText }) => {
         />
       </ProjectSearchContainer>
 
-      {canViewCollaborators && (
+      {selectedWorkspace && canViewCollaborators && (
         <Box.Flex ml={22}>
-          <Members.AvatarList members={members} onAdd={canAddCollaborators ? () => collaboratorsModal.openVoid() : undefined} />
+          <Members.AvatarList members={selectedWorkspace.members} onAdd={canAddCollaborators ? () => collaboratorsModal.openVoid() : undefined} />
         </Box.Flex>
       )}
     </>

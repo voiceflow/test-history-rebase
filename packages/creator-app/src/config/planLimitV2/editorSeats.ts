@@ -12,7 +12,7 @@ const DEFAULT_MODAL = {
   header: 'Add Members',
 };
 
-export const TEAM_INCREASE_LIMIT = 5;
+const TEAM_INCREASE_LIMIT = 5;
 
 const STARTER_LIMIT: UpgradeModalDynamicLimit = {
   upgradeModal: ({ limit }) => ({

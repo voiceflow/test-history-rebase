@@ -16,24 +16,22 @@ interface MembersListProps {
   memberRolesMap: Partial<Record<number, UserRole[]>>;
 }
 
-const MembersList: React.FC<MembersListProps> = ({ memberIDs, onRemove, onChangeRoles, memberRolesMap }) => {
-  const members = useSelector(WorkspaceV2.active.membersSelector);
+const MembersList: React.OldFC<MembersListProps> = ({ memberIDs, onRemove, onChangeRoles, memberRolesMap }) => {
   const workspace = useSelector(WorkspaceV2.active.workspaceSelector);
-  const allMembersCount = useSelector(WorkspaceV2.active.allNormalizedMembersCountSelector);
+  const activeMembersMap = useSelector(WorkspaceV2.active.activeMembersMapSelector);
+  const workspaceMembersCount = useSelector(WorkspaceV2.active.membersCountSelector);
 
   const membersToRender = React.useMemo(
     () =>
       memberIDs
         .map((id) => {
-          const member = members?.byKey[id];
+          const activeMember = activeMembersMap[id];
           const assistantRoles = memberRolesMap[id];
 
-          if (!member || !assistantRoles) return null;
-
-          return { ...member, role: assistantRoles[0] };
+          return activeMember && assistantRoles && { ...activeMember, role: assistantRoles[0] };
         })
         .filter(Utils.array.isNotNullish),
-    [memberIDs, memberRolesMap, members]
+    [memberIDs, memberRolesMap, activeMembersMap]
   );
 
   return !workspace ? null : (
@@ -43,7 +41,7 @@ const MembersList: React.FC<MembersListProps> = ({ memberIDs, onRemove, onChange
 
         <div>
           <S.Title>{workspace.name}</S.Title>
-          <S.Subtitle>All {allMembersCount} members have their default access</S.Subtitle>
+          <S.Subtitle>All {workspaceMembersCount} members have their default access</S.Subtitle>
         </div>
       </S.Header>
 

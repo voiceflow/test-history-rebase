@@ -1,7 +1,6 @@
-import { BillingPeriod, PlanType } from '@voiceflow/internal';
+import { BillingPeriod, PlanType, UserRole } from '@voiceflow/internal';
 import { Button, ClickableText, ControlledInput, Dropdown, FlexApart, FlexCenter, Menu, SvgIcon, toast } from '@voiceflow/ui';
 import _isEmpty from 'lodash/isEmpty';
-import * as Normal from 'normal-store';
 import React, { useContext } from 'react';
 
 import { teamGraphic } from '@/assets';
@@ -18,7 +17,6 @@ import { OnboardingContext } from '@/pages/Onboarding/context';
 import { SpecificFlowType } from '@/pages/Onboarding/context/types';
 import BillingDropdown from '@/pages/Payment/Checkout/components/SeatsAndBilling/components/BillingDropdown';
 import CostText from '@/pages/Payment/Checkout/components/SelectPlan/CheckoutButton/components/CostText';
-import { isAdminOrOwnerUserRole, isEditorUserRole } from '@/utils/role';
 
 import {
   BubbleTextContainer,
@@ -83,11 +81,9 @@ const Payment: React.OldFC = () => {
   };
 
   const isWorkspaceAdmin = (workspaceID: string) => {
-    const workspace = getWorkspaceByID({ id: workspaceID });
+    const targetWorkspaceMembers = getWorkspaceByID({ id: workspaceID })?.members;
 
-    if (!workspace?.members) return false;
-
-    return Normal.denormalize(workspace.members).some((member) => member.creator_id === creatorID && isAdminOrOwnerUserRole(member.role));
+    return targetWorkspaceMembers?.some((member) => member.creator_id === creatorID && member.role === UserRole.ADMIN);
   };
 
   const handleStripeOnChange = ({ error }: any) => {
@@ -129,16 +125,18 @@ const Payment: React.OldFC = () => {
   }, [coupon, paymentPeriod, selectedPlan, seatCount, setCouponError, setPriceError]);
 
   React.useEffect(() => {
-    const workspace = getWorkspaceByID({ id: selectedWorkspaceId });
+    const targetWorkspace = getWorkspaceByID({ id: selectedWorkspaceId });
+    let numberOfEditors = 0;
 
-    if (!workspace?.members) {
-      setSeatCount(0);
-      return;
-    }
+    targetWorkspace?.members.forEach((member) => {
+      if (member.role === UserRole.ADMIN || member.role === UserRole.EDITOR) {
+        numberOfEditors++;
+      }
+    });
 
-    const numberOfEditors = Normal.denormalize(workspace.members).reduce((acc, member) => acc + (isEditorUserRole(member.role) ? 1 : 0), 0);
+    const newSeatCount = Math.max(seatCount, numberOfEditors);
 
-    setSeatCount(Math.max(seatCount, numberOfEditors));
+    setSeatCount(newSeatCount);
   }, [selectedWorkspaceId]);
 
   // pre-populate stripe coupon or promotion code

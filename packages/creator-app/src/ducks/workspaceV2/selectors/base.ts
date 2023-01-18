@@ -1,10 +1,10 @@
-import * as Normal from 'normal-store';
+import { UserRole } from '@voiceflow/internal';
 import { createSelector } from 'reselect';
 
 import { userIDSelector } from '@/ducks/account/selectors';
 import { createParameterSelector } from '@/ducks/utils';
-import { createCRUDSelectors } from '@/ducks/utils/crudV2';
-import { isAdminOrOwnerUserRole } from '@/utils/role';
+import { createCRUDSelectors, idParamSelector } from '@/ducks/utils/crudV2';
+import { createCurriedSelector } from '@/ducks/utils/selector';
 
 import { STATE_KEY } from '../constants';
 
@@ -18,10 +18,22 @@ export const {
   getByID: getWorkspaceByIDSelector,
 } = createCRUDSelectors(STATE_KEY);
 
-export const workspacesWhereIsAdminOrOwnerSelector = createSelector([allWorkspacesSelector, userIDSelector], (workspaces, userID) =>
+export const isAdminOfAnyWorkspaceSelector = createSelector([allWorkspacesSelector, userIDSelector], (workspaces, userID) =>
+  workspaces.some(({ members }) => members.some(({ creator_id: creatorID, role }) => userID === creatorID && role === UserRole.ADMIN))
+);
+
+export const workspacesWhereIsAdminSelector = createSelector([allWorkspacesSelector, userIDSelector], (workspaces, userID) =>
   workspaces.filter(({ members }) =>
-    Normal.denormalize(members).some(({ creator_id: creatorID, role }) => userID === creatorID && isAdminOrOwnerUserRole(role))
+    members.some(({ creator_id: creatorID, role }) => userID === creatorID && (role === UserRole.ADMIN || role === UserRole.OWNER))
   )
 );
 
-export const isAdminOrOwnerOfAnyWorkspaceSelector = createSelector([workspacesWhereIsAdminOrOwnerSelector], (workspaces) => workspaces.length);
+export const allMembersSelector = createSelector([allWorkspacesSelector], (workspaces) => workspaces.flatMap(({ members }) => members));
+
+const memberByCreatorID = createSelector([allMembersSelector, idParamSelector], (members, userID) => {
+  if (!userID) return null;
+  const parsedUserID = parseInt(userID, 10);
+  return members.find(({ creator_id: creatorID }) => parsedUserID === creatorID);
+});
+
+export const memberByCreatorIDSelector = createCurriedSelector(memberByCreatorID);

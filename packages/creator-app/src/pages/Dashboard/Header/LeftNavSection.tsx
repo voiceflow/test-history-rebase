@@ -25,7 +25,7 @@ const LeftNavSection: React.FC<LeftNavSectionProps> = ({ activeWorkspace }) => {
   const plan = useSelector(WorkspaceV2.active.planSelector);
   const workspaces = useSelector(WorkspaceV2.allWorkspacesSelector);
   const isLoadingProjects = useSelector(UI.isLoadingProjectsSelector);
-  const isAdminOrOwnerOfAnyWorkspace = useSelector(WorkspaceV2.isAdminOrOwnerOfAnyWorkspaceSelector);
+  const isAdminOfAnyWorkspace = useSelector(WorkspaceV2.isAdminOfAnyWorkspaceSelector);
 
   const [canCreatePrivateCloudWorkspace] = usePermission(Permission.PRIVATE_CLOUD_WORKSPACE_CREATE);
 
@@ -37,7 +37,7 @@ const LeftNavSection: React.FC<LeftNavSectionProps> = ({ activeWorkspace }) => {
     onPlanForbid: ({ planConfig }) => upgradeModal.openVoid(planConfig.upgradeModal()),
   });
 
-  const showCreateWorkspaceButton = !IS_PRIVATE_CLOUD || isAdminOrOwnerOfAnyWorkspace || canCreatePrivateCloudWorkspace;
+  const showCreateWorkspaceButton = !IS_PRIVATE_CLOUD || isAdminOfAnyWorkspace || canCreatePrivateCloudWorkspace;
 
   return (
     <>

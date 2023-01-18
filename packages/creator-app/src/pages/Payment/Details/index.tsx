@@ -5,10 +5,10 @@ import React from 'react';
 import BubbleText from '@/components/BubbleText';
 import ImageCarousel from '@/components/ImageCarousel';
 import Tabs from '@/components/Tabs';
+import { upgradeToEnterpriseAction } from '@/config/planLimits';
 import { PLAN_TYPE_META } from '@/constants';
 import { PaymentContextProps, withPayment } from '@/pages/Payment/context';
 import { FadeLeftContainer } from '@/styles/animations';
-import { onOpenBookDemoPage } from '@/utils/upgrade';
 
 import CarouselButtons from './CarouselButtons';
 import {
@@ -123,7 +123,7 @@ const PlansDetails: React.OldFC<PlansDetailsProps> = ({
             Upgrade to {plan.name}
           </Button>
         ) : (
-          <Button variant={ButtonVariant.PRIMARY} onClick={onOpenBookDemoPage}>
+          <Button variant={ButtonVariant.PRIMARY} onClick={upgradeToEnterpriseAction}>
             Contact Sales
           </Button>
         )}

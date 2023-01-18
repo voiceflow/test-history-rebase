@@ -15,14 +15,15 @@ interface CommenterProps {
   creatorID: number;
 }
 
-export const Commenter: React.FC<CommenterProps> = ({ time, bold = true, creatorID }) => {
-  const member = useSelector(WorkspaceV2.active.memberByIDSelector, { creatorID }) ?? Workspace.UNKNOWN_MEMBER_DATA;
+export const Commenter: React.OldFC<CommenterProps> = ({ time, bold = true, creatorID }) => {
+  const user = useSelector(WorkspaceV2.active.memberByIDSelector, { creatorID });
+
+  const userData = user ?? Workspace.UNKNOWN_MEMBER_DATA;
 
   return (
     <Box.Flex>
-      <User user={member} />
-      <NameContainer fontWeight={bold ? 600 : 'normal'}>{Utils.string.capitalizeAllWords(member.name)}</NameContainer>
-
+      <User user={userData} />
+      <NameContainer fontWeight={bold ? 600 : 'normal'}>{Utils.string.capitalizeAllWords(userData.name)}</NameContainer>
       {time && (
         <Box ml={8}>
           <Duration time={time} short={!!time} />

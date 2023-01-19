@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1057.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1056.1...@voiceflow/creator-app@1.1057.0) (2023-01-19)
+
+
+### Bug Fixes
+
+* webchat section width failing [bugfix] (CT-000) ([e8c4e3c](https://github.com/voiceflow/creator-app/commit/e8c4e3c2cf9a501b9da002f17274527ba7343f79))
+
+
+### Features
+
+* freestyle disclaimer (CT-1410) ([#6570](https://github.com/voiceflow/creator-app/issues/6570)) ([76ea7a9](https://github.com/voiceflow/creator-app/commit/76ea7a9c977a59fd5e8073a710c12120beb07a4b))
+
+
+
+
+
 ## [1.1056.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1056.0...@voiceflow/creator-app@1.1056.1) (2023-01-18)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.220.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.220.1...@voiceflow/realtime-sdk@1.220.2) (2023-01-19)
+
+
+### Bug Fixes
+
+* sso tab endpoint [bugfix] (BUG-177) ([#6592](https://github.com/voiceflow/creator-app/issues/6592)) ([7fb8a39](https://github.com/voiceflow/creator-app/commit/7fb8a39158558b62d3cdb6a2e19036e70aec8a5e)), closes [/github.com/voiceflow/platform/blob/ba740969e634b4cb9a200c172f04c9311195cb09/apps/identity/src/provider/saml2-provider.controller.ts#L11](https://github.com//github.com/voiceflow/platform/blob/ba740969e634b4cb9a200c172f04c9311195cb09/apps/identity/src/provider/saml2-provider.controller.ts/issues/L11)
+
+
+
+
+
 ## [1.220.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.220.0...@voiceflow/realtime-sdk@1.220.1) (2023-01-18)
 
 

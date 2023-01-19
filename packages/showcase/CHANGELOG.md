@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.44.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/showcase@1.43.4...@voiceflow/showcase@1.44.0) (2023-01-19)
+
+
+### Features
+
+* freestyle disclaimer (CT-1410) ([#6570](https://github.com/voiceflow/creator-app/issues/6570)) ([76ea7a9](https://github.com/voiceflow/creator-app/commit/76ea7a9c977a59fd5e8073a710c12120beb07a4b))
+
+
+
+
+
 ## [1.43.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/showcase@1.43.3...@voiceflow/showcase@1.43.4) (2023-01-16)
 
 **Note:** Version bump only for package @voiceflow/showcase

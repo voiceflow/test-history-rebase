@@ -91,6 +91,9 @@ export enum Permission {
   // API keys
   API_KEY_EDIT = 'api_key.EDIT',
   API_KEY_VIEW = 'api_key.VIEW',
+
+  // AI
+  FREESTLYE_DISCLAIMER = 'ai_freestyle.EDIT',
 }
 
 export const TRIAL_EXPIRED_NOT_ALLOWED_PERMISSIONS = [

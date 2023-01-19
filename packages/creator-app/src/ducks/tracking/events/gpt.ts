@@ -31,3 +31,7 @@ export const trackAIResultJudgement = createProjectEventTracker<{
 }>(({ decision, modified, original, requestID, ...options }) =>
   client.api.analytics.track(EventName.AI_RESULT_JUDGEMENT, createProjectEventPayload(options, { decision, modified, original, requestID }))
 );
+
+export const trackFreestyleDisclaimerAccepted = createProjectEventTracker((options) =>
+  client.api.analytics.track(EventName.FREESTYLE_DISCLAIMER_ACCEPTED, createProjectEventPayload(options, { scope: 'project' }))
+);

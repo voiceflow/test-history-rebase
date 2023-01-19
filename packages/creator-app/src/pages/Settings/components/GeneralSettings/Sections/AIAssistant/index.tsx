@@ -6,10 +6,12 @@ import React from 'react';
 import * as GPT from '@/components/GPT';
 import * as Settings from '@/components/Settings';
 import { AI_GENERAL_LINK, LEARN_FREESTYLE, LEARN_GENERATIVE_TASKS } from '@/constants';
+import { Permission } from '@/constants/permissions';
 import * as Project from '@/ducks/project';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
-import { useActiveWorkspace, useDispatch, useFeature, useSelector, useTrackingEvents } from '@/hooks';
+import { useActiveWorkspace, useDispatch, useFeature, usePermission, useSelector, useTrackingEvents } from '@/hooks';
+import * as ModalsV2 from '@/ModalsV2';
 import { SettingSections } from '@/pages/Settings/constants';
 
 import { useAutoScrollSectionIntoView } from '../hooks';
@@ -19,8 +21,11 @@ const AIAssistant: React.FC = () => {
   const workspace = useActiveWorkspace();
   const [trackingEvents] = useTrackingEvents();
 
+  const freestyleDisclaimerModal = ModalsV2.useModal(ModalsV2.FreestyleDisclaimer);
+
   const activeProjectID = useSelector(Session.activeProjectIDSelector);
   const aiAssistSettings = useSelector(ProjectV2.active.aiAssistSettings);
+  const freestyleDisclaimerPermission = usePermission(Permission.FREESTLYE_DISCLAIMER);
 
   const updateProjectAiAssistSettings = useDispatch(Project.updateProjectAiAssistSettings);
 
@@ -43,9 +48,12 @@ const AIAssistant: React.FC = () => {
   const onFreestyleToggle = () => {
     const enabled = !aiAssistSettings?.freestyle;
 
-    onPatchAiAssistSettings({ freestyle: enabled });
-
-    trackingEvents.trackProjectGenerateAIFeatureToggled({ enabled, flag: GPT.FeatureToggle.FREESTYLE });
+    if (enabled && freestyleDisclaimerPermission.allowed) {
+      freestyleDisclaimerModal.openVoid();
+    } else {
+      onPatchAiAssistSettings({ freestyle: enabled });
+      trackingEvents.trackProjectGenerateAIFeatureToggled({ enabled, flag: GPT.FeatureToggle.FREESTYLE });
+    }
   };
 
   const { isEnabled: isFreestyleEnabled } = useFeature(Realtime.FeatureFlag.GPT_FREESTYLE);

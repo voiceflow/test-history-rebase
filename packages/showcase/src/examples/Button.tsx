@@ -26,4 +26,12 @@ const examples = [ButtonVariant.PRIMARY, ButtonVariant.SECONDARY, ButtonVariant.
     ))
 );
 
+const DarkButton = createExample('dark button', () => (
+  <Flex column gap={16}>
+    <Button.DarkButton>Default dark button</Button.DarkButton>
+  </Flex>
+));
+
+examples.concat(DarkButton);
+
 export default createSection('Button', 'src/components/Button/index.tsx', examples);

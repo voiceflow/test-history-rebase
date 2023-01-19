@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1058.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1057.0...@voiceflow/creator-app@1.1058.0) (2023-01-19)
+
+
+### Features
+
+* normalized members + realtime subprotocols (CT-000) ([#6589](https://github.com/voiceflow/creator-app/issues/6589)) ([7b1e4f6](https://github.com/voiceflow/creator-app/commit/7b1e4f6e087e67bbe63bb9f534cda3a0b9e61194))
+
+
+
+
+
 # [1.1057.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1056.1...@voiceflow/creator-app@1.1057.0) (2023-01-19)
 
 

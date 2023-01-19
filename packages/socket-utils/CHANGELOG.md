@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.27.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/socket-utils@1.26.2...@voiceflow/socket-utils@1.27.0) (2023-01-19)
+
+
+### Features
+
+* normalized members + realtime subprotocols (CT-000) ([#6589](https://github.com/voiceflow/creator-app/issues/6589)) ([7b1e4f6](https://github.com/voiceflow/creator-app/commit/7b1e4f6e087e67bbe63bb9f534cda3a0b9e61194))
+
+
+
+
+
 ## [1.26.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/socket-utils@1.26.1...@voiceflow/socket-utils@1.26.2) (2023-01-18)
 
 

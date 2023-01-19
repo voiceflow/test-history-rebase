@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.148.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.147.2...@voiceflow/realtime@1.148.0) (2023-01-19)
+
+
+### Features
+
+* normalized members + realtime subprotocols (CT-000) ([#6589](https://github.com/voiceflow/creator-app/issues/6589)) ([7b1e4f6](https://github.com/voiceflow/creator-app/commit/7b1e4f6e087e67bbe63bb9f534cda3a0b9e61194))
+
+
+
+
+
 ## [1.147.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.147.1...@voiceflow/realtime@1.147.2) (2023-01-19)
 
 **Note:** Version bump only for package @voiceflow/realtime

@@ -3,9 +3,9 @@ import { Button, ButtonVariant, SvgIcon } from '@voiceflow/ui';
 import _isEmpty from 'lodash/isEmpty';
 import React from 'react';
 
-import { upgradeToEnterpriseAction } from '@/config/planLimits';
 import { PaymentContextProps, withPayment } from '@/pages/Payment/context';
 import { Identifier } from '@/styles/constants';
+import { onOpenBookDemoPage } from '@/utils/upgrade';
 
 import { CostText, LoadingButton } from './components';
 
@@ -30,7 +30,7 @@ const CheckoutButton: React.OldFC<CheckoutButtonProps> = ({ payment: { state, ch
     <Button
       id={Identifier.PAYMENT_UPGRADE_BUTTON}
       variant={ButtonVariant.PRIMARY}
-      onClick={upgradePrompt ? upgradeToEnterpriseAction : checkout}
+      onClick={upgradePrompt ? onOpenBookDemoPage : checkout}
       disabled={upgradePrompt ? false : !_isEmpty(errors) || !paymentReady}
     >
       {upgradePrompt ? (

@@ -1,4 +1,3 @@
-import { PlanType } from '@voiceflow/internal';
 import { Link } from '@voiceflow/ui';
 import React from 'react';
 import { generatePath } from 'react-router-dom';
@@ -7,18 +6,18 @@ import NavigationSidebar from '@/components/NavigationSidebar';
 import { Path } from '@/config/routes';
 import { BLOG_LINK, BOOK_DEMO_LINK, DOCS_LINK, TEMPLATES_LINK, YOUTUBE_CHANNEL_LINK } from '@/constants';
 import { Permission } from '@/constants/permissions';
+import * as Sessions from '@/ducks/session';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { usePermission } from '@/hooks/permission';
 import { useSelector } from '@/hooks/redux';
-import { useActiveWorkspace } from '@/hooks/workspace';
 
 import { Account } from './components';
 import * as S from './styles';
 
-const DashboardNavigationSidebar: React.OldFC = () => {
-  const plan = useSelector(WorkspaceV2.active.planSelector);
-  const workspace = useActiveWorkspace();
-  const workspaceID = workspace?.id ?? 'unknown';
+const DashboardNavigationSidebar: React.FC = () => {
+  const isPaidPlan = useSelector(WorkspaceV2.active.isOnPaidPlanSelector);
+  const workspaceID = useSelector(Sessions.activeWorkspaceIDSelector) ?? 'unknown';
+  const membersCount = useSelector(WorkspaceV2.active.allNormalizedMembersCountSelector);
 
   const isOwner = usePermission(Permission.EDIT_ORGANIZATION);
   const isAdmin = usePermission(Permission.CONFIGURE_WORKSPACE);
@@ -35,7 +34,7 @@ const DashboardNavigationSidebar: React.OldFC = () => {
             title={isAdmin ? 'Team & Billing' : 'Team'}
             isActive={({ pathname, matchPath }) => !!matchPath(pathname, { path: [Path.WORKSPACE_MEMBERS, Path.WORKSPACE_BILLING] })}
           >
-            <NavigationSidebar.Item.SubText>{workspace?.members.length}</NavigationSidebar.Item.SubText>
+            <NavigationSidebar.Item.SubText>{membersCount}</NavigationSidebar.Item.SubText>
           </NavigationSidebar.NavItem>
         </S.Group>
 
@@ -92,7 +91,8 @@ const DashboardNavigationSidebar: React.OldFC = () => {
         <S.FillSpace />
 
         <S.Group>
-          {plan === PlanType.STARTER && <NavigationSidebar.Item icon="paid" title="Upgrade to Pro" />}
+          {!isPaidPlan && <NavigationSidebar.Item icon="paid" title="Upgrade to Pro" />}
+
           <Link color="inherit" href={BOOK_DEMO_LINK}>
             <NavigationSidebar.Item icon="sales" title="Contact Sales">
               <NavigationSidebar.Item.LinkIcon />

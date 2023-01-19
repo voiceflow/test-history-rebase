@@ -1,6 +1,5 @@
 export * from './asr';
 export * from './atoms';
-export * from './callback';
 export * from './canvasNodes';
 export * from './dnd';
 export * from './dragPreview';
@@ -48,6 +47,9 @@ export {
   useAsyncDidUpdate,
   useAsyncEffect,
   useAsyncMountUnmount,
+  useCancellable,
+  useCurried,
+  useDebouncedCallback,
   useForceUpdate,
   useInterval,
   useLinkedRef,
@@ -57,5 +59,6 @@ export {
   useRegistration,
   useResizeObserver,
   useScheduled,
+  useThrottledCallback,
   useTimeout,
 } from '@voiceflow/ui';

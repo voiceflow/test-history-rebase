@@ -74,8 +74,8 @@ class WorkspaceService extends AbstractControl {
         members: identityWorkspaceMembers,
         created: identityWorkspace.createdAt,
         team_id: identityWorkspace.id,
-        organization_id: identityWorkspace.organizationID,
         settings: identityWorkspaceSettings,
+        organization_id: identityWorkspace.organizationID,
       };
     }
 
@@ -89,7 +89,7 @@ class WorkspaceService extends AbstractControl {
     ]);
 
     if (identityWorkspaceEnabled) {
-      const [workspaces, identityWorkspaces] = await Promise.all([client.workspace.list(), client.identity.workspace.list()]);
+      const [workspaces, identityWorkspaces] = await Promise.all([client.workspace.list(), client.identity.workspace.list({ members: true })]);
 
       // this maps data from the new identity workspace to the old interface
       // we decided to do this just to communicate the intention of fully migrating in the future.
@@ -104,11 +104,10 @@ class WorkspaceService extends AbstractControl {
           name: identityWorkspace.name,
           image: identityWorkspace.image,
           created: identityWorkspace.createdAt,
+          members: Realtime.Adapters.Identity.workspaceMember.mapFromDB(identityWorkspace.members ?? []),
           team_id: identityWorkspace.id,
-          organization_id: identityWorkspace.organizationID,
-          // resetting members since identity workspace list doesn't have members array in it
-          members: [],
           settings: {},
+          organization_id: identityWorkspace.organizationID,
         };
       });
     }

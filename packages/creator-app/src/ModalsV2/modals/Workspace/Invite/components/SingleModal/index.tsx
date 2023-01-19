@@ -8,8 +8,8 @@ import { VoidInternalProps } from '@/ModalsV2/types';
 
 import * as S from './styles';
 
-const SingleModal: React.OldFC<VoidInternalProps> = ({ api, type, opened, hidden, animated }) => {
-  const members = useSelector(WorkspaceV2.active.membersSelector);
+const SingleModal: React.FC<VoidInternalProps> = ({ api, type, opened, hidden, animated }) => {
+  const members = useSelector(WorkspaceV2.active.allNormalizedMembersSelector);
 
   return (
     <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} maxWidth={880}>

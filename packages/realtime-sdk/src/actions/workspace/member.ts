@@ -18,7 +18,7 @@ export interface AddMemberPayload extends BaseWorkspacePayload {
 }
 
 export interface PatchMemberPayload extends BaseMemberPayload {
-  member: Pick<WorkspaceMember | PendingWorkspaceMember, 'role'>;
+  member: Pick<WorkspaceMember, 'role'>;
 }
 
 export interface ReplaceMembersPayload extends BaseWorkspacePayload {
@@ -34,11 +34,11 @@ export const add = Utils.protocol.createAction<AddMemberPayload>(memberType('ADD
 
 export const patch = Utils.protocol.createAction<PatchMemberPayload>(memberType('PATCH'));
 
-export const replace = Utils.protocol.createAction<ReplaceMembersPayload>(memberType('REPLACE'));
-
 export const eject = Utils.protocol.createAction<EjectPayload>(memberType('EJECT'));
 
 export const remove = Utils.protocol.createAction<BaseMemberPayload>(memberType('REMOVE'));
+
+export const replace = Utils.protocol.createAction<ReplaceMembersPayload>(memberType('REPLACE'));
 
 // invite
 
@@ -58,10 +58,10 @@ export interface UpdateInvitePayload extends BaseInvitePayload {
   role: UserRole;
 }
 
-export const acceptInvite = Utils.protocol.createAsyncAction<AcceptInvitePayload, string>(inviteType('ACCEPT'));
-
 export const sendInvite = Utils.protocol.createAsyncAction<SendInvitePayload, PendingWorkspaceMember | null>(inviteType('SEND'));
 
 export const updateInvite = Utils.protocol.createAction<UpdateInvitePayload>(inviteType('UPDATE'));
+
+export const acceptInvite = Utils.protocol.createAsyncAction<AcceptInvitePayload, string>(inviteType('ACCEPT'));
 
 export const cancelInvite = Utils.protocol.createAction<BaseInvitePayload>(inviteType('CANCEL'));

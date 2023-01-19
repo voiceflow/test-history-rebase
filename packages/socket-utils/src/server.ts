@@ -10,23 +10,25 @@ const WARNING_BYPASS = new Set(['Zombie client was disconnected', 'Action was de
 const INFO_BYPASS = new Set(['Action was processed', 'Action was cleaned']);
 
 export interface SocketServerOptions {
-  port: number;
   cwd: string;
   env: string;
+  port: number;
   logger: Logger;
   timeout?: number;
+  supports?: string;
+  subprotocol?: string;
   loggerIgnoredActions?: string[];
 }
 
 export class SocketServer extends Logux.Server {
-  constructor({ port, cwd, env, logger, timeout, loggerIgnoredActions }: SocketServerOptions) {
+  constructor({ port, cwd, env, logger, timeout, supports = SUPPORT_RANGE, subprotocol = SUBPROTOCOL, loggerIgnoredActions }: SocketServerOptions) {
     super({
-      subprotocol: SUBPROTOCOL,
-      supports: SUPPORT_RANGE,
       root: cwd,
       host: '0.0.0.0',
       port,
       timeout,
+      supports,
+      subprotocol,
       logger: {
         info: (details: { action: AnyAction }, message) => {
           const actionType = details?.action?.type || '';

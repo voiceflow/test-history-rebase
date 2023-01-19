@@ -1,4 +1,5 @@
 /* eslint-disable max-classes-per-file */
+import type { Context } from '@logux/server';
 import type { BaseClientMap } from '@socket-utils/client';
 import type { SocketServer } from '@socket-utils/server';
 import type { BaseServiceMap } from '@socket-utils/service';
@@ -72,6 +73,14 @@ export abstract class AbstractLoguxControl<T extends LoguxControlOptions> extend
 
   protected reject<C>(message: string, code?: C): never {
     throw new AsyncRejectionError<C>(message, code);
+  }
+
+  /**
+   * validates that client subprotocol is greater or equal than the provided one
+   * uses >={version} semver syntax
+   */
+  protected isGESubprotocol(ctx: Context<any, any>, version: string) {
+    return ctx.isSubprotocol(`>=${version}`);
   }
 
   abstract setup(): Eventual<void>;

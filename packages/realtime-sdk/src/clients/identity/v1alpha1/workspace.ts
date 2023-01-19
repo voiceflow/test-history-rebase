@@ -1,6 +1,5 @@
 import * as Models from '@realtime-sdk/models';
-import { IdentityWorkspace } from '@realtime-sdk/models/Workspace';
-import { UserRole } from '@voiceflow/internal';
+import * as Identity from '@realtime-sdk/models/Identity';
 
 import { NestResource, NestResourceOptions } from '../../nest';
 
@@ -9,13 +8,13 @@ export class Workspace extends NestResource {
     super({ ...options, path: '/workspace' });
   }
 
-  public async findOne(workspaceID: string): Promise<IdentityWorkspace> {
-    const { data } = await this.get<IdentityWorkspace>(`/${workspaceID}`);
+  public async findOne(workspaceID: string): Promise<Identity.Workspace> {
+    const { data } = await this.get<Identity.Workspace>(`/${workspaceID}`);
 
     return data;
   }
 
-  public async create(payload: { name: string; organizationID?: string; image?: string | null }): Promise<IdentityWorkspace> {
+  public async create(payload: { name: string; organizationID?: string; image?: string | null }): Promise<Identity.Workspace> {
     const { data } = await this.post('/', payload);
 
     return data;
@@ -35,8 +34,9 @@ export class Workspace extends NestResource {
     await this.delete(`/${workspaceID}`);
   }
 
-  public async list(roles?: UserRole[]): Promise<IdentityWorkspace[]> {
-    const { data } = await this.get<IdentityWorkspace[]>(`/`, { params: { ...(roles && { roles: roles?.join(',') }) } });
+  public async list(params?: { members?: boolean }): Promise<Identity.Workspace[]> {
+    const { data } = await this.get<Identity.Workspace[]>(`/`, { params });
+
     return data;
   }
 

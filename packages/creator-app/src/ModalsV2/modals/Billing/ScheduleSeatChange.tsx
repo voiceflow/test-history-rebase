@@ -3,7 +3,7 @@ import { Alert, Box, Button, Input, Modal, SectionV2, Text } from '@voiceflow/ui
 import React from 'react';
 
 import Workspace from '@/components/Workspace';
-import { STARTER_PRO_EDITOR_LIMIT } from '@/config/planLimits/numEditors';
+import { TEAM_INCREASE_LIMIT } from '@/config/planLimitV2/editorSeats';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useSelector } from '@/hooks/redux';
 
@@ -44,8 +44,8 @@ const ScheduleSeatChange = manager.create('ScheduleSeatChange', () => ({ api, ty
             <Text fontWeight={600}>Summary</Text>
 
             <div>
-              {numSeats > STARTER_PRO_EDITOR_LIMIT ? (
-                <Workspace.TakenSeatsMessage seats={STARTER_PRO_EDITOR_LIMIT} error small />
+              {numSeats > TEAM_INCREASE_LIMIT ? (
+                <Workspace.TakenSeatsMessage seats={TEAM_INCREASE_LIMIT} error small />
               ) : (
                 <SectionV2.Description>
                   ${pricePerEditor}
@@ -60,7 +60,7 @@ const ScheduleSeatChange = manager.create('ScheduleSeatChange', () => ({ api, ty
           <Box width={100}>
             <Input.Counter
               value={numSeats}
-              error={numSeats > STARTER_PRO_EDITOR_LIMIT}
+              error={numSeats > TEAM_INCREASE_LIMIT}
               onPlusClick={() => setNumSeats(numSeats + 1)}
               onMinusClick={() => setNumSeats(Math.max(0, numSeats - 1))}
             />
@@ -94,7 +94,7 @@ const ScheduleSeatChange = manager.create('ScheduleSeatChange', () => ({ api, ty
         <Button
           onClick={Utils.functional.chainVoid(api.close, () => onScheduleSeatChange())}
           variant={Button.Variant.PRIMARY}
-          disabled={numSeats === usedEditorSeats || numSeats > STARTER_PRO_EDITOR_LIMIT}
+          disabled={numSeats === usedEditorSeats || numSeats > TEAM_INCREASE_LIMIT}
         >
           Schedule Seat Change
         </Button>

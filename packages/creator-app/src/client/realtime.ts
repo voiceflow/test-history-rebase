@@ -1,3 +1,4 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { io } from 'socket.io-client';
 
 import { REALTIME_ENDPOINT, REALTIME_IO_ENDPOINT } from '@/config';
@@ -15,7 +16,7 @@ export const realtimeIO = (token: string) =>
 const realtimeClient = (): LoguxClient =>
   new LoguxClient({
     server: REALTIME_ENDPOINT,
-    subprotocol: '1.0.0',
+    subprotocol: Realtime.Subprotocol.CURRENT_VERSION,
 
     // no user specified initially
     userId: 'false',

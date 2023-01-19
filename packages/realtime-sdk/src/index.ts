@@ -6,5 +6,6 @@ export * from './config';
 export * from './constants';
 export * as IO from './io';
 export * from './models';
+export * as Subprotocol from './subprotocol';
 export * from './types';
 export * as Utils from './utils';

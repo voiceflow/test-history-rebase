@@ -1,6 +1,5 @@
 import { UserRole } from '@voiceflow/internal';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
-import _ from 'lodash';
 
 import { AbstractControl } from '../../control';
 
@@ -17,29 +16,7 @@ class WorkspaceMemberService extends AbstractControl {
         client.identity.workspaceInvitation.list(workspaceID),
       ]);
 
-      // sorting members by role strength and removing duplicates
-      const activeMembers = _.uniqBy(
-        members.sort((a, b) => Realtime.USER_ROLE_STRENGTH[b.membership.role] - Realtime.USER_ROLE_STRENGTH[a.membership.role]),
-        'user.id'
-      ).map(({ user, membership }) => ({
-        name: user.name,
-        role: membership.role,
-        email: user.email,
-        image: user.image,
-        created: user.createdAt,
-        creator_id: user.id,
-      }));
-
-      const pendingMembers = invites.map((invite) => ({
-        name: null,
-        role: invite.role,
-        email: invite.email,
-        image: null,
-        created: '',
-        creator_id: null,
-      }));
-
-      return [...activeMembers, ...pendingMembers];
+      return [...Realtime.Adapters.Identity.workspaceMember.mapFromDB(members), ...Realtime.Adapters.Identity.workspaceInvite.mapFromDB(invites)];
     }
 
     return client.workspace.listMembers(workspaceID);

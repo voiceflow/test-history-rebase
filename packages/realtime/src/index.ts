@@ -3,6 +3,7 @@ import './polyfills';
 import { inspect } from 'node:util';
 
 import { LoguxError } from '@logux/core';
+import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { serializeError, SocketServer } from '@voiceflow/socket-utils';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -17,9 +18,13 @@ const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 (async () => {
   const serverLogger = createLogger();
   const server = new SocketServer({
+    cwd: rootDir,
     env: config.NODE_ENV,
     port: config.PORT,
-    cwd: rootDir,
+
+    supports: `>=${Realtime.Subprotocol.Version.V1_0_0}`,
+    subprotocol: Realtime.Subprotocol.CURRENT_VERSION,
+
     // errors handled by server.on('error', ...) below
     logger: Object.assign(serverLogger, { error: serverLogger.debug }),
   });

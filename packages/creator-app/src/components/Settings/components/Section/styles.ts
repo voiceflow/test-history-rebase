@@ -20,8 +20,8 @@ export const Title = styled.div<{ withDescription?: boolean }>`
     `}
 `;
 
-export const Container = styled.div<{ mb?: number; w?: number }>`
-  width: ${({ w }) => `${w}px` || `100%`};
+export const Container = styled.div<{ mb?: number; w?: number | string }>`
+  width: ${({ w = '100%' }) => (typeof w === 'number' ? `${w}px` : w)};
 
   &:not(:last-child) {
     margin-bottom: ${({ mb = 32 }) => `${mb}px`};

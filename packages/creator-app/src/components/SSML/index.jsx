@@ -1,12 +1,11 @@
 import { Utils } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, OverflowText, Select, SvgIcon, TippyTooltip } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
 
 import { PluginType } from '@/components/TextEditor';
-import { useFeature } from '@/hooks/feature';
+import { useHasWavenet } from '@/hooks';
 import { ClassName } from '@/styles/constants';
 import { prettifyGoogleVoicesLong, prettifyVoice, voiceOptionsFilter } from '@/utils/voice';
 
@@ -21,7 +20,6 @@ const SSML = (
     voice,
     space,
     onBlur,
-    locales,
     platform,
     creatable,
     className,
@@ -43,11 +41,11 @@ const SSML = (
   },
   ref
 ) => {
+  const { hasWavenet } = useHasWavenet();
   const platformSSMLMeta = getPlatformSSML(platform, projectType);
-  const wavenetVoices = useFeature(Realtime.FeatureFlag.WAVENET_VOICES);
   const SSMLPlaceholder = placeholder ?? platformSSMLMeta.fallbackPlaceholder(voice);
   const { canChangeVoice } = platformSSMLMeta;
-  const voiceOptions = React.useMemo(() => platformSSMLMeta.voiceOptions(locales, wavenetVoices.isEnabled), [locales, wavenetVoices.isEnabled]);
+  const voiceOptions = React.useMemo(() => platformSSMLMeta.voiceOptions(hasWavenet), []);
   const hasProjectLevelVoice = platform === Platform.Constants.PlatformType.GOOGLE;
 
   const voiceSelectLabel = Utils.string.capitalizeFirstLetter(

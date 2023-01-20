@@ -6,7 +6,7 @@ import React from 'react';
 import * as Settings from '@/components/Settings';
 import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
-import { useActiveProjectTypeConfig, useDispatch, useFeature, useSelector } from '@/hooks';
+import { useActiveProjectTypeConfig, useDispatch, useHasWavenet, useSelector } from '@/hooks';
 import { PlatformSettingsMetaProps } from '@/pages/Settings/constants';
 import { getPlatformVoiceOptions, prettifyVoice } from '@/utils/voice';
 
@@ -20,18 +20,14 @@ interface DefaultTTSProps {
 
 const DefaultTTS: React.FC<DefaultTTSProps> = ({ platform, projectType, platformMeta }) => {
   const projectConfig = useActiveProjectTypeConfig();
-
-  const wavenetVoices = useFeature(Realtime.FeatureFlag.WAVENET_VOICES);
+  const { hasWavenet } = useHasWavenet();
 
   const locales = useSelector(VersionV2.active.localesSelector);
   const defaultVoice = useSelector(VersionV2.active.voice.defaultVoiceSelector);
 
   const updateDefaultVoice = useDispatch(Version.voice.updateDefaultVoice);
 
-  const voiceOptions = React.useMemo(
-    () => getPlatformVoiceOptions(platform, { locales, useWavenet: !!wavenetVoices.isEnabled }),
-    [locales, platform, wavenetVoices.isEnabled]
-  );
+  const voiceOptions = React.useMemo(() => getPlatformVoiceOptions(platform, { locales, useWavenet: !!hasWavenet }), [locales, platform, hasWavenet]);
 
   const { descriptors } = platformMeta;
 

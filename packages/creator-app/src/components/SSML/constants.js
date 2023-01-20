@@ -763,7 +763,7 @@ const GENERAL_SSML_META = {
   canChangeVoice: true,
   platformTags: ALEXA_DEFAULT_TAGS,
   addOptions: ALEXA_ADD_OPTIONS,
-  voiceOptions: (locales, useWavenet) => getGeneralVoiceOptions(locales, useWavenet),
+  voiceOptions: (useWavenet) => getGeneralVoiceOptions({ useWavenet }),
 };
 
 export const getPlatformSSML = Utils.platform.createPlatformAndProjectTypeSelector(

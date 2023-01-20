@@ -42,6 +42,7 @@ export * from './tracking';
 export * from './variable';
 export * from './variableStates';
 export * from './voiceflowAssistant';
+export * from './wavenet';
 export * from './workspace';
 export {
   useAsyncDidUpdate,

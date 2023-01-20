@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.45.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/showcase@1.44.1...@voiceflow/showcase@1.45.0) (2023-01-20)
+
+
+### Features
+
+* dashboard v2 billing page review fixes (CT-1469) ([#6597](https://github.com/voiceflow/creator-app/issues/6597)) ([93da606](https://github.com/voiceflow/creator-app/commit/93da60655e72c57b5f6607dace3916360db2cdbd))
+
+
+
+
+
 ## [1.44.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/showcase@1.44.0...@voiceflow/showcase@1.44.1) (2023-01-20)
 
 **Note:** Version bump only for package @voiceflow/showcase

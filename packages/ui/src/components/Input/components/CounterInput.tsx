@@ -1,4 +1,4 @@
-import SvgIcon from '@ui/components/SvgIcon';
+import IconButton from '@ui/components/IconButton';
 import React from 'react';
 
 import DefaultInput, { DefaultInputProps } from './DefaultInput';
@@ -13,9 +13,10 @@ const CounterInput = React.forwardRef<HTMLInputElement, CounterInputProps>(({ on
     <DefaultInput
       ref={ref}
       readOnly
-      leftAction={<SvgIcon icon="minus" clickable variant={SvgIcon.Variant.STANDARD} onClick={onMinusClick} />}
-      rightAction={<SvgIcon icon="plus" clickable variant={SvgIcon.Variant.STANDARD} onClick={onPlusClick} />}
+      leftAction={<IconButton icon="minus" onClick={onMinusClick} variant={IconButton.Variant.BASIC} transparent style={{ margin: '0' }} />}
+      rightAction={<IconButton icon="plus" onClick={onPlusClick} variant={IconButton.Variant.BASIC} transparent style={{ margin: '0' }} />}
       wrapperProps={{ counter: true }}
+      inline
       {...props}
     />
   );

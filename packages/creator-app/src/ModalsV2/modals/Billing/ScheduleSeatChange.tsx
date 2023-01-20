@@ -17,11 +17,11 @@ const ScheduleSeatChange = manager.create('ScheduleSeatChange', () => ({ api, ty
   const onScheduleSeatChange = () => {};
 
   return (
-    <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove}>
+    <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} maxWidth={450}>
       <Modal.Header actions={<Modal.Header.CloseButton onClick={api.close} />}>Schedule Seat Change</Modal.Header>
 
-      <SectionV2.SimpleSection headerProps={{ topUnit: 0, bottomUnit: 2 }}>
-        <SectionV2.Description secondary fontSize={14}>
+      <SectionV2.SimpleSection headerProps={{ topUnit: 0, bottomUnit: 2.5 }}>
+        <SectionV2.Description secondary lineHeight="20px">
           You can schedule a change number of Editor Seats you have on your next billing date on {nextBillingDate}. You currently have{' '}
           {usedEditorSeats} Editor seats.
         </SectionV2.Description>
@@ -57,14 +57,12 @@ const ScheduleSeatChange = manager.create('ScheduleSeatChange', () => ({ api, ty
             </div>
           </Box.FlexAlignStart>
 
-          <Box width={100}>
-            <Input.Counter
-              value={numSeats}
-              error={numSeats > TEAM_INCREASE_LIMIT}
-              onPlusClick={() => setNumSeats(numSeats + 1)}
-              onMinusClick={() => setNumSeats(Math.max(0, numSeats - 1))}
-            />
-          </Box>
+          <Input.Counter
+            value={numSeats}
+            error={numSeats > TEAM_INCREASE_LIMIT}
+            onPlusClick={() => setNumSeats(numSeats + 1)}
+            onMinusClick={() => setNumSeats(Math.max(0, numSeats - 1))}
+          />
         </Box.FlexApart>
       </SectionV2.SimpleSection>
 
@@ -86,7 +84,7 @@ const ScheduleSeatChange = manager.create('ScheduleSeatChange', () => ({ api, ty
         </Box.FlexApart>
       </SectionV2.SimpleSection>
 
-      <Modal.Footer>
+      <Modal.Footer gap={8}>
         <Button onClick={() => api.close()} variant={Button.Variant.TERTIARY} squareRadius>
           Cancel
         </Button>

@@ -4,6 +4,7 @@ export { default as assistantCard } from './AssistantCard';
 export { default as badge } from './Badge';
 export { default as banner } from './Banner';
 export { default as barChart } from './BarChart';
+export { default as bubble } from './Bubble';
 export { default as button } from './Button';
 export { default as canvasAction } from './CanvasAction';
 export { default as canvasPort } from './CanvasPort';

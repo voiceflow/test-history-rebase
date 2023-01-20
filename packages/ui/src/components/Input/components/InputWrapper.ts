@@ -41,6 +41,9 @@ const InputWrapper = styled.div<InputWrapperProps>`
     counter
       ? css`
           border: 1px solid #d2dae2;
+          border-radius: 8px;
+          padding: 0;
+          max-width: fit-content;
 
           &:active,
           &:focus,
@@ -50,6 +53,8 @@ const InputWrapper = styled.div<InputWrapperProps>`
 
           input {
             text-align: center;
+            max-width: min-content;
+            min-width: 24px;
           }
         `
       : css`

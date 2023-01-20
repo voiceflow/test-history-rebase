@@ -3,7 +3,7 @@ import { Box } from '@voiceflow/ui';
 import { styled, transition } from '@/hocs/styled';
 
 export const LoadMoreButton = styled(Box.FlexCenter)`
-  ${transition('background-color', 'box-shadow')}
+  ${transition('background-color')}
 
   height: 60px;
   background-color: #fbfbfb;
@@ -15,7 +15,6 @@ export const LoadMoreButton = styled(Box.FlexCenter)`
   font-weight: 600;
 
   &:hover {
-    background-color: #eff5f6;
-    box-shadow: 0 0 0 1px rgba(204, 211, 228, 0.8);
+    background-color: #f9f9f9;
   }
 `;

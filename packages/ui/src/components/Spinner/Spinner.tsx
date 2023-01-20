@@ -1,13 +1,8 @@
 import Loader from '@ui/components/Loader';
-import { colors, styled, ThemeColor } from '@ui/styles';
 import cn from 'classnames';
 import React from 'react';
 
-const Text = styled.div`
-  color: ${colors(ThemeColor.PRIMARY)};
-  font-weight: 400;
-  font-size: 18px;
-`;
+import * as S from './styles';
 
 export interface SpinnerProps {
   name?: string;
@@ -21,13 +16,10 @@ export interface SpinnerProps {
 }
 
 const Spinner: React.FC<SpinnerProps> = ({ message, name, isMd, color, className, borderLess, fillContainer = false }) => (
-  <div
-    className={cn('text-center', className)}
-    style={fillContainer ? { width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' } : {}}
-  >
+  <S.Container fillContainer={fillContainer} className={cn('text-center', className)}>
     <Loader isMd={isMd} color={color} borderLess={borderLess} />
-    {!!(message || name) && <Text>{message || `Loading ${name}...`}</Text>}
-  </div>
+    {!!(message || name) && <S.Text>{message || `Loading ${name}...`}</S.Text>}
+  </S.Container>
 );
 
 export default Spinner;

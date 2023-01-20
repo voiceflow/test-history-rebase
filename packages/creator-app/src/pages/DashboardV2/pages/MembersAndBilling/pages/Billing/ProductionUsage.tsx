@@ -5,7 +5,7 @@ import Page from '@/components/Page';
 
 import CardDetails from './CardDetails';
 
-const ProductionUsage: React.OldFC = () => {
+const ProductionUsage: React.FC = () => {
   const pricePerInteraction = '$0.02';
   const interactionsThisCycle = '24,583';
   const totalThisCycle = '$390.76';

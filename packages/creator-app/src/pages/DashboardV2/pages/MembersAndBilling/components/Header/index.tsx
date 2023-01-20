@@ -9,7 +9,7 @@ import { useSelector } from '@/hooks';
 
 import { WorkspaceSelector } from '../../../../components';
 
-const Header: React.OldFC = () => {
+const Header: React.FC = () => {
   const workspaceID = useSelector(Session.activeWorkspaceIDSelector)!;
 
   return (

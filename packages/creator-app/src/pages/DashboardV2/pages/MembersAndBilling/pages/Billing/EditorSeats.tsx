@@ -10,7 +10,7 @@ import * as ModalsV2 from '@/ModalsV2';
 
 import CardDetails from './CardDetails';
 
-const EditorSeats: React.OldFC = () => {
+const EditorSeats: React.FC = () => {
   const scheduleSeatModal = ModalsV2.useModal(ModalsV2.Billing.ScheduleSeatChange);
 
   const usedEditorSeats = useSelector(WorkspaceV2.active.usedEditorSeatsSelector);

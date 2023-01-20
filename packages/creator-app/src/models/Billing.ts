@@ -10,11 +10,18 @@ export namespace Billing {
     items: string[];
     amount: number;
     date: string;
+    pdf?: string;
   }
 
   export type PastInvoice = Invoice & {
+    id: string;
     status: unknown;
   };
+
+  export interface InvoiceList {
+    data: PastInvoice[];
+    hasMore: boolean;
+  }
 }
 
 export interface DBPayment {
@@ -43,12 +50,18 @@ export interface DBBilling {
 
 export namespace DBBilling {
   export interface Invoice {
+    id: string;
     items: string[];
     amount: number;
     timestamp: number;
+    pdf?: string;
   }
 
   export type PastInvoice = Invoice & {
     status: unknown;
   };
+  export interface InvoiceList {
+    data: PastInvoice[];
+    hasMore: boolean;
+  }
 }

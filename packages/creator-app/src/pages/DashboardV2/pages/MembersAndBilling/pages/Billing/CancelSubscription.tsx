@@ -3,7 +3,7 @@ import React from 'react';
 
 import Page from '@/components/Page';
 
-const CancelSubscription: React.OldFC = () => {
+const CancelSubscription: React.FC = () => {
   return (
     <Page.Section
       mb={0}

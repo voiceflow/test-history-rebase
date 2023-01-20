@@ -10,7 +10,8 @@ const convertAmountToDollars = (amount: number) => amount / 100;
 const invoiceAdapter = createSimpleAdapter<DBBilling, Billing>(
   ({ invoices, upcoming }) => ({
     invoices:
-      invoices?.map(({ status, amount, timestamp, items }) => ({
+      invoices?.map(({ status, amount, timestamp, items, id }) => ({
+        id,
         status,
         amount: convertAmountToDollars(amount),
         date: timestampToDate(timestamp),
@@ -18,6 +19,7 @@ const invoiceAdapter = createSimpleAdapter<DBBilling, Billing>(
       })) || null,
     upcoming: upcoming
       ? {
+          id: upcoming.id,
           amount: convertAmountToDollars(upcoming.amount),
           date: timestampToDate(upcoming.timestamp),
           items: upcoming.items,

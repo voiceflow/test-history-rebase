@@ -9,7 +9,7 @@ import { Sidebar } from '../../components';
 import { Header } from './components';
 import { Billing, Members } from './pages';
 
-const MembersAndBilling: React.OldFC = () => (
+const MembersAndBilling: React.FC = () => (
   <Page renderHeader={() => <Header />} renderSidebar={() => <Sidebar />}>
     <Page.Content style={{ backgroundColor: '#ffffff', minHeight: '100%' }}>
       <Switch>

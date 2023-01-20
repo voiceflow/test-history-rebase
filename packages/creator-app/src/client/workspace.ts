@@ -4,6 +4,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { APIKey, DBBilling, DBPayment, Price } from '@/models';
 
 import invoiceAdapter from './adapters/invoice';
+import invoiceListAdapter from './adapters/invoicesList';
 import { api, apiV2 } from './fetch';
 
 export const WORKSPACES_PATH = 'workspaces';
@@ -12,6 +13,12 @@ const workspaceClient = {
   validateInvite: (invite: string) => api.get<boolean>(`${WORKSPACES_PATH}/invite/${invite}`).catch(() => false),
 
   getInvoice: (workspaceID: string) => api.get<DBBilling>(`${WORKSPACES_PATH}/${workspaceID}/invoice`).then(invoiceAdapter.fromDB),
+
+  getInvoices: (workspaceID: string, cursor: string | null, limit: number) => {
+    return apiV2
+      .get<DBBilling.InvoiceList>(`${WORKSPACES_PATH}/${workspaceID}/invoices?limit=${limit}${cursor ? `&cursor=${cursor}` : ''}`)
+      .then(invoiceListAdapter.fromDB);
+  },
 
   getPlans: () => api.get<DBPayment[]>(`${WORKSPACES_PATH}/plans`),
 

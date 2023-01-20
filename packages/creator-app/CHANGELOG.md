@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1058.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1058.0...@voiceflow/creator-app@1.1058.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* upgrade modal button text (CT-1485) ([#6598](https://github.com/voiceflow/creator-app/issues/6598)) ([a73d32b](https://github.com/voiceflow/creator-app/commit/a73d32bf3d2ee56765ecacc091ea1a0dbd64e50c))
+
+
+
+
+
 # [1.1058.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1057.0...@voiceflow/creator-app@1.1058.0) (2023-01-19)
 
 

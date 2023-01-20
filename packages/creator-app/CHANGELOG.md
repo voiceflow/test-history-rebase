@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1059.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1058.1...@voiceflow/creator-app@1.1059.0) (2023-01-20)
+
+
+### Bug Fixes
+
+* temporarily disable disclaimer permission (CT-000) ([#6604](https://github.com/voiceflow/creator-app/issues/6604)) ([299e96b](https://github.com/voiceflow/creator-app/commit/299e96b511819330942f85cbe3de32b7f2163195))
+* wavenet [bugfix] (CT-000) ([#6600](https://github.com/voiceflow/creator-app/issues/6600)) ([51ab0d6](https://github.com/voiceflow/creator-app/commit/51ab0d65ff1e632547024ebaf17076b66f2c0516))
+
+
+### Features
+
+* implement billing history with pagination (CT-1416) ([#6588](https://github.com/voiceflow/creator-app/issues/6588)) ([4e96ae0](https://github.com/voiceflow/creator-app/commit/4e96ae02a19f88f8ed171987f15d0ba10035f5f9))
+
+
+
+
+
 ## [1.1058.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1058.0...@voiceflow/creator-app@1.1058.1) (2023-01-20)
 
 

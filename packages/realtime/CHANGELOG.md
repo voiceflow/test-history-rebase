@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.149.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.148.0...@voiceflow/realtime@1.149.0) (2023-01-20)
+
+
+### Features
+
+* implement billing history with pagination (CT-1416) ([#6588](https://github.com/voiceflow/creator-app/issues/6588)) ([4e96ae0](https://github.com/voiceflow/creator-app/commit/4e96ae02a19f88f8ed171987f15d0ba10035f5f9))
+
+
+
+
+
 # [1.148.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.147.2...@voiceflow/realtime@1.148.0) (2023-01-19)
 
 

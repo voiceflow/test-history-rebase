@@ -12,7 +12,7 @@ export const NLU_CONFLICTS_PERMISSIONS = {
   permission: Permission.NLU_CONFLICTS,
 
   upgradeModal: () => ({
-    ...getUpgradeModalProps(PlanType.TEAM, Tracking.UpgradePrompt.NLU_CONFLICTS),
+    ...getUpgradeModalProps(PlanType.ENTERPRISE, Tracking.UpgradePrompt.NLU_CONFLICTS),
     title: 'Need to view intent conflicts?',
     header: 'Intent Conflicts',
     description: 'Viewing intent conflicts is an enterprise feature. Please contact sales to unlock.',

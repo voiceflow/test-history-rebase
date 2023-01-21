@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1061.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1060.0...@voiceflow/creator-app@1.1061.0) (2023-01-21)
+
+
+### Features
+
+* rename members into platfprmMembers and normalize it (CT-000) ([#6595](https://github.com/voiceflow/creator-app/issues/6595)) ([48df992](https://github.com/voiceflow/creator-app/commit/48df992639884c6ec3fbe697eca104c3d65a7873))
+
+
+
+
+
 # [1.1060.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1059.0...@voiceflow/creator-app@1.1060.0) (2023-01-20)
 
 

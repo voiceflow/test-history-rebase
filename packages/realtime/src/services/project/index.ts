@@ -174,7 +174,7 @@ class ProjectService extends AbstractControl {
         this.updatedThrottleCache.set({ projectID }, `${creatorID}`),
       ]);
     } catch (error) {
-      logger.warn(error);
+      logger.warn(error, "couldn't set project updated by");
     }
   }, CANVAS_UPDATE_THROTTLE_TIME);
 }

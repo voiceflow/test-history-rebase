@@ -24,7 +24,7 @@ const VENDOR: AlexaProject.Vendor = {
   products: {},
 };
 
-const PROJECT_MEMBER: BaseModels.Project.Member<AlexaProject.MemberPlatformData> = {
+const PROJECT_PLATFORM_MEMBER: BaseModels.Project.Member<AlexaProject.MemberPlatformData> = {
   creatorID: CREATOR_ID,
   platformData: {
     selectedVendor: VENDOR_ID,
@@ -52,9 +52,9 @@ const PROJECT: Realtime.AnyProject = {
   platform: Platform.Constants.PlatformType.ALEXA,
   linkType: BaseModels.Project.LinkType.STRAIGHT,
   locales: ['en-us', 'eu-sp'],
-  members: [PROJECT_MEMBER],
   platformData: {},
   customThemes: [],
+  platformMembers: Normal.normalize([PROJECT_PLATFORM_MEMBER], (member) => String(member.creatorID)),
 };
 
 const MOCK_STATE: Project.ProjectState = {
@@ -73,9 +73,9 @@ const MOCK_STATE: Project.ProjectState = {
       platform: Platform.Constants.PlatformType.VOICEFLOW,
       linkType: BaseModels.Project.LinkType.CURVED,
       locales: [],
-      members: [],
-      platformData: {},
       customThemes: [],
+      platformData: {},
+      platformMembers: Normal.createEmpty(),
     },
   },
   allKeys: [PROJECT_ID, 'abc'],
@@ -104,17 +104,15 @@ suite(Project, MOCK_STATE)('Ducks - Project V2', ({ describeReducerV2, createSta
       it('update the active vendor', () => {
         const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, creatorID: CREATOR_ID, vendorID: VENDOR_ID, skillID });
 
-        expect(result.byKey[PROJECT_ID].members).toEqual(
-          expect.arrayContaining([
-            expect.objectContaining({ platformData: { selectedVendor: VENDOR_ID, vendors: [{ skillID, products: {}, vendorID: 'vendorID' }] } }),
-          ])
+        expect(result.byKey[PROJECT_ID].platformMembers.byKey[CREATOR_ID]).toEqual(
+          expect.objectContaining({ platformData: { selectedVendor: VENDOR_ID, vendors: [{ skillID, products: {}, vendorID: 'vendorID' }] } })
         );
       });
 
       it('append vendor if it does not exist', () => {
         const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, creatorID: CREATOR_ID, vendorID, skillID });
 
-        expect(result.byKey[PROJECT_ID].members[0].platformData).toEqual({
+        expect(result.byKey[PROJECT_ID].platformMembers.byKey[CREATOR_ID].platformData).toEqual({
           selectedVendor: vendorID,
           vendors: [VENDOR, { vendorID, skillID, products: {} }],
         });

@@ -98,7 +98,12 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
       Realtime.variableState.crud.replace({ ...actionContext, values: variableStates }),
       Realtime.nlu.crud.replace({ ...actionContext, values: nluUnclassifiedData }),
       Realtime.diagram.sharedNodes.load({ ...actionContext, sharedNodes }),
-      Realtime.project.crud.add({ ...actionContext, value: project, key: projectID }),
+      Realtime.project.crud.add({
+        ...actionContext,
+        key: project.id,
+        // TODO: replace with `value: project` when clients are migrated to v1.1.1
+        value: this.isGESubprotocol(ctx, Realtime.Subprotocol.Version.V1_1_1) ? project : ({ ...project, members: dbCreator.project.members } as any),
+      }),
       Realtime.version.crud.add({ ...actionContext, value: version, key: versionID }),
       Realtime.version.replacePrototypeSettings({ ...actionContext, settings: prototypeSettings }),
       Realtime.version.activateVersion({ ...actionContext, type: project.type, platform: project.platform }),

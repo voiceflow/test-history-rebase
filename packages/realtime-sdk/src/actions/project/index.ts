@@ -68,6 +68,6 @@ export const importProject = Utils.protocol.createAction<ImportProjectPayload>(p
 /** @deprecated use ImportProjectPayloadInstead */
 export const importFromFile = Utils.protocol.createAsyncAction<ImportProjectFromFilePayload, AnyProject>(projectType('IMPORT_FROM_FILE'));
 
-export const addManyCustomThemes = Utils.protocol.createAction<AddManyCustomThemesPayload>(projectType('ADD_MANY_CUSTOM_THEMES'));
-
 export const patchPlatformData = Utils.protocol.createAction<PatchPlatformDataPayload>(projectType('PATCH_PLATFORM_DATA'));
+
+export const addManyCustomThemes = Utils.protocol.createAction<AddManyCustomThemesPayload>(projectType('ADD_MANY_CUSTOM_THEMES'));

@@ -2,6 +2,7 @@ import { AnyProject } from '@realtime-sdk/models';
 import { BaseModels } from '@voiceflow/base-types';
 import { AnyRecord } from '@voiceflow/common';
 import { createMultiAdapter, notImplementedAdapter } from 'bidirectional-adapter';
+import * as Normal from 'normal-store';
 
 import { legacyPlatformToProjectType } from '../constants/platform';
 
@@ -13,7 +14,7 @@ const projectAdapter = createMultiAdapter<BaseModels.Project.Model<AnyRecord, An
     image = null,
     teamID,
     privacy,
-    members,
+    members = [],
     linkType = BaseModels.Project.LinkType.CURVED,
     platform: dbPlatform,
     _version,
@@ -41,7 +42,6 @@ const projectAdapter = createMultiAdapter<BaseModels.Project.Model<AnyRecord, An
       typeV2: type,
       locales: [],
       created: '',
-      members,
       privacy,
       linkType,
       platform,
@@ -58,6 +58,7 @@ const projectAdapter = createMultiAdapter<BaseModels.Project.Model<AnyRecord, An
       workspaceID: teamID,
       customThemes,
       platformData,
+      platformMembers: Normal.normalize(members, (member) => String(member.creatorID)),
       aiAssistSettings,
     };
   },

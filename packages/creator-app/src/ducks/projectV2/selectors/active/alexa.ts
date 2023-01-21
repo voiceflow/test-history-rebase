@@ -2,6 +2,7 @@ import { AlexaProject } from '@voiceflow/alexa-types';
 import { BaseModels } from '@voiceflow/base-types';
 import { Nullable } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import * as Normal from 'normal-store';
 import { createSelector } from 'reselect';
 
 import { userIDSelector } from '@/ducks/account/selectors';
@@ -16,10 +17,12 @@ export const projectSelector = createSelector(
     activeProject as Nullable<Realtime.Project<AlexaProject.PlatformData, BaseModels.Project.Member<AlexaProject.MemberPlatformData>>>
 );
 
-const membersSelector = createSelector([projectSelector], (project) => project?.members ?? []);
+const alexaMembersSelector = createSelector([projectSelector], (project) => project?.platformMembers);
+
+const alexaNormalizedMembersSelector = createSelector([alexaMembersSelector], (members) => (members ? Normal.denormalize(members) : []));
 
 const ownMemberSelector = createSelector(
-  [userIDSelector, membersSelector],
+  [userIDSelector, alexaNormalizedMembersSelector],
   (creatorID, members) => members.find((member) => member.creatorID === creatorID) ?? null
 );
 

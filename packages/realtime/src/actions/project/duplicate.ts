@@ -27,15 +27,23 @@ class DuplicateProject extends AbstractProjectResourceControl<Realtime.project.D
     const { creatorID } = ctx.data;
     const targetWorkspaceID = payload.data.teamID;
 
-    const [listID, project] = await Promise.all([
+    const [listID, dbProject] = await Promise.all([
       this.getTargetListID(ctx, targetWorkspaceID, payload.listID),
-      this.services.project
-        .duplicate(creatorID, payload.projectID, _.pick(payload.data, 'name', 'teamID', '_version', 'platform'))
-        .then(Realtime.Adapters.projectAdapter.fromDB),
+      this.services.project.duplicate(creatorID, payload.projectID, _.pick(payload.data, 'name', 'teamID', '_version', 'platform')),
     ]);
 
+    const project = Realtime.Adapters.projectAdapter.fromDB(dbProject);
+
     await Promise.all([
-      this.server.processAs(creatorID, Realtime.project.crud.add({ workspaceID: targetWorkspaceID, key: project.id, value: project })),
+      this.server.processAs(
+        creatorID,
+        Realtime.project.crud.add({
+          key: project.id,
+          // TODO: replace with `value: project` when clients are migrated to v1.1.1
+          value: this.isGESubprotocol(ctx, Realtime.Subprotocol.Version.V1_1_1) ? project : ({ ...project, members: dbProject.members } as any),
+          workspaceID: payload.workspaceID,
+        })
+      ),
       this.server.processAs(creatorID, Realtime.projectList.addProjectToList({ workspaceID: targetWorkspaceID, projectID: project.id, listID })),
     ]);
 

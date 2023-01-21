@@ -7,9 +7,9 @@ import { projectType } from '../utils';
 const alexaType = Utils.protocol.typeFactory(projectType(Platform.Constants.PlatformType.ALEXA));
 
 export interface UpdateVendorPayload extends BaseProjectPayload {
-  creatorID: number;
-  vendorID: string;
   skillID: string | null;
+  vendorID: string | null;
+  creatorID: number;
 }
 
 export const updateVendor = Utils.protocol.createAction<UpdateVendorPayload>(alexaType('UPDATE_VENDOR'));

@@ -2,6 +2,7 @@ import { SendBackActions } from '@logux/server';
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { ChannelContext } from '@voiceflow/socket-utils';
+import * as Normal from 'normal-store';
 
 import { AbstractChannelControl } from './utils';
 
@@ -73,7 +74,12 @@ class WorkspaceChannel extends AbstractChannelControl<Realtime.Channels.Workspac
     return [
       ...(isIdentityWorkspaceEnabled ? [Realtime.workspace.member.replace({ workspaceID, members: workspaceMembers })] : []),
       Realtime.workspace.settings.replace({ workspaceID, settings: workspaceSettings }),
-      Realtime.project.crud.replace({ values: projects, workspaceID }),
+      Realtime.project.crud.replace({
+        values: this.isGESubprotocol(ctx, Realtime.Subprotocol.Version.V1_1_1)
+          ? projects
+          : projects.map((project) => ({ ...project, members: Normal.denormalize(project.platformMembers) })),
+        workspaceID,
+      }),
       Realtime.projectList.crud.replace({ values: projectLists, workspaceID }),
       Realtime.project.awareness.loadViewers({ viewers: viewersPerProject, workspaceID }),
       Realtime.workspace.quotas.loadAll({ workspaceID, quotas: workspaceQuotas }),

@@ -4,6 +4,7 @@ import { DFESProject } from '@voiceflow/google-dfes-types';
 import { GoogleProject } from '@voiceflow/google-types';
 import * as Platform from '@voiceflow/platform-config';
 import { VoiceflowProject } from '@voiceflow/voiceflow-types';
+import * as Normal from 'normal-store';
 
 export interface Project<D extends AnyRecord, M extends BaseModels.Project.Member<any>> {
   id: string;
@@ -13,8 +14,8 @@ export interface Project<D extends AnyRecord, M extends BaseModels.Project.Membe
   workspaceID: string;
   liveVersion?: string;
 
-  members: M[];
   platformData: D;
+  platformMembers: Normal.Normalized<M>;
 
   nlu: Platform.Constants.NLUType;
   type: Platform.Constants.ProjectType;

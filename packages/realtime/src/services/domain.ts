@@ -60,7 +60,7 @@ class DomainService extends AbstractControl {
         this.updatedThrottleCache.set({ versionID, domainID }, `${creatorID}`),
       ]);
     } catch (error) {
-      logger.warn(error);
+      logger.warn(error, "couldn't set domain updated by");
     }
   }, CANVAS_UPDATE_THROTTLE_TIME);
 }

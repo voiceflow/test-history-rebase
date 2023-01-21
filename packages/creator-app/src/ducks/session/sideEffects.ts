@@ -83,6 +83,7 @@ export const identifyUser =
       email: user.email,
       name: user.name,
       isSSO,
+      realtimeSubprotocol: Realtime.Subprotocol.CURRENT_VERSION,
     });
   };
 

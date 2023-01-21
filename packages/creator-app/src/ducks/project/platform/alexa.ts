@@ -10,7 +10,7 @@ import { SyncThunk } from '@/store/types';
 // side effects
 
 export const updateActiveVendor =
-  (vendorID: Nullable<string>, skillID: string | null): SyncThunk =>
+  (vendorID: Nullable<string>, skillID: Nullable<string>): SyncThunk =>
   (dispatch, getState) => {
     const state = getState();
     const activeProject = alexaProjectSelector(state);
@@ -21,23 +21,7 @@ export const updateActiveVendor =
     Errors.assertProjectID(projectID);
     Errors.assertProject(projectID, activeProject);
     Errors.assertCreatorID(activeCreatorID);
-
-    const updatedMembers = activeProject.members.map((member) =>
-      member.creatorID === activeCreatorID
-        ? {
-            ...member,
-            platformData: {
-              ...member.platformData,
-              selectedVendor: vendorID,
-              vendors: member.platformData.vendors.some((vendor) => vendor.vendorID === vendorID)
-                ? member.platformData.vendors.map((vendor) => (vendor.vendorID === vendorID ? { ...vendor, skillID } : vendor))
-                : [...member.platformData.vendors, { vendorID, skillID, products: {} }],
-            },
-          }
-        : member
-    );
-
     Errors.assertWorkspaceID(workspaceID);
 
-    dispatch.local(Realtime.project.crud.patch({ workspaceID, key: projectID, value: { members: updatedMembers } }));
+    dispatch.local(Realtime.project.alexa.updateVendor({ creatorID: activeCreatorID, vendorID, skillID, projectID, workspaceID }));
   };

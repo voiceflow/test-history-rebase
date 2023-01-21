@@ -6,19 +6,22 @@ import { createReducer } from './utils';
 
 const updateVendorReducer = createReducer(Realtime.project.alexa.updateVendor, (state, { projectID, creatorID, vendorID, skillID }) => {
   const project = Normal.getOne(state, projectID);
-  const member = project?.members.find((member) => member.creatorID === creatorID);
 
-  if (member) {
-    const alexaMemberData = member.platformData as AlexaProject.MemberPlatformData;
-    const vendor = alexaMemberData.vendors.find((vendor) => vendor.vendorID === vendorID);
+  if (!project?.platformMembers) return;
 
-    alexaMemberData.selectedVendor = vendorID;
+  const member = Normal.getOne(project.platformMembers, String(creatorID));
 
-    if (vendor) {
-      vendor.skillID = skillID!;
-    } else {
-      alexaMemberData.vendors.push({ vendorID, skillID: skillID!, products: {} });
-    }
+  if (!member) return;
+
+  const alexaMemberData = member.platformData as AlexaProject.MemberPlatformData;
+  const vendor = alexaMemberData.vendors.find((vendor) => vendor.vendorID === vendorID);
+
+  alexaMemberData.selectedVendor = vendorID;
+
+  if (vendor) {
+    vendor.skillID = skillID!;
+  } else {
+    alexaMemberData.vendors.push({ vendorID: vendorID!, skillID: skillID!, products: {} });
   }
 });
 

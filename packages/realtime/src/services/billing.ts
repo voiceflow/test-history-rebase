@@ -27,7 +27,7 @@ class BillingService extends AbstractControl {
   public async changeQuotaPlan(creatorID: number, workspaceID: string, quotaName: Realtime.QuotaNames): Promise<void> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
-    return client.billing.quota.updateQuotaPlan(workspaceID, quotaName);
+    return client.billing.privateQuota.updateQuotaPlan(workspaceID, quotaName);
   }
 }
 

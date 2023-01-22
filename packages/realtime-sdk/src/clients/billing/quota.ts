@@ -23,8 +23,4 @@ export class Quota extends NestResource {
       return null;
     }
   }
-
-  public async updateQuotaPlan(workspaceID: string, quotaName: string): Promise<void> {
-    await this.put(`/workspace/${workspaceID}/${quotaName}/plandefault`);
-  }
 }

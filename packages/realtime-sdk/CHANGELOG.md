@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.223.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.223.0...@voiceflow/realtime-sdk@1.223.1) (2023-01-22)
+
+
+### Bug Fixes
+
+* fixes token update on workspace upgrade [bugfix] (CT-1491) ([#6606](https://github.com/voiceflow/creator-app/issues/6606)) ([ddd9910](https://github.com/voiceflow/creator-app/commit/ddd99103ad6742026e876592d882ab8f8dc60335))
+
+
+
+
+
 # [1.223.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.222.1...@voiceflow/realtime-sdk@1.223.0) (2023-01-21)
 
 

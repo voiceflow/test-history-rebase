@@ -26,17 +26,19 @@ const CUTOFF_DATE = `2025-01-12T00:00:00.000Z`;
 
 const DashboardModeSection: React.FC = () => {
   const toggleDashboardKanban = useDispatch(Workspace.toggleActiveWorkspaceDashboardKanban);
-  const workspace = useActiveWorkspace()!;
-  const mode = workspace.settings.dashboardKanban ? DashboardTypes.KANBAN : DashboardTypes.CARD;
+  const workspace = useActiveWorkspace();
+  const mode = workspace?.settings.dashboardKanban ? DashboardTypes.KANBAN : DashboardTypes.CARD;
   const [dashboardMode] = useLinkedState(mode);
 
-  if (dayjs(workspace.created).isAfter(CUTOFF_DATE)) return null;
+  const isCardOnly = React.useMemo(() => !workspace || dayjs(workspace.created).isAfter(CUTOFF_DATE), [workspace?.created]);
 
   const handleToggle = (type: DashboardTypes) => {
     const kanban = type === DashboardTypes.KANBAN;
 
     toggleDashboardKanban(kanban);
   };
+
+  if (isCardOnly) return null;
 
   return (
     <>

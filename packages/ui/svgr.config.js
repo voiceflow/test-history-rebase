@@ -1,5 +1,5 @@
 module.exports = {
-  ref: true,
+  ref: false,
   ext: 'svg.jsx',
   filenameCase: 'kebab',
 };

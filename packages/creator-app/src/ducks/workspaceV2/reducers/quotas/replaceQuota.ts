@@ -6,7 +6,7 @@ import { createReducer } from '../utils';
 const replaceQuota = createReducer(Realtime.workspace.quotas.replaceQuota, (state, { workspaceID, quotaDetails }) => {
   const workspace = Normal.getOne(state, workspaceID);
 
-  if (!workspace || !workspace.quotas) return;
+  if (!workspace?.quotas) return;
 
   const quotaIndex = workspace.quotas.findIndex((q) => q.quotaDetails.name === quotaDetails.quotaDetails.name);
 

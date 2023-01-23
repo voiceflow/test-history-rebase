@@ -13,7 +13,7 @@ import * as Sentry from '@/vendors/sentry';
 import { AIAssistSection } from './components';
 
 const GeneralSettingsPage: React.FC = () => {
-  const workspace = useActiveWorkspace()!;
+  const workspace = useActiveWorkspace();
 
   const isIdentityWorkspaceEnabled = useSelector(Feature.isFeatureEnabledSelector)(Realtime.FeatureFlag.IDENTITY_WORKSPACE);
 
@@ -24,21 +24,21 @@ const GeneralSettingsPage: React.FC = () => {
   const [canDeleteWorkspace] = usePermission(Permission.DELETE_WORKSPACE);
   const [canConfigureWorkspace] = usePermission(Permission.CONFIGURE_WORKSPACE);
 
-  const [name, updateName] = React.useState(workspace.name);
+  const [name, updateName] = React.useState(workspace?.name ?? '');
 
   const boardDeleteModal = ModalsV2.useModal(ModalsV2.Board.Delete);
 
   React.useEffect(() => {
-    updateName(workspace.name);
-  }, [workspace.id, workspace.name]);
+    updateName(workspace?.name ?? '');
+  }, [workspace?.name]);
 
   const saveName = React.useCallback(() => {
-    if (name && name !== workspace.name) {
+    if (name && name !== workspace?.name) {
       updateActiveWorkspaceName(name);
-    } else {
+    } else if (workspace) {
       updateName(workspace.name);
     }
-  }, [name, updateName]);
+  }, [name, updateName, workspace?.name]);
 
   return (
     <>
@@ -57,12 +57,12 @@ const GeneralSettingsPage: React.FC = () => {
 
               {isIdentityWorkspaceEnabled ? (
                 <Upload.Provider client={{ upload: (_endpoint, _fileType, formData) => updateActiveWorkspaceImage(formData) }} onError={Sentry.error}>
-                  <Upload.IconUpload size={UploadIconVariant.EXTRA_SMALL} image={workspace.image} disabled={!canConfigureWorkspace} />
+                  <Upload.IconUpload size={UploadIconVariant.EXTRA_SMALL} image={workspace?.image} disabled={!canConfigureWorkspace} />
                 </Upload.Provider>
               ) : (
                 <Upload.IconUpload
                   size={UploadIconVariant.EXTRA_SMALL}
-                  image={workspace.image}
+                  image={workspace?.image}
                   update={updateActiveWorkspaceImageLegacy}
                   disabled={!canConfigureWorkspace}
                 />
@@ -74,11 +74,11 @@ const GeneralSettingsPage: React.FC = () => {
 
       <AIAssistSection />
 
-      {canDeleteWorkspace && (
+      {!!workspace && canDeleteWorkspace && (
         <Settings.Section title="Danger Zone">
           <Settings.ActionSubSection
             title="Delete Workspace"
-            action={<Button onClick={() => boardDeleteModal.openVoid({ workspace })}>Delete Workspace</Button>}
+            action={<Button onClick={() => boardDeleteModal.openVoid({ workspaceID: workspace.id })}>Delete Workspace</Button>}
             description="This action cannot be reverted, proceed with caution"
           />
         </Settings.Section>

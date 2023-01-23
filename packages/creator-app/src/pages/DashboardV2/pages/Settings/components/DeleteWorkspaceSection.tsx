@@ -7,7 +7,7 @@ import { useActiveWorkspace, usePermission } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
 
 const GeneralSettingsPage: React.FC = () => {
-  const workspace = useActiveWorkspace()!;
+  const workspace = useActiveWorkspace();
 
   const [canDeleteWorkspace] = usePermission(Permission.DELETE_WORKSPACE);
 
@@ -15,14 +15,14 @@ const GeneralSettingsPage: React.FC = () => {
 
   return (
     <Box width={700}>
-      {canDeleteWorkspace && (
+      {!!workspace && canDeleteWorkspace && (
         <Box.FlexApart alignItems="flex-start">
           <Settings.Section
             title={<Box.Flex>Delete Workspace</Box.Flex>}
             description={<>Delete the workspace, including all assistants. Proceed with caution.</>}
             mb={0}
           />
-          <Button variant={Button.Variant.SECONDARY} onClick={() => boardDeleteModal.openVoid({ workspace })}>
+          <Button variant={Button.Variant.SECONDARY} onClick={() => boardDeleteModal.openVoid({ workspaceID: workspace.id })}>
             Delete Workspace
           </Button>
         </Box.FlexApart>

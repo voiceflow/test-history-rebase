@@ -37,7 +37,7 @@ Cypress.Commands.add('setVerified', () => {
 Cypress.Commands.add('setAuth', () => {
   const token = SESSION_CONTEXT.get(TOKEN_KEY);
 
-  cy.setCookie('auth_vf', token);
+  cy.setCookie('auth_vf', token, { domain: '.test.e2e' });
 
   cy.window().then((window) =>
     window.sessionStorage.setItem(

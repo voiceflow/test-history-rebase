@@ -1,4 +1,4 @@
-import { GLOBAL_FETCH_HEADERS, IS_SAFARI, setUnauthorizedHandler, StatusCode, toast, Vendors } from '@voiceflow/ui';
+import { GLOBAL_FETCH_HEADERS, IS_E2E, IS_SAFARI, setUnauthorizedHandler, StatusCode, toast, Vendors } from '@voiceflow/ui';
 import axios from 'axios';
 import { History } from 'history';
 import { setAutoFreeze } from 'immer';
@@ -108,7 +108,9 @@ const setupApp = ({ tabID, logout, history, browserID }: { tabID: string; logout
     ],
   });
 
-  DatadogRUM.initialize();
+  if (!IS_E2E) {
+    DatadogRUM.initialize();
+  }
 
   Google.initialize();
 

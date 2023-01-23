@@ -10,7 +10,7 @@ import { useActiveWorkspace, useDispatch, useLinkedState, usePermission, useSele
 import * as Sentry from '@/vendors/sentry';
 
 const GeneralSettingsPage: React.FC = () => {
-  const workspace = useActiveWorkspace()!;
+  const workspace = useActiveWorkspace();
 
   const isIdentityWorkspaceEnabled = useSelector(Feature.isFeatureEnabledSelector)(Realtime.FeatureFlag.IDENTITY_WORKSPACE);
 
@@ -19,15 +19,15 @@ const GeneralSettingsPage: React.FC = () => {
   const updateActiveWorkspaceImageLegacy = useDispatch(Workspace.updateActiveWorkspaceImageLegacy);
 
   const [canConfigureWorkspace] = usePermission(Permission.CONFIGURE_WORKSPACE);
-  const [name, updateName] = useLinkedState(workspace.name);
+  const [name, updateName] = useLinkedState(workspace?.name ?? '');
 
   const saveName = React.useCallback(() => {
-    if (name && name !== workspace.name) {
+    if (name && name !== workspace?.name) {
       updateActiveWorkspaceName(name);
-    } else {
+    } else if (workspace) {
       updateName(workspace.name);
     }
-  }, [name, updateName]);
+  }, [name, updateName, workspace?.name]);
 
   return (
     <Page.Section
@@ -41,15 +41,15 @@ const GeneralSettingsPage: React.FC = () => {
         <Box.Flex gap={24} fullWidth>
           {isIdentityWorkspaceEnabled ? (
             <Upload.Provider client={{ upload: (_endpoint, _fileType, formData) => updateActiveWorkspaceImage(formData) }} onError={Sentry.error}>
-              <Upload.IconUpload size={UploadIconVariant.SMALLER} isSquare image={workspace.image} />
+              <Upload.IconUpload size={UploadIconVariant.SMALLER} isSquare image={workspace?.image} />
             </Upload.Provider>
           ) : (
             <Upload.IconUpload
               size={UploadIconVariant.SMALLER}
-              isSquare
-              image={workspace.image}
+              image={workspace?.image}
               update={updateActiveWorkspaceImageLegacy}
               disabled={!canConfigureWorkspace}
+              isSquare
             />
           )}
 

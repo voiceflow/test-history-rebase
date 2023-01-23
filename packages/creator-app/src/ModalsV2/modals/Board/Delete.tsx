@@ -1,19 +1,22 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Button, ButtonVariant, Input, Modal, Spinner } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Workspace from '@/ducks/workspace';
+import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useDispatch } from '@/hooks/realtime';
+import { useSelector } from '@/hooks/redux';
 import { useTrackingEvents } from '@/hooks/tracking';
 
 import manager from '../../manager';
 
 export interface Props {
-  workspace: Realtime.Workspace;
+  workspaceID: string;
 }
 
-const Delete = manager.create<Props>('BoardDelete', () => ({ api, type, opened, hidden, animated, workspace }) => {
+const Delete = manager.create<Props>('BoardDelete', () => ({ api, type, opened, hidden, animated, workspaceID }) => {
   const [trackEvents] = useTrackingEvents();
+
+  const workspace = useSelector(WorkspaceV2.workspaceByIDSelector, { id: workspaceID });
 
   const deleteWorkspace = useDispatch(Workspace.deleteWorkspace);
 
@@ -24,9 +27,9 @@ const Delete = manager.create<Props>('BoardDelete', () => ({ api, type, opened, 
     try {
       updateDeleting(true);
 
-      await deleteWorkspace(workspace.id);
+      await deleteWorkspace(workspaceID);
 
-      trackEvents.trackWorkspaceDelete(workspace.id);
+      trackEvents.trackWorkspaceDelete(workspaceID);
     } finally {
       api.close();
       updateDeleting(false);
@@ -55,7 +58,7 @@ const Delete = manager.create<Props>('BoardDelete', () => ({ api, type, opened, 
         <Button
           variant={ButtonVariant.PRIMARY}
           onClick={onDeleteWorkspace}
-          disabled={name.trim().toLowerCase() !== workspace.name.trim().toLowerCase()}
+          disabled={name.trim().toLowerCase() !== workspace?.name.trim().toLowerCase()}
         >
           Delete forever
         </Button>

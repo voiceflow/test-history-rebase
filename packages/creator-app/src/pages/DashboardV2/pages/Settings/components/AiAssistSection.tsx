@@ -10,12 +10,12 @@ import { openURLInANewTab } from '@/utils/window';
 
 const AiAssistSection: React.FC = () => {
   const { isEnabled: isAssistantAiEnabled } = useFeature(Realtime.FeatureFlag.ASSISTANT_AI);
-  const workspace = useActiveWorkspace()!;
+  const workspace = useActiveWorkspace();
   const toggleAiAssist = useDispatch(Workspace.toggleActiveWorkspaceAiAssist);
   const [trackingEvents] = useTrackingEvents();
 
   const handleToggle = () => {
-    const enabled = !workspace.settings?.aiAssist;
+    const enabled = !workspace?.settings?.aiAssist;
 
     toggleAiAssist(enabled);
 
@@ -48,7 +48,7 @@ const AiAssistSection: React.FC = () => {
               <Settings.SubSection.Description>Enable or disable workspace members to access AI Assist features.</Settings.SubSection.Description>
             </div>
 
-            <Toggle checked={!!workspace.settings?.aiAssist} size={Toggle.Size.EXTRA_SMALL} onChange={handleToggle} hasLabel />
+            <Toggle checked={!!workspace?.settings?.aiAssist} size={Toggle.Size.EXTRA_SMALL} onChange={handleToggle} hasLabel />
           </Box.FlexApart>
         </Settings.SubSection>
       </Settings.Card>

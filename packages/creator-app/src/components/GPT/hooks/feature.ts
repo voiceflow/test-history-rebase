@@ -11,25 +11,22 @@ interface GPTFeature {
 }
 
 export const useGPTQuotas = () => {
-  const workspace = useActiveWorkspace()!;
+  const workspace = useActiveWorkspace();
 
-  const quotaData = React.useMemo(
-    () => workspace.quotas?.find((quota: any) => quota.quotaDetails.name === QuotaNames.TOKENS) || { consumed: 0, quota: 0 },
-    [workspace.quotas]
-  );
+  const quotaData = React.useMemo(() => workspace?.quotas?.find((quota: any) => quota.quotaDetails.name === QuotaNames.TOKENS), [workspace?.quotas]);
 
   return {
-    quota: quotaData.quota,
-    consumed: quotaData.consumed,
+    quota: quotaData?.quota ?? 0,
+    consumed: quotaData?.consumed ?? 0,
   };
 };
 
 export const useGPTSettingsToggles = (): { workspace: boolean; project: Record<string, boolean> } => {
-  const workspace = useActiveWorkspace()!;
+  const workspace = useActiveWorkspace();
   const projectAiAssistSettings = useSelector(ProjectV2.active.aiAssistSettings);
 
   return {
-    workspace: workspace.settings?.aiAssist ?? false,
+    workspace: workspace?.settings?.aiAssist ?? false,
     project: {
       generative: projectAiAssistSettings?.generativeTasks ?? false,
     },
@@ -47,10 +44,10 @@ type GPTFeatureFlags =
 const useGPTFeature = (feature: GPTFeatureFlags) => {
   const gptFeature = useFeature(feature);
   const gptFeatures = useFeature(Realtime.FeatureFlag.ASSISTANT_AI);
-  const workspace = useActiveWorkspace()!;
+  const workspace = useActiveWorkspace();
   const gptSetting = useGPTSettingsToggles();
 
-  const quota = workspace.quotas?.find((q) => q.quotaDetails.name === Realtime.QuotaNames.TOKENS);
+  const quota = workspace?.quotas?.find((q) => q.quotaDetails.name === Realtime.QuotaNames.TOKENS);
   const hitCap = quota ? quota.consumed >= quota.quota : false;
   const featureEnabled = gptFeatures.isEnabled && gptFeature.isEnabled && gptSetting.workspace;
 

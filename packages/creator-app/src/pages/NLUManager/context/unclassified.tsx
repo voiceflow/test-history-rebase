@@ -1,11 +1,12 @@
 import { Utils } from '@voiceflow/common';
+import * as ML from '@voiceflow/ml-sdk';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { PageProgress } from '@/components/PageProgressBar/utils';
 import { PageProgressBar } from '@/constants';
 import * as NLUDuck from '@/ducks/nlu';
-import { useSelector } from '@/hooks';
+import { useDispatch, useSelector } from '@/hooks';
 import useUnclassifiedFindSimilar from '@/pages/NLUManager/hooks/useUnclassifiedFindSimilar';
 import useUtteranceClustering from '@/pages/NLUManager/hooks/useUtteranceClustering';
 import { ListOrder } from '@/pages/NLUManager/pages/UnclassifiedData/constants';
@@ -43,6 +44,10 @@ export const UNCLASSIFIED_DATA_INTIAL_STATE = {
   findSimilar: async () => {},
   isFindingSimilar: false,
   similarCluster: null as UnclassifiedDataCluster | null,
+  clusteringData: null as ML.unclassified.ClusteringData | null,
+  isClusteringDataLoading: false,
+  assignUnclassifiedUtterancesToIntent: async () => {},
+  deleteUnclassifiedUtterances: async () => {},
 };
 
 interface UseNLUEntitiesProps {
@@ -65,11 +70,13 @@ const useNLUUnclassifiedData = ({ activeItemID, search, scrollToTop }: UseNLUEnt
   const [filteredUtterances, setFilteredUtterances] = React.useState<Realtime.NLUUnclassifiedUtterances[]>(utterances);
   const [isUnclassifiedDataLoading, setIsUnclassifiedDataLoading] = React.useState(false);
   const [clusteredUtterances, setClusteredUtterances] = React.useState<Record<string, string>>({});
+  const assignUnclassifiedUtterancesToIntent = useDispatch(NLUDuck.assignUtterancesToIntent);
+  const deleteUnclassifiedUtterances = useDispatch(NLUDuck.deleteUtterances);
 
   const { findSimilarUtterances, similarityScores, setSimilarityScores } = useUnclassifiedFindSimilar();
   const [isFindingSimilar, setIsFindingSimilar] = React.useState(UNCLASSIFIED_DATA_INTIAL_STATE.isFindingSimilar);
 
-  const { clusterUtterances } = useUtteranceClustering();
+  const { clusterUtterances, clusteringData, isClusteringDataLoading } = useUtteranceClustering();
   const [unclassifiedDataClusters, setUnclassifiedDataClusters] = React.useState<UnclassifiedDataCluster[]>([]);
   const [selectedClusterIDs, setSelectedClusterIDs] = React.useState(UNCLASSIFIED_DATA_INTIAL_STATE.selectedClusterIDs);
   const [isClusteringUnclassifiedData, setIsClusteringUnclassifiedData] = React.useState(false);
@@ -243,6 +250,12 @@ const useNLUUnclassifiedData = ({ activeItemID, search, scrollToTop }: UseNLUEnt
     setFilteredUtterances(filterUtterances(maxRange));
   }, [search, unclassifiedDataClusters, clusteredUtterances, similarCluster, utterances]);
 
+  React.useEffect(() => {
+    clusterUtterances();
+    const utteranceIDs = new Set(utterances.map((u) => u.id));
+    table.setSelectedItemIDs(Array.from(table.selectedItemIDs).filter((id) => utteranceIDs.has(id)));
+  }, [utterances]);
+
   return {
     totalUnclassifiedItems,
     unclassifiedUtterances: utterances,
@@ -270,6 +283,10 @@ const useNLUUnclassifiedData = ({ activeItemID, search, scrollToTop }: UseNLUEnt
     setSelectedClusterIDs,
     setSelectedUnclassifiedUtteranceIDs: table.setSelectedItemIDs,
     isFindingSimilar,
+    clusteringData,
+    isClusteringDataLoading,
+    assignUnclassifiedUtterancesToIntent,
+    deleteUnclassifiedUtterances,
   };
 };
 

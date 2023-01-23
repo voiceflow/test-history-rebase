@@ -19,6 +19,7 @@ const CreateModal: React.OldFC = () => {
     onCreate?: (id: string) => void;
     creationType: Tracking.CanvasCreationType;
     utteranceCreationType: Tracking.CanvasCreationType;
+    utterances?: string[];
   }>(ModalType.INTENT_CREATE);
 
   const [entityPromptSlotID, setEntityPromptSlotID] = React.useState('');
@@ -64,6 +65,11 @@ const CreateModal: React.OldFC = () => {
       cancel();
     }
   }, [isInStack]);
+
+  React.useEffect(() => {
+    if (!data.utterances) return;
+    setInputs(data.utterances.map((u) => ({ text: u })));
+  }, [data.utterances]);
 
   return (
     <Modal

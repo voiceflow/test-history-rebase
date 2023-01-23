@@ -14,7 +14,7 @@ import { getErrorMessage } from '@/utils/error';
 import { applyPlatformIntentNameFormatting } from '@/utils/intent';
 
 interface CreateIntentProps {
-  onCreate?: (id: string) => void;
+  onCreate?: (id: string, data?: Partial<Platform.Base.Models.Intent.Model>) => void;
   initialName?: string;
   creationType: Tracking.CanvasCreationType;
 }
@@ -90,7 +90,7 @@ export const useCreateIntent = ({ creationType, initialName, onCreate }: CreateI
 
       const intentID = await createIntent(creationType, newIntent);
 
-      onCreate?.(intentID);
+      onCreate?.(intentID, { inputs });
       reset();
     } catch (e) {
       toast.error(getErrorMessage(e));

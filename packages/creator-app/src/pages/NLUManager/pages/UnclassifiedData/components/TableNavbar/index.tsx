@@ -1,5 +1,6 @@
 import React from 'react';
 
+import AssignToIntentDropdown from '@/pages/NLUManager/components/AssignToIntentDropdown';
 import TableToolbar from '@/pages/NLUManager/components/TableToolbar';
 import { useNLUManager } from '@/pages/NLUManager/context';
 
@@ -21,6 +22,8 @@ const TableNavbar: React.OldFC<TableNavbarProps> = ({ showFindSimilarButton }) =
     return clusterUtterancesCount + nluManager.selectedUnclassifiedUtteranceIDs.size;
   }, [nluManager.selectedClusterIDs, nluManager.selectedUnclassifiedUtteranceIDs, nluManager.unclassifiedDataClusters]);
 
+  const utteranceIDs = React.useMemo(() => Array.from(nluManager.selectedUnclassifiedUtteranceIDs), [nluManager.selectedUnclassifiedUtteranceIDs]);
+
   return (
     <TableToolbar width={641} isOpen={selectedUtterances >= 2} bottom={77}>
       <TableToolbar.LeftActions>
@@ -35,7 +38,11 @@ const TableNavbar: React.OldFC<TableNavbarProps> = ({ showFindSimilarButton }) =
             {nluManager.isFindingSimilar ? 'Cancel' : 'Find'} Similar
           </TableToolbar.SecondaryButton>
         )}
-        <TableToolbar.PrimaryButton>Assign to Intent</TableToolbar.PrimaryButton>
+
+        <AssignToIntentDropdown
+          utteranceIDs={utteranceIDs}
+          renderTrigger={({ onClick }) => <TableToolbar.PrimaryButton onClick={onClick}>Assign to Intent</TableToolbar.PrimaryButton>}
+        />
       </TableToolbar.Actions>
     </TableToolbar>
   );

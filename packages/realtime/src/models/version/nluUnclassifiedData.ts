@@ -4,6 +4,11 @@ import { NestedMongoModel } from '../_mongo';
 import { Atomic } from '../utils';
 import type VersionModel from './index';
 
+interface RemoveManyUtterancesPayload {
+  datasourceKey: string;
+  utteranceIDs: string[];
+}
+
 class NluUnclassifiedDataModel extends NestedMongoModel<VersionModel> {
   readonly MODEL_PATH = 'nluUnclassifiedData' as const;
 
@@ -24,6 +29,22 @@ class NluUnclassifiedDataModel extends NestedMongoModel<VersionModel> {
 
   async delete(versionID: string, key: string): Promise<void> {
     await this.model.atomicUpdateByID(versionID, [Atomic.pull([{ path: this.MODEL_PATH, match: { key } }])]);
+  }
+
+  async removeManyUtterancesFromDatasource(versionID: string, datasourceKey: string, utteranceIDs: string[]): Promise<void> {
+    await this.model.atomicUpdateOne({ ...this.model.idFilter(versionID), [`${this.MODEL_PATH}.key`]: datasourceKey }, [
+      Atomic.pull([{ path: `${this.MODEL_PATH}.$.utterances`, match: { id: { $in: utteranceIDs } } }]),
+    ]);
+  }
+
+  // TODO: [Unclassified] fix it
+  async removeManyUtterances(versionID: string, updates: RemoveManyUtterancesPayload[]): Promise<void> {
+    const mapper = updates.map(({ datasourceKey: key, utteranceIDs: uttIDs }, index) => ({
+      ...Atomic.pull([{ path: `${this.MODEL_PATH}.$[item${index}].utterances`, match: { id: { $in: uttIDs } } }]),
+      arrayFilters: [{ [`item${index}`]: { key } }],
+    }));
+
+    await this.model.atomicUpdateByID(versionID, mapper);
   }
 }
 

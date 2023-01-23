@@ -1,7 +1,7 @@
+import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import {
   Box,
-  Button,
   Checkbox,
   Divider,
   FlexCenter,
@@ -17,6 +17,7 @@ import React from 'react';
 
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useSelector } from '@/hooks';
+import { AssignToIntentButton, AssignToIntentDropdown } from '@/pages/NLUManager/components';
 import { useNLUManager } from '@/pages/NLUManager/context';
 import { copy } from '@/utils/clipboard';
 
@@ -38,6 +39,7 @@ const TableUtteranceRow: React.FC<TableUtteranceRowProps> = ({ rowIndex, item: u
   const nluManager = useNLUManager();
   const [isHovering, setIsHovering] = React.useState(false);
   const importedByUser = useSelector(WorkspaceV2.active.memberByIDSelector, { creatorID: u.sourceID ? parseInt(u.sourceID, 10) : null });
+  const [menuOpened, setMenuOpened] = React.useState(false);
 
   return (
     <>
@@ -46,7 +48,10 @@ const TableUtteranceRow: React.FC<TableUtteranceRowProps> = ({ rowIndex, item: u
         active={isActive}
         onClick={() => onSelect(u.id)}
         onMouseEnter={() => setIsHovering(true)}
-        onMouseLeave={() => setIsHovering(false)}
+        onMouseLeave={Utils.functional.chain(
+          () => setIsHovering(false),
+          () => setMenuOpened(false)
+        )}
       >
         <FlexStart style={{ alignItems: 'flex-start' }}>
           {similarity != null && !isHovering ? (
@@ -77,11 +82,14 @@ const TableUtteranceRow: React.FC<TableUtteranceRowProps> = ({ rowIndex, item: u
             </FlexCenter>
           </Box>
         </FlexStart>
-        <UnclassifiedTable.RowButtons>
-          {/* TO DO: add assign to intent select component */}
-          <Button squareRadius onClick={stopPropagation(() => {})}>
-            Assign to Intent
-          </Button>
+        <UnclassifiedTable.RowButtons hovered={menuOpened}>
+          <AssignToIntentDropdown
+            utteranceIDs={[u.id]}
+            onClose={() => setMenuOpened(false)}
+            renderTrigger={({ onClick, isOpen, onHideMenu }) => (
+              <AssignToIntentButton onClick={onClick} onHideMenu={onHideMenu} menuOpened={menuOpened} setMenuOpened={setMenuOpened} isOpen={isOpen} />
+            )}
+          />
           <S.CopyIconContainer
             onClick={stopPropagation(() => {
               copy(u.utterance);
@@ -92,7 +100,7 @@ const TableUtteranceRow: React.FC<TableUtteranceRowProps> = ({ rowIndex, item: u
               <SvgIcon icon="copy" color={SvgIcon.DEFAULT_COLOR} size={16} clickable />
             </TippyTooltip>
           </S.CopyIconContainer>
-          {/* TO DO: create delete behavior */}
+          {/* TODO: [Unclassified] create delete behavior */}
           <S.DeleteIconContainer>
             <TippyTooltip content="Delete" position="top">
               <SvgIcon icon="trash" color={SvgIcon.DEFAULT_COLOR} size={16} onClick={stopPropagation(() => {})} clickable />

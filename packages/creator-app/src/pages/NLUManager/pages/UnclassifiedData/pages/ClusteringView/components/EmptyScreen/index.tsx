@@ -2,14 +2,21 @@ import { Box, Button, ButtonVariant, FlexCenter, Link, SvgIcon } from '@voiceflo
 import React from 'react';
 
 import * as ModalsV2 from '@/ModalsV2';
+import { UnclassifiedTabs } from '@/pages/NLUManager/constants';
+import { useNLUManager } from '@/pages/NLUManager/context';
 
 import * as S from './styles';
 
 const EmptyScreen: React.OldFC = () => {
   const { open } = ModalsV2.useModal(ModalsV2.NLU.Import);
-  // to do implement actions behaviors
+  const nluManager = useNLUManager();
+
+  // TO DO: [Unclassified] add learn more link
   const onLearnMore = () => {};
+
   const onCreate = () => open({ importType: ModalsV2.NLU.ImportType.UNCLASSIFIED });
+
+  const handleBackToAllData = () => nluManager.changeUnclassifiedPageTab(UnclassifiedTabs.UNCLASSIFIED_VIEW);
 
   return (
     <S.Container>
@@ -30,7 +37,7 @@ const EmptyScreen: React.OldFC = () => {
       </FlexCenter>
 
       <S.ButtonsContainer>
-        <Button squareRadius variant={ButtonVariant.QUATERNARY} onClick={onCreate}>
+        <Button squareRadius variant={ButtonVariant.QUATERNARY} onClick={handleBackToAllData}>
           Back to All Data
         </Button>
 

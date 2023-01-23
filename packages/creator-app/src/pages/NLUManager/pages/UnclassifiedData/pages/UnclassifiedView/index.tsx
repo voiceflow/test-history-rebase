@@ -28,35 +28,41 @@ const UnclassifiedView: React.OldFC = ({ children }) => {
 
   if (!nluManager.unclassifiedUtterances.length) return <EmptyScreen />;
 
+  const isPageLoading = nluManager.isUnclassifiedDataLoading;
+
   return (
     <div>
       <Table.Container>
         <TableTopBadge />
 
-        {nluManager.isUnclassifiedDataLoading && <LoadingScreen />}
+        {isPageLoading && <LoadingScreen />}
 
-        {nluManager.isFindingSimilar && nluManager.similarCluster?.utteranceIDs.length === 1 && nluManager.activeUnclassifiedUtterance && (
-          <TableUtteranceRow
-            onSelect={() =>
-              nluManager.activeUnclassifiedUtterance && nluManager.toggleSelectedUnclassifiedUtteranceID(nluManager.activeUnclassifiedUtterance.id)
-            }
-            item={nluManager.activeUnclassifiedUtterance}
-            isActive
-            rowIndex={0}
-            allItems={nluManager.filteredUtterances}
-          />
-        )}
+        {!isPageLoading &&
+          nluManager.isFindingSimilar &&
+          nluManager.similarCluster?.utteranceIDs.length === 1 &&
+          nluManager.activeUnclassifiedUtterance && (
+            <TableUtteranceRow
+              onSelect={() =>
+                nluManager.activeUnclassifiedUtterance && nluManager.toggleSelectedUnclassifiedUtteranceID(nluManager.activeUnclassifiedUtterance.id)
+              }
+              item={nluManager.activeUnclassifiedUtterance}
+              isActive
+              rowIndex={0}
+              allItems={nluManager.filteredUtterances}
+            />
+          )}
 
-        {nluManager.isFindingSimilar && !!nluManager.similarCluster?.utteranceIDs.length && (
+        {!isPageLoading && nluManager.isFindingSimilar && !!nluManager.similarCluster?.utteranceIDs.length && (
           <TableClusterRow
             isActive
+            utteranceIDs={nluManager.similarCluster.utteranceIDs}
             onSelect={() => nluManager.toggleSelectedUnclassifiedUtteranceID(null)}
             utterance={nluManager.activeUnclassifiedUtterance?.utterance || ''}
             utteranceCount={nluManager.similarCluster?.utteranceIDs.length}
           />
         )}
 
-        {!nluManager.isUnclassifiedDataLoading &&
+        {!isPageLoading &&
           nluManager.filteredUtterances.map((u: any, index) => (
             <TableUtteranceRow
               key={u.id}

@@ -33,6 +33,7 @@ const ClusteringView: React.OldFC = ({ children }) => {
             <TableClusterRow
               key={cluster.id}
               utterance={cluster.name}
+              utteranceIDs={cluster.utteranceIDs}
               utteranceCount={cluster.utteranceIDs.length}
               isActive={nluManager.selectedClusterIDs.has(cluster.id)}
               onSelect={() => nluManager.toggleClusterSelection(cluster.id)}

@@ -153,7 +153,6 @@ class ProjectService extends AbstractControl {
 
   public async patchPlatformData(creatorID: number, projectID: string, data: Partial<AnyRecord>): Promise<void> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
-
     await client.project.updatePlatformData(projectID, data);
   }
 
@@ -161,6 +160,11 @@ class ProjectService extends AbstractControl {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
     await client.project.deleteV2(projectID);
+  }
+
+  public async toggleWorkspaceProjectsAiAssistOff(workspaceID: string): Promise<void> {
+    const decodedWorkspaceID = this.clients.teamHashids.decode(workspaceID)[0];
+    await this.models.project.updateManyByWorkspaceID(decodedWorkspaceID, { aiAssistSettings: { freestyle: false, generativeTasks: false } });
   }
 
   // eslint-disable-next-line you-dont-need-lodash-underscore/throttle

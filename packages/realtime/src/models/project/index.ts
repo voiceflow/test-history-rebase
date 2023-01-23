@@ -51,6 +51,13 @@ class ProjectModel extends AbstractModel<DBProjectModel, BaseModels.Project.Mode
 
     return result.map(({ _id }) => _id!.toJSON());
   }
+
+  public async updateManyByWorkspaceID(
+    workspaceID: number,
+    data: Pick<BaseModels.Project.Model<AnyRecord, AnyRecord>, 'aiAssistSettings'>
+  ): Promise<void> {
+    this.collection.updateMany({ teamID: workspaceID }, { $set: data });
+  }
 }
 
 export default ProjectModel;

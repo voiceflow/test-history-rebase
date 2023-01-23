@@ -53,6 +53,8 @@ export interface PatchPlatformDataPayload extends BaseProjectPayload {
   platformData: Record<string, unknown>;
 }
 
+export interface ToggleWorkspaceProjectsAiAssistOffPayload extends BaseWorkspacePayload {}
+
 export const crud = createCRUDActions<AnyProject, BaseWorkspacePayload>(projectType);
 
 export const merge = Utils.protocol.createAsyncAction<MergeProjectsPayload, void>(projectType('MERGE'));
@@ -71,3 +73,7 @@ export const importFromFile = Utils.protocol.createAsyncAction<ImportProjectFrom
 export const patchPlatformData = Utils.protocol.createAction<PatchPlatformDataPayload>(projectType('PATCH_PLATFORM_DATA'));
 
 export const addManyCustomThemes = Utils.protocol.createAction<AddManyCustomThemesPayload>(projectType('ADD_MANY_CUSTOM_THEMES'));
+
+export const toggleWorkspaceProjectsAiAssistOff = Utils.protocol.createAction<ToggleWorkspaceProjectsAiAssistOffPayload>(
+  projectType('TOGGLE_WORKSPACE_PROJECTS_AI_ASSIST_OFF')
+);

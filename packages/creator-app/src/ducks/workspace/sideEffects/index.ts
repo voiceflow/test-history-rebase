@@ -180,6 +180,10 @@ export const toggleActiveWorkspaceAiAssist =
       Errors.assertWorkspaceID(workspaceID);
 
       await dispatch.sync(Realtime.workspace.settings.patch({ workspaceID, settings: { aiAssist } }));
+
+      if (!aiAssist) {
+        await dispatch.sync(Realtime.project.toggleWorkspaceProjectsAiAssistOff({ workspaceID }));
+      }
     } catch (err) {
       openError({ error: 'Error toggling workspace ai assist features' });
 

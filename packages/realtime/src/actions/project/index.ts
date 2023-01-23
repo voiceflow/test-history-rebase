@@ -13,6 +13,7 @@ import PatchProjectControl from './patch';
 import PatchPlatformDataControl from './patchPlatformData';
 import RemoveProjectControl from './remove';
 import RemoveManyProjectsControl from './removeMany';
+import ToggleWorkspaceProjectsAiAssistOffControl from './toggleWorkspaceProjectsAiAssistOff';
 
 const buildProjectActionControls = (options: LoguxControlOptions) => ({
   ejectUsersControl: new EjectUsersControl(options),
@@ -28,6 +29,7 @@ const buildProjectActionControls = (options: LoguxControlOptions) => ({
   /** @deprecated use ImportProject instead */
   importProjectFromFileControl: new ImportProjectFromFileControl(options),
   addManyCustomThemesController: new AddManyCustomThemesController(options),
+  toggleWorkspaceProjectsAiAssistOffControl: new ToggleWorkspaceProjectsAiAssistOffControl(options),
 
   // awareness
   updateDiagramViewersControl: new UpdateDiagramViewersControl(options),

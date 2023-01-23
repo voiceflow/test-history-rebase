@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1063.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1062.0...@voiceflow/creator-app@1.1063.0) (2023-01-23)
+
+
+### Features
+
+* freestyle email [bugfix](CT-1412) ([#6590](https://github.com/voiceflow/creator-app/issues/6590)) ([1810d7b](https://github.com/voiceflow/creator-app/commit/1810d7b9e3f4c00e8a9f89b326fd4cc597de8425))
+
+
+
+
+
 # [1.1062.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1061.2...@voiceflow/creator-app@1.1062.0) (2023-01-23)
 
 

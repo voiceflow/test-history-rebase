@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.154.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.153.0...@voiceflow/realtime@1.154.0) (2023-01-23)
+
+
+### Features
+
+* assign unclassified data to intent (CT-1423) ([#6587](https://github.com/voiceflow/creator-app/issues/6587)) ([193d6a4](https://github.com/voiceflow/creator-app/commit/193d6a4515aa4f4f67961a5eee9cb2f35eb457c1))
+
+
+
+
+
 # [1.153.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.152.0...@voiceflow/realtime@1.153.0) (2023-01-23)
 
 

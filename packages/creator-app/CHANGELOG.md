@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1064.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1063.0...@voiceflow/creator-app@1.1064.0) (2023-01-23)
+
+
+### Bug Fixes
+
+* add choice block to dialogflow ES (PL-388) ([#6605](https://github.com/voiceflow/creator-app/issues/6605)) ([df23cf1](https://github.com/voiceflow/creator-app/commit/df23cf1c61c0ba0f32c67506686c07a4c834653a))
+
+
+### Features
+
+* remove isDisabled check (VF-000) ([#6574](https://github.com/voiceflow/creator-app/issues/6574)) ([8eaab61](https://github.com/voiceflow/creator-app/commit/8eaab61de9979042174ad551e0d0cf2611c67f52))
+* update copy to reference assistants instead of projects (DX-287) ([#6539](https://github.com/voiceflow/creator-app/issues/6539)) ([5cbeb3c](https://github.com/voiceflow/creator-app/commit/5cbeb3c8e428d552dc26fba509617e7c264f00be))
+
+
+
+
+
 # [1.1063.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1062.0...@voiceflow/creator-app@1.1063.0) (2023-01-23)
 
 

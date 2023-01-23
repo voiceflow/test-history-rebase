@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.153.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.152.0...@voiceflow/realtime@1.153.0) (2023-01-23)
+
+
+### Features
+
+* update copy to reference assistants instead of projects (DX-287) ([#6539](https://github.com/voiceflow/creator-app/issues/6539)) ([5cbeb3c](https://github.com/voiceflow/creator-app/commit/5cbeb3c8e428d552dc26fba509617e7c264f00be))
+
+
+
+
+
 # [1.152.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.151.0...@voiceflow/realtime@1.152.0) (2023-01-23)
 
 

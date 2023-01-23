@@ -6,11 +6,11 @@ import React from 'react';
 import * as GPT from '@/components/GPT';
 import * as Settings from '@/components/Settings';
 import { AI_GENERAL_LINK, LEARN_FREESTYLE, LEARN_GENERATIVE_TASKS } from '@/constants';
-// import { Permission } from '@/constants/permissions';
+import { Permission } from '@/constants/permissions';
 import * as Project from '@/ducks/project';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
-import { useActiveWorkspace, useDispatch, useFeature, useSelector, useTrackingEvents } from '@/hooks';
+import { useActiveWorkspace, useDispatch, useFeature, usePermission, useSelector, useTrackingEvents } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
 import { SettingSections } from '@/pages/Settings/constants';
 
@@ -25,7 +25,7 @@ const AIAssistant: React.FC = () => {
 
   const activeProjectID = useSelector(Session.activeProjectIDSelector);
   const aiAssistSettings = useSelector(ProjectV2.active.aiAssistSettings);
-  const freestyleDisclaimerPermission = { allowed: false }; // usePermission(Permission.FREESTLYE_DISCLAIMER);
+  const freestyleDisclaimerPermission = usePermission(Permission.FREESTLYE_DISCLAIMER);
 
   const updateProjectAiAssistSettings = useDispatch(Project.updateProjectAiAssistSettings);
 
@@ -46,13 +46,13 @@ const AIAssistant: React.FC = () => {
   };
 
   const onFreestyleToggle = () => {
-    const enabled = !aiAssistSettings?.freestyle;
+    const freestyleEnabled = aiAssistSettings?.freestyle;
 
-    if (enabled && freestyleDisclaimerPermission.allowed) {
+    if (!freestyleEnabled && freestyleDisclaimerPermission.allowed) {
       freestyleDisclaimerModal.openVoid();
     } else {
-      onPatchAiAssistSettings({ freestyle: enabled });
-      trackingEvents.trackProjectGenerateAIFeatureToggled({ enabled, flag: GPT.FeatureToggle.FREESTYLE });
+      onPatchAiAssistSettings({ freestyle: !freestyleEnabled });
+      trackingEvents.trackProjectGenerateAIFeatureToggled({ enabled: !freestyleEnabled, flag: GPT.FeatureToggle.FREESTYLE });
     }
   };
 

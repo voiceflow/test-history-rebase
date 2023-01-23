@@ -19,10 +19,12 @@ const FreestyleFeatureDisclaimer = manager.create('FreestyleFeatureDisclaimer', 
   const activeProjectID = useSelector(Session.activeProjectIDSelector);
   const aiAssistSettings = useSelector(ProjectV2.active.aiAssistSettings);
   const updateProjectAiAssistSettings = useDispatch(Project.updateProjectAiAssistSettings);
+  const sendNotificationEmail = useDispatch(ProjectV2.sendFreestyleDisclaimerEmail);
 
   const onAccept = () => {
     if (!activeProjectID) return;
     updateProjectAiAssistSettings(activeProjectID, { ...aiAssistSettings, freestyle: true });
+    sendNotificationEmail();
     trackingEvents.trackFreestyleDisclaimerAccepted();
     api.close();
   };

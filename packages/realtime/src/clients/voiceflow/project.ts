@@ -39,6 +39,8 @@ const Client = ({ api, alexa, google, dialogflow, general }: ExtraOptions) => {
 
     deleteMany: (projectIDs: string[]): Promise<boolean> => api.post(`/v2/projects/delete-many`, { projectIDs }),
 
+    sendFreestyleDisclaimerEmail: (projectID: string) => api.post(`/v3/projects/${projectID}/sendFreestyleDisclaimer`),
+
     platform: Object.assign(getPlatform, {
       alexa: alexaClient,
       google: googleClient,

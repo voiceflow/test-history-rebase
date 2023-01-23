@@ -77,3 +77,6 @@ export const addManyCustomThemes = Utils.protocol.createAction<AddManyCustomThem
 export const toggleWorkspaceProjectsAiAssistOff = Utils.protocol.createAction<ToggleWorkspaceProjectsAiAssistOffPayload>(
   projectType('TOGGLE_WORKSPACE_PROJECTS_AI_ASSIST_OFF')
 );
+export const sendFreestyleDisclaimerEmail = Utils.protocol.createAsyncAction<BaseProjectPayload, void>(
+  projectType('SEND_FREESTLYE_DISCLAIMER_EMAIL')
+);

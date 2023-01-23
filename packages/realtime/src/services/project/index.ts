@@ -181,6 +181,12 @@ class ProjectService extends AbstractControl {
       logger.warn(error, "couldn't set project updated by");
     }
   }, CANVAS_UPDATE_THROTTLE_TIME);
+
+  public async sendFreestyleDisclaimerEmail(creatorID: number, projectID: string): Promise<void> {
+    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+
+    await client.project.sendFreestyleDisclaimerEmail(projectID);
+  }
 }
 
 export default ProjectService;

@@ -1,7 +1,6 @@
 import { UserRole } from '@voiceflow/internal';
 import React from 'react';
 
-import { IS_PRIVATE_CLOUD } from '@/config';
 import * as Account from '@/ducks/account';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
@@ -35,9 +34,7 @@ const ChatAssistant: React.OldFC = () => {
   }, [activeWorkspace?.id, activeWorkspace?.name, activeWorkspace?.plan]);
 
   React.useEffect(() => {
-    const isDisabled = IS_PRIVATE_CLOUD;
-
-    if (!user.creator_id || !user.email || isDisabled) return undefined;
+    if (!user.creator_id || !user.email) return undefined;
 
     VoiceflowAssistant.setup();
 

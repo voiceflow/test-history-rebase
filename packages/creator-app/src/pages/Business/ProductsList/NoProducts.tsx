@@ -37,7 +37,7 @@ const NoProducts: React.OldFC<NoProductsProps> = ({ onClick }) => (
   <Container>
     <img src={safeGraphic} alt="no products" height={100} />
     <Title>No products exists</Title>
-    <Description>Monetize your project with in skill purchases such as consumables and subscriptions.</Description>
+    <Description>Monetize your assistant with in-skill purchases such as consumables and subscriptions.</Description>
     <Button variant={ButtonVariant.PRIMARY} onClick={onClick}>
       Create a product
     </Button>

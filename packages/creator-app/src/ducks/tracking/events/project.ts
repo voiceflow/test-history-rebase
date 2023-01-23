@@ -168,7 +168,7 @@ export const trackProjectExported = createProjectEventTracker<{
     createProjectEventPayload(options, {
       nlu_type: nluType,
       platform,
-      export_type: exportType === ExportType.CANVAS ? 'Project Content' : 'Interaction Model',
+      export_type: exportType === ExportType.CANVAS ? 'Assistant Content' : 'Interaction Model',
       export_format: exportFormat,
     })
   )

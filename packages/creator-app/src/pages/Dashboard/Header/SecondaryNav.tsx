@@ -26,7 +26,7 @@ const SecondaryNav: React.FC<SecondaryNavProps> = ({ handleFilterText }) => {
         <ProjectSearchInput
           icon="search"
           iconProps={{ color: '#8da2b5' }}
-          placeholder="Search Projects"
+          placeholder="Search Assistants"
           onChange={(e) => handleFilterText(e.target.value)}
         />
       </ProjectSearchContainer>

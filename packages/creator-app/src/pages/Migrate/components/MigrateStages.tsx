@@ -31,7 +31,7 @@ const MigrateStages: React.FC = () => {
     case Stage.FORM:
       return <Migration onSuccess={() => setStage(Stage.SUCCESS)} />;
     case Stage.SUCCESS:
-      return <Alert mb={16}>Your Project Has Been Successfully Updated!</Alert>;
+      return <Alert mb={16}>Your Assistant Has Been Successfully Updated!</Alert>;
     default:
       return <Spinner />;
   }

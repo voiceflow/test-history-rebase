@@ -39,26 +39,26 @@ const getStageMeta = Utils.platform.createPlatformSelector<StageMeta>(
       title: 'Connect to Google',
       projectName: 'Action',
       platformName: 'Google',
-      prompt: 'Sign in with Google to upload your project.',
+      prompt: 'Sign in with Google to upload your assistant.',
     },
     [Platform.Constants.PlatformType.DIALOGFLOW_ES]: {
       title: 'Connect to Dialogflow',
-      projectName: 'Dialogflow project',
+      projectName: 'Dialogflow assistant',
       platformName: 'Dialogflow',
       prompt: 'Sign in with Google to connect this assistant to Dialogflow ES.',
     },
     [Platform.Constants.PlatformType.DIALOGFLOW_CX]: {
       title: 'Connect to Dialogflow',
-      projectName: 'Dialogflow project',
+      projectName: 'Dialogflow assistant',
       platformName: 'Dialogflow',
       prompt: 'Sign in with Google to connect this assistant to Dialogflow CX.',
     },
   },
   {
-    title: 'Connect to Project',
-    projectName: 'Voiceflow project',
+    title: 'Connect to Assistant',
+    projectName: 'Voiceflow assistant',
     platformName: 'Voiceflow',
-    prompt: 'Sign in with Voiceflow to upload your project.',
+    prompt: 'Sign in with Voiceflow to upload your assistant.',
   }
 );
 

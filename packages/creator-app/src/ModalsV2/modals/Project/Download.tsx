@@ -22,7 +22,7 @@ const Download = manager.create('ProjectDownload', () => ({ api, type, opened, h
 
   return (
     <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} maxWidth={400}>
-      <Modal.Header>Project Download</Modal.Header>
+      <Modal.Header>Assistant Download</Modal.Header>
 
       <Modal.Body centered>
         <Box.FlexCenter>

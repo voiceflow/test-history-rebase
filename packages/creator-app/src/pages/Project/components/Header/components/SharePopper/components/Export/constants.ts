@@ -8,12 +8,12 @@ export const CANVAS_EXPORT_OPTIONS_LABELS: Record<ExportFormat, string> = {
   [ExportFormat.PDF]: 'PDF',
   [ExportFormat.JSON]: 'JSON',
   [ExportFormat.DIALOGS]: 'Dialogs (CSV)',
-  [ExportFormat.VF]: 'Project file (JSON)',
+  [ExportFormat.VF]: 'Assistant file (JSON)',
 };
 
 export const EXPORT_TYPE_OPTIONS = [
   { id: ExportType.MODEL, label: 'NLU data' },
-  { id: ExportType.CANVAS, label: 'Project content' },
+  { id: ExportType.CANVAS, label: 'Assistant content' },
 ];
 
 export const NLP_COMPILER_OPTIONS: PrototypeRenderSyncOptions = {

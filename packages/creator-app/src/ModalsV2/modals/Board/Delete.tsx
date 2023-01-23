@@ -43,7 +43,7 @@ const Delete = manager.create<Props>('BoardDelete', () => ({ api, type, opened, 
           </Box>
         ) : (
           <div>
-            <b>Warning</b>, deleting a workspace will permanently delete all of its projects and live voice applications.
+            <b>Warning</b>, deleting a workspace will permanently delete all of its assistants and live voice applications.
             <br /> <br />
             <label>Workspace name</label>
             <Input name="input" onChangeText={setName} value={name} placeholder="Workspace Name" />

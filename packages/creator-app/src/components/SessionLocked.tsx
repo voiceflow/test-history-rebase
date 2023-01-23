@@ -5,12 +5,12 @@ import { activeProjectGraphic } from '@/assets';
 
 const SessionLocked: React.OldFC = ({ children }) => (
   <Page404Wrapper>
-    <img src={activeProjectGraphic} alt="Active Project" height={62} />
+    <img src={activeProjectGraphic} alt="Active Assistant" height={62} />
 
-    <label className="mt-3 dark">Project Open in Another Tab</label>
+    <label className="mt-3 dark">Assistant Open in Another Tab</label>
 
     <ErrorDescription className="mt-1 mb-4 text-center">
-      This project is currently open in another tab. Please close existing tab, or takeover the active session.
+      This assistant is currently open in another tab. Please close existing tab, or takeover the active session.
     </ErrorDescription>
 
     {children}

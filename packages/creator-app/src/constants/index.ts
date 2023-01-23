@@ -493,7 +493,7 @@ export enum PageProgressBar {
 }
 
 export enum NLUImportOrigin {
-  PROJECT = 'Project Create',
+  PROJECT = 'Assistant Create',
   NLU_MANAGER = 'NLU Manager',
 }
 

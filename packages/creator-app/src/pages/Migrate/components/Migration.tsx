@@ -103,7 +103,7 @@ const Migration: React.OldFC<MigrationProps> = ({ onSuccess }) => {
       }
       onSuccess();
     } catch (error) {
-      toast.error(`invalid project member data ${error}`);
+      toast.error(`invalid assistant member data ${error}`);
     }
   };
 

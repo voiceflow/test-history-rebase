@@ -72,7 +72,7 @@ const ConvertConfirm = manager.create<Props>(
             </BlockText>
 
             <BlockText>
-              When a domain is transfered, we’ll create a duplicate of the project being transferred, and we’ll create a new version of the target
+              When a domain is transferred, we’ll create a duplicate of the assistant being transferred, and we’ll create a new version of the target
               assistant in the state before the transfer.
             </BlockText>
           </Modal.Body>

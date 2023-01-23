@@ -31,7 +31,7 @@ const VariableStateSelectMenu: React.OldFC<VariableStateSelectMenuProps> = ({ re
     () =>
       variableStates.length
         ? variableStates.map<VariableStateOption>((state) => ({ label: state.name, value: state.id }))
-        : [{ label: 'All project variables', value: VariableState.ALL_PROJECT_VARIABLES_ID }],
+        : [{ label: 'All assistant variables', value: VariableState.ALL_PROJECT_VARIABLES_ID }],
     [variableStates]
   );
 

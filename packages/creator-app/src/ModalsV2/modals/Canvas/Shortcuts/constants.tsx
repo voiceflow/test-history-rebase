@@ -120,7 +120,7 @@ export const SHORTCUTS: ShortcutItem[] = [
     command: <ShortcutCommand>4</ShortcutCommand>,
   },
   {
-    title: 'Run Project',
+    title: 'Run Assistant',
     command: <ShortcutCommand>R</ShortcutCommand>,
   },
   {

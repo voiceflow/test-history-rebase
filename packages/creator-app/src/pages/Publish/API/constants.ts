@@ -5,7 +5,7 @@ export const nodeJS = `const axios = require('axios');
 const apiKey = '{{vf.api_key}}';
 
 const userID = 'user_123'; // Unique ID used to track conversation state
-const userInput = 'Hello world!'; // User's message to your Voiceflow project
+const userInput = 'Hello world!'; // User's message to your Voiceflow assistant
 
 const body = {
   action: {
@@ -56,7 +56,7 @@ export const python = `import requests
 api_key = "{{vf.api_key}}"
 
 user_id = "user_123"  # Unique ID used to track conversation state
-user_input = "Hello world!"  # User's message to your Voiceflow project
+user_input = "Hello world!"  # User's message to your Voiceflow assistant
 
 body = {"action": {"type": "text", "payload": "Hello world!"}}
 

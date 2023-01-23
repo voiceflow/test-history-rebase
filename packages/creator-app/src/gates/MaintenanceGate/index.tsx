@@ -52,7 +52,7 @@ const MaintenanceGate: React.FC<React.PropsWithChildren> = ({ children }) => {
           <br />
           <b>{interval}</b> from now
           <hr />
-          Live Projects will not be affected
+          Live Assistants will not be affected
         </Alert>
       ),
       confirm: () => {},

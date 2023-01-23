@@ -26,7 +26,7 @@ const AmazonIntegrations: React.OldFC = () => {
 
   const resetAmazon = () => {
     setConfirm({
-      body: 'Resetting your Amazon Account is dangerous and will de-sync all your published projects/versions and can lead to live skills being deleted. Do not reset unless you know what you are doing',
+      body: 'Resetting your Amazon Account is dangerous and will de-sync all your published assistants/versions and can lead to live skills being deleted. Do not reset unless you know what you are doing',
       bodyStyle: { padding: '16px', textAlign: 'center' },
       modalProps: { centered: true, withHeader: false, maxWidth: 300 },
       footerStyle: { justifyContent: 'space-between' },

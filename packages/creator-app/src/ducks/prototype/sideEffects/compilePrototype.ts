@@ -24,7 +24,7 @@ const compilePrototype =
       await platformPrototypeService.renderSync(versionID, compilerOptions);
     } catch (err) {
       Sentry.error(err);
-      return openError({ error: 'Could Not Render Your Test Project' });
+      return openError({ error: 'Could Not Render Your Test Assistant' });
     }
   };
 

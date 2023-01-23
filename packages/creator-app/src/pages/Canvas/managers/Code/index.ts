@@ -16,7 +16,7 @@ const CodeManager: NodeManagerConfigV2<Realtime.NodeData.Code, Realtime.NodeData
   editorV2: Editor,
   actionEditor: ActionEditor,
 
-  tooltipText: 'Executes custom JavaScript (ES6) code in the project.',
+  tooltipText: 'Executes custom JavaScript (ES6) code in the assistant.',
   tooltipLink: Documentation.CODE_STEP,
 };
 

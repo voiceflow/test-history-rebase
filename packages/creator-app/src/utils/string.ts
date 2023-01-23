@@ -35,7 +35,7 @@ export const isAnyStrictLink = (str: string): boolean => !!STRICT_LINKS_REGEXS.s
 
 export const getValidHref = (href: string): string => (href.startsWith('//') || href.includes('://') || isAnyStrictLink(href) ? href : `//${href}`);
 
-export const formatProjectName = (value: string): string => value.trim() || 'Untitled Project';
+export const formatProjectName = (value: string): string => value.trim() || 'Untitled Assistant';
 
 export const containsSlotOtVariable = (str: string): boolean => !!str.match(SLOT_REGEXP);
 

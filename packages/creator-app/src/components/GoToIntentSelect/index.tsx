@@ -37,7 +37,7 @@ const GoToIntentSelect: React.OldFC<Props> = ({ value, placeholder = 'Behave as 
     createInputPlaceholder: 'intents',
     renderEmpty: ({ close, search }: { close: VoidFunction; search: string }) => (
       <Menu.NotFound>
-        {!search ? 'No open intents exists in your project. ' : 'No open intents found. '}
+        {!search ? 'No open intents exists in your assistant. ' : 'No open intents found. '}
         <Link href={Documentation.OPEN_INTENT} onClick={close}>
           Learn more
         </Link>

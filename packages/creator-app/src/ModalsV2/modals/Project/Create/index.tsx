@@ -74,7 +74,7 @@ const Create = manager.create<{ listID?: string }>('CreateProject', () => ({ api
       api.close();
     } catch {
       stateAPI.update({ creating: false });
-      toast.error('Failed to create project, please try again later');
+      toast.error('Failed to create assistant, please try again later');
     }
   };
 

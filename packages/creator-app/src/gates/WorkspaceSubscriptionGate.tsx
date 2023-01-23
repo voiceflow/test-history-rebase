@@ -19,7 +19,7 @@ const WorkspaceSubscriptionGate: React.OldFC = ({ children }) => {
 
   return (
     <LoadingGate
-      label="Projects"
+      label="Assistants"
       isLoaded={isSubscribed}
       component={WorkspaceOrProjectLoader}
       internalName={WorkspaceSubscriptionGate.name}

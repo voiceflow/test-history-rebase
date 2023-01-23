@@ -88,7 +88,7 @@ export const STEP_META: StepMetaProps = {
       }),
   },
   [StepID.SELECT_CHANNEL]: {
-    title: () => 'Project Type',
+    title: () => 'Assistant Type',
     canBack: true,
     canSkip: false,
     skipTo: () => null,

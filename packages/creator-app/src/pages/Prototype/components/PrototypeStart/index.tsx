@@ -44,11 +44,11 @@ const PrototypeStart: React.OldFC<PrototypeStartProps> = ({ isPublic, onStart, d
           <img src={testingGraphic} alt="user" width="80" />
 
           <Text fontSize={16} color="#132144" fontWeight={600} mt={16}>
-            Run your project
+            Run your assistant
           </Text>
 
           <Text fontSize={13} color="#62778c" mt={8} mb={16} lineHeight={1.54}>
-            Start a test to interact with your project using text, voice or buttons. <Link href={Documentation.PROTOTYPING}>See more.</Link>
+            Start a test to interact with your assistant using text, voice or buttons. <Link href={Documentation.PROTOTYPING}>See more.</Link>
           </Text>
 
           {isModelTraining ? (

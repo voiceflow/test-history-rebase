@@ -22,7 +22,7 @@ const getTitle = ({ errorType, message }: AnyErrorStageData, platform: Platform.
   }
 
   if (isPublishJobSubmittingProjectError(errorType)) {
-    return 'Submitting project error';
+    return 'Submitting assistant error';
   }
 
   if (isPublishJobSubmittingReviewError(errorType)) {
@@ -36,7 +36,7 @@ const getError = <E extends AnyErrorStageData>(stageError: E, defaultMessage: st
   const { errorType, error } = stageError;
 
   if (IsPublishJobRenderingError(errorType)) {
-    return 'Project structure unable to build, please contact us';
+    return 'Assistant structure unable to build, please contact us';
   }
 
   const strError = _isString(error) ? error : error?.message;

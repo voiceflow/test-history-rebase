@@ -39,7 +39,7 @@ const getPlaceholder = (type: Realtime.BlockType): string => {
     case Realtime.BlockType.COMPONENT:
       return 'Select component';
     case Realtime.BlockType.START:
-      return 'Project starts here';
+      return 'Assistant starts here';
     default:
       return 'Select step';
   }

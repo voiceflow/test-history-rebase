@@ -28,7 +28,7 @@ const BlockSelect: React.OldFC<Props> = ({ value, clearable, startNodeIsDefault,
     clearOnSelectActive: true,
     createInputPlaceholder: 'blocks',
     renderEmpty: ({ search }: { search: string }) => (
-      <Menu.NotFound>{!search ? 'No blocks exists in your project. ' : 'No blocks found. '}</Menu.NotFound>
+      <Menu.NotFound>{!search ? 'No blocks exists in your assistant. ' : 'No blocks found. '}</Menu.NotFound>
     ),
   };
 

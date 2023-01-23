@@ -120,7 +120,7 @@ const NoReplyForm: React.OldFC<NoReplyFormProps> = ({ noReply, onChange, pushToP
 
       {!noReply.types.length ? (
         <Section dividers isDividerBottom customContentStyling={{ color: '#62778c' }}>
-          The project will end if no intent is matched.
+          The assistant will end if no intent is matched.
         </Section>
       ) : (
         <>

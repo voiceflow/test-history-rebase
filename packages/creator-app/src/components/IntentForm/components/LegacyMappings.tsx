@@ -99,7 +99,7 @@ const LegacyMappings: React.OldFC<LegacyMappingsProps> = ({ intent, onDelete, ma
           </Tooltip.Paragraph>
 
           <Tooltip.Paragraph marginBottomUnits={2}>
-            Mappings will eventually no longer be supported and this can cause issues with future versions of your project.
+            Mappings will eventually no longer be supported and this can cause issues with future versions of your assistant.
           </Tooltip.Paragraph>
         </>
       }

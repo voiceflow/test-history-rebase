@@ -50,8 +50,8 @@ export const createProject =
     const templateProjectID = await client.template.getPlatformTemplate(platformType, templateTag);
 
     if (!templateProjectID) {
-      toast.error(`no project templates exist for platform ${platformType}`);
-      throw new Error('no platform project template');
+      toast.error(`no assistant templates exist for platform ${platformType}`);
+      throw new Error('no platform assistant template');
     }
 
     try {
@@ -83,8 +83,8 @@ export const createProject =
 
       return project;
     } catch (err) {
-      toast.error('Error creating project, please try again later or contact support.');
-      throw new Error('error creating project');
+      toast.error('Error creating assistant, please try again later or contact support.');
+      throw new Error('error creating assistant');
     }
   };
 

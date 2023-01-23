@@ -194,7 +194,7 @@ export const useProjectOptions = ({
 
   return [
     withHistoryOption ? { label: 'Version history', onClick: () => goToVersions(targetVersionID) } : null,
-    withSettingsOption ? { label: 'Project settings', onClick: () => goToSettings(targetVersionID) } : null,
+    withSettingsOption ? { label: 'Assistant settings', onClick: () => goToSettings(targetVersionID) } : null,
     withInviteOption ? { key: 'invite', label: 'Invite collaborators', onClick: () => sharePopper?.open(ShareProjectTab.INVITE) } : null,
     withExportOption ? { label: 'Export as...', onClick: () => sharePopper.open(ShareProjectTab.EXPORT) } : null,
 
@@ -202,14 +202,14 @@ export const useProjectOptions = ({
       ? { label: 'divider-1', divider: true }
       : null,
 
-    withRenameOption ? { label: 'Rename project', onClick: onRename } : null,
-    canManageProjects ? { label: 'Duplicate project', onClick: onDuplicate } : null,
+    withRenameOption ? { label: 'Rename assistant', onClick: onRename } : null,
+    canManageProjects ? { label: 'Duplicate assistant', onClick: onDuplicate } : null,
     canManageProjects ? { label: 'Copy clone link', onClick: onClone } : null,
     canManageProjects && withConvertToDomain ? { label: 'Convert to domain', onClick: onCovertToDomain } : null,
 
     withDeleteOption ? { label: 'divider-2', divider: true } : null,
 
-    withDeleteOption ? { label: 'Delete project', onClick: onDelete } : null,
+    withDeleteOption ? { label: 'Delete assistant', onClick: onDelete } : null,
   ];
 };
 

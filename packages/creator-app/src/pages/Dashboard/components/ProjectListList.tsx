@@ -88,11 +88,11 @@ const ProjectListList: React.OldFC<ProjectListListProps> = ({ workspace, filter,
 
   const onDeleteBoard = React.useCallback(({ name, id, projects }: { id: string; name?: string; projects?: Realtime.AnyProject[] }) => {
     setConfirm({
-      header: 'Delete Projects List',
+      header: 'Delete Assistant List',
 
       body: (
         <>
-          This action can not be undone, <b>"{name}"</b> and all {!!projects && projects.length} projects can not be recovered
+          This action can not be undone, <b>"{name}"</b> and all {!!projects && projects.length} assistants can not be recovered
         </>
       ),
 
@@ -126,9 +126,9 @@ const ProjectListList: React.OldFC<ProjectListListProps> = ({ workspace, filter,
       {projects.length === 0 ? (
         <EmptyScreen
           id={Identifier.NEW_PROJECT_BUTTON}
-          title="No Projects Found"
-          body="This workspace has no projects, create one."
-          buttonText="New Project"
+          title="No Assistants Found"
+          body="This workspace has no assistants, create one."
+          buttonText="New Assistant"
           onClick={() => onCreateProject()}
         />
       ) : (

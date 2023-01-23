@@ -8,15 +8,15 @@ import { PlanLimit, UpgradeModalDynamicLimit } from './types';
 import { applyEnterpriseLimits, applyStarterLimits, applyTeamLimits } from './utils';
 
 const DEFAULT_MODAL = {
-  title: 'Need more projects?',
-  header: 'New Project',
+  title: 'Need more assistants?',
+  header: 'New Assistant',
 };
 
 const STARTER_LIMIT = {
   upgradeModal: ({ limit }) => ({
     ...DEFAULT_MODAL,
     ...getUpgradeModalProps(PlanType.TEAM, Tracking.UpgradePrompt.PROJECT_LIMIT),
-    description: `You've reached your ${limit} free project limit. Upgrade to team for unlimited projects.`,
+    description: `You've reached your ${limit} free assistant limit. Upgrade to team for unlimited assistants.`,
   }),
 } satisfies UpgradeModalDynamicLimit;
 
@@ -24,7 +24,7 @@ const TEAM_ENTERPRISE_LIMIT = {
   upgradeModal: ({ limit }) => ({
     ...DEFAULT_MODAL,
     ...getUpgradeModalProps(PlanType.ENTERPRISE, Tracking.UpgradePrompt.PROJECT_LIMIT),
-    description: `You've reached your ${limit} project limit. Contact us to increase project limits.`,
+    description: `You've reached your ${limit} assistant limit. Contact us to increase assistant limits.`,
   }),
 } satisfies UpgradeModalDynamicLimit;
 

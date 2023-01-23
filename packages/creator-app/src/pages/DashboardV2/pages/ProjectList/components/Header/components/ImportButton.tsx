@@ -42,7 +42,7 @@ const ImportButton: React.OldFC = () => {
       toast.success(
         <>
           .VF file successfully imported for <strong>"{newProject.name}"</strong>
-          <ToastCallToAction onClick={() => goToDomain({ versionID: newProject.versionID })}>Open Project</ToastCallToAction>
+          <ToastCallToAction onClick={() => goToDomain({ versionID: newProject.versionID })}>Open Assistant</ToastCallToAction>
         </>
       );
     } catch (err) {

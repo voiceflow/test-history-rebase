@@ -42,7 +42,7 @@ const GooglePublish: React.FC = () => {
                 <Settings.SubSection.Title>Actions Console</Settings.SubSection.Title>
 
                 <Settings.SubSection.Description>
-                  To publish your Google Action visit the Actions Console to submit your project for review.{' '}
+                  To publish your Google Action visit the Actions Console to submit your assistant for review.{' '}
                   <Link href={Documentation.GOOGLE_ACTIONS}>Learn More</Link>
                 </Settings.SubSection.Description>
               </div>

@@ -144,7 +144,7 @@ const ProjectVersions: React.FC = () => {
             <HotKeyContainer>Shift + {getHotkeyLabel(Hotkey.SAVE_VERSION)}</HotKeyContainer>.{' '}
             {!hasFullVersionPermissions && (
               <>
-                Free users can only view 30 days of a project's version history.{' '}
+                Free users can only view 30 days of an assistant's version history.{' '}
                 <ClickableText onClick={onClickUpgrade}>Upgrade to unlock unlimited version history</ClickableText>
               </>
             )}

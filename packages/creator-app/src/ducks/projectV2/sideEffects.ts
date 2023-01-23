@@ -22,7 +22,7 @@ export const ejectUsersFromProject =
     dispatch(Router.goToDashboard());
 
     if (creatorID !== userID) {
-      toast.info(`Another user has deleted the project`);
+      toast.info(`Another user has deleted the assistant`);
     }
   };
 

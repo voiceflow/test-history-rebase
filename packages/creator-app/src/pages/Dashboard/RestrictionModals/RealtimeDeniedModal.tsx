@@ -23,7 +23,7 @@ const RealtimeDeniedModal: React.OldFC = () => {
       icon={teamGraphic}
       bodyContent={
         <>
-          A teammate is actively editing this project. Real-time collaboration is a <b>Pro</b> feature, please upgrade your plan to continue.
+          A teammate is actively editing this assistant. Real-time collaboration is a <b>Pro</b> feature, please upgrade your plan to continue.
         </>
       }
     />

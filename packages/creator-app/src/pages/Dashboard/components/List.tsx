@@ -201,7 +201,7 @@ export const List: React.OldFC<ListProps> = ({
             >
               <div className={DashboardClassName.LIST_FOOTER_CENTER}>
                 <Button variant={ButtonVariant.TERTIARY} onClick={() => createProject(id)}>
-                  Create Project
+                  Create Assistant
                 </Button>
               </div>
             </div>

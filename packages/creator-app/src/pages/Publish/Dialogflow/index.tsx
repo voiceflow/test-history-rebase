@@ -42,7 +42,7 @@ const DialogflowPublish: React.OldFC = () => {
                 <Settings.SubSection.Title>Dialogflow Console</Settings.SubSection.Title>
 
                 <Settings.SubSection.Description>
-                  To connect your Dialogflow agent to a chat or voice channel upload your project from the canvas.{' '}
+                  To connect your Dialogflow agent to a chat or voice channel upload your assistant from the canvas.{' '}
                   <Link href={DIALOGFLOW_ES_LEARN_MORE}>Learn More</Link>
                 </Settings.SubSection.Description>
               </div>

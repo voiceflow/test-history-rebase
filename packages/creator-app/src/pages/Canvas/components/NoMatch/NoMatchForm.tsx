@@ -65,7 +65,7 @@ const NoMatchForm: React.OldFC<NoMatchFormProps> = ({ onChange, noMatch, pushToP
 
       {!noMatch.types.length ? (
         <>
-          <Section customContentStyling={{ color: '#62778c' }}>The project will end if no intent is matched.</Section>
+          <Section customContentStyling={{ color: '#62778c' }}>The assistant will end if no intent is matched.</Section>
           <Divider offset={0} />
         </>
       ) : (

@@ -94,7 +94,7 @@ class ProjectsMerge {
       this.targetProject.type as Platform.Constants.ProjectType
     );
 
-    if (sourceType !== targetType) throw new Error(`Can't merge projects of different types.`);
+    if (sourceType !== targetType) throw new Error(`Can't merge assistants of different types.`);
   }
 
   private mergeProjects() {

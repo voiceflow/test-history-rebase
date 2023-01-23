@@ -10,10 +10,11 @@ const infoTooltip = (
   <div>
     <p>Teams on Voiceflow consist of Editors (can edit), Viewers (can view), Billing (can manage payments), and Admins (all permissions)</p>
     <h5>Editors</h5>
-    <p>Editors can make changes to the contents of your project. They can edit from the canvas in real-time with other editors.</p>
+    <p>Editors can make changes to the contents of your assistant. They can edit from the canvas in real-time with other editors.</p>
     <h5>Viewer</h5>
     <p>
-      Viewers can view the canvas, simulate the project in the test tool and leave comments. Viewers can <b>not</b> edit the content of your project.
+      Viewers can view the canvas, simulate the assistant in the test tool and leave comments. Viewers can <b>not</b> edit the content of your
+      assistant.
     </p>
     <h5>Admins</h5>
     <p>
@@ -22,8 +23,8 @@ const infoTooltip = (
     </p>
     <h5>Billing</h5>
     <p>
-      Billing managers can manage payments and billing for the workspace, but have view-only permissions on projects. You will not be charged for any
-      Billing users.
+      Billing managers can manage payments and billing for the workspace, but have view-only permissions on assistants. You will not be charged for
+      any Billing users.
     </p>
   </div>
 );

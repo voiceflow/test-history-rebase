@@ -6,8 +6,8 @@ import * as Documentation from '@/config/documentation';
 const HelpTooltip: React.OldFC = () => (
   <>
     <Tooltip.Paragraph marginBottomUnits={3}>
-      Account linking enables your project to connect the user's identity with their identity in a different system. You can read more on how it works{' '}
-      <Link href={Documentation.ACCOUNT_LINKING_STEP}>here</Link>.
+      Account linking enables your assistant to connect the user's identity with their identity in a different system. You can read more on how it
+      works <Link href={Documentation.ACCOUNT_LINKING_STEP}>here</Link>.
     </Tooltip.Paragraph>
 
     <Tooltip.Title>How do users link their accounts?</Tooltip.Title>

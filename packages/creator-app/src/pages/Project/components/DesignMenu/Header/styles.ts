@@ -51,11 +51,11 @@ export const LabelContainer = styled.header`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 36px;
+  height: 34px;
 `;
 
 export const SearchContainer = styled.div`
-  height: 36px;
+  height: 34px;
   display: flex;
   align-items: center;
 `;

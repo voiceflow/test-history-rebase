@@ -4,7 +4,7 @@ import React from 'react';
 import { VoiceflowAssistantVisibilityContext } from '@/contexts/VoiceflowAssistantVisibility';
 
 export const useHideVoiceflowAssistant = () => {
-  const setVisibilityIDs = React.useContext(VoiceflowAssistantVisibilityContext);
+  const { setIDs: setVisibilityIDs } = React.useContext(VoiceflowAssistantVisibilityContext);
 
   React.useEffect(() => {
     const instanceID = Utils.id.cuid.slug();

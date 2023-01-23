@@ -13,7 +13,7 @@ export const ComponentItemNameContainer = styled(ItemNameContainer)<{
   position: relative;
   cursor: pointer;
 
-  padding: 5px 12px 5px 7px;
+  padding: 4px 12px 4px 7px;
 
   ${SvgIcon.Container} {
     opacity: 0.85;

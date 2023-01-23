@@ -18,7 +18,7 @@ const ItemNameContainer = styled(Flex)<ItemNameContainerProps>`
   ${transition('background', 'border-color', 'box-shadow', 'color', 'opacity')}
 
   margin: 0 12px;
-  padding: 5px 12px 5px 8px;
+  padding: 4px 12px 4px 8px;
   min-height: ${ITEM_HEIGHT}px;
   border-radius: 6px;
   border: solid 1px transparent;

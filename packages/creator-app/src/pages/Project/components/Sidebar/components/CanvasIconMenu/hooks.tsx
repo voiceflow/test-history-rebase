@@ -10,6 +10,7 @@ import { SidebarIconMenuItem } from '@/components/SidebarIconMenu';
 import { Path } from '@/config/routes';
 import { BOOK_DEMO_LINK, DOCS_LINK, FORUM_LINK, YOUTUBE_CHANNEL_LINK } from '@/constants';
 import { Permission } from '@/constants/permissions';
+import { VoiceflowAssistantVisibilityContext } from '@/contexts/VoiceflowAssistantVisibility';
 import * as Router from '@/ducks/router';
 import { NLUManagerOpenedOrigin } from '@/ducks/tracking/constants';
 import * as Transcript from '@/ducks/transcript';
@@ -232,6 +233,8 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
 export const useHelpOptions = (): MenuTypes.OptionWithoutValue[] => {
   const [, trackingEventsWrapper] = useTrackingEvents();
 
+  const voiceflowAssistantVisibility = React.useContext(VoiceflowAssistantVisibilityContext);
+
   return [
     {
       key: 'docs',
@@ -249,6 +252,11 @@ export const useHelpOptions = (): MenuTypes.OptionWithoutValue[] => {
       key: 'forum',
       label: 'Community',
       onClick: trackingEventsWrapper(onOpenInternalURLInANewTabFactory(FORUM_LINK), 'trackCanvasControlHelpMenuResource', { resource: 'Forum' }),
+    },
+    {
+      key: 'chatbot',
+      label: voiceflowAssistantVisibility?.isEnabled ? 'Hide chatbot' : 'Show chatbot',
+      onClick: () => voiceflowAssistantVisibility?.onToggleEnabled(),
     },
     { key: 'divider', label: 'Divider', divider: true },
     {

@@ -31,9 +31,11 @@ const PrototypeHeader: React.OldFC = () => {
         <Timer />
       </Content>
 
-      <Settings />
+      <Box.Flex gap={8}>
+        <Settings />
 
-      <Share />
+        <Share />
+      </Box.Flex>
 
       <Box width={12} />
     </Page.Header>

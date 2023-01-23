@@ -30,7 +30,7 @@ const CanvasHeader: React.OldFC = () => {
           <>
             <CanvasViewers flat withAdd={false} />
 
-            <ActionRow>
+            <ActionRow gap={8}>
               <Share />
               {platformConfig.oneClickPublish && <Run variant={ButtonVariant.SECONDARY} />}
 

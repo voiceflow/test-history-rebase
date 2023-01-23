@@ -117,7 +117,7 @@ const TopicsSection: React.OldFC = () => {
               rightAction={
                 canEditCanvas && (
                   <TippyTooltip content="Create topic" delay={500}>
-                    <IconButton icon="plus" variant={IconButton.Variant.BASIC} onClick={onCreateTopic} offsetSize={0} />
+                    <IconButton icon="plus" variant={IconButton.Variant.BASIC} onClick={onCreateTopic} offsetSize={0} buttonSize={34} />
                   </TippyTooltip>
                 )
               }

@@ -2,7 +2,7 @@ import { Input, SvgIcon } from '@voiceflow/ui';
 
 import { styled } from '@/hocs/styled';
 
-export const SEARCH_INPUT_HEIGHT = 36;
+export const SEARCH_INPUT_HEIGHT = 34;
 
 interface SearchInputProps {
   // styled-components props started with $ isn't passed to the Input component

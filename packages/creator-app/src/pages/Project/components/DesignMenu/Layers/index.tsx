@@ -9,7 +9,7 @@ import ComponentsSection from './ComponentsSection';
 import * as S from './styles';
 import TopicsSection from './TopicsSection';
 
-const DEFAULT_HEADER_HEIGHT = 36;
+const DEFAULT_HEADER_HEIGHT = 34;
 
 const Layers: React.OldFC = () => {
   const activeProjectID = useSelector(Session.activeProjectIDSelector);

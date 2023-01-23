@@ -7,7 +7,7 @@ export const Container = styled.div`
   height: 36px;
   padding: 2px;
   border-radius: 8px;
-  background-color: #f4f4f4;
+  background-color: #eef4f6;
 `;
 
 export const Tab = styled.button<{ isActive?: boolean }>`

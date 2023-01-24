@@ -3,7 +3,6 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { BlockType } from '@/constants';
 import { buttonsFactory } from '@/pages/Canvas/components/SuggestionButtons';
-import { getPlatformNoMatchFactory } from '@/utils/noMatch';
 
 import { NodeConfig } from '../types';
 
@@ -13,7 +12,7 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Prompt, Realtime.NodeData
 
   mergeTerminator: true,
 
-  factory: (_, { projectType, defaultVoice, features } = {}) => ({
+  factory: (_, { projectType } = {}) => ({
     node: {
       ports: {
         in: [{}],
@@ -28,7 +27,7 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Prompt, Realtime.NodeData
       name: 'Prompt',
       noReply: null,
       buttons: Realtime.Utils.typeGuards.isChatProjectType(projectType) ? buttonsFactory() : null,
-      noMatch: features?.global_no_match_no_reply ? null : getPlatformNoMatchFactory(projectType)({ defaultVoice }),
+      noMatch: null,
     },
   }),
 };

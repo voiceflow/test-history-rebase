@@ -65,7 +65,6 @@ export enum FeatureFlag {
   IDENTITY_ORGANIZATION = 'identity_organization',
   IDENTITY_SAML2_PROVIDER = 'identity_saml2_provider',
 
-  GLOABL_NO_MATCH_NO_REPLY = 'global_no_match_no_reply',
   TLS_UPLOAD = 'tls_upload',
   BEAMER_APP = 'beamer_app',
 

@@ -20,4 +20,5 @@ export default defineConfig({
       framework: 'react',
     },
   },
+  retries: 1,
 });

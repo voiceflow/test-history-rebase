@@ -5,7 +5,8 @@ import cn from 'classnames';
 import React from 'react';
 
 import { PluginType } from '@/components/TextEditor';
-import { useHasWavenet } from '@/hooks';
+import * as VersionV2 from '@/ducks/versionV2';
+import { useHasWavenet, useSelector } from '@/hooks';
 import { ClassName } from '@/styles/constants';
 import { prettifyGoogleVoicesLong, prettifyVoice, voiceOptionsFilter } from '@/utils/voice';
 
@@ -42,10 +43,12 @@ const SSML = (
   ref
 ) => {
   const { hasWavenet } = useHasWavenet();
+  const locales = useSelector(VersionV2.active.localesSelector);
+
   const platformSSMLMeta = getPlatformSSML(platform, projectType);
   const SSMLPlaceholder = placeholder ?? platformSSMLMeta.fallbackPlaceholder(voice);
   const { canChangeVoice } = platformSSMLMeta;
-  const voiceOptions = React.useMemo(() => platformSSMLMeta.voiceOptions(hasWavenet), []);
+  const voiceOptions = React.useMemo(() => platformSSMLMeta.voiceOptions(locales, hasWavenet), []);
   const hasProjectLevelVoice = platform === Platform.Constants.PlatformType.GOOGLE;
 
   const voiceSelectLabel = Utils.string.capitalizeFirstLetter(

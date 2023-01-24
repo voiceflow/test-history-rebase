@@ -26,7 +26,6 @@ const DefaultTTS: React.FC<DefaultTTSProps> = ({ platform, projectType, platform
   const defaultVoice = useSelector(VersionV2.active.voice.defaultVoiceSelector);
 
   const updateDefaultVoice = useDispatch(Version.voice.updateDefaultVoice);
-
   const voiceOptions = React.useMemo(() => getPlatformVoiceOptions(platform, { locales, useWavenet: !!hasWavenet }), [locales, platform, hasWavenet]);
 
   const { descriptors } = platformMeta;

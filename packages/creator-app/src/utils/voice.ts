@@ -119,7 +119,6 @@ export const getAzureVoiceOptions = (): VoiceOptionGroup<string>[] =>
 
 export const getGeneralVoiceOptions = ({ useWavenet }: GetVoiceOptionsParams = {}): VoiceOptionGroup<string>[] => {
   const allGoogleLocales = Object.values(GoogleConstants.Locale);
-
   return [
     {
       value: 'Amazon',

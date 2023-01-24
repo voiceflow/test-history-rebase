@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.226.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.226.0...@voiceflow/realtime-sdk@1.226.1) (2023-01-24)
+
+
+### Bug Fixes
+
+* remove global-no-match ff (CT-1488) ([#6616](https://github.com/voiceflow/creator-app/issues/6616)) ([5d1ab68](https://github.com/voiceflow/creator-app/commit/5d1ab682738615e2df47570f807904fe6bd80cb5))
+
+
+
+
+
 # [1.226.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.225.0...@voiceflow/realtime-sdk@1.226.0) (2023-01-23)
 
 

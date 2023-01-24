@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1065.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1065.1...@voiceflow/creator-app@1.1065.2) (2023-01-24)
+
+
+### Bug Fixes
+
+* remove global-no-match ff (CT-1488) ([#6616](https://github.com/voiceflow/creator-app/issues/6616)) ([5d1ab68](https://github.com/voiceflow/creator-app/commit/5d1ab682738615e2df47570f807904fe6bd80cb5))
+
+
+
+
+
 ## [1.1065.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1065.0...@voiceflow/creator-app@1.1065.1) (2023-01-24)
 
 **Note:** Version bump only for package @voiceflow/creator-app

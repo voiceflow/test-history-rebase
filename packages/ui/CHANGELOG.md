@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.224.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.224.2...@voiceflow/ui@1.224.3) (2023-01-24)
+
+
+### Bug Fixes
+
+* improve the overall UX for the NLUM (NLU-346) ([#6579](https://github.com/voiceflow/creator-app/issues/6579)) ([faed4b3](https://github.com/voiceflow/creator-app/commit/faed4b3f27ee8cacbc7025ccc8efc141bc6a579f))
+
+
+
+
+
 ## [1.224.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.224.1...@voiceflow/ui@1.224.2) (2023-01-23)
 
 **Note:** Version bump only for package @voiceflow/ui

@@ -37,6 +37,7 @@ interface ClipboardContext {
   products: Realtime.Product[];
   diagrams: Realtime.Diagram[];
   platform: Platform.Constants.PlatformType;
+  type: Platform.Constants.ProjectType;
 }
 
 interface EncodeData {
@@ -178,6 +179,8 @@ class ClipboardEngine extends EngineConsumer {
   getClipboardContext(nodeIDs: string[]): ClipboardContext {
     const state = this.engine.store.getState();
     const platform = ProjectV2.active.platformSelector(state);
+    const type = ProjectV2.active.projectTypeSelector(state);
+
     // cloning data to modify it later
     const { ...data } = CreatorV2.nodeDataMapSelector(state);
 
@@ -253,6 +256,7 @@ class ClipboardEngine extends EngineConsumer {
       intents,
       slots,
       platform,
+      type,
     };
   }
 
@@ -305,6 +309,14 @@ class ClipboardEngine extends EngineConsumer {
         this.log.debug(this.log.pending('pasting to canvas'));
 
         const clipboardData = await this.internal.extractData(copyBuffer);
+
+        const state = this.engine.store.getState();
+        const projectType = ProjectV2.active.projectTypeSelector(state);
+
+        if (clipboardData.type && projectType !== clipboardData.type) {
+          toast.error(`Cannot paste from a ${clipboardData.type} project to a ${projectType} project.`);
+          return;
+        }
 
         const { nodesWithData } = await this.cloneClipboardContext(clipboardData, coords);
 

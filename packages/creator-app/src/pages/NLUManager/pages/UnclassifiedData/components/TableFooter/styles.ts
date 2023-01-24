@@ -7,7 +7,7 @@ export const FooterContainer = styled.div<{ position: 'sticky' | 'absolute' }>`
   position: ${({ position }) => position};
   bottom: 0;
   width: ${`calc(100% - ${SIDEBAR_WIDTH}px)`};
-  padding: 20px 32px;
+  padding: 20px 27px;
   border-top: 1px solid rgba(223, 227, 237, 1);
   display: flex;
   align-items: center;

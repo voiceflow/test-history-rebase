@@ -14,7 +14,7 @@ export const Container = styled.div<{ scrolled?: boolean; stickyHeader?: boolean
   background-color: #fff;
 
   width: 100%;
-  border-bottom: 1px solid rgb(234 239 243);
+  border-bottom: 1px solid #dfe3ed;
   z-index: 2;
 
   ${({ scrolled }) =>

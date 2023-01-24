@@ -4,7 +4,7 @@ import { styled, transition } from '@/hocs/styled';
 
 export const Container = styled(FlexApart)`
   flex: 2;
-  padding-left: 32px;
+  padding-left: 27px;
   min-width: 500px;
   justify-content: space-between;
 `;

@@ -24,28 +24,31 @@ const Configurable = <T extends string, I extends T.Item>({
   scrolled,
   stickyHeader = true,
   hideLastDivider = false,
+  header,
 }: T.ConfigurableProps<T, I>) => (
   <Table
     items={items}
     empty={empty}
     hideLastDivider={hideLastDivider}
     header={
-      <Header scrolled={scrolled} stickyHeader={stickyHeader}>
-        {columns.map(({ type, flex, label, width, sorter, tooltip }) => (
-          <Header.Column
-            key={type}
-            flex={flex}
-            width={width}
-            active={type === orderBy}
-            tooltip={tooltip}
-            onClick={() => sorter && onChangeOrderBy?.(type)}
-            sortable={!!sorter}
-            descending={descending}
-          >
-            {label}
-          </Header.Column>
-        ))}
-      </Header>
+      header ?? (
+        <Header scrolled={scrolled} stickyHeader={stickyHeader}>
+          {columns.map(({ type, flex, label, width, sorter, tooltip }) => (
+            <Header.Column
+              key={type}
+              flex={flex}
+              width={width}
+              active={type === orderBy}
+              tooltip={tooltip}
+              onClick={() => sorter && onChangeOrderBy?.(type)}
+              sortable={!!sorter}
+              descending={descending}
+            >
+              {label}
+            </Header.Column>
+          ))}
+        </Header>
+      )
     }
     renderRow={(props) => (
       <RowProvider {...props}>

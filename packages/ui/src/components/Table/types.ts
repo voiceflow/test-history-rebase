@@ -50,6 +50,7 @@ export interface ConfigurableProps<T extends string, I extends Item> {
   scrolled?: boolean;
   stickyHeader?: boolean;
   hideLastDivider?: boolean;
+  header?: React.ReactNode;
 }
 
 export interface ContextValue<T extends Item> {

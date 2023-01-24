@@ -13,6 +13,7 @@ export interface BasicContainerProps extends BaseContainerProps {
   activeClick?: boolean;
   transparent?: boolean;
   containerSize?: number;
+  color?: string;
 }
 
 const transparentHoverStyle = css`
@@ -31,7 +32,7 @@ const BasicContainer = styled.button<BasicContainerProps>`
   width: ${({ buttonSize = 36 }) => buttonSize}px;
   height: ${({ buttonSize = 36 }) => buttonSize}px;
 
-  color: #8da2b5;
+  color: ${({ color = '#8da2b5' }) => color};
   background: transparent;
   border: none;
 

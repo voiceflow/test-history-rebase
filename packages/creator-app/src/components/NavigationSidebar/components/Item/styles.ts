@@ -35,7 +35,7 @@ export const Container = styled(FlexApart)<{ active?: boolean }>`
   cursor: pointer;
   width: 100%;
   display: flex;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
   background: transparent;
   border: solid 1px transparent;
 

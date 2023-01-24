@@ -6,6 +6,7 @@ import { Hotkey } from '@/keymap';
 import { useTableHotkeys } from '@/pages/NLUManager/hooks';
 
 import { useNLUManager } from '../../context';
+import NluHeader from '../components/NluHeader';
 import { EditSidebar, EmptyScreen, EntityTableToolbar, Row } from './components';
 import { COLUMNS, TableColumn } from './constants';
 
@@ -39,6 +40,24 @@ const EntityTable: React.OldFC = () => {
         scrolled={nluManager.isScrolling}
         descending={descending}
         onChangeOrderBy={onChangeOrderBy}
+        header={
+          <NluHeader scrolled={nluManager.isScrolling}>
+            {COLUMNS.map(({ type, flex, label, width, sorter, tooltip }) => (
+              <Table.Header.Column
+                key={type}
+                flex={flex}
+                width={width}
+                active={type === orderBy}
+                tooltip={tooltip}
+                onClick={() => sorter && onChangeOrderBy?.(type)}
+                sortable={!!sorter}
+                descending={descending}
+              >
+                {label}
+              </Table.Header.Column>
+            ))}
+          </NluHeader>
+        }
       />
 
       <EditSidebar />

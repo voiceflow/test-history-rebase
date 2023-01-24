@@ -11,7 +11,7 @@ export const StatusBubble = styled.div`
   &:after {
     position: absolute;
     left: 31px;
-    bottom: 28px;
+    bottom: 25px;
     display: block;
     width: 4px;
     height: 4px;

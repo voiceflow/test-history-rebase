@@ -34,7 +34,7 @@ export const Footer = styled.div<{ isMainMenu?: boolean; isOpen?: boolean }>`
   align-items: center;
   font-size: 15px;
   cursor: pointer;
-  background: ${({ isMainMenu }) => (isMainMenu ? 'RGB(253, 253, 253)' : 'rgba(238, 244, 246, 1)')};
+  background: ${({ isMainMenu }) => (isMainMenu ? 'RGB(253, 253, 253)' : 'rgba(238, 244, 246, 0.85)')};
 
   &:hover,
   &:active {

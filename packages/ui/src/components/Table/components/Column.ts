@@ -23,7 +23,7 @@ const Column = styled.div<ColumnProps>`
   ${({ $overflow }) =>
     $overflow &&
     css`
-      $overflow: hidden;
+      overflow: hidden;
     `}
 `;
 

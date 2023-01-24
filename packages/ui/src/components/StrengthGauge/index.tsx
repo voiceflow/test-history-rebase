@@ -22,4 +22,4 @@ const StrengthGauge: React.FC<T.Props> = ({ level = Level.NOT_SET, width = 100, 
   </S.Container>
 );
 
-export default Object.assign(StrengthGauge, { Level, TOOLTIP_LABEL_MAP, StrengthColor });
+export default Object.assign(StrengthGauge, { Level, TOOLTIP_LABEL_MAP, StrengthColor, LINE_MULTIPLIER_MAP });

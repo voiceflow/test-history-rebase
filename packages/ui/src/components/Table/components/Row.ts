@@ -16,11 +16,11 @@ const Row = styled.div<{ active?: boolean }>`
       cursor: pointer;
 
       &:hover {
-        background-color: rgba(238, 244, 246, 0.3);
+        background-color: rgba(238, 244, 246, 0.4);
       }
 
       &:active {
-        background-color: rgba(238, 244, 246, 0.5);
+        background-color: rgba(238, 244, 246, 0.65);
       }
     `}
 
@@ -38,10 +38,10 @@ const Row = styled.div<{ active?: boolean }>`
   ${({ active, theme }) =>
     active &&
     css`
-      background-color: rgba(238, 244, 246, 0.5);
+      background-color: rgba(238, 244, 246, 0.65);
 
       &:hover {
-        background-color: rgba(238, 244, 246, 0.5);
+        background-color: rgba(238, 244, 246, 0.65);
       }
 
       &:before {

@@ -32,6 +32,9 @@ export const isVoiceflowPlatform = (
 ): platform is typeof Platform.Constants.PlatformType.VOICEFLOW =>
   !!platform && legacyPlatformToProjectType(platform)?.platform === Platform.Constants.PlatformType.VOICEFLOW;
 
+export const isVoiceflowNluModel = (nlu?: Platform.Constants.NLUType | null): nlu is typeof Platform.Constants.NLUType.VOICEFLOW =>
+  !!nlu && nlu === Platform.Constants.NLUType.VOICEFLOW;
+
 export const isChatProjectType = createProjectTypeTypeGuard(Platform.Constants.ProjectType.CHAT);
 export const isVoiceProjectType = createProjectTypeTypeGuard(Platform.Constants.ProjectType.VOICE);
 

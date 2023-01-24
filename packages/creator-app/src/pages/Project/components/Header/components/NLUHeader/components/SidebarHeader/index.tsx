@@ -8,7 +8,7 @@ import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import { useTrackingEvents } from '@/hooks';
 import { useNLUManager } from '@/pages/NLUManager/context';
-import { isVoiceflowPlatform } from '@/utils/typeGuards';
+import { isVoiceflowNluModel } from '@/utils/typeGuards';
 
 import { ErrorBubble, SidebarHeaderContainer } from './components';
 import NLUNotifications from './components/NLUNotifications';
@@ -19,7 +19,7 @@ const SidebarHeader: React.OldFC = () => {
   const { notifications } = useNLUManager();
   const [trackingEvents] = useTrackingEvents();
 
-  const showIcon = !isVoiceflowPlatform(project?.platform);
+  const showIcon = !isVoiceflowNluModel(project?.nlu);
   const nluConfig = NLU.Config.get(project?.nlu);
 
   return (

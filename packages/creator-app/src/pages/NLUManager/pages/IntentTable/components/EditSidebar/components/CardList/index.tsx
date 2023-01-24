@@ -1,5 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, Button, ButtonVariant, StrengthGauge, useLocalStorageState } from '@voiceflow/ui';
+import { Box, Button, ButtonVariant, StrengthGauge } from '@voiceflow/ui';
 import React from 'react';
 
 import { Permission } from '@/constants/permissions';
@@ -29,15 +29,8 @@ const CardList: React.FC<CardListProps> = ({ intent }) => {
   const confidenceMeta = getConfidenceMeta()[confidenceStrengthLevel];
   const clarityMeta = getClarityMeta(intent)[clarityStrengthLevel];
   const isBuiltIn = isBuiltInIntent(intentID);
-  // Temporary storage behavior
-  const [dismissedNotifications, setDismissedNotifications] = useLocalStorageState(
-    'nlu-clarify-dismissed-notifications',
-    {} as Record<string, { clarity?: boolean; confidence?: boolean }>
-  );
-  const dismissedIntentNotifications = dismissedNotifications[intentID];
+
   const isConflictsPageOpen = nluManager.isEditorTabActive(EditorTabs.INTENT_CONFLICTS);
-  const showClarityMessage = !dismissedIntentNotifications?.clarity && clarityMeta.message && intent.hasConflicts;
-  const showConfidenceMessage = !dismissedIntentNotifications?.confidence && confidenceMeta.message;
 
   const upgradeModal = useUpgradeModal();
 
@@ -56,50 +49,48 @@ const CardList: React.FC<CardListProps> = ({ intent }) => {
     onPlanForbid: ({ planConfig }) => upgradeModal.openVoid(planConfig.upgradeModal()),
   });
 
-  const handleCloseNotification = (notificationID: 'clarity' | 'confidence') => {
-    setDismissedNotifications({ ...dismissedNotifications, [intentID]: { ...dismissedIntentNotifications, [notificationID]: true } });
-  };
-
   if (isBuiltIn) return null;
-  if (!showClarityMessage && !showConfidenceMessage) return null;
 
   const confidencePoints = confidence >= 10 ? 100 : confidence * 10;
 
   return (
     <FadeDownContainer>
       <S.Container>
-        {showConfidenceMessage && (
-          <Card
-            color={StrengthGauge.StrengthColor[confidenceStrengthLevel]}
-            title={
-              <>
-                <b style={{ display: 'contents' }}>Confidence: {confidencePoints}</b> of 100pts
-              </>
-            }
-            onClose={() => handleCloseNotification('confidence')}
-          >
-            {confidenceMeta.message}
-          </Card>
-        )}
+        <Card
+          color={StrengthGauge.StrengthColor[confidenceStrengthLevel]}
+          title={
+            <>
+              <b style={{ display: 'contents' }}>Confidence: {confidencePoints}</b> of 100pts
+            </>
+          }
+          level={confidencePoints / 100}
+        >
+          {confidenceMeta.message}
+        </Card>
 
-        {showClarityMessage && (
-          <Card
-            color={StrengthGauge.StrengthColor[clarityStrengthLevel]}
-            title={
-              <>
-                <b style={{ display: 'contents' }}>Clarity: {Math.round(intent.clarity * 100)}</b> of 100pts
-              </>
-            }
-            onClose={() => handleCloseNotification('clarity')}
-          >
-            <Box mb={isConflictsViewEnabled ? 16 : 0}>{clarityMeta.message}</Box>
-            {isConflictsViewEnabled && (
-              <Button onClick={onOpenConflictEditor} variant={ButtonVariant.SECONDARY}>
-                {isConflictsPageOpen ? 'Hide Conflicts' : 'View Conflicts'}
-              </Button>
-            )}
-          </Card>
-        )}
+        <Card
+          color={StrengthGauge.StrengthColor[clarityStrengthLevel]}
+          title={
+            <>
+              <b style={{ display: 'contents' }}>Clarity: {Math.round(intent.clarity * 100)}</b> of 100pts
+            </>
+          }
+          level={StrengthGauge.LINE_MULTIPLIER_MAP[intent.clarityLevel]}
+          expandedProp={upgradeModal.opened || isConflictsPageOpen}
+        >
+          {clarityMeta.message ? (
+            <>
+              <Box mb={isConflictsViewEnabled ? 16 : 0}>{clarityMeta.message}</Box>
+              {isConflictsViewEnabled && (
+                <Button onClick={onOpenConflictEditor} variant={ButtonVariant.WHITE}>
+                  {isConflictsPageOpen ? 'Close Conflicts' : 'View Conflicts'}
+                </Button>
+              )}
+            </>
+          ) : (
+            <Box>Intent is sufficiently differentiated from others in the model, very low chance of conflicts.</Box>
+          )}
+        </Card>
       </S.Container>
     </FadeDownContainer>
   );

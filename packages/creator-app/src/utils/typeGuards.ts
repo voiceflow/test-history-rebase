@@ -13,6 +13,7 @@ export const {
   isMicrosoftTeamsPlatform,
   isVoiceProjectType,
   isVoiceflowPlatform,
+  isVoiceflowNluModel,
   isInternalBlockType,
   isDialogflowPlatform,
   isRootOrMarkupBlockType,

@@ -9,7 +9,7 @@ export const RowButtons = styled.div<{ hovered?: boolean }>`
 `;
 
 export const Row = styled(Table.Row)`
-  padding: 20px 32px;
+  padding: 20px 27px;
   display: flex;
   justify-content: space-between;
 

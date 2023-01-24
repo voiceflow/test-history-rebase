@@ -6,6 +6,7 @@ import { Hotkey } from '@/keymap';
 import { useNLUManager } from '@/pages/NLUManager/context';
 import { useTableHotkeys } from '@/pages/NLUManager/hooks';
 
+import NluHeader from '../components/NluHeader';
 import { EditSidebar, EmptyScreen, IntentTableToolbar, Row } from './components';
 import { COLUMNS, TableColumn } from './constants';
 
@@ -39,6 +40,24 @@ const IntentTable: React.OldFC = () => {
         renderRow={(props) => <Row {...props} />}
         descending={descending}
         onChangeOrderBy={onChangeOrderBy}
+        header={
+          <NluHeader scrolled={nluManager.isScrolling}>
+            {COLUMNS.map(({ type, flex, label, width, sorter, tooltip }) => (
+              <Table.Header.Column
+                key={type}
+                flex={flex}
+                width={width}
+                active={type === orderBy}
+                tooltip={tooltip}
+                onClick={() => sorter && onChangeOrderBy?.(type)}
+                sortable={!!sorter}
+                descending={descending}
+              >
+                {label}
+              </Table.Header.Column>
+            ))}
+          </NluHeader>
+        }
       />
 
       <EditSidebar />

@@ -4,7 +4,12 @@ import React from 'react';
 
 import { InteractionModelTabType } from '@/constants';
 import { useNLUItemMenu } from '@/contexts/NLUContext/hooks';
+import { styled } from '@/hocs/styled';
 import { NLUManagerContext } from '@/pages/NLUManager/context';
+
+export const TableRow = styled(Table.Row)`
+  padding: 15px 27px;
+`;
 
 const Row: React.OldFC<TableTypes.ConfigurableRowProps<Realtime.Slot>> = ({ item, children, onMouseEnter, onMouseLeave }) => {
   const nluManager = React.useContext(NLUManagerContext);
@@ -28,7 +33,7 @@ const Row: React.OldFC<TableTypes.ConfigurableRowProps<Realtime.Slot>> = ({ item
   return (
     <ContextMenu options={options} selfDismiss>
       {({ isOpen, onContextMenu }) => (
-        <Table.Row
+        <TableRow
           active={isOpen || item.id === nluManager.activeItemID}
           onClick={() => nluManager.toggleActiveItemID(item.id)}
           onMouseEnter={handleMouseEnter}
@@ -36,7 +41,7 @@ const Row: React.OldFC<TableTypes.ConfigurableRowProps<Realtime.Slot>> = ({ item
           onContextMenu={onContextMenu}
         >
           {children}
-        </Table.Row>
+        </TableRow>
       )}
     </ContextMenu>
   );

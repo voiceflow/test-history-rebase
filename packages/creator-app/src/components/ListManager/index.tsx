@@ -81,7 +81,7 @@ function ListManager<I>({
   };
 
   const itemRenderer = (item: I, options: ItemOptions<I>) => (
-    <Box key={options.key} mb={options.isLast ? 0 : 16} width="100%">
+    <Box key={options.key} mb={options.isLast ? 0 : 12} width="100%">
       <SectionV2.ListItem
         action={<SectionV2.RemoveButton onClick={() => mapManager.onRemove(options.key)} disabled={options.index === requiredItemIndex} />}
       >

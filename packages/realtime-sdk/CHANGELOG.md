@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.229.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.228.0...@voiceflow/realtime-sdk@1.229.0) (2023-01-25)
+
+
+### Bug Fixes
+
+* remove import from file (CT-000) ([#6596](https://github.com/voiceflow/creator-app/issues/6596)) ([dc863b1](https://github.com/voiceflow/creator-app/commit/dc863b1bdc7de5f1b7c2ac83fc1b3f1416201eb3))
+
+
+### Features
+
+* call identity to update user password (PL-189) ([#6566](https://github.com/voiceflow/creator-app/issues/6566)) ([826c021](https://github.com/voiceflow/creator-app/commit/826c0217c767e3cf21dda450fda57738118f5336))
+
+
+
+
+
 # [1.228.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.227.0...@voiceflow/realtime-sdk@1.228.0) (2023-01-25)
 
 

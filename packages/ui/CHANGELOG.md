@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.226.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.225.1...@voiceflow/ui@1.226.0) (2023-01-25)
+
+
+### Features
+
+* fix settings + assistant sub page styles (CT-1470) ([#6591](https://github.com/voiceflow/creator-app/issues/6591)) ([38b37f2](https://github.com/voiceflow/creator-app/commit/38b37f242d2798488b484361baf255df1d074d28))
+
+
+
+
+
 ## [1.225.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.225.0...@voiceflow/ui@1.225.1) (2023-01-25)
 
 

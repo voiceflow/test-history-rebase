@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1068.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1067.0...@voiceflow/creator-app@1.1068.0) (2023-01-25)
+
+
+### Features
+
+* call identity to update user password (PL-189) ([#6566](https://github.com/voiceflow/creator-app/issues/6566)) ([826c021](https://github.com/voiceflow/creator-app/commit/826c0217c767e3cf21dda450fda57738118f5336))
+* fix settings + assistant sub page styles (CT-1470) ([#6591](https://github.com/voiceflow/creator-app/issues/6591)) ([38b37f2](https://github.com/voiceflow/creator-app/commit/38b37f242d2798488b484361baf255df1d074d28))
+
+
+
+
+
 # [1.1067.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1066.1...@voiceflow/creator-app@1.1067.0) (2023-01-25)
 
 

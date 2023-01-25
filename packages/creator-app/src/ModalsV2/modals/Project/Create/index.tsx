@@ -30,7 +30,7 @@ const Create = manager.create<{ listID?: string }>('CreateProject', () => ({ api
     type: null as Nullable<Platform.Constants.ProjectType>,
     image: null as Nullable<string>,
     screen: Screen.CHOOSE_TYPE,
-    members: (userMember ? [{ ...userMember, role: UserRole.EDITOR }] : []) as Assistant.Member[],
+    members: (userMember && dashboardV2.isEnabled ? [{ ...userMember, role: UserRole.EDITOR }] : []) as Assistant.Member[],
     locales: [] as string[],
     creating: false,
     platform: null as Nullable<Platform.Constants.PlatformType>,

@@ -24,7 +24,7 @@ class CreateProject extends AbstractProjectResourceControl<Realtime.project.Crea
 
     let members: Realtime.ProjectMember[] = [];
 
-    if (payload.members) {
+    if (payload.members?.length) {
       await this.services.project.member.addMany(creatorID, dbProject._id, payload.members);
 
       members = payload.members;

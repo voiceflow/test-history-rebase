@@ -6,7 +6,7 @@ import React from 'react';
 import * as Account from '@/ducks/account';
 import * as Workspace from '@/ducks/workspace';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { useActiveWorkspace, useDispatch, useFeature, useSelector } from '@/hooks';
+import { useActiveWorkspace, useDispatch, useSelector } from '@/hooks';
 import { ClassName } from '@/styles/constants';
 
 import {
@@ -44,8 +44,6 @@ interface MemberRowProps {
 }
 
 const MemberRow: React.FC<MemberRowProps> = ({ member, inline, resendInvite, isLast }) => {
-  const ownerRole = useFeature(Realtime.FeatureFlag.OWNER_ROLE);
-
   // TODO: refactor this to use the permission system
   const role = useSelector(WorkspaceV2.active.userRoleSelector);
   const userID = useSelector(Account.userIDSelector);
@@ -103,8 +101,11 @@ const MemberRow: React.FC<MemberRowProps> = ({ member, inline, resendInvite, isL
                 {getRoleVerb(UserRole.VIEWER)}
               </DropdownItem>
             </>
-            {(role === UserRole.OWNER || role === UserRole.ADMIN) && ownerRole.isEnabled && (
+            {role === UserRole.OWNER && (
               <>
+                <DropdownItem onClick={() => changePermission(UserRole.ADMIN)} active={member.role === UserRole.ADMIN}>
+                  {getRoleVerb(UserRole.ADMIN)}
+                </DropdownItem>
                 <DropdownItem onClick={() => changePermission(UserRole.OWNER)} active={member.role === UserRole.OWNER}>
                   {getRoleVerb(UserRole.OWNER)}
                 </DropdownItem>

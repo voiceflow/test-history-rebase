@@ -4,9 +4,6 @@ export enum FeatureFlag {
   ASR_BYPASS = 'asr_bypass',
   MOTOROLA_SSO = 'motorola_sso',
 
-  // used by select private cloud instances to add a new role type
-  OWNER_ROLE = 'owner_role',
-
   // permanent circuit breaker for ml-gateway integration
   ML_GATEWAY_INTEGRATION = 'ml_gateway_integration',
 

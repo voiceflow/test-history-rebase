@@ -1,4 +1,4 @@
-import { Box, Members } from '@voiceflow/ui';
+import { Members } from '@voiceflow/ui';
 import React from 'react';
 
 import Page from '@/components/Page';
@@ -29,9 +29,9 @@ const Header: React.OldFC = () => {
       <Page.Header.Title>{projectName}</Page.Header.Title>
 
       {canViewMembers && (
-        <Box.Flex pr={18} ml={22}>
+        <Page.Header.RightSection>
           <Members.AvatarList flat members={allViewers} />
-        </Box.Flex>
+        </Page.Header.RightSection>
       )}
     </Page.Header>
   );

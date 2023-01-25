@@ -21,6 +21,8 @@ export const Actions = styled.section`
 
 export const Row = styled(Table.Row)`
   height: 68px;
+  padding-top: 0;
+  padding-bottom: 0;
 
   ${Table.Column} {
     .vf-tooltip {

@@ -1,5 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, Link, Toggle } from '@voiceflow/ui';
+import { Badge, Box, Link, Toggle } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Settings from '@/components/Settings';
@@ -28,7 +28,7 @@ const AIAssistSection: React.FC = () => {
     <Settings.Section
       title={
         <Box.Flex>
-          Voiceflow AI Assist <Settings.Badge>Beta</Settings.Badge>
+          Voiceflow AI Assist <Badge.Descriptive marginLeft={9}>Beta</Badge.Descriptive>
         </Box.Flex>
       }
       description={

@@ -29,6 +29,7 @@ import {
 export interface AssistantCardProps extends React.PropsWithChildren {
   title?: string;
   hasTitleComponent?: boolean;
+  isHovered?: boolean;
   status?: string;
   members?: UserData[];
   image?: Nullable<string>;
@@ -57,12 +58,13 @@ const AssistantCard: React.FC<AssistantCardProps> = ({
   members,
   options,
   children,
+  isHovered,
 }) => {
   const [active, toggleActive] = useToggle(false);
 
   return (
     <OuterContainer>
-      <CardContainer active={active}>
+      <CardContainer isHovered={isHovered} active={active}>
         <CardImageContainer className="assistant-card-image">
           {image ? <ProjectImage src={image} /> : <SvgIcon icon="systemImage" size={45} color="#393E42" />}
         </CardImageContainer>

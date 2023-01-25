@@ -1,7 +1,7 @@
 import AudioUpload from './AudioUpload';
 import { Context, Provider } from './Context';
 import FullImage from './ImageUpload/FullImage';
-import IconUpload from './ImageUpload/IconUpload';
+import IconUpload, { ImageContainer, OverlayContainer } from './ImageUpload/IconUpload';
 import ImageGroup from './ImageUpload/ImageGroup';
 import JsonUpload from './JsonUpload';
 import DropUpload from './Primitive/DropUpload';
@@ -15,6 +15,8 @@ export default {
   DropUpload,
   FullImage,
   IconUpload,
+  OverlayContainer,
+  ImageContainer,
   ImageGroup,
   JsonUpload,
   LinkUpload,

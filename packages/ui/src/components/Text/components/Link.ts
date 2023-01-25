@@ -18,22 +18,22 @@ const formatHref = (href: string | undefined, isBlank: boolean) => (!isBlank || 
 export const linkStyles = css<LinkProps>`
   ${transition('color')}
 
-  color: ${({ color, theme }) => color ?? theme.colors.blue};
+  color: ${({ color }) => color ?? '#3876CB'};
   cursor: pointer;
   user-select: none;
 
   :hover {
-    color: ${({ color, theme }) => changeColorShade(color || theme.colors.blue, -40)};
+    color: ${({ color }) => (color ? changeColorShade(color, -40) : '#3876CB')};
   }
 
   :active {
-    color: ${({ color, theme }) => changeColorShade(color || theme.colors.blue, -60)};
+    color: ${({ color }) => (color ? changeColorShade(color, -60) : '#3876CB')};
   }
 
-  ${({ color, theme, isActive }) =>
+  ${({ color, isActive }) =>
     isActive &&
     css`
-      color: ${changeColorShade(color || theme.colors.blue, -60)};
+      color: ${color ? changeColorShade(color, -60) : '#3876CB'};
     `}
 
   ${({ $textDecoration }) =>

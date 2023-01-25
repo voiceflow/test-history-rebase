@@ -1,6 +1,6 @@
 import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, Link, SectionV2, Toggle } from '@voiceflow/ui';
+import { Badge, Box, Link, SectionV2, Toggle } from '@voiceflow/ui';
 import React from 'react';
 
 import * as GPT from '@/components/GPT';
@@ -64,7 +64,7 @@ const AIAssistant: React.FC = () => {
       ref={sectionRef}
       title={
         <Box.Flex>
-          AI Assist <Settings.Badge>Beta</Settings.Badge>
+          AI Assist <Badge.Descriptive marginLeft={9}>Beta</Badge.Descriptive>
         </Box.Flex>
       }
       description={

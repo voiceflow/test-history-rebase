@@ -10,7 +10,7 @@ export const IconUploadInput = styled.input`
   display: none;
 `;
 
-interface ImageContainerProps {
+export interface ImageContainerProps {
   size: number;
   image?: Nullable<string>;
   error: Nullable<string>;

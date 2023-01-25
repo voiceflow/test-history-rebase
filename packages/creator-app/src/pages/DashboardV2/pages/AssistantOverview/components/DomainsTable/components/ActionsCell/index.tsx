@@ -12,7 +12,6 @@ import * as ModalsV2 from '@/ModalsV2';
 import * as S from './styles';
 
 const ActionsCell: React.FC<TableTypes.ItemProps<Realtime.Domain>> = ({ item }) => {
-  const row = Table.useRowContext();
   const table = Table.useContext();
 
   const editModal = ModalsV2.useModal(ModalsV2.Domain.Edit);
@@ -57,15 +56,15 @@ const ActionsCell: React.FC<TableTypes.ItemProps<Realtime.Domain>> = ({ item }) 
       selfDismiss
     >
       {(ref, onToggle, isOpen) => (
-        <S.Container rowHovered={row.hovered || isOpen}>
+        <S.Container>
           <IconButton
             ref={ref}
+            onClick={onToggle}
+            activeClick={isOpen}
             size={15}
             icon="ellipsis"
-            onClick={onToggle}
             variant={IconButton.Variant.BASIC}
             disabled={!domainEditPermission.allowed}
-            activeClick={isOpen}
           />
         </S.Container>
       )}

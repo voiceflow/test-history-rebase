@@ -38,7 +38,7 @@ const AssistantOverview: React.FC = () => {
   });
 
   return (
-    <Page renderHeader={() => <Header />} renderSidebar={() => <Sidebar />}>
+    <Page white renderHeader={() => <Header />} renderSidebar={() => <Sidebar />}>
       {project && (
         <Page.Content>
           <Box mb={20}>
@@ -51,6 +51,7 @@ const AssistantOverview: React.FC = () => {
               isViewer={!canEditProject}
               iconColor={projectTypeConfig?.icon.color}
               onClickCTA={() => goToCanvasWithVersionID(project.versionID)}
+              isHovered
             />
           </Box>
 

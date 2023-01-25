@@ -19,7 +19,7 @@ const OPTIONS = [
 
 const DESCRIPTIONS = {
   [DashboardTypes.KANBAN]: 'Use a Kanban board and swimlanes to create your teams customized workflow.',
-  [DashboardTypes.CARD]: '',
+  [DashboardTypes.CARD]: 'Visualize your assistants as simple cards that can be searched and filtered.',
 };
 
 const CUTOFF_DATE = `2025-01-12T00:00:00.000Z`;

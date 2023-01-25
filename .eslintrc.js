@@ -23,5 +23,9 @@ module.exports = {
         packages: path.resolve(__dirname, 'packages'),
       },
     },
+
+    jest: {
+      version: 27,
+    },
   },
 };

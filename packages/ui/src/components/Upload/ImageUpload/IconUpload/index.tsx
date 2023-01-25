@@ -14,6 +14,8 @@ import { hasValidImages } from '../../utils';
 import { ErrorText, RemoveButton } from '../styles';
 import * as S from './styles';
 
+export { ImageContainer, OverlayContainer } from './styles';
+
 export enum UploadIconVariant {
   EXTRA_SMALL = 'xsmall',
   SMALLER = 'smaller',

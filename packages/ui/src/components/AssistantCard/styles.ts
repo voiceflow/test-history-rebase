@@ -24,7 +24,7 @@ export const CardImageContainer = styled(InnerContainer)`
   filter: blur(0);
 `;
 
-export const CardContainer = styled.div<{ active: boolean }>`
+export const CardContainer = styled.div<{ active: boolean; isHovered?: boolean }>`
   width: 100%;
   height: 220px;
   background-color: #f9f9f9;
@@ -53,6 +53,19 @@ export const CardContainer = styled.div<{ active: boolean }>`
       }
       & ${CardImageContainer} {
         filter: blur(5px) !important;
+      }
+    `}
+
+  ${({ isHovered }) =>
+    isHovered &&
+    css`
+      ${CardActionContainer} {
+        opacity: 1;
+        border-radius: 8px;
+      }
+
+      ${CardImageContainer} {
+        filter: blur(5px);
       }
     `}
 `;

@@ -21,7 +21,7 @@ export const Filters = styled.section`
   background-color: #eef4f6;
   display: flex;
   flex-direction: row;
-  gap: 12px;
+  gap: 11px;
   justify-content: space-between;
 `;
 

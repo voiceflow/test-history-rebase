@@ -21,6 +21,7 @@ const GeneralSettingsPage: React.FC = () => {
             title={<Box.Flex>Delete Workspace</Box.Flex>}
             description={<>Delete the workspace, including all assistants. Proceed with caution.</>}
             mb={0}
+            w={500}
           />
           <Button variant={Button.Variant.SECONDARY} onClick={() => boardDeleteModal.openVoid({ workspaceID: workspace.id })}>
             Delete Workspace

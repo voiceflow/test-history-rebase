@@ -1,13 +1,16 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, Button, Input, SectionV2, Upload, UploadIconVariant } from '@voiceflow/ui';
+import { Box, Input, SectionV2, Upload, UploadIconVariant } from '@voiceflow/ui';
 import React from 'react';
 
+import { vfLogo } from '@/assets';
 import Page from '@/components/Page';
 import { Permission } from '@/constants/permissions';
 import * as Feature from '@/ducks/feature';
 import * as Workspace from '@/ducks/workspace';
 import { useActiveWorkspace, useDispatch, useLinkedState, usePermission, useSelector } from '@/hooks';
 import * as Sentry from '@/vendors/sentry';
+
+import * as S from './styles';
 
 const GeneralSettingsPage: React.FC = () => {
   const workspace = useActiveWorkspace();
@@ -41,19 +44,19 @@ const GeneralSettingsPage: React.FC = () => {
         <Box.Flex gap={24} fullWidth>
           {isIdentityWorkspaceEnabled ? (
             <Upload.Provider client={{ upload: (_endpoint, _fileType, formData) => updateActiveWorkspaceImage(formData) }} onError={Sentry.error}>
-              <Upload.IconUpload size={UploadIconVariant.SMALLER} isSquare image={workspace?.image} />
+              <S.UploadIcon size={UploadIconVariant.SMALLER} isSquare image={workspace?.image || vfLogo} />
             </Upload.Provider>
           ) : (
-            <Upload.IconUpload
+            <S.UploadIcon
               size={UploadIconVariant.SMALLER}
-              image={workspace?.image}
+              isSquare
+              image={workspace?.image || vfLogo}
               update={updateActiveWorkspaceImageLegacy}
               disabled={!canConfigureWorkspace}
-              isSquare
             />
           )}
 
-          <Box.FlexAlignStart column gap={12} fullWidth>
+          <Box.FlexAlignStart column gap={11} fullWidth>
             <SectionV2.Title bold secondary>
               Name
             </SectionV2.Title>
@@ -67,10 +70,6 @@ const GeneralSettingsPage: React.FC = () => {
                 onChangeText={updateName}
                 placeholder="Workspace Name"
               />
-
-              <Button variant={Button.Variant.SECONDARY} flat>
-                Save
-              </Button>
             </Box.FlexApart>
           </Box.FlexAlignStart>
         </Box.Flex>

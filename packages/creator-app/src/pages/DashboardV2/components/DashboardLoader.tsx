@@ -6,7 +6,7 @@ import Page from '@/components/Page';
 import Sidebar from './Sidebar';
 import WorkspaceSelector from './WorkspaceSelector';
 
-const DashboardLoader: React.OldFC<FullSpinnerProps> = (props) => (
+const DashboardLoader: React.FC<FullSpinnerProps> = () => (
   <Page
     renderHeader={() => (
       <Page.Header>
@@ -14,8 +14,9 @@ const DashboardLoader: React.OldFC<FullSpinnerProps> = (props) => (
       </Page.Header>
     )}
     renderSidebar={() => <Sidebar />}
+    white
   >
-    <FullSpinner isAbs {...props} />
+    <FullSpinner isAbs borderLess />
   </Page>
 );
 

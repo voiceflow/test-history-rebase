@@ -51,4 +51,16 @@ export class User extends NestResource {
     const { data } = await this.put('/image', file);
     return data;
   }
+
+  public async resetEmail(email: string): Promise<void> {
+    await this.post(`/password/${email}`);
+  }
+
+  public async testResetPassword(token: string): Promise<void> {
+    await this.head(`/reset/${token}`);
+  }
+
+  public async resetPassword(token: string, nextPassword: string): Promise<void> {
+    await this.post(`/reset/${token}`, { nextPassword });
+  }
 }

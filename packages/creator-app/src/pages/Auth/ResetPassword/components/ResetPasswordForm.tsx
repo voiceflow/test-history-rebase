@@ -1,9 +1,12 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Button, ButtonVariant, ClickableText, preventDefault, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';
+import * as Feature from '@/ducks/feature';
 import * as Router from '@/ducks/router';
 import { useDispatch } from '@/hooks/realtime';
+import { useSelector } from '@/hooks/redux';
 
 import { PasswordInput } from '../../components';
 import { MIN_PASSWORD_LENGTH } from '../../constants';
@@ -15,6 +18,7 @@ export interface ResetPasswordFormProps {
 }
 
 const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({ resetCode, setStage }) => {
+  const isIdentityUserEnabled = useSelector(Feature.isFeatureEnabledSelector)(Realtime.FeatureFlag.IDENTITY_USER);
   const goToLogin = useDispatch(Router.goToLogin);
 
   const [password, setPassword] = React.useState('');
@@ -29,7 +33,11 @@ const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({ resetCode, setSta
     setStage(ResetPasswordStage.PENDING);
 
     try {
-      await client.user.resetPassword(resetCode, password);
+      if (isIdentityUserEnabled) {
+        await client.identity.user.resetPassword(resetCode, password);
+      } else {
+        await client.user.resetPassword(resetCode, password);
+      }
 
       setStage(ResetPasswordStage.SUCCESSFUL);
     } catch {

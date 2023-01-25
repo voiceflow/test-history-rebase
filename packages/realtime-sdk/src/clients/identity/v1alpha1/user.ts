@@ -52,6 +52,10 @@ export class User extends NestResource {
     return data;
   }
 
+  public async updatePassword(oldPassword: string, nextPassword: string): Promise<void> {
+    await this.put('/password', { oldPassword, nextPassword });
+  }
+
   public async resetEmail(email: string): Promise<void> {
     await this.post(`/password/${email}`);
   }

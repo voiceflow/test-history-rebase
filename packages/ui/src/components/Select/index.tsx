@@ -545,6 +545,7 @@ function Select({
                         color={showDropdownColorOnActive && opened ? '#4a88de' : undefined}
                         autoComplete="off"
                         withLeftIcon={!!leftAction}
+                        withRightIcon={showSearchInputIcon}
                         withClearIcon={withClearIcon}
                       />
 
@@ -555,6 +556,7 @@ function Select({
                           color={showDropdownColorOnActive && opened ? '#4a88de' : '#6e849a'}
                           rotate={!withClearIcon && isSecondaryInput}
                           onClick={onIconClick}
+                          $secondaryDisabled={isSecondaryInput && disabled}
                         />
                       )}
                     </>

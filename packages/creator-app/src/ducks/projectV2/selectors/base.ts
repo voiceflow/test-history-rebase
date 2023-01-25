@@ -1,3 +1,5 @@
+import { createSelector } from 'reselect';
+
 import { createCRUDSelectors } from '@/ducks/utils/crudV2';
 
 import { STATE_KEY } from '../constants';
@@ -10,3 +12,5 @@ export const {
   count: projectsCountSelector,
   getByID: getProjectByIDSelector,
 } = createCRUDSelectors(STATE_KEY);
+
+export const membersByProjectIDSelector = createSelector([projectByIDSelector], (project) => project?.members);

@@ -1,59 +1,84 @@
-import { Utils } from '@voiceflow/common';
 import { UserRole } from '@voiceflow/internal';
-import { Avatar, Members } from '@voiceflow/ui';
+import * as Realtime from '@voiceflow/realtime-sdk';
+import { Avatar, Members, TippyTooltip } from '@voiceflow/ui';
+import pluralize from 'pluralize';
 import React from 'react';
 
 import { logo } from '@/assets';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useSelector } from '@/hooks/redux';
+import { isEditorUserRole } from '@/utils/role';
 
+import type { Member } from '../../types';
 import * as S from './styles';
 
 interface MembersListProps {
+  members: Member[];
   onRemove: (memberID: number) => void;
-  memberIDs: number[];
-  onChangeRoles: (memberID: number, roles: UserRole[]) => void;
-  memberRolesMap: Partial<Record<number, UserRole[]>>;
+  onChangeRole: (memberID: number, role: Member['role']) => void;
 }
 
-const MembersList: React.FC<MembersListProps> = ({ memberIDs, onRemove, onChangeRoles, memberRolesMap }) => {
-  const members = useSelector(WorkspaceV2.active.membersSelector);
+const ROLES = [UserRole.EDITOR, UserRole.VIEWER] satisfies UserRole[];
+
+const MembersList: React.FC<MembersListProps> = ({ members, onRemove, onChangeRole }) => {
   const workspace = useSelector(WorkspaceV2.active.workspaceSelector);
   const allMembersCount = useSelector(WorkspaceV2.active.allNormalizedMembersCountSelector);
+  const getWorkspaceMemberByID = useSelector(WorkspaceV2.active.getMemberByIDSelector);
 
-  const membersToRender = React.useMemo(
+  const conflictingMemberRolesMap = React.useMemo(
     () =>
-      memberIDs
-        .map((id) => {
-          const member = members?.byKey[id];
-          const assistantRoles = memberRolesMap[id];
+      Object.fromEntries(
+        members.map((member) => {
+          const workspaceMember = getWorkspaceMemberByID({ creatorID: member.creator_id });
 
-          if (!member || !assistantRoles) return null;
-
-          return { ...member, role: assistantRoles[0] };
+          return [
+            member.creator_id,
+            !!workspaceMember &&
+              isEditorUserRole(member.role) !== isEditorUserRole(workspaceMember.role) &&
+              Realtime.Utils.role.isRoleAStrongerRoleB(workspaceMember.role, member.role),
+          ];
         })
-        .filter(Utils.array.isNotNullish),
-    [memberIDs, memberRolesMap, members]
+      ),
+    [members, getWorkspaceMemberByID]
   );
 
   return !workspace ? null : (
     <>
-      <S.Header border={!!membersToRender.length}>
+      <S.Header border={!!members.length}>
         <Avatar image={workspace.image ?? logo} text={workspace.name} large squareRadius />
 
         <div>
           <S.Title>{workspace.name}</S.Title>
-          <S.Subtitle>All {allMembersCount} members have their default access</S.Subtitle>
+          <S.Subtitle>All {pluralize('member', allMembersCount, true)} have their default access</S.Subtitle>
         </div>
       </S.Header>
 
-      <Members.List
-        inset
-        members={membersToRender}
-        onRemove={(member) => onRemove(member.creator_id)}
-        onChangeRoles={(member, roles) => onChangeRoles(member.creator_id, roles)}
-        hideLastDivider
-      />
+      <div>
+        {members.map((member, index) => (
+          <Members.Row<Member>
+            key={member.email}
+            inset
+            roles={ROLES}
+            border={index + 1 !== members.length}
+            member={member}
+            onRemove={onRemove && (() => onRemove(member.creator_id))}
+            onChangeRole={onChangeRole && ((role) => onChangeRole(member.creator_id, role))}
+            warningTooltip={
+              conflictingMemberRolesMap[member.creator_id]
+                ? {
+                    width: 232,
+                    placement: 'bottom',
+                    content: (
+                      <TippyTooltip.Multiline>
+                        This member can still edit this assistant as they have edit access at the workspace level.
+                      </TippyTooltip.Multiline>
+                    ),
+                  }
+                : null
+            }
+          />
+        ))}
+      </div>
     </>
   );
 };

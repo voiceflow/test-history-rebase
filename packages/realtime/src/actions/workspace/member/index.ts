@@ -1,7 +1,7 @@
 export { default as AcceptInviteControl } from './acceptInvite';
-export { default as AddMemberControl } from './addMember';
+export { default as AddWorkspaceMemberControl } from './addMember';
 export { default as CancelInviteControl } from './cancelInvite';
-export { default as EjectMemberControl } from './ejectMember';
+export { default as EjectWorkspaceMemberControl } from './ejectMember';
 export { default as PatchWorkspaceMemberControl } from './patchMember';
 export { default as RemoveWorkspaceMemberControl } from './removeMember';
 export { default as ReplaceWorkspaceMembersControl } from './replaceMembers';

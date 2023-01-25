@@ -32,7 +32,7 @@ const InviteByEmail: React.FC<InviteByEmailProps> = ({ buttonLabel = 'Add' }) =>
 
   const onAddSeats = useOnAddSeats();
 
-  const [roles, setRoles] = React.useState<UserRole[]>([UserRole.EDITOR]);
+  const [role, setRole] = React.useState<UserRole>(UserRole.EDITOR);
   const [error, setError] = React.useState('');
   const [emails, setEmails] = React.useState('');
 
@@ -53,7 +53,6 @@ const InviteByEmail: React.FC<InviteByEmailProps> = ({ buttonLabel = 'Add' }) =>
 
     setError('');
 
-    const role = roles[0]; // FIXME: we don't support multiple roles yet;
     const isEditorRole = isEditorUserRole(role);
     const updatedEditorSeats = usedEditorSeats + (isEditorRole ? emailsToInvite.length : 0);
     const updatedViewerSeats = usedViewerSeats + (isEditorRole ? 0 : emailsToInvite.length);
@@ -98,7 +97,7 @@ const InviteByEmail: React.FC<InviteByEmailProps> = ({ buttonLabel = 'Add' }) =>
             />
           )}
         >
-          {() => <Members.RoleSelect roles={roles} isInvite onChange={setRoles} />}
+          {() => <Members.RoleSelect value={role} onChange={setRole} />}
         </SelectInputGroup>
 
         <Button id={Identifier.COLLAB_SEND_INVITE_BUTTON} onClick={onSendInviteClick} disabled={!!error || !emails} variant={Button.Variant.PRIMARY}>

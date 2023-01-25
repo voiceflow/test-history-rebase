@@ -9,7 +9,6 @@ import TippyTooltip from '@ui/components/TippyTooltip';
 import { UserData } from '@ui/components/User';
 import { useToggle } from '@ui/hooks';
 import { Nullable, Utils } from '@voiceflow/common';
-import { UserRole } from '@voiceflow/internal';
 import React from 'react';
 
 import {
@@ -33,8 +32,8 @@ export interface AssistantCardProps extends React.PropsWithChildren {
   status?: string;
   members?: UserData[];
   image?: Nullable<string>;
-  userRole?: UserRole;
   icon?: SvgIconTypes.Icon;
+  isViewer?: boolean;
   iconColor?: string;
   iconTitle?: string;
   options?: Nullable<OptionWithoutValue>[];
@@ -43,9 +42,9 @@ export interface AssistantCardProps extends React.PropsWithChildren {
   onClickLink?: () => void;
 }
 
-// TODO: refactor component to remove userRole, options and etc
+// TODO: refactor component to remove options and etc
 const AssistantCard: React.FC<AssistantCardProps> = ({
-  userRole = 'viewer',
+  isViewer,
   onClickCTA,
   onClickLink,
   icon,
@@ -60,7 +59,6 @@ const AssistantCard: React.FC<AssistantCardProps> = ({
   children,
 }) => {
   const [active, toggleActive] = useToggle(false);
-  const isViewer = userRole === UserRole.VIEWER;
 
   return (
     <OuterContainer>

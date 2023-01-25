@@ -158,16 +158,15 @@ class MigrateService extends AbstractControl {
     yield MigrationState.STARTED;
 
     try {
-      const [project, diagrams] = await Promise.all([
-        this.services.project.get(creatorID, projectID).then(Realtime.Adapters.projectAdapter.fromDB),
-        this.services.diagram.getAll(versionID),
-      ]);
+      const [dbProject, dbDiagrams] = await Promise.all([this.services.project.get(creatorID, projectID), this.services.diagram.getAll(versionID)]);
+
+      const project = Realtime.Adapters.projectAdapter.fromDB(dbProject, { members: [] });
 
       const migrationContext: MigrationContext = { platform: project.platform, projectType: project.type };
       const migrationResult = produce<MigrationData>(
         {
           version: MigrateService.getVersionPatch(version),
-          diagrams: diagrams.map(MigrateService.getDiagramPatch),
+          diagrams: dbDiagrams.map(MigrateService.getDiagramPatch),
         },
         (draft) => pendingMigrations.forEach((migration) => migration.transform(draft, migrationContext))
       );

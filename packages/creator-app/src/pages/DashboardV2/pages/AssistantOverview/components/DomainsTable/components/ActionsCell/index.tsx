@@ -4,8 +4,9 @@ import React from 'react';
 
 import Domain from '@/components/Domain';
 import { LimitType } from '@/constants/limits';
+import { Permission } from '@/constants/permissions';
 import * as DomainDuck from '@/ducks/domain';
-import { useDispatch, usePlanLimitedAction, useSelector } from '@/hooks';
+import { useDispatch, usePermission, usePlanLimitedAction, useSelector } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
 
 import * as S from './styles';
@@ -21,6 +22,8 @@ const ActionsCell: React.FC<TableTypes.ItemProps<Realtime.Domain>> = ({ item }) 
   const patchDomain = useDispatch(DomainDuck.patch, item.id);
   const getDomainByID = useSelector(DomainDuck.getDomainByIDSelector);
   const duplicateDomain = useDispatch(DomainDuck.duplicate);
+
+  const domainEditPermission = usePermission(Permission.DOMAIN_EDIT);
 
   const onDuplicate = usePlanLimitedAction(LimitType.DOMAINS, {
     value: table.items.length,
@@ -55,7 +58,15 @@ const ActionsCell: React.FC<TableTypes.ItemProps<Realtime.Domain>> = ({ item }) 
     >
       {(ref, onToggle, isOpen) => (
         <S.Container rowHovered={row.hovered || isOpen}>
-          <IconButton ref={ref} onClick={onToggle} activeClick={isOpen} size={15} icon="ellipsis" variant={IconButton.Variant.BASIC} />
+          <IconButton
+            ref={ref}
+            size={15}
+            icon="ellipsis"
+            onClick={onToggle}
+            variant={IconButton.Variant.BASIC}
+            disabled={!domainEditPermission.allowed}
+            activeClick={isOpen}
+          />
         </S.Container>
       )}
     </Dropdown>

@@ -1,24 +1,54 @@
-import { AlexaProject } from '@voiceflow/alexa-types';
+import * as Realtime from '@voiceflow/realtime-sdk/backend';
 
 import { AbstractControl } from '../../control';
 
+type WorkspaceProjectMembers = Partial<Record<string, Realtime.ProjectMember[]>>;
+
 class ProjectMemberService extends AbstractControl {
-  /**
-   * @platform `alexa`
-   */
-  public async updateVendor(creatorID: number, projectID: string, vendorID: string, skillID: string | null): Promise<void> {
+  public async getAll(creatorID: number, projectID: string): Promise<Realtime.ProjectMember[]> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
-    const member = await client.project.member.get<AlexaProject.MemberPlatformData>(projectID);
 
-    const hasVendor = member.platformData.vendors.some((vendor) => vendor.vendorID === vendorID);
+    return client.identity.projectMember.list(projectID).then(Realtime.Adapters.Identity.projectMember.mapFromDB);
+  }
 
-    if (hasVendor) {
-      await client.project.member.platformDataUpdate(projectID, 'vendors.$[vendorID].skillID', skillID, { vendorID });
-    } else {
-      await client.project.member.platformDataAdd(projectID, 'vendors', { vendorID, skillID, products: {} });
-    }
+  public async getAllForWorkspace(creatorID: number, workspaceID: string): Promise<WorkspaceProjectMembers> {
+    const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
-    await client.project.member.platformDataUpdate(projectID, 'selectedVendor', vendorID);
+    const dbMembers = await client.identity.projectMember.listForWorkspace(workspaceID);
+
+    return dbMembers.reduce<WorkspaceProjectMembers>((acc, member) => {
+      acc[member.membership.projectID] ??= [];
+      acc[member.membership.projectID]!.push(Realtime.Adapters.Identity.projectMember.fromDB(member));
+
+      return acc;
+    }, {});
+  }
+
+  public async add(creatorID: number, projectID: string, { role, creatorID: memberID }: Realtime.ProjectMember): Promise<void> {
+    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+
+    await client.identity.projectMember.create(projectID, { role, userID: memberID });
+  }
+
+  public async addMany(creatorID: number, projectID: string, members: Realtime.ProjectMember[]): Promise<void> {
+    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+
+    await client.identity.projectMember.createMany(
+      projectID,
+      members.map(({ role, creatorID }) => ({ role, userID: creatorID }))
+    );
+  }
+
+  public async patch(creatorID: number, projectID: string, memberID: number, { role }: Pick<Realtime.ProjectMember, 'role'>): Promise<void> {
+    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+
+    await client.identity.projectMember.update(projectID, memberID, { role });
+  }
+
+  public async remove(creatorID: number, projectID: string, memberID: number): Promise<void> {
+    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+
+    await client.identity.projectMember.remove(projectID, memberID);
   }
 }
 

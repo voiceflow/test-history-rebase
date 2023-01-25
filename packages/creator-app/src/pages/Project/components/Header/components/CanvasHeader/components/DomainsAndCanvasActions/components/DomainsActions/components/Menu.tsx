@@ -3,10 +3,14 @@ import { Menu as UIMenu, stopImmediatePropagation, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import { LimitType } from '@/constants/limits';
+import { Permission } from '@/constants/permissions';
 import * as Domain from '@/ducks/domain';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
-import { useDispatch, usePlanLimitedAction, useSelector } from '@/hooks';
+import { usePermission } from '@/hooks/permission';
+import { usePlanLimitedAction } from '@/hooks/planLimitV2';
+import { useDispatch } from '@/hooks/realtime';
+import { useSelector } from '@/hooks/redux';
 import * as ModalsV2 from '@/ModalsV2';
 
 import MenuInfoTooltip from './MenuInfoTooltip';
@@ -17,7 +21,7 @@ interface MenuProps {
   onClose: VoidFunction;
 }
 
-const Menu: React.OldFC<MenuProps> = ({ onClose }) => {
+const Menu: React.FC<MenuProps> = ({ onClose }) => {
   const editModal = ModalsV2.useModal(ModalsV2.Domain.Edit);
   const deleteModal = ModalsV2.useModal(ModalsV2.Domain.Delete);
   const createModal = ModalsV2.useModal(ModalsV2.Domain.Create);
@@ -31,6 +35,8 @@ const Menu: React.OldFC<MenuProps> = ({ onClose }) => {
   const patchDomain = useDispatch(Domain.patch);
   const duplicateDomain = useDispatch(Domain.duplicate);
   const goToDomainDiagram = useDispatch(Router.goToDomainDiagram);
+
+  const domainEditPermission = usePermission(Permission.DOMAIN_EDIT);
 
   const [search, setSearch] = React.useState('');
 
@@ -76,11 +82,15 @@ const Menu: React.OldFC<MenuProps> = ({ onClose }) => {
             onChangeText={setSearch}
           />
         }
-        renderFooterAction={({ close }) => (
-          <UIMenu.Footer>
-            <UIMenu.Footer.Action onClick={Utils.functional.chain(close, onCreate)}>Create New Domain</UIMenu.Footer.Action>
-          </UIMenu.Footer>
-        )}
+        renderFooterAction={
+          domainEditPermission.allowed
+            ? ({ close }) => (
+                <UIMenu.Footer>
+                  <UIMenu.Footer.Action onClick={Utils.functional.chain(close, onCreate)}>Create New Domain</UIMenu.Footer.Action>
+                </UIMenu.Footer>
+              )
+            : null
+        }
       >
         {filteredDomains.length ? (
           filteredDomains.map(({ id, name, live, status, rootDiagramID }) => (
@@ -95,6 +105,7 @@ const Menu: React.OldFC<MenuProps> = ({ onClose }) => {
               onClick={Utils.functional.chainVoid(onClose, () => rootDiagramID !== activeDiagramID && goToDomainDiagram(id, rootDiagramID))}
               onDelete={Utils.functional.chainVoid(onClose, () => deleteModal.openVoid({ domainID: id }))}
               onDuplicate={Utils.functional.chainVoid(onClose, () => onDuplicate(id))}
+              withActions={domainEditPermission.allowed}
               onToggleLive={(live) => patchDomain(id, { live })}
               onChangeStatus={(status) => patchDomain(id, { status })}
             />

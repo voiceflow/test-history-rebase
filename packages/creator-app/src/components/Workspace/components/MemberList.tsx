@@ -1,10 +1,11 @@
-import { UserRole } from '@voiceflow/internal';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Members } from '@voiceflow/ui';
 import React from 'react';
 
+import * as Account from '@/ducks/account';
 import * as Workspace from '@/ducks/workspace';
 import { useDispatch } from '@/hooks/realtime';
+import { useSelector } from '@/hooks/redux';
 
 type WorkspaceMember = Realtime.WorkspaceMember | Realtime.PendingWorkspaceMember;
 
@@ -15,17 +16,12 @@ interface MemberListProps {
 }
 
 const MemberList: React.FC<MemberListProps> = ({ inset, members, hideLastDivider = true }) => {
+  const userID = useSelector(Account.userIDSelector)!;
+
   const sendInvite = useDispatch(Workspace.sendInviteToActiveWorkspace);
   const deleteMember = useDispatch(Workspace.deleteMemberOfActiveWorkspace);
   const cancelInvite = useDispatch(Workspace.cancelInviteToActiveWorkspace);
   const updateMemberRole = useDispatch(Workspace.updateActiveWorkspaceMemberRole);
-
-  const onResendInvite = (member: WorkspaceMember) => sendInvite(member.email, null);
-
-  const onChangeRoles = (member: WorkspaceMember, roles: UserRole[]) => {
-    const role = roles[0]; // FIXME: user does not support multiple roles yet
-    updateMemberRole(member, role);
-  };
 
   const onRemove = (member: WorkspaceMember) => {
     if (!member.creator_id) {
@@ -40,8 +36,9 @@ const MemberList: React.FC<MemberListProps> = ({ inset, members, hideLastDivider
       inset={inset}
       members={members}
       onRemove={onRemove}
-      onResendInvite={onResendInvite}
-      onChangeRoles={onChangeRoles}
+      onChangeRole={(member, role) => updateMemberRole(member, role)}
+      currentUserID={userID}
+      onResendInvite={(member) => sendInvite(member.email, null)}
       hideLastDivider={hideLastDivider}
     />
   );

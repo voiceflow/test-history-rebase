@@ -1,4 +1,3 @@
-import { UserRole } from '@voiceflow/internal';
 import { AssistantCard, Button } from '@voiceflow/ui';
 import React from 'react';
 
@@ -32,7 +31,7 @@ const viewer = createExample(
       image="https://cm4-production-assets.s3.amazonaws.com/1667337752059-screen-shot-2022-11-01-at-18.22.20.png"
       icon="dialogflowCX"
       status="Active"
-      userRole={UserRole.VIEWER}
+      isViewer
       members={[
         {
           name: 'Filipe Merker',
@@ -89,7 +88,6 @@ const owner = createExample(
       ]}
       title="Acme Chatbot"
       icon="googleAssistant"
-      userRole={UserRole.OWNER}
       status="Edited 4 hours ago"
     />
   ))
@@ -125,7 +123,6 @@ const wide = createExample(
       ]}
       title="Acme Chatbot"
       icon="googleAssistant"
-      userRole={UserRole.OWNER}
       status="Edited 4 hours ago"
     />
   ))

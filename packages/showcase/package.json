@@ -6,7 +6,6 @@
     "url": "https://github.com/voiceflow/creator-app/issues"
   },
   "dependencies": {
-    "@voiceflow/internal": "^3.0.1",
     "@voiceflow/ui": "^1.224.3",
     "bootstrap": "4.6.1",
     "react": "18.2.0",

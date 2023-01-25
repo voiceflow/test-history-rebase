@@ -16,7 +16,6 @@ export const INITIAL_STATE: UIState = {
   local: {},
   canvasNavigation: IS_MAC ? ControlScheme.TRACKPAD : ControlScheme.MOUSE,
   canvasOnly: false,
-  previewing: false,
   zoomType: ZoomType.REGULAR,
   isLoadingProjects: false,
   commentsVisible: true,

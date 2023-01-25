@@ -1,6 +1,9 @@
 /* eslint-disable no-nested-ternary */
 import Avatar from '@ui/components/Avatar';
 import Badge from '@ui/components/Badge';
+import Box from '@ui/components/Box';
+import SvgIcon from '@ui/components/SvgIcon';
+import TippyTooltip, { TippyTooltipProps } from '@ui/components/TippyTooltip';
 import { UserRole } from '@voiceflow/internal';
 import React from 'react';
 
@@ -8,18 +11,31 @@ import RoleSelect from '../RoleSelect';
 import { Member } from '../types';
 import * as S from './styles';
 
-interface MemberRowProps {
+interface MemberRowProps<M extends Member> {
+  roles?: M['role'][];
   inset?: boolean;
-  member: Member;
+  member: M;
   border?: boolean;
   onRemove?: VoidFunction;
-  onChangeRoles?: (roles: UserRole[]) => void;
+  onChangeRole?: (role: M['role']) => void;
+  isCurrentUser?: boolean;
   onResendInvite?: VoidFunction;
+  warningTooltip?: TippyTooltipProps | null;
 }
 
-const ROLES = new Set([UserRole.ADMIN, UserRole.OWNER]);
+const BADGE_ROLES = new Set([UserRole.ADMIN, UserRole.OWNER]);
 
-const MemberRow: React.FC<MemberRowProps> = ({ member, inset, border, onRemove, onChangeRoles, onResendInvite }) => (
+const MemberRow = <T extends Member>({
+  roles,
+  member,
+  inset,
+  border,
+  onRemove,
+  onChangeRole,
+  isCurrentUser,
+  onResendInvite,
+  warningTooltip,
+}: MemberRowProps<T>) => (
   <S.Container inset={inset} border={border}>
     <Avatar large text={member.name || member.email} image={member.image} />
 
@@ -31,7 +47,7 @@ const MemberRow: React.FC<MemberRowProps> = ({ member, inset, border, onRemove, 
           <Badge.Descriptive ml={8} color="gray">
             Pending
           </Badge.Descriptive>
-        ) : ROLES.has(member.role) ? (
+        ) : BADGE_ROLES.has(member.role) ? (
           <Badge.Descriptive ml={8}>{member.role}</Badge.Descriptive>
         ) : null}
       </S.Name>
@@ -39,11 +55,27 @@ const MemberRow: React.FC<MemberRowProps> = ({ member, inset, border, onRemove, 
       <S.Email>{member.name ? member.email : 'Invitation pending'}</S.Email>
     </S.Info>
 
-    {!!onChangeRoles && (
-      <S.RoleSelectContainer>
-        <RoleSelect roles={[member.role]} onRemove={onRemove} onChange={onChangeRoles} onResendInvite={onResendInvite} />
-      </S.RoleSelectContainer>
-    )}
+    <Box.Flex>
+      {!!warningTooltip && (
+        <TippyTooltip {...warningTooltip}>
+          <SvgIcon icon="warning" color="#BD425F" clickable />
+        </TippyTooltip>
+      )}
+
+      {!!onChangeRole && (
+        <S.RoleSelectContainer>
+          <RoleSelect
+            roles={roles}
+            value={member.role}
+            onRemove={onRemove}
+            onChange={onChangeRole}
+            isInvite={!member.creator_id}
+            disabled={isCurrentUser}
+            onResendInvite={onResendInvite}
+          />
+        </S.RoleSelectContainer>
+      )}
+    </Box.Flex>
   </S.Container>
 );
 

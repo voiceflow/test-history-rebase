@@ -16,6 +16,8 @@ export enum VirtualRole {
   PREVIEWER = 'previewer',
 }
 
+export const ALL_VIRTUAL_ROLES = Object.values(VirtualRole);
+
 export const ALL_USER_ROLES = [UserRole.ADMIN, UserRole.EDITOR, UserRole.VIEWER, UserRole.OWNER, UserRole.BILLING, VirtualRole.GUEST] satisfies Array<
   UserRole | VirtualRole
 >;

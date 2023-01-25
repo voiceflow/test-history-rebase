@@ -1,11 +1,12 @@
-import { UserRole } from '@voiceflow/internal';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { AssistantCard as AssistantCardComponent, AssistantCardProps, OverflowTippyTooltip, setRef, useLinkedState } from '@voiceflow/ui';
 import React from 'react';
 
 import { EditableTextAPI } from '@/components/EditableText';
+import { Permission } from '@/constants/permissions';
 import * as Project from '@/ducks/project';
+import { usePermission } from '@/hooks/permission';
 import { useProjectOptions } from '@/hooks/project';
 import { useDispatch } from '@/hooks/realtime';
 import { withEnterPress, withInputBlur } from '@/utils/dom';
@@ -20,10 +21,13 @@ interface CardProps extends AssistantCardProps {
 export const AssistantCard = ({ project, ...props }: CardProps) => {
   const { icon } = Platform.Config.getTypeConfig({ type: project.type, platform: project.platform });
   const { name: platformName } = Platform.Config.get(project.platform);
+
   const titleRef = React.useRef<EditableTextAPI | null>(null);
 
   const [isEditing, setIsEditing] = React.useState(false);
   const [formValue, updateFormValue] = useLinkedState(project?.name);
+
+  const [canEditProject] = usePermission(Permission.EDIT_PROJECT);
 
   const saveProjectName = useDispatch(Project.updateProjectNameByID, project?.id || '');
 
@@ -54,8 +58,9 @@ export const AssistantCard = ({ project, ...props }: CardProps) => {
     <AssistantCardComponent
       {...props}
       icon={icon.name}
+      options={canEditProject ? projectOptions : undefined}
+      isViewer={!canEditProject}
       iconTitle={platformName}
-      options={props.userRole === UserRole.VIEWER ? undefined : projectOptions}
       iconColor={icon.color}
       hasTitleComponent
     >

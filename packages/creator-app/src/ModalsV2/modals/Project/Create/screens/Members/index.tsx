@@ -1,20 +1,18 @@
-import { UserRole } from '@voiceflow/internal';
 import { Button, Modal, SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
-import Assistant from '@/components/Assistant';
+import * as Assistant from '@/components/Assistant';
 
 interface MembersProps {
-  onAdd: (memberID: number) => void;
+  onAdd: (member: Assistant.Member) => void;
   onNext: VoidFunction;
   onClose: VoidFunction;
+  members: Assistant.Member[];
   onRemove: (memberID: number) => void;
-  memberIDs: number[];
-  onChangeRoles: (memberID: number, roles: UserRole[]) => void;
-  memberRolesMap: Partial<Record<number, UserRole[]>>;
+  onChangeRole: (memberID: number, role: Assistant.Member['role']) => void;
 }
 
-const Members: React.OldFC<MembersProps> = ({ onAdd, onNext, onClose, onRemove, memberIDs, onChangeRoles, memberRolesMap }) => {
+const Members: React.FC<MembersProps> = ({ onAdd, onNext, onClose, members, onRemove, onChangeRole }) => {
   return (
     <>
       <SectionV2.SimpleContentSection
@@ -26,12 +24,12 @@ const Members: React.OldFC<MembersProps> = ({ onAdd, onNext, onClose, onRemove, 
         headerProps={{ bottomUnit: 1.5 }}
         contentProps={{ bottomOffset: 2.5 }}
       >
-        <Assistant.InviteMember onAdd={onAdd} memberIDs={memberIDs} />
+        <Assistant.InviteMember onAdd={onAdd} members={members} />
       </SectionV2.SimpleContentSection>
 
       <SectionV2.Divider inset />
 
-      <Assistant.MembersList memberIDs={memberIDs} memberRolesMap={memberRolesMap} onRemove={onRemove} onChangeRoles={onChangeRoles} />
+      <Assistant.MembersList members={members} onRemove={onRemove} onChangeRole={onChangeRole} />
 
       <Modal.Footer gap={12}>
         <Button variant={Button.Variant.TERTIARY} onClick={() => onClose()} squareRadius>

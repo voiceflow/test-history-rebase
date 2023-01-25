@@ -19,6 +19,7 @@ export interface CreateProjectParams {
   image?: string;
   listID?: string;
   nluType: Platform.Constants.NLUType;
+  members?: Realtime.ProjectMember[];
   platform: Platform.Constants.PlatformType;
   language?: string;
   onboarding?: boolean;
@@ -32,6 +33,7 @@ export const createProject =
     image,
     listID,
     nluType,
+    members,
     platform,
     language,
     onboarding = false,
@@ -62,6 +64,7 @@ export const createProject =
           data: { name, image, _version: Realtime.CURRENT_PROJECT_VERSION },
           listID,
           channel,
+          members,
           modality: projectType,
           language,
           onboarding,
@@ -102,7 +105,9 @@ export const importProjectFromFile =
     }
 
     // use HTTP API to import project because payload is too large for websockets
-    const project = await client.api.version.import(workspaceID, JSON.parse(data)).then(Realtime.Adapters.projectAdapter.fromDB);
+    const dbProject = await client.api.version.import(workspaceID, JSON.parse(data));
+
+    const project = Realtime.Adapters.projectAdapter.fromDB(dbProject, { members: [] });
 
     await dispatch.sync(Realtime.project.importProject({ project, workspaceID }));
 

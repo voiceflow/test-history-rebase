@@ -1,75 +1,67 @@
-import Checkbox, { CheckboxTypes } from '@ui/components/Checkbox';
-import { createDividerMenuItemOption, defaultMenuLabelRenderer, UIOnlyMenuItemOption } from '@ui/components/NestedMenu';
+import { createDividerMenuItemOption, UIOnlyMenuItemOption } from '@ui/components/NestedMenu';
 import Select from '@ui/components/Select';
-import { Utils } from '@voiceflow/common';
 import { UserRole } from '@voiceflow/internal';
 import React from 'react';
 
 interface Option {
   label: string;
-  value?: UserRole;
   onClick: VoidFunction;
-  variant?: CheckboxTypes.Type;
 }
 
-interface RoleSelectProps {
-  roles: UserRole[];
-  onChange: (roles: UserRole[]) => void;
+const ROLE_LABEL_MAP: Record<UserRole, string> = {
+  [UserRole.ADMIN]: 'Admin',
+  [UserRole.OWNER]: 'Owner',
+  [UserRole.EDITOR]: 'Editor',
+  [UserRole.VIEWER]: 'Viewer',
+  [UserRole.BILLING]: 'Billing',
+};
+
+interface RoleSelectProps<T extends UserRole> {
+  value: T;
+  roles?: T[];
+  onChange: (role: T) => void;
   isInvite?: boolean;
   disabled?: boolean;
   onRemove?: VoidFunction;
   onResendInvite?: VoidFunction;
 }
 
-const RoleSelect: React.FC<RoleSelectProps> = ({ roles, isInvite, disabled, onChange, onRemove, onResendInvite }) => {
-  const onChangeViewEditRole = (role: UserRole.EDITOR | UserRole.VIEWER) => {
-    const rolesToRemove = new Set([UserRole.EDITOR, UserRole.VIEWER]);
+const DEFAULT_ROLES = [UserRole.EDITOR, UserRole.VIEWER, UserRole.ADMIN, UserRole.BILLING];
 
-    onChange([...roles.filter((r) => !rolesToRemove.has(r)), role]);
-  };
-
-  const onChangeAdminBillingRole = (role: UserRole.ADMIN | UserRole.BILLING) => {
-    const rolesToRemove = new Set([UserRole.ADMIN, UserRole.BILLING]);
-
-    onChange([...(roles.includes(role) ? roles.filter((r) => r !== role) : [...roles.filter((r) => !rolesToRemove.has(r)), role])]);
-  };
-
+const RoleSelect = <T extends UserRole>({
+  value,
+  roles = DEFAULT_ROLES as T[],
+  isInvite,
+  disabled,
+  onChange,
+  onRemove,
+  onResendInvite,
+}: RoleSelectProps<T>): React.ReactElement => {
   const getOptions = () => {
-    const opts: Array<Option | UIOnlyMenuItemOption> = [
-      { label: 'Can edit', value: UserRole.EDITOR, variant: Checkbox.Type.RADIO, onClick: () => onChangeViewEditRole(UserRole.EDITOR) },
-      { label: 'Can view', value: UserRole.VIEWER, variant: Checkbox.Type.RADIO, onClick: () => onChangeViewEditRole(UserRole.VIEWER) },
-      createDividerMenuItemOption('divider-1'),
-      {
-        label: `${isInvite ? 'Invite' : 'Assign'} as admin`,
-        value: UserRole.ADMIN,
-        variant: Checkbox.Type.CHECKBOX,
-        onClick: () => onChangeAdminBillingRole(UserRole.ADMIN),
-      },
-      {
-        label: `${isInvite ? 'Invite' : 'Assign'} as billing`,
-        value: UserRole.BILLING,
-        variant: Checkbox.Type.CHECKBOX,
-        onClick: () => onChangeAdminBillingRole(UserRole.BILLING),
-      },
-    ];
+    const options: Array<Option | UIOnlyMenuItemOption> = roles.map((role) => ({
+      label: ROLE_LABEL_MAP[role],
+      value: role,
+      onClick: () => onChange(role),
+    }));
 
-    if (onRemove || onResendInvite) {
-      opts.push(createDividerMenuItemOption('divider-2'));
+    if (onRemove || (isInvite && onResendInvite)) {
+      options.push(createDividerMenuItemOption('divider-2'));
     }
 
     if (onRemove) {
-      opts.push({ label: 'Remove from invites', onClick: () => onRemove() });
-    }
-    if (onResendInvite) {
-      opts.push({ label: 'Resend invite', onClick: () => onResendInvite() });
+      options.push({ label: isInvite ? 'Remove from invites' : 'Remove', onClick: () => onRemove() });
     }
 
-    return opts;
+    if (isInvite && onResendInvite) {
+      options.push({ label: 'Resend invite', onClick: () => onResendInvite() });
+    }
+
+    return options;
   };
 
   return (
     <Select<Option>
-      label={roles.includes(UserRole.VIEWER) ? 'Viewer' : 'Editor'}
+      label={ROLE_LABEL_MAP[value]}
       inline
       options={getOptions()}
       onSelect={(option) => option.onClick()}
@@ -78,23 +70,11 @@ const RoleSelect: React.FC<RoleSelectProps> = ({ roles, isInvite, disabled, onCh
       autoWidth={false}
       isDropdown
       borderLess
-      autoDismiss={false}
       getOptionKey={(option) => option.label}
       getOptionLabel={(option) => option?.label}
       isSecondaryInput
       syncOptionsOnRender
       showDropdownColorOnActive
-      renderOptionLabel={(option, searchLabel, getOptionLabel, getOptionValue, config) => {
-        const label = defaultMenuLabelRenderer(option, searchLabel, getOptionLabel, getOptionValue, config);
-
-        if (!option.variant) return label;
-
-        return (
-          <Checkbox type={option.variant} isFlat checked={option.value && roles.includes(option.value)} onChange={Utils.functional.noop}>
-            {label}
-          </Checkbox>
-        );
-      }}
     />
   );
 };

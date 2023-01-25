@@ -48,7 +48,11 @@ class MergeProjects extends AbstractProjectResourceControl<Realtime.project.Merg
       this.services.diagram.getAll(sourceProject.devVersion),
     ]);
 
-    const { nlu: targetNLU, type: targetProjectType, platform: targetProjectPlatform } = Realtime.Adapters.projectAdapter.fromDB(targetProject);
+    const {
+      nlu: targetNLU,
+      type: targetProjectType,
+      platform: targetProjectPlatform,
+    } = Realtime.Adapters.projectAdapter.fromDB(targetProject, { members: [] });
 
     const targetProjectConfig = Platform.Config.getTypeConfig({ type: targetProjectType, platform: targetProjectPlatform });
 

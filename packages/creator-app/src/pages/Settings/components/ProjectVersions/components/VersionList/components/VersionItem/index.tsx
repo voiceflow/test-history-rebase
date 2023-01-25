@@ -14,12 +14,11 @@ import { VersionTag } from '@/constants/platforms';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useModals, useSelector, useTrackingEvents } from '@/hooks';
-import { QUERY_PARAMS } from '@/pages/Project/constants';
 import { ProjectVersion } from '@/pages/Settings/components/ProjectVersions';
 import THEME from '@/styles/theme';
 import { createPlatformSelector } from '@/utils/platform';
 import { isPlatformWithThirdPartyUpload } from '@/utils/typeGuards';
-import { onOpenInternalURLInANewTabFactory } from '@/utils/window';
+import { onOpenInternalURLInANewTabFactory, openURLInANewTab } from '@/utils/window';
 
 import {
   ActionsItemContainer,
@@ -113,7 +112,7 @@ const VersionItem: React.FC<VersionItemProps> = ({ version, restoreEnabled, swap
   };
 
   const handlePreview = () => {
-    window.open(`${generatePath(Path.PROJECT_DOMAIN, { versionID: version.versionID })}?${QUERY_PARAMS.PREVIEWING}=true`, '_blank')?.focus();
+    openURLInANewTab(`${window.location.origin}${generatePath(Path.PROJECT_DOMAIN, { versionID: version.versionID })}`);
 
     trackingEvents.trackVersionPreview({ versionID: version.versionID });
   };
@@ -162,18 +161,9 @@ const VersionItem: React.FC<VersionItemProps> = ({ version, restoreEnabled, swap
             <Menu
               width={103}
               options={[
-                {
-                  label: 'Preview',
-                  onClick: handlePreview,
-                },
-                {
-                  label: '',
-                  divider: true,
-                },
-                {
-                  label: 'Restore',
-                  onClick: () => confirmRestore(version.versionID),
-                },
+                { label: 'Preview', onClick: handlePreview },
+                { label: '', divider: true },
+                { label: 'Restore', onClick: () => confirmRestore(version.versionID) },
               ]}
             />
           }

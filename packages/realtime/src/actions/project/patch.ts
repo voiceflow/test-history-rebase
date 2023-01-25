@@ -1,6 +1,6 @@
+import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { Context } from '@voiceflow/socket-utils';
-import _ from 'lodash';
 import type { Action } from 'typescript-fsa';
 
 import { AbstractWorkspaceChannelControl } from '@/actions/workspace/utils';
@@ -14,7 +14,7 @@ class PatchProject extends AbstractWorkspaceChannelControl<PatchProjectPayload> 
     if (meta?.skipPersist) return;
 
     await this.services.project.patch(ctx.data.creatorID, payload.key, {
-      ..._.pick(payload.value, 'name', 'privacy', 'linkType', 'customThemes', 'apiPrivacy', 'aiAssistSettings'),
+      ...Utils.object.pick(payload.value, ['name', 'privacy', 'linkType', 'customThemes', 'apiPrivacy', 'aiAssistSettings']),
       ...('image' in payload.value && { image: payload.value.image ?? undefined }),
       updatedAt: new Date().toJSON(),
       updatedBy: ctx.data.creatorID,

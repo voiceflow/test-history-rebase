@@ -9,14 +9,15 @@ import {
   TRIAL_EXPIRED_PERMISSION_DEFAULT_WARN_MESSAGE,
 } from '@/constants/permissions';
 import { VirtualRole } from '@/constants/roles';
-import { IdentityContext, IdentityContextValue } from '@/contexts/IdentityContext';
 import { hasPermission, PermissionConfig } from '@/utils/permission';
 
-const checkPermission = <P extends Permission>(identity: IdentityContextValue, permission?: P | null) =>
+import { Identity, IdentityOptions, useIdentity } from './identity';
+
+const checkPermission = <P extends Permission>(identity: Identity, permission?: P | null) =>
   hasPermission<P>({ role: identity.activeRole, plan: identity.activePlan, permission, organizationTrialExpired: identity.organizationTrialExpired });
 
-export const usePermission = <P extends Permission>(permission?: P | null) => {
-  const identity = React.useContext(IdentityContext)!;
+export const usePermission = <P extends Permission>(permission?: P | null, options?: IdentityOptions) => {
+  const identity = useIdentity(options);
 
   return React.useMemo(() => {
     const permissionCheck = checkPermission<P>(identity, permission);
@@ -25,14 +26,14 @@ export const usePermission = <P extends Permission>(permission?: P | null) => {
   }, [identity, permission]);
 };
 
-export const useGetPermission = () => {
-  const identity = React.useContext(IdentityContext)!;
+export const useGetPermission = (options?: IdentityOptions) => {
+  const identity = useIdentity(options);
 
   return React.useCallback(<P extends Permission>(permission?: P | null) => checkPermission<P>(identity, permission), [identity]);
 };
 
-export const useHasPermissions = (permissions: Permission[]): boolean => {
-  const identity = React.useContext(IdentityContext)!;
+export const useHasPermissions = (permissions: Permission[], options?: IdentityOptions): boolean => {
+  const identity = useIdentity(options);
 
   return React.useMemo(() => permissions.every((permission) => checkPermission(identity, permission).allowed), [identity, ...permissions]);
 };
@@ -51,7 +52,7 @@ export const useIsCanvasDesignOnly = () => {
   return !editProjectPermission.allowed && !viewConversationsPermission.allowed;
 };
 
-interface PermissionActionOptions<P extends Permission, Args extends any[] = []> {
+interface PermissionActionOptions<P extends Permission, Args extends any[] = []> extends IdentityOptions {
   /**
    * the callback is called if user has the permission
    */
@@ -101,9 +102,10 @@ export const usePermissionAction = <P extends Permission, Args extends any[] = [
     onDefaultPlanForbid = () => toast.warn(PLAN_PERMISSION_DEFAULT_WARN_MESSAGE),
     onDefaultRoleForbid = () => toast.warn(ROLE_PERMISSION_DEFAULT_WARN_MESSAGE),
     onDefaultTrialForbid = () => toast.warn(TRIAL_EXPIRED_PERMISSION_DEFAULT_WARN_MESSAGE),
+    ...options
   }: PermissionActionOptions<P, Args>
 ): ((...args: Args) => void) => {
-  const getPermission = useGetPermission();
+  const getPermission = useGetPermission(options);
 
   return (...args: Args) => {
     const config = getPermission(permission);

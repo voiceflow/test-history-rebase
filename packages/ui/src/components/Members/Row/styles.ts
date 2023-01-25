@@ -1,3 +1,4 @@
+import Select from '@ui/components/Select';
 import { css, styled } from '@ui/styles';
 
 export const Container = styled.div<{ inset?: boolean; border?: boolean }>`
@@ -54,4 +55,8 @@ export const Email = styled.div`
 
 export const RoleSelectContainer = styled.div`
   margin-right: -12px;
+
+  ${Select.SearchInput} {
+    padding-left: 12px;
+  }
 `;

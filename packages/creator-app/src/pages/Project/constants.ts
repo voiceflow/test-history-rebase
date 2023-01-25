@@ -2,10 +2,6 @@ import { LegacyPath, Path } from '@/config/routes';
 
 export const TIMEOUT_COUNT = 5 * 60 * 1000;
 
-export enum QUERY_PARAMS {
-  PREVIEWING = 'previewing',
-}
-
 export const DIAGRAM_ROUTES = [
   Path.PROJECT_PROTOTYPE,
   Path.DOMAIN_CANVAS,

@@ -30,9 +30,9 @@ export enum Permission {
   MANAGE_ADMIN_COLLABORATORS = 'collaborator.MANAGE_ADMINS',
 
   // project
-  MANAGE_PROJECTS = 'project.MANAGE',
-  SHARE_PROJECT = 'project.SHARE',
   EDIT_PROJECT = 'project.EDIT',
+  SHARE_PROJECT = 'project.SHARE',
+  MANAGE_PROJECTS = 'project.MANAGE',
 
   // export
   CODE_EXPORT = 'export.CODE',
@@ -55,6 +55,9 @@ export enum Permission {
   // billing
   BILLING_SEATS = 'billing.SEATS',
   BILLING_MANAGE = 'billing.MANAGE',
+
+  // domain
+  DOMAIN_EDIT = 'domain.EDIT',
 
   // canvas
   CANVAS_EDIT = 'canvas.EDIT',

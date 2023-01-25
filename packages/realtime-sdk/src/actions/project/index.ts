@@ -1,5 +1,5 @@
 import { createCRUDActions } from '@realtime-sdk/actions/utils';
-import { AnyProject, DBProject } from '@realtime-sdk/models';
+import { AnyProject, DBProject, ProjectMember } from '@realtime-sdk/models';
 import { BaseProjectPayload, BaseWorkspacePayload } from '@realtime-sdk/types';
 import { Utils } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
@@ -8,6 +8,7 @@ import { Optional } from 'utility-types';
 import { projectType } from './utils';
 
 export * as awareness from './awareness';
+export * as member from './member';
 export * from './platform';
 export * from './utils';
 
@@ -15,6 +16,7 @@ export interface CreateProjectPayload extends BaseWorkspacePayload {
   data: Partial<Pick<DBProject, 'teamID' | 'name' | 'image' | '_version'>>;
   listID?: string;
   channel: string;
+  members?: ProjectMember[];
   modality: Platform.Constants.ProjectType;
   language?: string;
   onboarding: boolean;

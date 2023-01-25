@@ -1,4 +1,3 @@
-import { UserRole } from '@voiceflow/internal';
 import * as Platform from '@voiceflow/platform-config';
 import { AssistantCard as UIAssistantCard, AssistantCardProps, Banner, Button } from '@voiceflow/ui';
 import dayjs from 'dayjs';
@@ -7,10 +6,12 @@ import React from 'react';
 
 import { AssistantCard } from '@/components/AssistantCard';
 import Page from '@/components/Page';
+import * as Account from '@/ducks/account';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useDispatch, useSelector } from '@/hooks';
+import { ProjectIdentityProvider } from '@/pages/Project/contexts/ProjectIdentityContext';
 
 import { Sidebar } from '../../components';
 import { getProjectStatusAndMembers } from '../../utils';
@@ -18,16 +19,16 @@ import { EmptySearch, Header } from './components';
 import * as S from './styles';
 
 const customProp: AssistantCardProps = {
-  userRole: UserRole.VIEWER,
   title: 'Webchat - Book a Demo',
   status: 'By Voiceflow',
+  isViewer: true,
 };
 
-const ProjectList: React.OldFC = () => {
+const ProjectList: React.FC = () => {
   const [search, setSearch] = React.useState('');
 
+  const userID = useSelector(Account.userIDSelector)!;
   const projects = useSelector(ProjectV2.allProjectsSelector);
-  const userRole = useSelector(WorkspaceV2.active.userRoleSelector);
   const awarenessViewers = useSelector(ProjectV2.awarenessViewersSelector);
   const getMemberByIDSelector = useSelector(WorkspaceV2.active.getMemberByIDSelector);
 
@@ -82,15 +83,15 @@ const ProjectList: React.OldFC = () => {
         ) : (
           <S.Grid>
             {projectToRender.map((item) => (
-              <AssistantCard
-                {...getProjectStatusAndMembers({ project: item, activeViewers: activeViewersPerProject[item.id], getMemberByIDSelector })}
-                key={item.id}
-                image={item.image}
-                project={item}
-                userRole={userRole ?? undefined}
-                onClickCTA={() => goToCanvasWithVersionID(item.versionID)}
-                onClickLink={() => goToAssistantOverview(item.versionID)}
-              />
+              <ProjectIdentityProvider key={item.id} activeRole={Normal.getOne(item.members, String(userID))?.role ?? null}>
+                <AssistantCard
+                  {...getProjectStatusAndMembers({ project: item, activeViewers: activeViewersPerProject[item.id], getMemberByIDSelector })}
+                  image={item.image}
+                  project={item}
+                  onClickCTA={() => goToCanvasWithVersionID(item.versionID)}
+                  onClickLink={() => goToAssistantOverview(item.versionID)}
+                />
+              </ProjectIdentityProvider>
             ))}
           </S.Grid>
         )}

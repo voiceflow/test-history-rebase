@@ -26,7 +26,7 @@ const SMS: React.FC = () => {
   const [services, setServices] = React.useState<Record<string, MessagingServiceType & { disabled: boolean }> | null>(null);
 
   const projectPlatformData = useSelector(ProjectV2.active.platformDataSelector);
-  const patchProjectPlatformData = useDispatch(ProjectV2.patchPlatformData);
+  const patchProjectPlatformData = useDispatch(ProjectV2.patchActivePlatformData);
 
   const updateMessagingServiceID = async (messagingServiceID?: string | null) => {
     if (!messagingServiceID) return;

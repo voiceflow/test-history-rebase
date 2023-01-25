@@ -11,7 +11,6 @@ export interface UIState {
   local: Record<string, any>;
   canvasNavigation: ControlScheme;
   canvasOnly: boolean;
-  previewing: boolean;
   zoomType: ZoomType;
   isLoadingProjects: boolean;
   commentsVisible: boolean;

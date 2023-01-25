@@ -10,17 +10,19 @@ export interface Board {
 }
 
 export interface PendingWorkspaceMember {
-  creator_id: number | null;
   name: string | null;
   role: UserRole;
   email: string;
   image: string | null;
   created: string;
+  // TODO: refactor to creatorID
+  creator_id: number | null;
 }
 
 export interface WorkspaceMember extends PendingWorkspaceMember {
   name: string;
   image: string;
+  // TODO: refactor to creatorID
   creator_id: number;
 }
 

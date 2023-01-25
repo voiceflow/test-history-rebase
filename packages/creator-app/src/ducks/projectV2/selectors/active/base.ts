@@ -4,7 +4,9 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import * as Normal from 'normal-store';
 import { createSelector } from 'reselect';
 
+import { userIDSelector } from '@/ducks/account/selectors';
 import * as Session from '@/ducks/session';
+import { createCurriedSelector, creatorIDParamSelector } from '@/ducks/utils';
 
 import { getAwarenessViewersByIDSelector } from '../awareness';
 import { getProjectByIDSelector } from '../base';
@@ -12,6 +14,8 @@ import { getProjectByIDSelector } from '../base';
 export const projectSelector = createSelector([Session.activeProjectIDSelector, getProjectByIDSelector], (projectID, getProjectByID) =>
   getProjectByID({ id: projectID })
 );
+
+export const versionIDSelector = createSelector([projectSelector], (project) => project?.versionID);
 
 export const awarenessViewersSelector = createSelector(
   [Session.activeProjectIDSelector, getAwarenessViewersByIDSelector],
@@ -58,3 +62,16 @@ export const vfVersionSelector = createSelector([projectSelector], (project) => 
 export const platformDataSelector = createSelector([projectSelector], (project) => project?.platformData ?? {});
 
 export const updatedAtSelector = createSelector([projectSelector], (project) => project?.updatedAt);
+
+export const membersSelector = createSelector([projectSelector], (project) => project?.members);
+
+export const memberByIDSelector = createSelector([membersSelector, creatorIDParamSelector], (members, creatorID) =>
+  members && creatorID !== null ? Normal.getOne(members, String(creatorID)) : null
+);
+
+export const getMemberByIDSelector = createCurriedSelector(memberByIDSelector);
+
+export const userRoleSelector = createSelector([getMemberByIDSelector, userIDSelector], (getMember, creatorID) => {
+  if (!creatorID) return null;
+  return getMember({ creatorID })?.role ?? null;
+});

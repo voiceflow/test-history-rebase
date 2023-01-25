@@ -12,11 +12,11 @@ import { NLUManagerProvider } from '@/pages/NLUManager/context';
 import { ExportProvider as NLUExportProvider } from '@/pages/Project/components/Header/components/SharePopper/components/Export/Context';
 import { PrototypeProvider } from '@/pages/Prototype/context';
 
-import { LastCreatedComponentProvider, SelectionProvider, TrainingModelProvider } from './contexts';
+import { LastCreatedComponentProvider, ProjectIdentityProvider, ProjectPreviewProvider, SelectionProvider, TrainingModelProvider } from './contexts';
 
-const Providers: React.OldFC = ({ children }) => {
-  return (
-    <>
+const Providers: React.FC<React.PropsWithChildren> = ({ children }) => (
+  <ProjectPreviewProvider>
+    <ProjectIdentityProvider>
       <PrototypeProvider>
         <PrototypeJobProvider>
           <PublishProvider>
@@ -42,8 +42,8 @@ const Providers: React.OldFC = ({ children }) => {
           </PublishProvider>
         </PrototypeJobProvider>
       </PrototypeProvider>
-    </>
-  );
-};
+    </ProjectIdentityProvider>
+  </ProjectPreviewProvider>
+);
 
 export default Providers;

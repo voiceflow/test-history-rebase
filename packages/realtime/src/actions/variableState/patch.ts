@@ -1,6 +1,6 @@
+import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { Context } from '@voiceflow/socket-utils';
-import _ from 'lodash';
 import { Action } from 'typescript-fsa';
 
 import { AbstractVersionResourceControl } from '@/actions/version/utils';
@@ -11,7 +11,8 @@ class PatchVariableState extends AbstractVersionResourceControl<PatchVariableSta
   protected actionCreator = Realtime.variableState.crud.patch;
 
   protected process = async (ctx: Context, { payload }: Action<PatchVariableStatePayload>) => {
-    const updatedVariableState = _.pick(payload.value, 'name', 'startFrom', 'variables');
+    const updatedVariableState = Utils.object.pick(payload.value, ['name', 'startFrom', 'variables']);
+
     await this.services.variableState.patch(ctx.data.creatorID, payload.key, updatedVariableState);
   };
 }

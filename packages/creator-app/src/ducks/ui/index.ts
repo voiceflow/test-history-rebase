@@ -5,16 +5,7 @@ import storageLocal from 'redux-persist/lib/storage';
 import * as Session from '@/ducks/session';
 import { Reducer, RootReducer } from '@/store/types';
 
-import {
-  AnyUIAction,
-  SetCanvasNavigation,
-  SetLoadingProjects,
-  SetPreviewingVersion,
-  SetZoomType,
-  ToggleBlockMenuSection,
-  ToggleFullScreenMode,
-  UIAction,
-} from './actions';
+import { AnyUIAction, SetCanvasNavigation, SetLoadingProjects, SetZoomType, ToggleBlockMenuSection, ToggleFullScreenMode, UIAction } from './actions';
 import { INITIAL_STATE, STATE_KEY } from './constants';
 import { UIState } from './types';
 
@@ -112,11 +103,6 @@ export const toggleDomainThreadsOnlyReducer: Reducer<UIState> = (state) => ({
   domainThreadsOnly: !state.domainThreadsOnly,
 });
 
-export const setPreviewingVersionReducer: Reducer<UIState, SetPreviewingVersion> = (state, { payload: previewing }) => ({
-  ...state,
-  previewing,
-});
-
 export const setLoadingProjectsReducer: Reducer<UIState, SetLoadingProjects> = (state, { payload: isLoadingProjects }) => ({
   ...state,
   isLoadingProjects,
@@ -140,8 +126,6 @@ const uiReducer: RootReducer<UIState, AnyUIAction | Session.SetActiveWorkspaceID
       return toggleCanvasGridReducer(state);
     case UIAction.TOGGLE_FULL_SCREEN_MODE:
       return toggleFullScreenModeReducer(state, action);
-    case UIAction.SET_VIEWING_VERSION:
-      return setPreviewingVersionReducer(state, action);
     case UIAction.SET_ZOOM_TYPE:
       return setZoomTypeReducer(state, action);
     case UIAction.SET_LOADING_PROJECTS:

@@ -27,14 +27,14 @@ const DoubleModal: React.FC<VoidInternalProps> = ({ api, type, opened, hidden, a
 
   const onAddSeats = useOnAddSeats();
 
-  const [roles, setRoles] = React.useState<UserRole[]>([UserRole.EDITOR]);
+  const [role, setRole] = React.useState<UserRole>(UserRole.EDITOR);
   const [inviteLink, setInviteLink] = React.useState('');
 
-  const onFetchInviteLink = async (roles: UserRole[]) => {
+  const onFetchInviteLink = async (role: UserRole) => {
     try {
       setInviteLink('');
 
-      const link = await getWorkspaceInviteLink(roles[0]);
+      const link = await getWorkspaceInviteLink(role);
 
       setInviteLink(link);
     } catch (error) {
@@ -45,7 +45,7 @@ const DoubleModal: React.FC<VoidInternalProps> = ({ api, type, opened, hidden, a
   };
 
   const onCopyLink = async () => {
-    const isEditorRole = isEditorUserRole(roles[0]);
+    const isEditorRole = isEditorUserRole(role);
     const updatedEditorSeats = usedEditorSeats + (isEditorRole ? 1 : 0);
     const editorSeatLimit = getEditorSeatLimit({ value: updatedEditorSeats });
 
@@ -64,13 +64,13 @@ const DoubleModal: React.FC<VoidInternalProps> = ({ api, type, opened, hidden, a
     }
   };
 
-  const onChangeRole = (roles: UserRole[]) => () => {
-    setRoles(roles);
-    onFetchInviteLink(roles);
+  const onChangeRole = (role: UserRole) => () => {
+    setRole(role);
+    onFetchInviteLink(role);
   };
 
   useSetup(() => {
-    onFetchInviteLink(roles);
+    onFetchInviteLink(role);
   });
 
   return (
@@ -94,7 +94,7 @@ const DoubleModal: React.FC<VoidInternalProps> = ({ api, type, opened, hidden, a
               size={16}
               icon="arrowSpin"
               variant={IconButton.Variant.BASIC}
-              onClick={() => onFetchInviteLink(roles)}
+              onClick={() => onFetchInviteLink(role)}
               disabled={!inviteLink}
               iconProps={{ spin: !inviteLink }}
             />
@@ -112,7 +112,7 @@ const DoubleModal: React.FC<VoidInternalProps> = ({ api, type, opened, hidden, a
                 </Input>
               )}
             >
-              {() => <Members.RoleSelect roles={roles} isInvite onChange={onChangeRole} />}
+              {() => <Members.RoleSelect value={role} onChange={onChangeRole} />}
             </SelectInputGroup>
 
             <Button onClick={onCopyLink} disabled={!inviteLink} variant={Button.Variant.PRIMARY}>

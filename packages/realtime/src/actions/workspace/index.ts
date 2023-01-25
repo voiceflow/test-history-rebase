@@ -5,9 +5,9 @@ import CreateWorkspaceControl from './create';
 import LeaveWorkspaceControl from './leave';
 import {
   AcceptInviteControl,
-  AddMemberControl,
+  AddWorkspaceMemberControl,
   CancelInviteControl,
-  EjectMemberControl,
+  EjectWorkspaceMemberControl,
   PatchWorkspaceMemberControl,
   RemoveWorkspaceMemberControl,
   ReplaceWorkspaceMembersControl,
@@ -29,20 +29,22 @@ const buildWorkspaceActionControls = (options: LoguxControlOptions) => ({
   updateWorkspaceImageControl: new UpdateWorkspaceImageControl(options),
   updateWorkspaceNameControl: new UpdateWorkspaceNameControl(options),
 
+  // workspace invite
+  sendWorkspaceInviteControl: new SendInviteControl(options),
+  updateWorkspaceInviteControl: new UpdateInviteControl(options),
+  acceptWorkspaceInviteControl: new AcceptInviteControl(options),
+  cancelWorkspaceInviteControl: new CancelInviteControl(options),
+
   // workspace member
-  addMemberControl: new AddMemberControl(options),
-  sendInviteControl: new SendInviteControl(options),
-  ejectMemberControl: new EjectMemberControl(options),
-  updateInviteControl: new UpdateInviteControl(options),
-  acceptInviteControl: new AcceptInviteControl(options),
-  cancelInviteControl: new CancelInviteControl(options),
+  addWorkspaceMemberControl: new AddWorkspaceMemberControl(options),
   patchWorkspaceMemberControl: new PatchWorkspaceMemberControl(options),
+  ejectWorkspaceMemberControl: new EjectWorkspaceMemberControl(options),
   removeWorkspaceMemberControl: new RemoveWorkspaceMemberControl(options),
   replaceWorkspaceMembersControl: new ReplaceWorkspaceMembersControl(options),
 
   // workspace quotas
-  loadAllQuotasControl: new LoadAllQuotasControl(options),
   replaceQuotaControl: new ReplaceQuotaControl(options),
+  loadAllQuotasControl: new LoadAllQuotasControl(options),
 
   // workspace settings
   toggleDashboardKanbanControl: new ToggleDashboardKanbanControl(options),

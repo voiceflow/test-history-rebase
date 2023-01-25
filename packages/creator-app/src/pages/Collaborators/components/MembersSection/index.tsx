@@ -14,7 +14,7 @@ interface MemberSectionProps {
   resendInvite: (email: string, permissionType: UserRole | null, showToast?: boolean | undefined) => Promise<void>;
 }
 
-const MemberSection: React.OldFC<MemberSectionProps> = ({ inline, members, resendInvite }) => {
+const MemberSection: React.FC<MemberSectionProps> = ({ inline, members, resendInvite }) => {
   const Wrapper = (inline ? InlineContainer : Container) as typeof InlineContainer;
 
   return (

@@ -1,7 +1,7 @@
 import { ServerMeta } from '@logux/server';
+import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { Context, terminateResend } from '@voiceflow/socket-utils';
-import _ from 'lodash';
 import type { Action } from 'typescript-fsa';
 
 import { accessWorkspaces, WorkspaceContextData } from '@/actions/workspace/utils';
@@ -29,10 +29,10 @@ class DuplicateProject extends AbstractProjectResourceControl<Realtime.project.D
 
     const [listID, dbProject] = await Promise.all([
       this.getTargetListID(ctx, targetWorkspaceID, payload.listID),
-      this.services.project.duplicate(creatorID, payload.projectID, _.pick(payload.data, 'name', 'teamID', '_version', 'platform')),
+      this.services.project.duplicate(creatorID, payload.projectID, Utils.object.pick(payload.data, ['name', 'teamID', '_version', 'platform'])),
     ]);
 
-    const project = Realtime.Adapters.projectAdapter.fromDB(dbProject);
+    const project = Realtime.Adapters.projectAdapter.fromDB(dbProject, { members: [] });
 
     await Promise.all([
       this.server.processAs(

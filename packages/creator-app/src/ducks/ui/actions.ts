@@ -13,7 +13,6 @@ export enum UIAction {
   SHOW_CREATOR_MENU = 'UI:CREATOR_MENU:SHOW',
   HIDE_CREATOR_MENU = 'UI:CREATOR_MENU:HIDE',
   TOGGLE_CANVAS_ONLY = 'UI:TOGGLE_CANVAS_ONLY',
-  SET_VIEWING_VERSION = 'UI:SET_VIEWING_VERSION',
   SET_LOADING_PROJECTS = 'UI:SET_LOADING_PROJECTS',
   TOGGLE_COMMENT_VISIBILITY = 'UI:TOGGLE_COMMENT_VISIBILITY',
   TOGGLE_MENTIONED_THREADS_ONLY = 'UI:TOGGLE_MENTIONED_THREADS_ONLY',
@@ -40,8 +39,6 @@ export type ToggleCanvasGrid = Action<UIAction.TOGGLE_CANVAS_GRID, boolean>;
 
 export type ToggleCanvasOnly = Action<UIAction.TOGGLE_CANVAS_ONLY>;
 
-export type SetPreviewingVersion = Action<UIAction.SET_VIEWING_VERSION, boolean>;
-
 export type SetLoadingProjects = Action<UIAction.SET_LOADING_PROJECTS, boolean>;
 
 export type ToggleCommentVisibility = Action<UIAction.TOGGLE_COMMENT_VISIBILITY>;
@@ -61,7 +58,6 @@ export type AnyUIAction =
   | HideCreatorMenu
   | ShowCreatorMenu
   | ToggleCanvasOnly
-  | SetPreviewingVersion
   | SetZoomType
   | SetLoadingProjects
   | ToggleCommentVisibility
@@ -91,8 +87,6 @@ export const setZoomType = (zoomType: ZoomType): SetZoomType => createAction(UIA
 export const toggleCanvasOnly = (): ToggleCanvasOnly => createAction(UIAction.TOGGLE_CANVAS_ONLY);
 
 export const toggleCanvasGrid = (): ToggleCanvasGrid => createAction(UIAction.TOGGLE_CANVAS_GRID);
-
-export const setPreviewingVersion = (previewing: boolean): SetPreviewingVersion => createAction(UIAction.SET_VIEWING_VERSION, previewing);
 
 export const setLoadingProjects = (isLoadingProjects: boolean): SetLoadingProjects => createAction(UIAction.SET_LOADING_PROJECTS, isLoadingProjects);
 

@@ -67,8 +67,8 @@ export const useProjectOptions = ({
   const canExportProject = useHasPermissions([Permission.CANVAS_EXPORT, Permission.MODEL_EXPORT]);
   const [canEditProject] = usePermission(Permission.EDIT_PROJECT);
   const [canShareProject] = usePermission(Permission.SHARE_PROJECT);
-  const [canManageProjects] = usePermission(Permission.MANAGE_PROJECTS);
-  const [canAddCollaborators] = usePermission(Permission.ADD_COLLABORATORS);
+  const [canManageProjects] = usePermission(Permission.MANAGE_PROJECTS, { workspaceLevelOnly: true });
+  const [canAddCollaborators] = usePermission(Permission.ADD_COLLABORATORS, { workspaceLevelOnly: true });
 
   const workspace = useActiveWorkspace();
   const projectsCount = useSelector(ProjectV2.projectsCountSelector);
@@ -169,7 +169,7 @@ export const useProjectOptions = ({
   const withInviteOption = withInvite && canAddCollaborators && ((v2 && projectMembersModal) || sharePopper);
   const withDeleteOption = withDelete && canManageProjects;
   const withExportOption = canExportProject && sharePopper;
-  const withRenameOption = canManageProjects && onRename;
+  const withRenameOption = canEditProject && onRename;
   const withHistoryOption = canManageProjects && targetVersionID;
   const withSettingsOption = canEditProject && targetVersionID;
 
@@ -177,12 +177,12 @@ export const useProjectOptions = ({
     return [
       withRenameOption ? { label: 'Rename', onClick: onRename } : null,
       canManageProjects ? { label: 'Duplicate', onClick: onDuplicate } : null,
-      canManageProjects ? { label: 'Download', onClick: onExport } : null,
+      canExportProject ? { label: 'Download', onClick: onExport } : null,
       canManageProjects ? { label: 'Copy clone link', onClick: onClone } : null,
       canManageProjects && withConvertToDomain ? { label: 'Convert to domain', onClick: onCovertToDomain } : null,
 
-      withSettingsOption ? { label: 'divider-1', divider: true } : null,
-      withInviteOption ? { label: 'Manage access', onClick: () => projectMembersModal.openVoid() } : null,
+      canExportProject || canManageProjects || withRenameOption ? { label: 'divider-1', divider: true } : null,
+      withInviteOption ? { label: 'Manage access', onClick: () => projectID && projectMembersModal.openVoid({ projectID }) } : null,
 
       withSettingsOption ? { label: 'Settings', onClick: () => goToSettings(targetVersionID) } : null,
 

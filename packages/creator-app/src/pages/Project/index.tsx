@@ -15,10 +15,9 @@ import { VersionSubscriptionGate, WorkspaceFeatureLoadingGate } from '@/gates';
 import { lazy } from '@/hocs/lazy';
 import { withBatchLoadingGate } from '@/hocs/withBatchLoadingGate';
 import { withWorkspaceOrProjectAssetsSuspense } from '@/hocs/withWorkspaceOrProjectAssetsSuspense';
-import { useDispatch, useEventualEngine, useFeature, useLayoutDidUpdate, useLocalDispatch, useSelector, useTeardown, useTheme } from '@/hooks';
+import { useEventualEngine, useFeature, useLayoutDidUpdate, useLocalDispatch, useSelector, useTeardown, useTheme } from '@/hooks';
 import ExportModelModal from '@/pages/Canvas/components/ExportModelModal';
 import { ExportProvider } from '@/pages/Project/components/Header/components/SharePopper/components/Export';
-import { useProjectPreviewMode } from '@/pages/Project/hooks';
 import Providers from '@/pages/Project/Providers';
 import PrototypeWebhook from '@/pages/PrototypeWebhook';
 
@@ -46,7 +45,6 @@ const Project: React.OldFC = () => {
   const canvasOnly = useSelector(UI.isCanvasOnlyShowingSelector);
   const projectName = useSelector(ProjectV2.active.nameSelector);
   const isOnlyViewer = useSelector(DiagramV2.isOnlyViewerSelector);
-  const setPreviewing = useDispatch(UI.setPreviewingVersion);
   const resetCreator = useLocalDispatch(Realtime.creator.reset);
   const resetCanvasTemplateData = useLocalDispatch(Realtime.canvasTemplate.reset);
   const dashboardV2FF = useFeature(Realtime.FeatureFlag.DASHBOARD_V2);
@@ -55,8 +53,6 @@ const Project: React.OldFC = () => {
   const nluManager = useFeature(Realtime.FeatureFlag.NLU_MANAGER);
   const analyticsDashboard = useFeature(Realtime.FeatureFlag.ANALYTICS_DASHBOARD);
   const disableIntegration = useFeature(Realtime.FeatureFlag.DISABLE_INTEGRATION)?.isEnabled;
-
-  const isPreviewRoute = useProjectPreviewMode();
 
   const setActive = usePersistFunction(() => {
     inactivitySnackbar.close();
@@ -76,10 +72,6 @@ const Project: React.OldFC = () => {
     startOnMount: false,
     startManually: true,
   });
-
-  React.useEffect(() => {
-    setPreviewing(!!isPreviewRoute);
-  }, [isPreviewRoute]);
 
   React.useEffect(() => {
     if (isOnlyViewer) return Utils.functional.noop;

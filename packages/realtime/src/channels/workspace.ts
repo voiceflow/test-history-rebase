@@ -11,7 +11,8 @@ class WorkspaceChannel extends AbstractChannelControl<Realtime.Channels.Workspac
 
   private static normalizeProjectLists(
     dbProjects: Realtime.DBProject[],
-    dbProjectLists: Realtime.DBProjectList[]
+    dbProjectLists: Realtime.DBProjectList[],
+    membersPerProject: Partial<Record<string, Realtime.ProjectMember[]>>
   ): [projects: Realtime.AnyProject[], projectLists: Realtime.ProjectList[]] {
     const projectIDsSet = new Set(dbProjects.map(({ _id }) => _id));
 
@@ -41,7 +42,10 @@ class WorkspaceChannel extends AbstractChannelControl<Realtime.Channels.Workspac
       }
     }
 
-    return [Realtime.Adapters.projectAdapter.mapFromDB(dbProjects), Realtime.Adapters.projectListAdapter.mapFromDB(normalizedLists)];
+    return [
+      Realtime.Adapters.projectAdapter.mapFromDB(dbProjects, { membersPerProject }),
+      Realtime.Adapters.projectListAdapter.mapFromDB(normalizedLists),
+    ];
   }
 
   protected access = async (ctx: ChannelContext<Realtime.Channels.WorkspaceChannelParams>): Promise<boolean> => {
@@ -58,18 +62,20 @@ class WorkspaceChannel extends AbstractChannelControl<Realtime.Channels.Workspac
       Realtime.FeatureFlag.IDENTITY_WORKSPACE
     );
 
-    const [dbProjects, dbProjectLists, viewersPerProject, workspaceMembers, workspaceQuotas, workspaceSettings] = await Promise.all([
-      this.services.project.getAll(creatorID, workspaceID),
-      this.services.projectList.getAll(creatorID, workspaceID),
-      this.services.workspace.getConnectedViewersPerProject(workspaceID),
-      isIdentityWorkspaceEnabled ? this.services.workspace.member.getAll(creatorID, workspaceID) : Promise.resolve([]),
-      isIdentityWorkspaceEnabled ? this.services.billing.getWorkspaceQuotas(creatorID, workspaceID).catch(() => []) : Promise.resolve([]),
-      isIdentityWorkspaceEnabled
-        ? this.services.workspace.settings.getAll(workspaceID, creatorID)
-        : Promise.resolve(Realtime.Adapters.workspaceSettingsAdapter.fromDB({})),
-    ]);
+    const [dbProjects, dbProjectLists, viewersPerProject, workspaceMembers, membersPerProject, workspaceQuotas, workspaceSettings] =
+      await Promise.all([
+        this.services.project.getAll(creatorID, workspaceID),
+        this.services.projectList.getAll(creatorID, workspaceID),
+        this.services.workspace.getConnectedViewersPerProject(workspaceID),
+        isIdentityWorkspaceEnabled ? this.services.workspace.member.getAll(creatorID, workspaceID) : Promise.resolve([]),
+        isIdentityWorkspaceEnabled ? this.services.project.member.getAllForWorkspace(creatorID, workspaceID) : Promise.resolve({}),
+        isIdentityWorkspaceEnabled ? this.services.billing.getWorkspaceQuotas(creatorID, workspaceID).catch(() => []) : Promise.resolve([]),
+        isIdentityWorkspaceEnabled
+          ? this.services.workspace.settings.getAll(workspaceID, creatorID)
+          : Promise.resolve(Realtime.Adapters.workspaceSettingsAdapter.fromDB({})),
+      ]);
 
-    const [projects, projectLists] = WorkspaceChannel.normalizeProjectLists(dbProjects, dbProjectLists);
+    const [projects, projectLists] = WorkspaceChannel.normalizeProjectLists(dbProjects, dbProjectLists, membersPerProject);
 
     return [
       ...(isIdentityWorkspaceEnabled ? [Realtime.workspace.member.replace({ workspaceID, members: workspaceMembers })] : []),
@@ -77,7 +83,7 @@ class WorkspaceChannel extends AbstractChannelControl<Realtime.Channels.Workspac
       Realtime.project.crud.replace({
         values: this.isGESubprotocol(ctx, Realtime.Subprotocol.Version.V1_1_1)
           ? projects
-          : projects.map((project) => ({ ...project, members: Normal.denormalize(project.platformMembers) })),
+          : projects.map((project) => ({ ...project, members: Normal.denormalize(project.platformMembers) } as any)),
         workspaceID,
       }),
       Realtime.projectList.crud.replace({ values: projectLists, workspaceID }),

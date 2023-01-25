@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/common';
 import { UserRole } from '@voiceflow/internal';
 import { Button, Flex, Members } from '@voiceflow/ui';
 import React from 'react';
@@ -7,25 +8,35 @@ import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useSelector } from '@/hooks/redux';
 import { Identifier } from '@/styles/constants';
 
+import { Member } from '../../types';
+
 interface InviteMemberProps {
-  onAdd: (member: number) => void;
-  memberIDs: number[];
+  onAdd: (member: Member) => void;
+  members: Member[];
 }
 
-const InviteMember: React.FC<InviteMemberProps> = ({ onAdd: onAddProp, memberIDs }) => {
-  const members = useSelector(WorkspaceV2.active.normalizedMembersSelector);
+const InviteMember: React.FC<InviteMemberProps> = ({ onAdd: onAddProp, members }) => {
+  const workspaceMembers = useSelector(WorkspaceV2.active.normalizedMembersSelector);
 
-  const [roles, setRoles] = React.useState<UserRole[]>([UserRole.EDITOR]);
+  const [role, setRole] = React.useState<UserRole.VIEWER | UserRole.EDITOR>(UserRole.EDITOR);
   const [memberID, setMemberID] = React.useState<number | null>(null);
 
   const onAdd = () => {
     if (memberID === null) return;
 
-    onAddProp(memberID);
+    const member = workspaceMembers.find((member) => member.creator_id === memberID);
+
+    if (!member) return;
+
+    onAddProp({ ...member, role });
     setMemberID(null);
   };
 
-  const membersToAdd = React.useMemo(() => members.filter((member) => !memberIDs.includes(member.creator_id)), [memberIDs, members]);
+  const membersToAdd = React.useMemo(() => {
+    const membersMap = Utils.array.createMap(members, (member) => member.creator_id);
+
+    return workspaceMembers.filter((workspaceMember) => !membersMap[workspaceMember.creator_id]);
+  }, [members, workspaceMembers]);
 
   return (
     <Flex gap={12} fullWidth>
@@ -34,7 +45,7 @@ const InviteMember: React.FC<InviteMemberProps> = ({ onAdd: onAddProp, memberIDs
           <Members.Select {...props} value={memberID} members={membersToAdd} onChange={setMemberID} fullWidth />
         )}
       >
-        {() => (!memberID ? <></> : <Members.RoleSelect roles={roles} onChange={setRoles} />)}
+        {() => (!memberID ? <></> : <Members.RoleSelect value={role} roles={[UserRole.EDITOR, UserRole.VIEWER]} onChange={setRole} />)}
       </SelectInputGroup>
 
       <Button id={Identifier.COLLAB_SEND_INVITE_BUTTON} onClick={onAdd} disabled={memberID === null} variant={Button.Variant.PRIMARY}>

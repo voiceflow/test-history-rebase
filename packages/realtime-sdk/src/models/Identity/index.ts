@@ -1,4 +1,5 @@
 export * from './ApiKey';
+export * from './ProjectMember';
 export * from './SAMLProvider';
 export * from './User';
 export * from './Workspace';

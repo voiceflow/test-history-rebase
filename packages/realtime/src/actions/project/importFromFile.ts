@@ -15,7 +15,7 @@ class ImportProjectFromFile extends AbstractProjectResourceControl<Realtime.proj
       this.services.project.importFromFile(creatorID, payload.workspaceID, { data: payload.data, vfVersion: payload.vfVersion }),
     ]);
 
-    const project = Realtime.Adapters.projectAdapter.fromDB(dbProject);
+    const project = Realtime.Adapters.projectAdapter.fromDB(dbProject, { members: [] });
 
     await Promise.all([
       this.server.processAs(

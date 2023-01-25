@@ -12,13 +12,14 @@ export interface SearchInputProps {
   borderLess?: boolean;
   isSecondary?: boolean;
   withLeftIcon?: boolean;
+  withRightIcon?: boolean;
   withClearIcon?: boolean;
   isDropDownOpened?: boolean;
 }
 
 const SearchInput = styled(Input)<SearchInputProps>`
   height: ${({ theme }) => theme.components.input.height}px;
-  padding-right: 34px;
+
   ${({ color }) =>
     color &&
     css`
@@ -29,6 +30,12 @@ const SearchInput = styled(Input)<SearchInputProps>`
     withLeftIcon &&
     css`
       padding-left: 44px;
+    `}
+
+  ${({ withRightIcon }) =>
+    withRightIcon &&
+    css`
+      padding-right: 34px;
     `}
 
   ${({ ellipsis }) =>
@@ -51,6 +58,21 @@ const SearchInput = styled(Input)<SearchInputProps>`
     css`
       &[disabled] {
         color: #132144;
+      }
+    `}
+
+  ${({ isSecondary }) =>
+    isSecondary &&
+    css`
+      font-size: 13px;
+      color: #62778c;
+      font-weight: 600;
+      text-transform: uppercase;
+
+      &[disabled] {
+        color: #62778c;
+        opacity: 0.85;
+        pointer-events: none;
       }
     `}
 

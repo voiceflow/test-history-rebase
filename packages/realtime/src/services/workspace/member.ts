@@ -22,34 +22,29 @@ class WorkspaceMemberService extends AbstractControl {
     return client.workspace.listMembers(workspaceID);
   }
 
-  public async patch(
-    creatorID: number,
-    workspaceID: string,
-    memberCreatorID: number,
-    { role }: Pick<Realtime.WorkspaceMember, 'role'>
-  ): Promise<void> {
+  public async patch(creatorID: number, workspaceID: string, memberID: number, { role }: Pick<Realtime.WorkspaceMember, 'role'>): Promise<void> {
     const [client, identityWorkspaceMemberEnabled] = await Promise.all([
       this.services.voiceflow.getClientByUserID(creatorID),
       this.services.workspace.isFeatureEnabled(creatorID, workspaceID, Realtime.FeatureFlag.IDENTITY_WORKSPACE_MEMBER),
     ]);
 
     if (identityWorkspaceMemberEnabled) {
-      await client.identity.workspaceMember.update(workspaceID, memberCreatorID, { role });
+      await client.identity.workspaceMember.update(workspaceID, memberID, { role });
     } else {
-      await client.workspace.patchMember(workspaceID, memberCreatorID, { role });
+      await client.workspace.patchMember(workspaceID, memberID, { role });
     }
   }
 
-  public async remove(creatorID: number, workspaceID: string, memberCreatorID: number): Promise<void> {
+  public async remove(creatorID: number, workspaceID: string, memberID: number): Promise<void> {
     const [client, identityWorkspaceMemberEnabled] = await Promise.all([
       this.services.voiceflow.getClientByUserID(creatorID),
       this.services.workspace.isFeatureEnabled(creatorID, workspaceID, Realtime.FeatureFlag.IDENTITY_WORKSPACE_MEMBER),
     ]);
 
     if (identityWorkspaceMemberEnabled) {
-      await client.identity.workspaceMember.remove(workspaceID, memberCreatorID);
+      await client.identity.workspaceMember.remove(workspaceID, memberID);
     } else {
-      await client.workspace.removeMember(workspaceID, memberCreatorID);
+      await client.workspace.removeMember(workspaceID, memberID);
     }
   }
 

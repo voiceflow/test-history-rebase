@@ -1,11 +1,13 @@
-import { Nullable, Utils } from '@voiceflow/common';
+import { Nullable } from '@voiceflow/common';
 import { UserRole } from '@voiceflow/internal';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { FullSpinner, IconButton, Modal, Portal, SectionV2, Switch, toast, useSmartReducerV2 } from '@voiceflow/ui';
 import React from 'react';
 
+import * as Assistant from '@/components/Assistant';
 import * as Account from '@/ducks/account';
+import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useFeature } from '@/hooks/feature';
 import { useSelector } from '@/hooks/redux';
 import { NLUImportModel } from '@/models';
@@ -18,6 +20,7 @@ import { ChooseType, Members, NLUSetup, PlatformSetup } from './screens';
 
 const Create = manager.create<{ listID?: string }>('CreateProject', () => ({ api, type, opened, listID, hidden, animated }) => {
   const userID = useSelector(Account.userIDSelector)!;
+  const userMember = useSelector(WorkspaceV2.active.memberByIDSelector, { creatorID: userID });
 
   const dashboardV2 = useFeature(Realtime.FeatureFlag.DASHBOARD_V2);
 
@@ -27,13 +30,12 @@ const Create = manager.create<{ listID?: string }>('CreateProject', () => ({ api
     type: null as Nullable<Platform.Constants.ProjectType>,
     image: null as Nullable<string>,
     screen: Screen.CHOOSE_TYPE,
+    members: (userMember ? [{ ...userMember, role: UserRole.EDITOR }] : []) as Assistant.Member[],
     locales: [] as string[],
     creating: false,
     platform: null as Nullable<Platform.Constants.PlatformType>,
-    memberIDs: [userID] as number[],
     secondScreen: null as Nullable<Screen.NLU_SETUP | Screen.PLATFORM_SETUP>,
     importedModel: null as Nullable<NLUImportModel>,
-    memberRolesMap: { [userID]: [UserRole.EDITOR] } as Partial<Record<number, UserRole[]>>,
   });
 
   const onCreateProject = useProjectCreate();
@@ -66,6 +68,7 @@ const Create = manager.create<{ listID?: string }>('CreateProject', () => ({ api
         type: state.type,
         image: state.image,
         listID,
+        members: state.members.map((member) => ({ role: member.role, creatorID: member.creator_id })),
         locales: state.locales,
         platform: state.platform,
         importedModel: state.importedModel,
@@ -86,24 +89,16 @@ const Create = manager.create<{ listID?: string }>('CreateProject', () => ({ api
     }
   };
 
-  const onAddMember = (memberID: number) => {
-    stateAPI.update(({ memberIDs, memberRolesMap }) => ({
-      memberIDs: [...memberIDs, memberID],
-      memberRolesMap: { ...memberRolesMap, [memberID]: [UserRole.EDITOR] },
-    }));
+  const onAddMember = (member: Assistant.Member) => {
+    stateAPI.update(({ members }) => ({ members: [...members, member] }));
   };
 
   const onRemoveMember = (memberID: number) => {
-    stateAPI.update(({ memberIDs, memberRolesMap }) => ({
-      memberIDs: memberIDs.filter((id) => id !== memberID),
-      memberRolesMap: Utils.object.omit(memberRolesMap, [memberID]),
-    }));
+    stateAPI.update(({ members }) => ({ members: members.filter((member) => member.creator_id !== memberID) }));
   };
 
-  const onChangeMemberRoles = (memberID: number, roles: UserRole[]) => {
-    stateAPI.update(({ memberRolesMap }) => ({
-      memberRolesMap: { ...memberRolesMap, [memberID]: roles },
-    }));
+  const onChangeMemberRole = (memberID: number, role: Assistant.Member['role']) => {
+    stateAPI.update(({ members }) => ({ members: members.map((member) => (member.creator_id === memberID ? { ...member, role } : member)) }));
   };
 
   return (
@@ -164,11 +159,10 @@ const Create = manager.create<{ listID?: string }>('CreateProject', () => ({ api
             <Members
               onAdd={onAddMember}
               onNext={onFinish}
+              members={state.members}
               onClose={api.close}
               onRemove={onRemoveMember}
-              memberIDs={state.memberIDs}
-              onChangeRoles={onChangeMemberRoles}
-              memberRolesMap={state.memberRolesMap}
+              onChangeRole={onChangeMemberRole}
             />
           </Switch.Pane>
         </Switch>

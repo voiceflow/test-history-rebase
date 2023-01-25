@@ -21,15 +21,15 @@ const alexaMembersSelector = createSelector([projectSelector], (project) => proj
 
 const alexaNormalizedMembersSelector = createSelector([alexaMembersSelector], (members) => (members ? Normal.denormalize(members) : []));
 
-const ownMemberSelector = createSelector(
+const ownAlexaMemberSelector = createSelector(
   [userIDSelector, alexaNormalizedMembersSelector],
   (creatorID, members) => members.find((member) => member.creatorID === creatorID) ?? null
 );
 
-export const ownVendorIDSelector = createSelector([ownMemberSelector], (member) => member?.platformData.selectedVendor ?? null);
+export const ownVendorIDSelector = createSelector([ownAlexaMemberSelector], (member) => member?.platformData.selectedVendor ?? null);
 
 export const vendorByIDSelector = createSelector(
-  [ownMemberSelector, idParamSelector],
+  [ownAlexaMemberSelector, idParamSelector],
   (member, vendorID) => member?.platformData.vendors.find((vendor) => vendor.vendorID === vendorID) ?? null
 );
 

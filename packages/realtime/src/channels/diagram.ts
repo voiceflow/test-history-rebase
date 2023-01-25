@@ -27,13 +27,15 @@ class DiagramChannel extends AbstractChannelControl<Realtime.Channels.DiagramCha
     // the timestamp of Realtime.creator.initialize is when this.services.diagram.get is called, not when it is resolved
     const initializeMeta = { id: this.server.log.generateId() };
 
-    const [diagram, project, diagramLocks] = await Promise.all([
+    const [dbDiagram, dbProject, diagramLocks] = await Promise.all([
       this.services.diagram.get(ctx.params.diagramID),
-      this.services.project.get(creatorID, ctx.params.projectID).then(Realtime.Adapters.projectAdapter.fromDB),
+      this.services.project.get(creatorID, ctx.params.projectID),
       this.services.lock.getAllLocks<Realtime.diagram.awareness.LockEntityType>(ctx.params.diagramID),
     ]);
 
-    const { nodes, data, ports, links } = Realtime.Adapters.creatorAdapter.fromDB(diagram, {
+    const project = Realtime.Adapters.projectAdapter.fromDB(dbProject, { members: [] });
+
+    const { nodes, data, ports, links } = Realtime.Adapters.creatorAdapter.fromDB(dbDiagram, {
       platform: project.platform,
       projectType: project.type,
       context: {},
@@ -61,9 +63,9 @@ class DiagramChannel extends AbstractChannelControl<Realtime.Channels.DiagramCha
         Realtime.diagram.viewport.rehydrate({
           viewport: {
             id: ctx.params.diagramID,
-            x: diagram.offsetX,
-            y: diagram.offsetY,
-            zoom: diagram.zoom,
+            x: dbDiagram.offsetX,
+            y: dbDiagram.offsetY,
+            zoom: dbDiagram.zoom,
           },
         }),
         {},

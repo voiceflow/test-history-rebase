@@ -5,6 +5,7 @@ import * as Errors from '@/config/errors';
 import { userIDSelector } from '@/ducks/account/selectors';
 import * as Router from '@/ducks/router/actions';
 import { waitAsync } from '@/ducks/utils';
+import { getActiveWorkspaceContext } from '@/ducks/workspace/utils';
 import { Thunk } from '@/store/types';
 
 import { idSelector } from './selectors/active/base';
@@ -26,7 +27,31 @@ export const ejectUsersFromProject =
     }
   };
 
-export const patchPlatformData =
+export const addMember =
+  (projectID: string, member: Realtime.ProjectMember): Thunk =>
+  async (dispatch, getState) => {
+    const state = getState();
+
+    await dispatch.sync(Realtime.project.member.add({ ...getActiveWorkspaceContext(state), projectID, member }));
+  };
+
+export const patchMember =
+  (projectID: string, creatorID: number, member: Pick<Realtime.ProjectMember, 'role'>): Thunk =>
+  async (dispatch, getState) => {
+    const state = getState();
+
+    await dispatch.sync(Realtime.project.member.patch({ ...getActiveWorkspaceContext(state), projectID, creatorID, member }));
+  };
+
+export const removeMember =
+  (projectID: string, creatorID: number): Thunk =>
+  async (dispatch, getState) => {
+    const state = getState();
+
+    await dispatch.sync(Realtime.project.member.remove({ ...getActiveWorkspaceContext(state), projectID, creatorID }));
+  };
+
+export const patchActivePlatformData =
   (platformData: Record<string, unknown>): Thunk =>
   async (dispatch, getState) => {
     const state = getState();

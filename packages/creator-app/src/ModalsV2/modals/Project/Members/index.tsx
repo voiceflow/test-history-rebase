@@ -1,46 +1,62 @@
 import { Utils } from '@voiceflow/common';
-import { UserRole } from '@voiceflow/internal';
 import { Box, Button, ButtonVariant, Modal, SectionV2 } from '@voiceflow/ui';
+import * as Normal from 'normal-store';
 import React from 'react';
 
-import Assistant from '@/components/Assistant';
+import * as Assistant from '@/components/Assistant';
 import Workspace from '@/components/Workspace';
+import * as ProjectV2 from '@/ducks/projectV2';
+import * as WorkspaceV2 from '@/ducks/workspaceV2';
+import { useDispatch } from '@/hooks/realtime';
+import { useSelector } from '@/hooks/redux';
 
 import manager from '../../../manager';
 
-const Members = manager.create('ProjectMembers', () => ({ api, type, opened, hidden, animated }) => {
-  // FIXME: We don't have a list of assistant members yet, once we do, we need to use it here.
-  const [memberIDs, setMembers] = React.useState<number[]>([]);
-  const [memberRolesMap, setMemberRolesMap] = React.useState<Partial<Record<number, UserRole[]>>>({});
+interface Props {
+  projectID: string;
+}
 
-  // FIXME: Move to redux side effects to reuse in the assistant create modal
-  const onAdd = (memberID: number) => {
-    setMembers([...memberIDs, memberID]);
-    setMemberRolesMap({ ...memberRolesMap, [memberID]: [UserRole.EDITOR] });
-  };
+const Members = manager.create<Props>('ProjectMembers', () => ({ api, type, opened, hidden, animated, projectID }) => {
+  const projectMembers = useSelector(ProjectV2.membersByProjectIDSelector, { id: projectID });
+  const workspaceMembers = useSelector(WorkspaceV2.active.membersSelector);
 
-  // FIXME: Move to redux side effects to reuse in the assistant create modal
-  const onRemove = (memberID: number) => {
-    setMembers(memberIDs.filter((id) => id !== memberID));
-    setMemberRolesMap(Utils.object.omit(memberRolesMap, [memberID]));
-  };
+  const addMember = useDispatch(ProjectV2.addMember, projectID);
+  const patchMember = useDispatch(ProjectV2.patchMember, projectID);
+  const removeMember = useDispatch(ProjectV2.removeMember, projectID);
 
-  // FIXME: Move to redux side effects to reuse in the assistant create modal
-  const onChangeRoles = (memberID: number, roles: UserRole[]) => {
-    setMemberRolesMap({ ...memberRolesMap, [memberID]: roles });
-  };
+  const members = React.useMemo<Assistant.Member[]>(() => {
+    if (!workspaceMembers || !projectMembers) return [];
+
+    return projectMembers.allKeys
+      .map((memberID) => {
+        const projectMember = Normal.getOne(projectMembers, memberID);
+        const workspaceMember = Normal.getOne(workspaceMembers, memberID);
+
+        if (!projectMember || !workspaceMember) return null;
+
+        return {
+          ...workspaceMember,
+          role: projectMember.role,
+        };
+      })
+      .filter(Utils.array.isNotNullish);
+  }, [projectMembers, workspaceMembers]);
 
   return (
     <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} maxWidth={500}>
       <Modal.Header>Manage Assistant Access</Modal.Header>
 
       <Box mx={32}>
-        <Assistant.InviteMember onAdd={onAdd} memberIDs={memberIDs} />
+        <Assistant.InviteMember onAdd={(member) => addMember({ role: member.role, creatorID: member.creator_id })} members={members} />
       </Box>
 
       <SectionV2.Divider offset={[20, 0]} />
 
-      <Assistant.MembersList memberIDs={memberIDs} memberRolesMap={memberRolesMap} onRemove={onRemove} onChangeRoles={onChangeRoles} />
+      <Assistant.MembersList
+        members={members}
+        onRemove={(memberID) => removeMember(memberID)}
+        onChangeRole={(memberID, role) => patchMember(memberID, { role })}
+      />
 
       <SectionV2.Divider inset offset={[0, 16]} />
 
@@ -53,7 +69,7 @@ const Members = manager.create('ProjectMembers', () => ({ api, type, opened, hid
           Cancel
         </Button>
 
-        <Button variant={ButtonVariant.PRIMARY}>Invite & Pay</Button>
+        <Button variant={ButtonVariant.PRIMARY}>Done</Button>
       </Modal.Footer>
     </Modal>
   );

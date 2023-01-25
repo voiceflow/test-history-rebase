@@ -30,6 +30,7 @@ export const ROLE_PERMISSIONS = buildRolePermissionRecord([
   { permission: Permission.VIEW_COLLABORATORS, roles: SIGNED_USER_ROLES },
 
   // editor
+  { permission: Permission.DOMAIN_EDIT, roles: EDITOR_USER_ROLES },
   { permission: Permission.CANVAS_EDIT, roles: EDITOR_USER_ROLES },
   { permission: Permission.EDIT_PROJECT, roles: EDITOR_USER_ROLES },
   { permission: Permission.API_KEY_EDIT, roles: EDITOR_USER_ROLES },

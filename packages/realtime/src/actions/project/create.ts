@@ -1,6 +1,6 @@
+import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { terminateResend } from '@voiceflow/socket-utils';
-import _ from 'lodash';
 
 import { AbstractProjectResourceControl } from './utils';
 
@@ -17,12 +17,20 @@ class CreateProject extends AbstractProjectResourceControl<Realtime.project.Crea
       this.services.project.create(
         creatorID,
         payload.templateID,
-        { ..._.pick(payload.data, 'name', 'image', '_version'), teamID: payload.workspaceID },
+        { ...Utils.object.pick(payload.data, ['name', 'image', '_version']), teamID: payload.workspaceID },
         { modality: payload.modality, channel: payload.channel, language: payload.language, onboarding: payload.onboarding }
       ),
     ]);
 
-    const project = Realtime.Adapters.projectAdapter.fromDB(dbProject);
+    let members: Realtime.ProjectMember[] = [];
+
+    if (payload.members) {
+      await this.services.project.member.addMany(creatorID, dbProject._id, payload.members);
+
+      members = payload.members;
+    }
+
+    const project = Realtime.Adapters.projectAdapter.fromDB(dbProject, { members });
 
     await Promise.all([
       this.server.processAs(

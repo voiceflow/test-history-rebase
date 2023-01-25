@@ -52,7 +52,7 @@ const AgentSettings: React.OldFC<AgentSettingsProps> = ({ onValid, waitOnAgent =
   const agent: GCPAgent | null = useSelector(Project.active.platformDataSelector)?.agent || null;
 
   const patchVersionPublishing = useDispatch(Version.patchPublishing);
-  const patchProjectPlatformData = useDispatch(Project.patchPlatformData);
+  const patchProjectPlatformData = useDispatch(Project.patchActivePlatformData);
   const hasGoogleAccount = !!useSelector(Account.googleAccountSelector);
 
   const [state, api] = useSmartReducerV2<WaitAgentState>({

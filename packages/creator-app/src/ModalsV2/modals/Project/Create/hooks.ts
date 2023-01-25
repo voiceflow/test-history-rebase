@@ -17,6 +17,7 @@ interface CreateProjectOptions {
   image: string | null;
   listID?: string;
   locales: string[];
+  members: Realtime.ProjectMember[];
   platform: Platform.Constants.PlatformType;
   importedModel: NLUImportModel | null;
 }
@@ -79,7 +80,7 @@ export const useProjectCreate = () => {
   const modelImportTracking = useModelTracking();
   const onUpdateChannelMeta = useUpdateChannelMeta();
 
-  return async ({ nlu, type, name, image, listID, locales, platform, importedModel }: CreateProjectOptions) => {
+  return async ({ nlu, type, name, image, listID, members, locales, platform, importedModel }: CreateProjectOptions) => {
     const projectConfig = Platform.Config.getTypeConfig({ type, platform });
     const platformConfig = Platform.Config.get(platform);
 
@@ -90,6 +91,7 @@ export const useProjectCreate = () => {
       image: image ?? undefined,
       listID,
       nluType: nlu,
+      members,
       platform,
       language: projectConfig.project.locale.labelMap[defaultedLocales[0]],
       onboarding: false,

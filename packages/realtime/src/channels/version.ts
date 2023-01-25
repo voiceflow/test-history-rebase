@@ -39,17 +39,18 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
     const { workspaceID, projectID, versionID } = ctx.params;
     const creatorID = Number(ctx.userId);
 
-    const [dbCreator, threads, customBlocks] = await Promise.all([
-      this.services.project.getCreator(creatorID, projectID, versionID),
+    const [threads, customBlocks, projectMembers, dbCreator] = await Promise.all([
       this.services.thread.getAll(creatorID, projectID),
       this.services.customBlock.getAll(creatorID, projectID),
+      this.services.project.member.getAll(creatorID, projectID),
+      this.services.project.getCreator(creatorID, projectID, versionID),
     ]);
 
     const templateDiagram = dbCreator.version.templateDiagramID
       ? await this.services.diagram.get(dbCreator.version.templateDiagramID).catch(() => null)
       : null;
 
-    const project = Realtime.Adapters.projectAdapter.fromDB(dbCreator.project);
+    const project = Realtime.Adapters.projectAdapter.fromDB(dbCreator.project, { members: projectMembers });
     const projectConfig = Platform.Config.getTypeConfig(project);
 
     const intents = projectConfig.adapters.intent.smart.mapFromDB(dbCreator.version.platformData.intents);

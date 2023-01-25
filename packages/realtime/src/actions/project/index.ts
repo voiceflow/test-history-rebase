@@ -6,7 +6,6 @@ import { UpdateDiagramViewersControl } from './awareness';
 import CreateProjectControl from './create';
 import DuplicateProjectControl from './duplicate';
 import EjectUsersControl from './ejectUsers';
-import ImportProjectFromFileControl from './importFromFile';
 import ImportProjectControl from './importProject';
 import { AddProjectMemberControl, PatchProjectMemberControl, RemoveProjectMemberControl } from './member';
 import MergeProjectsControl from './merge';
@@ -29,8 +28,6 @@ const buildProjectActionControls = (options: LoguxControlOptions) => ({
   patchPlatformDataControl: new PatchPlatformDataControl(options),
   removeManyProjectsControl: new RemoveManyProjectsControl(options),
   addManyCustomThemesController: new AddManyCustomThemesController(options),
-  /** @deprecated use ImportProject instead */
-  importProjectFromFileControl: new ImportProjectFromFileControl(options),
   toggleWorkspaceProjectsAiAssistOffControl: new ToggleWorkspaceProjectsAiAssistOffControl(options),
   sendFreestyleDisclaimerEmail: new SendFreestyleDisclaimerEmail(options),
 

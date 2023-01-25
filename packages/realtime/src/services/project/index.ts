@@ -113,27 +113,6 @@ class ProjectService extends AbstractControl {
       .duplicate(templateID, data, params);
   }
 
-  /** @deprecated use ImportProject instead */
-  public async importFromFile(
-    creatorID: number,
-    workspaceID: string,
-    { data, vfVersion }: { data: string; vfVersion: number }
-  ): Promise<Realtime.DBProject> {
-    const client = await this.services.voiceflow.getClientByUserID(creatorID);
-
-    const importJSON = JSON.parse(data) as {
-      project: BaseModels.Project.Model<any, any>;
-      version: BaseVersion.Version;
-      diagrams: Record<string, BaseModels.Diagram.Model<any>>;
-    };
-
-    if (importJSON.project && typeof importJSON.project === 'object') {
-      importJSON.project._version = vfVersion;
-    }
-
-    return client.version.import(workspaceID, importJSON);
-  }
-
   public async duplicate(
     creatorID: number,
     projectID: string,

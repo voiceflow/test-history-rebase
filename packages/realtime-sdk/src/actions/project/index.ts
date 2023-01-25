@@ -45,12 +45,6 @@ export interface ImportProjectPayload extends BaseWorkspacePayload {
   project: AnyProject;
 }
 
-/** @deprecated use ImportProjectPayloadInstead */
-export interface ImportProjectFromFilePayload extends BaseWorkspacePayload {
-  data: string;
-  vfVersion: number;
-}
-
 export interface PatchPlatformDataPayload extends BaseProjectPayload {
   platformData: Record<string, unknown>;
 }
@@ -68,9 +62,6 @@ export const duplicate = Utils.protocol.createAsyncAction<DuplicateProjectPayloa
 export const ejectUsers = Utils.protocol.createAction<EjectUsersPayload>(projectType('KICK_USERS'));
 
 export const importProject = Utils.protocol.createAction<ImportProjectPayload>(projectType('IMPORT_PROJECT'));
-
-/** @deprecated use ImportProjectPayloadInstead */
-export const importFromFile = Utils.protocol.createAsyncAction<ImportProjectFromFilePayload, AnyProject>(projectType('IMPORT_FROM_FILE'));
 
 export const patchPlatformData = Utils.protocol.createAction<PatchPlatformDataPayload>(projectType('PATCH_PLATFORM_DATA'));
 

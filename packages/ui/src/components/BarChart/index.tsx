@@ -95,7 +95,7 @@ const BarChart: React.FC<BarChartProps> = ({
           ))}
         </Recharts.Bar>
         {withLabels && (
-          <Recharts.Bar dataKey="empty" stackId={STACK_ID}>
+          <Recharts.Bar dataKey="empty" stackId={STACK_ID} isAnimationActive={false}>
             <Recharts.LabelList
               dataKey="total"
               position="right"

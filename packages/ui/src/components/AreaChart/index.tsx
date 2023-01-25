@@ -21,6 +21,7 @@ export interface AreaChartProps {
 
   /* axes */
   withAxes?: boolean;
+  axisWidth?: number;
 
   /* tooltip */
   withTooltip?: boolean;
@@ -31,6 +32,7 @@ const AreaChart: React.FC<AreaChartProps> = ({
   color = '#5b9fd7',
   withGrid = false,
   withAxes = false,
+  axisWidth = 40,
   withTooltip = false,
   formatter = SimpleFormatter,
 }) => {
@@ -49,6 +51,7 @@ const AreaChart: React.FC<AreaChartProps> = ({
           scale="linear"
           domain={[0, maxY]}
           interval={0}
+          width={axisWidth}
           ticks={formatter.axes.ticksY?.(0, maxY)}
           tickFormatter={abbreviateNumber}
           hide={!withAxes}

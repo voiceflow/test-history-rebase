@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.225.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.225.0...@voiceflow/ui@1.225.1) (2023-01-25)
+
+
+### Bug Fixes
+
+* reduce default AreaChart y-axis width (DX-000) ([#6612](https://github.com/voiceflow/creator-app/issues/6612)) ([3b9beb0](https://github.com/voiceflow/creator-app/commit/3b9beb01be8541bcbd8c0274f5e2385ff0e6e48c)), closes [/www.notion.so/voiceflow/Remaining-analytics-dashboard-changes-459e1cc1174842d6a7d58df3c45f042d#3e4a6b6f2a864bf282be5357c5ce7857](https://github.com//www.notion.so/voiceflow/Remaining-analytics-dashboard-changes-459e1cc1174842d6a7d58df3c45f042d/issues/3e4a6b6f2a864bf282be5357c5ce7857)
+
+
+
+
+
 # [1.225.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.224.3...@voiceflow/ui@1.225.0) (2023-01-25)
 
 

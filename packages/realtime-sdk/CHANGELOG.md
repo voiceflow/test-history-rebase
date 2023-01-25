@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.228.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.227.0...@voiceflow/realtime-sdk@1.228.0) (2023-01-25)
+
+
+### Bug Fixes
+
+* allow owners to change role to admins (CT-1497) ([#6618](https://github.com/voiceflow/creator-app/issues/6618)) ([21ae10c](https://github.com/voiceflow/creator-app/commit/21ae10c19c936d8d9d4303575f8aab984792c3f9))
+
+
+### Features
+
+* check for identity ff to reset password (PL-190) ([#6583](https://github.com/voiceflow/creator-app/issues/6583)) ([9d75371](https://github.com/voiceflow/creator-app/commit/9d7537177f0b70ddd0b7f4b60594cfed3fa30277))
+
+
+
+
+
 # [1.227.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.226.2...@voiceflow/realtime-sdk@1.227.0) (2023-01-25)
 
 

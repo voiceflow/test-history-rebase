@@ -4,7 +4,7 @@ import { colors, css, styled, ThemeColor, transition } from '@ui/styles';
 
 export interface SelectWrapperProps {
   width?: string;
-  minWidth?: boolean;
+  minWidth?: boolean | string;
   maxWidth?: string | number;
   fullWidth?: boolean;
   isFocused?: boolean;
@@ -35,7 +35,7 @@ const SelectWrapper = styled.div<SelectWrapperProps>`
     minWidth &&
     !width &&
     css`
-      min-width: 200px;
+      min-width: ${typeof minWidth === 'boolean' ? `200px` : minWidth};
     `}
 
   ${({ fullWidth }) =>

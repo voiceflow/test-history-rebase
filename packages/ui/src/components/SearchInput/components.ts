@@ -1,7 +1,8 @@
 import SvgIcon from '@ui/components/SvgIcon';
-import { css, styled, units } from '@ui/styles';
+import { css, styled, transition, units } from '@ui/styles';
 
 export const SearchInputIcon = styled(SvgIcon)<{ rotate?: boolean; $secondaryDisabled?: boolean }>`
+  ${transition('opacity')}
   position: absolute;
   right: 1px;
   padding: ${units(2)}px ${units(2)}px ${units(2)}px ${units()}px;

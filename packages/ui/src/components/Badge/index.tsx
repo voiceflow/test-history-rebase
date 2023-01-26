@@ -89,7 +89,7 @@ export const DescriptiveBadge = styled.div<{ color?: 'blue' | 'gray' } & SpacePr
   box-shadow: 0px 1px 0px rgba(19, 33, 68, 0.12), 0px 0px 1px rgba(19, 33, 68, 0.2);
   background-color: #ffffff;
   display: inline-flex;
-  padding: 3px 8px;
+  padding: 3px 8px 2px 8px;
   ${space}
 `;
 

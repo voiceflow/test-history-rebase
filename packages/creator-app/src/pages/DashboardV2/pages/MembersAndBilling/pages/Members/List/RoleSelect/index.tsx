@@ -40,7 +40,8 @@ const TeamAndBillingMemberListRoleSelect: React.FC<TeamAndBillingMemberListRoleS
       getOptionValue={(option) => option?.value}
       getOptionLabel={(label) => label}
       getOptionKey={(option) => option.value}
-      width="145px"
+      maxWidth="145px"
+      minWidth="116px"
     />
   );
 };

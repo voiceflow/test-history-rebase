@@ -33,7 +33,7 @@ export const Info = styled.div`
 export const Name = styled.div`
   display: flex;
   align-items: center;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 `;
 
 export const Badge = styled.div`

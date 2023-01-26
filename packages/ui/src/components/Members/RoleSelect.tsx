@@ -68,6 +68,7 @@ const RoleSelect = <T extends UserRole>({
       minWidth={false}
       disabled={disabled}
       autoWidth={false}
+      placement="bottom"
       isDropdown
       borderLess
       getOptionKey={(option) => option.label}

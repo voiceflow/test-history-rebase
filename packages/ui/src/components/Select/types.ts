@@ -80,7 +80,7 @@ export interface BaseSelectProps {
   prefix?: React.ReactNode;
   onClose?: VoidFunction;
   onSearch?: (value: string) => void;
-  minWidth?: boolean;
+  minWidth?: boolean | string;
   maxWidth?: string | number;
   disabled?: boolean;
   useLayers?: boolean;

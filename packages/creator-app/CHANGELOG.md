@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1070.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1070.0...@voiceflow/creator-app@1.1070.1) (2023-01-26)
+
+
+### Bug Fixes
+
+* members page design fixes (CT-1468) ([#6623](https://github.com/voiceflow/creator-app/issues/6623)) ([30aa804](https://github.com/voiceflow/creator-app/commit/30aa804dde5ac5b7eebf2161948dce1a855f6414))
+* use the same error message on failed login (DX-000) ([#6634](https://github.com/voiceflow/creator-app/issues/6634)) ([cd35d37](https://github.com/voiceflow/creator-app/commit/cd35d37550d0bdc5a7b7c5eaf56ef148228ec523))
+
+
+
+
+
 # [1.1070.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1069.0...@voiceflow/creator-app@1.1070.0) (2023-01-26)
 
 

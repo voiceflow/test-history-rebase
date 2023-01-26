@@ -18,7 +18,7 @@ const formatHref = (href: string | undefined, isBlank: boolean) => (!isBlank || 
 export const linkStyles = css<LinkProps>`
   ${transition('color')}
 
-  color: ${({ color }) => color ?? '#3876CB'};
+  color: ${({ color }) => color ?? '#3d82e2'};
   cursor: pointer;
   user-select: none;
 

@@ -49,7 +49,7 @@ suite('Text', () => {
 
     const clickableText = screen.getByText(text);
 
-    expect(clickableText).toHaveStyleRule('color', '#3876CB');
+    expect(clickableText).toHaveStyleRule('color', '#3d82e2');
     expect(clickableText).toHaveStyleRule('cursor', 'pointer');
   });
 
@@ -65,7 +65,7 @@ suite('Text', () => {
     const text = Utils.generate.string();
     render(<Link>{text}</Link>, { wrapper: ThemeProvider });
 
-    expect(screen.getByText(text)).toHaveStyleRule('color', '#3876CB');
+    expect(screen.getByText(text)).toHaveStyleRule('color', '#3d82e2');
   });
 
   it('renders Link with custom color', () => {

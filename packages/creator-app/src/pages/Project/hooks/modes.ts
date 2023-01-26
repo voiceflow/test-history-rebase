@@ -14,18 +14,23 @@ export const useCanvasMode = () => !!useRouteMatch(Path.DOMAIN_CANVAS);
 
 export const useDashboardMode = () => !!useRouteMatch(Path.WORKSPACE_DASHBOARD);
 
-export const useAnyModeOpen = () => {
+export const useInteractiveMode = () => {
   const isCommentingMode = useCommentingMode();
   const isPrototypingMode = usePrototypingMode();
+
+  return isCommentingMode || isPrototypingMode;
+};
+
+export const useAnyModeOpen = () => {
+  const isInteractiveMode = useInteractiveMode();
   const isTextMarkupMode = useTextMarkupMode();
 
-  return isCommentingMode || isPrototypingMode || isTextMarkupMode;
+  return isInteractiveMode || isTextMarkupMode;
 };
 
 export const useEditingMode = () => {
   const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
-  const isCommentingMode = useCommentingMode();
-  const isPrototypingMode = usePrototypingMode();
+  const isInteractiveMode = useInteractiveMode();
 
-  return canEditCanvas && !isCommentingMode && !isPrototypingMode;
+  return canEditCanvas && !isInteractiveMode;
 };

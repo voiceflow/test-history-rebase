@@ -29,6 +29,7 @@ export enum CanvasAction {
   ADD_TEXT = 'add_text',
   ADD_IMAGE = 'add_image',
   ADD_COMMENT = 'add_comment',
+  COPY_CONTENT = 'copy_content',
 }
 
 export const CANVAS_OPTIONS: ContextMenuOption<CanvasAction>[] = [
@@ -106,6 +107,12 @@ const COMMENT_MENU_OPTION: ContextMenuOption<CanvasAction> = {
   shouldRender: ({ target: nodeID }, { engine, showHintFeatures }) => showHintFeatures && !isMarkup(nodeID, engine),
 };
 
+const COPY_CONTENT_OPTION: ContextMenuOption<CanvasAction> = {
+  label: 'Copy content',
+  value: CanvasAction.COPY_CONTENT,
+  shouldRender: ({ target: nodeID }, { engine }) => engine.isNodeOfType(nodeID, [BlockType.TEXT, BlockType.SPEAK]),
+};
+
 export const BLOCK_OPTIONS: ContextMenuOption<CanvasAction>[] = [
   {
     label: 'Block color',
@@ -167,7 +174,7 @@ export const BLOCK_OPTIONS: ContextMenuOption<CanvasAction>[] = [
   },
 ];
 
-export const VIEWER_BLOCK_OPTIONS: ContextMenuOption<CanvasAction>[] = [COMMENT_MENU_OPTION];
+export const VIEWER_BLOCK_OPTIONS: ContextMenuOption<CanvasAction>[] = [COMMENT_MENU_OPTION, COPY_CONTENT_OPTION];
 
 export const SELECTION_OPTIONS: ContextMenuOption<CanvasAction>[] = [
   {

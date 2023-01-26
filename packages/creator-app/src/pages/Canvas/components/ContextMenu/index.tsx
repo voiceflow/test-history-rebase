@@ -1,14 +1,17 @@
 import { Eventual, Utils } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk';
+import { serializeToText } from '@voiceflow/slate-serializer/text';
 import { Box, buildVirtualElement, NestedMenu, Text, useCache, useVirtualElementPopper } from '@voiceflow/ui';
 import React from 'react';
 
-import { CANVAS_ZOOM_DELTA, CLIPBOARD_DATA_KEY, ModalType } from '@/constants';
+import { BlockType, CANVAS_ZOOM_DELTA, CLIPBOARD_DATA_KEY, ModalType } from '@/constants';
 import { Permission } from '@/constants/permissions';
 import * as UIDuck from '@/ducks/ui';
 import { useDispatch, useModals, usePermission } from '@/hooks';
 import { ClipboardContext, ContextMenuContext, ContextMenuValue, EngineContext } from '@/pages/Canvas/contexts';
 import { MarkupContext } from '@/pages/Project/contexts';
 import { Identifier } from '@/styles/constants';
+import * as Clipboard from '@/utils/clipboard';
 import { Coords } from '@/utils/geometry';
 
 import { CanvasAction, TARGET_OPTIONS } from './constants';
@@ -26,6 +29,25 @@ const OPTION_HANDLERS: Record<CanvasAction, OptionHandler> = {
   },
 
   [CanvasAction.COPY_BLOCK]: ({ target: nodeID }, { clipboard }) => clipboard.copy(nodeID),
+
+  /** this is a temporary implementation while viewers can not access node editors */
+  [CanvasAction.COPY_CONTENT]: ({ target: nodeID }, { engine }) => {
+    const node = nodeID && engine.getDataByNodeID<any>(nodeID);
+
+    let variants: string[] = [];
+    if (node?.type === BlockType.TEXT) {
+      variants = (node as Realtime.NodeData.Text).texts?.map((text) => serializeToText(text.content));
+    }
+    if (node?.type === BlockType.SPEAK) {
+      variants = (node as Realtime.NodeData.Speak).dialogs?.map((dialog) =>
+        dialog.type === Realtime.DialogType.VOICE ? dialog.content : dialog.url
+      );
+    }
+
+    if (variants.length) {
+      Clipboard.copyWithToast(variants.join('\n\n'), variants.length > 1 ? 'All variants copied to clipboard' : 'Copied to clipboard')();
+    }
+  },
 
   [CanvasAction.DUPLICATE_BLOCK]: ({ target: nodeID }, { engine }) => {
     if (nodeID) {

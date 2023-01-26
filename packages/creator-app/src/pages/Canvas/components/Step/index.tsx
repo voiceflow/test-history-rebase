@@ -2,7 +2,7 @@ import { stopPropagation, User } from '@voiceflow/ui';
 import React from 'react';
 
 import { StepLabelVariant } from '@/constants/canvas';
-import { useEditingMode } from '@/pages/Project/hooks';
+import { useInteractiveMode } from '@/pages/Project/hooks';
 import { ClassName } from '@/styles/constants';
 
 import {
@@ -32,7 +32,7 @@ import { StepAPIContext } from './contexts';
 export * from './components';
 export * from './types';
 
-export interface BaseStepProps {
+export interface BaseStepProps extends React.PropsWithChildren {
   nodeID?: string;
   image?: string | null;
   imagePosition?: string;
@@ -43,9 +43,9 @@ export interface BaseStepProps {
 
 export type StepProps = BaseStepProps;
 
-const Step: React.OldFC<StepProps> = ({ nodeID, image, disableHighlightStyle, children, imagePosition, imageAspectRatio, dividerOffset }) => {
+const Step: React.FC<StepProps> = ({ nodeID, image, disableHighlightStyle, children, imagePosition, imageAspectRatio, dividerOffset }) => {
   const stepAPI = React.useContext(StepAPIContext);
-  const isEditingMode = useEditingMode();
+  const isInteractiveMode = useInteractiveMode();
 
   const element = (
     <HoverContainer
@@ -54,7 +54,7 @@ const Step: React.OldFC<StepProps> = ({ nodeID, image, disableHighlightStyle, ch
       {...stepAPI?.handlers}
       ref={stepAPI?.ref}
       onMouseDown={stopPropagation(null, true)}
-      readOnlyMode={!isEditingMode}
+      readOnlyMode={isInteractiveMode}
     >
       <Container canHighlight={!disableHighlightStyle} draggable={stepAPI?.isDraggable} dividerOffset={dividerOffset}>
         {stepAPI?.lockOwner && <User user={stepAPI.lockOwner} />}

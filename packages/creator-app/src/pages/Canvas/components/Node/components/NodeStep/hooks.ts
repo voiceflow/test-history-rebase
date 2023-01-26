@@ -8,7 +8,7 @@ import { ContextMenuContext, EngineContext, NodeEntityContext } from '@/pages/Ca
 import { NodeInstance } from '@/pages/Canvas/engine/entities/nodeEntity';
 import { useElementInstance } from '@/pages/Canvas/engine/entities/utils';
 import { StepAPI } from '@/pages/Canvas/types';
-import { useEditingMode } from '@/pages/Project/hooks';
+import { useEditingMode, useInteractiveMode } from '@/pages/Project/hooks';
 import { ClassName } from '@/styles/constants';
 import { Coords } from '@/utils/geometry';
 
@@ -71,6 +71,7 @@ export const useStepAPI = <T extends HTMLElement>(
   }));
 
   const isEditingMode = useEditingMode();
+  const isInteractiveMode = useInteractiveMode();
   const [hasLinkWarning, setLinkWarning, clearLinkWarning] = useEnableDisable();
   const [isHovered, wrapElement, hoverHandlers, setHovering] = useHover(
     {
@@ -125,7 +126,7 @@ export const useStepAPI = <T extends HTMLElement>(
         },
         onDoubleClick: stopPropagation(() => engine.node.center(nodeEntity.nodeID)),
         onContextMenu: stopPropagation((event: React.MouseEvent) => {
-          if (nodeEntity.nodeType === BlockType.START || !isEditingMode) return;
+          if (nodeEntity.nodeType === BlockType.START || isInteractiveMode) return;
 
           contextMenu.onOpen(event, ContextMenuTarget.NODE, nodeEntity.nodeID);
         }),

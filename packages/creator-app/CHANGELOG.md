@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1068.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1068.2...@voiceflow/creator-app@1.1068.3) (2023-01-26)
+
+
+### Bug Fixes
+
+* dashboard v2 kanban retore (CT-000) ([#6629](https://github.com/voiceflow/creator-app/issues/6629)) ([71b91c3](https://github.com/voiceflow/creator-app/commit/71b91c33d823a3903f753c956cfab15bac99cad8))
+
+
+
+
+
 ## [1.1068.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1068.1...@voiceflow/creator-app@1.1068.2) (2023-01-26)
 
 

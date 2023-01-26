@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.155.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.155.4...@voiceflow/realtime@1.155.5) (2023-01-26)
+
+
+### Bug Fixes
+
+* dashboard v2 kanban retore (CT-000) ([#6629](https://github.com/voiceflow/creator-app/issues/6629)) ([71b91c3](https://github.com/voiceflow/creator-app/commit/71b91c33d823a3903f753c956cfab15bac99cad8))
+
+
+
+
+
 ## [1.155.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.155.3...@voiceflow/realtime@1.155.4) (2023-01-26)
 
 **Note:** Version bump only for package @voiceflow/realtime

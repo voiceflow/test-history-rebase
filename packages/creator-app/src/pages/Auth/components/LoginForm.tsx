@@ -1,4 +1,5 @@
 import { Box, Button, ClickableText, preventDefault, SvgIcon, ThemeColor, toast, useDebouncedCallback, useSetup, useToggle } from '@voiceflow/ui';
+import { AxiosError } from 'axios';
 import _get from 'lodash/get';
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
@@ -66,7 +67,11 @@ export const LoginForm: React.OldFC<LoginFormProps> = ({ query, children }) => {
     try {
       await signin({ email, password }, { redirectTo: location.state?.redirectTo });
     } catch (error) {
-      const errText = _get(error, ['body', 'data']) || 'Unable to login, try again later';
+      let errText = _get(error, ['body', 'data']) || 'Unable to login, try again later';
+
+      if (error instanceof AxiosError && error.response?.status === 401) {
+        errText = 'Username or Password Incorrect';
+      }
 
       toast.error(errText);
     }

@@ -38,7 +38,9 @@ const Convert = manager.create<Props>('DomainConvert', () => ({ api, type, opene
 
   return (
     <Modal type={type} maxWidth={400} opened={opened} hidden={hidden} animated={animated} onExited={api.remove}>
-      <Modal.Header actions={<Modal.Header.CloseButton onClick={api.close} />}>Convert to Domain</Modal.Header>
+      <Modal.Header capitalizeText={false} actions={<Modal.Header.CloseButton onClick={api.close} />}>
+        Convert to Domain
+      </Modal.Header>
 
       <Modal.Body>
         <BlockText mb={16}>Select the Assistant that you’d like to merge this domain into.</BlockText>
@@ -62,7 +64,7 @@ const Convert = manager.create<Props>('DomainConvert', () => ({ api, type, opene
         </Button>
 
         <Button onClick={onConvert} disabled={!targetProjectID} squareRadius>
-          Next
+          Continue
         </Button>
       </Modal.Footer>
     </Modal>

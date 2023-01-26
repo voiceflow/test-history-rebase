@@ -4,7 +4,7 @@ export const GroupsContainer = styled.div`
   display: flex;
   flex-direction: column;
   overflow-y: auto;
-  gap: 24px;
+  gap: 20px;
   height: 100%;
   width: 100%;
   flex-direction: column;

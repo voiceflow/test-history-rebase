@@ -10,7 +10,7 @@ export const Container = styled.div<{ isOpen?: boolean }>`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 28px;
+  padding: 20px 24px;
   background-color: #fdfdfd;
 
   font-size: 15px;

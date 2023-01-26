@@ -2,10 +2,15 @@ import Box from '@ui/components/Box';
 import Button from '@ui/components/Button';
 import { colors, css, styled, ThemeColor } from '@ui/styles';
 
-export const CloseButton = styled(Button).attrs({ variant: Button.Variant.WHITE, iconProps: { size: 8 }, tiny: true })`
+export const CloseButton = styled(Button).attrs({
+  variant: Button.Variant.WHITE,
+  iconProps: { size: 8, color: `rgb(110, 132, 154)`, opacity: true, reducedOpacity: true },
+  tiny: true,
+})`
   top: -8px;
   right: -8px;
   opacity: 0;
+  box-shadow: 0px 0px 0px 1px rgba(19, 33, 68, 0.08), 0px 1px 3px rgba(19, 33, 68, 0.12);
 `;
 
 export const OuterContainer = styled(Box)`
@@ -19,15 +24,14 @@ export const Container = styled.div<{ backgroundImage?: string }>`
   min-height: 98px;
   width: 100%;
   position: relative;
+  background-color: ${colors(ThemeColor.SKY_BLUE)};
+  background-repeat: no-repeat;
 
   ${({ backgroundImage }) =>
-    backgroundImage
-      ? css`
-          background-image: url('${backgroundImage}');
-        `
-      : css`
-          background-color: ${colors(ThemeColor.SKY_BLUE)};
-        `}
+    backgroundImage &&
+    css`
+      background-image: url('${backgroundImage}');
+    `}
 
   &:hover ${CloseButton} {
     opacity: 1;

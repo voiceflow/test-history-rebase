@@ -8,4 +8,8 @@ export const Title = styled(EditableText)`
   width: 100%;
   text-align: left;
   margin-top: 11px;
+  white-space: nowrap;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;

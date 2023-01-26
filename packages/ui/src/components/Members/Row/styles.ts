@@ -26,6 +26,8 @@ export const Container = styled.div<{ inset?: boolean; border?: boolean }>`
 
 export const Info = styled.div`
   margin-right: auto;
+  flex: 1;
+  overflow: hidden;
 `;
 
 export const Name = styled.div`

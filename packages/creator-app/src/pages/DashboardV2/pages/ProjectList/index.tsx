@@ -1,9 +1,8 @@
-import * as Platform from '@voiceflow/platform-config';
-import { AssistantCard as UIAssistantCard, AssistantCardProps, Banner, Button } from '@voiceflow/ui';
 import dayjs from 'dayjs';
 import * as Normal from 'normal-store';
 import React from 'react';
 
+import { bannerBg } from '@/assets';
 import { AssistantCard } from '@/components/AssistantCard';
 import Page from '@/components/Page';
 import * as Account from '@/ducks/account';
@@ -17,12 +16,6 @@ import { Sidebar } from '../../components';
 import { getProjectStatusAndMembers } from '../../utils';
 import { EmptySearch, Header } from './components';
 import * as S from './styles';
-
-const customProp: AssistantCardProps = {
-  title: 'Webchat - Book a Demo',
-  status: 'By Voiceflow',
-  isViewer: true,
-};
 
 const ProjectList: React.FC = () => {
   const [search, setSearch] = React.useState('');
@@ -69,18 +62,36 @@ const ProjectList: React.FC = () => {
 
   return (
     <Page white renderHeader={() => <Header search={search} onSearch={setSearch} />} renderSidebar={() => <Sidebar />}>
-      <Page.Content>
-        <Banner
-          mb={32}
-          title="Learn Voiceflow with video tutorials"
-          subtitle="In this course you’ll find everything you need to get started with Voiceflow from the ground up."
-          closeKey="dashboard-learn-banner"
-          buttonText="Start Course"
-        />
+      {search && !projectToRender.length ? (
+        <EmptySearch onClear={() => setSearch('')} />
+      ) : (
+        <Page.Content>
+          <S.StyledBanner
+            mb={32}
+            title="Learn Voiceflow with video tutorials"
+            subtitle="In this course you’ll find everything you need to get started with Voiceflow from the ground up."
+            closeKey="dashboard-learn-banner"
+            buttonText="Start Course"
+            backgroundImage={bannerBg}
+          />
 
-        {search && !projectToRender.length ? (
-          <EmptySearch onClear={() => setSearch('')} />
-        ) : (
+          {Boolean(projectToRender.length) && (
+            <S.Grid>
+              {projectToRender.map((item) => (
+                <AssistantCard
+                  {...getProjectStatusAndMembers({ project: item, activeViewers: activeViewersPerProject[item.id], getMemberByIDSelector })}
+                  key={item.id}
+                  image={item.image}
+                  project={item}
+                  onClickCTA={() => goToCanvasWithVersionID(item.versionID)}
+                  onClickLink={() => goToAssistantOverview(item.versionID)}
+                />
+              ))}
+            </S.Grid>
+          )}
+
+          <S.Title>Start with a template</S.Title>
+
           <S.Grid>
             {projectToRender.map((item) => (
               <ProjectIdentityProvider key={item.id} activeRole={Normal.getOne(item.members, String(userID))?.role ?? null}>
@@ -94,36 +105,8 @@ const ProjectList: React.FC = () => {
               </ProjectIdentityProvider>
             ))}
           </S.Grid>
-        )}
-
-        <S.Title>Start with a template</S.Title>
-
-        <S.Grid>
-          <UIAssistantCard {...customProp} icon={Platform.Webchat.CONFIG.types.chat.icon.name}>
-            <Button squareRadius variant={Button.Variant.PRIMARY}>
-              Copy Template
-            </Button>
-          </UIAssistantCard>
-
-          <UIAssistantCard {...customProp} icon={Platform.Whatsapp.CONFIG.types.chat.icon.name}>
-            <Button squareRadius variant={Button.Variant.PRIMARY}>
-              Copy Template
-            </Button>
-          </UIAssistantCard>
-
-          <UIAssistantCard {...customProp} icon={Platform.SMS.CONFIG.types.chat.icon.name}>
-            <Button squareRadius variant={Button.Variant.PRIMARY}>
-              Copy Template
-            </Button>
-          </UIAssistantCard>
-
-          <UIAssistantCard {...customProp} icon={Platform.MicrosoftTeams.CONFIG.types.chat.icon.name}>
-            <Button squareRadius variant={Button.Variant.PRIMARY}>
-              Copy Template
-            </Button>
-          </UIAssistantCard>
-        </S.Grid>
-      </Page.Content>
+        </Page.Content>
+      )}
     </Page>
   );
 };

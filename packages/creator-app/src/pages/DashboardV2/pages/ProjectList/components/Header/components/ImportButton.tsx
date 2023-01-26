@@ -59,7 +59,20 @@ const ImportButton: React.OldFC = () => {
     onAction: () => upload(onUpload, { accept: ACCEPTED_FILE_FORMATS }),
   });
 
-  return <Page.Header.IconButton icon="importCircle" size={16} isSmall onClick={onImport} tooltip={{ content: 'Import .vf file' }} />;
+  return (
+    <Page.Header.IconButton
+      icon="importCircle"
+      size={16}
+      isSmall
+      onClick={onImport}
+      tooltip={{
+        content: 'Import .vf file',
+        popperOptions: {
+          modifiers: [{ name: 'offset', options: { offset: [0, 3] } }],
+        },
+      }}
+    />
+  );
 };
 
 export default ImportButton;

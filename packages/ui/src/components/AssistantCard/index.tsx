@@ -75,7 +75,7 @@ const AssistantCard: React.FC<AssistantCardProps> = ({
           <Box.Flex zIndex={100} flexDirection="row">
             {(children && !hasTitleComponent) || (
               <>
-                <Button onClick={onClickCTA} variant={Button.Variant.PRIMARY} squareRadius style={{ marginRight: isViewer ? 0 : 10 }}>
+                <Button onClick={onClickCTA} variant={Button.Variant.PRIMARY} squareRadius style={{ marginRight: isViewer ? 0 : 8 }}>
                   {isViewer ? 'View' : 'Designer'}
                 </Button>
 
@@ -102,7 +102,7 @@ const AssistantCard: React.FC<AssistantCardProps> = ({
         {icon && (
           <IconContainer>
             {iconTitle ? (
-              <TippyTooltip placement="top" content={iconTitle} offset={[12, 0]}>
+              <TippyTooltip placement="top" content={iconTitle} offset={[0, 3]}>
                 <SvgIcon color={iconColor} icon={icon} size={16} />
               </TippyTooltip>
             ) : (
@@ -113,7 +113,7 @@ const AssistantCard: React.FC<AssistantCardProps> = ({
       </CardContainer>
 
       <InfoContainer>
-        {title && !hasTitleComponent && <Title>{title}</Title>}
+        {!!title && !hasTitleComponent && <Title>{title}</Title>}
 
         {hasTitleComponent && children}
 

@@ -1,13 +1,15 @@
 import { BaseModels } from '@voiceflow/base-types';
 import { Nullable } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { MenuTypes, toast } from '@voiceflow/ui';
 import React from 'react';
 import { useSelector } from 'react-redux';
 
 import client from '@/client';
+import { PageProgress } from '@/components/PageProgressBar/utils';
 import * as Errors from '@/config/errors';
-import { ALEXA_SUNSET_PROJECT_ID, ExportFormat as CanvasExportFormat } from '@/constants';
+import { ALEXA_SUNSET_PROJECT_ID, ExportFormat as CanvasExportFormat, PageProgressBar } from '@/constants';
 import { LimitType } from '@/constants/limits';
 import { Permission } from '@/constants/permissions';
 import * as Export from '@/ducks/export';
@@ -16,6 +18,7 @@ import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import * as Workspace from '@/ducks/workspace';
+import { useFeature } from '@/hooks';
 import { useHasPermissions, usePermission } from '@/hooks/permission';
 import * as ModalsV2 from '@/ModalsV2';
 import { ShareProjectTab } from '@/pages/Project/components/Header/constants';
@@ -63,6 +66,7 @@ export const useProjectOptions = ({
   // eslint-disable-next-line sonarjs/cognitive-complexity
 }): Nullable<MenuTypes.Option>[] => {
   const sharePopper = React.useContext(SharePopperContext);
+  const dashboardV2 = useFeature(Realtime.FeatureFlag.DASHBOARD_V2);
 
   const canExportProject = useHasPermissions([Permission.CANVAS_EXPORT, Permission.MODEL_EXPORT]);
   const [canEditProject] = usePermission(Permission.EDIT_PROJECT);
@@ -111,7 +115,11 @@ export const useProjectOptions = ({
       }
 
       try {
-        loadingModal.openVoid();
+        if (dashboardV2.isEnabled) {
+          PageProgress.start(PageProgressBar.ASSISTANT_DUPLICATING);
+        } else {
+          loadingModal.openVoid();
+        }
 
         trackingEvents.trackProjectDuplicate({ versionID: getProjectByID({ id: projectID })?.versionID, projectID });
 
@@ -119,7 +127,11 @@ export const useProjectOptions = ({
 
         onDuplicated?.();
       } finally {
-        loadingModal.close();
+        if (dashboardV2.isEnabled) {
+          PageProgress.stop(PageProgressBar.ASSISTANT_DUPLICATING);
+        } else {
+          loadingModal.close();
+        }
       }
     },
   });

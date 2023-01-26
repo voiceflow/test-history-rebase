@@ -19,7 +19,7 @@ interface CardProps extends AssistantCardProps {
 }
 
 export const AssistantCard = ({ project, ...props }: CardProps) => {
-  const { icon } = Platform.Config.getTypeConfig({ type: project.type, platform: project.platform });
+  const { icon, logo } = Platform.Config.getTypeConfig({ type: project.type, platform: project.platform });
   const { name: platformName } = Platform.Config.get(project.platform);
 
   const titleRef = React.useRef<EditableTextAPI | null>(null);
@@ -57,14 +57,14 @@ export const AssistantCard = ({ project, ...props }: CardProps) => {
   return (
     <AssistantCardComponent
       {...props}
-      icon={icon.name}
+      icon={logo || icon.name}
       options={canEditProject ? projectOptions : undefined}
       isViewer={!canEditProject}
       iconTitle={platformName}
       iconColor={icon.color}
       hasTitleComponent
     >
-      <OverflowTippyTooltip content={project?.name} overflow>
+      <OverflowTippyTooltip content={project?.name} overflow style={{ width: '100%' }}>
         {(ref) => (
           <Title
             ref={(editableText) => {

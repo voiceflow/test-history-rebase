@@ -20,7 +20,7 @@ const activeStyles = css`
     0 2px 8px 0 rgba(19, 33, 68, 0.04);
 
   & ${Icon} {
-    color: #132144;
+    color: #132144 !important;
   }
 `;
 

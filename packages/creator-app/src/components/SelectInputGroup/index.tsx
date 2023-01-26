@@ -22,9 +22,16 @@ export interface SelectInputGroupProps {
   multiline?: boolean;
   renderInput: RenderInput;
   orientation?: OrientationType;
+  overflowHidden?: boolean;
 }
 
-const SelectInputGroup: React.OldFC<SelectInputGroupProps> = ({ children, multiline, renderInput, orientation = OrientationType.RIGHT }) => {
+const SelectInputGroup: React.OldFC<SelectInputGroupProps> = ({
+  children,
+  overflowHidden = true,
+  multiline,
+  renderInput,
+  orientation = OrientationType.RIGHT,
+}) => {
   const isLeft = orientation === OrientationType.LEFT;
 
   const child = (
@@ -41,7 +48,7 @@ const SelectInputGroup: React.OldFC<SelectInputGroupProps> = ({ children, multil
   );
 
   return (
-    <S.InputContainer isLeft={isLeft} multiline={multiline}>
+    <S.InputContainer overflowHidden={overflowHidden} isLeft={isLeft} multiline={multiline}>
       {renderInput({
         leftAction: isLeft ? child : undefined,
         rightAction: isLeft ? undefined : child,

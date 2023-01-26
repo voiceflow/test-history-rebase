@@ -41,6 +41,7 @@ const InviteMember: React.FC<InviteMemberProps> = ({ onAdd: onAddProp, members }
   return (
     <Flex gap={12} fullWidth>
       <SelectInputGroup
+        overflowHidden={false}
         renderInput={({ leftAction, ...props }) => (
           <Members.Select {...props} value={memberID} members={membersToAdd} onChange={setMemberID} fullWidth />
         )}

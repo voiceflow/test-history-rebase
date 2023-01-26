@@ -4,7 +4,7 @@ import { Avatar, Members, TippyTooltip } from '@voiceflow/ui';
 import pluralize from 'pluralize';
 import React from 'react';
 
-import { logo } from '@/assets';
+import { vfLogo } from '@/assets';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useSelector } from '@/hooks/redux';
 import { isEditorUserRole } from '@/utils/role';
@@ -45,7 +45,7 @@ const MembersList: React.FC<MembersListProps> = ({ members, onRemove, onChangeRo
   return !workspace ? null : (
     <>
       <S.Header border={!!members.length}>
-        <Avatar image={workspace.image ?? logo} text={workspace.name} large squareRadius />
+        <Avatar image={workspace.image ?? vfLogo} text={workspace.name} large squareRadius />
 
         <div>
           <S.Title>{workspace.name}</S.Title>

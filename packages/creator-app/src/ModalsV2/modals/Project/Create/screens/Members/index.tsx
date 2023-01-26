@@ -21,7 +21,7 @@ const Members: React.FC<MembersProps> = ({ onAdd, onNext, onClose, members, onRe
             Manage Access
           </SectionV2.Title>
         }
-        headerProps={{ bottomUnit: 1.5 }}
+        headerProps={{ bottomUnit: 1.5, pb: 11 }}
         contentProps={{ bottomOffset: 2.5 }}
       >
         <Assistant.InviteMember onAdd={onAdd} members={members} />

@@ -75,6 +75,7 @@ const RoleSelect = <T extends UserRole>({
       isSecondaryInput
       syncOptionsOnRender
       showDropdownColorOnActive
+      modifiers={{ offset: { offset: -4 } }}
     />
   );
 };

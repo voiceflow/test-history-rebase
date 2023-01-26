@@ -15,10 +15,14 @@ export const SelectContainer = styled.div<{ isLeft?: boolean }>`
   }
 `;
 
-export const InputContainer = styled.div<{ isLeft?: boolean; multiline?: boolean }>`
+export const InputContainer = styled.div<{ isLeft?: boolean; multiline?: boolean; overflowHidden?: boolean }>`
   width: 100%;
   display: flex;
-  overflow: hidden;
+  ${({ overflowHidden = true }) =>
+    overflowHidden &&
+    css`
+      overflow: hidden;
+    `};
 
   ${InputWrapper} {
     overflow: hidden;

@@ -1,6 +1,6 @@
 import { inputFocusStyle, InputWrapper } from '@ui/components/Input';
-import SearchInput from '@ui/components/SearchInput';
-import { colors, css, styled, ThemeColor } from '@ui/styles';
+import SearchInput, { SearchInputIcon } from '@ui/components/SearchInput';
+import { colors, css, styled, ThemeColor, transition } from '@ui/styles';
 
 export interface SelectWrapperProps {
   width?: string;
@@ -15,6 +15,11 @@ const SelectWrapper = styled.div<SelectWrapperProps>`
   position: relative;
   color: ${colors(ThemeColor.PRIMARY)};
   outline: none;
+
+  ${SearchInputIcon} {
+    opacity: 0.85;
+    transition: ${transition('opacity')};
+  }
 
   ${({ onClick, onFocus }) =>
     !!(onClick || onFocus) &&
@@ -59,6 +64,12 @@ const SelectWrapper = styled.div<SelectWrapperProps>`
 
   ${InputWrapper} {
     ${({ isFocused }) => isFocused && inputFocusStyle}
+  }
+
+  &:hover {
+    ${SearchInputIcon} {
+      opacity: 1;
+    }
   }
 `;
 

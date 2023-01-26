@@ -28,8 +28,7 @@ export const CardContainer = styled.div<{ active: boolean; isHovered?: boolean }
   width: 100%;
   height: 220px;
   background-color: #f9f9f9;
-  box-shadow: 0px 1px 3px 0px rgba(19, 33, 68, 0.06), 0px 1px 1px 0px rgba(19, 33, 68, 0.01), 0px 1px 0px 0px rgba(19, 33, 68, 0.03),
-    0px 0px 0px 1px rgba(19, 33, 68, 0.06);
+  border: rgb(223, 227, 237) 1px solid;
   border-radius: 8px;
   position: relative;
   align-items: center;
@@ -94,16 +93,16 @@ export const IconContainer = styled.div`
   z-index: 100;
   top: 11px;
   left: 11px;
-  width: 34px;
-  height: 34px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
 
-  border: 1px solid rgb(223 224 228 / 80%);
+  box-shadow: rgb(19 33 68 / 6%) 0px 1px 3px 0px, rgb(19 33 68 / 1%) 0px 1px 1px 0px, rgb(19 33 68 / 3%) 0px 1px 0px 0px,
+    rgb(19 33 68 / 6%) 0px 0px 0px 1px;
   background-color: #fff;
-  box-shadow: 0px 1px 0px rgba(19, 33, 68, 0.03);
 `;
 
 export const Title = styled(Text)`
@@ -112,7 +111,9 @@ export const Title = styled(Text)`
   font-size: 15px;
   width: 100%;
   text-align: left;
-  margin-top: 11px;
+  margin-top: 8px;
+  text-overflow: ellipsis;
+  display: none;
 `;
 
 export const SubTitle = styled.div`
@@ -120,7 +121,8 @@ export const SubTitle = styled.div`
   font-weight: 400;
   color: ${colors(ThemeColor.SECONDARY)};
   font-size: 13px;
-  padding-top: 4px;
+  padding-top: 2px;
+  line-height: 17px;
 
   display: flex;
 `;
@@ -131,6 +133,7 @@ export const InfoContainer = styled.header`
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
+  overflow: hidden;
 `;
 
 export const MembersContainer = styled.div`

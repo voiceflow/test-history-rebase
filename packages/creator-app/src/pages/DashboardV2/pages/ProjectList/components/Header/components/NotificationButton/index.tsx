@@ -38,7 +38,12 @@ const NotificationButton: React.OldFC = () => {
             active={isOpened}
             isSmall
             onClick={Utils.functional.chainVoid(onToggle, readNotifications)}
-            tooltip={{ content: 'Notifications' }}
+            tooltip={{
+              content: 'Notifications',
+              popperOptions: {
+                modifiers: [{ name: 'offset', options: { offset: [0, 3] } }],
+              },
+            }}
           />
 
           {areNewNotifications && <S.UpdateBubble />}

@@ -25,7 +25,8 @@ export const Header = styled.div<{ border?: boolean }>`
 `;
 export const Title = styled(BlockText)`
   color: #132144;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
+  width: 220px;
 `;
 
 export const Subtitle = styled(BlockText)`

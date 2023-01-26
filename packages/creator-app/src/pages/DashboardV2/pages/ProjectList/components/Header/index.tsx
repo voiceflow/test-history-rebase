@@ -26,7 +26,7 @@ const Header: React.OldFC<HeaderProps> = ({ search, onSearch }) => {
     <Page.Header renderLogoButton={() => <WorkspaceSelector />}>
       <Page.Header.Title leftOffset>All Assistants</Page.Header.Title>
 
-      <Page.Header.RightSection>
+      <Page.Header.RightSection rightOffset={false} mr={12}>
         <Box.Flex gap={4} mr={12}>
           <SearchButton value={search} onSearch={onSearch} />
 
@@ -35,7 +35,7 @@ const Header: React.OldFC<HeaderProps> = ({ search, onSearch }) => {
           <NotificationButton />
         </Box.Flex>
 
-        <Box.Flex gap={10}>
+        <Box.Flex gap={8}>
           {canInviteMembers && (
             <Button variant={Button.Variant.SECONDARY} squareRadius onClick={() => inviteModal.openVoid()}>
               Invite

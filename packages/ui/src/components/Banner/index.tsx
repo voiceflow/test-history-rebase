@@ -44,6 +44,7 @@ const Banner: React.FC<BannerProps> = ({ small = false, title, onClick, closeKey
   );
 };
 export default Object.assign(Banner, {
+  Container: S.Container,
   TextContainer: S.TextContainer,
   OuterContainer: S.OuterContainer,
 });

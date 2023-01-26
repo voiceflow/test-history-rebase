@@ -11,6 +11,7 @@ export { default as googleLogo } from '@/assets/svgs/google.svg?url';
 export { default as logoDark } from '@/assets/svgs/logo-dark.svg?url';
 export { default as logo } from '@/assets/images/logo.png';
 export { default as vfLogo } from '@/assets/images/vf-logo.png';
+export { default as bannerBg } from '@/assets/images/banner-bg.png';
 
 // wordmarks
 export { default as wordmark } from '@/assets/images/wordmark.png';

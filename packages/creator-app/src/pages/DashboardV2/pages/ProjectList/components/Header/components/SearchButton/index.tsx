@@ -52,6 +52,9 @@ const SearchButton: React.OldFC<SearchButtonProps> = ({ value, onSearch }) => {
                 Press <span style={{ color: '#F2F7F7' }}>/</span> to search
               </div>
             ),
+            popperOptions: {
+              modifiers: [{ name: 'offset', options: { offset: [0, 3] } }],
+            },
           }}
         />
       )}

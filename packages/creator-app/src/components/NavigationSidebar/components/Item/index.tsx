@@ -12,10 +12,11 @@ export interface ItemProps {
   children?: React.ReactNode | ((options: { isActive: boolean }) => React.ReactNode);
   style?: React.CSSProperties;
   clickable?: boolean;
+  className?: string;
 }
 
-const Item: React.FC<ItemProps> = ({ icon, title, isActive = false, clickable, onClick, children, style }) => (
-  <S.Container active={isActive} onClick={onClick} style={style}>
+const Item: React.FC<ItemProps> = ({ icon, className, title, isActive = false, clickable, onClick, children, style }) => (
+  <S.Container className={className} active={isActive} onClick={onClick} style={style}>
     <Box.Flex gap={12}>
       <S.Icon icon={icon} isActive={isActive} clickable={clickable} />
       <Box fontWeight={isActive ? 600 : undefined}>{title}</Box>

@@ -27,10 +27,10 @@ const GatedTranscripts: React.FC = () => {
               <SvgIcon icon="skillTemplate" size={80} />
             </SvgShadow>
 
-            <Text fontWeight={600}>Transcripts</Text>
+            <Text fontWeight={600}>Need conversation transcripts?</Text>
 
             <Box mt="8px" mb="20px" textAlign="center">
-              <Text color="#62778c">Need conversation transcripts?</Text>
+              <Text color="#62778c">Review and improve your assistant with transcript data from tests and prototype sessions.</Text>
               <Link href={PLAN_INFO_LINK}>Learn more</Link>
             </Box>
 

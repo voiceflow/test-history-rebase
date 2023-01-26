@@ -37,9 +37,9 @@ const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
   const serviceManager = new ServiceManager({ server, ioServer, config, log: logger });
 
   const gracefulShutdown = async () => {
-    await serviceManager.stop();
     await ioServer.stop();
     await server.stop();
+    await serviceManager.stop();
 
     // eslint-disable-next-line no-process-exit
     process.exit(0);

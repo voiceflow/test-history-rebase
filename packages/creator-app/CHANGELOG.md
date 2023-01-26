@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1070.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1069.0...@voiceflow/creator-app@1.1070.0) (2023-01-26)
+
+
+### Bug Fixes
+
+* ghost step (CT-1407) ([#6633](https://github.com/voiceflow/creator-app/issues/6633)) ([6d8c557](https://github.com/voiceflow/creator-app/commit/6d8c55712892c6ca196ceb980fb7179431fb727b))
+
+
+### Features
+
+* transcript timestamp based on update at rather than created at (PL-363) ([#6531](https://github.com/voiceflow/creator-app/issues/6531)) ([0fd4964](https://github.com/voiceflow/creator-app/commit/0fd496499e1f8a9b70f24f76409c198002bda4b0))
+* ux review all assistants (CT-1467) ([#6621](https://github.com/voiceflow/creator-app/issues/6621)) ([dbd4220](https://github.com/voiceflow/creator-app/commit/dbd422002680cfcf3d24f38034f8873b13a89387))
+
+
+
+
+
 # [1.1069.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1068.3...@voiceflow/creator-app@1.1069.0) (2023-01-26)
 
 

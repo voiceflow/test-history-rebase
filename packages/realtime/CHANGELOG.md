@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.155.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.155.5...@voiceflow/realtime@1.155.6) (2023-01-26)
+
+
+### Bug Fixes
+
+* boards with empty projects [bugfix] (CT-000) ([#6628](https://github.com/voiceflow/creator-app/issues/6628)) ([d26c649](https://github.com/voiceflow/creator-app/commit/d26c649132bd4b2c34e3a847aa4402b344f60faa))
+* service shutdown order [bugfix] (CT-000) ([#6632](https://github.com/voiceflow/creator-app/issues/6632)) ([3da0661](https://github.com/voiceflow/creator-app/commit/3da0661b352eedaec2c9cc59f962f25b99adeaf4))
+
+
+
+
+
 ## [1.155.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.155.4...@voiceflow/realtime@1.155.5) (2023-01-26)
 
 

@@ -9,6 +9,7 @@ class WorkspaceSettingsService extends AbstractControl {
 
     try {
       const properties = await client.identity.workspaceProperty.findAll(workspaceID);
+
       return Realtime.Adapters.workspaceSettingsAdapter.fromDB(properties);
     } catch (e) {
       return Realtime.Adapters.workspaceSettingsAdapter.fromDB({});

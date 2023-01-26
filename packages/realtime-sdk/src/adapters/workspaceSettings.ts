@@ -6,7 +6,7 @@ import { createMultiAdapter } from 'bidirectional-adapter';
 const workspaceSettingsAdapter = createMultiAdapter<DBWorkspaceProperties, WorkspaceSettings>(
   ({ settingsAiAssist, settingsDashboardKanban }) => ({
     aiAssist: settingsAiAssist == null ? true : settingsAiAssist,
-    kanban: Boolean(settingsDashboardKanban),
+    dashboardKanban: settingsDashboardKanban == null ? true : settingsDashboardKanban,
   }),
   ({ aiAssist, dashboardKanban }) => ({ settingsAiAssist: aiAssist, settingsDashboardKanban: dashboardKanban })
 );

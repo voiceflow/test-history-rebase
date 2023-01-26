@@ -35,7 +35,7 @@ export const createWorkspace =
           image: payload.image,
           organizationID: (payload.organizationID || workspaces[0]?.organizationID) ?? undefined,
           settings: {
-            dashboardKanban: dashboardV2,
+            dashboardKanban: !dashboardV2,
           },
         })
       );

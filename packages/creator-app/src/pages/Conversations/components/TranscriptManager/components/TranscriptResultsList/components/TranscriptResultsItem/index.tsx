@@ -20,7 +20,7 @@ const TranscriptResultsItem: React.FC<ListChildComponentProps<ListData>> = ({ da
   const { transcripts, currentTranscriptID } = data;
   const item = transcripts[index];
   const isLastItem = transcripts.length === index + 1;
-  const { id, reportTags, unread, createdAt, name } = item;
+  const { id, reportTags, unread, updatedAt, name } = item;
   const isActive = String(currentTranscriptID) === String(id);
 
   const [trackingEvents] = useTrackingEvents();
@@ -88,7 +88,7 @@ const TranscriptResultsItem: React.FC<ListChildComponentProps<ListData>> = ({ da
           >
             <ReadStatusDot read={!unread} />
 
-            <InfoSection active={isActive} name={name} date={createdAt} isRead={!unread} tags={reportTags} />
+            <InfoSection active={isActive} name={name} date={updatedAt} isRead={!unread} tags={reportTags} />
 
             <div className={ClassName.TRANSCRIPT_ITEM_DROPDOWN_BUTTON}>
               <IconButton icon="ellipsis" variant={IconButtonVariant.SUBTLE} size={15} onClick={stopPropagation(onToggle)} ref={ref} />

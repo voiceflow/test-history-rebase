@@ -66,6 +66,8 @@ export interface Transcript {
   notes: string | null;
   // creation date
   createdAt: number;
+  // last updated date
+  updatedAt: number;
   // session id
   sessionID: string;
   // TODO: change to designated message type

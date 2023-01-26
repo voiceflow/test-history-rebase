@@ -9,7 +9,10 @@ export interface ProjectListClient {
 }
 
 const Client = ({ api }: ExtraOptions): ProjectListClient => ({
-  getAll: (workspaceID) => api.get<{ boards: Realtime.DBProjectList[] }>(`/team/${workspaceID}/boards`).then(({ data }) => data.boards),
+  getAll: (workspaceID) =>
+    api
+      .get<{ boards: Realtime.DBProjectList[] }>(`/team/${workspaceID}/boards`)
+      .then(({ data }) => data.boards.map(({ projects = [], ...board }) => ({ projects, ...board }))),
 
   replaceAll: (workspaceID, lists) => api.patch(`/team/${workspaceID}/update_board`, { boards: lists }),
 });

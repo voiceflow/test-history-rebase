@@ -37,7 +37,7 @@ const RootEditor: React.OldFC = () => {
           onChangeColor={(blockColor) => editor.onChange({ blockColor })}
         />
       }
-      footer={<EditorV2.DefaultFooter tutorial={Documentation.START_STEP} />}
+      footer={<EditorV2.DefaultFooter tutorial={Documentation.COMMAND_STEP} />}
     >
       {isVersionRootDiagramActive && isPlatformWithInvocationName(platform) ? <InvocationNameSection /> : <StartLabelSection />}
 

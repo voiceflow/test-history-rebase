@@ -188,6 +188,7 @@ interface BaseNodeConfig<Data extends object> {
   mergeInitializer?: boolean;
 
   getTooltipText?: (data: Data) => string;
+  getTooptipLink?: (data: Data) => string;
   tooltipText?: string;
   tooltipLink?: string;
   isMergeTerminator?: (nodeEntity: NodeEntityResource<Data | unknown>) => boolean;

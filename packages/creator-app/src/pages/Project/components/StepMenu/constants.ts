@@ -77,7 +77,8 @@ export const getStepLabel = ({ factoryData, manager }: StepProps): string | unde
 export const getStepTooltipText = ({ factoryData, manager }: StepProps): string | undefined =>
   (_isFunction(manager.getTooltipText) && factoryData && manager.getTooltipText(factoryData)) || manager.tooltipText;
 
-export const getStepTooltipLink = ({ manager }: StepProps) => manager.tooltipLink;
+export const getStepTooltipLink = ({ factoryData, manager }: StepProps): string | undefined =>
+  (_isFunction(manager.getTooptipLink) && factoryData && manager.getTooptipLink(factoryData)) || manager.tooltipLink;
 
 const createMenuStep = (type: Realtime.StepBlockType, { publicOnly, factoryData }: MenuStepsConfig = {}) => {
   return {
@@ -87,7 +88,7 @@ const createMenuStep = (type: Realtime.StepBlockType, { publicOnly, factoryData 
     getIcon: (manager?: ReturnType<typeof getManager>) => getStepIcon({ factoryData, manager: manager || getManager(type) }),
     getLabel: (manager?: ReturnType<typeof getManager>) => getStepLabel({ factoryData, manager: manager || getManager(type) }),
     getStepTooltipText: (manager?: ReturnType<typeof getManager>) => getStepTooltipText({ factoryData, manager: manager || getManager(type) }),
-    getStepTooltipLink: (manager?: ReturnType<typeof getManager>) => getStepTooltipLink({ manager: manager || getManager(type) }),
+    getStepTooltipLink: (manager?: ReturnType<typeof getManager>) => getStepTooltipLink({ factoryData, manager: manager || getManager(type) }),
   };
 };
 

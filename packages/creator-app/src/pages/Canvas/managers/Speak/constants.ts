@@ -3,6 +3,7 @@ import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { SvgIconTypes } from '@voiceflow/ui';
 
+import * as Documentation from '@/config/documentation';
 import { BlockType, DialogType } from '@/constants';
 
 import { NodeConfig } from '../types';
@@ -31,6 +32,8 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Speak, Realtime.NodeData.
     data?.dialogs[0]?.type === DialogType.AUDIO
       ? 'Plays short audio files (less than 240s).'
       : 'Text-to-speech messages spoken by the Voice assistant.',
+
+  getTooptipLink: (data) => (data?.dialogs[0]?.type === DialogType.AUDIO ? Documentation.AUDIO_STEP : Documentation.SPEAK_STEP),
 
   factory: ({ dialogs: [data] = [] } = {}, options) => ({
     node: {

@@ -1,7 +1,6 @@
 import { SLOT_REGEXP } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
-import * as Documentation from '@/config/documentation';
 import { NodeCategory } from '@/contexts/SearchContext/types';
 
 import { NodeManagerConfigV2 } from '../types';
@@ -19,8 +18,6 @@ const SpeakManager: NodeManagerConfigV2<Realtime.NodeData.Speak, Realtime.NodeDa
 
   searchCategory: NodeCategory.RESPONSES,
   getSearchParams: (data) => data.dialogs.map((dialog) => (Realtime.isSSML(dialog) ? dialog.content : dialog.url).replace(SLOT_REGEXP, '{$1}')),
-
-  tooltipLink: Documentation.SPEAK_STEP,
 };
 
 export default SpeakManager;

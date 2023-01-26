@@ -18,7 +18,7 @@ const CardV2Manager: NodeManagerConfigV2<Realtime.NodeData.CardV2, Realtime.Node
   getSearchParams: ({ title, description }) => [title, typeof description === 'string' ? description : serializeToText(description)],
 
   tooltipText: 'Add card steps to your assistant.',
-  tooltipLink: Documentation.CAROUSEL_STEP,
+  tooltipLink: Documentation.CARD_STEP,
 };
 
 export default CardV2Manager;

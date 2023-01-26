@@ -27,7 +27,7 @@ const CardV2EditorRoot: NodeEditorV2<Realtime.NodeData.CardV2, Realtime.NodeData
     <EditorV2
       header={<EditorV2.DefaultHeader />}
       footer={
-        <EditorV2.DefaultFooter tutorial={Documentation.CAROUSEL_STEP}>
+        <EditorV2.DefaultFooter tutorial={Documentation.CARD_STEP}>
           {isLast && !isVoiceProject && <EditorV2.FooterActionsButton actions={[noMatchConfig.option, noReplyConfig.option]} />}
         </EditorV2.DefaultFooter>
       }

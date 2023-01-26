@@ -15,7 +15,7 @@ const VisualManager: NodeManagerConfigV2<Realtime.NodeData.Visual, Realtime.Node
   editorV2: Editor,
 
   tooltipText: 'Displays an image or gif.',
-  tooltipLink: Documentation.VISUALS_STEP,
+  tooltipLink: Documentation.IMAGE_STEP,
 };
 
 export default VisualManager;

@@ -23,20 +23,15 @@ export const DIALOGFLOW_ACTIONS = 'https://docs.voiceflow.com/#/platform/steps/c
 
 // canvas
 export const COMPONENTS_LAYER = 'https://www.voiceflow.com/docs/designing-components-flow';
-export const COMPONENT_STEP = 'https://www.voiceflow.com/docs/designing-components-flow';
-export const CODE_STEP = 'https://www.voiceflow.com/docs/designing-developer-steps#toc-2';
 export const SET_STEP_VIDEO = 'https://www.youtube.com/embed/6xgr-7GPZzU';
 export const ACCOUNT_LINKING_STEP = 'https://www.voiceflow.com/docs/designing-channel-specific-steps#toc-4';
-export const ALEXA_DIRECTIVE_STEP = 'https://www.voiceflow.com/docs/designing-channel-specific-steps#toc-5';
-export const GOOGLE_DIRECTIVE_STEP = 'https://www.voiceflow.com/docs/designing-channel-specific-steps#toc-6';
-export const VISUALS_STEP = 'https://www.voiceflow.com/docs/designing-response-steps#toc-4';
-export const DISPLAY_STEP = 'https://www.voiceflow.com/docs/designing-response-steps#toc-7';
-export const CUSTOM_RESPOSE = 'https://www.voiceflow.com/docs/designing-response-steps#toc-9';
+export const ALEXA_DIRECTIVE_STEP = 'https://voiceflow.zendesk.com/hc/en-us/articles/9178889682957-Directive-Steps';
+export const GOOGLE_DIRECTIVE_STEP = 'https://voiceflow.zendesk.com/hc/en-us/articles/9178889682957-Directive-Steps';
+export const DISPLAY_STEP = 'https://voiceflow.zendesk.com/hc/en-us/articles/6141573631885-Display-Step-Alexa-Only-';
+export const CUSTOM_RESPOSE = 'https://voiceflow.zendesk.com/hc/en-us/articles/9176403290253-Custom-Response-Step-Dialogflow-';
 
 // TODO: we don't have a dedicated pages for these anymore
-export const CARD_STEP = 'https://www.voiceflow.com/docs/designing-response-steps#toc-7';
 export const REMINDER_STEP = 'https://www.voiceflow.com/docs/designing-channel-specific-steps#toc-1';
-export const STREAM_STEP = 'https://www.voiceflow.com/docs/designing-response-steps#toc-8';
 
 // features
 export const MARKUP_FEATURE = 'https://docs.voiceflow.com/#/platform/canvas/markup';
@@ -56,29 +51,37 @@ export const PROJECT_CREATE = 'https://www.voiceflow.com/docs/designing-project-
 export const CUSTOM_BLOCK_EDITOR = 'https://developer.voiceflow.com/docs/custom-blocks';
 
 // TODO: the actions documentation is not available yet
-export const ACTIONS = 'https://www.voiceflow.com/docs/designing-adding-actions';
+export const ACTIONS = 'https://voiceflow.zendesk.com/hc/en-us/articles/9177827414541-Introduction-to-Actions';
 export const ACTIONS_BACKEND = 'https://www.voiceflow.com/docs/designing-adding-actions#backend-actions';
 export const ACTIONS_NAVIGATION = 'https://www.voiceflow.com/docs/designing-adding-actions#navigation-actions';
 
 // steps
-export const START_STEP = 'https://www.voiceflow.com/docs/designing-adding-steps-and-paths#toc-5';
-export const COMMAND_STEP = 'https://www.voiceflow.com/docs/designing-adding-steps-and-paths#toc-6';
-export const INTENT_STEP = 'https://www.voiceflow.com/docs/designing-event-steps#toc-0';
-export const CHOICE_STEP = 'https://www.voiceflow.com/docs/designing-user-input-steps#toc-2';
-export const BUTTONS_STEP = 'https://www.voiceflow.com/docs/designing-user-input-steps#toc-1';
-export const CAPTURE_STEP = 'https://www.voiceflow.com/docs/designing-user-input-steps#toc-4';
-export const CONDITION_STEP = 'https://www.voiceflow.com/docs/designing-logic-steps#toc-2';
-export const CUSTOM_CODE_STEP = 'https://www.voiceflow.com/docs/designing-developer-steps#toc-2';
-export const SET_STEP = 'https://www.voiceflow.com/docs/designing-logic-steps#toc-3';
-export const API_STEP = 'https://www.voiceflow.com/docs/designing-developer-steps#toc-1';
-export const SPEAK_STEP = 'https://www.voiceflow.com/docs/designing-response-steps#toc-1';
-export const TEXT_STEP = 'https://www.voiceflow.com/docs/designing-response-steps#toc-2';
-export const IMAGE_STEP = 'https://www.voiceflow.com/docs/designing-response-steps#toc-4';
-export const AUDIO_STEP = 'https://www.voiceflow.com/docs/designing-response-steps#toc-3';
-export const CAROUSEL_STEP = 'https://www.voiceflow.com/docs/designing-response-steps#toc-6';
-export const CUSTOM_ACTION = 'https://www.voiceflow.com/docs/designing-integration-steps#toc-4';
-export const EXIT_STEP = 'https://www.voiceflow.com/docs/designing-logic-steps#toc-6';
-export const RANDOM_STEP = 'https://www.voiceflow.com/docs/designing-logic-steps#toc-4';
+export const COMMAND_STEP = 'https://voiceflow.zendesk.com/hc/en-us/articles/9175374738445-Commands';
+
+export const INTENT_STEP = 'https://voiceflow.zendesk.com/hc/en-us/articles/9178883856653-Intent-Step';
+
+export const AUDIO_STEP = 'https://voiceflow.zendesk.com/hc/en-us/articles/6141420225293-Audio-Step';
+export const CARD_STEP = 'https://voiceflow.zendesk.com/hc/en-us/articles/6141611630349-Card-Step';
+export const CAROUSEL_STEP = 'https://voiceflow.zendesk.com/hc/en-us/articles/9176043863309-Carousel-Step';
+export const IMAGE_STEP = 'https://voiceflow.zendesk.com/hc/en-us/articles/9175900419853-Image-Step';
+export const SPEAK_STEP = 'https://voiceflow.zendesk.com/hc/en-us/articles/6141291821453-Speak-Step';
+export const STREAM_STEP = 'https://voiceflow.zendesk.com/hc/en-us/articles/6141616211725-Stream-Step-Alexa-Google-only-';
+export const TEXT_STEP = 'https://voiceflow.zendesk.com/hc/en-us/articles/6141316622861-Text-Step';
+
+export const BUTTONS_STEP = 'https://voiceflow.zendesk.com/hc/en-us/articles/6156015991949-Buttons-Step';
+export const CAPTURE_STEP = 'https://voiceflow.zendesk.com/hc/en-us/articles/6141766677005-Capture-Step';
+export const CHOICE_STEP = 'https://voiceflow.zendesk.com/hc/en-us/articles/6155884687757-Choice-Step';
+
+export const COMPONENT_STEP = 'https://voiceflow.zendesk.com/hc/en-us/articles/9178425818893-Component-Step';
+export const CONDITION_STEP = 'https://voiceflow.zendesk.com/hc/en-us/articles/9178328600461-Condition-Step';
+export const EXIT_STEP = 'https://voiceflow.zendesk.com/hc/en-us/articles/9178499968141-End-Step';
+export const RANDOM_STEP = 'https://voiceflow.zendesk.com/hc/en-us/articles/9178402073229-Random-Step';
+export const SET_STEP = 'https://voiceflow.zendesk.com/hc/en-us/articles/9178327419533-Set-Step';
+
+export const API_STEP = 'https://voiceflow.zendesk.com/hc/en-us/articles/9262787577613-API-Step';
+export const CODE_STEP = 'https://voiceflow.zendesk.com/hc/en-us/articles/9262803271821-Code-Javascript-Step';
+export const CUSTOM_ACTION = 'https://voiceflow.zendesk.com/hc/en-us/articles/9263025713165-Custom-Action-Step';
+
 export const TEMPLATE_STEP = 'https://www.voiceflow.com/docs/designing-adding-steps-and-paths#toc-6';
 
 export const DOMAINS = 'http://www.voiceflow.com/docs/designing-domains';

@@ -15,7 +15,7 @@ const Editor: NodeEditorV2<Realtime.NodeData.Code, Realtime.NodeData.CodeBuiltIn
       editor={props}
       footer={
         !props.isFullscreen && (
-          <EditorV2.DefaultFooter tutorial={Documentation.CUSTOM_CODE_STEP}>
+          <EditorV2.DefaultFooter tutorial={Documentation.CODE_STEP}>
             <EditorV2.FooterActionsButton actions={editorActions} />
           </EditorV2.DefaultFooter>
         )

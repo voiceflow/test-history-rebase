@@ -55,7 +55,7 @@ const Wrapper = styled.div`
   }
 `;
 
-const CanvasContainer: React.OldFC = ({ children }) => {
+const CanvasContainer: React.FC<React.PropsWithChildren> = ({ children }) => {
   const ref = React.useRef<HTMLDivElement>(null);
   const engine = React.useContext(EngineContext)!;
   const markup = React.useContext(MarkupContext)!;

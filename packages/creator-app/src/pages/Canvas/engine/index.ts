@@ -22,6 +22,7 @@ import * as Session from '@/ducks/session';
 import * as Thread from '@/ducks/threadV2';
 import * as UI from '@/ducks/ui';
 import * as Version from '@/ducks/versionV2';
+import * as Viewport from '@/ducks/viewport';
 import { CanvasAction } from '@/pages/Canvas/constants';
 import { CanvasContainerAPI } from '@/pages/Canvas/types';
 import { DiagramHeartbeatContextValue } from '@/pages/Project/contexts';
@@ -260,25 +261,34 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
     this.canvas = canvas;
 
     if (canvas) {
-      const nodeCoords = this.select(CreatorV2.nodeCoordsByIDSelectorV2);
+      const viewport = this.select(Viewport.activeDiagramViewportSelector);
+      const nodeCoords = Object.values(this.select(CreatorV2.nodeCoordsByIDSelectorV2));
 
-      const Xpositions: number[] = [];
-      const Ypositions: number[] = [];
-      Object.values(nodeCoords).forEach(([x, y] = ORIGIN) => {
-        Xpositions.push(x);
-        Ypositions.push(y);
-      });
+      const XPositions: number[] = [];
+      const YPositions: number[] = [];
+
+      if (nodeCoords.length) {
+        nodeCoords.forEach(([x, y] = ORIGIN) => {
+          XPositions.push(x);
+          YPositions.push(y);
+        });
+      } else if (viewport) {
+        XPositions.push(viewport.x);
+        YPositions.push(viewport.y);
+      }
+
       // add buffer to give extra room for creating new steps
-      const minX = Math.trunc(Math.min(...Xpositions)) - BUFFER_REGION;
-      const maxX = Math.trunc(Math.max(...Xpositions)) + BUFFER_REGION;
-      const minY = Math.trunc(Math.min(...Ypositions)) - BUFFER_REGION;
-      const maxY = Math.trunc(Math.max(...Ypositions)) + BUFFER_REGION;
+      const minX = Math.trunc(Math.min(...XPositions)) - BUFFER_REGION;
+      const maxX = Math.trunc(Math.max(...XPositions)) + BUFFER_REGION;
+      const minY = Math.trunc(Math.min(...YPositions)) - BUFFER_REGION;
+      const maxY = Math.trunc(Math.max(...YPositions)) + BUFFER_REGION;
 
       // find the difference, and ensure it is between a MIN and MAX
       const width = Math.max(Math.min(Math.abs(maxX - minX), MAX_CANVAS_SIZE), MIN_CANVAS_WIDTH);
       const height = Math.max(Math.min(Math.abs(maxY - minY), MAX_CANVAS_SIZE), MIN_CANVAS_HEIGHT);
 
       canvas.setCanvasSize(width, height, -minX, -minY);
+
       this.emitter.emit(CanvasAction.RENDERED);
     }
 

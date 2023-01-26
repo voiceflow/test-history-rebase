@@ -43,7 +43,7 @@ const GRID_COLOR = '#dae2e2';
 
 export type CanvasAPI = Canvas['api'];
 
-export interface CanvasProps {
+export interface CanvasProps extends React.PropsWithChildren {
   viewport?: Viewport;
   controlScheme?: ControlScheme;
   innerRef?: React.Ref<HTMLDivElement>;
@@ -528,4 +528,4 @@ class Canvas extends React.PureComponent<
   }
 }
 
-export default withContext(DismissableLayerContext, 'dismissableLayer')(Canvas) as React.OldFC<CanvasProps>;
+export default withContext(DismissableLayerContext, 'dismissableLayer')(Canvas) as React.FC<CanvasProps>;

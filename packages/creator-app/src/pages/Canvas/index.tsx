@@ -30,7 +30,7 @@ interface CanvasProps {
   isPrototypingMode?: boolean;
 }
 
-const Canvas: React.OldFC<CanvasProps> = ({ isPrototypingMode }) => {
+const Canvas: React.FC<CanvasProps> = ({ isPrototypingMode }) => {
   const [engine, engineKey] = useEngine();
 
   // using history to do not rerender on the every location change

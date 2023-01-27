@@ -22,7 +22,6 @@ const reorderStepsReducer = createActiveDiagramReducer(
 
     const stepIDs = state.stepIDsByParentNodeID[parentNodeID] ?? [];
     const fromIndex = stepIDs.indexOf(stepID);
-    if (fromIndex === -1) return;
 
     state.stepIDsByParentNodeID[parentNodeID] = Utils.array.reorder(stepIDs, fromIndex, toIndex);
 

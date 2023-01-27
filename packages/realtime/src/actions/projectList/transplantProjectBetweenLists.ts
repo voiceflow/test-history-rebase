@@ -8,30 +8,41 @@ import { AbstractWorkspaceChannelControl } from '@/actions/workspace/utils';
 class TransplantProjectBetweenLists extends AbstractWorkspaceChannelControl<Realtime.projectList.TransplantProjectBetweenListsPayload> {
   protected actionCreator = Realtime.projectList.transplantProjectBetweenLists;
 
-  protected process = async (ctx: Context, { payload }: Action<Realtime.projectList.TransplantProjectBetweenListsPayload>) => {
+  // eslint-disable-next-line sonarjs/cognitive-complexity
+  protected process = async (ctx: Context, { payload, meta }: Action<Realtime.projectList.TransplantProjectBetweenListsPayload>) => {
+    if (meta?.skipPersist) return;
+
     const { creatorID } = ctx.data;
-    const { projectID } = payload.from;
-    const isReorder = payload.from.listID === payload.to.listID;
+    const { index: toIndex, listID: toListID } = payload.to;
+    const { projectID: fromProjectID, listID: fromListID } = payload.from;
+    const isReorder = fromListID === toListID;
 
     const lists = await this.services.projectList.getAll(creatorID, payload.workspaceID);
 
+    const isSubprotocol1_2Plus = this.isGESubprotocol(ctx, Realtime.Subprotocol.Version.V1_2_0);
+
     const getTargetIndex = (list: Realtime.DBProjectList) =>
-      typeof payload.to.target === 'number' ? payload.to.target : list.projects.indexOf(payload.to.target);
+      typeof (payload.to as any).target === 'number' ? (payload.to as any).target : list.projects.indexOf((payload.to as any).target);
 
     const updatedLists = lists.map((list) => {
-      if (list.board_id === payload.from.listID) {
+      if (list.board_id === fromListID) {
+        const toProjectIndex = isSubprotocol1_2Plus ? toIndex : getTargetIndex(list);
+        const fromProjectIndex = list.projects.indexOf(fromProjectID);
+
         return {
           ...list,
           projects: isReorder
-            ? Utils.array.reorder(list.projects, list.projects.indexOf(projectID), getTargetIndex(list))
-            : Utils.array.withoutValue(list.projects, projectID),
+            ? Utils.array.reorder(list.projects, fromProjectIndex, toProjectIndex)
+            : Utils.array.withoutValue(list.projects, fromProjectID),
         };
       }
 
-      if (list.board_id === payload.to.listID) {
+      if (!isReorder && list.board_id === toListID) {
+        const insertIndex = isSubprotocol1_2Plus ? toIndex : getTargetIndex(list);
+
         return {
           ...list,
-          projects: Utils.array.insert(list.projects, getTargetIndex(list), projectID),
+          projects: Utils.array.insert(list.projects, insertIndex, fromProjectID),
         };
       }
 

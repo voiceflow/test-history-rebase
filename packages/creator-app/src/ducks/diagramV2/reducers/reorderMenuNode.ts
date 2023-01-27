@@ -9,8 +9,9 @@ const reorderMenuNodeReducer = createReducer(Realtime.diagram.reorderMenuNode, (
 
   if (!diagram) return;
 
-  diagram.menuNodeIDs = Utils.array.withoutValue(diagram.menuNodeIDs, nodeID);
-  diagram.menuNodeIDs = Utils.array.insert(diagram.menuNodeIDs, toIndex, nodeID);
+  const fromIndex = diagram.menuNodeIDs.indexOf(nodeID);
+
+  diagram.menuNodeIDs = Utils.array.reorder(diagram.menuNodeIDs, fromIndex, toIndex);
 });
 
 export default reorderMenuNodeReducer;

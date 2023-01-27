@@ -50,23 +50,34 @@ export const deleteProjectFromList =
   };
 
 export const moveProjectList =
-  (fromID: string, toID: string): Thunk =>
+  ({ fromID, toIndex, skipPersist }: { fromID: string; toIndex: number; skipPersist?: boolean }): Thunk =>
   async (dispatch, getState) => {
-    await dispatch.sync(Realtime.projectList.crud.move({ ...getActiveWorkspaceContext(getState()), from: fromID, to: toID }));
+    await dispatch.sync(Realtime.projectList.crud.move({ ...getActiveWorkspaceContext(getState()), fromID, toIndex }, { skipPersist }));
   };
 
 export const transplantProjectBetweenLists =
-  (projectID: string, fromListID: string, toListID: string, target: string | number): Thunk =>
+  ({
+    toListID,
+    fromListID,
+    skipPersist,
+    fromProjectID,
+    toProjectIndex,
+  }: {
+    toListID: string;
+    fromListID: string;
+    skipPersist?: boolean;
+    fromProjectID: string;
+    toProjectIndex: number;
+  }): Thunk =>
   async (dispatch, getState) => {
-    const fromList = ProjectListV2.projectListByIDSelector(getState(), { id: fromListID });
-
-    if (fromListID === toListID && target === fromList?.projects.indexOf(projectID)) return;
-
     await dispatch.sync(
-      Realtime.projectList.transplantProjectBetweenLists({
-        ...getActiveWorkspaceContext(getState()),
-        to: { listID: toListID, target },
-        from: { listID: fromListID, projectID },
-      })
+      Realtime.projectList.transplantProjectBetweenLists(
+        {
+          ...getActiveWorkspaceContext(getState()),
+          to: { listID: toListID, index: toProjectIndex },
+          from: { listID: fromListID, projectID: fromProjectID },
+        },
+        { skipPersist }
+      )
     );
   };

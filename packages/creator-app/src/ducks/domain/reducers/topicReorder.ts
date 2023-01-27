@@ -11,9 +11,7 @@ const topicReorderReducer = createReducer(Realtime.domain.topicReorder, (state, 
 
   const fromIndex = domain.topicIDs.indexOf(topicID);
 
-  if (fromIndex >= 0 && fromIndex !== toIndex) {
-    domain.topicIDs = Utils.array.reorder(domain.topicIDs, fromIndex, toIndex);
-  }
+  domain.topicIDs = Utils.array.reorder(domain.topicIDs, fromIndex, toIndex);
 });
 
 export default topicReorderReducer;

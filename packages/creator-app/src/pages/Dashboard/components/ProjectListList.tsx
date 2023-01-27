@@ -1,5 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { BoxFlex, IconButton, TippyTooltip } from '@voiceflow/ui';
+import { Box, IconButton, swallowEvent, TippyTooltip } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
 
@@ -14,16 +14,13 @@ import * as ProjectListV2 from '@/ducks/projectListV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { WorkspaceFeatureLoadingGate, WorkspaceSubscriptionGate } from '@/gates';
 import { withBatchLoadingGate } from '@/hocs/withBatchLoadingGate';
-import { DragItem as BaseDragItem, HoverItem as BaseHoverItem } from '@/hocs/withDraggable';
-import { useDispatch, usePermission, usePlanLimitedConfig, useScrollHelpers, useSelector } from '@/hooks';
+import { DragItem } from '@/hocs/withDraggable';
+import { useDispatch, useDropLagFix, usePermission, usePlanLimitedConfig, useScrollHelpers, useSelector } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
 import { DashboardClassName, Identifier } from '@/styles/constants';
 
-import { Item as ListItem, ItemProps as ListItemProps } from './Item';
-import DraggableList, { List, ListProps } from './List';
-
-type DragItem = BaseDragItem<'onDrag', 'onMove'>;
-type HoverItem = BaseHoverItem<'onDrag', 'onMove'>;
+import { Item as ListItem, ItemProps as ListItemProps, OwnItemProps as ListItemOwnProps } from './Item';
+import DraggableList, { List, ListProps, OwnListProps } from './List';
 
 const getBoardFilteredProjects = (projectsIDs: string[], getProjectByID: (projectID: string) => Realtime.AnyProject | null, filter: string) => {
   const filtered: Realtime.AnyProject[] = [];
@@ -46,26 +43,37 @@ export interface ProjectListListProps {
   fullHeightContainer?: boolean;
 }
 
-const ProjectListList: React.OldFC<ProjectListListProps> = ({ workspace, filter, isLocked, fullHeightContainer }) => {
-  const [newListID, setNewListID] = React.useState<string | null>(null);
-
+const ProjectListList: React.FC<ProjectListListProps> = ({ workspace, filter, isLocked, fullHeightContainer }) => {
   const projects = useSelector(ProjectV2.allProjectsSelector);
-  const getProjectByID = useSelector(ProjectV2.getProjectByIDSelector);
   const projectLists = useSelector(ProjectListV2.allProjectListsSelector);
+  const getProjectByID = useSelector(ProjectV2.getProjectByIDSelector);
+
   const createList = useDispatch(ProjectList.createProjectList);
   const setConfirm = useDispatch(Modal.setConfirm);
   const deleteList = useDispatch(ProjectList.deleteProjectList);
   const renameList = useDispatch(ProjectList.renameProjectList);
-  const transplantProjectBetweenLists = useDispatch(ProjectList.transplantProjectBetweenLists);
   const moveProjectList = useDispatch(ProjectList.moveProjectList);
+  const transplantProjectBetweenLists = useDispatch(ProjectList.transplantProjectBetweenLists);
 
   const [canManageLists] = usePermission(Permission.PROJECT_LIST_MANAGE);
-  const { bodyRef, innerRef, scrollHelpers } = useScrollHelpers<HTMLDivElement, HTMLDivElement>();
+  const projectsLimitConfig = usePlanLimitedConfig(LimitType.PROJECTS, { value: projects.length, limit: workspace?.projects ?? 2 });
 
+  const errorModal = ModalsV2.useModal(ModalsV2.Error);
   const upgradeModal = ModalsV2.useModal(ModalsV2.Upgrade);
   const projectCreateModal = ModalsV2.useModal(ModalsV2.Project.Create);
-  const projectsLimitConfig = usePlanLimitedConfig(LimitType.PROJECTS, { value: projects.length, limit: workspace?.projects ?? 2 });
-  const errorModal = ModalsV2.useModal(ModalsV2.Error);
+
+  const dropLagFixRef = useDropLagFix(['dashboard-list', 'dashboard-item']);
+  const { bodyRef, innerRef, scrollHelpers } = useScrollHelpers<HTMLDivElement, HTMLDivElement>();
+
+  const [newListID, setNewListID] = React.useState<string | null>(null);
+
+  const dragCache = React.useRef({
+    toListID: '',
+    fromListID: '',
+    toListIndex: -1,
+    fromProjectID: '',
+    toProjectIndex: -1,
+  });
 
   const onCreateList = React.useCallback(async () => {
     const list = await createList();
@@ -102,34 +110,96 @@ const ProjectListList: React.OldFC<ProjectListListProps> = ({ workspace, filter,
     });
   }, []);
 
-  const onMove = React.useCallback((drag: DragItem, hover: HoverItem) => {
-    moveProjectList(drag.id as string, hover.id as string);
+  const onDragStart = React.useCallback((item: DragItem<OwnListProps>) => {
+    dragCache.current.fromListID = item.id;
+  }, []);
+
+  const onMove = React.useCallback(
+    (drag: DragItem<OwnListProps>, hover: DragItem<OwnListProps>) => {
+      dragCache.current.toListIndex = hover.index;
+
+      moveProjectList({ toIndex: hover.index, fromID: drag.id, skipPersist: true });
+    },
+    [moveProjectList]
+  );
+
+  const onDrop = React.useCallback(() => {
+    if (dragCache.current.toListIndex === -1 || !dragCache.current.fromListID) return;
+
+    moveProjectList({
+      fromID: dragCache.current.fromListID,
+      toIndex: dragCache.current.toListIndex,
+    });
+
+    dragCache.current = {
+      toListID: '',
+      fromListID: '',
+      toListIndex: -1,
+      fromProjectID: '',
+      toProjectIndex: -1,
+    };
+  }, [transplantProjectBetweenLists]);
+
+  const onDragStartProject = React.useCallback((item: DragItem<ListItemOwnProps>) => {
+    if (!item.listID) return;
+
+    dragCache.current.fromListID = item.listID;
+    dragCache.current.fromProjectID = item.id;
   }, []);
 
   const onMoveProject = React.useCallback(
-    (drag: DragItem, hover: HoverItem) => transplantProjectBetweenLists(drag.id as string, drag.listId!, hover.listId!, hover.id),
-    []
+    (drag: DragItem<ListItemOwnProps>, hover: DragItem<ListItemOwnProps>) => {
+      if (!drag.listID || !hover.listID) return;
+
+      dragCache.current.toListID = hover.listID;
+      dragCache.current.toProjectIndex = hover.index;
+
+      transplantProjectBetweenLists({
+        toListID: hover.listID,
+        fromListID: drag.listID,
+        skipPersist: true,
+        fromProjectID: drag.id,
+        toProjectIndex: hover.index,
+      });
+    },
+    [transplantProjectBetweenLists]
   );
+
+  const onDropProject = React.useCallback(() => {
+    if (!dragCache.current.toListID || !dragCache.current.fromListID || dragCache.current.toProjectIndex === -1 || !dragCache.current.fromProjectID) {
+      return;
+    }
+
+    transplantProjectBetweenLists({
+      toListID: dragCache.current.toListID,
+      fromListID: dragCache.current.fromListID,
+      fromProjectID: dragCache.current.fromProjectID,
+      toProjectIndex: dragCache.current.toProjectIndex,
+    });
+
+    dragCache.current = {
+      toListID: '',
+      fromListID: '',
+      toListIndex: -1,
+      fromProjectID: '',
+      toProjectIndex: -1,
+    };
+  }, [transplantProjectBetweenLists]);
 
   return (
     <div
       id="dashboard"
+      ref={dropLagFixRef}
       className={cn({ 'thanos-ed': isLocked, 'full-height': fullHeightContainer })}
-      onClickCapture={(e) => {
-        // prevent all click events
-        if (isLocked) {
-          e.preventDefault();
-          e.stopPropagation();
-        }
-      }}
+      onClickCapture={isLocked ? swallowEvent() : undefined}
     >
       {projects.length === 0 ? (
         <EmptyScreen
           id={Identifier.NEW_PROJECT_BUTTON}
-          title="No Assistants Found"
           body="This workspace has no assistants, create one."
-          buttonText="New Assistant"
+          title="No Assistants Found"
           onClick={() => onCreateProject()}
+          buttonText="New Assistant"
         />
       ) : (
         <div className={DashboardClassName.LISTS_CONTAINER}>
@@ -146,17 +216,21 @@ const ProjectListList: React.OldFC<ProjectListListProps> = ({ workspace, filter,
                       <DraggableList
                         id={list.id}
                         key={list.id}
+                        name={list.name}
                         isNew={list.id === newListID}
                         index={index}
-                        name={list.name}
+                        onMove={onMove}
+                        onDrop={onDrop}
                         onRename={renameList}
                         onRemove={onDeleteBoard}
                         projects={projects}
-                        createProject={onCreateProject}
-                        onMove={onMove}
+                        onDragStart={onDragStart}
                         onMoveProject={onMoveProject}
                         clearNewBoard={onClearNewList}
+                        createProject={onCreateProject}
+                        onDropProject={onDropProject}
                         disableDragging={!!filter}
+                        onDragStartProject={onDragStartProject}
                       />
                     );
                   })}
@@ -176,14 +250,11 @@ const ProjectListList: React.OldFC<ProjectListListProps> = ({ workspace, filter,
                   </DragLayer>
 
                   {canManageLists && (
-                    <BoxFlex
-                      className={DashboardClassName.ADD_LIST_BUTTON}
-                      style={{ flex: '0 0 auto', alignSelf: 'flex-start', margin: '15px 27px', minWidth: '0' }}
-                    >
+                    <Box.Flex flex="0 0 auto" margin="15px 27px" minWidth="0" className={DashboardClassName.ADD_LIST_BUTTON} alignSelf="flex-start">
                       <TippyTooltip offset={[0, 8]} content="Add new list" position="bottom">
                         <IconButton large icon="add2" onClick={onCreateList} size={13} />
                       </TippyTooltip>
-                    </BoxFlex>
+                    </Box.Flex>
                   )}
                 </div>
               </div>

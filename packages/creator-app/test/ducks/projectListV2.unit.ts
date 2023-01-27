@@ -67,31 +67,20 @@ suite(ProjectList, MOCK_STATE)('Ducks - Project List V2', ({ describeReducerV2, 
         const result = applyAction(MOCK_STATE, {
           ...ACTION_CONTEXT,
           from: { listID: LIST_ID, projectID: 'otherProjectID' },
-          to: { listID: LIST_ID, target: PROJECT_ID },
+          to: { listID: LIST_ID, index: 0 },
         });
 
         expect(result.byKey[LIST_ID].projects).toEqual(['otherProjectID', PROJECT_ID]);
-      });
-
-      it('move project between lists by ID', () => {
-        const result = applyAction(MOCK_STATE, {
-          ...ACTION_CONTEXT,
-          from: { listID: 'abc', projectID: 'fizz' },
-          to: { listID: LIST_ID, target: PROJECT_ID },
-        });
-
-        expect(result.byKey[LIST_ID].projects).toEqual(['fizz', PROJECT_ID, 'otherProjectID']);
-        expect(result.byKey.abc.projects).toEqual(['buzz']);
       });
 
       it('move project between lists by index', () => {
         const result = applyAction(MOCK_STATE, {
           ...ACTION_CONTEXT,
           from: { listID: 'abc', projectID: 'fizz' },
-          to: { listID: LIST_ID, target: 1 },
+          to: { listID: LIST_ID, index: 0 },
         });
 
-        expect(result.byKey[LIST_ID].projects).toEqual([PROJECT_ID, 'fizz', 'otherProjectID']);
+        expect(result.byKey[LIST_ID].projects).toEqual(['fizz', PROJECT_ID, 'otherProjectID']);
         expect(result.byKey.abc.projects).toEqual(['buzz']);
       });
 
@@ -99,7 +88,7 @@ suite(ProjectList, MOCK_STATE)('Ducks - Project List V2', ({ describeReducerV2, 
         const result = applyAction(MOCK_STATE, {
           ...ACTION_CONTEXT,
           from: { listID: 'foo', projectID: 'fizz' },
-          to: { listID: LIST_ID, target: PROJECT_ID },
+          to: { listID: LIST_ID, index: 0 },
         });
 
         expect(result).toBe(MOCK_STATE);
@@ -109,7 +98,7 @@ suite(ProjectList, MOCK_STATE)('Ducks - Project List V2', ({ describeReducerV2, 
         const result = applyAction(MOCK_STATE, {
           ...ACTION_CONTEXT,
           from: { listID: 'abc', projectID: 'fizz' },
-          to: { listID: 'foo', target: PROJECT_ID },
+          to: { listID: 'foo', index: 0 },
         });
 
         expect(result).toBe(MOCK_STATE);
@@ -119,7 +108,7 @@ suite(ProjectList, MOCK_STATE)('Ducks - Project List V2', ({ describeReducerV2, 
         const result = applyAction(MOCK_STATE, {
           ...ACTION_CONTEXT,
           from: { listID: LIST_ID, projectID: 'foo' },
-          to: { listID: LIST_ID, target: PROJECT_ID },
+          to: { listID: LIST_ID, index: 0 },
         });
 
         expect(result).toBe(MOCK_STATE);
@@ -129,7 +118,7 @@ suite(ProjectList, MOCK_STATE)('Ducks - Project List V2', ({ describeReducerV2, 
         const result = applyAction(MOCK_STATE, {
           ...ACTION_CONTEXT,
           from: { listID: LIST_ID, projectID: PROJECT_ID },
-          to: { listID: 'abc', target: 'foo' },
+          to: { listID: 'abc', index: -1 },
         });
 
         expect(result.byKey[LIST_ID].projects).toEqual(['otherProjectID']);

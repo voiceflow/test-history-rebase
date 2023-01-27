@@ -1,6 +1,5 @@
 import * as Platform from '@voiceflow/platform-config';
 import { Dropdown, OverflowTippyTooltip, stopPropagation, SvgIcon, TippyTooltip, useLinkedState } from '@voiceflow/ui';
-import _constant from 'lodash/constant';
 import React from 'react';
 import { generatePath } from 'react-router-dom';
 
@@ -10,7 +9,7 @@ import * as NLU from '@/config/nlu';
 import { LegacyPath } from '@/config/routes';
 import { Permission } from '@/constants/permissions';
 import * as Project from '@/ducks/project';
-import { InjectedDraggableComponentProps, withDraggable } from '@/hocs/withDraggable';
+import { InjectedDraggableProps, withDraggable } from '@/hocs/withDraggable';
 import { usePermission } from '@/hooks/permission';
 import { useProjectOptions } from '@/hooks/project';
 import { useDispatch } from '@/hooks/realtime';
@@ -31,11 +30,11 @@ import {
   ProjectTitleDetails,
 } from './styled';
 
-export interface ItemProps extends InjectedDraggableComponentProps {
+export interface OwnItemProps {
   id: string;
   nlu: Platform.Constants.NLUType;
   name: string;
-  listId: string;
+  listID: string;
   isLive?: boolean;
   isOver?: boolean;
   created: string;
@@ -43,17 +42,18 @@ export interface ItemProps extends InjectedDraggableComponentProps {
   language: string[];
   avatarUrl?: string | null;
   versionID: string;
-  isDragging?: boolean;
+  className?: string;
   isDragLayer?: boolean;
   projectType: Platform.Constants.ProjectType;
-  isDraggingPreview?: boolean;
 }
 
-export const Item: React.OldFC<ItemProps> = ({
+export interface ItemProps extends InjectedDraggableProps, OwnItemProps {}
+
+export const Item: React.FC<ItemProps> = ({
   id,
   nlu,
   name,
-  listId,
+  listID,
   isLive,
   platform,
   language,
@@ -90,7 +90,7 @@ export const Item: React.OldFC<ItemProps> = ({
   };
 
   const options = useProjectOptions({
-    boardID: listId,
+    boardID: listID,
     onRename,
     projectID: id,
     versionID,
@@ -177,11 +177,8 @@ export const Item: React.OldFC<ItemProps> = ({
   );
 };
 
-export default withDraggable({
+export default withDraggable<OwnItemProps>({
   name: 'dashboard-item',
   canDrag: (monitor) => !monitor.getItem()?.disableDragging,
-  canDrop: _constant(true),
-  onDropKey: 'onDrop',
-  onMoveKey: 'onMove',
   allowXTransform: true,
-})<ItemProps>(React.memo(Item));
+})(React.memo(Item));

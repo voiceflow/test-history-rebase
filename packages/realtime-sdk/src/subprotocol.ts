@@ -7,6 +7,9 @@ export enum Version {
 
   /** rename `project.members` into `project.platformMembers` and normalize them */
   V1_1_1 = '1.1.1',
+
+  /** improves dashboard DnD ordering */
+  V1_2_0 = '1.2.0',
 }
 
-export const CURRENT_VERSION = Version.V1_1_1;
+export const CURRENT_VERSION = Version.V1_2_0;

@@ -11,7 +11,7 @@ class PatchProjectList extends AbstractProjectListResourceControl<PatchProjectLi
   protected actionCreator = Realtime.projectList.crud.patch;
 
   protected process = async (ctx: Context, { payload }: Action<PatchProjectListPayload>) => {
-    await this.applyPatch(ctx, payload.workspaceID, payload.key, () => Utils.object.pick(payload.value, ['name', 'projects']));
+    await this.applyPatch(ctx, payload.workspaceID, payload.key, () => Utils.object.pick(payload.value, ['name']));
   };
 }
 

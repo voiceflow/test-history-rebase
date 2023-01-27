@@ -11,9 +11,7 @@ const reorderComponentsReducer = createReducer(Realtime.version.reorderComponent
 
   const fromIndex = version.components.findIndex((component) => component.sourceID === fromID);
 
-  if (fromIndex >= 0 && fromIndex !== toIndex) {
-    version.components = Utils.array.reorder(version.components, fromIndex, toIndex);
-  }
+  version.components = Utils.array.reorder(version.components, fromIndex, toIndex);
 });
 
 export default reorderComponentsReducer;

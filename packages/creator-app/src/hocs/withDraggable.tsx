@@ -1,73 +1,64 @@
+import { EmptyObject } from '@voiceflow/common';
 import _constant from 'lodash/constant';
 import _throttle from 'lodash/throttle';
 import React from 'react';
 import { DragSourceHookSpec, useDrag, useDrop } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
 
-export interface InjectedDraggableComponentProps {
+export interface InjectedDraggableProps {
+  isDragging?: boolean;
   connectedRootRef: React.RefObject<HTMLDivElement>;
+  isDraggingPreview?: boolean;
 }
 
 export interface DropOptions {
-  toListId: string;
-  fromListId: string;
+  toListID?: string;
+  fromListID?: string;
 }
 
-type DynamicDropProps<D extends string> = Partial<Record<D, (dropOptions: DropOptions) => void>>;
-type DynamicMoveProps<D extends string, M extends string> = Partial<
-  Record<M, (dragItem: DragItem<D, M>, props: ExposedDraggableComponentProps<D, M>) => void>
->;
+export interface ExposedProps<Props extends EmptyObject> {
+  id: string;
+  isFB?: boolean;
+  index: number;
+  listID?: string;
+  onDrop?: (item: DragItem<Props>, dropOptions: DropOptions) => void;
+  onMove?: (item: DragItem<Props>, hoverItem: DragItem<Props>) => void;
+  onDragStart?: (item: DragItem<Props>) => void;
+  disableDragging?: boolean;
+}
 
-export type ExposedDraggableComponentProps<D extends string, M extends string> = DynamicDropProps<D> &
-  DynamicMoveProps<D, M> & {
-    id: number | string;
-    index: number;
-    listId?: string;
-    isFB?: boolean;
-    disableDragging?: boolean;
-    onToggleDragging?: (isDragging: boolean) => void;
-  };
+export type DragItem<Props extends EmptyObject> = ExposedProps<Props> & Props & { _initialListID?: string };
 
-export type DragItem<D extends string = string, M extends string = string> = ExposedDraggableComponentProps<D, M> & {
-  _initialListId: string;
-};
-
-export type HoverItem<D extends string = string, M extends string = string> = ExposedDraggableComponentProps<D, M>;
-
-export interface DraggableOptions<D extends string, M extends string> {
+export interface DraggableOptions<Props extends EmptyObject> {
   name: string;
   styles?: React.CSSProperties;
-  onDropKey: D;
-  onMoveKey: M;
-  canDrag?: DragSourceHookSpec<ExposedDraggableComponentProps<D, M>, {}, {}>['canDrag'];
-  canDrop?: (props: ExposedDraggableComponentProps<D, M>) => boolean;
+  canDrag?: DragSourceHookSpec<ExposedProps<Props>, {}, {}>['canDrag'];
+  canDrop?: (props: ExposedProps<Props>) => boolean;
   dropOnly?: boolean;
   allowXTransform?: boolean;
   allowYTransform?: boolean;
 }
 
 export const withDraggable =
-  <D extends string, M extends string>({
+  <P extends EmptyObject>({
     name,
     styles = {},
     canDrag,
     canDrop = _constant(true),
-    onDropKey,
-    onMoveKey,
     dropOnly,
     allowXTransform = false,
     allowYTransform = true,
-  }: DraggableOptions<D, M>) =>
-  <P extends object>(Wrapper: React.FC<P>) => {
-    type Props = ExposedDraggableComponentProps<D, M>;
+  }: DraggableOptions<P>) =>
+  (Wrapper: React.FC<P & InjectedDraggableProps>) => {
+    type Props = P & ExposedProps<P>;
 
-    return (props: Omit<P, keyof InjectedDraggableComponentProps> & Props) => {
-      const rootRef = React.useRef<HTMLElement>(null);
+    return (props: Omit<Props, keyof InjectedDraggableProps>) => {
+      const rootRef = React.useRef<HTMLDivElement>(null);
 
-      const [, connectDrop] = useDrop<DragItem<D, M>>({
+      const [, connectDrop] = useDrop<DragItem<Props>>({
         accept: name,
 
-        hover: _throttle((item: DragItem<D, M>) => {
+        hover: _throttle((item: DragItem<Props>) => {
           if (!item || (canDrop && !canDrop(props))) return;
 
           const { id: dragId } = item;
@@ -75,10 +66,10 @@ export const withDraggable =
 
           if (dragId === hoverId) return;
 
-          props[onMoveKey]?.(item, props);
+          props.onMove?.(item, props as DragItem<Props>);
 
           item.index = hoverIndex;
-          item.listId = props.listId;
+          item.listID = props.listID;
         }, 150),
       });
 
@@ -88,29 +79,27 @@ export const withDraggable =
         canDrag,
 
         item: () => {
-          const { onToggleDragging } = props;
-
-          onToggleDragging?.(true);
-
-          return {
+          const item = {
             ...props,
             _width: rootRef.current?.clientWidth,
             _height: rootRef.current?.clientHeight,
             _styles: styles,
             dragType: name,
-            _initialListId: props.listId,
+            _initialListID: props.listID,
             _allowXTransform: allowXTransform,
             _allowYTransform: allowYTransform,
             isDraggingPreview: true,
-          };
+          } as DragItem<Props>;
+
+          props.onDragStart?.(item);
+
+          return item;
         },
 
         end: (props, monitor) => {
-          const item = monitor.getItem<DragItem>();
-          const { [onDropKey]: onDrop, onToggleDragging } = props;
+          const item = monitor.getItem<DragItem<Props>>();
 
-          onDrop?.({ toListId: item.listId!, fromListId: item._initialListId, ...props });
-          onToggleDragging?.(false);
+          props.onDrop?.(props, { toListID: item.listID, fromListID: item._initialListID });
         },
 
         collect: (monitor) => ({ isDragging: monitor.isDragging() }),

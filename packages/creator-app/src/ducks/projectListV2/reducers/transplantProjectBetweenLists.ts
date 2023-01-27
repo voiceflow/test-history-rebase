@@ -4,30 +4,28 @@ import * as Normal from 'normal-store';
 
 import { createReducer } from './utils';
 
-const transplantProjectBetweenListsReducer = createReducer(Realtime.projectList.transplantProjectBetweenLists, (state, { from, to }) => {
+const transplantProjectBetweenListsReducer = createReducer(Realtime.projectList.transplantProjectBetweenLists, (state, { from, to }, { meta }) => {
+  if (meta?.persistOnly) return;
+
   if (from.listID === to.listID) {
     const list = Normal.getOne(state, from.listID);
 
-    if (list) {
-      list.projects = Utils.array.reorder(
-        list.projects,
-        list.projects.indexOf(from.projectID),
-        typeof to.target === 'number' ? to.target : list.projects.indexOf(to.target)
-      );
-    }
-  } else {
-    const sourceList = Normal.getOne(state, from.listID);
-    const targetList = Normal.getOne(state, to.listID);
+    if (!list) return;
 
-    if (sourceList && targetList) {
-      sourceList.projects = Utils.array.withoutValue(sourceList.projects, from.projectID);
-      targetList.projects = Utils.array.insert(
-        targetList.projects,
-        typeof to.target === 'number' ? to.target : targetList.projects.indexOf(to.target),
-        from.projectID
-      );
-    }
+    const fromIndex = list.projects.indexOf(from.projectID);
+
+    list.projects = Utils.array.reorder(list.projects, fromIndex, to.index);
+
+    return;
   }
+
+  const sourceList = Normal.getOne(state, from.listID);
+  const targetList = Normal.getOne(state, to.listID);
+
+  if (!sourceList || !targetList) return;
+
+  sourceList.projects = Utils.array.withoutValue(sourceList.projects, from.projectID);
+  targetList.projects = Utils.array.insert(Utils.array.withoutValue(targetList.projects, from.projectID), to.index, from.projectID);
 });
 
 export default transplantProjectBetweenListsReducer;

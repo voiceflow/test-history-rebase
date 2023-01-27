@@ -4,20 +4,20 @@ import React from 'react';
 
 import UtteranceInput from '@/components/Utterance';
 import * as SlotV2 from '@/ducks/slotV2';
-import { InjectedDraggableComponentProps, withDraggable } from '@/hocs/withDraggable';
+import { InjectedDraggableProps, withDraggable } from '@/hocs/withDraggable';
 import { useAddSlot, useSelector } from '@/hooks';
 
 import { DragAndDropTypes } from '../constants';
 import * as S from '../styles';
 
-interface UtteranceItemProps extends InjectedDraggableComponentProps {
+export interface OwnUtteranceProps {
   text: string;
-  intentID: string;
-  onRemove: () => void;
   onEdit: (text: string) => void;
-  isDragging?: boolean;
-  isDraggingPreview?: boolean;
+  onRemove: () => void;
+  intentID: string;
 }
+
+interface UtteranceItemProps extends InjectedDraggableProps, OwnUtteranceProps {}
 
 const UtteranceItem: React.FC<UtteranceItemProps> = ({ text, onRemove, onEdit, isDragging, connectedRootRef }) => {
   const allSlots = useSelector(SlotV2.allSlotsSelector);
@@ -45,11 +45,9 @@ const UtteranceItem: React.FC<UtteranceItemProps> = ({ text, onRemove, onEdit, i
   );
 };
 
-export default withDraggable({
+export default withDraggable<OwnUtteranceProps>({
   name: DragAndDropTypes.UTTERANCE,
   canDrag: _constant(true),
   canDrop: _constant(true),
-  onDropKey: 'onDrop',
-  onMoveKey: 'onMove',
   allowXTransform: true,
-})<UtteranceItemProps>(React.memo(UtteranceItem));
+})(React.memo(UtteranceItem));

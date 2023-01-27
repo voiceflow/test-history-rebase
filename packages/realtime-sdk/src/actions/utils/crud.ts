@@ -20,8 +20,8 @@ export interface CRUDValuesPayload<T> {
 }
 
 export interface CRUDMovePayload {
-  to: string;
-  from: string;
+  fromID: string;
+  toIndex: number;
 }
 
 export interface CRUDActionCreators<Model, Context extends object = {}, Patch extends Partial<Model> = Partial<Model>> {

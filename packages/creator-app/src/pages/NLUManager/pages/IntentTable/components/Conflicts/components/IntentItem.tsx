@@ -4,42 +4,35 @@ import React from 'react';
 import { useDrop } from 'react-dnd';
 
 import { HOVER_THROTTLE_TIMEOUT } from '@/constants';
+import { DragItem } from '@/hocs/withDraggable';
 import { useDragPreview } from '@/hooks';
 import { ConflictUtterance, DeletedUtterancePayload, EditUtterancePayload, MoveUtterancePayload, NLUIntent } from '@/pages/NLUManager/types';
 
 import { DragAndDropTypes } from '../constants';
 import * as S from '../styles';
-import UtteranceItem from './UtteranceItem';
+import UtteranceItem, { OwnUtteranceProps } from './UtteranceItem';
 import UtterancePreview from './UtterancePreview';
 
 interface IntentItemProps {
   intent: NLUIntent;
   conflictID: string;
   utterances: ConflictUtterance[];
-  onDeleteUtterance: (payload: DeletedUtterancePayload) => void;
   onEditUtterance: (payload: EditUtterancePayload) => void;
   onMoveUtterance: (payload: MoveUtterancePayload) => void;
+  onDeleteUtterance: (payload: DeletedUtterancePayload) => void;
 }
 
-const IntentItem: React.OldFC<IntentItemProps> = ({ intent, conflictID, utterances, onEditUtterance, onDeleteUtterance, onMoveUtterance }) => {
+const IntentItem: React.FC<IntentItemProps> = ({ intent, conflictID, utterances, onEditUtterance, onDeleteUtterance, onMoveUtterance }) => {
   const intentUtterances = React.useMemo(() => utterances.filter((u) => !u.deleted), [utterances]);
   const intentName = intent?.name || '';
   const intentID = intent?.id || '';
 
-  const onMove = (from: any, to: any) => {
+  const onMove = (from: DragItem<OwnUtteranceProps>, to: DragItem<OwnUtteranceProps>) => {
     onMoveUtterance({
-      conflictID,
+      to: { index: to.index, intentID: to.intentID, utterance: to.text },
+      from: { index: from.index, intentID: from.intentID, utterance: from.text },
       utterance: from.text,
-      from: {
-        intentID: from.listId,
-        index: from.index,
-        utterance: from.text,
-      },
-      to: {
-        intentID: to.listId,
-        index: to.index,
-        utterance: to.text,
-      },
+      conflictID,
     });
   };
 
@@ -82,15 +75,15 @@ const IntentItem: React.OldFC<IntentItemProps> = ({ intent, conflictID, utteranc
       <div style={{ display: 'grid', gridGap: '16px' }}>
         {intentUtterances.map((utterance, index) => (
           <UtteranceItem
-            text={utterance.sentence}
-            key={index}
-            onRemove={() => onDeleteUtterance({ conflictID, utterance })}
-            onEdit={(text) => onEditUtterance({ conflictID, intentID, newUtteranceSentence: text, utterance: utterance.sentence })}
-            intentID={intentID}
             id={utterance.sentence}
+            key={index}
+            text={utterance.sentence}
             index={index}
             onMove={onMove}
-            listId={intentID}
+            listID={intentID}
+            onEdit={(text) => onEditUtterance({ conflictID, intentID, newUtteranceSentence: text, utterance: utterance.sentence })}
+            onRemove={() => onDeleteUtterance({ conflictID, utterance })}
+            intentID={intentID}
           />
         ))}
       </div>

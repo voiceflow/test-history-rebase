@@ -102,14 +102,10 @@ export const createCRUDReducers = <
     state.allKeys = keys;
   });
 
-  const move = createReducer(actionCreators.move, (state, { from, to }) => {
-    if (from !== to) {
-      state.allKeys = Utils.array.reorder(
-        state.allKeys,
-        typeof from === 'number' ? from : state.allKeys.indexOf(from),
-        typeof to === 'number' ? to : state.allKeys.indexOf(to)
-      );
-    }
+  const move = createReducer(actionCreators.move, (state, { toIndex, fromID }) => {
+    const fromIndex = state.allKeys.indexOf(fromID);
+
+    state.allKeys = Utils.array.reorder(state.allKeys, fromIndex, toIndex);
   });
 
   return {

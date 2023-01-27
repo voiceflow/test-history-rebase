@@ -15,7 +15,12 @@ class ReorderMenuNodes extends AbstractDiagramResourceControl<Realtime.diagram.R
     await this.services.diagram.reorderMenuNodes({ index: payload.toIndex, nodeID: payload.nodeID, diagramID: payload.diagramID });
   };
 
-  protected finally = async (ctx: Context<WorkspaceContextData>, { payload }: Action<Realtime.diagram.ReorderMenuNodePayload>): Promise<void> => {
+  protected finally = async (
+    ctx: Context<WorkspaceContextData>,
+    { payload, meta }: Action<Realtime.diagram.ReorderMenuNodePayload>
+  ): Promise<void> => {
+    if (meta?.skipPersist) return;
+
     await this.services.project.setUpdatedBy(payload.projectID, ctx.data.creatorID);
   };
 }

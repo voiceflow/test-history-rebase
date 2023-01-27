@@ -1,6 +1,6 @@
 import './DashBoard.css';
 
-import { Alert, BoxFlexCenter, SvgIcon } from '@voiceflow/ui';
+import { Alert, Box, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 
@@ -58,7 +58,7 @@ const Dashboard: React.FC = () => {
       <SeoHelmet page={SeoPage.DASHBOARD} />
 
       {isLocked && (
-        <BoxFlexCenter height="100%" width="100%" position="absolute" zIndex={10}>
+        <Box.FlexCenter height="100%" width="100%" position="absolute" zIndex={10}>
           {/* TODO: flush out subscription failed logic */}
           <Alert variant={Alert.Variant.DANGER} mb={16} cursor="pointer" textAlign="center">
             <SvgIcon icon="ban" size={32} inline />
@@ -67,7 +67,7 @@ const Dashboard: React.FC = () => {
             <br />
             Please update your payment to continue
           </Alert>
-        </BoxFlexCenter>
+        </Box.FlexCenter>
       )}
 
       <ProjectListList workspace={workspace} filter={filter} isLocked={isLocked} />

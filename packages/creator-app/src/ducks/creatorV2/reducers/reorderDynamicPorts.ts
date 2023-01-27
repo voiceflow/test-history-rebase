@@ -14,11 +14,9 @@ const reorderDynamicPortsReducer = createActiveDiagramReducer(Realtime.port.reor
 
   if (!ports) return;
 
-  const currentIndex = ports.out.dynamic.indexOf(portID);
+  const fromIndex = ports.out.dynamic.indexOf(portID);
 
-  if (currentIndex === -1) return;
-
-  ports.out.dynamic = Utils.array.reorder(ports.out.dynamic, currentIndex, index);
+  ports.out.dynamic = Utils.array.reorder(ports.out.dynamic, fromIndex, index);
 });
 
 export default reorderDynamicPortsReducer;

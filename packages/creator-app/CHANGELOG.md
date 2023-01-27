@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1071.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1071.1...@voiceflow/creator-app@1.1071.2) (2023-01-27)
+
+
+### Bug Fixes
+
+* remove utterance for capture step (BUG-189) ([#6637](https://github.com/voiceflow/creator-app/issues/6637)) ([8a1be46](https://github.com/voiceflow/creator-app/commit/8a1be46c7e71fa0e6b43e94037212728099000d6))
+
+
+
+
+
 ## [1.1071.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1071.0...@voiceflow/creator-app@1.1071.1) (2023-01-27)
 
 

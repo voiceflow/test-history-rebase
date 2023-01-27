@@ -1,12 +1,13 @@
 import { BaseModels, BaseNode } from '@voiceflow/base-types';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Button, createDividerMenuItemOption, SectionV2, useConst } from '@voiceflow/ui';
+import { Button, createDividerMenuItemOption, OptionsMenuOption, SectionV2, UIOnlyMenuItemOption, useConst } from '@voiceflow/ui';
 import React from 'react';
 
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
 import * as Documentation from '@/config/documentation';
-import { useActiveProjectTypeConfig, useMapManager, useToggle } from '@/hooks';
+import * as ProjectV2 from '@/ducks/projectV2';
+import { useActiveProjectTypeConfig, useMapManager, useSelector, useToggle } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import { useIntentScope } from '@/pages/Canvas/managers/hooks';
 
@@ -16,9 +17,16 @@ import { DraggableItem } from './components';
 
 const ITEM_DRAG_TYPE = 'capture-v2-editor';
 
+const NO_UTTERANCES_PLATFORMS: Set<Platform.Constants.PlatformType> = new Set([
+  Platform.Constants.PlatformType.GOOGLE,
+  Platform.Constants.PlatformType.DIALOGFLOW_CX,
+  Platform.Constants.PlatformType.DIALOGFLOW_ES,
+]);
+
 const IntentEditor: React.OldFC<{ disableAnimation: boolean }> = ({ disableAnimation }) => {
   const editor = EditorV2.useEditor<Realtime.NodeData.CaptureV2, Realtime.NodeData.CaptureV2BuiltInPorts>();
   const projectConfig = useActiveProjectTypeConfig();
+  const platform = useSelector(ProjectV2.active.platformSelector);
 
   const defaultSlots = useConst<Platform.Base.Models.Intent.Slot[]>([]);
 
@@ -37,10 +45,19 @@ const IntentEditor: React.OldFC<{ disableAnimation: boolean }> = ({ disableAnima
   const dynamicSelectedSlotIDs = React.useMemo(() => mapManager.items.map((item) => item.id || ''), [mapManager.items]);
   const selectedSlotIDs = React.useMemo(() => dynamicSelectedSlotIDs, [dynamicSelectedSlotIDs.join('')]);
 
+  const showUtteranceOption = (platform: Platform.Constants.PlatformType) => !NO_UTTERANCES_PLATFORMS.has(platform);
+
   const noMatchConfig = NoMatchV2.useConfig({ step: editor.data });
   const noReplyConfig = NoReplyV2.useConfig({ step: editor.data });
   const intentScopeOption = useIntentScope({ data: editor.data, onChange: editor.onChange });
   const utterancesOption = useUtterancesOption(editor.data.utterancesShown || false, editor.onChange);
+  const footerOptions = [
+    intentScopeOption,
+    showUtteranceOption(platform) && utterancesOption,
+    createDividerMenuItemOption(),
+    noMatchConfig.option,
+    noReplyConfig.option,
+  ].filter(Boolean) as (OptionsMenuOption | UIOnlyMenuItemOption | null)[];
 
   return (
     <EditorV2
@@ -48,9 +65,7 @@ const IntentEditor: React.OldFC<{ disableAnimation: boolean }> = ({ disableAnima
       footer={
         !isDragging && (
           <EditorV2.DefaultFooter tutorial={Documentation.CAPTURE_STEP}>
-            <EditorV2.FooterActionsButton
-              actions={[intentScopeOption, utterancesOption, createDividerMenuItemOption(), noMatchConfig.option, noReplyConfig.option]}
-            />
+            <EditorV2.FooterActionsButton actions={footerOptions} />
 
             <Button variant={Button.Variant.PRIMARY} onClick={() => mapManager.onAdd()} squareRadius>
               Add Capture

@@ -7,6 +7,7 @@ import React from 'react';
 import { receiptGraphic } from '@/assets';
 import client from '@/client';
 import { ModalType, UNLIMITED_EDITORS_CONST } from '@/constants';
+import * as Payment from '@/contexts/PaymentContext';
 import * as Account from '@/ducks/account';
 import * as Workspace from '@/ducks/workspace';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
@@ -101,13 +102,12 @@ export interface PaymentContextProps {
 }
 
 interface PaymentContextProviderProps {
-  stripe: stripe.Stripe;
   children: JSX.Element;
   onCheckout?: (message: string) => void;
-  checkChargeable: (source: stripe.Source) => Promise<void>;
 }
 
-const PaymentContextProvider: React.FC<PaymentContextProviderProps> = ({ stripe, children, onCheckout, checkChargeable }) => {
+const PaymentContextProvider: React.FC<PaymentContextProviderProps> = ({ children, onCheckout }) => {
+  const paymentAPI = Payment.usePaymentAPI();
   const workspace = useActiveWorkspace();
   const referrerID = useSelector(Account.referrerIDSelector);
   const referralCode = useSelector(Account.referralCodeSelector);
@@ -185,15 +185,9 @@ const PaymentContextProvider: React.FC<PaymentContextProviderProps> = ({ stripe,
 
       let source;
       if (!state.usingExistingSource) {
-        const stripeSource = await stripe.createSource({ type: 'card' });
+        source = await paymentAPI.createSource();
 
-        source = stripeSource.source;
-
-        if (!source) {
-          throw new Error(stripeSource.error?.message || 'Invalid Card Information');
-        }
-
-        await checkChargeable(source);
+        await paymentAPI.checkChargeable(source);
       }
 
       await checkoutWorkspace({

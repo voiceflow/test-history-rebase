@@ -96,7 +96,5 @@ export interface OnboardingContextProps {
 export interface OnboardingProviderProps {
   query: Query;
   numberOfSteps?: number;
-  stripe: stripe.Stripe;
-  checkChargeable: (data: stripe.Source) => void;
   isLoginFlow: boolean;
 }

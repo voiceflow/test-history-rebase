@@ -1,45 +1,18 @@
-import { Box, preventDefault, SvgIcon, SvgIconTypes, TippyTooltip, useEnableDisable, useToggle } from '@voiceflow/ui';
+import { CardElement } from '@stripe/react-stripe-js';
+import * as stripeJs from '@stripe/stripe-js';
+import { Box, preventDefault, SvgIcon, TippyTooltip, useEnableDisable, useToggle } from '@voiceflow/ui';
 import React from 'react';
-import { CardElement, ReactStripeElements } from 'react-stripe-elements';
 
-import { StripeCardElementWrapper, stripeInputStyle, Wrapper } from './components';
-
-const getColor = (error: string, complete: boolean, focused?: boolean): string => {
-  if (error) {
-    return '#E91E63';
-  }
-
-  if (complete) {
-    return '#279745';
-  }
-
-  if (focused) {
-    return '#5D9DF5';
-  }
-
-  return '#d4d9e6';
-};
-
-const getIcon = (error: string, complete: boolean): SvgIconTypes.Icon => {
-  if (error) {
-    return 'error';
-  }
-
-  if (complete) {
-    return 'checkmark';
-  }
-
-  return 'creditCard';
-};
+import * as S from './styles';
 
 interface StripeCardElementProps {
   disabled?: boolean;
-  stripeOnChange?: (meta: ReactStripeElements.ElementChangeResponse) => void;
+  stripeOnChange?: (meta: stripeJs.StripeCardElementChangeEvent) => void;
   onChangeComplete?: (complete: boolean) => void;
 }
 
 const StripeCardElement: React.OldFC<StripeCardElementProps> = ({ onChangeComplete, disabled = false, stripeOnChange }) => {
-  const cardElementRef = React.useRef<CardElement>(null);
+  const cardElementRef = React.useRef<stripeJs.StripeCardElement | null>(null);
   const boxRef = React.useRef<HTMLDivElement>(null);
   const errorMessageRef = React.useRef('message');
   const [error, updateError] = React.useState('');
@@ -47,16 +20,18 @@ const StripeCardElement: React.OldFC<StripeCardElementProps> = ({ onChangeComple
   const [focused, enableFocus, disableFocus] = useEnableDisable();
 
   const onClick = () => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    cardElementRef.current?.getElement()?.focus();
+    cardElementRef.current?.focus();
 
     if (boxRef.current) {
       boxRef.current.scrollLeft = 0;
     }
   };
 
-  const onChange = (meta: ReactStripeElements.ElementChangeResponse) => {
+  const onReady = (element: stripeJs.StripeCardElement) => {
+    cardElementRef.current = element;
+  };
+
+  const onChange = (meta: stripeJs.StripeCardElementChangeEvent) => {
     const { error: nextError, complete: nextComplete } = meta;
 
     updateError(nextError?.message ?? '');
@@ -77,15 +52,21 @@ const StripeCardElement: React.OldFC<StripeCardElementProps> = ({ onChangeComple
 
   return (
     <TippyTooltip visible={!!error && focused} content={error || errorMessageRef.current} placement="bottom-start" animation="fade" offset={[0, 5]}>
-      <Wrapper disabled={disabled} onClick={preventDefault(onClick)} borderColor={getColor(error, complete, focused)}>
+      <S.Container disabled={disabled} onClick={preventDefault(onClick)} borderColor={S.getColor(error, complete, focused)}>
         <Box ref={boxRef} overflow="hidden" pl={2} pt={2} position="relative">
-          <SvgIcon icon={getIcon(error, complete)} color={getColor(error, complete)} />
+          <SvgIcon icon={S.getIcon(error, complete)} color={S.getColor(error, complete)} />
 
-          <StripeCardElementWrapper>
-            <CardElement ref={cardElementRef} style={stripeInputStyle} hideIcon onBlur={disableFocus} onFocus={enableFocus} onChange={onChange} />
-          </StripeCardElementWrapper>
+          <S.CardElementContainer>
+            <CardElement
+              onReady={onReady}
+              onBlur={disableFocus}
+              onFocus={enableFocus}
+              onChange={onChange}
+              options={{ style: S.stripeInputStyle, hideIcon: true }}
+            />
+          </S.CardElementContainer>
         </Box>
-      </Wrapper>
+      </S.Container>
     </TippyTooltip>
   );
 };

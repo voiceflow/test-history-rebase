@@ -1,3 +1,4 @@
+import * as stripeJs from '@stripe/stripe-js';
 import { Nullable, Utils } from '@voiceflow/common';
 import { BillingPeriod, PlanType, PromoType } from '@voiceflow/internal';
 import * as Platform from '@voiceflow/platform-config';
@@ -12,6 +13,7 @@ import { Redirect, useLocation } from 'react-router-dom';
 import { receiptGraphic } from '@/assets';
 import { IS_PRIVATE_CLOUD } from '@/config';
 import { Path } from '@/config/routes';
+import * as Payment from '@/contexts/PaymentContext';
 import * as Account from '@/ducks/account';
 import * as Feature from '@/ducks/feature';
 import * as Project from '@/ducks/project';
@@ -96,11 +98,9 @@ export const OnboardingContext = React.createContext<OnboardingContextProps>({
 
 export const { Consumer: OnboardingConsumer } = OnboardingContext;
 
-const UnconnectedOnboardingProvider: React.OldFC<OnboardingProviderProps> = ({
+const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<OnboardingProviderProps>> = ({
   query,
   children,
-  stripe,
-  checkChargeable,
   isLoginFlow, // This boolean represents if the user hits the onboarding flow from a link/new signup, or from the dashboard 'create workspace' button
 }) => {
   const store = useStore();
@@ -113,7 +113,7 @@ const UnconnectedOnboardingProvider: React.OldFC<OnboardingProviderProps> = ({
   const currentWorkspaceID = useSelector(Session.activeWorkspaceIDSelector);
   const isLoggedIn = useSelector(Account.isLoggedInSelector);
   const isIdentityWorkspaceEnabled = useSelector(Feature.isFeatureEnabledSelector)(Realtime.FeatureFlag.IDENTITY_WORKSPACE);
-
+  const paymentAPI = Payment.usePaymentAPI();
   const trackInviteSent = useDispatch(trackInvitationSent);
   const checkoutWorkspace = useDispatch(Workspace.checkout);
   const createWorkspace = useDispatch(Workspace.createWorkspace);
@@ -233,23 +233,7 @@ const UnconnectedOnboardingProvider: React.OldFC<OnboardingProviderProps> = ({
     }
   };
 
-  const checkPayment = async () => {
-    const stripeSource = await stripe.createSource({ type: 'card' });
-
-    const { source } = stripeSource;
-
-    if (!source) {
-      throw new Error(stripeSource.error?.message || 'Invalid Card Information');
-    }
-
-    try {
-      await checkChargeable(source);
-    } catch (e) {
-      throw new Error('Something went wrong');
-    }
-
-    return source;
-  };
+  const checkPayment = async () => paymentAPI.createSource();
 
   const getNumberOfEditors = () => {
     const numberOfEditors = OnboardingUtils.getNumberOfEditorSeats(addCollaboratorMeta.collaborators);
@@ -257,7 +241,7 @@ const UnconnectedOnboardingProvider: React.OldFC<OnboardingProviderProps> = ({
     return Math.max(paymentMeta.seats, numberOfEditors);
   };
 
-  const handlePayment = async (workspaceID: string, source: stripe.Source) => {
+  const handlePayment = async (workspaceID: string, source: stripeJs.Source) => {
     const { plan, period, couponCode, seats } = paymentMeta;
 
     await checkoutWorkspace({
@@ -292,7 +276,7 @@ const UnconnectedOnboardingProvider: React.OldFC<OnboardingProviderProps> = ({
 
     const name = createWorkspaceMeta.workspaceName;
     const { workspaceImage } = createWorkspaceMeta;
-    let source!: stripe.Source;
+    let source!: stripeJs.Source;
 
     if (hasPaymentStep) {
       try {
@@ -515,6 +499,4 @@ const UnconnectedOnboardingProvider: React.OldFC<OnboardingProviderProps> = ({
   return redirectToDashboard ? <Redirect to={Path.DASHBOARD} /> : <OnboardingContext.Provider value={api}>{children}</OnboardingContext.Provider>;
 };
 
-export const OnboardingProvider = withStripe(UnconnectedOnboardingProvider) as React.OldFC<
-  Omit<OnboardingProviderProps, 'stripe' | 'checkChargeable'>
->;
+export const OnboardingProvider = withStripe(UnconnectedOnboardingProvider) as React.FC<React.PropsWithChildren<OnboardingProviderProps>>;

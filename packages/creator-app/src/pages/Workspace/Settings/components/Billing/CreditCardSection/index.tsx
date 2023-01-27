@@ -4,20 +4,20 @@ import React from 'react';
 import client from '@/client';
 import Section, { SectionVariant } from '@/components/Section';
 import { CardElement } from '@/components/Stripe';
+import * as Payment from '@/contexts/PaymentContext';
 import { withStripe } from '@/hocs/withStripe';
 import { useAsyncMountUnmount } from '@/hooks';
 import { DBPaymentSource } from '@/models/Billing';
 import { ActionMapping } from '@/pages/Payment/Checkout/components/StepHeading';
 import { getErrorMessage } from '@/utils/error';
 
-export interface CreditCardSectionProps {
-  stripe: stripe.Stripe;
+export interface CreditCardSectionProps extends React.PropsWithChildren {
   workspaceId: string;
-  checkChargeable: (data: stripe.Source) => Promise<void>;
   setStripeCompleted?: (complete: boolean) => void;
 }
 
-const CreditCardSection: React.OldFC<CreditCardSectionProps> = ({ setStripeCompleted, workspaceId, stripe, checkChargeable }) => {
+const CreditCardSection: React.FC<CreditCardSectionProps> = ({ setStripeCompleted, workspaceId }) => {
+  const paymentAPI = Payment.usePaymentAPI();
   const [paymentSource, setPaymentSource] = React.useState<DBPaymentSource | null>();
   const [usingExistingSource, setUsingExistingSource] = React.useState(true);
   const [updatingSource, setUpdatingSource] = React.useState(false);
@@ -39,15 +39,8 @@ const CreditCardSection: React.OldFC<CreditCardSectionProps> = ({ setStripeCompl
 
     try {
       setUpdatingSource(true);
-      const stripeSource = await stripe.createSource({ type: 'card' });
-      const newSource = stripeSource.source;
+      const newSource = await paymentAPI.createSource();
 
-      if (!newSource) {
-        toast.error('Invalid Card Information');
-        return;
-      }
-
-      await checkChargeable(newSource);
       await client.workspace.updateSource(workspaceId, newSource.id);
 
       handleSuccessfulUpdate(newSource);
@@ -77,4 +70,4 @@ const CreditCardSection: React.OldFC<CreditCardSectionProps> = ({ setStripeCompl
   );
 };
 
-export default withStripe(CreditCardSection) as React.OldFC<Omit<CreditCardSectionProps, 'stripe' | 'checkChargeable'>>;
+export default withStripe(CreditCardSection) as React.FC<CreditCardSectionProps>;

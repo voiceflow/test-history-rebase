@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1071.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1070.1...@voiceflow/creator-app@1.1071.0) (2023-01-27)
+
+
+### Features
+
+* upgrade stripe libraries (CT-000) ([#6624](https://github.com/voiceflow/creator-app/issues/6624)) ([de89db9](https://github.com/voiceflow/creator-app/commit/de89db978831f3abfccb4019b356dde6fda39286))
+
+
+
+
+
 ## [1.1070.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1070.0...@voiceflow/creator-app@1.1070.1) (2023-01-26)
 
 

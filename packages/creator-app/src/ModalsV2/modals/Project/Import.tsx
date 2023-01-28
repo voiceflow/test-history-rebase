@@ -74,7 +74,7 @@ const ImportModal = manager.create<Props>('ProjectImport', () => ({ api, type, o
 
     api.close();
 
-    const projectCountPerWorkspace = workspace.boards.reduce((acc, board) => acc + (board.projects.length || 0), 0);
+    const projectCountPerWorkspace = workspace.projectLists.reduce((acc, board) => acc + (board.projects.length || 0), 0);
 
     if (projectLimitConfig && projectCountPerWorkspace >= workspace.projects) {
       goToWorkspace(workspaceID);

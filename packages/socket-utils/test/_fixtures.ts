@@ -11,7 +11,7 @@ export const MOCK_ACTION = {
     values: Utils.generate.array(10, () => ({
       id: Utils.generate.id(true),
       name: `Demo Workspace - ${Utils.generate.string()}`,
-      boards: [
+      projectLists: [
         {
           name: 'First Demo List',
           board_id: Utils.generate.id(),

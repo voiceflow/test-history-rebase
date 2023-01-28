@@ -35,7 +35,7 @@ Cypress.Commands.add('createProject', (platform = 'alexa', tag) => {
         SESSION_CONTEXT.set(PROJECT_LIST_ID_KEY, projectListID);
         SESSION_CONTEXT.set(VERSION_ID_KEY, versionID);
 
-        cy.request('PATCH', `${API_URL}/team/${workspaceID}/update_board`, { boards: [projectList] }).then(() => {
+        cy.request('PATCH', `${API_URL}/team/${workspaceID}/projectLists`, { projectLists: [projectList] }).then(() => {
           // eslint-disable-next-line max-nested-callbacks
           cy.request(`${API_URL}/v2/versions/${versionID}`).then((res) => {
             const { rootDiagramID: diagramID } = res.body;

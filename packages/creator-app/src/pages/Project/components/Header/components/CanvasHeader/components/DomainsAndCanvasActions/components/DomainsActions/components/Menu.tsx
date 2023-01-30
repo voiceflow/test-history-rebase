@@ -1,5 +1,6 @@
 import { Utils } from '@voiceflow/common';
 import { Menu as UIMenu, stopImmediatePropagation, toast } from '@voiceflow/ui';
+import _sortBy from 'lodash/sortBy';
 import React from 'react';
 
 import { LimitType } from '@/constants/limits';
@@ -43,7 +44,10 @@ const Menu: React.FC<MenuProps> = ({ onClose }) => {
   const filteredDomains = React.useMemo(() => {
     const lowercaseSearch = search.toLowerCase();
 
-    return domains.filter(({ name }) => name.toLowerCase().includes(lowercaseSearch));
+    return _sortBy(
+      domains.filter(({ name }) => name.toLowerCase().includes(lowercaseSearch)),
+      ({ name }) => name
+    );
   }, [search, domains]);
 
   const onCreate = usePlanLimitedAction(LimitType.DOMAINS, {

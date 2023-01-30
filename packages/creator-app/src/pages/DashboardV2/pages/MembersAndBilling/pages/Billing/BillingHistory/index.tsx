@@ -4,15 +4,17 @@ import React from 'react';
 import Page from '@/components/Page';
 import { Billing } from '@/models';
 
+import { Status } from './hooks';
 import * as S from './styles';
 
 interface BillingHistoryProps {
-  billingHistory: Billing.InvoiceList;
+  data: Billing.PastInvoice[];
+  hasMore: boolean;
   loadMore: VoidFunction;
-  loading: boolean;
+  status: Status;
 }
 
-const BillingHistory: React.FC<BillingHistoryProps> = ({ billingHistory, loadMore, loading }) => {
+const BillingHistory: React.FC<BillingHistoryProps> = ({ data, loadMore, status, hasMore }) => {
   return (
     <Page.Section
       mb={48}
@@ -26,7 +28,7 @@ const BillingHistory: React.FC<BillingHistoryProps> = ({ billingHistory, loadMor
         </Page.Section.Header>
       }
     >
-      {billingHistory?.data.map((invoice, index) => (
+      {data.map((invoice, index) => (
         <React.Fragment key={invoice.id}>
           {index !== 0 && <SectionV2.Divider />}
 
@@ -41,7 +43,7 @@ const BillingHistory: React.FC<BillingHistoryProps> = ({ billingHistory, loadMor
         </React.Fragment>
       ))}
 
-      {billingHistory?.hasMore && <S.LoadMoreButton onClick={loadMore}>{loading ? 'Loading...' : 'View More'}</S.LoadMoreButton>}
+      {hasMore && <S.LoadMoreButton onClick={loadMore}>{status === Status.LOADING_MORE ? 'Loading...' : 'View More'}</S.LoadMoreButton>}
     </Page.Section>
   );
 };

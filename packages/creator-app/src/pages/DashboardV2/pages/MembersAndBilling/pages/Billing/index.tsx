@@ -10,26 +10,35 @@ import CancelSubscription from './CancelSubscription';
 import EditorSeats from './EditorSeats';
 import PaymentDetails from './PaymentDetails';
 import ProductionUsage from './ProductionUsage';
+import { useUsageSubscription } from './ProductionUsage/hooks';
 
 const DashboardV2Billing: React.FC = () => {
-  const { billingHistory, loading, loadMore } = useBillingHistory();
+  const billingHistory = useBillingHistory();
+  const usageSubscription = useUsageSubscription();
   const canManageSeats = usePermission(Permission.BILLING_SEATS);
   const hasCard = true;
 
-  const billingHistoryLoading = !billingHistory?.data;
+  const isReady = billingHistory.isReady && usageSubscription.isReady;
 
-  if (billingHistoryLoading) {
+  if (!isReady) {
     return <FullSpinner isAbs backgroundColor="#f9f9f9" name="Billing" />;
   }
 
   return (
     <Box>
       <EditorSeats />
-      <ProductionUsage />
+      {usageSubscription.data?.billingStartDate && <ProductionUsage data={usageSubscription.data} />}
 
       {hasCard && <PaymentDetails />}
 
-      {!!billingHistory?.data.length && <BillingHistory loadMore={loadMore} loading={loading} billingHistory={billingHistory} />}
+      {!!billingHistory?.data?.length && (
+        <BillingHistory
+          loadMore={billingHistory.loadMore}
+          status={billingHistory.status}
+          data={billingHistory.data}
+          hasMore={!!billingHistory.hasMore}
+        />
+      )}
 
       {canManageSeats && <CancelSubscription />}
     </Box>

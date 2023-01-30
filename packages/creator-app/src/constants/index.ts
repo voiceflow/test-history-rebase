@@ -9,6 +9,7 @@ export * from './file';
 export * from './links';
 export * from './plans';
 export * from './roles';
+export * from './subscription';
 export type { MarkupBlockType, RootOrMarkupBlockType } from '@voiceflow/realtime-sdk';
 export { BlockType, BUILT_IN_VARIABLES, BuiltInVariable, CUSTOM_SLOT_TYPE, DialogType, LEGACY_CUSTOM_SLOT_TYPE } from '@voiceflow/realtime-sdk';
 

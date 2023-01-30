@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1072.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1071.3...@voiceflow/creator-app@1.1072.0) (2023-01-30)
+
+
+### Features
+
+* create domain from domains table (CT-1405) ([#6630](https://github.com/voiceflow/creator-app/issues/6630)) ([ac6a9fe](https://github.com/voiceflow/creator-app/commit/ac6a9fe99ed1f29ac1688b6de6c01e0e956bab17))
+
+
+
+
+
 ## [1.1071.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1071.2...@voiceflow/creator-app@1.1071.3) (2023-01-28)
 
 

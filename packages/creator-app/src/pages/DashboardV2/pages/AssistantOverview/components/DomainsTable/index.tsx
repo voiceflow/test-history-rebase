@@ -3,6 +3,10 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Button, FlexCenter, Input, Link, Table } from '@voiceflow/ui';
 import React from 'react';
 
+import { LimitType } from '@/constants/limits';
+import { usePlanLimitedAction } from '@/hooks/planLimitV2';
+import * as ModalsV2 from '@/ModalsV2';
+
 import { StatusSelect } from './components';
 import { COLUMNS, TableColumn } from './constants';
 import { FilterContextProvider } from './context';
@@ -13,6 +17,9 @@ interface DomainsTableProps {
 }
 
 const DomainsTable: React.FC<DomainsTableProps> = ({ domains }) => {
+  const createModal = ModalsV2.useModal(ModalsV2.Domain.Create);
+  const upgradeModal = ModalsV2.useModal(ModalsV2.Upgrade);
+
   const [search, setSearch] = React.useState('');
   const [status, setStatus] = React.useState('');
 
@@ -24,6 +31,13 @@ const DomainsTable: React.FC<DomainsTableProps> = ({ domains }) => {
     filterBy,
     initialOrderBy: TableColumn.MODIFIED,
     getItemFilterBy: ({ name, status = BaseModels.Version.DomainStatus.DESIGN }) => [name, status],
+  });
+
+  const onCreate = usePlanLimitedAction(LimitType.DOMAINS, {
+    value: domains.length,
+
+    onLimit: (config) => upgradeModal.openVoid(config.upgradeModal()),
+    onAction: () => createModal.openVoid({ name: search }),
   });
 
   const clearFilters = () => {
@@ -51,7 +65,9 @@ const DomainsTable: React.FC<DomainsTableProps> = ({ domains }) => {
           </Box.Flex>
 
           <S.Actions>
-            <Button squareRadius>New Domain</Button>
+            <Button onClick={() => onCreate()} squareRadius>
+              New Domain
+            </Button>
           </S.Actions>
         </S.Header>
 

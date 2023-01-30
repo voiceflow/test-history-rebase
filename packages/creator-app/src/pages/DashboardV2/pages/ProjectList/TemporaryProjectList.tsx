@@ -17,7 +17,7 @@ const TemporaryProjectList: React.OldFC = () => {
   const isLocked = workspace?.state === 'LOCKED';
 
   return workspace?.settings.dashboardKanban ? (
-    <Page renderHeader={() => <Header search={search} onSearch={setSearch} />} renderSidebar={() => <Sidebar />}>
+    <Page renderHeader={() => <Header search={search} onSearch={setSearch} isKanban />} renderSidebar={() => <Sidebar />}>
       <KanbanBoard fullHeightContainer workspace={workspace} filter={search} isLocked={isLocked} />
     </Page>
   ) : (

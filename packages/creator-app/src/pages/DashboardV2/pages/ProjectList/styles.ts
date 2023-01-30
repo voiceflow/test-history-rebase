@@ -1,4 +1,4 @@
-import { Banner, BlockText } from '@voiceflow/ui';
+import { Banner, BlockText, SearchInput, Select } from '@voiceflow/ui';
 
 import { styled } from '@/hocs/styled';
 
@@ -26,3 +26,9 @@ export const StyledBanner = styled(Banner)`
     background-position: right 38px top 17.5%;
   }
 `;
+
+export const StyledSelect = styled(Select)`
+  ${SearchInput} {
+    text-align: right;
+  }
+` as typeof Select;

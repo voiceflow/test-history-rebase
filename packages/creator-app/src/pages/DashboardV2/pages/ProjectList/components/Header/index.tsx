@@ -10,11 +10,12 @@ import { WorkspaceSelector } from '../../../../components';
 import { ImportButton, NotificationButton, SearchButton } from './components';
 
 interface HeaderProps {
-  search: string;
-  onSearch: (text: string) => void;
+  search?: string;
+  onSearch?: (text: string) => void;
+  isKanban?: boolean;
 }
 
-const Header: React.OldFC<HeaderProps> = ({ search, onSearch }) => {
+const Header: React.OldFC<HeaderProps> = ({ search, onSearch, isKanban }) => {
   const [canImportProject] = usePermission(Permission.IMPORT_PROJECT);
   const [canInviteMembers] = usePermission(Permission.INVITE);
   const [canCreateProject] = usePermission(Permission.EDIT_PROJECT);
@@ -28,7 +29,7 @@ const Header: React.OldFC<HeaderProps> = ({ search, onSearch }) => {
 
       <Page.Header.RightSection rightOffset={false} mr={12}>
         <Box.Flex gap={4} mr={12}>
-          <SearchButton value={search} onSearch={onSearch} />
+          {isKanban && onSearch && <SearchButton value={search} onSearch={onSearch} />}
 
           {canImportProject && <ImportButton />}
 

@@ -8,7 +8,7 @@ import { Hotkey } from '@/keymap';
 import * as S from './styles';
 
 interface SearchButtonProps {
-  value: string;
+  value?: string;
   onSearch: (text: string) => void;
 }
 

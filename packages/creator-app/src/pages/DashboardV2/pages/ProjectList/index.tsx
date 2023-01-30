@@ -1,4 +1,4 @@
-import dayjs from 'dayjs';
+import { Box } from '@voiceflow/ui';
 import * as Normal from 'normal-store';
 import React from 'react';
 
@@ -14,11 +14,14 @@ import { ProjectIdentityProvider } from '@/pages/Project/contexts/ProjectIdentit
 
 import { Sidebar } from '../../components';
 import { getProjectStatusAndMembers } from '../../utils';
-import { EmptySearch, Header } from './components';
+import { EmptySearch, Header, SearchBar } from './components';
+import { SortByOptions, SortOptionType } from './constants';
 import * as S from './styles';
+import { getProjectSortFunction } from './utils';
 
 const ProjectList: React.FC = () => {
   const [search, setSearch] = React.useState('');
+  const [sortBy, setSortBy] = React.useState<SortOptionType>(SortByOptions[0]);
 
   const userID = useSelector(Account.userIDSelector)!;
   const projects = useSelector(ProjectV2.allProjectsSelector);
@@ -40,19 +43,8 @@ const ProjectList: React.FC = () => {
   );
 
   const orderedProjects = React.useMemo(
-    () =>
-      projects.sort((a, b) => {
-        const aViewers = activeViewersPerProject[a.id] ?? [];
-        const bViewers = activeViewersPerProject[b.id] ?? [];
-
-        if (aViewers.length && !bViewers.length) return -1;
-        if (bViewers.length && !aViewers.length) return 1;
-        if (a.updatedAt && !b.updatedAt) return -1;
-        if (b.updatedAt && !a.updatedAt) return 1;
-
-        return dayjs(a.updatedAt).isAfter(b.updatedAt) ? -1 : 1;
-      }),
-    [projects, activeViewersPerProject]
+    () => projects.sort(getProjectSortFunction(activeViewersPerProject, sortBy.id)),
+    [projects, activeViewersPerProject, sortBy]
   );
 
   const projectToRender = React.useMemo(
@@ -62,51 +54,69 @@ const ProjectList: React.FC = () => {
 
   return (
     <Page white renderHeader={() => <Header search={search} onSearch={setSearch} />} renderSidebar={() => <Sidebar />}>
-      {search && !projectToRender.length ? (
-        <EmptySearch onClear={() => setSearch('')} />
-      ) : (
-        <Page.Content>
+      <Page.Content>
+        {!search && (
           <S.StyledBanner
-            mb={32}
+            mb={14}
             title="Learn Voiceflow with video tutorials"
             subtitle="In this course you’ll find everything you need to get started with Voiceflow from the ground up."
             closeKey="dashboard-learn-banner"
             buttonText="Start Course"
             backgroundImage={bannerBg}
           />
+        )}
+        <Box.FlexApart fullWidth mb={10}>
+          <SearchBar value={search} onSearch={setSearch} />
+          <S.StyledSelect
+            value={sortBy}
+            borderLess
+            isSecondaryIcon
+            minWidth={false}
+            maxWidth={150}
+            minMenuWidth={152}
+            options={SortByOptions}
+            onSelect={(option) => option && setSortBy(option)}
+            getOptionLabel={(option) => option?.label}
+          />
+        </Box.FlexApart>
 
-          {Boolean(projectToRender.length) && (
+        {search && !projectToRender.length ? (
+          <EmptySearch onClear={() => setSearch('')} />
+        ) : (
+          <>
+            {Boolean(projectToRender.length) && (
+              <S.Grid>
+                {projectToRender.map((item) => (
+                  <AssistantCard
+                    {...getProjectStatusAndMembers({ project: item, activeViewers: activeViewersPerProject[item.id], getMemberByIDSelector })}
+                    key={item.id}
+                    image={item.image}
+                    project={item}
+                    onClickCTA={() => goToCanvasWithVersionID(item.versionID)}
+                    onClickLink={() => goToAssistantOverview(item.versionID)}
+                  />
+                ))}
+              </S.Grid>
+            )}
+
+            <S.Title>Start with a template</S.Title>
+
             <S.Grid>
               {projectToRender.map((item) => (
-                <AssistantCard
-                  {...getProjectStatusAndMembers({ project: item, activeViewers: activeViewersPerProject[item.id], getMemberByIDSelector })}
-                  key={item.id}
-                  image={item.image}
-                  project={item}
-                  onClickCTA={() => goToCanvasWithVersionID(item.versionID)}
-                  onClickLink={() => goToAssistantOverview(item.versionID)}
-                />
+                <ProjectIdentityProvider key={item.id} activeRole={Normal.getOne(item.members, String(userID))?.role ?? null}>
+                  <AssistantCard
+                    {...getProjectStatusAndMembers({ project: item, activeViewers: activeViewersPerProject[item.id], getMemberByIDSelector })}
+                    image={item.image}
+                    project={item}
+                    onClickCTA={() => goToCanvasWithVersionID(item.versionID)}
+                    onClickLink={() => goToAssistantOverview(item.versionID)}
+                  />
+                </ProjectIdentityProvider>
               ))}
             </S.Grid>
-          )}
-
-          <S.Title>Start with a template</S.Title>
-
-          <S.Grid>
-            {projectToRender.map((item) => (
-              <ProjectIdentityProvider key={item.id} activeRole={Normal.getOne(item.members, String(userID))?.role ?? null}>
-                <AssistantCard
-                  {...getProjectStatusAndMembers({ project: item, activeViewers: activeViewersPerProject[item.id], getMemberByIDSelector })}
-                  image={item.image}
-                  project={item}
-                  onClickCTA={() => goToCanvasWithVersionID(item.versionID)}
-                  onClickLink={() => goToAssistantOverview(item.versionID)}
-                />
-              </ProjectIdentityProvider>
-            ))}
-          </S.Grid>
-        </Page.Content>
-      )}
+          </>
+        )}
+      </Page.Content>
     </Page>
   );
 };

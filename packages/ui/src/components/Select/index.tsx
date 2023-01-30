@@ -193,6 +193,7 @@ function Select({
   nestedModifiers,
   formatInputValue,
   isSecondaryInput,
+  isSecondaryIcon,
   alwaysShowCreate = false,
   inDropdownSearch = false,
   isButtonDisabled,
@@ -471,7 +472,7 @@ function Select({
 
   const hasOptions = !!selectedOptions?.length;
 
-  const caretIcon = isSecondaryInput ? 'arrowRightTopics' : 'caretDown';
+  const caretIcon = isSecondaryInput || isSecondaryIcon ? 'arrowRightTopics' : 'caretDown';
   const caretIconSize = isSecondaryInput ? 9 : 8;
 
   return (
@@ -554,7 +555,7 @@ function Select({
                           icon={withClearIcon ? 'close' : caretIcon}
                           size={withClearIcon ? 14 : caretIconSize}
                           color={showDropdownColorOnActive && opened ? '#4a88de' : '#6e849a'}
-                          rotate={!withClearIcon && isSecondaryInput}
+                          rotate={!withClearIcon && (isSecondaryInput || isSecondaryIcon)}
                           onClick={onIconClick}
                           $secondaryDisabled={isSecondaryInput && disabled}
                         />

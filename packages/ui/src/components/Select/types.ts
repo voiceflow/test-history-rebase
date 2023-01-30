@@ -126,6 +126,7 @@ export interface BaseSelectProps {
   formatInputValue?: (value: string) => string;
   isButtonDisabled?: (options: { value: string }) => boolean;
   isSecondaryInput?: boolean;
+  isSecondaryIcon?: boolean;
   renderFooterAction?: Nullable<(options: { close: VoidFunction; searchLabel: string }) => React.ReactNode>;
   renderSearchSuffix?: Nullable<(options: { close: VoidFunction; searchLabel: string }) => React.ReactNode>;
   syncOptionsOnRender?: boolean;

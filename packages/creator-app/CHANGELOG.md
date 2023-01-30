@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1073.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1072.0...@voiceflow/creator-app@1.1073.0) (2023-01-30)
+
+
+### Bug Fixes
+
+* viewer share error (BUG-192) ([#6639](https://github.com/voiceflow/creator-app/issues/6639)) ([8373825](https://github.com/voiceflow/creator-app/commit/837382555cf8141102e605fed017905051f00edd))
+
+
+### Features
+
+* account integrations v2 (CT-1393) ([#6635](https://github.com/voiceflow/creator-app/issues/6635)) ([9e41122](https://github.com/voiceflow/creator-app/commit/9e411227ddcc7c954d84fc71df6a3d58956ab9bf))
+* dashboard v2 search and filter (CT-1483) ([#6631](https://github.com/voiceflow/creator-app/issues/6631)) ([fe977cf](https://github.com/voiceflow/creator-app/commit/fe977cfdd50c68553727346b77ce83f43e23e1ed))
+
+
+
+
+
 # [1.1072.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1071.3...@voiceflow/creator-app@1.1072.0) (2023-01-30)
 
 

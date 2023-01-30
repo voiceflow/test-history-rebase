@@ -1,4 +1,4 @@
-import { hexToRGBA, Input, isHexColor, removeHashFromHex, rgbaToHex, useDebouncedCallback } from '@voiceflow/ui';
+import { hexToRGBA, Input, isHexColor, removeHashFromHex, rgbaToHex, useDebouncedCallback, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 import { RGBColor } from 'react-color';
 
@@ -35,7 +35,7 @@ const ColorInput: React.OldFC<ColorInputProps> = ({ isAllowed = true, disabledBo
 
   const debouncedOnChange = useDebouncedCallback(200, onChange, [localHex]);
 
-  React.useEffect(() => {
+  useDidUpdateEffect(() => {
     const hashedHex = `#${localHex}`;
 
     if (isHexColor(hashedHex) && hashedHex.length === 7) {

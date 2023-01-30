@@ -1,5 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Button, Input, Link, Modal, toast } from '@voiceflow/ui';
+import { Button, Input, Modal, toast } from '@voiceflow/ui';
 // eslint-disable-next-line you-dont-need-lodash-underscore/get
 import _get from 'lodash/get';
 import React from 'react';
@@ -61,10 +61,10 @@ const AccountName = manager.create('AccountName', () => ({ api, type, opened, hi
         <Input autoFocus value={saveName} placeholder="Enter name" onChangeText={setSaveName} onEnterPress={handleSave} />
       </Modal.Body>
 
-      <Modal.Footer>
-        <Link onClick={() => api.close()} style={{ marginRight: '33px', fontWeight: 600 }}>
+      <Modal.Footer gap={12}>
+        <Button variant={Button.Variant.TERTIARY} onClick={() => api.close()} squareRadius>
           Cancel
-        </Link>
+        </Button>
 
         <Button disabled={!saveName || saving} onClick={handleSave}>
           {saving ? 'Saving...' : 'Save'}

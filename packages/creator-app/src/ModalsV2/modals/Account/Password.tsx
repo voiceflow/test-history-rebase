@@ -106,8 +106,8 @@ const AccountPassword = manager.create('AccountPassword', () => ({ api, type, op
         />
       </SectionV2.SimpleContentSection>
 
-      <Modal.Footer>
-        <Button variant={ButtonVariant.TERTIARY} onClick={() => api.close()} style={{ marginRight: '15px' }}>
+      <Modal.Footer gap={12}>
+        <Button variant={ButtonVariant.TERTIARY} onClick={() => api.close()} squareRadius>
           Cancel
         </Button>
 

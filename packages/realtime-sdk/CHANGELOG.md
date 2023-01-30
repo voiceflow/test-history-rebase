@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.230.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.229.7...@voiceflow/realtime-sdk@1.230.0) (2023-01-30)
+
+
+### Features
+
+* get usage subscription data from api (CT-1415) ([#6615](https://github.com/voiceflow/creator-app/issues/6615)) ([5e8356a](https://github.com/voiceflow/creator-app/commit/5e8356a5c189009f2dd6fd121963eef1603a04e5))
+
+
+
+
+
 ## [1.229.7](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.229.6...@voiceflow/realtime-sdk@1.229.7) (2023-01-30)
 
 **Note:** Version bump only for package @voiceflow/realtime-sdk

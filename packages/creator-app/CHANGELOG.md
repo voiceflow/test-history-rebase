@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1074.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1073.0...@voiceflow/creator-app@1.1074.0) (2023-01-30)
+
+
+### Features
+
+* get usage subscription data from api (CT-1415) ([#6615](https://github.com/voiceflow/creator-app/issues/6615)) ([5e8356a](https://github.com/voiceflow/creator-app/commit/5e8356a5c189009f2dd6fd121963eef1603a04e5))
+
+
+
+
+
 # [1.1073.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1072.0...@voiceflow/creator-app@1.1073.0) (2023-01-30)
 
 

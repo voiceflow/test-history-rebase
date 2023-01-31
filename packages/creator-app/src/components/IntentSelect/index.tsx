@@ -3,11 +3,11 @@ import * as Platform from '@voiceflow/platform-config';
 import {
   Alert,
   BaseSelectProps,
-  IconButton,
   isNotUIOnlyMenuItemOption,
   isUIOnlyMenuItemOption,
   Menu,
   Select,
+  System,
   toast,
   UIOnlyMenuItemOption,
 } from '@voiceflow/ui';
@@ -154,7 +154,9 @@ const IntentSelect: React.OldFC<IntentSelectProps> = ({
           <Option option={option} isFocused={isFocused} searchLabel={searchLabel} getOptionLabel={getOptionLabel} getOptionValue={getOptionValue} />
         )}
         renderSearchSuffix={({ close, searchLabel }) => (
-          <IconButton size={16} icon="plus" variant={IconButton.Variant.BASIC} onClick={Utils.functional.chain(close, () => onCreate(searchLabel))} />
+          <System.IconButtonsGroup.Base>
+            <System.IconButton.Base icon="plus" onClick={Utils.functional.chain(close, () => onCreate(searchLabel))} />
+          </System.IconButtonsGroup.Base>
         )}
         renderFooterAction={({ close, searchLabel }) => (
           <Menu.Footer>

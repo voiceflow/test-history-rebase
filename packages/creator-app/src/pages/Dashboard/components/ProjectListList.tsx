@@ -252,7 +252,7 @@ const ProjectListList: React.FC<ProjectListListProps> = ({ workspace, filter, is
                   {canManageLists && (
                     <Box.Flex flex="0 0 auto" margin="15px 27px" minWidth="0" className={DashboardClassName.ADD_LIST_BUTTON} alignSelf="flex-start">
                       <TippyTooltip offset={[0, 8]} content="Add new list" position="bottom">
-                        <IconButton large icon="add2" onClick={onCreateList} size={13} />
+                        <IconButton large icon="plus" onClick={onCreateList} size={13} />
                       </TippyTooltip>
                     </Box.Flex>
                   )}

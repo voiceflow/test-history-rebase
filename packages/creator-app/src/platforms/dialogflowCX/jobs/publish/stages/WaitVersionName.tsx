@@ -3,11 +3,11 @@ import {
   Box,
   Button,
   ButtonVariant,
-  IconButton,
   Input,
   Label,
   Modal,
   Portal,
+  System,
   TippyTooltip,
   usePersistFunction,
   useSmartReducerV2,
@@ -60,9 +60,11 @@ const WaitVersionName: React.OldFC<StageComponentProps<any>> = ({ start, setJob,
               capitalizeText={false}
               actions={
                 hasExistingAgent && (
-                  <TippyTooltip content="Settings" position="top">
-                    <IconButton icon="systemSettings" variant={IconButton.Variant.BASIC} onClick={toggleSettings} />
-                  </TippyTooltip>
+                  <System.IconButtonsGroup.Base>
+                    <TippyTooltip content="Settings" position="top">
+                      <System.IconButton.Base icon="systemSettings" onClick={toggleSettings} />
+                    </TippyTooltip>
+                  </System.IconButtonsGroup.Base>
                 )
               }
             >
@@ -78,9 +80,13 @@ const WaitVersionName: React.OldFC<StageComponentProps<any>> = ({ start, setJob,
         ) : (
           <Animations.FadeLeftContainer distance={10}>
             <Modal.Header border>
-              <IconButton icon="largeArrowLeft" variant={IconButton.Variant.BASIC} onClick={toggleSettings} />
+              <System.IconButtonsGroup.Base mr={12}>
+                <System.IconButton.Base icon="largeArrowLeft" onClick={toggleSettings} />
+              </System.IconButtonsGroup.Base>
+
               <Box ml={22}>Upload Settings</Box>
             </Modal.Header>
+
             <Modal.Body mt={20}>
               <Label>Agent URL</Label>
               <Box mt={12}>
@@ -89,6 +95,7 @@ const WaitVersionName: React.OldFC<StageComponentProps<any>> = ({ start, setJob,
             </Modal.Body>
           </Animations.FadeLeftContainer>
         )}
+
         <Modal.Footer gap={8}>
           <Button variant={ButtonVariant.TERTIARY} onClick={onClose} squareRadius>
             Cancel

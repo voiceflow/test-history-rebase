@@ -22,7 +22,6 @@ const AnalyticsDashboardHeader: React.FC = () => {
         <Page.Header.RightSection>
           <Page.Header.IconButton
             icon="refreshData"
-            isSmall
             tooltip={{ content: <TippyTooltip.Title>'Refresh'</TippyTooltip.Title> }}
             onClick={() => analyticsDashboard.refresh()}
           />

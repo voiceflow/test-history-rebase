@@ -18,7 +18,7 @@ const ScheduleSeatChange = manager.create('ScheduleSeatChange', () => ({ api, ty
 
   return (
     <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} maxWidth={450}>
-      <Modal.Header actions={<Modal.Header.CloseButton onClick={api.close} />}>Schedule Seat Change</Modal.Header>
+      <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={api.close} />}>Schedule Seat Change</Modal.Header>
 
       <SectionV2.SimpleSection headerProps={{ topUnit: 0, bottomUnit: 2.5 }}>
         <SectionV2.Description secondary lineHeight="20px">

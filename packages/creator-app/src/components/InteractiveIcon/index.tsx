@@ -29,7 +29,7 @@ export const ButtonContainer = styled.div<{ disabled?: boolean }>`
   }
 `;
 
-const InteractiveIcon: React.OldFC<InteractiveIconProps> = ({ onClick, icon, disabled, className, message }) => (
+const InteractiveIcon: React.FC<InteractiveIconProps> = ({ onClick, icon, disabled, className, message }) => (
   <ButtonContainer onClick={onClick} disabled={disabled} className={className}>
     <TippyTooltip content={message}>
       <SvgIcon color="#fff" icon={icon as any} size={11} />
@@ -37,7 +37,7 @@ const InteractiveIcon: React.OldFC<InteractiveIconProps> = ({ onClick, icon, dis
   </ButtonContainer>
 );
 
-export const Add = withProps({ icon: 'add2' })(InteractiveIcon);
+export const Add = withProps({ icon: 'plus' })(InteractiveIcon);
 export const Minus = withProps({ icon: 'zoomOut' })(InteractiveIcon);
 
 export default InteractiveIcon;

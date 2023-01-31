@@ -48,7 +48,7 @@ const Upgrade = manager.create<UpgradeModal>(
 
       return (
         <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} maxWidth={maxWidth}>
-          <Modal.Header actions={<Modal.Header.CloseButton onClick={api.close} />}>{header}</Modal.Header>
+          <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={api.close} />}>{header}</Modal.Header>
 
           <Modal.Body centred style={{ paddingTop: '16px' }}>
             <Box.FlexCenter>

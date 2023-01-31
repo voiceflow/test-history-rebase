@@ -62,7 +62,9 @@ const ConvertConfirm = manager.create<Props>(
 
       return (
         <Modal type={type} maxWidth={400} opened={opened} hidden={hidden} animated={animated} onExited={api.remove}>
-          <Modal.Header actions={<Modal.Header.CloseButton onClick={api.close} disabled={closePrevented} />}>Confirm Domain Transfer</Modal.Header>
+          <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={api.close} disabled={closePrevented} />}>
+            Confirm Domain Transfer
+          </Modal.Header>
 
           <Modal.Body>
             <BlockText mb={16}>

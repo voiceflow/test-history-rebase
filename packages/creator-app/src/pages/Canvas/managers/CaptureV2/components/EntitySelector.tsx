@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import { defaultMenuLabelRenderer, IconButton, isNotUIOnlyMenuItemOption, Menu, Select, UIOnlyMenuItemOption } from '@voiceflow/ui';
+import { defaultMenuLabelRenderer, isNotUIOnlyMenuItemOption, Menu, Select, System, UIOnlyMenuItemOption } from '@voiceflow/ui';
 import React from 'react';
 
 import { EntityOption } from './hooks';
@@ -12,7 +12,7 @@ interface EntitySelectorProps {
   onSelect: (slotID: string | null) => void;
 }
 
-const EntitySelector: React.OldFC<EntitySelectorProps> = ({ value, options, onEdit, onSelect, onCreate }) => {
+const EntitySelector: React.FC<EntitySelectorProps> = ({ value, options, onEdit, onSelect, onCreate }) => {
   const optionsMap = React.useMemo(() => Utils.array.createMap(options.filter(isNotUIOnlyMenuItemOption), Utils.object.selectID), [options]);
 
   return (
@@ -35,12 +35,9 @@ const EntitySelector: React.OldFC<EntitySelectorProps> = ({ value, options, onEd
       }
       renderEmpty={({ search }) => <Menu.NotFound>{!search ? 'No entities exist in your assistant. ' : 'No entities found. '}</Menu.NotFound>}
       renderSearchSuffix={({ close, searchLabel }) => (
-        <IconButton
-          size={16}
-          icon="plus"
-          variant={IconButton.Variant.BASIC}
-          onClick={Utils.functional.chainVoid(close, () => onCreate(searchLabel))}
-        />
+        <System.IconButtonsGroup.Base>
+          <System.IconButton.Base icon="plus" onClick={Utils.functional.chainVoid(close, () => onCreate(searchLabel))} />
+        </System.IconButtonsGroup.Base>
       )}
       clearOnSelectActive
       renderFooterAction={({ close, searchLabel }) => (

@@ -18,11 +18,11 @@ interface ChildrenOptions {
 }
 
 interface HyperlinkButtonProps {
-  children?: (option: ChildrenOptions) => React.ReactNode;
   icon?: SvgIconTypes.Icon;
+  children?: (option: ChildrenOptions) => React.ReactNode;
 }
 
-const HyperlinkButton: React.OldFC<HyperlinkButtonProps> = ({ children, icon = 'systemLinkText' }) => {
+const HyperlinkButton: React.FC<HyperlinkButtonProps> = ({ children, icon = 'systemLinkText' }) => {
   const editor = useSlateEditor();
 
   const [isOpened, toggleOpen] = useToggle(false);

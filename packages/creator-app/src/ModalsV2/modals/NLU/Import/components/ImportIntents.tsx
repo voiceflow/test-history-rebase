@@ -120,9 +120,9 @@ const ImportIntents: React.OldFC<ImportIntentsProps> = ({
   return (
     <Modal type={type} maxWidth={450} opened={opened} hidden={hidden} animated={animated} onExited={api.remove}>
       <Modal.Header
-        border={isUnclassifiedEnabled}
-        actions={<Modal.Header.CloseButton onClick={() => api.close()} />}
         style={isUnclassifiedEnabled ? { padding: '12px 32px 12px 16px' } : {}}
+        border={isUnclassifiedEnabled}
+        actions={<Modal.Header.CloseButtonAction onClick={() => api.close()} />}
       >
         {isUnclassifiedEnabled ? (
           <FlexCenter>

@@ -36,7 +36,7 @@ const AccountEmail = manager.create('AccountEmail', () => ({ api, type, opened, 
 
   return (
     <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} maxWidth={400}>
-      <Modal.Header actions={<Modal.Header.CloseButton onClick={() => api.close()} />}>Change Email</Modal.Header>
+      <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={() => api.close()} />}>Change Email</Modal.Header>
 
       <SectionV2.SimpleSection headerProps={{ topUnit: 0.5, bottomUnit: 2.5 }}>
         <Alert title={<Alert.Title>Editing email address</Alert.Title>}>

@@ -1,4 +1,4 @@
-import { IconButton, IconButtonVariant, TippyTooltip } from '@voiceflow/ui';
+import { System, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import { SectionToggleVariant } from '@/components/Section';
@@ -56,7 +56,9 @@ const VariablesList: React.OldFC<SectionProps> = ({ search, setSearchLength, sel
       suffix={
         isActiveTab && (
           <TippyTooltip content="Create variable" position="top">
-            <IconButton style={{ marginRight: -12 }} onClick={onCreateVariable} variant={IconButtonVariant.BASIC} icon="plus" />
+            <System.IconButtonsGroup.Base mr={-12}>
+              <System.IconButton.Base icon="plus" onClick={onCreateVariable} />
+            </System.IconButtonsGroup.Base>
           </TippyTooltip>
         )
       }

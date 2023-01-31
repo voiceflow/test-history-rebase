@@ -1,7 +1,7 @@
 import { Utils } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { IconButton, IconButtonVariant, Menu, PopperTypes, Select } from '@voiceflow/ui';
+import { Menu, PopperTypes, Select, System } from '@voiceflow/ui';
 import * as Normal from 'normal-store';
 import React from 'react';
 
@@ -46,14 +46,14 @@ const AddDropdown: React.OldFC<AddDropdownProps> = ({ entities, placement, onAdd
       searchable={!!unusedEntities.length}
       minMenuWidth={250}
       renderTrigger={({ ref, onOpenMenu, onHideMenu, isOpen }) => (
-        <IconButton
-          ref={ref as React.RefObject<HTMLButtonElement>}
-          size={16}
-          icon="plus"
-          onClick={isOpen ? onHideMenu : onOpenMenu}
-          variant={IconButtonVariant.BASIC}
-          activeClick={isOpen}
-        />
+        <System.IconButtonsGroup.Base>
+          <System.IconButton.Base
+            ref={ref as React.RefObject<HTMLButtonElement>}
+            icon="plus"
+            active={isOpen}
+            onClick={isOpen ? onHideMenu : onOpenMenu}
+          />
+        </System.IconButtonsGroup.Base>
       )}
       optionsMaxSize={7.5}
       getOptionLabel={(value) => value?.name}

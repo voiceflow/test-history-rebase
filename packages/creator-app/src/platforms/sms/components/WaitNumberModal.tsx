@@ -54,7 +54,7 @@ export const WaitNumberModal: React.OldFC<WaitNumberModalProps> = ({ tag, descri
       </Portal>
 
       <Modal type="WaitNumberStage" opened={state.opened} hidden={false} onExited={onClose} maxWidth={400}>
-        <Modal.Header capitalizeText={false} actions={<Modal.Header.CloseButton onClick={onClose} />}>
+        <Modal.Header capitalizeText={false} actions={<Modal.Header.CloseButtonAction onClick={onClose} />}>
           Test on Your Phone
         </Modal.Header>
 

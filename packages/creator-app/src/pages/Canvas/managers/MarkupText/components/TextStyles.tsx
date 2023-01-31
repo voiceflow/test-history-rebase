@@ -1,14 +1,13 @@
+import { System } from '@voiceflow/ui';
 import React from 'react';
 
 import { TextItalicButton, TextUnderlineButton } from '@/components/SlateEditable';
 
-import Button from './Button';
-
-const TextStyles: React.OldFC = () => (
+const TextStyles: React.FC = () => (
   <>
-    <TextItalicButton component={Button} />
+    <TextItalicButton component={System.IconButton.Base} />
 
-    <TextUnderlineButton component={Button} />
+    <TextUnderlineButton component={System.IconButton.Base} />
   </>
 );
 

@@ -1,25 +1,23 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { IconButton, IconButtonVariant } from '@voiceflow/ui';
+import { System } from '@voiceflow/ui';
 import React from 'react';
 
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import { NodeEditorV2Props } from '@/pages/Canvas/managers/types';
 
-interface HeaderProps {
+interface HeaderProps extends React.PropsWithChildren {
   editor: NodeEditorV2Props<Realtime.NodeData.Code, Realtime.NodeData.CodeBuiltInPorts>;
 }
 
-const Header: React.OldFC<HeaderProps> = ({ editor, children }) => (
+const Header: React.FC<HeaderProps> = ({ editor, children }) => (
   <EditorV2.Header>
     {children}
 
     <EditorV2.HeaderTitle>{editor.label}</EditorV2.HeaderTitle>
 
-    <IconButton
-      icon={editor.isFullscreen ? 'systemMinimize' : 'systemExpand'}
-      onClick={editor.onToggleFullscreen}
-      variant={IconButtonVariant.BASIC}
-    />
+    <System.IconButtonsGroup.Base>
+      <System.IconButton.Base icon={editor.isFullscreen ? 'systemMinimize' : 'systemExpand'} onClick={editor.onToggleFullscreen} />
+    </System.IconButtonsGroup.Base>
   </EditorV2.Header>
 );
 

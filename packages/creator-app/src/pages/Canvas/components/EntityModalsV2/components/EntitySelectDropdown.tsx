@@ -1,6 +1,6 @@
 import { Nullish, Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, IconButton, IconButtonVariant, Menu, Select } from '@voiceflow/ui';
+import { Menu, Select, System } from '@voiceflow/ui';
 import React from 'react';
 
 import { ModalType } from '@/constants';
@@ -52,9 +52,9 @@ const EntitySelectDropdown: React.OldFC = () => {
         ) : null
       }
       renderTrigger={({ onOpenMenu, onHideMenu, isOpen }) => (
-        <Box onClick={isOpen ? onHideMenu : onOpenMenu} display="flex">
-          <IconButton activeClick={isOpen} variant={IconButtonVariant.BASIC} icon="sandwichMenu" size={16} style={{ marginRight: '12px' }} />
-        </Box>
+        <System.IconButtonsGroup.Base mr={12}>
+          <System.IconButton.Base active={isOpen} icon="sandwichMenu" onClick={isOpen ? onHideMenu : onOpenMenu} />
+        </System.IconButtonsGroup.Base>
       )}
     />
   );

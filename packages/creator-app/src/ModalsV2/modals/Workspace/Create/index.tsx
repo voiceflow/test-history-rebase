@@ -50,7 +50,7 @@ const Create = manager.create('WorkspaceCreate', () => ({ api, type, opened, hid
 
   return (
     <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} maxWidth={400}>
-      <Modal.Header actions={<Modal.Header.CloseButton onClick={api.close} />}>Create Workspace</Modal.Header>
+      <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={api.close} />}>Create Workspace</Modal.Header>
       <Switch active={screen}>
         <Switch.Pane value={Screen.WORKSPACE_ORGANIZATION}>
           <WorkspaceOrganization

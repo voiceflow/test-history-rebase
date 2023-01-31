@@ -16,7 +16,7 @@ const Disconnect = manager.create<BaseDisconnectProps>('AccountDisconnect', () =
 
   return (
     <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} maxWidth={400}>
-      <Modal.Header actions={<Modal.Header.CloseButton onClick={() => api.close()} />}>{title}</Modal.Header>
+      <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={() => api.close()} />}>{title}</Modal.Header>
 
       <Modal.Body>{text}</Modal.Body>
 

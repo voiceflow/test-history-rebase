@@ -44,7 +44,6 @@ const CanvasHeader: React.OldFC = () => {
               ref={ref}
               icon="cursorV2"
               active={!isMarkupTextActive && !isMarkupMediaActive && !isCommentingMode}
-              isSmall
               onClick={onDisableModes}
               tooltip={{
                 content: <TippyTooltip.WithHotkey hotkey={HOTKEY_LABEL_MAP[Hotkey.MOVE_MODE]}>Move</TippyTooltip.WithHotkey>,
@@ -61,7 +60,6 @@ const CanvasHeader: React.OldFC = () => {
           <Page.Header.IconButton
             icon="markupImageV2"
             active={isMarkupTextActive}
-            isSmall
             tooltip={{
               content: <TippyTooltip.WithHotkey hotkey={HOTKEY_LABEL_MAP[Hotkey.ADD_MARKUP_TEXT]}>Text Markup</TippyTooltip.WithHotkey>,
             }}
@@ -74,12 +72,11 @@ const CanvasHeader: React.OldFC = () => {
           <Page.Header.IconButton
             icon="systemImage"
             active={isMarkupMediaActive}
-            size={18}
-            isSmall
             onClick={markup.triggerMediaUpload}
             tooltip={{
               content: <TippyTooltip.WithHotkey hotkey={HOTKEY_LABEL_MAP[Hotkey.ADD_MARKUP_IMAGE]}>Image or Video</TippyTooltip.WithHotkey>,
             }}
+            iconProps={{ size: 18 }}
             className={`${ClassName.CANVAS_CONTROL}--markup-image`}
           />
         )}
@@ -88,7 +85,6 @@ const CanvasHeader: React.OldFC = () => {
           <Page.Header.IconButton
             icon="commentV2"
             active={isCommentingMode}
-            isSmall
             tooltip={{
               content: <TippyTooltip.WithHotkey hotkey={HOTKEY_LABEL_MAP[Hotkey.OPEN_COMMENTING]}>Comment</TippyTooltip.WithHotkey>,
             }}
@@ -102,7 +98,6 @@ const CanvasHeader: React.OldFC = () => {
           <Page.Header.IconButton
             icon="modelQuickview"
             active={nluQuickView.isOpened}
-            isSmall
             onClick={trackingEventsWrapper(nluQuickView.open, 'trackCanvasControlInteractionModel')}
             tooltip={{
               content: <TippyTooltip.WithHotkey hotkey={HOTKEY_LABEL_MAP[Hotkey.OPEN_CMS_MODAL]}>NLU Model</TippyTooltip.WithHotkey>,
@@ -113,7 +108,6 @@ const CanvasHeader: React.OldFC = () => {
         <Page.Header.IconButton
           icon="search"
           active={search?.isVisible}
-          isSmall
           onClick={() => search?.toggle()}
           tooltip={{
             content: <TippyTooltip.WithHotkey hotkey={HOTKEY_LABEL_MAP[Hotkey.SEARCH]}>Search Assistant</TippyTooltip.WithHotkey>,

@@ -56,7 +56,7 @@ context('Team Dashboard', () => {
 
     it('add new list', () => {
       dashboardPage.el.projectList.should('have.length', 1);
-      dashboardPage.el.projectListsContainer.find('.vf-svg-icon--add2').click();
+      dashboardPage.el.projectListsContainer.find('.vf-svg-icon--plus').click();
       dashboardPage.el.projectList.should('have.length', 2);
     });
 

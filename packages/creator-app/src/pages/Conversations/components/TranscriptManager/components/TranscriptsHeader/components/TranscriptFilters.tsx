@@ -1,4 +1,4 @@
-import { IconButton, IconButtonVariant } from '@voiceflow/ui';
+import { System } from '@voiceflow/ui';
 import queryString from 'query-string';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
@@ -115,14 +115,9 @@ const TranscriptFilters: React.OldFC<TranscriptFiltersProps> = ({ tags, range, e
       )}
     >
       {({ ref, isOpened, onToggle }) => (
-        <IconButton
-          ref={ref}
-          icon="filter"
-          variant={IconButtonVariant.BASIC}
-          onClick={onToggle}
-          activeClick={isOpened}
-          className={ClassName.TRANSCRIPT_FILTERS_MENU_TEXT}
-        />
+        <System.IconButtonsGroup.Base>
+          <System.IconButton.Base ref={ref} icon="filter" active={isOpened} onClick={onToggle} className={ClassName.TRANSCRIPT_FILTERS_MENU_TEXT} />
+        </System.IconButtonsGroup.Base>
       )}
     </SelectMenu>
   );

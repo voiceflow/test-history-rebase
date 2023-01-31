@@ -35,7 +35,7 @@ const FreestyleFeatureDisclaimer = manager.create('FreestyleFeatureDisclaimer', 
 
   return (
     <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} maxWidth={500} verticalMargin={32}>
-      <Modal.Header border actions={<Modal.Header.CloseButton onClick={() => api.close()} />}>
+      <Modal.Header border actions={<Modal.Header.CloseButtonAction onClick={() => api.close()} />}>
         Freestyle Feature Disclaimer
       </Modal.Header>
 

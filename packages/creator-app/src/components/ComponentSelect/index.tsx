@@ -1,5 +1,5 @@
 import { Nullable, Utils } from '@voiceflow/common';
-import { BaseSelectProps, IconButton, Menu, Select } from '@voiceflow/ui';
+import { BaseSelectProps, Menu, Select, System } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Diagram from '@/ducks/diagram';
@@ -11,7 +11,7 @@ interface ComponentSelectProps extends Pick<BaseSelectProps, 'icon' | 'iconProps
   componentID: Nullable<string>;
 }
 
-const ComponentSelect: React.OldFC<ComponentSelectProps> = ({ componentID, onChange, ...props }) => {
+const ComponentSelect: React.FC<ComponentSelectProps> = ({ componentID, onChange, ...props }) => {
   const componentDiagrams = useSelector(DiagramV2.active.componentDiagramsSelector);
 
   const createEmptyComponent = useDispatch(Diagram.createEmptyComponent);
@@ -43,12 +43,9 @@ const ComponentSelect: React.OldFC<ComponentSelectProps> = ({ componentID, onCha
       createInputPlaceholder="components"
       renderEmpty={({ search }) => <Menu.NotFound>{!search ? 'No components exist in your assistant. ' : 'No components found. '}</Menu.NotFound>}
       renderSearchSuffix={({ close, searchLabel }) => (
-        <IconButton
-          size={16}
-          icon="plus"
-          variant={IconButton.Variant.BASIC}
-          onClick={Utils.functional.chainVoid(close, () => onCreate(searchLabel))}
-        />
+        <System.IconButtonsGroup.Base>
+          <System.IconButton.Base icon="plus" onClick={Utils.functional.chainVoid(close, () => onCreate(searchLabel))} />
+        </System.IconButtonsGroup.Base>
       )}
       renderFooterAction={({ close, searchLabel }) => (
         <Menu.Footer>

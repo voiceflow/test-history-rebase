@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import { IconButton } from '@voiceflow/ui';
+import { System } from '@voiceflow/ui';
 import React from 'react';
 
 import { Variable } from '@/models';
@@ -15,7 +15,7 @@ export interface VariableListProps {
   disabled?: boolean;
 }
 
-const VariableList: React.OldFC<VariableListProps> = ({ variables, onChange, onChangeList, canDelete, disabled }) => {
+const VariableList: React.FC<VariableListProps> = ({ variables, onChange, onChangeList, canDelete, disabled }) => {
   const handleChange = (newVar: Variable, index: number) => {
     onChange?.(newVar);
     onChangeList?.(Utils.array.replace(variables, index, newVar));
@@ -35,7 +35,12 @@ const VariableList: React.OldFC<VariableListProps> = ({ variables, onChange, onC
             onChange={(text) => handleChange({ name, value: text }, index)}
             disabled={disabled}
           />
-          {canDelete && <IconButton icon="minus" onClick={() => handleDelete(index)} variant={IconButton.Variant.BASIC} />}
+
+          {canDelete && (
+            <System.IconButtonsGroup.Base>
+              <System.IconButton.Base icon="minus" onClick={() => handleDelete(index)} />
+            </System.IconButtonsGroup.Base>
+          )}
         </li>
       ))}
     </Container>

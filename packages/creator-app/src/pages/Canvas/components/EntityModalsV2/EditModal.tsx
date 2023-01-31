@@ -1,4 +1,4 @@
-import { Box, Button, ButtonVariant, Dropdown, IconButton, IconButtonVariant, toast } from '@voiceflow/ui';
+import { Box, Button, ButtonVariant, Dropdown, System, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import Modal, { ModalFooter } from '@/components/Modal';
@@ -39,15 +39,9 @@ const EditModal: React.OldFC = () => {
           ]}
         >
           {(ref, onToggle, isOpened) => (
-            <IconButton
-              style={{ marginRight: '0px' }}
-              size={14}
-              icon="ellipsis"
-              variant={IconButtonVariant.BASIC}
-              onClick={onToggle}
-              activeClick={isOpened}
-              ref={ref}
-            />
+            <System.IconButtonsGroup.Base mr={0}>
+              <System.IconButton.Base ref={ref} icon="ellipsis" iconProps={{ size: 14 }} active={isOpened} onClick={onToggle} />
+            </System.IconButtonsGroup.Base>
           )}
         </Dropdown>
       }

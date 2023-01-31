@@ -1,5 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { IconButton, SectionV2 } from '@voiceflow/ui';
+import { System } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Documentation from '@/config/documentation';
@@ -14,9 +14,9 @@ const Editor: ActionEditor<Realtime.NodeData.Code, Realtime.NodeData.CodeBuiltIn
     header={
       <Form.Header editor={props}>
         {!props.isFullscreen && (
-          <SectionV2.ActionsContainer isLeft unit={0} offsetUnit={2.75}>
-            <IconButton icon="largeArrowLeft" onClick={() => props.goBack()} variant={IconButton.Variant.BASIC} />
-          </SectionV2.ActionsContainer>
+          <System.IconButtonsGroup.Base mr={12}>
+            <System.IconButton.Base icon="largeArrowLeft" onClick={() => props.goBack()} />
+          </System.IconButtonsGroup.Base>
         )}
       </Form.Header>
     }

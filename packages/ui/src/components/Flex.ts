@@ -6,7 +6,7 @@ export interface FlexProps {
   inline?: boolean;
   fullWidth?: boolean;
   fullHeight?: boolean;
-  alignItems?: 'flex-start' | 'flex-end' | 'center' | 'baseline' | 'stretch';
+  alignItems?: 'flex-start' | 'flex-end' | 'center' | 'baseline' | 'stretch' | null;
 }
 
 export const flexStyles = css<FlexProps>`

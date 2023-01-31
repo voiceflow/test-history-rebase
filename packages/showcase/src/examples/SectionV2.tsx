@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { IconButton, IconButtonVariant, SectionV2, Toggle, useToggle } from '@voiceflow/ui';
+import { SectionV2, System, Toggle, useToggle } from '@voiceflow/ui';
 import React from 'react';
 
 import { withBox } from './hocs';
@@ -41,12 +41,12 @@ const collapseHeaderContentToggle = createExample(
   wrapContainer(() => (
     <SectionV2.CollapseSection
       header={({ onToggle, collapsed }) => (
-        <SectionV2.Header>
+        <SectionV2.Header gap={12}>
           <SectionV2.Title bold={!collapsed}>Title</SectionV2.Title>
 
-          <SectionV2.ActionsContainer>
-            <IconButton icon={collapsed ? 'add' : 'close'} variant={IconButtonVariant.BASIC} onClick={onToggle} />
-          </SectionV2.ActionsContainer>
+          <System.IconButtonsGroup.Base>
+            <System.IconButton.Base icon={collapsed ? 'plus' : 'close'} onClick={onToggle} />
+          </System.IconButtonsGroup.Base>
         </SectionV2.Header>
       )}
     >

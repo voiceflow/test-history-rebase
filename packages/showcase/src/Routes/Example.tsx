@@ -3,8 +3,9 @@ import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import Example from '@/components/Example';
-import Section from '@/components/Section';
+import Section, { Row } from '@/components/Section';
 import Sidebar from '@/components/Sidebar';
+import { isGroupedExamples } from '@/examples/utils';
 
 import * as examples from '../examples';
 
@@ -28,12 +29,26 @@ const ExampleRoute: React.FC = () => {
 
       <Content>
         {section ? (
-          <Section title={section.title} path={section.path}>
-            {section.examples.map((example) => (
-              <Example {...example.options} key={example.title} title={example.title}>
-                <example.component isPage />
-              </Example>
-            ))}
+          <Section path={section.path} title={section.title} description={section.description}>
+            {isGroupedExamples(section.examples) ? (
+              section.examples.map((examples, index) => (
+                <Row key={index}>
+                  {examples.map((example, index) => (
+                    <Example key={index} title={example.title}>
+                      <example.component />
+                    </Example>
+                  ))}
+                </Row>
+              ))
+            ) : (
+              <Row>
+                {section.examples.map((example, index) => (
+                  <Example key={index} title={example.title}>
+                    <example.component />
+                  </Example>
+                ))}
+              </Row>
+            )}
           </Section>
         ) : (
           <Section title={`Example "${example}" doesn't exist`} path="/"></Section>

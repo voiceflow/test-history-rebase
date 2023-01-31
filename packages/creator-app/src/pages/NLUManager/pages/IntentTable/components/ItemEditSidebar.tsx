@@ -1,4 +1,4 @@
-import { createDividerMenuItemOption, IconButton, SectionV2, SidebarEditor, SidebarEditorTypes, useLinkedState } from '@voiceflow/ui';
+import { createDividerMenuItemOption, SectionV2, SidebarEditor, SidebarEditorTypes, System, useLinkedState } from '@voiceflow/ui';
 import React from 'react';
 
 import Drawer from '@/components/Drawer';
@@ -52,9 +52,9 @@ const ItemEditSidebar: React.OldFC<ItemEditSidebarProps> = ({ children, isBuiltI
           style={nluManager.isEditorTabActive(EditorTabs.INTENT_CONFLICTS) ? { height: `${theme.components.page.header.height}px` } : {}}
         >
           {!!onBack && (
-            <SectionV2.ActionsContainer isLeft unit={0} offsetUnit={2.75}>
-              <IconButton icon="largeArrowLeft" onClick={() => onBack()} variant={IconButton.Variant.BASIC} />
-            </SectionV2.ActionsContainer>
+            <System.IconButtonsGroup.Base mr={12}>
+              <System.IconButton.Base icon="largeArrowLeft" onClick={() => onBack()} />
+            </System.IconButtonsGroup.Base>
           )}
 
           <SidebarEditor.HeaderTitle fontWeight={800}>
@@ -72,7 +72,7 @@ const ItemEditSidebar: React.OldFC<ItemEditSidebarProps> = ({ children, isBuiltI
           <SectionV2.ActionsContainer gap={8}>
             <SidebarEditor.HeaderActionsButton actions={actions} />
 
-            <IconButton size={16} icon="close" variant={IconButton.Variant.BASIC} onClick={nluManager.resetSelection} offsetSize={0} />
+            <System.IconButton.Base icon="close" onClick={nluManager.resetSelection} />
           </SectionV2.ActionsContainer>
         </SidebarEditor.Header>
 

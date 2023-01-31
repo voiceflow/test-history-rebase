@@ -1,4 +1,4 @@
-import { preventDefault, SvgIconTypes } from '@voiceflow/ui';
+import { preventDefault, SvgIconTypes, System } from '@voiceflow/ui';
 import React from 'react';
 import { Editor } from 'slate';
 import { PickByValue } from 'utility-types';
@@ -43,13 +43,7 @@ interface CreateButtonOptions {
   isActive: (editor: Editor) => boolean;
 }
 
-interface IconButtonProps {
-  icon: SvgIconTypes.Icon;
-  active: boolean;
-  onMouseDown: React.MouseEventHandler<HTMLButtonElement>;
-}
-
-type PropertyButton = React.OldFC<{ component?: React.OldFC<IconButtonProps>; icon?: SvgIconTypes.Icon }>;
+type PropertyButton = React.FC<{ component?: React.FC<System.IconButton.I.Props>; icon?: SvgIconTypes.Icon }>;
 
 const createButton =
   ({ icon: defaultIcon, hotkey, isActive, onAction }: CreateButtonOptions): PropertyButton =>

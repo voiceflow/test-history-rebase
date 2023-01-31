@@ -27,7 +27,7 @@ const WaitAgentStage: React.OldFC<StageComponentProps<DialogflowCXPublishJob.Wai
       </Portal>
 
       <Modal type="WaitAgentStage" opened={state.opened} hidden={false} onExited={onClose} maxWidth={400}>
-        <Modal.Header capitalizeText={false} actions={<Modal.Header.CloseButton onClick={onClose} />}>
+        <Modal.Header capitalizeText={false} actions={<Modal.Header.CloseButtonAction onClick={onClose} />}>
           Connect to Agent
         </Modal.Header>
 

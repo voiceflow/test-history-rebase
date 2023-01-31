@@ -1,5 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Divider, SectionV2, stopPropagation } from '@voiceflow/ui';
+import { Divider, SectionV2, stopPropagation, System } from '@voiceflow/ui';
 import React from 'react';
 
 import { ControlledEditorProvider, FontStyles, HyperlinkButton, TextColor } from '@/components/SlateEditable';
@@ -9,7 +9,7 @@ import { Content } from '@/pages/Canvas/components/Editor';
 import type Engine from '@/pages/Canvas/engine';
 import { NodeEditorPropsType } from '@/pages/Canvas/managers/types';
 
-import { BackgroundColor, IconButton, TextAligns, TextStyles } from './components';
+import { BackgroundColor, TextAligns, TextStyles } from './components';
 
 export const MarkupTextEditor: React.OldFC<NodeEditorPropsType<Realtime.Markup.NodeData.Text> & { engine: Engine }> = ({ nodeID, data, engine }) => {
   const [key, editor] = engine.markup.useTextEditor(nodeID);
@@ -37,7 +37,7 @@ export const MarkupTextEditor: React.OldFC<NodeEditorPropsType<Realtime.Markup.N
 
           <Divider offset={10} height={16} isVertical />
 
-          <HyperlinkButton>{(props) => <IconButton {...props} onClick={stopPropagation()} />}</HyperlinkButton>
+          <HyperlinkButton>{(props) => <System.IconButton.Base {...props} onClick={stopPropagation()} />}</HyperlinkButton>
         </SectionV2.SimpleSection>
 
         <SectionV2.Divider inset />

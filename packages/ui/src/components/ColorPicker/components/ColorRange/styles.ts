@@ -1,15 +1,8 @@
-import IconButton from '@ui/components/IconButton';
+import Box from '@ui/components/Box';
 import { styled } from '@ui/styles';
 
-import { BoxFlex } from '../../../Box';
-
-export const RangeContainer = styled(BoxFlex)`
+export const RangeContainer = styled(Box.Flex)`
   width: 204px;
   flex-direction: row;
   justify-content: space-between;
-`;
-
-export const StyledIconButton = styled(IconButton)`
-  margin-left: 5px;
-  margin-right: -5px;
 `;

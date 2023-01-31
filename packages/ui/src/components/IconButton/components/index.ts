@@ -1,7 +1,5 @@
 export type { ActionContainerProps } from './ActionContainer';
 export { default as ActionContainer } from './ActionContainer';
-export type { BasicContainerProps } from './BasicContainer';
-export { default as BasicContainer } from './BasicContainer';
 export type { FlatContainerProps } from './FlatContainer';
 export { default as FlatContainer } from './FlatContainer';
 export type { BaseContainerProps, IconButtonContainerProps, IconButtonContainerSharedProps } from './IconButtonContainer';

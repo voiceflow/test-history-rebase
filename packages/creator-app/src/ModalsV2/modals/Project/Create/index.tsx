@@ -2,7 +2,7 @@ import { Nullable } from '@voiceflow/common';
 import { UserRole } from '@voiceflow/internal';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { FullSpinner, IconButton, Modal, Portal, SectionV2, Switch, toast, useSmartReducerV2 } from '@voiceflow/ui';
+import { FullSpinner, Modal, Portal, Switch, System, toast, useSmartReducerV2 } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Assistant from '@/components/Assistant';
@@ -112,11 +112,11 @@ const Create = manager.create<{ listID?: string }>('CreateProject', () => ({ api
         maxWidth={450}
         className={`${ClassName.MODAL}--create-project`}
       >
-        <Modal.Header border actions={<Modal.Header.CloseButton onClick={() => api.close()} />}>
+        <Modal.Header border actions={<Modal.Header.CloseButtonAction onClick={() => api.close()} />}>
           {state.screen !== Screen.CHOOSE_TYPE && (
-            <SectionV2.ActionsContainer isLeft unit={0} offsetUnit={2.75}>
-              <IconButton icon="largeArrowLeft" onClick={() => onBack()} variant={IconButton.Variant.BASIC} />
-            </SectionV2.ActionsContainer>
+            <System.IconButtonsGroup.Base mr={12}>
+              <System.IconButton.Base icon="largeArrowLeft" onClick={() => onBack()} />
+            </System.IconButtonsGroup.Base>
           )}
 
           <Modal.Header.Title large>Create Assistant</Modal.Header.Title>

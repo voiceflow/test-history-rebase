@@ -6,6 +6,7 @@ import InfoIconTooltip from './InfoIconTooltip';
 
 export interface HeaderProps extends SpaceProps, TypographyProps {
   top?: number;
+  gap?: number;
   column?: boolean;
   sticky?: boolean;
   sticked?: boolean;

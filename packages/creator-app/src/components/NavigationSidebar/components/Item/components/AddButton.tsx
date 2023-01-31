@@ -1,4 +1,4 @@
-import { IconButton, TippyTooltip, TippyTooltipProps } from '@voiceflow/ui';
+import { System, TippyTooltip, TippyTooltipProps } from '@voiceflow/ui';
 import React from 'react';
 
 export interface AddButtonProps {
@@ -7,9 +7,9 @@ export interface AddButtonProps {
 }
 
 const AddButton: React.FC<AddButtonProps> = ({ tooltip, onClick }) => {
-  const button = <IconButton size={16} icon="plus" onClick={onClick} variant={IconButton.Variant.BASIC} color="#6E849A" />;
+  const button = <System.IconButton.Base icon="plus" onClick={onClick} />;
 
-  return tooltip ? <TippyTooltip {...tooltip}>{button}</TippyTooltip> : button;
+  return <System.IconButtonsGroup.Base>{tooltip ? <TippyTooltip {...tooltip}>{button}</TippyTooltip> : button}</System.IconButtonsGroup.Base>;
 };
 
 export default AddButton;

@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import { Box, IconButton, Input, Menu, Portal, preventDefault, stopPropagation, SvgIcon } from '@voiceflow/ui';
+import { Box, Input, Menu, Portal, preventDefault, stopPropagation, SvgIcon, System } from '@voiceflow/ui';
 import React from 'react';
 
 import { TextEditorVariablesPopoverConsumer } from '@/contexts/TextEditorVariablesPopoverContext';
@@ -72,14 +72,14 @@ export default React.forwardRef(
                   />
 
                   {creatable && (
-                    <IconButton
-                      size={16}
-                      icon="plus"
-                      variant={IconButton.Variant.BASIC}
-                      onClick={Utils.functional.chainVoid(preventDefault, onCreateMention)}
-                      disabled={!variableName || !!variablesMap[variableName]}
-                      onMouseDown={preventDefault()}
-                    />
+                    <System.IconButtonsGroup.Base>
+                      <System.IconButton.Base
+                        icon="plus"
+                        onClick={Utils.functional.chainVoid(preventDefault, onCreateMention)}
+                        disabled={!variableName || !!variablesMap[variableName]}
+                        onMouseDown={preventDefault()}
+                      />
+                    </System.IconButtonsGroup.Base>
                   )}
                 </Header>
 

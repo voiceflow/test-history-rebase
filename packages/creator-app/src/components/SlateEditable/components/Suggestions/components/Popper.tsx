@@ -2,7 +2,6 @@ import { Nullable, Utils } from '@voiceflow/common';
 import {
   Box,
   defaultMenuLabelRenderer,
-  IconButton,
   KeyName,
   Menu,
   Portal,
@@ -11,6 +10,7 @@ import {
   stopPropagation,
   SvgIcon,
   swallowEvent,
+  System,
   useCache,
   useCachedValue,
   useLinkedState,
@@ -191,14 +191,14 @@ const Popper = <T extends PopperItem>({
               <Input ref={inputRef} value={searchLabel} onBlur={onInputBlur} placeholder={inputPlaceholder} onChangeText={setSearchLabel} />
 
               {creatable && (
-                <IconButton
-                  size={16}
-                  icon="plus"
-                  variant={IconButton.Variant.BASIC}
-                  onClick={Utils.functional.chainVoid(preventDefault, onCreate)}
-                  disabled={!searchLabel || !!itemsByNameMap[searchLabel]}
-                  onMouseDown={preventDefault()}
-                />
+                <System.IconButtonsGroup.Base>
+                  <System.IconButton.Base
+                    icon="plus"
+                    onClick={Utils.functional.chainVoid(preventDefault, onCreate)}
+                    disabled={!searchLabel || !!itemsByNameMap[searchLabel]}
+                    onMouseDown={preventDefault()}
+                  />
+                </System.IconButtonsGroup.Base>
               )}
             </Header>
 

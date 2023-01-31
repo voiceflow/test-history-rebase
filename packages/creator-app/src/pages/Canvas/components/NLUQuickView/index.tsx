@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import { Box, IconButton, SectionV2, withProvider } from '@voiceflow/ui';
+import { Box, SectionV2, System, withProvider } from '@voiceflow/ui';
 import React from 'react';
 
 import Modal from '@/components/Modal';
@@ -75,9 +75,9 @@ const NLUQuickView: React.OldFC = () => {
       title={
         <>
           {showIntentForm && intentEntityPromptSlotID && (
-            <SectionV2.ActionsContainer isLeft unit={0} offsetUnit={2.75}>
-              <IconButton icon="largeArrowLeft" onClick={() => onIntentEntityPromptBack()} variant={IconButton.Variant.BASIC} />
-            </SectionV2.ActionsContainer>
+            <System.IconButtonsGroup.Base mr={12}>
+              <System.IconButton.Base icon="largeArrowLeft" onClick={() => onIntentEntityPromptBack()} />
+            </System.IconButtonsGroup.Base>
           )}
 
           <TitleInput

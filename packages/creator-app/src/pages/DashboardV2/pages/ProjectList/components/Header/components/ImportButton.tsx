@@ -62,8 +62,6 @@ const ImportButton: React.OldFC = () => {
   return (
     <Page.Header.IconButton
       icon="importCircle"
-      size={16}
-      isSmall
       onClick={onImport}
       tooltip={{
         content: 'Import .vf file',

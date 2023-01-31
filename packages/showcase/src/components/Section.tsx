@@ -1,4 +1,4 @@
-import { SvgIcon } from '@voiceflow/ui';
+import { Box, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 import styled, { css } from 'styled-components';
 
@@ -6,36 +6,31 @@ import { uiProjectDir } from '@/config';
 
 const Container = styled.section<{ inline?: boolean }>`
   margin: ${({ inline }) => (inline ? '0' : '1em 0 3em 0')};
+  overflow: hidden;
 `;
 
 const Header = styled.header`
   display: flex;
-  align-items: center;
-  font-size: 2em;
-  margin-bottom: 0.5em;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 24px;
 `;
 
 const Content = styled.div<{ inline?: boolean }>`
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
   background: #f9f9f9;
 
   ${({ inline }) =>
     !inline &&
     css`
-      justify-content: space-around;
       border: 1px solid #dedede;
       border-radius: 8px;
     `}
 `;
 
 const Title = styled.h2`
-  color: #b1b0b0;
-
-  &:not(:last-child) {
-    margin-right: 0.5em;
-  }
+  color: #132144;
+  font-size: 24px;
+  margin-bottom: 0;
 
   ${({ onClick }) =>
     onClick &&
@@ -43,27 +38,45 @@ const Title = styled.h2`
       cursor: pointer;
 
       &:hover {
-        color: #a4a3a3;
+        text-decoration: underline;
       }
     `}
+`;
+
+const Description = styled.p`
+  color: #62778c;
+  font-size: 16px;
+  margin-bottom: 0;
+`;
+
+export const Row = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
 `;
 
 interface SectionProps extends React.PropsWithChildren {
   path: string;
   title: string;
   inline?: boolean;
+  description?: string;
   onTitleClick?: VoidFunction;
 }
 
-const Section: React.FC<SectionProps> = ({ title, path, children, inline, onTitleClick }) => (
+const Section: React.FC<SectionProps> = ({ title, path, children, inline, description, onTitleClick }) => (
   <Container inline={inline}>
     {!inline && (
       <Header>
-        <Title onClick={onTitleClick}>{title}</Title>
+        <Box.Flex gap={12}>
+          <a href={`${uiProjectDir}/${path}`}>
+            <SvgIcon icon="link" size={20} />
+          </a>
 
-        <a href={`${uiProjectDir}/${path}`}>
-          <SvgIcon icon="link" size={20} />
-        </a>
+          <Title onClick={onTitleClick}>{title}</Title>
+        </Box.Flex>
+
+        {description && <Description>{description}</Description>}
       </Header>
     )}
 

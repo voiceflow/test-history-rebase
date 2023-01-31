@@ -3,7 +3,7 @@ import { ClassName } from '@/styles/constants';
 
 import IconButton from '../IconButton';
 
-export const StyledLogoButton = styled(IconButton).attrs({ icon: 'voiceflowV', size: 26, iconProps: { color: '#000' } })<{ withBorder?: boolean }>`
+export const StyledLogoButton = styled(IconButton)<{ withBorder?: boolean }>`
   ${({ theme, withBorder }) =>
     withBorder &&
     css`
@@ -12,6 +12,7 @@ export const StyledLogoButton = styled(IconButton).attrs({ icon: 'voiceflowV', s
 
   ${IconButton.S.Button} {
     width: ${({ theme }) => theme.components.page.header.height - 1}px;
+    height: ${({ theme }) => theme.components.page.header.height - 1}px;
   }
 
   ${IconButton.S.ExpandIconContainer} {

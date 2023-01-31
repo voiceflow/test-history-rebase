@@ -1,4 +1,4 @@
-import IconButton, { IconButtonVariant } from '@ui/components/IconButton';
+import * as System from '@ui/system';
 import React from 'react';
 
 export interface RemoveButtonProps {
@@ -9,7 +9,9 @@ export interface RemoveButtonProps {
 }
 
 const RemoveButton: React.FC<RemoveButtonProps> = ({ onClick, isActive, style, disabled }) => (
-  <IconButton size={16} icon="minus" onClick={onClick} variant={IconButtonVariant.BASIC} activeClick={isActive} style={style} disabled={disabled} />
+  <System.IconButtonsGroup.Base>
+    <System.IconButton.Base icon="minus" onClick={onClick} active={isActive} style={style} disabled={disabled} />
+  </System.IconButtonsGroup.Base>
 );
 
 export default RemoveButton;

@@ -4,6 +4,7 @@ import SearchInput, { SearchInputIcon } from '@ui/components/SearchInput';
 import { toast } from '@ui/components/Toast';
 import { useDidUpdateEffect, usePersistFunction } from '@ui/hooks';
 import { ClassName } from '@ui/styles/constants';
+import * as System from '@ui/system';
 import { Primitive } from '@ui/types';
 import { setRef, stopPropagation } from '@ui/utils';
 import { Nullable, Utils } from '@voiceflow/common';
@@ -13,7 +14,6 @@ import React from 'react';
 import { useDismissable } from 'react-dismissable-layers';
 import { Manager, PopperProps, Reference } from 'react-popper';
 
-import IconButton from '../IconButton';
 // for some reason absolute paths are not transformed for this import
 import {
   defaultMenuLabelRenderer,
@@ -525,14 +525,14 @@ function Select({
                     <>
                       {!!leftAction && (
                         <LeftActionContainer>
-                          <IconButton
+                          <System.IconButton.Base
                             icon={leftAction.icon}
-                            variant={IconButton.Variant.BASIC}
+                            active={leftAction.isActive}
                             onClick={stopPropagation(leftAction.onClick)}
                             disabled={leftAction.disabled}
                             iconProps={leftAction.iconProps}
-                            activeClick={leftAction.isActive}
-                            transparent
+                            hoverBackground={false}
+                            activeBackground={false}
                           />
                         </LeftActionContainer>
                       )}

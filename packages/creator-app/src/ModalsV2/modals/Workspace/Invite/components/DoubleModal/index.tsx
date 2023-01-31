@@ -1,5 +1,5 @@
 import { UserRole } from '@voiceflow/internal';
-import { Box, Button, IconButton, Input, Members, Modal, OverflowText, toast } from '@voiceflow/ui';
+import { Box, Button, Input, Members, Modal, OverflowText, System, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import SelectInputGroup from '@/components/SelectInputGroup';
@@ -76,7 +76,7 @@ const DoubleModal: React.FC<VoidInternalProps> = ({ api, type, opened, hidden, a
   return (
     <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} maxWidth={500} stacked>
       <>
-        <Modal.Header actions={<Modal.Header.CloseButton onClick={() => api.close()} />}>Invite Members</Modal.Header>
+        <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={() => api.close()} />}>Invite Members</Modal.Header>
 
         <Modal.Body>
           <WorkspaceUI.InviteByEmail buttonLabel="Invite" />
@@ -90,14 +90,14 @@ const DoubleModal: React.FC<VoidInternalProps> = ({ api, type, opened, hidden, a
       <>
         <Modal.Header
           actions={
-            <IconButton
-              size={16}
-              icon="arrowSpin"
-              variant={IconButton.Variant.BASIC}
-              onClick={() => onFetchInviteLink(role)}
-              disabled={!inviteLink}
-              iconProps={{ spin: !inviteLink }}
-            />
+            <System.IconButtonsGroup.Base>
+              <System.IconButton.Base
+                icon="arrowSpin"
+                onClick={() => onFetchInviteLink(role)}
+                disabled={!inviteLink}
+                iconProps={{ spin: !inviteLink }}
+              />
+            </System.IconButtonsGroup.Base>
           }
         >
           Invite via Magic Link

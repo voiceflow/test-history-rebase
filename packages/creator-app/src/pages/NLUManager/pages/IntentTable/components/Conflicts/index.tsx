@@ -1,4 +1,4 @@
-import { Box, Button, ButtonVariant, IconButton, SectionV2, SidebarEditor, SvgIcon, toast } from '@voiceflow/ui';
+import { Box, Button, ButtonVariant, SectionV2, SidebarEditor, SvgIcon, System, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import Drawer from '@/components/Drawer';
@@ -92,7 +92,7 @@ const Conflicts: React.OldFC = () => {
           <SectionV2.ActionsContainer gap={18}>
             <HelpTooltip />
 
-            <IconButton size={16} icon="close" variant={IconButton.Variant.BASIC} onClick={closeEditorTab} offsetSize={0} />
+            <System.IconButton.Base icon="close" onClick={closeEditorTab} />
           </SectionV2.ActionsContainer>
         </SidebarEditor.Header>
 

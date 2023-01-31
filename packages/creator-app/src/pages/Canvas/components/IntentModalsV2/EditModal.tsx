@@ -1,4 +1,4 @@
-import { Box, Button, ButtonVariant, Dropdown, IconButton, IconButtonVariant, SectionV2, useDidUpdateEffect } from '@voiceflow/ui';
+import { Box, Button, ButtonVariant, Dropdown, SectionV2, System, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 
 import Modal, { ModalFooter } from '@/components/Modal';
@@ -13,7 +13,7 @@ import EntityPromptForm from '@/pages/Canvas/components/EntityPromptForm';
 import IntentSelectDropdown from './components/components/IntentSelectDropdown';
 import EditIntentForm from './components/IntentForm/EditIntentForm';
 
-const EditModal: React.OldFC = () => {
+const EditModal: React.FC = () => {
   const { close, data, open, isInStack } = useModals<{ id: string; newUtterance?: string; utteranceCreationType: Tracking.CanvasCreationType }>(
     ModalType.INTENT_EDIT
   );
@@ -65,15 +65,9 @@ const EditModal: React.OldFC = () => {
         !entityPromptSlotID && (
           <Dropdown options={[{ key: 'delete', label: 'Delete intent', onClick: onDeleteIntent }]}>
             {(ref, onToggle, isOpened) => (
-              <IconButton
-                ref={ref}
-                size={14}
-                icon="ellipsis"
-                style={{ marginRight: '0px' }}
-                variant={IconButtonVariant.BASIC}
-                onClick={onToggle}
-                activeClick={isOpened}
-              />
+              <System.IconButtonsGroup.Base mr={0}>
+                <System.IconButton.Base ref={ref} icon="ellipsis" active={isOpened} onClick={onToggle} iconProps={{ size: 14 }} />
+              </System.IconButtonsGroup.Base>
             )}
           </Dropdown>
         )
@@ -83,7 +77,9 @@ const EditModal: React.OldFC = () => {
         <>
           {entityPromptSlotID ? (
             <SectionV2.ActionsContainer isLeft unit={0} offsetUnit={2.75}>
-              <IconButton icon="largeArrowLeft" onClick={() => onEntityPromptBack()} variant={IconButton.Variant.BASIC} />
+              <System.IconButtonsGroup.Base>
+                <System.IconButton.Base icon="largeArrowLeft" onClick={() => onEntityPromptBack()} />
+              </System.IconButtonsGroup.Base>
             </SectionV2.ActionsContainer>
           ) : (
             <IntentSelectDropdown onChange={onChangeIntent} />

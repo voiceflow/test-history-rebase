@@ -52,7 +52,7 @@ const Delete = manager.create<Props>('ProjectDelete', () => ({ api, type, opened
 
   return (
     <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} maxWidth={400}>
-      <Modal.Header actions={<Modal.Header.CloseButton onClick={api.close} />}>Delete Assistant</Modal.Header>
+      <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={api.close} />}>Delete Assistant</Modal.Header>
 
       <Modal.Body centered>
         <Box.FlexCenter pb={16}>

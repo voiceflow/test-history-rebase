@@ -4,10 +4,9 @@ import {
   CustomScrollbars,
   CustomScrollbarsTypes,
   Dropdown,
-  IconButton,
-  IconButtonVariant,
   preventDefault,
   stopImmediatePropagation,
+  System,
   Text,
   useOnScreen,
   useToggle,
@@ -90,14 +89,9 @@ export const ThreadHistoryDrawer: React.OldFC<ThreadHistoryDrawerProps> = () => 
         {isCommentingMode && (
           <Dropdown menu={(onToggle) => <FilterMenu filter={filter} setFilter={Utils.functional.chain(updateFilter, onToggle)} />}>
             {(ref, onToggle, isOpen) => (
-              <IconButton
-                ref={ref}
-                size={16}
-                icon="filter"
-                activeClick={isOpen}
-                variant={IconButtonVariant.BASIC}
-                onClick={preventDefault(onToggle)}
-              />
+              <System.IconButtonsGroup.Base>
+                <System.IconButton.Base ref={ref} icon="filter" active={isOpen} onClick={preventDefault(onToggle)} />
+              </System.IconButtonsGroup.Base>
             )}
           </Dropdown>
         )}

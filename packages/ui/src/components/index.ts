@@ -95,7 +95,6 @@ export type {
   BaseIconButtonProps,
   IconButtonActionContainerProps,
   IconButtonBaseContainerProps,
-  IconButtonBasicContainerProps,
   IconButtonContainerProps,
   IconButtonFlatContainerProps,
   IconButtonOutlineContainerProps,

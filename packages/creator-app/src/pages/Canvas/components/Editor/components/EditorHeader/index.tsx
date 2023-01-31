@@ -1,4 +1,4 @@
-import { Dropdown, IconButton, IconButtonVariant, preventDefault } from '@voiceflow/ui';
+import { Dropdown, preventDefault, System } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
 
@@ -53,9 +53,9 @@ const EditorHeader: React.FC<HeaderProps> = ({ path = [], className, goToPath })
           placement="bottom-end"
         >
           {(ref, onOpen, isOpened) => (
-            <div>
-              <IconButton ref={ref} icon="ellipsis" variant={IconButtonVariant.BASIC} onClick={onOpen} activeClick={isOpened} />
-            </div>
+            <System.IconButtonsGroup.Base>
+              <System.IconButton.Base ref={ref} icon="ellipsis" onClick={onOpen} active={isOpened} />
+            </System.IconButtonsGroup.Base>
           )}
         </Dropdown>
       )}

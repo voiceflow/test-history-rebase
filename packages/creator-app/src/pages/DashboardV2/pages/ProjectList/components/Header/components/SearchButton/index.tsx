@@ -43,8 +43,6 @@ const SearchButton: React.OldFC<SearchButtonProps> = ({ value, onSearch }) => {
       ) : (
         <Page.Header.IconButton
           icon="search"
-          size={16}
-          isSmall
           onClick={onEnableSearch}
           tooltip={{
             content: (

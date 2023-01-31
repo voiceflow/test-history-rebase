@@ -1,4 +1,4 @@
-import { Checkbox, Dropdown, IconButton, IconButtonVariant } from '@voiceflow/ui';
+import { Checkbox, Dropdown, System } from '@voiceflow/ui';
 import React from 'react';
 
 import { Container, LabelContainer } from './components';
@@ -34,7 +34,9 @@ const DialogHeader: React.OldFC<DialogHeaderProps> = ({ showDebugs, showIntentCo
         placement="bottom-end"
       >
         {(ref, onToggle, isOpened) => (
-          <IconButton ref={ref} icon="filter" variant={IconButtonVariant.BASIC} activeClick={isOpened} size={16} onClick={onToggle} />
+          <System.IconButtonsGroup.Base>
+            <System.IconButton.Base ref={ref} icon="filter" active={isOpened} onClick={onToggle} />
+          </System.IconButtonsGroup.Base>
         )}
       </Dropdown>
     </Container>

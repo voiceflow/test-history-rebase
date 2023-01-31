@@ -1,5 +1,5 @@
 import { Nullable } from '@voiceflow/common';
-import { Box, IconButton } from '@voiceflow/ui';
+import { System } from '@voiceflow/ui';
 import React from 'react';
 
 import IntentSelect from '@/components/IntentSelect';
@@ -8,7 +8,7 @@ interface IntentSelectDropdownProps {
   onChange: (intentID: string) => void;
 }
 
-const IntentSelectDropdown: React.OldFC<IntentSelectDropdownProps> = ({ onChange }) => {
+const IntentSelectDropdown: React.FC<IntentSelectDropdownProps> = ({ onChange }) => {
   const switchIntent = (value: { intent: Nullable<string> }) => {
     if (!value?.intent) return;
 
@@ -30,17 +30,15 @@ const IntentSelectDropdown: React.OldFC<IntentSelectDropdownProps> = ({ onChange
       inDropdownSearch
       createInputPlaceholder="Intents"
       renderTrigger={({ ref, isEmpty, onOpenMenu, onHideMenu, isOpen }) => (
-        <Box display="flex" mr={22}>
-          <IconButton
+        <System.IconButtonsGroup.Base mr={12}>
+          <System.IconButton.Base
             ref={ref as React.RefObject<HTMLButtonElement>}
-            size={16}
             icon="sandwichMenu"
+            active={isOpen}
             onClick={isOpen ? onHideMenu : onOpenMenu}
-            variant={IconButton.Variant.BASIC}
             disabled={isEmpty}
-            activeClick={isOpen}
           />
-        </Box>
+        </System.IconButtonsGroup.Base>
       )}
     />
   );

@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import { BaseSelectProps, defaultMenuLabelRenderer, IconButton, Menu, Select, toast } from '@voiceflow/ui';
+import { BaseSelectProps, defaultMenuLabelRenderer, Menu, Select, System, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import { getErrorMessage } from '@/utils/error';
@@ -41,12 +41,9 @@ const VariableSelectV2: React.OldFC<VariableSelectProps> = ({ value, options, on
       clearOnSelectActive
       renderEmpty={({ search }) => <Menu.NotFound>{!search ? 'No variables exist in your assistant. ' : 'No variables found. '}</Menu.NotFound>}
       renderSearchSuffix={({ close, searchLabel }) => (
-        <IconButton
-          size={16}
-          icon="plus"
-          variant={IconButton.Variant.BASIC}
-          onClick={Utils.functional.chainVoid(close, () => onCreate(searchLabel))}
-        />
+        <System.IconButtonsGroup.Base>
+          <System.IconButton.Base icon="plus" onClick={Utils.functional.chainVoid(close, () => onCreate(searchLabel))} />
+        </System.IconButtonsGroup.Base>
       )}
       renderFooterAction={({ close, searchLabel }) => (
         <Menu.Footer>

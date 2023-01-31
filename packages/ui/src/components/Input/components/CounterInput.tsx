@@ -1,4 +1,4 @@
-import IconButton from '@ui/components/IconButton';
+import * as System from '@ui/system';
 import React from 'react';
 
 import DefaultInput, { DefaultInputProps } from './DefaultInput';
@@ -8,18 +8,16 @@ export interface CounterInputProps extends Omit<DefaultInputProps, 'onChange' | 
   onMinusClick?: () => void;
 }
 
-const CounterInput = React.forwardRef<HTMLInputElement, CounterInputProps>(({ onPlusClick, onMinusClick, ...props }, ref) => {
-  return (
-    <DefaultInput
-      ref={ref}
-      readOnly
-      leftAction={<IconButton icon="minus" onClick={onMinusClick} variant={IconButton.Variant.BASIC} transparent style={{ margin: '0' }} />}
-      rightAction={<IconButton icon="plus" onClick={onPlusClick} variant={IconButton.Variant.BASIC} transparent style={{ margin: '0' }} />}
-      wrapperProps={{ counter: true }}
-      inline
-      {...props}
-    />
-  );
-});
+const CounterInput = React.forwardRef<HTMLInputElement, CounterInputProps>(({ onPlusClick, onMinusClick, ...props }, ref) => (
+  <DefaultInput
+    ref={ref}
+    inline
+    readOnly
+    leftAction={<System.IconButton.Base icon="minus" onClick={onMinusClick} hoverBackground={false} activeBackground={false} />}
+    rightAction={<System.IconButton.Base icon="plus" onClick={onPlusClick} hoverBackground={false} activeBackground={false} />}
+    wrapperProps={{ counter: true }}
+    {...props}
+  />
+));
 
 export default CounterInput;

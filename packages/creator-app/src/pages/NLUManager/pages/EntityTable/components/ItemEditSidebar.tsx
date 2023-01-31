@@ -1,4 +1,4 @@
-import { createDividerMenuItemOption, IconButton, SectionV2, SidebarEditor, SidebarEditorTypes, useLinkedState } from '@voiceflow/ui';
+import { createDividerMenuItemOption, SectionV2, SidebarEditor, SidebarEditorTypes, System, useLinkedState } from '@voiceflow/ui';
 import React from 'react';
 
 import Drawer from '@/components/Drawer';
@@ -64,7 +64,7 @@ const ItemEditSidebar: React.OldFC<ItemEditSidebarProps> = ({ children, isBuiltI
           <SectionV2.ActionsContainer gap={8}>
             <SidebarEditor.HeaderActionsButton actions={actions} />
 
-            <IconButton size={16} icon="close" variant={IconButton.Variant.BASIC} onClick={() => nluManager.goToItem(null)} offsetSize={0} />
+            <System.IconButton.Base icon="close" onClick={() => nluManager.goToItem(null)} />
           </SectionV2.ActionsContainer>
         </SidebarEditor.Header>
 

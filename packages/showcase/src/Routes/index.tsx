@@ -8,6 +8,7 @@ const Routes: React.FC = () => (
   <Switch>
     <Route path="/list" exact component={List} />
     <Route path="/:example" exact component={Example} />
+    <Route path="/:folder/:example" exact component={Example} />
     <Redirect to="/list" />
   </Switch>
 );

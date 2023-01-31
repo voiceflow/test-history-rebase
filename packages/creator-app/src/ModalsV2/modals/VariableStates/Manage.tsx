@@ -1,6 +1,6 @@
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Button, Dropdown, IconButton, IconButtonVariant, Modal, toast } from '@voiceflow/ui';
+import { Button, Dropdown, Modal, System, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import * as VariableState from '@/ducks/variableState';
@@ -94,15 +94,9 @@ const Manage = manager.create<Props>('VariableStateManage', () => ({ api, type, 
         actions={
           <Dropdown options={options}>
             {(ref, onToggle, isOpened) => (
-              <IconButton
-                ref={ref}
-                icon="ellipsis"
-                size={14}
-                style={{ marginRight: '0px' }}
-                variant={IconButtonVariant.BASIC}
-                onClick={onToggle}
-                activeClick={isOpened}
-              />
+              <System.IconButtonsGroup.Base>
+                <System.IconButton.Base ref={ref} icon="ellipsis" active={isOpened} onClick={onToggle} iconProps={{ size: 14 }} />
+              </System.IconButtonsGroup.Base>
             )}
           </Dropdown>
         }

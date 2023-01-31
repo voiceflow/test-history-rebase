@@ -1,4 +1,4 @@
-import { Dropdown, IconButton, IconButtonVariant } from '@voiceflow/ui';
+import { Dropdown, System } from '@voiceflow/ui';
 import React from 'react';
 
 import { useDataSourceMenu } from '@/contexts/NLUContext/hooks';
@@ -16,15 +16,9 @@ const DataSourceOptions: React.FC<DataSourceOptionsProps> = ({ items, dataSource
   return options.length ? (
     <Dropdown placement="bottom-end" selfDismiss options={options}>
       {(ref, onToggle, isOpened) => (
-        <IconButton
-          style={{ marginRight: '0px' }}
-          size={14}
-          icon="ellipsis"
-          variant={IconButtonVariant.BASIC}
-          onClick={onToggle}
-          activeClick={isOpened}
-          ref={ref}
-        />
+        <System.IconButtonsGroup.Base mr={0}>
+          <System.IconButton.Base ref={ref} icon="ellipsis" active={isOpened} onClick={onToggle} iconProps={{ size: 14 }} />
+        </System.IconButtonsGroup.Base>
       )}
     </Dropdown>
   ) : null;

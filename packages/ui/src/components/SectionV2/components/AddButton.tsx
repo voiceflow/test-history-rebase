@@ -1,4 +1,4 @@
-import IconButton, { IconButtonVariant } from '@ui/components/IconButton';
+import * as System from '@ui/system';
 import React from 'react';
 
 export interface AddButtonProps {
@@ -8,7 +8,9 @@ export interface AddButtonProps {
 }
 
 const AddButton: React.ForwardRefRenderFunction<HTMLButtonElement, AddButtonProps> = ({ onClick, isActive, disabled }, ref) => (
-  <IconButton ref={ref} size={16} icon="plus" onClick={onClick} variant={IconButtonVariant.BASIC} disabled={disabled} activeClick={isActive} />
+  <System.IconButtonsGroup.Base>
+    <System.IconButton.Base ref={ref} icon="plus" active={isActive} onClick={onClick} disabled={disabled} />
+  </System.IconButtonsGroup.Base>
 );
 
 export default React.forwardRef(AddButton);

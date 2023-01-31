@@ -2,8 +2,8 @@ import { styled } from '@ui/styles';
 
 const LeftActionContainer = styled.div`
   position: absolute;
-  top: 13px;
-  left: 16px;
+  top: 3px;
+  left: 6px;
 `;
 
 export default LeftActionContainer;

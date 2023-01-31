@@ -1,5 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, Button, Dropdown, IconButton, IconButtonVariant, Link, Spinner, toast } from '@voiceflow/ui';
+import { Box, Button, Dropdown, Link, Spinner, System, toast } from '@voiceflow/ui';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -103,17 +103,17 @@ const APIKeyPage: React.OldFC = () => {
                   {name}
                   <Box color="secondary" mt={6}>{`VF.${keyID}.XXX...`}</Box>
                 </Box>
-                <Dropdown
-                  options={[
-                    {
-                      label: 'Delete',
-                      onClick: confirmDeleteKey(keyID),
-                    },
-                  ]}
-                  placement="bottom-end"
-                >
+
+                <Dropdown options={[{ label: 'Delete', onClick: confirmDeleteKey(keyID) }]} placement="bottom-end">
                   {(ref, onToggle, isOpen) => (
-                    <IconButton icon="ellipsis" variant={IconButtonVariant.FLAT} active={isOpen} size={15} onClick={onToggle} ref={ref} large />
+                    <System.IconButton.Base
+                      ref={ref}
+                      size={System.IconButton.Size.L}
+                      icon="ellipsis"
+                      active={isOpen}
+                      onClick={onToggle}
+                      iconProps={{ size: 15 }}
+                    />
                   )}
                 </Dropdown>
               </TableRow>

@@ -1,6 +1,6 @@
 import { CustomSlot, Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { IconButton, IconButtonVariant, TippyTooltip, toast } from '@voiceflow/ui';
+import { System, TippyTooltip, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import { SectionToggleVariant } from '@/components/Section';
@@ -108,7 +108,9 @@ const EntitiesList: React.OldFC<SectionProps> = ({
       suffix={
         isActiveTab && (
           <TippyTooltip content="Create entity" position="top">
-            <IconButton style={{ marginRight: -12 }} onClick={triggerCreate} variant={IconButtonVariant.BASIC} icon="plus" />
+            <System.IconButtonsGroup.Base mr={-12}>
+              <System.IconButton.Base icon="plus" onClick={triggerCreate} />
+            </System.IconButtonsGroup.Base>
           </TippyTooltip>
         )
       }

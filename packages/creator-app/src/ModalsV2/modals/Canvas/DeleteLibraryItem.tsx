@@ -20,7 +20,7 @@ const DeleteLibraryItem = manager.create<DeleteLibraryItemProps>(
 
       return (
         <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} maxWidth={400} hideScrollbar>
-          <Modal.Header actions={<Modal.Header.CloseButton onClick={api.close} />}>Delete {entityType}</Modal.Header>
+          <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={api.close} />}>Delete {entityType}</Modal.Header>
 
           <div style={{ padding: '0 32px 32px 32px' }}>Warning, “{entityName}” and all its content will be removed from the assistant.</div>
 

@@ -1,5 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Dropdown, IconButton, Table, TableTypes, toast } from '@voiceflow/ui';
+import { Dropdown, System, Table, TableTypes, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import Domain from '@/components/Domain';
@@ -57,15 +57,16 @@ const ActionsCell: React.FC<TableTypes.ItemProps<Realtime.Domain>> = ({ item }) 
     >
       {(ref, onToggle, isOpen) => (
         <S.Container>
-          <IconButton
-            ref={ref}
-            onClick={onToggle}
-            activeClick={isOpen}
-            size={15}
-            icon="ellipsis"
-            variant={IconButton.Variant.BASIC}
-            disabled={!domainEditPermission.allowed}
-          />
+          <System.IconButtonsGroup.Base>
+            <System.IconButton.Base
+              ref={ref}
+              icon="ellipsis"
+              active={isOpen}
+              onClick={onToggle}
+              disabled={!domainEditPermission.allowed}
+              iconProps={{ size: 15 }}
+            />
+          </System.IconButtonsGroup.Base>
         </S.Container>
       )}
     </Dropdown>

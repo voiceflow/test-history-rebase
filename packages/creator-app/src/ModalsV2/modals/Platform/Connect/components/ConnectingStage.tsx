@@ -35,7 +35,7 @@ const ConnectingStage: React.OldFC<ConnectingStageProps> = ({ title, platformNam
 
   return (
     <>
-      <Modal.Header capitalizeText={false} actions={<Modal.Header.CloseButton onClick={onClose} />}>
+      <Modal.Header capitalizeText={false} actions={<Modal.Header.CloseButtonAction onClick={onClose} />}>
         {title}
       </Modal.Header>
 

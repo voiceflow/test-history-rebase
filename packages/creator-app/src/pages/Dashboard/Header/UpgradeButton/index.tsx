@@ -1,4 +1,3 @@
-import { IconButtonVariant } from '@voiceflow/ui';
 import React from 'react';
 
 import { ModalType } from '@/constants';
@@ -10,7 +9,7 @@ import { Identifier } from '@/styles/constants';
 
 import { Container, UpgradeIcon, UpgradeText } from './components';
 
-const UpgradeButton: React.OldFC = () => {
+const UpgradeButton: React.FC = () => {
   const isWorkspaceOnPaidPlan = useSelector(WorkspaceV2.active.isOnPaidPlanSelector);
 
   const { open: openPaymentsModal } = useModals(ModalType.PAYMENT);
@@ -20,7 +19,7 @@ const UpgradeButton: React.OldFC = () => {
       <>
         {!isWorkspaceOnPaidPlan ? (
           <Container id={Identifier.UPGRADE_BUTTON} onClick={openPaymentsModal}>
-            <UpgradeIcon variant={IconButtonVariant.FLAT} icon="upgrade" />
+            <UpgradeIcon icon="upgrade" />
             <UpgradeText>UPGRADE WORKSPACE</UpgradeText>
           </Container>
         ) : null}

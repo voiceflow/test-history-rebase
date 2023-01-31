@@ -1,33 +1,45 @@
-import { Flex, IconButton, IconButtonBaseContainerProps } from '@voiceflow/ui';
+import { Flex, SvgIcon } from '@voiceflow/ui';
 
 import { styled, transition, units } from '@/hocs/styled';
 
 export const UpgradeText = styled.div`
+  ${transition('color')}
+
   color: #132144;
   font-weight: 600;
   display: inline-block;
   font-size: 13px;
-  ${transition('color')}
 `;
 
-export const UpgradeIcon = styled(IconButton)<IconButtonBaseContainerProps>`
+export const UpgradeIcon = styled(SvgIcon)`
+  ${transition('border')}
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 32px;
+  height: 32px;
   background: #e9f5ee;
-  border-color: #cae3d4;
+  border: 1px solid #cae3d4;
+  border-radius: 50%;
+  color: #4c944f;
   box-shadow: inset 0 0 0 2px #fff !important;
   margin-right: ${units(2)}px;
-  pointer-events: none;
-  user-select: none;
-  ${transition('border')}
-  color: #4c944f;
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
 `;
 
 export const Container = styled(Flex)`
-  ${transition()}
   cursor: pointer;
-  :hover {
+
+  &:hover {
     ${UpgradeIcon} {
       border-color: #8fc9a5;
     }
+
     ${UpgradeText} {
       color: #279745;
     }

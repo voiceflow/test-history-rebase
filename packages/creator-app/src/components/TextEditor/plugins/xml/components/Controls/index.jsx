@@ -1,4 +1,4 @@
-import { Dropdown, IconButton, stopPropagation, SvgIcon, TippyTooltip } from '@voiceflow/ui';
+import { Dropdown, stopPropagation, SvgIcon, System, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import { addFakeSelection, addTag, removeFakeSelection } from '../../utils';
@@ -69,14 +69,13 @@ export default function Controls({
 
   const renderTrigger = ({ onOpenMenu, onHideMenu, isOpen }) => (
     <TippyTooltip content={addLabel} position="top" offset={[0, 0]}>
-      <IconButton
+      <System.IconButton.Base
         icon={icon}
-        variant={IconButton.Variant.BASIC}
+        size={System.IconButton.Size.S}
+        active={isOpen}
         onClick={isOpen ? onHideMenu : onOpenMenu}
-        buttonSize={32}
-        offsetSize={0}
-        transparent
-        activeClick={isOpen}
+        hoverBackground={false}
+        activeBackground={false}
       />
     </TippyTooltip>
   );

@@ -1,5 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Button, ButtonVariant, Modal } from '@voiceflow/ui';
+import { Box, Button, ButtonVariant, Modal, System } from '@voiceflow/ui';
 import React from 'react';
 
 import * as CustomBlock from '@/ducks/customBlock';
@@ -89,10 +89,13 @@ export const CustomBlocksForm: React.OldFC<CustomBlocksFormProps> = ({
         border
         sticky
         actions={
-          <div style={{ display: 'flex', gap: '28px' }}>
+          <Box.Flex>
             <Tooltip />
-            <Modal.Header.CloseButton onClick={onCancel} />
-          </div>
+
+            <System.IconButtonsGroup.Base ml={18}>
+              <Modal.Header.CloseButton onClick={onCancel} />
+            </System.IconButtonsGroup.Base>
+          </Box.Flex>
         }
       >
         {title}

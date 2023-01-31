@@ -5,8 +5,6 @@ import {
   ActionContainer,
   ActionContainerProps,
   BaseContainerProps,
-  BasicContainer,
-  BasicContainerProps,
   FlatContainer,
   FlatContainerProps,
   IconButtonContainer,
@@ -29,7 +27,6 @@ export { IconButtonContainer, IconButtonVariant };
 export type {
   ActionContainerProps as IconButtonActionContainerProps,
   BaseContainerProps as IconButtonBaseContainerProps,
-  BasicContainerProps as IconButtonBasicContainerProps,
   IconButtonContainerProps,
   FlatContainerProps as IconButtonFlatContainerProps,
   OutlineContainerProps as IconButtonOutlineContainerProps,
@@ -52,7 +49,6 @@ export type IconButtonProps = BaseIconButtonProps &
     | SuccessContainerProps
     | OutlineContainerProps
     | SquareContainerProps
-    | BasicContainerProps
   );
 
 const ICON_BUTTON_CONTAINERS = {
@@ -63,7 +59,6 @@ const ICON_BUTTON_CONTAINERS = {
   [IconButtonVariant.OUTLINE]: OutlineContainer,
   [IconButtonVariant.SUCCESS]: SuccessContainer,
   [IconButtonVariant.SQUARE]: SquareContainer,
-  [IconButtonVariant.BASIC]: BasicContainer,
 };
 
 const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
@@ -83,7 +78,6 @@ export default Object.assign(IconButton, {
 
   Container: IconButtonContainer,
   FlatContainer,
-  BasicContainer,
   SubtleContainer,
   SquareContainer,
   ActionContainer,

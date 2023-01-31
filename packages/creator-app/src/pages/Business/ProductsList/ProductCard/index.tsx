@@ -1,6 +1,6 @@
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Dropdown, IconButton, IconButtonVariant, stopPropagation, SvgIcon, TippyTooltip } from '@voiceflow/ui';
+import { Dropdown, stopPropagation, SvgIcon, System, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Product from '@/ducks/product';
@@ -59,8 +59,10 @@ const ProductCard: React.OldFC<ProductCardProps> = ({ product }) => {
       </Details>
 
       <Dropdown options={options}>
-        {(ref, onToggle, isOpen) => (
-          <IconButton icon="ellipsis" variant={IconButtonVariant.FLAT} active={isOpen} size={15} onClick={stopPropagation(onToggle)} ref={ref} />
+        {(ref, onToggle, isOpened) => (
+          <System.IconButtonsGroup.Base>
+            <System.IconButton.Base ref={ref} icon="ellipsis" active={isOpened} onClick={stopPropagation(onToggle)} />
+          </System.IconButtonsGroup.Base>
         )}
       </Dropdown>
 

@@ -94,7 +94,8 @@ export const UncontrolledModal = React.forwardRef<HTMLDivElement, React.PropsWit
                       headerActions || closable ? (
                         <>
                           {headerActions}
-                          {closable && <UIModal.Header.CloseButton onClick={onClose} />}
+
+                          {closable && <UIModal.Header.CloseButtonAction onClick={onClose} />}
                         </>
                       ) : null
                     }

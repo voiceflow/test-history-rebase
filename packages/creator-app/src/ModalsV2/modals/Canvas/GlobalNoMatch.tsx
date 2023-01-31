@@ -45,7 +45,7 @@ const GlobalNoMatchModal = manager.create('GlobalNoMatchModal', () => ({ api, ty
 
   return (
     <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} maxWidth={450}>
-      <Modal.Header actions={<Modal.Header.CloseButton disabled={closePrevented} onClick={api.close} />}>Global No Match</Modal.Header>
+      <Modal.Header actions={<Modal.Header.CloseButtonAction disabled={closePrevented} onClick={api.close} />}>Global No Match</Modal.Header>
 
       <Modal.Body>
         <PromptInput value={prompt} onChange={setPrompt} placeholder="Enter default no match response" />

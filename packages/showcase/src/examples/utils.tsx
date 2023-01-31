@@ -15,9 +15,10 @@ export interface Example {
 }
 
 export interface Section {
-  title: string;
   path: string;
-  examples: Example[];
+  title: string;
+  examples: Example[] | Example[][];
+  description?: string;
 }
 
 export const createExample = (title: string, component: React.FC<ComponentProps>, options?: ExampleOptions): Example => ({
@@ -27,3 +28,8 @@ export const createExample = (title: string, component: React.FC<ComponentProps>
 });
 
 export const createSection = (title: string, path: string, examples: Example[]): Section => ({ path, title, examples });
+
+export const configureExample = (example: Example): Example => example;
+export const configureSection = (section: Section): Section => section;
+
+export const isGroupedExamples = (examples: Example[] | Example[][]): examples is Example[][] => Array.isArray(examples[0]);

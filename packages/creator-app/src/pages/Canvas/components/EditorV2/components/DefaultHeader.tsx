@@ -1,4 +1,4 @@
-import { IconButton, SectionV2, SidebarEditor, SidebarEditorTypes } from '@voiceflow/ui';
+import { SectionV2, SidebarEditor, SidebarEditorTypes, System } from '@voiceflow/ui';
 import React from 'react';
 
 import { useEditor, useEditorDefaultActions } from '../hooks';
@@ -9,16 +9,16 @@ interface DefaultHeaderProps extends Partial<Omit<SidebarEditorTypes.HeaderProps
   actions?: SidebarEditorTypes.Action[];
 }
 
-const DefaultHeader: React.OldFC<DefaultHeaderProps> = ({ title, actions, onBack }) => {
+const DefaultHeader: React.FC<DefaultHeaderProps> = ({ title, actions, onBack }) => {
   const editor = useEditor();
   const defaultActions = useEditorDefaultActions();
 
   return (
     <SidebarEditor.Header>
       {!!onBack && (
-        <SectionV2.ActionsContainer isLeft unit={0} offsetUnit={2.75}>
-          <IconButton icon="largeArrowLeft" onClick={() => onBack()} variant={IconButton.Variant.BASIC} />
-        </SectionV2.ActionsContainer>
+        <System.IconButtonsGroup.Base mr={12}>
+          <System.IconButton.Base icon="largeArrowLeft" onClick={() => onBack()} />
+        </System.IconButtonsGroup.Base>
       )}
 
       <SidebarEditor.HeaderTitle>{title ?? editor.label}</SidebarEditor.HeaderTitle>

@@ -1,4 +1,4 @@
-import { CustomScrollbarsTypes, IconButton, TippyTooltip, useConst, usePersistFunction } from '@voiceflow/ui';
+import { CustomScrollbarsTypes, System, TippyTooltip, useConst, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 import { VariableSizeList } from 'react-window';
 
@@ -117,7 +117,7 @@ const TopicsSection: React.OldFC = () => {
               rightAction={
                 canEditCanvas && (
                   <TippyTooltip content="Create topic" delay={500}>
-                    <IconButton icon="plus" variant={IconButton.Variant.BASIC} onClick={onCreateTopic} offsetSize={0} buttonSize={34} />
+                    <System.IconButton.Base icon="plus" size={System.IconButton.Size.S} onClick={onCreateTopic} />
                   </TippyTooltip>
                 )
               }

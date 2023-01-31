@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import { Box, Button, ButtonVariant, IconButton, SectionV2, useDidUpdateEffect } from '@voiceflow/ui';
+import { Box, Button, ButtonVariant, System, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 
 import Modal, { ModalFooter } from '@/components/Modal';
@@ -12,7 +12,7 @@ import IntentForm from '../components/IntentForm';
 import EntityPromptForm from './EntityPromptForm';
 import { useCreateIntent } from './hooks';
 
-const CreateModal: React.OldFC = () => {
+const CreateModal: React.FC = () => {
   const { close, data, isInStack } = useModals<{
     id?: string;
     name?: string;
@@ -79,9 +79,9 @@ const CreateModal: React.OldFC = () => {
       title={
         <>
           {entityPromptSlotID && (
-            <SectionV2.ActionsContainer isLeft unit={0} offsetUnit={2.75}>
-              <IconButton icon="largeArrowLeft" onClick={() => onEntityPromptBack()} variant={IconButton.Variant.BASIC} />
-            </SectionV2.ActionsContainer>
+            <System.IconButtonsGroup.Base mr={12}>
+              <System.IconButton.Base icon="largeArrowLeft" onClick={() => onEntityPromptBack()} />
+            </System.IconButtonsGroup.Base>
           )}
 
           <span>Create Intent</span>

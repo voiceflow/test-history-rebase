@@ -103,7 +103,6 @@ const DomainsAndCanvasActions: React.OldFC = () => {
         <Box.Flex gap={5}>
           <Page.Header.IconButton
             icon="componentOutline"
-            isSmall
             tooltip={{
               content: <TippyTooltip.WithHotkey hotkey={HOTKEY_LABEL_MAP[Hotkey.CREATE_COMPONENT]}>Create component</TippyTooltip.WithHotkey>,
             }}
@@ -119,7 +118,6 @@ const DomainsAndCanvasActions: React.OldFC = () => {
               <Page.Header.IconButton
                 icon="librarySmall"
                 active={templatePopperIsOpen}
-                isSmall
                 tooltip={{
                   content: <TippyTooltip.WithHotkey hotkey={HOTKEY_LABEL_MAP[Hotkey.ADD_TO_LIBRARY]}>Add to library</TippyTooltip.WithHotkey>,
                 }}
@@ -130,7 +128,6 @@ const DomainsAndCanvasActions: React.OldFC = () => {
 
           <Page.Header.IconButton
             icon="copy"
-            isSmall
             tooltip={{
               content: <TippyTooltip.WithHotkey hotkey={HOTKEY_LABEL_MAP[Hotkey.COPY]}>Copy</TippyTooltip.WithHotkey>,
             }}

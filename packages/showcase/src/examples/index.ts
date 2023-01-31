@@ -19,6 +19,7 @@ export { default as preview } from './Preview';
 export { default as progressBar } from './ProgressBar';
 export { default as sectionV2 } from './SectionV2';
 export { default as svgIcon } from './SvgIcon';
+export * from './system';
 export { default as tabs } from './Tabs';
 export { default as tippyTooltip } from './TippyTooltip';
 export { default as toggle } from './Toggle';

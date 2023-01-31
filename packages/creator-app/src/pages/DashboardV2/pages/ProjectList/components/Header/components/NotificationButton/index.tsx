@@ -34,9 +34,7 @@ const NotificationButton: React.OldFC = () => {
           <Page.Header.IconButton
             ref={ref}
             icon="notificationsOutline"
-            size={16}
             active={isOpened}
-            isSmall
             onClick={Utils.functional.chainVoid(onToggle, readNotifications)}
             tooltip={{
               content: 'Notifications',

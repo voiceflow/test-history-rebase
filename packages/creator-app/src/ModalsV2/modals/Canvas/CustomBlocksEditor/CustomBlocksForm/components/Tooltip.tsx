@@ -4,7 +4,7 @@ import React from 'react';
 import { CUSTOM_BLOCK_EDITOR } from '@/config/documentation';
 import { onOpenInternalURLInANewTabFactory } from '@/utils/window';
 
-export const Tooltip: React.OldFC = () => (
+export const Tooltip: React.FC = () => (
   <TippyTooltip
     width={232}
     placement="top"

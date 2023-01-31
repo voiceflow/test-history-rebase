@@ -12,11 +12,19 @@ interface LogoButtonProps {
   withBorder?: boolean;
 }
 
-const LogoButton: React.OldFC<LogoButtonProps> = ({ options, expandable = true, noMargins = false, withBorder = true, style }) => (
+const LogoButton: React.FC<LogoButtonProps> = ({ options, expandable = true, noMargins = false, withBorder = true, style }) => (
   <Box.Flex mr={noMargins ? 0 : 16} height="100%" style={style}>
     <Dropdown options={options} offset={{ offset: [16, 6] }} menuWidth={240} maxVisibleItems={options.length}>
       {(ref, onToggle, isOpened) => (
-        <S.StyledLogoButton ref={ref} onClick={onToggle} active={isOpened} expandable={expandable} withBorder={withBorder} />
+        <S.StyledLogoButton
+          ref={ref}
+          icon="voiceflowV"
+          active={isOpened}
+          onClick={onToggle}
+          iconProps={{ color: '#000', size: 26 }}
+          expandable={expandable}
+          withBorder={withBorder}
+        />
       )}
     </Dropdown>
   </Box.Flex>

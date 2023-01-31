@@ -1,5 +1,4 @@
-/* eslint-disable sonarjs/no-identical-functions */
-import { BaseIconButtonProps, Box, IconButton, IconButtonOutlineContainerProps, IconButtonVariant } from '@voiceflow/ui';
+import { Box, System } from '@voiceflow/ui';
 
 import { css, styled, transition } from '@/hocs/styled';
 import { ClassName } from '@/styles/constants';
@@ -13,19 +12,11 @@ export const Container = styled(Box.Flex)`
   }
 `;
 
-export interface ButtonProps extends BaseIconButtonProps, IconButtonOutlineContainerProps {
-  isSmall?: boolean;
+export interface ButtonProps extends System.IconButton.I.Props {
   withBadge?: boolean;
 }
 
-const SMALL_BUTTON_SIZE = 42;
-
-export const Button = styled(IconButton).attrs({ variant: IconButtonVariant.OUTLINE, preventFocusStyle: true })<ButtonProps>`
-  width: ${({ theme, isSmall }) => (isSmall ? SMALL_BUTTON_SIZE : theme.components.page.header.height)}px;
-  height: ${({ isSmall }) => (isSmall ? `${SMALL_BUTTON_SIZE}px` : '100%')};
-  border: none !important;
-  border-radius: ${({ isSmall }) => (isSmall ? 6 : 0)}px;
-
+export const Button = styled(System.IconButton.Base)<ButtonProps>`
   ${({ onClick }) =>
     !onClick &&
     css`

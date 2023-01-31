@@ -226,16 +226,16 @@ class DiagramService extends AbstractControl {
     await this.models.diagram.removeManyNodes(diagramID, nodes);
   }
 
-  public async addByKeyLink(diagramID: string, nodeID: string, key: string, target: string): Promise<void> {
-    await this.models.diagram.addByKeyLink(diagramID, nodeID, key, target);
+  public async addByKeyLink(diagramID: string, nodeID: string, key: string, target: string, data?: Realtime.LinkData): Promise<void> {
+    await this.models.diagram.addByKeyLink(diagramID, nodeID, key, target, data);
   }
 
-  public async addBuiltInLink(diagramID: string, nodeID: string, type: BaseModels.PortType, target: string): Promise<void> {
-    await this.models.diagram.addBuiltInLink(diagramID, nodeID, type, target);
+  public async addBuiltInLink(diagramID: string, nodeID: string, type: BaseModels.PortType, target: string, data?: Realtime.LinkData): Promise<void> {
+    await this.models.diagram.addBuiltInLink(diagramID, nodeID, type, target, data);
   }
 
-  public async addDynamicLink(diagramID: string, nodeID: string, portID: string, target: string): Promise<void> {
-    await this.models.diagram.addDynamicLink(diagramID, nodeID, portID, target);
+  public async addDynamicLink(diagramID: string, nodeID: string, portID: string, target: string, data?: Realtime.LinkData): Promise<void> {
+    await this.models.diagram.addDynamicLink(diagramID, nodeID, portID, target, data);
   }
 
   public async removeManyLinks(diagramID: string, links: Realtime.LinkDelete[]): Promise<void> {

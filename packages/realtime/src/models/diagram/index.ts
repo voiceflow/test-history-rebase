@@ -347,24 +347,24 @@ class DiagramModel extends AbstractModel<DBDiagramModel, BaseModels.Diagram.Mode
     await this.atomicUpdateByID(diagramID, [this.atomicNodeData.push(nodeID, [{ path, value: item, index }])]);
   }
 
-  async addByKeyLink(diagramID: string, nodeID: string, key: string, target: string) {
+  async addByKeyLink(diagramID: string, nodeID: string, key: string, target: string, data: BaseModels.LinkData = {}) {
     await this.patchNodeData(diagramID, nodeID, [
       { path: DiagramModel.byKeyPortPath(key, 'target'), value: target },
-      { path: DiagramModel.byKeyPortPath(key, 'data'), value: {} },
+      { path: DiagramModel.byKeyPortPath(key, 'data'), value: data },
     ]);
   }
 
-  async addBuiltInLink(diagramID: string, nodeID: string, type: BaseModels.PortType, target: string) {
+  async addBuiltInLink(diagramID: string, nodeID: string, type: BaseModels.PortType, target: string, data: BaseModels.LinkData = {}) {
     await this.patchNodeData(diagramID, nodeID, [
       { path: DiagramModel.builtInPortPath(type, 'target'), value: target },
-      { path: DiagramModel.builtInPortPath(type, 'data'), value: {} },
+      { path: DiagramModel.builtInPortPath(type, 'data'), value: data },
     ]);
   }
 
-  async addDynamicLink(diagramID: string, nodeID: string, portID: string, target: string) {
+  async addDynamicLink(diagramID: string, nodeID: string, portID: string, target: string, data: BaseModels.LinkData = {}) {
     await this.patchNodeData(diagramID, nodeID, [
       { path: DiagramModel.dynamicPortPath(portID, 'target'), value: target },
-      { path: DiagramModel.dynamicPortPath(portID, 'data'), value: {} },
+      { path: DiagramModel.dynamicPortPath(portID, 'data'), value: data },
     ]);
   }
 

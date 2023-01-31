@@ -423,6 +423,10 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
     }
   ): void {
     if (options?.isSelection) {
+      if (this.focus.hasTarget) {
+        this.focus.reset();
+      }
+
       this.selection.toggle(nodeID);
     } else {
       this.focus.set(nodeID);

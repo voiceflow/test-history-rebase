@@ -237,6 +237,7 @@ export interface ByKeyLinkPatch {
   type?: never;
   key: string;
   data: Struct;
+  target?: string;
 }
 
 export interface BuiltInLinkPatch {
@@ -245,6 +246,7 @@ export interface BuiltInLinkPatch {
   type: BaseModels.PortType;
   key?: never;
   data: Struct;
+  target?: string;
 }
 
 export interface DynamicLinkPatch {
@@ -253,6 +255,7 @@ export interface DynamicLinkPatch {
   type?: never;
   key?: never;
   data: Struct;
+  target?: string;
 }
 
 export type LinkPatch = ByKeyLinkPatch | BuiltInLinkPatch | DynamicLinkPatch;

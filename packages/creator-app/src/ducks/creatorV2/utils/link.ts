@@ -7,7 +7,7 @@ import { CreatorState } from '../types';
 
 export const addLink = (
   state: Draft<CreatorState>,
-  { sourceNodeID, sourcePortID, targetNodeID, targetPortID, linkID }: Realtime.link.AddDynamicPayload
+  { sourceNodeID, sourcePortID, targetNodeID, targetPortID, linkID, data }: Realtime.link.AddDynamicPayload
 ): void => {
   if (Normal.hasOne(state.links, linkID)) return;
   if (!Normal.hasMany(state.nodes, [sourceNodeID, targetNodeID])) return;
@@ -30,6 +30,7 @@ export const addLink = (
 
   state.links = Normal.appendOne(state.links, linkID, {
     id: linkID,
+    data,
     source: {
       nodeID: sourceNodeID,
       portID: sourcePortID,

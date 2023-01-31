@@ -4,7 +4,15 @@ import * as Project from '@/ducks/projectV2';
 import { createReverter } from '@/ducks/utils';
 import * as Version from '@/ducks/versionV2';
 
-import { allPortsByIDsSelector, linksByNodeIDSelector, nodeByIDSelector, nodeDataByIDSelector, portsByNodeIDSelector } from '../selectors';
+import {
+  allPortsByIDsSelector,
+  builtInPortTypeSelector,
+  byKeyPortKeySelector,
+  linksByNodeIDSelector,
+  nodeByIDSelector,
+  nodeDataByIDSelector,
+  portsByNodeIDSelector,
+} from '../selectors';
 import { removeManyNodes } from '../utils';
 import { createActiveDiagramReducer, createDiagramInvalidator, createNodeRemovalInvalidators, DIAGRAM_INVALIDATORS } from './utils';
 
@@ -22,6 +30,7 @@ export const removeManyNodesReverter = createReverter(
   ({ workspaceID, projectID, versionID, domainID, diagramID, nodes }, getState) => {
     const state = getState();
     const projectMeta = Project.active.metaSelector(state);
+    const schemaVersion = Version.active.schemaVersionSelector(state);
     const nodeIDs = nodes.map<string>((node) => node.stepID ?? node.parentNodeID);
     const nodesWithData = nodeIDs.flatMap((nodeID) => {
       const node = nodeByIDSelector(state, { id: nodeID });
@@ -30,19 +39,80 @@ export const removeManyNodesReverter = createReverter(
 
       return [{ node, data }];
     });
-    const portsIDs = nodeIDs.flatMap((nodeID) => Realtime.Utils.port.flattenAllPorts(portsByNodeIDSelector(state, { id: nodeID })));
-    const ports = allPortsByIDsSelector(state, { ids: portsIDs });
-    const schemaVersion = Version.active.schemaVersionSelector(state);
-    const links = nodeIDs.flatMap((nodeID) => linksByNodeIDSelector(state, { id: nodeID }));
 
     if (!nodesWithData.length) return null;
 
-    return Realtime.creator.importSnapshot({
+    const actionContext = {
       workspaceID,
       projectID,
       versionID,
       domainID,
       diagramID,
+    };
+
+    const firstNodeData = nodesWithData[0];
+    if (nodesWithData.length === 1 && firstNodeData.node.parentNode) {
+      const parentNode = nodeByIDSelector(state, { id: firstNodeData.node.parentNode });
+
+      if (!parentNode) return null;
+
+      const index = parentNode.combinedNodes.indexOf(firstNodeData.node.id);
+
+      if (index === -1) return null;
+
+      const ports = portsByNodeIDSelector(state, { id: firstNodeData.node.id });
+      const links = linksByNodeIDSelector(state, { id: firstNodeData.node.id });
+
+      return [
+        Realtime.node.insertStep({
+          ...actionContext,
+          projectMeta,
+          schemaVersion,
+          index,
+          parentNodeID: firstNodeData.node.parentNode,
+          stepID: firstNodeData.node.id,
+          data: firstNodeData.data,
+          ports: {
+            in: ports.in.map((port) => ({ id: port })),
+            out: {
+              byKey: Object.fromEntries(Object.entries(ports.out.byKey).map(([key, port]) => [key, { id: port }])),
+              builtIn: Object.fromEntries(Object.entries(ports.out.builtIn).map(([key, port]) => [key, { id: port }])),
+              dynamic: ports.out.dynamic.map((port) => ({ id: port })),
+            },
+          },
+          nodePortRemaps: [],
+        }),
+
+        ...links.map((link) => {
+          const portKey = byKeyPortKeySelector(state, { id: link.source.portID });
+          const portType = builtInPortTypeSelector(state, { id: link.source.portID });
+
+          const context = {
+            ...actionContext,
+            sourceParentNodeID: parentNode.id,
+            sourceNodeID: link.source.nodeID,
+            sourcePortID: link.source.portID,
+            targetNodeID: link.target.nodeID,
+            targetPortID: link.target.portID,
+            data: link.data,
+            linkID: link.id,
+          };
+
+          if (portKey) return Realtime.link.addByKey({ ...context, key: portKey });
+
+          if (portType) return Realtime.link.addBuiltin({ ...context, type: portType });
+
+          return Realtime.link.addDynamic(context);
+        }),
+      ];
+    }
+
+    const portsIDs = nodeIDs.flatMap((nodeID) => Realtime.Utils.port.flattenAllPorts(portsByNodeIDSelector(state, { id: nodeID })));
+    const ports = allPortsByIDsSelector(state, { ids: portsIDs });
+    const links = nodeIDs.flatMap((nodeID) => linksByNodeIDSelector(state, { id: nodeID }));
+
+    return Realtime.creator.importSnapshot({
+      ...actionContext,
       links,
       ports,
       projectMeta,

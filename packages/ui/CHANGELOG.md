@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.230.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.229.0...@voiceflow/ui@1.230.0) (2023-01-31)
+
+
+### Features
+
+* add system icon button (CT-1477) ([#6644](https://github.com/voiceflow/creator-app/issues/6644)) ([392ce4a](https://github.com/voiceflow/creator-app/commit/392ce4a62f87efbc4d7c0f9dee11ee5b448db674))
+
+
+
+
+
 # [1.229.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.228.1...@voiceflow/ui@1.229.0) (2023-01-30)
 
 

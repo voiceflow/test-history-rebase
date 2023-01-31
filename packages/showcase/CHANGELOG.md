@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.48.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/showcase@1.47.6...@voiceflow/showcase@1.48.0) (2023-01-31)
+
+
+### Features
+
+* add system icon button (CT-1477) ([#6644](https://github.com/voiceflow/creator-app/issues/6644)) ([392ce4a](https://github.com/voiceflow/creator-app/commit/392ce4a62f87efbc4d7c0f9dee11ee5b448db674))
+
+
+
+
+
 ## [1.47.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/showcase@1.47.5...@voiceflow/showcase@1.47.6) (2023-01-30)
 
 **Note:** Version bump only for package @voiceflow/showcase

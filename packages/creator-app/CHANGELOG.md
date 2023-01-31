@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1074.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1074.0...@voiceflow/creator-app@1.1074.1) (2023-01-31)
+
+
+### Bug Fixes
+
+* alphabetical domain ordering (CT-000) ([#6643](https://github.com/voiceflow/creator-app/issues/6643)) ([769b0ad](https://github.com/voiceflow/creator-app/commit/769b0ad7ce7d796dc0a9b3efae608060a812aa53))
+
+
+
+
+
 # [1.1074.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1073.0...@voiceflow/creator-app@1.1074.0) (2023-01-30)
 
 

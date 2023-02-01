@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.155.15](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.155.14...@voiceflow/realtime@1.155.15) (2023-02-01)
+
+
+### Bug Fixes
+
+* logo button styling (CT-000) ([#6648](https://github.com/voiceflow/creator-app/issues/6648)) ([f4bfea7](https://github.com/voiceflow/creator-app/commit/f4bfea72a23c9e32d127e5cb03f6424bf37d71b8))
+
+
+
+
+
 ## [1.155.14](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.155.13...@voiceflow/realtime@1.155.14) (2023-02-01)
 
 **Note:** Version bump only for package @voiceflow/realtime

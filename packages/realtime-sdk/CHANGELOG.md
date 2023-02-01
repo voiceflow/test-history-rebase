@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.231.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.230.2...@voiceflow/realtime-sdk@1.231.0) (2023-02-01)
+
+
+### Features
+
+* disable ws keys creation behind feature flag (PL-423) ([#6645](https://github.com/voiceflow/creator-app/issues/6645)) ([f2f4bdd](https://github.com/voiceflow/creator-app/commit/f2f4bddf05731bc11cfe15260f929f829d144b0a))
+
+
+
+
+
 ## [1.230.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.230.1...@voiceflow/realtime-sdk@1.230.2) (2023-02-01)
 
 

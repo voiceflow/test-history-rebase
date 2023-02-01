@@ -28,7 +28,7 @@ export const importUnclassifiedData =
       utterances: utterances.map((u) => ({
         id: Utils.id.cuid.slug(),
         utterance: u,
-        sourceID: dataSourceID,
+        sourceID: creatorID.toString(),
         importedAt,
         datasourceID: dataSourceID,
         datasourceName,
@@ -62,6 +62,17 @@ export const deleteUtterances =
   async (dispatch, getState) => {
     await dispatch.sync(
       Realtime.nlu.removeManyUtterances({
+        ...getActiveVersionContext(getState()),
+        utterances,
+      })
+    );
+  };
+
+export const updateUtterances =
+  (utterances: Realtime.NLUUnclassifiedUtterances[]): Thunk =>
+  async (dispatch, getState) => {
+    await dispatch.sync(
+      Realtime.nlu.updateManyUtterances({
         ...getActiveVersionContext(getState()),
         utterances,
       })

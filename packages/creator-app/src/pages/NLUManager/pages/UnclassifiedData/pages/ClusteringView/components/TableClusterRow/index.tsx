@@ -1,7 +1,11 @@
-import { Box, CheckboxMultiple, Divider, FlexStart, stopPropagation, SvgIcon, Text } from '@voiceflow/ui';
+import { Box, CheckboxMultiple, Divider, FlexStart, Link, stopPropagation, SvgIcon, Text, toast } from '@voiceflow/ui';
 import React from 'react';
 
+import * as NLUDuck from '@/ducks/nlu';
+import { useSelector } from '@/hooks';
+import * as ModalsV2 from '@/ModalsV2';
 import { AssignToIntentButton, AssignToIntentDropdown } from '@/pages/NLUManager/components';
+import { useNLUManager } from '@/pages/NLUManager/context';
 import * as UnclassifiedTable from '@/pages/NLUManager/pages/UnclassifiedData/components/Table';
 
 import * as S from './styles';
@@ -15,7 +19,20 @@ interface TableClusterRowProps {
 }
 
 const TableClusterRow: React.OldFC<TableClusterRowProps> = ({ utterance, utteranceIDs, utteranceCount, isActive, onSelect }) => {
+  const nluManager = useNLUManager();
   const [menuOpened, setMenuOpened] = React.useState(false);
+  const utterancesByID = useSelector(NLUDuck.utterancesByID);
+  const manageClusterModal = ModalsV2.useModal(ModalsV2.NLU.Unclassified.ManageClusterData);
+
+  const handleDelete = async () => {
+    const utterances = utteranceIDs.map((id) => utterancesByID[id]);
+    await nluManager.deleteUnclassifiedUtterances(utterances);
+    toast.success(`Deleted ${utterances.length} utterances`);
+  };
+
+  const openClusterModal = () => {
+    manageClusterModal.openVoid({ utteranceIDs });
+  };
 
   return (
     <>
@@ -33,10 +50,8 @@ const TableClusterRow: React.OldFC<TableClusterRowProps> = ({ utterance, utteran
                 </Text>
               </S.ClusterCountBox>
             </Box>
-            <Box>
-              <Text fontSize={13} color="#3D82E2">
-                View and manage cluster data
-              </Text>
+            <Box fontSize={13}>
+              <Link onClick={stopPropagation(openClusterModal)}>View and manage cluster data</Link>
             </Box>
           </Box>
         </FlexStart>
@@ -50,8 +65,7 @@ const TableClusterRow: React.OldFC<TableClusterRowProps> = ({ utterance, utteran
           <Box ml={26} mr={24} onClick={stopPropagation(() => {})}>
             <SvgIcon icon="copy" color="#6E849A" size={16} clickable />
           </Box>
-          {/* TO DO: create delete behavior */}
-          <SvgIcon icon="trash" color="#6E849A" size={16} onClick={stopPropagation(() => {})} />
+          <SvgIcon icon="trash" color="#6E849A" size={16} onClick={stopPropagation(handleDelete)} clickable />
         </UnclassifiedTable.RowButtons>
       </UnclassifiedTable.Row>
       <Divider offset={0} isSecondaryColor />

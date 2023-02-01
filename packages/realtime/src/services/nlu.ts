@@ -15,24 +15,39 @@ class NluService extends AbstractControl {
     await this.models.version.nluUnclassifiedData.delete(versionID, datasourceKey);
   }
 
-  public async removeManyUtterances(versionID: string, utterances: Realtime.NLUUnclassifiedUtterances[]) {
-    const updates = Object.entries(
+  private mapUtterancesUpdates(utterances: Realtime.NLUUnclassifiedUtterances[]) {
+    return Object.entries(
       utterances.reduce((acc, utterance) => {
         const datasource = acc[utterance.datasourceID];
 
         return {
           ...acc,
-          [utterance.datasourceID]: datasource ? [...datasource, utterance.id] : [utterance.id],
+          [utterance.datasourceID]: datasource ? [...datasource, utterance] : [utterance],
         };
-      }, {} as Record<string, string[]>)
-    ).map(([datasourceKey, utteranceIDs]) => ({ datasourceKey, utteranceIDs }));
+      }, {} as Record<string, Realtime.NLUUnclassifiedUtterances[]>)
+    ).map(([datasourceKey, utterances]) => ({ datasourceKey, utterances }));
+  }
 
-    // TODO: adds support for removing many utterances from many datasources
-    // await this.models.version.nluUnclassifiedData.removeManyUtterances(versionID, updates);
+  public async updateManyUtterances(versionID: string, utterances: Realtime.NLUUnclassifiedUtterances[]) {
+    const updates = this.mapUtterancesUpdates(utterances);
 
     return Promise.all(
       updates.map((update) =>
-        this.models.version.nluUnclassifiedData.removeManyUtterancesFromDatasource(versionID, update.datasourceKey, update.utteranceIDs)
+        this.models.version.nluUnclassifiedData.updateManyUtterancesFromDatasource(versionID, update.datasourceKey, update.utterances)
+      )
+    );
+  }
+
+  public async removeManyUtterances(versionID: string, utterances: Realtime.NLUUnclassifiedUtterances[]) {
+    const updates = this.mapUtterancesUpdates(utterances);
+
+    return Promise.all(
+      updates.map((update) =>
+        this.models.version.nluUnclassifiedData.removeManyUtterancesFromDatasource(
+          versionID,
+          update.datasourceKey,
+          update.utterances.map((u) => u.id)
+        )
       )
     );
   }

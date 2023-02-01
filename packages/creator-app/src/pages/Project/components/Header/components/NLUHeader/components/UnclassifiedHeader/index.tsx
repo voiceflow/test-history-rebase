@@ -1,13 +1,14 @@
-import { Box, FlexCenter, SvgIcon, Switcher } from '@voiceflow/ui';
+import { Box, FlexCenter, Tabs } from '@voiceflow/ui';
 import React from 'react';
 
 import { useHotKeys } from '@/hooks';
 import { Hotkey } from '@/keymap';
-import { UnclassifiedTabItems, UnclassifiedTabs } from '@/pages/NLUManager/constants';
+import { UnclassifiedTabs } from '@/pages/NLUManager/constants';
 import { NLUManagerContext } from '@/pages/NLUManager/context';
 
 import { Container } from '../../styles';
 import NLUSearch from '../Search';
+import { FilterMenu } from './components';
 import * as S from './styles';
 
 const UnclassifiedHeader: React.OldFC = () => {
@@ -36,16 +37,14 @@ const UnclassifiedHeader: React.OldFC = () => {
 
         <FlexCenter>
           <S.QueryIconContainer>
-            <SvgIcon icon="query" size={16} onClick={() => {}} clickable color={SvgIcon.DEFAULT_COLOR} />
+            <FilterMenu />
           </S.QueryIconContainer>
 
-          <Box ml={14}>
-            <Switcher
-              value={nluManager.selectedUnclassifiedTab}
-              items={UnclassifiedTabItems}
-              onChange={(value) => nluManager.changeUnclassifiedPageTab(value as UnclassifiedTabs)}
-              isLoading={nluManager.isClusteringUnclassifiedData}
-            />
+          <Box ml={14} width={250} position="relative">
+            <Tabs value={nluManager.selectedUnclassifiedTab} onChange={nluManager.changeUnclassifiedPageTab}>
+              <Tabs.Tab value={UnclassifiedTabs.UNCLASSIFIED_VIEW}>Raw</Tabs.Tab>
+              <Tabs.Tab value={UnclassifiedTabs.CLUSTERING_VIEW}>{nluManager.isClusteringUnclassifiedData ? <S.TabLoader /> : 'Clustered'}</Tabs.Tab>
+            </Tabs>
           </Box>
         </FlexCenter>
       </Container>

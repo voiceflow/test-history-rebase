@@ -1,3 +1,5 @@
+import { LoadCircle } from '@voiceflow/ui';
+
 import { styled } from '@/hocs/styled';
 
 export const ShadowBox = styled.div`
@@ -15,4 +17,11 @@ export const QueryIconContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+`;
+
+export const TabLoader = styled(LoadCircle)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 25px;
 `;

@@ -1,5 +1,9 @@
+import { Utils } from '@voiceflow/common';
+import { toast } from '@voiceflow/ui';
 import React from 'react';
 
+import * as NLUDuck from '@/ducks/nlu';
+import { useSelector } from '@/hooks';
 import AssignToIntentDropdown from '@/pages/NLUManager/components/AssignToIntentDropdown';
 import TableToolbar from '@/pages/NLUManager/components/TableToolbar';
 import { useNLUManager } from '@/pages/NLUManager/context';
@@ -10,19 +14,27 @@ interface TableNavbarProps {
 
 const TableNavbar: React.OldFC<TableNavbarProps> = ({ showFindSimilarButton }) => {
   const nluManager = useNLUManager();
-  const selectedUtterances = React.useMemo(() => {
-    const clusterUtterancesCount = Array.from(nluManager.selectedClusterIDs).reduce((acc, clusterID) => {
-      const cluster = nluManager.unclassifiedDataClusters.find((c) => c.id === clusterID);
+  const utterancesByID = useSelector(NLUDuck.utterancesByID);
 
-      if (!cluster) return acc;
+  const selectedUtteranceIDs = React.useMemo(() => {
+    const unclassifiedDataClustersMap = Utils.array.createMap(nluManager.unclassifiedDataClusters, ({ id }) => id);
 
-      return acc + cluster.utteranceIDs.length;
-    }, 0);
+    const clusterUtterances = Array.from(nluManager.selectedClusterIDs).reduce<string[]>((acc, clusterID) => {
+      const cluster = unclassifiedDataClustersMap[clusterID];
 
-    return clusterUtterancesCount + nluManager.selectedUnclassifiedUtteranceIDs.size;
+      return !cluster ? acc : [...acc, ...cluster.utteranceIDs];
+    }, []);
+
+    return Utils.array.unique([...clusterUtterances, ...nluManager.selectedUnclassifiedUtteranceIDs]);
   }, [nluManager.selectedClusterIDs, nluManager.selectedUnclassifiedUtteranceIDs, nluManager.unclassifiedDataClusters]);
 
-  const utteranceIDs = React.useMemo(() => Array.from(nluManager.selectedUnclassifiedUtteranceIDs), [nluManager.selectedUnclassifiedUtteranceIDs]);
+  const selectedUtterances = selectedUtteranceIDs.length;
+
+  const handleDelete = async () => {
+    const utterances = selectedUtteranceIDs.map((id) => utterancesByID[id]);
+    await nluManager.deleteUnclassifiedUtterances(utterances);
+    toast.success(`Deleted ${utterances.length} utterances`);
+  };
 
   return (
     <TableToolbar width={641} isOpen={selectedUtterances >= 2} bottom={77}>
@@ -32,7 +44,7 @@ const TableNavbar: React.OldFC<TableNavbarProps> = ({ showFindSimilarButton }) =
       </TableToolbar.LeftActions>
 
       <TableToolbar.Actions>
-        <TableToolbar.Icon icon="trash" />
+        <TableToolbar.Icon icon="trash" onClick={handleDelete} />
         {showFindSimilarButton && (
           <TableToolbar.SecondaryButton onClick={nluManager.findSimilar}>
             {nluManager.isFindingSimilar ? 'Cancel' : 'Find'} Similar
@@ -40,7 +52,7 @@ const TableNavbar: React.OldFC<TableNavbarProps> = ({ showFindSimilarButton }) =
         )}
 
         <AssignToIntentDropdown
-          utteranceIDs={utteranceIDs}
+          utteranceIDs={selectedUtteranceIDs}
           renderTrigger={({ onClick }) => <TableToolbar.PrimaryButton onClick={onClick}>Assign to Intent</TableToolbar.PrimaryButton>}
         />
       </TableToolbar.Actions>

@@ -16,8 +16,14 @@ export interface RemoveManyUtterancesPayload extends BaseNLUUnclassifiedDataPayl
   utterances: NLUUnclassifiedUtterances[];
 }
 
+export interface UpdateManyUtterancesPayload extends BaseNLUUnclassifiedDataPayload {
+  utterances: NLUUnclassifiedUtterances[];
+}
+
 export const crud = createCRUDActions<NLUUnclassifiedData, BaseNLUUnclassifiedDataPayload>(nluType);
 
 export const reload = Utils.protocol.createAction<ReloadPayload>(nluType('RELOAD'));
 
 export const removeManyUtterances = Utils.protocol.createAction<RemoveManyUtterancesPayload>(nluType('REMOVE_MANY_UTTERANCES'));
+
+export const updateManyUtterances = Utils.protocol.createAction<RemoveManyUtterancesPayload>(nluType('UPDATE_MANY_UTTERANCES'));

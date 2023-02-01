@@ -582,6 +582,28 @@ function Select({
                       )}
                     </>
                   )}
+
+                  {inputVariant === SelectInputVariant.SELECTED && (
+                    <>
+                      <SearchInput
+                        {...inputProps}
+                        ref={inputRef}
+                        type="search"
+                        value={
+                          selectedOptions &&
+                          selectedOptions
+                            .map((option) => option && getOptionLabel(option))
+                            .filter(Boolean)
+                            .join(', ')
+                        }
+                        ellipsis
+                        onChange={() => null}
+                        autoComplete="off"
+                      />
+
+                      <SearchInputIcon icon={caretIcon} color="#6e849a" size={8} onClick={onIconClick} />
+                    </>
+                  )}
                 </>
               </Flex>
             )}

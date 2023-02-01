@@ -10,9 +10,9 @@ import { useDispatch, useSelector } from '@/hooks';
 import useUnclassifiedFindSimilar from '@/pages/NLUManager/hooks/useUnclassifiedFindSimilar';
 import useUtteranceClustering from '@/pages/NLUManager/hooks/useUtteranceClustering';
 import { ListOrder } from '@/pages/NLUManager/pages/UnclassifiedData/constants';
-import { UnclassifiedDataCluster } from '@/pages/NLUManager/pages/UnclassifiedData/types';
+import { DateRangeTypes, UnclassifiedDataCluster, UnclassifiedViewFilters } from '@/pages/NLUManager/pages/UnclassifiedData/types';
 import { mapClusteringData } from '@/pages/NLUManager/pages/UnclassifiedData/utils';
-import { getUnclassifiedDataMaxRange } from '@/pages/NLUManager/utils';
+import { getUnclassifiedDataMaxRange, searchUtterances } from '@/pages/NLUManager/utils';
 
 import { UnclassifiedTabs } from '../constants';
 import useTable from '../hooks/useTable';
@@ -48,6 +48,9 @@ export const UNCLASSIFIED_DATA_INTIAL_STATE = {
   isClusteringDataLoading: false,
   assignUnclassifiedUtterancesToIntent: async () => {},
   deleteUnclassifiedUtterances: async () => {},
+  updateUnclassifiedUtterances: async () => {},
+  unclassifiedDataFilters: { dateRange: DateRangeTypes.ALL_TIME, dataSourceIDs: [] } as UnclassifiedViewFilters,
+  setUnclassifiedDataFilters: Utils.functional.noop,
 };
 
 interface UseNLUEntitiesProps {
@@ -55,10 +58,6 @@ interface UseNLUEntitiesProps {
   search: string;
   scrollToTop: () => void;
 }
-
-const searchUtterances = (utterances: Realtime.NLUUnclassifiedUtterances[], search: string) => {
-  return utterances.filter(({ utterance }) => utterance.toLowerCase().includes(search));
-};
 
 const useNLUUnclassifiedData = ({ activeItemID, search, scrollToTop }: UseNLUEntitiesProps) => {
   const [unclassifiedListOrder, updateUnclassifiedListOrder] = React.useState<ListOrder>(UNCLASSIFIED_DATA_INTIAL_STATE.unclassifiedListOrder);
@@ -72,6 +71,10 @@ const useNLUUnclassifiedData = ({ activeItemID, search, scrollToTop }: UseNLUEnt
   const [clusteredUtterances, setClusteredUtterances] = React.useState<Record<string, string>>({});
   const assignUnclassifiedUtterancesToIntent = useDispatch(NLUDuck.assignUtterancesToIntent);
   const deleteUnclassifiedUtterances = useDispatch(NLUDuck.deleteUtterances);
+  const updateUnclassifiedUtterances = useDispatch(NLUDuck.updateUtterances);
+  const [unclassifiedDataFilters, setUnclassifiedDataFilters] = React.useState<UnclassifiedViewFilters>(
+    UNCLASSIFIED_DATA_INTIAL_STATE.unclassifiedDataFilters
+  );
 
   const { findSimilarUtterances, similarityScores, setSimilarityScores } = useUnclassifiedFindSimilar();
   const [isFindingSimilar, setIsFindingSimilar] = React.useState(UNCLASSIFIED_DATA_INTIAL_STATE.isFindingSimilar);
@@ -126,14 +129,16 @@ const useNLUUnclassifiedData = ({ activeItemID, search, scrollToTop }: UseNLUEnt
 
   const changeUnclassifiedPageTab = async (tab: UnclassifiedTabs) => {
     setIsUnclassifiedDataLoading(true);
+    setSelectedUnclassifiedTab(tab);
 
     if (tab === UnclassifiedTabs.CLUSTERING_VIEW) {
       await clusterUnclassifiedData();
     } else {
       setClusteredUtterances({} as any);
+      setIsClusteringUnclassifiedData(false);
+      PageProgress.stop(PageProgressBar.NLU_CLUSTERING);
     }
 
-    setSelectedUnclassifiedTab(tab);
     scrollToTop();
     resetSelectedUnclassifiedData();
 
@@ -144,7 +149,7 @@ const useNLUUnclassifiedData = ({ activeItemID, search, scrollToTop }: UseNLUEnt
     const unclusteredUtterances = utterances.filter((u) =>
       u.id ? !clusteredUtterances[u.id] && !similarCluster?.utteranceIDs.includes(u.id) : true
     );
-    const utterancesToSort = search ? searchUtterances(unclusteredUtterances, search) : unclusteredUtterances;
+    const utterancesToSort = searchUtterances(unclusteredUtterances, search, unclassifiedDataFilters);
 
     const sortedUtterances = utterancesToSort
       .sort(
@@ -240,6 +245,25 @@ const useNLUUnclassifiedData = ({ activeItemID, search, scrollToTop }: UseNLUEnt
     }
   };
 
+  const resetClusters = () => {
+    const allUtteranceIDsSet = new Set(Object.keys(utterancesByID));
+    const clusters = unclassifiedDataClusters
+      .map((c) => ({ ...c, utteranceIDs: c.utteranceIDs.filter((id) => allUtteranceIDsSet.has(id)) }))
+      .filter((c) => c.utteranceIDs.length > 0);
+
+    const updatedClusteredUtterances = Object.entries(clusteredUtterances).reduce<Record<string, string>>(
+      (acc, [id, intentID]) => (!allUtteranceIDsSet.has(id) ? acc : { ...acc, [id]: intentID }),
+      {}
+    );
+
+    setUnclassifiedDataClusters(clusters);
+    setClusteredUtterances(updatedClusteredUtterances);
+
+    if (clusters.length === 0) {
+      setSelectedUnclassifiedTab(UnclassifiedTabs.UNCLASSIFIED_VIEW);
+    }
+  };
+
   React.useEffect(() => {
     const maxRange = getUnclassifiedDataMaxRange(unclassifiedDataPage);
     handleDataChange(maxRange);
@@ -248,13 +272,25 @@ const useNLUUnclassifiedData = ({ activeItemID, search, scrollToTop }: UseNLUEnt
   React.useEffect(() => {
     const maxRange = getUnclassifiedDataMaxRange(unclassifiedDataPage);
     setFilteredUtterances(filterUtterances(maxRange));
-  }, [search, unclassifiedDataClusters, clusteredUtterances, similarCluster, utterances]);
+  }, [
+    search,
+    unclassifiedDataClusters,
+    clusteredUtterances,
+    similarCluster,
+    utterances,
+    unclassifiedDataFilters.dataSourceIDs,
+    unclassifiedDataFilters.dateRange,
+  ]);
 
   React.useEffect(() => {
     clusterUtterances();
     const utteranceIDs = new Set(utterances.map((u) => u.id));
     table.setSelectedItemIDs(Array.from(table.selectedItemIDs).filter((id) => utteranceIDs.has(id)));
   }, [utterances]);
+
+  React.useEffect(() => {
+    resetClusters();
+  }, [utterancesByID]);
 
   return {
     totalUnclassifiedItems,
@@ -287,6 +323,9 @@ const useNLUUnclassifiedData = ({ activeItemID, search, scrollToTop }: UseNLUEnt
     isClusteringDataLoading,
     assignUnclassifiedUtterancesToIntent,
     deleteUnclassifiedUtterances,
+    unclassifiedDataFilters,
+    setUnclassifiedDataFilters,
+    updateUnclassifiedUtterances,
   };
 };
 

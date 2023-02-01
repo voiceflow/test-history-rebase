@@ -66,6 +66,7 @@ export enum SelectInputVariant {
   TAGS = 'tags',
   DROPDOWN = 'dropdown',
   COUNTER = 'counter',
+  SELECTED = 'selected',
 }
 
 export interface BaseSelectProps {

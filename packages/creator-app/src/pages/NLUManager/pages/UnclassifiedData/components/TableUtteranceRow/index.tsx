@@ -41,6 +41,11 @@ const TableUtteranceRow: React.FC<TableUtteranceRowProps> = ({ rowIndex, item: u
   const importedByUser = useSelector(WorkspaceV2.active.memberByIDSelector, { creatorID: u.sourceID ? parseInt(u.sourceID, 10) : null });
   const [menuOpened, setMenuOpened] = React.useState(false);
 
+  const handleDelete = async () => {
+    await nluManager.deleteUnclassifiedUtterances([u]);
+    toast.success('Utterance deleted');
+  };
+
   return (
     <>
       <UnclassifiedTable.Row
@@ -100,10 +105,9 @@ const TableUtteranceRow: React.FC<TableUtteranceRowProps> = ({ rowIndex, item: u
               <SvgIcon icon="copy" color={SvgIcon.DEFAULT_COLOR} size={16} clickable />
             </TippyTooltip>
           </S.CopyIconContainer>
-          {/* TODO: [Unclassified] create delete behavior */}
           <S.DeleteIconContainer>
             <TippyTooltip content="Delete" position="top">
-              <SvgIcon icon="trash" color={SvgIcon.DEFAULT_COLOR} size={16} onClick={stopPropagation(() => {})} clickable />
+              <SvgIcon icon="trash" color={SvgIcon.DEFAULT_COLOR} size={16} onClick={stopPropagation(handleDelete)} clickable />
             </TippyTooltip>
           </S.DeleteIconContainer>
         </UnclassifiedTable.RowButtons>

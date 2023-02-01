@@ -37,6 +37,16 @@ class NluUnclassifiedDataModel extends NestedMongoModel<VersionModel> {
     ]);
   }
 
+  async updateManyUtterancesFromDatasource(
+    versionID: string,
+    datasourceKey: string,
+    utterances: BaseModels.Version.NLUUnclassifiedUtterances[]
+  ): Promise<void> {
+    await this.model.atomicUpdateOne({ ...this.model.idFilter(versionID), [`${this.MODEL_PATH}.key`]: datasourceKey }, [
+      Atomic.set([{ path: [`${this.MODEL_PATH}.$.utterances`, { match: { id: { $in: utterances.map((u) => u.id) } } }], value: utterances }]),
+    ]);
+  }
+
   // TODO: [Unclassified] fix it
   async removeManyUtterances(versionID: string, updates: RemoveManyUtterancesPayload[]): Promise<void> {
     const mapper = updates.map(({ datasourceKey: key, utteranceIDs: uttIDs }, index) => ({

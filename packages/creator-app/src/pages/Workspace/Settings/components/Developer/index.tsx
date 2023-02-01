@@ -1,5 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, ClickableText, Dropdown, Spinner, System, Text, toast } from '@voiceflow/ui';
+import { Alert, Box, ClickableText, Dropdown, Link, Spinner, System, Text, toast } from '@voiceflow/ui';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -18,6 +18,7 @@ const APIKeyPage: React.FC = () => {
   const dispatch = useDispatch();
   const workspaceID = useSelector(Session.activeWorkspaceIDSelector)!;
   const isIdentityWorkspaceEnabled = useSelector(Feature.isFeatureEnabledSelector)(Realtime.FeatureFlag.IDENTITY_WORKSPACE);
+  const deprecateWSKeys = useSelector(Feature.isFeatureEnabledSelector)(Realtime.FeatureFlag.DEPRECATE_WS_KEYS);
 
   const createAPIKeyModal = ModalsV2.useModal(ModalsV2.Workspace.CreateAPIKey);
 
@@ -77,11 +78,19 @@ const APIKeyPage: React.FC = () => {
 
   return (
     <Settings.Section title="API Keys">
+      {deprecateWSKeys && (
+        <Alert variant={Alert.Variant.WARNING} mt={10} mb={16}>
+          Workspace API Keys are being deprecated on Feb. 28, 2023.{' '}
+          <Link href="https://developer.voiceflow.com/reference/project">Please use Project DM API key instead.</Link>
+        </Alert>
+      )}
       <Settings.Card>
         <Box.FlexApart px={32} py={24}>
           <Text color="secondary">({apiKeys.length}) Existing API Keys</Text>
 
-          <ClickableText onClick={() => createAPIKeyModal.openVoid({ workspaceID, onCreate: fetchAPIKeys })}>Create New API Key</ClickableText>
+          {!deprecateWSKeys && (
+            <ClickableText onClick={() => createAPIKeyModal.openVoid({ workspaceID, onCreate: fetchAPIKeys })}>Create New API Key</ClickableText>
+          )}
         </Box.FlexApart>
 
         {!!apiKeys.length && (

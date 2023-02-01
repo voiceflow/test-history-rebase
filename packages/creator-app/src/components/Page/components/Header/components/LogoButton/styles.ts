@@ -1,3 +1,5 @@
+import { System } from '@voiceflow/ui';
+
 import { css, styled } from '@/hocs/styled';
 import { ClassName } from '@/styles/constants';
 
@@ -13,6 +15,8 @@ export const StyledLogoButton = styled(IconButton)<{ withBorder?: boolean }>`
   ${IconButton.S.Button} {
     width: ${({ theme }) => theme.components.page.header.height - 1}px;
     height: ${({ theme }) => theme.components.page.header.height - 1}px;
+    border-radius: 0;
+    background-color: #fff;
   }
 
   ${IconButton.S.ExpandIconContainer} {
@@ -30,19 +34,29 @@ export const StyledLogoButton = styled(IconButton)<{ withBorder?: boolean }>`
     }
   }
 
-  &:active ${IconButton.S.ExpandIconContainer} {
-    opacity: 1;
+  &:active {
+    ${IconButton.S.Button} {
+      ${System.IconButton.S.hoverActiveBackgroundStyle}
+    }
 
-    .${ClassName.SVG_ICON} {
-      color: #132144;
-      transform: translate(2px, 2px);
+    ${IconButton.S.ExpandIconContainer} {
+      opacity: 1;
+
+      .${ClassName.SVG_ICON} {
+        color: #132144;
+        transform: translate(2px, 2px);
+      }
     }
   }
 
   ${({ active }) =>
     active
       ? css`
-          & ${IconButton.S.ExpandIconContainer} {
+          ${IconButton.S.Button} {
+            ${System.IconButton.S.hoverActiveBackgroundStyle}
+          }
+
+          ${IconButton.S.ExpandIconContainer} {
             opacity: 1;
 
             .${ClassName.SVG_ICON} {
@@ -52,7 +66,7 @@ export const StyledLogoButton = styled(IconButton)<{ withBorder?: boolean }>`
           }
         `
       : css`
-          & ${IconButton.S.Button}:hover:not(:active) {
+          ${IconButton.S.Button}:hover:not(:active) {
             background-color: #fbfbfb;
           }
         `}

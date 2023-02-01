@@ -12,7 +12,7 @@ export interface ContainerProps {
   $activeBackground: boolean;
 }
 
-const hoverActiveBackgroundStyle = css`
+export const hoverActiveBackgroundStyle = css`
   background: #eef4f6;
 `;
 

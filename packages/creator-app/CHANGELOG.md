@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1080.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1079.0...@voiceflow/creator-app@1.1080.0) (2023-02-02)
+
+
+### Bug Fixes
+
+* misc UI/UX fixes (CT-1466) ([#6659](https://github.com/voiceflow/creator-app/issues/6659)) ([cbec6c8](https://github.com/voiceflow/creator-app/commit/cbec6c861400239809f3e3b5ec194b82edda15b2))
+* upgrade modal for adding viewers (BUG-223) ([#6660](https://github.com/voiceflow/creator-app/issues/6660)) ([b05ae10](https://github.com/voiceflow/creator-app/commit/b05ae1054c2f06522c8f0c8c073af6101f22debc))
+
+
+### Features
+
+* org members (CT-1516) ([#6641](https://github.com/voiceflow/creator-app/issues/6641)) ([10ea2fe](https://github.com/voiceflow/creator-app/commit/10ea2fe0c187191eecda2b306c7a62f3a2ee844d))
+
+
+
+
+
 # [1.1079.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1078.0...@voiceflow/creator-app@1.1079.0) (2023-02-02)
 
 

@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1079.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1078.0...@voiceflow/creator-app@1.1079.0) (2023-02-02)
+
+
+### Bug Fixes
+
+* design review fixes (CT-1537) ([#6651](https://github.com/voiceflow/creator-app/issues/6651)) ([5131778](https://github.com/voiceflow/creator-app/commit/5131778370e4343139d27ffea79c66f2256ff7b9))
+
+
+### Features
+
+* remove twilio sandbox ff (PL-000) ([#6650](https://github.com/voiceflow/creator-app/issues/6650)) ([294f6ab](https://github.com/voiceflow/creator-app/commit/294f6ab970967ef8d41dd7334dc63dd91e731b06))
+
+
+
+
+
 # [1.1078.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1077.1...@voiceflow/creator-app@1.1078.0) (2023-02-02)
 
 

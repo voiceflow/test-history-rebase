@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.234.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.233.0...@voiceflow/realtime-sdk@1.234.0) (2023-02-02)
+
+
+### Features
+
+* remove twilio sandbox ff (PL-000) ([#6650](https://github.com/voiceflow/creator-app/issues/6650)) ([294f6ab](https://github.com/voiceflow/creator-app/commit/294f6ab970967ef8d41dd7334dc63dd91e731b06))
+
+
+
+
+
 # [1.233.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.232.1...@voiceflow/realtime-sdk@1.233.0) (2023-02-02)
 
 

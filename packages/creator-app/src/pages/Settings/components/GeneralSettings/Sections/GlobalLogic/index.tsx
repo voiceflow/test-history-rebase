@@ -16,10 +16,7 @@ interface GeneralSettingsSectionsGlobalLogicProps {
 
 const GeneralSettingsSectionsGlobalLogic: React.FC<GeneralSettingsSectionsGlobalLogicProps> = ({ platform, projectType, platformMeta }) => {
   const showMessageDelaySetting = Utils.typeGuards.isChatProjectType(projectType);
-  const showTTSSettings =
-    Utils.typeGuards.isVoiceProjectType(projectType) &&
-    !Utils.typeGuards.isDialogflowPlatform(platform) &&
-    !Utils.typeGuards.isDialogflowCXPlatform(platform);
+  const showTTSSettings = Utils.typeGuards.isVoiceProjectType(projectType);
 
   return (
     <Settings.Section title="Global Logic">

@@ -5,6 +5,7 @@ import React from 'react';
 import { bannerBg } from '@/assets';
 import { AssistantCard } from '@/components/AssistantCard';
 import Page from '@/components/Page';
+import SearchBar from '@/components/SearchBar';
 import * as Account from '@/ducks/account';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
@@ -14,7 +15,7 @@ import { ProjectIdentityProvider } from '@/pages/Project/contexts/ProjectIdentit
 
 import { Sidebar } from '../../components';
 import { getProjectStatusAndMembers } from '../../utils';
-import { EmptySearch, Header, SearchBar } from './components';
+import { EmptySearch, Header } from './components';
 import { SortByOptions, SortOptionType } from './constants';
 import * as S from './styles';
 import { getProjectSortFunction } from './utils';
@@ -66,7 +67,7 @@ const ProjectList: React.FC = () => {
           />
         )}
         <Box.FlexApart fullWidth mb={10}>
-          <SearchBar value={search} onSearch={setSearch} />
+          <SearchBar value={search} onSearch={setSearch} placeholder="Search assistants" noBorder />
           <S.StyledSelect
             value={sortBy}
             borderLess

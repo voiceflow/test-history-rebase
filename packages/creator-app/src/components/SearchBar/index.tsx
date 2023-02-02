@@ -1,4 +1,4 @@
-import { TippyTooltip } from '@voiceflow/ui';
+import { DefaultInputProps, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import { useHotKeys } from '@/hooks';
@@ -6,12 +6,15 @@ import { Hotkey } from '@/keymap';
 
 import * as S from './styles';
 
-interface SearchBarProps {
+interface SearchBarProps extends Omit<DefaultInputProps, 'onChange'> {
   value: string;
+  placeholder: string;
   onSearch: (text: string) => void;
+  noBorder?: boolean;
+  width?: number;
 }
 
-const SearchBar: React.OldFC<SearchBarProps> = ({ value, onSearch }) => {
+const SearchBar: React.OldFC<SearchBarProps> = ({ value, placeholder, onSearch, noBorder, width }) => {
   const inputRef = React.useRef<HTMLInputElement>(null);
 
   const focusInput = () => {
@@ -38,8 +41,10 @@ const SearchBar: React.OldFC<SearchBarProps> = ({ value, onSearch }) => {
           icon={value ? 'close' : 'search'}
           value={value}
           iconProps={{ size: 16, color: 'rgba(110, 132, 154)', onClick: () => value && onSearch(''), clickable: true }}
-          placeholder="Search assistants"
+          placeholder={placeholder}
           onChangeText={onSearch}
+          noBorder={noBorder}
+          width={width}
         />
       </S.InputContainer>
     </TippyTooltip>

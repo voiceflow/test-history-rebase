@@ -1,6 +1,7 @@
-import { Banner, Button, ButtonVariant, FlexCenter, Text } from '@voiceflow/ui';
+import { Button, ButtonVariant, FlexCenter, Text } from '@voiceflow/ui';
 import React from 'react';
 
+import { bannerBg } from '@/assets';
 import Workspace from '@/components/Workspace';
 import { Permission } from '@/constants/permissions';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
@@ -25,12 +26,13 @@ const DashboardV2TeamAndBillingMembers: React.FC = () => {
   return (
     <S.Container>
       {!isOnPaidPlanSelector && (
-        <Banner
+        <S.StyledBanner
           mb={32}
           title="Unlock your teams potential"
           onClick={() => paymentModal.open({})}
           subtitle="Upgrade to unlock unlimited assistant and so much more."
           buttonText="Upgrade Now"
+          backgroundImage={bannerBg}
         />
       )}
 

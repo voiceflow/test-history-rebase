@@ -33,7 +33,7 @@ const StatusSelect: React.FC<StatusSelectProps> = ({ value, items, onChange }) =
     const options = [
       { value: '', label: 'All', count: items.length, width: '132px' },
       createStatusOption(BaseModels.Version.DomainStatus.DESIGN, 163),
-      createStatusOption(BaseModels.Version.DomainStatus.REVIEW, 182),
+      createStatusOption(BaseModels.Version.DomainStatus.REVIEW, 163),
       createStatusOption(BaseModels.Version.DomainStatus.COMPLETE, 182),
     ];
 

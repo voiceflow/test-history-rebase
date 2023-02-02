@@ -472,7 +472,7 @@ function Select({
 
   const hasOptions = !!selectedOptions?.length;
 
-  const caretIcon = isSecondaryInput || isSecondaryIcon ? 'arrowRightTopics' : 'caretDown';
+  const caretIcon = isSecondaryInput || isSecondaryIcon ? 'arrowRightSmall' : 'caretDown';
   const caretIconSize = isSecondaryInput ? 9 : 8;
 
   return (

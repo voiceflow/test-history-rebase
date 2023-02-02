@@ -13,8 +13,8 @@ enum DashboardTypes {
 }
 
 const OPTIONS = [
-  { id: DashboardTypes.KANBAN, label: 'Kanban' },
   { id: DashboardTypes.CARD, label: 'Cards' },
+  { id: DashboardTypes.KANBAN, label: 'Kanban' },
 ];
 
 const DESCRIPTIONS = {
@@ -54,7 +54,7 @@ const DashboardModeSection: React.FC = () => {
             <RadioGroup column options={OPTIONS} checked={dashboardMode} onChange={handleToggle} activeBar noPaddingLastItem={false} />
           </Settings.SubSection.RadioGroupContainer>
 
-          <Settings.SubSection.RadioGroupDescription offset={dashboardMode === DashboardTypes.CARD}>
+          <Settings.SubSection.RadioGroupDescription offset={dashboardMode === DashboardTypes.KANBAN}>
             {DESCRIPTIONS[dashboardMode]}
           </Settings.SubSection.RadioGroupDescription>
         </Settings.SubSection>

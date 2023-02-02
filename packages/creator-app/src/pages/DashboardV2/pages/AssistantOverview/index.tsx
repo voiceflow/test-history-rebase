@@ -22,6 +22,7 @@ const AssistantOverview: React.FC = () => {
   const domains = useSelector(Domains.allDomainsSelector);
   const activeViewers = useSelector(ProjectV2.active.allAwarenessViewersSelector);
   const getMemberByIDSelector = useSelector(WorkspaceV2.active.getMemberByIDSelector);
+  const { name: platformName } = Platform.Config.get(project?.platform);
 
   const goToCanvasWithVersionID = useDispatch(Router.goToCanvasWithVersionID);
 
@@ -45,6 +46,7 @@ const AssistantOverview: React.FC = () => {
             <AssistantCard
               {...getProjectStatusAndMembers({ project, activeViewers, getMemberByIDSelector })}
               icon={projectTypeConfig.icon.name}
+              iconTitle={platformName}
               image={project.image}
               title={project.name}
               options={projectOptions}

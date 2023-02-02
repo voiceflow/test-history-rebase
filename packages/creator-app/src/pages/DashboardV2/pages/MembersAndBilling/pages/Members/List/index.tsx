@@ -1,6 +1,7 @@
 import { TextButton, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
+import SearchBar from '@/components/SearchBar';
 import Workspace from '@/components/Workspace';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useSelector } from '@/hooks';
@@ -12,12 +13,12 @@ import { getRoleFacets } from './utils';
 const DashboardV2TeamAndBillingMembersList: React.FC = () => {
   const members = useSelector(WorkspaceV2.active.allNormalizedMembersSelector);
 
-  const [role, setRole] = React.useState('');
+  const [role, setRole] = React.useState('all');
   const [search, setSearch] = React.useState('');
 
   const clearFilters = usePersistFunction(() => {
     setSearch('');
-    setRole('');
+    setRole('all');
   });
 
   const filteredMembers = React.useMemo(() => {
@@ -26,7 +27,7 @@ const DashboardV2TeamAndBillingMembersList: React.FC = () => {
     const lowSearch = search.toLowerCase();
 
     return members.filter((member) => {
-      if (role && member.role !== role) return false;
+      if (role && role !== 'all' && member.role !== role) return false;
 
       if (search) {
         return member.name?.toLowerCase().includes(lowSearch) || member.email?.toLocaleLowerCase().includes(lowSearch);
@@ -40,19 +41,7 @@ const DashboardV2TeamAndBillingMembersList: React.FC = () => {
     <S.Container>
       <S.Header>
         <S.Filters>
-          <S.Input
-            icon={search ? 'close' : 'search'}
-            value={search}
-            iconProps={{
-              color: '#6E849A',
-              size: 14,
-              style: { cursor: search ? 'pointer' : 'default' },
-              onClick: () => setSearch(''),
-            }}
-            width={230}
-            placeholder="Search"
-            onChangeText={setSearch}
-          />
+          <SearchBar value={search} onSearch={setSearch} width={230} placeholder="Search" />
           <RoleSelect value={role} onChange={setRole} facets={getRoleFacets(members)} />
         </S.Filters>
       </S.Header>

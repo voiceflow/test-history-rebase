@@ -1,3 +1,4 @@
+import Page from '@/components/Page';
 import { css, styled, transition } from '@/hocs/styled';
 
 export const LinksWrapper = styled.div`
@@ -28,4 +29,8 @@ export const Link = styled.button<{ isActive?: boolean }>`
   }
 
   ${({ isActive }) => isActive && linkActiveStyle}
+`;
+
+export const StyledPageContent = styled(Page.Content)`
+  height: 100%;
 `;

@@ -1,8 +1,9 @@
 import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, Button, FlexCenter, Input, Link, Table } from '@voiceflow/ui';
+import { Box, Button, FlexCenter, Link, Table } from '@voiceflow/ui';
 import React from 'react';
 
+import SearchBar from '@/components/SearchBar';
 import { LimitType } from '@/constants/limits';
 import { usePlanLimitedAction } from '@/hooks/planLimitV2';
 import * as ModalsV2 from '@/ModalsV2';
@@ -51,14 +52,7 @@ const DomainsTable: React.FC<DomainsTableProps> = ({ domains }) => {
         <S.Header>
           <Box.Flex gap={12}>
             <Box width={230}>
-              <Input
-                icon={search ? 'close' : 'search'}
-                value={search}
-                autoFocus
-                iconProps={{ size: 16, color: 'rgba(110, 132, 154)', onClick: () => setSearch(''), clickable: !!search, opacity: true }}
-                placeholder="Search domains"
-                onChangeText={setSearch}
-              />
+              <SearchBar value={search} autoFocus placeholder="Search domains" onSearch={setSearch} />
             </Box>
 
             <StatusSelect value={status} items={domains} onChange={setStatus} />

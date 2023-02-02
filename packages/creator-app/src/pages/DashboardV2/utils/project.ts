@@ -16,7 +16,7 @@ export const getProjectStatusAndMembers = ({
   const lastUpdatedByMemberList = lastUpdateByMember ? [lastUpdateByMember] : [];
 
   return {
-    status: activeViewers?.length ? 'Active' : project?.updatedAt && dayjs(project.updatedAt).fromNow(),
+    status: activeViewers?.length ? 'Active' : project?.updatedAt && `Last edited ${dayjs(project.updatedAt).fromNow()}`,
     members: activeViewers?.length ? activeViewers : lastUpdatedByMemberList,
   };
 };

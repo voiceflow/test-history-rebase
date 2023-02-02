@@ -35,7 +35,7 @@ const AccountEmail = manager.create('AccountEmail', () => ({ api, type, opened, 
   };
 
   return (
-    <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} maxWidth={400}>
+    <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} maxWidth={450}>
       <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={() => api.close()} />}>Change Email</Modal.Header>
 
       <SectionV2.SimpleSection headerProps={{ topUnit: 0.5, bottomUnit: 2.5 }}>
@@ -68,8 +68,6 @@ const AccountEmail = manager.create('AccountEmail', () => ({ api, type, opened, 
       >
         <Input value={password} type="password" onEnterPress={onSave} onChangeText={setPassword} placeholder="Confirm Voiceflow password" />
       </SectionV2.SimpleContentSection>
-
-      <SectionV2.Divider />
 
       <Modal.Footer gap={12}>
         <Button variant={Button.Variant.TERTIARY} onClick={() => api.close()} squareRadius>

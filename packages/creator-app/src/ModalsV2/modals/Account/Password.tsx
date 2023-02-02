@@ -53,7 +53,7 @@ const AccountPassword = manager.create('AccountPassword', () => ({ api, type, op
   };
 
   return (
-    <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} maxWidth={400}>
+    <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} maxWidth={450}>
       <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={() => api.close()} />} border>
         Edit Password
       </Modal.Header>

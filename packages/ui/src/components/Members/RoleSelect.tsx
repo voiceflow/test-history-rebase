@@ -1,7 +1,8 @@
 import { createDividerMenuItemOption, UIOnlyMenuItemOption } from '@ui/components/NestedMenu';
-import Select from '@ui/components/Select';
 import { UserRole } from '@voiceflow/internal';
 import React from 'react';
+
+import * as S from './styles';
 
 interface Option {
   label: string;
@@ -60,7 +61,7 @@ const RoleSelect = <T extends UserRole>({
   };
 
   return (
-    <Select<Option>
+    <S.StyledSelect
       label={ROLE_LABEL_MAP[value]}
       inline
       options={getOptions()}

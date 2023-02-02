@@ -11,7 +11,7 @@ import { Sidebar } from '../../components';
 import { Header } from './components';
 import { General, SSO } from './pages';
 
-const MembersAndBilling: React.OldFC = () => {
+const Organization: React.FC = () => {
   const workspace = useActiveWorkspace();
   const [canConfigureOrganization] = usePermission(Permission.CONFIGURE_ORGANIZATION);
 
@@ -32,4 +32,4 @@ const MembersAndBilling: React.OldFC = () => {
   );
 };
 
-export default MembersAndBilling;
+export default Organization;

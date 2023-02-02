@@ -4,6 +4,8 @@ import Badge from '@ui/components/Badge';
 import Box from '@ui/components/Box';
 import SvgIcon from '@ui/components/SvgIcon';
 import TippyTooltip, { TippyTooltipProps } from '@ui/components/TippyTooltip';
+import { PROFILE_COLORS } from '@ui/styles/colors';
+import { getStringHashNumber } from '@ui/utils/string';
 import { UserRole } from '@voiceflow/internal';
 import React from 'react';
 
@@ -35,48 +37,58 @@ const MemberRow = <T extends Member>({
   isCurrentUser,
   onResendInvite,
   warningTooltip,
-}: MemberRowProps<T>) => (
-  <S.Container inset={inset} border={border}>
-    <Avatar large text={member.name || member.email} image={member.image} />
+}: MemberRowProps<T>) => {
+  const memberImage = React.useMemo(() => {
+    if (member.image) return member.image;
 
-    <S.Info>
-      <S.Name>
-        {member.name ?? member.email}
+    const emailHash = getStringHashNumber(member.email);
 
-        {!member.creator_id ? (
-          <Badge.Descriptive ml={8} color="gray">
-            Pending
-          </Badge.Descriptive>
-        ) : BADGE_ROLES.has(member.role) ? (
-          <Badge.Descriptive ml={8}>{member.role}</Badge.Descriptive>
-        ) : null}
-      </S.Name>
+    return PROFILE_COLORS[emailHash % PROFILE_COLORS.length];
+  }, [member.image, member.email]);
 
-      <S.Email>{member.name ? member.email : 'Invitation pending'}</S.Email>
-    </S.Info>
+  return (
+    <S.Container inset={inset} border={border}>
+      <Avatar large text={member.name || member.email} image={memberImage} />
 
-    <Box.Flex>
-      {!!warningTooltip && (
-        <TippyTooltip {...warningTooltip}>
-          <SvgIcon icon="warning" color="#BD425F" clickable />
-        </TippyTooltip>
-      )}
+      <S.Info>
+        <S.Name>
+          {member.name ?? member.email}
 
-      {!!onChangeRole && (
-        <S.RoleSelectContainer>
-          <RoleSelect
-            roles={roles}
-            value={member.role}
-            onRemove={onRemove}
-            onChange={onChangeRole}
-            isInvite={!member.creator_id}
-            disabled={isCurrentUser}
-            onResendInvite={onResendInvite}
-          />
-        </S.RoleSelectContainer>
-      )}
-    </Box.Flex>
-  </S.Container>
-);
+          {!member.creator_id ? (
+            <Badge.Descriptive ml={8} color="gray">
+              Pending
+            </Badge.Descriptive>
+          ) : BADGE_ROLES.has(member.role) ? (
+            <Badge.Descriptive ml={8}>{member.role}</Badge.Descriptive>
+          ) : null}
+        </S.Name>
+
+        <S.Email>{member.name ? member.email : 'Invitation pending'}</S.Email>
+      </S.Info>
+
+      <Box.Flex>
+        {!!warningTooltip && (
+          <TippyTooltip {...warningTooltip}>
+            <SvgIcon icon="warning" color="#BD425F" clickable />
+          </TippyTooltip>
+        )}
+
+        {!!onChangeRole && (
+          <S.RoleSelectContainer>
+            <RoleSelect
+              roles={roles}
+              value={member.role}
+              onRemove={onRemove}
+              onChange={onChangeRole}
+              isInvite={!member.creator_id}
+              disabled={isCurrentUser}
+              onResendInvite={onResendInvite}
+            />
+          </S.RoleSelectContainer>
+        )}
+      </Box.Flex>
+    </S.Container>
+  );
+};
 
 export default MemberRow;

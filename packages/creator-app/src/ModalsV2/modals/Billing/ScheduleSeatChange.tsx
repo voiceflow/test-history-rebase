@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import { Alert, Box, Button, Input, Modal, SectionV2, Text } from '@voiceflow/ui';
+import { Alert, Box, Button, Modal, SectionV2, Text } from '@voiceflow/ui';
 import React from 'react';
 
 import Workspace from '@/components/Workspace';
@@ -8,6 +8,7 @@ import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useSelector } from '@/hooks/redux';
 
 import manager from '../../manager';
+import * as S from './styles';
 
 const ScheduleSeatChange = manager.create('ScheduleSeatChange', () => ({ api, type, opened, hidden, animated }) => {
   const usedEditorSeats = useSelector(WorkspaceV2.active.usedEditorSeatsSelector);
@@ -20,7 +21,7 @@ const ScheduleSeatChange = manager.create('ScheduleSeatChange', () => ({ api, ty
     <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} maxWidth={450}>
       <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={api.close} />}>Schedule Seat Change</Modal.Header>
 
-      <SectionV2.SimpleSection headerProps={{ topUnit: 0, bottomUnit: 2.5 }}>
+      <SectionV2.SimpleSection headerProps={{ topUnit: 0, bottomUnit: 2 }}>
         <SectionV2.Description secondary lineHeight="20px">
           You can schedule a change number of Editor Seats you have on your next billing date on {nextBillingDate}. You currently have{' '}
           {usedEditorSeats} Editor seats.
@@ -28,7 +29,7 @@ const ScheduleSeatChange = manager.create('ScheduleSeatChange', () => ({ api, ty
       </SectionV2.SimpleSection>
 
       {numSeats < usedEditorSeats && (
-        <SectionV2.SimpleSection headerProps={{ topUnit: 0.5, bottomUnit: 2.5 }}>
+        <SectionV2.SimpleSection headerProps={{ topUnit: 0, bottomUnit: 2.5 }}>
           <Alert title={<Alert.Title>You're reducing the number of Editor seats</Alert.Title>}>
             If you are using more than {numSeats} Editor seats on your next billing date, we will downgrade {usedEditorSeats - numSeats} Editor to
             Viewer.
@@ -57,7 +58,7 @@ const ScheduleSeatChange = manager.create('ScheduleSeatChange', () => ({ api, ty
             </div>
           </Box.FlexAlignStart>
 
-          <Input.Counter
+          <S.StyledInput
             value={numSeats}
             error={numSeats > TEAM_INCREASE_LIMIT}
             onPlusClick={() => setNumSeats(numSeats + 1)}

@@ -1,4 +1,4 @@
-import { Box, FullSpinner } from '@voiceflow/ui';
+import { Box, Spinner } from '@voiceflow/ui';
 import React from 'react';
 
 import { Permission } from '@/constants/permissions';
@@ -21,7 +21,11 @@ const DashboardV2Billing: React.FC = () => {
   const isReady = billingHistory.isReady && usageSubscription.isReady;
 
   if (!isReady) {
-    return <FullSpinner isAbs backgroundColor="#f9f9f9" name="Billing" />;
+    return (
+      <Box.FlexCenter fullHeight fullWidth>
+        <Spinner borderLess fillContainer />
+      </Box.FlexCenter>
+    );
   }
 
   return (

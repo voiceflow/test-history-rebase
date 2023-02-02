@@ -15,8 +15,12 @@ export const Grid = styled.div`
   gap: 32px;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
 
-  @media (min-width: 1350px) {
+  @media (min-width: 1100px) {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  @media (min-width: 1350px) {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);
   }
 `;
 

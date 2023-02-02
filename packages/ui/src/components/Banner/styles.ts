@@ -4,9 +4,25 @@ import { colors, css, styled, ThemeColor } from '@ui/styles';
 
 export const CloseButton = styled(Button).attrs({
   variant: Button.Variant.WHITE,
-  iconProps: { size: 8, color: `rgb(110, 132, 154)`, opacity: true, reducedOpacity: true },
+  iconProps: { size: 8 },
   tiny: true,
 })`
+  ${Button.WhiteButton.Icon} {
+    color: rgb(110, 132, 154, 0.65);
+  }
+
+  &:hover {
+    ${Button.WhiteButton.Icon} {
+      color: rgb(110, 132, 154, 0.85);
+    }
+  }
+
+  &:active {
+    ${Button.WhiteButton.Icon} {
+      color: rgb(110, 132, 154, 1);
+    }
+  }
+
   top: -8px;
   right: -8px;
   opacity: 0;

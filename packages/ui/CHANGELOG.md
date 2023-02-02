@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.233.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.232.0...@voiceflow/ui@1.233.0) (2023-02-02)
+
+
+### Features
+
+* implement new credit card form (CT-1394) ([#6652](https://github.com/voiceflow/creator-app/issues/6652)) ([ba8d28e](https://github.com/voiceflow/creator-app/commit/ba8d28e741f94d43cadacac0fcac5c3bf76d75c3))
+
+
+
+
+
 # [1.232.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.231.2...@voiceflow/ui@1.232.0) (2023-02-02)
 
 

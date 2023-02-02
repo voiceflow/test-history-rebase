@@ -19,37 +19,44 @@ interface SwitcherProps {
 }
 
 const Switcher: React.FC<SwitcherProps> = ({ value, items, onChange, isLoading }) => {
+  const [currentItem, setCurrentItem] = React.useState(value);
   if (items.length < 2) return null;
 
   return (
     <S.SwitcherContainer>
-      <S.Slider isActive={value === items[0].tabID} />
+      <S.Slider isActive={currentItem === items[0].tabID} />
 
       {items.map((item) => (
-        <S.SwitcherButton isActive={value === item.tabID} onClick={() => onChange(item.tabID)} key={item.tabID}>
-          <>
-            {value === item.tabID && isLoading ? (
-              <Loader isMd />
-            ) : (
-              <Popper renderContent={({ onClose }) => <div onMouseLeave={() => onClose()}>{item.tooltip}</div>}>
-                {({ ref, onToggle }) => (
+        <Popper renderContent={() => <div>{item.tooltip}</div>} key={item.tabID}>
+          {({ ref, onToggle }) => (
+            <S.SwitcherButton
+              isActive={currentItem === item.tabID}
+              onClick={() => {
+                onChange(item.tabID);
+                setCurrentItem(item.tabID);
+              }}
+              ref={ref}
+            >
+              <>
+                {currentItem === item.tabID && isLoading ? (
+                  <Loader isMd />
+                ) : (
                   <SvgIcon
-                    ref={ref}
                     onMouseEnter={() => {
                       if (!item.tooltip) return;
                       onToggle();
                     }}
                     icon={item.icon}
                     size={16}
-                    color={item.tabID === value ? '#132144' : SvgIcon.DEFAULT_COLOR}
+                    color={item.tabID === currentItem ? '#132144' : SvgIcon.DEFAULT_COLOR}
                     style={{ zIndex: 1 }}
                     clickable
                   />
                 )}
-              </Popper>
-            )}
-          </>
-        </S.SwitcherButton>
+              </>
+            </S.SwitcherButton>
+          )}
+        </Popper>
       ))}
     </S.SwitcherContainer>
   );

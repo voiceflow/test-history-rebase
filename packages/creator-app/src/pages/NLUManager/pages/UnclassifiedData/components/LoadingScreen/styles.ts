@@ -33,7 +33,7 @@ export const LoadingBarDescription = styled.div`
 `;
 
 export const LoadingRow = styled.div`
-  height: 88px;
+  height: 90px;
   display: flex;
   padding: 20px 27px;
 `;

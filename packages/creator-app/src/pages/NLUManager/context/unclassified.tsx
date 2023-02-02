@@ -128,27 +128,28 @@ const useNLUUnclassifiedData = ({ activeItemID, search, scrollToTop }: UseNLUEnt
   };
 
   const changeUnclassifiedPageTab = async (tab: UnclassifiedTabs) => {
-    setIsUnclassifiedDataLoading(true);
     setSelectedUnclassifiedTab(tab);
+    setIsUnclassifiedDataLoading(true);
 
     if (tab === UnclassifiedTabs.CLUSTERING_VIEW) {
       await clusterUnclassifiedData();
     } else {
       setClusteredUtterances({} as any);
-      setIsClusteringUnclassifiedData(false);
-      PageProgress.stop(PageProgressBar.NLU_CLUSTERING);
     }
 
     scrollToTop();
     resetSelectedUnclassifiedData();
-
-    setTimeout(() => setIsUnclassifiedDataLoading(false), 300);
+    setIsUnclassifiedDataLoading(false);
   };
 
   const filterUtterances = (maxRange: number) => {
-    const unclusteredUtterances = utterances.filter((u) =>
-      u.id ? !clusteredUtterances[u.id] && !similarCluster?.utteranceIDs.includes(u.id) : true
-    );
+    const unclusteredUtterances = utterances.filter((u) => {
+      if (!u.id) return true;
+      if (selectedUnclassifiedTab === UnclassifiedTabs.CLUSTERING_VIEW && !clusteredUtterances[u.id]) return false;
+      if (similarCluster && similarCluster?.utteranceIDs.includes(u.id)) return false;
+      return true;
+    });
+
     const utterancesToSort = searchUtterances(unclusteredUtterances, search, unclassifiedDataFilters);
 
     const sortedUtterances = utterancesToSort

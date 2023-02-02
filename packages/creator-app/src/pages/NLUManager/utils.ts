@@ -50,33 +50,35 @@ export const mapIntentsToNLUIntents = (intents: Platform.Base.Models.Intent.Mode
     return { ...acc, [intent.id]: intent.inputs.map((input) => input.text) };
   }, {} as Record<string, string[]>);
 
-  return intents.map((intent): NLUIntent => {
-    const conflictingIntentIDs = getConflictingIntentIDs(intent, clarity);
-    const conflictingUtterances = getConflictingUtterances(intent, intentUtterances[intent.id], clarity);
-    const hasConflicts = conflictingIntentIDs.length > 0 && conflictingUtterances.length > 0;
-    const clarityScore = getClarityScore(intent, clarity, hasConflicts);
-    const confidence = getConfidenceScore(intent);
-    const hasEntityError = hasSlotsError(intent);
-    const clarityLevel = getIntentClarityStrengthLevel(clarityScore);
-    const confidenceLevel = getIntentConfidenceStrengthLevel(confidence);
+  return intents
+    .map((intent): NLUIntent => {
+      const conflictingIntentIDs = getConflictingIntentIDs(intent, clarity);
+      const conflictingUtterances = getConflictingUtterances(intent, intentUtterances[intent.id], clarity);
+      const hasConflicts = conflictingIntentIDs.length > 0 && conflictingUtterances.length > 0;
+      const clarityScore = getClarityScore(intent, clarity, hasConflicts);
+      const confidence = getConfidenceScore(intent);
+      const hasEntityError = hasSlotsError(intent);
+      const clarityLevel = getIntentClarityStrengthLevel(clarityScore);
+      const confidenceLevel = getIntentConfidenceStrengthLevel(confidence);
 
-    return {
-      ...intent,
-      clarity: clarityScore,
-      clarityLevel,
-      confidence,
-      confidenceLevel,
-      conflictingIntentIDs,
-      conflictingUtterances,
-      hasConflicts,
-      hasErrors:
-        hasEntityError ||
-        confidenceLevel === StrengthGauge.Level.WEAK ||
-        clarityLevel === StrengthGauge.Level.WEAK ||
-        confidenceLevel === StrengthGauge.Level.NOT_SET,
-      hasEntityError,
-    };
-  });
+      return {
+        ...intent,
+        clarity: clarityScore,
+        clarityLevel,
+        confidence,
+        confidenceLevel,
+        conflictingIntentIDs,
+        conflictingUtterances,
+        hasConflicts,
+        hasErrors:
+          hasEntityError ||
+          confidenceLevel === StrengthGauge.Level.WEAK ||
+          clarityLevel === StrengthGauge.Level.WEAK ||
+          confidenceLevel === StrengthGauge.Level.NOT_SET,
+        hasEntityError,
+      };
+    })
+    .filter((intent) => intent.name && intent.id);
 };
 
 export const mapClarityModelData = (clarity: ClarityModel): ClarityModel => {

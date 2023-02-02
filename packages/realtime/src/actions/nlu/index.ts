@@ -8,7 +8,7 @@ import UpdateManyUtterancesControl from './updateManyUtterances';
 
 const buildNluActionControls = (options: LoguxControlOptions) => ({
   addUnclassifiedDataControl: new AddUnclassifiedDataControl(options),
-  deleteUnclassifiedDataControl: new RemoveUnclassifiedDataControl(options),
+  removeUnclassifiedDataControl: new RemoveUnclassifiedDataControl(options),
   reloadUnclassifiedDataControl: new ReloadUnclassifiedDataControl(options),
   removeManyUtterancesControl: new RemoveManyUtterancesControl(options),
   updateManyUtterancesControl: new UpdateManyUtterancesControl(options),

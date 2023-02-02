@@ -62,6 +62,8 @@ const IntentItem: React.FC<IntentItemProps> = ({ intent, conflictID, utterances,
     accept: DragAndDropTypes.UTTERANCE,
   });
 
+  if (!intentName || !intentID) return null;
+
   return (
     <S.IntentItem ref={connectDrop}>
       <SidebarEditor.HeaderTitle fontWeight={600} fontSize={15} marginBottom={16}>

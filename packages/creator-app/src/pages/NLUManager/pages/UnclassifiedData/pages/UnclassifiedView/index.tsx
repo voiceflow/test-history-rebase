@@ -4,10 +4,16 @@ import React from 'react';
 import { useHotKeys } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import { useNLUManager } from '@/pages/NLUManager/context';
+import {
+  EmptyScreen,
+  LoadingScreen,
+  NoResultScreen,
+  TableFooter,
+  TableNavbar,
+  TableTopBadge,
+  TableUtteranceRow,
+} from '@/pages/NLUManager/pages/UnclassifiedData/components';
 import TableClusterRow from '@/pages/NLUManager/pages/UnclassifiedData/pages/ClusteringView/components/TableClusterRow';
-
-import { LoadingScreen, TableFooter, TableNavbar, TableTopBadge, TableUtteranceRow } from '../../components';
-import EmptyScreen from '../../components/EmptyScreen';
 
 const UnclassifiedView: React.OldFC = ({ children }) => {
   const nluManager = useNLUManager();
@@ -27,6 +33,7 @@ const UnclassifiedView: React.OldFC = ({ children }) => {
   }, [isBottom]);
 
   if (!nluManager.unclassifiedUtterances.length) return <EmptyScreen />;
+  if (!nluManager.filteredUtterances.length && nluManager.search) return <NoResultScreen />;
 
   const isPageLoading = nluManager.isUnclassifiedDataLoading;
 

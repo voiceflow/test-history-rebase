@@ -6,7 +6,7 @@ import { useFeature, useHotKeys } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import { useNLUManager } from '@/pages/NLUManager/context';
 
-import { LoadingScreen, TableFooter, TableNavbar, TableTopBadge, TableUtteranceRow } from '../../components';
+import { LoadingScreen, NoResultScreen, TableFooter, TableNavbar, TableTopBadge, TableUtteranceRow } from '../../components';
 import { EmptyScreen, TableClusterRow } from './components';
 
 const ClusteringView: React.OldFC = ({ children }) => {
@@ -19,6 +19,7 @@ const ClusteringView: React.OldFC = ({ children }) => {
 
   useHotKeys(Hotkey.SELECT_ALL, selectAllItems, { action: 'keyup' });
 
+  if (!nluManager.filteredUtterances.length && nluManager.search) return <NoResultScreen />;
   if (!nluManager.unclassifiedUtterances.length || !nluManager.unclassifiedDataClusters.length || !isClusteringViewEnabled) return <EmptyScreen />;
 
   return (

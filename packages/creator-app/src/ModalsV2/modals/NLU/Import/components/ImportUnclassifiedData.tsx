@@ -1,4 +1,4 @@
-import { Box, Button, FlexCenter, Input, Link, Modal, SvgIcon, Text, toast, UploadV2 } from '@voiceflow/ui';
+import { Box, Button, FlexCenter, Input, Link, Modal, System, Text, toast, UploadV2 } from '@voiceflow/ui';
 import React from 'react';
 
 import { CSV_UNCLASSIFIED_IMPORT } from '@/config/documentation';
@@ -6,6 +6,7 @@ import * as NLUDuck from '@/ducks/nlu';
 import { useDispatch, useHotKeys, useSelector } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import * as T from '@/ModalsV2/types';
+import { useNLUManager } from '@/pages/NLUManager/context';
 
 import { ImportType } from '../constants';
 import { CSVFile, IntentUnclassifiedData, ModalsState } from '../types';
@@ -37,6 +38,7 @@ const ImportUnclassifiedData: React.OldFC<ImportUnclassifiedDataProps> = ({
   const datasourceNames = useSelector(NLUDuck.datasourceNames);
   const [isImporting, setIsImporting] = React.useState(false);
   const [openDataSource, setOpenDataSource] = React.useState(false);
+  const nluManager = useNLUManager();
 
   const setImportedFile = (file: CSVFile | null) => {
     setTabState({ ...tabState, [ImportType.UNCLASSIFIED]: { ...tabState[ImportType.UNCLASSIFIED], file } });
@@ -115,7 +117,7 @@ const ImportUnclassifiedData: React.OldFC<ImportUnclassifiedDataProps> = ({
         <>
           <Modal.Header
             border
-            actions={<SvgIcon icon="systemSettings" size={16} clickable color="#6E849A" onClick={onSettingClick} />}
+            actions={<System.IconButton.Base icon="systemSettings" onClick={onSettingClick} disabled={!nluManager.unclassifiedUtterances.length} />}
             style={{ padding: '12px 32px 12px 16px' }}
           >
             <FlexCenter>
@@ -170,7 +172,7 @@ const ImportUnclassifiedData: React.OldFC<ImportUnclassifiedDataProps> = ({
               isLoading={isImporting}
               style={isImporting ? { width: '92px' } : {}}
             >
-              Upload
+              Import
             </Button>
           </Modal.Footer>
         </>

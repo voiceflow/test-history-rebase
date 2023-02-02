@@ -1,4 +1,4 @@
-import { loader2Icon } from '@ui/assets';
+import { loader2Icon, spinnerSmall } from '@ui/assets';
 import { colors, css, styled, StyledProps, ThemeColor } from '@ui/styles';
 import { ClassName } from '@ui/styles/constants';
 import cn from 'classnames';
@@ -31,6 +31,19 @@ export const LoadCircle = styled.span<LoaderProps>`
   line-height: 1;
   background-color: ${({ color }) => color || colors(ThemeColor.WHITE)};
   background-image: url(${loader2Icon});
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 75%;
+  animation: spin 1s linear infinite;
+`;
+
+export const LoadCircleSmall = styled.span<LoaderProps>`
+  ${spinnerStyles}
+  width: 1em;
+  height: 1em;
+  line-height: 1;
+  background-color: ${({ color }) => color || colors(ThemeColor.WHITE)};
+  background-image: url(${spinnerSmall});
   background-repeat: no-repeat;
   background-position: center;
   background-size: 75%;

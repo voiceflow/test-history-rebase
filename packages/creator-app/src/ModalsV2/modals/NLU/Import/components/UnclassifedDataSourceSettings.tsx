@@ -18,16 +18,22 @@ const UnclassifedDataSourceSettings: React.FC<DataSetProps> = ({ closePrevented,
   const dataSource = React.useMemo(
     () =>
       unclassifiedUtterances.reduce<Record<string, { utterances: string[]; dataSourceID: string; dataSourceName: string }>>(
-        (acc, { sourceID, utterance, datasourceName }) => {
-          if (!sourceID) return acc;
-          acc[sourceID] ??= { dataSourceID: sourceID, utterances: [], dataSourceName: datasourceName };
-          acc[sourceID].utterances.push(utterance);
+        (acc, { datasourceID, utterance, datasourceName }) => {
+          if (!datasourceID) return acc;
+          acc[datasourceID] ??= { dataSourceID: datasourceID, utterances: [], dataSourceName: datasourceName };
+          acc[datasourceID].utterances.push(utterance);
           return acc;
         },
         {}
       ),
     [unclassifiedUtterances]
   );
+
+  React.useEffect(() => {
+    if (unclassifiedUtterances.length === 0) {
+      onClose();
+    }
+  }, [unclassifiedUtterances]);
 
   return (
     <Box mt={10}>
@@ -37,12 +43,12 @@ const UnclassifedDataSourceSettings: React.FC<DataSetProps> = ({ closePrevented,
       >
         <FlexCenter>
           <SvgIcon icon="largeArrowLeft" size={16} clickable color="#6E849A" onClick={onBack} />
-          <Text ml={20}>Manage Unclassified</Text>
+          <Text ml={23}>Manage Unclassified</Text>
         </FlexCenter>
       </Modal.Header>
 
       <Modal.Body>
-        <Box mt={25} minHeight={285}>
+        <Box mt={25}>
           {unclassifiedUtterances.length ? (
             Object.values(dataSource).map(({ dataSourceID, dataSourceName, utterances }) => (
               <Box.FlexCenter key={dataSourceID} gap={20} mb={16}>

@@ -4,7 +4,7 @@ import { NLUIntent } from '@/pages/NLUManager/types';
 
 const clarityMetaMessage = (intent: NLUIntent) => {
   const conflictingUtterances = intent.conflictingUtterances.length;
-  const conflictingIntents = intent.conflictingUtterances.length;
+  const conflictingIntents = intent.conflictingIntentIDs.length;
 
   if (!conflictingUtterances) return '';
 

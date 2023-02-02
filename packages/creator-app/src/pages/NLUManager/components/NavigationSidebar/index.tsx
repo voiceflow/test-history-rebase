@@ -39,7 +39,7 @@ const NLUNavigationSidebar: React.OldFC = () => {
     <NavigationSidebar>
       <NavigationSidebar.ItemsContainer>
         {isUnclassifiedDataEnabled && (
-          <Box mb={24}>
+          <Box mb={20}>
             <NavigationSidebar.Item
               icon="noMatch"
               title="Unclassified"

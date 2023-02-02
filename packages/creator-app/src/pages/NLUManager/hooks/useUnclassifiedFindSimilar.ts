@@ -22,10 +22,12 @@ const useUnclassifiedFindSimilar = () => {
 
     const scores = utterancesNewIntentsMap[targetPhrase];
 
-    const similarUtterances = unclassifiedUtterances.reduce((acc, utterance) => {
-      const score = scores[utterance.utterance];
-      return { ...acc, [utterance.id]: score ? Math.round(score * 100) : 0 };
-    }, {} as Record<string, number>);
+    const similarUtterances = unclassifiedUtterances
+      .filter(({ utterance }) => scores[utterance] && scores[utterance] > 0)
+      .reduce((acc, utterance) => {
+        const score = scores[utterance.utterance];
+        return { ...acc, [utterance.id]: score ? Math.round(score * 100) : 0 };
+      }, {} as Record<string, number>);
 
     setSimilarityScores(similarUtterances);
   };

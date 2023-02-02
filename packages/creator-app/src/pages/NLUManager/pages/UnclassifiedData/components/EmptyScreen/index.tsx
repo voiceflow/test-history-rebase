@@ -24,7 +24,7 @@ const EmptyScreen: React.OldFC = () => {
       </FlexCenter>
 
       <FlexCenter>
-        <Box mt={8} mb={16} textAlign="center" color="#62778c" maxWidth={300}>
+        <Box mt={8} mb={16} textAlign="center" color="#62778c" maxWidth={250}>
           Unclassified user response data from tests, prototyes or the live assistant allows you to fill gaps in your model.{' '}
           <Link onClick={onLearnMore}>Learn more</Link>
         </Box>

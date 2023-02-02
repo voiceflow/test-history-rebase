@@ -1,23 +1,17 @@
-import { Utils } from '@voiceflow/common';
-import { Box, Popper, SvgIcon } from '@voiceflow/ui';
+import { Box, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 import { useSelector } from 'react-redux';
 
 import * as NLU from '@/config/nlu';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
-import { useTrackingEvents } from '@/hooks';
-import { useNLUManager } from '@/pages/NLUManager/context';
 import { isVoiceflowNluModel } from '@/utils/typeGuards';
 
-import { ErrorBubble, SidebarHeaderContainer } from './components';
-import NLUNotifications from './components/NLUNotifications';
+import { SidebarHeaderContainer } from './components';
 
 const SidebarHeader: React.OldFC = () => {
   const projectID = useSelector(Session.activeProjectIDSelector)!;
   const project = useSelector(ProjectV2.getProjectByIDSelector)({ id: projectID });
-  const { notifications } = useNLUManager();
-  const [trackingEvents] = useTrackingEvents();
 
   const showIcon = !isVoiceflowNluModel(project?.nlu);
   const nluConfig = NLU.Config.get(project?.nlu);
@@ -33,7 +27,8 @@ const SidebarHeader: React.OldFC = () => {
         NLU Model
       </Box>
 
-      {notifications.length > 0 && (
+      {/* TO DO: Removed from NLU v1. Add it back in NLU v2 */}
+      {/* {notifications.length > 0 && (
         <Popper width="400px" placement="bottom-start" renderContent={({ onClose }) => <NLUNotifications onClose={onClose} />}>
           {({ ref, onToggle, isOpened }) => (
             <ErrorBubble
@@ -47,7 +42,7 @@ const SidebarHeader: React.OldFC = () => {
             </ErrorBubble>
           )}
         </Popper>
-      )}
+      )} */}
     </SidebarHeaderContainer>
   );
 };

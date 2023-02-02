@@ -36,7 +36,7 @@ const TableOrderDropdown: React.OldFC = () => {
             <Text fontSize={13} color={isOpen ? '#3D82E2' : '#132144'}>
               {LIST_ORDER_LABELS[nluManager.unclassifiedListOrder]}
             </Text>
-            <SvgIcon size={8} icon="caretDown" color={isOpen ? '#3D82E2' : SvgIcon.DEFAULT_COLOR} />
+            <SvgIcon size={12} icon="arrowLeft" rotation={270} active={isOpen} variant={SvgIcon.Variant.STANDARD} clickable />
           </S.DropdownLabel>
         )}
       </Dropdown>

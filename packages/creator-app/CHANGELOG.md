@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1078.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1077.1...@voiceflow/creator-app@1.1078.0) (2023-02-02)
+
+
+### Bug Fixes
+
+* df default tts (CT-1544) ([#6654](https://github.com/voiceflow/creator-app/issues/6654)) ([251eb1f](https://github.com/voiceflow/creator-app/commit/251eb1fafe2b2d58af93d7006ac90024c718d495))
+
+
+### Features
+
+* add wavenet to dialogflow (CT-1500) ([#6653](https://github.com/voiceflow/creator-app/issues/6653)) ([58703e3](https://github.com/voiceflow/creator-app/commit/58703e3501964262d00f71686d4777041d8e65a7))
+* remove ffs (CT-1518) ([#6655](https://github.com/voiceflow/creator-app/issues/6655)) ([73d0db4](https://github.com/voiceflow/creator-app/commit/73d0db4cf7835236162338b3021d611e7ae85d42))
+
+
+
+
+
 ## [1.1077.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1077.0...@voiceflow/creator-app@1.1077.1) (2023-02-02)
 
 

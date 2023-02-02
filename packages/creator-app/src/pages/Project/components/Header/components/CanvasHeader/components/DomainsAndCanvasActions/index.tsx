@@ -105,6 +105,7 @@ const DomainsAndCanvasActions: React.OldFC = () => {
             icon="componentOutline"
             tooltip={{
               content: <TippyTooltip.WithHotkey hotkey={HOTKEY_LABEL_MAP[Hotkey.CREATE_COMPONENT]}>Create component</TippyTooltip.WithHotkey>,
+              offset: [0, -6],
             }}
             onClick={onCreateComponent}
           />
@@ -120,6 +121,7 @@ const DomainsAndCanvasActions: React.OldFC = () => {
                 active={templatePopperIsOpen}
                 tooltip={{
                   content: <TippyTooltip.WithHotkey hotkey={HOTKEY_LABEL_MAP[Hotkey.ADD_TO_LIBRARY]}>Add to library</TippyTooltip.WithHotkey>,
+                  offset: [0, -6],
                 }}
                 onClick={onToggle}
               />
@@ -130,6 +132,7 @@ const DomainsAndCanvasActions: React.OldFC = () => {
             icon="copy"
             tooltip={{
               content: <TippyTooltip.WithHotkey hotkey={HOTKEY_LABEL_MAP[Hotkey.COPY]}>Copy</TippyTooltip.WithHotkey>,
+              offset: [0, -6],
             }}
             onClick={onCopy}
           />

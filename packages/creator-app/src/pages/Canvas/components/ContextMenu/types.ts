@@ -4,11 +4,12 @@ import { ModalActions } from '@/hooks';
 import { ContextMenuValue } from '@/pages/Canvas/contexts';
 import { ClipboardContextValue } from '@/pages/Canvas/contexts/ClipboardContext';
 import type Engine from '@/pages/Canvas/engine';
-import { MarkupContextType } from '@/pages/Project/contexts';
+import { LastCreatedComponentContextType, MarkupContextType } from '@/pages/Project/contexts';
 
 export interface OptionProps {
   engine: Engine;
   markup: MarkupContextType;
+  lastCreatedComponent: LastCreatedComponentContextType;
   clipboard: ClipboardContextValue;
   isTemplate?: boolean;
   upgradeModal: ModalActions;

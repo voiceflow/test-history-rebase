@@ -21,6 +21,7 @@ export enum CanvasAction {
   DELETE_BLOCK = 'delete_block',
   COLOR_BLOCK = 'color_block',
   SAVE_TO_LIBRARY = 'save_to_library',
+  CREATE_COMPONENT = 'create_component',
   RETURN_TO_HOME = 'return_to_home',
   ZOOM_IN = 'zoom_in',
   ZOOM_OUT = 'zoom_out',
@@ -136,8 +137,9 @@ export const BLOCK_OPTIONS: ContextMenuOption<CanvasAction>[] = [
     shouldRender: ({ target: nodeID }, { engine }) => !isStart(nodeID, engine),
   },
   {
-    label: 'Rename',
-    value: CanvasAction.RENAME_BLOCK,
+    label: 'Create component',
+    value: CanvasAction.CREATE_COMPONENT,
+    hotkey: HOTKEY_LABEL_MAP[Hotkey.CREATE_COMPONENT],
     shouldRender: ({ target: nodeID }, { engine }) => engine.isNodeOfType(nodeID, BLOCKS_WITH_RENAME),
   },
   COMMENT_MENU_OPTION,
@@ -147,6 +149,11 @@ export const BLOCK_OPTIONS: ContextMenuOption<CanvasAction>[] = [
     menuItemProps: { divider: true },
     shouldRender: ({ target: nodeID }, { engine, showHintFeatures }) =>
       (showHintFeatures && !isMarkup(nodeID, engine)) || isBlock(nodeID, engine) || engine.isNodeOfType(nodeID, BLOCKS_WITH_RENAME),
+  },
+  {
+    label: 'Rename',
+    value: CanvasAction.RENAME_BLOCK,
+    shouldRender: ({ target: nodeID }, { engine }) => engine.isNodeOfType(nodeID, BLOCKS_WITH_RENAME),
   },
   {
     label: 'Copy',

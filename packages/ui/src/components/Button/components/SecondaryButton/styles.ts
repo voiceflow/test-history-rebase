@@ -58,7 +58,7 @@ export const SecondaryButtonContainer = styled(ButtonContainer)<SecondaryButtonC
   background-size: 1px 41px;
 
   padding: 11px 19px 10px;
-  background-color: #f2f7f8;
+  background-color: #eef4f6;
   border-radius: 10px;
   box-shadow: 0 0 0 1px rgba(204, 211, 228, 0.6);
   border: 1px solid #fff;

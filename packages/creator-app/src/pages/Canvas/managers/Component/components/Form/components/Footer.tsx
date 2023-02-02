@@ -23,7 +23,7 @@ const Footer: React.OldFC<FooterProps> = ({ editor, tutorial = Documentation.COM
     <EditorV2.DefaultFooter tutorial={tutorial}>
       {diagram && (
         <Button variant={Button.Variant.PRIMARY} onClick={() => goToDiagram(diagram.id, undefined, editor.nodeID)} squareRadius>
-          Enter Component
+          Edit
         </Button>
       )}
     </EditorV2.DefaultFooter>

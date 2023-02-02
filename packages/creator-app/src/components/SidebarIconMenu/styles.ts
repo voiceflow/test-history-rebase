@@ -14,18 +14,14 @@ export const ITEM_HEIGHT = 44;
 export const Icon = styled(SvgIcon)``;
 
 export const Item = styled(Box.FlexCenter)<ItemProps>`
-  ${transition('color')}
+  ${transition('color, opacity')}
 
   width: 100%;
   height: ${({ theme, small }) => (small ? theme.components.sidebarIconMenu.smallItemHeight : theme.components.sidebarIconMenu.itemHeight)}px;
   cursor: pointer;
-  color: #6e849a;
+  color: rgba(110, 131, 153, 0.85);
   flex-direction: column;
   position: relative;
-
-  ${Icon} {
-    opacity: 0.65;
-  }
 
   ${({ isActive }) =>
     isActive &&
@@ -43,9 +39,7 @@ export const Item = styled(Box.FlexCenter)<ItemProps>`
     !withoutHover &&
     css`
       &:hover {
-        ${Icon} {
-          opacity: 1;
-        }
+        color: rgb(110, 131, 153);
       }
     `}
 `;

@@ -65,7 +65,7 @@ const SidebarIconMenu = <T extends SidebarIconMenuItem>({
     );
 
     return option.tooltip ? (
-      <TippyTooltip key={option.value} placement="right" {...option.tooltip}>
+      <TippyTooltip key={option.value} placement="right" {...option.tooltip} offset={[0, -16]}>
         {item}
       </TippyTooltip>
     ) : (

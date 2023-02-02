@@ -47,6 +47,7 @@ const CanvasHeader: React.OldFC = () => {
               onClick={onDisableModes}
               tooltip={{
                 content: <TippyTooltip.WithHotkey hotkey={HOTKEY_LABEL_MAP[Hotkey.MOVE_MODE]}>Move</TippyTooltip.WithHotkey>,
+                offset: [0, -6],
               }}
               expandable
               expandActive={isOpen}
@@ -62,6 +63,7 @@ const CanvasHeader: React.OldFC = () => {
             active={isMarkupTextActive}
             tooltip={{
               content: <TippyTooltip.WithHotkey hotkey={HOTKEY_LABEL_MAP[Hotkey.ADD_MARKUP_TEXT]}>Text Markup</TippyTooltip.WithHotkey>,
+              offset: [0, -6],
             }}
             onClick={markup.toggleTextCreating}
             className={`${ClassName.CANVAS_CONTROL}--markup-text`}
@@ -75,6 +77,7 @@ const CanvasHeader: React.OldFC = () => {
             onClick={markup.triggerMediaUpload}
             tooltip={{
               content: <TippyTooltip.WithHotkey hotkey={HOTKEY_LABEL_MAP[Hotkey.ADD_MARKUP_IMAGE]}>Image or Video</TippyTooltip.WithHotkey>,
+              offset: [0, -6],
             }}
             iconProps={{ size: 18 }}
             className={`${ClassName.CANVAS_CONTROL}--markup-image`}
@@ -87,6 +90,7 @@ const CanvasHeader: React.OldFC = () => {
             active={isCommentingMode}
             tooltip={{
               content: <TippyTooltip.WithHotkey hotkey={HOTKEY_LABEL_MAP[Hotkey.OPEN_COMMENTING]}>Comment</TippyTooltip.WithHotkey>,
+              offset: [0, -6],
             }}
             onClick={onToggleCommenting}
             className={`${ClassName.CANVAS_CONTROL}--commenting`}
@@ -101,6 +105,7 @@ const CanvasHeader: React.OldFC = () => {
             onClick={trackingEventsWrapper(nluQuickView.open, 'trackCanvasControlInteractionModel')}
             tooltip={{
               content: <TippyTooltip.WithHotkey hotkey={HOTKEY_LABEL_MAP[Hotkey.OPEN_CMS_MODAL]}>NLU Model</TippyTooltip.WithHotkey>,
+              offset: [0, -6],
             }}
           />
         )}
@@ -111,6 +116,7 @@ const CanvasHeader: React.OldFC = () => {
           onClick={() => search?.toggle()}
           tooltip={{
             content: <TippyTooltip.WithHotkey hotkey={HOTKEY_LABEL_MAP[Hotkey.SEARCH]}>Search Assistant</TippyTooltip.WithHotkey>,
+            offset: [0, -6],
           }}
         />
       </Box.Flex>

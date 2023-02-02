@@ -40,7 +40,8 @@ export const PrimaryButtonContainer = styled(ButtonContainer)<PrimaryButtonConta
     disabled
       ? css`
           box-shadow: none;
-          opacity: 0.4;
+          background-color: rgba(61, 130, 226, 0.4);
+          box-shadow: inset 0px -2px 0px rgba(19, 33, 68, 0.06);
 
           & ${PrimaryButtonIcon} {
             opacity: 0.46;

@@ -14,8 +14,8 @@ export type TertiaryButtonProps = ButtonContainerProps &
 
 const TertiaryButton = styled(ButtonContainer)<TertiaryButtonProps>`
   ${transition('background', 'background-color')}
-  padding: 0 22px;
-  color: ${({ isGray }) => (isGray ? colors(ThemeColor.TERTIARY) : colors(ThemeColor.BLUE))};
+  padding: 0px 20px;
+  color: ${({ isGray }) => (isGray ? colors(ThemeColor.TERTIARY) : '#3d82e2')};
   font-weight: 600;
   border: 0;
   box-shadow: none;
@@ -28,12 +28,12 @@ const TertiaryButton = styled(ButtonContainer)<TertiaryButtonProps>`
         `
       : css`
           &:hover {
-            background: ${isGray ? 'rgb(141, 162, 181, 0.09)' : 'rgba(93, 157, 245, 0.1)'};
+            background-color: ${isGray ? 'rgb(141, 162, 181, 0.09)' : 'rgba(60, 129, 226, 0.1)'};
           }
         `}
 
   &:active {
-    background: ${({ isGray }) => (isGray ? 'rgb(141, 162, 181, 0.15)' : 'rgba(93, 157, 245, 0.16)')};
+    background-color: ${({ isGray }) => (isGray ? 'rgb(141, 162, 181, 0.15)' : 'rgba(60, 129, 226, 0.16)')};
   }
 `;
 

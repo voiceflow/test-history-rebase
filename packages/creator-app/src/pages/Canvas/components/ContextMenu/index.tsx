@@ -9,7 +9,7 @@ import { Permission } from '@/constants/permissions';
 import * as UIDuck from '@/ducks/ui';
 import { useDispatch, useModals, usePermission } from '@/hooks';
 import { ClipboardContext, ContextMenuContext, ContextMenuValue, EngineContext } from '@/pages/Canvas/contexts';
-import { MarkupContext } from '@/pages/Project/contexts';
+import { LastCreatedComponentContext, MarkupContext } from '@/pages/Project/contexts';
 import { Identifier } from '@/styles/constants';
 import * as Clipboard from '@/utils/clipboard';
 import { Coords } from '@/utils/geometry';
@@ -78,6 +78,11 @@ const OPTION_HANDLERS: Record<CanvasAction, OptionHandler> = {
 
   [CanvasAction.SAVE_TO_LIBRARY]: Utils.functional.noop,
 
+  [CanvasAction.CREATE_COMPONENT]: async (_, { engine, lastCreatedComponent }) => {
+    const diagramID = await engine.createComponent();
+    lastCreatedComponent.setComponentID(diagramID);
+  },
+
   [CanvasAction.RETURN_TO_HOME]: (_, { engine }) => engine.focusStart(),
 
   [CanvasAction.DIVIDER]: Utils.functional.noop,
@@ -117,6 +122,7 @@ const ContextMenu: React.OldFC = () => {
   const markup = React.useContext(MarkupContext)!;
   const clipboard = React.useContext(ClipboardContext)!;
   const contextMenu = React.useContext(ContextMenuContext)!;
+  const lastCreatedComponent = React.useContext(LastCreatedComponentContext)!;
   const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
 
   const upgradeModal = useModals(ModalType.PAYMENT);
@@ -128,6 +134,7 @@ const ContextMenu: React.OldFC = () => {
     engine,
     markup,
     clipboard,
+    lastCreatedComponent,
     contextMenu,
     upgradeModal,
     canUseCommenting,

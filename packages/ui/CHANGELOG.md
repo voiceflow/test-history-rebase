@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.231.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.231.0...@voiceflow/ui@1.231.1) (2023-02-02)
+
+
+### Bug Fixes
+
+* unclassified design review [bugfix] (CT-1429) ([#6649](https://github.com/voiceflow/creator-app/issues/6649)) ([c07d725](https://github.com/voiceflow/creator-app/commit/c07d725e242a4ae3c9ddd810f9fdbd3f06fb6659)), closes [/www.notion.so/voiceflow/Unclassified-View-0bd00b84b1e84e34ad9bd3f4f35190fc#961d90bb16304da18718c756f5f99104](https://github.com//www.notion.so/voiceflow/Unclassified-View-0bd00b84b1e84e34ad9bd3f4f35190fc/issues/961d90bb16304da18718c756f5f99104)
+
+
+
+
+
 # [1.231.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.230.1...@voiceflow/ui@1.231.0) (2023-02-01)
 
 

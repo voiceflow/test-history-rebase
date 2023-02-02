@@ -17,10 +17,7 @@ export enum FeatureFlag {
   NLU_MANAGER_UNCLASSIFIED = 'nlu_manager_unclassified',
   NLU_MANAGER_CLUSTERING_VIEW = 'nlu_manager_clustering_view',
 
-  CHAT_CARDS_CAROUSEL = 'chat_cards_carousel',
-  CHAT_CARD_STEP = 'chat_card_step',
   CHAT_CAROUSEL_INTENT = 'chat_carousel_intent',
-  CHAT_CHOICE_STEP = 'chat_choice_step',
 
   EXPERIMENTAL_SYNC_LINKS = 'experimental_sync_links',
 

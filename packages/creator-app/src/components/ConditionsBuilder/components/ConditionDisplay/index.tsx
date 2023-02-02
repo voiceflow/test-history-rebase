@@ -32,7 +32,7 @@ const ConditionDisplay: React.OldFC<ConditionDisplayProps> = ({ expression, isAc
       <LabelWrapper>
         {logicType && (
           <Text>
-            <b>{String(leftValue) || placeholder}</b> {ExpressionDisplayLabel[logicType].toLowerCase()} <b>{String(rightValue)}</b>
+            <b>{String(leftValue) || placeholder}</b> {ExpressionDisplayLabel[logicType]?.toLowerCase()} <b>{String(rightValue)}</b>
           </Text>
         )}
       </LabelWrapper>

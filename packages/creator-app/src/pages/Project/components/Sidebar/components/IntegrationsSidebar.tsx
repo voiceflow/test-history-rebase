@@ -30,7 +30,6 @@ const IntegrationsSidebar: React.OldFC = () => {
   const [canExportCode] = usePermission(Permission.CODE_EXPORT);
 
   const disableCodeExports = useFeature(Realtime.FeatureFlag.DISABLE_CODE_EXPORTS).isEnabled;
-  const twilioSandbox = useFeature(Realtime.FeatureFlag.TWILIO_SANDBOX).isEnabled;
   const canUseAlexaSettings = useAlexaProjectSettings();
 
   const { name: title } = Platform.Config.get(meta.platform);
@@ -57,7 +56,7 @@ const IntegrationsSidebar: React.OldFC = () => {
       case Platform.Constants.PlatformType.WHATSAPP:
         return [
           { to: generatePath(Path.PUBLISH_WHATSAPP, { versionID }), title: 'WhatsApp Business', icon },
-          ...(twilioSandbox ? [{ to: generatePath(Path.PROTOTYPE_WHATSAPP, { versionID }), title: 'Test on Phone', icon: 'phone' }] : []),
+          { to: generatePath(Path.PROTOTYPE_WHATSAPP, { versionID }), title: 'Test on Phone', icon: 'phone' },
         ] as MenuOption[];
       case Platform.Constants.PlatformType.MICROSOFT_TEAMS:
         return [{ to: generatePath(Path.PUBLISH_TEAMS, { versionID }), title, icon: 'microsoftTeamsT' }];

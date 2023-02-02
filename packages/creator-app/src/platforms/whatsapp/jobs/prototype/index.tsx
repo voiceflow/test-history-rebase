@@ -1,11 +1,8 @@
-import { Utils } from '@voiceflow/common';
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Dropdown, Menu, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
 import JobInterface from '@/components/JobInterface';
 import { PrototypeJobContext } from '@/contexts/PrototypeJobContext';
-import { useFeature } from '@/hooks';
 import { useSimulatedProgress } from '@/hooks/job';
 import RunButton from '@/pages/Project/components/Header/components/CanvasHeader/components/Run/button';
 import { useRunPrototype } from '@/pages/Project/components/Header/components/CanvasHeader/components/Run/hooks';
@@ -13,8 +10,6 @@ import { useRunPrototype } from '@/pages/Project/components/Header/components/Ca
 import { useTwilioPrototypeStageContent } from './stages';
 
 const TwilioPrototypeRun: React.OldFC<React.ComponentProps<typeof RunButton>> = ({ variant }) => {
-  const twilioSandbox = useFeature(Realtime.FeatureFlag.TWILIO_SANDBOX).isEnabled;
-
   const runPrototype = useRunPrototype();
 
   const context = React.useContext(PrototypeJobContext)!;
@@ -28,14 +23,6 @@ const TwilioPrototypeRun: React.OldFC<React.ComponentProps<typeof RunButton>> = 
     variant,
     loading: active,
   };
-
-  if (!twilioSandbox) {
-    return (
-      <JobInterface Content={Content} context={context} progress={progress}>
-        <RunButton {...buttonProps} onClick={(active && Utils.functional.noop) || runPrototype} />
-      </JobInterface>
-    );
-  }
 
   return (
     <JobInterface Content={Content} context={context} progress={progress}>

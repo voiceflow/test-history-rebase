@@ -9,3 +9,4 @@ export * from './logger';
 export * from './query';
 export * from './refs';
 export * from './store';
+export * from './string';

@@ -4,17 +4,17 @@ import React from 'react';
 
 import Page from '@/components/Page';
 import { PRICE_PER_INTERACTION } from '@/constants';
+import { DBPaymentSource } from '@/models/Billing';
 import * as currency from '@/utils/currency';
 
 import CardDetails from '../CardDetails';
 
 interface BillingProductionUsageProps {
   data: SubscriptionBillingPeriod;
+  source: DBPaymentSource | null;
 }
 
-const BillingProductionUsage: React.FC<BillingProductionUsageProps> = ({ data }) => {
-  const cardDetails = '8707';
-
+const BillingProductionUsage: React.FC<BillingProductionUsageProps> = ({ data, source }) => {
   const { quantity, amount } = data.items[0] ?? {};
 
   const pricePerInteraction = currency.formatUSD(PRICE_PER_INTERACTION);
@@ -31,7 +31,7 @@ const BillingProductionUsage: React.FC<BillingProductionUsageProps> = ({ data })
             </SectionV2.Description>
           </Box.FlexAlignStart>
 
-          {cardDetails ? <CardDetails>{cardDetails}</CardDetails> : <Button variant={Button.Variant.SECONDARY}>Add Card</Button>}
+          {source ? <CardDetails>{source.last4}</CardDetails> : <Button variant={Button.Variant.SECONDARY}>Add Card</Button>}
         </Box.FlexApart>
       </SectionV2.SimpleSection>
 

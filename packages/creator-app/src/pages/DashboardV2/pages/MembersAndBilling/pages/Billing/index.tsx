@@ -1,7 +1,8 @@
-import { Box, Spinner } from '@voiceflow/ui';
+import { Box, Spinner, withProvider } from '@voiceflow/ui';
 import React from 'react';
 
 import { Permission } from '@/constants/permissions';
+import * as Payment from '@/contexts/PaymentContext';
 import { usePermission } from '@/hooks';
 
 import BillingHistory from './BillingHistory';
@@ -13,12 +14,13 @@ import ProductionUsage from './ProductionUsage';
 import { useUsageSubscription } from './ProductionUsage/hooks';
 
 const DashboardV2Billing: React.FC = () => {
+  const paymentAPI = Payment.usePaymentAPI();
   const billingHistory = useBillingHistory();
   const usageSubscription = useUsageSubscription();
-  const canManageSeats = usePermission(Permission.BILLING_SEATS);
-  const hasCard = true;
 
-  const isReady = billingHistory.isReady && usageSubscription.isReady;
+  const canManageSeats = usePermission(Permission.BILLING_SEATS);
+
+  const isReady = billingHistory.isReady && usageSubscription.isReady && paymentAPI.isReady;
 
   if (!isReady) {
     return (
@@ -31,9 +33,9 @@ const DashboardV2Billing: React.FC = () => {
   return (
     <Box>
       <EditorSeats />
-      {usageSubscription.data?.billingStartDate && <ProductionUsage data={usageSubscription.data} />}
+      {usageSubscription.data?.billingStartDate && <ProductionUsage data={usageSubscription.data} source={paymentAPI.paymentSource} />}
 
-      {hasCard && <PaymentDetails />}
+      {paymentAPI.paymentSource && <PaymentDetails source={paymentAPI.paymentSource} refetch={paymentAPI.refetchPaymentSource} />}
 
       {!!billingHistory?.data?.length && (
         <BillingHistory
@@ -49,4 +51,4 @@ const DashboardV2Billing: React.FC = () => {
   );
 };
 
-export default DashboardV2Billing;
+export default withProvider(Payment.PaymentProvider)(DashboardV2Billing);

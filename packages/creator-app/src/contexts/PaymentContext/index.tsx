@@ -1,24 +1,28 @@
 import { Elements, useElements, useStripe } from '@stripe/react-stripe-js';
-import { loadStripe, Source } from '@stripe/stripe-js';
+import { loadStripe, Source, SourceCreateParams } from '@stripe/stripe-js';
 import { Utils } from '@voiceflow/common';
-import { useContextApi, usePersistFunction } from '@voiceflow/ui';
+import { useAsyncEffect, useContextApi, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
+import client from '@/client';
 import { STRIPE_KEY } from '@/config';
+import * as Session from '@/ducks/session';
+import { useSelector } from '@/hooks';
+import { DBPaymentSource } from '@/models/Billing';
 
-const MAX_POLL_COUNT = 30;
-const POLL_INTERVAL = 1000;
+import { MAX_POLL_COUNT, POLL_INTERVAL, STRIPE_ELEMENT_OPTIONS } from './constants';
+import { CardHolderInfo, PaymentAPIContextType } from './types';
+
+export * from './types';
 
 const stripePromise = loadStripe(STRIPE_KEY);
-
-export interface PaymentAPIContextType {
-  checkChargeable: (source: Pick<Source, 'id' | 'client_secret'>) => Promise<boolean>;
-  createSource: () => Promise<Source>;
-}
 
 export const PaymentAPIContext = React.createContext<PaymentAPIContextType | null>(null);
 
 export const PaymentApiProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
+  const [isReady, setIsReady] = React.useState(false);
+  const [paymentSource, setPaymentSource] = React.useState<DBPaymentSource | null>(null);
+  const workspaceID = useSelector(Session.activeWorkspaceIDSelector)!;
   const stripe = useStripe();
   const elements = useElements();
 
@@ -69,9 +73,57 @@ export const PaymentApiProvider: React.FC<React.PropsWithChildren> = ({ children
     return stripeSource.source;
   });
 
+  const createFullSource = usePersistFunction(async (cardHolderInfo: CardHolderInfo): Promise<Source> => {
+    if (!stripe || !elements) throw new Error('Stripe not loaded');
+
+    const cardElement = elements.getElement('card');
+
+    if (!cardElement) throw new Error('Card Element not found');
+
+    const owner: SourceCreateParams.Owner = {
+      name: cardHolderInfo.name,
+      address: {
+        line1: cardHolderInfo.address,
+        city: cardHolderInfo.city,
+        state: cardHolderInfo.state,
+        country: cardHolderInfo.country,
+      },
+    };
+
+    const stripeSource = await stripe.createSource(cardElement, { type: 'card', owner });
+
+    if (!stripeSource.source) {
+      throw new Error(stripeSource.error?.message || 'Invalid Card Information');
+    }
+
+    await checkChargeable(stripeSource.source);
+
+    await client.workspace.updateSource(workspaceID, stripeSource.source.id);
+
+    return stripeSource.source;
+  });
+
+  const fetchPaymentSource = async () => {
+    const plan = await client.workspace.getPlan(workspaceID);
+
+    setPaymentSource(plan.source ?? null);
+  };
+
+  useAsyncEffect(async () => {
+    setPaymentSource(null);
+    setIsReady(false);
+
+    await fetchPaymentSource();
+    setIsReady(true);
+  }, [workspaceID]);
+
   const api = useContextApi({
     checkChargeable,
     createSource,
+    createFullSource,
+    paymentSource,
+    refetchPaymentSource: fetchPaymentSource,
+    isReady,
   });
 
   if (!stripe) return null;
@@ -80,7 +132,11 @@ export const PaymentApiProvider: React.FC<React.PropsWithChildren> = ({ children
 };
 
 export const StripeProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
-  return <Elements stripe={stripePromise}>{children}</Elements>;
+  return (
+    <Elements stripe={stripePromise} options={STRIPE_ELEMENT_OPTIONS}>
+      {children}
+    </Elements>
+  );
 };
 
 export const PaymentProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
@@ -100,10 +156,3 @@ export const usePaymentAPI = () => {
 
   return paymentAPI;
 };
-
-export const withPayment = (Component: any) =>
-  React.forwardRef((props, ref) => (
-    <PaymentProvider>
-      <Component {...props} ref={ref} />
-    </PaymentProvider>
-  ));

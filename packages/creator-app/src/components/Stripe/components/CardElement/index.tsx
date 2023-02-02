@@ -11,7 +11,7 @@ interface StripeCardElementProps {
   onChangeComplete?: (complete: boolean) => void;
 }
 
-const StripeCardElement: React.OldFC<StripeCardElementProps> = ({ onChangeComplete, disabled = false, stripeOnChange }) => {
+const StripeCardElement: React.FC<StripeCardElementProps> = ({ onChangeComplete, disabled = false, stripeOnChange }) => {
   const cardElementRef = React.useRef<stripeJs.StripeCardElement | null>(null);
   const boxRef = React.useRef<HTMLDivElement>(null);
   const errorMessageRef = React.useRef('message');

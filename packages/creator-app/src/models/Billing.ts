@@ -41,6 +41,7 @@ export interface DBPaymentSource {
   type: 'card';
   brand: string;
   last4: string;
+  expiration?: string;
 }
 
 export interface DBBilling {

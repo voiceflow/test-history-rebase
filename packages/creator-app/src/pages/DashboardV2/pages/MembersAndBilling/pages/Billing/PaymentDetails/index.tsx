@@ -2,9 +2,26 @@ import { Box, Button, Link, SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
 import Page from '@/components/Page';
+import * as ModalsV2 from '@/ModalsV2';
+import { DBPaymentSource } from '@/models/Billing';
 
-const PaymentDetails: React.FC = () => {
-  const cardDetails = '... 8707, card expires 4 / 23';
+interface PaymentDetailsProps {
+  source: DBPaymentSource | null;
+  refetch: () => void;
+}
+
+const PaymentDetails: React.FC<PaymentDetailsProps> = ({ source, refetch }) => {
+  const addCardSeatModal = ModalsV2.useModal(ModalsV2.Billing.AddCard);
+
+  const cardExpires = source?.expiration ? `, card expires ${source.expiration}` : '';
+  const cardDetails = source ? `...${source.last4}${cardExpires}` : '...';
+
+  const onClickAddCard = async () => {
+    await addCardSeatModal.openVoid();
+    refetch();
+  };
+
+  if (!source) return null;
 
   return (
     <Page.Section
@@ -25,7 +42,9 @@ const PaymentDetails: React.FC = () => {
             <SectionV2.Description secondary>{cardDetails}</SectionV2.Description>
           </Box.FlexAlignStart>
 
-          <Button variant={Button.Variant.SECONDARY}>Edit Card</Button>
+          <Button variant={Button.Variant.SECONDARY} onClick={onClickAddCard}>
+            Edit Card
+          </Button>
         </Box.FlexApart>
       </SectionV2.SimpleSection>
     </Page.Section>

@@ -13,3 +13,4 @@ export const getStringHashNumber = (text: string) => {
   }
   return Math.abs(hash);
 };
+export const stripAccents = (str?: string) => (str ? str.normalize('NFD').replace(/[\u0300-\u036f]/g, '') : '');

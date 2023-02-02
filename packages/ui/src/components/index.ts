@@ -65,6 +65,7 @@ export * as COLOR_PICKER_CONSTANTS from './ColorPicker/constants';
 export { normalizeColor } from './ColorPicker/utils';
 export type { ContextMenuProps } from './ContextMenu';
 export { CONTEXT_MENU_IGNORED_CLASS_NAME, default as ContextMenu } from './ContextMenu';
+export { default as CountrySelect } from './CountrySelect';
 export { default as Cursor, CursorConstants } from './Cursor';
 export type { CustomScrollbarsTypes } from './CustomScrollbars';
 export { default as CustomScrollbars } from './CustomScrollbars';

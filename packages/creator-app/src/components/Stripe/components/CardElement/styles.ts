@@ -1,3 +1,4 @@
+import * as stripeJs from '@stripe/stripe-js';
 import { inputStyle, StyledInputProps, SvgIconTypes } from '@voiceflow/ui';
 
 import { css, styled } from '@/hocs/styled';
@@ -43,7 +44,7 @@ export const CardElementContainer = styled.div`
   right: -32px;
 `;
 
-export const stripeInputStyle = {
+export const stripeInputStyle: stripeJs.StripeElementStyle = {
   base: {
     fontSize: '15px',
     fontWeight: '400',

@@ -79,7 +79,7 @@ const AssistantCard: React.FC<AssistantCardProps> = ({
                   {isViewer ? 'View' : 'Designer'}
                 </Button>
 
-                {options && (
+                {!!options?.length && (
                   <Dropdown options={options} selfDismiss placement="bottom" onClose={() => toggleActive(false)}>
                     {(ref, onToggle, isOpen) => (
                       <Button

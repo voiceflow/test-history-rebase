@@ -1,4 +1,4 @@
-import { IdentityOrganization } from '@realtime-sdk/models/Organization';
+import { Identity } from '@realtime-sdk/models';
 
 import { NestResource, NestResourceOptions } from '../../nest';
 
@@ -7,8 +7,9 @@ export class Organization extends NestResource {
     super({ ...options, path: '/organization' });
   }
 
-  public async list(): Promise<IdentityOrganization[]> {
-    const { data } = await this.get<IdentityOrganization[]>(`/`);
+  public async list(params?: { members?: boolean }): Promise<Identity.Organization[]> {
+    const { data } = await this.get<Identity.Organization[]>('/', { params });
+
     return data;
   }
 }

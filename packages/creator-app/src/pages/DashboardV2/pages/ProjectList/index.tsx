@@ -85,17 +85,18 @@ const ProjectList: React.FC = () => {
           <EmptySearch onClear={() => setSearch('')} />
         ) : (
           <>
-            {Boolean(projectToRender.length) && (
+            {!!projectToRender.length && (
               <S.Grid>
                 {projectToRender.map((item) => (
-                  <AssistantCard
-                    {...getProjectStatusAndMembers({ project: item, activeViewers: activeViewersPerProject[item.id], getMemberByIDSelector })}
-                    key={item.id}
-                    image={item.image}
-                    project={item}
-                    onClickCTA={() => goToCanvasWithVersionID(item.versionID)}
-                    onClickLink={() => goToAssistantOverview(item.versionID)}
-                  />
+                  <ProjectIdentityProvider key={item.id} activeRole={Normal.getOne(item.members, String(userID))?.role ?? null}>
+                    <AssistantCard
+                      {...getProjectStatusAndMembers({ project: item, activeViewers: activeViewersPerProject[item.id], getMemberByIDSelector })}
+                      image={item.image}
+                      project={item}
+                      onClickCTA={() => goToCanvasWithVersionID(item.versionID)}
+                      onClickLink={() => goToAssistantOverview(item.versionID)}
+                    />
+                  </ProjectIdentityProvider>
                 ))}
               </S.Grid>
             )}
@@ -104,15 +105,14 @@ const ProjectList: React.FC = () => {
 
             <S.Grid>
               {projectToRender.map((item) => (
-                <ProjectIdentityProvider key={item.id} activeRole={Normal.getOne(item.members, String(userID))?.role ?? null}>
-                  <AssistantCard
-                    {...getProjectStatusAndMembers({ project: item, activeViewers: activeViewersPerProject[item.id], getMemberByIDSelector })}
-                    image={item.image}
-                    project={item}
-                    onClickCTA={() => goToCanvasWithVersionID(item.versionID)}
-                    onClickLink={() => goToAssistantOverview(item.versionID)}
-                  />
-                </ProjectIdentityProvider>
+                <AssistantCard
+                  key={item.id}
+                  {...getProjectStatusAndMembers({ project: item, activeViewers: activeViewersPerProject[item.id], getMemberByIDSelector })}
+                  image={item.image}
+                  project={item}
+                  onClickCTA={() => goToCanvasWithVersionID(item.versionID)}
+                  onClickLink={() => goToAssistantOverview(item.versionID)}
+                />
               ))}
             </S.Grid>
           </>

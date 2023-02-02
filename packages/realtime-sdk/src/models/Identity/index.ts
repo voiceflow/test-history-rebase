@@ -1,4 +1,6 @@
 export * from './ApiKey';
+export * from './Organization';
+export * from './OrganizationMember';
 export * from './ProjectMember';
 export * from './SAMLProvider';
 export * from './User';

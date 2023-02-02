@@ -1,12 +1,16 @@
+import { UserRole } from '@voiceflow/internal';
+import { Normalized } from 'normal-store';
+
+export interface OrganizationMember {
+  name: string;
+  role: UserRole;
+  email: string;
+  image: string | null;
+  creatorID: number;
+}
+
 export interface Organization {
   id: string;
   name: string;
-}
-
-export interface IdentityOrganization {
-  id: string;
-  createdAt?: string;
-  updatedAt?: string;
-  deletedAt?: string;
-  name: string;
+  members: Normalized<OrganizationMember>;
 }

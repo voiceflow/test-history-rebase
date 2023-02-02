@@ -755,7 +755,7 @@ const GOOGLE_DIALOGFLOW_SSML_META = {
   canChangeVoice: true,
   platformTags: GOOGLE_DIALOGFLOW_DEFAULT_TAGS,
   addOptions: UNIVERSAL_ADD_OPTIONS,
-  voiceOptions: () => getGoogleDialogflowVoiceOptions(),
+  voiceOptions: (locales, useWavenet) => getGoogleDialogflowVoiceOptions({ locales, useWavenet }),
 };
 
 const GENERAL_SSML_META = {

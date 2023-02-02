@@ -87,25 +87,24 @@ export const getGoogleVoiceOptions = ({ locales, useWavenet }: GetVoiceOptionsPa
     }));
 };
 
-export const getGoogleDialogflowVoiceOptions = (): VoiceOptionGroup<string>[] => {
-  const allDialogflowLocales = Object.values(DFESConstants.Locale);
-
-  const localeMeta = allDialogflowLocales.map((locale) => ({
-    locale,
-    languageCode: DFESConstants.LocaleToVoiceLanguageCode[locale] ?? DFESConstants.VoiceLanguageCode.EN_US,
-  }));
+export const getGoogleDialogflowVoiceOptions = ({ locales, useWavenet }: GetVoiceOptionsParams = {}): VoiceOptionGroup<string>[] => {
+  const localeMeta =
+    locales?.map((locale) => ({
+      locale,
+      languageCode: DFESConstants.LocaleToVoiceLanguageCode[locale as DFESConstants.Locale] ?? DFESConstants.VoiceLanguageCode.EN_US,
+    })) ?? [];
 
   const getLangOptions = (languageCode: DFESConstants.VoiceLanguageCode) =>
     DFESConstants.VoiceLanguageCodeToVoice[languageCode].flatMap(({ voiceName }) =>
       voiceName
-        .filter((voiceName) => voiceName.includes(GoogleConstants.VoiceType.STANDARD))
+        .filter((voiceName) => useWavenet || voiceName.includes(GoogleConstants.VoiceType.STANDARD))
         .map((voiceName) => ({ value: voiceName, label: prettifyGoogleVoicesShort(voiceName) }))
     );
 
   return localeMeta
-    .filter(({ locale }) => DFESConstants.LocaleCodeToCountryLanguage[locale])
+    .filter(({ locale, languageCode }) => locale === languageCode)
     .map(({ locale, languageCode }) => ({
-      label: DFESConstants.LocaleCodeToCountryLanguage[locale]!,
+      label: DFESConstants.LocaleCodeToCountryLanguage[locale as DFESConstants.Locale]!,
       options: getLangOptions(languageCode),
     }));
 };

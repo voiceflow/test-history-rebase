@@ -10,7 +10,7 @@ import { NodeEditorV2 } from '@/pages/Canvas/managers/types';
 const Editor: NodeEditorV2<Realtime.NodeData.Text, Realtime.NodeData.TextBuiltInPorts> = (editor) => {
   const promptSectionRef = React.useRef<PromptsSectionRef>(null);
 
-  const gptResponseGen = GPT.useResponseGenFeature();
+  const gptResponseGen = GPT.useGPTGenFeatures();
 
   const gptGenChatPrompt = GPT.useGenChatPrompts({
     examples: editor.data.texts,

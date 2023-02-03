@@ -61,11 +61,6 @@ export enum FeatureFlag {
   BEAMER_APP = 'beamer_app',
 
   ANALYTICS_DASHBOARD = 'analytics_dashboard',
-  GPT_RESPONSE_GEN = 'gpt_response_gen',
-  GPT_UTTERANCE_GEN = 'gpt_utterance_gen',
-  GPT_ENTITY_VALUE_GEN = 'gpt_entity_value_gen',
-  GPT_ENTITY_REPROMPT_GEN = 'gpt_entity_reprompt_gen',
-  GPT_NOMATCH_NOREPLY_GEN = 'gpt_nomatch_noreply_gen',
   GPT_FREESTYLE = 'gpt_freestyle',
 
   ASSISTANT_AI = 'assistant_ai',

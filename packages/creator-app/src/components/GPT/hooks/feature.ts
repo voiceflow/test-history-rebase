@@ -33,23 +33,14 @@ export const useGPTSettingsToggles = (): { workspace: boolean; project: Record<s
   };
 };
 
-type GPTFeatureFlags =
-  | Realtime.FeatureFlag.GPT_RESPONSE_GEN
-  | Realtime.FeatureFlag.GPT_UTTERANCE_GEN
-  | Realtime.FeatureFlag.GPT_ENTITY_VALUE_GEN
-  | Realtime.FeatureFlag.GPT_ENTITY_REPROMPT_GEN
-  | Realtime.FeatureFlag.GPT_FREESTYLE
-  | Realtime.FeatureFlag.GPT_NOMATCH_NOREPLY_GEN;
-
-const useGPTFeature = (feature: GPTFeatureFlags) => {
-  const gptFeature = useFeature(feature);
+const useGPTFeature = () => {
   const gptFeatures = useFeature(Realtime.FeatureFlag.ASSISTANT_AI);
   const workspace = useActiveWorkspace();
   const gptSetting = useGPTSettingsToggles();
 
   const quota = workspace?.quotas?.find((q) => q.quotaDetails.name === Realtime.QuotaNames.TOKENS);
   const hitCap = quota ? quota.consumed >= quota.quota : false;
-  const featureEnabled = gptFeatures.isEnabled && gptFeature.isEnabled && gptSetting.workspace;
+  const featureEnabled = gptFeatures.isEnabled && gptSetting.workspace;
 
   return {
     isEnabled: featureEnabled,
@@ -57,8 +48,8 @@ const useGPTFeature = (feature: GPTFeatureFlags) => {
   };
 };
 
-const useGPTGenFeatures = (feature: GPTFeatureFlags) => {
-  const { isEnabled, hitCap } = useGPTFeature(feature);
+export const useGPTGenFeatures = () => {
+  const { isEnabled, hitCap } = useGPTFeature();
   const gptSetting = useGPTSettingsToggles();
 
   const featureEnabled = isEnabled && gptSetting.project.generative;
@@ -69,12 +60,13 @@ const useGPTGenFeatures = (feature: GPTFeatureFlags) => {
   };
 };
 
-// GENERATIVE TASKS
-export const useResponseGenFeature = (): GPTFeature => useGPTGenFeatures(Realtime.FeatureFlag.GPT_RESPONSE_GEN);
-export const useUtteranceGenFeature = (): GPTFeature => useGPTGenFeatures(Realtime.FeatureFlag.GPT_UTTERANCE_GEN);
-export const useEntityValueGenFeature = (): GPTFeature => useGPTGenFeatures(Realtime.FeatureFlag.GPT_ENTITY_VALUE_GEN);
-export const useEntityRepromptGenFeature = (): GPTFeature => useGPTGenFeatures(Realtime.FeatureFlag.GPT_ENTITY_REPROMPT_GEN);
-export const useNoMatchNoReplyGenFeature = (): GPTFeature => useGPTGenFeatures(Realtime.FeatureFlag.GPT_NOMATCH_NOREPLY_GEN);
-
 // FREESTYLE
-export const useFreestyleFeature = (): GPTFeature => useGPTFeature(Realtime.FeatureFlag.GPT_FREESTYLE);
+export const useFreestyleFeature = (): GPTFeature => {
+  const { isEnabled, hitCap } = useGPTFeature();
+  const freestyleFeatureFlag = useFeature(Realtime.FeatureFlag.GPT_FREESTYLE);
+
+  return {
+    isEnabled: isEnabled && freestyleFeatureFlag.isEnabled,
+    hitCap,
+  };
+};

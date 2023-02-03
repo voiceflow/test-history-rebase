@@ -23,7 +23,7 @@ const Editor: NodeEditorV2<Realtime.NodeData.Speak, Realtime.NodeData.SpeakBuilt
       dialogs: Realtime.Adapters.voicePromptToSpeakDataAdapter.mapFromDB(newItems as Platform.Common.Voice.Models.Prompt.Model[]),
     });
 
-  const gptResponseGen = GPT.useResponseGenFeature();
+  const gptResponseGen = GPT.useGPTGenFeatures();
 
   const gptGenVoicePrompt = GPT.useGenVoicePrompts({
     examples: items,

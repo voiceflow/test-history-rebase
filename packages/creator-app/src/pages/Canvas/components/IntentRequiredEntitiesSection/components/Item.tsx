@@ -18,7 +18,7 @@ interface ItemProps {
 
 const Item: React.OldFC<ItemProps> = ({ entity, onClick, isActive, contentRef, intentEntity, onRemoveRequired, onGeneratePrompt }) => {
   const hasError = useAreIntentPromptsEmpty(intentEntity.dialog.prompt);
-  const entityReprompt = GPT.useEntityRepromptGenFeature();
+  const entityReprompt = GPT.useGPTGenFeatures();
 
   const errorTooltip = !entityReprompt.isEnabled
     ? { content: 'Prompt is missing' }

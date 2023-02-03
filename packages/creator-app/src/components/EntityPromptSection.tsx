@@ -47,7 +47,7 @@ const EntityPromptSection: React.OldFC<EntityPromptSectionProps> = ({
     factory: () => projectConfig.utils.intent.promptFactory({ defaultVoice }),
   });
 
-  const entityReprompt = GPT.useEntityRepromptGenFeature();
+  const entityReprompt = GPT.useGPTGenFeatures();
 
   const gptGenEntityPrompt = GPT.useGenEntityPrompts({
     entity,

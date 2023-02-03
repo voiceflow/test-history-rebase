@@ -83,7 +83,7 @@ const RootEditor: React.OldFC = () => {
     acceptAllOnChange: editor.isOpened,
   });
 
-  const gptNoMatchGen = GPT.useNoMatchNoReplyGenFeature();
+  const gptNoMatchGen = GPT.useGPTGenFeatures();
 
   React.useEffect(() => {
     if (!location.state?.autogenerate) return;

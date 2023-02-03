@@ -99,7 +99,7 @@ const ValuesSection: React.OldFC<ValuesSectionProps> = ({ type, name, inputs, on
     return { ...value, value: text };
   };
 
-  const gptEntityValueGen = GPT.useEntityValueGenFeature();
+  const gptEntityValueGen = GPT.useGPTGenFeatures();
 
   const gptGenEntities = GPT.useGenEntityValues({
     inputs,

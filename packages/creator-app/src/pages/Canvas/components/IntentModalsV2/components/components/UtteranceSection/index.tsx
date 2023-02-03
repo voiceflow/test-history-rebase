@@ -163,7 +163,7 @@ const UtteranceSection: React.OldFC<UtteranceSectionProps> = ({
     }
   });
 
-  const gptUtteranceGen = GPT.useUtteranceGenFeature();
+  const gptUtteranceGen = GPT.useGPTGenFeatures();
 
   const gptGenUtterances = GPT.useGenUtterances({
     inputs: intentUtterances,

@@ -20,7 +20,7 @@ interface NoReplyConfigOptions {
 }
 
 export const useConfig = ({ step }: NoReplyConfigOptions = {}): OptionalSectionConfig => {
-  const gptResponseGen = GPT.useResponseGenFeature();
+  const gptResponseGen = GPT.useGPTGenFeatures();
   const [trackingEvents] = useTrackingEvents();
 
   const editor = EditorV2.useEditor<{ noReply?: Nullable<Realtime.NodeData.NoReply> }>();

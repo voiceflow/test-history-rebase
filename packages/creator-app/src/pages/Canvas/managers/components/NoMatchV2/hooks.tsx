@@ -21,7 +21,7 @@ interface NoMatchConfigOptions {
 }
 
 export const useConfig = ({ canRemove = true, step }: NoMatchConfigOptions = {}): OptionalSectionConfig => {
-  const gptResponseGen = GPT.useResponseGenFeature();
+  const gptResponseGen = GPT.useGPTGenFeatures();
   const [trackingEvents] = useTrackingEvents();
 
   const editor = EditorV2.useEditor<{ noMatch?: Nullable<Realtime.NodeData.NoMatch> }>();

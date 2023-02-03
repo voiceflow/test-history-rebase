@@ -18,6 +18,7 @@ const FIND_SIMILAR_REQUEST_CONFIG = {
   nWords: 3,
   similarityScoring: true,
   useSeed: false,
+  topK: 10,
 };
 
 const APPEND_REQUEST_CONFIG = false;
@@ -43,7 +44,7 @@ class FindSimilar extends AbstractActionControl<ML.unclassified.FindSimilarReque
         // the order of the fields is important here!
         nWords: FIND_SIMILAR_REQUEST_CONFIG.nWords,
         similarityScoring: FIND_SIMILAR_REQUEST_CONFIG.similarityScoring,
-        topK: 100,
+        topK: FIND_SIMILAR_REQUEST_CONFIG.topK,
         useSeed: FIND_SIMILAR_REQUEST_CONFIG.useSeed,
         utterancesIntentsMap: utterances.reduce((acc, utterance) => {
           return {

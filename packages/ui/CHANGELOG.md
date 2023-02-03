@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.233.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.233.0...@voiceflow/ui@1.233.1) (2023-02-03)
+
+
+### Bug Fixes
+
+* remove 0.9 opacity from df svg (CT-1506) ([#6665](https://github.com/voiceflow/creator-app/issues/6665)) ([8121e06](https://github.com/voiceflow/creator-app/commit/8121e06b8fe5701207a3da24d73aab4e5ba1c0a2))
+
+
+
+
+
 # [1.233.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.232.0...@voiceflow/ui@1.233.0) (2023-02-02)
 
 

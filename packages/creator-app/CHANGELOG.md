@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1082.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1081.1...@voiceflow/creator-app@1.1082.0) (2023-02-03)
+
+
+### Features
+
+* removes gpt gen feature flags (CT-1501) ([#6657](https://github.com/voiceflow/creator-app/issues/6657)) ([275389d](https://github.com/voiceflow/creator-app/commit/275389dc14c7952a1afb5d51c8126cd121d16df9))
+
+
+
+
+
 ## [1.1081.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1081.0...@voiceflow/creator-app@1.1081.1) (2023-02-03)
 
 

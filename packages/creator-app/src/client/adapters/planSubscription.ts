@@ -1,0 +1,16 @@
+import { createSimpleAdapter, notImplementedAdapter } from 'bidirectional-adapter';
+import dayjs from 'dayjs';
+
+import { DBPlanSubscription, PlanSubscription } from '@/models';
+
+const timestampToDate = (timestamp: number) => dayjs.unix(timestamp).format('DD MMM YY');
+
+const planSubscriptionAdapter = createSimpleAdapter<DBPlanSubscription, PlanSubscription>(
+  ({ nextBillingDate, ...subscription }) => ({
+    ...subscription,
+    nextBillingDate: timestampToDate(nextBillingDate),
+  }),
+  notImplementedAdapter.transformer
+);
+
+export default planSubscriptionAdapter;

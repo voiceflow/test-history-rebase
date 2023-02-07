@@ -8,7 +8,7 @@ import { usePermission } from '@/hooks';
 import BillingHistory from './BillingHistory';
 import { useBillingHistory } from './BillingHistory/hooks';
 import CancelSubscription from './CancelSubscription';
-import EditorSeats from './EditorSeats';
+import EditorSeats from './EditorSeats/EditorSeats';
 import PaymentDetails from './PaymentDetails';
 import ProductionUsage from './ProductionUsage';
 import { useUsageSubscription } from './ProductionUsage/hooks';
@@ -17,9 +17,7 @@ const DashboardV2Billing: React.FC = () => {
   const paymentAPI = Payment.usePaymentAPI();
   const billingHistory = useBillingHistory();
   const usageSubscription = useUsageSubscription();
-
   const canManageSeats = usePermission(Permission.BILLING_SEATS);
-
   const isReady = billingHistory.isReady && usageSubscription.isReady && paymentAPI.isReady;
 
   if (!isReady) {
@@ -32,7 +30,9 @@ const DashboardV2Billing: React.FC = () => {
 
   return (
     <Box>
-      <EditorSeats />
+      {paymentAPI.planSubscription && (
+        <EditorSeats source={paymentAPI.paymentSource} data={paymentAPI.planSubscription} refetch={paymentAPI.refetchPlanSubscription} />
+      )}
       {usageSubscription.data?.billingStartDate && <ProductionUsage data={usageSubscription.data} source={paymentAPI.paymentSource} />}
 
       {paymentAPI.paymentSource && <PaymentDetails source={paymentAPI.paymentSource} refetch={paymentAPI.refetchPaymentSource} />}

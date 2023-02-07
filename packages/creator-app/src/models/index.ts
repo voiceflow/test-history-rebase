@@ -11,7 +11,6 @@ export * from './Prototype';
 export * from './Query';
 export * from './ReportTag';
 export * from './SAMLProvider';
-export * from './Subscription';
 export * from './Template';
 export * from './Transcript';
 export * from './UploadProject';

@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 
 import { Billing, DBBilling } from '@/models';
 
-const timestampToDate = (timestamp: number) => dayjs.unix(timestamp).format('MMMM Do YYYY');
+const timestampToDate = (timestamp: number) => dayjs.unix(timestamp).format('DD MMM YY');
 
 const convertAmountToDollars = (amount: number) => amount / 100;
 

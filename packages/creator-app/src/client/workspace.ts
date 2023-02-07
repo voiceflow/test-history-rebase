@@ -1,10 +1,11 @@
 import { BillingPeriod, PlanType, UserRole } from '@voiceflow/internal';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
-import { APIKey, DBBilling, DBPayment, DBPlan, Price, SubscriptionBillingPeriod } from '@/models';
+import { APIKey, DBBilling, DBPayment, DBPlan, DBPlanSubscription, Price, SubscriptionBillingPeriod } from '@/models';
 
 import invoiceAdapter from './adapters/invoice';
 import invoiceListAdapter from './adapters/invoicesList';
+import planSubscriptionAdapter from './adapters/planSubscription';
 import { api, apiV2 } from './fetch';
 
 export const WORKSPACES_PATH = 'workspaces';
@@ -20,6 +21,10 @@ const workspaceClient = {
       .then(invoiceListAdapter.fromDB);
   },
 
+  getPlanSubscription: (workspaceID: string) => {
+    return apiV2.get<DBPlanSubscription>(`${WORKSPACES_PATH}/${workspaceID}/plan-subscription`).then(planSubscriptionAdapter.fromDB);
+  },
+
   getUsageSubscription: (workspaceID: string) => {
     return apiV2.get<SubscriptionBillingPeriod>(`${WORKSPACES_PATH}/${workspaceID}/usage-subscription`);
   },
@@ -27,6 +32,10 @@ const workspaceClient = {
   getPlans: () => api.get<DBPlan[]>(`${WORKSPACES_PATH}/plans`),
 
   getPlan: (workspaceID: string) => api.get<DBPayment>(`${WORKSPACES_PATH}/${workspaceID}/plan`),
+
+  scheduleSeatsChange: (workspaceID: string, seats: number) => {
+    return apiV2.post(`${WORKSPACES_PATH}/${workspaceID}/subscription/plan/seats`, { seats });
+  },
 
   updateSource: (workspaceID: string, sourceID: string) => api.patch(`${WORKSPACES_PATH}/${workspaceID}/source`, { source_id: sourceID }),
 

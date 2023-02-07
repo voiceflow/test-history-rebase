@@ -1,14 +1,14 @@
 import { Elements, useElements, useStripe } from '@stripe/react-stripe-js';
 import { loadStripe, Source, SourceCreateParams } from '@stripe/stripe-js';
 import { Utils } from '@voiceflow/common';
-import { useAsyncEffect, useContextApi, usePersistFunction } from '@voiceflow/ui';
+import { toast, useAsyncEffect, useContextApi, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';
 import { STRIPE_KEY } from '@/config';
 import * as Session from '@/ducks/session';
 import { useSelector } from '@/hooks';
-import { DBPaymentSource } from '@/models/Billing';
+import { DBPaymentSource, PlanSubscription } from '@/models';
 
 import { MAX_POLL_COUNT, POLL_INTERVAL, STRIPE_ELEMENT_OPTIONS } from './constants';
 import { CardHolderInfo, PaymentAPIContextType } from './types';
@@ -20,13 +20,12 @@ const stripePromise = loadStripe(STRIPE_KEY);
 export const PaymentAPIContext = React.createContext<PaymentAPIContextType | null>(null);
 
 export const PaymentApiProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
-  const stripe = useStripe();
-  const elements = useElements();
-
-  const workspaceID = useSelector(Session.activeWorkspaceIDSelector)!;
-
   const [isReady, setIsReady] = React.useState(false);
   const [paymentSource, setPaymentSource] = React.useState<DBPaymentSource | null>(null);
+  const [planSubscription, setPlanSubscription] = React.useState<PlanSubscription | null>(null);
+  const workspaceID = useSelector(Session.activeWorkspaceIDSelector)!;
+  const stripe = useStripe();
+  const elements = useElements();
 
   const checkChargeable = usePersistFunction(async ({ id, client_secret: clientSecret }: Pick<Source, 'id' | 'client_secret'>) => {
     let pollCount = 0;
@@ -106,13 +105,18 @@ export const PaymentApiProvider: React.FC<React.PropsWithChildren> = ({ children
 
   const fetchPaymentSource = async () => {
     const plan = await client.workspace.getPlan(workspaceID);
-
     setPaymentSource(plan.source ?? null);
   };
 
+  const fetchPlanSubscription = async () => {
+    const newPlanSubscription = await client.workspace.getPlanSubscription(workspaceID);
+    setPlanSubscription(newPlanSubscription);
+  };
+
   useAsyncEffect(async () => {
-    setIsReady(false);
+    setPlanSubscription(null);
     setPaymentSource(null);
+    setIsReady(false);
 
     try {
       await fetchPaymentSource();
@@ -120,7 +124,14 @@ export const PaymentApiProvider: React.FC<React.PropsWithChildren> = ({ children
       // skip
     }
 
-    setIsReady(true);
+    Promise.allSettled([fetchPlanSubscription(), fetchPaymentSource()])
+      .then(() => setIsReady(true))
+      .catch((error) => {
+        setIsReady(true);
+        if (error.statusCode !== 404) {
+          toast.error('Something went wrong. Please try again later.');
+        }
+      });
   }, [workspaceID]);
 
   const api = useContextApi({
@@ -129,7 +140,9 @@ export const PaymentApiProvider: React.FC<React.PropsWithChildren> = ({ children
     paymentSource,
     checkChargeable,
     createFullSource,
+    planSubscription,
     refetchPaymentSource: fetchPaymentSource,
+    refetchPlanSubscription: fetchPlanSubscription,
   });
 
   if (!stripe) return null;

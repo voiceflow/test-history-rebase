@@ -1,4 +1,4 @@
-import { Box, Button, SectionV2, Text } from '@voiceflow/ui';
+import { Box, Button, Link, SectionV2, Text } from '@voiceflow/ui';
 import React from 'react';
 
 import Page from '@/components/Page';
@@ -7,20 +7,37 @@ import { Permission } from '@/constants/permissions';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { usePermission, useSelector } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
+import { DBPaymentSource, PlanSubscription } from '@/models';
+import * as currency from '@/utils/currency';
 
-import CardDetails from './CardDetails';
+import CardDetails from '../CardDetails';
 
-const EditorSeats: React.FC = () => {
+interface EditorSeatsProps {
+  data: PlanSubscription;
+  source: DBPaymentSource | null;
+  refetch: () => Promise<void>;
+}
+
+const EditorSeats: React.FC<EditorSeatsProps> = ({ data, source, refetch }) => {
   const scheduleSeatModal = ModalsV2.useModal(ModalsV2.Billing.ScheduleSeatChange);
-
-  const usedEditorSeats = useSelector(WorkspaceV2.active.usedEditorSeatsSelector);
+  const seats = useSelector(WorkspaceV2.active.numberOfSeatsSelector);
   const usedViewerSeats = useSelector(WorkspaceV2.active.usedViewerSeatsSelector);
-  const pricePerEditor = '$50';
-  const cardDetails = '8787';
   const isEnterprise = useSelector(WorkspaceV2.active.isEnterpriseSelector);
   const isPaidPlan = useSelector(WorkspaceV2.active.isOnPaidPlanSelector);
-  const nextBillingDate = '10 Jan 2023';
   const canManageSeats = usePermission(Permission.BILLING_SEATS);
+
+  const { nextBillingDate, unitPrice, interval, quantity } = data;
+  const scheduledSeat = quantity !== seats;
+
+  const openScheduleSeatModal = async () => {
+    await scheduleSeatModal.openVoid({
+      nextBillingDate,
+      pricePerEditor: unitPrice,
+      priceInterval: interval,
+      scheduleOrCurrentEditorSeats: scheduledSeat ? quantity : seats,
+    });
+    refetch();
+  };
 
   return (
     <Page.Section
@@ -34,7 +51,7 @@ const EditorSeats: React.FC = () => {
               <Page.Section.Description>
                 {!isPaidPlan && (
                   <div>
-                    This workspace has <Text color="#132144">{usedEditorSeats} Editor seats.</Text>
+                    This workspace has <Text color="#132144">{seats} Editor seats.</Text>
                   </div>
                 )}
 
@@ -42,14 +59,15 @@ const EditorSeats: React.FC = () => {
 
                 {isPaidPlan && !isEnterprise && (
                   <>
-                    Your next billing date is <Text color="#132144">{nextBillingDate}.</Text>
+                    Your next billing date is <Text color="#132144">{nextBillingDate}.</Text>{' '}
+                    {scheduledSeat && <Link onClick={openScheduleSeatModal}>Seat changes are scheduled</Link>}
                   </>
                 )}
               </Page.Section.Description>
             </div>
 
             {canManageSeats && (
-              <Button variant={Button.Variant.SECONDARY} onClick={() => scheduleSeatModal.openVoid()}>
+              <Button variant={Button.Variant.SECONDARY} onClick={openScheduleSeatModal}>
                 Schedule Seat Change
               </Button>
             )}
@@ -66,28 +84,28 @@ const EditorSeats: React.FC = () => {
 
             {isEnterprise && (
               <div>
-                <SectionV2.Description>{usedEditorSeats} </SectionV2.Description>
-                <SectionV2.Description secondary> Editor seat{usedEditorSeats > 1 && 's'} being used in this workspace.</SectionV2.Description>
+                <SectionV2.Description>{seats} </SectionV2.Description>
+                <SectionV2.Description secondary> Editor seat{seats > 1 && 's'} being used in this workspace.</SectionV2.Description>
               </div>
             )}
 
             {isPaidPlan && !isEnterprise && (
               <div>
-                <SectionV2.Description>{pricePerEditor} </SectionV2.Description>
-                <SectionV2.Description secondary> per Editor, per month</SectionV2.Description>
+                <SectionV2.Description>{currency.formatUSD(unitPrice, { noDecimal: true })} </SectionV2.Description>
+                <SectionV2.Description secondary> per Editor, per {interval}</SectionV2.Description>
               </div>
             )}
           </Box.FlexAlignStart>
 
-          {cardDetails && <CardDetails>{cardDetails}</CardDetails>}
+          {source && <CardDetails>{source.last4}</CardDetails>}
         </Box.FlexApart>
       </SectionV2.SimpleSection>
 
       <SectionV2.Divider inset />
 
       <SectionV2.SimpleSection headerProps={{ topUnit: 2, bottomUnit: 2 }} minHeight={50}>
-        <SectionV2.Description>{usedEditorSeats} Editor seats</SectionV2.Description>
-        <SectionV2.Description>{pricePerEditor}</SectionV2.Description>
+        <SectionV2.Description>{seats} Editor seats</SectionV2.Description>
+        <SectionV2.Description>{currency.formatUSD(unitPrice * seats)}</SectionV2.Description>
       </SectionV2.SimpleSection>
 
       <SectionV2.Divider inset />
@@ -103,7 +121,7 @@ const EditorSeats: React.FC = () => {
         <Box.FlexApart fullWidth>
           <SectionV2.Title bold>Total</SectionV2.Title>
           <SectionV2.Title bold fill={false}>
-            Custom
+            {currency.formatUSD(unitPrice * seats)}
           </SectionV2.Title>
         </Box.FlexApart>
       </SectionV2.SimpleSection>

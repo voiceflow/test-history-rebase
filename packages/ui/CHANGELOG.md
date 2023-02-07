@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.234.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.233.1...@voiceflow/ui@1.234.0) (2023-02-07)
+
+
+### Features
+
+* refactor card (CT-1535) ([#6663](https://github.com/voiceflow/creator-app/issues/6663)) ([229de77](https://github.com/voiceflow/creator-app/commit/229de7757e071175660b712e6ce4d2a7ee2a6490))
+
+
+
+
+
 ## [1.233.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.233.0...@voiceflow/ui@1.233.1) (2023-02-03)
 
 

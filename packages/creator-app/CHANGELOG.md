@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1083.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1082.3...@voiceflow/creator-app@1.1083.0) (2023-02-07)
+
+
+### Bug Fixes
+
+* workspace viewer invite error (BUG-223) ([#6671](https://github.com/voiceflow/creator-app/issues/6671)) ([ca76478](https://github.com/voiceflow/creator-app/commit/ca7647869388d3ab64d17254d51350ad85d8f443))
+
+
+### Features
+
+* refactor card (CT-1535) ([#6663](https://github.com/voiceflow/creator-app/issues/6663)) ([229de77](https://github.com/voiceflow/creator-app/commit/229de7757e071175660b712e6ce4d2a7ee2a6490))
+
+
+
+
+
 ## [1.1082.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1082.2...@voiceflow/creator-app@1.1082.3) (2023-02-07)
 
 

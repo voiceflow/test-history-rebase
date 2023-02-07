@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.49.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/showcase@1.48.7...@voiceflow/showcase@1.49.0) (2023-02-07)
+
+
+### Features
+
+* refactor card (CT-1535) ([#6663](https://github.com/voiceflow/creator-app/issues/6663)) ([229de77](https://github.com/voiceflow/creator-app/commit/229de7757e071175660b712e6ce4d2a7ee2a6490))
+
+
+
+
+
 ## [1.48.7](https://github.com/voiceflow/creator-app/compare/@voiceflow/showcase@1.48.6...@voiceflow/showcase@1.48.7) (2023-02-03)
 
 **Note:** Version bump only for package @voiceflow/showcase

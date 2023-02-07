@@ -41,7 +41,7 @@ const Prototype: React.OldFC<PrototypeProps & PrototypeAllTypes> = ({
   const startPrototype = useStartPrototype();
   const resetPrototype = useResetPrototype();
 
-  const { buttons, durationMilliseconds, autoplay, showButtons, prototypeColor, prototypeAvatar } = config;
+  const { buttons, durationMilliseconds, autoplay, showButtons, prototypeColor, prototypeAvatar, isMuted } = config;
   const { updatePrototype } = actions;
   const { status } = state;
 
@@ -97,6 +97,10 @@ const Prototype: React.OldFC<PrototypeProps & PrototypeAllTypes> = ({
   React.useEffect(() => {
     if (autoplay) start();
   }, [autoplay]);
+
+  React.useEffect(() => {
+    audioController.mute();
+  }, [isMuted]);
 
   const history = useHistory();
   const location = useLocation();

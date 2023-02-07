@@ -12,7 +12,7 @@ import { openURLInANewTab } from '@/utils/window';
 
 import * as S from './styles';
 
-export interface BaseMessageProps extends S.ContainerProps {
+export interface BaseMessageProps extends S.ContainerProps, React.PropsWithChildren {
   onClick?: React.MouseEventHandler;
   style?: React.CSSProperties;
   startTime?: string;
@@ -38,7 +38,7 @@ export interface BaseMessageProps extends S.ContainerProps {
   isAiMessage?: boolean;
 }
 
-const BaseMessage: React.OldFC<BaseMessageProps> = ({
+const BaseMessage: React.FC<BaseMessageProps> = ({
   rightAlign,
   isFirstInSeries,
   children,

@@ -15,6 +15,7 @@ interface SpeakProps extends Omit<BaseMessageProps, 'iconProps'> {
   audio?: HTMLAudioElement;
   voice?: string;
   message: string;
+  isMuted?: boolean;
   onPause?: VoidFunction;
   onContinue?: VoidFunction;
 }
@@ -24,7 +25,7 @@ const MARKDOWN_OPTIONS: MarkdownToJSX.Options = {
   forceInline: true,
 };
 
-const Speak: React.OldFC<SpeakProps> = ({ ai, src, audio, voice, message, className, onPause, onContinue, ...props }) => {
+const Speak: React.FC<SpeakProps> = ({ ai, src, audio, voice, message, className, onPause, onContinue, ...props }) => {
   const audioPlayer = AudioPlayer.useAudioPlayer({ audioURL: src });
 
   const formattedMessage = React.useMemo(

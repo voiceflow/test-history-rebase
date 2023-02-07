@@ -28,6 +28,8 @@ export class TAudio extends Audio {
 }
 
 class AudioController {
+  private resolveCurrentAudio?: VoidFunction;
+
   public audio: TAudio;
 
   constructor() {
@@ -40,6 +42,11 @@ class AudioController {
 
   public continue(): void {
     this.audio.play();
+  }
+
+  public mute(): void {
+    this.audio.muted = true;
+    this.resolveCurrentAudio?.();
   }
 
   public async play(
@@ -57,7 +64,8 @@ class AudioController {
 
     if (!src) return Promise.resolve();
 
-    return new Promise<void>((resolve, reject) => {
+    const promise = new Promise<void>((resolve, reject) => {
+      this.resolveCurrentAudio = resolve;
       this.audio.VF_REJECT = reject;
       this.audio.VF_ON_STOP = onStop;
 
@@ -78,6 +86,11 @@ class AudioController {
         this.audio.play();
       }
     });
+
+    const result = await promise;
+    this.resolveCurrentAudio = undefined;
+
+    return result;
   }
 
   public stop(): void {

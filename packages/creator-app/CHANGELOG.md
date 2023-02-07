@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1082.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1082.2...@voiceflow/creator-app@1.1082.3) (2023-02-07)
+
+
+### Bug Fixes
+
+* audio in loop when muted in the prototype (BUG-142) ([#6669](https://github.com/voiceflow/creator-app/issues/6669)) ([a00689f](https://github.com/voiceflow/creator-app/commit/a00689f46d569384e3839fb6d7ed68cafa323144))
+
+
+
+
+
 ## [1.1082.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1082.1...@voiceflow/creator-app@1.1082.2) (2023-02-06)
 
 

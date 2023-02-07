@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1085.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1084.0...@voiceflow/creator-app@1.1085.0) (2023-02-07)
+
+
+### Features
+
+* hookup schedule seat change (CT-1417) ([#6642](https://github.com/voiceflow/creator-app/issues/6642)) ([fd5fe1f](https://github.com/voiceflow/creator-app/commit/fd5fe1f674c7026b7a53ef19369706ab8f926e50))
+
+
+
+
+
 # [1.1084.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1083.0...@voiceflow/creator-app@1.1084.0) (2023-02-07)
 
 

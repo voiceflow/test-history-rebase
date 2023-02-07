@@ -5,8 +5,11 @@ import { Country } from './countries';
 
 const getMatchScore = (search: string, text: string, multiplier = 1) => {
   if (text === search) return 100 * multiplier;
+
   if (text.startsWith(search)) return 70 * multiplier;
+
   if (text.includes(search)) return 30 * multiplier;
+
   return 0;
 };
 
@@ -18,8 +21,9 @@ export const filterAndSortOptions: OptionsFilter<Country, string> = (options, se
 
   const strippedString = stripAccents(searchLabel).toLowerCase();
 
-  options.forEach((option) => {
-    if (isUIOnlyMenuItemOption(option)) return;
+  // eslint-disable-next-line no-restricted-syntax
+  for (const option of options) {
+    if (isUIOnlyMenuItemOption(option)) continue;
 
     const { searchValue, searchAlternative } = option;
 
@@ -31,7 +35,7 @@ export const filterAndSortOptions: OptionsFilter<Country, string> = (options, se
     } else {
       notMatchedOptions.push(option);
     }
-  });
+  }
 
   const sorted = matchedOptions.sort((a, b) => b.booster - a.booster);
 

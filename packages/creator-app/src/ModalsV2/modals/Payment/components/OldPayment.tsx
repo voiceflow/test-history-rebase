@@ -1,21 +1,14 @@
-import { Modal } from '@voiceflow/ui';
+import { Modal, useSetup } from '@voiceflow/ui';
 import React from 'react';
 
 import { receiptGraphic } from '@/assets';
-import { useSetup, useTrackingEvents } from '@/hooks';
+import { useTrackingEvents } from '@/hooks/tracking';
+import { useSuccessModal } from '@/ModalsV2/hooks';
+import { VoidInternalProps } from '@/ModalsV2/types';
 import PaymentPage from '@/pages/Payment';
 
-import { useModal } from '../hooks';
-import manager from '../manager';
-import Success from './Success';
-
-export interface PaymentProps {
-  focus?: string;
-}
-
-const Payment = manager.create<PaymentProps>('Payment', () => ({ api, focus, type, opened, hidden, animated }) => {
-  const successModal = useModal(Success);
-
+const Payment = ({ api, type, opened, hidden, animated }: VoidInternalProps) => {
+  const successModal = useSuccessModal();
   const [trackingEvents] = useTrackingEvents();
 
   const onCheckout = (message: string) => {
@@ -29,9 +22,9 @@ const Payment = manager.create<PaymentProps>('Payment', () => ({ api, focus, typ
 
   return (
     <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} maxWidth={545} minHeight={100}>
-      <PaymentPage focus={focus} onCheckout={onCheckout} />
+      <PaymentPage onCheckout={onCheckout} />
     </Modal>
   );
-});
+};
 
 export default Payment;

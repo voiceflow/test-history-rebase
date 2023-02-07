@@ -1,15 +1,15 @@
 export interface Price {
   price: number;
+
   errors: {
-    coupon?: {
-      message: string;
-    };
-    seats?: {
-      message: string;
-    };
-    period?: {
-      message: string;
-    };
+    seats?: { message: string };
+    coupon?: { message: string };
+    period?: { message: string };
   };
-  discount?: {};
+
+  discount?: {
+    type: string;
+    value: number;
+    message: string;
+  };
 }

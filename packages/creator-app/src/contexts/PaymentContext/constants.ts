@@ -1,7 +1,9 @@
+import { StripeElementsOptions } from '@stripe/stripe-js';
+
 export const MAX_POLL_COUNT = 30;
 export const POLL_INTERVAL = 1000;
 
-export const STRIPE_ELEMENT_OPTIONS = {
+export const STRIPE_ELEMENT_OPTIONS: StripeElementsOptions = {
   fonts: [
     {
       cssSrc: 'https://fonts.googleapis.com/css?family=Open+Sans:400',
@@ -12,15 +14,6 @@ export const STRIPE_ELEMENT_OPTIONS = {
       fontFamily: 'Open Sans, sans-serif',
       borderRadius: '6px',
       colorTextPlaceholder: '#8DA2B5',
-    },
-    rules: {
-      '.StripeElement': {
-        borderRadius: '6px',
-        backgroundColor: 'red',
-      },
-      '.ElementsApp input': {
-        fontFamily: 'Open Sans, sans-serif',
-      },
     },
   },
 };

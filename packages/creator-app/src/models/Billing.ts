@@ -1,4 +1,4 @@
-import { PlanType } from '@voiceflow/internal';
+import { BillingPeriod, PlanType } from '@voiceflow/internal';
 
 export interface Billing {
   invoices: Billing.PastInvoice[] | null;
@@ -24,17 +24,27 @@ export namespace Billing {
   }
 }
 
+export interface DBPlan {
+  id: PlanType;
+  period: string;
+  source: DBPaymentSource | null;
+  legacy?: boolean;
+  hidden?: boolean;
+  pricing: Record<BillingPeriod, { price: number }> | null;
+  projects: number;
+  editorLimit: number;
+  viewerLimit: number;
+  stripeProductID: string;
+  interactionsLimit: number | null;
+  variableStatesLimit: number | null;
+}
+
 export interface DBPayment {
   plan: PlanType;
   seats: number;
   period: string;
   source: DBPaymentSource | null;
   projects: number;
-  // NOTE(trs): Not returned by creator-api
-  id?: PlanType;
-  pricing?: unknown;
-  legacy?: boolean;
-  hidden?: boolean;
 }
 
 export interface DBPaymentSource {

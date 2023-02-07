@@ -1,14 +1,15 @@
+import { StripeElementStyle } from '@stripe/stripe-js';
 import { colors, StyledInputProps, ThemeColor } from '@voiceflow/ui';
 
 import { css, styled } from '@/hocs/styled';
 import { ANIMATION_SPEED } from '@/styles/theme';
 
-type ContaienrProps = StyledInputProps & {
-  disabled?: boolean;
+interface ContainerProps extends StyledInputProps {
   error?: boolean;
-};
+  disabled?: boolean;
+}
 
-export const CardElementContainer = styled.div<ContaienrProps>`
+export const CardElementContainer = styled.div<ContainerProps>`
   width: 100%;
 
   .StripeElement {
@@ -39,7 +40,7 @@ export const CardElementContainer = styled.div<ContaienrProps>`
     `}
 `;
 
-export const stripeInputStyle = {
+export const stripeInputStyle: StripeElementStyle = {
   base: {
     fontSize: '15px',
     fontWeight: '400',

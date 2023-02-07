@@ -1,7 +1,7 @@
 import { BillingPeriod, PlanType, UserRole } from '@voiceflow/internal';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
-import { APIKey, DBBilling, DBPayment, Price, SubscriptionBillingPeriod } from '@/models';
+import { APIKey, DBBilling, DBPayment, DBPlan, Price, SubscriptionBillingPeriod } from '@/models';
 
 import invoiceAdapter from './adapters/invoice';
 import invoiceListAdapter from './adapters/invoicesList';
@@ -24,7 +24,7 @@ const workspaceClient = {
     return apiV2.get<SubscriptionBillingPeriod>(`${WORKSPACES_PATH}/${workspaceID}/usage-subscription`);
   },
 
-  getPlans: () => api.get<DBPayment[]>(`${WORKSPACES_PATH}/plans`),
+  getPlans: () => api.get<DBPlan[]>(`${WORKSPACES_PATH}/plans`),
 
   getPlan: (workspaceID: string) => api.get<DBPayment>(`${WORKSPACES_PATH}/${workspaceID}/plan`),
 

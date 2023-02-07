@@ -7,7 +7,7 @@ import { DBPaymentSource } from '@/models/Billing';
 
 interface PaymentDetailsProps {
   source: DBPaymentSource | null;
-  refetch: () => void;
+  refetch: VoidFunction;
 }
 
 const PaymentDetails: React.FC<PaymentDetailsProps> = ({ source, refetch }) => {
@@ -17,7 +17,7 @@ const PaymentDetails: React.FC<PaymentDetailsProps> = ({ source, refetch }) => {
   const cardDetails = source ? `...${source.last4}${cardExpires}` : '...';
 
   const onClickAddCard = async () => {
-    await addCardSeatModal.openVoid();
+    await addCardSeatModal.openVoid({ update: !!source });
     refetch();
   };
 

@@ -20,29 +20,30 @@ const stripePromise = loadStripe(STRIPE_KEY);
 export const PaymentAPIContext = React.createContext<PaymentAPIContextType | null>(null);
 
 export const PaymentApiProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
-  const [isReady, setIsReady] = React.useState(false);
-  const [paymentSource, setPaymentSource] = React.useState<DBPaymentSource | null>(null);
-  const workspaceID = useSelector(Session.activeWorkspaceIDSelector)!;
   const stripe = useStripe();
   const elements = useElements();
 
-  // eslint-disable-next-line camelcase
-  const checkChargeable = usePersistFunction(async ({ id, client_secret }: Pick<Source, 'id' | 'client_secret'>) => {
+  const workspaceID = useSelector(Session.activeWorkspaceIDSelector)!;
+
+  const [isReady, setIsReady] = React.useState(false);
+  const [paymentSource, setPaymentSource] = React.useState<DBPaymentSource | null>(null);
+
+  const checkChargeable = usePersistFunction(async ({ id, client_secret: clientSecret }: Pick<Source, 'id' | 'client_secret'>) => {
     let pollCount = 0;
 
     const pollForSourceStatus = async (): Promise<boolean> => {
       if (!stripe) throw new Error('Stripe not initialized');
 
-      // eslint-disable-next-line camelcase
-      const { source } = await stripe.retrieveSource({ id, client_secret });
+      const { source } = await stripe.retrieveSource({ id, client_secret: clientSecret });
 
       if (!source) {
         throw new Error('Payment not valid - unable to verify card');
       }
 
       if (source.status === 'chargeable') return true;
+
+      // Try again in a second, if the Source is still `pending`:
       if (source.status === 'pending' && pollCount < MAX_POLL_COUNT) {
-        // Try again in a second, if the Source is still `pending`:
         pollCount += 1;
 
         await Utils.promise.delay(POLL_INTERVAL);
@@ -83,8 +84,8 @@ export const PaymentApiProvider: React.FC<React.PropsWithChildren> = ({ children
     const owner: SourceCreateParams.Owner = {
       name: cardHolderInfo.name,
       address: {
-        line1: cardHolderInfo.address,
         city: cardHolderInfo.city,
+        line1: cardHolderInfo.address,
         state: cardHolderInfo.state,
         country: cardHolderInfo.country,
       },
@@ -110,20 +111,25 @@ export const PaymentApiProvider: React.FC<React.PropsWithChildren> = ({ children
   };
 
   useAsyncEffect(async () => {
-    setPaymentSource(null);
     setIsReady(false);
+    setPaymentSource(null);
 
-    await fetchPaymentSource();
+    try {
+      await fetchPaymentSource();
+    } catch {
+      // skip
+    }
+
     setIsReady(true);
   }, [workspaceID]);
 
   const api = useContextApi({
-    checkChargeable,
-    createSource,
-    createFullSource,
-    paymentSource,
-    refetchPaymentSource: fetchPaymentSource,
     isReady,
+    createSource,
+    paymentSource,
+    checkChargeable,
+    createFullSource,
+    refetchPaymentSource: fetchPaymentSource,
   });
 
   if (!stripe) return null;
@@ -131,21 +137,17 @@ export const PaymentApiProvider: React.FC<React.PropsWithChildren> = ({ children
   return <PaymentAPIContext.Provider value={api}>{children}</PaymentAPIContext.Provider>;
 };
 
-export const StripeProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
-  return (
-    <Elements stripe={stripePromise} options={STRIPE_ELEMENT_OPTIONS}>
-      {children}
-    </Elements>
-  );
-};
+export const StripeProvider: React.FC<React.PropsWithChildren> = ({ children }) => (
+  <Elements stripe={stripePromise} options={STRIPE_ELEMENT_OPTIONS}>
+    {children}
+  </Elements>
+);
 
-export const PaymentProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
-  return (
-    <StripeProvider>
-      <PaymentApiProvider>{children}</PaymentApiProvider>
-    </StripeProvider>
-  );
-};
+export const PaymentProvider: React.FC<React.PropsWithChildren> = ({ children }) => (
+  <StripeProvider>
+    <PaymentApiProvider>{children}</PaymentApiProvider>
+  </StripeProvider>
+);
 
 export const usePaymentAPI = () => {
   const paymentAPI = React.useContext(PaymentAPIContext);

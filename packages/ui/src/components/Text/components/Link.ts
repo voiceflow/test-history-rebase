@@ -5,6 +5,7 @@ import { layout, LayoutProps, space, SpaceProps } from 'styled-system';
 export interface LinkProps extends LayoutProps, SpaceProps {
   link?: string;
   color?: string;
+  $hidden?: boolean;
   isActive?: boolean;
   disabled?: boolean;
   unstyled?: boolean;
@@ -18,7 +19,7 @@ const formatHref = (href: string | undefined, isBlank: boolean) => (!isBlank || 
 export const linkStyles = css<LinkProps>`
   ${transition('color')}
 
-  color: ${({ color }) => color ?? '#3d82e2'};
+  color: ${({ color, $hidden }) => color ?? ($hidden ? 'inherit' : '#3d82e2')};
   cursor: pointer;
   user-select: none;
 

@@ -5,32 +5,34 @@ import Select from '../Select';
 import COUNTRIES from './countries';
 import { filterAndSortOptions } from './utils';
 
-const counteriesMap = Utils.array.createMap(COUNTRIES, ({ value }) => value);
-
 interface CountrySelectProps {
   value: string | null;
-  onChange: (value: string | null) => void;
-  placeholder?: string;
   error?: boolean;
+  onClose?: VoidFunction;
+  onChange: (value: string | null) => void;
   disabled?: boolean;
+  placeholder?: string;
 }
 
-const CountrySelect: React.FC<CountrySelectProps> = ({ value, onChange, placeholder, error, disabled }) => {
+const CountrySelect: React.FC<CountrySelectProps> = ({ value, error, onClose, onChange, disabled, placeholder }) => {
+  const countriesMap = React.useMemo(() => Utils.array.createMap(COUNTRIES, ({ value }) => value), []);
+
   return (
     <Select
-      searchable
-      clearable={false}
       error={error}
-      disabled={disabled}
-      fullWidth
-      placeholder={placeholder ?? 'Country'}
       value={value}
       options={COUNTRIES}
-      optionsFilter={filterAndSortOptions}
-      getOptionKey={({ value }) => value}
-      getOptionValue={(option) => option?.value}
-      getOptionLabel={(value) => value && counteriesMap[value]?.value}
+      disabled={disabled}
       onSelect={(value) => onChange(value)}
+      clearable={false}
+      fullWidth
+      onClose={onClose}
+      searchable
+      placeholder={placeholder ?? 'Country'}
+      getOptionKey={({ value }) => value}
+      optionsFilter={filterAndSortOptions}
+      getOptionValue={(option) => option?.value}
+      getOptionLabel={(value) => value && countriesMap[value]?.value}
     />
   );
 };

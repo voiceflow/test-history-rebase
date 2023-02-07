@@ -8,13 +8,32 @@ export interface CounterInputProps extends Omit<DefaultInputProps, 'onChange' | 
   onMinusClick?: () => void;
 }
 
-const CounterInput = React.forwardRef<HTMLInputElement, CounterInputProps>(({ onPlusClick, onMinusClick, ...props }, ref) => (
+const CounterInput = React.forwardRef<HTMLInputElement, CounterInputProps>(({ min, max, value, onPlusClick, onMinusClick, ...props }, ref) => (
   <DefaultInput
     ref={ref}
+    min={min}
+    max={max}
+    value={value}
     inline
     readOnly
-    leftAction={<System.IconButton.Base icon="minus" onClick={onMinusClick} hoverBackground={false} activeBackground={false} />}
-    rightAction={<System.IconButton.Base icon="plus" onClick={onPlusClick} hoverBackground={false} activeBackground={false} />}
+    leftAction={
+      <System.IconButton.Base
+        icon="minus"
+        onClick={onMinusClick}
+        disabled={!!min && Number(value) === Number(min)}
+        hoverBackground={false}
+        activeBackground={false}
+      />
+    }
+    rightAction={
+      <System.IconButton.Base
+        icon="plus"
+        onClick={onPlusClick}
+        disabled={!!max && Number(value) === Number(max)}
+        hoverBackground={false}
+        activeBackground={false}
+      />
+    }
     wrapperProps={{ counter: true }}
     {...props}
   />

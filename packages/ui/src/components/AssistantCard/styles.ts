@@ -1,5 +1,7 @@
-import { Link, Text } from '@ui/components/Text';
+import { Text } from '@ui/components/Text';
 import { colors, css, styled, ThemeColor, transition } from '@ui/styles';
+
+const RADIUS = 8;
 
 export const OuterContainer = styled.section`
   width: 100%;
@@ -24,20 +26,20 @@ export const CardImageContainer = styled(InnerContainer)`
   filter: blur(0);
 `;
 
-export const CardContainer = styled.div<{ active: boolean; isHovered?: boolean }>`
+export const CardContainer = styled.div<{ active?: boolean; isHovered?: boolean }>`
   width: 100%;
   height: 220px;
   background-color: #f9f9f9;
   border: rgb(223, 227, 237) 1px solid;
-  border-radius: 8px;
+  border-radius: ${RADIUS}px;
   position: relative;
   align-items: center;
   display: flex;
   justify-content: center;
+  overflow: hidden;
 
   &:hover ${CardActionContainer} {
     opacity: 1;
-    border-radius: 8px;
   }
 
   &:hover ${CardImageContainer} {
@@ -60,7 +62,6 @@ export const CardContainer = styled.div<{ active: boolean; isHovered?: boolean }
     css`
       ${CardActionContainer} {
         opacity: 1;
-        border-radius: 8px;
       }
 
       ${CardImageContainer} {
@@ -79,13 +80,6 @@ export const ProjectImage = styled.div<{ src: string }>`
   border-radius: 12px;
   box-shadow: 0px 12px 24px rgba(19, 33, 68, 0.04), 0px 8px 12px rgba(19, 33, 68, 0.04), 0px 4px 4px rgba(19, 33, 68, 0.02),
     0px 2px 2px rgba(19, 33, 68, 0.01), 0px 1px 1px rgba(19, 33, 68, 0.01), 0px 1px 0px rgba(17, 49, 96, 0.03), 0px 0px 0px rgba(17, 49, 96, 0.06);
-`;
-
-export const StyledLink = styled(Link)`
-  position: absolute;
-  z-index: 0;
-  width: 100%;
-  height: 100%;
 `;
 
 export const IconContainer = styled.div`
@@ -111,9 +105,8 @@ export const Title = styled(Text)`
   font-size: 15px;
   width: 100%;
   text-align: left;
-  margin-top: 8px;
+  margin-top: 10px;
   text-overflow: ellipsis;
-  display: none;
 `;
 
 export const SubTitle = styled.div`
@@ -136,8 +129,12 @@ export const InfoContainer = styled.header`
   overflow: hidden;
 `;
 
-export const MembersContainer = styled.div`
-  margin-left: 5px;
+export const Image = styled.div<{ backgroundColor?: string; src?: string }>`
+  inset: 0;
+  position: absolute;
+  background-color: ${({ backgroundColor }) => backgroundColor};
+  background-image: url(${({ src }) => src});
+  background-position: bottom center;
+  background-repeat: no-repeat;
+  background-size: contain;
 `;
-
-export const Status = styled.div``;

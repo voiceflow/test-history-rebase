@@ -1,15 +1,12 @@
-import * as Platform from '@voiceflow/platform-config';
-import { AssistantCard, Box } from '@voiceflow/ui';
+import { Box } from '@voiceflow/ui';
 import React from 'react';
 
+import { AssistantCard } from '@/components/AssistantCard';
 import Page from '@/components/Page';
-import { Permission } from '@/constants/permissions';
 import * as Domains from '@/ducks/domain';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { usePermission } from '@/hooks/permission';
-import { useProjectOptions } from '@/hooks/project';
 import { useDispatch } from '@/hooks/realtime';
 import { useSelector } from '@/hooks/redux';
 
@@ -22,21 +19,8 @@ const AssistantOverview: React.FC = () => {
   const domains = useSelector(Domains.allDomainsSelector);
   const activeViewers = useSelector(ProjectV2.active.allAwarenessViewersSelector);
   const getMemberByIDSelector = useSelector(WorkspaceV2.active.getMemberByIDSelector);
-  const { name: platformName } = Platform.Config.get(project?.platform);
 
   const goToCanvasWithVersionID = useDispatch(Router.goToCanvasWithVersionID);
-
-  const [canEditProject] = usePermission(Permission.EDIT_PROJECT);
-
-  const projectTypeConfig = Platform.Config.getTypeConfig({ type: project?.type, platform: project?.platform });
-
-  const projectOptions = useProjectOptions({
-    v2: true,
-    projectID: project?.id,
-    versionID: project?.versionID,
-    withInvite: true,
-    withConvertToDomain: true,
-  });
 
   return (
     <Page white renderHeader={() => <Header />} renderSidebar={() => <Sidebar />}>
@@ -45,14 +29,8 @@ const AssistantOverview: React.FC = () => {
           <Box mb={20}>
             <AssistantCard
               {...getProjectStatusAndMembers({ project, activeViewers, getMemberByIDSelector })}
-              icon={projectTypeConfig.icon.name}
-              iconTitle={platformName}
-              image={project.image}
-              title={project.name}
-              options={projectOptions}
-              isViewer={!canEditProject}
-              iconColor={projectTypeConfig?.icon.color}
-              onClickCTA={() => goToCanvasWithVersionID(project.versionID)}
+              onClickDesigner={() => goToCanvasWithVersionID(project.versionID)}
+              project={project}
               isHovered
             />
           </Box>

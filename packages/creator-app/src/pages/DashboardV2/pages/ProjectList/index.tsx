@@ -1,8 +1,8 @@
-import { Box } from '@voiceflow/ui';
+import { AssistantCard as BaseAssistantCard, Box, Button } from '@voiceflow/ui';
 import * as Normal from 'normal-store';
 import React from 'react';
 
-import { bannerBg } from '@/assets';
+import { bannerBg, chatTemplate, teamsTemplate, whatsappTemplate } from '@/assets';
 import { AssistantCard } from '@/components/AssistantCard';
 import Page from '@/components/Page';
 import SearchBar from '@/components/SearchBar';
@@ -24,13 +24,13 @@ const ProjectList: React.FC = () => {
   const [search, setSearch] = React.useState('');
   const [sortBy, setSortBy] = React.useState<SortOptionType>(SortByOptions[0]);
 
-  const userID = useSelector(Account.userIDSelector)!;
   const projects = useSelector(ProjectV2.allProjectsSelector);
   const awarenessViewers = useSelector(ProjectV2.awarenessViewersSelector);
   const getMemberByIDSelector = useSelector(WorkspaceV2.active.getMemberByIDSelector);
+  const userID = useSelector(Account.userIDSelector)!;
 
-  const goToAssistantOverview = useDispatch(Router.goToAssistantOverview);
   const goToCanvasWithVersionID = useDispatch(Router.goToCanvasWithVersionID);
+  const goToAssistantOverview = useDispatch(Router.goToAssistantOverview);
 
   const activeViewersPerProject = React.useMemo(
     () =>
@@ -53,9 +53,12 @@ const ProjectList: React.FC = () => {
     [orderedProjects, search]
   );
 
+  const hasProjects = !!projectToRender.length;
+  const emptySearch = !!search && !hasProjects;
+
   return (
     <Page white renderHeader={() => <Header search={search} onSearch={setSearch} />} renderSidebar={() => <Sidebar />}>
-      <Page.Content>
+      <S.Content emptySearch={emptySearch}>
         {!search && (
           <S.StyledBanner
             mb={14}
@@ -66,6 +69,7 @@ const ProjectList: React.FC = () => {
             backgroundImage={bannerBg}
           />
         )}
+
         <Box.FlexApart fullWidth mb={10}>
           <SearchBar value={search} onSearch={setSearch} placeholder="Search assistants" noBorder />
           <S.StyledSelect
@@ -78,46 +82,64 @@ const ProjectList: React.FC = () => {
             options={SortByOptions}
             onSelect={(option) => option && setSortBy(option)}
             getOptionLabel={(option) => option?.label}
+            modifiers={{ offset: { offset: -11 } }}
           />
         </Box.FlexApart>
 
-        {search && !projectToRender.length ? (
-          <EmptySearch onClear={() => setSearch('')} />
-        ) : (
-          <>
-            {!!projectToRender.length && (
-              <S.Grid>
-                {projectToRender.map((item) => (
-                  <ProjectIdentityProvider key={item.id} activeRole={Normal.getOne(item.members, String(userID))?.role ?? null}>
-                    <AssistantCard
-                      {...getProjectStatusAndMembers({ project: item, activeViewers: activeViewersPerProject[item.id], getMemberByIDSelector })}
-                      image={item.image}
-                      project={item}
-                      onClickCTA={() => goToCanvasWithVersionID(item.versionID)}
-                      onClickLink={() => goToAssistantOverview(item.versionID)}
-                    />
-                  </ProjectIdentityProvider>
-                ))}
-              </S.Grid>
-            )}
+        {emptySearch && <EmptySearch onClear={() => setSearch('')} />}
 
+        {hasProjects && (
+          <S.Grid>
+            {projectToRender.map((item) => (
+              <ProjectIdentityProvider key={item.id} activeRole={Normal.getOne(item.members, String(userID))?.role ?? null}>
+                <AssistantCard
+                  {...getProjectStatusAndMembers({ project: item, activeViewers: activeViewersPerProject[item.id], getMemberByIDSelector })}
+                  onClickCard={() => goToAssistantOverview(item.versionID)}
+                  onClickDesigner={() => goToCanvasWithVersionID(item.versionID)}
+                  project={item}
+                />
+              </ProjectIdentityProvider>
+            ))}
+          </S.Grid>
+        )}
+
+        {!emptySearch && (
+          <>
             <S.Title>Start with a template</S.Title>
 
             <S.Grid>
-              {projectToRender.map((item) => (
-                <AssistantCard
-                  key={item.id}
-                  {...getProjectStatusAndMembers({ project: item, activeViewers: activeViewersPerProject[item.id], getMemberByIDSelector })}
-                  image={item.image}
-                  project={item}
-                  onClickCTA={() => goToCanvasWithVersionID(item.versionID)}
-                  onClickLink={() => goToAssistantOverview(item.versionID)}
-                />
-              ))}
+              <BaseAssistantCard
+                image={<BaseAssistantCard.Image src={chatTemplate} backgroundColor="#f4f8fe" />}
+                action={<Button>Copy Template</Button>}
+                title="Webchat - Book a Demo"
+                subtitle="By Voiceflow"
+                icon="slack"
+              />
+              <BaseAssistantCard
+                image={<BaseAssistantCard.Image src={whatsappTemplate} backgroundColor="#f5faf6" />}
+                action={<Button>Copy Template</Button>}
+                title="Whatsapp Customer Support"
+                subtitle="By Voiceflow"
+                icon="logoWhatsapp"
+              />
+              <BaseAssistantCard
+                image={<BaseAssistantCard.Image src={teamsTemplate} backgroundColor="#f4f4fb" />}
+                action={<Button>Copy Template</Button>}
+                title="Microsoft Teams Internal Assistant"
+                subtitle="By Voiceflow"
+                icon="logoMicrosoftTeams"
+              />
+              <BaseAssistantCard
+                image={<BaseAssistantCard.Image src={chatTemplate} backgroundColor="#f4f8fe" />}
+                action={<Button>Copy Template</Button>}
+                title="Webchat - Book a Demo"
+                subtitle="By Voiceflow"
+                icon="slack"
+              />
             </S.Grid>
           </>
         )}
-      </Page.Content>
+      </S.Content>
     </Page>
   );
 };

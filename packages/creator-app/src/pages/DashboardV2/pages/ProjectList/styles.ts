@@ -1,5 +1,6 @@
 import { Banner, BlockText, SearchInput, Select } from '@voiceflow/ui';
 
+import Page from '@/components/Page';
 import { styled } from '@/hocs/styled';
 
 export const Title = styled(BlockText)`
@@ -25,14 +26,23 @@ export const Grid = styled.div`
 `;
 
 export const StyledBanner = styled(Banner)`
+  margin-top: 18px;
+
   ${Banner.Container} {
     background-size: 332px;
     background-position: right 38px top 17.5%;
   }
 `;
 
+export const Content = styled(Page.Content)<{ emptySearch?: boolean }>`
+  padding-top: 14px;
+
+  ${({ emptySearch }) => emptySearch && `height: 100%;`}
+`;
+
 export const StyledSelect = styled(Select)`
   ${SearchInput} {
     text-align: right;
   }
+  margin-right: -9px;
 ` as typeof Select;

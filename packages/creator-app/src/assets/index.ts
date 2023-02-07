@@ -59,6 +59,9 @@ export { default as uploadFail } from '@/assets/svgs/upload-fail.svg?url';
 // placeholders
 export { default as itemDragPlaceholder } from '@/assets/svgs/item-drag-placeholder.svg?url';
 export { default as listDragPlaceholder } from '@/assets/svgs/list-drag-placeholder.svg?url';
+export { default as teamsTemplate } from '@/assets/images/teams-template.png';
+export { default as whatsappTemplate } from '@/assets/images/whatsapp-template.png';
+export { default as chatTemplate } from '@/assets/images/chat-template.png';
 
 // icons
 export { default as cancelIcon } from '@/assets/svgs/cancel.svg?url';

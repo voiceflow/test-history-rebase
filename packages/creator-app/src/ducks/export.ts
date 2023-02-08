@@ -17,7 +17,7 @@ import { jsonToCSV } from '@/utils/files';
 import * as Sentry from '@/vendors/sentry';
 
 export const exportCanvas =
-  (type: ExportFormat, version?: string): Thunk =>
+  (type: ExportFormat, version?: string, projectId?: string | null): Thunk =>
   async (_, getState) => {
     const state = getState();
     const versionID = version || Session.activeVersionIDSelector(state);
@@ -57,7 +57,8 @@ export const exportCanvas =
     }
 
     if (type === ExportFormat.VF) {
-      const projectName = ProjectV2.active.nameSelector(state);
+      const getProjectById = ProjectV2.getProjectByIDSelector(state);
+      const projectName = ProjectV2.active.nameSelector(state) || getProjectById({ id: projectId })?.name;
 
       try {
         const data = await client.api.version.export(versionID);

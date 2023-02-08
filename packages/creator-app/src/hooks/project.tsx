@@ -174,7 +174,7 @@ export const useProjectOptions = ({
   const onExport = async () => {
     trackingEvents.trackExportButtonClick({ format: CanvasExportFormat.VF });
 
-    await exportCanvas(CanvasExportFormat.VF, versionID);
+    await exportCanvas(CanvasExportFormat.VF, versionID, projectID);
   };
 
   const targetVersionID = versionID || currentVersionID;
@@ -189,7 +189,7 @@ export const useProjectOptions = ({
     return [
       withRenameOption ? { label: 'Rename', onClick: onRename } : null,
       canManageProjects ? { label: 'Duplicate', onClick: onDuplicate } : null,
-      canExportProject ? { label: 'Download', onClick: onExport } : null,
+      canExportProject ? { label: 'Download (.vf)', onClick: onExport } : null,
       canManageProjects ? { label: 'Copy clone link', onClick: onClone } : null,
       canManageProjects && withConvertToDomain ? { label: 'Convert to domain', onClick: onCovertToDomain } : null,
 

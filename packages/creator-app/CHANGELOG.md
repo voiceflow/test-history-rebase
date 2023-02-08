@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1086.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1085.0...@voiceflow/creator-app@1.1086.0) (2023-02-08)
+
+
+### Features
+
+* fix assistant download (CT-1629) ([#6675](https://github.com/voiceflow/creator-app/issues/6675)) ([fad3c39](https://github.com/voiceflow/creator-app/commit/fad3c39a888c6515e6d4a19fe6bd61c8b91bc7f8))
+
+
+
+
+
 # [1.1085.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1084.0...@voiceflow/creator-app@1.1085.0) (2023-02-07)
 
 

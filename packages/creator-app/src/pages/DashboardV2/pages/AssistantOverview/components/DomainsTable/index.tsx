@@ -5,6 +5,8 @@ import React from 'react';
 
 import SearchBar from '@/components/SearchBar';
 import { LimitType } from '@/constants/limits';
+import { Permission } from '@/constants/permissions';
+import { usePermission } from '@/hooks';
 import { usePlanLimitedAction } from '@/hooks/planLimitV2';
 import * as ModalsV2 from '@/ModalsV2';
 
@@ -20,6 +22,8 @@ interface DomainsTableProps {
 const DomainsTable: React.FC<DomainsTableProps> = ({ domains }) => {
   const createModal = ModalsV2.useModal(ModalsV2.Domain.Create);
   const upgradeModal = ModalsV2.useModal(ModalsV2.Upgrade);
+  const [domainEditPermission] = usePermission(Permission.DOMAIN_EDIT);
+  const columnsToRender = domainEditPermission ? COLUMNS : COLUMNS.slice(0, -1);
 
   const [search, setSearch] = React.useState('');
   const [status, setStatus] = React.useState('');
@@ -28,7 +32,7 @@ const DomainsTable: React.FC<DomainsTableProps> = ({ domains }) => {
 
   const { items, orderBy, descending, onChangeOrderBy } = Table.useFilterOrderItems({
     items: domains,
-    columns: COLUMNS,
+    columns: columnsToRender,
     filterBy,
     initialOrderBy: TableColumn.MODIFIED,
     getItemFilterBy: ({ name, status = BaseModels.Version.DomainStatus.DESIGN }) => [name, status],
@@ -58,11 +62,13 @@ const DomainsTable: React.FC<DomainsTableProps> = ({ domains }) => {
             <StatusSelect value={status} items={domains} onChange={setStatus} />
           </Box.Flex>
 
-          <S.Actions>
-            <Button onClick={() => onCreate()} squareRadius>
-              New Domain
-            </Button>
-          </S.Actions>
+          {domainEditPermission && (
+            <S.Actions>
+              <Button onClick={() => onCreate()} squareRadius>
+                New Domain
+              </Button>
+            </S.Actions>
+          )}
         </S.Header>
 
         <Table.Configurable
@@ -75,7 +81,7 @@ const DomainsTable: React.FC<DomainsTableProps> = ({ domains }) => {
           }
           items={items}
           orderBy={orderBy}
-          columns={COLUMNS}
+          columns={columnsToRender}
           renderRow={(props) => <S.Row {...props} />}
           descending={descending}
           stickyHeader={false}

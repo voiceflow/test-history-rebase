@@ -13,7 +13,7 @@ import Card from './components/Card';
 import Container from './components/Container';
 import Title from './components/Title';
 
-const Verify: React.OldFC = () => {
+const Verify: React.FC = () => {
   useHideVoiceflowAssistant();
 
   const email = useSelector(Account.userEmailSelector);

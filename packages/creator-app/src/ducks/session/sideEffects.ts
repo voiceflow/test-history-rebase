@@ -49,7 +49,7 @@ export const resetSession = (): SyncThunk => (dispatch) => {
   dispatch(resetAccount());
   dispatch(updateAuthToken(null));
 
-  dispatch(goToLogin());
+  dispatch(goToLogin(window.location.search));
 };
 
 export const logout = (): Thunk => async (dispatch, getState) => {

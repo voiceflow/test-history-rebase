@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1088.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1087.0...@voiceflow/creator-app@1.1088.0) (2023-02-09)
+
+
+### Features
+
+* added debounced refresh of clarity scores (CT-1563) ([#6672](https://github.com/voiceflow/creator-app/issues/6672)) ([7b09da4](https://github.com/voiceflow/creator-app/commit/7b09da402b2dc00e33a38752e5c50b1573f112aa))
+
+
+
+
+
 # [1.1087.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1086.0...@voiceflow/creator-app@1.1087.0) (2023-02-09)
 
 

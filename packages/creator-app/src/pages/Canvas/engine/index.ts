@@ -208,6 +208,8 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
 
   getLinkIDsByNodeID = (nodeID: Nullish<string>) => this.select(CreatorV2.linkIDsByNodeIDSelector, { id: nodeID });
 
+  getAllNodeIDs = () => this.select(CreatorV2.allNodeIDsSelector);
+
   getRootNodeIDs = () => this.select(CreatorV2.blockIDsSelector);
 
   isRootNode = (nodeID: string) => this.select(CreatorV2.isBlockSelector, { id: nodeID });
@@ -538,17 +540,26 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
     return startNode?.[0] ?? null;
   }
 
-  focusStart(options: { open?: boolean; skipURLSync?: boolean } = {}): void {
+  focusStart(options: { open?: boolean; animated?: boolean; skipURLSync?: boolean } = {}): void {
     const startNodeID = this.getStartNodeID();
+
     if (startNodeID) {
       this.focusNode(startNodeID, options);
     }
   }
 
-  focusNode(nodeID: string, { open, skipURLSync, focusOnStep }: { open?: boolean; skipURLSync?: boolean; focusOnStep?: boolean } = {}): void {
+  focusNode(
+    nodeID: string,
+    {
+      open,
+      animated = !this.comment.isModeActive,
+      skipURLSync,
+      focusOnStep,
+    }: { open?: boolean; animated?: boolean; skipURLSync?: boolean; focusOnStep?: boolean } = {}
+  ): void {
     const node = focusOnStep && this.getNodeByID(nodeID);
 
-    this.node.center(nodeID, !this.comment.isModeActive);
+    this.node.center(nodeID, animated);
 
     if (node && Realtime.Utils.typeGuards.isCombinedBlockType(node.type)) {
       this.setActive(node.combinedNodes[0]);
@@ -560,8 +571,8 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
     this.log.info(this.log.success(`focused on the ${nodeID} node`));
   }
 
-  centerNode(nodeID: string): void {
-    this.node.center(nodeID, !this.comment.isModeActive);
+  centerNode(nodeID: string, { animated = !this.comment.isModeActive }: { animated?: boolean } = {}): void {
+    this.node.center(nodeID, animated);
     this.comment.forceRedrawThreads();
     this.log.info(this.log.success(`centered on the ${nodeID} node`));
   }

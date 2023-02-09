@@ -42,19 +42,23 @@ const Canvas: React.FC<CanvasProps> = ({ isPrototypingMode }) => {
 
   React.useEffect(() => {
     const nodeMatch = matchPath<{ nodeID: string }>(history.location.pathname, { path: Path.CANVAS_NODE });
-    const rootNodes = engine.getRootNodeIDs();
 
     scheduler(() => {
       const nodeID = nodeMatch?.params.nodeID;
+      const rootNodes = engine.getRootNodeIDs();
+      const allNodeIDs = engine.getAllNodeIDs();
+
+      // TODO: play with the number, probably needs to read user's available memory and adjust number based on the memory
+      const animated = allNodeIDs.length < 1000;
 
       if (nodeID) {
         if (nodeID === 'start') {
-          engine.focusStart({ open: true, skipURLSync: true });
+          engine.focusStart({ open: true, animated, skipURLSync: true });
         } else {
-          engine.focusNode(nodeID, { open: true, skipURLSync: true });
+          engine.focusNode(nodeID, { open: true, animated, skipURLSync: true });
         }
       } else if (rootNodes.length === 1 && !engine.comment.isModeActive) {
-        engine.centerNode(rootNodes[0]);
+        engine.centerNode(rootNodes[0], { animated });
       }
     });
 

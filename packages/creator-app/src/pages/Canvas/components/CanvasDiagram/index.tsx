@@ -16,6 +16,7 @@ import * as UI from '@/ducks/ui';
 import * as Viewport from '@/ducks/viewport';
 import { useInitialValueSelector, useSelector, useSetup } from '@/hooks';
 import AutoPanLayer from '@/pages/Canvas/components/AutoPanLayer';
+import CustomBlockSync from '@/pages/Canvas/components/CustomBlockSync';
 import LinkLayer from '@/pages/Canvas/components/LinkLayer';
 import MarkupLayer from '@/pages/Canvas/components/MarkupLayer';
 import MergeLayer from '@/pages/Canvas/components/MergeLayer';
@@ -238,6 +239,7 @@ const CanvasDiagram: React.FC<React.PropsWithChildren> = ({ children }) => {
         onZoomApplied={(calculateMovement) => engine.emitter.emit(CanvasAction.ZOOM_APPLIED, calculateMovement)}
       >
         <AutoPanLayer />
+        <CustomBlockSync />
         <LinkLayer />
         <NodeLayer />
         <MarkupLayer />

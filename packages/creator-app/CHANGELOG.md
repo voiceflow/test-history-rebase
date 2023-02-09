@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1087.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1086.0...@voiceflow/creator-app@1.1087.0) (2023-02-09)
+
+
+### Bug Fixes
+
+* keep invite token param on logout (CT-000) ([#6679](https://github.com/voiceflow/creator-app/issues/6679)) ([889adf8](https://github.com/voiceflow/creator-app/commit/889adf8d6cbc0e66eaf7a895b125b7b002a94196))
+* node focus on the huge diagrams (CT-1569) ([#6678](https://github.com/voiceflow/creator-app/issues/6678)) ([a1ca2fc](https://github.com/voiceflow/creator-app/commit/a1ca2fcdf6d3d36892b77a9f7acf6aeee6680fce))
+
+
+### Features
+
+* fix assistant sub permissions (CT-1643) ([#6680](https://github.com/voiceflow/creator-app/issues/6680)) ([36aa097](https://github.com/voiceflow/creator-app/commit/36aa0978f6f7d01b3ab2b4b617fd7ac863124379))
+* fix editor permission (CT-1645) ([#6676](https://github.com/voiceflow/creator-app/issues/6676)) ([157d433](https://github.com/voiceflow/creator-app/commit/157d433ea512963151cd5f973bf86af3d2b556f9))
+* fix viewer conditions for all assistants page (CT-1638) ([#6681](https://github.com/voiceflow/creator-app/issues/6681)) ([21a1f74](https://github.com/voiceflow/creator-app/commit/21a1f74d82d3d9862283e6fa5cfc422964def0f0))
+
+
+
+
+
 # [1.1086.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1085.0...@voiceflow/creator-app@1.1086.0) (2023-02-08)
 
 

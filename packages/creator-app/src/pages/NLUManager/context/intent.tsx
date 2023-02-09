@@ -31,11 +31,14 @@ interface UseNLUIntentsProps {
   goToItem: (id: string | null) => void;
 }
 
+const REFRESH_CLARITY_TIMEOUT = 5000;
+
 const useNLUIntents = ({ activeItemID, goToItem }: UseNLUIntentsProps) => {
   const orderedIntents = useOrderedIntents();
   const { fetchClarity, clarity, nluIntents, isFetching: isFetchingClarity } = useClarity(orderedIntents);
   const notifications = useNotifications(nluIntents);
   const addIntentModal = useModals(ModalType.INTENT_CREATE);
+  const timeout = React.useRef<number>();
 
   const { deleteItem, deleteItems, renamingItemID, selectedItemIDs, setRenamingItemID, setSelectedItemIDs, toggleSelectedItemID } = useNLUTable(
     InteractionModelTabType.INTENTS,
@@ -52,6 +55,18 @@ const useNLUIntents = ({ activeItemID, goToItem }: UseNLUIntentsProps) => {
       creationType: Tracking.CanvasCreationType.NLU_MANAGER,
       utteranceCreationType: Tracking.CanvasCreationType.QUICKVIEW,
     });
+
+  const refreshClarity = () => {
+    if (!clarity) {
+      fetchClarity();
+      return;
+    }
+
+    clearTimeout(timeout.current);
+    timeout.current = window.setTimeout(fetchClarity, REFRESH_CLARITY_TIMEOUT);
+  };
+
+  React.useEffect(refreshClarity, [orderedIntents]);
 
   return {
     // state

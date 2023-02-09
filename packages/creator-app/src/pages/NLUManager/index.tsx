@@ -16,7 +16,6 @@ const NLUManager: React.FC = () => {
   React.useEffect(() => {
     nluManager.goToTab(previousTab.current);
     nluManager.closeEditorTab();
-    nluManager.fetchClarity();
   }, []);
 
   return (

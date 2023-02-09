@@ -53,6 +53,7 @@ export enum Permission {
   PROJECT_LIST_MANAGE = 'project_list.MANAGE',
 
   // billing
+  BILLING_SEATS_ADD = 'billing.SEATS_ADD',
   BILLING_SEATS = 'billing.SEATS',
   BILLING_MANAGE = 'billing.MANAGE',
 

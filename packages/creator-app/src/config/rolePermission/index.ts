@@ -55,6 +55,7 @@ export const ROLE_PERMISSIONS = buildRolePermissionRecord([
   { permission: Permission.ADD_COLLABORATORS_V2, roles: ADMIN_OWNER_BILLING_ROLES },
   { permission: Permission.VIEW_SETTINGS_WORKSPACE, roles: ADMIN_OWNER_BILLING_ROLES },
   { permission: Permission.CONFIGURE_WORKSPACE_BILLING, roles: ADMIN_OWNER_BILLING_ROLES },
+  { permission: Permission.BILLING_SEATS_ADD, roles: ADMIN_OWNER_BILLING_ROLES },
 
   // owner and admin
   { permission: Permission.INVITE, roles: OWNER_AND_ADMIN_ROLES },

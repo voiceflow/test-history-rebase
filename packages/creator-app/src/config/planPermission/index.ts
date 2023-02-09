@@ -33,7 +33,7 @@ export const PLAN_PERMISSIONS = buildPlanPermissionRecord([
   { permission: Permission.SHARE_PROTOTYPE, plans: ALL_PLANS },
 
   // non enterprise plans
-  { permission: Permission.ADD_COLLABORATORS_V2, plans: NON_ENTERPRISE_PLANS },
+  { permission: Permission.BILLING_SEATS_ADD, plans: NON_ENTERPRISE_PLANS },
 
   // paid plans
   { permission: Permission.MODEL_EXPORT, plans: PAID_PLANS },

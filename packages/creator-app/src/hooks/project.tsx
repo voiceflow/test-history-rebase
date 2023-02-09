@@ -70,6 +70,7 @@ export const useProjectOptions = ({
 
   const canExportProject = useHasPermissions([Permission.CANVAS_EXPORT, Permission.MODEL_EXPORT]);
   const [canEditProject] = usePermission(Permission.EDIT_PROJECT);
+  const [canAddCollaboratorsV2] = usePermission(Permission.ADD_COLLABORATORS_V2, { workspaceLevelOnly: true });
   const [canShareProject] = usePermission(Permission.SHARE_PROJECT);
   const [canManageProjects] = usePermission(Permission.MANAGE_PROJECTS, { workspaceLevelOnly: true });
   const [canAddCollaborators] = usePermission(Permission.ADD_COLLABORATORS, { workspaceLevelOnly: true });
@@ -194,7 +195,9 @@ export const useProjectOptions = ({
       canManageProjects && withConvertToDomain ? { label: 'Convert to domain', onClick: onCovertToDomain } : null,
 
       canExportProject || canManageProjects || withRenameOption ? { label: 'divider-1', divider: true } : null,
-      withInviteOption ? { label: 'Manage access', onClick: () => projectID && projectMembersModal.openVoid({ projectID }) } : null,
+      withInviteOption && canAddCollaboratorsV2
+        ? { label: 'Manage access', onClick: () => projectID && projectMembersModal.openVoid({ projectID }) }
+        : null,
 
       withSettingsOption ? { label: 'Settings', onClick: () => goToSettings(targetVersionID) } : null,
 

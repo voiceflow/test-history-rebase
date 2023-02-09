@@ -1,3 +1,4 @@
 export { default as InviteByEmail } from './InviteByEmail';
 export { default as MemberList } from './MemberList';
 export { default as TakenSeatsMessage } from './TakenSeatsMessage';
+export { default as TakenSeatsMessageV2 } from './TakenSeatsMessageV2';

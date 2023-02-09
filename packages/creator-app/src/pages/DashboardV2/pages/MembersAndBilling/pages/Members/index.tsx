@@ -16,7 +16,7 @@ const DashboardV2TeamAndBillingMembers: React.FC = () => {
   const usedEditorSeats = useSelector(WorkspaceV2.active.usedEditorSeatsSelector);
   const isOnPaidPlanSelector = useSelector(WorkspaceV2.active.isOnPaidPlanSelector);
 
-  const canAddSeats = usePermission(Permission.BILLING_SEATS_ADD);
+  const [canAddSeats] = usePermission(Permission.BILLING_SEATS_ADD);
 
   const inviteModal = ModalsV2.useModal(ModalsV2.Workspace.Invite);
   const paymentModal = ModalsV2.useModal(ModalsV2.Payment);
@@ -41,7 +41,7 @@ const DashboardV2TeamAndBillingMembers: React.FC = () => {
           <S.Title>{membersCount} Workspace Members</S.Title>
 
           {canAddSeats ? (
-            <Workspace.TakenSeatsMessage />
+            <Workspace.TakenSeatsMessageV2 />
           ) : (
             <Text color="#62778c">
               <Text color="#132144">{usedEditorSeats} Editor seats</Text> Being used in this workspace.

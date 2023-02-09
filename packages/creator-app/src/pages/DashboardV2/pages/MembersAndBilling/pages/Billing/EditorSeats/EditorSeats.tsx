@@ -80,7 +80,7 @@ const EditorSeats: React.FC<EditorSeatsProps> = ({ data, source, refetch }) => {
           <Box.FlexAlignStart column gap={4}>
             <SectionV2.Title bold>Editor Seats</SectionV2.Title>
 
-            {!isPaidPlan && <Workspace.TakenSeatsMessage small />}
+            {!isPaidPlan && <Workspace.TakenSeatsMessageV2 small />}
 
             {isEnterprise && (
               <div>

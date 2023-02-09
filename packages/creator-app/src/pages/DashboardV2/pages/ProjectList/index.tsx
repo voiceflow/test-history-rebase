@@ -6,11 +6,12 @@ import { bannerBg, chatTemplate, teamsTemplate, whatsappTemplate } from '@/asset
 import { AssistantCard } from '@/components/AssistantCard';
 import Page from '@/components/Page';
 import SearchBar from '@/components/SearchBar';
+import { Permission } from '@/constants/permissions';
 import * as Account from '@/ducks/account';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { useDispatch, useSelector } from '@/hooks';
+import { useDispatch, usePermission, useSelector } from '@/hooks';
 import { ProjectIdentityProvider } from '@/pages/Project/contexts/ProjectIdentityContext';
 
 import { Sidebar } from '../../components';
@@ -23,6 +24,7 @@ import { getProjectSortFunction } from './utils';
 const ProjectList: React.FC = () => {
   const [search, setSearch] = React.useState('');
   const [sortBy, setSortBy] = React.useState<SortOptionType>(SortByOptions[0]);
+  const [canCreateAssistant] = usePermission(Permission.EDIT_PROJECT);
 
   const projects = useSelector(ProjectV2.allProjectsSelector);
   const awarenessViewers = useSelector(ProjectV2.awarenessViewersSelector);
@@ -103,7 +105,7 @@ const ProjectList: React.FC = () => {
           </S.Grid>
         )}
 
-        {!emptySearch && (
+        {!emptySearch && canCreateAssistant && (
           <>
             <S.Title>Start with a template</S.Title>
 

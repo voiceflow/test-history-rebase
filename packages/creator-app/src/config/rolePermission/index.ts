@@ -18,7 +18,6 @@ export const ROLE_PERMISSIONS = buildRolePermissionRecord([
   // configurable
 
   // all
-  { permission: Permission.IMPORT_PROJECT, roles: ALL_USER_ROLES },
   { permission: Permission.VIEW_CONVERSATIONS, roles: ALL_USER_ROLES },
   { permission: Permission.SHARE_PROTOTYPE_PASSWORD, roles: ALL_USER_ROLES },
 
@@ -30,6 +29,7 @@ export const ROLE_PERMISSIONS = buildRolePermissionRecord([
   { permission: Permission.VIEW_COLLABORATORS, roles: SIGNED_USER_ROLES },
 
   // editor
+  { permission: Permission.IMPORT_PROJECT, roles: EDITOR_USER_ROLES },
   { permission: Permission.DOMAIN_EDIT, roles: EDITOR_USER_ROLES },
   { permission: Permission.CANVAS_EDIT, roles: EDITOR_USER_ROLES },
   { permission: Permission.EDIT_PROJECT, roles: EDITOR_USER_ROLES },

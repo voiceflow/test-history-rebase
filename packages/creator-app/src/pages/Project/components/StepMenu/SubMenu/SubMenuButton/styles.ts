@@ -50,8 +50,9 @@ export const SubMenuButtonContainer = styled(Box.FlexStart)<SubMenuButtonContain
           }
         `}
 
-  ${({ isClicked, isContextMenuOpen }) =>
+  ${({ isClicked, isContextMenuOpen, isDragging }) =>
     isClicked &&
+    !isDragging &&
     !isContextMenuOpen &&
     css`
       transform: rotate(-2deg);

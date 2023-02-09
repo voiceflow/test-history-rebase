@@ -6,12 +6,11 @@ export const Container = styled(Flex)<{ isActive?: boolean }>`
   cursor: pointer;
 
   ${SvgIcon.Container} {
-    color: #6e849a;
-    opacity: 0.65;
+    color: rgba(110, 132, 154, 0.85);
   }
 
   &:hover ${SvgIcon.Container} {
-    opacity: 1;
+    color: #6e849a;
   }
 
   ${({ isActive }) =>

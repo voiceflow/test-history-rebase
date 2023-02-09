@@ -2,9 +2,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Button, ButtonVariant, StrengthGauge } from '@voiceflow/ui';
 import React from 'react';
 
-import { Permission } from '@/constants/permissions';
 import { useFeature } from '@/hooks/feature';
-import { usePermissionAction } from '@/hooks/permission';
 import { useUpgradeModal } from '@/ModalsV2/hooks';
 import { EditorTabs } from '@/pages/NLUManager/constants';
 import { useNLUManager } from '@/pages/NLUManager/context';
@@ -35,19 +33,6 @@ const CardList: React.FC<CardListProps> = ({ intent }) => {
   const upgradeModal = useUpgradeModal();
 
   const { isEnabled: isConflictsViewEnabled } = useFeature(Realtime.FeatureFlag.NLU_MANAGER_CONFLICTS_VIEW);
-
-  const onOpenConflictEditor = usePermissionAction(Permission.NLU_CONFLICTS, {
-    onAction: () => {
-      if (isConflictsPageOpen) {
-        nluManager.closeEditorTab();
-        return;
-      }
-
-      nluManager.openEditorTab(EditorTabs.INTENT_CONFLICTS);
-    },
-
-    onPlanForbid: ({ planConfig }) => upgradeModal.openVoid(planConfig.upgradeModal()),
-  });
 
   if (isBuiltIn) return null;
 
@@ -82,7 +67,7 @@ const CardList: React.FC<CardListProps> = ({ intent }) => {
             <>
               <Box mb={isConflictsViewEnabled ? 16 : 0}>{clarityMeta.message}</Box>
               {isConflictsViewEnabled && (
-                <Button onClick={onOpenConflictEditor} variant={ButtonVariant.WHITE}>
+                <Button onClick={() => nluManager.openEditorTab(EditorTabs.INTENT_CONFLICTS)} variant={ButtonVariant.WHITE}>
                   {isConflictsPageOpen ? 'Close Conflicts' : 'View Conflicts'}
                 </Button>
               )}

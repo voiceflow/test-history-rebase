@@ -1,6 +1,7 @@
 import { PrimaryButton } from '@voiceflow/ui';
 import React from 'react';
 
+import { ConfirmProps } from '@/components/ConfirmModal';
 import { ModalType } from '@/constants';
 import { useModals } from '@/hooks';
 import TableToolbar from '@/pages/NLUManager/components/TableToolbar';
@@ -9,6 +10,7 @@ import { useNLUManager } from '@/pages/NLUManager/context';
 const IntentTableToolbar: React.FC = () => {
   const nluManager = useNLUManager();
   const { open: openExportModelModal } = useModals<{ checkedItems: string[] }>(ModalType.EXPORT_MODEL);
+  const confirmModal = useModals<ConfirmProps>(ModalType.CONFIRM);
 
   const exportIntents = () => {
     openExportModelModal({ checkedItems: Array.from(nluManager.selectedIntentIDs) });
@@ -23,6 +25,21 @@ const IntentTableToolbar: React.FC = () => {
     resetSelectedIntents();
   };
 
+  const confirmDelete = () => {
+    confirmModal.open({
+      body: (
+        <>
+          Are you sure you want to delete {nluManager.selectedIntentIDs.size} item(s)?
+          <br />
+          This action cannot be undone.
+        </>
+      ),
+      header: 'Delete Items',
+      confirm: deleteIntents,
+      confirmButtonText: 'Delete',
+    });
+  };
+
   return (
     <TableToolbar width={450} isOpen={nluManager.selectedIntentIDs.size >= 2}>
       <TableToolbar.LeftActions>
@@ -31,7 +48,7 @@ const IntentTableToolbar: React.FC = () => {
       </TableToolbar.LeftActions>
 
       <TableToolbar.Actions>
-        <TableToolbar.Icon icon="trash" onClick={deleteIntents} />
+        <TableToolbar.Icon icon="trash" onClick={confirmDelete} />
         <PrimaryButton onClick={exportIntents} squareRadius>
           Export
         </PrimaryButton>

@@ -18,7 +18,12 @@ const ExportModelModal: React.OldFC = () => {
         <Model selectedIntentsIds={data.checkedItems} />
       </ModalBody>
       <ModalFooter onClick={stopImmediatePropagation()}>
-        <ExportFooter origin={Tracking.ModelExportOriginType.NLU_MANAGER} withoutLink={true} linkURL={MODEL_EXPORT} />
+        <ExportFooter
+          selectedItems={data.checkedItems}
+          origin={Tracking.ModelExportOriginType.NLU_MANAGER}
+          withoutLink={true}
+          linkURL={MODEL_EXPORT}
+        />
       </ModalFooter>
     </Modal>
   );

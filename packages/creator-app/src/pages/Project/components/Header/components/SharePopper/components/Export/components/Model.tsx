@@ -19,6 +19,8 @@ const ExportModel: React.FC<ExportModelProps> = ({ selectedIntentsIds }) => {
   const [selectedIntents, setSelectedIntents] = React.useState(exportIntents);
 
   const exportNLPConfig = exportNLPType && NLP.Config.get(exportNLPType);
+  const nlpFileExtension = exportNLPConfig?.export?.defaultExtension;
+
   const nluOptions = React.useMemo(() => {
     const supported = nlpTypes.filter((nlpType) => !!NLP.Config.get(nlpType).export);
 
@@ -85,7 +87,7 @@ const ExportModel: React.FC<ExportModelProps> = ({ selectedIntentsIds }) => {
         <span>
           {nluOptions.length === 1 && exportNLPType === NLP.Constants.NLPType.VOICEFLOW
             ? 'Export as .CSV'
-            : 'Export as .CSV, or as consumable file for any NLU vendor.'}
+            : `Export as ${nlpFileExtension?.toUpperCase() || '.CSV'}, or as consumable file for any NLU vendor.`}
         </span>
       </BlockText>
 

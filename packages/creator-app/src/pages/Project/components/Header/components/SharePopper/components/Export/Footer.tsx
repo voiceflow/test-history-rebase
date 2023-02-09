@@ -17,11 +17,13 @@ interface ExportFooterProps {
   origin: Tracking.ModelExportOriginType;
   linkURL?: string;
   withoutLink?: boolean;
+  selectedItems?: string[];
 }
 
-const ExportFooter: React.FC<ExportFooterProps> = ({ origin, linkURL, withoutLink }) => {
+const ExportFooter: React.FC<ExportFooterProps> = ({ origin, linkURL, withoutLink, selectedItems }) => {
   const { onExport, exportType, isExporting, canvasExportFormat, exportNLPType, exportIntents } = React.useContext(ExportContext)!;
-  const noModelData = exportType === ExportType.MODEL && exportIntents.length === 0;
+
+  const noModelData = exportType === ExportType.MODEL && exportIntents.length === 0 && !selectedItems?.length;
 
   const upgradeModal = useUpgradeModal();
   const { open: openNLUQuickView } = useModals(ModalType.NLU_MODEL_QUICK_VIEW);

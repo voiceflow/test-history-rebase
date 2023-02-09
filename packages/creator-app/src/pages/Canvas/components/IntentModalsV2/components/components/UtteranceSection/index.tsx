@@ -211,9 +211,9 @@ const UtteranceSection: React.OldFC<UtteranceSectionProps> = ({
                 {mapManager.map(itemRenderer)}
 
                 {gptUtteranceGen.isEnabled ? (
-                  <Box pt={16}>
+                  <Box pt={12}>
                     {gptGenUtterancesManager.map((item, { key, index }) => (
-                      <Box mb={16} key={key}>
+                      <Box mb={12} key={key}>
                         <GPT.Utterance
                           input={item}
                           slots={slots}

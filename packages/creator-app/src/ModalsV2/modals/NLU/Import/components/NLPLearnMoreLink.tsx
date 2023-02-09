@@ -3,6 +3,7 @@ import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import { Base } from '@/config/nlp';
+import { NLPType } from '@/config/nlp/constants';
 
 import { ImportLearnMoreLink } from '../constants';
 
@@ -32,11 +33,11 @@ const NLPLearnMoreLink: React.OldFC<NLPLearnMoreLinkProps> = ({ nlp, platform, f
   const platformLearnMoreLink = ImportLearnMoreLink[nlp.type];
   const nlpPlatformName = nlp.name;
 
-  return platform === VoiceflowConstants.PlatformType.VOICEFLOW ? (
-    <LarnMoreButton platformLearnMoreLink={platformLearnMoreLink} />
-  ) : (
-    <ImportedNLPText fileExtensions={fileExtensions} nlpPlatformName={nlpPlatformName} platformLearnMoreLink={platformLearnMoreLink} />
-  );
+  if (platform === VoiceflowConstants.PlatformType.VOICEFLOW && nlp.type === NLPType.VOICEFLOW) {
+    return <LarnMoreButton platformLearnMoreLink={platformLearnMoreLink} />;
+  }
+
+  return <ImportedNLPText fileExtensions={fileExtensions} nlpPlatformName={nlpPlatformName} platformLearnMoreLink={platformLearnMoreLink} />;
 };
 
 export default NLPLearnMoreLink;

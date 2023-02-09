@@ -1,15 +1,13 @@
 import { Box, ButtonVariant, SvgIcon, toast, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 
-import { ConfirmProps } from '@/components/ConfirmModal';
 import { PageProgress } from '@/components/PageProgressBar/utils';
-import { ModalType, PageProgressBar } from '@/constants';
+import { PageProgressBar } from '@/constants';
 import * as Tracking from '@/ducks/tracking';
-import { useModals } from '@/hooks';
 import { NLUManagerContext } from '@/pages/NLUManager/context';
 import { TrainingModelContext } from '@/pages/Project/contexts';
 
-import { Container, TrainButton, TrashButton } from '../../styles';
+import { Container, TrainButton } from '../../styles';
 import NLUSearch from '../Search';
 
 const IntentsHeader: React.OldFC = () => {
@@ -22,23 +20,6 @@ const IntentsHeader: React.OldFC = () => {
       startTraining(Tracking.AssistantOriginType.NLU_MANAGER);
       PageProgress.start(PageProgressBar.NLU_MODEL_TRAINNING, 50000);
     }
-  };
-
-  const confirmModal = useModals<ConfirmProps>(ModalType.CONFIRM);
-
-  const confirmDelete = () => {
-    confirmModal.open({
-      body: (
-        <>
-          Are you sure you want to delete {nluManager.selectedIntentIDs.size} item(s)?
-          <br />
-          This action cannot be undone.
-        </>
-      ),
-      header: 'Delete Items',
-      confirm: () => nluManager.deleteIntents(),
-      confirmButtonText: 'Delete',
-    });
   };
 
   useDidUpdateEffect(() => {
@@ -57,12 +38,6 @@ const IntentsHeader: React.OldFC = () => {
       />
 
       <Box.FlexCenter pr={12} gap={10}>
-        {!!nluManager.selectedIntentIDs.size && (
-          <TrashButton variant={ButtonVariant.SECONDARY} onClick={confirmDelete}>
-            <SvgIcon icon="trash" size={15} inline />
-          </TrashButton>
-        )}
-
         <TrainButton active={isTraining} onClick={handleTrain} variant={ButtonVariant.PRIMARY}>
           <Box display="inline-block" position="relative" top={2}>
             <SvgIcon icon="arrowSpin" spin={isTraining} size={16} inline mr={16} />

@@ -3,7 +3,6 @@ import { Box, Button, FlexCenter, Modal, Text, toast, UploadV2 } from '@voiceflo
 import React from 'react';
 
 import client from '@/client';
-import * as NLU from '@/config/nlu';
 import { NLUImportOrigin } from '@/constants';
 import * as Intent from '@/ducks/intent';
 import * as ProjectV2 from '@/ducks/projectV2';
@@ -14,11 +13,12 @@ import { Hotkey } from '@/keymap';
 import * as T from '@/ModalsV2/types';
 import { NLUImportModel } from '@/models';
 
-import { getDropzoneCaption } from '../../constants';
-import { ImportType } from '../constants';
-import { IntentImportState, ModalsState } from '../types';
-import NLPLearnMoreLink from './NLPLearnMoreLink';
-import TabButton from './TabButton';
+import { getDropzoneCaption } from '../../../constants';
+import { ImportType } from '../../constants';
+import { IntentImportState, ModalsState } from '../../types';
+import NLPLearnMoreLink from '../NLPLearnMoreLink';
+import TabButton from '../TabButton';
+import { FILE_EXTENSION_LABELS } from './constants';
 
 interface ImportIntentsProps extends T.VoidInternalProps {
   onChangeModalTab: (tab: ImportType) => void;
@@ -42,7 +42,8 @@ const ImportIntents: React.OldFC<ImportIntentsProps> = ({
   const [file, setFile] = React.useState<File | null>(importIntentsTabState.file || null);
   const [importedModel, setImportedModel] = React.useState<NLUImportModel | null>(importIntentsTabState.importedModel || null);
   const platform = useSelector(ProjectV2.active.platformSelector);
-  const nlp = NLU.Config.get(platform).nlps[0];
+  const nlp = nluConfig.nlps[0];
+
   const [isLoading, setIsLoading] = React.useState(false);
   const [isSubmitting, setIsSubmitting] = React.useState(false);
 
@@ -70,6 +71,11 @@ const ImportIntents: React.OldFC<ImportIntentsProps> = ({
 
   const acceptedFileFormatsLabel = React.useMemo(
     () => fileExtensions.map((fileExtension) => fileExtension.replace('.', '').toUpperCase()).join(', '),
+    [fileExtensions]
+  );
+
+  const fileExtensionsLabel = React.useMemo(
+    () => fileExtensions.map((fileExtension) => FILE_EXTENSION_LABELS[fileExtension] || fileExtension),
     [fileExtensions]
   );
 
@@ -166,7 +172,7 @@ const ImportIntents: React.OldFC<ImportIntentsProps> = ({
 
         {!importedModel ? (
           <Text color="#62778C" fontSize={13}>
-            <NLPLearnMoreLink platform={platform} nlp={nlp} fileExtensions={fileExtensions} />
+            <NLPLearnMoreLink platform={platform} nlp={nlp} fileExtensions={fileExtensionsLabel} />
           </Text>
         ) : (
           <Text color="#62778C" fontSize={13}>

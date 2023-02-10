@@ -3,7 +3,8 @@ import React from 'react';
 
 import { useNLUManager } from '@/pages/NLUManager/context';
 
-import DataSourceOptions from './DataSourceOptions';
+import DataSourceOptions from '../DataSourceOptions';
+import * as S from './styles';
 
 interface DataSetProps {
   onBack: VoidFunction;
@@ -13,7 +14,6 @@ interface DataSetProps {
 
 const UnclassifedDataSourceSettings: React.FC<DataSetProps> = ({ closePrevented, onBack, onClose }) => {
   const { unclassifiedUtterances } = useNLUManager();
-  const isUploading = false;
 
   const dataSource = React.useMemo(
     () =>
@@ -29,18 +29,17 @@ const UnclassifedDataSourceSettings: React.FC<DataSetProps> = ({ closePrevented,
     [unclassifiedUtterances]
   );
 
+  const allDatasources = Object.values(dataSource);
+
   React.useEffect(() => {
-    if (unclassifiedUtterances.length === 0) {
+    if (allDatasources.length === 0) {
       onClose();
     }
-  }, [unclassifiedUtterances]);
+  }, [allDatasources]);
 
   return (
-    <Box mt={10}>
-      <Modal.Header
-        actions={<SvgIcon icon="close" size={16} clickable color="#6E849A" onClick={onClose} />}
-        style={{ paddingTop: '12px', paddingBottom: '12px' }}
-      >
+    <>
+      <Modal.Header actions={<SvgIcon icon="close" onClick={onClose} clickable color="#6E849A" />}>
         <FlexCenter>
           <SvgIcon icon="largeArrowLeft" size={16} clickable color="#6E849A" onClick={onBack} />
           <Text ml={23}>Manage Unclassified</Text>
@@ -48,13 +47,13 @@ const UnclassifedDataSourceSettings: React.FC<DataSetProps> = ({ closePrevented,
       </Modal.Header>
 
       <Modal.Body>
-        <Box mt={25}>
+        <Box mt={4}>
           {unclassifiedUtterances.length ? (
-            Object.values(dataSource).map(({ dataSourceID, dataSourceName, utterances }) => (
-              <Box.FlexCenter key={dataSourceID} gap={20} mb={16}>
+            allDatasources.map(({ dataSourceID, dataSourceName, utterances }) => (
+              <S.UtteranceItem key={dataSourceID}>
                 <Input value={dataSourceName} readOnly />
                 <DataSourceOptions items={utterances} dataSourceID={dataSourceID} dataSourceName={dataSourceName} />
-              </Box.FlexCenter>
+              </S.UtteranceItem>
             ))
           ) : (
             <BlockText
@@ -74,11 +73,11 @@ const UnclassifedDataSourceSettings: React.FC<DataSetProps> = ({ closePrevented,
           Cancel
         </Button>
 
-        <Button onClick={onBack} disabled={closePrevented || isUploading} squareRadius isLoading={isUploading} style={{ width: '91px' }}>
-          Upload
+        <Button onClick={onBack} disabled={closePrevented} squareRadius style={{ width: '91px' }}>
+          Import
         </Button>
       </Modal.Footer>
-    </Box>
+    </>
   );
 };
 

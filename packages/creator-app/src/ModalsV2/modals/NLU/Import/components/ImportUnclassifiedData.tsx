@@ -11,7 +11,7 @@ import { useNLUManager } from '@/pages/NLUManager/context';
 import { ImportType } from '../constants';
 import { CSVFile, IntentUnclassifiedData, ModalsState } from '../types';
 import TabButton from './TabButton';
-import UnclassifedDataSourceSettings from './UnclassifedDataSourceSettings';
+import UnclassifedDataSourceSettings from './UnclassifiedDataSourceSettings';
 
 interface ImportUnclassifiedDataProps extends T.VoidInternalProps {
   onChangeModalTab: (tab: ImportType) => void;
@@ -117,7 +117,11 @@ const ImportUnclassifiedData: React.OldFC<ImportUnclassifiedDataProps> = ({
         <>
           <Modal.Header
             border
-            actions={<System.IconButton.Base icon="systemSettings" onClick={onSettingClick} disabled={!nluManager.unclassifiedUtterances.length} />}
+            actions={
+              <System.IconButtonsGroup.Base>
+                <System.IconButton.Base icon="systemSettings" onClick={onSettingClick} disabled={!nluManager.unclassifiedUtterances.length} />
+              </System.IconButtonsGroup.Base>
+            }
             style={{ padding: '12px 32px 12px 16px' }}
           >
             <FlexCenter>

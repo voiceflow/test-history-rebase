@@ -138,12 +138,15 @@ export const useDataSourceMenu = ({ items, dataSourceName, dataSourceID }: useDa
 
   const [downloading, setIsDownloading] = React.useState(false);
 
+  const onDelete = usePersistFunction(async (dataSourceID: string) => {
+    await onDeleteUnclassified(dataSourceID);
+    toast.success('Deleted');
+  });
+
   const onDownload = usePersistFunction(async () => {
     if (!items) return;
 
     setIsDownloading(true);
-
-    toast.info('Downloading...');
 
     const data = items.join('\r\n');
     const blob = new Blob([data], { type: 'octet/stream' });
@@ -151,7 +154,7 @@ export const useDataSourceMenu = ({ items, dataSourceName, dataSourceID }: useDa
 
     downloadFromURL(`${NLP.Constants.NLPType.VOICEFLOW}-${dataSourceName}.csv`, url);
     URL.revokeObjectURL(data);
-    toast.success('Successfully Exported');
+    toast.success('Downloaded');
 
     setIsDownloading(false);
   });
@@ -175,7 +178,7 @@ export const useDataSourceMenu = ({ items, dataSourceName, dataSourceID }: useDa
       options.push({
         key: 'delete',
         label: 'Delete',
-        onClick: () => onDeleteUnclassified(dataSourceID),
+        onClick: () => onDelete(dataSourceID),
       });
     }
 

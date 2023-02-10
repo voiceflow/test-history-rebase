@@ -19,7 +19,8 @@ const BillingAddCard = manager.create<BillingAddCardProps>('BillingAddCard', () 
     const onSubmitForm = async (values: CardHolderInfo) => {
       api.preventClose();
 
-      await paymentAPI.createFullSource(values);
+      const source = await paymentAPI.createFullSource(values);
+      await paymentAPI.updateWorkspaceSource(source);
 
       api.enableClose();
       api.close();

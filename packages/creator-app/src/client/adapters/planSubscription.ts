@@ -8,6 +8,7 @@ const timestampToDate = (timestamp: number) => dayjs.unix(timestamp).format('DD 
 const planSubscriptionAdapter = createSimpleAdapter<DBPlanSubscription, PlanSubscription>(
   ({ nextBillingDate, ...subscription }) => ({
     ...subscription,
+    billingPeriod: subscription.interval,
     nextBillingDate: timestampToDate(nextBillingDate),
   }),
   notImplementedAdapter.transformer

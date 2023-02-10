@@ -87,7 +87,7 @@ export interface DBPlanSubscription {
 export interface PlanSubscription {
   quantity: number;
   unitPrice: number;
-  interval: BillingPeriod;
+  billingPeriod: BillingPeriod;
   nextBillingDate: string;
 }
 

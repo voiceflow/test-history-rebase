@@ -1,11 +1,12 @@
-import { Button, ButtonVariant, FlexCenter, Text } from '@voiceflow/ui';
+import { Button, ButtonVariant, FlexCenter, Text, withProvider } from '@voiceflow/ui';
 import React from 'react';
 
 import { bannerBg } from '@/assets';
 import Workspace from '@/components/Workspace';
 import { Permission } from '@/constants/permissions';
+import * as Payment from '@/contexts/PaymentContext';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { useOnAddSeats, usePermission, useSelector } from '@/hooks';
+import { usePermission, useSelector } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
 
 import MemberList from './List';
@@ -18,10 +19,9 @@ const DashboardV2TeamAndBillingMembers: React.FC = () => {
 
   const [canAddSeats] = usePermission(Permission.BILLING_SEATS_ADD);
 
+  const addSeatsModal = ModalsV2.useModal(ModalsV2.Billing.AddSeats);
   const inviteModal = ModalsV2.useModal(ModalsV2.Workspace.Invite);
   const paymentModal = ModalsV2.useModal(ModalsV2.Payment);
-
-  const onAddSeats = useOnAddSeats();
 
   return (
     <S.Container>
@@ -52,7 +52,7 @@ const DashboardV2TeamAndBillingMembers: React.FC = () => {
         <FlexCenter gap={10}>
           {canAddSeats && (
             <>
-              <Button variant={ButtonVariant.SECONDARY} nowrap onClick={() => onAddSeats()}>
+              <Button variant={ButtonVariant.SECONDARY} nowrap onClick={() => addSeatsModal.openVoid()}>
                 Add Seats
               </Button>
               <Button variant={ButtonVariant.PRIMARY} onClick={() => inviteModal.openVoid()}>
@@ -67,4 +67,4 @@ const DashboardV2TeamAndBillingMembers: React.FC = () => {
   );
 };
 
-export default DashboardV2TeamAndBillingMembers;
+export default withProvider(Payment.PaymentProvider)(DashboardV2TeamAndBillingMembers);

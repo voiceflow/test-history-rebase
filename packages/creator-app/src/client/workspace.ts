@@ -33,8 +33,8 @@ const workspaceClient = {
 
   getPlan: (workspaceID: string) => api.get<DBPayment>(`${WORKSPACES_PATH}/${workspaceID}/plan`),
 
-  scheduleSeatsChange: (workspaceID: string, seats: number) => {
-    return apiV2.post(`${WORKSPACES_PATH}/${workspaceID}/subscription/plan/seats`, { seats });
+  updatePlanSubscriptionSeats: (workspaceID: string, { seats, schedule }: { seats: number; schedule: boolean }) => {
+    return apiV2.post(`${WORKSPACES_PATH}/${workspaceID}/subscription/plan/seats`, { seats, prorate: !schedule });
   },
 
   updateSource: (workspaceID: string, sourceID: string) => api.patch(`${WORKSPACES_PATH}/${workspaceID}/source`, { source_id: sourceID }),

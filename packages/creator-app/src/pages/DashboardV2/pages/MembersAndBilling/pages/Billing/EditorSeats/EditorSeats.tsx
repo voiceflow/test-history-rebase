@@ -26,14 +26,14 @@ const EditorSeats: React.FC<EditorSeatsProps> = ({ data, source, refetch }) => {
   const isPaidPlan = useSelector(WorkspaceV2.active.isOnPaidPlanSelector);
   const canManageSeats = usePermission(Permission.BILLING_SEATS);
 
-  const { nextBillingDate, unitPrice, interval, quantity } = data;
+  const { nextBillingDate, unitPrice, billingPeriod, quantity } = data;
   const scheduledSeat = quantity !== seats;
 
   const openScheduleSeatModal = async () => {
     await scheduleSeatModal.openVoid({
       nextBillingDate,
       pricePerEditor: unitPrice,
-      priceInterval: interval,
+      billingPeriod,
       scheduleOrCurrentEditorSeats: scheduledSeat ? quantity : seats,
     });
     refetch();
@@ -92,7 +92,7 @@ const EditorSeats: React.FC<EditorSeatsProps> = ({ data, source, refetch }) => {
             {isPaidPlan && !isEnterprise && (
               <div>
                 <SectionV2.Description>{currency.formatUSD(unitPrice, { noDecimal: true })} </SectionV2.Description>
-                <SectionV2.Description secondary> per Editor, per {interval}</SectionV2.Description>
+                <SectionV2.Description secondary> per Editor, per {billingPeriod}</SectionV2.Description>
               </div>
             )}
           </Box.FlexAlignStart>

@@ -18,6 +18,7 @@ export interface PaymentAPIContextType {
   checkChargeable: (source: Pick<Source, 'id' | 'client_secret'>) => Promise<boolean>;
   planSubscription: PlanSubscription | null;
   createFullSource: CreateFullSourceFunction;
+  updateWorkspaceSource: (source: Source) => Promise<void>;
   refetchPaymentSource: () => Promise<void>;
   refetchPlanSubscription: () => Promise<void>;
 }

@@ -11,13 +11,13 @@ interface PaymentDetailsProps {
 }
 
 const PaymentDetails: React.FC<PaymentDetailsProps> = ({ source, refetch }) => {
-  const addCardSeatModal = ModalsV2.useModal(ModalsV2.Billing.AddCard);
+  const addCardModal = ModalsV2.useModal(ModalsV2.Billing.AddCard);
 
   const cardExpires = source?.expiration ? `, card expires ${source.expiration}` : '';
   const cardDetails = source ? `...${source.last4}${cardExpires}` : '...';
 
   const onClickAddCard = async () => {
-    await addCardSeatModal.openVoid({ update: !!source });
+    await addCardModal.openVoid({ update: !!source });
     refetch();
   };
 

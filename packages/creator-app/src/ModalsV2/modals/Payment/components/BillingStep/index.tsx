@@ -164,7 +164,7 @@ const BillingStep: React.FC<BillingStepProps> = ({
           width={hasCard ? 144 : 194}
           onClick={() => onNext()}
           variant={Button.Variant.PRIMARY}
-          disabled={isLoading}
+          disabled={isLoading || editorSeats > TEAM_INCREASE_LIMIT}
           isLoading={isLoading}
           squareRadius
         >

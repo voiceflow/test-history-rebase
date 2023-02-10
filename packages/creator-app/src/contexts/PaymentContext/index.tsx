@@ -73,6 +73,10 @@ export const PaymentApiProvider: React.FC<React.PropsWithChildren> = ({ children
     return stripeSource.source;
   });
 
+  const updateWorkspaceSource = usePersistFunction(async (source: Source) => {
+    await client.workspace.updateSource(workspaceID, source.id);
+  });
+
   const createFullSource = usePersistFunction(async (cardHolderInfo: CardHolderInfo): Promise<Source> => {
     if (!stripe || !elements) throw new Error('Stripe not loaded');
 
@@ -97,8 +101,6 @@ export const PaymentApiProvider: React.FC<React.PropsWithChildren> = ({ children
     }
 
     await checkChargeable(stripeSource.source);
-
-    await client.workspace.updateSource(workspaceID, stripeSource.source.id);
 
     return stripeSource.source;
   });
@@ -142,6 +144,7 @@ export const PaymentApiProvider: React.FC<React.PropsWithChildren> = ({ children
     createFullSource,
     planSubscription,
     refetchPaymentSource: fetchPaymentSource,
+    updateWorkspaceSource,
     refetchPlanSubscription: fetchPlanSubscription,
   });
 

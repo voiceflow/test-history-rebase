@@ -17,24 +17,24 @@ interface ScheduleSeatChangeProps {
   nextBillingDate: string;
   pricePerEditor: number;
   scheduleOrCurrentEditorSeats: number;
-  priceInterval: BillingPeriod;
+  billingPeriod: BillingPeriod;
 }
 
 const ScheduleSeatChange = manager.create<ScheduleSeatChangeProps>(
   'ScheduleSeatChange',
   () =>
-    ({ api, type, opened, hidden, animated, nextBillingDate, pricePerEditor, scheduleOrCurrentEditorSeats, priceInterval }) => {
+    ({ api, type, opened, hidden, animated, nextBillingDate, pricePerEditor, scheduleOrCurrentEditorSeats, billingPeriod }) => {
       const workspaceID = useSelector(Session.activeWorkspaceIDSelector)!;
       const [isSubmitting, setSubmitting] = React.useState(false);
       const [numSeats, setNumSeats] = React.useState(scheduleOrCurrentEditorSeats);
 
-      const isAnnual = priceInterval === BillingPeriod.ANNUALLY;
+      const isAnnual = billingPeriod === BillingPeriod.ANNUALLY;
       const isIncreasing = numSeats > scheduleOrCurrentEditorSeats;
 
       const onScheduleSeatChange = async () => {
         api.preventClose();
         setSubmitting(true);
-        await client.workspace.scheduleSeatsChange(workspaceID, numSeats);
+        await client.workspace.updatePlanSubscriptionSeats(workspaceID, { seats: numSeats, schedule: true });
         api.enableClose();
         api.close();
       };
@@ -73,7 +73,7 @@ const ScheduleSeatChange = manager.create<ScheduleSeatChangeProps>(
                     <SectionV2.Description>
                       {currency.formatUSD(pricePerEditor, { noDecimal: true })}
                       <Text color="#62778C" paddingLeft="3px">
-                        per Editor, per {priceInterval}
+                        per Editor, per {billingPeriod}
                       </Text>
                     </SectionV2.Description>
                   )}

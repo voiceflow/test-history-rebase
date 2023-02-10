@@ -59,7 +59,6 @@ export {
   useRAF,
   useRegistration,
   useResizeObserver,
-  useScheduled,
   useThrottledCallback,
   useTimeout,
 } from '@voiceflow/ui';

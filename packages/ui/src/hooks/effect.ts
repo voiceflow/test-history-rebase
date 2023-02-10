@@ -1,23 +1,7 @@
-import { Callback, Eventual, Utils } from '@voiceflow/common';
-import dayjs from 'dayjs';
-import { useEffect, useRef, useState } from 'react';
+import { Callback, Utils } from '@voiceflow/common';
+import { useEffect, useRef } from 'react';
 
 import { useDidUpdateEffect, useTeardown } from './lifecycle';
-
-/**
- * ex. "8pm" or "8:30pm"
- */
-const SCHEDULE_FORMAT = ['ha', 'h:ma'];
-
-const getNextScheduledTimeout = (schedule: string[]) => {
-  const now = dayjs();
-  const todayTimes = schedule.map((time) => dayjs(time, SCHEDULE_FORMAT));
-  const tomorrowTimes = todayTimes.map((date) => dayjs(date).add(1, 'day'));
-  const validTimes = [...todayTimes, ...tomorrowTimes].filter((date) => date.isAfter(now));
-  const minDate = dayjs.min(...validTimes);
-
-  return minDate ? minDate.valueOf() - now.valueOf() : 4 * 60 * 60 * 1000;
-};
 
 export const useAsyncEffect = (effect: () => Promise<void>, dependencies: unknown[] = []): void =>
   useEffect(() => {
@@ -74,16 +58,3 @@ export const useTimeout = (callback: Callback, timeout: number, dependencies: un
 
     return () => clearTimeout(timer);
   }, dependencies);
-
-export const useScheduled = (schedule: string[], effect: () => Eventual<void>, dependencies: unknown[] = []): void => {
-  const [timeout, updateTimeout] = useState(() => getNextScheduledTimeout(schedule));
-
-  useTimeout(
-    async () => {
-      updateTimeout(getNextScheduledTimeout(schedule));
-      await effect();
-    },
-    timeout,
-    [schedule, timeout, ...dependencies]
-  );
-};

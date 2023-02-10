@@ -10,10 +10,8 @@ import React from 'react';
 import { RootPageProgressBar } from '@/components/PageProgressBar';
 import SeoHelmet from '@/components/SeoHelmet';
 import SupportChat from '@/components/SupportChat';
-import TrackNewCodeVersion from '@/components/TrackNewCodeVersion';
 import { SeoPage } from '@/constants/seo';
 import AppModals from '@/modals/AppModals';
-import * as ModalsV2 from '@/ModalsV2';
 import Beamer from '@/services/Beamer';
 import ChatAssistant from '@/services/ChatAssistant';
 import DatadogRum from '@/services/DatadogRum';
@@ -28,10 +26,8 @@ const App: React.FC = () => (
     <ToastContainer />
     <Routes />
     <AppModals />
-    <ModalsV2.Placeholder />
     <RootPageProgressBar />
     <SupportChat />
-    <TrackNewCodeVersion />
     <DatadogRum />
     <Beamer />
     <ChatAssistant />

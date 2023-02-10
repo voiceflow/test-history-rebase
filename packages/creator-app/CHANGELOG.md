@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1091.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1090.2...@voiceflow/creator-app@1.1091.0) (2023-02-10)
+
+
+### Features
+
+* generative response step (CT-000) ([#6666](https://github.com/voiceflow/creator-app/issues/6666)) ([a01aee4](https://github.com/voiceflow/creator-app/commit/a01aee4acb47b6f2b8ccb96adc1a29f1a1850341))
+* implement add seats modal (CT-1538) ([#6686](https://github.com/voiceflow/creator-app/issues/6686)) ([aac5e34](https://github.com/voiceflow/creator-app/commit/aac5e34c96a0659c684e11497effd9a4bceaf494))
+
+
+
+
+
 ## [1.1090.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1090.1...@voiceflow/creator-app@1.1090.2) (2023-02-10)
 
 

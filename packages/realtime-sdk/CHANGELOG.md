@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.237.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.236.4...@voiceflow/realtime-sdk@1.237.0) (2023-02-10)
+
+
+### Features
+
+* generative response step (CT-000) ([#6666](https://github.com/voiceflow/creator-app/issues/6666)) ([a01aee4](https://github.com/voiceflow/creator-app/commit/a01aee4acb47b6f2b8ccb96adc1a29f1a1850341))
+
+
+
+
+
 ## [1.236.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.236.3...@voiceflow/realtime-sdk@1.236.4) (2023-02-10)
 
 **Note:** Version bump only for package @voiceflow/realtime-sdk

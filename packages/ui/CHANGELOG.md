@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.236.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.235.1...@voiceflow/ui@1.236.0) (2023-02-10)
+
+
+### Features
+
+* generative response step (CT-000) ([#6666](https://github.com/voiceflow/creator-app/issues/6666)) ([a01aee4](https://github.com/voiceflow/creator-app/commit/a01aee4acb47b6f2b8ccb96adc1a29f1a1850341))
+
+
+
+
+
 ## [1.235.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.235.0...@voiceflow/ui@1.235.1) (2023-02-10)
 
 

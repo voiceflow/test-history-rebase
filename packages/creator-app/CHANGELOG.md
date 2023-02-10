@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1090.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1090.1...@voiceflow/creator-app@1.1090.2) (2023-02-10)
+
+
+### Bug Fixes
+
+* dashboard v2 sidebar upgrade to pro (CT-1634) ([#6684](https://github.com/voiceflow/creator-app/issues/6684)) ([203cb71](https://github.com/voiceflow/creator-app/commit/203cb717cbe774e80f6bc404f4380e850c64cfe1))
+
+
+
+
+
 ## [1.1090.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1090.0...@voiceflow/creator-app@1.1090.1) (2023-02-10)
 
 

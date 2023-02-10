@@ -939,7 +939,6 @@ label {
   margin-bottom: 11px;
   color: #62778c !important;
   font-weight: 600 !important;
-  font-size: 15px !important;
   line-height: 1.4666666667 !important;
 }
 
@@ -2096,6 +2095,7 @@ kbd {
   animation: fadein 0.15s ease both;
 }
 
+/* stylelint-disable-next-line keyframes-name-pattern */
 @keyframes scaleY {
   from {
     transform: scaleY(0);

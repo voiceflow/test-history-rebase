@@ -10,6 +10,7 @@ export enum BlockType {
   TEXT = 'text',
   SPEAK = 'speak',
   CHOICE_OLD = 'choice',
+  GENERATIVE = 'generative',
 
   // navigation
   EXIT = 'exit',

@@ -76,3 +76,9 @@ export interface MLGenAutoComplete {
   projectID: string;
   transcript: string[];
 }
+
+export interface MLGenerativeResponse {
+  projectID: string;
+  prompt: string;
+  length?: number;
+}

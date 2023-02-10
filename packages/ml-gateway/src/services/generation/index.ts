@@ -2,7 +2,7 @@ import VError from '@voiceflow/verror';
 import template from 'es6-template-string';
 
 import logger from '@/logger';
-import { MLGenAutoComplete, MLGenEntityPrompt, MLGenEntityValue, MLGenPromptRequest, MLGenUtteranceRequest } from '@/types';
+import { MLGenAutoComplete, MLGenEntityPrompt, MLGenEntityValue, MLGenerativeResponse, MLGenPromptRequest, MLGenUtteranceRequest } from '@/types';
 
 import { AbstractControl } from '../../control';
 import { autoCompletePrompt } from './constants';
@@ -219,6 +219,12 @@ class GenerationService extends AbstractControl {
     const result = await this.clients.openAI.createCompletion({ prompt: autoCompletePrompt(transcript) });
 
     return result.text;
+  }
+
+  async generativeResponse({ prompt, length = 128 }: MLGenerativeResponse) {
+    const result = await this.clients.openAI.createCompletion({ prompt, max_tokens: length });
+
+    return { result: result.text.trim() };
   }
 }
 

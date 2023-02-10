@@ -115,3 +115,11 @@ export interface EntityPromptGenResponse extends BaseResponse {
    */
   results: string[];
 }
+
+export interface GenerativeResponseRequest extends Omit<BaseRequest, 'quantity'> {
+  prompt: string;
+}
+
+export interface GenerativeResponseResponse {
+  result: string;
+}

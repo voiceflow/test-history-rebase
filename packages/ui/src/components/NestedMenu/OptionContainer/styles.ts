@@ -1,4 +1,4 @@
-import { styled } from '@/hocs/styled';
+import { styled } from '@ui/styles';
 
 export const Container = styled.div`
   background-color: #fff;

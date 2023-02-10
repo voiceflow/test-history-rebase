@@ -5,6 +5,8 @@ import {
   EntityPromptGenResponse,
   EntityValuesGenRequest,
   EntityValuesGenResponse,
+  GenerativeResponseRequest,
+  GenerativeResponseResponse,
   ResponseGenRequest,
   ResponseGenResponse,
   UtteranceGenRequest,
@@ -12,7 +14,7 @@ import {
 } from './types';
 
 const gptGenClient = {
-  genResponses: (options: ResponseGenRequest): Promise<ResponseGenResponse> => mlService.post<ResponseGenResponse>('v1/generation/prompt', options),
+  genPrompts: (options: ResponseGenRequest): Promise<ResponseGenResponse> => mlService.post<ResponseGenResponse>('v1/generation/prompt', options),
 
   genUtterances: (options: UtteranceGenRequest): Promise<UtteranceGenResponse> =>
     mlService.post<UtteranceGenResponse>('v1/generation/utterance', options),
@@ -22,6 +24,9 @@ const gptGenClient = {
 
   genEntityPrompts: (options: EntityPromptGenRequest): Promise<EntityPromptGenResponse> =>
     mlService.post<EntityPromptGenResponse>('v1/generation/entity-prompt', options),
+
+  generativeResponse: (options: GenerativeResponseRequest): Promise<GenerativeResponseResponse> =>
+    mlService.post<any>('v1/generation/generative-response', options),
 };
 
 export default gptGenClient;

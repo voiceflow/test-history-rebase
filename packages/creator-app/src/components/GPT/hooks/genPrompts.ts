@@ -1,4 +1,3 @@
-/* eslint-disable sonarjs/no-identical-functions */
 import { READABLE_VARIABLE_REGEXP, Utils } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
 import { serializeToText } from '@voiceflow/slate-serializer/text';
@@ -51,7 +50,7 @@ export const useGenVoicePrompts = ({
       if (!options.examples.length && generateBuiltIn) {
         results = await generateBuiltIn({ quantity: options.quantity });
       } else {
-        ({ results } = await client.gptGen.genResponses({ ...options, format: 'ssml' }));
+        ({ results } = await client.gptGen.genPrompts({ ...options, format: 'ssml' }));
       }
 
       return results.map((result) => ({
@@ -104,7 +103,7 @@ export const useGenChatPrompts = ({
       if (!options.examples.length && generateBuiltIn) {
         results = await generateBuiltIn({ quantity: options.quantity });
       } else {
-        ({ results } = await client.gptGen.genResponses({ ...options, format: 'text' }));
+        ({ results } = await client.gptGen.genPrompts({ ...options, format: 'text' }));
       }
 
       const editor = SlateEditor.createEditor([SlateEditor.PluginType.VARIABLES]);

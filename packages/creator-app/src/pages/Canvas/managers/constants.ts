@@ -22,6 +22,7 @@ import DirectiveManager from './Directive';
 import DisplayManager from './Display';
 import EventManager from './Event';
 import ExitManager from './Exit';
+import GenerativeManager from './Generative';
 import GoToDomainManager from './GoToDomain';
 import GoToIntentManager from './GoToIntent';
 import GoToNodeManager from './GoToNode';
@@ -72,6 +73,7 @@ export const MANAGERS_BY_TYPE = {
   [BlockType.CARD]: CardManager,
   [BlockType.CAROUSEL]: CarouselManager,
   [BlockType.CARDV2]: CardV2Manager,
+  [BlockType.GENERATIVE]: GenerativeManager,
   [BlockType.DISPLAY]: DisplayManager,
   [BlockType.PERMISSION]: PermissionManager,
   [BlockType.ACCOUNT_LINKING]: AccountLinkingManager,

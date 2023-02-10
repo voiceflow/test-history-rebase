@@ -52,15 +52,30 @@ export interface GenApi<T> {
   onRejectActiveItem: VoidFunction;
 }
 
-export const useGen = <T, D = string>({ onAccept, generate, disabled, examples, examplesToDB, dbExamplesToTrack }: GenOptions<T, D>): GenApi<T> => {
+export const useGenOptions = () => {
   const projectConfig = useActiveProjectTypeConfig();
-
-  const [, hotkeysAPI] = React.useContext(HotkeysContext)!;
-  const [trackingEvents] = useTrackingEvents();
 
   const locales = useSelector(VersionV2.active.localesSelector);
   const workspaceID = useSelector(Session.activeWorkspaceIDSelector);
+
+  return React.useCallback(() => {
+    Errors.assertWorkspaceID(workspaceID);
+
+    return {
+      requestID: Utils.id.cuid(),
+      workspaceID,
+      locales: locales.map(projectConfig.utils.locale.toVoiceflowLocale),
+    };
+  }, []);
+};
+
+export const useGen = <T, D = string>({ onAccept, generate, disabled, examples, examplesToDB, dbExamplesToTrack }: GenOptions<T, D>): GenApi<T> => {
+  const [, hotkeysAPI] = React.useContext(HotkeysContext)!;
+  const [trackingEvents] = useTrackingEvents();
+
   const refreshWorkspaceQuotaDetails = useDispatch(Workspace.refreshWorkspaceQuotaDetails);
+
+  const getGenOptions = useGenOptions();
 
   const [state, stateAPI] = useSmartReducerV2({
     items: [] as T[],
@@ -86,8 +101,6 @@ export const useGen = <T, D = string>({ onAccept, generate, disabled, examples, 
     if (disabled) return;
 
     try {
-      Errors.assertWorkspaceID(workspaceID);
-
       const requestID = Utils.id.cuid();
 
       stateAPI.fetching.set(true);
@@ -98,10 +111,8 @@ export const useGen = <T, D = string>({ onAccept, generate, disabled, examples, 
 
       const items = await generate({
         ...options,
-        locales: locales.map(projectConfig.utils.locale.toVoiceflowLocale),
         examples: examplesToDB(options.examples?.length ? options.examples : examples),
-        requestID,
-        workspaceID,
+        ...getGenOptions(),
       });
 
       stateAPI.update({

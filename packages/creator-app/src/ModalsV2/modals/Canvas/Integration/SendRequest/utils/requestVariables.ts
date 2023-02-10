@@ -1,3 +1,4 @@
+import { READABLE_VARIABLE_REGEXP } from '@voiceflow/common';
 import cloneDeep from 'lodash/cloneDeep';
 
 import { deepDraftToMarkdown } from '@/pages/Canvas/managers/Integration/components/ZapierAndGoogleEditor/components/utils';
@@ -15,7 +16,7 @@ export const normalize = (data: any) => {
  * @param {Object} object
  * @returns {Array} all things matching a variable format in this object
  */
-export const deepVariableSearch = (object: any) => {
+export const deepVariableSearch = (object: any, regex = READABLE_VARIABLE_REGEXP): string[] => {
   const variables = new Set<string>();
 
   const recurse = (subCollection: any) => {
@@ -25,7 +26,7 @@ export const deepVariableSearch = (object: any) => {
         recurse(subCollection[key]);
       }
     } else if (typeof subCollection === 'string') {
-      const re = /{(\w*){1,16}}/g;
+      const re = new RegExp(regex);
       let m;
       // eslint-disable-next-line no-cond-assign
       while ((m = re.exec(subCollection))) {
@@ -39,14 +40,14 @@ export const deepVariableSearch = (object: any) => {
   return [...variables];
 };
 
-const replacer = (match: any, inner: any, variablesMap: any, uriEncode = false) => {
+const replacer = (match: any, inner: any, variablesMap: Record<string, any>, uriEncode = false) => {
   if (inner in variablesMap) {
     return uriEncode ? encodeURI(decodeURI(variablesMap[inner])) : variablesMap[inner];
   }
   return match;
 };
 
-export const deepVariableReplacement = (object: any, variableMap: any) => {
+export const deepVariableReplacement = (object: any, variableMap: Record<string, any>, regex = READABLE_VARIABLE_REGEXP) => {
   const recurse = (subCollection: any, uriEncode = false) => {
     if (typeof subCollection === 'object') {
       // eslint-disable-next-line guard-for-in,no-restricted-syntax
@@ -54,7 +55,7 @@ export const deepVariableReplacement = (object: any, variableMap: any) => {
         subCollection[key] = key === 'url' ? recurse(subCollection[key], true) : recurse(subCollection[key]);
       }
     } else if (typeof subCollection === 'string') {
-      return subCollection.replace(/{(\w*){1,16}}/g, (match, inner) => replacer(match, inner, variableMap, uriEncode));
+      return subCollection.replace(regex, (match, inner) => replacer(match, inner, variableMap, uriEncode));
     }
     return subCollection;
   };

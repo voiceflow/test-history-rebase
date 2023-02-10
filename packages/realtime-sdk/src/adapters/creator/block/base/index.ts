@@ -14,6 +14,7 @@ import componentAdapter, { componentOutPortsAdapter, componentOutPortsAdapterV2 
 import customBlockPointerAdapter, { customBlockPointerOutPortsAdapter, customBlockPointerOutPortsAdapterV2 } from './customBlockPointer';
 import directiveAdapter, { directiveOutPortsAdapter, directiveOutPortsAdapterV2 } from './directive';
 import exitAdapter, { exitOutPortsAdapter, exitOutPortsAdapterV2 } from './exit';
+import generativeAdapter, { generativeOutPortsAdapterV2 } from './generative';
 import goToDomainAdapter, { goToDomainOutPortsAdapter, goToDomainOutPortsAdapterV2 } from './goToDomain';
 import goToIntentAdapter, { goToIntentOutPortsAdapter, goToIntentOutPortsAdapterV2 } from './goToIntent';
 import goToNodeAdapter, { goToNodeOutPortsAdapter, goToNodeOutPortsAdapterV2 } from './goToNode';
@@ -60,6 +61,7 @@ export const baseBlockAdapter = {
   [BlockType.DIRECTIVE]: directiveAdapter,
   [BlockType.COMPONENT]: componentAdapter,
   [BlockType.GO_TO_NODE]: goToNodeAdapter,
+  [BlockType.GENERATIVE]: generativeAdapter,
   [BlockType.INTEGRATION]: integrationAdapter,
   [BlockType.GO_TO_INTENT]: goToIntentAdapter,
   [BlockType.GO_TO_DOMAIN]: goToDomainAdapter,
@@ -134,6 +136,7 @@ export const baseOutPortAdapterV2 = {
   [BlockType.CAPTUREV2]: captureV2OutPortsAdapterV2,
   [BlockType.COMPONENT]: componentOutPortsAdapterV2,
   [BlockType.DIRECTIVE]: directiveOutPortsAdapterV2,
+  [BlockType.GENERATIVE]: generativeOutPortsAdapterV2,
   [BlockType.CHOICE_OLD]: interactionOutPortsAdapterV2,
   [BlockType.GO_TO_NODE]: goToNodeOutPortsAdapterV2,
   [BlockType.INTEGRATION]: integrationOutPortsAdapterV2,

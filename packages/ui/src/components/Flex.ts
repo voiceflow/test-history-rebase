@@ -94,6 +94,11 @@ export const flexLabelStyles = css`
   text-overflow: ellipsis;
 `;
 
+export const flexColumnStyles = css`
+  ${flexStyles}
+  flex-direction: column;
+`;
+
 export const FlexLabel = styled.div`
   ${flexLabelStyles}
 `;

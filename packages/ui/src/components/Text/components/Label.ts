@@ -1,13 +1,12 @@
 import { colors, styled, ThemeColor } from '@ui/styles';
 
-import Text from './Text';
+import Text, { TextProps } from './Text';
 
-export const Label = styled(Text).attrs({ as: 'label' })`
+export const Label = styled(Text).attrs<TextProps>(({ fontSize = 15 }) => ({ as: 'label', fontSize }))`
   display: block;
   margin-bottom: 11px;
   color: ${colors(ThemeColor.SECONDARY)};
   font-weight: 600;
-  font-size: 15px;
   line-height: 1.4666666667;
 `;
 

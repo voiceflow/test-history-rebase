@@ -62,6 +62,7 @@ export enum FeatureFlag {
 
   ANALYTICS_DASHBOARD = 'analytics_dashboard',
   GPT_FREESTYLE = 'gpt_freestyle',
+  GPT_GENERATIVE_RESPONSE = 'gpt_generative_response',
 
   ASSISTANT_AI = 'assistant_ai',
 

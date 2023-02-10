@@ -1,8 +1,8 @@
 import { css, styled, transition } from '@ui/styles';
 import { changeColorShade } from '@ui/utils/colors';
-import { layout, LayoutProps, space, SpaceProps } from 'styled-system';
+import { layout, LayoutProps, space, SpaceProps, typography, TypographyProps } from 'styled-system';
 
-export interface LinkProps extends LayoutProps, SpaceProps {
+export interface LinkProps extends LayoutProps, SpaceProps, TypographyProps {
   link?: string;
   color?: string;
   $hidden?: boolean;
@@ -55,6 +55,7 @@ export const linkStyles = css<LinkProps>`
 
   ${space}
   ${layout}
+  ${typography}
 `;
 
 const Link = styled.a.attrs<LinkProps>(({ link, href, target = '_blank', rel = 'noopener noreferrer' }) => ({

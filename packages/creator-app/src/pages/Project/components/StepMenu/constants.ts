@@ -125,6 +125,8 @@ const INTENT_STEP = createMenuStep(Realtime.BlockType.INTENT);
 
 const RANDOM_STEP_V2 = createMenuStep(Realtime.BlockType.RANDOMV2);
 
+const GENERATIVE_STEP = createMenuStep(Realtime.BlockType.GENERATIVE);
+
 const SET_STEP_V2 = createMenuStep(Realtime.BlockType.SETV2);
 
 const SPEAK_STEP = createMenuStep(Realtime.BlockType.SPEAK, { factoryData: { dialogs: [{ type: Realtime.DialogType.VOICE }] } });
@@ -222,7 +224,7 @@ export const GOOGLE_STEP_SECTIONS = createStepSections({
 
 // chatbot menu sections
 export const CHATBOT_STEP_SECTIONS = createStepSections({
-  talkSteps: [TEXT_STEP, VISUAL_STEP, CARDV2_STEP, CAROUSEL_STEP],
+  talkSteps: [TEXT_STEP, VISUAL_STEP, CARDV2_STEP, CAROUSEL_STEP, GENERATIVE_STEP],
   listenSteps: [BUTTONS_STEP, CHOICE_STEP, CAPTURE_STEP_V2],
   logicSteps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
   eventSteps: [INTENT_STEP],
@@ -231,7 +233,7 @@ export const CHATBOT_STEP_SECTIONS = createStepSections({
 
 // general menu sections
 export const GENERAL_STEP_SECTIONS = createStepSections({
-  talkSteps: [SPEAK_STEP, AUDIO_STEP, VISUAL_STEP],
+  talkSteps: [SPEAK_STEP, AUDIO_STEP, VISUAL_STEP, GENERATIVE_STEP],
   listenSteps: [CHOICE_STEP, CAPTURE_STEP_V2],
   logicSteps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
   eventSteps: [INTENT_STEP],
@@ -257,7 +259,7 @@ export const DIALOGFLOW_ES_VOICE_STEP_SECTIONS = createStepSections({
 });
 
 export const MICROSOFT_TEAMS_STEP_SECTIONS = createStepSections({
-  talkSteps: [TEXT_STEP, VISUAL_STEP, CARDV2_STEP],
+  talkSteps: [TEXT_STEP, VISUAL_STEP, CARDV2_STEP, GENERATIVE_STEP],
   listenSteps: [BUTTONS_STEP, CHOICE_STEP, CAPTURE_STEP_V2],
   logicSteps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
   eventSteps: [INTENT_STEP],
@@ -265,7 +267,7 @@ export const MICROSOFT_TEAMS_STEP_SECTIONS = createStepSections({
 });
 
 export const WHATSAPP_STEP_SECTIONS = createStepSections({
-  talkSteps: [TEXT_STEP, VISUAL_STEP],
+  talkSteps: [TEXT_STEP, VISUAL_STEP, GENERATIVE_STEP],
   listenSteps: [CHOICE_STEP, CAPTURE_STEP_V2],
   logicSteps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
   eventSteps: [INTENT_STEP],
@@ -273,7 +275,7 @@ export const WHATSAPP_STEP_SECTIONS = createStepSections({
 });
 
 export const SMS_STEP_SECTIONS = createStepSections({
-  talkSteps: [TEXT_STEP, VISUAL_STEP],
+  talkSteps: [TEXT_STEP, VISUAL_STEP, GENERATIVE_STEP],
   listenSteps: [CHOICE_STEP, CAPTURE_STEP_V2],
   logicSteps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
   eventSteps: [INTENT_STEP],

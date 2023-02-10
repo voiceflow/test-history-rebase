@@ -6,8 +6,8 @@
     "url": "https://github.com/voiceflow/creator-app/issues"
   },
   "dependencies": {
-    "@voiceflow/base-types": "2.78.0",
-    "@voiceflow/common": "8.1.5",
+    "@voiceflow/base-types": "2.79.1",
+    "@voiceflow/common": "8.2.0",
     "typescript-fsa": "3.0.0"
   },
   "files": [

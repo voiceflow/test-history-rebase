@@ -12,7 +12,7 @@ interface VoiceOption<V> {
   label: string;
 }
 
-interface VoiceOptionGroup<V> {
+export interface VoiceOptionGroup<V> {
   label: string;
   value?: string;
   options: Array<VoiceOptionGroup<V> | VoiceOption<V>>;
@@ -147,6 +147,27 @@ export const getPlatformVoiceOptions = (platform: Platform.Constants.PlatformTyp
     },
     getGeneralVoiceOptions
   )(params);
+
+export const isVoiceOptionsGroup = <V>(options: VoiceOptionGroup<V> | VoiceOption<V>): options is VoiceOptionGroup<V> => {
+  return !!(options as VoiceOptionGroup<V>).options;
+};
+
+export const bindVoiceOptions = (voiceOptions: VoiceOptionGroup<string>[], fn: (option: VoiceOption<string>) => VoiceOption<string>) => {
+  // apply onClick to all leaf option nodes
+  const recurse = (options: VoiceOptionGroup<string>['options']) => {
+    options.forEach((option, index) => {
+      if (isVoiceOptionsGroup(option)) {
+        recurse(option.options);
+      } else {
+        options[index] = fn(option);
+      }
+    });
+  };
+
+  recurse(voiceOptions);
+
+  return voiceOptions;
+};
 
 export const voiceOptionsFilter = (
   voiceOptions: VoiceOptionGroup<string>[],

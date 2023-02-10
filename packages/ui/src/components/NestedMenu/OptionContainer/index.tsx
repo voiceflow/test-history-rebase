@@ -2,6 +2,7 @@ import React from 'react';
 import { Popper, PopperProps } from 'react-popper';
 
 import Portal from '../../Portal';
+import * as S from './styles';
 
 export interface NestedMenuOptionContainerProps extends React.PropsWithChildren {
   placement?: PopperProps['placement'];
@@ -17,9 +18,9 @@ const NestedMenuOptionContainer: React.FC<NestedMenuOptionContainerProps> = ({ c
       }}
     >
       {({ ref, style, placement: parentPlacement }) => (
-        <div ref={ref} style={style} data-placement={parentPlacement}>
+        <S.Container ref={ref} style={style} data-placement={parentPlacement}>
           {children}
-        </div>
+        </S.Container>
       )}
     </Popper>
   </Portal>

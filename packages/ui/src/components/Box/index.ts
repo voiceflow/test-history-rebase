@@ -22,7 +22,7 @@ import {
   TypographyProps,
 } from 'styled-system';
 
-import { flexApartStyles, flexAroundStyles, flexCenterStyles, flexEndStyles, flexStartStyles, flexStyles } from '../Flex';
+import { flexApartStyles, flexAroundStyles, flexCenterStyles, flexColumnStyles, flexEndStyles, flexStartStyles, flexStyles } from '../Flex';
 
 export type BoxProps = ColorProps &
   LayoutProps &
@@ -92,6 +92,10 @@ const FlexEnd = styled(Box)`
   ${flexEndStyles}
 `;
 
+const FlexColumn = styled(Box)`
+  ${flexColumnStyles}
+`;
+
 const FlexStart = styled(Box)`
   ${flexStartStyles}
 `;
@@ -146,6 +150,7 @@ export default Object.assign(Box, {
   FlexStart,
   FlexAround,
   FlexCenter,
+  FlexColumn,
   FlexAlignEnd,
   FlexAlignStart,
 });

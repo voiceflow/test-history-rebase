@@ -8,6 +8,7 @@ const generationRoutes = (middlewares: MiddlewaresMap, controllers: ControllersM
 
   // runtime generation
   router.post('/autocomplete', controllers.generation.autoComplete);
+  router.post('/generative-response', controllers.generation.generativeResponse);
 
   router.use(middlewares.auth.authenticateUser);
   router.use(middlewares.billing.checkQuota);

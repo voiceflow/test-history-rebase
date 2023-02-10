@@ -457,6 +457,12 @@ export namespace NodeData {
     [BaseModels.PortType.NEXT]: string;
   }
 
+  export interface Generative extends VoiceNode.Generative.StepData<string> {}
+
+  export interface GenerativeBuiltInPorts {
+    [BaseModels.PortType.NEXT]: string;
+  }
+
   // union
   export type Visual = BaseNode.Visual.StepData;
 
@@ -525,6 +531,7 @@ export interface NodeDataMap {
 
   [BlockType.TEXT]: NodeData.Text;
   [BlockType.SPEAK]: NodeData.Speak;
+  [BlockType.GENERATIVE]: NodeData.Generative;
   [BlockType.CHOICE_OLD]: unknown;
 
   [BlockType.EXIT]: NodeData.Exit;

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1092.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1091.0...@voiceflow/creator-app@1.1092.0) (2023-02-10)
+
+
+### Features
+
+* handle realtime errors (BUG-183) ([#6687](https://github.com/voiceflow/creator-app/issues/6687)) ([9ebc11a](https://github.com/voiceflow/creator-app/commit/9ebc11a86bf60c6c9343e33321608ed8022e0193))
+
+
+
+
+
 # [1.1091.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1090.2...@voiceflow/creator-app@1.1091.0) (2023-02-10)
 
 

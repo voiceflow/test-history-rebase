@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1092.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1092.0...@voiceflow/creator-app@1.1092.1) (2023-02-10)
+
+
+### Bug Fixes
+
+* import unclassified modal fixes (CT-1593) ([#6690](https://github.com/voiceflow/creator-app/issues/6690)) ([a9656ef](https://github.com/voiceflow/creator-app/commit/a9656efe6eac04898db0ad7bf87d8d97c0db8ede)), closes [/www.notion.so/voiceflow/UI-UX-61d9864c4f3e4534942fae06f0d16be4#1f46eef0e6584297aa79d2cf727a65d7](https://github.com//www.notion.so/voiceflow/UI-UX-61d9864c4f3e4534942fae06f0d16be4/issues/1f46eef0e6584297aa79d2cf727a65d7)
+
+
+
+
+
 # [1.1092.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1091.0...@voiceflow/creator-app@1.1092.0) (2023-02-10)
 
 

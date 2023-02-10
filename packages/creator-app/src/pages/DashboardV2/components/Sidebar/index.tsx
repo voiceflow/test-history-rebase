@@ -10,6 +10,7 @@ import * as Sessions from '@/ducks/session';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { usePermission } from '@/hooks/permission';
 import { useSelector } from '@/hooks/redux';
+import * as ModalsV2 from '@/ModalsV2';
 
 import { Account } from './components';
 import * as S from './styles';
@@ -19,8 +20,10 @@ const DashboardNavigationSidebar: React.FC = () => {
   const workspaceID = useSelector(Sessions.activeWorkspaceIDSelector) ?? 'unknown';
   const membersCount = useSelector(WorkspaceV2.active.allNormalizedMembersCountSelector);
 
-  const [isOwner] = usePermission(Permission.EDIT_ORGANIZATION);
-  const [isAdmin] = usePermission(Permission.CONFIGURE_WORKSPACE);
+  const [canEditOrganization] = usePermission(Permission.EDIT_ORGANIZATION);
+  const [canConfigureWorkspace] = usePermission(Permission.CONFIGURE_WORKSPACE);
+
+  const paymentModal = ModalsV2.useModal(ModalsV2.Payment);
 
   return (
     <NavigationSidebar isMainMenu>
@@ -31,7 +34,7 @@ const DashboardNavigationSidebar: React.FC = () => {
           <NavigationSidebar.NavItem
             to={generatePath(Path.WORKSPACE_MEMBERS, { workspaceID })}
             icon="team"
-            title={isAdmin ? 'Team & Billing' : 'Team'}
+            title={canConfigureWorkspace ? 'Team & Billing' : 'Team'}
             isActive={({ pathname, matchPath }) => !!matchPath(pathname, { path: [Path.WORKSPACE_MEMBERS, Path.WORKSPACE_BILLING] })}
           >
             <NavigationSidebar.Item.SubText>{membersCount}</NavigationSidebar.Item.SubText>
@@ -65,7 +68,7 @@ const DashboardNavigationSidebar: React.FC = () => {
             </NavigationSidebar.Item>
           </Link>
 
-          {isAdmin && (
+          {canConfigureWorkspace && (
             <NavigationSidebar.NavItem
               to={generatePath(Path.WORKSPACE_GENERAL_SETTINGS, { workspaceID })}
               icon="systemSettings"
@@ -76,7 +79,7 @@ const DashboardNavigationSidebar: React.FC = () => {
             />
           )}
 
-          {isOwner && (
+          {canEditOrganization && (
             <NavigationSidebar.NavItem
               to={generatePath(Path.WORKSPACE_GENERAL_ORG, { workspaceID })}
               icon="organization"
@@ -91,7 +94,9 @@ const DashboardNavigationSidebar: React.FC = () => {
         <S.FillSpace />
 
         <S.Group>
-          {!isPaidPlan && <NavigationSidebar.Item icon="paid" title="Upgrade to Pro" />}
+          {!isPaidPlan && canConfigureWorkspace && (
+            <NavigationSidebar.Item icon="paid" title="Upgrade to Pro" onClick={() => paymentModal.open({})} />
+          )}
 
           <Link color="inherit" href={BOOK_DEMO_LINK}>
             <NavigationSidebar.Item icon="sales" title="Contact Sales">

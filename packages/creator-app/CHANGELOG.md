@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1090.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1089.0...@voiceflow/creator-app@1.1090.0) (2023-02-10)
+
+
+### Features
+
+* add no assistants page (CT-1622) ([#6685](https://github.com/voiceflow/creator-app/issues/6685)) ([14f52a8](https://github.com/voiceflow/creator-app/commit/14f52a862bd1edb732ea58147c94795aa9e9b721))
+* fix total number of seats (CT-1631) ([#6683](https://github.com/voiceflow/creator-app/issues/6683)) ([cdebba7](https://github.com/voiceflow/creator-app/commit/cdebba799ba488cb1a838960cc08f67a88b3e1e2))
+
+
+
+
+
 # [1.1089.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1088.0...@voiceflow/creator-app@1.1089.0) (2023-02-09)
 
 

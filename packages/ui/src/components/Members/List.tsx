@@ -12,6 +12,7 @@ interface ListProps<M extends Member> {
   currentUserID?: number;
   onResendInvite?: (member: M) => void;
   hideLastDivider?: boolean;
+  canChangeRole?: boolean;
 }
 
 const List = <M extends Member>({
@@ -23,6 +24,7 @@ const List = <M extends Member>({
   currentUserID,
   onResendInvite,
   hideLastDivider = true,
+  canChangeRole = false,
 }: ListProps<M>): React.ReactElement => (
   <div>
     {members.map((member, index) => (
@@ -36,6 +38,7 @@ const List = <M extends Member>({
         onChangeRole={onChangeRole && ((role) => onChangeRole(member, role))}
         isCurrentUser={currentUserID !== undefined && member.creator_id === currentUserID}
         onResendInvite={!member.creator_id && onResendInvite ? () => onResendInvite(member) : undefined}
+        canChangeRole={canChangeRole}
       />
     ))}
   </div>

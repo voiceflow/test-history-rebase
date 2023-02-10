@@ -64,12 +64,10 @@ const Members = manager.create<Props>('ProjectMembers', () => ({ api, type, open
         <Workspace.TakenSeatsMessage small />
       </Modal.Body>
 
-      <Modal.Footer gap={10}>
-        <Button variant={ButtonVariant.TERTIARY} squareRadius onClick={() => api.close()}>
-          Cancel
+      <Modal.Footer>
+        <Button variant={ButtonVariant.PRIMARY} onClick={() => api.close()}>
+          Done
         </Button>
-
-        <Button variant={ButtonVariant.PRIMARY}>Done</Button>
       </Modal.Footer>
     </Modal>
   );

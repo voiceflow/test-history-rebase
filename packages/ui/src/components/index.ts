@@ -9,7 +9,7 @@ export type { AssistantCardProps } from './AssistantCard';
 export { default as AssistantCard } from './AssistantCard';
 export type { AudioPlayerProps } from './AudioPlayer';
 export { default as AudioPlayer } from './AudioPlayer';
-export { default as Avatar } from './Avatar';
+export { default as Avatar, isColorImage } from './Avatar';
 export { default as Badge } from './Badge';
 export { default as Banner } from './Banner';
 export type { BarChartDatum } from './BarChart';

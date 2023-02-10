@@ -20,6 +20,7 @@ interface MemberRowProps<M extends Member> {
   border?: boolean;
   onRemove?: VoidFunction;
   onChangeRole?: (role: M['role']) => void;
+  canChangeRole?: boolean;
   isCurrentUser?: boolean;
   onResendInvite?: VoidFunction;
   warningTooltip?: TippyTooltipProps | null;
@@ -34,6 +35,7 @@ const MemberRow = <T extends Member>({
   border,
   onRemove,
   onChangeRole,
+  canChangeRole,
   isCurrentUser,
   onResendInvite,
   warningTooltip,
@@ -81,8 +83,9 @@ const MemberRow = <T extends Member>({
               onRemove={onRemove}
               onChange={onChangeRole}
               isInvite={!member.creator_id}
-              disabled={isCurrentUser}
+              disabled={isCurrentUser || !canChangeRole}
               onResendInvite={onResendInvite}
+              canChangeRole={canChangeRole && !isCurrentUser}
             />
           </S.RoleSelectContainer>
         )}

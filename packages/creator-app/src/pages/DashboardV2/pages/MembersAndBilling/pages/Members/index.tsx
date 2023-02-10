@@ -25,7 +25,7 @@ const DashboardV2TeamAndBillingMembers: React.FC = () => {
 
   return (
     <S.Container>
-      {!isOnPaidPlanSelector && (
+      {!isOnPaidPlanSelector && canAddSeats && (
         <S.StyledBanner
           mb={32}
           title="Unlock your teams potential"
@@ -44,21 +44,22 @@ const DashboardV2TeamAndBillingMembers: React.FC = () => {
             <Workspace.TakenSeatsMessageV2 />
           ) : (
             <Text color="#62778c">
-              <Text color="#132144">{usedEditorSeats} Editor seats</Text> Being used in this workspace.
+              <Text color="#132144">{usedEditorSeats} Editor seats</Text> being used in this workspace.
             </Text>
           )}
         </div>
 
         <FlexCenter gap={10}>
           {canAddSeats && (
-            <Button variant={ButtonVariant.SECONDARY} nowrap onClick={() => onAddSeats()}>
-              Add Seats
-            </Button>
+            <>
+              <Button variant={ButtonVariant.SECONDARY} nowrap onClick={() => onAddSeats()}>
+                Add Seats
+              </Button>
+              <Button variant={ButtonVariant.PRIMARY} onClick={() => inviteModal.openVoid()}>
+                Invite Members
+              </Button>
+            </>
           )}
-
-          <Button variant={ButtonVariant.PRIMARY} onClick={() => inviteModal.openVoid()}>
-            Invite Members
-          </Button>
         </FlexCenter>
       </S.Header>
       <MemberList />

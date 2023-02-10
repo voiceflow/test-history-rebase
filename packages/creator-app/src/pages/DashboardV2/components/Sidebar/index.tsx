@@ -19,8 +19,8 @@ const DashboardNavigationSidebar: React.FC = () => {
   const workspaceID = useSelector(Sessions.activeWorkspaceIDSelector) ?? 'unknown';
   const membersCount = useSelector(WorkspaceV2.active.allNormalizedMembersCountSelector);
 
-  const isOwner = usePermission(Permission.EDIT_ORGANIZATION);
-  const isAdmin = usePermission(Permission.CONFIGURE_WORKSPACE);
+  const [isOwner] = usePermission(Permission.EDIT_ORGANIZATION);
+  const [isAdmin] = usePermission(Permission.CONFIGURE_WORKSPACE);
 
   return (
     <NavigationSidebar isMainMenu>

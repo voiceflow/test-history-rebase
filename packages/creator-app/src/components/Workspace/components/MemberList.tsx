@@ -2,10 +2,10 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Members } from '@voiceflow/ui';
 import React from 'react';
 
+import { Permission } from '@/constants/permissions';
 import * as Account from '@/ducks/account';
 import * as Workspace from '@/ducks/workspace';
-import { useDispatch } from '@/hooks/realtime';
-import { useSelector } from '@/hooks/redux';
+import { useDispatch, usePermission, useSelector } from '@/hooks';
 
 type WorkspaceMember = Realtime.WorkspaceMember | Realtime.PendingWorkspaceMember;
 
@@ -17,6 +17,7 @@ interface MemberListProps {
 
 const MemberList: React.FC<MemberListProps> = ({ inset, members, hideLastDivider = true }) => {
   const userID = useSelector(Account.userIDSelector)!;
+  const [canEditRole] = usePermission(Permission.ADD_COLLABORATORS_V2);
 
   const sendInvite = useDispatch(Workspace.sendInviteToActiveWorkspace);
   const deleteMember = useDispatch(Workspace.deleteMemberOfActiveWorkspace);
@@ -40,6 +41,7 @@ const MemberList: React.FC<MemberListProps> = ({ inset, members, hideLastDivider
       currentUserID={userID}
       onResendInvite={(member) => sendInvite(member.email, null)}
       hideLastDivider={hideLastDivider}
+      canChangeRole={canEditRole}
     />
   );
 };

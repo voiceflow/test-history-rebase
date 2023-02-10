@@ -25,6 +25,7 @@ interface RoleSelectProps<T extends UserRole> {
   disabled?: boolean;
   onRemove?: VoidFunction;
   onResendInvite?: VoidFunction;
+  canChangeRole?: boolean;
 }
 
 const DEFAULT_ROLES = [UserRole.EDITOR, UserRole.VIEWER, UserRole.ADMIN, UserRole.BILLING];
@@ -37,6 +38,7 @@ const RoleSelect = <T extends UserRole>({
   onChange,
   onRemove,
   onResendInvite,
+  canChangeRole,
 }: RoleSelectProps<T>): React.ReactElement => {
   const getOptions = () => {
     const options: Array<Option | UIOnlyMenuItemOption> = roles.map((role) => ({
@@ -78,6 +80,7 @@ const RoleSelect = <T extends UserRole>({
       syncOptionsOnRender
       showDropdownColorOnActive
       modifiers={{ offset: { offset: -4 } }}
+      showSearchInputIcon={canChangeRole}
     />
   );
 };

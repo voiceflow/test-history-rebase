@@ -1,5 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { getAlternativeColor } from '@voiceflow/ui';
+import { getAlternativeColor, isColorImage } from '@voiceflow/ui';
 import * as Normal from 'normal-store';
 import { createSelector } from 'reselect';
 
@@ -59,7 +59,9 @@ export const getDistinctMemberByCreatorIDSelector = createSelector(
   (getWorkspaceMember) => (creatorID: number, nodeID: string) => {
     const workspaceMember = getWorkspaceMember({ creatorID });
 
-    return workspaceMember ? { ...workspaceMember, color: getAlternativeColor(nodeID) } : null;
+    return workspaceMember
+      ? { ...workspaceMember, color: isColorImage(workspaceMember.image) ? workspaceMember.image : getAlternativeColor(nodeID) }
+      : null;
   }
 );
 

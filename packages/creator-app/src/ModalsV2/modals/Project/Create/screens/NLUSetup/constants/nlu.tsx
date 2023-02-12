@@ -22,19 +22,6 @@ const buildOption = (nluConfig: NLU.Base.Config): Option => ({
   },
 });
 
-/** @deprecated remove after DIALOGFLOW_CX FF gone */
-export const OPTIONS_LEGACY: Array<Option | UIOnlyMenuItemOption> = [
-  buildOption(NLU.Voiceflow.CONFIG),
-  createDividerMenuItemOption(),
-  buildOption(NLU.DialogflowES.CONFIG),
-  buildOption(NLU.Watson.CONFIG),
-  buildOption(NLU.Luis.CONFIG),
-  buildOption(NLU.Rasa.CONFIG),
-  buildOption(NLU.Einstein.CONFIG),
-  buildOption(NLU.Lex.CONFIG),
-  buildOption(NLU.NuanceMix.CONFIG),
-];
-
 export const OPTIONS: Array<Option | UIOnlyMenuItemOption> = [
   buildOption(NLU.Voiceflow.CONFIG),
   createDividerMenuItemOption(),

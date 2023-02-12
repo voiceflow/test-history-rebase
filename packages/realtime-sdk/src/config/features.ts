@@ -28,8 +28,6 @@ export enum FeatureFlag {
   DISABLE_CODE_EXPORTS = 'disable_code_exports',
 
   // integrations
-  DIALOGFLOW_CX = 'dialogflow_cx',
-
   WEBCHAT = 'webchat',
 
   WHATSAPP = 'whatsapp',

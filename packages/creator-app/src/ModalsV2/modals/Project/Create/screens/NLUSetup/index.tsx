@@ -52,7 +52,6 @@ const PlatformSetup: React.OldFC<PlatformSetupProps> = ({
   const dashboardV2 = useFeature(Realtime.FeatureFlag.DASHBOARD_V2);
 
   const gasPermission = useGetPermission();
-  const isDialogflowCXEnabled = useFeature(Realtime.FeatureFlag.DIALOGFLOW_CX);
 
   const [nluError, setNLUError] = React.useState('');
   const [modalityError, setModalityError] = React.useState('');
@@ -134,7 +133,7 @@ const PlatformSetup: React.OldFC<PlatformSetupProps> = ({
             value={nlu}
             error={!!nluError}
             prefix={getIcon({ nluConfig, isImportLoading })}
-            options={isDialogflowCXEnabled ? NLUConstants.OPTIONS : NLUConstants.OPTIONS_LEGACY}
+            options={NLUConstants.OPTIONS}
             onSelect={onSelectNLU}
             useLayers
             clearable

@@ -1,5 +1,4 @@
 import { BaseModels } from '@voiceflow/base-types';
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { Badge, Box, Link, SectionV2, Toggle } from '@voiceflow/ui';
 import React from 'react';
 
@@ -10,7 +9,7 @@ import { Permission } from '@/constants/permissions';
 import * as Project from '@/ducks/project';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
-import { useActiveWorkspace, useDispatch, useFeature, usePermission, useSelector, useTrackingEvents } from '@/hooks';
+import { useActiveWorkspace, useDispatch, usePermission, useSelector, useTrackingEvents } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
 import { SettingSections } from '@/pages/Settings/constants';
 
@@ -56,7 +55,6 @@ const AIAssistant: React.FC = () => {
     }
   };
 
-  const { isEnabled: isFreestyleEnabled } = useFeature(Realtime.FeatureFlag.GPT_FREESTYLE);
   const [sectionRef] = useAutoScrollSectionIntoView(SettingSections.AI_ASSISTANT);
 
   return (
@@ -97,33 +95,29 @@ const AIAssistant: React.FC = () => {
           </Box.FlexApart>
         </Settings.SubSection>
 
-        {isFreestyleEnabled && (
-          <>
-            <SectionV2.Divider />
+        <SectionV2.Divider />
 
-            <Settings.SubSection contentProps={{ topOffset: 3 }}>
-              <Box.FlexApart fullWidth>
-                <Box>
-                  <Settings.SubSection.Title>Freestyle</Settings.SubSection.Title>
+        <Settings.SubSection contentProps={{ topOffset: 3 }}>
+          <Box.FlexApart fullWidth>
+            <Box>
+              <Settings.SubSection.Title>Freestyle</Settings.SubSection.Title>
 
-                  <Settings.SubSection.Description mt={4}>
-                    Auto dialog to keep the conversation on track and answer questions. <Link href={LEARN_FREESTYLE}>Learn more</Link>
-                  </Settings.SubSection.Description>
-                </Box>
+              <Settings.SubSection.Description mt={4}>
+                Auto dialog to keep the conversation on track and answer questions. <Link href={LEARN_FREESTYLE}>Learn more</Link>
+              </Settings.SubSection.Description>
+            </Box>
 
-                <WorkspaceDisabledTooltip disabled={workspaceAIEnabled}>
-                  <Toggle
-                    size={Toggle.Size.EXTRA_SMALL}
-                    checked={workspaceAIEnabled && aiAssistSettings?.freestyle}
-                    disabled={!workspaceAIEnabled}
-                    onChange={onFreestyleToggle}
-                    hasLabel
-                  />
-                </WorkspaceDisabledTooltip>
-              </Box.FlexApart>
-            </Settings.SubSection>
-          </>
-        )}
+            <WorkspaceDisabledTooltip disabled={workspaceAIEnabled}>
+              <Toggle
+                size={Toggle.Size.EXTRA_SMALL}
+                checked={workspaceAIEnabled && aiAssistSettings?.freestyle}
+                disabled={!workspaceAIEnabled}
+                onChange={onFreestyleToggle}
+                hasLabel
+              />
+            </WorkspaceDisabledTooltip>
+          </Box.FlexApart>
+        </Settings.SubSection>
       </Settings.Card>
     </Settings.Section>
   );

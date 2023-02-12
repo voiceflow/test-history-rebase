@@ -5,11 +5,6 @@ import React from 'react';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { useActiveWorkspace, useFeature, useSelector } from '@/hooks';
 
-interface GPTFeature {
-  isEnabled: boolean;
-  hitCap: boolean;
-}
-
 export const useGPTQuotas = () => {
   const workspace = useActiveWorkspace();
 
@@ -56,17 +51,6 @@ export const useGPTGenFeatures = () => {
 
   return {
     isEnabled: featureEnabled,
-    hitCap,
-  };
-};
-
-// FREESTYLE
-export const useFreestyleFeature = (): GPTFeature => {
-  const { isEnabled, hitCap } = useGPTFeature();
-  const freestyleFeatureFlag = useFeature(Realtime.FeatureFlag.GPT_FREESTYLE);
-
-  return {
-    isEnabled: isEnabled && freestyleFeatureFlag.isEnabled,
     hitCap,
   };
 };

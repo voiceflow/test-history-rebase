@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1092.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1092.1...@voiceflow/creator-app@1.1092.2) (2023-02-13)
+
+
+### Bug Fixes
+
+* remove dialogflow cx ff (CT-000) ([#6691](https://github.com/voiceflow/creator-app/issues/6691)) ([86092bb](https://github.com/voiceflow/creator-app/commit/86092bb54322328dea9ed46fbad969a55a13dcc1))
+* remove gpt freestyle ff (CT-000) ([#6692](https://github.com/voiceflow/creator-app/issues/6692)) ([4312051](https://github.com/voiceflow/creator-app/commit/431205196f93ec50adc57f3966a1a0f59eddf7df))
+
+
+
+
+
 ## [1.1092.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1092.0...@voiceflow/creator-app@1.1092.1) (2023-02-10)
 
 

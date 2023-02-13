@@ -95,7 +95,7 @@ class DisplayRenderer extends React.Component<DisplayRendererProps, DisplayRende
         {this.props.withControls && (
           <div className="d-flex justify-content-center pt-2">
             {DEVICES.map((type) => [type, AlexaConstants.APL_DEVICE_CONFIG[type]] as const).map(([type, device]) => (
-              <TippyTooltip content={device.name} position="bottom" animation="fade" key={type}>
+              <TippyTooltip content={device.name} position="bottom" key={type}>
                 {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions,jsx-a11y/click-events-have-key-events */}
                 <div
                   className={type === this.state.device ? 'svg-active' : ''}

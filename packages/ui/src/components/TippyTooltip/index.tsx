@@ -68,8 +68,8 @@ const TippyTooltip = React.forwardRef<Element, TippyTooltipProps>(
       placement,
       animation = 'shift-away',
       className,
-      animateFill = true,
       popperOptions,
+      duration = [150, 0],
       ...props
     },
     ref
@@ -85,13 +85,13 @@ const TippyTooltip = React.forwardRef<Element, TippyTooltipProps>(
         arrow={arrow}
         onShow={Utils.functional.chain(onShow, (instance) => registerOpenedTooltip(internalId, instance))}
         onHide={Utils.functional.chain(onHide, () => registerOpenedTooltip(internalId, null))}
-        plugins={animateFill ? [animateFillPlugin, ...(plugins ?? [])] : plugins}
+        plugins={props.animateFill ? [animateFillPlugin, ...(plugins ?? [])] : plugins}
         maxWidth={width}
         appendTo={appendTo}
         disabled={disabled || IS_TEST}
+        duration={duration}
         animation={animation}
         placement={placement ?? position}
-        animateFill={animateFill}
         popperOptions={{
           ...popperOptions,
           modifiers: [{ name: 'preventOverflow', options: { boundary: document.body, padding: 10 } }, ...(popperOptions?.modifiers ?? [])],

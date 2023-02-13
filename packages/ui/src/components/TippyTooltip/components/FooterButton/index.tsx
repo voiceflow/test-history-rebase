@@ -8,10 +8,11 @@ export interface ComplexProps extends React.PropsWithChildren {
   title?: React.ReactNode;
   onClick: React.MouseEventHandler<HTMLDivElement>;
   buttonText: string;
+  animateFill?: boolean;
 }
 
-const FooterButton: React.FC<ComplexProps> = ({ title, onClick, buttonText, children }) => (
-  <S.Content>
+const FooterButton: React.FC<ComplexProps> = ({ title, onClick, children, buttonText, animateFill }) => (
+  <S.Content $animateFill={animateFill}>
     {(!!title || !!children) && (
       <Multiline>
         {!!title && <Title>{title}</Title>}

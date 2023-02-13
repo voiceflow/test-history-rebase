@@ -51,7 +51,7 @@ const StripeCardElement: React.FC<StripeCardElementProps> = ({ onChangeComplete,
   errorMessageRef.current = error || errorMessageRef.current;
 
   return (
-    <TippyTooltip visible={!!error && focused} content={error || errorMessageRef.current} placement="bottom-start" animation="fade" offset={[0, 5]}>
+    <TippyTooltip visible={!!error && focused} content={error || errorMessageRef.current} placement="bottom-start" offset={[0, 5]}>
       <S.Container disabled={disabled} onClick={preventDefault(onClick)} borderColor={S.getColor(error, complete, focused)}>
         <Box ref={boxRef} overflow="hidden" pl={2} pt={2} position="relative">
           <SvgIcon icon={S.getIcon(error, complete)} color={S.getColor(error, complete)} />

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1093.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1093.0...@voiceflow/creator-app@1.1093.1) (2023-02-13)
+
+
+### Bug Fixes
+
+* tooltip animation (CT-1474) ([#6670](https://github.com/voiceflow/creator-app/issues/6670)) ([1e2ab49](https://github.com/voiceflow/creator-app/commit/1e2ab499bc480d7fd034b5e7dbe09ca2820727bb))
+
+
+
+
+
 # [1.1093.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1092.2...@voiceflow/creator-app@1.1093.0) (2023-02-13)
 
 
